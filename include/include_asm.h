@@ -1,0 +1,87 @@
+#ifndef INCLUDE_ASM_H
+#define INCLUDE_ASM_H
+
+/*
+ * INCLUDE_ASM(const s32, "unit/path", func) pulls a not-yet-decompiled function
+ * from the split assembly into the C translation unit, so the object keeps the
+ * original function order. ee-gcc 2.96 emits top-level asm in source order (no
+ * unit-at-a-time), and the same ee-as assembles the compiler output and the
+ * included body.
+ *
+ * ee-as cannot read spimdisasm's syntax directly, so configure.py rewrites each
+ * body into build/eeasm/ (tools/eeas_compat.py); ASM_ROOT is that tree for the
+ * version being compiled (e.g. "build/eeasm/asm/raidou1/nonmatchings/").
+ *
+ * M2CTX/PERMUTER (context and permuter builds) and SKIP_ASM (objdiff progress
+ * objects: an asm fallback must not count as matched code) drop the asm.
+ *
+ * A function whose C is close but not exact is kept beside its fallback:
+ *
+ *     #ifdef NON_MATCHING
+ *     void f(void) { ... }
+ *     #else
+ *     INCLUDE_ASM(const s32, "unit/path", f);
+ *     #endif
+ *
+ * The normal build never defines NON_MATCHING, so it takes the asm and stays
+ * byte-identical, and the function still counts as unmatched. The draft is
+ * there for the next person, and for a native build of this source, which
+ * compiles it; tools/check_nonmatching.py compiles every draft so it cannot
+ * rot unnoticed.
+ *
+ * A bug the original has, which the image therefore depends on, keeps the
+ * behaviour and carries the correction behind FIX_BUGS:
+ *
+ *     // BUG: what is wrong and why it cannot be fixed in place
+ *     #ifdef FIX_BUGS
+ *     <the correction>
+ *     #endif
+ *
+ * The normal build never defines FIX_BUGS, so it keeps the bug and stays
+ * byte-identical. Anything built from this source that is not trying to match,
+ * a port for instance, defines it and gets code that does what was meant. A
+ * bug that can be corrected without moving the image is simply corrected; the
+ * guard is only for the ones the image depends on.
+ */
+#if !defined(M2CTX) && !defined(PERMUTER) && !defined(SKIP_ASM)
+
+#ifndef ASM_ROOT
+#error "ASM_ROOT must be defined by the build (see configure.py)"
+#endif
+
+#define INCLUDE_ASM(TYPE, FOLDER, NAME)                        \
+    __asm__(".section .text\n"                                 \
+            "\t.set noat\n"                                    \
+            "\t.set noreorder\n"                               \
+            "\t.include \"" ASM_ROOT FOLDER "/" #NAME ".s\"\n" \
+            "\t.set reorder\n"                                 \
+            "\t.set at\n")
+
+#define INCLUDE_RODATA(TYPE, FOLDER, NAME)                     \
+    __asm__(".section .rodata\n"                               \
+            "\t.include \"" ASM_ROOT FOLDER "/" #NAME ".s\"\n" \
+            ".section .text\n")
+
+/* Small data not yet defined in C (tools/include_sdata.py places these). */
+#define INCLUDE_SDATA(TYPE, FOLDER, NAME)                      \
+    __asm__(".section .sdata\n"                                \
+            "\t.include \"" ASM_ROOT FOLDER "/" #NAME ".s\"\n" \
+            ".section .text\n")
+
+/* Raise this unit's .text alignment to 2^N, for a unit whose original object
+ * was aligned more strictly than its own code needs. The retail link pads up
+ * to it, so dropping the request moves everything after the unit. */
+#define TEXT_ALIGN(N) __asm__(".section .text\n\t.align " #N "\n")
+
+__asm__(".include \"macro.inc\"\n");
+
+#else
+
+#define INCLUDE_ASM(TYPE, FOLDER, NAME)
+#define INCLUDE_RODATA(TYPE, FOLDER, NAME)
+#define INCLUDE_SDATA(TYPE, FOLDER, NAME)
+#define TEXT_ALIGN(N)
+
+#endif
+
+#endif /* INCLUDE_ASM_H */
