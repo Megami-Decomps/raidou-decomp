@@ -114,7 +114,10 @@ in the link (at its address). Within a unit only the first displaced definition
 is blamed; when none is, the last definition in the object before the first
 label the link moved is. A failed one goes back to its line (`asm` in the tsv).
 Some Raidou data differs from SMT3 (sizes, values, an alignment the unit's start
-cannot give), which this catches. 226 definitions in raidou1, 206 in raidou2.
+cannot give), which this catches. A string array SMT3 declares larger than
+Raidou's label is carried with Raidou's size (last column of the tsv; the TU's
+own `extern` for it loses its size), unless that size is 8 bytes or less, which
+`-G 8` would put in `.sdata`. 228 definitions in raidou1, 208 in raidou2.
 
 ## Why a function stays asm
 

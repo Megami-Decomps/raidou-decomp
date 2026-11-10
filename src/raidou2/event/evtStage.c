@@ -126,7 +126,7 @@ enum evtProcessState {
     EVT_PROCESS_STATE_DESTROY_PENDING = 3
 };
 
-extern const char evtKillFieldScriptFormat[0x28];
+extern const char evtKillFieldScriptFormat[];
 
 void dds3PathBasicPauseOn(dds3PathBasicControl_t *value);
 
@@ -191,7 +191,7 @@ s32 evtLoadArea_FromMemory(s32 fld, s32 area, saddr_t pF1, saddr_t pF2,
 
 void evtStartEvent(s32 no);
 
-extern const char evtKillFieldScriptFormat[0x28];
+extern const char evtKillFieldScriptFormat[];
 
 void evtKillFieldScript(void);
 
@@ -422,7 +422,7 @@ s32 evtStageAnimeControl(s32 type, s32 mode) {
     }
     return 1;
 }
-INCLUDE_RODATA(const s32, "event/evtStage", D_004B44A0);
+const char evtKillFieldScriptFormat[0x20] = "kill field script -> [%s]\n";
 
 INCLUDE_SDATA(const s32, "event/evtStage", D_004DF838);
 

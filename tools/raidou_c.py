@@ -22,6 +22,9 @@ from units import SRC, shared_sources, unit_name, unit_sources  # noqa: E402
 OUT = ROOT / "build" / "raidou_c"
 # Read only: the smt3-port checkout follows smt3-decomp upstream.
 SMT3 = Path.home() / "projects/smt3-decomp"
+# Read only. A DDS source is `dds1/<path>` or `dds2/<path>` under its src/; SMT3 ones are relative to src/smt3.
+DDS = Path.home() / "projects/dds-decomp"
+DDS_GAMES = ("dds1", "dds2")
 
 INSN = re.compile(r"^\s*/\* [0-9A-Fa-f]+ ([0-9A-Fa-f]+) ([0-9A-Fa-f]{8}) \*/\s+(.*?)\s*$")
 GLABEL = re.compile(r"^\s*glabel\s+(\S+)")
@@ -112,38 +115,111 @@ def definitions(text):
     return found
 
 
-def smt3_symbols(smt3):
+def repo_symbols(root, game="smt3"):
     out = {}
-    for line in (smt3 / "config/smt3/symbol_addrs.txt").read_text().splitlines():
+    for line in (root / "config" / game / "symbol_addrs.txt").read_text().splitlines():
         if m := SYMROW.match(line):
             out.setdefault(m.group(1), int(m.group(2), 16))
     return out
 
 
-def smt3_c_functions(smt3):
-    """SMT3 address -> (name, source path) for every function the normal build compiles from C."""
-    syms = smt3_symbols(smt3)
+def smt3_symbols(smt3):
+    return repo_symbols(smt3)
+
+
+def c_functions(root, game):
+    """Address -> (name, source path) for every function a repo's normal build compiles from C."""
+    syms = repo_symbols(root, game)
     out = {}
-    for src in sorted((smt3 / "src/smt3").rglob("*.c")):
+    for src in sorted((root / "src" / game).rglob("*.c")):
         text = drop_nonmatching(src.read_text(errors="replace"))
+        if game in DDS_GAMES:
+            text = resolve_version(text, game)
         for name in definitions(text):
             addr = syms.get(name)
             if addr is None and (m := re.fullmatch(r"func_([0-9A-F]{8})", name)):
                 addr = int(m.group(1), 16)
             if addr is not None:
-                out.setdefault(addr, (name, str(src.relative_to(smt3))))
+                out.setdefault(addr, (name, str(src.relative_to(root))))
     return out
 
 
-def smt3_bodies(smt3):
-    """SMT3 address -> (masked words, slots), from the split assembly."""
+def smt3_c_functions(smt3):
+    return c_functions(smt3, "smt3")
+
+
+def split_bodies(root, game):
+    """Address -> (masked words, slots), from a repo's split assembly."""
     out = {}
     for sub in ("matchings", "nonmatchings"):
-        for path in (smt3 / "asm/smt3" / sub).rglob("*.s"):
+        for path in (root / "asm" / game / sub).rglob("*.s"):
             for _, (addr, words, slots) in parse_asm(path).items():
                 if addr is not None:
                     out.setdefault(addr, (words, slots))
     return out
+
+
+def smt3_bodies(smt3):
+    return split_bodies(smt3, "smt3")
+
+
+VERSION_IF = re.compile(r"^\s*#\s*(ifdef|ifndef|if|elif|else|endif)\b(.*)$")
+
+
+def version_value(kind, arg, game):
+    """True/False for a conditional on VERSION_DDS1/2 alone, else None."""
+    arg = re.sub(r"/\*.*?\*/|//.*", "", arg).strip()
+    if kind in ("ifdef", "ifndef"):
+        if not re.fullmatch(r"VERSION_DDS[12]", arg):
+            return None
+        return (arg == f"VERSION_{game.upper()}") == (kind == "ifdef")
+    expr = re.sub(r"defined\s*\(?\s*VERSION_(DDS[12])\s*\)?",
+                  lambda m: "1" if m.group(1).lower() == game else "0", arg)
+    if expr == arg or not re.fullmatch(r"[01\s()!&|]+", expr):
+        return None
+    return bool(eval(expr.replace("||", " or ").replace("&&", " and ").replace("!", " not ")))
+
+
+def resolve_version(text, game):
+    """text with conditionals on VERSION_DDS1/2 decided for game; others kept."""
+    out, stack, skipping = [], [], False
+    for line in text.split("\n"):
+        d = VERSION_IF.match(line)
+        if d:
+            kind, arg = d.groups()
+            if kind in ("ifdef", "ifndef", "if"):
+                value = version_value(kind, arg, game)
+                stack.append((skipping, value))
+                if value is None:
+                    if not skipping:
+                        out.append(line)
+                else:
+                    skipping = skipping or not value
+                continue
+            if stack:
+                parent, value = stack[-1]
+                if value is not None:
+                    if kind == "endif":
+                        stack.pop()
+                        skipping = parent
+                    elif kind == "else":
+                        skipping = parent or value
+                    else:
+                        sys.exit(f"#elif after a VERSION_DDS conditional: {line}")
+                    continue
+                if kind == "endif":
+                    stack.pop()
+        if not skipping:
+            out.append(line)
+    return "\n".join(out)
+
+
+def is_dds(rel):
+    return rel.split("/", 1)[0] in DDS_GAMES
+
+
+def source_file(smt3, rel):
+    return DDS / "src" / f"{rel}.c" if is_dds(rel) else smt3 / "src/smt3" / f"{rel}.c"
 
 
 def name_sources(version):
@@ -355,8 +431,10 @@ def declaration(item):
     return body + ";"
 
 
-def shared_rel(smt3_src):
-    return Path(smt3_src).relative_to("src/smt3").with_suffix("").as_posix()
+def shared_rel(src):
+    """src/smt3/<x>.c -> <x>; src/ddsN/<x>.c -> ddsN/<x>."""
+    path = Path(src).with_suffix("")
+    return (path.relative_to("src/smt3") if path.parts[1] == "smt3" else path.relative_to("src")).as_posix()
 
 
 _SMT3_TEXT = {}
@@ -364,24 +442,28 @@ _SMT3_TEXT = {}
 
 def smt3_text(smt3, rel):
     if rel not in _SMT3_TEXT:
-        _SMT3_TEXT[rel] = drop_nonmatching((smt3 / "src/smt3" / f"{rel}.c").read_text(errors="replace"))
+        text = drop_nonmatching(source_file(smt3, rel).read_text(errors="replace"))
+        _SMT3_TEXT[rel] = resolve_version(text, rel.split("/", 1)[0]) if is_dds(rel) else text
     return _SMT3_TEXT[rel]
 
 
 def decl_begin(rel):
-    return f"/* Declarations from smt3-decomp src/smt3/{rel}.c */"
+    return f"/* Declarations from dds-decomp src/{rel}.c */" if is_dds(rel) \
+        else f"/* Declarations from smt3-decomp src/smt3/{rel}.c */"
 
 
 def decl_end(rel):
-    return f"/* End of declarations from src/smt3/{rel}.c */"
+    return f"/* End of declarations from src/{'' if is_dds(rel) else 'smt3/'}{rel}.c */"
 
 
-DECL_BLOCK = re.compile(r"^/\* Declarations from smt3-decomp src/smt3/(\S+)\.c \*/\n.*?"
-                        r"^/\* End of declarations from src/smt3/\1\.c \*/\n\n?", re.M | re.S)
+DECL_BLOCK = re.compile(r"^/\* Declarations from (?:smt3-decomp src/smt3/|dds-decomp src/)(\S+)\.c \*/\n.*?"
+                        r"^/\* End of declarations from src/(?:smt3/)?\1\.c \*/\n\n?", re.M | re.S)
+DDS_INCLUDE = re.compile(r'^(\s*#\s*include\s+)"([^"/]+)"', re.M)
 
 
-def decl_block(smt3, rel):
-    """Every declaration of one SMT3 file (types, prototypes, its data as extern)."""
+def decl_block(smt3, rel, unsized=()):
+    """Every declaration of one source file (types, prototypes, its data as extern);
+    arrays named in unsized are declared without a size (Raidou's differs)."""
     decls, unprototyped = [], set()
     for d in (declaration(b) for b in blocks(smt3_text(smt3, rel))):
         if d is None:
@@ -392,7 +474,13 @@ def decl_block(smt3, rel):
                 unprototyped.add(m.group(1))
             elif m.group(1) in unprototyped:
                 continue
+        if (name := data_name(d.replace("extern", "", 1))) in unsized:
+            d = re.sub(rf"\b{name}\s*\[[^\]]*\]", f"{name}[]", d, count=1)
         decls.append(d)
+    if is_dds(rel):
+        # dds-decomp's headers live in include/dds/; its headers include each other by bare name.
+        macro = f"VERSION_{rel.split('/', 1)[0].upper()}"
+        decls = [f"#ifndef {macro}\n#define {macro}\n#endif"] + [DDS_INCLUDE.sub(r'\1"dds/\2"', d) for d in decls]
     return decl_begin(rel) + "\n" + "\n\n".join(decls) + "\n" + decl_end(rel) + "\n"
 
 
@@ -446,15 +534,15 @@ def tu_bodies(smt3, text, candidates):
     return out
 
 
-def set_decl_blocks(smt3, text, rels):
+def set_decl_blocks(smt3, text, rels, unsized=()):
     """Keep exactly the declaration blocks of rels, new ones after the TU's leading #includes."""
     have = {m.group(1) for m in DECL_BLOCK.finditer(text)}
-    text = DECL_BLOCK.sub(lambda m: decl_block(smt3, m.group(1)) + "\n" if m.group(1) in rels else "", text)
+    text = DECL_BLOCK.sub(lambda m: decl_block(smt3, m.group(1), unsized) + "\n" if m.group(1) in rels else "", text)
     add = sorted(set(rels) - have)
     if add:
         at = re.match(r"(?:[ \t]*(?:#include[^\n]*)?\n)*", text).end()
         head = text[:at].rstrip("\n")
-        text = (head + "\n\n" if head else "") + "\n".join(decl_block(smt3, rel) for rel in add) \
+        text = (head + "\n\n" if head else "") + "\n".join(decl_block(smt3, rel, unsized) for rel in add) \
             + "\n" + text[at:].lstrip("\n")
     return text
 
@@ -498,22 +586,24 @@ def smt3_data(smt3):
 
 
 def data_rows(version):
-    """config/<v>/smt3_data.tsv: name -> {address, kind, rel, status, reason}."""
+    """config/<v>/smt3_data.tsv: name -> {address, kind, rel, status, reason, size}."""
     path = ROOT / "config" / version / "smt3_data.tsv"
     out = {}
     if path.exists():
         for line in path.read_text().splitlines():
             if line and not line.startswith("#"):
-                name, addr, kind, rel, status, reason = (line.split("\t") + [""] * 6)[:6]
-                out[name] = {"address": int(addr, 16), "kind": kind, "rel": rel, "status": status, "reason": reason}
+                name, addr, kind, rel, status, reason, size = (line.split("\t") + [""] * 7)[:7]
+                out[name] = {"address": int(addr, 16), "kind": kind, "rel": rel, "status": status, "reason": reason,
+                             "size": int(size, 16) if size else None}
     return out
 
 
 def write_data_rows(version, rows):
     path = ROOT / "config" / version / "smt3_data.tsv"
     lines = ["# SMT3 data definitions carried by tools/raidou_c.py: name, address, RODATA|SDATA, "
-             "SMT3 file, c|asm, reason it stays split"]
-    lines += [f"{n}\t0x{r['address']:08X}\t{r['kind']}\t{r['rel']}\t{r['status']}\t{r['reason']}".rstrip("\t")
+             "SMT3 file, c|asm, reason it stays split, Raidou array size"]
+    lines += [(f"{n}\t0x{r['address']:08X}\t{r['kind']}\t{r['rel']}\t{r['status']}\t{r['reason']}"
+               + (f"\t0x{r['size']:X}" if r.get("size") else "")).rstrip("\t")
               for n, r in sorted(rows.items())]
     path.write_text("\n".join(lines) + "\n")
 
@@ -522,8 +612,28 @@ def data_line(unit, kind, address):
     return f'INCLUDE_{kind}(const s32, "{unit}", D_{address:08X});'
 
 
-def data_definition(smt3, name, rel):
-    return next((d for r, d in smt3_data(smt3).get(name, []) if r == rel), None)
+def resize(d, name, size):
+    """d with its array size set to size."""
+    return re.sub(rf"\b{name}\s*\[[^\]]*\]", f"{name}[0x{size:X}]", d, count=1) if size else d
+
+
+def raidou_size(version, kind, address, d):
+    """Raidou's label extent for a string array SMT3 declares larger than it, else None."""
+    m = re.search(r"\[\s*(0x[0-9A-Fa-f]+|\d+)\s*\]\s*(?:__attribute__\(\(.*?\)\)\s*)?=(.*);\s*$", code_view(d), re.S)
+    if not m or not re.search(r"\bchar\b", d[:m.start()]):
+        return None
+    labels = all_labels(version, kind.lower())
+    i = bisect.bisect_right(labels, address)
+    extent = labels[i] - address if i < len(labels) else None
+    need = string_size(d[m.start(2):m.end(2)])
+    if kind == "RODATA" and extent is not None and extent <= 8:
+        return None  # -G 8 would put it in .sdata
+    return extent if extent and need and need <= extent < int(m.group(1), 0) else None
+
+
+def data_definition(smt3, name, rel, size=None):
+    d = next((d for r, d in smt3_data(smt3).get(name, []) if r == rel), None)
+    return resize(d, name, size) if d else None
 
 
 def tu_data(smt3, text, rows):
@@ -531,8 +641,12 @@ def tu_data(smt3, text, rows):
     out = {}
     for name, row in rows.items():
         d = data_definition(smt3, name, row["rel"])
-        if d and (at := text.find(d)) >= 0:
-            out[name] = (row["rel"], at, at + len(d))
+        if not d:
+            continue
+        # Match any array size: a reverted row may have lost the Raidou size.
+        pattern = re.escape(resize(d, name, 1)).replace(re.escape(f"{name}[0x1]"), rf"{name}\[[^\]]*\]")
+        if m := re.search(pattern, text):
+            out[name] = (row["rel"], m.start(), m.end())
     return out
 
 
@@ -561,8 +675,9 @@ def port_data(smt3, text, unit, rels, ctx):
         if len(found) != 1:
             return m.group(0)
         name, rel, d = found[0]
-        rows[name] = {"address": address, "kind": m.group(1), "rel": rel, "status": "c", "reason": ""}
-        return d
+        size = raidou_size(ctx["version"], m.group(1), address, d)
+        rows[name] = {"address": address, "kind": m.group(1), "rel": rel, "status": "c", "reason": "", "size": size}
+        return resize(d, name, size)
 
     return re.sub(rf'^INCLUDE_(RODATA|SDATA)\(const s32, "{re.escape(unit)}", D_([0-9A-F]{{8}})\);$', to_c, text, flags=re.M)
 
@@ -665,7 +780,10 @@ def port_text(smt3, text, unit, carry, cands, ctx):
     for nested in nested_names(text):
         text = re.sub(rf'^INCLUDE_ASM\(\s*const s32,\s*"[^"]+"\s*,\s*{nested}\s*\);\n\n?', "", text, flags=re.M)
     rels = {rel for rel, _, _ in tu_bodies(smt3, text, cands).values()}
-    return set_decl_blocks(smt3, port_data(smt3, text, unit, rels, ctx), rels)
+    text = port_data(smt3, text, unit, rels, ctx)
+    # Only the defining TU needs the unsized declaration; elsewhere SMT3's size is harmless.
+    unsized = {n for n in tu_data(smt3, text, ctx["rows"]) if ctx["rows"][n].get("size")}
+    return set_decl_blocks(smt3, text, rels, unsized)
 
 
 def write_tus(texts):
@@ -712,7 +830,7 @@ def cmd_port(args):
         for name, row in rows.items():
             if name not in alias[row["address"]]:
                 alias[row["address"]].append(name)
-        ctx[version] = {"rows": rows, "alias": alias, "retry": retry}
+        ctx[version] = {"rows": rows, "alias": alias, "retry": retry, "version": version}
         for unit, src in unit_sources(version).items():
             if args.units and not any(unit.startswith(u) for u in args.units):
                 continue

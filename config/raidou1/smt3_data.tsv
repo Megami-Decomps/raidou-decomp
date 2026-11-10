@@ -1,4 +1,4 @@
-# SMT3 data definitions carried by tools/raidou_c.py: name, address, RODATA|SDATA, SMT3 file, c|asm, reason it stays split
+# SMT3 data definitions carried by tools/raidou_c.py: name, address, RODATA|SDATA, SMT3 file, c|asm, reason it stays split, Raidou array size
 BlinkMultiBlurCount	0x0046D098	SDATA	effect/effPCPMisc	c
 EffEveCPSmokeCount	0x0046D068	SDATA	effect/effEvent	c
 PlayingNo	0x0046CD84	SDATA	movie/mviManager	c
@@ -47,7 +47,7 @@ egl_OT_Offset	0x0046B238	SDATA	kernel/dds3KernelDraw	asm	bytes differ at +0x0
 endinglistcnt	0x0046B164	SDATA	kernel/dds3KernelCore	c
 endinglistf	0x0046B15C	SDATA	kernel/dds3KernelCore	c
 endinglistl	0x0046B160	SDATA	kernel/dds3KernelCore	c
-evtEventScriptPathFormat	0x00451140	RODATA	event/evtEventPack	asm	bytes differ at +0x20
+evtEventScriptPathFormat	0x00451140	RODATA	event/evtEventPack	c		0x20
 evtFrameVarName	0x0044FEA8	RODATA	event/evtEventViewerFrameVar	c
 evtKillFieldScriptFormat	0x0044DD18	RODATA	event/evtStage	c
 evtKutiUnit	0x0046C5DC	SDATA	event/evtCommand	c
@@ -73,7 +73,7 @@ evtMsgObjPathPara0	0x0044E5F0	RODATA	event/evtCommand	c
 evtMsgObjPathPara1	0x0044E600	RODATA	event/evtCommand	c
 evtMsgObjPathWaitNoObj	0x0044E640	RODATA	event/evtCommand	c
 evtMsgReadBeStart	0x0044E680	RODATA	event/evtCommand	c
-evtMsgSetSkyAlphaHigh	0x0044E858	RODATA	event/evtCommand	asm	bytes differ at +0x28
+evtMsgSetSkyAlphaHigh	0x0044E858	RODATA	event/evtCommand	c		0x28
 evtMsgSetSkyAlphaLow	0x0044E830	RODATA	event/evtCommand	c
 evtPackNameFormat	0x0046CCB0	SDATA	event/evtSky	c
 evtPictureProcName	0x0046C800	SDATA	event/evtPicture	c

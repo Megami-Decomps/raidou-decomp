@@ -228,7 +228,7 @@ extern const char evtMotionSeNameFormat[0x10] __attribute__((aligned(8)));
 /* Allocate a three-word task parameter block and format its "mse_..." name. */
 dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId);
 
-extern const char evtEventScriptPathFormat[0x28] __attribute__((aligned(8)));
+extern const char evtEventScriptPathFormat[] __attribute__((aligned(8)));
 
 /* Resolve the event's script path ("/event/eNNN/eNNN/scr/eNNN.be", grouped by tens) and start loading it. */
 void evtLoadEventScript(evtPackProcessData_t *state);
@@ -610,5 +610,5 @@ char evtLoadStartMessage[8] = "LOAD..\n";
 
 char evtLoadDoneMessage[8] = "OK!!\n";
 
-INCLUDE_RODATA(const s32, "event/evtEventPack", D_00451140);
+const char evtEventScriptPathFormat[0x20] __attribute__((aligned(8))) = "/event/e%03d/e%03d/scr/e%03d.be";
 

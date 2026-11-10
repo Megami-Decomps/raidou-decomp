@@ -894,7 +894,7 @@ extern const char evtMsgTexLoadNoProc[72];
 
 extern const char evtMsgSetSkyAlphaLow[40];
 
-extern const char evtMsgSetSkyAlphaHigh[48];
+extern const char evtMsgSetSkyAlphaHigh[];
 
 void nbLoadDeadMoonTex(void);
 
@@ -2291,7 +2291,7 @@ const char evtMsgSetSkyAlphaLow[40] = "warning : SET_SKY_A alpha < -255\n";
 
 addr_t evtKutiUnit = 0;
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_004B4A78);
+const char evtMsgSetSkyAlphaHigh[0x28] = "warning : SET_SKY_A alpha > 255\n";
 
 INCLUDE_SDATA(const s32, "event/evtCommand", D_004DF844);
 
