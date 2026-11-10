@@ -604,7 +604,7 @@ INCLUDE_ASM(const s32, "event/evtEventPack", func_001CA848);
 
 const char evtMotionSeNameFormat[0x10] __attribute__((aligned(8))) = "mse_%d_%d";
 
-INCLUDE_SDATA(const s32, "event/evtEventPack", D_0046CCB8);
+s32 evtMotionSeWork = 0x3E8;
 
 char evtLoadStartMessage[8] = "LOAD..\n";
 

@@ -113,7 +113,7 @@ in the link (at its address). Within a unit only the first displaced definition
 is blamed; when none is, the last definition in the object before the first
 label the link moved is. A failed one goes back to its line (`asm` in the tsv).
 Some Raidou data differs from SMT3 (sizes, values, an alignment the unit's start
-cannot give), which this catches. 182 definitions in raidou1, 165 in raidou2.
+cannot give), which this catches. 184 definitions in raidou1, 167 in raidou2.
 
 ## Why a function stays asm
 

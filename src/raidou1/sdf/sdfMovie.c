@@ -623,7 +623,7 @@ s32 sdfMovieIsFinished(sdfMovieCb_t *aMov)
     }
     return aMov->decodeCb.activeBuffCount == 0;
 }
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5B0);
+s32 movieStreamSema = -1;
 
 INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5B4);
 

@@ -1910,7 +1910,7 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE360);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE364);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE368);
+u16 dds3QuakeFlag = 0;
 
 s16 dds3QuakeFrame = 0;
 

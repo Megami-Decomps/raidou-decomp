@@ -26,7 +26,7 @@ dds3GsThreadId	0x004E42A4	SDATA	sdf/sdfGraph	c
 dds3MoverCount	0x004DE5D0	SDATA	basic/dds3MoverBasic	c
 dds3PauseSign	0x004DE20C	SDATA	kernel/dds3KernelMain	c
 dds3PauseTime	0x004DE210	SDATA	kernel/dds3KernelMain	c
-dds3QuakeFlag	0x004DE368	SDATA	kernel/dds3KernelDraw	asm	linked at 0x004DE364, retail 0x004DE368
+dds3QuakeFlag	0x004DE368	SDATA	kernel/dds3KernelDraw	c
 dds3QuakeFrame	0x004DE36A	SDATA	kernel/dds3KernelDraw	c
 dds3QuakeXRange	0x004DE36C	SDATA	kernel/dds3KernelDraw	c
 dds3QuakeYRange	0x004DE36E	SDATA	kernel/dds3KernelDraw	asm	next item at +0x2, retail +0x6
@@ -96,7 +96,7 @@ mdlPibLabelD3P	0x004DF600	SDATA	model/mdlEffect	c
 mdlPibLabelP2A	0x004DF5F8	SDATA	model/mdlEffect	c
 movieDrawProcName	0x004BBE28	RODATA	movie/mviManager	c
 movieManProcName	0x004BBE38	RODATA	movie/mviManager	c
-movieStreamSema	0x004E45C8	SDATA	sdf/sdfMovie	asm	linked at 0x004E45D0, retail 0x004E45C8
+movieStreamSema	0x004E45C8	SDATA	sdf/sdfMovie	c
 movieViewerProcName	0x004BBE88	RODATA	movie/MovieViewer	c
 p2sdPcmBusy	0x004E444C	SDATA	sdf/sdfSound	c
 p2sdPcmCallback	0x004E4444	SDATA	sdf/sdfSound	c
@@ -172,7 +172,7 @@ sdfGrScreenMode	0x004E4290	SDATA	sdf/sdfGraph	c
 sdfGsErrorHandler	0x004E42AC	SDATA	sdf/sdfGsMemory	c
 sdfGsMemInfoTitle	0x004D7BA8	RODATA	sdf/sdfSound	c
 sdfGsMemNodeFmt	0x004D7C20	RODATA	sdf/sdfSound	c
-sdfGsMemTypeFmt	0x004E45C0	SDATA	sdf/sdfSound	asm	last in place before the first displaced definition
+sdfGsMemTypeFmt	0x004E45C0	SDATA	sdf/sdfSound	asm	size 0x8, retail 0x4
 sdfIopModulePathCdrom	0x004D7E70	RODATA	sdf/sdfTmx	c
 sdfIopModulePathHost	0x004D7E90	RODATA	sdf/sdfTmx	c
 sdfMemFullCallback	0x004E4284	SDATA	sdf/sdfMemory	c

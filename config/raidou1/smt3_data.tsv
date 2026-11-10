@@ -50,7 +50,7 @@ evtKutiUnit	0x0046C5DC	SDATA	event/evtCommand	c
 evtLoadDoneMessage	0x0046CCC8	SDATA	event/evtEventPack	c
 evtLoadStartMessage	0x0046CCC0	SDATA	event/evtEventPack	c
 evtMotionSeNameFormat	0x00451130	RODATA	event/evtEventPack	c
-evtMotionSeWork	0x0046CCB8	SDATA	event/evtEventPack	asm	linked at 0x0046CCB0, retail 0x0046CCB8
+evtMotionSeWork	0x0046CCB8	SDATA	event/evtEventPack	c
 evtMsgBeOk	0x0044E670	RODATA	event/evtCommand	c
 evtMsgDelBeStart	0x0044E690	RODATA	event/evtCommand	c
 evtMsgEffectBeFailed	0x0044E1F0	RODATA	event/evtCommand	c
@@ -106,7 +106,7 @@ mdlPibLabelP2A	0x0046C398	SDATA	model/mdlEffect	c
 mdlWorkPathPrefix	0x0046C390	SDATA	model/mdlManager	c
 movieDrawProcName	0x004550C8	RODATA	movie/mviManager	c
 movieManProcName	0x004550D8	RODATA	movie/mviManager	c
-movieStreamSema	0x0046F5B0	SDATA	sdf/sdfMovie	asm	linked at 0x0046F5B8, retail 0x0046F5B0
+movieStreamSema	0x0046F5B0	SDATA	sdf/sdfMovie	c
 movieViewerProcName	0x00455118	RODATA	movie/MovieViewer	c
 p2sdPcmBusy	0x0046F434	SDATA	sdf/sdfSound	c
 p2sdPcmCallback	0x0046F42C	SDATA	sdf/sdfSound	c
@@ -185,7 +185,7 @@ sdfGrScreenMode	0x0046F278	SDATA	sdf/sdfGraph	c
 sdfGsErrorHandler	0x0046F294	SDATA	sdf/sdfGsMemory	c
 sdfGsMemInfoTitle	0x004653A8	RODATA	sdf/sdfSound	c
 sdfGsMemNodeFmt	0x00465420	RODATA	sdf/sdfSound	c
-sdfGsMemTypeFmt	0x0046F5A8	SDATA	sdf/sdfSound	asm	last in place before the first displaced definition
+sdfGsMemTypeFmt	0x0046F5A8	SDATA	sdf/sdfSound	asm	size 0x8, retail 0x4
 sdfIopModulePathCdrom	0x00465670	RODATA	sdf/sdfTmx	c
 sdfIopModulePathHost	0x00465690	RODATA	sdf/sdfTmx	c
 sdfMemFullCallback	0x0046F26C	SDATA	sdf/sdfMemory	c
