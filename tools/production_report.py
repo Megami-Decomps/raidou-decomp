@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import json
 import math
+import posixpath
 from pathlib import Path
 import re
 import shlex
@@ -247,7 +248,8 @@ def record_object(root: Path, source: Path, obj: Path) -> None:
     target, separator, dependencies = dependency_text.partition(":")
     if not separator or target.strip() != str(obj):
         raise ValueError("invalid compiler dependency file")
-    paths = {str(obj), str(obj) + ".s", str(source), *shlex.split(dependencies)}
+    # include/dds headers include SMT3's as "../x.h".
+    paths = {str(obj), str(obj) + ".s", str(source), *map(posixpath.normpath, shlex.split(dependencies))}
     assembly = (root / (str(obj) + ".s")).read_text()
     for included in re.findall(r'^\s*\.include "([^"\n]+)"\s*$', assembly, re.M):
         paths.add("include/macro.inc" if included == "macro.inc" else included)
