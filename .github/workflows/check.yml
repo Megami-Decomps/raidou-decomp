@@ -1,0 +1,47 @@
+name: Check
+
+on:
+  push:
+  pull_request:
+
+# Read-only token: the job runs repository scripts.
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+# The retail executables are copyrighted and are not in this repository, so CI
+# cannot configure, build or checksum either version. It checks what needs
+# neither: that the scripts parse, the tables are consistent and the source
+# layout is valid. Build and verify locally with `python configure.py && ninja`.
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python3 -m pip install -q pyyaml
+
+      - name: Compile the scripts
+        run: python3 -m compileall -q configure.py diff_settings.py tools
+
+      - name: Check config tables and source layout
+        run: python3 tools/check_config.py
+
+      - name: Check that no retail data is committed
+        run: |
+          if git ls-files | grep -E '^orig/.+|\.(iso|elf|bin)$' | grep -v '^orig/\.gitkeep$'; then
+            echo "retail data is tracked" >&2
+            exit 1
+          fi

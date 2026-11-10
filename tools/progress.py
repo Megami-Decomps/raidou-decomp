@@ -105,7 +105,7 @@ def main():
         rows = [(r, stats[r]) for r in ROWS if r in stats] + [("total", total)]
         if md:
             print(f"\n`{version}`\n\n| Unit kind | Functions in C | Code bytes in C | C from SMT3 | C from DDS | C written here |"
-                  "\n|---|---|---|---|---|")
+                  "\n|---|---|---|---|---|---|")
             for r, s in rows:
                 print(f"| {r} | {s[2]:,} / {s[0]:,} ({pct(s[2], s[0])}) | {s[3]:,} / {s[1]:,} "
                       f"({pct(s[3], s[1])}) | {s[4]:,} | {s[5]:,} | {s[6]:,} |")
