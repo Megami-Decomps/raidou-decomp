@@ -478,6 +478,32 @@ def objdiff_progress_category(version: str, name: str) -> str:
     return "sdk" if "/sdk/" in name else "game"
 
 
+ORIGIN_CATEGORIES = {"smt3": "from_smt3", "dds": "from_dds", "none": "raidou_only"}
+
+
+def unit_origin_category(version: str, name: str) -> str | None:
+    """Game units only: the kind of unit config/<v>/tu_evidence.tsv found."""
+    if objdiff_progress_category(version, name) != "game":
+        return None
+    unit = Path(name).relative_to("src" if name.startswith("src/") else "asm").as_posix()
+    unit = unit.split("/", 1)[1] if unit.split("/", 1)[0] == version else unit
+    return ORIGIN_CATEGORIES.get(unit_evidence(version).get(unit, "none"), "raidou_only")
+
+
+_EVIDENCE: dict[str, dict[str, str]] = {}
+
+
+def unit_evidence(version: str) -> dict[str, str]:
+    if version not in _EVIDENCE:
+        out = {}
+        for line in (ROOT / "config" / version / "tu_evidence.tsv").read_text().splitlines():
+            cols = line.split("\t")
+            if not line.startswith("#") and len(cols) > 4 and cols[0] != "start":
+                out[cols[2]] = cols[4].split(":")[0]
+        _EVIDENCE[version] = out
+    return _EVIDENCE[version]
+
+
 def used_categories(categories: list[dict], units: list[dict]) -> list[dict]:
     """Drop categories that no unit belongs to.
 
@@ -707,6 +733,9 @@ def write_objdiff(units: dict[str, list[dict]]) -> None:
     categories = [
         {"id": "game", "name": "Atlus game/engine"},
         {"id": "sdk", "name": "Sony SDK / C runtime"},
+        {"id": "from_smt3", "name": "Game units found in SMT3"},
+        {"id": "from_dds", "name": "Game units found in DDS (not SMT3)"},
+        {"id": "raidou_only", "name": "Game units with no SMT3 or DDS counterpart"},
         {"id": "vu1", "name": "VU0/VU1 microcode"},
         {"id": "handwritten", "name": "Handwritten assembly (not C)"},
         {"id": "data", "name": "Split data segments (not compared)"},
@@ -727,6 +756,9 @@ def write_objdiff(units: dict[str, list[dict]]) -> None:
                 "target_path": row["target"],
                 "metadata": {"progress_categories": [version, category]},
             }
+            origin = unit_origin_category(version, row["name"])
+            if origin:
+                unit["metadata"]["progress_categories"].append(origin)
             if row["base"]:
                 unit["base_path"] = row["base"]
             config["units"].append(unit)
