@@ -1,0 +1,78 @@
+#include "common.h"
+
+INCLUDE_ASM(const s32, "code_001DB8A0", fileSetMenuValueAndInitializeFlags);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", fileClampPackedColorByte);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", fileCursorStepUp);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", fileFadeStepDown);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", func_001DB9E0);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", fileLoadSetMode);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", fileResetLoadContextSlide);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBBD8);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDA0);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDB0);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDC8);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDE0);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDF0);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBE10);
+
+INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBE98);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_004552E8);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455390);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_004553A8);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_004553C0);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_004553D8);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_004553F0);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455408);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455420);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455438);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455450);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455468);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455480);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455498);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_004554B0);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_004554C8);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_004554E0);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_004554F8);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455510);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455528);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455540);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455558);
+
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455570);
+
+INCLUDE_SDATA(const s32, "code_001DB8A0", D_0046CF68);
+

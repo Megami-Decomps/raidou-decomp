@@ -1128,6 +1128,8 @@ INCLUDE_RODATA(const s32, "model/mdlEffect", D_004B4010);
 
 INCLUDE_RODATA(const s32, "model/mdlEffect", D_004B4020);
 
+INCLUDE_RODATA(const s32, "model/mdlEffect", D_004B4038);
+
 INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF638);
 
 INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF640);

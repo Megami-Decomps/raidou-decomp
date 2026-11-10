@@ -40,7 +40,10 @@ the same units.
    `code_<vram>` gaps are not units and give no label.
 2. **DDS pair**, for code DDS shares and SMT3 lacks
    (`dds_unique_in_raidou.tsv`), with dds-decomp's unit when both DDS games
-   agree. Most such functions sit in dds-decomp gaps, so this adds little.
+   agree. Otherwise DDS1's (else DDS2's) `code_<vram>` file, which in
+   dds-decomp is a TU too; the Raidou TU is then named `code_<its vram>`.
+   `raidou_tus.py <v> --gaps-only --write` keeps the current TUs and splits
+   only the gaps this way (48 TUs in raidou1, 53 in raidou2).
 3. **SDK archive member** (`config/<v>/sdk_objects.tsv`, from
    `tools/sdk_objects.py`, matching by masked bytes or by a name defined in one
    member). In the SDK region this replaces the SMT3 label: smt3-decomp's SDK

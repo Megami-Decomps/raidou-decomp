@@ -1,0 +1,233 @@
+#include "common.h"
+
+INCLUDE_ASM(const s32, "code_0012C998", fldPointDistance);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012C9C8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012CA38);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012CB48);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012CBA0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012CC38);
+
+INCLUDE_ASM(const s32, "code_0012C998", fldToggleWorldNodeState);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012CD48);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012CD70);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012CF80);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012CFF0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D068);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D0E0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D290);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D2D8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D368);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D5C8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D690);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D6B8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D6F8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D710);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D750);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D768);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D7A8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D7E8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D830);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012D960);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DA20);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DAD0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DAF0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DB00);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DB58);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DB80);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DBC0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DBE8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DC28);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DC50);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DC90);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DCC8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DD00);
+
+INCLUDE_RODATA(const s32, "code_0012C998", D_004A98A0);
+
+INCLUDE_RODATA(const s32, "code_0012C998", D_004A98B0);
+
+INCLUDE_RODATA(const s32, "code_0012C998", D_004A98C0);
+
+INCLUDE_RODATA(const s32, "code_0012C998", D_004A98D0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DDE0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DE48);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DE88);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DED0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DEF0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DF00);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DF20);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DF38);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012DF68);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E038);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E048);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E0A8);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E190);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E1C0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E3A0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E440);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E478);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E488);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E4C0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E560);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E590);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E6C0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E6F0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E728);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E760);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E7E0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E828);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E858);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E8A0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E950);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E960);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E998);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012E9D0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012EA50);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012EA90);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012EAC0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012EAE0);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012EB28);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012EB38);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012EB58);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012EB78);
+
+INCLUDE_ASM(const s32, "code_0012C998", fldCleanupFieldScene);
+
+INCLUDE_ASM(const s32, "code_0012C998", func_0012EC18);
+
+INCLUDE_ASM(const s32, "code_0012C998", fldResetPlayerSceneObjectState);
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE74C);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE750);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE754);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE758);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE75C);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE760);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE764);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE768);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE76C);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE770);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE778);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE780);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE784);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE788);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE78C);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE790);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE794);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE798);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE79C);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE7A0);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE7A4);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE7A8);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE7AC);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE7B0);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE7B4);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE7B8);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE7BC);
+
+INCLUDE_SDATA(const s32, "code_0012C998", D_004DE7C0);
+

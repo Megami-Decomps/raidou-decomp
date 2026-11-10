@@ -1,0 +1,156 @@
+#include "common.h"
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D02F8);
+
+INCLUDE_ASM(const s32, "code_001D02F8", sndMixSampleBuffers);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D0400);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D04C0);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D0E50);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D0ED0);
+
+INCLUDE_ASM(const s32, "code_001D02F8", mnuReadTitleStreamStatusLocked);
+
+INCLUDE_ASM(const s32, "code_001D02F8", mnuWriteTitleStreamStatusLocked);
+
+INCLUDE_ASM(const s32, "code_001D02F8", mnuLoadTitleStreamFrameData);
+
+INCLUDE_ASM(const s32, "code_001D02F8", mnuStoreTaskResult);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D11D0);
+
+INCLUDE_ASM(const s32, "code_001D02F8", mnuStartFixedSoundStream);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D12F8);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1458);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D14D8);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1570);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1630);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1708);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D17F0);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1848);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1878);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1928);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D19A0);
+
+INCLUDE_ASM(const s32, "code_001D02F8", mnuResetTitleStreamLocked);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1A30);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1A60);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454CE0);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1B20);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1BC8);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1CC0);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1E40);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D1FC8);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D2028);
+
+INCLUDE_ASM(const s32, "code_001D02F8", func_001D20C8);
+
+INCLUDE_ASM(const s32, "code_001D02F8", mnuResetSoundBuffer);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454D10);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454D30);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454D50);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454D70);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454D90);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454DB0);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454DD0);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454DF0);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454E08);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454E28);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454E48);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454E68);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454E88);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454EA8);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454EC8);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454EE8);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454F08);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454F28);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454F48);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454F68);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454F88);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454FA8);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454FC8);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00454FE8);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00455008);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00455028);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00455048);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00455068);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_00455088);
+
+INCLUDE_RODATA(const s32, "code_001D02F8", D_004550A8);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD50);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD54);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD58);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD5C);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD60);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD64);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD68);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD6C);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD70);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD74);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD78);
+
+INCLUDE_SDATA(const s32, "code_001D02F8", D_0046CD7C);
+

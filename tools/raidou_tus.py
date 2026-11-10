@@ -11,7 +11,8 @@ Evidence, strongest first:
                 inside, is a Raidou TU from its first to its last paired
                 function; unpaired functions inside the run belong to it.
   * dds         The same for DDS-only code, through dds_unique_in_raidou.tsv
-                and dds-decomp's units (its code_<vram> gaps are not units).
+                and dds-decomp's units; its code_<vram> files (DDS1's first)
+                give TUs named code_<Raidou vram>.
   * literal     find_tus.py's same-TU cores (shared strings, jump tables,
                 .lit4 constants) extend a TU over unpaired neighbours, and a
                 duplicate string inside a TU marks a conflict.
@@ -37,6 +38,7 @@ from find_tus import VERSIONS, Image, literal_evidence
 ROOT = Path(__file__).resolve().parent.parent
 SMT3 = Path.home() / "projects/smt3-decomp"
 DDS = Path.home() / "projects/dds-decomp"
+DDS_CODE = "dds-code:"  # label of a dds-decomp code_<vram> unit; the Raidou TU is named code_<its vram>
 MAP = Path.home() / ".local/state/smt3-port-work/raidou-map"
 MIN_WORDS = 6
 # No TU spans more functions; a longer order inversion is a link-order anomaly.
@@ -131,6 +133,11 @@ def pairs(version: str, starts: list[int]):
                      if row[f"{d}_unit"] and row[f"{d}_method"] and "code_" not in row[f"{d}_unit"]}
             if len(names) == 1:
                 label[ea] = (names.pop(), "dds", None, None)
+            elif not names:
+                # dds-decomp's code_<vram> files are its TUs too, named per game: DDS1's when it has one.
+                d = next((d for d in ("dds1", "dds2") if row[f"{d}_unit"] and row[f"{d}_method"]), None)
+                if d:
+                    label[ea] = (f"{DDS_CODE}{d}:{row[f'{d}_unit']}", "dds", None, None)
     for i, ea in enumerate(starts):
         words.setdefault(ea, ((starts[i + 1] if i + 1 < len(starts) else ea) - ea) // 4)
     label = {ea: l for ea, l in label.items() if words.get(ea, 0) >= MIN_WORDS}
@@ -244,6 +251,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("version", choices=list(VERSIONS))
     ap.add_argument("--write", action="store_true")
+    ap.add_argument("--gaps-only", action="store_true",
+                    help="keep tu_evidence.tsv's TUs; only split its gaps into new code_<vram> TUs")
     args = ap.parse_args()
     v = args.version
     cfg_path = ROOT / "config" / v / f"{VERSIONS[v]['serial']}.yaml"
@@ -258,6 +267,9 @@ def main():
     cores, boundaries = literal_evidence(img, starts, refs, max_span=MAX_SPAN)
     label = pairs(v, starts)
     tus, conflicts, dropped = assign(starts, label, cores, boundaries)
+    for t in tus:
+        if t[2].startswith(DDS_CODE):
+            t[2] = f"code_{starts[t[0]]:08X}"
 
     smt3_names = {n for _, k, n in text_units(SMT3 / "config/smt3/SLUS_209.11.yaml")}
 
@@ -279,6 +291,9 @@ def main():
         pos = hi + 1
     if pos < len(starts):
         rows.append((starts[pos], starts[-1], f"code_{starts[pos]:08X}", "asm", "none", ""))
+
+    if args.gaps_only:
+        rows = gaps_only(v, rows, starts)
 
     plan = ROOT / "build" / v / "tu_plan.tsv"
     plan.parent.mkdir(parents=True, exist_ok=True)
@@ -312,6 +327,31 @@ HEADER = """\
 # reordered = paired functions not in SMT3 order; joined by literal = runs of
 # one unit joined by a shared literal.
 """
+
+
+def gaps_only(v, rows, starts):
+    """The current TUs, with each current gap split by the new plan's code_<vram> TUs inside it."""
+    old = []
+    for line in (ROOT / "config" / v / "tu_evidence.tsv").read_text().splitlines():
+        if line and not line.startswith(("#", "start")):
+            c = line.split("\t")
+            old.append((int(c[0], 16), int(c[1], 16), c[2], c[3], c[4], c[5] if len(c) > 5 else ""))
+    index = {ea: i for i, ea in enumerate(starts)}
+    out = []
+    for lo, hi, unit, kind, ev, smt3_u in old:
+        if kind == "c":
+            out.append((lo, hi, unit, kind, ev, smt3_u))
+            continue
+        pos = lo
+        for r in rows:
+            if r[3] == "c" and r[2].startswith("code_") and lo <= r[0] and r[1] <= hi:
+                if r[0] > pos:
+                    out.append((pos, starts[index[r[0]] - 1], f"code_{pos:08X}", "asm", "none", ""))
+                out.append(r)
+                pos = starts[index[r[1]] + 1] if index[r[1]] + 1 < len(starts) else hi + 1
+        if pos <= hi:
+            out.append((pos, hi, f"code_{pos:08X}", "asm", "none", ""))
+    return out
 
 
 def write(v, cfg_path, rows):

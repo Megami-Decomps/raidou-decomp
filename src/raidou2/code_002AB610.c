@@ -1,0 +1,182 @@
+#include "common.h"
+
+INCLUDE_ASM(const s32, "code_002AB610", btlProjectForwardPositionToScreen);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AB7B8);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AB958);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABB08);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABB58);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABB78);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABBB0);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABBE8);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABC00);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABC30);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABC60);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABCC0);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABCD8);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABD58);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABDA0);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABDE8);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABE08);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABE88);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABEA0);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABF20);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABF40);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002ABFC0);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC1F8);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC248);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC268);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC2E8);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC308);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC388);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC3A0);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC420);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC438);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC458);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC470);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC4F0);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC610);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC630);
+
+INCLUDE_ASM(const s32, "code_002AB610", btlTriangleNormalVU);
+
+INCLUDE_ASM(const s32, "code_002AB610", btlTriangleNormalDotEdge);
+
+INCLUDE_ASM(const s32, "code_002AB610", btlProjectOnPlaneVU);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC878);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC888);
+
+INCLUDE_ASM(const s32, "code_002AB610", func_002AC8F0);
+
+INCLUDE_RODATA(const s32, "code_002AB610", D_004C11E8);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E243C);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2440);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2444);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2448);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E244C);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2450);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2454);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2458);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2460);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2468);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2470);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2478);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2480);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2488);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2490);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2498);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24A0);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24A8);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24B0);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24B8);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24C0);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24C8);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24D0);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24D8);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24E0);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24E8);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24F0);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E24F8);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2500);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2508);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2510);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2518);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2520);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2528);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2530);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2538);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2540);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2548);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2550);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2558);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2560);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2568);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2570);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2578);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2580);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2588);
+
+INCLUDE_SDATA(const s32, "code_002AB610", D_004E2590);
+

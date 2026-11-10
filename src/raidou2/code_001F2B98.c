@@ -1,0 +1,78 @@
+#include "common.h"
+
+INCLUDE_ASM(const s32, "code_001F2B98", fileSetMenuValueAndInitializeFlags);
+
+INCLUDE_ASM(const s32, "code_001F2B98", fileClampPackedColorByte);
+
+INCLUDE_ASM(const s32, "code_001F2B98", fileCursorStepUp);
+
+INCLUDE_ASM(const s32, "code_001F2B98", fileFadeStepDown);
+
+INCLUDE_ASM(const s32, "code_001F2B98", func_001F2CD8);
+
+INCLUDE_ASM(const s32, "code_001F2B98", fileLoadSetMode);
+
+INCLUDE_ASM(const s32, "code_001F2B98", fileResetLoadContextSlide);
+
+INCLUDE_ASM(const s32, "code_001F2B98", func_001F2ED0);
+
+INCLUDE_ASM(const s32, "code_001F2B98", func_001F3098);
+
+INCLUDE_ASM(const s32, "code_001F2B98", func_001F30A8);
+
+INCLUDE_ASM(const s32, "code_001F2B98", func_001F30C0);
+
+INCLUDE_ASM(const s32, "code_001F2B98", func_001F30D8);
+
+INCLUDE_ASM(const s32, "code_001F2B98", func_001F30E8);
+
+INCLUDE_ASM(const s32, "code_001F2B98", func_001F3108);
+
+INCLUDE_ASM(const s32, "code_001F2B98", func_001F3190);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC0C0);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC168);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC180);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC198);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC1B0);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC1C8);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC1E0);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC1F8);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC210);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC228);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC240);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC258);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC270);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC288);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC2A0);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC2B8);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC2D0);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC2E8);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC300);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC318);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC330);
+
+INCLUDE_RODATA(const s32, "code_001F2B98", D_004BC348);
+
+INCLUDE_SDATA(const s32, "code_001F2B98", D_004E16B0);
+

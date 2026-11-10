@@ -1,0 +1,150 @@
+#include "common.h"
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E6518);
+
+INCLUDE_ASM(const s32, "code_001E6518", sndMixSampleBuffers);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E6620);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E66E0);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7128);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E71A8);
+
+INCLUDE_ASM(const s32, "code_001E6518", mnuReadTitleStreamStatusLocked);
+
+INCLUDE_ASM(const s32, "code_001E6518", mnuWriteTitleStreamStatusLocked);
+
+INCLUDE_ASM(const s32, "code_001E6518", mnuLoadTitleStreamFrameData);
+
+INCLUDE_ASM(const s32, "code_001E6518", mnuStoreTaskResult);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E74A8);
+
+INCLUDE_ASM(const s32, "code_001E6518", mnuStartFixedSoundStream);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E75F8);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7760);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E77E0);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7878);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7938);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7A10);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7AF8);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7B50);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7B80);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7C30);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7CA8);
+
+INCLUDE_ASM(const s32, "code_001E6518", mnuResetTitleStreamLocked);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7D38);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7D68);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBAF8);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7E28);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7ED0);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E7FD8);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E8160);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E82E8);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E8348);
+
+INCLUDE_ASM(const s32, "code_001E6518", func_001E83E8);
+
+INCLUDE_ASM(const s32, "code_001E6518", mnuResetSoundBuffer);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBB28);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBB48);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBB68);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBB88);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBBA8);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBBC8);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBBE8);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBC08);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBC28);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBC48);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBC68);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBC88);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBCA8);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBCC8);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBCE8);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBD08);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBD28);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBD48);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBD68);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBD88);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBDA8);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBDC8);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBDE8);
+
+INCLUDE_RODATA(const s32, "code_001E6518", D_004BBE08);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14D8);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14DC);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14E0);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14E4);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14E8);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14EC);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14F0);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14F4);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14F8);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E14FC);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E1500);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E1504);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E1508);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E150C);
+
+INCLUDE_SDATA(const s32, "code_001E6518", D_004E1510);
+
