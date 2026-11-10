@@ -1,8 +1,315 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "code_00121708", evtLoadValueVectorIntoVu);
+/* Declarations from dds-decomp src/dds1/game/code_00117438.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
 
-INCLUDE_ASM(const s32, "code_00121708", evtLoadValueSecondaryVectorIntoVu);
+#include "dds/sdk_ps2.h"
+
+#include "dds/evt_run_context_api.h"
+
+#include "dds/common.h"
+
+#include "dds/scr.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/sdf_channel.h"
+
+#include "dds/scr_work_task_api.h"
+
+#include "dds/dat_save_words.h"
+
+#include "dds/sdf_float_counter.h"
+
+#include "dds/eff_random_mod.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/mnu_flag_snapshot.h"
+
+#include "dds/dds3_path.h"
+
+#include "dds/eff_transform.h"
+
+#include "dds/evt_world_source_transform.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/btl_action.h"
+
+#include "dds/dat_state.h"
+
+#include "dds/dat_affinity_selector.h"
+
+#include "dds/dat_effective_affinity_api.h"
+
+#include "dds/dat_world_field_flags.h"
+
+#include "dds/dat_unit_has_skill_api.h"
+
+#include "dds/evt_randomize_entry_api.h"
+
+#include "dds/dat_command.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_dev_state.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/fld_runtime_reset_api.h"
+
+#include "dds/mdl_flag_api.h"
+
+extern void scrDestroyWorkTask(void);
+
+extern void dds3WorkInit(const scrHeader_t *header);
+
+extern scrHeader_t *D_003BAAAC;
+
+#define SDF_PACKED_STATUS_BIT 0x8000
+
+#define SDF_PACKED_CHANNEL_MASK 0x7fff
+
+#define SDF_UNIT_ENEMY 0x20
+
+extern DatEnemyRecord *datEnemyRecords;
+
+extern u32 sdfRollActionHit(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *packed);
+
+extern char sdfRuntimeTaskName[];
+
+void sdfRuntimeTaskTeardownHook(void);
+
+s32 dds3GlobalWorkMainProc(dds3ProcessID_t *task);
+
+void evtResetWorldAndProfileRuntime(void);
+
+extern void dds3GlobalWorkClearFlags(void);
+
+extern void evtInitGlobalWork(void);
+
+extern void ptyClearProfileRecords(void);
+
+extern void ptyRebuildAllProfiles(void);
+
+extern void evtUpdateFlaggedEntries(void);
+
+extern void dds3ForEachEntry(void);
+
+extern void sdfSaveResetSnapshot(void);
+
+extern void sdfRestoreResetSnapshot(void);
+
+s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, datUnitWork_t *sourceRecord,
+    datUnitWork_t *targetRecord, u8 mode);
+
+/* Linearly interpolated curve sample at `time`; 0 when no curve is active. */
+f32 dds3PathBasicControlGetFovy(dds3PathBasicControl_t *user);
+
+#define SDF_FLOAT_COUNTER_FROZEN_FLAG 0x00000008
+
+#define SDF_FLOAT_COUNTER_WRAP_FLAG 0x00000020
+
+/* Step the counter by one; return zero when a non-looping endpoint is reached. */
+s32 dds3PathBasicControlStep(SdfFloatCounter *counter);
+
+void dds3PathBasicControlAlterMode(SdfFloatCounter *counter, u32 direction);
+
+u32 dds3PathBasicControlGetMode(const SdfFloatCounter *counter);
+
+void dds3PathBasicControlSetRatio(SdfFloatCounter *value, float multiplier);
+
+float dds3PathBasicControlGetRatio(const SdfFloatCounter *value);
+
+void dds3PathBasicPauseOn(SdfFloatCounter *value);
+
+void dds3PathBasicPauseOff(SdfFloatCounter *value);
+
+void dds3PathBasicLoopOn(SdfFloatCounter *value);
+
+void dds3PathBasicLoopOff(SdfFloatCounter *value);
+
+dds3Basic_t *dds3AddPointBasic(u32 key, EvtWorldSourceTransformPrefix *source, const char *name);
+
+f32 *dds3GetTransformSourceData(dds3Basic_t *node);
+
+void *dds3GetWorldNodeData(dds3Basic_t *node);
+
+/* Load the world node's borrowed data vector into VF10. */
+void evtLoadValueVectorIntoVu(dds3Basic_t *node);
+
+/* Same, from the second quadword in the borrowed vector. */
+void evtLoadValueSecondaryVectorIntoVu(dds3Basic_t *node);
+
+/* Allocate the 0x33600 game-state block, retain its scene allocation, zero it
+ * and register the "GBWK" tick task that owns it. */
+void dds3GlobalWorkInit(void);
+
+/* Tear down the "GBWK" task hierarchy, clear the backing scene allocation
+ * owned by the game state, and release the global state handle. */
+void dds3GlobalWorkDestroy(void);
+
+s32 dds3GlobalWorkMainProc(dds3ProcessID_t *task);
+
+extern void btlClearSharedBattleStateWords(void);
+
+extern void ptyInitRuntime(void);
+
+void evtResetWorldAndProfileRuntime(void);
+
+/* Empty GBWK teardown hook, invoked before its backing allocation is released. */
+void sdfRuntimeTaskTeardownHook(void);
+
+extern s8 D_003BA9E5;
+
+extern s8 D_003BA9E6;
+
+extern s8 D_003BA9E7;
+
+extern s8 D_003BA9E8;
+
+extern s8 D_003BA9E9;
+
+extern s8 D_003BA9EA;
+
+extern u16 D_003BA9EC;
+
+extern u32 D_003BA9F0;
+
+extern u32 D_003BA9F4;
+
+extern s8 D_003BA9F8;
+
+extern s8 D_003BA9F9;
+
+extern u32 D_003C2E30[3];
+
+extern DatSaveWords D_0032A200;
+
+extern u8 D_003C2E40[41];
+
+extern sdfMemHandle_t *D_003BD790;
+
+extern sdfMemHandle_t *D_003BD794;
+
+extern sdfMemHandle_t *D_003BD798;
+
+extern sdfMemHandle_t *D_003BD79C;
+
+extern u32 D_003BD7A0;
+
+extern void ptySaveActiveUnitsToStock(void);
+
+extern void mnuCollectFlagArray(u8 *flags);
+
+/* Preserve carried flags and progress before the full runtime reset. */
+void sdfSaveResetSnapshot(void);
+
+extern void mnuApplyFlagArray(u8 *flags);
+
+extern void dds3ForEachFlagged(void);
+
+void sdfRestoreResetSnapshot(void);
+
+/* A full reset preserves the scene allocation and restores the saved runtime data. */
+void sdfResetGameRuntime(s32 fullReset);
+
+void evtInitializeWorkScriptTask(void);
+
+void sdfFirePendingCallback(void);
+
+ScrCurrentWorkTaskResult scrIsCurrentWorkTask(const struct scrProcessWork_s *expectedValue);
+
+#include "dds/sdf_debug_api.h"
+
+extern const char D_0039F930[10];
+
+/* Load a table's file and copy each size-prefixed segment into its own block. */
+void sdfReloadChannelSegments(SdfChannel *table);
+
+extern SdfChannel D_0032A6F0[];
+
+void sdfResetChannels(void);
+
+/* Enemy vitals use a 76-byte base table; party vitals come from a script,
+ * a unit-specific bonus, and a maximum of 999. */
+s32 ptyComputeMaxHp(datUnitWork_t *unit);
+
+/* Compute the matching MP value from the base table or the MP script. */
+s32 ptyComputeMaxMp(datUnitWork_t *unit);
+
+/* Sdf dispatch: pick the script id from the unit's runtime flag byte and run
+ * it against the given entry index. 0x40/0x80 select the alternate scripts. */
+s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, datUnitWork_t *sourceRecord,
+    datUnitWork_t *targetRecord, u8 mode);
+
+s32 sdfDispatchCmd(u32 unitIndex, datUnitWork_t *sourceRecord,
+    datUnitWork_t *targetRecord, u32 mode);
+
+s32 sdfDispatchUnitScriptDefault9(u32 unitIndex, datUnitWork_t *sourceRecord,
+    datUnitWork_t *targetRecord, u8 mode);
+
+s32 evtRunCommandContext10(u32 unitIndex, datUnitWork_t *sourceRecord,
+    datUnitWork_t *targetRecord, u8 mode);
+
+s32 evtRunCommandContext7(u32 unitIndex, datUnitWork_t *sourceRecord,
+    datUnitWork_t *targetRecord, u8 mode);
+
+s32 sdfDispatchSubCmd(u32 unitIndex, datUnitWork_t *sourceRecord,
+    datUnitWork_t *targetRecord, u32 mode);
+
+s32 sdfCalculateCommandVitalDelta(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item, u32 mode, u8 vital);
+
+extern char D_0039F980[];
+
+/* Rolls whether the action hits: returns the surviving channel mask, or 0 on a miss. */
+u32 sdfRollActionHit(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *packed);
+
+u32 sdfQueryChannelValue(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
+
+u32 sdfQueryChannelBits(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
+
+extern s32 sdfCalculateCommandVitalDelta(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item, u32 mode, u8 vital);
+
+extern void datResetBadStat(datUnitWork_t *item, s32 mask);
+
+/* These unused-result legacy mutator calls had no prototype in scope. */
+void sdfRaisePackedChannelValue(datUnitWork_t *item, u32 minimumValue);
+
+extern s32 datAddHp(datUnitWork_t *unit, s32 delta);
+
+extern s32 datAddMp(datUnitWork_t *unit, s32 delta);
+
+s32 sdfApplyCommandResults(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
+
+void sdfSetPackedValuePreservingFlag(datUnitWork_t *item, u16 channelValue);
+
+/* Raise the packed value to `minimumValue` (never lower it); reaching 0x40, 0x80 or 0x400 re-randomizes the entry. */
+void sdfRaisePackedChannelValue(datUnitWork_t *item, u32 minimumValue);
+/* End of declarations from src/dds1/game/code_00117438.c */
+
+/* Load the world node's borrowed data vector into VF10. */
+void evtLoadValueVectorIntoVu(dds3Basic_t *node) {
+    void *vec = dds3GetWorldNodeData(node);
+
+    SDF_VU0_LOADVECTOR_BARRIER(vec);
+
+}
+
+/* Same, from the second quadword in the borrowed vector. */
+void evtLoadValueSecondaryVectorIntoVu(dds3Basic_t *node) {
+    void *vec = (void *)((u8 *)dds3GetWorldNodeData(node) + 0x10);
+
+    SDF_VU0_LOADVECTOR_BARRIER(vec);
+
+}
 
 INCLUDE_ASM(const s32, "code_00121708", func_00121750);
 

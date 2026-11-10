@@ -763,7 +763,13 @@ def candidates(version):
 
 def nested_names(text):
     """Assembler names given to nested functions (emitted ahead of their parent)."""
-    return re.findall(r'FAKEMATCH_ASM_NAME\("(\w+)"\)', re.sub(r"/\*.*?\*/|//[^\n]*", "", text, flags=re.S))
+    code = re.sub(r"/\*.*?\*/|//[^\n]*", "", text, flags=re.S)
+    names = re.findall(r'FAKEMATCH_ASM_NAME\("(\w+)"\)', code)
+    # Without an assembler name the nested function keeps its own (as name.0, local).
+    for m in re.finditer(r"^[ \t]+[A-Za-z_][\w \t]*[\s*](\w+)[ \t]*\(([^;{}()]*)\)([^;{}]*)\{", code, re.M):
+        if m.group(1) not in ("if", "while", "for", "switch", "return") and "FAKEMATCH_ASM_NAME" not in m.group(3):
+            names.append(m.group(1))
+    return names
 
 
 def port_text(smt3, text, unit, carry, cands, ctx):

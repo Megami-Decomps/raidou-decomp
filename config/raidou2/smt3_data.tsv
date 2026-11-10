@@ -54,7 +54,7 @@ endinglistcnt	0x004DE25C	SDATA	kernel/dds3KernelCore	c
 endinglistf	0x004DE254	SDATA	kernel/dds3KernelCore	c
 endinglistl	0x004DE258	SDATA	kernel/dds3KernelCore	c
 evtEventScriptPathFormat	0x004B72D8	RODATA	event/evtEventPack	c
-evtFrameVarName	0x004B6078	RODATA	event/evtEventViewerFrameVar	asm	linked at 0x004B6088, retail 0x004B6078
+evtFrameVarName	0x004B6078	RODATA	event/evtEventViewerFrameVar	c
 evtKillFieldScriptFormat	0x004B44A0	RODATA	event/evtStage	c		0x20
 evtKutiUnit	0x004DF840	SDATA	event/evtCommand	c
 evtLoadDoneMessage	0x004DFF38	SDATA	event/evtEventPack	c
