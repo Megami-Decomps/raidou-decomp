@@ -601,6 +601,13 @@ void dds3SetFogColor(s32 blendFrames, f32 *color);
 /* Either replace the draw vector immediately or interpolate from its prior value. */
 void dds3SetFogPara(s32 blendFrames, f32 x, f32 y, f32 z, f32 w);
 
+/* SDK float-input unpack: the RGBA word and its 16-byte workspace stay in memory. */
+static inline void eeUnpackRGBAWordFloatReadOnly(u32 color, f32 unit) {
+    u32 rgba[4];
+    rgba[0] = color;
+    EE_MMI_RGBA_UNPACK_READONLY(rgba, unit);
+}
+
 /* The color-blend site passes ratio and the 128.0f pack scale as ordinary GPR operands
    (VU0_SCALE_VF / eePackRGBAWord), so their SF->GPR reloads advance the spill ring
    ($2,$3,$4) and the vector-blend site starts at $4 (cc1probe --reload, uid650). */

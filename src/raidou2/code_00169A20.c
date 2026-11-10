@@ -911,6 +911,11 @@ extern void btlBuildPresetCameraPose(BtlLinkedCommand *, BtlCamState *, s16, s16
 
 extern void btlInitializeCameraCursorFromPreset(BtlLinkedCommand *, BtlCamState *, s32, s32);
 
+/* Four retail flag/boolean sites: 1E5CE4/1E5CF0/1E5D3C/1E5D48; matched DDS2 predicate. */
+static inline s32 btlHasFlag(u32 flags, u32 mask) {
+    return (flags & mask) != 0;
+}
+
 void btlInitSkillCommandCursor(BtlLinkedCommand *command, BtlCamState *pose);
 
 extern const BtlCameraTimedInstruction *D_0035DA28[];

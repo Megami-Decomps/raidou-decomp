@@ -779,6 +779,10 @@ void mnuCampDestroyPanelTasks(void);
 
 s32 mnuCampConsumePanelTaskCompletion(void);
 
+static inline s32 campSetHandler(MenuTerminalContext *context, s32 mode, void *callback) {
+    return mnuDispatchPopupTransition(&context->transitionWork, &context->popupState, mode, callback);
+}
+
 s32 mnuPreparePopupAndDispatchSelection(dds3ProcessID_t *callback);
 
 s32 mnuAdvanceCampPopup(dds3ProcessID_t *callback);

@@ -1066,7 +1066,8 @@ def port_text(smt3, text, unit, carry, cands, ctx):
         text = re.sub(rf'^INCLUDE_ASM\(\s*const s32,\s*"[^"]+"\s*,\s*{nested}\s*\);\n\n?', "", text, flags=re.M)
     carried = tu_bodies(smt3, text, cands)
     rels = {rel for rel, _, _ in carried.values()}
-    own = set(definitions(text)) - set(carried)
+    # Inline helpers in the old declaration blocks are not the TU's own.
+    own = set(definitions(DECL_BLOCK.sub("", text))) - set(carried)
     text = port_data(smt3, text, unit, rels, ctx)
     # Only the defining TU needs the unsized declaration; elsewhere SMT3's size is harmless.
     unsized = {n for n in tu_data(smt3, text, ctx["rows"]) if ctx["rows"][n].get("size")}

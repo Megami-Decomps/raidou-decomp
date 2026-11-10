@@ -863,6 +863,19 @@ extern char *D_003BAE44;
 
 extern char *D_003BAE48;
 
+static inline s32 fldTestBits(u32 flags, u32 mask) {
+    return (flags & mask) != 0;
+}
+
+/* vu0 routine: normalize vf10 and return its original XYZ length. */
+static inline f32 fldNormalizeProbeVector(void) {
+    f32 length;
+
+    SDF_VU0_GETLENGTH(length);
+    SDF_VU0_NORMALIZE();
+    return length;
+}
+
 extern void fldSpawnActionObjects(const FldActionSpawn *, u32);
 
 extern s32 D_0032E400[];
@@ -1206,6 +1219,29 @@ extern s32 fldSetSparkVectors(s32 index, const u128 *position, const u128 *rotat
 extern void fldAddSe3D(FldSpatialSoundId soundId, f32 radius, f32 sourceX, f32 sourceY, f32 sourceZ);
 
 extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32, u128 *, u128 *);
+
+/* Serialized transforms leave the position W component zero. */
+static inline void fldCopySpawnTransform(f32 *position, f32 *rotation, const f32 *source) {
+    if (source != NULL) {
+        position[0] = source[0];
+        position[1] = source[1];
+        position[2] = source[2];
+        position[3] = 0.0f;
+        rotation[0] = source[4];
+        rotation[1] = source[5];
+        rotation[2] = source[6];
+        rotation[3] = source[7];
+    } else {
+        position[0] = 0.0f;
+        position[1] = 0.0f;
+        position[2] = 0.0f;
+        position[3] = 0.0f;
+        rotation[0] = 0.0f;
+        rotation[1] = 0.0f;
+        rotation[2] = 0.0f;
+        rotation[3] = 0.0f;
+    }
+}
 
 void fldSpawnPlacementObjectsFromBatches(FldSpawnBatch *spawnBatch, u32 batchCount, FldPlacementBatchMode mode);
 

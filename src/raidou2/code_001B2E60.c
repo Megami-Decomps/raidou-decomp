@@ -516,6 +516,10 @@ typedef struct MdlCtrlState {
 
 extern MdlViewState mdlViewerState;
 
+static inline s8 mdlGetViewerDisplayMode(MdlViewState *state) {
+    return state->assetDisplayMode;
+}
+
 extern MdlCtrlState mdlDebugScaleWork;
 
 extern s8 D_003D7A60[];

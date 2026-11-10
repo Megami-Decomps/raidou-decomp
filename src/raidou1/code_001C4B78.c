@@ -778,6 +778,22 @@ extern void dds3SetAmbientColor(s32, f32 *);
 
 extern void evtSetSlotVectors(s32, EvtUnitVectorSlotState, evtUnitHandle_t *, const f32 *, const f32 *, const f32 *);
 
+/* Select and draw one light-color bank at the current panel offset. */
+static inline void evtDrawLightRgbComponents(sdfDrawTag_t *list, dds_evtViewerInfo_t *runtime,
+                                             s32 selected, s32 y, s32 firstComponent) {
+    if ((u32)selected >= 3U || runtime->lightEditorEditMode != 1) {
+        selected = -1;
+    }
+    dds3PrimDebugTextBox(list,
+                     (s32)(0x8740u + ((u32)runtime->lightPanelOffset << 4)),
+                     y, selected, &runtime->commandMatrix[firstComponent]);
+}
+
+/* Convert the panel offset into the fixed-point X origin used by captions. */
+static inline s32 evtLightCaptionX(s32 panelOffset) {
+    return (s32)(0x8740u + ((u32)panelOffset << 4));
+}
+
 s32 evtUpdateLightAndBackgroundEditor(s32 x, s32 y, dds_evtViewerInfo_t *runtime);
 
 /* The editor draws its own fields; the menu frame's row callback stays blank. */

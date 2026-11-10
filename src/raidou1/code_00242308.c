@@ -523,6 +523,10 @@ extern void kwlnPadResetMotorLevelsAndOutput(void);
 
 extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 
+static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list) {
+    surface->regFunc(surface, list);
+}
+
 #include "dds/sdf_packet_alloc.h"
 
 extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *);
@@ -1949,6 +1953,18 @@ void effSharedAssetReferenceRelease(EffRibbonWork *work);
 extern sdfGrOt_t *D_0037ED78[];
 
 EffRibbonWork *effCloneRibbonWithSharedResource(EffRibbonWork *source);
+
+static inline void unpackNormalizedColor(u32 color) {
+    u32 rgba[4];
+    rgba[0] = color;
+    EE_MMI_RGBA_UNPACK(rgba, 1.0f / 128.0f);
+}
+
+static inline u32 packNormalizedColor(void) {
+    u32 rgba[4];
+    EE_MMI_RGBA_PACK_UNIT(rgba[0], 128.0f);
+    return rgba[0];
+}
 
 void effDrawRibbon(EffRibbonWork *work, const Matrix4 *matrix);
 

@@ -1016,6 +1016,10 @@ extern char fileNoSaveDataMessageLine2[];
 
 extern char fileNoSaveDataMessageLine3[];
 
+static inline void fileDrawDialogLine(s32 line, const char *glyphSource) {
+    mcdCreateFontDrawHandle(86, 114 + line * 24, 0x89FEFF80U, glyphSource);
+}
+
 void fileShowStatusDialog(void);
 
 void slSetInfo(u32 state);
@@ -1228,6 +1232,37 @@ s32 fileMenuTaskExists(void);
 FileSelectionFlowState fileGetSelectionPendingFlag(void);
 
 extern FileSelectionCallback D_003BD908, D_003BD90C;
+
+/* Yes/no cursor input while the card request is idle. */
+static inline void filePollPromptChoice(void) {
+    if (D_003BC838 == 0 && slChkWindowOpenDone() != 0) {
+        if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x27] < 0) != 0) {
+            if (D_003BC830 != 1) {
+                p2sdPlaySE(0, 0x7F, 0x3F);
+            }
+            D_003BC830 = 1;
+        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x26] < 0) != 0) {
+            if (D_003BC830 != 0) {
+                p2sdPlaySE(0, 0x7F, 0x3F);
+            }
+            D_003BC830 = 0;
+        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x21] < 0) != 0) {
+            if (D_003BC830 == 0 && (D_003BC834 == 1 || D_003BC834 == 3)) {
+                p2sdPlaySE(0x11, 0x7F, 0x3F);
+            } else {
+                p2sdPlaySE(8, 0x7F, 0x3F);
+            }
+            if (D_003BC830 != 0) {
+                D_003BC838 = 2;
+            } else {
+                D_003BC838 = 1;
+            }
+        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x23] < 0) != 0) {
+            p2sdPlaySE(0xA, 0x7F, 0x3F);
+            D_003BC838 = 2;
+        }
+    }
+}
 
 s32 fileUpdatePromptDialog(void);
 
@@ -1508,6 +1543,20 @@ FileJob *fileJobDuplicateAfter(FileQueue *queue, FileJob *src);
 extern FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
 
 extern FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id);
+
+/* Makes the first job chained to owner's sector the leader and rechains the rest to it. */
+static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *owner, FileJob *leader) {
+    FileJob *next;
+
+    leader->sector = 0;
+    leader->flags &= ~FILE_JOB_FLAG_SECTOR_FOLLOWER;
+    fileQueueLinkJobToSectorLeader(queue, leader, leader);
+    next = fileQueueFindBySector(queue, owner->id);
+    while (next != NULL) {
+        fileQueueLinkJobToSectorLeader(queue, next, leader);
+        next = fileQueueFindBySector(queue, owner->id);
+    }
+}
 
 void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref);
 
