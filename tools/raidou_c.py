@@ -433,8 +433,10 @@ def cmd_port(args):
     if args.units:
         pairs = [r for r in pairs if any(r["src"].startswith(f"src/{r['version']}/{u}") for u in args.units)]
     carry = defaultdict(dict)    # version -> function -> rel
+    retry = re.compile(args.retry) if args.retry else None
     for r in pairs:
-        if outcomes(r["version"]).get(r["function"], ("c",))[0] == "asm":
+        status, why = outcomes(r["version"]).get(r["function"], ("c", ""))
+        if status == "asm" and not (retry and retry.search(why)):
             continue
         carry[r["version"]][r["function"]] = shared_rel(r["smt3_src"])
     by_rel = defaultdict(set)
@@ -467,7 +469,7 @@ def cmd_port(args):
                 src.write_text(new)
                 changed += 1
         for fn in carry[version]:
-            done.setdefault(fn, ("c", ""))
+            done[fn] = ("c", "")
         write_outcomes(version, done)
         sdk_settings(smt3, version)
         print(f"{version}: {len(carry[version])} functions from C, {changed} units rewritten")
@@ -522,17 +524,17 @@ def compile_failures(log):
 
 
 INCLUDE_PATH = re.compile(r"^src/shared/.+/\w+\.c$")
-R_26, R_HI16, R_LO16, R_GPREL16 = 4, 5, 6, 7
+R_26, R_HI16, R_LO16, R_GPREL16, R_LITERAL = 4, 5, 6, 7, 8
 
 
-def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known):
+def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known, owns=()):
     """Compare each carried body in obj with retail. Returns ({fn: reason},
     {fn: [(symbol, address)]})."""
     from elftools.elf.elffile import ELFFile
     from elftools.elf.relocation import RelocationSection
     from retail_elf import va_to_off
 
-    fails, needs = {}, {}
+    fails, needs, refs = {}, {}, defaultdict(list)
     with open(obj, "rb") as f:
         elf = ELFFile(f)
         symtab = elf.get_section_by_name(".symtab")
@@ -543,6 +545,8 @@ def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known):
         relocs = sorted(((r["r_offset"], r["r_info_type"], r["r_info_sym"]) for r in rel.iter_relocations())
                         if isinstance(rel, RelocationSection) else [])
         sections = {i: s.name for i, s in enumerate(elf.iter_sections())}
+        reginfo = elf.get_section_by_name(".reginfo")
+        gp0 = int.from_bytes(reginfo.data()[20:24], "little") if reginfo else 0
         defined = {s.name: s for s in syms if s["st_shndx"] == text_index and s["st_info"]["type"] == "STT_FUNC"}
         # The unit's data comes from the split: C must not define any of its own.
         stray = [s.name for s in syms if s["st_info"]["bind"] != "STB_LOCAL" and s.name
@@ -584,8 +588,13 @@ def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known):
                 if s["st_shndx"] == text_index and s["st_info"]["type"] == "STT_SECTION":
                     name = "@text"
                 elif s["st_info"]["type"] == "STT_SECTION" or s["st_info"]["bind"] == "STB_LOCAL":
-                    reason = f"emits {sections.get(s['st_shndx'], s['st_shndx'])} data"
-                    break
+                    # Data the body emits itself: the need is the section's base address.
+                    sec = sections.get(s["st_shndx"])
+                    if sec not in DATA_SECTIONS:
+                        reason = f"emits {sec} data"
+                        break
+                    name = "@" + sec
+                    local = s["st_value"]
                 else:
                     name = s.name
                 if r_type == R_26:
@@ -599,9 +608,17 @@ def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known):
                         reason = f"%lo({name}) without %hi"
                         break
                     value = ((theirs[h] & 0xFFFF) << 16) + sext16(theirs[i])
-                    need.append((name, value - (((mine[h] & 0xFFFF) << 16) + sext16(mine[i]))))
-                elif r_type == R_GPREL16:
-                    need.append((name, gp + sext16(theirs[i]) - sext16(mine[i])))
+                    addend = ((mine[h] & 0xFFFF) << 16) + sext16(mine[i])
+                    if name[0] == "@" and name != "@text":
+                        addend += local
+                        refs[fn].append((name[1:], addend))
+                    need.append((name, value - addend))
+                elif r_type in (R_GPREL16, R_LITERAL):
+                    addend = sext16(mine[i])
+                    if name[0] == "@":
+                        addend += local + gp0    # a local gp-relative field is offset by the object's gp0
+                        refs[fn].append((name[1:], addend))
+                    need.append((name, gp + sext16(theirs[i]) - addend))
                 else:
                     reason = f"relocation type {r_type}"
                     break
@@ -613,7 +630,83 @@ def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known):
                 fails[fn] = reason
             else:
                 needs[fn] = need
+        text_base = next((addr - defined[fn]["st_value"] for fn, addr in bodies.items() if fn in needs), None)
+        fails.update(check_sections(elf, needs, refs, retail, segs, text_base))
+        for fn in owns:
+            if fn in needs and fn not in fails and not refs[fn]:
+                fails[fn] = "its rodata is in its asm file"
+    for fn in fails:
+        needs.pop(fn, None)
+    for fn in needs:
+        needs[fn] = [x for x in needs[fn] if x[0][0] != "@"]
     return fails, needs
+
+
+DATA_SECTIONS = (".rodata", ".lit4", ".data", ".sdata")
+R_32 = 2
+
+
+def check_sections(elf, needs, refs, retail, segs, text_base):
+    """Each data section the bodies emit into must have one base, and the whole
+    section must equal retail there (relocated words: .text targets checked, others
+    skipped). Returns {fn: reason}."""
+    from elftools.elf.relocation import RelocationSection
+    from retail_elf import va_to_off
+
+    fails = {}
+    users = defaultdict(dict)    # section -> fn -> [section offsets it refers to]
+    bases = defaultdict(set)
+    for fn, need in needs.items():
+        for name, base in need:
+            if name[0] == "@" and name != "@text":
+                users[name[1:]].setdefault(fn, [])
+                bases[name[1:]].add(base)
+    for sec, fns in users.items():
+        if len(bases[sec]) > 1:
+            for fn in fns:
+                fails[fn] = f"{sec} base " + ", ".join(f"0x{b:08X}" for b in sorted(bases[sec]))
+            continue
+        base = next(iter(bases[sec]))
+        data = elf.get_section_by_name(sec).data()
+        roff = va_to_off(segs, base)
+        if roff is None:
+            for fn in fns:
+                fails[fn] = f"{sec} base 0x{base:08X} outside the image"
+            continue
+        want = retail[roff:roff + len(data)]
+        relsec = elf.get_section_by_name(".rel" + sec)
+        skip, text_words = set(), {}
+        if isinstance(relsec, RelocationSection):
+            symtab = elf.get_section(relsec["sh_link"])
+            for r in relsec.iter_relocations():
+                o = r["r_offset"]
+                s = symtab.get_symbol(r["r_info_sym"])
+                if r["r_info_type"] == R_32 and s["st_info"]["type"] == "STT_SECTION" \
+                        and elf.get_section(s["st_shndx"]).name == ".text" and text_base is not None:
+                    text_words[o] = text_base
+                else:
+                    skip.add(o)
+        first = None
+        for o in range(0, len(data) - len(data) % 4, 4):
+            mw = int.from_bytes(data[o:o + 4], "little")
+            rw = int.from_bytes(want[o:o + 4], "little")
+            if o in skip:
+                continue
+            if o in text_words:
+                mw = (mw + text_words[o]) & 0xFFFFFFFF
+            if mw != rw:
+                first = o
+                break
+        if first is None and data[len(data) - len(data) % 4:] != want[len(data) - len(data) % 4:]:
+            first = len(data) - len(data) % 4
+        if first is None:
+            continue
+        # Blame the body whose data starts closest before the difference.
+        why = f"{sec} differs at 0x{base + first:08X}"
+        before = [(o, fn) for fn in fns for s, o in refs[fn] if s == sec and o <= first]
+        for fn in [max(before)[1]] if before else fns:
+            fails[fn] = why
+    return fails
 
 
 def sext16(v):
@@ -656,13 +749,12 @@ def cmd_verify(args):
                 continue
             sizes = {fn: len(parse_asm(function_asm(version, unit, fn))[fn][1])
                      for fn in bodies}
-            for fn in bodies:
-                # splat moves rodata only this function uses into its asm file and
-                # drops it once the function is C, so the C must emit it.
-                if re.search(r"^(dlabel|jlabel) ", function_asm(version, unit, fn).read_text(), re.M):
-                    fails[fn] = "its rodata is in its asm file"
+            # splat moves rodata only this function uses into its asm file and
+            # drops it once the function is C, so the C must emit it.
+            owns = {fn for fn in bodies
+                    if re.search(r"^(dlabel|jlabel) ", function_asm(version, unit, fn).read_text(), re.M)}
             f, n = check_object(version, obj, {k: v for k, v in bodies.items() if k not in fails},
-                                retail, segs, gp, sizes, known)
+                                retail, segs, gp, sizes, known, owns)
             fails.update(f)
             needs.update(n)
         # Every name a body uses must name one Raidou address.
@@ -728,6 +820,7 @@ def main():
     p = sub.add_parser("port")
     p.add_argument("--smt3", type=Path, default=ROOT.parent / "smt3-decomp")
     p.add_argument("--units", nargs="*", help="only units under these paths (e.g. sdf sdk)")
+    p.add_argument("--retry", help="carry again asm rows whose reason matches this regex")
     p.set_defaults(func=cmd_port)
     p = sub.add_parser("verify")
     p.add_argument("--log", type=Path, default=Path.home() / ".local/state/raidou-decomp-work/stage4/ninja.log")
