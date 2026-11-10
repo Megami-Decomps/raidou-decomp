@@ -211,6 +211,14 @@ INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtPollRuntimeControlReady);
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001DA038);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001DA850);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6D88);
+
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6D98);
+
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6DA8);
+
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6DB8);
+
 INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB48);
 
 INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB50);

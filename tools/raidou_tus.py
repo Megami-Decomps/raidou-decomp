@@ -330,7 +330,7 @@ HEADER = """\
 
 
 def gaps_only(v, rows, starts):
-    """The current TUs, with each current gap split by the new plan's code_<vram> TUs inside it."""
+    """The current TUs, with each current gap split by the new plan's code_<vram> TUs in it."""
     old = []
     for line in (ROOT / "config" / v / "tu_evidence.tsv").read_text().splitlines():
         if line and not line.startswith(("#", "start")):
@@ -344,7 +344,10 @@ def gaps_only(v, rows, starts):
             continue
         pos = lo
         for r in rows:
-            if r[3] == "c" and r[2].startswith("code_") and lo <= r[0] and r[1] <= hi:
+            if r[3] == "c" and r[2].startswith("code_") and r[0] <= hi and r[1] >= lo:
+                # A DDS run that reaches into a current TU is clipped to the gap.
+                if r[0] < lo or r[1] > hi:
+                    r = (max(r[0], lo), min(r[1], hi), f"code_{max(r[0], lo):08X}", "c", r[4] + " clipped", r[5])
                 if r[0] > pos:
                     out.append((pos, starts[index[r[0]] - 1], f"code_{pos:08X}", "asm", "none", ""))
                 out.append(r)

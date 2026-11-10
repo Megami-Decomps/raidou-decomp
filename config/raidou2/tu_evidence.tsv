@@ -69,7 +69,8 @@ start	last_func	unit	kind	evidence	smt3_unit
 00120C30	00121638	basic/dds3PathBasic	c	smt3:names:10 of 13	basic/dds3PathBasic
 00121658	00121690	code_00121658	asm	none	
 001216A8	001216A8	basic/dds3PointBasic	c	smt3:names:1 of 1	basic/dds3PointBasic
-001216F8	00124B18	code_001216F8	asm	none	
+001216F8	00121700	code_001216F8	asm	none	
+00121708	00124B18	code_00121708	c	dds:4+smt3:map:2 literal-cores:1 of 114 clipped	kernel/dds3GlobalWork
 00124B28	00126858	newdata/datCalc	c	dds:6+smt3:names:2+smt3:map:1 of 94	newdata/datCalc
 00126AD0	00126B00	code_00126AD0	asm	none	
 00126B08	00126B08	code_00126B08	c	dds:1 of 1	
@@ -169,7 +170,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001D1B58	001D1B58	field/fldGlobal	c	smt3:map:1 of 1	field/fldGlobal
 001D1B98	001D2488	code_001D1B98	asm	none	
 001D24E8	001DA850	event/evtEventViewerMenu	c	smt3:map:28+smt3:names:1 literal-cores:1 of 65 joined by literal	event/evtEventViewerMenu
-001DAC80	001DF938	code_001DAC80	asm	none	
+001DAC80	001DF938	code_001DAC80	c	dds:65+smt3:map:1 of 75 clipped	event/evtEventViewerMenu
 001DFAE8	001DFD90	event/evtSound	c	smt3:names:8+smt3:map:2 of 10	event/evtSound
 001DFDB8	001E0930	event/evtEventPack	c	smt3:names:15+smt3:map:3 of 18	event/evtEventPack
 001E0968	001E0968	code_001E0968	asm	none	
@@ -237,15 +238,18 @@ start	last_func	unit	kind	evidence	smt3_unit
 00230800	00231FB0	effect/effPCPBoss	c	smt3:names:13+smt3:map:6 of 72	effect/effPCPBoss
 00231FE8	00232000	code_00231FE8	asm	none	
 00232008	00232C08	newbattle/nbCameraHelper	c	smt3:names:7+smt3:map:4 literal-cores:1 of 17	newbattle/nbCameraHelper
-00232D20	00233880	code_00232D20	asm	none	
+00232D20	00233860	code_00232D20	asm	none	
+00233868	00233880	code_00233868	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
 00233900	00233900	newbattle/nbMisc	c	smt3:map:1 of 1	newbattle/nbMisc
-00233A70	002340C0	code_00233A70	asm	none	
+00233A70	002340C0	code_00233A70	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
 00234128	00234128	pipe/pipeObject	c	smt3:map:1 of 1	pipe/pipeObject
-00234168	0023BEC0	code_00234168	asm	none	
+00234168	0023BEC0	code_00234168	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
 0023C018	0023C3B0	effect/effPCPMisc_0023C018	c	smt3:map:2+smt3:names:1 of 15 reordered part	effect/effPCPMisc
-0023C400	00259408	code_0023C400	asm	none	
+0023C400	0023E1A0	code_0023C400	c	dds:39+smt3:map:2 of 59 clipped	effect/effPCPMisc
+0023E1D0	00259408	code_0023E1D0	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 002595A8	002595E0	effect/effPCPBoss_002595A8	c	smt3:map:2 of 2 part	effect/effPCPBoss
-00259620	0027A170	code_00259620	asm	none	
+00259620	00261D68	code_00259620	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
+00261DF0	0027A170	code_00261DF0	asm	none	
 0027A1D0	0027A1D0	code_0027A1D0	c	dds:1 of 1	
 0027A1E8	002881A0	code_0027A1E8	asm	none	
 00288200	00288200	code_00288200	c	dds:1 of 1	
