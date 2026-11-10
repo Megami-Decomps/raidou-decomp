@@ -54,7 +54,7 @@ typedef struct
 
 extern dds3ScreenParam_t dds3ScreenParam;
 
-extern f32 D_002FA240[16];
+extern f32 sdfViewMatrix[16];
 
 extern sdfVector4_t aViewEye;
 
@@ -85,7 +85,7 @@ s32 dds3Bezier4PPartRun(effBezier4P_t *table, s32 slotIndex, f32 *out);
 
 s32 nbCameraLerpVec(dds3Bezier4PPart_t *slot, f32 *out);
 
-void func_001AC068(effBezier4P_t *table, s32 slotIndex);
+void effMathResetBezierSlot(effBezier4P_t *table, s32 slotIndex);
 
 dds3Bezier4PPart_t *dds3Bezier4PGetPart(effBezier4P_t *pEffBezier4P, s32 index);
 /* End of declarations from src/smt3/effect/effMath.c */
@@ -178,7 +178,26 @@ f32 effLinePointLength(sdfVector4_t *pDir, sdfVector4_t *pLinePos, sdfVector4_t 
     return length;
 }
 
-INCLUDE_ASM(const s32, "effect/effMath", dds3Bezier4PCreate);
+effBezier4P_t *dds3Bezier4PCreate(s32 number) {
+    void *allocation = sdfMemAllocDirect(number * sizeof(dds3Bezier4PPart_t) + sizeof(effBezier4P_t));
+    void *retainedAddress = (void *)sdfMemLock(allocation);
+    u32 slotIndex = 0;
+    dds3Bezier4PPart_t *slot = retainedAddress;
+    u8 *headerAddress = (u8 *)slot + number * sizeof(dds3Bezier4PPart_t);
+
+    ((effBezier4P_t *)headerAddress)->allocation = allocation;
+    ((effBezier4P_t *)headerAddress)->pPart = retainedAddress;
+    ((effBezier4P_t *)headerAddress)->number = number;
+    if (number != 0) {
+        do {
+            slotIndex++;
+            slot->t = 0;
+            slot->step = 0.05f;
+            slot = (dds3Bezier4PPart_t *)((u8 *)slot + sizeof(dds3Bezier4PPart_t));
+        } while (slotIndex < number);
+    }
+    return (effBezier4P_t *)headerAddress;
+}
 
 INCLUDE_ASM(const s32, "effect/effMath", func_001FCAC8);
 

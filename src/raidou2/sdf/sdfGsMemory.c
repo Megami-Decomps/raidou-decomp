@@ -90,11 +90,60 @@ sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 aW, s32 aH, s32 aPixelFormat);
 sdfGsMemSlice_t *sdfGsMemGetLinkHead(void);
 
 sdfGsMemSlice_t *sdfGsMemGetLinkTail(void);
+
+extern void (*sdfGsErrorHandler)(s32 size, s32 type);
 /* End of declarations from src/smt3/sdf/sdfGsMemory.c */
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemGetBitCount);
+s32 sdfGsMemGetBitCount(u32 aFormat)
+{
+    switch (aFormat) {
+    case SDF_PSMCT32:
+    case SDF_PSMCT24:
+    case SDF_PSMT8H:
+    case SDF_PSMT4HL:
+    case SDF_PSMT4HH:
+    case SDF_PSMZ32:
+    case SDF_PSMZ24:
+        return 0x20;
+    case SDF_PSMCT16:
+    case SDF_PSMCT16S:
+    case SDF_PSMZ16:
+    case SDF_PSMZ16S:
+        return 0x10;
+    case SDF_PSMT8:
+        return 8;
+    case SDF_PSMT4:
+        return 4;
+    default:
+        return 0;
+    }
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGetTexelBitCount);
+s32 sdfGetTexelBitCount(u32 aFormat)
+{
+    switch (aFormat) {
+    case SDF_PSMCT32:
+    case SDF_PSMZ32:
+        return 0x20;
+    case SDF_PSMCT24:
+    case SDF_PSMZ24:
+        return 0x18;
+    case SDF_PSMCT16:
+    case SDF_PSMCT16S:
+    case SDF_PSMZ16:
+    case SDF_PSMZ16S:
+        return 0x10;
+    case SDF_PSMT8:
+    case SDF_PSMT8H:
+        return 8;
+    case SDF_PSMT4:
+    case SDF_PSMT4HL:
+    case SDF_PSMT4HH:
+        return 4;
+    default:
+        return 0;
+    }
+}
 
 s32 sdfGsMemCheckHandle(sdfGsMemSlice_t *aHandle) {
     sdfGsMemSlice_t *node = gsMemHandleLinkHead;
@@ -290,7 +339,31 @@ void sdfGsMemInit(void)
     sdfDelayedResrcInitCB(&gsMemDelayedResrcCB, sdfGsMemFree);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsAllocFrameBuff);
+sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 aW, s32 aH, s32 aPixelFormat)
+{
+    s32 rowWidth = (aW + 0x3F) & -0x40;
+    s32 rowCount = (aH + 0x1F) & -0x20;
+    sdfGsMemSlice_t *slice;
+
+    switch (aPixelFormat) {
+    case SDF_PSMCT16:
+    case SDF_PSMCT16S:
+    case SDF_PSMZ16:
+    case SDF_PSMZ16S:
+        rowWidth >>= 1;
+        break;
+    case SDF_PSMCT32:
+    case SDF_PSMCT24:
+    case SDF_PSMZ32:
+    case SDF_PSMZ24:
+        break;
+    }
+    slice = sdfGsMemAllocFromHead((rowWidth * rowCount + 0x7FF) & -0x800, 1);
+    slice->w = aW;
+    slice->h = aH;
+    slice->pixelFormat = aPixelFormat;
+    return slice;
+}
 
 INCLUDE_SDATA(const s32, "sdf/sdfGsMemory", D_004E42AC);
 

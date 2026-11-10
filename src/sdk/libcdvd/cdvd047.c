@@ -184,7 +184,7 @@ extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
 
 extern s32 cdvdNcmdLastCommand __attribute__((section(".data")));
 
-SYMBOL_AT(s32, cdvdNcmdInit, cdvdNcmdState, 8);
+extern s32 cdvdNcmdInit;
 
 s32 _sceCd_ncmd_prechk(s32 command);
 
@@ -208,7 +208,7 @@ extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
 
 extern s32 cdvdScmdLastCommand __attribute__((section(".data")));
 
-SYMBOL_AT(s32, cdvdScmdInit, cdvdScmdState, 12);
+extern s32 cdvdScmdInit;
 
 s32 _sceCd_scmd_prechk(s32 command);
 
@@ -299,8 +299,28 @@ s32 sceCdStStop(void)
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStRead);
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStPause);
+s32 sceCdStPause(void)
+{
+    cdvdStreamActive = 0;
+    if (cdvdDebugLevel > 0) {
+        scePrintf("sceCdStPause call\n");
+    }
+    return sceCdStream(0, 0, 0, 7, cdvdDefaultStreamMode);
+}
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStResume);
+s32 sceCdStResume(void)
+{
+    cdvdStreamActive = 1;
+    if (cdvdDebugLevel > 0) {
+        scePrintf("sceCdStResume call\n");
+    }
+    return sceCdStream(0, 0, 0, 8, cdvdDefaultStreamMode);
+}
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStStat);
+s32 sceCdStStat(void)
+{
+    if (cdvdDebugLevel > 0) {
+        scePrintf("sceCdStStat call\n");
+    }
+    return sceCdStream(0, 0, 0, 6, cdvdDefaultStreamMode);
+}

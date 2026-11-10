@@ -111,7 +111,7 @@ u32 sdfMemLock(sdfMemHandle_t *aHandle);
 
 #include "sdk_libc.h"
 
-extern char sdfDevLoadMsgFmt[];
+extern const char sdfDevLoadMsgFmt[];
 
 void sdfMemUnlock(sdfMemHandle_t *aHandle);
 
@@ -152,6 +152,8 @@ void *sdfDevLoadModel(const char *aFilename, void **aOutBody);
 void *sdfFixupMotionBinary(sdfBinaryHeader_t *aData);
 
 void *sdfDevLoadMotion(const char *aFilename, void **aOutBody);
+
+extern const char sdfDevLoadMsgFmt[15];
 /* End of declarations from src/smt3/sdf/sdfDevFile.c */
 
 /* Read a named file through the dev RPC into a freshly allocated block; returns the block's handle.

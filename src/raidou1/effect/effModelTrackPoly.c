@@ -110,7 +110,7 @@ extern void *sdfChipAllocDirect(u32 aSize);
 
 extern sdfGrOt_t sdfGrOtTable[];
 
-SYMBOL_AT(sdfGrOt_t, D_002F64B8, sdfGrOtTable, 0x5A0);
+extern sdfGrOt_t effPolyOt;
 
 extern u32 dds3GetFrameID(void);
 

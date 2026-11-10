@@ -72,6 +72,22 @@ void dds3PrimDebugTextBoxRGB(void *packetList, s32 x, s32 y, s32 selected,
 u32 dds3NullDrawProc(void);
 
 void dds3DrawUnitObjectShadow(s32 fade, f32 x, f32 y, f32 z, f32 radius);
+
+extern char dds3DebugLabelB[8];
+
+extern char dds3DebugLabelG[8];
+
+extern char dds3DebugLabelR[8];
+
+extern char dds3DebugFmtInt3[8];
+
+extern char dds3DebugFmtFloat3[8];
+
+extern f32 fldCamDirLock;
+
+extern f32 fldCamPitch;
+
+extern f32 fldCamLength;
 /* End of declarations from src/smt3/kernel/dds3DebugStuff.c */
 
 INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", func_00127658);
@@ -86,7 +102,30 @@ INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", func_00127930);
 
 INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3DebugColorEdit);
 
-INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3MenuStepValue);
+void dds3MenuStepValue(char *out, f32 value)
+{
+    s32 i;
+    s32 f1;
+    s32 f2;
+
+    value += 0.005f;
+    i = (s32)value;
+    if (i >= 10) {
+        f1 = 9;
+        f2 = 9;
+    } else {
+        value -= (f32)i;
+        value *= 10.0f;
+        f1 = (s32)value;
+        value -= (f32)f1;
+        f2 = (s32)(value * 10.0f);
+    }
+    out[0] = i + '0';
+    out[1] = '.';
+    out[2] = f1 + '0';
+    out[3] = f2 + '0';
+    out[4] = '\0';
+}
 
 void dds3PrimDebugTextBox(void *packetList, s32 x, s32 y, s32 selected, f32 *values) {
     char text[16];
@@ -128,7 +167,49 @@ void dds3PrimDebugTextBox(void *packetList, s32 x, s32 y, s32 selected, f32 *val
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3PrimDebugTextBoxRGB);
+void dds3PrimDebugTextBoxRGB(void *packetList, s32 x, s32 y, s32 selected,
+                   u32 color, s32 showNormalized) {
+    s32 i;
+    s32 style;
+    s32 channel;
+    const char *label;
+
+    color = (color & 0xFFFFFF) | 0x80000000;
+    sdfDrawTagLink(packetList, EE_ADDR(dds3PrimFrameRect(x + 0x510, y + 0x18,
+                    0xFF0080, 0x240, 0xF0, color, 0x40806020)));
+    for (i = 0; i != 3; i++) {
+        switch (i) {
+        case 0:
+            style = 2;
+            label = dds3DebugLabelR;
+            channel = color & 0xFF;
+            break;
+        case 1:
+            style = 4;
+            label = dds3DebugLabelG;
+            channel = (color >> 8) & 0xFF;
+            break;
+        default:
+            style = 5;
+            label = dds3DebugLabelB;
+            channel = (color >> 16) & 0xFF;
+            break;
+        }
+        sdfDrawTagLink(packetList, EE_ADDR(sdfDevPrintf(
+                        x, y, 0xFF0080, style, label)));
+        sdfDrawTagLink(packetList, EE_ADDR(sdfDevPrintf(
+                        x + 0x180, y, 0xFF0080, i == selected ? 6 : 0,
+                        dds3DebugFmtInt3, channel)));
+        if (showNormalized != 0) {
+            sdfDrawTagLink(packetList, EE_ADDR(sdfDevPrintf(
+                            x, y + 0x180, 0xFF0080, style, label)));
+            sdfDrawTagLink(packetList, EE_ADDR(sdfDevPrintf(
+                            x + 0x240, y + 0x180, 0xFF0080, 0,
+                            dds3DebugFmtFloat3, fptodp(channel * (1.0f / 255.0f)))));
+        }
+        y += 0x60;
+    }
+}
 INCLUDE_SDATA(const s32, "kernel/dds3DebugStuff", D_004DE6E8);
 
 INCLUDE_SDATA(const s32, "kernel/dds3DebugStuff", D_004DE6F0);

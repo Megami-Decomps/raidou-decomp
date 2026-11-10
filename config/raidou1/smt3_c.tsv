@@ -9,8 +9,9 @@ AreaBasicDrawprocuder	c
 AreaBasicMainprocuder	c
 CB_BasicDrawProcuder	c
 CalcMsgMng_Process	c
+CallBattleFieldTest	c
 CallBootMc	c
-CallDebug	asm	emits .rodata data
+CallDebug	c
 CallEndSave	c
 CallTitle	c
 ChangeFontAlpha	c
@@ -27,7 +28,7 @@ CheckDebug	c
 CheckESP	c
 CheckEndSave	c
 CheckStaff	c
-CodeFunc_2Operation	asm	its rodata is in its asm file
+CodeFunc_2Operation	c
 CodeFunc_Add	c
 CodeFunc_And	c
 CodeFunc_Call	c
@@ -36,13 +37,13 @@ CodeFunc_Div	c
 CodeFunc_EQ	c
 CodeFunc_End	c
 CodeFunc_Goto	c
-CodeFunc_IF	asm	its rodata is in its asm file
+CodeFunc_IF	c
 CodeFunc_Jump	c
 CodeFunc_L	c
 CodeFunc_LE	c
 CodeFunc_Mul	c
 CodeFunc_NEQ	c
-CodeFunc_Not	asm	its rodata is in its asm file
+CodeFunc_Not	c
 CodeFunc_Or	c
 CodeFunc_PopLFX	c
 CodeFunc_PopLIX	c
@@ -78,19 +79,19 @@ CreateVertexMesWin	c
 CreateVertexNormal	c
 CreateVertexPlain	c
 CreateVertexSelWin	c
-DebugDrawWindowLine	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+DebugDrawWindowLine	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 DebugProcessTree	c
 DeleteProcessList	c
 DiagMatrix	c
-DispBaseData	asm	its rodata is in its asm file
-DispObjectBaseData	asm	its rodata is in its asm file
-DmacAddHandler	asm	emits .rodata data
+DispBaseData	c
+DispObjectBaseData	c
+DmacAddHandler	c
 DrawMsgMng_Process	asm	size 0x74, retail 0x70
 DrawMsgMng_Shutdown	asm	local jump at +0x28
 DrawPlain	c
-DrwSprite2D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-DrwSprite2DC	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-DrwSprite2DF	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+DrwSprite2D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+DrwSprite2DC	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+DrwSprite2DF	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 Eff_ModelTrackPolyGetMarkPosition	c
 Eff_ModelTrackPolyListCreate	c
 Eff_ModelTrackPolyListDelete	c
@@ -108,12 +109,12 @@ EventObjectBasicMainProcuder	c
 ExecPS2	c
 ExitBattleFieldTest	c
 ExitBootMc	c
-ExitDebug	asm	emits .rodata data
+ExitDebug	c
 ExitEndSave	c
 ExitTitle	c
 FatalError	c
 FinishMovieViewer	c
-FreeEffectData	asm	its rodata is in its asm file
+FreeEffectData	c
 FromEuler	c
 FromEulerXYZ	c
 FromRotation	c
@@ -128,7 +129,7 @@ GetMessageWidth	c
 GetNumSelectItem	c
 GetSpeakerName	c
 GetSphericalPosMove	c
-GetSplineLength	asm	emits .lit4 data
+GetSplineLength	c
 GetSystemCallEntry	c
 GetSystemCallTableEntry	c
 GetTypeHeader	c
@@ -150,7 +151,7 @@ LoadIdentity_B	c
 LoadMatrix	c
 LoadMatrix_B	c
 LoadMcModules	c
-LookAt	asm	emits .lit4 data
+LookAt	c
 LookAtMatrix	c
 MakeCamera	c
 MbLoadCallback	c
@@ -161,7 +162,7 @@ MessageRequestEx2	c
 MoverBasicConstructor	c
 MoverBasicDestructor	c
 MoverBasicMainprocuder	c
-MovieViewerDrawFrameInfo	asm	its rodata is in its asm file
+MovieViewerDrawFrameInfo	c
 Mult	c
 MultMatrix	c
 MultMatrixNoArg	c
@@ -203,7 +204,7 @@ SetRotateMatrixZ	c
 SetRotateMatrixZ_B	c
 SetTLBHandler	c
 SifRpcServerThreadProc	c
-Slerp	asm	emits .lit4 data
+Slerp	c
 SolveTridiagonal	c
 StartProcess	c
 StartingProcess	c
@@ -215,15 +216,15 @@ TbLoadCallback	c
 TbMbAbLoadEnd	c
 TerminateLibrary	c
 TestMsgMngC_Process	asm	dds3PadButtonState at 0x003AD38E, 0x003AD390
-TestMsgMngD_Process	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+TestMsgMngD_Process	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 TestMsgReloadTexture	c
 ToMatrix	c
 UnchainFontHandleUnit	c
 VSync	c
 VSync2	c
 VblankThreadProc	c
-WaitDma	asm	emits .rodata data
-WatchDma	asm	emits .rodata data
+WaitDma	c
+WatchDma	c
 _Balloc	c
 _Bfree	c
 _InitSys	c
@@ -295,8 +296,8 @@ _s2b	c
 _sceCallCode	c
 _sceCd_Poff_Intr	c
 _sceCd_cd_read_intr	c
-_sceCd_ncmd_prechk	asm	emits .rodata data
-_sceCd_scmd_prechk	asm	emits .rodata data
+_sceCd_ncmd_prechk	c
+_sceCd_scmd_prechk	c
 _sceFsSemInit	c
 _sceFsSigSema	c
 _sceFsWaitS	c
@@ -316,19 +317,19 @@ _signal_r	c
 _sprintf_r	c
 _strtol_r	c
 _ulp	c
-aDrawBoxF	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-aDrawBoxFZ	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-aDrawBoxF_Direct	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-aDrawBoxGF	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-aDrawLineDirect	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-aDrawLineStripPrim	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-aDrawTriG	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+aDrawBoxF	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+aDrawBoxFZ	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+aDrawBoxF_Direct	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+aDrawBoxGF	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+aDrawLineDirect	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+aDrawLineStripPrim	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+aDrawTriG	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 abort	c
 atanf	asm	size 0x2A8, retail 0x290
 atexit	c
 atoi	c
 cdvd_exit	c
-checkModelVersion	asm	emits .rodata data
+checkModelVersion	c
 cmd_sem_init	c
 corePktBuildBackFaceList	c
 corePktBuildFaceList	c
@@ -357,8 +358,8 @@ dds3AddBEDEffectObjectBasic	c
 dds3AddBEDEffectObjectBasic2	c
 dds3AddBasicArray	c
 dds3AddCameraObjectBasic	c
-dds3AddCameraObjectBasicTypeFree	asm	emits .lit4 data
-dds3AddCameraObjectBasicTypeLookAt	asm	emits .lit4 data
+dds3AddCameraObjectBasicTypeFree	c
+dds3AddCameraObjectBasicTypeLookAt	c
 dds3AddESPEffectObjectBasic	c
 dds3AddEffectObjectBasic	c
 dds3AddEventObjectBasic	c
@@ -389,7 +390,7 @@ dds3AllocCameraObjectBasic	c
 dds3AllocEventBasicWorkData	c
 dds3AllocPathBasicWorkData	c
 dds3AllocRenderTexture	c
-dds3AllocSplineHandle	asm	emits .lit4 data
+dds3AllocSplineHandle	c
 dds3AllocSplinePoints	c
 dds3AreaBasicArrangeGetItemArray	c
 dds3AreaBasicGetItemArray	c
@@ -399,7 +400,7 @@ dds3AreaBasicTypeHasItems	c
 dds3BackupPoseSet	c
 dds3BasicDrawProcess	c
 dds3BasicMainProcess	c
-dds3Bezier4PCreate	asm	emits .lit4 data
+dds3Bezier4PCreate	c
 dds3Bezier4PGetPart	c
 dds3Bezier4PPartRun	c
 dds3BezierTrackPolyCreate	c
@@ -427,8 +428,8 @@ dds3Billboard_P2ACopy	c
 dds3Billboard_P2ACreate	c
 dds3Billboard_P2ADraw	asm	1 words differ, first at +0x144
 dds3Billboard_P2ASetAnim	c
-dds3Billboard_P2ASetNumber	asm	its rodata is in its asm file
-dds3BitEditorProcess	asm	its rodata is in its asm file
+dds3Billboard_P2ASetNumber	c
+dds3BitEditorProcess	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 dds3Blur2Off	c
 dds3Blur2On	c
 dds3Blur2Swap	c
@@ -449,7 +450,7 @@ dds3ComparePosPoseSet	c
 dds3ComparePosPoseSet2	c
 dds3ConsPanelTagLink	c
 dds3ConsPanelTagLinkZ	c
-dds3DebugBasic	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+dds3DebugBasic	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 dds3DebugColorEdit	asm	dds3PadButtonState at 0x003AD38E, 0x003AD390
 dds3DebugDevDumpProcess	c
 dds3DebugFloatEdit	asm	dds3PadButtonState at 0x003AD38E, 0x003AD390
@@ -462,32 +463,32 @@ dds3DeleteLightObjectBasic	c
 dds3DeleteMatterObjectBasic	c
 dds3DeletePathControl	c
 dds3DeleteScene	c
-dds3DeleteUnitObjectBasic	asm	declarations clash: `dds3GetUnitHandleObjectBasic' previously defined here
+dds3DeleteUnitObjectBasic	c
 dds3DeleteWorld	c
 dds3DistBlurOff	c
 dds3DistBlurOn	c
 dds3DistBlurSwap	c
-dds3DrawDistRipOverError	asm	its rodata is in its asm file
+dds3DrawDistRipOverError	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 dds3EffectBlurSetRect	c
 dds3EffectCopy	c
-dds3EffectCreate	asm	emits .lit4 data
-dds3EffectDataRevision	asm	its rodata is in its asm file
+dds3EffectCreate	c
+dds3EffectDataRevision	c
 dds3EffectDelete	c
 dds3EffectDirRead	c
-dds3EffectDistBlurPartInit	asm	emits .lit4 data
-dds3EffectDistortionBlurCreate	asm	emits .lit4 data
+dds3EffectDistBlurPartInit	c
+dds3EffectDistortionBlurCreate	c
 dds3EffectFileListCreate	asm	1 words differ, first at +0x3F8
 dds3EffectFileListDelete	c
 dds3EffectFileListWindowDelete	c
-dds3EffectFileListWindowDrawSprite	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+dds3EffectFileListWindowDrawSprite	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 dds3EffectFileListWindowGetFilename	c
-dds3EffectFilter	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+dds3EffectFilter	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 dds3EffectListSetTexture	c
-dds3EffectLoad	asm	its rodata is in its asm file
+dds3EffectLoad	c
 dds3EffectManagerRun	c
 dds3EffectObjectBasicConstructor	c
 dds3EffectObjectBasicDestructor	c
-dds3EffectObjectBasicDrawProcedure	asm	its rodata is in its asm file
+dds3EffectObjectBasicDrawProcedure	c
 dds3EffectObjectBasicGetControlWorkData	c
 dds3EffectObjectBasicGetObjectIndex	c
 dds3EffectObjectBasicLinkObjectIndex	c
@@ -550,7 +551,7 @@ dds3FreeSplineHandle	c
 dds3GetActiveCameraSceneBasic	c
 dds3GetActiveScene	c
 dds3GetActiveUnitSceneBasic	c
-dds3GetBaseControlWorkData	asm	its rodata is in its asm file
+dds3GetBaseControlWorkData	c
 dds3GetBasicArray	c
 dds3GetBasicArrayCount	c
 dds3GetBasicArrayHandle	c
@@ -568,11 +569,11 @@ dds3GetRadiusPoseSet	c
 dds3GetRenderTexture	c
 dds3GetRotPoseSet	c
 dds3GetSclPoseSetMCR	c
-dds3GetStatusUnitObjectBasic	asm	declarations clash: `dds3GetUnitHandleObjectBasic' previously defined here
+dds3GetStatusUnitObjectBasic	c
 dds3GetTMPoseSet	c
-dds3GetUnitHandleObjectBasic	asm	declarations clash: `dds3GetUnitHandleObjectBasic' previously defined here
+dds3GetUnitHandleObjectBasic	c
 dds3HermitianTrackPolyCreate	c
-dds3HermitianTrackPolyDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+dds3HermitianTrackPolyDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 dds3HermitianTrackPolyGetVertex	c
 dds3HermitianTrackPolySetCurrent	c
 dds3HermitianTrackPolySetVC	c
@@ -593,11 +594,11 @@ dds3LinkZClearDrawTag	c
 dds3MFilterOff	c
 dds3MFilterOn	c
 dds3MFilterSwap	c
-dds3MagatuhiParCopy	asm	its rodata is in its asm file
+dds3MagatuhiParCopy	c
 dds3MagatuhiParCreate	c
 dds3MagatuhiParDelete	c
 dds3MagatuhiParDraw	c
-dds3MagatuhiParSetByType	asm	its rodata is in its asm file
+dds3MagatuhiParSetByType	c
 dds3MakeMatrix	c
 dds3MatterObjectBasicConstructor	c
 dds3MatterObjectBasicDestructor	c
@@ -606,7 +607,7 @@ dds3MatterObjectBasicGetHojiID	c
 dds3MatterObjectBasicSetAlpMode	c
 dds3MatterObjectBasicSetHojiID	c
 dds3MatterObjectBasicSetOt	c
-dds3MenuStepValue	asm	emits .lit4 data
+dds3MenuStepValue	c
 dds3ModelBasicMakeModel	c
 dds3ModelBasicSetMotion	c
 dds3MoverBasicFreePath	c
@@ -649,50 +650,50 @@ dds3ParticleCreate	c
 dds3ParticleDraw	c
 dds3ParticleExpCopy	c
 dds3ParticleExpCreate	c
-dds3ParticleExpDraw	asm	emits .lit4 data
+dds3ParticleExpDraw	c
 dds3ParticleExpSetScale	c
-dds3ParticleGetLoop	asm	its rodata is in its asm file
+dds3ParticleGetLoop	c
 dds3ParticleReset	c
 dds3ParticleSetColorTable	c
 dds3ParticleSetRotateMatrix	c
 dds3ParticleSetScale	c
-dds3Particle_BasicCreate	asm	compile error: too many arguments to function `dds3Particle_TrackPolyGetRecTiming'
+dds3Particle_BasicCreate	c
 dds3Particle_BasicDelete	c
 dds3Particle_BlurCreate	c
 dds3Particle_BlurDraw	c
 dds3Particle_BlurSetExp	c
-dds3Particle_EffectInit	asm	its rodata is in its asm file
+dds3Particle_EffectInit	c
 dds3Particle_PhysicsCreate	c
 dds3Particle_RadiateAllBuffInit	c
-dds3Particle_RadiateBuffInit	asm	emits .lit4 data
-dds3Particle_RadiateDraw	asm	emits .lit4 data
+dds3Particle_RadiateBuffInit	c
+dds3Particle_RadiateDraw	c
 dds3Particle_RadiateSetScale	c
-dds3Particle_SmokeBuffInit	asm	emits .lit4 data
-dds3Particle_SmokeOffsetBuffInit	asm	emits .lit4 data
+dds3Particle_SmokeBuffInit	c
+dds3Particle_SmokeOffsetBuffInit	c
 dds3Particle_SmokeOffsetCreate	c
 dds3Particle_SmokeOffsetDelete	c
-dds3Particle_SmokeOffsetDraw	asm	emits .lit4 data
-dds3Particle_Spark2BuffInit	asm	emits .lit4 data
+dds3Particle_SmokeOffsetDraw	c
+dds3Particle_Spark2BuffInit	c
 dds3Particle_Spark2Draw	c
 dds3Particle_SparkDraw	c
 dds3Particle_SparkOffsetCreate	c
 dds3Particle_SparkOffsetDraw	c
 dds3Particle_SphereAtomAllBuffInit	c
-dds3Particle_SphereAtomBuffInit	asm	emits .lit4 data
+dds3Particle_SphereAtomBuffInit	c
 dds3Particle_SphereAtomDraw	c
 dds3Particle_SphereAtomSetScale	c
 dds3Particle_SphereRingAllBuffInit	c
-dds3Particle_SphereRingDraw	asm	emits .lit4 data
+dds3Particle_SphereRingDraw	c
 dds3Particle_SphereRingSetScale	c
-dds3Particle_SphereSmokeBuffInit	asm	emits .lit4 data
+dds3Particle_SphereSmokeBuffInit	c
 dds3Particle_SphereSpiral2Create	c
 dds3Particle_SphereSpiral2Delete	c
-dds3Particle_SphereSpiral2Draw	asm	emits .lit4 data
-dds3Particle_SphereSpiralDraw	asm	emits .lit4 data
+dds3Particle_SphereSpiral2Draw	c
+dds3Particle_SphereSpiralDraw	c
 dds3Particle_SpiralAllBuffInit	c
 dds3Particle_SpiralBlendColor	c
-dds3Particle_SpiralBuffInit	asm	emits .lit4 data
-dds3Particle_SpiralDraw	asm	emits .lit4 data
+dds3Particle_SpiralBuffInit	c
+dds3Particle_SpiralDraw	c
 dds3Particle_SpiralRandomize	c
 dds3Particle_SpiralSetScale	c
 dds3Particle_Track2Set	c
@@ -712,16 +713,16 @@ dds3PathBasicControlSetRatio	c
 dds3PathEvalSpline	c
 dds3PolygonCreate	c
 dds3PolygonDelete	c
-dds3PolygonLinkOt	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+dds3PolygonLinkOt	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 dds3PolygonManagerInit	c
 dds3PolygonSetTex	c
 dds3PolygonTriangleSet	c
 dds3PrimDebugTextBox	c
-dds3PrimDebugTextBoxRGB	asm	emits .lit4 data
+dds3PrimDebugTextBoxRGB	c
 dds3PrimFrameRect	c
 dds3PrimLine	c
-dds3PrimLine3D	asm	emits .lit4 data
-dds3PrintProcessList	asm	its rodata is in its asm file
+dds3PrimLine3D	c
+dds3PrintProcessList	c
 dds3ProcessMain	c
 dds3RenderTextureOFF	c
 dds3RenderTextureON	c
@@ -731,7 +732,7 @@ dds3RingPolyExpListDelete	c
 dds3RipBlurOff	c
 dds3RipBlurOn	c
 dds3RipBlurSwap	c
-dds3RotationArc	asm	emits .lit4 data
+dds3RotationArc	c
 dds3ScatterPolyListCopyTex	c
 dds3ScatterPolyListCreate	c
 dds3ScatterPolyListDelete	c
@@ -810,7 +811,7 @@ dds3SpPoly_RingBuffInit	c
 dds3SpPoly_RingCreate	c
 dds3SpPoly_RingDelete	c
 dds3SpPoly_RingDraw	c
-dds3SpPoly_RingMove	asm	emits .lit4 data
+dds3SpPoly_RingMove	c
 dds3SpPoly_RingSetScale	c
 dds3SpPoly_Ring_Old_BuffInit	c
 dds3SpPoly_Ring_Old_Calc	c
@@ -818,18 +819,18 @@ dds3SpPoly_Ring_Old_Create	c
 dds3SpPoly_Ring_Old_Delete	c
 dds3SpPoly_Ring_Old_Draw	c
 dds3SpPoly_Ring_Old_Move	c
-dds3SpPoly_Ring_Old_New	asm	emits .lit4 data
+dds3SpPoly_Ring_Old_New	c
 dds3SpPoly_RollRingAllBuffInit	c
-dds3SpPoly_RollRingBuffInit	asm	emits .lit4 data
+dds3SpPoly_RollRingBuffInit	c
 dds3SpPoly_RollRingCreate	c
 dds3SpPoly_RollRingDelete	c
-dds3SpPoly_RollRingMove	asm	emits .lit4 data
+dds3SpPoly_RollRingMove	c
 dds3SpPoly_SphereRingAllBuffInit	c
 dds3SpPoly_SphereRingBuffInit	c
 dds3SpPoly_SphereRingCreate	c
 dds3SpPoly_SphereRingDelete	c
 dds3SpPoly_SphereRingDraw	c
-dds3SpPoly_SphereRingMove	asm	emits .lit4 data
+dds3SpPoly_SphereRingMove	c
 dds3SpPoly_SphereRingSetScale	c
 dds3StartBEDEffectObjectBasic	c
 dds3StartMovieManager	asm	its rodata is in its asm file
@@ -854,10 +855,10 @@ dds3TrackPolyVCSet2_AcuteW	c
 dds3TrianglePolyCreate	c
 dds3TrianglePolyDelete	c
 dds3TrianglePolyLinkOt	c
-dds3UnitObjectBasicDestructor	asm	declarations clash: `dds3GetUnitHandleObjectBasic' previously defined here
-dds3UnitObjectBasicEL_Link	asm	declarations clash: `dds3GetUnitHandleObjectBasic' previously defined here
-dds3UnitObjectBasicEL_LinkFree	asm	declarations clash: `dds3GetUnitHandleObjectBasic' previously defined here
-dds3UnitObjectBasicSetOt	asm	declarations clash: `dds3GetUnitHandleObjectBasic' previously defined here
+dds3UnitObjectBasicDestructor	c
+dds3UnitObjectBasicEL_Link	c
+dds3UnitObjectBasicEL_LinkFree	c
+dds3UnitObjectBasicSetOt	c
 dds3UnlinkLightObjectFromUnitObject	c
 dds3UnlinkProcess	c
 dds3UnlinkSceneLight	c
@@ -878,7 +879,7 @@ dpmul	c
 dpsub	c
 dptoli	c
 dptoul	c
-drawSprite3D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+drawSprite3D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 effAPPoint4Copy	c
 effAPPoint4CreatePCF	c
 effAPPoint4Delete	c
@@ -888,20 +889,20 @@ effBTLBindCreateTrack	c
 effBTLPartCreate	c
 effBTLPartDelete	c
 effBTLPartGetPositionPtr	c
-effBTLPartGetRotateMatrixPtr	asm	emits .lit4 data
+effBTLPartGetRotateMatrixPtr	c
 effColorBlend	c
 effDebugDrawWireModel	c
-effDebugLineDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-effDebugLineDraw2	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-effDebugPointDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-effDebugPointDraw2	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-effDebugSelectCursorDraw	asm	emits .lit4 data
-effDebugWindowDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-effDebugWireframeCylinderDraw	asm	emits .lit4 data
-effDebugWireframeSphereDraw	asm	emits .lit4 data
-effEVECombParSmokeCreate	asm	its rodata is in its asm file
+effDebugLineDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effDebugLineDraw2	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effDebugPointDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effDebugPointDraw2	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effDebugSelectCursorDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effDebugWindowDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effDebugWireframeCylinderDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effDebugWireframeSphereDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effEVECombParSmokeCreate	c
 effEVECombParSmokeDelete	c
-effEVECombParSmokeDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effEVECombParSmokeDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 effEveAPP4Randomize	c
 effEveBEDCutCreate	c
 effEveBEDCutSetParams	c
@@ -913,32 +914,32 @@ effMagaCylinderBlendColor	c
 effMagaCylinderCreate	c
 effMagaCylinderDelete	c
 effMagaCylinderDraw	c
-effMagaCylinderPartInit	asm	emits .lit4 data
+effMagaCylinderPartInit	c
 effMagaCylinderRandomize	c
 effMagaCylinderSetPart	c
-effMagaCylinderSetPartPos	asm	emits .lit4 data
-effMagaCylinderSetPartPtrs	asm	emits .lit4 data
+effMagaCylinderSetPartPos	c
+effMagaCylinderSetPartPtrs	c
 effMagaP4Randomize	c
 effMagaP4SetPoint	c
 effMagaPoint4Create	c
 effMagaPoint4Delete	c
 effMagaPoint4Draw	c
 effMagaPoint4PartInit	c
-effMagaRandomize	asm	its rodata is in its asm file
+effMagaRandomize	c
 effMagaSCSetArea	c
 effMagaSmokeConvCreate	c
 effMagaSmokeConvDelete	c
-effMagaSmokeConvDraw	asm	emits .lit4 data
-effMagaSmokeConvPartInit	asm	emits .lit4 data
+effMagaSmokeConvDraw	c
+effMagaSmokeConvPartInit	c
 effMagaSmokeCreate	c
 effMagaSmokeDelete	c
 effMagaSmokeDraw	c
-effMagaSmokePartInit	asm	emits .lit4 data
+effMagaSmokePartInit	c
 effMagaSmokeRandomize	c
 effMagaSpiralCreate	c
 effMagaSpiralDelete	c
 effMagaSpiralDraw	c
-effMagaSpiralPartInit	asm	emits .lit4 data
+effMagaSpiralPartInit	c
 effMagaSpiralRandomize	c
 effPCPAgiFireball2Copy	c
 effPCPAgiFireball2Create	c
@@ -969,14 +970,14 @@ effPCPBlurExpDraw	c
 effPCPBlurScreenOffset	c
 effPCPBossBaelCopy	c
 effPCPBossBaelCreate	c
-effPCPBossBaelDelete	asm	compile error: initializer element is not constant
+effPCPBossBaelDelete	c
 effPCPBossMETATOBeamCreate	c
 effPCPBossMETATOBeamDelete	c
 effPCPBreathCopy	c
-effPCPBreathCreate	asm	emits .lit4 data
+effPCPBreathCreate	c
 effPCPBreathDelete	c
-effPCPBufuIceCopy	asm	emits .lit4 data
-effPCPBufuIceCreate	asm	emits .lit4 data
+effPCPBufuIceCopy	c
+effPCPBufuIceCreate	c
 effPCPBufuIceDelete	c
 effPCPBufuIceDraw	c
 effPCPCrack2Copy	c
@@ -984,8 +985,8 @@ effPCPCrack2Create	c
 effPCPCrackCopy	c
 effPCPCrackCreate	c
 effPCPCrackDelete	c
-effPCPCrackDraw	c
-effPCPCrackInit	asm	emits .lit4 data
+effPCPCrackDraw	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
+effPCPCrackInit	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPCrackSizeInit	c
 effPCPDistortionBlurExpDraw	c
 effPCPEyeThunderDelete	c
@@ -994,16 +995,16 @@ effPCPFilterExpDraw	c
 effPCPFlashPolyCircleCreate	c
 effPCPFlashPolyCircleDraw	c
 effPCPFlashPolyCirclePartSetVC	c
-effPCPFlashPolyCirclePartSetVertex	asm	emits .lit4 data
-effPCPFlashPolyPipeCreate	asm	emits .lit4 data
-effPCPFlashPolyPipeDraw	asm	emits .lit4 data
+effPCPFlashPolyCirclePartSetVertex	c
+effPCPFlashPolyPipeCreate	c
+effPCPFlashPolyPipeDraw	c
 effPCPFlashPolyPipePartRotate	c
 effPCPFlashPolyPipePartSetVC	c
 effPCPFlashPolyPipePartSetVertex	c
-effPCPFlashPolyRingCreate	asm	emits .lit4 data
+effPCPFlashPolyRingCreate	c
 effPCPFlashPolyRingDelete	c
 effPCPFlashPolyRingDraw	c
-effPCPFlashPolyRingExp2Create	asm	emits .lit4 data
+effPCPFlashPolyRingExp2Create	c
 effPCPFlashPolyRingExp2Draw	c
 effPCPFlashPolyRingExp2PartRotate	c
 effPCPFlashPolyRingExp2PartSetVC	c
@@ -1018,13 +1019,13 @@ effPCPFlashPolySphere2ExpCreate	c
 effPCPFlashPolySphere2ExpDelete	c
 effPCPFlashPolySphere2ExpDraw	c
 effPCPFlashPolySphere2ExpPartSetVC	c
-effPCPFlashPolySphere2ExpPartSetVertex	asm	emits .lit4 data
+effPCPFlashPolySphere2ExpPartSetVertex	c
 effPCPFlashPolySphere2PartSetVC	c
-effPCPFlashPolySphere2PartSetVertex	asm	emits .lit4 data
+effPCPFlashPolySphere2PartSetVertex	c
 effPCPFlashPolySphere3Create	c
 effPCPFlashPolySphere3Delete	c
 effPCPFlashPolySphere3Draw	c
-effPCPFlashPolySphere3PartInit	asm	emits .lit4 data
+effPCPFlashPolySphere3PartInit	c
 effPCPFlashPolySphere3PartRotate	c
 effPCPFlashPolySphere3PartSetVC	c
 effPCPFlashPolySphere3PartSetVertex	c
@@ -1032,37 +1033,37 @@ effPCPFlashPolySphereCreate	c
 effPCPFlashPolySphereDraw	c
 effPCPFlashPolySphereExpCreate	c
 effPCPFlashPolySphereExpDelete	c
-effPCPFlashPolySphereExpDraw	asm	1 words differ, first at +0x94
-effPCPFlashPolySphereExpPartInit	asm	emits .lit4 data
+effPCPFlashPolySphereExpDraw	c
+effPCPFlashPolySphereExpPartInit	c
 effPCPFlashPolySphereExpPartRotate	c
 effPCPFlashPolySphereExpPartSetVC	c
 effPCPFlashPolySphereExpPartSetVertex	c
-effPCPFlashPolySpherePartInit	asm	emits .lit4 data
+effPCPFlashPolySpherePartInit	c
 effPCPFlashPolySpherePartRotate	c
 effPCPFlashPolySpherePartSetVC	c
 effPCPFlashPolySpherePartSetVertex	c
 effPCPHama01Copy	c
 effPCPHama01Create	c
 effPCPHama01Delete	c
-effPCPHama01PartInit	asm	emits .lit4 data
+effPCPHama01PartInit	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPHama02Copy	c
 effPCPHama02Create	c
 effPCPHama02Delete	c
 effPCPHama02Draw	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
-effPCPHama02PartInit	asm	emits .lit4 data
+effPCPHama02PartInit	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPHamaCardScatterDelete	c
 effPCPHamaCardScatterDraw	c
-effPCPHamaCardScatterPartInit	asm	emits .lit4 data
+effPCPHamaCardScatterPartInit	c
 effPCPHamaCardSphereDelete	c
 effPCPHamaCardSphereDraw	c
-effPCPHamaCardSpherePartInit	asm	emits .lit4 data
+effPCPHamaCardSpherePartInit	c
 effPCPHamaCardSpiralDelete	c
 effPCPHamaCardSpiralDraw	c
-effPCPHamaCardSpiralPartInit	asm	emits .lit4 data
+effPCPHamaCardSpiralPartInit	c
 effPCPHamaonCopy	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPHamaonCreate	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPHamaonDelete	c
-effPCPHamaonPartInit	asm	emits .lit4 data
+effPCPHamaonPartInit	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPHelperBEDCopy	c
 effPCPHelperBEDCreate	asm	1 words differ, first at +0xC0
 effPCPHelperBEDDelete	c
@@ -1078,14 +1079,14 @@ effPCPMHanma01Copy	c
 effPCPMHanma01Create	c
 effPCPMHanma01Delete	c
 effPCPMHanma01PartInit	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
-effPCPMZiodin01Init	asm	emits .lit4 data
+effPCPMZiodin01Init	c
 effPCPMZiodin02Delete	c
 effPCPMZiodin02Draw	c
-effPCPMZiodin02Init	asm	emits .lit4 data
+effPCPMZiodin02Init	c
 effPCPMakkaDelete	c
 effPCPMakkaUpdateNode	c
 effPCPMegidora01Draw	c
-effPCPMegidoraon01Draw	asm	emits .lit4 data
+effPCPMegidoraon01Draw	c
 effPCPMudoCopy	c
 effPCPMudoCreate	c
 effPCPMudoDelete	c
@@ -1099,50 +1100,50 @@ effPCPMultiBlurExpDraw	c
 effPCPMultiFilterExpCopy	c
 effPCPMultiFilterExpCreate	c
 effPCPMultiFilterExpDraw	c
-effPCPNeedleSpiralCreate	asm	emits .lit4 data
+effPCPNeedleSpiralCreate	c
 effPCPNeedleSpiralDelete	c
 effPCPRadiateBEDCopy	c
 effPCPRadiateBEDCreate	c
 effPCPRadiateBEDDelete	c
 effPCPRadiateBEDDraw	c
-effPCPRadiateBEDPartInit	asm	emits .lit4 data
+effPCPRadiateBEDPartInit	c
 effPCPRadiateTBCopy	c
 effPCPRadiateTBCreate	c
 effPCPRadiateTBDelete	c
 effPCPRadiateTBDraw	c
-effPCPRadiateTBPartInit	asm	emits .lit4 data
+effPCPRadiateTBPartInit	c
 effPCPRadiateThunderCopy	c
 effPCPRadiateThunderCreate	c
 effPCPRadiateThunderCreatePCF	c
 effPCPRadiateThunderDelete	c
 effPCPRadiateThunderDraw	c
-effPCPRadiateThunderPartInit	asm	emits .lit4 data
+effPCPRadiateThunderPartInit	c
 effPCPRingPolyExp2Create	c
 effPCPRingPolyExp2Delete	c
 effPCPRingPolyExp2Draw	c
-effPCPRingPolyExp2Init	asm	emits .lit4 data
-effPCPRingPolyExp2SetVertex	asm	emits .lit4 data
+effPCPRingPolyExp2Init	c
+effPCPRingPolyExp2SetVertex	c
 effPCPRingPolyExpCreate	c
 effPCPRingPolyExpDelete	c
 effPCPRingPolyExpDraw	c
 effPCPRingPolyExpInit	c
-effPCPRingPolyExpSetDirection	asm	emits .lit4 data
-effPCPRingPolyExpSetVertex	asm	emits .lit4 data
+effPCPRingPolyExpSetDirection	c
+effPCPRingPolyExpSetVertex	c
 effPCPRippleBlurExpDraw	c
 effPCPShockWave01Draw	c
 effPCPSparkleSphereCreate	c
-effPCPSparkleSphereDraw	asm	emits .lit4 data
+effPCPSparkleSphereDraw	c
 effPCPSpiralBEDCopy	c
 effPCPSpiralBEDCreate	c
 effPCPSpiralBEDDelete	c
 effPCPSpiralBEDDraw	c
-effPCPSpiralBEDPartInit	asm	emits .lit4 data
+effPCPSpiralBEDPartInit	c
 effPCPThunderSphereExpCopy	c
 effPCPThunderSphereExpCreate	c
 effPCPThunderSphereExpDraw	c
 effPCPThunderSphereLowRotateAxis	c
 effPCPThunderSpherePolyCreate	c
-effPCPThunderSphereRotate	asm	emits .lit4 data
+effPCPThunderSphereRotate	c
 effPCPThunderSphereRotateAxis	c
 effPCPWhirlwind2PolyCopy	c
 effPCPWhirlwind2PolyDelete	c
@@ -1166,12 +1167,12 @@ effPCP_ThunderPolyDraw	c
 effPCP_ThunderPolyListCreate	c
 effPCP_ThunderPolyListDelete	c
 effPCP_ThunderPolyListDraw	c
-effPCP_ThunderPolyListPartRefresh	asm	emits .lit4 data
+effPCP_ThunderPolyListPartRefresh	c
 effPCP_ThunderPolyLowCreate	c
 effPCP_ThunderPolyLowDelete	c
 effPCP_ThunderPolyLowDraw	c
-effPCP_ThunderPolyLowPartRefresh	asm	emits .lit4 data
-effPCP_ThunderPolyPartRefresh	asm	emits .lit4 data
+effPCP_ThunderPolyLowPartRefresh	c
+effPCP_ThunderPolyPartRefresh	c
 effPCP_ThunderRadiatePolyCreate	c
 effPCP_ThunderRadiatePolyDelete	c
 effPCP_ThunderRadiatePolyDraw	c
@@ -1187,11 +1188,11 @@ effSimpleBEDSetRGBA	c
 effSwordTrackDrawTex	c
 eglInit	c
 eglLinkKanji	asm	frwGetSmallFontFRQ at 0x00182F78, 0x00182FA8
-eglLinkLine	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-eglLinkPoly4	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-eglLinkPrint	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-eglLinkTexPoly4	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-eglLinkTri	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+eglLinkLine	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+eglLinkPoly4	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+eglLinkPrint	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+eglLinkTexPoly4	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+eglLinkTri	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 eglSetOt	c
 evtAddCamera	c
 evtBitAllOff_FieldDebug	c
@@ -1200,7 +1201,7 @@ evtCheckEventScriptLoaded	c
 evtCheckPathStat	c
 evtCheckScriptDone	asm	1 words differ, first at +0x30
 evtCheckSkyAlphaAnime	c
-evtChkEndProcess	asm	its rodata is in its asm file
+evtChkEndProcess	c
 evtCommand_BGM_PLAY_E	c
 evtCommand_BGM_TRANS_E	c
 evtCommand_BOKASI_OFF	c
@@ -1208,22 +1209,22 @@ evtCommand_BOKASI_ON	c
 evtCommand_CALL_BATTLE	c
 evtCommand_CALL_BATTLE2	c
 evtCommand_CALL_ENDSAVE	c
-evtCommand_CALL_NEXT	asm	its rodata is in its asm file
+evtCommand_CALL_NEXT	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtCommand_CAM_CLS	c
 evtCommand_CAM_CREATE	c
 evtCommand_CAM_PATH_WAIT	c
 evtCommand_CAM_POS_XYZ	c
 evtCommand_CAM_ROT_Q	c
-evtCommand_CAM_ROT_XYZ	asm	emits .lit4 data
+evtCommand_CAM_ROT_XYZ	c
 evtCommand_CAM_SEL_FOVY	c
 evtCommand_CHG_MOON	c
 evtCommand_CHK_BE	c
 evtCommand_DEL_BE	asm	its rodata is in its asm file
-evtCommand_EFFBED_BE	asm	its rodata is in its asm file
+evtCommand_EFFBED_BE	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtCommand_EFFBED_BE_EVO	c
 evtCommand_EFFBED_LOAD	c
-evtCommand_EFFBED_START	asm	emits .rodata data
-evtCommand_EFFBED_START_EVO	asm	emits .rodata data
+evtCommand_EFFBED_START	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
+evtCommand_EFFBED_START_EVO	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtCommand_EFFECT_BE	asm	its rodata is in its asm file
 evtCommand_EFFECT_CLS	c
 evtCommand_EFFECT_LINK	c
@@ -1231,23 +1232,23 @@ evtCommand_EFFECT_LINK2	c
 evtCommand_EFFECT_LOAD	c
 evtCommand_EFFECT_OFF	c
 evtCommand_EFFECT_ON	c
-evtCommand_EFFECT_PATH_WAIT	asm	its rodata is in its asm file
+evtCommand_EFFECT_PATH_WAIT	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtCommand_EFFECT_POS_XYZ	c
 evtCommand_EFFECT_PRESET	c
-evtCommand_EFFECT_ROT_XYZ	asm	emits .lit4 data
+evtCommand_EFFECT_ROT_XYZ	c
 evtCommand_EFFECT_UNLINK	c
-evtCommand_EFFMG1_BE	asm	its rodata is in its asm file
+evtCommand_EFFMG1_BE	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtCommand_EFFMG1_LOAD	c
-evtCommand_EFFMG1_POS	asm	its rodata is in its asm file
-evtCommand_EFFMG2_BE	asm	its rodata is in its asm file
+evtCommand_EFFMG1_POS	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
+evtCommand_EFFMG2_BE	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtCommand_EFFMG2_LOAD	c
 evtCommand_EFFMG2_PRESET	c
 evtCommand_FADEOUT_E	c
 evtCommand_FIELD_ANIME_START	c
 evtCommand_FIELD_ANIME_STOP	c
-evtCommand_FIELD_BE	asm	its rodata is in its asm file
-evtCommand_FIELD_CLS	asm	its rodata is in its asm file
-evtCommand_FIELD_CLS_STOP	asm	its rodata is in its asm file
+evtCommand_FIELD_BE	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
+evtCommand_FIELD_CLS	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
+evtCommand_FIELD_CLS_STOP	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtCommand_FIELD_DSP	c
 evtCommand_GET_MOON	c
 evtCommand_GET_MOON16	c
@@ -1257,8 +1258,8 @@ evtCommand_LIGHT_PATH_WAIT	c
 evtCommand_LOAD_BE	asm	its rodata is in its asm file
 evtCommand_LOAD_SOUND_E	c
 evtCommand_MODEL_A	c
-evtCommand_MODEL_BE	asm	its rodata is in its asm file
-evtCommand_MODEL_LIGHT_DIR	asm	its rodata is in its asm file
+evtCommand_MODEL_BE	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
+evtCommand_MODEL_LIGHT_DIR	c
 evtCommand_MODEL_LIGHT_LINK	c
 evtCommand_MODEL_LIGHT_OFF	c
 evtCommand_MODEL_LIGHT_ON	c
@@ -1269,7 +1270,7 @@ evtCommand_MODEL_MOVE_MOT	c
 evtCommand_MODEL_PLAYER	c
 evtCommand_MODEL_POS_XYZ	c
 evtCommand_MODEL_RGB	c
-evtCommand_MODEL_ROT_XYZ	asm	emits .lit4 data
+evtCommand_MODEL_ROT_XYZ	c
 evtCommand_MODEL_SCL_XYZ	c
 evtCommand_MODEL_WAIT	c
 evtCommand_MOON_START	c
@@ -1285,12 +1286,12 @@ evtCommand_SET_SKY_A	asm	its rodata is in its asm file
 evtCommand_TEX_CLS	c
 evtCommand_TEX_OFF	c
 evtCommand_TEX_ON	c
-evtCommand_UNIT_CLS	asm	its rodata is in its asm file
-evtCommand_UNIT_CLS_STOP	asm	its rodata is in its asm file
+evtCommand_UNIT_CLS	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
+evtCommand_UNIT_CLS_STOP	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtEffectLoopControl	c
 evtExitSky	c
-evtFadeInEventBgm	asm	its rodata is in its asm file
-evtFileName2Head	asm	its rodata is in its asm file
+evtFadeInEventBgm	c
+evtFileName2Head	asm	.rodata differs at 0x004502A8
 evtFreeAllUnit	c
 evtFreeScriptProcessData	c
 evtFreeStage	c
@@ -1311,10 +1312,10 @@ evtHokanMultFilter	c
 evtHokanRipBlur	c
 evtHokanSceneFog	c
 evtHokanUInt	c
-evtInitEventTest	asm	emits .rodata data
+evtInitEventTest	c
 evtInitFrameVar	asm	its rodata is in its asm file
 evtInitGlobalWork	c
-evtInitMotionSeProcess	asm	its rodata is in its asm file
+evtInitMotionSeProcess	c
 evtKillEventPack	c
 evtKillFieldScript	asm	its rodata is in its asm file
 evtKillPictureProcess	c
@@ -1331,17 +1332,17 @@ evtPathStart	c
 evtPathStop	c
 evtPictureDrawOff	c
 evtPictureDrawOn	c
-evtPlayEventBgm	asm	its rodata is in its asm file
+evtPlayEventBgm	c
 evtPlaySe	c
 evtRegistBEField	c
 evtSearchBasic	c
 evtSearchEventPack	c
 evtSetSkyAlpha	c
-evtSetTestCamera	asm	emits .rodata data
+evtSetTestCamera	c
 evtStageAnimeControl	c
 evtStartPictureProcess2	c
 evtStopEventBgm	c
-evtTransEventBgm	asm	its rodata is in its asm file
+evtTransEventBgm	c
 evtUpdateSkyAlpha	c
 evtVu0SubVectorXZAxis	c
 evtWaitEventPackLoad	c
@@ -1358,7 +1359,7 @@ fclScriptStart	c
 fclStartMessage	c
 fflush	c
 fileExecCallback	c
-fileExecQueue	asm	its rodata is in its asm file
+fileExecQueue	c
 fileGetLoadPtr	c
 fileGetLoadRemain	c
 fileGetLoadSize	c
@@ -1386,18 +1387,18 @@ fldAutoMapSeqClearFlag	c
 fldAutoMapSeqSetFlag	c
 fldAutoMapSeqTestFlag	c
 fldCommand_GetHojiID	c
-fldDbgPrint3D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-fldDrawGetOt	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-fldDrawPoly3	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+fldDbgPrint3D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+fldDrawGetOt	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+fldDrawPoly3	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 fldDrwZAlloc	c
 fldDrwZFree	c
 fldEncountClearFlag	c
 fldEncountSetFlag	c
 fldEncountTestFlag	c
-fldFlowParse	asm	its rodata is in its asm file
+fldFlowParse	c
 fldKanjiDraw	asm	frwGetSmallFontFRQ at 0x00182F78, 0x00182FA8
 fldPlayerCalc360_4	c
-fldPlayerCalc360_8	asm	its rodata is in its asm file
+fldPlayerCalc360_8	c
 fldPoint3To2	c
 floorf	asm	size 0x114, retail 0xD8
 fmDestroyFontMemControl	c
@@ -1426,7 +1427,7 @@ frGetFontImagePtrs	c
 frGetGsFontNum	c
 frGetMessageResult	c
 frGetTextHandleNum	c
-frLoadStyleAll	asm	its rodata is in its asm file
+frLoadStyleAll	c
 frMessageReturnCode	c
 frSetDrawPosition	c
 frSetExtDic	c
@@ -1439,7 +1440,7 @@ frSwapColor	c
 free	c
 frwFreeStaffFont	c
 frwGetStaffFontFRQ	c
-frwLoadStaffFont	asm	its rodata is in its asm file
+frwLoadStaffFont	c
 get_iob	c
 iInvalidDCache	c
 iPutTLBEntry	c
@@ -1448,7 +1449,7 @@ iSyncDCache	c
 initDrawTag	c
 isceSifSendCmd	c
 itfCamp	c
-itfDebugPrintMark	asm	its rodata is in its asm file
+itfDebugPrintMark	c
 itfMesMngClearBitStat	c
 itfMesMngClearBitStatManager	c
 itfMesMngCloseSelectWindow	c
@@ -1516,7 +1517,7 @@ kFindAddress	c
 kill	c
 kprintf	c
 kputs	c
-lightconstructor	asm	emits .lit4 data
+lightconstructor	c
 lightdestructor	c
 lightdrawprocedure	c
 lightmainprocedure	c
@@ -1529,7 +1530,7 @@ mceIntrReadFixAlign	c
 mceStorePwd	c
 mdlCheckLoading	c
 mdlChkMotionEndEx	c
-mdlCreateEffect	asm	its rodata is in its asm file
+mdlCreateEffect	c
 mdlCreateEffectCtrlr	c
 mdlCreateEffectResrc_D3P	c
 mdlCreateEffectResrc_IPU	c
@@ -1583,7 +1584,7 @@ mdlLinkEffect	c
 mdlLoad	c
 mdlLoadPrepare	c
 mdlLoopMotion	c
-mdlMakeHddFileList	asm	its rodata is in its asm file
+mdlMakeHddFileList	c
 mdlMakeHddFileListDummy	c
 mdlMotion	c
 mdlMotionPause	c
@@ -1593,8 +1594,8 @@ mdlPackDecode	c
 mdlPackSet	c
 mdlPackSetOld	c
 mdlPibCheckItemType	c
-mdlPibDrawEffectInfo	asm	its rodata is in its asm file
-mdlPibDrawTrackInfo	asm	its rodata is in its asm file
+mdlPibDrawEffectInfo	c
+mdlPibDrawTrackInfo	c
 mdlPibGetChunk	c
 mdlPibGetChunkItemCount	c
 mdlPibGetEffectCount	c
@@ -1612,7 +1613,7 @@ mdlSetBlur	c
 mdlSetClutColor	c
 mdlSetColor	c
 mdlSetColorWithEffect	c
-mdlSetDebugMatrix	asm	emits .lit4 data
+mdlSetDebugMatrix	c
 mdlSetEffectColor	c
 mdlSetEffectColorSub	c
 mdlSetEffectScale	c
@@ -1642,10 +1643,9 @@ movieCopyChunk	c
 movieDebugDrawInfo	c
 movieGetStreamSize	c
 movieMan_Process	c
-movieMemcpy	asm	nested function of movieParseHeader in SMT3 C
 movieOpenStream	c
-movieParseHeader	asm	defines nested movieMemcpy, a separate Raidou function
-movieReadChunk	asm	emits .rodata data
+movieParseHeader	c
+movieReadChunk	c
 movieReadHeaderChunk	c
 movieReadNextChunk	c
 movieStop	c
@@ -1657,24 +1657,24 @@ movieViewerStep	c
 movieWaitSema	c
 nbPlaySe	c
 new_iob	c
-ooyTestLine3D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+ooyTestLine3D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 p2sdBgmVolDown	c
 p2sdBgmVolUp	c
 p2sdGetPcmState	c
 p2sdLoadPcmFile	c
-p2sdLoadSMGFile	asm	emits .rodata data
+p2sdLoadSMGFile	asm	sdfSndMakeFilename at 0x001CF7D8, 0x001CF808
 p2sdPlayBGM	c
 p2sdPlayBGMFade	c
 p2sdPlayPcm	c
 p2sdPlaySE	asm	local jump at +0x1C
-p2sdPlaySe3DEx	asm	emits .lit4 data
-p2sdPlaySeDeg	asm	emits .lit4 data
+p2sdPlaySe3DEx	c
+p2sdPlaySeDeg	c
 p2sdResumeBgm	c
 p2sdSendStopCmd	c
 p2sdSetBgmTrack	c
 p2sdSetPcmBuffer	c
 p2sdSetPcmCallback	c
-p2sdSetStandPos	asm	emits .lit4 data
+p2sdSetStandPos	c
 p2sdStopAllBgm	c
 p2sdStopAllSe	c
 p2sdStopBGM	c
@@ -1694,17 +1694,17 @@ pacSync	c
 pbAllocPrimPacket	c
 pbCalcFovDegrees	asm	dds3PadButtonState at 0x003AD38E, 0x003AD390
 pbCheckPreviousRecord	c
-pbDebugPrintPanel	asm	its rodata is in its asm file
-pbDrawRotatedPrim	asm	emits .lit4 data
+pbDebugPrintPanel	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+pbDrawRotatedPrim	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 pbMakePrimPacket	c
 pbMakeSpritePacket	c
-printfloat	asm	emits .rodata data
+printfloat	c
 qsort	asm	size 0x654, retail 0x9F0
 raise	c
-rsetAlpha	asm	its rodata is in its asm file
+rsetAlpha	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 rsetOtOfs	c
-rsetTest	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-rsetTexa	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+rsetTest	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+rsetTexa	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 sceAddDrv	c
 sceCdCallback	c
 sceCdDelayThread	c
@@ -1714,16 +1714,16 @@ sceCdPowerOff	c
 sceCdReadClock	asm	its rodata is in its asm file
 sceCdSearchFile	c
 sceCdStInit	c
-sceCdStPause	asm	emits .rodata data
-sceCdStResume	asm	emits .rodata data
+sceCdStPause	c
+sceCdStResume	c
 sceCdStSeek	c
 sceCdStSeekF	c
 sceCdStStart	c
-sceCdStStat	asm	emits .rodata data
+sceCdStStat	c
 sceCdStStop	c
-sceCdStatus	asm	emits .rodata data
-sceCdSync	asm	emits .rodata data
-sceCdSyncS	asm	emits .rodata data
+sceCdStatus	c
+sceCdSync	c
+sceCdSyncS	c
 sceChdir	c
 sceChstat	c
 sceClose	c
@@ -1764,7 +1764,7 @@ sceGsGetGParam	c
 sceGsGetIMR	c
 sceGsPutDispEnv	c
 sceGsPutIMR	c
-sceGsSetDefLoadImage	asm	emits .rodata data
+sceGsSetDefLoadImage	c
 sceGsSetDefStoreImage	c
 sceIoctl2	c
 sceIpuInit	c
@@ -1782,7 +1782,7 @@ sceMcGetDir	c
 sceMcGetEntSpace	c
 sceMcGetInfo	c
 sceMcGetSlotMax	c
-sceMcInit	asm	emits .rodata data
+sceMcInit	c
 sceMcMkdir	c
 sceMcOpen	c
 sceMcRead	c
@@ -1809,11 +1809,11 @@ scePadInfoAct	c
 scePadInfoComb	c
 scePadInfoMode	c
 scePadInfoPressMode	c
-scePadInit	asm	emits .rodata data
+scePadInit	c
 scePadInit2	c
 scePadPortClose	c
 scePadRead	c
-scePadReqIntToStr	asm	emits .rodata data
+scePadReqIntToStr	c
 scePadSetActAlign	c
 scePadSetActDirect	c
 scePadSetButtonInfo	c
@@ -1821,7 +1821,7 @@ scePadSetMainMode	c
 scePadSetReqState	c
 scePadSetVrefParam	c
 scePadSetWarningLevel	c
-scePadStateIntToStr	asm	emits .rodata data
+scePadStateIntToStr	c
 scePowerOffHandler	c
 scePrintf	c
 sceReadlink	c
@@ -1845,7 +1845,7 @@ sceSifGetOtherData	c
 sceSifGetSreg	c
 sceSifInitIopHeap	c
 sceSifIsAliveIop	c
-sceSifLoadElf	asm	emits .rodata data
+sceSifLoadElf	c
 sceSifLoadElfPart	c
 sceSifLoadFileReset	c
 sceSifLoadIopHeap	c
@@ -1855,7 +1855,7 @@ sceSifLoadStartModule	c
 sceSifLoadStartModuleBuffer	c
 sceSifMBindRpc	c
 sceSifMBindRpcParam	c
-sceSifMCallRpc	asm	emits .rodata data
+sceSifMCallRpc	c
 sceSifMInitRpc	c
 sceSifMUnBindRpc	c
 sceSifQueryBlockSize	c
@@ -1879,7 +1879,7 @@ sceSifSyncIop	c
 sceSifUnloadModule	c
 sceSymlink	c
 sceSync	c
-sceTtyHandler	asm	compile error: `receiveLength' undeclared (first use in this function)
+sceTtyHandler	asm	its rodata is in its asm file
 sceTtyInit	c
 sceTtyRead	c
 sceTtyWrite	c
@@ -1891,7 +1891,7 @@ scrCommand_BLUR	c
 scrCommand_BLUR2_AREA	c
 scrCommand_BLUR2_OFF	c
 scrCommand_BLUR2_ON	c
-scrCommand_BLUR2_PARA	asm	its rodata is in its asm file
+scrCommand_BLUR2_PARA	c
 scrCommand_BLUR2_RGBA	c
 scrCommand_BLUR2_SWAP	c
 scrCommand_DIST_BLUR_AREA	c
@@ -1902,14 +1902,14 @@ scrCommand_DIST_BLUR_RGBA	c
 scrCommand_DIST_BLUR_SWAP	c
 scrCommand_FILTER2_OFF	c
 scrCommand_FILTER2_ON	c
-scrCommand_FILTER2_PARA	asm	its rodata is in its asm file
+scrCommand_FILTER2_PARA	c
 scrCommand_FILTER2_RGBA	c
 scrCommand_FILTER2_SWAP	c
 scrCommand_KEY	asm	dds3PadBitTable at 0x0043EED8, 0x0043EEDA
 scrCommand_MFILTER_AREA	c
 scrCommand_MFILTER_OFF	c
 scrCommand_MFILTER_ON	c
-scrCommand_MFILTER_PARA	asm	its rodata is in its asm file
+scrCommand_MFILTER_PARA	c
 scrCommand_MFILTER_RGBA	c
 scrCommand_MFILTER_SWAP	c
 scrCommand_MUL_BLUR_AREA	c
@@ -1933,14 +1933,14 @@ scrCommand_RND	c
 scrCommand_SCENE_AMBIENT	c
 scrCommand_SCENE_FOG_PARA	c
 scrCommand_SCENE_FOG_RGB	c
-scrCommand_SCENE_LIGHT_DIR	asm	its rodata is in its asm file
+scrCommand_SCENE_LIGHT_DIR	c
 scrCommand_SCENE_LIGHT_RGB	c
 scrCommand_SCR_KILL	c
 scrCommand_SCR_STAT	c
 scrCommand_SCR_TIME	c
 scrCommand_SCR_WAIT	c
 scrCommand_SEL_JMP	c
-scrCommand_SET_FOVY	asm	its rodata is in its asm file
+scrCommand_SET_FOVY	c
 scrCommand_SOFTEN_BIAS	c
 scrCommand_SYNC	c
 scrCommand_WAIT	c
@@ -1972,11 +1972,11 @@ sdf2DMakePrimPacketHeader	c
 sdf2DMakeStdPacket	c
 sdf2DMakeTexPacket	c
 sdf3DInit	c
-sdf3DInitSpecularTex2	asm	emits .lit4 data
+sdf3DInitSpecularTex2	c
 sdf3DLinkInitPacket	c
 sdf3DMakeDirectRefPacket	c
 sdf3DMakeFogPacket	c
-sdf3DMakeLightParallelPacket	asm	emits .lit4 data
+sdf3DMakeLightParallelPacket	c
 sdf3DMakeViewportPacket	c
 sdf3DPrimLinkMat	c
 sdf3DPrimLinkResetTm	c
@@ -1986,13 +1986,13 @@ sdf3DPrimSetTmPacket	c
 sdf3DSetCamera	c
 sdf3DSetDefaultFog	c
 sdf3DSetDefaultLight	c
-sdfAcos	asm	emits .lit4 data
+sdfAcos	c
 sdfAddressResolver	c
 sdfAlarmWakeup	c
 sdfAllocAuto	c
-sdfAsin	asm	emits .lit4 data
-sdfAtan	asm	emits .lit4 data
-sdfAtan2	asm	emits .lit4 data
+sdfAsin	c
+sdfAtan	c
+sdfAtan2	c
 sdfBcdToDecimal	c
 sdfBillBoardGetPacketSize	c
 sdfBillBoardMake1	c
@@ -2003,10 +2003,10 @@ sdfBillBoardVcMake1	c
 sdfBillBoardVcMakeN	c
 sdfCdImageCheckExist	c
 sdfCdImageClose	c
-sdfCdImageGetCurrFileSize	asm	emits .rodata data
+sdfCdImageGetCurrFileSize	c
 sdfCdImageGetFileSize	c
-sdfCdImageInit	asm	emits .rodata data
-sdfCdImageLoadDir	asm	emits .rodata data
+sdfCdImageInit	c
+sdfCdImageLoadDir	c
 sdfCdImageRead	c
 sdfCdImageSearchFile	asm	1 words differ, first at +0x48
 sdfCdStStart	c
@@ -2020,16 +2020,16 @@ sdfChipFreeDelayedDirect	c
 sdfChipFreeDirect	c
 sdfChipGetInfo	c
 sdfChipInit	c
-sdfClipAngleValuePI	asm	emits .lit4 data
+sdfClipAngleValuePI	c
 sdfCoreDrawInit	c
 sdfCoreDrawScanOneSkinNodes	c
 sdfCoreDrawSetFog	c
 sdfCoreDrawSetLight	c
 sdfCoreDrawSetZBias	c
-sdfCos	asm	emits .lit4 data
+sdfCos	c
 sdfCreateSema	c
 sdfCreateThreadWithStack	c
-sdfDecomp	asm	emits .rodata data
+sdfDecomp	c
 sdfDecompInit	c
 sdfDelayThread	c
 sdfDelayedResrcCheck	c
@@ -2039,7 +2039,7 @@ sdfDelayedResrcEntry	c
 sdfDelayedResrcInitCB	c
 sdfDelayedResrcRelease	c
 sdfDeliverDrawStart	c
-sdfDev9LoadModule	asm	emits .rodata data
+sdfDev9LoadModule	c
 sdfDevConsAttribute	c
 sdfDevConsClear	c
 sdfDevConsClearInside	c
@@ -2075,12 +2075,12 @@ sdfDrawTagLink	c
 sdfDrawTagLinkCall	c
 sdfDrawTagLinkRefGif	c
 sdfDrawThIntHandler	c
-sdfDumpChipMemory	asm	emits .rodata data
-sdfDumpDmaChain	asm	emits .rodata data
+sdfDumpChipMemory	asm	.rodata base 0x00464EF0, 0x00464F88
+sdfDumpDmaChain	asm	.rodata base 0x00464EF0, 0x00464F88
 sdfDumpGsMemory	c
 sdfDumpGsMemory2	c
 sdfDumpHexLine	c
-sdfDumpMemory	asm	emits .rodata data
+sdfDumpMemory	asm	.rodata base 0x00464EF0, 0x00464F88
 sdfFileCallback	c
 sdfFileCheckExist	c
 sdfFileChkCdFile	c
@@ -2115,11 +2115,11 @@ sdfFileLength	c
 sdfFileMakeFilename	c
 sdfFileOpen	c
 sdfFileRead	c
-sdfFileRpcCallback	asm	emits .rodata data
+sdfFileRpcCallback	c
 sdfFileRpcContinueRead	c
-sdfFileRpcHandleCmd	asm	emits .rodata data
+sdfFileRpcHandleCmd	asm	sdfSndMakeFilename at 0x001CF7D8, 0x001CF808
 sdfFileRpcHandler	c
-sdfFileRpcReadCallback	asm	emits .rodata data
+sdfFileRpcReadCallback	asm	.rodata differs at 0x00465670
 sdfFileSeek	c
 sdfFileSetCdFilename	c
 sdfFileSetHddFilename	c
@@ -2130,12 +2130,12 @@ sdfFreeAutoDelayed	c
 sdfGetCdClock	c
 sdfGetRunTimeCount	c
 sdfGetRunTimeCountBase	c
-sdfGetTexelBitCount	asm	emits .rodata data
+sdfGetTexelBitCount	c
 sdfGrAddExPacket	c
 sdfGrAllocPacketBuff	c
 sdfGrCapture	c
 sdfGrDrawFrame	c
-sdfGrFlushOtChain	asm	emits .rodata data
+sdfGrFlushOtChain	asm	.rodata base 0x00464EF0, 0x00464F88
 sdfGrFramePacketPredraw	c
 sdfGrFreeFrameSet	c
 sdfGrGetPacketBuffRemain	c
@@ -2173,7 +2173,7 @@ sdfGrSortOtFixup	c
 sdfGrSortOtReg	c
 sdfGrSortOtSetup	c
 sdfGrSortOtTraverse	c
-sdfGsAllocFrameBuff	asm	emits .rodata data
+sdfGsAllocFrameBuff	c
 sdfGsMemAllocFromHead	c
 sdfGsMemAllocFromTail	c
 sdfGsMemAllocRect	c
@@ -2182,9 +2182,9 @@ sdfGsMemCheckLinkConsistence	c
 sdfGsMemCheckMerge	c
 sdfGsMemFree	c
 sdfGsMemFreeDelayed	c
-sdfGsMemGetBitCount	asm	emits .rodata data
+sdfGsMemGetBitCount	c
 sdfGsMemInit	c
-sdfImageDataSize	asm	emits .rodata data
+sdfImageDataSize	c
 sdfImageSetChainReleaseMem	c
 sdfImageSetChainTag	c
 sdfImageSetClearCb	c
@@ -2303,7 +2303,7 @@ sdfModelDrawEnvLinkOt	c
 sdfModelEvalNode	c
 sdfModelEvalTm	c
 sdfModelEvalTm2	c
-sdfModelGetDrawPacketSize	asm	emits .rodata data
+sdfModelGetDrawPacketSize	c
 sdfModelGetMarkPosCount	c
 sdfModelGetNodeIndexByName	c
 sdfModelInitSystem	c
@@ -2337,6 +2337,7 @@ sdfModelSetNormalDrawPacket	c
 sdfModelSetOtCallbacks	c
 sdfModelSetTermPacket	c
 sdfModelSetTmRefPacket	c
+sdfModelTempPacketLinkOt	c
 sdfMotCLBK_Destroy	c
 sdfMotCLBK_SetCut	c
 sdfMotCLBK_matAmbientBlendSeek	c
@@ -2352,6 +2353,7 @@ sdfMotCLBK_matMultiDiffuseBlendSeek	c
 sdfMotCLBK_matMultiDiffuseInitBlend	c
 sdfMotCLBK_matMultiDiffuseSeek	c
 sdfMotCLBK_matMultiUvw2BlendSeek	c
+sdfMotCLBK_matMultiUvw2InitBlend	c
 sdfMotCLBK_matMultiUvw2Seek	c
 sdfMotCLBK_matMultiUvwBlendSeek	c
 sdfMotCLBK_matMultiUvwInitBlend	c
@@ -2363,6 +2365,7 @@ sdfMotCLBK_matSpecularBlendSeek	c
 sdfMotCLBK_matSpecularInitBlend	c
 sdfMotCLBK_matSpecularSeek	c
 sdfMotCLBK_matUvw2BlendSeek	c
+sdfMotCLBK_matUvw2InitBlend	c
 sdfMotCLBK_matUvw2Seek	c
 sdfMotCLBK_matUvwBlendSeek	c
 sdfMotCLBK_matUvwInitBlend	c
@@ -2381,7 +2384,7 @@ sdfMotCLBK_modelScaleInitBlend	c
 sdfMotCLBK_modelVisibleBlendSeek	c
 sdfMotCLBK_modelVisibleInitBlend	c
 sdfMotCLBK_modelVisibleSeek	c
-sdfMotCLBK_morphBlendSeek	asm	emits .lit4 data
+sdfMotCLBK_morphBlendSeek	c
 sdfMotCLBK_morphInitBlend	c
 sdfMotCLBK_morphSeek	c
 sdfMotGenMatAmbient	c
@@ -2416,7 +2419,7 @@ sdfMotionChange	c
 sdfMotionChangeBlend	c
 sdfMotionCtrlrFree	c
 sdfMotionCtrlrNew	c
-sdfMotionNext	asm	emits .rodata data
+sdfMotionNext	c
 sdfMotionNodeBaseInit	c
 sdfMotionNodeFree	c
 sdfMotionNodeNew	c
@@ -2459,7 +2462,7 @@ sdfPacTmxDecompDecoderFunc	c
 sdfPacTmxStayDecoderFunc	c
 sdfPacUseSrc	c
 sdfPadChangeMode	c
-sdfPadControl	asm	emits .rodata data
+sdfPadControl	c
 sdfPadManager	c
 sdfPadSetAct	c
 sdfPadSetAct0	c
@@ -2526,7 +2529,7 @@ sdfRandomizeByTime	c
 sdfSetLoadImage	c
 sdfSetMainThreadPriority	c
 sdfSetStoreImage	c
-sdfSin	asm	emits .lit4 data
+sdfSin	c
 sdfSndCmdIFThread	c
 sdfSndLoadBDFile	c
 sdfSndLoadHDFile	c
@@ -2553,7 +2556,7 @@ sdfTexGetPacketCtx2	c
 sdfTexGetPacketCtx2Length	c
 sdfTexGetPacketLength	c
 sdfTexGetPixelAddr	c
-sdfTexGetPixelBitCount	asm	emits .rodata data
+sdfTexGetPixelBitCount	c
 sdfTexGetTex0Reg	c
 sdfTexGetTex1Reg	c
 sdfTexGetTexelBitCount	c

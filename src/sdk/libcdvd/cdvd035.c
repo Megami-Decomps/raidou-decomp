@@ -184,7 +184,7 @@ extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
 
 extern s32 cdvdNcmdLastCommand __attribute__((section(".data")));
 
-SYMBOL_AT(s32, cdvdNcmdInit, cdvdNcmdState, 8);
+extern s32 cdvdNcmdInit;
 
 s32 _sceCd_ncmd_prechk(s32 command);
 
@@ -208,7 +208,7 @@ extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
 
 extern s32 cdvdScmdLastCommand __attribute__((section(".data")));
 
-SYMBOL_AT(s32, cdvdScmdInit, cdvdScmdState, 12);
+extern s32 cdvdScmdInit;
 
 s32 _sceCd_scmd_prechk(s32 command);
 

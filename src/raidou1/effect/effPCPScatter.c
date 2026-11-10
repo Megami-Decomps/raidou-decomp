@@ -730,7 +730,7 @@ extern u32 effPCPScatterTexcoords[];
 
 extern u32 effPCPScatterParams[];
 
-extern u8 D_0031F3E0[];
+extern u8 effScatterTriangleIndices[];
 
 extern void *memset(void *a, s32 b, size_t c);
 
@@ -748,10 +748,10 @@ void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
  * then replace vf28-vf31 with the four transformed vectors. */
 void MultMatrixNoArg(void);
 
-void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
+extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
                               s32 (*aAllocator)(s32));
 
-void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
+extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
                            s32 (*aAllocator)(s32));
 
 struct sdfMat_t *sdfMatNew(void);
@@ -1085,7 +1085,27 @@ void effPCPHamaCardSpiralDelete(effPCPHamaCardSpiral_tag *hData)
     sdfMemFreeDirect(hData->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralPartInit);
+void effPCPHamaCardSpiralPartInit(effPCPHamaCardSpiral_tag *pHCardSpiral, u32 number) {
+    u32 segments = pHCardSpiral->param.simu_num;
+    effPCPHamaCardSpiralPart_tag *particle = &pHCardSpiral->pPart[number];
+    f32 angleStep;
+    f32 jitter;
+
+    if (segments == 0) {
+        segments = 1;
+    }
+    angleStep = EFF_SCATTER_FULL_TURN / segments;
+    particle->radian = angleStep * (number % segments) + angleStep * EFF_SCATTER_HALF_SEGMENT * dds3GetRandFloatA(dds3EffectBase);
+    jitter = pHCardSpiral->param.radius_s_r;
+    particle->radius = pHCardSpiral->param.radius_s * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter));
+    particle->height = 0.0f;
+    jitter = pHCardSpiral->param.radius_e_r;
+    particle->radius_s = (pHCardSpiral->param.radius_e * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter)) - particle->radius) / pHCardSpiral->param.life;
+    jitter = pHCardSpiral->param.up_r;
+    particle->up_s = pHCardSpiral->param.up_s * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter));
+    particle->frame = 0;
+    particle->roll_s = pHCardSpiral->param.roll_s;
+}
 
 void effPCPHamaCardSpiralDraw(effPCPHamaCardSpiral_tag *hData) {
     sdfVector4_t next;
@@ -1285,7 +1305,29 @@ void effPCPHamaCardSphereDelete(effPCPHamaCardSphere_tag *hData)
     sdfMemFreeDirect(hData->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpherePartInit);
+void effPCPHamaCardSpherePartInit(effPCPHamaCardSphere_tag *pHCardSphere, s32 number)
+{
+    effPCPHamaCardSpherePart_tag *sprite = &pHCardSphere->pPart[number];
+    sdfVector4_t direction;
+    f32 jitter;
+
+    sprite->radian = dds3GetRandFloatA(dds3EffectBase) * (EFF_SCATTER_HALF_TURN * 2.0f);
+    jitter = pHCardSphere->param.radius_s_r;
+    sprite->radius = pHCardSphere->param.radius_s * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter));
+    jitter = pHCardSphere->param.radius_e_r;
+    sprite->radius_s = (pHCardSphere->param.radius_e * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter)) - sprite->radius) / (f32)pHCardSphere->param.life;
+    sprite->roll_s = pHCardSphere->param.roll_s;
+    direction.x = (dds3GetRandFloatA(dds3EffectBase) - EFF_SCATTER_RANDOM_MIDPOINT) * EFF_SCATTER_RANDOM_SPAN;
+    direction.y = (dds3GetRandFloatA(dds3EffectBase) - EFF_SCATTER_RANDOM_MIDPOINT) * EFF_SCATTER_RANDOM_SPAN;
+    direction.z = (dds3GetRandFloatA(dds3EffectBase) - EFF_SCATTER_RANDOM_MIDPOINT) * EFF_SCATTER_RANDOM_SPAN;
+    SDF_VU0_LOADVECTOR(&direction);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(&direction);
+    sprite->frame = 0;
+    sprite->axis[0] = direction.x;
+    sprite->axis[1] = direction.y;
+    sprite->axis[2] = direction.z;
+}
 
 void effPCPHamaCardSphereDraw(effPCPHamaCardSphere_tag *hData) {
     sdfVector4_t axis;
@@ -1486,7 +1528,31 @@ void effPCPHamaCardScatterDelete(effPCPHamaCardScatter_tag *hData)
     sdfMemFreeDirect(hData->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterPartInit);
+void effPCPHamaCardScatterPartInit(effPCPHamaCardScatter_tag *pHCardScatter, s32 number)
+{
+    f32 rightAngle = EFF_SCATTER_RIGHT_ANGLE_DEGREES * EFF_SCATTER_DEGREES_TO_RADIANS;
+    f32 diagonalAngle = EFF_SCATTER_DIAGONAL_ANGLE_DEGREES * EFF_SCATTER_DEGREES_TO_RADIANS;
+    f32 tiltStep = EFF_SCATTER_TILT_STEP_DEGREES * EFF_SCATTER_DEGREES_TO_RADIANS;
+    effPCPHamaCardScatterPart_tag *particle = &pHCardScatter->pPart[number];
+    sdfVector4_t direction;
+
+    particle->height = 0.0f;
+    particle->height_s = pHCardScatter->param.heightStep;
+    particle->radian_w = rightAngle;
+    particle->radian = diagonalAngle;
+    particle->radian_s = tiltStep;
+    particle->roll = dds3GetRandFloatA(dds3EffectBase) * EFF_SCATTER_FULL_TURN;
+    particle->radius = EFF_SCATTER_INITIAL_RIBBON_RADIUS;
+
+    direction.x = (dds3GetRandFloatA(dds3EffectBase) - EFF_SCATTER_RANDOM_MIDPOINT) * EFF_SCATTER_RANDOM_SPAN;
+    direction.y = 0.0f;
+    direction.z = (dds3GetRandFloatA(dds3EffectBase) - EFF_SCATTER_RANDOM_MIDPOINT) * EFF_SCATTER_RANDOM_SPAN;
+    VU0_NORMALIZE_PACKED_VECTOR(direction);
+
+    particle->unk20 = direction.x;
+    particle->frame = 0;
+    particle->unk24 = direction.z;
+}
 
 /* vu0 routine: each particle sweeps three ribbon quads around its tilt angle,
  * and the tilt reverses once it passes half its stored span. */
@@ -2376,7 +2442,7 @@ void dds3WhirlwindPolyListDraw(dds3WhirlwindPolyList_tag *object) {
     }
     sdf3DPrimLinkMat(packet, (sdfMat_t *)object->asset, 0);
     count = (s32)object->particleCount;
-    effDebugPoly.parameters = (const u32 *)D_0031F3E0;
+    effDebugPoly.parameters = (const u32 *)effScatterTriangleIndices;
     for (particleIndex = 0; particleIndex < count; particleIndex++) {
         draw = &effDebugPoly;
         remaining = object->vectorsPerParticle;

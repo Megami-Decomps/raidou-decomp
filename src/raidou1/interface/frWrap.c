@@ -189,11 +189,13 @@ extern s8 dds3PadBitTable[];
 
 extern frFontHandle_t *frTestFontHandle;
 
-extern char frTestFontText[];
+extern const char frTestFontText[];
 
 extern void frSetDrawSpeed(frFontHandle_t *request, s32 speed);
 
 void fr_1CAC50(void);
+
+extern const char frTestFontText[24];
 /* End of declarations from src/smt3/interface/frWrap.c */
 
 /* Staff callers supply a trailing request; this wrapper creates a fresh chain. */
@@ -220,7 +222,10 @@ frFontHandle_t *frwGetStaffFontFRQ(u32 x, u32 y, s32 depth, s32 alt, s32 measure
     return glyph;
 }
 
-INCLUDE_ASM(const s32, "interface/frWrap", frwLoadStaffFont);
+void frwLoadStaffFont(void) {
+    frLoadFontData(4, "/font/staff1.fnt");
+    frLoadFontData(5, "/font/staff2.fnt");
+}
 
 void frwFreeStaffFont(void) {
     frDelFontStyle(4);

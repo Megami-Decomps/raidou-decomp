@@ -42,9 +42,9 @@ extern sdfVector4_t aViewTarget;
 
 extern sdfVector4_t aViewDown;
 
-extern sdfVector4Unaligned_t dds3CameraObjectBasicInitialUp;
+extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialUp;
 
-extern sdfVector4Unaligned_t dds3CameraObjectBasicInitialEye;
+extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialEye;
 
 extern dds3Basic_t *dds3AddSceneBasicData(s32 type);
 
@@ -102,6 +102,10 @@ void dds3CameraObjectBasicGetTgtCam(dds3Basic_t *pBasic, sdfVector4_t *tgtpos, s
 u32 dds3CameraObjectBasicGetMode(dds3Basic_t *pBasic);
 
 void func_00112A18(dds3Basic_t *basic, u32 mode);
+
+extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialUp;
+
+extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialEye;
 /* End of declarations from src/smt3/basic/dds3CameraObjectBasic.c */
 
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011C900);
@@ -152,9 +156,44 @@ dds3Basic_t *dds3AllocCameraObjectBasic(u32 serialID)
     return basic;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3AddCameraObjectBasicTypeFree);
+dds3Basic_t *dds3AddCameraObjectBasicTypeFree(u32 serialID, const sdfVector4_t *pos,
+                                           const sdfVector4_t *rot)
+{
+    sdfVector4_t initialUp;
+    sdfVector4_t initialEye;
+    dds3Basic_t *basic;
+    dds3CameraObjectBasicWorkData_t *work;
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3AddCameraObjectBasicTypeLookAt);
+    initialUp = dds3CameraObjectBasicInitialUp;
+    initialEye = dds3CameraObjectBasicInitialEye;
+    basic = dds3AllocCameraObjectBasic(serialID);
+    work = basic->workdata;
+    work->mode = 1;
+    work->fovy = 0.6283185f;
+    dds3SetRotPoseSet(basic, rot);
+    dds3SetPosPoseSet(basic, pos);
+    dds3SetRadiusPoseSet(basic->poseset);
+    SDF_VU0_COPYVECTOR(&work->vertical, &initialUp);
+    SDF_VU0_COPYVECTOR(&work->eyeVector, &initialEye);
+    MakeCamera(basic);
+    return basic;
+}
+
+dds3Basic_t *dds3AddCameraObjectBasicTypeLookAt(u32 serialID, const sdfVector4_t *position,
+                                             const sdfVector4_t *target, const sdfVector4_t *up)
+{
+    dds3Basic_t *basic = dds3AllocCameraObjectBasic(serialID);
+    dds3CameraObjectBasicWorkData_t *work = basic->workdata;
+
+    work->fovy = 0.6283185f;
+    work->mode = 0;
+    dds3SetPosPoseSet(basic, position);
+    dds3SetRadiusPoseSet(basic->poseset);
+    SDF_VU0_COPYVECTOR(&work->vertical, up);
+    SDF_VU0_COPYVECTOR(&work->targetPos, target);
+    MakeCamera(basic);
+    return basic;
+}
 
 dds3Basic_t *dds3AddCameraObjectBasic(u32 serialID, f32 fovy, const sdfVector4_t *position,
                                      const sdfVector4_t *eye, const sdfVector4_t *up, s32 mode)

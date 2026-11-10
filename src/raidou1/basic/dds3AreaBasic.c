@@ -12,9 +12,9 @@ typedef struct dds3AreaBasicWorkData_t
     dds3BasicArrayHandle_t *items[2];
 } dds3AreaBasicWorkData_t;
 
-extern char dds3AreaBasicMsgNoList[];
+extern const char dds3AreaBasicMsgNoList[];
 
-extern char dds3AreaBasicMsgNoArea[];
+extern const char dds3AreaBasicMsgNoArea[];
 
 #include "sdk_libc.h"
 
@@ -86,6 +86,10 @@ dds3BasicArrayHandle_t *dds3AreaBasicReleaseItem(dds3Basic_t *pAreaBasic, u32 pI
 dds3BasicArrayHandle_t *dds3AreaBasicArrangeGetItemArray(dds3Basic_t *area, u32 itemType, dds3BasicProc_t check);
 
 dds3Basic_t *dds3AreaBasicGetFastArea(void);
+
+extern const char dds3AreaBasicMsgNoList[40];
+
+extern const char dds3AreaBasicMsgNoArea[56];
 /* End of declarations from src/smt3/basic/dds3AreaBasic.c */
 
 s32 AreaBasicConstructor(dds3Basic_t *pBasic)

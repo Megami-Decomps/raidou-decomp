@@ -35,16 +35,16 @@ void sdfBillBoardMakeTMPacket(u8 *aPacket, const f32 *aTM);
 void sdfBillBoardMake1(u8 *aPacket, const f32 *aCenter, u32 aColor, const void *aUVList,
                                    const f32 *aXYOffsetList);
 
-u32 *sdfBillBoardMakeN(const u128 *aCenter, const void *aColor, const void *aUVList, const void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
+extern u32 *sdfBillBoardMakeN(const u128 *aCenter, const void *aColor, const void *aUVList, const void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
 
 void sdfMultiBillBoardMake1(u8 *aPacket, const f32 *aCenter, u32 aColor0, u32 aColor1,
                    const void *aUVList0, const void *aUVList1, const f32 *aXYOffsetList);
 
 u32 sdfMultiBillBoardGetPacketSize(s32 aNum);
 
-u32 *sdfMultiBillBoardMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
+extern u32 *sdfMultiBillBoardMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
 
-addr_t sdfBillBoardVcMakeN(const u128 *aCenter, const void *aColor,
+extern addr_t sdfBillBoardVcMakeN(const u128 *aCenter, const void *aColor,
                   const void *aUVList, const void *aXYOffsetList,
                   s32 aNum, void *(*aAllocator)(s32));
 
@@ -53,7 +53,7 @@ void sdfMultiBillBoardVcMake1(u8 *aPacket, const f32 *aCenter, const void *aColo
 
 u32 sdfMultiBillBoardVcGetPacketSize(s32 aNum);
 
-addr_t sdfMultiBillBoardVcMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
+extern addr_t sdfMultiBillBoardVcMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
 
 void sdfBillBoardMakeTMPacket(u8 *aPacket, const f32 *aTM);
 

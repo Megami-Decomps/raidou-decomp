@@ -274,6 +274,44 @@ extern void cmpSetCursorFlag(void *cur, saddr_t flag);
 void cmbEnableMenuEntry2(void);
 
 void cmbEnableMenuEntry6(void);
+
+extern const char D_0053C6A0[32];
+
+extern const char D_0053C6C0[40];
+
+extern const char D_0053C6E8[40];
+
+extern const char D_0053C710[40];
+
+extern const char D_0053C738[40];
+
+extern const char D_0053C760[40];
+
+extern const char D_0053C788[40];
+
+extern const char D_0053C7B0[24];
+
+extern const char D_0053C7C8[16];
+
+extern const char D_0053C7D8[16];
+
+extern const char D_0053C7E8[24];
+
+extern const char D_0053C800[24];
+
+extern const char D_0053C818[16];
+
+extern const char D_0053C828[24];
+
+extern const char D_0053C840[16];
+
+extern s32 evtMotionSeWork;
+
+extern char evtLoadStartMessage[8];
+
+extern char evtLoadDoneMessage[8];
+
+extern evtCmbWork_t *CMB_GBWK;
 /* End of declarations from src/smt3/event/evtEventPack.c */
 
 dds3ProcessID_t *evtSearchEventPack(u32 eventno) {
@@ -330,7 +368,51 @@ INCLUDE_ASM(const s32, "event/evtEventPack", func_001DFF00);
 
 INCLUDE_ASM(const s32, "event/evtEventPack", func_001DFF88);
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtInitMotionSeProcess);
+/* Decode one retained unit payload and return its new viewer-object key. */
+s32 evtInitMotionSeProcess(s32 eventId, s32 resourceId) {
+    evtPackProcessData_t *packState;
+    evtPackEntry_t *entry;
+    s32 packEntryIndex;
+    s32 entrySize;
+    u8 *modelPayload;
+    s32 viewerObjectKey;
+
+    packState = evtGetPackProcessData(eventId);
+    packEntryIndex = 0;
+    if (packState->header->entryCount > 0) {
+        entry = packState->entries;
+        do {
+            if (entry->secondaryResourceId == resourceId) {
+                switch (entry->kind) {
+                case 5:
+                    entrySize = entry->dataSize;
+                    modelPayload = packState->payload + entry->dataOffset;
+                    printf("unit decode rid:%d, size:%d\n", resourceId, entrySize);
+                    switch (eventId) {
+                    case 0x2A4:
+                    case 0x2AC:
+                    case 0x2AE:
+                    case 0x2B0:
+                        mdlPackDecode(3, evtMotionSeWork, 0x101, modelPayload, entrySize);
+                        break;
+                    default:
+                        mdlPackDecode(3, evtMotionSeWork, 0x103, modelPayload, entrySize);
+                        break;
+                    }
+                    viewerObjectKey = evtSetRegistUnit(3, evtMotionSeWork);
+                    evtMotionSeWork++;
+                    if (evtMotionSeWork >= 0x7D0) {
+                        evtMotionSeWork = 0x3E8;
+                    }
+                    printf("BE regist unit %d < %d >\n", evtMotionSeWork, entrySize);
+                    return viewerObjectKey;
+                }
+            }
+            entry++;
+        } while (++packEntryIndex < packState->header->entryCount);
+    }
+    return -1;
+}
 
 /* Start a field BE from the task's resource table when all four payloads exist. */
 s32 evtRegistBEField(s32 eventno, s32 rid) {
@@ -494,6 +576,7 @@ void evtKillEventPack(s32 eventno) {
 }
 
 INCLUDE_ASM(const s32, "event/evtEventPack", func_001E0930);
+
 INCLUDE_SDATA(const s32, "event/evtEventPack", D_004DFF28);
 
 INCLUDE_SDATA(const s32, "event/evtEventPack", D_004DFF30);

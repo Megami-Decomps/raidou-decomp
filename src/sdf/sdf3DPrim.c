@@ -174,15 +174,15 @@ void *sdfGrAllocPacketBuff(s32 aSize);
 
 extern void *memcpy(void *, const void *, size_t);
 
-void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag,
+extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag,
                              s32 (*aAllocator)(s32));
 
 void sdf3DPrimSetTmPacket(sdf3DTmPacketData_t *aPacket);
 
-void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
+extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
                            s32 (*aAllocator)(s32));
 
-void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
+extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
                               s32 (*aAllocator)(s32));
 
 u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);

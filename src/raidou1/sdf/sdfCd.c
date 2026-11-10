@@ -143,15 +143,21 @@ extern s32 sceCdDiskReady(s32 mode);
 
 extern s32 sceCdGetDiskType(void);
 
-extern char sdfCdMsgWaitTrayClose[];
+extern const char sdfCdMsgWaitTrayClose[];
 
-extern char sdfCdMsgTrayClose[];
+extern const char sdfCdMsgTrayClose[];
 
-extern char sdfCdMsgReadRestart[];
+extern const char sdfCdMsgReadRestart[];
 
 void sdfCdWaitTrayClose(void);
 
 void sdfCdStStart(s32 lsn);
+
+extern const char sdfCdMsgWaitTrayClose[18];
+
+extern const char sdfCdMsgTrayClose[16];
+
+extern const char sdfCdMsgReadRestart[18];
 
 void sdfCdStRead(s32 sectors, void *buffer);
 
@@ -191,6 +197,10 @@ void sdfCdImageLoadDir(const char *dirFile);
 void sdfCdImageInit(const char *imageFile, const char *dirFile);
 
 s32 sdfCdInit(void);
+
+extern char sdfCdDirectPrefix[8];
+
+extern s32 sdfCdTrayMode;
 /* End of declarations from src/smt3/sdf/sdfCd.c */
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036BC48);
@@ -327,15 +337,48 @@ s32 sdfCdImageGetFileSize(const char *fname)
     return entry->size_;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageGetCurrFileSize);
+s32 sdfCdImageGetCurrFileSize(void)
+{
+    sdfCdImageDirEntry_t *file = sdfCdImageCurrFile;
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageLoadDir);
+    if (file == NULL) {
+        FatalError("file didn't open.");
+    }
+    return file->size_;
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageInit);
+/* Read a whole named file into the loader's allocated EE buffer, then close it. */
+void sdfCdImageLoadDir(const char *dirFile) {
+    s32 fileHandle = sceOpen(dirFile, 1);
+    s32 fileBytes;
+    void *buffer;
+    if (fileHandle < 0) {
+        FatalError("%s couldn't open.", dirFile);
+    }
+    fileBytes = sceLseek(fileHandle, 0, 2);
+    sceLseek(fileHandle, 0, 0);
+    buffer = malloc(fileBytes);
+    sdfCdImageDirData = buffer;
+    sceRead(fileHandle, EE_ADDR_S(buffer), fileBytes);
+    sceClose(fileHandle);
+}
+
+/* Record the disc search path, preload a separate file, and initialize an aligned IOP buffer. */
+void sdfCdImageInit(const char *imageFile, const char *dirFile) {
+    u32 discFileRecord[12];
+    s32 iopHeapAddress;
+    dds3ImgPath = imageFile;
+    sdfCdImageLoadDir(dirFile);
+    if (sceCdSearchFile((sceCdlFILE *)discFileRecord, (const char *)imageFile) == 0) {
+        FatalError("%s couldn't open.", imageFile);
+    }
+    dds3ImgLsn = discFileRecord[0];
+    iopHeapAddress = sceSifAllocIopHeap(0x28010);
+    sdfCdImageFileName = iopHeapAddress;
+    sceCdStInit(0x50, 5, (iopHeapAddress + 15) & -16);
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036C748);
-
-INCLUDE_RODATA(const s32, "sdf/sdfCd", D_00464A58);
 
 INCLUDE_SDATA(const s32, "sdf/sdfCd", D_0046F368);
 

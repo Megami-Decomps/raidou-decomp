@@ -38,7 +38,7 @@ typedef struct
 
 extern s8 dds3PadBitTable[];
 
-extern char scrRunNoProcessMsg[];
+extern const char scrRunNoProcessMsg[];
 
 #include "sdk_libc.h"
 
@@ -224,6 +224,8 @@ s32 scrCommand_QUAKE_OFF(void);
 
 s32 scrCommand_SCENE_LIGHT_RGB(void);
 
+extern const char scrRunNoProcessMsg[68];
+
 s32 scrCommand_SCENE_LIGHT_DIR(void);
 
 s32 scrCommand_SCENE_AMBIENT(void);
@@ -407,7 +409,19 @@ s32 scrCommand_PAD_ACT(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SET_FOVY);
+s32 scrCommand_SET_FOVY(void)
+{
+    f32 fovy;
+
+    fovy = scrGetFloatPara(0) * 0.017453293f;
+    if (fovy <= 5.0f || fovy >= 180.0f)
+    {
+        datDebugPrintf("WARNING: SET_FOVY over = %f\n", fovy);
+        return 1;
+    }
+    dds3SetScreenFovy(fovy);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_001145E8);
 
@@ -492,7 +506,22 @@ s32 scrCommand_SCENE_LIGHT_RGB(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCENE_LIGHT_DIR);
+s32 scrCommand_SCENE_LIGHT_DIR(void)
+{
+    scrVecW_t dir;
+
+    dir.x = scrGetFloatPara(1);
+    dir.y = scrGetFloatPara(2);
+    dir.z = scrGetFloatPara(3);
+    dir.w = 0;
+    if (scrFabsf(dir.x) <= 0.01f && scrFabsf(dir.y) <= 0.01f && scrFabsf(dir.z) <= 0.01f)
+    {
+        datDebugPrintf("WARNING: SCENE_LIGHT_DIR length zero\n");
+        return 1;
+    }
+    dds3SetLightDir(scrGetIntPara(0), 0, &dir);
+    return 1;
+}
 
 s32 scrCommand_SCENE_AMBIENT(void)
 {
@@ -792,7 +821,35 @@ s32 scrCommand_RIP_BLUR_OFF(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BLUR2_PARA);
+s32 scrCommand_BLUR2_PARA(void)
+{
+    s32 blendControl;
+    s32 blendMode;
+    f32 rotation;
+    f32 scale;
+
+    blendMode = scrGetIntPara(2);
+    switch (blendMode)
+    {
+    case 0:
+        blendControl = 0x44;
+        break;
+    case 1:
+        blendControl = 0x48;
+        break;
+    case 2:
+        blendControl = 0x42;
+        break;
+    default:
+        datDebugPrintf("error: BLUR2_PARA blend\n");
+        blendControl = 0x44;
+        break;
+    }
+    rotation = scrGetFloatPara(0);
+    scale = scrGetFloatPara(1);
+    dds3SetBlur2Para(rotation, scale, blendControl);
+    return 1;
+}
 
 s32 scrCommand_BLUR2_RGBA(void)
 {
@@ -837,7 +894,34 @@ s32 scrCommand_BLUR2_OFF(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FILTER2_PARA);
+s32 scrCommand_FILTER2_PARA(void)
+{
+    s32 blendMode;
+    s32 blendControl;
+
+    blendMode = scrGetIntPara(0);
+    switch (blendMode)
+    {
+    case 1:
+        blendControl = 0x48;
+        break;
+    case 0:
+        blendControl = 0x44;
+        break;
+    case 2:
+        blendControl = 0x42;
+        break;
+    case 3:
+        blendControl = 6;
+        break;
+    default:
+        datDebugPrintf("error: FILTER2_PARA blend\n");
+        blendControl = 0x44;
+        break;
+    }
+    dds3SetFilter2Para(blendControl);
+    return 1;
+}
 
 s32 scrCommand_FILTER2_RGBA(void)
 {
@@ -873,7 +957,34 @@ s32 scrCommand_FILTER2_OFF(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MFILTER_PARA);
+s32 scrCommand_MFILTER_PARA(void)
+{
+    s32 blendMode;
+    s32 blendControl;
+
+    blendMode = scrGetIntPara(0);
+    switch (blendMode)
+    {
+    case 1:
+        blendControl = 0x48;
+        break;
+    case 0:
+        blendControl = 0x44;
+        break;
+    case 2:
+        blendControl = 0x42;
+        break;
+    case 3:
+        blendControl = 6;
+        break;
+    default:
+        datDebugPrintf("error: MFILTER_PARA blend\n");
+        blendControl = 0x44;
+        break;
+    }
+    dds3SetMFilterPara(blendControl);
+    return 1;
+}
 
 s32 scrCommand_MFILTER_RGBA(void)
 {

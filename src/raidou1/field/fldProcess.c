@@ -23,7 +23,7 @@ extern u32 dds3GetKernelCount(void);
 
 extern s32 fldEncountCount;
 
-extern u32 fldEncountTimer;
+extern u32 fldEncountTimer[2];
 
 extern char dds3DebugLabelB[], dds3DebugLabelG[], dds3DebugLabelR[], dds3DebugFmtInt3[], dds3DebugFmtFloat3[];
 
@@ -110,7 +110,9 @@ extern s8 fldDoorExitMode[];
 
 extern char pointResName[];
 
-extern char fldProcSequenceName[], fldProcDrawName[];
+extern const char fldProcDrawName[];
+
+extern char fldProcSequenceName[];
 
 extern s32 fldProcShutDownFlg;
 
@@ -138,7 +140,7 @@ extern dds3Basic_t *fldAnaBasic;
 
 extern effBlurScatterWork_t *hDistortionBlur;
 
-extern char fldProcDrawName[];
+extern const char fldProcDrawName[];
 
 extern s32 gfldPlayerSize;
 
@@ -256,7 +258,7 @@ extern dds3FontReqFunc_t dds3FontReqBoxTable;
 
 extern u8 dds3PadButtonState[];
 
-extern char fldKiretaLabel[];
+extern const char fldKiretaLabel[];
 
 extern fldSequenceController_t fldAutoMapSeqFlags;
 
@@ -340,6 +342,11 @@ extern void fldProcShutDown(void);
 void InitOoyTest(void);
 
 void fldRegistUnitPad(void);
+
+/* NON_MATCHING. Behaviour checked against retail: 6 PCSX2 call vectors give the same return and memory,
+ * field underground facility, field unknown realm savestates, covering only the paths those calls took.
+ * (sdfport bc29478, tools/funcvec, tests/funcvec.sh). */
+extern const char fldKiretaLabel[16];
 
 s32 fldProcKiretaChk(void);
 
@@ -471,8 +478,6 @@ extern void dds3EffectDistortionBlurDraw(effBlurScatterWork_t *work);
 
 s32 ProcDraw(dds3ProcessID_t *id);
 
-#undef DRAW_FIELD_BLUR
-
 void fldAutoMapSeqSetFlag(u32 flag);
 
 void fldAutoMapSeqClearFlag(u32 flag);
@@ -501,10 +506,41 @@ void fldSetNextField(s32 fld, s32 area);
 
 void fldProcNextJump(void);
 
-/* After the definition it offsets from, which the assembler needs. */
-SYMBOL_AT(s32, fldSequenceState, fldAutoMapSeqFlags, 4);
+extern s32 fldSequenceState;
 
-SYMBOL_AT(u32, fldEncountBtlId, fldEncountTimer, 4);
+extern u32 fldEncountBtlId;
+
+extern const char fldProcDrawName[16];
+
+extern s32 fldNextFieldId;
+
+extern s32 fldEncountCount;
+
+extern s32 fldEncountSagasiFlag;
+
+extern effBlurScatterWork_t *hDistortionBlur;
+
+extern s32 gFldRndEncBtl;
+
+extern s32 fldEncountCheckWork;
+
+extern s32 fldProcCampWait;
+
+extern s32 fldProcAmWait;
+
+extern s32 gFldStart;
+
+extern s32 fldProcShutDownFlg;
+
+extern s32 fldNext_fld;
+
+extern s32 fldNextArea;
+
+extern fldSequenceController_t fldAutoMapSeqFlags;
+
+extern u32 fldEncountFlags;
+
+extern u32 fldEncountTimer[2];
 /* End of declarations from src/smt3/field/fldProcess.c */
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_00447450);

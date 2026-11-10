@@ -211,7 +211,9 @@ extern void pb_draw_map_cursor_Shutdown(dds3ProcessID_t *id);
 
 extern char pbDrawMapCursorProcName[];
 
-extern char pbBlockDbProcName[], pbDrawMapbaseProcName[], pbViewCameraProcName[];
+extern const char pbViewCameraProcName[];
+
+extern char pbBlockDbProcName[], pbDrawMapbaseProcName[];
 
 extern s32 pb_proc_block_DB_Process(dds3ProcessID_t *id);
 
@@ -223,7 +225,7 @@ extern s32 moveChar(dds3ProcessID_t *id);
 
 extern void deleteMoveChar(dds3ProcessID_t *id);
 
-extern char pbMoveCharProcName[], pbMoveBlockProcName[], pbGameProcName[], pbMoveCameraProcName[];
+extern const char pbMoveCharProcName[], pbMoveBlockProcName[], pbGameProcName[], pbMoveCameraProcName[];
 
 extern s32 roundBlock(dds3ProcessID_t *id);
 
@@ -273,7 +275,7 @@ extern s32 roundAutoCamera(dds3ProcessID_t *id);
 
 extern u8 pbGetKeyMode(void);
 
-extern char pbGameDebugOwnerName[];
+extern const char pbGameDebugOwnerName[];
 
 extern void deleteGame(dds3ProcessID_t *id);
 
@@ -309,7 +311,9 @@ extern u32 pbAddRecord_blk(pbProcHandle_t *p, pbGroupData_t *grp);
 
 extern void deleteViewModeCamera(dds3ProcessID_t *id);
 
-extern char pbDrawBgProcName[], pbLoadMapDataProcName[], pbClearProcName[];
+extern const char pbClearProcName[];
+
+extern char pbDrawBgProcName[], pbLoadMapDataProcName[];
 
 extern void updateMotion(void);
 
@@ -333,7 +337,7 @@ extern pbProcHandle_t *moveB;
 
 extern pbProcHandle_t *roundCamera;
 
-extern char pbRootProcName[];
+extern const char pbRootProcName[];
 
 extern u32 pbPushRecord(pbProcHandle_t *p);
 
@@ -408,6 +412,10 @@ s32 gameKey1(void);
 u32 RotateBit(u32 val, s32 loop);
 
 s32 gameKey2(void);
+
+extern const char pbRootProcName[16];
+
+extern const char pbGameDebugOwnerName[24];
 
 void deleteGame(dds3ProcessID_t *id);
 
@@ -573,6 +581,18 @@ extern void evtBitOn(s32 no);
 
 extern pbProcHandle_t *pbGetMoveChar(void);
 
+extern const char pbGameProcName[16];
+
+extern const char pbMoveCharProcName[24];
+
+extern const char pbMoveBlockProcName[24];
+
+extern const char pbMoveCameraProcName[24];
+
+extern const char pbViewCameraProcName[32];
+
+extern const char pbClearProcName[16];
+
 void pbGotoNewStage(void);
 
 void pbRoundStageNext(s16 *plevel, s16 *pstage);
@@ -629,13 +649,13 @@ s32 pb_proc_block_DB_Process(dds3ProcessID_t *id);
 
 void pb_proc_block_DB_Shutdown(dds3ProcessID_t *id);
 
-extern s32 pbMapCursorOffsetTable[4][4];
+extern const s32 pbMapCursorOffsetTable[4][4];
 
 extern s32 pbMapCursorBaseTable[4][4], pbMapCursorUvTable[4][4], pbMapCursorColorTable[4][4];
 
 extern f32 pbMapCursorWork;
 
-SYMBOL_AT(sdfGrOt_t, D_002F67F8, sdfGrOtTable, 0x8E0);
+extern sdfGrOt_t D_002F67F8;
 
 extern f32 sdfSin(f32 angle);
 
@@ -645,6 +665,8 @@ extern void itfMiscDrawSpritePrim(void *vertices, void *uv, void *color, s32 z,
 s32 pb_draw_map_cursor_Process(dds3ProcessID_t *id);
 
 void pb_draw_map_cursor_Shutdown(dds3ProcessID_t *id);
+
+extern const s32 pbMapCursorOffsetTable[4][4];
 /* End of declarations from src/smt3/pb/pbGame.c */
 
 s8 pbCheckPreviousRecord(void) {

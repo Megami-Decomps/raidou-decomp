@@ -183,13 +183,13 @@ extern s32 sdfFileCmdThreadPrio;
 
 extern s32 ChangeThreadPriority(s32 tid, s32 prio);
 
-s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priority);
+extern s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priority);
 
 sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 void sdfCdImageClose(void);
 
-sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
+extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext);
 
 s32 sdfFileCmdClearError(sdfFileCmd_t *aHandle);
@@ -280,6 +280,36 @@ void sdfFileCmdThreadCheckPrio(void);
 
 /* Start worker thread `index` if it isn't running; slot 3 runs the alternate entry point. */
 void sdfFileCmdStartThread(s32 deviceType);
+
+extern sdfFileCmdHandle_t *sdfFileCmdActiveHead;
+
+extern sdfFileCmdHandle_t *sdfFileCmdFreeList;
+
+extern s16 sdfFileCmdCount;
+
+extern sdfFileCmdHandle_t *sdfFileCmdCacheHead;
+
+extern sdfFileCmdHandle_t *sdfFileCmdCacheTail;
+
+extern s16 sdfFileCmdFreeCount;
+
+extern u8 sdfFileCmdDefaultDevice;
+
+extern u8 sdfFileCmdThreadPrioCheckCounter;
+
+extern s32 sdfFileCmdThreadPrio;
+
+extern u16 sdfFileCmdDefaultCreateMode;
+
+extern char sdfFileCmdCdromPrefix[8];
+
+extern char sdfFileCmdHostPrefix[8];
+
+extern char sdfFileCmdPfsPrefix[8];
+
+extern char sdfFileCmdMoviePath[8];
+
+extern char sdfFileCmdCdimgPrefix[8];
 /* End of declarations from src/smt3/sdf/sdfFileIO.c */
 
 /* Unlink a cached request under interrupt protection, then release its storage. */

@@ -59,17 +59,17 @@ void dds3GlobalWorkClearFlags(void);
 
 void scrStartScriptByName(s32 priority, char *name, s32 messageHandle);
 
-scrProcessWork_s *scr_109D80(char *name);
+scrProcessWork_s *scrCreateProcessWithDefaultOption(char *name);
 
 dds3ProcessID_t *scrStartScript2(s32 priority, void *scrdata, s32 startproc);
 
-scrProcessWork_s *scr_109DD0(void *data);
+scrProcessWork_s *scrCreateTaskWithDefaultOption(void *data);
 
 dds3ProcessID_t *scrRunScriptEx(s32 priority, scrHeader_t *header, scrTypeTable_t *typeTable,
                     scrProcTable_t *procTable, scrLabelTable_t *labelTable, scrCode_u *code,
                     u8 *messageData, u8 *stringData, s32 procNo);
 
-scrProcessWork_s *scr_109E38(scrHeader_t *header, scrTypeTable_t *typeTable,
+scrProcessWork_s *scrCreateProcessAtFirstProcedure(scrHeader_t *header, scrTypeTable_t *typeTable,
                              scrProcTable_t *procTable, scrLabelTable_t *labelTable,
                              scrCode_u *code, u8 *messageData, u8 *stringData);
 
@@ -78,7 +78,7 @@ void scrPrintProcedureEnd(scrProcessWork_s *pw);
 void scrAllReleaseScript(void);
 
 /* Restart a procedure with an empty operand stack and fresh timers. */
-s32 func_00109FD0(scrProcessWork_s *pw, s32 procNo);
+s32 scrStartProcessProcedure(scrProcessWork_s *pw, s32 procNo);
 
 scrProcessWork_s *scrSearchScriptName(char *scriptname);
 

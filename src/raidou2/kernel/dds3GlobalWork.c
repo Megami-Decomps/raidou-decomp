@@ -237,9 +237,9 @@ u64 *dds3PrimFrameRect(s32 aX, s32 aY, s32 aZ, s32 aW, s32 aH, u32 aBgCol, u32 a
 
 u64 *dds3PrimLine(s32 aX0, s32 aY0, s32 aZ0, s32 aColor0, s32 aX1, s32 aY1, s32 aZ1, s32 aColor1, s32 aMode);
 
-extern f32 D_00529630[4];
+extern f32 sdf3DUpVector[4];
 
-extern sdfMatrix4_t D_002FA240;
+extern sdfMatrix4_t sdfViewMatrix;
 
 extern const f32 dds3PrimLineOutline[13][4];
 
@@ -250,6 +250,36 @@ extern const u8 dds3PrimLinePairs[20][2];
 extern void MultMatrixRev(const void *aMatrix);
 
 void *dds3PrimLine3D(s32 x, s32 y, s32 z, s32 highlighted);
+
+extern char dds3GlobalWorkProcName[5];
+
+extern s8 slNewGameBit2208;
+
+extern s8 slNewGameBit2209;
+
+extern s8 slNewGameBit2210;
+
+extern s8 slNewGameBit2211;
+
+extern s8 slNewGameBit2212;
+
+extern s8 slNewGameBit2213;
+
+extern s8 slNewGameBit2323;
+
+extern s8 slNewGameBit162;
+
+extern u16 dds3NewGameSavedHalf0C;
+
+extern s32 D_0054EA18;
+
+extern sdfMemHandle_t *D_0054EA1C;
+
+extern dds3GlobalWork_t *DDS3_GBWK;
+
+extern dds3FontReqFunc_t dds3FontReqTable;
+
+extern dds3FontReqFunc_t dds3FontReqBoxTable;
 /* End of declarations from src/smt3/kernel/dds3GlobalWork.c */
 
 INCLUDE_ASM(const s32, "kernel/dds3GlobalWork", func_00127070);
@@ -299,4 +329,81 @@ u64 *dds3PrimLine(s32 aX0, s32 aY0, s32 aZ0, s32 aColor0, s32 aX1, s32 aY1, s32 
     return packet;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3GlobalWork", dds3PrimLine3D);
+void *dds3PrimLine3D(s32 x, s32 y, s32 z, s32 highlighted)
+{
+    u64 xyz[13];
+    u64 color[13];
+    volatile f32 axis[4] __attribute__((aligned(16)));
+    volatile s32 point[4] __attribute__((aligned(16)));
+    u64 *packet;
+    u64 *endColor;
+    u64 *endXyz;
+    const f32 (*outline)[4];
+    const u8 (*pair)[2];
+    s32 i;
+    s32 shade;
+
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_SET_ROW2();
+    SDF_VU0_STOREVECTOR(axis);
+    if (ffabsf(axis[0]) < 0.000001f && ffabsf(axis[2]) < 0.000001f) {
+        axis[2] = -axis[1];
+        axis[0] = 0.0f;
+        axis[1] = 0.0f;
+        SDF_VU0_LOADVECTOR_B(axis);
+    } else {
+        SDF_VU0_LOADVECTOR_B(sdf3DUpVector);
+    }
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_SET_ROW0();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_GET_ROW2();
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_SET_ROW1();
+    SDF_VU0_RESET_ROW3();
+    MultMatrixRev(&sdfViewMatrix);
+    SDF_VU0_LOADVECTOR(dds3PrimLineScale);
+    SDF_VU0_SCALE_XYZ_REV();
+    axis[0] = (f32)x;
+    axis[1] = (f32)y;
+    axis[2] = 160.0f;
+    SDF_VU0_LOAD_ROW3(axis);
+
+    shade = highlighted ? 0x101 : 0x10101;
+    outline = dds3PrimLineOutline;
+    for (i = 0; i != 13; i++) {
+        SDF_VU0_LOADVECTOR(outline[i]);
+        SDF_VU0_APPLYMATRIX_XYZ1();
+        SDF_VU0_FTOI0();
+        SDF_VU0_STOREVECTOR(point);
+        xyz[i] = (((u32)point[0] & 0xFFFF) | ((u32)point[1] << 16)) | ((u64)z << 32);
+        color[i] = (u32)(shade * point[2] | 0x80000000) | ((u64)0x3F800000 << 32);
+    }
+
+    packet = (u64 *)sdfGrAllocPacketBuff(0x2C0);
+    packet[0] = 0x2B;
+    packet[1] = 0x5000002B00000000ULL;
+    packet[2] = 0x1400000000000001ULL;
+    packet[3] = 0;
+    packet[4] = 0x189;
+    packet[5] = 0;
+    packet[6] = 0x4400000000008014ULL;
+    packet[7] = 0x5151;
+    endColor = packet + 10;
+    endXyz = packet + 11;
+    pair = dds3PrimLinePairs;
+    for (i = 0; i != 20; i++) {
+        s32 index = pair[i][0];
+
+        endColor[i * 4 - 2] = color[index];
+        endXyz[i * 4 - 2] = xyz[index];
+        index = pair[i][1];
+        endColor[i * 4] = color[index];
+        endXyz[i * 4] = xyz[index];
+    }
+    return packet;
+}

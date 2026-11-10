@@ -206,7 +206,7 @@ evtUnit_t *evtGetUnitHandle2(dds3Basic_t *unit);
 
 void *sdfChipAllocDirect(u32 aSize);
 
-extern sdfVector4_t D_0053A850;
+extern const sdfVector4_t D_0053A850;
 
 evtUnit_t *evtCreateUnitHandle(dds3Basic_t *owner, mdlObj_t *model);
 
@@ -242,7 +242,7 @@ extern void FromRotation(f32 aAngle);
 
 void dds3AddRotPoseSet(dds3Basic_t *pBasic, const sdfVector4_t *rot);
 
-extern sdfVector4_t evtUnitUpAxis;
+extern const sdfVector4_t evtUnitUpAxis;
 
 /* vu0 routine: turn the unit toward dir, at most a tenth of a radian a frame. */
 s32 evtUnitRotationTarget(evtUnit_t *h, f32 *pos, f32 radio);
@@ -278,6 +278,10 @@ extern s32 mdlChkMotionEndEx(mdlObj_t *model, s32 group);
 
 #include "sdk_libc.h"
 
+extern const sdfVector4_t D_0053A850;
+
+extern const sdfVector4_t evtUnitUpAxis;
+
 s32 evtUnitManagerPrimaryFunc(dds3PoseSet_t *unused, dds3Basic_t *object);
 /* End of declarations from src/smt3/event/evtUnitManager.c */
 
@@ -295,7 +299,31 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", evtCheckMoveEnd);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtGetNextMovePos);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", GetSplineLength);
+/* Length of the path's vec4 trajectory sampled at 20 steps of the value multiplier. */
+f32 GetSplineLength(dds3PathBasicControl_t *path) {
+    f32 savedScaleFactor;
+    f32 length = 0.0f;
+    f32 step = 0.05f;
+    f32 t = step;
+    f32 segmentLength;
+
+    savedScaleFactor = dds3PathBasicControlGetRatio((dds3PathBasicControl_t *)path);
+    dds3PathBasicControlSetRatio((dds3PathBasicControl_t *)path, 0.0f);
+    dds3PathBasicControlGetPos(path);
+    do {
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        dds3PathBasicControlSetRatio((dds3PathBasicControl_t *)path, t);
+        dds3PathBasicControlGetPos(path);
+        SDF_VU0_COPYVECTOR_A_TO_C();
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_GETLENGTH(segmentLength);
+        length += segmentLength;
+        SDF_VU0_COPYVECTOR_C_TO_A();
+        t += step;
+    } while (t <= 1.0f);
+    dds3PathBasicControlSetRatio((dds3PathBasicControl_t *)path, savedScaleFactor);
+    return length;
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A4318);
 

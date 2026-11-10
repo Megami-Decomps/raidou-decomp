@@ -30,7 +30,7 @@ extern s32 fclEncycCount;
 
 extern s32 fclEncycFree;
 
-extern char dds3DebugOwnerProcessName[];
+extern const char dds3DebugOwnerProcessName[];
 
 extern char dds3AdminiProcessName[];
 
@@ -40,9 +40,9 @@ extern char dds3AdminiHistoryCursorStr[];
 
 extern char dds3AdminiHistoryEndStr[];
 
-extern char dds3AdminiHistoryEntryFmt[];
+extern const char dds3AdminiHistoryEntryFmt[];
 
-extern char dds3AdminiRestoreMsg[];
+extern const char dds3AdminiRestoreMsg[];
 
 #include "sdk_libc.h"
 
@@ -371,6 +371,36 @@ s32 ExitTgs(void);
 s32 CheckTgs(void);
 
 extern dds3AdminiList_t dds3AdminiList[43];
+
+extern const char dds3AdminiHistoryEntryFmt[16];
+
+extern const char dds3AdminiRestoreMsg[24];
+
+extern const char dds3DebugOwnerProcessName[24];
+
+extern char dds3AdminiProcessName[8];
+
+extern char dds3AdminiHistoryOpenStr[8];
+
+extern char dds3AdminiHistoryCursorStr[8];
+
+extern char dds3AdminiHistoryEndStr[4];
+
+extern s32 fclEncycHead;
+
+extern s32 fclEncycTail;
+
+extern s32 fclEncycCount;
+
+extern s32 fclEncycFree;
+
+extern u8 D_0054E8F4;
+
+extern u8 D_0054E8F5;
+
+extern u8 D_0054E8F6;
+
+extern u8 dds3PadInitDone;
 /* End of declarations from src/smt3/kernel/dds3AdminiProcess.c */
 
 dds3AdminiData_t *GetAdminiProcessData(void)

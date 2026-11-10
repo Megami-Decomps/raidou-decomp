@@ -116,8 +116,7 @@ s32 itfMesMngMessage(void);
 
 extern u32 scrGetMessageHandle(void);
 
-/* The message instances are the state words of itfMesMngManager.nodes. */
-SYMBOL_AT_REGION(itfMesInstance_t, pinst, itfMesMngManager, 0x2C);
+extern itfMesInstance_t pinst[];
 
 extern s32 scrGetIntPara(s32);
 
@@ -277,7 +276,7 @@ s32 GetMessageWidth(frFontHandle_t *pfont);
 
 void itfMesMngSetDefaultSpeed(s32 id, u8 speed);
 
-void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
+extern void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
 
 void itfMesMngInitializeManager(void);
 
@@ -662,6 +661,14 @@ void itfMesMngClearBitStatManager(u32 flags);
 /* Read the manager's 16-bit flags, distinct from itfMessageFlags. */
 u16 itfMesMngGetStatManager(void);
 
+extern const char itfMesDebugLabelChange[16];
+
+extern const char itfMesDebugLabelPosition[16];
+
+extern const char itfMesDebugLabelRightBottom[16];
+
+extern const char itfMesDebugLabelLeftTop[16];
+
 s32 itfMesMngDebugProc(void);
 
 /* Reset the three otherwise unnamed message-state words. */
@@ -800,6 +807,30 @@ void DebugMoveWinVert(window_tag *pwin, s32 flag);
 void DebugMoveWinAlpha(window_tag *pwin);
 
 itfMesLink_t *DebugChangeInstance(itfMesLink_t *pflow);
+
+extern char itfMesFmtInt[8];
+
+extern char itfMesDebugLabelAlpha[8];
+
+extern char itfMesMarkerEdit[];
+
+extern char itfMesMarkerSelect[];
+
+extern char *itfMesSelectionMarkers[2];
+
+extern char itfMesMarkerEdit[8];
+
+extern char itfMesMarkerSelect[8];
+
+extern char itfMesDebugItemFormat[8];
+
+extern char itfMesMarkerNone[8];
+
+extern char itfMesDebugFadeFormat[8];
+
+extern u8 itfMesDebugLineVertIndex[5];
+
+extern u8 itfMesDebugLineColorIndex[5];
 /* End of declarations from src/smt3/interface/itfMesManager.c */
 
 /* Poll/start an entry: one ends the command, zero keeps waiting.

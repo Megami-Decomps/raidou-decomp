@@ -77,11 +77,11 @@ void sdfMemUnlock(sdfMemHandle_t *aHandle);
 
 void sdfMemReallocRecord(sdfMemHandle_t *aHandle, s32 aSize);
 
-void func_002BFF98(sdfItemArray_t *aArray, s32 aCapacity);
+void sdfDevResizeBufferedRequest(sdfItemArray_t *aArray, s32 aCapacity);
 
 void sdfItemArrayGrow(sdfItemArray_t *aArray);
 
-void func_002BFF98(sdfItemArray_t *aArray, s32 aCapacity);
+void sdfDevResizeBufferedRequest(sdfItemArray_t *aArray, s32 aCapacity);
 /* End of declarations from src/smt3/sdf/sdfMisc.c */
 
 /* Allocate element storage with a fixed element stride and growth increment. */

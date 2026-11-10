@@ -223,7 +223,7 @@ extern s8 dds3PadButtonState[];
 
 extern s8 dds3PadBitTable[];
 
-extern f32 D_002FA240[16];
+extern f32 sdfViewMatrix[16];
 
 extern u8 aViewEye[];
 
@@ -516,9 +516,120 @@ s32 mdlDebugPrintEffectScale2(dds3ProcessID_t *task);
 
 /* Update/draw the FACE-DIV soften, bias and divide controls; return zero. */
 s32 soften_bias_Process(dds3ProcessID_t *task);
+
+extern const char mdlDebugLabelAmbient[16];
+
+extern const char softenBiasTitle[16];
+
+extern char mdlPibLabelP2A[8];
+
+extern char mdlPibLabelD3P[8];
+
+extern char mdlColorLabelA[8];
+
+extern char mdlColorLabelB[8];
+
+extern char mdlColorLabelG[8];
+
+extern char mdlColorLabelR[8];
+
+extern char mdlColorByteFormat[8];
+
+extern char mdlPibCursorMark[8];
+
+extern char mdlDebugLabelLight2[8];
+
+extern char mdlDebugLabelLight1[8];
+
+extern char mdlDebugLabelLight0[8];
+
+extern char mdlDebugLightCursor[8];
+
+extern char mdlDebugLightFormat[8];
+
+extern char mdlDebugLabelFog[8];
+
+extern char mdlDebugLabelFar[8];
+
+extern char mdlDebugLabelMin[8];
+
+extern char mdlDebugLabelNear[8];
+
+extern char mdlDebugIntFormat[8];
+
+extern char mdlDebugLabelMax[8];
+
+extern char mdlDebugScaleCursor[8];
+
+extern char softenBiasLabelDivide[8];
+
+extern char softenBiasLabelBias[8];
+
+extern char softenBiasLabelSoften[8];
+
+extern char softenBiasCursor[8];
+
+extern char softenBiasValueFormat[8];
+
+extern char softenBiasAdjustFormat[8];
+
+extern char softenBiasLabelOn[8];
+
+extern char softenBiasLabelOff[8];
+
+extern s32 dds3BitEditorRowBase;
+
+extern s32 dds3BitEditorTable;
+
+extern s32 dds3BitEditorTable2;
+
+extern char dds3BitEditorGlyphTemplate[8];
+
+extern char dds3BitEditorColumnFormat[8];
+
+extern char dds3BitEditorRowFormat[8];
+
+extern s32 evtNextEventNo;
 /* End of declarations from src/smt3/model/mdlEffect.c */
 
-INCLUDE_ASM(const s32, "model/mdlEffect_001B7238", mdlSetDebugMatrix);
+/* vu0 routine: rotate the edited light direction about the view's X/Y axes. */
+void mdlSetDebugMatrix(mdlDebugLight_t *context, f32 *position)
+{
+    if (context->pad->stepUpA != 0) {
+        SDF_VU0_LOADVECTOR_MTXCOL(sdfViewMatrix + 1);
+        FromRotation(2.0f * 3.14159265f / 180.0f);
+        ToMatrix();
+        SDF_VU0_LOADVECTOR( position);
+        SDF_VU0_APPLYMATRIX_XYZ1();
+        SDF_VU0_VECTOR_W_SET_ONE();
+        SDF_VU0_STOREVECTOR( position);
+    } else if (context->pad->stepDownA != 0) {
+        SDF_VU0_LOADVECTOR_MTXCOL(sdfViewMatrix + 1);
+        FromRotation(-2.0f * 3.14159265f / 180.0f);
+        ToMatrix();
+        SDF_VU0_LOADVECTOR( position);
+        SDF_VU0_APPLYMATRIX_XYZ1();
+        SDF_VU0_VECTOR_W_SET_ONE();
+        SDF_VU0_STOREVECTOR( position);
+    }
+    if (context->pad->stepUpB != 0) {
+        SDF_VU0_LOADVECTOR_MTXCOL(sdfViewMatrix);
+        FromRotation(-2.0f * 3.14159265f / 180.0f);
+        ToMatrix();
+        SDF_VU0_LOADVECTOR( position);
+        SDF_VU0_APPLYMATRIX_XYZ1();
+        SDF_VU0_VECTOR_W_SET_ONE();
+        SDF_VU0_STOREVECTOR( position);
+    } else if (context->pad->stepDownB != 0) {
+        SDF_VU0_LOADVECTOR_MTXCOL(sdfViewMatrix);
+        FromRotation(2.0f * 3.14159265f / 180.0f);
+        ToMatrix();
+        SDF_VU0_LOADVECTOR( position);
+        SDF_VU0_APPLYMATRIX_XYZ1();
+        SDF_VU0_VECTOR_W_SET_ONE();
+        SDF_VU0_STOREVECTOR( position);
+    }
+}
 
 INCLUDE_ASM(const s32, "model/mdlEffect_001B7238", mdlDebugPrintEffectScale);
 

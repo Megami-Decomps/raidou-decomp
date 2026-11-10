@@ -163,6 +163,12 @@ s32 picpri_Process(dds3ProcessID_t *id);
 void picpri_Shutdown(dds3ProcessID_t *id);
 
 void evtPicturePriProcessInit(void);
+
+extern void *evtPicturePriList;
+
+extern char evtPictureProcName[8];
+
+extern char evtPicturePriProcName[7];
 /* End of declarations from src/smt3/event/evtPicture.c */
 
 void evtPictureDrawOn(dds3ProcessID_t *id)

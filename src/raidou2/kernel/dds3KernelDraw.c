@@ -89,9 +89,7 @@ typedef struct
 
 extern dds3LightState_t dds3LightParam;
 
-/* Native fog setters address the record at +0x20 as a separate base.
- * This typed view allocates no storage; the enclosing light state is unchanged. */
-SYMBOL_AT(sdf3DFogParam_t, dds3FogState, dds3LightParam, 0x20);
+extern sdf3DFogParam_t dds3FogState;
 
 extern dds3Filter2Param_t dds3Filter2Buf;
 
@@ -385,11 +383,9 @@ extern sdfMatrix4_t aProjMatrix;
 
 extern dds3LightState_t dds3LightParam2;
 
-/* Retail addresses each light record's ambient term as its own symbol, so the
- * parallel array and the ambient reach sdf3DMakeLightParallelPacket apart. */
-SYMBOL_AT(sdfVector4_t, dds3AmbientColor, dds3LightParam, 0x10);
+extern sdfVector4_t dds3AmbientColor;
 
-SYMBOL_AT(sdfVector4_t, dds3AmbientColor2, dds3LightParam2, 0x10);
+extern sdfVector4_t dds3AmbientColor2;
 
 extern u32 dds3BackColor;
 
@@ -409,7 +405,7 @@ extern sdf3DLight_t *dds3RenderLightParallel[];
 
 extern sdfVector4_t dds3RenderAmbientColor;
 
-extern sdfMatrix4_t D_002FA240;
+extern sdfMatrix4_t sdfViewMatrix;
 
 extern sdfMatrix4_t dds3RenderViewportMatrix;
 
@@ -459,9 +455,7 @@ extern dds3DistBlurParam_t dds3DistBlurCurrent;
 
 extern dds3RipBlurParam_t dds3BlurState;
 
-/* The rectangular frame body follows the ripple body in the same storage.
- * Bind its typed view without defining or extending the imported BSS symbol. */
-SYMBOL_AT(dds3Blur2Param_t, dds3Blur2State, dds3BlurState, 0x30);
+extern dds3Blur2Param_t dds3Blur2State;
 
 extern dds3Filter2Param_t dds3BlurParam;
 
@@ -751,6 +745,48 @@ void eglLinkKanji(s32 x, s32 y, s32 rgba, const char *moji);
 
 /* vu0 routine: project a world point into viewport pixel coordinates. */
 void egl3Dto2D(s32 *x3, s32 *y3, f32 z3, f32 x2, f32 y2);
+
+extern u32 egl_OT_Offset;
+
+extern u32 dds3BackColor;
+
+extern u32 dds3RenderTex;
+
+extern sdfGsMemSlice_t *dds3RenderTexHandle;
+
+extern sdfTexHandle_t *dds3RenderTexture;
+
+extern u16 dds3RenderTexWidth;
+
+extern u16 dds3RenderTexHeight;
+
+extern u32 dds3RenderDrawEnv;
+
+extern u32 dds3DrawFlag;
+
+extern u8 dds3ScreenBlurFlag;
+
+extern s16 dds3ScreenBlurAlpha;
+
+extern s16 dds3ScreenBlurScale;
+
+extern s32 dds3ScreenBlurOfsX[2];
+
+extern u16 dds3QuakeFlag;
+
+extern s16 dds3QuakeFrame;
+
+extern u16 dds3QuakeXRange;
+
+extern u16 dds3QuakeYRange;
+
+extern u8 fadergba[4];
+
+extern u32 distblurovercnt;
+
+extern u32 ripblurovercnt;
+
+extern dds3QuakeGain_t dds3QuakeGainTable[1];
 /* End of declarations from src/smt3/kernel/dds3KernelDraw.c */
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00105430);
@@ -1661,7 +1697,62 @@ void dds3BlurUpdate(void)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RotationArc);
+/* vu0 routine: shortest-arc quaternion rotating VF10 to VF11. */
+void dds3RotationArc(void)
+{
+    sdfVector4_t identity;
+    sdfVector4_t axis;
+    f32 dot;
+    f32 component;
+
+    memset(&identity, 0, sizeof(identity));
+    identity.w = 1.0f;
+
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_SWAPVECTOR_A_B();
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_SWAPVECTOR_A_B();
+
+    SDF_VU0_INNERPRODUCT(dot);
+    if (dot >= 0.9999f) {
+        SDF_VU0_LOADVECTOR_MEMOPS(*(u128 *)&identity);
+        return;
+    }
+
+    if (dot <= -0.9999f) {
+        SDF_VU0_GETVECTOR_Y(component);
+        if (0.9999f <= fabsf(component)) {
+            SDF_VU0_LOADIDENTITYVECTOR();
+            SDF_VU0_VECTOR_W_SET_ZERO();
+            SDF_VU0_SETVECTOR_Z(-1.0f);
+        } else {
+            SDF_VU0_GETVECTOR_Z(component);
+            axis.x = -component;
+            axis.y = 0.0f;
+            SDF_VU0_GETVECTOR_X(axis.z);
+            axis.w = 0.0f;
+            SDF_VU0_LOADVECTOR(&axis);
+            SDF_VU0_NORMALIZE();
+        }
+
+        SDF_VU0_INNERPRODUCT(dot);
+        SDF_VU0_OUTERPRODUCT();
+        SDF_VU0_SETVECTOR_W(dot);
+        return;
+    }
+
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_COPYVECTOR_C_TO_B();
+    SDF_VU0_INNERPRODUCT(dot);
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_STOREVECTOR(&axis);
+    SDF_VU0_SETVECTOR_W(dot);
+    Normalize();
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetLightColor);
 

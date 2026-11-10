@@ -97,9 +97,9 @@ extern void dds3SetSclPoseSet(dds3Basic_t *pBasic, f32 *scl);
 
 extern f32 fldWmapPlayerState;
 
-extern sdfVector4Unaligned_t fldWm3Scale;
+extern const sdfVector4Unaligned_t fldWm3Scale;
 
-extern sdfVector4Unaligned_t fldWm4Scale;
+extern const sdfVector4Unaligned_t fldWm4Scale;
 
 extern u8 dds3ObjectBaseCheckFlag(dds3Basic_t *pObjectBasic, s32 flag);
 
@@ -140,6 +140,10 @@ void fldPlayerMotionSe(s32 hisMotion, s32 upMotion);
 
 void fldPlayerCalc_Hit(void);
 
+extern const sdfVector4_t fldWarpRunAxis;
+
+extern const sdfVector4_t fldNmlAxis;
+
 void fldPlayerCalc_WarpStart(void);
 
 void fldPlayerCalc_FastStart(void);
@@ -148,9 +152,9 @@ void fldPlayerCalc_Wm3(void);
 
 void fldPlayerCalc_Wm4(void);
 
-extern char fldNoroiDamageOnMsg[];
+extern const char fldNoroiDamageOnMsg[];
 
-extern char fldNoroiDamageOffMsg[];
+extern const char fldNoroiDamageOffMsg[];
 
 extern s32 fldEncountTestFlag(u32 mask);
 
@@ -199,16 +203,140 @@ void fldPlayerSdwOn(void);
 
 void fldPlayerSdwOff(void);
 
+s32 fldPlayerFastSet(void);
+
 void fldPlayerMotReset(void);
 
 void fldPlayerMotReset2(void);
+
+extern const sdfVector4Unaligned_t fldWm3Scale;
+
+extern const sdfVector4Unaligned_t fldWm4Scale;
+
+extern const sdfVector4Unaligned_t fldWm2Scale;
+
+extern const sdfVector4Unaligned_t fldWm2WorkInit;
+
+extern const sdfVector4Unaligned_t fldNmlSyukanAxis;
+
+extern const char fldNoroiDamageOnMsg[24];
+
+extern const char fldNoroiDamageOffMsg[32];
+
+extern f32 fldPlayerWarpState;
+
+extern s32 fldPlayerFastMode;
+
+extern s32 gfldPlayerHasiCnt;
+
+extern s32 gfldPlayerDamegeCnt;
+
+extern s32 fldPlayerStepDist;
+
+extern s32 fldPlayerMoveState;
+
+extern s32 fldPlayerSyukanState;
+
+extern u32 fldPlayerMoveStateSaved;
+
+extern s32 fldWmapMatterLast;
+
+extern s32 fldWmapBlendStep;
+
+extern s32 fldWmWarpMode;
+
+extern f32 fldWmapPlayerState;
+
+extern f32 fldWmFastMove;
+
+extern s32 fldSyukanState;
+
+extern s32 fldSkyEnable;
 /* End of declarations from src/smt3/field/fldPlayer.c */
 
 INCLUDE_ASM(const s32, "field/fldPlayer", func_001274A8);
 
 INCLUDE_ASM(const s32, "field/fldPlayer", func_00127578);
 
-INCLUDE_ASM(const s32, "field/fldPlayer", fldPlayerCalc360_8);
+f32 fldPlayerCalc360_8(f32 aKakudo) {
+    f32 best;
+    s32 index;
+    f32 diff;
+    while (aKakudo >= 360.0f) {
+        aKakudo -= 360.0f;
+    }
+    while (aKakudo < 0.0f) {
+        aKakudo += 360.0f;
+    }
+    best = 900.0f;
+    index = -1;
+    diff = fabsf(R360_LR(0.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 0;
+    }
+    diff = fabsf(R360_LR(45.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 1;
+    }
+    diff = fabsf(R360_LR(90.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 2;
+    }
+    diff = fabsf(R360_LR(135.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 3;
+    }
+    diff = fabsf(R360_LR(180.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 4;
+    }
+    diff = fabsf(R360_LR(225.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 5;
+    }
+    diff = fabsf(R360_LR(270.0f, aKakudo));
+    if (diff < best) {
+        best = diff;
+        index = 6;
+    }
+    diff = fabsf(R360_LR(315.0f, aKakudo));
+    if (diff < best) {
+        index = 7;
+    }
+    switch (index) {
+    case 0:
+        aKakudo = 0.0f;
+        break;
+    case 1:
+        aKakudo = 45.0f;
+        break;
+    case 2:
+        aKakudo = 90.0f;
+        break;
+    case 3:
+        aKakudo = 135.0f;
+        break;
+    case 4:
+        aKakudo = 180.0f;
+        break;
+    case 5:
+        aKakudo = 225.0f;
+        break;
+    case 6:
+        aKakudo = 270.0f;
+        break;
+    case 7:
+        aKakudo = 315.0f;
+        break;
+    }
+    return aKakudo;
+}
 
 f32 fldPlayerCalc360_4(f32 aKakudo) {
     f32 best;

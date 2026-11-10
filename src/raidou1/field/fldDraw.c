@@ -113,7 +113,7 @@ s32 sdfGrAllocPacketBuff(s32 aSize);
 
 extern saddr_t sdf2DGetPrimPtr(saddr_t);
 
-void sdfPrimLinkGt4(
+extern void sdfPrimLinkGt4(
     sdfDrawTag_t *aTag, s32 aPrim, s32 aX0, s32 aY0, s32 aU0, s32 aV0,
     s32 aColor0, s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aColor1, s32 aX2, s32 aY2,
     s32 aU2, s32 aV2, s32 aColor2, s32 aX3, s32 aY3, s32 aU3, s32 aV3, s32 aColor3,
@@ -123,7 +123,7 @@ sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 
 void MultMatrixRev(const void *aMatrix);
 
-extern u8 D_002FA240[];
+extern u8 sdfViewMatrix[];
 
 extern sdf3DScreenParam_t dds3ScreenParam;
 
@@ -160,10 +160,10 @@ extern sdfVector4_t fldTestLineVertex[];
 
 extern u32 fldTestLineColor[];
 
-void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag,
+extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag,
                               s32 (*aAllocator)(s32));
 
-void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
+extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
                               s32 (*aAllocator)(s32));
 
 u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
@@ -172,16 +172,16 @@ extern void *memset(void *, int, size_t);
 
 void sdfFreeAutoDelayed(void *data);
 
-void sdfLinkStoreImage(
+extern void sdfLinkStoreImage(
     sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle, s32 aSrcX, s32 aSrcY,
     s32 aWidth, s32 aHeight, saddr_t aBuffer, s32 aCallback, s32 aCallbackParam,
     s32 (*aAllocator)(s32));
 
-sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*aAllocator)(s32));
+extern sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*aAllocator)(s32));
 
 extern sdfGrFrameSet_t sdfGrFrameSet;
 
-void sdfLinkLoadImage(
+extern void sdfLinkLoadImage(
     sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle, s32 aDstX,
     s32 aDstY, s32 aWidth, s32 aHeight, saddr_t aBuffer,
     s32 (*aAllocator)(s32));
@@ -361,6 +361,10 @@ void fldDrawMaruKage(u32 fade, f32 x, f32 y, f32 z, f32 radius);
 s32 nbGetEncountOn(void);
 
 void nbSetEncountMode(s32 mode);
+
+extern u32 fldDrawInitDone;
+
+extern void *fldDrwZBuf;
 /* End of declarations from src/smt3/field/fldDraw.c */
 
 INCLUDE_ASM(const s32, "field/fldDraw", func_00132850);
@@ -377,7 +381,7 @@ void fldPoint3To2(f32 *x3, f32 *y3, f32 z3, f32 x2, f32 y2) {
     sdfVector4_t vec = { z3, x2, y2, 1.0f };
     sdfVector4_t result;
 
-    SDF_VU0_LOADMATRIX(D_002FA240);
+    SDF_VU0_LOADMATRIX(sdfViewMatrix);
     MultMatrixRev(&dds3ScreenParam.TM);
     SDF_VU0_COPYMATRIX_A_TO_B();
     SDF_VU0_LOADVECTOR_MEMOPS(*(const u128 *)&vec);

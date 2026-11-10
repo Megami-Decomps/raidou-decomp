@@ -147,7 +147,7 @@ extern char sdfFileCdromPrefix[];
 
 extern char * strcpy(char *, const char *);
 
-extern sdfHostPrefix_t sdfFileHostPrefix[];
+extern char sdfFileHostPrefix[];
 
 extern u8 sdfFileHddPrefix[];
 
@@ -169,7 +169,7 @@ extern sdfFileCmdHandle_t *sdfFileCmdFreeList;
 
 extern s16 sdfFileCmdFreeCount;
 
-sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
+extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext);
 
 s32 sdfFileCmdClearError(sdfFileCmd_t *aHandle);
@@ -224,6 +224,18 @@ void sdfFileCmdSetDefaultDevice(s32 aDevice);
 
 /* Queue a request on the global list and on its worker's list; wake the worker when its list was empty. */
 void sdfFileCmdAllocHandle(sdfFileCmdHandle_t *state);
+
+extern u8 sdfFileDefaultSrcType;
+
+extern s32 sdfFileSemaId;
+
+extern char sdfFileCdromPrefix[8];
+
+extern char sdfFileHostPrefix[8];
+
+extern u8 sdfFileHddPrefix[8];
+
+extern char sdfFileCdromName[8];
 /* End of declarations from src/smt3/sdf/sdfFile.c */
 
 /* Convert a relative disc path to the drive's uppercase backslash form with ;1 suffix. */
@@ -252,7 +264,7 @@ char *sdfFileSetHostFilename(char *aDst, char *aSrc) {
         strcpy(aDst, sdfFileHostRootPath);
         return strcat(aDst, aSrc);
     }
-    *(sdfHostPrefix_t *)aDst = sdfFileHostPrefix[0];
+    *(sdfHostPrefix_t *)aDst = *(sdfHostPrefix_t *)sdfFileHostPrefix;
     return strcat(aDst, aSrc);
 }
 

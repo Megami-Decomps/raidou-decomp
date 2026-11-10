@@ -155,6 +155,8 @@ void sdfTexSetClutColor(sdfTexHandle_t *texture, s32 tint, f32 amount);
 sdfTexHandle_t *sdfTexSearch(u32 id);
 
 void sdfTexInit(void);
+
+extern sdfTexHandle_t *sdfTexHandleLink;
 /* End of declarations from src/smt3/sdf/sdfTex.c */
 
 s32 sdfTexGetPacketLength(sdfTexHandle_t *aHandle)

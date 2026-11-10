@@ -196,6 +196,10 @@ void dds3EffectFileListWindowDrawSprite(nbCameraHelper_effFLWinHandle_t *work);
 void InitParticleEditorProcess(void);
 
 void InitSpriteViewerProcess(void);
+
+extern char dds3EffectDirPathFormat[8];
+
+extern char dds3EffectResourcePathFormat[5];
 /* End of declarations from src/smt3/newbattle/nbCameraHelper.c */
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_0021AD10);

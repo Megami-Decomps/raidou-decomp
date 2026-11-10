@@ -69,9 +69,9 @@ extern u32 movieSemaCount;
 
 extern sdfMovieCb_t *movieSemaId;
 
-extern const char D_00551B50[];
+extern char sdfMovieIpsExt[];
 
-void movie_2C5080(const char *aStr);
+void sdfPrintTextLine(const char *aStr);
 
 u8 *movieWaitSema(s32 aSize);
 
@@ -122,6 +122,10 @@ void movieOpenStream(sdfMovieCb_t *stream, sdfMovieInitParm_t *desc, const char 
 void movieCloseStream(sdfMovieCb_t *aMov);
 
 s32 sdfMovieIsFinished(sdfMovieCb_t *aMov);
+
+extern s32 movieStreamSema;
+
+extern char sdfMovieIpsExt[4];
 /* End of declarations from src/smt3/sdf/sdfMovie.c */
 
 u8 *movieWaitSema(s32 aSize)
@@ -275,7 +279,123 @@ void movieReadHeaderChunk(sdfMovieCb_t *aMov)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieReadChunk);
+s32 movieReadChunk(void *file, s32 operation, void *readBuffer, s32 bytesRead, sdfMovieCb_t *movie) {
+    sdfMovieStrmPac_t *stream;
+
+    movie->fileHandle = file;
+    stream = movie->readCb.pac;
+
+    if (movie->cancel != 0 &&
+        (movie->readStat < 6 ||
+         movie->readStat > 7)) {
+        movie->readStat = 7;
+        sdfFileCmdClose(file);
+        return 0;
+    }
+
+    switch (movie->readStat) {
+    case 0:
+        if (operation == 2) {
+            movie->readStat = 1;
+            sdfFileCmdFileSize(file);
+        }
+        break;
+    case 1:
+        if (operation == 4) {
+            movie->fileSize = bytesRead;
+            movie->readRemain = bytesRead;
+            movie->readStat = 2;
+            sdfFileCmdRead(file, stream, 0x40);
+        }
+        break;
+    case 2:
+        if (operation == 5) {
+            s32 payloadBytes = stream->packetBytes - 0x40;
+            stream->payloadAllocation = sdfMemAllocDirect(payloadBytes);
+            stream->blockMask = (u8 *)sdfMemLock(stream->payloadAllocation);
+            movie->readStat = 3;
+            sdfFileCmdRead(file, stream->blockMask, payloadBytes);
+            movie->readRemain -= stream->packetBytes;
+        }
+        break;
+    case 3:
+        if (operation == 5) {
+            movieReadHeaderChunk(movie);
+        }
+        break;
+    case 4: {
+        if (operation == 5) {
+            u8 *source = readBuffer;
+            s32 unitSize = stream->blockBytes;
+            s32 blocksRemaining = bytesRead / unitSize;
+            do {
+                s32 blockIndex = stream->blockIndex;
+                s32 byteIndex = blockIndex / 8;
+                s32 bitIndex = blockIndex - byteIndex * 8;
+                s32 blockFlag = 1 << bitIndex;
+                s32 writeOffset;
+                if ((stream->blockMask[byteIndex] & blockFlag) != 0) {
+                    s32 ringFill;
+                    s32 wrappedBytes;
+
+                    WaitSema(movieStreamSema);
+                    ringFill = stream->ringLength;
+                    writeOffset = stream->ringOffset + ringFill;
+                    writeOffset += (writeOffset > 0xFFFF) * -0x10000;
+                    wrappedBytes = writeOffset + unitSize - 0x10000;
+                    if (wrappedBytes > 0) {
+                        memcpy(stream->ringBuffer + writeOffset, source, unitSize - wrappedBytes);
+                        memcpy(stream->ringBuffer, source + unitSize - wrappedBytes, wrappedBytes);
+                    } else {
+                        memcpy(stream->ringBuffer + writeOffset, source, unitSize);
+                    }
+                    wrappedBytes = ringFill + unitSize;
+                    if (wrappedBytes > 0x10000) {
+                        stream->ringOffset += wrappedBytes - 0x10000;
+                        if (stream->ringOffset > 0xFFFF) {
+                            stream->ringOffset -= 0x10000;
+                        }
+                        stream->ringLength = 0x10000;
+                    } else {
+                        stream->ringLength = wrappedBytes;
+                    }
+                    SignalSema(movieStreamSema);
+                } else {
+                    s32 restoreInterrupts = DIntr();
+
+                    writeOffset = stream->pacReadOffset + stream->pacBufferedBytes;
+                    writeOffset += (writeOffset > 0xFFFF) * -0x10000;
+                    memcpy(stream->pacBuffer + writeOffset, source, unitSize);
+                    stream->pacBufferedBytes += unitSize;
+                    if (restoreInterrupts != 0) {
+                        EIntr();
+                    }
+                }
+                source += unitSize;
+                stream->blockIndex++;
+            } while (--blocksRemaining != 0);
+
+            movie->readRemain -= bytesRead;
+            if (movie->readRemain == 0) {
+                movie->readStat = 7;
+                sdfFileCmdClose(file);
+            } else {
+                movieReadHeaderChunk(movie);
+            }
+        }
+        break;
+    }
+    case 7:
+        if (operation == 7) {
+            movie->fileHandle = NULL;
+            movie->readStat = 6;
+            sdfFileCmdFree(file);
+        }
+        break;
+    }
+
+    return 0;
+}
 
 s32 movieCopyChunk(sdfIpuDecodeCb_t *aNode, sdfMovieCb_t *aMov, s32 aOp, void *aBuf, s32 aSize)
 {
@@ -327,9 +447,61 @@ s32 movieCopyChunk(sdfIpuDecodeCb_t *aNode, sdfMovieCb_t *aMov, s32 aOp, void *a
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieMemcpy);
+s32 movieParseHeader(sdfIpuDecodeCb_t *aNode, sdfMovieCb_t *aMov, s32 aOp, void *aBuf, s32 aSize)
+{
+    /* Keep the retail helper symbol while retaining GCC's nested static chain. */
+    auto void movieMemcpy(void *, const void *, s32) FAKEMATCH_ASM_NAME("movieMemcpy");
+    void movieMemcpy(void *aDst, const void *aSrc, s32 aCount)
+    {
+        memcpy(aDst, aSrc, aCount);
+    }
+    sdfMovieStrmPac_t *stream = aMov->readCb.pac;
+    u8 *body;
+    s32 off;
+    s32 over;
+    s32 first;
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieParseHeader);
+    switch (aOp) {
+    case 0:
+        if (aMov->cancel != 0) {
+            *(u8 *)aBuf = 1;
+            return 0;
+        }
+        if (aMov->readRemain == 0) {
+            *(u8 *)aBuf = 1;
+        }
+        return stream->pacBufferedBytes;
+    case 1:
+        if (aMov->cancel != 0) {
+            return 0;
+        }
+        off = stream->pacReadOffset;
+        body = stream->pacBuffer;
+        over = off + aSize - 0x10000;
+        if (over >= 0) {
+            first = aSize - over;
+            movieMemcpy(aBuf, body + off, first);
+            if (over > 0) {
+                movieMemcpy((u8 *)aBuf + first, body, over);
+            }
+            stream->pacReadOffset = over;
+        } else {
+            movieMemcpy(aBuf, body + off, aSize);
+            stream->pacReadOffset = off + aSize;
+        }
+        stream->pacBufferedBytes -= aSize;
+        return aMov->readRemain;
+    case 2:
+        if (aMov->cancel != 0) {
+            return 0;
+        }
+        if (aMov->readStat == 5) {
+            movieReadHeaderChunk(aMov);
+        }
+        return 0;
+    }
+    return 0;
+}
 
 void movieOpenStream(sdfMovieCb_t *stream, sdfMovieInitParm_t *desc, const char *path)
 {
@@ -344,7 +516,7 @@ void movieOpenStream(sdfMovieCb_t *stream, sdfMovieInitParm_t *desc, const char 
     ext = strrchr(path, '.');
     isPac = 0;
     if (ext != NULL) {
-        isPac = strcasecmp(ext, D_00551B50) == 0;
+        isPac = strcasecmp(ext, sdfMovieIpsExt) == 0;
     }
     stream->mode = isPac;
     fmt.loopMode = 0;

@@ -16,8 +16,7 @@ extern void *memset(void *a, s32 b, size_t c);
 
 extern u8 dds3PadVibrationState[2];
 
-/* Second view of dds3PadVibrationState[1]: the retail load is its own, not the pointer's. */
-SYMBOL_AT(u8, dds3PadVibrationCurrent, dds3PadVibrationState, 1);
+extern u8 dds3PadVibrationCurrent;
 
 extern u8 dds3PadVibrationMode[2];
 
@@ -41,9 +40,9 @@ extern u8 dds3PadButtonState[64];
 
 extern u8 dds3PadButtonPrev[64];
 
-extern u32 D_002F56C0[64];
+extern u32 dds3PadButtonHoldCounters[64];
 
-extern u32 D_002F57C0[4];
+extern u32 dds3PadStickHoldCounters[4];
 
 extern u8 dds3PadStickPrev[8];
 
@@ -61,7 +60,7 @@ void dds3PadInitialize(void);
 
 extern s8 dds3PadBitTable[32];
 
-extern u8 D_005518E0[8];
+extern u8 sdfPadAnalogSticks[8];
 
 extern void dds3UpdateVibrationSlots(void);
 
@@ -77,9 +76,63 @@ void dds3GetVibrationLevel(void);
 
 void dds3PadVibrationSet(u32 motor, u8 level, s32 duration);
 
-void dds3_104170(void);
+void dds3PadVibrationReset(void);
 
 void dds3UpdateVibrationSlots(void);
+
+extern const char dds3StartMenuModeSelect[16];
+
+extern const char dds3StartMenuEndSaveTest[16];
+
+extern const char dds3StartMenuStaffTest[16];
+
+extern const char dds3StartMenuMovieViewer[16];
+
+extern const char dds3StartMenuPuzzleBoyGame[16];
+
+extern const char dds3StartMenuMagatuhiEditor[16];
+
+extern const char dds3StartMenuSpriteViewer[16];
+
+extern const char dds3StartMenuParticleEditor[16];
+
+extern const char dds3StartMenuFontTest[16];
+
+extern const char dds3StartMenuSoundTest[16];
+
+extern const char dds3StartMenuModelViewer[16];
+
+extern const char dds3StartMenuNameEntryTest[16];
+
+extern const char dds3StartMenuResult2Test[16];
+
+extern const char dds3StartMenuTerminalTest[16];
+
+extern const char dds3StartMenuRecoverTest[16];
+
+extern const char dds3StartMenuRagTest[16];
+
+extern const char dds3StartMenuShopTest[16];
+
+extern const char dds3StartMenuCombineTest[16];
+
+extern const char dds3StartMenuCampTest[16];
+
+extern const char dds3StartMenuMessageScriptTest[24];
+
+extern const char dds3StartMenuEventViewer[16];
+
+extern const char dds3StartMenuEventTest[16];
+
+extern const char dds3StartMenuKernelTest[16];
+
+extern const char dds3StartMenuModelCollisionEditor[24];
+
+extern const char dds3StartMenuBattleFieldTest[24];
+
+extern const char dds3StartMenuNewBattleTest[16];
+
+extern const char dds3StartMenuGameStart[16];
 /* End of declarations from src/smt3/kernel/dds3PadManager.c */
 
 s32 dds3PadVibrationTest(dds3ProcessID_t *task) {

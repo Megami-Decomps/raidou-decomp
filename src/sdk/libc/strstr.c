@@ -225,7 +225,7 @@ extern void *_signal_r(_reent *r, s32 sig, void *handler);
 
 extern char *_setlocale_r(_reent *r, s32 category, const char *locale);
 
-extern void *func_002DA308(_reent *r);
+extern void *_localeconv_r(_reent *r);
 
 extern void _cleanup_r(_reent *r);
 
@@ -241,11 +241,11 @@ extern long strtol(const char *s, char **end, s32 base);
 
 extern s32 raise(s32 sig);
 
-extern void func_001001C8(s32 code) __attribute__((noreturn));
+extern void _exit(s32 code) __attribute__((noreturn));
 
 extern u8 localeconvData[] __attribute__((section(".data")));
 
-extern s32 D_00552178 __attribute__((section(".data")));
+extern s32 libcErrno __attribute__((section(".data")));
 
 extern s32 mallocLockCount __attribute__((section(".data")));
 
@@ -337,19 +337,19 @@ extern void __do_global_ctors(void);
 
 extern s32 atexit(void (*fn)(void));
 
-extern void (**D_0052BB28)(void) __attribute__((section(".data")));
+extern void (**dtorListCursor)(void) __attribute__((section(".data")));
 
-extern s32 D_0052BB2C __attribute__((section(".data")));
+extern s32 dtorFrameDeregistered __attribute__((section(".data")));
 
-extern s32 D_0052C37C __attribute__((section(".data")));
+extern s32 frameObjectSema __attribute__((section(".data")));
 
-extern u8 D_0052D940[] __attribute__((section(".data")));
+extern u8 __EH_FRAME_BEGIN__[] __attribute__((section(".data")));
 
-extern void (*D_002F5600[])(void) __attribute__((section(".data")));
+extern void (*__CTOR_LIST__[])(void) __attribute__((section(".data")));
 
-extern s32 D_0059AD58 __attribute__((section(".data")));
+extern s32 mainCtorsDone __attribute__((section(".data")));
 
-extern object *D_0059AD60 __attribute__((section(".data")));
+extern object *frameObjectList __attribute__((section(".data")));
 
 typedef struct fp_number_type {
     s32 class;
@@ -366,7 +366,7 @@ extern f64 __make_dp(s32 kind, s32 sign, s32 exp, s64 mant);
 
 #define va_start(ap, last) __builtin_stdarg_start((ap), last)
 
-extern s32 func_002D6678(_reent *r, FILE *fp, const char *fmt, va_list ap);
+extern s32 _vfprintf_r(_reent *r, FILE *fp, const char *fmt, va_list ap);
 
 typedef union f32_bits {
     f32 f;
@@ -507,8 +507,6 @@ static inline void qsortSwapRange(char *first, char *second, s32 bytes, s32 swap
 
 void qsort(void *array, u32 count, u32 size, qsortCompare_t compare);
 
-#undef QSORT_SWAP_ELEMENT
-
 void *_sbrk_r(_reent *r, s32 incr);
 
 s32 _init_signal_r(_reent *r);
@@ -564,6 +562,17 @@ s32 __sbprintf(FILE *fp, const char *fmt, va_list ap);
 
 s32 vfprintf(FILE *fp, const char *fmt, va_list ap);
 
+/* NON_MATCHING: formatter control flow, frame and allocation remain different. */
+extern const u8 _ctype_[264];
+
+extern const char D_0054B658[8] __attribute__((section(".rodata")));
+
+extern const char putsNewline[16];
+
+extern const char printfSpaces[16];
+
+extern const char printfZeros[16];
+
 extern char *_dtoa_r(_reent *r, f64 value, s32 mode, s32 digits,
                      s32 *decimalPoint, s32 *sign, char **end);
 
@@ -607,7 +616,7 @@ _Bigint *__mdiff(_reent *r, _Bigint *a, _Bigint *b);
 
 s32 gcc2_compiled__1(_Bigint *dividend, _Bigint *divisor);
 
-extern char dtoaInfinityText[], dtoaNanText[];
+extern const char dtoaInfinityText[], dtoaNanText[];
 
 extern const f64 dtoaLog10Slope __attribute__((section(".rodata")));
 
@@ -618,6 +627,24 @@ extern const f64 dtoaLog10Of2 __attribute__((section(".rodata")));
 extern const f64 dtoaPow10Big[];
 
 extern const f64 dtoaPow10Limit __attribute__((section(".rodata")));
+
+extern const char printfNanText[8] __attribute__((section(".rodata")));
+
+extern const char printfHexLower[24];
+
+extern const char printfNullText[8] __attribute__((section(".rodata")));
+
+extern const char printfHexUpper[24];
+
+extern const char printfBadBaseMsg[32];
+
+extern const char printfZeroDigit[8] __attribute__((section(".rodata")));
+
+extern const char printfDecimalPoint[16];
+
+extern const char dtoaInfinityText[16];
+
+extern const char dtoaNanText[8] __attribute__((section(".rodata")));
 
 s32 fflush(void *stream);
 
@@ -643,15 +670,15 @@ s32 __sfvwrite(FILE *fp, __suio *uio);
 
 s32 _fwalk(_reent *r, s32 (*func)(void *));
 
-extern char localeEmptyStr[];
+extern const char localeEmptyStr[];
 
-extern char localeCName[];
+extern const char localeCName[];
 
 extern s32 strcmp(const char *left, const char *right);
 
 char *_setlocale_r(_reent *r, s32 category, const char *locale);
 
-void *func_002DA308(_reent *r);
+void *_localeconv_r(_reent *r);
 
 char *setlocale(s32 category, const char *locale);
 
@@ -681,7 +708,7 @@ s32 _lo0bits(u32 *y);
 _Bigint *_i2b(_reent *r, s32 i);
 
 /* Native indexed constants span the separately labeled word at 0x0054B928. */
-extern const s32 pow5MultTable[4];
+extern const s32 pow5MultTable[];
 
 _Bigint *_multiply(_reent *r, _Bigint *a, _Bigint *b);
 
@@ -728,6 +755,38 @@ s32 _fstat_r(_reent *r, s32 fd, struct stat *buf);
 long _lseek_r(_reent *r, s32 fd, s32 offset, s32 whence);
 
 long _read_r(_reent *r, s32 fd, char *buf, s32 n);
+
+extern f64 dtoaLog10Slope __attribute__((section(".rodata")));
+
+extern f64 dtoaLog10Offset __attribute__((section(".rodata")));
+
+extern const f64 dtoaLog10Of2 __attribute__((section(".rodata")));
+
+extern const char localeEmptyStr[8] __attribute__((section(".rodata")));
+
+extern const char localeDecimalPoint[8] __attribute__((section(".rodata")));
+
+extern const char localeCName[4] __attribute__((section(".rodata")));
+
+extern const s32 pow5MultTable[2] __attribute__((section(".rodata")));
+
+extern const f64 pow10Table[25];
+
+extern const f64 dtoaPow10Big[4];
+
+extern const f64 dtoaPow10Limit __attribute__((section(".rodata")));
+
+extern const f64 dtoaPow10Tiny[5];
+
+extern const char kernlInternalErrorMsg[40];
+
+extern const char ttyMsgPacketTooLarge[40];
+
+extern const char ttyMsgReceiveError[24];
+
+extern const char ttyMsgSendError[24];
+
+extern const char ttyMsgWlenError[24];
 /* End of declarations from src/smt3/sdk/libc.c */
 
 char *strstr(const char *haystack, const char *needle)

@@ -209,6 +209,8 @@ void effBTLModelGroupGetDirection(u32 group, sdfVector4_t *pDirection);
 
 void effBTLModelLook(nbFormation_t *pFormation, sdfVector4_t *pTargetPos);
 
+void effBTLModelLook2(nbFormation_t *pFormation, sdfVector4_t *pTargetPos, f32 angle);
+
 void effBTLModelGroupLook(u32 group, sdfVector4_t *pPos);
 
 u32 effBTLModelGetGroupNumber(u32 group);
@@ -358,4 +360,25 @@ INCLUDE_ASM(const s32, "effect/effBattleMisc", func_001EA408);
 void func_001EA418(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", effBTLPartGetRotateMatrixPtr);
+/* Build a 4x4 basis matrix into `out`: look-at for anchor kind 4 / direction mode 9, else a table-driven rotation. */
+void effBTLPartGetRotateMatrixPtr(effBTLAimParams_t *pPosPtr, sdfMatrix4_t *pMatrix) {
+    f32 angle = 0;
+    f32 tilt = 0;
+
+    if (pPosPtr->aimMode == 4 || pPosPtr->directionMode == 9) {
+        LookAtMatrix(aViewTarget, aViewEye, aViewDown);
+        ReverseMatrix();
+        SDF_VU0_RESET_ROW3();
+    } else {
+        if (pPosPtr->aimMode == 5 || pPosPtr->aimMode == 3 || pPosPtr->directionMode == 8 || pPosPtr->directionMode == 10) {
+            tilt = 3.14159265f / 2.0f;
+        }
+        if (pPosPtr->directionMode < 9) {
+            angle = effBTL_Ptr_D[pPosPtr->directionMode];
+        }
+        SetRotateMatrixX(tilt);
+        SetRotateMatrixY_B(angle);
+        MultMatrixRevNoArg();
+    }
+    SDF_VU0_STOREMATRIX(pMatrix);
+}

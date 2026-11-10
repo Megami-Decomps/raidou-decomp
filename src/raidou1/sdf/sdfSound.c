@@ -253,21 +253,21 @@ extern char sdfDumpLineBuf[];
 
 extern char sdfDumpEndStr[];
 
-extern char sdfDmaDumpStartFmt[];
+extern const char sdfDmaDumpStartFmt[];
 
-extern char sdfDmaNotQwordFmt[];
+extern const char sdfDmaNotQwordFmt[];
 
-extern char sdfDmaTagLineFmt[];
+extern const char sdfDmaTagLineFmt[];
 
-extern char sdfDmaNestOverflowMsg[];
+extern const char sdfDmaNestOverflowMsg[];
 
 extern char *sdfDmaTagNameTable[];
 
 sdfGsMemSlice_t *sdfGsMemGetLinkHead(void);
 
-extern char sdfGsMemInfoTitle[];
+extern const char sdfGsMemInfoTitle[];
 
-extern char sdfGsMemNodeFmt[];
+extern const char sdfGsMemNodeFmt[];
 
 extern char sdfGsMemTypeFmt[];
 
@@ -395,7 +395,9 @@ void sdfSndLoadIRXModules(void);
 
 extern char sdfSndIopSizeMsg[];
 
-extern char sdfSndSeqMapInitMsg[];
+extern const char sdfSndSeqMapInitMsg[];
+
+void sdfSndVoiceMapInit(char *aVoiceInfo, s32 aVoiceCount);
 
 void sdfSndVoiceMapInit(char *aVoiceInfo, s32 aVoiceCount);
 
@@ -404,6 +406,8 @@ void sdfSndSeqMapInit(u32 *aSequenceInfo, s32 aSequenceCount);
 extern s32 sceSifInitIopHeap(void);
 
 extern s32 sdfSndIopWorkAddr;
+
+extern const char sdfSndSeqMapInitMsg[18];
 
 void sdfSndInit(char *aVoiceInfo, s32 aVoiceCount, char *aSequenceInfo, s32 aSequenceCount);
 
@@ -420,11 +424,11 @@ void p2sdStopSe(u32 soundId);
 
 s32 p2sdStopAllBgm(void);
 
-s32 p2sd_2C1788(void);
+s32 sdfSndQueueNoPayloadCommand210(void);
 
 s32 p2sdStopAllSe(void);
 
-s32 p2sd_2C17D8(s32 aSeId);
+s32 sdfSndDispatchCommandWithoutPayload(s32 aSeId);
 
 /* Send a NUL-terminated command string; the transport excludes the terminator. */
 u32 sdfSndLoadHDFile(s32 aVcChNum, char *aFilename);
@@ -454,32 +458,32 @@ s32 p2sdLoadCheckMidi(s32 MidiNo);
 /* Make sure the MIDI bank named by the packed track id is resident, loading it if not. */
 void p2sdLoadSMGFile(s32 MidiNo);
 
-u64 p2sd_2C1D78(const char *aName);
+u64 sdfSndSendFilenameCommand(const char *aName);
 
 void p2sdSetPcmBuffer(saddr_t data, s32 size);
 
-u64 p2sd_2C1E10(s32 aCh);
+u64 sdfSndSendChannelControlCommand(s32 aCh);
 
-u64 p2sd_2C1E40(u8 aCh);
+u64 sdfSndSendChannelGroupCommand140(u8 aCh);
 
-u64 func_002C1E70(u8 aCh);
+u64 sdfSndSendChannelGroupCommand150(u8 aCh);
 
-void p2sd_2C1EA0(s32 id);
+void sdfSndReleaseMidiTrack(s32 id);
 
-u8 p2sd_2C1EF8(s32 aIndex);
+u8 sdfSndGetTrackBalanceFirstComponent(s32 aIndex);
 
-u8 p2sd_2C1F10(s32 aIndex);
+u8 sdfSndGetTrackBalanceSecondComponent(s32 aIndex);
 
-s32 p2sd_2C1F28(s32 aIndex);
+s32 sdfSndGetNonnegativeEntryBalance(s32 aIndex);
 
-u8 *p2sd_2C1F50(void);
+u8 *sdfSndGetMidiChannelTable(void);
 
-p2sdLoadEntry_t *p2sd_2C1F60(void);
+p2sdLoadEntry_t *sdfSndGetTrackSlotTable(void);
 
-u32 p2sd_2C1F70(u32 *aOutValue);
+u32 sdfSndGetMidiStateWordPair(u32 *aOutValue);
 
 /* Pack two 24-byte MIDI state groups into out; NULL leaves the state untouched. */
-void p2sd_2C1F90(u8 *out);
+void sdfSndCopyGroupedMidiStateBytes(u8 *out);
 
 /* Sends a prepared track identifier with the 0x17f setting. */
 void p2sdPlayBGMFade(s32 trackId);
@@ -500,9 +504,9 @@ u32 p2sdGetPcmState(void);
 
 s32 p2sdSyncSound(void);
 
-void p2sd_2C21A8(u8 channel);
+void sdfSndSendChannelGroupCommand110(u8 channel);
 
-s32 p2sd_2C21D8(u32 aCh);
+s32 sdfSndSetChannelCount(u32 aCh);
 
 u32 p2sdSetPcmCallback(addr_t aCallback);
 
@@ -510,12 +514,12 @@ u32 p2sdSetPcmCallback(addr_t aCallback);
  * pending; returns nonzero when busy. */
 s32 p2sdPlayPcm(u8 channel);
 
-u32 p2sd_2C2280(void);
+u32 sdfSndGetCommandStatus(void);
 
 s32 p2sdSyncMovie(void);
 
 /* Separate native copy of the command-0x110 channel-group sender. */
-void p2sd_2C22B0(u8 channel);
+void sdfSndSendChannelGroupCommand110Duplicate(u8 channel);
 
 s32 sdfFileRpcCallback(s32 unused, u32 event);
 
@@ -530,12 +534,20 @@ extern s32 GetThreadId(void);
 
 void SifRpcServerThreadProc(void);
 
-void sdf_2C2618(u32 kind, const u8 *data);
+void sdfSndSetTableEntry(u32 kind, const u8 *data);
 
-void sdf_2C27F8(u32 kind, u8 *data);
+void sdfSndGetTableEntry(u32 kind, u8 *data);
 
 /* Print size bytes in address-aligned, sixteen-column hexadecimal rows. */
 void sdfDumpHexLine(const u8 *data, s32 size);
+
+extern const char sdfDmaDumpStartFmt[29];
+
+extern const char sdfDmaNotQwordFmt[21];
+
+extern const char sdfDmaTagLineFmt[33];
+
+extern const char sdfDmaNestOverflowMsg[27];
 
 void sdfDumpDmaChain(sdfDmaDumpTag_t *source);
 
@@ -557,10 +569,118 @@ void sdfDumpGsMemory(void);
 
 void sdfDumpGsMemory2(void);
 
+extern const char sdfGsMemInfoTitle[116];
+
+extern const char sdfGsMemNodeFmt[31];
+
 void sdfDumpMemory(void);
 
 /* Print the chip heap totals and how many cells are in use per size class (1..16, 17..32, ...). */
 void sdfDumpChipMemory(void);
+
+extern s32 p2sdSmgHandle;
+
+extern u32 p2sdPcmCallback;
+
+extern u32 p2sdPcmState;
+
+extern u32 p2sdPcmBusy;
+
+extern u32 sdfSndSendCmd_cmd_id;
+
+extern s32 sdfSifRpcThreadId;
+
+extern s32 (*p2sdSmgBuf)(void);
+
+extern char sdfDmaTagEndName[8];
+
+extern char sdfDmaTagRetName[8];
+
+extern char sdfDmaTagCallName[8];
+
+extern char sdfDmaTagRefsName[8];
+
+extern char sdfDmaTagRefName[8];
+
+extern char sdfDmaTagNextName[8];
+
+extern char sdfDmaTagCntName[8];
+
+extern char sdfDmaTagRefeName[8];
+
+extern char sdfDumpAddrFmt[8];
+
+extern char sdfDumpPadStr[8];
+
+extern char sdfDumpMidGapStr[8];
+
+extern char sdfDumpByteSepStr[8];
+
+extern char sdfDumpByteFmt[8];
+
+extern char sdfDumpLineBuf[2];
+
+extern char sdfDumpEndStr[8];
+
+extern char sdfVifMaskedName[8];
+
+extern char sdfVifXferOkName[8];
+
+extern char sdfVifUnpackV4_5Name[8];
+
+extern char sdfVifUnpackV4_8Name[8];
+
+extern char sdfVifUnpackV4_16Name[8];
+
+extern char sdfVifUnpackV4_32Name[8];
+
+extern char sdfVifUnpackV3_8Name[8];
+
+extern char sdfVifUnpackV3_16Name[8];
+
+extern char sdfVifUnpackV3_32Name[8];
+
+extern char sdfVifUnpackV2_8Name[8];
+
+extern char sdfVifUnpackV2_16Name[8];
+
+extern char sdfVifUnpackV2_32Name[8];
+
+extern char sdfVifUnpackS_8Name[8];
+
+extern char sdfVifUnpackS_16Name[8];
+
+extern char sdfVifUnpackS_32Name[8];
+
+extern char sdfVifFlagsMruName[8];
+
+extern char sdfVifFlagsRuName[8];
+
+extern char sdfVifFlagsMrName[8];
+
+extern char sdfVifFlagsRName[8];
+
+extern char sdfVifFlagsMuName[8];
+
+extern char sdfVifFlagsUName[8];
+
+extern char sdfVifFlagsMName[8];
+
+extern char sdfVifFlagsNoneName[8];
+
+extern char sdfDumpIndentStr[8];
+
+extern char sdfDumpWordFmt[8];
+
+extern char sdfGsMemClutName[8];
+
+extern char sdfGsMemTexName[8];
+
+extern char sdfGsMemFrameName[8];
+
+extern char sdfGsMemFreeName[8];
+
+extern char sdfGsMemTypeFmt[8];
 /* End of declarations from src/smt3/sdf/sdfSound.c */
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036F610);
@@ -728,11 +848,67 @@ INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036FF48);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdPlaySE);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdPlaySeDeg);
+/* The angle normalization and attenuation share one frame through the SE tail call. */
+void p2sdPlaySeDeg(s32 trackId, f32 angle, f32 distance) {
+    s32 degrees = (s32)angle % 360;
+    s32 side = 1;
+    s32 pan;
+    f32 volume;
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdPlaySe3DEx);
+    if (degrees > 180) {
+        degrees -= 360;
+    }
+    if (degrees < -180) {
+        degrees += 360;
+    }
+    if (degrees < 0) {
+        degrees = -degrees;
+        side = -1;
+    }
+    volume = 1.0f;
+    if (degrees < 45) {
+        pan = 63 - (s32)(degrees * 0.71111f) * side;
+    } else if (degrees <= 90) {
+        pan = 63 - (s32)(degrees * 0.7f) * side;
+        volume = 1.0f - (degrees - 45) * 0.004444f;
+    } else {
+        volume = 0.75f - (degrees - 90) * 0.005556f;
+        pan = 63 - (s32)((180 - degrees) * 0.7f) * side;
+    }
+    if (distance > 1.0f) {
+        volume /= distance * 0.333f + 1.0f;
+    }
+    p2sdPlaySE(trackId, (s32)(volume * 127.0f), pan);
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdSetStandPos);
+/* Converts world coordinates to the sound engine's one-tenth scale. */
+void p2sdPlaySe3DEx(s32 MidiNo, s32 posx, f32 posy, f32 posz, f32 limit) {
+    u32 packet[8];
+    packet[0] = MidiNo;
+    packet[1] = posx;
+    packet[2] = (s32)(posy * 0.1f);
+    packet[3] = (s32)(posz * 0.1f);
+    packet[4] = (s32)(limit * 0.1f);
+    sdfSndSendSyncCmd(0x170, 0, packet, 0x20);
+}
+
+/* Scale six world-space values and send them to the sound engine when they changed. */
+void p2sdSetStandPos(f32 Cposx, f32 Cposy, f32 Cposz,
+                                 f32 Pposx, f32 Pposy, f32 Pposz) {
+    sndListenerState_t state;
+    state.scaledValues[0] = Cposx * 0.1f;
+    state.scaledValues[1] = Cposy * 0.1f;
+    state.scaledValues[2] = Cposz * 0.1f;
+    state.scaledValues[3] = Pposx * 0.1f;
+    state.scaledValues[4] = Pposy * 0.1f;
+    state.scaledValues[5] = Pposz * 0.1f;
+    if (sdfSndListenerPrevState.scaledValues[0] != state.scaledValues[0] || sdfSndListenerPrevState.scaledValues[1] != state.scaledValues[1] ||
+        sdfSndListenerPrevState.scaledValues[2] != state.scaledValues[2] || sdfSndListenerPrevState.scaledValues[3] != state.scaledValues[3] ||
+        sdfSndListenerPrevState.scaledValues[4] != state.scaledValues[4] || sdfSndListenerPrevState.scaledValues[5] != state.scaledValues[5]) {
+        sdfSndSendSyncCmd(0x160, 0, &state, 0x20);
+        sdfSndListenerPrevState = state;
+    }
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003703A8);
 
@@ -860,7 +1036,28 @@ s32 p2sdSyncMovie(void)
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_00370A00);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfFileRpcCallback);
+s32 sdfFileRpcCallback(s32 unused, u32 event) {
+    switch (event) {
+    case 1:
+        break;
+    case 3:
+        break;
+    case 6:
+        break;
+    case 5:
+        FlushCache(0);
+        /* Fall through: flush and wake the waiting thread. */
+    case 4:
+        SignalSema(sifRpcServerSema);
+        break;
+    case 0:
+    case 2:
+    case 7:
+        SignalSema(sifRpcServerSema);
+        break;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", sdfFileRpcHandleCmd);
 

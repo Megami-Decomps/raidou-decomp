@@ -48,7 +48,7 @@ void *sdfChipAllocDirect(s32 aSize);
 
 extern s32 EIntr(void);
 
-extern saddr_t D_005520A8[2];
+extern saddr_t sdfPendingQueueSlots[2];
 
 extern s32 DIntr(void);
 
@@ -104,6 +104,8 @@ void sdfDelayedResrcProc(void);
 u64 sdfDelayedResrcCheckFunc(void);
 
 u64 sdfDelayedResrcCheck(void);
+
+extern s32 sdfDelayedResrcSemaId;
 /* End of declarations from src/smt3/sdf/sdfDelayedResrc.c */
 
 void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, SdfPendingCallback aFreeFunc) {
@@ -202,7 +204,7 @@ u64 sdfDelayedResrcCheckFunc(void) {
         return 1;
     }
     slotIndex = 0;
-    slotCursor = D_005520A8;
+    slotCursor = sdfPendingQueueSlots;
     do {
         if (*slotCursor != 0) {
             return 1;

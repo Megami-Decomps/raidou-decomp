@@ -174,6 +174,40 @@ void dds3UnlinkProcess(dds3ProcessID_t *target);
 void dds3SetProcessFlag(dds3ProcessID_t *target, u32 flag, s32 type);
 
 void dds3ResetProcessFlag(dds3ProcessID_t *target, u32 flag, s32 type);
+
+extern dds3ProcessID_t *startinglistf;
+
+extern dds3ProcessID_t *startinglistl;
+
+extern u32 startinglistcnt;
+
+extern dds3ProcessID_t *endinglistf;
+
+extern dds3ProcessID_t *endinglistl;
+
+extern u32 endinglistcnt;
+
+extern dds3ProcessID_t *runninglistf;
+
+extern dds3ProcessID_t *runninglistl;
+
+extern u32 runninglistcnt;
+
+extern dds3ProcessID_t *runprocess;
+
+extern char dds3DebugMesFmt[8];
+
+extern char dds3DebugStatOpen[8];
+
+extern char dds3DebugFlagCharDot[8];
+
+extern char dds3DebugFlagCharP[8];
+
+extern char dds3DebugFlagCharS[8];
+
+extern char dds3DebugFieldClose[8];
+
+extern char dds3DebugBlockEnd[8];
 /* End of declarations from src/smt3/kernel/dds3KernelCore.c */
 
 void DeleteProcessList(dds3ProcessID_t *setp)
@@ -566,7 +600,19 @@ dds3ProcessID_t *dds3SearchProcessNumber(u32 type, s32 n)
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_001012B0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3PrintProcessList);
+void dds3PrintProcessList(void)
+{
+    char *countFormat;
+
+    DebugProcess(startinglistf, "*** starting ***************************");
+    countFormat = "<<< %d >>>\n";
+    printf(countFormat, startinglistcnt);
+    DebugProcess(runninglistf, "*** running ****************************");
+    printf(countFormat, runninglistcnt);
+    DebugProcess(endinglistf, "*** ending *****************************");
+    printf(countFormat, endinglistcnt);
+    printf(dds3DebugBlockEnd);
+}
 
 void DebugProcessTree(dds3ProcessID_t *ps, s32 level)
 {
@@ -882,6 +928,7 @@ void dds3ResetProcessFlag(dds3ProcessID_t *target, u32 flag, s32 type)
 {
     ChangeProcessFlag(0, target, flag, type);
 }
+
 INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_004DE248);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_004DE24C);

@@ -81,7 +81,7 @@ s32 movieDrawProc(void);
 
 extern void movieOpenStream(sdfMovieCb_t *stream, sdfMovieInitParm_t *descriptor, const char *path);
 
-extern char movieDrawProcName[];
+extern const char movieDrawProcName[];
 
 void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor);
 
@@ -97,7 +97,7 @@ s32 movieMan_Process(void);
 
 extern void sdfIpuInit(void);
 
-extern char movieManProcName[];
+extern const char movieManProcName[];
 
 void *dds3StartMovieManager(void);
 
@@ -142,7 +142,7 @@ typedef struct
 
 extern u8 sdfHddValid;
 
-extern char movieDirPath[];
+extern const char movieDirPath[];
 
 extern char movieExtIpu[];
 
@@ -182,6 +182,14 @@ extern char movieDebugRowFmt[];
 /* One screen of the movie list, with an arrow on the selected row and a
  * marker at each end the list continues past. */
 void movieDebugDrawInfo(void);
+
+extern const char movieDrawProcName[16];
+
+extern const char movieManProcName[16];
+
+extern const char movieDirPath[16];
+
+extern saddr_t PlayingNo;
 /* End of declarations from src/smt3/movie/mviManager.c */
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001E8A48);

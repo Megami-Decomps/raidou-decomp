@@ -131,9 +131,7 @@ extern void sceSifRpcLoop(sifRpcDataQueue_t *queue);
 
 extern u8 sdfPrintRpcBuff[];
 
-void sdfPrintRpcThread(void);
-
-extern char sdfPrintIopBindErrMsg[];
+extern const char sdfPrintIopBindErrMsg[];
 
 #include "sdk_libc.h"
 
@@ -151,6 +149,12 @@ void sdfPrintIopInit(void);
 void sdfPuts(const char *str);
 
 s32 sdfPrintf(const char *str, ...);
+
+extern const char sdfPrintIopBindErrMsg[16];
+
+extern s8 sdfPrintIopFlag;
+
+extern char sdfPrintStrFmt[4];
 /* End of declarations from src/smt3/sdf/sdfPrint.c */
 
 /* Copy a positive source/end span into the RPC reply buffer; otherwise return NULL. */

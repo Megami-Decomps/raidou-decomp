@@ -249,6 +249,34 @@ s32 fcl_214458(void);
 s32 fclLoadFileDone(s32 unused, s32 cmd, s32 value, s32 unused2, s32 *out);
 
 void fclLoadFileAsync(const char *name, void *buf);
+
+extern s32 gMsgID;
+
+extern s8 gMsgFlag;
+
+extern s8 gMsgInvFlag;
+
+extern s32 gSelMsgNo;
+
+extern s8 gSelMsgPos;
+
+extern char fclStrFee[4];
+
+extern u32 D_0054FC68[2];
+
+extern char fclStrOwn[4];
+
+extern u32 D_0054FC78[2];
+
+extern u32 D_0054FC80[2];
+
+extern char fclStrTotal[6];
+
+extern char fclStrMoney[6];
+
+extern char fclStrNo[3];
+
+extern char fclStrYes[4];
 /* End of declarations from src/smt3/facility/fclMisc.c */
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00127F48);

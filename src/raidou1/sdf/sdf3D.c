@@ -148,9 +148,7 @@ extern u8 sdf3DScreenParam[];
 
 extern u8 vu1MicroPacket[];
 
-/* One past the last byte of the vu1MicroPacket VIF packet, so the packet's
- * length is the distance between the two. */
-SYMBOL_AT_REGION(u8, vu1MicroPacketEnd, vu1MicroPacket, 0x3D20);
+extern u8 vu1MicroPacketEnd[];
 
 extern u8 sdf3DScreenTm[];
 
@@ -277,7 +275,7 @@ extern void MultMatrix(const void *matrix);
 /* vu0 routine: compose the perspective matrix and clip-to-screen mapping. */
 void sdf3DMakeScreenParam(sdf3DScreenParam_t *camera);
 
-extern f32 D_00529630[];
+extern f32 sdf3DUpVector[];
 
 extern void DiagMatrix(void);
 
@@ -301,6 +299,18 @@ extern void *memset(void *dst, s32 value, size_t size);
 void sdf3DInitSpecularTex2(void);
 
 void sdf3DInit(void);
+
+extern addr_t sdf3DLightDefault;
+
+extern addr_t sdf3DFogDefault;
+
+extern sdfTexHandle_t *sdf3DSlot2Tex;
+
+extern sdfTexHandle_t *sdf3DSpecularTex;
+
+extern u64 sdf3DRefMapParam;
+
+extern sdfTexHandle_t *sdf3DSlot1Tex;
 /* End of declarations from src/smt3/sdf/sdf3D.c */
 
 void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera) {
@@ -347,7 +357,88 @@ void sdf3DSetDefaultFog(u8 *aFog) {
 
 INCLUDE_ASM(const s32, "sdf/sdf3D", func_003686B0);
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DMakeLightParallelPacket);
+/* vu0 routine: parallel-light packet and lighting basis construction */
+void sdf3DMakeLightParallelPacket(sdf3DLightParallelPacket_t *aPacket, sdf3DLight_t **aLights, sdfVector4_t *aAmbient) {
+    f32 direction[4] __attribute__((aligned(16)));
+    /* VU0 lqc2 reads this scratch through its address, like the DDS rotation
+     * loaders and Euler-to-quaternion routines; volatile preserves its stores. */
+    volatile f32 axis[4] __attribute__((aligned(16)));
+    sdf3DLight_t *first;
+    s32 i;
+
+    aPacket->dmatag.qwc = 13;
+    aPacket->dmatag.dat0 = 0x10000000;
+    aPacket->dmatag.dat1 = 0x6C0D4398;
+    SDF_VU0_LOADVECTOR_B(aAmbient);
+    SDF_VU0_STOREVECTOR_B(&aPacket->color[3]);
+    first = NULL;
+    for (i = 0; i < 3; i++) {
+        sdf3DLight_t *light = aLights[i];
+
+        if (light == NULL) {
+            aPacket->normalComponents[0][i] = 0.0f;
+            aPacket->normalComponents[1][i] = 0.0f;
+            aPacket->normalComponents[2][i] = 0.0f;
+            aPacket->color[i].x = 0.0f;
+            aPacket->color[i].y = 0.0f;
+            aPacket->color[i].z = 0.0f;
+            aPacket->color[i].w = 0.0f;
+        } else {
+            if (first == NULL) {
+                first = light;
+            }
+            SDF_VU0_LOADVECTOR(&light->v);
+            SDF_VU0_NORMALIZE();
+            SDF_VU0_SCALEVECTOR_BITS(-1.0f);
+            SDF_VU0_STOREVECTOR(direction);
+            aPacket->normalComponents[0][i] = direction[0];
+            aPacket->normalComponents[1][i] = direction[1];
+            aPacket->normalComponents[2][i] = direction[2];
+            SDF_VU0_LOADVECTOR(&light->color);
+            SDF_VU0_ADDVECTOR_B_A();
+            SDF_VU0_STOREVECTOR(&aPacket->color[i]);
+        }
+    }
+    SDF_VU0_COPYVECTOR_F32(&aPacket->colorBase, &aPacket->color[0]);
+    SDF_VU0_STOREVECTOR_B(&aPacket->color[4]);
+    if (first == NULL) {
+        SDF_MMI_STORE_UNIT_MATRIX(&aPacket->TM);
+        return;
+    }
+    SDF_VU0_LOADVECTOR(&first->v);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_SET_ROW2();
+    SDF_VU0_STOREVECTOR_F32(axis);
+    if (ffabsf(axis[0]) < 0.000001f && ffabsf(axis[2]) < 0.000001f) {
+        axis[0] = -axis[1];
+        axis[1] = 0.0f;
+        axis[2] = 0.0f;
+        axis[3] = 0.0f;
+        SDF_VU0_LOADVECTOR_B_F32(axis);
+    } else {
+        SDF_VU0_LOADVECTOR_B(sdf3DUpVector);
+    }
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_SET_ROW0();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_GET_ROW2();
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_SET_ROW1();
+    SDF_VU0_RESET_ROW3();
+    DiagMatrix();
+    SDF_VU0_LOADVECTOR(&first->v);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_LOADVECTOR_B_MTXCOL(sdfCameraTm + 8);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_NEGVECTOR_XYZ();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_SET_ROW3();
+    SDF_VU0_STOREMATRIX(&aPacket->TM);
+}
 
 void sdf3DMakeFogPacket(sdf3DFogPacket_t *aPacket, sdf3DFogParam_t *aParam) {
     f32 rangeMax = aParam->fogMin;
@@ -394,7 +485,33 @@ void sdf3DLinkInitPacket(sdfDrawTag_t *aTag, DmaPacketHeader *aPacket) {
     sdfDrawTagLinkRef(aTag, EE_ADDR(aPacket));
 }
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DInitSpecularTex2);
+void sdf3DInitSpecularTex2(void) {
+    struct sdfMemHandle_t *allocation = sdfMemAllocDirect(0x2440);
+    sdf3DSpecularTexImage_t *texture = (sdf3DSpecularTexImage_t *)EE_ADDR_PTR(sdfMemLock(allocation));
+    s32 i;
+    s32 j;
+
+    sdfTmxSetHeader(&texture->header, 0x80, 0x40, 0x13, 1, 0);
+    texture->header.fileSize = 0x2440;
+    texture->header.texWrapMode = 5;
+    /* The physical CLUT slot j decodes to the logical intensity i. */
+    for (j = 0; j != 0x100; j++) {
+        i = ((j & 8) << 1) | ((j & 0x10) >> 1) | (j & ~0x18);
+        texture->palette[j] = i | (i << 16) | (i << 8) | 0x80000000;
+    }
+    memset(&texture->indices[0][1], 0xFF, 0x7F);
+    texture->indices[0][0] = 0;
+    for (i = 0; i != 0x80; i++) {
+        f32 power = i * (1.0f / 127.0f);
+        f32 value = power;
+        for (j = 1; j != 0x40; j++) {
+            texture->indices[j][i] = (u8)(s32)(value * 255.0f + 0.5f);
+            value *= power;
+        }
+    }
+    sdf3DSpecularTex = sdfTexSet(&texture->header);
+    sdfMemFreeDirect(allocation);
+}
 
 void sdf3DInit(void) {
     s64 textureWord;

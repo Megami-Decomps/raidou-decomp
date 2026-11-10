@@ -531,7 +531,47 @@ void sdfMotionSeek(sdfMotionCtrlr_t *aCtrlr, f32 aFrame) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionNext);
+s32 sdfMotionNext(sdfMotionCtrlr_t *aCtrlr) {
+    s32 result;
+    f32 frame;
+    f32 frameLength;
+
+    result = 0;
+    switch (aCtrlr->stat) {
+    case 0:
+    case 2:
+    case 3:
+    case SDF_MOTION_STAT_NOCUT:
+    case SDF_MOTION_STAT_PAUSE:
+        break;
+    case SDF_MOTION_STAT_SET:
+        sdfMotionSeek(aCtrlr, aCtrlr->blendPreLength);
+        break;
+    case SDF_MOTION_STAT_SEEK:
+        frame = aCtrlr->frame + SDF_FRAME_STEP(aCtrlr->speed);
+        frameLength = aCtrlr->frameLength;
+        if (aCtrlr->playType == 0) {
+            if (frameLength <= frame) {
+                sdfMotionSeek(aCtrlr, frameLength);
+                aCtrlr->stat = SDF_MOTION_STAT_NOCUT;
+                result = 1;
+                break;
+            }
+        } else if (frameLength <= frame) {
+            aCtrlr->blendLength = 0.0f;
+            result = 2;
+            aCtrlr->blendPreLength = 0.0f;
+            do {
+                frame -= frameLength;
+            } while (frameLength <= frame);
+        }
+        sdfMotionSeek(aCtrlr, frame);
+        break;
+    default:
+        break;
+    }
+    return result;
+}
 
 void sdfMotionPause(sdfMotionCtrlr_t *aCtrlr)
 {
@@ -1311,7 +1351,85 @@ void sdfMotCLBK_morphSeek(sdfMotNodeMorph_t *aThis, f32 aFrame) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_morphBlendSeek);
+void sdfMotCLBK_morphBlendSeek(sdfMotNodeMorph_t *aThis, f32 aFrame, f32 aBlendRate) {
+    sdfMotGetKeyIf_t sample;
+    sdfModelMorph_t *current;
+    sdfModelMorphParm_t *previous;
+    u32 count;
+    s32 previousPairIndex;
+    s32 firstId;
+    s32 secondId;
+    f32 firstValue;
+    f32 secondValue;
+    f32 contributionWeight;
+    f32 secondWeight;
+
+    sdfMotGetKey(&aThis->nodeBase, aFrame, &sample);
+    firstId = ((sdfModelMorphParm_t *)sample.key0)->targetId;
+    secondId = ((sdfModelMorphParm_t *)sample.key1)->targetId;
+    firstValue = ((sdfModelMorphParm_t *)sample.key0)->blend;
+    secondValue = ((sdfModelMorphParm_t *)sample.key1)->blend;
+    secondWeight = sample.rate;
+    {
+        const f32 sampleComplement = 1.0f - secondWeight;
+        contributionWeight = sampleComplement * aBlendRate;
+    }
+    secondWeight *= aBlendRate;
+    current = aThis->morphNode;
+
+    if (firstId == secondId) {
+        current->target[0].targetId = secondId;
+        current->target[0].blend = firstValue * contributionWeight + secondValue * secondWeight;
+        count = 1;
+    } else {
+        current->target[0].targetId = firstId;
+        current->target[0].blend = firstValue * contributionWeight;
+        current->target[1].targetId = secondId;
+        current->target[1].blend = secondValue * secondWeight;
+        count = 2;
+    }
+
+    contributionWeight = 1.0f - aBlendRate;
+    for (previous = aThis->blendSrc.target, previousPairIndex = 0;
+         previousPairIndex < 2; previousPairIndex++, previous++) {
+        f32 previousContributionWeight = previous->blend * contributionWeight;
+
+        if (!(previousContributionWeight <= 1.0e-6f)) {
+            s32 id = previous->targetId;
+
+            if (count == 1) {
+                if (current->target[0].targetId == id) {
+                    current->target[0].blend += previousContributionWeight;
+                } else {
+                    current->target[1].targetId = id;
+                    current->target[1].blend = previousContributionWeight;
+                    count = 2;
+                }
+            } else if (current->target[0].targetId == id) {
+                current->target[0].blend += previousContributionWeight;
+            } else if (current->target[1].targetId == id) {
+                current->target[1].blend += previousContributionWeight;
+            } else if (current->target[0].blend < current->target[1].blend) {
+                if (current->target[0].blend < previousContributionWeight) {
+                    current->target[0].targetId = id;
+                    current->target[0].blend = previousContributionWeight;
+                }
+            } else {
+                if (current->target[1].blend < previousContributionWeight) {
+                    current->target[1].targetId = id;
+                    current->target[1].blend = previousContributionWeight;
+                }
+            }
+        }
+
+    }
+
+    if (count == 1) {
+        current->target[1].targetId = 0;
+        current->target[1].blend = 0.0f;
+    }
+
+}
 
 void sdfMotCLBK_morphInitBlend(sdfMotNodeMorph_t *aThis) {
     aThis->blendSrc = *aThis->morphNode;

@@ -82,7 +82,7 @@ typedef struct polyMovieObject_t polyMovieObject_t;
 
 extern s32 evtStopMover(polyMovieObject_t *mover, s32 sw, s32 baseframe, s32 nowframe);
 
-extern char evtViewerPathLinkMsg[];
+extern const char evtViewerPathLinkMsg[];
 
 extern s8 evtFrameListFieldTable[];
 
@@ -196,7 +196,7 @@ extern char evtViewerCameraNameFormat[];
 
 extern sdfGrOt_t sdfGrOtTable[];
 
-SYMBOL_AT(sdfGrOt_t, sdfDebugGrOt, sdfGrOtTable, 0xA60);
+extern sdfGrOt_t sdfDebugGrOt;
 
 extern void *dds3FontReqAllocDrawTag(void);
 
@@ -264,6 +264,8 @@ s32 SearchNameTable(const char *name);
 s32 evtAddNameTable(const char *name);
 
 void *SearchBasicFromNameIndex_evtEventViewer(s32 index);
+
+extern const char evtViewerPathLinkMsg[40];
 
 void LinkEffectBasic(dds3Basic_t *eff, s32 nameindex, s32 posindex, s32 baseframe);
 
@@ -346,11 +348,29 @@ s32 PopMenu(void);
 
 u32 evtEventViewerProcess5_0(void);
 
+extern const char D_0053B620[32];
+
 s32 EnterMain(void);
 
 s32 EnterSelect(s32 unused, s32 menuMode);
 
 s32 EnterObjList(void);
+
+extern const char evtFrameFadeBlackOut[16];
+
+extern const char evtFrameFadeBlackIn[16];
+
+extern const char evtFrameFadeWhiteOut[16];
+
+extern const char evtFrameFadeWhiteIn[16];
+
+extern const char evtViewerUnitVshadowOn[16];
+
+extern const char evtViewerUnitMshadowOn[16];
+
+extern const char evtViewerUnitShadowOff[16];
+
+extern const char evtViewerUnitDispOff[16];
 
 s32 EnterFrameChange(void);
 
@@ -383,6 +403,62 @@ void evtEventViewerShutdown(void *id);
 void evtInitEventViewer(void);
 
 s32 evtKillEventViewer(void);
+
+extern evtViewerInfo_t *viewerinfo;
+
+extern u16 evtFileMajor;
+
+extern u16 evt_file_minor;
+
+extern s16 winoff_x;
+
+extern evtViewerObject_s *evt_camera;
+
+extern char *evtViewerFreeCameraName;
+
+extern char *evtViewerGameCameraName;
+
+extern char evtViewerCameraNameFormat[3];
+
+extern s32 capwait;
+
+extern char evtViewerStrNo[3];
+
+extern char evtViewerStrYes[4];
+
+extern char evtViewerStrOn[3];
+
+extern char evtViewerStrOff[4];
+
+extern char evtViewerStrSub[4];
+
+extern char evtViewerStrAdd[4];
+
+extern char evtViewerStrNormal[7];
+
+extern char evtFrameFadeNameAllStop[8];
+
+extern char evtFrameFadeNameVolUp[6];
+
+extern char evtFrameFadeNameVolDown[8];
+
+extern char evtFrameFadeNameTrans[6];
+
+extern char evtFrameFadeNameFadeOut[8];
+
+extern char evtFrameFadeNameFadeIn[7];
+
+extern char evtFrameFadeNamePlay[5];
+
+extern char evtViewerUnitControlNameDispOn[8];
+
+extern char evtViewerProcNameSlight[7];
+
+extern char evtViewerProcNameSfog[5];
+
+extern char evtViewerProcNameFilter[7];
+
+extern char evtViewerProcNameMfilter[8];
 /* End of declarations from src/smt3/event/evtEventViewer.c */
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", LinkFrameInfo);

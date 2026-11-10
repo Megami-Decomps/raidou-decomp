@@ -36,9 +36,9 @@ extern sdfTexHandle_t *dds3GetRenderTexture(void);
 
 extern u32 dds3RenderDrawEnv;
 
-extern f32 D_002F5C20[];
+extern f32 dds3RenderTargetVector[];
 
-extern f32 D_002F5C30[];
+extern f32 dds3RenderEyeVector[];
 
 extern void dds3CrossfadeEnd(void);
 
@@ -112,6 +112,12 @@ void dds3CrossfadeStart(s32 frame);
 void dds3CrossfadeRun(void);
 
 void dds3CrossfadeEnd(void);
+
+extern s8 dds3CrossfadeRunFlag;
+
+extern u32 dds3CrossfadeFrame;
+
+extern u32 dds3CrossfadeFrameMax;
 /* End of declarations from src/smt3/effect/effPacket.c */
 
 sdfGrPacketHeader_t *effPkt2DAllocTriStrip(s32 num, s32 prim) {

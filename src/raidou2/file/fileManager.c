@@ -42,8 +42,6 @@ typedef struct pacFileRequest {
     FILE_REQUEST_FIELDS(struct pacFileRequest, void *)
 } pacFileRequest_t;
 
-#undef FILE_REQUEST_FIELDS
-
 typedef struct fileSlot {
     /* 0x0 */ u32 size;
     /* 0x4 */ fileRequest_t *req;
@@ -98,7 +96,7 @@ s32 fileManager(void);
 
 s32 fileManagerProc(dds3ProcessID_t *procId);
 
-dds3ProcessID_t *dds3StartProcess(char *v1, s32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
+extern dds3ProcessID_t *dds3StartProcess(char *v1, s32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
                                 s32 (*drawExit)(dds3ProcessID_t *),
                                 void (*deleteExit)(dds3ProcessID_t *), void *p);
 
@@ -223,6 +221,30 @@ s32 fileManager(void);
 s32 fileManagerProc(dds3ProcessID_t *procId);
 
 void fileSysInit(void);
+
+extern const char nmeKyaraTmxPath01[24];
+
+extern const char nmeKyaraTmxPath04[24];
+
+extern const char nmeKyaraTmxPath03[24];
+
+extern const char nmeKyaraTmxPath02[24];
+
+extern const char nmeKyaraTmxPath05[24];
+
+extern const u8 D_00546978[7048];
+
+extern const u8 D_00548500[200];
+
+extern const u8 D_005485C8[200];
+
+extern const u8 D_00548690[200];
+
+extern const char D_00548758[16];
+
+extern u32 fileCallbackStatus;
+
+extern char fileManagerProcName[8];
 /* End of declarations from src/smt3/file/fileManager.c */
 
 s32 pacFileHandleFree(fileRequest_t *pacHandle)
@@ -700,7 +722,72 @@ s32 fileSaveCallback(void *fileHandle, s32 cause, s32 buffer, s32 length, fileCb
     return 0;
 }
 
-INCLUDE_ASM(const s32, "file/fileManager", fileExecQueue);
+void fileExecQueue(void) {
+    fileMngCb_tag *work = &fileQueueHead;
+    fileCb_t *job;
+    s32 locked;
+
+    WaitSema(work->semaId);
+    job = (fileCb_t *)work->queue;
+    if (job == NULL) {
+        SignalSema(work->semaId);
+        return;
+    }
+    locked = 1;
+    switch (job->kind) {
+    case 0:
+        switch (job->state) {
+        case 0:
+            job->state = 1;
+            locked = 0;
+            SignalSema(work->semaId);
+            job->dev = sdfFileCmdReadOpen(job->name, fileLoadCallback, job);
+            break;
+        case 7:
+            job->handle = sdfMemAlloc2Direct(job->size);
+            if (job->handle == NULL) {
+                sdfPrintf("alloc retry for %s\n",
+                                            ((sdfFileCmd_t *)job->dev)->path);
+                job->retry--;
+            } else {
+                u32 address = sdfMemLock(job->handle);
+
+                job->ptr = address;
+                job->top = address;
+                job->state = 3;
+                fileRead(job);
+            }
+            break;
+        }
+        break;
+    case 1:
+        switch (job->state) {
+        case 0:
+            job->state = 1;
+            locked = 0;
+            SignalSema(work->semaId);
+            job->dev = sdfFileCmdReadOpen(job->name, pacLoadCallback, job);
+            break;
+        case 3:
+            locked = 0;
+            SignalSema(work->semaId);
+            pacRead((fileRequest_t *)job);
+            break;
+        }
+        break;
+    case 2:
+        if (job->state == 0) {
+            job->state = 1;
+            locked = 0;
+            SignalSema(work->semaId);
+            job->dev = sdfFileCmdWriteOpen(job->name, fileSaveCallback, job, 0x180);
+        }
+        break;
+    }
+    if (locked != 0) {
+        SignalSema(work->semaId);
+    }
+}
 
 void fileExecCallback(void) {
     fileMngCb_tag *work = &fileQueueHead;

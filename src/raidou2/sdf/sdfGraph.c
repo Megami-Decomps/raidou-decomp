@@ -183,6 +183,28 @@ void sdfDispThread(void);
 void sdfGrInit(s32 aPacketBuffSize);
 
 void sdfGrInitNewFrame(void);
+
+extern u8 sdfGrScreenMode;
+
+extern u8 sdfGrGsResetDone;
+
+extern volatile u8 sdfFrameId;
+
+extern volatile s32 dds3GsSema;
+
+extern s8 sdfGrCaptureBuff;
+
+extern volatile u8 sdfDispThreadFlag;
+
+extern s32 sdfGrCaptureReq;
+
+extern s32 sdfGrCaptureTarget;
+
+extern s32 dds3GsThreadId;
+
+extern s8 sdfDispFrameId[2];
+
+extern volatile s8 sdfGrDrawBusy;
 /* End of declarations from src/smt3/sdf/sdfGraph.c */
 
 void sdfGrSetFrameSetMode(sdfGrFrameSet_t *aFrame, s32 aMode, s32 aReqHandleClear)

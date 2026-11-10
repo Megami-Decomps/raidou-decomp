@@ -118,6 +118,14 @@ sdfMemHandle_t *sdfMemSearchHandle(s32 ptr);
 /* Pack the two lengths, the terminated name and the optional payload, then
  * return the transport error or the server's result. */
 s32 SdfIopFileRpc(const char *aName, s32 aDataSize, const void *aData, s32 *aOutSize);
+
+extern void (*sdfMemFullCallback)(s32 size);
+
+extern u32 D_00551834;
+
+extern u8 sdfGrDrawFirstFlag;
+
+extern u8 sdfFrameEvenOdd;
 /* End of declarations from src/smt3/sdf/sdfMemory.c */
 
 /* Align the usable span to 128 bytes and link one free handle between the guards. */

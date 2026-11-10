@@ -90,7 +90,7 @@ extern f32 dds3BillboardUpAxis[4];
 
 extern sdf3DScreenParam_t dds3ScreenParam;
 
-extern f32 D_002FA240[16];
+extern f32 sdfViewMatrix[16];
 
 extern void MultMatrixRev(f32 *aMatrix);
 
@@ -112,7 +112,7 @@ extern f32 sdfSin(f32 aRadius);
 
 extern f64 fabs(f64 value);
 
-SYMBOL_AT(sdfGrOt_t, dds3MultiBillboardOt, sdfGrOtTable, 0x580);
+extern sdfGrOt_t dds3MultiBillboardOt;
 
 extern void *sdfGrAllocPacketBuff(s32 aSize);
 
@@ -242,7 +242,7 @@ struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Build a quad packet from paired colors and per-corner UV sets. */
-u32 *sdfMultiBillBoardMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
+extern u32 *sdfMultiBillBoardMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
 
 sdfMat_t *sdfMatNew(void);
 
@@ -658,7 +658,45 @@ void dds3Billboard_P2ASetAnim(dds3BillAnimResource_tag *hBillAnimRes, s32 number
     pBillAnim->wait = SDF_FRAMES(value + 1) - 1;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_P2ASetNumber);
+void dds3Billboard_P2ASetNumber(billHandle_t *pP2A, s32 number) {
+    dds3BillAnimResource_tag *data = pP2A->u.animationData;
+    P2A_ANIMATION_tag *entry = data->pAnimTable + number;
+
+    if (entry->times == 0) {
+        pP2A->animationActive = 0;
+        return;
+    }
+    if (entry->mode & BILL_ANIMATION_FLAG_PLURAL_ENTRIES) {
+        billPluralEntry_t *records;
+        u32 i = 0;
+
+        printf("billAnim..PLURAL SET\n");
+        pP2A->modeFlags = 0x10000000;
+        pP2A->animationEntryIndex = number;
+        pP2A->entryCount = entry->times;
+        records = (billPluralEntry_t *)(data->pHeader + entry->spranm);
+        for (; i < entry->times; i++) {
+            dds3Billboard_P2ASetAnim(data, records[i].entryIndex, pP2A->resolvedEntries + i);
+            (pP2A->resolvedEntries)[i].key = -SDF_FRAMES(records[i].delay);
+        }
+    } else if (entry->attr & 0xC0) {
+        printf("billAnim..(A)MTEX SET\n");
+        pP2A->modeFlags = entry->attr;
+        pP2A->animationEntryIndex = number;
+        pP2A->entryCount = 2;
+        dds3Billboard_P2ASetAnim(data, number, pP2A->resolvedEntries);
+        dds3Billboard_P2ASetAnim(data, number + 1, pP2A->resolvedEntries + 1);
+    } else {
+        pP2A->modeFlags = 0;
+        pP2A->entryCount = 1;
+        pP2A->animationEntryIndex = number;
+        dds3Billboard_P2ASetAnim(data, number, pP2A->resolvedEntries);
+    }
+    if (entry->attr & 0x100) {
+        printf("billAnim..P2A POLYGON\n");
+    }
+    pP2A->animationActive = 1;
+}
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001DD998);
 

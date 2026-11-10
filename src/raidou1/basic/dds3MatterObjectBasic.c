@@ -77,7 +77,7 @@ extern void sdfModelEvalTm(sdfModelRootNode_t *model);
 
 s32 dds3MatterObjectBasicMainProcedure(dds3Basic_t *basic);
 
-extern sdfModelOt_t D_002F69B8[];
+extern sdfModelOt_t sdfModelOtTable[];
 
 extern dds3Basic_t *fldUnitControlHandle;
 

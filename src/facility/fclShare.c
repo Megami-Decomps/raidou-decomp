@@ -94,8 +94,6 @@ s32 fclRagCalcTexSize(s32 size, s32 mode);
 
 extern s32 fclRagCalcTexSize(s32 size, s32 mode);
 
-void fclRagTexCalcSizes(fclRagTex_t *tex);
-
 void fclRagTexInit(fclRagTex_t *tex, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, void (*calc)(void *));
 
 s32 fclRunPanelAnim(void *work);

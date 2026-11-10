@@ -213,7 +213,52 @@ s32 sceMcUnformat(s32 port, s32 slot);
 s32 sceMcGetEntSpace(s32 port, s32 slot, char *name);
 /* End of declarations from src/smt3/sdk/libmc.c */
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcInit);
+s32 sceMcInit(void)
+{
+    mcSemaParam_t param;
+    s32 ret;
+    u32 delay;
+
+    if (mcSema < 0) {
+        param.option = 0;
+        param.initCount = 1;
+        param.maxCount = 1;
+        mcSema = CreateSema(&param);
+    }
+    sceMcSync(0, NULL, NULL);
+    WaitSema(mcSema);
+    sceSifInitRpc(0);
+    for (;;) {
+        if (sceSifBindRpc(&mcRpcClient, 0x80000400, 0) < 0) {
+            scePrintf("bind error libmc \n");
+            for (;;) {
+            }
+        }
+        if (mcRpcClient.bound != 0) {
+            break;
+        }
+        for (delay = 0x100000; --delay != 0;) {
+        }
+    }
+    ret = sceSifCallRpc(&mcRpcClient, 0xFE, 0, &mcRequest, 0x30,
+                        &mcReplyBuf, 0xC, NULL, NULL);
+    SignalSema(mcSema);
+    if (ret < 0) {
+        mcRpcClient.bound = 0;
+        return ret - 100;
+    }
+    if (mcReplyBuf.serverVersion < 0x20A) {
+        scePrintf("libmc: too old release of mcserv.irx\n");
+        mcRpcClient.bound = 0;
+        return -120;
+    }
+    if (mcReplyBuf.managerVersion < 0x20E) {
+        scePrintf("libmc: too old release of mcman.irx\n");
+        mcRpcClient.bound = 0;
+        return -121;
+    }
+    return mcReplyBuf.result;
+}
 
 s32 sceMcEnd(void)
 {

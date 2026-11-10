@@ -223,7 +223,7 @@ extern s8 dds3PadButtonState[];
 
 extern s8 dds3PadBitTable[];
 
-extern f32 D_002FA240[16];
+extern f32 sdfViewMatrix[16];
 
 extern u8 aViewEye[];
 
@@ -516,6 +516,80 @@ s32 mdlDebugPrintEffectScale2(dds3ProcessID_t *task);
 
 /* Update/draw the FACE-DIV soften, bias and divide controls; return zero. */
 s32 soften_bias_Process(dds3ProcessID_t *task);
+
+extern const char mdlDebugLabelAmbient[16];
+
+extern const char softenBiasTitle[16];
+
+extern char mdlPibLabelP2A[8];
+
+extern char mdlPibLabelD3P[8];
+
+extern char mdlColorLabelA[8];
+
+extern char mdlColorLabelB[8];
+
+extern char mdlColorLabelG[8];
+
+extern char mdlColorLabelR[8];
+
+extern char mdlColorByteFormat[8];
+
+extern char mdlPibCursorMark[8];
+
+extern char mdlDebugLabelLight2[8];
+
+extern char mdlDebugLabelLight1[8];
+
+extern char mdlDebugLabelLight0[8];
+
+extern char mdlDebugLightCursor[8];
+
+extern char mdlDebugLightFormat[8];
+
+extern char mdlDebugLabelFog[8];
+
+extern char mdlDebugLabelFar[8];
+
+extern char mdlDebugLabelMin[8];
+
+extern char mdlDebugLabelNear[8];
+
+extern char mdlDebugIntFormat[8];
+
+extern char mdlDebugLabelMax[8];
+
+extern char mdlDebugScaleCursor[8];
+
+extern char softenBiasLabelDivide[8];
+
+extern char softenBiasLabelBias[8];
+
+extern char softenBiasLabelSoften[8];
+
+extern char softenBiasCursor[8];
+
+extern char softenBiasValueFormat[8];
+
+extern char softenBiasAdjustFormat[8];
+
+extern char softenBiasLabelOn[8];
+
+extern char softenBiasLabelOff[8];
+
+extern s32 dds3BitEditorRowBase;
+
+extern s32 dds3BitEditorTable;
+
+extern s32 dds3BitEditorTable2;
+
+extern char dds3BitEditorGlyphTemplate[8];
+
+extern char dds3BitEditorColumnFormat[8];
+
+extern char dds3BitEditorRowFormat[8];
+
+extern s32 evtNextEventNo;
 /* End of declarations from src/smt3/model/mdlEffect.c */
 
 /* Follow the relative links in a resource's record table to find an ID. */
@@ -589,9 +663,77 @@ u16 mdlPibGetMotionCount(const pibHeaderChunk_t *record) {
     return record->tail.half.slotCount;
 }
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibDrawEffectInfo);
+void mdlPibDrawEffectInfo(sdfDrawTag_t *tag, s32 x, s32 y, s32 z, s32 attr, pibHeaderChunk_t *data) {
+    if (data->group >= PIB_CHUNK_TYPE_P2A &&
+        data->group <= IPU) {
+        switch (data->group) {
+        case PIB_CHUNK_TYPE_P2A:
+        case PIB_CHUNK_TYPE_D3P: {
+            char *label = data->group == PIB_CHUNK_TYPE_P2A ? mdlPibLabelP2A : mdlPibLabelD3P;
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibDrawTrackInfo);
+            if (data->parameter.part.count == 1) {
+                sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x, y, z, attr,
+                                                                    "%s %d,%d", label, data->payload.word,
+                                                                    data->parameter.part.partIndex)));
+                return;
+            }
+            sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x, y, z, attr,
+                                                                "%s %d~%d,%d", label, data->payload.word,
+                                                                data->payload.word + data->parameter.part.count - 1,
+                                                                data->parameter.part.partIndex)));
+            return;
+        }
+        case PIB_CHUNK_TYPE_TRACK:
+            sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x, y, z, attr,
+                                                                "TRACK %d~%d", data->payload.word,
+                                                                data->parameter.word)));
+            return;
+        case PIB_CHUNK_TYPE_BLUR:
+            sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x, y, z, attr,
+                                                                "BLUR %d,%d", data->payload.stream.selectorA,
+                                                                data->payload.stream.selectorB)));
+            return;
+        case IPU:
+            sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x, y, z, attr,
+                                                                "IPU %08x", data->payload.word)));
+            return;
+        }
+    } else {
+        sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x, y, z, attr,
+                                                            "UNKNOWN[%3d]", data->group)));
+    }
+}
+
+/* Draw the scalar marker fields, then four colors with four byte channels each; negative selection hides the cursor. */
+void mdlPibDrawTrackInfo(sdfDrawTag_t *tag, s32 x, s32 y, s32 z, mdlTrackParams_t *data, s32 cursor) {
+    s32 colorY = y + 0x300;
+    s32 labelX = x + 0xC0;
+    u32 packedColor;
+    s32 colorIndex;
+    s32 channelIndex;
+
+    sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(labelX, y, z, 0, "MARK0:%d", data->mark0)));
+    sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(labelX, y + 0x60, z, 0, "MARK1:%d", data->mark1)));
+    sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(labelX, y + 0xC0, z, 0, "START:%d", data->start)));
+    sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(labelX, y + 0x120, z, 0, "END  :%d", data->end)));
+    sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(labelX, y + 0x180, z, 0, "ITRVL:%d", data->interval)));
+    sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(labelX, y + 0x1E0, z, 0, "FACE :%d", data->face)));
+    sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(labelX, y + 0x240, z, 0, "BLEND:%d", data->blend)));
+    for (colorIndex = 0; colorIndex != MDL_MARK_COLOR_COUNT; colorIndex++) {
+        packedColor = data->colors[colorIndex];
+        sdfDrawTagLink(tag, EE_ADDR(dds3PrimFrameRect(x + 0x480, colorY, z, 0x300, 0x180, (packedColor & 0xFFFFFF) | 0x80000000, 0x60404040)));
+        for (channelIndex = 0; channelIndex != MDL_COLOR_CHANNEL_COUNT; channelIndex++) {
+            sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(labelX, colorY, z, mdlColorChannelStyle[channelIndex], mdlColorChannelLabels[channelIndex])));
+            sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x + 0x240, colorY, z, 0, mdlColorByteFormat, packedColor & MDL_COLOR_BYTE_MASK)));
+            packedColor >>= MDL_COLOR_BYTE_BITS;
+            colorY += 0x60;
+        }
+        colorY += 0x60;
+    }
+    if (cursor >= 0) {
+        sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(x, y + mdlPibTrackRowOffset[cursor], z, 0, mdlPibCursorMark)));
+    }
+}
 
 INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibEditTrackInfo);
 
@@ -806,7 +948,26 @@ void mdlDrawEffect_IPU(dds3ModelEffectCtrlr_t *effect) {
     }
 }
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffect);
+/* Dispatch the five record kinds, retaining the game's native return behavior. */
+void mdlCreateEffect(mdlObj_t *owner, pibHeaderChunk_t *record, s32 motionSlotIndex) {
+    switch (record->group) {
+    case PIB_CHUNK_TYPE_P2A:
+        mdlCreateEffect_P2A_D3P(owner, (pibChunkItem_P2A_D3P_t *)record, motionSlotIndex, dds3ModelEffectType_P2A, mdlEffectDup_P2A);
+        return;
+    case PIB_CHUNK_TYPE_D3P:
+        mdlCreateEffect_P2A_D3P(owner, (pibChunkItem_P2A_D3P_t *)record, motionSlotIndex, dds3ModelEffectType_D3P, mdlEffectDup_D3P);
+        return;
+    case PIB_CHUNK_TYPE_TRACK:
+        mdlCreateEffect_TRACK(owner, (pibChunkItem_TRACK_t *)record, motionSlotIndex);
+        return;
+    case PIB_CHUNK_TYPE_BLUR:
+        mdlCreateEffect_BLUR(owner, record);
+        return;
+    case IPU:
+        mdlCreateEffect_IPU(owner, (mdlPibIpu_t *)record, motionSlotIndex);
+        break;
+    }
+}
 
 /* Find the requested record list and associate each entry with this motion slot. */
 void mdlGenEffect(mdlObj_t *aHandle, s32 aGroup, s32 aPlayGroup) {

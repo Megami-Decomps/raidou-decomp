@@ -77,6 +77,12 @@ s32 func_001C61B8(frFontHandle_t *chain, s32 limit);
 void fr_1C6270(frFontHandle_t *chain);
 
 void func_001C62F8(u32 messageCode);
+
+extern char D_0054F3F8[6];
+
+extern s8 fmFontMemInitialized;
+
+extern s32 D_0054F400;
 /* End of declarations from src/smt3/interface/fmGslCont.c */
 
 /* Build the glyph atlas once: COLUMNS x ROWS cells in a circular node list, each with its

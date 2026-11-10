@@ -19,7 +19,7 @@ extern void sdfItemArrayFree(sdfItemArray_t *aArray);
 
 extern void sdfItemArrayGrow(sdfItemArray_t *aArray);
 
-extern void func_002BFF98(sdfItemArray_t *aArray, s32 aCapacity);
+extern void sdfDevResizeBufferedRequest(sdfItemArray_t *aArray, s32 aCapacity);
 
 extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 
@@ -201,6 +201,8 @@ void sdfMatListUpdatePacket(sdfItemArray_t *aMatList, s32 aId);
 void sdfMatCopyStat(sdfMat_t *aDstMat, sdfMat_t *aSrcMat);
 
 void sdfMatListCopyStat(sdfItemArray_t *aDst, sdfItemArray_t *aSrc);
+
+extern s32 sdfMatAllocCount;
 /* End of declarations from src/smt3/sdf/sdfMat.c */
 
 sdfItemArray_t *sdfTexListNew(s32 aInitCapa)
@@ -249,7 +251,7 @@ void sdfTexListSetCapacity(sdfItemArray_t *aList, s32 aCapa, s32 aReleaseItems)
         } while (i != count);
         aList->count = aCapa;
     }
-    func_002BFF98(aList, aCapa);
+    sdfDevResizeBufferedRequest(aList, aCapa);
 }
 
 sdfItemArray_t *sdfTexListDup(sdfItemArray_t *aList)

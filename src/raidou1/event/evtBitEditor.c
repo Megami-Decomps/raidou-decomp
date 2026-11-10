@@ -1,6 +1,7 @@
 #include "common.h"
 
 INCLUDE_ASM(const s32, "event/evtBitEditor", dds3BitEditorProcess);
+
 INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5B0);
 
 INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5B4);

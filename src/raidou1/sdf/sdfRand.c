@@ -184,6 +184,10 @@ void sdfRandomize(sdfRandCB_t *aCB, u32 aSeed);
 void sdfRandomizeByTime(sdfRandCB_t *aCB);
 
 s32 sdfGetCdClock(sdfClock_t *now);
+
+extern u8 sdfCdClock;
+
+extern sdfClock_t sdfCdClockCache;
 /* End of declarations from src/smt3/sdf/sdfRand.c */
 
 /* Seed the generator state (the shared effect state when `state` is NULL); each word is the previous one rotated right 8 bits and xored with a constant. */

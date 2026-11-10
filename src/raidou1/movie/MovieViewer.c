@@ -96,7 +96,7 @@ extern s32 movieViewerPhase;
 
 extern sdfGrOt_t sdfGrOtTable[];
 
-SYMBOL_AT(sdfGrOt_t, D_002F67F8, sdfGrOtTable, 0x8E0);
+extern sdfGrOt_t D_002F67F8;
 
 extern void *movieViewerStep(void);
 
@@ -124,11 +124,11 @@ extern void movieViewerScanDir(void);
 
 extern s32 MovieViewerProc(dds3ProcessID_t *process);
 
-extern char movieViewerProcName[];
+extern const char movieViewerProcName[];
 
 void InitMovieViewer(void);
 
-extern char movieViewerProcName[];
+extern const char movieViewerProcName[];
 
 extern void movieViewerFree(void);
 
@@ -150,7 +150,7 @@ extern sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 extern void sdfPrimLinkRect(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0,
                             s32 aX1, s32 aY1, s32 aZ, s32 (*aAllocator)(s32));
 
-SYMBOL_AT(sdfGrOt_t, D_002F6938, sdfGrOtTable, 0xA20);
+extern sdfGrOt_t D_002F6938;
 
 /* "%08X", "%02X" and "**", in .sdata where a literal cannot go. */
 extern char movieViewerFmtWord[];
@@ -159,10 +159,44 @@ extern char movieViewerFmtByte[];
 
 extern char movieViewerBlankByte[];
 
+/* The memory window: a cursor over the eight nibbles of either source address,
+ * the word above and the 8x8 block below. */
+extern const char movieViewerProcName[16];
+
 s32 movieViewerDebugDraw(void);
+
+extern const char D_0053F438[16];
+
+extern const char D_0053F448[16];
+
+extern const char D_0053F458[16];
+
+extern const char D_0053F468[16];
+
+extern const char cmpCampTmxPath[24];
+
+extern s32 movieViewerPhase;
+
+extern char movieViewerFmtWord[8];
+
+extern char movieViewerFmtByte[8];
+
+extern char movieViewerBlankByte[8];
 /* End of declarations from src/smt3/movie/MovieViewer.c */
 
-INCLUDE_ASM(const s32, "movie/MovieViewer", MovieViewerDrawFrameInfo);
+void MovieViewerDrawFrameInfo(void)
+{
+    sdfDrawTag_t *tag;
+
+    if (dds3WaitMovieEnd() == 0) {
+        tag = movieViewerWork.tag;
+        sdfDrawTagLink(tag, dds3PrimFrameRect(0x8810, 0x85E8, 0xFF0080, 0x720, 0x90,
+                                              0x30000000, 0x60404040));
+        sdfDrawTagLink(tag, sdfDevPrintf(0x8840, 0x8600, 0xFF0080, 0, "%04d/%04d",
+                                         movieCb.decodeCb.frame,
+                                         movieCb.decodeCb.frameCount));
+    }
+}
 
 INCLUDE_ASM(const s32, "movie/MovieViewer", func_001D2F28);
 

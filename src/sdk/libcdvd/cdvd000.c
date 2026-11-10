@@ -184,7 +184,7 @@ extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
 
 extern s32 cdvdNcmdLastCommand __attribute__((section(".data")));
 
-SYMBOL_AT(s32, cdvdNcmdInit, cdvdNcmdState, 8);
+extern s32 cdvdNcmdInit;
 
 s32 _sceCd_ncmd_prechk(s32 command);
 
@@ -208,7 +208,7 @@ extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
 
 extern s32 cdvdScmdLastCommand __attribute__((section(".data")));
 
-SYMBOL_AT(s32, cdvdScmdInit, cdvdScmdState, 12);
+extern s32 cdvdScmdInit;
 
 s32 _sceCd_scmd_prechk(s32 command);
 
@@ -424,7 +424,58 @@ s32 sceCdSearchFile(sceCdlFILE *file, const char *name)
     return sceCdLayerSearchFile(EE_ADDR(file), (char *)name, 0);
 }
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", _sceCd_ncmd_prechk);
+s32 _sceCd_ncmd_prechk(s32 command)
+{
+    s32 status;
+    s32 delay;
+
+    cmd_sem_init();
+    {
+        s32 sema = cdvdNcmdSema;
+        FAKEMATCH_ASM_LIVE(sema);
+        status = PollSema(sema);
+    }
+    if (cdvdNcmdSema != status) {
+        if (cdvdDebugLevel > 0) {
+            scePrintf("Ncmd fail sema cur_cmd:%d keep_cmd:%d\n", command, cdvdNcmdLastCommand);
+        }
+        return 0;
+    }
+    cdvdNcmdLastCommand = command;
+    ReferThreadStatus(cdvdOwnerThreadId, cdvdThreadStatus);
+    status = sceCdSync(1);
+    {
+        FAKEMATCH_ASM_REG(s32, rpcMode, "$4") = 0;
+        if (status != 0) {
+            s32 sema = cdvdNcmdSema;
+            FAKEMATCH_ASM_LIVE(sema);
+            SignalSema(sema);
+            return 0;
+        }
+        sceSifInitRpc(rpcMode);
+    }
+    if (cdvdNcmdInit < 0) {
+        for (;;) {
+            cdvdRpcClient_t *client = &cdvdNcmdClient;
+
+            if (sceSifBindRpc(client, 0x80000595, 0) < 0) {
+                if (cdvdDebugLevel > 0) {
+                    scePrintf("Libcdvd bind err N CMD\n");
+                }
+                for (delay = 0x100000; delay != -1; --delay) {
+                }
+                continue;
+            }
+            if (client->server != NULL) {
+                break;
+            }
+            for (delay = 0x100000; delay != -1; --delay) {
+            }
+        }
+        cdvdNcmdInit = 0;
+    }
+    return 1;
+}
 
 s32 sceCdNcmdDiskReady(void)
 {
@@ -442,11 +493,92 @@ s32 sceCdNcmdDiskReady(void)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdSync);
+s32 sceCdSync(s32 mode)
+{
+    if (mode == 0) {
+        if (cdvdDebugLevel > 0) {
+            scePrintf("N cmd wait\n");
+        }
+        while (cdvdNcmdState != 0 || sceSifCheckStatRpc(&cdvdNcmdClient) != 0) {
+            sceCdDelayThread(60);
+        }
+        return 0;
+    }
+    if (cdvdNcmdState != 0 || sceSifCheckStatRpc(&cdvdNcmdClient) != 0) {
+        return 1;
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdSyncS);
+s32 sceCdSyncS(s32 mode)
+{
+    if (mode == 0) {
+        if (cdvdDebugLevel > 0) {
+            scePrintf("S cmd wait\n");
+        }
+        while (1) {
+            if (sceSifCheckStatRpc(&cdvdScmdClient) == 0) {
+                break;
+            }
+            sceCdDelayThread(60);
+        }
+        return 0;
+    }
+    return sceSifCheckStatRpc(&cdvdScmdClient);
+}
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", _sceCd_scmd_prechk);
+s32 _sceCd_scmd_prechk(s32 command)
+{
+    s32 status;
+    s32 delay;
+
+    cmd_sem_init();
+    {
+        s32 sema = cdvdScmdLockSema;
+        FAKEMATCH_ASM_LIVE(sema);
+        status = PollSema(sema);
+    }
+    if (cdvdScmdLockSema != status) {
+        if (cdvdDebugLevel > 0) {
+            scePrintf("Scmd fail sema cur_cmd:%d keep_cmd:%d\n", command, cdvdScmdLastCommand);
+        }
+        return 0;
+    }
+    cdvdScmdLastCommand = command;
+    ReferThreadStatus(cdvdOwnerThreadId, cdvdThreadStatus);
+    status = sceCdSyncS(1);
+    {
+        FAKEMATCH_ASM_REG(s32, rpcMode, "$4") = 0;
+        if (status != 0) {
+            s32 sema = cdvdScmdLockSema;
+            FAKEMATCH_ASM_LIVE(sema);
+            SignalSema(sema);
+            return 0;
+        }
+        sceSifInitRpc(rpcMode);
+    }
+    if (cdvdScmdInit < 0) {
+        for (;;) {
+            cdvdRpcClient_t *client = &cdvdScmdClient;
+
+            if (sceSifBindRpc(client, 0x80000593, 0) < 0) {
+                if (cdvdDebugLevel > 0) {
+                    scePrintf("Libcdvd bind err S cmd\n");
+                }
+                for (delay = 0x100000; delay != -1; --delay) {
+                }
+                continue;
+            }
+            if (client->server != NULL) {
+                break;
+            }
+            for (delay = 0x100000; delay != -1; --delay) {
+            }
+        }
+        cdvdScmdInit = 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdInit);
 

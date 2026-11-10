@@ -253,7 +253,43 @@ void dds3NeedleModelSetColor(dds3NeedleModel_tag *hNModel, s32 index, u32 abgr);
 void dds3NeedleModelSetMatrix(dds3NeedleModel_tag *hNModel, const f32 *pMatrix);
 /* End of declarations from src/smt3/effect/effPCPNeedle.c */
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralCreate);
+effPCPNeedleSpiral_tag *effPCPNeedleSpiralCreate(effPCPNeedleSpiralParam_t *pParam) {
+    effAllocation_t *allocation = sdfMemAllocDirect(pParam->number * sizeof(effPCPNeedleSpiralPart_tag) + sizeof(effPCPNeedleSpiral_tag));
+    effPCPNeedleSpiral_tag *work = (effPCPNeedleSpiral_tag *)sdfMemLock(allocation);
+    u32 slotIndex;
+    dds3NeedleModel_tag *resource;
+    u32 count, delayRange;
+    effPCPNeedleSpiralPart_tag *slot;
+    f32 radiusBase, radiusJitter;
+
+    work->pPart = (effPCPNeedleSpiralPart_tag *)(work + 1);
+    work->param = *pParam;
+    work->hMem = allocation;
+    work->number = pParam->number;
+    work->abgr = 0x80808080;
+    work->hTrackPoly = 0;
+    resource = dds3NeedleModelCreate(pParam->number);
+    resource->blend = pParam->mode;
+    work->hNModel = resource;
+    dds3NeedleModelVNCListCreate(resource, pParam->n_split, pParam->centerColor,
+                            pParam->outerColor, pParam->radiusScale, pParam->viewOffset);
+    work->hTrackPoly = dds3TrackPolyCreate(work->number, work->param.t_length, 0, PAR_CELL_TOPOLOGY_PAIR);
+    dds3TrackPolyVCSet(EE_ADDR(work->hTrackPoly), 1, work->param.t_abgr, work->param.t_abgr);
+    dds3TrackPolySetMode(work->hTrackPoly, (u16)work->param.mode);
+    count = work->number;
+    delayRange = SDF_FRAMES(pParam->timing);
+    slot = work->pPart;
+    if (delayRange == 0) delayRange = 1;
+    radiusBase = work->param.radius;
+    radiusJitter = work->param.radius_r;
+    for (slotIndex = 0; slotIndex < count; slotIndex++, slot++) {
+        slot->radian = dds3GetRandFloatA(dds3EffectBase) * EFFECT_RING_FULL_TURN;
+        slot->radius = radiusBase * (dds3GetRandFloatA(dds3EffectBase) * radiusJitter + (1.0f - radiusJitter));
+        slot->frame = -(dds3GetRandA((effRandState_t *)dds3EffectBase) % delayRange);
+        dds3NeedleModelSetColor(work->hNModel, slotIndex, 0x808080);
+    }
+    return work;
+}
 
 void effPCPNeedleSpiralDelete(effPCPNeedleSpiral_tag *hData) {
     dds3TrackPolyDelete(hData->hTrackPoly);

@@ -41,7 +41,7 @@ extern s32 _gp, sdfThreadSema, sdfVblankFlag, sdfCoreDrawBuffSize;
 
 extern u8 sdfPadManagerMode, sdfSystemThreadStack[], sdfVblankThreadStack[];
 
-extern void (*D_00551828)(void);
+extern void (*sdfTickCallback)(void);
 
 extern sdfThCB_t *sdfVblankThreadId;
 
@@ -148,7 +148,7 @@ extern u16 myStatus;
 
 extern u8 camMode, CameraAction, offsetStep, offsetStepCount;
 
-extern s32 D_00551738, D_0055173C, D_00551744, D_00551748;
+extern s32 pipeClearedOnStart, pipePartsFrame, pipeTiltHorizontal, pipeTiltVertical;
 
 extern void *pipeObjList, *pipeObjTail;
 
@@ -207,9 +207,9 @@ extern void *slLoadProcId;
 
 extern s32 sdfMainThreadId;
 
-extern char D_00551700[];
+extern char dds3ConfigProcName[];
 
-extern char D_00551808[];
+extern char pipeMessNumFmt[];
 
 extern s32 dds3ConfigValue[2];
 
@@ -239,7 +239,7 @@ extern s32 iWakeupThread(s32 thid);
 
 extern void sdfMemFreeDelayedDirect(void *aHandle);
 
-extern sdfThCB_t *func_002A87F0(s32 threadId);
+extern sdfThCB_t *sdfFindThreadNode(s32 threadId);
 
 extern s32 GetThreadId(void);
 
@@ -249,7 +249,7 @@ extern s32 SleepThread(void);
 
 extern void sdfIpuRemoveHandler(sdfHandlerNode_t *handler);
 
-extern void func_002A8758(sdfThCB_t *node);
+extern void sdfDeleteTrackedThread(sdfThCB_t *node);
 
 extern void *sdfMemAllocDirect(s32 aSize);
 
@@ -273,7 +273,7 @@ s32 sdfFreeAuto(void *allocation);
 
 s32 sdfFreeAutoDelayed(void *allocation);
 
-s32 sdf_2A8258(void **slot);
+s32 sdfFreeMemorySlotFromEitherHeap(void **slot);
 
 void FatalError(const char *format, ...);
 
@@ -281,7 +281,7 @@ sdfHandlerNode_t *DmacAddHandler(s32 kind, s32 channel, saddr_t handler, s32 arg
 
 void sdfIpuRemoveHandler(sdfHandlerNode_t *target);
 
-void sdf_2A84D8(void);
+void sdfDrainPendingHandlers(void);
 
 void sdfAlarmWakeup(s32 arg0, s32 arg1, s32 thid);
 
@@ -299,11 +299,11 @@ void sdfStartThreadAndWait(sdfThCB_t *node, void (*entry)(void), void *stack, s6
 
 void sdfWaitVblank(s32 count);
 
-void func_002A8758(sdfThCB_t *node);
+void sdfDeleteTrackedThread(sdfThCB_t *node);
 
-sdfThCB_t *func_002A87F0(s32 threadId);
+sdfThCB_t *sdfFindThreadNode(s32 threadId);
 
-void sdf_2A8858(void);
+void sdfUnlinkAndDeleteCurrentThread(void);
 
 s32 VblankIntcHandler(s32 cause);
 
@@ -312,6 +312,14 @@ void VblankThreadProc(void);
 s32 sdfInitThreadSystem(void);
 
 void sdfSetMainThreadPriority(void);
+
+extern sdfHandlerNode_t *sdfDmacHandlerTable;
+
+extern s32 sdfCoreDrawBuffSize;
+
+extern void (*sdfTickCallback)(void);
+
+extern s32 sdfVblankFlag;
 /* End of declarations from src/smt3/sdf/sdfSystem.c */
 
 s32 sdfCreateSema(s32 initCount, s32 maxCount, u32 option)
@@ -386,7 +394,32 @@ void FatalError(const char *format, ...) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", DmacAddHandler);
+sdfHandlerNode_t *DmacAddHandler(s32 kind, s32 channel, saddr_t handler, s32 arg, s32 next) {
+    sdfHandlerNode_t *node;
+    s32 id;
+
+    switch (kind) {
+    case 0:
+        id = AddIntcHandler2(channel, handler, arg, next);
+        break;
+    case 1:
+        id = AddDmacHandler2(channel, (s32 (*)(s32, void *, void *))handler, arg, EE_ADDR_AS(void *, next));
+        break;
+    case 2:
+        id = AddSbusIntcHandler(channel, handler);
+        break;
+    default:
+        FatalError("sdfAddHandler : unknown type %d\n", kind);
+        break;
+    }
+    node = sdfAllocAuto(sizeof(*node));
+    node->handlerKind = kind;
+    node->channel = channel;
+    node->handlerId = id;
+    node->next = sdfDmacHandlerTable;
+    sdfDmacHandlerTable = node;
+    return node;
+}
 
 void sdfIpuRemoveHandler(sdfHandlerNode_t *target) {
     sdfHandlerNode_t **link = &sdfDmacHandlerTable;
@@ -448,8 +481,8 @@ void sdfSystemThreadProc(void) {
             sdfPadWork();
         }
         sdfFileCmdThreadCheckPrio();
-        if (D_00551828 != NULL) {
-            D_00551828();
+        if (sdfTickCallback != NULL) {
+            sdfTickCallback();
         }
     }
 }

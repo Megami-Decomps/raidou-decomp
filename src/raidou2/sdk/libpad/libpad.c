@@ -128,6 +128,8 @@ extern int scePadGetModVersion(void);
 
 extern int scePadInit2(int mode);
 
+extern const char padDmaFailMsg[72];
+
 int scePadInit(int mode);
 
 int scePadInit2(int mode);
@@ -145,6 +147,14 @@ u32 scePadGetFrameCount(int port, int slot);
 int scePadRead(int port, int slot, u8 *data);
 
 int scePadGetState(int port, int slot);
+
+extern const char padStateNameError[8] __attribute__((section(".rodata")));
+
+extern const char padStateNameStable[8] __attribute__((section(".rodata")));
+
+extern const char padStateNameExecCmd[8] __attribute__((section(".rodata")));
+
+extern const char padStateNameFindCtp1[16];
 
 void scePadStateIntToStr(u32 state, char *str);
 
@@ -185,11 +195,53 @@ int scePadGetSlotMax(int port);
 int scePadGetModVersion(void);
 
 int scePadSetWarningLevel(int level);
+
+extern const char padStateNameDisconnect[16];
+
+extern const char padRequestNameBusy[8] __attribute__((section(".rodata")));
+
+extern const char padRequestNameFailed[8] __attribute__((section(".rodata")));
+
+extern const char padRequestNameComplete[16];
 /* End of declarations from src/smt3/sdk/libpad.c */
 
 INCLUDE_ASM(const s32, "sdk/libpad/libpad", _send_to_iop);
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadInit);
+int scePadInit(int mode)
+{
+    s32 delay;
+    s32 version;
+    s32 major;
+
+    padInitialized = 1;
+    for (;;) {
+        sceSifBindRpc(&padRpcClient[0], 0x80000100, 0);
+        if (padRpcClient[0].server != NULL) {
+            break;
+        }
+        for (delay = 0x10000; --delay != -1;) {
+        }
+    }
+    for (;;) {
+        sceSifBindRpc(&padRpcClient[1], 0x80000101, 0);
+        if (padRpcClient[1].server != NULL) {
+            break;
+        }
+        for (delay = 0x10000; --delay != -1;) {
+        }
+    }
+    version = scePadGetModVersion();
+    major = version >> 8;
+    if (major != 4) {
+        if (padDebugPrint != 0) {
+            scePrintf("libpad: Module version mismatch ");
+            scePrintf("[libpad.a = %d.%d, padman.irx = %d.%d]\n",
+                      4, 0, major, version & 0xFF);
+        }
+        return 0;
+    }
+    return scePadInit2(mode);
+}
 
 int scePadInit2(int mode)
 {
@@ -289,7 +341,22 @@ int scePadGetState(int port, int slot)
     return d->state;
 }
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadStateIntToStr);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8568);
+
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8570);
+
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8578);
+
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8580);
+
+void scePadStateIntToStr(u32 state, char *str)
+{
+    if (state < 8) {
+        strcpy(str, padStateNames[state]);
+    } else {
+        strcpy(str, "");
+    }
+}
 
 int scePadSetReqState(int port, int slot, int state)
 {
@@ -308,7 +375,14 @@ int scePadGetReqState(int port, int slot)
     return scePadGetDmaStr(port, slot)->reqState;
 }
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadReqIntToStr);
+void scePadReqIntToStr(u32 req, char *str)
+{
+    if (req < 4) {
+        strcpy(str, padRequestNames[req]);
+    } else {
+        strcpy(str, "");
+    }
+}
 
 int scePadInfoAct(int port, int slot, int actno, int term)
 {
@@ -591,16 +665,6 @@ int scePadSetWarningLevel(int level)
     }
     return padRpcPacket.slot;
 }
-
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8568);
-
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8570);
-
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8578);
-
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8580);
-
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8590);
 
 INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8598);
 

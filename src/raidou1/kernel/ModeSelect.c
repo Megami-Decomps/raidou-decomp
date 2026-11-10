@@ -233,9 +233,9 @@ extern s32 nbBgmFadeState;
 
 extern void p2sdStopBGM(s32 no);
 
-extern void func_002C1E70(s32 no);
+extern void sdfSndSendChannelGroupCommand150(s32 no);
 
-extern char nbBgmStopFormat[];
+extern const char nbBgmStopFormat[];
 
 extern u8 datModelParamTable[];
 
@@ -267,11 +267,11 @@ extern void p2sdSetPcmBuffer(void *buf, u32 size);
 
 extern void datDebugPrintf(const char *format, ...);
 
-extern char nbNegoSeOkMsg[];
+extern const char nbNegoSeOkMsg[];
 
-extern char nbMidiDebugFmt[];
+extern const char nbMidiDebugFmt[];
 
-extern char nbMotSeOkMsg[];
+extern const char nbMotSeOkMsg[];
 
 extern s32 (*D_00527420[])(nbEventProcessData_t *e);
 
@@ -367,6 +367,12 @@ extern char nbMidiPath[];
 
 extern fileRequest_t *fileLoad(const char *path);
 
+extern const char nbNegoSeOkMsg[16];
+
+extern const char nbMidiDebugFmt[16];
+
+extern const char nbMotSeOkMsg[16];
+
 s32 nbLoadMidiFile(s32 no);
 
 void nbCheckPackLoad(nbMainProcessData_t *data);
@@ -383,6 +389,12 @@ void nbAllocMainProcessData(nbMainProcessData_t *data);
 
 s32 nbMaeCheckDone();
 
+extern const u16 nbMaeMidiTable1[16];
+
+extern const u16 D_00545C58[16];
+
+extern const u16 nbMaeMidiTable2[20];
+
 void nbIncResultCounter(void);
 
 void nbMaeWaitStep(void);
@@ -396,6 +408,26 @@ void nbBgmStop(void);
 void nb_28DE10(void);
 
 void nb_28DE28(void);
+
+extern const char nbBgmStopFormat[24];
+
+extern const char nbUnitLoadTimeFormat[72];
+
+extern s32 bgmno;
+
+extern s32 nbBgmSaved;
+
+extern s32 nbBgmFadeState;
+
+extern s32 nbResultCount;
+
+extern s32 nbMaeMidiNo;
+
+extern s32 nbMaeSubMidiNo;
+
+extern s32 nbMaeFlag;
+
+extern s32 nbMaeLoadDone;
 /* End of declarations from src/smt3/newbattle/nbSound.c */
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_002CEE00);

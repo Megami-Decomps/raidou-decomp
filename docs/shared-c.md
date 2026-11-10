@@ -1,6 +1,6 @@
 # C from smt3-decomp
 
-Carried from smt3-decomp d1569b46.
+Carried from smt3-decomp 3837939d.
 
 Functions Raidou shares with SMT3 are compiled from smt3-decomp's C where the
 Raidou code is the same, one function at a time. Everything else in a unit
@@ -8,12 +8,12 @@ stays `INCLUDE_ASM`.
 
 | | raidou1 | raidou2 |
 |---|---|---|
-| identical to SMT3 C (`pairs`) | 2,627 | 2,595 |
-| compiled from C | 2,305 | 2,285 |
-| units with C | 203 | 204 |
-| SMT3 names in `smt3_symbols.txt` | 941 | 937 |
+| identical to SMT3 C (`pairs`) | 2,631 | 2,601 |
+| compiled from C | 2,490 | 2,469 |
+| units with C | 209 | 211 |
+| SMT3 names in `smt3_symbols.txt` | 1,025 | 1,018 |
 
-123 of the TUs are one file both games compile; the rest have a file per game.
+124 of the TUs are one file both games compile; the rest have a file per game.
 
 ## Layout
 
@@ -72,16 +72,18 @@ splat moves the asm of a C function from `nonmatchings/` to `matchings/`.
 
 ## Why a function stays asm
 
-| reason | meaning |
-|---|---|
-| `emits .rodata data`, `emits .lit4 data` | the body writes strings, jump tables or float constants itself; the unit's data is still `INCLUDE_RODATA`, so it would be there twice and in the wrong order |
-| `its rodata is in its asm file` | splat moved data only this function uses into its asm file and drops it once the function is C |
-| `compile error`, `declarations clash` | the SMT3 declarations do not compile in this unit (a struct both an SMT3 file and an included header define, an old-style definition, file-scope statics) |
-| `local jump` | a jump to code elsewhere in the unit at another distance than in SMT3 |
-| `<name> is/at 0x...` | a name the body uses would need two Raidou addresses (a static of the same name in two SMT3 files, or a table laid out differently) |
-| `N words differ`, `size` | same masked words in the split, different object code here (context) |
-| nested function | `movieParseHeader` defines `movieMemcpy` inside it; Raidou has both as functions |
+Data a body emits (.rodata strings, jump tables, .lit4 floats) is checked
+against retail and kept when its section lands where retail has it.
 
-Data-emitting bodies are the main remainder. Carrying them needs the unit's
-`INCLUDE_RODATA`/`.lit4` lines placed around the C in object order, or the data
-defined in C.
+| reason | raidou1 | raidou2 | meaning |
+|---|---|---|---|
+| `<name> at 0x..., 0x...` | 79 | 78 | a name the body uses would need two Raidou addresses (a static of the same name in two SMT3 files, or a table laid out differently) |
+| `its rodata is in its asm file` | 21 | 18 | splat moved data only this function uses into its asm file and drops it once the function is C; the C has to define that data |
+| `.rodata base` | 18 | 13 | the body's .rodata would need more than one base, or not the address the unit's split puts it at |
+| `size` | 13 | 13 | the object is larger than retail (newlib float functions, qsort: other compiler settings) |
+| `N words differ` | 7 | 7 | same masked words in the split, different object code here (context) |
+| `local jump` | 2 | 2 | a jump to code elsewhere in the unit at another distance than in SMT3 |
+
+A nested function with an assembler name (`movieMemcpy` in
+`movieParseHeader`) is emitted by its parent's body, so `port` drops its
+`INCLUDE_ASM` line while the parent is C.

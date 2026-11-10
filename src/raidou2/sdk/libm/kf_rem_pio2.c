@@ -49,9 +49,9 @@ extern f32 atanf(f32 x);
 
 f32 __ieee754_atan2f(f32 y, f32 x);
 
-extern const s32 two_over_pi[198];
+extern const s32 two_over_pi[];
 
-extern const s32 npio2_hw[32];
+extern const s32 npio2_hw[];
 
 extern s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,
                               const s32 *twoOverPi);
@@ -74,19 +74,19 @@ s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,
 
 f32 __kernel_sinf(f32 x, f32 y, s32 useTail);
 
-extern const f32 D_0054B3C0[13];
+extern const f32 D_0054B3C0[];
 
 f32 __kernel_tanf(f32 x, f32 y, s32 selector);
 
-extern const f32 D_0054B3F8[4];
+extern const f32 D_0054B3F8[];
 
 extern const f32 D_0054B404;
 
-extern const f32 D_0054B408[4];
+extern const f32 D_0054B408[];
 
 extern const f32 D_0054B414;
 
-extern const f32 D_0054B418[11];
+extern const f32 D_0054B418[];
 
 f32 atanf(f32 x);
 
@@ -100,9 +100,25 @@ f32 scalbnf(f32 x, s32 n);
 
 f32 copysignf(f32 magnitude, f32 sign);
 
-#undef GET_FLOAT_WORD
+extern const s32 two_over_pi[198];
 
-#undef SET_FLOAT_WORD
+extern const s32 npio2_hw[52];
+
+extern const s32 D_0054B348[4];
+
+extern const f32 D_0054B358[26];
+
+extern const f32 D_0054B3C0[14];
+
+extern const f32 D_0054B3F8[3];
+
+extern const f32 D_0054B404 __attribute__((section(".rodata")));
+
+extern const f32 D_0054B408[3];
+
+extern const f32 D_0054B414 __attribute__((section(".rodata")));
+
+extern const f32 D_0054B418[18];
 /* End of declarations from src/smt3/sdk/libm.c */
 
 s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,

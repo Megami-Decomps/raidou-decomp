@@ -543,6 +543,28 @@ extern void sdfDelayedResrcProc(void);
 void sdfGrDrawFrame(void);
 
 void sdfDrawSync(void);
+
+extern volatile u8 sdfDrawFrameFlag;
+
+extern volatile u8 sdfDrawSyncFlag;
+
+extern u16 sdfDrawFrameCounter;
+
+extern volatile u8 sdfDrawPublishFlag;
+
+extern u8 sdfGrDrawFrameId;
+
+extern u8 sdfGrBufferSlot;
+
+extern volatile s8 sdfReqDrawDelayCount;
+
+extern u16 sdfReqDrawDelaySleepCount;
+
+extern s32 sdfDrawReqQueueIndex;
+
+extern u32 sdfGrDrawFrameTagHead;
+
+extern u32 sdfDrawFrameCount;
 /* End of declarations from src/smt3/sdf/sdfDraw.c */
 
 void sdfDrawTagInit(sdfDrawTag_t *a) {

@@ -72,13 +72,13 @@ extern u64 sdf3DRefMapParam;
 
 extern u8 sdfPadCb_0[];
 
-extern u8 D_005518E0[8];
+extern u8 sdfPadAnalogSticks[8];
 
 extern s8 dds3PadBitTable[0x20];
 
 extern u8 sdfPadPressure[0x18];
 
-extern u16 sdfPadButtons[2];
+extern u16 sdfPadButtons[4];
 
 extern u16 sdfPadBitMask[0x10];
 
@@ -157,9 +157,170 @@ void sdfPadSetAct1(s32 pad, u8 value);
 void sdfPadSetAct(s32 pad, s32 value0, s32 value1);
 
 void sdfPadInitManager(void);
+
+extern u8 sdfPadPortSlotPairs[4];
+
+extern u8 sdfPadManagerMode;
+
+extern u16 sdfPadButtons[4];
+
+extern u8 sdfPadAnalogSticks[8];
+
+extern u32 D_005518E8;
+
+extern u32 D_005518EC;
+
+extern u32 D_005518F0;
+
+extern u32 D_005518F4;
 /* End of declarations from src/smt3/sdf/sdf_PadManager.c */
 
-INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadControl);
+void sdfPadControl(sdfPadCb_t *entry) {
+    u8 reply[SDF_PAD_REPLY_BUFFER_BYTES];
+    u8 actuatorData[SDF_PAD_ACTUATOR_BYTES];
+    s32 port = entry->port;
+    s32 slot = entry->slot;
+    s32 padState;
+    s32 hasButtons;
+    s32 hasAnalog;
+    s32 hasPressure;
+    s32 alignmentStatus;
+    s32 requestedMode;
+    s32 smallMotor;
+    s32 largeMotor;
+    reply[0] = -1;
+    padState = scePadGetState(port, slot);
+    switch (entry->stat) {
+    case 0:
+        if (padState == 2 || padState == 6) {
+            entry->lastSmallMotor = -1;
+            entry->lastLargeMotor = -1;
+            requestedMode = entry->mode = entry->reqMode;
+            switch (requestedMode) {
+            case 0:
+                entry->stat = 3;
+                break;
+            case 1:
+                if (padState == 6) {
+                    if (scePadSetMainMode(port, slot, 0, 0) == 1) {
+                        entry->stat = 1;
+                    }
+                } else {
+                    entry->stat = 3;
+                }
+                break;
+            case 2:
+                if (padState == 6) {
+                    if (scePadSetMainMode(port, slot, 0, 3) == 1) {
+                        entry->stat = 1;
+                    }
+                } else {
+                    entry->stat = 3;
+                }
+                break;
+            case 3:
+                if (padState == 6) {
+                    if (scePadSetMainMode(port, slot, 1, 3) == 1) {
+                        entry->stat = 1;
+                    }
+                } else {
+                    entry->stat = 3;
+                }
+                break;
+            }
+        }
+        break;
+    case 1:
+        if (padState == 6) {
+            entry->stat = 3;
+        } else if (padState != 5) {
+            entry->stat = 0;
+        }
+        break;
+    case 2:
+        break;
+    case 3:
+        if (scePadInfoAct(port, slot, -1, 0) != 0) {
+            if (scePadSetActAlign(port, slot, sdfPadCb_0) != 0) {
+                entry->stat = 4;
+            }
+        } else {
+            entry->stat = 5;
+        }
+        break;
+    case 4:
+        alignmentStatus = scePadGetReqState(port, slot);
+        if (alignmentStatus != 0) {
+            if (alignmentStatus == 1) {
+                entry->stat = 3;
+            }
+        } else {
+            entry->stat = 5;
+        }
+        break;
+    case 5:
+        if (padState != 2 && padState != 6) {
+            entry->stat = 0;
+        } else if (entry->mode != entry->reqMode) {
+            entry->stat = 0;
+        } else {
+            scePadRead(port, slot, reply);
+            smallMotor = entry->actData;
+            largeMotor = entry->actDataBack;
+            if (smallMotor != entry->lastSmallMotor || largeMotor != entry->lastLargeMotor) {
+                entry->lastSmallMotor = smallMotor;
+                entry->lastLargeMotor = largeMotor;
+                actuatorData[0] = smallMotor;
+                actuatorData[1] = largeMotor;
+                scePadSetActDirect(port, slot, actuatorData);
+            }
+        }
+        break;
+    }
+    /* Pad reply IDs: digital, analog-stick, and pressure-sensitive modes.
+     * Missing channels are normalized before consumers see this port. */
+    hasAnalog = 0;
+    hasPressure = 0;
+    hasButtons = 0;
+    if (reply[0] == 0) {
+        switch (reply[1]) {
+        case SDF_PAD_REPLY_DIGITAL:
+            hasButtons = 1;
+            break;
+        case SDF_PAD_REPLY_ANALOG:
+            hasButtons = 1;
+            hasAnalog = 1;
+            break;
+        case SDF_PAD_REPLY_PRESSURE:
+            hasButtons = 1;
+            hasAnalog = 1;
+            hasPressure = 1;
+            break;
+        }
+    }
+    if (hasButtons) {
+        memset(entry->pressure, 0, SDF_PAD_PRESSURE_COUNT);
+        entry->padData = ~(reply[3] | (reply[2] << 8));
+    } else {
+        entry->padData = 0;
+    }
+    if (hasAnalog) {
+        entry->stick[0] = reply[4];
+        entry->stick[1] = reply[5];
+        entry->stick[2] = reply[6];
+        entry->stick[3] = reply[7];
+    } else {
+        entry->stick[0] = SDF_PAD_STICK_CENTER;
+        entry->stick[1] = SDF_PAD_STICK_CENTER;
+        entry->stick[2] = SDF_PAD_STICK_CENTER;
+        entry->stick[3] = SDF_PAD_STICK_CENTER;
+    }
+    if (hasPressure) {
+        memcpy(entry->pressure, &reply[8], SDF_PAD_PRESSURE_COUNT);
+    } else {
+        memset(entry->pressure, 0, SDF_PAD_PRESSURE_COUNT);
+    }
+}
 
 void sdfPadManager(void) {
     s32 padIndex;

@@ -168,6 +168,12 @@ s32 TestMsgMngC_Process(dds3ProcessID_t *id);
 
 s32 TestMsgMngD_Process(dds3ProcessID_t *id);
 
+extern const char D_00535BD0[24];
+
+extern const char D_00535BE8[24];
+
+extern const char D_00535C00[24];
+
 void itfDebugPrintMark(void);
 
 s32 pbDebugPrintPanel(void);
@@ -189,6 +195,104 @@ void *pbMakePrimPacket(u64 data, s32 context);
 void pbDrawRotatedPrim(s32 surfaceIndex);
 
 void func_001D2638(f32 *delta);
+
+extern const sdfVector4Unaligned_t pbMyCharScale;
+
+extern const char pbDrawMyCharacterProcName[24];
+
+extern s32 testMsgTexIndex;
+
+extern void *testMsgTexture;
+
+extern char D_0054F518[8];
+
+extern char D_0054F520[8];
+
+extern char D_0054F528[8];
+
+extern char pbDebugBlurOnText[8];
+
+extern char pbDebugBlurOffText[8];
+
+extern char pbDebugPanel2CursorMark[8];
+
+extern char pbDebugPanel2RowFormat[8];
+
+extern char pbDebugBlurValueFormat[8];
+
+extern char pbDebugBlurOffsetFormat[8];
+
+extern char D_0054F560[8];
+
+extern char D_0054F568[8];
+
+extern char D_0054F570[8];
+
+extern char D_0054F578[8];
+
+extern char D_0054F580[4];
+
+extern u8 D_0054F584;
+
+extern char pbDebugPanel3Title[8];
+
+extern char pbDebugPanel3CursorMark[8];
+
+extern char pbDebugPanel3RowFormat[8];
+
+extern char pbDebugChannelFormat[8];
+
+extern char D_0054F5A8[8];
+
+extern s32 func_001D35F0(s16 x, s16 y, s32 mode);
+
+extern u8 pbFindBlockSlot(s16 x, s16 y, s32 mode);
+
+extern s32 (*pbMapCallbacks[2])(s16 x, s16 y, s32 mode);
+
+extern s8 pbNeighborOffsets[4][2];
+
+extern char pbProcNameFormat[4];
+
+extern void *pbMapWork;
+
+extern s32 D_0054F5C8;
+
+extern s32 D_0054F5CC;
+
+extern u8 pbMenuItemCount[2];
+
+extern s32 D_0054F5D4;
+
+extern u32 pbMoveCharList;
+
+extern void *blockDB;
+
+extern void *bmap;
+
+extern void *goal;
+
+extern void *record;
+
+extern void *mapCursor;
+
+extern s32 D_0054F5F0;
+
+extern u8 degree_mode;
+
+extern u8 pbGameKeyState;
+
+extern f32 pbMapCursorWork;
+
+extern char pbMCardInitFormat[8];
+
+extern char pbMCardNewline[8];
+
+extern void *g_pdebug_0;
+
+extern char pbDebugMenuCursorMark[8];
+
+extern char pbDebugFloatFormat[8];
 /* End of declarations from src/smt3/interface/itfTestMesManager.c */
 
 INCLUDE_ASM(const s32, "interface/itfTestMesManager_0018CC20", itfDebugMesMngInitialize);
@@ -215,7 +319,9 @@ INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018CC20", D_0044A998);
 
 INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018CC20", D_0044A9B0);
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager_0018CC20", itfDebugPrintMark);
+void itfDebugPrintMark(void) {
+    printf("********* AAAA ********\n");
+}
 INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018CC20", D_0046C2B8);
 
 INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018CC20", D_0046C2BC);

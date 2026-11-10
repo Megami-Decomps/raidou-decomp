@@ -114,11 +114,39 @@ int sceDmaWatch(sceDmaChan *chan, u32 addr, int mode, int timeout);
 int sceDmaPause(sceDmaChan *chan);
 
 int sceDmaRestart(sceDmaChan *chan, u32 chcr);
+
+extern const int sceDmaChanResetFlag[10];
+
+extern const u8 sceDmaStsBits[16];
+
+extern const u8 sceDmaStdBits[16];
+
+extern const u8 sceDmaMfdBits[16];
 /* End of declarations from src/smt3/sdk/libdma.c */
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", WaitDma);
+void WaitDma(sceDmaChan *chan)
+{
+    int i = 0x1000000;
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", WatchDma);
+    while (CHCR(chan) & 0x100) {
+        if (--i < 0) {
+            scePrintf("libdma: sync timeout\n");
+            sceDmaPause(chan);
+        }
+    }
+}
+
+void WatchDma(sceDmaChan *chan, u32 addr, int timeout)
+{
+    int i = timeout ? timeout : 0x1000000;
+
+    while (MADR(chan) < addr) {
+        if (--i < 0) {
+            scePrintf("libdma: sync timeout\n");
+            sceDmaPause(chan);
+        }
+    }
+}
 
 u32 CheckAddress(addr_t addr)
 {
@@ -307,8 +335,6 @@ int sceDmaRestart(sceDmaChan *chan, u32 chcr)
     chan->chcr = chcr;
     return (old >> 8) & 1;
 }
-
-INCLUDE_RODATA(const s32, "sdk/libdma/libdma", D_004D8400);
 
 INCLUDE_RODATA(const s32, "sdk/libdma/libdma", D_004D8418);
 

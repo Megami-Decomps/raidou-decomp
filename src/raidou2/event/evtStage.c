@@ -23,7 +23,7 @@ u32 dds3AllocObjectId(void);
 
 void dds3ObjectBaseCreateMover(void *pObjectBasic);
 
-void dds3ObjectBaseSetPadControl(dds3Basic_t *object,
+extern void dds3ObjectBaseSetPadControl(dds3Basic_t *object,
                                      s32 (*update)(struct dds3PoseSet_t *, struct dds3Basic_t *));
 
 dds3Basic_t *dds3SetActiveCameraSceneBasic(dds3Basic_t *pSceneBasic, dds3Basic_t *pCameraBasic);

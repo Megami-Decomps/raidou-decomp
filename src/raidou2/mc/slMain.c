@@ -58,7 +58,7 @@ extern u32 mccb;
 
 void sdfMcSetSlotIndex(s32 request, s32 selectedSlot);
 
-s8 sdfMcGetSlotIndex(s32 request);
+s32 sdfMcGetSlotIndex(s32 request);
 
 u32 sdfMcGetSlotFlags(s32 request, s32 slot);
 
@@ -118,7 +118,7 @@ extern u32 slQueryYesNoMsg;
 
 extern u32 gslDrawFlagFile;
 
-saddr_t slQueryYesNo(s32 (*yesFunc)(void), s32 (*noFunc)(void), s32 yesNoDefault);
+extern saddr_t slQueryYesNo(s32 (*yesFunc)(void), s32 (*noFunc)(void), s32 yesNoDefault);
 
 saddr_t slSaveData(void);
 
@@ -140,11 +140,11 @@ extern u32 gslDrawFlagBg;
 
 s32 slExitToTitleSub(void);
 
-extern char slFldProcSequenceName[];
+extern const char slFldProcSequenceName[];
 
 s32 slExitToTitle2(void);
 
-extern char slIconPath[];
+extern const char slIconPath[];
 
 fileRequest_t *fileLoad(const char *filename);
 
@@ -184,7 +184,7 @@ slMcResult_t sdfMcFuncChdir1(void);
 
 void sdfMcSetSlotFlags(s32 request, s32 slot, s32 mask);
 
-extern char slIconSysName[];
+extern const char slIconSysName[];
 
 extern u8 slDirEntries[];
 
@@ -222,7 +222,7 @@ extern s32 slSaveData_writeFile(void);
 
 void slKillLoadProcess(void);
 
-extern char slBaseIconName[];
+extern const char slBaseIconName[];
 
 extern s32 slSaveWriteEnd_baseIcon(void);
 
@@ -300,7 +300,7 @@ u32 fileGetLoadSize(const fileRequest_t *fileHandle);
 
 s32 fileHandleFree(fileRequest_t *fileHandle);
 
-extern char slCalcName[];
+extern const char slCalcName[];
 
 extern u32 gslExitType;
 
@@ -334,7 +334,7 @@ extern s32 slDDS3To31Flg;
 
 #include "sdk_libc.h"
 
-extern char slSaveDirFmt[];
+extern const char slSaveDirFmt[];
 
 extern s8 D_00569743[];
 
@@ -407,6 +407,9 @@ typedef struct slFileName_t {
     s8 ch[20];
 } slFileName_t;
 
+/* The 0x34-byte save preview: the renderer reads playTime as a word and
+ * endcnt/newfile as signed halfwords. The last count is for the encoded
+ * player name, not map state (nmeBuildNameFont and slCopyNonZero). */
 typedef struct slFileRec_t {
     s8 verstr[3];
     s8 ver;
@@ -414,15 +417,15 @@ typedef struct slFileRec_t {
     s8 tmnlId;
     s8 level;
     s8 mode;
-    s8 playTime[4];
-    s8 endcnt[2];
-    s8 newfile[2];
+    s32 playTime;
+    s16 endcnt;
+    s16 newfile;
     slFileName_t name;
-    s8 mapOpen;
+    s8 nameLength;
     s8 unk25[15];
 } slFileRec_t;
 
-#define SL_REC ((u8 (*)[52])slFileRecs)
+SIZE_CHECK(slFileRecSizeCheck, slFileRec_t, 0x34);
 
 #define SL_FILE_HEAD ((GameFileInfo_t *)DDS3_GBWK)
 
@@ -590,9 +593,9 @@ typedef struct {
     fclencyceelem_t encyclopedia[184];
 } slConvertWork_t;
 
-extern char slConvert03Msg[];
+extern const char slConvert03Msg[];
 
-extern char slConvert04Msg[];
+extern const char slConvert04Msg[];
 
 void slVersionConvert_Step3(void);
 
@@ -746,6 +749,8 @@ s32 slSaveWriteEnd_baseIcon(void);
 
 s32 slSaveWriteEnd_saveData(void);
 
+s32 slSaveData_writeFile(void);
+
 saddr_t slSaveData_deleteIconSys(void);
 
 saddr_t slSaveWriteFile(const char *filename, u32 *buff, u32 *size, void *endFunc, u32 *srcPtr);
@@ -780,13 +785,27 @@ extern char slNewFileLabel[], slCorruptedFileLabel[], slNewCycleLabel[];
 
 extern char slNoFileLabel[], slCycleLabel[];
 
-extern char slNum2dFmt[], D_0054F088[], D_0054F090[], D_0054F098[], D_0054F0A0[];
+extern char slNum2dFmt[], slNum3dFmt[], slNum02dFmt[], D_0054F098[], D_0054F0A0[];
 
 extern char D_00311450[][0x20], D_00311850[][0x20];
 
 extern void cmpSetSkillListRows(s32 rows);
 
 extern void fldKanjiDraw(s32 x, s32 y, u32 rgba, const u8 *text);
+
+extern const char slSaveDirFmt[20];
+
+extern const char slConvert03Msg[38];
+
+extern const char slConvert04Msg[31];
+
+extern const char slFldProcSequenceName[16];
+
+extern const char slIconPath[13];
+
+extern const char slIconSysName[9];
+
+extern const char slBaseIconName[9];
 
 s32 slCalc(dds3ProcessID_t *id);
 
@@ -890,6 +909,8 @@ extern char slYesLabel[];
 extern char slNoLabel[];
 
 extern char slNewCycleMsg3[];
+
+extern const char slCalcName[13];
 
 void slQueryYesNoDraw(void);
 

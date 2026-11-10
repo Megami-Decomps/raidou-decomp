@@ -405,9 +405,69 @@ void dds3EffectObjectBasicSetFldEx(dds3Basic_t *basic, fldResourceEffect_t *pRes
 
 /* Apply field visibility/animation selectors and the view-distance fade. */
 void dds3EffectObjectBasicCalcFldEx(dds3Basic_t *basic);
+
+extern const dds3EffectEventParameters_t dds3EffectEventDefaultParameters;
+
+extern const effMagaSCArea_t dds3EffectMagaSCAreaDefault;
+
+extern const effMagaP4Point_t dds3EffectMagaP4PointDefault;
 /* End of declarations from src/smt3/basic/dds3EffectObjectBasic.c */
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", FreeEffectData);
+void FreeEffectData(dds3EffectObjectBasicWorkData_t *work) {
+    dds3EffectObjectBasicWorkData_t *data = work;
+
+    switch (data->type) {
+    case 1:
+        if (data->handle != NULL) {
+            dds3EffectDelete(data->handle);
+            data->handle = NULL;
+        }
+        break;
+    case 2:
+    case 3:
+        if (data->handle != NULL) {
+            dds3BillboardDelete(data->handle);
+            data->handle = NULL;
+        }
+        break;
+    case 4:
+        if (data->handle != NULL) {
+            data->handle = NULL;
+        }
+        break;
+    case 5:
+        if (data->cuth != NULL) {
+            effEveBEDCutDelete(data->cuth);
+            data->cuth = NULL;
+        }
+        if (data->handle != NULL) {
+            effEveBEDDelete(data->handle);
+            data->handle = NULL;
+        }
+        if (data->para != NULL) {
+            sdfChipFreeDirect(data->para);
+            data->para = NULL;
+        }
+        break;
+    case 7:
+    case 8:
+        if (data->handle != NULL) {
+            dds3EffectDelete(data->handle);
+            data->handle = NULL;
+        }
+        if (data->cuth != NULL) {
+            sdfChipFreeDirect(data->cuth);
+            data->cuth = NULL;
+        }
+        if (data->para != NULL) {
+            sdfChipFreeDirect(data->para);
+            data->para = NULL;
+        }
+        break;
+    }
+    data->type = 0;
+    data->handle = NULL;
+}
 
 s32 dds3EffectObjectBasicConstructor(dds3Basic_t *aPtr) {
     dds3EffectObjectBasicWorkData_t *data;
@@ -434,7 +494,40 @@ void dds3EffectObjectBasicDestructor(dds3Basic_t *aPtr) {
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011BE60);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicDrawProcedure);
+s32 dds3EffectObjectBasicDrawProcedure(dds3Basic_t *aPtr) {
+    dds3EffectObjectBasicWorkData_t *data;
+
+    data = aPtr->workdata;
+    dds3EffectObjectBasicCalcFldEx((dds3Basic_t *)aPtr);
+    if ((data->stat & 1) == 0) {
+        return 1;
+    }
+    if (dds3ObjectBaseCheckFlag(aPtr, 1)) {
+        return 1;
+    }
+
+    switch (data->type) {
+    case 1:
+    case 7:
+    case 8:
+        if (data->handle != NULL) {
+            dds3EffectDraw(data->handle);
+        }
+        break;
+    case 2:
+    case 3:
+        if (data->handle != NULL) {
+            dds3BillboardDraw(data->handle);
+        }
+        break;
+    case 5:
+        if (data->cuth != NULL) {
+            effEveBEDCutDraw(data->cuth);
+        }
+        break;
+    }
+    return 1;
+}
 
 dds3ObjectBaseControlWorkData_t *dds3EffectObjectBasicGetControlWorkData(dds3Basic_t *pBasic)
 {

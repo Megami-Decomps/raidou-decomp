@@ -56,6 +56,12 @@ void sdfCoreDrawSetZBias(f32 z);
 void sdfCoreDrawReset(void);
 
 void sdfCoreDrawInit(s32 buffSize);
+
+extern sdfMemHandle_t *sdfCoreDrawBuffHandle;
+
+extern f32 sdfFaceDivSoften;
+
+extern f32 sdfFaceDivBias;
 /* End of declarations from src/smt3/sdf/sdfCoreDraw.c */
 
 INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", sdfCorePacketGen);

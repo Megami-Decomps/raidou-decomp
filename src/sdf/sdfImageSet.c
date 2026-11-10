@@ -112,7 +112,7 @@ extern void SleepThread(void);
 
 extern sdfImageSetCb_t sdfImageSetCb;
 
-extern u64 D_005293A0[];
+extern u64 sdfImageSetTexFlushPacket[];
 
 s32 sdfImageDataSize(u32 format, s32 width, s32 height);
 
@@ -137,7 +137,36 @@ void sdfImageSetTrans(void);
 void sdfImageSetInit(void);
 /* End of declarations from src/smt3/sdf/sdfImageSet.c */
 
-INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageDataSize);
+s32 sdfImageDataSize(u32 format, s32 width, s32 height)
+{
+    s32 bitCount;
+
+    switch (format) {
+    case SDF_PSMCT24:
+    case SDF_PSMZ24:
+        bitCount = 0x18;
+        break;
+    case SDF_PSMCT16:
+    case SDF_PSMCT16S:
+    case SDF_PSMZ16:
+    case SDF_PSMZ16S:
+        bitCount = 0x10;
+        break;
+    case SDF_PSMT8:
+    case SDF_PSMT8H:
+        bitCount = 8;
+        break;
+    case SDF_PSMT4:
+    case SDF_PSMT4HL:
+    case SDF_PSMT4HH:
+        bitCount = 4;
+        break;
+    default:
+        bitCount = 0x20;
+        break;
+    }
+    return (bitCount * width * height) >> 7;
+}
 
 void sdfImageSetReq(sdfImageSetReqParam_t *parm)
 {
@@ -315,7 +344,7 @@ void sdfImageSetTrans(void)
     if (dmaAddr != 0) {
         s32 threadId = GetThreadId();
         s32 handlerId = AddDmacHandler2(1, (s32 (*)(s32, void *, void *))sdfImageSetDmacHandler, 0, EE_ADDR_AS(void *, threadId));
-        u64 tag = SDF_DMA_TAG(EE_ADDR(D_005293A0), 0x20000000);
+        u64 tag = SDF_DMA_TAG(EE_ADDR(sdfImageSetTexFlushPacket), 0x20000000);
         u32 *chan;
 
         tagTail->vifCodes = 0;

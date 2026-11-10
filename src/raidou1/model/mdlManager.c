@@ -307,11 +307,11 @@ typedef struct mdlPartTagRecord_t {
 
 struct mdlEffectDescriptor_t;
 
-extern const mdlPathPrefix_t mdlModelPathPrefix[];
+extern char mdlModelPathPrefix[];
 
-extern const char mdlPackedBundleExt[];
+extern char mdlPackedBundleExt[];
 
-extern const mdlWorkPrefix_t mdlWorkPathPrefix[];
+extern mdlWorkPrefix_t mdlWorkPathPrefix[];
 
 extern mdlHddFileEntry_t *mdlHddFileCount;
 
@@ -355,7 +355,7 @@ extern s32 mdlPibGetVersion(mdlPibRecord_t *record);
 
 extern sdfPacDecodeResrc_t *sdfPacFreeResrc(sdfPacDecodeResrc_t *resrc);
 
-extern sdfMatrix4_t D_002FA240;
+extern sdfMatrix4_t sdfViewMatrix;
 
 extern sdf3DScreenParam_t dds3ScreenParam;
 
@@ -363,7 +363,7 @@ extern void MultMatrixRev(sdfMatrix4_t *aMatrix);
 
 extern void MultMatrixRevNoArg(void);
 
-s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (*callback)(u32), u32 parm);
+extern s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (*callback)(u32), u32 parm);
 
 #define MDL_CHAR_IS_LOWER(c) ((_ctype_ + 1)[(unsigned)(c)] & 2)
 
@@ -506,7 +506,7 @@ void mdlSetEffectScale(mdlObj_t *aHandle, f32 aScale);
 void mdlGetScreenOffset(mdlObj_t *aHandle, void *aOfs);
 
 /* vu0 routine: project an array of points and store their screen coordinates. */
-void mdl_1DD9C0(mdlObj_t *ctx, f32 (*inputPoints)[4], f32 (*outputPoints)[4], s32 pointCount);
+void mdlProjectPoints(mdlObj_t *ctx, f32 (*inputPoints)[4], f32 (*outputPoints)[4], s32 pointCount);
 
 void mdlMotionPause(mdlObj_t *aHandle);
 
@@ -550,6 +550,16 @@ void mdlReleaseHddFileList(void);
 void mdlMakeHddFileListDummy(void);
 
 void mdlMakeHddFileList(void);
+
+extern char mdlModelPathPrefix[8];
+
+extern char mdlPackedBundleExt[4];
+
+extern sdfMemHandle_t *mdlHddFileIndexHandle;
+
+extern sdfMemHandle_t *mdlHddFileListHandle;
+
+extern mdlWorkPrefix_t mdlWorkPathPrefix[1];
 /* End of declarations from src/smt3/model/mdlManager.c */
 
 void mdlInitManager(void)
@@ -1466,7 +1476,7 @@ void mdlSetEffectScale(mdlObj_t *aHandle, f32 aScale)
 /* vu0 routine: project the point through the view and model matrices into vf10. */
 void mdlGetScreenOffset(mdlObj_t *aHandle, void *aOfs)
 {
-    SDF_VU0_LOADMATRIX(&D_002FA240);
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
     MultMatrixRev(&dds3ScreenParam.TM);
     SDF_VU0_COPYMATRIX_A_TO_B();
     SDF_VU0_LOADMATRIX(&aHandle->inner->tm);
@@ -1885,7 +1895,133 @@ void mdlMakeHddFileListDummy(void)
     modelFileTable[5].count = 1;
 }
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlMakeHddFileList);
+void mdlMakeHddFileList(void) {
+    mdlDirectoryEntry_t directory;
+    s32 index;
+    s32 count;
+    s32 handle;
+    s32 length;
+    s32 end;
+    mdlHddFileEntry_t *next;
+    mdlHddFileEntry_t *file;
+    mdlHddFileEntry_t **link;
+
+    if (sdfHddValid && (handle = sceDopen("pfs0:/model/work")) >= 0) {
+        mdlReleaseHddFileList();
+        while ((length = sceDread(handle, &directory)) > 0) {
+            if ((directory.mode & 0xF000) != 0x1000 && length >= 4 && length < 49) {
+                s32 kind = -1;
+
+                if (directory.name[length - 3] == '.' &&
+                    (s8)FileUpper(directory.name[length - 1]) == 'B') {
+                    s32 ext = directory.name[length - 2];
+
+                    if (MDL_CHAR_IS_LOWER(ext)) {
+                        ext -= 'a' - 'A';
+                    }
+                    switch (ext) {
+                    case 'A':
+                        kind = 2;
+                        break;
+                    case 'T':
+                        kind = 1;
+                        break;
+                    case 'M':
+                    case 'P':
+                        kind = 0;
+                        break;
+                    }
+                    if (kind >= 0) {
+                        file = mdlHddFileCount;
+                        while (file != NULL && memcmp(file->name, directory.name, length - 2) != 0) {
+                            file = file->next;
+                        }
+                        if (file == NULL) {
+                            file = sdfChipAllocDirect(sizeof(*file));
+                            memset(file, 0, sizeof(*file));
+                            memcpy(file->name, directory.name, length - 2);
+                            file->name[length - 2] = 0;
+                            file->next = mdlHddFileCount;
+                            mdlHddFileCount = file;
+                        }
+                        file->available[kind] = 1;
+                        file->extension[kind][0] = directory.name[length - 2];
+                        file->extension[kind][1] = directory.name[length - 1];
+                    }
+                }
+            }
+        }
+        count = 0;
+        sceDclose(handle);
+        link = &mdlHddFileCount;
+        next = mdlHddFileCount;
+        while (next != NULL) {
+            file = next;
+            next = file->next;
+            if (!file->available[0]) {
+                *link = next;
+                mdlFreeFileItem(file);
+            } else {
+                if (FileUpper(file->extension[0][0]) == 'P') {
+                    file->available[1] = 0;
+                    file->available[2] = 0;
+                }
+                link = &file->next;
+                count++;
+            }
+        }
+        if (count != 0) {
+            index = 0;
+            mdlHddFileIndexHandle = sdfMemAllocDirect(count * sizeof(dds3ModelFileIndex_t));
+            mdlHddFileIndex = sdfMemLock(mdlHddFileIndexHandle);
+            mdlHddFileListHandle = sdfMemAllocDirect(count * sizeof(dds3ModelFileTable_t));
+            mdlHddFileList = sdfMemLock(mdlHddFileListHandle);
+            memset(mdlHddFileList, 0, count * sizeof(dds3ModelFileTable_t));
+            file = mdlHddFileCount;
+            while (file != NULL) {
+                const char *name = file->name;
+                s32 kind;
+
+                mdlHddFileIndex[index].major = 5;
+                mdlHddFileIndex[index].minor = index;
+                mdlHddFileIndex[index].scale = 0x1000;
+                mdlHddFileIndex[index].radius = 1000;
+                length = strlen(name);
+                end = length + 5;
+                for (kind = 0; kind != 3; kind++) {
+                    if (file->available[kind]) {
+                        char *path = sdfChipAllocDirect(length + 8);
+
+                        *(mdlWorkPrefix_t *)path = mdlWorkPathPrefix[0];
+                        memcpy(path + 5, name, length);
+                        path[end] = file->extension[kind][0];
+                        path[end + 1] = file->extension[kind][1];
+                        path[end + 2] = 0;
+                        switch (kind) {
+                        case 0:
+                            mdlHddFileList[index].modelFile = path;
+                            break;
+                        case 1:
+                            mdlHddFileList[index].texFile = path;
+                            break;
+                        case 2:
+                            mdlHddFileList[index].motionFile = path;
+                            break;
+                        }
+                    }
+                }
+                file = file->next;
+                index++;
+            }
+            modelFileKindTable[5].entries = mdlHddFileIndex;
+            modelFileKindTable[5].count = count;
+            modelFileTable[5].entries = mdlHddFileList;
+            modelFileTable[5].count = count;
+            return;
+        }
+    }
+    mdlMakeHddFileListDummy();
+}
 INCLUDE_SDATA(const s32, "model/mdlManager", D_0046C378);
 
 INCLUDE_SDATA(const s32, "model/mdlManager", D_0046C380);

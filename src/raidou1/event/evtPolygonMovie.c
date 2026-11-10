@@ -151,9 +151,9 @@ extern void sdfMotionSeek(sdfMotionCtrlr_t *motion, f32 frame);
 
 extern u32 dds3DrawFlag;
 
-extern char evtPolygonMovieStartMsg[];
+extern const char evtPolygonMovieStartMsg[];
 
-extern char evtPolygonMovieMapMsg[];
+extern const char evtPolygonMovieMapMsg[];
 
 void evtPolygonMovieShutdown(dds3ProcessID_t *id);
 
@@ -437,6 +437,10 @@ void CheckLoad_evtPolygonMovie(evtPolygonMovieWork_t *work);
 
 s32 evtCheckPolygonMovieRun(dds3ProcessID_t *id);
 
+extern const char evtPolygonMovieStartMsg[40];
+
+extern const char evtPolygonMovieMapMsg[16];
+
 saddr_t evtPolygonMovieProcess1(dds3ProcessID_t *id);
 
 void evtPolygonMovieShutdown(dds3ProcessID_t *id);
@@ -496,6 +500,12 @@ void SetPMFileName(s32 eventno, s32 cutno, char *pm1file, char *pm2file);
 evtPolygonMovieWork_t *evtGetPolygonMovieWorkData2(s32 eventno, s32 cutno, s32 type);
 
 dds3ProcessID_t *evtStartPolygonMovie2(s32 priority, s32 eventno, s32 cutno);
+
+extern saddr_t evtCameraFrameState;
+
+extern f32 nowfovy;
+
+extern s32 evtCameraLastFrame;
 /* End of declarations from src/smt3/event/evtPolygonMovie.c */
 
 f32 evtHokanFloat(s32 hokan, f32 ratio, f32 f1, f32 f2)

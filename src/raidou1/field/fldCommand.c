@@ -385,7 +385,7 @@ extern s32 dds3GetRandIntA(s32 aLimit, s32 name);
 
 extern s32 fldItemBoxRndTable[];
 
-extern char fldFixCameraMissingMsg[];
+extern const char fldFixCameraMissingMsg[];
 
 extern void resetCamTgtPlayer(void);
 
@@ -488,6 +488,8 @@ extern void evtEnableMoonDraw(void);
 extern void evtDisableMoonDraw2(void);
 
 extern void evtEnableMoonDraw2(void);
+
+extern const char fldFixCameraMissingMsg[48] __attribute__((aligned(16)));
 
 s32 fldCommand_SET_ALLPANEL(void);
 

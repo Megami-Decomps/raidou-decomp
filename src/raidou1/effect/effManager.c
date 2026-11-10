@@ -280,6 +280,24 @@ s32 dds3EffectPartCopy(s32 instance);
 void dds3EffectPartSetScale(s32 instance, f32 scale);
 
 extern effMajorEntry_t EffMajorTable[5];
+
+extern const char billPathSmoke12[18];
+
+extern const char billPathSmoke10[18];
+
+extern const char billPathSmoke08[18];
+
+extern const char billPathSmoke07[18];
+
+extern const char billPathMblur8_3[19];
+
+extern const char billPathMblur8[17];
+
+extern const char billPathSmoke16[18];
+
+extern const char billPathBil00[16];
+
+extern char dds3EffectProcessName[7];
 /* End of declarations from src/smt3/effect/effManager.c */
 
 INCLUDE_ASM(const s32, "effect/effManager", func_001E97E0);
@@ -309,7 +327,16 @@ void func_001E9A70(void) {
 
 INCLUDE_ASM(const s32, "effect/effManager", func_001E9A78);
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectCreate);
+effNode_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param)
+{
+    effNode_t *node = sdfChipAllocDirect(sizeof(effNode_t));
+
+    node->type = type;
+    node->version = 1.03f;
+    node->arg = arg;
+    node->instance = EffMajorTable[type].create(arg, param);
+    return node;
+}
 
 void dds3EffectDelete(effNode_t *pData)
 {
@@ -335,7 +362,32 @@ INCLUDE_ASM(const s32, "effect/effManager", func_001E9CE8);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_001E9D28);
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectLoad);
+effNode_t *dds3EffectLoad(effResourceHeader_t *pD3P)
+{
+    effNode_t *node;
+    effLegacyInstance_t *instance;
+
+    if (pD3P->version < 1.03f) {
+        printf("old version!![%f]\n", pD3P->version);
+        dds3EffectDataRevision(pD3P);
+    }
+    node = dds3EffectCreate((u16)pD3P->type, (u16)pD3P->arg, EE_ADDR_S(pD3P->payload));
+    if (pD3P->version <= 1.02f) {
+        switch (node->type) {
+        case 0:
+        case 1:
+            instance = EE_ADDR_AS(effLegacyInstance_t *, node->instance);
+            SDF_VU0_STOREIDENTITY(&instance->matrixB0);
+            break;
+        case 2:
+            instance = EE_ADDR_AS(effLegacyInstance_t *, node->instance);
+            SDF_VU0_STOREIDENTITY(&instance->matrix20);
+            break;
+        }
+        printf("effManager:set Identity matrix\n");
+    }
+    return node;
+}
 
 INCLUDE_ASM(const s32, "effect/effManager", func_001E9E78);
 
@@ -352,7 +404,43 @@ effNode_t *dds3EffectCopy(effNode_t *node)
     return copy;
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectDataRevision);
+void dds3EffectDataRevision(effResourceHeader_t *header)
+{
+    u8 *payload = header->payload;
+
+    if (header->version == 1.0f) {
+        u32 type = header->type;
+        switch (type) {
+        case 0:
+            *(u32 *)(payload + 0xA0) = 0xAC;
+            break;
+        case 1:
+            {
+                u8 *source = payload + *(u32 *)(payload + 4);
+                payload = source + 0x10;
+                *(u32 *)(payload + 0xA0) = 0xAC;
+            }
+            break;
+        case 2:
+            *(u32 *)(payload + 0x18) = 0x20;
+            break;
+        }
+    }
+
+    if (header->version <= 1.01f) {
+        u32 type = header->type;
+        if (type == 1) {
+            u8 *source = payload + *(u32 *)(payload + 4);
+            payload = source + 0x10;
+            *(f32 *)(payload + 0x8C) =
+                *(f32 *)(payload + 0x8C) * 0.1f * (f32)*(s32 *)(payload + 0x24) +
+                *(f32 *)(payload + 0x10);
+        }
+        if (type < 2 && header->arg == 0) {
+            printf("effManager:par spiral old version!![%f]\n", header->version);
+        }
+    }
+}
 
 INCLUDE_SDATA(const s32, "effect/effManager", D_0046D078);
 

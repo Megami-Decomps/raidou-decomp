@@ -20,7 +20,7 @@ from units import SRC, shared_sources, unit_name, unit_sources  # noqa: E402
 
 OUT = ROOT / "build" / "raidou_c"
 # Read only: the smt3-port checkout follows smt3-decomp upstream.
-SMT3 = Path.home() / "projects/smt3-port/external/smt3-decomp"
+SMT3 = Path.home() / "projects/smt3-decomp"
 
 INSN = re.compile(r"^\s*/\* [0-9A-Fa-f]+ ([0-9A-Fa-f]+) ([0-9A-Fa-f]{8}) \*/\s+(.*?)\s*$")
 GLABEL = re.compile(r"^\s*glabel\s+(\S+)")
@@ -72,9 +72,15 @@ def definitions(text):
     """Function name -> (start, end) offsets of each definition in text."""
     code = code_view(text)
     found = {}
+    nesting, level = [], 0
+    for ch in code:
+        nesting.append(level)
+        level += (ch == "{") - (ch == "}")
     candidate = re.compile(r"^[\w \t*\n]*?(\w+)[ \t]*(?:\n[ \t]*)?\(", re.M)
     for m in candidate.finditer(code):
         name = m.group(1)
+        if nesting[m.start(1)]:
+            continue  # a nested function belongs to its parent's body
         if not code[m.start():m.start(1)].strip() or name in ("if", "while", "for", "switch", "return"):
             continue
         depth, i = 0, m.end() - 1
@@ -215,7 +221,11 @@ def cmd_pairs(args):
 
 KNR_HEADER = re.compile(r"^[A-Za-z_][\w \t\*]*\b\w+\s*\(\s*\w+(\s*,\s*\w+)*\s*\)\s*$")
 STATIC = re.compile(r"\bstatic\s+")
-DROP = re.compile(r"^\s*(INCLUDE_ASM|INCLUDE_RODATA|INCLUDE_SDATA|TEXT_ALIGN|__asm__|asm)\b")
+# Data layout directives: the data stays where the unit's split puts it.
+DROP = re.compile(r"^\s*(INCLUDE_ASM|INCLUDE_RODATA|INCLUDE_SDATA|TEXT_ALIGN|SDATA_PAD|SDATA_RESUME|__asm__|asm)\b")
+# SYMBOL_AT(type, name, base, offset): an SMT3 name inside other data; here an extern
+# that smt3_symbols.txt places.
+SYMBOL_AT = re.compile(r"^\s*SYMBOL_AT(_REGION)?\(\s*([^,]+?)\s*,\s*(\w+)\s*,[^;]*;", re.M)
 
 
 def blocks(text):
@@ -305,12 +315,15 @@ def declaration(item):
     code = cv.strip()
     if not code or DROP.match(code):
         return None
+    if m := SYMBOL_AT.match(code):
+        return f"extern {m.group(2)} {m.group(3)}{'[]' if m.group(1) else ''};"
     if code.startswith("#"):
-        return item if re.match(r"#\s*(include|define|undef|if|ifdef|ifndef|elif|else|endif)\b", code) else None
-    if code.startswith("typedef") or re.fullmatch(r"(struct|union|enum)\s+\w+\s*;", code) \
-            or (re.match(r"(struct|union|enum)\b", code) and code.rstrip(";").rstrip().endswith("}")):
-        return item
+        return item if re.match(r"#\s*(include|define|if|ifdef|ifndef|elif|else|endif)\b", code) else None
     brace, paren, eq = top_level(cv, "{"), top_level(cv, "("), top_level(cv, "=")
+    if code.startswith("typedef") or re.fullmatch(r"(struct|union|enum)\s+\w+\s*;", code) \
+            or (re.match(r"(struct|union|enum)\b", code) and code.rstrip(";").rstrip().endswith("}")
+                and not 0 <= paren < brace):
+        return item
     if paren >= 0 and (eq < 0 or eq > paren) and code.endswith("}") and brace > paren:
         # A function definition: inline helpers stay whole, the rest become prototypes.
         if re.search(r"\binline\b|__inline", cv[:brace]):
@@ -321,8 +334,9 @@ def declaration(item):
         return strip_static(head) + ";"
     if not code.endswith(";"):
         return None
-    if paren >= 0 and (eq < 0 or eq > paren) and brace < 0:
-        return strip_static(item)
+    if paren >= 0 and (eq < 0 or eq > paren) and brace < 0 \
+            and not re.search(r"\(\s*\*\s*\w+\s*(\[[^\]]*\]\s*)*\)\s*\(", code):
+        return strip_static(item)  # a prototype; a function pointer object is data
     # Data: an extern declaration without its initializer.
     end = cv.rstrip().rfind(";")
     body = item[:eq if eq >= 0 else end].rstrip()
@@ -334,7 +348,7 @@ def declaration(item):
         size = string_size(init)
         if size is not None:
             body = re.sub(r"\[\s*\]\s*$", f"[{size}]", body)
-    if not re.match(r"(\s*/\*.*?\*/\s*|\s*//[^\n]*\n)*\s*extern\b", body, re.S):
+    if not re.match(r"(\s*/\*.*?\*/\s*|\s*//[^\n]*\n)*\s*(extern|EXTERN_LATE_CONST)\b", body, re.S):
         lead = len(body) - len(code_view(body).lstrip()) if code_view(body).strip() else 0
         body = body[:lead] + "extern " + body[lead:]
     return body + ";"
@@ -367,7 +381,17 @@ DECL_BLOCK = re.compile(r"^/\* Declarations from smt3-decomp src/smt3/(\S+)\.c \
 
 def decl_block(smt3, rel):
     """Every declaration of one SMT3 file (types, prototypes, its data as extern)."""
-    decls = [d for d in (declaration(b) for b in blocks(smt3_text(smt3, rel))) if d is not None]
+    decls, unprototyped = [], set()
+    for d in (declaration(b) for b in blocks(smt3_text(smt3, rel))):
+        if d is None:
+            continue
+        # The file calls `f()` with arguments before defining f(void); a later prototype breaks that.
+        if (m := re.search(r"\b(\w+)\s*\(([^()]*)\)\s*;$", code_view(d).strip())) and "{" not in d:
+            if not m.group(2).strip():
+                unprototyped.add(m.group(1))
+            elif m.group(1) in unprototyped:
+                continue
+        decls.append(d)
     return decl_begin(rel) + "\n" + "\n\n".join(decls) + "\n" + decl_end(rel) + "\n"
 
 
@@ -378,7 +402,9 @@ def body_text(smt3, rel, fn):
     """One SMT3 function definition with the comment directly above it, `static` dropped."""
     if (rel, fn) not in _BODY:
         text = smt3_text(smt3, rel)
-        start, end = definitions(text)[fn]
+        if ("defs", rel) not in _BODY:
+            _BODY[("defs", rel)] = definitions(text)
+        start, end = _BODY[("defs", rel)][fn]
         cv = code_view(text)
         lead = start
         while lead > 0:
@@ -404,13 +430,25 @@ def tu_bodies(smt3, text, candidates):
         at = text.find(body)
         if at >= 0:
             out[fn] = (rel, at, at + len(body))
+            continue
+        # The data tools may have put INCLUDE_RODATA/SDATA lines between the comment and the definition.
+        split = definitions(body)[fn][0]
+        if text[start:end] != body[split:]:
+            continue
+        lead, comment = start, body[:split]
+        while (m := re.search(r"(^INCLUDE_(RODATA|SDATA)\(.*\);\n+)\Z", text[:lead], re.M)):
+            lead = m.start(1)
+        if comment and text[:lead].endswith(comment):
+            out[fn] = (rel, lead - len(comment), end)
+        elif not comment.strip():
+            out[fn] = (rel, start, end)
     return out
 
 
 def set_decl_blocks(smt3, text, rels):
     """Keep exactly the declaration blocks of rels, new ones after the TU's leading #includes."""
     have = {m.group(1) for m in DECL_BLOCK.finditer(text)}
-    text = DECL_BLOCK.sub(lambda m: m.group(0) if m.group(1) in rels else "", text)
+    text = DECL_BLOCK.sub(lambda m: decl_block(smt3, m.group(1)) + "\n" if m.group(1) in rels else "", text)
     add = sorted(set(rels) - have)
     if add:
         at = re.match(r"(?:[ \t]*(?:#include[^\n]*)?\n)*", text).end()
@@ -478,6 +516,11 @@ def candidates(version):
             if r["version"] == version and r["status"] == "identical" and r["function"] == r["smt3_name"]}
 
 
+def nested_names(text):
+    """Assembler names given to nested functions (emitted ahead of their parent)."""
+    return re.findall(r'FAKEMATCH_ASM_NAME\("(\w+)"\)', re.sub(r"/\*.*?\*/|//[^\n]*", "", text, flags=re.S))
+
+
 def port_text(smt3, text, unit, carry, cands):
     """A TU with carry's bodies written inline and every other carried body back to INCLUDE_ASM."""
     def asm_line(fn):
@@ -486,13 +529,18 @@ def port_text(smt3, text, unit, carry, cands):
     text = INCLUDE_BODY.sub(lambda m: asm_line(m.group(2)), text)
     for fn, (rel, a, b) in sorted(tu_bodies(smt3, text, cands).items(), key=lambda x: -x[1][1]):
         if fn not in carry:
-            text = text[:a] + asm_line(fn) + text[b:]
+            data = "".join(m.group(0) + "\n\n" for m in re.finditer(r"^INCLUDE_(RODATA|SDATA)\(.*\);$", text[a:b], re.M))
+            asm = "".join(asm_line(n) + "\n\n" for n in nested_names(text[a:b])) + asm_line(fn)
+            text = text[:a] + data + asm + text[b:]
 
     def to_c(m):
         fn = m.group(2)
         return body_text(smt3, carry[fn], fn) if fn in carry and m.group(1) == unit else m.group(0)
 
     text = re.sub(r'^INCLUDE_ASM\(\s*const s32,\s*"([^"]+)"\s*,\s*(\w+)\s*\);$', to_c, text, flags=re.M)
+    # A nested function with an assembler name is emitted by its parent's body.
+    for nested in nested_names(text):
+        text = re.sub(rf'^INCLUDE_ASM\(\s*const s32,\s*"[^"]+"\s*,\s*{nested}\s*\);\n\n?', "", text, flags=re.M)
     rels = {rel for rel, _, _ in tu_bodies(smt3, text, cands).values()}
     return set_decl_blocks(smt3, text, rels)
 
@@ -880,6 +928,62 @@ def cmd_verify(args):
             print(f"  {count:5d}  {why}")
 
 
+MAP = Path.home() / ".local/state/smt3-port-work/raidou-map"
+
+
+def cmd_names(args):
+    """Name func_* functions whose masked words occur once in SMT3 and once in the game,
+    when the SMT3 function is compiled from C. Writes names_<v>.tsv for raidou_names.py --apply."""
+    smt3 = args.smt3.expanduser().resolve()
+    c_funcs = smt3_c_functions(smt3)
+    by_words = defaultdict(list)
+    for addr, (words, slots) in smt3_bodies(smt3).items():
+        by_words[tuple(words)].append((addr, slots))
+    OUT.mkdir(parents=True, exist_ok=True)
+    for version in VERSIONS:
+        taken = {m.group(1) for line in (ROOT / "config" / version / "symbol_addrs.txt").read_text().splitlines()
+                 if (m := SYMROW.match(line))}
+        fwd = {}
+        for line in (MAP / f"{version}_map.tsv").read_text().splitlines()[1:]:
+            cols = line.split("\t")
+            if len(cols) >= 4 and cols[3]:
+                fwd[int(cols[0], 16)] = int(cols[3], 16)
+        ours = defaultdict(list)
+        for src, unit, fn, addr, words, slots in raidou_asm_functions(version):
+            ours[tuple(words)].append((fn, addr, slots))
+        rows, counts = [], defaultdict(int)
+        for key, found in ours.items():
+            fn, addr, slots = found[0]
+            if not re.fullmatch(r"func_[0-9A-F]{8}", fn) or len(key) < 16:
+                continue
+            theirs = by_words.get(key, [])
+            if len(found) > 1 or len(theirs) != 1:
+                counts["not unique" if theirs else "no match"] += 1
+                continue
+            saddr, sslots = theirs[0]
+            if saddr not in c_funcs:
+                counts["smt3 asm"] += 1
+                continue
+            name = c_funcs[saddr][0]
+            if re.fullmatch(r"func_[0-9A-F]{8}", name) or name in taken:
+                counts["name taken" if name in taken else "smt3 unnamed"] += 1
+                continue
+            if [k for k, _ in sslots] != [k for k, _ in slots]:
+                counts["slots differ"] += 1
+                continue
+            mapped = fwd.get(addr)
+            if mapped is not None and mapped != saddr:
+                counts["map disagrees"] += 1
+                continue
+            verdict = "map-agrees" if mapped == saddr else "map-silent"
+            taken.add(name)
+            counts["named"] += 1
+            rows.append(f"0x{addr:08X}\t{name}\tinferred\tsmt3-decomp C name via SLUS_209.11 "
+                        f"0x{saddr:08X}, unique-masked-hash-c; {verdict}")
+        (OUT / f"names_{version}.tsv").write_text("\n".join(sorted(rows)) + "\n")
+        print(version, dict(sorted(counts.items())))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -895,6 +999,9 @@ def main():
     p.add_argument("--smt3", type=Path, default=SMT3)
     p.add_argument("--log", type=Path, default=Path.home() / ".local/state/raidou-decomp-work/stage4/ninja.log")
     p.set_defaults(func=cmd_verify)
+    p = sub.add_parser("names")
+    p.add_argument("--smt3", type=Path, default=SMT3)
+    p.set_defaults(func=cmd_names)
     args = ap.parse_args()
     args.func(args)
 

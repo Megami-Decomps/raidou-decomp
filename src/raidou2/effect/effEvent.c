@@ -420,7 +420,7 @@ extern s32 sdfModelGetMarkPos(sdfModelRootNode_t *aRoot, s32 aId);
 
 extern s32 sdfModelGetMarkPosMatrix(sdfModelRootNode_t *aRoot, s32 aId);
 
-extern sdfVector4_t effUnitY;
+EXTERN_LATE_CONST sdfVector4_t effUnitY;
 
 void effEveBEDPartGetPositionPtr(effEveBEDParams_t *pParams, effBTLAimParams_t *pPosPtr);
 
@@ -620,6 +620,8 @@ void effSimpleBEDSetRGBA(effSimpleBED_t *hSimpleBED, u32 abgr);
 /* vu0 routine: place one part relative to the record's position and facing. */
 void effEveBEDPartGetPositionPtr(effEveBEDParams_t *pParams, effBTLAimParams_t *pPosPtr);
 
+extern const sdfVector4_t effUnitY;
+
 effEVECombParSmoke_t *effEVECombParSmokeCreate(effEVECombParSmokeParam_t *pParam);
 
 /* Drop the shared texture reference count; zero dispatches both resource handles.
@@ -669,7 +671,7 @@ typedef struct effEveBillBatch_t {
 
 extern sdfGrOt_t sdfGrOtTable[85];
 
-SYMBOL_AT(sdfGrOt_t, effEveCPSmokeOt1, sdfGrOtTable, 0x600);
+extern sdfGrOt_t effEveCPSmokeOt1;
 
 /* vu0 routine: advance every live particle of one smoke set and batch two
  * textured quads per particle into the two ordering tables. VIF consumes XYZ;
@@ -718,6 +720,140 @@ void func_001B0730(effChan_t *channel, f32 *source);
 /* Jitter each slot and choose its initial unsigned-modulo step.
  * Stored record time is one ahead of the Bezier cursor parameter's sampled step. */
 void effEveAPP4Randomize(effEmit_t *hEffect);
+
+extern const char nbCameraStateNameDebugShotAll[16];
+
+extern const char nbCameraStateNameScriptFix[16];
+
+extern const char nbCameraStateNameScriptBougai[16];
+
+extern const char nbCameraStateNameScript1Shot[16];
+
+extern const char nbCameraStateNameEnemyBad[16];
+
+extern const char nbCameraStateNameEveTarget[16];
+
+extern const char nbCameraStateNameEnemySide[16];
+
+extern const char nbCameraStateNamePlayerSide[16];
+
+extern const char nbCameraStateNameGameOver[16];
+
+extern const char nbCameraStateNameNegoEnd[16];
+
+extern const char nbCameraStateNameNegoHojo[16];
+
+extern const char nbCameraStateNameNegoTarget[16];
+
+extern const char nbCameraStateNameNegoTaizi[16];
+
+extern const char nbCameraStateNameNegoBougai[16];
+
+extern const char nbCameraStateNamePressTurn[16];
+
+extern const char nbCameraStateNameSkillEnd[16];
+
+extern const char nbCameraStateNameSkillCut3[16];
+
+extern const char nbCameraStateNameSkillCut2[16];
+
+extern const char nbCameraStateNameSkillCut1[16];
+
+extern const char nbCameraStateNameSkillStart[16];
+
+extern const char nbCameraStateNameSkillAttack[16];
+
+extern const char nbCameraStateNameCommandTargetSelect[24];
+
+extern const char nbCameraStateNameCommandBad[16];
+
+extern const char nbCameraStateNameCommandRoot[16];
+
+extern s8 Eve_BlurShow;
+
+extern s8 Eve_PartialMultiBlurShow;
+
+extern s8 Eve_DistortionBlurShow;
+
+extern s8 Eve_FilterShow;
+
+extern s8 Eve_PartialMultiFilterShow;
+
+extern s8 Eve_RippleBlurShow;
+
+extern char D_0054F280[8];
+
+extern char D_0054F288[8];
+
+extern char D_0054F290[8];
+
+extern char D_0054F298[8];
+
+extern char D_0054F2A0[8];
+
+extern char effLabelScale[8];
+
+extern char effLabelRotate[8];
+
+extern void *D_0054F2B8[2];
+
+extern char effLabelBlur[5];
+
+extern s8 D_0054F2C5;
+
+extern u32 D_0054F2C8[2];
+
+extern char effLabelArea[5];
+
+extern s8 mblurDone;
+
+extern char effLabelBlend[8];
+
+extern char effLabelDistor[8];
+
+extern char effLabelSpeed[8];
+
+extern char effLabelIntval[8];
+
+extern char effLabelWidth[8];
+
+extern char effLabelNumber[7];
+
+extern s8 dblurDone;
+
+extern void *D_0054F308[2];
+
+extern char effLabelFilter[7];
+
+extern s8 evtViewerDirty;
+
+extern u32 D_0054F318;
+
+extern s8 mfilterDone;
+
+extern u32 D_0054F320[2];
+
+extern char effLabelDistS[7];
+
+extern s8 rblurDone;
+
+extern s32 EffEveCPSmokeCount;
+
+extern addr_t hEffEveCPSmokeBill01Tex;
+
+extern addr_t hEffEveCPSmokeBill02Tex;
+
+extern char nbCameraStateNameEvent[8];
+
+extern char nbCameraStateNameEnd[8];
+
+extern char nbCameraStateNameResult[8];
+
+extern char nbCameraStateNameSummon[8];
+
+extern char nbCameraStateNameStart[8];
+
+extern char nbCameraStateNameWait[8];
 /* End of declarations from src/smt3/effect/effEvent.c */
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FD1C8);
@@ -1018,7 +1154,39 @@ void effEveBEDPartGetPositionPtr(effEveBEDParams_t *pParams, effBTLAimParams_t *
 
 INCLUDE_RODATA(const s32, "effect/effEvent", D_004BC540);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effEVECombParSmokeCreate);
+effEVECombParSmoke_t *effEVECombParSmokeCreate(effEVECombParSmokeParam_t *pParam) {
+    u32 particleCount = pParam->number;
+    u32 particleBytes = particleCount * sizeof(effEVECombParSmokePart_t);
+    sdfMemHandle_t *allocationHandle = sdfMemAllocDirect(particleBytes + sizeof(effEVECombParSmoke_t));
+    effEVECombParSmokePart_t *particle = EE_ADDR_AS(effEVECombParSmokePart_t *, sdfMemLock(allocationHandle));
+    effEVECombParSmoke_t *work = (effEVECombParSmoke_t *)((u8 *)particle + particleBytes);
+    u32 particleIndex;
+
+    work->head = *pParam;
+    work->hMem = allocationHandle;
+    work->pPart = particle;
+    work->Ztest = 0;
+    if (work->head.fade_in <= 0) {
+        work->head.fade_in = 1;
+    }
+    if (work->head.fade_out <= 0) {
+        work->head.fade_out = 1;
+    }
+    if (work->head.wait <= 0) {
+        work->head.wait = 1;
+    }
+    EffEveCPSmokeCount = EffEveCPSmokeCount + 1;
+    if (EffEveCPSmokeCount == 1) {
+        hEffEveCPSmokeBill01Tex = EE_ADDR(dds3BillboardFileLoad(0, "/efftool/bill/dbball01.tmx"));
+        hEffEveCPSmokeBill02Tex = EE_ADDR(dds3BillboardFileLoad(0, "/efftool/bill/dbball02.tmx"));
+    }
+    particleCount = work->head.number;
+    for (particleIndex = 0; particleIndex < particleCount; particleIndex++) {
+        particle->frame = 0;
+        particle++;
+    }
+    return work;
+}
 
 /* Drop the shared texture reference count; zero dispatches both resource handles.
  * The retained allocation is released afterwards, regardless of that count. */

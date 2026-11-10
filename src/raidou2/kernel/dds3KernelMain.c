@@ -41,23 +41,23 @@ extern u16 sdfReqDrawDelaySleepCount;
 
 extern u16 sdfDrawFrameCounter;
 
-extern char dds3HardResetMessage[];
+extern const char dds3HardResetMessage[];
 
-extern char dds3ResetExecPath[];
+extern const char dds3ResetExecPath[];
 
 extern char dds3FirstProcessName[];
 
 extern char dds3DrawFirstProcessName[];
 
-extern char dds3DrawProcessName[];
+extern const char dds3DrawProcessName[];
 
-extern char dds3BasicMainProcessName[];
+extern const char dds3BasicMainProcessName[];
 
-extern char dds3BasicDrawProcessName[];
+extern const char dds3BasicDrawProcessName[];
 
-extern char dds3FontSysProcessName[];
+extern const char dds3FontSysProcessName[];
 
-extern char dds3DebugDevDumpProcessName[];
+extern const char dds3DebugDevDumpProcessName[];
 
 extern void dds3InitDrawEnv(void);
 
@@ -180,6 +180,58 @@ void dds3SoftResetOn(void);
 void dds3SoftResetOff(void);
 
 void dds3KernelMain(void);
+
+extern const char dds3DrawProcessName[16];
+
+extern const char dds3BasicMainProcessName[16];
+
+extern const char dds3BasicDrawProcessName[16];
+
+extern const char dds3FontSysProcessName[16];
+
+extern const char dds3DebugDevDumpProcessName[16];
+
+extern const char dds3HardResetMessage[16];
+
+extern const char dds3ResetExecPath[24];
+
+extern u32 dds3FrameCount;
+
+extern u32 dds3RunCount;
+
+extern s8 dds3SoftResetFlag;
+
+extern u8 dds3SoftResetDisableFlag;
+
+extern u32 dds3PauseSign;
+
+extern u32 dds3PauseTime;
+
+extern u32 dds3SlowSign;
+
+extern u32 dds3SlowTime;
+
+extern u32 dds3SlowRunCount;
+
+extern u32 dds3SlowEndCount;
+
+extern u32 dds3DebugSign;
+
+extern s16 dds3FrameRunTime;
+
+extern s16 dds3LastDrawFrameCount;
+
+extern u16 dds3VblanksPerFrame;
+
+extern s32 dds3KernelDebugSign;
+
+extern s8 dds3FileCmdLoPrio;
+
+extern char dds3FirstProcessName[8];
+
+extern char dds3DrawFirstProcessName[8];
+
+extern u8 dds3DrawProcessFlag;
 /* End of declarations from src/smt3/kernel/dds3KernelMain.c */
 
 void dds3PauseOn(void)

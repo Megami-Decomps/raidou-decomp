@@ -60,7 +60,7 @@ void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber);
 
 extern dds3EffectFunc_t dds3EffectFuncTable[7];
 
-extern void *D_002F69B8[4];
+extern void *sdfModelOtTable[4];
 
 extern s32 effPartModelSerial;
 
@@ -108,7 +108,7 @@ extern s8 effBTLFieldColorOn;
 
 extern s8 D_0054F0F1;
 
-extern const char *D_0054F0F4;
+extern const char *effBTLJyocyuEffFilePath;
 
 extern u8 effBTLDebugCameraAllEdit;
 
@@ -218,21 +218,21 @@ u32 dds3EffectPCPDataGetType(dds3EffectPCPData_t *hPCPData, u32 number);
 
 effPartHandle_t *dds3EffectPCPDataPartCreate(dds3EffectPCPData_t *hPCPData, u32 number);
 
-extern void *D_0031DD20[];
+extern void *effPCPThunderSpherePolyDataList[];
 
-extern void *D_0031DD48[];
+extern void *effPCPThunderPolyDataList[];
 
-extern void *D_0031DDA0[];
+extern void *effPCPThunderRadiatePolyDataList[];
 
-extern void *D_0031DDA8[];
+extern void *effPCPMultiBlurExpDataList[];
 
-extern void *D_0031DDB0[];
+extern void *effPCPSparkleSphereDataList[];
 
-extern void *D_0031DDB8[];
+extern void *effPCPFlashPolySphereDataList[];
 
-extern void *D_0031DDC0[];
+extern void *effPCPMultiFilterExpDataList[];
 
-extern void *D_0031DDC8[];
+extern void *effPCPBlinkMultiBlurDataList[];
 
 void *dds3EffectLoad(void *);
 

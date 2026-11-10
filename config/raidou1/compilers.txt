@@ -2,11 +2,14 @@
 
 # SMT3 settings for SDK members with carried C (tools/raidou_c.py)
 sdk/libcdvd/cdvd000  ee-gcc2.9-991111-01
+sdk/libcdvd/cdvd017  ee-gcc2.9-991111-01
 sdk/libcdvd/cdvd035  ee-gcc2.9-991111-01
 sdk/libcdvd/cdvd047  ee-gcc2.9-991111-01
 sdk/libdma/libdma  ee-gcc2.9-991111-01
 sdk/libgraph/graph001  ee-gcc2.9-991111-01
+sdk/libgraph/graph003  ee-gcc2.9-991111-01
 sdk/libgraph/graph004  ee-gcc2.9-991111-01
+sdk/libgraph/graph015  ee-gcc2.9-991111-01
 sdk/libgraph/graph016  ee-gcc2.9-991111-01
 sdk/libgraph/graph020  ee-gcc2.9-991111-01
 sdk/libgraph/graph029  ee-gcc2.9-991111-01

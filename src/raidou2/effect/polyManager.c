@@ -350,7 +350,7 @@ extern void MultMatrixNoArg(void);
 extern void dds3SpPoly_RingBuffInit(dds3SpPoly_Ring_t3 *pRing, s32 number);
 
 /* Separate geometry builder reached by the initializer's native tail call. */
-extern void func_00168A50(dds3SpPoly_Ring_t3 *ring, s32 number, f32 radius);
+extern void polyBandLayoutRing(dds3SpPoly_Ring_t3 *ring, s32 number, f32 radius);
 
 dds3SpPolyOldDesc_t *dds3SpPoly_Ring_Old_Create(dds3SpPolyOldDesc_t *src);
 
@@ -462,7 +462,7 @@ void dds3PolygonDraw(dds3Polygon_t *hPolygon);
 
 extern sdfGrOt_t sdfGrOtTable[85];
 
-SYMBOL_AT(sdfGrOt_t, D_002F64B8, sdfGrOtTable, 0x5A0);
+extern sdfGrOt_t effPolyOt;
 
 static inline void parAppendDrawSurfacePool(sdfGrOt_t *pool, sdfDrawTag_t *packet) {
     pool->regFunc(pool, packet);
@@ -568,7 +568,7 @@ void dds3SpPoly_RingAllBuffInit(dds3SpPoly_Ring_t3 *band);
 
 void dds3SpPoly_RingBuffInit(dds3SpPoly_Ring_t3 *ring, s32 number);
 
-void func_00168A50(dds3SpPoly_Ring_t3 *ring, s32 number, f32 radius);
+void polyBandLayoutRing(dds3SpPoly_Ring_t3 *ring, s32 number, f32 radius);
 
 void dds3SpPoly_RingMove(dds3SpPoly_Ring_t3 *pRing, s32 number);
 
@@ -682,6 +682,10 @@ extern dds3SpPolyEntry_t dds3SpPolyTable[4];
 extern void (*dds3SpPolyResetTable[4])(void *work);
 
 extern void (*dds3SpPolySetScaleTable[4])(void *work, f32 scale);
+
+extern dds3Polygon_t *hDrawListTop;
+
+extern dds3TrackPoly_t *dds3TrackPolyTag;
 /* End of declarations from src/smt3/effect/polyManager.c */
 
 void dds3PolygonManagerInit(void)
@@ -1489,7 +1493,49 @@ void dds3SpPoly_Ring_Old_Draw(dds3SpPoly_Ring_Old_t3 *hData) {
     dds3TrackPolyDraw(hData->hTrackPoly);
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_Ring_Old_New);
+void dds3SpPoly_Ring_Old_New(dds3SpPoly_Ring_Old_t3 *pRing, s32 number) {
+    dds3TrackPoly_t *strip = pRing->hTrackPoly;
+    dds3TrackPolyList_t *cell = &strip->trackList[number];
+    f32 radius = pRing->radius;
+    sdfVector4_t origin;
+    sdfVector4_t offset;
+    f32 angle;
+    f32 step;
+    f32 cosine;
+    f32 sine;
+    u128 *p;
+    u128 *hist;
+    s32 half;
+    s32 pairs;
+    s32 i;
+
+    step = 6.2831853f / (f32)pRing->segments;
+    cell->count = strip->point;
+    p = cell->pVertex;
+    half = strip->point / 2;
+    SDF_VU0_LOADMATRIX(pRing->matrix);
+    angle = 0.0f;
+    SDF_VU0_COPYVECTOR_F32(&origin, pRing->origin);
+    pairs = half - 1;
+    for (i = 0; i < pairs; i++) {
+        cosine = sdfCos(angle);
+        sine = sdfSin(angle);
+        SDF_VU0_LOADVECTOR_B(&origin);
+        SDF_VU0_STOREVECTOR_B(p);
+        offset.x = cosine * radius;
+        offset.y = 0.0f;
+        offset.z = sine * radius;
+        SDF_VU0_LOADVECTOR(&offset);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(p + 1);
+        p += 2;
+        angle += step;
+    }
+    hist = cell->pVertex;
+    SDF_VU0_COPYVECTOR(p, hist);
+    SDF_VU0_COPYVECTOR(p + 1, hist + 1);
+}
 
 void dds3SpPoly_Ring_Old_Move(dds3SpPoly_Ring_Old_t3 *pRing, s32 number) {
     dds3TrackPoly_t *strip = pRing->hTrackPoly;
@@ -1612,12 +1658,60 @@ void dds3SpPoly_RingBuffInit(dds3SpPoly_Ring_t3 *ring, s32 number)
     } else {
         record->spread_s = endRadius - radius;
     }
-    func_00168A50(ring, number, radius);
+    polyBandLayoutRing(ring, number, radius);
 }
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F9888);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RingMove);
+void dds3SpPoly_RingMove(dds3SpPoly_Ring_t3 *pRing, s32 number) {
+    dds3TrackPoly_t *strip = pRing->hTrackPoly;
+    dds3SpPoly_RingPhysics_t *rec = &pRing->pPhysics[number];
+    dds3TrackPolyList_t *entry = &strip->trackList[number];
+    sdfVector4_t radialDirection;
+    sdfVector4_t radiusStepVector;
+    sdfVector4_t liftVector;
+    f32 angleStep;
+    f32 angle;
+    f32 *pointCursor;
+    f32 *firstPointPair;
+    s32 pairs;
+    s32 i;
+
+    entry->count = strip->point;
+    pointCursor = (f32 *)entry->pVertex;
+    pairs = strip->point >> 1;
+    radiusStepVector.z = radiusStepVector.y = radiusStepVector.x = SDF_FRAME_STEP(rec->spread_s);
+    liftVector.y = SDF_FRAME_STEP(pRing->liftStep);
+    liftVector.z = liftVector.x = 0;
+    angleStep = 3.14159265f * 2.0f / (f32)pRing->vertex;
+    SDF_VU0_LOADMATRIX(pRing->head.matrix);
+    angle = 0.0f;
+    for (i = 0; i < pairs - 1; i++) {
+        radialDirection.x = sdfCos(angle);
+        radialDirection.y = 0;
+        radialDirection.z = sdfSin(angle);
+        SDF_VU0_LOADVECTOR(&radialDirection);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_LOADVECTOR_B(&radiusStepVector);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_LOADVECTOR_B(&liftVector);
+        SDF_VU0_APPLYMATRIX_B();
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_COPYVECTOR_A_TO_C();
+        SDF_VU0_LOADVECTOR_B(pointCursor + 4);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(pointCursor + 4);
+        SDF_VU0_COPYVECTOR_C_TO_A();
+        SDF_VU0_LOADVECTOR_B(pointCursor);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(pointCursor);
+        pointCursor += 8;
+        angle += angleStep;
+    }
+    firstPointPair = (f32 *)entry->pVertex;
+    SDF_VU0_COPYVECTOR(pointCursor, firstPointPair);
+    SDF_VU0_COPYVECTOR(pointCursor + 4, firstPointPair + 4);
+}
 
 void dds3SpPoly_RingSetScale(dds3SpPoly_Ring_t3 *hData, f32 scale) {
     hData->radialWidth = hData->radialWidth * scale;
@@ -1749,7 +1843,61 @@ void dds3SpPoly_SphereRingBuffInit(dds3SpPoly_SphereRing_t3 *pSphereRing, s32 nu
     record->radius = pSphereRing->radius * (dds3GetRandFloatA(dds3EffectBase) * spread + (1.0f - spread));
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_SphereRingMove);
+void dds3SpPoly_SphereRingMove(dds3SpPoly_SphereRing_t3 *pSphereRing, s32 number) {
+    dds3TrackPoly_t *strip = pSphereRing->hTrackPoly;
+    dds3SpPoly_SphereRingPhysics_t *record = &pSphereRing->pPhysics[number];
+    dds3TrackPolyList_t *stripEntry = &strip->trackList[number];
+    sdfVector4_t innerPointVector;
+    sdfVector4_t outerPointVector;
+    f32 recordRadius;
+    f32 projectedInnerRadius;
+    f32 verticalOffset;
+    f32 radialWidth;
+    f32 angleStep;
+    f32 angle;
+    f32 *pointCursor;
+    f32 *firstPointPair;
+    s32 pairs;
+    s32 i;
+
+    stripEntry->count = strip->point;
+    pointCursor = (f32 *)stripEntry->pVertex;
+    pairs = strip->point >> 1;
+    recordRadius = record->radius;
+    angle = (f32)record->frame / (f32)SDF_FRAMES(pSphereRing->head.frame) * 3.14159265f;
+    projectedInnerRadius = recordRadius * sdfSin(angle);
+    verticalOffset = recordRadius * sdfCos(angle) - recordRadius;
+    angleStep = 3.14159265f * 2.0f / (f32)pSphereRing->vertex;
+    SDF_VU0_LOADMATRIX(pSphereRing->head.matrix);
+    radialWidth = pSphereRing->radialWidth;
+    angle = 0.0f;
+    SDF_VU0_LOADVECTOR_C(pSphereRing->head.origin);
+    for (i = 0; i < pairs - 1; i++) {
+        innerPointVector.x = outerPointVector.x = sdfCos(angle);
+        innerPointVector.z = sdfSin(angle);
+        outerPointVector.y = verticalOffset;
+        outerPointVector.z = innerPointVector.z * (projectedInnerRadius + radialWidth);
+        outerPointVector.x *= projectedInnerRadius + radialWidth;
+        SDF_VU0_LOADVECTOR(&outerPointVector);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_STOREVECTOR(&outerPointVector);
+        innerPointVector.y = verticalOffset;
+        innerPointVector.x *= projectedInnerRadius;
+        innerPointVector.z *= projectedInnerRadius;
+        SDF_VU0_LOADVECTOR(&innerPointVector);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR(pointCursor + 4);
+        SDF_VU0_LOADVECTOR(&outerPointVector);
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR(pointCursor);
+        pointCursor += 8;
+        angle += angleStep;
+    }
+    firstPointPair = (f32 *)stripEntry->pVertex;
+    SDF_VU0_COPYVECTOR(pointCursor, firstPointPair);
+    SDF_VU0_COPYVECTOR(pointCursor + 4, firstPointPair + 4);
+}
 
 void dds3SpPoly_SphereRingSetScale(dds3SpPoly_SphereRing_t3 *hData, f32 scale) {
     hData->radius = hData->radius * scale;
@@ -1871,9 +2019,79 @@ void dds3SpPoly_RollRingAllBuffInit(dds3SpPoly_RollRing_t3 *rotatingBand) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RollRingBuffInit);
+void dds3SpPoly_RollRingBuffInit(dds3SpPoly_RollRing_t3 *pRollRing, u32 number) {
+    dds3SpPoly_RollRingPhysics_t *record = pRollRing->pPhysics;
+    f32 spread;
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RollRingMove);
+    record += number;
+    spread = pRollRing->radius_s_r;
+    record->frame = 0;
+    record->radius = pRollRing->radius_s * (dds3GetRandFloatA(dds3EffectBase) * spread + (1.0f - spread));
+    spread = pRollRing->radius_e_r;
+    record->spread_s = (pRollRing->radius_e * (dds3GetRandFloatA(dds3EffectBase) * spread + (1.0f - spread)) - record->radius) / (f32)pRollRing->head.frame;
+    record->rot_x = pRollRing->incline * 0.017453292f;
+    record->rot_y = 6.2831852f / (f32)pRollRing->simu_num * (f32)(number % pRollRing->simu_num);
+}
+
+void dds3SpPoly_RollRingMove(dds3SpPoly_RollRing_t3 *pRollRing, s32 number)
+{
+    dds3TrackPoly_t *strip = pRollRing->hTrackPoly;
+    dds3SpPoly_RollRingPhysics_t *rec = &pRollRing->pPhysics[number];
+    dds3TrackPolyList_t *entry = &strip->trackList[number];
+    sdfVector4_t dir;
+    sdfVector4_t baseRadiusVector;
+    sdfVector4_t offsetRadiusVector;
+    f32 step;
+    f32 radius;
+    f32 angle;
+    f32 *out;
+    f32 *first;
+    s32 pairs;
+    s32 i;
+
+    entry->count = strip->point;
+    out = (f32 *)entry->pVertex;
+    pairs = strip->point >> 1;
+    SetRotateMatrixX(rec->rot_x);
+    SetRotateMatrixY_B(rec->rot_y);
+    MultMatrixRevNoArg();
+    rec->rot_y += SDF_FRAME_STEP(pRollRing->roll_s * (3.14159265f / 180.0f));
+    radius = rec->radius;
+    rec->radius = radius + SDF_FRAME_STEP(rec->spread_s);
+    step = 3.14159265f * 2.0f / (f32)pRollRing->vertex;
+    SDF_VU0_LOADMATRIX_B(pRollRing->head.matrix);
+    MultMatrixRevNoArg();
+    baseRadiusVector.x = radius;
+    baseRadiusVector.y = radius;
+    baseRadiusVector.z = radius;
+    offsetRadiusVector.x = radius + pRollRing->width;
+    offsetRadiusVector.y = radius + pRollRing->width;
+    offsetRadiusVector.z = radius + pRollRing->width;
+    angle = 0.0f;
+    SDF_VU0_LOADVECTOR_C(pRollRing->head.origin);
+    for (i = 0; i < pairs - 1; i++) {
+        dir.x = sdfCos(angle);
+        dir.y = 0;
+        dir.z = sdfSin(angle);
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_STOREVECTOR(&dir);
+        SDF_VU0_LOADVECTOR_B(&baseRadiusVector);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR(out + 4);
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_LOADVECTOR_B(&offsetRadiusVector);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR(out);
+        out += 8;
+        angle += step;
+    }
+    first = (f32 *)entry->pVertex;
+    SDF_VU0_COPYVECTOR(out, first);
+    SDF_VU0_COPYVECTOR(out + 4, first + 4);
+}
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FA900);
 

@@ -62,7 +62,7 @@ extern void *memcpy(void *, const void *, size_t);
 
 void *sdfChipAllocDirect(s32 aSize);
 
-extern char sdfDev9ResidentFailMsg[];
+extern const char sdfDev9ResidentFailMsg[];
 
 extern u8 sdfDev9LoadFlag;
 
@@ -88,10 +88,29 @@ s32 sdfBcdToDecimal(s32 aBcd);
 /* Pack positive decimal digits into nibbles; non-positive input returns zero.
  * The original signed shifts and lack of an overflow check are retained.
  */
-s32 sdf_2BFE08(s32 number);
+s32 sdfDecimalToPackedDigits(s32 number);
+
+extern const char sdfDev9ResidentFailMsg[40];
+
+extern u8 sdfDev9Ready;
 /* End of declarations from src/smt3/sdf/sdfDev9.c */
 
-INCLUDE_ASM(const s32, "sdf/sdfDev9", sdfDev9LoadModule);
+void sdfDev9LoadModule(void) {
+    s32 resident;
+    if (sdfDev9LoadFlag == 0) {
+        sdfDev9Ready = 0;
+        if (sceSifLoadStartModule("cdrom0:\\IRX\\DEV9.IRX;1", 0, NULL, &resident) < 0) {
+            printf("cdrom0:\\IRX\\DEV9.IRX;1 could't load.\n");
+            return;
+        }
+        if (resident != 0) {
+            printf(sdfDev9ResidentFailMsg);
+            return;
+        }
+        sdfDev9Ready = 1;
+        sdfDev9LoadFlag = 1;
+    }
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfDev9", func_0036E3C0);
 
@@ -150,3 +169,6 @@ s32 sdfBcdToDecimal(s32 aBcd)
     }
     return result;
 }
+
+INCLUDE_RODATA(const s32, "sdf/sdfDev9", D_00464B90);
+

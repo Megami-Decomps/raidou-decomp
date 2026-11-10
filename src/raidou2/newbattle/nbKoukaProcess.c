@@ -497,6 +497,8 @@ s32 nbKoukaShutdown(dds3ProcessID_t *id);
 nbKoukaProcessData_t *InitKoukaProcessData(nbMainProcessData_t *data);
 
 void nbInitKoukaProcess(nbMainProcessData_t *data);
+
+extern char nbPcmLoadNameFormat[4];
 /* End of declarations from src/smt3/newbattle/nbKoukaProcess.c */
 
 void nbDelKoukaPacket(nbKoukaPacket_t *p)

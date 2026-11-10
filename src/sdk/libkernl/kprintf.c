@@ -189,8 +189,6 @@ extern const char ttyMsgWlenError[];
 
 void sceTtyHandler(s32 event, s32 byteCount, void *argument);
 
-#undef TTY_CALLBACK_WORD
-
 /* The transport header is eight bytes; TTY adds a four-byte reserved word.
  * Both native backing buffers span 320 bytes. */
 typedef struct ttyPacket_t {
@@ -960,6 +958,10 @@ s32 _sceSifLoadElfPart(const char *path, const char *section, u32 *result, s32 c
 
 s32 sceSifLoadElfPart(const char *path, const char *section, u32 *result);
 
+extern const char D_0054BCA8[8];
+
+extern const char D_0054BCB0[8];
+
 s32 sceSifLoadElf(const char *path, u32 *result);
 
 s32 sceSifGetIopAddr(void *address, void *output, u32 kind);
@@ -1001,7 +1003,7 @@ s32 sceSifSyncIop(void);
 
 extern s32 mallocSema;
 
-extern s32 D_0052C37C;
+extern s32 frameObjectSema;
 
 void supplement_crt0(void);
 
@@ -1201,15 +1203,38 @@ extern s32 _SetTLBEntry(u32 index, u32 pageMask, u32 entryHi, u32 entryLo0, u32 
 /* Existing retail symbol is retained; this is the checked indexed setter,
  * not the separate interrupt-context PutTLBEntry syscall stub. */
 s32 iPutTLBEntry(u32 index, u32 pageMask, u32 entryHi, u32 entryLo0, u32 entryLo1);
+
+extern const char execDefaultPath[8];
 /* End of declarations from src/smt3/sdk/libkernl.c */
 
-INCLUDE_ASM(const s32, "sdk/libkernl/kprintf", printfloat);
+void printfloat(f64 value)
+{
+    s32 exponent = 0;
+    s32 digits;
 
-INCLUDE_RODATA(const s32, "sdk/libkernl/kprintf", D_004DBA58);
-
-INCLUDE_RODATA(const s32, "sdk/libkernl/kprintf", D_004DBA60);
-
-INCLUDE_RODATA(const s32, "sdk/libkernl/kprintf", D_004DBA68);
+    if (value < 0.0) {
+        value = 0.0 - value;
+        printfPutchar('-');
+    }
+    if (value < 0.1) {
+        while (value < 0.1) {
+            value *= 10.0;
+            exponent--;
+        }
+    } else if (value >= 1.0) {
+        while (value >= 1.0) {
+            value /= 10.0;
+            exponent++;
+        }
+    }
+    digits = ftoi((u64)(value * 1000000.0));
+    kprintf("0.%d", digits);
+    if (exponent >= 0) {
+        kprintf("e+%d", exponent);
+    } else {
+        kprintf("e%d", exponent);
+    }
+}
 
 INCLUDE_ASM(const s32, "sdk/libkernl/kprintf", _printf);
 

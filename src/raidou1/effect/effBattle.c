@@ -224,11 +224,11 @@ typedef struct effBTLColorRow_t {
 
 extern effBTLColorRow_t effBTLFieldColorTable[];
 
-extern f32 effBTLCutBaseRotate[4];
+extern const f32 effBTLCutBaseRotate[4];
 
-extern f32 effBTLCutRotateA[4];
+extern const f32 effBTLCutRotateA[4];
 
-extern f32 effBTLCutRotateB[4];
+extern const f32 effBTLCutRotateB[4];
 
 extern void effBTLPointLightSet(void *pLight, void *pFormation);
 
@@ -276,7 +276,7 @@ extern effBTLLightParams_t dds3LightParam;
 
 typedef f32 effBTLVector4_t[4];
 
-SYMBOL_AT(effBTLVector4_t, effBTLSceneAmbient, dds3LightParam, 0x10);
+extern effBTLVector4_t effBTLSceneAmbient;
 
 effBTL_t *effBTLCreate(void *pData);
 
@@ -338,9 +338,17 @@ u32 effBTLCutGetAllPartColor(u32 frame, u32 frame_end);
 void effBTLCutSetCameraState(effBTLCut_t *hBTLCutEffect);
 
 /* Canonical declaration of the provider defined below. */
-extern char effBTLShakeFormat[];
+extern const char effBTLShakeFormat[];
 
 u32 effBTLSkillGetInvokeParty(void);
+
+extern const f32 effBTLCutBaseRotate[4];
+
+extern const f32 effBTLCutRotateA[4];
+
+extern const f32 effBTLCutRotateB[4];
+
+extern const char effBTLShakeFormat[28];
 
 void effBTLCutDraw(effBTLCut_t *hBTLCutEffect);
 
@@ -426,6 +434,18 @@ s32 nbEffectDraw(void);
 void nbEffectShutdown(void);
 
 void nbInitEffectProcess(nbMainProcessData_t *data);
+
+extern s8 effBTLSkillRun;
+
+extern s32 effBTLFieldColorProcess;
+
+extern s32 effBTLSkyFilterAlphaTarget;
+
+extern s32 effBTLSkyFilterAlphaBase;
+
+extern u16 effBTLSkyFilterFrame;
+
+extern u16 effBTLSkyFilterFrameMax;
 /* End of declarations from src/smt3/effect/effBattle.c */
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001E4A08);

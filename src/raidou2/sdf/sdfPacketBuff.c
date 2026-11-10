@@ -67,6 +67,18 @@ s32 sdfGrAllocPacketBuff(s32 aSize);
 s32 sdfGrOpenPacketBuff(void);
 
 void sdfGrClosePacketBuff(saddr_t aBuffPtr);
+
+extern struct sdfMemHandle_t *sdfGrPacketBuffHandle;
+
+extern s32 sdfGrPacketBuffSize;
+
+extern s32 sdfGrPacketBuffBase[2];
+
+extern s32 sdfGrPacketBuffPtr;
+
+extern s32 sdfGrPacketBuffLimit;
+
+extern u32 D_00551880;
 /* End of declarations from src/smt3/sdf/sdfPacketBuff.c */
 
 void sdfGrMakePacketBuff(s32 aPacketBuffSize) {

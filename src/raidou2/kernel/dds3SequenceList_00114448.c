@@ -247,6 +247,8 @@ s32 CheckNewBattle(void);
 
 void CallEvent(u32 flg, s32 *data);
 
+extern const char dds3CallEventReturnMsg[16];
+
 s32 ExitEvent(void);
 
 s32 CheckEvent(void);
@@ -470,6 +472,16 @@ scrProcessWork_s *scrPrintProcedureStart(scrHeader_t *header, scrTypeTable_t *ty
                                          scrCode_u *code, u8 *mesdata, char *strdata, s32 procno);
 
 scrProcessWork_s *fldFlowParse(scrHeader_t *header, s32 procno);
+
+extern u32 abcd;
+
+extern s32 scrHandleCount;
+
+extern scrProcessWork_s *scrHandleFirst;
+
+extern scrProcessWork_s *scrHandleLast;
+
+extern u32 D_0054E9A0[2];
 /* End of declarations from src/smt3/kernel/dds3SequenceList.c */
 
 void scrLinkHandle(scrProcessWork_s *work)
@@ -509,7 +521,46 @@ void scrUnlinkHandle(scrProcessWork_s *work)
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList_00114448", func_001144E0);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList_00114448", fldFlowParse);
+scrProcessWork_s *fldFlowParse(scrHeader_t *header, s32 procno)
+{
+    scrTypeTable_t *typetable;
+    scrProcTable_t *proctable = NULL;
+    scrLabelTable_t *labeltable = NULL;
+    scrCode_u *code = NULL;
+    u8 *mesdata = NULL;
+    char *strdata = NULL;
+    s32 i;
+
+    typetable = (scrTypeTable_t *)&header[1];
+    if (*(s32 *)header->MagicCode != 0x30574C46) {
+        return NULL;
+    }
+    for (i = 0; i < header->TypeTableCount; i++) {
+        switch (typetable[i].Type) {
+        case SCR_DATATYPE_PROCTABLE:
+            proctable = (scrProcTable_t *)((u8 *)header + typetable[i].ItemAddress);
+            break;
+        case SCR_DATATYPE_LABELTABLE:
+            labeltable = (scrLabelTable_t *)((u8 *)header + typetable[i].ItemAddress);
+            break;
+        case SCR_DATATYPE_SCRDATA:
+            code = (scrCode_u *)((u8 *)header + typetable[i].ItemAddress);
+            break;
+        case SCR_DATATYPE_MESSAGE:
+            if (typetable[i].ItemCount != 0) {
+                mesdata = (u8 *)header + typetable[i].ItemAddress;
+            }
+            break;
+        case SCR_DATATYPE_STRINGS:
+            strdata = (char *)header + typetable[i].ItemAddress;
+            break;
+        default:
+            return NULL;
+        }
+    }
+    return scrPrintProcedureStart(header, typetable, proctable, labeltable, code, mesdata, strdata,
+                                  procno);
+}
 INCLUDE_SDATA(const s32, "kernel/dds3SequenceList_00114448", D_004DE598);
 
 INCLUDE_SDATA(const s32, "kernel/dds3SequenceList_00114448", D_004DE59C);

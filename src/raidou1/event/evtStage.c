@@ -23,7 +23,7 @@ u32 dds3AllocObjectId(void);
 
 void dds3ObjectBaseCreateMover(void *pObjectBasic);
 
-void dds3ObjectBaseSetPadControl(dds3Basic_t *object,
+extern void dds3ObjectBaseSetPadControl(dds3Basic_t *object,
                                      s32 (*update)(struct dds3PoseSet_t *, struct dds3Basic_t *));
 
 dds3Basic_t *dds3SetActiveCameraSceneBasic(dds3Basic_t *pSceneBasic, dds3Basic_t *pCameraBasic);
@@ -218,7 +218,19 @@ void evtEffectLoopControl(dds3Basic_t *eff, s32 sw);
 s32 evtStageAnimeControl(s32 type, s32 mode);
 /* End of declarations from src/smt3/event/evtStage.c */
 
-INCLUDE_ASM(const s32, "event/evtStage", evtSetTestCamera);
+void evtSetTestCamera(void) {
+    f32 position[4] = { 0.0f, -100.0f, -600.0f, 0.0f };
+    sdfVector4_t rotation;
+    dds3Basic_t *object;
+
+    memset(&rotation, 0, 0x10);
+    rotation.w = 1.0f;
+    object = dds3AddCameraObjectBasicTypeFree(dds3AllocObjectId(), position, &rotation.x);
+    dds3GetRadiusPoseSet((dds3Basic_t *)object, 10.0f);
+    dds3ObjectBaseCreateMover(object);
+    dds3SetActiveCameraSceneBasic(dds3GetControlScene(), (dds3Basic_t *)object);
+    dds3ObjectBaseSetPadControl(object, 0);
+}
 
 INCLUDE_ASM(const s32, "event/evtStage", func_001A2E60);
 
@@ -258,8 +270,6 @@ void evtFreeAllUnit(void) {
         }
     }
 }
-
-INCLUDE_RODATA(const s32, "event/evtStage", D_0044DCC8);
 
 INCLUDE_RODATA(const s32, "event/evtStage", D_0044DCD8);
 

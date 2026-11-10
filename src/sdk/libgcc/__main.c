@@ -219,7 +219,7 @@ extern void *_signal_r(_reent *r, s32 sig, void *handler);
 
 extern s32 _setlocale_r(_reent *r, s32 category, const char *locale);
 
-extern void *func_002DA308(_reent *r);
+extern void *_localeconv_r(_reent *r);
 
 extern void _cleanup_r(_reent *r);
 
@@ -235,11 +235,11 @@ extern long strtol(const char *s, char **end, s32 base);
 
 extern s32 raise(s32 sig);
 
-extern void func_001001C8(s32 code) __attribute__((noreturn));
+extern void _exit(s32 code) __attribute__((noreturn));
 
 extern u8 localeconvData[] __attribute__((section(".data")));
 
-extern s32 D_00552178 __attribute__((section(".data")));
+extern s32 libcErrno __attribute__((section(".data")));
 
 extern s32 mallocLockCount __attribute__((section(".data")));
 
@@ -323,23 +323,23 @@ extern void abort(void);
 
 extern void __do_global_ctors(void);
 
-extern object D_0059AD40;
+extern object ctorFrameObject;
 
 extern s32 atexit(void (*fn)(void));
 
-extern void (**D_0052BB28)(void) __attribute__((section(".data")));
+extern void (**dtorListCursor)(void) __attribute__((section(".data")));
 
-extern s32 D_0052BB2C __attribute__((section(".data")));
+extern s32 dtorFrameDeregistered __attribute__((section(".data")));
 
-extern s32 D_0052C37C __attribute__((section(".data")));
+extern s32 frameObjectSema __attribute__((section(".data")));
 
-extern u8 D_0052D940[] __attribute__((section(".data")));
+extern u8 __EH_FRAME_BEGIN__[] __attribute__((section(".data")));
 
-extern void (*D_002F5600[])(void) __attribute__((section(".data")));
+extern void (*__CTOR_LIST__[])(void) __attribute__((section(".data")));
 
-extern s32 D_0059AD58 __attribute__((section(".data")));
+extern s32 mainCtorsDone __attribute__((section(".data")));
 
-extern object *D_0059AD60 __attribute__((section(".data")));
+extern object *frameObjectList __attribute__((section(".data")));
 
 typedef struct fp_number_type {
     s32 class;
@@ -356,7 +356,7 @@ extern f64 __make_dp(s32 kind, s32 sign, s32 exp, s64 mant);
 
 #define va_start(ap, last) __builtin_stdarg_start((ap), last)
 
-extern s32 func_002D6678(_reent *r, FILE *fp, const char *fmt, va_list ap);
+extern s32 _vfprintf_r(_reent *r, FILE *fp, const char *fmt, va_list ap);
 
 typedef union f32_bits {
     f32 f;
@@ -637,6 +637,10 @@ typedef union __attribute__((packed)) {
     u32 word;
 } cfiEncodedValue_t;
 
+extern const char libgccCieAugEmpty[8] __attribute__((section(".rodata")));
+
+extern const char libgccCieAugEh[8] __attribute__((section(".rodata")));
+
 u8 *libc_2D2D90(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location);
 
 frameState_t *libc_2D31E0(u32 pc, frameState_t *output);
@@ -661,14 +665,14 @@ f32 sdfPackFloat(const fp_number_type *number);
 void __do_global_dtors(void) {
     void (**p)(void);
 
-    while (*D_0052BB28 != NULL) {
-        p = D_0052BB28;
-        D_0052BB28 = p + 1;
+    while (*dtorListCursor != NULL) {
+        p = dtorListCursor;
+        dtorListCursor = p + 1;
         (*p)();
     }
-    if (D_0052BB2C == 0) {
-        D_0052BB2C = 1;
-        __deregister_frame_info(D_0052D940);
+    if (dtorFrameDeregistered == 0) {
+        dtorFrameDeregistered = 1;
+        __deregister_frame_info(__EH_FRAME_BEGIN__);
     }
 }
 
@@ -676,23 +680,23 @@ void __do_global_ctors(void) {
     unsigned long count;
     unsigned int index;
 
-    __register_frame_info(D_0052D940, &D_0059AD40);
-    count = (s32)D_002F5600[0];
+    __register_frame_info(__EH_FRAME_BEGIN__, &ctorFrameObject);
+    count = (s32)__CTOR_LIST__[0];
     if (count == (unsigned long)-1) {
         count = 0;
-        while (D_002F5600[count + 1] != NULL) {
+        while (__CTOR_LIST__[count + 1] != NULL) {
             count++;
         }
     }
     for (index = count; index != 0; index--) {
-        D_002F5600[index]();
+        __CTOR_LIST__[index]();
     }
     atexit(__do_global_dtors);
 }
 
 void __main(void) {
-    if (D_0059AD58 == 0) {
-        D_0059AD58 = 1;
+    if (mainCtorsDone == 0) {
+        mainCtorsDone = 1;
         __do_global_ctors();
     }
 }

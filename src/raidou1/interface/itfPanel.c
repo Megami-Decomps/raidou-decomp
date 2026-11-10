@@ -331,6 +331,22 @@ void DrawFacility(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
 /* Append two GS A+D state writes: TEST_1 (0x47), then ALPHA_1 (0x42). */
 void DrawTestAlphaPrim(sdfDrawTag_t *pdrawtag);
+
+extern u8 itfPanelMesWinLineVertexIndex[8];
+
+extern u8 itfPanelSelWinLineVertexIndex[8];
+
+extern u8 itfPanelPlainRectVertexIndex[8];
+
+extern u8 itfPanelPlainRectColorIndex[8];
+
+extern u8 itfPanelPera1RectVertexIndex[8];
+
+extern u8 itfPanelPera1RectColorIndex[8];
+
+extern u8 itfPanelLeftFadeStripVertexIndex[8];
+
+extern u8 itfPanelLeftFadeStripColorIndex[8];
 /* End of declarations from src/smt3/interface/itfPanel.c */
 
 INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlRegist2);

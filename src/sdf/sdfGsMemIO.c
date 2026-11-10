@@ -135,13 +135,13 @@ typedef struct effDebugPolyParams_t {
 void sdfSetStoreImage(sdfStoreImagePacket_t *aPacket, sdfGsMemSlice_t *aGsHandle,
     s32 aSrcX, s32 aSrcY, s32 aWidth, s32 aHeight, u32 aBuffer, u32 aCallback, u32 aCallbackParam);
 
-void sdfLinkStoreImage(sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle, s32 aSrcX,
+extern void sdfLinkStoreImage(sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle, s32 aSrcX,
                    s32 aSrcY, s32 aWidth, s32 aHeight, saddr_t aBuffer, s32 aCallback,
                    s32 aCallbackParam, s32 (*aAllocator)(s32));
 
 void sdfLinkStoreFrameImagePredraw(sdfStoreFrameImagePacket_t *aPre, s32 aEvenOdd);
 
-void sdfLinkStoreFrameImage(sdfDrawTag_t *aDrawTag, sdfPreDrawTag_t *aPreDrawTag, s32 aSrcX, s32 aSrcY,
+extern void sdfLinkStoreFrameImage(sdfDrawTag_t *aDrawTag, sdfPreDrawTag_t *aPreDrawTag, s32 aSrcX, s32 aSrcY,
                    s32 aWidth, s32 aHeight, s32 aBuffer, s32 aCallback, s32 aCallbackParam,
                    s32 (*aAllocator)(s32));
 
@@ -149,7 +149,7 @@ void sdfSetLoadImage(sdfLoadImagePacket_t *aPacket, sdfGsMemSlice_t *aGsHandle,
                    s64 aDstX, s64 aDstY, s32 aWidth,
                    s32 aHeight, u32 aBuffer);
 
-void sdfLinkLoadImage(sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle,
+extern void sdfLinkLoadImage(sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle,
                    s32 aDstX, s32 aDstY, s32 aWidth, s32 aHeight,
                    saddr_t aBuffer, s32 (*aAllocator)(s32));
 

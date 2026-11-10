@@ -92,9 +92,33 @@ s32 evtCheckEventBgmLoaded(s32 eventId)
 
 INCLUDE_ASM(const s32, "event/evtSound", func_001DFBA8);
 
-INCLUDE_ASM(const s32, "event/evtSound", evtTransEventBgm);
+void evtTransEventBgm(s32 eventId, s32 variation)
+{
+    s32 soundIndex;
 
-INCLUDE_ASM(const s32, "event/evtSound", evtFadeInEventBgm);
+    if ((u32)(eventId - 0x258) >= 0x100) {
+        return;
+    }
+    soundIndex = -1;
+    if (variation >= 0) {
+        soundIndex = evtGetSoundIndex(eventId, variation);
+    }
+    printf("Event BGM trans :%08X\n", soundIndex);
+    p2sdSetBgmTrack(soundIndex);
+}
+
+s32 evtFadeInEventBgm(s32 eventId, s32 variation)
+{
+    s32 soundIndex;
+
+    if ((u32)(eventId - 0x258) >= 0x100) {
+        return 0;
+    }
+    soundIndex = evtGetSoundIndex(eventId, variation);
+    printf("Event BGM fade in play :%08X\n", soundIndex);
+    p2sdPlayBGMFade(soundIndex);
+    return soundIndex;
+}
 
 s32 evtStopEventBgm(s32 eventId, s32 variation)
 {

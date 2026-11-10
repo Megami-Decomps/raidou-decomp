@@ -220,9 +220,52 @@ INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020F8F0);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020F8F8);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectDistBlurPartInit);
+void dds3EffectDistBlurPartInit(effBlurScatterWork_t *pParam, effBlurScatterSlot_t *pPart) {
+    dds3Effect_Blur_t *quad = &pPart->quad;
+    f32 spread;
+    s32 halfSize;
+    s32 centerX;
+    s32 centerY;
+    pPart->delay = SDF_FRAMES(dds3GetRandA((u8 *)dds3EffectBase) % (pParam->params.interval + 1));
+    pPart->angle = -3.14159265f;
+    quad->rotate = pParam->params.rotate;
+    quad->abgr = pParam->params.abgr;
+    quad->blend = pParam->params.blend;
+    spread = pParam->params.area;
+    halfSize = pParam->params.width;
+    quad->center[0] = pParam->params.center[0] +
+        (s32)(spread * ((dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f));
+    halfSize >>= 1;
+    quad->center[1] = pParam->params.center[1] +
+        (s32)(spread * ((dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f));
+    centerX = quad->center[0] + 256;
+    quad->xy[0][0] = centerX - halfSize;
+    quad->xy[1][0] = centerX + halfSize;
+    centerY = quad->center[1] + 224;
+    quad->xy[0][1] = centerY - halfSize;
+    quad->xy[1][1] = centerY + halfSize;
+}
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectDistortionBlurCreate);
+effBlurScatterWork_t *dds3EffectDistortionBlurCreate(dds3Effect_DistortionBlurParam_t *pParam)
+{
+    struct sdfMemHandle_t *allocation;
+    effBlurScatterWork_t *work;
+    effBlurScatterSlot_t *slot;
+    s32 slotIndex;
+
+    allocation = sdfMemAllocDirect(sizeof(effBlurScatterWork_t) + 100 * sizeof(effBlurScatterSlot_t));
+    work = EE_ADDR_AS(effBlurScatterWork_t *, sdfMemLock(allocation));
+    work->params = *pParam;
+    work->allocation = allocation;
+    work->slots = (effBlurScatterSlot_t *)(work + 1);
+    work->texture = dds3BillboardGetGeneralTex(2);
+    slot = work->slots;
+    for (slotIndex = 0; slotIndex < 100; slotIndex++, slot++) {
+        dds3EffectDistBlurPartInit(work, slot);
+        slot->angle = 3.14159265f + 1.0f;
+    }
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020FB48);
 

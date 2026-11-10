@@ -57,7 +57,7 @@ extern addr_t evtKutiUnit;
 
 extern void evtRunUnitKutiMotion(addr_t h);
 
-void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
+extern void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
 
 extern evtUnit_t *evtGetUnitHandle(s32 serial);
 
@@ -199,7 +199,7 @@ s32 fldGbSetGimic(s32 fld, s32 area, s32 hojiID, s32 toplast);
 
 extern void dds3MoverBasicMakePath(dds3Basic_t *pMoverBasic);
 
-extern char evtMsgObjPathPara0[], evtMsgObjPathPara1[], evtMsgObjPathMoveNoObj[];
+extern const char evtMsgObjPathPara0[], evtMsgObjPathPara1[], evtMsgObjPathMoveNoObj[];
 
 void evtEnableMoonCalc(void);
 
@@ -215,15 +215,15 @@ dds3ProcessID_t *evtLoadEventPack(s32 eventno);
 
 s32 evtGetEventPackStat(u32 eventno);
 
-extern char evtMsgBeOk[];
+extern const char evtMsgBeOk[];
 
 void sdfPrintf(const char *str, ...);
 
-extern char evtMsgLoadBeStart[];
+extern const char evtMsgLoadBeStart[];
 
-extern char evtMsgReadBeStart[];
+extern const char evtMsgReadBeStart[];
 
-extern char evtMsgPmvRunNoProc[];
+extern const char evtMsgPmvRunNoProc[];
 
 void evtPathRate(dds3Basic_t *basic, f32 rate);
 
@@ -231,7 +231,7 @@ void evtPathDir(dds3Basic_t *basic, u32 dir);
 
 dds3ProcessID_t *evtStartPictureProcess(s32 priority, struct sdfTexHandle_t *texpath);
 
-extern char evtMsgTexBeNoProc[];
+extern const char evtMsgTexBeNoProc[];
 
 typedef u8 sdfTextureClampMode_t;
 
@@ -299,11 +299,11 @@ extern void fldSetNextField(s32 command, s32 para);
 
 extern s32 sdfDelayedResrcCheck(void);
 
-extern char evtMsgNameNotFound[];
+extern const char evtMsgNameNotFound[];
 
-extern char evtMsgEffmg1LoadHint[];
+extern const char evtMsgEffmg1LoadHint[];
 
-extern char evtMsgEffmg2LoadHint[];
+extern const char evtMsgEffmg2LoadHint[];
 
 extern void dds3ObjectBaseOnFlag(void *basic, s32 flag);
 
@@ -319,9 +319,9 @@ extern void evtUnitLightOff(evtUnit_t *h, s32 frame);
 
 extern u8 evtUnitLightAnimeStat(evtUnit_t *h);
 
-extern char evtMsgModelMotionDeprecated[];
+extern const char evtMsgModelMotionDeprecated[];
 
-extern char evtMsgModelMoveMotDeprecated[];
+extern const char evtMsgModelMoveMotDeprecated[];
 
 extern void func_001E3C30(void *unit, s32 p1, s32 p2, s32 p3, s32 p4, s32 p5);
 
@@ -407,17 +407,17 @@ extern void sdfTexFreeDelayed(void *aHandle);
 extern void evtSetUnitMove2(evtUnit_t *h, s32 movetype, s32 posID, s32 motion,
                             s32 para1, s32 para2, void *func, void *data);
 
-extern char evtMsgPmvLoadArgs[];
+extern const char evtMsgPmvLoadArgs[];
 
-extern char evtMsgPmvLoadNoProc[];
+extern const char evtMsgPmvLoadNoProc[];
 
-extern char evtMsgPmvLoadStart[];
+extern const char evtMsgPmvLoadStart[];
 
-extern char evtMsgPmvLoadEnd[];
+extern const char evtMsgPmvLoadEnd[];
 
-extern char evtMsgPmvRun2Begin[];
+extern const char evtMsgPmvRun2Begin[];
 
-extern char evtMsgPmvRun2End[];
+extern const char evtMsgPmvRun2End[];
 
 extern void evtPictureDrawOn(void *id);
 
@@ -425,13 +425,13 @@ extern void evtPictureDrawOff(void *id);
 
 extern void evtKillPictureProcess(void *id);
 
-extern char evtMsgLightPathMoveError[];
+extern const char evtMsgLightPathMoveError[];
 
-extern char evtMsgLightPathMoveErrorDbg[];
+extern const char evtMsgLightPathMoveErrorDbg[];
 
-extern char evtMsgSetSkyAlphaLow[];
+extern const char evtMsgSetSkyAlphaLow[];
 
-extern char evtMsgSetSkyAlphaHigh[];
+extern const char evtMsgSetSkyAlphaHigh[];
 
 extern s32 *dds3GetActiveUnitSceneBasic(void *pSceneBasic);
 
@@ -441,7 +441,7 @@ extern void fldSkySetAlpha(s32 alp);
 
 extern void fldSkySetFilter(s32 idx, s32 mode, s32 hokan);
 
-extern char evtMsgBeOk[];
+extern const char evtMsgBeOk[];
 
 extern dds3Basic_t *dds3SceneBasicSearchName(void *scene, const char *name);
 
@@ -449,11 +449,11 @@ extern dds3Basic_t *dds3AddMG12EffectObjectBasic(s32 type, const char *file);
 
 extern void *evtStartPictureProcess2(s32 priority, const char *texdata);
 
-extern char evtMsgTexLoadNoProc[];
+extern const char evtMsgTexLoadNoProc[];
 
-extern char evtMsgIdNotFound[];
+extern const char evtMsgIdNotFound[];
 
-extern char evtMsgIdNotFoundWarn[];
+extern const char evtMsgIdNotFoundWarn[];
 
 typedef struct
 {
@@ -467,17 +467,17 @@ extern dds3Basic_t *dds3AddD3PEffectObjectBasic(const char *file, evtVec_t *pos,
 
 extern dds3Basic_t *dds3AddBEDEffectObjectBasic(const char *file, evtVec_t *pos, evtVec_t *rot);
 
-extern char evtMsgEffectLoadHint[];
+extern const char evtMsgEffectLoadHint[];
 
 extern void evtKillEventPack(s32 eventno);
 
-extern char evtMsgObjPathPara0[];
+extern const char evtMsgObjPathPara0[];
 
-extern char evtMsgObjPathPara1[];
+extern const char evtMsgObjPathPara1[];
 
-extern char evtMsgObjPathWaitNoObj[];
+extern const char evtMsgObjPathWaitNoObj[];
 
-extern char evtMsgDelBeStart[];
+extern const char evtMsgDelBeStart[];
 
 void *evtSearchBasic(s32 type, s32 serial);
 
@@ -571,6 +571,20 @@ u32 evtCommand_EFFECT_LOAD(void);
 
 u32 evtCommand_EFFBED_LOAD(void);
 
+extern const char evtMsgModelMotionDeprecated[64];
+
+extern const char evtMsgModelMoveMotDeprecated[64];
+
+extern const char evtMsgLightDirZero[40];
+
+extern const char evtMsgEffectBeNotFound[32];
+
+extern const char evtMsgEffectBeFailed[24];
+
+extern const char evtMsgEffectLoadHint[48];
+
+extern const char evtMsgNameNotFound[24];
+
 u32 evtCommand_EFFBED_BE(void);
 
 u32 evtCommand_EFFBED_BE_EVO(void);
@@ -583,9 +597,13 @@ u32 evtCommand_EFFBED_START_EVO(void);
 
 u32 evtCommand_EFFMG1_LOAD(void);
 
+extern const char evtMsgEffmg1LoadHint[48];
+
 u32 evtCommand_EFFMG1_BE(void);
 
 u32 evtCommand_EFFMG2_LOAD(void);
+
+extern const char evtMsgEffmg2LoadHint[48];
 
 u32 evtCommand_EFFMG2_BE(void);
 
@@ -639,6 +657,10 @@ u32 evtCommand_CALL_RAG(void);
 s32 evtCommand_CALL_SAVE(void);
 
 u32 evtCommand_CALL_PUZZLEBOY(void);
+
+extern const char evtMsgIdNotFound[32];
+
+extern const char evtMsgIdNotFoundWarn[32];
 
 s32 evtCommand_CALL_NEXT(void);
 
@@ -757,6 +779,42 @@ s32 evtCommand_LIGHT_PATH_MOVE(void);
 
 s32 evtCommand_LIGHT_PATH_WAIT(void);
 
+extern const char evtMsgObjPathPara0[16];
+
+extern const char evtMsgObjPathPara1[16];
+
+extern const char evtMsgObjPathMoveNoObj[32];
+
+extern const char evtMsgObjPathWaitNoObj[32];
+
+extern const char evtMsgLoadBeStart[16];
+
+extern const char evtMsgBeOk[16];
+
+extern const char evtMsgReadBeStart[16];
+
+extern const char evtMsgDelBeStart[16];
+
+extern const char evtMsgPmvLoadArgs[24];
+
+extern const char evtMsgPmvLoadNoProc[72];
+
+extern const char evtMsgPmvLoadStart[24];
+
+extern const char evtMsgPmvLoadEnd[16];
+
+extern const char evtMsgPmvRun2Begin[16];
+
+extern const char evtMsgPmvRun2End[16];
+
+extern const char evtMsgPmvRunNoProc[72];
+
+extern const char evtMsgLightPathMoveError[24];
+
+extern const char evtMsgLightPathMoveErrorDbg[32];
+
+extern const char evtMsgTexBeNoProc[72];
+
 u32 evtCommand_TEX_BE(void);
 
 u32 evtCommand_TEX_LOAD(void);
@@ -831,9 +889,20 @@ void evtDrawDeadMoonSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32
                            s32 rgb, sdfTexHandle_t *th, s32 ox, s32 oy,
                            f32 cnt, f32 alpha0, f32 alpha1, f32 scale0, f32 scale1);
 
+/* Acquire the background texture, then release the temporary file allocation. */
+extern const char evtMsgTexLoadNoProc[72];
+
+extern const char evtMsgSetSkyAlphaLow[40];
+
+extern const char evtMsgSetSkyAlphaHigh[48];
+
 void nbLoadDeadMoonTex(void);
 
 void nbFreeDeadMoonTex(void);
+
+extern addr_t evtKutiUnit;
+
+extern sdfTexHandle_t *DeadMoonTmx;
 /* End of declarations from src/smt3/event/evtCommand.c */
 
 void *evtSearchBasic(s32 type, s32 serial)
@@ -907,7 +976,34 @@ u32 evtCommand_MODEL_POS_XYZ(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ROT_XYZ);
+u32 evtCommand_MODEL_ROT_XYZ(void) {
+    sdfVector4_t v;
+    void *ctx;
+    s32 worldObjectKey;
+    void *unit;
+    f32 toRad;
+    f32 x;
+    f32 y;
+
+    memset(&v, 0, 0x10);
+    v.w = 1.0f;
+    ctx = dds3GetActiveScene();
+    worldObjectKey = scrGetIntPara(0);
+    unit = dds3SearchSceneBasic(ctx, worldObjectKey, 5);
+    if (unit == NULL) {
+        return 1;
+    }
+    toRad = 0.017453293f;
+    x = scrGetFloatPara(1) * toRad;
+    y = scrGetFloatPara(2) * toRad;
+    FromEuler(x, y, 0.0f);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    FromEuler(0.0f, 0.0f, scrGetFloatPara(3) * toRad);
+    Mult();
+    SDF_VU0_STOREVECTOR(&v);
+    dds3SetRotPoseSet(unit, (u128 *)&v);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001BE658);
 
@@ -1103,7 +1199,32 @@ u32 evtCommand_MODEL_LIGHT_RGB(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_LIGHT_DIR);
+u32 evtCommand_MODEL_LIGHT_DIR(void)
+{
+    sdfVector4_t dir;
+    evtUnit_t *unit;
+    f32 mag;
+
+    memset(&dir, 0, sizeof(dir));
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    dir.x = scrGetFloatPara(2);
+    dir.y = scrGetFloatPara(3);
+    dir.z = scrGetFloatPara(4);
+    mag = sdfFabs(dir.x);
+    if (mag <= 0.01f) {
+        mag = sdfFabs(dir.y);
+        if (mag <= 0.01f) {
+            mag = sdfFabs(dir.z);
+            if (mag <= 0.01f) {
+                datDebugPrintf(evtMsgLightDirZero);
+                return 1;
+            }
+        }
+    }
+    SDF_VU0_LOADVECTOR(&dir);
+    evtSetUnitLightDir(unit, scrGetIntPara(1));
+    return 1;
+}
 
 u32 evtCommand_MODEL_RGB(void)
 {
@@ -1172,6 +1293,8 @@ u32 evtCommand_MODEL_LIGHT_UNLINK(void)
     evtUnlinkLightObjectBasic(unit, time);
     return 1;
 }
+
+INCLUDE_RODATA(const s32, "event/evtCommand", D_004B4720);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C0208);
 
@@ -1261,7 +1384,29 @@ u32 evtCommand_EFFECT_POS_XYZ(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_ROT_XYZ);
+u32 evtCommand_EFFECT_ROT_XYZ(void) {
+    sdfVector4_t v;
+    dds3Basic_t *obj;
+    f32 toRad;
+    f32 x;
+    f32 y;
+
+    memset(&v, 0, 0x10);
+    v.w = 1.0f;
+    obj = evtSearchBasic(7, scrGetIntPara(0));
+    if (!(((evtModelHeader_t *)obj->workdata)->flags & 4)) {
+        toRad = 0.017453293f;
+        x = scrGetFloatPara(1) * toRad;
+        y = scrGetFloatPara(2) * toRad;
+        FromEuler(x, y, 0.0f);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        FromEuler(0.0f, 0.0f, scrGetFloatPara(3) * toRad);
+        Mult();
+        SDF_VU0_STOREVECTOR(&v);
+        dds3SetRotPoseSet(obj, (u128 *)&v);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_POS);
 
@@ -1560,7 +1705,31 @@ s32 evtCommand_CAM_POS_XYZ(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CAM_ROT_XYZ);
+/* Convert the three degree inputs before composing and storing a quaternion. */
+s32 evtCommand_CAM_ROT_XYZ(void) {
+    void *effectUnit;
+    sdfVector4_t quaternion;
+    f32 degreesToRadians;
+    f32 pitch;
+
+    if (scrGetIntPara(0) < 0) {
+        effectUnit = fldGetUnitFollowCamera();
+    } else {
+        effectUnit = evtSearchBasic(4, scrGetIntPara(0));
+    }
+    if (effectUnit == NULL) {
+        return 1;
+    }
+    degreesToRadians = 0.017453293f;
+    pitch = scrGetFloatPara(1) * degreesToRadians;
+    FromEuler(pitch, scrGetFloatPara(2) * degreesToRadians, 0.0f);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    FromEuler(0.0f, 0.0f, scrGetFloatPara(3) * degreesToRadians);
+    Mult();
+    SDF_VU0_STOREVECTOR(&quaternion);
+    dds3SetRotPoseSet(effectUnit, (u128 *)&quaternion);
+    return 1;
+}
 
 s32 evtCommand_CAM_ROT_Q(void) {
     void *effectUnit;

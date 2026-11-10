@@ -83,9 +83,9 @@ void sdfPacTexListDecoder0(sdfPacDecodeCb_t *cb);
 
 void sdfPacTexListDecoderInit(sdfPacDecodeCb_t *cb, sdfPacStdBlockHeader_t *hdr);
 
-void func_002C60E0(sdfPacDecodeCb_t *aState);
+void sdfPacMarkPhaseFinished(sdfPacDecodeCb_t *aState);
 
-void func_002C6D58(sdfPacDecodeCb_t *aState);
+void sdfPacResetOutputToAllocationEntry(sdfPacDecodeCb_t *aState);
 
 void sdfPacTexListDecoderTmxHeaderEndFunc(sdfPacDecodeCb_t *cb);
 
@@ -99,7 +99,7 @@ void sdfPacSetFromTail(sdfPacDecodeCb_t *cb);
 
 void sdfPacFree(sdfPacDecodeCb_t *cb);
 
-void func_002C60E0(sdfPacDecodeCb_t *aState);
+void sdfPacMarkPhaseFinished(sdfPacDecodeCb_t *aState);
 
 void sdfPacUseSrc(sdfPacDecodeCb_t *cb, s32 size);
 
@@ -150,7 +150,7 @@ void sdfPacTmxDecoderInit(sdfPacDecodeCb_t *cb, sdfPacStdBlockHeader_t *hdr);
 
 void sdfPacTexListDecoderTmxHeaderEndFunc(sdfPacDecodeCb_t *cb);
 
-void func_002C6D58(sdfPacDecodeCb_t *aState);
+void sdfPacResetOutputToAllocationEntry(sdfPacDecodeCb_t *aState);
 
 void sdfPacTexListDecoderTmxBodyEndFunc(sdfPacDecodeCb_t *cb);
 

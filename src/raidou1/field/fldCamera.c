@@ -127,6 +127,12 @@ extern s32 fldHitChkSlope;
 
 extern collision_s *fldMatterTable;
 
+/* Select a valid fallback hit only in the -1 arm. Keeping that observation
+ * separate from the selected row preserves the native entry dataflow; an
+ * eager copy followed by reusing the observation is folded by the first
+ * CSE pass. This ordinary branch structure needs no register constraint. */
+void fldCamCalcSaka(void);
+
 extern void dds3GetRotPoseSet(dds3Basic_t *pBasic);
 
 extern f32 EulerAngleAxisY(void);
@@ -144,6 +150,15 @@ extern f32 fldCamPitchTarget;
 extern s32 fldHitChkCamera(const f32 start[3], const f32 end[3], f32 hitPoint[3]);
 
 extern void fldCamSetLeng(void);
+
+/* Compiler reconstruction, not recovered source spelling: the initial angle
+ * conversion uses its real scalar-field address rather than the later full
+ * camera-state base. Qualified CSE dumps retain the distinct HIGH quantities
+ * and the later base/constant loads. The three local homes die at the initial
+ * store, before the pose call; none relies on a call-clobbered value surviving.
+ * Vector copies name their actual four-float memory so unrelated camera state
+ * remains available across them. Native scratch W lanes are left untouched. */
+void resetCamNormal2(void);
 
 void fldCamGetPhokanParam(void);
 
@@ -253,7 +268,7 @@ extern void dds3CameraObjectBasicSetFovy(dds3Basic_t *pBasic, f32 fovy);
 
 extern void dds3FadeIn(s32 r, s32 g, s32 b, s32 frame);
 
-extern char fldCamElvStartLabel[];
+extern const char fldCamElvStartLabel[];
 
 extern s32 D_0054EC94;
 
@@ -261,19 +276,66 @@ extern f32 D_0054EC98;
 
 extern f32 D_0054EC9C;
 
+/* Six-mode camera dispatcher; native returns NULL on every path. */
+extern const char fldCamElvStartLabel[15];
+
 void *fldCamMain(void);
 
 extern void *dds3SearchProcessName(const char *namestr);
 
 extern void dds3SetScreenFovy(f32 fovy);
 
-extern char fldCamElvStartLabel[];
+extern const char fldCamElvStartLabel[];
 
 void fldCamSyukanSuriawase(void);
 
 s32 fldCamMiwatasiChk(void);
 
 s32 fldCamNpcCamChk(char *pName);
+
+extern f32 fldCamDefaultPitch;
+
+extern f32 fldCamDist;
+
+extern s32 fldCamMiwatasi;
+
+extern s32 D_0054EC94;
+
+extern f32 D_0054EC98;
+
+extern f32 D_0054EC9C;
+
+extern f32 fldCamHeightTarget;
+
+extern f32 fldCamHeight;
+
+extern f32 fldCamParamTable2;
+
+extern s32 fldCamResetOn;
+
+extern s32 fldCamFastFlag;
+
+extern f32 fldCamOrbitAngle;
+
+extern f32 fldCamPadHeight;
+
+extern s32 fldElvCameraScene;
+
+extern f32 fldCamElvState;
+
+extern s32 D_0054ECC4;
+
+extern s32 fldHitChkMatter;
+
+extern s32 fldHitChkSlope;
+
+extern s32 fldCamPhokanState;
+
+extern s32 fldCamPHokanMode;
+
+extern s32 fldCamSvsState;
+
+extern f32 fldCamPitchTarget;
 /* End of declarations from src/smt3/field/fldCamera.c */
 
 f32 GetSphericalPosMove(f32 fromX, f32 fromZ, f32 toX, f32 toZ) {

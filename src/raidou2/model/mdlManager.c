@@ -307,11 +307,11 @@ typedef struct mdlPartTagRecord_t {
 
 struct mdlEffectDescriptor_t;
 
-extern const mdlPathPrefix_t mdlModelPathPrefix[];
+extern char mdlModelPathPrefix[];
 
-extern const char mdlPackedBundleExt[];
+extern char mdlPackedBundleExt[];
 
-extern const mdlWorkPrefix_t mdlWorkPathPrefix[];
+extern mdlWorkPrefix_t mdlWorkPathPrefix[];
 
 extern mdlHddFileEntry_t *mdlHddFileCount;
 
@@ -355,7 +355,7 @@ extern s32 mdlPibGetVersion(mdlPibRecord_t *record);
 
 extern sdfPacDecodeResrc_t *sdfPacFreeResrc(sdfPacDecodeResrc_t *resrc);
 
-extern sdfMatrix4_t D_002FA240;
+extern sdfMatrix4_t sdfViewMatrix;
 
 extern sdf3DScreenParam_t dds3ScreenParam;
 
@@ -363,7 +363,7 @@ extern void MultMatrixRev(sdfMatrix4_t *aMatrix);
 
 extern void MultMatrixRevNoArg(void);
 
-s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (*callback)(u32), u32 parm);
+extern s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (*callback)(u32), u32 parm);
 
 #define MDL_CHAR_IS_LOWER(c) ((_ctype_ + 1)[(unsigned)(c)] & 2)
 
@@ -506,7 +506,7 @@ void mdlSetEffectScale(mdlObj_t *aHandle, f32 aScale);
 void mdlGetScreenOffset(mdlObj_t *aHandle, void *aOfs);
 
 /* vu0 routine: project an array of points and store their screen coordinates. */
-void mdl_1DD9C0(mdlObj_t *ctx, f32 (*inputPoints)[4], f32 (*outputPoints)[4], s32 pointCount);
+void mdlProjectPoints(mdlObj_t *ctx, f32 (*inputPoints)[4], f32 (*outputPoints)[4], s32 pointCount);
 
 void mdlMotionPause(mdlObj_t *aHandle);
 
@@ -550,6 +550,16 @@ void mdlReleaseHddFileList(void);
 void mdlMakeHddFileListDummy(void);
 
 void mdlMakeHddFileList(void);
+
+extern char mdlModelPathPrefix[8];
+
+extern char mdlPackedBundleExt[4];
+
+extern sdfMemHandle_t *mdlHddFileIndexHandle;
+
+extern sdfMemHandle_t *mdlHddFileListHandle;
+
+extern mdlWorkPrefix_t mdlWorkPathPrefix[1];
 /* End of declarations from src/smt3/model/mdlManager.c */
 
 void mdlInitManager(void)
@@ -1356,7 +1366,7 @@ void mdlSetEffectScale(mdlObj_t *aHandle, f32 aScale)
 /* vu0 routine: project the point through the view and model matrices into vf10. */
 void mdlGetScreenOffset(mdlObj_t *aHandle, void *aOfs)
 {
-    SDF_VU0_LOADMATRIX(&D_002FA240);
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
     MultMatrixRev(&dds3ScreenParam.TM);
     SDF_VU0_COPYMATRIX_A_TO_B();
     SDF_VU0_LOADMATRIX(&aHandle->inner->tm);

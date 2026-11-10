@@ -155,6 +155,8 @@ void sdfTexSetClutColor(sdfTexHandle_t *texture, s32 tint, f32 amount);
 sdfTexHandle_t *sdfTexSearch(u32 id);
 
 void sdfTexInit(void);
+
+extern sdfTexHandle_t *sdfTexHandleLink;
 /* End of declarations from src/smt3/sdf/sdfTex.c */
 
 s32 sdfTexGetPacketLength(sdfTexHandle_t *aHandle)
@@ -212,7 +214,23 @@ u32 sdfTexGetPixelAddr(sdfTexHandle_t *aHandle)
     return aHandle->pixelGsHandle->addr;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetPixelBitCount);
+s32 sdfTexGetPixelBitCount(s32 aFormat)
+{
+    switch (aFormat) {
+    case 0:
+        return 32;
+    case 1:
+        return 24;
+    case 2:
+    case 10:
+        return 16;
+    case 19:
+    case 27:
+        return 8;
+    default:
+        return 4;
+    }
+}
 
 s32 sdfTexGetTexelBitCount(s32 aFormat)
 {

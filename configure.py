@@ -256,13 +256,14 @@ def splat_digest(version: str, yaml: Path) -> str:
     return digest.hexdigest()
 
 
-def run_splat(version: str, yaml: Path, force: bool) -> None:
+def run_splat(version: str, yaml: Path, force: bool) -> bool:
     """Split when configuration or ASM/C ownership changed since the last split."""
     digest = splat_digest(version, yaml)
     stamp = ROOT / "build" / version / ".splat_stamp"
     if not force and stamp.exists() and stamp.read_text() == digest and (ROOT / "asm" / version).exists():
-        return
+        return False
     print(f"splat: {version}")
+    sources = sorted(map(str, unit_sources(version).values()))
     snapshot = snapshot_generated_files(generated_footprint(version))
     # splat never deletes files: a unit or rodata split that moved leaves stale
     # asm behind (and include_rodata.py would include it twice).
@@ -279,7 +280,9 @@ def run_splat(version: str, yaml: Path, force: bool) -> None:
     stamp.parent.mkdir(parents=True, exist_ok=True)
     # Splat can create C files on the first split. Record their final ownership,
     # not the pre-split absence, so the following configure remains a cache hit.
-    stamp.write_text(splat_digest(version, yaml))
+    stamp.write_text(splat_digest(version, yaml) if sorted(map(str, unit_sources(version).values())) == sources
+                     else "a shared TU was split after splat named its object")
+    return True
 
 
 def write_configure_build(n, configure_inputs: list[str], argv: list[str]) -> None:
@@ -565,11 +568,15 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
 
     units: dict[str, list[dict]] = {}
     defaults = []
+    # include_rodata.py/include_sdata.py split a shared TU the versions place
+    # differently into per-game files, which moves its object: split again.
+    for attempt in range(3):
+        if args.no_split or not any([run_splat(v, ROOT / "config" / v / f"{VERSIONS[v]['serial']}.yaml",
+                                               args.force_split and attempt == 0) for v in versions]):
+            break
     for version in versions:
         serial = VERSIONS[version]["serial"]
         yaml = Path("config") / version / f"{serial}.yaml"
-        if not args.no_split:
-            run_splat(version, ROOT / yaml, args.force_split)
         provide_symbol_aliases(version)
         ld_script = Path("build") / version / f"{serial}.ld"
         if not (ROOT / ld_script).exists():

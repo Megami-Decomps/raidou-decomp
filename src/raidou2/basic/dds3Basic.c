@@ -97,6 +97,10 @@ u32 dds3AllocObjectId(void);
 void dds3SetUnitObjectId(dds3Basic_t *basic, char *name);
 
 char *func_0010E270(dds3Basic_t *basic);
+
+extern u32 dds3ObjectIdCounter;
+
+extern dds3Basic_t *dds3TheWorld;
 /* End of declarations from src/smt3/basic/dds3Basic.c */
 
 INCLUDE_ASM(const s32, "basic/dds3Basic", func_001194B0);

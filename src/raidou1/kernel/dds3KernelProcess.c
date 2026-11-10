@@ -62,9 +62,9 @@ typedef struct {
     dds3BlurCorner_t corner[2];
 } dds3BlurSprite_t;
 
-extern sdfModelOt_t D_002F69B8[];
+extern sdfModelOt_t sdfModelOtTable[];
 
-SYMBOL_AT(sdfGrOt_t, D_002F6938, sdfGrOtTable, 0xA20);
+extern sdfGrOt_t D_002F6938;
 
 extern u8 dds3ScreenBlurFlag, dds3DrawProcessFlag;
 
@@ -108,7 +108,7 @@ extern void sdfGrFlushOtChain(u32 *);
 
 extern void sdfGrReqDraw(sdfDrawTag_t *, sdfPreDrawChain_t *);
 
-/* DDS1 kwlnRenderFrame donor, with SMT3's eleven model groups and draw bank. */
+/* DDS1 dds3DrawProcess donor, with SMT3's eleven model groups and draw bank. */
 s32 dds3DrawProcess(dds3ProcessID_t *task);
 
 s32 dds3BasicMainProcess(dds3ProcessID_t *id);

@@ -50,23 +50,32 @@
 #endif
 
 #define INCLUDE_ASM(TYPE, FOLDER, NAME)                        \
-    __asm__(".section .text\n"                                 \
+    __asm__(".pushsection .text\n"                             \
             "\t.set noat\n"                                    \
             "\t.set noreorder\n"                               \
             "\t.include \"" ASM_ROOT FOLDER "/" #NAME ".s\"\n" \
             "\t.set reorder\n"                                 \
-            "\t.set at\n")
+            "\t.set at\n"                                      \
+            ".popsection\n")
 
 #define INCLUDE_RODATA(TYPE, FOLDER, NAME)                     \
-    __asm__(".section .rodata\n"                               \
+    __asm__(".pushsection .rodata\n"                           \
             "\t.include \"" ASM_ROOT FOLDER "/" #NAME ".s\"\n" \
-            ".section .text\n")
+            ".popsection\n")
 
 /* Small data not yet defined in C (tools/include_sdata.py places these). */
 #define INCLUDE_SDATA(TYPE, FOLDER, NAME)                      \
-    __asm__(".section .sdata\n"                                \
+    __asm__(".pushsection .sdata\n"                            \
             "\t.include \"" ASM_ROOT FOLDER "/" #NAME ".s\"\n" \
-            ".section .text\n")
+            ".popsection\n")
+
+/* N zero bytes of alignment padding ee-gcc put between two small-data objects
+ * of one unit, where splat has no object to name (tools/include_sdata.py). */
+#define SDATA_PAD(N) __asm__(".pushsection .sdata\n\t.space " #N "\n.popsection\n")
+
+/* Return to .sdata after an INCLUDE_SDATA, which ends in .text, when C-defined
+ * small data follows: cc1 still believes it is in .sdata. */
+#define SDATA_RESUME() __asm__(".section .sdata\n")
 
 /* Raise this unit's .text alignment to 2^N, for a unit whose original object
  * was aligned more strictly than its own code needs. The retail link pads up
@@ -80,8 +89,19 @@ __asm__(".include \"macro.inc\"\n");
 #define INCLUDE_ASM(TYPE, FOLDER, NAME)
 #define INCLUDE_RODATA(TYPE, FOLDER, NAME)
 #define INCLUDE_SDATA(TYPE, FOLDER, NAME)
+#define SDATA_PAD(N)
+#define SDATA_RESUME()
 #define TEXT_ALIGN(N)
 
+#endif
+
+/* Declaration of a const object defined later in the unit. ee-gcc treats an
+ * extern const as read-only data and addresses it differently, so the retail
+ * build must keep the plain extern; a native compiler rejects the mismatch. */
+#ifdef NON_MATCHING
+#define EXTERN_LATE_CONST extern const
+#else
+#define EXTERN_LATE_CONST extern
 #endif
 
 #endif /* INCLUDE_ASM_H */

@@ -196,9 +196,13 @@ void *sdfDevPrintfEx(u32 *aCB, const char *aStr, ...);
 
 void *sdfDevPrintf(u32 aX, u32 aY, u32 aZ, s32 aAttr, const char *aStr, ...);
 
-void func_002BD300(u32 *aCB, s32 aMode);
+void sdfPktSetCmd(u32 *aCB, s32 aMode);
 
 void sdfDevSetPrintCB(u32 *aCB, u32 aX, u32 aY, u32 aZ, s32 aAttr);
+
+extern sdfDevConsCB_tag *devConsTop;
+
+extern s32 alreadyInitDevCons;
 /* End of declarations from src/smt3/sdf/sdfDevCons.c */
 
 void sdfDevConsInit(void)
@@ -422,7 +426,7 @@ void sdfDevConsDrawFlush(sdfDevConsDrawCB_t *aCB) {
     if ((packetBytes >> 3) != 0) {
         channelRegisters = aCB->dmaCh;
         sceDmaSync((sceDmaChan *)channelRegisters, 0, 0);
-        HW_WRITE((volatile u32 *)channelRegisters, HW_READ((volatile u32 *)channelRegisters) | 0x40); /* CHCR bit 6: tag-transfer enable */
+        *(volatile u32 *)channelRegisters = *(volatile u32 *)channelRegisters | 0x40; /* CHCR bit 6: tag-transfer enable */
         EE_SYNC_BARRIER();
         sceDmaSendN(channelRegisters, (void *)EE_PHYSICAL(EE_ADDR(aCB->start)), packetBytes >> 4);
         nextBufferIndex = aCB->dblBuffId ^ 1;

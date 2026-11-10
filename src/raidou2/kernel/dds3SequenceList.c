@@ -247,6 +247,8 @@ s32 CheckNewBattle(void);
 
 void CallEvent(u32 flg, s32 *data);
 
+extern const char dds3CallEventReturnMsg[16];
+
 s32 ExitEvent(void);
 
 s32 CheckEvent(void);
@@ -470,11 +472,28 @@ scrProcessWork_s *scrPrintProcedureStart(scrHeader_t *header, scrTypeTable_t *ty
                                          scrCode_u *code, u8 *mesdata, char *strdata, s32 procno);
 
 scrProcessWork_s *fldFlowParse(scrHeader_t *header, s32 procno);
+
+extern u32 abcd;
+
+extern s32 scrHandleCount;
+
+extern scrProcessWork_s *scrHandleFirst;
+
+extern scrProcessWork_s *scrHandleLast;
+
+extern u32 D_0054E9A0[2];
 /* End of declarations from src/smt3/kernel/dds3SequenceList.c */
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallDebug);
+dds3ProcessID_t *CallDebug(void)
+{
+    return dds3StartProcess("StartSel", 0x2AF9, 0, 0, dds3StartMenuProcess, NULL, NULL);
+}
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitDebug);
+s32 ExitDebug(void)
+{
+    dds3KillProcessName("StartSel", 1);
+    return 1;
+}
 
 s32 CheckDebug(void)
 {
@@ -648,8 +667,6 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010E898);
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010E978);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010E9A0);
-
-INCLUDE_RODATA(const s32, "kernel/dds3SequenceList", D_004A7258);
 
 INCLUDE_SDATA(const s32, "kernel/dds3SequenceList", D_004DE400);
 

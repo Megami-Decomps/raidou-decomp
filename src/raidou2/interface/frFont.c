@@ -780,6 +780,32 @@ u32 frGetMessageResult(u32 Flag);
 
 /* Store an unchecked replacement-text address word in the font's indexed table. */
 void frSetVariableRequest(s32 VarNo, s32 pStr);
+
+extern const char D_00535968[16];
+
+extern const char D_00535978[16];
+
+extern const char D_00535988[16];
+
+extern u32 gMessageRequestResult;
+
+extern s8 gMessageSpaceX;
+
+extern u32 gMessageStepY;
+
+extern s32 frDefaultFontHandle;
+
+extern u32 frSpaceAdvanceOffset;
+
+extern u32 D_0054F418;
+
+extern u8 gModeFlag;
+
+extern u32 gFontDrawOT;
+
+extern u8 frSetFontString_style;
+
+extern u32 frDrawFontWork;
 /* End of declarations from src/smt3/interface/frFont.c */
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001923A8);
@@ -869,7 +895,13 @@ INCLUDE_ASM(const s32, "interface/frFont", func_00192BB8);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00192CA0);
 
-INCLUDE_ASM(const s32, "interface/frFont", frLoadStyleAll);
+/* Ensure the four named default font files are installed, in slot order. */
+void frLoadStyleAll(void) {
+    frLoadFontData(0, "/font/font0.fnt");
+    frLoadFontData(1, "/font/font1.fnt");
+    frLoadFontData(2, "/font/font2.fnt");
+    frLoadFontData(3, "/font/font3.fnt");
+}
 
 INCLUDE_ASM(const s32, "interface/frFont", frDelStyleAll);
 

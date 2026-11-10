@@ -17,7 +17,7 @@ typedef struct
 
 extern dds3SceneLightParam_t dds3LightParam;
 
-SYMBOL_AT(sdfVector4_t, dds3LightObjectAmbient, dds3LightParam, 0x10);
+extern sdfVector4_t dds3LightObjectAmbient;
 
 extern void evtLinkLightObjectBasic(void *h, dds3Basic_t *light, s32 frame);
 
@@ -115,7 +115,37 @@ void dds3SetLightObjectPathResoruce(dds3Basic_t *basic, fldResourceLightPath_t *
 s32 dds3AllocEventBasicWorkData(dds3Basic_t *basic);
 /* End of declarations from src/smt3/basic/dds3LightObjectBasic.c */
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", lightconstructor);
+s32 lightconstructor(dds3Basic_t *basic)
+{
+    dds3LightObjectBasicWorkData_t *work;
+
+    dds3InitPoseSet(basic);
+    work = sdfChipAllocDirect(sizeof(dds3LightObjectBasicWorkData_t));
+    basic->workdata = work;
+    work->ObjectBaseControlWorkData = dds3ObjectBaseInitControlWorkData(basic);
+    dds3ObjectBaseOnFlag(basic, 0x62);
+    work->Flag = 0;
+
+    work->Light.color.x = 0.7f;
+    work->Light.color.y = 0.7f;
+    work->Light.color.z = 0.7f;
+    work->Light.color.w = 0.0f;
+    work->Light.v.x = 0.0f;
+    work->Light.v.y = 1.0f;
+    work->Light.v.z = 0.5f;
+    work->Light.v.w = 0.0f;
+    work->Ambient.x = 0.2f;
+    work->Ambient.y = 0.2f;
+    work->Ambient.z = 0.2f;
+    work->Ambient.w = 1.0f;
+    work->InsideR = 100.0f;
+    work->OutsideR = 800.0f;
+    work->Soften = 7.0f;
+    work->Bias = 0.0f;
+
+    work->LightPacket = sdfChipAllocDirect(224);
+    return 1;
+}
 
 void lightdestructor(dds3Basic_t *basic)
 {

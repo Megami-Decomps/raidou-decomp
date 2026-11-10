@@ -90,6 +90,8 @@ dds3PathBasicControl_t *dds3MoverBasicGetPathControl(dds3Basic_t *pMoverBasic);
 s32 dds3MoverBasicUpdate(dds3Basic_t *pBasic);
 
 u32 BasicTypeToItemType(u32 type);
+
+extern s32 dds3MoverCount;
 /* End of declarations from src/smt3/basic/dds3MoverBasic.c */
 
 s32 MoverBasicConstructor(dds3Basic_t *pBasic)
