@@ -140,7 +140,10 @@ void dds3DebugFloatEditEx(f32 *controlledValue, u8 *padState, f32 minimum, f32 m
     *controlledValue = adjustedValue;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3DebugFloatEdit);
+void dds3DebugFloatEdit(f32 *value, f32 step, f32 min, f32 max, f32 scale)
+{
+    dds3DebugFloatEditEx(value, &dds3PadButtonState[0x20], step, min, max, scale);
+}
 
 void dds3DebugIntEditEx(void *aValue, s32 aValueSize, s64 aMin, s64 aMax, s64 aSmall, s64 aLarge, s8 *aPadMap) {
     s64 adjustedValue;
@@ -226,7 +229,10 @@ void dds3DebugIntEditEx(void *aValue, s32 aValueSize, s64 aMin, s64 aMax, s64 aS
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3DebugIntEdit);
+void dds3DebugIntEdit(void *aValue, s32 aValueSize, s64 aMin, s64 aMax, s64 aSmall, s64 aLarge)
+{
+    dds3DebugIntEditEx(aValue, aValueSize, aMin, aMax, aSmall, aLarge, (s8 *)&dds3PadButtonState[0x20]);
+}
 
 s32 dds3DebugColorEditEx(u32 *aValue, s32 aColumn, s8 *aPadMap) {
     s32 originalColor = *aValue;
@@ -291,7 +297,10 @@ s32 dds3DebugColorEditEx(u32 *aValue, s32 aColumn, s8 *aPadMap) {
     return updatedColor != originalColor;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3DebugColorEdit);
+void dds3DebugColorEdit(u32 *aValue, s32 aColumn)
+{
+    dds3DebugColorEditEx(aValue, aColumn, (s8 *)&dds3PadButtonState[0x20]);
+}
 
 void dds3MenuStepValue(char *out, f32 value)
 {

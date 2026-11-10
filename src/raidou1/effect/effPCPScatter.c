@@ -1834,7 +1834,13 @@ dds3ScatterPolyListTexResource_tag *dds3ScatterPolyListTexResourceCreate(u32 pTe
     return res;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListTexResourceDelete);
+void dds3ScatterPolyListTexResourceDelete(dds3ScatterPolyListTexResource_tag *hSplTexRes)
+{
+    if (--hSplTexRes->refCount == 0) {
+        sdfTexFreeDelayed(hSplTexRes->textureHandle);
+        sdfChipFreeDirect(hSplTexRes);
+    }
+}
 
 dds3ScatterPolyListTexResource_tag *dds3ScatterPolyListTexResourceCopy(dds3ScatterPolyListTexResource_tag *hSplTexResSrc)
 {

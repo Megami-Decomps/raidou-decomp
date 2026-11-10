@@ -522,7 +522,59 @@ void sdfFileRpcContinueRead(void) {
     sdfFileCmdRead(sdfFileRpcState.deviceState, sdfFileRpcReadBuf, chunkBytes);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTmx", sdfFileRpcReadCallback);
+s32 sdfFileRpcReadCallback(sdfFileCmdHandle_t *deviceState, s32 command, s32 sourceAddress,
+                  s32 byteCount, s32 callbackArg) {
+    sdfFileRpcCb_t *stream = &sdfFileRpcState;
+    s32 dmaId;
+    s32 timer;
+
+    switch (command) {
+    case SDF_FILE_CMD_CLBK_FILESIZE:
+        stream->readResult = byteCount;
+        SignalSema(stream->semaphore);
+        break;
+    case SDF_FILE_CMD_CLBK_READ: {
+        struct {
+            s32 source;
+            s32 destination;
+            s32 size;
+            s32 attributes;
+        } transfer;
+
+        FlushCache(0);
+        transfer.source = sourceAddress;
+        transfer.destination = EE_ADDR_S(stream->destination);
+        transfer.size = byteCount;
+        transfer.attributes = 0;
+        dmaId = sceSifSetDma(&transfer, 1);
+        while (sceSifDmaStat(dmaId) >= 0) {
+            timer = sdfGetRunTimeCountBase();
+            while ((s32)sdfGetRunTimeCount(timer) <= 0) {
+            }
+        }
+        timer = sdfGetRunTimeCountBase();
+        while ((s32)sdfGetRunTimeCount(timer) < 0x64) {
+        }
+        stream->destination += byteCount;
+        stream->transferredBytes += byteCount;
+        stream->remainingBytes -= byteCount;
+        if (stream->remainingBytes > 0) {
+            sdfFileRpcContinueRead();
+        } else {
+            SignalSema(stream->semaphore);
+        }
+        break;
+    }
+    case SDF_FILE_CMD_CLBK_OPEN:
+    case SDF_FILE_CMD_CLBK_CLOSE:
+        SignalSema(stream->semaphore);
+        break;
+    case SDF_FILE_CMD_CLBK_ERROR:
+        SignalSema(stream->semaphore);
+        break;
+    }
+    return 0;
+}
 
 void *sdfFileRpcHandler(s32 function, void *request, s32 requestSize) {
     sdfFileRpcCb_t *state = &sdfFileRpcState;

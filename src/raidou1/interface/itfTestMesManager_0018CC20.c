@@ -297,9 +297,25 @@ extern char pbDebugFloatFormat[8];
 
 INCLUDE_ASM(const s32, "interface/itfTestMesManager_0018CC20", itfDebugMesMngInitialize);
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager_0018CC20", TestMsgReloadTexture);
+void TestMsgReloadTexture(void)
+{
+    if (testMsgTexture != NULL) {
+        sdfTexFreeDelayed(testMsgTexture);
+        testMsgTexture = NULL;
+    }
+    testMsgTexIndex = (testMsgTexIndex + 1) & 3;
+    if (testMsgTexIndex != 3) {
+        testMsgTexture = itfMiscLoadTexture(D_00326BC8[testMsgTexIndex]);
+    }
+}
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager_0018CC20", TestMsgMngC_Process);
+s32 TestMsgMngC_Process(dds3ProcessID_t *id)
+{
+    if ((s8)dds3PadButtonState[0x20] < 0) {
+        TestMsgReloadTexture();
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "interface/itfTestMesManager_0018CC20", TestMsgMngD_Process);
 

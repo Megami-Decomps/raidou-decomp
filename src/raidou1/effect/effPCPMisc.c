@@ -3665,7 +3665,17 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FA4E8);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FA4F0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama01PartInit);
+void effPCPHama01PartInit(effPCPHama01_tag *pPCPHama01, s32 number) {
+    u128 mtx[4];
+
+    SetRotateMatrixY((dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 6.283185f);
+    SDF_VU0_STOREMATRIX_NOMEM(mtx);
+    dds3EffectPartSetRotateMatrix(pPCPHama01->pair[number][0], mtx);
+    dds3EffectPartSetRotateMatrix(pPCPHama01->pair[number][1], mtx);
+    mdlSingleMotion(dds3EffectPartGetHandle(pPCPHama01->pair[number][0]), 0, 0);
+    mdlSingleMotion(dds3EffectPartGetHandle(pPCPHama01->pair[number][1]), 0, 0);
+    pPCPHama01->counter[number] = SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % 10);
+}
 
 effPCPHama01_tag *effPCPHama01Create(void *src) {
     effPCPHama01_tag *work = sdfChipAllocDirect(sizeof(effPCPHama01_tag));
@@ -3774,7 +3784,18 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FAA40);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FAA48);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02PartInit);
+void effPCPHama02PartInit(effPCPHama02_tag *pPCPHama02, s32 number) {
+    u128 mtx[4];
+
+    SetRotateMatrixY((dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 6.283185f);
+    SDF_VU0_STOREMATRIX_NOMEM(mtx);
+    dds3EffectPartSetRotateMatrix(pPCPHama02->handle[number * 2], mtx);
+    dds3EffectPartSetRotateMatrix(pPCPHama02->handle[number * 2 + 1], mtx);
+    mdlSingleMotion(dds3EffectPartGetHandle(pPCPHama02->handle[number * 2]), 0, 0);
+    mdlSingleMotion(dds3EffectPartGetHandle(pPCPHama02->handle[number * 2 + 1]), 0, 0);
+    pPCPHama02->verticalOffset[number] = dds3GetRandFloatA(dds3EffectBase) * 150.0f;
+    pPCPHama02->remainingDelay[number] = SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % 10);
+}
 
 effPCPHama02_tag *effPCPHama02Create(void *args) {
     effPCPHama02_tag *work = sdfChipAllocDirect(sizeof(effPCPHama02_tag));
@@ -3832,7 +3853,32 @@ effPCPHama02_tag *effPCPHama02Copy(effPCPHama02_tag *source) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02Draw);
+void effPCPHama02Draw(effPCPHama02_tag *hData) {
+    dds3ModelHandle_t *obj[2];
+    sdfVector4_t pos;
+    s32 i;
+
+    for (i = 0; i < 8; i++) {
+        if (hData->remainingDelay[i] != 0) {
+            hData->remainingDelay[i]--;
+        } else {
+            obj[0] = dds3EffectPartGetHandle(hData->handle[i * 2]);
+            obj[1] = dds3EffectPartGetHandle(hData->handle[i * 2 + 1]);
+            pos.x = hData->position[0];
+            pos.z = hData->position[2];
+            pos.y = (hData->position[1] - hData->verticalOffset[i] + 100.0f) * hData->scale;
+            SDF_VU0_LOADVECTOR(&pos);
+            mdlSetPosition(obj[0]);
+            dds3EffectPartSetScale(hData->handle[i * 2], hData->scale * 1.5f);
+            dds3EffectPartSetScale(hData->handle[i * 2 + 1], 1.5f);
+            mdlSetColor(obj[1], hData->color);
+            mdlLink(obj[0], sdfModelOtTable);
+            sdfModelGetMarkPos(obj[0]->modelRoot, 1);
+            mdlSetPosition(obj[1]);
+            mdlLink(obj[1], sdfModelOtTable);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FAEB0);
 
@@ -3840,9 +3886,54 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FAEC0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FAEC8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonPartInit);
+void effPCPHamaonPartInit(effPCPHamaon_tag *pPCPHamaon, u32 kind, u32 attach) {
+    u128 mtx[4];
+    f32 angle;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonCreate);
+    mdlSingleMotion(dds3EffectPartGetHandle(pPCPHamaon->handle[kind][attach]), 0, 0);
+    angle = (f32)attach * -1.0471974f;
+    if (kind == 0) {
+        SetRotateMatrixY(angle);
+    } else if (kind == 1) {
+        SetRotateMatrixY(-angle);
+    } else if (kind == 2) {
+        SetRotateMatrixZ(-angle);
+    } else {
+        SetRotateMatrixZ(angle);
+    }
+    SDF_VU0_STOREMATRIX(mtx);
+    dds3EffectPartSetRotateMatrix(pPCPHamaon->handle[kind][attach], mtx);
+    if ((attach + 1) & 1) {
+        pPCPHamaon->remainingDelay[kind][attach] = 0;
+    } else {
+        pPCPHamaon->remainingDelay[kind][attach] = SDF_FRAMES(5);
+    }
+}
+
+effPCPHamaon_tag *effPCPHamaonCreate(void *src) {
+    effPCPHamaon_tag *work = sdfChipAllocDirect(sizeof(effPCPHamaon_tag));
+    s32 i;
+    s32 j;
+
+    work->base = dds3EffectPCPDataPartCreate(src, 0);
+    mdlSingleMotion(dds3EffectPartGetHandle(work->base), 0, 0);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            if (j == 0) {
+                work->handle[i][j] = dds3EffectPCPDataPartCreate(src, i + 1);
+            } else {
+                work->handle[i][j] = dds3EffectPartCopy(work->handle[i][0]);
+            }
+            effPCPHamaonPartInit(work, i, j);
+        }
+    }
+    work->pos[0] = 0.0f;
+    work->color = 0x80808080;
+    work->scale = 1.0f;
+    work->pos[1] = 0.0f;
+    work->pos[2] = 0.0f;
+    return work;
+}
 
 void effPCPHamaonDelete(effPCPHamaon_tag *hData) {
     s32 i;
@@ -3857,7 +3948,26 @@ void effPCPHamaonDelete(effPCPHamaon_tag *hData) {
     sdfChipFreeDirect(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonCopy);
+effPCPHamaon_tag *effPCPHamaonCopy(effPCPHamaon_tag *src) {
+    effPCPHamaon_tag *work = sdfChipAllocDirect(sizeof(effPCPHamaon_tag));
+    s32 i;
+    s32 j;
+
+    work->base = dds3EffectPartCopy(src->base);
+    mdlSingleMotion(dds3EffectPartGetHandle(work->base), 0, 0);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            work->handle[i][j] = dds3EffectPartCopy(src->handle[i][0]);
+            effPCPHamaonPartInit(work, i, j);
+        }
+    }
+    work->pos[0] = 0.0f;
+    work->color = 0x80808080;
+    work->scale = 1.0f;
+    work->pos[1] = 0.0f;
+    work->pos[2] = 0.0f;
+    return work;
+}
 
 void effPCPHamaonDraw(effPCPHamaon_tag *hData) {
     dds3ModelHandle_t *anchor;
@@ -3891,7 +4001,12 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FB450);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FB458);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMHanma01PartInit);
+void effPCPMHanma01PartInit(effPCPMHanma01_tag *pPCPMHanma01, s32 number) {
+
+    mdlSingleMotion(dds3EffectPartGetHandle(pPCPMHanma01->handle[number * 2]), 0, 0);
+    mdlSingleMotion(dds3EffectPartGetHandle(pPCPMHanma01->handle[number * 2 + 1]), 0, number & 1);
+    pPCPMHanma01->remainingDelay[number] = SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % 10);
+}
 
 effPCPMHanma01_tag *effPCPMHanma01Create(void *source) {
     effPCPMHanma01_tag *work = sdfChipAllocDirect(sizeof(effPCPMHanma01_tag));
@@ -4022,7 +4137,67 @@ effPCPMudo_tag *effPCPMudoCopy(effPCPMudo_tag *source) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMudoDraw);
+void effPCPMudoDraw(effPCPMudo_tag *hData) {
+    f32 position[4] __attribute__((aligned(16)));
+    u32 i;
+    u32 color;
+    billHandle_t *bill;
+    dds3ModelHandle_t *model;
+    f32 scale;
+    u32 count;
+    u32 captureRow;
+    u32 point;
+
+    if (hData->updateCount > SDF_FRAMES(50)) {
+        if (SDF_FRAME_DUE(hData->updateCount) && (hData->baseColor & 0xFF000000) >= 0x08000000) {
+            hData->baseColor -= 0x08000000;
+        }
+    }
+    hData->updateCount++;
+    color = effMagaCylinderCalcColor(hData->color, hData->baseColor);
+    bill = dds3EffectPartGetHandle(hData->primaryHandle);
+    model = dds3EffectPartGetHandle(hData->secondaryHandle);
+    scale = hData->scale * 1.5f;
+    dds3EffectPartSetScale(hData->secondaryHandle, scale);
+    dds3EffectPartSetPosition(hData->secondaryHandle, hData->vectorWords);
+    mdlLink(model, sdfModelOtTable);
+    captureRow = hData->historyCount;
+    if (captureRow < 25 && SDF_FRAME_DUE(hData->updateCount - 1)) {
+        for (point = 0; point < 7; point++) {
+            if (captureRow % effPCPMudoSampleStep[point] == 0) {
+                sdfModelGetMarkPos(model->modelRoot, point + 1);
+                SDF_VU0_STOREVECTOR(position);
+                SDF_VU0_COPYVECTOR(hData->samplePositions[captureRow][point], position);
+                hData->animationFrames[captureRow][point] = dds3GetRandA((effRandState_t *)dds3EffectBase);
+                hData->sampleScales[captureRow][point] = 0;
+                hData->sampleAges[captureRow][point] = 0;
+            }
+        }
+        hData->historyCount++;
+    }
+    count = hData->historyCount;
+    dds3BillboardSetRGBA(bill, color);
+    for (i = 0; i < count; i++) {
+        for (point = 0; point < 7; point++) {
+            if (i % effPCPMudoSampleStep[point] == 0) {
+                f32 growth = (f32)hData->sampleAges[i][point] / SDF_FRAMES_F(12.0f);
+                f32 size;
+
+                if (growth > 1.0f) {
+                    growth = 1.0f;
+                }
+                size = effPCPMudoSampleScale[point] * growth * scale;
+                hData->sampleAges[i][point]++;
+                hData->sampleScales[i][point] = size;
+                dds3BillboardSetScale(bill, size, size);
+                dds3BillboardSetPosition(bill, hData->samplePositions[i][point]);
+                dds3BillboardDraw(bill);
+                dds3BillboardSetAnimKey(bill, hData->animationFrames[i][point]);
+                hData->animationFrames[i][point] += SDF_FRAME_DUE(hData->updateCount - 1);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FBCD0);
 
@@ -4066,7 +4241,20 @@ effPCPHwave01_tag *effPCPHwave01Copy(effPCPHwave01_tag *src) {
     return dst;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHwave01Draw);
+void effPCPHwave01Draw(effPCPHwave01_tag *hData) {
+    dds3ModelHandle_t *obj;
+    u128 vec;
+
+    obj = dds3EffectPartGetHandle(hData->hPB);
+    SDF_VU0_LOADVECTOR(hData->pos);
+    mdlSetPosition(obj);
+    dds3EffectPartSetColor(hData->hD3P, hData->abgr);
+    mdlLink(obj, sdfModelOtTable);
+    sdfModelGetMarkPos(obj->modelRoot, 1);
+    SDF_VU0_STOREVECTOR_MEMOPS(vec);
+    dds3EffectPartSetPosition(hData->hD3P, &vec);
+    dds3EffectPartDraw(hData->hD3P);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FBE88);
 
@@ -5118,7 +5306,53 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00200438);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00200448);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballCreate);
+effPCPAgiFireball_tag *effPCPAgiFireballCreate(
+    const effPCPAgiFireballParam_t *pParam, const effPCPAgiFireballPartList_t *pPart)
+{
+    effPCPAgiFireball_tag *work;
+    dds3ModelHandle_t *model;
+    u32 i;
+    u32 j;
+    u32 n;
+
+    work = sdfChipAllocDirect(sizeof(effPCPAgiFireball_tag));
+    memset(work, 0, 0x10C);
+    work->param = *pParam;
+    work->frame = 0;
+    work->color = 0x80808080;
+    work->mode = 0;
+    SDF_VU0_STOREIDENTITY(work->matrix);
+    work->headHandle = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_VIEWER_CONTEXT, pPart->pHelper);
+    work->handleA[0] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pAttach[0]);
+    work->handleA[1] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pAttach[1]);
+    work->handleA[2] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pAttach[2]);
+    work->handleA[3] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pAttach[3]);
+    work->handleA[4] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_VIEWER_CONTEXT, pPart->pAttach[4]);
+    model = dds3EffectPartGetHandle(work->headHandle);
+    work->count = model->first->frameCount;
+    for (i = 0; i < 3; i++) {
+        if (work->param.TrackCount[i] > 0) {
+            n = work->count * work->param.TrackCount[i];
+            work->alloc[i] = sdfMemAllocDirect(n * 4);
+            work->list[i] = EE_ADDR_AS(effPartHandle_t **, sdfMemLock(work->alloc[i]));
+            work->list[i][0] = dds3EffectPartCreate(
+                EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pTrack[i]);
+            for (j = 1; j < n; j++) {
+                work->list[i][j] = NULL;
+            }
+        } else {
+            work->alloc[i] = NULL;
+        }
+    }
+    work->handleB[0] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pStart[0]);
+    work->handleB[1] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pStart[1]);
+    work->handleB[2] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pStart[2]);
+    work->handleB[3] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pStart[3]);
+    work->handleB[4] = dds3EffectPartCreate(
+        EFF_PARAM_WORK_KIND_EXTENDED_WORK_WITH_MATRIX_CALLBACK, pPart->pStart[4]);
+    work->tailHandle = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pOkSmoke);
+    return work;
+}
 
 effPCPAgiFireball_tag *effPCPAgiFireballCreatePCF(void *parameterTable) {
     effPCPAgiFireballPartList_t set;
@@ -5140,7 +5374,36 @@ effPCPAgiFireball_tag *effPCPAgiFireballCreatePCF(void *parameterTable) {
     return effPCPAgiFireballCreate(first, &set);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballCopySub);
+void effPCPAgiFireballCopySub(effPCPAgiFireball_tag *pPCPAgiFireball, effPCPAgiFireball_tag *pPCPAgiFireballSrc) {
+    dds3ModelHandle_t *headModel;
+    u32 handleIndex;
+    u32 groupIndex;
+    u32 groupHandleCount;
+
+    pPCPAgiFireball->headHandle = dds3EffectPartCopy(pPCPAgiFireballSrc->headHandle);
+    for (handleIndex = 0; handleIndex < ARRAY_COUNT(pPCPAgiFireball->handleA); handleIndex++) {
+        pPCPAgiFireball->handleA[handleIndex] = dds3EffectPartCopy(pPCPAgiFireballSrc->handleA[handleIndex]);
+    }
+    headModel = dds3EffectPartGetHandle(pPCPAgiFireball->headHandle);
+    pPCPAgiFireball->count = headModel->first->frameCount;
+    for (groupIndex = 0; groupIndex < ARRAY_COUNT(pPCPAgiFireball->list); groupIndex++) {
+        if (pPCPAgiFireball->param.TrackCount[groupIndex] > 0) {
+            groupHandleCount = pPCPAgiFireball->count * pPCPAgiFireball->param.TrackCount[groupIndex];
+            pPCPAgiFireball->alloc[groupIndex] = sdfMemAllocDirect(groupHandleCount * 4);
+            pPCPAgiFireball->list[groupIndex] = EE_ADDR_AS(effPartHandle_t **, sdfMemLock(pPCPAgiFireball->alloc[groupIndex]));
+            pPCPAgiFireball->list[groupIndex][0] = dds3EffectPartCopy(pPCPAgiFireballSrc->list[groupIndex][0]);
+            for (handleIndex = 1; handleIndex < groupHandleCount; handleIndex++) {
+                pPCPAgiFireball->list[groupIndex][handleIndex] = 0;
+            }
+        } else {
+            pPCPAgiFireball->alloc[groupIndex] = NULL;
+        }
+    }
+    for (handleIndex = 0; handleIndex < ARRAY_COUNT(pPCPAgiFireball->handleB); handleIndex++) {
+        pPCPAgiFireball->handleB[handleIndex] = dds3EffectPartCopy(pPCPAgiFireballSrc->handleB[handleIndex]);
+    }
+    pPCPAgiFireball->tailHandle = dds3EffectPartCopy(pPCPAgiFireballSrc->tailHandle);
+}
 
 effPCPAgiFireball_tag *effPCPAgiFireballCopy(effPCPAgiFireball_tag *src) {
     effPCPAgiFireball_tag *work;
@@ -6931,7 +7194,42 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00206278);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00206280);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHelperInit);
+void effPCPHelperInit(effPCPHelperBED_tag *pHelperBED) {
+    effEveBEDParams_t place;
+    u32 i = 0;
+    u32 count;
+    dds3ModelHandle_t *model;
+    effPCPHelperBEDPart_tag *entry;
+
+    model = dds3EffectPartGetHandle(pHelperBED->hHelper);
+    model->first->frameStep = pHelperBED->param.speed;
+    mdlSingleMotion(model, 0, 0);
+    pHelperBED->frameLimit = model->first->frameCount;
+    count = sdfModelGetMarkPosCount(model->modelRoot);
+    pHelperBED->count = count;
+    pHelperBED->hPartMem = sdfMemAllocDirect(count << 5);
+    entry = EE_ADDR_AS(void *, sdfMemLock(pHelperBED->hPartMem));
+    pHelperBED->pPart = entry;
+    place.center[0] = 0;
+    place.center[1] = 0;
+    place.center[2] = 0;
+    place.center[3] = 0;
+    place.rot[0] = 0;
+    place.rot[1] = 0;
+    place.rot[2] = 0;
+    place.rot[3] = 1.0f;
+    place.r = 100.0f;
+    place.h = 100.0f;
+    place.scale = 1.0f;
+    place.abgr = 0x80808080;
+    for (; i < count; i++) {
+        entry->move = 0;
+        entry->frame = 0;
+        entry->life = 0;
+        entry->hBEDCut = effEveBEDCutCreate(pHelperBED->hBED, 2, &place);
+        entry++;
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHelperBEDCreate);
 
@@ -6968,7 +7266,101 @@ void effPCPHelperBEDDelete(effPCPHelperBED_tag *hData) {
     sdfChipFreeDirect(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHelperBEDDraw);
+void effPCPHelperBEDDraw(effPCPHelperBED_tag *hData) {
+    effEveBEDParams_t place;
+    f32 position[4] __attribute__((aligned(16)));
+    f32 initialPosition[4] __attribute__((aligned(16)));
+    f32 scale[4] __attribute__((aligned(16)));
+    s32 frame = hData->frame;
+    s32 frameLimit = SDF_FRAMES(hData->frameLimit);
+    sdfModelRootNode_t *mapModel;
+    s32 fadeIn;
+    s32 fadeOut;
+    u32 color;
+    u32 count;
+    u32 i;
+    dds3ModelHandle_t *model;
+    effPCPHelperBEDPart_tag *entry;
+    f32 distance;
+    f32 t;
+
+    VEC3_SPLAT(scale, hData->scale);
+    scale[3] = 0;
+    place.rot[0] = 0;
+    place.rot[1] = 0;
+    place.rot[2] = 0;
+    place.rot[3] = 1.0f;
+    place.center[3] = 0;
+    place.r = 100.0f;
+    place.h = 100.0f;
+    place.scale = 1.0f;
+    if (frameLimit >= frame) {
+        model = dds3EffectPartGetHandle(hData->hHelper);
+        mapModel = model->modelRoot;
+        SDF_VU0_LOADVECTOR(hData->param.pos);
+        mdlSetPosition(model);
+        SDF_VU0_LOADVECTOR(scale);
+        mdlSetScale(model);
+        mdlLink(model, sdfModelOtTable);
+        count = hData->count;
+        fadeIn = SDF_FRAMES(hData->param.fade_in);
+        fadeOut = SDF_FRAMES(hData->param.fade_out);
+        color = hData->color;
+        entry = hData->pPart;
+        for (i = 0; i < count; i++, entry++) {
+            if (frame == 0) {
+                effEveBEDCutSetScale(entry->hBEDCut, hData->scale);
+            }
+            if (frame >= 0) {
+                sdfModelGetMarkPos(mapModel, i);
+                SDF_VU0_STOREVECTOR(position);
+                if (frame == 0) {
+                    entry->pos[0] = position[0];
+                    entry->pos[1] = position[1];
+                    entry->pos[2] = position[2];
+                    entry->pos[3] = 0;
+                } else {
+                    s32 age;
+                    s32 ageLimit;
+
+                    if (entry->move == 0) {
+                        initialPosition[0] = entry->pos[0];
+                        initialPosition[1] = entry->pos[1];
+                        initialPosition[2] = entry->pos[2];
+                        initialPosition[3] = 0;
+                        SDF_VU0_LOADVECTOR(position);
+                        SDF_VU0_LOADVECTOR_B(initialPosition);
+                        SDF_VU0_SUBVECTOR();
+                        SDF_VU0_GETLENGTH(distance);
+                        if (distance > 1.0f) {
+                            entry->life = frameLimit - frame;
+                            entry->move = 1;
+                        }
+                    }
+                    age = entry->frame;
+                    ageLimit = entry->life;
+                    if (entry->move && age < ageLimit) {
+                        if (age < fadeIn && fadeIn != 0) {
+                            t = (f32)age / (f32)fadeIn;
+                        } else if (frameLimit - frame <= fadeOut && fadeOut != 0) {
+                            t = (f32)(ageLimit - age) / (f32)fadeOut;
+                        } else {
+                            t = 1.0f;
+                        }
+                        place.abgr = effColorBlend(color & 0xFFFFFF, color, t);
+                        place.center[0] = position[0];
+                        place.center[1] = position[1];
+                        place.center[2] = position[2];
+                        effEveBEDCutSetParams(entry->hBEDCut, &place);
+                        effEveBEDCutDraw(entry->hBEDCut);
+                        entry->frame++;
+                    }
+                }
+            }
+        }
+        hData->frame++;
+    }
+}
 INCLUDE_SDATA(const s32, "effect/effPCPMisc", D_0046D098);
 
 INCLUDE_SDATA(const s32, "effect/effPCPMisc", D_0046D09C);

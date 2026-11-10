@@ -394,9 +394,17 @@ s32 scrCommand_SEL_JMP(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_PAD_TRIG);
+s32 scrCommand_PAD_TRIG(void)
+{
+    scrSetIntReturnValue(dds3PadBitTable[scrGetIntPara(0)] < 0);
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_PAD_PRESS);
+s32 scrCommand_PAD_PRESS(void)
+{
+    scrSetIntReturnValue(dds3PadBitTable[scrGetIntPara(0)] & 1);
+    return 1;
+}
 
 s32 scrCommand_PAD_ACT(void)
 {

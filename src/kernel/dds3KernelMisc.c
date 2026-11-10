@@ -22,7 +22,75 @@ void dds3ConsPanelTagLink(sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy);
 void dds3ConsPanelTagLinkZ(sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy, s32 z);
 /* End of declarations from src/smt3/kernel/dds3KernelMisc.c */
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMisc", SelectSub);
+void SelectSub(s32 *pbase, s32 *pm, s32 list, s32 win, s32 pad, s32 pluskey, s32 minuskey) {
+    s32 backwardState;
+    s32 forwardState;
+
+    if (pm == NULL) {
+        return;
+    }
+    if (list < 2) {
+        return;
+    }
+    backwardState = dds3PadButtonState[minuskey + pad * 16];
+    if (backwardState < 0) {
+        if (pbase == NULL) {
+            if (*pm > 0) {
+                (*pm)--;
+            } else if (list < win) {
+                *pm = list - 1;
+            } else {
+                *pm = win - 1;
+            }
+        } else if (*pm > 0) {
+            (*pm)--;
+        } else if (*pbase > 0) {
+            (*pbase)--;
+        } else if (win < list) {
+            *pbase = list - win;
+            *pm = win - 1;
+        } else {
+            *pm = list - 1;
+        }
+    } else if (dds3PadButtonState[minuskey + pad * 16] & 2) {
+        if (pbase == NULL) {
+            if (*pm > 0) {
+                (*pm)--;
+            }
+        } else if (*pm > 0) {
+            (*pm)--;
+        } else if (*pbase > 0) {
+            (*pbase)--;
+        }
+    }
+    forwardState = dds3PadButtonState[pluskey + pad * 16];
+    if (forwardState < 0) {
+        if (pbase == NULL) {
+            if (*pm < win - 1) {
+                (*pm)++;
+            } else {
+                *pm = 0;
+            }
+        } else if (*pm < win - 1) {
+            (*pm)++;
+        } else if (*pbase + win < list) {
+            (*pbase)++;
+        } else {
+            *pbase = 0;
+            *pm = 0;
+        }
+    } else if (dds3PadButtonState[pluskey + pad * 16] & 2) {
+        if (pbase == NULL) {
+            if (*pm < win - 1) {
+                (*pm)++;
+            }
+        } else if (*pm < win - 1) {
+            (*pm)++;
+        } else if (*pbase + win < list) {
+            (*pbase)++;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMisc", dds3SelectMenu);
 

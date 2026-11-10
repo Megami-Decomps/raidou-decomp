@@ -253,7 +253,15 @@ INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_002325C0);
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232650);
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectFileListWindowDelete);
+void dds3EffectFileListWindowDelete(nbCameraHelper_effFLWinHandle_t *a) {
+    sdfTexHandle_t *texture = a->textureHandle;
+
+    if (texture != NULL) {
+        sdfTexFreeDelayed(texture);
+        a->textureHandle = NULL;
+    }
+    sdfChipFreeDirect(a);
+}
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232B10);
 
@@ -272,7 +280,20 @@ INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232B80);
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232B88);
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectListSetTexture);
+void dds3EffectListSetTexture(nbCameraHelper_effFLWinHandle_t *work, char *textureResource) {
+    sdfTexHandle_t *texture;
+    sdfMemHandle_t *loadedResource;
+    u32 resourceWords[4];
+
+    if (work->textureHandle != NULL) {
+        sdfTexFreeDelayed(work->textureHandle);
+        work->textureHandle = NULL;
+    }
+    loadedResource = sdfDevLoadFileEx(textureResource, resourceWords, 0);
+    texture = sdfTexSet(EE_ADDR_AS(void *, (resourceWords[0])));
+    work->textureHandle = texture;
+    sdfMemFreeDirect(loadedResource);
+}
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectFileListWindowDrawSprite);
 

@@ -586,4 +586,77 @@ void dds3HermitianTrackPolySetVertex(dds3HermitianTrackPoly_tag *hPoly, const u1
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolyDraw);
+/* Submit up to two wrapped ring runs in 18-point strips, overlapping by two. */
+void dds3HermitianTrackPolyDraw(dds3HermitianTrackPoly_tag *hPoly) {
+    sdfDrawTag_t *list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    s32 runStart[4];
+    s32 runPointCount[2];
+    sdf3DPrimPolyParm_t *draw;
+    s32 runIndex;
+    s32 pointsRemaining;
+    s32 wrappedStartOffset;
+    s32 activePointCount;
+    sdfDrawTag_t *list2;
+    u64 *packet;
+
+    sdfDrawTagInit(list);
+    sdf3DPrimLinkResetTm(list, 0);
+    sdf3DPrimLinkMat(list, hPoly->pMat, 0);
+    activePointCount = hPoly->count;
+    runStart[0] = hPoly->current - activePointCount;
+    if (runStart[0] < 2) {
+        wrappedStartOffset = runStart[0] - 2;
+        runStart[1] = 0;
+        runStart[0] = wrappedStartOffset + hPoly->point;
+        runPointCount[0] = -wrappedStartOffset;
+        runPointCount[1] = activePointCount - runPointCount[0] + 2;
+    } else {
+        runPointCount[0] = activePointCount;
+        runPointCount[1] = 0;
+    }
+    effModelTrackPolyPrimParm.vertexColor = hPoly->pVC;
+    for (runIndex = 0; runIndex < 2; runIndex++) {
+        draw = &effModelTrackPolyPrimParm;
+        draw->vertex = (sdfVector4_t *)&hPoly->pVertex[runStart[runIndex]];
+        draw->color = hPoly->abgr;
+        draw->faceCount = 0x10;
+        draw->pointCount = 0x12;
+        pointsRemaining = runPointCount[runIndex];
+        while (pointsRemaining >= 0x12) {
+            pointsRemaining -= 0x10;
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&effModelTrackPolyPrimParm)));
+            effModelTrackPolyPrimParm.vertex += 0x10;
+            effModelTrackPolyPrimParm.vertexColor += 0x10;
+        }
+        if (pointsRemaining >= 4) {
+            draw->pointCount = pointsRemaining;
+            draw->faceCount = pointsRemaining - 2;
+            sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(draw)));
+            draw->vertexColor += pointsRemaining;
+        }
+    }
+    if (hPoly->blend < 4) {
+        ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))effModelTrackPolyBlendOt[hPoly->blend]->regFunc)(effModelTrackPolyBlendOt[hPoly->blend], list);
+    } else {
+        list2 = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+        sdfDrawTagInit(list2);
+        packet = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x30));
+        packet[0] = 2;
+        packet[1] = ((u64)0x50000002 << 16 | 0x1000) << 16;
+        packet[2] = ((u64)0x10000000 << 32) | 0x8001;
+        packet[3] = 0xE;
+        packet[4] = 6;
+        packet[5] = 0x42;
+        sdfDrawTagLink(list2, EE_ADDR(packet));
+        effPolyOt.regFunc(&effPolyOt, list2);
+        packet = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x30));
+        packet[0] = 2;
+        packet[1] = ((u64)0x50000002 << 16 | 0x1000) << 16;
+        packet[2] = ((u64)0x10000000 << 32) | 0x8001;
+        packet[3] = 0xE;
+        packet[4] = 0x42;
+        packet[5] = 0x42;
+        sdfDrawTagLink(list, EE_ADDR(packet));
+        effPolyOt.regFunc(&effPolyOt, list);
+    }
+}

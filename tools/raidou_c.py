@@ -854,6 +854,29 @@ def sext16(v):
     return ((v & 0xFFFF) ^ 0x8000) - 0x8000
 
 
+PLACEHOLDER = re.compile(r"(func|D|jtbl|L|lbl)_[0-9A-F]{8}\w*|\..*")
+
+
+def choose_addresses(want, named_at):
+    """For a name bodies want at several addresses: the address most of them want,
+    when no other real name is there and no other chosen name takes it. Bodies that
+    want another address differ from SMT3 in a callee or an offset."""
+    options = []
+    for name, by_address in want.items():
+        if len(by_address) < 2:
+            continue
+        counts = sorted(((len(fns), a) for a, fns in by_address.items()
+                         if not (named_at.get(a, set()) - {name})), reverse=True)
+        if counts and (len(counts) == 1 or counts[0][0] > counts[1][0]):
+            options.append((counts[0][0], name, counts[0][1]))
+    chosen, taken = {}, set()
+    for _, name, address in sorted(options, reverse=True):
+        if address not in taken:
+            chosen[name] = address
+            taken.add(address)
+    return chosen
+
+
 def cmd_verify(args):
     from retail_elf import RETAIL, VERSIONS as INFO, load_segments
 
@@ -898,20 +921,33 @@ def cmd_verify(args):
             needs.update(n)
         # Every name a body uses must name one Raidou address.
         users = defaultdict(set)
-        want = defaultdict(set)
+        want = defaultdict(lambda: defaultdict(set))  # name -> address -> functions
         for fn, need in needs.items():
             for name, address in need:
                 users[name].add(fn)
-                want[name].add(address)
-        aliases = {}
-        for name, addresses in want.items():
-            if len(addresses) > 1:
-                why = f"{name} at " + ", ".join(f"0x{a:08X}" for a in sorted(addresses))
-            elif name in known and known[name] != next(iter(addresses)):
-                why = f"{name} is 0x{known[name]:08X}, code wants 0x{next(iter(addresses)):08X}"
+                want[name][address].add(fn)
+        named_at = defaultdict(set)
+        for name, address in known.items():
+            if not PLACEHOLDER.fullmatch(name):
+                named_at[address].add(name)
+        aliases, chosen = {}, choose_addresses(want, named_at)
+        for name, by_address in want.items():
+            if len(by_address) > 1:
+                pick = chosen.get(name)
+                listed = ", ".join(f"0x{a:08X}" for a in sorted(by_address))
+                if pick is not None:
+                    aliases[name] = pick
+                    for address, fns in by_address.items():
+                        for fn in fns:
+                            if address != pick:
+                                fails.setdefault(fn, f"{name} at 0x{address:08X}, others at 0x{pick:08X}")
+                    continue
+                why = f"{name} at {listed}"
+            elif name in known and known[name] != next(iter(by_address)):
+                why = f"{name} is 0x{known[name]:08X}, code wants 0x{next(iter(by_address)):08X}"
             else:
                 if name not in known:
-                    aliases[name] = next(iter(addresses))
+                    aliases[name] = next(iter(by_address))
                 continue
             for fn in users[name]:
                 fails.setdefault(fn, why)

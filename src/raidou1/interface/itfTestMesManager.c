@@ -337,7 +337,30 @@ void *pbMakePrimPacket(u64 data, s32 context)
     return packet;
 }
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager", pbDrawRotatedPrim);
+void pbDrawRotatedPrim(s32 surfaceIndex) {
+    u32 color = 0;
+    s32 alpha;
+    s32 i;
+    pbColorByte_t *component;
+    sdfDrawTag_t *list;
+    sdfGrOt_t *surface;
+    f32 phase;
+
+    phase = (f32)(pbDebugPanel3State % 4096) * (1.0f / 4096.0f);
+    phase = phase * 6.2831852f + 1.5707963f + 0.78539815f;
+    alpha = (s32)((sdfSin(phase) + 1.0f) * 0.5f * D_00326C50.alpha);
+    component = D_00326C50.channelBytes;
+    for (i = 0; i != 3; i++, component++) {
+        color |= component->value << (i * 8);
+    }
+    color |= (u32)alpha << 24;
+    list = dds3FontReqAllocDrawTag();
+    sdfDrawTagLink(list, EE_ADDR(pbMakeSpritePacket(0x33001, 0)));
+    sdfDrawTagLink(list, EE_ADDR(pbMakePrimPacket(6, 0)));
+    sdfDrawTagLink(list, EE_ADDR(pbAllocPrimPacket(0x7000, 0x7900, 0xFEFFFF, 0x2000, 0xE00, color, color)));
+    surface = &sdfGrOtTable[surfaceIndex];
+    ((sdfGrOtRegFunc_t)surface->regFunc)(surface, list);
+}
 INCLUDE_SDATA(const s32, "interface/itfTestMesManager", D_0046BFDC);
 
 INCLUDE_SDATA(const s32, "interface/itfTestMesManager", D_0046BFE0);

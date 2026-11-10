@@ -1014,9 +1014,19 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D6368);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D6390);
 
-INCLUDE_ASM(const s32, "mc/slMain", slBootError);
+s32 slBootError(void) {
+    gslDrawFlagBg = 1;
+    slSetInfo(0);
+    slQueryYesNoMsg = 5;
+    return slQueryYesNo(&slExitToTitle, &slBootRetry, 1);
+}
 
-INCLUDE_ASM(const s32, "mc/slMain", slBootError2);
+s32 slBootError2(void) {
+    gslDrawFlagBg = 1;
+    slSetInfo(0);
+    slQueryYesNoMsg = 6;
+    return slQueryYesNo(&slExitToTitle, &slBootRetry, 1);
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D6460);
 
