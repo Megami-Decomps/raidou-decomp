@@ -2699,7 +2699,7 @@ void dds3PolygonTriangleSet(dds3Polygon_t *hPolygon, const f32 *center) {
 void dds3TrackPolyColorSet(dds3TrackPoly_t *hTrackPoly, s32 number, u32 color) {
     hTrackPoly->trackList[number].color = color;
 }
-INCLUDE_SDATA(const s32, "effect/polyManager", D_0046CF6C);
+dds3Polygon_t *hDrawListTop = NULL;
 
-INCLUDE_SDATA(const s32, "effect/polyManager", D_0046CF70);
+dds3TrackPoly_t *dds3TrackPolyTag = NULL;
 

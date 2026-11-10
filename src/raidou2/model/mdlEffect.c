@@ -1084,6 +1084,22 @@ void mdlSetEffectScaleSub(mdlObj_t *aHandle, dds3ModelEffectCtrlr_t *aEffect, fl
     }
 }
 
+char mdlPibLabelP2A[8] = "P2A";
+
+char mdlPibLabelD3P[8] = "D3P";
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF608);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF610);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF618);
+
+INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF620);
+
+char mdlColorByteFormat[8] = "%02X";
+
+char mdlPibCursorMark[8] = ">";
+
 INCLUDE_RODATA(const s32, "model/mdlEffect", D_004B3F50);
 
 INCLUDE_RODATA(const s32, "model/mdlEffect", D_004B3F60);
@@ -1111,22 +1127,6 @@ INCLUDE_RODATA(const s32, "model/mdlEffect", D_004B4000);
 INCLUDE_RODATA(const s32, "model/mdlEffect", D_004B4010);
 
 INCLUDE_RODATA(const s32, "model/mdlEffect", D_004B4020);
-
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF5F8);
-
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF600);
-
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF608);
-
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF610);
-
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF618);
-
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF620);
-
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF628);
-
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF630);
 
 INCLUDE_SDATA(const s32, "model/mdlEffect", D_004DF638);
 

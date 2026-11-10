@@ -433,25 +433,25 @@ void sdfGrInitNewFrame(void) {
     sdfGrSetupPacketBuff((s8)sdfFrameId);
     sdfCoreDrawReset();
 }
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F278);
+u8 sdfGrScreenMode = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F279);
+u8 sdfGrGsResetDone = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F27A);
+volatile u8 sdfFrameId = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F27C);
+volatile s32 dds3GsSema = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F280);
+s8 sdfGrCaptureBuff = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F281);
+volatile u8 sdfDispThreadFlag = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F284);
+s32 sdfGrCaptureReq = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F288);
+s32 sdfGrCaptureTarget = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F28C);
+s32 dds3GsThreadId = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F290);
+s8 sdfDispFrameId[2] = {0, 0};
 
-INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F292);
+volatile s8 sdfGrDrawBusy = 0;
 

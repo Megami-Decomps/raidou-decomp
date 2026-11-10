@@ -220,5 +220,5 @@ void dds3MoverBasicFreePath(dds3Basic_t *pMoverBasic)
     }
 }
 
-INCLUDE_SDATA(const s32, "basic/dds3MoverBasic", D_0046B488);
+s32 dds3MoverCount = 0;
 

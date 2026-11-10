@@ -454,5 +454,5 @@ s32 evtStageAnimeControl(s32 type, s32 mode) {
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtStage", D_0044DD18);
+const char evtKillFieldScriptFormat[0x28] = "kill field script -> [%s]\n";
 

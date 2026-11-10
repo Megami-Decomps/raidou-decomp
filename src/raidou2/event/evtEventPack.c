@@ -602,13 +602,13 @@ void evtKillEventPack(s32 eventno) {
 
 INCLUDE_ASM(const s32, "event/evtEventPack", func_001E0930);
 
-INCLUDE_RODATA(const s32, "event/evtEventPack", D_004B72C8);
+const char evtMotionSeNameFormat[0x10] __attribute__((aligned(8))) = "mse_%d_%d";
 
-INCLUDE_RODATA(const s32, "event/evtEventPack", D_004B72D8);
+const char evtEventScriptPathFormat[0x28] __attribute__((aligned(8))) = "/event/e%03d/e%03d/scr/e%03d.be";
 
-INCLUDE_SDATA(const s32, "event/evtEventPack", D_004DFF28);
+s32 evtMotionSeWork = 0x3E8;
 
-INCLUDE_SDATA(const s32, "event/evtEventPack", D_004DFF30);
+char evtLoadStartMessage[8] = "LOAD..\n";
 
-INCLUDE_SDATA(const s32, "event/evtEventPack", D_004DFF38);
+char evtLoadDoneMessage[8] = "OK!!\n";
 

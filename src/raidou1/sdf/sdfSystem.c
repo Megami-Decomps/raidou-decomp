@@ -617,11 +617,11 @@ void sdfSetMainThreadPriority(void)
     SleepThread();
 }
 
-INCLUDE_SDATA(const s32, "sdf/sdfSystem", D_0046F25C);
+sdfHandlerNode_t *sdfDmacHandlerTable = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfSystem", D_0046F260);
+s32 sdfCoreDrawBuffSize = 0x100000;
 
-INCLUDE_SDATA(const s32, "sdf/sdfSystem", D_0046F264);
+void (*sdfTickCallback)(void) = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfSystem", D_0046F268);
+s32 sdfVblankFlag = 0;
 

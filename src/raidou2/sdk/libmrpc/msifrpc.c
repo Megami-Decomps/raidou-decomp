@@ -357,7 +357,7 @@ s32 sceSifMUnBindRpc(rpcClient *client, s32 mode)
     return result;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libmrpc/msifrpc", D_004D88E8);
+const char sceSifMModeErrorString[40] = "mode must be 0 in this version.\n";
 
 s32 sceSifMCallRpc(rpcClient *client, u32 function, u32 mode,
                    void *send, s32 sendSize, void *receive, s32 receiveSize,

@@ -660,7 +660,7 @@ void *sdfDevPrintf(u32 aX, u32 aY, u32 aZ, s32 aAttr, const char *aStr, ...)
     __builtin_stdarg_start(args, aStr);
     return sdfDevVprintf(cb, aStr, args);
 }
-INCLUDE_SDATA(const s32, "sdf/sdfDevCons", D_004E4368);
+sdfDevConsCB_tag *devConsTop = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDevCons", D_004E436C);
+s32 alreadyInitDevCons = 0;
 

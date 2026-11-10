@@ -439,17 +439,17 @@ void sdfFileCmdAllocHandle(sdfFileCmdHandle_t *state) {
         SignalSema(worker->semaId);
     }
 }
-INCLUDE_SDATA(const s32, "sdf/sdfFile", D_004E4398);
+u8 sdfFileDefaultSrcType = 1;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFile", D_004E439C);
+s32 sdfFileSemaId = -1;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFile", D_004E43A0);
+char sdfFileCdromPrefix[8] = "cdrom0:";
 
-INCLUDE_SDATA(const s32, "sdf/sdfFile", D_004E43A8);
+char sdfFileHostPrefix[8] = "host0:";
 
-INCLUDE_SDATA(const s32, "sdf/sdfFile", D_004E43B0);
+u8 sdfFileHddPrefix[8] = "pfs0:";
 
-INCLUDE_SDATA(const s32, "sdf/sdfFile", D_004E43B8);
+char sdfFileCdromName[8] = "cdrom";
 
 INCLUDE_SDATA(const s32, "sdf/sdfFile", D_004E43C0);
 

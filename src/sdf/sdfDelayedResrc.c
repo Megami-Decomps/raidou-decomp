@@ -227,5 +227,5 @@ u64 sdfDelayedResrcCheck(void) {
     return pendingWork;
 }
 
-INCLUDE_SDATA(const s32, "sdf/sdfDelayedResrc", D_004E42B4);
+s32 sdfDelayedResrcSemaId = -1;
 

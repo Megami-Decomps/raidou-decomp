@@ -97,6 +97,24 @@ and `include_rodata.py` keeps the data as `INCLUDE_RODATA` before the body.
 aligns split `.rodata`/`.data` files at 16-byte addresses to 16 as C objects
 are, since a C object can end short of the next split by its padding.
 
+## Data definitions from SMT3 C
+
+`port` replaces an `INCLUDE_RODATA`/`INCLUDE_SDATA` line with SMT3's C
+definition when the line's address carries an SMT3 name (`smt3_symbols.txt`)
+that one SMT3 file defines and the TU already has that file's declarations.
+`static` is dropped. SMT3 placeholder names (`D_...`) are not carried, since
+they would clash with the game's own. A carried name leaves `smt3_symbols.txt`
+(the definition provides it); asm still reaches the address through its
+`PROVIDE(D_...)` fallback. `include_rodata.py` and `include_sdata.py` read the
+carried names from `config/<v>/smt3_data.tsv` and place the other lines around
+the definition. `verify` checks each definition in its object (retail's bytes,
+no larger than the label it replaces, the next item at retail's distance) and
+in the link (at its address). Within a unit only the first displaced definition
+is blamed; when none is, the last definition in the object before the first
+label the link moved is. A failed one goes back to its line (`asm` in the tsv).
+Some Raidou data differs from SMT3 (sizes, values, an alignment the unit's start
+cannot give), which this catches. 182 definitions in raidou1, 165 in raidou2.
+
 ## Why a function stays asm
 
 Data a body emits (.rodata strings, jump tables, .lit4 floats) is checked

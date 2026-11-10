@@ -561,9 +561,9 @@ scrProcessWork_s *fldFlowParse(scrHeader_t *header, s32 procno)
     return scrPrintProcedureStart(header, typetable, proctable, labeltable, code, mesdata, strdata,
                                   procno);
 }
-INCLUDE_SDATA(const s32, "kernel/dds3SequenceList_00114448", D_004DE598);
+s32 scrHandleCount = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3SequenceList_00114448", D_004DE59C);
+scrProcessWork_s *scrHandleFirst = NULL;
 
 INCLUDE_SDATA(const s32, "kernel/dds3SequenceList_00114448", D_004DE5A0);
 

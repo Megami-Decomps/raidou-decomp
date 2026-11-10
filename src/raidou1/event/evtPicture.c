@@ -231,7 +231,7 @@ INCLUDE_ASM(const s32, "event/evtPicture", func_001BB588);
 INCLUDE_ASM(const s32, "event/evtPicture", func_001BB5F8);
 INCLUDE_SDATA(const s32, "event/evtPicture", D_0046C7F8);
 
-INCLUDE_SDATA(const s32, "event/evtPicture", D_0046C800);
+char evtPictureProcName[8] = "Picture";
 
 INCLUDE_SDATA(const s32, "event/evtPicture", D_0046C808);
 

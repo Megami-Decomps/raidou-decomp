@@ -615,9 +615,9 @@ void LoadMcModules(const char *prefix, s32 moduleGroup) {
     sceMcInit();
 }
 
-INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_00465670);
+const char sdfIopModulePathCdrom[32] = "cdrom0:\\USERIRX\\SDFIOPFL.IRX;1";
 
-INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_00465690);
+const char sdfIopModulePathHost[27] = "pfs0:/userirx/sdfiopfl.irx";
 
 INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_004656B0);
 

@@ -293,7 +293,7 @@ s32 sceCdReadClock(sdfCdClock_t *clock)
     return result;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libcdvd/cdvd039", D_00465F88);
+const char cdvdMsgClockRead1[32] = "Libcdvd call Clock read 1\n";
 
-INCLUDE_RODATA(const s32, "sdk/libcdvd/cdvd039", D_00465FA8);
+const char cdvdMsgClockRead2[32] = "Libcdvd call Clock read 2\n";
 

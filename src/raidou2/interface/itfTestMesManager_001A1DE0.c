@@ -328,7 +328,7 @@ INCLUDE_RODATA(const s32, "interface/itfTestMesManager_001A1DE0", D_004AF6D0);
 void itfDebugPrintMark(void) {
     printf("********* AAAA ********\n");
 }
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_001A1DE0", D_004DF570);
+s32 testMsgTexIndex = 3;
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_001A1DE0", D_004DF574);
+void *testMsgTexture = NULL;
 

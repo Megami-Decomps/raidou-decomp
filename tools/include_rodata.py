@@ -32,7 +32,7 @@ import re
 import sys
 from pathlib import Path
 
-from units import unit_sources, write_unit
+from units import carried_data, unit_sources, write_unit
 
 from include_sdata import DATA_DEF
 
@@ -53,6 +53,8 @@ def place(version):
     added = 0
     aliases = {m.group(1): int(m.group(2), 16) for m in re.finditer(
         r"^(\w+) = 0x([0-9A-Fa-f]+);", (ROOT / "config" / version / "smt3_symbols.txt").read_text(), re.M)}
+    carried = carried_data(version)
+    aliases.update(carried)
     for unit, c in unit_sources(version).items():
         nonmatchings = ROOT / "asm" / version / "nonmatchings" / unit
         matchings = ROOT / "asm" / version / "matchings" / unit
@@ -82,6 +84,10 @@ def place(version):
             m.group(1): m.start() for m in DATA_DEF.finditer(text)
             if m.group(1) in unit_rodata
         }
+        # An SMT3 data definition carried into C stands for the label at its address.
+        for m in DATA_DEF.finditer(text):
+            if m.group(1) in carried and (sym := f"D_{carried[m.group(1)]:08X}") in unit_rodata:
+                defined_at.setdefault(sym, m.start())
         # Rodata a C function no longer names is compiled by that function itself
         # (a string literal): nothing to include.
         # The retail references come from the unit's full disassembly, which

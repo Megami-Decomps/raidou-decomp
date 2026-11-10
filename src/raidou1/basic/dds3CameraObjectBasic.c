@@ -280,7 +280,7 @@ void dds3CameraObjectBasicGetTgtCam(dds3Basic_t *pBasic, sdfVector4_t *tgtpos, s
     campos->w = pose->pos.w;
 }
 
-INCLUDE_RODATA(const s32, "basic/dds3CameraObjectBasic", D_00446428);
+const sdfVector4Unaligned_t dds3CameraObjectBasicInitialUp = {0.0f, 1.0f, 0.0f, 1.0f};
 
-INCLUDE_RODATA(const s32, "basic/dds3CameraObjectBasic", D_00446438);
+const sdfVector4Unaligned_t dds3CameraObjectBasicInitialEye = {0.0f, 0.0f, 1.0f, 1.0f};
 

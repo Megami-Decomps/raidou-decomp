@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import argparse
+import bisect
 import re
 import sys
 from collections import defaultdict
@@ -458,6 +459,125 @@ def set_decl_blocks(smt3, text, rels):
     return text
 
 
+DATA_NAME = re.compile(r"(\w+)\s*(?:\[[^\]]*\]\s*)*$")
+
+
+def data_name(item):
+    """The name a top-level item defines as data (not extern, one declarator), or None."""
+    cv = blank_attributes(code_view(item))
+    code = cv.strip()
+    if not code.endswith(";") or code.startswith(("#", "extern", "typedef", "EXTERN")) \
+            or DROP.match(code) or SYMBOL_AT.match(code):
+        return None
+    paren, eq = top_level(cv, "("), top_level(cv, "=")
+    head = cv[:eq if eq >= 0 else cv.rstrip().rfind(";")]
+    if top_level(head, ",") >= 0:
+        return None
+    pointer = re.search(r"\(\s*\*\s*(\w+)\s*(\[[^\]]*\]\s*)*\)\s*\(", head)
+    if paren >= 0 and (eq < 0 or eq > paren) and not pointer:
+        return None  # a prototype
+    if re.fullmatch(r"(struct|union|enum)\b[^=]*\}\s*;", code, re.S) or re.fullmatch(r"(struct|union|enum)\s+\w+\s*;", code):
+        return None
+    m = pointer or DATA_NAME.search(head.rstrip())
+    return m.group(1) if m else None
+
+
+_DATA = {}
+
+
+def smt3_data(smt3):
+    """Name -> [(rel, definition with `static` dropped)] for data SMT3 defines in C."""
+    if not _DATA:
+        for src in sorted((smt3 / "src/smt3").rglob("*.c")):
+            rel = shared_rel(str(src.relative_to(smt3)))
+            for item in blocks(smt3_text(smt3, rel)):
+                if name := data_name(item):
+                    m = STATIC.search(code_view(item))
+                    _DATA.setdefault(name, []).append((rel, item[:m.start()] + item[m.end():] if m else item))
+    return _DATA
+
+
+def data_rows(version):
+    """config/<v>/smt3_data.tsv: name -> {address, kind, rel, status, reason}."""
+    path = ROOT / "config" / version / "smt3_data.tsv"
+    out = {}
+    if path.exists():
+        for line in path.read_text().splitlines():
+            if line and not line.startswith("#"):
+                name, addr, kind, rel, status, reason = (line.split("\t") + [""] * 6)[:6]
+                out[name] = {"address": int(addr, 16), "kind": kind, "rel": rel, "status": status, "reason": reason}
+    return out
+
+
+def write_data_rows(version, rows):
+    path = ROOT / "config" / version / "smt3_data.tsv"
+    lines = ["# SMT3 data definitions carried by tools/raidou_c.py: name, address, RODATA|SDATA, "
+             "SMT3 file, c|asm, reason it stays split"]
+    lines += [f"{n}\t0x{r['address']:08X}\t{r['kind']}\t{r['rel']}\t{r['status']}\t{r['reason']}".rstrip("\t")
+              for n, r in sorted(rows.items())]
+    path.write_text("\n".join(lines) + "\n")
+
+
+def data_line(unit, kind, address):
+    return f'INCLUDE_{kind}(const s32, "{unit}", D_{address:08X});'
+
+
+def data_definition(smt3, name, rel):
+    return next((d for r, d in smt3_data(smt3).get(name, []) if r == rel), None)
+
+
+def tu_data(smt3, text, rows):
+    """Carried data definitions present in a TU: name -> (rel, start, end)."""
+    out = {}
+    for name, row in rows.items():
+        d = data_definition(smt3, name, row["rel"])
+        if d and (at := text.find(d)) >= 0:
+            out[name] = (row["rel"], at, at + len(d))
+    return out
+
+
+def port_data(smt3, text, unit, rels, ctx):
+    """Swap INCLUDE_RODATA/SDATA lines at SMT3-named addresses for SMT3's C definition
+    when the TU has that file's declarations; put failed ones back."""
+    rows, retry = ctx["rows"], ctx["retry"]
+    for name, (rel, a, b) in sorted(tu_data(smt3, text, rows).items(), key=lambda x: -x[1][1]):
+        row = rows[name]
+        if row["status"] == "asm" or rel not in rels:
+            text = text[:a] + data_line(unit, row["kind"], row["address"]) + text[b:]
+
+    def to_c(m):
+        address = int(m.group(2), 16)
+        found = []
+        for name in ctx["alias"].get(address, ()):
+            if re.fullmatch(r"(D|jtbl)_[0-9A-F]{8}", name):
+                continue  # an SMT3 placeholder would clash with Raidou's own D_ names
+            row = rows.get(name)
+            if row and row["status"] == "asm" and not (retry and retry.search(row["reason"])):
+                continue
+            found += [(name, r, d) for r, d in smt3_data(smt3).get(name, []) if r in rels]
+        if len(found) != 1:
+            return m.group(0)
+        name, rel, d = found[0]
+        rows[name] = {"address": address, "kind": m.group(1), "rel": rel, "status": "c", "reason": ""}
+        return d
+
+    return re.sub(rf'^INCLUDE_(RODATA|SDATA)\(const s32, "{re.escape(unit)}", D_([0-9A-F]{{8}})\);$', to_c, text, flags=re.M)
+
+
+def alias_rows(version):
+    path = ROOT / "config" / version / "smt3_symbols.txt"
+    return [(m.group(1), int(m.group(2), 16)) for line in path.read_text().splitlines() if (m := SYMROW.match(line))]
+
+
+def write_alias_rows(version, rows):
+    path = ROOT / "config" / version / "smt3_symbols.txt"
+    lines = [path.read_text().splitlines()[0]]
+    lines += [f"{n} = 0x{a:08X};" for n, a in sorted(rows, key=lambda x: (x[1], x[0]))]
+    text = "\n".join(lines) + "\n"
+    if text != path.read_text():
+        path.write_text(text)
+
+
 def outcomes(version):
     """config/<v>/smt3_c.tsv: function -> (status, reason)."""
     path = ROOT / "config" / version / "smt3_c.tsv"
@@ -521,7 +641,7 @@ def nested_names(text):
     return re.findall(r'FAKEMATCH_ASM_NAME\("(\w+)"\)', re.sub(r"/\*.*?\*/|//[^\n]*", "", text, flags=re.S))
 
 
-def port_text(smt3, text, unit, carry, cands):
+def port_text(smt3, text, unit, carry, cands, ctx):
     """A TU with carry's bodies written inline and every other carried body back to INCLUDE_ASM."""
     def asm_line(fn):
         return f'INCLUDE_ASM(const s32, "{unit}", {fn});'
@@ -542,7 +662,7 @@ def port_text(smt3, text, unit, carry, cands):
     for nested in nested_names(text):
         text = re.sub(rf'^INCLUDE_ASM\(\s*const s32,\s*"[^"]+"\s*,\s*{nested}\s*\);\n\n?', "", text, flags=re.M)
     rels = {rel for rel, _, _ in tu_bodies(smt3, text, cands).values()}
-    return set_decl_blocks(smt3, text, rels)
+    return set_decl_blocks(smt3, port_data(smt3, text, unit, rels, ctx), rels)
 
 
 def write_tus(texts):
@@ -580,22 +700,38 @@ def cmd_port(args):
                 continue
             carry[version][fn] = rel
     texts = defaultdict(dict)
+    ctx = {}
     for version in VERSIONS:
+        rows = data_rows(version)
+        alias = defaultdict(list)
+        for name, address in alias_rows(version):
+            alias[address].append(name)
+        for name, row in rows.items():
+            if name not in alias[row["address"]]:
+                alias[row["address"]].append(name)
+        ctx[version] = {"rows": rows, "alias": alias, "retry": retry}
         for unit, src in unit_sources(version).items():
             if args.units and not any(unit.startswith(u) for u in args.units):
                 continue
-            texts[unit][version] = port_text(smt3, src.read_text(), unit, carry[version], cands[version])
+            texts[unit][version] = port_text(smt3, src.read_text(), unit, carry[version], cands[version], ctx[version])
     written = write_tus(texts)
     for version in VERSIONS:
         done = outcomes(version)
-        kept = set()
+        kept, data = set(), set()
         for unit, src in unit_sources(version).items():
             kept.update(tu_bodies(smt3, src.read_text(), cands[version]))
+            data.update(tu_data(smt3, src.read_text(), ctx[version]["rows"]))
+        rows = ctx[version]["rows"]
+        dropped = [(n, r["address"]) for n, r in rows.items() if n not in data]
+        write_data_rows(version, {n: r for n, r in rows.items() if r["status"] == "asm" or n in data})
+        # A carried definition provides its name; the linker script must not.
+        names = {n for n, _ in dropped}
+        write_alias_rows(version, [(n, a) for n, a in alias_rows(version) if n not in data and n not in names] + dropped)
         for fn in kept:
             done[fn] = ("c", "")
         write_outcomes(version, done)
         sdk_settings(smt3, version)
-        print(f"{version}: {len(kept)} functions from C")
+        print(f"{version}: {len(kept)} functions, {len(data)} data definitions from C")
     print(f"{written} files changed; {len(shared_sources())} shared TUs")
 
 
@@ -681,7 +817,7 @@ def owned_data(asm, known):
     return out
 
 
-def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known, owns={}):
+def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known, owns={}, own_data=()):
     """Compare each carried body in obj with retail. Returns ({fn: reason},
     {fn: [(symbol, address)]})."""
     from elftools.elf.elffile import ELFFile
@@ -706,7 +842,7 @@ def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known, owns=
         stray = [s.name for s in syms if s["st_info"]["bind"] != "STB_LOCAL" and s.name
                  and (s["st_shndx"] == "SHN_COMMON"
                       or (isinstance(s["st_shndx"], int) and s["st_shndx"] != text_index
-                          and s["st_info"]["type"] == "STT_OBJECT" and s.name not in known))]
+                          and s["st_info"]["type"] == "STT_OBJECT" and s.name not in known and s.name not in own_data))]
         if stray:
             return {fn: f"unit defines {stray[0]}" for fn in bodies}, {}
         for fn, addr in bodies.items():
@@ -864,6 +1000,161 @@ def check_sections(elf, needs, refs, retail, segs, text_base):
     return fails
 
 
+_LABELS = {}
+
+
+def data_labels(version, unit, sec):
+    """Addresses of the labels in a unit's split .rodata or .sdata, sorted."""
+    path = ROOT / "asm" / version / "data" / f"{unit}.{sec.lstrip('.')}.s"
+    if not path.exists():
+        return []
+    return sorted({int(a, 16) for a in re.findall(r"^dlabel \S+\n\s*/\* [0-9A-F]+ ([0-9A-F]{8})", path.read_text(), re.M)})
+
+
+def all_labels(version, sec):
+    """Addresses of every label in the game's split .rodata or .sdata, sorted."""
+    if (version, sec) not in _LABELS:
+        found = set()
+        for path in (ROOT / "asm" / version / "data").rglob(f"*.{sec.lstrip('.')}.s"):
+            found.update(int(a, 16) for a in re.findall(r"^dlabel \S+\n\s*/\* [0-9A-F]+ ([0-9A-F]{8})", path.read_text(), re.M))
+        _LABELS[(version, sec)] = sorted(found)
+    return _LABELS[(version, sec)]
+
+
+def first_displaced(path):
+    """(displaced object, object before it) at the first D_ label the link moved."""
+    obj = prev = None
+    for line in path.read_text().splitlines():
+        if m := re.match(r"^ \.\w+\s+0x[0-9a-f]+\s+0x([0-9a-f]+) (\S+\.o)$", line):
+            if int(m.group(1), 16) and m.group(2) != obj:
+                prev, obj = obj, m.group(2)
+        elif (m := re.match(r"^\s+0x([0-9a-f]+)\s+D_([0-9A-F]{8})\s*$", line)) \
+                and int(m.group(1), 16) != int(m.group(2), 16) and int(m.group(1), 16) > 0x100000:
+            return obj, prev
+    return None, None
+
+
+def map_starts(path):
+    """(object path, section) -> address of that input section in a link map."""
+    out = {}
+    for line in path.read_text().splitlines():
+        if m := re.match(r"^ (\.\w+)\s+0x([0-9a-f]+)\s+0x([0-9a-f]+) (\S+\.o)$", line):
+            if int(m.group(3), 16):
+                out.setdefault((m.group(4), m.group(1)), int(m.group(2), 16))
+    return out
+
+
+def check_data_object(version, obj, want, units, retail, segs):
+    """Each definition in a unit object against the split: no larger than the label
+    it replaces, with retail's bytes (relocated words skipped). Returns
+    ({name: reason}, {name: section})."""
+    from elftools.elf.elffile import ELFFile
+    from elftools.elf.relocation import RelocationSection
+    from retail_elf import va_to_off
+
+    fails, section = {}, {}
+    with open(obj, "rb") as f:
+        elf = ELFFile(f)
+        symbols = [s for s in elf.get_section_by_name(".symtab").iter_symbols() if isinstance(s["st_shndx"], int)]
+        syms = {s.name: s for s in symbols if s.name in want and s["st_info"]["bind"] != "STB_LOCAL"}
+        for n, address in want.items():
+            s = syms.get(n)
+            if s is None:
+                fails[n] = "not defined in the object"
+                continue
+            sec = elf.get_section(s["st_shndx"])
+            section[n] = sec.name
+            off, size = s["st_value"], s["st_size"]
+            labels = data_labels(version, units[n], sec.name)
+            glob = all_labels(version, sec.name)
+            later = glob[bisect.bisect_right(glob, address):][:1]
+            if address not in labels:
+                fails[n] = f"in {sec.name}, retail label is not"
+                continue
+            if later and size > later[0] - address:
+                fails[n] = f"size 0x{size:X}, retail 0x{later[0] - address:X}"
+                continue
+            # What follows it in the object must follow it in retail by the same distance.
+            after = [x["st_value"] for x in symbols if x["st_shndx"] == s["st_shndx"] and x["st_value"] > off
+                     and x["st_info"]["type"] in ("STT_OBJECT", "STT_NOTYPE")]
+            if after and later and min(after) - off != later[0] - address:
+                fails[n] = f"next item at +0x{min(after) - off:X}, retail +0x{later[0] - address:X}"
+                continue
+            if sec["sh_type"] == "SHT_NOBITS":
+                continue
+            skip = set()
+            relsec = elf.get_section_by_name(".rel" + sec.name)
+            if isinstance(relsec, RelocationSection):
+                skip = {r["r_offset"] for r in relsec.iter_relocations()}
+            data, roff = sec.data(), va_to_off(segs, address)
+            bad = next((i for i in range(size) if (off + i) & ~3 not in skip
+                        and data[off + i] != retail[roff + i]), None)
+            if bad is not None:
+                fails[n] = f"bytes differ at +0x{bad:X}"
+    return fails, section
+
+
+def check_data(version, want, objs, units, retail, segs):
+    """Each carried definition must match the split in its object and sit at its address
+    in the link. A unit already shifted where it starts is not blamed; within a unit only
+    the first definition off its place is. Returns {name: reason}."""
+    from elftools.elf.elffile import ELFFile
+    from retail_elf import VERSIONS as INFO
+
+    if not want:
+        return {}
+    fails, section = {}, {}
+    by_obj = defaultdict(dict)
+    for n, a in want.items():
+        by_obj[objs[n]][n] = a
+    for obj, names in by_obj.items():
+        f, sec = check_data_object(version, obj, names, units, retail, segs)
+        fails.update(f)
+        section.update(sec)
+    serial = INFO[version]["serial"]
+    elf_path = ROOT / "build" / version / f"{serial}.elf"
+    if not elf_path.exists():
+        return {n: fails.get(n, "no link") for n in want}
+    stale = {n for n, obj in objs.items() if obj.stat().st_mtime > elf_path.stat().st_mtime}
+    for n in stale:
+        fails.setdefault(n, "no link")
+    with open(elf_path, "rb") as f:
+        linked = {s.name: s["st_value"] for s in ELFFile(f).get_section_by_name(".symtab").iter_symbols()
+                  if s.name in want and s["st_info"]["bind"] != "STB_LOCAL"}
+    starts = map_starts(elf_path.with_suffix(".map"))
+    groups = defaultdict(list)
+    for n, a in want.items():
+        if n in section:
+            groups[(objs[n], section[n])].append((a, n))
+    off_place = []
+    for (obj, sec), items in groups.items():
+        labels = data_labels(version, units[items[0][1]], sec)
+        start = starts.get((str(obj.relative_to(ROOT)), sec))
+        d0 = start - labels[0] if start is not None and labels else None
+        for a, n in sorted(items):
+            if n not in linked:
+                fails.setdefault(n, "not in the link")
+                continue
+            if linked[n] == a:
+                continue
+            off_place.append((a, n))
+            if d0 == 0 and linked[n] - a != d0:
+                if not any(m in fails for b, m in items if b < a):
+                    fails.setdefault(n, f"linked at 0x{linked[n]:08X}, retail 0x{a:08X}")
+                break
+    if off_place and not any(n in fails for _, n in off_place):
+        # The first label the link moved follows the object that grew or shrank.
+        _, prev = first_displaced(elf_path.with_suffix(".map"))
+        before = [(a, n) for n, a in want.items() if prev and str(objs[n].relative_to(ROOT)) == prev]
+        if before:
+            a, n = max(before)
+            fails[n] = "last in the object before the first moved label"
+        else:
+            a, n = min(off_place)
+            fails[n] = f"linked at 0x{linked[n]:08X}, retail 0x{a:08X}"
+    return fails
+
+
 def sext16(v):
     return ((v & 0xFFFF) ^ 0x8000) - 0x8000
 
@@ -904,25 +1195,35 @@ def cmd_verify(args):
         done = outcomes(version)
         fails, needs = {}, {}
         cands = candidates(version)
+        rows = data_rows(version)
+        carried = {n: r for n, r in rows.items() if r["status"] == "c"}
+        data_fails, data_objs, data_units = {}, {}, {}
         for unit, src in unit_sources(version).items():
             text = src.read_text()
             spans = tu_bodies(smt3, text, cands)
             bodies = {fn: known[fn] for fn in spans}
             if not bodies:
                 continue
-            f, other = blame_errors(text, spans, compile_fails.get((version, unit), []))
+            dspans = tu_data(smt3, text, carried)
+            f, other = blame_errors(text, {**spans, **dspans}, compile_fails.get((version, unit), []))
+            data_fails.update({n: why for n, why in f.items() if n in dspans})
+            f = {fn: why for fn, why in f.items() if fn in spans}
             fails.update(f)
             if other or f:
                 # Bodies that compiled are checked once the unit builds again.
-                for fn in bodies:
-                    if fn not in fails and other:
-                        fails[fn] = "unit compile error: " + other[0]
+                for fn in [*bodies, *dspans]:
+                    if fn not in fails and fn not in data_fails and other:
+                        (data_fails if fn in dspans else fails)[fn] = "unit compile error: " + other[0]
                 continue
             obj = ROOT / "build" / version / src.relative_to(ROOT).with_suffix(".o")
             if not obj.exists() or obj.stat().st_mtime < src.stat().st_mtime:
                 for fn in bodies:
                     fails.setdefault(fn, "no object")
+                for n in dspans:
+                    data_fails.setdefault(n, "no object")
                 continue
+            data_objs.update({n: obj for n in dspans if n not in data_fails})
+            data_units.update({n: unit for n in dspans})
             sizes = {fn: len(parse_asm(function_asm(version, unit, fn))[fn][1])
                      for fn in bodies}
             # splat moves rodata only this function uses into its asm file and
@@ -930,9 +1231,13 @@ def cmd_verify(args):
             owns = {fn: owned_data(function_asm(version, unit, fn), known) for fn in bodies}
             owns = {fn: a for fn, a in owns.items() if a}
             f, n = check_object(version, obj, {k: v for k, v in bodies.items() if k not in fails},
-                                retail, segs, gp, sizes, known, owns)
+                                retail, segs, gp, sizes, known, owns, set(dspans))
             fails.update(f)
             needs.update(n)
+        data_fails.update(check_data(version, {n: carried[n]["address"] for n in data_objs}, data_objs, data_units, retail, segs))
+        # A link that did not happen decides nothing: those stay C for the next build.
+        data_fails = {n: why for n, why in data_fails.items() if why != "no link"}
+        defined = set(data_objs) - set(data_fails)
         # Every name a body uses must name one Raidou address.
         users = defaultdict(set)
         want = defaultdict(lambda: defaultdict(set))  # name -> address -> functions
@@ -965,16 +1270,22 @@ def cmd_verify(args):
                 continue
             for fn in users[name]:
                 fails.setdefault(fn, why)
-        aliases = {n: a for n, a in aliases.items() if not users[n] <= set(fails)}
+        aliases = {n: a for n, a in aliases.items() if not users[n] <= set(fails) and n not in defined}
         for fn, why in fails.items():
             done[fn] = ("asm", why)
         write_outcomes(version, done)
+        for n, why in data_fails.items():
+            rows[n] = dict(rows[n], status="asm", reason=why)
+        write_data_rows(version, rows)
         path = ROOT / "config" / version / "smt3_symbols.txt"
         lines = [path.read_text().splitlines()[0]]
         lines += [f"{n} = 0x{a:08X};" for n, a in sorted(aliases.items(), key=lambda x: (x[1], x[0]))]
         path.write_text("\n".join(lines) + "\n")
         kept = sum(1 for fn in needs if fn not in fails)
-        print(f"{version}: {kept} match, {len(fails)} back to asm, {len(aliases)} SMT3 names")
+        print(f"{version}: {kept} match, {len(fails)} back to asm, {len(aliases)} SMT3 names; "
+              f"data {len(defined)} match, {len(data_fails)} back to the split")
+        for n, why in sorted(data_fails.items())[:20]:
+            print(f"  data {n}: {why}")
         reasons = defaultdict(int)
         for why in fails.values():
             reasons[re.sub(r"0x[0-9A-F]+|\d+|'[^']*'|`[^']*'|\w+ (is|at) ", "#", why)[:60]] += 1

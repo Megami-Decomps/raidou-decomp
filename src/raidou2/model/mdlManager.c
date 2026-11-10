@@ -1693,7 +1693,7 @@ INCLUDE_ASM(const s32, "model/mdlManager", func_001B1540);
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B15D8);
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B16F0);
-INCLUDE_SDATA(const s32, "model/mdlManager", D_004DF5D8);
+char mdlModelPathPrefix[8] = "/model/";
 
 INCLUDE_SDATA(const s32, "model/mdlManager", D_004DF5E0);
 

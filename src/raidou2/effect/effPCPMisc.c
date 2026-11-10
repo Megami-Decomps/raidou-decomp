@@ -7361,7 +7361,7 @@ void effPCPHelperBEDDraw(effPCPHelperBED_tag *hData) {
         hData->frame++;
     }
 }
-INCLUDE_SDATA(const s32, "effect/effPCPMisc", D_004E17D8);
+s32 BlinkMultiBlurCount = 0;
 
 INCLUDE_SDATA(const s32, "effect/effPCPMisc", D_004E17DC);
 

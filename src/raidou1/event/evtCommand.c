@@ -1067,7 +1067,7 @@ u32 evt_1E50C0(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044DFF0);
+const char evtMsgModelMotionDeprecated[64] = "\xa2\xa8\xc3\xed\xb0\xd5\x3a\x4d\x4f\x44\x45\x4c\x5f\x4d\x4f\x54\x49\x4f\x4e\x28\x29\xa4\xb3\xa4\xce\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\xa4\xcf\xba\xa3\xb8\xe5\xbb\xc8\xcd\xd1\xb6\xd8\xbb\xdf\xa4\xcb\xa4\xca\xa4\xea\xa4\xde\xa4\xb9\xa1\xa3\x0a";
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001A8A58);
 
@@ -1414,17 +1414,17 @@ u32 evtCommand_EFFBED_LOAD(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E168);
+const char evtMsgModelMoveMotDeprecated[64] = "\xa2\xa8\xc3\xed\xb0\xd5\x3a\x4d\x4f\x44\x45\x4c\x5f\x4d\x4f\x56\x45\x5f\x4d\x4f\x54\x28\x29\xa4\xb3\xa4\xce\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\xa4\xcf\xba\xa3\xb8\xe5\xbb\xc8\xcd\xd1\xb6\xd8\xbb\xdf\xa4\xcb\xa4\xca\xa4\xea\xa4\xde\xa4\xb9\xa1\xa3\x0a";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E1A8);
+const char evtMsgLightDirZero[40] = "WARNING: MODEL_LIGHT_DIR length zero\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E1D0);
+const char evtMsgEffectBeNotFound[32] = "EFFECT_BE not fount RID = %d\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E1F0);
+const char evtMsgEffectBeFailed[24] = "\x45\x46\x46\x45\x43\x54\x5f\x42\x45\x28\x29\xc5\xd0\xcf\xbf\xbc\xba\xc7\xd4\x0a";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E208);
+const char evtMsgEffectLoadHint[48] = "\xa5\xb9\xa5\xaf\xa5\xea\xa5\xd7\xa5\xc8\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\x45\x46\x46\x45\x43\x54\x5f\x4c\x4f\x41\x44\x28\x29\xa4\xc7\xc2\xd0\xbe\xdd\xa5\xd5\xa5\xa1\xa5\xa4\xa5\xeb\x0a";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E238);
+const char evtMsgNameNotFound[24] = "\x25\x73\xa4\xac\xb8\xab\xa4\xc4\xa4\xab\xa4\xea\xa4\xde\xa4\xbb\xa4\xf3\x21\x21\x0a";
 
 u32 evtCommand_EFFBED_BE(void) {
     sdfVector4_t position;
@@ -1525,7 +1525,7 @@ u32 evtCommand_EFFMG1_LOAD(void)
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E298);
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E2C8);
+const char evtMsgEffmg1LoadHint[48] = "\xa5\xb9\xa5\xaf\xa5\xea\xa5\xd7\xa5\xc8\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\x45\x46\x46\x4d\x47\x31\x5f\x4c\x4f\x41\x44\x28\x29\xa4\xc7\xc2\xd0\xbe\xdd\xa5\xd5\xa5\xa1\xa5\xa4\xa5\xeb\x0a";
 
 u32 evtCommand_EFFMG1_BE(void) {
     s32 taskId;
@@ -1568,7 +1568,7 @@ u32 evtCommand_EFFMG2_LOAD(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E318);
+const char evtMsgEffmg2LoadHint[48] = "\xa5\xb9\xa5\xaf\xa5\xea\xa5\xd7\xa5\xc8\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\x45\x46\x46\x4d\x47\x32\x5f\x4c\x4f\x41\x44\x28\x29\xa4\xc7\xc2\xd0\xbe\xdd\xa5\xd5\xa5\xa1\xa5\xa4\xa5\xeb\x0a";
 
 u32 evtCommand_EFFMG2_BE(void) {
     s32 taskId;
@@ -1840,9 +1840,9 @@ s32 evtCommand_CALL_ENDSAVE(void)
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001AB408);
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E490);
+const char evtMsgIdNotFound[32] = "ID : id not found!! <%s>\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E4B0);
+const char evtMsgIdNotFoundWarn[32] = "WARNING: ID not found! <%s>\n";
 
 s32 evtCommand_CALL_NEXT(void)
 {
@@ -2138,9 +2138,9 @@ s32 evtCommand_CAM_ROT_Q(void) {
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001AC060);
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E5F0);
+const char evtMsgObjPathPara0[16] = "PARA0:%08x\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E600);
+const char evtMsgObjPathPara1[16] = "PARA1:%08x\n";
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E610);
 
@@ -2280,15 +2280,15 @@ u32 evtCommand_DEL_BE(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E640);
+const char evtMsgObjPathWaitNoObj[32] = "e OBJ_PATH_WAIT : obj==NULL\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E660);
+const char evtMsgLoadBeStart[16] = "load BE (%d)..\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E670);
+const char evtMsgBeOk[16] = "BE ok! (%d)\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E680);
+const char evtMsgReadBeStart[16] = "read BE (%d)..\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E690);
+const char evtMsgDelBeStart[16] = "del BE (%d)..\n";
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E6A0);
 
@@ -2522,11 +2522,11 @@ u32 evt_1E92F8(void)
 }
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E7E8);
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E830);
+const char evtMsgSetSkyAlphaLow[40] = "warning : SET_SKY_A alpha < -255\n";
+
+addr_t evtKutiUnit = 0;
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E858);
-
-INCLUDE_SDATA(const s32, "event/evtCommand", D_0046C5DC);
 
 INCLUDE_SDATA(const s32, "event/evtCommand", D_0046C5E0);
 

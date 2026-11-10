@@ -871,7 +871,7 @@ void fileSysInit(void) {
     dds3StartProcess(fileManagerProcName, 0x384, 1, 0, fileManagerProc, 0, 0);
     p2sdSmgBuf = fileManager;
 }
-INCLUDE_SDATA(const s32, "file/fileManager", D_0046CDC0);
+u32 fileCallbackStatus = 0;
 
-INCLUDE_SDATA(const s32, "file/fileManager", D_0046CDC8);
+char fileManagerProcName[8] = "fileMan";
 

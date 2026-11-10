@@ -410,13 +410,13 @@ void dds3PrimDebugTextBoxRGB(void *packetList, s32 x, s32 y, s32 selected,
         y += 0x60;
     }
 }
-INCLUDE_SDATA(const s32, "kernel/dds3DebugStuff", D_0046B590);
+char dds3DebugLabelB[8] = "B:";
 
-INCLUDE_SDATA(const s32, "kernel/dds3DebugStuff", D_0046B598);
+char dds3DebugLabelG[8] = "G:";
 
-INCLUDE_SDATA(const s32, "kernel/dds3DebugStuff", D_0046B5A0);
+char dds3DebugLabelR[8] = "R:";
 
-INCLUDE_SDATA(const s32, "kernel/dds3DebugStuff", D_0046B5A8);
+char dds3DebugFmtInt3[8] = "%3d";
 
-INCLUDE_SDATA(const s32, "kernel/dds3DebugStuff", D_0046B5B0);
+char dds3DebugFmtFloat3[8] = "%5.3f";
 

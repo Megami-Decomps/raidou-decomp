@@ -1272,7 +1272,7 @@ INCLUDE_ASM(const s32, "interface/frFont", func_001811F8);
 INCLUDE_ASM(const s32, "interface/frFont", func_00181200);
 
 INCLUDE_ASM(const s32, "interface/frFont", frDumpFontTexture);
-INCLUDE_SDATA(const s32, "interface/frFont", D_0046C1A4);
+u32 gMessageRequestResult = 0xFFFFFFFF;
 
 INCLUDE_SDATA(const s32, "interface/frFont", D_0046C1A8);
 

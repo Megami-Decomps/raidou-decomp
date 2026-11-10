@@ -365,7 +365,7 @@ sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 aW, s32 aH, s32 aPixelFormat)
     return slice;
 }
 
-INCLUDE_SDATA(const s32, "sdf/sdfGsMemory", D_0046F294);
+void (*sdfGsErrorHandler)(s32 size, s32 type) = NULL;
 
 INCLUDE_SDATA(const s32, "sdf/sdfGsMemory", D_0046F298);
 

@@ -242,7 +242,9 @@ void movieViewerDrawInfo(void)
     }
 }
 
-INCLUDE_RODATA(const s32, "movie/MovieViewer", D_00455118);
+/* The memory window: a cursor over the eight nibbles of either source address,
+ * the word above and the 8x8 block below. */
+const char movieViewerProcName[16] = "movieViewer";
 
 INCLUDE_ASM(const s32, "movie/MovieViewer", movieViewerDebugDraw);
 INCLUDE_SDATA(const s32, "movie/MovieViewer", D_0046CDA8);

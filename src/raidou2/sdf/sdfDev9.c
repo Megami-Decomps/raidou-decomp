@@ -170,5 +170,5 @@ s32 sdfBcdToDecimal(s32 aBcd)
     return result;
 }
 
-INCLUDE_RODATA(const s32, "sdf/sdfDev9", D_004D73B0);
+const char sdfDev9ResidentFailMsg[40] = "cdrom0:\\IRX\\DEV9.IRX;1 resident fail.\n";
 

@@ -1025,7 +1025,7 @@ INCLUDE_SDATA(const s32, "field/fldDraw", D_004DE898);
 
 INCLUDE_SDATA(const s32, "field/fldDraw", D_004DE89C);
 
-INCLUDE_SDATA(const s32, "field/fldDraw", D_004DE8A0);
+void *fldDrwZBuf = 0;
 
 INCLUDE_SDATA(const s32, "field/fldDraw", D_004DE8A8);
 

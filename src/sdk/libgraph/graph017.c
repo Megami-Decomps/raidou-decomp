@@ -292,5 +292,22 @@ s32 sceGsExecLoadImage(sceGsLoadImage *pkt, void *addr)
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libgraph/graph017", D_004D81F0);
+/* Reference implementation; see docs/matching/sdk/libgraph.md. */
+/* NON_MATCHING: 1672 bytes against retail's 1680, first difference at +0x3C.
+ * The prologue's seven saved registers and both parameter copies, the single
+ * load of each 64-bit record word and the width/height/mode extraction, the
+ * jump table and its five case bodies, the uncached trxreg patch, every spin
+ * loop and both FIFO loops now agree instruction for instruction; what is left
+ * is scheduling inside the case bodies and the cleanup block, plus three
+ * delay slots this compiler leaves empty because the access is volatile (see
+ * the near-miss rules in docs/sdk-matching.md).
+ * Four things moved it: the DMA count mask is the unsigned 0xFFFFFFF8, not
+ * ~7, so it is materialized with lui/ori and shared with the align-up masks;
+ * the cleanup is written out at each of the four timeout sites, which lets
+ * cross-jumping merge the scePrintf call itself down to retail's three call
+ * sites; the trxreg patch re-extracts the width from the record instead of
+ * reusing the local, which local CSE cannot share across the block; and each
+ * case body computes the byte remainder, then the quadword remainder, then the
+ * DMA count, which halved the instruction-order difference. */
+const char sceGsExecLoadImageDma2Msg[64] = "sceGsExecLoadImage: DMA Ch.2 does not terminate\r\n";
 

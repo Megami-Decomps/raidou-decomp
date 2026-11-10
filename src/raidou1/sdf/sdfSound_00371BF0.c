@@ -714,13 +714,13 @@ void sdfDumpHexLine(const u8 *data, s32 size) {
     }
 }
 
-INCLUDE_RODATA(const s32, "sdf/sdfSound_00371BF0", D_00464E70);
+const char sdfDmaDumpStartFmt[29] = "<<< DMA dump start [%p] >>>\n";
 
-INCLUDE_RODATA(const s32, "sdf/sdfSound_00371BF0", D_00464E90);
+const char sdfDmaNotQwordFmt[21] = "%p not qword align.\n";
 
-INCLUDE_RODATA(const s32, "sdf/sdfSound_00371BF0", D_00464EA8);
+const char sdfDmaTagLineFmt[33] = "%08X : [%s] %08X %08X %08X %08X\n";
 
-INCLUDE_RODATA(const s32, "sdf/sdfSound_00371BF0", D_00464ED0);
+const char sdfDmaNestOverflowMsg[27] = "call stack nest overflow!\n";
 
 void sdfDumpDmaChain(sdfDmaDumpTag_t *source) {
     sdfDmaDumpTag_t *callStack[2];
@@ -1112,9 +1112,9 @@ void sdfDumpGsMemory2(void) {
     }
 }
 
-INCLUDE_RODATA(const s32, "sdf/sdfSound_00371BF0", D_004653A8);
+const char sdfGsMemInfoTitle[116] = " <<< GS memory information >>>\n -----------------------------\n address  : previous   next     type   GS-addr  size\n";
 
-INCLUDE_RODATA(const s32, "sdf/sdfSound_00371BF0", D_00465420);
+const char sdfGsMemNodeFmt[31] = " %08X : %08X %08X %8s %08X %d\n";
 
 void sdfDumpMemory(void) {
     sdfMemInfo_t info;
@@ -1145,23 +1145,23 @@ void sdfDumpChipMemory(void) {
     } while (i != 7);
     sdfPrintf(sdfDumpLineBuf, first);
 }
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F488);
+char sdfDumpAddrFmt[8] = "%08X : ";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F490);
+char sdfDumpPadStr[8] = "   ";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F498);
+char sdfDumpMidGapStr[8] = "-";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4A0);
+char sdfDumpByteSepStr[8] = " ";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4A8);
+char sdfDumpByteFmt[8] = "%02X";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4B0);
+char sdfDumpLineBuf[2] = "\n";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4B8);
+char sdfDumpEndStr[8] = "\n\n";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4C0);
+char sdfVifMaskedName[8] = "mask";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4C8);
+char sdfVifXferOkName[8] = "xfer-ok";
 
 INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4D0);
 
@@ -1205,9 +1205,9 @@ INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F568);
 
 INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F570);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F578);
+char sdfDumpIndentStr[8] = "    ";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F580);
+char sdfDumpWordFmt[8] = "%08X";
 
 INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F588);
 

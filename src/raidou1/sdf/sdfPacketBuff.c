@@ -108,13 +108,13 @@ s32 sdfGrAllocPacketBuff(s32 aSize) {
     sdfGrPacketBuffPtr = sdfGrPacketBuffPtr + ((aSize + 0xfU) & 0xfffffff0);
     return packet;
 }
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2A0);
+struct sdfMemHandle_t *sdfGrPacketBuffHandle = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2A4);
+s32 sdfGrPacketBuffSize = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2A8);
+s32 sdfGrPacketBuffBase[2] = {0, 0};
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2B0);
+s32 sdfGrPacketBuffPtr = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2B4);
 

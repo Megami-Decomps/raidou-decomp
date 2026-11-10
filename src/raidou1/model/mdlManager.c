@@ -2042,13 +2042,13 @@ void mdlMakeHddFileList(void) {
     }
     mdlMakeHddFileListDummy();
 }
-INCLUDE_SDATA(const s32, "model/mdlManager", D_0046C378);
+char mdlModelPathPrefix[8] = "/model/";
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_0046C380);
+char mdlPackedBundleExt[4] = ".PB";
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_0046C384);
+sdfMemHandle_t *mdlHddFileIndexHandle = NULL;
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_0046C388);
+sdfMemHandle_t *mdlHddFileListHandle = NULL;
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_0046C390);
+mdlWorkPrefix_t mdlWorkPathPrefix[1] = { { "work/" } };
 

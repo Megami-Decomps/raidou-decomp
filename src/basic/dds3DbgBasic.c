@@ -117,9 +117,9 @@ u32 DispObjectBaseData(dds3Basic_t *basic, s32 x, s32 y, sdfDrawTag_t *tag) {
 }
 
 INCLUDE_ASM(const s32, "basic/dds3DbgBasic", dds3DebugBasic);
-INCLUDE_SDATA(const s32, "basic/dds3DbgBasic", D_0046B468);
+char dds3BasicPosLabel[8] = "POS  :";
 
-INCLUDE_SDATA(const s32, "basic/dds3DbgBasic", D_0046B470);
+char dds3BasicRotLabel[8] = "ROT  :";
 
-INCLUDE_SDATA(const s32, "basic/dds3DbgBasic", D_0046B478);
+char dds3BasicSclLabel[8] = "SCL  :";
 

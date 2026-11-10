@@ -464,11 +464,11 @@ s32 fcl_214458(void)
     scrSetIntReturnValue(fclWorkValue[index]);
     return 1;
 }
-INCLUDE_SDATA(const s32, "facility/fclMisc", D_0046B5B8);
+s32 gMsgID = -1;
 
-INCLUDE_SDATA(const s32, "facility/fclMisc", D_0046B5BC);
+s8 gMsgFlag = 0;
 
-INCLUDE_SDATA(const s32, "facility/fclMisc", D_0046B5BD);
+s8 gMsgInvFlag = 0;
 
 INCLUDE_SDATA(const s32, "facility/fclMisc", D_0046B5C0);
 

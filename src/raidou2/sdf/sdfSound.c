@@ -1095,19 +1095,19 @@ void SifRpcServerThreadProc(void)
     sceSifRegisterRpc((struct sifRpcServerData_t *)&server, 0x54524E53, (sceSifRpcFunc)sdfFileRpcHandleCmd, sdfFileRpcQueue, 0, NULL, (struct sifRpcDataQueue_t *)&queue);
     sceSifRpcLoop(&queue);
 }
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E4440);
+s32 p2sdSmgHandle = -1;
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E4444);
+u32 p2sdPcmCallback = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E4448);
+u32 p2sdPcmState = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E444C);
+u32 p2sdPcmBusy = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E4450);
+u32 sdfSndSendCmd_cmd_id = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E4454);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E4458);
+s32 (*p2sdSmgBuf)(void) = NULL;
 
 INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E4460);
 

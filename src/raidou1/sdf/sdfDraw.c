@@ -1221,13 +1221,13 @@ void sdfDrawSync(void) {
         sdfWaitVblank(0);
     }
 }
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2C4);
+u16 sdfReqDrawDelaySleepCount = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2C8);
+s32 sdfDrawReqQueueIndex = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2CC);
+u32 sdfGrDrawFrameTagHead = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2D0);
+u32 sdfDrawFrameCount = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2D4);
 

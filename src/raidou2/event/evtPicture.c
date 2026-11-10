@@ -235,7 +235,7 @@ INCLUDE_SDATA(const s32, "event/evtPicture", D_004DFA60);
 
 INCLUDE_SDATA(const s32, "event/evtPicture", D_004DFA68);
 
-INCLUDE_SDATA(const s32, "event/evtPicture", D_004DFA70);
+char evtPictureProcName[8] = "Picture";
 
 INCLUDE_SDATA(const s32, "event/evtPicture", D_004DFA78);
 

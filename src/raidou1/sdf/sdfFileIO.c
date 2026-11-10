@@ -697,29 +697,29 @@ void sdfFileCmdStartThread(s32 deviceType) {
         _StartThread(thread, worker);
     }
 }
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3B0);
+s16 sdfFileCmdCount = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3B4);
+sdfFileCmdHandle_t *sdfFileCmdCacheHead = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3B8);
+sdfFileCmdHandle_t *sdfFileCmdCacheTail = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3BC);
+s16 sdfFileCmdFreeCount = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3BE);
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3BF);
+u8 sdfFileCmdThreadPrioCheckCounter = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3C0);
+s32 sdfFileCmdThreadPrio = 0x48;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3C4);
+u16 sdfFileCmdDefaultCreateMode = 0x180;
 
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3C8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3D0);
+char sdfFileCmdCdromPrefix[8] = "cdrom0:";
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3D8);
+char sdfFileCmdHostPrefix[8] = "host0:";
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3E0);
+char sdfFileCmdPfsPrefix[8] = "pfs0:";
 
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3E8);
 

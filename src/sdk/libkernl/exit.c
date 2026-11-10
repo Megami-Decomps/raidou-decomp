@@ -1258,5 +1258,5 @@ void LoadExecPS2(const char *path, s32 count, char **arguments)
                   &((execArgumentBlock_t *)execArgumentBlock)->arguments[1]);
 }
 
-INCLUDE_RODATA(const s32, "sdk/libkernl/exit", D_00469280);
+const char execDefaultPath[8] = "";
 

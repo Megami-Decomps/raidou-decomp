@@ -629,17 +629,17 @@ INCLUDE_ASM(const s32, "interface/itfPanel", func_0019B838);
 
 INCLUDE_ASM(const s32, "interface/itfPanel", DrawTestAlphaPrim);
 
-INCLUDE_RODATA(const s32, "interface/itfPanel", D_004AF1F8);
-
-INCLUDE_RODATA(const s32, "interface/itfPanel", D_004AF248);
-
 INCLUDE_SDATA(const s32, "interface/itfPanel", D_004DF4C0);
 
 INCLUDE_SDATA(const s32, "interface/itfPanel", D_004DF4C8);
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_004DF4D0);
+u8 itfPanelPlainRectVertexIndex[8] = {0, 1, 2, 3, 0, 0, 0, 0};
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_004DF4D8);
+u8 itfPanelPlainRectColorIndex[8] = {0, 0, 1, 1, 0, 0, 0, 0};
+
+INCLUDE_RODATA(const s32, "interface/itfPanel", D_004AF1F8);
+
+INCLUDE_RODATA(const s32, "interface/itfPanel", D_004AF248);
 
 INCLUDE_SDATA(const s32, "interface/itfPanel", D_004DF4E0);
 

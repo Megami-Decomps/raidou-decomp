@@ -639,5 +639,5 @@ INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5C8);
 
 INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5CB);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5D0);
+char sdfMovieIpsExt[4] = ".ips";
 

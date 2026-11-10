@@ -1321,7 +1321,7 @@ u32 evtCommand_MODEL_LIGHT_UNLINK(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_004B4720);
+const char evtMsgLightDirZero[40] = "WARNING: MODEL_LIGHT_DIR length zero\n";
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C0208);
 
@@ -2055,13 +2055,13 @@ u32 evtCommand_DEL_BE(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49B8);
+const char evtMsgLoadBeStart[16] = "load BE (%d)..\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49C8);
+const char evtMsgBeOk[16] = "BE ok! (%d)\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49D8);
+const char evtMsgReadBeStart[16] = "read BE (%d)..\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49E8);
+const char evtMsgDelBeStart[16] = "del BE (%d)..\n";
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C2590);
 
@@ -2287,11 +2287,11 @@ u32 evt_1E92F8(void)
     }
     return 1;
 }
-INCLUDE_RODATA(const s32, "event/evtCommand", D_004B4A50);
+const char evtMsgSetSkyAlphaLow[40] = "warning : SET_SKY_A alpha < -255\n";
+
+addr_t evtKutiUnit = 0;
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_004B4A78);
-
-INCLUDE_SDATA(const s32, "event/evtCommand", D_004DF840);
 
 INCLUDE_SDATA(const s32, "event/evtCommand", D_004DF844);
 

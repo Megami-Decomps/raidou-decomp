@@ -1724,11 +1724,11 @@ INCLUDE_SDATA(const s32, "effect/effEvent", D_0046D058);
 
 INCLUDE_SDATA(const s32, "effect/effEvent", D_0046D060);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_0046D068);
+s32 EffEveCPSmokeCount = 0;
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_0046D06C);
+addr_t hEffEveCPSmokeBill01Tex = 0;
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_0046D070);
+addr_t hEffEveCPSmokeBill02Tex = 0;
 
 INCLUDE_SDATA(const s32, "effect/effEvent", D_0046D074);
 

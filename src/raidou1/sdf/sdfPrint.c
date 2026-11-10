@@ -205,7 +205,7 @@ s32 sdfPrintf(const char *str, ...) {
     sdfPuts(buffer);
     return length;
 }
-INCLUDE_SDATA(const s32, "sdf/sdfPrint", D_0046F358);
+s8 sdfPrintIopFlag = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPrint", D_0046F360);
+char sdfPrintStrFmt[4] = "%s";
 

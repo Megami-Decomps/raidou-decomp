@@ -970,9 +970,9 @@ u8 *libc_2D2C70(u8 *p, frameState_t *state)
     return p;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAAA0);
+const char libgccCieAugEmpty[8] __attribute__((section(".rodata"))) = "";
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAAA8);
+const char libgccCieAugEh[8] __attribute__((section(".rodata"))) = "eh";
 
 u8 *libc_2D2D90(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location)
 {

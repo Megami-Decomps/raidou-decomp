@@ -929,27 +929,27 @@ void dds3ResetProcessFlag(dds3ProcessID_t *target, u32 flag, s32 type)
     ChangeProcessFlag(0, target, flag, type);
 }
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B150);
+dds3ProcessID_t *startinglistf = NULL;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B154);
+dds3ProcessID_t *startinglistl = NULL;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B158);
+u32 startinglistcnt = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B15C);
+dds3ProcessID_t *endinglistf = NULL;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B160);
+dds3ProcessID_t *endinglistl = NULL;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B164);
+u32 endinglistcnt = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B168);
+dds3ProcessID_t *runninglistf = NULL;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B16C);
+dds3ProcessID_t *runninglistl = NULL;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B170);
+u32 runninglistcnt = 0;
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B174);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B178);
+char dds3DebugBlockEnd[8] = "\n\n";
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B180);
 

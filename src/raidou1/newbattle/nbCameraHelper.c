@@ -297,7 +297,7 @@ void dds3EffectListSetTexture(nbCameraHelper_effFLWinHandle_t *work, char *textu
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectFileListWindowDrawSprite);
 
-INCLUDE_SDATA(const s32, "newbattle/nbCameraHelper", D_0046D0B0);
+char dds3EffectDirPathFormat[8] = "pfs0:%s";
 
-INCLUDE_SDATA(const s32, "newbattle/nbCameraHelper", D_0046D0B8);
+char dds3EffectResourcePathFormat[5] = "%s%s";
 

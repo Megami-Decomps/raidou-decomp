@@ -60,3 +60,15 @@ def write_unit(version, path, text):
         own.parent.mkdir(parents=True, exist_ok=True)
         own.write_text(text if v == version else path.read_text())
     path.unlink()
+
+
+def carried_data(version):
+    """Name -> address of SMT3 data definitions carried into C (config/<v>/smt3_data.tsv)."""
+    path = ROOT / "config" / version / "smt3_data.tsv"
+    out = {}
+    if path.exists():
+        for line in path.read_text().splitlines():
+            row = line.split("\t")
+            if line and not line.startswith("#") and len(row) >= 5 and row[4] == "c":
+                out[row[0]] = int(row[1], 16)
+    return out

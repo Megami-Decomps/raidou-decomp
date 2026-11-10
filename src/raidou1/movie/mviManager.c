@@ -257,9 +257,9 @@ void movieViewerFree(void)
     }
 }
 
-INCLUDE_RODATA(const s32, "movie/mviManager", D_004550C8);
+const char movieDrawProcName[16] = "movieDraw";
 
-INCLUDE_RODATA(const s32, "movie/mviManager", D_004550D8);
+const char movieManProcName[16] = "movieMan";
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001D29E0);
 
@@ -313,7 +313,7 @@ void movieDebugDrawInfo(void)
                       0xFF0080, 0);
     }
 }
-INCLUDE_SDATA(const s32, "movie/mviManager", D_0046CD84);
+saddr_t PlayingNo = 0;
 
 INCLUDE_SDATA(const s32, "movie/mviManager", D_0046CD88);
 

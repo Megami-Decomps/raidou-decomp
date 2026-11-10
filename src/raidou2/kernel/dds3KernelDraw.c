@@ -1886,23 +1886,23 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE334);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE338);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE33C);
+u32 dds3RenderTex = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE340);
+sdfGsMemSlice_t *dds3RenderTexHandle = NULL;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE344);
+sdfTexHandle_t *dds3RenderTexture = NULL;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE348);
+u16 dds3RenderTexWidth = 0x80;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE34A);
+u16 dds3RenderTexHeight = 0x80;
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE34C);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE350);
+u32 dds3DrawFlag = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE354);
+u8 dds3ScreenBlurFlag = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE356);
+s16 dds3ScreenBlurAlpha = 0x60;
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE358);
 
@@ -1912,9 +1912,9 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE364);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE368);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE36A);
+s16 dds3QuakeFrame = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE36C);
+u16 dds3QuakeXRange = 0;
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE36E);
 
@@ -1944,7 +1944,7 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE38C);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE390);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE394);
+u32 distblurovercnt = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_004DE398);
+u32 ripblurovercnt = 0;
 

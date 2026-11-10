@@ -22,7 +22,7 @@ import re
 import sys
 from pathlib import Path
 
-from units import unit_sources, write_unit
+from units import carried_data, unit_sources, write_unit
 
 ROOT = Path(__file__).resolve().parent.parent
 LINE = re.compile(r'^INCLUDE_SDATA\([^,]+,\s*"[^"]+",\s*(\w+)\);\n\n?', re.M)
@@ -65,6 +65,10 @@ def place(version):
     alias_names = {}
     for n, a in re.findall(r"^(\w+) = 0x([0-9A-Fa-f]+);", (ROOT / "config" / version / "smt3_symbols.txt").read_text(), re.M):
         alias_names.setdefault(int(a, 16), []).append(n)
+    # SMT3 data definitions carried into C sit at their definition.
+    for n, a in carried_data(version).items():
+        names.setdefault(n, a)
+        alias_names.setdefault(a, []).append(n)
     added = 0
     for unit, c in unit_sources(version).items():
         data = ROOT / "asm" / version / "data" / f"{unit}.sdata.s"
@@ -100,8 +104,9 @@ def place(version):
         for m in DATA_DEF.finditer(text):
             n = m.group(1)
             addr = names.get(n, int(n[2:], 16) if re.fullmatch(r"D_[0-9A-F]{8}", n) else None)
-            if addr is not None and any(a == addr for a, _ in syms):
-                anchors.append((addr, m.start(), n))
+            sym = next((s for a, s in syms if a == addr), None) if addr is not None else None
+            if sym is not None:
+                anchors.append((addr, m.start(), sym))
         full = ROOT / "asm" / version / f"{unit}.s"
         refs = {}
         written_symbols = set()

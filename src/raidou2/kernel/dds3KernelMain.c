@@ -294,17 +294,17 @@ void dds3SoftResetOff(void)
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", func_001005C0);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", func_001005C8);
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE20C);
+u32 dds3PauseSign = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE210);
+u32 dds3PauseTime = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE214);
+u32 dds3SlowSign = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE218);
+u32 dds3SlowTime = 4;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE21C);
+u32 dds3SlowRunCount = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE220);
+u32 dds3SlowEndCount = 0;
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE224);
 

@@ -589,11 +589,11 @@ INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycAllocEntry);
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_00103618);
 
+char dds3AdminiProcessName[8] = "Admini";
+
+s32 fclEncycHead = -1;
+
 INCLUDE_RODATA(const s32, "kernel/dds3AdminiProcess", D_00444898);
-
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_0046B198);
-
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_0046B1A0);
 
 INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_0046B1A4);
 
