@@ -842,6 +842,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("unit", type=Path)
     ap.add_argument("-v", "--verbose", action="store_true", help="print every differing instruction")
+    ap.add_argument("--version", default="raidou1", help="version to check a src/shared unit against")
     ap.add_argument("--func", help="only report this function")
     ap.add_argument("--source", type=Path, help="compile this file instead of the unit (same unit layout)")
     ap.add_argument("--cflags", default="", help="extra cc1 flags (experiments)")
@@ -850,7 +851,11 @@ def main():
     source = args.source.resolve() if args.source else unit
     source_text = drop_nonmatching(source.read_text())
     version = unit.relative_to(ROOT / "src").parts[0]
-    unit_name = unit.relative_to(ROOT / "src" / version).with_suffix("").as_posix()
+    if version == "shared":
+        version = args.version
+        unit_name = unit.relative_to(ROOT / "src" / "shared").with_suffix("").as_posix()
+    else:
+        unit_name = unit.relative_to(ROOT / "src" / version).with_suffix("").as_posix()
     syms = symbols(version)
     aliases = load_symbol_aliases(ROOT, version)
     syms.update({alias.name: alias.address for alias in aliases})
@@ -1618,7 +1623,7 @@ def main():
         wanted -= set(subprocess.run(["grep", "-rhoE", rf"^\s*(glabel|dlabel|jlabel|nonmatching) ({alt})\b",
                                       str(ROOT / "asm" / version)], capture_output=True, text=True).stdout.split()[1::2])
     if wanted:
-        for path in subprocess.run(["grep", "-rlwE", "|".join(sorted(wanted)), str(ROOT / "src" / version)],
+        for path in subprocess.run(["grep", "-rlwE", "|".join(sorted(wanted)), str(ROOT / "src" / version), str(ROOT / "src" / "shared")],
                                    capture_output=True, text=True).stdout.splitlines():
             source = Path(path).read_text()
             wanted = {n for n in wanted if not re.search(

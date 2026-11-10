@@ -19,7 +19,7 @@ stays `INCLUDE_ASM`.
 
 - Each TU is one file with its C bodies inline in link order and
   `INCLUDE_ASM` for the rest, as in smt3-decomp. A TU with the same text in
-  both games is `src/<unit>.c`, compiled into each version (its `INCLUDE_ASM`
+  both games is `src/shared/<unit>.c`, compiled into each version (its `INCLUDE_ASM`
   lines resolve against that version's `asm/<version>/`). A TU that differs
   (other `func_`/`D_` names, other bodies) is `src/<version>/<unit>.c`; the
   per-game file wins. `tools/units.py` resolves a unit to its file, and

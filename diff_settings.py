@@ -14,7 +14,7 @@ def apply(config, args):
     config["baseimg"] = f"orig/{version}/{serial}"
     config["myimg"] = f"build/{version}/{serial}"
     config["mapfile"] = f"build/{version}/{serial}.map"
-    config["source_directories"] = [f"src/{version}", "include", f"asm/{version}"]
+    config["source_directories"] = [f"src/{version}", "src/shared", "include", f"asm/{version}"]
     config["objdump_executable"] = "tools/bin/mips-ps2-decompals-objdump"
     config["make_command"] = ["ninja"]
     config["build_dir"] = f"build/{version}"

@@ -1,7 +1,7 @@
 """Where each C translation unit's source lives.
 
-A TU both games build the same way is one file, src/<unit>.c, compiled into each
-version; a TU that differs has a file per game, src/<version>/<unit>.c. The
+A TU both games build the same way is one file, src/shared/<unit>.c, compiled into
+each version; a TU that differs has a file per game, src/<version>/<unit>.c. The
 per-game file wins when both exist.
 """
 import json
@@ -10,15 +10,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 VERSIONS = json.loads((ROOT / "config" / "versions.json").read_text())
 SRC = ROOT / "src"
+SHARED = SRC / "shared"
 
 
 def shared_sources():
     """Unit name -> path of every shared TU."""
     out = {}
-    for path in sorted(SRC.rglob("*.c")):
-        rel = path.relative_to(SRC)
-        if rel.parts[0] not in VERSIONS:
-            out[rel.with_suffix("").as_posix()] = path
+    for path in sorted(SHARED.rglob("*.c")):
+        out[path.relative_to(SHARED).with_suffix("").as_posix()] = path
     return out
 
 
@@ -34,7 +33,7 @@ def unit_name(path):
     """Unit name of a source path (absolute, or relative to the repository)."""
     path = Path(path)
     rel = (path if not path.is_absolute() else path.relative_to(ROOT)).relative_to("src")
-    if rel.parts[0] in VERSIONS:
+    if rel.parts[0] in VERSIONS or rel.parts[0] == "shared":
         rel = rel.relative_to(rel.parts[0])
     return rel.with_suffix("").as_posix()
 
@@ -42,7 +41,7 @@ def unit_name(path):
 def is_shared(path):
     path = Path(path)
     rel = (path if not path.is_absolute() else path.relative_to(ROOT)).relative_to("src")
-    return rel.parts[0] not in VERSIONS
+    return rel.parts[0] == "shared"
 
 
 def write_unit(version, path, text):

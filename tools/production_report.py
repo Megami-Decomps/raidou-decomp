@@ -26,7 +26,7 @@ sys.path.insert(0, str(ROOT))
 VERSIONS = json.loads((ROOT / "config/versions.json").read_text())
 VERSION_PATTERN = "|".join(re.escape(version) for version in VERSIONS) or r"(?!)"
 # build/<version>/[base/]src/[<version>/]<unit>.o, the objects a C unit compiles to
-# (src/<unit>.c is a TU both games share).
+# (src/shared/<unit>.c is a TU both games share).
 OBJECT_PATH = re.compile(rf"build/({VERSION_PATTERN})/(?:base/)?(src/(?:\1/)?.+)\.o")
 LINKED_OBJECT_PATH = re.compile(rf"build/({VERSION_PATTERN})/(src/(?:\1/)?.+)\.o")
 
@@ -34,7 +34,8 @@ LINKED_OBJECT_PATH = re.compile(rf"build/({VERSION_PATTERN})/(src/(?:\1/)?.+)\.o
 def unit_source(root: Path, version: str, name: str) -> str:
     """The source a version compiles for a unit: its own file, else the shared one."""
     own = f"src/{version}/{name}.c"
-    return own if (root / own).is_file() or not (root / f"src/{name}.c").is_file() else f"src/{name}.c"
+    shared = f"src/shared/{name}.c"
+    return own if (root / own).is_file() or not (root / shared).is_file() else shared
 
 
 def percent(numerator: int, denominator: int) -> float:
@@ -520,7 +521,7 @@ def reconcile(report: dict, scope: str, root: Path = ROOT, *,
 
     for version, production in proofs.items():
         prefix = f"build/{version}/src/"
-        expected = {re.sub(rf"^{version}/", "", path[len(prefix):-2]) for path in production.map
+        expected = {re.sub(rf"^(?:{version}|shared)/", "", path[len(prefix):-2]) for path in production.map
                     if path.startswith(prefix)} - outside
         # A game-scope report leaves non-game units out of its unit list
         # altogether, so they are never in `outside` either.

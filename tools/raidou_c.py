@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from check_unit import drop_nonmatching  # noqa: E402
 from retail_elf import VERSIONS  # noqa: E402
-from units import SRC, shared_sources, unit_name, unit_sources  # noqa: E402
+from units import SHARED, SRC, shared_sources, unit_name, unit_sources  # noqa: E402
 
 OUT = ROOT / "build" / "raidou_c"
 # Read only: the smt3-port checkout follows smt3-decomp upstream.
@@ -1079,7 +1079,7 @@ def write_tus(texts):
     shared file; otherwise each game has its own. Returns the number of files changed."""
     written = 0
     for unit, by_version in texts.items():
-        shared = SRC / f"{unit}.c"
+        shared = SHARED / f"{unit}.c"
         own = {v: SRC / v / f"{unit}.c" for v in VERSIONS}
         same = len(by_version) == len(VERSIONS) and len(set(by_version.values())) == 1
         want = {shared: next(iter(by_version.values()))} if same else {own[v]: x for v, x in by_version.items()}

@@ -84,3 +84,9 @@ different units would be a conflict; there are none.
 - An `.sdata` block that starts unaligned with no aligned symbol of its own (a
   lone `char`) stays in the chunk before it: an ee-as `.sdata` section is
   word-aligned, so the object could not start there.
+
+## Source layout
+
+A TU both games compile the same way is `src/shared/<unit>.c`; a TU that
+differs is `src/<version>/<unit>.c`, and the per-game file wins.
+`tools/units.py` resolves a unit to its file. See [shared-c.md](shared-c.md).

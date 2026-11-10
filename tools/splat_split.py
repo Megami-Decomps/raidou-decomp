@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""`splat split` that reads src/<unit>.c (a TU both games share) when
+"""`splat split` that reads src/shared/<unit>.c (a TU both games share) when
 src/<version>/<unit>.c is missing.  Usage: tools/splat_split.py <yaml>"""
 import sys
 from pathlib import Path
@@ -14,7 +14,7 @@ _out_path = CommonSegC.out_path
 def out_path(self):
     path = _out_path(self)
     src = Path(options.opts.src_path)
-    shared = src.parent / path.relative_to(src)
+    shared = src.parent / "shared" / path.relative_to(src)
     return shared if not path.exists() and shared.exists() else path
 
 
