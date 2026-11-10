@@ -1377,11 +1377,11 @@ s32 sceTtyInit(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libkernl/tty", D_004DB9D0);
+const char ttyMsgPacketTooLarge[40] = "TTY: packet size larger than expect\n";
 
-INCLUDE_RODATA(const s32, "sdk/libkernl/tty", D_004DB9F8);
+const char ttyMsgReceiveError[24] = "TTY: receive error";
 
-INCLUDE_RODATA(const s32, "sdk/libkernl/tty", D_004DBA10);
+const char ttyMsgSendError[24] = "TTY: send err %d\n";
 
-INCLUDE_RODATA(const s32, "sdk/libkernl/tty", D_004DBA28);
+const char ttyMsgWlenError[24] = "TTY: err ti->wlen=%08x\n";
 

@@ -120,7 +120,7 @@ INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42CC);
 
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42D4);
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42D5);
+volatile u8 sdfDrawSyncFlag = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42D6);
 
@@ -128,7 +128,7 @@ INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42D8);
 
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42D9);
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42DA);
+u8 sdfGrBufferSlot = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42DB);
+volatile s8 sdfReqDrawDelayCount = 0;
 

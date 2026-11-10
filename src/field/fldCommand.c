@@ -677,5 +677,5 @@ s32 fldCommand_GetHojiID(char *pName) {
     return 0;
 }
 
-INCLUDE_SDATA(const s32, "field/fldCommand", D_004DF1F0);
+char fldHojiNameKey[8] = "hoji";
 

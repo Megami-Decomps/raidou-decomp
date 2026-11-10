@@ -162,5 +162,5 @@ void evtMakeEventPackName(s32 index, char *buffer)
     sprintf(buffer, evtPackNameFormat, index);
 }
 
-INCLUDE_SDATA(const s32, "event/evtSound", D_0046CCB0);
+char evtPackNameFormat[8] = "e%03d_p";
 

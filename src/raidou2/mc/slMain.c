@@ -1468,13 +1468,7 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001F2190);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001F21F8);
 
-INCLUDE_RODATA(const s32, "mc/slMain", D_004BC040);
-
-INCLUDE_RODATA(const s32, "mc/slMain", jtbl_004BC050);
-
-INCLUDE_RODATA(const s32, "mc/slMain", D_004BC070);
-
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E157C);
+addr_t baseIconFileHandle = 0;
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E1580);
 
@@ -1482,17 +1476,17 @@ INCLUDE_SDATA(const s32, "mc/slMain", D_004E1584);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E1588);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E158C);
+s32 slExitWaitCnt = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1590);
+u32 gSlNowCardCheck = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1594);
+s32 gslCheckCardWait = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1598);
+u32 gslDrawFlagBg = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E159C);
+u32 gslDrawFlagFile = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15A0);
+s32 gslAnimCnt = 0;
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15A4);
 
@@ -1504,13 +1498,13 @@ INCLUDE_SDATA(const s32, "mc/slMain", D_004E15B0);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15B4);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15B8);
+s32 slChooseSaveIndex = 0;
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15BC);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15C0);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15C4);
+u32 slQueryYesNoMsg = 0;
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15C8);
 
@@ -1518,21 +1512,27 @@ INCLUDE_SDATA(const s32, "mc/slMain", D_004E15CC);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15D0);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15D4);
+s32 slFileSelError = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15D8);
+s32 gslMode = 0;
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15DC);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15E0);
+s32 gslInfoCode = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15E4);
+u32 gslErrorCode = 0;
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15E8);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15EC);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15F0);
+s32 gSlWindowCnt = 0;
+
+INCLUDE_RODATA(const s32, "mc/slMain", D_004BC040);
+
+INCLUDE_RODATA(const s32, "mc/slMain", jtbl_004BC050);
+
+INCLUDE_RODATA(const s32, "mc/slMain", D_004BC070);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E15F4);
 

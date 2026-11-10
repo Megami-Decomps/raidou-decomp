@@ -539,7 +539,7 @@ INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F318);
 
 INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F320);
 
-INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F32C);
+u8 sdfPadManagerMode = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F330);
 

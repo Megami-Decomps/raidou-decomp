@@ -101,8 +101,9 @@ are, since a C object can end short of the next split by its padding.
 
 `port` replaces an `INCLUDE_RODATA`/`INCLUDE_SDATA` line with SMT3's C
 definition when the line's address carries an SMT3 name (`smt3_symbols.txt`)
-that one SMT3 file defines and the TU already has that file's declarations.
-`static` is dropped. SMT3 placeholder names (`D_...`) are not carried, since
+and SMT3 defines that name in C: from a file whose declarations the TU already
+has, else from the one file that defines it, without that file's declarations
+(it stays only if it compiles alone). `static` is dropped. SMT3 placeholder names (`D_...`) are not carried, since
 they would clash with the game's own. A carried name leaves `smt3_symbols.txt`
 (the definition provides it); asm still reaches the address through its
 `PROVIDE(D_...)` fallback. `include_rodata.py` and `include_sdata.py` read the
@@ -113,7 +114,7 @@ in the link (at its address). Within a unit only the first displaced definition
 is blamed; when none is, the last definition in the object before the first
 label the link moved is. A failed one goes back to its line (`asm` in the tsv).
 Some Raidou data differs from SMT3 (sizes, values, an alignment the unit's start
-cannot give), which this catches. 184 definitions in raidou1, 167 in raidou2.
+cannot give), which this catches. 226 definitions in raidou1, 206 in raidou2.
 
 ## Why a function stays asm
 

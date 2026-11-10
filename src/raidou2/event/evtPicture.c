@@ -237,5 +237,5 @@ INCLUDE_SDATA(const s32, "event/evtPicture", D_004DFA68);
 
 char evtPictureProcName[8] = "Picture";
 
-INCLUDE_SDATA(const s32, "event/evtPicture", D_004DFA78);
+u16 skyanime = 0;
 

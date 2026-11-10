@@ -461,7 +461,7 @@ u8 sdfFileHddPrefix[8] = "pfs0:";
 
 char sdfFileCdromName[8] = "cdrom";
 
-INCLUDE_SDATA(const s32, "sdf/sdfFile", D_0046F3A8);
+sdfFileCmdHandle_t *sdfFileCmdActiveHead = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFile", D_0046F3AC);
+sdfFileCmdHandle_t *sdfFileCmdFreeList = NULL;
 

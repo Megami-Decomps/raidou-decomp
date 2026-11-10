@@ -537,12 +537,13 @@ def tu_data(smt3, text, rows):
 
 
 def port_data(smt3, text, unit, rels, ctx):
-    """Swap INCLUDE_RODATA/SDATA lines at SMT3-named addresses for SMT3's C definition
-    when the TU has that file's declarations; put failed ones back."""
+    """Swap INCLUDE_RODATA/SDATA lines at SMT3-named addresses for SMT3's C definition,
+    preferring a file whose declarations the TU has (else the definition alone, if it
+    compiles); put failed ones back."""
     rows, retry = ctx["rows"], ctx["retry"]
     for name, (rel, a, b) in sorted(tu_data(smt3, text, rows).items(), key=lambda x: -x[1][1]):
         row = rows[name]
-        if row["status"] == "asm" or rel not in rels:
+        if row["status"] == "asm":
             text = text[:a] + data_line(unit, row["kind"], row["address"]) + text[b:]
 
     def to_c(m):
@@ -554,7 +555,9 @@ def port_data(smt3, text, unit, rels, ctx):
             row = rows.get(name)
             if row and row["status"] == "asm" and not (retry and retry.search(row["reason"])):
                 continue
-            found += [(name, r, d) for r, d in smt3_data(smt3).get(name, []) if r in rels]
+            have = smt3_data(smt3).get(name, [])
+            found += [(name, r, d) for r, d in have if r in rels] or (
+                [(name, r, d) for r, d in have] if len(have) == 1 else [])
         if len(found) != 1:
             return m.group(0)
         name, rel, d = found[0]
@@ -1202,9 +1205,9 @@ def cmd_verify(args):
             text = src.read_text()
             spans = tu_bodies(smt3, text, cands)
             bodies = {fn: known[fn] for fn in spans}
-            if not bodies:
-                continue
             dspans = tu_data(smt3, text, carried)
+            if not bodies and not dspans:
+                continue
             f, other = blame_errors(text, {**spans, **dspans}, compile_fails.get((version, unit), []))
             data_fails.update({n: why for n, why in f.items() if n in dspans})
             f = {fn: why for fn, why in f.items() if fn in spans}
@@ -1230,10 +1233,11 @@ def cmd_verify(args):
             # drops it once the function is C, so the C must emit it.
             owns = {fn: owned_data(function_asm(version, unit, fn), known) for fn in bodies}
             owns = {fn: a for fn, a in owns.items() if a}
-            f, n = check_object(version, obj, {k: v for k, v in bodies.items() if k not in fails},
-                                retail, segs, gp, sizes, known, owns, set(dspans))
-            fails.update(f)
-            needs.update(n)
+            if bodies:
+                f, n = check_object(version, obj, {k: v for k, v in bodies.items() if k not in fails},
+                                    retail, segs, gp, sizes, known, owns, set(dspans))
+                fails.update(f)
+                needs.update(n)
         data_fails.update(check_data(version, {n: carried[n]["address"] for n in data_objs}, data_objs, data_units, retail, segs))
         # A link that did not happen decides nothing: those stay C for the next build.
         data_fails = {n: why for n, why in data_fails.items() if why != "no link"}

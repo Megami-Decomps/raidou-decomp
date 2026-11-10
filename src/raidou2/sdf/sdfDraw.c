@@ -1111,17 +1111,17 @@ INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E42E4);
 
 u32 sdfDrawFrameCount = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E42EC);
+u8 corePktSoftenBias = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E42F0);
+s32 sdfMatAllocCount = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E42F4);
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E42F8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E4300);
+f32 sdfFaceDivSoften = 7.0f;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E4304);
+f32 sdfFaceDivBias = 0.0f;
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E4308);
 

@@ -118,17 +118,17 @@ s32 sdfGrPacketBuffPtr = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2B4);
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2BC);
+volatile u8 sdfDrawFrameFlag = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2BD);
+volatile u8 sdfDrawSyncFlag = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2BE);
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2C0);
+volatile u8 sdfDrawPublishFlag = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2C1);
+u8 sdfGrDrawFrameId = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2C2);
+u8 sdfGrBufferSlot = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2C3);
+volatile s8 sdfReqDrawDelayCount = 0;
 

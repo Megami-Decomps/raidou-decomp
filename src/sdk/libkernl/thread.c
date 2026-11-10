@@ -1284,5 +1284,5 @@ s32 iRotateThreadReadyQueue(s32 priority)
 
 INCLUDE_ASM(const s32, "sdk/libkernl/thread", iSuspendThread);
 
-INCLUDE_RODATA(const s32, "sdk/libkernl/thread", D_004DB9A8);
+const char kernlInternalErrorMsg[40] = "## internel error in libkernl.a!\n";
 

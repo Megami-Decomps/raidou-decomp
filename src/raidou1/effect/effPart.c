@@ -1689,5 +1689,5 @@ effPartHandle_t *dds3EffectPCPDataPartCreate(dds3EffectPCPData_t *hPCPData, u32 
     return dds3EffectPartCreate(type, pData);
 }
 
-INCLUDE_SDATA(const s32, "effect/effPart", D_0046D094);
+s32 effPartModelSerial = 0;
 

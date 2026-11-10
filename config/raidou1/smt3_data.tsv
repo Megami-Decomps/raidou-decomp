@@ -3,8 +3,10 @@ BlinkMultiBlurCount	0x0046D098	SDATA	effect/effPCPMisc	c
 EffEveCPSmokeCount	0x0046D068	SDATA	effect/effEvent	c
 PlayingNo	0x0046CD84	SDATA	movie/mviManager	c
 alreadyInitDevCons	0x0046F354	SDATA	sdf/sdfDevCons	c
+baseIconFileHandle	0x0046CDE0	SDATA	field/fldSe	c
 cdvdMsgClockRead1	0x00465F88	RODATA	sdk/libcdvd	c
 cdvdMsgClockRead2	0x00465FA8	RODATA	sdk/libcdvd	c
+corePktSoftenBias	0x0046F2D4	SDATA	sdf/sdfModel	c
 dds3AdminiProcessName	0x0046B198	SDATA	kernel/dds3AdminiProcess	c
 dds3BackColor	0x0046B23C	SDATA	kernel/dds3KernelDraw	asm	bytes differ at +0x3
 dds3BasicPosLabel	0x0046B468	SDATA	basic/dds3DbgBasic	c
@@ -37,8 +39,10 @@ dds3ScreenBlurAlpha	0x0046B25A	SDATA	kernel/dds3KernelDraw	c
 dds3ScreenBlurFlag	0x0046B258	SDATA	kernel/dds3KernelDraw	c
 dds3ScreenBlurScale	0x0046B25C	SDATA	kernel/dds3KernelDraw	c
 dds3TrackPolyTag	0x0046CF70	SDATA	effect/polyManager	c
+dds3VblanksPerFrame	0x0046B12C	SDATA	kernel/dds3KernelMain	asm	bytes differ at +0x0
 devConsTop	0x0046F350	SDATA	sdf/sdfDevCons	c
 distblurovercnt	0x0046B290	SDATA	kernel/dds3KernelDraw	c
+effPartModelSerial	0x0046D094	SDATA	effect/effBattleLight	c
 egl_OT_Offset	0x0046B238	SDATA	kernel/dds3KernelDraw	asm	bytes differ at +0x0
 endinglistcnt	0x0046B164	SDATA	kernel/dds3KernelCore	c
 endinglistf	0x0046B15C	SDATA	kernel/dds3KernelCore	c
@@ -71,6 +75,7 @@ evtMsgObjPathWaitNoObj	0x0044E640	RODATA	event/evtCommand	c
 evtMsgReadBeStart	0x0044E680	RODATA	event/evtCommand	c
 evtMsgSetSkyAlphaHigh	0x0044E858	RODATA	event/evtCommand	asm	bytes differ at +0x28
 evtMsgSetSkyAlphaLow	0x0044E830	RODATA	event/evtCommand	c
+evtPackNameFormat	0x0046CCB0	SDATA	event/evtSky	c
 evtPictureProcName	0x0046C800	SDATA	event/evtPicture	c
 evtSkyProcName	0x0046C810	SDATA	event/evtSky	asm	next item at +0x8, retail +0x10
 execDefaultPath	0x00469280	RODATA	sdk/libkernl	c
@@ -81,6 +86,7 @@ fileManagerProcName	0x0046CDC8	SDATA	file/fileManager	c
 fldAutoMapSeqFlags	0x0046B6E0	SDATA	field/fldProcess	asm	size 0x8, retail 0x4
 fldDrwZBuf	0x0046B738	SDATA	field/fldDraw	c
 fldEncountFlags	0x0046B6E8	SDATA	field/fldProcess	c
+fldHojiNameKey	0x0046BF60	SDATA	field/fldSe	c
 fldTestDrawName	0x00447278	RODATA	field/fldTest	asm	bytes differ at +0x3
 gMessageRequestResult	0x0046C1A4	SDATA	interface/frFont	c
 gMessageStepY	0x0046C1AC	SDATA	interface/frFont	asm	bytes differ at +0x0
@@ -88,13 +94,27 @@ gModeFlag	0x0046C1C0	SDATA	interface/frFont	asm	bytes differ at +0x0
 gMsgFlag	0x0046B5BC	SDATA	facility/fclMisc	c
 gMsgID	0x0046B5B8	SDATA	facility/fclMisc	c
 gMsgInvFlag	0x0046B5BD	SDATA	facility/fclMisc	c
+gSlNowCardCheck	0x0046CDF4	SDATA	field/fldSe	c
+gSlWindowCnt	0x0046CE54	SDATA	field/fldSe	c
+gslAnimCnt	0x0046CE04	SDATA	field/fldSe	c
+gslCheckCardWait	0x0046CDF8	SDATA	field/fldSe	c
+gslDrawFlagBg	0x0046CDFC	SDATA	field/fldSe	c
+gslDrawFlagFile	0x0046CE00	SDATA	field/fldSe	c
+gslErrorCode	0x0046CE48	SDATA	field/fldSe	c
+gslInfoCode	0x0046CE44	SDATA	field/fldSe	c
+gslMode	0x0046CE3C	SDATA	field/fldSe	c
 hDrawListTop	0x0046CF6C	SDATA	effect/polyManager	c
 hEffEveCPSmokeBill01Tex	0x0046D06C	SDATA	effect/effEvent	c
 hEffEveCPSmokeBill02Tex	0x0046D070	SDATA	effect/effEvent	c
+itfGaugeQuadColorIndex	0x0046C200	SDATA	interface/frName	c
+itfGaugeQuadVertexIndex	0x0046C1F8	SDATA	interface/frName	c
 itfPanelPlainRectColorIndex	0x0046C220	SDATA	interface/itfPanel	c
 itfPanelPlainRectVertexIndex	0x0046C218	SDATA	interface/itfPanel	c
+kernlInternalErrorMsg	0x00468FD8	RODATA	sdk/libc	c
 libgccCieAugEh	0x004682A8	RODATA	sdk/libgcc	c
 libgccCieAugEmpty	0x004682A0	RODATA	sdk/libgcc	c
+localeCName	0x00468DC8	RODATA	sdk/libc	c
+localeEmptyStr	0x00468DB8	RODATA	sdk/libc	c
 mdlColorByteFormat	0x0046C3C8	SDATA	model/mdlEffect	c
 mdlHddFileIndexHandle	0x0046C384	SDATA	model/mdlManager	c
 mdlHddFileListHandle	0x0046C388	SDATA	model/mdlManager	c
@@ -114,24 +134,32 @@ p2sdPcmState	0x0046F430	SDATA	sdf/sdfSound	c
 p2sdSmgBuf	0x0046F440	SDATA	sdf/sdfSound	c
 p2sdSmgHandle	0x0046F428	SDATA	sdf/sdfSound	c
 padDmaFailMsg	0x00465C70	RODATA	sdk/libpad	asm	next item at +0x98, retail +0x48
+pow10Table	0x00468DE0	RODATA	sdk/libc	c
 putsNewline	0x004684B0	RODATA	sdk/libc	c
 ripblurovercnt	0x0046B294	SDATA	kernel/dds3KernelDraw	c
+rsetFrameMaskOtOffset	0x0046B730	SDATA	field/fldFileResolver	asm	bytes differ at +0x0
 runninglistcnt	0x0046B170	SDATA	kernel/dds3KernelCore	c
 runninglistf	0x0046B168	SDATA	kernel/dds3KernelCore	c
 runninglistl	0x0046B16C	SDATA	kernel/dds3KernelCore	c
 sceDmaChanResetFlag	0x00465C18	RODATA	sdk/libdma	c
 sceGsExecLoadImageDma2Msg	0x004659F0	RODATA	sdk/libgraph	c
 sceSifMModeErrorString	0x004660E8	RODATA	sdk/libmrpc	c
+scrCommandTable	0x00444D88	RODATA	script/scrTraceCode	asm	bytes differ at +0xEC
 scrHandleCount	0x0046B450	SDATA	kernel/dds3SequenceList	c
 scrHandleFirst	0x0046B454	SDATA	kernel/dds3SequenceList	c
 scrHandleLast	0x0046B458	SDATA	kernel/dds3SequenceList	asm	last in the object before the first moved label
+sdf3DFogDefault	0x0046F308	SDATA	sdf/sdf3D	asm	compile error: conflicting types for `sdf3DFogDefault'
+sdf3DLightDefault	0x0046F304	SDATA	sdf/sdf3D	asm	compile error: conflicting types for `sdf3DLightDefault'
 sdf3DRefMapParam	0x0046F318	SDATA	sdf/sdf3D	asm	linked at 0x0046F320, retail 0x0046F318
 sdf3DSlot1Tex	0x0046F320	SDATA	sdf/sdf3D	asm	next item at +0x4, retail +0xC
 sdf3DSlot2Tex	0x0046F30C	SDATA	sdf/sdf3D	asm	linked at 0x0046F310, retail 0x0046F30C
 sdf3DSpecularTex	0x0046F310	SDATA	sdf/sdf3D	asm	next item at +0x4, retail +0x8
+sdfCdClock	0x0046F418	SDATA	sdf/sdfRand	asm	last in the object before the first moved label
 sdfCdClockCache	0x0046F420	SDATA	sdf/sdfRand	asm	size 0x8, retail 0x1
+sdfCoreDrawBuffHandle	0x0046F2E0	SDATA	sdf/sdfCoreDraw	asm	next item at +0x4, retail +0x8
 sdfCoreDrawBuffSize	0x0046F260	SDATA	sdf/sdfSystem	c
 sdfDelayedResrcSemaId	0x0046F29C	SDATA	sdf/sdfDelayedResrc	c
+sdfDev9Ready	0x0046F410	SDATA	sdf/sdfDev9	asm	next item at +0x1, retail +0x8
 sdfDev9ResidentFailMsg	0x00464B90	RODATA	sdf/sdfDev9	c
 sdfDispFrameId	0x0046F290	SDATA	sdf/sdfGraph	c
 sdfDispThreadFlag	0x0046F281	SDATA	sdf/sdfGraph	c
@@ -141,7 +169,10 @@ sdfDmaNotQwordFmt	0x00464E90	RODATA	sdf/sdfSound	c
 sdfDmaTagLineFmt	0x00464EA8	RODATA	sdf/sdfSound	c
 sdfDmacHandlerTable	0x0046F25C	SDATA	sdf/sdfSystem	c
 sdfDrawFrameCount	0x0046F2D0	SDATA	sdf/sdfDraw	c
+sdfDrawFrameFlag	0x0046F2BC	SDATA	sdf/sdfDraw	c
+sdfDrawPublishFlag	0x0046F2C0	SDATA	sdf/sdfDraw	c
 sdfDrawReqQueueIndex	0x0046F2C8	SDATA	sdf/sdfDraw	c
+sdfDrawSyncFlag	0x0046F2BD	SDATA	sdf/sdfDraw	c
 sdfDumpAddrFmt	0x0046F488	SDATA	sdf/sdfSound	c
 sdfDumpByteFmt	0x0046F4A8	SDATA	sdf/sdfSound	c
 sdfDumpByteSepStr	0x0046F4A0	SDATA	sdf/sdfSound	c
@@ -151,14 +182,18 @@ sdfDumpLineBuf	0x0046F4B0	SDATA	sdf/sdfSound	c
 sdfDumpMidGapStr	0x0046F498	SDATA	sdf/sdfSound	c
 sdfDumpPadStr	0x0046F490	SDATA	sdf/sdfSound	c
 sdfDumpWordFmt	0x0046F580	SDATA	sdf/sdfSound	c
+sdfFaceDivBias	0x0046F2EC	SDATA	sdf/sdfCoreDraw	c
+sdfFaceDivSoften	0x0046F2E8	SDATA	sdf/sdfCoreDraw	c
 sdfFileCdromName	0x0046F3A0	SDATA	sdf/sdfFile	c
 sdfFileCdromPrefix	0x0046F388	SDATA	sdf/sdfFile	c
+sdfFileCmdActiveHead	0x0046F3A8	SDATA	sdf/sdfFileIO	c
 sdfFileCmdCacheHead	0x0046F3B4	SDATA	sdf/sdfFileIO	c
 sdfFileCmdCacheTail	0x0046F3B8	SDATA	sdf/sdfFileIO	c
 sdfFileCmdCdromPrefix	0x0046F3D0	SDATA	sdf/sdfFileIO	c
 sdfFileCmdCount	0x0046F3B0	SDATA	sdf/sdfFileIO	c
 sdfFileCmdDefaultCreateMode	0x0046F3C4	SDATA	sdf/sdfFileIO	c
 sdfFileCmdFreeCount	0x0046F3BC	SDATA	sdf/sdfFileIO	c
+sdfFileCmdFreeList	0x0046F3AC	SDATA	sdf/sdfFileIO	c
 sdfFileCmdHostPrefix	0x0046F3D8	SDATA	sdf/sdfFileIO	c
 sdfFileCmdPfsPrefix	0x0046F3E0	SDATA	sdf/sdfFileIO	c
 sdfFileCmdThreadPrio	0x0046F3C0	SDATA	sdf/sdfFileIO	c
@@ -169,11 +204,13 @@ sdfFileHostPrefix	0x0046F390	SDATA	sdf/sdfFile	c
 sdfFileSemaId	0x0046F384	SDATA	sdf/sdfFile	c
 sdfFrameEvenOdd	0x0046F271	SDATA	sdf/sdfMemory	c
 sdfFrameId	0x0046F27A	SDATA	sdf/sdfGraph	c
+sdfGrBufferSlot	0x0046F2C2	SDATA	sdf/sdfDraw	c
 sdfGrCaptureBuff	0x0046F280	SDATA	sdf/sdfGraph	c
 sdfGrCaptureReq	0x0046F284	SDATA	sdf/sdfGraph	c
 sdfGrCaptureTarget	0x0046F288	SDATA	sdf/sdfGraph	c
 sdfGrDrawBusy	0x0046F292	SDATA	sdf/sdfGraph	c
 sdfGrDrawFirstFlag	0x0046F270	SDATA	sdf/sdfMemory	c
+sdfGrDrawFrameId	0x0046F2C1	SDATA	sdf/sdfDraw	c
 sdfGrDrawFrameTagHead	0x0046F2CC	SDATA	sdf/sdfDraw	c
 sdfGrGsResetDone	0x0046F279	SDATA	sdf/sdfGraph	c
 sdfGrPacketBuffBase	0x0046F2A8	SDATA	sdf/sdfPacketBuff	c
@@ -188,18 +225,31 @@ sdfGsMemNodeFmt	0x00465420	RODATA	sdf/sdfSound	c
 sdfGsMemTypeFmt	0x0046F5A8	SDATA	sdf/sdfSound	asm	size 0x8, retail 0x4
 sdfIopModulePathCdrom	0x00465670	RODATA	sdf/sdfTmx	c
 sdfIopModulePathHost	0x00465690	RODATA	sdf/sdfTmx	c
+sdfMatAllocCount	0x0046F2D8	SDATA	sdf/sdfMat	c
 sdfMemFullCallback	0x0046F26C	SDATA	sdf/sdfMemory	c
 sdfMovieIpsExt	0x0046F5D0	SDATA	sdf/sdfMovie	c
+sdfPadManagerMode	0x0046F32C	SDATA	sdf/sdf_PadManager	c
 sdfPrintIopFlag	0x0046F358	SDATA	sdf/sdfPrint	c
 sdfPrintStrFmt	0x0046F360	SDATA	sdf/sdfPrint	c
+sdfReqDrawDelayCount	0x0046F2C3	SDATA	sdf/sdfDraw	c
 sdfReqDrawDelaySleepCount	0x0046F2C4	SDATA	sdf/sdfDraw	c
 sdfSndSendCmd_cmd_id	0x0046F438	SDATA	sdf/sdfSound	c
+sdfTexHandleLink	0x0046F298	SDATA	sdf/sdfTex	c
 sdfTickCallback	0x0046F264	SDATA	sdf/sdfSystem	c
 sdfVblankFlag	0x0046F268	SDATA	sdf/sdfSystem	c
 sdfVifMaskedName	0x0046F4C0	SDATA	sdf/sdfSound	c
 sdfVifXferOkName	0x0046F4C8	SDATA	sdf/sdfSound	c
+skyanime	0x0046C808	SDATA	event/evtSky	c
+slChooseSaveIndex	0x0046CE1C	SDATA	field/fldSe	c
+slExitWaitCnt	0x0046CDF0	SDATA	field/fldSe	c
+slFileSelError	0x0046CE38	SDATA	field/fldSe	c
+slQueryYesNoMsg	0x0046CE28	SDATA	field/fldSe	c
 startinglistcnt	0x0046B158	SDATA	kernel/dds3KernelCore	c
 startinglistf	0x0046B150	SDATA	kernel/dds3KernelCore	c
 startinglistl	0x0046B154	SDATA	kernel/dds3KernelCore	c
 testMsgTexIndex	0x0046C2B8	SDATA	interface/itfTestMesManager	c
 testMsgTexture	0x0046C2BC	SDATA	interface/itfTestMesManager	c
+ttyMsgPacketTooLarge	0x00469000	RODATA	sdk/libc	c
+ttyMsgReceiveError	0x00469028	RODATA	sdk/libc	c
+ttyMsgSendError	0x00469040	RODATA	sdk/libc	c
+ttyMsgWlenError	0x00469058	RODATA	sdk/libc	c

@@ -1229,17 +1229,17 @@ u32 sdfGrDrawFrameTagHead = 0;
 
 u32 sdfDrawFrameCount = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2D4);
+u8 corePktSoftenBias = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2D8);
+s32 sdfMatAllocCount = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2DC);
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2E0);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2E8);
+f32 sdfFaceDivSoften = 7.0f;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2EC);
+f32 sdfFaceDivBias = 0.0f;
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2F0);
 

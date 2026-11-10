@@ -367,5 +367,5 @@ sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 aW, s32 aH, s32 aPixelFormat)
 
 void (*sdfGsErrorHandler)(s32 size, s32 type) = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfGsMemory", D_004E42B0);
+sdfTexHandle_t *sdfTexHandleLink = NULL;
 

@@ -645,7 +645,7 @@ u32 itfCamp(void) {
 }
 
 INCLUDE_ASM(const s32, "interface/itfMisc", func_0019A170);
-INCLUDE_SDATA(const s32, "interface/itfMisc", D_004DF4B0);
+u8 itfGaugeQuadVertexIndex[8] = { 0, 1, 4, 3, 1, 2, 5, 4 };
 
-INCLUDE_SDATA(const s32, "interface/itfMisc", D_004DF4B8);
+u8 itfGaugeQuadColorIndex[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
