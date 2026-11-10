@@ -551,7 +551,7 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
     )
     n.rule(
         "ld",
-        f"{LD} -EL -T $ldscript -T $undef_syms -T $undef_funcs -Map $map --no-check-sections -o $out && "
+        f"{LD} -EL -T $ldscript -T $undef_syms -T $undef_funcs -T $smt3_syms -Map $map --no-check-sections -o $out && "
         f"{sys.executable} tools/production_report.py record-link $out $map $in",
         description="ld $out",
     )
@@ -633,12 +633,15 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
         n.build(
             str(elf), "ld", [str(o) for o in objects],
             implicit=[str(ld_script), f"config/{version}/undefined_syms_auto.txt",
-                      f"config/{version}/undefined_funcs_auto.txt", "tools/production_report.py"],
+                      f"config/{version}/undefined_funcs_auto.txt", f"config/{version}/smt3_symbols.txt",
+                      "tools/production_report.py"],
             implicit_outputs=[str(elf.with_suffix(".map")), str(elf) + ".proof.json"],
             variables={
                 "ldscript": str(ld_script),
                 "undef_syms": f"config/{version}/undefined_syms_auto.txt",
                 "undef_funcs": f"config/{version}/undefined_funcs_auto.txt",
+                # SMT3 names that carried C bodies use for Raidou symbols (tools/raidou_c.py).
+                "smt3_syms": f"config/{version}/smt3_symbols.txt",
                 "map": str(elf.with_suffix(".map")),
             },
         )
