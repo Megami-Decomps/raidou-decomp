@@ -8,12 +8,12 @@ stays `INCLUDE_ASM`.
 
 | | raidou1 | raidou2 |
 |---|---|---|
-| identical to SMT3 C (`pairs`) | 2,631 | 2,601 |
-| compiled from C | 2,490 | 2,469 |
-| units with C | 209 | 211 |
-| SMT3 names in `smt3_symbols.txt` | 1,025 | 1,018 |
+| identical to SMT3 C (`pairs`) | 2,742 | 2,705 |
+| compiled from C | 2,683 | 2,647 |
+| units with C | 218 | 220 |
+| SMT3 names in `smt3_symbols.txt` | 1,119 | 1,099 |
 
-124 of the TUs are one file both games compile; the rest have a file per game.
+120 of the TUs are one file both games compile; the rest have a file per game.
 
 ## Layout
 
@@ -70,6 +70,33 @@ to the body by its line in the TU (or, for a clash in a declarations block, to e
 the unit). `configure.py` must run after `port` reverts a function, because
 splat moves the asm of a C function from `nonmatchings/` to `matchings/`.
 
+## Names from SMT3 C
+
+`raidou_c.py names` names a `func_` function when its masked words (as `pairs`
+compares them, at least 16 words) occur once in the game and once in SMT3 and
+the SMT3 function is C with a real name not yet used in the game. It writes
+`build/raidou_c/names_<v>.tsv` for `raidou_names.py --apply --out-dir
+build/raidou_c` (provenance `unique-masked-hash-c` in `name_sources.txt`; a
+cross-game map that disagrees rejects the name). 111 names in raidou1, 104 in
+raidou2.
+
+## Names bodies want at several addresses
+
+The masked compare hides `%lo` offsets and `jal` targets, so a body can match
+SMT3 while calling another function or reading another offset. When bodies want
+one SMT3 name at several Raidou addresses, `verify` gives the name the address
+most of them want (not one that already has another real name, and not one
+another such name took); the others stay asm. A tie leaves all of them asm.
+
+## Owned rodata
+
+Data only one function uses sits in that function's asm file. When the body
+reaches all of it through SMT3 names, those names go into `smt3_symbols.txt`
+and `include_rodata.py` keeps the data as `INCLUDE_RODATA` before the body.
+`configure.py` resplits when `smt3_symbols.txt` changes for that reason, and
+aligns split `.rodata`/`.data` files at 16-byte addresses to 16 as C objects
+are, since a C object can end short of the next split by its padding.
+
 ## Why a function stays asm
 
 Data a body emits (.rodata strings, jump tables, .lit4 floats) is checked
@@ -77,11 +104,11 @@ against retail and kept when its section lands where retail has it.
 
 | reason | raidou1 | raidou2 | meaning |
 |---|---|---|---|
-| `<name> at 0x..., 0x...` | 79 | 78 | a name the body uses would need two Raidou addresses (a static of the same name in two SMT3 files, or a table laid out differently) |
-| `its rodata is in its asm file` | 21 | 18 | splat moved data only this function uses into its asm file and drops it once the function is C; the C has to define that data |
-| `.rodata base` | 18 | 13 | the body's .rodata would need more than one base, or not the address the unit's split puts it at |
+| `<name> at 0x..., others at 0x...` | 27 | 26 | the body calls another function or uses another offset than SMT3 (hidden by the masked compare) |
 | `size` | 13 | 13 | the object is larger than retail (newlib float functions, qsort: other compiler settings) |
-| `N words differ` | 7 | 7 | same masked words in the split, different object code here (context) |
+| `N words differ` | 8 | 8 | same masked words in the split, different object code here (context) |
+| `<name> at 0x..., 0x...` | 6 | 6 | bodies want a name at several addresses with no majority |
+| `.rodata differs` | 2 | 2 | the emitted strings differ from Raidou's |
 | `local jump` | 2 | 2 | a jump to code elsewhere in the unit at another distance than in SMT3 |
 
 A nested function with an assembler name (`movieMemcpy` in
