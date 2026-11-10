@@ -137,7 +137,7 @@ GetTypeHeader	c
 GetTypeHeader2	c
 InitAlarm	c
 InitExecPS2	c
-InitOoyTest	asm	its rodata is in its asm file
+InitOoyTest	c
 InitTLBFunctions	c
 InitThread	c
 InitializeVariable	c
@@ -190,7 +190,7 @@ RotateMatrixY	c
 RotateMatrixZ	c
 RunningProcess	c
 SDF_QUAT_INNERPRODUCT	c
-SdfFileRpcServerThreadProc	asm	its rodata is in its asm file
+SdfFileRpcServerThreadProc	c
 SdfIopFileRpc	c
 SelectSub	c
 SetArg	c
@@ -288,7 +288,7 @@ _mprec_log10	c
 _multadd	c
 _pow5mult	c
 _printf_r	c
-_puts_r	asm	its rodata is in its asm file
+_puts_r	c
 _raise_r	c
 _ratio	c
 _request_end	c
@@ -313,7 +313,7 @@ _sceRpcGetPacket_0	c
 _sceSifLoadElfPart	c
 _sceSifSendCmd	c
 _search_svdata	c
-_send_to_iop	asm	its rodata is in its asm file
+_send_to_iop	c
 _setlocale_r	c
 _signal_r	c
 _sprintf_r	c
@@ -853,7 +853,7 @@ dds3SpPoly_SphereRingDraw	c
 dds3SpPoly_SphereRingMove	c
 dds3SpPoly_SphereRingSetScale	c
 dds3StartBEDEffectObjectBasic	c
-dds3StartMovieManager	asm	its rodata is in its asm file
+dds3StartMovieManager	c
 dds3StartProcess	c
 dds3StopQuake	c
 dds3TrackPolyColorSet	c
@@ -1280,13 +1280,13 @@ evtCommand_CAM_ROT_XYZ	c
 evtCommand_CAM_SEL_FOVY	c
 evtCommand_CHG_MOON	c
 evtCommand_CHK_BE	c
-evtCommand_DEL_BE	asm	its rodata is in its asm file
+evtCommand_DEL_BE	c
 evtCommand_EFFBED_BE	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtCommand_EFFBED_BE_EVO	c
 evtCommand_EFFBED_LOAD	c
 evtCommand_EFFBED_START	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
 evtCommand_EFFBED_START_EVO	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
-evtCommand_EFFECT_BE	asm	its rodata is in its asm file
+evtCommand_EFFECT_BE	c
 evtCommand_EFFECT_CLS	c
 evtCommand_EFFECT_LINK	c
 evtCommand_EFFECT_LINK2	c
@@ -1316,7 +1316,7 @@ evtCommand_GET_MOON16	c
 evtCommand_KUTI	c
 evtCommand_KUTISET	c
 evtCommand_LIGHT_PATH_WAIT	c
-evtCommand_LOAD_BE	asm	its rodata is in its asm file
+evtCommand_LOAD_BE	c
 evtCommand_LOAD_SOUND_E	c
 evtCommand_MODEL_A	c
 evtCommand_MODEL_BE	asm	.rodata base 0x0044DE58, 0x0044DEB8, 0x0044DEF8
@@ -1336,14 +1336,14 @@ evtCommand_MODEL_SCL_XYZ	c
 evtCommand_MODEL_WAIT	c
 evtCommand_MOON_START	c
 evtCommand_MOON_STOP	c
-evtCommand_OBJ_PATH_WAIT	asm	its rodata is in its asm file
+evtCommand_OBJ_PATH_WAIT	c
 evtCommand_PATH_LOOP_OFF	c
 evtCommand_PATH_LOOP_ON	c
-evtCommand_READ_BE	asm	its rodata is in its asm file
+evtCommand_READ_BE	c
 evtCommand_RESTORE_BATTLE	c
-evtCommand_SEARCH_ID	asm	its rodata is in its asm file
+evtCommand_SEARCH_ID	c
 evtCommand_SET_SKY	c
-evtCommand_SET_SKY_A	asm	its rodata is in its asm file
+evtCommand_SET_SKY_A	c
 evtCommand_TEX_CLS	c
 evtCommand_TEX_OFF	c
 evtCommand_TEX_ON	c
@@ -1374,16 +1374,16 @@ evtHokanRipBlur	c
 evtHokanSceneFog	c
 evtHokanUInt	c
 evtInitEventTest	c
-evtInitFrameVar	asm	its rodata is in its asm file
+evtInitFrameVar	c
 evtInitGlobalWork	c
 evtInitMotionSeProcess	c
 evtKillEventPack	c
-evtKillFieldScript	asm	its rodata is in its asm file
+evtKillFieldScript	c
 evtKillPictureProcess	c
 evtLoadEventBgm	c
 evtLoadEventPack	c
-evtLoadEventScript	asm	its rodata is in its asm file
-evtLoadModelSe	asm	its rodata is in its asm file
+evtLoadEventScript	c
+evtLoadModelSe	c
 evtMakeEventPackName	c
 evtPathDir	c
 evtPathLinkAndMake	c
@@ -1597,7 +1597,7 @@ libc_2D2768	c
 libc_2D27F8	c
 libc_2D2850	c
 libc_2D29B8	c
-libc_2D2B60	asm	its rodata is in its asm file
+libc_2D2B60	c
 libc_2D2C70	c
 libc_2D2D90	c
 libc_2D31E0	c
@@ -1730,7 +1730,7 @@ movieGetStreamSize	c
 movieMan_Process	c
 movieOpenStream	c
 movieParseHeader	c
-moviePlayFile_27041744	asm	its rodata is in its asm file
+moviePlayFile_27041744	c
 movieReadChunk	c
 movieReadHeaderChunk	c
 movieReadNextChunk	c
@@ -1799,7 +1799,7 @@ sceCdDelayThread	c
 sceCdNcmdDiskReady	c
 sceCdPOffCallback	c
 sceCdPowerOff	c
-sceCdReadClock	asm	its rodata is in its asm file
+sceCdReadClock	c
 sceCdSearchFile	c
 sceCdStInit	c
 sceCdStPause	c
@@ -1847,7 +1847,7 @@ sceFormat	c
 sceFsInit	c
 sceFsReset	c
 sceGetstat	c
-sceGsExecLoadImage	asm	its rodata is in its asm file
+sceGsExecLoadImage	c
 sceGsGetGParam	c
 sceGsGetIMR	c
 sceGsPutDispEnv	c
@@ -1878,7 +1878,7 @@ sceMcRead	c
 sceMcRename	c
 sceMcSeek	c
 sceMcSetFileInfo	c
-sceMcUdCheckNewCard	asm	its rodata is in its asm file
+sceMcUdCheckNewCard	c
 sceMcUnformat	c
 sceMcWrite	c
 sceMkdir	c
@@ -1968,7 +1968,7 @@ sceSifSyncIop	c
 sceSifUnloadModule	c
 sceSymlink	c
 sceSync	c
-sceTtyHandler	asm	its rodata is in its asm file
+sceTtyHandler	c
 sceTtyInit	c
 sceTtyRead	c
 sceTtyWrite	c
@@ -2213,7 +2213,7 @@ sdfFileRpcCallback	c
 sdfFileRpcContinueRead	c
 sdfFileRpcHandleCmd	asm	sdfSndMakeFilename at 0x001CF7D8, 0x001CF808
 sdfFileRpcHandler	c
-sdfFileRpcReadCallback	c
+sdfFileRpcReadCallback	asm	.rodata differs at 0x00465670
 sdfFileSeek	c
 sdfFileSetCdFilename	c
 sdfFileSetHddFilename	c
@@ -2732,7 +2732,7 @@ strstr	c
 strtol	c
 supplement_crt0	c
 tanf	asm	size 0x98, retail 0x78
-topThread	asm	its rodata is in its asm file
+topThread	c
 vfprintf	c
 vsprintf	c
 vsprintf_r	c

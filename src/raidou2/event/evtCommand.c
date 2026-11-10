@@ -1787,11 +1787,48 @@ s32 evtCommand_CHG_MOON(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_LOAD_BE);
+/* Create a missing camp task, then wait for its ready value.
+ * No VM context completes immediately; a pending task returns zero. */
+s32 evtCommand_LOAD_BE(void) {
+    s32 taskId = scrGetIntPara(0);
+    scrProcessWork_s *commandWork = scrGetScriptHandle();
+    char *message;
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49C8);
+    if (commandWork == NULL) {
+        return 1;
+    }
+    if (evtSearchEventPack(taskId) == 0) {
+        message = evtMsgLoadBeStart;
+        datDebugPrintf(message, taskId);
+        sdfPrintf(message, taskId);
+        dds3LinkProcess(commandWork->ProcessID, evtLoadEventPack(taskId));
+        return 0;
+    }
+    if (evtGetEventPackStat(taskId) == EVT_CAMP_TASK_READY_VALUE) {
+        message = evtMsgBeOk;
+        datDebugPrintf(message, taskId);
+        sdfPrintf(message, taskId);
+        return 1;
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_READ_BE);
+/* Start the camp task only if no task with this ID exists yet.
+ * A missing VM context completes without creating a task. */
+s32 evtCommand_READ_BE(void) {
+    s32 taskId = scrGetIntPara(0);
+    scrProcessWork_s *commandWork = scrGetScriptHandle();
+
+    if (commandWork == NULL) {
+        return 1;
+    }
+    if (evtSearchEventPack(taskId) != 0) {
+        return 1;
+    }
+    datDebugPrintf(evtMsgReadBeStart, taskId);
+    dds3LinkProcess(commandWork->ProcessID, evtLoadEventPack(taskId));
+    return 1;
+}
 
 u32 evtCommand_CHK_BE(void)
 {
@@ -1810,7 +1847,29 @@ u32 evtCommand_CHK_BE(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_DEL_BE);
+u32 evtCommand_DEL_BE(void)
+{
+    s32 no;
+
+    no = scrGetIntPara(0);
+    if (scrGetScriptHandle() == NULL) {
+        return 1;
+    }
+    if (evtSearchEventPack(no) == 0) {
+        return 1;
+    }
+    datDebugPrintf(evtMsgDelBeStart, no);
+    evtKillEventPack(no);
+    return 1;
+}
+
+INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49B8);
+
+INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49C8);
+
+INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49D8);
+
+INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49E8);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C2590);
 
@@ -1945,7 +2004,22 @@ u32 evtCommand_SET_SKY(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_SET_SKY_A);
+u32 evtCommand_SET_SKY_A(void)
+{
+    s32 alpha;
+
+    alpha = scrGetIntPara(1);
+    if (alpha < -255) {
+        datDebugPrintf(evtMsgSetSkyAlphaLow);
+        alpha = -255;
+    }
+    if (alpha > 255) {
+        datDebugPrintf(evtMsgSetSkyAlphaHigh);
+        alpha = 255;
+    }
+    evtSetSkyAlpha(scrGetIntPara(0), alpha);
+    return 1;
+}
 
 u32 evtCommand_BOKASI_ON(void) {
     evtSetBokasi(1);
@@ -2021,6 +2095,10 @@ u32 evt_1E92F8(void)
     }
     return 1;
 }
+INCLUDE_RODATA(const s32, "event/evtCommand", D_004B4A50);
+
+INCLUDE_RODATA(const s32, "event/evtCommand", D_004B4A78);
+
 INCLUDE_SDATA(const s32, "event/evtCommand", D_004DF840);
 
 INCLUDE_SDATA(const s32, "event/evtCommand", D_004DF844);

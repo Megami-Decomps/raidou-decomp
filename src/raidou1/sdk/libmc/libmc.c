@@ -566,7 +566,14 @@ s32 sceMcGetInfo(s32 a, s32 b, s32 *c, s32 *d, s32 *e)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcUdCheckNewCard);
+s32 sceMcUdCheckNewCard(void)
+{
+    if (sceSifCallRpc(&mcRpcClient, 53, 0, &mcRequest, 48, &mcReplyBuf, 4, 0, 0) != 0) {
+        scePrintf(D_0054AEE8);
+        return -1;
+    }
+    return mcReplyBuf.result;
+}
 
 s32 sceMcGetDir(s32 a, s32 b, char *c, s32 d, s32 e, void *f)
 {
@@ -840,3 +847,6 @@ s32 sceMcGetEntSpace(s32 port, s32 slot, char *name)
     }
     return ret;
 }
+
+INCLUDE_RODATA(const s32, "sdk/libmc/libmc", D_00466290);
+

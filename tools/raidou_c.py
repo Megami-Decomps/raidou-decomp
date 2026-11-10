@@ -668,7 +668,20 @@ def blame_errors(text, bodies, errors):
 R_26, R_HI16, R_LO16, R_GPREL16, R_LITERAL = 4, 5, 6, 7, 8
 
 
-def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known, owns=()):
+def owned_data(asm, known):
+    """Addresses of the data labels in a function's asm file (data only it uses)."""
+    out = set()
+    for kind, name in re.findall(r"^(dlabel|jlabel) (\S+)", asm.read_text(), re.M):
+        if m := re.fullmatch(r"(?:D|jtbl)_([0-9A-F]{8})", name):
+            out.add(int(m.group(1), 16))
+        elif name in known:
+            out.add(known[name])
+        else:
+            out.add(-1)  # unknown: never covered
+    return out
+
+
+def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known, owns={}):
     """Compare each carried body in obj with retail. Returns ({fn: reason},
     {fn: [(symbol, address)]})."""
     from elftools.elf.elffile import ELFFile
@@ -773,8 +786,9 @@ def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known, owns=
                 needs[fn] = need
         text_base = next((addr - defined[fn]["st_value"] for fn, addr in bodies.items() if fn in needs), None)
         fails.update(check_sections(elf, needs, refs, retail, segs, text_base))
-        for fn in owns:
-            if fn in needs and fn not in fails and not refs[fn]:
+        for fn, owned in dict(owns).items():
+            # Owned data the body names externally is kept by include_rodata.py.
+            if fn in needs and fn not in fails and not refs[fn] and not owned <= {a for _, a in needs[fn]}:
                 fails[fn] = "its rodata is in its asm file"
     for fn in fails:
         needs.pop(fn, None)
@@ -913,8 +927,8 @@ def cmd_verify(args):
                      for fn in bodies}
             # splat moves rodata only this function uses into its asm file and
             # drops it once the function is C, so the C must emit it.
-            owns = {fn for fn in bodies
-                    if re.search(r"^(dlabel|jlabel) ", function_asm(version, unit, fn).read_text(), re.M)}
+            owns = {fn: owned_data(function_asm(version, unit, fn), known) for fn in bodies}
+            owns = {fn: a for fn, a in owns.items() if a}
             f, n = check_object(version, obj, {k: v for k, v in bodies.items() if k not in fails},
                                 retail, segs, gp, sizes, known, owns)
             fails.update(f)

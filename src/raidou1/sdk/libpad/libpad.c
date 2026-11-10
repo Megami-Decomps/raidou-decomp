@@ -205,7 +205,42 @@ extern const char padRequestNameFailed[8] __attribute__((section(".rodata")));
 extern const char padRequestNameComplete[16];
 /* End of declarations from src/smt3/sdk/libpad.c */
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", _send_to_iop);
+int _send_to_iop(int port, int slot)
+{
+    padCmd *c = padPortState[port][slot].cmd;
+    sceSifDmaData dma[16];
+    int id;
+    u32 seq;
+    void *destination;
+
+    if (padPortState[port][slot].dmaId != 0) {
+        if (sceSifDmaStat(padPortState[port][slot].dmaId) >= 0) {
+            if (padDebugPrint != 0) {
+                scePrintf(padDmaFailMsg);
+            }
+            return 0;
+        }
+    }
+    seq = c->seq + 1;
+    destination = EE_ADDR_AS(void *, (padPortState[port][slot].iopAddr + ((seq & 1) << 5)));
+    c->seq = seq;
+    SyncDCache(c, (u8 *)c + 0x20);
+    dma[0].dest = destination;
+    dma[0].src = c;
+    dma[0].size = 0x20;
+    dma[0].attr = 0;
+    id = sceSifSetDma(dma, 1);
+    if (id == 0) {
+        if (padDebugPrint != 0) {
+            scePrintf(padDmaFailMsg);
+        }
+        return 0;
+    }
+    padPortState[port][slot].dmaId = id;
+    return 1;
+}
+
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465C70);
 
 int scePadInit(int mode)
 {

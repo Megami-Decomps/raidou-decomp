@@ -901,9 +901,34 @@ u32 *libc_2D29B8(u32 pc)
     return NULL;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAAA0);
+u8 *libc_2D2B60(u32 *frame, cieInfo_t *info)
+{
+    u8 *p;
+    u32 length;
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", libc_2D2B60);
+    info->augmentation = (char *)frame - frame[1] + 13;
+    if (strcmp(info->augmentation, libgccCieAugEmpty) != 0 &&
+        strcmp(info->augmentation, libgccCieAugEh) != 0 &&
+        info->augmentation[0] != 'z')
+        return NULL;
+    length = strlen(info->augmentation);
+    p = (u8 *)info->augmentation + length + 1;
+    if (strcmp(info->augmentation, libgccCieAugEh) == 0) {
+        info->ehPointer = ((const cieEncodedPointer_t *)p)->value;
+        p += sizeof(void *);
+    } else {
+        info->ehPointer = NULL;
+    }
+    p = libc_2D1E08(p, &info->codeAlignment);
+    p = libc_2D1E50(p, &info->dataAlignment);
+    info->returnRegister = *p++;
+    if (info->augmentation[0] == 'z') {
+        u32 payloadSize;
+        p = libc_2D1E08(p, &payloadSize);
+        p += payloadSize;
+    }
+    return p;
+}
 
 u8 *libc_2D2C70(u8 *p, frameState_t *state)
 {
@@ -944,6 +969,10 @@ u8 *libc_2D2C70(u8 *p, frameState_t *state)
     }
     return p;
 }
+
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAAA0);
+
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAAA8);
 
 u8 *libc_2D2D90(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location)
 {

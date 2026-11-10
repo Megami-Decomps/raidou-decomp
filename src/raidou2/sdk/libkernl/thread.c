@@ -1207,116 +1207,82 @@ s32 iPutTLBEntry(u32 index, u32 pageMask, u32 entryHi, u32 entryLo0, u32 entryLo
 extern const char execDefaultPath[8];
 /* End of declarations from src/smt3/sdk/libkernl.c */
 
-void QueuePeekWriteDone(ttyQueue_t *queue)
+void topThread(void *argument)
 {
-    queue->count++;
-    queue->write++;
-    if (queue->write == queue->data + queue->capacity) {
-        queue->write = queue->data;
-    }
-}
+    threadMgrQueue_t *queue = argument;
+    u32 index;
 
-void QueuePeekReadDone(ttyQueue_t *queue)
-{
-    queue->count--;
-    queue->read++;
-    if (queue->read == queue->data + queue->capacity) {
-        queue->read = queue->data;
-    }
-}
-
-INCLUDE_ASM(const s32, "sdk/libkernl/tty", sceTtyHandler);
-
-s32 sceTtyWrite(const char *buffer, s32 length)
-{
-    s32 consumed = 0;
-    s32 outputLength = 0;
-    /* Reuse the live transport status for the request and completion tests. */
-    s32 status;
-    ttyPacket_t *packet;
-    u8 *output;
-
-    if ((*(volatile ttyState_t *)&ttyState).sendBusy != 0) {
-        return -1;
-    }
-    DIntr();
-    packet = (ttyPacket_t *)(EE_ADDR(&ttySendPacket) | 0x20000000);
-    ttyState.sendBusy = 1;
-    ttyState.sendBuffer = (u8 *)packet;
-    output = packet->payload;
-    /* Native decrement wraps even for negative lengths; only zero stops it. */
-    while ((length = (s32)((u32)length - 1)) != -1) {
-        if (*buffer == '\n') {
-            *output++ = '\r';
-            if (++outputLength >= 256) {
-                break;
-            }
-        }
-        *output++ = *buffer++;
-        outputLength++;
-        consumed++;
-        if (outputLength >= 256) {
+    for (;;) {
+        WaitSema(threadMgrSema);
+        index = queue->readIndex & 0x1FF;
+        queue->readIndex = index + 1;
+        switch (queue->commands[index][0]) {
+        case 0:
+            WakeupThread(queue->commands[index][1]);
+            break;
+        case 1:
+            RotateThreadReadyQueue(queue->commands[index][1]);
+            break;
+        case 2:
+            SuspendThread(queue->commands[index][1]);
+            break;
+        default:
+            kprintf(kernlInternalErrorMsg);
             break;
         }
     }
-    {
-        volatile ttyState_t *state = &ttyState;
-
-        state->sendLength = outputLength + 12;
-        packet->length = state->sendLength;
-        status = sceDeci2ReqSend((*(volatile ttyState_t *)&ttyState).handle,
-                                 (s8)packet->destination);
-        if (status < 0) {
-            state->sendBusy = 0;
-            EIntr();
-            return -1;
-        }
-        while ((status = state->sendBusy) != 0) {
-            sceDeci2Poll((*(volatile ttyState_t *)&ttyState).handle);
-        }
-        EIntr();
-        return consumed;
-    }
 }
 
-s32 sceTtyRead(char *buffer, s32 length)
+s32 InitThread(void)
 {
-    s32 count;
+    kernelThreadParam_t thread;
+    rpcSemaParam sema;
 
-    for (count = 0; count < length; count++) {
-        while (ttyState.queue->count == 0) {
-        }
-        buffer[count] = *ttyState.queue->read;
-        QueuePeekReadDone(ttyState.queue);
-        if (buffer[count] == 10 || buffer[count] == 13) {
-            return count + 1;
-        }
+    if (topThreadId > 0) {
+        return -1;
     }
-    return count;
+    sema.maxCount = 255;
+    sema.initCount = 0;
+    threadMgrSema = CreateSema(&sema);
+    if (threadMgrSema < 0) {
+        return -1;
+    }
+    thread.entry = topThread;
+    thread.stack = topThreadStack;
+    thread.stackSize = 0x400;
+    thread.gp = _gp;
+    thread.priority = 0;
+    topThreadId = CreateThread(&thread);
+    if (topThreadId < 0) {
+        DeleteSema(threadMgrSema);
+        return -1;
+    }
+    threadCommandQueue.readIndex = 0;
+    threadCommandQueue.writeIndex = 0;
+    _StartThread(topThreadId, &threadCommandQueue);
+    ChangeThreadPriority(GetThreadId(), 1);
+    return topThreadId;
 }
 
-s32 sceTtyInit(void)
+INCLUDE_ASM(const s32, "sdk/libkernl/thread", iWakeupThread);
+
+s32 iRotateThreadReadyQueue(s32 priority)
 {
-    ttyPacket_t *packet;
+    u32 index;
 
-    /* Registration exposes this context to the asynchronous TTY callback.
-     * Publish and observe its shared words with native-width accesses. */
-    FlushCache(0);
-    (*(volatile s32 *)&ttyState.handle) = sceDeci2Open(0x210, &ttyState, sceTtyHandler);
-    if ((*(volatile s32 *)&ttyState.handle) < 0) {
-        return 0;
+    if ((u32)priority >= 0x80 || topThreadId == 0) {
+        return -1;
     }
-    (*(volatile s32 *)&ttyState.sendBusy) = 0;
-    (*(volatile s32 *)&ttyState.sendLength) = 0;
-    (*(volatile s32 *)&ttyState.receiveLength) = 0;
-    ttyState.receiveBuffer = (u8 *)(EE_ADDR(&ttyReceivePacket) | 0x20000000);
-    packet = (ttyPacket_t *)(EE_ADDR(&ttySendPacket) | 0x20000000);
-    ttyState.sendBuffer = (u8 *)packet;
-    packet->protocol = 0x210;
-    packet->source = 'E';
-    packet->destination = 'H';
-    packet->reserved = 0;
-    packet->ttyReserved = 0;
-    ttyState.queue = gcc2_compiled__10(0x100);
-    return 1;
+
+    index = threadCommandQueue.writeIndex & 0x1FF;
+    threadCommandQueue.writeIndex = index + 1;
+    threadCommandQueue.commands[index][0] = 1;
+    threadCommandQueue.commands[index][1] = (u8)priority;
+    iSignalSema(threadMgrSema);
+    return priority;
 }
+
+INCLUDE_ASM(const s32, "sdk/libkernl/thread", iSuspendThread);
+
+INCLUDE_RODATA(const s32, "sdk/libkernl/thread", D_004DB9A8);
+

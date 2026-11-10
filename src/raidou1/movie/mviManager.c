@@ -192,7 +192,15 @@ extern const char movieDirPath[16];
 extern saddr_t PlayingNo;
 /* End of declarations from src/smt3/movie/mviManager.c */
 
-INCLUDE_ASM(const s32, "movie/mviManager", moviePlayFile_27041744);
+void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor)
+{
+    if (PlayingNo == 0)
+    {
+        movieOpenStream(&movieCb, descriptor, path);
+        PlayingNo =
+            EE_ADDR_S(dds3StartProcess(movieDrawProcName, 0x2AFB, 1, 1, movieDrawProc, NULL, NULL));
+    }
+}
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001D2728);
 
@@ -217,7 +225,11 @@ s32 movieMan_Process(void)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "movie/mviManager", dds3StartMovieManager);
+void *dds3StartMovieManager(void)
+{
+    sdfIpuInit();
+    return dds3StartProcess(movieManProcName, 0x385, 1, 0, movieMan_Process, NULL, NULL);
+}
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001D2850);
 
@@ -244,6 +256,10 @@ void movieViewerFree(void)
         movieViewerWork.unk_0C = 0;
     }
 }
+
+INCLUDE_RODATA(const s32, "movie/mviManager", D_004550C8);
+
+INCLUDE_RODATA(const s32, "movie/mviManager", D_004550D8);
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001D29E0);
 

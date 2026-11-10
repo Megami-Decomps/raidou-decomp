@@ -472,9 +472,34 @@ void evtFreeScriptProcessData(dds3ProcessID_t *task)
     sdfChipFreeDirect(EE_ADDR_PTR(dds3GetProcessData(task)));
 }
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtLoadModelSe);
+/* Allocate a three-word task parameter block and format its "mse_..." name. */
+dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId) {
+    char taskName[0x20];
+    evtMotionSeTaskParams_t *params;
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtLoadEventScript);
+    sprintf(taskName, evtMotionSeNameFormat, eventTaskId, resourceId);
+    params = sdfChipAllocDirect(0xC);
+    memset(params, 0, 0xC);
+    params->modelKey = modelKey;
+    params->eventTaskId = eventTaskId;
+    params->resourceId = resourceId;
+    return dds3StartProcess(taskName, 0x3EC, 0, 0, evtMotionSeProcess1, (dds3ProcessFunc_t)evtFreeScriptProcessData, params);
+}
+
+/* Resolve the event's script path ("/event/eNNN/eNNN/scr/eNNN.be", grouped by tens) and start loading it. */
+void evtLoadEventScript(evtPackProcessData_t *state) {
+    s32 eventId;
+    s32 eventDirectoryId;
+    struct FileRequest *request;
+
+    printf(evtLoadStartMessage);
+    eventId = state->eventno;
+    eventDirectoryId = eventId - eventId % 10;
+    sprintf(evtEventPackScriptPath, evtEventScriptPathFormat, eventDirectoryId, eventId, eventId);
+    request = fileLoad(evtEventPackScriptPath);
+    state->pendingRequest = request;
+    state->stat = 1;
+}
 
 /* Retain a ready pack and select its first entry-point record.
  * Clearing the request handle and marking completion occur on separate calls;
@@ -576,6 +601,10 @@ void evtKillEventPack(s32 eventno) {
 }
 
 INCLUDE_ASM(const s32, "event/evtEventPack", func_001CA848);
+
+INCLUDE_RODATA(const s32, "event/evtEventPack", D_00451130);
+
+INCLUDE_RODATA(const s32, "event/evtEventPack", D_00451140);
 
 INCLUDE_SDATA(const s32, "event/evtEventPack", D_0046CCB8);
 

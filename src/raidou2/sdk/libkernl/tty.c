@@ -1207,55 +1207,181 @@ s32 iPutTLBEntry(u32 index, u32 pageMask, u32 entryHi, u32 entryLo0, u32 entryLo
 extern const char execDefaultPath[8];
 /* End of declarations from src/smt3/sdk/libkernl.c */
 
-INCLUDE_ASM(const s32, "sdk/libkernl/thread", topThread);
-
-s32 InitThread(void)
+void QueuePeekWriteDone(ttyQueue_t *queue)
 {
-    kernelThreadParam_t thread;
-    rpcSemaParam sema;
-
-    if (topThreadId > 0) {
-        return -1;
+    queue->count++;
+    queue->write++;
+    if (queue->write == queue->data + queue->capacity) {
+        queue->write = queue->data;
     }
-    sema.maxCount = 255;
-    sema.initCount = 0;
-    threadMgrSema = CreateSema(&sema);
-    if (threadMgrSema < 0) {
-        return -1;
-    }
-    thread.entry = topThread;
-    thread.stack = topThreadStack;
-    thread.stackSize = 0x400;
-    thread.gp = _gp;
-    thread.priority = 0;
-    topThreadId = CreateThread(&thread);
-    if (topThreadId < 0) {
-        DeleteSema(threadMgrSema);
-        return -1;
-    }
-    threadCommandQueue.readIndex = 0;
-    threadCommandQueue.writeIndex = 0;
-    _StartThread(topThreadId, &threadCommandQueue);
-    ChangeThreadPriority(GetThreadId(), 1);
-    return topThreadId;
 }
 
-INCLUDE_ASM(const s32, "sdk/libkernl/thread", iWakeupThread);
-
-s32 iRotateThreadReadyQueue(s32 priority)
+void QueuePeekReadDone(ttyQueue_t *queue)
 {
-    u32 index;
-
-    if ((u32)priority >= 0x80 || topThreadId == 0) {
-        return -1;
+    queue->count--;
+    queue->read++;
+    if (queue->read == queue->data + queue->capacity) {
+        queue->read = queue->data;
     }
-
-    index = threadCommandQueue.writeIndex & 0x1FF;
-    threadCommandQueue.writeIndex = index + 1;
-    threadCommandQueue.commands[index][0] = 1;
-    threadCommandQueue.commands[index][1] = (u8)priority;
-    iSignalSema(threadMgrSema);
-    return priority;
 }
 
-INCLUDE_ASM(const s32, "sdk/libkernl/thread", iSuspendThread);
+void sceTtyHandler(s32 event, s32 byteCount, void *argument)
+{
+    /* Qualified EE 2.9 global_alloc trace: this shared receive/traversal count
+     * has 17 refs over 44 live instructions, ahead of the context's 25/78.
+     * It takes r16 and the context takes r17; splitting the count reverses them.
+     * Ordinary, dumped and hooked assembly agree; both RTL dump sets agree. */
+    ttyState_t *state = argument;
+    u8 *packet;
+
+    switch (event) {
+    case 1:
+    case 2:
+        if (byteCount != 0) {
+            if ((u32)TTY_CALLBACK_WORD(state, receiveLength) + (u32)byteCount > 320) {
+                kprintf(ttyMsgPacketTooLarge);
+            }
+            {
+                s32 receiveOffset = TTY_CALLBACK_WORD(state, receiveLength);
+                byteCount = sceDeci2ExRecv(state->handle,
+                                          state->receiveBuffer + receiveOffset,
+                                          (u16)byteCount);
+            }
+            if (byteCount < 0) {
+                kprintf(ttyMsgReceiveError);
+            }
+            TTY_CALLBACK_WORD(state, receiveLength) += byteCount;
+        } else {
+            packet = state->receiveBuffer;
+            for (byteCount = 12; byteCount < *(u16 *)packet; byteCount++) {
+                *state->queue->write = state->receiveBuffer[byteCount];
+                QueuePeekWriteDone(state->queue);
+            }
+            TTY_CALLBACK_WORD(state, receiveLength) = 0;
+        }
+        return;
+    case 3: {
+        s32 sent = sceDeci2ExSend(state->handle, state->sendBuffer,
+                                (u16)TTY_CALLBACK_WORD(state, sendLength));
+        if (sent < 0) {
+            kprintf(ttyMsgSendError, sent);
+        } else {
+            state->sendBuffer += sent;
+            TTY_CALLBACK_WORD(state, sendLength) -= sent;
+            return;
+        }
+        break;
+    }
+    case 4:
+        if (TTY_CALLBACK_WORD(state, sendLength) != 0) {
+            kprintf(ttyMsgWlenError, TTY_CALLBACK_WORD(state, sendLength));
+        }
+        break;
+    default:
+        return;
+    }
+    TTY_CALLBACK_WORD(state, sendBusy) = 0;
+}
+
+s32 sceTtyWrite(const char *buffer, s32 length)
+{
+    s32 consumed = 0;
+    s32 outputLength = 0;
+    /* Reuse the live transport status for the request and completion tests. */
+    s32 status;
+    ttyPacket_t *packet;
+    u8 *output;
+
+    if ((*(volatile ttyState_t *)&ttyState).sendBusy != 0) {
+        return -1;
+    }
+    DIntr();
+    packet = (ttyPacket_t *)(EE_ADDR(&ttySendPacket) | 0x20000000);
+    ttyState.sendBusy = 1;
+    ttyState.sendBuffer = (u8 *)packet;
+    output = packet->payload;
+    /* Native decrement wraps even for negative lengths; only zero stops it. */
+    while ((length = (s32)((u32)length - 1)) != -1) {
+        if (*buffer == '\n') {
+            *output++ = '\r';
+            if (++outputLength >= 256) {
+                break;
+            }
+        }
+        *output++ = *buffer++;
+        outputLength++;
+        consumed++;
+        if (outputLength >= 256) {
+            break;
+        }
+    }
+    {
+        volatile ttyState_t *state = &ttyState;
+
+        state->sendLength = outputLength + 12;
+        packet->length = state->sendLength;
+        status = sceDeci2ReqSend((*(volatile ttyState_t *)&ttyState).handle,
+                                 (s8)packet->destination);
+        if (status < 0) {
+            state->sendBusy = 0;
+            EIntr();
+            return -1;
+        }
+        while ((status = state->sendBusy) != 0) {
+            sceDeci2Poll((*(volatile ttyState_t *)&ttyState).handle);
+        }
+        EIntr();
+        return consumed;
+    }
+}
+
+s32 sceTtyRead(char *buffer, s32 length)
+{
+    s32 count;
+
+    for (count = 0; count < length; count++) {
+        while (ttyState.queue->count == 0) {
+        }
+        buffer[count] = *ttyState.queue->read;
+        QueuePeekReadDone(ttyState.queue);
+        if (buffer[count] == 10 || buffer[count] == 13) {
+            return count + 1;
+        }
+    }
+    return count;
+}
+
+s32 sceTtyInit(void)
+{
+    ttyPacket_t *packet;
+
+    /* Registration exposes this context to the asynchronous TTY callback.
+     * Publish and observe its shared words with native-width accesses. */
+    FlushCache(0);
+    (*(volatile s32 *)&ttyState.handle) = sceDeci2Open(0x210, &ttyState, sceTtyHandler);
+    if ((*(volatile s32 *)&ttyState.handle) < 0) {
+        return 0;
+    }
+    (*(volatile s32 *)&ttyState.sendBusy) = 0;
+    (*(volatile s32 *)&ttyState.sendLength) = 0;
+    (*(volatile s32 *)&ttyState.receiveLength) = 0;
+    ttyState.receiveBuffer = (u8 *)(EE_ADDR(&ttyReceivePacket) | 0x20000000);
+    packet = (ttyPacket_t *)(EE_ADDR(&ttySendPacket) | 0x20000000);
+    ttyState.sendBuffer = (u8 *)packet;
+    packet->protocol = 0x210;
+    packet->source = 'E';
+    packet->destination = 'H';
+    packet->reserved = 0;
+    packet->ttyReserved = 0;
+    ttyState.queue = gcc2_compiled__10(0x100);
+    return 1;
+}
+
+INCLUDE_RODATA(const s32, "sdk/libkernl/tty", D_004DB9D0);
+
+INCLUDE_RODATA(const s32, "sdk/libkernl/tty", D_004DB9F8);
+
+INCLUDE_RODATA(const s32, "sdk/libkernl/tty", D_004DBA10);
+
+INCLUDE_RODATA(const s32, "sdk/libkernl/tty", D_004DBA28);
+

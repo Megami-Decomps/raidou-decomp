@@ -251,7 +251,25 @@ INCLUDE_ASM(const s32, "event/evtStage", func_001B96B8);
 
 INCLUDE_ASM(const s32, "event/evtStage", func_001B97D0);
 
-INCLUDE_ASM(const s32, "event/evtStage", evtKillFieldScript);
+void evtKillFieldScript(void)
+{
+    s32 taskState;
+    s32 taskIndex;
+    dds3ProcessID_t *task;
+
+    for (taskState = EVT_PROCESS_STATE_DELAYED_START; taskState < EVT_PROCESS_STATE_DESTROY_PENDING; taskState++) {
+    restartStateScan:
+        for (taskIndex = 0; taskIndex < dds3GetProcessCount(taskState); taskIndex++) {
+            task = dds3SearchProcessNumber(taskState, taskIndex);
+            if (task->priority == 0x3EA) {
+                printf(evtKillFieldScriptFormat, task->name);
+                dds3KillProcess(task, 0);
+                /* Destruction changes the queue, so restart the current scan. */
+                goto restartStateScan;
+            }
+        }
+    }
+}
 
 void evtPathStop(dds3Basic_t *basic)
 {
@@ -404,6 +422,8 @@ s32 evtStageAnimeControl(s32 type, s32 mode) {
     }
     return 1;
 }
+INCLUDE_RODATA(const s32, "event/evtStage", D_004B44A0);
+
 INCLUDE_SDATA(const s32, "event/evtStage", D_004DF838);
 
 INCLUDE_SDATA(const s32, "event/evtStage", D_004DF83C);
