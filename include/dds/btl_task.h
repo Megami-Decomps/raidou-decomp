@@ -1,0 +1,266 @@
+#ifndef BTL_TASK_H
+#define BTL_TASK_H
+
+#include "common.h"
+
+struct BtlUnit;
+typedef struct BtlUnit BtlUnit;
+
+typedef struct BtlIndexList {
+    s32 capacity;       /* 0x00: allocated entry count */
+    s32 count;          /* 0x04: live entry count */
+    struct BtlUnit **entries; /* 0x08: points just past this header */
+} BtlIndexList;
+
+BtlIndexList *btlAllocateIndexList(s32 capacity);
+void btlFreeIndexList(BtlIndexList *list);
+void btlAppendIndexListEntry(BtlIndexList *list, BtlUnit *entry);
+void btlClearIndexList(BtlIndexList *list);
+u32 btlGetIndexListCount(BtlIndexList *list);
+BtlUnit *btlGetIndexListEntry(BtlIndexList *list, s32 index);
+void btlCopyIndexList(BtlIndexList *destination, BtlIndexList *source);
+void btlSwapIndexListEntries(BtlIndexList *list, s32 first, s32 second);
+s32 btlFindListIndex(BtlIndexList *list, BtlUnit *entry);
+
+/* The battle AI task's 0xA4-byte user-data allocation in both games. */
+typedef struct SceneAiWork {
+    s32 state;              /* 0x00 */
+    u32 result;             /* 0x04: raw command target policy/category. */
+    s32 entry;              /* 0x08 */
+    BtlIndexList *eligibleTargets; /* 0x0C: candidates available to target selection. */
+    BtlIndexList *selectedTargets; /* 0x10: targets committed by the selection policy. */
+#ifdef VERSION_DDS1
+    struct BtlTask *source; /* 0x14: nullable command actor retained by the task. */
+#else
+    struct ActionStateLink *source; /* 0x14: nullable command actor retained by the task. */
+#endif
+    /* The selection helper indexes a 3-by-3 target-mask table with this cursor. */
+    /* 001C0724/001C0760 read the word; movement arms store each half. */
+    union {
+        struct {
+            s16 row;
+            s16 column;
+        } position;
+        u32 packed;
+    } cursor;              /* 0x18 */
+    s8 animationPhase;       /* 0x1C */
+    u8 pad1D[3];
+    s32 panelFade[4];        /* 0x20: signed panel fades. */
+    f32 panelAngleDegrees[4]; /* 0x30: copied to each sprite's angle while drawing. */
+    s32 animationCounter;   /* 0x40 */
+    u8 pad44[0xC];
+    f32 panelScale[4];      /* 0x50: sprite size percentages, not XY positions. */
+    s8 rowPhase[3];          /* 0x60: three independent row-animation states */
+    u8 pad63[5];
+    f32 rowScale[3];        /* 0x68: row size in percent, initialized to 80 */
+    s32 rowPosition[3][2];   /* 0x74: XY outputs from the direction-step table */
+    s32 rowStep[3];          /* 0x8C: bounded to 0..5 during row animation */
+    s32 rowFade[3];          /* 0x98: initialized to 128 for each row */
+} SceneAiWork;
+typedef char SceneAiWork_size[(sizeof(SceneAiWork) == 0xA4) ? 1 : -1];
+typedef char SceneAiWork_cursor_offset[((unsigned long)&((SceneAiWork *)0)->cursor == 0x18) ? 1 : -1];
+
+/* Retained command operands: 0x28 bytes in DDS1, 0x2C in DDS2.
+ * The task constructors copy the complete operand after the actor pointer. */
+typedef struct BtlOperandEntry {
+    s32 hpDelta;
+    s32 mpDelta;
+    u32 addedStatus;
+    u32 removedStatus;
+    u32 entryChangeMask;
+    s16 entryChange;
+    u16 entryChangeFlags;
+    s32 entrySelection; /* Counter command to retain; zero means no selected entry. */
+    s32 hpRecovery;
+    s32 mpRecovery;
+    u16 deferredStatus;
+#ifdef VERSION_DDS1
+    u16 flags;
+#else
+    u8 pad26[2];
+    u32 flags;
+#endif
+} BtlOperandEntry;
+
+/* btlAllocTask reserves 0x2C/0x30 argument bytes for these command tasks. */
+typedef struct BtlOperandTaskArgs {
+    BtlUnit *unit;
+    BtlOperandEntry operand;
+} BtlOperandTaskArgs;
+
+/* The command work owns thirteen groups. Their payload counts and strides
+ * differ: 64 operands/0xA1C bytes in DDS1, 32 operands/0x59C in DDS2. */
+typedef struct BtlOperandGroup {
+    u8 count;
+    u8 pad01[3];
+    s32 interval;
+#ifdef VERSION_DDS1
+    s32 kind;
+#else
+    u32 kind;
+#endif
+    s32 parameter;
+    /* Dispatch tests both bytes with lhu; reset and population use sb. */
+    union {
+        u16 inactiveOrStatusChanged;
+        struct {
+            u8 inactive;
+            u8 statusChanged;
+        };
+    };
+    u8 targetSpecialHit;
+    u8 sourceSpecialHit;
+    u8 reflected; /* Population prints "btl:HANSYA" when this is set. */
+    u8 reflectionKind;
+    u8 pad16[2];
+    s32 reactionCode;
+#ifdef VERSION_DDS1
+    BtlOperandEntry entries[64];
+#else
+    BtlOperandEntry entries[32];
+#endif
+} BtlOperandGroup;
+
+/* Embedded command work at actor +0x20. DDS1 btlInitBattleIndexWork owns
+ * thirteen retained groups at +0x60/+0x64 (0x68 bytes); DDS2 uses
+ * +0x68/+0x6C (0x70 bytes). Neither record is the whole owning actor. */
+struct sdfMemHandle_t;
+
+typedef struct BattleIndexWork {
+    s32 phase;
+    s32 skillId;
+    s32 reference;
+    BtlUnit *companionA;
+    BtlUnit *companionB;
+    BtlUnit *linkedUnit;
+    s32 summonId; /* +0x18: also reused as a scene-command party-record index. */
+    s32 stageValue;
+    s32 precedence; /* Command precedence value: 8 for the default, otherwise helper result minus 8 (logged as btl:precede). */
+#ifdef VERSION_DDS1
+    s32 slot; /* DDS1 001D2A10 stores the complete action-classification result. */
+    s32 adjustedValue; /* DDS1 001D2AA0 / 001D2AC8. */
+    s8 resultKind; /* DDS1 001D2AB0 / 001D2AC4. */
+#else
+    s32 slot;
+    s32 adjustedValue;
+    s8 resultKind;
+#endif
+    u8 costValidationFailed; /* +0x2D: cost check failed; suppress normal command follow-up. */
+    u8 allTargetSideActorsSkipped; /* +0x2E: target resolution reports every active actor on selected sides skipped. */
+    u8 pad2F;
+    u16 stage;
+    u8 pad32[2];
+    s32 parameter;
+    s32 wait;
+    s32 unk3C;
+    BtlIndexList *indices;
+    u8 pad44[4];
+    u64 ownerId;
+    s32 huntEpReward; /* +0x50: accumulated hunt EP awarded after target resolution. */
+    s32 battleExperienceReward; /* 0x54: accumulated per-enemy EP sent to the reward packet. */
+    s32 moneyReward; /* 0x58: accumulated per-enemy currency sent to the reward packet. */
+    u16 flags;
+#ifdef VERSION_DDS1
+    u8 refreshEligibleActors;
+    u8 pad5F;
+#else
+    u8 pad5E[2];
+    s32 moneyDrop; /* 0x60: currency a kind-21 command makes its target drop (btlCalculateMoneyDropAmount), handed to the currency reward task. */
+    u8 refreshEligibleActors;
+    u8 pad65[3];
+#endif
+    BtlOperandGroup *groups;
+    struct sdfMemHandle_t *allocationHandle;
+} BattleIndexWork;
+typedef char BattleIndexWork_costValidationFailed_offset_must_be_0x2D[
+    ((u32)&((BattleIndexWork *)0)->costValidationFailed == 0x2D) ? 1 : -1];
+typedef char BattleIndexWork_allTargetSideActorsSkipped_offset_must_be_0x2E[
+    ((u32)&((BattleIndexWork *)0)->allTargetSideActorsSkipped == 0x2E) ? 1 : -1];
+typedef char BattleIndexWork_huntEpReward_offset_must_be_0x50[
+    ((u32)&((BattleIndexWork *)0)->huntEpReward == 0x50) ? 1 : -1];
+#ifdef VERSION_DDS1
+typedef char BattleIndexWork_refreshEligibleActors_offset_must_be_0x5E[
+    ((u32)&((BattleIndexWork *)0)->refreshEligibleActors == 0x5E) ? 1 : -1];
+#else
+typedef char BattleIndexWork_refreshEligibleActors_offset_must_be_0x64[
+    ((u32)&((BattleIndexWork *)0)->refreshEligibleActors == 0x64) ? 1 : -1];
+#endif
+#define BTL_COMMAND_PARTY_RECORD_INDEX(work) ((work)->summonId)
+
+void btlInitBattleIndexWork(BattleIndexWork *work);
+void btlResetIndexWork(BattleIndexWork *work);
+void btlReleaseObjectBuffers(BattleIndexWork *work);
+
+#ifdef VERSION_DDS1
+/* DDS1 btlCreateActionSeq owns one 0x170-byte command actor. */
+typedef struct BtlTask {
+    s32 state;
+    u16 actionNumber;
+    u8 pad06[2];
+    u32 flags;
+    union {
+        u32 options;
+        s32 actionFlags; /* +0x0C: AI context tests bit 1 as signed state */
+    };
+    s32 stateTime;
+    s32 completedTurns; /* +0x14: incremented when an actor turn is committed */
+    BtlUnit *unit;
+    u8 unk_1C[4];
+    BattleIndexWork indexWork; /* +0x20..+0x87 */
+    u16 aiCounter; /* +0x88: reset, incremented, then clamped by AI queries */
+    u8 pad8A[0xBC];
+    s8 lowHpActionHold; /* +0x146: positive suppresses the low-HP action */
+    u8 pad147;
+    u32 actions[8]; /* +0x148: queued action words; consumers also read low halfword IDs */
+    struct BtlTask *prev; /* +0x168 */
+    struct BtlTask *next; /* +0x16C */
+} BtlTask;
+typedef char BtlTask_size_must_be_0x170[(sizeof(BtlTask) == 0x170) ? 1 : -1];
+typedef char BtlTask_aiCounter_offset_must_be_0x88[
+    ((u32)&((BtlTask *)0)->aiCounter == 0x88) ? 1 : -1];
+typedef char BtlTask_lowHpActionHold_offset_must_be_0x146[
+    ((u32)&((BtlTask *)0)->lowHpActionHold == 0x146) ? 1 : -1];
+typedef char BtlTask_actions_offset_must_be_0x148[
+    ((u32)&((BtlTask *)0)->actions == 0x148) ? 1 : -1];
+#endif
+
+#ifdef VERSION_DDS2
+/* Queued action slots are queried as complete words and low halfword IDs. */
+typedef union BattleActionSlot {
+    s32 word;
+    s16 actionId;
+} BattleActionSlot;
+
+/* DDS2 0x1DCF58 allocates this 0x180-byte command actor. It is not the
+ * 0x70-byte scheduler task or the 0x368-byte world unit. */
+typedef struct ActionStateLink {
+    u32 state;
+    u16 actionNumber;
+    u8 pad06[2];
+    /* fldUpdateSceneGroupTask reads both flag words with ld at 0x1D3C68. */
+    union {
+        u64 combinedFlags;
+        struct {
+            u32 pendingFlags;
+            u32 flags;
+        };
+    };
+    s32 stateTime;
+    s32 completedTurns;
+    BtlUnit *unit; /* +0x18 */
+    u8 pad1C[4];
+    BattleIndexWork indexWork; /* +0x20..+0x8F */
+    u16 aiCounter;
+    u8 pad92[0xBC];
+    s8 lowHpActionHold;
+    u8 pad14F;
+    BattleActionSlot actions[8]; /* +0x150 */
+    s32 lastMode;
+    struct ActionStateLink *prev; /* +0x174 */
+    struct ActionStateLink *next; /* +0x178 */
+    u8 pad17C[4];
+} ActionStateLink;
+#endif
+
+
+#endif /* BTL_TASK_H */

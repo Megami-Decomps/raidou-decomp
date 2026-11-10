@@ -1,0 +1,172 @@
+#ifndef EVT_POLYGON_MOVIE_H
+#define EVT_POLYGON_MOVIE_H
+
+#include "common.h"
+#include "evt_polygon_movie_flags_api.h"
+#include "itf_mes_window_index.h"
+#include "sdf.h"
+#include "sdf_float_counter.h"
+
+struct dds3ProcessID_t;
+struct evtViewerInfo_t;
+struct PolyMovieWork;
+struct dds3Basic_t;
+struct FileRequest;
+struct EvtCompactRow;
+struct EvtExtendedRow;
+
+/* User-value state shared by the DDS1 and DDS2 polygon-movie providers. */
+typedef struct EvtPolygonMovieTaskState {
+    u32 movieFlags; /* 0x0 */
+    u32 opaque_04;  /* 0x4 */
+    struct PolyMovieWork *work; /* 0x8: viewer's movie work context. */
+} EvtPolygonMovieTaskState;
+
+typedef char EvtPolygonMovieTaskState_size_must_be_0x0C[(sizeof(EvtPolygonMovieTaskState) == 0x0C) ? 1 : -1];
+typedef char EvtPolygonMovieTaskState_work_at_0x8[((u32)&((EvtPolygonMovieTaskState *)0)->work == 0x8) ? 1 : -1];
+
+/* PMD2 records and the complete 0x11C-byte owner cleared by both games'
+ * InitPolygonMovieWorkData. Movie parsing, asynchronous resource loading,
+ * viewer dialogs and message-window lifetime all use this single object. */
+typedef struct PmdEntry {
+    u32 type;     /* 0x00 */
+    u32 elementSize; /* 0x04: serialized payload bytes per element. */
+    u32 value;    /* 0x08 */
+    u32 offset;   /* 0x0C */
+} PmdEntry;
+
+typedef struct PmdHeader {
+    u8 pad[0x10];
+    s32 count;    /* 0x10 */
+    s32 kind;     /* 0x14 */
+    u8 pad2[8];
+    const PmdEntry entries[1]; /* 0x20: serialized records are read-only. */
+} PmdHeader;
+
+/* sdfDevLoadFileEx writes the 32-bit payload address, not its allocation handle. */
+typedef union PmdResourceAddress {
+    u32 word;
+    PmdHeader *header;
+} PmdResourceAddress;
+
+typedef char PmdResourceAddress_size_must_be_0x4[
+    (sizeof(PmdResourceAddress) == 0x4) ? 1 : -1];
+
+/* Three retained resources share request/handle/address slots. */
+#define EVT_POLY_MOVIE_MAIN_LOAD_PENDING 0x02
+#define EVT_POLY_MOVIE_SECONDARY_LOAD_PENDING 0x04
+#define EVT_POLY_MOVIE_ASYNC_INITIALIZED 0x08
+#define EVT_POLY_MOVIE_TERTIARY_LOAD_PENDING 0x10
+
+typedef struct PolyMovieResourceSlot {
+    struct FileRequest *request;
+    sdfMemHandle_t *handle;
+    PmdHeader *address;
+} PolyMovieResourceSlot;
+
+typedef struct PolyMovieWork {
+    EvtPolygonMovieWorkFlags flags; /* 0x00 */
+    PolyMovieResourceSlot mainResource; /* 0x04 */
+    PmdHeader *data;   /* 0x10 */
+    const PmdEntry *entries; /* 0x14: borrowed directory records. */
+    u8 *mainEntry1Data;   /* 0x18 */
+    u32 mainEntry1Value; /* 0x1C: value from the main type-1 entry. */
+    u8 *mainEntry2Data;   /* 0x20 */
+    u32 mainEntry2Value; /* 0x24: value from the main type-2 entry. */
+    u8 *mainEntry10Data;  /* 0x28 */
+    u8 *mainEntry11Data;  /* 0x2C */
+    u8 *mainEntry12Data;  /* 0x30 */
+    u8 *mainEntry3Data;   /* 0x34 */
+    u32 mainEntry3Count; /* 0x38: rows in the main type-3 package table */
+    u8 *mainEntry9Data;   /* 0x3C */
+    u8 *mainEntry7Data;   /* 0x40 */
+    u32 mainEntry7Count; /* 0x44: PMD type-7 resource row count */
+    u8 *mainEntry8Data;   /* 0x48 */
+    u8 *mainEntry6Data;   /* 0x4C */
+    u8 *mainEntry22Data;  /* 0x50 */
+    u32 mainEntry22Count; /* 0x54: PMD type-22 texture row count */
+    u8 *mainEntry23Data;  /* 0x58 */
+    PolyMovieResourceSlot secondaryResource; /* 0x5C */
+    PolyMovieResourceSlot tertiaryResource; /* 0x68 */
+    PmdHeader *sub;    /* 0x74 */
+    const PmdEntry *subEntries; /* 0x78: borrowed directory records. */
+    u8 *subEntry1Data;    /* 0x7C */
+    u32 subEntry1Value; /* 0x80: value from the secondary type-1 entry. */
+    u8 *subEntry0Data;    /* 0x84 */
+    const struct EvtCompactRow *subEntry4Kind4Data; /* 0x88 */
+    const struct EvtExtendedRow *subEntry4OtherData; /* 0x8C */
+    PmdHeader *sub2;   /* 0x90 */
+    const PmdEntry *sub2Entries; /* 0x94: borrowed directory records. */
+    const struct EvtExtendedRow *secondEntry4Data; /* 0x98 */
+    u32 extendedEntry4Count; /* 0x9C: rows in the extended type-4 table */
+    u32 subEntry4Count; /* 0xA0 */
+    u8 *subEntry5Data;    /* 0xA4 */
+    u32 subEntry5Value; /* 0xA8: value from the secondary type-5 entry. */
+    u8 *subEntry13Data;   /* 0xAC */
+    u32 subEntry13Value; /* 0xB0: value from the secondary type-13 entry. */
+    u8 *subEntry14Data;   /* 0xB4 */
+    u32 subEntry14Value; /* 0xB8: value from the secondary type-14 entry. */
+    u8 *subEntry15Data;   /* 0xBC */
+    u32 subEntry15Value; /* 0xC0: value from the secondary type-15 entry. */
+    u8 *subEntry16Data;   /* 0xC4 */
+    u32 subEntry16Value; /* 0xC8: value from the secondary type-16 entry. */
+    u8 *subEntry17Data;   /* 0xCC */
+    u32 subEntry17Value; /* 0xD0: value from the secondary type-17 entry. */
+    u8 *subEntry18Data;   /* 0xD4 */
+    u32 subEntry18Value; /* 0xD8: value from the secondary type-18 entry. */
+    u8 *subEntry19Data;   /* 0xDC */
+    u32 subEntry19Value; /* 0xE0: value from the secondary type-19 entry. */
+    u8 *subEntry20Data;   /* 0xE4 */
+    u32 subEntry20Value; /* 0xE8: value from the secondary type-20 entry. */
+    u8 *subEntry24Data;   /* 0xEC */
+    u32 subEntry24Value; /* 0xF0: value from the secondary type-24 entry. */
+    u8 *subEntry21Data;   /* 0xF4 */
+    u32 subEntry21Count; /* 0xF8: rows in the sub type-21 group metadata table */
+    u8 *subEntry25Data;   /* 0xFC */
+    u32 subEntry25Count;       /* 0x100 */
+    ItfMesWindowIndex messageManagerHandle; /* 0x104: owned index for the main type-6 message window. */
+    struct dds3ProcessID_t *task; /* 0x108: scheduler task created for this viewer */
+    s32 eventId;       /* 0x10C */
+    s32 sceneId;       /* 0x110 */
+    u32 unk_114;       /* 0x114 */
+    s32 *buffer;       /* 0x118 */
+} PolyMovieWork;
+
+typedef struct PolyMovieState {
+    u8 opaque_00[4];
+    SdfFloatCounter *clip; /* 0x4 */
+} PolyMovieState;
+
+typedef char PolyMovieWork_size_must_be_0x11C[(sizeof(PolyMovieWork) == 0x11C) ? 1 : -1];
+typedef char PolyMovieWork_messageManagerHandle_at_0x104[
+    ((u32)&((PolyMovieWork *)0)->messageManagerHandle == 0x104) ? 1 : -1];
+typedef char PolyMovieWork_task_at_0x108[((u32)&((PolyMovieWork *)0)->task == 0x108) ? 1 : -1];
+typedef char PolyMovieWork_eventId_at_0x10C[((u32)&((PolyMovieWork *)0)->eventId == 0x10C) ? 1 : -1];
+typedef char PolyMovieState_clip_at_0x4[((u32)&((PolyMovieState *)0)->clip == 0x4) ? 1 : -1];
+
+/* Serialized mode values select transform behavior (0-1) or unit flags (2-4). */
+typedef u32 EvtPolygonMovieObjectMode;
+enum {
+    EVT_POLYGON_MOVIE_MODE_TRANSFORMS_ENABLED = 0,
+    EVT_POLYGON_MOVIE_MODE_TRANSFORMS_SKIPPED = 1,
+    EVT_POLYGON_MOVIE_MODE_UNIT_DEFAULT_FLAGS_OFF = 2,
+    EVT_POLYGON_MOVIE_MODE_UNIT_400_ON_200_OFF = 3,
+    EVT_POLYGON_MOVIE_MODE_UNIT_400_OFF_200_ON = 4
+};
+
+PolyMovieWork *InitPolygonMovieWorkData(void);
+PolyMovieWork *evtPolygonMovieInitWork(PolyMovieWork *, PmdHeader *, PmdHeader *, PmdHeader *);
+sdfMemHandle_t *evtAllocMovieWork(PmdHeader **out);
+sdfMemHandle_t *evtPolygonMovieSynthesizePmd3Header(PmdHeader **out);
+void evtPolygonMovieSetObjectMode(struct dds3Basic_t *obj, EvtPolygonMovieObjectMode mode,
+                                  u32 setFlags, u32 clearFlags);
+s32 evtStopMover(struct dds3Basic_t *movie, s32 undo, s32 start, s32 end);
+
+#ifdef VERSION_DDS1
+void evtPolygonMovieClampTime(struct dds3Basic_t *movie, s32 unused, s32 start, s32 end);
+s32 evtPopulateViewerTimelineFromMovie(PolyMovieWork *work, struct evtViewerInfo_t *viewer);
+#elif VERSION_DDS2
+s32 evtPopulateViewerTimelineFromMovie(PolyMovieWork *work, struct evtViewerInfo_t *viewer);
+#endif
+
+#endif

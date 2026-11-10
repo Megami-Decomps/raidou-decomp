@@ -1,0 +1,41 @@
+#ifndef FPU_H
+#define FPU_H
+
+/*
+ * Square root in one FPU instruction.
+ *
+ * Retail computes every square root with a bare `sqrt.s`: 33 of them in 11
+ * DDS1 units, and never the errno-checking sqrtf() call that gcc emits by
+ * default. With -fno-math-errno, ee-gcc 2.96's own sqrt.s comes after two
+ * hazard `nop`s, which retail never has. So the games used an asm helper like
+ * this one. `.set noreorder` keeps ee-as from moving it into a jr delay slot
+ * (retail: `sqrt.s; jr $31; nop`).
+ */
+static inline float fsqrtf(float x) {
+    float r;
+    __asm__(".set noreorder\n\tsqrt.s %0, %1\n\t.set reorder" : "=f"(r) : "f"(x));
+    return r;
+}
+
+/*
+ * EE numerator / sqrt(x) in one instruction; fsqrtf followed by division does
+ * not combine into this operation. Retail sites: DDS1 002E80DC/002E8148 and
+ * DDS2 00340F84/00340FF0.
+ */
+static inline float frsqrtf(float numerator, float x) {
+    float r;
+    __asm__(".set noreorder\n\trsqrt.s %0, %1, %2\n\t.set reorder" : "=f"(r) : "f"(numerator), "f"(x));
+    return r;
+}
+
+/*
+ * Absolute value with a single abs.s, the counterpart of fsqrtf. Most of the
+ * game code uses this form; the kwln kernel code uses the builtin fabsf.
+ */
+static inline float ffabsf(float x) {
+    float r;
+    __asm__(".set noreorder\n\tabs.s %0, %1\n\t.set reorder" : "=f"(r) : "f"(x));
+    return r;
+}
+
+#endif

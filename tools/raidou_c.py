@@ -480,7 +480,7 @@ def decl_block(smt3, rel, unsized=()):
     if is_dds(rel):
         # dds-decomp's headers live in include/dds/; its headers include each other by bare name.
         macro = f"VERSION_{rel.split('/', 1)[0].upper()}"
-        decls = [f"#ifndef {macro}\n#define {macro}\n#endif"] + [DDS_INCLUDE.sub(r'\1"dds/\2"', d) for d in decls]
+        decls = [f"#ifndef {macro}\n#define {macro} 1\n#endif"] + [DDS_INCLUDE.sub(r'\1"dds/\2"', d) for d in decls]
     return decl_begin(rel) + "\n" + "\n\n".join(decls) + "\n" + decl_end(rel) + "\n"
 
 

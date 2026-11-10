@@ -1,0 +1,74 @@
+#ifndef FLD_SPARK_CONTROLLER_STATE_H
+#define FLD_SPARK_CONTROLLER_STATE_H
+
+#include "common.h"
+
+/* Signed halfword selected by the current field-spark resource record. */
+typedef s16 FldSparkEncounterSelection;
+
+FldSparkEncounterSelection fldGetEncounterSelection(void);
+FldSparkEncounterSelection fldGetSparkEncounterSelection(void);
+
+typedef s32 FldSparkAnimationState;
+enum {
+    FLD_SPARK_ANIMATION_READY = 0,
+    FLD_SPARK_ANIMATION_RUNNING = 1
+};
+
+/* Outer encounter flow; dialogPhase tracks the nested prompt/message state. */
+typedef s32 FldSparkControllerPhase;
+enum FldSparkControllerPhaseValue {
+    FLD_SPARK_CONTROLLER_PHASE_IDLE = 0,
+    FLD_SPARK_CONTROLLER_PHASE_ENCOUNTER_ACTIVE = 1,
+    FLD_SPARK_CONTROLLER_PHASE_EVENT_THRESHOLD = 2, /* Comparison boundary, not a stored state. */
+    FLD_SPARK_CONTROLLER_PHASE_TIMEOUT_MESSAGE = 3,
+    FLD_SPARK_CONTROLLER_PHASE_POST_MESSAGE_HANDOFF = 6, /* The follow-up work differs by title. */
+    FLD_SPARK_CONTROLLER_PHASE_FADE_TO_EVENT = 7,
+    FLD_SPARK_CONTROLLER_PHASE_ENTER_EVENT = 8,
+    FLD_SPARK_CONTROLLER_PHASE_RETURN_TO_FIELD = 9
+};
+
+/* Values for the spark-event prompt, playback, and field-return state machine. */
+typedef s32 FldSparkDialogPhase;
+enum FldSparkDialogPhaseValue {
+    FLD_SPARK_DIALOG_PHASE_IDLE = 0,
+    FLD_SPARK_DIALOG_PHASE_ENTRY_PROMPT = 1,
+    FLD_SPARK_DIALOG_PHASE_ARCHIVE_LOADING = 2,
+    FLD_SPARK_DIALOG_PHASE_TITLE_STREAM_WAIT = 3,
+    FLD_SPARK_DIALOG_PHASE_CONFIRM_PROMPT = 4,
+    FLD_SPARK_DIALOG_PHASE_START_ARCHIVE_LOAD = 5,
+    FLD_SPARK_DIALOG_PHASE_WAIT_ARCHIVE_FILE = 6,
+    FLD_SPARK_DIALOG_PHASE_ENTER_ENCOUNTER = 7,
+    FLD_SPARK_DIALOG_PHASE_PLAY_EVENT = 8,
+    FLD_SPARK_DIALOG_PHASE_RESTORE_FIELD = 9,
+    FLD_SPARK_DIALOG_PHASE_WAIT_FIELD_FADE = 10,
+    FLD_SPARK_DIALOG_PHASE_CANCELLED = 11,
+    FLD_SPARK_DIALOG_PHASE_UNAVAILABLE_MESSAGE = 12
+};
+
+/* Shared field-spark phase, timer, and serialized-sequence progress state. */
+typedef struct FldSparkControllerState {
+    FldSparkControllerPhase phase;
+    s32 countdown;
+    s32 terminated;
+    FldSparkAnimationState animationState;
+    s32 modeCountdown;
+    s32 pendingMode;
+    s32 frame;
+    s32 pulse;
+    FldSparkDialogPhase dialogPhase;
+    s32 dialogTimer;
+    s32 entryCount;
+    s32 sequenceIndex;
+    s32 sequenceRemaining;
+} FldSparkControllerState;
+
+typedef char FldSparkControllerStateSizeCheck[(sizeof(FldSparkControllerState) == 0x34) ? 1 : -1];
+typedef char FldSparkControllerStateAnimationStateOffsetCheck[
+    ((u32)&((FldSparkControllerState *)0)->animationState == 0x0C) ? 1 : -1];
+typedef char FldSparkControllerStateSequenceIndexOffsetCheck[
+    ((u32)&((FldSparkControllerState *)0)->sequenceIndex == 0x2C) ? 1 : -1];
+typedef char FldSparkControllerStateSequenceRemainingOffsetCheck[
+    ((u32)&((FldSparkControllerState *)0)->sequenceRemaining == 0x30) ? 1 : -1];
+
+#endif

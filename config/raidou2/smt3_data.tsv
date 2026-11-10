@@ -54,7 +54,7 @@ endinglistcnt	0x004DE25C	SDATA	kernel/dds3KernelCore	c
 endinglistf	0x004DE254	SDATA	kernel/dds3KernelCore	c
 endinglistl	0x004DE258	SDATA	kernel/dds3KernelCore	c
 evtEventScriptPathFormat	0x004B72D8	RODATA	event/evtEventPack	c
-evtFrameVarName	0x004B6078	RODATA	event/evtEventViewerFrameVar	c
+evtFrameVarName	0x004B6078	RODATA	event/evtEventViewerFrameVar	asm	linked at 0x004B6088, retail 0x004B6078
 evtKillFieldScriptFormat	0x004B44A0	RODATA	event/evtStage	c		0x20
 evtKutiUnit	0x004DF840	SDATA	event/evtCommand	c
 evtLoadDoneMessage	0x004DFF38	SDATA	event/evtEventPack	c
@@ -108,6 +108,7 @@ libgccCieAugEh	0x004DAAA8	RODATA	sdk/libgcc	c
 libgccCieAugEmpty	0x004DAAA0	RODATA	sdk/libgcc	c
 localeCName	0x004DB798	RODATA	sdk/libc	c
 localeEmptyStr	0x004DB788	RODATA	sdk/libc	c
+mccb	0x004E1568	SDATA	nme/Nme_Init	c
 mdlColorByteFormat	0x004DF628	SDATA	model/mdlEffect	c
 mdlModelPathPrefix	0x004DF5D8	SDATA	model/mdlManager	c
 mdlPibCursorMark	0x004DF630	SDATA	model/mdlEffect	c

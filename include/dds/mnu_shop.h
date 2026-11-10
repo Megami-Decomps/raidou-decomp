@@ -1,0 +1,249 @@
+#ifndef MNU_SHOP_H
+#define MNU_SHOP_H
+
+#include "common.h"
+#include "evt_world.h"
+#include "mnu_transition.h"
+
+struct MenuList;
+struct EffectSlotSet;
+struct EffMappedResource;
+struct sdfMemHandle_t;
+
+/* Shop stock by progress row: unlock flag, row price percent, then 32 stock entries. */
+typedef struct ShopRankPriceEntry {
+    u16 itemId;
+    u8 mode;
+    u8 pricePercent; /* 0: use the row's percent */
+    u32 flags;
+} ShopRankPriceEntry;
+
+typedef struct ShopRankPriceRow {
+    s16 unlockFlag;
+    u16 pricePercent;
+    ShopRankPriceEntry entries[0x20];
+} ShopRankPriceRow;
+
+/* Shop-message states stored in the broader terminal action/phase word. */
+typedef enum MnuShopMessageSequencePhase {
+    MNU_SHOP_SEQUENCE_INITIALIZE = 0,
+    MNU_SHOP_SEQUENCE_SELECT_INTRO_MESSAGE = 1,
+    MNU_SHOP_SEQUENCE_WAIT_FOR_INTRO_MESSAGE = 2,
+    MNU_SHOP_SEQUENCE_SCAN_STOCK = 3,
+    MNU_SHOP_SEQUENCE_WAIT_FOR_STOCK_MESSAGE = 4,
+    MNU_SHOP_SEQUENCE_WAIT_BEFORE_COMMAND_MENU = 5,
+    MNU_SHOP_SEQUENCE_SHOW_COMPLETION_MESSAGE = 6,
+    MNU_SHOP_SEQUENCE_WAIT_FOR_COMPLETION_MESSAGE = 7,
+    MNU_SHOP_SEQUENCE_AWARD_PROGRESS_CURRENCY = 8,
+    MNU_SHOP_SEQUENCE_WAIT_FOR_PROGRESS_CURRENCY_MESSAGE = 9,
+    MNU_SHOP_SEQUENCE_START_PRESET_ENTRY = 10,
+    MNU_SHOP_SEQUENCE_WAIT_FOR_PRESET_ENTRY = 11
+} MnuShopMessageSequencePhase;
+
+#ifdef VERSION_DDS2
+struct MenuIconSprites;
+
+/* The native window constructor allocates 0x98 bytes; panel layout is 0x38. */
+struct MenuIconState {
+    u32 kind;
+    u32 unk4;
+    s32 count;
+    struct EffectSlotSet *sprite[6];
+    u32 left;
+    u32 top;
+    u32 right;
+    u32 bottom;
+    s32 fade;
+};
+
+/* The native constructor receives both resource words for every kind. */
+struct MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource,
+                                               s32 material);
+void mnuReleaseResourceList(struct MenuIconState *list);
+void mnuClearEntryFlags(struct MenuIconState *group);
+
+typedef struct MenuWindowContainer {
+    s32 id;                /* 0x00 */
+    u32 flags;             /* 0x04 */
+    s32 originX;           /* 0x08 */
+    s32 originY;           /* 0x0C */
+    s32 width;             /* 0x10 */
+    s32 height;            /* 0x14 */
+    struct MenuList *list; /* 0x18 */
+    s32 suppressBaseSprite; /* 0x1C */
+    struct EffectSlotSet *spriteResource; /* 0x20 */
+    s32 rowSpriteSlot;     /* 0x24 */
+    s32 baseSpriteSlot;    /* 0x28 */
+    struct {
+        struct EffectSlotSet *sprite;
+        u32 parameter;
+    } decorations[3];      /* 0x2C: optional window decoration sprites */
+    u32 decorationX[3];    /* 0x44 */
+    s32 scale50;           /* 0x50 */
+    s32 scale54;           /* 0x54 */
+    struct MenuIconState panel; /* 0x58: embedded drawable panel layout */
+    struct MenuIconSprites *resource; /* 0x90: owned sprite-resource bundle */
+    u32 fadeScale;         /* 0x94: window/list opacity scale; full fade is 0x100 */
+} MenuWindowContainer;
+
+/* Sprite slots are resource-set owners; parameters and offsets stay words. */
+void mnuInitializeBasicWindowLayout(MenuWindowContainer *menu,
+                                    struct EffectSlotSet *firstSprite,
+                                    u32 firstParameter);
+void mnuSetWindowContainerLayout(MenuWindowContainer *menu,
+                                 struct EffectSlotSet *firstSprite,
+                                 u32 firstParameter,
+                                 struct EffectSlotSet *secondSprite,
+                                 u32 secondX,
+                                 u32 secondParameter,
+                                 struct EffectSlotSet *thirdSprite,
+                                 u32 thirdParameter,
+                                 u32 thirdX);
+void mnuSetWindowOverlaySprite(MenuWindowContainer *menu,
+                               struct EffectSlotSet *sprite);
+void mnuSetWindowEntryParameters(u32 first, MenuWindowContainer *menu,
+                                 struct EffectSlotSet *spriteResource,
+                                 u32 third, u32 fourth);
+void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first,
+                               u32 second, u32 third,
+                               struct EffectSlotSet *spriteResource);
+
+typedef char MenuIconState_size_must_be_0x38[(sizeof(struct MenuIconState) == 0x38) ? 1 : -1];
+typedef char MenuWindowContainer_size_must_be_0x98[(sizeof(MenuWindowContainer) == 0x98) ? 1 : -1];
+#else
+struct MenuWindowSpriteGroup;
+struct EffMappedResource;
+
+void mnuConfigureWindowSpriteSlots(struct MenuWindowSpriteGroup *group,
+                                    struct EffMappedResource *target);
+
+/* DDS1's generic window panel is embedded at +0x4C and copied as 0x38 bytes. */
+typedef struct MenuPanelHandles {
+    u32 panelKind;
+    u8 pad04[4];
+    s32 count;
+    struct EffectSlotSet *handles[6];
+    u32 left;
+    u32 top;
+    u32 right;
+    u32 bottom;
+    s32 transition;
+} MenuPanelHandles;
+
+MenuPanelHandles *mnuCreatePanelSpriteHandles(u32 panelKind,
+                                              struct EffectSlotSet *resource,
+                                              struct EffMappedResource *target);
+void mnuClearEntryFlags(MenuPanelHandles *group);
+
+/* The DDS1 generic window constructor allocates and clears 0x8C bytes. */
+typedef struct MenuWindowContainer {
+    s32 id;
+    u32 flags;
+    s32 width;
+    s32 height;
+    u32 capOffsetY; /* Y offset of the trailing entry decoration. */
+    struct MenuList *list;
+    s32 entryValue;
+    struct EffectSlotSet *entryResources;
+    s32 entryY;
+    s32 alternateEntryY;
+    s32 entryOption;
+    struct EffectSlotSet *frameResources;
+    s32 frameSlot;
+    struct EffectSlotSet *spriteResources;
+    u32 spriteSlot;
+    struct EffectSlotSet *overlayResources;
+    u32 overlaySlot;
+    s32 firstDecorationFade;
+    s32 secondDecorationFade;
+    MenuPanelHandles panel;
+    struct MenuWindowSpriteGroup *textures;
+    s32 fadeScale; /* 0x88: window/list opacity scale; full fade is 0x100 */
+} MenuWindowContainer;
+
+void mnuInitializeWindowEntryPlacement(s32 value, MenuWindowContainer *window,
+                                      struct EffectSlotSet *resources,
+                                      s32 rowSlot, s32 capSlot);
+
+void mnuSetWindowOverlaySprite(MenuWindowContainer *window,
+                                struct EffectSlotSet *resources);
+void mnuConfigureWindowSpriteAndGrid(MenuWindowContainer *window,
+                                     struct EffectSlotSet *frameResources, s32 frameSlot,
+                                     struct EffectSlotSet *spriteResources, u32 spriteSlot,
+                                     u32 overlaySlot);
+void mnuForwardDupArg(MenuWindowContainer *window,
+                      struct EffectSlotSet *frameResources, s32 frameSlot,
+                      struct EffectSlotSet *spriteResources, s32 spriteSlot);
+
+/* 2443F8 allocates 0x10 bytes. The operation-row renderer 25E820 reads
+ * countdown/mode; 245C98's initialization stores the pending selection. */
+typedef struct MnuShopListContext {
+    s32 countdown;
+    s32 mode;
+    s32 cursorPulseTicks;
+    u16 extraOption;
+    s16 pendingSelection;
+} MnuShopListContext;
+
+/* DDS1 mnuShopCreateScene allocates and clears this complete 0xB4-byte owner. */
+typedef struct ShopScene {
+    struct sdfMemHandle_t *resourceHandle;
+    u8 pad04[4];
+    MenuPopupState transitionWork;
+    s32 dispatchState;
+    MenuPopupEntry *popupTable;
+    EvtResourcePair messageResource;
+    struct EffectSlotSet *spriteResource;
+    s32 batchState;
+    MenuWindowContainer *ownedWindows[1];
+    MenuWindowContainer *window;
+    struct EffMappedResource *batches[2];
+    s32 initialSelection;
+    s32 counter;
+    s32 menuMode;
+    u8 pad88[4];
+    s32 activePartyCount;
+    s16 extraOption;
+    s16 pendingSelection;
+    s32 scanIndex;
+    s32 pendingPriceStage;
+    s32 previousValue;
+    s32 elapsedFrames;
+    s32 progressTicks;
+    s32 frames;
+    s32 action;
+    s16 substate;
+    s8 pulseFrame;
+    s8 atLimit;
+} ShopScene;
+
+typedef enum MnuShopPendingSelection {
+    MNU_SHOP_NO_PENDING_SELECTION = 0,
+    MNU_SHOP_HAS_PENDING_SELECTION = 1
+} MnuShopPendingSelection;
+
+/* Scans global inventory; the scene is unused. The result drives both
+ * pendingSelection fields in the shop and its list context. */
+MnuShopPendingSelection mnuShopHasPendingSelection(ShopScene *unused);
+
+typedef char MnuShopListContext_size_must_be_0x10[(sizeof(MnuShopListContext) == 0x10) ? 1 : -1];
+
+typedef char MenuPanelHandles_size_must_be_0x38[(sizeof(MenuPanelHandles) == 0x38) ? 1 : -1];
+typedef char MenuWindowContainer_size_must_be_0x8C[(sizeof(MenuWindowContainer) == 0x8C) ? 1 : -1];
+typedef char ShopScene_size_must_be_0xB4[(sizeof(ShopScene) == 0xB4) ? 1 : -1];
+#endif
+
+/* Draw a window container owned by the menu window subsystem. */
+void mnuDrawWindowContainer(s32 x, s32 y, s32 depth, MenuWindowContainer *menu, s32 drawArg);
+
+#ifdef VERSION_DDS2
+void mnuSetWindowPanelBounds(MenuWindowContainer *panel,
+                             const struct MenuIconState *layout,
+                             u32 left, u32 top, u32 right, u32 bottom);
+#else
+void mnuSetWindowPanelBounds(MenuWindowContainer *panel,
+                             const MenuPanelHandles *layout,
+                             u32 left, u32 top, u32 right, u32 bottom);
+#endif
+
+#endif

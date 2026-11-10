@@ -154,3 +154,26 @@ python3 tools/raidou_dds.py names --dds <dds-decomp, split>
 python3 tools/raidou_names.py --apply --out-dir build/raidou_c/dds
 python3 tools/raidou_dds.py rename && python3 configure.py && ninja
 ```
+
+## C from dds-decomp
+
+Functions SMT3 lacks but DDS1 or DDS2 has are carried from dds-decomp's C the
+same way. `raidou_dds.py pairs` writes `build/raidou_c/pairs_dds.tsv` (map
+pair, same masked words and slot kinds, Raidou name equal to the DDS C name);
+`port` reads it after `pairs.tsv`, and `verify` treats the bodies like SMT3's.
+
+- A DDS source is `dds1/<path>` or `dds2/<path>` in `smt3_c.tsv` and the
+  declaration block (`/* Declarations from dds-decomp src/dds1/<path>.c */`).
+  `#if VERSION_DDS1/2` in the source is decided for that game; the block
+  defines `VERSION_DDSn` for the headers.
+- dds-decomp's headers are in `include/dds/` (`raidou_dds.py headers` copies
+  those the blocks include). They define many SMT3 types differently, so a unit
+  with SMT3 bodies gets no DDS bodies, and a unit takes one DDS game (the one
+  most of its functions pair with).
+- DDS data definitions are not carried yet.
+
+```sh
+python3 tools/raidou_c.py pairs && python3 tools/raidou_dds.py pairs --dds <dds-decomp, split>
+python3 tools/raidou_c.py port --dds <...> && python3 tools/raidou_dds.py headers --dds <...>
+python3 configure.py && ninja -k 0 > log; python3 tools/raidou_c.py verify --dds <...> --log log
+```

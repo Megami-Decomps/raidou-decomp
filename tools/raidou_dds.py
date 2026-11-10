@@ -157,7 +157,10 @@ def cmd_pairs(args):
             if r["status"] == "identical" and r["function"] == r["smt3_name"]}
     lines = ["version\tsrc\tfunction\taddress\tsmt3_address\tsmt3_name\tsmt3_src\twords\tstatus"]
     for version in VERSIONS:
-        rows = [r for r in verified(version, sides) if r[0] and r[5] and (version, r[2]) not in smt3]
+        # SMT3's and dds-decomp's headers define the same types differently: no unit gets both.
+        smt3_units = {r["src"] for r in rc.read_pairs(rc.OUT / "pairs.tsv")
+                      if r["version"] == version and (version, r["function"]) in smt3}
+        rows = [r for r in verified(version, sides) if r[0] and r[5] and r[0] not in smt3_units]
         # One DDS game per unit: two VERSION_DDS macros in one TU select conflicting headers.
         votes = defaultdict(Counter)
         for src, unit, fn, addr, words, good in rows:

@@ -1,0 +1,308 @@
+#ifndef BTL_H
+#define BTL_H
+
+#include "common.h"
+#include "btl_task.h"
+#if defined(VERSION_DDS1) || defined(VERSION_DDS2)
+#include "dat_state.h"
+#endif
+
+/* Generic first word shared by actor-effect and boss-selection allocations. */
+typedef struct BtlEffectHeader {
+    union {
+        u32 owner;
+        struct BtlUnit *actor;
+        u8 statIndex;
+        u16 formCount; /* DDS1 HARI1 reads and advances only this halfword. */
+    };
+} BtlEffectHeader;
+
+/* DDS1 mode 0x108 owns the complete 0x18-byte timing/vertical-motion record. */
+typedef struct BattleEffectState {
+    BtlEffectHeader header;
+    u32 flags, value;        /* +0x04/+0x08 */
+    u16 timer;               /* +0x0C */
+    u8 active, phase;        /* +0x0E/+0x0F */
+    union {
+        u32 effect;
+        f32 height;          /* +0x10: effect position's Y component */
+    };
+    f32 speed;               /* +0x14 */
+} BattleEffectState;
+
+/* DDS1 mode 0x10B allocates a distinct 0x10-byte boss-selection record. */
+typedef struct BtlBossEffectPayload {
+    BtlEffectHeader header;
+    u32 color;
+    s32 options;
+    s32 selectedId;
+} BtlBossEffectPayload;
+
+typedef char BtlEffectHeaderSizeCheck[(sizeof(BtlEffectHeader) == 4) ? 1 : -1];
+typedef char BattleEffectStateSizeCheck[(sizeof(BattleEffectState) == 0x18) ? 1 : -1];
+typedef char BtlBossEffectPayloadSizeCheck[(sizeof(BtlBossEffectPayload) == 0x10) ? 1 : -1];
+
+typedef struct BtlUnit BtlUnit;
+
+/* Stored party indices use 6 when the unit has no active roster slot. */
+#define BTL_UNIT_PARTY_INDEX_NO_ACTIVE_SLOT 6
+
+void btlInitFxLights(BtlUnit *unit);
+void btlInitializeEffectVectorsFromSourceRecords(
+    BtlUnit *unit, s32 resourceKind, s32 resourceIndex);
+
+struct evtUnitHandle_t;
+struct sdfMemHandle_t;
+struct SoundResourceLink;
+struct dds3Basic_t;
+
+/* The actor owns both status words as one complete, naturally aligned record.
+ * Scalar accesses retain their ordinary word alias behavior. Packed observations
+ * copy the whole record's representation, without casting a scalar member. */
+typedef struct BtlUnitStatus {
+    s32 flags;
+    u32 stateFlags;
+} BtlUnitStatus;
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+/* Six-byte status-entry record; each game's battle unit contains seven. */
+typedef struct BtlUnitEntrySlot {
+    s16 code;
+    s16 initialValue;
+    s16 countdown;
+} BtlUnitEntrySlot;
+
+/* DDS1 001F1194 / DDS2 00201D1C load this pair with LD; SH flags and SW reference counts also access its halves. */
+typedef union BtlEffectLinkState {
+    u64 packed;
+    struct {
+        u16 flags;
+        u8 pad02[2];
+        s32 referenceCount;
+    };
+} BtlEffectLinkState;
+
+#ifdef VERSION_DDS1
+/* Battle unit, DDS1 (0x348). Retail accessors distinguish world rotation at
+ * +0x40 from the orientation quaternion at +0x70; body/muzzle offsets are
+ * +0x90/+0xA0 respectively. Effect origin/scene extension are +0x31C/+0x320.
+ * The actor chain ends at +0x344. Command state/action words are a different
+ * object and must not be interpreted through this unit layout. */
+typedef struct BtlUnit {
+    f32 lightDirection[4]; /* 0x00: source direction restored by battle light transitions. */
+    f32 colorStart[4]; /* 0x10: first source color used by the effect blend callback. */
+    f32 colorEnd[4]; /* 0x20: second source color used by the effect blend callback. */
+    f32 position[4]; /* 0x30: world position */
+    f32 rotation[4]; /* 0x40: world rotation passed to btlSetUnitRotation */
+    f32 actorScale; /* 0x50: base actor scale applied to model resources and effect vectors. */
+    u32 baseColor; /* 0x54: RGB restored after temporary battle effects */
+    union {
+        f32 unk58;
+        u32 unk58Bits;
+    };
+    u8 pad5C[4];
+    f32 currentPosition[4]; /* 0x60: position retained by the unit setter */
+    f32 orientation[4]; /* 0x70: quaternion converted to a VU matrix */
+    f32 scale; /* 0x80 */
+    u32 overlayColor; /* 0x84: packed transient actor color. */
+    union {
+        f32 positionZOffset; /* 0x88: added to world Z before rotating a local offset. */
+        u32 positionZOffsetBits; /* Integer-zero initialization preserves the native store view. */
+    };
+    u8 pad8C[4];
+    union {
+        /* Accessor names describe caller intent: GetMuzzlePosVU reads this
+         * body-reach offset; GetBodyPosVU reads muzzleOffset at +0xA0. */
+        f32 bodyOffset[4]; /* 0x90: same field naming as DDS2 */
+        struct {
+            /* Some setup paths write zero as integer bits, not float stores. */
+            s32 bodyOffsetXBits;
+            f32 bodyOffsetY;
+            f32 bodyOffsetZ;
+            s32 bodyOffsetWBits;
+        };
+    };
+    f32 muzzleOffset[4]; /* 0xA0: read by btlUnitGetBodyPosVU */
+    f32 height; /* 0xB0 */
+    f32 reach; /* 0xB4 */
+    f32 geometryHeight; /* 0xB8: geometry height, independently copied or overridden. */
+    f32 bodyRadius; /* 0xBC: unscaled actor half-width used by formation and positioning. */
+    f32 cameraRadius; /* 0xC0: scaled actor clearance used by camera framing. */
+    s32 resourceKind; /* 0xC4: actor resource table selector. */
+    u32 species; /* 0xC8 */
+    u8 modelBorrowed; /* Nonzero shares another unit's model state. */
+    u8 padCD[3];
+    s32 modelId; /* 0xD0: model passed to btlCreateModelChangeTask by the gun-change command */
+    s32 modelVariant; /* 0xD4: its variant argument */
+    u8 padD8[4];
+    s32 modelResourceKind; /* 0xDC: model-asset kind paired with displaySpecies for special-mode loads. */
+    u32 displaySpecies; /* 0xE0 */
+    u8 padE4[4];
+    u32 updateFlags; /* 0xE8: bit 1 forces the actor update's reset path */
+    s32 motionId; /* 0xEC: current primary model motion; -1 before selection. */
+    s32 effectState; /* 0xF0 */
+    f32 motionRate; /* 0xF4: stored rate applied to the owner's primary SDK motion. */
+    s16 motionStartFrame; /* 0xF8: retained motion-range start frame. */
+    s16 motionEndFrame; /* 0xFA: retained motion-range end frame. */
+    s32 effectIndex; /* 0xFC: retained motion-selection index. */
+    s32 effectParameter; /* 0x100: retained motion-selection mode. */
+    f32 effectScale; /* 0x104: retained motion-selection rate. */
+    u64 identity; /* 0x108: copied to effect tasks and compared to command IDs */
+    BtlUnitStatus status; /* 0x110: complete low/high status record. */
+    u32 gunResourceFlags; /* 0x118 */
+    u8 lookupId; /* 0x11C: party slots 0-2 or enemy slots 0-8; 0xFF when unset. */
+    u8 pad11D[3];
+    datUnitWork_t partyRecord; /* 0x120: complete copied actor record (0x1A4). */
+    u8 partyIndex; /* 0x2C4: saved party-entry index, read with lbu. */
+    u8 pad2C5;
+    BtlUnitEntrySlot entrySlots[7]; /* 0x2C6 */
+    s32 selectedEntryIndex; /* 0x2F0: command-record index; -1 denotes no selected entry. */
+    s32 pendingSkillNameIndex; /* 0x2F4: skill-name override index; -1 uses the action skill. */
+    struct SoundResourceNode *resourceNode; /* 0x2F8: owned system-effect resource. */
+    struct SoundResourceLink *resourceLink; /* 0x2FC: linked model-resource task. */
+    struct SoundLink *link; /* 0x300: per-unit command effect. */
+    struct ActiveSoundNode *listNode; /* 0x304: independently loaded sound node. */
+    struct SoundSlotOwner *soundSlotOwner; /* 0x308: shared category/id motion-SE owner. */
+    struct SoundMixer *gunResource; /* 0x30C: retained actor sound mixer. */
+    BtlEffectLinkState effectLink; /* 0x310: effect flags and outstanding effect-task references. */
+    u8 firstCountdown; /* 0x318: active linked-number displays; selects modulo-12 offset. */
+    u8 counterDisplayCount; /* 0x319: active counter displays; selects modulo-12 offset. */
+    u8 pad31A[2];
+    struct dds3Basic_t *effectObject; /* 0x31C: actor's world node and transform. */
+    struct evtUnitHandle_t *ext; /* 0x320: the event manager's complete 0x170-byte work. */
+    struct sdfModelRootNode_t *transparencyModel; /* 0x324: alternate SDF model retained during transparency. */
+    struct BtlUnit *mirror; /* 0x328: unit drawn from this unit's transparency packet buffer */
+    s32 transparencyBuffer; /* 0x32C: mirror pass's 512x224 transfer image. */
+    struct sdfMemHandle_t *transparencyBufferAllocation; /* 0x330: allocation handle released with the image. */
+    u8 pad334[8];
+    struct sdfMemHandle_t *handle; /* 0x33C: allocation that owns this unit. */
+    struct BtlUnit *previousActor; /* 0x340 */
+    struct BtlUnit *next; /* 0x344: actor-list link, not a task-chain link */
+} BtlUnit;
+typedef char BtlUnitRecordOffsetCheck[((u32)&((BtlUnit *)0)->partyRecord == 0x120) ? 1 : -1];
+typedef char BtlUnitRecordEndCheck[((u32)&((BtlUnit *)0)->partyIndex == 0x2C4) ? 1 : -1];
+typedef char BtlUnitPositionZOffsetOffsetCheck[
+    ((u32)&((BtlUnit *)0)->positionZOffset == 0x88) ? 1 : -1];
+typedef char BtlUnitGeometryHeightOffsetCheck[
+    ((u32)&((BtlUnit *)0)->geometryHeight == 0xB8) ? 1 : -1];
+typedef char BtlUnitSizeCheck[(sizeof(BtlUnit) == 0x348) ? 1 : -1];
+#endif /* VERSION_DDS1 */
+
+
+
+#ifdef VERSION_DDS2
+/* Battle unit, DDS2. The complete party record is copied to +0x120; actor-list
+ * links are the distinct pointers at +0x360/+0x364. */
+typedef struct BtlUnit {
+    f32 lightDirection[4]; /* 0x00: source direction restored by battle light transitions. */
+    f32 colorStart[4]; /* 0x10: first source color used by the effect blend callback. */
+    f32 colorEnd[4]; /* 0x20: second source color used by the effect blend callback. */
+    f32 position[4]; /* 0x30: world position */
+    f32 rotation[4]; /* 0x40: world rotation passed to btlSetUnitRotation */
+    f32 actorScale; /* 0x50: base actor scale applied to model resources and effect vectors. */
+    u32 baseColor;
+    f32 unk58;
+    u8 pad5C[4];
+    f32 currentPosition[4]; /* 0x60: position retained by the unit setter */
+    f32 orientation[4]; /* 0x70: quaternion converted to a rotation matrix */
+    f32 scale;      /* 0x80 */
+    u32 overlayColor;
+    f32 positionZOffset;
+    u8 pad8C[4];
+    f32 bodyOffset[4]; /* 0x90: scaled and rotated into the unit's body position */
+    f32 muzzleOffset[4]; /* 0xA0 */
+    f32 height;     /* 0xB0 */
+    f32 reach;      /* 0xB4 */
+    f32 geometryHeight; /* 0xB8: geometry height, copied from or overridden from height. */
+    f32 bodyRadius; /* 0xBC: unscaled actor half-width used by formation and positioning. */
+    f32 cameraRadius; /* 0xC0: scaled actor clearance used by camera framing. */
+    s32 resourceKind; /* 0xC4: actor resource table selector. */
+    s32 resourceIndex; /* 0xC8 */
+    u8 modelBorrowed; /* Nonzero shares another unit's model state. */
+    u8 padCD[3];
+    s32 modelId; /* 0xD0: model passed to btlCreateModelChangeTask by the gun-change command */
+    s32 modelVariant; /* 0xD4: its variant argument */
+    u8 padD8[4];
+    s32 modelResourceKind; /* 0xDC: model-asset kind paired with combatantKind for special-mode loads. */
+    u32 combatantKind; /* 0xE0: display/command kind before special-mode canonicalization */
+    u8 padE4[4];
+    u32 updateFlags; /* 0xE8: bit 1 forces the actor update's reset path */
+    s32 motionId; /* 0xEC: current primary model motion; -1 before selection. */
+    s32 effectState; /* 0xF0: same actor effect state as DDS1 */
+    f32 motionRate; /* 0xF4: stored rate applied to the owner's primary SDK motion. */
+    s16 motionStartFrame; /* 0xF8: retained motion-range start frame. */
+    s16 motionEndFrame; /* 0xFA: retained motion-range end frame. */
+    s32 effectIndex; /* 0xFC: retained motion-selection index. */
+    s32 effectParameter; /* 0x100: retained motion-selection mode. */
+    f32 effectScale; /* 0x104: retained motion-selection rate. */
+    u64 owner;      /* 0x108: compared against the battle command's unit ID */
+    BtlUnitStatus status; /* 0x110: complete low/high status record. */
+    u32 gunResourceFlags; /* 0x118: model/gun request and readiness bits. */
+    u8 lookupId; /* 0x11C: party slots 0-2 or enemy slots 0-8; 0xFF when unset. */
+    u8 pad11D[3];
+    datUnitWork_t partyRecord; /* 0x120: complete copied roster record (0x1C4). */
+    u8 partyIndex; /* 0x2E4: saved party-entry index, read with lbu. */
+    u8 pad2E5;
+    BtlUnitEntrySlot entrySlots[7]; /* 0x2E6: btlClearActorEntrySlot clears each signed record. */
+    s32 selectedEntryIndex; /* 0x310: command-record index; -1 denotes no selected entry. */
+    s32 pendingSkillNameIndex; /* 0x314: skill-name override index; -1 uses the action skill. */
+    struct SoundResourceNode *resourceNode; /* 0x318: owned system-effect resource, as DDS1's +0x2F8. */
+    struct SoundResourceLink *resourceLink; /* 0x31C: linked model-resource task. */
+    struct SoundLink *link; /* 0x320: per-unit command effect. */
+    struct ActiveSoundNode *listNode; /* 0x324: independently loaded sound node. */
+    struct SoundSlotOwner *soundSlotOwner; /* 0x328: shared category/id motion-SE owner, as in DDS1. */
+    struct SoundMixer *gunResource; /* retained actor sound mixer */
+    BtlEffectLinkState effectLink; /* 0x330: same flags/reference pair as DDS1 +0x310. */
+    u8 linkedNumberCount; /* 0x338: active linked-number displays; selects modulo-12 offset. */
+    u8 counterDisplayCount; /* 0x339: active counter displays; selects modulo-12 offset. */
+    u8 pad33A[2];
+    struct dds3Basic_t *effectObject; /* 0x33C: effect whose first inner vector becomes the origin */
+    struct evtUnitHandle_t *ext; /* 0x340: the event manager's complete 0x1D0-byte work. */
+    struct sdfModelRootNode_t *transparencyModel; /* Alternate SDF model used by the transparency path. */
+    struct BtlUnit *mirror; /* 0x348: created and destroyed by the model-change task. */
+    s32 transparencyBuffer; /* 0x34C: mirror pass's 512x224 transfer image. */
+    struct sdfMemHandle_t *transparencyBufferAllocation; /* 0x350: allocation handle released with the image. */
+    u8 pad354[8];
+    struct sdfMemHandle_t *handle; /* 0x35C: allocation that owns this unit. */
+    struct BtlUnit *previousActor; /* 0x360 */
+    struct BtlUnit *next; /* 0x364: actor-list link, not a task-chain link */
+} BtlUnit;
+typedef char BtlUnitPartyRecordOffsetCheck[((u32)&((BtlUnit *)0)->partyRecord == 0x120) ? 1 : -1];
+typedef char BtlUnitPartyRecordEndCheck[((u32)&((BtlUnit *)0)->partyIndex == 0x2E4) ? 1 : -1];
+typedef char BtlUnitMirrorOffsetCheck[((u32)&((BtlUnit *)0)->mirror == 0x348) ? 1 : -1];
+typedef char BtlUnitSoundSlotOwnerOffsetCheck[
+    ((u32)&((BtlUnit *)0)->soundSlotOwner == 0x328) ? 1 : -1];
+typedef char BtlUnitPositionZOffsetOffsetCheck[
+    ((u32)&((BtlUnit *)0)->positionZOffset == 0x88) ? 1 : -1];
+typedef char BtlUnitGeometryHeightOffsetCheck[
+    ((u32)&((BtlUnit *)0)->geometryHeight == 0xB8) ? 1 : -1];
+typedef char BtlUnitSizeCheck[(sizeof(BtlUnit) == 0x368) ? 1 : -1];
+#endif /* VERSION_DDS2 */
+
+/* Both titles keep the primary owner's existing eight-byte alignment. */
+typedef char BtlUnitStatusSizeCheck[(sizeof(BtlUnitStatus) == 8) ? 1 : -1];
+typedef char BtlUnitStatusAlignmentCheck[(__alignof__(BtlUnitStatus) == 4) ? 1 : -1];
+typedef char BtlUnitAlignmentCheck[(__alignof__(BtlUnit) == 8) ? 1 : -1];
+typedef char BtlUnitStatusOffsetCheck[((u32)&((BtlUnit *)0)->status == 0x110) ? 1 : -1];
+typedef char BtlUnitMotionIdOffsetCheck[((u32)&((BtlUnit *)0)->motionId == 0xEC) ? 1 : -1];
+typedef char BtlUnitCameraRadiusOffsetCheck[((u32)&((BtlUnit *)0)->cameraRadius == 0xC0) ? 1 : -1];
+typedef char BtlUnitModelResourceKindOffsetCheck[((u32)&((BtlUnit *)0)->modelResourceKind == 0xDC) ? 1 : -1];
+typedef char BtlUnitStatusFlagsOffsetCheck[((u32)&((BtlUnit *)0)->status.flags == 0x110) ? 1 : -1];
+typedef char BtlUnitStateFlagsOffsetCheck[((u32)&((BtlUnit *)0)->status.stateFlags == 0x114) ? 1 : -1];
+typedef char BtlUnitGunResourceFlagsOffsetCheck[((u32)&((BtlUnit *)0)->gunResourceFlags == 0x118) ? 1 : -1];
+
+/* Whole status pair (flags low, stateFlags high) for the 64-bit mask tests. */
+static inline u64 btlUnitStatusPair(BtlUnit *unit) {
+    u64 bits;
+    memcpy(&bits, &unit->status, sizeof(unit->status));
+    return bits;
+}
+
+/* Returns the signed projection length in f0; the projected point is in vf10. */
+f32 btlProjectOnPlaneVU(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
+
+/* Preserve the field token for compiler matching; source uses its side-slot role. */
+#define battleSideSlotIndex lookupId
+
+#endif /* BTL_H */

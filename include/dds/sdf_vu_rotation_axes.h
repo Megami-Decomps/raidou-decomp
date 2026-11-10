@@ -1,0 +1,12 @@
+#ifndef SDF_VU_ROTATION_AXES_H
+#define SDF_VU_ROTATION_AXES_H
+
+#include "common.h"
+
+/* Load the X-axis rotation matrix into the primary VU0 matrix registers. */
+void SetRotateMatrixX(f32 angle);
+
+/* Load the secondary Y-axis rotation matrix into the primary VU0 matrix registers. */
+void SetRotateMatrixY_B(f32 angle);
+
+#endif /* SDF_VU_ROTATION_AXES_H */

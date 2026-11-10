@@ -1,0 +1,31 @@
+#ifndef ITF_MEM_NODE_H
+#define ITF_MEM_NODE_H
+
+#include "common.h"
+
+/* Free-list header stored immediately before each interface-pool payload. */
+typedef struct MemNode {
+    u32 slotIndex; /* Zero identifies the ring sentinel. */
+    struct MemNode *next;
+} MemNode;
+
+typedef char MemNodeSizeCheck[(sizeof(MemNode) == 8) ? 1 : -1];
+typedef char MemNodeNextOffsetCheck[((u32)&((MemNode *)0)->next == 4) ? 1 : -1];
+
+/* Allocation prefix immediately before the returned node ring base. */
+struct sdfMemHandle_t;
+typedef struct MemRingHeader {
+    struct sdfMemHandle_t *allocation;
+    MemNode first;
+} MemRingHeader;
+
+typedef char MemRingHeaderSizeCheck[(sizeof(MemRingHeader) == 0x0C) ? 1 : -1];
+typedef char MemRingHeaderFirstOffsetCheck[
+    ((u32)&((MemRingHeader *)0)->first == 0x04) ? 1 : -1];
+
+MemNode *frAllocFontTable(s32 payloadBytes, s32 count);
+void *frAllocFontNode(MemNode *pool);
+s32 frFreeFontNode(void *payload, MemNode *pool);
+u32 frFreeFontTable(MemNode *pool);
+
+#endif

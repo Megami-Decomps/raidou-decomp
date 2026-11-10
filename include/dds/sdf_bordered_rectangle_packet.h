@@ -1,0 +1,9 @@
+#ifndef SDF_BORDERED_RECTANGLE_PACKET_H
+#define SDF_BORDERED_RECTANGLE_PACKET_H
+
+#include "common.h"
+
+u64 *dds3PrimFrameRect(s32 x, s32 y, s32 depth, s32 width, s32 height, u32 colorA, u32 colorB);
+u64 *mdlBuildViewerRectanglePacket(s32 x, s32 y, s32 depth, s32 width, s32 height);
+
+#endif

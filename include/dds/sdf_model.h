@@ -1,0 +1,94 @@
+#ifndef SDF_MODEL_H
+#define SDF_MODEL_H
+
+#include "sdf_draw.h"
+
+/* Native model constructor reference: AMB roots and the FLD model wrapper's
+ * four-word subrecord. The item list has a variable-length body of SdfItem
+ * records beginning at its firstItem array. */
+typedef struct SdfItemList SdfItemList;
+/* Values understood by sdfModelNodeSet. */
+#define SDF_ITEM_COMMAND_SETUP_INLINE_LISTS 0
+#define SDF_ITEM_COMMAND_SETUP_NULL_TERMINATED_LIST_TABLE 1
+
+/* Per-item view after packed-resource or scene relocation, applied by
+ * sdfModelNodeBaseSet. Command-list fields hold relocated pointers. */
+typedef struct SdfItem {
+    u16 commandSetupMode; /* 0x00: selects the optional command-list form */
+    u16 reserved02;       /* 0x02 */
+    u32 unk04;            /* 0x04 */
+    s32 nodeId;       /* 0x08 */
+    s32 parentNodeIndex; /* 0x0C: negative means this node has no parent */
+    f32 rotationX;    /* 0x10: Euler angles supplied to the quaternion builder */
+    f32 rotationY;    /* 0x14 */
+    f32 rotationZ;    /* 0x18 */
+    u8 pad1C[4];
+    u128 translation; /* 0x20 */
+    u128 scale;       /* 0x30 */
+    const f32 *boundsCorners; /* 0x40: optional two xyz corners used by clipping */
+    union {
+        u32 *inlineCommandLists[3]; /* SDF_ITEM_COMMAND_SETUP_INLINE_LISTS */
+        struct {
+            u32 **commandLists; /* SDF_ITEM_COMMAND_SETUP_NULL_TERMINATED_LIST_TABLE */
+            u32 unk48;
+            u32 unk4C;
+        } commandList;
+    } commandData; /* 0x44: other modes leave the command tail unused */
+} SdfItem;
+
+typedef char SdfItem_size_must_be_0x50[(sizeof(SdfItem) == 0x50) ? 1 : -1];
+
+/* Scale the model root transform and propagate its draw-node tree for frame. */
+void sdfModelEvalTm2(sdfModelRootNode_t *model, s32 frame);
+typedef char SdfItem_boundsCorners_at_40[
+    ((u32)&((SdfItem *)0)->boundsCorners == 0x40) ? 1 : -1];
+typedef char SdfItem_commandData_at_44[
+    ((u32)&((SdfItem *)0)->commandData == 0x44) ? 1 : -1];
+
+/* Variable-length serialized list: a 0x10-byte header, followed by count
+ * complete 0x50-byte items. The array contributes no bytes to the header. */
+struct SdfItemList {
+    s32 count;
+    u8 pad_0x04[0x0C];
+    SdfItem firstItem[0];
+};
+typedef char SdfItemList_header_size_must_be_0x10[
+    (sizeof(SdfItemList) == 0x10) ? 1 : -1];
+typedef char SdfItemList_firstItem_must_be_at_0x10[
+    ((u32)&((SdfItemList *)0)->firstItem == 0x10) ? 1 : -1];
+
+typedef struct sdfModelDef_t {
+    SdfItemList *items; /* 0x00 */
+    struct SdfMaterialAssetList *serializedAssets; /* 0x04: count-prefixed material records */
+    s32 slotPairCount; /* 0x08: passed to sdfModelMakeMorphList */
+    struct SdfChunkHeader *chunkTable; /* 0x0C: borrowed by sdfModelRootNode_t */
+} sdfModelDef_t;
+
+typedef char SdfItemListRef_size_must_be_0x10[(sizeof(sdfModelDef_t) == 0x10) ? 1 : -1];
+typedef char SdfItemListRef_serializedAssets_at_4[((u32)&((sdfModelDef_t *)0)->serializedAssets == 4) ? 1 : -1];
+typedef char SdfItemListRef_slotPairCount_at_8[((u32)&((sdfModelDef_t *)0)->slotPairCount == 8) ? 1 : -1];
+typedef char SdfItemListRef_chunkTable_at_C[((u32)&((sdfModelDef_t *)0)->chunkTable == 0xC) ? 1 : -1];
+
+sdfModelRootNode_t *sdfModelMakeRoot(DevRequest *resourceList, sdfModelDef_t *listRef);
+sdfModelRootNode_t *sdfModelMake(DevRequest *resourceList, sdfModelDef_t *listRef);
+sdfModelRootNode_t *sdfModelMakeEarly(DevRequest *resourceList, sdfModelDef_t *listRef);
+void sdfModelLinkDrawPacket(sdfModelNode_t *node, const u32 *commandList,
+                                s32 packetSelector, s32 alternateSelector,
+                                s32 listIndex);
+void sdfModelMakeLocalTm(sdfModelNode_t *node);
+void sdfModelNodeSet(sdfModelNode_t *node, const SdfItem *item);
+/* Build the kind-3 command packet; zero means there is no packet to append. */
+u32 sdfCorePacketGen(sdfModelNode_t *node, void *payload,
+                                   s32 nodeFlags, s32 color,
+                                   f32 firstScalar, f32 secondScalar,
+                                   s32 frame, s32 skipCommands);
+/* The draw node owns the lazily allocated workspace; callers receive a borrowed
+ * pointer to it, and must not release it independently. */
+u8 *sdfModelAllocTmPacket(sdfModelNode_t *root);
+/* Releases each allocation in both free-node lists. The list heads remain
+ * stored on root and must not be traversed again after this call. */
+void sdfModelPacketFree(sdfModelNode_t *root);
+/* Refresh the current per-node transforms from the model's selected frame. */
+void sdfModelEvalTm(sdfModelRootNode_t *model);
+
+#endif /* SDF_MODEL_H */

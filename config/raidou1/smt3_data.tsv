@@ -115,6 +115,7 @@ libgccCieAugEh	0x004682A8	RODATA	sdk/libgcc	c
 libgccCieAugEmpty	0x004682A0	RODATA	sdk/libgcc	c
 localeCName	0x00468DC8	RODATA	sdk/libc	c
 localeEmptyStr	0x00468DB8	RODATA	sdk/libc	c
+mccb	0x0046CDD0	SDATA	nme/Nme_Init	c
 mdlColorByteFormat	0x0046C3C8	SDATA	model/mdlEffect	c
 mdlHddFileIndexHandle	0x0046C384	SDATA	model/mdlManager	c
 mdlHddFileListHandle	0x0046C388	SDATA	model/mdlManager	c
@@ -240,9 +241,11 @@ sdfVblankFlag	0x0046F268	SDATA	sdf/sdfSystem	c
 sdfVifMaskedName	0x0046F4C0	SDATA	sdf/sdfSound	c
 sdfVifXferOkName	0x0046F4C8	SDATA	sdf/sdfSound	c
 skyanime	0x0046C808	SDATA	event/evtSky	c
+slBaseIconName	0x00455198	RODATA	mc/slMain	c
 slChooseSaveIndex	0x0046CE1C	SDATA	field/fldSe	c
 slExitWaitCnt	0x0046CDF0	SDATA	field/fldSe	c
 slFileSelError	0x0046CE38	SDATA	field/fldSe	c
+slIconSysName	0x00455188	RODATA	mc/slMain	c
 slQueryYesNoMsg	0x0046CE28	SDATA	field/fldSe	c
 startinglistcnt	0x0046B158	SDATA	kernel/dds3KernelCore	c
 startinglistf	0x0046B150	SDATA	kernel/dds3KernelCore	c

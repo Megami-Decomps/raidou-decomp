@@ -1,0 +1,465 @@
+#ifndef BTL_SOUND_H
+#define BTL_SOUND_H
+
+#include "common.h"
+#include "active_sound_node.h"
+#include "eff.h"
+#include "eff_battle_color_keyframe.h"
+#include "eff_battle_voice_kind.h"
+
+enum { BTL_SOUND_ENTRY_COUNT = 0x31 };
+
+/* Each effect bank addresses this many parameter rows when flattening a
+ * bank/entry pair into the copy-source index stored in an entry. */
+enum { EFF_BATTLE_PARAMETER_ENTRY_CAPACITY = 0x3C };
+
+/* One SYSEFF archive slot. The loader tests enabled, stores the archive payload
+ * pointer from node+0x0C, and retains node+0x08 without interpreting it. */
+typedef struct BattleSoundArchiveEntry {
+    u32 enabled;       /* +0x00: nonzero rows consume one archive node. */
+    void *archiveData; /* +0x04: borrowed archive payload; opaque08 retains other metadata. */
+    u32 opaque08;      /* +0x08: copied archive metadata; role not established. */
+} BattleSoundArchiveEntry;
+
+typedef char BattleSoundArchiveEntry_size_must_be_0x0C[
+    (sizeof(BattleSoundArchiveEntry) == 0x0C) ? 1 : -1];
+typedef char BattleSoundArchiveEntry_enabled_at_0x00[
+    ((u32)&((BattleSoundArchiveEntry *)0)->enabled == 0x00) ? 1 : -1];
+typedef char BattleSoundArchiveEntry_archiveData_at_0x04[
+    ((u32)&((BattleSoundArchiveEntry *)0)->archiveData == 0x04) ? 1 : -1];
+typedef char BattleSoundArchiveEntry_opaque08_at_0x08[
+    ((u32)&((BattleSoundArchiveEntry *)0)->opaque08 == 0x08) ? 1 : -1];
+typedef char BattleSoundArchiveTable_extent_must_be_0x24C[
+    (sizeof(BattleSoundArchiveEntry[BTL_SOUND_ENTRY_COUNT]) == 0x24C) ? 1 : -1];
+
+typedef struct effBTLCutHandle_t effBTLCutHandle_t;
+typedef void (*BattleEffectCallback)(effBTLCutHandle_t *effect);
+
+/* Serialized parameter selector: an effect-work kind or one of the row states
+ * below. Keep the wire/storage width at 16 bits. */
+typedef u16 EffBattleParameterKind;
+enum {
+    EFF_BATTLE_PARAMETER_KIND_NO_WORK = 0xFFFE,
+    EFF_BATTLE_PARAMETER_KIND_COPY_SOURCE_ENTRY = 0xFFFF
+};
+
+typedef union EffBattleParameterValue {
+    u32 mixerOffset; /* Effect-work payload offset from the source mixer. */
+    u32 copySourceIndex; /* Bank * EFF_BATTLE_PARAMETER_ENTRY_CAPACITY + entry. */
+    struct effPartHandle_t *work;
+} EffBattleParameterValue;
+
+/* Per-entry actor eligibility selector; preserve the stored byte width. */
+typedef u8 EffBattleEntryActorFilterMode;
+enum EffBattleEntryActorFilterMode {
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_BYPASS = 0,
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_LINK_FLAG_4_WITHOUT_FLAG_1 = 1,
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_LINK_FLAGS_4_AND_1 = 2,
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_LINK_FLAG_2 = 3,
+#ifdef VERSION_DDS2
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_LINK_FLAG_4_NON_SPECIAL_CLASS = 4,
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_LINK_FLAG_4_RECORD_FLAG_CLASS = 5
+#endif
+};
+
+typedef struct EffBattleEntry {
+    EffBattleParameterKind parameterKind; /* 0x00: work kind or row-state sentinel. */
+    u8 pad02[2];
+    EffBattleParameterValue value; /* 0x04 */
+    EffectVectorRequest aimParams;        /* 0x08 */
+    u32 zeroKindCount;             /* 0x10 */
+    EffBattleEntryActorFilterMode kind; /* 0x14: actor eligibility filter mode. */
+    u8 pad15[3];
+} EffBattleEntry; /* 0x18 */
+
+typedef struct EffBattleEntryList {
+    s32 triggerFrame;              /* 0x00 */
+    u8 pad04[2];
+    u16 shake;                     /* 0x06: screen-shake amount; 31 or more logs and caps at 300 frames */
+    u16 shakeFrame;                /* 0x08: frame at which the shake starts */
+    u16 shakeFade;                 /* 0x0A: fade applied with the shake */
+    EffBattleUnitColorCommand colorCommand; /* 0x0C: single command read by the voice updater */
+    u8 opaque2C[4];                /* 0x2C: retained bytes not read by the update routine */
+    EffBattleUnitRgbCommand rgbCommand;     /* 0x30: single command read by the voice updater */
+    u8 opaque44[4];                /* 0x44: retained bytes not read by the update routine */
+    s32 callbackFrame;             /* 0x48 */
+    u8 pad4C[0x20];
+    u16 count;                     /* 0x6C */
+    u8 pad6E[2];
+    s32 colorRampEndFrame;         /* 0x70 */
+    u8 actorScaleEnabled;          /* 0x74 */
+    u8 pad75[3];
+    EffBattleEntry entries[1];     /* 0x78 */
+} EffBattleEntryList;
+
+typedef struct SoundBank {
+    u8 pad00[8];
+    EffBattleEntryList list;       /* 0x08 */
+    u8 pad98[0x580];
+} SoundBank;
+
+typedef char EffBattleEntry_size_must_be_0x18[
+    (sizeof(EffBattleEntry) == 0x18) ? 1 : -1];
+typedef char EffBattleEntry_aimParams_at_0x08[
+    ((u32)&((EffBattleEntry *)0)->aimParams == 0x08) ? 1 : -1];
+typedef char EffBattleEntry_zeroKindCount_at_0x10[
+    ((u32)&((EffBattleEntry *)0)->zeroKindCount == 0x10) ? 1 : -1];
+typedef char EffBattleEntry_kind_at_0x14[
+    ((u32)&((EffBattleEntry *)0)->kind == 0x14) ? 1 : -1];
+typedef char EffBattleEntryList_size_must_be_0x90[
+    (sizeof(EffBattleEntryList) == 0x90) ? 1 : -1];
+typedef char EffBattleEntryList_callbackFrame_at_0x48[
+    ((u32)&((EffBattleEntryList *)0)->callbackFrame == 0x48) ? 1 : -1];
+typedef char EffBattleEntryList_colorCommand_at_0x0C[
+    ((u32)&((EffBattleEntryList *)0)->colorCommand == 0x0C) ? 1 : -1];
+typedef char EffBattleEntryList_rgbCommand_at_0x30[
+    ((u32)&((EffBattleEntryList *)0)->rgbCommand == 0x30) ? 1 : -1];
+typedef char EffBattleEntryList_count_at_0x6C[
+    ((u32)&((EffBattleEntryList *)0)->count == 0x6C) ? 1 : -1];
+typedef char EffBattleEntryList_entries_at_0x78[
+    ((u32)&((EffBattleEntryList *)0)->entries == 0x78) ? 1 : -1];
+typedef char SoundBank_size_must_be_0x618[
+    (sizeof(SoundBank) == 0x618) ? 1 : -1];
+typedef char SoundBank_list_at_0x08[
+    ((u32)&((SoundBank *)0)->list == 0x08) ? 1 : -1];
+typedef char EffBattleEntryList_triggerFrame_at_0x00[
+    ((u32)&((EffBattleEntryList *)0)->triggerFrame == 0x00) ? 1 : -1];
+typedef char EffBattleEntryList_colorRampEndFrame_at_0x70[
+    ((u32)&((EffBattleEntryList *)0)->colorRampEndFrame == 0x70) ? 1 : -1];
+
+struct effPartHandle_t;
+struct sdfMemHandle_t;
+struct FileRequest;
+struct BtlUnit;
+struct BtlRuntimeTask;
+
+typedef struct SoundMixer {
+    SoundBank banks[2];
+    u8 pad0C30[8];
+    struct sdfMemHandle_t *resource; /* 0xC38: owns the mixer allocation. */
+    u32 activeVoiceCount; /* Effect voices currently linked to this mixer. */
+    effBTLCutHandle_t *voiceList;
+} SoundMixer;
+
+/* DDS1 00160958 / DDS2 00168548 allocate and clear exactly 0x128 bytes. */
+struct effBTLCutHandle_t {
+    struct BtlUnit *owner; /* 0x00: borrowed voice owner used for actor scaling. */
+    SoundMixer *state; /* 0x04 */
+    u32 color; /* 0x08 */
+    u16 flags; /* 0x0C */
+    u8 pad0E[2];
+    u32 currentFrame; /* 0x10 */
+    u32 triggerFrame; /* 0x14 */
+    u32 colorRampEndFrame; /* 0x18 */
+    u16 kind; /* 0x1C */
+    u8 pad1E[2];
+    s32 unk20;
+    struct EffBattleEntryList *list; /* 0x24 */
+    struct effPartHandle_t *parameterWorks[EFF_BATTLE_PARAMETER_ENTRY_CAPACITY]; /* 0x28 */
+    BattleEffectCallback sourceFrameCallback; /* 0x118 */
+    BattleEffectCallback triggerFrameCallback; /* 0x11C */
+    u32 unk120;
+    effBTLCutHandle_t *next; /* 0x124 */
+};
+
+/* The allocated 0x20-byte resource is also the system-effect task owner. */
+typedef u32 SoundResourceNodeFlags;
+/* Pending loads become available after their mixer is installed; indexed
+ * system effects retain a borrowed source and clone its mixer on first use. */
+enum {
+    SOUND_RESOURCE_NODE_FLAG_LOAD_PENDING = 0x01,
+    SOUND_RESOURCE_NODE_FLAG_AVAILABLE = 0x02,
+    SOUND_RESOURCE_NODE_FLAG_SYSTEM_EFFECT = 0x08,
+};
+
+typedef struct SoundResourceNode {
+    SoundResourceNodeFlags flags; /* Load pending, available, and lazy system-effect bits. */
+    s32 referenceCount; /* 0x04: retained effect tasks, not a separate prefix object. */
+    u32 activeCount; /* 0x08: timed effects still using this resource. */
+    s32 fadeCountdown;
+    SoundMixer *resourceHandle; /* Owned clone, released by sndFreeResourceNode. */
+    SoundMixer *sourceHandle; /* Borrowed archive mixer data; clones own resourceHandle. */
+    struct SoundResourceNode *previous;
+    struct SoundResourceNode *next;
+} SoundResourceNode;
+
+typedef char SoundResourceNode_size_must_be_0x20[
+    (sizeof(SoundResourceNode) == 0x20) ? 1 : -1];
+typedef char SoundResourceNode_flags_offset_must_be_0[
+    ((u32)&((SoundResourceNode *)0)->flags == 0) ? 1 : -1];
+typedef char SoundResourceNode_referenceCount_offset_must_be_4[
+    ((u32)&((SoundResourceNode *)0)->referenceCount == 4) ? 1 : -1];
+typedef char SoundResourceNode_activeCount_offset_must_be_8[
+    ((u32)&((SoundResourceNode *)0)->activeCount == 8) ? 1 : -1];
+typedef char SoundResourceNode_fadeCountdown_offset_must_be_0x0C[
+    ((u32)&((SoundResourceNode *)0)->fadeCountdown == 0x0C) ? 1 : -1];
+typedef char SoundResourceNode_resourceHandle_offset_must_be_0x10[
+    ((u32)&((SoundResourceNode *)0)->resourceHandle == 0x10) ? 1 : -1];
+typedef char SoundResourceNode_sourceHandle_offset_must_be_0x14[
+    ((u32)&((SoundResourceNode *)0)->sourceHandle == 0x14) ? 1 : -1];
+typedef char SoundResourceNode_previous_offset_must_be_0x18[
+    ((u32)&((SoundResourceNode *)0)->previous == 0x18) ? 1 : -1];
+typedef char SoundResourceNode_next_offset_must_be_0x1C[
+    ((u32)&((SoundResourceNode *)0)->next == 0x1C) ? 1 : -1];
+
+/* Per-unit command-effect link, allocated at exactly 0x10 bytes. */
+typedef struct SoundLink {
+    struct BtlUnit *owner; /* 0x00 */
+    effBTLCutHandle_t *effectHandle; /* 0x04 */
+    SoundResourceNode *effect; /* 0x08 */
+    u16 commandEffectId; /* 0x0C: selected datCommandRecords entry's +0x2E value. */
+    u16 pad0E[1];
+} SoundLink;
+
+typedef char SoundLink_size_must_be_0x10[(sizeof(SoundLink) == 0x10) ? 1 : -1];
+typedef char SoundLink_commandEffectId_offset_must_be_0x0C[
+    ((u32)&((SoundLink *)0)->commandEffectId == 0x0C) ? 1 : -1];
+
+/* Per-unit model-resource link, allocated at exactly 0x14 bytes. */
+typedef struct SoundResourceLink {
+    struct BtlUnit *owner; /* 0x00 */
+    effBTLCutHandle_t *effectHandle; /* 0x04 */
+    SoundResourceNode *effect; /* 0x08 */
+    u32 opaque0C; /* 0x0C: retained for the title-specific link updater. */
+    u8 refreshRequested; /* 0x10 */
+    u8 pad11[3];
+} SoundResourceLink;
+
+typedef char SoundResourceLink_size_must_be_0x14[
+    (sizeof(SoundResourceLink) == 0x14) ? 1 : -1];
+typedef char SoundResourceLink_opaque0C_offset_must_be_0x0C[
+    ((u32)&((SoundResourceLink *)0)->opaque0C == 0x0C) ? 1 : -1];
+typedef char SoundResourceLink_refreshRequested_offset_must_be_0x10[
+    ((u32)&((SoundResourceLink *)0)->refreshRequested == 0x10) ? 1 : -1];
+
+SoundLink *sndAllocLink(struct BtlUnit *owner);
+void sndFreeLink(SoundLink *link);
+#include "btl_sound_node_api.h"
+void btlUpdateUnitCommandEffect(SoundLink *link);
+SoundResourceLink *sndAllocResourceLink(struct BtlUnit *owner);
+void sndFreeResourceLink(SoundResourceLink *link);
+void btlMarkTaskReady(SoundResourceLink *link);
+
+/* Effect callbacks dereference these words as units, while the selector
+ * provider stores their encoded keys (DDS1 001F1588 / DDS2 0020220C). */
+typedef union ActorEffectOwner {
+    struct BtlUnit *unit;
+    s32 selectorKey;
+} ActorEffectOwner;
+
+typedef struct SoundEffectReferenceArgs {
+    SoundResourceNode *source;
+    EffBattleVoiceKind kind;
+    u8 pad06[2];
+    effBTLCutHandle_t *effect;
+    ActorEffectOwner sourceOwner;
+    s32 sourceSelector;
+    s32 targetSelector;
+    ActorEffectOwner targetOwner;
+    u32 duration;
+} SoundEffectReferenceArgs;
+
+typedef struct SoundEffectSourceArgs {
+    SoundResourceNode *source;
+    effBTLCutHandle_t *effect;
+    ActorEffectOwner owner;
+    u8 pad0C[4];
+    u64 waitForTaskHandle;
+    s32 frameCount;
+    s32 fadeOutFrame;
+} SoundEffectSourceArgs;
+
+typedef struct TimedUnitEffectArgs {
+    SoundResourceNode *source;
+    EffBattleVoiceKind kind;
+    u8 pad06[2];
+    struct BtlUnit *unit;
+    s32 channel;
+    u32 volume;
+    s32 frame;
+} TimedUnitEffectArgs;
+
+typedef struct EffectLoadArgs {
+    SoundResourceNode *effect;
+    struct FileRequest *request;
+    const char *name;
+} EffectLoadArgs;
+
+typedef char EffectLoadArgs_size_must_be_0x0C[
+    (sizeof(EffectLoadArgs) == 0x0C) ? 1 : -1];
+typedef char EffectLoadArgs_request_offset_must_be_4[
+    ((u32)&((EffectLoadArgs *)0)->request == 4) ? 1 : -1];
+typedef char EffectLoadArgs_name_offset_must_be_8[
+    ((u32)&((EffectLoadArgs *)0)->name == 8) ? 1 : -1];
+
+/* Callback arguments stored in the 12-byte earring playback task. */
+typedef struct BtlDeadLoadArgs {
+    struct BtlUnit *unit; /* 0x00 */
+    struct FileRequest *request; /* 0x04 */
+    struct sdfMemHandle_t *resourceAllocation; /* 0x08: retained until task finish. */
+} BtlDeadLoadArgs;
+
+/* The scheduler finishes this task on nonzero, then runs its allocation-release hook. */
+typedef s32 SndEarringPlaybackTaskResult;
+enum {
+    SND_EARRING_PLAYBACK_TASK_CONTINUE = 0,
+    SND_EARRING_PLAYBACK_TASK_FINISHED = 1,
+};
+
+typedef char BtlDeadLoadArgs_size_must_be_0x0C[
+    (sizeof(BtlDeadLoadArgs) == 0x0C) ? 1 : -1];
+typedef char BtlDeadLoadArgs_request_offset_must_be_4[
+    ((u32)&((BtlDeadLoadArgs *)0)->request == 4) ? 1 : -1];
+typedef char BtlDeadLoadArgs_resourceAllocation_offset_must_be_8[
+    ((u32)&((BtlDeadLoadArgs *)0)->resourceAllocation == 8) ? 1 : -1];
+
+#ifdef VERSION_DDS1
+SndEarringPlaybackTaskResult sndUpdateEarringDeadPlayback(BtlDeadLoadArgs *args);
+#else
+SndEarringPlaybackTaskResult sndDeadAtracPlaybackTask(BtlDeadLoadArgs *args);
+#endif
+
+/* Fixed task payload for asynchronous ATRAC3 sample effects. */
+typedef struct Atrac3LoadTaskArgs {
+    struct FileRequest *request; /* 0x00 */
+    s32 state; /* 0x04 */
+    s32 entryIndex; /* 0x08 */
+} Atrac3LoadTaskArgs;
+
+typedef char Atrac3LoadTaskArgs_size_must_be_0x0C[
+    (sizeof(Atrac3LoadTaskArgs) == 0x0C) ? 1 : -1];
+typedef char Atrac3LoadTaskArgs_state_offset_must_be_4[
+    ((u32)&((Atrac3LoadTaskArgs *)0)->state == 4) ? 1 : -1];
+typedef char Atrac3LoadTaskArgs_entryIndex_offset_must_be_8[
+    ((u32)&((Atrac3LoadTaskArgs *)0)->entryIndex == 8) ? 1 : -1];
+
+SoundMixer *sndMixerClone(SoundMixer *source);
+/* Frame queries borrow a mixer and only inspect its bank metadata. */
+s32 effBTLGetMotionChangeFrame(const SoundMixer *mixer, EffBattleVoiceKind kind);
+s32 effBTLGetCutEndFrame(const SoundMixer *mixer, EffBattleVoiceKind kind);
+s32 effBTLGetDrawEndFrame(const SoundMixer *mixer, EffBattleVoiceKind kind);
+/* Destroy an owned mixer clone, including its voices, parts, and allocation. */
+void sndMixerDestroy(SoundMixer *mixer);
+void sndCreateSystemEffect(SoundResourceNode *effect);
+void sndDeleteSystemEffect(SoundResourceNode *effect);
+s32 sndSetEffectNodeParameter(SoundResourceNode *effect, EffBattleVoiceKind kind);
+s32 sndGetEffectNodeParameter(SoundResourceNode *effect, EffBattleVoiceKind kind);
+void btlExtendTaskFrameLimit(SoundResourceNode *effect, s32 frames);
+u32 sndGetResourceStatus(SoundResourceNode *effect);
+s32 sndHasResourceFlagsOneOrEight(struct ActiveSoundNode *node);
+struct BtlRuntimeTask *sndCreateStationedSeTask(u32 soundId);
+struct BtlRuntimeTask *sndCreateEffectSourceTask(SoundResourceNode *source, struct BtlUnit *owner,
+                                                u64 waitForTaskHandle);
+effBTLCutHandle_t *effCreateBattleVoiceOwner(SoundMixer *mixer, EffBattleVoiceKind kind,
+                                             struct BtlUnit *owner, s32 value);
+void effBTLCutListRelease(effBTLCutHandle_t *effect);
+void effBTLCutDelete(effBTLCutHandle_t *effect);
+/* Read the updater-owned frame counter through a borrowed handle view. */
+u32 effBTLCutGetFrame(const effBTLCutHandle_t *effect);
+void effBTLCutSetDrawEndFrame(effBTLCutHandle_t *effect, u32 endFrame);
+
+/* The data-file task allocates four argument bytes for its borrowed unit. */
+typedef struct SoundDataFileArgs {
+    struct BtlUnit *unit;
+} SoundDataFileArgs;
+
+typedef char SoundDataFileArgs_size_must_be_4[
+    (sizeof(SoundDataFileArgs) == 4) ? 1 : -1];
+
+/* Fixed payload queued by the skill-sound retry task. */
+typedef struct SkillSeTaskArgs {
+    u32 packedTrackPosition;
+    u16 optionId;
+    u8 pad06[2];
+} SkillSeTaskArgs;
+
+typedef char SkillSeTaskArgs_size_must_be_8[
+    (sizeof(SkillSeTaskArgs) == 8) ? 1 : -1];
+typedef char SkillSeTaskArgs_optionId_offset_must_be_4[
+    ((u32)&((SkillSeTaskArgs *)0)->optionId == 4) ? 1 : -1];
+
+s32 sndPlaySkillSeTask(SkillSeTaskArgs *args);
+
+/* Fixed header followed by the copied filename in sound MotSE load tasks. */
+typedef struct SoundFileTaskArgs {
+    ActiveSoundNode *node; /* 0x00: sound-list owner; file-load view is shared. */
+    struct FileRequest *request; /* 0x04: queued file request */
+    struct sdfMemHandle_t *resourceAllocation; /* 0x08: retained file allocation */
+#ifdef VERSION_DDS1
+    u32 skillIndex; /* 0x0C: relative to the first skill sound block, 0x200. */
+#else
+    s32 skillIndex; /* 0x0C: relative to the first skill sound block, 0x200. */
+#endif
+    const char *filename; /* 0x10: points to inline bytes after this header */
+} SoundFileTaskArgs;
+
+typedef char SoundFileTaskArgs_size_must_be_0x14[
+    (sizeof(SoundFileTaskArgs) == 0x14) ? 1 : -1];
+typedef char SoundFileTaskArgs_node_offset_must_be_0[
+    ((u32)&((SoundFileTaskArgs *)0)->node == 0) ? 1 : -1];
+typedef char SoundFileTaskArgs_request_offset_must_be_4[
+    ((u32)&((SoundFileTaskArgs *)0)->request == 4) ? 1 : -1];
+typedef char SoundFileTaskArgs_allocation_offset_must_be_8[
+    ((u32)&((SoundFileTaskArgs *)0)->resourceAllocation == 8) ? 1 : -1];
+typedef char SoundFileTaskArgs_index_offset_must_be_C[
+#ifdef VERSION_DDS1
+    ((u32)&((SoundFileTaskArgs *)0)->skillIndex == 0x0C) ? 1 : -1];
+#else
+    ((u32)&((SoundFileTaskArgs *)0)->skillIndex == 0x0C) ? 1 : -1];
+#endif
+typedef char SoundFileTaskArgs_filename_offset_must_be_10[
+    ((u32)&((SoundFileTaskArgs *)0)->filename == 0x10) ? 1 : -1];
+
+/* Known active sound-node phase bits; other flag bits stay opaque. */
+enum {
+    SOUND_FILE_STATE_REQUEST_PENDING = 0x01,
+    SOUND_FILE_STATE_SOURCE_REQUEST_RESOLVED = 0x02,
+    SOUND_FILE_STATE_SPU_LOAD_PENDING = 0x08,
+    SOUND_FILE_STATE_COMPLETE = 0x10
+};
+
+s32 sndLoadDataFile(const SoundDataFileArgs *data);
+struct BtlRuntimeTask *sndCreateDataFileLoadTask(struct BtlUnit *unit);
+void sndStartFileLoad(SoundFileTaskArgs *args);
+s32 sndPollMotSeFileAndSpu(SoundFileTaskArgs *args);
+#ifdef VERSION_DDS1
+struct BtlRuntimeTask *sndCreateFileLoadTask(ActiveSoundNode *node, u32 skillIndex, const char *filename);
+#else
+struct BtlRuntimeTask *sndCreateFileLoadTask(ActiveSoundNode *node, s32 skillIndex, const char *filename);
+#endif
+
+/* Both factories store full words; callbacks use the low 16 duration bits. */
+typedef struct BtlTintAcquireArgs {
+    u32 color;
+    u32 frames;
+} BtlTintAcquireArgs;
+
+typedef struct BtlTintReleaseArgs {
+    u32 frames;
+} BtlTintReleaseArgs;
+
+typedef char BtlTintAcquireArgs_size_must_be_8[sizeof(BtlTintAcquireArgs) == 8 ? 1 : -1];
+typedef char BtlTintReleaseArgs_size_must_be_4[sizeof(BtlTintReleaseArgs) == 4 ? 1 : -1];
+
+s32 btlQueueTintTransitionWhenEnabled(const BtlTintAcquireArgs *args);
+s32 sndTickFadeCounter(const BtlTintReleaseArgs *args);
+#ifdef VERSION_DDS1
+struct BtlRuntimeTask *sndCreateAcquireTask(u32 color, u32 frames);
+#else
+struct BtlRuntimeTask *sndCreateAcquireTask(s32 color, s32 frames);
+#endif
+#ifdef VERSION_DDS1
+struct BtlRuntimeTask *sndCreateAtracEffectLoadTask(u32 entryIndex);
+#else
+struct BtlRuntimeTask *sndCreateAtracEffectLoadTask(s32 entryIndex);
+#endif
+
+struct BtlRuntimeTask *sndCreateEarringPlaybackTask(struct BtlUnit *unit);
+
+void sndFormatResourceNameFromIndex(s32 index, char *output);
+void sndFormatResourceNameFromUnitMode(const struct BtlUnit *unit, char *output);
+
+/* Preserve the compiler-visible member token while naming the actor filter. */
+#define effBattleEntryActorFilterMode kind
+
+#endif /* BTL_SOUND_H */

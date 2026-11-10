@@ -1,0 +1,116 @@
+#ifndef MNU_STAFF_H
+#define MNU_STAFF_H
+
+#include "mnu.h"
+#include "mnu_skill_slot_reorder_state.h"
+
+/* Party-selection handoff mode that marks the transferred entry frontline. */
+#define CAMP_PARTY_TRANSFER_FRONTLINE 2
+
+/* Classify signed, truncated (amount * 100) / divisor. Zero is the default
+ * class for ratios of at least one half and for a zero divisor. */
+typedef s32 MnuQuarterHalfPercentClass;
+enum {
+    MNU_QUARTER_HALF_PERCENT_CLASS_DEFAULT = 0,
+    MNU_QUARTER_HALF_PERCENT_CLASS_BELOW_HALF = 1,
+    MNU_QUARTER_HALF_PERCENT_CLASS_BELOW_QUARTER = 2
+};
+
+MnuQuarterHalfPercentClass mnuClassifyQuarterHalfPercent(s32 amount, s32 divisor);
+
+/* Staff-list nodes with unavailable entries carry this lifecycle flag. */
+#define MNU_STAFF_NODE_UNAVAILABLE 1
+
+/* Updating the selected item reports whether any staff-window entries remain. */
+typedef s32 MnuStaffWindowEntryPresence;
+enum {
+    MNU_STAFF_WINDOW_ENTRIES_ABSENT = 0,
+    MNU_STAFF_WINDOW_ENTRIES_PRESENT = 1
+};
+
+struct EffectList;
+struct MenuWindowContainer;
+/* Destroy the window's owned list, optional sprite resources, and window. */
+void mnuDestroyWindowContainer(struct MenuWindowContainer *window);
+
+void mnuAppendCampSpriteRequests(struct EffectList *resourceList,
+                                 StaffSlots *resourceSlots);
+#ifdef VERSION_DDS2
+s32 movAreTitleEffectsReady(struct EffectList *resourceList,
+                            StaffSlots *resourceSlots);
+#else
+s32 mnuStaffSlotsAllFilled(struct EffectList *resourceList, StaffSlots *slots);
+#endif
+
+#ifdef VERSION_DDS2
+#define MNU_WINDOW_SLOT_REFRESH_RELEASE_HANDLES 0
+#define MNU_WINDOW_SLOT_REFRESH_PRESERVE_HANDLES 1
+#endif
+
+/* Set the window/list opacity scale without clamping. */
+void mnuSetWindowFadeScale(struct MenuWindowContainer *window, u32 fadeScale);
+
+/* Draw the configured grid labels using this resource slot set. */
+void mnuDrawStaffGridLabelsForKind(s32 kind, struct EffectSlotSet *resources);
+
+/* Create, draw, and queue the unchecked image-table entry for this staff slot. */
+void mnuCreateStaffImageSprite(s32 imageIndex);
+
+struct datUnitWork_t;
+/* Index of the highest-priority active party-status icon, or none. */
+typedef s32 MnuPartyStatusIconIndex;
+#define MNU_PARTY_STATUS_ICON_INDEX_NONE (-1)
+MnuPartyStatusIconIndex mnuGetPartyStatusIconIndex(const struct datUnitWork_t *entry);
+
+/* Field-use skills operate on the selected party records and their page. */
+s32 ptySkillApplyFieldUseEffect(MenuPageWindow *page, u16 ability,
+                               struct datUnitWork_t *target,
+                               struct datUnitWork_t *selected);
+
+/* Rebuild the five party-panel rows from occupied party records. */
+void mnuInitPartyPanelSlots(PartyPanel *party);
+
+void mnuStepPartyPanelListFromInput(s32 mode, MenuPageWindow *page);
+struct dds3ProcessID_t;
+/* Draw the default camp screen for its scheduler task. */
+void mnuDrawCampScreenDefault(struct dds3ProcessID_t *task);
+#ifdef VERSION_DDS1
+void mnuClearListFlags(s32 which, MenuPageWindow *page);
+struct StaffDisplayContext;
+MnuStaffWindowEntryPresence mnuHasStaffWindowEntriesForItem(
+    s32 itemId, struct StaffDisplayContext *context);
+#endif
+
+#ifdef VERSION_DDS2
+/* Initialize the camp menu after its task-owned effect handles are ready. */
+s32 mnuInitializeCampMenuWhenResourcesReady(struct dds3ProcessID_t *task);
+void mnuRefreshWindowSlots(MenuPageWindow *page, s32 preserveResourceHandles);
+
+/* Native staff components: page 0x284, party 0xA928 and fade 0xB10C. */
+void mnuInitializeWindowFadeState(MenuFadeFields *fade);
+void mnuBeginWindowFadeTransition(MenuWindowContainer *window,
+                                  MenuFadeFields *fade);
+void mnuUpdateAndDrawWindowTransition(s32 x, s32 y, s32 depth,
+                                     MenuFadeFields *fade, s32 option);
+void mnuClearActionFlags(s32 kind, MenuPageWindow *page);
+void mnuApplyResourceSelection(s32 itemId, MenuStaffContext *context);
+MnuStaffWindowEntryPresence mnuHasStaffWindowEntriesForItem(
+    s32 itemId, MenuStaffContext *context);
+s32 func_002C5A28(MenuPageWindow *page, u16 ability,
+                  struct datUnitWork_t *target, struct datUnitWork_t *selected);
+s32 mnuTryUseFieldSkill(PartyPanel *party, MenuPageWindow *page,
+                       struct datUnitWork_t *entry, s32 commit);
+s32 mnuUseFieldSkillOnParty(PartyPanel *party, MenuPageWindow *page, s32 commit);
+s32 mnuIsEntryCostUnaffordable(u16 commandId, struct datUnitWork_t *entry);
+void mnuReleaseAndRefreshWindowSlots(MenuPageWindow *page);
+void mnuRefreshPartyPanelBars(MenuPageWindow *page);
+s32 mnuTryUseBestPartyHealingSkill(PartyPanel *party, MenuPageWindow *page,
+                                   struct datUnitWork_t *caster, s32 commit);
+/* Append entry pointers whose optional model-flag requirements are met. */
+MenuWindowContainer *mnuCreateStaffResourceListWindow(
+    void *const *entries, s32 entryCount, s32 width, s32 rowHeight,
+    u8 *work, const s32 *requiredFlags);
+s32 mnuConsumeEntryCost(s32 commandId, struct datUnitWork_t *entry);
+#endif
+
+#endif

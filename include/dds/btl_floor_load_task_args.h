@@ -1,0 +1,26 @@
+#ifndef BTL_FLOOR_LOAD_TASK_ARGS_H
+#define BTL_FLOOR_LOAD_TASK_ARGS_H
+
+#include "common.h"
+
+struct FileRequest;
+
+typedef s32 BtlFloorLoadPollCount;
+
+/* Complete 0x14-byte payload allocated by the paired floor-load task creators. */
+typedef struct BtlFloorLoadArgs {
+    struct FileRequest *frontRequest; /* 0x00: pending front-floor file request */
+    struct FileRequest *sideRequest;  /* 0x04: pending side-floor file request */
+    s32 stage;       /* 0x08: stage used to form both resource paths */
+    s32 variant;     /* 0x0C: floor variant used to form both paths */
+    BtlFloorLoadPollCount pollCount; /* 0x10: callback invocations elapsed */
+} BtlFloorLoadArgs;
+
+typedef char BtlFloorLoadArgs_size[(sizeof(BtlFloorLoadArgs) == 0x14) ? 1 : -1];
+typedef char BtlFloorLoadArgs_frontRequest_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->frontRequest == 0x00) ? 1 : -1];
+typedef char BtlFloorLoadArgs_sideRequest_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->sideRequest == 0x04) ? 1 : -1];
+typedef char BtlFloorLoadArgs_stage_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->stage == 0x08) ? 1 : -1];
+typedef char BtlFloorLoadArgs_variant_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->variant == 0x0C) ? 1 : -1];
+typedef char BtlFloorLoadArgs_pollCount_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->pollCount == 0x10) ? 1 : -1];
+
+#endif

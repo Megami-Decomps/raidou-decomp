@@ -1,0 +1,291 @@
+#ifndef BTL_TASK_ARGS_H
+#define BTL_TASK_ARGS_H
+
+#include "btl_action_code.h"
+#include "btl_camera_mode_index.h"
+#include "btl_scene_counter_mode.h"
+#include "common.h"
+
+struct BtlUnit;
+struct BtlTask;
+struct BtlRuntimeTask;
+struct ActionStateLink;
+
+/* Task 0x0B waits for a unit's model frame to reach a signed threshold. */
+typedef struct BtlThresholdTaskArgs {
+    struct BtlUnit *unit; /* 0x00 */
+    s32 frameThreshold;   /* 0x04 */
+} BtlThresholdTaskArgs;
+typedef char BtlThresholdTaskArgsSizeCheck[
+    sizeof(BtlThresholdTaskArgs) == 8 ? 1 : -1];
+typedef char BtlThresholdTaskArgsUnitOffsetCheck[
+    (u32)&((BtlThresholdTaskArgs *)0)->unit == 0 ? 1 : -1];
+typedef char BtlThresholdTaskArgsFrameThresholdOffsetCheck[
+    (u32)&((BtlThresholdTaskArgs *)0)->frameThreshold == 4 ? 1 : -1];
+
+/* The camera-transform task's complete 0x24-byte pose payload. */
+typedef struct BtlCameraTransformTaskArgs {
+#ifdef VERSION_DDS1
+    struct BtlTask *actor; /* 0x00: nullable command actor. */
+#else
+    struct ActionStateLink *actor; /* 0x00: nullable command actor. */
+#endif
+    f32 position[3];       /* 0x04: camera origin xyz. */
+    f32 direction[4];      /* 0x10: camera direction quaternion xyzw. */
+    f32 fovDegrees;        /* 0x20 */
+} BtlCameraTransformTaskArgs;
+typedef char BtlCameraTransformTaskArgsSizeCheck[
+    sizeof(BtlCameraTransformTaskArgs) == 0x24 ? 1 : -1];
+typedef char BtlCameraTransformTaskArgsActorOffsetCheck[
+    (u32)&((BtlCameraTransformTaskArgs *)0)->actor == 0x00 ? 1 : -1];
+typedef char BtlCameraTransformTaskArgsPositionOffsetCheck[
+    (u32)&((BtlCameraTransformTaskArgs *)0)->position == 0x04 ? 1 : -1];
+typedef char BtlCameraTransformTaskArgsDirectionOffsetCheck[
+    (u32)&((BtlCameraTransformTaskArgs *)0)->direction == 0x10 ? 1 : -1];
+typedef char BtlCameraTransformTaskArgsFovOffsetCheck[
+    (u32)&((BtlCameraTransformTaskArgs *)0)->fovDegrees == 0x20 ? 1 : -1];
+
+/* The camera-keyframes task carries two poses and their blend controls. */
+typedef struct BtlCameraKeyframesTaskArgs {
+#ifdef VERSION_DDS1
+    struct BtlTask *actor; /* 0x00: nullable command actor. */
+#else
+    struct ActionStateLink *actor; /* 0x00: nullable command actor. */
+#endif
+    f32 frontPosition[3];    /* 0x04: first camera origin xyz. */
+    f32 frontDirection[4];  /* 0x10: first direction quaternion xyzw. */
+    f32 backPosition[3];    /* 0x20: second camera origin xyz. */
+    f32 backDirection[4];   /* 0x2C: second direction quaternion xyzw. */
+    f32 scale;               /* 0x3C: passed to both pose initializers. */
+    f32 motionParameter;     /* 0x40: camera pose blend parameter. */
+} BtlCameraKeyframesTaskArgs;
+typedef char BtlCameraKeyframesTaskArgsSizeCheck[
+    sizeof(BtlCameraKeyframesTaskArgs) == 0x44 ? 1 : -1];
+typedef char BtlCameraKeyframesTaskArgsActorOffsetCheck[
+    (u32)&((BtlCameraKeyframesTaskArgs *)0)->actor == 0x00 ? 1 : -1];
+typedef char BtlCameraKeyframesTaskArgsFrontPositionOffsetCheck[
+    (u32)&((BtlCameraKeyframesTaskArgs *)0)->frontPosition == 0x04 ? 1 : -1];
+typedef char BtlCameraKeyframesTaskArgsFrontDirectionOffsetCheck[
+    (u32)&((BtlCameraKeyframesTaskArgs *)0)->frontDirection == 0x10 ? 1 : -1];
+typedef char BtlCameraKeyframesTaskArgsBackPositionOffsetCheck[
+    (u32)&((BtlCameraKeyframesTaskArgs *)0)->backPosition == 0x20 ? 1 : -1];
+typedef char BtlCameraKeyframesTaskArgsBackDirectionOffsetCheck[
+    (u32)&((BtlCameraKeyframesTaskArgs *)0)->backDirection == 0x2C ? 1 : -1];
+typedef char BtlCameraKeyframesTaskArgsScaleOffsetCheck[
+    (u32)&((BtlCameraKeyframesTaskArgs *)0)->scale == 0x3C ? 1 : -1];
+typedef char BtlCameraKeyframesTaskArgsMotionParameterOffsetCheck[
+    (u32)&((BtlCameraKeyframesTaskArgs *)0)->motionParameter == 0x40 ? 1 : -1];
+
+/* Command-sound task variants carry this 0x14-byte camera-mode request
+ * (task 0x27 in DDS1, 0x2A in DDS2); targeted variants add linked units. */
+typedef struct BtlCameraModeTaskArgs {
+#ifdef VERSION_DDS1
+    struct BtlTask *actor; /* 0x00: task owner passed to camera command mode. */
+#else
+    struct ActionStateLink *actor; /* 0x00: task owner passed to camera command mode. */
+#endif
+    struct BtlUnit *unitA; /* 0x04: optional first linked camera unit. */
+    struct BtlUnit *unitB; /* 0x08: optional second linked camera unit. */
+    BtlCameraModeIndex cameraMode; /* 0x0C: camera-mode definition index. */
+    BtlActionCode actionCode; /* 0x10: action-table selector forwarded to cameraCommand.actionCode. */
+} BtlCameraModeTaskArgs;
+typedef char BtlCameraModeTaskArgsSizeCheck[
+    sizeof(BtlCameraModeTaskArgs) == 0x14 ? 1 : -1];
+typedef char BtlCameraModeTaskArgsIndexOffsetCheck[
+    (u32)&((BtlCameraModeTaskArgs *)0)->cameraMode == 0x0C ? 1 : -1];
+typedef char BtlCameraModeTaskArgsActionCodeOffsetCheck[
+    (u32)&((BtlCameraModeTaskArgs *)0)->actionCode == 0x10 ? 1 : -1];
+
+/* The linked-number task allocates the full 0x34-byte variant; the counter
+ * task uses the common prefix and its 0x2C-byte counter variant. */
+typedef struct BtlLinkedEffectArgs {
+    f32 anchorOffset[4]; /* 0x00: initial label anchor minus referencePosition. */
+    f32 referencePosition[4]; /* 0x10: saved reference for the update flags. */
+    struct BtlUnit *unit; /* 0x20: owner used by both finish callbacks. */
+    union {
+        struct {
+            s32 value; /* 0x24: signed number rendered by the update callback. */
+            u32 elapsedTicks; /* 0x28: unsigned frame threshold. */
+            u32 color; /* 0x2C */
+            u8 kind; /* 0x30 */
+            u8 offsetIndex; /* 0x31: indexes the twelve display offsets. */
+        } linked;
+        struct {
+            u32 elapsedTicks; /* 0x24: counter timing and float conversion. */
+            u8 kind; /* 0x28 */
+            u8 offsetIndex; /* 0x29 */
+        } counter;
+    } payload;
+} BtlLinkedEffectArgs;
+
+typedef char BtlLinkedEffectArgsSizeCheck[
+    (sizeof(BtlLinkedEffectArgs) == 0x34) ? 1 : -1];
+typedef char BtlLinkedEffectArgsOwnerOffsetCheck[
+    ((u32)&((BtlLinkedEffectArgs *)0)->unit == 0x20) ? 1 : -1];
+typedef char BtlLinkedEffectArgsPayloadOffsetCheck[
+    ((u32)&((BtlLinkedEffectArgs *)0)->payload == 0x24) ? 1 : -1];
+typedef char BtlLinkedEffectArgsCounterExtentCheck[
+    (sizeof(((BtlLinkedEffectArgs *)0)->payload.counter) == 8) ? 1 : -1];
+typedef char BtlLinkedEffectArgsLinkedFieldsOffsetCheck[
+    ((u32)&((BtlLinkedEffectArgs *)0)->payload.linked.color == 0x2C &&
+     (u32)&((BtlLinkedEffectArgs *)0)->payload.linked.kind == 0x30 &&
+     (u32)&((BtlLinkedEffectArgs *)0)->payload.linked.offsetIndex == 0x31) ? 1 : -1];
+
+/* Complete eight-byte actor/amount block owned by the hunt-EP task. */
+typedef struct BtlHuntExpArgs {
+    struct BtlUnit *actor; /* 0x00 */
+    u32 amount;            /* 0x04 */
+} BtlHuntExpArgs;
+typedef char BtlHuntExpArgsSizeCheck[sizeof(BtlHuntExpArgs) == 8 ? 1 : -1];
+typedef char BtlHuntExpArgsAmountOffsetCheck[(u32)&((BtlHuntExpArgs *)0)->amount == 4 ? 1 : -1];
+
+/* The battle reward callbacks receive this complete eight-byte task payload. */
+typedef struct BtlRewardPacket {
+    struct BtlUnit *actor; /* 0x00 */
+    s32 amount;            /* 0x04 */
+} BtlRewardPacket;
+typedef char BtlRewardPacketSizeCheck[sizeof(BtlRewardPacket) == 8 ? 1 : -1];
+typedef char BtlRewardPacketActorOffsetCheck[
+    (u32)&((BtlRewardPacket *)0)->actor == 0 ? 1 : -1];
+typedef char BtlRewardPacketAmountOffsetCheck[
+    (u32)&((BtlRewardPacket *)0)->amount == 4 ? 1 : -1];
+
+/* Return the runtime scheduler task's allocated argument block, or NULL. */
+void *btlGetTaskArguments(struct BtlRuntimeTask *task);
+
+/* Category-stat damage task arguments, written by both title constructors. */
+typedef struct BtlCategoryStatDamageArgs {
+    struct BtlUnit *unit; /* 0x00 */
+    s32 amount;           /* 0x04: HP or MP cost. */
+    s32 category;         /* 0x08: indexes datCommandRecords. */
+} BtlCategoryStatDamageArgs;
+typedef char BtlCategoryStatDamageArgsSizeCheck[
+    (sizeof(BtlCategoryStatDamageArgs) == 0x0C) ? 1 : -1];
+
+/* The scene scheduler copies these request records into its argument block. */
+typedef struct BtlSceneCounterArgs {
+#ifdef VERSION_DDS1
+    struct BtlTask *actor;
+#else
+    struct ActionStateLink *actor;
+#endif
+    u32 amount;
+    u8 counterMode;
+    u8 pad09[3];
+} BtlSceneCounterArgs;
+
+typedef struct BtlSceneInsertArgs {
+#ifdef VERSION_DDS1
+    struct BtlTask *actor;
+#else
+    struct ActionStateLink *actor;
+#endif
+    s32 count;
+} BtlSceneInsertArgs;
+
+/* The model-blend task advances once from apply-effect to motion-reach. */
+typedef u32 BtlActorModelBlendStage;
+enum {
+    BTL_ACTOR_MODEL_BLEND_STAGE_APPLY_EFFECT = 0,
+    BTL_ACTOR_MODEL_BLEND_STAGE_MOTION_REACH = 1,
+};
+
+/* The model-blend task allocates and initializes this complete 0x1C-byte packet. */
+typedef struct BtlActorModelBlendArgs {
+    struct BtlUnit *unit;
+    struct BtlUnit *target;
+    s32 index;
+    s32 previousMotionIndex;
+    s32 value;
+    f32 scale;
+    BtlActorModelBlendStage stage;
+} BtlActorModelBlendArgs;
+typedef char BtlActorModelBlendArgsSizeCheck[sizeof(BtlActorModelBlendArgs) == 0x1C ? 1 : -1];
+
+/* The model-change task allocates this 0x1C-byte record in both titles. */
+enum {
+    BTL_MODEL_CHANGE_WAITING_FOR_ASSET = 0,
+    BTL_MODEL_CHANGE_CROSSFADE = 1,
+    BTL_MODEL_CHANGE_CLEANUP = 2
+};
+
+typedef struct BtlModelChangeArgs {
+    struct BtlUnit *unit; /* 0x00 */
+    u32 resourceKind;     /* 0x04 */
+    u32 resourceId;       /* 0x08 */
+    s32 delay;            /* 0x0C */
+    u32 duration;         /* 0x10 */
+    s32 elapsed;          /* 0x14 */
+    u8 phase;             /* 0x18: BTL_MODEL_CHANGE_* */
+    u8 transitionMode;    /* 0x19 */
+    u8 opaque_1A[2];      /* 0x1A: allocated but not interpreted by these readers. */
+} BtlModelChangeArgs;
+typedef char BtlModelChangeArgsSizeCheck[sizeof(BtlModelChangeArgs) == 0x1C ? 1 : -1];
+typedef char BtlModelChangeArgsElapsedOffsetCheck[(u32)&((BtlModelChangeArgs *)0)->elapsed == 0x14 ? 1 : -1];
+typedef char BtlModelChangeArgsPhaseOffsetCheck[(u32)&((BtlModelChangeArgs *)0)->phase == 0x18 ? 1 : -1];
+
+/* Task 0x0F applies two packed unit colors after checking unit status. */
+typedef struct BtlUnitLightAndAmbientTaskArgs {
+    u32 firstColor;       /* 0x00 */
+    u32 secondColor;      /* 0x04 */
+    s32 duration;         /* 0x08 */
+    struct BtlUnit *unit; /* 0x0C */
+} BtlUnitLightAndAmbientTaskArgs;
+typedef char BtlUnitLightAndAmbientTaskArgsSizeCheck[
+    sizeof(BtlUnitLightAndAmbientTaskArgs) == 0x10 ? 1 : -1];
+typedef char BtlUnitLightAndAmbientTaskArgsFirstColorOffsetCheck[
+    (u32)&((BtlUnitLightAndAmbientTaskArgs *)0)->firstColor == 0 ? 1 : -1];
+typedef char BtlUnitLightAndAmbientTaskArgsSecondColorOffsetCheck[
+    (u32)&((BtlUnitLightAndAmbientTaskArgs *)0)->secondColor == 4 ? 1 : -1];
+typedef char BtlUnitLightAndAmbientTaskArgsDurationOffsetCheck[
+    (u32)&((BtlUnitLightAndAmbientTaskArgs *)0)->duration == 8 ? 1 : -1];
+typedef char BtlUnitLightAndAmbientTaskArgsUnitOffsetCheck[
+    (u32)&((BtlUnitLightAndAmbientTaskArgs *)0)->unit == 0xC ? 1 : -1];
+
+/* Shared 0x28-byte record used by battle runtime callbacks and task setup. */
+typedef struct BtlRuntimeTaskArgs {
+    union {
+        void *actor;
+        s32 value;
+    };
+    union {
+        s32 option;
+        struct BtlUnit *unitA; /* Kind 0x2A: first linked camera unit. */
+        u16 optionId;
+        f32 scale;
+    };
+    union {
+        u32 unk_08;
+        s32 effectParameterOption; /* Kind 9: argument 3 to btlApplyScaledUnitEffectParameter. */
+        struct BtlUnit *unitB;
+        s32 resourceIndex; /* sdfMotionCtrlr_t-SE task: selected entry in its resource handle array. */
+    };
+    union {
+        u32 unk_0C;
+        struct BtlUnit *unitC; /* Status callback receives a unit pointer in this slot. */
+        f32 scale2;
+        s8 mode;
+        s32 elapsedFrames; /* sdfMotionCtrlr_t-SE task: retries before the load timeout. */
+    };
+    u32 unk_10;
+    union {
+        u32 unk_14;
+        f32 scale14;
+    };
+    union {
+        u32 unk_18;
+        struct {
+            u8 flag18;
+            u8 flag19;
+        };
+    };
+    u32 unk_1C;
+    u32 unk_20;
+    u32 unk_24;
+} BtlRuntimeTaskArgs;
+typedef char BtlRuntimeTaskArgsSizeCheck[sizeof(BtlRuntimeTaskArgs) == 0x28 ? 1 : -1];
+typedef char BtlRuntimeTaskArgsUnitAOffsetCheck[(u32)&((BtlRuntimeTaskArgs *)0)->unitA == 0x4 ? 1 : -1];
+typedef char BtlRuntimeTaskArgsUnitBOffsetCheck[(u32)&((BtlRuntimeTaskArgs *)0)->unitB == 0x8 ? 1 : -1];
+typedef char BtlRuntimeTaskArgsUnitCOffsetCheck[(u32)&((BtlRuntimeTaskArgs *)0)->unitC == 0xC ? 1 : -1];
+
+#endif /* BTL_TASK_ARGS_H */

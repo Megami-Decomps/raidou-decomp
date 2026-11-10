@@ -1,0 +1,348 @@
+#ifndef BTL_UI_H
+#define BTL_UI_H
+
+#include "common.h"
+
+struct BtlTask;
+struct dds3ProcessID_t;
+struct sdfMemHandle_t;
+struct ActionStateLink;
+struct BattleIndexWork;
+
+/* Each command class keeps the selected option separate from the start of its
+ * visible option window. The first index also doubles as the scroll offset. */
+typedef u16 BattleSceneOptionIndex;
+typedef u16 BattleSceneOptionWindowStart;
+
+typedef struct BattleSceneSelection {
+    BattleSceneOptionWindowStart firstVisibleOption;
+    BattleSceneOptionIndex selectedOption;
+} BattleSceneSelection;
+
+/* Lifecycle states shared by command-panel input, reserve selection, and close flows. */
+typedef s32 BattleCommandSceneState;
+enum {
+    BTL_COMMAND_SCENE_STATE_INPUT_ACTIVE = 1,
+    BTL_COMMAND_SCENE_STATE_PRIORITY_INPUT = 2,
+    BTL_COMMAND_SCENE_STATE_COMMAND_SUBMITTED = 3,
+    BTL_COMMAND_SCENE_STATE_CLOSE_REQUESTED = 5,
+    BTL_COMMAND_SCENE_STATE_RESERVE_SELECTION = 6,
+    BTL_COMMAND_SCENE_STATE_RESERVE_CANCEL_WAIT = 7,
+    BTL_COMMAND_SCENE_STATE_RESERVE_CONFIRM_WAIT = 8,
+    BTL_COMMAND_SCENE_STATE_TARGET_COMMIT_WAIT = 9,
+    BTL_COMMAND_SCENE_STATE_TIMED_CLOSE_MODE = 11
+};
+
+/* Both fldInitializeSceneObject constructors clear one 0x30-byte allocation.
+ * Its final two pointers refer to the owning task's command work and task;
+ * the state word alone is not a complete scene-object allocation. */
+typedef struct BattleSceneObject {
+    BattleCommandSceneState commandState;
+    BattleSceneSelection selections[9]; /* +0x04: command classes include kind 8. */
+    struct BattleIndexWork *commandData; /* +0x28: owning actor's complete +0x20 work. */
+#ifdef VERSION_DDS1
+    struct BtlTask *owner; /* +0x2C: the 0x170-byte DDS1 actor */
+#else
+    struct ActionStateLink *owner; /* +0x2C: the 0x180-byte DDS2 actor */
+#endif
+} BattleSceneObject;
+
+typedef char BattleSceneObjectSizeCheck[sizeof(BattleSceneObject) == 0x30 ? 1 : -1];
+typedef char BattleSceneObjectCommandStateOffsetCheck[
+    ((u32)&((BattleSceneObject *)0)->commandState == 0x00) ? 1 : -1];
+typedef char BattleSceneObjectCommandDataOffsetCheck[((u32)&((BattleSceneObject *)0)->commandData == 0x28) ? 1 : -1];
+typedef char BattleSceneObjectOwnerOffsetCheck[((u32)&((BattleSceneObject *)0)->owner == 0x2C) ? 1 : -1];
+
+/* Both scene scratch constructors allocate and clear 0x38 bytes. */
+typedef struct SceneKindTable {
+    u32 phase;
+    s16 alpha;
+    u8 pad06[2];
+    s32 entry;
+    s32 cursor;
+    s32 row;
+    u32 value[9]; /* +0x14..0x37: command classes include kind 8. */
+} SceneKindTable;
+
+typedef char SceneKindTable_size_must_be_0x38[(sizeof(SceneKindTable) == 0x38) ? 1 : -1];
+typedef char SceneKindTable_alpha_offset_check[
+    ((u32)&((SceneKindTable *)0)->alpha == 0x04) ? 1 : -1];
+typedef char SceneKindTable_value_offset_check[
+    ((u32)&((SceneKindTable *)0)->value == 0x14) ? 1 : -1];
+
+#ifdef VERSION_DDS1
+void fldInitializeSceneObject(BattleSceneObject *object, struct BtlTask *owner);
+#else
+typedef s32 BtlCommandPanelIntroMode;
+
+#define BTL_COMMAND_PANEL_INTRO_NONE ((BtlCommandPanelIntroMode)0)
+#define BTL_COMMAND_PANEL_INTRO_FIRST_BATTLE ((BtlCommandPanelIntroMode)1)
+#define BTL_COMMAND_PANEL_INTRO_WEAKNESS ((BtlCommandPanelIntroMode)2)
+#define BTL_COMMAND_PANEL_INTRO_HUNT ((BtlCommandPanelIntroMode)3)
+#define BTL_COMMAND_PANEL_INTRO_FEAR ((BtlCommandPanelIntroMode)4)
+#define BTL_COMMAND_PANEL_INTRO_LINKAGE ((BtlCommandPanelIntroMode)5)
+#define BTL_COMMAND_PANEL_INTRO_MAJIN ((BtlCommandPanelIntroMode)6)
+
+void fldInitializeSceneObject(BattleSceneObject *object, struct ActionStateLink *owner);
+BtlCommandPanelIntroMode fldSelectSceneMode(struct ActionStateLink *task);
+void btlOpenBattleCommandPanel(struct ActionStateLink *task);
+#endif
+
+/* Return the command-panel state, or zero when its process is absent. */
+BattleCommandSceneState fldGetSceneObjectState(void);
+
+/* One allocated 0xCC-byte command panel, not a header plus overlapping rows.
+ * Rows begin at +0x14/+0x64; the class Y coordinate occupies +0x10. */
+enum {
+    BTL_COMMAND_PANEL_STATE_INACTIVE = 0,
+    BTL_COMMAND_PANEL_STATE_ENTERING = 1,
+    BTL_COMMAND_PANEL_STATE_ACTIVE = 2,
+    BTL_COMMAND_PANEL_STATE_CLOSING = 3,
+    BTL_COMMAND_PANEL_STATE_TIMED_CLOSE = 4
+};
+
+typedef struct BattleCmdPanelSlot {
+    s8 hidden; /* Nonzero grid entries are omitted by the row renderer. */
+    u8 unk01; /* Initialized to 0/1 by bank; no consumer read established. */
+    s16 fadeValue; /* Signed narrow ramp; rendering uses its low color byte. */
+    u8 pad04[4];
+    s32 position[2]; /* Signed X/Y coordinates owned by this slot. */
+} BattleCmdPanelSlot;
+
+typedef struct BattleCmdPanel {
+    s8 state; /* BTL_COMMAND_PANEL_STATE_* */
+    s8 classIndex;
+    u16 labelEntry;
+    s16 labelFade;
+    s16 classFade;
+    u8 pad08[4];
+    u32 classX;
+    u32 classY;
+    BattleCmdPanelSlot slotsA[5];
+    BattleCmdPanelSlot slotsB[5];
+    s16 cornerFade[4]; /* Four low-byte color levels used by the backdrop. */
+    u32 cornerPhase[4]; /* Advanced by 8 modulo 360 before the sine pulse. */
+} BattleCmdPanel;
+typedef char BattleCmdPanelSlot_size_must_be_0x10[(sizeof(BattleCmdPanelSlot) == 0x10) ? 1 : -1];
+typedef char BattleCmdPanelSlot_position_at_0x08[((u32)&((BattleCmdPanelSlot *)0)->position[0] == 0x08) ? 1 : -1];
+typedef char BattleCmdPanelSlot_y_at_0x0C[((u32)&((BattleCmdPanelSlot *)0)->position[1] == 0x0C) ? 1 : -1];
+typedef char BattleCmdPanel_size_must_be_0xCC[(sizeof(BattleCmdPanel) == 0xCC) ? 1 : -1];
+typedef char BattleCmdPanel_slotsA_at_0x14[((u32)&((BattleCmdPanel *)0)->slotsA == 0x14) ? 1 : -1];
+typedef char BattleCmdPanel_slotsB_at_0x64[((u32)&((BattleCmdPanel *)0)->slotsB == 0x64) ? 1 : -1];
+
+/* Native 0x58-byte command UI work in both games. The first 0x38 bytes hold
+ * twelve scheduler-task pointers and two resource-presence flags. Keep the
+ * raw word view for indexed accessors; the typed view documents each slot. */
+typedef struct BattleTrackedTaskWork {
+    union {
+        s32 rawSlots[14];
+        struct {
+            struct dds3ProcessID_t *aphNamePanelTask; /* +0x00 */
+            struct dds3ProcessID_t *skillNamePanelTask; /* +0x04 */
+            s32 selectionBufferActive; /* +0x08 */
+            struct dds3ProcessID_t *actorPanelTask; /* +0x0C */
+            s32 commandHintWindowActive; /* +0x10 */
+            struct dds3ProcessID_t *selectionTrailTask; /* +0x14 */
+            struct dds3ProcessID_t *phaseChangePanelTask; /* +0x18 */
+            struct dds3ProcessID_t *registeredActorPanelChildTask; /* +0x1C */
+            struct dds3ProcessID_t *reserveActorPanelTask; /* +0x20 */
+            struct dds3ProcessID_t *guidePanelTask; /* +0x24 */
+            struct dds3ProcessID_t *mahenPanelTask; /* +0x28 */
+            struct dds3ProcessID_t *analysisPanelTask; /* +0x2C */
+            struct dds3ProcessID_t *linkageNoticeTask; /* +0x30 */
+            struct dds3ProcessID_t *tutorialCommandNoticeTask; /* +0x34 */
+        } typed;
+    } taskSlots; /* +0x00 */
+    u32 presentationState; /* +0x38: linked actor-slot panel transition. */
+    union {
+        u32 flags;
+        struct {
+            s8 state;
+            s8 blocked;
+            u16 fadeStep; /* 0x80 / transition duration. */
+        } bytes;
+    } status; /* +0x3C */
+    s32 counter;
+    s32 threshold;
+    s8 fadeKindsCached;
+    u8 pad49[3];
+    s32 fadeKindACount;
+    s32 fadeKindBCount;
+    s8 phaseGate; /* +0x54: nonzero skips two phase-gated panel updates. */
+    u8 pad55[3];
+} BattleTrackedTaskWork;
+
+typedef char BattleTrackedTaskWorkSizeCheck[
+    (sizeof(BattleTrackedTaskWork) == 0x58) ? 1 : -1];
+typedef char BattleTrackedTaskSlotsSizeCheck[
+    (sizeof(((BattleTrackedTaskWork *)0)->taskSlots) == 0x38) ? 1 : -1];
+typedef char BattleTrackedSelectionBufferActiveOffsetCheck[
+    ((u32)&((BattleTrackedTaskWork *)0)->taskSlots.typed.selectionBufferActive == 0x08) ? 1 : -1];
+typedef char BattleTrackedCommandHintWindowActiveOffsetCheck[
+    ((u32)&((BattleTrackedTaskWork *)0)->taskSlots.typed.commandHintWindowActive == 0x10) ? 1 : -1];
+
+/* The linked selection task allocates 0x30 bytes: a one-based selected row,
+ * four signed fade levels, four screen positions and a backdrop fade.
+ * Defaults place the rows 23 pixels apart; updates slide x toward 11. */
+typedef struct BattleSelectionPosition {
+    s32 x;
+    s32 y;
+} BattleSelectionPosition;
+
+typedef struct BattleSelectionWork {
+    s8 selectedRow;
+    u8 pad01;
+    s16 rowFade[4]; /* +0x02; one-based selection indexes rowFade[row - 1]. */
+    u8 pad0A[2];
+    s32 positions[4][2]; /* +0x0C: row, then signed x/y components. */
+    s16 backdropFade; /* +0x2C */
+    u8 pad2E[2];
+} BattleSelectionWork;
+
+typedef struct BattleStatPulse {
+    s8 active;
+    u8 pad01[3];
+    u32 phase;
+    s32 progress;
+    s32 yOffset;
+    s16 alpha;
+    u8 pad12[2];
+} BattleStatPulse;
+typedef char BattleStatPulse_size_must_be_0x14[(sizeof(BattleStatPulse) == 0x14) ? 1 : -1];
+
+/* 0x2C-byte action record shared by the initializer, updater and renderer. */
+typedef struct BattleMirroredSpriteRecord {
+    s8 active;
+    u8 pad01;
+    s16 slot;
+    f32 scale;
+    s32 restoredWidth;
+    s32 restoredHeight;
+    s32 width;
+    s32 height;
+    s32 x;
+    s32 y;
+    s32 secondX;
+    s32 frame;
+    s8 alpha;
+    u8 pad29[3];
+} BattleMirroredSpriteRecord;
+
+/* The actor-panel allocation has three active rows and four reserve rows. */
+/* The state/render block begins at +0x10 within each 0x290-byte row. */
+typedef struct BattleActorPanelPresentation {
+    s16 fade;
+    u8 pad02[2];
+    /* The primary (0x04) and secondary (0x70) channels share one 0x6C-byte
+     * layout; each is a nested record. */
+    struct {
+        s8 presentationState;
+        s8 presentationValue;
+        u8 pad06[2];
+        s32 unk08[2]; /* Reserve initializer sets 0 and 180. */
+        s32 transitionGeometry[4];
+        u8 transitionFade[2];
+        u8 pad22[2];
+        s32 pulseDirection[2];
+        s32 pulseTimer[2];
+        s32 pulseOffsets[2][2];
+        s16 pulseLevel[2];
+        u32 highlightPhase[8];
+        u8 highlightLevel[8];
+    };
+    struct {
+        s8 transitionState;
+        s8 secondaryPresentationValue;
+        u8 pad72[0xA];
+        s32 secondaryGeometry[4];
+        u8 secondaryFade[2];
+        u8 pad8E[2];
+        s32 secondaryPulseDirection[2];
+        s32 secondaryPulseTimer[2];
+        s32 secondaryPulseOffsets[2][2];
+        s16 secondaryPulseLevel[2];
+        u32 trianglePhase[8];
+        u8 triangleAlpha[8];
+    };
+    struct {
+        s8 pendingSceneState;
+        s8 cursorSelection; /* +0xDD: signed selection among three option IDs. */
+        u8 pendingCursorSelection; /* +0xDE: pending scene-group index. */
+        u8 padDF;
+        s16 cursorOption; /* +0xE0 */
+        u8 padE2[2];
+        s32 cursorOffset[2]; /* +0xE4: x, y */
+        u32 cursorPhase; /* +0xEC: unsigned pulse/fade counter. */
+        u8 unkF0;
+        u8 padF1[3];
+    };
+    s8 cursorEchoCount; /* +0xF4: counts the four records beginning at +0xF8. */
+    u8 padF5[3];
+    BattleMirroredSpriteRecord mirroredSprites[4];
+    u8 pad1A8[4];
+    s32 hpLevel;
+    s32 mpLevel;
+    s8 hpState;
+    s8 mpState;
+    u8 pad1B6[2];
+    s32 offset[2];
+    s32 hpEffectTimer;
+    s32 mpEffectTimer;
+    s16 hpHighlightLevel;
+    s16 mpHighlightLevel;
+    s32 hpTarget;
+    s32 mpTarget;
+    s8 hpEffectState;
+    s8 mpEffectState;
+    s16 hpEffectFade;
+    s16 mpEffectFade;
+    u8 pad1DA[2];
+    BattleStatPulse hpBarPulse;
+    BattleStatPulse mpBarPulse;
+    /* Signed frame counters, clamped to 0..12 before stacking three pulses. */
+    s8 hpPulseFrame;
+    s8 mpPulseFrame;
+    u8 pad206[2];
+    BattleStatPulse hpBarPulses[3];
+    BattleStatPulse mpBarPulses[3];
+} BattleActorPanelPresentation;
+
+typedef struct BattleActorPanelEntry {
+    s32 position[2]; /* x, y */
+    s32 basePosition[2]; /* x, y before presentation offsets */
+    BattleActorPanelPresentation presentation;
+} BattleActorPanelEntry;
+
+typedef struct BattleActorPanelWork {
+    struct sdfMemHandle_t *allocation;
+    s32 activeCount;
+    s32 reserveCount;
+    BattleActorPanelEntry activeEntries[3];
+    s16 selectedReserveIndex;
+    s16 partyRecordIndex;
+    BattleActorPanelEntry reserveEntries[4];
+    struct sdfMemHandle_t *reserveUnitAllocation;
+} BattleActorPanelWork;
+
+typedef char BattleActorPanelPresentationSizeCheck[sizeof(BattleActorPanelPresentation) == 0x280 ? 1 : -1];
+typedef char BattleActorPanelPresentationHpEffectTimerOffsetCheck[
+    ((u32)&((BattleActorPanelPresentation *)0)->hpEffectTimer == 0x1C0) ? 1 : -1];
+typedef char BattleActorPanelPresentationMpEffectTimerOffsetCheck[
+    ((u32)&((BattleActorPanelPresentation *)0)->mpEffectTimer == 0x1C4) ? 1 : -1];
+typedef char BattleActorPanelTriangleOffsetCheck[
+    ((u32)&((BattleActorPanelPresentation *)0)->trianglePhase == 0xB4 &&
+     (u32)&((BattleActorPanelPresentation *)0)->triangleAlpha == 0xD4 &&
+     sizeof(((BattleActorPanelPresentation *)0)->trianglePhase) == 0x20 &&
+     sizeof(((BattleActorPanelPresentation *)0)->triangleAlpha) == 8) ? 1 : -1];
+typedef char BattleActorPanelPresentationOffsetCheck[((u32)&((BattleActorPanelEntry *)0)->presentation == 0x10) ? 1 : -1];
+
+typedef char BattleActorPanelEntrySizeCheck[sizeof(BattleActorPanelEntry) == 0x290 ? 1 : -1];
+typedef char BattleActorPanelWorkSizeCheck[sizeof(BattleActorPanelWork) == 0x1204 ? 1 : -1];
+typedef char BattleActorPanelActiveOffsetCheck[((u32)&((BattleActorPanelWork *)0)->activeEntries == 0xC) ? 1 : -1];
+typedef char BattleActorPanelReserveOffsetCheck[((u32)&((BattleActorPanelWork *)0)->reserveEntries == 0x7C0) ? 1 : -1];
+
+void btlSlotBankPromoteStates(BattleActorPanelWork *bank);
+void btlInitializeActionRecordWithScale(BattleMirroredSpriteRecord *record, s16 slot,
+                                      s32 x, s32 y, s32 index, f32 scale);
+
+#endif /* BTL_UI_H */

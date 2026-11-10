@@ -1,0 +1,130 @@
+#ifndef BTL_ACTION_H
+#define BTL_ACTION_H
+
+#include "common.h"
+
+/* Native 0x70-byte scheduler-task header, distinct from a queued command actor.
+ * The condition evaluator reads the first byte and +8 query key; task startup
+ * assigns handle, while owner lookup uses ownerId. Scene request constructors
+ * share its task-ID/status prefix and native start/update callback slots.
+ */
+typedef struct BtlTaskCondition {
+    u8 kind;
+    u8 pad01[7];
+    union {
+        s32 count;
+        u64 handle;
+        u64 owner;
+        u16 taskKind;
+    } value;
+} BtlTaskCondition;
+
+typedef struct BtlRuntimeTask {
+    BtlTaskCondition startCondition; /* 0x00 */
+    BtlTaskCondition endCondition; /* 0x10 */
+    u16 taskId; /* 0x20 */
+    u16 state; /* 0x22 */
+    u16 flags; /* 0x24: command tasks set bit 1 before starting */
+    u8 pad26[2];
+    s32 startDelay; /* Signed countdown before the task's running phase. */
+    s32 endDelay;
+    u32 pollCount;
+    u32 runCount;
+    u64 handle; /* 0x38 */
+    u64 ownerId; /* 0x40 */
+    void (*onStart)(); /* 0x48: each task kind owns its argument packet type. */
+    s32 (*callback)(); /* 0x4C */
+    void (*onFinish)(); /* 0x50 */
+    void *args; /* 0x54 */
+    struct BtlRuntimeTask *next; /* 0x58 */
+    struct BtlRuntimeTask *prev; /* 0x5C */
+    struct BtlRuntimeTask *deferNext; /* 0x60 */
+    struct BtlRuntimeTask *deferPrev; /* 0x64 */
+    u8 pad68[8];
+} BtlRuntimeTask;
+
+/* Eight-byte ability parameter rows: coefficient and two integer parameters. */
+typedef struct BtlAbilityParameter {
+    f32 value;
+    u16 parameterA; /* 0x04: base item-find chance for skill 0x27B. */
+    s16 parameterB; /* 0x06: additional item-find chance, signed when scaled. */
+} BtlAbilityParameter;
+
+#ifdef VERSION_DDS2
+enum { BTL_ABILITY_PARAMETER_FIRST_SKILL = 0x220 };
+#else
+enum { BTL_ABILITY_PARAMETER_FIRST_SKILL = 0x200 };
+#endif
+
+extern BtlAbilityParameter *datAbilityParameters;
+
+/* Native 0x20-byte action-animation descriptor, shared by motion and camera selection. */
+/* In reflected/special linkage groups, 3 routes the effect to the indexed
+ * target while later command flags remain owned by the action actor. Value 4
+ * marks the target with 0x10 and shares 0x20 across target and actor. Other
+ * record values remain opaque and use the existing fallback paths. */
+#define BTL_ACTION_EFFECT_KIND_TARGET_EFFECT_WITH_ACTOR_OWNER 3
+#define BTL_ACTION_EFFECT_KIND_TARGET_AND_ACTOR_FLAGS 4
+
+typedef struct BtlActionAnimationRecord {
+    u8 cameraKind; /* 0x00: values 6 and 7 select an aim pose. */
+    u8 delayIndex; /* 0x01: row of the action delay table */
+    u8 effectKind; /* 0x02: observed special target-effect policies are 3 and 4. */
+    u8 resourceType; /* 0x03: aliases BtlActionTableEntry.resourceType. */
+    u16 displayCode;
+    u8 pad06[0x16];
+    u16 flags;
+    u8 pad1E[2];
+} BtlActionAnimationRecord;
+
+/* Alternate table view used by action metadata and lighting readers. Its
+ * kind and resourceType bytes alias cameraKind and resourceType in the animation view. */
+typedef struct BtlActionTableEntry {
+    u8 kind; /* 0x00 */
+    u8 pad01[2];
+    union {
+        u8 resourceType; /* 0x03: DDS2 resource selector. */
+#ifdef VERSION_DDS1
+        u8 enabled; /* 0x03: DDS1 rejects action rows whose byte is zero. */
+#endif
+    };
+    u16 displayCode; /* 0x04: action-specific asset ID, formatted as a .BED filename. */
+    u8 pad06[2];
+    f32 lightColorMode; /* 0x08 */
+    f32 lightColor[3]; /* 0x0C */
+    s32 defaultValue; /* 0x18 */
+    u16 flags; /* 0x1C */
+    u8 pad1E[2];
+} BtlActionTableEntry;
+
+typedef char BtlActionTableEntry_size_must_be_0x20[
+    (sizeof(BtlActionTableEntry) == 0x20) ? 1 : -1];
+typedef char BtlActionTableEntry_kind_offset_must_be_0x00[
+    ((u32)&((BtlActionTableEntry *)0)->kind == 0x00) ? 1 : -1];
+typedef char BtlActionTableEntry_resourceType_offset_must_be_0x03[
+    ((u32)&((BtlActionTableEntry *)0)->resourceType == 0x03) ? 1 : -1];
+typedef char BtlActionTableEntry_displayCode_offset_must_be_0x04[
+    ((u32)&((BtlActionTableEntry *)0)->displayCode == 0x04) ? 1 : -1];
+#ifdef VERSION_DDS1
+typedef char BtlActionTableEntry_enabled_offset_must_be_0x03[
+    ((u32)&((BtlActionTableEntry *)0)->enabled == 0x03) ? 1 : -1];
+#endif
+typedef char BtlActionTableEntry_lightColorMode_offset_must_be_0x08[
+    ((u32)&((BtlActionTableEntry *)0)->lightColorMode == 0x08) ? 1 : -1];
+typedef char BtlActionTableEntry_lightColor_offset_must_be_0x0C[
+    ((u32)&((BtlActionTableEntry *)0)->lightColor == 0x0C) ? 1 : -1];
+typedef char BtlActionTableEntry_defaultValue_offset_must_be_0x18[
+    ((u32)&((BtlActionTableEntry *)0)->defaultValue == 0x18) ? 1 : -1];
+typedef char BtlActionTableEntry_flags_offset_must_be_0x1C[
+    ((u32)&((BtlActionTableEntry *)0)->flags == 0x1C) ? 1 : -1];
+
+/* Group policy takes precedence; target policy falls back to group framing
+ * unless exactly one target is present. DDS1's fixed-preset bit selects explicit
+ * camera keys, while the DDS2 consumers retain identical arms for that bit. */
+enum {
+    BTL_ANIMATION_FIXED_DEFEAT_CAMERA = 0x10,
+    BTL_ANIMATION_GROUP_DEFEAT_CAMERA = 0x1000,
+    BTL_ANIMATION_TARGET_DEFEAT_CAMERA = 0x2000
+};
+
+#endif /* BTL_ACTION_H */

@@ -875,5 +875,5 @@ u32 fileCallbackStatus = 0;
 
 char fileManagerProcName[8] = "fileMan";
 
-INCLUDE_SDATA(const s32, "file/fileManager", D_0046CDD0);
+u32 mccb = 0;
 

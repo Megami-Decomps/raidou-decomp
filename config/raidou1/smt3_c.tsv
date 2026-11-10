@@ -330,9 +330,51 @@ abort	c
 atanf	asm	size 0x2A8, retail 0x290
 atexit	c
 atoi	c
+btlAppendEntry	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlBossDebugPrintfN	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlClearTintAndEnableCamera	c
+btlClosePfsDebugDirectory	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlCreateResourceNameRecord	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlDestroyEntryList	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlDestroyResourceDescriptor	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlDestroyResourceNameRecord	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlDrawResourcePreview	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlFormatResourceNameWithExtension	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlFormatResourceNameWithoutExtension	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlFormatSelectedResourceName	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlGetResourceBrowserSelectedIndex	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlGetResourceBrowserSelectionStatus	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlGetResourceNameSelectionStatus	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlGetResourcePathVariant	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlLoadAndReplaceResourceHandle	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlNextScaledRandom	c
+btlOpenPfsDebugDirectory	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlProjectForwardPositionToScreen	c
+btlProjectOnPlaneVU	c
+btlRandomInclusiveRange	c
+btlReplaceResourceHandle	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlResourceRecordSetName	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlRollAiBucket	c
+btlScanDirectory	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlSetResourceBrowserPosition	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlSetResourceNameLengthLimit	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlSetResourceNamePosition	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlTriangleNormalDotEdge	c
+btlTriangleNormalVU	c
+btlTrimResourceName	asm	declarations clash: previous declaration of `btlDebugDrawText'
 cdvd_exit	c
 checkModelVersion	c
 cmd_sem_init	c
+cmpDraw3DPoly	c
+cmpDrawBoxLine	c
+cmpDrawBoxSolid	c
+cmpDrawPanelEffCell	c
+cmpDrawSprite	c
+cmpDrawSprite2	c
+cmpDrawSpriteFlag	c
+cmpDrawSpriteIndexed	c
+cmpDrawSpriteIndexed2	c
+cmpDrawTriG	c
 corePktBuildBackFaceList	c
 corePktBuildFaceList	c
 corePktClipFace	c
@@ -353,6 +395,7 @@ corePktSetFaceDivParm	c
 corePktSetupPointBuff	c
 cosf	asm	size 0xEC, retail 0xD8
 cvt	c
+datDebugPrintf	asm	.sdata differs at 0x0046B318
 datGetAisyoFlag	c
 datGetAisyoValue	c
 dds3AddAreaBasic	c
@@ -379,6 +422,7 @@ dds3AddRotPoseSet	c
 dds3AddScene	c
 dds3AddTMXEffectObjectBasic3	c
 dds3AddWorld	c
+dds3AdminSubmitEmptyModeRequest	c
 dds3AdminiCallSequence	c
 dds3AdminiEndCheck	c
 dds3AdminiExitSequence	c
@@ -459,6 +503,8 @@ dds3DebugColorEditEx	c
 dds3DebugDevDumpProcess	c
 dds3DebugFloatEdit	c
 dds3DebugFloatEditEx	c
+dds3DebugGraphSetEnabled	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3DebugGraphUpdate	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
 dds3DebugIntEdit	c
 dds3DebugIntEditEx	c
 dds3DeleteAllBasicArray	c
@@ -475,6 +521,10 @@ dds3DistBlurOff	c
 dds3DistBlurOn	c
 dds3DistBlurSwap	c
 dds3DrawDistRipOverError	asm	sdfGrOtTable at 0x003ADD78, others at 0x003AD9D8
+dds3DrawTextureAllocationMapBlock	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3DrawTextureListDiagnostic	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3DrawTextureResourceDetails	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3DrawTextureViewerFrame	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
 dds3EffectBlurSetRect	c
 dds3EffectCopy	c
 dds3EffectCreate	c
@@ -533,6 +583,7 @@ dds3EffectRippleBlurCreate	c
 dds3EffectRippleBlurReset	c
 dds3EndProcess	c
 dds3EndingProcess	c
+dds3EnsureDefaultResource	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
 dds3ExistProcess	c
 dds3FadeCheck	c
 dds3FadeClear	c
@@ -605,6 +656,7 @@ dds3LinkLightObjectToUnitObject	c
 dds3LinkProcess	c
 dds3LinkSceneLight	c
 dds3LinkZClearDrawTag	c
+dds3LoadDefaultResource	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
 dds3MFilterOff	c
 dds3MFilterOn	c
 dds3MFilterSwap	c
@@ -774,6 +826,7 @@ dds3SearchProcessName	c
 dds3SearchProcessNumber	c
 dds3SearchProcessPriority	c
 dds3SearchSceneBasic	c
+dds3SelectIncompleteResourceAtPageIndex	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
 dds3SetActiveCameraSceneBasic	c
 dds3SetActiveScene	c
 dds3SetActiveUnitSceneBasic	c
@@ -856,6 +909,11 @@ dds3StartBEDEffectObjectBasic	c
 dds3StartMovieManager	c
 dds3StartProcess	c
 dds3StopQuake	c
+dds3SwapActiveResource	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3TextureAttachTask	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3TextureCountIncompleteResources	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3TextureDrawPageCounter	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3TextureGetPageIndex	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
 dds3TrackPolyColorSet	c
 dds3TrackPolyCreate	c
 dds3TrackPolyDelete	c
@@ -920,14 +978,31 @@ effAPPoint4CreatePCF	c
 effAPPoint4Delete	c
 effAPPoint4Draw	c
 effAPPoint4PartInit	c
+effAppendListEntry	c
+effAttachSlotWorkOwner	c
 effBTLBindCreateTrack	c
 effBTLGetDrawEndFrame	c
 effBTLPartCreate	c
 effBTLPartDelete	c
 effBTLPartGetPositionPtr	c
 effBTLPartGetRotateMatrixPtr	c
+effClampSlotPhaseAtEnd	c
+effClampSlotPhaseAtStart	c
 effCloneSingleParticleTemplate	c
 effColorBlend	c
+effCompleteMappedResourceJob	c
+effCompleteRetainedResourceJob	c
+effCompleteTransientResourceJob	c
+effConfigureIndexedSlotMaterial	c
+effConfigureIndexedSlotResource	c
+effConfigureSlotResource	c
+effConfigureWithDefaultSetting	c
+effConvertParamValue	c
+effCreateOwnerRecordList	c
+effCreatePayload	c
+effCreateResourceSlotSet	c
+effCreateResourceSlotSetFromAllocation	c
+effCreateStatusBatch	c
 effDebugDrawWireModel	c
 effDebugLineDraw	asm	sdfGrOtTable at 0x003ADD78, others at 0x003AD9D8
 effDebugLineDraw2	asm	sdfGrOtTable at 0x003ADD78, others at 0x003AD9D8
@@ -938,6 +1013,16 @@ effDebugStringDraw	asm	sdfGrOtTable at 0x003ADD78, others at 0x003AD9D8
 effDebugWindowDraw	asm	sdfGrOtTable at 0x003ADD78, others at 0x003AD9D8
 effDebugWireframeCylinderDraw	asm	sdfGrOtTable at 0x003ADC58, others at 0x003AD9D8
 effDebugWireframeSphereDraw	asm	sdfGrOtTable at 0x003ADC58, others at 0x003AD9D8
+effDestroyOwnerRecordList	c
+effDestroyPackedBatch	c
+effDestroyPayload	c
+effDestroyResourceSlotSet	c
+effDispatchRecordBuckets	c
+effDrawGeneratedTextureQuad	c
+effDrawRepeatedSpriteTiles	c
+effDrawSpriteWithCornerColors	c
+effDrawSpriteWithCornerFade	c
+effDrawSpriteWithWorkCornerColors	c
 effEVECombParSmokeCreate	c
 effEVECombParSmokeDelete	c
 effEVECombParSmokeDraw	asm	sdfGrOtTable at 0x003ADC98, others at 0x003AD9D8
@@ -949,8 +1034,17 @@ effEveBEDCutCreate	c
 effEveBEDCutGetParams	c
 effEveBEDCutSetParams	c
 effEveBEDPartGetPositionPtr	c
+effGetSlotWorkOrOverride	c
+effHasFirstTextureHandle	c
 effInitParticleRecord	c
+effInitializeAllSlotWork	c
+effInitializeSlotPhase	c
+effInitializeSlotWork	c
+effInsertSlotRecord	c
 effLinePointLength	c
+effLoadIndexedResource	c
+effLoadMappedResource	c
+effLoadMappedStatusRecords	c
 effMagaCylinderAllocPart	c
 effMagaCylinderAllocTex	c
 effMagaCylinderBlendColor	c
@@ -1233,16 +1327,39 @@ effPCP_ThunderRadiatePolyDrawOff	c
 effPkt2DAllocF4	c
 effPkt2DAllocTriStrip	c
 effPkt3DPrimMakePoly	c
+effPollResourceList	c
+effReleaseSlotWorkAllocation	c
+effReleaseTextureHandlesAndResetSlots	c
+effRemoveListEntry	c
+effRemoveSlotRecord	c
+effRequestMappedResource	c
+effRequestResourceByMode	c
+effResetRecordRun	c
+effResetSlotWork	c
+effResolveAndReleaseResource	c
+effResolveAndReleaseSelectedResource	c
+effResolveResourceSlots	c
 effScreenOffset	c
+effSelectPresetAndDispatch	c
+effSelectPresetByKind	c
+effSetMaterialSlots	c
+effSetSlotIndexedResource	c
+effSetSlotOverrideWork	c
+effSetSlotResourceAndFlags	c
 effSimpleBEDCopy	c
 effSimpleBEDCreate	c
 effSimpleBEDDelete	asm	1 words differ, first at +0x1C
 effSimpleBEDSetPosition	c
 effSimpleBEDSetRGBA	c
+effSlotTransitionClearTarget	c
 effSplCalc	c
 effSplCalcRegist	c
 effSplRun	c
+effSubmitCompositeGsPacket	c
+effSubmitGeneratedTexturePacket	c
+effSumRecordStatuses	c
 effSwordTrackDrawTex	c
+effUpdateTimedStates	c
 eff_177850	c
 eff_177A48	c
 eff_178128	c
@@ -1261,8 +1378,10 @@ evtCheckEventBgmLoaded	c
 evtCheckEventScriptLoaded	c
 evtCheckPathStat	c
 evtCheckScriptDone	asm	1 words differ, first at +0x30
+evtCheckSelectionState	c
 evtCheckSkyAlphaAnime	c
 evtChkEndProcess	c
+evtClearSecondaryWorldAndViewer	c
 evtCommand_BGM_PLAY_E	c
 evtCommand_BGM_TRANS_E	c
 evtCommand_BOKASI_OFF	c
@@ -1349,7 +1468,15 @@ evtCommand_TEX_OFF	c
 evtCommand_TEX_ON	c
 evtCommand_UNIT_CLS	c
 evtCommand_UNIT_CLS_STOP	c
+evtCreateTestAndSkyTasks	c
+evtDestroyFontResourceChain	c
+evtDestroySelectionState	c
+evtDrawConditionalHeapUsageOverlay	c
+evtDrawGeneralHeapUsageGraph	c
+evtDrawHeapUsageOverlay	c
+evtDrawResourceCountDebugTask	c
 evtEffectLoopControl	c
+evtEnsureFontResourceChain	c
 evtExitSky	c
 evtFadeInEventBgm	c
 evtFileName2Head	asm	.rodata differs at 0x004502A8
@@ -1377,6 +1504,9 @@ evtInitEventTest	c
 evtInitFrameVar	c
 evtInitGlobalWork	c
 evtInitMotionSeProcess	c
+evtInitializeSelectionScene	c
+evtInitializeSelectionScreen	c
+evtKeepTestSkyModePending	c
 evtKillEventPack	c
 evtKillFieldScript	c
 evtKillPictureProcess	c
@@ -1398,6 +1528,8 @@ evtPlaySe	c
 evtRegistBEField	c
 evtSearchBasic	c
 evtSearchEventPack	c
+evtSelStateCreate	c
+evtSelStateDestroy	c
 evtSetSkyAlpha	c
 evtSetTestCamera	c
 evtStageAnimeControl	c
@@ -1412,6 +1544,7 @@ evt_1E50C0	c
 evt_1E92F8	c
 exponent	c
 fabsf	asm	size 0x58, retail 0x28
+fclBlendColor	c
 fclChkMessage	c
 fclDestroyMessage	c
 fclEncycFreeEntry	c
@@ -1425,25 +1558,33 @@ fcl_213998	c
 fcl_2142F0	c
 fcl_214458	c
 fflush	c
+fileClampPackedColorByte	c
+fileCursorStepUp	c
 fileExecCallback	c
 fileExecQueue	c
+fileFadeStepDown	c
 fileGetLoadPtr	c
 fileGetLoadRemain	c
 fileGetLoadSize	c
 fileGetMemHandle	c
 fileHandleFree	c
+fileIsLoadedAndConditionTrue	c
+fileIsLoadedWithActiveFlow	c
 fileLinkCloseWait	c
 fileLinkQueue	c
 fileLoad	c
 fileLoadCallback	c
 fileLoadEx	c
+fileLoadSetMode	c
 fileLoadUseTail	c
 fileManager	c
 fileManagerProc	c
 fileRead	c
+fileResetLoadContextSlide	c
 fileSave	c
 fileSaveCallback	c
 fileSaveEx	c
+fileSetMenuValueAndInitializeFlags	c
 fileSync	c
 fileSyncAll	c
 fileSysInit	c
@@ -1453,21 +1594,38 @@ fileWrite	c
 fldAutoMapSeqClearFlag	c
 fldAutoMapSeqSetFlag	c
 fldAutoMapSeqTestFlag	c
+fldClearCameraObjectTransitionFlags	c
+fldCommandSendNamedSound	c
 fldCommand_GetHojiID	c
 fldDbgPrint3D	asm	sdfGrOtTable at 0x003ADD78, others at 0x003AD9D8
+fldDisableCameraObjectFlag	c
 fldDrawGetOt	c
 fldDrawPoly3	c
 fldDrwZAlloc	c
 fldDrwZFree	c
+fldEnableCameraObjectFlag	c
 fldEncountClearFlag	c
 fldEncountSetFlag	c
 fldEncountTestFlag	c
 fldFlowParse	c
 fldKanjiDraw	asm	frwGetSmallFontFRQ at 0x00182F78, 0x00182FA8
+fldLmapAdvanceCursor	c
+fldLmapAdvanceThroughWindow	c
+fldLmapAdvanceWindowStart	c
+fldLmapExpandWindowBackward	c
+fldLmapRewindCursor	c
+fldLmapRewindThroughWindow	c
+fldLmapSubmitPositionedCommandPacket	c
+fldLmapSubmitScaledSpritePacket	c
 fldPlayerCalc360_4	c
 fldPlayerCalc360_8	c
 fldPoint3To2	c
+fldPointDistance	c
+fldResetPlayerSceneObjectState	c
+fldRestoreCameraModelColor	c
+fldSetCameraObjectTransitionFlag	c
 fldTitleMini_Shutdown	asm	sdfTexFreeDelayed at 0x00359998, others at 0x003599E0
+fldToggleWorldNodeState	c
 fld_1374F0	c
 floorf	asm	size 0x114, retail 0xD8
 fmDestroyFontMemControl	c
@@ -1519,7 +1677,10 @@ iSyncDCache	c
 initDrawTag	c
 isceSifSendCmd	c
 itfCamp	c
+itfCreateGridPacketWithDefaultFlags	c
 itfDebugPrintMark	c
+itfDrawBackgroundAndGetTaskReadyMask	c
+itfInitTextDrawArgs	c
 itfMesMngClearBitStat	c
 itfMesMngClearBitStatManager	c
 itfMesMngCloseSelectWindow	c
@@ -1583,6 +1744,9 @@ itfMiscLoadTexture	c
 itfMiscMoveFontPosition	c
 itfMiscSetRatioRGB	c
 itfPnlRelease	c
+itfReleaseBackgroundSpriteTexture	c
+itfRotateScreenOffset	c
+itfScanEncodedTextControls	asm	1 words differ, first at +0xEC
 kCopy	c
 kCopy_1	c
 kCopy_3	c
@@ -1608,12 +1772,19 @@ lightmainprocedure	c
 litodp	c
 malloc	c
 mcDelayThread	c
+mcFormatSaveFilename	asm	.rodata differs at 0x0045515C
 mcHearAlarm	c
 mceGetInfoApdx	c
 mceIntrReadFixAlign	c
 mceStorePwd	c
+mdlAddPlainViewerEntryForSelectedNode	c
+mdlAddViewEntryFlagged	c
+mdlAppendViewerRectToDrawList	c
+mdlApplyViewerResourceMenuAction	asm	.rodata base 0x0044D920, 0x0044D930
+mdlBuildViewerRectanglePacket	c
 mdlCheckLoading	c
 mdlChkMotionEndEx	c
+mdlCountActiveRecords	c
 mdlCreateEffect	c
 mdlCreateEffectCtrlr	c
 mdlCreateEffectResrc_D3P	c
@@ -1627,6 +1798,17 @@ mdlCreateMotion	c
 mdlDebugTextBox	c
 mdlDeleteEffectResrc_IPU	c
 mdlDrawEffect_IPU	c
+mdlDrawMapPositionRecords	c
+mdlDrawViewerAssetSelection	asm	.rodata base 0x0044D920, 0x0044D930
+mdlDrawViewerEffectRecordList	c
+mdlDrawViewerIndexedLabelOverlay	c
+mdlDrawViewerModeLabel	c
+mdlDrawViewerModelAndMotionSummary	c
+mdlDrawViewerMotionTimeline	asm	.rodata base 0x0044D920, 0x0044D930
+mdlDrawViewerOptionLabels	c
+mdlDrawViewerResourceMenu	c
+mdlDrawViewerSelectionLabel	c
+mdlDrawViewerTexturePreview	c
 mdlEffectDup_D3P	c
 mdlEffectDup_P2A	c
 mdlEffectResrcListFree	c
@@ -1641,6 +1823,7 @@ mdlFreeEffect	c
 mdlFreeFileItem	c
 mdlFreeMotion	c
 mdlFreeMotionCtrlr	c
+mdlFreeViewResources	c
 mdlGenEffect	c
 mdlGetColor	c
 mdlGetDebugEntry	c
@@ -1659,14 +1842,18 @@ mdlGetPosition	c
 mdlGetRotate	c
 mdlGetScale	c
 mdlGetScreenOffset	c
+mdlGetSelectedRecord	c
+mdlHandleViewerNodeCursorInput	c
 mdlHasMotionEx	c
 mdlHideAllNode	c
 mdlInitManager	c
+mdlIsDebugTimeGraph	asm	.rodata base 0x0044D920, 0x0044D930
 mdlLink	c
 mdlLinkBlur	c
 mdlLinkEffect	c
 mdlLoad	c
 mdlLoadPrepare	c
+mdlLoadViewerResourceAndResetCursors	c
 mdlLoopMotion	c
 mdlMakeHddFileList	c
 mdlMakeHddFileListDummy	c
@@ -1693,6 +1880,16 @@ mdlRegist	c
 mdlRegistModelSet	c
 mdlRegistMotion	c
 mdlReleaseHddFileList	c
+mdlRequestViewerExitOnce	c
+mdlResetViewerBasisVectors	c
+mdlRotateViewList	c
+mdlRotateViewResourcesRight	c
+mdlRunViewerAssetSelectionTask	c
+mdlRunViewerEffectEditorTask	c
+mdlRunViewerIndexedLabelTask	c
+mdlRunViewerResourceMenuTask	c
+mdlRunViewerSelectionLabelTask	c
+mdlRunViewerSettingsTask	c
 mdlSearchResrc	c
 mdlSetBlur	c
 mdlSetClutColor	c
@@ -1713,6 +1910,8 @@ mdlSmoothLoopMotion	c
 mdlSmoothSingleMotion	c
 mdlStartEffectResrc_IPU	c
 mdlStopEffect	c
+mdlSubmitViewerIntermediateDrawPacket	c
+mdlSubmitViewerResourceDrawPacket	c
 mdlUnRegLoading	c
 mdlUnRegist	c
 mdlUnRegistAll	c
@@ -1720,9 +1919,109 @@ mdlUnRegistMotion	c
 mdlUnRegistResrc	c
 mdlUnRegistResrcMotion	c
 mdlUnlinkResrc	c
+mdlUpdateViewerCursor	c
+mdlUpdateViewerCursorWithPageStep	c
+mdlUpdateViewerNodeCursorTask	c
+mdlUpdateViewerScaleTask	c
+mdlUpdateViewerWorkspaceSetup	c
+mdlUpdateViewerWorkspaceSetupTask	c
+mdlViewerTaskDestroy	c
 mdlWaitLoadEnd	c
 memclr	c
 mfilterSetParam	c
+mnuAdvanceListCursorDefault	c
+mnuAdvanceListSelection	c
+mnuAdvanceListWindowStart	c
+mnuAdvanceWindowListSelection	c
+mnuAllocateListEntries	c
+mnuAppendWindowListNode	c
+mnuApplyPanelTransitionAction	c
+mnuBindPresentMenuEntry	c
+mnuBlendListNodeColorByFlags	c
+mnuBuildVoiceResourcePath	c
+mnuCallInitWide	c
+mnuCampCheckClockDivisor	c
+mnuCampFindEntryByName	c
+mnuCampInitializeDisplayDefaults	c
+mnuClearEntryFlags	c
+mnuClearPanelTransitionState	c
+mnuClearTerminalPanelSelection	c
+mnuClearWindowListSelectionFlags	c
+mnuCreateListState	c
+mnuCreateListWithDefaults	c
+mnuCreatePanelIconState	asm	.rodata base 0x00463ED0, 0x00463F28
+mnuCreateWindowSpriteResources	c
+mnuDecreaseListNodeFadeCounters	c
+mnuDestroyListState	c
+mnuDispatchEntryWords	c
+mnuDispatchPopupTransition	c
+mnuDispatchStaffMenuWithIdlePopup	c
+mnuDrainPanelTransitions	c
+mnuDrawFadingWindows	c
+mnuDrawFourEntries	c
+mnuDrawIconPair	c
+mnuDrawIconPanel	c
+mnuDrawIconPanelFade	c
+mnuDrawIconPanelFullFade	c
+mnuDrawIconRow6	c
+mnuDrawIconState	c
+mnuDrawListScrollbar	c
+mnuDrawVisibleWindowIconRows	c
+mnuEvaluateCubicBezierPoint	c
+mnuFindCampKeyTrackNeighbors	c
+mnuFreeListEntries	c
+mnuFxWorldDropOutOfRange	c
+mnuGetTitleEffectFrameCounter	c
+mnuHandleListPageJumpInput	c
+mnuHandlePanelListPageJumpInput	c
+mnuInitIconSprites	c
+mnuInitTitleSoundRemoteRequest	c
+mnuInitializeBasicWindowLayout	c
+mnuInsertListNodeRelativeToAnchor	c
+mnuInsertWindowListNodeRelativeToAnchor	c
+mnuIsTitleStreamIdle	c
+mnuLinkItemList	c
+mnuListAdvanceCursor	c
+mnuListContainsFinalNode	c
+mnuListRetreatCursor	c
+mnuLoadTitleStreamFrameData	asm	sdfMemFreeDelayedDirect at 0x003573A8, others at 0x003574A0
+mnuMapPadMaskToFlags	asm	dds3PadButtonState at 0x003AD392, others at 0x003AD390
+mnuNoOpTitleAudio	c
+mnuQueryTitleSoundBusy	c
+mnuReadTitleStreamStatusLocked	c
+mnuRebuildListFirstFromCursor	c
+mnuRebuildListLastFromCursor	c
+mnuReleaseResourceList	c
+mnuReleaseWindowTextures	c
+mnuRemoveFadingWindowEntry	c
+mnuRemoveListCursorNode	c
+mnuRemoveWindowListCursorNode	c
+mnuResetNodeLinks	c
+mnuResetSoundBuffer	c
+mnuResetTitleEffectState	c
+mnuResetTitleStreamLocked	c
+mnuRetreatListCursorDefault	c
+mnuRetreatListWindowStart	c
+mnuRetreatWindowListSelection	c
+mnuReverseListSelection	c
+mnuSampleCampDisplayTrack	c
+mnuScrollListToEnd	c
+mnuScrollListToPreviousPage	asm	size 0x16C, retail 0x168
+mnuSetPopupEntry	c
+mnuSetPopupEntryFlagged	c
+mnuSetTitleVoicePrefixIndex	c
+mnuSetWindowContainerLayout	c
+mnuShouldBlockViewerEndCountdown	c
+mnuSolveCubicBezierYForX	c
+mnuSortItems	asm	.rodata base 0x00463ED0, 0x00463F28
+mnuStartFixedSoundStream	c
+mnuStopTitleVoicePlayback	c
+mnuStoreTaskResult	asm	fileLoad at 0x001D3B30, others at 0x001D3B10
+mnuUnpackNibbleFields	c
+mnuUpdateFade	c
+mnuUpdateListScrollFlags	c
+mnuUpdateWindowPanelHandleStatesKindFourFive	c
+mnuWriteTitleStreamStatusLocked	c
 movieCloseStream	c
 movieCopyChunk	c
 movieDebugDrawInfo	c
@@ -1973,6 +2272,7 @@ sceTtyInit	c
 sceTtyRead	c
 sceTtyWrite	c
 sceUmount	c
+scrCmdHasEnoughOwnedMantras	c
 scrCommand_BIT_CHK	c
 scrCommand_BIT_OFF	c
 scrCommand_BIT_ON	c
@@ -2113,6 +2413,7 @@ sdfChipGetInfo	c
 sdfChipInit	c
 sdfChunkFindById	c
 sdfClipAngleValuePI	c
+sdfCopyCornerWordsWithEdgeByte	c
 sdfCoreDrawInit	c
 sdfCoreDrawScanOneSkinNodes	c
 sdfCoreDrawSetFog	c
@@ -2159,7 +2460,10 @@ sdfDevLoadFile	c
 sdfDevLoadFileEx	c
 sdfDevPrintf	c
 sdfDevPrintfEx	c
+sdfDevSetPrintCB	c
 sdfDevVprintf	c
+sdfDrawHeapMapOverlay	c
+sdfDrawHeapSpanOverlay	c
 sdfDrawModelWithMatrix	c
 sdfDrawRotatedModel	c
 sdfDrawSync	c
@@ -2168,6 +2472,7 @@ sdfDrawTagLink	c
 sdfDrawTagLinkCall	c
 sdfDrawTagLinkRef	c
 sdfDrawTagLinkRefGif	c
+sdfDrawTexturedQuad	asm	46 words differ, first at +0x33C
 sdfDrawThIntHandler	c
 sdfDumpChipMemory	c
 sdfDumpDmaChain	c
@@ -2220,6 +2525,7 @@ sdfFileSetHddFilename	c
 sdfFileSetHostFilename	c
 sdfFileSetHostRoot	c
 sdfFindThreadNode	c
+sdfFirePendingCallback	c
 sdfFreeAuto	c
 sdfFreeAutoDelayed	c
 sdfFreeMemorySlotFromEitherHeap	c
@@ -2573,6 +2879,7 @@ sdfPadManager	c
 sdfPadSetAct	c
 sdfPadSetAct0	c
 sdfPadSetAct1	c
+sdfPktSetCmd	c
 sdfPreDrawChainInit	c
 sdfPreDrawChainLink	c
 sdfPreDrawTagInit	c
@@ -2726,6 +3033,11 @@ slSaveProc_writeFile	c
 slSaveWriteEnd_saveData	c
 slSaveWriteFile	c
 slSetInfo	c
+sndCopyWordsToIopSynchronously	c
+sndInitializeStreamTransferBuffers	c
+sndMixSampleBuffers	c
+sndOpStopNamedPlayback	asm	p2sdSyncSound at 0x0036FE20, others at 0x003708D0
+sndOpUpdateTitleBgmState	c
 strcasecmp	c
 strrchr	c
 strstr	c
@@ -2733,6 +3045,8 @@ strtol	c
 supplement_crt0	c
 tanf	asm	size 0x98, retail 0x78
 topThread	c
+uiDrawUniformRgbRange	c
+uiPrepareMenuBackgroundSurface	asm	size 0x3C, retail 0x40
 vfprintf	c
 vsprintf	c
 vsprintf_r	c
