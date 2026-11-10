@@ -1,0 +1,20 @@
+{
+  "raidou1": {
+    "title": "Shin Megami Tensei: Devil Summoner - Raidou Kuzunoha vs. the Soulless Army (USA)",
+    "serial": "SLUS_214.31",
+    "iso_glob": "*Raidou Kuzunoha vs. the Soulless Army (USA)*.iso",
+    "elf_sha1": "a005ff18213eb72017119c7d666312507ad3b5ea",
+    "elf_size": 3624592,
+    "entry": "0x00100008",
+    "gp": "0x00471770"
+  },
+  "raidou2": {
+    "title": "Shin Megami Tensei: Devil Summoner 2 - Raidou Kuzunoha vs. King Abaddon (USA)",
+    "serial": "SLUS_218.45",
+    "iso_glob": "*Raidou Kuzunoha vs. King Abaddon (USA)*.iso",
+    "elf_sha1": "bc0d30b35a40324db1f6d43bb652c6ca1dab3629",
+    "elf_size": 4103896,
+    "entry": "0x00100008",
+    "gp": "0x004E4170"
+  }
+}
