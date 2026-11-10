@@ -937,7 +937,34 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001A8098);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001A8130);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_BE);
+u32 evtCommand_MODEL_BE(void) {
+    s32 eventId;
+    s32 resourceId;
+    s32 modelKey;
+    dds3ProcessID_t *motionSeTask;
+
+    if (scrGetScriptHandle() == 0) {
+        return 1;
+    }
+    eventId = scrGetIntPara(0);
+    resourceId = scrGetIntPara(1);
+    modelKey = evtInitMotionSeProcess(eventId, resourceId);
+    if (modelKey < 0) {
+        datDebugPrintf("MODEL_BE not fount RID = %d!\n", scrGetIntPara(1));
+        return 1;
+    }
+    eventId = scrGetIntPara(0);
+    resourceId = scrGetIntPara(1);
+    motionSeTask = evtLoadModelSe(modelKey, eventId, resourceId);
+    if (motionSeTask != 0) {
+        dds3LinkProcess(evtSearchEventPack(scrGetIntPara(0)), motionSeTask);
+    }
+    /* BUG: the success path ends in this void call with no return. Retail
+     * returns whatever v0 holds, which is nowpwork, a non-null pointer left by
+     * scrSetIntReturnValue. CodeFunc_Comm reads 0 as "command still pending",
+     * so a port that returns garbage can stall the script forever. */
+    scrSetIntReturnValue(modelKey);
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001A82E8);
 
@@ -1399,17 +1426,84 @@ INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E208);
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E238);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFBED_BE);
+u32 evtCommand_EFFBED_BE(void) {
+    sdfVector4_t position;
+    sdfVector4_t scale;
+    s32 taskId;
+    s32 key;
+    void *resource;
+    dds3Basic_t *object;
+
+    memset(&position, 0, sizeof(position));
+    memset(&scale, 0, sizeof(scale));
+    taskId = scrGetIntPara(0);
+    key = scrGetIntPara(1);
+    resource = evtGetResorceData(taskId, key);
+    if (resource == NULL) {
+        key = scrGetIntPara(1);
+        datDebugPrintf("EFFBED_BE not fount RID = %d\n", key);
+        scrSetIntReturnValue(0);
+        return 1;
+    }
+    object = (dds3Basic_t *)dds3AddBEDEffectObjectBasic2(resource, &position, &scale);
+    if (object == NULL) {
+        scrSetIntReturnValue(0);
+    } else {
+        dds3EffectObjectBasicStatOn(object, 1);
+        scrSetIntReturnValue(object->serialID);
+    }
+    return 1;
+}
 
 u32 evtCommand_EFFBED_BE_EVO(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFBED_START);
+u32 evtCommand_EFFBED_START(void)
+{
+    s32 key;
+    dds3Basic_t *basic;
+    u32 entry;
+
+    key = scrGetIntPara(0);
+    basic = evtSearchBasic(7, key);
+    if (basic != NULL) {
+        entry = scrGetIntPara(1);
+        if (entry >= 3U) {
+            datDebugPrintf("error EFFBED_START cut no over = %d\n", entry);
+            return 1;
+        } else {
+            dds3StartBEDEffectObjectBasic(basic, entry);
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001AA5C8);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFBED_START_EVO);
+u32 evtCommand_EFFBED_START_EVO(void) {
+    void *unit;
+
+    unit = evtSearchBasic(7, scrGetIntPara(0));
+    if (unit != NULL) {
+        s32 entryId = scrGetIntPara(1);
+        s32 modelRecordIndex;
+        if ((u32)entryId >= 3) {
+            datDebugPrintf("error EFFBED_START cut no over = %d\n", entryId);
+            return 1;
+        }
+        dds3StartBEDEffectObjectBasic(unit, entryId);
+        modelRecordIndex = scrGetIntPara(2);
+        if (modelRecordIndex >= 0) {
+            f32 value = evtCalcEffBedScale(modelRecordIndex);
+            void *target = *(void **)(*(u8 **)((u8 *)unit + 0x18) + 0x2C);
+            if (target != NULL) {
+                effEveBEDCutSetScale(target, value);
+            }
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001AA6F8);
 
@@ -1429,13 +1523,34 @@ u32 evtCommand_EFFMG1_LOAD(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E270);
-
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E298);
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E2C8);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG1_BE);
+u32 evtCommand_EFFMG1_BE(void) {
+    s32 taskId;
+    s32 key;
+    void *resource;
+    dds3Basic_t *object;
+
+    taskId = scrGetIntPara(0);
+    key = scrGetIntPara(1);
+    resource = evtGetResorceData(taskId, key);
+    if (resource == NULL) {
+        key = scrGetIntPara(1);
+        datDebugPrintf("EFFMG1_BE not fount RID = %d\n", key);
+        scrSetIntReturnValue(0);
+        return 1;
+    }
+    object = dds3AddMG12EffectObjectBasic2(1, (struct effPCPAgiraoFirePartList_t *)resource);
+    if (object == NULL) {
+        scrSetIntReturnValue(0);
+    } else {
+        dds3EffectObjectBasicStatOn(object, 1);
+        scrSetIntReturnValue(object->serialID);
+    }
+    return 1;
+}
 
 u32 evtCommand_EFFMG2_LOAD(void)
 {
@@ -1455,7 +1570,30 @@ u32 evtCommand_EFFMG2_LOAD(void)
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E318);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG2_BE);
+u32 evtCommand_EFFMG2_BE(void) {
+    s32 taskId;
+    s32 key;
+    void *resource;
+    dds3Basic_t *object;
+
+    taskId = scrGetIntPara(0);
+    key = scrGetIntPara(1);
+    resource = evtGetResorceData(taskId, key);
+    if (resource == NULL) {
+        key = scrGetIntPara(1);
+        datDebugPrintf("EFFMG2_BE not fount RID = %d\n", key);
+        scrSetIntReturnValue(0);
+        return 1;
+    }
+    object = dds3AddMG12EffectObjectBasic2(2, (struct effPCPAgiraoFirePartList_t *)resource);
+    if (object == NULL) {
+        scrSetIntReturnValue(0);
+    } else {
+        dds3EffectObjectBasicStatOn(object, 1);
+        scrSetIntReturnValue(object->serialID);
+    }
+    return 1;
+}
 
 u32 evtCommand_EFFMG2_PRESET(void)
 {
@@ -1541,7 +1679,29 @@ u32 evtCommand_EFFECT_ROT_XYZ(void) {
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_POS);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG1_POS);
+s32 evtCommand_EFFMG1_POS(void)
+{
+    dds3Basic_t *effect;
+    dds3Basic_t *point0;
+    dds3Basic_t *point1;
+
+    effect = evtSearchBasic(7, scrGetIntPara(0));
+    if (effect == NULL) {
+        datDebugPrintf("EFFMG1_POS mg1 ID error!\n");
+        return 1;
+    }
+    point0 = evtSearchBasic(7, scrGetIntPara(1));
+    point1 = evtSearchBasic(7, scrGetIntPara(2));
+    if (point0 == NULL || point1 == NULL) {
+        datDebugPrintf("EFFMG1_POS point ID not found!\n");
+        return 1;
+    }
+    if (dds3EffectObjectSetMG12Pos(effect, point0, point1, NULL, NULL) == 0) {
+        datDebugPrintf("EFFMG1_POS set error!\n");
+        return 1;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG2_POS);
 
@@ -1628,7 +1788,28 @@ s32 evtCommand_EFFECT_OFF(void)
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_PATH_MOVE);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_PATH_WAIT);
+s32 evtCommand_EFFECT_PATH_WAIT(void)
+{
+    s32 key = scrGetIntPara(0);
+    dds3Basic_t *basic = evtSearchBasic(7, key);
+    s32 stat;
+
+    if (basic == NULL) {
+        datDebugPrintf("EFFECT_PATH_WAIT not found eff!\n");
+        return 1;
+    }
+    stat = evtCheckPathStat(basic);
+    switch (stat) {
+    case 0:
+        return 1;
+    case 1:
+        return 0;
+    case -1:
+        return 1;
+    default:
+        return 0;
+    }
+}
 
 u32 evtCommand_SEARCH_ID(void)
 {
@@ -1663,7 +1844,18 @@ INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E490);
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E4B0);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_NEXT);
+s32 evtCommand_CALL_NEXT(void)
+{
+    s32 para0 = scrGetIntPara(0);
+    s32 para1 = scrGetIntPara(1);
+    s32 para2 = scrGetIntPara(2);
+    s32 command;
+
+    printf("CALL_NEXT(%d,%d,%d)\n", para0, para1, para2);
+    command = scrGetIntPara(1);
+    fldSetNextField(command, scrGetIntPara(2));
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001AB4C0);
 
@@ -1708,7 +1900,18 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001AB810);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001AB880);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_FIELD_BE);
+s32 evtCommand_FIELD_BE(void)
+{
+    s32 event;
+    s32 resource;
+
+    sdfPrintf("FIELD_BE start\n");
+    event = scrGetIntPara(0);
+    resource = scrGetIntPara(1);
+    evtRegistBEField(event, resource);
+    sdfPrintf("FIELD_BE end\n");
+    return 1;
+}
 
 s32 evtCommand_FIELD_DSP(void)
 {
@@ -1745,13 +1948,51 @@ s32 evtCommand_FIELD_ANIME_STOP(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_FIELD_CLS);
+s32 evtCommand_FIELD_CLS(void)
+{
+    evtFreeAllUnit();
+    while (sdfDelayedResrcCheck()) {
+    }
+    evtFreeStage();
+    while (sdfDelayedResrcCheck()) {
+    }
+    dds3DrawFlag |= 0x2000000;
+    printf("event stage shutdown !!\n");
+    datDebugPrintf("field shutdown.\n");
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_FIELD_CLS_STOP);
+s32 evtCommand_FIELD_CLS_STOP(void)
+{
+    evtFreeAllUnit();
+    while (sdfDelayedResrcCheck()) {
+    }
+    evtFreeStage();
+    while (sdfDelayedResrcCheck()) {
+    }
+    dds3DrawFlag |= 0x2000000;
+    printf("event stage shutdown2 !!\n");
+    datDebugPrintf("field shutdown2.\n");
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_UNIT_CLS);
+s32 evtCommand_UNIT_CLS(void)
+{
+    evtFreeAllUnit();
+    printf("unit all clear !!\n");
+    datDebugPrintf("unit all clear.\n");
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_UNIT_CLS_STOP);
+s32 evtCommand_UNIT_CLS_STOP(void)
+{
+    evtFreeAllUnit();
+    while (sdfDelayedResrcCheck()) {
+    }
+    printf("unit all clear2 !!\n");
+    datDebugPrintf("unit all clear2.\n");
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001ABB48);
 

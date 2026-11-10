@@ -245,7 +245,8 @@ def source_matching_ownership(version: str) -> list[tuple[str, list[tuple[str, s
 
 
 def splat_digest(version: str, yaml: Path) -> str:
-    inputs = [yaml, ROOT / "config" / version / "symbol_addrs.txt", ROOT / "config" / version / "reloc_addrs.txt"]
+    inputs = [yaml, ROOT / "config" / version / "symbol_addrs.txt", ROOT / "config" / version / "reloc_addrs.txt",
+              ROOT / "config" / version / "smt3_symbols.txt"]
     digest = hashlib.sha1(b"source-matching-ownership-v1\0")
     for path in inputs:
         digest.update(str(path.relative_to(ROOT)).encode())

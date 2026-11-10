@@ -1280,28 +1280,28 @@ evtCommand_CAM_SEL_FOVY	c
 evtCommand_CHG_MOON	c
 evtCommand_CHK_BE	c
 evtCommand_DEL_BE	c
-evtCommand_EFFBED_BE	asm	.rodata base 0x004B45E8, 0x004B4610
+evtCommand_EFFBED_BE	c
 evtCommand_EFFBED_BE_EVO	c
-evtCommand_EFFBED_START	asm	.rodata base 0x004B45E8, 0x004B4610
-evtCommand_EFFBED_START_EVO	asm	.rodata base 0x004B45E8, 0x004B4610
+evtCommand_EFFBED_START	c
+evtCommand_EFFBED_START_EVO	c
 evtCommand_EFFECT_CLS	c
 evtCommand_EFFECT_LINK	c
 evtCommand_EFFECT_LINK2	c
 evtCommand_EFFECT_OFF	c
 evtCommand_EFFECT_ON	c
-evtCommand_EFFECT_PATH_WAIT	asm	.rodata base 0x004B45E8, 0x004B4610
+evtCommand_EFFECT_PATH_WAIT	c
 evtCommand_EFFECT_POS_XYZ	c
 evtCommand_EFFECT_PRESET	c
 evtCommand_EFFECT_ROT_XYZ	c
 evtCommand_EFFECT_UNLINK	c
-evtCommand_EFFMG1_BE	asm	.rodata base 0x004B45E8, 0x004B4610
-evtCommand_EFFMG1_POS	asm	.rodata base 0x004B45E8, 0x004B4610
-evtCommand_EFFMG2_BE	asm	.rodata base 0x004B45E8, 0x004B4610
+evtCommand_EFFMG1_BE	c
+evtCommand_EFFMG1_POS	c
+evtCommand_EFFMG2_BE	c
 evtCommand_EFFMG2_PRESET	c
 evtCommand_FADEOUT_E	c
 evtCommand_FIELD_ANIME_START	c
 evtCommand_FIELD_ANIME_STOP	c
-evtCommand_FIELD_BE	asm	.rodata base 0x004B45E8, 0x004B4610
+evtCommand_FIELD_BE	c
 evtCommand_FIELD_DSP	c
 evtCommand_GET_MOON	c
 evtCommand_GET_MOON16	c
@@ -1311,7 +1311,7 @@ evtCommand_LIGHT_PATH_WAIT	c
 evtCommand_LOAD_BE	c
 evtCommand_LOAD_SOUND_E	c
 evtCommand_MODEL_A	c
-evtCommand_MODEL_BE	asm	.rodata base 0x004B45E8, 0x004B4610
+evtCommand_MODEL_BE	c
 evtCommand_MODEL_LIGHT_DIR	c
 evtCommand_MODEL_LIGHT_LINK	c
 evtCommand_MODEL_LIGHT_OFF	c
@@ -2134,12 +2134,12 @@ sdfDrawTagLinkCall	c
 sdfDrawTagLinkRef	c
 sdfDrawTagLinkRefGif	c
 sdfDrawThIntHandler	c
-sdfDumpChipMemory	asm	.rodata base 0x004D76F0, 0x004D7788
-sdfDumpDmaChain	asm	.rodata base 0x004D76F0, 0x004D7788
+sdfDumpChipMemory	c
+sdfDumpDmaChain	c
 sdfDumpGsMemory	c
 sdfDumpGsMemory2	c
 sdfDumpHexLine	c
-sdfDumpMemory	asm	.rodata base 0x004D76F0, 0x004D7788
+sdfDumpMemory	c
 sdfFileCallback	c
 sdfFileChkCdFile	c
 sdfFileChkHddFile	c
@@ -2194,7 +2194,7 @@ sdfGetTexelBitCount	c
 sdfGrAddExPacket	c
 sdfGrAllocPacketBuff	c
 sdfGrCapture	c
-sdfGrFlushOtChain	asm	.rodata base 0x004D76F0, 0x004D7788
+sdfGrFlushOtChain	c
 sdfGrFramePacketPredraw	c
 sdfGrFreeFrameSet	c
 sdfGrGetPacketBuffRemain	c
