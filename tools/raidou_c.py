@@ -284,9 +284,23 @@ def top_level(code, char):
     return -1
 
 
+def blank_attributes(cv):
+    """cv with each __attribute__((...)) blanked, offsets kept."""
+    out = cv
+    for m in re.finditer(r"__attribute__\s*\(", cv):
+        depth, i = 0, m.end() - 1
+        while i < len(cv):
+            depth += {"(": 1, ")": -1}.get(cv[i], 0)
+            if depth == 0:
+                break
+            i += 1
+        out = out[:m.start()] + " " * (i + 1 - m.start()) + out[i + 1:]
+    return out
+
+
 def declaration(item):
     """One top-level item as a header declaration, or None to drop it."""
-    cv = code_view(item)
+    cv = blank_attributes(code_view(item))
     code = cv.strip()
     if not code or DROP.match(code):
         return None
@@ -301,7 +315,7 @@ def declaration(item):
         if re.search(r"\binline\b|__inline", cv[:brace]):
             return item
         head = item[:brace].rstrip()
-        if KNR_HEADER.match(next(c for c in head.split("\n") if "(" in c).strip()) and ";" in cv[:brace]:
+        if KNR_HEADER.match(next(c for c in cv[:brace].split("\n") if "(" in c).strip()) and ";" in cv[:brace]:
             head = item[:paren] + "()"  # old-style definition: no prototype
         return strip_static(head) + ";"
     if not code.endswith(";"):
@@ -342,8 +356,15 @@ def write_shared(smt3, rel, functions):
     spans = definitions(text)
     for fn in functions:
         start, end = spans[fn]
-        lead = text.rfind("\n\n", 0, start)
-        lead = 0 if lead < 0 else lead + 2
+        # Keep the comment directly above the definition, not the data before it.
+        cv = code_view(text)
+        lead = start
+        while lead > 0:
+            prev = text.rfind("\n", 0, lead - 1) + 1
+            if text[prev:lead].strip() and not cv[prev:lead].strip():
+                lead = prev
+            else:
+                break
         body = text[lead:end]
         brace = body.find("{", body.find(fn))
         body = strip_static(body[:brace]) + body[brace:]
@@ -504,7 +525,7 @@ INCLUDE_PATH = re.compile(r"^src/shared/.+/\w+\.c$")
 R_26, R_HI16, R_LO16, R_GPREL16 = 4, 5, 6, 7
 
 
-def check_object(version, obj, bodies, retail, segs, gp, asm_sizes):
+def check_object(version, obj, bodies, retail, segs, gp, asm_sizes, known):
     """Compare each carried body in obj with retail. Returns ({fn: reason},
     {fn: [(symbol, address)]})."""
     from elftools.elf.elffile import ELFFile
@@ -523,6 +544,13 @@ def check_object(version, obj, bodies, retail, segs, gp, asm_sizes):
                         if isinstance(rel, RelocationSection) else [])
         sections = {i: s.name for i, s in enumerate(elf.iter_sections())}
         defined = {s.name: s for s in syms if s["st_shndx"] == text_index and s["st_info"]["type"] == "STT_FUNC"}
+        # The unit's data comes from the split: C must not define any of its own.
+        stray = [s.name for s in syms if s["st_info"]["bind"] != "STB_LOCAL" and s.name
+                 and (s["st_shndx"] == "SHN_COMMON"
+                      or (isinstance(s["st_shndx"], int) and s["st_shndx"] != text_index
+                          and s["st_info"]["type"] == "STT_OBJECT" and s.name not in known))]
+        if stray:
+            return {fn: f"unit defines {stray[0]}" for fn in bodies}, {}
         for fn, addr in bodies.items():
             sym = defined.get(fn)
             if sym is None:
@@ -634,7 +662,7 @@ def cmd_verify(args):
                 if re.search(r"^(dlabel|jlabel) ", function_asm(version, unit, fn).read_text(), re.M):
                     fails[fn] = "its rodata is in its asm file"
             f, n = check_object(version, obj, {k: v for k, v in bodies.items() if k not in fails},
-                                retail, segs, gp, sizes)
+                                retail, segs, gp, sizes, known)
             fails.update(f)
             needs.update(n)
         # Every name a body uses must name one Raidou address.
