@@ -1,6 +1,173 @@
 #include "common.h"
 
-#include "shared/sdf/sdfMovie/movieWaitSema.c"
+/* Declarations from smt3-decomp src/smt3/sdf/sdfMovie.c */
+#include "common.h"
+
+#include "libsdf.h"
+
+#include "ps2asm.h"
+
+#include "sdf_movie_types.h"
+
+void puts(const char *aStr);
+
+s32 sdfFileCmdRead(void *aHandle, void *aBuffer, s32 aLength);
+
+s32 sdfFileCmdClose(void *aHandle);
+
+void sdfDummyFunc(void);
+
+void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
+
+void sdfChipFreeDirect(void *aPtr);
+
+void sdfIpuFree(sdfIpuDecodeCb_t *cb);
+
+s32 p2sdSyncMovie(void);
+
+void *memcpy(void *a, const void *b, size_t c);
+
+s32 sdfFileCmdFileSize(void *aHandle);
+
+s32 sdfFileCmdFree(void *aHandle);
+
+s32 DIntr(void);
+
+s32 EIntr(void);
+
+void *memset(void *a, s32 b, size_t c);
+
+char *strrchr(const char *aStr, s32 aChar);
+
+s32 strcasecmp(const char *aLeft, const char *aRight);
+
+void *sdfChipAllocZeroDirect(s32 aSize);
+
+sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
+
+void *sdfMemLock(sdfMemHandle_t *aHandle);
+
+void *sdfFileCmdReadOpen(const char *aFileName, SdfStreamRead aCallback, sdfMovieCb_t *aUserData);
+
+void movieAttachDecodeTask(sdfIpuDecodeCb_t *aNode, sdfIpuInitParm_t *aFormat, SdfStreamRead aRead, sdfMovieCb_t *aContext, s32 aResourceWord);
+
+s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
+
+s32 WaitSema(s32 sema);
+
+s32 SignalSema(s32 sema);
+
+s32 movieReadChunk(void *aHandle, s32 aOp, void *aBuf, s32 aSize, sdfMovieCb_t *stream);
+
+s32 movieCopyChunk(sdfIpuDecodeCb_t *aNode, sdfMovieCb_t *stream, s32 aOp, void *aBuf, s32 aSize);
+
+s32 movieParseHeader(sdfIpuDecodeCb_t *aNode, sdfMovieCb_t *stream, s32 aOp, void *aBuf, s32 aSize);
+
+extern s32 movieStreamSema;
+
+extern u32 movieSemaCount;
+
+extern sdfMovieCb_t *movieSemaId;
+
+extern const char D_00551B50[];
+
+void movie_2C5080(const char *aStr);
+
+u8 *movieWaitSema(s32 aSize);
+
+/* DMA/VIF/GIF header followed by nine real A+D writes for one movie sprite. */
+typedef struct sdfMovieDrawPacket_t {
+    u64 dmaTag;
+    u64 vifCommands;
+    sdfGifTag_t gifTag;
+    sdfGrTagStdReg_t sampling;
+    sdfGrTagStdReg_t texture;
+    sdfGrTagStdReg_t clamp;
+    sdfGrTagStdReg_t textureAlpha;
+    sdfGrTagStdReg_t color;
+    sdfGrTagStdReg_t sourceOrigin;
+    sdfGrTagStdReg_t vertexOrigin;
+    sdfGrTagStdReg_t sourceExtent;
+    sdfGrTagStdReg_t vertexExtent;
+} sdfMovieDrawPacket_t;
+
+extern u8 *movieWaitSema(s32 size);
+
+extern s32 sdfGrAllocPacketBuff(s32 size);
+
+extern sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*allocator)(s32));
+
+extern void sdfDrawTagLink(sdfDrawTag_t *tag, addr_t packet);
+
+extern u32 p2sdSetPcmCallback(addr_t callback);
+
+extern s32 p2sdPlayPcm(u8 channel);
+
+void release_movieobj2(sdfMovieCb_t *obj, sdfGrOt_t *ot);
+
+void movieReadNextChunk(sdfMovieCb_t *aMov);
+
+s32 movieGetStreamSize(void *aHandle, s32 aOp, void *aBuf, s32 aSize, sdfMovieCb_t *aMov);
+
+void movieReadHeaderChunk(sdfMovieCb_t *aMov);
+
+s32 movieReadChunk(void *file, s32 operation, void *readBuffer, s32 bytesRead, sdfMovieCb_t *movie);
+
+s32 movieCopyChunk(sdfIpuDecodeCb_t *aNode, sdfMovieCb_t *aMov, s32 aOp, void *aBuf, s32 aSize);
+
+s32 movieParseHeader(sdfIpuDecodeCb_t *aNode, sdfMovieCb_t *aMov, s32 aOp, void *aBuf, s32 aSize);
+
+void movieOpenStream(sdfMovieCb_t *stream, sdfMovieInitParm_t *desc, const char *path);
+
+void movieCloseStream(sdfMovieCb_t *aMov);
+
+s32 sdfMovieIsFinished(sdfMovieCb_t *aMov);
+/* End of declarations from src/smt3/sdf/sdfMovie.c */
+
+u8 *movieWaitSema(s32 aSize)
+{
+    sdfMovieCb_t *mov = movieSemaId;
+    sdfMovieStrmPac_t *obj = mov->readCb.pac;
+    u8 *ptr;
+
+    WaitSema(movieStreamSema);
+    if (obj->scratchSize > 0) {
+        ptr = obj->scratch;
+        obj->scratchSize -= aSize;
+        obj->scratch = ptr + aSize;
+    } else {
+        s32 offset = obj->ringOffset;
+        ptr = obj->ringBuffer + offset;
+        if (obj->ringLength < aSize) {
+            /* Retail copies the old count before reusing its register for
+             * the XOR predicate: countScratch has those two live phases.
+             * Ordinary scalar reuse keeps the select; these local constraints
+             * recover native allocation and XOR operand order. This is a
+             * reconstruction aid, not original-source evidence. */
+            FAKEMATCH_ASM_REG(s32, frame, "$2") = mov->decodeCb.frame;
+            FAKEMATCH_ASM_REG(u32, countScratch, "$3") = movieSemaCount;
+            u32 count;
+
+            ptr = NULL;
+            count = countScratch;
+            countScratch = (u32)frame ^ countScratch;
+            FAKEMATCH_ASM_LIVE(countScratch);
+            if (countScratch != 0) {
+                count = frame;
+            }
+            movieSemaCount = count;
+        } else {
+            obj->ringLength -= aSize;
+            offset += aSize;
+            if (offset > 0xFFFF) {
+                offset -= 0x10000;
+            }
+            obj->ringOffset = offset;
+        }
+    }
+    SignalSema(movieStreamSema);
+    return ptr;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", func_003E9F90);
 
@@ -10,25 +177,280 @@ INCLUDE_ASM(const s32, "sdf/sdfMovie", func_003E9FD0);
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", func_003EA248);
 
-#include "shared/sdf/sdfMovie/movieReadNextChunk.c"
+void movieReadNextChunk(sdfMovieCb_t *aMov)
+{
+    s32 remaining = aMov->readRemain;
+    sdfMovieStrmLinear_t *stream = aMov->readCb.linear;
+    s32 size;
+    u8 *dst;
+    u8 *next;
 
-#include "shared/sdf/sdfMovie/movieGetStreamSize.c"
+    if (remaining != 0) {
+        if (0x20000 - stream->bufferedBytes < 0x4000) {
+            aMov->readStat = 5;
+        } else {
+            aMov->readStat = 4;
+            size = remaining < 0x4001 ? remaining : 0x4000;
+            dst = stream->writeCursor;
+            next = dst + size;
+            if (next >= stream->bufferStart + 0x20000) {
+                next = stream->bufferStart;
+            }
+            stream->writeCursor = next;
+            sdfFileCmdRead(aMov->fileHandle, dst, size);
+        }
+    }
+}
 
-#include "shared/sdf/sdfMovie/movieReadHeaderChunk.c"
+s32 movieGetStreamSize(void *aHandle, s32 aOp, void *aBuf, s32 aSize, sdfMovieCb_t *aMov)
+{
+    sdfMovieStrmLinear_t *stream = aMov->readCb.linear;
+    s32 enabled;
+
+    aMov->fileHandle = aHandle;
+    if (aMov->cancel != 0) {
+        if (aMov->readStat != 6 && aMov->readStat != 7) {
+            aMov->readStat = 7;
+            sdfFileCmdClose(aHandle);
+            return 0;
+        }
+    }
+    switch (aMov->readStat) {
+    case 0:
+        if (aOp == 2) {
+            aMov->readStat = 1;
+            sdfFileCmdFileSize(aHandle);
+        }
+        break;
+    case 1:
+        if (aOp == 4) {
+            aMov->fileSize = aSize;
+            aMov->readRemain = aSize;
+            movieReadNextChunk(aMov);
+        }
+        break;
+    case 4:
+        if (aOp == 5) {
+            enabled = DIntr();
+            stream->bufferedBytes += aSize;
+            aMov->readRemain -= aSize;
+            if (enabled != 0) {
+                EIntr();
+            }
+            if (aMov->readRemain == 0) {
+                aMov->readStat = 7;
+                sdfFileCmdClose(aHandle);
+            } else {
+                movieReadNextChunk(aMov);
+            }
+        }
+        break;
+    case 7:
+        if (aOp == 7) {
+            aMov->fileHandle = NULL;
+            aMov->readStat = 6;
+            sdfFileCmdFree(aHandle);
+        }
+        break;
+    }
+    return 0;
+}
+
+void movieReadHeaderChunk(sdfMovieCb_t *aMov)
+{
+    s32 remaining = aMov->readRemain;
+    sdfMovieStrmPac_t *stream = aMov->readCb.pac;
+    s32 size;
+
+    if (remaining != 0) {
+        if (0x10000 - stream->pacBufferedBytes < 0x4000) {
+            aMov->readStat = 5;
+        } else if (0x10000 + (stream->unk6C - stream->ringLength) < 0x4000) {
+            aMov->readStat = 5;
+        } else {
+            aMov->readStat = 4;
+            size = remaining < 0x4001 ? remaining : 0x4000;
+            sdfFileCmdRead(aMov->fileHandle, stream->pacInputBuffer, size);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", movieReadChunk);
 
-#include "shared/sdf/sdfMovie/movieCopyChunk.c"
+s32 movieCopyChunk(sdfIpuDecodeCb_t *aNode, sdfMovieCb_t *aMov, s32 aOp, void *aBuf, s32 aSize)
+{
+    sdfMovieStrmLinear_t *stream = aMov->readCb.linear;
+    u8 *src;
+    u8 *base;
+    s32 over;
+    s32 first;
+
+    switch (aOp) {
+    case 0:
+        if (aMov->cancel != 0) {
+            *(u8 *)aBuf = 1;
+            return 0;
+        }
+        if (aMov->readRemain == 0) {
+            *(u8 *)aBuf = 1;
+        }
+        return stream->bufferedBytes;
+    case 1:
+        if (aMov->cancel != 0) {
+            return 0;
+        }
+        src = stream->readCursor;
+        base = stream->bufferStart;
+        over = (src - base) + aSize - 0x20000;
+        if (over >= 0) {
+            first = aSize - over;
+            memcpy(aBuf, src, first);
+            if (over > 0) {
+                memcpy((u8 *)aBuf + first, base, over);
+            }
+            stream->readCursor = base + over;
+        } else {
+            memcpy(aBuf, src, aSize);
+            stream->readCursor = src + aSize;
+        }
+        stream->bufferedBytes -= aSize;
+        return aMov->readRemain;
+    case 2:
+        if (aMov->cancel != 0) {
+            return 0;
+        }
+        if (aMov->readStat == 5) {
+            movieReadNextChunk(aMov);
+        }
+        return 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", movieMemcpy);
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", movieParseHeader);
 
-#include "shared/sdf/sdfMovie/movieOpenStream.c"
+void movieOpenStream(sdfMovieCb_t *stream, sdfMovieInitParm_t *desc, const char *path)
+{
+    sdfIpuInitParm_t fmt;
+    sdfMovieStrmLinear_t *linear;
+    sdfMovieStrmPac_t *pac;
+    char *ext;
+    u8 isPac;
 
-#include "shared/sdf/sdfMovie/movieCloseStream.c"
+    memset(stream, 0, sizeof(sdfMovieCb_t));
+    stream->stat = 1;
+    ext = strrchr(path, '.');
+    isPac = 0;
+    if (ext != NULL) {
+        isPac = strcasecmp(ext, D_00551B50) == 0;
+    }
+    stream->mode = isPac;
+    fmt.loopMode = 0;
+    stream->readRemain = 0x7FFFFFFF;
+    stream->x = desc->x;
+    stream->z = desc->z;
+    stream->y = desc->y;
+    stream->width = desc->width;
+    stream->height = desc->height;
+    fmt.rgbMode = desc->rgbMode;
+    fmt.ditherMode = desc->ditherMode;
+    fmt.fps = desc->fps;
+    if (isPac == 0) {
+        sdfMemHandle_t *handle;
+        u8 *base;
 
-#include "shared/sdf/sdfMovie/sdfMovieIsFinished.c"
+        linear = sdfChipAllocZeroDirect(sizeof(sdfMovieStrmLinear_t));
+        stream->readCb.linear = linear;
+        handle = sdfMemAllocDirect(0x20000);
+        linear->allocation = handle;
+        base = sdfMemLock(handle);
+        linear->bufferStart = base;
+        linear->readCursor = base;
+        linear->writeCursor = base;
+        stream->readStat = 0;
+        stream->fileHandle = sdfFileCmdReadOpen(path, (SdfStreamRead)movieGetStreamSize, stream);
+        movieAttachDecodeTask(&stream->decodeCb, &fmt, movieCopyChunk, stream, desc->resourceWord);
+    } else {
+        sdfMemHandle_t *handle;
+        u8 *base;
+        u8 *ring;
+        u8 *body;
+        u8 *scr;
+        s32 n;
+
+        if (movieStreamSema < 0) {
+            movieStreamSema = sdfCreateSema(1, 1, 0);
+        }
+        movieSemaCount = -1;
+        pac = sdfChipAllocZeroDirect(sizeof(sdfMovieStrmPac_t));
+        stream->readCb.pac = pac;
+        handle = sdfMemAllocDirect(0x24000);
+        pac->allocation = handle;
+        base = sdfMemLock(handle);
+        n = 0x20;
+        ring = base + 0x14000;
+        body = base + 0x4000;
+        scr = pac->scratchBuffer;
+        pac->pacBuffer = body;
+        pac->scratch = scr;
+        pac->ringBuffer = ring;
+        pac->scratchSize = n;
+        pac->pacInputBuffer = base;
+        stream->readStat = 0;
+        stream->fileHandle = sdfFileCmdReadOpen(path, (SdfStreamRead)movieReadChunk, stream);
+        stream->sndActive = 1;
+        stream->sndVolume = 0x7F;
+        movieAttachDecodeTask(&stream->decodeCb, &fmt, movieParseHeader, stream, desc->resourceWord);
+    }
+}
+
+void movieCloseStream(sdfMovieCb_t *aMov)
+{
+    u8 state;
+    sdfMovieStrmLinear_t *stream;
+    sdfMovieStrmPac_t *pac;
+
+    if (aMov->stat == 0) {
+        return;
+    }
+    state = aMov->readStat;
+    aMov->cancel = 1;
+    if (state == 5) {
+        aMov->readStat = 7;
+        sdfFileCmdClose(aMov->fileHandle);
+        state = aMov->readStat;
+    }
+    if (state != 6) {
+        do {
+            sdfDummyFunc();
+        } while (aMov->readStat != 6);
+    }
+    if (aMov->mode == 0) {
+        stream = aMov->readCb.linear;
+        sdfMemFreeDirect(stream->allocation);
+        sdfChipFreeDirect(stream);
+    } else {
+        pac = aMov->readCb.pac;
+        sdfMemFreeDirect(pac->payloadAllocation);
+        sdfMemFreeDirect(pac->allocation);
+        sdfChipFreeDirect(pac);
+    }
+    sdfIpuFree(&aMov->decodeCb);
+    if (aMov->sndActive != 0) {
+        p2sdSyncMovie();
+    }
+    aMov->stat = 0;
+}
+
+s32 sdfMovieIsFinished(sdfMovieCb_t *aMov)
+{
+    if (aMov->decodeCb.drained == 0) {
+        return 0;
+    }
+    return aMov->decodeCb.activeBuffCount == 0;
+}
 INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_004E45C8);
 
 INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_004E45CC);

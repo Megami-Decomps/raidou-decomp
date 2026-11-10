@@ -21,6 +21,7 @@ from pathlib import Path
 
 from tools.ee_gcc_aslr import marker_is_valid
 from tools.symbol_aliases import load_symbol_aliases, linker_aliases
+from tools.units import unit_name, unit_sources
 
 ROOT = Path(__file__).resolve().parent
 
@@ -218,7 +219,7 @@ def generated_footprint(version: str) -> list[Path]:
     return [
         ROOT / "asm" / version,
         ROOT / "assets" / version,
-        *(ROOT / "src" / version).rglob("*.c"),
+        *unit_sources(version).values(),
         ROOT / "build" / version / f"{serial}.ld",
         *config.glob("undefined_*_auto.txt"),
     ]
@@ -239,7 +240,7 @@ def source_matching_ownership(version: str) -> list[tuple[str, list[tuple[str, s
             )
             if kind == "ASM"
         ])
-        for path in sorted((ROOT / "src" / version).rglob("*.c"))
+        for path in unit_sources(version).values()
     ]
 
 
@@ -266,7 +267,7 @@ def run_splat(version: str, yaml: Path, force: bool) -> None:
     # splat never deletes files: a unit or rodata split that moved leaves stale
     # asm behind (and include_rodata.py would include it twice).
     shutil.rmtree(ROOT / "asm" / version, ignore_errors=True)
-    subprocess.run([sys.executable, "-m", "splat", "split", str(yaml)], cwd=ROOT, check=True)
+    subprocess.run([sys.executable, "tools/splat_split.py", str(yaml)], cwd=ROOT, check=True)
     subprocess.run([sys.executable, "tools/resolve_jtbl_targets.py", f"asm/{version}"], cwd=ROOT, check=True)
     subprocess.run([sys.executable, "tools/include_rodata.py", version], cwd=ROOT, check=True)
     subprocess.run([sys.executable, "tools/include_sdata.py", version], cwd=ROOT, check=True)
@@ -597,7 +598,7 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
                     n.build(eeasm, "eeasm", asm_files, implicit=["tools/eeas_compat.py"],
                             variables={"unit": str(src), "rspfile": f"build/{version}/{src.stem}.eeasm.rsp"})
                 cdefs = f"'-DASM_ROOT=\"build/eeasm/{nonmatchings}/\"' -DVERSION_{version.upper()}"
-                unit = src.relative_to(Path("src") / version).with_suffix("").as_posix()
+                unit = unit_name(src)
                 flags = unit_cflags(version).get(unit, "")
                 chain = TOOLCHAINS[unit_toolchain(version).get(unit, DEFAULT_TOOLCHAIN)]
                 tools = {"cc1": str(chain["cc1"]), "ccdefines": chain["defines"],
@@ -623,11 +624,11 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
                         implicit_outputs=[str(base) + ".s", str(base) + ".proof.json"],
                         variables={"cdefs": f"{cdefs} -DSKIP_ASM", "cflags": flags, **tools})
                 # objdiff target: splat's full disassembly of this C unit, assembled as-is.
-                full = Path("asm") / version / src.relative_to(Path("src") / version).with_suffix(".s")
+                full = Path("asm") / version / f"{unit}.s"
                 target = Path("build") / version / "target" / full.with_suffix(".o")
                 if (ROOT / full).exists():
                     n.build(str(target), "as", str(full), implicit=["include/macro.inc"])
-                units[version].append({"name": str(src.with_suffix("")), "target": str(target), "base": str(base)})
+                units[version].append({"name": f"src/{version}/{unit}", "target": str(target), "base": str(base)})
         elf = Path("build") / version / f"{serial}.elf"
         image = Path("build") / version / serial
         n.build(
@@ -664,8 +665,7 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
     # Source changes can alter both the eeasm dependency list and splat's
     # ASM/C ownership. The ownership digest keeps body-only edits split-free.
     configure_inputs += [
-        str(path.relative_to(ROOT)) for v in versions
-        for path in sorted((ROOT / "src" / v).rglob("*.c"))
+        str(path.relative_to(ROOT)) for path in sorted({p for v in versions for p in unit_sources(v).values()})
     ]
     for version in versions:
         alias_metadata = ROOT / "config" / version / "symbol_aliases.json"

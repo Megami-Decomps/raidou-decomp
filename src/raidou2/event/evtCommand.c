@@ -1,8 +1,864 @@
 #include "common.h"
 
-#include "shared/event/evtCommand/evtSearchBasic.c"
+/* Declarations from smt3-decomp src/smt3/event/evtCommand.c */
+#include "common.h"
 
-#include "shared/event/evtCommand/evtCommand_MODEL_PLAYER.c"
+#include "sdf_resource.h"
+
+#include "event.h"
+
+#include "kernel.h"
+
+#include "scr.h"
+
+#include "field.h"
+
+#include "sdfFrame.h"
+
+struct effPCPAgiraoFirePartList_t;
+
+extern dds3Basic_t *dds3AddMG12EffectObjectBasic2(s32 type, const struct effPCPAgiraoFirePartList_t *effdata);
+
+extern dds3ProcessID_t *evtStartPolygonMovie2(u32 priority, s32 eventno, s32 cutno);
+
+void scrSetIntReturnValue(s32 i);
+
+extern s32 scrGetIntPara(s32 n);
+
+extern s32 evtLoadUnit(s32 major, s32 minor);
+
+void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *target);
+
+dds3ProcessID_t *evtSearchEventPack(u32 eventno);
+
+dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId);
+
+scrProcessWork_s *scrGetScriptHandle(void);
+
+extern void datDebugPrintf(const char *fmt, ...);
+
+extern s32 evtInitMotionSeProcess(s32 eventId, s32 resourceId);
+
+void evtSetUnitPos(u32 unitID, u32 posID);
+
+void FromEuler(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
+
+void Mult(void);
+
+dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type);
+
+f32 scrGetFloatPara(s32 n);
+
+struct dds3Basic_t *dds3GetActiveScene(void);
+
+extern void *memset(void *a, s32 b, size_t c);
+
+extern addr_t evtKutiUnit;
+
+extern void evtRunUnitKutiMotion(addr_t h);
+
+void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
+
+extern evtUnit_t *evtGetUnitHandle(s32 serial);
+
+extern void evtSetUnitMove3(evtUnit_t *h, s32 pathID, s32 para1, s32 para2, s32 movesys, s32 movedir, s32 rotsys);
+
+extern void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1);
+
+extern void fldCamSyukanSuriawase(void);
+
+/* Canonical provider signatures; callers retain their s32 parameter values. */
+extern s32 evtPlayEventBgm(s32 eventId, s32 variation);
+
+extern void evtTransEventBgm(s32 eventId, s32 variation);
+
+extern s32 evtStopEventBgm(s32 eventId, s32 variation);
+
+extern s32 evtPlaySe(s32 eventno, s32 seno);
+
+extern s32 func_001FA158(s32 eventId, s32 variation);
+
+extern void datAddKotowariPoint(s32 type, s32 point);
+
+extern void func_001FA310(s32 taskId, s32 key);
+
+extern s32 scrGetMessageHandle(void);
+
+extern void evtSetUnitKutiMotion(evtUnit_t *h, s32 group, s32 motion);
+
+s32 mdlChkMotionEndEx(const mdlObj_t *aHandle, s32 aGroup);
+
+void dds3DeleteSceneBasicData(dds3Basic_t *basic);
+
+void evtUnitLightOn(evtUnit_t *h);
+
+void evtSetUnitLightDir(evtUnit_t *h, s32 frame);
+
+extern const char evtMsgLightDirZero[];
+
+void *evtGetResorceData(u32 eventno, s32 rid);
+
+#include "sdk_libc.h"
+
+/* Declared here because no header carries these. */
+extern s32 datGetKotowariLank(s32 lank);
+
+extern s32 p2sdBgmVolDown(void);
+
+extern s32 p2sdBgmVolUp(void);
+
+extern void Eve_DistortionBlurSetDefTex(void);
+
+extern void dds3AdminiExitSequence(void);
+
+extern void evtSetBokasi(s32 sw);
+
+extern void nbBgmStop(void);
+
+extern void dds3EffectObjectBasicStatOn(void *basic, s32 s);
+
+extern dds3Basic_t *dds3AddD3PEffectObjectBasic2(struct effPCPAgiraoFirePartList_t *effdata, void *pos, void *rot);
+
+extern const char evtMsgEffectBeFailed[];
+
+extern const char evtMsgEffectBeNotFound[];
+
+extern void * dds3AddBEDEffectObjectBasic2(void *data, void *pos, void *rot);
+
+typedef struct effEventWork_t effEventWork_t;
+
+void effEveBEDCutSetScale(effEventWork_t *hEveBEDCut, f32 scale);
+
+extern void dds3StartBEDEffectObjectBasic(void *basic, u32 cutno);
+
+extern f32 evtCalcEffBedScale(s32);
+
+enum {
+    OBJECT_TRANSFORM_FLAG_UPDATE_PENDING = 1,
+    OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID = 2,
+    OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
+};
+
+typedef struct evtModelHeader_t {
+    u8 pad00[4];
+    u32 flags;
+    u8 pad08[8];
+    f32 positionX;
+    f32 positionY;
+    f32 positionZ;
+} evtModelHeader_t;
+
+void dds3AdminiCallSequence(s32 sequence, void *data, s32 datasize, s32 restore);
+
+enum {
+    EVT_SCALAR_REQUEST_SIZE = 4,
+    EVT_PAIRED_REQUEST_SIZE = 8,
+    EVT_WORLD_OBJECT_KIND_FIRST = 4,
+    EVT_WORLD_OBJECT_KIND_LIMIT = 10,
+    EVT_CAMP_TASK_READY_VALUE = 2
+};
+
+void scrAllReleaseScript(void);
+
+void CallBattleSub(s32 encno, s32 eventno);
+
+void CallBattleSub2(s32 encno);
+
+char *scrGetStrPara(s32 n);
+
+void fldBgmFadeOut(void);
+
+void fldSetSceneParam2(fldSceneParam_t *pParam, s32 loadField, s32 loadArea, const char *pointResName);
+
+void fldSetSceneParam3(fldSceneParam_t *pParam, s32 loadField, s32 loadArea, const char *pointResName);
+
+struct dds3Basic_t *fldGetUnitFollowCamera(void);
+
+void *evtSearchBasic(s32 type, s32 serial);
+
+struct dds3Basic_t *fldGetMatter_From_ModelRangeID(u32 modelRangeID);
+
+typedef s32 (*dds3MoverUpdate_t)(struct dds3PoseSet_t *, struct dds3Basic_t *);
+
+typedef struct dds3SlotResource_t {
+    struct dds3Basic_t *target;
+    dds3PathBasicControl_t *path;
+    dds3MoverUpdate_t update;
+    struct dds3Basic_t *sourceObject;
+} dds3SlotResource_t;
+
+dds3PathBasicControl_t *dds3MoverBasicGetPathControl(struct dds3Basic_t *pMoverBasic);
+
+void dds3ObjectBaseCreateMover(void *pObjectBasic);
+
+void dds3MoverBasicSetPath(dds3Basic_t *pMoverBasic, dds3Basic_t *pPathBasic);
+
+s32 fldCommand_GetHojiID(char *pName);
+
+s32 fldGbSetGimic(s32 fld, s32 area, s32 hojiID, s32 toplast);
+
+extern void dds3MoverBasicMakePath(dds3Basic_t *pMoverBasic);
+
+extern char evtMsgObjPathPara0[], evtMsgObjPathPara1[], evtMsgObjPathMoveNoObj[];
+
+void evtEnableMoonCalc(void);
+
+void evtDisableMoonCalc(void);
+
+s32 evtGetAgeOfMoon(void);
+
+s32 evtGetAgeOfMoon16(void);
+
+void evtSetAgeOfMoon(s32 age);
+
+dds3ProcessID_t *evtLoadEventPack(s32 eventno);
+
+s32 evtGetEventPackStat(u32 eventno);
+
+extern char evtMsgBeOk[];
+
+void sdfPrintf(const char *str, ...);
+
+extern char evtMsgLoadBeStart[];
+
+extern char evtMsgReadBeStart[];
+
+extern char evtMsgPmvRunNoProc[];
+
+void evtPathRate(dds3Basic_t *basic, f32 rate);
+
+void evtPathDir(dds3Basic_t *basic, u32 dir);
+
+dds3ProcessID_t *evtStartPictureProcess(s32 priority, struct sdfTexHandle_t *texpath);
+
+extern char evtMsgTexBeNoProc[];
+
+typedef u8 sdfTextureClampMode_t;
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
+
+struct sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
+
+extern sdfTexHandle_t *DeadMoonTmx;
+
+void evtSetUnitLightAndAmbient(evtUnit_t *h, s32 frame, u32 lrgb, u32 argb);
+
+void evtSetUnitColorRGB(evtUnit_t *h, s32 frame, u32 rgb);
+
+void evtSetUnitColorA(evtUnit_t *h, s32 frame, u32 a);
+
+#include "basic.h"
+
+#include "dds3obj.h"
+
+#include "ps2asm.h"
+
+extern void dds3EffectObjectPresetMG12(dds3Basic_t *eff);
+
+extern s32 dds3EffectObjectSetMG12Pos(dds3Basic_t *eff, dds3Basic_t *p1,
+                                      dds3Basic_t *p2, dds3Basic_t *p3, dds3Basic_t *p4);
+
+extern void dds3EffectObjectBasicLinkObject(dds3Basic_t *basic, dds3Basic_t *target);
+
+extern s32 dds3EffectObjectBasicLinkObjectIndex(dds3Basic_t *basic, dds3Basic_t *target,
+                                                 s32 index);
+
+extern void dds3EffectObjectBasicUnlinkObject(dds3Basic_t *basic);
+
+extern void *dds3GetControlScene(void);
+
+extern s32 dds3GetMapNo(void *scene);
+
+extern void dds3SetActiveCameraSceneBasic(void *pSceneBasic, dds3Basic_t *pCameraBasic);
+
+extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 serialID, f32 *pos, f32 *rot);
+
+extern s32 dds3AllocObjectId(void);
+
+extern void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r);
+
+extern u32 dds3DrawFlag;
+
+extern void evtEffectLoopControl(dds3Basic_t *eff, s32 sw);
+
+extern s32 evtPathLinkAndMake(dds3Basic_t *path, dds3Basic_t *obj);
+
+extern s32 evtCheckPathStat(dds3Basic_t *obj);
+
+extern s32 evtRegistBEField(s32 eventno, s32 rid);
+
+extern s32 evtLoadArea(s32 fld, s32 area);
+
+extern s32 evtStageAnimeControl(s32 type, s32 mode);
+
+extern void evtFreeAllUnit(void);
+
+extern void evtFreeStage(void);
+
+extern void fldSetNextField(s32 command, s32 para);
+
+extern s32 sdfDelayedResrcCheck(void);
+
+extern char evtMsgNameNotFound[];
+
+extern char evtMsgEffmg1LoadHint[];
+
+extern char evtMsgEffmg2LoadHint[];
+
+extern void dds3ObjectBaseOnFlag(void *basic, s32 flag);
+
+extern void dds3ObjectBaseOffFlag(void *pObjectBasic, s32 flag);
+
+extern void dds3SetSclPoseSet(void *pBasic, u128 *scl);
+
+extern s32 evtCheckUnitWait(evtUnit_t *h);
+
+extern void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode);
+
+extern void evtUnitLightOff(evtUnit_t *h, s32 frame);
+
+extern u8 evtUnitLightAnimeStat(evtUnit_t *h);
+
+extern char evtMsgModelMotionDeprecated[];
+
+extern char evtMsgModelMoveMotDeprecated[];
+
+extern void func_001E3C30(void *unit, s32 p1, s32 p2, s32 p3, s32 p4, s32 p5);
+
+extern void evtLinkLightObjectBasic(evtUnit_t *h, dds3Basic_t *light, s32 frame);
+
+extern void evtUnlinkLightObjectBasic(evtUnit_t *h, s32 frame);
+
+extern void evtPathStop(dds3Basic_t *basic);
+
+extern void evtPathStart(dds3Basic_t *basic);
+
+extern void evtPathLoop(dds3Basic_t *basic, s32 sw);
+
+extern void evtLoadEventBgm(s32 event);
+
+extern s32 evtCheckEventBgmLoaded(s32 event);
+
+extern s32 scrGetCommandTimer(void);
+
+extern void evtSetSkyAlpha(s32 frame, s32 a);
+
+extern s32 dds3ExistProcess(void *id);
+
+extern void *DDS3_GBWK;
+
+extern f32 sdfSin(f32 aRadius);
+
+extern void DrwSprite2DF(f32 x, f32 y, f32 w, f32 h, s32 u, s32 v, s32 uw, s32 vh,
+                         s32 rgba, sdfTexHandle_t *th);
+
+/* Rows of 0x310 bytes; only the three size fields the bed scale reads are
+ * named here. */
+typedef struct {
+    u8 unk00[0x10];
+    f32 formsize;                   /* 0x10 */
+    f32 formheight;                 /* 0x14 */
+    f32 formscale;                  /* 0x18 */
+    u8 unk1C[0x310 - 0x1C];
+} datModelParam_t;
+
+extern datModelParam_t datModelParamTable[];
+
+/* The colour inlines read and write a 16-byte slot, one word of it used. */
+typedef struct {
+    u32 word;
+    u8 pad04[12];
+} evtColorWork_t;
+
+#define EVT_RGBA_SCALE_128 0x43000000
+
+extern void evtPictureSwap(void *id1, void *id2, s32 pat, s32 prm);
+
+extern void evtPictureSetSize(void *id, s32 sw, s32 sh, s32 tw, s32 th);
+
+extern void evtPictureSetPos(void *id, s32 x0, s32 y0, s32 x1, s32 y1, s32 time);
+
+extern void evtPictureSetAlpha(void *id, s32 alp0, s32 alp1, s32 time);
+
+extern void evtPictureSetZoom(void *id, s32 zoom0, s32 zoom1, s32 time);
+
+extern s32 evtPictureStat(void *id);
+
+extern void fldProc_SisetuReturnPoint(s32 fld, s32 area, char *pName);
+
+extern void fldBgmStop(void);
+
+extern void fldPauseBgm(void);
+
+extern void p2sdPlaySE(s32 no, s32 volume, s32 pan);
+
+extern void encStart(void);
+
+extern s32 evtNextEventNo;
+
+extern void evtSetPolygonMovieFlag(void *id, s32 flag);
+
+extern void evtResetPolygonMovieFlag(void *id, s32 flag);
+
+extern u8 evtCheckPolygonMovieFlag(void *id, s32 flag);
+
+extern void sdfTexFreeDelayed(void *aHandle);
+
+extern void evtSetUnitMove2(evtUnit_t *h, s32 movetype, s32 posID, s32 motion,
+                            s32 para1, s32 para2, void *func, void *data);
+
+extern char evtMsgPmvLoadArgs[];
+
+extern char evtMsgPmvLoadNoProc[];
+
+extern char evtMsgPmvLoadStart[];
+
+extern char evtMsgPmvLoadEnd[];
+
+extern char evtMsgPmvRun2Begin[];
+
+extern char evtMsgPmvRun2End[];
+
+extern void evtPictureDrawOn(void *id);
+
+extern void evtPictureDrawOff(void *id);
+
+extern void evtKillPictureProcess(void *id);
+
+extern char evtMsgLightPathMoveError[];
+
+extern char evtMsgLightPathMoveErrorDbg[];
+
+extern char evtMsgSetSkyAlphaLow[];
+
+extern char evtMsgSetSkyAlphaHigh[];
+
+extern s32 *dds3GetActiveUnitSceneBasic(void *pSceneBasic);
+
+extern void fldSetFilterAnime(s32 on);
+
+extern void fldSkySetAlpha(s32 alp);
+
+extern void fldSkySetFilter(s32 idx, s32 mode, s32 hokan);
+
+extern char evtMsgBeOk[];
+
+extern dds3Basic_t *dds3SceneBasicSearchName(void *scene, const char *name);
+
+extern dds3Basic_t *dds3AddMG12EffectObjectBasic(s32 type, const char *file);
+
+extern void *evtStartPictureProcess2(s32 priority, const char *texdata);
+
+extern char evtMsgTexLoadNoProc[];
+
+extern char evtMsgIdNotFound[];
+
+extern char evtMsgIdNotFoundWarn[];
+
+typedef struct
+{
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} evtVec_t;
+
+extern dds3Basic_t *dds3AddD3PEffectObjectBasic(const char *file, evtVec_t *pos, evtVec_t *rot);
+
+extern dds3Basic_t *dds3AddBEDEffectObjectBasic(const char *file, evtVec_t *pos, evtVec_t *rot);
+
+extern char evtMsgEffectLoadHint[];
+
+extern void evtKillEventPack(s32 eventno);
+
+extern char evtMsgObjPathPara0[];
+
+extern char evtMsgObjPathPara1[];
+
+extern char evtMsgObjPathWaitNoObj[];
+
+extern char evtMsgDelBeStart[];
+
+void *evtSearchBasic(s32 type, s32 serial);
+
+u32 evtCommand_MODEL_PLAYER(void);
+
+u32 evtCommand_MODEL_DSP(void);
+
+u32 evtCommand_MODEL_BE(void);
+
+u32 evtCommand_MODEL_POS(void);
+
+u32 evtCommand_MODEL_SHADOW_ON(void);
+
+u32 evtCommand_MODEL_SHADOW_ON2(void);
+
+u32 evtCommand_MODEL_SHADOW_OFF(void);
+
+u32 evtCommand_MODEL_POS_XYZ(void);
+
+u32 evtCommand_MODEL_ROT_XYZ(void);
+
+u32 evtCommand_MODEL_SCL_XYZ(void);
+
+u32 evt_1E50C0(void);
+
+u32 evt_1E5158(void);
+
+u32 evt_1E51F8(void);
+
+void evtRunKutiMotion(void);
+
+u32 evtCommand_KUTISET(void);
+
+u32 evtCommand_KUTI(void);
+
+u32 evtCommand_MODEL_WAIT(void);
+
+u32 evtCommand_MODEL_EXWAIT(void);
+
+u32 evt_1E54B8(void);
+
+u32 evtCommand_MODEL_MOVE(void);
+
+u32 evtCommand_MODEL_MOVE2(void);
+
+u32 evtCommand_MODEL_WAIT_EXMOT(void);
+
+/* Store the script-supplied value for the selected event unit. */
+u32 evtCommand_MODEL_WAIT_MOT(void);
+
+/* Store the two script-supplied world-unit state values. */
+u32 evtCommand_MODEL_WAIT_HOKAN(void);
+
+u32 evtCommand_MODEL_MOVE_MOT(void);
+
+u32 evtCommand_MODEL_ROT(void);
+
+u32 evtCommand_MODEL_ON(void);
+
+u32 evtCommand_MODEL_OFF(void);
+
+u32 evtCommand_MODEL_LIGHT_ON(void);
+
+u32 evtCommand_MODEL_LIGHT_OFF(void);
+
+u32 evtCommand_MODEL_LIGHT_WAIT(void);
+
+u32 evtCommand_MODEL_LIGHT_RGB(void);
+
+u32 evtCommand_MODEL_LIGHT_RGB(void);
+
+u32 evtCommand_MODEL_LIGHT_DIR(void);
+
+u32 evtCommand_MODEL_LIGHT_DIR(void);
+
+u32 evtCommand_MODEL_RGB(void);
+
+u32 evtCommand_MODEL_RGB(void);
+
+u32 evtCommand_MODEL_A(void);
+
+u32 evtCommand_MODEL_A(void);
+
+u32 evtCommand_MODEL_LIGHT_LINK(void);
+
+u32 evtCommand_MODEL_LIGHT_UNLINK(void);
+
+u32 evtCommand_EFFECT_BE(void);
+
+u32 evtCommand_EFFECT_LOAD(void);
+
+u32 evtCommand_EFFBED_LOAD(void);
+
+u32 evtCommand_EFFBED_BE(void);
+
+u32 evtCommand_EFFBED_BE_EVO(void);
+
+u32 evtCommand_EFFBED_START(void);
+
+f32 evtCalcEffBedScale(s32 uid);
+
+u32 evtCommand_EFFBED_START_EVO(void);
+
+u32 evtCommand_EFFMG1_LOAD(void);
+
+u32 evtCommand_EFFMG1_BE(void);
+
+u32 evtCommand_EFFMG2_LOAD(void);
+
+u32 evtCommand_EFFMG2_BE(void);
+
+u32 evtCommand_EFFMG2_PRESET(void);
+
+u32 evtCommand_EFFECT_PRESET(void);
+
+u32 evtCommand_EFFECT_CLS(void);
+
+u32 evtCommand_EFFECT_POS_XYZ(void);
+
+u32 evtCommand_EFFECT_ROT_XYZ(void);
+
+u32 evtCommand_EFFECT_POS(void);
+
+s32 evtCommand_EFFMG1_POS(void);
+
+s32 evtCommand_EFFMG2_POS(void);
+
+s32 evtCommand_EFFECT_ON(void);
+
+s32 evtCommand_EFFECT_LINK(void);
+
+s32 evtCommand_EFFECT_LINK2(void);
+
+u32 evtCommand_EFFECT_UNLINK(void);
+
+s32 evtCommand_EFFECT_OFF(void);
+
+s32 evtCommand_EFFECT_PATH_MOVE(void);
+
+s32 evtCommand_EFFECT_PATH_WAIT(void);
+
+u32 evtCommand_SEARCH_ID(void);
+
+s32 evtCommand_RTRN_TITLE(void);
+
+s32 evtCommand_CALL_STAFF(void);
+
+s32 evtCommand_CALL_ENDSAVE(void);
+
+u32 evtCommand_CALL_COMBINE(void);
+
+u32 evtCommand_CALL_RECOVER(void);
+
+u32 evtCommand_CALL_SHOP(void);
+
+u32 evtCommand_CALL_RAG(void);
+
+/* Forward two VM integers as the admin request's two-word payload. */
+s32 evtCommand_CALL_SAVE(void);
+
+u32 evtCommand_CALL_PUZZLEBOY(void);
+
+s32 evtCommand_CALL_NEXT(void);
+
+/* The event ID becomes a four-byte dispatch payload. */
+s32 evtCommand_CALL_EVENT(void);
+
+u32 evtCommand_EXIT_EVENT(void);
+
+void CallBattleSub(s32 encno, s32 eventno);
+
+s32 evtCommand_CALL_BATTLE(void);
+
+void CallBattleSub2(s32 encno);
+
+s32 evtCommand_CALL_BATTLE2(void);
+
+s32 evtCommand_RESTORE_BATTLE(void);
+
+/* A field-sequence request is the 0xA0-byte scene parameter block. */
+s32 evtCommand_CALL_FIELD(void);
+
+/* Use the current group's stage with the VM's kind and sequence-name inputs. */
+s32 evtCommand_CALL_FIELD2(void);
+
+/* Build the current group's field request using the alternate initializer. */
+s32 evtCommand_CALL_FIELD3(void);
+
+s32 evtCommand_FIELD_BE(void);
+
+s32 evtCommand_FIELD_DSP(void);
+
+s32 evtCommand_FIELD_ANIME_START(void);
+
+s32 evtCommand_FIELD_ANIME_STOP(void);
+
+s32 evtCommand_FIELD_CLS(void);
+
+s32 evtCommand_FIELD_CLS_STOP(void);
+
+s32 evtCommand_UNIT_CLS(void);
+
+s32 evtCommand_UNIT_CLS_STOP(void);
+
+u32 evtCommand_CAM_SEL(void);
+
+u32 evtCommand_CAM_SEL_FOVY(void);
+
+s32 evtCommand_CAM_PATH_MOVE(void);
+
+s32 evtCommand_CAM_PATH_WAIT(void);
+
+s32 evtCommand_CAM_CREATE(void);
+
+s32 evtCommand_CAM_CLS(void);
+
+s32 evtCommand_CAM_POS_XYZ(void);
+
+/* Convert the three degree inputs before composing and storing a quaternion. */
+s32 evtCommand_CAM_ROT_XYZ(void);
+
+s32 evtCommand_CAM_ROT_Q(void);
+
+s32 evtCommand_OBJ_PATH_MOVE(void);
+
+s32 evtCommand_OBJ_PATH_WAIT(void);
+
+s32 evtCommand_MOON_START(void);
+
+s32 evtCommand_MOON_STOP(void);
+
+s32 evtCommand_GET_MOON(void);
+
+s32 evtCommand_GET_MOON16(void);
+
+s32 evtCommand_CHG_MOON(void);
+
+/* Create a missing camp task, then wait for its ready value.
+ * No VM context completes immediately; a pending task returns zero. */
+s32 evtCommand_LOAD_BE(void);
+
+/* Start the camp task only if no task with this ID exists yet.
+ * A missing VM context completes without creating a task. */
+s32 evtCommand_READ_BE(void);
+
+u32 evtCommand_CHK_BE(void);
+
+u32 evtCommand_DEL_BE(void);
+
+u32 evtCommand_PMV_LOAD(void);
+
+u32 evtCommand_PMV_RUN2(void);
+
+u32 evtCommand_PMV_LOAD_END_WAIT(void);
+
+/* Create and return an event/scene movie task without setting bit 0.
+ * The owning scheduler task supplies the viewer task's priority. */
+s32 evtCommand_PMV_RUN(void);
+
+s32 evtCommand_PATH_STOP(void);
+
+s32 evtCommand_PATH_START(void);
+
+/* Apply the float state, then update a room flag when its parsed number is positive.
+ * Values above 0.5 set that flag; the VM float parameter is deliberately re-read. */
+s32 evtCommand_PATH_RATE(void);
+
+/* Apply the integer state and update a positive parsed room number's flag.
+ * Unlike the float command, an integer value of zero sets the room flag. */
+s32 evtCommand_PATH_DIR(void);
+
+s32 evtCommand_PATH_LOOP_ON(void);
+
+s32 evtCommand_PATH_LOOP_OFF(void);
+
+s32 evtCommand_LIGHT_PATH_MOVE(void);
+
+s32 evtCommand_LIGHT_PATH_WAIT(void);
+
+u32 evtCommand_TEX_BE(void);
+
+u32 evtCommand_TEX_LOAD(void);
+
+u32 evtCommand_TEX_ON(void);
+
+u32 evtCommand_TEX_OFF(void);
+
+u32 evtCommand_TEX_CLS(void);
+
+u32 evtCommand_TEX_SWAP(void);
+
+extern void evtPictureSetOt(dds3ProcessID_t *id, s32 ot);
+
+extern void evtPictureSetPri(dds3ProcessID_t *id, s32 pri);
+
+u32 evtCommand_TEX_OT(void);
+
+u32 evtCommand_TEX_PRI(void);
+
+u32 evtCommand_TEX_SIZE(void);
+
+u32 evtCommand_TEX_POS(void);
+
+u32 evtCommand_TEX_ALP(void);
+
+u32 evtCommand_TEX_ZOOM(void);
+
+u32 evtCommand_TEX_STAT(void);
+
+u32 evtCommand_SET_SKY(void);
+
+u32 evtCommand_SET_SKY_A(void);
+
+u32 evtCommand_BOKASI_ON(void);
+
+u32 evtCommand_BOKASI_OFF(void);
+
+u32 evtCommand_LOAD_SOUND_E(void);
+
+u32 evtCommand_BGM_PLAY_E(void);
+
+u32 evtCommand_BGM_TRANS_E(void);
+
+u32 evtCommand_FADEOUT_E(void);
+
+u32 evtCommand_BGM_VOL_DOWN(void);
+
+u32 evtCommand_BGM_VOL_UP(void);
+
+u32 evtCommand_SE_PLAY_E(void);
+
+u32 evt_1E9168(void);
+
+u32 evt_1E91A8(void);
+
+u32 evt_1E91E8(void);
+
+s32 evt_1E9220(void);
+
+s32 evt_1E9248(void);
+
+s32 evt_1E9270(void);
+
+u32 evt_1E9298(void);
+
+u32 evt_1E92D8(void);
+
+u32 evt_1E92F8(void);
+
+void evtDrawDeadMoonSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32 vh,
+                           s32 rgb, sdfTexHandle_t *th, s32 ox, s32 oy,
+                           f32 cnt, f32 alpha0, f32 alpha1, f32 scale0, f32 scale1);
+
+void nbLoadDeadMoonTex(void);
+
+void nbFreeDeadMoonTex(void);
+/* End of declarations from src/smt3/event/evtCommand.c */
+
+void *evtSearchBasic(s32 type, s32 serial)
+{
+    void *scene;
+
+    scene = dds3GetActiveScene();
+    return dds3SearchSceneBasic(scene, serial, type);
+}
+
+u32 evtCommand_MODEL_PLAYER(void)
+{
+    void *scene;
+    s32 *basic;
+    s32 key;
+
+    scene = dds3GetActiveScene();
+    basic = dds3GetActiveUnitSceneBasic(scene);
+    key = -1;
+    if (basic != NULL) {
+        key = basic[1];
+    }
+    scrSetIntReturnValue(key);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001BDD48);
 
@@ -30,13 +886,52 @@ INCLUDE_RODATA(const s32, "event/evtCommand", D_004B4658);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001BE420);
 
-#include "shared/event/evtCommand/evtCommand_MODEL_POS_XYZ.c"
+u32 evtCommand_MODEL_POS_XYZ(void)
+{
+    sdfVector4_t pos;
+    void *scene;
+    s32 key;
+    void *unit;
+
+    memset(&pos, 0, 0x10);
+    scene = dds3GetActiveScene();
+    key = scrGetIntPara(0);
+    unit = dds3SearchSceneBasic(scene, key, 5);
+    if (unit == NULL) {
+        return 1;
+    }
+    pos.x = scrGetFloatPara(1);
+    pos.y = scrGetFloatPara(2);
+    pos.z = scrGetFloatPara(3);
+    dds3SetPosPoseSet(unit, (u128 *)&pos);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ROT_XYZ);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001BE658);
 
-#include "shared/event/evtCommand/evtCommand_MODEL_SCL_XYZ.c"
+u32 evtCommand_MODEL_SCL_XYZ(void)
+{
+    sdfVector4_t scl;
+    void *scene;
+    s32 key;
+    void *unit;
+
+    memset(&scl, 0, 0x10);
+    scl.w = 1.0f;
+    scene = dds3GetActiveScene();
+    key = scrGetIntPara(0);
+    unit = dds3SearchSceneBasic(scene, key, 5);
+    if (unit == NULL) {
+        return 1;
+    }
+    scl.x = scrGetFloatPara(1);
+    scl.y = scrGetFloatPara(2);
+    scl.z = scrGetFloatPara(3);
+    dds3SetSclPoseSet(unit, (u128 *)&scl);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001BE790);
 
@@ -52,11 +947,66 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001BECA0);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001BED70);
 
-#include "shared/event/evtCommand/evtCommand_KUTISET.c"
+u32 evtCommand_KUTISET(void) {
+    evtUnit_t *unit;
 
-#include "shared/event/evtCommand/evtCommand_KUTI.c"
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    if (unit == NULL) {
+        return 1;
+    }
+    {
+        s32 firstSlot = scrGetIntPara(1);
+        s32 secondSlot = scrGetIntPara(2);
+        evtSetUnitKutiMotion(unit, firstSlot, secondSlot);
+        evtKutiUnit = EE_ADDR(unit);
+    }
+    {
+        s32 window = scrGetMessageHandle();
+        if (window < 0) {
+            return 1;
+        }
+        itfMesMngSetKutiCallback(window, evtRunKutiMotion);
+    }
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_MODEL_WAIT.c"
+u32 evtCommand_KUTI(void) {
+    evtUnit_t *unit;
+
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    if (unit == NULL) {
+        return 1;
+    }
+    {
+        s32 firstSlot = scrGetIntPara(1);
+        s32 secondSlot = scrGetIntPara(2);
+        evtSetUnitKutiMotion(unit, firstSlot, secondSlot);
+        evtRunUnitKutiMotion(EE_ADDR(unit));
+        evtKutiUnit = EE_ADDR(unit);
+    }
+    {
+        s32 window = scrGetMessageHandle();
+        if (window < 0) {
+            return 1;
+        }
+        itfMesMngSetKutiCallback(window, evtRunKutiMotion);
+    }
+    return 1;
+}
+
+u32 evtCommand_MODEL_WAIT(void)
+{
+    s32 key;
+    void *unit;
+    u32 ret = 1;
+
+    key = scrGetIntPara(0);
+    unit = evtGetUnitHandle(key);
+    if (unit == NULL) {
+        return ret;
+    }
+    return evtCheckUnitWait(unit) != 0;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_EXWAIT);
 
@@ -92,23 +1042,136 @@ INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ON);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_OFF);
 
-#include "shared/event/evtCommand/evtCommand_MODEL_LIGHT_ON.c"
+u32 evtCommand_MODEL_LIGHT_ON(void) {
+    s32 worldObjectKey;
+    evtUnit_t *unit;
 
-#include "shared/event/evtCommand/evtCommand_MODEL_LIGHT_OFF.c"
+    worldObjectKey = scrGetIntPara(0);
+    unit = evtGetUnitHandle(worldObjectKey);
+    evtUnitLightOn(unit);
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_MODEL_LIGHT_WAIT.c"
+u32 evtCommand_MODEL_LIGHT_OFF(void)
+{
+    s32 key;
+    void *unit;
+    s32 time;
 
-#include "shared/event/evtCommand/evtCommand_MODEL_LIGHT_RGB.c"
+    key = scrGetIntPara(0);
+    unit = evtGetUnitHandle(key);
+    time = scrGetIntPara(1);
+    evtUnitLightOff(unit, time);
+    return 1;
+}
+
+u32 evtCommand_MODEL_LIGHT_WAIT(void)
+{
+    s32 key;
+    void *unit;
+    s32 stat;
+
+    key = scrGetIntPara(0);
+    unit = evtGetUnitHandle(key);
+    stat = evtUnitLightAnimeStat(unit);
+    return stat == 0;
+}
+
+u32 evtCommand_MODEL_LIGHT_RGB(void)
+{
+    evtColorWork_t work[2];
+    evtUnit_t *unit;
+    u32 light;
+    u32 ambient;
+    u32 scale;
+
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    SDF_VU0_SETVECTOR_X(scrGetFloatPara(2));
+    SDF_VU0_SETVECTOR_Y(scrGetFloatPara(3));
+    SDF_VU0_SETVECTOR_Z(scrGetFloatPara(4));
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    scale = EVT_RGBA_SCALE_128;
+    MMI_RGBA_PACK_UNIT(light, scale);
+    work[0].word = light;
+    SDF_VU0_SETVECTOR_X(scrGetFloatPara(5));
+    SDF_VU0_SETVECTOR_Y(scrGetFloatPara(6));
+    SDF_VU0_SETVECTOR_Z(scrGetFloatPara(7));
+    SDF_VU0_VECTOR_W_SET_ONE();
+    MMI_RGBA_PACK_UNIT(ambient, scale);
+    work[1].word = ambient;
+    evtSetUnitLightAndAmbient(unit, scrGetIntPara(1), light, ambient);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_LIGHT_DIR);
 
-#include "shared/event/evtCommand/evtCommand_MODEL_RGB.c"
+u32 evtCommand_MODEL_RGB(void)
+{
+    evtColorWork_t work[1];
+    evtUnit_t *unit;
+    u32 color;
+    s32 duration;
 
-#include "shared/event/evtCommand/evtCommand_MODEL_A.c"
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    SDF_VU0_SETVECTOR_X(scrGetFloatPara(2));
+    SDF_VU0_SETVECTOR_Y(scrGetFloatPara(3));
+    SDF_VU0_SETVECTOR_Z(scrGetFloatPara(4));
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    MMI_RGBA_PACK_128_S2(color);
+    work[0].word = color;
+    duration = scrGetIntPara(1);
+    /* Qualified cc1 loop notes 106/126 keep the unit argument before the
+     * duration argument; the no-block control reverses those two copies.
+     * See docs/levers/control-flow.md. */
+    do {
+        evtSetUnitColorRGB(unit, duration, color);
+    } while (0);
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_MODEL_LIGHT_LINK.c"
+u32 evtCommand_MODEL_A(void)
+{
+    evtColorWork_t work[1];
+    evtUnit_t *unit;
+    u32 color;
 
-#include "shared/event/evtCommand/evtCommand_MODEL_LIGHT_UNLINK.c"
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    SDF_VU0_LOADIDENTITYVECTOR();
+    SDF_VU0_SETVECTOR_W(scrGetFloatPara(2));
+    MMI_RGBA_PACK_128_S2(color);
+    work[0].word = color;
+    evtSetUnitColorA(unit, scrGetIntPara(1), color);
+    return 1;
+}
+
+u32 evtCommand_MODEL_LIGHT_LINK(void)
+{
+    s32 key;
+    void *unit;
+    void *target;
+
+    key = scrGetIntPara(0);
+    unit = evtGetUnitHandle(key);
+    target = evtSearchBasic(9, scrGetIntPara(2));
+    if (target == NULL) {
+        return 1;
+    }
+    evtLinkLightObjectBasic(unit, target, scrGetIntPara(1));
+    return 1;
+}
+
+u32 evtCommand_MODEL_LIGHT_UNLINK(void)
+{
+    s32 key;
+    void *unit;
+    s32 time;
+
+    key = scrGetIntPara(0);
+    unit = evtGetUnitHandle(key);
+    time = scrGetIntPara(1);
+    evtUnlinkLightObjectBasic(unit, time);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C0208);
 
@@ -118,7 +1181,9 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001C0370);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFBED_BE);
 
-#include "shared/event/evtCommand/evtCommand_EFFBED_BE_EVO.c"
+u32 evtCommand_EFFBED_BE_EVO(void) {
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFBED_START);
 
@@ -138,13 +1203,63 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001C08B8);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG2_BE);
 
-#include "shared/event/evtCommand/evtCommand_EFFMG2_PRESET.c"
+u32 evtCommand_EFFMG2_PRESET(void)
+{
+    s32 key;
+    dds3Basic_t *basic;
 
-#include "shared/event/evtCommand/evtCommand_EFFECT_PRESET.c"
+    key = scrGetIntPara(0);
+    basic = evtSearchBasic(7, key);
+    if (basic != NULL) {
+        dds3EffectObjectPresetMG12(basic);
+    }
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_EFFECT_CLS.c"
+u32 evtCommand_EFFECT_PRESET(void)
+{
+    s32 key;
+    dds3Basic_t *basic;
 
-#include "shared/event/evtCommand/evtCommand_EFFECT_POS_XYZ.c"
+    key = scrGetIntPara(0);
+    basic = evtSearchBasic(7, key);
+    if (basic != NULL) {
+        dds3EffectObjectPresetMG12(basic);
+    }
+    return 1;
+}
+
+u32 evtCommand_EFFECT_CLS(void)
+{
+    s32 key;
+    dds3Basic_t *basic;
+
+    key = scrGetIntPara(0);
+    basic = evtSearchBasic(7, key);
+    if (basic != NULL) {
+        dds3DeleteSceneBasicData(basic);
+    }
+    return 1;
+}
+
+u32 evtCommand_EFFECT_POS_XYZ(void) {
+    dds3Basic_t *obj;
+    evtModelHeader_t *header;
+
+    obj = evtSearchBasic(7, scrGetIntPara(0));
+    header = (evtModelHeader_t *)obj->workdata;
+    if (header->flags & 4) {
+        header->positionX = scrGetFloatPara(1);
+        header->positionY = scrGetFloatPara(2);
+        header->positionZ = scrGetFloatPara(3);
+    } else {
+        obj->poseset->pos.x = scrGetFloatPara(1);
+        obj->poseset->pos.y = scrGetFloatPara(2);
+        obj->poseset->pos.z = scrGetFloatPara(3);
+        obj->poseset->flag = (obj->poseset->flag | OBJECT_TRANSFORM_FLAG_UPDATE_PENDING) & ~OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_ROT_XYZ);
 
@@ -154,15 +1269,86 @@ INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG1_POS);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG2_POS);
 
-#include "shared/event/evtCommand/evtCommand_EFFECT_ON.c"
+s32 evtCommand_EFFECT_ON(void)
+{
+    s32 key;
+    dds3Basic_t *basic;
 
-#include "shared/event/evtCommand/evtCommand_EFFECT_LINK.c"
+    key = scrGetIntPara(0);
+    basic = evtSearchBasic(7, key);
+    if (basic != NULL) {
+        evtEffectLoopControl(basic, 1);
+        dds3EffectObjectBasicStatOn(basic, 1);
+    }
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_EFFECT_LINK2.c"
+s32 evtCommand_EFFECT_LINK(void)
+{
+    dds3Basic_t *effect = evtSearchBasic(7, scrGetIntPara(0));
+    dds3Basic_t *owner;
+    s32 type;
 
-#include "shared/event/evtCommand/evtCommand_EFFECT_UNLINK.c"
+    if (effect == NULL) {
+        return 1;
+    }
+    type = 4;
+    do {
+        owner = evtSearchBasic(type, scrGetIntPara(1));
+        type++;
+    } while (type < 10 && owner == NULL);
+    if (owner == NULL) {
+        return 1;
+    }
+    dds3EffectObjectBasicLinkObject(effect, owner);
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_EFFECT_OFF.c"
+s32 evtCommand_EFFECT_LINK2(void)
+{
+    dds3Basic_t *effect = evtSearchBasic(7, scrGetIntPara(0));
+    dds3Basic_t *owner;
+    s32 type;
+
+    if (effect == NULL) {
+        return 1;
+    }
+    type = 4;
+    do {
+        owner = evtSearchBasic(type, scrGetIntPara(1));
+        type++;
+    } while (type < 10 && owner == NULL);
+    if (owner == NULL) {
+        return 1;
+    }
+    dds3EffectObjectBasicLinkObjectIndex(effect, owner, scrGetIntPara(2));
+    return 1;
+}
+
+u32 evtCommand_EFFECT_UNLINK(void)
+{
+    dds3Basic_t *basic;
+
+    basic = evtSearchBasic(7, scrGetIntPara(0));
+    if (basic == NULL) {
+        return 1;
+    }
+    dds3EffectObjectBasicUnlinkObject(basic);
+    return 1;
+}
+
+s32 evtCommand_EFFECT_OFF(void)
+{
+    s32 key;
+    dds3Basic_t *basic;
+
+    key = scrGetIntPara(0);
+    basic = evtSearchBasic(7, key);
+    if (basic != NULL) {
+        evtEffectLoopControl(basic, 0);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_PATH_MOVE);
 
@@ -170,11 +1356,19 @@ INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_PATH_WAIT);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C1200);
 
-#include "shared/event/evtCommand/evtCommand_RTRN_TITLE.c"
+s32 evtCommand_RTRN_TITLE(void)
+{
+    dds3AdminiCallSequence(2, 0, 0, 0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_STAFF);
 
-#include "shared/event/evtCommand/evtCommand_CALL_ENDSAVE.c"
+s32 evtCommand_CALL_ENDSAVE(void)
+{
+    dds3AdminiCallSequence(5, 0, 0, 0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C1310);
 
@@ -186,13 +1380,36 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001C13C8);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C13F8);
 
-#include "shared/event/evtCommand/evtCommand_CALL_BATTLE.c"
+s32 evtCommand_CALL_BATTLE(void)
+{
+    s32 eventId;
+
+    eventId = scrGetIntPara(0);
+    CallBattleSub(eventId, 0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C1588);
 
-#include "shared/event/evtCommand/evtCommand_CALL_BATTLE2.c"
+s32 evtCommand_CALL_BATTLE2(void)
+{
+    s32 eventId;
 
-#include "shared/event/evtCommand/evtCommand_RESTORE_BATTLE.c"
+    eventId = scrGetIntPara(0);
+    CallBattleSub2(eventId);
+    return 1;
+}
+
+s32 evtCommand_RESTORE_BATTLE(void)
+{
+    s32 eventId;
+    s32 requestMode;
+
+    eventId = scrGetIntPara(0);
+    requestMode = scrGetIntPara(1);
+    CallBattleSub(eventId, requestMode);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C16D0);
 
@@ -204,11 +1421,40 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001C17E0);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_FIELD_BE);
 
-#include "shared/event/evtCommand/evtCommand_FIELD_DSP.c"
+s32 evtCommand_FIELD_DSP(void)
+{
+    s32 area;
+    s32 room;
+    s32 mapno;
 
-#include "shared/event/evtCommand/evtCommand_FIELD_ANIME_START.c"
+    area = scrGetIntPara(0);
+    room = scrGetIntPara(1);
+    mapno = (area << 16) + room;
+    if (dds3GetMapNo(dds3GetControlScene()) != mapno) {
+        area = scrGetIntPara(0);
+        room = scrGetIntPara(1);
+        evtLoadArea(area, room);
+    }
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_FIELD_ANIME_STOP.c"
+s32 evtCommand_FIELD_ANIME_START(void)
+{
+    s32 value;
+
+    value = scrGetIntPara(0);
+    evtStageAnimeControl(0, value);
+    return 1;
+}
+
+s32 evtCommand_FIELD_ANIME_STOP(void)
+{
+    s32 value;
+
+    value = scrGetIntPara(0);
+    evtStageAnimeControl(1, value);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C1948);
 
@@ -220,21 +1466,121 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001C1A38);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C1A70);
 
-#include "shared/event/evtCommand/evtCommand_CAM_SEL_FOVY.c"
+u32 evtCommand_CAM_SEL_FOVY(void)
+{
+    dds3Basic_t *camera;
+
+    if (scrGetIntPara(0) < 0) {
+        camera = fldGetUnitFollowCamera();
+    } else {
+        camera = evtSearchBasic(4, scrGetIntPara(0));
+        *(u32 *)((u8 *)camera->workdata + 0x88) |= 1;
+    }
+    if (camera == NULL) {
+        return 1;
+    }
+    dds3SetActiveCameraSceneBasic(dds3GetActiveScene(), camera);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C1B70);
 
-#include "shared/event/evtCommand/evtCommand_CAM_PATH_WAIT.c"
+s32 evtCommand_CAM_PATH_WAIT(void)
+{
+    dds3Basic_t *camera;
+    s32 stat;
 
-#include "shared/event/evtCommand/evtCommand_CAM_CREATE.c"
+    if (scrGetIntPara(0) < 0) {
+        camera = fldGetUnitFollowCamera();
+    } else {
+        camera = evtSearchBasic(4, scrGetIntPara(0));
+    }
+    if (camera == NULL) {
+        return 1;
+    }
+    stat = evtCheckPathStat(camera);
+    switch (stat) {
+    case 0:
+        return 1;
+    case 1:
+        return 0;
+    case -1:
+        return 1;
+    default:
+        return 0;
+    }
+}
 
-#include "shared/event/evtCommand/evtCommand_CAM_CLS.c"
+s32 evtCommand_CAM_CREATE(void)
+{
+    sdfVector4_t pos;
+    sdfVector4_t rot;
+    s32 id;
 
-#include "shared/event/evtCommand/evtCommand_CAM_POS_XYZ.c"
+    memset(&pos, 0, 0x10);
+    memset(&rot, 0, 0x10);
+    rot.w = 1.0f;
+    id = dds3AllocObjectId();
+    dds3GetRadiusPoseSet(dds3AddCameraObjectBasicTypeFree(id, &pos.x, &rot.x), 1.0f);
+    scrSetIntReturnValue(id);
+    return 1;
+}
+
+s32 evtCommand_CAM_CLS(void)
+{
+    s32 key;
+    dds3Basic_t *camera;
+
+    key = scrGetIntPara(0);
+    camera = evtSearchBasic(4, key);
+    if (camera == NULL) {
+        return 1;
+    }
+    dds3DeleteSceneBasicData(camera);
+    return 1;
+}
+
+s32 evtCommand_CAM_POS_XYZ(void) {
+    void *effectUnit;
+    sdfVector4_t position;
+
+    memset(&position, 0, sizeof(position));
+    if (scrGetIntPara(0) < 0) {
+        effectUnit = fldGetUnitFollowCamera();
+    } else {
+        effectUnit = evtSearchBasic(4, scrGetIntPara(0));
+    }
+    if (effectUnit == NULL) {
+        return 1;
+    }
+    position.x = scrGetFloatPara(1);
+    position.y = scrGetFloatPara(2);
+    position.z = scrGetFloatPara(3);
+    dds3SetPosPoseSet(effectUnit, (u128 *)&position);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CAM_ROT_XYZ);
 
-#include "shared/event/evtCommand/evtCommand_CAM_ROT_Q.c"
+s32 evtCommand_CAM_ROT_Q(void) {
+    void *effectUnit;
+    sdfVector4_t quaternion;
+
+    if (scrGetIntPara(0) < 0) {
+        effectUnit = fldGetUnitFollowCamera();
+    } else {
+        effectUnit = evtSearchBasic(4, scrGetIntPara(0));
+    }
+    if (effectUnit == NULL) {
+        return 1;
+    }
+    quaternion.x = scrGetFloatPara(1);
+    quaternion.y = scrGetFloatPara(2);
+    quaternion.z = scrGetFloatPara(3);
+    quaternion.w = scrGetFloatPara(4);
+    dds3SetRotPoseSet(effectUnit, (u128 *)&quaternion);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C1F80);
 
@@ -242,15 +1588,35 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001C20B8);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C2218);
 
-#include "shared/event/evtCommand/evtCommand_MOON_START.c"
+s32 evtCommand_MOON_START(void)
+{
+    evtEnableMoonCalc();
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_MOON_STOP.c"
+s32 evtCommand_MOON_STOP(void)
+{
+    evtDisableMoonCalc();
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_GET_MOON.c"
+s32 evtCommand_GET_MOON(void)
+{
+    scrSetIntReturnValue(evtGetAgeOfMoon());
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_GET_MOON16.c"
+s32 evtCommand_GET_MOON16(void)
+{
+    scrSetIntReturnValue(evtGetAgeOfMoon16());
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_CHG_MOON.c"
+s32 evtCommand_CHG_MOON(void)
+{
+    evtSetAgeOfMoon(scrGetIntPara(0));
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_LOAD_BE);
 
@@ -258,7 +1624,22 @@ INCLUDE_RODATA(const s32, "event/evtCommand", D_004B49C8);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_READ_BE);
 
-#include "shared/event/evtCommand/evtCommand_CHK_BE.c"
+u32 evtCommand_CHK_BE(void)
+{
+    s32 no;
+    s32 ret;
+
+    no = scrGetIntPara(0);
+    if (scrGetScriptHandle() != NULL && evtSearchEventPack(no) != 0
+            && evtGetEventPackStat(no) == 2) {
+        datDebugPrintf(evtMsgBeOk, no);
+        ret = 1;
+    } else {
+        ret = 0;
+    }
+    scrSetIntReturnValue(ret);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_DEL_BE);
 
@@ -284,39 +1665,168 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001C29E0);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C2A78);
 
-#include "shared/event/evtCommand/evtCommand_PATH_LOOP_ON.c"
+s32 evtCommand_PATH_LOOP_ON(void)
+{
+    s32 type;
+    void *obj;
 
-#include "shared/event/evtCommand/evtCommand_PATH_LOOP_OFF.c"
+    type = 4;
+    do {
+        obj = evtSearchBasic(type, scrGetIntPara(0));
+        type++;
+    } while (type < 10 && obj == NULL);
+
+    if (obj == NULL) {
+        obj = fldGetMatter_From_ModelRangeID(scrGetIntPara(0));
+        if (obj == NULL) {
+            return 1;
+        }
+    }
+    evtPathLoop(obj, 1);
+    return 1;
+}
+
+s32 evtCommand_PATH_LOOP_OFF(void)
+{
+    s32 type;
+    void *obj;
+
+    type = 4;
+    do {
+        obj = evtSearchBasic(type, scrGetIntPara(0));
+        type++;
+    } while (type < 10 && obj == NULL);
+
+    if (obj == NULL) {
+        obj = fldGetMatter_From_ModelRangeID(scrGetIntPara(0));
+        if (obj == NULL) {
+            return 1;
+        }
+    }
+    evtPathLoop(obj, 0);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C2C10);
 
-#include "shared/event/evtCommand/evtCommand_LIGHT_PATH_WAIT.c"
+s32 evtCommand_LIGHT_PATH_WAIT(void)
+{
+    s32 stat;
+
+    stat = evtCheckPathStat(evtSearchBasic(9, scrGetIntPara(0)));
+    switch (stat) {
+    case 0:
+        return 1;
+    case 1:
+        return 0;
+    case -1:
+        return 1;
+    default:
+        return 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C2CD8);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C2D90);
 
-#include "shared/event/evtCommand/evtCommand_TEX_ON.c"
+u32 evtCommand_TEX_ON(void)
+{
+    void *id;
 
-#include "shared/event/evtCommand/evtCommand_TEX_OFF.c"
+    id = EE_ADDR_AS(void *, scrGetIntPara(0));
+    if (dds3ExistProcess(id) != 0) {
+        evtPictureDrawOn(id);
+    }
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_TEX_CLS.c"
+u32 evtCommand_TEX_OFF(void)
+{
+    void *id;
 
-#include "shared/event/evtCommand/evtCommand_SET_SKY.c"
+    id = EE_ADDR_AS(void *, scrGetIntPara(0));
+    if (dds3ExistProcess(id) != 0) {
+        evtPictureDrawOff(id);
+    }
+    return 1;
+}
+
+u32 evtCommand_TEX_CLS(void)
+{
+    void *id;
+
+    id = EE_ADDR_AS(void *, scrGetIntPara(0));
+    if (dds3ExistProcess(id) != 0) {
+        evtKillPictureProcess(id);
+    }
+    return 1;
+}
+
+u32 evtCommand_SET_SKY(void)
+{
+    s32 r;
+    s32 g;
+
+    fldSetFilterAnime(0);
+    fldSkySetAlpha(0x80);
+    r = scrGetIntPara(0);
+    g = scrGetIntPara(1);
+    fldSkySetFilter(r, g, scrGetIntPara(2));
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_SET_SKY_A);
 
-#include "shared/event/evtCommand/evtCommand_BOKASI_ON.c"
+u32 evtCommand_BOKASI_ON(void) {
+    evtSetBokasi(1);
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_BOKASI_OFF.c"
+u32 evtCommand_BOKASI_OFF(void) {
+    evtSetBokasi(0);
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_LOAD_SOUND_E.c"
+u32 evtCommand_LOAD_SOUND_E(void)
+{
+    if (scrGetCommandTimer() == 0) {
+        evtLoadEventBgm(scrGetIntPara(0));
+    } else if (evtCheckEventBgmLoaded(scrGetIntPara(0)) != 0) {
+        return 1;
+    }
+    return 0;
+}
 
-#include "shared/event/evtCommand/evtCommand_BGM_PLAY_E.c"
+u32 evtCommand_BGM_PLAY_E(void) {
+    s32 eventId;
+    s32 fade;
 
-#include "shared/event/evtCommand/evtCommand_BGM_TRANS_E.c"
+    eventId = scrGetIntPara(0);
+    fade = scrGetIntPara(1);
+    evtPlayEventBgm(eventId, fade);
+    return 1;
+}
 
-#include "shared/event/evtCommand/evtCommand_FADEOUT_E.c"
+u32 evtCommand_BGM_TRANS_E(void) {
+    s32 eventId;
+    s32 fade;
+
+    eventId = scrGetIntPara(0);
+    fade = scrGetIntPara(1);
+    evtTransEventBgm(eventId, fade);
+    return 1;
+}
+
+u32 evtCommand_FADEOUT_E(void) {
+    s32 eventId;
+    s32 fade;
+
+    eventId = scrGetIntPara(0);
+    fade = scrGetIntPara(1);
+    evtStopEventBgm(eventId, fade);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C3118);
 

@@ -27,9 +27,12 @@ function's asm file, and each C function brings what the compiler emits for it
 The first two kinds get per-symbol files in asm/<v>/nonmatchings/<unit>/ and an
 INCLUDE_RODATA line. Placement is recomputed on every run.
 """
+import bisect
 import re
 import sys
 from pathlib import Path
+
+from units import unit_sources, write_unit
 
 from include_sdata import DATA_DEF
 
@@ -48,8 +51,9 @@ def rodata_part(path):
 
 def place(version):
     added = 0
-    for c in sorted((ROOT / "src" / version).rglob("*.c")):
-        unit = c.relative_to(ROOT / "src" / version).with_suffix("").as_posix()
+    aliases = {m.group(1): int(m.group(2), 16) for m in re.finditer(
+        r"^(\w+) = 0x([0-9A-Fa-f]+);", (ROOT / "config" / version / "smt3_symbols.txt").read_text(), re.M)}
+    for unit, c in unit_sources(version).items():
         nonmatchings = ROOT / "asm" / version / "nonmatchings" / unit
         matchings = ROOT / "asm" / version / "matchings" / unit
         if not nonmatchings.is_dir() and not matchings.is_dir():
@@ -57,7 +61,7 @@ def place(version):
             text = c.read_text()
             stripped = re.sub(r'^INCLUDE_RODATA\([^,]+,\s*"[^"]+",\s*(\w+)\);\n\n?', "", text, flags=re.M)
             if stripped != text:
-                c.write_text(stripped)
+                write_unit(version, c, stripped)
             continue
         # The unit's rodata as splat last split it; INCLUDE_RODATA lines and per-symbol
         # files for anything else are left over from an earlier split.
@@ -106,11 +110,19 @@ def place(version):
                 macro_text, re.M)
         }
 
+        by_addr = sorted((int(a, 16), s) for s, a in labels.items())
+
         def code_refs(code, visited):
             code = code_tokens(code)
             tokens = set(re.findall(r"\b[A-Za-z_]\w*\b", code))
             calls = set(re.findall(r"\b(\w+)\s*\(", code))
             refs = unit_rodata.intersection(tokens)
+            # C carried from SMT3 names Raidou data by SMT3's name (smt3_symbols.txt).
+            for token in tokens & aliases.keys():
+                i = bisect.bisect_right(by_addr, (aliases[token], "\uffff")) - 1
+                end = by_addr[i + 1][0] if i + 1 < len(by_addr) else (by_addr[-1][0] + 0x100 if by_addr else 0)
+                if i >= 0 and aliases[token] < end:
+                    refs.add(by_addr[i][1])
             for token in tokens:
                 if token in macros and ("macro", token) not in visited:
                     function_like, body = macros[token]
@@ -222,7 +234,7 @@ def place(version):
             added += len(inserts[pos])
         # One blank line before each included item, however often this reruns.
         text = re.sub(r"\n{3,}(?=INCLUDE_(?:RODATA|SDATA)\()", "\n\n", text)
-        c.write_text(text)
+        write_unit(version, c, text)
     print(f"{version}: {added} INCLUDE_RODATA lines")
 
 

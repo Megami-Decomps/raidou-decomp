@@ -1,5 +1,7 @@
 # C from smt3-decomp
 
+Carried from smt3-decomp d1569b46.
+
 Functions Raidou shares with SMT3 are compiled from smt3-decomp's C where the
 Raidou code is the same, one function at a time. Everything else in a unit
 stays `INCLUDE_ASM`.
@@ -11,27 +13,37 @@ stays `INCLUDE_ASM`.
 | units with C | 203 | 204 |
 | SMT3 names in `smt3_symbols.txt` | 941 | 937 |
 
-2,325 body files in `src/shared`, 2,265 of them used by both games.
+123 of the TUs are one file both games compile; the rest have a file per game.
 
 ## Layout
 
-- `src/shared/<smt3 unit>/<function>.c`: one SMT3 body, taken verbatim from
-  `src/smt3/<smt3 unit>.c` in smt3-decomp, except that `static` is dropped
-  (other Raidou objects call these functions and read these objects by name).
-- `src/shared/<smt3 unit>/decls.h`: every declaration of that SMT3 file:
-  types, macros, prototypes, inline helpers, and its data as `extern`.
-- A Raidou unit includes the body in place of its `INCLUDE_ASM` line:
-  `#include "shared/sdf/sdfTmx/sdfFileRpcHandler.c"`. Both games include the
-  same file, so a body exists once whichever game uses it.
+- Each TU is one file with its C bodies inline in link order and
+  `INCLUDE_ASM` for the rest, as in smt3-decomp. A TU with the same text in
+  both games is `src/<unit>.c`, compiled into each version (its `INCLUDE_ASM`
+  lines resolve against that version's `asm/<version>/`). A TU that differs
+  (other `func_`/`D_` names, other bodies) is `src/<version>/<unit>.c`; the
+  per-game file wins. `tools/units.py` resolves a unit to its file, and
+  `tools/splat_split.py` lets splat read the shared file.
+- A carried body is smt3-decomp's text verbatim, minus `static` (other Raidou
+  objects call these functions and read these objects by name).
+- The TU holds every declaration of the SMT3 file its bodies come from (types,
+  macros, prototypes, inline helpers, data as `extern`) between
+  `/* Declarations from smt3-decomp src/smt3/<file>.c */` and its end comment,
+  after the leading `#include`s. `port` adds and drops these blocks.
 - `include/` carries smt3-decomp's headers.
 - `config/<v>/smt3_symbols.txt`: linker definitions for the SMT3 names the
   bodies use where Raidou has no name, at the Raidou address (`ttyState =
   0x0050ACD0;`). The body text never changes between games; the address does.
+  `include_rodata.py` and `include_sdata.py` treat these names as references
+  to the Raidou data at that address.
 - `config/<v>/smt3_c.tsv`: every function considered, `c` or `asm`, with the
   reason it stays asm.
 - SDK members that compile SMT3 C get SMT3's compiler and flags for that
   library (the generated block in `config/<v>/compilers.txt`, `cflags.txt`,
   `asflags.txt`).
+- `port` writes both games' text for a TU and keeps one shared file when they
+  are equal. When the second version's `include_rodata.py`/`include_sdata.py`
+  run would change a shared file, the TU is split into per-game files.
 
 ## Pipeline
 
@@ -54,7 +66,7 @@ retail except relocated fields, and each relocation's symbol must resolve to
 the Raidou address the retail word implies. A name Raidou already has must
 already be at that address; a new name goes into `smt3_symbols.txt`; a name
 two bodies want at different addresses fails both. Compile errors are traced
-to the body (or, for a clash in a `decls.h`, to every body of that SMT3 file in
+to the body by its line in the TU (or, for a clash in a declarations block, to every body of that SMT3 file in
 the unit). `configure.py` must run after `port` reverts a function, because
 splat moves the asm of a C function from `nonmatchings/` to `matchings/`.
 

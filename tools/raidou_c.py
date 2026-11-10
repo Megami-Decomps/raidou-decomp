@@ -15,9 +15,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 from check_unit import drop_nonmatching  # noqa: E402
+from retail_elf import VERSIONS  # noqa: E402
+from units import SRC, shared_sources, unit_name, unit_sources  # noqa: E402
 
-VERSIONS = ("raidou1", "raidou2")
 OUT = ROOT / "build" / "raidou_c"
+# Read only: the smt3-port checkout follows smt3-decomp upstream.
+SMT3 = Path.home() / "projects/smt3-port/external/smt3-decomp"
 
 INSN = re.compile(r"^\s*/\* [0-9A-Fa-f]+ ([0-9A-Fa-f]+) ([0-9A-Fa-f]{8}) \*/\s+(.*?)\s*$")
 GLABEL = re.compile(r"^\s*glabel\s+(\S+)")
@@ -162,19 +165,18 @@ def function_asm(version, unit, fn):
 
 
 def raidou_asm_functions(version):
-    """Each INCLUDE_ASM or carried body line of a C unit: (src, unit, name, address, words, slots)."""
+    """Each INCLUDE_ASM line or C definition of a unit: (src, unit, name, address, words, slots)."""
     rows = []
-    for src in sorted((ROOT / "src" / version).rglob("*.c")):
+    for unit, src in unit_sources(version).items():
         text = src.read_text(errors="replace")
-        unit = src.relative_to(ROOT / "src" / version).with_suffix("").as_posix()
-        lines = INCLUDE_ASM.findall(text) + [(unit, m.group(2)) for m in INCLUDE_BODY.finditer(text)]
-        for unit, fn in lines:
-            asm = function_asm(version, unit, fn)
+        lines = INCLUDE_ASM.findall(text) + [(unit, fn) for fn in definitions(text)]
+        for folder, fn in lines:
+            asm = function_asm(version, folder, fn)
             if asm is None:
                 continue
             body = parse_asm(asm).get(fn)
             if body:
-                rows.append((str(src.relative_to(ROOT)), unit, fn, *body))
+                rows.append((str(src.relative_to(ROOT)), folder, fn, *body))
     return rows
 
 
@@ -211,7 +213,6 @@ def cmd_pairs(args):
     (OUT / "pairs.tsv").write_text("\n".join(lines) + "\n")
 
 
-SHARED = ROOT / "src" / "shared"
 KNR_HEADER = re.compile(r"^[A-Za-z_][\w \t\*]*\b\w+\s*\(\s*\w+(\s*,\s*\w+)*\s*\)\s*$")
 STATIC = re.compile(r"\bstatic\s+")
 DROP = re.compile(r"^\s*(INCLUDE_ASM|INCLUDE_RODATA|INCLUDE_SDATA|TEXT_ALIGN|__asm__|asm)\b")
@@ -343,20 +344,41 @@ def shared_rel(smt3_src):
     return Path(smt3_src).relative_to("src/smt3").with_suffix("").as_posix()
 
 
-def write_shared(smt3, rel, functions):
-    """src/shared/<rel>.h (the SMT3 file's declarations) and one body file per function."""
-    text = drop_nonmatching((smt3 / "src/smt3" / f"{rel}.c").read_text(errors="replace"))
-    guard = "SHARED_" + re.sub(r"\W", "_", rel).upper() + "_H"
-    decls = [d for d in (declaration(b) for b in blocks(text)) if d is not None]
-    header = SHARED / rel / "decls.h"
-    header.parent.mkdir(parents=True, exist_ok=True)
-    header.write_text(
-        f"/* Declarations of smt3-decomp src/smt3/{rel}.c, for its bodies in this directory. */\n"
-        f"#ifndef {guard}\n#define {guard}\n\n" + "\n\n".join(decls) + f"\n\n#endif\n")
-    spans = definitions(text)
-    for fn in functions:
-        start, end = spans[fn]
-        # Keep the comment directly above the definition, not the data before it.
+_SMT3_TEXT = {}
+
+
+def smt3_text(smt3, rel):
+    if rel not in _SMT3_TEXT:
+        _SMT3_TEXT[rel] = drop_nonmatching((smt3 / "src/smt3" / f"{rel}.c").read_text(errors="replace"))
+    return _SMT3_TEXT[rel]
+
+
+def decl_begin(rel):
+    return f"/* Declarations from smt3-decomp src/smt3/{rel}.c */"
+
+
+def decl_end(rel):
+    return f"/* End of declarations from src/smt3/{rel}.c */"
+
+
+DECL_BLOCK = re.compile(r"^/\* Declarations from smt3-decomp src/smt3/(\S+)\.c \*/\n.*?"
+                        r"^/\* End of declarations from src/smt3/\1\.c \*/\n\n?", re.M | re.S)
+
+
+def decl_block(smt3, rel):
+    """Every declaration of one SMT3 file (types, prototypes, its data as extern)."""
+    decls = [d for d in (declaration(b) for b in blocks(smt3_text(smt3, rel))) if d is not None]
+    return decl_begin(rel) + "\n" + "\n\n".join(decls) + "\n" + decl_end(rel) + "\n"
+
+
+_BODY = {}
+
+
+def body_text(smt3, rel, fn):
+    """One SMT3 function definition with the comment directly above it, `static` dropped."""
+    if (rel, fn) not in _BODY:
+        text = smt3_text(smt3, rel)
+        start, end = definitions(text)[fn]
         cv = code_view(text)
         lead = start
         while lead > 0:
@@ -367,10 +389,35 @@ def write_shared(smt3, rel, functions):
                 break
         body = text[lead:end]
         brace = body.find("{", body.find(fn))
-        body = strip_static(body[:brace]) + body[brace:]
-        path = SHARED / rel / f"{fn}.c"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(f'#include "shared/{rel}/decls.h"\n\n{body}\n')
+        _BODY[(rel, fn)] = strip_static(body[:brace]) + body[brace:]
+    return _BODY[(rel, fn)]
+
+
+def tu_bodies(smt3, text, candidates):
+    """Carried bodies present in a TU: fn -> (rel, start, end), from candidates {fn: rel}."""
+    out = {}
+    for fn, (start, end) in definitions(text).items():
+        rel = candidates.get(fn)
+        if rel is None:
+            continue
+        body = body_text(smt3, rel, fn)
+        at = text.find(body)
+        if at >= 0:
+            out[fn] = (rel, at, at + len(body))
+    return out
+
+
+def set_decl_blocks(smt3, text, rels):
+    """Keep exactly the declaration blocks of rels, new ones after the TU's leading #includes."""
+    have = {m.group(1) for m in DECL_BLOCK.finditer(text)}
+    text = DECL_BLOCK.sub(lambda m: m.group(0) if m.group(1) in rels else "", text)
+    add = sorted(set(rels) - have)
+    if add:
+        at = re.match(r"(?:[ \t]*(?:#include[^\n]*)?\n)*", text).end()
+        head = text[:at].rstrip("\n")
+        text = (head + "\n\n" if head else "") + "\n".join(decl_block(smt3, rel) for rel in add) \
+            + "\n" + text[at:].lstrip("\n")
+    return text
 
 
 def outcomes(version):
@@ -407,10 +454,8 @@ SDK_BLOCK = "# SMT3 settings for SDK members with carried C (tools/raidou_c.py)"
 def sdk_settings(smt3, version):
     """Give each SDK member that compiles SMT3 C the compiler, cflags and asflags SMT3
     uses for that library."""
-    users = set()
-    for src in (ROOT / "src" / version / "sdk").rglob("*.c"):
-        if INCLUDE_BODY.search(src.read_text()):
-            users.add(src.relative_to(ROOT / "src" / version).with_suffix("").as_posix())
+    users = {unit for unit, src in unit_sources(version).items()
+             if unit.startswith("sdk/") and DECL_BLOCK.search(src.read_text())}
     for name in ("compilers.txt", "cflags.txt", "asflags.txt"):
         theirs = {}
         for line in (smt3 / "config/smt3" / name).read_text().splitlines():
@@ -427,58 +472,88 @@ def sdk_settings(smt3, version):
         path.write_text(text)
 
 
+def candidates(version):
+    """fn -> SMT3 rel for every Raidou function identical to SMT3 C of the same name."""
+    return {r["function"]: shared_rel(r["smt3_src"]) for r in read_pairs()
+            if r["version"] == version and r["status"] == "identical" and r["function"] == r["smt3_name"]}
+
+
+def port_text(smt3, text, unit, carry, cands):
+    """A TU with carry's bodies written inline and every other carried body back to INCLUDE_ASM."""
+    def asm_line(fn):
+        return f'INCLUDE_ASM(const s32, "{unit}", {fn});'
+
+    text = INCLUDE_BODY.sub(lambda m: asm_line(m.group(2)), text)
+    for fn, (rel, a, b) in sorted(tu_bodies(smt3, text, cands).items(), key=lambda x: -x[1][1]):
+        if fn not in carry:
+            text = text[:a] + asm_line(fn) + text[b:]
+
+    def to_c(m):
+        fn = m.group(2)
+        return body_text(smt3, carry[fn], fn) if fn in carry and m.group(1) == unit else m.group(0)
+
+    text = re.sub(r'^INCLUDE_ASM\(\s*const s32,\s*"([^"]+)"\s*,\s*(\w+)\s*\);$', to_c, text, flags=re.M)
+    rels = {rel for rel, _, _ in tu_bodies(smt3, text, cands).values()}
+    return set_decl_blocks(smt3, text, rels)
+
+
+def write_tus(texts):
+    """texts: unit -> {version: text}. A unit with the same text in both games is one
+    shared file; otherwise each game has its own. Returns the number of files changed."""
+    written = 0
+    for unit, by_version in texts.items():
+        shared = SRC / f"{unit}.c"
+        own = {v: SRC / v / f"{unit}.c" for v in VERSIONS}
+        same = len(by_version) == len(VERSIONS) and len(set(by_version.values())) == 1
+        want = {shared: next(iter(by_version.values()))} if same else {own[v]: x for v, x in by_version.items()}
+        for path in [shared, *own.values()]:
+            if path in want:
+                if not path.exists() or path.read_text() != want[path]:
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text(want[path])
+                    written += 1
+            elif path.exists():
+                path.unlink()
+                written += 1
+    return written
+
+
 def cmd_port(args):
     smt3 = args.smt3.expanduser().resolve()
-    pairs = [r for r in read_pairs() if r["status"] == "identical" and r["function"] == r["smt3_name"]]
-    if args.units:
-        pairs = [r for r in pairs if any(r["src"].startswith(f"src/{r['version']}/{u}") for u in args.units)]
-    carry = defaultdict(dict)    # version -> function -> rel
     retry = re.compile(args.retry) if args.retry else None
-    for r in pairs:
-        status, why = outcomes(r["version"]).get(r["function"], ("c", ""))
-        if status == "asm" and not (retry and retry.search(why)):
-            continue
-        carry[r["version"]][r["function"]] = shared_rel(r["smt3_src"])
-    by_rel = defaultdict(set)
-    for funcs in carry.values():
-        for fn, rel in funcs.items():
-            by_rel[rel].add(fn)
-    for rel, funcs in sorted(by_rel.items()):
-        write_shared(smt3, rel, funcs)
+    carry, cands = {}, {}
     for version in VERSIONS:
+        cands[version] = candidates(version)
         done = outcomes(version)
-        changed = 0
-        for src in sorted((ROOT / "src" / version).rglob("*.c")):
-            text = src.read_text()
-            unit = src.relative_to(ROOT / "src" / version).with_suffix("").as_posix()
+        carry[version] = {}
+        for fn, rel in cands[version].items():
+            status, why = done.get(fn, ("c", ""))
+            if status == "asm" and not (retry and retry.search(why)):
+                continue
+            carry[version][fn] = rel
+    texts = defaultdict(dict)
+    for version in VERSIONS:
+        for unit, src in unit_sources(version).items():
             if args.units and not any(unit.startswith(u) for u in args.units):
                 continue
-
-            def to_c(m):
-                fn = m.group(2)
-                rel = carry[version].get(fn)
-                return f'#include "shared/{rel}/{fn}.c"' if rel and m.group(1) == unit else m.group(0)
-
-            def to_asm(m):
-                fn = m.group(2)
-                return m.group(0) if fn in carry[version] else f'INCLUDE_ASM(const s32, "{unit}", {fn});'
-
-            new = INCLUDE_BODY.sub(to_asm, text)
-            new = re.sub(r'^INCLUDE_ASM\(\s*const s32,\s*"([^"]+)"\s*,\s*(\w+)\s*\);$', to_c, new, flags=re.M)
-            if new != text:
-                src.write_text(new)
-                changed += 1
-        for fn in carry[version]:
+            texts[unit][version] = port_text(smt3, src.read_text(), unit, carry[version], cands[version])
+    written = write_tus(texts)
+    for version in VERSIONS:
+        done = outcomes(version)
+        kept = set()
+        for unit, src in unit_sources(version).items():
+            kept.update(tu_bodies(smt3, src.read_text(), cands[version]))
+        for fn in kept:
             done[fn] = ("c", "")
         write_outcomes(version, done)
         sdk_settings(smt3, version)
-        print(f"{version}: {len(carry[version])} functions from C, {changed} units rewritten")
-    remove_unused_bodies()
+        print(f"{version}: {len(kept)} functions from C")
+    print(f"{written} files changed; {len(shared_sources())} shared TUs")
 
 
 WORK = Path.home() / ".local/state/raidou-decomp-work/stage4"
 ERROR = re.compile(r"^(\S+?):(\d+):(?:\d+:)? (?!warning)(.*)$")
-FROM = re.compile(r"^(?:In file included|\s+) from (\S+?):\d+[:,]")
+FROM = re.compile(r"^(?:In file included|\s+) from (\S+?):(\d+)[:,]")
 
 
 def known_symbols(version):
@@ -492,38 +567,52 @@ def known_symbols(version):
 
 
 def compile_failures(log):
-    """(version, function) -> message, for each body a compiler error is traced to."""
-    out, unit_errors, version, chain = {}, defaultdict(list), None, []
+    """(version, unit) -> [(TU line or None, message)] for each compiler error, at the
+    line of the TU itself (an error in a header is placed at the TU's #include)."""
+    out, version, unit, chain = defaultdict(list), None, None, []
     for line in log.read_text(errors="replace").splitlines():
         if line.startswith("FAILED: "):
-            m = re.search(r"build/(raidou\d)/src/raidou\d/(\S+)\.o\b", line)
+            m = re.search(r"build/(raidou\d)/src/(?:raidou\d/)?(\S+)\.o\b", line)
             version, unit = (m.group(1), m.group(2)) if m else (None, None)
             chain = []
             continue
         if m := FROM.match(line):
-            chain.append(m.group(1))
+            chain.append((m.group(1), int(m.group(2))))
             continue
         m = ERROR.match(line)
         if not m or version is None:
             if not line.startswith((" ", "In ")):
                 chain = []
             continue
-        path, msg = m.group(1), m.group(3).strip()
-        bodies = [p for p in [path] + chain if INCLUDE_PATH.match(p)]
-        if path.endswith("/decls.h") and path.startswith("src/shared/"):
-            # A clash in one SMT3 file's declarations fails all of its bodies in the unit.
-            out.setdefault((version, "decls:" + unit + ":" + path[len("src/shared/"):-len("/decls.h")]),
-                           f"declarations clash: {msg}")
-        elif bodies:
-            fn = Path(bodies[-1] if path not in bodies else path).stem
-            out.setdefault((version, fn), f"compile error: {msg}")
-        else:
-            unit_errors[(version, unit)].append(f"{path}:{m.group(2)}: {msg}")
+        at = [(m.group(1), int(m.group(2)))] + chain
+        tu = [n for path, n in at if path.startswith("src/") and path.endswith(".c")]
+        out[(version, unit)].append((tu[0] if tu else None, f"{m.group(1)}:{m.group(2)}: {m.group(3).strip()}"))
         chain = []
-    return out, unit_errors
+    return out
 
 
-INCLUDE_PATH = re.compile(r"^src/shared/.+/\w+\.c$")
+def blame_errors(text, bodies, errors):
+    """Map TU-line errors to bodies: {fn: reason}, plus the unit's other errors."""
+    line_of = lambda off: text.count("\n", 0, off) + 1
+    regions = [(line_of(a), line_of(b), fn) for fn, (rel, a, b) in bodies.items()]
+    decls = {m.group(1): (line_of(m.start()), line_of(m.end())) for m in DECL_BLOCK.finditer(text)}
+    fails, other = {}, []
+    for line, msg in errors:
+        msg = msg.split(": ", 1)[1] if ": " in msg else msg
+        hit = [fn for a, b, fn in regions if line is not None and a <= line <= b]
+        rel = next((r for r, (a, b) in decls.items() if line is not None and a <= line <= b), None)
+        if hit:
+            fails.setdefault(hit[0], f"compile error: {msg}")
+        elif rel:
+            # A clash in one SMT3 file's declarations fails all of its bodies in the unit.
+            for fn, (r, _, _) in bodies.items():
+                if r == rel:
+                    fails.setdefault(fn, f"declarations clash: {msg}")
+        else:
+            other.append(msg)
+    return fails, other
+
+
 R_26, R_HI16, R_LO16, R_GPREL16, R_LITERAL = 4, 5, 6, 7, 8
 
 
@@ -716,7 +805,8 @@ def sext16(v):
 def cmd_verify(args):
     from retail_elf import RETAIL, VERSIONS as INFO, load_segments
 
-    compile_fails, unit_errors = compile_failures(args.log)
+    smt3 = args.smt3.expanduser().resolve()
+    compile_fails = compile_failures(args.log)
     for version in VERSIONS:
         retail = (ROOT / RETAIL[version]).read_bytes()
         segs = load_segments(retail)
@@ -724,25 +814,22 @@ def cmd_verify(args):
         known = known_symbols(version)
         done = outcomes(version)
         fails, needs = {}, {}
-        for src in sorted((ROOT / "src" / version).rglob("*.c")):
+        cands = candidates(version)
+        for unit, src in unit_sources(version).items():
             text = src.read_text()
-            unit = src.relative_to(ROOT / "src" / version).with_suffix("").as_posix()
-            bodies = {m.group(2): known[m.group(2)] for m in INCLUDE_BODY.finditer(text)}
+            spans = tu_bodies(smt3, text, cands)
+            bodies = {fn: known[fn] for fn in spans}
             if not bodies:
                 continue
-            rels = {m.group(2): m.group(1) for m in INCLUDE_BODY.finditer(text)}
-            for fn in bodies:
-                if (version, fn) in compile_fails:
-                    fails[fn] = compile_fails[(version, fn)]
-                clash = compile_fails.get((version, f"decls:{unit}:{rels[fn]}"))
-                if clash:
-                    fails[fn] = clash
-            if (version, unit) in unit_errors or any(fn in fails for fn in bodies):
+            f, other = blame_errors(text, spans, compile_fails.get((version, unit), []))
+            fails.update(f)
+            if other or f:
+                # Bodies that compiled are checked once the unit builds again.
                 for fn in bodies:
-                    if fn not in fails and (version, unit) in unit_errors:
-                        fails[fn] = "unit compile error: " + unit_errors[(version, unit)][0]
+                    if fn not in fails and other:
+                        fails[fn] = "unit compile error: " + other[0]
                 continue
-            obj = ROOT / "build" / version / "src" / version / f"{unit}.o"
+            obj = ROOT / "build" / version / src.relative_to(ROOT).with_suffix(".o")
             if not obj.exists() or obj.stat().st_mtime < src.stat().st_mtime:
                 for fn in bodies:
                     fails.setdefault(fn, "no object")
@@ -793,36 +880,19 @@ def cmd_verify(args):
             print(f"  {count:5d}  {why}")
 
 
-def remove_unused_bodies():
-    """Delete body files and declaration headers no Raidou unit includes."""
-    used = set()
-    for version in VERSIONS:
-        for src in (ROOT / "src" / version).rglob("*.c"):
-            used.update(f"{m.group(1)}/{m.group(2)}" for m in INCLUDE_BODY.finditer(src.read_text()))
-    for body in SHARED.rglob("*.c"):
-        if body.relative_to(SHARED).with_suffix("").as_posix() not in used:
-            body.unlink()
-    for decls in SHARED.rglob("decls.h"):
-        if not any(decls.parent.glob("*.c")):
-            decls.unlink()
-            for d in [decls.parent, *decls.parent.parents]:
-                if d == SHARED or any(d.iterdir()):
-                    break
-                d.rmdir()
-
-
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("pairs")
-    p.add_argument("--smt3", type=Path, default=ROOT.parent / "smt3-decomp")
+    p.add_argument("--smt3", type=Path, default=SMT3)
     p.set_defaults(func=cmd_pairs)
     p = sub.add_parser("port")
-    p.add_argument("--smt3", type=Path, default=ROOT.parent / "smt3-decomp")
+    p.add_argument("--smt3", type=Path, default=SMT3)
     p.add_argument("--units", nargs="*", help="only units under these paths (e.g. sdf sdk)")
     p.add_argument("--retry", help="carry again asm rows whose reason matches this regex")
     p.set_defaults(func=cmd_port)
     p = sub.add_parser("verify")
+    p.add_argument("--smt3", type=Path, default=SMT3)
     p.add_argument("--log", type=Path, default=Path.home() / ".local/state/raidou-decomp-work/stage4/ninja.log")
     p.set_defaults(func=cmd_verify)
     args = ap.parse_args()

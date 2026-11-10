@@ -22,6 +22,8 @@ import re
 import sys
 from pathlib import Path
 
+from units import unit_sources, write_unit
+
 ROOT = Path(__file__).resolve().parent.parent
 LINE = re.compile(r'^INCLUDE_SDATA\([^,]+,\s*"[^"]+",\s*(\w+)\);\n\n?', re.M)
 DEF = re.compile(r"^[A-Za-z_][\w \t\*]*?\b(\w+)\s*\([^;{]*\)\s*\{?[ \t]*$", re.M)
@@ -59,20 +61,23 @@ def write_text_if_changed(path, text):
 
 def place(version):
     names = {n: int(a, 16) for n, a in ROW.findall((ROOT / "config" / version / "symbol_addrs.txt").read_text())}
+    # C carried from SMT3 names Raidou data by SMT3's name (smt3_symbols.txt).
+    alias_names = {}
+    for n, a in re.findall(r"^(\w+) = 0x([0-9A-Fa-f]+);", (ROOT / "config" / version / "smt3_symbols.txt").read_text(), re.M):
+        alias_names.setdefault(int(a, 16), []).append(n)
     added = 0
-    for c in sorted((ROOT / "src" / version).rglob("*.c")):
-        unit = c.relative_to(ROOT / "src" / version).with_suffix("").as_posix()
+    for unit, c in unit_sources(version).items():
         data = ROOT / "asm" / version / "data" / f"{unit}.sdata.s"
         text = LINE.sub("", c.read_text())
         if not data.exists():
-            write_text_if_changed(c, text)
+            write_unit(version, c, text)
             continue
         out_dir = ROOT / "asm" / version / "nonmatchings" / unit
         out_dir.mkdir(parents=True, exist_ok=True)
         syms = []
         blocks = list(BLOCK.finditer(data.read_text()))
         if not blocks:
-            write_text_if_changed(c, text)
+            write_unit(version, c, text)
             continue
         # An .align raises the whole section's alignment, so no symbol may ask for
         # more than the unit's own start address has.
@@ -118,7 +123,7 @@ def place(version):
                     sym in mine
                     and sym not in still_asm
                     and sym not in written_symbols
-                    and not re.search(rf"\b{sym}\b", code)
+                    and not any(re.search(rf"\b{n}\b", code) for n in [sym, *alias_names.get(addr_of[sym], ())])
                 ):
                     anchors.append((addr_of[sym], m.start(), sym))
         compiled = {s for _, _, s in anchors}
@@ -135,7 +140,7 @@ def place(version):
             added += 1
         # One blank line before each included item, however often this reruns.
         text = re.sub(r"\n{3,}(?=INCLUDE_(?:RODATA|SDATA)\()", "\n\n", text)
-        write_text_if_changed(c, text)
+        write_unit(version, c, text)
     print(f"{version}: {added} INCLUDE_SDATA lines")
 
 

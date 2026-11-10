@@ -24,9 +24,16 @@ sys.path.insert(0, str(ROOT))
 
 VERSIONS = json.loads((ROOT / "config/versions.json").read_text())
 VERSION_PATTERN = "|".join(re.escape(version) for version in VERSIONS) or r"(?!)"
-# build/<version>/[base/]src/<version>/<unit>.o, the objects a C unit compiles to.
-OBJECT_PATH = re.compile(rf"build/({VERSION_PATTERN})/(?:base/)?(src/\1/.+)\.o")
-LINKED_OBJECT_PATH = re.compile(rf"build/({VERSION_PATTERN})/(src/\1/.+)\.o")
+# build/<version>/[base/]src/[<version>/]<unit>.o, the objects a C unit compiles to
+# (src/<unit>.c is a TU both games share).
+OBJECT_PATH = re.compile(rf"build/({VERSION_PATTERN})/(?:base/)?(src/(?:\1/)?.+)\.o")
+LINKED_OBJECT_PATH = re.compile(rf"build/({VERSION_PATTERN})/(src/(?:\1/)?.+)\.o")
+
+
+def unit_source(root: Path, version: str, name: str) -> str:
+    """The source a version compiles for a unit: its own file, else the shared one."""
+    own = f"src/{version}/{name}.c"
+    return own if (root / own).is_file() or not (root / f"src/{name}.c").is_file() else f"src/{name}.c"
 
 
 def percent(numerator: int, denominator: int) -> float:
@@ -244,7 +251,7 @@ def record_object(root: Path, source: Path, obj: Path) -> None:
     assembly = (root / (str(obj) + ".s")).read_text()
     for included in re.findall(r'^\s*\.include "([^"\n]+)"\s*$', assembly, re.M):
         paths.add("include/macro.inc" if included == "macro.inc" else included)
-    version = source.parts[1]
+    version = match[1]
     paths.update((f"config/{version}/cflags.txt", "include/macro.inc"))
     receipt = {"schema": 1, "source": str(source), "object": str(obj),
                "files": {p: digest(root / p) for p in sorted(paths)}}
@@ -337,8 +344,8 @@ class Production:
                 self.syms.setdefault(match[1], int(match[2], 16))
 
     def unit(self, unit: dict, name: str) -> dict:
-        obj = f"build/{self.version}/src/{self.version}/{name}.o"
-        source = f"src/{self.version}/{name}.c"
+        source = unit_source(self.root, self.version, name)
+        obj = f"build/{self.version}/{source[:-2]}.o"
         assembly_path = obj + ".s"
         if obj not in self.receipt["objects"] or not {source, assembly_path} <= self.receipt["files"].keys():
             raise ValueError(f"{name}: missing compiled source provenance")
@@ -496,7 +503,7 @@ def reconcile(report: dict, scope: str, root: Path = ROOT, *,
             version, name = scope, unit["name"]
         if version not in VERSIONS:
             raise ValueError(f"unknown report version: {version}")
-        if not (root / f"src/{version}/{name}.c").is_file():
+        if not (root / unit_source(root, version, name)).is_file():
             # The game scope is deliberately limited to the C reconstruction
             # target. An unexpected unit is a configuration error, not credit.
             raise ValueError(f"missing source for game report unit: {version}/{name}")
@@ -510,8 +517,8 @@ def reconcile(report: dict, scope: str, root: Path = ROOT, *,
     from configure import objdiff_progress_category
 
     for version, production in proofs.items():
-        prefix = f"build/{version}/src/{version}/"
-        expected = {path[len(prefix):-2] for path in production.map
+        prefix = f"build/{version}/src/"
+        expected = {re.sub(rf"^{version}/", "", path[len(prefix):-2]) for path in production.map
                     if path.startswith(prefix)} - outside
         # A game-scope report leaves non-game units out of its unit list
         # altogether, so they are never in `outside` either.

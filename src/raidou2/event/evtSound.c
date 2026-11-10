@@ -1,10 +1,94 @@
 #include "common.h"
 
-#include "shared/event/evtSound/evtGetSoundIndex.c"
+/* Declarations from smt3-decomp src/smt3/event/evtSound.c */
+#include "common.h"
 
-#include "shared/event/evtSound/evtLoadEventBgm.c"
+#include "kernel.h"
 
-#include "shared/event/evtSound/evtCheckEventBgmLoaded.c"
+extern char evtSkyProcName[];
+
+extern char evtFmtStr[];
+
+extern char evtPackNameFormat[];
+
+extern u16 skyanime;
+
+extern s32 fldbokasi;
+
+#include "sdk_libc.h"
+
+extern s32 p2sdLoadSMGFile(s32 MidiNo);
+
+extern s32 p2sdLoadCheckMidi(s32 MidiNo);
+
+extern void p2sdPlayBGM(s32 MidiNo);
+
+extern void p2sdSetBgmTrack(s32 index);
+
+extern void p2sdPlayBGMFade(s32 index);
+
+extern void p2sdStopBGM(s32 index);
+
+extern void p2sdPlaySE(s32 index, s32 volume, s32 pan);
+
+extern void p2sdStopSe(u32 sound);
+
+s32 evtGetSoundIndex(s32 eventId, s32 variation);
+
+s32 evtGetSoundIndex(s32 eventId, s32 variation);
+
+s32 evtLoadEventBgm(s32 eventId);
+
+s32 evtCheckEventBgmLoaded(s32 eventId);
+
+s32 evtPlayEventBgm(s32 eventId, s32 variation);
+
+void evtTransEventBgm(s32 eventId, s32 variation);
+
+s32 evtFadeInEventBgm(s32 eventId, s32 variation);
+
+s32 evtStopEventBgm(s32 eventId, s32 variation);
+
+s32 evtPlaySe(s32 eventno, s32 seno);
+
+s32 func_001FA158(s32 eventId, s32 variation);
+
+void evtMakeEventPackName(s32 index, char *buffer);
+/* End of declarations from src/smt3/event/evtSound.c */
+
+s32 evtGetSoundIndex(s32 eventId, s32 variation)
+{
+    s32 index;
+
+    index = 0xC7;
+    if (eventId != 0x31F) {
+        index = eventId - 0x259;
+        if (eventId >= 0x320) {
+            index = (eventId < 0x384) ? (eventId - 0x258) : (eventId - 0x29E);
+        }
+    }
+    return ((index + 0x100) << 16) + variation;
+}
+
+s32 evtLoadEventBgm(s32 eventId)
+{
+    s32 soundIndex;
+
+    if ((u32)(eventId - 0x258) >= 0x100) {
+        return 0;
+    }
+    soundIndex = evtGetSoundIndex(eventId, 0);
+    p2sdLoadSMGFile(soundIndex);
+    return soundIndex;
+}
+
+s32 evtCheckEventBgmLoaded(s32 eventId)
+{
+    if ((u32)(eventId - 0x258) >= 0x100) {
+        return 1;
+    }
+    return p2sdLoadCheckMidi(evtGetSoundIndex(eventId, 0)) == 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtSound", func_001DFBA8);
 
@@ -12,13 +96,36 @@ INCLUDE_ASM(const s32, "event/evtSound", evtTransEventBgm);
 
 INCLUDE_ASM(const s32, "event/evtSound", evtFadeInEventBgm);
 
-#include "shared/event/evtSound/evtStopEventBgm.c"
+s32 evtStopEventBgm(s32 eventId, s32 variation)
+{
+    s32 soundIndex;
 
-#include "shared/event/evtSound/evtPlaySe.c"
+    if ((u32)(eventId - 0x258) >= 0x100) {
+        return 0;
+    }
+    soundIndex = evtGetSoundIndex(eventId, variation);
+    p2sdStopBGM(soundIndex);
+    return soundIndex;
+}
+
+s32 evtPlaySe(s32 eventno, s32 seno)
+{
+    s32 soundIndex;
+
+    if ((u32)(eventno - 0x258) >= 0x100) {
+        return 0;
+    }
+    soundIndex = evtGetSoundIndex(eventno, seno);
+    p2sdPlaySE(soundIndex, 0x7F, 0x3F);
+    return soundIndex;
+}
 
 INCLUDE_ASM(const s32, "event/evtSound", func_001DFD48);
 
-#include "shared/event/evtSound/evtMakeEventPackName.c"
+void evtMakeEventPackName(s32 index, char *buffer)
+{
+    sprintf(buffer, evtPackNameFormat, index);
+}
 
 INCLUDE_SDATA(const s32, "event/evtSound", D_004DFF20);
 
