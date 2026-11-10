@@ -797,7 +797,32 @@ void dds3BillboardSetMode(billHandle_t *hBillboard, s32 mode) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DE010);
+/* Store the variant bits in one child payload or every child of a list. */
+void dds3BillboardSetCondition(billHandle_t *hBillboard, s32 condition) {
+    s32 remainingChildren;
+    dds3BillResource_tag **childEntries;
+    dds3BillResource_tag **childCursor;
+
+    condition = (s16)condition;
+    switch (hBillboard->type) {
+    case 0:
+        hBillboard->u.child->type = (u16)condition;
+        break;
+    case 1:
+        remainingChildren = hBillboard->u.animationData->TexNum;
+        childEntries = hBillboard->u.animationData->pResList;
+
+        if (remainingChildren > 0) {
+            childCursor = childEntries;
+            do {
+                (*childCursor)->type = (u16)condition;
+                childCursor++;
+                remainingChildren--;
+            } while (remainingChildren != 0);
+        }
+        break;
+    }
+}
 
 saddr_t dds3BillboardGetTex(billHandle_t *hBillboard) {
     if (hBillboard->type == 0) {

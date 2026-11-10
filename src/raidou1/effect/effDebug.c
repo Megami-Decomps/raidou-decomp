@@ -8,7 +8,7 @@ INCLUDE_ASM(const s32, "effect/effDebug", effDebugLineDraw);
 
 INCLUDE_ASM(const s32, "effect/effDebug", effDebugLineDraw2);
 
-INCLUDE_ASM(const s32, "effect/effDebug", func_00218B40);
+INCLUDE_ASM(const s32, "effect/effDebug", effDebugStringDraw);
 
 INCLUDE_ASM(const s32, "effect/effDebug", effDebugWireframeSphereDraw);
 

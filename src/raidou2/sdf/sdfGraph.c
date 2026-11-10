@@ -424,7 +424,15 @@ void sdfGrInit(s32 aPacketBuffSize) {
                           0x1000, 0x40, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", func_003CDEB0);
+void sdfGrInitNewFrame(void) {
+    s8 nextBuffer = sdfFrameId ^ 1;
+
+    /* Do not select a buffer while its index is the busy-buffer status. */
+    SDF_FLAG_WAIT(&sdfGrDrawBusy, sdfGrDrawBusy == nextBuffer);
+    sdfFrameId = nextBuffer;
+    sdfGrSetupPacketBuff((s8)sdfFrameId);
+    sdfCoreDrawReset();
+}
 INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_004E4290);
 
 INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_004E4291);

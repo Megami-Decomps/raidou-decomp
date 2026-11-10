@@ -1170,9 +1170,47 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D7710);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D77A8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001D77E8);
+saddr_t slChooseData_getCardInfo2_B(void) {
+    slMcResult_t t = sdfMcFuncChdir1();
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001D7888);
+    if (t == SL_MC_RESULT_PENDING) {
+        return 0;
+    }
+    if (t == SL_MC_RESULT_SUCCESS) {
+        sdfMcSetSlotFlags(mccb, slChooseSaveIndex, SL_SLOT_FLAG_DIRECTORY_READY);
+        sdfMcFuncGetDir(mccb, slIconSysName, slDirEntries, 1);
+        return EE_ADDR_S(slChooseData_getCardInfo3_B);
+    }
+    if (t == SL_MC_RESULT_ERROR) {
+        slSetInfo(0);
+        gslDrawFlagFile = 0;
+        gslErrorCode = 0;
+        return slBootError();
+    }
+    return slChooseData_getCardInfoNext_B();
+}
+
+s32 slChooseData_getCardInfo3_B(void) {
+    s32 value;
+    slMcResult_t status = sdfMcFuncGetDir1(&value);
+    if (status == SL_MC_RESULT_PENDING) {
+        return 0;
+    }
+    if (status == SL_MC_RESULT_SUCCESS) {
+        if (value == 1) {
+            sdfMcSetSlotFlags(mccb, slChooseSaveIndex,
+                                SL_SLOT_FLAG_CAN_READ_SAVE | SL_SLOT_FLAG_DELETE_BEFORE_WRITE);
+        }
+        return slChooseData_getCardInfoNext_B();
+    }
+    if (status == SL_MC_RESULT_ERROR) {
+        slSetInfo(0);
+        gslDrawFlagFile = 0;
+        gslErrorCode = 0;
+        return slBootError();
+    }
+    return slChooseData_getCardInfoNext_B();
+}
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D7918);
 
@@ -1318,7 +1356,20 @@ saddr_t slSaveProc_waitDataReady(void) {
     return EE_ADDR_S(slSaveProc_writeFile);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001D8658);
+saddr_t slProc_Format(void) {
+    slMcResult_t status = sdfMcFuncFormat1();
+    if (status == SL_MC_RESULT_PENDING) {
+        return 0;
+    }
+    dds3SoftResetOn();
+    if (status < 0) {
+        slSetInfo(0);
+        gslErrorCode = 6;
+        return EE_ADDR_S(slErrorWait);
+    }
+    slSetInfo(6);
+    return slHitAnyKey(EE_ADDR(slCardChk));
+}
 
 saddr_t slFormatStart(void) {
     slSetInfo(5);

@@ -1012,7 +1012,10 @@ void effEveBEDCutSetParams(effEveBEDCut_t *hEveBEDCut, const void *pParams) {
     *(effEveBEDRecord_t *)hEveBEDCut = *(const effEveBEDRecord_t *)pParams;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E6DB8);
+/* This copies a packed 0x30-byte record, not a complete 0x60-byte billboard state. */
+void effEveBEDCutGetParams(const effEveBEDRecord_t *hEveBEDCut, effEveBEDRecord_t *pParams) {
+    *pParams = *hEveBEDCut;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E6E20);
 
@@ -1199,9 +1202,166 @@ void effEVECombParSmokeDelete(effEVECombParSmoke_t *pCombParSmoke) {
     sdfMemFreeDirect(pCombParSmoke->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E7830);
+/* Randomize delays, scale oscillations, spin and motion. Scale amplitudes share
+   the base-scale random factor; motion's Y component begins as zero height. */
+void effEVECombParSmokePartInit(effEVECombParSmoke_t *pCombParSmoke, s32 index) {
+    effEVECombParSmokePart_t *particle = &pCombParSmoke->pPart[index];
+    f32 direction[EFF_EVENT_VECTOR_COMPONENTS];
+    f32 scaleFactor;
+    f32 spawnRadius;
+    s32 startDelaySpread = pCombParSmoke->head.wait;
+    s32 motionDelaySpread = pCombParSmoke->head.motionDelaySpread;
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E7BE0);
+    particle->frame = -SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % startDelaySpread);
+    particle->wait = -SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % motionDelaySpread);
+    scaleFactor = dds3GetRandFloatA(dds3EffectBase) * pCombParSmoke->head.scaleRandomness + (1.0f - pCombParSmoke->head.scaleRandomness);
+    particle->scale = pCombParSmoke->head.baseScale * scaleFactor;
+    particle->s_w_r = dds3GetRandFloatA(dds3EffectBase) * (EFF_EVENT_HALF_TURN * 2.0f);
+    particle->s_h_r = dds3GetRandFloatA(dds3EffectBase) * (EFF_EVENT_HALF_TURN * 2.0f);
+    particle->scalePhaseStepX = pCombParSmoke->head.scalePhaseStep * (dds3GetRandFloatA(dds3EffectBase) * 0.5f + 0.5f);
+    particle->scalePhaseStepY = pCombParSmoke->head.scalePhaseStep * (dds3GetRandFloatA(dds3EffectBase) * 0.5f + 0.5f);
+    particle->scaleAmplitudeX = pCombParSmoke->head.scaleAmplitudeX * (dds3GetRandFloatA(dds3EffectBase) * EFF_EVENT_JITTER_RANGE + EFF_EVENT_JITTER_BASE) * scaleFactor;
+    particle->scaleAmplitudeY = pCombParSmoke->head.scaleAmplitudeY * (dds3GetRandFloatA(dds3EffectBase) * EFF_EVENT_JITTER_RANGE + EFF_EVENT_JITTER_BASE) * scaleFactor;
+    particle->roll = dds3GetRandFloatA(dds3EffectBase) * (EFF_EVENT_HALF_TURN * 2.0f);
+    if (dds3GetRandA((effRandState_t *)dds3EffectBase) & 1) {
+        particle->roll_s = pCombParSmoke->head.angularSpeed * (dds3GetRandFloatA(dds3EffectBase) * EFF_EVENT_JITTER_RANGE + EFF_EVENT_JITTER_BASE);
+    } else {
+        particle->roll_s = -(pCombParSmoke->head.angularSpeed * (dds3GetRandFloatA(dds3EffectBase) * EFF_EVENT_JITTER_RANGE + EFF_EVENT_JITTER_BASE));
+    }
+    spawnRadius = pCombParSmoke->head.spawnRadius;
+    direction[0] = (dds3GetRandFloatA(dds3EffectBase) - EFF_EVENT_RANDOM_MIDPOINT) * 2.0f;
+    direction[1] = (dds3GetRandFloatA(dds3EffectBase) - EFF_EVENT_RANDOM_MIDPOINT) * 2.0f;
+    direction[2] = (dds3GetRandFloatA(dds3EffectBase) - EFF_EVENT_RANDOM_MIDPOINT) * 2.0f;
+    SDF_VU0_LOADVECTOR(direction);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(direction);
+    /* Each coordinate consumes its own radial random factor, not one shared radius. */
+    particle->pos[0] = spawnRadius * dds3GetRandFloatA(dds3EffectBase) * direction[0];
+    particle->pos[1] = spawnRadius * dds3GetRandFloatA(dds3EffectBase) * direction[1];
+    particle->pos[2] = spawnRadius * dds3GetRandFloatA(dds3EffectBase) * direction[2];
+    particle->motion[0] = (dds3GetRandFloatA(dds3EffectBase) - EFF_EVENT_RANDOM_MIDPOINT) * 2.0f;
+    particle->motion[1] = 0;
+    particle->motion[2] = (dds3GetRandFloatA(dds3EffectBase) - EFF_EVENT_RANDOM_MIDPOINT) * 2.0f;
+    SDF_VU0_LOADVECTOR(particle->motion);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(particle->motion);
+    particle->amplitude = pCombParSmoke->head.swayAmplitude * (dds3GetRandFloatA(dds3EffectBase) * pCombParSmoke->head.swayRandomness + (1.0f - pCombParSmoke->head.swayRandomness));
+    particle->angle = 0;
+    particle->up_s = pCombParSmoke->head.verticalSpeed * (dds3GetRandFloatA(dds3EffectBase) * pCombParSmoke->head.verticalSpeedRandomness + (1.0f - pCombParSmoke->head.verticalSpeedRandomness));
+    particle->shift_s = pCombParSmoke->head.lateralSpeed * (dds3GetRandFloatA(dds3EffectBase) * pCombParSmoke->head.lateralSpeedRandomness + (1.0f - pCombParSmoke->head.lateralSpeedRandomness));
+}
+
+/* vu0 routine: advance and draw every live particle of one smoke set. */
+void eff_1AEC58(effEVECombParSmoke_t *work) {
+    sdfVector4_t offset;
+    sdfVector4_t origin;
+    f32 side[EFF_EVENT_VECTOR_COMPONENTS];
+    effEVECombParSmokePart_t *particle;
+    u8 repeat;
+    u32 count;
+    s32 duration;
+    s32 fadeIn;
+    s32 fadeOut;
+    u32 color;
+    f32 growth;
+    f32 swayPhaseStep;
+    f32 swayAmplitudeStep;
+    f32 drift;
+    f32 wave;
+    f32 ratio;
+    f32 scaleX;
+    f32 scaleY;
+    u32 rgba;
+    s32 age;
+    s32 remaining;
+    u32 i;
+
+    SDF_VU0_LOADVECTOR(aViewTarget);
+    SDF_VU0_LOADVECTOR_B(aViewEye);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_LOADVECTOR_B(aViewDown);
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR(side);
+    growth = SDF_FRAME_DECAY(work->head.accelerationPercent / 100.0f + 1.0f);
+    particle = work->pPart;
+    count = work->head.number;
+    repeat = work->head.repeat;
+    duration = SDF_FRAMES(work->head.duration);
+    fadeIn = SDF_FRAMES(work->head.fade_in);
+    fadeOut = SDF_FRAMES(work->head.fade_out);
+    color = work->head.color;
+    swayPhaseStep = SDF_FRAME_STEP(work->head.swayPhaseStep);
+    swayAmplitudeStep = SDF_FRAME_STEP(work->head.swayAmplitudeStep);
+    SDF_VU0_COPYVECTOR(&origin, work);
+    i = 0;
+    dds3BillboardSetMode(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), work->head.drawMode);
+    dds3BillboardSetMode(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), 3);
+    for (; i < count; i++, particle++) {
+        age = particle->frame;
+        if (age == 0) {
+            effEVECombParSmokePartInit(work, i);
+        }
+        if (age > 0 && age <= duration) {
+            if (particle->wait >= 0) {
+                drift = SDF_FRAME_STEP(particle->shift_s);
+                particle->pos[0] += side[0] * drift;
+                particle->pos[1] += side[1] * drift;
+                particle->pos[2] += side[2] * drift;
+                wave = particle->amplitude * sdfSin(particle->angle);
+                particle->motion[1] += SDF_FRAME_STEP(particle->up_s);
+                offset.x = particle->pos[0] + particle->motion[0] * wave;
+                offset.y = particle->pos[1] + particle->motion[1];
+                offset.z = particle->pos[2] + particle->motion[2] * wave;
+                particle->up_s *= growth;
+                particle->shift_s *= growth;
+                particle->amplitude += swayAmplitudeStep;
+                particle->angle += swayPhaseStep;
+            } else {
+                particle->wait++;
+                offset.x = particle->pos[0];
+                offset.y = particle->pos[1];
+                offset.z = particle->pos[2];
+            }
+            if (age < fadeIn) {
+                ratio = (f32)age / (f32)fadeIn;
+            } else {
+                remaining = duration - age;
+                if (remaining <= fadeOut) {
+                    ratio = (f32)remaining / (f32)fadeOut;
+                } else {
+                    ratio = 1.0f;
+                }
+            }
+            rgba = effColorBlend(color & 0xFFFFFF, color, ratio);
+            scaleY = particle->scale;
+            scaleX = scaleY + particle->scaleAmplitudeX * sdfCos(particle->s_w_r);
+            scaleY = scaleY + particle->scaleAmplitudeY * sdfCos(particle->s_h_r);
+            SDF_VU0_LOADVECTOR_MEMOPS(offset.x);
+            SDF_VU0_LOADVECTOR_B(&origin);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR_MEMOPS(offset.x);
+            dds3BillboardSetPosition(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), &offset);
+            dds3BillboardSetScale(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), scaleX, scaleY);
+            dds3BillboardSetRGBA(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), rgba);
+            dds3BillboardSetRotate(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), particle->roll);
+            dds3BillboardDraw(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex));
+            dds3BillboardSetPosition(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), &offset);
+            dds3BillboardSetScale(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), scaleX, scaleY);
+            dds3BillboardSetRGBA(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), rgba);
+            dds3BillboardSetRotate(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), particle->roll);
+            dds3BillboardDraw(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex));
+            particle->s_w_r += SDF_FRAME_STEP(particle->scalePhaseStepX);
+            particle->s_h_r += SDF_FRAME_STEP(particle->scalePhaseStepY);
+            particle->roll += SDF_FRAME_STEP(particle->roll_s);
+        }
+        if (duration == age && repeat != 0) {
+            particle->frame = 0;
+        } else {
+            particle->frame++;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", effEVECombParSmokeDraw);
 
@@ -1209,13 +1369,59 @@ INCLUDE_ASM(const s32, "effect/effEvent", func_001E8B30);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E8B40);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E8B48);
+/* Copy the serialized emitter parameters without changing their values. */
+void effEVECombParSmokeGetParams(const effEVECombParSmokeParam_t *pCombParSmoke, effEVECombParSmokeParam_t *pParam) {
+    *pParam = *pCombParSmoke;
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E8C28);
+/* Copy parameters and clamp only start-delay spread and fade divisors;
+ * motionDelaySpread remains unvalidated on this native path. */
+void effEVECombParSmokeSetParams(effEVECombParSmokeParam_t *pCombParSmoke, const effEVECombParSmokeParam_t *pParam) {
+    *pCombParSmoke = *pParam;
+    if (pCombParSmoke->fade_in <= 0) {
+        pCombParSmoke->fade_in = 1;
+    }
+    if (pCombParSmoke->fade_out <= 0) {
+        pCombParSmoke->fade_out = 1;
+    }
+    if (pCombParSmoke->wait <= 0) {
+        pCombParSmoke->wait = 1;
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E8D48);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E8D68);
+effAPPoint4_tag *effAPPoint4Create(const effAPPoint4Param_t *pParams, u16 type, void *pData) {
+    const effAPPoint4Param_t *head = pParams;
+    u32 recordCount = head->count;
+    sdfMemHandle_t *allocation = sdfMemAllocDirect(recordCount * sizeof(effAPPoint4Part_tag) + sizeof(effAPPoint4_tag));
+    effAPPoint4_tag *work = EE_ADDR_AS(effAPPoint4_tag *, sdfMemLock(allocation));
+    effAPPoint4Part_tag *record = (effAPPoint4Part_tag *)(work + 1);
+    dds3EffectPart_t *parameterTemplate;
+    s32 delayModulus;
+    u32 recordIndex;
+
+    work->param = *head;
+    work->hMem = allocation;
+    work->pPart = record;
+    if (work->param.spread <= 0) {
+        work->param.spread = 1;
+    }
+    work->pBezier4P = dds3Bezier4PCreate(recordCount);
+    if (recordCount != 0) {
+        delayModulus = work->param.spread;
+        parameterTemplate = dds3EffectPartCreate(type, pData);
+        record->hPart = parameterTemplate;
+        record->frame = -SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % delayModulus);
+        record++;
+        for (recordIndex = 1; recordIndex < recordCount; recordIndex++) {
+            record->hPart = dds3EffectPartCopy(parameterTemplate);
+            record->frame = -SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % delayModulus);
+            record++;
+        }
+    }
+    return work;
+}
 
 /* Forward block 0, block 1's word-2 kind (narrowed to u16), and block 1 unchanged. */
 effAPPoint4_tag *effAPPoint4CreatePCF(void *data) {

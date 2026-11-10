@@ -865,7 +865,23 @@ void dds3TrackPolySet(dds3TrackPoly_t *hTrackPoly, s32 number, const u128 *pV) {
     SDF_VU0_COPYVECTOR(vertex + 1, pV + 1);
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001DFD38);
+void dds3TrackPolyMove(dds3TrackPoly_t *hTrackPoly, s32 number, const u128 *pMove) {
+    dds3TrackPolyList_t *cell = hTrackPoly->trackList + number;
+    s32 count = hTrackPoly->point;
+    u128 *vertex = cell->pVertex;
+    s32 i;
+    SDF_VU0_LOADVECTOR_B_BARRIER(pMove);
+    if (count > 0) {
+        i = count;
+        do {
+            SDF_VU0_LOADVECTOR(vertex);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(vertex);
+            i--;
+            vertex++;
+        } while (i != 0);
+    }
+}
 
 void dds3TrackPolySet2(dds3TrackPoly_t *hTrackPoly, s32 number, const u128 *pV) {
     dds3TrackPolyList_t *cell = &hTrackPoly->trackList[number];
@@ -893,7 +909,29 @@ void dds3TrackPolySet2(dds3TrackPoly_t *hTrackPoly, s32 number, const u128 *pV) 
     SDF_VU0_COPYVECTOR(vertex + 2, pV + 2);
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001DFE58);
+void dds3TrackPolyMove2(dds3TrackPoly_t *hTrackPoly, s32 number, const u128 *pMove) {
+    dds3TrackPolyList_t *cell = hTrackPoly->trackList + number;
+    s32 count = cell->count / 3;
+    u128 *vertex = cell->pVertex;
+    s32 i;
+    SDF_VU0_LOADVECTOR_B(pMove);
+    if (count > 0) {
+        i = count;
+        do {
+            SDF_VU0_LOADVECTOR(vertex);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(vertex);
+            SDF_VU0_LOADVECTOR(vertex + 1);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(vertex + 1);
+            SDF_VU0_LOADVECTOR(vertex + 2);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(vertex + 2);
+            i--;
+            vertex += 3;
+        } while (i != 0);
+    }
+}
 
 void dds3TrackPolyVCRefresh_ParType1(dds3TrackPoly_t *hTrackPoly, s32 index) {
     u32 startCarrier[4];
@@ -930,17 +968,276 @@ void dds3TrackPolyVCRefresh_ParType1(dds3TrackPoly_t *hTrackPoly, s32 index) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E0040);
+void dds3TrackPolyVCRefresh_ParType2(dds3TrackPoly_t *hTrackPoly, s32 index) {
+    dds3TrackPolyList_t *cell = (dds3TrackPolyList_t *)((u8 *)(index * sizeof(dds3TrackPolyList_t)) + EE_ADDR(hTrackPoly->trackList));
+    u32 count = cell->count / 3;
+    trackTriangleColors_t *vertex;
+    u32 middleWord;
+    u32 edgeWord;
+    sdfVector4_t cur0;
+    sdfVector4_t cur1;
+    sdfVector4_t step0;
+    sdfVector4_t step1;
+    s32 alpha0[4];
+    s32 alpha1[4];
+    s32 col0[4];
+    s32 col1[4];
+    s32 out0[4];
+    s32 out1[4];
+    u32 j;
+    u32 packedMiddle;
+    u32 packedEdge;
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E02D0);
+    if (count >= 2) {
+        vertex = (trackTriangleColors_t *)cell->pVC;
+        middleWord = vertex->middle;
+        edgeWord = vertex->edge0;
+        alpha0[0] = middleWord & 0xFF000000;
+        MMI_RGBA_UNPACK(alpha0, 1.0f / 128.0f);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_LOADVECTOR(dds3TrackPolyVCType2Param);
+        SDF_VU0_INTERPOLATE(1.0f / count);
+        SDF_VU0_STOREVECTOR(&step0);
+        alpha1[0] = edgeWord & 0xFF000000;
+        MMI_RGBA_UNPACK(alpha1, 1.0f / 128.0f);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_LOADVECTOR(dds3TrackPolyVCType2Param);
+        SDF_VU0_INTERPOLATE(1.0f / count);
+        SDF_VU0_STOREVECTOR_NOMEM(&step1);
+        col0[0] = middleWord;
+        MMI_RGBA_UNPACK(col0, 1.0f / 128.0f);
+        SDF_VU0_STOREVECTOR_NOMEM(&cur0);
+        col1[0] = edgeWord;
+        MMI_RGBA_UNPACK(col1, 1.0f / 128.0f);
+        SDF_VU0_STOREVECTOR_NOMEM(&cur1);
+        for (j = 0; j < count; j++) {
+            SDF_VU0_LOADVECTOR(&cur0);
+            SDF_VU0_COPYVECTOR_A_TO_B();
+            /* Read each packed output once, then reuse its color word for the vertex fields. */
+            MMI_RGBA_PACK_UNIT(out0[0], 128.0f);
+            packedMiddle = out0[0];
+            vertex->middle = packedMiddle;
+            SDF_VU0_LOADVECTOR_C(&step0);
+            SDF_VU0_SUBVECTOR_B_C();
+            SDF_VU0_STOREVECTOR_B(&cur0);
+            SDF_VU0_LOADVECTOR(&cur1);
+            SDF_VU0_COPYVECTOR_A_TO_B();
+            MMI_RGBA_PACK_UNIT(out1[0], 128.0f);
+            packedEdge = out1[0];
+            vertex->edge0 = packedEdge;
+            vertex->edge1 = packedEdge;
+            SDF_VU0_LOADVECTOR_C(&step1);
+            SDF_VU0_SUBVECTOR_B_C();
+            SDF_VU0_STOREVECTOR_B(&cur1);
+            vertex++;
+        }
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E0330);
+void dds3TrackPolyVCSet_Normal(dds3TrackPoly_t *hTrackPoly, u32 abgr_in, u32 abgr_out)
+{
+    s32 perCell = hTrackPoly->point >> 1;
+    s32 count = hTrackPoly->number;
+    s32 i;
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E0480);
+    for (i = 0; i < count; i++) {
+        u32 *vc = hTrackPoly->trackList[i].pVC;
+        s32 j;
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E0648);
+        for (j = 0; j < perCell; j++) {
+            vc[0] = abgr_in;
+            vc[1] = abgr_out;
+            vc += 2;
+        }
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E06B8);
+void dds3TrackPolyVCSet_Acute(dds3TrackPoly_t *hTrackPoly, u32 abgr_in, u32 abgr_out) {
+    u32 startCarrier[4];
+    u32 cellCarrier[4];
+    u32 packed[4];
+    u32 perCell = hTrackPoly->point >> 1;
+    u32 cellCount = hTrackPoly->number;
+    s32 i;
+
+    startCarrier[0] = abgr_in & 0xFF000000;
+    MMI_RGBA_UNPACK(startCarrier, 1.0f / 128.0f);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(dds3TrackPolyVCSetAcuteParam);
+    VU0_LERP_VF10_VF11(1.0f / (f32)perCell);
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    for (i = 0; i < cellCount; i++) {
+        u32 *vc = hTrackPoly->trackList[i].pVC;
+        s32 j;
+
+        cellCarrier[0] = abgr_in;
+        MMI_RGBA_UNPACK_NOMEM(cellCarrier, 0x3C000000);
+        for (j = 0; j < perCell; j++) {
+            u32 color;
+
+            SDF_VU0_COPYVECTOR_A_TO_B();
+            MMI_RGBA_PACK_UNIT(color, 0x43000000);
+            packed[0] = color;
+            vc[0] = color;
+            vc[1] = color;
+            SDF_VU0_SUBVECTOR_B_C();
+            SDF_VU0_COPYVECTOR_B_TO_A();
+            vc += 2;
+        }
+    }
+}
+
+void dds3TrackPolyVCSet_AcuteW(dds3TrackPoly_t *hTrackPoly, u32 color) {
+    u32 words = hTrackPoly->point;
+    u32 count = hTrackPoly->number;
+    u32 quarter = words >> 2;
+    u32 i;
+    u32 j;
+    u32 **cell;
+    u32 *vertex;
+    s32 alpha[4];
+    s32 start[4];
+    s32 rise[4];
+    s32 fall[4];
+    u32 base;
+    u32 odd;
+    u32 packed;
+
+    alpha[0] = color & 0xFF000000;
+    MMI_RGBA_UNPACK(alpha, 1.0f / 128.0f);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(dds3TrackPolyVCSetAcuteWParam);
+    SDF_VU0_INTERPOLATE(1.0f / quarter);
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    i = 0;
+    if (count != 0) {
+        base = color & 0x00FFFFFF;
+        odd = (words >> 1) & 1;
+        cell = (u32 **)&hTrackPoly->trackList[0].pVC;
+        do {
+            vertex = *cell;
+            start[0] = base;
+            MMI_RGBA_UNPACK(start, 1.0f / 128.0f);
+            /* Keep each packed ramp value in its output lane before copying it to both vertex words. */
+            for (j = 0; j < quarter; j++) {
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                MMI_RGBA_PACK_UNIT(packed, 128.0f);
+                rise[0] = packed;
+                vertex[0] = rise[0];
+                vertex[1] = vertex[0];
+                SDF_VU0_ADDVECTOR_B_C();
+                SDF_VU0_COPYVECTOR_B_TO_A();
+                vertex += 2;
+            }
+            if (odd) {
+                vertex[0] = color;
+                vertex[1] = color;
+                vertex += 2;
+            }
+            for (j = 0; j < quarter; j++) {
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                MMI_RGBA_PACK_UNIT(packed, 128.0f);
+                fall[0] = packed;
+                vertex[0] = fall[0];
+                vertex[1] = vertex[0];
+                SDF_VU0_SUBVECTOR_B_C();
+                SDF_VU0_COPYVECTOR_B_TO_A();
+                vertex += 2;
+            }
+            i++;
+            cell = (u32 **)((u8 *)cell + sizeof(dds3TrackPolyList_t));
+        } while (i < count);
+    }
+}
+
+void dds3TrackPolyVCSet2_Normal(dds3TrackPoly_t *hTrackPoly, u32 abgr_in, u32 abgr_out) {
+    s32 cellCount = hTrackPoly->number;
+    s32 perCell = hTrackPoly->point / 3;
+    s32 i;
+
+    for (i = 0; i < cellCount; i++) {
+        u32 *vc = hTrackPoly->trackList[i].pVC;
+        s32 j;
+
+        for (j = 0; j < perCell; j++) {
+            vc[1] = abgr_in;
+            vc[2] = abgr_out;
+            vc[0] = abgr_out;
+            vc += 3;
+        }
+    }
+}
+
+void dds3TrackPolyVCSet2_Acute(dds3TrackPoly_t *hTrackPoly, u32 abgr_in, u32 abgr_out) {
+    sdfVector4_t cur0;
+    sdfVector4_t cur1;
+    sdfVector4_t step0;
+    sdfVector4_t step1;
+    s32 alpha0[4];
+    s32 alpha1[4];
+    s32 col0[4];
+    s32 col1[4];
+    s32 out0[4];
+    s32 out1[4];
+    s32 groups = 3;
+    u32 perCell = hTrackPoly->point / groups;
+    u32 count = hTrackPoly->number;
+    u32 i;
+    u32 j;
+    u32 **cell;
+    trackTriangleColors_t *vertex;
+    u32 packedMiddle;
+    u32 packedEdge;
+
+    alpha0[0] = abgr_in & 0xFF000000;
+    MMI_RGBA_UNPACK(alpha0, 1.0f / 128.0f);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(dds3TrackPolyVCAcuteParam);
+    SDF_VU0_INTERPOLATE(1.0f / perCell);
+    SDF_VU0_STOREVECTOR(&step0);
+    alpha1[0] = abgr_out & 0xFF000000;
+    MMI_RGBA_UNPACK(alpha1, 1.0f / 128.0f);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(dds3TrackPolyVCAcuteParam);
+    SDF_VU0_INTERPOLATE(1.0f / perCell);
+    SDF_VU0_STOREVECTOR(&step1);
+    i = 0;
+    if (count != 0) {
+        cell = &hTrackPoly->trackList[0].pVC;
+        do {
+            vertex = (trackTriangleColors_t *)*cell;
+            col0[0] = abgr_in;
+            MMI_RGBA_UNPACK(col0, 1.0f / 128.0f);
+            SDF_VU0_STOREVECTOR(&cur0);
+            col1[0] = abgr_out;
+            MMI_RGBA_UNPACK(col1, 1.0f / 128.0f);
+            SDF_VU0_STOREVECTOR(&cur1);
+            for (j = 0; j < perCell; j++) {
+                SDF_VU0_LOADVECTOR(&cur0);
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                /* These packed words feed every color field for their vertex. */
+                MMI_RGBA_PACK_UNIT(out0[0], 0x43000000);
+                packedMiddle = out0[0];
+                vertex->middle = packedMiddle;
+                SDF_VU0_LOADVECTOR_C(&step0);
+                SDF_VU0_SUBVECTOR_B_C();
+                SDF_VU0_STOREVECTOR_B(&cur0);
+                SDF_VU0_LOADVECTOR(&cur1);
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                MMI_RGBA_PACK_UNIT(out1[0], 0x43000000);
+                packedEdge = out1[0];
+                vertex->edge0 = packedEdge;
+                vertex->edge1 = packedEdge;
+                SDF_VU0_LOADVECTOR_C(&step1);
+                SDF_VU0_SUBVECTOR_B_C();
+                SDF_VU0_STOREVECTOR_B(&cur1);
+                vertex++;
+            }
+            i++;
+            cell = (u32 **)((u8 *)cell + sizeof(dds3TrackPolyList_t));
+        } while (i < count);
+    }
+}
 
 void dds3TrackPolyVCSet2_AcuteW(dds3TrackPoly_t *hTrackPoly, u32 abgr_in, u32 abgr_out) {
     s32 cellCount = hTrackPoly->number;
@@ -981,7 +1278,26 @@ void dds3TrackPolyVCSet2_AcuteW(dds3TrackPoly_t *hTrackPoly, u32 abgr_in, u32 ab
     }
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E0A80);
+void dds3TrackPolyVC3Set_Normal(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2) {
+    s32 cellCount = hTrackPoly->number;
+    s32 perCell = hTrackPoly->point / 6;
+    s32 i;
+
+    for (i = 0; i < cellCount; i++) {
+        u32 *vc = hTrackPoly->trackList[i].pVC;
+        s32 j;
+
+        for (j = 0; j < perCell; j++) {
+            vc[0] = abgr_2;
+            vc[1] = abgr_1;
+            vc[2] = abgr_0;
+            vc[3] = abgr_0;
+            vc[4] = abgr_1;
+            vc[5] = abgr_2;
+            vc += 6;
+        }
+    }
+}
 
 void dds3TrackPolyVC3Set_Acute(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2) {
     s32 cellCount = hTrackPoly->number;
@@ -1072,13 +1388,114 @@ void dds3TrackPolyVC3Set_AcuteW(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abg
     }
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E0D98);
+void dds3TrackPolyVCSet4_Normal(dds3TrackPoly_t *hTrackPoly, u32 abgr_in, u32 abgr_out) {
+    s32 perCell = hTrackPoly->point >> 2;
+    s32 cellCount = hTrackPoly->number;
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E0DF8);
+    s32 cellIndex;
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E0EB0);
+    for (cellIndex = 0; cellIndex < cellCount; cellIndex++) {
+        u32 *vertices = hTrackPoly->trackList[cellIndex].pVC;
+        s32 i;
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E0FB0);
+        for (i = 0; i < perCell; i++) {
+            vertices[2] = abgr_in;
+            vertices[1] = abgr_in;
+            vertices[3] = abgr_out;
+            vertices[0] = abgr_out;
+            vertices += 4;
+        }
+    }
+}
+
+void dds3TrackPolyVCSet4_Acute(dds3TrackPoly_t *hTrackPoly, u32 abgr_in, u32 abgr_out) {
+    s32 perCell = hTrackPoly->point >> 2;
+    u32 firstAlpha = abgr_in & 0xFF000000;
+    u32 secondAlpha = abgr_out & 0xFF000000;
+    s32 cellCount = hTrackPoly->number;
+    u32 firstStep = firstAlpha / perCell;
+    u32 secondStep = secondAlpha / perCell;
+    u32 firstRGB = abgr_in & 0x00FFFFFF;
+    u32 secondRGB = abgr_out & 0x00FFFFFF;
+    s32 i;
+
+    for (i = 0; i < cellCount; i++) {
+        u32 *vc = hTrackPoly->trackList[i].pVC;
+        u32 alphaA = firstAlpha;
+        u32 alphaB = secondAlpha;
+        s32 j;
+
+        for (j = 0; j < perCell; j++) {
+            alphaA -= firstStep;
+            alphaB -= secondStep;
+            vc[2] = firstRGB | (alphaA & 0xFF000000);
+            vc[1] = firstRGB | (alphaA & 0xFF000000);
+            vc[3] = secondRGB | (alphaB & 0xFF000000);
+            vc[0] = secondRGB | (alphaB & 0xFF000000);
+            vc += 4;
+        }
+    }
+}
+
+void dds3TrackPolyVCSet4_AcuteW(dds3TrackPoly_t *hTrackPoly, u32 abgr_in, u32 abgr_out) {
+    s32 perCell = hTrackPoly->point >> 3;
+    u32 firstAlpha = abgr_in & 0xFF000000;
+    u32 secondAlpha = abgr_out & 0xFF000000;
+    s32 cellCount = hTrackPoly->number;
+    u32 firstStep = firstAlpha / perCell;
+    u32 secondStep = secondAlpha / perCell;
+    u32 firstRGB = abgr_in & 0x00FFFFFF;
+    u32 secondRGB = abgr_out & 0x00FFFFFF;
+    s32 i;
+
+    for (i = 0; i < cellCount; i++) {
+        u32 *vc = hTrackPoly->trackList[i].pVC;
+        u32 alphaA = 0;
+        u32 alphaB = 0;
+        s32 j;
+
+        for (j = 0; j < perCell; j++) {
+            vc[2] = firstRGB | (alphaA & 0xFF000000);
+            vc[1] = firstRGB | (alphaA & 0xFF000000);
+            vc[3] = secondRGB | (alphaB & 0xFF000000);
+            vc[0] = secondRGB | (alphaB & 0xFF000000);
+            alphaA += firstStep;
+            alphaB += secondStep;
+            vc += 4;
+        }
+        alphaA = firstAlpha;
+        alphaB = secondAlpha;
+        for (j = 0; j < perCell; j++) {
+            alphaA -= firstStep;
+            alphaB -= secondStep;
+            vc[2] = firstRGB | (alphaA & 0xFF000000);
+            vc[1] = firstRGB | (alphaA & 0xFF000000);
+            vc[3] = secondRGB | (alphaB & 0xFF000000);
+            vc[0] = secondRGB | (alphaB & 0xFF000000);
+            vc += 4;
+        }
+    }
+}
+
+void dds3TrackPolyVC5Set_Normal(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2) {
+    s32 cellCount = hTrackPoly->number;
+    s32 perCell = hTrackPoly->point / 5;
+    s32 i;
+
+    for (i = 0; i < cellCount; i++) {
+        u32 *vc = hTrackPoly->trackList[i].pVC;
+        s32 j;
+
+        for (j = 0; j < perCell; j++) {
+            vc[0] = abgr_2;
+            vc[1] = abgr_1;
+            vc[2] = abgr_0;
+            vc[3] = abgr_1;
+            vc[4] = abgr_2;
+            vc += 5;
+        }
+    }
+}
 
 void dds3TrackPolyVC5Set_Acute(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2) {
     s32 cellCount = hTrackPoly->number;
@@ -1210,7 +1627,159 @@ void dds3TrackPolyVCSet(dds3TrackPoly_t *hTrackPoly, s32 type, void *abgr_in, vo
     VCSetFunc[id * 3 + type](hTrackPoly, abgr_in, abgr_out);
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E1418);
+void dds3TrackPolyLinkOt(void) {
+    sdfDrawTag_t *lists[5];
+    sdfDrawTag_t **slot;
+    sdfDrawTag_t *list;
+    sdfDrawTag_t *specialList;
+    s32 count;
+    s32 i;
+    s32 remaining;
+    dds3TrackPoly_t *system;
+    dds3TrackPolyList_t *cell;
+    u64 *packet;
+
+    if (dds3TrackPolyTag == NULL) {
+        return;
+    }
+    memset(lists, 0, sizeof(lists));
+    for (system = dds3TrackPolyTag; system != NULL; system = system->next) {
+        slot = &lists[system->mode];
+        list = *slot;
+        if (list == 0) {
+            *slot = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+            sdfDrawTagInit(*slot);
+            sdf3DPrimLinkResetTm(*slot, 0);
+            list = *slot;
+        }
+        sdf3DPrimLinkMat(list, system->pMat, 0);
+        count = system->number;
+        if (system->type == TRACK_TOPOLOGY_PAIR) {
+            dds3PolygonPrimParm.faceIndex = dds3TrackPolyPairFaceIndex;
+            for (i = 0; i < count; i++) {
+                cell = &system->trackList[i];
+                dds3PolygonPrimParm.faceCount = 16;
+                dds3PolygonPrimParm.pointCount = 18;
+                remaining = cell->count;
+                dds3PolygonPrimParm.vertex = (sdfVector4_t *)cell->pVertex;
+                dds3PolygonPrimParm.vertexColor = cell->pVC;
+                dds3PolygonPrimParm.color = cell->color;
+                while (remaining >= 18) {
+                    remaining -= 16;
+                    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3PolygonPrimParm)));
+                    dds3PolygonPrimParm.vertex += 16;
+                    dds3PolygonPrimParm.vertexColor += 16;
+                }
+                if (remaining >= 4) {
+                    dds3PolygonPrimParm.faceCount = remaining - 2;
+                    dds3PolygonPrimParm.pointCount = remaining;
+                    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3PolygonPrimParm)));
+                }
+            }
+        } else if (system->type == TRACK_TOPOLOGY_TRIANGLE) {
+            dds3PolygonPrimParm.faceIndex = dds3TrackPolyTriangleFaceIndex;
+            for (i = 0; i < count; i++) {
+                cell = &system->trackList[i];
+                dds3PolygonPrimParm.faceCount = 16;
+                dds3PolygonPrimParm.pointCount = 15;
+                remaining = cell->count;
+                dds3PolygonPrimParm.vertex = (sdfVector4_t *)cell->pVertex;
+                dds3PolygonPrimParm.vertexColor = cell->pVC;
+                dds3PolygonPrimParm.color = cell->color;
+                while (remaining >= 15) {
+                    remaining -= 12;
+                    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3PolygonPrimParm)));
+                    dds3PolygonPrimParm.vertex += 12;
+                    dds3PolygonPrimParm.vertexColor += 12;
+                }
+                if (remaining >= 6) {
+                    dds3PolygonPrimParm.faceCount = (remaining / 3) * 4 - 4;
+                    dds3PolygonPrimParm.pointCount = remaining;
+                    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3PolygonPrimParm)));
+                }
+            }
+        } else if (system->type == TRACK_TOPOLOGY_FIVE_VECTOR) {
+            dds3PolygonPrimParm.faceIndex = dds3TrackPolyFiveVectorFaceIndex;
+            for (i = 0; i < count; i++) {
+                cell = &system->trackList[i];
+                dds3PolygonPrimParm.faceCount = 8;
+                dds3PolygonPrimParm.pointCount = 10;
+                remaining = cell->count;
+                dds3PolygonPrimParm.vertex = (sdfVector4_t *)cell->pVertex;
+                dds3PolygonPrimParm.vertexColor = cell->pVC;
+                dds3PolygonPrimParm.color = cell->color;
+                while (remaining >= 10) {
+                    remaining -= 5;
+                    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3PolygonPrimParm)));
+                    dds3PolygonPrimParm.vertex += 5;
+                    dds3PolygonPrimParm.vertexColor += 5;
+                }
+            }
+        } else if (system->type == TRACK_TOPOLOGY_SIX_VECTOR) {
+            dds3PolygonPrimParm.faceIndex = dds3TrackPolySixVectorFaceIndex;
+            for (i = 0; i < count; i++) {
+                cell = &system->trackList[i];
+                dds3PolygonPrimParm.faceCount = 10;
+                dds3PolygonPrimParm.pointCount = 12;
+                remaining = cell->count;
+                dds3PolygonPrimParm.vertex = (sdfVector4_t *)cell->pVertex;
+                dds3PolygonPrimParm.vertexColor = cell->pVC;
+                dds3PolygonPrimParm.color = cell->color;
+                while (remaining >= 12) {
+                    remaining -= 6;
+                    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3PolygonPrimParm)));
+                    dds3PolygonPrimParm.vertex += 6;
+                    dds3PolygonPrimParm.vertexColor += 6;
+                }
+            }
+        } else {
+            dds3PolygonPrimParm.faceIndex = dds3TrackPolyDefaultFaceIndex;
+            for (i = 0; i < count; i++) {
+                cell = &system->trackList[i];
+                dds3PolygonPrimParm.faceCount = 12;
+                dds3PolygonPrimParm.pointCount = 16;
+                remaining = cell->count;
+                dds3PolygonPrimParm.vertex = (sdfVector4_t *)cell->pVertex;
+                dds3PolygonPrimParm.vertexColor = cell->pVC;
+                dds3PolygonPrimParm.color = cell->color;
+                while (remaining >= 16) {
+                    remaining -= 12;
+                    sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3PolygonPrimParm)));
+                    dds3PolygonPrimParm.vertex += 12;
+                    dds3PolygonPrimParm.vertexColor += 12;
+                }
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (lists[i] != 0) {
+            ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))dds3TrackPolyOtTable[i]->regFunc)(dds3TrackPolyOtTable[i], lists[i]);
+        }
+    }
+    if (lists[4] != 0) {
+        specialList = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+        sdfDrawTagInit(specialList);
+        packet = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x30));
+        packet[0] = 2;
+        packet[1] = 0x5000000210000000ULL;
+        packet[2] = 0x1000000000008001ULL;
+        packet[3] = 0xE;
+        packet[4] = 0x8000000026ULL;
+        packet[5] = 0x42;
+        sdfDrawTagLink(specialList, EE_ADDR(packet));
+        effPolyOt.regFunc(&effPolyOt, specialList);
+        packet = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x30));
+        packet[0] = 2;
+        packet[1] = 0x5000000210000000ULL;
+        packet[2] = 0x1000000000008001ULL;
+        packet[3] = 0xE;
+        packet[4] = 0x42;
+        packet[5] = 0x42;
+        sdfDrawTagLink(lists[4], EE_ADDR(packet));
+        effPolyOt.regFunc(&effPolyOt, lists[4]);
+    }
+    dds3TrackPolyTag = NULL;
+}
 
 dds3TrianglePoly_t *dds3TrianglePolyCreate(s32 number) {
     s32 points = number * 3;
@@ -1535,7 +2104,56 @@ void dds3SpPoly_RingBuffInit(dds3SpPoly_Ring_t3 *ring, s32 number)
     polyBandLayoutRing(ring, number, radius);
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E2590);
+void polyBandLayoutRing(dds3SpPoly_Ring_t3 *ring, s32 number, f32 radius)
+{
+    dds3TrackPoly_t *strip = ring->hTrackPoly;
+    dds3TrackPolyList_t *entry = &strip->trackList[number];
+    sdfVector4_t radial;
+    sdfVector4_t inner;
+    sdfVector4_t outer;
+    f32 angleStep;
+    f32 angle;
+    u128 *pointCursor;
+    u128 *firstPointPair;
+    s32 pairs;
+    s32 i;
+
+    entry->count = strip->point;
+    pointCursor = entry->pVertex;
+    pairs = strip->point / 2;
+    inner.x = radius;
+    inner.y = radius;
+    inner.z = radius;
+    outer.x = radius + ring->radialWidth;
+    outer.y = radius + ring->radialWidth;
+    outer.z = radius + ring->radialWidth;
+    angleStep = 6.2831853f / (f32)ring->vertex;
+    SDF_VU0_LOADMATRIX(ring->head.matrix);
+    angle = 0.0f;
+    SDF_VU0_LOADVECTOR_C(ring->head.origin);
+    for (i = 0; i < pairs - 1; i++) {
+        radial.x = sdfCos(angle);
+        radial.y = 0.0f;
+        radial.z = sdfSin(angle);
+        SDF_VU0_LOADVECTOR(&radial);
+        SDF_VU0_APPLYMATRIX();
+        SDF_VU0_STOREVECTOR(&radial);
+        SDF_VU0_LOADVECTOR_B(&inner);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR(pointCursor + 1);
+        SDF_VU0_LOADVECTOR(&radial);
+        SDF_VU0_LOADVECTOR_B(&outer);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR(pointCursor);
+        pointCursor += 2;
+        angle += angleStep;
+    }
+    firstPointPair = entry->pVertex;
+    SDF_VU0_COPYVECTOR(pointCursor, firstPointPair);
+    SDF_VU0_COPYVECTOR(pointCursor + 1, firstPointPair + 1);
+}
 
 void dds3SpPoly_RingMove(dds3SpPoly_Ring_t3 *pRing, s32 number) {
     dds3TrackPoly_t *strip = pRing->hTrackPoly;
@@ -1971,7 +2589,27 @@ INCLUDE_ASM(const s32, "effect/polyManager", func_001E3608);
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001E3628);
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E37C0);
+void dds3SpPoly_RollRingSetEndless(dds3SpPoly_RollRing_t3 *pRollRing) {
+    u32 count;
+    dds3SpPoly_RollRingPhysics_t *entry;
+    u32 i;
+
+    count = pRollRing->head.number;
+    i = 0;
+    pRollRing->head.frame = POLY_RESET_DURATION;
+    pRollRing->head.alpha_e = 0;
+    pRollRing->head.alpha_s = 0;
+    entry = pRollRing->pPhysics;
+    if (count != 0) {
+        do {
+            if (entry->frame != POLY_INACTIVE_ENTRY_AGE) {
+                entry->frame = SDF_FRAMES(POLY_RESET_DURATION) - SDF_FRAMES(POLY_RESET_DURATION - POLY_RESET_ENTRY_AGE);
+            }
+            i++;
+            entry++;
+        } while (i < count);
+    }
+}
 
 void *dds3SpPolyCreate(s32 index, void *arg) {
     dds3SpPoly_Basic_t *effect = dds3SpPolyTable[index].func(arg);

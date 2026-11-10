@@ -1027,7 +1027,18 @@ u32 evtCommand_MODEL_SCL_XYZ(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001A89C0);
+u32 evt_1E50C0(void)
+{
+    void *unit;
+
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    if (unit == NULL) {
+        return 1;
+    }
+    evtSetUnitMotion(unit, scrGetIntPara(1), scrGetIntPara(2), scrGetIntPara(3), 0);
+    printf(evtMsgModelMotionDeprecated);
+    return 1;
+}
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044DFF0);
 
@@ -2107,7 +2118,18 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001AD418);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001AD458);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001AD478);
+u32 evt_1E92F8(void)
+{
+    if (scrGetIntPara(0) <= 0) {
+        dds3DrawFlag |= 0x2000000;
+        return 1;
+    }
+    if (scrGetCommandTimer() < SDF_FRAMES(scrGetIntPara(0))) {
+        dds3DrawFlag |= 0x2000000;
+        return 0;
+    }
+    return 1;
+}
 INCLUDE_SDATA(const s32, "event/evtCommand", D_0046C5DC);
 
 INCLUDE_SDATA(const s32, "event/evtCommand", D_0046C5E0);

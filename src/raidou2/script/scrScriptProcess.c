@@ -149,7 +149,32 @@ INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114A48);
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114AE0);
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114B58);
+/* Restart a procedure with an empty operand stack and fresh timers. */
+s32 scrStartProcessProcedure(scrProcessWork_s *pw, s32 procNo)
+{
+    s32 cursor;
+
+    if (procNo < 0 || procNo >= pw->TypeTable->ItemCount) {
+        return 0;
+    }
+    for (cursor = 0; (((char *)pw->Name)[cursor] = pw->ProcTable[procNo].Name[cursor]) != 0; cursor++) {
+    }
+    pw->CP = pw->ProcTable[procNo].CodeAddress;
+    pw->SP = 0;
+    {
+        scrStackData_u *stackValue = pw->StackData;
+        u8 *stackType = pw->StackType;
+
+        for (cursor = 27; cursor >= 0; cursor--) {
+            *stackType++ = 0;
+            stackValue++->i = 0;
+        }
+    }
+    pw->StartProc = procNo;
+    pw->ScriptTimer = 0;
+    pw->CommandTimer = 0;
+    return 1;
+}
 
 scrProcessWork_s *scrSearchScriptName(char *scriptname)
 {

@@ -203,9 +203,44 @@ void sdfPacUseSrc(sdfPacDecodeCb_t *cb, s32 size)
     cb->srcTotal += size;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_003755D0);
+void sdfPacNewBlock(sdfPacDecodeCb_t *cb)
+{
+    sdfPacStdBlockHeader_t *packet;
+    u32 alignmentOffset;
+    u32 packetBytes;
+    u32 headerBytes;
+    u32 payloadBytes;
+    s32 (*callback)();
+    s32 result;
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_003756A8);
+    alignmentOffset = cb->srcTotal & 0x3F;
+    if (alignmentOffset != 0) {
+        cb->stat = 1;
+        cb->rest = 0x40 - alignmentOffset;
+        return;
+    }
+    packet = (sdfPacStdBlockHeader_t *)cb->srcData;
+    sdfPacUseSrc(cb, 0x10);
+    packetBytes = packet->size;
+    cb->currBlockNum++;
+    headerBytes = (packet->flags & SDF_PAC_EXTRA_MASK) + 0x10;
+    payloadBytes = packetBytes - headerBytes;
+    cb->rest = payloadBytes;
+    callback = (s32 (*)())cb->callback;
+    result = callback(cb, 0, packet, payloadBytes);
+    if (result == 1) {
+        sdfPacMarkPhaseFinished(cb);
+        return;
+    }
+    if (result == 2) {
+        cb->stat = 1;
+        cb->rest = (cb->rest + 0x3F) & ~0x3F;
+    } else {
+        cb->stat = 2;
+    }
+}
+
+INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacEndBlock);
 
 s32 sdfPacDecode(sdfPacDecodeCb_t *cb, const u8 *data, s32 length)
 {
@@ -564,9 +599,42 @@ void sdfPacTexListDecoderTmxHeaderEndFunc(sdfPacDecodeCb_t *cb)
 
 INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_00376210);
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_00376240);
+void sdfPacTexListDecoderTmxBodyEndFunc(sdfPacDecodeCb_t *cb)
+{
+    sdfPacTexListDecodeCb_t *list = cb->slot.list;
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_003762B8);
+    sdfTexListAdd(cb->resrcTail->resrc, list->tmxCb.texHandle);
+    {
+        s32 nextIndex = list->currNum + 1;
+
+        list->currNum = nextIndex;
+        if (nextIndex == list->count) {
+            sdfChipFreeDirect(list);
+            sdfPacEndBlock(cb);
+        } else {
+            sdfPacResetOutputToAllocationEntry(cb);
+        }
+    }
+}
+
+void sdfPacTexListDecoder1(sdfPacDecodeCb_t *cb)
+{
+    s32 skipBytes = cb->srcLength;
+
+    if (cb->rest < skipBytes) {
+        skipBytes = cb->rest;
+    }
+    sdfPacUseSrc(cb, skipBytes);
+    {
+        s32 bytesRemaining = cb->rest - skipBytes;
+
+        cb->rest = bytesRemaining;
+        if (bytesRemaining != 0) {
+            return;
+        }
+    }
+    sdfPacResetOutputToAllocationEntry(cb);
+}
 
 void sdfPacTexListDecoder0(sdfPacDecodeCb_t *cb)
 {

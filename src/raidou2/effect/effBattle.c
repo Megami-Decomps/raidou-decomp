@@ -456,7 +456,13 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_001FBE98);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FBEC8);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FBEF8);
+s32 effBTLGetDrawEndFrame(effBTL_t *hBTLEffect, u16 CutNum) {
+    s32 bank = CutNum >= 2;
+    if (CutNum == 2) {
+        return hBTLEffect->banks[bank].list.frame;
+    }
+    return hBTLEffect->banks[bank].list.colorRampEndFrame;
+}
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FBF50);
 

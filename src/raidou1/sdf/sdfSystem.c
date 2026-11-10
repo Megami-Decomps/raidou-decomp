@@ -387,7 +387,19 @@ s32 sdfFreeAutoDelayed(void *allocation)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003560A0);
+s32 sdfFreeMemorySlotFromEitherHeap(void **slot)
+{
+    void *allocation = *slot;
+
+    if (allocation != NULL) {
+        *slot = NULL;
+        if (sdfChipCheck(allocation)) {
+            sdfChipFreeDirect(allocation);
+        } else {
+            sdfMemFreePtrDirect(allocation);
+        }
+    }
+}
 
 void FatalError(const char *format, ...) {
     for (;;) {
@@ -523,9 +535,46 @@ void sdfWaitVblank(s32 count)
     } while (rest > 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003565A0);
+void sdfDeleteTrackedThread(sdfThCB_t *node) {
+    sdfThCB_t **link;
+    sdfThCB_t *current;
+    s32 threadId;
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", func_00356638);
+    WaitSema(sdfThreadSema);
+    link = &sdfVblankThreadId;
+    current = *link;
+    while (current != node) {
+        link = &current->next;
+        current = current->next;
+    }
+    *link = node->next;
+    SignalSema(sdfThreadSema);
+    threadId = node->thId;
+    if (threadId == GetThreadId()) {
+        ExitDeleteThread();
+        return;
+    }
+    TerminateThread(threadId);
+    DeleteThread(threadId);
+}
+
+sdfThCB_t *sdfFindThreadNode(s32 threadId) {
+    sdfThCB_t *node;
+
+    if (threadId < 0) {
+        threadId = GetThreadId();
+    }
+    WaitSema(sdfThreadSema);
+    node = sdfVblankThreadId;
+    while (node != NULL) {
+        if (node->thId == threadId) {
+            break;
+        }
+        node = node->next;
+    }
+    SignalSema(sdfThreadSema);
+    return node;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003566A0);
 

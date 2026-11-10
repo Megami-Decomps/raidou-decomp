@@ -2009,7 +2009,18 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001C3208);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C3248);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001C3268);
+u32 evt_1E92F8(void)
+{
+    if (scrGetIntPara(0) <= 0) {
+        dds3DrawFlag |= 0x2000000;
+        return 1;
+    }
+    if (scrGetCommandTimer() < SDF_FRAMES(scrGetIntPara(0))) {
+        dds3DrawFlag |= 0x2000000;
+        return 0;
+    }
+    return 1;
+}
 INCLUDE_SDATA(const s32, "event/evtCommand", D_004DF840);
 
 INCLUDE_SDATA(const s32, "event/evtCommand", D_004DF844);

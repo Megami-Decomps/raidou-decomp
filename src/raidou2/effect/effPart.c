@@ -1596,7 +1596,13 @@ void dds3EffectPartModelSetScale(void *hData, f32 scale)
     mdlSetScale(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_002111B0);
+void dds3EffectPartModelSetRotateMatrix(mdlObj_t *hData, sdfMatrix4_t *pMatrix)
+{
+    SDF_VU0_LOADMATRIX(pMatrix);
+    SDF_VU0_STORE_ROW0(&hData->inner->tm.m[0]);
+    SDF_VU0_STORE_ROW1(&hData->inner->tm.m[4]);
+    SDF_VU0_STORE_ROW2(&hData->inner->tm.m[8]);
+}
 
 INCLUDE_ASM(const s32, "effect/effPart", func_002111F0);
 

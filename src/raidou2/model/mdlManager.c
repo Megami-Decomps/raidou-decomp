@@ -1178,7 +1178,18 @@ INCLUDE_ASM(const s32, "model/mdlManager", func_001B0220);
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B02C0);
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001B0578);
+void mdlHideAllNode(mdlObj_t *aHandle)
+{
+    sdfModelNode_t **items;
+    s32 count;
+    s32 i;
+
+    count = aHandle->inner->nodeList->count;
+    items = aHandle->inner->nodeList->items;
+    for (i = 0; i < count; i++) {
+        items[i]->flags = 1;
+    }
+}
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B05C0);
 
@@ -1381,7 +1392,27 @@ void mdlGetScreenOffset(mdlObj_t *aHandle, void *aOfs)
     SDF_VU0_ADDVECTOR();
 }
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001B0B70);
+/* vu0 routine: project an array of points and store their screen coordinates. */
+void mdlProjectPoints(mdlObj_t *ctx, f32 (*inputPoints)[4], f32 (*outputPoints)[4], s32 pointCount)
+{
+    s32 pointIndex;
+
+    SDF_VU0_LOADMATRIX(&ctx->inner->tm);
+    SDF_VU0_LOADVECTOR_BARRIER(&ctx->inner->scale);
+    SDF_VU0_SCALE_XYZ();
+    MultMatrixRev(&sdfViewMatrix);
+    MultMatrixRev(&dds3ScreenParam.TM);
+    for (pointIndex = 0; pointIndex < pointCount; pointIndex++) {
+        SDF_VU0_LOADVECTOR_BARRIER(inputPoints[pointIndex]);
+        SDF_VU0_APPLYMATRIX_XYZ1();
+        SDF_VU0_PERSVECTOR();
+        SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.scale);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.trans);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(outputPoints[pointIndex]);
+    }
+}
 
 void mdlMotionPause(mdlObj_t *aHandle)
 {

@@ -259,7 +259,40 @@ u64 sceGsPutIMR(u64 imr);
 u64 sceGsGetIMR(void);
 /* End of declarations from src/smt3/sdk/libgraph.c */
 
-INCLUDE_ASM(const s32, "sdk/libgraph/graph001", func_003ED2A0);
+void sceGsResetGraph(s16 mode, s16 interlace, s16 outputMode, s16 fieldMode)
+{
+    GParam *param;
+
+    switch (mode) {
+    case 0:
+        param = sceGsGetGParam();
+        *(volatile u64 *)0x12001000 = 0x200;
+        param->interlace = interlace;
+        param->mode = outputMode;
+        param->version = (*(volatile u64 *)0x12001000 >> 16) & 0xFF;
+        GsPutIMR(0xFF00);
+        param->fieldMode = fieldMode != 0;
+        if (param->intcHandlerEnabled != 0) {
+            DisableIntc(2);
+            RemoveIntcHandler(2, param->intcHandlerId);
+            param->intcHandlerEnabled = 0;
+            param->intcHandlerId = 0;
+        }
+        SetGsCrt(interlace & 1, outputMode & 0xFF, fieldMode & 1);
+        break;
+    case 1:
+        *(volatile u64 *)0x12001000 = 0x100;
+        break;
+    case 5:
+        param = sceGsGetGParam();
+        param->fieldMode = fieldMode != 0;
+        param->interlace = interlace;
+        param->mode = outputMode;
+        param->version = (*(volatile u64 *)0x12001000 >> 16) & 0xFF;
+        SetGsCrt(interlace & 1, outputMode & 0xFF, fieldMode & 1);
+        break;
+    }
+}
 
 GParam *sceGsGetGParam(void)
 {

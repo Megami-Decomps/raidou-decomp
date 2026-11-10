@@ -277,7 +277,10 @@ INCLUDE_ASM(const s32, "event/evtStage", func_001A3908);
 
 INCLUDE_ASM(const s32, "event/evtStage", func_001A3A00);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A3B18);
+void evtStartEvent(s32 no) {
+    sprintf(evtStageScriptPath, "/event/e%03d/e%03d/scr/e%03d.bf", no - no % 10, no, no);
+    scrStartScriptByName(0x3EB, evtStageScriptPath, 0);
+}
 
 INCLUDE_ASM(const s32, "event/evtStage", evtKillFieldScript);
 

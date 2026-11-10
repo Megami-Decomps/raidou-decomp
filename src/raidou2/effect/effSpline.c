@@ -213,11 +213,79 @@ void dds3FreeSplineHandle(dds3Spline_t *pSpline)
     sdfMemFreeDirect(pSpline->handle);
 }
 
-INCLUDE_ASM(const s32, "effect/effSpline", func_0020D230);
+s32 effSplRun(sdfVector4_t *pVertex, dds3Spline_t *pSpline)
+{
+    f32 t = pSpline->unk24;
+    s32 index = pSpline->unk20;
+    s32 running = 1;
 
-INCLUDE_ASM(const s32, "effect/effSpline", func_0020D2D0);
+    effSplCalc(pVertex, pSpline, index, t);
+    t += SDF_FRAME_STEP(pSpline->unk28);
+    if (t > 1.0f) {
+        t -= 1.0f;
+        index++;
+    }
+    if ((u32)index >= (u32)(pSpline->count - 1)) {
+        t = 0.0f;
+        index = 0;
+        running = 0;
+    }
+    pSpline->unk20 = index;
+    pSpline->unk24 = t;
+    return running;
+}
 
-INCLUDE_ASM(const s32, "effect/effSpline", func_0020D400);
+void effSplCalc(sdfVector4_t *vertex, dds3Spline_t *primitive, s32 recordIndex, f32 t) {
+    f32 *a;
+    f32 *b;
+    f32 *c;
+    f32 *d;
+
+    if ((u16)primitive->single == 0) {
+        a = primitive->coefs + recordIndex * 3;
+        b = primitive->coefB + recordIndex * 3;
+        c = primitive->coefC + recordIndex * 3;
+        d = (f32 *)primitive->points + recordIndex * 3;
+        vertex->x = ((a[0] * t + b[0]) * t + c[0]) * t + d[0];
+        vertex->y = ((a[1] * t + b[1]) * t + c[1]) * t + d[1];
+        vertex->z = ((a[2] * t + b[2]) * t + c[2]) * t + d[2];
+        vertex->w = 1.0f;
+    } else {
+        a = (f32 *)primitive->points + recordIndex * 3;
+        b = a + 3;
+        vertex->x = a[0] + (b[0] - a[0]) * t;
+        vertex->y = a[1] + (b[1] - a[1]) * t;
+        vertex->z = a[2] + (b[2] - a[2]) * t;
+    }
+}
+
+/* vu0 routine: sample the curve into vf10. */
+void effSplCalcRegist(dds3Spline_t *primitive, s32 recordIndex, f32 t)
+{
+    sdfVector4_t vertex;
+    f32 *a;
+    f32 *b;
+    f32 *c;
+    f32 *d;
+
+    if ((u16)primitive->single == 0) {
+        a = primitive->coefs + recordIndex * 3;
+        b = primitive->coefB + recordIndex * 3;
+        c = primitive->coefC + recordIndex * 3;
+        d = (f32 *)primitive->points + recordIndex * 3;
+        vertex.x = ((a[0] * t + b[0]) * t + c[0]) * t + d[0];
+        vertex.y = ((a[1] * t + b[1]) * t + c[1]) * t + d[1];
+        vertex.z = ((a[2] * t + b[2]) * t + c[2]) * t + d[2];
+        vertex.w = 1.0f;
+    } else {
+        a = (f32 *)primitive->points + recordIndex * 3;
+        b = a + 3;
+        vertex.x = a[0] + (b[0] - a[0]) * t;
+        vertex.y = a[1] + (b[1] - a[1]) * t;
+        vertex.z = a[2] + (b[2] - a[2]) * t;
+    }
+    SDF_VU0_LOADVECTOR_MEMOPS(*(u128 *)&vertex);
+}
 
 INCLUDE_ASM(const s32, "effect/effSpline", func_0020D530);
 

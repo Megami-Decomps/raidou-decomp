@@ -192,7 +192,7 @@ extern const char movieDirPath[16];
 extern saddr_t PlayingNo;
 /* End of declarations from src/smt3/movie/mviManager.c */
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001E8A48);
+INCLUDE_ASM(const s32, "movie/mviManager", moviePlayFile_27041744);
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001E8AA0);
 

@@ -1190,11 +1190,38 @@ void itfMesMngSetMesPosition(s32 id, s32 x, s32 y) {
     message->y = y;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187D80);
+/* Translate selected-entry text and update its cached position. */
+void itfMesMngSetMesPositionOffset(s32 id, s32 x, s32 y) {
+    message_tag *message = &pinst[id].mes->message;
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187DF0);
+    ChangeFontPosition(message->pfont, x, y);
+    message->x += x;
+    message->y += y;
+}
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187E80);
+/* Move option text absolutely; an unchanged position is a no-op. */
+void itfMesMngSetSelPosition(s32 id, s32 x, s32 y) {
+    select_tag *optionBlock = &pinst[id].mes->select;
+    s32 delta[2];
+
+    delta[0] = x - optionBlock->x;
+    delta[1] = y - optionBlock->y;
+    if (delta[0] == 0 && delta[1] == 0) {
+        return;
+    }
+    ChangeFontPosition(optionBlock->pfont, delta[0], delta[1]);
+    optionBlock->x = x;
+    optionBlock->y = y;
+}
+
+/* Translate option text and update its cached position. */
+void itfMesMngSetSelPositionOffset(s32 id, s32 x, s32 y) {
+    select_tag *optionBlock = &pinst[id].mes->select;
+
+    ChangeFontPosition(optionBlock->pfont, x, y);
+    optionBlock->x += x;
+    optionBlock->y += y;
+}
 
 /* Propagate a changed render value to all three glyph chains before caching it. */
 void itfMesMngSetPriority(s32 id, s32 z_buf) {

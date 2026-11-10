@@ -166,6 +166,7 @@
 0x001124E8	scrStartScriptByName	inferred	SMT3HD name via SLUS_209.11 0x00109D48, shared-hash-in-run; map-agrees
 0x00112538	scrStartScript2	inferred	SMT3HD name via SLUS_209.11 0x00109D98, shared-hash-in-run; map-agrees
 0x00112588	scrRunScriptEx	inferred	SMT3HD name via SLUS_209.11 0x00109DE8, reloc-identical; map-agrees
+0x00112700	scrStartProcessProcedure	inferred	smt3-decomp C name via SLUS_209.11 0x00109FD0, unique-masked-hash-c; map-silent
 0x001127A8	scrSearchScriptName	inferred	SMT3HD name via SLUS_209.11 0x0010A078, reloc-identical; map-agrees
 0x00112800	scrSearchProcedureName	inferred	SMT3HD name via SLUS_209.11 0x0010A0D0, reloc-identical; map-agrees
 0x001128F8	scrSetUserData	inferred	SMT3HD name via SLUS_209.11 0x0010A1C8, reloc-identical; map-agrees
@@ -516,13 +517,17 @@
 0x00122C88	dds3PrimFrameRect	inferred	SMT3HD name via SLUS_209.11 0x00117B40, reloc-identical; map-agrees
 0x00122E10	dds3PrimLine	inferred	SMT3HD name via SLUS_209.11 0x00117CC8, reloc-identical; map-agrees
 0x00122F50	dds3PrimLine3D	inferred	SMT3HD name via SLUS_209.11 0x00117E08, unique-masked-hash; map-agrees
+0x00123238	dds3DebugFloatEditEx	inferred	smt3-decomp C name via SLUS_209.11 0x001180F0, unique-masked-hash-c; map-agrees
 0x00123340	dds3DebugFloatEdit	inferred	SMT3HD name via SLUS_209.11 0x001181F8, shared-hash-in-run; map-agrees
+0x00123360	dds3DebugIntEditEx	inferred	smt3-decomp C name via SLUS_209.11 0x00118218, unique-masked-hash-c; map-agrees
 0x001234F0	dds3DebugIntEdit	inferred	SMT3HD name via SLUS_209.11 0x001183A8, reloc-identical; map-agrees
+0x00123510	dds3DebugColorEditEx	inferred	smt3-decomp C name via SLUS_209.11 0x001183C8, unique-masked-hash-c; map-agrees
 0x001236A0	dds3DebugColorEdit	inferred	SMT3HD name via SLUS_209.11 0x00118558, reloc-identical; map-agrees
 0x001236C0	dds3MenuStepValue	inferred	SMT3HD name via SLUS_209.11 0x00118578, reloc-identical; map-agrees
 0x00123750	dds3PrimDebugTextBox	inferred	SMT3HD name via SLUS_209.11 0x00118608, reloc-identical; map-agrees
 0x00123920	dds3PrimDebugTextBoxRGB	inferred	SMT3HD name via SLUS_209.11 0x001187D8, unique-masked-hash; map-agrees
 0x00123B18	dds3NullDrawProc	inferred	SMT3HD name via SLUS_209.11 0x001189D0, shared-hash-in-run; map-agrees
+0x00123B28	fcl_213998	inferred	smt3-decomp C name via SLUS_209.11 0x00213998, unique-masked-hash-c; map-agrees
 0x00123B88	fclLoadStage	inferred	SMT3HD name via SLUS_209.11 0x002139F8, reloc-identical; map-agrees
 0x00123C98	fclScriptForcedEnd	inferred	SMT3HD name via SLUS_209.11 0x00213B08, reloc-identical; map-agrees
 0x00123CD8	fclScriptStart	inferred	SMT3HD name via SLUS_209.11 0x00213B48, reloc-identical; map-agrees
@@ -531,6 +536,8 @@
 0x00123F20	fclStartMessage	inferred	SMT3HD name via SLUS_209.11 0x00213F38, reloc-identical; map-agrees
 0x001240A8	fclDestroyMessage	inferred	SMT3HD name via SLUS_209.11 0x002140A0, reloc-identical; map-agrees
 0x001240E8	fclChkMessage	inferred	SMT3HD name via SLUS_209.11 0x002140E0, reloc-identical; map-agrees
+0x00124310	fcl_2142F0	inferred	smt3-decomp C name via SLUS_209.11 0x002142F0, unique-masked-hash-c; map-agrees
+0x00124420	fcl_214458	inferred	smt3-decomp C name via SLUS_209.11 0x00214458, unique-masked-hash-c; map-agrees
 0x00124468	fclLoadTexture	inferred	SMT3HD name via SLUS_209.11 0x002144E0, reloc-identical; map-agrees
 0x001266A0	pbCheckPreviousRecord	inferred	SMT3HD name via SLUS_209.11 0x001D8CD8, reloc-identical; map-agrees
 0x00127910	fldPlayerCalc360_8	inferred	SMT3HD name via SLUS_209.11 0x0012FE08, reloc-identical; map-agrees
@@ -545,6 +552,7 @@
 0x0012F928	fldEncountClearFlag	inferred	SMT3HD name via SLUS_209.11 0x001259E0, reloc-identical; map-silent
 0x0012F940	fldEncountTestFlag	inferred	SMT3HD name via SLUS_209.11 0x001259F8, shared-hash-in-run; map-silent
 0x00132080	fldMakeBlockBasicFL2	inferred	SMT3HD name via SLUS_209.11 0x00126A58, unique-masked-hash; map-agrees
+0x001323F0	sdfAddressResolverReset	inferred	smt3-decomp C name via SLUS_209.11 0x00127230, unique-masked-hash-c; map-silent
 0x00132890	fldDrawGetOt	inferred	SMT3HD name via SLUS_209.11 0x00128898, shared-hash-in-run; map-silent
 0x001328B0	DrwSprite2D	inferred	SMT3HD name via SLUS_209.11 0x001288B8, shared-hash-in-run; map-agrees
 0x00132A28	DrwSprite2DC	inferred	SMT3HD name via SLUS_209.11 0x00128A30, shared-hash-in-run; map-agrees
@@ -572,6 +580,8 @@
 0x00134E90	fldDbgPrint3D	inferred	SMT3HD name via SLUS_209.11 0x0012B660, reloc-identical; map-agrees
 0x00135028	fldDrawMaruKage	inferred	SMT3HD name via SLUS_209.11 0x0012BF10, unique-masked-hash; map-agrees
 0x00135268	nbSetEncountMode	inferred	SMT3HD name via SLUS_209.11 0x0012C150, shared-hash-in-run; map-silent
+0x00140910	fld_1374F0	inferred	smt3-decomp C name via SLUS_209.11 0x001374F0, unique-masked-hash-c; map-agrees
+0x00156730	fldTitleMini_Shutdown	inferred	smt3-decomp C name via SLUS_209.11 0x00150740, unique-masked-hash-c; map-agrees
 0x001677D8	fldSetSnowActive	inferred	smt3-decomp name via SLUS_209.11 0x00150BB8, unique-masked-hash; map-agrees
 0x00179788	fldCommand_GetHojiID	inferred	SMT3HD name via SLUS_209.11 0x00158A48, reloc-identical; map-agrees
 0x0017AB10	pbDebugPrintPanel	inferred	SMT3HD name via SLUS_209.11 0x001D1660, reloc-identical; map-agrees
@@ -587,6 +597,7 @@
 0x0017D7A8	frSwapColor	inferred	SMT3HD name via SLUS_209.11 0x001C6338, byte-identical; map-agrees
 0x0017D7D0	frConvertVal2N	inferred	SMT3HD name via SLUS_209.11 0x001C6360, byte-identical; map-agrees
 0x0017D810	frCreateDrawEnvPacket	inferred	SMT3HD name via SLUS_209.11 0x001C63A0, byte-identical; map-agrees
+0x0017D8A8	frCreateDrawFontPacket_20550848	inferred	smt3-decomp C name via SLUS_209.11 0x001C6438, unique-masked-hash-c; map-agrees
 0x0017DB08	frCreateUserFontPacket	inferred	SMT3HD name via SLUS_209.11 0x001C6698, reloc-identical; map-agrees
 0x0017DB70	frCopyFontClutToVram	inferred	SMT3HD name via SLUS_209.11 0x001C6700, reloc-identical; map-agrees
 0x0017DBF0	frClearTexBuf	inferred	SMT3HD name via SLUS_209.11 0x001C6780, unique-masked-hash; map-agrees
@@ -703,6 +714,9 @@
 0x00187BF0	itfMesMngSetSpeakerPosition	inferred	SMT3HD name via SLUS_209.11 0x001CE090, shared-hash-in-run; map-silent
 0x00187C80	itfMesMngSetSpeakerPositionOffset	inferred	SMT3HD name via SLUS_209.11 0x001CE120, shared-hash-in-run; map-silent
 0x00187CF0	itfMesMngSetMesPosition	inferred	SMT3HD name via SLUS_209.11 0x001CE190, reloc-identical; map-agrees
+0x00187D80	itfMesMngSetMesPositionOffset	inferred	smt3-decomp C name via SLUS_209.11 0x001CE220, unique-masked-hash-c; map-silent
+0x00187DF0	itfMesMngSetSelPosition	inferred	smt3-decomp C name via SLUS_209.11 0x001CE290, unique-masked-hash-c; map-silent
+0x00187E80	itfMesMngSetSelPositionOffset	inferred	smt3-decomp C name via SLUS_209.11 0x001CE320, unique-masked-hash-c; map-silent
 0x00187EF0	itfMesMngSetPriority	inferred	SMT3HD name via SLUS_209.11 0x001CE390, shared-hash-in-run; map-silent
 0x00187F60	itfMesMngGetStat	inferred	SMT3HD name via SLUS_209.11 0x001CE400, reloc-identical; map-agrees
 0x00187F80	itfMesMngSetStat	inferred	SMT3HD name via SLUS_209.11 0x001CE420, shared-hash-in-run; map-silent
@@ -816,6 +830,7 @@
 0x0019AE80	mdlSetColorWithEffect	inferred	SMT3HD name via SLUS_209.11 0x001DD878, reloc-identical; map-agrees
 0x0019AEA0	mdlSetEffectScale	inferred	SMT3HD name via SLUS_209.11 0x001DD898, reloc-identical; map-agrees
 0x0019AEF8	mdlGetScreenOffset	inferred	SMT3HD name via SLUS_209.11 0x001DD8F0, reloc-identical; map-agrees
+0x0019AFC8	mdlProjectPoints	inferred	smt3-decomp C name via SLUS_209.11 0x001DD9C0, unique-masked-hash-c; map-agrees
 0x0019B0C0	mdlMotionPause	inferred	SMT3HD name via SLUS_209.11 0x001DDAB8, shared-hash-in-run; map-agrees
 0x0019B108	mdlMotionPauseOff	inferred	SMT3HD name via SLUS_209.11 0x001DDB00, shared-hash-in-run; map-agrees
 0x0019B150	mdlHasMotionEx	inferred	SMT3HD name via SLUS_209.11 0x001DDB48, shared-hash-in-run; map-agrees
@@ -890,6 +905,7 @@
 0x001A3798	evtSetUnitPos	inferred	SMT3HD name via SLUS_209.11 0x001E1688, unique-masked-hash; map-agrees
 0x001A3880	evtFreeStage	inferred	SMT3HD name via SLUS_209.11 0x001E1770, shared-hash-in-run; map-agrees
 0x001A38B8	evtFreeAllUnit	inferred	SMT3HD name via SLUS_209.11 0x001E17A8, reloc-identical; map-agrees
+0x001A3B18	evtStartEvent	inferred	smt3-decomp C name via SLUS_209.11 0x001E1A48, unique-masked-hash-c; map-silent
 0x001A3B80	evtKillFieldScript	inferred	SMT3HD name via SLUS_209.11 0x001E1AB0, reloc-identical; map-agrees
 0x001A3C30	evtPathStop	inferred	SMT3HD name via SLUS_209.11 0x001E1B60, shared-hash-in-run; map-agrees
 0x001A3C68	evtPathStart	inferred	SMT3HD name via SLUS_209.11 0x001E1B98, shared-hash-in-run; map-agrees
@@ -937,6 +953,7 @@
 0x001A87A0	evtCommand_MODEL_POS_XYZ	inferred	SMT3HD name via SLUS_209.11 0x001E4EA0, reloc-identical; map-agrees
 0x001A8838	evtCommand_MODEL_ROT_XYZ	inferred	SMT3HD name via SLUS_209.11 0x001E4F38, reloc-identical; map-agrees
 0x001A8920	evtCommand_MODEL_SCL_XYZ	inferred	SMT3HD name via SLUS_209.11 0x001E5020, reloc-identical; map-agrees
+0x001A89C0	evt_1E50C0	inferred	smt3-decomp C name via SLUS_209.11 0x001E50C0, unique-masked-hash-c; map-agrees
 0x001A8E50	evtCommand_KUTISET	inferred	SMT3HD name via SLUS_209.11 0x001E52C8, reloc-identical; map-agrees
 0x001A8EE8	evtCommand_KUTI	inferred	SMT3HD name via SLUS_209.11 0x001E5360, reloc-identical; map-agrees
 0x001A8F88	evtCommand_MODEL_WAIT	inferred	SMT3HD name via SLUS_209.11 0x001E5400, reloc-identical; map-agrees
@@ -1032,6 +1049,7 @@
 0x001AD268	evtCommand_BGM_PLAY_E	inferred	SMT3HD name via SLUS_209.11 0x001E9018, shared-hash-in-run; map-agrees
 0x001AD2A8	evtCommand_BGM_TRANS_E	inferred	SMT3HD name via SLUS_209.11 0x001E9058, shared-hash-in-run; map-agrees
 0x001AD2E8	evtCommand_FADEOUT_E	inferred	SMT3HD name via SLUS_209.11 0x001E9098, shared-hash-in-run; map-agrees
+0x001AD478	evt_1E92F8	inferred	smt3-decomp C name via SLUS_209.11 0x001E92F8, unique-masked-hash-c; map-agrees
 0x001AD9D0	evtGetAgeOfMoon	inferred	SMT3HD name via SLUS_209.11 0x001E9998, unique-masked-hash; map-agrees
 0x001AD9F8	evtGetAgeOfMoon16	inferred	SMT3HD name via SLUS_209.11 0x001E99C0, shared-hash-in-run; map-agrees
 0x001ADA08	evtSetAgeOfMoon	inferred	SMT3HD name via SLUS_209.11 0x001E99D0, unique-masked-hash; map-agrees
@@ -1093,6 +1111,7 @@
 0x001CA688	evtWaitEventPackLoad	inferred	SMT3HD name via SLUS_209.11 0x001FAB80, reloc-identical; map-agrees
 0x001CA780	evtLoadEventPack	inferred	SMT3HD name via SLUS_209.11 0x001FAC78, reloc-identical; map-agrees
 0x001CA810	evtKillEventPack	inferred	SMT3HD name via SLUS_209.11 0x001FAD08, reloc-identical; map-agrees
+0x001D26D0	moviePlayFile_27041744	inferred	smt3-decomp C name via SLUS_209.11 0x0022B710, unique-masked-hash-c; map-agrees
 0x001D2768	movieStop	inferred	SMT3HD name via SLUS_209.11 0x0022B7A0, reloc-identical; map-agrees
 0x001D27D8	movieMan_Process	inferred	SMT3HD name via SLUS_209.11 0x0022B808, reloc-identical; map-agrees
 0x001D2810	dds3StartMovieManager	inferred	SMT3HD name via SLUS_209.11 0x0022B840, reloc-identical; map-agrees
@@ -1174,6 +1193,8 @@
 0x001D71D8	slExitWaitProc	inferred	SMT3HD name via SLUS_209.11 0x001541C8, reloc-identical; map-agrees
 0x001D7538	slChooseData_getCardInfo2	inferred	SMT3HD name via SLUS_209.11 0x00154620, reloc-identical; map-agrees
 0x001D75C0	slChooseData_getCardInfo3	inferred	SMT3HD name via SLUS_209.11 0x001546A8, reloc-identical; map-agrees
+0x001D77E8	slChooseData_getCardInfo2_B	inferred	smt3-decomp C name via SLUS_209.11 0x001548D0, unique-masked-hash-c; map-agrees
+0x001D7888	slChooseData_getCardInfo3_B	inferred	smt3-decomp C name via SLUS_209.11 0x00154970, unique-masked-hash-c; map-silent
 0x001D7A28	slSaveData	inferred	SMT3HD name via SLUS_209.11 0x00154B10, reloc-identical; map-agrees
 0x001D7AC8	slSaveData_chdir	inferred	SMT3HD name via SLUS_209.11 0x00154BB0, reloc-identical; map-agrees
 0x001D7B18	slSaveProc_Write_mkdir	inferred	SMT3HD name via SLUS_209.11 0x00154C00, reloc-identical; map-agrees
@@ -1184,6 +1205,7 @@
 0x001D8548	slSaveProc_writeFile	inferred	SMT3HD name via SLUS_209.11 0x001551A0, reloc-identical; map-agrees
 0x001D85B0	slSaveProc_closeFile	inferred	SMT3HD name via SLUS_209.11 0x00155208, reloc-identical; map-agrees
 0x001D8618	slSaveProc_waitDataReady	inferred	SMT3HD name via SLUS_209.11 0x00155270, reloc-identical; map-agrees
+0x001D8658	slProc_Format	inferred	smt3-decomp C name via SLUS_209.11 0x001552B0, unique-masked-hash-c; map-agrees
 0x001D86D8	slFormatStart	inferred	SMT3HD name via SLUS_209.11 0x00155330, reloc-identical; map-agrees
 0x001D8890	slLoadProc_openFile	inferred	SMT3HD name via SLUS_209.11 0x001554B0, reloc-identical; map-agrees
 0x001D8938	slLoadProc_readFile	inferred	SMT3HD name via SLUS_209.11 0x00155558, reloc-identical; map-agrees
@@ -1202,6 +1224,7 @@
 0x001DDE48	dds3BillboardDraw	inferred	SMT3HD name via SLUS_209.11 0x0015CF78, byte-identical; map-agrees
 0x001DDED8	dds3BillboardGetGeneralTex	inferred	SMT3HD name via SLUS_209.11 0x0015D000, reloc-identical; map-agrees
 0x001DDF60	dds3BillboardSetMode	inferred	SMT3HD name via SLUS_209.11 0x0015D088, byte-identical; map-agrees
+0x001DE010	dds3BillboardSetCondition	inferred	smt3-decomp C name via SLUS_209.11 0x0015D138, unique-masked-hash-c; map-silent
 0x001DE080	dds3BillboardGetTex	inferred	SMT3HD name via SLUS_209.11 0x0015D1A8, byte-identical; map-agrees
 0x001DE0A8	dds3BillboardSetDrawType	inferred	SMT3HD name via SLUS_209.11 0x0015D1D0, byte-identical; map-agrees
 0x001DE110	dds3BillboardSetAnimNumber	inferred	SMT3HD name via SLUS_209.11 0x0015D238, reloc-identical; map-agrees
@@ -1229,15 +1252,29 @@
 0x001DFC40	dds3TrackPolyListInit	inferred	SMT3HD name via SLUS_209.11 0x00166100, byte-identical; map-agrees
 0x001DFC70	dds3TrackPolyDraw	inferred	SMT3HD name via SLUS_209.11 0x00166130, reloc-identical; map-agrees
 0x001DFC80	dds3TrackPolySet	inferred	SMT3HD name via SLUS_209.11 0x00166140, byte-identical; map-agrees
+0x001DFD38	dds3TrackPolyMove	inferred	smt3-decomp C name via SLUS_209.11 0x001661F8, unique-masked-hash-c; map-silent
 0x001DFD90	dds3TrackPolySet2	inferred	SMT3HD name via SLUS_209.11 0x00166250, byte-identical; map-agrees
+0x001DFE58	dds3TrackPolyMove2	inferred	smt3-decomp C name via SLUS_209.11 0x00166318, unique-masked-hash-c; map-silent
 0x001DFEE8	dds3TrackPolyVCRefresh_ParType1	inferred	SMT3HD name via SLUS_209.11 0x001663A8, reloc-identical; map-agrees
+0x001E0040	dds3TrackPolyVCRefresh_ParType2	inferred	smt3-decomp C name via SLUS_209.11 0x00166500, unique-masked-hash-c; map-agrees
+0x001E02D0	dds3TrackPolyVCSet_Normal	inferred	smt3-decomp C name via SLUS_209.11 0x00166790, unique-masked-hash-c; map-silent
+0x001E0330	dds3TrackPolyVCSet_Acute	inferred	smt3-decomp C name via SLUS_209.11 0x001667F0, unique-masked-hash-c; map-silent
+0x001E0480	dds3TrackPolyVCSet_AcuteW	inferred	smt3-decomp C name via SLUS_209.11 0x00166940, unique-masked-hash-c; map-silent
+0x001E0648	dds3TrackPolyVCSet2_Normal	inferred	smt3-decomp C name via SLUS_209.11 0x00166B08, unique-masked-hash-c; map-silent
+0x001E06B8	dds3TrackPolyVCSet2_Acute	inferred	smt3-decomp C name via SLUS_209.11 0x00166B78, unique-masked-hash-c; map-agrees
 0x001E0970	dds3TrackPolyVCSet2_AcuteW	inferred	SMT3HD name via SLUS_209.11 0x00166E30, byte-identical; map-agrees
+0x001E0A80	dds3TrackPolyVC3Set_Normal	inferred	smt3-decomp C name via SLUS_209.11 0x00166F40, unique-masked-hash-c; map-silent
 0x001E0AF8	dds3TrackPolyVC3Set_Acute	inferred	SMT3HD name via SLUS_209.11 0x00166FB8, byte-identical; map-agrees
 0x001E0C18	dds3TrackPolyVC3Set_AcuteW	inferred	SMT3HD name via SLUS_209.11 0x001670D8, byte-identical; map-agrees
+0x001E0D98	dds3TrackPolyVCSet4_Normal	inferred	smt3-decomp C name via SLUS_209.11 0x00167258, unique-masked-hash-c; map-silent
+0x001E0DF8	dds3TrackPolyVCSet4_Acute	inferred	smt3-decomp C name via SLUS_209.11 0x001672B8, unique-masked-hash-c; map-silent
+0x001E0EB0	dds3TrackPolyVCSet4_AcuteW	inferred	smt3-decomp C name via SLUS_209.11 0x00167370, unique-masked-hash-c; map-silent
+0x001E0FB0	dds3TrackPolyVC5Set_Normal	inferred	smt3-decomp C name via SLUS_209.11 0x00167470, unique-masked-hash-c; map-silent
 0x001E1028	dds3TrackPolyVC5Set_Acute	inferred	SMT3HD name via SLUS_209.11 0x001674E8, byte-identical; map-agrees
 0x001E1148	dds3TrackPolyVC5Set_AcuteR	inferred	SMT3HD name via SLUS_209.11 0x00167608, byte-identical; map-agrees
 0x001E1250	dds3TrackPolyVC5Set_AcuteW	inferred	SMT3HD name via SLUS_209.11 0x00167710, byte-identical; map-agrees
 0x001E13D8	dds3TrackPolyVCSet	inferred	SMT3HD name via SLUS_209.11 0x00167898, reloc-identical; map-agrees
+0x001E1418	dds3TrackPolyLinkOt	inferred	smt3-decomp C name via SLUS_209.11 0x001678D8, unique-masked-hash-c; map-agrees
 0x001E1A68	dds3TrianglePolyCreate	inferred	SMT3HD name via SLUS_209.11 0x00167F28, reloc-identical; map-agrees
 0x001E1B10	dds3TrianglePolyDelete	inferred	SMT3HD name via SLUS_209.11 0x00167FD0, reloc-identical; map-agrees
 0x001E1B40	dds3TrianglePolyLinkOt	inferred	SMT3HD name via SLUS_209.11 0x00168000, reloc-identical; map-agrees
@@ -1253,6 +1290,7 @@
 0x001E2428	dds3SpPoly_RingDelete	inferred	SMT3HD name via SLUS_209.11 0x001688E8, reloc-identical; map-agrees
 0x001E2458	dds3SpPoly_RingAllBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00168918, byte-identical; map-agrees
 0x001E24A0	dds3SpPoly_RingBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00168960, reloc-identical; map-agrees
+0x001E2590	polyBandLayoutRing	inferred	smt3-decomp C name via SLUS_209.11 0x00168A50, unique-masked-hash-c; map-silent
 0x001E2730	dds3SpPoly_RingMove	inferred	SMT3HD name via SLUS_209.11 0x00168BF0, reloc-identical; map-agrees
 0x001E28F8	dds3SpPoly_RingSetScale	inferred	SMT3HD name via SLUS_209.11 0x00168DB8, byte-identical; map-agrees
 0x001E2930	dds3SpPoly_RingDraw	inferred	SMT3HD name via SLUS_209.11 0x00168DF0, reloc-identical; map-agrees
@@ -1268,6 +1306,7 @@
 0x001E3248	dds3SpPoly_RollRingAllBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00169708, byte-identical; map-agrees
 0x001E32A8	dds3SpPoly_RollRingBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00169768, reloc-identical; map-agrees
 0x001E3418	dds3SpPoly_RollRingMove	inferred	SMT3HD name via SLUS_209.11 0x001698D8, reloc-identical; map-agrees
+0x001E37C0	dds3SpPoly_RollRingSetEndless	inferred	smt3-decomp C name via SLUS_209.11 0x00169C70, unique-masked-hash-c; map-silent
 0x001E3828	dds3SpPolyCreate	inferred	SMT3HD name via SLUS_209.11 0x00169CD8, reloc-identical; map-agrees
 0x001E3878	dds3SpPolyCopy	inferred	SMT3HD name via SLUS_209.11 0x00169D28, reloc-identical; map-agrees
 0x001E3940	dds3SpPolyReset	inferred	SMT3HD name via SLUS_209.11 0x00169DF0, reloc-identical; map-agrees
@@ -1279,13 +1318,16 @@
 0x001E3B70	effPkt2DAllocTriStrip	inferred	SMT3HD name via SLUS_209.11 0x0016A020, reloc-identical; map-agrees
 0x001E40F0	effPkt2DAllocF4	inferred	SMT3HD name via SLUS_209.11 0x0016A098, reloc-identical; map-agrees
 0x001E4178	effPkt3DPrimMakePoly	inferred	SMT3HD name via SLUS_209.11 0x0016A120, reloc-identical; map-agrees
+0x001E4C00	effBTLGetDrawEndFrame	inferred	smt3-decomp C name via SLUS_209.11 0x0016ABD0, unique-masked-hash-c; map-silent
 0x001E5048	effBTLPartCreate	inferred	SMT3HD name via SLUS_209.11 0x0016B588, reloc-identical; map-agrees
 0x001E5188	effBTLPartDelete	inferred	SMT3HD name via SLUS_209.11 0x0016B6C8, reloc-identical; map-agrees
+0x001E5418	effScreenOffset	inferred	smt3-decomp C name via SLUS_209.11 0x001ABA68, unique-masked-hash-c; map-agrees
 0x001E5498	effPCPBlurScreenOffset	inferred	SMT3HD name via SLUS_209.11 0x001ABAE8, reloc-identical; map-agrees
 0x001E5580	effColorBlend	inferred	SMT3HD name via SLUS_209.11 0x001ABBD0, byte-identical; map-agrees
 0x001E56B8	effLinePointLength	inferred	SMT3HD name via SLUS_209.11 0x001ABD08, byte-identical; map-agrees
 0x001E5740	dds3Bezier4PCreate	inferred	SMT3HD name via SLUS_209.11 0x001ABD90, reloc-identical; map-agrees
 0x001E57E8	dds3Bezier4PPartRun	inferred	SMT3HD name via SLUS_209.11 0x001ABE38, byte-identical; map-agrees
+0x001E5908	nbCameraLerpVec	inferred	smt3-decomp C name via SLUS_209.11 0x001ABF58, unique-masked-hash-c; map-silent
 0x001E5A40	dds3Bezier4PGetPart	inferred	SMT3HD name via SLUS_209.11 0x001AC090, byte-identical; map-agrees
 0x001E6140	Eve_RippleBlurSetDefTex	inferred	SMT3HD name via SLUS_209.11 0x001AD4B8, reloc-identical; map-agrees
 0x001E6270	Eve_PartialMultiFilterSetParam	inferred	SMT3HD name via SLUS_209.11 0x001AD560, reloc-identical; map-agrees
@@ -1294,6 +1336,7 @@
 0x001E6A90	mfilterSetParam	inferred	SMT3HD name via SLUS_209.11 0x001ADC40, reloc-identical; map-agrees
 0x001E6C48	effEveBEDCutCreate	inferred	SMT3HD name via SLUS_209.11 0x001ADDF8, reloc-identical; map-agrees
 0x001E6D50	effEveBEDCutSetParams	inferred	SMT3HD name via SLUS_209.11 0x001ADF00, byte-identical; map-agrees
+0x001E6DB8	effEveBEDCutGetParams	inferred	smt3-decomp C name via SLUS_209.11 0x001ADF68, unique-masked-hash-c; map-silent
 0x001E7158	effSimpleBEDCreate	inferred	SMT3HD name via SLUS_209.11 0x001AE1D0, reloc-identical; map-agrees
 0x001E7220	effSimpleBEDDelete	inferred	SMT3HD name via SLUS_209.11 0x001AE298, reloc-identical; map-agrees
 0x001E7260	effSimpleBEDCopy	inferred	SMT3HD name via SLUS_209.11 0x001AE2D8, reloc-identical; map-agrees
@@ -1302,7 +1345,12 @@
 0x001E73B8	effEveBEDPartGetPositionPtr	inferred	SMT3HD name via SLUS_209.11 0x001AE430, reloc-identical; map-agrees
 0x001E75F0	effEVECombParSmokeCreate	inferred	SMT3HD name via SLUS_209.11 0x001AE668, reloc-identical; map-agrees
 0x001E77E8	effEVECombParSmokeDelete	inferred	SMT3HD name via SLUS_209.11 0x001AE860, reloc-identical; map-agrees
+0x001E7830	effEVECombParSmokePartInit	inferred	smt3-decomp C name via SLUS_209.11 0x001AE8A8, unique-masked-hash-c; map-agrees
+0x001E7BE0	eff_1AEC58	inferred	smt3-decomp C name via SLUS_209.11 0x001AEC58, unique-masked-hash-c; map-agrees
 0x001E7FF8	effEVECombParSmokeDraw	inferred	SMT3HD name via SLUS_209.11 0x001AF070, reloc-identical; map-agrees
+0x001E8B48	effEVECombParSmokeGetParams	inferred	smt3-decomp C name via SLUS_209.11 0x001AFBC0, unique-masked-hash-c; map-silent
+0x001E8C28	effEVECombParSmokeSetParams	inferred	smt3-decomp C name via SLUS_209.11 0x001AFCA0, unique-masked-hash-c; map-silent
+0x001E8D68	effAPPoint4Create	inferred	smt3-decomp C name via SLUS_209.11 0x001AFDE0, unique-masked-hash-c; map-agrees
 0x001E8F38	effAPPoint4CreatePCF	inferred	SMT3HD name via SLUS_209.11 0x001AFFB0, reloc-identical; map-agrees
 0x001E8FA0	effAPPoint4Copy	inferred	SMT3HD name via SLUS_209.11 0x001B0018, reloc-identical; map-agrees
 0x001E9150	effAPPoint4Delete	inferred	SMT3HD name via SLUS_209.11 0x001B01C8, reloc-identical; map-agrees
@@ -1335,6 +1383,7 @@
 0x001ECF20	dds3Particle_SphereSmokeBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00160888, reloc-identical; map-agrees
 0x001ED490	dds3Particle_SphereRingAllBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00160DF8, byte-identical; map-agrees
 0x001ED500	dds3Particle_SphereRingSetScale	inferred	SMT3HD name via SLUS_209.11 0x00160E68, byte-identical; map-agrees
+0x001ED5E0	dds3Particle_SphereRingBuffInit	inferred	smt3-decomp C name via SLUS_209.11 0x00160F48, unique-masked-hash-c; map-agrees
 0x001ED7D0	dds3Particle_SphereRingDraw	inferred	SMT3HD name via SLUS_209.11 0x00161138, reloc-identical; map-agrees
 0x001EDB88	dds3Particle_Spark2BuffInit	inferred	SMT3HD name via SLUS_209.11 0x001614F0, reloc-identical; map-agrees
 0x001EDDE0	dds3Particle_Spark2Draw	inferred	SMT3HD name via SLUS_209.11 0x00161748, reloc-identical; map-agrees
@@ -1343,6 +1392,8 @@
 0x001EE130	dds3Particle_SphereAtomBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00161A98, reloc-identical; map-agrees
 0x001EE480	dds3Particle_SphereAtomDraw	inferred	SMT3HD name via SLUS_209.11 0x00161DE8, reloc-identical; map-agrees
 0x001EE820	dds3Particle_SpiralRandomize	inferred	SMT3HD name via SLUS_209.11 0x00162188, reloc-identical; map-agrees
+0x001EE860	effCloneSingleParticleTemplate	inferred	smt3-decomp C name via SLUS_209.11 0x001621C8, unique-masked-hash-c; map-silent
+0x001EE908	effInitParticleRecord	inferred	smt3-decomp C name via SLUS_209.11 0x00162270, unique-masked-hash-c; map-silent
 0x001EEA08	dds3Particle_SpiralBlendColor	inferred	SMT3HD name via SLUS_209.11 0x00162370, reloc-identical; map-agrees
 0x001EEB30	dds3Particle_SparkOffsetCreate	inferred	SMT3HD name via SLUS_209.11 0x00162498, reloc-identical; map-agrees
 0x001EEBD8	dds3Particle_SparkOffsetBuffInit	inferred	SMT3HD name via SLUS_209.11 0x00162540, reloc-identical; map-agrees
@@ -1357,6 +1408,7 @@
 0x001F0598	dds3ParticleSetColorTable	inferred	SMT3HD name via SLUS_209.11 0x00163F00, byte-identical; map-agrees
 0x001F0968	dds3ParticleColorAnim	inferred	SMT3HD name via SLUS_209.11 0x001642D0, byte-identical; map-agrees
 0x001F0AB8	dds3Particle_BlurCreate	inferred	SMT3HD name via SLUS_209.11 0x00164420, reloc-identical; map-agrees
+0x001F0BA0	dds3Particle_BlurSet	inferred	smt3-decomp C name via SLUS_209.11 0x00164508, unique-masked-hash-c; map-silent
 0x001F0C18	dds3Particle_BlurSetExp	inferred	SMT3HD name via SLUS_209.11 0x00164580, byte-identical; map-agrees
 0x001F0CD0	dds3Particle_BlurDraw	inferred	SMT3HD name via SLUS_209.11 0x00164638, reloc-identical; map-agrees
 0x001F0DF8	dds3Particle_TrackSetExp	inferred	SMT3HD name via SLUS_209.11 0x00164760, reloc-identical; map-agrees
@@ -1367,6 +1419,7 @@
 0x001F14B8	dds3ParticleReset	inferred	SMT3HD name via SLUS_209.11 0x00164E20, reloc-identical; map-agrees
 0x001F1508	dds3ParticleSetScale	inferred	SMT3HD name via SLUS_209.11 0x00164E70, reloc-identical; map-agrees
 0x001F15A8	dds3ParticleSetRotateMatrix	inferred	SMT3HD name via SLUS_209.11 0x00164F10, reloc-identical; map-agrees
+0x001F1610	dds3ParticleSetTypeFlag	inferred	smt3-decomp C name via SLUS_209.11 0x00164F78, unique-masked-hash-c; map-silent
 0x001F1650	dds3ParticleGetLoop	inferred	SMT3HD name via SLUS_209.11 0x00164FB8, reloc-identical; map-agrees
 0x001F1690	dds3ParticleExpCreate	inferred	SMT3HD name via SLUS_209.11 0x00164FF8, reloc-identical; map-agrees
 0x001F1778	dds3ParticleExpCopy	inferred	SMT3HD name via SLUS_209.11 0x001650E0, reloc-identical; map-agrees
@@ -1417,6 +1470,9 @@
 0x001F5D50	dds3MagatuhiParCopy	inferred	SMT3HD name via SLUS_209.11 0x001A8E58, reloc-identical; map-agrees
 0x001F5DD0	dds3AllocSplineHandle	inferred	SMT3HD name via SLUS_209.11 0x001B0858, reloc-identical; map-agrees
 0x001F5EE8	dds3FreeSplineHandle	inferred	SMT3HD name via SLUS_209.11 0x001B0970, reloc-identical; map-agrees
+0x001F5F38	effSplRun	inferred	smt3-decomp C name via SLUS_209.11 0x001B09C0, unique-masked-hash-c; map-agrees
+0x001F5FD8	effSplCalc	inferred	smt3-decomp C name via SLUS_209.11 0x001B0A60, unique-masked-hash-c; map-agrees
+0x001F6108	effSplCalcRegist	inferred	smt3-decomp C name via SLUS_209.11 0x001B0B90, unique-masked-hash-c; map-silent
 0x001F6250	dds3AllocSplinePoints	inferred	SMT3HD name via SLUS_209.11 0x001B0CD8, reloc-identical; map-agrees
 0x001F62E8	dds3BuildSplinePoints	inferred	SMT3HD name via SLUS_209.11 0x001B0D70, reloc-identical; map-agrees
 0x001F6470	SolveTridiagonal	inferred	SMT3HD name via SLUS_209.11 0x001B0EF8, reloc-identical; map-agrees
@@ -1427,6 +1483,7 @@
 0x001F6B48	Eff_ModelTrackPolyListDelete	inferred	SMT3HD name via SLUS_209.11 0x001A35B0, reloc-identical; map-agrees
 0x001F6BD8	Eff_ModelTrackPolyListReset	inferred	SMT3HD name via SLUS_209.11 0x001A3640, reloc-identical; map-agrees
 0x001F6C28	Eff_ModelTrackPolyListDrawOnly	inferred	SMT3HD name via SLUS_209.11 0x001A3690, reloc-identical; map-agrees
+0x001F6C88	Eff_HermitianSpline	inferred	smt3-decomp C name via SLUS_209.11 0x001A36F0, unique-masked-hash-c; map-agrees
 0x001F6E00	dds3HermitianTrackPolyCreate	inferred	SMT3HD name via SLUS_209.11 0x001A3868, reloc-identical; map-agrees
 0x001F6F40	dds3HermitianTrackPolySetVC	inferred	SMT3HD name via SLUS_209.11 0x001A39A8, reloc-identical; map-agrees
 0x001F7020	dds3HermitianTrackPolyGetVertex	inferred	SMT3HD name via SLUS_209.11 0x001A3A88, byte-identical; map-agrees
@@ -1436,8 +1493,10 @@
 0x001F74D8	dds3HermitianTrackPolyDraw	inferred	SMT3HD name via SLUS_209.11 0x001A3F40, reloc-identical; map-agrees
 0x001F8398	dds3EffectBlurSetRect	inferred	SMT3HD name via SLUS_209.11 0x001A1FA8, reloc-identical; map-agrees
 0x001F83E8	dds3EffectPartialMultiBlurCreate	inferred	SMT3HD name via SLUS_209.11 0x001A1FF8, reloc-identical; map-agrees
+0x001F8598	dds3EffectPartialMultiBlurSetParam	inferred	smt3-decomp C name via SLUS_209.11 0x001A2128, unique-masked-hash-c; map-silent
 0x001F8630	dds3EffectDistBlurPartInit	inferred	SMT3HD name via SLUS_209.11 0x001A21C0, reloc-identical; map-agrees
 0x001F8760	dds3EffectDistortionBlurCreate	inferred	SMT3HD name via SLUS_209.11 0x001A22F0, reloc-identical; map-agrees
+0x001F8AA8	dds3EffectDistortionBlurSetParam	inferred	smt3-decomp C name via SLUS_209.11 0x001A2600, unique-masked-hash-c; map-silent
 0x001F8BB0	dds3EffectRipBlurPartInit	inferred	SMT3HD name via SLUS_209.11 0x001A26F0, byte-identical; map-agrees
 0x001F8BE8	dds3EffectRippleBlurReset	inferred	SMT3HD name via SLUS_209.11 0x001A2728, reloc-identical; map-agrees
 0x001F8C68	dds3EffectRippleBlurCreate	inferred	SMT3HD name via SLUS_209.11 0x001A27A8, reloc-identical; map-agrees
@@ -1453,6 +1512,7 @@
 0x001F9CD8	dds3EffectPartModelInit	inferred	SMT3HD name via SLUS_209.11 0x00175CD0, reloc-identical; map-agrees
 0x001F9D80	dds3EffectPartModelCreate	inferred	SMT3HD name via SLUS_209.11 0x00175D78, reloc-identical; map-agrees
 0x001F9E88	dds3EffectPartModelSetScale	inferred	SMT3HD name via SLUS_209.11 0x00175E80, reloc-identical; map-agrees
+0x001F9EB8	dds3EffectPartModelSetRotateMatrix	inferred	smt3-decomp C name via SLUS_209.11 0x00175EB0, unique-masked-hash-c; map-silent
 0x001F9F10	dds3EffectPCPCreate	inferred	SMT3HD name via SLUS_209.11 0x00175F08, reloc-identical; map-agrees
 0x001F9FC0	dds3EffectPCPDelete	inferred	SMT3HD name via SLUS_209.11 0x00175FB8, reloc-identical; map-agrees
 0x001FA008	dds3EffectPCPDraw	inferred	SMT3HD name via SLUS_209.11 0x00176000, reloc-identical; map-agrees
@@ -1466,6 +1526,7 @@
 0x001FA5F8	effPCPHama01Create	inferred	SMT3HD name via SLUS_209.11 0x0018A460, reloc-identical; map-agrees
 0x001FA770	effPCPHama01Delete	inferred	SMT3HD name via SLUS_209.11 0x0018A5D8, reloc-identical; map-agrees
 0x001FA7E8	effPCPHama01Copy	inferred	SMT3HD name via SLUS_209.11 0x0018A650, reloc-identical; map-agrees
+0x001FA8E0	effPCPHama01Draw	inferred	smt3-decomp C name via SLUS_209.11 0x0018A748, unique-masked-hash-c; map-agrees
 0x001FAA50	effPCPHama02PartInit	inferred	SMT3HD name via SLUS_209.11 0x0018A8B8, reloc-identical; map-agrees
 0x001FAB70	effPCPHama02Create	inferred	SMT3HD name via SLUS_209.11 0x0018A9D8, reloc-identical; map-agrees
 0x001FAC48	effPCPHama02Delete	inferred	SMT3HD name via SLUS_209.11 0x0018AAB0, reloc-identical; map-agrees
@@ -1475,10 +1536,12 @@
 0x001FB018	effPCPHamaonCreate	inferred	SMT3HD name via SLUS_209.11 0x0018AE80, reloc-identical; map-agrees
 0x001FB170	effPCPHamaonDelete	inferred	SMT3HD name via SLUS_209.11 0x0018AFD8, reloc-identical; map-agrees
 0x001FB208	effPCPHamaonCopy	inferred	SMT3HD name via SLUS_209.11 0x0018B070, reloc-identical; map-agrees
+0x001FB310	effPCPHamaonDraw	inferred	smt3-decomp C name via SLUS_209.11 0x0018B178, unique-masked-hash-c; map-agrees
 0x001FB460	effPCPMHanma01PartInit	inferred	SMT3HD name via SLUS_209.11 0x0018B2C8, reloc-identical; map-agrees
 0x001FB500	effPCPMHanma01Create	inferred	SMT3HD name via SLUS_209.11 0x0018B368, reloc-identical; map-agrees
 0x001FB5C8	effPCPMHanma01Delete	inferred	SMT3HD name via SLUS_209.11 0x0018B430, reloc-identical; map-agrees
 0x001FB628	effPCPMHanma01Copy	inferred	SMT3HD name via SLUS_209.11 0x0018B490, reloc-identical; map-agrees
+0x001FB6E0	effPCPMHanma01Draw	inferred	smt3-decomp C name via SLUS_209.11 0x0018B548, unique-masked-hash-c; map-agrees
 0x001FB7E8	effPCPMudoPartInit	inferred	SMT3HD name via SLUS_209.11 0x0018B650, byte-identical; map-agrees
 0x001FB800	effPCPMudoCreate	inferred	SMT3HD name via SLUS_209.11 0x0018B668, reloc-identical; map-agrees
 0x001FB8A0	effPCPMudoDelete	inferred	SMT3HD name via SLUS_209.11 0x0018B708, reloc-identical; map-agrees
@@ -1488,6 +1551,7 @@
 0x001FBD68	effPCPHwave01Delete	inferred	SMT3HD name via SLUS_209.11 0x0018BBD0, reloc-identical; map-agrees
 0x001FBDA0	effPCPHwave01Copy	inferred	SMT3HD name via SLUS_209.11 0x0018BC08, reloc-identical; map-agrees
 0x001FBE08	effPCPHwave01Draw	inferred	SMT3HD name via SLUS_209.11 0x0018BC70, reloc-identical; map-agrees
+0x001FBEA0	effPCPZiodin01Init	inferred	smt3-decomp C name via SLUS_209.11 0x0018BD08, unique-masked-hash-c; map-agrees
 0x001FD0C0	effPCPMZiodin01Init	inferred	SMT3HD name via SLUS_209.11 0x0018CF28, reloc-identical; map-agrees
 0x001FD430	effPCPMZiodin02Init	inferred	SMT3HD name via SLUS_209.11 0x0018D298, reloc-identical; map-agrees
 0x001FD600	effPCPMZiodin02Delete	inferred	SMT3HD name via SLUS_209.11 0x0018D468, reloc-identical; map-agrees
@@ -1516,7 +1580,9 @@
 0x001FFC40	effPCPBreathCreate	inferred	SMT3HD name via SLUS_209.11 0x0018FAA8, reloc-identical; map-agrees
 0x001FFDB0	effPCPBreathCopy	inferred	SMT3HD name via SLUS_209.11 0x0018FC18, reloc-identical; map-agrees
 0x001FFE08	effPCPBreathDelete	inferred	SMT3HD name via SLUS_209.11 0x0018FC70, reloc-identical; map-agrees
+0x001FFE68	effPCPBreathSetRotateMatrix	inferred	smt3-decomp C name via SLUS_209.11 0x0018FF18, unique-masked-hash-c; map-silent
 0x001FFEC8	effPCPAgiraoFireCreate	inferred	SMT3HD name via SLUS_209.11 0x0018FF78, reloc-identical; map-agrees
+0x00200030	effPCPAgiraoFireCreatePCF	inferred	smt3-decomp C name via SLUS_209.11 0x001900E0, unique-masked-hash-c; map-agrees
 0x002000A8	effPCPAgiraoFireCopy	inferred	SMT3HD name via SLUS_209.11 0x00190158, reloc-identical; map-agrees
 0x00200218	effPCPAgiraoFireDelete	inferred	SMT3HD name via SLUS_209.11 0x001902C8, reloc-identical; map-agrees
 0x00200288	effPCPAgiraoFireDraw	inferred	SMT3HD name via SLUS_209.11 0x00190338, reloc-identical; map-agrees
@@ -1545,6 +1611,7 @@
 0x00202768	effPCPThunderSphereExpDraw	inferred	SMT3HD name via SLUS_209.11 0x00193310, reloc-identical; map-agrees
 0x002028E0	dds3RingPolyExpListCreate	inferred	SMT3HD name via SLUS_209.11 0x00193488, reloc-identical; map-agrees
 0x00202A20	dds3RingPolyExpListDelete	inferred	SMT3HD name via SLUS_209.11 0x001935C8, reloc-identical; map-agrees
+0x00202A58	dds3RingPolyExpListDraw	inferred	smt3-decomp C name via SLUS_209.11 0x00193600, unique-masked-hash-c; map-agrees
 0x00202C28	effPCPRingPolyExpSetVertex	inferred	SMT3HD name via SLUS_209.11 0x001937D0, reloc-identical; map-agrees
 0x00202DB0	effPCPRingPolyExpInit	inferred	SMT3HD name via SLUS_209.11 0x00193958, reloc-identical; map-agrees
 0x00202DE0	effPCPRingPolyExpCreate	inferred	SMT3HD name via SLUS_209.11 0x00193988, reloc-identical; map-agrees
@@ -1592,6 +1659,9 @@
 0x002074A0	effBTLBindCreateTrack	inferred	SMT3HD name via SLUS_209.11 0x00176E28, reloc-identical; map-agrees
 0x00207940	effPCPThunderSphereLowRotate	inferred	SMT3HD name via SLUS_209.11 0x001772C8, reloc-identical; map-agrees
 0x00207C30	effPCPThunderSphereLowRotateAxis	inferred	SMT3HD name via SLUS_209.11 0x001775B8, reloc-identical; map-agrees
+0x00207EC8	eff_177850	inferred	smt3-decomp C name via SLUS_209.11 0x00177850, unique-masked-hash-c; map-agrees
+0x002080C0	eff_177A48	inferred	smt3-decomp C name via SLUS_209.11 0x00177A48, unique-masked-hash-c; map-agrees
+0x002087A0	eff_178128	inferred	smt3-decomp C name via SLUS_209.11 0x00178128, unique-masked-hash-c; map-agrees
 0x00208AA8	effPCP_ThunderPolyCreate	inferred	SMT3HD name via SLUS_209.11 0x00178430, reloc-identical; map-agrees
 0x00208C60	effPCP_ThunderPolyDelete	inferred	SMT3HD name via SLUS_209.11 0x001785E8, reloc-identical; map-agrees
 0x00208DE8	effPCP_ThunderPolyPartRefresh	inferred	SMT3HD name via SLUS_209.11 0x00178770, reloc-identical; map-agrees
@@ -1665,13 +1735,17 @@
 0x00210968	effPCPFlashPolyCirclePartSetVertex	inferred	SMT3HD name via SLUS_209.11 0x00181D80, reloc-identical; map-agrees
 0x00210B00	effPCPFlashPolyCircleDraw	inferred	SMT3HD name via SLUS_209.11 0x00181F18, reloc-identical; map-agrees
 0x00211708	dds3FlashPolyListCreate	inferred	SMT3HD name via SLUS_209.11 0x00182B20, reloc-identical; map-agrees
+0x00211858	dds3FlashPolyListDraw	inferred	smt3-decomp C name via SLUS_209.11 0x00182C70, unique-masked-hash-c; map-agrees
 0x00211B50	dds3FlashPolyList2Create	inferred	SMT3HD name via SLUS_209.11 0x00182F68, reloc-identical; map-agrees
+0x00211C78	dds3FlashPolyList2Draw	inferred	smt3-decomp C name via SLUS_209.11 0x00183090, unique-masked-hash-c; map-agrees
 0x00211E20	dds3FlashPolyList2GetVertex	inferred	SMT3HD name via SLUS_209.11 0x00183238, byte-identical; map-agrees
 0x00211E38	dds3FlashPolyList2GetVC	inferred	SMT3HD name via SLUS_209.11 0x00183250, byte-identical; map-agrees
 0x00211E50	dds3FlashPolyList3Create	inferred	SMT3HD name via SLUS_209.11 0x00183268, reloc-identical; map-agrees
+0x00211F80	dds3FlashPolyList3Draw	inferred	smt3-decomp C name via SLUS_209.11 0x00183398, unique-masked-hash-c; map-agrees
 0x00212138	dds3FlashPolyList3GetVertex	inferred	SMT3HD name via SLUS_209.11 0x00183550, byte-identical; map-agrees
 0x00212148	dds3FlashPolyList3GetVC	inferred	SMT3HD name via SLUS_209.11 0x00183560, byte-identical; map-agrees
 0x00212158	dds3FlashPolyListHCreate	inferred	SMT3HD name via SLUS_209.11 0x00183570, reloc-identical; map-agrees
+0x002121B8	dds3FlashPolyListHDraw	inferred	smt3-decomp C name via SLUS_209.11 0x001835D0, unique-masked-hash-c; map-agrees
 0x002124A0	effPCPHamaCardSpiralCreate	inferred	SMT3HD name via SLUS_209.11 0x001838B8, reloc-identical; map-agrees
 0x002127F0	effPCPHamaCardSpiralCopy	inferred	SMT3HD name via SLUS_209.11 0x00183C08, reloc-identical; map-agrees
 0x002128E0	effPCPHamaCardSpiralDelete	inferred	SMT3HD name via SLUS_209.11 0x00183CF8, reloc-identical; map-agrees
@@ -1689,6 +1763,7 @@
 0x002142E8	effPCPHamaCardScatterDraw	inferred	SMT3HD name via SLUS_209.11 0x00185700, reloc-identical; map-agrees
 0x00214868	dds3ScatterPolyListCreate	inferred	SMT3HD name via SLUS_209.11 0x00185C80, reloc-identical; map-agrees
 0x00214970	dds3ScatterPolyListDelete	inferred	SMT3HD name via SLUS_209.11 0x00185D88, reloc-identical; map-agrees
+0x002149B0	dds3ScatterPolyListDraw	inferred	smt3-decomp C name via SLUS_209.11 0x00185DC8, unique-masked-hash-c; map-agrees
 0x00214B88	dds3ScatterPolyListSetTex	inferred	SMT3HD name via SLUS_209.11 0x00185FA0, reloc-identical; map-agrees
 0x00214BB8	dds3ScatterPolyListCopyTex	inferred	SMT3HD name via SLUS_209.11 0x00185FD0, reloc-identical; map-agrees
 0x00214BE8	dds3ScatterPolyListGetVertex	inferred	SMT3HD name via SLUS_209.11 0x00186000, byte-identical; map-agrees
@@ -1699,21 +1774,25 @@
 0x00214CD0	effPCPWhirlwindPolyCreate	inferred	SMT3HD name via SLUS_209.11 0x001860E8, reloc-identical; map-agrees
 0x00214F30	effPCPWhirlwindPolyCopy	inferred	SMT3HD name via SLUS_209.11 0x00186348, reloc-identical; map-agrees
 0x00214F78	effPCPWhirlwindPolyDelete	inferred	SMT3HD name via SLUS_209.11 0x00186390, reloc-identical; map-agrees
+0x00214FA8	effPCPWhirlwindPolyPartInit	inferred	smt3-decomp C name via SLUS_209.11 0x001863C0, unique-masked-hash-c; map-agrees
 0x00215338	effPCPWhirlwindPolyPartMove	inferred	SMT3HD name via SLUS_209.11 0x00186750, reloc-identical; map-agrees
 0x002154C8	effPCPWhirlwindPolyDraw	inferred	SMT3HD name via SLUS_209.11 0x001868E0, reloc-identical; map-agrees
 0x00215748	effPCPWhirlwind2PolyCreate	inferred	SMT3HD name via SLUS_209.11 0x00186B60, reloc-identical; map-agrees
 0x002159C0	effPCPWhirlwind2PolyCopy	inferred	SMT3HD name via SLUS_209.11 0x00186DD8, reloc-identical; map-agrees
 0x00215A08	effPCPWhirlwind2PolyDelete	inferred	SMT3HD name via SLUS_209.11 0x00186E20, reloc-identical; map-agrees
+0x00215A38	effPCPWhirlwind2PolyPartInit	inferred	smt3-decomp C name via SLUS_209.11 0x00186E50, unique-masked-hash-c; map-agrees
 0x00215DB0	effPCPWhirlwind2PolyPartMove	inferred	SMT3HD name via SLUS_209.11 0x001871C8, reloc-identical; map-agrees
 0x00215F50	effPCPWhirlwind2PolyDraw	inferred	SMT3HD name via SLUS_209.11 0x00187368, reloc-identical; map-agrees
 0x00216280	effPCPWhirlwind3PolyCreate	inferred	SMT3HD name via SLUS_209.11 0x00187698, reloc-identical; map-agrees
 0x002164C8	effPCPWhirlwind3PolyCopy	inferred	SMT3HD name via SLUS_209.11 0x001878E0, reloc-identical; map-agrees
 0x00216510	effPCPWhirlwind3PolyDelete	inferred	SMT3HD name via SLUS_209.11 0x00187928, reloc-identical; map-agrees
+0x00216540	effPCPWhirlwind3PolyPartInit	inferred	smt3-decomp C name via SLUS_209.11 0x00187958, unique-masked-hash-c; map-agrees
 0x00216930	effPCPWhirlwind3PolyPartMove	inferred	SMT3HD name via SLUS_209.11 0x00187D48, reloc-identical; map-agrees
 0x00216AD0	effPCPWhirlwind3PolyDraw	inferred	SMT3HD name via SLUS_209.11 0x00187EE8, reloc-identical; map-agrees
 0x00216E30	effPCPWwSpherePolyCreate	inferred	SMT3HD name via SLUS_209.11 0x00188248, reloc-identical; map-agrees
 0x00217068	effPCPWwSpherePolyCopy	inferred	SMT3HD name via SLUS_209.11 0x00188480, reloc-identical; map-agrees
 0x002170B0	effPCPWwSpherePolyDelete	inferred	SMT3HD name via SLUS_209.11 0x001884C8, reloc-identical; map-agrees
+0x002170E0	effPCPWwSpherePolyPartInit	inferred	smt3-decomp C name via SLUS_209.11 0x001884F8, unique-masked-hash-c; map-agrees
 0x00217380	effPCPWwSpherePolyPartMove	inferred	SMT3HD name via SLUS_209.11 0x00188798, reloc-identical; map-agrees
 0x00217508	effPCPWwSpherePolyDraw	inferred	SMT3HD name via SLUS_209.11 0x00188920, reloc-identical; map-agrees
 0x00217750	dds3WhirlwindPolyListCreate	inferred	SMT3HD name via SLUS_209.11 0x00188B68, reloc-identical; map-agrees
@@ -1734,6 +1813,7 @@
 0x00218818	effDebugPointDraw2	inferred	SMT3HD name via SLUS_209.11 0x001AC5D0, reloc-identical; map-agrees
 0x002188E8	effDebugLineDraw	inferred	SMT3HD name via SLUS_209.11 0x001AC6A0, reloc-identical; map-agrees
 0x00218A10	effDebugLineDraw2	inferred	SMT3HD name via SLUS_209.11 0x001AC7C8, reloc-identical; map-agrees
+0x00218B40	effDebugStringDraw	inferred	smt3-decomp C name via SLUS_209.11 0x001AC8F8, unique-masked-hash-c; map-agrees
 0x00218BE0	effDebugWireframeSphereDraw	inferred	SMT3HD name via SLUS_209.11 0x001AC998, reloc-identical; map-agrees
 0x00218E58	effDebugSelectCursorDraw	inferred	SMT3HD name via SLUS_209.11 0x001ACC10, reloc-identical; map-agrees
 0x00218FA8	effDebugWireframeCylinderDraw	inferred	SMT3HD name via SLUS_209.11 0x001ACD60, reloc-identical; map-agrees
@@ -1751,6 +1831,7 @@
 0x0021A9A0	effPCPCrack2Copy	inferred	SMT3HD name via SLUS_209.11 0x0019E1C8, reloc-identical; map-agrees
 0x0021AA78	effPCPBossMETATOBeamCreate	inferred	SMT3HD name via SLUS_209.11 0x0019E2A0, reloc-identical; map-agrees
 0x0021ACB8	effPCPBossMETATOBeamDelete	inferred	SMT3HD name via SLUS_209.11 0x0019E4E0, reloc-identical; map-agrees
+0x0021AD10	dds3EffectDirOpen	inferred	smt3-decomp C name via SLUS_209.11 0x001AAD00, unique-masked-hash-c; map-agrees
 0x0021AD90	dds3EffectDirRead	inferred	SMT3HD name via SLUS_209.11 0x001AAD80, reloc-identical; map-agrees
 0x0021AE38	dds3EffectFileListCreate	inferred	SMT3HD name via SLUS_209.11 0x001AAE28, reloc-identical; map-agrees
 0x0021B270	dds3EffectFileListDelete	inferred	SMT3HD name via SLUS_209.11 0x001AB260, reloc-identical; map-agrees
@@ -1784,6 +1865,7 @@
 0x00355FB8	sdfAllocAuto	inferred	SMT3HD name via SLUS_209.11 0x002A8170, reloc-identical; map-agrees
 0x00355FF8	sdfFreeAuto	inferred	SMT3HD name via SLUS_209.11 0x002A81B0, reloc-identical; map-agrees
 0x00356048	sdfFreeAutoDelayed	inferred	SMT3HD name via SLUS_209.11 0x002A8200, reloc-identical; map-agrees
+0x003560A0	sdfFreeMemorySlotFromEitherHeap	inferred	smt3-decomp C name via SLUS_209.11 0x002A8258, unique-masked-hash-c; map-agrees
 0x003560F8	FatalError	inferred	SMT3HD name via SLUS_209.11 0x002A82B0, byte-identical; map-agrees
 0x00356158	DmacAddHandler	inferred	SMT3HD name via SLUS_209.11 0x002A8310, reloc-identical; map-agrees
 0x00356240	sdfIpuRemoveHandler	inferred	SMT3HD name via SLUS_209.11 0x002A83F8, reloc-identical; map-agrees
@@ -1795,6 +1877,8 @@
 0x00356430	dds3InitSubsystems	inferred	SMT3HD name via SLUS_209.11 0x002A85E8, reloc-identical; map-agrees
 0x003564F0	sdfStartThreadAndWait	inferred	SMT3HD name via SLUS_209.11 0x002A86A8, reloc-identical; map-agrees
 0x00356560	sdfWaitVblank	inferred	SMT3HD name via SLUS_209.11 0x002A8718, reloc-identical; map-agrees
+0x003565A0	sdfDeleteTrackedThread	inferred	smt3-decomp C name via SLUS_209.11 0x002A8758, unique-masked-hash-c; map-agrees
+0x00356638	sdfFindThreadNode	inferred	smt3-decomp C name via SLUS_209.11 0x002A87F0, unique-masked-hash-c; map-agrees
 0x00356700	VblankThreadProc	inferred	SMT3HD name via SLUS_209.11 0x002A88B0, reloc-identical; map-agrees
 0x00356780	sdfInitThreadSystem	inferred	SMT3HD name via SLUS_209.11 0x002A8930, reloc-identical; map-agrees
 0x003567E0	sdfSetMainThreadPriority	inferred	SMT3HD name via SLUS_209.11 0x002A8990, reloc-identical; map-agrees
@@ -1827,6 +1911,7 @@
 0x003574F0	sdfMemUnlock	inferred	SMT3HD name via SLUS_209.11 0x002A96A0, byte-identical; map-agrees
 0x00357510	sdfMemGetHandleByPtr	inferred	SMT3HD name via SLUS_209.11 0x002A96C0, reloc-identical; map-agrees
 0x003575E0	sdfMemGetInfo	inferred	SMT3HD name via SLUS_209.11 0x002A9790, reloc-identical; map-agrees
+0x00357688	sdfMemSearchHandle	inferred	smt3-decomp C name via SLUS_209.11 0x002A9838, unique-masked-hash-c; map-silent
 0x003576F8	SdfIopFileRpc	inferred	SMT3HD name via SLUS_209.11 0x002A98A8, reloc-identical; map-agrees
 0x003578C0	sdfGrSetFrameSetMode	inferred	SMT3HD name via SLUS_209.11 0x002A9AA8, reloc-identical; map-agrees
 0x00357918	sdfGrSetScreen	inferred	SMT3HD name via SLUS_209.11 0x002A9B00, reloc-identical; map-agrees
@@ -1841,6 +1926,7 @@
 0x00357DE0	sdfDeliverDrawEnd	inferred	SMT3HD name via SLUS_209.11 0x002A9FC8, unique-masked-hash; map-agrees
 0x00357E10	sdfDrawThread	inferred	SMT3HD name via SLUS_209.11 0x002A9FF8, reloc-identical; map-agrees
 0x00358020	sdfGrInit	inferred	SMT3HD name via SLUS_209.11 0x002AA1F0, reloc-identical; map-agrees
+0x00358128	sdfGrInitNewFrame	inferred	smt3-decomp C name via SLUS_209.11 0x002AA2F8, unique-masked-hash-c; map-agrees
 0x00358180	sdfGsMemGetBitCount	inferred	SMT3HD name via SLUS_209.11 0x002AA350, reloc-identical; map-agrees
 0x003581D0	sdfGetTexelBitCount	inferred	SMT3HD name via SLUS_209.11 0x002AA3A0, reloc-identical; map-agrees
 0x00358228	sdfGsMemCheckHandle	inferred	SMT3HD name via SLUS_209.11 0x002AA3F8, shared-hash-in-run; map-silent
@@ -1914,6 +2000,7 @@
 0x0035AEB0	sdfGrClosePacketBuff	inferred	SMT3HD name via SLUS_209.11 0x002ACB78, reloc-identical; map-agrees
 0x0035AEC8	sdfDrawTagInit	inferred	SMT3HD name via SLUS_209.11 0x002ACB90, byte-identical; map-agrees
 0x0035AEF0	sdfDrawTagLink	inferred	SMT3HD name via SLUS_209.11 0x002ACBB8, byte-identical; map-agrees
+0x0035AF60	sdfDrawTagLinkRef	inferred	smt3-decomp C name via SLUS_209.11 0x002ACC28, unique-masked-hash-c; map-agrees
 0x0035AFA0	sdfDrawTagLinkRefGif	inferred	SMT3HD name via SLUS_209.11 0x002ACC68, byte-identical; map-agrees
 0x0035AFD8	sdfDrawTagLinkCall	inferred	SMT3HD name via SLUS_209.11 0x002ACCA0, byte-identical; map-agrees
 0x0035B018	sdfGrOtFuncLinkToHead	inferred	SMT3HD name via SLUS_209.11 0x002ACCE0, reloc-identical; map-agrees
@@ -1935,8 +2022,12 @@
 0x0035B5E8	sdfGrSetClearPacket	inferred	SMT3HD name via SLUS_209.11 0x002AD2B0, byte-identical; map-agrees
 0x0035B670	sdfGrSetDrawDefParmPacket	inferred	SMT3HD name via SLUS_209.11 0x002AD338, shared-hash-in-run; map-silent
 0x0035B6B8	sdfGrSetDrawFrame	inferred	SMT3HD name via SLUS_209.11 0x002AD380, reloc-identical; map-agrees
+0x0035B760	sdfGrSetDrawEnv	inferred	smt3-decomp C name via SLUS_209.11 0x002AD428, unique-masked-hash-c; map-agrees
 0x0035B8A0	sdfGrStdDrawEnvPredraw	inferred	SMT3HD name via SLUS_209.11 0x002AD568, reloc-identical; map-agrees
+0x0035BA58	sdfGrSetStdDrawEnv	inferred	smt3-decomp C name via SLUS_209.11 0x002AD720, unique-masked-hash-c; map-agrees
 0x0035BAF8	sdfGrLinkStdDrawEnv	inferred	SMT3HD name via SLUS_209.11 0x002AD7C0, reloc-identical; map-agrees
+0x0035BB38	sdfGrSetFrameMaskRGB	inferred	smt3-decomp C name via SLUS_209.11 0x002AD800, unique-masked-hash-c; map-silent
+0x0035BB80	sdfGrSetFrameMaskReset	inferred	smt3-decomp C name via SLUS_209.11 0x002AD848, unique-masked-hash-c; map-silent
 0x0035BBC8	sdfGrLinkDispFrameTex	inferred	SMT3HD name via SLUS_209.11 0x002AD890, reloc-identical; map-agrees
 0x0035BC28	sdfGrLinkDrawFrameTex	inferred	SMT3HD name via SLUS_209.11 0x002AD8F0, reloc-identical; map-agrees
 0x0035BC88	sdfGrFramePacketPredraw	inferred	SMT3HD name via SLUS_209.11 0x002AD950, byte-identical; map-agrees
@@ -2035,6 +2126,7 @@
 0x00360600	sdfModelCopyStat	inferred	SMT3HD name via SLUS_209.11 0x002B2268, reloc-identical; map-agrees
 0x00360868	sdfModelSetDrawEnv	inferred	SMT3HD name via SLUS_209.11 0x002B24D0, reloc-identical; map-agrees
 0x00360928	sdfModelDrawEnvLinkOt	inferred	SMT3HD name via SLUS_209.11 0x002B2590, byte-identical; map-agrees
+0x003609C0	sdfChunkFindById	inferred	smt3-decomp C name via SLUS_209.11 0x002B2628, unique-masked-hash-c; map-silent
 0x00360A20	sdfModelGetNodeIndexByName	inferred	SMT3HD name via SLUS_209.11 0x002B2688, reloc-identical; map-agrees
 0x00360AE0	sdfModelGetNodeName	inferred	SMT3HD name via SLUS_209.11 0x002B2748, reloc-identical; map-agrees
 0x00360B80	sdfModelGetMarkPosCount	inferred	SMT3HD name via SLUS_209.11 0x002B27E8, reloc-identical; map-agrees
@@ -2434,6 +2526,7 @@
 0x00370280	p2sdSetStandPos	inferred	SMT3HD name via SLUS_209.11 0x002C1AF8, shared-hash-in-run; map-silent
 0x00370428	p2sdLoadSMGFile	inferred	SMT3HD name via SLUS_209.11 0x002C1CA0, reloc-identical; map-agrees
 0x00370538	p2sdSetPcmBuffer	inferred	SMT3HD name via SLUS_209.11 0x002C1DB0, reloc-identical; map-agrees
+0x00370628	sdfSndReleaseMidiTrack	inferred	smt3-decomp C name via SLUS_209.11 0x002C1EA0, unique-masked-hash-c; map-agrees
 0x00370778	p2sdPlayBGMFade	inferred	SMT3HD name via SLUS_209.11 0x002C1FF0, reloc-identical; map-agrees
 0x003707C0	p2sdStopBGM	inferred	SMT3HD name via SLUS_209.11 0x002C2070, reloc-identical; map-agrees
 0x003707F0	p2sdBgmVolDown	inferred	SMT3HD name via SLUS_209.11 0x002C20A0, reloc-identical; map-agrees
@@ -2442,6 +2535,7 @@
 0x00370870	p2sdLoadPcmFile	inferred	SMT3HD name via SLUS_209.11 0x002C2120, reloc-identical; map-agrees
 0x003708C8	p2sdGetPcmState	inferred	SMT3HD name via SLUS_209.11 0x002C2178, shared-hash-in-run; map-agrees
 0x003708D0	p2sdSyncSound	inferred	SMT3HD name via SLUS_209.11 0x002C2180, shared-hash-in-run; map-agrees
+0x00370928	sdfSndSetChannelCount	inferred	smt3-decomp C name via SLUS_209.11 0x002C21D8, unique-masked-hash-c; map-agrees
 0x00370968	p2sdSetPcmCallback	inferred	SMT3HD name via SLUS_209.11 0x002C2218, reloc-identical; map-agrees
 0x00370988	p2sdPlayPcm	inferred	SMT3HD name via SLUS_209.11 0x002C2238, reloc-identical; map-agrees
 0x003709D8	p2sdSyncMovie	inferred	SMT3HD name via SLUS_209.11 0x002C2288, shared-hash-in-run; map-agrees
@@ -2500,6 +2594,8 @@
 0x00375550	sdfPacSetFromTail	inferred	SMT3HD name via SLUS_209.11 0x002C6098, byte-identical; map-agrees
 0x00375560	sdfPacFree	inferred	SMT3HD name via SLUS_209.11 0x002C60A8, reloc-identical; map-agrees
 0x003755A8	sdfPacUseSrc	inferred	SMT3HD name via SLUS_209.11 0x002C60F0, byte-identical; map-agrees
+0x003755D0	sdfPacNewBlock	inferred	smt3-decomp C name via SLUS_209.11 0x002C6118, unique-masked-hash-c; map-agrees
+0x003756A8	sdfPacEndBlock	inferred	smt3-decomp C name via SLUS_209.11 0x002C61F0, unique-masked-hash-c; map-agrees
 0x00375758	sdfPacDecode	inferred	SMT3HD name via SLUS_209.11 0x002C62A0, reloc-identical; map-agrees
 0x00375870	sdfPacNewResrc	inferred	SMT3HD name via SLUS_209.11 0x002C63B8, reloc-identical; map-agrees
 0x003758F8	sdfPacFreeResrc	inferred	SMT3HD name via SLUS_209.11 0x002C6440, reloc-identical; map-agrees
@@ -2521,6 +2617,8 @@
 0x00376138	sdfPacTmxDecoderEndFunc	inferred	SMT3HD name via SLUS_209.11 0x002C6C80, reloc-identical; map-agrees
 0x00376178	sdfPacTmxDecoderInit	inferred	SMT3HD name via SLUS_209.11 0x002C6CC0, reloc-identical; map-agrees
 0x003761D0	sdfPacTexListDecoderTmxHeaderEndFunc	inferred	SMT3HD name via SLUS_209.11 0x002C6D18, reloc-identical; map-agrees
+0x00376240	sdfPacTexListDecoderTmxBodyEndFunc	inferred	smt3-decomp C name via SLUS_209.11 0x002C6D88, unique-masked-hash-c; map-agrees
+0x003762B8	sdfPacTexListDecoder1	inferred	smt3-decomp C name via SLUS_209.11 0x002C6E00, unique-masked-hash-c; map-agrees
 0x00376328	sdfPacTexListDecoder0	inferred	SMT3HD name via SLUS_209.11 0x002C6E70, reloc-identical; map-agrees
 0x003763B0	sdfPacTexListDecoderInit	inferred	SMT3HD name via SLUS_209.11 0x002C6EF8, reloc-identical; map-agrees
 0x003763F0	sdfDecomp	inferred	SMT3HD name via SLUS_209.11 0x002C6F38, reloc-identical; map-agrees
@@ -2545,6 +2643,7 @@
 0x00377578	sdfGrSortOtSetup	inferred	SMT3HD name via SLUS_209.11 0x002C80C0, reloc-identical; map-agrees
 0x003775E0	sdfGrSortOtCallback	inferred	SMT3HD name via SLUS_209.11 0x002C8128, reloc-identical; map-agrees
 0x00377640	sdfModelSetOtCallbacks	inferred	SMT3HD name via SLUS_209.11 0x002C8188, shared-hash-in-run; map-silent
+0x00377660	sceGsResetGraph	inferred	smt3-decomp C name via SLUS_209.11 0x002C81A8, unique-masked-hash-c; map-agrees
 0x003777F0	sceGsGetGParam	inferred	SMT3HD name via SLUS_209.11 0x002C8338, shared-hash-in-run; map-agrees
 0x00377800	sceGsResetPath	inferred	SMT3HD name via SLUS_209.11 0x002C8348, reloc-identical; map-agrees
 0x00377868	checkModelVersion	inferred	SMT3HD name via SLUS_209.11 0x002C83B0, reloc-identical; map-agrees
@@ -2712,12 +2811,23 @@
 0x00385FA8	__make_dp	inferred	smt3-decomp name via SLUS_209.11 0x002D1CE0, reloc-identical; map-agrees
 0x00385FD8	dptofp	inferred	smt3-decomp name via SLUS_209.11 0x002D1D10, reloc-identical; map-agrees
 0x00386030	dptoul	inferred	smt3-decomp name via SLUS_209.11 0x002D1D68, reloc-identical; map-agrees
+0x00386118	libc_2D1E50	inferred	smt3-decomp C name via SLUS_209.11 0x002D1E50, unique-masked-hash-c; map-agrees
+0x00386170	libc_2D1EA8	inferred	smt3-decomp C name via SLUS_209.11 0x002D1EA8, unique-masked-hash-c; map-agrees
 0x003867E0	__register_frame_info	inferred	SMT3HD name via SLUS_209.11 0x002D2518, reloc-identical; map-agrees
 0x00386848	__register_frame	inferred	SMT3HD name via SLUS_209.11 0x002D2580, shared-hash-in-run; map-agrees
 0x00386878	__register_frame_info_table	inferred	SMT3HD name via SLUS_209.11 0x002D25B0, reloc-identical; map-agrees
 0x003868E0	__register_frame_table	inferred	SMT3HD name via SLUS_209.11 0x002D2618, shared-hash-in-run; map-agrees
 0x00386910	__deregister_frame_info	inferred	SMT3HD name via SLUS_209.11 0x002D2648, reloc-identical; map-agrees
 0x003869D0	__deregister_frame	inferred	SMT3HD name via SLUS_209.11 0x002D2708, shared-hash-in-run; map-agrees
+0x003869F0	libc_2D2728	inferred	smt3-decomp C name via SLUS_209.11 0x002D2728, unique-masked-hash-c; map-agrees
+0x00386A30	libc_2D2768	inferred	smt3-decomp C name via SLUS_209.11 0x002D2768, unique-masked-hash-c; map-agrees
+0x00386AC0	libc_2D27F8	inferred	smt3-decomp C name via SLUS_209.11 0x002D27F8, unique-masked-hash-c; map-agrees
+0x00386B18	libc_2D2850	inferred	smt3-decomp C name via SLUS_209.11 0x002D2850, unique-masked-hash-c; map-agrees
+0x00386C80	libc_2D29B8	inferred	smt3-decomp C name via SLUS_209.11 0x002D29B8, unique-masked-hash-c; map-agrees
+0x00386E28	libc_2D2B60	inferred	smt3-decomp C name via SLUS_209.11 0x002D2B60, unique-masked-hash-c; map-agrees
+0x00386F38	libc_2D2C70	inferred	smt3-decomp C name via SLUS_209.11 0x002D2C70, unique-masked-hash-c; map-agrees
+0x00387058	libc_2D2D90	inferred	smt3-decomp C name via SLUS_209.11 0x002D2D90, unique-masked-hash-c; map-agrees
+0x003874A8	libc_2D31E0	inferred	smt3-decomp C name via SLUS_209.11 0x002D31E0, unique-masked-hash-c; map-agrees
 0x00387660	__muldi3	inferred	smt3-decomp name via SLUS_209.11 0x002D3398, byte-identical; map-agrees
 0x003876D8	sdfUnpackFloat	inferred	SMT3HD name via SLUS_209.11 0x002D3410, byte-identical; map-agrees
 0x00387738	sdfPackQuad	inferred	SMT3HD name via SLUS_209.11 0x002D3470, reloc-identical; map-agrees
@@ -3048,6 +3158,7 @@
 0x0039C188	SetArg	inferred	SMT3HD name via SLUS_209.11 0x002E4508, unique-masked-hash; map-agrees
 0x0039C2A0	TerminateLibrary	inferred	SMT3HD name via SLUS_209.11 0x002E4620, shared-hash-in-run; map-agrees
 0x0039C2A8	ExecPS2	inferred	SMT3HD name via SLUS_209.11 0x002E4628, reloc-identical; map-agrees
+0x0039C318	LoadExecPS2	inferred	smt3-decomp C name via SLUS_209.11 0x002E4698, unique-masked-hash-c; map-agrees
 0x0039C3E8	Copy_1	inferred	SMT3HD name via SLUS_209.11 0x002E4768, shared-hash-in-run; map-agrees
 0x0039C3F8	kCopy_2	inferred	SMT3HD name via SLUS_209.11 0x002E4778, shared-hash-in-run; map-agrees
 0x0039C430	GetEntryAddress_0	inferred	SMT3HD name via SLUS_209.11 0x002E47B0, shared-hash-in-run; map-agrees

@@ -90,7 +90,21 @@ void effMathResetBezierSlot(effBezier4P_t *table, s32 slotIndex);
 dds3Bezier4PPart_t *dds3Bezier4PGetPart(effBezier4P_t *pEffBezier4P, s32 index);
 /* End of declarations from src/smt3/effect/effMath.c */
 
-INCLUDE_ASM(const s32, "effect/effMath", func_001FC710);
+/* vu0 routine: project the world point in vf10 to screen space */
+void effScreenOffset(void)
+{
+    f32 *matrix;
+
+    SDF_VU0_LOADMATRIX(sdfViewMatrix);
+    matrix = dds3ScreenParam.matrix;
+    MultMatrixRev(matrix);
+    SDF_VU0_APPLYMATRIX_XYZ1();
+    SDF_VU0_PERSVECTOR();
+    SDF_VU0_LOADVECTOR_B(matrix + 16);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.offset);
+    SDF_VU0_ADDVECTOR();
+}
 
 /* vu0 routine: measure the projected camera-right offset. */
 s32 effPCPBlurScreenOffset(f32 scale) {
@@ -223,7 +237,27 @@ s32 dds3Bezier4PPartRun(effBezier4P_t *table, s32 slotIndex, f32 *out) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "effect/effMath", func_001FCC00);
+s32 nbCameraLerpVec(dds3Bezier4PPart_t *slot, f32 *out) {
+    sdfVector4_t w;
+    f32 t = slot->t;
+    f32 u = 1.0f - t;
+
+    w.x = u * u * u;
+    w.y = t * (u * u) * 3.0f;
+    w.z = t * t * u * 3.0f;
+    w.w = t * t * t;
+    out[0] = slot->controlPoints[0][0] * w.x + slot->controlPoints[1][0] * w.y + slot->controlPoints[2][0] * w.z + slot->controlPoints[3][0] * w.w;
+    out[1] = slot->controlPoints[0][1] * w.x + slot->controlPoints[1][1] * w.y + slot->controlPoints[2][1] * w.z + slot->controlPoints[3][1] * w.w;
+    out[2] = slot->controlPoints[0][2] * w.x + slot->controlPoints[1][2] * w.y + slot->controlPoints[2][2] * w.z + slot->controlPoints[3][2] * w.w;
+    out[3] = 1.0f;
+    t += slot->step;
+    if (t > 1.0f) {
+        slot->t = 1.0f;
+        return 0;
+    }
+    slot->t = t;
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "effect/effMath", func_001FCD10);
 

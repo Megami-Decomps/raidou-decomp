@@ -1076,7 +1076,14 @@ void itfMesMngSetMesPosition(s32 id, s32 x, s32 y) {
     message->y = y;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019CE00);
+/* Translate selected-entry text and update its cached position. */
+void itfMesMngSetMesPositionOffset(s32 id, s32 x, s32 y) {
+    message_tag *message = &pinst[id].mes->message;
+
+    ChangeFontPosition(message->pfont, x, y);
+    message->x += x;
+    message->y += y;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019CE70);
 

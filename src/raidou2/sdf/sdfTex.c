@@ -214,7 +214,23 @@ u32 sdfTexGetPixelAddr(sdfTexHandle_t *aHandle)
     return aHandle->pixelGsHandle->addr;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CEBD8);
+s32 sdfTexGetPixelBitCount(s32 aFormat)
+{
+    switch (aFormat) {
+    case 0:
+        return 32;
+    case 1:
+        return 24;
+    case 2:
+    case 10:
+        return 16;
+    case 19:
+    case 27:
+        return 8;
+    default:
+        return 4;
+    }
+}
 
 s32 sdfTexGetTexelBitCount(s32 aFormat)
 {

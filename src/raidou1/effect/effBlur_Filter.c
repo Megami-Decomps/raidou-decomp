@@ -214,7 +214,10 @@ INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F84A0);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8518);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8598);
+/* Copy only the serialized parameters, leaving the owned work tail intact. */
+void dds3EffectPartialMultiBlurSetParam(effBlurTemplate_t *hPartialMultiBlur, const dds3Effect_PartialMultiBlurParam_t *pParam) {
+    hPartialMultiBlur->body = *pParam;
+}
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F85F8);
 
@@ -271,7 +274,13 @@ INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8850);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8868);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8AA8);
+/* Update scale parameters but preserve the allocated destination slot count. */
+void dds3EffectDistortionBlurSetParam(effBlurScaleWork_t *hDistortionBlur, dds3Effect_RippleBlurParam_t *pParam) {
+    u32 count = hDistortionBlur->params.number;
+
+    hDistortionBlur->params = *pParam;
+    hDistortionBlur->params.number = count;
+}
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8B10);
 

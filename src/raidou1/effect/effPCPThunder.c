@@ -921,9 +921,42 @@ void effPCPThunderSphereLowRotateAxis(effPCPThunderSpherePoly_t *work, s32 index
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00207D88);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00207EC8);
+effPCP_ThunderColumnPolyLow_t *eff_177850(effPCP_ThunderColumnPolyLowParam_t *parameters) {
+    sdfMemHandle_t *allocationHandle = sdfMemAllocDirect(parameters->sparkCount * sizeof(effPCP_ThunderColumnPolyLowPart_t) + sizeof(effPCP_ThunderColumnPolyLow_t));
+    effPCP_ThunderColumnPolyLow_t *work = (effPCP_ThunderColumnPolyLow_t *)sdfMemLock(allocationHandle);
+    s32 delaySpread;
+    u32 sparkIndex;
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_002080C0);
+    work->param = *parameters;
+    work->pPart = (effPCP_ThunderColumnPolyLowPart_t *)(work + 1);
+    work->abgr = EFF_THUNDER_NEUTRAL_COLOR;
+    work->hMem = allocationHandle;
+    if (work->param.startDelaySpread <= 0) {
+        work->param.startDelaySpread = EFF_THUNDER_MIN_DELAY_SPREAD;
+    }
+    delaySpread = work->param.startDelaySpread;
+    for (sparkIndex = 0; sparkIndex < work->param.sparkCount; sparkIndex++) {
+        work->pPart[sparkIndex].hPoly = dds3TrackPolyCreate(EFF_THUNDER_SINGLE_CELL, work->param.halfLife * 2 - 1, 0, PAR_CELL_TOPOLOGY_PAIR);
+        dds3TrackPolyVCSet(work->pPart[sparkIndex].hPoly, 2, EE_ADDR(work->param.dispatchArg), EE_ADDR(work->param.dispatchArg));
+        dds3TrackPolySetMode(work->pPart[sparkIndex].hPoly, work->param.systemParam);
+        func_00177AC8(work, sparkIndex);
+        work->pPart[sparkIndex].frame = -SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % delaySpread);
+    }
+    return work;
+}
+
+void eff_177A48(effPCP_ThunderColumnPolyLow_t *work) {
+    s32 sparkCount = (s32)work->param.sparkCount;
+    s32 sparkIndex = 0;
+
+    if (sparkCount > 0) {
+        do {
+            dds3TrackPolyDelete(work->pPart[sparkIndex].hPoly);
+            sparkIndex++;
+        } while (sparkIndex < sparkCount);
+    }
+    sdfMemFreeDirect(work->hMem);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00208128);
 
@@ -933,7 +966,75 @@ INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00208140);
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00208238);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_002087A0);
+void eff_178128(effPCP_ThunderColumnPolyLow_t *work) {
+    f32 position[3];
+    f32 origin[4] __attribute__((aligned(16)));
+    u32 tintColor;
+    s32 count;
+    s32 loop = work->param.loop;
+    s32 duration = SDF_FRAMES(work->param.duration);
+    s32 delaySpread = work->param.startDelaySpread;
+    s32 fadeInTime = SDF_FRAMES(work->param.fadeInTime);
+    s32 fadeOutTime = SDF_FRAMES(work->param.fadeOutTime);
+    f32 heightOffset = work->param.heightOffset;
+    f32 verticalDamping = SDF_FRAME_DECAY(work->param.verticalDamping);
+    f32 angularDamping = SDF_FRAME_DECAY(work->param.angularDamping);
+    effPCP_ThunderColumnPolyLowPart_t *spark;
+    parCell_t *renderCell;
+    s32 i;
+    s32 age;
+    f32 angle;
+    f32 radius;
+    f32 alpha;
+    f32 lowerHeight;
+    u32 color;
+
+    tintColor = work->abgr;
+    SDF_VU0_COPYVECTOR(origin, work->param.origin);
+    count = work->param.sparkCount;
+    spark = work->pPart;
+    for (i = 0; i < count; i++, spark++) {
+        age = spark->frame;
+        if (age == 0) {
+            func_00177AC8(work, i);
+            dds3TrackPolyListInit(spark->hPoly, 0);
+        } else if (age > 0 && age <= duration) {
+            angle = spark->rotate;
+            radius = spark->radius;
+            position[0] = origin[0] + sdfCos(angle) * radius;
+            position[1] = origin[1] + spark->up - spark->height;
+            position[2] = origin[2] + sdfSin(angle) * radius;
+            spark->up += SDF_FRAME_STEP(spark->up_s);
+            spark->rotate += SDF_FRAME_STEP(spark->rotate_s);
+            spark->up_s *= verticalDamping;
+            spark->rotate_s *= angularDamping;
+            if (age < fadeInTime) {
+                alpha = (f32)age / fadeInTime;
+            } else if (duration - age <= fadeOutTime) {
+                alpha = (f32)(duration - age) / fadeOutTime;
+            } else {
+                alpha = 1.0f;
+            }
+            color = effMagaCylinderCalcColor(((u32)(alpha * 127.0f) << 24) | 0x808080, tintColor);
+            renderCell = spark->hPoly->cells;
+            lowerHeight = position[1] - heightOffset;
+            work->param.loweredPosition[0] = position[0];
+            work->param.loweredPosition[1] = lowerHeight;
+            work->param.loweredPosition[2] = position[2];
+            work->param.position[0] = position[0];
+            work->param.position[1] = position[1];
+            work->param.position[2] = position[2];
+            func_00177BC0(work, i);
+            renderCell->color = color;
+            dds3TrackPolyDraw(spark->hPoly);
+        }
+        if (age >= duration && loop) {
+            spark->frame = -SDF_FRAMES(dds3GetRandA((effRandState_t *)dds3EffectBase) % delaySpread);
+        } else {
+            spark->frame++;
+        }
+    }
+}
 
 effPCP_ThunderPoly_t *effPCP_ThunderPolyCreate(effPCP_ThunderPolyParam_t *parameters) {
     sdfMemHandle_t *allocationHandle = sdfMemAllocDirect(parameters->number * sizeof(effPCP_ThunderPolyPart_t) + sizeof(effPCP_ThunderPoly_t));

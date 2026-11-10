@@ -92,6 +92,7 @@ DrawPlain	c
 DrwSprite2D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 DrwSprite2DC	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 DrwSprite2DF	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+Eff_HermitianSpline	c
 Eff_ModelTrackPolyGetMarkPosition	c
 Eff_ModelTrackPolyListCreate	c
 Eff_ModelTrackPolyListDelete	c
@@ -146,6 +147,7 @@ Inverse	c
 IpuWriteCommand	c
 LF	c
 Lerp	c
+LoadExecPS2	c
 LoadIdentity	c
 LoadIdentity_B	c
 LoadMatrix	c
@@ -217,7 +219,7 @@ TbMbAbLoadEnd	c
 TerminateLibrary	c
 TestMsgMngC_Process	asm	dds3PadButtonState at 0x003AD38E, 0x003AD390
 TestMsgMngD_Process	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-TestMsgReloadTexture	c
+TestMsgReloadTexture	asm	sdfTexFreeDelayed at 0x00359998, 0x003599E0
 ToMatrix	c
 UnchainFontHandleUnit	c
 VSync	c
@@ -418,6 +420,7 @@ dds3BillboardSetAnimColorAdvMode	c
 dds3BillboardSetAnimKey	c
 dds3BillboardSetAnimKey2	c
 dds3BillboardSetAnimNumber	c
+dds3BillboardSetCondition	c
 dds3BillboardSetDrawType	c
 dds3BillboardSetMode	c
 dds3BillboardSetXYOffset	c
@@ -452,9 +455,12 @@ dds3ConsPanelTagLink	c
 dds3ConsPanelTagLinkZ	c
 dds3DebugBasic	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 dds3DebugColorEdit	asm	dds3PadButtonState at 0x003AD38E, 0x003AD390
+dds3DebugColorEditEx	c
 dds3DebugDevDumpProcess	c
 dds3DebugFloatEdit	asm	dds3PadButtonState at 0x003AD38E, 0x003AD390
+dds3DebugFloatEditEx	c
 dds3DebugIntEdit	asm	dds3PadButtonState at 0x003AD38E, 0x003AD390
+dds3DebugIntEditEx	c
 dds3DeleteAllBasicArray	c
 dds3DeleteBasic	c
 dds3DeleteBasicArray	c
@@ -474,16 +480,18 @@ dds3EffectCopy	c
 dds3EffectCreate	c
 dds3EffectDataRevision	c
 dds3EffectDelete	c
+dds3EffectDirOpen	c
 dds3EffectDirRead	c
 dds3EffectDistBlurPartInit	c
 dds3EffectDistortionBlurCreate	c
+dds3EffectDistortionBlurSetParam	c
 dds3EffectFileListCreate	asm	1 words differ, first at +0x3F8
 dds3EffectFileListDelete	c
-dds3EffectFileListWindowDelete	c
+dds3EffectFileListWindowDelete	asm	sdfTexFreeDelayed at 0x00359998, 0x003599E0
 dds3EffectFileListWindowDrawSprite	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 dds3EffectFileListWindowGetFilename	c
 dds3EffectFilter	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
-dds3EffectListSetTexture	c
+dds3EffectListSetTexture	asm	sdfTexFreeDelayed at 0x00359998, 0x003599E0
 dds3EffectLoad	c
 dds3EffectManagerRun	c
 dds3EffectObjectBasicConstructor	c
@@ -513,10 +521,12 @@ dds3EffectPartDelete	c
 dds3EffectPartDraw	c
 dds3EffectPartModelCreate	c
 dds3EffectPartModelInit	c
+dds3EffectPartModelSetRotateMatrix	c
 dds3EffectPartModelSetScale	c
 dds3EffectPartP2ABillboardCreate	c
 dds3EffectPartTMXBillboardCreate	c
 dds3EffectPartialMultiBlurCreate	c
+dds3EffectPartialMultiBlurSetParam	c
 dds3EffectPartialMultiFilterCreate	c
 dds3EffectRipBlurPartInit	c
 dds3EffectRippleBlurCreate	c
@@ -536,13 +546,17 @@ dds3Filter2Off	c
 dds3Filter2On	c
 dds3Filter2Swap	c
 dds3FlashPolyList2Create	c
+dds3FlashPolyList2Draw	c
 dds3FlashPolyList2GetVC	c
 dds3FlashPolyList2GetVertex	c
 dds3FlashPolyList3Create	c
+dds3FlashPolyList3Draw	c
 dds3FlashPolyList3GetVC	c
 dds3FlashPolyList3GetVertex	c
 dds3FlashPolyListCreate	c
+dds3FlashPolyListDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC78, 0x003ADD78
 dds3FlashPolyListHCreate	c
+dds3FlashPolyListHDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC78, 0x003ADD78
 dds3ForEachBasicArray	c
 dds3FreeBasicArrayHandle	c
 dds3FreePoseSet	c
@@ -657,10 +671,12 @@ dds3ParticleReset	c
 dds3ParticleSetColorTable	c
 dds3ParticleSetRotateMatrix	c
 dds3ParticleSetScale	c
+dds3ParticleSetTypeFlag	c
 dds3Particle_BasicCreate	c
 dds3Particle_BasicDelete	c
 dds3Particle_BlurCreate	c
 dds3Particle_BlurDraw	c
+dds3Particle_BlurSet	c
 dds3Particle_BlurSetExp	c
 dds3Particle_EffectInit	c
 dds3Particle_PhysicsCreate	c
@@ -683,6 +699,7 @@ dds3Particle_SphereAtomBuffInit	c
 dds3Particle_SphereAtomDraw	c
 dds3Particle_SphereAtomSetScale	c
 dds3Particle_SphereRingAllBuffInit	c
+dds3Particle_SphereRingBuffInit	c
 dds3Particle_SphereRingDraw	c
 dds3Particle_SphereRingSetScale	c
 dds3Particle_SphereSmokeBuffInit	c
@@ -729,6 +746,7 @@ dds3RenderTextureON	c
 dds3ResetProcessFlag	c
 dds3RingPolyExpListCreate	c
 dds3RingPolyExpListDelete	c
+dds3RingPolyExpListDraw	c
 dds3RipBlurOff	c
 dds3RipBlurOn	c
 dds3RipBlurSwap	c
@@ -736,12 +754,13 @@ dds3RotationArc	c
 dds3ScatterPolyListCopyTex	c
 dds3ScatterPolyListCreate	c
 dds3ScatterPolyListDelete	c
+dds3ScatterPolyListDraw	c
 dds3ScatterPolyListGetVC	c
 dds3ScatterPolyListGetVertex	c
 dds3ScatterPolyListSetTex	c
 dds3ScatterPolyListTexResourceCopy	c
 dds3ScatterPolyListTexResourceCreate	c
-dds3ScatterPolyListTexResourceDelete	c
+dds3ScatterPolyListTexResourceDelete	asm	sdfTexFreeDelayed at 0x00359998, 0x003599E0
 dds3SceneBasicEndScript	c
 dds3SceneBasicExistBasicFromType	c
 dds3SceneBasicFreeScene	c
@@ -825,6 +844,7 @@ dds3SpPoly_RollRingBuffInit	c
 dds3SpPoly_RollRingCreate	c
 dds3SpPoly_RollRingDelete	c
 dds3SpPoly_RollRingMove	c
+dds3SpPoly_RollRingSetEndless	c
 dds3SpPoly_SphereRingAllBuffInit	c
 dds3SpPoly_SphereRingBuffInit	c
 dds3SpPoly_SphereRingCreate	c
@@ -841,17 +861,31 @@ dds3TrackPolyCreate	c
 dds3TrackPolyDelete	c
 dds3TrackPolyDraw	c
 dds3TrackPolyInit	c
+dds3TrackPolyLinkOt	c
 dds3TrackPolyListInit	c
+dds3TrackPolyMove	c
+dds3TrackPolyMove2	c
 dds3TrackPolySet	c
 dds3TrackPolySet2	c
 dds3TrackPolyVC3Set_Acute	c
 dds3TrackPolyVC3Set_AcuteW	c
+dds3TrackPolyVC3Set_Normal	c
 dds3TrackPolyVC5Set_Acute	c
 dds3TrackPolyVC5Set_AcuteR	c
 dds3TrackPolyVC5Set_AcuteW	c
+dds3TrackPolyVC5Set_Normal	c
 dds3TrackPolyVCRefresh_ParType1	c
+dds3TrackPolyVCRefresh_ParType2	c
 dds3TrackPolyVCSet	c
+dds3TrackPolyVCSet2_Acute	c
 dds3TrackPolyVCSet2_AcuteW	c
+dds3TrackPolyVCSet2_Normal	c
+dds3TrackPolyVCSet4_Acute	c
+dds3TrackPolyVCSet4_AcuteW	c
+dds3TrackPolyVCSet4_Normal	c
+dds3TrackPolyVCSet_Acute	c
+dds3TrackPolyVCSet_AcuteW	c
+dds3TrackPolyVCSet_Normal	c
 dds3TrianglePolyCreate	c
 dds3TrianglePolyDelete	c
 dds3TrianglePolyLinkOt	c
@@ -881,15 +915,18 @@ dptoli	c
 dptoul	c
 drawSprite3D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 effAPPoint4Copy	c
+effAPPoint4Create	c
 effAPPoint4CreatePCF	c
 effAPPoint4Delete	c
 effAPPoint4Draw	c
 effAPPoint4PartInit	c
 effBTLBindCreateTrack	c
+effBTLGetDrawEndFrame	c
 effBTLPartCreate	c
 effBTLPartDelete	c
 effBTLPartGetPositionPtr	c
 effBTLPartGetRotateMatrixPtr	c
+effCloneSingleParticleTemplate	c
 effColorBlend	c
 effDebugDrawWireModel	c
 effDebugLineDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
@@ -897,16 +934,22 @@ effDebugLineDraw2	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003A
 effDebugPointDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 effDebugPointDraw2	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 effDebugSelectCursorDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effDebugStringDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC78, 0x003ADD78
 effDebugWindowDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 effDebugWireframeCylinderDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 effDebugWireframeSphereDraw	asm	sdfGrOtTable at 0x003ADA78, 0x003ADBF8, 0x003ADC58, 0x003ADC78, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 effEVECombParSmokeCreate	c
 effEVECombParSmokeDelete	c
 effEVECombParSmokeDraw	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
+effEVECombParSmokeGetParams	c
+effEVECombParSmokePartInit	c
+effEVECombParSmokeSetParams	c
 effEveAPP4Randomize	c
 effEveBEDCutCreate	c
+effEveBEDCutGetParams	c
 effEveBEDCutSetParams	c
 effEveBEDPartGetPositionPtr	c
+effInitParticleRecord	c
 effLinePointLength	c
 effMagaCylinderAllocPart	c
 effMagaCylinderAllocTex	c
@@ -958,6 +1001,7 @@ effPCPAgiFireballSpCopy	c
 effPCPAgiFireballSpCreatePCF	c
 effPCPAgiraoFireCopy	c
 effPCPAgiraoFireCreate	c
+effPCPAgiraoFireCreatePCF	c
 effPCPAgiraoFireDelete	c
 effPCPAgiraoFireDraw	c
 effPCPBezierBillCopy	c
@@ -976,6 +1020,7 @@ effPCPBossMETATOBeamDelete	c
 effPCPBreathCopy	c
 effPCPBreathCreate	c
 effPCPBreathDelete	c
+effPCPBreathSetRotateMatrix	c
 effPCPBufuIceCopy	c
 effPCPBufuIceCreate	c
 effPCPBufuIceDelete	c
@@ -1045,6 +1090,7 @@ effPCPFlashPolySpherePartSetVertex	c
 effPCPHama01Copy	c
 effPCPHama01Create	c
 effPCPHama01Delete	c
+effPCPHama01Draw	c
 effPCPHama01PartInit	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPHama02Copy	c
 effPCPHama02Create	c
@@ -1063,6 +1109,7 @@ effPCPHamaCardSpiralPartInit	c
 effPCPHamaonCopy	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPHamaonCreate	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPHamaonDelete	c
+effPCPHamaonDraw	c
 effPCPHamaonPartInit	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPHelperBEDCopy	c
 effPCPHelperBEDCreate	asm	1 words differ, first at +0xC0
@@ -1078,6 +1125,7 @@ effPCPHwave01Draw	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPMHanma01Copy	c
 effPCPMHanma01Create	c
 effPCPMHanma01Delete	c
+effPCPMHanma01Draw	c
 effPCPMHanma01PartInit	asm	dds3EffectPartGetHandle at 0x001F9990, 0x003573A8
 effPCPMZiodin01Init	c
 effPCPMZiodin02Delete	c
@@ -1148,19 +1196,24 @@ effPCPThunderSphereRotateAxis	c
 effPCPWhirlwind2PolyCopy	c
 effPCPWhirlwind2PolyDelete	c
 effPCPWhirlwind2PolyDraw	c
+effPCPWhirlwind2PolyPartInit	c
 effPCPWhirlwind2PolyPartMove	c
 effPCPWhirlwind3PolyCopy	c
 effPCPWhirlwind3PolyDelete	c
 effPCPWhirlwind3PolyDraw	c
+effPCPWhirlwind3PolyPartInit	c
 effPCPWhirlwind3PolyPartMove	c
 effPCPWhirlwindPolyCopy	c
 effPCPWhirlwindPolyDelete	c
 effPCPWhirlwindPolyDraw	c
+effPCPWhirlwindPolyPartInit	c
 effPCPWhirlwindPolyPartMove	c
 effPCPWwSpherePolyCopy	c
 effPCPWwSpherePolyDelete	c
 effPCPWwSpherePolyDraw	c
+effPCPWwSpherePolyPartInit	c
 effPCPWwSpherePolyPartMove	c
+effPCPZiodin01Init	c
 effPCP_ThunderPolyCreate	c
 effPCP_ThunderPolyDelete	c
 effPCP_ThunderPolyDraw	c
@@ -1180,12 +1233,20 @@ effPCP_ThunderRadiatePolyDrawOff	c
 effPkt2DAllocF4	c
 effPkt2DAllocTriStrip	c
 effPkt3DPrimMakePoly	c
+effScreenOffset	c
 effSimpleBEDCopy	c
 effSimpleBEDCreate	c
 effSimpleBEDDelete	asm	1 words differ, first at +0x1C
 effSimpleBEDSetPosition	c
 effSimpleBEDSetRGBA	c
+effSplCalc	c
+effSplCalcRegist	c
+effSplRun	c
 effSwordTrackDrawTex	c
+eff_177850	c
+eff_177A48	c
+eff_178128	c
+eff_1AEC58	c
 eglInit	c
 eglLinkKanji	asm	frwGetSmallFontFRQ at 0x00182F78, 0x00182FA8
 eglLinkLine	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
@@ -1340,12 +1401,15 @@ evtSearchEventPack	c
 evtSetSkyAlpha	c
 evtSetTestCamera	c
 evtStageAnimeControl	c
+evtStartEvent	c
 evtStartPictureProcess2	c
 evtStopEventBgm	c
 evtTransEventBgm	c
 evtUpdateSkyAlpha	c
 evtVu0SubVectorXZAxis	c
-evtWaitEventPackLoad	c
+evtWaitEventPackLoad	asm	sdfTexFreeDelayed at 0x00359998, 0x003599E0
+evt_1E50C0	c
+evt_1E92F8	c
 exponent	c
 fabsf	asm	size 0x58, retail 0x28
 fclChkMessage	c
@@ -1357,6 +1421,9 @@ fclLoadTexture	c
 fclScriptForcedEnd	c
 fclScriptStart	c
 fclStartMessage	c
+fcl_213998	c
+fcl_2142F0	c
+fcl_214458	c
 fflush	c
 fileExecCallback	c
 fileExecQueue	c
@@ -1400,6 +1467,8 @@ fldKanjiDraw	asm	frwGetSmallFontFRQ at 0x00182F78, 0x00182FA8
 fldPlayerCalc360_4	c
 fldPlayerCalc360_8	c
 fldPoint3To2	c
+fldTitleMini_Shutdown	asm	sdfTexFreeDelayed at 0x00359998, 0x003599E0
+fld_1374F0	c
 floorf	asm	size 0x114, retail 0xD8
 fmDestroyFontMemControl	c
 fmInitFontMemControl	c
@@ -1411,6 +1480,7 @@ frAllocFontTable	c
 frConvertVal2N	c
 frCopyFontClutToVram	c
 frCreateDrawEnvPacket	c
+frCreateDrawFontPacket_20550848	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC78, 0x003ADD78
 frCreateUserFontPacket	c
 frDecodeFontRow	c
 frDestroyExtDic	c
@@ -1472,11 +1542,14 @@ itfMesMngSetBitStatManager	c
 itfMesMngSetDefaultSpeed	c
 itfMesMngSetMaskSelect	c
 itfMesMngSetMesPosition	c
+itfMesMngSetMesPositionOffset	c
 itfMesMngSetMesPositionScript	c
 itfMesMngSetPhase	c
 itfMesMngSetPriority	c
 itfMesMngSetResourcePtr	c
 itfMesMngSetSelPhase	c
+itfMesMngSetSelPosition	c
+itfMesMngSetSelPositionOffset	c
 itfMesMngSetSelect	c
 itfMesMngSetSpeakerPosition	c
 itfMesMngSetSpeakerPositionOffset	c
@@ -1517,6 +1590,17 @@ kFindAddress	c
 kill	c
 kprintf	c
 kputs	c
+libc_2D1E50	c
+libc_2D1EA8	c
+libc_2D2728	c
+libc_2D2768	c
+libc_2D27F8	c
+libc_2D2850	c
+libc_2D29B8	c
+libc_2D2B60	asm	its rodata is in its asm file
+libc_2D2C70	c
+libc_2D2D90	c
+libc_2D31E0	c
 lightconstructor	c
 lightdestructor	c
 lightdrawprocedure	c
@@ -1603,6 +1687,7 @@ mdlPibGetFirstChunkItem	c
 mdlPibGetMotionCount	c
 mdlPibGetNextChunkItem	c
 mdlPrepare	c
+mdlProjectPoints	c
 mdlRegLoading	c
 mdlRegist	c
 mdlRegistModelSet	c
@@ -1645,6 +1730,7 @@ movieGetStreamSize	c
 movieMan_Process	c
 movieOpenStream	c
 movieParseHeader	c
+moviePlayFile_27041744	asm	its rodata is in its asm file
 movieReadChunk	c
 movieReadHeaderChunk	c
 movieReadNextChunk	c
@@ -1655,6 +1741,7 @@ movieViewerInitRegs	c
 movieViewerSetFlags	c
 movieViewerStep	c
 movieWaitSema	c
+nbCameraLerpVec	c
 nbPlaySe	c
 new_iob	c
 ooyTestLine3D	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
@@ -1698,6 +1785,7 @@ pbDebugPrintPanel	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003A
 pbDrawRotatedPrim	asm	sdfGrOtTable at 0x003AD9D8, 0x003ADC98, 0x003ADD78, 0x003ADDD8
 pbMakePrimPacket	c
 pbMakeSpritePacket	c
+polyBandLayoutRing	c
 printfloat	c
 qsort	asm	size 0x654, retail 0x9F0
 raise	c
@@ -1764,6 +1852,7 @@ sceGsGetGParam	c
 sceGsGetIMR	c
 sceGsPutDispEnv	c
 sceGsPutIMR	c
+sceGsResetGraph	c
 sceGsSetDefLoadImage	c
 sceGsSetDefStoreImage	c
 sceIoctl2	c
@@ -1959,6 +2048,7 @@ scrSearchScriptName	c
 scrSetFloatReturnValue	c
 scrSetIntReturnValue	c
 scrSetUserData	c
+scrStartProcessProcedure	c
 scrStartScript2	c
 scrStartScriptByName	c
 scrStartScriptProcess	c
@@ -1988,6 +2078,7 @@ sdf3DSetDefaultFog	c
 sdf3DSetDefaultLight	c
 sdfAcos	c
 sdfAddressResolver	c
+sdfAddressResolverReset	c
 sdfAlarmWakeup	c
 sdfAllocAuto	c
 sdfAsin	c
@@ -2020,6 +2111,7 @@ sdfChipFreeDelayedDirect	c
 sdfChipFreeDirect	c
 sdfChipGetInfo	c
 sdfChipInit	c
+sdfChunkFindById	c
 sdfClipAngleValuePI	c
 sdfCoreDrawInit	c
 sdfCoreDrawScanOneSkinNodes	c
@@ -2038,6 +2130,7 @@ sdfDelayedResrcClose	c
 sdfDelayedResrcEntry	c
 sdfDelayedResrcInitCB	c
 sdfDelayedResrcRelease	c
+sdfDeleteTrackedThread	c
 sdfDeliverDrawStart	c
 sdfDev9LoadModule	c
 sdfDevConsAttribute	c
@@ -2073,6 +2166,7 @@ sdfDrawSync	c
 sdfDrawTagInit	c
 sdfDrawTagLink	c
 sdfDrawTagLinkCall	c
+sdfDrawTagLinkRef	c
 sdfDrawTagLinkRefGif	c
 sdfDrawThIntHandler	c
 sdfDumpChipMemory	asm	.rodata base 0x00464EF0, 0x00464F88
@@ -2125,8 +2219,10 @@ sdfFileSetCdFilename	c
 sdfFileSetHddFilename	c
 sdfFileSetHostFilename	c
 sdfFileSetHostRoot	c
+sdfFindThreadNode	c
 sdfFreeAuto	c
 sdfFreeAutoDelayed	c
+sdfFreeMemorySlotFromEitherHeap	c
 sdfGetCdClock	c
 sdfGetRunTimeCount	c
 sdfGetRunTimeCountBase	c
@@ -2143,6 +2239,7 @@ sdfGrGsReset	c
 sdfGrInit	c
 sdfGrInitDraw	c
 sdfGrInitExPacket	c
+sdfGrInitNewFrame	c
 sdfGrJoinDrawTag	c
 sdfGrLinkDispFrameTex	c
 sdfGrLinkDrawFrameTex	c
@@ -2161,13 +2258,17 @@ sdfGrReqDrawDelay	c
 sdfGrSetClearPacket	c
 sdfGrSetDisp	c
 sdfGrSetDrawDefParmPacket	c
+sdfGrSetDrawEnv	c
 sdfGrSetDrawFrame	c
 sdfGrSetDrawFramePacket	c
+sdfGrSetFrameMaskRGB	c
+sdfGrSetFrameMaskReset	c
 sdfGrSetFramePacket	c
 sdfGrSetFrameSetMode	c
 sdfGrSetRefGifPacket	c
 sdfGrSetRegsPacketHeader	c
 sdfGrSetScreen	c
+sdfGrSetStdDrawEnv	c
 sdfGrSortOtCallback	c
 sdfGrSortOtFixup	c
 sdfGrSortOtReg	c
@@ -2294,6 +2395,7 @@ sdfMemGetType	c
 sdfMemInit	c
 sdfMemLock	c
 sdfMemReallocRecord	c
+sdfMemSearchHandle	c
 sdfMemUnlock	c
 sdfModelAllocNodeList	c
 sdfModelAllocTmPacket	c
@@ -2434,6 +2536,7 @@ sdfMultiBillBoardVcGetPacketSize	c
 sdfMultiBillBoardVcMake1	c
 sdfMultiBillBoardVcMakeN	c
 sdfPacDecode	c
+sdfPacEndBlock	asm	1 words differ, first at +0x2C
 sdfPacFree	c
 sdfPacFreeResrc	c
 sdfPacGetResrcFileName	c
@@ -2447,12 +2550,15 @@ sdfPacModelDecoderEndFunc	c
 sdfPacModelDecoderInit	c
 sdfPacMotionDecoderEndFunc	c
 sdfPacMotionDecoderInit	c
+sdfPacNewBlock	c
 sdfPacNewResrc	c
 sdfPacSetFromTail	c
 sdfPacSetStay	c
 sdfPacStdCallback	c
 sdfPacTexListDecoder0	c
+sdfPacTexListDecoder1	c
 sdfPacTexListDecoderInit	c
+sdfPacTexListDecoderTmxBodyEndFunc	c
 sdfPacTexListDecoderTmxHeaderEndFunc	c
 sdfPacTmxDecoderEndFunc	c
 sdfPacTmxDecoderFunc	c
@@ -2534,8 +2640,10 @@ sdfSndCmdIFThread	c
 sdfSndLoadBDFile	c
 sdfSndLoadHDFile	c
 sdfSndLoadSQFile	c
+sdfSndReleaseMidiTrack	c
 sdfSndSendCmd	c
 sdfSndSendSyncCmd	c
+sdfSndSetChannelCount	c
 sdfSndTransToIOP	c
 sdfSortOtAvlCheckBalance	c
 sdfSortOtAvlRegist	c
@@ -2564,7 +2672,7 @@ sdfTexInit	asm	sdfTexFree at 0x00359910, 0x00359998
 sdfTexLink	c
 sdfTexListAdd	c
 sdfTexListDup	c
-sdfTexListFree	c
+sdfTexListFree	asm	sdfTexFreeDelayed at 0x00359998, 0x003599E0
 sdfTexListNew	c
 sdfTexListSetCapacity	c
 sdfTexListSetClutColor	c
@@ -2593,7 +2701,9 @@ slBootError2	asm	slExitToTitle at 0x001D65A0, 0x001D65F8
 slBootProc1st	c
 slCalc	c
 slChooseData_getCardInfo2	c
+slChooseData_getCardInfo2_B	c
 slChooseData_getCardInfo3	c
+slChooseData_getCardInfo3_B	c
 slEndingExit	asm	slExitToTitle at 0x001D65A0, 0x001D65F8
 slEndingTop	c
 slEndingUpd2	c
@@ -2604,6 +2714,7 @@ slHeadLoad	c
 slHeadLoadProc_readFile	c
 slLoadProc_openFile	asm	1 words differ, first at +0x20
 slLoadProc_readFile	c
+slProc_Format	c
 slSaveData	c
 slSaveData_chdir	c
 slSaveData_deleteIconSys	c

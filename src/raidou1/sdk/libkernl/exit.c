@@ -1250,7 +1250,13 @@ s32 ExecPS2(void *entry, void *gp, s32 count, const char *const *arguments)
                     &((execArgumentBlock_t *)execArgumentBlock)->arguments[1]);
 }
 
-INCLUDE_ASM(const s32, "sdk/libkernl/exit", func_0039C318);
+void LoadExecPS2(const char *path, s32 count, char **arguments)
+{
+    char *packedPath = SetArg(path, count, (const char *const *)arguments);
+    TerminateLibrary();
+    libc_2DBAE0(packedPath, count,
+                  &((execArgumentBlock_t *)execArgumentBlock)->arguments[1]);
+}
 
 INCLUDE_RODATA(const s32, "sdk/libkernl/exit", D_00469280);
 

@@ -279,7 +279,16 @@ extern char fclStrNo[3];
 extern char fclStrYes[4];
 /* End of declarations from src/smt3/facility/fclMisc.c */
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00127F48);
+s32 fcl_213998(char *name, fclSceneObj_t *dst)
+{
+    fclSceneObj_t *obj = dds3SceneBasicSearchNameAndType(dds3GetControlScene(), 9, name);
+
+    if (obj == NULL) {
+        return 0;
+    }
+    *(s32 *)(dst->unk_18 + 0x80) = *(s32 *)(obj->unk_18 + 0x78);
+    return 1;
+}
 
 void fclLoadStage(s32 MajorNo, s32 MinorNo)
 {
@@ -427,7 +436,11 @@ INCLUDE_ASM(const s32, "facility/fclMisc", func_001286B8);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_001286C0);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00128730);
+void fcl_2142F0(s32 x, s32 y)
+{
+    itfMesMngSetMesPosition(gMsgID, x * 16, y * 8);
+    itfMesMngSetOffsetY1(gMsgID, -((0x15F - y) * 8));
+}
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00128778);
 
@@ -443,7 +456,16 @@ INCLUDE_ASM(const s32, "facility/fclMisc", func_00128808);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00128830);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00128860);
+s32 fcl_214458(void)
+{
+    s32 index = scrGetIntPara(0);
+
+    if (index >= 0x10) {
+        index = 0xF;
+    }
+    scrSetIntReturnValue(fclWorkValue[index]);
+    return 1;
+}
 INCLUDE_SDATA(const s32, "facility/fclMisc", D_004DE710);
 
 INCLUDE_SDATA(const s32, "facility/fclMisc", D_004DE714);

@@ -545,7 +545,23 @@ void sdfMemGetInfo(sdfMemInfo_t *aInfo)
     aInfo->freeHandleCount = freeHandleCount;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", func_003CD398);
+/* The used handle whose span contains `aAddr`; NULL at the end sentinel. */
+sdfMemHandle_t *sdfMemSearchHandle(s32 ptr)
+{
+    sdfMemHandle_t *handle = sdfMemCB.headGuard.next;
+    sdfMemHandle_t *next;
+
+    for (;; handle = next) {
+        next = handle->next;
+        if (handle->stat != SDF_MEM_STAT_USED) {
+            if (handle->stat == SDF_MEM_STAT_END) {
+                return NULL;
+            }
+        } else if (ptr >= EE_ADDR_S(handle->ptr) && ptr < EE_ADDR_S(next->ptr)) {
+            return handle;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfMemory", func_003CD408);
 

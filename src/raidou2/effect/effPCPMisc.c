@@ -3736,7 +3736,37 @@ effPCPHama01_tag *effPCPHama01Copy(effPCPHama01_tag *src) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00211BD8);
+void effPCPHama01Draw(effPCPHama01_tag *hData) {
+    dds3ModelHandle_t *obj[2];
+    u128 pos;
+    u128 *posp;
+    s32 slotIndex;
+
+    for (slotIndex = 0; slotIndex < 8; slotIndex++) {
+        if (hData->counter[slotIndex] != 0) {
+            hData->counter[slotIndex]--;
+            continue;
+        }
+        obj[0] = dds3EffectPartGetHandle(hData->pair[slotIndex][0]);
+        obj[1] = dds3EffectPartGetHandle(hData->pair[slotIndex][1]);
+        SDF_VU0_LOADVECTOR(hData);
+        mdlSetPosition(obj[0]);
+        dds3EffectPartSetScale(hData->pair[slotIndex][0], hData->scale * 1.5f);
+        dds3EffectPartSetScale(hData->pair[slotIndex][1], 1.75f);
+        mdlSetColor(obj[1], hData->abgr);
+        mdlLink(obj[0], sdfModelOtTable);
+        sdfModelGetMarkPos(obj[0]->modelRoot, 1);
+        posp = &pos;
+        SDF_VU0_STOREVECTOR_NOMEM(posp);
+        mdlSetPosition(obj[1]);
+        mdlLink(obj[1], sdfModelOtTable);
+        if (hData->frame > SDF_FRAMES(0x18)) {
+            dds3EffectPartSetPosition(hData->shared[slotIndex], posp);
+            dds3EffectPartDraw(hData->shared[slotIndex]);
+        }
+    }
+    hData->frame++;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00211D28);
 
@@ -3829,7 +3859,31 @@ void effPCPHamaonDelete(effPCPHamaon_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonCopy);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00212608);
+void effPCPHamaonDraw(effPCPHamaon_tag *hData) {
+    dds3ModelHandle_t *anchor;
+    dds3ModelHandle_t *obj;
+    s32 i;
+    s32 j;
+
+    anchor = dds3EffectPartGetHandle(hData->base);
+    SDF_VU0_LOADVECTOR(hData);
+    mdlSetPosition(anchor);
+    dds3EffectPartSetScale(hData->base, hData->scale);
+    mdlLink(anchor, sdfModelOtTable);
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            if (hData->remainingDelay[i][j] != 0) {
+                hData->remainingDelay[i][j]--;
+                continue;
+            }
+            obj = dds3EffectPartGetHandle(hData->handle[i][j]);
+            mdlSetColor(obj, hData->color);
+            sdfModelGetMarkPos(anchor->modelRoot, i * 4 + j + 1);
+            mdlSetPosition(obj);
+            mdlLink(obj, sdfModelOtTable);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00212738);
 
@@ -3896,7 +3950,28 @@ effPCPMHanma01_tag *effPCPMHanma01Copy(effPCPMHanma01_tag *source) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002129D8);
+void effPCPMHanma01Draw(effPCPMHanma01_tag *hData) {
+    dds3ModelHandle_t *obj[2];
+    u128 vec;
+    s32 i;
+
+    for (i = 0; i < 6; i++) {
+        if (hData->remainingDelay[i] != 0) {
+            hData->remainingDelay[i]--;
+        } else {
+            obj[0] = dds3EffectPartGetHandle(hData->handle[i * 2]);
+            obj[1] = dds3EffectPartGetHandle(hData->handle[i * 2 + 1]);
+            SDF_VU0_LOADVECTOR(hData);
+            mdlSetPosition(obj[0]);
+            mdlSetColor(obj[1], hData->abgr);
+            mdlLink(obj[0], sdfModelOtTable);
+            sdfModelGetMarkPos(obj[0]->modelRoot, 1);
+            SDF_VU0_STOREVECTOR_NOMEM(&vec);
+            mdlSetPosition(obj[1]);
+            mdlLink(obj[1], sdfModelOtTable);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00212AC0);
 
@@ -3997,7 +4072,65 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213180);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213190);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213198);
+void effPCPZiodin01Init(effPCPZiodin01_tag *pPCPZiodin01) {
+    s32 i;
+    effPCP_ThunderPoly_t **out;
+    f32 angle = 0.0f;
+    f32 cosv = 0.0f;
+    f32 sinv = 0.0f;
+    sdfVector4_t dir;
+    sdfVector4_t scale;
+    f32 spread;
+    f32 radius;
+    f32 reach;
+    f32 speed;
+    s16 life;
+
+    i = 0;
+    out = pPCPZiodin01->handles;
+    do {
+        if ((i & 1) == 0) {
+            sinv = sdfCos(angle);
+            cosv = sdfSin(angle);
+            angle += 60.0f * EFF_DEG2RAD;
+        }
+        spread = dds3GetRandFloatA(dds3EffectBase) * 0.5f + 0.5f;
+        effPCPZiodin01ThunderParam->width_border = spread * 1.25f;
+        effPCPZiodin01ThunderParam->width_edge = spread * 12.5f;
+        radius = (dds3GetRandFloatA(dds3EffectBase) * 0.25f + 0.75f) * 100.0f;
+        effPCPZiodin01ThunderParam->end[1] = 0;
+        effPCPZiodin01ThunderParam->end[0] = sinv * radius;
+        effPCPZiodin01ThunderParam->end[2] = cosv * radius;
+        dir.x = sinv;
+        dir.y = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f + 2.0f;
+        dir.z = cosv;
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_STOREVECTOR(&dir);
+        reach = (dds3GetRandFloatA(dds3EffectBase) * 0.65f + (1.0f - 0.65f)) * 350.0f;
+        scale.z = reach;
+        scale.x = reach;
+        scale.y = -reach;
+        SDF_VU0_LOADVECTOR(&dir);
+        SDF_VU0_LOADVECTOR_B(&scale);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_LOADVECTOR_B(effPCPZiodin01Vec);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(effPCPZiodin01ThunderParam);
+        if (scale.x < 250.0f) {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 2.5f + 5.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 5 + 5;
+        } else {
+            speed = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 5.0f + 10.0f;
+            life = dds3GetRandA((effRandState_t *)dds3EffectBase) % 6 + 15;
+        }
+        effPCPZiodin01ThunderParam->split = life;
+        effPCPZiodin01ThunderParam->waveAmplitude = speed;
+        *out = effPCP_ThunderPolyCreate((effPCP_ThunderPolyParam_t *)effPCPZiodin01ThunderParam);
+        out++;
+        i++;
+    } while (i < 12);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213458);
 
@@ -4865,7 +4998,13 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217140);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217158);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217160);
+/* vu0 routine: turn the source matrix by half a turn around Y */
+void effPCPBreathSetRotateMatrix(effPCPBreath_tag *hData, const void *pMatrix) {
+    SetRotateMatrixY(3.14159265f);
+    SDF_VU0_LOADMATRIX_B(pMatrix);
+    MultMatrixNoArg();
+    SDF_VU0_STOREMATRIX(hData->matrix);
+}
 
 effPCPAgiraoFire_tag *effPCPAgiraoFireCreate(effPCPAgiraoFireParam_t *pParam, effPCPAgiraoFirePartList_t **pPartList) {
     effPCPAgiraoFire_tag *work;
@@ -5476,7 +5615,49 @@ void dds3RingPolyExpListDelete(dds3RingPolyExpList_tag *hData) {
     sdfChipFreeDirect(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219D50);
+/* vu0 routine: compose the beam transform and submit batches of its vertices. */
+void dds3RingPolyExpListDraw(dds3RingPolyExpList_tag *hData) {
+    f32 scaleMatrix[4][4] QWORD_ALIGNED;
+    sdfDrawTag_t *list;
+    s32 count;
+    sdfGrOt_t *entry;
+
+    if (hData->vertexCount == 0) {
+        return;
+    }
+    list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(list);
+    SDF_VU0_STOREIDENTITY(scaleMatrix);
+    scaleMatrix[2][2] = scaleMatrix[1][1] = scaleMatrix[0][0] = hData->scale;
+    SDF_VU0_LOADMATRIX(hData->rot);
+    SDF_VU0_LOADMATRIX_B(hData->matrix);
+    MultMatrixNoArg();
+    SDF_VU0_LOADVECTOR(&hData->pos);
+    VU0_ADD_VF31_VF10_XYZ();
+    SDF_VU0_LOADMATRIX_B(scaleMatrix);
+    MultMatrixNoArg();
+    sdf3DPrimLinkTm(list, 0);
+    sdf3DPrimLinkMat(list, hData->pMat, 0);
+    count = hData->vertexCount;
+    dds3RingPolyExpListPolyParam.colors = hData->pVC;
+    dds3RingPolyExpListPolyParam.positions = (u128 *)hData->pVertex;
+    dds3RingPolyExpListPolyParam.color = hData->color;
+    dds3RingPolyExpListPolyParam.vertexCount = dds3RingPolyExpListPolyParam.parameterCount = 12;
+    dds3RingPolyExpListPolyParam.parameters = (u32 *)dds3RingPolyExpListParameters;
+    while (count >= 12) {
+        count -= 8;
+        sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3RingPolyExpListPolyParam)));
+        dds3RingPolyExpListPolyParam.positions += 8;
+        dds3RingPolyExpListPolyParam.colors += 8;
+    }
+    if (count >= 8) {
+        dds3RingPolyExpListPolyParam.parameterCount = 6;
+        dds3RingPolyExpListPolyParam.vertexCount = 8;
+        sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3RingPolyExpListPolyParam)));
+    }
+    entry = dds3RingPolyExpListBlendOt[hData->blend];
+    entry->regFunc(entry, list);
+}
 
 void effPCPRingPolyExpSetVertex(f32 pPCPRingPolyExp, effPCPRingPolyExp_tag *radius) {
     sdfVector4_t direction;

@@ -594,7 +594,20 @@ void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket) {
 
 INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035AF28);
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035AF60);
+void sdfDrawTagLinkRef(sdfDrawTag_t *aTag, addr_t aPacket) {
+    s32 previousTailAddress;
+
+    (EE_ADDR_AS(SdfDmaTag *, aPacket))->kind = SDF_DMA_TAG_REF_BYTE;
+    previousTailAddress = aTag->tail;
+    if (previousTailAddress == 0) {
+        aTag->head = aPacket;
+    }
+    else {
+        (EE_ADDR_AS(SdfDmaTag *, previousTailAddress))->kind = SDF_DMA_TAG_NEXT_BYTE;
+        (EE_ADDR_AS(SdfDmaTag *, previousTailAddress))->address = EE_PHYSICAL(aPacket);
+    }
+    aTag->tail = aPacket + SDF_QWORD_BYTES;
+}
 
 void sdfDrawTagLinkRefGif(sdfDrawTag_t *aTag, addr_t aPacket) {
     s32 previousTailAddress;
@@ -913,20 +926,73 @@ void sdfGrSetDrawFrame(sdfGrDrawFrame_t *aFrame, s32 aFrameAddr, s32 aW, s32 aH,
     sdfGrSetDrawFramePacket(&aFrame->packet, aFrameAddr, aW, aH, aPixelFormat, aZBuffAddr, aZBuffFormat, 0, aContext);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035B760);
+void sdfGrSetDrawEnv(sdfGrDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet, s32 aEvenOdd) {
+    s32 frameAddress;
+    s32 depthAddress;
+    s32 width;
+    s32 height;
+    s32 frameFormat;
+    s32 depthFormat;
+
+    sdfGrSetRegsPacketHeader(&aEnv->header, SDF_TEXTURE_SCENE_PAYLOAD_QWORDS);
+    frameAddress = aFrameSet->buffers[aEvenOdd]->addr;
+    depthAddress = aFrameSet->buffers[SDF_GRAPH_DEPTH_BUFFER_INDEX]->addr;
+    width = aFrameSet->width;
+    frameFormat = aFrameSet->bufferFormat;
+    height = aFrameSet->height;
+    depthFormat = aFrameSet->auxiliaryFormat;
+    sdfGrSetDrawFramePacket(&aEnv->frame1, frameAddress, width, height, frameFormat, depthAddress, depthFormat, sdfGrBufferSlot, 0);
+    sdfGrSetDrawFramePacket(&aEnv->frame2, frameAddress, width, height, frameFormat, depthAddress, depthFormat, sdfGrBufferSlot, 1);
+    sdfGrSetClearPacket(&aEnv->clear, aFrameSet->width, aFrameSet->height, aFrameSet->bufferFormat, aFrameSet->auxiliaryFormat);
+    aEnv->test1.data = SDF_GS_SCENE_TEST;
+    aEnv->test1.reg = SDF_GS_TEST_1;
+    aEnv->alpha1.data = SDF_GS_DEFAULT_ALPHA;
+    aEnv->alpha1.reg = SDF_GS_ALPHA_1;
+    aEnv->test2.data = SDF_GS_SCENE_TEST;
+    aEnv->test2.reg = SDF_GS_TEST_2;
+    aEnv->alpha2.data = SDF_GS_DEFAULT_ALPHA;
+    aEnv->alpha2.reg = SDF_GS_ALPHA_2;
+    sdfGrSetDrawDefParmPacket(&aEnv->defParm);
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrStdDrawEnvPredraw);
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035BA58);
+void sdfGrSetStdDrawEnv(sdfGrStdDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet) {
+    sdfGrSetRegsPacketHeader(&aEnv->header, SDF_TEXTURE_SCENE_PAYLOAD_QWORDS);
+    aEnv->view = aFrameSet;
+    aEnv->link.predrawFunc = sdfGrStdDrawEnvPredraw;
+    sdfGrSetClearPacket(&aEnv->clear, aFrameSet->width, aFrameSet->height, aFrameSet->bufferFormat, aFrameSet->auxiliaryFormat);
+    aEnv->test1.data = SDF_GS_SCENE_TEST;
+    aEnv->test1.reg = SDF_GS_TEST_1;
+    aEnv->alpha1.data = SDF_GS_DEFAULT_ALPHA;
+    aEnv->alpha1.reg = SDF_GS_ALPHA_1;
+    aEnv->test2.data = SDF_GS_SCENE_TEST;
+    aEnv->test2.reg = SDF_GS_TEST_2;
+    aEnv->alpha2.data = SDF_GS_DEFAULT_ALPHA;
+    aEnv->alpha2.reg = SDF_GS_ALPHA_2;
+    sdfGrSetDrawDefParmPacket(&aEnv->defParm);
+}
 
 void sdfGrLinkStdDrawEnv(sdfDrawTag_t *aTag, sdfPreDrawTag_t *aPreDrawTag, sdfPreDrawHook_t *aEnv) {
     sdfPreDrawTagLink(aPreDrawTag, aEnv);
     sdfDrawTagLink(aTag, EE_ADDR_S(aEnv) + SDF_QWORD_BYTES);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035BB38);
+void sdfGrSetFrameMaskRGB(const u8 *aEnv, sdfGrRefGifPacketHeader_t *aHdr, s32 aContext) {
+    if (aContext == 0) {
+        sdfGrSetRefGifPacket(aHdr, EE_ADDR((aEnv + 0x180)), 1);
+        return;
+    }
+    sdfGrSetRefGifPacket(aHdr, EE_ADDR((aEnv + 400)), 1);
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035BB80);
+void sdfGrSetFrameMaskReset(const u8 *aEnv, sdfGrRefGifPacketHeader_t *aHdr, s32 aContext) {
+    if (aContext == 0) {
+        sdfGrSetRefGifPacket(aHdr, EE_ADDR((aEnv + 0x70)), 1);
+        return;
+    }
+    sdfGrSetRefGifPacket(aHdr, EE_ADDR((aEnv + 0xb0)), 1);
+}
 
 void sdfGrLinkDispFrameTex(sdfDrawTag_t *aTag, addr_t aEnv, sdfGrRefPacketHeader_t *aPkt) {
     aPkt->vifCommands = (((u64)0x50000004 << 16) | 0x1000) << 16;

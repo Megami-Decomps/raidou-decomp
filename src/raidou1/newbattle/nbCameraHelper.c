@@ -202,7 +202,19 @@ extern char dds3EffectDirPathFormat[8];
 extern char dds3EffectResourcePathFormat[5];
 /* End of declarations from src/smt3/newbattle/nbCameraHelper.c */
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_0021AD10);
+/* Debug filesystem mode opens the formatted pfs0 directory; otherwise reset built-in iteration.
+   Return the native directory-open result, or zero for built-in mode. */
+s32 dds3EffectDirOpen(void *name) {
+    u8 path[EFF_DIRECTORY_PATH_BYTES];
+
+    if (sdfHddValid != 0) {
+        sprintf(path, dds3EffectDirPathFormat, name);
+        return sceDopen(path);
+    } else {
+        dds3EffectBuiltinNameIndex = 0;
+        return 0;
+    }
+}
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_0021AD60);
 
@@ -241,15 +253,7 @@ INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_0021B2C8);
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_0021B358);
 
-void dds3EffectFileListWindowDelete(nbCameraHelper_effFLWinHandle_t *a) {
-    sdfTexHandle_t *texture = a->textureHandle;
-
-    if (texture != NULL) {
-        sdfTexFreeDelayed(texture);
-        a->textureHandle = NULL;
-    }
-    sdfChipFreeDirect(a);
-}
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectFileListWindowDelete);
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_0021B818);
 
@@ -268,22 +272,10 @@ INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_0021B888);
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_0021B890);
 
-void dds3EffectListSetTexture(nbCameraHelper_effFLWinHandle_t *work, char *textureResource) {
-    sdfTexHandle_t *texture;
-    sdfMemHandle_t *loadedResource;
-    u32 resourceWords[4];
-
-    if (work->textureHandle != NULL) {
-        sdfTexFreeDelayed(work->textureHandle);
-        work->textureHandle = NULL;
-    }
-    loadedResource = sdfDevLoadFileEx(textureResource, resourceWords, 0);
-    texture = sdfTexSet(EE_ADDR_AS(void *, (resourceWords[0])));
-    work->textureHandle = texture;
-    sdfMemFreeDirect(loadedResource);
-}
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectListSetTexture);
 
 INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectFileListWindowDrawSprite);
+
 INCLUDE_SDATA(const s32, "newbattle/nbCameraHelper", D_0046D0B0);
 
 INCLUDE_SDATA(const s32, "newbattle/nbCameraHelper", D_0046D0B8);

@@ -611,6 +611,10 @@ def known_symbols(version):
         parts = line.split()
         if len(parts) == 3:
             out.setdefault(parts[2], int(parts[0], 16))
+    # Names given since that link.
+    for line in (ROOT / "config" / version / "symbol_addrs.txt").read_text().splitlines():
+        if m := SYMROW.match(line):
+            out.setdefault(m.group(1), int(m.group(2), 16))
     return out
 
 

@@ -90,15 +90,206 @@ extern f32 fldCamPitch;
 extern f32 fldCamLength;
 /* End of declarations from src/smt3/kernel/dds3DebugStuff.c */
 
-INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", func_00127658);
+void dds3DebugFloatEditEx(f32 *controlledValue, u8 *padState, f32 minimum, f32 maximum, f32 step, f32 bigStep) {
+    f32 adjustedValue = *controlledValue;
+
+    if ((s8)padState[5] & 0x80) {
+        adjustedValue += bigStep;
+        if (maximum < adjustedValue) {
+            adjustedValue = minimum;
+        }
+    } else if (padState[5] & 2) {
+        adjustedValue += bigStep;
+        if (maximum < adjustedValue) {
+            adjustedValue = maximum;
+        }
+    } else if ((s8)padState[4] & 0x80) {
+        adjustedValue -= bigStep;
+        if (adjustedValue < minimum) {
+            adjustedValue = maximum;
+        }
+    } else if (padState[4] & 2) {
+
+        adjustedValue -= bigStep;
+        if (adjustedValue < minimum) {
+            adjustedValue = minimum;
+        }
+    } else if ((s8)padState[7] & 0x80) {
+        adjustedValue += step;
+        if (maximum < adjustedValue) {
+            adjustedValue = minimum;
+        }
+    } else if (padState[7] & 2) {
+        adjustedValue += step;
+        if (maximum < adjustedValue) {
+            adjustedValue = maximum;
+        }
+    } else if ((s8)padState[6] & 0x80) {
+        adjustedValue -= step;
+        if (adjustedValue < minimum) {
+            adjustedValue = maximum;
+        }
+    } else if (padState[6] & 2) {
+        adjustedValue -= step;
+        if (adjustedValue < minimum) {
+            adjustedValue = minimum;
+        }
+    } else {
+        return;
+    }
+    *controlledValue = adjustedValue;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3DebugFloatEdit);
 
-INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", func_00127780);
+void dds3DebugIntEditEx(void *aValue, s32 aValueSize, s64 aMin, s64 aMax, s64 aSmall, s64 aLarge, s8 *aPadMap) {
+    s64 adjustedValue;
+    switch (aValueSize) {
+    case 1:
+        adjustedValue = *(u8 *)aValue;
+        break;
+    case 2:
+        adjustedValue = *(u16 *)aValue;
+        break;
+    case 4:
+        adjustedValue = *(u32 *)aValue;
+        break;
+    case -1:
+        adjustedValue = *(s8 *)aValue;
+        break;
+    case -2:
+        adjustedValue = *(s16 *)aValue;
+        break;
+    case -4:
+        adjustedValue = *(s32 *)aValue;
+        break;
+    default:
+        return;
+    }
+    if (aPadMap[5] & 0x80) {
+        adjustedValue += aLarge;
+        if (aMax < adjustedValue) {
+            adjustedValue = aMin;
+        }
+    } else if (aPadMap[5] & 2) {
+        adjustedValue += aLarge;
+        if (aMax < adjustedValue) {
+            adjustedValue = aMax;
+        }
+    } else if (aPadMap[4] & 0x80) {
+        adjustedValue -= aLarge;
+        if (adjustedValue < aMin) {
+            adjustedValue = aMax;
+        }
+    } else if (aPadMap[4] & 2) {
+        adjustedValue -= aLarge;
+        if (adjustedValue < aMin) {
+            adjustedValue = aMin;
+        }
+    } else if (aPadMap[7] & 0x80) {
+        adjustedValue += aSmall;
+        if (aMax < adjustedValue) {
+            adjustedValue = aMin;
+        }
+    } else if (aPadMap[7] & 2) {
+        adjustedValue += aSmall;
+        if (aMax < adjustedValue) {
+            adjustedValue = aMax;
+        }
+    } else if (aPadMap[6] & 0x80) {
+        adjustedValue -= aSmall;
+        if (adjustedValue < aMin) {
+            adjustedValue = aMax;
+
+        }
+    } else if (aPadMap[6] & 2) {
+        adjustedValue -= aSmall;
+        if (adjustedValue < aMin) {
+            adjustedValue = aMin;
+        }
+    } else {
+        return;
+    }
+    switch (aValueSize) {
+    case -1:
+    case 1:
+        *(u8 *)aValue = adjustedValue;
+        break;
+    case -2:
+    case 2:
+        *(u16 *)aValue = adjustedValue;
+        break;
+    case -4:
+    case 4:
+        *(u32 *)aValue = adjustedValue;
+        break;
+    }
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3DebugIntEdit);
 
-INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", func_00127930);
+s32 dds3DebugColorEditEx(u32 *aValue, s32 aColumn, s8 *aPadMap) {
+    s32 originalColor = *aValue;
+    s32 channelValue = originalColor;
+    s32 updatedColor;
+    switch (aColumn) {
+    case 0:
+        break;
+    case 1:
+        channelValue = originalColor >> 8;
+        break;
+    case 2:
+        channelValue = originalColor >> 16;
+        break;
+    case 3:
+        channelValue = originalColor >> 24;
+        break;
+    }
+    channelValue &= 0xFF;
+    if (((aPadMap[5] & 0x80) || (aPadMap[7] & 0x80)) && channelValue == 0xFF) {
+        channelValue = 0;
+    } else if (aPadMap[5] & 2) {
+        channelValue += 10;
+        if (channelValue >= 0x100) {
+            channelValue = 0xFF;
+        }
+    } else if (((aPadMap[4] & 0x80) || (aPadMap[6] & 0x80)) && channelValue == 0) {
+        channelValue = 0xFF;
+    } else if (aPadMap[4] & 2) {
+        channelValue -= 10;
+        if (channelValue < 0) {
+            channelValue = 0;
+        }
+    } else if (aPadMap[7] & 2) {
+        channelValue += 1;
+        if (channelValue >= 0x100) {
+            channelValue = 0xFF;
+        }
+    } else if (aPadMap[6] & 2) {
+        channelValue -= 1;
+        if (channelValue < 0) {
+            channelValue = 0;
+        }
+    } else {
+        return 0;
+    }
+    switch (aColumn) {
+    case 0:
+        updatedColor = (originalColor & 0xFFFFFF00) | channelValue;
+        break;
+    case 1:
+        updatedColor = (originalColor & 0xFFFF00FF) | (channelValue << 8);
+        break;
+    case 2:
+        updatedColor = (originalColor & 0xFF00FFFF) | (channelValue << 16);
+        break;
+    default:
+        updatedColor = (originalColor & 0x00FFFFFF) | (channelValue << 24);
+        break;
+    }
+    *aValue = updatedColor;
+    return updatedColor != originalColor;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3DebugColorEdit);
 

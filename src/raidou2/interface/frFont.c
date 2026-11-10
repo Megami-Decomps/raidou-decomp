@@ -859,7 +859,7 @@ void frCreateDrawEnvPacket(frFontGsPacket_t *pDrawEnvPkt) {
     pDrawEnvPkt->writes[5].reg = 0x47;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", func_001924D8);
+INCLUDE_ASM(const s32, "interface/frFont", frCreateDrawFontPacket_20550848);
 
 /* Submit glyph-relative coordinates and the cache node's owned UV rectangle. */
 void frCreateUserFontPacket(s32 X, s32 Y, s32 Z, frTextHandle_t *pText,

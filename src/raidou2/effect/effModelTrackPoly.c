@@ -316,7 +316,69 @@ void Eff_ModelTrackPolyListDrawOnly(effMTPolyListHandle_t *hMTPolyList) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020DF80);
+/* vu0 routine: Catmull-Rom point between p[1] and p[2], left in vf10. */
+void Eff_HermitianSpline(sdfVector4_t *p, f32 t)
+{
+    sdfVector4_t tan[2];
+    sdfVector4_t half;
+    sdfVector4_t h[4];
+    f32 t2 = t * t;
+    f32 t3 = t2 * t;
+
+    half.x = 0.5f;
+    half.y = 0.5f;
+    half.z = 0.5f;
+    SDF_VU0_LOADVECTOR(&p[1]);
+    SDF_VU0_LOADVECTOR_B(&p[0]);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR(&p[2]);
+    SDF_VU0_LOADVECTOR_B(&p[1]);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_ADDVECTOR_A_C();
+    SDF_VU0_LOADVECTOR_B(&half);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR(&tan[0]);
+    SDF_VU0_LOADVECTOR(&p[2]);
+    SDF_VU0_LOADVECTOR_B(&p[1]);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR(&p[3]);
+    SDF_VU0_LOADVECTOR_B(&p[2]);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_ADDVECTOR_A_C();
+    SDF_VU0_LOADVECTOR_B(&half);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR(&tan[1]);
+    h[0].x = 2.0f * t3 - 3.0f * t2 + 1.0f;
+    h[0].y = 2.0f * t3 - 3.0f * t2 + 1.0f;
+    h[0].z = 2.0f * t3 - 3.0f * t2 + 1.0f;
+    h[1].x = t3 - 2.0f * t2 + t;
+    h[1].y = t3 - 2.0f * t2 + t;
+    h[1].z = t3 - 2.0f * t2 + t;
+    h[2].x = t3 - t2;
+    h[2].y = t3 - t2;
+    h[2].z = t3 - t2;
+    h[3].x = -2.0f * t3 + 3.0f * t2;
+    h[3].y = -2.0f * t3 + 3.0f * t2;
+    h[3].z = -2.0f * t3 + 3.0f * t2;
+    SDF_VU0_LOADVECTOR(&h[0]);
+    SDF_VU0_LOADVECTOR_B(&p[1]);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR(&h[1]);
+    SDF_VU0_LOADVECTOR_B(&tan[0]);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_ADDVECTOR_C_A();
+    SDF_VU0_LOADVECTOR(&h[2]);
+    SDF_VU0_LOADVECTOR_B(&tan[1]);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_ADDVECTOR_C_A();
+    SDF_VU0_LOADVECTOR(&h[3]);
+    SDF_VU0_LOADVECTOR_B(&p[2]);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_ADDVECTOR_A_C();
+}
 
 dds3HermitianTrackPoly_tag *dds3HermitianTrackPolyCreate(s32 face, s32 split) {
     s32 count = face * split * 2 + 4;

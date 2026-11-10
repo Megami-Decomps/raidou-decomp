@@ -2108,7 +2108,43 @@ INCLUDE_ASM(const s32, "effect/parManager", func_00204830);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_002048B0);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_002048D8);
+/* Seed radius and ring direction, placing the packet at its rotated vertical offset. */
+void dds3Particle_SphereRingBuffInit(dds3Particle_SphereRing_t3 *pSphereRing, u32 number) {
+    parSphereRingPacket_t *packet = (parSphereRingPacket_t *)pSphereRing->head.buffer->pPhysics;
+    sdfVector4_t offsetVector;
+    f32 jitter;
+    f32 radius;
+    f32 angle;
+
+    packet += number;
+    packet->age = -1;
+    packet->color = 0;
+    jitter = pSphereRing->radius_r;
+    radius = pSphereRing->radius * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter));
+    packet->radius = radius;
+    angle = (3.14159265f * 2.0f) / pSphereRing->simu_num * (number % pSphereRing->simu_num);
+    packet->vel[0] = sdfCos(angle);
+    packet->vel[1] = 0;
+    packet->vel[2] = sdfSin(angle);
+    SDF_VU0_LOADMATRIX(pSphereRing->head.matrix);
+    offsetVector.y = radius;
+    offsetVector.x = 0;
+    offsetVector.z = 0;
+    SDF_VU0_LOADVECTOR(&offsetVector);
+    SDF_VU0_APPLYMATRIX_XYZ();
+    SDF_VU0_LOADVECTOR_B(pSphereRing->head.origin);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(packet);
+    jitter = pSphereRing->head.speedJitter;
+    packet->billboardScale = pSphereRing->head.scale[0] * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter));
+    jitter = pSphereRing->head.spinJitter;
+    if (jitter != 0) {
+        packet->spin = (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter)) * (3.14159265f * 2.0f);
+    } else {
+        packet->spin = 0;
+    }
+    dds3Particle_EffectReset(&pSphereRing->head.sub, number);
+}
 
 /* Build age-phase ring positions and rotate the stored X/Z directions.
  * vector is reused for the position offset and old direction components. */
@@ -2537,11 +2573,43 @@ void dds3Particle_SpiralRandomize(effParticleOverlay_t *effect) {
 
 INCLUDE_ASM(const s32, "effect/parManager", func_00205B30);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_00205B58);
+effEmitterHead_t *effCloneSingleParticleTemplate(effEmitterHead_t *source) {
+    effEmitterHead_t *clone = sdfChipAllocDirect(0x150);
+    /* This variant has no appended tail; retail retains the template-tail copy. */
+    s32 tailBytes = 0;
+
+    memset(clone, 0, 0x150);
+    memcpy(clone, source, source->templateSize);
+    memcpy((u8 *)clone + 0x150, (u8 *)source + source->templateSize, tailBytes);
+    clone->particleCount = 1;
+    clone->lifetimeFrames = 0;
+    dds3Particle_BasicCreate(clone);
+    return clone;
+}
 
 INCLUDE_ASM(const s32, "effect/parManager", func_00205BD8);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_00205C00);
+void effInitParticleRecord(effParticleOverlay_t *effect) {
+    effParticleRecord_t *record = (effParticleRecord_t *)effect->buffer->pPhysics;
+    f32 jitter;
+
+    record->x = effect->x;
+    record->color = effect->color | (effect->alpha << 24);
+    record->frame = -1;
+    record->y = effect->y;
+    record->z = effect->z;
+    record->speed = 1.0f;
+    record->angle = 0.0f;
+    effect->lastSpeed = effect->speed;
+    jitter = effect->speedJitter;
+    record->speed = effect->speed * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter));
+    jitter = effect->angleJitter;
+    if (jitter != 0.0f) {
+        record->angle = (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter)) * (3.14159265f * 2.0f);
+    } else {
+        record->angle = 0.0f;
+    }
+}
 
 /* Frame zero reinitializes to -1 before incrementing; refresh position and modulated packed color. */
 void dds3Particle_SpiralBlendColor(effParticleOverlay_t *effect) {
@@ -3147,7 +3215,23 @@ dds3Particle_BlurBuff_t *dds3Particle_BlurCreate(u32 number, u16 length, billHan
 
 INCLUDE_ASM(const s32, "effect/parManager", func_00207E80);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_00207E98);
+void dds3Particle_BlurSet(dds3Particle_BlurBuff_t *table, s32 slotIndex, u32 color, f32 billboardScale) {
+    dds3Particle_BlurBuffList_t *slot = &table->blurList[slotIndex];
+    s32 last = table->point - 1;
+    u128 *point = slot->pPos + last;
+    s32 i;
+
+    for (i = 0; i < last * SDF_FRAME_DUE(dds3GetKernelCount()); i++) {
+        point--;
+        SDF_VU0_COPYVECTOR(point + 1, point);
+    }
+    if (slot->count <= last) {
+        slot->count += SDF_FRAME_DUE(dds3GetKernelCount());
+    }
+    SDF_FRAME_WHEN(dds3GetKernelCount(), SDF_VU0_STOREVECTOR_C(point));
+    slot->abgr = color;
+    slot->scale = billboardScale;
+}
 
 void dds3Particle_BlurSetExp(dds3Particle_BlurBuff_t *hBlur, s32 index, const f32 *pPosBase, u32 abgr,
                    dds3ParOffsetBuff_t *pOffBuff, f32 scale) {
@@ -3441,7 +3525,30 @@ void dds3ParticleSetRotateMatrix(dds3Particle_Basic_t *hData, void *pMatrix) {
 
 INCLUDE_ASM(const s32, "effect/parManager", func_00208900);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_00208908);
+void dds3ParticleSetTypeFlag(dds3Particle_Basic_t *object, s32 mode) {
+    mode &= 0xFF;
+    switch (object->type) {
+    case 1:
+    case 5:
+    case 11:
+        ((parObjClientView_t *)object)->mode150 = mode;
+        break;
+    case 0:
+    case 2:
+    case 3:
+    case 4:
+    case 6:
+    case 7:
+    case 8:
+    case 10:
+    case 12:
+        ((parObjClientView_t *)object)->mode151 = mode;
+        break;
+    case 9:
+        break;
+    }
+    object->state = 1;
+}
 
 u8 dds3ParticleGetLoop(dds3Particle_Basic_t *hData) {
     switch (hData->type) {

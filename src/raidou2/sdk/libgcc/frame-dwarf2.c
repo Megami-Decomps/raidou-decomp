@@ -662,9 +662,45 @@ static inline s32 sfIsZero(const fp_number_type *number) {
 f32 sdfPackFloat(const fp_number_type *number);
 /* End of declarations from src/smt3/sdk/libgcc.c */
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FCF58);
+u8 *libc_2D1E50(u8 *p, s32 *out) {
+    s32 shift = 0;
+    u32 v = 0;
+    u32 b;
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FCFB0);
+    do {
+        b = *p++;
+        v |= (b & 0x7F) << shift;
+        shift += 7;
+    } while (b & 0x80);
+    if ((u32)shift < 32 && (b & 0x40)) {
+        v |= -1 << shift;
+    }
+    *out = v;
+    return p;
+}
+
+void libc_2D1EA8(fde_vector *left, const fde_vector *right)
+{
+    u32 leftIndex;
+    u32 rightIndex;
+    u32 *entry;
+
+    /* Preserve owner-based indexing; see levers/cross-block-locals.md. */
+    rightIndex = right->count;
+    if (rightIndex > 0) {
+        leftIndex = left->count;
+        do {
+            rightIndex--;
+            entry = right->array[rightIndex];
+            while (leftIndex > 0 && fde_compare(left->array[leftIndex - 1], entry) > 0) {
+                left->array[leftIndex + rightIndex] = left->array[leftIndex - 1];
+                leftIndex--;
+            }
+            left->array[leftIndex + rightIndex] = entry;
+        } while (rightIndex > 0);
+        left->count += right->count;
+    }
+}
 
 INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FD0A8);
 
@@ -734,25 +770,340 @@ void __deregister_frame(void *fn) {
     free(__deregister_frame_info(fn));
 }
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FD830);
+s32 libc_2D2728(u32 *p) {
+    s32 n = 0;
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FD870);
+    while (p[0] != 0) {
+        if (p[1] != 0 && p[2] != 0) {
+            n++;
+        }
+        p = (u32 *)((char *)p + p[0] + 4);
+    }
+    return n;
+}
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FD900);
+void libc_2D2768(u32 *p, fde_vector *list, u32 *pmin, u32 *pmax) {
+    u32 lo = *pmin;
+    u32 hi = *pmax;
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FD958);
+    while (p[0] != 0) {
+        if (p[1] != 0) {
+            u32 a = p[2];
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FDAC0);
+            if (a != 0) {
+                if (list->array != NULL) {
+                    list->array[list->count++] = p;
+                }
+                if (a < lo) {
+                    lo = a;
+                }
+                if (hi < a + p[3]) {
+                    hi = a + p[3];
+                }
+            }
+        }
+        p = (u32 *)((char *)p + p[0] + 4);
+    }
+    *pmin = lo;
+    *pmax = hi;
+}
+
+void *libc_2D27F8(u32 *p, u32 addr) {
+    while (p[0] != 0) {
+        if (p[1] != 0 && p[2] != 0 && addr - p[2] < p[3]) {
+            return p;
+        }
+        p = (u32 *)((char *)p + p[0] + 4);
+    }
+    return NULL;
+}
+
+void libc_2D2850(object *entry)
+{
+    fde_accumulator vectors;
+    u32 minimum;
+    u32 maximum;
+    u32 count;
+    u32 **sorted;
+
+    if (entry->pc_begin != NULL) {
+        count = entry->count;
+    } else if (entry->fde_array != NULL) {
+        u32 **table = entry->fde_array;
+        for (count = 0; *table != NULL; table++)
+            count += libc_2D2728(*table);
+    } else {
+        count = libc_2D2728(entry->fde_begin);
+    }
+    entry->count = count;
+    if (!start_fde_sort(&vectors, count) && entry->pc_begin != NULL)
+        return;
+    minimum = 0xffffffff;
+    maximum = 0;
+    if (entry->fde_array != NULL) {
+        u32 **table = entry->fde_array;
+        for (; *table != NULL; table++)
+            libc_2D2768(*table, &vectors.linear, &minimum, &maximum);
+    } else {
+        libc_2D2768(entry->fde_begin, &vectors.linear, &minimum, &maximum);
+    }
+    sorted = libc_2D1FA0(&vectors, count);
+    if (sorted != NULL)
+        entry->fde_array = sorted;
+    entry->pc_begin = EE_ADDR_AS(void *, minimum);
+    entry->pc_end = EE_ADDR_AS(void *, maximum);
+}
+
+u32 *libc_2D29B8(u32 pc)
+{
+    object *entry;
+    u32 low;
+    u32 high;
+    u32 *found;
+
+    WaitSema(frameObjectSema);
+    for (entry = frameObjectList; entry != NULL; entry = entry->next) {
+        if (entry->pc_begin == NULL)
+            libc_2D2850(entry);
+        if (pc >= EE_ADDR(entry->pc_begin) && pc < EE_ADDR(entry->pc_end))
+            break;
+    }
+    if (entry == NULL) {
+        SignalSema(frameObjectSema);
+        return NULL;
+    }
+    if (entry->fde_array == NULL || entry->fde_array == entry->fde_begin)
+        libc_2D2850(entry);
+    if (entry->fde_array != NULL && entry->fde_array != entry->fde_begin) {
+        SignalSema(frameObjectSema);
+        for (low = 0, high = entry->count; low < high;) {
+            u32 index = (low + high) / 2;
+            u32 *frame = ((u32 **)entry->fde_array)[index];
+            if (pc < frame[2])
+                high = index;
+            else if (pc >= frame[2] + frame[3])
+                low = index + 1;
+            else
+                return frame;
+        }
+    } else {
+        if (entry->fde_array != NULL) {
+            u32 **table = entry->fde_array;
+            do {
+                found = libc_2D27F8(*table, pc);
+            } while (found == NULL && *++table != NULL);
+        } else {
+            found = libc_2D27F8(entry->fde_begin, pc);
+        }
+        SignalSema(frameObjectSema);
+        return found;
+    }
+    return NULL;
+}
 
 INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAAA0);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FDC68);
+INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", libc_2D2B60);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FDD78);
+u8 *libc_2D2C70(u8 *p, frameState_t *state)
+{
+    u32 opcode = *p++;
+    union {
+        s32 signedValue;
+        u32 unsignedValue;
+    } value;
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FDE98);
+    switch (opcode) {
+    case 0x50 ... 0x6f:
+        state->cfaRegister = opcode - 0x50;
+        break;
+    case 0x90:
+        p = libc_2D1E50(p, &value.signedValue);
+        state->cfaRegister = value.signedValue;
+        /* The native regx case falls through and replaces this register. */
+    case 0x70 ... 0x8f:
+        state->cfaRegister = opcode - 0x70;
+        p = libc_2D1E50(p, &value.signedValue);
+        state->baseOffset = value.signedValue;
+        break;
+    case 0x92:
+        p = libc_2D1E50(p, &value.signedValue);
+        state->cfaRegister = value.signedValue;
+        p = libc_2D1E50(p, &value.signedValue);
+        state->baseOffset = value.signedValue;
+        break;
+    case 0x06:
+        state->indirect = 1;
+        break;
+    case 0x23:
+        p = libc_2D1E08(p, &value.unsignedValue);
+        state->cfaOffset = value.signedValue;
+        break;
+    default:
+        abort();
+    }
+    return p;
+}
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003FE2E8);
+u8 *libc_2D2D90(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location)
+{
+    union {
+        s32 signedValue;
+        u32 unsignedValue;
+    } offset;
+    u32 reg;
+    u32 sourceReg;
+    u32 opcode = *p++;
+
+    if (opcode & 0x40) {
+        *location += (opcode & 0x3f) * info->codeAlignment;
+    } else if (opcode & 0x80) {
+        reg = opcode & 0x3f;
+        p = libc_2D1E08(p, &offset.unsignedValue);
+        if (reg != state->state.cfaRegister) {
+            offset.signedValue *= info->dataAlignment;
+            state->state.saved[reg] = 1;
+            state->state.registerOrOffset[reg] = offset.signedValue;
+        }
+    } else if (opcode & 0xc0) {
+        reg = opcode & 0x3f;
+        state->state.saved[reg] = 0;
+    } else switch (opcode) {
+    case 0:
+    case 7:
+    case 8:
+        break;
+    case 1:
+        *location = ((const cfiEncodedValue_t *)p)->word;
+        p += 4;
+        break;
+    case 2:
+        *location += *p++;
+        break;
+    case 3:
+        *location += ((const cfiEncodedValue_t *)p)->half;
+        p += 2;
+        break;
+    case 4:
+        *location += ((const cfiEncodedValue_t *)p)->word;
+        p += 4;
+        break;
+    case 5:
+        p = libc_2D1E08(p, &reg);
+        p = libc_2D1E08(p, &offset.unsignedValue);
+        if (reg != state->state.cfaRegister) {
+            offset.signedValue *= info->dataAlignment;
+            state->state.saved[reg] = 1;
+            state->state.registerOrOffset[reg] = offset.signedValue;
+        }
+        break;
+    case 6:
+        p = libc_2D1E08(p, &reg);
+        state->state.saved[reg] = 0;
+        break;
+    case 9:
+        p = libc_2D1E08(p, &reg);
+        p = libc_2D1E08(p, &sourceReg);
+        state->state.saved[reg] = 2;
+        state->state.registerOrOffset[reg] = sourceReg;
+        break;
+    case 0x0c:
+        p = libc_2D1E08(p, &reg);
+        p = libc_2D1E08(p, &offset.unsignedValue);
+        state->state.cfaRegister = reg;
+        state->state.cfaOffset = offset.signedValue;
+        break;
+    case 0x0d:
+        p = libc_2D1E08(p, &reg);
+        state->state.cfaRegister = reg;
+        break;
+    case 0x0e:
+        p = libc_2D1E08(p, &offset.unsignedValue);
+        state->state.cfaOffset = offset.signedValue;
+        break;
+    case 0x0f: {
+        u8 *end;
+        state->state.cfaRegister = 0;
+        state->state.cfaOffset = 0;
+        state->state.baseOffset = 0;
+        state->state.indirect = 0;
+        p = libc_2D1E08(p, &offset.unsignedValue);
+        end = p + offset.unsignedValue;
+        while (p < end)
+            p = libc_2D2C70(p, &state->state);
+        break;
+    }
+    case 0x0a: {
+        frameStateInternal_t *saved = malloc(sizeof(*saved));
+        *saved = *state;
+        state->savedState = saved;
+        break;
+    }
+    case 0x0b: {
+        frameStateInternal_t *saved = state->savedState;
+        *state = *saved;
+        free(saved);
+        break;
+    }
+    case 0x2d:
+        for (reg = 16; reg < 32; reg++) {
+            state->state.saved[reg] = 1;
+            state->state.registerOrOffset[reg] = (reg - 16) * sizeof(void *);
+        }
+        break;
+    case 0x2e:
+        p = libc_2D1E08(p, &offset.unsignedValue);
+        state->state.argumentSize = offset.signedValue;
+        break;
+    case 0x2f:
+        p = libc_2D1E08(p, &reg);
+        p = libc_2D1E08(p, &offset.unsignedValue);
+        offset.signedValue *= info->dataAlignment;
+        state->state.saved[reg] = 1;
+        state->state.registerOrOffset[reg] = (s32)(0u - (u32)offset.signedValue);
+        break;
+    default:
+        abort();
+    }
+    return p;
+}
+
+frameState_t *libc_2D31E0(u32 pc, frameState_t *output)
+{
+    cieInfo_t info;
+    frameStateInternal_t state;
+    u32 *frame;
+    u8 *p;
+    u8 *end;
+    u32 payloadSize;
+    u32 location;
+    u32 *cie;
+
+    frame = libc_2D29B8(pc);
+    if (frame == NULL)
+        return NULL;
+    p = libc_2D2B60(frame, &info);
+    if (p == NULL)
+        return NULL;
+    memset(&state, 0, sizeof(state));
+    state.state.returnColumn = info.returnRegister;
+    state.state.ehPointer = info.ehPointer;
+    cie = (u32 *)((u8 *)frame - frame[1] + 4);
+    end = (u8 *)cie + cie[0] + 4;
+    while (p < end)
+        p = libc_2D2D90(p, &state, &info, NULL);
+    p = (u8 *)frame + 16;
+    if (info.augmentation[0] == 'z') {
+        p = libc_2D1E08(p, &payloadSize);
+        p += payloadSize;
+    }
+    end = (u8 *)frame + frame[0] + 4;
+    location = frame[2];
+    while (p < end && pc >= location)
+        p = libc_2D2D90(p, &state, &info, &location);
+    *output = state.state;
+    return output;
+}
 
 INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAB70);
 

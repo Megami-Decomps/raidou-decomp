@@ -1208,7 +1208,23 @@ void sdfModelDrawEnvLinkOt(sdfGrOt_t **aOt, sdfModelDrawEnv_t *aEnv)
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))aOt[3]->regFunc)(aOt[3], &aEnv->term.drawTag);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_003D6748);
+void *sdfChunkFindById(void *data, u32 chunkId) {
+    sdfModelChunkHeader_t *chunk = data;
+    u32 currentId;
+
+    if (chunk == NULL) {
+        return NULL;
+    }
+    currentId = chunk->tag;
+    while (currentId != 0) {
+        if (currentId == chunkId) {
+            return chunk;
+        }
+        chunk = (sdfModelChunkHeader_t *)((u8 *)chunk + chunk->size);
+        currentId = chunk->tag;
+    }
+    return NULL;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_003D6790);
 

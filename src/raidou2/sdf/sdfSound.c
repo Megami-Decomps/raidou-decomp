@@ -935,7 +935,17 @@ INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6358);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6388);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E63B8);
+void sdfSndReleaseMidiTrack(s32 id) {
+    u32 packet[4];
+    if (p2sdLoadCheckMidi(id) != 0) {
+        packet[0] = id;
+        sdfSndSendSyncCmd(0xB0, 0, packet, 0x10);
+        id >>= 16;
+        if (p2sdSmgHandle == id) {
+            p2sdSmgHandle = -1;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6410);
 
@@ -1005,7 +1015,16 @@ s32 p2sdSyncSound(void)
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6688);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E66B8);
+s32 sdfSndSetChannelCount(u32 aCh)
+{
+    if (aCh > 16) {
+        aCh = 16;
+    }
+    if (aCh == 0) {
+        aCh = 1;
+    }
+    return sdfSndSendSyncCmd((aCh - 1) | 0x1D0, 0, NULL, 0);
+}
 
 u32 p2sdSetPcmCallback(addr_t aCallback)
 {

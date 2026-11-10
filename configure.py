@@ -275,6 +275,7 @@ def run_splat(version: str, yaml: Path, force: bool) -> bool:
     subprocess.run([sys.executable, "tools/vu_include.py", version], cwd=ROOT, check=True)
     subprocess.run([sys.executable, "tools/label_string_padding.py", version], cwd=ROOT, check=True)
     align_bss(ROOT / "build" / version / f"{VERSIONS[version]['serial']}.ld")
+    align_data_files(version)
     provide_data_symbols(version)
     restore_unchanged_timestamps(snapshot)
     stamp.parent.mkdir(parents=True, exist_ok=True)
@@ -308,6 +309,22 @@ def provide_data_symbols(version: str) -> None:
     path = ROOT / "config" / version / "undefined_syms_auto.txt"
     text = path.read_text() if path.exists() else ""
     path.write_text(text + "".join(f"PROVIDE({n} = 0x{n[2:]});\n" for n in sorted(names)))
+
+
+def align_data_files(version: str) -> None:
+    """C objects align .rodata and .data to 16, so a C object can end short of the
+    next split by its padding. Align split data on a 16-byte boundary the same way."""
+    for path in (ROOT / "asm" / version / "data").glob("*_*.*data.s"):
+        m = re.match(r"(rodata|data)_([0-9A-F]{8})\.(rodata|data)\.s$", path.name)
+        if not m or int(m.group(2), 16) % 16:
+            continue
+        text = path.read_text()
+        head, sep, rest = text.partition("\nnonmatching ")
+        fixed = re.sub(r"^\.align [0-3]$", ".align 4", head, count=1, flags=re.M)
+        if not re.search(r"^\.align ", head, re.M):
+            fixed = head.rstrip("\n") + "\n\n.align 4\n"
+        if fixed != head:
+            path.write_text(fixed + sep + rest)
 
 
 def align_bss(ld_script: Path) -> None:
