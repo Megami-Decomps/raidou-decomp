@@ -2797,6 +2797,11 @@
 0x0040C700	_EnableDmac	inferred	SMT3HD name via SLUS_209.11 0x002DBC00, byte-identical; map-agrees
 0x0040C710	_DisableDmac	inferred	SMT3HD name via SLUS_209.11 0x002DBC10, byte-identical; map-agrees
 0x0040C720	SetAlarm	inferred	SMT3HD name via SLUS_209.11 0x002DBC20, byte-identical; map-agrees
+0x0040C730	ReleaseAlarm	inferred	syscall stub, number and bytes match SLUS_209.11 0x002DBC30; map one stub off
+0x0040C740	_iEnableIntc	inferred	syscall stub, number and bytes match SLUS_209.11 0x002DBC40; map one stub off
+0x0040C750	_iDisableIntc	inferred	syscall stub, number and bytes match SLUS_209.11 0x002DBC50; map one stub off
+0x0040C760	_iEnableDmac	inferred	syscall stub, number and bytes match SLUS_209.11 0x002DBC60; map one stub off
+0x0040C770	_iDisableDmac	inferred	syscall stub, number and bytes match SLUS_209.11 0x002DBC70; map one stub off
 0x0040C7A0	CreateThread	inferred	SMT3HD name via SLUS_209.11 0x002DBCA0, byte-identical; map-agrees
 0x0040C7C0	_StartThread	inferred	smt3-decomp name via SLUS_209.11 0x002DBCC0, byte-identical; map-agrees
 0x0040C7E0	ExitDeleteThread	inferred	SMT3HD name via SLUS_209.11 0x002DBCE0, byte-identical; map-agrees
