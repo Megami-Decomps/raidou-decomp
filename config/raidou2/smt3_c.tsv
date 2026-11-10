@@ -407,7 +407,7 @@ btlProjectOnPlaneVU	c
 btlRandomInclusiveRange	c
 btlReplaceResourceHandle	c
 btlResourceRecordSetName	c
-btlRollAiBucket	asm	size 0x90, retail 0xC8
+btlRollAiBucket	c
 btlRunCameraMotionResetTask	c
 btlScanDirectory	c
 btlScriptReturnOneBasedAiBucket	asm	btlRollAiBucket is 0x002A95B0, code wants 0x003C1A60
@@ -2249,14 +2249,14 @@ fldLmapRewindThroughWindow	c
 fldLmapSubmitPositionedCommandPacket	c
 fldLmapSubmitScaledSpritePacket	c
 fldPlayerCalc360_4	c
-fldPlayerCalc360_8	asm	.rodata base 0x004A9800, 0x004A9840
+fldPlayerCalc360_8	c
 fldPoint3To2	c
 fldPointDistance	c
 fldProcessFieldRequestAlternate	c
 fldResetPlayerSceneObjectState	c
 fldRestoreCameraModelColor	c
 fldSetCameraObjectTransitionFlag	c
-fldSnapAngleToCompassPoint	asm	.rodata base 0x004A9800, 0x004A9840
+fldSnapAngleToCompassPoint	c
 fldTitleMini_Shutdown	asm	sdfTexFreeDelayed at 0x003CF720, others at 0x003CF768
 fldToggleWorldNodeState	c
 fld_1374F0	c
@@ -2469,7 +2469,7 @@ mdlDrawViewerAssetSelection	asm	.rodata base 0x004B4090, 0x004B40A0
 mdlDrawViewerEffectRecordList	c
 mdlDrawViewerIndexedLabelOverlay	c
 mdlDrawViewerModeLabel	c
-mdlDrawViewerModelAndMotionSummary	asm	37 words differ, first at +0x8
+mdlDrawViewerModelAndMotionSummary	c
 mdlDrawViewerMotionTimeline	asm	.rodata base 0x004B4090, 0x004B40A0
 mdlDrawViewerOptionLabels	c
 mdlDrawViewerResourceMenu	c

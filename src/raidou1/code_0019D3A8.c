@@ -1313,7 +1313,37 @@ void mdlDrawViewerOptionLabels(void) {
     } while (i != 13);
 }
 
-INCLUDE_ASM(const s32, "code_0019D3A8", mdlDrawViewerModelAndMotionSummary);
+void mdlDrawViewerModelAndMotionSummary(void) {
+    SifCommand packet;
+    const char *format;
+    s32 displayMode;
+    s32 nodeCount;
+    void *formatted;
+
+    mdlAppendViewerRectToDrawList(0x7E10, 0x8608, 0xFF0080, 0xEA0, 0x90, 0);
+    sdfDevSetPrintCB(&packet, 0x7E40, 0x8620, 0xFF0080, 0);
+
+    if ((displayMode = mdlGetViewerDisplayMode(&mdlViewerState)) == 0) {
+        format = D_003ABC98;
+    } else {
+        format = D_003ABCB0;
+    }
+    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintfEx(&packet, format, mdlViewerState.resourceGroup, mdlViewerState.resourceId)));
+
+    nodeCount = mdlGetNumOfCut(mdlViewerState.resources[0], 0);
+    if (nodeCount == 0) {
+        formatted = sdfDevPrintfEx(&packet, D_003BBC28);
+    } else {
+        if (mdlViewerState.assetDisplayMode == 0) {
+            format = D_003ABCC8;
+        } else {
+            format = D_003ABCD8;
+        }
+        formatted = sdfDevPrintfEx(&packet, format,
+                                       mdlGetMotionNum(mdlViewerState.resources[0], 0), nodeCount - 1);
+    }
+    sdfDrawTagLink(mdlViewerState.packetList, (u32)(formatted));
+}
 
 void mdlAddViewEntryFlagged(void) {
     f32 low;
@@ -1348,6 +1378,8 @@ void mdlAddPlainViewerEntryForSelectedNode(void) {
         mdlSmoothSingleMotion(mdlViewerState.resources[0], mdlViewerState.selectedNodeId, mdlViewerState.selectedEntryId, first, low);
     }
 }
+
+INCLUDE_RODATA(const s32, "code_0019D3A8", D_0044D8E0);
 
 INCLUDE_RODATA(const s32, "code_0019D3A8", D_0044D8F8);
 

@@ -406,7 +406,7 @@ btlProjectOnPlaneVU	c
 btlRandomInclusiveRange	c
 btlReplaceResourceHandle	c
 btlResourceRecordSetName	c
-btlRollAiBucket	asm	size 0x90, retail 0xC8
+btlRollAiBucket	c
 btlScanDirectory	c
 btlSelectConditionalEncounterGroup	c
 btlSetResourceBrowserPosition	c
@@ -2500,7 +2500,7 @@ mdlDrawViewerAssetSelection	asm	.rodata base 0x0044D920, 0x0044D930
 mdlDrawViewerEffectRecordList	c
 mdlDrawViewerIndexedLabelOverlay	c
 mdlDrawViewerModeLabel	c
-mdlDrawViewerModelAndMotionSummary	asm	37 words differ, first at +0x8
+mdlDrawViewerModelAndMotionSummary	c
 mdlDrawViewerMotionTimeline	asm	.rodata base 0x0044D920, 0x0044D930
 mdlDrawViewerOptionLabels	c
 mdlDrawViewerResourceMenu	c
