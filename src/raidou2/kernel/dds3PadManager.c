@@ -141,7 +141,7 @@ INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadInitialize);
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_00103C18);
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_00104110);
+INCLUDE_ASM(const s32, "kernel/dds3PadManager", kwlnPadStepLargeMotorLevel);
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_00104170);
 

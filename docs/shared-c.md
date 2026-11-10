@@ -136,3 +136,21 @@ against retail and kept when its section lands where retail has it.
 A nested function with an assembler name (`movieMemcpy` in
 `movieParseHeader`) is emitted by its parent's body, so `port` drops its
 `INCLUDE_ASM` line while the parent is C.
+
+## Names from dds-decomp
+
+`raidou_dds.py names` names a `func_` function (asm, in a TU or a gap) after
+its DDS1 or DDS2 partner in `dds_unique_in_raidou.tsv` when the partner's
+masked words and slot kinds (as `pairs` compares them) equal Raidou's in
+dds-decomp's split assembly and the name is not a placeholder or already used.
+A C partner wins, then DDS1. `rename` updates the `INCLUDE_ASM` lines;
+`raidou_names.py --apply --out-dir build/raidou_c/dds` writes the names. The
+note in `name_sources.txt` says how dds-decomp got the name: `SMT3HD name`,
+`evidence`, `descriptive` (its own descriptive names, most of them) or `no
+provenance row`. 1,132 names in raidou1, 1,126 in raidou2.
+
+```sh
+python3 tools/raidou_dds.py names --dds <dds-decomp, split>
+python3 tools/raidou_names.py --apply --out-dir build/raidou_c/dds
+python3 tools/raidou_dds.py rename && python3 configure.py && ninja
+```

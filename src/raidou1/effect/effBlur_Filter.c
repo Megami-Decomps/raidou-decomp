@@ -212,7 +212,7 @@ INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8488);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F84A0);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8518);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effDrawBlurFixedPointRectangle);
 
 /* Copy only the serialized parameters, leaving the owned work tail intact. */
 void dds3EffectPartialMultiBlurSetParam(effBlurTemplate_t *hPartialMultiBlur, const dds3Effect_PartialMultiBlurParam_t *pParam) {

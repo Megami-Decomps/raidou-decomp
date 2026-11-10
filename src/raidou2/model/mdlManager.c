@@ -1176,7 +1176,7 @@ void mdlLink(mdlObj_t *aHandle, void *aModelOt)
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B0220);
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001B02C0);
+INCLUDE_ASM(const s32, "model/mdlManager", mdlBlendEntryPitchYawAndUpdate);
 
 void mdlHideAllNode(mdlObj_t *aHandle)
 {

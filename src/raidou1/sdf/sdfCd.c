@@ -232,9 +232,9 @@ void sdfCdStStart(s32 lsn) {
     sdfCdCurrLsn = lsn;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036BD90);
+INCLUDE_ASM(const s32, "sdf/sdfCd", sdfDevSignalPendingSemaphore);
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036BDB8);
+INCLUDE_ASM(const s32, "sdf/sdfCd", sdfDevSeekDiscWithRequestGate);
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036BE78);
 

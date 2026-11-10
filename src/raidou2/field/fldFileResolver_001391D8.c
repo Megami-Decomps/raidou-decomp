@@ -647,7 +647,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139460);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_001394E8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139520);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldProcessFieldRequestAlternate);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139540);
 

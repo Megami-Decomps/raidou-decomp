@@ -568,9 +568,9 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_001FC548);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC550);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC558);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLFieldColorGetOverrideSelector);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC560);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLFieldColorGetFinalSelector);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC568);
 

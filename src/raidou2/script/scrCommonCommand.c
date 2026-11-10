@@ -359,7 +359,7 @@ INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00116700);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_001167B0);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00116860);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommandFadeBackgroundOut);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_001168A0);
 
@@ -1035,4 +1035,4 @@ s32 scrCommand_MFILTER_OFF(void)
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00117D40);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00117D90);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FILTER_ALLOFF);

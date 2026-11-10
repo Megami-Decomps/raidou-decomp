@@ -974,9 +974,9 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001BE280);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001BE2F0);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001BE360);
+INCLUDE_ASM(const s32, "event/evtCommand", evtOpQueueWorldObjectPendingValue);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001BE3C8);
+INCLUDE_ASM(const s32, "event/evtCommand", evtOpClearWorldObjectPendingValue);
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_004B4658);
 
@@ -1155,7 +1155,7 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001BF720);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ROT);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001BF7F0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtGetShortestAngleDelta);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001BF8C0);
 
@@ -2065,7 +2065,7 @@ const char evtMsgDelBeStart[16] = "del BE (%d)..\n";
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C2590);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001C2658);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommandClearPolygonMovieFlag);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C2698);
 
@@ -2267,13 +2267,13 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001C3118);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001C3150);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001C3188);
+INCLUDE_ASM(const s32, "event/evtCommand", evtOpcodeSetBgmVolumePan);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001C31C8);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommandStartBgmWithFade);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001C3208);
+INCLUDE_ASM(const s32, "event/evtCommand", evtOpcodeRefreshTaskData);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001C3248);
+INCLUDE_ASM(const s32, "event/evtCommand", evtOpcodeInitializeEffectSoundChannel);
 
 u32 evt_1E92F8(void)
 {

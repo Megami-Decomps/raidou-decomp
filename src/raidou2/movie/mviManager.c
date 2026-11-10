@@ -235,7 +235,7 @@ INCLUDE_ASM(const s32, "movie/mviManager", func_001E8BC8);
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001E8BF8);
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001E8C28);
+INCLUDE_ASM(const s32, "movie/mviManager", mnuUpdateMovieDrawShutdownCountdown);
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001E8CD0);
 

@@ -1,4 +1,4 @@
-# SMT3 bodies carried by tools/raidou_c.py: function, c|asm, reason it stays asm
+# SMT3 and DDS bodies carried by tools/raidou_c.py: function, c|asm, reason it stays asm
 AbLoadCallback	c
 AddFrameInfo2	c
 AddProcessList	c

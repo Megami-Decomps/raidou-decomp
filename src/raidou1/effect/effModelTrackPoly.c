@@ -271,7 +271,7 @@ INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F69B8);
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F69C8);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F69E0);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effTrackPolyUpdate);
 
 effMTPolyListHandle_t *Eff_ModelTrackPolyListCreate(Eff_ModelTrackPolyParam_t *pParam, u32 number) {
     sdfMemHandle_t *handle = sdfMemAllocDirect(number * sizeof(effModelTrackPoly_t *) + sizeof(effMTPolyListHandle_t));

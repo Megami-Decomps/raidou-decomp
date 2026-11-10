@@ -354,9 +354,9 @@ void shuffleIndices(s8 *order, s32 count, s32 rounds)
     }
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123E58);
+INCLUDE_ASM(const s32, "facility/fclMisc", evtLoadResourcePair);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123E88);
+INCLUDE_ASM(const s32, "facility/fclMisc", evtReleaseResourcePairHandle);
 
 s8 fclInitMessage(void *pData)
 {
@@ -372,7 +372,7 @@ s8 fclInitMessage(void *pData)
     return ret;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123EE8);
+INCLUDE_ASM(const s32, "facility/fclMisc", evtSetMessageWindowPageValue);
 
 s32 fclStartMessage(s32 MsgNo)
 {
@@ -393,13 +393,13 @@ INCLUDE_ASM(const s32, "facility/fclMisc", func_00123FB0);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00123FC8);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123FD0);
+INCLUDE_ASM(const s32, "facility/fclMisc", dspReadWindowSecondPanelValue);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124008);
+INCLUDE_ASM(const s32, "facility/fclMisc", evtGetCapturedWindowPanelValue);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00124010);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124090);
+INCLUDE_ASM(const s32, "facility/fclMisc", evtFinishMessageWindowAndNotify);
 
 s32 fclDestroyMessage(void)
 {
@@ -428,9 +428,9 @@ INCLUDE_ASM(const s32, "facility/fclMisc", func_00124130);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00124178);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124258);
+INCLUDE_ASM(const s32, "facility/fclMisc", dspRequestMessageWindowModeOne);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124270);
+INCLUDE_ASM(const s32, "facility/fclMisc", evtCopyEntryStringToActiveWindow);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00124298);
 

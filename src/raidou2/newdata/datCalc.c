@@ -358,7 +358,7 @@ INCLUDE_ASM(const s32, "newdata/datCalc", func_001257C0);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_001257C8);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001257E0);
+INCLUDE_ASM(const s32, "newdata/datCalc", sdfRaisePackedChannelValue);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00125860);
 
@@ -370,7 +370,7 @@ INCLUDE_ASM(const s32, "newdata/datCalc", func_00125898);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_001258C0);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001258C8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datGetStatWithStatusOverride);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00125900);
 
@@ -483,13 +483,13 @@ INCLUDE_ASM(const s32, "newdata/datCalc", func_001263D0);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00126430);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00126488);
+INCLUDE_ASM(const s32, "newdata/datCalc", evtTestSolarPhaseOrModelFlag);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00126518);
+INCLUDE_ASM(const s32, "newdata/datCalc", btlSelectConditionalEncounterGroup);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00126718);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00126778);
+INCLUDE_ASM(const s32, "newdata/datCalc", btlGetConditionalEncounterInterval);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00126858);
 

@@ -791,7 +791,7 @@ extern dds3QuakeGain_t dds3QuakeGainTable[1];
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", func_0010A750);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", func_0010AA08);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", evtSubmitDefaultDepthGradientRect);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", func_0010AA48);
 

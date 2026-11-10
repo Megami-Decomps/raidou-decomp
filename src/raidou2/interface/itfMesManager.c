@@ -845,13 +845,13 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetPhase);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetPhase);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019BAD0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfPanelAcquireHold);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019BB30);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfPanelReleaseHold);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019BB88);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfCommandQueueHeldPanelEntry);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019BC30);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfStepHeldPanelMessages);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSelect);
 
@@ -1006,7 +1006,7 @@ s32 itfMesMngSelectDefKey(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019C4E0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetWindowTexture);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019C4F0);
 
@@ -1230,9 +1230,9 @@ itfMesBinTypeHeader_t *GetTypeHeader2(itfMesResource_t *pfileheader)
     return &entries[pfileheader->entryCount];
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019DD00);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetWindowEntryItems);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019DD38);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetEntryCount);
 
 u8 *GetMessagePagePtr(itfMesBinMesHeader_t *table, s32 index)
 {
@@ -1564,7 +1564,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", DebugMoveWinAlpha);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DebugChangeInstance);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001A10E8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfQueueOffsetTexturedRect);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_001A11F0);
 

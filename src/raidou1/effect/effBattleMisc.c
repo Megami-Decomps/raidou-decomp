@@ -346,9 +346,9 @@ void func_001EA1C0(void) {
 void func_001EA1C8(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", func_001EA1D0);
+INCLUDE_ASM(const s32, "effect/effBattleMisc", effBattleMiscQueryOriginalTargetPosition);
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", func_001EA200);
+INCLUDE_ASM(const s32, "effect/effBattleMisc", effBattleMiscQueryVariantTargetPosition);
 
 INCLUDE_ASM(const s32, "effect/effBattleMisc", func_001EA230);
 

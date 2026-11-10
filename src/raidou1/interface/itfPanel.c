@@ -625,7 +625,7 @@ INCLUDE_ASM(const s32, "interface/itfPanel", func_00185F88);
 
 INCLUDE_ASM(const s32, "interface/itfPanel", func_00186540);
 
-INCLUDE_ASM(const s32, "interface/itfPanel", func_001867E8);
+INCLUDE_ASM(const s32, "interface/itfPanel", itfDrawTintedPanelRect);
 
 INCLUDE_ASM(const s32, "interface/itfPanel", DrawTestAlphaPrim);
 

@@ -304,7 +304,7 @@ INCLUDE_ASM(const s32, "effect/effManager", func_001E97E0);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_001E9888);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_001E98B0);
+INCLUDE_ASM(const s32, "effect/effManager", effSubmitFieldBlendStateTask);
 
 s32 dds3EffectManagerRun(dds3ProcessID_t *ProcessID)
 {

@@ -219,7 +219,7 @@ void dds3DeleteCameraObjectBasic(dds3Basic_t *pBasic)
     dds3DeleteSceneBasicData(pBasic);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011CE18);
+INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3LoadObjectMatrixPointerIntoVu);
 
 /* The recovered name is misleading: retail stores a target, not a matrix. */
 void dds3CameraObjectBasicGetCameraTM(dds3Basic_t *basic, const sdfVector4_t *target)

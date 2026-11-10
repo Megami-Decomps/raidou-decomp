@@ -691,7 +691,7 @@ void sdfMatUpdatePacket(sdfMat_t *aMat, s32 aId)
     aMat->duty = duty & (0x55 << (aId ^ 1));
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", func_00361D98);
+INCLUDE_ASM(const s32, "sdf/sdfMat", sdfApplyAssetEntryChangesWithForcedTexture);
 
 sdfItemArray_t *sdfMatListMake(sdfItemArray_t *aTexList, u32 *aData)
 {

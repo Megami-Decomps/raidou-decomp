@@ -950,7 +950,7 @@ void dds3FadeSet(s32 r, s32 g, s32 b, s32 a)
     fadergba[3] = a;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106190);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeColorGet);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001061A0);
 
@@ -1925,7 +1925,7 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001094E8);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00109600);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00109738);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", evtSubmitFixedAlphaBlend);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001097D8);
 

@@ -147,7 +147,7 @@ INCLUDE_ASM(const s32, "script/scrScriptProcess", func_001125D8);
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", func_001125F0);
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00112688);
+INCLUDE_ASM(const s32, "script/scrScriptProcess", scrAllReleaseScript);
 
 /* Restart a procedure with an empty operand stack and fresh timers. */
 s32 scrStartProcessProcedure(scrProcessWork_s *pw, s32 procNo)

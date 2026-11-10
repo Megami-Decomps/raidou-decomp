@@ -974,13 +974,13 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_001A8500);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001A8570);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001A85E0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtOpQueueWorldObjectPendingValue);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001A8648);
+INCLUDE_ASM(const s32, "event/evtCommand", evtOpClearWorldObjectPendingValue);
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044DE78);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001A86A0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtOpModelLodChg);
 
 u32 evtCommand_MODEL_POS_XYZ(void)
 {
@@ -1177,7 +1177,7 @@ u32 evtCommand_MODEL_MOVE_MOT(void)
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ROT);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001A97F0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtGetShortestAngleDelta);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001A98C0);
 
@@ -2294,7 +2294,7 @@ INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E6A0);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001AC738);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001AC818);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommandClearPolygonMovieFlag);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001AC858);
 

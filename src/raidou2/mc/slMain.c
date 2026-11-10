@@ -951,7 +951,7 @@ void slSetInfo(u32 id) {
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001EC3D0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EC770);
+INCLUDE_ASM(const s32, "mc/slMain", fileClearAllSlotFlags);
 
 saddr_t slHeadLoad(void) {
     char path[0x50];
@@ -1051,7 +1051,7 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001ECE70);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001ECEC0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECED8);
+INCLUDE_ASM(const s32, "mc/slMain", fileRestartSlotScan);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001ECF08);
 

@@ -1323,9 +1323,9 @@ INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360DF0);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360E30);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360E70);
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfGetUniqueChunkValue);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360EA0);
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfGetLodChunkValue);
 
 void sdfModelSetFaceDivParm(sdfModelRootNode_t *aRoot, f32 aSoften, f32 aBias)
 {

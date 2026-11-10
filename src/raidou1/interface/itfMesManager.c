@@ -876,13 +876,13 @@ void itfMesMngSetPhase(s32 msgid, s8 phase) {
     pinst[msgid].mes->message.phase = phase;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186A68);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfPanelAcquireHold);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186AC8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfPanelReleaseHold);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186B20);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfCommandQueueHeldPanelEntry);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186BC8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfStepHeldPanelMessages);
 
 s32 itfMesMngSelect(void) {
     s32 window;
@@ -908,7 +908,7 @@ s32 itfMesMngSelect(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186DA0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfCommandSelectOptionWithFade);
 
 /* Return the option-block signed status word, not the separate entry status byte. */
 s16 itfMesMngGetSelPhase(s32 msgid) {
@@ -1068,7 +1068,7 @@ s32 itfMesMngSelectDefKey(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187478);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetWindowTexture);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187488);
 
@@ -1087,7 +1087,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_001875F8);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187658);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187840);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesSelectTableItemText);
 
 /* Release/reset selected-entry glyphs and their status; optionally do the same
  * for primary text. Negative window is a no-op; no other slot validation. */
@@ -1378,9 +1378,9 @@ itfMesBinTypeHeader_t *GetTypeHeader2(itfMesResource_t *pfileheader)
     return &entries[pfileheader->entryCount];
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188C70);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetWindowEntryItems);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188CA8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetEntryCount);
 
 u8 *GetMessagePagePtr(itfMesBinMesHeader_t *table, s32 index)
 {
@@ -1712,7 +1712,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", DebugMoveWinAlpha);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DebugChangeInstance);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018BF28);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfQueueOffsetTexturedRect);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018C030);
 

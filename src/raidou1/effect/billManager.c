@@ -702,7 +702,7 @@ INCLUDE_ASM(const s32, "effect/billManager", func_001DD998);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001DDB68);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DDBF8);
+INCLUDE_ASM(const s32, "effect/billManager", billCopyCurrentRecordToSnapshot);
 
 billHandle_t *dds3BillboardCreate(s32 index, addr_t data) {
     billHandle_t *newobj;

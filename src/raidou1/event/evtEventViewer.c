@@ -482,7 +482,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001AFC40);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001AFD28);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001AFE08);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerProcessPending);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001AFE48);
 
@@ -492,9 +492,9 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001AFF38);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001AFFB0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001AFFE8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerCountEntries);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B0020);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerSumNodeCounts);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B00A0);
 
@@ -562,17 +562,17 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B2FB8);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B3358);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B37F8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewFindGlyphAtOrBefore);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B3878);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerClampMovieTimes);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B3990);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B3CA8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B3D58);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerApplyGlyphLodChannel);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B3E58);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerAttachIndexedObject);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B3FE0);
 
@@ -582,7 +582,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B40E8);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4120);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4268);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerHasUpdateFlag);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4278);
 
@@ -602,11 +602,11 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B48B0);
 void func_001B4918(void) {
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4920);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerFindLatestMatchingMotionKey);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B49E8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4CA0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerDispatchFlagMode);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4CE8);
 
@@ -614,7 +614,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4D68);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4DE8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4E50);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerPopHistory);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4E80);
 
@@ -622,7 +622,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4F00);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B4F38);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B50F8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerReturnZero);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", D_0044F070);
 
@@ -636,7 +636,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B5100);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B52E8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B5748);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerPushMode5CommandHistory);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", D_0044F2D0);
 
@@ -688,23 +688,23 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B67F8);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6928);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6BC8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewCmdSetValue);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6C30);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerStoreCommandInSelectedField);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6CD8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewCmdNoOp);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6CE0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6D38);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerCommitGroupSelection);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6E30);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6ED0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6F38);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewCmdCancelSelection);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B6F58);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewCmdResolveSlot);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B7030);
 
@@ -712,13 +712,13 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B7088);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B7158);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B7438);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerClearPendingNodeAndPushHistory);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", D_0044FAA0);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B7488);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B7768);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerPickNextHandler);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B7790);
 
@@ -740,15 +740,15 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B7FD8);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B7FE0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B8198);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerDestroyActive);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B81B8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerDestroyActiveAlternate);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B81D8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerInitCampFontResource);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B81F0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B8290);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerDestroyTask);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001B82B0);
 

@@ -234,7 +234,7 @@ void frwFreeStaffFont(void) {
 
 INCLUDE_ASM(const s32, "interface/frWrap", func_00197CD0);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_00197D18);
+INCLUDE_ASM(const s32, "interface/frWrap", itfConvertText);
 
 INCLUDE_ASM(const s32, "interface/frWrap", func_00197DE8);
 
@@ -252,11 +252,11 @@ INCLUDE_ASM(const s32, "interface/frWrap", func_00198310);
 
 INCLUDE_ASM(const s32, "interface/frWrap", func_001983F0);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_001984B8);
+INCLUDE_ASM(const s32, "interface/frWrap", itfDrawBankTextWithLayoutFlags);
 
 INCLUDE_ASM(const s32, "interface/frWrap", func_00198680);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_00198710);
+INCLUDE_ASM(const s32, "interface/frWrap", itfDrawUnderscoreTextSegment);
 
 INCLUDE_ASM(const s32, "interface/frWrap", func_00198850);
 

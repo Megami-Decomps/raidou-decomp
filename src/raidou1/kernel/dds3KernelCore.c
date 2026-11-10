@@ -598,7 +598,7 @@ dds3ProcessID_t *dds3SearchProcessNumber(u32 type, s32 n)
     return p;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_00101280);
+INCLUDE_ASM(const s32, "kernel/dds3KernelCore", kwlnTraverseDiagnosticTaskQueue);
 
 void dds3PrintProcessList(void)
 {

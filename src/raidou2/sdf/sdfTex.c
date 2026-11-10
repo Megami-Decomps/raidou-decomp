@@ -388,9 +388,9 @@ INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF520);
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF698);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF720);
+INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexReleaseReference);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF768);
+INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexFreeDelayed);
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexSetPacket);
 

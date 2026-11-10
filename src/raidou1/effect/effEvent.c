@@ -899,13 +899,13 @@ void Eve_RippleBlurSetDefTex(void) {
     hEve_RippleBlur->texture = dds3BillboardGetGeneralTex(EFF_EVENT_STAGGERED_RESOURCE_INDEX);
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E6168);
+INCLUDE_ASM(const s32, "effect/effEvent", effEnableFramebufferQuad);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E6178);
+INCLUDE_ASM(const s32, "effect/effEvent", effDisableFramebufferQuad);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E6180);
+INCLUDE_ASM(const s32, "effect/effEvent", effCopyFramebufferQuadParameters);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E61E0);
+INCLUDE_ASM(const s32, "effect/effEvent", effGetCh73Params);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E61F0);
 
@@ -972,7 +972,7 @@ INCLUDE_ASM(const s32, "effect/effEvent", func_001E68C0);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E6978);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_001E6988);
+INCLUDE_ASM(const s32, "effect/effEvent", effEventSetSolidRectangleParameters);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E69C8);
 

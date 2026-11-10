@@ -710,14 +710,16 @@ def outcomes(version):
 
 def write_outcomes(version, rows):
     path = ROOT / "config" / version / "smt3_c.tsv"
-    lines = ["# SMT3 bodies carried by tools/raidou_c.py: function, c|asm, reason it stays asm"]
+    lines = ["# SMT3 and DDS bodies carried by tools/raidou_c.py: function, c|asm, reason it stays asm"]
     lines += [f"{fn}\t{st}\t{why}".rstrip("\t") for fn, (st, why) in sorted(rows.items())]
     path.write_text("\n".join(lines) + "\n")
 
 
-def read_pairs():
+def read_pairs(path=OUT / "pairs.tsv"):
     rows = []
-    with open(OUT / "pairs.tsv") as f:
+    if not path.exists():
+        return rows
+    with open(path) as f:
         head = f.readline().rstrip("\n").split("\t")
         for line in f:
             rows.append(dict(zip(head, line.rstrip("\n").split("\t"))))
@@ -731,7 +733,7 @@ def sdk_settings(smt3, version):
     """Give each SDK member that compiles SMT3 C the compiler, cflags and asflags SMT3
     uses for that library."""
     users = {unit for unit, src in unit_sources(version).items()
-             if unit.startswith("sdk/") and DECL_BLOCK.search(src.read_text())}
+             if unit.startswith("sdk/") and "Declarations from smt3-decomp" in src.read_text()}
     for name in ("compilers.txt", "cflags.txt", "asflags.txt"):
         theirs = {}
         for line in (smt3 / "config/smt3" / name).read_text().splitlines():
@@ -749,9 +751,14 @@ def sdk_settings(smt3, version):
 
 
 def candidates(version):
-    """fn -> SMT3 rel for every Raidou function identical to SMT3 C of the same name."""
-    return {r["function"]: shared_rel(r["smt3_src"]) for r in read_pairs()
-            if r["version"] == version and r["status"] == "identical" and r["function"] == r["smt3_name"]}
+    """fn -> source rel for every Raidou function identical to SMT3 C of the same name,
+    then to DDS C (raidou_dds.py pairs) for the rest."""
+    out = {}
+    for path in (OUT / "pairs.tsv", OUT / "pairs_dds.tsv"):
+        for r in read_pairs(path):
+            if r["version"] == version and r["status"] == "identical" and r["function"] == r["smt3_name"]:
+                out.setdefault(r["function"], shared_rel(r["smt3_src"]))
+    return out
 
 
 def nested_names(text):
@@ -1489,7 +1496,12 @@ def main():
     p = sub.add_parser("names")
     p.add_argument("--smt3", type=Path, default=SMT3)
     p.set_defaults(func=cmd_names)
+    for p in sub.choices.values():
+        p.add_argument("--dds", type=Path, default=Path.home() / "projects/dds-decomp",
+                       help="dds-decomp checkout, configured (split)")
     args = ap.parse_args()
+    global DDS
+    DDS = args.dds.expanduser().resolve()
     args.func(args)
 
 

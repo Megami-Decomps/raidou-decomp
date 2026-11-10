@@ -396,7 +396,7 @@ void itfMiscDrawRectanglePrim(sdfIVector2_t *vertices, itfColor_t *colors, u8 *v
     sdfDrawTagLink(command, EE_ADDR(packet));
 }
 
-INCLUDE_ASM(const s32, "interface/itfMisc", func_001842C0);
+INCLUDE_ASM(const s32, "interface/itfMisc", itfDrawThreePanelBorderBands);
 
 /* Emit a textured triangle fan: each four-float input supplies S/T/Q only.
  * The fourth float is skipped, and the context word is shifted without masking. */

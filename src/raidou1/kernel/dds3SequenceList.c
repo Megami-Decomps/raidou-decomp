@@ -623,7 +623,7 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010DB98);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010DC20);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010DC50);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckEvent);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010DC58);
 

@@ -1187,11 +1187,11 @@ INCLUDE_ASM(const s32, "interface/frFont", func_00194E10);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00194E88);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_00194F58);
+INCLUDE_ASM(const s32, "interface/frFont", frFontGetGlyphPositionAtIndex);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_00194FE8);
+INCLUDE_ASM(const s32, "interface/frFont", frFontMoveChainTo);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_00195038);
+INCLUDE_ASM(const s32, "interface/frFont", frFontCenterGlyphChainAt);
 
 /* Read the packed table count, then skip the table and its trailing metadata
  * word to reach the encoded text. The native parser copies that metadata even
@@ -1214,11 +1214,11 @@ u8 *MessageNumSearch(s32 Index, frTextBank_t *pData, s32 Size) {
     return (u8 *)pData + offset;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", func_001951D0);
+INCLUDE_ASM(const s32, "interface/frFont", frFontAppendIndexedTextToGlyphChain);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00195340);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_001953B0);
+INCLUDE_ASM(const s32, "interface/frFont", frFontCheckPendingGlyphState);
 
 /* Advance by eight times cursor spacing and request both context updates. */
 void frMessageReturnCode(frMsgInfo_t *pMsgInfo) {
@@ -1227,9 +1227,9 @@ void frMessageReturnCode(frMsgInfo_t *pMsgInfo) {
     pMsgInfo->RetFlag = 1;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", func_00195448);
+INCLUDE_ASM(const s32, "interface/frFont", itfReadEncodedTextLead);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_00195470);
+INCLUDE_ASM(const s32, "interface/frFont", itfReadEncodedCode);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001954C8);
 
@@ -1276,9 +1276,9 @@ void frSetVariableRequest(s32 VarNo, s32 pStr) {
     gVarStr[VarNo] = pStr;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", func_001961E8);
+INCLUDE_ASM(const s32, "interface/frFont", itfGetTextLipsUnitId);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_001961F0);
+INCLUDE_ASM(const s32, "interface/frFont", itfGetTextLipsMotionId);
 
 INCLUDE_ASM(const s32, "interface/frFont", frDumpFontTexture);
 u32 gMessageRequestResult = 0xFFFFFFFF;

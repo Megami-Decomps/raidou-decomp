@@ -173,7 +173,7 @@ void dds3UnitObjectBasicSetOt(dds3Basic_t *aPtr, s32 idx) {
     ((dds3UnitObjectBasicWorkData_t *)aPtr->workdata)->ot = idx;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011D1B0);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3ShortestAngleDelta);
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011D280);
 

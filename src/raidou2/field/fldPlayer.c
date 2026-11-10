@@ -256,7 +256,7 @@ extern s32 fldSkyEnable;
 
 INCLUDE_ASM(const s32, "field/fldPlayer", func_0012BAC8);
 
-INCLUDE_ASM(const s32, "field/fldPlayer", func_0012BB98);
+INCLUDE_ASM(const s32, "field/fldPlayer", fldSnapAngleToCompassPoint);
 
 INCLUDE_RODATA(const s32, "field/fldPlayer", D_004A9840);
 

@@ -1180,9 +1180,9 @@ INCLUDE_ASM(const s32, "interface/frFont", func_00180088);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00180158);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_001801E8);
+INCLUDE_ASM(const s32, "interface/frFont", frFontMoveChainTo);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_00180238);
+INCLUDE_ASM(const s32, "interface/frFont", frFontCenterGlyphChainAt);
 
 /* Read the packed table count, then skip the table and its trailing metadata
  * word to reach the encoded text. The native parser copies that metadata even
@@ -1205,11 +1205,11 @@ u8 *MessageNumSearch(s32 Index, frTextBank_t *pData, s32 Size) {
     return (u8 *)pData + offset;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", func_001803D0);
+INCLUDE_ASM(const s32, "interface/frFont", frFontAppendIndexedTextToGlyphChain);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00180540);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_001805B0);
+INCLUDE_ASM(const s32, "interface/frFont", frFontCheckPendingGlyphState);
 
 /* Advance by eight times cursor spacing and request both context updates. */
 void frMessageReturnCode(frMsgInfo_t *pMsgInfo) {
@@ -1218,9 +1218,9 @@ void frMessageReturnCode(frMsgInfo_t *pMsgInfo) {
     pMsgInfo->RetFlag = 1;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", func_00180648);
+INCLUDE_ASM(const s32, "interface/frFont", itfReadEncodedTextLead);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_00180670);
+INCLUDE_ASM(const s32, "interface/frFont", itfReadEncodedCode);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001806C8);
 
@@ -1267,9 +1267,9 @@ void frSetVariableRequest(s32 VarNo, s32 pStr) {
     gVarStr[VarNo] = pStr;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", func_001811F8);
+INCLUDE_ASM(const s32, "interface/frFont", itfGetTextLipsUnitId);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_00181200);
+INCLUDE_ASM(const s32, "interface/frFont", itfGetTextLipsMotionId);
 
 INCLUDE_ASM(const s32, "interface/frFont", frDumpFontTexture);
 u32 gMessageRequestResult = 0xFFFFFFFF;

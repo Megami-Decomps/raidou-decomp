@@ -771,9 +771,9 @@ void evtHokanRipBlur(s32 hokan, f32 ratio, dds3Effect_RippleBlurParam_t *key1, d
     d->area = evtHokanUInt(hokan, ratio, key1->area, key2->area);
 }
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_001CF7D0);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtBlendParamsG);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_001CF940);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtBlendParamsH);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_001CFAA8);
 

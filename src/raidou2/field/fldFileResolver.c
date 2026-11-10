@@ -10,7 +10,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D338);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D4B0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D530);
+INCLUDE_ASM(const s32, "field/fldFileResolver", sdfFirePendingCallback);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D560);
 
@@ -112,17 +112,17 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", func_001406B8);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_001415A0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00141610);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldEnableCameraObjectFlag);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00141630);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldDisableCameraObjectFlag);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_00141650);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00141660);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldRestoreCameraModelColor);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00141678);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldSetCameraObjectTransitionFlag);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00141698);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldClearCameraObjectTransitionFlags);
 INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8BC);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8C0);

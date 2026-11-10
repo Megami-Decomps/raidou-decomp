@@ -131,25 +131,25 @@ INCLUDE_ASM(const s32, "mc/mcManager", func_001EAE30);
 
 INCLUDE_ASM(const s32, "mc/mcManager", func_001EAE78);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EAF70);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetFileInfoReady);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EAF98);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetFreeBytes);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EAFC0);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetStatus);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EAFE8);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcClearCardStat);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EB010);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcSetCardStat);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EB040);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcClearSlotFlags);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EB070);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcSetSlotFlags);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EB0A8);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetSlotFlags);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EB0D8);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetSlotIndex);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001EB100);
+INCLUDE_ASM(const s32, "mc/mcManager", sdfMcSetSlotIndex);
 
 void sdfMcFuncFormat(u32 port)
 {

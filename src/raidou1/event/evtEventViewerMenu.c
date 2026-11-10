@@ -106,7 +106,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001BFCF0);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001BFE50);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001BFFC0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", mnuDrawInfoWindowB);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C00C0);
 
@@ -140,7 +140,7 @@ INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004508B0);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", jtbl_004508C0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C05B8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", mnuDrawCutFlagLabel);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004508F0);
 
@@ -148,7 +148,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C0608);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C0810);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C09D8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtIsMenuTableEntryEnabled);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C0A00);
 
@@ -160,20 +160,20 @@ INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_00450960);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C0CF8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C1048);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", mnuDrawMotionChangeLabel);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C1098);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C14A8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C1988);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtDrawGroupListRow);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C1B60);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtUpdateGroupListDialog);
 
 void func_001C1C70(void) {
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C1C78);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtRotateViewerPositionFromPad);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C1E40);
 
@@ -196,9 +196,9 @@ INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_00450AC0);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_00450AD8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C36D0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtViewerDrawGroupRow);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C3808);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtViewerDrawGroupWindow);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_00450AF8);
 
@@ -208,7 +208,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C3B28);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C3E60);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C3EF0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtPollRuntimeControlReady);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001C3F30);
 

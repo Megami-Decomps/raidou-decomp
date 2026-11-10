@@ -173,13 +173,13 @@ u8 *movieWaitSema(s32 aSize)
     return ptr;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", func_00374350);
+INCLUDE_ASM(const s32, "sdf/sdfMovie", sdfSetStreamFrameDrawMode);
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", func_00374358);
+INCLUDE_ASM(const s32, "sdf/sdfMovie", sdfSetGridScaledDrawBounds);
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", func_00374390);
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", func_00374608);
+INCLUDE_ASM(const s32, "sdf/sdfMovie", release_movieobj2);
 
 void movieReadNextChunk(sdfMovieCb_t *aMov)
 {

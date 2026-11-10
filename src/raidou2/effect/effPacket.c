@@ -127,13 +127,13 @@ sdfGrPacketHeader_t *effPkt2DAllocTriStrip(s32 num, s32 prim) {
     return packet;
 }
 
-INCLUDE_ASM(const s32, "effect/effPacket", func_001FAEE0);
+INCLUDE_ASM(const s32, "effect/effPacket", effWriteGouraudTexturedQuadPacket);
 
-INCLUDE_ASM(const s32, "effect/effPacket", func_001FB018);
+INCLUDE_ASM(const s32, "effect/effPacket", effAppendGouraudTexturedQuadPacket);
 
-INCLUDE_ASM(const s32, "effect/effPacket", func_001FB1D8);
+INCLUDE_ASM(const s32, "effect/effPacket", billWriteFloatTextureTrianglePacket);
 
-INCLUDE_ASM(const s32, "effect/effPacket", func_001FB298);
+INCLUDE_ASM(const s32, "effect/effPacket", effAppendTexturedTrianglePacket);
 
 u64 *effPkt2DAllocF4(u32 prim) {
     u64 *packet = (u64 *)sdfGrAllocPacketBuff(0x80);

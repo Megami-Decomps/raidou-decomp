@@ -173,7 +173,7 @@ void dds3UnitObjectBasicSetOt(dds3Basic_t *aPtr, s32 idx) {
     ((dds3UnitObjectBasicWorkData_t *)aPtr->workdata)->ot = idx;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011A748);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3ShortestAngleDelta);
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011A818);
 
@@ -183,7 +183,7 @@ INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011AA70);
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011AAB8);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011AAD8);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", effObjInitializeFollowModelData);
 
 void dds3UnitObjectBasicDestructor(dds3Basic_t *aPtr) {
     dds3UnitObjectBasicWorkData_t *work;
