@@ -1,10 +1,12 @@
-#ifndef SDF_TEXTURE_CLAMP_H
-#define SDF_TEXTURE_CLAMP_H
+#ifndef DDS_SDF_TEXTURE_CLAMP_H
 
+#define DDS_SDF_TEXTURE_CLAMP_H
 #include "common.h"
 
+#if !defined(SMT3_DEFINES_SdfTextureClampMode)
 /* Serialized byte consumed by the GS texture-state packet builder. */
 typedef u8 SdfTextureClampMode;
+#endif
 
 enum {
     SDF_TEXTURE_CLAMP_MODE_DEFAULT = 0xFF,
@@ -12,6 +14,5 @@ enum {
 };
 
 struct sdfTexHandle_t;
-void sdfTexSetWrapMode(struct sdfTexHandle_t *texture, SdfTextureClampMode mode);
 
-#endif /* SDF_TEXTURE_CLAMP_H */
+#endif /* DDS_SDF_TEXTURE_CLAMP_H */

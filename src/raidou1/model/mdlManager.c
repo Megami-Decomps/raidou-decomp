@@ -562,6 +562,68 @@ extern sdfMemHandle_t *mdlHddFileListHandle;
 extern mdlWorkPrefix_t mdlWorkPathPrefix[1];
 /* End of declarations from src/smt3/model/mdlManager.c */
 
+/* Declarations from dds-decomp src/dds1/model/mdlManager.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_dds3ModelFileIndex_t 1
+
+#define SMT3_DEFINES_dds3ModelFileTable_t 1
+
+#define SMT3_DEFINES_filePacRequest_t 1
+
+#define SMT3_DEFINES_fileRequest_t 1
+
+#define SMT3_DEFINES_mdlDirectoryEntry_t 1
+
+#define SMT3_DEFINES_mdlFileKindSlot_t 1
+
+#define SMT3_DEFINES_mdlFileSlot_t 1
+
+#define SMT3_DEFINES_mdlHddFileEntry_t 1
+
+#define SMT3_DEFINES_mdlLoadingTag_t 1
+
+#define SMT3_DEFINES_mdlManager_mdlFileLoadCb_t 1
+
+#define SMT3_DEFINES_mdlManager_mdlTbMbAbLoadCb_t 1
+
+#define SMT3_DEFINES_mdlPartTagRecord_t 1
+
+#define SMT3_DEFINES_mdlPathPrefix_t 1
+
+#define SMT3_DEFINES_mdlPibRecord_t 1
+
+#define SMT3_DEFINES_mdlSetDef_t 1
+
+#define SMT3_DEFINES_mdlWorkPrefix_t 1
+
+#include "dds/common.h"
+
+#include "dds/model.h"
+
+#include "dds/motion.h"
+
+#include "dds/draw3d.h"
+
+#include "dds/ps2asm.h"
+
+#include "dds/sdfFrame.h"
+
+struct mdlEffectDescriptor_t;
+
+extern void LoadIdentity(void);
+
+extern void RotateMatrixX(f32 angle);
+
+extern void RotateMatrixY(f32 angle);
+
+/* mdlLink, first turning node aNode's local rotation towards aPitch and aYaw
+ * (degrees) by abs(aPitch) / 25, at most one. aNode -1 skips the turn. */
+void mdlBlendEntryPitchYawAndUpdate(mdlObj_t *aHandle, void *aModelOt, s32 aNode, f32 aPitch, f32 aYaw);
+/* End of declarations from src/dds1/model/mdlManager.c */
+
 void mdlInitManager(void)
 {
     s32 groupIndex;
@@ -1252,7 +1314,89 @@ void mdlLink(mdlObj_t *aHandle, void *aModelOt)
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_0019A6A8);
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlBlendEntryPitchYawAndUpdate);
+/* mdlLink, first turning node aNode's local rotation towards aPitch and aYaw
+ * (degrees) by abs(aPitch) / 25, at most one. aNode -1 skips the turn. */
+void mdlBlendEntryPitchYawAndUpdate(mdlObj_t *aHandle, void *aModelOt, s32 aNode, f32 aPitch, f32 aYaw)
+{
+    dds_sdfModelRootNode_t *inner;
+    sdfModelNode_t *node = NULL;
+    f32 target[4][4];
+    f32 magnitude;
+    f32 weight;
+    f32 rest;
+    dds3ModelEffectCtrlr_t *item;
+    s32 i;
+
+    inner = aHandle->inner;
+    if (aNode != -1)
+    {
+        node = inner->nodeList->items[aNode];
+        LoadIdentity();
+        RotateMatrixX(aPitch * 0.017453293f);
+        RotateMatrixY(aYaw * 0.017453293f);
+        SDF_VU0_STOREMATRIX(target);
+    }
+    for (i = 0; i != 4; i++)
+    {
+        if (aHandle->slots[i] != NULL)
+        {
+            if (aHandle->slots[i]->stat != 0)
+            {
+                sdfMotionNext(aHandle->slots[i]);
+            }
+        }
+    }
+    magnitude = aPitch;
+    if (aNode != -1)
+    {
+        if (magnitude < 0.0f)
+        {
+            magnitude = -magnitude;
+        }
+        weight = 1.0f;
+        if (magnitude < 25.0f)
+        {
+            weight = magnitude / 25.0f;
+        }
+        rest = 1.0f - weight;
+        node->localNoScaledTm.m[0] = target[0][0] * weight + node->localNoScaledTm.m[0] * rest;
+        node->localNoScaledTm.m[1] = target[0][1] * weight + node->localNoScaledTm.m[1] * rest;
+        node->localNoScaledTm.m[2] = target[0][2] * weight + node->localNoScaledTm.m[2] * rest;
+        node->localNoScaledTm.m[4] = target[1][0] * weight + node->localNoScaledTm.m[4] * rest;
+        node->localNoScaledTm.m[5] = target[1][1] * weight + node->localNoScaledTm.m[5] * rest;
+        node->localNoScaledTm.m[6] = target[1][2] * weight + node->localNoScaledTm.m[6] * rest;
+        node->localNoScaledTm.m[8] = target[2][0] * weight + node->localNoScaledTm.m[8] * rest;
+        node->localNoScaledTm.m[9] = target[2][1] * weight + node->localNoScaledTm.m[9] * rest;
+        node->localNoScaledTm.m[10] = target[2][2] * weight + node->localNoScaledTm.m[10] * rest;
+    }
+    if (aHandle->flags & 1)
+    {
+        return;
+    }
+    inner = aHandle->inner;
+    sdfModelEvalTm(inner);
+    sdfModelLinkOt(aModelOt, inner);
+    if (aHandle->flags & 2)
+    {
+        return;
+    }
+    if (aHandle->flags & 4)
+    {
+        if ((inner->flags & 0x10) == 0)
+        {
+            return;
+        }
+    }
+    for (item = aHandle->resourceItems; item != NULL; item = item->next)
+    {
+        mdlLinkEffect(aHandle, item);
+    }
+    if (aHandle->devList == NULL)
+    {
+        return;
+    }
+    mdlLinkBlur(aHandle, aModelOt);
+}
 
 void mdlHideAllNode(mdlObj_t *aHandle)
 {

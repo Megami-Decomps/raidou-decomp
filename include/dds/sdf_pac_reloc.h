@@ -1,6 +1,6 @@
-#ifndef SDF_PAC_RELOC_H
-#define SDF_PAC_RELOC_H
+#ifndef DDS_SDF_PAC_RELOC_H
 
+#define DDS_SDF_PAC_RELOC_H
 #include "common.h"
 
 /* Prefix on relocated PAC payloads: tableBytes is cleared after fixups. */
@@ -11,13 +11,4 @@ typedef struct PacReloc {
     u8 payload[0]; /* 0x10: variable-length relocated payload */
 } PacReloc;
 
-void sdfAddressResolver(s32 *words, u32 relocationBase, const u8 *table, s32 tableBytes);
-
-typedef char PacReloc_tableOffset_must_be_at_0[
-    ((u32)&((PacReloc *)0)->tableOffset == 0) ? 1 : -1];
-typedef char PacReloc_tableBytes_must_be_at_4[
-    ((u32)&((PacReloc *)0)->tableBytes == 4) ? 1 : -1];
-typedef char PacReloc_payload_must_be_at_0x10[
-    ((u32)&((PacReloc *)0)->payload == 0x10) ? 1 : -1];
-
-#endif /* SDF_PAC_RELOC_H */
+#endif /* DDS_SDF_PAC_RELOC_H */

@@ -1,6 +1,6 @@
-#ifndef BTL_COMMAND_REQUIRED_ENTRY_MATCH_H
-#define BTL_COMMAND_REQUIRED_ENTRY_MATCH_H
+#ifndef DDS_BTL_COMMAND_REQUIRED_ENTRY_MATCH_H
 
+#define DDS_BTL_COMMAND_REQUIRED_ENTRY_MATCH_H
 #include "btl_command_id.h"
 
 typedef s32 BtlCommandRequiredEntryMatchResult;
@@ -16,4 +16,4 @@ struct BtlIndexList;
 BtlCommandRequiredEntryMatchResult btlCheckCommandRequiredEntryMatches(
     struct BtlIndexList *indexList, BtlCommandId commandId);
 
-#endif /* BTL_COMMAND_REQUIRED_ENTRY_MATCH_H */
+#endif /* DDS_BTL_COMMAND_REQUIRED_ENTRY_MATCH_H */

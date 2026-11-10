@@ -1,7 +1,8 @@
-#ifndef BRS_LEVEL_PROGRESS_API_H
-#define BRS_LEVEL_PROGRESS_API_H
+#ifndef DDS_BRS_LEVEL_PROGRESS_API_H
 
+#define DDS_BRS_LEVEL_PROGRESS_API_H
 #include "common.h"
+
 #include "pty_skill_slot_count.h"
 
 /* Level thresholds 1, 10, and 20 provide 4, 6, and 8 skill slots. */
@@ -11,4 +12,4 @@ PtySkillSlotCount brsGetLevelStepForValue(s32 level);
  * threshold. */
 PtySkillSlotCount brsGetLevelStepCrossedBy(s32 startingLevel, s32 levelGain);
 
-#endif /* BRS_LEVEL_PROGRESS_API_H */
+#endif /* DDS_BRS_LEVEL_PROGRESS_API_H */

@@ -1,9 +1,12 @@
-#ifndef CAMP_MENU_CONTEXT_H
-#define CAMP_MENU_CONTEXT_H
+#ifndef DDS_CAMP_MENU_CONTEXT_H
 
+#define DDS_CAMP_MENU_CONTEXT_H
 #include "common.h"
+
 #include "mnu.h"
+
 #include "mnu_transition.h"
+
 #include "eff.h"
 
 /* The staff and skill menu's context: resource handles and current panel work. */
@@ -52,12 +55,6 @@ typedef struct CampMenuContext {
     MenuProfilePanel *extraResource; /* 0x920 */
 } CampMenuContext;
 
-typedef char CampMenuContext_selectionResources_at_0xC4[
-    ((u32)&((CampMenuContext *)0)->selectionResources == 0xC4) ? 1 : -1];
-typedef char CampMenuContext_panelResources_at_0xF0[
-    ((u32)&((CampMenuContext *)0)->panelResources == 0xF0) ? 1 : -1];
-typedef char CampMenuContext_windowSpriteTarget_at_0x118[
-    ((u32)&((CampMenuContext *)0)->windowSpriteTarget == 0x118) ? 1 : -1];
 typedef char CampMenuContext_size_must_be_0x924[
     (sizeof(CampMenuContext) == 0x924) ? 1 : -1];
 

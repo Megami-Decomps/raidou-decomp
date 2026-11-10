@@ -1,7 +1,8 @@
-#ifndef EFF_ANIMATION_STATE_H
-#define EFF_ANIMATION_STATE_H
+#ifndef DDS_EFF_ANIMATION_STATE_H
 
+#define DDS_EFF_ANIMATION_STATE_H
 #include "common.h"
+
 #include "file_slot.h"
 
 /* Per-animation allocation: positions follow this four-word owner header. */

@@ -1,6 +1,6 @@
-#ifndef FLD_PLACEMENT_BATCH_MODE_H
-#define FLD_PLACEMENT_BATCH_MODE_H
+#ifndef DDS_FLD_PLACEMENT_BATCH_MODE_H
 
+#define DDS_FLD_PLACEMENT_BATCH_MODE_H
 #include "common.h"
 
 typedef s32 FldPlacementBatchMode;
@@ -10,4 +10,4 @@ enum {
     FLD_PLACEMENT_BATCH_MODE_APPEND = 1
 };
 
-#endif /* FLD_PLACEMENT_BATCH_MODE_H */
+#endif /* DDS_FLD_PLACEMENT_BATCH_MODE_H */

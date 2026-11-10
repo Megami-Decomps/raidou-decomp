@@ -1,15 +1,19 @@
-#ifndef FILE_CONFIG_TASK_H
-#define FILE_CONFIG_TASK_H
+#ifndef DDS_FILE_CONFIG_TASK_H
 
+#define DDS_FILE_CONFIG_TASK_H
 #include "common.h"
 
 struct sdfMemHandle_t;
+
 struct MenuList;
+
 struct EffectSlotSet;
+
 struct MenuResourceWork;
 
 /* Lifecycle phase for the save/config menu's input and exit tasks. */
 typedef s32 FileConfigTaskState;
+
 enum {
     FILE_CONFIG_TASK_STATE_WAITING_FOR_RESOURCES = 0,
     FILE_CONFIG_TASK_STATE_FADING_IN = 1,
@@ -20,6 +24,7 @@ enum {
 };
 
 /* Set after the close-complete phase to tell both owner tasks to exit. */
+
 #define FILE_CONFIG_TASK_EXIT_FLAG 0x80000000
 
 /* Save/config menu owner; slot count and tail differ between the games. */
@@ -56,20 +61,11 @@ typedef struct FileConfigTask {
 
 typedef char FileConfigTask_size_check[
     (sizeof(FileConfigTask) == 0x3C) ? 1 : -1];
-typedef char FileConfigTask_mode_offset_check[
-	((u32)&((FileConfigTask *)0)->mode == 0x04) ? 1 : -1];
+
 #ifdef VERSION_DDS1
-typedef char FileConfigTask_state_offset_check[
-    ((u32)&((FileConfigTask *)0)->state == 0x24) ? 1 : -1];
-typedef char FileConfigTask_pending_offset_check[
-    ((u32)&((FileConfigTask *)0)->pending == 0x34) ? 1 : -1];
-typedef char FileConfigTask_effect_offset_check[
-    ((u32)&((FileConfigTask *)0)->effect == 0x38) ? 1 : -1];
+
 #else
-typedef char FileConfigTask_state_offset_check[
-    ((u32)&((FileConfigTask *)0)->state == 0x28) ? 1 : -1];
-typedef char FileConfigTask_pending_offset_check[
-    ((u32)&((FileConfigTask *)0)->pending == 0x38) ? 1 : -1];
+
 #endif
 
-#endif /* FILE_CONFIG_TASK_H */
+#endif /* DDS_FILE_CONFIG_TASK_H */

@@ -313,6 +313,78 @@ s32 scrCommand_BLUR_ALLOFF(void);
 s32 scrCommand_FILTER_ALLOFF(void);
 /* End of declarations from src/smt3/script/scrCommonCommand.c */
 
+/* Declarations from dds-decomp src/dds1/script/scrCommonCommand.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_scrVec4_t 1
+
+#define SMT3_DEFINES_scrVecW_t 1
+
+#include "newdata.h"
+
+#include "dds/common.h"
+
+#include "dds/sdk_libgcc.h"
+
+#include "dds/kernel.h"
+
+#include "dds/scr.h"
+
+#include "dds/ps2asm.h"
+
+#include "dds/sdfFrame.h"
+
+#include "dds/sdk_libc.h"
+
+/* DDS's global work keeps the script variables at SMT3's offsets. */
+typedef struct
+{
+    u8 unk0[0x40];
+    s32 integers[256];
+    f32 floats[256];
+} dds_dds3GlobalWork_t;
+
+#define SCR_PROCESS_CONTROL_FLAG 210
+
+extern void dds3FadeBackgroundStartOut(s32 duration);
+
+extern void dds3FadeBackgroundStartIn(s32 duration);
+
+extern void effDisableFramebufferQuad(void);
+
+extern void fldSetFilterAnime(u32 mode);
+
+extern void fldSkySetAlpha(u32 alpha);
+
+extern void fldSkySetAlphaOfs(u32 alpha);
+
+extern void fldSetFadeTarget(s32 area, s32 mode, s32 frame);
+
+extern void ptyAdjustItemQuantity(s32 itemId, s32 delta);
+
+extern void datAddCurrencyClamped(s32 delta);
+
+extern u8 datHasEnoughCurrency(s32 amount);
+
+s32 scrCommandFadeBackgroundOut(void);
+
+s32 scrCommandFadeBackgroundIn(void);
+
+s32 scrCommandClearProcessControlFlag(void);
+
+s32 scrCommandSetProcessControlFlag(void);
+
+s32 scrCommandIsProcessControlFlagClear(void);
+
+s32 scrCommandAdjustItemQuantity(void);
+
+s32 scrCommandAddPartyCurrency(void);
+
+s32 scrCommand_SCR_EXISTS(void);
+/* End of declarations from src/dds1/script/scrCommonCommand.c */
+
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_KEY);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00116500);
@@ -359,7 +431,15 @@ INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00116700);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_001167B0);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommandFadeBackgroundOut);
+s32 scrCommandFadeBackgroundOut(void)
+{
+    if (scrGetCommandTimer() == 0)
+    {
+        dds3FadeBackgroundStartOut(scrGetIntPara(0));
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_001168A0);
 
@@ -1035,4 +1115,13 @@ s32 scrCommand_MFILTER_OFF(void)
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00117D40);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FILTER_ALLOFF);
+s32 scrCommand_FILTER_ALLOFF(void)
+{
+    dds3Filter2Off(0);
+    dds3MFilterOff(0);
+    fldSetFilterAnime(0);
+    fldSkySetAlpha(0x80);
+    fldSkySetAlphaOfs(0);
+    fldSetFadeTarget(0, 1, 0);
+    return 1;
+}

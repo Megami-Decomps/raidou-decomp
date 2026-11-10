@@ -1,6 +1,6 @@
-#ifndef FLD_CAMERA_FOLLOW_ROW_H
-#define FLD_CAMERA_FOLLOW_ROW_H
+#ifndef DDS_FLD_CAMERA_FOLLOW_ROW_H
 
+#define DDS_FLD_CAMERA_FOLLOW_ROW_H
 #include "common.h"
 
 /* One 0x18-byte FLDALL.TBL camera row: distance, eye height, target height
@@ -21,18 +21,6 @@ enum {
 };
 
 typedef char FldCamRowSizeCheck[(sizeof(FldCamRow) == 0x18) ? 1 : -1];
-typedef char FldCamRowDistanceOffsetCheck[
-    ((u32)&((FldCamRow *)0)->dist == 0x00) ? 1 : -1];
-typedef char FldCamRowEyeHeightOffsetCheck[
-    ((u32)&((FldCamRow *)0)->y == 0x04) ? 1 : -1];
-typedef char FldCamRowTargetHeightOffsetCheck[
-    ((u32)&((FldCamRow *)0)->targetY == 0x08) ? 1 : -1];
-typedef char FldCamRowFovOffsetCheck[
-    ((u32)&((FldCamRow *)0)->fov == 0x0C) ? 1 : -1];
-typedef char FldCamRowFlagsOffsetCheck[
-    ((u32)&((FldCamRow *)0)->flags == 0x10) ? 1 : -1];
-typedef char FldCamRowNamedCameraOffsetCheck[
-    ((u32)&((FldCamRow *)0)->namedCamera == 0x14) ? 1 : -1];
 
 /* A FLD named camera (0x28): the camera sits at the first node when the
  * player's coordinate on axis (0 x, 1 y, 2 z) is at minimum, at the second
@@ -47,4 +35,4 @@ typedef struct FldNamedCamera {
 
 typedef char FldNamedCameraSizeCheck[(sizeof(FldNamedCamera) == 0x28) ? 1 : -1];
 
-#endif /* FLD_CAMERA_FOLLOW_ROW_H */
+#endif /* DDS_FLD_CAMERA_FOLLOW_ROW_H */

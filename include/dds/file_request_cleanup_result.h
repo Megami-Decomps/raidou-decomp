@@ -1,6 +1,6 @@
-#ifndef FILE_REQUEST_CLEANUP_RESULT_H
-#define FILE_REQUEST_CLEANUP_RESULT_H
+#ifndef DDS_FILE_REQUEST_CLEANUP_RESULT_H
 
+#define DDS_FILE_REQUEST_CLEANUP_RESULT_H
 #include "file_request_cleanup_result_type.h"
 
 /* Cleanup either invalidates a completed wrapper or retains pending work. */
@@ -9,4 +9,4 @@ enum {
     FILE_REQUEST_CLEANUP_PENDING = 1,
 };
 
-#endif /* FILE_REQUEST_CLEANUP_RESULT_H */
+#endif /* DDS_FILE_REQUEST_CLEANUP_RESULT_H */

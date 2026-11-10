@@ -1,10 +1,14 @@
-#ifndef FILE_PAC_H
-#define FILE_PAC_H
+#ifndef DDS_FILE_PAC_H
 
+#define DDS_FILE_PAC_H
 #include "common.h"
+
 #include "file_request.h"
+
 #include "sdf_pac_packet.h"
+
 #include "sdf_pac_state.h"
+
 #include "sdf_pac_work.h"
 
 struct PacAlloc;
@@ -14,4 +18,4 @@ typedef struct FilePacRequest {
     FILE_REQUEST_FIELDS(struct FilePacRequest, void *)
 } FilePacRequest;
 
-#endif /* FILE_PAC_H */
+#endif /* DDS_FILE_PAC_H */

@@ -342,6 +342,56 @@ f32 sdfModelGetFaceDivBias(sdfModelRootNode_t *aRoot);
 extern u8 corePktSoftenBias;
 /* End of declarations from src/smt3/sdf/sdfModel.c */
 
+/* Declarations from dds-decomp src/dds1/sdf/sdfModel.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_QWORD_ALIGNED 1
+
+#define SMT3_DEFINES_sdfModelChunkHeader_t 1
+
+#define SMT3_DEFINES_sdfModelMarkPos_t 1
+
+#define SMT3_DEFINES_sdfModelNodeDefList_t 1
+
+#define SMT3_DEFINES_sdfModelShapedHeader_t 1
+
+#define SMT3_DEFINES_sdfModelTempDrawPacket_t 1
+
+#define SMT3_DEFINES_sdfModelTmImage_t 1
+
+#include "dds/btl.h"
+
+#include "dds/sdk_libc.h"
+
+s32 memcmp(const void *a, const void *b, u32 size);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+u32 strlen(const char *text);
+
+#include "dds/common.h"
+
+#include "dds/libsdf.h"
+
+#include "dds/model.h"
+
+#include "dds/draw.h"
+
+#include "dds/ps2asm.h"
+
+#include "dds/eeregs.h"
+
+extern void sdfResourceListApplyEntryChanges(sdfMatList_t *aMatList, s32 aId);
+
+extern void sdfSetForcedAssetTextureMode(s32 aMode);
+
+u32 sdfGetUniqueChunkValue(dds_sdfModelRootNode_t *aRoot);
+
+u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *aRoot);
+/* End of declarations from src/dds1/sdf/sdfModel.c */
+
 void sdfModelInitSystem(void)
 {
     sdfDelayedResrcInitCB(&sdfModelDelayedResrcCB, (sdfDelayedResrcFreeFunc)sdfModelRootFreeResrc);
@@ -1323,9 +1373,25 @@ INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360DF0);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360E30);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfGetUniqueChunkValue);
+u32 sdfGetUniqueChunkValue(dds_sdfModelRootNode_t *aRoot)
+{
+    u32 *chunk = sdfModelGetExtraChunk(aRoot, 0x51494E55); /* "UNIQ" */
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfGetLodChunkValue);
+    if (chunk != NULL) {
+        return chunk[2];
+    }
+    return 0;
+}
+
+u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *aRoot)
+{
+    u32 *chunk = sdfModelGetExtraChunk(aRoot, 0x43444F4C); /* "LODC" */
+
+    if (chunk != NULL) {
+        return chunk[2];
+    }
+    return 0;
+}
 
 void sdfModelSetFaceDivParm(sdfModelRootNode_t *aRoot, f32 aSoften, f32 aBias)
 {

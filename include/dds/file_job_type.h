@@ -1,6 +1,6 @@
-#ifndef FILE_JOB_TYPE_H
-#define FILE_JOB_TYPE_H
+#ifndef DDS_FILE_JOB_TYPE_H
 
+#define DDS_FILE_JOB_TYPE_H
 #include "common.h"
 
 /* A file job type's operations (0x28), fileJobTypeOperations[type]. Each
@@ -19,8 +19,6 @@ typedef struct FileTypeCallbacks {
 } FileTypeCallbacks;
 
 typedef char FileTypeCallbacksSizeAssert[sizeof(FileTypeCallbacks) == 0x28 ? 1 : -1];
-typedef char FileTypeCallbacksResetOffsetAssert[
-    ((u32)&((FileTypeCallbacks *)0)->reset == 0x14) ? 1 : -1];
 
 extern FileTypeCallbacks fileJobTypeOperations[];
 

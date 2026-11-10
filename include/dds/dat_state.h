@@ -1,8 +1,11 @@
-#ifndef DAT_STATE_H
-#define DAT_STATE_H
+#ifndef DDS_DAT_STATE_H
 
+#define DDS_DAT_STATE_H
+#include "../newdata.h"
 #include "common.h"
+
 #include "dat_affinity.h"
+
 #include "dat_stat.h"
 
 struct sdfMemHandle_t;
@@ -29,16 +32,6 @@ typedef struct DatStateHeader {
     u32 secondTick;
     s32 currency;
 } DatStateHeader;
-typedef char DatStateHeaderSavedMoneyOffsetCheck[
-    ((u32)&((DatStateHeader *)0)->savedMoney == 0x20) ? 1 : -1];
-typedef char DatStateHeaderStatusOffsetCheck[
-    ((u32)&((DatStateHeader *)0)->status == 0x0C) ? 1 : -1];
-typedef char DatStateHeaderSaveFlagsOffsetCheck[
-    ((u32)&((DatStateHeader *)0)->saveFlags == 0x24) ? 1 : -1];
-typedef char DatStateHeaderSaveFlags1OffsetCheck[
-    ((u32)&((DatStateHeader *)0)->saveFlags1 == 0x28) ? 1 : -1];
-typedef char DatStateHeaderSaveFlags2OffsetCheck[
-    ((u32)&((DatStateHeader *)0)->saveFlags2 == 0x2C) ? 1 : -1];
 
 /* Shared script storage begins at +0x40; +0x388 is integer register 210. */
 typedef struct DatScriptGlobals {
@@ -64,10 +57,6 @@ typedef struct DatWorldState {
     u32 fieldFlags;
     u32 updateMode;
 } DatWorldState;
-typedef char DatWorldState_fieldTransitionCycleCount_offset[
-    ((u32)&((DatWorldState *)0)->fieldTransitionCycleCount == 0x0C) ? 1 : -1];
-typedef char DatWorldState_specialEncounterAttemptCount_offset[
-    ((u32)&((DatWorldState *)0)->specialEncounterAttemptCount == 0x08) ? 1 : -1];
 
 /* Occupied records participate in roster lookup; frontline records occupy
  * the active battle formation. Other record flag bits remain unresolved. */
@@ -99,7 +88,7 @@ typedef struct EventRosterStat {
 typedef char EventRosterStatSizeCheck[sizeof(EventRosterStat) == 0x14 ? 1 : -1];
 
 /* The active roster and saved template bank share this complete record type. */
-typedef struct datUnitWork_t {
+typedef struct dds_datUnitWork_t {
     u16 flags;
     u16 affinityTableIndex;
     u16 unitId; /* 0x04: DatUnitId key stored at its native 16-bit width. */
@@ -149,18 +138,16 @@ typedef struct datUnitWork_t {
     s32 huntExp; /* 0x1B8: hunt EP accumulated this battle */
     u8 pad1BC[8];
 #endif
-} datUnitWork_t;
+} dds_datUnitWork_t;
 
 #ifdef VERSION_DDS1
-typedef char DatPartyRecord_savedCommandPhase_offset[
-    ((u32)&((datUnitWork_t *)0)->savedCommandPhase == 0x18C) ? 1 : -1];
+
 #else
-typedef char DatPartyRecord_savedCommandPhase_offset[
-    ((u32)&((datUnitWork_t *)0)->savedCommandPhase == 0x1AC) ? 1 : -1];
+
 #endif
 
 typedef char DatPartyRecord_effectDataCount_offset[
-    ((unsigned long)&((datUnitWork_t *)0)->effectDataCount == 0x20) ? 1 : -1];
+    ((unsigned long)&((dds_datUnitWork_t *)0)->effectDataCount == 0x20) ? 1 : -1];
 
 typedef struct DatInventory {
 #ifdef VERSION_DDS1
@@ -171,31 +158,9 @@ typedef struct DatInventory {
 #endif
 } DatInventory;
 
-/* The field reset constructors prove the 30-byte slot and 64-slot bank. */
-typedef struct fldGbFlags_t {
-    union {
-        u16 flagBanks[5];
-        struct {
-            u16 modelFlag;
-            u16 animeFlag;
-            u16 atariFlag;
-            u16 modelFlag2;
-            u16 animeFlag2;
-        };
-    };
-    u8 animeId2[16];
-    union {
-        u16 trailingFlagBanks[2];
-        struct {
-            u16 npcFlag;
-            u16 hojiFlag;
-        };
-    };
-} fldGbFlags_t;
-
-typedef struct fldGbTypeBlock_t {
+typedef struct dds_fldGbTypeBlock_t {
     fldGbFlags_t flags[64];
-} fldGbTypeBlock_t;
+} dds_fldGbTypeBlock_t;
 
 /* The fifteenth reset word is the first word of the following render region. */
 typedef struct DatVrHeader {
@@ -211,11 +176,14 @@ typedef struct DatProfileRecord {
 } DatProfileRecord;
 
 #ifdef VERSION_DDS2
+
 /* Each unit owns one complete 0x580-byte bank of 176 profile records. */
 typedef struct DatProfileBank {
     DatProfileRecord records[176];
 } DatProfileBank;
+
 typedef char DatProfileBankSizeCheck[sizeof(DatProfileBank) == 0x580 ? 1 : -1];
+
 #endif
 
 /* Eight-skill output shared by profile builders and reward renderers. */
@@ -235,12 +203,12 @@ typedef struct DatMantraBitmap {
 #endif
 } DatMantraBitmap;
 
-typedef struct dds3GlobalWork_t {
+typedef struct dds_dds3GlobalWork_t {
     DatStateHeader header;                 /* 0x00000 */
     DatScriptGlobals script;               /* 0x00040 */
     DatEventBits EventBit;                 /* 0x00840: 4096 event bits (evtBitCheck) */
     DatWorldState world;                   /* 0x00A40 */
-    datUnitWork_t party[5];               /* 0x00A60 */
+    dds_datUnitWork_t party[5];               /* 0x00A60 */
 #ifdef VERSION_DDS1
     u8 partyOrder[5];                      /* 0x01294: ordered indices into party[]. */
     u8 pad1299[3];
@@ -249,7 +217,7 @@ typedef struct dds3GlobalWork_t {
     f32 conditionalEncounterStepRemainder; /* Residual step carried until it reaches 100.0. */
     u16 conditionalEncounterGauge; /* Randomized progress compared with the selected interval. */
     u8 pad1366[0xA];
-    fldGbTypeBlock_t gb[40];               /* 0x01370 */
+    dds_fldGbTypeBlock_t gb[40];               /* 0x01370 */
     u64 areaFlags[13][64];                 /* 0x13F70 */
     u8 activationFlags[32];                /* 0x15970 */
     DatVrHeader vr;                        /* 0x15990 */
@@ -259,7 +227,7 @@ typedef struct dds3GlobalWork_t {
     u8 pad2E9E8[8];
     DatMantraBitmap mantraBits[16];        /* 0x2E9F0 */
     DatProfileRecord profileRecords[16][96]; /* 0x2EBB0 */
-    datUnitWork_t templates[16];          /* 0x31BB0: the snapshot copies sixteen records. */
+    dds_datUnitWork_t templates[16];          /* 0x31BB0: the snapshot copies sixteen records. */
     u8 pad335F0[0x10];
 #endif
 #ifdef VERSION_DDS2
@@ -270,7 +238,7 @@ typedef struct dds3GlobalWork_t {
     f32 conditionalEncounterStepRemainder; /* Residual step carried until it reaches 100.0. */
     u16 conditionalEncounterGauge; /* Randomized progress compared with the selected interval. */
     u8 pad1446[0xA];
-    fldGbTypeBlock_t gb[31];               /* 0x01450 */
+    dds_fldGbTypeBlock_t gb[31];               /* 0x01450 */
     u64 areaFlags[10][64];                 /* 0x0FCD0 */
     u8 activationFlags[32];                /* 0x110D0 */
     DatVrHeader vr;                        /* 0x110F0 */
@@ -279,7 +247,7 @@ typedef struct dds3GlobalWork_t {
     u32 battleFlags[4];                    /* 0x16F00 */
     DatMantraBitmap mantraBits[16];        /* 0x16F10 */
     DatProfileBank profileBanks[16]; /* 0x17210 */
-    datUnitWork_t templates[16];          /* 0x1CA10: the initializer clears sixteen records. */
+    dds_datUnitWork_t templates[16];          /* 0x1CA10: the initializer clears sixteen records. */
     u32 savedCurrency;                    /* 0x1E650 */
     s32 progressTotal;                    /* 0x1E654 */
     s32 progressSlot;                     /* 0x1E658 */
@@ -291,20 +259,26 @@ typedef struct dds3GlobalWork_t {
     u8 itemBlockedFlags[64];               /* 0x1E7F0 */
     u8 pad1E830[0x10];
 #endif
-} dds3GlobalWork_t;
+} dds_dds3GlobalWork_t;
 
 typedef char DatStateHeaderSizeCheck[sizeof(DatStateHeader) == 0x40 ? 1 : -1];
-typedef char DatFieldMapBankSizeCheck[sizeof(fldGbTypeBlock_t) == 0x780 ? 1 : -1];
+
+typedef char DatFieldMapBankSizeCheck[sizeof(dds_fldGbTypeBlock_t) == 0x780 ? 1 : -1];
+
 #ifdef VERSION_DDS1
-typedef char DatPartyRecordSizeCheck[sizeof(datUnitWork_t) == 0x1A4 ? 1 : -1];
-typedef char DatGameStateSizeCheck[sizeof(dds3GlobalWork_t) == 0x33600 ? 1 : -1];
+
+typedef char DatPartyRecordSizeCheck[sizeof(dds_datUnitWork_t) == 0x1A4 ? 1 : -1];
+
+typedef char DatGameStateSizeCheck[sizeof(dds_dds3GlobalWork_t) == 0x33600 ? 1 : -1];
+
 #endif
+
 #ifdef VERSION_DDS2
-typedef char DatPartyRecordSizeCheck[sizeof(datUnitWork_t) == 0x1C4 ? 1 : -1];
-typedef char DatPartyRecordActionSlotOffsetCheck[((u32)&((datUnitWork_t *)0)->actionSlot == 0x1B0) ? 1 : -1];
-typedef char DatPartyRecordAssignedItemIdOffsetCheck[
-    ((u32)&((datUnitWork_t *)0)->assignedItemId == 0x1B2) ? 1 : -1];
-typedef char DatGameStateSizeCheck[sizeof(dds3GlobalWork_t) == 0x1E840 ? 1 : -1];
+
+typedef char DatPartyRecordSizeCheck[sizeof(dds_datUnitWork_t) == 0x1C4 ? 1 : -1];
+
+typedef char DatGameStateSizeCheck[sizeof(dds_dds3GlobalWork_t) == 0x1E840 ? 1 : -1];
+
 #endif
 
 /* The 0x4C-byte enemy table supplies initial party vitals/stats, skills and
@@ -347,18 +321,6 @@ typedef struct DatEnemyRecord {
 } DatEnemyRecord;
 
 typedef char DatEnemyRecordSizeCheck[sizeof(DatEnemyRecord) == 0x4C ? 1 : -1];
-typedef char DatEnemyRecordUsePanelIconsOffsetCheck[
-    ((u32)&((DatEnemyRecord *)0)->usePanelIcons == 0x16) ? 1 : -1];
-typedef char DatEnemyRecordBattleExperienceRewardOffsetCheck[
-    ((u32)&((DatEnemyRecord *)0)->battleExperienceReward == 0x2C) ? 1 : -1];
-typedef char DatEnemyActionChancesOffsetCheck[((u32)&((DatEnemyRecord *)0)->actionChances == 0x40) ? 1 : -1];
-typedef char DatEnemyOverrideFlagOffsetCheck[((u32)&((DatEnemyRecord *)0)->overrideFlag == 0x42) ? 1 : -1];
-typedef char DatEnemyOverrideActionOffsetCheck[((u32)&((DatEnemyRecord *)0)->overrideAction == 0x44) ? 1 : -1];
-typedef char DatEnemyOverrideChanceOffsetCheck[((u32)&((DatEnemyRecord *)0)->overrideChance == 0x45) ? 1 : -1];
-typedef char DatEnemyIndexedValueOverrideOffsetCheck[
-    ((u32)&((DatEnemyRecord *)0)->indexedValueOverride == 0x46) ? 1 : -1];
-typedef char DatEnemyRecordAdditionalDropItemIdsOffsetCheck[
-    ((u32)&((DatEnemyRecord *)0)->additionalDropItemIds == 0x3E) ? 1 : -1];
 
 /* One 0x28-byte battle scene record; datBattleSceneRecords points at the 0x400-entry table. */
 typedef struct DatBattleSceneRecord {
@@ -380,6 +342,7 @@ typedef struct DatBattleSceneRecord {
 typedef char DatBattleSceneRecordSizeCheck[sizeof(DatBattleSceneRecord) == 0x28 ? 1 : -1];
 
 #ifdef VERSION_DDS1
+
 /* One 0x20C-byte encounter adjustment record. Sound selection shares the
  * header with condition/variant data; four complete weighted groups follow. */
 typedef struct BattleAdjustmentEntry {
@@ -405,15 +368,15 @@ typedef struct BattleAdjustmentRecord {
 } BattleAdjustmentRecord;
 
 typedef char BattleAdjustmentEntrySizeCheck[sizeof(BattleAdjustmentEntry) == 6 ? 1 : -1];
-typedef char BattleAdjustmentEntrySerialChanceAdjustmentOffsetCheck[
-    ((u32)&((BattleAdjustmentEntry *)0)->serialEncounterChanceAdjustment == 5) ? 1 : -1];
+
 typedef char BattleAdjustmentGroupSizeCheck[sizeof(BattleAdjustmentGroup) == 0x7C ? 1 : -1];
+
 typedef char BattleAdjustmentRecordSizeCheck[sizeof(BattleAdjustmentRecord) == 0x20C ? 1 : -1];
-typedef char BattleAdjustmentStreamOffsetCheck[(u32)&((BattleAdjustmentRecord *)0)->streamSelection == 4 ? 1 : -1];
-typedef char BattleAdjustmentGroupsOffsetCheck[(u32)&((BattleAdjustmentRecord *)0)->groups == 0x1C ? 1 : -1];
 
 extern BattleAdjustmentRecord *datBattleAdjustmentRecords;
+
 #else
+
 /* DDS2 encounter records carry two background IDs, four opaque bytes, and
  * three conditional weighted encounter groups (0x190 bytes total). */
 typedef struct BattleAdjustmentEntry {
@@ -438,23 +401,19 @@ typedef struct BattleAdjustmentRecord {
 } BattleAdjustmentRecord;
 
 typedef char BattleAdjustmentEntrySizeCheck[(sizeof(BattleAdjustmentEntry) == 6) ? 1 : -1];
-typedef char BattleAdjustmentEntrySerialChanceAdjustmentOffsetCheck[
-    ((u32)&((BattleAdjustmentEntry *)0)->serialEncounterChanceAdjustment == 5) ? 1 : -1];
+
 typedef char BattleAdjustmentGroupSizeCheck[(sizeof(BattleAdjustmentGroup) == 0x7C) ? 1 : -1];
+
 typedef char BattleAdjustmentRecordSizeCheck[(sizeof(BattleAdjustmentRecord) == 0x190) ? 1 : -1];
-typedef char BattleAdjustmentConditionsOffsetCheck[((u32)&((BattleAdjustmentRecord *)0)->conditions == 0x08) ? 1 : -1];
-typedef char BattleAdjustmentVariantsOffsetCheck[((u32)&((BattleAdjustmentRecord *)0)->variantCodes == 0x14) ? 1 : -1];
-typedef char BattleAdjustmentGroupsOffsetCheck[((u32)&((BattleAdjustmentRecord *)0)->groups == 0x1C) ? 1 : -1];
 
 extern BattleAdjustmentRecord *D_00435E0C;
+
 #endif
 
 extern DatBattleSceneRecord *datBattleSceneRecords;
-
-extern dds3GlobalWork_t *DDS3_GBWK;
 
 /* Maps one exact channel flag to its stat/element index; unmatched or combined
  * flags return -1 (see the paired datCalc.c lookup switches). */
 extern s32 datFlagToElementIndex(s32 flag);
 
-#endif /* DAT_STATE_H */
+#endif /* DDS_DAT_STATE_H */

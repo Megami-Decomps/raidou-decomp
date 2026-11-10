@@ -1,10 +1,12 @@
-#ifndef EVT_EVENT_PACK_H
-#define EVT_EVENT_PACK_H
+#ifndef DDS_EVT_EVENT_PACK_H
 
+#define DDS_EVT_EVENT_PACK_H
 #include "common.h"
 
 struct sdfMemHandle_t;
+
 struct sdfTexHandle_t;
+
 struct FileRequest;
 
 /* Payload categories used by the fixed-stride BE resource table. */
@@ -62,19 +64,23 @@ typedef struct EvtPackHeader {
     EvtPackEntry entries[0];      /* 0x20 */
 } EvtPackHeader;
 
+#if !defined(SMT3_DEFINES_EVT_PACK_LOAD_COMPLETE)
 typedef enum EvtPackLoadPhase {
     EVT_PACK_LOAD_PHASE_INVALID = -1,
     EVT_PACK_LOAD_NOT_STARTED = 0,
     EVT_PACK_LOAD_REQUEST_PENDING = 1,
     EVT_PACK_LOAD_COMPLETE = 2
 } EvtPackLoadPhase;
+#endif
 
 /* Phase values plus the absent-process result returned by evtGetEventPackStat. */
 typedef s32 EvtPackLoadStatus;
+
 enum { EVT_PACK_LOAD_NOT_FOUND = -1 };
 
 /* Script-visible result of querying whether an event pack is fully loaded. */
 typedef s32 EvtPackLoadQueryResult;
+
 enum {
     EVT_PACK_LOAD_QUERY_NOT_READY = 0,
     EVT_PACK_LOAD_QUERY_READY = 1,
@@ -103,37 +109,23 @@ typedef struct EvtPackLoadState {
 } EvtPackLoadState;
 
 typedef char EvtPackEntry_size_must_be_0x20[(sizeof(EvtPackEntry) == 0x20) ? 1 : -1];
-typedef char EvtAreaRoomIds_size_must_be_0x08[(sizeof(EvtAreaRoomIds) == 0x08) ? 1 : -1];
-typedef char EvtPackHeader_size_must_be_0x20[(sizeof(EvtPackHeader) == 0x20) ? 1 : -1];
-typedef char EvtPackLoadState_size_must_be_0x48[(sizeof(EvtPackLoadState) == 0x48) ? 1 : -1];
-typedef char EvtPackLoadPhase_must_be_4_bytes[(sizeof(EvtPackLoadPhase) == 4) ? 1 : -1];
-typedef char EvtPackLoadState_loadPhase_at_0x04[
-    ((u32)&((EvtPackLoadState *)0)->loadPhase == 0x04) ? 1 : -1];
-typedef char EvtPackLoadState_sceneAllocation1_at_0x24[
-    ((u32)&((EvtPackLoadState *)0)->sceneAllocation1 == 0x24) ? 1 : -1];
-typedef char EvtPackLoadState_sceneAllocation2_at_0x30[
-    ((u32)&((EvtPackLoadState *)0)->sceneAllocation2 == 0x30) ? 1 : -1];
-typedef char EvtPackLoadState_effect72_at_0x38[
-    ((u32)&((EvtPackLoadState *)0)->effect72 == 0x38) ? 1 : -1];
-typedef char EvtPackLoadState_effect71_at_0x3C[
-    ((u32)&((EvtPackLoadState *)0)->effect71 == 0x3C) ? 1 : -1];
-typedef char EvtPackLoadState_effect76_at_0x40[
-    ((u32)&((EvtPackLoadState *)0)->effect76 == 0x40) ? 1 : -1];
-typedef char EvtPackLoadState_effect75_at_0x44[
-    ((u32)&((EvtPackLoadState *)0)->effect75 == 0x44) ? 1 : -1];
 
-/* Borrow the camp-owned state for updates; valid only while its task exists. */
-EvtPackLoadState *evtGetPackProcessData(EvtPackEventId eventId);
+typedef char EvtAreaRoomIds_size_must_be_0x08[(sizeof(EvtAreaRoomIds) == 0x08) ? 1 : -1];
+
+typedef char EvtPackHeader_size_must_be_0x20[(sizeof(EvtPackHeader) == 0x20) ? 1 : -1];
+
+typedef char EvtPackLoadState_size_must_be_0x48[(sizeof(EvtPackLoadState) == 0x48) ? 1 : -1];
+
+typedef char EvtPackLoadPhase_must_be_4_bytes[(sizeof(EvtPackLoadPhase) == 4) ? 1 : -1];
 
 /* Borrow a read-only view for readers, with the same task lifetime. */
 static inline const EvtPackLoadState *evtGetPackProcessDataView(EvtPackEventId eventId) {
     return evtGetPackProcessData(eventId);
 }
-EvtPackLoadStatus evtGetEventPackStat(EvtPackEventId eventId);
 
 /* Find an entry by secondaryResourceId in a complete pack and return its
  * borrowed payload address; resource kinds stay opaque. */
 void *evtGetEventPackResourceAddress(EvtPackEventId eventId,
                                      EvtPackSecondaryResourceId secondaryResourceId);
 
-#endif /* EVT_EVENT_PACK_H */
+#endif /* DDS_EVT_EVENT_PACK_H */

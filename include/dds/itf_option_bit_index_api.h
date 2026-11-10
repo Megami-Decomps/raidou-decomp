@@ -1,6 +1,6 @@
-#ifndef ITF_OPTION_BIT_INDEX_API_H
-#define ITF_OPTION_BIT_INDEX_API_H
+#ifndef DDS_ITF_OPTION_BIT_INDEX_API_H
 
+#define DDS_ITF_OPTION_BIT_INDEX_API_H
 #include "common.h"
 
 /* Index of an option bit in the message-selection mask. */
@@ -18,4 +18,4 @@ typedef s16 ItfMesSelectedOptionBitResult;
  * width when that ordinal is absent. */
 ItfMesOptionBitIndex itfMesFindOptionBitIndex(ItfMesVisibleOptionOrdinal optionOrdinal, u32 optionMask);
 
-#endif /* ITF_OPTION_BIT_INDEX_API_H */
+#endif /* DDS_ITF_OPTION_BIT_INDEX_API_H */

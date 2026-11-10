@@ -5,6 +5,59 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "field.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/eff_manager_task.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/eff_random_mod.h"
+
+#include "dds/mnu_title_sound.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+#include "dds/scr_string_parameter_api.h"
+
+dds3TaskUpdateResult_t dds3EffectManagerRun(dds3ProcessID_t *task);
+
+/* Return the next caller-owned or shared state value reduced modulo `modulus`. */
+u32 dds3GetRandIntA(EffRandState *state, u32 modulus);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+/* The voice-file RPC sets this busy state on open and clears it on close.
+ * It is separate from the PCM callback-command busy latch. */
+MnuTitleSoundBusyState p2sdGetPcmState(void);
+
+/* Read a command parameter as a signed VM integer, converting floats and
+ * dereferencing global integer or float references. */
+ScrVmInteger scrGetIntPara(ScrCommandParameterIndex parameterIndex);
+
+/* Returns a borrowed read-only string for a STRING-tagged parameter, or NULL. */
+const char *scrGetStrPara(ScrCommandParameterIndex parameterIndex);
+
+/* Declared void for the callers that ignore its result: ee-gcc 2.96
+ * allocates registers around the call as retail did only then. The
+ * definition (scrTraceCode.c) returns the context it set the value in, for
+ * the script commands that pass it on as their result; their units declare
+ * it so. */
+void scrSetIntReturnValue(ScrVmInteger retVal);
+
+/* Seed caller-owned state from the clock; NULL selects the shared state. */
+void sdfRandomizeByTime(EffRandState *state);
+
 #include "dds/fld_area_work.h"
 
 #include "dds/common.h"
@@ -90,6 +143,84 @@ void fldCreateFieldEffectTask(void);
 #define VERSION_DDS1 1
 #endif
 
+#include "kernel_draw.h"
+
+#include "sdk_libc.h"
+
+#include "sdk_libkernl.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/fr_font_measure.h"
+
+#include "dds/kwln.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/sdk_libkernl.h"
+
+#include "dds/snd_command_packet.h"
+
+#include "dds/snd_sequence_volume_pan.h"
+
+#include "dds/snd_track_playback_api.h"
+
+#include "dds/ui_color.h"
+
+void Exit(s32 status);
+
+void FlushCache(s32 mode);
+
+u32 dds3GetProcessData(const dds3ProcessID_t *task);
+
+/* Return a borrowed scheduler-owned handle from the starting, active, or
+ * destroy-pending queue. The handle remains valid through its destroy callback
+ * and is freed when finalization completes; return NULL when no name matches. */
+dds3ProcessID_t *dds3SearchProcessName(const char *name);
+
+void dds3SetProcessData(dds3ProcessID_t *task, u32 userValue);
+
+/* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
+u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+s32 frGetStrWidth2(const struct _FRQ *glyphChain);
+
+void p2sdPlayBGM(s32 trackId);
+
+/* Apply volume and pan to a sequence track through the command queue. */
+void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
+
+/* Queue sound command 0x40 without a payload. */
+void p2sdStopAllSe(void);
+
+s32 sceSifAllocIopHeap(s32 size);
+
+s32 sceSifDmaStat(s32 transferId);
+
+s32 sceSifInitIopHeap(void);
+
+void *sdfChipAllocDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+f32 sdfSin(f32 angle);
+
+char *strcat(char *dst, const char *src);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/snd_command_packet.h"
@@ -140,10 +271,6 @@ extern void mnuAdvanceTitleStateUnderSemaphore(void);
 
 extern void mnuTitleStreamUpdateAndLogBgm(void);
 
-extern s32 p2sdLoadPcmFile(const char *name, u8 channel);
-
-extern void p2sdSyncSound(void);
-
 void brsUpdateResultBackgroundFade(s32 x, s32 y, s32 z, BrsSkillPackageWork *work,
                                   BrsProgressRow *row, s32 context, s32 rowIndex);
 
@@ -161,8 +288,6 @@ void brsUpdateResultPortraitFade(s32 x, s32 y, s32 z, BrsSkillPackageWork *work,
                                  BrsProgressRow *row, s32 context, s32 rowIndex);
 
 #include "dds/sdf.h"
-
-extern sdfGrOt_t sdfGrOtTable[];
 
 extern void effDrawSpriteWithCornerColors(s32, s32, s32, u32 *, s32, struct EffectSlotSet *, s32, s32);
 
@@ -184,7 +309,7 @@ void brsDrawProgressRowOverlays(s32 x, s32 y, s32 z, BrsSkillPackageWork *work,
 
 extern void nbPlaySe(u32 sequenceId);
 
-extern PtyExperienceThreshold ptyComputeTotalExp(const datUnitWork_t *unit, s32 levelDelta);
+extern PtyExperienceThreshold ptyComputeTotalExp(const dds_datUnitWork_t *unit, s32 levelDelta);
 
 void brsUpdateLevelProgressAnimation(s32 x, s32 y, s32 z, BrsSkillPackageWork *work,
                    BrsProgressRow *progressRow, s32 context, s32 rowIndex);
@@ -226,9 +351,9 @@ extern void effDrawSpriteWithCornerColors(s32, s32, s32, u32 *, s32, struct Effe
 void brsDrawProfileProgressIndicator(s32 x, s32 y, s32 z, BrsSkillPackageWork *work,
     BrsProgressRow *row, s32 context, s32 rowIndex);
 
-extern PtyExperienceThreshold ptyComputeTotalExp(const datUnitWork_t *unit, s32 levelDelta);
+extern PtyExperienceThreshold ptyComputeTotalExp(const dds_datUnitWork_t *unit, s32 levelDelta);
 
-extern s32 ptyGetCurrentProfileId(const datUnitWork_t *);
+extern s32 ptyGetCurrentProfileId(const dds_datUnitWork_t *);
 
 extern u32 prfGetCapValue(u16);
 
@@ -361,7 +486,7 @@ typedef struct BrsResultWork {
     BrsResultCounterView profileCounters[8];
 } BrsResultWork;
 
-extern s32 ptyGetCurrentProfileId(const datUnitWork_t *);
+extern s32 ptyGetCurrentProfileId(const dds_datUnitWork_t *);
 
 extern u32 prfGetCapValue(u16);
 
@@ -382,7 +507,7 @@ void brsUpdateProfileProgressAnimation(s32 x, s32 y, s32 z, BrsSkillPackageWork 
 
 extern s32 prfResolveMantraNameOrFallback(u16, u8 **);
 
-extern s32 mnuIsTitleEntryAvailable(datUnitWork_t *);
+extern s32 mnuIsTitleEntryAvailable(dds_datUnitWork_t *);
 
 typedef struct BrsProfilePalette { u32 values[4]; } BrsProfilePalette;
 

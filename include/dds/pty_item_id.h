@@ -1,6 +1,6 @@
-#ifndef PTY_ITEM_ID_H
-#define PTY_ITEM_ID_H
+#ifndef DDS_PTY_ITEM_ID_H
 
+#define DDS_PTY_ITEM_ID_H
 #include "common.h"
 
 /* Save-backed item key. IDs in [0x80, 0xA0) use model flags. */
@@ -12,4 +12,4 @@ enum {
     PTY_ITEM_MODEL_FLAG_BASE = 0x980
 };
 
-#endif /* PTY_ITEM_ID_H */
+#endif /* DDS_PTY_ITEM_ID_H */

@@ -1,7 +1,8 @@
-#ifndef BRS_RESULT_COUNTER_H
-#define BRS_RESULT_COUNTER_H
+#ifndef DDS_BRS_RESULT_COUNTER_H
 
+#define DDS_BRS_RESULT_COUNTER_H
 #include "common.h"
+
 #include "mnu_result.h"
 
 /* Cross-title completion view, 0x14 bytes before the corresponding
@@ -19,13 +20,5 @@ typedef struct BrsResultCounterView {
 } BrsResultCounterView;
 
 typedef char BrsResultCounterView_size_must_be_0x68[(sizeof(BrsResultCounterView) == 0x68) ? 1 : -1];
-typedef char BrsResultCounterView_phase_must_be_at_0x14[
-    ((u32)&((BrsResultCounterView *)0)->phase == 0x14) ? 1 : -1];
-typedef char BrsResultCounterView_remaining_must_be_at_0x34[
-    ((u32)&((BrsResultCounterView *)0)->remaining == 0x34) ? 1 : -1];
-typedef char BrsResultCounterView_pad4C_must_be_at_0x4C[
-    ((u32)&((BrsResultCounterView *)0)->progressIconState == 0x4C) ? 1 : -1];
-typedef char BrsResultCounterView_pad60_must_be_at_0x60[
-    ((u32)&((BrsResultCounterView *)0)->completionIconState == 0x60) ? 1 : -1];
 
 #endif

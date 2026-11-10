@@ -1,11 +1,13 @@
-#ifndef EVT_MOTION_SE_H
-#define EVT_MOTION_SE_H
+#ifndef DDS_EVT_MOTION_SE_H
 
+#define DDS_EVT_MOTION_SE_H
 #include "common.h"
+
 #include "evt_event_pack.h"
 
 /* The model's world key is also the result; this sentinel means it is absent. */
 typedef s32 EvtMotionSeModelKey;
+
 enum { EVT_MOTION_SE_MODEL_KEY_NOT_FOUND = -1 };
 
 /* MODEL_BE key shared by the model and motion-cue row lookups. */
@@ -36,4 +38,4 @@ typedef struct EvtMotionSeCue {
 
 typedef char EvtMotionSeCueSizeCheck[sizeof(EvtMotionSeCue) == 0x10 ? 1 : -1];
 
-#endif /* EVT_MOTION_SE_H */
+#endif /* DDS_EVT_MOTION_SE_H */

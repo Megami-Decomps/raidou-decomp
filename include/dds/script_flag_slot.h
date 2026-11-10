@@ -1,6 +1,6 @@
-#ifndef SCRIPT_FLAG_SLOT_H
-#define SCRIPT_FLAG_SLOT_H
+#ifndef DDS_SCRIPT_FLAG_SLOT_H
 
+#define DDS_SCRIPT_FLAG_SLOT_H
 #include "common.h"
 
 typedef struct ScriptFlagSlot {

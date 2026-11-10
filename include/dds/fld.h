@@ -1,6 +1,7 @@
-#ifndef FLD_H
-#define FLD_H
+#ifndef DDS_FLD_H
 
+#define DDS_FLD_H
+#include "../field.h"
 #include "common.h"
 
 struct dds3Basic_t;
@@ -11,34 +12,11 @@ typedef struct FldWorkFlags {
     u32 fieldFlags; /* 0xA58 */
 } FldWorkFlags;
 
-/* Sequence command packet: the submission contract copies all 0xA0 bytes. */
-typedef struct fldSceneParam_t {
-    u8 unk_00[0x30];
-    u32 unk_30;
-    u32 unk_34;
-    u32 sequenceWord38;
-    u32 sequenceWord3C;
-    char name[16];
-    s32 stage; /* 0x50: destination area; source spelling fldSceneDestinationArea */
-    s32 kind; /* 0x54: destination room; source spelling fldSceneDestinationRoom */
-    u32 retainCachedAreaResource;
-    s32 mode;
-    u16 code;
-    u16 sequenceMode;
-    s32 link;
-    u8 unk_68[8];
-    char detail[16];
-    char note[16];
-    u32 options; /* 0x90: record options */
-    u8 pad94[0xC];
-} fldSceneParam_t;
-
-
-/* A field's door table row (its WAP file's, fldWaypointBlock_t), named and laid
+/* A field's door table row (its WAP file's, dds_fldWaypointBlock_t), named and laid
  * out as Nocturne's build has it, used by field searches, motion and sound
  * dispatch, and fldDoor_Warp. Both games use 0x6C-byte rows: Nocturne's 0x64
  * bytes, then the exploration map's marks; their flags differ in signedness. */
-typedef struct doormovetbl_s {
+typedef struct dds_doormovetbl_s {
     s8 kind; /* 0x00 */
     u8 pad01;
     s16 requiredFlag; /* 0x02: zero or a model-flag ID */
@@ -121,14 +99,7 @@ typedef struct doormovetbl_s {
         s8 explorationRowCount; /* 0x6B: number of bitmap rows to mark */
     };
 #endif
-} doormovetbl_s;
-
-typedef char FldActorExplorationAreaOffset[((u32)&((doormovetbl_s *)0)->explorationArea == 0x65) ? 1 : -1];
-typedef char FldActorExplorationFloorOffset[((u32)&((doormovetbl_s *)0)->explorationFloor == 0x66) ? 1 : -1];
-typedef char FldActorExplorationColumnOffset[((u32)&((doormovetbl_s *)0)->explorationColumn == 0x68) ? 1 : -1];
-typedef char FldActorExplorationRowOffset[((u32)&((doormovetbl_s *)0)->explorationRow == 0x69) ? 1 : -1];
-typedef char FldActorExplorationColumnCountOffset[((u32)&((doormovetbl_s *)0)->explorationColumnCount == 0x6A) ? 1 : -1];
-typedef char FldActorExplorationRowCountOffset[((u32)&((doormovetbl_s *)0)->explorationRowCount == 0x6B) ? 1 : -1];
+} dds_doormovetbl_s;
 
 /* fldFileResolver::fldMakeResouceBasicFL1 publishes file rows; fldSpawnPlacementObjectsFromBatches walks them
  * at stride 0x24. Both game resolvers walk counted names at stride 0x0C.
@@ -159,13 +130,21 @@ typedef struct FldFileResource {
 typedef u32 FldSpawnBatchKind;
 
 /* Spawn-batch tags whose payload handling is understood in both titles. */
+
 #define FLD_SPAWN_BATCH_KIND_SCRIPT_RESOURCE 2
+
 #define FLD_SPAWN_BATCH_KIND_COLLISION 3
+
 #define FLD_SPAWN_BATCH_KIND_CAMERA 4
+
 #define FLD_SPAWN_BATCH_KIND_EVENT 6
+
 #define FLD_SPAWN_BATCH_KIND_PATH 9
+
 #define FLD_SPAWN_BATCH_KIND_PLACEMENT_DATA 10
+
 #define FLD_SPAWN_BATCH_KIND_BILLBOARD_EFFECT 11
+
 #define FLD_SPAWN_BATCH_KIND_LIGHT 12
 
 /* Counted resource group consumed by field spawning and copied payloads. */
@@ -176,6 +155,7 @@ typedef struct FldSpawnBatch {
 } FldSpawnBatch;
 
 typedef char FldFileNameEntrySizeCheck[(sizeof(FldFileNameEntry) == 0x0C) ? 1 : -1];
+
 typedef char FldFileResourceSizeCheck[(sizeof(FldFileResource) == 0x24) ? 1 : -1];
 
 /* Camera-color timeline keys interpolate two banks of three values. */
@@ -208,15 +188,21 @@ typedef struct FldCameraSetting {
 } FldCameraSetting;
 
 typedef char EvtBlendKeySizeCheck[(sizeof(EvtBlendKey) == 0x38) ? 1 : -1];
+
 typedef char FldColorParamsSizeCheck[(sizeof(FldColorParams) == 0x20) ? 1 : -1];
+
 typedef char FldCameraSettingSizeCheck[(sizeof(FldCameraSetting) == 0x54) ? 1 : -1];
 
 void evtBlendParamsH(s32 enable, f32 t, const EvtBlendKey *a, const EvtBlendKey *b, EvtBlendKey *out);
+
 void fldCopyCameraSetting(FldCameraSetting *destination);
+
 void fldUpdateCameraColorEffect(const FldCameraSetting *setting);
 
 /* Semantic packet spellings preserve the compiler-visible member identifiers. */
+
 #define fldSceneDestinationArea stage
+
 #define fldSceneDestinationRoom kind
 
-#endif /* FLD_H */
+#endif /* DDS_FLD_H */

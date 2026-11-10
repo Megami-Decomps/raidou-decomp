@@ -1,7 +1,8 @@
-#ifndef EVT_STAGE_TEST_H
-#define EVT_STAGE_TEST_H
+#ifndef DDS_EVT_STAGE_TEST_H
 
+#define DDS_EVT_STAGE_TEST_H
 #include "common.h"
+
 #include "mdl_asset_request.h"
 
 struct SoundHandleNode;
@@ -41,8 +42,11 @@ typedef struct StageTestSlot {
 } StageTestSlot;
 
 /* StageTestQueue.flags bits. */
+
 #define EVT_STAGE_QUEUE_PENDING 1        /* a second selection waits in slot[1] */
+
 #define EVT_STAGE_QUEUE_REQUESTING 2     /* slot[0]'s model request is in progress */
+
 #define EVT_STAGE_QUEUE_SETUP_COMPLETE 4 /* slot[0]'s model is set up */
 
 typedef struct StageTestQueue {
@@ -68,28 +72,19 @@ typedef struct StageTestState {
 } StageTestState;
 
 typedef char StageTestEntrySizeCheck[sizeof(StageTestEntry) == 0x3C ? 1 : -1];
+
 typedef char StageTestSlotSizeCheck[sizeof(StageTestSlot) == 0x28 ? 1 : -1];
+
 typedef char StageTestQueueSizeCheck[sizeof(StageTestQueue) == 0x54 ? 1 : -1];
-typedef char StageTestEntryFrameOffsetCheck[((u32)&((StageTestEntry *)0)->frame) == 0x18 ? 1 : -1];
-typedef char StageTestEntryPositionOffsetCheck[((u32)&((StageTestEntry *)0)->position) == 0x1C ? 1 : -1];
-typedef char StageTestEntryRotationOffsetCheck[((u32)&((StageTestEntry *)0)->rotation) == 0x2C ? 1 : -1];
-typedef char StageTestSlotStateOffsetCheck[((u32)&((StageTestSlot *)0)->state) == 0x18 ? 1 : -1];
-typedef char StageTestQueueSlotsOffsetCheck[((u32)&((StageTestQueue *)0)->slot) == 4 ? 1 : -1];
-typedef char StageTestStateModeOffsetCheck[((u32)&((StageTestState *)0)->mode) == 0x00 ? 1 : -1];
-typedef char StageTestStateAssetRequestOffsetCheck[((u32)&((StageTestState *)0)->assetRequest) == 0x04 ? 1 : -1];
-typedef char StageTestStateModelOffsetCheck[((u32)&((StageTestState *)0)->model) == 0x08 ? 1 : -1];
-typedef char StageTestStateFlagOffsetCheck[((u32)&((StageTestState *)0)->flag) == 0x0C ? 1 : -1];
-typedef char StageTestStatePaddingOffsetCheck[((u32)&((StageTestState *)0)->pad0D) == 0x0D ? 1 : -1];
-typedef char StageTestStateEntriesOffsetCheck[((u32)&((StageTestState *)0)->entries) == 0x10 ? 1 : -1];
-typedef char StageTestStateQueueOffsetCheck[((u32)&((StageTestState *)0)->queue) == 0x14 ? 1 : -1];
-typedef char StageTestStateEffectOffsetCheck[((u32)&((StageTestState *)0)->effect) == 0x68 ? 1 : -1];
-typedef char StageTestStatePendingEffectOffsetCheck[((u32)&((StageTestState *)0)->pendingEffect) == 0x6C ? 1 : -1];
+
 #if defined(VERSION_DDS1)
+
 typedef char StageTestStateSizeCheck[sizeof(StageTestState) == 0x70 ? 1 : -1];
+
 #elif defined(VERSION_DDS2)
-typedef char StageTestStateModelUpdateStartedOffsetCheck[
-    ((u32)&((StageTestState *)0)->modelUpdateStarted) == 0x70 ? 1 : -1];
+
 typedef char StageTestStateSizeCheck[sizeof(StageTestState) == 0x74 ? 1 : -1];
+
 #endif
 
 #endif

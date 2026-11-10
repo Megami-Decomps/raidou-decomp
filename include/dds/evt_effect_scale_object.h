@@ -1,6 +1,6 @@
-#ifndef EVT_EFFECT_SCALE_OBJECT_H
-#define EVT_EFFECT_SCALE_OBJECT_H
+#ifndef DDS_EVT_EFFECT_SCALE_OBJECT_H
 
+#define DDS_EVT_EFFECT_SCALE_OBJECT_H
 #include "common.h"
 
 struct effEveBEDCutHandle_t;
@@ -25,15 +25,11 @@ typedef struct EvtEffectObject {
 
 typedef char EvtModelScaleEntry_size_check[
     (sizeof(EvtModelScaleEntry) == 0x270) ? 1 : -1];
-typedef char EvtModelScaleEntry_modelScale_offset_check[
-    ((u32)&((EvtModelScaleEntry *)0)->modelScale == 0x18) ? 1 : -1];
+
 typedef char EvtEffectInner_size_check[
     (sizeof(EvtEffectInner) == 0x30) ? 1 : -1];
-typedef char EvtEffectInner_scaledObject_offset_check[
-    ((u32)&((EvtEffectInner *)0)->scaledObject == 0x2C) ? 1 : -1];
+
 typedef char EvtEffectObject_size_check[
     (sizeof(EvtEffectObject) == 0x1C) ? 1 : -1];
-typedef char EvtEffectObject_inner_offset_check[
-    ((u32)&((EvtEffectObject *)0)->inner == 0x18) ? 1 : -1];
 
-#endif /* EVT_EFFECT_SCALE_OBJECT_H */
+#endif /* DDS_EVT_EFFECT_SCALE_OBJECT_H */

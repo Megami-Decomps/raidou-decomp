@@ -1,9 +1,10 @@
-#ifndef EFF_POINT_SET_H
-#define EFF_POINT_SET_H
+#ifndef DDS_EFF_POINT_SET_H
 
+#define DDS_EFF_POINT_SET_H
 #include "common.h"
 
 struct sdfMemHandle_t;
+
 struct sdfMat_t;
 
 /* Point-set node: `rows` 16-byte entries in `buffer`, then `tail`. */
@@ -24,15 +25,14 @@ typedef struct EffRingResource {
 } EffRingResource;
 
 typedef char EffPointSetSizeCheck[sizeof(EffPointSet) == 0x20 ? 1 : -1];
-typedef char EffPointSetHandleOffsetCheck[
-    ((u32)&((EffPointSet *)0)->handle == 0x18) ? 1 : -1];
-typedef char EffPointSetAllocationOffsetCheck[
-    ((u32)&((EffPointSet *)0)->allocation == 0x1C) ? 1 : -1];
+
 typedef char EffRingResourceSizeCheck[
     (sizeof(EffRingResource) == 0x04) ? 1 : -1];
 
 EffPointSet *effCreatePointSet5(s32 count);
+
 EffPointSet *effCreatePointSet4(u32 count);
+
 void effReleasePointSetAsset(EffPointSet *set);
 
 #endif

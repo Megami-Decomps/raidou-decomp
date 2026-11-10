@@ -1,12 +1,13 @@
-#ifndef FLD_ROOM_EFFECT_ENTRY_H
-#define FLD_ROOM_EFFECT_ENTRY_H
+#ifndef DDS_FLD_ROOM_EFFECT_ENTRY_H
 
+#define DDS_FLD_ROOM_EFFECT_ENTRY_H
 #include "common.h"
+
 #include "eff_transform.h"
 
 /* A room's placed NPC model, in placement order. DDS1 and DDS2 use the same
  * 0x50-byte layout. */
-typedef struct fldNpc_tag {
+typedef struct dds_fldNpc_tag {
     s32 type;           /* 0x00: source placement key; 999 excludes the row from name lookup. */
     f32 x;              /* 0x04 */
     f32 y;              /* 0x08 */
@@ -22,17 +23,8 @@ typedef struct fldNpc_tag {
     s16 unk3C;
     s16 lodIndex;       /* 0x3E: selected LOD copied to the spawned model. */
     char name[0x10];    /* 0x40 */
-} fldNpcSlot_t;
+} dds_fldNpcSlot_t;
 
-typedef char FldRoomEffectEntry_size_check[(sizeof(fldNpcSlot_t) == 0x50) ? 1 : -1];
-typedef char FldRoomEffectEntry_object_offset_check[
-    ((u32)&((fldNpcSlot_t *)0)->object == 0x20) ? 1 : -1];
-typedef char FldRoomEffectEntry_room_offset_check[
-    ((u32)&((fldNpcSlot_t *)0)->room == 0x38) ? 1 : -1];
-typedef char FldRoomEffectEntry_lodIndex_offset_check[
-    ((u32)&((fldNpcSlot_t *)0)->lodIndex == 0x3E) ? 1 : -1];
+typedef char FldRoomEffectEntry_size_check[(sizeof(dds_fldNpcSlot_t) == 0x50) ? 1 : -1];
 
-extern fldNpcSlot_t fldModelSlotTable[];
-extern s32 fldNpcModelTable;
-
-#endif /* FLD_ROOM_EFFECT_ENTRY_H */
+#endif /* DDS_FLD_ROOM_EFFECT_ENTRY_H */

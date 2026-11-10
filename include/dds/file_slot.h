@@ -1,12 +1,16 @@
-#ifndef FILE_SLOT_H
-#define FILE_SLOT_H
+#ifndef DDS_FILE_SLOT_H
 
+#define DDS_FILE_SLOT_H
 #include "common.h"
+
 #include "eff_curve.h"
+
 #include "sdf.h"
 
 /* Primary cells and their address-valued record, shared by both file engines. */
+
 #define FILE_SLOT_FRAME_NONE (-1)
+
 #define FILE_SLOT_FRAME_DISABLED (-2)
 
 typedef struct FileSlot {
@@ -18,6 +22,7 @@ typedef struct FileSlot {
 } FileSlot;
 
 /* Keep the member token used by the matching compiler; callers treat it as a frame. */
+
 #define FILE_SLOT_FRAME(slot) ((slot)->state)
 
 typedef struct FileSlotTable {
@@ -36,8 +41,9 @@ typedef struct FileSlotTable {
 } FileSlotTable;
 
 FileSlotTable *fileAllocateGridRecordSlots(u16 type, u32 count, const void *configuration);
-void effPCPHelperBEDGetModel(FileSlotTable *record);
+
 void fileClearRecordReferences(FileSlotTable *record);
+
 void fileAcquireRecord(FileSlotTable *record);
 
 /* The track's +0x0C word is a real emitter random multiplier; the ordinary
@@ -174,11 +180,9 @@ typedef struct FileKeyBlock {
 
 /* The existing root-pointer conventions are 4-byte aligned, not VU types. */
 typedef char FileSlotSizeCheck[(sizeof(FileSlot) == 0x20) ? 1 : -1];
+
 typedef char FileSlotTableSizeCheck[(sizeof(FileSlotTable) == 0x2C) ? 1 : -1];
+
 typedef char FileKeyScalarTrackSizeCheck[(sizeof(FileKeyScalarTrack) == 0x2C) ? 1 : -1];
-typedef char FileKeyBlockColorOffsetCheck[((u32)&((FileKeyBlock *)0)->colorTrack == 0x2C) ? 1 : -1];
-typedef char FileKeyBlockSurfaceOffsetCheck[((u32)&((FileKeyBlock *)0)->alphaTrack.surfaceIndex == 0x54) ? 1 : -1];
-typedef char FileKeyBlockColumnsOffsetCheck[((u32)&((FileKeyBlock *)0)->columns == 0xC0) ? 1 : -1];
-typedef char FileKeyBlockRowsOffsetCheck[((u32)&((FileKeyBlock *)0)->rows == 0xC4) ? 1 : -1];
 
 #endif

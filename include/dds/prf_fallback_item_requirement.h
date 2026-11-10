@@ -1,6 +1,6 @@
-#ifndef PRF_FALLBACK_ITEM_REQUIREMENT_H
-#define PRF_FALLBACK_ITEM_REQUIREMENT_H
+#ifndef DDS_PRF_FALLBACK_ITEM_REQUIREMENT_H
 
+#define DDS_PRF_FALLBACK_ITEM_REQUIREMENT_H
 #include "common.h"
 
 typedef struct PrfItemRequirement {

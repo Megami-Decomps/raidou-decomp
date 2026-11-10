@@ -1,6 +1,6 @@
-#ifndef DDS3_OBJECT_CONTROL_SLOT_H
-#define DDS3_OBJECT_CONTROL_SLOT_H
+#ifndef DDS_DDS3_OBJECT_CONTROL_SLOT_H
 
+#define DDS_DDS3_OBJECT_CONTROL_SLOT_H
 #include "common.h"
 
 struct dds3Basic_t;
@@ -16,10 +16,4 @@ enum {
     DDS3_OBJECT_HANDLER_SLOT = 5
 };
 
-struct dds3Basic_t *dds3ObjectBaseSetControlBasicType(
-    struct dds3Basic_t *object, struct dds3Basic_t *slotData,
-    Dds3ObjectControlSlotIndex slotIndex);
-struct dds3Basic_t *dds3ObjectBaseGetControlBasic(
-    struct dds3Basic_t *object, Dds3ObjectControlSlotIndex slotIndex);
-
-#endif /* DDS3_OBJECT_CONTROL_SLOT_H */
+#endif /* DDS_DDS3_OBJECT_CONTROL_SLOT_H */

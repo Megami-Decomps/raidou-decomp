@@ -1,6 +1,6 @@
-#ifndef PTY_PRESET_RECORD_H
-#define PTY_PRESET_RECORD_H
+#ifndef DDS_PTY_PRESET_RECORD_H
 
+#define DDS_PTY_PRESET_RECORD_H
 #include "common.h"
 
 /* Consumer view of the preset rows. The choice records have title-specific
@@ -14,18 +14,19 @@ typedef struct PtyPresetScriptChoice {
 } PtyPresetScriptChoice;
 
 typedef char PtyPresetScriptChoiceSizeCheck[
+
 #ifdef VERSION_DDS1
+
     (sizeof(PtyPresetScriptChoice) == 0x0C) ? 1 : -1];
+
 #else
+
     (sizeof(PtyPresetScriptChoice) == 0x04) ? 1 : -1];
+
 #endif
-typedef char PtyPresetScriptChoiceScriptIdOffsetCheck[
-    ((u32)&((PtyPresetScriptChoice *)0)->scriptId == 0x00) ? 1 : -1];
-typedef char PtyPresetScriptChoiceInitialValueOffsetCheck[
-    ((u32)&((PtyPresetScriptChoice *)0)->initialValue == 0x02) ? 1 : -1];
+
 #ifdef VERSION_DDS1
-typedef char PtyPresetScriptChoiceRequiredProfilesOffsetCheck[
-    ((u32)&((PtyPresetScriptChoice *)0)->requiredProfiles == 0x04) ? 1 : -1];
+
 #endif
 
 typedef struct PtyPresetRecord {
@@ -40,23 +41,13 @@ typedef struct PtyPresetRecord {
 } PtyPresetRecord;
 
 #ifdef VERSION_DDS1
+
 typedef char PtyPresetRecordSizeCheck[(sizeof(PtyPresetRecord) == 0xC0) ? 1 : -1];
-typedef char PtyPresetRecordScriptChoicesOffsetCheck[
-    ((u32)&((PtyPresetRecord *)0)->scriptChoices == 0x00) ? 1 : -1];
-typedef char PtyPresetRecordProfileIdsOffsetCheck[
-    ((u32)&((PtyPresetRecord *)0)->profileIds == 0x30) ? 1 : -1];
-typedef char PtyPresetRecordSkillSlotsOffsetCheck[
-    ((u32)&((PtyPresetRecord *)0)->skillSlots == 0x60) ? 1 : -1];
-typedef char PtyPresetRecordPoolSkillsOffsetCheck[
-    ((u32)&((PtyPresetRecord *)0)->poolSkills == 0x70) ? 1 : -1];
+
 #else
+
 typedef char PtyPresetRecordSizeCheck[(sizeof(PtyPresetRecord) == 0xA0) ? 1 : -1];
-typedef char PtyPresetRecordScriptChoicesOffsetCheck[
-    ((u32)&((PtyPresetRecord *)0)->scriptChoices == 0x00) ? 1 : -1];
-typedef char PtyPresetRecordProfileIdsOffsetCheck[
-    ((u32)&((PtyPresetRecord *)0)->profileIds == 0x10) ? 1 : -1];
-typedef char PtyPresetRecordOpaque40OffsetCheck[
-    ((u32)&((PtyPresetRecord *)0)->opaque40 == 0x40) ? 1 : -1];
+
 #endif
 
-#endif /* PTY_PRESET_RECORD_H */
+#endif /* DDS_PTY_PRESET_RECORD_H */

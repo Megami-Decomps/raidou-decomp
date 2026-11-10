@@ -1,9 +1,6 @@
-#ifndef FLD_AREA_PATH_H
-#define FLD_AREA_PATH_H
+#ifndef DDS_FLD_AREA_PATH_H
 
+#define DDS_FLD_AREA_PATH_H
 #include "common.h"
 
-/* Write the area directory path into buffer. The final argument is ignored. */
-void fldMakeFilePath(char *buffer, s32 area, s32 unused);
-
-#endif /* FLD_AREA_PATH_H */
+#endif /* DDS_FLD_AREA_PATH_H */

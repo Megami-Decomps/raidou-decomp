@@ -203,6 +203,116 @@ extern char sdfCdDirectPrefix[8];
 extern s32 sdfCdTrayMode;
 /* End of declarations from src/smt3/sdf/sdfCd.c */
 
+/* Declarations from dds-decomp src/dds1/sdf/sdfCd.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_SDF_FILE_CMD_CLOSE 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_FILESIZE 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_NONE 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_READ 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_READFILE 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_READOPEN 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_SEEK 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_CANCEL 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_CLOSE 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_DONE 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_DORMANT 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_ERROR 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_INIT 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_OPEN 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_READ 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_SEEK 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_SUSPEND 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_STAT_WRITE 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_WRITE 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_WRITEFILE 1
+
+#define SMT3_DEFINES_SDF_FILE_CMD_WRITEOPEN 1
+
+#define SMT3_DEFINES_SDF_STREAM_OUTPUT_RGBA16 1
+
+#define SMT3_DEFINES_SDF_STREAM_OUTPUT_RGBA16_DITHERED 1
+
+#define SMT3_DEFINES_SDF_STREAM_OUTPUT_RGBA32 1
+
+#define SMT3_DEFINES_SDF_STREAM_PLAYBACK_CADENCED 1
+
+#define SMT3_DEFINES_SDF_STREAM_PLAYBACK_FIRST_COMPLETION 1
+
+#define SMT3_DEFINES_SDF_STREAM_PLAYBACK_INITIAL 1
+
+#define SMT3_DEFINES_SDF_TEX_RESOURCE_CLUT 1
+
+#define SMT3_DEFINES_SDF_TEX_RESOURCE_FRAME 1
+
+#define SMT3_DEFINES_SDF_TEX_RESOURCE_FREE 1
+
+#define SMT3_DEFINES_SDF_TEX_RESOURCE_KNOWN_MODE_COUNT 1
+
+#define SMT3_DEFINES_SDF_TEX_RESOURCE_TEXTURE 1
+
+#define SMT3_DEFINES_SdfFileIOCmd 1
+
+#define SMT3_DEFINES_SdfFileIOCmdStat 1
+
+#define SMT3_DEFINES_sdfCdImageDirEntry_t 1
+
+#define SMT3_DEFINES_sdf_stream_output 1
+
+#define SMT3_DEFINES_sdf_stream_playback 1
+
+#define SMT3_DEFINES_sdf_tex_resource 1
+
+#include "sdk_libcdvd.h"
+
+#include "dds/sdk_libkernl.h"
+
+void FlushCache(s32 mode);
+
+#include "dds/fpu.h"
+
+#include "dds/common.h"
+
+#include "dds/libsdf.h"
+
+#include "dds/ps2asm.h"
+
+#include "dds/sdk_libkernl.h"
+
+#include "dds/sdk_libcdvd.h"
+
+#include "dds/sdk_libc.h"
+
+extern s32 sdfDiscRequestPending;
+
+extern s32 sdfDiscRequestSemaphore;
+
+void sdfDevSignalPendingSemaphore(void);
+
+void sdfDevSeekDiscWithRequestGate(s32 lsn);
+/* End of declarations from src/dds1/sdf/sdfCd.c */
+
 INCLUDE_ASM(const s32, "sdf/sdfCd", func_003E19D0);
 
 void sdfCdStStart(s32 lsn) {
@@ -232,9 +342,44 @@ void sdfCdStStart(s32 lsn) {
     sdfCdCurrLsn = lsn;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfDevSignalPendingSemaphore);
+void sdfDevSignalPendingSemaphore(void)
+{
+    if (sdfDiscRequestPending != 0) {
+        SignalSema(sdfDiscRequestSemaphore);
+        sdfDiscRequestPending = 0;
+    }
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfDevSeekDiscWithRequestGate);
+void sdfDevSeekDiscWithRequestGate(s32 lsn)
+{
+    u8 options[4];
+    s32 ready;
+
+    options[0] = 0;
+    if (sdfCdImageMode == 1) {
+        options[1] = 0;
+    } else {
+        options[1] = 1;
+    }
+    options[2] = 0;
+    options[3] = 0;
+    for (;;) {
+        WaitSema(sdfCdImageFd);
+        sdfDiscRequestPending = 1;
+        WaitSema(sdfDiscRequestSemaphore);
+        ready = sceCdStStart(lsn, options);
+        SignalSema(sdfCdImageFd);
+        if (ready != 0) {
+            break;
+        }
+        if (sceCdStatus() == 1) {
+            sdfCdWaitTrayClose();
+        } else {
+            sdfDelayThread(100);
+        }
+    }
+    sdfCdCurrLsn = lsn;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", func_003E1C00);
 

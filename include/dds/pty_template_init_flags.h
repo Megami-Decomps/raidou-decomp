@@ -1,6 +1,6 @@
-#ifndef PTY_TEMPLATE_INIT_FLAGS_H
-#define PTY_TEMPLATE_INIT_FLAGS_H
+#ifndef DDS_PTY_TEMPLATE_INIT_FLAGS_H
 
+#define DDS_PTY_TEMPLATE_INIT_FLAGS_H
 /* Bit flags controlling a roster template's initial level and skill rebuild. */
 typedef enum PtyTemplateInitFlags {
     PTY_TEMPLATE_INIT_NONE = 0,

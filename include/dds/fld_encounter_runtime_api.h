@@ -1,10 +1,11 @@
-#ifndef FLD_ENCOUNTER_RUNTIME_API_H
-#define FLD_ENCOUNTER_RUNTIME_API_H
+#ifndef DDS_FLD_ENCOUNTER_RUNTIME_API_H
 
+#define DDS_FLD_ENCOUNTER_RUNTIME_API_H
 #include "common.h"
 
 /* Field encounter modes; 0-2 select runtime fades and 3 bypasses that runtime. */
 typedef s32 FldEncounterRuntimeMode;
+
 enum FldEncounterRuntimeModeValue {
     FLD_ENCOUNTER_MODE_STANDARD = 0,
     FLD_ENCOUNTER_MODE_ALTERNATE = 1,
@@ -14,6 +15,7 @@ enum FldEncounterRuntimeModeValue {
 
 /* Zero means no runtime result; nonzero values preserve the source result. */
 typedef s32 FldEncounterRuntimeResult;
+
 enum {
     FLD_ENCOUNTER_RESULT_NONE = 0
 };
@@ -22,10 +24,14 @@ enum {
 typedef s32 FldBattleSceneRecordIndex;
 
 FldEncounterRuntimeResult fldGetEncounterRuntimeResult(void);
+
 void fldSetEncounterPendingValue(u32 value);
+
 s32 fldSetEncounterMode(FldEncounterRuntimeMode mode);
+
 void fldRequestEncounterWithFade(FldEncounterRuntimeMode mode,
                                  FldBattleSceneRecordIndex recordIndex);
+
 extern FldEncounterRuntimeMode fldEncounterRuntimeState;
 
-#endif /* FLD_ENCOUNTER_RUNTIME_API_H */
+#endif /* DDS_FLD_ENCOUNTER_RUNTIME_API_H */

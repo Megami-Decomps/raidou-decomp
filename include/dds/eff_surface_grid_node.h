@@ -1,11 +1,14 @@
-#ifndef EFF_SURFACE_GRID_NODE_H
-#define EFF_SURFACE_GRID_NODE_H
+#ifndef DDS_EFF_SURFACE_GRID_NODE_H
 
+#define DDS_EFF_SURFACE_GRID_NODE_H
 #include "common.h"
+
 #include "sdf.h"
 
 /* Surface grid node: the record at the end of a retained block, after the vertex rows. */
+
 #ifdef VERSION_DDS1
+
 typedef struct EffSurfaceGridNode {
     u8 pad_00[0x10];
     s32 rows;       // 0x10
@@ -22,7 +25,9 @@ typedef struct EffSurfaceGridNode {
 } EffSurfaceGridNode;
 
 typedef char EffSurfaceGridNodeSizeCheck[(sizeof(EffSurfaceGridNode) == 0x3C) ? 1 : -1];
+
 #else
+
 typedef struct EffSurfaceGridNode {
     f32 position[4];    // 0x00: the row position the trail last reached
     f32 direction[4];   // 0x10: the trail's last side direction, kept facing one way
@@ -40,6 +45,7 @@ typedef struct EffSurfaceGridNode {
 } EffSurfaceGridNode;
 
 typedef char EffSurfaceGridNodeSizeCheck[(sizeof(EffSurfaceGridNode) == 0x4C) ? 1 : -1];
+
 #endif
 
 #endif

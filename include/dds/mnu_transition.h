@@ -1,6 +1,6 @@
-#ifndef MNU_TRANSITION_H
-#define MNU_TRANSITION_H
+#ifndef DDS_MNU_TRANSITION_H
 
+#define DDS_MNU_TRANSITION_H
 #include "common.h"
 
 struct dds3ProcessID_t;
@@ -8,6 +8,7 @@ struct dds3ProcessID_t;
 typedef u32 (*MenuPopupCallback)();
 
 /* Insert a newly selected popup before the current top transition entry. */
+
 #define MNU_POPUP_INSERT_BEFORE_TOP 0x20000
 
 typedef struct MenuPopupEntry {
@@ -35,8 +36,10 @@ typedef char MenuPopupState_size_must_be_0x4C[
     (sizeof(MenuPopupState) == 0x4C) ? 1 : -1];
 
 void mnuClearPanelTransitionState(MenuPopupState *state);
+
 /* The scheduler task is forwarded to each saved entry's leave callback. */
 void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *task);
+
 void mnuBindPresentMenuEntry(MenuPopupState *state, s32 *entrySlot);
 
-#endif /* MNU_TRANSITION_H */
+#endif /* DDS_MNU_TRANSITION_H */

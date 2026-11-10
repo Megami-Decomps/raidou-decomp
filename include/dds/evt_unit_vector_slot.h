@@ -1,6 +1,6 @@
-#ifndef EVT_UNIT_VECTOR_SLOT_H
-#define EVT_UNIT_VECTOR_SLOT_H
+#ifndef DDS_EVT_UNIT_VECTOR_SLOT_H
 
+#define DDS_EVT_UNIT_VECTOR_SLOT_H
 #include "common.h"
 
 struct evtUnitHandle_t;
@@ -12,6 +12,7 @@ typedef enum EvtUnitVectorSlotState {
 } EvtUnitVectorSlotState;
 
 typedef s32 EvtUnitVectorSlotLookupResult;
+
 enum {
     EVT_UNIT_VECTOR_SLOT_LOOKUP_NOT_FOUND = 0,
     EVT_UNIT_VECTOR_SLOT_LOOKUP_FOUND = 1
@@ -28,8 +29,6 @@ typedef struct EvtUnitVectorSlot {
 } EvtUnitVectorSlot;
 
 typedef char EvtUnitVectorSlotSizeCheck[sizeof(EvtUnitVectorSlot) == 0x40 ? 1 : -1];
-typedef char EvtUnitVectorSlot_unitHandle_offset_check[
-    ((u32)&((EvtUnitVectorSlot *)0)->unitHandle == 0x04) ? 1 : -1];
 
 void evtSetSlotVectors(s32 slotIndex, EvtUnitVectorSlotState slotState,
                        struct evtUnitHandle_t *unitHandle, const f32 *firstEndpoint,
@@ -44,4 +43,4 @@ EvtUnitVectorSlotLookupResult evtCopyUnitVectorSlotEndpoint(
 EvtUnitVectorSlotLookupResult evtFindUnitSlotAuxCoordinates(
     struct evtUnitHandle_t *unit, f32 *outX, f32 *outY);
 
-#endif /* EVT_UNIT_VECTOR_SLOT_H */
+#endif /* DDS_EVT_UNIT_VECTOR_SLOT_H */

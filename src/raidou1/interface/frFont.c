@@ -808,6 +808,758 @@ extern u8 frSetFontString_style;
 extern u32 frDrawFontWork;
 /* End of declarations from src/smt3/interface/frFont.c */
 
+/* Declarations from dds-decomp src/dds1/game/code_00196478.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_SDF_IMAGESET_MEM_CHIP 1
+
+#define SMT3_DEFINES_SDF_IMAGESET_MEM_HANDLE 1
+
+#define SMT3_DEFINES_SDF_IMAGESET_MEM_IGNORE 1
+
+#define SMT3_DEFINES_SdfImageSetMem 1
+
+#define SMT3_DEFINES_frFontAtlas_t 1
+
+#define SMT3_DEFINES_frFontData_t 1
+
+#define SMT3_DEFINES_frFontDmaTag_t 1
+
+#define SMT3_DEFINES_frFontGsPacket_t 1
+
+#define SMT3_DEFINES_frFontGsWrite_t 1
+
+#define SMT3_DEFINES_frFontHeader_t 1
+
+#define SMT3_DEFINES_frFontImage_t 1
+
+#define SMT3_DEFINES_frFontNodeHeader_t 1
+
+#define SMT3_DEFINES_frFontResource_t 1
+
+#define SMT3_DEFINES_frFontSpriteCorner_t 1
+
+#define SMT3_DEFINES_frFontSpritePacketView_t 1
+
+#define SMT3_DEFINES_frFontSpritePacket_t 1
+
+#define SMT3_DEFINES_frFontSystem_t 1
+
+#define SMT3_DEFINES_frMsgInfo_t 1
+
+#define SMT3_DEFINES_frTextBank_t 1
+
+#define SMT3_DEFINES_frTextIndex_t 1
+
+#define SMT3_DEFINES_sdfImageRequest_t 1
+
+#include "scr.h"
+
+#include "sdk_libc.h"
+
+#include "dds/dds3_admin_control_api.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_state_query.h"
+
+#include "dds/sdf_gs_packet.h"
+
+#include "dds/sdf_packet_header.h"
+
+#include "dds/sdf_texture_draw_packet.h"
+
+#include "dds/sdf_texture_file.h"
+
+/* Register selectors carried by GIF A+D writes in the two GS contexts. */
+enum {
+    SDF_GS_PRIM = 0x00,
+    SDF_GS_RGBAQ = 0x01,
+    SDF_GS_XYZ2 = 0x05,
+    SDF_GS_TEX0_1 = 0x06,
+    SDF_GS_TEX0_2 = 0x07,
+    SDF_GS_CLAMP_1 = 0x08,
+    SDF_GS_CLAMP_2 = 0x09,
+    SDF_GIF_REGISTER_AD = 0x0E,
+    SDF_GS_TEX1_1 = 0x14,
+    SDF_GS_TEX1_2 = 0x15,
+    SDF_GS_XYOFFSET_1 = 0x18,
+    SDF_GS_XYOFFSET_2 = 0x19,
+    SDF_GS_PRMODECONT = 0x1A,
+    SDF_GS_TEXA = 0x3B,
+    SDF_GS_TEXFLUSH = 0x3F,
+    SDF_GS_SCISSOR_1 = 0x40,
+    SDF_GS_SCISSOR_2 = 0x41,
+    SDF_GS_ALPHA_1 = 0x42,
+    SDF_GS_ALPHA_2 = 0x43,
+    SDF_GS_DTHE = 0x45,
+    SDF_GS_COLCLAMP = 0x46,
+    SDF_GS_TEST_1 = 0x47,
+    SDF_GS_TEST_2 = 0x48,
+    SDF_GS_FRAME_1 = 0x4C,
+    SDF_GS_FRAME_2 = 0x4D,
+    SDF_GS_ZBUF_1 = 0x4E,
+    SDF_GS_ZBUF_2 = 0x4F,
+    SDF_GS_BITBLTBUF = 0x50,
+    SDF_GS_TRXPOS = 0x51,
+    SDF_GS_TRXREG = 0x52,
+    SDF_GS_TRXDIR = 0x53
+};
+
+/* Set bit 1 in the active administration task's flags; that task must exist. */
+void dds3AdminiExitSequence(void);
+
+/* Return the scheduler state, mapping unregistered or invalid states to DETACHED. */
+dds3TaskState_t dds3GetProcessStat(const struct dds3ProcessID_t *task);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
+
+SdfDrawPacket *sdf2DMakePrimPacketHeader(SdfDrawPacket *packet, s32 primitiveFlags,
+                                       s32 registerCount, s64 registerList,
+                                       s32 loopCount);
+
+/* Both entry points return one caller-owned texture reference. A nonzero
+ * resourceKey reuses a live matching texture and increments its count; a new
+ * texture starts at one. Release the returned reference once with
+ * sdfTexReleaseReference or sdfTexFreeDelayed. */
+/* For a new texture, copy payload bytes into queue-owned storage before return. */
+struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/scr.h"
+
+#include "dds/common.h"
+
+#include "dds/itf_bit_range.h"
+
+#include "dds/dds3_admin_control_api.h"
+
+#include "dds/itf_text_vector.h"
+
+#include "dds/itf_text_slots_api.h"
+
+#include "dds/fr_font_text_slots.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_packet_header.h"
+
+#include "dds/itf_gs_state_packet.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/kwln.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_state.h"
+
+#include "dds/dds3_task_state_query.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/itf.h"
+
+#include "dds/itf_panel_api.h"
+
+#include "dds/fr_font_glyph_chain_count.h"
+
+#include "dds/fr_font_measure.h"
+
+#include "dds/itf_mem_node.h"
+
+#include "dds/itf_resource_segments.h"
+
+#include "dds/sdf.h"
+
+#include "dds/itf_panel_draw.h"
+
+#include "dds/sdf_texture_file.h"
+
+#include "dds/btl.h"
+
+#include "dds/fr_font.h"
+
+#define ITF_BYTE_MASK 0xFF
+
+#define ITF_NODE_HEADER_BYTES 8
+
+#define ITF_ALLOCATION_HANDLE_BYTES 4
+
+#define ITF_VECTOR_WORD_COUNT 4
+
+#define ITF_RGBA_COMPONENT_COUNT 4
+
+#define ITF_FIXED_FRACTION_BITS 16
+
+#define ITF_FIXED_COMPONENT_MAX 0xff0000
+
+#define ITF_NEUTRAL_COLOR 0x80808080
+
+#define ITF_GS_X_BIAS 0x7000
+
+#define ITF_GS_Y_BIAS 0x7900
+
+#define ITF_TRIANGLE_VERTEX_COUNT 3
+
+#define ITF_QUAD_VERTEX_COUNT 4
+
+#define ITF_STATE_PACKET_BYTES 0x30
+
+#define ITF_TEST_FIRST_CONTEXT 0x47
+
+#define ITF_TEST_SECOND_CONTEXT 0x48
+
+#define ITF_ALPHA_FIRST_CONTEXT 0x42
+
+#define ITF_ALPHA_SECOND_CONTEXT 0x43
+
+#define ITF_TRIANGLE_PRIMITIVE_BITS 0x4B
+
+#define ITF_QUAD_FAN_PRIMITIVE_BITS 0x4D
+
+#define ITF_TEXTURED_FAN_PRIMITIVE_BITS 0x5D
+
+#define ITF_TEXTURED_SPRITE_PRIMITIVE_BITS 0x156
+
+#define ITF_COLORED_SPRITE_PRIMITIVE_BITS 0x15E
+
+#define ITF_SPRITE_PRIMITIVE_BITS 0x46
+
+#define ITF_TRIANGLE_STRIP_PRIMITIVE_BITS 0x4C
+
+#define ITF_LINE_STRIP_PRIMITIVE_BITS 0x14A
+
+#define ITF_LINES_PRIMITIVE_BITS 0x49
+
+#include "dds/sdf_debug_api.h"
+
+extern dds3ProcessID_t *itfFontTestScriptTask;
+
+extern u32 D_003BB18C;
+
+extern sdfTexHandle_t *itfBackgroundSpriteTexture;
+
+extern u8 D_003BB188[];
+
+extern void frFontCheckPendingGlyphState(FrFontCtx *);
+
+extern void frFontAppendIndexedTextToGlyphChain(u8, FrFontCtx *);
+
+extern void mnuSetTitleVoicePrefixIndex(s32);
+
+extern void mnuPlayTitleVoiceFile(char *);
+
+extern s32 mnuGetTitleEffectFrameCounter(void);
+
+extern _FRQ *frFontLinkGlyph(_FRQ *, _FRQ *, s32);
+
+extern u8 D_00357980[];
+
+extern u8 D_00357988[];
+
+extern u32 itfTextLipsMotionId;
+
+extern u32 itfTextLipsUnitId;
+
+extern s32 D_003BD818;
+
+void frFontEnsureSlotLoaded(s32 id, const char *path);
+
+extern u16 itfGlyphDecodeTable[];
+
+extern s32 itfScanEncodedTextControls(FrFontCtx *args);
+
+/* Subtract one modulo 256 from the first byte, then advance over the whole pair. */
+u32 itfReadEncodedTextLead(FrFontCtx *args);
+
+/* Decode a little-endian pair; encoded high byte 0xFF is the zero escape.
+ * Neither reader checks the input length. */
+u32 itfReadEncodedCode(FrFontCtx *args);
+
+extern u32 D_003BB15C;
+
+extern FrFontSystem frFontWork;
+
+extern u8 *datSkillMessages;
+
+extern u8 *datItemMessages;
+
+s32 itfProcessEncodedTextControl(s32 code, FrFontCtx *stream);
+
+extern s8 frFontEncodedTextGlyphSpacing;
+
+extern _FRQ * frFontBuildGlyphChain(const char *text, s8 fontIndex, s8 firstOption, s8 secondOption, _FRQ *existingGlyph);
+
+_FRQ *itfBuildGlyphChainFromEncodedStream(FrFontCtx *stream);
+
+extern _FRQ *itfBuildGlyphChainFromEncodedStream(FrFontCtx *);
+
+_FRQ *itfDrawColor(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1,
+                   s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *unusedSub);
+
+/* Return the unit identifier saved by text lip-sync control 0xF416. */
+u32 itfGetTextLipsUnitId(void);
+
+/* Return the motion number saved by text lip-sync control 0xF416. */
+u32 itfGetTextLipsMotionId(void);
+
+s32 itfSkipEncodedTextOpcode(s32 code, FrFontCtx *stream);
+
+s32 itfScanEncodedTextControls(FrFontCtx *stream);
+
+s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub);
+
+/* Return the selected resource header's cell width; index is unchecked. */
+u16 frFontGetSlotCellWidth(s32 slotIndex);
+
+/* Return the selected resource header's cell height; index is unchecked. */
+u16 frFontGetSlotCellHeight(s32 slotIndex);
+
+void itfSetTextDrawLimit(s32 limit);
+
+_FRQ *frwGetStaffFontFRQ(u32 x, u32 y, s32 depth, s32 alt, s32 measureFlag, u64 entryFlag, u32 colors, const char *source);
+
+void frwLoadStaffFont(void);
+
+void frwFreeStaffFont(void);
+
+/* Decode a two-byte glyph through the DDS1 lookup table; 0xFFFF is missing. */
+u32 itfDecodeGlyph(u32 glyphCode);
+
+/* Preserve single-byte text and substitute 0x8080 for unmapped glyph pairs. */
+void itfConvertText(u8 *output, const char *input);
+
+/* Build a glyph with a fixed 16x18 cell, then attach it to its parent. */
+void itfAttachGlyph16x18(u32 x, u32 y, s32 depth, u32 colors,
+                                    void *glyphSource, _FRQ *parent);
+
+_FRQ *frwGetFontEx(s32 x, s32 y, s32 depth, u32 colors, const char *text,
+                         s8 glyphMode, s8 sharedFlag, _FRQ *previousGlyph);
+
+_FRQ *frwGetSmallFontFRQ();
+
+/* Create positioned, colored text with measured spacing and link it to parent. */
+_FRQ *itfCreateMeasuredTextGlyph(s32 x, s32 y, s32 depth, s32 colors,
+                           const char *text, _FRQ *parent);
+
+/* Decode two-byte glyph codes before building and linking the text glyph. */
+_FRQ *itfCreateConvertedTextGlyph(s32 x, s32 y, s32 depth, u32 colors, const u8 *text, _FRQ *parent);
+
+_FRQ *itfCreateFont2TextGlyph(s32 x, s32 y, s32 depth, u32 colors, char *text, _FRQ *previousGlyph);
+
+/* Build text with font index 3; retain the existing glyph chain's spacing. */
+_FRQ *itfCreateFont3TextGlyph(s32 x, s32 y, s32 depth, u32 colors, const char *text, _FRQ *previousGlyph);
+
+/* Build font-index-3 text with signed spacing -2 and return its glyph chain. */
+_FRQ *itfCreateTightFont3TextGlyph(s32 x, s32 y, s32 depth, s32 colors, char *text, _FRQ *previousGlyph);
+
+/* Attach the alternate font glyph, with a 12x16 cell, to its parent. */
+void itfAttachGlyph12x16(u32 x, u32 y, s32 depth, u32 colors,
+                                    void *glyphSource, _FRQ *parent);
+
+extern void frFontMoveChainTo(s32 x, s32 y, _FRQ *text);
+
+_FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, FrFontTextBank *bank, s32 flags);
+
+_FRQ *itfDrawTextWithSelectedFontMode(s32 x, s32 y, s32 depth, s8 fontMode, u16 textId, s32 flags);
+
+_FRQ *itfDrawUnderscoreTextSegment();
+
+u32 itfReturnZero(void);
+
+void func_00198010(void);
+
+void func_00198018(void);
+
+u32 itfReturnThirdCallbackValue(u32 unused0, u32 unused1, u32 value);
+
+/* Return the byte count saved by the most recent packed-resource decode. */
+s32 itfGetLastDecodedByteCount(void);
+
+u32 frGetFontHeader(u32 resourceBase);
+
+/* Read the opaque header word at 0x10; its role is not established. */
+u32 itfGetPackedResourceHeaderWord(u32 resourceBase);
+
+/* Acquire the background texture, then release the temporary file allocation. */
+void nbLoadDeadMoonTex(void);
+
+/* Drop the held texture reference without clearing the global. */
+void itfReleaseBackgroundSpriteTexture(void);
+
+struct EffSpriteUV;
+
+struct sdfTexHandle_t;
+
+union EffSpriteColor;
+
+extern void itfDrawTexturedSpriteRect(s32 x, s32 y, u32 depth, s32 width, s32 height, const struct EffSpriteUV *uvRect, const union EffSpriteColor *color, u32 flipFlags, u32 blendKind, s32 mode, struct sdfTexHandle_t *texture, s32 surfaceId);
+
+/* Draw only when a texture is present; native X/Y extent scaling differs. */
+void itfDrawBackgroundSprite(void);
+
+extern s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task);
+
+extern void itfReleaseFontTestTaskResources(dds3ProcessID_t *task);
+
+/* Start the background draw task and host-file font-test process. */
+void itfStartFontTestScene(void);
+
+/* Advance/retain the test glyph and release its background texture reference. */
+void itfReleaseFontTestTaskResources(dds3ProcessID_t *task);
+
+/* Draw first, then report all bits set only for a task awaiting destruction. */
+s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task);
+
+/* Initialize a FIFO free list and empty active list.
+ * Native do/while writes at least two nodes; the s8 index can wrap. */
+void itfMiscLinkInitialize(ItfMesPool *pool, mesflow_tag *nodes, s32 count, s32 stride);
+
+/* Move the free-list head to the active-list tail; exhausted pools return NULL. */
+mesflow_tag *itfMiscLinkTake(ItfMesPool *pool);
+
+/* Unlink an active node and append it to the free-list tail; membership is trusted. */
+void itfMiscLinkGive(mesflow_tag *node, ItfMesPool *pool);
+
+/* Multiply XYZ, cap only the positive product at 255 << 16, then shift by 16.
+ * Negative products are not clamped; W comes from the argument. */
+void itfMiscSetRatioRGB(DrawColorRec *output, s32 scaleX, s32 scaleY, s32 scaleZ,
+                   s32 w, const TextVector *input, s32 count);
+
+/* Replace each child color; parent color words are not modified. */
+void itfMiscChangeFontVertexColor(_FRQ *entry, u32 color);
+
+/* Clear each child's low byte, then OR unmasked bits into the full color word. */
+void itfMiscChangeFontAlpha(_FRQ *entry, u32 colorBits);
+
+/* Translate parent entries only; child coordinates are left unchanged. */
+void itfMiscMoveFontPosition(_FRQ *entry, u32 xOffset, u32 yOffset);
+
+#include "dds/sdf_packet_alloc.h"
+
+extern s32 sdf2DGetPrimPacketSize(s32 registerCount, s32 loopCount);
+
+extern u8 *sdf2DGetPrimPtr(SdfDrawPacket *packet);
+
+extern void *sdf2DMakeStdPacket(void *, s32);
+
+extern u64 D_00357998[];
+
+/* Keep the sprite texture handle while releasing the temporary file allocation. */
+sdfTexHandle_t *itfMiscLoadTexture(const char *path);
+
+/* Emit three per-vertex RGBA/XYZ2 records; PRIM's low bits select a triangle.
+ * Coordinates receive the native GS screen biases; no clipping is performed. */
+void itfMiscDrawTrianglePrim(DrawVertex *vertices, DrawColorRec *colors, s32 xOffset, s32 yOffset, u32 tail, sdfDrawTag_t *command);
+
+/* Emit an indexed four-vertex triangle fan with a color record per vertex. */
+void itfMiscDrawRectanglePrim(DrawVertex *vertices, DrawColorRec *colors, u8 *vertexIndex, u8 *colorIndex, u32 tail, sdfDrawTag_t *command);
+
+/* Draw three adjacent quads using zero-alpha/source-alpha edge color records.
+ * Border widths and resulting signed middle width are not clamped. */
+void itfDrawThreePanelBorderBands(DrawVertex *bounds, DrawColorRec *color, u32 tail, s32 borderWidth, sdfDrawTag_t *command);
+
+/* Emit a textured triangle fan: each four-float input supplies S/T/Q only.
+ * The fourth float is skipped, and the context word is shifted without masking. */
+void itfMiscDrawTexPoly(DrawVertex *vertices, f32 *uvs, DrawColorRec *colors, u32 tail, s32 flag, sdfDrawTag_t *command);
+
+/* Bind the texture and emit one two-corner sprite using two packed UV pairs.
+ * Unwritten padding words in the native packet remain untouched. */
+void itfMiscDrawSpritePrim(DrawVertex *vertices, DrawColorRec *uv,
+                            DrawColorRec *colors, s32 tail,
+                            const sdfTexHandle_t *borrowedTexture, s32 flag,
+                            sdfDrawTag_t *command);
+
+/* Emit a colored textured sprite without binding a texture in this function. */
+void itfMiscDrawSpritePrim2(DrawVertex *vertices, DrawColorRec *uv, DrawColorRec *colors, u32 tail, s32 flag, sdfDrawTag_t *command);
+
+/* Despite the current name, PRIM selects a two-corner sprite, not a line. */
+void itfMiscDrawSpritePlanePrim(DrawVertex *vertices, DrawColorRec *colors, u32 tail, s32 flag, sdfDrawTag_t *command);
+
+/* Emit an indexed triangle strip, packing two vertices per GIF loop.
+ * Header loop count truncates odd vertex counts; the native writer does not. */
+void itfMiscDrawTriangleStripPrim(DrawVertex *vertices, DrawColorRec *colors, u8 *vertexIndex, u8 *colorIndex, s32 count, u32 tail, sdfDrawTag_t *command);
+
+/* Emit indexed RGBA/XYZ2 records with the line-strip primitive. */
+void itfMiscDrawLineStripPrim(DrawVertex *vertices, DrawColorRec *colors, u8 *vertexIndex, u8 *colorIndex, s32 count, u32 tail, sdfDrawTag_t *command);
+
+/* Emit indexed RGBA/XYZ2 records with independent line primitives. */
+void itfMiscDrawLinePrim(DrawVertex *vertices, DrawColorRec *colors, u8 *vertexIndex, u8 *colorIndex, s32 count, u32 tail, sdfDrawTag_t *command);
+
+/* Write TEST for the selected GS context, not the ALPHA blend register. */
+void itfMiscDrawTestPrim(sdfDrawTag_t *command, u64 value, s32 flag);
+
+/* Write an unchecked table entry to ALPHA for the selected GS context. */
+void itfMiscDrawAlphaPrim(sdfDrawTag_t *command, s32 index, s32 flag);
+
+/* Write CLAMP for the selected GS context. */
+void itfMiscDrawClampPrim(sdfDrawTag_t *command, s32 flag, s32 wms, s32 wmt, s32 minu, s32 maxu, s32 minv, s32 maxv);
+
+extern u8 D_003BB198[8];
+
+extern u8 D_003BB1A0[8];
+
+extern u8 D_003579B0[];
+
+extern u8 D_003579B8[];
+
+extern TextVector D_003579C0[4];
+
+/* Draw filled and remaining quad regions. The optional highlight is produced
+ * as signed fixed-point vectors and passed as their four-word RGBA image. */
+void itfMiscDrawGauge(s32 value, s32 limit, s32 highlight,
+                   DrawVertex *bounds, u32 tail, DrawColorRec *filledColor,
+                   DrawColorRec *remainingColor, sdfDrawTag_t *command);
+
+/* Retail "DbgDevDump" task callback: perform no dump work and return zero. */
+s32 dds3DebugDevDumpProcess(dds3ProcessID_t *task);
+
+u32 itfCamp(void);
+
+extern char D_003A13F0[];
+
+void itfCampStartProcess(void);
+
+extern s32 D_00357AB8[];
+
+dds_itfpanel_t *itfCreateUiSpriteByKind(s32 kind, const sdfTexHandle_t *borrowedTexture);
+/* End of declarations from src/dds1/game/code_00196478.c */
+
+/* Declarations from dds-decomp src/dds1/interface/frFont.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_SDF_GIF_REGISTER_AD 1
+
+#define SMT3_DEFINES_SDF_GS_ALPHA_1 1
+
+#define SMT3_DEFINES_SDF_GS_ALPHA_2 1
+
+#define SMT3_DEFINES_SDF_GS_BITBLTBUF 1
+
+#define SMT3_DEFINES_SDF_GS_CLAMP_1 1
+
+#define SMT3_DEFINES_SDF_GS_CLAMP_2 1
+
+#define SMT3_DEFINES_SDF_GS_COLCLAMP 1
+
+#define SMT3_DEFINES_SDF_GS_DTHE 1
+
+#define SMT3_DEFINES_SDF_GS_FRAME_1 1
+
+#define SMT3_DEFINES_SDF_GS_FRAME_2 1
+
+#define SMT3_DEFINES_SDF_GS_PRIM 1
+
+#define SMT3_DEFINES_SDF_GS_PRMODECONT 1
+
+#define SMT3_DEFINES_SDF_GS_RGBAQ 1
+
+#define SMT3_DEFINES_SDF_GS_SCISSOR_1 1
+
+#define SMT3_DEFINES_SDF_GS_SCISSOR_2 1
+
+#define SMT3_DEFINES_SDF_GS_TEST_1 1
+
+#define SMT3_DEFINES_SDF_GS_TEST_2 1
+
+#define SMT3_DEFINES_SDF_GS_TEX0_1 1
+
+#define SMT3_DEFINES_SDF_GS_TEX0_2 1
+
+#define SMT3_DEFINES_SDF_GS_TEX1_1 1
+
+#define SMT3_DEFINES_SDF_GS_TEX1_2 1
+
+#define SMT3_DEFINES_SDF_GS_TEXA 1
+
+#define SMT3_DEFINES_SDF_GS_TEXFLUSH 1
+
+#define SMT3_DEFINES_SDF_GS_TRXDIR 1
+
+#define SMT3_DEFINES_SDF_GS_TRXPOS 1
+
+#define SMT3_DEFINES_SDF_GS_TRXREG 1
+
+#define SMT3_DEFINES_SDF_GS_XYOFFSET_1 1
+
+#define SMT3_DEFINES_SDF_GS_XYOFFSET_2 1
+
+#define SMT3_DEFINES_SDF_GS_XYZ2 1
+
+#define SMT3_DEFINES_SDF_GS_ZBUF_1 1
+
+#define SMT3_DEFINES_SDF_GS_ZBUF_2 1
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/common.h"
+
+#include "dds/fr_font_draw_glyph.h"
+
+#include "dds/fr_font_position.h"
+
+#include "dds/fr_font_text_slots.h"
+
+#include "dds/sdf_image_upload.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/fr_font_measure.h"
+
+#include "dds/fr_font_glyph_measure.h"
+
+#include "dds/fr_font_text_measure_mode.h"
+
+#include "dds/fr_font_clone_entry_resource.h"
+
+#include "dds/fr_font_glyph_chain_count.h"
+
+#include "dds/itf.h"
+
+#include "dds/fr_font_temporary_entry_api.h"
+
+#include "dds/itf_mem_node.h"
+
+#include "dds/itf_resource_segments.h"
+
+#include "dds/kwln.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/dds3_task_runner.h"
+
+#include "dds/btl.h"
+
+#include "dds/mnu_title_sound.h"
+
+/* Declared before first use (were implicit int). */
+extern void evtLipsStopFunction(void);
+
+extern u8 D_003BB180[];
+
+void frFontCreateContext();
+
+extern _FRQ *frFontReleaseGlyphChain(_FRQ *glyph);
+
+extern void frFontInitGlyph(_FRQ *glyph);
+
+extern u32 frFontGetGlyphCellWidth(u8 fontIndex);
+
+extern u32 frFontGetGlyphCellHeight(u8 fontIndex);
+
+extern u8 D_003BB17C;
+
+_TEXT *frFontCreateGlyphFromCode(u16 glyphId, s32 fontIndexArg, u8 firstOption, u8 secondOption);
+
+#define FR_FONT_CONTEXT_ENABLE_VALUE 0x80
+
+#define FR_FONT_FADE_COMPLETE 0x80
+
+#define FR_FONT_FADE_ADVANCE_SCALE 22
+
+#define FR_FONT_JITTER_OPTION 1
+
+#define FR_FONT_JITTER_PERIOD 5
+
+#define FR_FONT_JITTER_CENTER 2
+
+#define FR_FONT_FADE_PREDECESSOR_THRESHOLD 0x1C
+
+#define FR_FONT_POSITION_SHIFT 4
+
+#define FR_FONT_POSITION_BAND_HEIGHT 0x54
+
+/* Release parents backward and children forward, returning both to their pools.
+ * Children with a borrowed source record bypass cached-item reference release. Return NULL. */
+_FRQ *frFontReleaseGlyphChain(_FRQ *glyph);
+
+/* Glyph setup queries its initial Y here for flag 0x10; retail always returns zero. */
+u32 frFontGetInitialGlyphY(s8 fontIndex, s32 glyphIndex);
+
+/* Fill cell dimensions, advance and horizontal bearing for one glyph. */
+void frFontFillGlyphMetrics(FrFontGlyphMeasureWork *work, s32 glyphIndex);
+
+/* Reset standalone chain-head state and context controls; leave drawCount intact. */
+void frFontInitGlyph(_FRQ *glyph);
+
+extern void frFontFillGlyphMetrics(FrFontGlyphMeasureWork *work, s32 glyphIndex);
+
+_TEXT *frFontCreateGlyphFromCode(u16 glyphId, s32 fontIndexArg, u8 firstOption, u8 secondOption);
+
+/* Build text and position its chain after the previous glyph. A NULL build
+ * preserves the previous chain. */
+_FRQ *frFontAppendTextToGlyphChain(const char *text, s8 fontIndex, s8 firstOption, s8 secondOption, _FRQ *previousGlyph);
+
+/* Enable the glyph mode and initialize its encoded byte to the cap. */
+void frFontEnableContextMode(_FRQ *glyph);
+
+/* Advance one rendered glyph's fade state and return its transient X jitter. */
+s32 frFontAdvanceChildFadeAndGetJitter(_FRQ *parent, _TEXT *glyph, u8 threshold, u8 step);
+
+/* Draw through the shared render flags with mode zero. */
+s32 frFontDrawGlyphInDefaultMode(_FRQ *glyph);
+
+/* Pass the selected mode and current shared render-flag word to the renderer. */
+s32 frFontDrawGlyphWithSharedFlags(_FRQ *glyph, s8 mode);
+
+/* Draw every child glyph, advance each parent chain, and report its total
+ * child-glyph count only while all control/fade conditions remain ready. */
+s32 frFontDrawGlyphChain(_FRQ *glyph, s8 mode, u32 renderFlags);
+
+u32 frFontGetGlyphCellWidth(u8 fontIndex);
+
+u32 frFontGetGlyphCellHeight(u8 fontIndex);
+
+extern void frFontFillGlyphMetrics(FrFontGlyphMeasureWork *work, s32 glyphIndex);
+
+s32 frFontMeasureTextAdvance(const u8 *text, u8 fontIndex, FrFontTextMeasureMode mode);
+
+/* Slots 0/1 use the shared default size; later slots read their resource width.
+ * Retain the nested signed check and the absence of upper-bound validation. */
+u32 frFontGetGlyphCellWidth(u8 fontIndex);
+
+/* Slots 0/1 use the shared default size; later slots read their resource height.
+ * Retain the nested signed check and the absence of upper-bound validation. */
+u32 frFontGetGlyphCellHeight(u8 fontIndex);
+
+/* Restore this game's cursor spacing (DDS1: 21, DDS2: 25). */
+void frFontResetContextCursorSpacing(void);
+
+/* Store unscaled cursor spacing; advancement applies its factor of eight later. */
+void frFontSetContextCursorSpacing(u32 spacing);
+
+/* Count the y-band rows of the glyph chain. DDS1 scans the band but advances
+ * only one next node, as frFontGetGlyphPositionAtIndex does. */
+s32 frFontCountGlyphChainNodes(const _FRQ *glyph);
+
+s32 frFontMeasureGlyphStripWidth(s32 requestedLine, const _FRQ *glyph);
+
+/* Write each visited position and stop at requestedIndex. Missing indices leave
+ * the last visited position; empty input leaves output unchanged. DDS1 still
+ * scans the y-band but advances only one next node, unlike DDS2's band advance. */
+void frFontGetGlyphPositionAtIndex(FrFontPosition *position, s32 requestedIndex, const _FRQ *glyph);
+
+/* Append the shared-text child context, apply its cached encoded byte and clear
+ * the pending-create flag. Preserve the old-style implicit-argument interface. */
+/* Old-style definition: callers invoke it without arguments and rely on $a0. */
+void frFontCreateContext();
+/* End of declarations from src/dds1/interface/frFont.c */
+
 INCLUDE_ASM(const s32, "interface/frFont", func_0017D778);
 
 /* Reverse the four byte positions of a 32-bit word. */
@@ -1180,7 +1932,23 @@ INCLUDE_ASM(const s32, "interface/frFont", func_00180088);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00180158);
 
-INCLUDE_ASM(const s32, "interface/frFont", frFontMoveChainTo);
+/* Translate the complete next-linked chain to place its origin at x/y.
+ * NULL glyphChain is a no-op; a non-NULL chain requires a non-NULL origin. */
+void frFontMoveChainTo(s32 targetX, s32 targetY, _FRQ *glyphChain) {
+    _FRQ *currentGlyph;
+    s32 dx;
+    s32 dy;
+
+    if (glyphChain != NULL) {
+        currentGlyph = glyphChain->chainHead;
+        dx = targetX - currentGlyph->x;
+        dy = targetY - currentGlyph->y;
+        for (; currentGlyph != NULL; currentGlyph = currentGlyph->next) {
+            currentGlyph->x += dx;
+            currentGlyph->y += dy;
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "interface/frFont", frFontCenterGlyphChainAt);
 
@@ -1218,9 +1986,32 @@ void frMessageReturnCode(frMsgInfo_t *pMsgInfo) {
     pMsgInfo->RetFlag = 1;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", itfReadEncodedTextLead);
+/* Subtract one modulo 256 from the first byte, then advance over the whole pair. */
+u32 itfReadEncodedTextLead(FrFontCtx *args) {
+    s32 *position = &args->encodedTextOffset;
+    const u8 *byte = args->encodedText + *position;
+    u32 value = *byte;
 
-INCLUDE_ASM(const s32, "interface/frFont", itfReadEncodedCode);
+    *position += 2;
+    return (value + ITF_BYTE_MASK) & ITF_BYTE_MASK;
+}
+
+/* Decode a little-endian pair; encoded high byte 0xFF is the zero escape.
+ * Neither reader checks the input length. */
+u32 itfReadEncodedCode(FrFontCtx *args) {
+    const u8 *bytes = args->encodedText;
+    u32 first;
+    u32 second;
+
+    first = (bytes[args->encodedTextOffset++] + ITF_BYTE_MASK) & ITF_BYTE_MASK;
+    second = bytes[args->encodedTextOffset++];
+    if (second == ITF_BYTE_MASK) {
+        second = 0;
+    } else {
+        second = (second + ITF_BYTE_MASK) & ITF_BYTE_MASK;
+    }
+    return (second << 8) | first;
+}
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001806C8);
 
@@ -1267,9 +2058,15 @@ void frSetVariableRequest(s32 VarNo, s32 pStr) {
     gVarStr[VarNo] = pStr;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", itfGetTextLipsUnitId);
+/* Return the unit identifier saved by text lip-sync control 0xF416. */
+u32 itfGetTextLipsUnitId(void) {
+    return itfTextLipsUnitId;
+}
 
-INCLUDE_ASM(const s32, "interface/frFont", itfGetTextLipsMotionId);
+/* Return the motion number saved by text lip-sync control 0xF416. */
+u32 itfGetTextLipsMotionId(void) {
+    return itfTextLipsMotionId;
+}
 
 INCLUDE_ASM(const s32, "interface/frFont", frDumpFontTexture);
 u32 gMessageRequestResult = 0xFFFFFFFF;

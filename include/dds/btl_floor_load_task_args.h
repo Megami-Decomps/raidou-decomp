@@ -1,6 +1,6 @@
-#ifndef BTL_FLOOR_LOAD_TASK_ARGS_H
-#define BTL_FLOOR_LOAD_TASK_ARGS_H
+#ifndef DDS_BTL_FLOOR_LOAD_TASK_ARGS_H
 
+#define DDS_BTL_FLOOR_LOAD_TASK_ARGS_H
 #include "common.h"
 
 struct FileRequest;
@@ -17,10 +17,15 @@ typedef struct BtlFloorLoadArgs {
 } BtlFloorLoadArgs;
 
 typedef char BtlFloorLoadArgs_size[(sizeof(BtlFloorLoadArgs) == 0x14) ? 1 : -1];
+
 typedef char BtlFloorLoadArgs_frontRequest_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->frontRequest == 0x00) ? 1 : -1];
+
 typedef char BtlFloorLoadArgs_sideRequest_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->sideRequest == 0x04) ? 1 : -1];
+
 typedef char BtlFloorLoadArgs_stage_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->stage == 0x08) ? 1 : -1];
+
 typedef char BtlFloorLoadArgs_variant_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->variant == 0x0C) ? 1 : -1];
+
 typedef char BtlFloorLoadArgs_pollCount_offset[((unsigned long)&((BtlFloorLoadArgs *)0)->pollCount == 0x10) ? 1 : -1];
 
 #endif

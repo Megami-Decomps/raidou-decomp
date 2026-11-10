@@ -1,6 +1,6 @@
-#ifndef FILE_SLOT_FLAGS_H
-#define FILE_SLOT_FLAGS_H
+#ifndef DDS_FILE_SLOT_FLAGS_H
 
+#define DDS_FILE_SLOT_FLAGS_H
 #include "common.h"
 
 /* Bits in each FileReqEntry slot-flags word.  Known writers set the
@@ -18,6 +18,7 @@ enum FileReqSlotFlag {
  * from request flags. Zero also means not yet scanned; state two is a ready
  * directory without a recognized save. */
 typedef u32 FileSlotDisplayState;
+
 enum FileSlotDisplayState {
     FILE_SLOT_DISPLAY_NO_RECOGNIZED_SAVE = 0,
     FILE_SLOT_DISPLAY_SAVE_PRESENT = 1,
@@ -25,9 +26,5 @@ enum FileSlotDisplayState {
 };
 
 extern FileSlotDisplayState fileSlotDisplayStates[16];
-
-void sdfMcClearSlotFlags(s32 request, s32 slot);
-void sdfMcSetSlotFlags(s32 request, s32 slot, s32 mask);
-u32 sdfMcGetSlotFlags(s32 request, s32 slot);
 
 #endif

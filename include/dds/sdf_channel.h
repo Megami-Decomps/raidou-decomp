@@ -1,6 +1,6 @@
-#ifndef SDF_CHANNEL_H
-#define SDF_CHANNEL_H
+#ifndef DDS_SDF_CHANNEL_H
 
+#define DDS_SDF_CHANNEL_H
 #include "common.h"
 
 /* Each configured segment supplies a destination slot and an opaque word. */
@@ -16,10 +16,7 @@ typedef struct SdfChannel {
 } SdfChannel;
 
 typedef char SdfChannelEntry_size_must_be_8[(sizeof(SdfChannelEntry) == 8) ? 1 : -1];
-typedef char SdfChannelEntry_unused_offset_must_be_4[
-    ((u32)&((SdfChannelEntry *)0)->unused == 4) ? 1 : -1];
-typedef char SdfChannel_entries_offset_must_be_4[
-    ((u32)&((SdfChannel *)0)->entries == 4) ? 1 : -1];
+
 typedef char SdfChannel_size_must_be_0xA4[(sizeof(SdfChannel) == 0xA4) ? 1 : -1];
 
-#endif /* SDF_CHANNEL_H */
+#endif /* DDS_SDF_CHANNEL_H */

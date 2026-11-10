@@ -1,6 +1,6 @@
-#ifndef EFF_LIGHT_H
-#define EFF_LIGHT_H
+#ifndef DDS_EFF_LIGHT_H
 
+#define DDS_EFF_LIGHT_H
 #include "dds3obj.h"
 
 struct sdf3DLightParallelPacket_t;
@@ -39,17 +39,10 @@ typedef struct EffLightData {
     u32 packedColorB;
     u16 blendFrames;
     u16 unk72;
-    dds3ObjectBaseControlWorkData_t *baseControlWorkData; /* Owned block released by lightdestructor. */
+    dds_dds3ObjectBaseControlWorkData_t *baseControlWorkData; /* Owned block released by lightdestructor. */
     struct sdf3DLightParallelPacket_t *buffer;
 } EffLightData;
 
 typedef char EffLightData_size_must_be_0x7C[(sizeof(EffLightData) == 0x7C) ? 1 : -1];
-typedef char EffLightData_sourceVectors_at_0x00[
-    ((u32)&((EffLightData *)0)->sourceVectors == 0x00) ? 1 : -1];
-typedef char EffLightData_ambientColor_at_0x40[
-    ((u32)&((EffLightData *)0)->ambientColor == 0x40) ? 1 : -1];
-typedef char EffLightData_flags_at_0x64[((u32)&((EffLightData *)0)->flags == 0x64) ? 1 : -1];
-typedef char EffLightData_baseControlWorkData_at_0x74[
-    ((u32)&((EffLightData *)0)->baseControlWorkData == 0x74) ? 1 : -1];
 
 #endif

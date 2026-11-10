@@ -5,6 +5,87 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "kernel_draw.h"
+
+#include "sdf_resource.h"
+
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_header.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_texture_draw_packet.h"
+
+#include "dds/sdf_texture_file.h"
+
+#include "dds/sdf_trig.h"
+
+/* Return the payload allocation descriptor. For normal file loads, freeing the
+ * request wrapper does not free this allocation; its resource owner must keep
+ * or release it separately. */
+struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
+
+/* Free a completed request wrapper; return one while it remains pending. */
+FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
+
+/* fileLoadEx stores userData without copying it. When callbackAddress is
+ * nonzero, the manager calls it once after the device request closes, passing
+ * the completed request and userData. The context must remain valid until then;
+ * callback delivery does not free the request wrapper, which callers release
+ * with fileHandleFree. */
+struct FileRequest *fileLoadEx(const char *requestName, u32 allocationMode,
+                                              u32 callbackAddress, u32 userData);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
+
+SdfDrawPacket *sdf2DMakePrimPacketHeader(SdfDrawPacket *packet, s32 primitiveFlags,
+                                       s32 registerCount, s64 registerList,
+                                       s32 loopCount);
+
+void *sdfChipAllocDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+f32 sdfCos(f32 angle);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+void sdfMemUnlock(struct sdfMemHandle_t *allocation);
+
+f32 sdfSin(f32 angle);
+
+/* Both entry points return one caller-owned texture reference. A nonzero
+ * resourceKey reuses a live matching texture and increments its count; a new
+ * texture starts at one. Release the returned reference once with
+ * sdfTexReleaseReference or sdfTexFreeDelayed. */
+/* For a new texture, copy payload bytes into queue-owned storage before return. */
+struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
+
 #include "dds/sdf_gs_alpha_register_api.h"
 
 #include "dds/common.h"
@@ -161,13 +242,9 @@ extern f32 D_003BC9A8;
 
 extern char D_003BD080[];
 
-extern s32 sprintf(char *, const char *, ...);
-
 extern u8 D_003BD078[];
 
 extern u8 D_003BCF30[];
-
-extern s32 sprintf(char *, const char *, ...);
 
 extern u32 D_003BD064;
 
@@ -211,8 +288,6 @@ void effCompleteTransientResourceJob(struct FileRequest *job, u32 *outInstance);
 
 /* Publish the instance without releasing its source allocation, then clean up the file job. */
 void effCompleteRetainedResourceJob(struct FileRequest *job, u32 *outInstance);
-
-extern s32 sprintf(char *, const char *, ...);
 
 /* Clear the output first; only mode one selects the retained-allocation completion path. */
 void effRequestResourceByMode(const char *base, const char *name, u32 mode, u32 *outInstance);
@@ -373,10 +448,6 @@ u32 effConfigureWithDefaultSetting(EffectSlotSet *effect, u32 slot,
 u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
 
 void effSelectPresetByKind(u32 mode, u32 value);
-
-extern sdfGrOt_t sdfGrOtTable[];
-
-typedef struct sdfTexHandle_t sdfTexHandle_t;
 
 typedef struct SdfDrawPacket SdfDrawPacket;
 

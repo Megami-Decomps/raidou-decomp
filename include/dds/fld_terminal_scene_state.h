@@ -1,9 +1,10 @@
-#ifndef FLD_TERMINAL_SCENE_STATE_H
-#define FLD_TERMINAL_SCENE_STATE_H
+#ifndef DDS_FLD_TERMINAL_SCENE_STATE_H
 
+#define DDS_FLD_TERMINAL_SCENE_STATE_H
 #include "common.h"
 
 typedef s8 FldTerminalTaskState;
+
 typedef s32 FldTerminalScenePollResult;
 
 enum FldTerminalTaskStateValue {
@@ -17,4 +18,4 @@ enum FldTerminalScenePollResultValue {
     FLD_TERMINAL_SCENE_POLL_PENDING = 1,
 };
 
-#endif /* FLD_TERMINAL_SCENE_STATE_H */
+#endif /* DDS_FLD_TERMINAL_SCENE_STATE_H */

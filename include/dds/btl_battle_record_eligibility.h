@@ -1,6 +1,6 @@
-#ifndef BTL_BATTLE_RECORD_ELIGIBILITY_H
-#define BTL_BATTLE_RECORD_ELIGIBILITY_H
+#ifndef DDS_BTL_BATTLE_RECORD_ELIGIBILITY_H
 
+#define DDS_BTL_BATTLE_RECORD_ELIGIBILITY_H
 #include "common.h"
 
 struct BtlUnit;
@@ -9,6 +9,7 @@ struct BtlUnit;
 typedef s32 BtlBattleRecordEligibilityResult;
 
 #define BTL_BATTLE_RECORD_INELIGIBLE ((BtlBattleRecordEligibilityResult)0)
+
 #define BTL_BATTLE_RECORD_ELIGIBLE ((BtlBattleRecordEligibilityResult)1)
 
 /* The override rejects on zero; nonzero permits the ordinary checks to run. */
@@ -16,6 +17,7 @@ typedef s32 BtlBattleRecordEligibilityOverrideResult;
 
 #define BTL_BATTLE_RECORD_OVERRIDE_REJECT \
     ((BtlBattleRecordEligibilityOverrideResult)0)
+
 #define BTL_BATTLE_RECORD_OVERRIDE_CONTINUE \
     ((BtlBattleRecordEligibilityOverrideResult)1)
 
@@ -25,4 +27,4 @@ typedef BtlBattleRecordEligibilityOverrideResult (*BtlBattleRecordEligibilityOve
 BtlBattleRecordEligibilityResult btlIsBattleRecordEligible(
     struct BtlUnit *actor, struct BtlUnit *target, s32 recordIndex, s32 speciesIndex);
 
-#endif /* BTL_BATTLE_RECORD_ELIGIBILITY_H */
+#endif /* DDS_BTL_BATTLE_RECORD_ELIGIBILITY_H */

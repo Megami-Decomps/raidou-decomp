@@ -1,6 +1,6 @@
-#ifndef MNU_TITLE_STREAM_ENTRY_H
-#define MNU_TITLE_STREAM_ENTRY_H
+#ifndef DDS_MNU_TITLE_STREAM_ENTRY_H
 
+#define DDS_MNU_TITLE_STREAM_ENTRY_H
 #include "common.h"
 
 /* Shared row shape used by the paired title-stream tables. Byte +1 is not

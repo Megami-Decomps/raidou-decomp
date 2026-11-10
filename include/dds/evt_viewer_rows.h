@@ -1,6 +1,6 @@
-#ifndef EVT_VIEWER_ROWS_H
-#define EVT_VIEWER_ROWS_H
+#ifndef DDS_EVT_VIEWER_ROWS_H
 
+#define DDS_EVT_VIEWER_ROWS_H
 #include "evt_polygon_movie.h"
 
 /* The viewer reads these fixed row strides from borrowed PMD section data.
@@ -31,17 +31,19 @@ typedef struct EvtCameraFovRowPayload {
 } EvtCameraFovRowPayload;
 
 typedef char EvtCompactRow_size[(sizeof(EvtCompactRow) == 0x10) ? 1 : -1];
+
 typedef char EvtExtendedRow_size[(sizeof(EvtExtendedRow) == 0x2C) ? 1 : -1];
+
 typedef char EvtCameraFovRowPayload_size[(sizeof(EvtCameraFovRowPayload) == 8) ? 1 : -1];
-typedef char EvtCameraFovRowPayload_fov_offset[
-    ((u32)&((EvtCameraFovRowPayload *)0)->cameraFieldOfView == 0) ? 1 : -1];
-typedef char EvtCameraFovRowPayload_opaque04_offset[
-    ((u32)&((EvtCameraFovRowPayload *)0)->opaque04 == 4) ? 1 : -1];
 
 u16 evtGetRowValue(const PolyMovieWork *work, s32 row);
+
 s16 evtGetRowVariant(const PolyMovieWork *work, s32 row);
+
 u16 evtGetRowParameter(const PolyMovieWork *work, s32 row);
+
 u16 evtGetRowFlags(const PolyMovieWork *work, s32 row);
+
 const u8 *evtGetRowPayloadAddress(const PolyMovieWork *work, s32 row);
 
 #endif

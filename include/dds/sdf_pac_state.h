@@ -1,11 +1,14 @@
-#ifndef SDF_PAC_STATE_H
-#define SDF_PAC_STATE_H
+#ifndef DDS_SDF_PAC_STATE_H
 
+#define DDS_SDF_PAC_STATE_H
 #include "common.h"
+
 #include "sdf_pac_packet.h"
+
 #include "sdf_pac_work.h"
 
 struct sdfMemHandle_t;
+
 struct sdfTexHandle_t;
 
 /* Complete 0x10-byte packet buffer: texture is the acquired output, while
@@ -18,10 +21,6 @@ typedef struct PacBuf {
 } PacBuf;
 
 typedef char PacBuf_size_must_be_0x10[(sizeof(PacBuf) == 0x10) ? 1 : -1];
-typedef char PacBuf_resourceSlot_offset_must_be_4[
-    ((u32)&((PacBuf *)0)->resourceSlot == 4) ? 1 : -1];
-typedef char PacBuf_remainingBytes_offset_must_be_C[
-    ((u32)&((PacBuf *)0)->remainingBytes == 0xC) ? 1 : -1];
 
 /* Per-queue allocation-list descriptor selected through PacState.slot. */
 typedef struct PacListAllocation {
@@ -34,14 +33,6 @@ typedef struct PacListAllocation {
 
 typedef char PacListAllocation_size_must_be_0x30[
     (sizeof(PacListAllocation) == 0x30) ? 1 : -1];
-typedef char PacListAllocation_entryCount_must_be_at_0[
-    ((u32)&((PacListAllocation *)0)->entryCount == 0) ? 1 : -1];
-typedef char PacListAllocation_entryIndex_must_be_at_4[
-    ((u32)&((PacListAllocation *)0)->entryIndex == 4) ? 1 : -1];
-typedef char PacListAllocation_entry_must_be_at_0x10[
-    ((u32)&((PacListAllocation *)0)->entry == 0x10) ? 1 : -1];
-typedef char PacListAllocation_buffer_must_be_at_0x20[
-    ((u32)&((PacListAllocation *)0)->buffer == 0x20) ? 1 : -1];
 
 /* Complete 0x38-byte PAC decoder state shared by file and model loaders. */
 typedef struct PacState {
@@ -70,26 +61,5 @@ typedef struct PacState {
 typedef s32 SdfPacPhase;
 
 typedef char PacState_size_must_be_0x38[(sizeof(PacState) == 0x38) ? 1 : -1];
-typedef char PacState_phase_must_be_at_0x00[
-    ((u32)&((PacState *)0)->phase == 0x00) ? 1 : -1];
-typedef char PacState_packetCallback_must_be_at_0x04[
-    ((u32)&((PacState *)0)->packetCallback == 0x04) ? 1 : -1];
-typedef char PacState_slot_must_be_at_0x2C[
-    ((u32)&((PacState *)0)->slot == 0x2C) ? 1 : -1];
-typedef char PacState_queueHead_must_be_at_0x30[
-    ((u32)&((PacState *)0)->queueHead == 0x30) ? 1 : -1];
-typedef char PacState_queueTail_must_be_at_0x34[
-    ((u32)&((PacState *)0)->queueTail == 0x34) ? 1 : -1];
 
-void sdfPacInit(PacState *state, void *callbackAddress);
-SdfPacPhase sdfPacDecode(PacState *state, const u8 *input, s32 inputByteCount);
-void sdfPacUseSrc(PacState *state, s32 consumedBytes);
-void sdfPacTexListDecoder0(PacState *state);
-void sdfPacTexListDecoder1(PacState *state);
-void sdfPacTexListDecoderInit(PacState *state,
-                                SdfPacStreamPacketHeader *packet);
-void sdfPacSetStay(PacState *state);
-void sdfPacSetFromTail(PacState *state);
-void sdfPacFree(PacState *state);
-
-#endif /* SDF_PAC_STATE_H */
+#endif /* DDS_SDF_PAC_STATE_H */

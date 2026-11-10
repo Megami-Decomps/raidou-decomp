@@ -5,6 +5,468 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "basic.h"
+
+#include "dds3obj.h"
+
+#include "field.h"
+
+#include "include_asm.h"
+
+#include "kernel_draw.h"
+
+#include "sdf_packet_list.h"
+
+#include "sdf_resource.h"
+
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/btl_stage_task_cleanup.h"
+
+#include "dds/dds3_area_room_key.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/dds3_fade.h"
+
+#include "dds/dds3_object_flags.h"
+
+#include "dds/dds3_path.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_world_counter.h"
+
+#include "dds/dds3_world_primary.h"
+
+#include "dds/dds3_world_secondary.h"
+
+#include "dds/dds3_world_value.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/eff_transform.h"
+
+#include "dds/evt_action_object.h"
+
+#include "dds/evt_script_model.h"
+
+#include "dds/evt_unit.h"
+
+#include "dds/evt_unit_color_transition.h"
+
+#include "dds/evt_world.h"
+
+#include "dds/evt_world_object_api.h"
+
+#include "dds/evt_world_source_transform.h"
+
+#include "dds/file_pac_completion_api.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/fld_event_display_resource_api.h"
+
+#include "dds/fld_packed_resource_kind.h"
+
+#include "dds/fld_scene_object_key_result.h"
+
+#include "dds/fld_scene_ready_api.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/kwln.h"
+
+#include "dds/mdl.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/mdl_motion_api.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_column_packet_api.h"
+
+#include "dds/sdf_dev_state.h"
+
+#include "dds/sdf_gs_blend.h"
+
+#include "dds/sdf_gs_packet.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_line_pair_packet_api.h"
+
+#include "dds/sdf_map_position_api.h"
+
+#include "dds/sdf_motion.h"
+
+#include "dds/sdf_pac_reloc.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_append.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_packet_header.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_primitive_packet_api.h"
+
+#include "dds/sdf_resource_list_release_api.h"
+
+#include "dds/sdf_sif_command.h"
+
+#include "dds/sdf_texture_draw_packet.h"
+
+#include "dds/sdf_texture_file.h"
+
+#include "dds/sdf_texture_offset_list.h"
+
+#include "dds/sdf_texture_primary_buffer_api.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdk_libc.h"
+
+/* The field-area loader interprets these serialized packet-header values. */
+typedef enum FldPackedResourceKind {
+    FLD_PACKED_RESOURCE_INFO_TABLE = 1,
+    FLD_PACKED_RESOURCE_NPC_PALETTE = 2,
+    FLD_PACKED_RESOURCE_SKY_BUFFER = 3,
+    FLD_PACKED_RESOURCE_ACTOR_WAYPOINT_TABLE = 4,
+    FLD_PACKED_RESOURCE_RETAINED_COPY = 5,
+    FLD_PACKED_RESOURCE_SCENE_RECORD_CHUNK = 6
+} FldPackedResourceKind;
+
+/* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
+void MultMatrixRev(const struct Matrix4 *matrix);
+
+enum {
+    OBJECT_TRANSFORM_FLAG_UPDATE_PENDING = 1,
+    OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID = 2,
+    OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
+};
+
+/* Register selectors carried by GIF A+D writes in the two GS contexts. */
+enum {
+    SDF_GS_PRIM = 0x00,
+    SDF_GS_RGBAQ = 0x01,
+    SDF_GS_XYZ2 = 0x05,
+    SDF_GS_TEX0_1 = 0x06,
+    SDF_GS_TEX0_2 = 0x07,
+    SDF_GS_CLAMP_1 = 0x08,
+    SDF_GS_CLAMP_2 = 0x09,
+    SDF_GIF_REGISTER_AD = 0x0E,
+    SDF_GS_TEX1_1 = 0x14,
+    SDF_GS_TEX1_2 = 0x15,
+    SDF_GS_XYOFFSET_1 = 0x18,
+    SDF_GS_XYOFFSET_2 = 0x19,
+    SDF_GS_PRMODECONT = 0x1A,
+    SDF_GS_TEXA = 0x3B,
+    SDF_GS_TEXFLUSH = 0x3F,
+    SDF_GS_SCISSOR_1 = 0x40,
+    SDF_GS_SCISSOR_2 = 0x41,
+    SDF_GS_ALPHA_1 = 0x42,
+    SDF_GS_ALPHA_2 = 0x43,
+    SDF_GS_DTHE = 0x45,
+    SDF_GS_COLCLAMP = 0x46,
+    SDF_GS_TEST_1 = 0x47,
+    SDF_GS_TEST_2 = 0x48,
+    SDF_GS_FRAME_1 = 0x4C,
+    SDF_GS_FRAME_2 = 0x4D,
+    SDF_GS_ZBUF_1 = 0x4E,
+    SDF_GS_ZBUF_2 = 0x4F,
+    SDF_GS_BITBLTBUF = 0x50,
+    SDF_GS_TRXPOS = 0x51,
+    SDF_GS_TRXREG = 0x52,
+    SDF_GS_TRXDIR = 0x53
+};
+
+enum SdfMotionStateValue {
+    SDF_MOTION_STATE_UNINITIALIZED = 0,
+    SDF_MOTION_STATE_INITIALIZED = 1,
+    SDF_MOTION_STATE_SAMPLING = 4,
+    SDF_MOTION_STATE_TERMINAL = 5,
+    SDF_MOTION_STATE_SUSPENDED = 6,
+};
+
+/* Load a Y-axis rotation matrix into the primary VU0 matrix registers. */
+void SetRotateMatrixZ(f32 angle);
+
+/* Appends a linked kind-2 world node whose value is an object name. */
+struct dds3Basic_t *dds3AddAreaBasic(s32 key, const char *objectName);
+
+struct dds3Basic_t *dds3AddModelBasic2(s32 key,
+    struct sdfModelDef_t *itemList, struct MotionTable *motionTable,
+    struct DevRequest *loadedModelResource, const char *name);
+
+dds3Basic_t *dds3AddPointBasic(u32 key, EvtWorldSourceTransformPrefix *source, const char *name);
+
+/* Advance the wrapping 16-bit world object sequence carried in a u32. */
+u32 dds3AllocObjectId(void);
+
+void dds3FadeIn(s32 red, s32 green, s32 blue, s32 duration);
+
+void dds3FadeIn2(s32 duration);
+
+struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
+
+dds3Basic_t *dds3GetActiveCameraSceneBasic(dds3Basic_t *world);
+
+/* Return the borrowed primary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetActiveScene(void);
+
+/* Return the borrowed secondary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetControlScene(void);
+
+/* Return the current frame draw-buffer slot (0 or 1). */
+u32 dds3GetFrameID(void);
+
+/* Legacy MapNo names access the packed (area << 16) + room key. The getter
+ * returns UNASSIGNED for a NULL node; the setter ignores one. */
+Dds3AreaRoomKey dds3GetMapNo(const struct dds3Basic_t *worldNode);
+
+void dds3GetPosPoseSet(dds3Basic_t *object);
+
+void dds3GetRotPoseSet(dds3Basic_t *object);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+dds3PathBasicControl_t *dds3MoverBasicGetPathControl(struct dds3Basic_t *object);
+
+/* Store the source object address used by a slot's later path replacement. */
+void dds3MoverBasicSetPath(dds3Basic_t *object, dds3Basic_t *sourceObject);
+
+void dds3ObjectBaseOffFlag(struct dds3Basic_t *object, u32 mask);
+
+/* Set or clear requested bits in the object's flag word. */
+void dds3ObjectBaseOnFlag(struct dds3Basic_t *object, u32 mask);
+
+dds3Basic_t *dds3ObjectBaseSetControlBasic(dds3Basic_t *object, dds3Basic_t *slotData);
+
+void dds3ObjectBaseSetControlBasicSvs(dds3Basic_t *object, u32 value);
+
+/* Attach a memory-backed scene script to worldNode. A NULL handle returns
+ * FAILED and leaves the current resource untouched. A non-NULL handle replaces
+ * the current resource before locking: SUCCEEDED transfers ownership to the
+ * scene, while FAILED leaves the handle at the caller (the previous resource
+ * has already been released). */
+Dds3SceneScriptAttachResult dds3SceneBasicLoadScriptFile_FromMem(
+    struct dds3Basic_t *worldNode, struct sdfMemHandle_t *resourceHandle);
+
+dds3Basic_t *dds3SceneBasicSearchNameAndType(dds3Basic_t *world, s32 slotIndex, const char *name);
+
+/* Return a borrowed scheduler-owned handle from the starting, active, or
+ * destroy-pending queue. The handle remains valid through its destroy callback
+ * and is freed when finalization completes; return NULL when no name matches. */
+dds3ProcessID_t *dds3SearchProcessName(const char *name);
+
+dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *world, u32 key, s32 kind);
+
+/* Store objectName directly as the node's lookup key; no copy is made.
+ * A NULL node is ignored and a NULL name clears the key. Keep non-NULL names
+ * alive while the node can be searched. */
+void dds3SetUnitObjectId(struct dds3Basic_t *node, const char *objectName);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+/* Preserve the signed-byte drawing gate; only a missing payload is ignored. */
+void dds3VisibleSceneBasic(dds3Basic_t *object, s8 enabled);
+
+struct SdfPacket *effDebugDrawWireModel(const f32 vertices[][4], const u32 *colors,
+                                                 s32 vertexCount, u32 primitiveFlags);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+evtUnitHandle_t *evtGetUnitHandle2(dds3Basic_t *unit);
+
+/* Initialize an event unit's color transition for the requested duration. */
+void evtSetUnitLightAndAmbient(evtUnitHandle_t *unit, s32 duration, u32 firstColor, u32 secondColor);
+
+void evtSetUnitLightDir(evtUnitHandle_t *unit, EvtUnitDirectionTransitionFrames durationFrames);
+
+void evtUnitLightOn(evtUnitHandle_t *unit);
+
+FldSceneReadyState fldAutoMapChkMode(void);
+
+FldSceneObjectKeyResult fldCommand_SEARCH_ID(const char *name);
+
+FldEventDisplayResourceIndex fldEveHit_AddEveData(
+    const struct FldFileResource *resource, struct dds3Basic_t *object);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+void mdlMotionPause(dds3ModelHandle_t *ctx);
+
+void mdlMotionPauseOff(dds3ModelHandle_t *ctx);
+
+void mdlSetMotionSpeedEx(dds3ModelHandle_t *ctx, MdlMotionSearchId searchId, f32 frameStep);
+
+/* sdfMotionCtrlr_t-record selection and lookup. */
+void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+void mdlSmoothLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+                          f32 blendDurationFrames);
+
+void mdlSmoothSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+                       f32 blendDurationFrames);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+FilePacRequestCompletionResult pacCheckEnd(const struct FileRequest *request);
+
+/* These title-specific wrappers forward an opaque stage-task owner and its
+ * handled/not-handled result. */
+s32 pacFileHandleFree_(void *request);
+
+struct FileRequest *pacLoad(const char *requestName);
+
+void pacSync(struct FileRequest *request);
+
+/* Allocate a variable-length sprite column packet with this draw header. */
+SdfDrawPacket *sdf2DAllocSprite(s32 loopCount);
+
+SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
+
+SdfDrawPacket *sdf2DMakePrimPacketHeader(SdfDrawPacket *packet, s32 primitiveFlags,
+                                       s32 registerCount, s64 registerList,
+                                       s32 loopCount);
+
+void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
+                              s32 (*allocatePacket)(s32));
+
+/* Append standard packets to a DMA packet list. A null allocator selects the
+   default packet allocator. Asset packets reference the selected draw entry. */
+void sdf3DPrimLinkResetTm(sdfDrawTag_t *packetList,
+                              s32 (*allocatePacket)(s32));
+
+/* Build the serialized VIF attribute stream and return its word cursor. */
+u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *request);
+
+void sdfAddressResolver(s32 *words, u32 relocationBase, const u8 *table, s32 tableBytes);
+
+/* Allocate from the chip heap through 0x400 bytes; larger requests use the
+ * general heap and return its locked payload address. */
+void *sdfAllocAuto(s32 size);
+
+f32 sdfCos(f32 angle);
+
+void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
+
+void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+void sdfDrawTagLinkRef(struct sdfDrawTag_t *list, u32 packetAddress);
+
+void sdfDrawTagLinkRefGif(struct sdfDrawTag_t *list, u32 packetAddress);
+
+void sdfFileClose(sdfFileCmdHandle_t *state);
+
+/* Stable state APIs. Callback factories keep caller-specific callback types. */
+sdfFileCmdHandle_t *sdfFileOpen(const char *path);
+
+void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
+
+/* Queue release of the sdfAllocAuto base in its source heap; interior pointers
+ * are invalid. */
+s32 sdfFreeAutoDelayed(void *data);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+void sdfLinkLoadImage(
+    sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,
+    s32 destinationY, s32 width, s32 height, s32 sourceAddress,
+    s32 (*allocatePacket)(s32));
+
+void sdfLinkStoreImage(
+    sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 sourceX, s32 sourceY,
+    s32 width, s32 height, s32 resourceAddress, s32 arg7, s32 arg8,
+    s32 (*allocatePacket)(s32));
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+/* Queue the two heap owners separately: the general heap stores descriptors,
+ * while the chip heap stores the address of the cell to release. */
+void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *allocation);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+s32 sdfMemGetSize(const struct sdfMemHandle_t *block);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+void sdfMemUnlock(struct sdfMemHandle_t *allocation);
+
+/* On success, write the requested MPOS record's position or matrix to VU state. */
+SdfMapPositionLookupResult sdfModelGetMarkPos(
+    struct dds_sdfModelRootNode_t *model, s32 id);
+
+struct sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*allocator)(s32));
+
+void sdfPrimLinkGt4(
+    sdfDrawTag_t *list, s32 primitive, s32 x0, s32 y0, s32 u0, s32 v0,
+    s32 color0, s32 x1, s32 y1, s32 u1, s32 v1, s32 color1, s32 x2, s32 y2,
+    s32 u2, s32 v2, s32 color2, s32 x3, s32 y3, s32 u3, s32 v3, s32 color3,
+    s32 depth, s32 (*allocatePacket)(s32));
+
+void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *packet);
+
+f32 sdfSin(f32 angle);
+
+void sdfTexFreeDelayed(sdfTexHandle_t *texture);
+
+/* Requires a non-NULL texture; returns its texture-owned primary buffer as a
+ * borrowed, read-only view. Keep the texture alive while using the packet. */
+const struct sdfTexPacket_t *sdfTexGetPacket(const struct sdfTexHandle_t *texture);
+
+/* Requires a non-NULL texture; returns 0 for no primary buffer, otherwise
+ * ((gifTagWord & 0x7fff) + 1) * 16 bytes. */
+s32 sdfTexGetPacketLength(const struct sdfTexHandle_t *texture);
+
+void sdfTexListFree(struct DevRequest *list, SdfTexListItemReferencePolicy itemReferencePolicy);
+
+/* Both entry points return one caller-owned texture reference. A nonzero
+ * resourceKey reuses a live matching texture and increments its count; a new
+ * texture starts at one. Release the returned reference once with
+ * sdfTexReleaseReference or sdfTexFreeDelayed. */
+/* For a new texture, copy payload bytes into queue-owned storage before return. */
+struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
+
+struct DevRequest *sdfTexSetTB(
+    const SdfTextureOffsetListHeader *resource);
+
+s32 strcmp(const char *a, const char *b);
+
+char *strcpy(char *dst, const char *src);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/fld_item_box_object_api.h"
@@ -276,10 +738,6 @@ typedef struct SdfGsTextureAlphaFlushPacket {
 typedef char SdfGsTextureAlphaFlushPacket_size_must_be_0x40[
     (sizeof(SdfGsTextureAlphaFlushPacket) == 0x40) ? 1 : -1];
 
-typedef char SdfGsTextureAlphaFlushPacket_payload_offsets_must_match[
-    (((u32)&((SdfGsTextureAlphaFlushPacket *)0)->textureAlpha == 0x20) &&
-     ((u32)&((SdfGsTextureAlphaFlushPacket *)0)->textureFlush == 0x30)) ? 1 : -1];
-
 /* Declared before first use (were implicit int). */
 extern void btlResetAsyncState(void);
 
@@ -393,9 +851,6 @@ typedef struct {
     f32 secondStep[3];
 } FldActorRow; /* 0x5C bytes */
 
-typedef char FldActorRow_secondaryMotion_offset_must_be_0x10[
-    ((u32)&((FldActorRow *)0)->secondaryMotion == 0x10) ? 1 : -1];
-
 typedef char FldActorRow_size_must_be_0x5C[sizeof(FldActorRow) == 0x5C ? 1 : -1];
 
 extern FldActorRow fldActorSlots[];
@@ -407,19 +862,6 @@ extern FldNpcMotion D_00336A60[];
 extern char *D_003BAE44;
 
 extern char *D_003BAE48;
-
-static inline s32 fldTestBits(u32 flags, u32 mask) {
-    return (flags & mask) != 0;
-}
-
-/* vu0 routine: normalize vf10 and return its original XYZ length. */
-static inline f32 fldNormalizeProbeVector(void) {
-    f32 length;
-
-    SDF_VU0_GETLENGTH(length);
-    SDF_VU0_NORMALIZE();
-    return length;
-}
 
 extern void fldSpawnActionObjects(const FldActionSpawn *, u32);
 
@@ -586,8 +1028,6 @@ extern u32 D_0032E59C[];
 
 extern u32 D_0032E5A8[];
 
-extern sdfGrOt_t sdfGrOtTable[];
-
 extern u8 sdfViewMatrix[];
 
 extern u32 D_003BACD4;
@@ -705,7 +1145,7 @@ extern void mnuReleaseResourceEntries(void);
 
 extern void fldDrwZFree(void);
 
-extern fldWaypointBlock_t fldActorWaypointRows;
+extern dds_fldWaypointBlock_t fldActorWaypointRows;
 
 extern FldFileResource *fldRoomResources[];
 
@@ -766,29 +1206,6 @@ extern s32 fldSetSparkVectors(s32 index, const u128 *position, const u128 *rotat
 extern void fldAddSe3D(FldSpatialSoundId soundId, f32 radius, f32 sourceX, f32 sourceY, f32 sourceZ);
 
 extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32, u128 *, u128 *);
-
-/* Serialized transforms leave the position W component zero. */
-static inline void fldCopySpawnTransform(f32 *position, f32 *rotation, const f32 *source) {
-    if (source != NULL) {
-        position[0] = source[0];
-        position[1] = source[1];
-        position[2] = source[2];
-        position[3] = 0.0f;
-        rotation[0] = source[4];
-        rotation[1] = source[5];
-        rotation[2] = source[6];
-        rotation[3] = source[7];
-    } else {
-        position[0] = 0.0f;
-        position[1] = 0.0f;
-        position[2] = 0.0f;
-        position[3] = 0.0f;
-        rotation[0] = 0.0f;
-        rotation[1] = 0.0f;
-        rotation[2] = 0.0f;
-        rotation[3] = 0.0f;
-    }
-}
 
 void fldSpawnPlacementObjectsFromBatches(FldSpawnBatch *spawnBatch, u32 batchCount, FldPlacementBatchMode mode);
 
@@ -896,7 +1313,7 @@ void fldFormatAreaResourceName(char *out);
 
 FldAreaResourceNameChangeResult fldHasAreaResourceNameChanged(void);
 
-extern void fldGetDoorEntry(const fldWaypointBlock_t *source);
+extern void fldGetDoorEntry(const dds_fldWaypointBlock_t *source);
 
 extern void fldInfLoadFromMem(const FldInfTable *source);
 
@@ -1701,6 +2118,164 @@ void evtMessageExtraActionNoOp(void);
 #define VERSION_DDS1 1
 #endif
 
+#define SMT3_DEFINES_DmaPacketHeader 1
+
+#define SMT3_DEFINES_FLD_PACKED_RESOURCE_ACTOR_WAYPOINT_TABLE 1
+
+#define SMT3_DEFINES_FLD_PACKED_RESOURCE_INFO_TABLE 1
+
+#define SMT3_DEFINES_FLD_PACKED_RESOURCE_NPC_PALETTE 1
+
+#define SMT3_DEFINES_FLD_PACKED_RESOURCE_RETAINED_COPY 1
+
+#define SMT3_DEFINES_FLD_PACKED_RESOURCE_SCENE_RECORD_CHUNK 1
+
+#define SMT3_DEFINES_FLD_PACKED_RESOURCE_SKY_BUFFER 1
+
+#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID 1
+
+#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_UPDATE_PENDING 1
+
+#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION 1
+
+#define SMT3_DEFINES_SDF_GIF_REGISTER_AD 1
+
+#define SMT3_DEFINES_SDF_GS_ALPHA_1 1
+
+#define SMT3_DEFINES_SDF_GS_ALPHA_2 1
+
+#define SMT3_DEFINES_SDF_GS_BITBLTBUF 1
+
+#define SMT3_DEFINES_SDF_GS_CLAMP_1 1
+
+#define SMT3_DEFINES_SDF_GS_CLAMP_2 1
+
+#define SMT3_DEFINES_SDF_GS_COLCLAMP 1
+
+#define SMT3_DEFINES_SDF_GS_DTHE 1
+
+#define SMT3_DEFINES_SDF_GS_FRAME_1 1
+
+#define SMT3_DEFINES_SDF_GS_FRAME_2 1
+
+#define SMT3_DEFINES_SDF_GS_PRIM 1
+
+#define SMT3_DEFINES_SDF_GS_PRMODECONT 1
+
+#define SMT3_DEFINES_SDF_GS_RGBAQ 1
+
+#define SMT3_DEFINES_SDF_GS_SCISSOR_1 1
+
+#define SMT3_DEFINES_SDF_GS_SCISSOR_2 1
+
+#define SMT3_DEFINES_SDF_GS_TEST_1 1
+
+#define SMT3_DEFINES_SDF_GS_TEST_2 1
+
+#define SMT3_DEFINES_SDF_GS_TEX0_1 1
+
+#define SMT3_DEFINES_SDF_GS_TEX0_2 1
+
+#define SMT3_DEFINES_SDF_GS_TEX1_1 1
+
+#define SMT3_DEFINES_SDF_GS_TEX1_2 1
+
+#define SMT3_DEFINES_SDF_GS_TEXA 1
+
+#define SMT3_DEFINES_SDF_GS_TEXFLUSH 1
+
+#define SMT3_DEFINES_SDF_GS_TRXDIR 1
+
+#define SMT3_DEFINES_SDF_GS_TRXPOS 1
+
+#define SMT3_DEFINES_SDF_GS_TRXREG 1
+
+#define SMT3_DEFINES_SDF_GS_XYOFFSET_1 1
+
+#define SMT3_DEFINES_SDF_GS_XYOFFSET_2 1
+
+#define SMT3_DEFINES_SDF_GS_XYZ2 1
+
+#define SMT3_DEFINES_SDF_GS_ZBUF_1 1
+
+#define SMT3_DEFINES_SDF_GS_ZBUF_2 1
+
+#define SMT3_DEFINES_SDF_MOTION_STATE_INITIALIZED 1
+
+#define SMT3_DEFINES_SDF_MOTION_STATE_SAMPLING 1
+
+#define SMT3_DEFINES_SDF_MOTION_STATE_SUSPENDED 1
+
+#define SMT3_DEFINES_SDF_MOTION_STATE_TERMINAL 1
+
+#define SMT3_DEFINES_SDF_MOTION_STATE_UNINITIALIZED 1
+
+#include "basic.h"
+
+#include "datCalc.h"
+
+#include "newdata.h"
+
+#include "sdk_libc.h"
+
+#include "dds/dds3_path.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/eff_random_mod.h"
+
+#include "dds/eff_transform.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/sdf_dev_state.h"
+
+#include "dds/sdf_heap_api.h"
+
+/* Sparse world-node identities recovered from the paired operation tables and
+ * concrete creators. Unlisted values stay unnamed; COUNT remains the full
+ * directory extent rather than an enum-completeness claim. */
+enum {
+    EFF_WORLD_KIND_WORLD_INFO = 0,
+    EFF_WORLD_KIND_EVENT_TABLE = 1,
+    EFF_WORLD_KIND_WORLD_INDEX_OWNER = 2,
+    EFF_WORLD_KIND_SLOT_RING = 3,
+    EFF_WORLD_KIND_CAMERA = 4,
+    EFF_WORLD_KIND_FOLLOW_MODEL = 5,
+    EFF_WORLD_KIND_EFFECT_TRANSFORM = 6,
+    EFF_WORLD_KIND_EFFECT_OBJECT = 7,
+    EFF_WORLD_KIND_RESOURCE_OWNER = 8,
+    EFF_WORLD_KIND_LIGHT = 9,
+    EFF_WORLD_KIND_SCRIPT_OBJECT = 10,
+    EFF_WORLD_KIND_ACTION_B = 11,
+    EFF_WORLD_KIND_ACTION_D = 13,
+    EFF_WORLD_KIND_ACTION_10 = 16,
+    EFF_WORLD_KIND_TRANSFORM_SOURCE = 17,
+    EFF_WORLD_KIND_COUNT = 18
+};
+
+dds3Basic_t *dds3AddSceneBasicData(s32 kind);
+
+/* Return the next caller-owned or shared state value reduced modulo `modulus`. */
+u32 dds3GetRandIntA(EffRandState *state, u32 modulus);
+
+void dds3PathEvalSpline(u32 *segment, f32 *weight, const Dds3PathKeyframes *keys, f32 frame);
+
+void evtBitOff(s32 flag);
+
+/* Set and clear one flag using the providers' signed-index adjustment. */
+void evtBitOn(s32 flag);
+
+u32 sdfFileLength(sdfFileCmdHandle_t *state);
+
+/* Release the sdfAllocAuto base in its source heap; interior pointers are
+ * invalid. */
+s32 sdfFreeAuto(void *data);
+
+struct sdfMemHandle_t *sdfMemAllocFromTailDirect(s32 requestedBytes);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/evt_run_context_api.h"
@@ -1777,7 +2352,7 @@ extern scrHeader_t *D_003BAAAC;
 
 extern DatEnemyRecord *datEnemyRecords;
 
-extern u32 sdfRollActionHit(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *packed);
+extern u32 sdfRollActionHit(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *packed);
 
 extern char sdfRuntimeTaskName[];
 
@@ -1803,8 +2378,8 @@ extern void sdfSaveResetSnapshot(void);
 
 extern void sdfRestoreResetSnapshot(void);
 
-s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
 /* Linearly interpolated curve sample at `time`; 0 when no curve is active. */
 f32 dds3PathBasicControlGetFovy(dds3PathBasicControl_t *user);
@@ -1815,10 +2390,6 @@ f32 dds3PathBasicControlGetFovy(dds3PathBasicControl_t *user);
 
 /* Step the counter by one; return zero when a non-looping endpoint is reached. */
 s32 dds3PathBasicControlStep(SdfFloatCounter *counter);
-
-void dds3PathBasicControlAlterMode(SdfFloatCounter *counter, u32 direction);
-
-u32 dds3PathBasicControlGetMode(const SdfFloatCounter *counter);
 
 void dds3PathBasicControlSetRatio(SdfFloatCounter *value, float multiplier);
 
@@ -1831,8 +2402,6 @@ void dds3PathBasicPauseOff(SdfFloatCounter *value);
 void dds3PathBasicLoopOn(SdfFloatCounter *value);
 
 void dds3PathBasicLoopOff(SdfFloatCounter *value);
-
-dds3Basic_t *dds3AddPointBasic(u32 key, EvtWorldSourceTransformPrefix *source, const char *name);
 
 f32 *dds3GetTransformSourceData(dds3Basic_t *node);
 
@@ -1936,59 +2505,57 @@ void sdfResetChannels(void);
 
 /* Enemy vitals use a 76-byte base table; party vitals come from a script,
  * a unit-specific bonus, and a maximum of 999. */
-s32 ptyComputeMaxHp(datUnitWork_t *unit);
+s32 ptyComputeMaxHp(dds_datUnitWork_t *unit);
 
 /* Compute the matching MP value from the base table or the MP script. */
-s32 ptyComputeMaxMp(datUnitWork_t *unit);
+s32 ptyComputeMaxMp(dds_datUnitWork_t *unit);
 
 /* Sdf dispatch: pick the script id from the unit's runtime flag byte and run
  * it against the given entry index. 0x40/0x80 select the alternate scripts. */
-s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
-s32 sdfDispatchCmd(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u32 mode);
+s32 sdfDispatchCmd(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u32 mode);
 
-s32 sdfDispatchUnitScriptDefault9(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 sdfDispatchUnitScriptDefault9(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
-s32 evtRunCommandContext10(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 evtRunCommandContext10(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
-s32 evtRunCommandContext7(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 evtRunCommandContext7(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
-s32 sdfDispatchSubCmd(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u32 mode);
+s32 sdfDispatchSubCmd(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u32 mode);
 
-s32 sdfCalculateCommandVitalDelta(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item, u32 mode, u8 vital);
+s32 sdfCalculateCommandVitalDelta(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item, u32 mode, u8 vital);
 
 extern char D_0039F980[];
 
 /* Rolls whether the action hits: returns the surviving channel mask, or 0 on a miss. */
-u32 sdfRollActionHit(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *packed);
+u32 sdfRollActionHit(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *packed);
 
-u32 sdfQueryChannelValue(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
+u32 sdfQueryChannelValue(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item);
 
-u32 sdfQueryChannelBits(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
+u32 sdfQueryChannelBits(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item);
 
-extern s32 sdfCalculateCommandVitalDelta(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item, u32 mode, u8 vital);
+extern s32 sdfCalculateCommandVitalDelta(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item, u32 mode, u8 vital);
 
-extern void datResetBadStat(datUnitWork_t *item, s32 mask);
+extern void datResetBadStat(dds_datUnitWork_t *item, s32 mask);
 
 /* These unused-result legacy mutator calls had no prototype in scope. */
-void sdfRaisePackedChannelValue(datUnitWork_t *item, u32 minimumValue);
+void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 
-extern s32 datAddHp(datUnitWork_t *unit, s32 delta);
+extern s32 datAddMp(dds_datUnitWork_t *unit, s32 delta);
 
-extern s32 datAddMp(datUnitWork_t *unit, s32 delta);
+s32 sdfApplyCommandResults(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item);
 
-s32 sdfApplyCommandResults(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
-
-void sdfSetPackedValuePreservingFlag(datUnitWork_t *item, u16 channelValue);
+void sdfSetPackedValuePreservingFlag(dds_datUnitWork_t *item, u16 channelValue);
 
 /* Raise the packed value to `minimumValue` (never lower it); reaching 0x40, 0x80 or 0x400 re-randomizes the entry. */
-void sdfRaisePackedChannelValue(datUnitWork_t *item, u32 minimumValue);
+void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 /* End of declarations from src/dds1/game/code_00117438.c */
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_00135520);

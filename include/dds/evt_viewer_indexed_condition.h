@@ -1,6 +1,6 @@
-#ifndef EVT_VIEWER_INDEXED_CONDITION_H
-#define EVT_VIEWER_INDEXED_CONDITION_H
+#ifndef DDS_EVT_VIEWER_INDEXED_CONDITION_H
 
+#define DDS_EVT_VIEWER_INDEXED_CONDITION_H
 #include "common.h"
 
 /* Sign-extended 32-bit view of the signed timeline-key parameter halfword:
@@ -19,4 +19,4 @@ typedef enum EvtViewerIndexedConditionResult {
 EvtViewerIndexedConditionResult evtViewerTestIndexedCondition(
     EvtViewerIndexedCondition condition);
 
-#endif /* EVT_VIEWER_INDEXED_CONDITION_H */
+#endif /* DDS_EVT_VIEWER_INDEXED_CONDITION_H */

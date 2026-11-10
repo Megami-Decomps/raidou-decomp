@@ -1,6 +1,6 @@
-#ifndef BTL_COMMAND_PARTNER_OUTPUT_H
-#define BTL_COMMAND_PARTNER_OUTPUT_H
+#ifndef DDS_BTL_COMMAND_PARTNER_OUTPUT_H
 
+#define DDS_BTL_COMMAND_PARTNER_OUTPUT_H
 #include "btl.h"
 
 typedef struct BtlCommandPartnerOutput {

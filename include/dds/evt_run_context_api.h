@@ -1,7 +1,8 @@
-#ifndef EVT_RUN_CONTEXT_API_H
-#define EVT_RUN_CONTEXT_API_H
+#ifndef DDS_EVT_RUN_CONTEXT_API_H
 
+#define DDS_EVT_RUN_CONTEXT_API_H
 #include "evt_script_context.h"
+
 #include "scr_procedure_index.h"
 
 /* Run one FLW0 procedure with the supplied event context words. */
@@ -28,4 +29,4 @@ static inline ScrVmInteger evtRunContextWithArguments(ScrProcedureIndex procedur
         commandIndex, options);
 }
 
-#endif /* EVT_RUN_CONTEXT_API_H */
+#endif /* DDS_EVT_RUN_CONTEXT_API_H */

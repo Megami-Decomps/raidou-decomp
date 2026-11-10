@@ -5,6 +5,223 @@
 #define VERSION_DDS2 1
 #endif
 
+#include "event.h"
+
+#include "kernel_draw.h"
+
+#include "newdata.h"
+
+#include "sdf_resource.h"
+
+#include "sdk_libc.h"
+
+#include "dds/dds3_fade.h"
+
+#include "dds/dds3_task_add_child.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_task_priority_query.h"
+
+#include "dds/dsp_channel.h"
+
+#include "dds/dsp_entry_api.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/evt_message_window_api.h"
+
+#include "dds/evt_solar.h"
+
+#include "dds/evt_task.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/fr_font_context.h"
+
+#include "dds/itf_panel_draw.h"
+
+#include "dds/kwln.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_gs_packet.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_linked_packet.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/snd_sequence_volume_pan.h"
+
+/* Register selectors carried by GIF A+D writes in the two GS contexts. */
+enum {
+    SDF_GS_PRIM = 0x00,
+    SDF_GS_RGBAQ = 0x01,
+    SDF_GS_XYZ2 = 0x05,
+    SDF_GS_TEX0_1 = 0x06,
+    SDF_GS_TEX0_2 = 0x07,
+    SDF_GS_CLAMP_1 = 0x08,
+    SDF_GS_CLAMP_2 = 0x09,
+    SDF_GIF_REGISTER_AD = 0x0E,
+    SDF_GS_TEX1_1 = 0x14,
+    SDF_GS_TEX1_2 = 0x15,
+    SDF_GS_XYOFFSET_1 = 0x18,
+    SDF_GS_XYOFFSET_2 = 0x19,
+    SDF_GS_PRMODECONT = 0x1A,
+    SDF_GS_TEXA = 0x3B,
+    SDF_GS_TEXFLUSH = 0x3F,
+    SDF_GS_SCISSOR_1 = 0x40,
+    SDF_GS_SCISSOR_2 = 0x41,
+    SDF_GS_ALPHA_1 = 0x42,
+    SDF_GS_ALPHA_2 = 0x43,
+    SDF_GS_DTHE = 0x45,
+    SDF_GS_COLCLAMP = 0x46,
+    SDF_GS_TEST_1 = 0x47,
+    SDF_GS_TEST_2 = 0x48,
+    SDF_GS_FRAME_1 = 0x4C,
+    SDF_GS_FRAME_2 = 0x4D,
+    SDF_GS_ZBUF_1 = 0x4E,
+    SDF_GS_ZBUF_2 = 0x4F,
+    SDF_GS_BITBLTBUF = 0x50,
+    SDF_GS_TRXPOS = 0x51,
+    SDF_GS_TRXREG = 0x52,
+    SDF_GS_TRXDIR = 0x53
+};
+
+/* Return nonzero while either foreground fade direction is enabled. */
+s32 dds3FadeCheck(void);
+
+void dds3FadeIn(s32 red, s32 green, s32 blue, s32 duration);
+
+u32 dds3GetProcessData(const dds3ProcessID_t *task);
+
+/* Advance caller-owned state, returning its next 32-bit value. NULL selects
+ * the shared effect RNG state. */
+u32 dds3GetRandA(EffRandState *state);
+
+dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+/*
+ * Append child to parent's child list, detaching it from any previous parent.
+ * This hierarchy controls teardown: parent finalization calls
+ * dds3KillProcess(child, 0) for linked children before its destroy callback.
+ * It does not change scheduler queue membership.
+ */
+void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *child);
+
+/* Returns a borrowed task from the scheduler queues, or NULL when none has this priority. */
+dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+void evtBitOff(s32 flag);
+
+EvtSolarCyclePhase evtGetAgeOfMoon16(void);
+
+void evtMakeEventPackName(EvtPackEventId eventId, char *buffer);
+
+/* Event-pack IDs identify camp tasks; lookup returns the scheduler handle. */
+dds3ProcessID_t *evtSearchEventPack(EvtPackEventId eventId);
+
+/* Return the signed control-state byte as a query result, not a boolean or a
+ * stored phase. NO_ACTIVE_CONTROL (0) covers a missing window and control state
+ * two hidden by the gate; stored zero also passes through. Visible stored states
+ * one, two and three report ACTIVE, GATED and CLEANUP. Other stored values pass
+ * through unchanged. */
+EvtMessageWindowControlResult fclChkMessage(void);
+
+/* Close the active display channel and return its status. */
+s32 fclDestroyMessage(void);
+
+s32 fclInitMessage(struct ItfMesSub *definition);
+
+/* Start a display entry; return zero if no window is open, one if it starts. */
+s32 fclStartMessage(s32 entry);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+void frSetDrawPosition(struct _FRQ *glyph, s32 x, s32 y);
+
+/* Replace each child render word along the borrowed glyph chain. */
+void frSetFontColor(struct _FRQ *parentNode, u32 colorWord);
+
+/* Bind a texture and emit a sprite from two vertices and packed UV/color pairs. */
+void itfMiscDrawSpritePrim(DrawVertex *vertices, DrawColorRec *uv,
+                           DrawColorRec *colors, s32 tail,
+                           const sdfTexHandle_t *borrowedTexture, s32 flag,
+                           sdfDrawTag_t *command);
+
+void *memset(void *dst, s32 value, u32 size);
+
+/* Apply volume and pan to a sequence track through the command queue. */
+void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
+
+void *sdfChipAllocDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+void sdfLinkLoadImage(
+    sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,
+    s32 destinationY, s32 width, s32 height, s32 sourceAddress,
+    s32 (*allocatePacket)(s32));
+
+/* resourceAddress is copied as a packet metadata word, not dereferenced. */
+void sdfLinkStoreFrameImage(
+    sdfDrawTag_t *list, sdfPreDrawTag_t *linkedList, s32 sourceX, s32 sourceY,
+    s32 width, s32 height, s32 resourceAddress, s32 arg7, s32 arg8,
+    s32 (*allocatePacket)(s32));
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+struct sdfMemHandle_t *sdfMemAllocFromTailDirect(s32 requestedBytes);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+void sdfMemGetInfo(SdfGeneralHeapStats *stats);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+void sdfPreDrawChainLink(SdfPacketChain *chain, sdfPreDrawTag_t *node);
+
+void sdfPreDrawTagInit(sdfPreDrawTag_t *list);
+
+struct sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*allocator)(s32));
+
+s32 strcmp(const char *a, const char *b);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/evt_message_window_api.h"
@@ -287,8 +504,6 @@ extern s32 mnuCampQuadTexcoords[4];
 
 extern s32 mnuCampQuadColor[4];
 
-extern sdfGrOt_t sdfGrOtTable[];
-
 extern ShopRankPriceRow mnuShopRankPriceRows[];
 
 /* Schedule the camp task only if no task currently owns this event ID. */
@@ -300,17 +515,17 @@ void evtKillEventPack(EvtPackEventId eventId);
 void mnuCampDestroyAllTasks(void);
 
 /* Shift the selected track's frames; values exactly at the upper limit are kept. */
-void mnuShopScrollList(evtViewerInfo_t *scene, s32 delta);
+void mnuShopScrollList(dds_evtViewerInfo_t *scene, s32 delta);
 
 /* Shift qualifying keys and their supported payload offsets. Preserve the
  * incoming base/offset/ubase arguments when no key overwrites them: the native
  * cleanup call receives those values even after an empty track traversal. */
-void mnuFxWorldScrollDelta(evtViewerInfo_t *scene, s32 delta, s32 threshold, s32 base, s32 offset, s32 ubase);
+void mnuFxWorldScrollDelta(dds_evtViewerInfo_t *scene, s32 delta, s32 threshold, s32 base, s32 offset, s32 ubase);
 
 /* Process keys at or beyond threshold, restarting at the head after each call. */
-void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold);
+void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold);
 
-void mnuAdjustTimelineDurations(evtViewerInfo_t *world, s32 threshold, s32 delta);
+void mnuAdjustTimelineDurations(dds_evtViewerInfo_t *world, s32 threshold, s32 delta);
 
 /* Default three-vector slot contents; the trailing two scalars have unknown roles. */
 void mnuInitializeCampPanelVisualDefaults(f32 *firstVector, f32 *secondVector, f32 *thirdVector, f32 *scalarA, f32 *scalarB);
@@ -321,7 +536,7 @@ extern f32 evtHokanFloat(s32 enable, f32 t, f32 first, f32 second);
 
 void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **selected, EvtRuntimeChild **future);
 
-void mnuSampleCampPanelVisualTrack(evtViewerInfo_t *runtime, EvtRuntimeGroup *group, s32 frame,
+void mnuSampleCampPanelVisualTrack(dds_evtViewerInfo_t *runtime, EvtRuntimeGroup *group, s32 frame,
                    f32 (*outVectors)[4], f32 *outValueA, f32 *outValueB);
 
 void mnuCampInitializeDisplayDefaults(CampDisplayDefaults *display);
@@ -331,11 +546,11 @@ void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeC
 void mnuBlendCampDisplayFields(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
 
 /* Use defaults before the first key; otherwise blend the bounding keys. */
-void mnuSampleCampDisplayTrack(evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display);
+void mnuSampleCampDisplayTrack(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display);
 
 void mnuInitializeCampListLayoutDefaults(EvtBlendKey *layout);
 
-void mnuSampleCampListLayoutTrack(evtViewerInfo_t *viewer, EvtRuntimeGroup *track, EvtBlendKey *out);
+void mnuSampleCampListLayoutTrack(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, EvtBlendKey *out);
 
 /* Blend the display fields; control bytes always come from the lower key. */
 void mnuBlendCampDisplayFields(EvtRuntimeChild *from, EvtRuntimeChild *to,
@@ -350,58 +565,58 @@ u32 mnuShouldBlockViewerEndCountdown(void);
 void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsOut);
 
 /* Return the scene's matching name index, or -1 when the track list has no match. */
-EvtViewerNameIndex mnuCampFindMatchingEntryIndex(PolyMovieWork *lookup, evtViewerInfo_t *scene, s32 nameIndex);
+EvtViewerNameIndex mnuCampFindMatchingEntryIndex(PolyMovieWork *lookup, dds_evtViewerInfo_t *scene, s32 nameIndex);
 
 /* Return the first track with this fixed-width name, or NULL when absent. */
-EvtRuntimeGroup *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *name);
+EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *name);
 
 /* Follow zero-coded alternatives, clear on code 1, otherwise resolve a name.
  * Keep the native signed code and separately retained halfword bits distinct. */
-void campResolvePendingValue(evtViewerInfo_t *scene, EvtRuntimeChild *cue);
+void campResolvePendingValue(dds_evtViewerInfo_t *scene, EvtRuntimeChild *cue);
 
 void mnuDrawCampScaledTexture(sdfTexHandle_t *texture, CampDisplayDefaults *display);
 
 /* Clear each track's unknown word and the scene state; do not alter links or values. */
-void fldResetCampSceneEntries(evtViewerInfo_t *scene);
+void fldResetCampSceneEntries(dds_evtViewerInfo_t *scene);
 
 /* Blend the first camera-color track at the clamped frame. Lookup includes
  * the track base, but interpolation retains the native unre-based key frames.
  * Without a future key, pass zero blend and the uninitialized fallback block. */
-void evtApplyCameraColorTrackAtFrame(evtViewerInfo_t *scene);
+void evtApplyCameraColorTrackAtFrame(dds_evtViewerInfo_t *scene);
 
 /* The genuine three-row typed candidate remains non-matching. */
-void fldApplyCameraColorKeyWords(evtViewerInfo_t *viewer, const EvtBlendKey *source);
+void fldApplyCameraColorKeyWords(dds_evtViewerInfo_t *viewer, const EvtBlendKey *source);
 
-void evtUpdateCameraColorTrackEffect(evtViewerInfo_t *scene);
+void evtUpdateCameraColorTrackEffect(dds_evtViewerInfo_t *scene);
 
-void mnuCampInitFontResource(evtViewerInfo_t *scene);
+void mnuCampInitFontResource(dds_evtViewerInfo_t *scene);
 
-void mnuCampLinkFontGlyph(evtViewerInfo_t *scene);
+void mnuCampLinkFontGlyph(dds_evtViewerInfo_t *scene);
 
 /* Retail keeps only the divide-by-zero check (break 7) of a division whose result is never used. */
 void mnuCampCheckClockDivisor(void);
 
-void mnuEnterCampSceneMenuState(evtViewerInfo_t *scene);
+void mnuEnterCampSceneMenuState(dds_evtViewerInfo_t *scene);
 
 extern s32 dds3AllocRenderTexture(u16 width, u16 height, f32 value);
 
-extern void mnuShopCreateDescriptorSurface(evtViewerInfo_t *scene);
+extern void mnuShopCreateDescriptorSurface(dds_evtViewerInfo_t *scene);
 
-extern void mnuShopSubmitDescriptor(evtViewerInfo_t *scene);
+extern void mnuShopSubmitDescriptor(dds_evtViewerInfo_t *scene);
 
-extern void mnuShopQueueAuxiliaryTexture(evtViewerInfo_t *scene);
+extern void mnuShopQueueAuxiliaryTexture(dds_evtViewerInfo_t *scene);
 
 /* Stages 1, 3, 4 and 5 fall through; stage 0 stops. All other stages,
  * including 2, advance once through the default arm. */
-void mnuAdvanceShopMenuState(evtViewerInfo_t *scene);
+void mnuAdvanceShopMenuState(dds_evtViewerInfo_t *scene);
 
 extern sdfGrOt_t D_00380708;
 
 extern u8 D_00380860[];
 
-void mnuShopCreateDescriptorSurface(evtViewerInfo_t *scene);
+void mnuShopCreateDescriptorSurface(dds_evtViewerInfo_t *scene);
 
-void mnuShopSubmitDescriptor(evtViewerInfo_t *scene);
+void mnuShopSubmitDescriptor(dds_evtViewerInfo_t *scene);
 
 extern sdfGrOt_t D_003805A8;
 
@@ -413,36 +628,36 @@ extern s32 D_003C9A10[4];
 
 void mnuShopQueueAuxiliaryTexturePacket(s32 alpha);
 
-void mnuShopQueueAuxiliaryTexture(evtViewerInfo_t *scene);
+void mnuShopQueueAuxiliaryTexture(dds_evtViewerInfo_t *scene);
 
 void func_0025F2C8(void);
 
-void mnuCampSetPrimaryOption(evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex);
+void mnuCampSetPrimaryOption(dds_evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex);
 
-MnuCampPrimaryOptionIndex mnuCampGetPrimaryOption(evtViewerInfo_t *scene);
+MnuCampPrimaryOptionIndex mnuCampGetPrimaryOption(dds_evtViewerInfo_t *scene);
 
-void mnuCampSetSecondaryOption(evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex);
+void mnuCampSetSecondaryOption(dds_evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex);
 
-MnuCampSecondaryOptionIndex mnuCampGetSecondaryOption(evtViewerInfo_t *scene);
+MnuCampSecondaryOptionIndex mnuCampGetSecondaryOption(dds_evtViewerInfo_t *scene);
 
 /* Clear script registers 200..209 whose type-4 key is not active at this frame. */
-void mnuValidateCampTimelineScriptRegisters(evtViewerInfo_t *scene);
+void mnuValidateCampTimelineScriptRegisters(dds_evtViewerInfo_t *scene);
 
 /* Save the first and last four-component vectors; leave the middle unsaved. */
-void mnuShopSavePrimaryTransform(evtViewerInfo_t *scene);
+void mnuShopSavePrimaryTransform(dds_evtViewerInfo_t *scene);
 
 /* Save all three vectors and enable the middle-vector restore path. */
-void mnuShopSaveFullTransform(evtViewerInfo_t *scene);
+void mnuShopSaveFullTransform(dds_evtViewerInfo_t *scene);
 
 /* Keep the native restore-mode snapshot and last/middle/first write order. */
-void mnuShopRestoreTransform(evtViewerInfo_t *scene);
+void mnuShopRestoreTransform(dds_evtViewerInfo_t *scene);
 
 /* Append a distinct identifier only while the native registry has room. */
-void fldRegisterCampSceneId(evtViewerInfo_t *scene, s32 identifier);
+void fldRegisterCampSceneId(dds_evtViewerInfo_t *scene, s32 identifier);
 
 /* Queue the scene's BGM ID with each registered variation, then clear the list.
  * The loop bound is read again after each queue call, not cached up front. */
-void mnuReleaseCampSceneRegisteredIds(evtViewerInfo_t *scene);
+void mnuReleaseCampSceneRegisteredIds(dds_evtViewerInfo_t *scene);
 
 void mnuEvaluateCubicBezierPoint(f32 parameter, const s32 *x, const s32 *y, s32 *outX, s32 *outY);
 
@@ -563,10 +778,6 @@ void mnuCreateCampShopPopupTasks(const s32 *stockGroup);
 void mnuCampDestroyPanelTasks(void);
 
 s32 mnuCampConsumePanelTaskCompletion(void);
-
-static inline s32 campSetHandler(MenuTerminalContext *context, s32 mode, void *callback) {
-    return mnuDispatchPopupTransition(&context->transitionWork, &context->popupState, mode, callback);
-}
 
 s32 mnuPreparePopupAndDispatchSelection(dds3ProcessID_t *callback);
 
@@ -1162,7 +1373,7 @@ s32 evtMenuSetTypeProgressFlagOnce(MenuTerminalContext *object);
 INCLUDE_ASM(const s32, "code_001CA8F8", func_001CA8F8);
 
 /* Process keys at or beyond threshold, restarting at the head after each call. */
-void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold) {
+void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold) {
     EvtRuntimeGroup *track;
     EvtRuntimeChild *key;
 
@@ -1203,7 +1414,7 @@ void mnuCampInitializeDisplayDefaults(CampDisplayDefaults *display) {
 }
 
 /* Use defaults before the first key; otherwise blend the bounding keys. */
-void mnuSampleCampDisplayTrack(evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display) {
+void mnuSampleCampDisplayTrack(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display) {
     EvtRuntimeChild *lowerKey;
     EvtRuntimeChild *upperKey;
     s32 startFrame;
@@ -1276,7 +1487,7 @@ void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsO
 INCLUDE_ASM(const s32, "code_001CA8F8", func_001CB498);
 
 /* Return the first track with this fixed-width name, or NULL when absent. */
-EvtRuntimeGroup *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *name) {
+EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *name) {
     EvtRuntimeGroup *track = scene->groups;
     while (track != NULL) {
         if (strcmp(scene->entryName[track->entryHeader], name) == 0) {

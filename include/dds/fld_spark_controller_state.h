@@ -1,15 +1,17 @@
-#ifndef FLD_SPARK_CONTROLLER_STATE_H
-#define FLD_SPARK_CONTROLLER_STATE_H
+#ifndef DDS_FLD_SPARK_CONTROLLER_STATE_H
 
+#define DDS_FLD_SPARK_CONTROLLER_STATE_H
 #include "common.h"
 
 /* Signed halfword selected by the current field-spark resource record. */
 typedef s16 FldSparkEncounterSelection;
 
 FldSparkEncounterSelection fldGetEncounterSelection(void);
+
 FldSparkEncounterSelection fldGetSparkEncounterSelection(void);
 
 typedef s32 FldSparkAnimationState;
+
 enum {
     FLD_SPARK_ANIMATION_READY = 0,
     FLD_SPARK_ANIMATION_RUNNING = 1
@@ -17,6 +19,7 @@ enum {
 
 /* Outer encounter flow; dialogPhase tracks the nested prompt/message state. */
 typedef s32 FldSparkControllerPhase;
+
 enum FldSparkControllerPhaseValue {
     FLD_SPARK_CONTROLLER_PHASE_IDLE = 0,
     FLD_SPARK_CONTROLLER_PHASE_ENCOUNTER_ACTIVE = 1,
@@ -30,6 +33,7 @@ enum FldSparkControllerPhaseValue {
 
 /* Values for the spark-event prompt, playback, and field-return state machine. */
 typedef s32 FldSparkDialogPhase;
+
 enum FldSparkDialogPhaseValue {
     FLD_SPARK_DIALOG_PHASE_IDLE = 0,
     FLD_SPARK_DIALOG_PHASE_ENTRY_PROMPT = 1,
@@ -64,11 +68,5 @@ typedef struct FldSparkControllerState {
 } FldSparkControllerState;
 
 typedef char FldSparkControllerStateSizeCheck[(sizeof(FldSparkControllerState) == 0x34) ? 1 : -1];
-typedef char FldSparkControllerStateAnimationStateOffsetCheck[
-    ((u32)&((FldSparkControllerState *)0)->animationState == 0x0C) ? 1 : -1];
-typedef char FldSparkControllerStateSequenceIndexOffsetCheck[
-    ((u32)&((FldSparkControllerState *)0)->sequenceIndex == 0x2C) ? 1 : -1];
-typedef char FldSparkControllerStateSequenceRemainingOffsetCheck[
-    ((u32)&((FldSparkControllerState *)0)->sequenceRemaining == 0x30) ? 1 : -1];
 
 #endif

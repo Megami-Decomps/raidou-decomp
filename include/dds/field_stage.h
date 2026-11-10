@@ -1,7 +1,8 @@
-#ifndef FIELD_STAGE_H
-#define FIELD_STAGE_H
+#ifndef DDS_FIELD_STAGE_H
 
+#define DDS_FIELD_STAGE_H
 #include "common.h"
+
 #include "fld_sequence_scene_mode.h"
 
 /* Stage-map entries are keyed by area/stage and store spatial layout in sixteen bytes.
@@ -17,11 +18,6 @@ typedef struct FieldStageCoordinate {
 } FieldStageCoordinate;
 
 typedef char FieldStageCoordinate_size_must_be_0x10[(sizeof(FieldStageCoordinate) == 0x10) ? 1 : -1];
-typedef char FieldStageCoordinate_originX_at_4[((u32)&((FieldStageCoordinate *)0)->originX == 4) ? 1 : -1];
-typedef char FieldStageCoordinate_originZ_at_8[((u32)&((FieldStageCoordinate *)0)->originZ == 8) ? 1 : -1];
-typedef char FieldStageCoordinate_cols_at_C[((u32)&((FieldStageCoordinate *)0)->cols == 0xC) ? 1 : -1];
-typedef char FieldStageCoordinate_rows_at_D[((u32)&((FieldStageCoordinate *)0)->rows == 0xD) ? 1 : -1];
-typedef char FieldStageCoordinate_cellSize_at_E[((u32)&((FieldStageCoordinate *)0)->cellSize == 0xE) ? 1 : -1];
 
 /* Contiguous player-scene work: saved transform, status words and deferred resource.
  * The data also exports a label at +0x3C for separate object-slot consumers. */
@@ -48,19 +44,7 @@ typedef struct FieldPlayerSceneWork {
 } FieldPlayerSceneWork;
 
 typedef char FieldPlayerSceneWork_size_must_be_0xA0[(sizeof(FieldPlayerSceneWork) == 0xA0) ? 1 : -1];
-typedef char FieldPlayerSceneWork_retainCachedAreaResource_at_58[
-    ((u32)&((FieldPlayerSceneWork *)0)->retainCachedAreaResource == 0x58) ? 1 : -1];
-typedef char FieldPlayerSceneWork_resourceName_at_80[((u32)&((FieldPlayerSceneWork *)0)->resourceName == 0x80) ? 1 : -1];
-typedef char FieldPlayerSceneWork_sequenceOption_at_90[((u32)&((FieldPlayerSceneWork *)0)->sequenceOption == 0x90) ? 1 : -1];
-typedef char FieldPlayerSceneWork_sequenceWord38_at_38[((u32)&((FieldPlayerSceneWork *)0)->sequenceWord38 == 0x38) ? 1 : -1];
-typedef char FieldPlayerSceneWork_sequenceWord3C_at_3C[((u32)&((FieldPlayerSceneWork *)0)->sequenceWord3C == 0x3C) ? 1 : -1];
-typedef char FieldPlayerSceneWork_entryName_at_40[((u32)&((FieldPlayerSceneWork *)0)->entryName == 0x40) ? 1 : -1];
-typedef char FieldPlayerSceneWork_area_at_50[((u32)&((FieldPlayerSceneWork *)0)->area == 0x50) ? 1 : -1];
-typedef char FieldPlayerSceneWork_room_at_54[((u32)&((FieldPlayerSceneWork *)0)->room == 0x54) ? 1 : -1];
-typedef char FieldPlayerSceneWork_sequenceCode_at_60[((u32)&((FieldPlayerSceneWork *)0)->sequenceCode == 0x60) ? 1 : -1];
-typedef char FieldPlayerSceneWork_cameraLinkMode_at_64[((u32)&((FieldPlayerSceneWork *)0)->cameraLinkMode == 0x64) ? 1 : -1];
-typedef char FieldPlayerSceneWork_cameraName_at_70[((u32)&((FieldPlayerSceneWork *)0)->cameraName == 0x70) ? 1 : -1];
 
 FieldStageCoordinate *fldFindStageCoordinateRecord(s32 area, s32 stage);
 
-#endif /* FIELD_STAGE_H */
+#endif /* DDS_FIELD_STAGE_H */

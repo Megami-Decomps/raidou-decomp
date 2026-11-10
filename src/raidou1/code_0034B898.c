@@ -5,6 +5,189 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "datCalc.h"
+
+#include "kernel_draw.h"
+
+#include "newdata.h"
+
+#include "sdfDevCons.h"
+
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_world_primary.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/dsp_entry_api.h"
+
+#include "dds/evt_world.h"
+
+#include "dds/evt_world_object_api.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/kwln.h"
+
+#include "dds/mdl.h"
+
+#include "dds/mdl_asset_request.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_delayed_resource_check_api.h"
+
+#include "dds/sdf_motion.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_projection.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/snd_sequence_volume_pan.h"
+
+#include "dds/ui_color.h"
+
+/* The primary object returned by dds3GetActiveScene is distinct from the active
+ * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
+ * object +0x18 -> table +0x08 -> 0x0C-byte slot entries, each with head +0x04.
+ * DDS1 and DDS2 use the same observed layout. Node payloads depend on the slot. */
+enum {
+    EVT_WORLD_SLOT_MOVIE = 3, /* viewer movie-time lists: byte offset 0x28 */
+    EVT_WORLD_SLOT_CAMERA = 4, /* linked cameras; active nodes supply the view transform */
+    EVT_WORLD_SLOT_UNIT = 5   /* unit/group/lip-sync lists: byte offset 0x40 */
+};
+
+/* Convert three Euler angle components to the VU0 quaternion output.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void FromEuler(f32 x, f32 y, f32 z);
+
+/* Build a look-at basis from four-float target, eye, and up vectors. */
+void LookAtMatrix(const f32 *targetPoint, const f32 *eyePosition, const f32 *upVector);
+
+enum SdfMotionStateValue {
+    SDF_MOTION_STATE_UNINITIALIZED = 0,
+    SDF_MOTION_STATE_INITIALIZED = 1,
+    SDF_MOTION_STATE_SAMPLING = 4,
+    SDF_MOTION_STATE_TERMINAL = 5,
+    SDF_MOTION_STATE_SUSPENDED = 6,
+};
+
+/* Append the common rectangle used to frame a grid of sprite cells. */
+void dds3ConsPanelTagLink(struct sdfDrawTag_t *packetList, s32 column, s32 row,
+                        s32 columnCount, s32 rowCount);
+
+struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
+
+dds3Basic_t *dds3GetActiveCameraSceneBasic(dds3Basic_t *world);
+
+/* Return the borrowed primary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetActiveScene(void);
+
+/* Return the current frame draw-buffer slot (0 or 1). */
+u32 dds3GetFrameID(void);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+extern SdfProjectionRecord dds3ScreenParam;
+
+void dds3SetScreenFovy(f32 value);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+/* Create and select the world object for an area/room pair; returns 1 after setup. */
+s32 evtLoadArea(s32 area, s32 room);
+
+/* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
+u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
+
+/* Start a display entry; return zero if no window is open, one if it starts. */
+s32 fclStartMessage(s32 entry);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+/* Model-context lifetime, per-frame update, and broadcast accessors. */
+/* Destroy one context. If it leaves its resource-owning group empty, group
+ * teardown also releases that group's registered assets. */
+void mdlFree(dds3ModelHandle_t *ctx);
+
+/* The referenced halfword is promoted to a word-sized SDK result. */
+s32 mdlGetNumOfCut(const dds3ModelHandle_t *ctx, s32 searchId);
+
+void mdlLink(dds3ModelHandle_t *ctx, struct sdfGrOt_t **surfaces);
+
+/* Allocate a distinct caller-owned context linked to the registered group.
+ * Contexts share the group node and assets; release each context with mdlFree. */
+dds3ModelHandle_t *mdlLoad(u32 group, u32 id);
+
+void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+/* A nonblocking request returns QUEUED when it starts work and
+ * ALREADY_PENDING when work for the key already exists. Otherwise the result
+ * is the ready dds3ModelResrc_t address. */
+MdlAssetRequestResult mdlPrepare(
+    s32 group, s32 id, MdlAssetRequestMode requestMode);
+
+void mdlSetPosition(dds3ModelHandle_t *ctx);
+
+void mdlSetRotate(dds3ModelHandle_t *ctx);
+
+void mdlSetScale(dds3ModelHandle_t *ctx);
+
+void mdlSmoothLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+                          f32 blendDurationFrames);
+
+void mdlSmoothSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+                       f32 blendDurationFrames);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+/* Apply volume and pan to a sequence track through the command queue. */
+void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
+
+extern void sdf3DMakeScreenParam(SdfCamera *);
+
+extern void sdf3DMakeViewportPacket(struct ConsMatrixPacket *, SdfProjectionRecord *, const Matrix4 *);
+
+extern void sdf3DSetCamera(const SdfProjectionRecord *, const Matrix4 *);
+
+void *sdfChipAllocDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+SdfDelayedResourceCheckResult sdfDelayedResrcCheck(void);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/dsp_entry_api.h"
@@ -121,10 +304,7 @@
 
 #include "dds/sdf_packet_alloc.h"
 
-/* Declared before first use (were implicit int). */
-extern s32 datAddHp(datUnitWork_t *unit, s32 delta);
-
-extern s32 datAddMp(datUnitWork_t *unit, s32 delta);
+extern s32 datAddMp(dds_datUnitWork_t *unit, s32 delta);
 
 extern void evtFreeStage(void);
 
@@ -136,7 +316,7 @@ extern void mnuDrawIconPanelDefaultFlag(s32 x, s32 y, s32 depth, s32 fade, MenuP
 
 extern void mnuUpdateWindowPanelHandleStates(MenuPanelHandles *panel);
 
-extern s32 sdfApplyCommandResults(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
+extern s32 sdfApplyCommandResults(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item);
 
 extern void sndDestroyFileQueueWrapper(struct SoundHandleNode *node);
 
@@ -254,7 +434,7 @@ extern void fldEsutoMaStart(void);
 
 extern void fldRiberaMaStart(void);
 
-extern void mnuPopulatePartyPanelSlot(datUnitWork_t *entry, s32 unused, u32 index, PartyPanel *panel);
+extern void mnuPopulatePartyPanelSlot(dds_datUnitWork_t *entry, s32 unused, u32 index, PartyPanel *panel);
 
 extern dds3Basic_t *evtAddCamera(f32 *pos, f32 *rot);
 
@@ -343,8 +523,6 @@ typedef struct MenuPanelState {
 
 typedef char MenuPanelStateSizeCheck[(sizeof(MenuPanelState) == MNU_PANEL_STATE_BYTES) ? 1 : -1];
 
-typedef char MenuPanelStateResourceHandleOffsetCheck[((u32)&((MenuPanelState *)0)->resourceHandle == 0x60) ? 1 : -1];
-
 /* Allocate a zeroed native panel state with the requested dimensions. */
 MenuPanelState *mnuCreatePanelState(s32 width, s32 height);
 
@@ -408,7 +586,7 @@ extern void mnuDrawPanelItemValue(s32 x, s32 y, s32 depth, s32 mode, MenuPanelIt
 
 /* Draw the five stat panels of a group (values from the party record, if any), then ramp the
  * group's fade value up to 0x100. */
-void mnuDrawAndAdvancePanelGroup(s32 x, s32 y, s32 depth, datUnitWork_t *partyRecord, MenuPanelGroup *group, s32 drawFlags);
+void mnuDrawAndAdvancePanelGroup(s32 x, s32 y, s32 depth, dds_datUnitWork_t *partyRecord, MenuPanelGroup *group, s32 drawFlags);
 
 void mnuSetGroupSelection(MenuPanelGroup *group, s32 index, s32 selection, u32 option);
 
@@ -426,7 +604,7 @@ void mnuDrawRangeSpriteVariant(u32 x, u32 y, u32 depth, u32 color,
 extern const u8 *D_003BAA8C;
 
 /* The source table holds text and empty-slot XY banks, each with two columns. */
-void mnuDrawPartyInfoSprites(s32 x, s32 y, s32 depth, datUnitWork_t *entry,
+void mnuDrawPartyInfoSprites(s32 x, s32 y, s32 depth, dds_datUnitWork_t *entry,
                              MenuSpriteState *spriteState, s32 surface);
 
 /* Create the DDS1 sprite record, including its five resource sets and blend weight. */
@@ -445,11 +623,11 @@ extern const MenuPoint D_003B2450[];
 
 extern const MenuPoint D_003B2468[];
 
-extern void mnuDrawRangeCostAndIcon(s32, s32, s32, s32, u32, datUnitWork_t *, u16, s32, s32, EffectSlotSet *, EffectSlotSet *, u32);
+extern void mnuDrawRangeCostAndIcon(s32, s32, s32, s32, u32, dds_datUnitWork_t *, u16, s32, s32, EffectSlotSet *, EffectSlotSet *, u32);
 
 /* Reuse the frame-coordinate workspace for the next phase's row count.
  * See docs/idioms.md, "Profile contents: coordinate-to-counter workspace". */
-void mnuDrawPartyProfilePanelContents(s32 x, s32 y, s32 depth, datUnitWork_t *actor, s32 profile, MenuSimpleSpriteState *panel, s32 surface);
+void mnuDrawPartyProfilePanelContents(s32 x, s32 y, s32 depth, dds_datUnitWork_t *actor, s32 profile, MenuSimpleSpriteState *panel, s32 surface);
 
 void mnuResetGradientFadeColor(MenuGradientFade *state, s32 color);
 
@@ -536,10 +714,10 @@ void mnuDrawPanelItemValue(s32 x, s32 y, s32 depth, s32 mode, MenuPanelItem *ite
 
 void mnuSetProfilePanelValues(MenuProfilePanel *panel, s32 capValue, s32 progressValue);
 
-extern s8 scrGetSelectedOperandIndex(datUnitWork_t *);
+extern s8 scrGetSelectedOperandIndex(dds_datUnitWork_t *);
 
 /* Create a profile panel from the selection state's current profile ID and record. */
-MenuProfilePanel *mnuCreateProfilePanel(datUnitWork_t *selectionState);
+MenuProfilePanel *mnuCreateProfilePanel(dds_datUnitWork_t *selectionState);
 
 void mnuFreeProfilePanelWork(MenuProfilePanel *panel);
 
@@ -585,7 +763,7 @@ void mnuAttachAndMarkMenuEntry(s32 entrySlotAddress, s32 entryAddress);
 /* Bind the current popup entry only when its saved address is nonzero. */
 void mnuBindPresentMenuEntry(MenuPopupState *state, s32 *entrySlot);
 
-void mnuPopulatePartyPanelSlot(datUnitWork_t *partyRecord, s32 unused, u32 index, PartyPanel *panel);
+void mnuPopulatePartyPanelSlot(dds_datUnitWork_t *partyRecord, s32 unused, u32 index, PartyPanel *panel);
 
 /* Populate occupied party slots; empty slots retain a unit index of -1. */
 void mnuInitPartyPanelSlots(PartyPanel *panel);
@@ -608,7 +786,7 @@ void mnuPlayInputSoundKind(s32 inputFlags, s8 soundKind);
 void mnuPlayDefaultInputSounds(u32 inputFlags);
 
 /* Find the first occupied slot with the same table ID; zero also serves as no-match. */
-s32 mnuFindMatchingPartyEntryIndex(const datUnitWork_t *borrowedEntry);
+s32 mnuFindMatchingPartyEntryIndex(const dds_datUnitWork_t *borrowedEntry);
 
 extern s8 mnuSkillCategoryRangeMapRows[];
 
@@ -637,31 +815,31 @@ u16 mnuGetCommandFlagMask(s32 commandId);
 u8 mnuGetRangeEntryKind(u32 commandId);
 
 /* HP-kind values use max HP as a percentage basis; other kinds retain the stored value. */
-u16 mnuGetAdjustedEntryValue(s32 commandId, datUnitWork_t *actor);
+u16 mnuGetAdjustedEntryValue(s32 commandId, dds_datUnitWork_t *actor);
 
 u16 mnuGetAdjustedPartyRangeValue(s32 id);
 
 /* Compare the stored raw HP/MP cost; equality is affordable and other kinds pass. */
 MnuEntryCostAffordability mnuCanAffordEntryCost(
-    u16 commandId, const datUnitWork_t *actorEntry);
+    u16 commandId, const dds_datUnitWork_t *actorEntry);
 
 /* Return the menu's three-way unavailable-marker status. */
-MnuEntryUseStatus mnuGetEntryUseStatus(datUnitWork_t *actorEntry, u16 commandId);
+MnuEntryUseStatus mnuGetEntryUseStatus(dds_datUnitWork_t *actorEntry, u16 commandId);
 
 /* Report insufficient raw HP/MP cost; equality and unhandled kinds return zero. */
-s32 mnuIsEntryCostUnaffordable(u16 commandId, datUnitWork_t *actor);
+s32 mnuIsEntryCostUnaffordable(u16 commandId, dds_datUnitWork_t *actor);
 
 /* Deduct an affordable stored HP/MP cost; unhandled kinds succeed without a deduction. */
-s32 mnuConsumeEntryCost(s32 commandId, datUnitWork_t *actorEntry);
+s32 mnuConsumeEntryCost(s32 commandId, dds_datUnitWork_t *actorEntry);
 
 /* Map target_type to the menu's single-entry or party-group selection category. */
 MnuAbilityTargetCategory mnuGetAbilityTargetCategory(u16 commandId);
 
-void datDelDevil(u16 ability, datUnitWork_t *target, datUnitWork_t *entry);
+void datDelDevil(u16 ability, dds_datUnitWork_t *target, dds_datUnitWork_t *entry);
 
-u32 ptyCheckFieldUseOverride(s32 context, s32 ability, s32 target, datUnitWork_t *entry);
+u32 ptyCheckFieldUseOverride(s32 context, s32 ability, s32 target, dds_datUnitWork_t *entry);
 
-s32 ptySkillApplyFieldUseEffect(MenuPageWindow *context, u16 ability, datUnitWork_t *target, datUnitWork_t *selectedEntry);
+s32 ptySkillApplyFieldUseEffect(MenuPageWindow *context, u16 ability, dds_datUnitWork_t *target, dds_datUnitWork_t *selectedEntry);
 
 /* Test for the exact signed-byte marker one, not merely a nonzero selector byte. */
 u8 mnuIsAbilityValueMarked(u32 commandId);
@@ -674,37 +852,37 @@ u8 mnuIsBulletItemId(s32 id);
 
 u8 mnuIsSolarPricedItemId(s32 id);
 
-u16 mnuGetPartyEntryMenuValue(datUnitWork_t *entry);
+u16 mnuGetPartyEntryMenuValue(dds_datUnitWork_t *entry);
 
 /* Count inventory plus one for every matching slot value, without an occupancy test.
  * This counter accepts only IDs 0xA0..0xBE. */
 PtyBulletItemCount ptyCountBulletItem(PtyBulletItemId bulletItemId);
 
-u32 mnuSetPartyEntryMenuValue(datUnitWork_t *entry, u32 menuValue);
+u32 mnuSetPartyEntryMenuValue(dds_datUnitWork_t *entry, u32 menuValue);
 
-u16 mnuGetPartyEntryMenuValue(datUnitWork_t *entry);
+u16 mnuGetPartyEntryMenuValue(dds_datUnitWork_t *entry);
 
 extern u16 D_0037CE00[];
 
 /* Match an item ID, select its mode-dependent SE ID, and start it; id changes roles. */
 s32 sndPlayPartyItemSe(u32 id, s32 soundMode);
 
-extern u32 datComputeSkillBoostedMaxHp(datUnitWork_t *);
+extern u32 datComputeSkillBoostedMaxHp(dds_datUnitWork_t *);
 
-extern u32 datComputeSkillBoostedMaxMp(datUnitWork_t *);
+extern u32 datComputeSkillBoostedMaxMp(dds_datUnitWork_t *);
 
 /* Apply a permanent stat/capacity item and refill eligible vitals.
  * Returns 0 for other items, 1 when accepted, or 2 when capped and already full. */
-s32 btlItemApplyPermanentBonus(u16 itemId, datUnitWork_t *unit);
+s32 btlItemApplyPermanentBonus(u16 itemId, dds_datUnitWork_t *unit);
 
 s32 btlItemApplyDirectEffect(MenuPageWindow *context, u16 item, s32 mode,
-                             datUnitWork_t *unit);
+                             dds_datUnitWork_t *unit);
 
 /* Return the first matching status-icon index in native priority order, or none. */
-MnuPartyStatusIconIndex mnuGetPartyStatusIconIndex(const datUnitWork_t *partyRecord);
+MnuPartyStatusIconIndex mnuGetPartyStatusIconIndex(const dds_datUnitWork_t *partyRecord);
 
 /* Return one bit for the first occupied matching table ID, or zero when absent. */
-s32 mnuGetMatchingPartyEntryMask(const datUnitWork_t *borrowedEntry);
+s32 mnuGetMatchingPartyEntryMask(const dds_datUnitWork_t *borrowedEntry);
 
 /* Classify the truncated signed percentage into default, below-half, and
  * below-quarter bands. A zero divisor returns the default class. */
@@ -881,8 +1059,6 @@ extern s32 D_003BC7BC;
 extern const char *D_003BC7B8;
 
 extern char D_003BC7C0[];
-
-extern sdfGrOt_t sdfGrOtTable[];
 
 extern f32 dds3CameraObjectBasicGetFovy(const dds3Basic_t *camera);
 

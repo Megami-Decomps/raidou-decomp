@@ -1,27 +1,33 @@
-#ifndef EVT_STAGE_TEST_API_H
-#define EVT_STAGE_TEST_API_H
+#ifndef DDS_EVT_STAGE_TEST_API_H
 
+#define DDS_EVT_STAGE_TEST_API_H
 #include "common.h"
+
 #include "mdl_asset_request.h"
 
 /* Number of nonzero entries in one eight-value stage-test motion column. */
 typedef u32 EvtStageMotionColumnCount;
+
 EvtStageMotionColumnCount evtStageTestCountFlags(s32 columnKind);
 
 typedef s32 EvtStageTestSelectionResult;
 
 #define EVT_STAGE_TEST_SELECTION_UNCHANGED 0
+
 #define EVT_STAGE_TEST_SELECTION_SCHEDULED 1
 
 EvtStageTestSelectionResult evtStageTestSelectEntry(
     s32 encodedIndex, s32 initialMotionIndex,
     MdlAssetRequestMode assetRequestMode);
+
 MdlAssetRequestResult evtStageTestRequestModelAsset(
     s32 resource, s32 modelId, MdlAssetRequestMode requestMode);
+
 void evtStageTestSelectEntryWithoutInitialValue(
     u16 entryIndex, MdlAssetRequestMode assetRequestMode);
 
 typedef s32 EvtStageMotionQueueStatus;
+
 enum {
     EVT_STAGE_MOTION_QUEUE_SETTLED = 0,
     EVT_STAGE_MOTION_QUEUE_PENDING = 1

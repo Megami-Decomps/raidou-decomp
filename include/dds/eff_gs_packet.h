@@ -1,6 +1,6 @@
-#ifndef EFF_GS_PACKET_H
-#define EFF_GS_PACKET_H
+#ifndef DDS_EFF_GS_PACKET_H
 
+#define DDS_EFF_GS_PACKET_H
 #include "common.h"
 
 /* An effect's GS register packet: DMA, VIF and GIF tags, then one register write. */

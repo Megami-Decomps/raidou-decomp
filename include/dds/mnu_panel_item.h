@@ -1,10 +1,12 @@
-#ifndef MNU_PANEL_ITEM_H
-#define MNU_PANEL_ITEM_H
+#ifndef DDS_MNU_PANEL_ITEM_H
 
+#define DDS_MNU_PANEL_ITEM_H
 #include "common.h"
+
 #include "itf_grid_slot.h"
 
 #ifdef VERSION_DDS2
+
 /* DDS2's panel item is wider than the DDS1 variant, with five points at +0x74. */
 typedef struct MenuPanelItem {
     u8 pad00[0x10];
@@ -24,6 +26,7 @@ typedef struct MenuPanelItem {
 } MenuPanelItem;
 
 typedef char MenuPanelItem_dds2_size_check[(sizeof(MenuPanelItem) == 0xAC) ? 1 : -1];
+
 #endif
 
 #endif

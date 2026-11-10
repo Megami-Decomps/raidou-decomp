@@ -1,6 +1,6 @@
-#ifndef BTL_FIND_ACTOR_FOR_OWNER_API_H
-#define BTL_FIND_ACTOR_FOR_OWNER_API_H
+#ifndef DDS_BTL_FIND_ACTOR_FOR_OWNER_API_H
 
+#define DDS_BTL_FIND_ACTOR_FOR_OWNER_API_H
 #include "common.h"
 
 /* Runtime-sequence key stored in a battle unit's identity/owner field. */

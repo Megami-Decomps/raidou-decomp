@@ -1,6 +1,6 @@
-#ifndef BTL_HORIZONTAL_AIM_API_H
-#define BTL_HORIZONTAL_AIM_API_H
+#ifndef DDS_BTL_HORIZONTAL_AIM_API_H
 
+#define DDS_BTL_HORIZONTAL_AIM_API_H
 #include "btl_horizontal_aim_result.h"
 
 /* Reports whether horizontal aiming produced a directional quaternion.
@@ -13,4 +13,4 @@ enum {
 BtlHorizontalAimResult btlAimHorizontalDirectionVU(
     const f32 *origin, const f32 *targetPosition);
 
-#endif /* BTL_HORIZONTAL_AIM_API_H */
+#endif /* DDS_BTL_HORIZONTAL_AIM_API_H */

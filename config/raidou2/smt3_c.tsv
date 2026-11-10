@@ -331,43 +331,96 @@ aDrawTriG	c
 atanf	asm	size 0x2A8, retail 0x290
 atexit	c
 atoi	c
-btlAppendEntry	asm	declarations clash: previous declaration of `btlDebugDrawText'
+billAdvanceAnimatedFrameTransforms	c
+billAdvanceCellInstances	c
+billAdvanceEmitterInstances	c
+billAdvanceFrameInstances	c
+billAdvanceQuadInstances	c
+billAdvanceStripInstances	c
+billAllocEmitterNode	c
+billAllocQuadNode	c
+billAllocStripNode	c
+billAllocateAnimatedTransformEntries	c
+billCloneAnimatedTransform	c
+billCloneEmitterTransform	c
+billCloneQuadTransform	c
+billCloneStripTransform	c
+billCopyCurrentRecordToSnapshot	asm	compile error: structure has no member named `kind'
+billCreateAnimatedTransform	c
+billCreateCellNode	c
+billCreateEmitterTransform	c
+billCreateParticleNode	c
+billCreateQuadTransform	c
+billCreateStripTransform	c
+billCreateTrailNode	c
+billDrawCellBlendA	c
+billDrawCellBlendB	c
+billDrawClassUpdatedCellBlend	c
+billInitializeEmitterRows	c
+billInitializeQuadRows	c
+billInitializeStripRows	c
+billReleaseAlternatingTransformNode	c
+billReleaseCellNode	c
+billReleaseEmitterNode	c
+billReleaseParticleNode	c
+billReleaseQuadNode	c
+billReleaseStripNode	c
+billReleaseTrailNode	c
+billResetCellIndices	c
+billResetEmitterIndices	c
+billResetParticleIndices	c
+billResetQuadIndices	c
+billResetTrailIndices	c
+billUpdateAlternatingDrawColorAndTransform	c
+billUpdateCellDrawColorAndTransform	c
+billUpdateEmitterDrawColorAndTransform	c
+billUpdateFrameDrawColorAndTransform	c
+billUpdateParticleDrawColorAndTransform	c
+billUpdateQuadDrawColorAndTransform	c
+billUpdateStripDrawColorAndTransform	c
+billUpdateTrailDrawColorAndTransform	c
+billWriteFloatTextureTrianglePacket	c
+btlAppendEntry	c
 btlAverageActorAttribute	c
-btlBossDebugPrintfN	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlBossDebugPrintfN	c
 btlCheckEnemySpawnCapacity	asm	size 0x18, retail 0x20
 btlClearTintAndEnableCamera	c
-btlClosePfsDebugDirectory	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlCreateResourceNameRecord	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlDestroyEntryList	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlDestroyResourceDescriptor	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlDestroyResourceNameRecord	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlDrawResourcePreview	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlFormatResourceNameWithExtension	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlFormatResourceNameWithoutExtension	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlFormatSelectedResourceName	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlGetResourceBrowserSelectedIndex	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlGetResourceBrowserSelectionStatus	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlGetResourceNameSelectionStatus	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlGetResourcePathVariant	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlLoadAndReplaceResourceHandle	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlClosePfsDebugDirectory	c
+btlCreateResourceNameRecord	c
+btlDestroyEntryList	c
+btlDestroyResourceDescriptor	c
+btlDestroyResourceNameRecord	c
+btlDrawResourcePreview	c
+btlFormatResourceNameWithExtension	c
+btlFormatResourceNameWithoutExtension	c
+btlFormatSelectedResourceName	c
+btlGetConditionalEncounterInterval	c
+btlGetResourceBrowserSelectedIndex	c
+btlGetResourceBrowserSelectionStatus	c
+btlGetResourceNameSelectionStatus	c
+btlGetResourcePathVariant	c
+btlLoadAndReplaceResourceHandle	c
 btlNextScaledRandom	c
-btlOpenPfsDebugDirectory	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlOpenPfsDebugDirectory	c
 btlProjectForwardPositionToScreen	c
 btlProjectOnPlaneVU	c
 btlRandomInclusiveRange	c
-btlReplaceResourceHandle	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlResourceRecordSetName	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlRollAiBucket	c
+btlReplaceResourceHandle	c
+btlResourceRecordSetName	c
+btlRollAiBucket	asm	size 0x90, retail 0xC8
 btlRunCameraMotionResetTask	c
-btlScanDirectory	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlScanDirectory	c
 btlScriptReturnOneBasedAiBucket	asm	btlRollAiBucket is 0x002A95B0, code wants 0x003C1A60
-btlSetResourceBrowserPosition	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlSetResourceNameLengthLimit	asm	declarations clash: previous declaration of `btlDebugDrawText'
-btlSetResourceNamePosition	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlSelectConditionalEncounterGroup	c
+btlSetResourceBrowserPosition	c
+btlSetResourceNameLengthLimit	c
+btlSetResourceNamePosition	c
 btlTriangleNormalDotEdge	c
 btlTriangleNormalVU	c
-btlTrimResourceName	asm	declarations clash: previous declaration of `btlDebugDrawText'
+btlTrimResourceName	c
 btlUpdateEffectWork	c
+camAimRotation	c
+camFollowOffsetVec	c
 cdvd_exit	c
 checkModelVersion	c
 cmd_sem_init	c
@@ -404,6 +457,7 @@ cvt	c
 datDebugPrintf	asm	.sdata differs at 0x004DE420
 datGetAisyoFlag	c
 datGetAisyoValue	c
+datGetStatWithStatusOverride	c
 dds3AddAreaBasic	c
 dds3AddBEDEffectObjectBasic	c
 dds3AddBEDEffectObjectBasic2	c
@@ -507,8 +561,8 @@ dds3DebugColorEditEx	c
 dds3DebugDevDumpProcess	c
 dds3DebugFloatEdit	c
 dds3DebugFloatEditEx	c
-dds3DebugGraphSetEnabled	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
-dds3DebugGraphUpdate	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3DebugGraphSetEnabled	c
+dds3DebugGraphUpdate	c
 dds3DebugIntEdit	c
 dds3DebugIntEditEx	c
 dds3DeleteAllBasicArray	c
@@ -521,14 +575,15 @@ dds3DeletePathControl	c
 dds3DeleteScene	c
 dds3DeleteUnitObjectBasic	c
 dds3DeleteWorld	c
+dds3DispatchIndexedCallback	c
 dds3DistBlurOff	c
 dds3DistBlurOn	c
 dds3DistBlurSwap	c
 dds3DrawDistRipOverError	asm	sdfGrOtTable at 0x00428218, others at 0x00427E58
-dds3DrawTextureAllocationMapBlock	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
-dds3DrawTextureListDiagnostic	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
-dds3DrawTextureResourceDetails	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
-dds3DrawTextureViewerFrame	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3DrawTextureAllocationMapBlock	c
+dds3DrawTextureListDiagnostic	c
+dds3DrawTextureResourceDetails	c
+dds3DrawTextureViewerFrame	c
 dds3EffectBlurSetRect	c
 dds3EffectCopy	c
 dds3EffectCreate	c
@@ -587,10 +642,11 @@ dds3EffectRippleBlurCreate	c
 dds3EffectRippleBlurReset	c
 dds3EndProcess	c
 dds3EndingProcess	c
-dds3EnsureDefaultResource	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3EnsureDefaultResource	c
 dds3ExistProcess	c
 dds3FadeCheck	c
 dds3FadeClear	c
+dds3FadeColorGet	c
 dds3FadeSet	c
 dds3FadeUpdate	c
 dds3Filter2Off	c
@@ -656,7 +712,8 @@ dds3LinkLightObjectToUnitObject	c
 dds3LinkProcess	c
 dds3LinkSceneLight	c
 dds3LinkZClearDrawTag	c
-dds3LoadDefaultResource	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3LoadDefaultResource	c
+dds3LoadObjectMatrixPointerIntoVu	c
 dds3MFilterOff	c
 dds3MFilterOn	c
 dds3MFilterSwap	c
@@ -829,7 +886,7 @@ dds3SearchProcessName	c
 dds3SearchProcessNumber	c
 dds3SearchProcessPriority	c
 dds3SearchSceneBasic	c
-dds3SelectIncompleteResourceAtPageIndex	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3SelectIncompleteResourceAtPageIndex	asm	compile error: structure has no member named `ref'
 dds3SetActiveCameraSceneBasic	c
 dds3SetActiveScene	c
 dds3SetActiveUnitSceneBasic	c
@@ -874,6 +931,7 @@ dds3SetScreenFovy	c
 dds3SetSearchNextBasicArray	c
 dds3SetShutdownTimer	c
 dds3SetSoftenBias	c
+dds3ShortestAngleDelta	c
 dds3SlowOff	c
 dds3SlowOn	c
 dds3SoftResetOff	c
@@ -917,11 +975,11 @@ dds3StartMovieManager	c
 dds3StartProcess	c
 dds3Stop	c
 dds3StopQuake	c
-dds3SwapActiveResource	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
-dds3TextureAttachTask	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
-dds3TextureCountIncompleteResources	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
-dds3TextureDrawPageCounter	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
-dds3TextureGetPageIndex	asm	declarations clash: previous declaration of `dds3DebugGraphTaskDestroy'
+dds3SwapActiveResource	c
+dds3TextureAttachTask	c
+dds3TextureCountIncompleteResources	asm	compile error: structure has no member named `ref'
+dds3TextureDrawPageCounter	c
+dds3TextureGetPageIndex	c
 dds3TrackPolyColorSet	c
 dds3TrackPolyCreate	c
 dds3TrackPolyDelete	c
@@ -979,54 +1037,145 @@ dpsub	c
 dptoli	c
 dptoul	c
 drawSprite3D	c
+dspReadWindowSecondPanelValue	asm	size 0x2C, retail 0x38
+dspRequestMessageWindowModeOne	c
 effAPPoint4Copy	c
 effAPPoint4Create	c
 effAPPoint4CreatePCF	c
 effAPPoint4Delete	c
 effAPPoint4Draw	c
 effAPPoint4PartInit	c
+effAcquireStripRecord	c
+effAcquireSurfaceRecord	c
+effActivateAnimationState	c
+effAdvanceActiveInstanceFrame	c
+effAdvanceBlockResourceFrame	c
+effAdvanceClassResourceFrame	c
+effAdvanceDispatchCounter	c
+effAdvanceModelResourceUpdateCount	c
+effAdvanceRadialClassResourceFrames	c
+effAllocateActiveInstanceWork	c
+effAllocateAlternateKindWork	c
+effAllocateAnimationBuffer	c
+effAllocateBillFadeFrameEntries	c
+effAllocateBlock	c
+effAllocateBlockWithModel	c
+effAllocateCompactRingFadeEntries	c
+effAllocateKindWork	c
+effAllocateQuantizedBuffer	c
 effAllocateResourcePayload	c
+effAllocateRingFadeEntries	c
+effAllocateStripFromWorkAndRetainTexture	c
+effAppendGouraudTexturedQuadPacket	c
 effAppendListEntry	c
 effAppendPositionedCameraFileJob	c
+effAppendSurfaceGridVectors	c
+effAppendTexturedTrianglePacket	c
 effApplyModelPrimaryVector	c
 effApplyModelVecB	c
 effApplyScaledModelTertiaryVector	c
+effAssetPointerSet	c
+effAssetQueueRelease	c
 effAssignSampledSegmentReference	c
 effAttachSlotWorkOwner	c
 effBTLBindCreateTrack	c
+effBTLFieldColorGetFinalSelector	c
+effBTLFieldColorGetOverrideSelector	c
 effBTLGetDrawEndFrame	c
 effBTLPartCreate	c
 effBTLPartDelete	c
 effBTLPartGetPositionPtr	c
 effBTLPartGetRotateMatrixPtr	c
+effBattleMiscQueryOriginalTargetPosition	c
+effBattleMiscQueryVariantTargetPosition	c
 effBattleResourceDescriptorRelease	c
+effBeginMatrixVuDrawPacket	c
+effBillBlendCellColorAndUpdateTransform	c
+effBillboardEntryFrameReset	c
+effBillboardWorkRelease	c
+effBlendBillboardInstanceColorsAndTransforms	c
 effBroadcastModelMask	c
+effBuildQuantizedTexturedStrip	c
+effClampSlotCount	c
 effClampSlotPhaseAtEnd	c
 effClampSlotPhaseAtStart	c
 effClassifyResourceMask	c
+effClearAnimatedFrames	c
+effClearBillFrames	c
 effClearCallbackFrame	c
+effClearStripFrames	c
+effClearStripRecordReferences	c
+effClearSurfaceNodeRecordReferences	c
+effCloneAlternateKindWork	c
+effCloneBillFadeTable	c
+effCloneBillboardFrameAsset	c
+effCloneClassResourceWork	c
+effCloneClassWork	c
+effCloneFadeVectorWork	c
+effCloneKindWork	c
+effCloneModelWithVUState	c
+effCloneParticleSharedResource	c
+effCloneRibbonWithSharedResource	c
 effCloneSelectedFileJob	c
+effCloneSelectionHeaderFromWork	c
 effCloneSharedReferenceWithValue	c
 effCloneSingleParticleTemplate	c
+effCloneSmallHeaderFromWork	c
+effCloneStripResourceFromOwner	c
+effCloneSurfaceGridResources	c
 effColorBlend	c
 effCompleteMappedResourceJob	c
 effCompleteRetainedResourceJob	c
 effCompleteTransientResourceJob	c
 effComputeBattleCameraPositionVU	c
+effComputeLightDirectionVU	c
 effConfigureIndexedSlotMaterial	c
 effConfigureIndexedSlotResource	c
 effConfigureSlotResource	c
 effConfigureWithDefaultSetting	c
 effConvertParamValue	c
+effCopyClassResourcePosition	c
+effCopyFramebufferQuadParameters	c
 effCopyResourceOwner	c
+effCopyRingFrameVectors	c
 effCountExpandedEntries	c
+effCreateActiveInstanceFromFile	c
+effCreateActiveResource	c
 effCreateActiveResourceFromFile	c
+effCreateAlphaRampPointSetRows	c
+effCreateAlternateSlotAnimationState	c
+effCreateAnimationState	c
 effCreateBattleCameraJob	c
+effCreateBillFadeTable	c
+effCreateBillFrameNode	c
+effCreateBillboardWork	c
+effCreateBlockResourceFromFile	c
 effCreateBlurTask	c
+effCreateClassResourceFromFile	c
+effCreateClassResourceWork	c
+effCreateClassWork	c
+effCreateClassWorkFromFile	c
+effCreateCompactRingFadeTable	c
+effCreateEmbeddedSelectionFlagList	c
 effCreateEnvironmentTask	c
+effCreateFadeBlendWorkFromOutput	c
+effCreateFadeColorWorkFromOutput	c
+effCreateFadeVectorFromFile	c
 effCreateFilterTask	c
+effCreateFixedSlotBlurWorkFromFadeOutput	c
+effCreateKindWorkFromFile	c
+effCreateKindWorkFromFileB	c
+effCreateModelBlockFromFile	c
+effCreateModelResource	c
+effCreateModelResourceFromFile	c
+effCreateModelResourceWithInlineData	c
 effCreateOwnerRecordList	c
+effCreateParticleSharedResourceFromFile	c
+effCreateParticleSpanTable	asm	compile error: structure has no member named `frameCount'
 effCreatePayload	c
+effCreatePointSet3	c
+effCreatePointSet4	c
+effCreatePointSet5	c
 effCreatePolyCrackTask	c
 effCreatePolyFlashTask	c
 effCreatePolyRingTask	c
@@ -1036,14 +1185,38 @@ effCreatePolyTrackControlTask	c
 effCreatePolyTrackTask	c
 effCreatePolyTwinkleTask	c
 effCreatePolyWindTask	c
+effCreatePrimarySlotAnimationState	c
+effCreateRadialClassResourceEntries	c
 effCreateResourceInstance	c
+effCreateResourceInstanceA	c
+effCreateResourceInstanceB	c
+effCreateResourceInstanceC	c
 effCreateResourceOwner	c
 effCreateResourceSlotSet	c
 effCreateResourceSlotSetFromAllocation	c
+effCreateRetainedPointSetColorRows	c
+effCreateRibbonWithSharedResource	c
+effCreateRibbonWork	c
+effCreateRingFadeTable	c
+effCreateRingHandle	c
+effCreateScaledClassDrawState	c
+effCreateSelectionFlagListFromFile	c
+effCreateSelectionFlagListFromWork	c
+effCreateSelectionHeaderFromFile	c
 effCreateSharedTextureReference	c
+effCreateSmallHeaderFromFile	c
 effCreateStatusBatch	c
+effCreateStripNode	c
+effCreateStripNodeFromGrid	c
+effCreateSurfaceGridWithConfiguration	c
+effCreateSurfaceNode	c
+effCreateSurfaceNodeForGrid	c
 effCreateTextureAnimationSet	c
+effCreateTexturedStripWithSharedTexture	c
+effCreateTrackSet	c
+effCreateTrackSetWithSharedReferences	c
 effCreateTwoDimensionalTask	c
+effCreateVariableSlotBlurWorkFromFadeOutput	c
 effDebugDrawWireModel	c
 effDebugLineDraw	asm	sdfGrOtTable at 0x00428218, others at 0x00427E58
 effDebugLineDraw2	asm	sdfGrOtTable at 0x00428218, others at 0x00427E58
@@ -1054,21 +1227,51 @@ effDebugStringDraw	asm	sdfGrOtTable at 0x00428218, others at 0x00427E58
 effDebugWindowDraw	asm	sdfGrOtTable at 0x00428218, others at 0x00427E58
 effDebugWireframeCylinderDraw	asm	sdfGrOtTable at 0x004280F8, others at 0x00427E58
 effDebugWireframeSphereDraw	asm	sdfGrOtTable at 0x004280F8, others at 0x00427E58
+effDestroyActiveInstanceWork	c
+effDestroyBlockResourceWork	c
+effDestroyClassResourceWork	c
+effDestroyClassWork	c
+effDestroyCopiedEffectPayload	c
+effDestroyModelBlockWork	c
+effDestroyModelContext	c
+effDestroyModelResource	c
 effDestroyOwnerRecordList	c
 effDestroyPackedBatch	c
 effDestroyPayload	c
+effDestroyRadialClassResourceEntries	c
 effDestroyResourceInstance	c
 effDestroyResourceOwner	c
 effDestroyResourceSlotSet	c
+effDestroySurfaceNode	c
+effDisableFramebufferQuad	c
+effDispatchActiveInstanceDraw	c
 effDispatchEnabledCallback	c
+effDispatchModelResourceCallback	c
 effDispatchRecordBuckets	c
+effDrawBlockResourceWork	c
+effDrawBlurFixedPointRectangle	asm	compile error: structure has no member named `source'
+effDrawClassResourceWork	c
+effDrawEffectStrip	asm	compile error: structure has no member named `position'
+effDrawFivePointGroups	c
 effDrawGeneratedTextureQuad	c
+effDrawModelBlock	c
+effDrawParticleSpanPointsAndReferences	c
 effDrawRepeatedSpriteTiles	c
+effDrawRetainedPointSetRows	c
+effDrawRibbon	asm	size 0x3B4, retail 0x410
+effDrawSelectionEntryVectors	c
 effDrawSpriteWithCornerColors	c
 effDrawSpriteWithCornerFade	c
 effDrawSpriteWithWorkCornerColors	c
+effDrawSurfaceTrailHistory	c
+effDrawThreePointGroups	c
+effDrawTintedFivePointGroupRows	c
 effDuplicateActiveResource	c
+effDuplicateActiveResourceB	c
+effDuplicateBillState	c
 effDuplicateModelOwner	c
+effDuplicatePayloadHeader	c
+effDuplicateResourceRefs	c
 effEVECombParSmokeCreate	c
 effEVECombParSmokeDelete	c
 effEVECombParSmokeDraw	asm	sdfGrOtTable at 0x00428138, others at 0x00427E58
@@ -1117,39 +1320,62 @@ effEditUSpherePolygonFadeTrack	c
 effEditUSphereScaleTrack	c
 effEditWRotationTrack	c
 effEditWScaleTrack	c
+effEnableFramebufferQuad	c
 effEveAPP4Randomize	c
 effEveBEDCutCreate	c
 effEveBEDCutGetParams	c
 effEveBEDCutSetParams	c
 effEveBEDPartGetPositionPtr	c
+effEventSetSolidRectangleParameters	c
 effFileJobQueueRelease	c
 effFileJobSecondaryDataSet	c
+effFileResourceReferenceReplace	c
+effFillBillFadeGradient	c
+effFillCompactRingFadeGradient	c
+effFillFadeColorRows	c
+effFillRingFadeGradient	c
+effFillSurfaceGridColorGradient	c
 effFinalizeQueuedFile	c
 effFlagFileQueueActive	c
 effFloorModelListPush	c
 effFloorModelListRemove	c
+effFreeFadeVectorWork	c
+effFreeIndexedEntries	c
+effGetCh73Params	c
 effGetPacketSubmissionSurface	c
+effGetScalyTextureHandle	c
 effGetSelectedFileQueueIndex	c
 effGetSlotWorkOrOverride	c
+effGetWindTextureHandle	c
 effHasFirstTextureHandle	c
+effIndexedFloatCallbackDispatch	c
+effInitModelVUState	asm	compile error: structure has no member named `frameStep'
 effInitParticleRecord	c
 effInitializeAllSlotWork	c
+effInitializeAlternatingTransformRows	c
+effInitializeAnimationPositions	c
+effInitializeClassFrame	c
 effInitializeResourceQueue	c
 effInitializeSlotPhase	c
 effInitializeSlotWork	c
+effInitializeSurfaceForKind	c
 effInsertSlotRecord	c
+effInterpolateSurfaceGridVectors	c
 effInvokeFileJobWithBattleCamera	c
 effLinePointLength	c
 effLoadBattleCameraSnapshot	c
 effLoadFileJobPayload	c
 effLoadFileSlotAndPoll	c
 effLoadFileSlotF2	c
+effLoadFlashTextures	c
 effLoadIndexedResource	c
 effLoadMappedResource	c
 effLoadMappedStatusRecords	c
 effLoadMaterialFile	c
 effLoadModelPrimaryVector	c
+effLoadScalyTexture	c
 effLoadSelectedFileJob	c
+effLoadWindTexture	asm	.rodata differs at 0x004BCC40
 effMagaCylinderAllocPart	c
 effMagaCylinderAllocTex	c
 effMagaCylinderBlendColor	c
@@ -1186,6 +1412,7 @@ effMagaSpiralRandomize	c
 effMapObjectWithTemporaryMappingTable	c
 effMarkFloorModelForDestruction	c
 effMarkFloorModelForUpdate	c
+effMenuRecordVectorSet	c
 effMultiplyQuatWithFlag	c
 effObjectListCountersReset	c
 effPCPAgiFireball2Copy	c
@@ -1461,46 +1688,123 @@ effPollResourceQueueWithTlp	c
 effPollResourceQueueWithoutTlp	c
 effPollSTMaterialTmxFile	c
 effPollTextureResourceFile	c
+effPrepareOwnedQuantizedTexture	c
+effPrepareOwnedTextureAnimation	c
+effPrepareQuantizedTexture	c
+effPrepareTextureAnimation	c
 effProcessQueuedFileRecordAndPersistChanges	c
 effPropagateResourceModelMask	c
 effQueueAttachedResourceRequest	c
 effQueueNamedResourceRequest	c
 effQueueResource	c
+effRandomizeParticleFields	c
+effRebuildSurfaceHandles	c
+effRebuildSurfaceJobs	c
+effRecreateActiveByClass	c
 effRecreateModelFromSource	c
+effRecreateSurfaceNodeFromWork	c
 effReferenceObjectRetain	c
 effReinitializeFileQueue	c
+effReleaseAlternateKindWork	c
+effReleaseAnimationFrameResources	c
+effReleaseBillFadeTable	c
+effReleaseBillFrameNode	c
+effReleaseBillPointEntries	c
+effReleaseBillboardFrameAsset	c
+effReleaseClassDrawResources	c
+effReleaseCompactRingFadeTable	c
+effReleaseFadeBlendWork	c
+effReleaseFadeColorWork	c
+effReleaseFixedSlotBlurWork	c
+effReleaseLinkedTarget	c
+effReleaseModelPointSetAsset	c
+effReleaseModelResources	c
+effReleaseParticleList	asm	local jump at +0x40
+effReleaseParticleResources	c
+effReleasePointSetAsset	c
 effReleaseQueuedResourceName	c
 effReleaseReferenceHolder	c
 effReleaseResourceBankDescriptors	c
+effReleaseResourceRefs	c
+effReleaseRingFadeTable	c
+effReleaseRingHandle	c
+effReleaseRingResourceHandle	c
+effReleaseScalyStripResources	c
+effReleaseScalyTextureReference	c
+effReleaseSelectionFlagList	c
+effReleaseSelectionHeaderAllocation	c
 effReleaseSharedReference	c
 effReleaseSlotWorkAllocation	c
+effReleaseSurfaceGridBuffers	c
+effReleaseTextureAnimationWork	c
 effReleaseTextureHandlesAndResetSlots	c
+effReleaseVariableSlotBlurWork	c
 effRemoveListEntry	c
 effRemoveSlotRecord	c
+effReplaceBillboardClone	c
+effReplaceFileResourceRef	c
+effReplaceKindLinkedTarget	c
+effReplaceLinkedKindWorkTarget	c
+effReplaceResourceRef	c
+effReplaceSharedResource	c
+effReplaceSurfaceFlaggedBillboard	c
+effReplaceSurfacePrimaryBillboard	c
+effReplaceSurfaceResourceHolder	c
 effRequestMappedResource	c
 effRequestResourceByMode	c
+effResetActiveInstanceFrame	c
+effResetAnimationFrameEntries	c
+effResetBillTable	c
+effResetBlockResourceFrame	c
+effResetClassFrameAndFlags	c
+effResetDispatchCounter	c
 effResetFileQueueState	c
 effResetFileResourceManager	c
 effResetFileResources	c
+effResetModelBlockFrame	c
+effResetModelResourceUpdateCount	c
+effResetRadialClassResourceFrames	c
 effResetRecordRun	c
+effResetSelectionEntriesAndState	c
+effResetSelectionEntryBuffers	c
 effResetSlotWork	c
+effResetSlots	c
+effResetSurfaceGridFrame	c
 effResolveAndReleaseResource	c
 effResolveAndReleaseSelectedResource	c
 effResolveMappingWithTemporaryTable	c
+effResourceReferenceReplaceFromFile	c
+effRetainScalyTextureReference	c
 effRetainSharedReference	c
+effRunClassPostFrame	c
 effRunWithStateBackup	c
 effSampleAnimSet	c
+effSampleColorAlphaTracks	c
+effSampleScalarCurve	c
 effScaleModelVec	c
+effScaleWaveEmitterParameters	c
 effScreenOffset	c
+effSeedBillScaleRange	c
+effSeedParticleSpanParameters	c
+effSegmentPointerSet	c
 effSelectLinkedFileState	c
 effSelectPresetAndDispatch	c
 effSelectPresetByKind	c
+effSelectionFrameAdvance	c
 effSetBattleOffset	c
+effSetClassResourceColor	c
+effSetClassResourceMatrixComponent	c
 effSetMaterialSlots	c
 effSetModelRotationQuaternion	c
 effSetSlotIndexedResource	c
 effSetSlotOverrideWork	c
 effSetSlotResourceAndFlags	c
+effSetStripOpacity	c
+effSetStripRecordSecondaryVector	c
+effSetStripRecordVector	c
+effSetSurfaceRecordSecondaryVector	c
+effSetSurfaceRetainedResource	c
+effSharedAssetReferenceRelease	c
 effSimpleBEDCopy	c
 effSimpleBEDCreate	c
 effSimpleBEDDelete	asm	1 words differ, first at +0x1C
@@ -1512,14 +1816,49 @@ effSplCalcRegist	c
 effSplRun	c
 effStoreBattleCameraSnapshot	c
 effSubmitCompositeGsPacket	c
+effSubmitFieldBlendStateTask	asm	compile error: structure has no member named `dmaTag'
 effSubmitGeneratedTexturePacket	c
+effSubmitIndexedRenderPacket	c
 effSumRecordStatuses	c
 effSweepFloorModelList	c
 effSwordTrackDrawTex	c
+effSynchronizeFileTransform	c
+effTextureReferenceRelease	c
+effTrackPolyUpdate	asm	compile error: structure has no member named `currentFrame'
+effUpdateAndDrawStripRecord	c
+effUpdateBillSpiral	c
 effUpdateCameraDiagnostics	c
 effUpdateCameraSnapshotGuides	c
+effUpdateCenteredRadialRingVertices	c
+effUpdateCircularEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
+effUpdateClassFrame	c
+effUpdateColumnParticlesAndRibbons	c
+effUpdateCompactRingDrawColorAndTransform	c
+effUpdateDirectedEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
+effUpdateExpandingRingPoints	c
+effUpdateFadeBlendA	asm	compile error: structure has no member named `position'
+effUpdateFadeBlendB	asm	compile error: structure has no member named `position'
+effUpdateFadeBlendC	asm	compile error: structure has no member named `corners'
+effUpdateFadeMapA	asm	compile error: structure has no member named `positionSpread'
+effUpdateFadeMapB	asm	compile error: structure has no member named `size'
+effUpdateFadedMeshTransform	c
+effUpdateGridRecordSlotHistory	c
+effUpdateOrbitalPointSpanWaves	c
+effUpdateOrientedRingEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
+effUpdateProjectedBlurFadeRectangle	asm	compile error: structure has no member named `source'
+effUpdateProjectedFadeColor	asm	compile error: structure has no member named `extent'
+effUpdateRadialClassInstances	c
+effUpdateRadialEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
+effUpdateRadialWavePointRows	c
 effUpdateResourceQueue	c
+effUpdateScaledClassFrameRows	c
+effUpdateSectorEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
+effUpdateSelectionEntryState	c
+effUpdateTarget	c
 effUpdateTimedStates	c
+effUpdateTintedScaledMesh	c
+effUpdateWaveEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
+effWriteGouraudTexturedQuadPacket	c
 eff_177850	c
 eff_177A48	c
 eff_178128	c
@@ -1534,6 +1873,8 @@ eglLinkTri	c
 eglSetOt	c
 evtAddCamera	c
 evtAssignRuntimeChildSequenceAndCount	c
+evtBlendParamsG	asm	compile error: structure has no member named `color'
+evtBlendParamsH	c
 evtCheckEventBgmLoaded	c
 evtCheckEventScriptLoaded	c
 evtCheckPathStat	c
@@ -1541,6 +1882,8 @@ evtCheckScriptDone	asm	1 words differ, first at +0x30
 evtCheckSelectionState	c
 evtCheckSkyAlphaAnime	c
 evtChkEndProcess	asm	evtFreeStage at 0x00167618, 0x001B9538
+evtCommandClearPolygonMovieFlag	asm	declarations clash: conflicting types for `DDS3_GBWK'
+evtCommandStartBgmWithFade	asm	declarations clash: conflicting types for `DDS3_GBWK'
 evtCommand_BGM_PLAY_E	c
 evtCommand_BGM_TRANS_E	c
 evtCommand_BOKASI_OFF	c
@@ -1615,11 +1958,13 @@ evtCommand_SET_SKY_A	c
 evtCommand_TEX_CLS	c
 evtCommand_TEX_OFF	c
 evtCommand_TEX_ON	c
+evtCopyEntryStringToActiveWindow	c
 evtDestroyFontResourceChain	c
 evtDestroySelectionState	c
 evtDispatchActionByIndex	c
 evtDrawConditionalHeapUsageOverlay	c
 evtDrawGeneralHeapUsageGraph	c
+evtDrawGroupListRow	c
 evtDrawHeapUsageOverlay	c
 evtDrawResourceCountDebugTask	c
 evtEffectLoopControl	c
@@ -1633,15 +1978,27 @@ evtEmitGroupTypeTwentyFivePayloads	c
 evtEmitGroupTypeTwentySevenPayloads	c
 evtEmitGroupTypeTwentyThreePayloads	c
 evtEnsureFontResourceChain	c
+evtEventViewerAttachIndexedObject	asm	compile error: structure has no member named `smoothedPosition'
+evtEventViewerCommitGroupSelection	asm	1 words differ, first at +0xAC
+evtEventViewerCountEntries	c
+evtEventViewerDestroyActive	c
+evtEventViewerDestroyActiveAlternate	c
+evtEventViewerDestroyTask	c
+evtEventViewerInitCampFontResource	c
+evtEventViewerProcessPending	c
+evtEventViewerSumNodeCounts	c
 evtExitSky	c
 evtFadeInEventBgm	c
 evtFileName2Head	asm	.rodata differs at 0x004B6478
+evtFinishMessageWindowAndNotify	c
 evtFreeAllUnit	c
 evtFreeScriptProcessData	c
 evtFreeStage	c
+evtGetCapturedWindowPanelValue	c
 evtGetEventPackStat	c
 evtGetPackProcessData	c
 evtGetResorceData	c
+evtGetShortestAngleDelta	asm	declarations clash: conflicting types for `DDS3_GBWK'
 evtGetSoundIndex	c
 evtGetUnitHandle	c
 evtGetUnitHandle2	c
@@ -1669,6 +2026,7 @@ evtInitEventTest	asm	.rodata differs at 0x004B4B98
 evtInitFrameVar	c
 evtInitGlobalWork	c
 evtInitMotionSeProcess	c
+evtIsMenuTableEntryEnabled	c
 evtKillEventPack	c
 evtKillFieldScript	c
 evtKillPictureProcess	c
@@ -1676,9 +2034,15 @@ evtLoadEventBgm	c
 evtLoadEventPack	c
 evtLoadEventScript	c
 evtLoadModelSe	c
+evtLoadResourcePair	c
 evtLoadValueSecondaryVectorIntoVu	c
 evtLoadValueVectorIntoVu	c
 evtMakeEventPackName	c
+evtOpClearWorldObjectPendingValue	asm	declarations clash: conflicting types for `DDS3_GBWK'
+evtOpQueueWorldObjectPendingValue	asm	declarations clash: conflicting types for `DDS3_GBWK'
+evtOpcodeInitializeEffectSoundChannel	asm	declarations clash: conflicting types for `DDS3_GBWK'
+evtOpcodeRefreshTaskData	asm	declarations clash: conflicting types for `DDS3_GBWK'
+evtOpcodeSetBgmVolumePan	asm	declarations clash: conflicting types for `DDS3_GBWK'
 evtPathDir	c
 evtPathLinkAndMake	c
 evtPathLoop	c
@@ -1688,18 +2052,44 @@ evtPathStop	c
 evtPictureDrawOff	c
 evtPictureDrawOn	c
 evtPlaySe	c
+evtPollRuntimeControlReady	c
 evtRegistBEField	c
+evtReleaseResourcePairHandle	c
+evtRotateViewerPositionFromPad	c
 evtSearchBasic	c
 evtSearchEventPack	c
 evtSelStateCreate	c
 evtSelStateDestroy	c
+evtSetMessageWindowPageValue	c
 evtSetSkyAlpha	c
 evtSetTestCamera	c
 evtStageAnimeControl	c
 evtStartPictureProcess2	c
 evtStopEventBgm	c
+evtSubmitDefaultDepthGradientRect	c
+evtSubmitFixedAlphaBlend	c
+evtTestSolarPhaseOrModelFlag	c
 evtTransEventBgm	c
+evtUpdateGroupListDialog	c
 evtUpdateSkyAlpha	c
+evtViewCmdCancelSelection	c
+evtViewCmdNoOp	c
+evtViewCmdResolveSlot	asm	1 words differ, first at +0x94
+evtViewCmdSetValue	c
+evtViewFindGlyphAtOrBefore	c
+evtViewerApplyGlyphLodChannel	c
+evtViewerClampMovieTimes	c
+evtViewerClearPendingNodeAndPushHistory	c
+evtViewerDispatchFlagMode	c
+evtViewerDrawGroupRow	c
+evtViewerDrawGroupWindow	c
+evtViewerFindLatestMatchingMotionKey	c
+evtViewerHasUpdateFlag	c
+evtViewerPickNextHandler	c
+evtViewerPopHistory	c
+evtViewerPushMode5CommandHistory	c
+evtViewerReturnZero	c
+evtViewerStoreCommandInSelectedField	c
 evtViewerWriteChildRecords	c
 evtVu0SubVectorXZAxis	c
 evtWaitEventPackLoad	c
@@ -1723,19 +2113,50 @@ fcl_213998	c
 fcl_2142F0	c
 fcl_214458	c
 fflush	c
+fileAppendJob	c
+fileAppendJobFromCommandPath	c
 fileClampPackedColorByte	c
+fileClearAllSlotFlags	c
+fileClearLoadObjectReferences	c
+fileCloneQueueEntries	asm	local jump at +0x90
+fileCopyAndInvalidateSlotGroup	c
+fileCopyLoadObjectRecordVector	c
+fileCreateGridLoaderRecord	c
+fileCreateSurfaceLoaderState	c
 fileCursorStepUp	c
+fileDestroyEffectSurfaceAndChildren	asm	local jump at +0xAC
+fileDestroyJob	c
+fileDispatchJobTypeCallback	c
+fileDuplicateAndAppendJob	c
+fileDuplicateJob	asm	1 words differ, first at +0x4C
 fileExecCallback	c
 fileExecQueue	c
 fileFadeStepDown	c
+fileFindQueuedJobIndex	c
 fileGetLoadPtr	c
 fileGetLoadRemain	c
 fileGetLoadSize	c
 fileGetMemHandle	c
 fileHandleFree	c
+fileInvalidateSlotGroup	c
 fileIsLoadedAndConditionTrue	c
 fileIsLoadedWithActiveFlow	c
+fileJobCopyCommandIntoPrimaryData	c
+fileJobCopyCommandIntoSecondaryData	c
+fileJobCreateChild	c
+fileJobCreateFromCommandState	c
 fileJobCreateFromJob	c
+fileJobDuplicateAfter	c
+fileJobFreeSecondaryBuffer	c
+fileJobInvokePositionCallback	c
+fileJobInvokeRotationCallback	c
+fileJobInvokeScaleCallback	c
+fileJobInvokeTypeCallback	c
+fileJobNotifyComplete	c
+fileJobNotifyPair	c
+fileJobSerializedSize	c
+fileJobSetPrimaryData	c
+fileJobSetSecondaryData	c
 fileLinkCloseWait	c
 fileLinkQueue	c
 fileLoad	c
@@ -1744,24 +2165,62 @@ fileLoadEffectSlotA	c
 fileLoadEffectSlotB	c
 fileLoadEffectSlotHelp	c
 fileLoadEx	c
+fileLoadObjectCreateChild	c
+fileLoadObjectOpenAndStartDevice	c
+fileLoadObjectOpenDevice	c
+fileLoadObjectOpenNamedDevice	c
+fileLoadObjectSetResource	c
 fileLoadSetMode	c
 fileLoadUseTail	c
 fileManager	c
 fileManagerProc	c
+fileQueueAppend	c
+fileQueueClone	c
+fileQueueCopyRotationFromSource	c
+fileQueueCountLinkedJobs	c
+fileQueueCreateFromCommandState	asm	local jump at +0xCC
+fileQueueDestroy	c
+fileQueueDetachSectorFollower	asm	size 0x68, retail 0xB0
+fileQueueFindById	c
+fileQueueFindBySector	c
+fileQueueFindFlaggedById	c
+fileQueueGetAt	c
+fileQueueInsertAfter	c
+fileQueueLinkJobToSectorLeader	asm	size 0x13C, retail 0x170
+fileQueueRemove	c
+fileQueueRemoveAndDestroyJob	asm	2 words differ, first at +0xC0
+fileQueueSaveImage	asm	local jump at +0x2E8
+fileQueueSaveVersionedImage	asm	local jump at +0x308
+fileQueueSetColor	c
+fileQueueSetPosition	c
+fileQueueSetRotation	c
+fileQueueSetScale	c
 fileRead	c
+fileReadRecordSecondVector	c
+fileReadVectorPtr20	c
+fileReplaceEffectSurfaceJobs	asm	local jump at +0xB0
+fileReplaceEffectSurfaceQueues	asm	local jump at +0x4C
+fileReplaceReferenceHolder	c
 fileResetLoadContextSlide	c
+fileResetSlotStates	c
 fileResolvePrimaryBuffer	c
 fileResolveSecondaryBuffer	c
+fileRestartSlotScan	c
 fileSave	c
 fileSaveCallback	c
 fileSaveEx	c
+fileSendLoadObjectRecordVector	c
+fileSetLoadObjectScale	c
 fileSetMenuValueAndInitializeFlags	c
+fileSetRecordSecondVector	c
+fileSetRecordWordFour	c
 fileSync	c
 fileSyncAll	c
 fileSysInit	c
 fileUnlinkCloseWait	c
 fileUnlinkQueue	c
 fileWrite	c
+fileWriteToPfs	c
 fldAutoMapSeqClearFlag	c
 fldAutoMapSeqSetFlag	c
 fldAutoMapSeqTestFlag	c
@@ -1790,12 +2249,14 @@ fldLmapRewindThroughWindow	c
 fldLmapSubmitPositionedCommandPacket	c
 fldLmapSubmitScaledSpritePacket	c
 fldPlayerCalc360_4	c
-fldPlayerCalc360_8	c
+fldPlayerCalc360_8	asm	.rodata base 0x004A9800, 0x004A9840
 fldPoint3To2	c
 fldPointDistance	c
+fldProcessFieldRequestAlternate	c
 fldResetPlayerSceneObjectState	c
 fldRestoreCameraModelColor	c
 fldSetCameraObjectTransitionFlag	c
+fldSnapAngleToCompassPoint	asm	.rodata base 0x004A9800, 0x004A9840
 fldTitleMini_Shutdown	asm	sdfTexFreeDelayed at 0x003CF720, others at 0x003CF768
 fldToggleWorldNodeState	c
 fld_1374F0	c
@@ -1819,6 +2280,10 @@ frDestroyFontRequestAfter	c
 frDisableMode	c
 frEnableMode	c
 frEraseEffect	c
+frFontAppendIndexedTextToGlyphChain	asm	size 0x168, retail 0x170
+frFontCheckPendingGlyphState	asm	local jump at +0x50
+frFontGetGlyphPositionAtIndex	c
+frFontMoveChainTo	c
 frFreeFontNode	c
 frFreeFontTable	c
 frGetFontHandleNum	c
@@ -1842,6 +2307,7 @@ free	c
 frwFreeStaffFont	c
 frwGetStaffFontFRQ	c
 frwLoadStaffFont	c
+func_00101A78	c
 get_iob	c
 iInvalidDCache	c
 iPutTLBEntry	c
@@ -1849,11 +2315,38 @@ iRotateThreadReadyQueue	c
 iSyncDCache	c
 initDrawTag	c
 isceSifSendCmd	c
+itfAdvanceGridScrollPosition	c
+itfAdvanceSelectedGridScroll	c
+itfAppendGridTextItem	c
 itfCamp	c
+itfCommandQueueHeldPanelEntry	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfConvertText	c
 itfCreateGridPacketWithDefaultFlags	c
 itfDebugPrintMark	c
+itfDestroyGridTextWidget	c
+itfDestroyGridTextWidgetTree	c
 itfDrawBackgroundAndGetTaskReadyMask	c
+itfDrawBankTextWithLayoutFlags	c
+itfDrawGridWithResolvedSlot	c
+itfDrawThreePanelBorderBands	c
+itfDrawTintedPanelRect	c
+itfFindGridNodeByKey	c
+itfGetGridListLinkFlags	c
+itfGetTextLipsMotionId	c
+itfGetTextLipsUnitId	c
+itfGridApplyLinearBoundsAndColorScale	c
+itfGridApplyLinearZoomBoundsAndFadeAlpha	c
+itfGridApplyQuadraticZoomBoundsAndFadeAlpha	c
+itfGridApplySqrtBoundsAndColorScale	c
+itfGridApplyThresholdBoundsAndAlpha	c
+itfGridApplyTimedBoundsAndAlpha	c
+itfGridInterpolateCornerColorsToTarget	c
+itfGridLookupValueOrDefault	c
 itfInitTextDrawArgs	c
+itfInitializeAdminInterfaceNoop	c
+itfMesGetEntryCount	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfMesGetWindowEntryItems	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfMesGetWindowTexture	asm	declarations clash: conflicting types for `DDS3_GBWK'
 itfMesMngClearBitStat	c
 itfMesMngClearBitStatManager	c
 itfMesMngCloseSelectWindow	c
@@ -1901,10 +2394,23 @@ itfMiscLinkTake	c
 itfMiscLoadTexture	c
 itfMiscMoveFontPosition	c
 itfMiscSetRatioRGB	c
+itfPanelAcquireHold	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfPanelReleaseHold	asm	declarations clash: conflicting types for `DDS3_GBWK'
 itfPnlRelease	c
+itfQueueOffsetTexturedRect	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfReadEncodedCode	c
+itfReadEncodedTextLead	c
 itfReleaseBackgroundSpriteTexture	c
+itfRemoveSelectedGridTextItem	c
+itfReplaceGridTextAndExpandColumn	c
+itfReturnZeroDuplicate	c
+itfReverseGridScrollPosition	c
+itfReverseSelectedGridScroll	c
 itfRotateScreenOffset	c
 itfScanEncodedTextControls	asm	1 words differ, first at +0xEC
+itfSetGridEntryQuantizedAndRefresh	c
+itfStepHeldPanelMessages	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfUpdateGridSlotDescription	c
 kCopy	c
 kCopy_1	c
 kCopy_3	c
@@ -1912,6 +2418,8 @@ kFindAddress	c
 kill	c
 kprintf	c
 kputs	c
+kwlnPadStepLargeMotorLevel	c
+kwlnTraverseDiagnosticTaskQueue	c
 libc_2D1E50	c
 libc_2D1EA8	c
 libc_2D2728	c
@@ -1938,6 +2446,7 @@ mdlAddPlainViewerEntryForSelectedNode	c
 mdlAddViewEntryFlagged	c
 mdlAppendViewerRectToDrawList	c
 mdlApplyViewerResourceMenuAction	asm	.rodata base 0x004B4090, 0x004B40A0
+mdlBlendEntryPitchYawAndUpdate	c
 mdlBuildViewerRectanglePacket	c
 mdlCheckLoading	c
 mdlChkMotionEndEx	c
@@ -1960,7 +2469,7 @@ mdlDrawViewerAssetSelection	asm	.rodata base 0x004B4090, 0x004B40A0
 mdlDrawViewerEffectRecordList	c
 mdlDrawViewerIndexedLabelOverlay	c
 mdlDrawViewerModeLabel	c
-mdlDrawViewerModelAndMotionSummary	c
+mdlDrawViewerModelAndMotionSummary	asm	37 words differ, first at +0x8
 mdlDrawViewerMotionTimeline	asm	.rodata base 0x004B4090, 0x004B40A0
 mdlDrawViewerOptionLabels	c
 mdlDrawViewerResourceMenu	c
@@ -2108,6 +2617,7 @@ mnuDispatchEntryWords	c
 mnuDispatchPopupTransition	c
 mnuDispatchStaffMenuWithIdlePopup	c
 mnuDrainPanelTransitions	c
+mnuDrawCutFlagLabel	c
 mnuDrawFadingWindows	c
 mnuDrawFourEntries	c
 mnuDrawIconPair	c
@@ -2116,7 +2626,9 @@ mnuDrawIconPanelFade	c
 mnuDrawIconPanelFullFade	c
 mnuDrawIconRow6	c
 mnuDrawIconState	c
+mnuDrawInfoWindowB	c
 mnuDrawListScrollbar	c
+mnuDrawMotionChangeLabel	c
 mnuDrawVisibleWindowIconRows	c
 mnuEvaluateCubicBezierPoint	c
 mnuFindCampKeyTrackNeighbors	c
@@ -2144,6 +2656,7 @@ mnuQueryTitleSoundBusy	c
 mnuReadTitleStreamStatusLocked	c
 mnuRebuildListFirstFromCursor	c
 mnuRebuildListLastFromCursor	c
+mnuRecordSetVector	c
 mnuReleaseResourceList	c
 mnuReleaseWindowTextures	c
 mnuRemoveFadingWindowEntry	c
@@ -2173,6 +2686,7 @@ mnuStoreTaskResult	asm	fileLoad at 0x001E9F40, others at 0x001E9F20
 mnuUnpackNibbleFields	c
 mnuUpdateFade	c
 mnuUpdateListScrollFlags	c
+mnuUpdateMovieDrawShutdownCountdown	asm	1 words differ, first at +0x68
 mnuUpdateWindowPanelHandleStatesKindFourFive	c
 mnuWriteTitleStreamStatusLocked	c
 movieCloseStream	c
@@ -2242,6 +2756,7 @@ polyBandLayoutRing	c
 printfloat	c
 qsort	asm	size 0x654, retail 0x9F0
 raise	c
+release_movieobj2	c
 rsetAlpha	c
 rsetOtOfs	c
 rsetTest	c
@@ -2427,6 +2942,8 @@ sceTtyInit	c
 sceTtyRead	c
 sceTtyWrite	c
 sceUmount	c
+scrAllReleaseScript	c
+scrCommandFadeBackgroundOut	c
 scrCommand_BIT_CHK	c
 scrCommand_BLUR	c
 scrCommand_BLUR2_AREA	c
@@ -2446,6 +2963,7 @@ scrCommand_FILTER2_ON	c
 scrCommand_FILTER2_PARA	c
 scrCommand_FILTER2_RGBA	c
 scrCommand_FILTER2_SWAP	c
+scrCommand_FILTER_ALLOFF	c
 scrCommand_KEY	asm	dds3PadBitTable at 0x004A053A, others at 0x004A0538
 scrCommand_MFILTER_AREA	c
 scrCommand_MFILTER_OFF	c
@@ -2533,6 +3051,7 @@ sdfAddressResolver	c
 sdfAddressResolverReset	c
 sdfAlarmWakeup	c
 sdfAllocAuto	c
+sdfApplyAssetEntryChangesWithForcedTexture	asm	1 words differ, first at +0x54
 sdfAsin	c
 sdfAtan	c
 sdfAtan2	c
@@ -2614,7 +3133,9 @@ sdfDevLoadFile	c
 sdfDevLoadFileEx	c
 sdfDevPrintf	c
 sdfDevPrintfEx	c
+sdfDevSeekDiscWithRequestGate	c
 sdfDevSetPrintCB	c
+sdfDevSignalPendingSemaphore	c
 sdfDevVprintf	c
 sdfDrawFlagListVertices	c
 sdfDrawHeapMapOverlay	c
@@ -2684,10 +3205,12 @@ sdfFreeAuto	c
 sdfFreeAutoDelayed	c
 sdfFreeMemorySlotFromEitherHeap	c
 sdfGetCdClock	c
+sdfGetLodChunkValue	c
 sdfGetOrCreateTextureForReference	c
 sdfGetRunTimeCount	c
 sdfGetRunTimeCountBase	c
 sdfGetTexelBitCount	c
+sdfGetUniqueChunkValue	c
 sdfGrAddExPacket	c
 sdfGrAllocPacketBuff	c
 sdfGrCapture	c
@@ -2820,6 +3343,8 @@ sdfMatUpdatePacket	c
 sdfMatUpdatePacketFaceDiv	c
 sdfMatUpdatePacketMultiTex	c
 sdfMatUpdatePacketUvwParm	c
+sdfMcClearCardStat	asm	size 0x20, retail 0x28
+sdfMcClearSlotFlags	asm	9 words differ, first at +0x0
 sdfMcFuncChdir	c
 sdfMcFuncChdir1	c
 sdfMcFuncClose	c
@@ -2838,6 +3363,14 @@ sdfMcFuncRead	c
 sdfMcFuncRead1	c
 sdfMcFuncWrite	c
 sdfMcFuncWrite1	c
+sdfMcGetFileInfoReady	asm	size 0x20, retail 0x28
+sdfMcGetFreeBytes	asm	size 0x20, retail 0x28
+sdfMcGetSlotFlags	asm	9 words differ, first at +0x0
+sdfMcGetSlotIndex	asm	size 0x20, retail 0x28
+sdfMcGetStatus	asm	size 0x20, retail 0x28
+sdfMcSetCardStat	asm	size 0x24, retail 0x30
+sdfMcSetSlotFlags	asm	size 0x30, retail 0x38
+sdfMcSetSlotIndex	asm	size 0x20, retail 0x28
 sdfMemAlloc2Direct	c
 sdfMemAllocDirect	c
 sdfMemAllocFromTailDirect	c
@@ -3092,14 +3625,17 @@ sdfPrintRpcFunc	c
 sdfPrintRpcThread	c
 sdfPrintf	c
 sdfPuts	c
+sdfRaisePackedChannelValue	c
 sdfRandomize	c
 sdfRandomizeByTime	c
 sdfReleaseFlagListResource	c
 sdfResetFlagListEntries	c
 sdfSampleFlagListStartColor	c
+sdfSetGridScaledDrawBounds	c
 sdfSetLoadImage	c
 sdfSetMainThreadPriority	c
 sdfSetStoreImage	c
+sdfSetStreamFrameDrawMode	c
 sdfSin	c
 sdfSndCmdIFThread	c
 sdfSndLoadBDFile	c
@@ -3122,6 +3658,7 @@ sdfTableInterpolation	c
 sdfTexAllocClutBuff	c
 sdfTexClutToGs	c
 sdfTexCopyClutData	c
+sdfTexFreeDelayed	asm	compile error: structure has no member named `ref'
 sdfTexGetCLUTAddr	c
 sdfTexGetCLUTCount	c
 sdfTexGetClampReg	c
@@ -3145,6 +3682,7 @@ sdfTexMakeGIFPacket	c
 sdfTexMakeGIFPacketCtx2	c
 sdfTexMakeGIFPacketSub	c
 sdfTexRebuildPacket	c
+sdfTexReleaseReference	asm	compile error: structure has no member named `ref'
 sdfTexSearch	c
 sdfTexSetFilter	c
 sdfTexSetFilterCtx2	c
@@ -3204,6 +3742,8 @@ strtol	c
 supplement_crt0	c
 tanf	asm	size 0x98, retail 0x78
 topThread	c
+uiDrawSurfaceAtNearDepth	c
+uiDrawTexturedSurfaceAtFarDepth	c
 uiDrawUniformRgbRange	c
 uiPrepareMenuBackgroundSurface	asm	size 0x3C, retail 0x40
 vfprintf	c

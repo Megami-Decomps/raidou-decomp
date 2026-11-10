@@ -1,0 +1,90 @@
+#ifndef DDS_ITF_PANEL_LAYOUTS_H
+
+#define DDS_ITF_PANEL_LAYOUTS_H
+#include "common.h"
+
+#include "itf.h"
+
+#define ITF_PANEL_HOLD_CAPACITY 0x40
+
+/* The draw buffer is traversed in 0x10-byte records; its payload is opaque. */
+typedef struct PktRec {
+    u8 bytes00[0xC];
+    u32 alpha; /* +0xC: set from panel alpha or the draw alpha argument */
+} PktRec;
+
+/* Integer corners passed to the panel-border drawer. */
+typedef struct PanelRect {
+    s32 x0;
+    s32 y0;
+    s32 x1;
+    s32 y1;
+} PanelRect;
+
+/* Panel table payload. Only the status byte in this subrecord is interpreted. */
+typedef struct PanelRecSub {
+    u8 bytes[0x10];
+    s8 status;
+} PanelRecSub;
+
+/* Option-list fields used by the panel status and row helpers. */
+typedef struct PanelOptionBlock {
+    u32 x;
+    u32 y;
+    _FRQ *glyphChain;
+    u32 panelValue;
+    s16 status;
+    s16 clearBitCount;
+    u16 unk14;
+    s16 rowCount;
+} PanelOptionBlock;
+
+/* The surrounding table payload remains opaque; known subviews are retained. */
+typedef struct PanelRec {
+    u8 bytes00[0x24];
+    PanelRecSub sub24;
+    u8 bytes35[0xB];
+    PanelOptionBlock options;
+    u8 bytes58[0x50];
+    dds_itfpanel_t *layoutSprite; /* 0xA8: sprite passed to the layout updater. */
+} PanelRec;
+
+/* Table entry begins with its payload pointer; the trailing words are unknown. */
+typedef struct PanelEntry {
+    PanelRec *ptr;
+    u8 bytes04[0x10];
+} PanelEntry;
+
+typedef struct PanelHoldItem {
+    s32 first;
+    s16 second;
+    s16 third;
+} PanelHoldItem;
+
+/* Bounded held-panel queue. Unknown scalar slots stay unnamed. */
+typedef struct PanelHold {
+    s32 window;
+    s16 unk4;
+    s16 queuedCount;
+    s32 entryEndFrame; /* Script timer deadline of the active entry. */
+    PanelHoldItem items[ITF_PANEL_HOLD_CAPACITY];
+} PanelHold;
+
+typedef char PktRec_size_must_be_0x10[sizeof(PktRec) == 0x10 ? 1 : -1];
+
+typedef char PanelRect_size_must_be_0x10[sizeof(PanelRect) == 0x10 ? 1 : -1];
+
+typedef char PanelOptionBlock_size_must_be_0x18[
+    sizeof(PanelOptionBlock) == 0x18 ? 1 : -1];
+
+typedef char PanelRec_size_must_be_0xAC[sizeof(PanelRec) == 0xAC ? 1 : -1];
+
+typedef char PanelEntry_size_must_be_0x14[
+    sizeof(PanelEntry) == 0x14 ? 1 : -1];
+
+typedef char PanelHoldItem_size_must_be_8[sizeof(PanelHoldItem) == 8 ? 1 : -1];
+
+typedef char PanelHold_size_must_be_0x20C[
+    sizeof(PanelHold) == 0x20C ? 1 : -1];
+
+#endif

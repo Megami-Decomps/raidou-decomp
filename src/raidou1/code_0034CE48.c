@@ -5,6 +5,87 @@
 #define VERSION_DDS2 1
 #endif
 
+#include "common.h"
+
+#include "newdata.h"
+
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/dsp_entry_api.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/evt_message_window_api.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/fr_font_context.h"
+
+#include "dds/kwln.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/snd_sequence_volume_pan.h"
+
+#include "dds/ui_color.h"
+
+u32 dds3GetProcessData(const dds3ProcessID_t *task);
+
+/* Advance caller-owned state, returning its next 32-bit value. NULL selects
+ * the shared effect RNG state. */
+u32 dds3GetRandA(EffRandState *state);
+
+/* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
+u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
+
+/* Return the signed control-state byte as a query result, not a boolean or a
+ * stored phase. NO_ACTIVE_CONTROL (0) covers a missing window and control state
+ * two hidden by the gate; stored zero also passes through. Visible stored states
+ * one, two and three report ACTIVE, GATED and CLEANUP. Other stored values pass
+ * through unchanged. */
+EvtMessageWindowControlResult fclChkMessage(void);
+
+/* Start a display entry; return zero if no window is open, one if it starts. */
+s32 fclStartMessage(s32 entry);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+void frSetDrawPosition(struct _FRQ *glyph, s32 x, s32 y);
+
+/* Replace each child render word along the borrowed glyph chain. */
+void frSetFontColor(struct _FRQ *parentNode, u32 colorWord);
+
+/* Update the first-option byte of every child on this glyph chain. */
+void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
+
+void frSetPriority(struct _FRQ *glyph, u32 unshiftedValue);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+/* Apply volume and pan to a sequence track through the command queue. */
+void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
+
+void *sdfChipAllocDirect(s32 size);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/sdf_gs_register_submit_api.h"
@@ -112,7 +193,7 @@ struct StaffMenuRuntime;
 
 extern void evtCopyEntryStringToActiveWindow(s32, const char *);
 
-extern DatAssignedItemId mnuGetPartyEntryCurrentId(datUnitWork_t *);
+extern DatAssignedItemId mnuGetPartyEntryCurrentId(dds_datUnitWork_t *);
 
 #define MNU_ENTRY_SPRITE_COUNT 4
 
@@ -222,7 +303,7 @@ typedef struct MenuIconState MenuIconState;
 
 extern s32 mnuLookupRangeEntry(u16);
 
-extern u16 mnuGetAdjustedEntryValue(s32, datUnitWork_t *);
+extern u16 mnuGetAdjustedEntryValue(s32, dds_datUnitWork_t *);
 
 extern s32 mnuGetRangeEntryFlatValue(s32);
 
@@ -298,9 +379,9 @@ extern void mnuFreeWindowSprites();
 
 extern s8 evtGetCapturedWindowPanelValue(void);
 
-extern s32 mnuApplyRandomStatItemEffect(u8 *, datUnitWork_t *, MnuRequirementItemId);
+extern s32 mnuApplyRandomStatItemEffect(u8 *, dds_datUnitWork_t *, MnuRequirementItemId);
 
-extern void mnuPrepareStaffValueChangeDialog(MenuStaffContext *, datUnitWork_t *, s32, s32);
+extern void mnuPrepareStaffValueChangeDialog(MenuStaffContext *, dds_datUnitWork_t *, s32, s32);
 
 extern MenuPopupEntry mnuCampRingCustomizationPopupEntry[];
 
@@ -343,7 +424,7 @@ extern const MenuPanelDrawLayout D_0042AD38;
 
 extern const u8 D_00437BF0[];
 
-extern s32 ptyGetCurrentProfileId(const datUnitWork_t *);
+extern s32 ptyGetCurrentProfileId(const dds_datUnitWork_t *);
 
 extern void cmpDrawTriG(const u32 *, const u32 *, u32, const u32 *, u32);
 
@@ -429,9 +510,9 @@ typedef struct SkillMenuRuntime {
     s32 fade; /* 0x38: shared skill-category marker fade. */
 } SkillMenuRuntime;
 
-extern void ptyRecomputeMaxHpMp(datUnitWork_t *unit);
+extern void ptyRecomputeMaxHpMp(dds_datUnitWork_t *unit);
 
-extern void scrClearSecondaryScriptFlag(datUnitWork_t *unit, u16 flagId);
+extern void scrClearSecondaryScriptFlag(dds_datUnitWork_t *unit, u16 flagId);
 
 extern s32 frFontDrawGlyphChain(_FRQ *, s8, u32);
 
@@ -442,8 +523,6 @@ typedef struct MenuListDefaults {
 extern MenuListDefaults D_0042AF00;
 
 extern const MenuListDefaults D_0042AE18;
-
-extern u8 (*datSkillNames)[17];
 
 extern char D_00437C00[];
 
@@ -478,7 +557,7 @@ extern char mnuRingCustomizationStatEligibility[];
 
 extern char mnuRingCustomizationBonusWeights[20];
 
-s32 mnuApplyRandomStatItemEffect(u8 *menu, datUnitWork_t *entry,
+s32 mnuApplyRandomStatItemEffect(u8 *menu, dds_datUnitWork_t *entry,
                                  MnuRequirementItemId itemId);
 
 s32 mnuUpdatePartySlotAssignmentPopup(dds3ProcessID_t *callback);
@@ -489,7 +568,7 @@ s32 mnuStartPanelExit(dds3ProcessID_t *callback);
 
 /* Clear the selected item's five stat bonuses and its requirement count,
  * then recalculate the party record's maximum HP and MP. */
-void mnuClearPartySelectionValues(datUnitWork_t *entry, MnuRequirementItemId selection);
+void mnuClearPartySelectionValues(dds_datUnitWork_t *entry, MnuRequirementItemId selection);
 
 u32 mnuEnterSlotLabel(dds3ProcessID_t *task);
 
@@ -559,14 +638,14 @@ void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu);
 s32 mnuHandlePartySelectionInput(dds3ProcessID_t *callback);
 
 void mnuDrawPartySelectionPreviewPanel(MenuContext *context, MenuPageBar *hpBar, MenuPageBar *mpBar,
-                   datUnitWork_t *entry, EffectSlotSet *portrait, u32 fade,
+                   dds_datUnitWork_t *entry, EffectSlotSet *portrait, u32 fade,
                    u32 frameFade, s32 dimmed);
 
 /* Two-stage fade: B rises first when opening, A falls first when closing.
  * The second ramp begins strictly past its threshold; clamps follow each step. */
 void mnuUpdateStaffFade(s32 opening, PartyMenuData *menuWork);
 
-extern MenuProfilePanel *mnuCreateProfilePanel(datUnitWork_t *selectionState);
+extern MenuProfilePanel *mnuCreateProfilePanel(dds_datUnitWork_t *selectionState);
 
 extern void mnuSetGroupProperties(MenuProfilePanel *, EffectSlotSet *, EffectSlotSet *, s32, s32);
 
@@ -576,7 +655,7 @@ extern void mnuFreeProfilePanelWork(MenuProfilePanel *);
 
 extern void mnuDrawPartySelectionPreview(MenuContext *);
 
-extern void mnuDrawPartySelectionPreviewPanel(MenuContext *, MenuPageBar *, MenuPageBar *, datUnitWork_t *, EffectSlotSet *, u32, u32, s32);
+extern void mnuDrawPartySelectionPreviewPanel(MenuContext *, MenuPageBar *, MenuPageBar *, dds_datUnitWork_t *, EffectSlotSet *, u32, u32, s32);
 
 /* Refresh the selected party member's effect pair and profile panel. */
 void mnuDrawPartySelectionPreview(MenuContext *context);
@@ -650,9 +729,9 @@ void mnuDrawSelectedPartySlotMarkers(s32 context, StaffSlots *resources);
 
 void mnuDrawTextSprite(s32 x, s32 y, s32 width, u32 color, const char *text, s32 flags);
 
-void mnuDrawPartySkillAndStatusPanel(datUnitWork_t *entry, MenuPageWindow *page, MenuPanelGroup *packedGroup, MenuSpriteState *spriteState, s32 unused, s32 spriteFlags);
+void mnuDrawPartySkillAndStatusPanel(dds_datUnitWork_t *entry, MenuPageWindow *page, MenuPanelGroup *packedGroup, MenuSpriteState *spriteState, s32 unused, s32 spriteFlags);
 
-void mnuDrawProfilePanelAndSprite(datUnitWork_t *entry, u32 unused1, MenuSpriteState *spriteState,
+void mnuDrawProfilePanelAndSprite(dds_datUnitWork_t *entry, u32 unused1, MenuSpriteState *spriteState,
                                     MenuProfilePanel *resource,
                                     u32 unused4, u32 spriteFlags);
 
@@ -668,7 +747,7 @@ s32 mnuStaffIdlePartyUpdate(dds3ProcessID_t *callback);
 u32 mnuAllowSkillMenuReturn(void);
 
 void mnuDrawRangeCostAndIcon(s32 x, s32 y, s32 depth, s32 xOffset, u32 fade,
-                   datUnitWork_t *actor, u16 rangeId, s32 style, s32 dim,
+                   dds_datUnitWork_t *actor, u16 rangeId, s32 style, s32 dim,
                    EffectSlotSet *costResource, u32 texture);
 
 extern void mnuDispatchEntryWords(EffectSlotSet *, s32, MenuListNode *);
@@ -711,14 +790,14 @@ typedef struct MnuCategoryPositions {
 
 extern const MnuCategoryPositions D_0042AE28;
 
-extern u32 scrGetSecondaryScriptFlag(datUnitWork_t *, u16);
+extern u32 scrGetSecondaryScriptFlag(dds_datUnitWork_t *, u16);
 
 void mnuDrawSkillCategoryEntry(s32 x, s32 y, s32 depth, MenuList *list,
                    MenuListNode *node, s32 texture);
 
-extern s32 ptyHasSkill(datUnitWork_t *, s32);
+extern s32 ptyHasSkill(dds_datUnitWork_t *, s32);
 
-extern u32 scrGetSecondaryScriptFlag(datUnitWork_t *, u16);
+extern u32 scrGetSecondaryScriptFlag(dds_datUnitWork_t *, u16);
 
 /* Secondary script bits enable the category marker independently of learned skills. */
 void mnuRefreshSkillWindowOwnershipFlags(MenuContext *context);
@@ -780,10 +859,10 @@ u32 mnuClearSkillSelectionImageState(dds3ProcessID_t *task);
 
 /* Narrow the ID to its native 16-bit skill code before duplicate detection.
  * Insert only missing skills, then recompute maxima and clear the script flag. */
-void mnuAddPartySkillIfMissing(datUnitWork_t *partyEntry, s32 skillId, s32 skillSlot);
+void mnuAddPartySkillIfMissing(dds_datUnitWork_t *partyEntry, s32 skillId, s32 skillSlot);
 
 /* Clear one skill slot and recompute the owning party record's maxima. */
-void mnuClearPartySkillSlot(datUnitWork_t *partyEntry, s32 skillSlot);
+void mnuClearPartySkillSlot(dds_datUnitWork_t *partyEntry, s32 skillSlot);
 
 /* Open the selected skill's popup or cancel, then process list navigation.
  * Native list reads precede the late window guard; preserve that ordering. */
@@ -792,7 +871,7 @@ void mnuCampMenuHandleInput(dds3ProcessID_t *callback);
 /* Apply a selected skill to the current slot, then process window input. */
 void ptySkillMenuHandleSelection(dds3ProcessID_t *callback);
 
-void mnuSwapPartySkillSlots(datUnitWork_t *party, s32 firstSlot, s32 secondSlot);
+void mnuSwapPartySkillSlots(dds_datUnitWork_t *party, s32 firstSlot, s32 secondSlot);
 
 /* First confirm stores a slot; a different second slot swaps and rebuilds.
  * Cancel clears the saved slot, opening the exit popup only if none was saved. */
@@ -867,8 +946,6 @@ extern MenuPoint D_00437C18[];
 
 extern const char *mnuComboGunRequirementTexts[16];
 
-extern u8 (*D_00435E68)[33];
-
 extern s32 ptyGetAffinityKind(s32 affinityId, s32 index);
 
 extern s32 ptyGetAffinityFlagsWithoutOverride(s32 affinityId, s32 index);
@@ -882,7 +959,7 @@ void ptySkillMenuDrawEntry(s32 x, s32 y, s32 depth, MenuList *list,
                            MenuListNode *node, s32 texture);
 
 /* Collect up to max pointers to occupied, frontline party slots. */
-void mnuCollectFrontlinePartySlots(const datUnitWork_t **out, s32 max);
+void mnuCollectFrontlinePartySlots(const dds_datUnitWork_t **out, s32 max);
 
 u8 mnuHasStandardPartnerRequirements(BtlCommandId commandId);
 

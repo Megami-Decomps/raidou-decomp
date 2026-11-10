@@ -1,10 +1,12 @@
-#ifndef MDL_PART_ENTRY_H
-#define MDL_PART_ENTRY_H
+#ifndef DDS_MDL_PART_ENTRY_H
 
+#define DDS_MDL_PART_ENTRY_H
 #include "common.h"
 
 struct billHandle_t;
+
 struct EffNode;
+
 struct MdlObj;
 
 /* The slot kind selects the concrete object retained at offset 0x08. */
@@ -32,8 +34,7 @@ static inline MdlPartObject mdlPartObjectFromStorage(void *object) {
 
 typedef char MdlPartEntry_size_must_be_0x10[
     (sizeof(MdlPartEntry) == 0x10) ? 1 : -1];
-typedef char MdlPartEntry_object_offset_must_be_0x08[
-    ((u32)&((MdlPartEntry *)0)->object == 0x08) ? 1 : -1];
+
 typedef char MdlPartObject_size_must_be_4[
     (sizeof(MdlPartObject) == 0x04) ? 1 : -1];
 

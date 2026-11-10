@@ -1,7 +1,8 @@
-#ifndef MDL_OPTION_STATE_H
-#define MDL_OPTION_STATE_H
+#ifndef DDS_MDL_OPTION_STATE_H
 
+#define DDS_MDL_OPTION_STATE_H
 #include "common.h"
+
 #include "sdf_draw.h"
 
 typedef union MdlOptionControl {

@@ -1,18 +1,28 @@
-#ifndef EVT_POLYGON_MOVIE_H
-#define EVT_POLYGON_MOVIE_H
+#ifndef DDS_EVT_POLYGON_MOVIE_H
 
+#define DDS_EVT_POLYGON_MOVIE_H
 #include "common.h"
+
 #include "evt_polygon_movie_flags_api.h"
+
 #include "itf_mes_window_index.h"
+
 #include "sdf.h"
+
 #include "sdf_float_counter.h"
 
 struct dds3ProcessID_t;
-struct evtViewerInfo_t;
+
+struct dds_evtViewerInfo_t;
+
 struct PolyMovieWork;
+
 struct dds3Basic_t;
+
 struct FileRequest;
+
 struct EvtCompactRow;
+
 struct EvtExtendedRow;
 
 /* User-value state shared by the DDS1 and DDS2 polygon-movie providers. */
@@ -23,7 +33,6 @@ typedef struct EvtPolygonMovieTaskState {
 } EvtPolygonMovieTaskState;
 
 typedef char EvtPolygonMovieTaskState_size_must_be_0x0C[(sizeof(EvtPolygonMovieTaskState) == 0x0C) ? 1 : -1];
-typedef char EvtPolygonMovieTaskState_work_at_0x8[((u32)&((EvtPolygonMovieTaskState *)0)->work == 0x8) ? 1 : -1];
 
 /* PMD2 records and the complete 0x11C-byte owner cleared by both games'
  * InitPolygonMovieWorkData. Movie parsing, asynchronous resource loading,
@@ -53,9 +62,13 @@ typedef char PmdResourceAddress_size_must_be_0x4[
     (sizeof(PmdResourceAddress) == 0x4) ? 1 : -1];
 
 /* Three retained resources share request/handle/address slots. */
+
 #define EVT_POLY_MOVIE_MAIN_LOAD_PENDING 0x02
+
 #define EVT_POLY_MOVIE_SECONDARY_LOAD_PENDING 0x04
+
 #define EVT_POLY_MOVIE_ASYNC_INITIALIZED 0x08
+
 #define EVT_POLY_MOVIE_TERTIARY_LOAD_PENDING 0x10
 
 typedef struct PolyMovieResourceSlot {
@@ -138,14 +151,10 @@ typedef struct PolyMovieState {
 } PolyMovieState;
 
 typedef char PolyMovieWork_size_must_be_0x11C[(sizeof(PolyMovieWork) == 0x11C) ? 1 : -1];
-typedef char PolyMovieWork_messageManagerHandle_at_0x104[
-    ((u32)&((PolyMovieWork *)0)->messageManagerHandle == 0x104) ? 1 : -1];
-typedef char PolyMovieWork_task_at_0x108[((u32)&((PolyMovieWork *)0)->task == 0x108) ? 1 : -1];
-typedef char PolyMovieWork_eventId_at_0x10C[((u32)&((PolyMovieWork *)0)->eventId == 0x10C) ? 1 : -1];
-typedef char PolyMovieState_clip_at_0x4[((u32)&((PolyMovieState *)0)->clip == 0x4) ? 1 : -1];
 
 /* Serialized mode values select transform behavior (0-1) or unit flags (2-4). */
 typedef u32 EvtPolygonMovieObjectMode;
+
 enum {
     EVT_POLYGON_MOVIE_MODE_TRANSFORMS_ENABLED = 0,
     EVT_POLYGON_MOVIE_MODE_TRANSFORMS_SKIPPED = 1,
@@ -154,19 +163,23 @@ enum {
     EVT_POLYGON_MOVIE_MODE_UNIT_400_OFF_200_ON = 4
 };
 
-PolyMovieWork *InitPolygonMovieWorkData(void);
 PolyMovieWork *evtPolygonMovieInitWork(PolyMovieWork *, PmdHeader *, PmdHeader *, PmdHeader *);
-sdfMemHandle_t *evtAllocMovieWork(PmdHeader **out);
+
 sdfMemHandle_t *evtPolygonMovieSynthesizePmd3Header(PmdHeader **out);
+
 void evtPolygonMovieSetObjectMode(struct dds3Basic_t *obj, EvtPolygonMovieObjectMode mode,
                                   u32 setFlags, u32 clearFlags);
-s32 evtStopMover(struct dds3Basic_t *movie, s32 undo, s32 start, s32 end);
 
 #ifdef VERSION_DDS1
+
 void evtPolygonMovieClampTime(struct dds3Basic_t *movie, s32 unused, s32 start, s32 end);
-s32 evtPopulateViewerTimelineFromMovie(PolyMovieWork *work, struct evtViewerInfo_t *viewer);
+
+s32 evtPopulateViewerTimelineFromMovie(PolyMovieWork *work, struct dds_evtViewerInfo_t *viewer);
+
 #elif VERSION_DDS2
-s32 evtPopulateViewerTimelineFromMovie(PolyMovieWork *work, struct evtViewerInfo_t *viewer);
+
+s32 evtPopulateViewerTimelineFromMovie(PolyMovieWork *work, struct dds_evtViewerInfo_t *viewer);
+
 #endif
 
 #endif

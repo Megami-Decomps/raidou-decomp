@@ -122,7 +122,7 @@ volatile u8 sdfDrawFrameFlag = 0;
 
 volatile u8 sdfDrawSyncFlag = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2BE);
+u16 sdfDrawFrameCounter = 0;
 
 volatile u8 sdfDrawPublishFlag = 0;
 

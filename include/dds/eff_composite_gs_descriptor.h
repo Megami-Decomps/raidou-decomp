@@ -1,8 +1,10 @@
-#ifndef EFF_COMPOSITE_GS_DESCRIPTOR_H
-#define EFF_COMPOSITE_GS_DESCRIPTOR_H
+#ifndef DDS_EFF_COMPOSITE_GS_DESCRIPTOR_H
 
+#define DDS_EFF_COMPOSITE_GS_DESCRIPTOR_H
 #include "common.h"
+
 #include "eff.h"
+
 #include "sdf.h"
 
 /* Caller-built composite draw description; 0x68 bytes. */

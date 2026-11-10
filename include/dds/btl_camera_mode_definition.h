@@ -1,6 +1,6 @@
-#ifndef BTL_CAMERA_MODE_DEFINITION_H
-#define BTL_CAMERA_MODE_DEFINITION_H
+#ifndef DDS_BTL_CAMERA_MODE_DEFINITION_H
 
+#define DDS_BTL_CAMERA_MODE_DEFINITION_H
 #include "btl_command.h"
 
 typedef struct BtlCameraModeDefinition {

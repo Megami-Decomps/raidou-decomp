@@ -448,6 +448,91 @@ extern u16 effBTLSkyFilterFrame;
 extern u16 effBTLSkyFilterFrameMax;
 /* End of declarations from src/smt3/effect/effBattle.c */
 
+/* Declarations from dds-decomp src/dds1/game/code_00161838.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_EFF_BATTLE_COPY_TRIGGER_FRAME 1
+
+#define SMT3_DEFINES_EFF_BATTLE_MINIMUM_RAMP_END_FRAME 1
+
+#define SMT3_DEFINES_EFF_BATTLE_PARAMETER_WORK_CAPACITY 1
+
+#define SMT3_DEFINES_EFF_PARAM_WORK_KIND_EFFECT_NODE 1
+
+#define SMT3_DEFINES_effBTLColorRow_t 1
+
+#define SMT3_DEFINES_effBTLColorWork_t 1
+
+#define SMT3_DEFINES_effBTLColor_t 1
+
+#define SMT3_DEFINES_effBTLFieldFilter_t 1
+
+#define SMT3_DEFINES_effBTLImage_t 1
+
+#define SMT3_DEFINES_effBTLLightParams_t 1
+
+#define SMT3_DEFINES_effBTLLightWork_t 1
+
+#define SMT3_DEFINES_effBTLSkillInfo_t 1
+
+#define SMT3_DEFINES_effBTLVector4_t 1
+
+#define SMT3_DEFINES_fldResourceLight_t 1
+
+#include "dds/common.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/btl.h"
+
+#include "dds/eff_field_color.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/sdf_debug_api.h"
+
+extern u32 effFieldColorFlags;
+
+extern u32 effFieldColorOriginalSelector;
+
+extern u32 effFieldColorFinalSelector;
+
+/* Keep the original selector and optional overrides separately for field-color lookups. */
+void effBTLFieldColorSetSelectors(s32 baseId, u32 variant, s32 overrideId, s32 finalId);
+
+u32 effBTLFieldColorGetVariantSelector(void);
+
+u32 effBTLFieldColorGetOverrideSelector(void);
+
+u32 effBTLFieldColorGetFinalSelector(void);
+
+/* Default RGB adjustment used when no field-specific color is supplied. */
+void effBTLFieldColorGetFixedVector(u32 unused, f32 *color);
+
+extern f32 D_00350F60[][4];
+
+extern f32 D_00352880[4];
+
+extern EffFieldColorRecord D_0034E730[];
+
+/* Variant and kind are narrowed to their stored widths before the lookup. */
+void effBTLFieldColorLookupNarrowSelectors(s32 colorId, s16 variant, s16 kind, f32 *output);
+
+u32 effBTLFieldColorGetEntryWord(s32 index);
+
+void effBTLFieldColorSetFlags(u32 flags);
+
+void effBTLFieldColorClearFlags(u32 flags);
+
+void effBTLFieldColorResetFlags(void);
+
+f32 effBTLFieldColorGetActorScale(BtlUnit *unit);
+
+f32 effGetActorScaleForParameterWork(BtlUnit *unit);
+/* End of declarations from src/dds1/game/code_00161838.c */
+
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FBD00);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FBE40);
@@ -568,9 +653,13 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_001FC548);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC550);
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLFieldColorGetOverrideSelector);
+u32 effBTLFieldColorGetOverrideSelector(void) {
+    return effBTLSkillID;
+}
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLFieldColorGetFinalSelector);
+u32 effBTLFieldColorGetFinalSelector(void) {
+    return effFieldColorFinalSelector;
+}
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC568);
 

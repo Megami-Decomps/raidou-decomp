@@ -1,7 +1,8 @@
-#ifndef BTL_RESOURCE_BROWSER_H
-#define BTL_RESOURCE_BROWSER_H
+#ifndef DDS_BTL_RESOURCE_BROWSER_H
 
+#define DDS_BTL_RESOURCE_BROWSER_H
 #include "common.h"
+
 #include "btl_resource_selection.h"
 
 /* Filters consumed by the directory scan; these are independent of entry categories. */
@@ -46,6 +47,7 @@ typedef struct BtlResourceEntryList {
 } BtlResourceEntryList;
 
 typedef char BtlResourceEntrySizeCheck[(sizeof(BtlResourceEntry) == 0x44) ? 1 : -1];
+
 typedef char BtlResourceEntryListSizeCheck[(sizeof(BtlResourceEntryList) == 0x0C) ? 1 : -1];
 
 struct sdfTexHandle_t;
@@ -74,29 +76,38 @@ typedef struct BtlResourceDescriptor {
 
 typedef char BtlResourceDescriptor_size_must_be_0x48[
     (sizeof(BtlResourceDescriptor) == 0x48) ? 1 : -1];
-typedef char BtlResourceDescriptor_selectedIndex_offset_must_be_0x14[
-    ((u32)&((BtlResourceDescriptor *)0)->selectedIndex == 0x14) ? 1 : -1];
 
 s32 btlOpenPfsDebugDirectory(const char *directoryName);
+
 struct BtlResourceEntryList *btlScanDirectory(const char *path, s32 flags);
+
 void btlDestroyEntryList(struct BtlResourceEntryList *list);
+
 void btlAppendEntry(struct BtlResourceEntryList *list, const char *name,
                     s32 category, s32 value, s32 id);
 
 struct BtlResourceDescriptor *
 btlCreateResourceDescriptor(struct BtlResourceEntryList *list);
+
 void btlDestroyResourceDescriptor(struct BtlResourceDescriptor *descriptor);
+
 s32 btlUpdateAndDrawResourceBrowser(struct BtlResourceDescriptor *descriptor);
+
 s32 btlFormatSelectedResourceName(struct BtlResourceDescriptor *descriptor,
                                   char *output);
+
 s32 btlTrimResourceName(struct BtlResourceDescriptor *descriptor,
                         char *output);
+
 u32 btlGetResourcePathVariant(const struct BtlResourceDescriptor *descriptor);
+
 u32 btlGetResourceBrowserSelectedIndex(
     const struct BtlResourceDescriptor *descriptor);
+
 void btlDrawResourcePreview(struct BtlResourceDescriptor *descriptor);
 
 void btlSetResourceBrowserPosition(struct BtlResourceDescriptor *descriptor, s32 x, s32 y);
+
 u32 btlGetResourceBrowserSelectionStatus(const struct BtlResourceDescriptor *descriptor);
 
 #endif

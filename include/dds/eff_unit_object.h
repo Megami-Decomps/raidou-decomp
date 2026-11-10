@@ -1,12 +1,14 @@
-#ifndef EFF_UNIT_OBJECT_H
-#define EFF_UNIT_OBJECT_H
+#ifndef DDS_EFF_UNIT_OBJECT_H
 
+#define DDS_EFF_UNIT_OBJECT_H
 #include "common.h"
+
 #include "eff.h"
 
 struct sdfMat_t;
 
 #define EFF_INSTANCE_BYTES 0x88
+
 #define EFF_MATRIX_BYTES 0x40
 
 /* An effect unit instance (EFF_INSTANCE_BYTES): each effect scene object owns
@@ -17,14 +19,7 @@ typedef struct EffUnitObject {
     billHandle_t *billboard; /* 0x80: scene-owned billboard */
     struct sdfMat_t *material; /* 0x84: owned render material */
 } EffUnitObject;
+
 typedef char EffUnitObject_size_check[(sizeof(EffUnitObject) == EFF_INSTANCE_BYTES) ? 1 : -1];
-typedef char EffUnitObject_localMatrix_offset_check[
-    ((u32)&((EffUnitObject *)0)->localMatrix == 0) ? 1 : -1];
-typedef char EffUnitObject_transform_offset_check[
-    ((u32)&((EffUnitObject *)0)->transform == EFF_MATRIX_BYTES) ? 1 : -1];
-typedef char EffUnitObject_billboard_offset_check[
-    ((u32)&((EffUnitObject *)0)->billboard == 0x80) ? 1 : -1];
-typedef char EffUnitObject_material_offset_check[
-    ((u32)&((EffUnitObject *)0)->material == 0x84) ? 1 : -1];
 
 #endif

@@ -1,7 +1,8 @@
-#ifndef ITF_MES_RESOURCE_H
-#define ITF_MES_RESOURCE_H
+#ifndef DDS_ITF_MES_RESOURCE_H
 
+#define DDS_ITF_MES_RESOURCE_H
 #include "common.h"
+
 #include "itf_mes_entry_items_result.h"
 
 /* Message tables contain relocated encoded-text addresses. */
@@ -17,20 +18,18 @@ typedef struct ItfMesEntry {
     ItfMesEntryItemsResult itemList;
     ItfMesTable *table;
 } ItfMesEntry;
+
 typedef char ItfMesEntry_size_must_be_0x8[
     sizeof(ItfMesEntry) == 0x8 ? 1 : -1];
-typedef char ItfMesEntry_table_offset_must_be_0x4[
-    ((u32)&((ItfMesEntry *)0)->table == 0x4) ? 1 : -1];
 
 /* MSG1 appends a font-entry pointer after the trailing message entry. */
 typedef struct ItfMesTrailingFontEntry {
     ItfMesEntry entry;
     u8 *temporaryFontEntry;
 } ItfMesTrailingFontEntry;
+
 typedef char ItfMesTrailingFontEntry_size_must_be_0xC[
     sizeof(ItfMesTrailingFontEntry) == 0xC ? 1 : -1];
-typedef char ItfMesTrailingFontEntry_font_offset_must_be_0x8[
-    ((u32)&((ItfMesTrailingFontEntry *)0)->temporaryFontEntry == 0x8) ? 1 : -1];
 
 typedef struct ItfMesSub {
     u8 unk0[8];

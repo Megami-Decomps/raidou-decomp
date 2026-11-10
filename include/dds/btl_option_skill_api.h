@@ -1,6 +1,6 @@
-#ifndef BTL_OPTION_SKILL_API_H
-#define BTL_OPTION_SKILL_API_H
+#ifndef DDS_BTL_OPTION_SKILL_API_H
 
+#define DDS_BTL_OPTION_SKILL_API_H
 #include "btl_command_id.h"
 
 struct BtlUnit;
@@ -11,4 +11,4 @@ s32 btlCollectAvailableOptionSkills(struct BtlUnit *actor, BtlCommandId *choices
 /* Return an available option-skill command ID, or the invalid-ID sentinel. */
 BtlCommandId btlChooseRandomAvailableOption(struct BtlUnit *actor);
 
-#endif /* BTL_OPTION_SKILL_API_H */
+#endif /* DDS_BTL_OPTION_SKILL_API_H */

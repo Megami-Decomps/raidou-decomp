@@ -1,6 +1,6 @@
-#ifndef EFF_EDITOR_MENU_H
-#define EFF_EDITOR_MENU_H
+#ifndef DDS_EFF_EDITOR_MENU_H
 
+#define DDS_EFF_EDITOR_MENU_H
 #include "common.h"
 
 /* A code address stored in a menu row; the menu dispatcher decides how to call it. */
@@ -66,6 +66,7 @@ typedef struct EffQueuedFileObject {
 } EffQueuedFileObject;
 
 typedef char EffEditorRowSizeCheck[(sizeof(EffEditorRow) == 0x18) ? 1 : -1];
+
 typedef char EffQueuedFileObjectSizeCheck[(sizeof(EffQueuedFileObject) == 0x38) ? 1 : -1];
 
 #endif

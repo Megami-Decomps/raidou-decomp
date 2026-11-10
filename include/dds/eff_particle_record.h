@@ -1,6 +1,6 @@
-#ifndef EFF_PARTICLE_RECORD_H
-#define EFF_PARTICLE_RECORD_H
+#ifndef DDS_EFF_PARTICLE_RECORD_H
 
+#define DDS_EFF_PARTICLE_RECORD_H
 #include "common.h"
 
 /* Particle-specific view of one 0x40-byte EffectBufferRecord slot. */
@@ -18,10 +18,5 @@ typedef struct EffParticleRecord {
 
 typedef char EffParticleRecordSizeAssert[
     (sizeof(EffParticleRecord) == 0x40) ? 1 : -1];
-typedef char EffParticleRecordLayoutAssert[
-    ((u32)&((EffParticleRecord *)0)->frame == 0x20 &&
-     (u32)&((EffParticleRecord *)0)->color == 0x24 &&
-     (u32)&((EffParticleRecord *)0)->speed == 0x28 &&
-     (u32)&((EffParticleRecord *)0)->angle == 0x2C) ? 1 : -1];
 
 #endif

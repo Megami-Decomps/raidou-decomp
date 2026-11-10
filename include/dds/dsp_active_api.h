@@ -1,6 +1,6 @@
-#ifndef DSP_ACTIVE_API_H
-#define DSP_ACTIVE_API_H
+#ifndef DDS_DSP_ACTIVE_API_H
 
+#define DDS_DSP_ACTIVE_API_H
 #include "common.h"
 
 /* Update the current message window's gate and disable flags. Enabling also
@@ -8,4 +8,4 @@
  * Callers must provide a valid current window. */
 void dspSetActive(s32 enabled);
 
-#endif /* DSP_ACTIVE_API_H */
+#endif /* DDS_DSP_ACTIVE_API_H */

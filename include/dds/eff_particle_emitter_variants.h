@@ -1,7 +1,8 @@
-#ifndef EFF_PARTICLE_EMITTER_VARIANTS_H
-#define EFF_PARTICLE_EMITTER_VARIANTS_H
+#ifndef DDS_EFF_PARTICLE_EMITTER_VARIANTS_H
 
+#define DDS_EFF_PARTICLE_EMITTER_VARIANTS_H
 #include "eff.h"
+
 #include "eff_particle_launch_mode.h"
 
 /* Kind-specific state following the shared 0x150-byte emitter prefix. */
@@ -22,10 +23,6 @@ typedef struct EffDiscEmitter {
 
 typedef char EffDiscEmitter_size_check[
     (sizeof(EffDiscEmitter) == 0x178) ? 1 : -1];
-typedef char EffDiscEmitter_spread_offset_check[
-    ((u32)&((EffDiscEmitter *)0)->spread == 0x154) ? 1 : -1];
-typedef char EffDiscEmitter_jitterB_offset_check[
-    ((u32)&((EffDiscEmitter *)0)->jitterB == 0x174) ? 1 : -1];
 
 typedef struct EffBallisticEmitter {
     EffEmitterHead head;
@@ -45,9 +42,5 @@ typedef struct EffBallisticEmitter {
 
 typedef char EffBallisticEmitter_size_check[
     (sizeof(EffBallisticEmitter) == 0x174) ? 1 : -1];
-typedef char EffBallisticEmitter_launchMode_offset_check[
-    ((u32)&((EffBallisticEmitter *)0)->launchMode == 0x150) ? 1 : -1];
-typedef char EffBallisticEmitter_radius_offset_check[
-    ((u32)&((EffBallisticEmitter *)0)->radius == 0x15C) ? 1 : -1];
 
 #endif

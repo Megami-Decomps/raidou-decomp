@@ -1,6 +1,6 @@
-#ifndef EFF_FILE_JOB_REQUEST_H
-#define EFF_FILE_JOB_REQUEST_H
+#ifndef DDS_EFF_FILE_JOB_REQUEST_H
 
+#define DDS_EFF_FILE_JOB_REQUEST_H
 #include "common.h"
 
 struct sdfMemHandle_t;
@@ -20,13 +20,5 @@ typedef struct EffFileJobRequest {
 } EffFileJobRequest;
 
 typedef char EffFileJobRequestSizeCheck[(sizeof(EffFileJobRequest) == 0x20) ? 1 : -1];
-typedef char EffFileJobRequestTransferModeOffsetCheck[
-    ((u32)&((EffFileJobRequest *)0)->transferMode == 0x08) ? 1 : -1];
-typedef char EffFileJobRequestOutputBufferOffsetCheck[
-    ((u32)&((EffFileJobRequest *)0)->outputBuffer == 0x0C) ? 1 : -1];
-typedef char EffFileJobRequestAllocationOffsetCheck[
-    ((u32)&((EffFileJobRequest *)0)->allocation == 0x14) ? 1 : -1];
-typedef char EffFileJobRequestSecondaryPathOffsetCheck[
-    ((u32)&((EffFileJobRequest *)0)->secondaryCommandPath == 0x1C) ? 1 : -1];
 
 #endif

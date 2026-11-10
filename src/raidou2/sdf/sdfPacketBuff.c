@@ -122,7 +122,7 @@ INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42D4);
 
 volatile u8 sdfDrawSyncFlag = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42D6);
+u16 sdfDrawFrameCounter = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_004E42D8);
 

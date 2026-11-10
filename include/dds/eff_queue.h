@@ -1,6 +1,6 @@
-#ifndef EFF_QUEUE_H
-#define EFF_QUEUE_H
+#ifndef DDS_EFF_QUEUE_H
 
+#define DDS_EFF_QUEUE_H
 #include "common.h"
 
 /* Native 0x70-byte output of the effect resource-name chooser in DDS1/2.
@@ -19,6 +19,7 @@ typedef struct EffQueueRecord {
 } EffQueueRecord;
 
 extern void effQueueResource(const char *extension, const char *resourceName);
+
 extern void effUpdateResourceQueue(const char *directoryPath, const char *extension, EffQueueRecord *);
 
-#endif /* EFF_QUEUE_H */
+#endif /* DDS_EFF_QUEUE_H */

@@ -856,6 +856,333 @@ extern char nbCameraStateNameStart[8];
 extern char nbCameraStateNameWait[8];
 /* End of declarations from src/smt3/effect/effEvent.c */
 
+/* Declarations from dds-decomp src/dds1/effect/effEvent.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_dds3Billboard_t 1
+
+#define SMT3_DEFINES_effAPPoint4Param_t 1
+
+#define SMT3_DEFINES_effAPPoint4Part_tag 1
+
+#define SMT3_DEFINES_effAPPoint4_tag 1
+
+#define SMT3_DEFINES_effChanSourceOwner_t 1
+
+#define SMT3_DEFINES_effChanSource_t 1
+
+#define SMT3_DEFINES_effChan_t 1
+
+#define SMT3_DEFINES_effEVECombParSmokeParam_t 1
+
+#define SMT3_DEFINES_effEVECombParSmokePart_t 1
+
+#define SMT3_DEFINES_effEVECombParSmoke_t 1
+
+#define SMT3_DEFINES_effEmit_t 1
+
+#define SMT3_DEFINES_effEveBEDCut_t 1
+
+#define SMT3_DEFINES_effEveBEDParams_t 1
+
+#define SMT3_DEFINES_effEveBEDRecord_t 1
+
+#define SMT3_DEFINES_effEveBillBatch_t 1
+
+#define SMT3_DEFINES_effFloatRows_t 1
+
+#define SMT3_DEFINES_effSimpleBED_t 1
+
+#include "effBattle.h"
+
+#include "dds/mdl.h"
+
+#include "dds/sdf_gs_packet.h"
+
+/* Register selectors carried by GIF A+D writes in the two GS contexts. */
+enum {
+    SDF_GS_PRIM = 0x00,
+    SDF_GS_RGBAQ = 0x01,
+    SDF_GS_XYZ2 = 0x05,
+    SDF_GS_TEX0_1 = 0x06,
+    SDF_GS_TEX0_2 = 0x07,
+    SDF_GS_CLAMP_1 = 0x08,
+    SDF_GS_CLAMP_2 = 0x09,
+    SDF_GIF_REGISTER_AD = 0x0E,
+    SDF_GS_TEX1_1 = 0x14,
+    SDF_GS_TEX1_2 = 0x15,
+    SDF_GS_XYOFFSET_1 = 0x18,
+    SDF_GS_XYOFFSET_2 = 0x19,
+    SDF_GS_PRMODECONT = 0x1A,
+    SDF_GS_TEXA = 0x3B,
+    SDF_GS_TEXFLUSH = 0x3F,
+    SDF_GS_SCISSOR_1 = 0x40,
+    SDF_GS_SCISSOR_2 = 0x41,
+    SDF_GS_ALPHA_1 = 0x42,
+    SDF_GS_ALPHA_2 = 0x43,
+    SDF_GS_DTHE = 0x45,
+    SDF_GS_COLCLAMP = 0x46,
+    SDF_GS_TEST_1 = 0x47,
+    SDF_GS_TEST_2 = 0x48,
+    SDF_GS_FRAME_1 = 0x4C,
+    SDF_GS_FRAME_2 = 0x4D,
+    SDF_GS_ZBUF_1 = 0x4E,
+    SDF_GS_ZBUF_2 = 0x4F,
+    SDF_GS_BITBLTBUF = 0x50,
+    SDF_GS_TRXPOS = 0x51,
+    SDF_GS_TRXREG = 0x52,
+    SDF_GS_TRXDIR = 0x53
+};
+
+void mdlGetScale(dds3ModelHandle_t *ctx);
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/sdf_line_pair_packet_api.h"
+
+#include "dds/sdf_projection.h"
+
+#include "dds/sdf_compact_vertex_vif_packet.h"
+
+#include "dds/bill_object_api.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/common.h"
+
+#include "dds/sdf_map_position_api.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/sdf_vu_rotation_axes.h"
+
+#include "dds/sdf_sif_command.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/eff_param.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/ee_mmi.h"
+
+#include "dds/btl_sound.h"
+
+#include "dds/eff_blur.h"
+
+#include "dds/eff_rectangle_blur_api.h"
+
+#include "dds/eff_event_draw.h"
+
+#include "dds/eff.h"
+
+#include "dds/eff_resource_rect_api.h"
+
+#include "dds/eff_math.h"
+
+#include "dds/eff_channel.h"
+
+#include "dds/eff_event.h"
+
+#include "dds/eff_event_work_api.h"
+
+#include "dds/eff_event_sound.h"
+
+#include "dds/eff_event_setup.h"
+
+#include "dds/eff_event_setup_readiness.h"
+
+#include "dds/eff_event_bill.h"
+
+#include "dds/eff_event_bill_batch.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/sdf_vu_transform_api.h"
+
+#include "dds/sdf_texture_primary_buffer_api.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdf_gs_blend.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/eff_packet_params.h"
+
+#include "dds/sdf_asset_create.h"
+
+#include "dds/sdf_asset_state.h"
+
+#include "dds/evt_unit.h"
+
+#include "dds/mdl.h"
+
+#include "dds/eff_channel_layout.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/font_mem_control_api.h"
+
+#define EFF_EVENT_EVENT_RECORD_BYTES 0x30
+
+extern EffScreenDrawParams D_00355908;
+
+extern EffScreenDrawParams D_003559A0;
+
+extern dds3Effect_PartialMultiBlurParam_t effTexturedBlurSetupParameters;
+
+extern dds3Effect_DistortionBlurParam_t effScatterBlurSetupParameters;
+
+extern EffScreenDrawParams D_00355E48;
+
+extern dds3Effect_Filter_t D_00355F88;
+
+extern dds3Effect_PartialMultiFilterParam_t effResourceRectangleSetupParameters;
+
+extern dds3Effect_RippleBlurParam_t effStaggeredBlurSetupParameters;
+
+extern s8 D_003BB073;
+
+extern u8 D_003558D8[];
+
+extern u8 D_003558A8[];
+
+extern u8 D_00355948[];
+
+extern u8 D_00355970[];
+
+extern void effBlurStepScaleSlotsAndDraw(EffBlurScaleWork *arg);
+
+extern sdfMat_t *effDebugSelectCursorMat;
+
+extern f32 effDebugSelectCursorAngle;
+
+void effEnableFramebufferQuad(void);
+
+void effDisableFramebufferQuad(void);
+
+/* Copy only the framebuffer source prefix, not the trailing screen-record bytes. */
+void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source);
+
+/* Expose the framebuffer-quad parameter block by address. */
+EffScreenDrawParams *effGetCh73Params(void);
+
+/* Dispatch enabled draw families independently, in their native order. */
+void effDispatchActive(void);
+
+/* callbackResult must be valid whenever callback is present. */
+extern EffEventSetupRecord effRectangleBlurSetupRecord;
+
+extern s8 effRectangleBlurSetupReady;
+
+extern s8 D_0039862B[];
+
+extern void effEventSetupBeforeRecordNoOp(void);
+
+extern void effEventSetupRecordNoOp(void *);
+
+extern void effEventSetupAfterRecordNoOp(void);
+
+/* Prepare once per flag cycle, then run the registered operations while ready.
+ * A negative control byte clears readiness only after those operations. */
+EffEventSetupReadiness effUpdateCh72Params(void);
+
+/* Expose this screen-draw setup block; no parameter copy is made. */
+EffScreenDrawParams *effGetLoadDescA(void);
+
+/* Replace the screen-draw source prefix while preserving the trailing bytes. */
+void effSetLoadDescA(const dds3Effect_Blur_t *parameters);
+
+/* Prepare the blur-template callback from its explicit parameter block,
+ * then process the channel; its optional copy still uses source/destination. */
+EffEventSetupReadiness effEventAdvanceBlurTemplateSetup(void);
+
+/* Expose the blur-template setup parameters by address. */
+dds3Effect_PartialMultiBlurParam_t *effEventGetBlurTemplateSetupParams(void);
+
+/* Replace the setup template; this does not modify the active blur work. */
+void effEventSetBlurTemplateParameters(dds3Effect_PartialMultiBlurParam_t *parameters);
+
+/* Prepare scatter setup from its explicit parameters, then process the channel. */
+EffEventSetupReadiness effEventAdvanceScatterBlurSetup(void);
+
+/* Expose the scatter-blur setup parameters by address. */
+dds3Effect_DistortionBlurParam_t *effEventGetScatterBlurSetupParams(void);
+
+/* Replace setup parameters without replacing the active filter-blur work. */
+void effEventSetScatterBlurParameters(dds3Effect_DistortionBlurParam_t *parameters);
+
+extern EffEventSetupRecord effFramebufferQuadSetupRecord;
+
+extern s8 D_003BB114;
+
+/* Prepare from the channel's source, process it, then honor the control-byte reset. */
+EffEventSetupReadiness effEventAdvanceScreenDrawSetup(void);
+
+/* Expose the other screen-draw setup block by address. */
+EffScreenDrawParams *effGetLoadDescD(void);
+
+/* Replace this screen-draw source prefix without changing trailing bytes. */
+void effSetLoadDescD(const dds3Effect_Blur_t *parameters);
+
+/* Expose the solid-rectangle setup parameters by address. */
+dds3Effect_Filter_t *effEventGetSolidRectangleSetupParams(void);
+
+/* Replace the setup block rather than the active solid-rectangle parameters. */
+void effEventSetSolidRectangleParameters(dds3Effect_Filter_t *parameters);
+
+extern s8 D_003BB12C;
+
+extern u8 D_003563F0[];
+
+extern s32 D_003BB140;
+
+extern billHandle_t *D_003BB144;
+
+extern billHandle_t *D_003BB148;
+
+/* Compact event owner: the allocator reserves exactly 0x38 bytes. */
+struct effEveBEDCutHandle_t {
+    EffEventInit init;
+    struct evtUnitHandle_t *actor; /* Linked event unit supplies its model owner. */
+    effBTLCutHandle_t *effect;
+};
+
+struct BtlUnit;
+
+extern const f32 D_003A12E0[4];
+
+/* Callbacks consume the VU0 output buffers; see docs/idioms.md,
+ * "Event-effect SDK output frontiers". */
+void effEventUpdateEffectParameters(effEveBEDCutHandle_t *work);
+
+extern f32 D_003563A0[];
+
+extern f32 D_003563B8[];
+
+extern billHandle_t *billCreateFromResource(s32 kind, const char *path);
+
+extern EffRandState effDefaultRandomState[];
+
+/* vu0 routine: camera-right normalization and position addition use the
+ * native SDK pipeline. As in effEVECombParSmokeDraw, position W is untouched. */
+void effEventUpdateBillboardParticles(EffEventBillSet *work);
+
+struct DmaPacketHeader;
+
+extern sdfGrOt_t D_003252A8;
+
+/* Copy XYZ from four float4 rows without touching destination W, then copy four trailing scalars. */
+void effCopyVertRows(EffChan *channel, f32 *source);
+/* End of declarations from src/dds1/effect/effEvent.c */
+
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E5ED0);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E5F30);
@@ -899,13 +1226,23 @@ void Eve_RippleBlurSetDefTex(void) {
     hEve_RippleBlur->texture = dds3BillboardGetGeneralTex(EFF_EVENT_STAGGERED_RESOURCE_INDEX);
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effEnableFramebufferQuad);
+void effEnableFramebufferQuad(void) {
+    D_003BB073 = 1;
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", effDisableFramebufferQuad);
+void effDisableFramebufferQuad(void) {
+    D_003BB073 = 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", effCopyFramebufferQuadParameters);
+/* Copy only the framebuffer source prefix, not the trailing screen-record bytes. */
+void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source) {
+    memcpy(&D_00355908, source, EFF_EVENT_BLUR_SOURCE_BYTES);
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", effGetCh73Params);
+/* Expose the framebuffer-quad parameter block by address. */
+EffScreenDrawParams *effGetCh73Params(void) {
+    return &D_00355908;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E61F0);
 
@@ -972,7 +1309,10 @@ INCLUDE_ASM(const s32, "effect/effEvent", func_001E68C0);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E6978);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effEventSetSolidRectangleParameters);
+/* Replace the setup block rather than the active solid-rectangle parameters. */
+void effEventSetSolidRectangleParameters(dds3Effect_Filter_t *parameters) {
+    D_00355F88 = *parameters;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001E69C8);
 

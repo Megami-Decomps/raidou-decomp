@@ -5,6 +5,159 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "newdata.h"
+
+#include "scr.h"
+
+#include "sdf_resource.h"
+
+#include "dds/dds3_area_room_key.h"
+
+#include "dds/dds3_fade.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_task_state_query.h"
+
+#include "dds/dds3_world_secondary.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/eff_event_draw.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/eff_transform.h"
+
+#include "dds/evt_world_object_api.h"
+
+#include "dds/itf_mes_panel_mode.h"
+
+#include "dds/itf_mes_select_def_key_result.h"
+
+#include "dds/itf_mes_window.h"
+
+#include "dds/kwln.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_texture_file.h"
+
+/* Sparse world-node identities recovered from the paired operation tables and
+ * concrete creators. Unlisted values stay unnamed; COUNT remains the full
+ * directory extent rather than an enum-completeness claim. */
+enum {
+    EFF_WORLD_KIND_WORLD_INFO = 0,
+    EFF_WORLD_KIND_EVENT_TABLE = 1,
+    EFF_WORLD_KIND_WORLD_INDEX_OWNER = 2,
+    EFF_WORLD_KIND_SLOT_RING = 3,
+    EFF_WORLD_KIND_CAMERA = 4,
+    EFF_WORLD_KIND_FOLLOW_MODEL = 5,
+    EFF_WORLD_KIND_EFFECT_TRANSFORM = 6,
+    EFF_WORLD_KIND_EFFECT_OBJECT = 7,
+    EFF_WORLD_KIND_RESOURCE_OWNER = 8,
+    EFF_WORLD_KIND_LIGHT = 9,
+    EFF_WORLD_KIND_SCRIPT_OBJECT = 10,
+    EFF_WORLD_KIND_ACTION_B = 11,
+    EFF_WORLD_KIND_ACTION_D = 13,
+    EFF_WORLD_KIND_ACTION_10 = 16,
+    EFF_WORLD_KIND_TRANSFORM_SOURCE = 17,
+    EFF_WORLD_KIND_COUNT = 18
+};
+
+void Eve_BlurOFF(void);
+
+void Eve_DistortionBlurOFF(void);
+
+void Eve_FilterOFF(void);
+
+void Eve_PartialMultiBlurOFF(void);
+
+void Eve_PartialMultiFilterOFF(void);
+
+/* Return nonzero while either foreground fade direction is enabled. */
+s32 dds3FadeCheck(void);
+
+void dds3FadeIn(s32 red, s32 green, s32 blue, s32 duration);
+
+/* Foreground alpha transitions, stepped by dds3FadeUpdate. */
+void dds3FadeOut(s32 red, s32 green, s32 blue, s32 duration);
+
+/* Return the borrowed secondary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetControlScene(void);
+
+/* Legacy MapNo names access the packed (area << 16) + room key. The getter
+ * returns UNASSIGNED for a NULL node; the setter ignores one. */
+Dds3AreaRoomKey dds3GetMapNo(const struct dds3Basic_t *worldNode);
+
+u32 dds3GetProcessData(const dds3ProcessID_t *task);
+
+/* Return the scheduler state, mapping unregistered or invalid states to DETACHED. */
+dds3TaskState_t dds3GetProcessStat(const struct dds3ProcessID_t *task);
+
+/* Advance caller-owned state, returning its next 32-bit value. NULL selects
+ * the shared effect RNG state. */
+u32 dds3GetRandA(EffRandState *state);
+
+dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
+
+dds3Basic_t *dds3SceneBasicSearchNameAndType(dds3Basic_t *world, s32 slotIndex, const char *name);
+
+/* Return a borrowed scheduler-owned handle from the starting, active, or
+ * destroy-pending queue. The handle remains valid through its destroy callback
+ * and is freed when finalization completes; return NULL when no name matches. */
+dds3ProcessID_t *dds3SearchProcessName(const char *name);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+/* Set and clear one flag using the providers' signed-index adjustment. */
+void evtBitOn(s32 flag);
+
+/* Create and select the world object for an area/room pair; returns 1 after setup. */
+s32 evtLoadArea(s32 area, s32 room);
+
+void itfMesMngChangeWindowType(ItfMesWindowIndex window, ItfMesPanelMode panelMode,
+    ItfMesPanelFadeLimit fadeLimit);
+
+void itfMesMngClearBitStat(ItfMesWindowIndex window, ItfMesHighStatusBits mask);
+
+/* Set or clear only bits from the high-half mask. */
+void itfMesMngMarkBitStat(ItfMesWindowIndex window, ItfMesHighStatusBits mask);
+
+void itfMesMngMsgWndCls(ItfMesWindowIndex window);
+
+void itfMesMngSetSelect(ItfMesWindowIndex window, ItfMesOptionBitIndex selectedBitIndex);
+
+ItfMesSelectDefKeyResult itfMesMngSetSelectDefKey(ItfMesWindowIndex window,
+    s32 id, s32 value);
+
+/* Read a command parameter as a signed VM integer, converting floats and
+ * dereferencing global integer or float references. */
+ScrVmInteger scrGetIntPara(ScrCommandParameterIndex parameterIndex);
+
+/* Declared void for the callers that ignore its result: ee-gcc 2.96
+ * allocates registers around the call as retail did only then. The
+ * definition (scrTraceCode.c) returns the context it set the value in, for
+ * the script commands that pass it on as their result; their units declare
+ * it so. */
+void scrSetIntReturnValue(ScrVmInteger retVal);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+/* Both entry points return one caller-owned texture reference. A nonzero
+ * resourceKey reuses a live matching texture and increments its count; a new
+ * texture starts at one. Release the returned reference once with
+ * sdfTexReleaseReference or sdfTexFreeDelayed. */
+/* For a new texture, copy payload bytes into queue-owned storage before return. */
+struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
+
 #include "dds/dsp_entry_api.h"
 
 #include "dds/scr_integer_parameter_api.h"

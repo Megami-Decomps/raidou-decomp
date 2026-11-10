@@ -5,6 +5,203 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "effBattle.h"
+
+#include "fileManager.h"
+
+#include "newdata.h"
+
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/btl_effect_position.h"
+
+#include "dds/btl_sound.h"
+
+#include "dds/btl_stage_task_cleanup.h"
+
+#include "dds/dds3_fade.h"
+
+#include "dds/dds3_fade_timing.h"
+
+#include "dds/dds3_world_counter.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/eff_random_mod.h"
+
+#include "dds/evt_unit.h"
+
+#include "dds/evt_unit_color_transition.h"
+
+#include "dds/file_pac_completion_api.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/fld_area_path.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/mdl_motion_api.h"
+
+#include "dds/mnu_title_sound.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_delayed_resource_check_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_map_position_api.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/sdk_libm.h"
+
+#include "dds/snd_sequence_volume_pan.h"
+
+/* Convert three Euler angle components to the VU0 quaternion output.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void FromEuler(f32 x, f32 y, f32 z);
+
+/* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
+void Mult(void);
+
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void ToMatrix(void);
+
+f32 acosf(f32 x);
+
+f32 atanf(f32 x);
+
+f32 cosf(f32 x);
+
+/* Advance the wrapping 16-bit world object sequence carried in a u32. */
+u32 dds3AllocObjectId(void);
+
+void dds3FadeIn2(s32 duration);
+
+/* Foreground alpha transitions, stepped by dds3FadeUpdate. */
+void dds3FadeOut(s32 red, s32 green, s32 blue, s32 duration);
+
+/* Advance caller-owned state, returning its next 32-bit value. NULL selects
+ * the shared effect RNG state. */
+u32 dds3GetRandA(EffRandState *state);
+
+/* Return the next caller-owned or shared state value reduced modulo `modulus`. */
+u32 dds3GetRandIntA(EffRandState *state, u32 modulus);
+
+/* Disable configured timing while retaining the stored parameters. */
+void dds3StopQuake(void);
+
+/* Read the updater-owned frame counter through a borrowed handle view. */
+u32 effBTLCutGetFrame(const effBTLCutHandle_t *effect);
+
+void effBTLCutSetDrawEndFrame(effBTLCutHandle_t *effect, u32 endFrame);
+
+s32 effBTLGetDrawEndFrame(const SoundMixer *mixer, EffBattleVoiceKind kind);
+
+/* Frame queries borrow a mixer and only inspect its bank metadata. */
+s32 effBTLGetMotionChangeFrame(const SoundMixer *mixer, EffBattleVoiceKind kind);
+
+/* Leaves the unit's transformed muzzle position in vf10. */
+void effBTLModelGetSphereCenter(struct BtlUnit *unit);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+/* Initialize an event unit's color transition for the requested duration. */
+void evtSetUnitLightAndAmbient(evtUnitHandle_t *unit, s32 duration, u32 firstColor, u32 secondColor);
+
+void evtSetUnitLightDir(evtUnitHandle_t *unit, EvtUnitDirectionTransitionFrames durationFrames);
+
+void evtUnitLightOn(evtUnitHandle_t *unit);
+
+/* Return the signed byte count recorded by the file transfer request. */
+s32 fileGetLoadSize(const struct FileRequest *request);
+
+/* Return the payload allocation descriptor. For normal file loads, freeing the
+ * request wrapper does not free this allocation; its resource owner must keep
+ * or release it separately. */
+struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
+
+/* Free a completed request wrapper; return one while it remains pending. */
+FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
+
+/* Write the area directory path into buffer. The final argument is ignored. */
+void fldMakeFilePath(char *buffer, s32 area, s32 unused);
+
+/* Context-level motion APIs; per-sdfMotionCtrlr_t lifecycle methods are in sdf_motion.h. */
+MdlMotionIndexResult mdlGetMotionNum(const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+/* The voice-file RPC sets this busy state on open and clears it on close.
+ * It is separate from the PCM callback-command busy latch. */
+MnuTitleSoundBusyState p2sdGetPcmState(void);
+
+/* Apply volume and pan to a sequence track through the command queue. */
+void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
+
+FilePacRequestCompletionResult pacCheckEnd(const struct FileRequest *request);
+
+s32 pacFileCheckEnd(const struct FileRequest *request);
+
+/* These title-specific wrappers forward an opaque stage-task owner and its
+ * handled/not-handled result. */
+s32 pacFileHandleFree_(void *request);
+
+struct FileRequest *pacLoad(const char *requestName);
+
+void pacSync(struct FileRequest *request);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+f32 sdfCos(f32 angle);
+
+SdfDelayedResourceCheckResult sdfDelayedResrcCheck(void);
+
+/* Queue release of the sdfAllocAuto base in its source heap; interior pointers
+ * are invalid. */
+s32 sdfFreeAutoDelayed(void *data);
+
+/* Queue the two heap owners separately: the general heap stores descriptors,
+ * while the chip heap stores the address of the cell to release. */
+void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *allocation);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+s32 sdfMemGetSize(const struct sdfMemHandle_t *block);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+/* On success, write the requested MPOS record's position or matrix to VU state. */
+SdfMapPositionLookupResult sdfModelGetMarkPos(
+    struct dds_sdfModelRootNode_t *model, s32 id);
+
+f32 sdfSin(f32 angle);
+
+f32 sinf(f32 x);
+
+char *strcpy(char *dst, const char *src);
+
+u32 strlen(const char *text);
+
+f32 tanf(f32 x);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/snd_packed_track_load_status.h"
@@ -345,7 +542,7 @@ extern void btlAdvanceWorldCounterAndSpawnActionObject(void);
 
 extern s32 btlRepositionPartyAroundBattleCenter(void);
 
-s32 btlGetEntryFlagsUnlessDisabled(datUnitWork_t *entry);
+s32 btlGetEntryFlagsUnlessDisabled(dds_datUnitWork_t *entry);
 
 struct evtUnitHandle_t;
 
@@ -714,11 +911,6 @@ extern void btlBuildPresetCameraPose(BtlLinkedCommand *, BtlCamState *, s16, s16
 
 extern void btlInitializeCameraCursorFromPreset(BtlLinkedCommand *, BtlCamState *, s32, s32);
 
-/* Four retail flag/boolean sites: 1E5CE4/1E5CF0/1E5D3C/1E5D48; matched DDS2 predicate. */
-static inline s32 btlHasFlag(u32 flags, u32 mask) {
-    return (flags & mask) != 0;
-}
-
 void btlInitSkillCommandCursor(BtlLinkedCommand *command, BtlCamState *pose);
 
 extern const BtlCameraTimedInstruction *D_0035DA28[];
@@ -854,14 +1046,6 @@ extern BtlCameraParameterRecord D_0035F080[];
 extern s16 D_0035D800[];
 
 typedef char CameraCursorExtent[(sizeof(BtlCameraCursorView) == 0x130) ? 1 : -1];
-
-typedef char CameraCursorRestoreOffset[((u32)&((BtlCameraCursorView *)0)->restoreAlternate == 0x15) ? 1 : -1];
-
-typedef char CameraCursorD0Offset[((u32)&((BtlCameraCursorView *)0)->parameterD0 == 0xD0) ? 1 : -1];
-
-typedef char CameraCursorE0Offset[((u32)&((BtlCameraCursorView *)0)->parameterE0 == 0xE0) ? 1 : -1];
-
-typedef char CameraCursorIndexOffset[((u32)&((BtlCameraCursorView *)0)->parameterIndex12C == 0x12C) ? 1 : -1];
 
 void btlApplyTimedCameraInstruction(BtlLinkedCommand *action, BtlCamState *pose,
                    const BtlCameraTimedInstruction *instruction);

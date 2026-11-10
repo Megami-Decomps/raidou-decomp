@@ -1,6 +1,6 @@
-#ifndef EFF_RECORD_BUCKET_H
-#define EFF_RECORD_BUCKET_H
+#ifndef DDS_EFF_RECORD_BUCKET_H
 
+#define DDS_EFF_RECORD_BUCKET_H
 #include "eff.h"
 
 /* Indexed timed-effect table entry; the first word's meaning is unknown. */

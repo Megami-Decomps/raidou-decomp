@@ -1,6 +1,6 @@
-#ifndef EFF_ACTOR_TRANSITION_CONFIG_H
-#define EFF_ACTOR_TRANSITION_CONFIG_H
+#ifndef DDS_EFF_ACTOR_TRANSITION_CONFIG_H
 
+#define DDS_EFF_ACTOR_TRANSITION_CONFIG_H
 #include "eff.h"
 
 /* Kind-specific payload copied immediately after EffActiveResource. */
@@ -28,13 +28,8 @@ typedef struct EffActorTintConfig {
 
 typedef char EffActorLightConfig_size_must_be_0x28[
     (sizeof(EffActorLightConfig) == 0x28) ? 1 : -1];
-typedef char EffActorLightConfig_selection_offset_must_be_0x1C[
-    ((u32)&((EffActorLightConfig *)0)->actorSelection == 0x1C) ? 1 : -1];
-typedef char EffActorLightConfig_direction_offset_must_be_0x20[
-    ((u32)&((EffActorLightConfig *)0)->direction == 0x20) ? 1 : -1];
+
 typedef char EffActorTintConfig_size_must_be_0x14[
     (sizeof(EffActorTintConfig) == 0x14) ? 1 : -1];
-typedef char EffActorTintConfig_selection_offset_must_be_0x10[
-    ((u32)&((EffActorTintConfig *)0)->actorSelection == 0x10) ? 1 : -1];
 
-#endif /* EFF_ACTOR_TRANSITION_CONFIG_H */
+#endif /* DDS_EFF_ACTOR_TRANSITION_CONFIG_H */

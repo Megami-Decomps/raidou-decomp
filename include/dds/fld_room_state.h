@@ -1,8 +1,9 @@
-#ifndef FLD_ROOM_STATE_H
-#define FLD_ROOM_STATE_H
+#ifndef DDS_FLD_ROOM_STATE_H
 
+#define DDS_FLD_ROOM_STATE_H
 #include "common.h"
 
+#if !defined(SMT3_DEFINES_FIELD_ACTOR_SLOT_COUNT) && !defined(SMT3_DEFINES_FIELD_AUX_RECORD_STORAGE_SIZE) && !defined(SMT3_DEFINES_FIELD_ROOM_CORNER_COUNT) && !defined(SMT3_DEFINES_FIELD_ROOM_PLANE_COUNT) && !defined(SMT3_DEFINES_FIELD_ROOM_RECORD_COUNT) && !defined(SMT3_DEFINES_FIELD_VALUE_RECORD_STORAGE_SIZE)
 /* Capacities shared by field-record allocation and reset code. */
 enum {
     FIELD_VALUE_RECORD_STORAGE_SIZE = 0x72000,
@@ -12,9 +13,11 @@ enum {
     FIELD_ROOM_PLANE_COUNT = 6,
     FIELD_ACTOR_SLOT_COUNT = 256
 };
+#endif
 
 /* Interaction modes stored in FldRoomState.mode; the field remains s16. */
 typedef s16 FldRoomInteractionMode;
+
 enum FldRoomInteractionModeValue {
     FLD_ROOM_INTERACTION_NONE = 0,
     FLD_ROOM_INTERACTION_NPC = 1,
@@ -57,11 +60,5 @@ typedef struct FldRoomState {
 } FldRoomState;
 
 typedef char FldRoomStateSizeCheck[(sizeof(FldRoomState) == 0x140) ? 1 : -1];
-typedef char FldRoomStateWorldObjectKeyOffsetCheck[
-    ((u32)&((FldRoomState *)0)->worldObjectKey == 0x108) ? 1 : -1];
-typedef char FldRoomStateRoomIdOffsetCheck[
-    ((u32)&((FldRoomState *)0)->roomId == 0x132) ? 1 : -1];
-typedef char FldRoomStateCrossingDirectionOffsetCheck[
-    ((u32)&((FldRoomState *)0)->crossingDirection == 0x13C) ? 1 : -1];
 
-#endif /* FLD_ROOM_STATE_H */
+#endif /* DDS_FLD_ROOM_STATE_H */

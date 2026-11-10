@@ -1,6 +1,6 @@
-#ifndef EFF_CURVE_H
-#define EFF_CURVE_H
+#ifndef DDS_EFF_CURVE_H
 
+#define DDS_EFF_CURVE_H
 #include "common.h"
 
 enum EffScalarCurveMode {
@@ -33,6 +33,7 @@ typedef struct EffScalarTrack {
 f32 effSampleScalarCurve(const EffScalarCurve *curve, s32 frame, s32 duration);
 
 struct SdfColorTrack;
+
 struct SdfAlphaTrack;
 
 u32 effSampleColorAlphaTracks(const struct SdfColorTrack *colorTrack,

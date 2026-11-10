@@ -1,6 +1,6 @@
-#ifndef MNU_ITEM_REQUIREMENT_API_H
-#define MNU_ITEM_REQUIREMENT_API_H
+#ifndef DDS_MNU_ITEM_REQUIREMENT_API_H
 
+#define DDS_MNU_ITEM_REQUIREMENT_API_H
 #include "common.h"
 
 /* Zero means no selected item; nonzero keys must be in [0xC0, 0x100). */
@@ -12,6 +12,7 @@ enum {
 };
 
 u8 mnuGetItemRequirementCount(MnuRequirementItemId itemId);
+
 s8 mnuGetItemRequirementValue(MnuRequirementItemId itemId);
 
-#endif /* MNU_ITEM_REQUIREMENT_API_H */
+#endif /* DDS_MNU_ITEM_REQUIREMENT_API_H */

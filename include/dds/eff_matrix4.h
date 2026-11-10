@@ -1,6 +1,6 @@
-#ifndef EFF_MATRIX4_H
-#define EFF_MATRIX4_H
+#ifndef DDS_EFF_MATRIX4_H
 
+#define DDS_EFF_MATRIX4_H
 #include "common.h"
 
 /* Effect transform consumed as four float columns or four VU0/DMA rows. */

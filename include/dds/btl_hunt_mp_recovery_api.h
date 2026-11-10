@@ -1,6 +1,6 @@
-#ifndef BTL_HUNT_MP_RECOVERY_API_H
-#define BTL_HUNT_MP_RECOVERY_API_H
+#ifndef DDS_BTL_HUNT_MP_RECOVERY_API_H
 
+#define DDS_BTL_HUNT_MP_RECOVERY_API_H
 #include "common.h"
 
 struct BtlUnit;
@@ -13,4 +13,4 @@ typedef s32 BtlHuntMpRecoveryAmount;
 BtlHuntMpRecoveryAmount btlGetHuntMpRecoveryAmount(
     struct BtlUnit *actor, struct BtlUnit *target);
 
-#endif /* BTL_HUNT_MP_RECOVERY_API_H */
+#endif /* DDS_BTL_HUNT_MP_RECOVERY_API_H */

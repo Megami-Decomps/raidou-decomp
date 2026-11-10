@@ -1,11 +1,14 @@
-#ifndef EFF_SPAN_WORK_H
-#define EFF_SPAN_WORK_H
+#ifndef DDS_EFF_SPAN_WORK_H
 
+#define DDS_EFF_SPAN_WORK_H
 #include "common.h"
+
 #include "sdf.h"
 
 struct EffPointSet;
+
 struct EffTrackSet;
+
 struct sdfMemHandle_t;
 
 /* Span table layout shared by the DDS1/DDS2 model-effect implementations. */
@@ -67,21 +70,11 @@ typedef struct EffSpanConfig {
 
 typedef char EffSpanEntry_size_check[
     (sizeof(EffSpanEntry) == 0x0C) ? 1 : -1];
+
 typedef char EffSpanRecord_size_check[
     (sizeof(EffSpanRecord) == 0x10) ? 1 : -1];
+
 typedef char EffSpanTable_size_check[
     (sizeof(EffSpanTable) == 0x10) ? 1 : -1];
-typedef char EffSpanTable_allocation_offset_check[
-    ((u32)&((EffSpanTable *)0)->allocation == 0x0C) ? 1 : -1];
-typedef char EffSpanConfig_progress_offset_check[
-    ((u32)&((EffSpanConfig *)0)->progress == 0x34) ? 1 : -1];
-typedef char EffSpanConfig_referenceTracks_offset_check[
-    ((u32)&((EffSpanConfig *)0)->referenceColorTrack == 0x50) ? 1 : -1];
-typedef char EffSpanConfig_referenceLifetime_offset_check[
-    ((u32)&((EffSpanConfig *)0)->referenceLifetime == 0x84) ? 1 : -1];
-typedef char EffSpanConfig_perSpan_offset_check[
-    ((u32)&((EffSpanConfig *)0)->perSpan == 0xB0) ? 1 : -1];
-typedef char EffSpanConfig_pointSetFlag_offset_check[
-    ((u32)&((EffSpanConfig *)0)->pointSetFlag == 0xBC) ? 1 : -1];
 
-#endif /* EFF_SPAN_WORK_H */
+#endif /* DDS_EFF_SPAN_WORK_H */

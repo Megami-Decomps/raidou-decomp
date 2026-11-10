@@ -1,12 +1,14 @@
-#ifndef BTL_INDEX_LIST_SEARCH_API_H
-#define BTL_INDEX_LIST_SEARCH_API_H
+#ifndef DDS_BTL_INDEX_LIST_SEARCH_API_H
 
+#define DDS_BTL_INDEX_LIST_SEARCH_API_H
 #include "common.h"
 
 struct BtlIndexList;
+
 struct BtlUnit;
 
 typedef s32 BtlIndexListEntryIndex;
+
 enum {
     BTL_INDEX_LIST_ENTRY_NOT_FOUND = -1,
 };
@@ -15,4 +17,4 @@ enum {
 BtlIndexListEntryIndex btlFindListIndex(
     struct BtlIndexList *list, struct BtlUnit *entry);
 
-#endif /* BTL_INDEX_LIST_SEARCH_API_H */
+#endif /* DDS_BTL_INDEX_LIST_SEARCH_API_H */

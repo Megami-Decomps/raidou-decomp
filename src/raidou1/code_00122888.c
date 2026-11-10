@@ -5,6 +5,41 @@
 #define VERSION_DDS2 1
 #endif
 
+#include "newdata.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/fr_font_context.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+#include "dds/sdf_chip.h"
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+void frSetDrawPosition(struct _FRQ *glyph, s32 x, s32 y);
+
+/* Update the first-option byte of every child on this glyph chain. */
+void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
+
+/* Read a command parameter as a signed VM integer, converting floats and
+ * dereferencing global integer or float references. */
+ScrVmInteger scrGetIntPara(ScrCommandParameterIndex parameterIndex);
+
+/* Declared void for the callers that ignore its result: ee-gcc 2.96
+ * allocates registers around the call as retail did only then. The
+ * definition (scrTraceCode.c) returns the context it set the value in, for
+ * the script commands that pass it on as their result; their units declare
+ * it so. */
+void scrSetIntReturnValue(ScrVmInteger retVal);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
 #include "dds/common.h"
 
 #include "dds/scr_integer_parameter_api.h"
@@ -35,11 +70,11 @@ extern s32 mtrHasEnoughOwnedMantras(void);
 
 extern PtyAddUnitResult ptyAddUnitWithFlags(DatUnitId unitId, PtyTemplateInitFlags initFlags);
 
-extern s32 scrSetFlag(datUnitWork_t *work, u16 index);
+extern s32 scrSetFlag(dds_datUnitWork_t *work, u16 index);
 
-extern void scrClearAllSecondaryScriptFlags(datUnitWork_t *work);
+extern void scrClearAllSecondaryScriptFlags(dds_datUnitWork_t *work);
 
-extern void scrSetSecondaryScriptFlag(datUnitWork_t *work, u16 index);
+extern void scrSetSecondaryScriptFlag(dds_datUnitWork_t *work, u16 index);
 
 s32 ptyScriptRemoveUnitAndReturnResult(void);
 

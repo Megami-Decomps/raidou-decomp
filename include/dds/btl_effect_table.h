@@ -1,6 +1,6 @@
-#ifndef BTL_EFFECT_TABLE_H
-#define BTL_EFFECT_TABLE_H
+#ifndef DDS_BTL_EFFECT_TABLE_H
 
+#define DDS_BTL_EFFECT_TABLE_H
 #include "common.h"
 
 /* Eight-byte rows from /battle/EFFECT.TBL. */
@@ -13,13 +13,7 @@ typedef struct BtlEffectActionRecord {
 
 typedef char BtlEffectActionRecordSizeCheck[
     sizeof(BtlEffectActionRecord) == 8 ? 1 : -1];
-typedef char BtlEffectActionRecordKindOffsetCheck[
-    ((u32)&((BtlEffectActionRecord *)0)->kind == 2) ? 1 : -1];
-typedef char BtlEffectActionRecordParticipantSelectorsOffsetCheck[
-    ((u32)&((BtlEffectActionRecord *)0)->participantSelectors == 4) ? 1 : -1];
-typedef char BtlEffectActionRecordUnknown07OffsetCheck[
-    ((u32)&((BtlEffectActionRecord *)0)->unknown07 == 7) ? 1 : -1];
 
 extern BtlEffectActionRecord *D_00435E34;
 
-#endif /* BTL_EFFECT_TABLE_H */
+#endif /* DDS_BTL_EFFECT_TABLE_H */

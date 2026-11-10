@@ -5,6 +5,29 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "sdk_libc.h"
+
+#include "dds/btl_effect_position.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_map_position_api.h"
+
+void dds3GetPosPoseSet(dds3Basic_t *object);
+
+/* Leaves the unit's transformed muzzle position in vf10. */
+void effBTLModelGetSphereCenter(struct BtlUnit *unit);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+/* On success, write the requested MPOS record's position or matrix to VU state. */
+SdfMapPositionLookupResult sdfModelGetMarkPos(
+    struct dds_sdfModelRootNode_t *model, s32 id);
+
 #include "dds/common.h"
 
 #include "dds/sdf_map_position_api.h"

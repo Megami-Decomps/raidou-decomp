@@ -5,6 +5,11 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "dds/ui_color.h"
+
+/* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
+u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
+
 #include "dds/common.h"
 
 #include "dds/ui_color.h"

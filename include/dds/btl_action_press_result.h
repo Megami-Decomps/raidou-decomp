@@ -1,6 +1,6 @@
-#ifndef BTL_ACTION_PRESS_RESULT_H
-#define BTL_ACTION_PRESS_RESULT_H
+#ifndef DDS_BTL_ACTION_PRESS_RESULT_H
 
+#define DDS_BTL_ACTION_PRESS_RESULT_H
 #include "common.h"
 
 struct BtlUnit;
@@ -18,4 +18,4 @@ enum {
 BtlActionPressResult btlDetermineActionPressResult(
     struct BtlUnit *attacker, struct BtlUnit *target, u32 command);
 
-#endif /* BTL_ACTION_PRESS_RESULT_H */
+#endif /* DDS_BTL_ACTION_PRESS_RESULT_H */

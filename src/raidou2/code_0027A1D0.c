@@ -5,6 +5,15 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "newdata.h"
+
+#include "sdk_libc.h"
+
+#include "dds/eff_random_mod.h"
+
+/* Return the next caller-owned or shared state value reduced modulo `modulus`. */
+u32 dds3GetRandIntA(EffRandState *state, u32 modulus);
+
 #include "dds/common.h"
 
 #include "dds/btl_unit_defeat_by_delta_result.h"
@@ -108,7 +117,7 @@ extern u8 btlTestSelectedItemCategoryMask(BtlUnit *unit, s32 actorIndex);
 
 extern s32 fldCountSceneSlots(void);
 
-extern u32 sdfQueryChannelBits(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
+extern u32 sdfQueryChannelBits(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item);
 
 typedef struct BattleController {
     u8 pad_000[0x1F4];
@@ -173,7 +182,7 @@ s32 btlGetAbilityAttributeMultiplierPercent(BtlUnit *actor, s32 attr);
 
 f32 btlGetActorEntryMultiplier(BtlUnit *unit, u32 index, s8 includeCharge);
 
-s32 btlGetEntryFlagsUnlessDisabled(datUnitWork_t *record);
+s32 btlGetEntryFlagsUnlessDisabled(dds_datUnitWork_t *record);
 
 s32 btlHasEnabledSpecialAbilityForSlot(BtlUnit *unit, u32 slot);
 
@@ -181,7 +190,7 @@ s32 btlHasMappedSpecialAbilityForSlot(BtlUnit *unit, u32 slot);
 
 u32 btlHasSpecialAbilityWhenArgumentUnset(BtlUnit *unit, s64 argumentValue);
 
-extern u32 sdfQueryChannelValue(s32, datUnitWork_t *, datUnitWork_t *);
+extern u32 sdfQueryChannelValue(s32, dds_datUnitWork_t *, dds_datUnitWork_t *);
 
 #include "dds/sdf_debug_api.h"
 

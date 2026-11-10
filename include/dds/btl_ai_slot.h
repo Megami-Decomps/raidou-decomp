@@ -1,6 +1,6 @@
-#ifndef BTL_AI_SLOT_H
-#define BTL_AI_SLOT_H
+#ifndef DDS_BTL_AI_SLOT_H
 
+#define DDS_BTL_AI_SLOT_H
 #include "common.h"
 
 struct BtlUnit;
@@ -9,4 +9,4 @@ struct BtlUnit;
  * the established call contract but is not read by either title's provider. */
 u32 btlPickWeightedAiSlot(struct BtlUnit *unusedUnit, s32 speciesId, s32 rowIndex);
 
-#endif /* BTL_AI_SLOT_H */
+#endif /* DDS_BTL_AI_SLOT_H */

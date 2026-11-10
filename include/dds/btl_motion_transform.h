@@ -1,24 +1,27 @@
-#ifndef BTL_MOTION_TRANSFORM_H
-#define BTL_MOTION_TRANSFORM_H
+#ifndef DDS_BTL_MOTION_TRANSFORM_H
 
+#define DDS_BTL_MOTION_TRANSFORM_H
 #include "btl_command.h"
 
 /* Copies both vectors, distance and field of view. */
 void btlCopyMotionTransform(BtlCamState *destination, const BtlCamState *source);
+
 /* Field of view is stored in radians. */
 void btlSetMotionTransformFieldOfView(BtlCamState *object, f32 fovRadians);
 
 /* Adjusts the direction using a horizontal plane at the supplied Y coordinate.
  * Returns one when the direction changes; the default plane is Y = -20. */
 s32 btlAdjustCameraDirectionForPlane(BtlCamState *state, f32 height);
+
 s32 btlAdjustCameraDirectionForDefaultPlane(BtlCamState *state);
 
 /* Both vector inputs contain four floats; direction supplies a quaternion.
  * Initializes the camera pose and clears the runtime motion-update flag. */
 void btlInitMotionTransformFromVectors(BtlCamState *object, const f32 *origin,
                                        const f32 *direction);
+
 /* The final input is a field-of-view angle in degrees. */
 void btlInitMotionTransformFromComponents(BtlCamState *object,
     f32 x, f32 y, f32 z, f32 vx, f32 vy, f32 vz, f32 vw, f32 fovDegrees);
 
-#endif /* BTL_MOTION_TRANSFORM_H */
+#endif /* DDS_BTL_MOTION_TRANSFORM_H */

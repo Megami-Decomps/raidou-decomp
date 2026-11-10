@@ -1,6 +1,6 @@
-#ifndef PTY_SKILL_NIBBLE_STATE_H
-#define PTY_SKILL_NIBBLE_STATE_H
+#ifndef DDS_PTY_SKILL_NIBBLE_STATE_H
 
+#define DDS_PTY_SKILL_NIBBLE_STATE_H
 #include "common.h"
 
 typedef enum PtySkillNibbleState {
@@ -9,7 +9,8 @@ typedef enum PtySkillNibbleState {
     PTY_SKILL_NIBBLE_STATE_BIT_1_SET = 2
 } PtySkillNibbleState;
 
-struct datUnitWork_t;
-PtySkillNibbleState ptyGetSkillNibbleState(const struct datUnitWork_t *partyRecord, u16 flagId);
+struct dds_datUnitWork_t;
+
+PtySkillNibbleState ptyGetSkillNibbleState(const struct dds_datUnitWork_t *partyRecord, u16 flagId);
 
 #endif

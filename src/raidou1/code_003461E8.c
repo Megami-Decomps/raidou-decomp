@@ -5,6 +5,22 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "newdata.h"
+
+#include "sdk_libc.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/kwln.h"
+
+u32 dds3GetProcessData(const dds3ProcessID_t *task);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+/* Update the first-option byte of every child on this glyph chain. */
+void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/fr_font.h"

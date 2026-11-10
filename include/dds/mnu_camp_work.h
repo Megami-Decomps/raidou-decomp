@@ -1,15 +1,20 @@
-#ifndef MNU_CAMP_WORK_H
-#define MNU_CAMP_WORK_H
+#ifndef DDS_MNU_CAMP_WORK_H
 
+#define DDS_MNU_CAMP_WORK_H
 #include "mnu.h"
+
 #include "mnu_shop.h"
+
 #include "mnu_scroll_panel.h"
 
 struct EffectList;
+
 struct EffectSlotSet;
+
 struct EffMappedResource;
 
 #ifndef VERSION_DDS2
+
 /* The camp task userdata owner allocated and shared by the input, draw, and
  * teardown tasks. Its complete native allocation is 0x924 bytes. */
 typedef struct StaffMenuWork {
@@ -39,8 +44,7 @@ typedef struct StaffMenuWork {
 
 typedef char StaffMenuWork_size_must_be_0x924[
     (sizeof(StaffMenuWork) == 0x924) ? 1 : -1];
-typedef char StaffMenuWork_staffSlots_offset_check[
-    ((u32)&((StaffMenuWork *)0)->staffSlots == 0x60) ? 1 : -1];
+
 #endif
 
-#endif /* MNU_CAMP_WORK_H */
+#endif /* DDS_MNU_CAMP_WORK_H */

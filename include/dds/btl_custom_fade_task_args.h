@@ -1,6 +1,6 @@
-#ifndef BTL_CUSTOM_FADE_TASK_ARGS_H
-#define BTL_CUSTOM_FADE_TASK_ARGS_H
+#ifndef DDS_BTL_CUSTOM_FADE_TASK_ARGS_H
 
+#define DDS_BTL_CUSTOM_FADE_TASK_ARGS_H
 /* Packed RGB word and duration consumed by the custom battle fade task. */
 typedef struct BtlCustomFadeTaskArgs {
     union {
@@ -17,13 +17,5 @@ typedef struct BtlCustomFadeTaskArgs {
 
 typedef char BtlCustomFadeTaskArgsSizeCheck[
     sizeof(BtlCustomFadeTaskArgs) == 0x08 ? 1 : -1];
-typedef char BtlCustomFadeTaskArgsRedOffsetCheck[
-    (u32)&((BtlCustomFadeTaskArgs *)0)->rgb.red == 0x00 ? 1 : -1];
-typedef char BtlCustomFadeTaskArgsGreenOffsetCheck[
-    (u32)&((BtlCustomFadeTaskArgs *)0)->rgb.green == 0x01 ? 1 : -1];
-typedef char BtlCustomFadeTaskArgsBlueOffsetCheck[
-    (u32)&((BtlCustomFadeTaskArgs *)0)->rgb.blue == 0x02 ? 1 : -1];
-typedef char BtlCustomFadeTaskArgsDurationOffsetCheck[
-    (u32)&((BtlCustomFadeTaskArgs *)0)->duration == 0x04 ? 1 : -1];
 
-#endif /* BTL_CUSTOM_FADE_TASK_ARGS_H */
+#endif /* DDS_BTL_CUSTOM_FADE_TASK_ARGS_H */

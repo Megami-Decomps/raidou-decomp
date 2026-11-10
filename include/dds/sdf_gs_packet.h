@@ -1,48 +1,8 @@
-#ifndef SDF_GS_PACKET_H
-#define SDF_GS_PACKET_H
+#ifndef DDS_SDF_GS_PACKET_H
 
+#define DDS_SDF_GS_PACKET_H
+#include "../draw.h"
 #include "common.h"
-
-/* Register selectors carried by GIF A+D writes in the two GS contexts. */
-enum {
-    SDF_GS_PRIM = 0x00,
-    SDF_GS_RGBAQ = 0x01,
-    SDF_GS_XYZ2 = 0x05,
-    SDF_GS_TEX0_1 = 0x06,
-    SDF_GS_TEX0_2 = 0x07,
-    SDF_GS_CLAMP_1 = 0x08,
-    SDF_GS_CLAMP_2 = 0x09,
-    SDF_GIF_REGISTER_AD = 0x0E,
-    SDF_GS_TEX1_1 = 0x14,
-    SDF_GS_TEX1_2 = 0x15,
-    SDF_GS_XYOFFSET_1 = 0x18,
-    SDF_GS_XYOFFSET_2 = 0x19,
-    SDF_GS_PRMODECONT = 0x1A,
-    SDF_GS_TEXA = 0x3B,
-    SDF_GS_TEXFLUSH = 0x3F,
-    SDF_GS_SCISSOR_1 = 0x40,
-    SDF_GS_SCISSOR_2 = 0x41,
-    SDF_GS_ALPHA_1 = 0x42,
-    SDF_GS_ALPHA_2 = 0x43,
-    SDF_GS_DTHE = 0x45,
-    SDF_GS_COLCLAMP = 0x46,
-    SDF_GS_TEST_1 = 0x47,
-    SDF_GS_TEST_2 = 0x48,
-    SDF_GS_FRAME_1 = 0x4C,
-    SDF_GS_FRAME_2 = 0x4D,
-    SDF_GS_ZBUF_1 = 0x4E,
-    SDF_GS_ZBUF_2 = 0x4F,
-    SDF_GS_BITBLTBUF = 0x50,
-    SDF_GS_TRXPOS = 0x51,
-    SDF_GS_TRXREG = 0x52,
-    SDF_GS_TRXDIR = 0x53
-};
-
-/* Values written to the PRIM and TEST registers by the centered-bounds packet. */
-enum {
-    SDF_GS_PRIMITIVE_SPRITE = 0x06,
-    SDF_GS_CENTERED_VIEW_BOUNDS_TEST = 0x30003
-};
 
 /* Packed ALPHA operands: (A - B) * C / 128 + D. Cs/Cd denote
  * source/destination colors, and As/Ad their alpha values. */
@@ -69,18 +29,6 @@ typedef struct SdfGsRegisterWrite {
     u64 registerId;
 } SdfGsRegisterWrite;
 
-/* TEST and ALPHA form the two A+D writes shared by the blend builders. */
-typedef struct sdfPrimTransElem_t {
-    SdfGsRegisterWrite test;
-    SdfGsRegisterWrite alpha;
-} sdfPrimTransElem_t;
-
-/* Fixed packets allocated by the paired blend and composite-quad renderers. */
-typedef struct sdfPrimTransPacket_t {
-    SdfGsPacketHeader header;
-    sdfPrimTransElem_t registers;
-} sdfPrimTransPacket_t;
-
 /* A single A+D write follows the texture-flush DMA/VIF/GIF header. */
 typedef struct SdfGsTextureFlushPacket {
     SdfGsPacketHeader header;
@@ -96,30 +44,14 @@ typedef struct SdfGsTexturePacket {
 
 typedef char SdfGsPacketHeader_size_must_be_0x20[
     (sizeof(SdfGsPacketHeader) == 0x20) ? 1 : -1];
+
 typedef char SdfGsRegisterWrite_size_must_be_0x10[
     (sizeof(SdfGsRegisterWrite) == 0x10) ? 1 : -1];
-typedef char SdfGsBlendRegisters_size_must_be_0x20[
-    (sizeof(sdfPrimTransElem_t) == 0x20) ? 1 : -1];
-typedef char SdfGsBlendRegisters_alpha_at_0x10[
-    ((u32)&((sdfPrimTransElem_t *)0)->alpha == 0x10) ? 1 : -1];
-typedef char SdfGsBlendPacket_size_must_be_0x40[
-    (sizeof(sdfPrimTransPacket_t) == 0x40) ? 1 : -1];
+
 typedef char SdfGsTexturePacket_size_must_be_0x50[
     (sizeof(SdfGsTexturePacket) == 0x50) ? 1 : -1];
-typedef char SdfGsBlendPacket_test_at_0x20[
-    ((u32)&((sdfPrimTransPacket_t *)0)->registers.test == 0x20) ? 1 : -1];
-typedef char SdfGsBlendPacket_alpha_at_0x30[
-    ((u32)&((sdfPrimTransPacket_t *)0)->registers.alpha == 0x30) ? 1 : -1];
-typedef char SdfGsTexturePacket_sampling_at_0x20[
-    ((u32)&((SdfGsTexturePacket *)0)->sampling == 0x20) ? 1 : -1];
-typedef char SdfGsTexturePacket_texture_at_0x30[
-    ((u32)&((SdfGsTexturePacket *)0)->texture == 0x30) ? 1 : -1];
-typedef char SdfGsTexturePacket_clamp_at_0x40[
-    ((u32)&((SdfGsTexturePacket *)0)->clamp == 0x40) ? 1 : -1];
 
 typedef char SdfGsTextureFlushPacket_size_must_be_0x30[
     (sizeof(SdfGsTextureFlushPacket) == 0x30) ? 1 : -1];
-typedef char SdfGsTextureFlushPacket_payload_at_0x20[
-    ((u32)&((SdfGsTextureFlushPacket *)0)->textureFlush == 0x20) ? 1 : -1];
 
-#endif /* SDF_GS_PACKET_H */
+#endif /* DDS_SDF_GS_PACKET_H */

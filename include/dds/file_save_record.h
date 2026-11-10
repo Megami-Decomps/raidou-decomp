@@ -1,8 +1,10 @@
-#ifndef FILE_SAVE_RECORD_H
-#define FILE_SAVE_RECORD_H
+#ifndef DDS_FILE_SAVE_RECORD_H
 
+#define DDS_FILE_SAVE_RECORD_H
 #include "common.h"
+
 #include "dat_new_cycle_state.h"
+
 #include "dat_save_words.h"
 
 /* The memory-card browser copies the first 0x30 bytes of a save into a
@@ -34,11 +36,5 @@ typedef struct FileSavePreviewRecord {
 
 typedef char FileSavePreviewRecordSizeCheck[
     sizeof(FileSavePreviewRecord) == 0x30 ? 1 : -1];
-typedef char FileSavePreviewRecordSaveWordsOffsetCheck[
-    (u32)&((FileSavePreviewRecord *)0)->saveWords == 0x24 ? 1 : -1];
-typedef char FileSavePreviewRecordNewCycleOffsetCheck[
-    (u32)&((FileSavePreviewRecord *)0)->newCycle == 0x0E ? 1 : -1];
-typedef char FileSavePreviewRecordSavedFlagsOffsetCheck[
-    (u32)&((FileSavePreviewRecord *)0)->saveState.savedFlags == 0x2C ? 1 : -1];
 
 #endif

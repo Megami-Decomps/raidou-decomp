@@ -789,6 +789,1441 @@ extern u32 ripblurovercnt;
 extern dds3QuakeGain_t dds3QuakeGainTable[1];
 /* End of declarations from src/smt3/kernel/dds3KernelDraw.c */
 
+/* Declarations from dds-decomp src/dds1/game/code_00102ED8.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_dds3Blur2Param 1
+
+#define SMT3_DEFINES_dds3Blur2Param_t 1
+
+#define SMT3_DEFINES_dds3DistBlurParam 1
+
+#define SMT3_DEFINES_dds3DistBlurParam_t 1
+
+#define SMT3_DEFINES_dds3FadePacket_t 1
+
+#define SMT3_DEFINES_dds3Filter2Param 1
+
+#define SMT3_DEFINES_dds3Filter2Param_t 1
+
+#define SMT3_DEFINES_dds3FogRange_t 1
+
+#define SMT3_DEFINES_dds3GouraudRegister_t 1
+
+#define SMT3_DEFINES_dds3GsCommand_t 1
+
+#define SMT3_DEFINES_dds3MFilterParam 1
+
+#define SMT3_DEFINES_dds3MFilterParam_t 1
+
+#define SMT3_DEFINES_dds3MultiBlurParam 1
+
+#define SMT3_DEFINES_dds3MultiBlurParam_t 1
+
+#define SMT3_DEFINES_dds3PrintControl_t 1
+
+#define SMT3_DEFINES_dds3QuakeGain_t 1
+
+#define SMT3_DEFINES_dds3RipBlurBody 1
+
+#define SMT3_DEFINES_dds3RipBlurBody_t 1
+
+#define SMT3_DEFINES_dds3RipBlurParam 1
+
+#define SMT3_DEFINES_dds3RipBlurParam_t 1
+
+#define SMT3_DEFINES_dds3ZClearPacket_t 1
+
+#include "common.h"
+
+#include "sdk_libc.h"
+
+#include "dds/dds3_process_registration.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_task_update_count.h"
+
+#include "dds/eff_random_mod.h"
+
+#include "dds/kwln.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_gs_scene_state.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_pad_motor_api.h"
+
+#include "dds/sdf_texture_lists.h"
+
+#include "dds/sdf_texture_registry.h"
+
+#include "dds/sdk_libm.h"
+
+f32 acosf(f32 x);
+
+/* Test membership in the starting, running, and destruction-pending queues. */
+dds3ProcessRegistrationResult_t dds3ExistProcess(const struct dds3ProcessID_t *task);
+
+/* The API returns this count; it resets on creation/activation and increments
+ * after callback handling, except when an active callback finishes immediately. */
+dds3TaskUpdateCount_t dds3GetProcessRunTime(const dds3ProcessID_t *task);
+
+/* Return the next caller-owned or shared state value reduced modulo `modulus`. */
+u32 dds3GetRandIntA(EffRandState *state, u32 modulus);
+
+dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
+
+/* Return a borrowed scheduler-owned handle from the starting, active, or
+ * destroy-pending queue. The handle remains valid through its destroy callback
+ * and is freed when finalization completes; return NULL when no name matches. */
+dds3ProcessID_t *dds3SearchProcessName(const char *name);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+void *sdfChipAllocDirect(s32 size);
+
+void sdfGrSetClearPacket(SdfGsCenteredBoundsRegisters *packet,
+    s32 width, s32 height, s32 unused0, s32 unused1);
+
+/* Return borrowed endpoints; callers may inspect list nodes but do not own them. */
+sdfGsMemSlice_t *sdfGsMemGetLinkHead(void);
+
+void sdfPadSetAct(SdfPadIndex padIndex, s32 smallMotor, s32 largeMotor);
+
+/* These APIs index the two-entry logical-pad table without bounds checks. */
+void sdfPadSetAct0(SdfPadIndex padIndex, u16 strength);
+
+void sdfPadSetAct1(SdfPadIndex padIndex, u8 strength);
+
+void sdfPrimLinkLine(
+    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
+    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
+
+void sdfPrimLinkRect(
+    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
+    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
+
+void sdfPrimLinkSprite(
+    sdfDrawTag_t *list, s32 color, s32 primitive, s32 x0, s32 y0, s32 u0,
+    s32 v0, s32 x1, s32 y1, s32 u1, s32 v1, s32 depth,
+    s32 (*allocatePacket)(s32));
+
+/* The active resource registry contains sdfTexHandle_t nodes; lookup compares the
+ * texture's resource key and follows its previous-node link. A match is borrowed:
+ * lookup does not retain it, and callers must not release it as an acquired ref. */
+extern struct sdfTexHandle_t *sdfTexHandleLink;
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/sdf_scene_packet.h"
+
+#include "dds/sdf_gs_scene_state.h"
+
+#include "dds/common.h"
+
+#include "dds/file_config_option_api.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/dds3_background_fade_api.h"
+
+#include "dds/sdf_pad_motor_api.h"
+
+#include "dds/dds3Admin.h"
+
+#include "dds/kernel.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/eff_random_mod.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/sdf_cons_matrix_packet.h"
+
+#include "dds/sdf_dma_packet_header.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_texture_draw_packet.h"
+
+#include "dds/sdf_tex_packet.h"
+
+#include "dds/kwln.h"
+
+#include "dds/dds3_task_update_count.h"
+
+#include "dds/dds3_process_registration.h"
+
+#include "dds/dds3_named_slot.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_runner.h"
+
+#include "dds/dds3_fade.h"
+
+#include "dds/dds3_fade_timing.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_texture_lists.h"
+
+#include "dds/sdf_texture_registry.h"
+
+#include "dds/sdf_projection.h"
+
+#include "dds/sdf_linked_packet.h"
+
+#include "dds/sdf_draw.h"
+
+#include "dds/sdf_gs_blend.h"
+
+#include "dds/sdf_sif_command.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/sdf_dma_tag.h"
+
+#include "dds/sdf_gs_packet.h"
+
+#include "dds/btl.h"
+
+#include "dds/dds3_fade_color.h"
+
+#include "dds/evt_frame_state_packet.h"
+
+extern void evtSubmitDefaultDepthGradientRect(s32 x, s32 y, s32 width, s32 height, s32 topLeftColor, s32 topRightColor, s32 bottomRightColor, s32 bottomLeftColor);
+
+extern void evtSubmitPrimaryAlphaBlendMode(s32 blendMode);
+
+extern void evtSubmitPrimaryGsTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 unusedZte, s32 ztst);
+
+extern u16 D_003BA918;
+
+extern s16 D_003BA91A;
+
+extern u16 D_003BA91C;
+
+extern u16 D_003BA91E;
+
+extern sdfGsMemSlice_t *D_003BA8F4;
+
+extern u32 dds3TextureViewerPageIndex;
+
+extern u8 D_003BA890;
+
+extern s8 D_003BA7FC;
+
+extern s8 dds3BackgroundFadeMode;
+
+extern s16 dds3BackgroundFadeFirstRamp;
+
+extern s16 dds3BackgroundFadeSecondRamp;
+
+extern u8 dds3BackgroundFadeColor[4];
+
+extern s8 D_0032453B[];
+
+extern f32 D_003245EC[];
+
+extern sdfGrOt_t sdfDebugGrOt;
+
+extern u8 dds3PadVibrationState[2];
+
+extern s32 D_003BD6A0[2];
+
+extern u8 kwlnLargeMotorTarget;
+
+extern u16 dds3BackgroundFadeCounter;
+
+extern u16 dds3BackgroundFadeDuration;
+
+extern sdfTexHandle_t *dds3CurrentIncompleteResource;
+
+extern EffRandState effSharedRandomState[];
+
+extern void sdfRandomize(void *data, u32 tag);
+
+extern s32 dds3TextureViewerHandlePad(void);
+
+extern void dds3DrawTextureViewerFrame(sdfGrOt_t *surface, sdfTexHandle_t *image);
+
+extern void dds3TextureAttachTask(sdfGrOt_t *surface);
+
+extern void dds3InitializeFrameDrawPackets(s32 bufferIndex);
+
+#include "dds/sdf_packet_alloc.h"
+
+extern void dds3DrawTextureListDiagnostic(sdfDrawTag_t *packetList, s32 x, s32 y);
+
+extern u64 *dds3PrimFrameRect(s32, s32, s32, s32, s32, u32, u32);
+
+extern void dds3PadVibrationSet(u32, u8, s32);
+
+extern s32 dds3DebugGraphUpdate(dds3ProcessID_t *task);
+
+extern dds3ProcessID_t *dds3DebugGraphTask;
+
+extern s32 dds3TextureCountIncompleteResources(void);
+
+extern s32 D_003BA724;
+
+extern s8 dds3PadBitTable[32];
+
+extern s32 dds3SelectIncompleteResourceAtPageIndex(s32);
+
+extern sdfGrOt_t D_00325708;
+
+extern char dds3AdminTaskName[];
+
+extern dds3TaskUpdateResult_t dds3AdminiNeoProcess(dds3ProcessID_t *task);
+
+extern void dds3AdminiNeoShutdown(dds3ProcessID_t *task);
+
+void dds3InitAdmini(void);
+
+extern fclNamedSlot_t D_003C1C90[];
+
+extern char D_0039E018[];
+
+extern s32 D_003BA850;
+
+extern s32 D_003BA854;
+
+extern s32 D_003BA858;
+
+extern s32 D_003BA85C;
+
+s32 fclEncycFreeEntry(const char *name);
+
+s32 fclEncycFindFreeSlot(const char *name);
+
+/* One shared initializer for the three configure modes and unregister. */
+static inline void dds3SetNamedSlotState(s32 index, s32 kind, dds3ProcessFunc_t update, dds3ProcessShutdownFunc_t destroy,
+                                         void (*setState)(s32), void *userValue) {
+    D_003C1C90[index].kind = kind;
+    D_003C1C90[index].task = NULL;
+    D_003C1C90[index].update = update;
+    D_003C1C90[index].destroy = destroy;
+    D_003C1C90[index].setState = setState;
+    D_003C1C90[index].enabled = 0;
+    D_003C1C90[index].userValue = userValue;
+}
+
+#define DDS3_PAD_INPUTS_PER_SET 16
+
+#define DDS3_PAD_REPEAT_BIT 2
+
+#define DDS3_ALT_CONFIRM_INPUT 0x11
+
+#define DDS3_ALT_CANCEL_INPUT 0x13
+
+#define DDS3_PAD_SMALL_MOTOR 0
+
+#define DDS3_PAD_LARGE_MOTOR 1
+
+#define DDS3_PAD_MOTOR_COUNT 2
+
+#define DDS3_DEBUG_RUMBLE_PERIOD 0x4650
+
+#define DDS3_DEBUG_SMALL_PULSE_FRAMES 0xF
+
+#define DDS3_DEBUG_LARGE_PULSE_FRAMES 30
+
+#define DDS3_DEBUG_RUMBLE_VARIATION 150
+
+#define DDS3_DEBUG_RUMBLE_BASE 100
+
+#define DDS3_SHARED_RANDOM_SEED 0x12345678
+
+#define DDS3_CELL_COLUMN_SPAN 0xC0
+
+#define DDS3_CELL_ROW_SPAN 0x60
+
+#define DDS3_PREVIEW_MAX_TEXELS 0x100
+
+#define DDS3_PREVIEW_WRAP_TEXELS 0x400
+
+#define DDS3_DIAG_DEPTH 0x0FFFFF80
+
+/* Find an exact NUL-terminated name along the linked slot indices, or return -1. */
+s32 fclEncycFreeEntry(const char *name);
+
+/* Unregister a named slot: stop its task, clear it and unlink it from the slot chain. */
+s32 fclEncycFreeEntries(const char *name);
+
+s32 kwlnConfigureNamedSlotMode3(const char *name, void (*setState)(s32));
+
+s32 fclEncycAllocEntry(const char *name, dds3ProcessFunc_t update, dds3ProcessShutdownFunc_t destroy, void *userValue);
+
+s32 kwlnConfigureNamedSlotMode2(const char *name, dds3ProcessFunc_t update, dds3ProcessShutdownFunc_t destroy, void *userValue);
+
+void dds3InitDebugSystem(void);
+
+extern s8 dds3PadButtonState[64];
+
+/* Fresh presses wrap; repeat-bit input stops at the implemented end bounds.
+ * Without scrolling, forward motion is bounded by visibleRows, not itemCount. */
+void SelectSub(s32 *scrollOffset, s32 *cursorRow, s32 itemCount, s32 visibleRows, s32 padSet, s32 forwardInput, s32 backwardInput);
+
+/* Step the primary then secondary cursor pair; return 1/-1 for confirm/cancel.
+ * Any nonzero padSet tests set 1's confirm/cancel, while movement uses padSet. */
+s32 dds3SelectMenu(s32 padSet, s32 secondaryCount, s32 primaryCount, s32 secondaryVisible, s32 primaryVisible, s32 *secondaryScroll, s32 *primaryScroll, s32 *secondaryCursor, s32 *primaryCursor);
+
+/* Append a cell rectangle; rowSpan also supplies the horizontal padding. */
+void dds3ConsPanelTagLink(sdfDrawTag_t *packetList, s32 column, s32 row, s32 columnCount, s32 rowCount);
+
+/* Append the same cell rectangle with caller-selected depth. */
+void dds3ConsPanelTagLinkZ(sdfDrawTag_t *packetList, s32 column, s32 row, s32 columnCount, s32 rowCount, s32 depth);
+
+/* Periodically pulses both pad motors, varying the large-motor level. */
+s32 dds3PadVibrationTest(dds3ProcessID_t *task);
+
+extern u32 dds3PadButtonHoldCounters[4][16];
+
+extern u32 dds3PadStickHoldCounters[2][2];
+
+extern s8 dds3PadButtonPrev[2][2][16];
+
+extern u8 D_003BA860[2][2][2];
+
+extern s8 D_003BA868[2][2];
+
+extern u8 D_003BA870[2][2][2];
+
+extern u8 D_003BA878[2][2];
+
+extern u8 D_003BD698[2];
+
+void dds3PadInitialize(void);
+
+extern u8 sdfPadAnalogSticks[8];
+
+extern void dds3UpdateVibrationSlots(void);
+
+void kwlnUpdatePadInputState(void);
+
+void kwlnPadStepLargeMotorLevel(void);
+
+/* Honor the saved rumble option, normalize small-motor strength and clamp
+ * motor indices to the large motor. Preserve target update before output. */
+void dds3PadVibrationSet(u32 motor, u8 level, s32 duration);
+
+/* Clear motor levels and countdowns, then send both zero strengths to pad 0. */
+void kwlnPadResetMotorLevelsAndOutput(void);
+
+/* Tick both rumble countdowns; stop expired motors and refresh the active large motor. */
+void dds3UpdateVibrationSlots(void);
+
+s32 dds3TaskNoopCallback(dds3ProcessID_t *task);
+
+/* Seed the shared effect random state with the fixed initialization seed. */
+void dds3InitRandCB(void);
+
+extern s16 D_003BA728;
+
+extern u16 sdfDrawFrameCounter;
+
+extern u16 D_003BA880;
+
+extern u16 D_003BA882;
+
+extern u16 D_003BA884;
+
+extern u16 D_003BA886;
+
+extern char D_003BA888[];
+
+s32 dds3DebugGraphUpdate(dds3ProcessID_t *task);
+
+void dds3DebugGraphTaskDestroy(dds3ProcessID_t *task);
+
+/* Only mode 1 creates and mode 0 destroys the timing graph; other modes do nothing. */
+void dds3DebugGraphSetEnabled(s8 enabled);
+
+/* Scale the longer preview side to at most 256 texels, preserving division
+ * before coordinate scaling; UV endpoints at 1024 texels are reduced by one. */
+void dds3DrawImageOutline(sdfDrawTag_t *packetList, sdfTexHandle_t *image);
+
+extern u32 dds3TextureGetPageIndex(void);
+
+/* Append the zero-based viewer page and final page index; an empty list prints -1. */
+void dds3TextureDrawPageCounter(sdfDrawTag_t *packetList);
+
+extern const char *D_00324560[];
+
+extern char D_0039E170[];
+
+extern char D_0039E188[];
+
+void dds3DrawTextureResourceDetails(sdfDrawTag_t *packetList, sdfTexHandle_t *texture);
+
+#define DDS3_DIAG_PACKET_LIST_BYTES 0x20
+
+#define DDS3_VIEWER_FAST_PAGE_STEP 10
+
+#define DDS3_MAP_ROW_UNITS 0x1000
+
+#define DDS3_MAP_ROW_SHIFT 12
+
+#define DDS3_MAP_ROW_MASK 0xFFF
+
+#define DDS3_MAP_COLUMN_SHIFT 5
+
+#define DDS3_MAP_COLUMN_UNITS 32
+
+#define DDS3_MAP_COLUMN_COUNT 128
+
+#define DDS3_MAP_ROW_SPAN 0x800
+
+#define DDS3_MAP_BORDER_WIDTH 0x840
+
+#define DDS3_MAP_CELL_X_STEP 16
+
+#define DDS3_MAP_ROW_Y_STEP 8
+
+#define DDS3_MAP_CELL_X_SHIFT 4
+
+#define DDS3_MAP_GREEN 0x80008000
+
+#define DDS3_MAP_YELLOW 0x80008080
+
+#define DDS3_MAP_RED 0x80000080
+
+#define DDS3_MAP_BLUE 0x80800000
+
+#define DDS3_MAP_CYAN 0x80808000
+
+#define DDS3_HELD_TEXTURE_CLAMP_MODE 5
+
+/* Count texture entries without a reference clone source. */
+s32 dds3TextureCountIncompleteResources(void);
+
+u32 dds3TextureGetPageIndex(void);
+
+/* Clamp a negative request and return the reached index. DDS1 index zero
+ * selects the head without scanning clone-source links; tail exits retain prior writes. */
+s32 dds3SelectIncompleteResourceAtPageIndex(s32 requestedIndex);
+
+/* Exit input returns 0 immediately; otherwise apply one prioritized page step,
+ * select its reached index, then optionally toggle the viewer mode and return 1. */
+s32 dds3TextureViewerHandlePad(void);
+
+extern s32 D_003BA8E0;
+
+void dds3DrawTextureAllocationMapBlock(void *packetList, s32 x, s32 y, sdfGsMemSlice_t *block, u8 mode);
+
+void dds3DrawTextureViewerFrame(sdfGrOt_t *surface, sdfTexHandle_t *image);
+
+/* With a nonempty list, invoke its renderer even when input reports exit.
+ * The surface owns the packet submission callback; return input status. */
+s32 dds3SwapActiveResource(sdfGrOt_t *surface);
+
+/* Use the default surface: empty list returns 0, exit input -1, drawing 0. */
+s32 dds3LoadDefaultResource(void);
+
+/* Draw one allocation-map block in address units, choosing color by mode.
+ * Only the initial partial row forces a nonzero remainder to occupy one cell;
+ * the final partial row retains its truncated cell count. */
+void dds3DrawTextureAllocationMapBlock(void *packetList, s32 x, s32 y, sdfGsMemSlice_t *block, u8 mode);
+
+/* Draw the allocation-map border, then walk blocks through their prev links. */
+void dds3DrawTextureListDiagnostic(sdfDrawTag_t *packetList, s32 x, s32 y);
+
+/* Build an allocation-map packet list and submit it through the surface callback. */
+void dds3TextureAttachTask(sdfGrOt_t *surface);
+
+/* Submit the default surface's map only when the control array's first byte is zero. */
+s32 dds3EnsureDefaultResource(void);
+
+#include "dds/dds3_frame_draw_bank.h"
+
+extern u32 D_003BA8EC;
+
+extern sdf3DLight_t *D_00324770[3];
+
+extern f32 kwlnDefaultColorVector[4];
+
+extern Matrix4 D_00329790;
+
+extern sdf3DLight_t *kwlnOverlayLightSources[3];
+
+extern f32 kwlnOverlayAmbientColor[4];
+
+/* Initialize the selected frame bank's scene and overlay packet chains. */
+void dds3InitializeFrameDrawPackets(s32 bufferIndex);
+
+#include "dds/dds3_texture_bank.h"
+
+extern u16 D_003BA8FC;
+
+extern u16 D_003BA8FE;
+
+extern u16 D_003BA8FC;
+
+extern u16 D_003BA8FE;
+
+#include "dds/dds3_texture_reference_flag_api.h"
+
+extern f32 sdfViewShakeVector[];
+
+extern f32 D_003BA940[];
+
+/* Advance the two bounded shake offsets and taper finite-duration amplitudes. */
+void kwlnAdvanceShakeOffsets(void);
+
+#define DDS3_FADE_TICKS_PER_FRAME 10
+
+#define DDS3_FADE_MARK_NUMERATOR 4
+
+#define DDS3_FADE_COUNT_DOWN_BIT 1
+
+#define DDS3_FADE_COUNT_UP_BIT 2
+
+#define DDS3_FADE_DIRECTION_BITS 3
+
+#define DDS3_FADE_MAX_ALPHA 0x80
+
+#define DDS3_FADE_ALPHA_SHIFT 7
+
+#define DDS3_COLOR_ALPHA_CHANNEL 3
+
+#define DDS3_BGFADE_COUNT_DOWN_BIT 0x04000000
+
+#define DDS3_BGFADE_COUNT_UP_BIT 0x08000000
+
+#define DDS3_BGFADE_DIRECTION_BITS 0x0C000000
+
+#define DDS3_BGFADE_KEEP_OTHER_BITS 0xF3FFFFFF
+
+#define DDS3_BGFADE_CLEAR_UP_MASK 0xF7FFFFFF
+
+#define DDS3_BGFADE_CLEAR_DOWN_MASK 0xFBFFFFFF
+
+#define DDS3_BGFADE_FIRST_RAMP_MAX 0x31
+
+#define DDS3_BGFADE_SECOND_RAMP_MAX 0x4F
+
+#define DDS3_BGFADE_FIRST_RAMP_SCALE 49.0f
+
+#define DDS3_BGFADE_SECOND_RAMP_SCALE 79.0f
+
+/* Return the live color address through outColor, rather than copying channels. */
+void dds3FadeColorGet(dds3FadeColor_t **outColor);
+
+/* Cancel background direction, zero RGBA and restore the inactive ramp maxima.
+ * This reset does not rewrite the background counter or duration. */
+void dds3FadeResetBackground(void);
+
+/* Start the background countdown; zero duration performs the full background reset. */
+void dds3FadeBackgroundStartOut(s32 duration);
+
+/* Start the background count-up; zero duration leaves max alpha and zero ramps. */
+void dds3FadeBackgroundStartIn(s32 duration);
+
+/* Direction flags take precedence; idle visibility uses alpha in mode zero,
+ * otherwise it tests whether the first ramp differs from its inactive maximum. */
+dds3BackgroundOverlayActivity_t dds3FadeIsBackgroundOverlayActive(void);
+
+/* Store the visibility mode; its stored zero value clears ramps, otherwise
+ * maximum alpha is selected. Counter direction and timing are unchanged. */
+void dds3FadeSetMode(s32 visibilityMode);
+
+/* Step the u16 counter, then derive integer alpha and f32 ramp samples.
+ * Completion clears timing/flags after sampling, retaining endpoint values. */
+void dds3StepBackgroundFade(void);
+
+void dds3DrawBackgroundFadeBands(void);
+/* End of declarations from src/dds1/game/code_00102ED8.c */
+
+/* Declarations from dds-decomp src/dds1/game/code_00107FD8.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#include "event.h"
+
+#include "scr.h"
+
+#include "sdf_packet_alloc.h"
+
+#include "sdk_libc.h"
+
+#include "dds/dds3_admin_control_api.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_task_priority_query.h"
+
+#include "dds/fld_scene_sequence_api.h"
+
+#include "dds/mnu_camp_state_ack_api.h"
+
+#include "dds/scr.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_dev_cons.h"
+
+#include "dds/sdf_dev_console_node.h"
+
+#include "dds/sdf_general_heap_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/sdk_libkernl.h"
+
+s32 DIntr();
+
+s32 EIntr(void);
+
+/* Consume CLEANED_UP back to IDLE, then report whether camp remains active. */
+MnuCampStateAcknowledgementResult campCheckExitState(void);
+
+/* Set bit 1 in the active administration task's flags; that task must exist. */
+void dds3AdminiExitSequence(void);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+/* Returns a borrowed task from the scheduler queues, or NULL when none has this priority. */
+dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
+
+/* The packet is borrowed for this call. Mode zero copies its fields into
+ * persistent scene work before asynchronous tasks start. */
+void fldProcTrigSequence(const struct fldSceneParam_t *record, u32 mode);
+
+extern scrProcessWork_s *scrHandleFirst;
+
+extern scrProcessWork_s *scrHandleLast;
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+void sdfChipGetInfo(SdfChipHeapStats *stats);
+
+void sdfDevConsAttribute(sdfDevConsCB_tag *console, u8 attribute);
+
+void sdfDevConsClose(sdfDevConsCB_tag *node);
+
+sdfDevConsCB_tag *sdfDevConsOpen(u32 screenOriginX, u32 screenOriginY, s32 columns, s32 rows);
+
+s32 sdfDevConsPrintf(sdfDevConsCB_tag *console, const char *format, ...);
+
+/* Update the console state stored at the corresponding field offsets. */
+void sdfDevConsSetMode(sdfDevConsCB_tag *console, u8 controlByte);
+
+void sdfDrawTagLinkRefGif(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Read the active packet cursor or restore it at a quadword boundary. */
+s32 sdfGrOpenPacketBuff(void);
+
+void sdfMemGetInfo(SdfGeneralHeapStats *stats);
+
+/* Return NULL when the following link is the end marker. */
+const struct sdfMemHandle_t *sdfMemGetNext(const struct sdfMemHandle_t *block);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+s32 sdfMemGetSize(const struct sdfMemHandle_t *block);
+
+/* Borrowed read-only descriptors; exclude heap mutation while traversing. */
+const struct sdfMemHandle_t *sdfMemGetTop(void);
+
+/* Return free/used/end-sentinel state, not a resource kind. */
+SdfMemBlockState sdfMemGetType(const struct sdfMemHandle_t *block);
+
+s32 vsprintf(char *dst, const char *format, void *args);
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/evt_sel_state.h"
+
+#include "dds/evt_start_event_api.h"
+
+#include "dds/evt_script_event_id.h"
+
+#include "dds/sdf_line_pair_packet_api.h"
+
+#include "dds/sdf_gs_header.h"
+
+#include "dds/dds3_admin_control_api.h"
+
+#include "dds/sdf_dev_cons.h"
+
+#include "dds/sdf_dev_console_node.h"
+
+#include "dds/sdf_gs_blend.h"
+
+#include "dds/ee_mmi.h"
+
+#include "dds/eff_quaternion_nlerp.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/common.h"
+
+#include "dds/file_menu_start_mode.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/dds3_background_fade_api.h"
+
+#include "dds/mnu_camp_state_ack_api.h"
+
+#include "dds/fld_lmap_task_presence.h"
+
+#include "dds/fld_terminal_scene_state.h"
+
+#include "dds/sdf_heap_overlay_block.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/dds3_frame_draw_buffer.h"
+
+#include "dds/evt_gradient_rect.h"
+
+#include "dds/sdf_textured_rect.h"
+
+#include "dds/sdf_packet_header.h"
+
+#include "dds/sdf_packet_append.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_primitive_packet_api.h"
+
+#include "dds/kwln.h"
+
+#include "dds/dds3_task_priority_query.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_asset_state.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_general_heap_api.h"
+
+#include "dds/sdf_sif_command.h"
+
+#include "dds/scr.h"
+
+#include "dds/scr_instruction_stream_api.h"
+
+#include "dds/scr.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/brs_task.h"
+
+#include "dds/fld_resource_wait_api.h"
+
+#include "dds/fld_scene_sequence_api.h"
+
+#include "dds/itf.h"
+
+/* Declared before first use (were implicit int). */
+extern void btlCreateStageTestTask(void);
+
+extern s32 btlExitWhenAudioAndTasksIdle(void);
+
+extern void evtBattleStageTestStopTask(void);
+
+extern void evtFreeStage(void);
+
+extern void evtInitEventTest(void);
+
+extern void evtViewerCreateTaskWithSky(void);
+
+extern void fileMenuReleaseNoOp(void);
+
+extern void fileReleaseMenuResources(void);
+
+extern void fldCleanupFieldScene(void);
+
+extern void fldProcNextJump(void);
+
+extern void fldProc_CallSisetuReturn(void);
+
+extern void fldRunPendingSceneAction(void);
+
+extern void fldStopLmapTask(void);
+
+extern void fldStopSceneTasks(void);
+
+extern void itfInitializeAdminInterfaceNoop(void);
+
+extern void itfShutdownAdminInterfaceNoop(void);
+
+extern void itfStartFontTestScene(void);
+
+extern void mnuCampDestroyPanelTasks(void);
+
+extern void dds3ConfigProcessEnd(void);
+
+extern void mnuCreateCampTasks(void);
+
+extern void InitMovieViewer(void);
+
+extern void mnuDestroyCampTasks(void);
+
+extern void FinishMovieViewer(void);
+
+extern s32 mnuDestroyTitleMenuTask(void);
+
+extern s32 mnuOpenShopSceneWithInitialSelection(s32 *initialSelection);
+
+extern u32 mnuOpenTitleMenuForMode(s32 mode);
+
+extern dds3ProcessID_t *mnuStaffCreateTasks(void);
+
+extern u32 mnuStaffDestroyTasks(void);
+
+extern u32 mnuStartStaffMovieRequest(void);
+
+extern s32 mnuStopStaffTasks(void);
+
+extern s32 mnuTerminalCreateTasks(s32 reduced, s32 slot);
+
+extern void dds3ConfigProcessStart(s32 mode);
+
+enum {
+    EVT_PACKET_LIST_BYTES = 0x20,
+    EVT_GS_COMMAND_BYTES = 0x30,
+    EVT_GS_TEST_PRIMARY = 0x47,
+    EVT_GS_TEST_SECONDARY = 0x48,
+    EVT_GS_ALPHA_PRIMARY = 0x42,
+    EVT_FIXED_ALPHA_INTERPOLATION = 0x64,
+    EVT_QUAD_DEFAULT_DEPTH = 0xFFFFFF,
+    EVT_FRAME_REFERENCE_PACKET_BYTES = 0x40,
+    EVT_FRAME_DRAW_RECORD_BYTES = 0x1F40,
+    EVT_BACKGROUND_BLEND_FLAG = 0x100,
+    EVT_DRAW_COLOR_BLEND_FLAG = 0x200,
+    EVT_DRAW_VECTOR_BLEND_FLAG = 0x400,
+    EVT_SAVED_VECTOR_BLEND_FLAG = 0x4000,
+    EVT_QUAD_DESCRIPTOR_BYTES = 0x2C,
+    EVT_QUAD_VERTEX_COUNT = 4,
+    EVT_SELECTION_ALLOCATION_BYTES = 0x28,
+    EVT_DEV_CONSOLE_BUFFER_BYTES = 0x200,
+    BF_FLW0_MAGIC = 0x30574C46
+};
+
+extern sdfDevConsCB_tag *evtConsoleFontResourceChain;
+
+extern u8 fldLmapTaskExists(void);
+
+extern FldTerminalScenePollResult fldPollSceneState(void);
+
+extern s32 mnuPollTaskState(void);
+
+extern u32 D_003BA958;
+
+extern s32 checkConfigState(void);
+
+extern u32 D_003BA730;
+
+extern s32 fileMenuTaskExists(void);
+
+extern void fileEnterMcPackScene(FileMenuStartMode mode);
+
+extern s32 fileMenuOperationSucceeded(void);
+
+extern void fldMainLoadStart(void);
+
+extern void btlStart(s32 mode, s32 pack, s32 encounter);
+
+extern void evtEventViewerDestroyTask(void);
+
+extern void evtChkEndProcess(void);
+
+extern void evtExitSky(void);
+
+#include "dds/sdf_asset_create.h"
+
+extern s8 evtSelectionStateActive;
+
+extern EvtSelState *evtSelectionState;
+
+extern char D_003BA950[];
+
+extern void *D_003BD6B0;
+
+extern u16 D_003BD706;
+
+extern f32 D_003BD708;
+
+extern f32 D_003BD70C;
+
+extern f32 D_003BD710;
+
+extern f32 D_003BD714;
+
+extern u16 D_003BD704;
+
+extern char D_0039E1F0[];
+
+extern char D_0039E200[];
+
+extern dds3ProcessID_t *evtInitSky(void);
+
+typedef struct {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} DrawVec4;
+
+/* The allocated draw state's float at +0x1C is initialized to 1. */
+typedef struct EvtDrawState {
+    u8 pad00[0x1C];
+    f32 value1C;
+} EvtDrawState;
+
+extern KwlnDrawVectorParams kwlnDrawVector;
+
+extern DrawVec4 D_003C2C20;
+
+extern DrawVec4 D_003C2C30;
+
+extern u16 D_003BD6FA;
+
+extern u16 D_003BD6F8;
+
+extern void evtUpdateSelectionStateInterpolation(void);
+
+extern void evtSelStateDestroy(void);
+
+extern s32 D_0032E3C0[];
+
+extern void fldStartLmapTask(s32 mode);
+
+extern u32 scrHandleCount;
+
+extern void evtDrawHeapUsageOverlay(sdfGrOt_t *);
+
+extern s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *);
+
+extern void *D_003BD764;
+
+typedef struct dds3ResourceNode_t {
+    s32 unk0;
+    struct dds3ResourceNode_t *next;
+    s32 *ready;
+} dds3ResourceNode_t;
+
+extern s32 sdfPrintIopFlag;
+
+extern s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task);
+
+extern void *D_003BD768;
+
+extern char D_0039E238[];
+
+extern u16 D_003BD6C8[4];
+
+extern u16 D_003BD6D0[4];
+
+extern u32 D_003C2BA0[4];
+
+extern u32 D_003C2BB0[4];
+
+/* Normalize the requested light direction; replace it immediately or prepare its blend. */
+extern u16 D_003BD6D8[4];
+
+extern u16 D_003BD6E0[4];
+
+extern f32 D_003C2BC0[][4];
+
+extern f32 D_003C2BF0[][4];
+
+extern u16 D_003BD6E6;
+
+extern u16 D_003BD6E8;
+
+extern u32 D_003BD6EC;
+
+extern u32 D_003BD6F0;
+
+extern u32 D_003247A0[];
+
+extern u16 D_003BD6F4;
+
+extern u16 D_003BD6F6;
+
+extern u32 D_003BD6FC;
+
+extern u32 D_003BD700;
+
+/* SDK float-input unpack: the RGBA word and its 16-byte workspace stay in memory. */
+static inline void eeUnpackRGBAWordFloatReadOnly(u32 color, f32 unit) {
+    u32 rgba[4];
+    rgba[0] = color;
+    EE_MMI_RGBA_UNPACK_READONLY(rgba, unit);
+}
+
+/* GS AD packet payload starts after the 0x20-byte command header. */
+typedef struct EvtGsCommand {
+    u8 pad00[0x20];
+    u64 data;
+    u64 registerId;
+} EvtGsCommand;
+
+#include "dds/sdf_packet_alloc.h"
+
+/* Submit the same TEST bit layout for the secondary GS context, with ZTE forced on. */
+void evtSubmitSecondaryGsTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 unusedZte, s32 ztst);
+
+/* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
+void evtSubmitFixedAlphaBlend(s32 fixedAlpha);
+
+extern dds3FrameDrawBuffer_t dds3FrameDrawPacketRecords[];
+
+extern void sdfGrSetFrameMaskRGB(const u8 *, SdfDmaReferenceChainPacket *, s32);
+
+void evtSubmitPrimaryFramePacket(void);
+
+extern void sdfGrSetFrameMaskReset(const u8 *, SdfDmaReferenceChainPacket *, s32);
+
+void evtSubmitAlternateFramePacket(void);
+
+void evtSubmitTexturedGradientQuad(s32 x, s32 y, s32 width, s32 height,
+                   s32 u, s32 v, s32 textureWidth, s32 textureHeight,
+                   u32 color0, u32 color1, u32 color2, u32 color3, sdfTexHandle_t *texture);
+
+/* Native rectangle emitter: x/y/width/height, explicit depth, then TL/TR/BR/BL colors. */
+void evtSubmitGradientRectAtDepth(s32 x, s32 y, s32 w, s32 h, u32 depth, s32 color0, s32 color1, s32 color2, s32 color3);
+
+extern u64 D_003245A0[];
+
+extern f32 D_003245B0[][4];
+
+extern u32 D_003245D0[];
+
+/* Zero frames leaves the prior state untouched; zero countLimit selects the -1 sentinel. */
+s32 evtSelStateCreate(s32 countLimit, s16 frames, s32 firstValue, s32 secondValue);
+
+/* Return zero only when inactive on entry; updating or destroying active state returns one. */
+u32 evtCheckSelectionState(void);
+
+void evtDestroySelectionState(void);
+
+void evtSelStateDestroy(void);
+
+dds3ProcessID_t *CallDebug(void);
+
+u32 ExitDebug(void);
+
+/* Admin mode 0 cleanup: zero leaves the mode pending. */
+u32 CheckDebug(void);
+
+void CallBootMc(void);
+
+u32 ExitBootMc(void);
+
+u8 CheckBootMc(void);
+
+u32 CallTitle(u32 unused, u32 *modeOverride);
+
+u32 ExitTitle(void);
+
+/* Admin mode 2 cleanup: zero leaves the mode pending. */
+u32 CheckTitle(void);
+
+void CallLoad(void);
+
+s32 ExitLoad(void);
+
+u8 CheckLoad_dds3SequenceList(void);
+
+u32 CallStaff(void);
+
+u32 ExitStaff(void);
+
+/* Admin mode 12 cleanup: zero leaves the mode pending. */
+u32 CheckStaff(void);
+
+void CallEndSave(void);
+
+u32 ExitEndSave(void);
+
+u8 CheckEndSave(void);
+
+void CallField(u32 selection, const struct fldSceneParam_t *record);
+
+u32 ExitField(void);
+
+/* Admin mode 5 cleanup: zero leaves the mode pending. */
+u32 CheckField(void);
+
+void evtStartSelectionFadeOut(void);
+
+/* Admin mode 11 destroy callback: no work, zero transition result. */
+u32 evtDestroySelectionFadeOutNoOp(void);
+
+/* Admin mode 11 cleanup: zero leaves the mode pending. */
+u32 evtKeepSelectionFadeOutPending(void);
+
+/* Source zero takes an explicit event ID; source one uses the pending event ID. */
+void CallEvent(s32 selectionSource, EvtScriptEventId *eventParams);
+
+u32 ExitEvent(void);
+
+/* Admin mode 6 cleanup: zero leaves the mode pending. */
+u32 CheckEvent(void);
+
+void CallCamp(void);
+
+u32 ExitCamp(void);
+
+u8 CheckCamp(void);
+
+/* Admin mode 8 entry intentionally performs no work. */
+void CallRecover(void);
+
+/* Admin mode 8 destroy callback: no work, zero transition result. */
+u32 ExitRecover(void);
+
+/* Admin mode 8 cleanup: one immediately reports completion. */
+u32 CheckRecover(void);
+
+/* Admin mode 9 entry intentionally performs no work. */
+void CallTerminal(void);
+
+/* Admin mode 9 destroy: no work, zero transition result. */
+u32 ExitTerminal(void);
+
+/* Admin mode 9 cleanup: one immediately reports completion. */
+u32 CheckTerminal(void);
+
+s32 CallResult2(void);
+
+u32 ExitResult2(void);
+
+u8 CheckResult2(void);
+
+void CallConfig(void);
+
+u32 ExitConfig(void);
+
+u8 CheckConfig(void);
+
+/* Source zero forwards an optional parameter pair; other sources resume deferred field work. */
+void evtDispatchSelectionCommand(s32 commandSource, s32 *commandParams);
+
+/* Check battle shutdown; the callee exits only after audio and task work become idle. */
+s32 evtCheckBattleShutdown(void);
+
+u32 CheckNewBattleTest(void);
+
+void evtCreateBattleStageTestTask(void);
+
+/* Stop the battle-stage test task and return the scene callback's native zero status. */
+u32 evtEndBattleStageTest(void);
+
+/* Admin mode 15 cleanup: zero leaves the mode pending. */
+u32 evtKeepBattleStageTestModePending(void);
+
+dds3ProcessID_t *evtCreateTestAndSkyTasks(void);
+
+u32 evtInitializeSelectionScene(void);
+
+/* Admin mode 16 cleanup: zero leaves the mode pending. */
+u32 evtKeepTestSkyModePending(void);
+
+void evtClearSecondaryWorldAndViewer(void);
+
+u32 evtInitializeSelectionScreen(void);
+
+/* Admin mode 17 cleanup: zero leaves the mode pending. */
+u32 evtKeepEventViewerModePending(void);
+
+/* Admin mode 18 entry intentionally performs no work. */
+void evtAdminModeEighteenEntryNoOp(void);
+
+/* Admin mode 18 destroy: no work, zero transition result. */
+u32 evtAdminModeEighteenDestroyNoOp(void);
+
+/* Admin mode 18 cleanup: zero leaves the mode pending. */
+u32 evtKeepAdminModeEighteenPending(void);
+
+void evtCreateCampTasksAlternate(void);
+
+u32 evtExitCampTaskGroup(void);
+
+u8 mnuCheckCampStateAndAcknowledge(void);
+
+s32 evtCreateSkyAndCampTasks(u32 unused, u32 campMode);
+
+u32 evtDestroySkyAndCampTasks(void);
+
+u8 CheckRecoverTest(void);
+
+s32 CallTerminalTest(u32 unused, u32 *fieldArgs);
+
+u32 ExitTerminalTest(void);
+
+u8 CheckTerminalTest(void);
+
+s32 evtCreateStaffTasksAlternate(void);
+
+u32 evtDestroyStaffTasksAlternate(void);
+
+u8 evtWaitStaffTaskDoneAlternate(void);
+
+/* Admin mode 23 entry intentionally performs no work. */
+void CallSoundTest(void);
+
+/* Admin mode 23 destroy: no work, zero transition result. */
+u32 ExitSoundTest(void);
+
+/* Admin mode 23 cleanup: zero leaves the mode pending. */
+u32 CheckSoundTest(void);
+
+/* Admin mode 24 entry intentionally performs no work. */
+void CallBillboardTest(void);
+
+/* Admin mode 24 destroy: no work, zero transition result. */
+u32 ExitBillboardTest(void);
+
+/* Admin mode 24 cleanup: zero leaves the mode pending. */
+u32 CheckBillboardTest(void);
+
+void CallFontTest(void);
+
+/* Admin mode 25 destroy callback: no work, zero transition result. */
+u32 ExitFontTest(void);
+
+u32 CheckFontTest(void);
+
+void evtCreateMovieViewerTask(void);
+
+u32 evtDestroyMovieViewerTask(void);
+
+/* Admin mode 26 cleanup: zero leaves the mode pending. */
+u32 evtKeepMovieViewerModePending(void);
+
+void evtEnterInterfaceMode(void);
+
+u32 evtDestroyInterfaceMode(void);
+
+u32 evtKeepInterfaceModePending(void);
+
+void evtSelectFontResource(s32 unused, s32 *lmapArgs);
+
+u32 evtDestroyLmapTask(void);
+
+u8 evtWaitLmapTaskGone(void);
+
+u32 evtEnsureFontResourceChain(void);
+
+void evtDestroyFontResourceChain(void);
+
+void datDebugPrintf(const char *format, ...);
+
+extern u16 D_003BA970;
+
+extern u16 D_003BA972;
+
+extern char evtGeneralHeapPercentFormat[];
+
+s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task);
+
+void evtGeneralHeapGraphTaskDestroy(dds3ProcessID_t *task);
+
+void evtToggleDebugTimeGraphTask(s8 mode);
+
+extern u32 D_003BA97C;
+
+/* Render an allocation span as partial rows and complete heap-map rows. */
+void sdfDrawHeapSpanOverlay(sdfDrawTag_t *packetList, s32 x, s32 y,
+                   u32 heapBase, u32 blockAddress, s32 blockSize, u8 blockState);
+
+void sdfDrawHeapMapOverlay(sdfDrawTag_t *packetList, s32 x, s32 y);
+
+extern void sdfDrawHeapMapOverlay(sdfDrawTag_t *packetList, s32 x, s32 y);
+
+extern char D_003BA980[];
+
+extern char D_003BA988[];
+
+/* Format general/chip free-memory statistics into the supplied draw surface.
+   Keep the native heap-ratio coordinate calculation and title-specific initial packet. */
+void evtDrawHeapUsageOverlay(sdfGrOt_t *surface);
+
+/* Draw the overlay only when the control byte is zero; return zero in either case. */
+s32 evtDrawConditionalHeapUsageOverlay(void);
+
+extern s32 frGetFontHandleNum(void);
+
+extern s32 frGetTextHandleNum(void);
+
+extern s32 effGetFontListCount(void);
+
+extern const char D_0039E220[];
+
+s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task);
+
+void evtResourceCountDebugTaskDestroy(dds3ProcessID_t *task);
+
+void evtToggleAlternateDebugTimeGraphTask(s8 mode);
+
+/* Append to the event-work doubly linked list, maintaining both endpoints. */
+void scrLinkHandle(scrProcessWork_s *node);
+
+/* Detach from either end or the middle, and clear the old links. */
+void scrUnlinkHandle(scrProcessWork_s *node);
+
+extern ItfMesWindowIndex itfMesMngInitialize(ItfMesSub *data);
+
+scrProcessWork_s *scrPrintProcedureStart(const scrHeader_t *header, const scrTypeTable_t *procedureSection,
+                        const scrProcTable_t *procedures, const scrLabelTable_t *labels,
+                        const scrCode_u *instructions, struct ItfMesSub *auxiliaryData,
+                        const char *strings, ScrProcedureIndex procedureIndex);
+
+/* Resolve supported FLW0 sections relative to the header; reject bad magic/unknown kinds.
+   Zero-count auxiliary sections are ignored, and absent sections remain null. */
+scrProcessWork_s *fldFlowParse(const scrHeader_t *header, ScrProcedureIndex procedureIndex);
+/* End of declarations from src/dds1/game/code_00107FD8.c */
+
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00105400);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitRenderDrawEnv);
@@ -950,7 +2385,10 @@ void dds3FadeSet(s32 r, s32 g, s32 b, s32 a)
     fadergba[3] = a;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeColorGet);
+/* Return the live color address through outColor, rather than copying channels. */
+void dds3FadeColorGet(dds3FadeColor_t **outColor) {
+    *outColor = &fadergba;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001061A0);
 
@@ -1925,7 +3363,22 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001094E8);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00109600);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", evtSubmitFixedAlphaBlend);
+/* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
+void evtSubmitFixedAlphaBlend(s32 fixedAlpha) {
+    void *list = (void *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);
+    void *packet;
+    EvtGsCommand *command;
+    sdfDrawTagInit(list);
+    packet = (void *)sdfGrAllocPacketBuff(EVT_GS_COMMAND_BYTES);
+    command = (EvtGsCommand *)sdf2DMakeStdPacket(packet, EVT_GS_COMMAND_BYTES);
+    command->data = ((u64)fixedAlpha << 32) | EVT_FIXED_ALPHA_INTERPOLATION;
+    command->registerId = EVT_GS_ALPHA_PRIMARY;
+    sdfDrawTagLink(list, (u32)(packet));
+    {
+        sdfGrOt_t *surface = &sdfGrOtTable[egl_OT_Offset];
+        surface->regFunc(surface, list);
+    }
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001097D8);
 

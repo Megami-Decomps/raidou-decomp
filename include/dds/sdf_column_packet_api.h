@@ -1,9 +1,6 @@
-#ifndef SDF_COLUMN_PACKET_API_H
-#define SDF_COLUMN_PACKET_API_H
+#ifndef DDS_SDF_COLUMN_PACKET_API_H
 
+#define DDS_SDF_COLUMN_PACKET_API_H
 #include "sdf_texture_draw_packet.h"
 
-/* Allocate a variable-length sprite column packet with this draw header. */
-SdfDrawPacket *sdf2DAllocSprite(s32 loopCount);
-
-#endif /* SDF_COLUMN_PACKET_API_H */
+#endif /* DDS_SDF_COLUMN_PACKET_API_H */

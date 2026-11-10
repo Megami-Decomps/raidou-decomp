@@ -5,6 +5,119 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "kernel_draw.h"
+
+#include "sdf_resource.h"
+
+#include "sdk_libc.h"
+
+#include "dds/dds3_fade.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_world_secondary.h"
+
+#include "dds/dds3_world_selection.h"
+
+#include "dds/dsp_channel.h"
+
+#include "dds/dsp_entry_api.h"
+
+#include "dds/evt_message_window_api.h"
+
+#include "dds/evt_world_object_api.h"
+
+#include "dds/kwln.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/sdf_bordered_rectangle_packet.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_sif_command.h"
+
+#include "dds/snd_track_playback_api.h"
+
+void dds3FadeIn(s32 red, s32 green, s32 blue, s32 duration);
+
+/* Foreground alpha transitions, stepped by dds3FadeUpdate. */
+void dds3FadeOut(s32 red, s32 green, s32 blue, s32 duration);
+
+/* Return the borrowed secondary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetControlScene(void);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+u64 *dds3PrimFrameRect(s32 x, s32 y, s32 depth, s32 width, s32 height, u32 colorA, u32 colorB);
+
+/* Return a borrowed scheduler-owned handle from the starting, active, or
+ * destroy-pending queue. The handle remains valid through its destroy callback
+ * and is freed when finalization completes; return NULL when no name matches. */
+dds3ProcessID_t *dds3SearchProcessName(const char *name);
+
+/* Setting either selection does not transfer ownership. */
+void dds3SetActiveScene(struct dds3Basic_t *primaryObject);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+void evtBitOff(s32 flag);
+
+/* Set and clear one flag using the providers' signed-index adjustment. */
+void evtBitOn(s32 flag);
+
+/* Create and select the world object for an area/room pair; returns 1 after setup. */
+s32 evtLoadArea(s32 area, s32 room);
+
+/* Return the signed control-state byte as a query result, not a boolean or a
+ * stored phase. NO_ACTIVE_CONTROL (0) covers a missing window and control state
+ * two hidden by the gate; stored zero also passes through. Visible stored states
+ * one, two and three report ACTIVE, GATED and CLEANUP. Other stored values pass
+ * through unchanged. */
+EvtMessageWindowControlResult fclChkMessage(void);
+
+/* Close the active display channel and return its status. */
+s32 fclDestroyMessage(void);
+
+s32 fclInitMessage(struct ItfMesSub *definition);
+
+/* Start a display entry; return zero if no window is open, one if it starts. */
+s32 fclStartMessage(s32 entry);
+
+void p2sdPlayBGM(s32 trackId);
+
+void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
+
+void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+/* Queue the two heap owners separately: the general heap stores descriptors,
+ * while the chip heap stores the address of the cell to release. */
+void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *allocation);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/snd_packed_track_load_status.h"
@@ -227,8 +340,6 @@ extern void fldLmapSubmitScaledSpritePacket(s32 x, s32 y, s32 z, s32 width, s32 
 extern void itfDrawGridTextRows(s32, s32, s32, LmapList *, s32);
 
 void fldLmapDrawListTree(s32 x, s32 y, s32 z, LmapList *list, s32 channel);
-
-extern sdfGrOt_t sdfGrOtTable[];
 
 #include "dds/sdf_packet_alloc.h"
 

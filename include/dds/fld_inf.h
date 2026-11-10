@@ -1,6 +1,6 @@
-#ifndef FLD_INF_H
-#define FLD_INF_H
+#ifndef DDS_FLD_INF_H
 
+#define DDS_FLD_INF_H
 #include "common.h"
 
 /* Fixed little-endian INF serialization, documented in docs/inf.md and
@@ -48,7 +48,6 @@ typedef enum FldInfMessageAttribute {
     FLD_INF_MESSAGE_ATTRIBUTE_MESSAGE = 1,
     FLD_INF_MESSAGE_ATTRIBUTE_VIEWED = 2,
 } FldInfMessageAttribute;
-typedef char FldInfMessageAttribute_size[(sizeof(FldInfMessageAttribute) == sizeof(s32)) ? 1 : -1];
 
 typedef struct FldInfMessageRow {
     s16 kind;
@@ -82,14 +81,23 @@ typedef struct FldInfTable {
 } FldInfTable;
 
 typedef char FldInfHit_size[(sizeof(FldInfHit) == 0x10) ? 1 : -1];
+
 typedef char FldInfPack_size[(sizeof(FldInfPack) == 0x54) ? 1 : -1];
+
 typedef char FldInfView_size[(sizeof(FldInfView) == 0x20) ? 1 : -1];
+
 typedef char FldInfExtraAction_size[(sizeof(FldInfExtraAction) == 0x14) ? 1 : -1];
+
 typedef char FldInfMessageRow_size[(sizeof(FldInfMessageRow) == 0xE) ? 1 : -1];
+
 typedef char FldInfSet_size[(sizeof(FldInfSet) == 0x138) ? 1 : -1];
+
 typedef char FldInfTable_size[(sizeof(FldInfTable) == 0x3B80) ? 1 : -1];
+
 typedef char FldInfTable_views_offset[((unsigned long)&((FldInfTable *)0)->views == 0x2A0) ? 1 : -1];
+
 typedef char FldInfTable_extraActions_offset[((unsigned long)&((FldInfTable *)0)->extraActions == 0x7A0) ? 1 : -1];
+
 typedef char FldInfTable_sets_offset[((unsigned long)&((FldInfTable *)0)->sets == 0xAC0) ? 1 : -1];
 
 #endif

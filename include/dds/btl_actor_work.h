@@ -1,14 +1,17 @@
-#ifndef BTL_ACTOR_WORK_H
-#define BTL_ACTOR_WORK_H
+#ifndef DDS_BTL_ACTOR_WORK_H
 
+#define DDS_BTL_ACTOR_WORK_H
 #include "btl.h"
+
 #include "common.h"
+
 #include "btl_sound.h"
 
 /* Observed prefix of the DDS1 singleton battle work. Actor/task registration,
  * resource-node lists, and packed battle tint share this owner; intervening
  * words without a proved role remain opaque. */
 struct BtlRuntimeTask;
+
 struct dds3ProcessID_t;
 
 typedef struct BtlActorWork {
@@ -38,31 +41,46 @@ typedef struct BtlActorWork {
 } BtlActorWork;
 
 typedef char BtlActorWorkExtent[(sizeof(BtlActorWork) == 0x5EC) ? 1 : -1];
+
 typedef char BtlActorWorkCurrentSceneOffset[
     ((unsigned int)&((BtlActorWork *)0)->currentScene == 0x208) ? 1 : -1];
+
 typedef char BtlActorWorkBoundTaskOffset[
     ((unsigned int)&((BtlActorWork *)0)->boundTask == 0x2A4) ? 1 : -1];
+
 typedef char BtlActorWorkActorListOffset[((unsigned int)&((BtlActorWork *)0)->actorList == 0x228) ? 1 : -1];
+
 typedef char BtlActorWorkTaskTailOffset[((unsigned int)&((BtlActorWork *)0)->taskTail == 0x22C) ? 1 : -1];
+
 typedef char BtlActorWorkTaskHeadOffset[((unsigned int)&((BtlActorWork *)0)->taskHead == 0x230) ? 1 : -1];
+
 typedef char BtlActorWorkResourceHeadOffset[
     ((unsigned int)&((BtlActorWork *)0)->soundResourceHead == 0x234) ? 1 : -1
 ];
+
 typedef char BtlActorWorkActiveSoundOffset[((unsigned int)&((BtlActorWork *)0)->soundList == 0x238) ? 1 : -1];
+
 typedef char BtlActorWorkSlotOwnerOffset[
     ((unsigned int)&((BtlActorWork *)0)->soundSlotOwners == 0x23C) ? 1 : -1
 ];
+
 typedef char BtlActorWorkResourceSlotsOffset[
     ((unsigned int)&((BtlActorWork *)0)->soundResourceSlots == 0x4B8) ? 1 : -1
 ];
+
 typedef char BtlActorWorkFadeEnabledOffset[
     ((unsigned int)&((BtlActorWork *)0)->fadeEnabled == 0x584) ? 1 : -1
 ];
+
 typedef char BtlActorWorkFadeColorOffset[((unsigned int)&((BtlActorWork *)0)->fadeColor == 0x588) ? 1 : -1];
+
 typedef char BtlActorWorkHookOffset[((unsigned int)&((BtlActorWork *)0)->hook5E4 == 0x5E4) ? 1 : -1];
+
 typedef char BtlActorWorkFallbackHookOffset[((unsigned int)&((BtlActorWork *)0)->hook5E8 == 0x5E8) ? 1 : -1];
+
 typedef char BtlActorWorkMotionSeLoadFrameOffset[
     ((unsigned int)&((BtlActorWork *)0)->motionSeLoadFrame == 0x264) ? 1 : -1];
+
 typedef char BtlActorWorkSkillSeLoadFrameOffset[
     ((unsigned int)&((BtlActorWork *)0)->skillSeLoadFrame == 0x268) ? 1 : -1];
 

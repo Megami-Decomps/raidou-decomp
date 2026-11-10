@@ -1,6 +1,6 @@
-#ifndef FLD_AREA_ROOM_RESOURCE_LOAD_API_H
-#define FLD_AREA_ROOM_RESOURCE_LOAD_API_H
+#ifndef DDS_FLD_AREA_ROOM_RESOURCE_LOAD_API_H
 
+#define DDS_FLD_AREA_ROOM_RESOURCE_LOAD_API_H
 #include "sdf_texture_offset_list.h"
 
 struct sdfMemHandle_t;
@@ -17,4 +17,4 @@ const struct sdfMemHandle_t *fldLoadAreaRoomResourcesFromRequest(
     u32 area, u32 room, u8 *resource0Data, u8 *resource1Data,
     const SdfTextureOffsetListHeader *textureOffsets, u32 flags);
 
-#endif /* FLD_AREA_ROOM_RESOURCE_LOAD_API_H */
+#endif /* DDS_FLD_AREA_ROOM_RESOURCE_LOAD_API_H */

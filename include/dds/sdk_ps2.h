@@ -1,6 +1,6 @@
-#ifndef SDK_PS2_H
-#define SDK_PS2_H
+#ifndef DDS_SDK_PS2_H
 
+#define DDS_SDK_PS2_H
 /* PS2 SDK entry points the game links, one canonical prototype each.
  *
  * Every prototype sits in an `#ifndef SDK_SKIP_<name>` guard. A unit whose retail code
@@ -11,14 +11,23 @@
  * "memset as a builtin or a library call". */
 
 #include "sdk_libkernl.h"
+
 #include "sdk_libc.h"
+
 #include "sdk_libm.h"
+
 #include "sdk_libcdvd.h"
+
 #include "sdk_libdma.h"
+
 #include "sdk_libgraph.h"
+
 #include "sdk_libipu.h"
+
 #include "sdk_libpad.h"
+
 #include "sdk_libmc.h"
+
 #include "sdk_libsdr.h"
 
 #endif

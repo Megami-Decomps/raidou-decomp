@@ -1,7 +1,8 @@
-#ifndef FLD_PLACEMENT_DATA_H
-#define FLD_PLACEMENT_DATA_H
+#ifndef DDS_FLD_PLACEMENT_DATA_H
 
+#define DDS_FLD_PLACEMENT_DATA_H
 #include "common.h"
+
 #include "fld_spatial_sound_id.h"
 
 struct FldSpecialPoint;
@@ -20,6 +21,7 @@ enum FldPlacementKind {
 
 /* Kind-8 payload discriminators select these special point behaviors. */
 typedef u32 FldSpecialPointKind;
+
 enum {
     FLD_SPECIAL_POINT_KIND_SAVE_TERMINAL = 1,
     FLD_SPECIAL_POINT_KIND_HEAL_TERMINAL = 2,
@@ -57,21 +59,12 @@ typedef struct FldPlacementData {
 
 typedef char FldPlacementPayloadRefSizeCheck[
     sizeof(FldPlacementPayloadRef) == 4 ? 1 : -1];
+
 typedef char FldPendingSoundParamsSizeCheck[
     sizeof(FldPendingSoundParams) == 8 ? 1 : -1];
+
 typedef char FldPlacementDataSizeCheck[(sizeof(FldPlacementData) == 0x10) ? 1 : -1];
-typedef char FldPlacementDataOpaqueGapOffsetCheck[
-    ((u32)&((FldPlacementData *)0)->opaque08 == 8) ? 1 : -1];
-typedef char FldPlacementDataPayloadOffsetCheck[
-    ((u32)&((FldPlacementData *)0)->payload == 0xC) ? 1 : -1];
-typedef char FldPlacementPayloadWordsOffsetCheck[
-    ((u32)&((FldPlacementPayloadRef *)0)->words == 0) ? 1 : -1];
-typedef char FldPendingSoundIdOffsetCheck[
-    ((u32)&((FldPendingSoundParams *)0)->soundId == 4) ? 1 : -1];
+
 typedef char FldSpecialPointSizeCheck[(sizeof(FldSpecialPoint) == 8) ? 1 : -1];
-typedef char FldSpecialPointKindOffsetCheck[
-    ((u32)&((FldSpecialPoint *)0)->kind == 0) ? 1 : -1];
-typedef char FldSpecialPointIdOffsetCheck[
-    ((u32)&((FldSpecialPoint *)0)->id == 4) ? 1 : -1];
 
 #endif

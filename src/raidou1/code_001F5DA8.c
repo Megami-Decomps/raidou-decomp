@@ -5,6 +5,19 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "dds/evt_unit.h"
+
+#include "dds/evt_unit_color_transition.h"
+
+void evtSetUnitColorRGB(evtUnitHandle_t *unit, s32 duration, u32 color);
+
+/* Initialize an event unit's color transition for the requested duration. */
+void evtSetUnitLightAndAmbient(evtUnitHandle_t *unit, s32 duration, u32 firstColor, u32 secondColor);
+
+void evtSetUnitLightDir(evtUnitHandle_t *unit, EvtUnitDirectionTransitionFrames durationFrames);
+
+void evtUnitLightOn(evtUnitHandle_t *unit);
+
 #include "dds/common.h"
 
 #include "dds/sdf_vu0.h"

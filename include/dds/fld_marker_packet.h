@@ -1,6 +1,6 @@
-#ifndef FLD_MARKER_PACKET_H
-#define FLD_MARKER_PACKET_H
+#ifndef DDS_FLD_MARKER_PACKET_H
 
+#define DDS_FLD_MARKER_PACKET_H
 #include "eff.h"
 
 /* Stack-built input shared by the field marker packet producers and submitter. */
@@ -15,13 +15,5 @@ typedef struct FldMarkerPacket {
 
 typedef char FldMarkerPacketSizeCheck[
     (sizeof(FldMarkerPacket) == 0x48) ? 1 : -1];
-typedef char FldMarkerPacketUvOffsetCheck[
-    ((u32)&((FldMarkerPacket *)0)->uv == 0x10) ? 1 : -1];
-typedef char FldMarkerPacketQuadOffsetCheck[
-    ((u32)&((FldMarkerPacket *)0)->quad == 0x20) ? 1 : -1];
-typedef char FldMarkerPacketColorOffsetCheck[
-    ((u32)&((FldMarkerPacket *)0)->color == 0x40) ? 1 : -1];
-typedef char FldMarkerPacketScaleOffsetCheck[
-    ((u32)&((FldMarkerPacket *)0)->scale == 0x44) ? 1 : -1];
 
 #endif

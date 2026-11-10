@@ -1,6 +1,6 @@
-#ifndef BTL_RESOURCE_SELECTION_H
-#define BTL_RESOURCE_SELECTION_H
+#ifndef DDS_BTL_RESOURCE_SELECTION_H
 
+#define DDS_BTL_RESOURCE_SELECTION_H
 /* Result values shared by the resource browser and name-entry selectors. */
 enum BtlResourceSelectionStatus {
     BTL_RESOURCE_SELECTION_PENDING = 0,

@@ -1,6 +1,6 @@
-#ifndef EFFECT_ASSET_LINK_H
-#define EFFECT_ASSET_LINK_H
+#ifndef DDS_EFFECT_ASSET_LINK_H
 
+#define DDS_EFFECT_ASSET_LINK_H
 #include "common.h"
 
 /* Sentinel-terminated map from asset identifiers to their runtime objects. */

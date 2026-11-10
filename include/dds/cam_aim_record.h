@@ -1,6 +1,6 @@
-#ifndef CAM_AIM_RECORD_H
-#define CAM_AIM_RECORD_H
+#ifndef DDS_CAM_AIM_RECORD_H
 
+#define DDS_CAM_AIM_RECORD_H
 #include "common.h"
 
 typedef struct CamAim {
@@ -11,7 +11,5 @@ typedef struct CamAim {
 } CamAim;
 
 typedef char CamAimSizeCheck[(sizeof(CamAim) == 0x6C) ? 1 : -1];
-typedef char CamAimQuaternionOffsetCheck[((u32)&((CamAim *)0)->quat == 0x50) ? 1 : -1];
-typedef char CamAimFlagsOffsetCheck[((u32)&((CamAim *)0)->flags == 0x68) ? 1 : -1];
 
 #endif

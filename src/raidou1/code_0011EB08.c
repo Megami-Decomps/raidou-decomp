@@ -5,6 +5,118 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "basic.h"
+
+#include "datCalc.h"
+
+#include "newdata.h"
+
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/dds3_path.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/eff_random_mod.h"
+
+#include "dds/eff_transform.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/sdf_dev_state.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdk_libc.h"
+
+/* Sparse world-node identities recovered from the paired operation tables and
+ * concrete creators. Unlisted values stay unnamed; COUNT remains the full
+ * directory extent rather than an enum-completeness claim. */
+enum {
+    EFF_WORLD_KIND_WORLD_INFO = 0,
+    EFF_WORLD_KIND_EVENT_TABLE = 1,
+    EFF_WORLD_KIND_WORLD_INDEX_OWNER = 2,
+    EFF_WORLD_KIND_SLOT_RING = 3,
+    EFF_WORLD_KIND_CAMERA = 4,
+    EFF_WORLD_KIND_FOLLOW_MODEL = 5,
+    EFF_WORLD_KIND_EFFECT_TRANSFORM = 6,
+    EFF_WORLD_KIND_EFFECT_OBJECT = 7,
+    EFF_WORLD_KIND_RESOURCE_OWNER = 8,
+    EFF_WORLD_KIND_LIGHT = 9,
+    EFF_WORLD_KIND_SCRIPT_OBJECT = 10,
+    EFF_WORLD_KIND_ACTION_B = 11,
+    EFF_WORLD_KIND_ACTION_D = 13,
+    EFF_WORLD_KIND_ACTION_10 = 16,
+    EFF_WORLD_KIND_TRANSFORM_SOURCE = 17,
+    EFF_WORLD_KIND_COUNT = 18
+};
+
+dds3Basic_t *dds3AddSceneBasicData(s32 kind);
+
+/* Return the next caller-owned or shared state value reduced modulo `modulus`. */
+u32 dds3GetRandIntA(EffRandState *state, u32 modulus);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+void dds3PathEvalSpline(u32 *segment, f32 *weight, const Dds3PathKeyframes *keys, f32 frame);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+void evtBitOff(s32 flag);
+
+/* Set and clear one flag using the providers' signed-index adjustment. */
+void evtBitOn(s32 flag);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+/* Allocate from the chip heap through 0x400 bytes; larger requests use the
+ * general heap and return its locked payload address. */
+void *sdfAllocAuto(s32 size);
+
+void sdfFileClose(sdfFileCmdHandle_t *state);
+
+u32 sdfFileLength(sdfFileCmdHandle_t *state);
+
+/* Stable state APIs. Callback factories keep caller-specific callback types. */
+sdfFileCmdHandle_t *sdfFileOpen(const char *path);
+
+void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
+
+/* Release the sdfAllocAuto base in its source heap; interior pointers are
+ * invalid. */
+s32 sdfFreeAuto(void *data);
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+struct sdfMemHandle_t *sdfMemAllocFromTailDirect(s32 requestedBytes);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+void sdfMemUnlock(struct sdfMemHandle_t *allocation);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/evt_run_context_api.h"
@@ -81,7 +193,7 @@ extern scrHeader_t *D_003BAAAC;
 
 extern DatEnemyRecord *datEnemyRecords;
 
-extern u32 sdfRollActionHit(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *packed);
+extern u32 sdfRollActionHit(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *packed);
 
 extern char sdfRuntimeTaskName[];
 
@@ -107,8 +219,8 @@ extern void sdfSaveResetSnapshot(void);
 
 extern void sdfRestoreResetSnapshot(void);
 
-s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
 /* Linearly interpolated curve sample at `time`; 0 when no curve is active. */
 f32 dds3PathBasicControlGetFovy(dds3PathBasicControl_t *user);
@@ -119,10 +231,6 @@ f32 dds3PathBasicControlGetFovy(dds3PathBasicControl_t *user);
 
 /* Step the counter by one; return zero when a non-looping endpoint is reached. */
 s32 dds3PathBasicControlStep(SdfFloatCounter *counter);
-
-void dds3PathBasicControlAlterMode(SdfFloatCounter *counter, u32 direction);
-
-u32 dds3PathBasicControlGetMode(const SdfFloatCounter *counter);
 
 void dds3PathBasicControlSetRatio(SdfFloatCounter *value, float multiplier);
 
@@ -240,59 +348,57 @@ void sdfResetChannels(void);
 
 /* Enemy vitals use a 76-byte base table; party vitals come from a script,
  * a unit-specific bonus, and a maximum of 999. */
-s32 ptyComputeMaxHp(datUnitWork_t *unit);
+s32 ptyComputeMaxHp(dds_datUnitWork_t *unit);
 
 /* Compute the matching MP value from the base table or the MP script. */
-s32 ptyComputeMaxMp(datUnitWork_t *unit);
+s32 ptyComputeMaxMp(dds_datUnitWork_t *unit);
 
 /* Sdf dispatch: pick the script id from the unit's runtime flag byte and run
  * it against the given entry index. 0x40/0x80 select the alternate scripts. */
-s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 sdfDispatchUnitScriptDefault5(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
-s32 sdfDispatchCmd(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u32 mode);
+s32 sdfDispatchCmd(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u32 mode);
 
-s32 sdfDispatchUnitScriptDefault9(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 sdfDispatchUnitScriptDefault9(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
-s32 evtRunCommandContext10(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 evtRunCommandContext10(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
-s32 evtRunCommandContext7(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u8 mode);
+s32 evtRunCommandContext7(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u8 mode);
 
-s32 sdfDispatchSubCmd(u32 unitIndex, datUnitWork_t *sourceRecord,
-    datUnitWork_t *targetRecord, u32 mode);
+s32 sdfDispatchSubCmd(u32 unitIndex, dds_datUnitWork_t *sourceRecord,
+    dds_datUnitWork_t *targetRecord, u32 mode);
 
-s32 sdfCalculateCommandVitalDelta(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item, u32 mode, u8 vital);
+s32 sdfCalculateCommandVitalDelta(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item, u32 mode, u8 vital);
 
 extern char D_0039F980[];
 
 /* Rolls whether the action hits: returns the surviving channel mask, or 0 on a miss. */
-u32 sdfRollActionHit(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *packed);
+u32 sdfRollActionHit(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *packed);
 
-u32 sdfQueryChannelValue(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
+u32 sdfQueryChannelValue(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item);
 
-u32 sdfQueryChannelBits(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
+u32 sdfQueryChannelBits(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item);
 
-extern s32 sdfCalculateCommandVitalDelta(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item, u32 mode, u8 vital);
+extern s32 sdfCalculateCommandVitalDelta(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item, u32 mode, u8 vital);
 
-extern void datResetBadStat(datUnitWork_t *item, s32 mask);
+extern void datResetBadStat(dds_datUnitWork_t *item, s32 mask);
 
 /* These unused-result legacy mutator calls had no prototype in scope. */
-void sdfRaisePackedChannelValue(datUnitWork_t *item, u32 minimumValue);
+void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 
-extern s32 datAddHp(datUnitWork_t *unit, s32 delta);
+extern s32 datAddMp(dds_datUnitWork_t *unit, s32 delta);
 
-extern s32 datAddMp(datUnitWork_t *unit, s32 delta);
+s32 sdfApplyCommandResults(s32 channel, dds_datUnitWork_t *sourceRecord, dds_datUnitWork_t *item);
 
-s32 sdfApplyCommandResults(s32 channel, datUnitWork_t *sourceRecord, datUnitWork_t *item);
-
-void sdfSetPackedValuePreservingFlag(datUnitWork_t *item, u16 channelValue);
+void sdfSetPackedValuePreservingFlag(dds_datUnitWork_t *item, u16 channelValue);
 
 /* Raise the packed value to `minimumValue` (never lower it); reaching 0x40, 0x80 or 0x400 re-randomizes the entry. */
-void sdfRaisePackedChannelValue(datUnitWork_t *item, u32 minimumValue);
+void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 /* End of declarations from src/dds1/game/code_00117438.c */
 
 /* Load the world node's borrowed data vector into VF10. */

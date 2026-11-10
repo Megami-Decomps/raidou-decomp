@@ -508,6 +508,211 @@ extern f32 nowfovy;
 extern s32 evtCameraLastFrame;
 /* End of declarations from src/smt3/event/evtPolygonMovie.c */
 
+/* Declarations from dds-decomp src/dds1/event/evtPolygonMovie.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_evtFrameFunc_t 1
+
+#define SMT3_DEFINES_evtScaledValue_t 1
+
+#define SMT3_DEFINES_fileRequest_t 1
+
+#define SMT3_DEFINES_pmdCameraTable_t 1
+
+#define SMT3_DEFINES_polyMovieClip_t 1
+
+#define SMT3_DEFINES_polyMovieObject_t 1
+
+#define SMT3_DEFINES_polyMovieState_t 1
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/itf.h"
+
+#include "dds/sdf_file_existence_api.h"
+
+dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
+
+/* Return a retained texture handle after releasing the temporary asset allocation. */
+sdfTexHandle_t *itfMiscLoadTexture(const char *path);
+
+SdfFileExistenceResult sdfFileCheckExist(const char *path);
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/common.h"
+
+#include "dds/sdf_file_existence_api.h"
+
+#include "dds/dds3_object_flags.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/eff.h"
+
+#include "dds/eff_event_draw.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/kwln.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/ee_mmi.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/fld.h"
+
+#include "dds/evt_polygon_movie.h"
+
+#include "dds/evt_polygon_movie_load_api.h"
+
+#include "dds/evt_unit.h"
+
+#include "dds/mdl.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/itf.h"
+
+#include "dds/itf_mes_resource.h"
+
+#include "dds/sdf_float_counter.h"
+
+#include "dds/evt_blend_vec_color.h"
+
+#include "dds/mnu_title_sound.h"
+
+extern f32 D_00368540[4];
+
+extern f32 D_00368550[4];
+
+extern f32 D_00368560[4];
+
+extern dds3Effect_Blur_t D_00368590;
+
+extern dds3Effect_PartialMultiBlurParam_t evtMovieDefaultBlurTemplate;
+
+extern dds3Effect_Filter_t evtMovieDefaultSolidRect;
+
+extern dds3Effect_PartialMultiFilterParam_t evtMovieDefaultResourceRect;
+
+extern dds3Effect_DistortionBlurParam_t evtMovieDefaultBlurScatter;
+
+extern dds3Effect_RippleBlurParam_t evtMovieDefaultBlurScale;
+
+extern dds3Effect_Blur_t D_003686A0;
+
+extern ItfMesWindowIndex itfMesMngInitialize(ItfMesSub *messageSub);
+
+extern void mnuStopTitleVoicePlayback(void);
+
+#include "dds/sdf_debug_api.h"
+
+extern f32 D_00368570[4];
+
+extern u32 D_00368580[4];
+
+/* One asm location for every arm's w set, so jump2 can cross-jump them. */
+static inline void evtSetBlendVecW(f32 w)
+{
+    VU0_SCALAR_OP_CLOBBER(w, "vmulx.w vf10, vf0, vf2x");
+}
+
+void evtBlendParamsG(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Effect_Blur_t *b, dds3Effect_Blur_t *out);
+
+void evtBlendParamsH(s32 enable, f32 t, const EvtBlendKey *a, const EvtBlendKey *b, EvtBlendKey *out);
+
+void evtPolygonMovieSetObjectMode(dds3Basic_t *obj, EvtPolygonMovieObjectMode mode,
+                                  u32 setFlags, u32 clearFlags);
+
+/* Apply a caller-provided mask to the viewer's movie-work flags. */
+void evtPolygonMovieSetFlagBits(dds3ProcessID_t *task, EvtPolygonMovieWorkFlags flags);
+
+void evtPolygonMovieClearFlagBits(dds3ProcessID_t *task, EvtPolygonMovieWorkFlags flags);
+
+/* Store elapsed frames, bounded below by zero and above by clip duration. */
+void evtPolygonMovieClampTime(dds3Basic_t *movie, s32 unused, s32 start, s32 end);
+
+PolyMovieWork *evtPolygonMovieInitWork(PolyMovieWork *work, PmdHeader *mainHeader, PmdHeader *sub, PmdHeader *sub2);
+
+void evtPolygonMovieFreeWork(PolyMovieWork *work);
+
+#include "dds/common.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/evt_viewer.h"
+
+#include "dds/event.h"
+
+#include "dds/kwln.h"
+
+#include "dds/sdf.h"
+
+#include "dds/evt_world.h"
+
+#include "dds/evt_picture.h"
+
+#include "dds/evt_polygon_movie.h"
+
+#include "dds/file.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+extern char D_003BBF78[];
+
+/* Build the 0x20-byte PMD3 resource header, copy it into a fresh allocation and
+ * hand the retained address back through `out`. */
+sdfMemHandle_t *evtPolygonMovieSynthesizePmd3Header(PmdHeader **out);
+
+s32 evtFormatPolygonMoviePaths(s32 eventId, s32 sceneId, char *path1, char *path2, char *path3);
+
+extern const char evtMovieBeforePrimaryLoadMessage[31];
+
+extern const char evtMoviePrimaryLoadedMessage[31];
+
+extern const char evtMovieTertiaryLoadedMessage[26];
+
+extern const char evtMovieResourcesReadyMessage[31];
+
+extern const char evtMovieWorkInitializedMessage[31];
+
+extern u32 D_003BA8EC;
+
+extern void evtEventViewerDestroyActiveAlternate(dds3ProcessID_t *task);
+
+extern void evtEventViewerInitCampFontResource(dds_evtViewerInfo_t *viewer);
+
+extern char D_003ADDB0[];
+
+/* Create the event viewer task at `priority` for `eventId`/`sceneId` and request its movie files. */
+dds3ProcessID_t *evtViewerCreateTask(u32 priority, s32 eventId, s32 sceneId);
+
+/* Flag operations act on the scheduler task's user-value context. */
+void evtPictureDrawOn(dds3ProcessID_t *task);
+
+void evtPictureDrawOff(dds3ProcessID_t *task);
+
+void evtKillPictureProcess(dds3ProcessID_t *task);
+
+/* Allocate the picture task's flag and texture state. */
+EvtPictureWork *evtAllocateContext(void);
+
+void LoadTexture(EvtPictureWork *pictureWork, const char *path);
+/* End of declarations from src/dds1/event/evtPolygonMovie.c */
+
 f32 evtHokanFloat(s32 hokan, f32 ratio, f32 f1, f32 f2)
 {
     if (hokan) {
@@ -773,7 +978,24 @@ void evtHokanRipBlur(s32 hokan, f32 ratio, dds3Effect_RippleBlurParam_t *key1, d
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtBlendParamsG);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtBlendParamsH);
+void evtBlendParamsH(s32 enable, f32 t, const EvtBlendKey *a, const EvtBlendKey *b, EvtBlendKey *out)
+{
+    s32 colorChannelIndex;
+
+    if (enable == 0) {
+        t = 0.0f;
+    }
+    out->x = evtHokanInt(enable, t, a->x, b->x);
+    out->w[0] = evtHokanInt(enable, t, a->w[0], b->w[0]);
+    out->w[1] = evtHokanInt(enable, t, a->w[1], b->w[1]);
+    out->w[2] = evtHokanInt(enable, t, a->w[2], b->w[2]);
+    out->w[3] = evtHokanInt(enable, t, a->w[3], b->w[3]);
+    out->flagWord = a->flagWord;
+    for (colorChannelIndex = 0; colorChannelIndex < 3; colorChannelIndex++) {
+        out->y[colorChannelIndex] = evtHokanInt(enable, t, a->y[colorChannelIndex], b->y[colorChannelIndex]);
+        out->z[colorChannelIndex] = evtHokanInt(enable, t, a->z[colorChannelIndex], b->z[colorChannelIndex]);
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_001B99E0);
 

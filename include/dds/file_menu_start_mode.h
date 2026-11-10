@@ -1,10 +1,11 @@
-#ifndef FILE_MENU_START_MODE_H
-#define FILE_MENU_START_MODE_H
+#ifndef DDS_FILE_MENU_START_MODE_H
 
+#define DDS_FILE_MENU_START_MODE_H
 #include "common.h"
 
 /* Entry modes for the paired memory-card menu start functions. */
 typedef s32 FileMenuStartMode;
+
 enum {
     FILE_MENU_START_MODE_LOAD = 0,
     FILE_MENU_START_MODE_SLOT_SELECTION = 1,
@@ -13,4 +14,4 @@ enum {
     FILE_MENU_START_MODE_ORIGINAL_TITLE = 4
 };
 
-#endif /* FILE_MENU_START_MODE_H */
+#endif /* DDS_FILE_MENU_START_MODE_H */

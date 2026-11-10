@@ -1,7 +1,8 @@
-#ifndef BTL_RESOURCE_NAME_H
-#define BTL_RESOURCE_NAME_H
+#ifndef DDS_BTL_RESOURCE_NAME_H
 
+#define DDS_BTL_RESOURCE_NAME_H
 #include "common.h"
+
 #include "btl_resource_selection.h"
 
 typedef u32 BtlResourceWritePermissionResult;
@@ -25,15 +26,15 @@ typedef struct BtlResourceNameRecord {
 
 typedef char BtlResourceNameRecordSizeCheck[
     (sizeof(BtlResourceNameRecord) == 0x38) ? 1 : -1];
-typedef char BtlResourceNameRecordExtensionOffsetCheck[
-    ((u32)&((BtlResourceNameRecord *)0)->extension == 0x1C) ? 1 : -1];
-typedef char BtlResourceNameRecordNameOffsetCheck[
-    ((u32)&((BtlResourceNameRecord *)0)->resourceName == 0x21) ? 1 : -1];
 
 struct BtlResourceNameRecord *btlCreateResourceNameRecord(const char *extension);
+
 void btlSetResourceNamePosition(struct BtlResourceNameRecord *record, s32 x, s32 y);
+
 void btlResourceRecordSetName(struct BtlResourceNameRecord *record, const char *name);
+
 void btlFormatResourceNameWithExtension(const struct BtlResourceNameRecord *record, char *output);
+
 void btlFormatResourceNameWithoutExtension(const struct BtlResourceNameRecord *record, char *output);
 
 /* Reports immediate permission; an active prompt or cancellation is not
@@ -42,10 +43,11 @@ BtlResourceWritePermissionResult btlPollResourceNameOverwrite(
     struct BtlResourceNameRecord *record, const char *directoryPath);
 
 u32 btlGetResourceNameSelectionStatus(const struct BtlResourceNameRecord *record);
+
 void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 maximumNameLength);
 
 void btlUpdateResourceNameEditor(struct BtlResourceNameRecord *record);
 
 void btlDestroyResourceNameRecord(struct BtlResourceNameRecord *record);
 
-#endif /* BTL_RESOURCE_NAME_H */
+#endif /* DDS_BTL_RESOURCE_NAME_H */

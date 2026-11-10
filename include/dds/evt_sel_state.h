@@ -1,15 +1,17 @@
-#ifndef EVT_SEL_STATE_H
-#define EVT_SEL_STATE_H
+#ifndef DDS_EVT_SEL_STATE_H
 
+#define DDS_EVT_SEL_STATE_H
 #include "common.h"
 
 /* Values stored at offset zero and dispatched by the interpolation assembly. */
 typedef u32 EvtSelStateMode;
+
 enum {
     EVT_SEL_STATE_MODE_RAMP_UP = 0,
     EVT_SEL_STATE_MODE_HOLD = 1,
     EVT_SEL_STATE_MODE_RAMP_DOWN = 2,
 };
+
 #define EVT_SEL_STATE_UNBOUNDED_LIMIT (-1)
 
 /* The selection shake: a per-axis offset that ramps up, holds and ramps down. */
@@ -23,6 +25,7 @@ typedef struct EvtSelState {
     s32 count;         /* 0x18: frames elapsed */
     f32 offset[3];     /* 0x1C: current per-axis shake limit */
 } EvtSelState;
+
 typedef char EvtSelState_size_check[(sizeof(EvtSelState) == 0x28) ? 1 : -1];
 
 #endif

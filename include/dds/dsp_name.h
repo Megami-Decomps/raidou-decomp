@@ -1,6 +1,6 @@
-#ifndef DSP_NAME_H
-#define DSP_NAME_H
+#ifndef DDS_DSP_NAME_H
 
+#define DDS_DSP_NAME_H
 #include "common.h"
 
 /* Fixed-stride encoded mantra-name rows used by the display and script APIs. */
@@ -14,6 +14,7 @@ typedef struct DspUnitName {
 } DspUnitName;
 
 typedef char DspMantraName_size_must_be_19[(sizeof(DspMantraName) == 19) ? 1 : -1];
+
 typedef char DspUnitName_size_must_be_17[(sizeof(DspUnitName) == 17) ? 1 : -1];
 
 #endif

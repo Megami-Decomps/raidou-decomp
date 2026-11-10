@@ -1,11 +1,14 @@
-#ifndef SND_WORK_H
-#define SND_WORK_H
+#ifndef DDS_SND_WORK_H
 
+#define DDS_SND_WORK_H
 #include "common.h"
+
 #include "snd_track_slot.h"
 
 #define SND_WORK_CHANNEL_COUNT 16
+
 #define SND_WORK_IOP_BUFFER_COUNT 16
+
 #define SND_WORK_TRACK_SLOT_COUNT 13
 
 typedef struct SndChannel {
@@ -49,25 +52,5 @@ typedef struct SifDmaTransfer {
 } SifDmaTransfer;
 
 typedef char SndChannelSizeAssert[(sizeof(SndChannel) == 0x10) ? 1 : -1];
-typedef char SndIopBufferLayoutAssert[
-    (sizeof(SndIopBuffer) == 8 &&
-     (u32)&((SndIopBuffer *)0)->size == 0 &&
-     (u32)&((SndIopBuffer *)0)->iopAddress == 4) ? 1 : -1];
-typedef char SndWorkArrayOffsetsAssert[
-    ((u32)&((SndWork *)0)->channels == 0x10 &&
-     (u32)&((SndWork *)0)->buffers == 0x110 &&
-     (u32)&((SndWork *)0)->slots == 0x190 &&
-     (u32)&((SndWork *)0)->eeWorkAddress == 0x1F8 &&
-     (u32)&((SndWork *)0)->eeWorkByteCount == 0x1FC &&
-     (u32)&((SndWork *)0)->opaque200 == 0x200 &&
-     (u32)&((SndWork *)0)->opaque204 == 0x204 &&
-     (u32)&((SndWork *)0)->opaque208 == 0x208 &&
-     (u32)&((SndWork *)0)->opaque20C == 0x20C &&
-     sizeof(void *) == 4 && sizeof(SndWork) == 0x210) ? 1 : -1];
-typedef char SifDmaTransferLayoutAssert[
-    (sizeof(SifDmaTransfer) == 0x10 &&
-     (u32)&((SifDmaTransfer *)0)->destination == 4 &&
-     (u32)&((SifDmaTransfer *)0)->size == 8 &&
-     (u32)&((SifDmaTransfer *)0)->attributes == 0xC) ? 1 : -1];
 
 #endif

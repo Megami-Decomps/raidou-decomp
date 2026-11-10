@@ -1,6 +1,6 @@
-#ifndef FR_FONT_DRAW_GLYPH_H
-#define FR_FONT_DRAW_GLYPH_H
+#ifndef DDS_FR_FONT_DRAW_GLYPH_H
 
+#define DDS_FR_FONT_DRAW_GLYPH_H
 #include "common.h"
 
 struct _FRQ;

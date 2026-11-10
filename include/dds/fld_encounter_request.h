@@ -1,6 +1,6 @@
-#ifndef FLD_ENCOUNTER_REQUEST_H
-#define FLD_ENCOUNTER_REQUEST_H
+#ifndef DDS_FLD_ENCOUNTER_REQUEST_H
 
+#define DDS_FLD_ENCOUNTER_REQUEST_H
 #include "common.h"
 
 typedef struct FieldEncounterRequest {

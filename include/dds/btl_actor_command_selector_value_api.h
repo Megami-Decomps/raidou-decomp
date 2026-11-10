@@ -1,7 +1,8 @@
-#ifndef BTL_ACTOR_COMMAND_SELECTOR_VALUE_API_H
-#define BTL_ACTOR_COMMAND_SELECTOR_VALUE_API_H
+#ifndef DDS_BTL_ACTOR_COMMAND_SELECTOR_VALUE_API_H
 
+#define DDS_BTL_ACTOR_COMMAND_SELECTOR_VALUE_API_H
 #include "common.h"
+
 #include "btl_command_id.h"
 
 struct BtlUnit;
@@ -9,4 +10,4 @@ struct BtlUnit;
 /* Reads the command selector stat, with enemy command zero using its record override. */
 s8 btlGetActorIndexedSignedValue(const struct BtlUnit *actor, BtlCommandId commandId);
 
-#endif /* BTL_ACTOR_COMMAND_SELECTOR_VALUE_API_H */
+#endif /* DDS_BTL_ACTOR_COMMAND_SELECTOR_VALUE_API_H */

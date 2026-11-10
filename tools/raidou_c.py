@@ -173,8 +173,8 @@ def version_value(kind, arg, game):
         if not re.fullmatch(r"VERSION_DDS[12]", arg):
             return None
         return (arg == f"VERSION_{game.upper()}") == (kind == "ifdef")
-    expr = re.sub(r"defined\s*\(?\s*VERSION_(DDS[12])\s*\)?",
-                  lambda m: "1" if m.group(1).lower() == game else "0", arg)
+    expr = re.sub(r"defined\s*\(\s*VERSION_(DDS[12])\s*\)|(?:defined\s+)?\bVERSION_(DDS[12])\b",
+                  lambda m: "1" if (m.group(1) or m.group(2)).lower() == game else "0", arg)
     if expr == arg or not re.fullmatch(r"[01\s()!&|]+", expr):
         return None
     return bool(eval(expr.replace("||", " or ").replace("&&", " and ").replace("!", " not ")))
@@ -189,7 +189,7 @@ def resolve_version(text, game):
             kind, arg = d.groups()
             if kind in ("ifdef", "ifndef", "if"):
                 value = version_value(kind, arg, game)
-                stack.append((skipping, value))
+                stack.append([skipping, value, bool(value)])
                 if value is None:
                     if not skipping:
                         out.append(line)
@@ -197,15 +197,19 @@ def resolve_version(text, game):
                     skipping = skipping or not value
                 continue
             if stack:
-                parent, value = stack[-1]
+                parent, value, taken = stack[-1]
                 if value is not None:
                     if kind == "endif":
                         stack.pop()
                         skipping = parent
                     elif kind == "else":
-                        skipping = parent or value
+                        skipping = parent or taken
                     else:
-                        sys.exit(f"#elif after a VERSION_DDS conditional: {line}")
+                        branch = version_value("if", arg, game)
+                        if branch is None:
+                            sys.exit(f"#elif on more than VERSION_DDS after a VERSION_DDS conditional: {line}")
+                        skipping = parent or taken or not branch
+                        stack[-1][2] = taken or branch
                     continue
                 if kind == "endif":
                     stack.pop()
@@ -413,6 +417,9 @@ def declaration(item):
         return None
     if paren >= 0 and (eq < 0 or eq > paren) and brace < 0 \
             and not re.search(r"\(\s*\*\s*\w+\s*(\[[^\]]*\]\s*)*\)\s*\(", code):
+        first = next(c for c in cv.split("\n") if "(" in c).strip()
+        if KNR_HEADER.match(first) and first != code:
+            return strip_static(item[:paren]) + "();"  # head of an old-style definition
         return strip_static(item)  # a prototype; a function pointer object is data
     # Data: an extern declaration without its initializer.
     end = cv.rstrip().rfind(";")
@@ -438,12 +445,23 @@ def shared_rel(src):
 
 
 _SMT3_TEXT = {}
+_DDS_TYPES = []
+
+
+def dds_rename(text):
+    """dds_<name> for each type config/dds_types.txt lists: dds-decomp defines it with
+    another layout than SMT3's type of that name, and the DDS code needs its own."""
+    if not _DDS_TYPES:
+        lines = (ROOT / "config/dds_types.txt").read_text().splitlines()
+        names = [ln.split("#")[0].strip() for ln in lines if ln.split("#")[0].strip()]
+        _DDS_TYPES.append(re.compile(r"\b(" + "|".join(map(re.escape, names)) + r")\b") if names else None)
+    return _DDS_TYPES[0].sub(r"dds_\1", text) if _DDS_TYPES[0] else text
 
 
 def smt3_text(smt3, rel):
     if rel not in _SMT3_TEXT:
         text = drop_nonmatching(source_file(smt3, rel).read_text(errors="replace"))
-        _SMT3_TEXT[rel] = resolve_version(text, rel.split("/", 1)[0]) if is_dds(rel) else text
+        _SMT3_TEXT[rel] = dds_rename(resolve_version(text, rel.split("/", 1)[0])) if is_dds(rel) else text
     return _SMT3_TEXT[rel]
 
 
@@ -461,9 +479,213 @@ DECL_BLOCK = re.compile(r"^/\* Declarations from (?:smt3-decomp src/smt3/|dds-de
 DDS_INCLUDE = re.compile(r'^(\s*#\s*include\s+)"([^"/]+)"', re.M)
 
 
-def decl_block(smt3, rel, unsized=()):
+def declared_names(item):
+    """(kind, name) for each name a top-level item defines: kind "macro", "tag" (a struct,
+    union or enum with a body) or "ident" (typedef, enum constant, function, data)."""
+    cv = blank_attributes(code_view(item)).strip()
+    if m := re.match(r"#\s*define\s+(\w+)", cv):
+        return {("macro", m.group(1))}
+    out = set()
+    if not cv or cv.startswith("#"):
+        return out
+    out |= {("tag", m.group(2)) for m in re.finditer(r"\b(struct|union|enum)\s+(\w+)\s*\{", cv)}
+    for m in re.finditer(r"\benum\b[^{;]*\{([^}]*)\}", cv):
+        out |= {("ident", c.split("=")[0].strip()) for c in m.group(1).split(",") if c.split("=")[0].strip()}
+    flat = cv
+    while "{" in flat:
+        flat = re.sub(r"\{[^{}]*\}", "", flat)
+    brace, paren = top_level(cv, "{"), top_level(cv, "(")
+    if cv.endswith("}") and 0 <= paren < brace and (m := re.search(r"(\w+)\s*$", cv[:paren])):
+        return {("ident", m.group(1))}  # a function definition
+    if not flat.endswith(";") or re.fullmatch(r"(struct|union|enum)\s+\w+\s*;", cv):
+        return out
+    # A function pointer declarator, not a parameter: it is the first top-level parenthesis.
+    pointer = re.match(r"\(\s*\*\s*(\w+)\s*(\[[^\]]*\]\s*)*\)\s*\(", flat[max(top_level(flat, "("), 0):])
+    if flat.startswith("typedef"):
+        if pointer:
+            return out | {("ident", pointer.group(1))}
+        parts = flat[:-1].split(",")
+    else:
+        eq = top_level(flat, "=")
+        head = flat[:eq] if eq >= 0 else flat[:-1]
+        paren = top_level(head, "(")
+        if pointer:
+            return out | {("ident", pointer.group(1))}
+        parts = [head[:paren]] if paren >= 0 else [head]
+    for part in parts:
+        if (m := re.search(r"(\w+)\s*(\[[^\]]*\]\s*)*$", part.strip())) and m.group(1) not in ("struct", "union", "enum"):
+            out.add(("ident", m.group(1)))
+    return out
+
+
+def header_guard(text):
+    m = re.search(r"^\s*#\s*ifndef\s+(\w+)\s*\n\s*#\s*define\s+\1\b", text, re.M)
+    return m.group(1) if m else None
+
+
+_SMT3_NAMES = []
+
+
+def smt3_header_names():
+    """(kind, name) -> SMT3 header (relative to include/) for each name include/ defines."""
+    if not _SMT3_NAMES:
+        names = {}
+        for h in sorted((ROOT / "include").rglob("*.h")):
+            rel = h.relative_to(ROOT / "include").as_posix()
+            if rel.startswith("dds/"):
+                continue
+            text = h.read_text(errors="replace")
+            guard = header_guard(text)
+            for b in blocks(text):
+                for n in declared_names(b):
+                    if n != ("macro", guard):
+                        names.setdefault(n, rel)
+        _SMT3_NAMES.append(names)
+    return _SMT3_NAMES[0]
+
+
+def is_object_decl(item):
+    """A function or data declaration or definition (not a type, macro or directive)."""
+    cv = code_view(item).strip()
+    return bool(cv) and not cv.startswith(("typedef", "#")) and not re.match(r"(struct|union|enum)\b[^(]*\{", cv)
+
+
+def is_movable(item):
+    """A prototype, extern or enum: a declaration a TU can carry in place of a header's."""
+    cv = code_view(item).strip()
+    return (is_object_decl(item) and "{" not in cv) or bool(re.match(r"(typedef\s+)?enum\b[^;(]*\{", cv))
+
+
+_SMT3_SRC_NAMES = []
+
+
+def extern_names(text):
+    """Names text declares extern anywhere: a block-scope extern clashes with a
+    file-scope declaration just the same."""
+    return set(re.findall(r"\bextern\b[^;{}()=]*?\b(\w+)\s*(?:\(|\[|;)", code_view(text)))
+
+
+def smt3_source_names():
+    """Functions and data the SMT3 files carried into Raidou declare at top level."""
+    if not _SMT3_SRC_NAMES:
+        rels = {shared_rel(r["smt3_src"]) for r in read_pairs(OUT / "pairs.tsv") if r["smt3_src"]}
+        names = set()
+        for rel in rels:
+            if source_file(SMT3, rel).exists():
+                text = smt3_text(SMT3, rel)
+                for b in blocks(text):
+                    if is_object_decl(b) or is_movable(b):
+                        names |= {n for k, n in declared_names(b) if k == "ident"}
+                names |= extern_names(text)
+        _SMT3_SRC_NAMES.append(names)
+    return _SMT3_SRC_NAMES[0]
+
+
+_SMT3_SRC_TYPES = []
+
+
+def smt3_source_types():
+    """(kind, name) of the types and tags the SMT3 files carried into Raidou define; a
+    dds-decomp header's definition of one is skipped where SMT3_DEFINES_<name> is set."""
+    if not _SMT3_SRC_TYPES:
+        rels = {shared_rel(r["smt3_src"]) for r in read_pairs(OUT / "pairs.tsv") if r["smt3_src"]}
+        names = set()
+        for rel in rels:
+            if source_file(SMT3, rel).exists():
+                for b in blocks(smt3_text(SMT3, rel)):
+                    if not is_object_decl(b):
+                        names |= {(k, n) for k, n in declared_names(b) if k != "macro"}
+        _SMT3_SRC_TYPES.append(names)
+    return _SMT3_SRC_TYPES[0]
+
+
+def smt3_includes(text, seen=None):
+    """SMT3 headers (relative to include/) text includes, directly or through them."""
+    seen = set() if seen is None else seen
+    for h in re.findall(r'^\s*#\s*include\s+"([^"]+)"', text, re.M):
+        if h.startswith("dds/") or h in seen or not (ROOT / "include" / h).exists():
+            continue
+        seen.add(h)
+        smt3_includes((ROOT / "include" / h).read_text(errors="replace"), seen)
+    return seen
+
+
+_DDS_DROPPED = {}
+
+
+def dds_dropped(game):
+    """name -> (header, declaration) for the prototypes, externs and enums dropped from
+    include/dds because SMT3 declares a name of theirs; DDS declaration blocks add them
+    back where no SMT3 declaration is in the TU."""
+    if game not in _DDS_DROPPED:
+        out = _DDS_DROPPED[game] = {}
+        shared = smt3_source_names() | {n for k, n in smt3_header_names() if k == "ident"}
+        for h in sorted((DDS / "include").rglob("*.h")):
+            if h.relative_to(DDS / "include").parts[0] == "irx":
+                continue  # IOP module headers
+            raw = dds_rename(h.read_text(errors="replace"))
+            kept, _ = defer_to_smt3(blocks(raw))
+            stays = {n for b in kept for n in declared_names(b)}
+            for b in blocks(dds_rename(resolve_version(raw, game))):
+                if is_movable(b):
+                    for k, n in declared_names(b):
+                        if k == "ident" and n in shared and (k, n) not in stays:
+                            out.setdefault(n, (h.relative_to(DDS / "include").as_posix(), b))
+    return _DDS_DROPPED[game]
+
+
+def defer_to_smt3(items, taken=(), header=True):
+    """Drop the items defining a name SMT3 defines: SMT3 is authoritative on shared code.
+    A header gives way to SMT3's headers (types, macros) and to any SMT3 declaration of
+    its prototypes, externs and enums; a declaration block to the names in taken.
+    Returns (kept items, SMT3 headers to include)."""
+    smt3 = smt3_header_names()
+    shared = smt3_source_names() | {n for k, n in smt3 if k == "ident"} if header else set()
+    kept, need = [], set()
+    idents = {n for k, n in smt3 if k != "macro"}
+    items = list(items)
+    words = [set(re.findall(r"\w+", code_view(i))) for i in items]
+    for at, item in enumerate(items):
+        names = declared_names(item)
+        cv = code_view(item)
+        if re.match(r"\s*typedef\s+char\s+\w+\s*\[.*\?\s*1\s*:\s*-1\s*\]\s*;", cv, re.S) \
+                and set(re.findall(r"\w+", cv)) & idents:
+            continue  # a layout check of a type SMT3 owns: the build compares the code instead
+        if names & set(taken):
+            continue
+        # An enum the rest of the header uses (its type or constants) stays with it.
+        typed = {n for n in re.findall(r"\benum\s+(\w+)|\}\s*(\w+)\s*;", cv) for n in n if n}
+        if re.match(r"\s*(typedef\s+)?enum\b", cv):
+            typed |= {n for k, n in names if k == "ident"}  # its constants too
+        used = typed and any(typed & w for i, w in enumerate(words) if i != at)
+        if is_movable(item) and not used:
+            if {n for k, n in names if k == "ident"} & shared:
+                continue
+            if not header and (hit := {smt3[n] for n in names if n in smt3}):
+                need |= hit
+                continue
+        elif hit := {smt3[n] for n in names if n in smt3}:
+            need |= hit
+            if alias := enum_alias(item):
+                kept.append(alias)
+            continue
+        kept.append(item)
+    return kept, sorted(need)
+
+
+def enum_alias(item):
+    """`typedef int N;` for a typedef'd enum whose constants SMT3 defines under another type name."""
+    m = re.search(r"^\s*typedef\s+enum\b[^{]*\{.*\}\s*(\w+)\s*;\s*$", code_view(item), re.S)
+    if m and ("ident", m.group(1)) not in smt3_header_names():
+        n = m.group(1)
+        return f"#ifndef DDS_ENUM_{n}\n#define DDS_ENUM_{n}\ntypedef int {n};\n#endif"
+    return None
+
+
+def decl_block(smt3, rel, unsized=(), taken=(), text_macros=()):
     """Every declaration of one source file (types, prototypes, its data as extern);
-    arrays named in unsized are declared without a size (Raidou's differs)."""
+    arrays named in unsized are declared without a size (Raidou's differs). A DDS file's
+    declarations give way to SMT3's headers and to the names in taken."""
     decls, unprototyped = [], set()
     for d in (declaration(b) for b in blocks(smt3_text(smt3, rel))):
         if d is None:
@@ -480,7 +702,42 @@ def decl_block(smt3, rel, unsized=()):
     if is_dds(rel):
         # dds-decomp's headers live in include/dds/; its headers include each other by bare name.
         macro = f"VERSION_{rel.split('/', 1)[0].upper()}"
-        decls = [f"#ifndef {macro}\n#define {macro} 1\n#endif"] + [DDS_INCLUDE.sub(r'\1"dds/\2"', d) for d in decls]
+        decls, need = defer_to_smt3(decls, taken, header=False)
+        used = set(re.findall(r"\w+", code_view(smt3_text(smt3, rel))))
+        back, seen = [], {n for d in decls for n in declared_names(d)}
+        for n, (h, d) in sorted(dds_dropped(rel.split("/", 1)[0]).items()):
+            names = declared_names(d)
+            if {x for _, x in names} & used and not names & (set(taken) | seen):
+                back.append((h, d))
+                seen |= names
+        # What SMT3's headers declare comes from them; the rest is dds-decomp's declaration.
+        smt3_hdr = smt3_header_names()
+        by_header = defaultdict(set)
+        for n, h in smt3_hdr.items():
+            by_header[h].add(n)
+        own, own_text, included = [], [], {n for k, n in taken if k == "include"}
+        for h, d in back:
+            hit = {smt3_hdr[n] for n in declared_names(d) if n in smt3_hdr}
+            if hit and hit <= included:
+                continue  # the TU's SMT3 files already include the header
+            # An SMT3 header that redeclares what the TU's SMT3 files declare would clash.
+            if hit and not any(by_header[x] & set(taken) for x in hit):
+                need = sorted(set(need) | hit)
+                if alias := enum_alias(d):
+                    own_text.append(alias)
+            else:
+                own.append((h, d))
+        # The file's own declarations use these, so they come first.
+        decls = [f'#include "dds/{h}"' for h in sorted({h for h, _ in own})] + [d for _, d in own] + own_text + decls
+        # An SMT3 header that redeclares what the TU's SMT3 files define locally would clash.
+        types = smt3_source_types()
+        local = (set(taken) & types) | {("ident", n) for k, n in taken if k == "extern"}
+        need = [h for h in need if h in included or not by_header[h] & local]
+        guards = sorted({n for k, n in taken if (k, n) in types})
+        decls = [f"#ifndef {macro}\n#define {macro} 1\n#endif"] \
+            + [f"#define SMT3_DEFINES_{n} 1" for n in guards if f"SMT3_DEFINES_{n}" not in text_macros] \
+            + [f'#include "{h}"' for h in need] \
+            + [DDS_INCLUDE.sub(r'\1"dds/\2"', d) for d in decls]
     return decl_begin(rel) + "\n" + "\n\n".join(decls) + "\n" + decl_end(rel) + "\n"
 
 
@@ -522,7 +779,7 @@ def tu_bodies(smt3, text, candidates):
             continue
         # The data tools may have put INCLUDE_RODATA/SDATA lines between the comment and the definition.
         split = definitions(body)[fn][0]
-        if text[start:end] != body[split:]:
+        if text[start:end] != body[split:] and not (is_dds(rel) and dds_rename(text[start:end]) == body[split:]):
             continue
         lead, comment = start, body[:split]
         while (m := re.search(r"(^INCLUDE_(RODATA|SDATA)\(.*\);\n+)\Z", text[:lead], re.M)):
@@ -534,16 +791,31 @@ def tu_bodies(smt3, text, candidates):
     return out
 
 
-def set_decl_blocks(smt3, text, rels, unsized=()):
-    """Keep exactly the declaration blocks of rels, new ones after the TU's leading #includes."""
-    have = {m.group(1) for m in DECL_BLOCK.finditer(text)}
-    text = DECL_BLOCK.sub(lambda m: decl_block(smt3, m.group(1), unsized) + "\n" if m.group(1) in rels else "", text)
-    add = sorted(set(rels) - have)
+def set_decl_blocks(smt3, text, rels, unsized=(), own=()):
+    """Keep exactly the declaration blocks of rels, new ones after the TU's leading #includes.
+    own: functions the TU defines itself (not carried); a DDS block does not declare them."""
+    # SMT3's blocks come first and a DDS block drops what they define.
+    order = sorted(rels, key=lambda r: (is_dds(r), r))
+    taken = {("ident", n) for n in own}
+    for rel in order:
+        if not is_dds(rel):
+            block = decl_block(smt3, rel, unsized)
+            for b in blocks(block):
+                taken |= declared_names(b)
+            taken |= {("include", h) for h in smt3_includes(block)}
+            externs = extern_names(smt3_text(smt3, rel))
+            taken |= {("ident", n) for n in externs} | {("extern", n) for n in externs}
+    text = DECL_BLOCK.sub(lambda m: "", text)
+    add = order
     if add:
         at = re.match(r"(?:[ \t]*(?:#include[^\n]*)?\n)*", text).end()
         head = text[:at].rstrip("\n")
-        text = (head + "\n\n" if head else "") + "\n".join(decl_block(smt3, rel, unsized) for rel in add) \
-            + "\n" + text[at:].lstrip("\n")
+        made = []
+        for rel in add:
+            made.append(decl_block(smt3, rel, unsized, taken, set(re.findall(r"SMT3_DEFINES_\w+", "".join(made)))))
+            if is_dds(rel):
+                taken = taken | {n for b in blocks(made[-1]) for n in declared_names(b)}
+        text = (head + "\n\n" if head else "") + "\n".join(made) + "\n" + text[at:].lstrip("\n")
     return text
 
 
@@ -779,7 +1051,7 @@ def port_text(smt3, text, unit, carry, cands, ctx):
 
     text = INCLUDE_BODY.sub(lambda m: asm_line(m.group(2)), text)
     for fn, (rel, a, b) in sorted(tu_bodies(smt3, text, cands).items(), key=lambda x: -x[1][1]):
-        if fn not in carry:
+        if fn not in carry or (is_dds(rel) and body_text(smt3, rel, fn) not in text[a:b]):
             data = "".join(m.group(0) + "\n\n" for m in re.finditer(r"^INCLUDE_(RODATA|SDATA)\(.*\);$", text[a:b], re.M))
             asm = "".join(asm_line(n) + "\n\n" for n in nested_names(text[a:b])) + asm_line(fn)
             text = text[:a] + data + asm + text[b:]
@@ -792,11 +1064,13 @@ def port_text(smt3, text, unit, carry, cands, ctx):
     # A nested function with an assembler name is emitted by its parent's body.
     for nested in nested_names(text):
         text = re.sub(rf'^INCLUDE_ASM\(\s*const s32,\s*"[^"]+"\s*,\s*{nested}\s*\);\n\n?', "", text, flags=re.M)
-    rels = {rel for rel, _, _ in tu_bodies(smt3, text, cands).values()}
+    carried = tu_bodies(smt3, text, cands)
+    rels = {rel for rel, _, _ in carried.values()}
+    own = set(definitions(text)) - set(carried)
     text = port_data(smt3, text, unit, rels, ctx)
     # Only the defining TU needs the unsized declaration; elsewhere SMT3's size is harmless.
     unsized = {n for n in tu_data(smt3, text, ctx["rows"]) if ctx["rows"][n].get("size")}
-    return set_decl_blocks(smt3, text, rels, unsized)
+    return set_decl_blocks(smt3, text, rels, unsized, own)
 
 
 def write_tus(texts):
@@ -919,12 +1193,18 @@ def blame_errors(text, bodies, errors):
     regions = [(line_of(a), line_of(b), fn) for fn, (rel, a, b) in bodies.items()]
     decls = {m.group(1): (line_of(m.start()), line_of(m.end())) for m in DECL_BLOCK.finditer(text)}
     fails, other = {}, []
+    # SMT3 is authoritative: where DDS declarations meet SMT3's, the DDS bodies give way.
+    dds_fns = [fn for fn, (r, _, _) in bodies.items() if is_dds(r)]
+    mixed = dds_fns and any(not is_dds(r) for r, _, _ in bodies.values())
     for line, msg in errors:
         msg = msg.split(": ", 1)[1] if ": " in msg else msg
         hit = [fn for a, b, fn in regions if line is not None and a <= line <= b]
         rel = next((r for r, (a, b) in decls.items() if line is not None and a <= line <= b), None)
-        if hit:
+        if hit and not (mixed and not is_dds(bodies[hit[0]][0])):
             fails.setdefault(hit[0], f"compile error: {msg}")
+        elif mixed:
+            for fn in dds_fns:
+                fails.setdefault(fn, f"declarations clash: {msg}")
         elif rel:
             # A clash in one SMT3 file's declarations fails all of its bodies in the unit.
             for fn, (r, _, _) in bodies.items():
@@ -1296,15 +1576,15 @@ def sext16(v):
 PLACEHOLDER = re.compile(r"(func|D|jtbl|L|lbl)_[0-9A-F]{8}\w*|\..*")
 
 
-def choose_addresses(want, named_at):
-    """For a name bodies want at several addresses: the address most of them want,
-    when no other real name is there and no other chosen name takes it. Bodies that
-    want another address differ from SMT3 in a callee or an offset."""
+def choose_addresses(want, named_at, smt3_fns=frozenset()):
+    """For a name bodies want at several addresses: the address most SMT3 bodies (then
+    most bodies) want, when no other real name is there and no other chosen name takes it.
+    SMT3 decides shared names; bodies that want another address differ in a callee or an offset."""
     options = []
     for name, by_address in want.items():
         if len(by_address) < 2:
             continue
-        counts = sorted(((len(fns), a) for a, fns in by_address.items()
+        counts = sorted((((len(fns & smt3_fns), len(fns)), a) for a, fns in by_address.items()
                          if not (named_at.get(a, set()) - {name})), reverse=True)
         if counts and (len(counts) == 1 or counts[0][0] > counts[1][0]):
             options.append((counts[0][0], name, counts[0][1]))
@@ -1384,7 +1664,7 @@ def cmd_verify(args):
         for name, address in known.items():
             if not PLACEHOLDER.fullmatch(name):
                 named_at[address].add(name)
-        aliases, chosen = {}, choose_addresses(want, named_at)
+        aliases, chosen = {}, choose_addresses(want, named_at, {fn for fn, rel in cands.items() if not is_dds(rel)})
         for name, by_address in want.items():
             if len(by_address) > 1:
                 pick = chosen.get(name)

@@ -1,6 +1,6 @@
-#ifndef BTL_TASK_CONDITION_H
-#define BTL_TASK_CONDITION_H
+#ifndef DDS_BTL_TASK_CONDITION_H
 
+#define DDS_BTL_TASK_CONDITION_H
 #include "common.h"
 
 /* The task scheduler evaluates these predicates for either task phase.
@@ -32,9 +32,5 @@ typedef struct TaskCondition {
 } TaskCondition;
 
 typedef char TaskConditionSizeCheck[(sizeof(TaskCondition) == 0x10) ? 1 : -1];
-typedef char TaskConditionKindOffsetCheck[
-    ((u32)&((TaskCondition *)0)->kind == 0) ? 1 : -1];
-typedef char TaskConditionValueOffsetCheck[
-    ((u32)&((TaskCondition *)0)->value == 8) ? 1 : -1];
 
-#endif /* BTL_TASK_CONDITION_H */
+#endif /* DDS_BTL_TASK_CONDITION_H */

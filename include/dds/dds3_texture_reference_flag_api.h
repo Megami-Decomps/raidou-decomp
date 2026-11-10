@@ -1,0 +1,6 @@
+#ifndef DDS_DDS3_TEXTURE_REFERENCE_FLAG_API_H
+
+#define DDS_DDS3_TEXTURE_REFERENCE_FLAG_API_H
+#include "common.h"
+
+#endif

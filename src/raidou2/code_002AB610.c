@@ -5,6 +5,176 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "kernel_draw.h"
+
+#include "scr.h"
+
+#include "sdfDevCons.h"
+
+#include "sdf_resource.h"
+
+#include "sdk_libc.h"
+
+#include "dds/bill_object_api.h"
+
+#include "dds/dds3_task_add_child.h"
+
+#include "dds/dds3_world_primary.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/evt_unit.h"
+
+#include "dds/kwln.h"
+
+#include "dds/scr.h"
+
+#include "dds/scr_arg_read.h"
+
+#include "dds/scr_current_process_user_data_api.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_column_packet_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_texture_draw_packet.h"
+
+#include "dds/sdf_texture_file.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdf_vu_transform_api.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/sdk_libkernl.h"
+
+#include "dds/sdk_libm.h"
+
+/* Convert three Euler angle components to the VU0 quaternion output.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void FromEuler(f32 x, f32 y, f32 z);
+
+/* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
+void MultMatrixRev(const struct Matrix4 *matrix);
+
+/* Rigid-invert the VU matrix in vf28-vf31 in place; translation becomes
+ * -(R^T * t). The rotation input is assumed to contain no scale. */
+void ReverseMatrix(void);
+
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void ToMatrix(void);
+
+f32 atan2f(f32 y, f32 x);
+
+struct sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 index);
+
+dds3Basic_t *dds3GetActiveCameraSceneBasic(dds3Basic_t *world);
+
+/* Return the borrowed primary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetActiveScene(void);
+
+void dds3GetPosPoseSet(dds3Basic_t *object);
+
+u32 dds3GetProcessData(const dds3ProcessID_t *task);
+
+/*
+ * Append child to parent's child list, detaching it from any previous parent.
+ * This hierarchy controls teardown: parent finalization calls
+ * dds3KillProcess(child, 0) for linked children before its destroy callback.
+ * It does not change scheduler queue membership.
+ */
+void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *child);
+
+void evtSetUnitLightDir(evtUnitHandle_t *unit, EvtUnitDirectionTransitionFrames durationFrames);
+
+void evtUnitLightOn(evtUnitHandle_t *unit);
+
+s32 sceDclose(s32 directory);
+
+s32 sceDopen(const char *path);
+
+s32 sceDread(s32 directory, void *entry);
+
+/* Returns the opaque caller-owned context attached to the ambient current
+ * script process. This is a borrowed pointer; the caller retains ownership. */
+void *scrGetData(void);
+
+/* Read the current script argument as a float, converting supported numeric tags. */
+f32 scrGetFloatPara(ScrCommandParameterIndex parameterIndex);
+
+/* Read a command parameter as a signed VM integer, converting floats and
+ * dereferencing global integer or float references. */
+ScrVmInteger scrGetIntPara(ScrCommandParameterIndex parameterIndex);
+
+/* Declared void for the callers that ignore its result: ee-gcc 2.96
+ * allocates registers around the call as retail did only then. The
+ * definition (scrTraceCode.c) returns the context it set the value in, for
+ * the script commands that pass it on as their result; their units declare
+ * it so. */
+void scrSetIntReturnValue(ScrVmInteger retVal);
+
+void scrSetUserData(dds3ProcessID_t *id, void *p);
+
+/* Allocate a variable-length sprite column packet with this draw header. */
+SdfDrawPacket *sdf2DAllocSprite(s32 loopCount);
+
+SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
+
+void *sdfChipAllocDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+f32 sdfCos(f32 angle);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+void sdfPrimLinkGt4(
+    sdfDrawTag_t *list, s32 primitive, s32 x0, s32 y0, s32 u0, s32 v0,
+    s32 color0, s32 x1, s32 y1, s32 u1, s32 v1, s32 color1, s32 x2, s32 y2,
+    s32 u2, s32 v2, s32 color2, s32 x3, s32 y3, s32 u3, s32 v3, s32 color3,
+    s32 depth, s32 (*allocatePacket)(s32));
+
+f32 sdfSin(f32 angle);
+
+void sdfTexFreeDelayed(sdfTexHandle_t *texture);
+
+/* Both entry points return one caller-owned texture reference. A nonzero
+ * resourceKey reuses a live matching texture and increments its count; a new
+ * texture starts at one. Release the returned reference once with
+ * sdfTexReleaseReference or sdfTexFreeDelayed. */
+/* For a new texture, copy payload bytes into queue-owned storage before return. */
+struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
+
+char *strcpy(char *dst, const char *src);
+
+u32 strlen(const char *text);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/btl_command.h"
@@ -220,7 +390,7 @@ typedef struct BtlCmdCtx {
 
 extern f32 btlUnitGetTopY(BtlUnit *);
 
-extern s32 btlReadCurrentUnitHp(datUnitWork_t *);
+extern s32 btlReadCurrentUnitHp(dds_datUnitWork_t *);
 
 extern void btlGetUnitWorldPos(BtlUnit *, f32 *);
 
@@ -966,8 +1136,6 @@ extern s8 dds3PadBitTable[0x20];
 
 extern s8 D_0039862B[];
 
-extern sdfGrOt_t sdfGrOtTable[];
-
 extern u64 *dds3PrimFrameRect(s32, s32, s32, s32, s32, u32, u32);
 
 s32 btlFormatSelectedResourceName(BtlResourceDescriptor *, char *);
@@ -975,8 +1143,6 @@ s32 btlFormatSelectedResourceName(BtlResourceDescriptor *, char *);
 void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *, const char *);
 
 void btlReplaceResourceHandle(BtlResourceDescriptor *, void *);
-
-extern void * sdfDevPrintf(s32 source, s32 end, s32 argument, s32 index, const char *fmt, ...);
 
 /* Update list selection and submit the visible browser rows to its surface. */
 s32 btlUpdateAndDrawResourceBrowser(BtlResourceDescriptor *descriptor);

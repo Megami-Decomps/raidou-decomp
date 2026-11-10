@@ -1,6 +1,6 @@
-#ifndef BTL_POSITION_LERP_TASK_ARGS_H
-#define BTL_POSITION_LERP_TASK_ARGS_H
+#ifndef DDS_BTL_POSITION_LERP_TASK_ARGS_H
 
+#define DDS_BTL_POSITION_LERP_TASK_ARGS_H
 #include "common.h"
 
 struct BtlUnit;
@@ -16,11 +16,17 @@ typedef struct BtlPosLerpTaskArgs {
 } BtlPosLerpTaskArgs;
 
 typedef char BtlPosLerpTaskArgs_size[(sizeof(BtlPosLerpTaskArgs) == 0x30) ? 1 : -1];
+
 typedef char BtlPosLerpTaskArgs_from_offset[((unsigned long)&((BtlPosLerpTaskArgs *)0)->from == 0x00) ? 1 : -1];
+
 typedef char BtlPosLerpTaskArgs_to_offset[((unsigned long)&((BtlPosLerpTaskArgs *)0)->to == 0x10) ? 1 : -1];
+
 typedef char BtlPosLerpTaskArgs_rate_offset[((unsigned long)&((BtlPosLerpTaskArgs *)0)->rate == 0x20) ? 1 : -1];
+
 typedef char BtlPosLerpTaskArgs_t_offset[((unsigned long)&((BtlPosLerpTaskArgs *)0)->t == 0x24) ? 1 : -1];
+
 typedef char BtlPosLerpTaskArgs_count_offset[((unsigned long)&((BtlPosLerpTaskArgs *)0)->count == 0x28) ? 1 : -1];
+
 typedef char BtlPosLerpTaskArgs_unit_offset[((unsigned long)&((BtlPosLerpTaskArgs *)0)->unit == 0x2C) ? 1 : -1];
 
 #endif

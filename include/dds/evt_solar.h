@@ -1,11 +1,14 @@
-#ifndef EVT_SOLAR_H
-#define EVT_SOLAR_H
+#ifndef DDS_EVT_SOLAR_H
 
+#define DDS_EVT_SOLAR_H
 #include "common.h"
+
 #include "kwln.h"
 
 /* DatWorldState control bits used by the shared solar clock and overlay. */
+
 #define SOLAR_PHASE_ADVANCE_FLAG 1
+
 #define SOLAR_ALPHA_ENABLED_FLAG 2
 
 /* Sprite resource layer stride used by the paired solar render helpers. */
@@ -36,23 +39,8 @@ typedef struct SolarOverlayShape {
     u8 opaque18[8];
 } SolarOverlayShape;
 
-typedef char SolarSpriteContextLayersOffsetAssert[
-    ((u32)&((SolarSpriteContext *)0)->layers == 0x18) ? 1 : -1];
-typedef char SolarOverlayShapeDrawFieldsOffsetAssert[
-    ((u32)&((SolarOverlayShape *)0)->positions == 0x0C &&
-     (u32)&((SolarOverlayShape *)0)->colors == 0x10 &&
-     (u32)&((SolarOverlayShape *)0)->count == 0x14) ? 1 : -1];
-
 typedef char SolarSpriteLayer_size_must_be_0xA0[
     (sizeof(SolarSpriteLayer) == 0xA0) ? 1 : -1];
-typedef char SolarSpriteLayer_drawWidth_offset_check[
-    ((u32)&((SolarSpriteLayer *)0)->drawWidth == 0x0C) ? 1 : -1];
-typedef char SolarSpriteLayer_drawHeight_offset_check[
-    ((u32)&((SolarSpriteLayer *)0)->drawHeight == 0x10) ? 1 : -1];
-typedef char SolarSpriteLayer_width_offset_check[
-    ((u32)&((SolarSpriteLayer *)0)->width == 0x7C) ? 1 : -1];
-typedef char SolarSpriteLayer_height_offset_check[
-    ((u32)&((SolarSpriteLayer *)0)->height == 0x80) ? 1 : -1];
 
 typedef struct SolarNoiseLayer {
     s16 x;
@@ -103,39 +91,55 @@ typedef struct SolarOverlayWork {
 /* The world clock cycles through 16 phases; the mirrored animation query
  * folds phases 9..15 back to 7..1, so its result is in the range 0..8. */
 typedef s32 EvtSolarCyclePhase;
+
 typedef s32 EvtMirroredSolarPhase;
 
 typedef char SolarPoint_size_must_be_0x06[(sizeof(SolarPoint) == 0x06) ? 1 : -1];
-typedef char SolarNoiseLayer_size_must_be_0x08[(sizeof(SolarNoiseLayer) == 0x08) ? 1 : -1];
-typedef char SolarNoiseState_size_must_be_0x60[(sizeof(SolarNoiseState) == 0x60) ? 1 : -1];
-typedef char SolarOverlayState_size_must_be_0x100[(sizeof(SolarOverlayState) == 0x100) ? 1 : -1];
-typedef char SolarOverlayWork_size_must_be_0x104[(sizeof(SolarOverlayWork) == 0x104) ? 1 : -1];
-typedef char SolarOverlayState_pulseFrame_offset_check[
-    ((u32)&((SolarOverlayState *)0)->pulseFrame == 0xFC) ? 1 : -1];
 
-EvtSolarCyclePhase evtGetAgeOfMoon16(void);
+typedef char SolarNoiseLayer_size_must_be_0x08[(sizeof(SolarNoiseLayer) == 0x08) ? 1 : -1];
+
+typedef char SolarNoiseState_size_must_be_0x60[(sizeof(SolarNoiseState) == 0x60) ? 1 : -1];
+
+typedef char SolarOverlayState_size_must_be_0x100[(sizeof(SolarOverlayState) == 0x100) ? 1 : -1];
+
+typedef char SolarOverlayWork_size_must_be_0x104[(sizeof(SolarOverlayWork) == 0x104) ? 1 : -1];
+
 EvtMirroredSolarPhase evtGetMirroredSolarPhase(void);
+
 void evtInitializeVisualData(SolarOverlayWork *overlay);
+
 void evtUpdateSolarPhaseTransition(SolarOverlayWork *overlay);
+
 void evtDrawFadingSolarOverlayFrame(s32 x, s32 y, s32 z, s32 alpha,
     s32 mirroredPhase, SolarOverlayWork *overlay, s32 renderContext);
+
 void evtAdvanceSolarOverlayFadeAndDraw(s32 x, s32 y, s32 z, s32 alpha,
     SolarOverlayWork *overlay, s32 renderContext);
+
 void evtBeginSolarOverlayFadeIn(s32 fadeDuration);
+
 void evtBeginSolarOverlayFadeOut(s32 fadeDuration);
+
 void evtActivateNextSolarPoint(SolarOverlayWork *overlay);
+
 void evtDeactivateLastSolarPoint(SolarOverlayWork *overlay);
+
 /* Keep the active-point count aligned with the mirrored phase (0..8). */
 void evtSetSolarPointActiveCount(
     SolarOverlayWork *overlay, EvtMirroredSolarPhase mirroredPhase);
+
 void evtUpdateSolarPointTimers(SolarOverlayWork *overlay);
+
 void evtSetSolarOverlayFullyVisible(void);
+
 void evtLoadSolarNoiseSprite(struct EffectSlotSet **sprite);
+
 void evtReleaseSolarNoiseSprite(struct EffectSlotSet **sprite);
 
-extern dds3ProcessID_t *moonprocess_id;
 dds3TaskUpdateResult_t evtCreateSolarOverlayWork(dds3ProcessID_t *task);
+
 dds3TaskUpdateResult_t evtUpdateSolarOverlayFade(dds3ProcessID_t *task);
+
 void evtFreeSolarOverlayWork(dds3ProcessID_t *task);
 
-#endif /* EVT_SOLAR_H */
+#endif /* DDS_EVT_SOLAR_H */

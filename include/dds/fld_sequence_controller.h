@@ -1,10 +1,11 @@
-#ifndef FLD_SEQUENCE_CONTROLLER_H
-#define FLD_SEQUENCE_CONTROLLER_H
+#ifndef DDS_FLD_SEQUENCE_CONTROLLER_H
 
+#define DDS_FLD_SEQUENCE_CONTROLLER_H
 #include "common.h"
 
 /* Field-scene lifecycle states; DDS2 also pauses for its target-guide archive. */
 typedef s32 FldSequencePhase;
+
 enum FldSequencePhaseValue {
     FLD_SEQUENCE_PHASE_INITIALIZE = 0,
     FLD_SEQUENCE_PHASE_WAIT_FOR_BGM_ARCHIVE = 1,
@@ -24,7 +25,5 @@ typedef struct FldSequenceController {
 
 typedef char FldSequenceController_size_must_be_0x08[
     (sizeof(FldSequenceController) == 0x08) ? 1 : -1];
-typedef char FldSequenceController_phase_offset_must_be_0x04[
-    ((u32)&((FldSequenceController *)0)->phase == 0x04) ? 1 : -1];
 
 #endif

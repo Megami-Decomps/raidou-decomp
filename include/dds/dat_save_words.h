@@ -1,6 +1,6 @@
-#ifndef DAT_SAVE_WORDS_H
-#define DAT_SAVE_WORDS_H
+#ifndef DDS_DAT_SAVE_WORDS_H
 
+#define DDS_DAT_SAVE_WORDS_H
 #include "common.h"
 
 /* Three opaque words copied together between the game state and save preview. */

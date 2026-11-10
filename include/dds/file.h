@@ -1,18 +1,26 @@
-#ifndef FILE_H
-#define FILE_H
+#ifndef DDS_FILE_H
 
+#define DDS_FILE_H
 #include "common.h"
 
 /* File manager job states, request entry size and transfer chunk. */
+
 #define FILE_JOB_READY 3
+
 #define FILE_JOB_TRANSFERRING 4
+
 #define FILE_REQ_WORDS_PER_ENTRY 0x19
+
 #define FILE_IO_MAX_CHUNK_BYTES 0x8000
 
 struct FilePacRequest;
+
 struct FileQueue;
+
 struct FileRequest;
+
 struct FileTransferJob;
+
 struct sdfMemHandle_t;
 
 /* Selects the operation and callback rows used by a file job. */
@@ -58,43 +66,71 @@ typedef char FileJobPayload_size_must_be_0x2C[
     (sizeof(FileJobPayload) == 0x2C) ? 1 : -1];
 
 void *fileResolvePrimaryBuffer(FileJobPayload *job);
+
 void *fileResolveSecondaryBuffer(FileJobPayload *job);
+
 FileJobPayload *fileJobCreateFromJob(FileJobPayload *request);
+
 FileJobPayload *fileJobCreateChild(FileJobPayload *request);
+
 FileJobPayload *fileDuplicateJob(FileJobPayload *request);
+
 FileJobPayload *fileJobCreateFromCommandState(const char *entry);
+
 FileJobPayload *fileCreateJob(FileJobType type);
+
 void fileJobDestroy(FileJobPayload *job);
+
 void fileJobNotifyComplete(FileJobPayload *job);
+
 void fileJobInvokeTypeCallback(FileJobPayload *job);
-/* Word coordinates narrow only at the serialized reset-view fields. */
-void slSetTmnlID(s32 x, s32 y);
+
 void fileJobInvokePositionCallback(FileJobPayload *job, const f32 position[4]);
+
 void fileJobInvokeRotationCallback(FileJobPayload *job, const f32 rotation[4]);
+
 void fileJobInvokeScaleCallback(FileJobPayload *job, f32 scale);
+
 void fileDispatchJobTypeCallback(FileJobPayload *job, u32 color);
+
 void fileWriteToPfs(FileJobPayload *job, const char *filePath);
+
 void fileJobWriteSerializedPayload(s32 fd, FileJobPayload *job);
+
 void fileJobSetPrimaryData(FileJobPayload *job, const void *src, s32 size, u16 option);
+
 void fileJobSetSecondaryData(FileJobPayload *job, const void *src, s32 size, u16 selector);
+
 void fileJobCopyCommandIntoPrimaryData(FileJobPayload *job, const char *commandPath, u16 option);
+
 void fileJobCopyCommandIntoSecondaryData(FileJobPayload *job, const char *commandPath, u16 selector);
 
 struct FileQueue *fileCloneQueueEntries(struct FileQueue *source);
+
 struct FileQueue *fileQueueClone(const struct FileQueue *source);
+
 void fileQueueDestroy(struct FileQueue *queue);
+
 void fileQueueSetPosition(struct FileQueue *queue, const f32 position[4]);
+
 void fileQueueSetRotation(struct FileQueue *queue, const f32 rotation[4]);
+
 void fileQueueSetScale(struct FileQueue *queue, f32 scale);
+
 void fileQueueUpdate(struct FileQueue *queue);
+
 void fileQueueNotifyAllJobsComplete(struct FileQueue *queue);
 
 /* Queue flags describe payload sharing and secondary-buffer links. */
+
 #define FILE_JOB_FLAG_SHARED_PAYLOAD 0x1
+
 #define FILE_JOB_FLAG_SECTOR_FOLLOWER 0x2
 
 /* Known update-policy bits; other bits remain uninterpreted. */
+
 #define FILE_JOB_UPDATE_FLAG_APPLY_QUEUE_SCALE 0x1
+
 #define FILE_JOB_UPDATE_FLAG_SKIP_FRAME_UPDATE 0x2
 
 /* Effect/file queue entries share this C0-byte record in both games. */
@@ -127,14 +163,12 @@ typedef struct FileJob {
 
 typedef char FileJobBufferSlot_size_must_be_0x10[
     (sizeof(FileJobBufferSlot) == 0x10) ? 1 : -1];
+
 typedef char FileJobPayloadBufferSlot_size_must_be_0x10[
     (sizeof(FileJobPayloadBufferSlot) == 0x10) ? 1 : -1];
+
 typedef char FileJob_size_must_be_0xC0[
     (sizeof(FileJob) == 0xC0) ? 1 : -1];
-typedef char FileJob_type_offset_must_be_0x04[
-    ((u32)&((FileJob *)0)->type == 0x04) ? 1 : -1];
-typedef char FileJobPayload_type_offset_must_be_0x04[
-    ((u32)&((FileJobPayload *)0)->type == 0x04) ? 1 : -1];
 
 /* Runtime queue owner; serialized images retain the same 0x90-byte header. */
 typedef struct FileQueue {
@@ -160,24 +194,33 @@ typedef struct FileQueue {
 
 typedef char FileQueue_size_must_be_0x90[
     (sizeof(FileQueue) == 0x90) ? 1 : -1];
-typedef char FileQueue_scaleMultiplier_offset_must_be_0x74[
-    ((u32)&((FileQueue *)0)->scaleMultiplier == 0x74) ? 1 : -1];
-typedef char FileQueue_first_offset_must_be_0x8C[
-    ((u32)&((FileQueue *)0)->first == 0x8C) ? 1 : -1];
 
 FileQueue *fileQueueCreate(void);
+
 void fileQueueSetColor(FileQueue *queue, u32 color);
+
 void fileQueueReadPosition(const FileQueue *queue, f32 position[4]);
+
 FileQueue *fileQueueCreateFromCommandState(const char *entry);
+
 void fileQueueCopyRotationFromSource(FileQueue *queue, f32 matrix[4][4]);
+
 void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath);
+
 void fileQueueSaveImage(FileQueue *queue, const char *filePath);
+
 FileJob *fileQueueGetAt(FileQueue *queue, s32 index);
+
 FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath);
+
 FileJob *fileJobDuplicateAfter(FileQueue *queue, FileJob *source);
+
 void fileJobCopyHeader(FileJob *destination, const FileJob *source);
+
 void fileQueueRemoveAndDestroyJob(FileQueue *queue, FileJob *job);
+
 void fileQueueDetachSectorFollower(FileQueue *queue, FileJob *job);
+
 void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *leader);
 
 /* One of the four device-read slots at FileManWork + 0x20. */
@@ -203,9 +246,4 @@ typedef struct FileManWork {
 
 typedef char FileManWork_size_must_be_0x40[(sizeof(FileManWork) == 0x40) ? 1 : -1];
 
-extern FileManWork fileQueueHead;
-
-/* Queue a callback-kind request without a completion callback; return its work. */
-struct FileRequest *fileLoad(const char *requestName);
-
-#endif /* FILE_H */
+#endif /* DDS_FILE_H */

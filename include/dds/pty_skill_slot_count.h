@@ -1,6 +1,6 @@
-#ifndef PTY_SKILL_SLOT_COUNT_H
-#define PTY_SKILL_SLOT_COUNT_H
+#ifndef DDS_PTY_SKILL_SLOT_COUNT_H
 
+#define DDS_PTY_SKILL_SLOT_COUNT_H
 #include "common.h"
 
 typedef u8 PtySkillSlotCount;
@@ -13,4 +13,4 @@ enum {
     PTY_SKILL_SLOT_COUNT_AFTER_SECOND_UNLOCK = 8
 };
 
-#endif /* PTY_SKILL_SLOT_COUNT_H */
+#endif /* DDS_PTY_SKILL_SLOT_COUNT_H */

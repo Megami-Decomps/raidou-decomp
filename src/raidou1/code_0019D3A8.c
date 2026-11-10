@@ -5,6 +5,277 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "fileManager.h"
+
+#include "model.h"
+
+#include "sdfDevCons.h"
+
+#include "sdk_libc.h"
+
+#include "dds/bill_object_api.h"
+
+#include "dds/dds3_admin_control_api.h"
+
+#include "dds/dds3_task_add_child.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/eff_node.h"
+
+#include "dds/eff_node_descriptor.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/fld_integer_editor_api.h"
+
+#include "dds/kwln.h"
+
+#include "dds/mdl.h"
+
+#include "dds/mdl_blur_api.h"
+
+#include "dds/mdl_motion_api.h"
+
+#include "dds/sdf_bordered_rectangle_packet.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_chunk.h"
+
+#include "dds/sdf_draw.h"
+
+#include "dds/sdf_file_existence_api.h"
+
+#include "dds/sdf_gs_header.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_line_pair_packet_api.h"
+
+#include "dds/sdf_motion.h"
+
+#include "dds/sdf_motion_loop.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_projection.h"
+
+#include "dds/sdf_request.h"
+
+#include "dds/sdf_sif_command.h"
+
+#include "dds/sdf_texture_draw_packet.h"
+
+#include "dds/sdf_texture_registry.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdk_libc.h"
+
+/* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
+void Mult(void);
+
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void ToMatrix(void);
+
+/* Set bit 1 in the active administration task's flags; that task must exist. */
+void dds3AdminiExitSequence(void);
+
+struct billHandle_t *dds3BillboardCopy(const struct billHandle_t *source);
+
+/* The selected kind interprets the opaque payload word. */
+struct billHandle_t *dds3BillboardCreate(s32 kind, u32 data);
+
+void dds3BillboardDelete(struct billHandle_t *obj);
+
+void dds3BillboardSetRGBA(struct billHandle_t *billboard, u32 parameter);
+
+void dds3BillboardSetScale(struct billHandle_t *billboard, f32 x, f32 y);
+
+void dds3DebugIntEdit(void *valueAddress, FldIntegerStorageType storageType, s64 min, s64 max,
+                      s64 step, s64 bigStep);
+
+/* The pad-state bytes are borrowed read-only input; valueAddress is updated. */
+void dds3DebugIntEditEx(void *valueAddress, FldIntegerStorageType storageType, s64 min, s64 max,
+                     s64 step, s64 bigStep, const s8 *padState);
+
+EffNode *dds3EffectCopy(const EffNode *source);
+
+void dds3EffectDelete(EffNode *node);
+
+struct EffNode *dds3EffectLoad(EffNodeDescriptor *descriptor);
+
+void dds3EffectSetScale(EffNode *node, f32 factor);
+
+struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
+
+u32 dds3GetProcessData(const dds3ProcessID_t *task);
+
+dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+/*
+ * Append child to parent's child list, detaching it from any previous parent.
+ * This hierarchy controls teardown: parent finalization calls
+ * dds3KillProcess(child, 0) for linked children before its destroy callback.
+ * It does not change scheduler queue membership.
+ */
+void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *child);
+
+u64 *dds3PrimFrameRect(s32 x, s32 y, s32 depth, s32 width, s32 height, u32 colorA, u32 colorB);
+
+extern SdfProjectionRecord dds3ScreenParam;
+
+/* Return a borrowed scheduler-owned handle from the starting, active, or
+ * destroy-pending queue. The handle remains valid through its destroy callback
+ * and is freed when finalization completes; return NULL when no name matches. */
+dds3ProcessID_t *dds3SearchProcessName(const char *name);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+/* Return the address of the loaded resource payload as a byte pointer. */
+u8 *fileGetLoadPtr(const struct FileRequest *request);
+
+/* Return the signed byte count recorded by the file transfer request. */
+s32 fileGetLoadSize(const struct FileRequest *request);
+
+/* Return the payload allocation descriptor. For normal file loads, freeing the
+ * request wrapper does not free this allocation; its resource owner must keep
+ * or release it separately. */
+struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
+
+/* Free a completed request wrapper; return one while it remains pending. */
+FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
+
+/* fileSave also copies requestName into request-owned storage. It separately
+ * borrows sourceData for the asynchronous write, which must stay readable and
+ * unchanged until CLOSED. */
+struct FileRequest *fileSave(const char *requestName, const void *sourceData, s32 sourceByteCount);
+
+void fileSync(struct FileRequest *request);
+
+/* Model-context lifetime, per-frame update, and broadcast accessors. */
+/* Destroy one context. If it leaves its resource-owning group empty, group
+ * teardown also releases that group's registered assets. */
+void mdlFree(dds3ModelHandle_t *ctx);
+
+u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
+
+u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
+
+/* Context-level motion APIs; per-sdfMotionCtrlr_t lifecycle methods are in sdf_motion.h. */
+MdlMotionIndexResult mdlGetMotionNum(const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
+
+/* The referenced halfword is promoted to a word-sized SDK result. */
+s32 mdlGetNumOfCut(const dds3ModelHandle_t *ctx, s32 searchId);
+
+/* VU helpers transfer vectors through vf10 and basis rows through vf28-vf30. */
+void mdlGetPosition(dds3ModelHandle_t *ctx);
+
+void mdlGetRotate(dds3ModelHandle_t *ctx);
+
+MdlMotionPresence mdlHasMotionEx(const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
+
+void mdlLink(dds3ModelHandle_t *ctx, struct sdfGrOt_t **surfaces);
+
+/* Allocate a distinct caller-owned context linked to the registered group.
+ * Contexts share the group node and assets; release each context with mdlFree. */
+dds3ModelHandle_t *mdlLoad(u32 group, u32 id);
+
+void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+void mdlSetBlur(dds3ModelHandle_t *ctx, MdlBlurSpawnInterval spawnInterval,
+                MdlBlurSnapshotCapacity snapshotCapacity,
+                u32 endColor, u32 startColor);
+
+void mdlSetPosition(dds3ModelHandle_t *ctx);
+
+void mdlSetRotate(dds3ModelHandle_t *ctx);
+
+void mdlSmoothLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+                          f32 blendDurationFrames);
+
+void mdlSmoothSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+                       f32 blendDurationFrames);
+
+s32 memcmp(const void *a, const void *b, u32 size);
+
+void *memset(void *dst, s32 value, u32 size);
+
+SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
+
+void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
+
+struct SdfPacket *sdfDrawRotatedModel(const f32 vertices[][4], const u32 *colors,
+                                                   s32 vertexCount, u32 primitiveFlags);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+SdfFileExistenceResult sdfFileCheckExist(const char *path);
+
+/* DMA/VIF transfer header and packed A+D GIF tag, excluding register payload. */
+void sdfGrSetRegsPacketHeader(SdfGsPacketHeader *header, s32 payloadQwords);
+
+/* Operations on the complete buffered-request owner, distinct from draw packets. */
+void sdfItemArrayFree(DevRequest *request);
+
+DevRequest *sdfItemArrayNew(s32 count, s32 stride, s32 growStep);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+SdfChunkHeader *sdfModelGetExtraChunk(const struct dds_sdfModelRootNode_t *model, s32 tag);
+
+u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
+
+void sdfModelMakeMarkPosMatrix(struct dds_sdfModelRootNode_t *model, SdfMapPositionRecord *record);
+
+SdfMapPositionRecord *sdfModelSearchMarkPosData(struct dds_sdfModelRootNode_t *model, s32 recordId);
+
+sdfModelNode_t *sdfModelSearchNode(dds_sdfModelRootNode_t *model, s32 nodeIdOrIndex);
+
+void sdfMotionChange(struct sdfMotionCtrlr_t *motion, s32 motionIndex, SdfMotionLoopMode loopMode);
+
+void sdfMotionSeek(struct sdfMotionCtrlr_t *motion, f32 frame);
+
+void sdfPktSetCmd(SifCommand *packet, s32 index);
+
+void sdfPrimLinkF3(
+    sdfDrawTag_t *list, s32 color, s32 primitive, s32 x0, s32 y0, s32 x1,
+    s32 y1, s32 x2, s32 y2, s32 depth, s32 (*allocatePacket)(s32));
+
+void sdfPrimLinkLine(
+    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
+    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
+
+void sdfPrimLinkSprite(
+    sdfDrawTag_t *list, s32 color, s32 primitive, s32 x0, s32 y0, s32 u0,
+    s32 v0, s32 x1, s32 y1, s32 u1, s32 v1, s32 depth,
+    s32 (*allocatePacket)(s32));
+
+struct sdfTexHandle_t *sdfTexSearch(s32 resourceKey);
+
+u32 strlen(const char *text);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/sdf_line_pair_packet_api.h"
@@ -245,10 +516,6 @@ typedef struct MdlCtrlState {
 
 extern MdlViewState mdlViewerState;
 
-static inline s8 mdlGetViewerDisplayMode(MdlViewState *state) {
-    return state->assetDisplayMode;
-}
-
 extern MdlCtrlState mdlDebugScaleWork;
 
 extern s8 D_003D7A60[];
@@ -367,22 +634,9 @@ void mdlPibEditTrackInfo(EffMarkParams *params, s16 *fieldCursor);
 
 #define MDL_PART_OBJECT 3
 
-/* Append a newly created billboard to the next part-list slot. */
-void mdlCreateEffectResrc_P2A(DevRequest *partList, const u8 *resourceBytes);
-
-/* Append a newly created effect to the next part-list slot. */
-void mdlCreateEffectResrc_D3P(DevRequest *partList, EffNodeDescriptor *descriptor);
-
-void mdlCreateEffectResrc_IPU(DevRequest *list, u8 *sourceAddress, sdfMemHandle_t *backingAllocation, s32 sourceSize);
-
 void mdlDeleteEffectResrc_IPU(MdlObj *obj);
 
 void mdlStartEffectResrc_IPU(MdlObj *obj, sdfTexHandle_t *resource, const SdfStreamParams *params);
-
-DevRequest *mdlEffectResrcListNew(u32 request);
-
-/* Destroy each part according to its stored kind, then release the owning request. */
-void mdlEffectResrcListFree(DevRequest *partList);
 
 /* Prepend a cleared, typed resource item to the owner's list. */
 dds3ModelEffectCtrlr_t *mdlCreateEffectCtrlr(
@@ -431,7 +685,7 @@ void mdlStopEffect(dds3ModelHandle_t *owner, MdlMotionSlotIndex motionSlotIndex)
 extern u8 aViewEye[];
 
 /* vu0 routine: positionOut = p + normalize(p - aViewEye) * scale, p = transformed node position. */
-void mdlEffect_P2A_D3P_GetPos(sdfModelRootNode_t *model, dds3ModelEffectCtrlr_t *anchorRecord, f32 *positionOut);
+void mdlEffect_P2A_D3P_GetPos(dds_sdfModelRootNode_t *model, dds3ModelEffectCtrlr_t *anchorRecord, f32 *positionOut);
 
 extern void dds3BillboardDraw(billHandle_t *billboard);
 
@@ -586,9 +840,6 @@ extern f32 sdf3DScreenAdjustOffsetY;
 /* Final workspace publication: see docs/idioms.md, "Publishing viewer workspace". */
 void mdlUpdateViewerWorkspaceSetup(void);
 
-/* Retail no-op invoked after every workspace setup phase update. */
-void mdlAfterViewerWorkspaceUpdate(void);
-
 /* Run workspace setup and its separate hook; keep the task result zero. */
 u32 mdlUpdateViewerWorkspaceSetupTask(void);
 
@@ -696,7 +947,7 @@ extern u8 aViewTarget[];
 
 extern u8 aViewDown[];
 
-extern u32 sdfGetLodChunkValue(sdfModelRootNode_t *);
+extern u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *);
 
 extern s32 sdfGrAllocPacketBuff(s32 size);
 
@@ -1058,37 +1309,7 @@ void mdlDrawViewerOptionLabels(void) {
     } while (i != 13);
 }
 
-void mdlDrawViewerModelAndMotionSummary(void) {
-    SifCommand packet;
-    const char *format;
-    s32 displayMode;
-    s32 nodeCount;
-    void *formatted;
-
-    mdlAppendViewerRectToDrawList(0x7E10, 0x8608, 0xFF0080, 0xEA0, 0x90, 0);
-    sdfDevSetPrintCB(&packet, 0x7E40, 0x8620, 0xFF0080, 0);
-
-    if ((displayMode = mdlGetViewerDisplayMode(&mdlViewerState)) == 0) {
-        format = D_003ABC98;
-    } else {
-        format = D_003ABCB0;
-    }
-    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintfEx(&packet, format, mdlViewerState.resourceGroup, mdlViewerState.resourceId)));
-
-    nodeCount = mdlGetNumOfCut(mdlViewerState.resources[0], 0);
-    if (nodeCount == 0) {
-        formatted = sdfDevPrintfEx(&packet, D_003BBC28);
-    } else {
-        if (mdlViewerState.assetDisplayMode == 0) {
-            format = D_003ABCC8;
-        } else {
-            format = D_003ABCD8;
-        }
-        formatted = sdfDevPrintfEx(&packet, format,
-                                       mdlGetMotionNum(mdlViewerState.resources[0], 0), nodeCount - 1);
-    }
-    sdfDrawTagLink(mdlViewerState.packetList, (u32)(formatted));
-}
+INCLUDE_ASM(const s32, "code_0019D3A8", mdlDrawViewerModelAndMotionSummary);
 
 void mdlAddViewEntryFlagged(void) {
     f32 low;
@@ -1123,8 +1344,6 @@ void mdlAddPlainViewerEntryForSelectedNode(void) {
         mdlSmoothSingleMotion(mdlViewerState.resources[0], mdlViewerState.selectedNodeId, mdlViewerState.selectedEntryId, first, low);
     }
 }
-
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_0044D8E0);
 
 INCLUDE_RODATA(const s32, "code_0019D3A8", D_0044D8F8);
 

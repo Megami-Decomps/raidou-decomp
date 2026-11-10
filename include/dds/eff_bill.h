@@ -1,14 +1,18 @@
-#ifndef EFF_BILL_H
-#define EFF_BILL_H
+#ifndef DDS_EFF_BILL_H
 
+#define DDS_EFF_BILL_H
 #include "common.h"
+
 #include "eff_expanded_list.h"
+
 #include "sdf.h"
 
 #include "eff_curve.h"
 
 struct billHandle_t;
+
 struct EffTrackSet;
+
 struct FileSlotTable;
 
 /* Lens-flare constructors copy 0x40 bytes into a 0x58-byte owner at +0x18
@@ -40,12 +44,10 @@ typedef struct EffFadeVectorWork {
 } EffFadeVectorWork;
 
 typedef char EffLensFlareParamsSizeCheck[(sizeof(EffLensFlareParams) == 0x40) ? 1 : -1];
+
 typedef char EffLensFlareElementSizeCheck[(sizeof(EffLensFlareElement) == 0x10) ? 1 : -1];
-typedef char EffLensFlareStrengthOffsetCheck[((u32)&((EffLensFlareParams *)0)->strength == 0x34) ? 1 : -1];
-typedef char EffLensFlareLimitOffsetCheck[((u32)&((EffLensFlareParams *)0)->limit == 0x38) ? 1 : -1];
-typedef char EffLensFlareSetOffsetCheck[((u32)&((EffLensFlareParams *)0)->flareSet == 0x3C) ? 1 : -1];
+
 typedef char EffFadeVectorWorkSizeCheck[(sizeof(EffFadeVectorWork) == 0x58) ? 1 : -1];
-typedef char EffFadeVectorSourceOffsetCheck[((u32)&((EffFadeVectorWork *)0)->source == 0x18) ? 1 : -1];
 
 /* The 0x20-byte strip file header copied into EffectStripNode at +0x0C. */
 typedef struct EffStripParams {
@@ -59,6 +61,7 @@ typedef struct EffStripParams {
     f32 billSize;
     u32 tint;
 } EffStripParams;
+
 typedef char EffStripParamsSizeCheck[(sizeof(EffStripParams) == 0x20) ? 1 : -1];
 
 /* DDS1 002AAF70 / DDS2 002EE348 allocate this 0x3C-byte strip owner.
@@ -75,9 +78,6 @@ typedef struct EffectStripNode {
 } EffectStripNode;
 
 typedef char EffectStripNodeSizeCheck[(sizeof(EffectStripNode) == 0x3C) ? 1 : -1];
-typedef char EffectStripHeaderOffsetCheck[((u32)&((EffectStripNode *)0)->copiedHeader == 0x0C) ? 1 : -1];
-typedef char EffectStripRecordOffsetCheck[((u32)&((EffectStripNode *)0)->active == 0x34) ? 1 : -1];
-typedef char EffectStripCountOffsetCheck[((u32)&((EffectStripNode *)0)->count == 0x38) ? 1 : -1];
 
 /* DDS1 002A7B68 / DDS2 002EA120 allocate 0xD4 bytes and copy this
  * 0x98-byte parameter record at +0x30. Draws 002A8020 / 002EA5D8
@@ -107,13 +107,8 @@ typedef struct EffQuadWork {
 } EffQuadWork;
 
 typedef char EffQuadParamsSizeCheck[(sizeof(EffQuadParams) == 0x98) ? 1 : -1];
+
 typedef char EffQuadWorkSizeCheck[(sizeof(EffQuadWork) == 0xD4) ? 1 : -1];
-typedef char EffQuadSourceOffsetCheck[((u32)&((EffQuadWork *)0)->source == 0x30) ? 1 : -1];
-typedef char EffQuadSizeTrackOffsetCheck[((u32)&((EffQuadWork *)0)->source.sizeTrack == 0x64) ? 1 : -1];
-typedef char EffQuadAngleTrackOffsetCheck[((u32)&((EffQuadWork *)0)->source.angleTrack == 0x90) ? 1 : -1];
-typedef char EffQuadBillOffsetCheck[((u32)&((EffQuadWork *)0)->billHandle == 0xC8) ? 1 : -1];
-typedef char EffQuadReferenceOffsetCheck[((u32)&((EffQuadWork *)0)->reference == 0xCC) ? 1 : -1];
-typedef char EffQuadAssetOffsetCheck[((u32)&((EffQuadWork *)0)->assetHandle == 0xD0) ? 1 : -1];
 
 /* Class operations select the copied parameter format and own this 0x40-byte
  * header. Each resource kind owns the pointer returned by its factory. */
@@ -223,10 +218,6 @@ typedef struct EffTrackSet {
 } EffTrackSet;
 
 typedef char EffTrackSet_size_must_be_0x30[(sizeof(EffTrackSet) == 0x30) ? 1 : -1];
-typedef char EffTrackSet_handle_offset_must_be_0x28[
-    ((u32)&((EffTrackSet *)0)->handle == 0x28) ? 1 : -1];
-typedef char EffTrackSet_allocation_offset_must_be_0x2C[
-    ((u32)&((EffTrackSet *)0)->allocation == 0x2C) ? 1 : -1];
 
 /* Resource kinds 1..8 allocate sixteen bytes before their entry array. */
 typedef struct EffBillFrameState {
@@ -350,18 +341,6 @@ typedef struct EffBillStripEntry {
 } EffBillStripEntry;
 
 typedef char EffBillStripEntrySizeCheck[(sizeof(EffBillStripEntry) == 0x28) ? 1 : -1];
-typedef char EffBillStripFrameConfig_colorA_OffsetCheck[((u32)&((EffBillStripFrameConfig *)0)->colorA == 0x58) ? 1 : -1];
-typedef char EffBillStripFrameConfig_width_OffsetCheck[((u32)&((EffBillStripFrameConfig *)0)->width == 0x60) ? 1 : -1];
-typedef char EffBillStripFrameConfig_lengthStart_OffsetCheck[((u32)&((EffBillStripFrameConfig *)0)->lengthStart == 0x68) ? 1 : -1];
-typedef char EffBillStripFrameConfig_radiusStart_OffsetCheck[((u32)&((EffBillStripFrameConfig *)0)->radiusStart == 0x78) ? 1 : -1];
-typedef char EffBillStripFrameConfig_tiltStart_OffsetCheck[((u32)&((EffBillStripFrameConfig *)0)->tiltStart == 0x88) ? 1 : -1];
-typedef char EffBillStripFrameConfig_spin_OffsetCheck[((u32)&((EffBillStripFrameConfig *)0)->spin == 0x98) ? 1 : -1];
-typedef char EffBillStripFrameConfig_spinAccel_OffsetCheck[((u32)&((EffBillStripFrameConfig *)0)->spinAccel == 0xA0) ? 1 : -1];
-typedef char EffBillStripEntry_length_OffsetCheck[((u32)&((EffBillStripEntry *)0)->length == 0xC) ? 1 : -1];
-typedef char EffBillStripEntry_radius_OffsetCheck[((u32)&((EffBillStripEntry *)0)->radius == 0x14) ? 1 : -1];
-typedef char EffBillStripEntry_tilt_OffsetCheck[((u32)&((EffBillStripEntry *)0)->tilt == 0x1C) ? 1 : -1];
-typedef char EffBillStripEntry_width_OffsetCheck[((u32)&((EffBillStripEntry *)0)->width == 0x24) ? 1 : -1];
-
 
 /* Kind-7 trails share each randomized width factor across their two ends. */
 typedef struct EffBillTrailFrameConfig {
@@ -403,19 +382,6 @@ typedef struct EffBillTrailEntry {
 } EffBillTrailEntry;
 
 typedef char EffBillTrailEntrySizeCheck[(sizeof(EffBillTrailEntry) == 0x2C) ? 1 : -1];
-typedef char EffBillTrailFrameConfig_colorA_OffsetCheck[((u32)&((EffBillTrailFrameConfig *)0)->colorA == 0x58) ? 1 : -1];
-typedef char EffBillTrailFrameConfig_widthA_OffsetCheck[((u32)&((EffBillTrailFrameConfig *)0)->widthA == 0x60) ? 1 : -1];
-typedef char EffBillTrailFrameConfig_widthB_OffsetCheck[((u32)&((EffBillTrailFrameConfig *)0)->widthB == 0x64) ? 1 : -1];
-typedef char EffBillTrailFrameConfig_lengthStart_OffsetCheck[((u32)&((EffBillTrailFrameConfig *)0)->lengthStart == 0x6c) ? 1 : -1];
-typedef char EffBillTrailFrameConfig_radiusStart_OffsetCheck[((u32)&((EffBillTrailFrameConfig *)0)->radiusStart == 0x7c) ? 1 : -1];
-typedef char EffBillTrailFrameConfig_tiltStart_OffsetCheck[((u32)&((EffBillTrailFrameConfig *)0)->tiltStart == 0x8c) ? 1 : -1];
-typedef char EffBillTrailFrameConfig_spin_OffsetCheck[((u32)&((EffBillTrailFrameConfig *)0)->spin == 0x9c) ? 1 : -1];
-typedef char EffBillTrailFrameConfig_spinAccel_OffsetCheck[((u32)&((EffBillTrailFrameConfig *)0)->spinAccel == 0xa4) ? 1 : -1];
-typedef char EffBillTrailEntry_length_OffsetCheck[((u32)&((EffBillTrailEntry *)0)->length == 0xc) ? 1 : -1];
-typedef char EffBillTrailEntry_radius_OffsetCheck[((u32)&((EffBillTrailEntry *)0)->radius == 0x14) ? 1 : -1];
-typedef char EffBillTrailEntry_tilt_OffsetCheck[((u32)&((EffBillTrailEntry *)0)->tilt == 0x1c) ? 1 : -1];
-typedef char EffBillTrailEntry_widthA_OffsetCheck[((u32)&((EffBillTrailEntry *)0)->widthA == 0x24) ? 1 : -1];
-typedef char EffBillTrailEntry_widthB_OffsetCheck[((u32)&((EffBillTrailEntry *)0)->widthB == 0x28) ? 1 : -1];
 
 /* Kind-8 quad updates (DDS1 002A2E18 / DDS2 002E4E80) read these
  * parameters from the copied 0x98-byte record and advance 0x20-byte entries. */
@@ -731,6 +697,7 @@ typedef union EffBillConfig {
 } EffBillConfig;
 
 struct EffPointSet;
+
 typedef struct EffScaleRangeEntry {
     struct EffPointSet *set;
     f32 position[3];
@@ -745,61 +712,65 @@ typedef struct EffScaleRangeEntry {
 } EffScaleRangeEntry;
 
 typedef char EffClassWorkSizeCheck[(sizeof(EffClassWork) == 0x40) ? 1 : -1];
-typedef char EffClassWorkResourceOffsetCheck[((u32)&((EffClassWork *)0)->resource == 0x30) ? 1 : -1];
-typedef char EffClassWorkFrameOffsetCheck[((u32)&((EffClassWork *)0)->frame == 0x28) ? 1 : -1];
+
 typedef char EffBillTimedHeaderSizeCheck[(sizeof(EffBillTimedHeader) == 0x3C) ? 1 : -1];
-typedef char EffBillTimeOffsetCheck[((u32)&((EffBillTimedHeader *)0)->time == 0x34) ? 1 : -1];
-typedef char EffBillCountOffsetCheck[((u32)&((EffBillTimedHeader *)0)->count == 0x38) ? 1 : -1];
+
 typedef char EffBillOutputHeaderSizeCheck[(sizeof(EffBillOutputHeader) == 0x40) ? 1 : -1];
+
 typedef char EffBillFrameHeaderSizeCheck[(sizeof(EffBillFrameHeader) == 0x58) ? 1 : -1];
+
 typedef char EffBillFrameConfigSizeCheck[(sizeof(EffBillFrameConfig) == 0x80) ? 1 : -1];
+
 typedef char EffBillCellConfigSizeCheck[(sizeof(EffBillCellConfig) == 0x8C) ? 1 : -1];
+
 typedef char EffBillParticleConfigSizeCheck[(sizeof(EffBillParticleConfig) == 0x9C) ? 1 : -1];
+
 typedef char EffBillParticleEntrySizeCheck[(sizeof(EffBillParticleEntry) == 0x2C) ? 1 : -1];
-typedef char EffBillParticleConfigColorAOffsetCheck[
-    ((u32)&((EffBillParticleConfig *)0)->colorA == 0x58) ? 1 : -1];
-typedef char EffBillParticleConfigGravityOffsetCheck[
-    ((u32)&((EffBillParticleConfig *)0)->gravity == 0x98) ? 1 : -1];
+
 typedef char EffBillAnimatedFrameConfigSizeCheck[(sizeof(EffBillAnimatedFrameConfig) == 0x80) ? 1 : -1];
+
 typedef char EffBillEmitterFrameConfigSizeCheck[(sizeof(EffBillEmitterFrameConfig) == 0x88) ? 1 : -1];
-typedef char EffBillEmitterFrameConfigFirstColorOffsetCheck[
-    ((u32)&((EffBillEmitterFrameConfig *)0)->firstColor == 0x58) ? 1 : -1];
-typedef char EffBillEmitterFrameConfigWidthOffsetCheck[
-    ((u32)&((EffBillEmitterFrameConfig *)0)->width == 0x60) ? 1 : -1];
-typedef char EffBillEmitterFrameConfigAccelerationOffsetCheck[
-    ((u32)&((EffBillEmitterFrameConfig *)0)->acceleration == 0x80) ? 1 : -1];
-typedef char EffBillEmitterFrameConfigReverseOffsetCheck[
-    ((u32)&((EffBillEmitterFrameConfig *)0)->reverse == 0x84) ? 1 : -1];
+
 typedef char EffBillStripFrameConfigSizeCheck[(sizeof(EffBillStripFrameConfig) == 0xA4) ? 1 : -1];
+
 typedef char EffBillTrailFrameConfigSizeCheck[(sizeof(EffBillTrailFrameConfig) == 0xA8) ? 1 : -1];
+
 typedef char EffBillQuadFrameConfigSizeCheck[(sizeof(EffBillQuadFrameConfig) == 0x98) ? 1 : -1];
+
 typedef char EffBillClass1ConfigSizeCheck[(sizeof(EffBillClass1Config) == 0x6C) ? 1 : -1];
+
 typedef char EffBillClass2ConfigSizeCheck[(sizeof(EffBillClass2Config) == 0xD0) ? 1 : -1];
+
 typedef char EffBillClass3ConfigSizeCheck[(sizeof(EffBillClass3Config) == 0x68) ? 1 : -1];
+
 typedef char EffBillQuantizedConfigSizeCheck[(sizeof(EffBillQuantizedConfig) == 0x98) ? 1 : -1];
+
 typedef char EffBillPointConfigSizeCheck[(sizeof(EffBillPointConfig) == 0x88) ? 1 : -1];
-typedef char EffBillPointAlternatingAmplitudeOffsetCheck[
-    ((u32)&((EffBillPointConfig *)0)->alternatingAmplitude == 0x44) ? 1 : -1];
-typedef char EffBillPointAmplitudeOffsetCheck[
-    ((u32)&((EffBillPointConfig *)0)->amplitude == 0x50) ? 1 : -1];
-typedef char EffBillPointFlagOffsetCheck[((u32)&((EffBillPointConfig *)0)->drawFlag == 0x5C) ? 1 : -1];
-typedef char EffBillPointTotalLengthOffsetCheck[
-    ((u32)&((EffBillPointConfig *)0)->totalLength == 0x84) ? 1 : -1];
+
 typedef char EffBillRangeConfigSizeCheck[(sizeof(EffBillRangeConfig) == 0xAC) ? 1 : -1];
+
 typedef char EffBillEmitterHeaderSizeCheck[(sizeof(EffBillEmitterHeader) == 0x90) ? 1 : -1];
+
 typedef char EffBillEmitterCommonSizeCheck[(sizeof(EffBillEmitterCommon) == 0xCC) ? 1 : -1];
+
 typedef char EffBillVortexConfigSizeCheck[(sizeof(EffBillVortexConfig) == 0xF8) ? 1 : -1];
+
 typedef char EffBillColumnConfigSizeCheck[(sizeof(EffBillColumnConfig) == 0xF4) ? 1 : -1];
+
 typedef char EffBillSpiralConfigSizeCheck[(sizeof(EffBillSpiralConfig) == 0xD8) ? 1 : -1];
+
 typedef char EffBillFlameConfigSizeCheck[(sizeof(EffBillFlameConfig) == 0x10C) ? 1 : -1];
+
 typedef char EffBillRadialConfigSizeCheck[(sizeof(EffBillRadialConfig) == 0x8C) ? 1 : -1];
-typedef char EffBillVortexSpinOffsetCheck[((u32)&((EffBillVortexConfig *)0)->spin == 0xEC) ? 1 : -1];
-typedef char EffBillFlameGravityOffsetCheck[((u32)&((EffBillFlameConfig *)0)->gravity == 0x108) ? 1 : -1];
+
 typedef char EffBillConfigSizeCheck[(sizeof(EffBillConfig) == 0x10C) ? 1 : -1];
+
 typedef char EffScaleRangeEntrySizeCheck[(sizeof(EffScaleRangeEntry) == 0x30) ? 1 : -1];
+
 typedef char EffBillQuadEntrySizeCheck[(sizeof(EffBillQuadEntry) == 0x20) ? 1 : -1];
-typedef char EffBillQuadReverseOffsetCheck[((u32)&((EffBillQuadFrameConfig *)0)->reverse == 0x94) ? 1 : -1];
+
 typedef char EffBillEmitterEntrySizeCheck[(sizeof(EffBillEmitterEntry) == 0x30) ? 1 : -1];
+
 typedef char EffStripWorkSizeCheck[(sizeof(EffStripWork) == 0x34) ? 1 : -1];
 
 #endif

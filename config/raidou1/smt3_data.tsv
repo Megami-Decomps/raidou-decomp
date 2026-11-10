@@ -170,6 +170,7 @@ sdfDmaNotQwordFmt	0x00464E90	RODATA	sdf/sdfSound	c
 sdfDmaTagLineFmt	0x00464EA8	RODATA	sdf/sdfSound	c
 sdfDmacHandlerTable	0x0046F25C	SDATA	sdf/sdfSystem	c
 sdfDrawFrameCount	0x0046F2D0	SDATA	sdf/sdfDraw	c
+sdfDrawFrameCounter	0x0046F2BE	SDATA	sdf/sdfDraw	c
 sdfDrawFrameFlag	0x0046F2BC	SDATA	sdf/sdfDraw	c
 sdfDrawPublishFlag	0x0046F2C0	SDATA	sdf/sdfDraw	c
 sdfDrawReqQueueIndex	0x0046F2C8	SDATA	sdf/sdfDraw	c

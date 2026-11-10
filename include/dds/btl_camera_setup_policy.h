@@ -1,6 +1,6 @@
-#ifndef BTL_CAMERA_SETUP_POLICY_H
-#define BTL_CAMERA_SETUP_POLICY_H
+#ifndef DDS_BTL_CAMERA_SETUP_POLICY_H
 
+#define DDS_BTL_CAMERA_SETUP_POLICY_H
 #include "common.h"
 
 /* Complete 0x60-byte camera-setup records. The seven bank boundaries and
@@ -26,4 +26,4 @@ typedef struct BtlCameraSetupPolicy {
     u8 reserved54[12];
 } BtlCameraSetupPolicy;
 
-#endif /* BTL_CAMERA_SETUP_POLICY_H */
+#endif /* DDS_BTL_CAMERA_SETUP_POLICY_H */

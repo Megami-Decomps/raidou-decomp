@@ -1,17 +1,23 @@
-#ifndef MNU_TERMINAL_WORK_H
-#define MNU_TERMINAL_WORK_H
+#ifndef DDS_MNU_TERMINAL_WORK_H
 
+#define DDS_MNU_TERMINAL_WORK_H
 #include "common.h"
+
 #include "mnu_transition.h"
+
 #include "evt_world.h"
+
 #include "eff.h"
+
 #include "eff_resource_records.h"
+
 #include "mnu_list.h"
 
 struct MenuResourceWork;
 
 /* Phases of the terminal's visual-resource handoff and return transition. */
 typedef s32 MnuTerminalResourceTransitionPhase;
+
 enum {
     MNU_TERMINAL_RESOURCE_PHASE_WAIT_FOR_PANEL_FADE = 0,
     MNU_TERMINAL_RESOURCE_PHASE_WAIT_FOR_LOAD_START = 1,
@@ -53,9 +59,11 @@ typedef struct MenuTerminalWork {
     s32 effectStage; /* 0x15C */
     u32 bgmHandle;           /* 0x160: encoded bank/track handle */
 } MenuTerminalWork; /* 0x164 allocation (mnuTerminalCreateScene) */
+
 typedef char MenuTerminalWork_size[(sizeof(MenuTerminalWork) == 0x164) ? 1 : -1];
 
 void mnuLoadResourceHandles(MenuTerminalWork *work);
+
 void mnuReleaseResourceHandles(MenuTerminalWork *work);
 
 #endif

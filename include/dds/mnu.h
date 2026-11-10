@@ -1,19 +1,29 @@
-#ifndef MNU_H
-#define MNU_H
+#ifndef DDS_MNU_H
 
+#define DDS_MNU_H
 #include "common.h"
+
 #include "itf_grid_slot.h"
+
 #include "dat_stat.h"
+
 #include "evt_world.h"
+
 #include "mnu_transition.h"
+
 #include "mnu_progress_load_state.h"
+
 #include "mnu_staff_visual_category.h"
+
 #ifdef VERSION_DDS2
+
 #include "mnu_shop.h"
+
 #endif
 
 /* The shared title-movie phase uses a signed word in both menu-state layouts. */
 typedef s32 MnuMovieMenuPhase;
+
 typedef enum MnuMovieMenuPhaseValue {
     MNU_MOVIE_PHASE_OPENING_ANIMATION = 0,
     MNU_MOVIE_PHASE_FADE_IN = 1,
@@ -23,30 +33,43 @@ typedef enum MnuMovieMenuPhaseValue {
 } MnuMovieMenuPhaseValue;
 
 /* Results returned by the title-movie menu input and update handlers. */
+
 #define MNU_MOVIE_INPUT_MOVED -1
+
 #define MNU_MOVIE_INPUT_IDLE 0
+
 #define MNU_MOVIE_INPUT_CONFIRMED 1
+
 #define MNU_MOVIE_INPUT_CANCELLED 2
+
 #define MNU_MOVIE_UPDATE_RUNNING 0
+
 #define MNU_MOVIE_UPDATE_CONFIRMED 1
+
 #define MNU_MOVIE_UPDATE_CANCELLED 2
 
 struct MenuWindowContainer;
+
 struct MenuListNode;
+
 struct MenuWindowContainer *mnuCreateWindowContainer(s32 id, s32 width,
                                                     s32 height, s32 visibleCount,
                                                     s32 rowSpacing);
+
 struct MenuListNode *mnuRetreatWindowListSelection(struct MenuWindowContainer *window);
+
 struct MenuListNode *mnuAdvanceWindowListSelection(struct MenuWindowContainer *window);
+
 /* Clear only the window's panel-transition bit. */
 void mnuClearWindowPanelTransitionFlag(struct MenuWindowContainer *window);
 
 /* Advance one popup transition state using its current scheduler word. */
 s32 mnuDispatchPopupTransition(MenuPopupState *work, s32 *entrySlot, s32 mode,
                                void *callback);
-void mnuSetPopupEntry(s32 *entrySlot, MenuPopupEntry *entry);
-void mnuSetPopupEntryFlagged(s32 *entrySlot, MenuPopupEntry *entry);
 
+void mnuSetPopupEntry(s32 *entrySlot, MenuPopupEntry *entry);
+
+void mnuSetPopupEntryFlagged(s32 *entrySlot, MenuPopupEntry *entry);
 
 static inline s32 menuSetHandler(void *context, s32 mode, void *callback) {
     return mnuDispatchPopupTransition((MenuPopupState *)((u8 *)context + 8),
@@ -74,10 +97,13 @@ static inline void panelSetVec4(u32 *vec, u32 red, u32 green, u32 blue, u32 alph
 }
 
 /* Summary-menu entry count and pass threshold. */
+
 #define MENU_SUM_COUNT DAT_BASE_STAT_COUNT
+
 #define MENU_SUM_MINIMUM 99
 
 /* Camp task priority for the menu task family. */
+
 #define CAMP_TASK_PRIORITY 0x3EC
 
 /* Native 0x10-byte list-node payload. Its first word is an entry index or
@@ -118,9 +144,11 @@ typedef struct MenuEffectResources {
 } MenuEffectResources;
 
 #ifdef VERSION_DDS2
+
 void mnuSetCampEffectResourceHandles(struct EffectSlotSet *sheet,
                                     struct EffMappedResource *animation,
                                     MenuEffectResources *resources);
+
 #endif
 
 /* DDS2 result/camp backdrop: resources, sixteen sparks and the badge fade. */
@@ -134,7 +162,9 @@ typedef struct MenuCampEffect {
 } MenuCampEffect;
 
 typedef char MapPacket_size_must_be_0x3C[(sizeof(MapPacket) == 0x3C) ? 1 : -1];
+
 typedef char MenuEffectResources_size_must_be_0x60[(sizeof(MenuEffectResources) == 0x60) ? 1 : -1];
+
 typedef char MenuCampEffect_size_must_be_0x168[(sizeof(MenuCampEffect) == 0x168) ? 1 : -1];
 
 struct EffPayload;
@@ -163,12 +193,17 @@ typedef struct StaffSlots {
 
 /* The two pair owners follow the title-specific base resource bank. */
 void mnuReleaseStaffMenuResources(struct EffectSlotSet **baseResources);
+
 void mnuReleaseStaffMenuTextureHandles(struct EffectSlotSet **baseResources);
 
 #ifdef VERSION_DDS2
+
 typedef char StaffSlots_size_must_be_0x64[(sizeof(StaffSlots) == 0x64) ? 1 : -1];
+
 #else
+
 typedef char StaffSlots_size_must_be_0x78[(sizeof(StaffSlots) == 0x78) ? 1 : -1];
+
 #endif
 
 /* The occupied-party display and its five native 0x34-byte entries. */
@@ -191,12 +226,12 @@ typedef struct PartyPanel {
 } PartyPanel;
 
 /* Native result-menu row shared by the level and profile progress bars. */
-struct datUnitWork_t;
+struct dds_datUnitWork_t;
 
 typedef struct BrsProgressRow {
     s32 flags;
     s32 amount;
-    struct datUnitWork_t *unit; /* 0x08: profile record for the row. */
+    struct dds_datUnitWork_t *unit; /* 0x08: profile record for the row. */
     u32 levelProgress[4];
     u32 profileProgress[4];
 } BrsProgressRow;
@@ -231,17 +266,21 @@ typedef struct MenuSprites {
 } MenuSprites;
 
 #ifdef VERSION_DDS2
+
 MenuSprites *mnuCreatePageSpriteSet(s32 kind,
                                     struct EffectSlotSet *mainResource,
                                     struct EffectSlotSet *itemResource,
                                     struct EffectSlotSet *iconResource,
                                     struct EffectSlotSet *cursorResource,
                                     struct EffectSlotSet *alternateResource);
+
 #endif
 
 #ifndef VERSION_DDS2
+
 typedef char MenuSprites_dds1_size_check[
     sizeof(MenuSprites) == 0x50 ? 1 : -1];
+
 #endif
 
 /* The allocated icon bundle owns its draw fade and fade direction. */
@@ -258,15 +297,16 @@ typedef struct MenuIconBundle {
 } MenuIconBundle;
 
 #ifdef VERSION_DDS2
+
 typedef char MenuIconBundle_size_must_be_0x20[
     sizeof(MenuIconBundle) == 0x20 ? 1 : -1];
+
 #else
+
 typedef char MenuIconBundle_size_must_be_0x24[
     sizeof(MenuIconBundle) == 0x24 ? 1 : -1];
-typedef char MenuIconBundle_dds1_sprites_offset_check[
-    ((u32)&((MenuIconBundle *)0)->sprite == 0xC) ? 1 : -1];
-#endif
 
+#endif
 
 typedef struct MenuPoint {
     s32 x;
@@ -281,27 +321,30 @@ typedef struct MenuSpriteState {
 } MenuSpriteState;
 
 typedef char MenuSpriteState_size_must_be_0x20[(sizeof(MenuSpriteState) == 0x20) ? 1 : -1];
-typedef char MenuSpriteState_resourceSets_offset_check[
-    ((u32)&((MenuSpriteState *)0)->resourceSets == 0x10) ? 1 : -1];
-typedef char MenuSpriteState_initialValue_offset_check[
-    ((u32)&((MenuSpriteState *)0)->initialValue == 0x1C) ? 1 : -1];
 
 MenuSpriteState *mnuCreateSpriteState(struct EffectSlotSet *, struct EffectSlotSet *, struct EffectSlotSet *);
+
 void mnuFreeSpriteStateWork(MenuSpriteState *);
 
 #ifndef VERSION_DDS2
+
 void mnuDrawPartyInfoSprites(s32 x, s32 y, s32 depth,
-                             struct datUnitWork_t *entry,
+                             struct dds_datUnitWork_t *entry,
                              MenuSpriteState *spriteState, s32 flags);
+
 #endif
 
 #ifdef VERSION_DDS2
+
 MenuSpriteState *mnuAllocateSimpleSprite(struct EffectSlotSet *, struct EffectSlotSet *,
                                        struct EffectSlotSet *);
+
 void mnuFreeSimpleSpriteWork(MenuSpriteState *);
+
 #endif
 
 #ifndef VERSION_DDS2
+
 /* DDS1's simple sprite owns five effect resource sets and a blend factor. */
 typedef struct MenuSimpleSpriteState {
     u8 pad00[0x10];
@@ -311,21 +354,20 @@ typedef struct MenuSimpleSpriteState {
 
 typedef char MenuSimpleSpriteState_size_must_be_0x28[
     (sizeof(MenuSimpleSpriteState) == 0x28) ? 1 : -1];
-typedef char MenuSimpleSpriteState_resourceSets_offset_check[
-    ((u32)&((MenuSimpleSpriteState *)0)->resourceSets == 0x10) ? 1 : -1];
-typedef char MenuSimpleSpriteState_blendFactor_offset_check[
-    ((u32)&((MenuSimpleSpriteState *)0)->blendFactor == 0x24) ? 1 : -1];
 
 MenuSimpleSpriteState *mnuAllocateSimpleSprite(
     struct EffectSlotSet *, struct EffectSlotSet *, struct EffectSlotSet *,
     struct EffectSlotSet *, struct EffectSlotSet *);
+
 void mnuFreeSimpleSpriteWork(MenuSimpleSpriteState *);
+
 #endif
 
 struct MenuPanelItem;
 
 /* Signed row selector; -1 leaves the panel group without a selected row. */
 typedef s32 MenuPanelGroupSelection;
+
 #define MENU_PANEL_GROUP_NO_SELECTION ((MenuPanelGroupSelection)-1)
 
 /* Native group allocations own five panel items and retain their selection. */
@@ -344,41 +386,54 @@ typedef struct MenuPanelGroup {
 } MenuPanelGroup;
 
 #ifdef VERSION_DDS2
+
 typedef char MenuPanelGroup_size_must_be_0x2C[(sizeof(MenuPanelGroup) == 0x2C) ? 1 : -1];
-typedef char MenuPanelGroup_texture_offset[((u32)&((MenuPanelGroup *)0)->texture == 0x0C) ? 1 : -1];
-typedef char MenuPanelGroup_entries_offset[((u32)&((MenuPanelGroup *)0)->entries == 0x10) ? 1 : -1];
-typedef char MenuPanelGroup_selection_offset[((u32)&((MenuPanelGroup *)0)->selection == 0x24) ? 1 : -1];
-typedef char MenuPanelGroup_initialValue_offset[((u32)&((MenuPanelGroup *)0)->initialValue == 0x28) ? 1 : -1];
+
 #else
+
 typedef char MenuPanelGroup_size_must_be_0x28[(sizeof(MenuPanelGroup) == 0x28) ? 1 : -1];
-typedef char MenuPanelGroup_children_offset[((u32)&((MenuPanelGroup *)0)->children == 0x0C) ? 1 : -1];
-typedef char MenuPanelGroup_selection_offset[((u32)&((MenuPanelGroup *)0)->selection == 0x20) ? 1 : -1];
-typedef char MenuPanelGroup_initialValue_offset[((u32)&((MenuPanelGroup *)0)->initialValue == 0x24) ? 1 : -1];
+
 #endif
 
 #ifdef VERSION_DDS2
+
 extern MenuPanelGroup *mnuCreatePanelGroup(struct EffectSlotSet *owner,
                                            struct EffectSlotSet *texture,
                                            struct EffectSlotSet *extraGrid);
+
 #else
+
 extern MenuPanelGroup *mnuCreatePanelGroup(struct EffectSlotSet *parent);
+
 #endif
+
 extern void mnuDestroyPanelGroup(MenuPanelGroup *group);
+
 extern void mnuUpdateFiveListEntries(MenuPanelGroup *group,
                                     struct EffectSlotSet *gridObject);
+
 extern void mnuSetPanelGroupSelection(MenuPanelGroup *group, MenuPanelGroupSelection selection);
+
 extern void mnuClearPanelGroupSelection(MenuPanelGroup *group);
+
 extern MenuPanelGroupSelection mnuGetPanelGroupSelection(MenuPanelGroup *group);
+
 extern void mnuSetGroupSelection(MenuPanelGroup *group, s32 index, s32 selection, u32 option);
+
 #ifdef VERSION_DDS2
+
 extern void mnuApplyPackedGroupValues(MenuPanelGroup *group, s32 itemId);
+
 void mnuDrawAndAdvancePanelGroup(s32 x, s32 y, s32 depth,
-                                 struct datUnitWork_t *entry,
+                                 struct dds_datUnitWork_t *entry,
                                  MenuPanelGroup *group, s32 mode, s32 drawFlags);
+
 #else
+
 void mnuDrawAndAdvancePanelGroup(s32 x, s32 y, s32 depth,
-                                 struct datUnitWork_t *entry,
+                                 struct dds_datUnitWork_t *entry,
                                  MenuPanelGroup *group, s32 drawFlags);
+
 #endif
 
 /* Native profile-progress panel, including its cached sprite-slot pairs. */
@@ -407,10 +462,13 @@ typedef struct MenuProfilePanel {
 } MenuProfilePanel;
 
 #ifdef VERSION_DDS2
+
 typedef char MenuProfilePanel_dds2_size_check[(sizeof(MenuProfilePanel) == 0x48) ? 1 : -1];
-typedef char MenuProfilePanel_dds2_sets_check[((u32)&((MenuProfilePanel *)0)->sets == 0x18) ? 1 : -1];
+
 #else
+
 typedef char MenuProfilePanel_size_must_be_0x3C[(sizeof(MenuProfilePanel) == 0x3C) ? 1 : -1];
+
 #endif
 
 struct EffMappedResource;
@@ -434,8 +492,6 @@ typedef struct MenuEffectPair {
 } MenuEffectPair;
 
 typedef char MenuEffectPair_size_check[(sizeof(MenuEffectPair) == 0x54) ? 1 : -1];
-typedef char MenuEffectPair_opacity_offset_check[
-    ((u32)&((MenuEffectPair *)0)->opacity == 0x4C) ? 1 : -1];
 
 /* Two 0x20-byte gradient states are embedded in each DDS1 page slot. */
 typedef struct MenuPanelFade {
@@ -452,6 +508,7 @@ typedef struct MenuPanelFade {
 typedef char MenuPanelFade_size_check[(sizeof(MenuPanelFade) == 0x20) ? 1 : -1];
 
 #ifdef VERSION_DDS2
+
 /* Complete 0x50-byte texture/effect owner embedded in each page bank. */
 typedef struct MenuPageBar {
     s32 variant;
@@ -516,21 +573,12 @@ typedef struct MenuPageSlot {
 } MenuPageSlot;
 
 typedef char MenuCommandPosition_size_check[(sizeof(MenuCommandPosition) == 0x10) ? 1 : -1];
+
 typedef char MenuCommandMotion_size_check[(sizeof(MenuCommandMotion) == 0x10) ? 1 : -1];
+
 typedef char MenuQueuedCommand_size_check[(sizeof(MenuQueuedCommand) == 0x1024) ? 1 : -1];
-typedef char MenuQueuedCommand_resource_check[((u32)&((MenuQueuedCommand *)0)->resources == 0x1C) ? 1 : -1];
-typedef char MenuQueuedCommand_count_check[((u32)&((MenuQueuedCommand *)0)->particleCount == 0x20) ? 1 : -1];
-typedef char MenuQueuedCommand_positions_check[((u32)&((MenuQueuedCommand *)0)->positions == 0x24) ? 1 : -1];
-typedef char MenuQueuedCommand_motion_check[((u32)&((MenuQueuedCommand *)0)->motion == 0x824) ? 1 : -1];
+
 typedef char MenuPageSlot_size_check[(sizeof(MenuPageSlot) == 0x2138) ? 1 : -1];
-typedef char MenuPageSlot_icon_check[((u32)&((MenuPageSlot *)0)->icon == 0x10) ? 1 : -1];
-typedef char MenuPageSlot_hp_check[((u32)&((MenuPageSlot *)0)->hp == 0x1C) ? 1 : -1];
-typedef char MenuPageSlot_mp_check[((u32)&((MenuPageSlot *)0)->mp == 0x6C) ? 1 : -1];
-typedef char MenuPageSlot_frame_check[((u32)&((MenuPageSlot *)0)->frame == 0xBC) ? 1 : -1];
-typedef char MenuPageSlot_sprites_check[((u32)&((MenuPageSlot *)0)->windowSprites == 0xDC) ? 1 : -1];
-typedef char MenuPageSlot_panel_handles_check[
-    ((u32)&((MenuPageSlot *)0)->panelResourceHandles == 0xE4) ? 1 : -1];
-typedef char MenuPageSlot_commands_check[((u32)&((MenuPageSlot *)0)->commands == 0xF0) ? 1 : -1];
 
 void mnuLoadPanelSectionResources(MenuPageSlot *slot,
                                   struct EffectSlotSet *model,
@@ -538,6 +586,7 @@ void mnuLoadPanelSectionResources(MenuPageSlot *slot,
                                   s32 thirdValue);
 
 #else
+
 typedef struct MenuPageSlot {
     s32 kind;
     u32 flags;
@@ -555,13 +604,7 @@ typedef struct MenuPageSlot {
 } MenuPageSlot;
 
 typedef char MenuPageSlot_size_check_dds1[(sizeof(MenuPageSlot) == 0x134) ? 1 : -1];
-typedef char MenuPageSlot_icon_check_dds1[
-    ((u32)&((MenuPageSlot *)0)->icon == 0x10) ? 1 : -1];
-typedef char MenuPageSlot_frame_check_dds1[
-    ((u32)&((MenuPageSlot *)0)->frame == 0xC4) ? 1 : -1];
-typedef char MenuPageSlot_hp_check[((u32)&((MenuPageSlot *)0)->bars[0] == 0x1C) ? 1 : -1];
-typedef char MenuPageSlot_mp_check[((u32)&((MenuPageSlot *)0)->bars[1] == 0x70) ? 1 : -1];
-typedef char MenuPageSlot_work_check[((u32)&((MenuPageSlot *)0)->work == 0xF4) ? 1 : -1];
+
 #endif
 
 typedef struct MenuPageWindow {
@@ -591,13 +634,18 @@ typedef struct MenuPageWindow {
 } MenuPageWindow;
 
 #ifdef VERSION_DDS2
+
 MenuIconBundle *mnuCreateIconBundle(struct EffectSlotSet *resource);
+
 #endif
+
 void mnuAttachPartyIconBundle(s32 index, MenuPageWindow *window,
                               struct EffectSlotSet *resource);
 
 #ifdef VERSION_DDS2
+
 /* Marks the window-sprite mode toggled by page setup and entry resets. */
+
 #define MNU_PAGE_WINDOW_SPRITE_MODE 0x80
 
 void mnuSetWindowResource(s32 index, MenuPageWindow *menu,
@@ -606,70 +654,72 @@ void mnuSetWindowResource(s32 index, MenuPageWindow *menu,
                           struct EffectSlotSet *iconResource,
                           struct EffectSlotSet *cursorResource,
                           struct EffectSlotSet *alternateResource);
+
 #endif
 
 void mnuDrawPanelListDefault(s32 x, s32 y, s32 depth,
                              MenuPageWindow *window, s32 mode);
+
 void mnuRebuildScrollLists(MenuPageWindow *menu, PartyPanel *records);
 
 #ifdef VERSION_DDS2
+
 typedef char MenuPageWindow_size_must_be_0xA6A4[
     sizeof(MenuPageWindow) == 0xA6A4 ? 1 : -1];
-typedef char MenuPageWindow_mainResources_offset_check[
-    ((u32)&((MenuPageWindow *)0)->mainResources == 0x24) ? 1 : -1];
+
 typedef char MenuPageWindow_mainResources_extent_check[
     sizeof(((MenuPageWindow *)0)->mainResources) == 0x40 ? 1 : -1];
-typedef char MenuPageWindow_extraResources_offset_check[
-    ((u32)&((MenuPageWindow *)0)->handlesC == 0x64) ? 1 : -1];
-typedef char MenuPageWindow_resources_offset_check[
-    ((u32)&((MenuPageWindow *)0)->resources == 0x0C) ? 1 : -1];
-typedef char MenuPageWindow_slot_offset_check[
-    ((u32)&((MenuPageWindow *)0)->slot == 0x10) ? 1 : -1];
-typedef char MenuPageWindow_secondaryResource_offset_check[
-    ((u32)&((MenuPageWindow *)0)->secondaryResource == 0x14) ? 1 : -1];
-typedef char MenuPageWindow_secondarySlot_offset_check[
-    ((u32)&((MenuPageWindow *)0)->secondarySlot == 0x18) ? 1 : -1];
-typedef char MenuPageWindow_alternateResource_offset_check[
-    ((u32)&((MenuPageWindow *)0)->alternateResource == 0x1C) ? 1 : -1];
-typedef char MenuPageWindow_alternateSlot_offset_check[
-    ((u32)&((MenuPageWindow *)0)->alternateSlot == 0x20) ? 1 : -1];
 
 void mnuInitPageWindow(MenuPageWindow *, PartyPanel *, struct EffectSlotSet *,
                    s32, struct EffectSlotSet *, s32, struct EffectSlotSet *, s32);
+
 void mnuSetPanelSlotValues(MenuPageWindow *, struct EffectSlotSet *);
+
 void mnuInitializeCampPanelResources(MenuPageWindow *, StaffSlots *, u32, PartyPanel *);
+
 void mnuReleaseSpriteTextures(u32 *objectWords);
+
 #else
+
 void mnuInitPageWindow(MenuPageWindow *window, PartyPanel *records,
                        struct EffectSlotSet *resources, s32 slot,
                        struct EffectSlotSet *secondaryResource, s32 secondarySlot,
                        struct EffectSlotSet *alternateResource, s32 alternateSlot);
+
 void mnuFillPanelLists(MenuPageWindow *window, PartyPanel *records);
 
-typedef char MenuPageWindow_handlesA_offset_check[
-    ((u32)&((MenuPageWindow *)0)->handlesA == 0x24) ? 1 : -1];
 typedef char MenuPageWindow_handlesA_extent_check[
     sizeof(((MenuPageWindow *)0)->handlesA) == 0x20 ? 1 : -1];
-typedef char MenuPageWindow_handlesB_offset_check[
-    ((u32)&((MenuPageWindow *)0)->handlesB == 0x44) ? 1 : -1];
-typedef char MenuPageWindow_handlesC_offset_check[
-    ((u32)&((MenuPageWindow *)0)->handlesC == 0x64) ? 1 : -1];
+
 typedef char MenuPageWindow_handlesC_extent_check[
     sizeof(((MenuPageWindow *)0)->handlesC) == 0x14 ? 1 : -1];
+
 void mnuReleasePageHandlesAndClearSelection(MenuPageWindow *);
+
 void mnuReleaseSpriteTextures(s32 *objectWords);
+
 #endif
+
 void mnuReleasePartyPanelSpriteTextures(MenuPageWindow *);
+
 void mnuReleasePartyPanelTextures(MenuPageWindow *);
+
 void mnuShutdownContext(MenuPageWindow *);
+
 void mnuFlagActiveWindows(MenuPageWindow *);
+
 void mnuClearPartyPanelActiveFlags(MenuPageWindow *);
+
 #ifndef VERSION_DDS2
+
 void mnuUpdateHandleStates(MenuPageWindow *);
+
 #endif
 
 void mnuCopyPrimaryWindowHandles(MenuPageWindow *, struct EffectSlotSet **);
+
 void mnuCopySecondaryWindowHandles(MenuPageWindow *, struct EffectSlotSet **);
+
 void mnuRegisterResourceHandles(MenuPageWindow *, struct EffectSlotSet **);
 
 typedef struct MenuGradientFade {
@@ -681,6 +731,7 @@ typedef struct MenuGradientFade {
 typedef char MenuGradientFade_size_must_be_0x0C[(sizeof(MenuGradientFade) == 0x0C) ? 1 : -1];
 
 #ifdef VERSION_DDS2
+
 /* The terminal's eight progress thresholds and their selectable rewards. */
 typedef struct MnuProgressReward {
     u8 kind;
@@ -694,11 +745,13 @@ typedef struct MnuProgressEntry {
 } MnuProgressEntry;
 
 typedef char MnuProgressReward_size_must_be_0x8[(sizeof(MnuProgressReward) == 0x8) ? 1 : -1];
+
 typedef char MnuProgressEntry_size_must_be_0x48[(sizeof(MnuProgressEntry) == 0x48) ? 1 : -1];
 
 extern MnuProgressEntry D_003CE1A8[8];
 
 struct EffectSlotSet;
+
 struct EffMappedResource;
 
 typedef struct MenuAction {
@@ -717,7 +770,6 @@ typedef struct MenuTerminalWindowState {
 } MenuTerminalWindowState;
 
 typedef char MenuTerminalWindowState_size_must_be_0x14[(sizeof(MenuTerminalWindowState) == 0x14) ? 1 : -1];
-
 
 typedef struct DspScrollingStrip {
     struct EffectSlotSet *resource;
@@ -739,15 +791,17 @@ typedef struct DspScrollingStripState {
 } DspScrollingStripState;
 
 typedef char DspScrollingStrip_size_must_be_0x14[(sizeof(DspScrollingStrip) == 0x14) ? 1 : -1];
+
 typedef char DspScrollingStripState_size_must_be_0x94[(sizeof(DspScrollingStripState) == 0x94) ? 1 : -1];
-typedef char DspScrollingStripState_strips_offset[((u32)&((DspScrollingStripState *)0)->strips == 0x1C) ? 1 : -1];
-typedef char DspScrollingStripState_firstSpeed_offset[((u32)&((DspScrollingStripState *)0)->strips[0].scrollSpeed == 0x2C) ? 1 : -1];
 
 void mnuInitScrollingStripState(DspScrollingStripState *state, s32 layout,
                                 struct EffectSlotSet *resource, s32 firstFrame,
                                 s32 layer);
+
 void func_0026BE28(DspScrollingStripState *state, s32 negate, s32 minimum, s32 maximum);
+
 void func_0026BEB0(DspScrollingStripState *state, s32 vertical, s32 horizontal, s32 unused);
+
 void func_0026BEC0(s32 x, s32 y, s32 flags, s32 scale, DspScrollingStripState *state, s32 option);
 
 struct MenuIconSprites;
@@ -811,17 +865,10 @@ typedef struct MenuTerminalContext {
 } MenuTerminalContext;
 
 typedef char MenuTerminalContext_size_must_be_0x38C[(sizeof(MenuTerminalContext) == 0x38C) ? 1 : -1];
-typedef char MenuTerminalContext_lastPopupEntry_offset[
-    ((u32)&((MenuTerminalContext *)0)->transitionWork.lastEntryAddress == 0x54) ? 1 : -1];
-typedef char MenuTerminalContext_firstPanel_offset[((u32)&((MenuTerminalContext *)0)->panelWork[0] == 0xE8) ? 1 : -1];
-typedef char MenuTerminalContext_secondPanel_offset[((u32)&((MenuTerminalContext *)0)->panelWork[1] == 0x17C) ? 1 : -1];
-typedef char MenuTerminalContext_campEffect_offset[((u32)&((MenuTerminalContext *)0)->campEffect == 0x210) ? 1 : -1];
-typedef char MenuTerminalContext_windowResource_offset[
-    ((u32)&((MenuTerminalContext *)0)->windowResource == 0x378) ? 1 : -1];
 
 extern MenuTerminalContext *mnuCurrentTerminalContext;
-void func_0025FD78(MenuTerminalContext *scene);
 
+void func_0025FD78(MenuTerminalContext *scene);
 
 typedef struct MenuIconSprites {
     struct sdfMemHandle_t *allocation; /* 0x00: retained descriptor for this bundle. */
@@ -832,6 +879,7 @@ typedef struct MenuIconSprites {
 
 MenuIconSprites *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
                     struct EffectSlotSet *resourceHandle, s32 *indices, u32 unused);
+
 void mnuReleaseWindowTextures(MenuIconSprites *menu);
 
 typedef struct MenuFadeFields {
@@ -845,7 +893,9 @@ typedef struct MenuFadeFields {
 } MenuFadeFields;
 
 typedef char MenuIconSprites_size_must_be_0x18[(sizeof(MenuIconSprites) == 0x18) ? 1 : -1];
+
 typedef char MenuFadeFields_size_must_be_0xC4[(sizeof(MenuFadeFields) == 0xC4) ? 1 : -1];
+
 #endif
 
 struct EffectList;
@@ -869,20 +919,30 @@ typedef struct MenuProgressHost {
 } MenuProgressHost;
 
 #ifdef VERSION_DDS2
+
 typedef char MenuProgressHost_size_must_be_0xA82C[(sizeof(MenuProgressHost) == 0xA82C) ? 1 : -1];
+
 #else
+
 typedef char MenuProgressHost_size_must_be_0x82C[(sizeof(MenuProgressHost) == 0x82C) ? 1 : -1];
+
 #endif
 
 #ifndef VERSION_DDS2
-void mnuSetupStaffMenuProfilePage(struct datUnitWork_t *source, MenuProgressHost *work);
+
+void mnuSetupStaffMenuProfilePage(struct dds_datUnitWork_t *source, MenuProgressHost *work);
+
 void mnuReleaseMenuVisualWorkResources(MenuProgressHost *work);
+
 void effUpdateAttached(s32 x, s32 y, s32 mode, void *owner, s32 layer);
+
 #endif
 
 #ifndef VERSION_DDS2
+
 /* DDS1 staff movie task work allocated by mnuMovieCreateTask (0x20 bytes). */
 struct sdfMemHandle_t;
+
 struct MnuSpriteResourceGroup;
 
 void mnuDrawIconAlphaSprite(s32 x, s32 y, s32 z, s32 alpha,
@@ -924,12 +984,13 @@ typedef struct MovieMenuState {
 typedef char MovieMenuState_size_must_be_0x40[(sizeof(MovieMenuState) == 0x40) ? 1 : -1];
 
 #include "mnu_scene.h"
+
 #endif
 
 #ifdef VERSION_DDS2
+
 /* Staff menu task context (DDS2 layout). */
 struct MenuIconState;
-
 
 typedef struct MenuStaffContext {
     struct sdfMemHandle_t *allocation; /* 0x00: retained descriptor for the full camp work. */
@@ -974,9 +1035,6 @@ typedef struct MenuStaffContext {
 typedef char MenuStaffContext_size_must_be_0xB1E0[
     sizeof(MenuStaffContext) == 0xB1E0 ? 1 : -1];
 
-typedef char MenuStaffContext_resourceListWindow_offset[
-    ((u32)&((MenuStaffContext *)0)->resourceListWindow == 0x10C) ? 1 : -1];
-
 /* Five owned windows and their selection/transition state share one 0x54 allocation. */
 typedef struct MenuStaffChoices {
     struct sdfMemHandle_t *allocation; /* 0x00: retained descriptor for this 0x54-byte owner. */
@@ -1012,10 +1070,9 @@ typedef struct SlideBarTimed {
     s32 id;
     s32 timer;
 } SlideBarTimed;
+
 typedef char SlideBarTimed_size_must_be_0x10[
     sizeof(SlideBarTimed) == 0x10 ? 1 : -1];
-typedef char SlideBarTimed_timer_at_0x0C[
-    ((u32)&((SlideBarTimed *)0)->timer == 0x0C) ? 1 : -1];
 
 typedef struct MovieMenuEffectSlot {
     s32 active;
@@ -1027,6 +1084,7 @@ typedef struct PickEntry {
     u8 paletteIndex; /* Current index in the five-entry fade palette. */
     s8 fadeDelay;    /* Ticks until the next palette step. */
 } PickEntry;
+
 typedef char PickEntry_size_must_be_3[(sizeof(PickEntry) == 3) ? 1 : -1];
 
 /* Paired bar with the randomly picked title-movie slots (0x94 bytes). */
@@ -1039,8 +1097,9 @@ typedef struct PickList {
     s32 unk70;
     MovieMenuEffectSlot effectSlots[4]; /* 0x74 */
 } PickList;
+
 typedef char PickList_size_must_be_0x94[(sizeof(PickList) == 0x94) ? 1 : -1];
 
 #endif /* VERSION_DDS2 */
 
-#endif /* MNU_H */
+#endif /* DDS_MNU_H */

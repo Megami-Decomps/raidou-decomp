@@ -1,9 +1,10 @@
-#ifndef FLD_MOVEMENT_HOLD_STATE_API_H
-#define FLD_MOVEMENT_HOLD_STATE_API_H
+#ifndef DDS_FLD_MOVEMENT_HOLD_STATE_API_H
 
+#define DDS_FLD_MOVEMENT_HOLD_STATE_API_H
 #include "common.h"
 
 typedef u8 FldMovementHoldState;
+
 enum {
     FLD_MOVEMENT_HOLD_CLEAR = 0,
     FLD_MOVEMENT_HOLD_ACTIVE = 1
@@ -11,4 +12,4 @@ enum {
 
 FldMovementHoldState fldGetMovementHoldState(void);
 
-#endif /* FLD_MOVEMENT_HOLD_STATE_API_H */
+#endif /* DDS_FLD_MOVEMENT_HOLD_STATE_API_H */

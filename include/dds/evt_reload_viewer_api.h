@@ -1,10 +1,12 @@
-#ifndef EVT_RELOAD_VIEWER_API_H
-#define EVT_RELOAD_VIEWER_API_H
+#ifndef DDS_EVT_RELOAD_VIEWER_API_H
 
+#define DDS_EVT_RELOAD_VIEWER_API_H
 #include "evt_viewer.h"
+
 #include "evt_polygon_movie_resource_mode.h"
 
 typedef s32 EvtViewerReloadResult;
+
 enum {
     EVT_VIEWER_RELOAD_FAILED = 0,
     EVT_VIEWER_RELOAD_SUCCEEDED = 1
@@ -14,6 +16,6 @@ enum {
  * files were unavailable or movie-work creation failed. Failure may follow
  * resource cleanup and does not promise rollback to the previous viewer. */
 EvtViewerReloadResult evtReloadEventViewer(
-    EvtPolygonMovieResourceMode resourceMode, evtViewerInfo_t *runtime);
+    EvtPolygonMovieResourceMode resourceMode, dds_evtViewerInfo_t *runtime);
 
 #endif

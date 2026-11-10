@@ -1,6 +1,6 @@
-#ifndef PRF_SKILL_LIST_BUFFER_H
-#define PRF_SKILL_LIST_BUFFER_H
+#ifndef DDS_PRF_SKILL_LIST_BUFFER_H
 
+#define DDS_PRF_SKILL_LIST_BUFFER_H
 #include "dat_state.h"
 
 /* 0x40-byte local storage used by menu callers of prfBuildRawSkillList. The
@@ -10,6 +10,7 @@ typedef struct PrfSkillListBuffer {
     PrfSkillList list;
     u8 opaque34[0x0C];
 } PrfSkillListBuffer;
+
 typedef char PrfSkillListBufferSizeCheck[
     (sizeof(PrfSkillListBuffer) == 0x40) ? 1 : -1];
 

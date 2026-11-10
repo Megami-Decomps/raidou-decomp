@@ -1,7 +1,8 @@
-#ifndef BTL_SOUND_HANDLE_NODE_H
-#define BTL_SOUND_HANDLE_NODE_H
+#ifndef DDS_BTL_SOUND_HANDLE_NODE_H
 
+#define DDS_BTL_SOUND_HANDLE_NODE_H
 struct FileQueue;
+
 struct dds3ModelHandle_t;
 
 typedef struct SoundHandleNode {

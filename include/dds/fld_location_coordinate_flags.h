@@ -1,6 +1,6 @@
-#ifndef FLD_LOCATION_COORDINATE_FLAGS_H
-#define FLD_LOCATION_COORDINATE_FLAGS_H
+#ifndef DDS_FLD_LOCATION_COORDINATE_FLAGS_H
 
+#define DDS_FLD_LOCATION_COORDINATE_FLAGS_H
 #include "common.h"
 
 /* Signed flag word at +0x06 in a location-coordinate record; zero on a miss. */

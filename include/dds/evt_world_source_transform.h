@@ -1,6 +1,6 @@
-#ifndef EVT_WORLD_SOURCE_TRANSFORM_H
-#define EVT_WORLD_SOURCE_TRANSFORM_H
+#ifndef DDS_EVT_WORLD_SOURCE_TRANSFORM_H
 
+#define DDS_EVT_WORLD_SOURCE_TRANSFORM_H
 #include "eff_transform.h"
 
 /* Borrowed 0x20-byte prefix used by kind-0x11 world-node data. Consumers
@@ -20,8 +20,7 @@ typedef struct EvtWorldSourceTransformPrefix {
 } EvtWorldSourceTransformPrefix;
 
 typedef char EvtWorldSourcePosition_size_must_be_0x10[(sizeof(EvtWorldSourcePosition) == 0x10) ? 1 : -1];
-typedef char EvtWorldSourceTransformPrefix_size_must_be_0x20[(sizeof(EvtWorldSourceTransformPrefix) == 0x20) ? 1 : -1];
 
-dds3Basic_t *dds3AddPointBasic(u32 key, EvtWorldSourceTransformPrefix *source, const char *name);
+typedef char EvtWorldSourceTransformPrefix_size_must_be_0x20[(sizeof(EvtWorldSourceTransformPrefix) == 0x20) ? 1 : -1];
 
 #endif

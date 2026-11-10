@@ -1,6 +1,6 @@
-#ifndef FLD_MAP_SLOT_AUXILIARY_FLAG_SELECTOR_H
-#define FLD_MAP_SLOT_AUXILIARY_FLAG_SELECTOR_H
+#ifndef DDS_FLD_MAP_SLOT_AUXILIARY_FLAG_SELECTOR_H
 
+#define DDS_FLD_MAP_SLOT_AUXILIARY_FLAG_SELECTOR_H
 #include "common.h"
 
 /* Positive values select a map-slot auxiliary flag that hides the collision

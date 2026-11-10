@@ -1,6 +1,6 @@
-#ifndef SDF_TEXTURE_OFFSET_LIST_H
-#define SDF_TEXTURE_OFFSET_LIST_H
+#ifndef DDS_SDF_TEXTURE_OFFSET_LIST_H
 
+#define DDS_SDF_TEXTURE_OFFSET_LIST_H
 #include "common.h"
 
 /* One signed displacement from the list base to an SdfTextureFileHeader. */
@@ -22,11 +22,7 @@ typedef struct SdfTextureOffsetListHeader {
 
 typedef char SdfTextureOffsetListHeader_size_must_be_0x14[
     (sizeof(SdfTextureOffsetListHeader) == 0x14) ? 1 : -1];
-typedef char SdfTextureOffsetListHeader_count_at_0x10[
-    ((u32)&((SdfTextureOffsetListHeader *)0)->textureCount == 0x10) ? 1 : -1];
 
 struct DevRequest;
-struct DevRequest *sdfTexSetTB(
-    const SdfTextureOffsetListHeader *resource);
 
-#endif /* SDF_TEXTURE_OFFSET_LIST_H */
+#endif /* DDS_SDF_TEXTURE_OFFSET_LIST_H */

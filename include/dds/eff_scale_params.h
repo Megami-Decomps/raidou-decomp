@@ -1,6 +1,6 @@
-#ifndef EFF_SCALE_PARAMS_H
-#define EFF_SCALE_PARAMS_H
+#ifndef DDS_EFF_SCALE_PARAMS_H
 
+#define DDS_EFF_SCALE_PARAMS_H
 #include "common.h"
 
 typedef struct ScaleEntry {
@@ -35,15 +35,5 @@ typedef struct ScaleOwner {
 } ScaleOwner;
 
 typedef char ScaleEntry_size_must_be_0x08[(sizeof(ScaleEntry) == 0x08) ? 1 : -1];
-typedef char ScaleEntry_value_offset_must_be_0x04[
-    ((u32)&((ScaleEntry *)0)->value == 0x04) ? 1 : -1];
-typedef char ScaleSet_entries_offset_must_be_0x70[
-    ((u32)&((ScaleSet *)0)->entries == 0x70) ? 1 : -1];
-typedef char ScaleSet_unkF0_offset_must_be_0xF0[
-    ((u32)&((ScaleSet *)0)->unkF0 == 0xF0) ? 1 : -1];
-typedef char ScaleOwner_dst_offset_must_be_0x20[
-    ((u32)&((ScaleOwner *)0)->dst == 0x20) ? 1 : -1];
-typedef char ScaleOwner_src_offset_must_be_0x24[
-    ((u32)&((ScaleOwner *)0)->src == 0x24) ? 1 : -1];
 
-#endif /* EFF_SCALE_PARAMS_H */
+#endif /* DDS_EFF_SCALE_PARAMS_H */

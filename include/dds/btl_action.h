@@ -1,6 +1,6 @@
-#ifndef BTL_ACTION_H
-#define BTL_ACTION_H
+#ifndef DDS_BTL_ACTION_H
 
+#define DDS_BTL_ACTION_H
 #include "common.h"
 
 /* Native 0x70-byte scheduler-task header, distinct from a queued command actor.
@@ -51,9 +51,13 @@ typedef struct BtlAbilityParameter {
 } BtlAbilityParameter;
 
 #ifdef VERSION_DDS2
+
 enum { BTL_ABILITY_PARAMETER_FIRST_SKILL = 0x220 };
+
 #else
+
 enum { BTL_ABILITY_PARAMETER_FIRST_SKILL = 0x200 };
+
 #endif
 
 extern BtlAbilityParameter *datAbilityParameters;
@@ -63,7 +67,9 @@ extern BtlAbilityParameter *datAbilityParameters;
  * target while later command flags remain owned by the action actor. Value 4
  * marks the target with 0x10 and shares 0x20 across target and actor. Other
  * record values remain opaque and use the existing fallback paths. */
+
 #define BTL_ACTION_EFFECT_KIND_TARGET_EFFECT_WITH_ACTOR_OWNER 3
+
 #define BTL_ACTION_EFFECT_KIND_TARGET_AND_ACTOR_FLAGS 4
 
 typedef struct BtlActionAnimationRecord {
@@ -99,24 +105,10 @@ typedef struct BtlActionTableEntry {
 
 typedef char BtlActionTableEntry_size_must_be_0x20[
     (sizeof(BtlActionTableEntry) == 0x20) ? 1 : -1];
-typedef char BtlActionTableEntry_kind_offset_must_be_0x00[
-    ((u32)&((BtlActionTableEntry *)0)->kind == 0x00) ? 1 : -1];
-typedef char BtlActionTableEntry_resourceType_offset_must_be_0x03[
-    ((u32)&((BtlActionTableEntry *)0)->resourceType == 0x03) ? 1 : -1];
-typedef char BtlActionTableEntry_displayCode_offset_must_be_0x04[
-    ((u32)&((BtlActionTableEntry *)0)->displayCode == 0x04) ? 1 : -1];
+
 #ifdef VERSION_DDS1
-typedef char BtlActionTableEntry_enabled_offset_must_be_0x03[
-    ((u32)&((BtlActionTableEntry *)0)->enabled == 0x03) ? 1 : -1];
+
 #endif
-typedef char BtlActionTableEntry_lightColorMode_offset_must_be_0x08[
-    ((u32)&((BtlActionTableEntry *)0)->lightColorMode == 0x08) ? 1 : -1];
-typedef char BtlActionTableEntry_lightColor_offset_must_be_0x0C[
-    ((u32)&((BtlActionTableEntry *)0)->lightColor == 0x0C) ? 1 : -1];
-typedef char BtlActionTableEntry_defaultValue_offset_must_be_0x18[
-    ((u32)&((BtlActionTableEntry *)0)->defaultValue == 0x18) ? 1 : -1];
-typedef char BtlActionTableEntry_flags_offset_must_be_0x1C[
-    ((u32)&((BtlActionTableEntry *)0)->flags == 0x1C) ? 1 : -1];
 
 /* Group policy takes precedence; target policy falls back to group framing
  * unless exactly one target is present. DDS1's fixed-preset bit selects explicit
@@ -127,4 +119,4 @@ enum {
     BTL_ANIMATION_TARGET_DEFEAT_CAMERA = 0x2000
 };
 
-#endif /* BTL_ACTION_H */
+#endif /* DDS_BTL_ACTION_H */

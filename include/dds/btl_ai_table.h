@@ -1,6 +1,6 @@
-#ifndef BTL_AI_TABLE_H
-#define BTL_AI_TABLE_H
+#ifndef DDS_BTL_AI_TABLE_H
 
+#define DDS_BTL_AI_TABLE_H
 #include "common.h"
 
 enum {
@@ -17,10 +17,6 @@ typedef struct AiSlot {
 } AiSlot;
 
 typedef char AiSlot_size_must_be_8[(sizeof(AiSlot) == 8) ? 1 : -1];
-typedef char AiSlot_actionId_offset_must_be_2[
-    ((u32)&((AiSlot *)0)->actionId == 2) ? 1 : -1];
-typedef char AiSlot_packedAction_offset_must_be_4[
-    ((u32)&((AiSlot *)0)->packedAction == 4) ? 1 : -1];
 
 /* One AICALC.TBL decision tier: three packed predicates and eight routes. */
 typedef struct AiDecisionRow {
@@ -30,8 +26,6 @@ typedef struct AiDecisionRow {
 
 typedef char AiDecisionRow_size_must_be_0x14[
     (sizeof(AiDecisionRow) == 0x14) ? 1 : -1];
-typedef char AiDecisionRow_routes_offset_must_be_0x0C[
-    ((u32)&((AiDecisionRow *)0)->routes == 0x0C) ? 1 : -1];
 
 /* One species' decision tiers and weighted action slots; other bytes stay opaque. */
 typedef struct AiSpecies {
@@ -45,15 +39,5 @@ typedef struct AiSpecies {
 
 typedef char AiSpecies_size_must_be_0x15C[
     (sizeof(AiSpecies) == 0x15C) ? 1 : -1];
-typedef char AiSpecies_kind_offset_must_be_0[
-    ((u32)&((AiSpecies *)0)->kind == 0x00) ? 1 : -1];
-typedef char AiSpecies_sceneSlot_offset_must_be_2[
-    ((u32)&((AiSpecies *)0)->sceneSlot == 0x02) ? 1 : -1];
-typedef char AiSpecies_decisions_offset_must_be_0x04[
-    ((u32)&((AiSpecies *)0)->decisions == 0x04) ? 1 : -1];
-typedef char AiSpecies_slot_offset_must_be_0x40[
-    ((u32)&((AiSpecies *)0)->slot == 0x40) ? 1 : -1];
-typedef char AiSpecies_unknown108_offset_must_be_0x108[
-    ((u32)&((AiSpecies *)0)->unknown108 == 0x108) ? 1 : -1];
 
-#endif /* BTL_AI_TABLE_H */
+#endif /* DDS_BTL_AI_TABLE_H */

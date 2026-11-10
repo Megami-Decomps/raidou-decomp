@@ -1,6 +1,6 @@
-#ifndef BRS_PROGRESS_ANIMATION_KIND_H
-#define BRS_PROGRESS_ANIMATION_KIND_H
+#ifndef DDS_BRS_PROGRESS_ANIMATION_KIND_H
 
+#define DDS_BRS_PROGRESS_ANIMATION_KIND_H
 #include "common.h"
 
 /* Keep the selector's signed-byte convention while naming its two call modes. */
@@ -13,6 +13,7 @@ enum BrsProgressAnimationMode {
 };
 
 struct BrsSkillPackageWork;
+
 struct BrsProgressRow;
 
 s32 brsCalcProgressAnimationStep(struct BrsSkillPackageWork *work,

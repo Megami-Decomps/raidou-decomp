@@ -1,6 +1,7 @@
-#ifndef EE_MMI_H
-#define EE_MMI_H
+#ifndef DDS_EE_MMI_H
 
+#define DDS_EE_MMI_H
+#include "../ps2asm.h"
 #include "common.h"
 
 /*
@@ -23,6 +24,7 @@
  * the registers the shuffle left them in. Tried: sixteen u32 stores of 0/1
  * (gcc 2.96 emits sw of $0 and a constant, never qmfc2/pextuw or sq).
  */
+
 #define EE_MMI_UNIT_MATRIX(dst) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "qmfc2.ni $5, $vf0\n\t" \
@@ -47,17 +49,6 @@
  * shift/mask unpack `(float)(c & 255)`, ... (gcc gives andi/srl per byte and
  * cvt.s.w, no pextlb/pextlh or COP2).
  */
-#define EE_MMI_RGBA_UNPACK(src, unit) __asm__ volatile ( \
-    ".set noreorder\n" \
-    "lw $2, 0(%0)\n" \
-    "pextlb $2, $0, $2\n" \
-    "pextlh $2, $0, $2\n" \
-    "qmtc2.ni $2, vf10\n" \
-    "vitof0.xyzw vf10, vf10\n" \
-    "qmtc2.ni %1, vf2\n" \
-    "vmulx.xyzw vf10, vf10, vf2x\n" \
-    ".set reorder" \
-    : : "r"(src), "r"(unit) : "$2", "memory")
 
 /* Read-only variant of the same unpack, with the actual four-byte load as
  * an input instead of a global memory-write clobber. Event-unit transitions
@@ -72,21 +63,11 @@
  * barrier or an MMIO primitive. Preserve the broad-clobber variant for callers
  * with additional unmodeled asm effects; do not replace it globally.
  */
-#define EE_MMI_RGBA_UNPACK_READONLY(src, unit) __asm__ volatile ( \
-    ".set noreorder\n" \
-    "lw $2, 0(%1)\n" \
-    "pextlb $2, $0, $2\n" \
-    "pextlh $2, $0, $2\n" \
-    "qmtc2.ni $2, vf10\n" \
-    "vitof0.xyzw vf10, vf10\n" \
-    "qmtc2.ni %0, vf2\n" \
-    "vmulx.xyzw vf10, vf10, vf2x\n" \
-    ".set reorder" \
-    : : "r"(unit), "r"(src), "m"(*(const u32 *)(src)) : "$2")
 
 /* Unscaled RGBA8888 -> four floats in the selected VU register; $2 is scratch.
  * Shared SDK inline: DDS1 002EEF18, DDS2 00347DC0, Nocturne debug 002C6880
  * (sdfCore3DPrim.c). Unlike the normalized unpack, no 1/128 scale is applied. */
+
 #define EE_MMI_RGBA_TO_VF(vf, rgba) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "pextlb $2, $0, %0\n\t" \
@@ -106,22 +87,6 @@
  * Inputs are consumed before out is written. vf2/vf3/vf4 are scratch under
  * the same implicit VU-register convention as EE_MMI_RGBA_TO_VF.
  */
-#define EE_MMI_RGBA_MULTIPLY_VECTOR(out, a, b, unit) __asm__ volatile ( \
-    ".set noreorder\n\t" \
-    "pextlb $2, $0, %1\n\t" \
-    "pextlb $3, $0, %2\n\t" \
-    "pextlh $2, $0, $2\n\t" \
-    "pextlh $3, $0, $3\n\t" \
-    "qmtc2.ni $2, vf2\n\t" \
-    "qmtc2.ni $3, vf3\n\t" \
-    "qmtc2.ni %3, vf4\n\t" \
-    "vitof0.xyzw vf2, vf2\n\t" \
-    "vitof0.xyzw vf3, vf3\n\t" \
-    "vmul.xyzw vf2, vf2, vf3\n\t" \
-    "vmulx.xyzw vf2, vf2, vf4x\n\t" \
-    "qmfc2.ni %0, vf2\n\t" \
-    ".set reorder" \
-    : "=r" (out) : "r" (a), "r" (b), "r" (unit) : "$2", "$3")
 
 /*
  * vf10 (floats, 0..1) -> RGBA8888 word: scale by 128.0 through vf2x, then
@@ -129,6 +94,7 @@
  * (words -> halfwords -> bytes). Tried: `(u32)(int)f[0] | ... << 8 ...` in C
  * (gcc gives cvt.w.s/mfc1/sll/or per channel, no qmfc2 or ppach).
  */
+
 #define EE_MMI_RGBA_PACK(out) __asm__ volatile ( \
     ".set noreorder\n" \
     "mfc1 $3, %1\n" \
@@ -140,8 +106,10 @@
     "ppacb %0, $0, %0\n" \
     ".set reorder" \
     : "=r"(out) : "f"(128.0f) : "$3")
+
 /* The same pack without the "$3" clobber, as the effect draw templates wrote
  * it (DDS2 func_002E6CB8 keeps a mask constant in $3 across the block). */
+
 #define EE_MMI_RGBA_PACK_UNCLOBBERED(out) __asm__ volatile ( \
     ".set noreorder\n" \
     "mfc1 $3, %1\n" \
@@ -161,6 +129,7 @@
  * Retail keeps `unit` (0x43000000 = 128.0f) in one register for several packs.
  * out is earlyclobber: retail never shares it with unit.
  */
+
 #define EE_MMI_RGBA_PACK_UNIT(out, unit) __asm__ volatile ( \
     ".set noreorder\n" \
     "qmtc2.ni %1, vf2\n" \
@@ -179,6 +148,7 @@
  *     vftoi0.xyzw vf10,vf10; qmfc2.ni out,vf10; ppach out,$0,out; ppacb out,$0,out
  * $2 is not declared clobbered, like VU0_SCALAR_OP.
  */
+
 #define EE_MMI_RGBA_PACK_F128(out) __asm__ volatile ( \
     ".set noreorder\n" \
     "mfc1 $2, %1\n" \
@@ -228,6 +198,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * s64 load (gcc emits ldl before ldr, retail has ldr first) and u128 C
  * shifts (no pcpyld).
  */
+
 #define EE_MMI_LOAD_VEC3(vf, p) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "ldr $2, 0(%0)\n\t" \
@@ -247,6 +218,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * keeps both shuffles and transfers after the six retail loads. Scratch
  * registers and the loads' memory effects are declared explicitly.
  */
+
 #define EE_MMI_LOAD_VEC3_PAIR(vf_a, a, vf_b, b) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "ldr $2, 0(%0)\n\t" \
@@ -265,6 +237,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
 /* Adjacent vec3 pair at base and base+12. Keeping one address operand lets
  * the assembler encode the second vector directly at 0xC/0x13/0x14 instead
  * of making gcc materialize base+12 in another GPR. */
+
 #define EE_MMI_LOAD_VEC3_PAIR_12(vf_a, vf_b, base) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "ldr $2, 0(%0)\n\t" \
@@ -288,6 +261,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  *     qmtc2.ni $2,vfN; vitof12.xyzw vfN,vfN
  * Scratch $2 is hard-coded as in EE_MMI_LOAD_VEC3.
  */
+
 #define EE_MMI_LOAD_S16X4_FIXED12(vf, p) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "ldr $2, 0(%0)\n\t" \
@@ -310,6 +284,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * `vsubx.w vf5` is issued twice in retail. Users: sdfMotion colour-key lerp
  * and its five weighted-binding callers, both games.
  */
+
 #define EE_MMI_RGBA_LERP(out, a, b, t, half) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "qmtc2.ni %4, vf3\n\t" \
@@ -345,6 +320,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * union half/word extraction spills the quadword rather than emitting pcpyud.
  * Stores to the macro's own destination are part of the packing idiom.
  */
+
 #define EE_MMI_STORE_VEC3_FROM_QUAD(dst, src) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "lq $3, 0(%1)\n\t" \
@@ -363,6 +339,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * nop; the pointer-taking primitive above has two.
  * cc1 cannot extract the upper half with a C >>64 operation.
  */
+
 #define EE_MMI_STORE_VEC3_VALUE(dst, value) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "pcpyud $2, %1, $0\n\t" \
@@ -378,10 +355,6 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * also store with swl/swr. Retail: DDS1 sdfBillBoardMake1 and
  * DDS2 func_0033B530 (texture-quad UV words).
  */
-#define EE_LOAD_UNALIGNED_WORD(out, src) __asm__ volatile ( \
-    "lwr %0, 0(%1)\n\t" \
-    "lwl %0, 3(%1)" \
-    : "=&r"(out) : "r"(src))
 
 /*
  * vf10 (floats) -> RGBA8888 word, scale 255.0f through `mfc1 $2` (the draw
@@ -391,6 +364,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * $2 is not declared clobbered, like EE_MMI_RGBA_PACK_F128. Users: DDS1
  * dds3SetFogColor and DDS2 dds3SetFogColor.
  */
+
 #define EE_MMI_RGBA_PACK_F255(out) __asm__ volatile ( \
     ".set noreorder\n" \
     "mfc1 $2, %1\n" \
@@ -412,6 +386,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * Plain C float gathering was compiled first: four lwc1/swc1 pairs, a
  * 16-byte stack temporary, then lqc2, rather than this MMI packing.
  */
+
 #define EE_MMI_LOAD_MATRIX_COLUMN(vf, src) __asm__ volatile ( \
     ".set noreorder\n\tlw $2, 0(%0)\n\tlw $3, 0x10(%0)\n\t" \
     "lw $4, 0x20(%0)\n\tlw $5, 0x30(%0)\n\t" \
@@ -426,6 +401,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * C has no equivalent (cc1 has no clz builtin), so the instruction is
  * written directly; `out` may be the same variable as `in`.
  */
+
 #define EE_MMI_PLZCW(out, in) __asm__ volatile ("plzcw %0, %1" : "=r"(out) : "r"(in))
 
 /*
@@ -438,6 +414,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * Plain C counting emits a loop; ordinary C subtraction emits ADDIU,
  * not the native trapping ADDI used to materialize 31.
  */
+
 #define EE_MMI_BIT_LENGTH(value) __asm__ ( \
     ".set noreorder\n\tplzcw $2, %0\n\tandi $2, $2, 0xff\n\t" \
     "addi %0, $0, 31\n\tsubu %0, %0, $2\n\t.set reorder" \
@@ -449,17 +426,18 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * (`*chcr |= 0x40; sync;` before sceDmaSendN), as in Sony's libkernel
  * inline usage.
  */
-#define EE_SYNC() __asm__ volatile ("sync")
 
 /* Interrupt-enable sequence: finish preceding stores before enabling handlers.
  * Independent retail sites: DDS2 func_00345268 (+0x14), func_00345298
  * (+0x7C), and sdfDrawThIntHandler (+0x18); DDS1 sdfImageSetDmacHandler uses it too. */
+
 #define EE_ENABLE_INTERRUPTS_SYNC() __asm__ volatile ("sync\n\tei")
 
 /* Expand packed RGB5 channels into byte lanes (PEXT5), before replicating
  * their high bits into the low three bits. Both games' sdfTexSetMonoClut
  * share this texture-intensity conversion instruction.
  * Registers are selected by gcc; the output may reuse the input register. */
+
 #define EE_MMI_PEXT5(out, in) __asm__ volatile ("pext5 %0, %1" : "=r" (out) : "r" (in))
 
 /*
@@ -468,6 +446,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * volatile and memory-clobbering, so stores keep source order and anything
  * that must issue before them (a loop test) has to come first in source.
  */
+
 #define EE_STORE_ZERO_QUAD(p, off) __asm__ volatile ( \
     "sq $0, " #off "(%0)" : : "r" (p) : "memory")
 
@@ -476,6 +455,7 @@ static inline u32 eePackRGBAWord(f32 unit) {
  * The loop primitives preserve source alpha in vf6w. Scalar C cannot emit
  * PEXTLB/PEXTLH, VITOF0, the VU accumulator blend, or PPAC5. These are the
  * native packed-color SDK idioms, not replacements for the palette loops. */
+
 #define EE_MMI_PALETTE_TINT_SETUP(amount, tint, unit) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "qmtc2.ni %0, vf2\n\t" \

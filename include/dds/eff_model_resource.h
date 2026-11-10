@@ -1,7 +1,8 @@
-#ifndef EFF_MODEL_RESOURCE_H
-#define EFF_MODEL_RESOURCE_H
+#ifndef DDS_EFF_MODEL_RESOURCE_H
 
+#define DDS_EFF_MODEL_RESOURCE_H
 #include "common.h"
+
 #include "mdl.h"
 
 /* An effect's model resource: its placement, color, model context and span configuration. */

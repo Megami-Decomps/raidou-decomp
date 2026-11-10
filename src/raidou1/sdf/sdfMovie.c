@@ -128,6 +128,41 @@ extern s32 movieStreamSema;
 extern char sdfMovieIpsExt[4];
 /* End of declarations from src/smt3/sdf/sdfMovie.c */
 
+/* Declarations from dds-decomp src/dds1/sdf/sdfMovie.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_sdfMovieDrawPacket_t 1
+
+#include "dds/common.h"
+
+#include "dds/libsdf.h"
+
+#include "dds/ps2asm.h"
+
+#include "dds/sdf_movie_types.h"
+
+extern u32 movieDrawMode;
+
+extern s32 sdfMovieDrawLeft;
+
+extern s32 sdfMovieDrawTop;
+
+extern s32 sdfMovieDrawRight;
+
+extern s32 sdfMovieDrawBottom;
+
+extern u32 sdfMovieDrawColor;
+
+/* Store the stream-frame draw-path mode; movie viewport setup selects 1. */
+void sdfSetStreamFrameDrawMode(u32 value);
+
+void sdfSetGridScaledDrawBounds(s32 column, s32 row, s32 width, s32 height, u32 mode);
+
+extern void sdfMovieQueueFrameSprite(sdfMovieCb_t *movie, sdfGrOt_t *ot);
+/* End of declarations from src/dds1/sdf/sdfMovie.c */
+
 u8 *movieWaitSema(s32 aSize)
 {
     sdfMovieCb_t *mov = movieSemaId;
@@ -173,13 +208,89 @@ u8 *movieWaitSema(s32 aSize)
     return ptr;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", sdfSetStreamFrameDrawMode);
+/* Store the stream-frame draw-path mode; movie viewport setup selects 1. */
+void sdfSetStreamFrameDrawMode(u32 value) {
+    movieDrawMode = value;
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", sdfSetGridScaledDrawBounds);
+void sdfSetGridScaledDrawBounds(s32 column, s32 row, s32 width, s32 height, u32 mode) {
+    sdfMovieDrawLeft = column * 0x10 + 0x7000;
+    sdfMovieDrawTop = row * 8 + 0x7900;
+    sdfMovieDrawRight = sdfMovieDrawLeft + width * 0x10;
+    sdfMovieDrawBottom = sdfMovieDrawTop + height * 8;
+    sdfMovieDrawColor = mode;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", func_00374390);
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", release_movieobj2);
+void release_movieobj2(sdfMovieCb_t *obj, sdfGrOt_t *ot)
+{
+    sdfMovieDrawPacket_t *packet;
+    sdfDrawTag_t *tag;
+    u16 width;
+    u16 height;
+    s32 widthLog2;
+    s32 heightLog2;
+    u32 bufferWidth;
+    u32 basePointer;
+
+    if (obj->decodeCb.playbackPhase < 2) {
+        return;
+    }
+    if (movieDrawMode == 1) {
+        sdfMovieQueueFrameSprite(obj, ot);
+        return;
+    }
+    if (obj->sndActive != 0 && obj->sndPlaying == 0 && obj->readCb.pac->ringLength >= 0x1000) {
+        obj->sndPlaying = 1;
+        movieSemaId = obj;
+        p2sdSetPcmCallback(EE_ADDR(movieWaitSema));
+        p2sdPlayPcm(obj->sndVolume);
+    }
+
+    packet = EE_ADDR_AS(sdfMovieDrawPacket_t *, sdfGrAllocPacketBuff(sizeof(sdfMovieDrawPacket_t)));
+    packet->dmaTag = 0x100000A;
+    height = obj->decodeCb.height;
+    width = obj->decodeCb.width;
+    packet->vifCommands = 0x5000000A00000000ULL;
+    packet->gifTag.parm = 0x108B400000008009ULL;
+    packet->gifTag.regs = 0x0E;
+    packet->sampling.data = 0x21;
+    packet->sampling.reg = 0x14;
+    heightLog2 = height - 1;
+    widthLog2 = width - 1;
+    bufferWidth = width >> 6;
+    heightLog2 = PS2_WORD_BIT_LENGTH(heightLog2);
+    widthLog2 = PS2_WORD_BIT_LENGTH(widthLog2);
+    basePointer = (u32)obj->decodeCb.resourceWord >> 6;
+    if (bufferWidth == 0) {
+        bufferWidth = 1;
+    }
+    packet->texture.data = ((u64)1 << 34) | ((u64)heightLog2 << 30) |
+        (widthLog2 << 26) | (obj->decodeCb.rgbMode != 0 ? 0x200000 : 0) |
+        ((u64)bufferWidth << 14) | (u64)basePointer;
+    packet->texture.reg = 0x06;
+    packet->clamp.data = 5;
+    packet->clamp.reg = 0x08;
+    packet->textureAlpha.data = 0x4000000080ULL;
+    packet->textureAlpha.reg = 0x3B;
+    packet->color.data = (s32)0x80808080;
+    packet->color.reg = 0x01;
+    packet->sourceOrigin.data = 0;
+    packet->sourceOrigin.reg = 0x03;
+    packet->vertexOrigin.data = ((u64)obj->z << 32) |
+        ((u32)(s16)obj->y << 16) | (u32)(s16)obj->x;
+    packet->vertexOrigin.reg = 0x05;
+    packet->sourceExtent.data = (s32)(((u32)height << 20) | ((u32)width << 4));
+    packet->sourceExtent.reg = 0x03;
+    packet->vertexExtent.data = ((u64)obj->z << 32) |
+        ((u32)((s16)obj->y + (s16)obj->height) << 16) |
+        (u32)((s16)obj->x + (s16)obj->width);
+    packet->vertexExtent.reg = 0x05;
+    tag = sdfPrimAllocDrawTag(NULL);
+    sdfDrawTagLink(tag, EE_ADDR(packet));
+    ot->regFunc(ot, tag);
+}
 
 void movieReadNextChunk(sdfMovieCb_t *aMov)
 {

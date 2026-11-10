@@ -1,55 +1,8 @@
-#ifndef EFF_TRANSFORM_H
-#define EFF_TRANSFORM_H
+#ifndef DDS_EFF_TRANSFORM_H
 
+#define DDS_EFF_TRANSFORM_H
+#include "../basic.h"
 #include "common.h"
-
-/* Sparse world-node identities recovered from the paired operation tables and
- * concrete creators. Unlisted values stay unnamed; COUNT remains the full
- * directory extent rather than an enum-completeness claim. */
-enum {
-    EFF_WORLD_KIND_WORLD_INFO = 0,
-    EFF_WORLD_KIND_EVENT_TABLE = 1,
-    EFF_WORLD_KIND_WORLD_INDEX_OWNER = 2,
-    EFF_WORLD_KIND_SLOT_RING = 3,
-    EFF_WORLD_KIND_CAMERA = 4,
-    EFF_WORLD_KIND_FOLLOW_MODEL = 5,
-    EFF_WORLD_KIND_EFFECT_TRANSFORM = 6,
-    EFF_WORLD_KIND_EFFECT_OBJECT = 7,
-    EFF_WORLD_KIND_RESOURCE_OWNER = 8,
-    EFF_WORLD_KIND_LIGHT = 9,
-    EFF_WORLD_KIND_SCRIPT_OBJECT = 10,
-    EFF_WORLD_KIND_ACTION_B = 11,
-    EFF_WORLD_KIND_ACTION_D = 13,
-    EFF_WORLD_KIND_ACTION_10 = 16,
-    EFF_WORLD_KIND_TRANSFORM_SOURCE = 17,
-    EFF_WORLD_KIND_COUNT = 18
-};
-
-enum {
-    OBJECT_TRANSFORM_FLAG_UPDATE_PENDING = 1,
-    OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID = 2,
-    OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
-};
-
-typedef struct dds3Basic_t dds3Basic_t;
-
-/* Separate 0xD0-byte allocation: DDS1 dds3InitPoseSet (0010F570).
- * VU0 vector transfers and scalar camera reads use the same float vectors. */
-typedef struct dds3PoseSet_t {
-    u128 matrix[4];
-    f32 pos[4]; /* 0x40: used as the returned inner-position vector. */
-    f32 rotation[4]; /* 0x50: used as the returned inner-rotation vector. */
-    f32 scale[4]; /* 0x60: used as the returned inner-scale vector. */
-    f32 smoothedPosition[4];
-    f32 savedPosition[4];
-    f32 savedRotation[4];
-    f32 savedScale[4];
-    f32 unkB0[4];
-    u32 flags;
-    f32 radius;
-    u32 unkC8;
-    u8 padCC[4];
-} dds3PoseSet_t;
 
 /* D_003299C0 selects six-word tables; D_00329A20 is kind 1.
  * The last two words in every populated retail table are zero. */
@@ -64,37 +17,15 @@ typedef struct EffWorldOps {
 
 /* Kind-1 value cursors use these halfwords at 00110490. The same prefix is
  * used by separate 0x10-byte world index nodes (0010FEC8). */
-typedef struct dds3BasicArrayHandle_t {
+typedef struct dds_dds3BasicArrayHandle_t {
     s16 headIndex;
     s16 tailIndex;
     s16 cursorIndex;
     u16 entryCount;
-} dds3BasicArrayHandle_t;
-typedef char WorldValueIndices_size_must_be_0x08[(sizeof(dds3BasicArrayHandle_t) == 0x08) ? 1 : -1];
+} dds_dds3BasicArrayHandle_t;
 
-/* Complete 68-byte (0x44, not 0x68) allocation from
- * dds3AllocBasic at DDS1 0010F418 / DDS2 0010F640.
- * Its kind byte at +0x0F determines both identity and payload interpretation. */
-struct dds3Basic_t {
-    u32 word0;
-    u32 key; /* Kind 2: dds3AddAreaBasic at 00111188. */
-    const char *name; /* Native caption string for named kinds; other kinds keep a scalar here. */
-    u32 kindTag; /* Kind occupies the high byte; constructor clears low 24 bits. */
-    EffWorldOps *ops;
-    u32 word14;
-    void *workdata; /* Kind-specific payload; never the separately allocated inner. */
-    dds3PoseSet_t *poseset;
-    dds3Basic_t *next;
-    dds3Basic_t *previous;
-    u32 word28;
-    u32 word2C;
-    dds3Basic_t *owner; /* Per-kind list membership: 00110928. */
-    u32 color;
-    u8 unk38[0x0C];
-};
+typedef char WorldValueIndices_size_must_be_0x08[(sizeof(dds_dds3BasicArrayHandle_t) == 0x08) ? 1 : -1];
 
-typedef char EffWorldNode_size_must_be_0x44[(sizeof(dds3Basic_t) == 0x44) ? 1 : -1];
 typedef char EffWorldOps_size_must_be_0x18[(sizeof(EffWorldOps) == 0x18) ? 1 : -1];
-typedef char ObjectTransform_size_must_be_0xD0[(sizeof(dds3PoseSet_t) == 0xD0) ? 1 : -1];
 
 #endif

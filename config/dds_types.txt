@@ -1,0 +1,16 @@
+# dds-decomp types whose size differs from SMT3's type of the same name (DDS1 or DDS2).
+# The DDS code carried into Raidou uses them as dds_<name>; SMT3's keep the plain name.
+datUnitWork_t
+dds3BasicArrayHandle_t
+dds3GlobalWork_t
+dds3ObjectBaseControlWorkData_t
+doormovetbl_s
+evtViewerInfo_t
+fldAreaWork_t
+fldGbTypeBlock_t
+fldNpcSlot_t
+fldNpc_tag
+fldWaypointBlock_t
+instanceMes_tag
+itfpanel_t
+sdfModelRootNode_t

@@ -210,6 +210,74 @@ extern char dds3DebugFieldClose[8];
 extern char dds3DebugBlockEnd[8];
 /* End of declarations from src/smt3/kernel/dds3KernelCore.c */
 
+/* Declarations from dds-decomp src/dds1/kernel/dds3KernelCore.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#include "dds/common.h"
+
+#include "dds/dds3_task_add_child.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/kwln.h"
+
+#include "dds/dds3_task_update_count.h"
+
+#include "dds/dds3_process_registration.h"
+
+#include "dds/dds3_task_queue_query.h"
+
+#include "dds/dds3_task_priority_query.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_flags.h"
+
+#include "dds/dds3_task_state.h"
+
+#include "dds/dds3_task_state_query.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_task_queue_mutation.h"
+
+#include "dds/dds3_task_runner.h"
+
+#include "dds/dds3_process_main_result.h"
+
+extern void kwlnTaskFinalizeDestroy(dds3ProcessID_t* task);
+
+#include "dds/sdf_debug_api.h"
+
+extern u8 D_003BA828[];
+
+extern u8 D_003BA830[];
+
+extern u8 D_003BA860[2][2][2];
+
+extern s8 D_003BA868[2][2];
+
+extern u8 D_003BA870[2][2][2];
+
+extern u8 D_003BA878[2][2];
+
+extern u8 D_0039DE88[];
+
+extern u8 D_0039DEB8[];
+
+extern u8 D_0039DEC8[];
+
+extern u8 D_0039DEF8[];
+
+void kwlnTaskFinalizeDestroy(dds3ProcessID_t* task);
+
+void kwlnTraverseDiagnosticTaskQueue(dds3ProcessID_t* task, void* unused);
+
+void func_00101A78(void);
+/* End of declarations from src/dds1/kernel/dds3KernelCore.c */
+
 void DeleteProcessList(dds3ProcessID_t *setp)
 {
     if ((setp->flag & 0xF) == 0) {
@@ -598,7 +666,15 @@ dds3ProcessID_t *dds3SearchProcessNumber(u32 type, s32 n)
     return p;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", kwlnTraverseDiagnosticTaskQueue);
+void kwlnTraverseDiagnosticTaskQueue(dds3ProcessID_t* task, void* unused)
+{
+    if (task == 0) {
+        return;
+    }
+    do {
+        task = task->next;
+    } while (task != 0);
+}
 
 void dds3PrintProcessList(void)
 {

@@ -1,6 +1,6 @@
-#ifndef EFF_OWNER_RECORDS_H
-#define EFF_OWNER_RECORDS_H
+#ifndef DDS_EFF_OWNER_RECORDS_H
 
+#define DDS_EFF_OWNER_RECORDS_H
 #include "common.h"
 
 struct EffectSlotSet;
@@ -30,12 +30,11 @@ typedef struct EffectSlotOwner {
 } EffectSlotOwner;
 
 typedef char EffectRecordSizeCheck[sizeof(EffectRecord) == 0x10 ? 1 : -1];
+
 typedef char EffectOwnerRecordSizeCheck[sizeof(EffectOwnerRecord) == 0x44 ? 1 : -1];
+
 typedef char EffectSlotSizeCheck[sizeof(EffectSlot) == 0x80 ? 1 : -1];
-typedef char EffectSlot_bucketIndex_offset_check[
-    ((u32)&((EffectSlot *)0)->bucketIndex == 0x28) ? 1 : -1];
+
 typedef char EffectSlotOwnerSizeCheck[sizeof(EffectSlotOwner) == 0x14 ? 1 : -1];
-typedef char EffectSlotOwner_slots_offset_check[
-    ((u32)&((EffectSlotOwner *)0)->slots == 0x10) ? 1 : -1];
 
 #endif

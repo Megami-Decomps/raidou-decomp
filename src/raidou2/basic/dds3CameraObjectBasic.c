@@ -108,6 +108,67 @@ extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialUp;
 extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialEye;
 /* End of declarations from src/smt3/basic/dds3CameraObjectBasic.c */
 
+/* Declarations from dds-decomp src/dds1/basic/dds3CameraObjectBasic.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#include "basic.h"
+
+#include "dds/eff_transform.h"
+
+enum {
+    OBJECT_TRANSFORM_FLAG_UPDATE_PENDING = 1,
+    OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID = 2,
+    OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
+};
+
+#include "dds/sdf_projection.h"
+
+#include "dds/common.h"
+
+#include "dds/dds3_camera_update_flags.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/pcp_vu0.h"
+
+typedef struct {
+    f32 components[4];
+} CameraVector;
+
+extern CameraVector D_0039F6F8;
+
+extern CameraVector D_0039F708;
+
+#include "dds/dds3_world_secondary.h"
+
+/* Release the camera's inner node, base handle, and owned data block. */
+void dds3DestroyCameraData(dds3Basic_t *camera);
+
+/* Rebuild dirty vectors and publish only the active world's camera; return 1.
+ * A pending field-of-view update is consumed only while this camera is active. */
+s32 dds3UpdateCameraObject(dds3Basic_t *camera);
+
+/* The camera draw callback has no geometry to submit. */
+s32 dds3DrawCameraObject(dds3Basic_t *camera);
+
+/* Load the owned look-at matrix into vf28-vf31. */
+void dds3LoadObjectMatrixPointerIntoVu(dds3Basic_t *camera);
+
+/* Copy the supplied vector to the camera's world-space eye position. */
+void dds3CameraObjectBasicSetWorldEye(dds3Basic_t *camera, const u128 *worldEye);
+
+/* Load the camera's world-space eye vector into vf10. */
+void dds3CameraObjectBasicLoadWorldEyeIntoVu(dds3Basic_t *camera);
+/* End of declarations from src/dds1/basic/dds3CameraObjectBasic.c */
+
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011C900);
 
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011C960);
@@ -219,7 +280,10 @@ void dds3DeleteCameraObjectBasic(dds3Basic_t *pBasic)
     dds3DeleteSceneBasicData(pBasic);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3LoadObjectMatrixPointerIntoVu);
+/* Load the owned look-at matrix into vf28-vf31. */
+void dds3LoadObjectMatrixPointerIntoVu(dds3Basic_t *camera) {
+    VU0_LOAD_MATRIX(((CameraData *)camera->workdata)->matrix);
+}
 
 /* The recovered name is misleading: retail stores a target, not a matrix. */
 void dds3CameraObjectBasicGetCameraTM(dds3Basic_t *basic, const sdfVector4_t *target)

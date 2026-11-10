@@ -1,8 +1,10 @@
-#ifndef BTL_ACTOR_RESOURCE_BANK_API_H
-#define BTL_ACTOR_RESOURCE_BANK_API_H
+#ifndef DDS_BTL_ACTOR_RESOURCE_BANK_API_H
 
+#define DDS_BTL_ACTOR_RESOURCE_BANK_API_H
 #include "common.h"
+
 #include "btl_actor_resource_table_kind.h"
+
 #include "btl_actor_resource_table_kind_type.h"
 
 /* Return a borrowed pointer into the selected actor-resource bank. The party

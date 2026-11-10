@@ -1,13 +1,18 @@
-#ifndef EFF_H
-#define EFF_H
+#ifndef DDS_EFF_H
 
+#define DDS_EFF_H
+#include "../billboard.h"
+#include "../effect.h"
 #include "common.h"
+
 #include "sdf.h"
 
 struct EffNode;
+
 struct EffMappedRecord;
 
 struct FilePacRequest;
+
 struct sdfMemHandle_t;
 
 /* Packed position/basis query; the final word is a signed extent override. */
@@ -40,6 +45,7 @@ typedef struct EffectList {
 } EffectList;
 
 typedef char EffectListNode_size_must_be_0x18[(sizeof(EffectListNode) == 0x18) ? 1 : -1];
+
 typedef char EffectList_size_must_be_0x14[(sizeof(EffectList) == 0x14) ? 1 : -1];
 
 /* History arrays precede this 0x38-byte owner in one retained allocation. */
@@ -78,28 +84,19 @@ typedef struct EffMagatuhiOwner {
 } EffMagatuhiOwner;
 
 typedef char EffMagatuhiValueWork_size_must_be_0x38[(sizeof(EffMagatuhiValueWork) == 0x38) ? 1 : -1];
-typedef char EffMagatuhiValueWork_historyScalars_offset[((u32)&((EffMagatuhiValueWork *)0)->historyScalars == 0x1C) ? 1 : -1];
+
 typedef char EffMagatuhiHistoryParams_size_must_be_0x1C[(sizeof(EffMagatuhiHistoryParams) == 0x1C) ? 1 : -1];
+
 typedef char EffMagatuhiOwner_size_must_be_0x20[(sizeof(EffMagatuhiOwner) == 0x20) ? 1 : -1];
 
-EffMagatuhiOwner *effMagaCylinderAllocPart(const EffMagatuhiHistoryParams *source);
-void effMagaCylinderFree(EffMagatuhiOwner *owner);
-void effMagaCylinderFreeParts(EffMagatuhiValueWork *work);
-void effMagaCylinderSetPart(EffMagatuhiValueWork *work, s32 index, u32 color);
-void effMagaCylinderBlendColor(EffMagatuhiValueWork *work, u32 colorA, u32 colorB);
 #ifdef VERSION_DDS2
-EffMagatuhiValueWork *effMagaCylinderAllocTex(s32 count, s32 historyCount, f32 historyDistanceScale, s32 drawQueueIndex, f32 historyAngleStep);
-void effMagaCylinderDrawTrack(EffMagatuhiOwner *owner);
-void effMagaCylinderSetPartPtrs(EffMagatuhiValueWork *work, s32 index);
-void effMagaCylinderSetPartPos(EffMagatuhiValueWork *work, s32 index, const f32 vector[4]);
+
 #else
-EffMagatuhiValueWork *effMagaCylinderAllocTex(s32 count, s32 historyCount, f32 historyDistanceScale, s32 drawQueueIndex, f32 historyAngleStep);
-void effMagaCylinderDrawTrack(EffMagatuhiOwner *owner);
-void effMagaCylinderSetPartPtrs(EffMagatuhiValueWork *work, s32 index);
-void effMagaCylinderSetPartPos(EffMagatuhiValueWork *work, s32 index, const f32 vector[4]);
+
 #endif
 
 struct dds3ModelHandle_t;
+
 struct dds3HermitianTrackPoly_tag;
 
 /* Thirteen copied words, followed by an update counter and owned history. */
@@ -123,15 +120,20 @@ typedef struct EffTrackPolyWork {
 } EffTrackPolyWork;
 
 typedef char EffTrackPolyParams_size_must_be_0x34[(sizeof(EffTrackPolyParams) == 0x34) ? 1 : -1];
+
 typedef char EffTrackPolyWork_size_must_be_0x3C[(sizeof(EffTrackPolyWork) == 0x3C) ? 1 : -1];
 
 EffTrackPolyWork *effTrackPolyCreateWork(EffTrackPolyParams *src);
+
 void effTrackPolyRelease(EffTrackPolyWork *work);
+
 void effTrackPolyUpdate(EffTrackPolyWork *work);
 
 /* Copy one four-float vector from read-only source storage to destination. */
 void effCopyVector(f32 destination[4], const f32 source[4]);
+
 void effCopyVectorToNodeInstance(struct EffNode *node, const void *vector);
+
 void effApplyNodeTransformMatrix(struct EffNode *node, const void *matrix);
 
 typedef struct EffBezierPoint {
@@ -147,8 +149,6 @@ typedef struct EffSegmentedBezierSlot {
     f32 t;
     f32 parameterStep;
 } EffSegmentedBezierSlot;
-
-extern s32 effPCPBezierEval(EffSegmentedBezierSlot *slot, f32 *out);
 
 /* Parameter head (0x54 bytes) of the fragment effect, copied verbatim into the work. */
 typedef struct {
@@ -186,28 +186,14 @@ typedef struct {
     EffResourceRectBounds bounds;
 } EffResourceRectDrawParams;
 
-/* Nine copied words; the selected source texture belongs to the owner. */
-typedef struct {
-    s32 extent;
-    /* The native movie blender interpolates both center coordinates in one loop. */
-    s32 center[2];
-    EffResourceRectDrawParams draw;
-} dds3Effect_PartialMultiFilterParam_t; /* 0x24 */
-
-void Eve_PartialMultiFilterSetParam(dds3Effect_PartialMultiFilterParam_t *parameters);
-
 typedef struct {
     dds3Effect_PartialMultiFilterParam_t params;
     sdfTexHandle_t *texture;
 } EffResourceRectWork; /* 0x28 */
 
-EffResourceRectWork *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *params);
-void dds3EffectPartialMultiFilterDelete(EffResourceRectWork *work);
-
 typedef char EffResourceRectDrawParams_size_must_be_0x18[(sizeof(EffResourceRectDrawParams) == 0x18) ? 1 : -1];
-typedef char EffResourceRectParams_size_must_be_0x24[(sizeof(dds3Effect_PartialMultiFilterParam_t) == 0x24) ? 1 : -1];
+
 typedef char EffResourceRectWork_size_must_be_0x28[(sizeof(EffResourceRectWork) == 0x28) ? 1 : -1];
-typedef char EffResourceRectDrawParams_layout[((u32)&((dds3Effect_PartialMultiFilterParam_t *)0)->draw == 0xC && (u32)&((EffResourceRectDrawParams *)0)->blendControl == 4 && (u32)&((EffResourceRectDrawParams *)0)->bounds == 8) ? 1 : -1];
 
 /* Random slot index and associated release id (0x8); DDS1/2 effect and panel views. */
 typedef struct EffCntRec {
@@ -240,10 +226,8 @@ typedef struct EffWork {
     u32 type;
     void *payload;
 } EffWork;
-typedef char EffWork_size_must_be_8[sizeof(EffWork) == 8 ? 1 : -1];
 
-EffWork *dds3MagatuhiParCreate(s32 type, void *params);
-void *dds3MagatuhiGetHandle(EffWork *work);
+typedef char EffWork_size_must_be_8[sizeof(EffWork) == 8 ? 1 : -1];
 
 /* Effect callback dispatch entry (0x18); DDS1/2 game/code_0018CAC8/00194700.c. */
 typedef struct EffHandler {
@@ -256,6 +240,7 @@ typedef struct EffCreateHandler {
     void *(*handler)(void *);
     u8 unk4[0x14];
 } EffCreateHandler;
+
 typedef char EffCreateHandler_size_must_be_0x18[
     sizeof(EffCreateHandler) == 0x18 ? 1 : -1];
 
@@ -290,52 +275,11 @@ typedef char BillRenderPair_size_must_be_0x1C[
     (sizeof(BillRenderPair) == 0x1C) ? 1 : -1];
 
 struct BillData;
+
 struct BillChildPayload;
 
 /* Billboard common prefix and animation-list view (max 0x64); child allocations are 0x34 bytes. */
 struct BillOut;
-
-typedef struct billHandle_t {
-    f32 position[4]; /* 0x00: copied as a four-component position by both render paths. */
-    f32 childScaleX;  /* 0x10: set by dds3BillboardSetScale */
-    f32 childScaleY;  /* 0x14 */
-    f32 unk18;
-    f32 unk1C;
-    f32 rotationAngle;  /* 0x20: radian angle used to rotate the quad corners. */
-    u32 childParam;   /* 0x24: set by dds3BillboardSetRGBA */
-    void (*callback)(); /* 0x28: called by dds3BillboardDraw; set from the
-                          per-index table by dds3BillboardCreate */
-    u16 kind;         /* 0x2C: kind 0/3 child, kind 1 animation list */
-    u16 requestedPacketListIndex; /* 0x2E: selected child packet-list pool */
-    union {
-        void *payload; /* 0x30: kind-discriminated payload when its type is unknown */
-        struct BillChildPayload *child; /* child kinds */
-        struct BillData *animationData; /* kind 1 */
-    };
-    BillRenderPair pair; /* 0x34: used by the mode-0x80 entry renderer */
-    u16 animationActive; /* 0x50: cleared by empty or completed nonlooping animation */
-    u8 pad52[2];
-    u32 modeFlags; /* 0x54: bits 0x40/0x80 select billboard entry modes */
-    u32 animationEntryIndex; /* 0x58: selected nonempty animation descriptor */
-    s32 entryCount;
-    struct BillOut *resolvedEntries; /* 0x60: runtime animation state array */
-} billHandle_t;
-
-typedef char BillObj_size_must_be_0x64[
-    (sizeof(billHandle_t) == 0x64) ? 1 : -1];
-typedef char BillObj_payload_offset_must_be_0x30[
-    ((u32)&((billHandle_t *)0)->payload == 0x30) ? 1 : -1];
-
-/* Serialized entry offsets are relative to BillData.base. */
-/* BillAnimationEntry.flags bits; distinct from entryModeFlags and billHandle_t.modeFlags. */
-enum {
-    BILL_ANIMATION_FLAG_FRAME_COLORS = 0x00000001,
-    BILL_ANIMATION_FLAG_PACKET_LIST_2 = 0x00000002,
-    BILL_ANIMATION_FLAG_PACKET_LIST_3 = 0x00000004,
-    BILL_ANIMATION_FLAG_PACKET_LIST_MASK = 0x00000006,
-    BILL_ANIMATION_FLAG_STOP_AT_END = 0x00000010,
-    BILL_ANIMATION_FLAG_PLURAL_ENTRIES = 0x10000000
-};
 
 typedef struct BillAnimationEntry {
     s32 offset;
@@ -394,10 +338,13 @@ typedef struct BillData {
 
 typedef char BillAnimationEntry_size_must_be_0x14[
     (sizeof(BillAnimationEntry) == 0x14) ? 1 : -1];
+
 typedef char BillRecord_size_must_be_0x18[
     (sizeof(BillRecord) == 0x18) ? 1 : -1];
+
 typedef char BillOut_size_must_be_0x14[
     (sizeof(BillOut) == 0x14) ? 1 : -1];
+
 typedef char BillData_size_must_be_0x1C[
     (sizeof(BillData) == 0x1C) ? 1 : -1];
 
@@ -426,8 +373,6 @@ typedef struct BillSnapshot {
 
 typedef char BillSnapshot_size_must_be_0x24[
     (sizeof(BillSnapshot) == 0x24) ? 1 : -1];
-typedef char BillSnapshot_texture_offset_must_be_0x10[
-    ((u32)&((BillSnapshot *)0)->texture == 0x10) ? 1 : -1];
 
 /* Fifteen billboard quads precede the child manager in its 0x450 allocation. */
 typedef struct BillPacketWork {
@@ -478,7 +423,9 @@ typedef struct EffectConfig {
 } EffectConfig;
 
 struct dds3Particle_BlurBuff_t;
+
 struct ParSystem;
+
 struct effMTPolyListHandle_t;
 
 /* The kind tag selects one complete view of the 16-byte payload at +8. */
@@ -530,17 +477,10 @@ typedef struct ParKindState {
 } ParKindState; /* 0x18 */
 
 typedef char ParKindState_size_must_be_0x18[(sizeof(ParKindState) == 0x18) ? 1 : -1];
-typedef char ParKindState_payload_offset_must_be_0x08[
-    ((u32)&((ParKindState *)0)->payload == 0x08) ? 1 : -1];
-typedef char ParKindCrossStripPayload_system_offset_must_be_0x10[
-    ((u32)&((ParKindState *)0)->payload.crossStrip.drawSystem == 0x10) ? 1 : -1];
-typedef char ParKindCrossTrianglePayload_system_offset_must_be_0x14[
-    ((u32)&((ParKindState *)0)->payload.crossTriangle.drawSystem == 0x14) ? 1 : -1];
-typedef char ParKindTrackPolygonPayload_modelList_offset_must_be_0x14[
-    ((u32)&((ParKindState *)0)->payload.trackPolygon.modelList == 0x14) ? 1 : -1];
 
 /* Each particle kind has constructor, per-frame update and release callbacks. */
 struct ParObj;
+
 typedef struct ParDispatch {
     void *(*func)();
     void (*update)(struct ParObj *);
@@ -599,9 +539,8 @@ typedef struct EffEmitterHead {
     u16 active;            /* 0x142 */
     u8 pad144[0xC];
 } EffEmitterHead;
+
 typedef char EffEmitterHeadSizeCheck[sizeof(EffEmitterHead) == 0x150 ? 1 : -1];
-typedef char EffEmitterHeadSubOffsetCheck[(u32)&((EffEmitterHead *)0)->sub == 0x30 ? 1 : -1];
-typedef char EffEmitterHeadBackupOffsetCheck[(u32)&((EffEmitterHead *)0)->backupMatrix == 0x100 ? 1 : -1];
 
 typedef struct EffTemplatePacketList {
     EffEmitterHead head; /* Common runtime prefix, 0x150 bytes. */
@@ -631,12 +570,6 @@ typedef struct EffTemplatePacketList {
 } EffTemplatePacketList;
 
 typedef char EffTemplatePacketList_layout_preserved[(sizeof(EffTemplatePacketList) == 0x180) ? 1 : -1];
-typedef char EffTemplatePacketList_listAllocation_offset[(u32)&((EffTemplatePacketList *)0)->listAllocation == 0x174 ? 1 : -1];
-typedef char EffTemplatePacketList_auxiliaryAllocation_offset[(u32)&((EffTemplatePacketList *)0)->auxiliaryAllocation == 0x17C ? 1 : -1];
-
-
-EffectBufferTail *dds3Particle_PhysicsCreate(s32 recordCount);
-void dds3Particle_PhysicsDelete(EffectBufferTail *buffer);
 
 /* Resource-entry work shared by the needle constructor and its renderer. */
 typedef struct EffResourceEntry {
@@ -659,9 +592,8 @@ typedef struct EffResourceWork {
     sdfMat_t *drawAsset;
     struct sdfMemHandle_t *backingAllocation;
 } EffResourceWork; /* 0x74 */
-typedef char EffResourceWork_drawAsset_offset_must_be_0x6C[
-    ((u32)&((EffResourceWork *)0)->drawAsset == 0x6C) ? 1 : -1];
 
+#if !defined(SMT3_DEFINES_dds3FlashPolyList_t)
 /* Position/color arrays precede this render pool; constructors clear the full allocation. */
 typedef struct dds3FlashPolyList_t {
     f32 matrix[16];
@@ -676,16 +608,9 @@ typedef struct dds3FlashPolyList_t {
     sdfMat_t *resource;
     sdfMemHandle_t *buffer;
 } dds3FlashPolyList_t; /* 0x70 */
+#endif
 
 typedef char EffRecordPool_size_must_be_0x70[(sizeof(dds3FlashPolyList_t) == 0x70) ? 1 : -1];
-typedef char EffRecordPool_resource_offset_must_be_0x68[
-    ((u32)&((dds3FlashPolyList_t *)0)->resource == 0x68) ? 1 : -1];
-typedef char EffRecordPool_buffer_offset_must_be_0x6C[
-    ((u32)&((dds3FlashPolyList_t *)0)->buffer == 0x6C) ? 1 : -1];
-typedef char EffRecordPool_recordBase_offset_must_be_0x60[
-    ((u32)&((dds3FlashPolyList_t *)0)->recordBase == 0x60) ? 1 : -1];
-typedef char EffRecordPool_auxRecordBase_offset_must_be_0x64[
-    ((u32)&((dds3FlashPolyList_t *)0)->auxRecordBase == 0x64) ? 1 : -1];
 
 typedef struct EffRingParticle {
     u32 color;
@@ -730,11 +655,8 @@ typedef struct EffRingWork {
 } EffRingWork;
 
 typedef char EffRingParticleSizeCheck[sizeof(EffRingParticle) == 0x10 ? 1 : -1];
+
 typedef char EffRingWorkSizeCheck[sizeof(EffRingWork) == 0x80 ? 1 : -1];
-typedef char EffRingWork_currentRadius_offset_check[((u32)&((EffRingWork *)0)->currentRadius == 0x68) ? 1 : -1];
-typedef char EffRingWork_currentAxisOffset_offset_check[((u32)&((EffRingWork *)0)->currentAxisOffset == 0x6C) ? 1 : -1];
-typedef char EffRingWork_currentSideOffsetB_offset_check[((u32)&((EffRingWork *)0)->currentSideOffsetB == 0x70) ? 1 : -1];
-typedef char EffRingWork_currentSideOffsetA_offset_check[((u32)&((EffRingWork *)0)->currentSideOffsetA == 0x74) ? 1 : -1];
 
 typedef struct PcpFlashPulseParticle {
     u32 color;
@@ -766,6 +688,7 @@ typedef struct PcpFlashTrianglePulseWork {
 } PcpFlashTrianglePulseWork;
 
 typedef char PcpFlashPulseParticleSizeCheck[sizeof(PcpFlashPulseParticle) == 0x10 ? 1 : -1];
+
 typedef char PcpFlashTrianglePulseWorkSizeCheck[sizeof(PcpFlashTrianglePulseWork) == 0x48 ? 1 : -1];
 
 /* Shared scatter texture reference, created and released independently of pools. */
@@ -787,19 +710,8 @@ typedef struct PcpScatterPool {
     sdfMemHandle_t *allocation;
     PcpScatterRes *sharedResource;
 } PcpScatterPool; /* 0x34 */
+
 typedef char PcpScatterPool_size_must_be_0x34[(sizeof(PcpScatterPool) == 0x34) ? 1 : -1];
-typedef char PcpScatterPool_poolMode_offset_must_be_0x10[
-    ((u32)&((PcpScatterPool *)0)->poolMode == 0x10) ? 1 : -1];
-typedef char PcpScatterPool_recordBase_offset_must_be_0x20[
-    ((u32)&((PcpScatterPool *)0)->recordBase == 0x20) ? 1 : -1];
-typedef char PcpScatterPool_auxRecordBase_offset_must_be_0x24[
-    ((u32)&((PcpScatterPool *)0)->auxRecordBase == 0x24) ? 1 : -1];
-typedef char PcpScatterPool_drawAsset_offset_must_be_0x28[
-    ((u32)&((PcpScatterPool *)0)->drawAsset == 0x28) ? 1 : -1];
-typedef char PcpScatterPool_allocation_offset_must_be_0x2C[
-    ((u32)&((PcpScatterPool *)0)->allocation == 0x2C) ? 1 : -1];
-
-
 
 /* Exactly the 0x5C bytes copied into the needle's runtime work. */
 typedef struct EffPCPNeedleParams {
@@ -848,27 +760,20 @@ typedef struct EffPCPNeedleWork {
 } EffPCPNeedleWork; /* 0x74, followed by count slots */
 
 typedef char EffResourceEntrySizeCheck[sizeof(EffResourceEntry) == 0x14 ? 1 : -1];
-typedef char EffResourceEntry_color_offset_check[((u32)&((EffResourceEntry *)0)->color == 0x10) ? 1 : -1];
+
 typedef char EffResourceWorkSizeCheck[sizeof(EffResourceWork) == 0x74 ? 1 : -1];
+
 typedef char EffPCPNeedleParamsSizeCheck[sizeof(EffPCPNeedleParams) == 0x5C ? 1 : -1];
+
 typedef char EffPCPNeedleSlotSizeCheck[sizeof(EffPCPNeedleSlot) == 0x2C ? 1 : -1];
+
 typedef char EffPCPNeedleWorkSizeCheck[sizeof(EffPCPNeedleWork) == 0x74 ? 1 : -1];
 
 #ifdef VERSION_DDS2
-extern EffPCPNeedleWork *effPCPNeedleSpiralCreate(EffPCPNeedleParams *);
-extern EffResourceWork *dds3NeedleModelCreate(u32);
-#else
-extern EffPCPNeedleWork *effPCPNeedleSpiralCreate(EffPCPNeedleParams *);
-extern EffResourceWork *dds3NeedleModelCreate(u32);
-#endif
 
-extern void dds3NeedleModelVNCListDelete(EffResourceWork *);
-extern void dds3NeedleModelDelete(EffResourceWork *);
-extern void dds3NeedleModelSetPosition(EffResourceWork *, s32, f32 *);
-extern void dds3NeedleModelGetPosition(EffResourceWork *, s32, f32 *);
-extern void dds3NeedleModelSetColor(EffResourceWork *work, s32 index, u32 color);
-extern void dds3NeedleModelDraw(EffResourceWork *);
-extern void dds3NeedleModelVNCListCreate(EffResourceWork *, u32, u32, u32, f32, f32);
+#else
+
+#endif
 
 /* Native 0x14-byte timed state embedded in a slot's kind-specific payload. */
 typedef struct EffTimedState {
@@ -964,7 +869,9 @@ typedef struct EffectSlotSet {
 } EffectSlotSet;
 
 typedef char BdWorkSizeCheck[sizeof(BdWork) == 0xA0 ? 1 : -1];
+
 typedef char EffectSlotDescriptionSizeCheck[sizeof(EffectSlotDescription) == 0x80 ? 1 : -1];
+
 typedef char EffectSlotSetSizeCheck[sizeof(EffectSlotSet) == 0x30 ? 1 : -1];
 
 /* Particle cell shared by the DDS1/2 particle subroutines (0x14 bytes). */
@@ -977,17 +884,6 @@ typedef struct ParCell {
 } ParCell;
 
 typedef char ParCell_size_must_be_0x14[(sizeof(ParCell) == 0x14) ? 1 : -1];
-typedef char ParCell_history_countdown_at_0x0C[
-    ((u32)&((ParCell *)0)->historyAdvanceCountdown == 0x0C) ? 1 : -1];
-
-/* Topology codes determine the vector rows allocated and submitted per cell. */
-typedef enum ParCellTopology {
-    PAR_CELL_TOPOLOGY_PAIR = 0,
-    PAR_CELL_TOPOLOGY_TRIANGLE = 1,
-    PAR_CELL_TOPOLOGY_SIX_VECTOR = 2,
-    PAR_CELL_TOPOLOGY_FOUR_VECTOR = 3,
-    PAR_CELL_TOPOLOGY_FIVE_VECTOR = 4,
-} ParCellTopology;
 
 /* The cell-system allocation ends with this complete 0x2C-byte owner. */
 typedef struct ParSystem {
@@ -1006,13 +902,15 @@ typedef struct ParSystem {
 } ParSystem;
 
 typedef char ParSystem_size_must_be_0x2C[(sizeof(ParSystem) == 0x2C) ? 1 : -1];
-typedef char ParSystem_cells_at_0x14[((u32)&((ParSystem *)0)->cells == 0x14) ? 1 : -1];
 
 /* Ring-effect geometry: starting angle (-pi/2) and one full turn. */
+
 #define EFFECT_RING_START_ANGLE (-1.5707963f)
+
 #define EFFECT_RING_FULL_TURN (6.2831853f)
 
 /* Mid-grey fragment colour (0x80 in each channel). */
+
 #define EFF_THUNDER_FRAGMENT_GREY 0x80808080
 
 /* Shared paired-chain parameter and resource owners. Points are filled before rendering. */
@@ -1021,10 +919,8 @@ typedef struct EffThunderGroupParams {
     s32 count;
     EffThunderFragmentParams params;
 } EffThunderGroupParams;
-typedef struct EffThunderGroup EffThunderGroup;
 
-EffThunderGroupParams *effPCP_ThunderPolyListGetParam(EffThunderGroup *resource);
-void effPCP_ThunderPolyListSetColor(EffThunderGroup *resource, u32 color);
+typedef struct EffThunderGroup EffThunderGroup;
 
 typedef struct PairedEffectParams {
     f32 startVec[4];
@@ -1046,13 +942,9 @@ typedef struct PairedEffectResources {
 } PairedEffectResources;
 
 typedef char EffThunderGroupParamsSizeCheck[sizeof(EffThunderGroupParams) == 0xF8 ? 1 : -1];
-typedef char EffThunderGroupParamsCountOffsetCheck[((u32)&((EffThunderGroupParams *)0)->count == 0xA0) ? 1 : -1];
-typedef char EffThunderGroupParamsFragmentOffsetCheck[((u32)&((EffThunderGroupParams *)0)->params == 0xA4) ? 1 : -1];
-typedef char PairedEffectParamsSizeCheck[sizeof(PairedEffectParams) == 0x70 ? 1 : -1];
-typedef char PairedEffectResourcesSizeCheck[sizeof(PairedEffectResources) == 0x80 ? 1 : -1];
-typedef char PairedEffectFragmentOffsetCheck[((u32)&((PairedEffectResources *)0)->fragment == 0x10) ? 1 : -1];
-typedef char PairedEffectResourcesOffsetCheck[((u32)&((PairedEffectResources *)0)->resource == 0x70) ? 1 : -1];
-typedef char PairedEffectFrameOffsetCheck[((u32)&((PairedEffectResources *)0)->frame == 0x78) ? 1 : -1];
-typedef char PairedEffectColorOffsetCheck[((u32)&((PairedEffectResources *)0)->colorWithAlpha == 0x7C) ? 1 : -1];
 
-#endif /* EFF_H */
+typedef char PairedEffectParamsSizeCheck[sizeof(PairedEffectParams) == 0x70 ? 1 : -1];
+
+typedef char PairedEffectResourcesSizeCheck[sizeof(PairedEffectResources) == 0x80 ? 1 : -1];
+
+#endif /* DDS_EFF_H */

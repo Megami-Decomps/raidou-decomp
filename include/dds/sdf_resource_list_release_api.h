@@ -1,6 +1,6 @@
-#ifndef SDF_RESOURCE_LIST_RELEASE_API_H
-#define SDF_RESOURCE_LIST_RELEASE_API_H
+#ifndef DDS_SDF_RESOURCE_LIST_RELEASE_API_H
 
+#define DDS_SDF_RESOURCE_LIST_RELEASE_API_H
 #include "common.h"
 
 struct DevRequest;
@@ -12,6 +12,4 @@ enum {
     SDF_TEX_LIST_RELEASE_REFERENCES = 1
 };
 
-void sdfTexListFree(struct DevRequest *list, SdfTexListItemReferencePolicy itemReferencePolicy);
-
-#endif /* SDF_RESOURCE_LIST_RELEASE_API_H */
+#endif /* DDS_SDF_RESOURCE_LIST_RELEASE_API_H */

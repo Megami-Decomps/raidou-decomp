@@ -1,9 +1,10 @@
-#ifndef FLD_SEQUENCE_SCENE_MODE_H
-#define FLD_SEQUENCE_SCENE_MODE_H
+#ifndef DDS_FLD_SEQUENCE_SCENE_MODE_H
 
+#define DDS_FLD_SEQUENCE_SCENE_MODE_H
 #include "common.h"
 
 typedef u32 FldSequenceSceneMode;
+
 enum {
     FLD_SEQUENCE_SCENE_MODE_INHERIT_PRIMARY = 2,
     FLD_SEQUENCE_SCENE_MODE_ANA = 3,
@@ -12,4 +13,4 @@ enum {
     FLD_SEQUENCE_SCENE_MODE_EVENT = 6
 };
 
-#endif /* FLD_SEQUENCE_SCENE_MODE_H */
+#endif /* DDS_FLD_SEQUENCE_SCENE_MODE_H */

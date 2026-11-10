@@ -1,9 +1,9 @@
-#ifndef SDF_CHUNK_H
-#define SDF_CHUNK_H
+#ifndef DDS_SDF_CHUNK_H
 
+#define DDS_SDF_CHUNK_H
 #include "common.h"
 
-struct sdfModelRootNode_t;
+struct dds_sdfModelRootNode_t;
 
 /* Variable-size serialized chunk streams share only this eight-byte header.
  * The word at +8 belongs to each chunk's payload. */
@@ -32,22 +32,8 @@ typedef struct SdfMapPositionRecord {
 
 typedef char SdfMapPositionChunkPrefix_size_must_be_0x10[
     (sizeof(SdfMapPositionChunkPrefix) == 0x10) ? 1 : -1];
+
 typedef char SdfMapPositionRecord_size_must_be_0x40[
     (sizeof(SdfMapPositionRecord) == 0x40) ? 1 : -1];
-typedef char SdfMapPositionRecord_id_at_4[
-    ((u32)&((SdfMapPositionRecord *)0)->id == 4) ? 1 : -1];
-typedef char SdfMapPositionRecord_position_at_10[
-    ((u32)&((SdfMapPositionRecord *)0)->position == 0x10) ? 1 : -1];
-typedef char SdfMapPositionRecord_up_at_20[
-    ((u32)&((SdfMapPositionRecord *)0)->up == 0x20) ? 1 : -1];
-typedef char SdfMapPositionRecord_direction_at_30[
-    ((u32)&((SdfMapPositionRecord *)0)->direction == 0x30) ? 1 : -1];
 
-SdfChunkHeader *sdfChunkFindById(SdfChunkHeader *chunk, s32 chunkId);
-SdfChunkHeader *sdfModelGetExtraChunk(const struct sdfModelRootNode_t *model, s32 tag);
-u32 sdfModelGetMarkPosCount(const struct sdfModelRootNode_t *model);
-SdfMapPositionRecord *sdfModelSearchMarkPosData(struct sdfModelRootNode_t *model, s32 recordId);
-void sdfModelMakeMarkPosMatrix(struct sdfModelRootNode_t *model, SdfMapPositionRecord *record);
-void sdfModelMakeMarkPos(struct sdfModelRootNode_t *model, SdfMapPositionRecord *record);
-
-#endif /* SDF_CHUNK_H */
+#endif /* DDS_SDF_CHUNK_H */

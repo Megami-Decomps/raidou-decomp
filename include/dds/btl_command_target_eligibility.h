@@ -1,6 +1,6 @@
-#ifndef BTL_COMMAND_TARGET_ELIGIBILITY_H
-#define BTL_COMMAND_TARGET_ELIGIBILITY_H
+#ifndef DDS_BTL_COMMAND_TARGET_ELIGIBILITY_H
 
+#define DDS_BTL_COMMAND_TARGET_ELIGIBILITY_H
 #include "btl_command_id.h"
 
 typedef s32 BtlCommandTargetEligibilityResult;
@@ -12,14 +12,18 @@ enum {
 };
 
 #if defined(VERSION_DDS1)
+
 enum {
     BTL_COMMAND_TARGET_ELIGIBILITY_RESULT_COMMAND_RESTRICTED = 8,
 };
+
 #elif defined(VERSION_DDS2)
+
 enum {
     BTL_COMMAND_TARGET_ELIGIBILITY_RESULT_ENTRY_FLAG_8000 = 7,
     BTL_COMMAND_TARGET_ELIGIBILITY_RESULT_COMMAND_RESTRICTED = 9,
 };
+
 #endif
 
 struct BtlIndexList;
@@ -28,4 +32,4 @@ struct BtlIndexList;
 BtlCommandTargetEligibilityResult btlGetCommandTargetEligibility(
     struct BtlIndexList *indexList, BtlCommandId commandId);
 
-#endif /* BTL_COMMAND_TARGET_ELIGIBILITY_H */
+#endif /* DDS_BTL_COMMAND_TARGET_ELIGIBILITY_H */

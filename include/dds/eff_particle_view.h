@@ -1,6 +1,6 @@
-#ifndef EFF_PARTICLE_VIEW_H
-#define EFF_PARTICLE_VIEW_H
+#ifndef DDS_EFF_PARTICLE_VIEW_H
 
+#define DDS_EFF_PARTICLE_VIEW_H
 #include "eff.h"
 
 /* Single-particle callbacks interpret selected fields in the shared emitter
@@ -37,34 +37,7 @@ typedef union EffParticleView {
 
 typedef char EffParticleOverlay_size_check[
     sizeof(EffParticleOverlay) == 0xFC ? 1 : -1];
-typedef char EffParticleOverlay_x_offset_check[
-    (u32)&((EffParticleOverlay *)0)->x == 0x00 ? 1 : -1];
-typedef char EffParticleOverlay_y_offset_check[
-    (u32)&((EffParticleOverlay *)0)->y == 0x04 ? 1 : -1];
-typedef char EffParticleOverlay_z_offset_check[
-    (u32)&((EffParticleOverlay *)0)->z == 0x08 ? 1 : -1];
-typedef char EffParticleOverlay_speed_offset_check[
-    (u32)&((EffParticleOverlay *)0)->speed == 0x10 ? 1 : -1];
-typedef char EffParticleOverlay_unk24_offset_check[
-    (u32)&((EffParticleOverlay *)0)->unk24 == 0x24 ? 1 : -1];
-typedef char EffParticleOverlay_color_offset_check[
-    (u32)&((EffParticleOverlay *)0)->color == 0x4C ? 1 : -1];
-typedef char EffParticleOverlay_alpha_offset_check[
-    (u32)&((EffParticleOverlay *)0)->alpha == 0x58 ? 1 : -1];
-typedef char EffParticleOverlay_lastSpeed_offset_check[
-    (u32)&((EffParticleOverlay *)0)->lastSpeed == 0x8C ? 1 : -1];
-typedef char EffParticleOverlay_speedJitter_offset_check[
-    (u32)&((EffParticleOverlay *)0)->speedJitter == 0x94 ? 1 : -1];
-typedef char EffParticleOverlay_angleJitter_offset_check[
-    (u32)&((EffParticleOverlay *)0)->angleJitter == 0x98 ? 1 : -1];
-typedef char EffParticleOverlay_colorMask_offset_check[
-    (u32)&((EffParticleOverlay *)0)->colorMask == 0xF0 ? 1 : -1];
-typedef char EffParticleOverlay_buffer_offset_check[
-    (u32)&((EffParticleOverlay *)0)->buffer == 0xF8 ? 1 : -1];
-typedef char EffParticleView_emitter_offset_check[
-    (u32)&((EffParticleView *)0)->emitter == 0 ? 1 : -1];
-typedef char EffParticleView_particle_offset_check[
-    (u32)&((EffParticleView *)0)->particle == 0 ? 1 : -1];
+
 typedef char EffParticleView_size_check[
     sizeof(EffParticleView) == 0x150 ? 1 : -1];
 

@@ -1,6 +1,6 @@
-#ifndef FLD_CAMERA_LINK_MODE_H
-#define FLD_CAMERA_LINK_MODE_H
+#ifndef DDS_FLD_CAMERA_LINK_MODE_H
 
+#define DDS_FLD_CAMERA_LINK_MODE_H
 #include "common.h"
 
 typedef s32 FldCameraLinkMode;
@@ -11,4 +11,4 @@ enum {
     FLD_CAMERA_LINK_MODE_ALTERNATE_FOCUS = 2
 };
 
-#endif /* FLD_CAMERA_LINK_MODE_H */
+#endif /* DDS_FLD_CAMERA_LINK_MODE_H */

@@ -1,6 +1,6 @@
-#ifndef SDF_HEAP_OVERLAY_BLOCK_H
-#define SDF_HEAP_OVERLAY_BLOCK_H
+#ifndef DDS_SDF_HEAP_OVERLAY_BLOCK_H
 
+#define DDS_SDF_HEAP_OVERLAY_BLOCK_H
 #include "common.h"
 
 typedef struct SdfHeapOverlayBlock {

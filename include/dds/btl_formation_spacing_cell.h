@@ -1,6 +1,6 @@
-#ifndef BTL_FORMATION_SPACING_CELL_H
-#define BTL_FORMATION_SPACING_CELL_H
+#ifndef DDS_BTL_FORMATION_SPACING_CELL_H
 
+#define DDS_BTL_FORMATION_SPACING_CELL_H
 #include "common.h"
 
 /* Read-only actor-archive stride used by radial linked formations. */
@@ -12,4 +12,4 @@ typedef struct BtlFormationSpacingCell {
 typedef char BtlFormationSpacingCellSizeCheck[
     (sizeof(BtlFormationSpacingCell) == 0x14) ? 1 : -1];
 
-#endif /* BTL_FORMATION_SPACING_CELL_H */
+#endif /* DDS_BTL_FORMATION_SPACING_CELL_H */

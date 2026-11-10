@@ -1,6 +1,6 @@
-#ifndef EFF_EMITTER_TYPE_H
-#define EFF_EMITTER_TYPE_H
+#ifndef DDS_EFF_EMITTER_TYPE_H
 
+#define DDS_EFF_EMITTER_TYPE_H
 #include "common.h"
 
 /* An emitter type (0x10), effEmitterTypeDescriptors[type]: its per-frame slot

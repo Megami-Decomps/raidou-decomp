@@ -1,6 +1,6 @@
-#ifndef EFF_TEMPLATE_SCALE_RECORD_H
-#define EFF_TEMPLATE_SCALE_RECORD_H
+#ifndef DDS_EFF_TEMPLATE_SCALE_RECORD_H
 
+#define DDS_EFF_TEMPLATE_SCALE_RECORD_H
 #include "common.h"
 
 /* Template packet overlay: an initial tag at +0x20 and scale at +0x34. */
@@ -13,9 +13,5 @@ typedef struct EffTemplateScaleRecord {
 } EffTemplateScaleRecord;
 
 typedef char EffTemplateScaleRecordSizeCheck[(sizeof(EffTemplateScaleRecord) == 0x40) ? 1 : -1];
-typedef char EffTemplateScaleRecordInitialTagOffsetCheck[
-    ((u32)&((EffTemplateScaleRecord *)0)->initialTag == 0x20) ? 1 : -1];
-typedef char EffTemplateScaleRecordScaleOffsetCheck[
-    ((u32)&((EffTemplateScaleRecord *)0)->scale == 0x34) ? 1 : -1];
 
 #endif

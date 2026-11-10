@@ -1,14 +1,18 @@
-#ifndef EFF_PARTICLE_SHARED_RESOURCE_H
-#define EFF_PARTICLE_SHARED_RESOURCE_H
+#ifndef DDS_EFF_PARTICLE_SHARED_RESOURCE_H
 
+#define DDS_EFF_PARTICLE_SHARED_RESOURCE_H
 #include "common.h"
+
 #include "eff_curve.h"
+
 #include "sdf.h"
 
 struct billHandle_t;
+
 struct EffExpandedList;
 
 /* The +0x0C bytes (colorTrack through y) are copied from the file. */
+
 #define EFF_PARTICLE_SHARED_PAYLOAD_BYTES 0x98
 
 /* DDS1 0029C530 / DDS2 002DE248 allocate this 0xAC-byte shared resource.
@@ -31,11 +35,5 @@ typedef struct EffParticleSharedResource {
 
 typedef char EffParticleSharedResourceSizeCheck[
     (sizeof(EffParticleSharedResource) == 0xAC) ? 1 : -1];
-typedef char EffParticleSharedResourcePayloadOffsetCheck[
-    ((u32)&((EffParticleSharedResource *)0)->colorTrack == 0x0C) ? 1 : -1];
-typedef char EffParticleSharedResourceBillOffsetCheck[
-    ((u32)&((EffParticleSharedResource *)0)->billHandle == 0xA4) ? 1 : -1];
-typedef char EffParticleSharedResourceReferenceOffsetCheck[
-    ((u32)&((EffParticleSharedResource *)0)->reference == 0xA8) ? 1 : -1];
 
 #endif

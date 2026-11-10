@@ -1,9 +1,10 @@
-#ifndef DDS_ITF_GRID_TEXT_H
-#define DDS_ITF_GRID_TEXT_H
+#ifndef DDS_DDS_ITF_GRID_TEXT_H
 
+#define DDS_DDS_ITF_GRID_TEXT_H
 #include "common.h"
 
 typedef struct GridTextWidget GridTextWidget;
+
 typedef struct GridTextListItem GridTextListItem;
 
 /* Numeric item formatting modes stored in GridNumericDescriptor.mode. */
@@ -70,7 +71,9 @@ struct GridTextListItem {
 };
 
 typedef char GridTextWidgetSizeCheck[sizeof(GridTextWidget) == 0x40 ? 1 : -1];
+
 typedef char GridTextListItemSizeCheck[sizeof(GridTextListItem) == 0x2C ? 1 : -1];
+
 typedef char GridNumericDescriptorSizeCheck[sizeof(GridNumericDescriptor) == 0x14 ? 1 : -1];
 
 #endif

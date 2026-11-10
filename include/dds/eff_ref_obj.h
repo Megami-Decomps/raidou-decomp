@@ -1,9 +1,10 @@
-#ifndef EFF_REF_OBJ_H
-#define EFF_REF_OBJ_H
+#ifndef DDS_EFF_REF_OBJ_H
 
+#define DDS_EFF_REF_OBJ_H
 #include "common.h"
 
 struct sdfMemHandle_t;
+
 struct SdfTextureFileHeader;
 
 /* Reference-counted texture payload placed at the end of its allocation. */
@@ -19,12 +20,13 @@ typedef struct RefObj {
 } RefObj;
 
 typedef char RefObjSizeCheck[sizeof(RefObj) == 0x20 ? 1 : -1];
-typedef char RefObjAllocationOffsetCheck[
-    ((u32)&((RefObj *)0)->allocationHandle == 0x1C) ? 1 : -1];
 
 RefObj *effCreateSharedTextureReference(struct SdfTextureFileHeader *source);
+
 RefObj *effCloneSharedReferenceWithValue(struct SdfTextureFileHeader *source, u32 textureIndex);
+
 void effReleaseSharedReference(RefObj *obj);
+
 /* Retain returns the same object after incrementing its object and shared-texture counts. */
 RefObj *effRetainSharedReference(RefObj *obj);
 

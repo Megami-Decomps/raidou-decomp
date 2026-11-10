@@ -1,9 +1,9 @@
-#ifndef DAT_AFFINITY_SELECTOR_H
-#define DAT_AFFINITY_SELECTOR_H
+#ifndef DDS_DAT_AFFINITY_SELECTOR_H
 
+#define DDS_DAT_AFFINITY_SELECTOR_H
 #include "dat_affinity_selector_type.h"
 
 /* Map one exact channel flag to an affinity selector. */
 DatAffinitySelector datFlagToElementIndex(s32 channelFlag);
 
-#endif /* DAT_AFFINITY_SELECTOR_H */
+#endif /* DDS_DAT_AFFINITY_SELECTOR_H */

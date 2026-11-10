@@ -1,9 +1,10 @@
-#ifndef EFF_THUNDER_VECTOR_H
-#define EFF_THUNDER_VECTOR_H
+#ifndef DDS_EFF_THUNDER_VECTOR_H
 
+#define DDS_EFF_THUNDER_VECTOR_H
 #include "common.h"
 
 struct ParSystem;
+
 struct sdfMemHandle_t;
 
 /* Indexed-vector parameters retain a color word and geometry widths. */
@@ -76,17 +77,13 @@ typedef struct EffThunderVectorWork {
 } EffThunderVectorWork;
 
 typedef char EffThunderVectorParams_size_check[sizeof(EffThunderVectorParams) == 0x4C ? 1 : -1];
-typedef char EffThunderAlphaParams_size_check[sizeof(EffThunderAlphaParams) == 0x4C ? 1 : -1];
-typedef char EffThunderParameterHead_size_check[sizeof(EffThunderParameterHead) == 0x4C ? 1 : -1];
-typedef char EffThunderVectorCell_size_check[sizeof(EffThunderVectorCell) == 0x2C ? 1 : -1];
-typedef char EffThunderVectorWork_size_check[sizeof(EffThunderVectorWork) == 0x64 ? 1 : -1];
 
-EffThunderVectorWork *effPCPThunderSpherePolyCreate(EffThunderAlphaParams *parameters);
-EffThunderVectorWork *effBTLBindCreateTrack(EffThunderVectorParams *parameters);
-EffThunderParameterHead *effPCPThunderSpherePolyGetParam(EffThunderVectorWork *work);
-void effPCPThunderSpherePolyDelete(EffThunderVectorWork *work);
-void effPCPThunderSpherePolySetColor(EffThunderVectorWork *work, u32 tintColor);
-void effPCPThunderSpherePolySetScale(f32 factor, EffThunderVectorWork *work);
-void effPCPThunderSpherePolyDraw(EffThunderVectorWork *work);
+typedef char EffThunderAlphaParams_size_check[sizeof(EffThunderAlphaParams) == 0x4C ? 1 : -1];
+
+typedef char EffThunderParameterHead_size_check[sizeof(EffThunderParameterHead) == 0x4C ? 1 : -1];
+
+typedef char EffThunderVectorCell_size_check[sizeof(EffThunderVectorCell) == 0x2C ? 1 : -1];
+
+typedef char EffThunderVectorWork_size_check[sizeof(EffThunderVectorWork) == 0x64 ? 1 : -1];
 
 #endif

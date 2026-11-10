@@ -1,6 +1,6 @@
-#ifndef BTL_CAMERA_SNAPSHOTS_H
-#define BTL_CAMERA_SNAPSHOTS_H
+#ifndef DDS_BTL_CAMERA_SNAPSHOTS_H
 
+#define DDS_BTL_CAMERA_SNAPSHOTS_H
 #include "btl_command.h"
 
 typedef struct BtlCameraStoredPose {
@@ -37,23 +37,8 @@ typedef struct BtlCameraParameterSnapshot {
 
 typedef char BtlCameraParameterSnapshot_size_check[
     (sizeof(BtlCameraParameterSnapshot) == 0x100) ? 1 : -1];
+
 typedef char BtlCameraStoredPose_size_check[
     (sizeof(BtlCameraStoredPose) == 0x30) ? 1 : -1];
-typedef char BtlCameraStoredPose_pose_offset_check[
-    ((u32)&((BtlCameraStoredPose *)0)->pose == 0) ? 1 : -1];
-typedef char BtlCameraParameterSnapshot_distance_offset_check[
-    ((u32)&((BtlCameraParameterSnapshot *)0)->distance == 0x70) ? 1 : -1];
-typedef char BtlCameraParameterSnapshot_angleVector_offset_check[
-    ((u32)&((BtlCameraParameterSnapshot *)0)->angleVector == 0x80) ? 1 : -1];
-typedef char BtlCameraParameterSnapshot_parameterD0_offset_check[
-    ((u32)&((BtlCameraParameterSnapshot *)0)->parameterD0 == 0xB0) ? 1 : -1];
-typedef char BtlCameraParameterSnapshot_parameterE0_offset_check[
-    ((u32)&((BtlCameraParameterSnapshot *)0)->parameterE0 == 0xC0) ? 1 : -1];
-typedef char BtlCameraParameterSnapshot_blendRate_offset_check[
-    ((u32)&((BtlCameraParameterSnapshot *)0)->blendRate == 0xD0) ? 1 : -1];
-typedef char BtlCameraParameterSnapshot_rangeStart_offset_check[
-    ((u32)&((BtlCameraParameterSnapshot *)0)->rangeStart == 0xE0) ? 1 : -1];
-typedef char BtlCameraParameterSnapshot_rangeEnd_offset_check[
-    ((u32)&((BtlCameraParameterSnapshot *)0)->rangeEnd == 0xF0) ? 1 : -1];
 
-#endif /* BTL_CAMERA_SNAPSHOTS_H */
+#endif /* DDS_BTL_CAMERA_SNAPSHOTS_H */

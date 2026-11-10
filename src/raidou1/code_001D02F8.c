@@ -5,6 +5,90 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "fileManager.h"
+
+#include "libsdf.h"
+
+#include "sdf_resource.h"
+
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/dds3_world_counter.h"
+
+#include "dds/dds3_world_secondary.h"
+
+#include "dds/dds3_world_value.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_semaphore_api.h"
+
+#include "dds/sdf_thread_sleep.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/sdk_libkernl.h"
+
+s32 SignalSema(s32 semaphoreId);
+
+s32 WaitSema(s32 semaphoreId);
+
+/* Advance the wrapping 16-bit world object sequence carried in a u32. */
+u32 dds3AllocObjectId(void);
+
+/* Return the borrowed secondary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetControlScene(void);
+
+/* Store objectName directly as the node's lookup key; no copy is made.
+ * A NULL node is ignored and a NULL name clears the key. Keep non-NULL names
+ * alive while the node can be searched. */
+void dds3SetUnitObjectId(struct dds3Basic_t *node, const char *objectName);
+
+/* Return the address of the loaded resource payload as a byte pointer. */
+u8 *fileGetLoadPtr(const struct FileRequest *request);
+
+/* Return the signed byte count recorded by the file transfer request. */
+s32 fileGetLoadSize(const struct FileRequest *request);
+
+/* Return the payload allocation descriptor. For normal file loads, freeing the
+ * request wrapper does not free this allocation; its resource owner must keep
+ * or release it separately. */
+struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
+
+/* Free a completed request wrapper; return one while it remains pending. */
+FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+s32 pacFileCheckEnd(const struct FileRequest *request);
+
+s32 sdfCreateSema(u32 initialCount, u32 option, u32 maximumCount);
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+struct sdfMemHandle_t *sdfMemAllocFromTailDirect(s32 requestedBytes);
+
+/* Queue the two heap owners separately: the general heap stores descriptors,
+ * while the chip heap stores the address of the cell to release. */
+void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *allocation);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+s32 sdfMemGetSize(const struct sdfMemHandle_t *block);
+
+/* Record the current thread, lower its priority for sleep, and return the
+ * result from the SDK SleepThread call. */
+s32 sdfSetMainThreadPriority(void);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/dds3_world_counter.h"

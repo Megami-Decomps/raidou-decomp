@@ -1,9 +1,10 @@
-#ifndef ITF_GRID_TEXT_COLOR_API_H
-#define ITF_GRID_TEXT_COLOR_API_H
+#ifndef DDS_ITF_GRID_TEXT_COLOR_API_H
 
+#define DDS_ITF_GRID_TEXT_COLOR_API_H
 #include "common.h"
 
 struct GridTextWidget;
+
 struct GridTextListItem;
 
 /* Index consumed by sdfDevSetPrintCB and resolved through sdfDevConsColorTable. */
@@ -17,4 +18,4 @@ ItfGridTextColorTableIndex itfGetGridTextColorTableIndex(
 void fldLmapSubmitPositionedCommandPacket(s32 x, s32 y, s32 z,
     ItfGridTextColorTableIndex colorTableIndex, const char *command, s32 surfaceIndex);
 
-#endif /* ITF_GRID_TEXT_COLOR_API_H */
+#endif /* DDS_ITF_GRID_TEXT_COLOR_API_H */

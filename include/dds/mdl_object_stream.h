@@ -1,6 +1,6 @@
-#ifndef MDL_OBJECT_STREAM_H
-#define MDL_OBJECT_STREAM_H
+#ifndef DDS_MDL_OBJECT_STREAM_H
 
+#define DDS_MDL_OBJECT_STREAM_H
 #include "sdf.h"
 
 /* These four bytes are consumed by the same sound-format initializer. */
@@ -10,6 +10,7 @@ typedef struct SoundFormat {
     u8 loopMode;
     u8 playbackCadenceStep;
 } SoundFormat;
+
 typedef SoundFormat SdfStreamParams;
 
 typedef char SdfStreamParams_size_must_be_4[(sizeof(SdfStreamParams) == 4) ? 1 : -1];
@@ -27,15 +28,5 @@ typedef struct MdlObj {
 } MdlObj;
 
 typedef char MdlObj_size_must_be_0xAC[(sizeof(MdlObj) == 0xAC) ? 1 : -1];
-typedef char MdlObj_backingAllocation_offset_must_be_4[
-    ((u32)&((MdlObj *)0)->backingAllocation == 4) ? 1 : -1];
-typedef char MdlObj_inUse_offset_must_be_8[
-    ((u32)&((MdlObj *)0)->inUse == 8) ? 1 : -1];
-typedef char MdlObj_initialized_offset_must_be_9[
-    ((u32)&((MdlObj *)0)->initialized == 9) ? 1 : -1];
-typedef char MdlObj_sourceSize_offset_must_be_0x10[
-    ((u32)&((MdlObj *)0)->sourceSize == 0x10) ? 1 : -1];
-typedef char MdlObj_soundNode_offset_must_be_0x20[
-    ((u32)&((MdlObj *)0)->soundNode == 0x20) ? 1 : -1];
 
-#endif /* MDL_OBJECT_STREAM_H */
+#endif /* DDS_MDL_OBJECT_STREAM_H */

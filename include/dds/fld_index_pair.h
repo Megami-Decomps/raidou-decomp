@@ -1,6 +1,6 @@
-#ifndef FLD_INDEX_PAIR_H
-#define FLD_INDEX_PAIR_H
+#ifndef DDS_FLD_INDEX_PAIR_H
 
+#define DDS_FLD_INDEX_PAIR_H
 #include "common.h"
 
 /* A row of the field's shared index tables, whose second halfword is the

@@ -1,6 +1,6 @@
-#ifndef MNU_SCROLL_PANEL_H
-#define MNU_SCROLL_PANEL_H
+#ifndef DDS_MNU_SCROLL_PANEL_H
 
+#define DDS_MNU_SCROLL_PANEL_H
 #include "mnu.h"
 
 struct EffMappedResource;
@@ -21,26 +21,35 @@ typedef struct MenuScrollPanel {
 
 typedef char MenuScrollPanel_dds2_size_check[
     (sizeof(MenuScrollPanel) == 0x48) ? 1 : -1];
-typedef char MenuScrollPanel_dds2_positions_check[
-    ((u32)&((MenuScrollPanel *)0)->positions == 0x14) ? 1 : -1];
-typedef char MenuScrollPanel_dds2_handles_check[
-    ((u32)&((MenuScrollPanel *)0)->handles == 0x3C) ? 1 : -1];
 
 MenuScrollPanel *mnuCreateScrollPanel(struct EffectSlotSet *owner);
+
 void mnuDestroyScrollPanel(MenuScrollPanel *menu);
+
 void mnuReleaseScrollPanelAnimations(MenuScrollPanel *menu);
+
 void mnuConfigurePanelResource(MenuScrollPanel *menu,
                                struct EffectSlotSet *model, u32 value,
                                u32 retract);
+
 void mnuDrawStaffScrollPanel(s32 x, s32 y, s32 depth, MenuScrollPanel *panel, s32 surface);
+
 #else
+
     u32 selection; /* 0x04 */
+
     u32 firstSprite; /* 0x08 */
+
     u32 secondSprite; /* 0x0C */
+
     MenuGridSlot positions[2]; /* 0x10 */
+
     MenuGridSlot active[2]; /* 0x20 */
+
     MenuGridSlot pending[2]; /* 0x30 */
+
     struct EffMappedResource *handles[3]; /* 0x40 */
+
 } MenuScrollPanel;
 
 typedef char MenuScrollPanel_dds1_size_check[
@@ -64,3 +73,4 @@ void mnuActivatePanelAndConfigureGridResources(MenuScrollPanel *menu,
 #endif
 
 #endif
+

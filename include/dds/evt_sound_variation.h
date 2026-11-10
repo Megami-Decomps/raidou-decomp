@@ -1,6 +1,6 @@
-#ifndef EVT_SOUND_VARIATION_H
-#define EVT_SOUND_VARIATION_H
+#ifndef DDS_EVT_SOUND_VARIATION_H
 
+#define DDS_EVT_SOUND_VARIATION_H
 #include "common.h"
 
 /* Signed selector added to an event sound's packed track ID.
@@ -10,4 +10,4 @@ typedef s32 EvtSoundVariation;
 /* Packed sequence/variation identifier consumed by the sound engine. */
 typedef s32 EvtPackedSoundTrackId;
 
-#endif /* EVT_SOUND_VARIATION_H */
+#endif /* DDS_EVT_SOUND_VARIATION_H */

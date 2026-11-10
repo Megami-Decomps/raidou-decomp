@@ -1,6 +1,6 @@
-#ifndef BTL_ENEMY_SPAWN_CAPACITY_API_H
-#define BTL_ENEMY_SPAWN_CAPACITY_API_H
+#ifndef DDS_BTL_ENEMY_SPAWN_CAPACITY_API_H
 
+#define DDS_BTL_ENEMY_SPAWN_CAPACITY_API_H
 #include "common.h"
 
 struct BtlUnit;
@@ -9,10 +9,12 @@ struct BtlUnit;
 typedef s32 BtlEnemySpawnCapacityResult;
 
 #define BTL_ENEMY_SPAWN_CAPACITY_EXHAUSTED 0
+
 #define BTL_ENEMY_SPAWN_CAPACITY_AVAILABLE 1
 
 /* The requester may be null when querying capacity without a particular unit. */
 BtlEnemySpawnCapacityResult btlCanSpawnAnotherEnemy(struct BtlUnit *requester);
+
 BtlEnemySpawnCapacityResult btlCheckEnemySpawnCapacity(void);
 
-#endif /* BTL_ENEMY_SPAWN_CAPACITY_API_H */
+#endif /* DDS_BTL_ENEMY_SPAWN_CAPACITY_API_H */

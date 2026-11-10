@@ -1,6 +1,6 @@
-#ifndef DAT_WORLD_FIELD_FLAGS_H
-#define DAT_WORLD_FIELD_FLAGS_H
+#ifndef DDS_DAT_WORLD_FIELD_FLAGS_H
 
+#define DDS_DAT_WORLD_FIELD_FLAGS_H
 /* Shared world-state bits have context-specific uses across field systems. */
 enum DatWorldFieldFlags {
     DAT_WORLD_FIELD_PRIMARY_SCENE_WORK = 1,
@@ -12,4 +12,4 @@ enum DatWorldFieldFlags {
     DAT_WORLD_FIELD_ENCOUNTER_RATE_BOOST = DAT_WORLD_FIELD_SECONDARY_SCENE_WORK
 };
 
-#endif /* DAT_WORLD_FIELD_FLAGS_H */
+#endif /* DDS_DAT_WORLD_FIELD_FLAGS_H */

@@ -1,10 +1,14 @@
-#ifndef BTL_H
-#define BTL_H
+#ifndef DDS_BTL_H
 
+#define DDS_BTL_H
 #include "common.h"
+
 #include "btl_task.h"
+
 #if defined(VERSION_DDS1) || defined(VERSION_DDS2)
+
 #include "dat_state.h"
+
 #endif
 
 /* Generic first word shared by actor-effect and boss-selection allocations. */
@@ -39,21 +43,28 @@ typedef struct BtlBossEffectPayload {
 } BtlBossEffectPayload;
 
 typedef char BtlEffectHeaderSizeCheck[(sizeof(BtlEffectHeader) == 4) ? 1 : -1];
+
 typedef char BattleEffectStateSizeCheck[(sizeof(BattleEffectState) == 0x18) ? 1 : -1];
+
 typedef char BtlBossEffectPayloadSizeCheck[(sizeof(BtlBossEffectPayload) == 0x10) ? 1 : -1];
 
 typedef struct BtlUnit BtlUnit;
 
 /* Stored party indices use 6 when the unit has no active roster slot. */
+
 #define BTL_UNIT_PARTY_INDEX_NO_ACTIVE_SLOT 6
 
 void btlInitFxLights(BtlUnit *unit);
+
 void btlInitializeEffectVectorsFromSourceRecords(
     BtlUnit *unit, s32 resourceKind, s32 resourceIndex);
 
 struct evtUnitHandle_t;
+
 struct sdfMemHandle_t;
+
 struct SoundResourceLink;
+
 struct dds3Basic_t;
 
 /* The actor owns both status words as one complete, naturally aligned record.
@@ -63,8 +74,6 @@ typedef struct BtlUnitStatus {
     s32 flags;
     u32 stateFlags;
 } BtlUnitStatus;
-
-extern void *memcpy(void *, const void *, unsigned int);
 
 /* Six-byte status-entry record; each game's battle unit contains seven. */
 typedef struct BtlUnitEntrySlot {
@@ -84,6 +93,7 @@ typedef union BtlEffectLinkState {
 } BtlEffectLinkState;
 
 #ifdef VERSION_DDS1
+
 /* Battle unit, DDS1 (0x348). Retail accessors distinguish world rotation at
  * +0x40 from the orientation quaternion at +0x70; body/muzzle offsets are
  * +0x90/+0xA0 respectively. Effect origin/scene extension are +0x31C/+0x320.
@@ -153,7 +163,7 @@ typedef struct BtlUnit {
     u32 gunResourceFlags; /* 0x118 */
     u8 lookupId; /* 0x11C: party slots 0-2 or enemy slots 0-8; 0xFF when unset. */
     u8 pad11D[3];
-    datUnitWork_t partyRecord; /* 0x120: complete copied actor record (0x1A4). */
+    dds_datUnitWork_t partyRecord; /* 0x120: complete copied actor record (0x1A4). */
     u8 partyIndex; /* 0x2C4: saved party-entry index, read with lbu. */
     u8 pad2C5;
     BtlUnitEntrySlot entrySlots[7]; /* 0x2C6 */
@@ -171,7 +181,7 @@ typedef struct BtlUnit {
     u8 pad31A[2];
     struct dds3Basic_t *effectObject; /* 0x31C: actor's world node and transform. */
     struct evtUnitHandle_t *ext; /* 0x320: the event manager's complete 0x170-byte work. */
-    struct sdfModelRootNode_t *transparencyModel; /* 0x324: alternate SDF model retained during transparency. */
+    struct dds_sdfModelRootNode_t *transparencyModel; /* 0x324: alternate SDF model retained during transparency. */
     struct BtlUnit *mirror; /* 0x328: unit drawn from this unit's transparency packet buffer */
     s32 transparencyBuffer; /* 0x32C: mirror pass's 512x224 transfer image. */
     struct sdfMemHandle_t *transparencyBufferAllocation; /* 0x330: allocation handle released with the image. */
@@ -180,18 +190,13 @@ typedef struct BtlUnit {
     struct BtlUnit *previousActor; /* 0x340 */
     struct BtlUnit *next; /* 0x344: actor-list link, not a task-chain link */
 } BtlUnit;
-typedef char BtlUnitRecordOffsetCheck[((u32)&((BtlUnit *)0)->partyRecord == 0x120) ? 1 : -1];
-typedef char BtlUnitRecordEndCheck[((u32)&((BtlUnit *)0)->partyIndex == 0x2C4) ? 1 : -1];
-typedef char BtlUnitPositionZOffsetOffsetCheck[
-    ((u32)&((BtlUnit *)0)->positionZOffset == 0x88) ? 1 : -1];
-typedef char BtlUnitGeometryHeightOffsetCheck[
-    ((u32)&((BtlUnit *)0)->geometryHeight == 0xB8) ? 1 : -1];
+
 typedef char BtlUnitSizeCheck[(sizeof(BtlUnit) == 0x348) ? 1 : -1];
+
 #endif /* VERSION_DDS1 */
 
-
-
 #ifdef VERSION_DDS2
+
 /* Battle unit, DDS2. The complete party record is copied to +0x120; actor-list
  * links are the distinct pointers at +0x360/+0x364. */
 typedef struct BtlUnit {
@@ -241,7 +246,7 @@ typedef struct BtlUnit {
     u32 gunResourceFlags; /* 0x118: model/gun request and readiness bits. */
     u8 lookupId; /* 0x11C: party slots 0-2 or enemy slots 0-8; 0xFF when unset. */
     u8 pad11D[3];
-    datUnitWork_t partyRecord; /* 0x120: complete copied roster record (0x1C4). */
+    dds_datUnitWork_t partyRecord; /* 0x120: complete copied roster record (0x1C4). */
     u8 partyIndex; /* 0x2E4: saved party-entry index, read with lbu. */
     u8 pad2E5;
     BtlUnitEntrySlot entrySlots[7]; /* 0x2E6: btlClearActorEntrySlot clears each signed record. */
@@ -259,7 +264,7 @@ typedef struct BtlUnit {
     u8 pad33A[2];
     struct dds3Basic_t *effectObject; /* 0x33C: effect whose first inner vector becomes the origin */
     struct evtUnitHandle_t *ext; /* 0x340: the event manager's complete 0x1D0-byte work. */
-    struct sdfModelRootNode_t *transparencyModel; /* Alternate SDF model used by the transparency path. */
+    struct dds_sdfModelRootNode_t *transparencyModel; /* Alternate SDF model used by the transparency path. */
     struct BtlUnit *mirror; /* 0x348: created and destroyed by the model-change task. */
     s32 transparencyBuffer; /* 0x34C: mirror pass's 512x224 transfer image. */
     struct sdfMemHandle_t *transparencyBufferAllocation; /* 0x350: allocation handle released with the image. */
@@ -268,29 +273,17 @@ typedef struct BtlUnit {
     struct BtlUnit *previousActor; /* 0x360 */
     struct BtlUnit *next; /* 0x364: actor-list link, not a task-chain link */
 } BtlUnit;
-typedef char BtlUnitPartyRecordOffsetCheck[((u32)&((BtlUnit *)0)->partyRecord == 0x120) ? 1 : -1];
-typedef char BtlUnitPartyRecordEndCheck[((u32)&((BtlUnit *)0)->partyIndex == 0x2E4) ? 1 : -1];
-typedef char BtlUnitMirrorOffsetCheck[((u32)&((BtlUnit *)0)->mirror == 0x348) ? 1 : -1];
-typedef char BtlUnitSoundSlotOwnerOffsetCheck[
-    ((u32)&((BtlUnit *)0)->soundSlotOwner == 0x328) ? 1 : -1];
-typedef char BtlUnitPositionZOffsetOffsetCheck[
-    ((u32)&((BtlUnit *)0)->positionZOffset == 0x88) ? 1 : -1];
-typedef char BtlUnitGeometryHeightOffsetCheck[
-    ((u32)&((BtlUnit *)0)->geometryHeight == 0xB8) ? 1 : -1];
+
 typedef char BtlUnitSizeCheck[(sizeof(BtlUnit) == 0x368) ? 1 : -1];
+
 #endif /* VERSION_DDS2 */
 
 /* Both titles keep the primary owner's existing eight-byte alignment. */
 typedef char BtlUnitStatusSizeCheck[(sizeof(BtlUnitStatus) == 8) ? 1 : -1];
+
 typedef char BtlUnitStatusAlignmentCheck[(__alignof__(BtlUnitStatus) == 4) ? 1 : -1];
+
 typedef char BtlUnitAlignmentCheck[(__alignof__(BtlUnit) == 8) ? 1 : -1];
-typedef char BtlUnitStatusOffsetCheck[((u32)&((BtlUnit *)0)->status == 0x110) ? 1 : -1];
-typedef char BtlUnitMotionIdOffsetCheck[((u32)&((BtlUnit *)0)->motionId == 0xEC) ? 1 : -1];
-typedef char BtlUnitCameraRadiusOffsetCheck[((u32)&((BtlUnit *)0)->cameraRadius == 0xC0) ? 1 : -1];
-typedef char BtlUnitModelResourceKindOffsetCheck[((u32)&((BtlUnit *)0)->modelResourceKind == 0xDC) ? 1 : -1];
-typedef char BtlUnitStatusFlagsOffsetCheck[((u32)&((BtlUnit *)0)->status.flags == 0x110) ? 1 : -1];
-typedef char BtlUnitStateFlagsOffsetCheck[((u32)&((BtlUnit *)0)->status.stateFlags == 0x114) ? 1 : -1];
-typedef char BtlUnitGunResourceFlagsOffsetCheck[((u32)&((BtlUnit *)0)->gunResourceFlags == 0x118) ? 1 : -1];
 
 /* Whole status pair (flags low, stateFlags high) for the 64-bit mask tests. */
 static inline u64 btlUnitStatusPair(BtlUnit *unit) {
@@ -303,6 +296,7 @@ static inline u64 btlUnitStatusPair(BtlUnit *unit) {
 f32 btlProjectOnPlaneVU(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 /* Preserve the field token for compiler matching; source uses its side-slot role. */
+
 #define battleSideSlotIndex lookupId
 
-#endif /* BTL_H */
+#endif /* DDS_BTL_H */

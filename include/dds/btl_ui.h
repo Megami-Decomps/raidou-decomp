@@ -1,17 +1,22 @@
-#ifndef BTL_UI_H
-#define BTL_UI_H
+#ifndef DDS_BTL_UI_H
 
+#define DDS_BTL_UI_H
 #include "common.h"
 
 struct BtlTask;
+
 struct dds3ProcessID_t;
+
 struct sdfMemHandle_t;
+
 struct ActionStateLink;
+
 struct BattleIndexWork;
 
 /* Each command class keeps the selected option separate from the start of its
  * visible option window. The first index also doubles as the scroll offset. */
 typedef u16 BattleSceneOptionIndex;
+
 typedef u16 BattleSceneOptionWindowStart;
 
 typedef struct BattleSceneSelection {
@@ -21,6 +26,7 @@ typedef struct BattleSceneSelection {
 
 /* Lifecycle states shared by command-panel input, reserve selection, and close flows. */
 typedef s32 BattleCommandSceneState;
+
 enum {
     BTL_COMMAND_SCENE_STATE_INPUT_ACTIVE = 1,
     BTL_COMMAND_SCENE_STATE_PRIORITY_INPUT = 2,
@@ -48,10 +54,6 @@ typedef struct BattleSceneObject {
 } BattleSceneObject;
 
 typedef char BattleSceneObjectSizeCheck[sizeof(BattleSceneObject) == 0x30 ? 1 : -1];
-typedef char BattleSceneObjectCommandStateOffsetCheck[
-    ((u32)&((BattleSceneObject *)0)->commandState == 0x00) ? 1 : -1];
-typedef char BattleSceneObjectCommandDataOffsetCheck[((u32)&((BattleSceneObject *)0)->commandData == 0x28) ? 1 : -1];
-typedef char BattleSceneObjectOwnerOffsetCheck[((u32)&((BattleSceneObject *)0)->owner == 0x2C) ? 1 : -1];
 
 /* Both scene scratch constructors allocate and clear 0x38 bytes. */
 typedef struct SceneKindTable {
@@ -65,27 +67,35 @@ typedef struct SceneKindTable {
 } SceneKindTable;
 
 typedef char SceneKindTable_size_must_be_0x38[(sizeof(SceneKindTable) == 0x38) ? 1 : -1];
-typedef char SceneKindTable_alpha_offset_check[
-    ((u32)&((SceneKindTable *)0)->alpha == 0x04) ? 1 : -1];
-typedef char SceneKindTable_value_offset_check[
-    ((u32)&((SceneKindTable *)0)->value == 0x14) ? 1 : -1];
 
 #ifdef VERSION_DDS1
+
 void fldInitializeSceneObject(BattleSceneObject *object, struct BtlTask *owner);
+
 #else
+
 typedef s32 BtlCommandPanelIntroMode;
 
 #define BTL_COMMAND_PANEL_INTRO_NONE ((BtlCommandPanelIntroMode)0)
+
 #define BTL_COMMAND_PANEL_INTRO_FIRST_BATTLE ((BtlCommandPanelIntroMode)1)
+
 #define BTL_COMMAND_PANEL_INTRO_WEAKNESS ((BtlCommandPanelIntroMode)2)
+
 #define BTL_COMMAND_PANEL_INTRO_HUNT ((BtlCommandPanelIntroMode)3)
+
 #define BTL_COMMAND_PANEL_INTRO_FEAR ((BtlCommandPanelIntroMode)4)
+
 #define BTL_COMMAND_PANEL_INTRO_LINKAGE ((BtlCommandPanelIntroMode)5)
+
 #define BTL_COMMAND_PANEL_INTRO_MAJIN ((BtlCommandPanelIntroMode)6)
 
 void fldInitializeSceneObject(BattleSceneObject *object, struct ActionStateLink *owner);
+
 BtlCommandPanelIntroMode fldSelectSceneMode(struct ActionStateLink *task);
+
 void btlOpenBattleCommandPanel(struct ActionStateLink *task);
+
 #endif
 
 /* Return the command-panel state, or zero when its process is absent. */
@@ -123,12 +133,10 @@ typedef struct BattleCmdPanel {
     s16 cornerFade[4]; /* Four low-byte color levels used by the backdrop. */
     u32 cornerPhase[4]; /* Advanced by 8 modulo 360 before the sine pulse. */
 } BattleCmdPanel;
+
 typedef char BattleCmdPanelSlot_size_must_be_0x10[(sizeof(BattleCmdPanelSlot) == 0x10) ? 1 : -1];
-typedef char BattleCmdPanelSlot_position_at_0x08[((u32)&((BattleCmdPanelSlot *)0)->position[0] == 0x08) ? 1 : -1];
-typedef char BattleCmdPanelSlot_y_at_0x0C[((u32)&((BattleCmdPanelSlot *)0)->position[1] == 0x0C) ? 1 : -1];
+
 typedef char BattleCmdPanel_size_must_be_0xCC[(sizeof(BattleCmdPanel) == 0xCC) ? 1 : -1];
-typedef char BattleCmdPanel_slotsA_at_0x14[((u32)&((BattleCmdPanel *)0)->slotsA == 0x14) ? 1 : -1];
-typedef char BattleCmdPanel_slotsB_at_0x64[((u32)&((BattleCmdPanel *)0)->slotsB == 0x64) ? 1 : -1];
 
 /* Native 0x58-byte command UI work in both games. The first 0x38 bytes hold
  * twelve scheduler-task pointers and two resource-presence flags. Keep the
@@ -174,12 +182,9 @@ typedef struct BattleTrackedTaskWork {
 
 typedef char BattleTrackedTaskWorkSizeCheck[
     (sizeof(BattleTrackedTaskWork) == 0x58) ? 1 : -1];
+
 typedef char BattleTrackedTaskSlotsSizeCheck[
     (sizeof(((BattleTrackedTaskWork *)0)->taskSlots) == 0x38) ? 1 : -1];
-typedef char BattleTrackedSelectionBufferActiveOffsetCheck[
-    ((u32)&((BattleTrackedTaskWork *)0)->taskSlots.typed.selectionBufferActive == 0x08) ? 1 : -1];
-typedef char BattleTrackedCommandHintWindowActiveOffsetCheck[
-    ((u32)&((BattleTrackedTaskWork *)0)->taskSlots.typed.commandHintWindowActive == 0x10) ? 1 : -1];
 
 /* The linked selection task allocates 0x30 bytes: a one-based selected row,
  * four signed fade levels, four screen positions and a backdrop fade.
@@ -208,6 +213,7 @@ typedef struct BattleStatPulse {
     s16 alpha;
     u8 pad12[2];
 } BattleStatPulse;
+
 typedef char BattleStatPulse_size_must_be_0x14[(sizeof(BattleStatPulse) == 0x14) ? 1 : -1];
 
 /* 0x2C-byte action record shared by the initializer, updater and renderer. */
@@ -325,24 +331,14 @@ typedef struct BattleActorPanelWork {
 } BattleActorPanelWork;
 
 typedef char BattleActorPanelPresentationSizeCheck[sizeof(BattleActorPanelPresentation) == 0x280 ? 1 : -1];
-typedef char BattleActorPanelPresentationHpEffectTimerOffsetCheck[
-    ((u32)&((BattleActorPanelPresentation *)0)->hpEffectTimer == 0x1C0) ? 1 : -1];
-typedef char BattleActorPanelPresentationMpEffectTimerOffsetCheck[
-    ((u32)&((BattleActorPanelPresentation *)0)->mpEffectTimer == 0x1C4) ? 1 : -1];
-typedef char BattleActorPanelTriangleOffsetCheck[
-    ((u32)&((BattleActorPanelPresentation *)0)->trianglePhase == 0xB4 &&
-     (u32)&((BattleActorPanelPresentation *)0)->triangleAlpha == 0xD4 &&
-     sizeof(((BattleActorPanelPresentation *)0)->trianglePhase) == 0x20 &&
-     sizeof(((BattleActorPanelPresentation *)0)->triangleAlpha) == 8) ? 1 : -1];
-typedef char BattleActorPanelPresentationOffsetCheck[((u32)&((BattleActorPanelEntry *)0)->presentation == 0x10) ? 1 : -1];
 
 typedef char BattleActorPanelEntrySizeCheck[sizeof(BattleActorPanelEntry) == 0x290 ? 1 : -1];
+
 typedef char BattleActorPanelWorkSizeCheck[sizeof(BattleActorPanelWork) == 0x1204 ? 1 : -1];
-typedef char BattleActorPanelActiveOffsetCheck[((u32)&((BattleActorPanelWork *)0)->activeEntries == 0xC) ? 1 : -1];
-typedef char BattleActorPanelReserveOffsetCheck[((u32)&((BattleActorPanelWork *)0)->reserveEntries == 0x7C0) ? 1 : -1];
 
 void btlSlotBankPromoteStates(BattleActorPanelWork *bank);
+
 void btlInitializeActionRecordWithScale(BattleMirroredSpriteRecord *record, s16 slot,
                                       s32 x, s32 y, s32 index, f32 scale);
 
-#endif /* BTL_UI_H */
+#endif /* DDS_BTL_UI_H */

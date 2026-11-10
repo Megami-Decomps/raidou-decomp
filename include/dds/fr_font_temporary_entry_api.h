@@ -1,0 +1,6 @@
+#ifndef DDS_FR_FONT_TEMPORARY_ENTRY_API_H
+
+#define DDS_FR_FONT_TEMPORARY_ENTRY_API_H
+#include "common.h"
+
+#endif /* DDS_FR_FONT_TEMPORARY_ENTRY_API_H */

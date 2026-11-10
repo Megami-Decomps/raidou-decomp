@@ -1,9 +1,6 @@
-#ifndef DSP_CHANNEL_H
-#define DSP_CHANNEL_H
+#ifndef DDS_DSP_CHANNEL_H
 
+#define DDS_DSP_CHANNEL_H
 #include "common.h"
 
-/* Close the active display channel and return its status. */
-s32 fclDestroyMessage(void);
-
-#endif /* DSP_CHANNEL_H */
+#endif /* DDS_DSP_CHANNEL_H */

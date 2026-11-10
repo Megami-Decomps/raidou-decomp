@@ -1,12 +1,13 @@
-#ifndef DAT_EFFECTIVE_AFFINITY_API_H
-#define DAT_EFFECTIVE_AFFINITY_API_H
+#ifndef DDS_DAT_EFFECTIVE_AFFINITY_API_H
 
+#define DDS_DAT_EFFECTIVE_AFFINITY_API_H
 #include "dat_effective_affinity_result_type.h"
+
 #include "dat_affinity_selector.h"
 
-struct datUnitWork_t;
+struct dds_datUnitWork_t;
 
 DatEffectiveAffinityResult datGetEffectiveAffinity(
-    const struct datUnitWork_t *unit, DatAffinitySelector selector);
+    const struct dds_datUnitWork_t *unit, DatAffinitySelector selector);
 
-#endif /* DAT_EFFECTIVE_AFFINITY_API_H */
+#endif /* DDS_DAT_EFFECTIVE_AFFINITY_API_H */

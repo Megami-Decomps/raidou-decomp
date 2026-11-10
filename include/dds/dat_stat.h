@@ -1,6 +1,6 @@
-#ifndef DAT_STAT_H
-#define DAT_STAT_H
+#ifndef DDS_DAT_STAT_H
 
+#define DDS_DAT_STAT_H
 /* The five base-stat slots used by party/enemy records and matching stat
  * vectors. These are not affinity-table selectors or script IDs. */
 typedef enum DatBaseStatIndex {

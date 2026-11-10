@@ -5,6 +5,96 @@
 #define VERSION_DDS2 1
 #endif
 
+#include "kernel_draw.h"
+
+#include "libsdf.h"
+
+#include "sdk_libc.h"
+
+#include "sdk_libgcc.h"
+
+#include "dds/btl.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_append.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_packet_header.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_primitive_packet_api.h"
+
+#include "dds/sdf_projection.h"
+
+#include "dds/sdk_libc.h"
+
+/* Build a look-at basis from four-float target, eye, and up vectors. */
+void LookAtMatrix(const f32 *targetPoint, const f32 *eyePosition, const f32 *upVector);
+
+/* Return the current frame draw-buffer slot (0 or 1). */
+u32 dds3GetFrameID(void);
+
+extern SdfProjectionRecord dds3ScreenParam;
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+SdfDrawPacket *sdf2DMakePrimPacketHeader(SdfDrawPacket *packet, s32 primitiveFlags,
+                                       s32 registerCount, s64 registerList,
+                                       s32 loopCount);
+
+extern void sdf3DMakeScreenParam(SdfCamera *);
+
+extern void sdf3DMakeViewportPacket(struct ConsMatrixPacket *, SdfProjectionRecord *, const Matrix4 *);
+
+void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
+                              s32 (*allocatePacket)(s32));
+
+/* Append standard packets to a DMA packet list. A null allocator selects the
+   default packet allocator. Asset packets reference the selected draw entry. */
+void sdf3DPrimLinkResetTm(sdfDrawTag_t *packetList,
+                              s32 (*allocatePacket)(s32));
+
+/* Build the serialized VIF attribute stream and return its word cursor. */
+u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *request);
+
+void *sdfChipAllocDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+void sdfDrawTagLinkRefGif(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+void sdfLinkLoadImage(
+    sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,
+    s32 destinationY, s32 width, s32 height, s32 sourceAddress,
+    s32 (*allocatePacket)(s32));
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+void sdfMemUnlock(struct sdfMemHandle_t *allocation);
+
+char *strcpy(char *dst, const char *src);
+
+u32 strlen(const char *text);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/sdf_gs_header.h"
@@ -138,8 +228,6 @@ u8 itfGridGetOverlayFlag(GridDrawWork *work);
 
 /* Two overlay kinds use a 16x16 region; other kinds use 8x2. */
 void itfDrawGridOverlayPacket(GridDrawWork *work, u8 *data, sdfDrawTag_t *context);
-
-extern sdfGrOt_t sdfGrOtTable[];
 
 extern s32 sdf2DGetPrimPacketSize(s32 registerCount, s32 loopCount);
 
@@ -339,8 +427,6 @@ void itfReverseSelectedGridScroll(GridTextWidget *owner, u32 steps);
 
 ItfGridTextColorTableIndex itfGetGridTextColorTableIndex(const GridTextWidget *widget,
                                                           const GridTextListItem *target);
-
-extern double fptodp(f32);
 
 /* Format a native value row, then optionally prefix its decimal/hex row number. */
 void itfFormatGridValueEntryText(GridTextWidget *widget, GridTextListItem *entry, char *out);

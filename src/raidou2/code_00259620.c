@@ -5,6 +5,331 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "dds3obj.h"
+
+#include "kernel_draw.h"
+
+#include "libsdf.h"
+
+#include "sdf_resource.h"
+
+#include "sdk_libc.h"
+
+#include "dds/bill_object_api.h"
+
+#include "dds/btl.h"
+
+#include "dds/btl_effect_position.h"
+
+#include "dds/btl_stage_task_cleanup.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/dds3_fade_timing.h"
+
+#include "dds/dds3_path.h"
+
+#include "dds/dds3_world_primary.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/eff.h"
+
+#include "dds/eff_blur.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/eff_random_mod.h"
+
+#include "dds/evt_unit.h"
+
+#include "dds/evt_unit_color_transition.h"
+
+#include "dds/file_pac_completion_api.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/file_slot.h"
+
+#include "dds/fld_transfer_chunk.h"
+
+#include "dds/mdl.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_asset_packets.h"
+
+#include "dds/sdf_asset_state.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_chunk.h"
+
+#include "dds/sdf_dev_state.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_append.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_quaternion.h"
+
+#include "dds/sdf_texture_draw_packet.h"
+
+#include "dds/sdf_texture_file.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdf_vu_matrix_multiply_api.h"
+
+#include "dds/sdf_vu_rotation_axes.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/sdk_libm.h"
+
+/* Convert three Euler angle components to the VU0 quaternion output.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void FromEuler(f32 x, f32 y, f32 z);
+
+/* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
+void Mult(void);
+
+/* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
+void MultMatrixRevNoArg(void);
+
+/* Load axis-angle rotation into VU0 vf28-vf31. The angle-first interface
+ * follows the native Flash caller at DDS2 00171FF8..00172000; EE's separate
+ * f12/a0 argument registers alone do not distinguish the two source orders. */
+void SetRotateMatrixAxis(f32 angle, const RwV3d *axis);
+
+/* Load the X-axis rotation matrix into the primary VU0 matrix registers. */
+void SetRotateMatrixX(f32 angle);
+
+/* Load the secondary Y-axis rotation matrix into the primary VU0 matrix registers. */
+void SetRotateMatrixY_B(f32 angle);
+
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void ToMatrix(void);
+
+f32 acosf(f32 x);
+
+f32 atan2f(f32 y, f32 x);
+
+f32 atanf(f32 x);
+
+dds3PathBasicControl_t *dds3AllocPathBasicWorkData(struct dds3Basic_t *object);
+
+struct billHandle_t *dds3BillboardCopy(const struct billHandle_t *source);
+
+/* The selected kind interprets the opaque payload word. */
+struct billHandle_t *dds3BillboardCreate(s32 kind, u32 data);
+
+void dds3BillboardDelete(struct billHandle_t *obj);
+
+struct billHandle_t *dds3BillboardGeneral(s32 index);
+
+s32 dds3BillboardGetAnimFrame(const struct billHandle_t *billboard);
+
+struct sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 index);
+
+void dds3BillboardSetAnimColorAdvMode(struct billHandle_t *billboard);
+
+void dds3BillboardSetAnimKey(struct billHandle_t *billboard, u32 frame);
+
+void dds3BillboardSetAnimKey2(struct billHandle_t *billboard, u32 frame);
+
+void dds3BillboardSetMode(struct billHandle_t *billboard, s32 mode);
+
+void dds3BillboardSetRGBA(struct billHandle_t *billboard, u32 parameter);
+
+/* Radian rotation of the billboard quad in its plane. */
+void dds3BillboardSetRotate(struct billHandle_t *billboard, f32 angle);
+
+void dds3BillboardSetScale(struct billHandle_t *billboard, f32 x, f32 y);
+
+void dds3DeletePathControl(dds3PathBasicControl_t *path);
+
+void dds3DeleteSceneBasicData(dds3Basic_t *node);
+
+/* Factories accept the serialized parameter prefix used by effect callbacks. */
+EffBlurScatterWork *dds3EffectDistortionBlurCreate(dds3Effect_DistortionBlurParam_t *params);
+
+void dds3EffectDistortionBlurDelete(EffBlurScatterWork *work);
+
+EffBlurTemplate *dds3EffectPartialMultiBlurCreate(const dds3Effect_PartialMultiBlurParam_t *body);
+
+void dds3EffectPartialMultiBlurDelete(EffBlurTemplate *owner);
+
+EffResourceRectWork *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *params);
+
+void dds3EffectPartialMultiFilterDelete(EffResourceRectWork *work);
+
+EffBlurScaleWork *dds3EffectRippleBlurCreate(dds3Effect_RippleBlurParam_t *params);
+
+void dds3EffectRippleBlurDelete(EffBlurScaleWork *work);
+
+dds3Basic_t *dds3GetActiveCameraSceneBasic(dds3Basic_t *world);
+
+/* Return the borrowed primary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetActiveScene(void);
+
+/* Return the current frame draw-buffer slot (0 or 1). */
+u32 dds3GetFrameID(void);
+
+/* Advance caller-owned state, returning its next 32-bit value. NULL selects
+ * the shared effect RNG state. */
+u32 dds3GetRandA(EffRandState *state);
+
+/* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
+f32 dds3GetRandFloatA(EffRandState *state);
+
+/* Return the next caller-owned or shared state value reduced modulo `modulus`. */
+u32 dds3GetRandIntA(EffRandState *state, u32 modulus);
+
+void dds3PathBasicControlGetPos(dds3PathBasicControl_t *path);
+
+void dds3PathBasicControlGetRot(dds3PathBasicControl_t *path);
+
+/* Configure the foreground fade timing mode and frame duration. */
+void dds3SetQuake(s32 mode, s32 frames);
+
+/* Disable configured timing while retaining the stored parameters. */
+void dds3StopQuake(void);
+
+/* Leaves the unit's transformed muzzle position in vf10. */
+void effBTLModelGetSphereCenter(struct BtlUnit *unit);
+
+void effPCPHelperBEDGetModel(FileSlotTable *record);
+
+void evtSetUnitColorRGB(evtUnitHandle_t *unit, s32 duration, u32 color);
+
+/* Initialize an event unit's color transition for the requested duration. */
+void evtSetUnitLightAndAmbient(evtUnitHandle_t *unit, s32 duration, u32 firstColor, u32 secondColor);
+
+void evtSetUnitLightDir(evtUnitHandle_t *unit, EvtUnitDirectionTransitionFrames durationFrames);
+
+void evtUnitLightOn(evtUnitHandle_t *unit);
+
+/* Relocate resource words in buffer using this read-only transfer descriptor. */
+void fldAddressResolver(u8 *buffer, const FldTransferChunk *chunk);
+
+u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
+
+u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
+
+/* The referenced halfword is promoted to a word-sized SDK result. */
+s32 mdlGetNumOfCut(const dds3ModelHandle_t *ctx, s32 searchId);
+
+/* VU helpers transfer vectors through vf10 and basis rows through vf28-vf30. */
+void mdlGetPosition(dds3ModelHandle_t *ctx);
+
+/* Allocate a distinct caller-owned context linked to the registered group.
+ * Contexts share the group node and assets; release each context with mdlFree. */
+dds3ModelHandle_t *mdlLoad(u32 group, u32 id);
+
+/* sdfMotionCtrlr_t-record selection and lookup. */
+void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+FilePacRequestCompletionResult pacCheckEnd(const struct FileRequest *request);
+
+/* These title-specific wrappers forward an opaque stage-task owner and its
+ * handled/not-handled result. */
+s32 pacFileHandleFree_(void *request);
+
+struct FileRequest *pacLoad(const char *requestName);
+
+void pacSync(struct FileRequest *request);
+
+SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
+
+void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
+                              s32 (*allocatePacket)(s32));
+
+void sdf3DPrimLinkTm(sdfDrawTag_t *packetList,
+                           s32 (*allocatePacket)(s32));
+
+void *sdfChipAllocDirect(s32 size);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+f32 sdfCos(f32 angle);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+void sdfDrawTagLinkRef(struct sdfDrawTag_t *list, u32 packetAddress);
+
+void sdfDrawTagLinkRefGif(struct sdfDrawTag_t *list, u32 packetAddress);
+
+void sdfFileClose(sdfFileCmdHandle_t *state);
+
+u32 sdfFileLength(sdfFileCmdHandle_t *state);
+
+/* Stable state APIs. Callback factories keep caller-specific callback types. */
+sdfFileCmdHandle_t *sdfFileOpen(const char *path);
+
+void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+/* Queue an asset owner for the deferred sdfMat_t release callback. */
+void sdfMatFreeDelayed(struct sdfMat_t *asset);
+
+/* Write the reference header for one buffered asset draw entry and return
+ * the packet payload immediately after the header. */
+struct SdfDmaTagHeader *sdfMatMakePacket(struct sdfMat_t *asset,
+                                                           struct SdfDmaTagHeader *tag,
+                                                           s32 frame);
+
+void sdfMatSetConstant(struct sdfMat_t *asset, f32 value);
+
+void sdfMatSetMultiMethod(struct sdfMat_t *asset, u32 packetMode);
+
+void sdfMatSetMultiTex(struct sdfMat_t *asset, struct sdfTexHandle_t *texture);
+
+/* Store the primary or secondary texture owner and mark its draw state dirty. */
+void sdfMatSetTex(struct sdfMat_t *asset, struct sdfTexHandle_t *texture);
+
+/* Refresh one of the two draw entries and retain the other entry's dirty bits. */
+void sdfMatUpdatePacket(struct sdfMat_t *asset, s32 entryIndex);
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
+
+f32 sdfSin(f32 angle);
+
+void sdfTexFreeDelayed(sdfTexHandle_t *texture);
+
+/* Both entry points return one caller-owned texture reference. A nonzero
+ * resourceKey reuses a live matching texture and increments its count; a new
+ * texture starts at one. Release the returned reference once with
+ * sdfTexReleaseReference or sdfTexFreeDelayed. */
+/* For a new texture, copy payload bytes into queue-owned storage before return. */
+struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
+
+char *strcpy(char *dst, const char *src);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/eff_block128.h"
@@ -198,10 +523,6 @@ extern void kwlnPadResetMotorLevelsAndOutput(void);
 
 extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 
-static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list) {
-    surface->regFunc(surface, list);
-}
-
 #include "dds/sdf_packet_alloc.h"
 
 extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *);
@@ -215,8 +536,6 @@ extern sdfGrOt_t *D_0037EE68[];
 extern u32 D_0037EB30[];
 
 extern sdfGrOt_t *D_0037EB78[];
-
-extern sdfGrOt_t sdfGrOtTable[];
 
 #include "dds/bill_object_api.h"
 
@@ -863,18 +1182,6 @@ typedef struct EffBillFrameEntry {
 } EffBillFrameEntry;
 
 typedef char EffBillFrameEntrySizeCheck[(sizeof(EffBillFrameEntry) == 0x18) ? 1 : -1];
-
-typedef char EffBillFrameEntry_age_offset_check[((u32)&((EffBillFrameEntry *)0)->age == 0x0) ? 1 : -1];
-
-typedef char EffBillFrameEntry_spin_offset_check[((u32)&((EffBillFrameEntry *)0)->spin == 0x4) ? 1 : -1];
-
-typedef char EffBillFrameEntry_angle_offset_check[((u32)&((EffBillFrameEntry *)0)->angle == 0x8) ? 1 : -1];
-
-typedef char EffBillFrameEntry_radius_offset_check[((u32)&((EffBillFrameEntry *)0)->radius == 0xC) ? 1 : -1];
-
-typedef char EffBillFrameEntry_innerWidth_offset_check[((u32)&((EffBillFrameEntry *)0)->innerWidth == 0x10) ? 1 : -1];
-
-typedef char EffBillFrameEntry_outerWidth_offset_check[((u32)&((EffBillFrameEntry *)0)->outerWidth == 0x14) ? 1 : -1];
 
 extern EffRandState effSharedRandomState[];
 
@@ -1642,18 +1949,6 @@ void effSharedAssetReferenceRelease(EffRibbonWork *work);
 extern sdfGrOt_t *D_0037ED78[];
 
 EffRibbonWork *effCloneRibbonWithSharedResource(EffRibbonWork *source);
-
-static inline void unpackNormalizedColor(u32 color) {
-    u32 rgba[4];
-    rgba[0] = color;
-    EE_MMI_RGBA_UNPACK(rgba, 1.0f / 128.0f);
-}
-
-static inline u32 packNormalizedColor(void) {
-    u32 rgba[4];
-    EE_MMI_RGBA_PACK_UNIT(rgba[0], 128.0f);
-    return rgba[0];
-}
 
 void effDrawRibbon(EffRibbonWork *work, const Matrix4 *matrix);
 
@@ -2753,6 +3048,42 @@ s32 effPollResourceList(EffectList *list);
 #define VERSION_DDS1 1
 #endif
 
+#include "newdata.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_line_pair_packet_api.h"
+
+#include "dds/sdf_projection.h"
+
+#include "dds/sdk_libc.h"
+
+extern SdfProjectionRecord dds3ScreenParam;
+
+struct SdfPacket *effDebugDrawWireModel(const f32 vertices[][4], const u32 *colors,
+                                                 s32 vertexCount, u32 primitiveFlags);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+/* Set and clear one flag using the providers' signed-index adjustment. */
+void evtBitOn(s32 flag);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+/* Replace each child render word along the borrowed glyph chain. */
+void frSetFontColor(struct _FRQ *parentNode, u32 colorWord);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+u32 strlen(const char *text);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/sdf_line_pair_packet_api.h"
@@ -2820,7 +3151,7 @@ s32 effPollResourceList(EffectList *list);
 /* Declared before first use (were implicit int). */
 extern u16 prfGetSkillAtIndex(u16 profileId, u32 skillIndex);
 
-extern s32 scrSetFlag(datUnitWork_t *work, u16 flagId);
+extern s32 scrSetFlag(dds_datUnitWork_t *work, u16 flagId);
 
 #define SCR_FLAG_ID_MASK 0xFFFF
 
@@ -2888,11 +3219,9 @@ extern s32 scrSetFlag(datUnitWork_t *work, u16 flagId);
 
 #define SDF_FLAG_SLOT_COUNT 16
 
-extern void memset(void *dst, s32 value, s32 size);
-
 extern PtyPresetRecord D_00393A80[];
 
-extern void ptyMergeStockSkills(datUnitWork_t *);
+extern void ptyMergeStockSkills(dds_datUnitWork_t *);
 
 extern void (*sdfTickCallback)(void);
 
@@ -2900,7 +3229,7 @@ extern u32 D_003BD2C8;
 
 extern u32 prfIsRequirementExcluded(u16);
 
-extern DatProfileRecord *ptyGetProfileRecord(const datUnitWork_t *, u16);
+extern DatProfileRecord *ptyGetProfileRecord(const dds_datUnitWork_t *, u16);
 
 extern FrFontTextBank frFontColoredGlyphResource;
 
@@ -2927,62 +3256,62 @@ extern _FRQ *itfDrawBankTextWithLayoutFlags(s32, s32, s32, u16, FrFontTextBank *
 
 extern s32 frFontDrawGlyphChain(_FRQ *, s8, u32);
 
-extern s32 ptyTestPrimaryProfileFlag(datUnitWork_t *, u16);
+extern s32 ptyTestPrimaryProfileFlag(dds_datUnitWork_t *, u16);
 
-s32 ptyGetCurrentProfileId(const datUnitWork_t *);
+s32 ptyGetCurrentProfileId(const dds_datUnitWork_t *);
 
-extern void ptyRecomputeMaxVitals(datUnitWork_t *, const s32 *);
+extern void ptyRecomputeMaxVitals(dds_datUnitWork_t *, const s32 *);
 
 void sdfAppendFormattedDebugLogPair(s32 left, s32 right);
 
 /* Clear the complete per-unit profile-record table in game state. */
 void ptyClearProfileRecords(void);
 
-s8 scrSelectOperandIndex(datUnitWork_t *unit, s32 profileId);
+s8 scrSelectOperandIndex(dds_datUnitWork_t *unit, s32 profileId);
 
-extern void ptySetSecondaryProfileFlag(datUnitWork_t *, u16);
+extern void ptySetSecondaryProfileFlag(dds_datUnitWork_t *, u16);
 
-PtyProfileRecordValue ptyAddProfilePoints(datUnitWork_t *unit, s32 increment);
+PtyProfileRecordValue ptyAddProfilePoints(dds_datUnitWork_t *unit, s32 increment);
 
 /* Pick the highest preset stage whose required profiles all sit at their cap, then apply that stage's script. */
-void ptySelectProfileStage(datUnitWork_t *unit);
+void ptySelectProfileStage(dds_datUnitWork_t *unit);
 
-extern void ptyApplyProfile(datUnitWork_t *, u16);
+extern void ptyApplyProfile(dds_datUnitWork_t *, u16);
 
 /* Choose the least-conflicting profile group and install its nonzero IDs. */
-void ptyApplyProfilePreset(s32 useCurrentProfile, datUnitWork_t *unit);
+void ptyApplyProfilePreset(s32 useCurrentProfile, dds_datUnitWork_t *unit);
 
 /* Load nonzero preset IDs into their original slots; zero IDs leave slots unchanged. */
-void ptyLoadPresetSkillSlots(datUnitWork_t *unit);
+void ptyLoadPresetSkillSlots(dds_datUnitWork_t *unit);
 
 /* Mark nonzero IDs in the preset pool, then perform the native flag-gated extra call. */
-void ptyMarkPresetSkillPool(datUnitWork_t *unit);
+void ptyMarkPresetSkillPool(dds_datUnitWork_t *unit);
 
-extern void ptyRecomputeMaxHpMp(datUnitWork_t *);
+extern void ptyRecomputeMaxHpMp(dds_datUnitWork_t *);
 
 extern s32 prfBuildRawSkillList(u16, PrfSkillList *);
 
-extern s32 scrSetFlag(datUnitWork_t *, u16);
+extern s32 scrSetFlag(dds_datUnitWork_t *, u16);
 
-extern void scrSetSecondaryScriptFlag(datUnitWork_t *, u16);
+extern void scrSetSecondaryScriptFlag(dds_datUnitWork_t *, u16);
 
-extern void scrClearAllSecondaryScriptFlags(datUnitWork_t *);
+extern void scrClearAllSecondaryScriptFlags(dds_datUnitWork_t *);
 
 /* Rebuild skill flags from the preset (no current profile) or from the current profile. */
-void ptyRebuildProfileSkills(s32 useCurrentProfile, datUnitWork_t *unit);
+void ptyRebuildProfileSkills(s32 useCurrentProfile, dds_datUnitWork_t *unit);
 
 /* Rebuild skill lists for the five occupied party slots. */
 void ptyRebuildAllProfiles(void);
 
-extern u32 datComputeSkillBoostedMaxHp(datUnitWork_t *unit);
+extern u32 datComputeSkillBoostedMaxHp(dds_datUnitWork_t *unit);
 
-extern u32 datComputeSkillBoostedMaxMp(datUnitWork_t *unit);
+extern u32 datComputeSkillBoostedMaxMp(dds_datUnitWork_t *unit);
 
 /* Recompute effective maxima from the profile plus optional stat gains, then
  * preserve each current resource's proportion of its former maximum. */
-void ptyRecomputeMaxVitals(datUnitWork_t *unit, const s32 *statDeltas);
+void ptyRecomputeMaxVitals(dds_datUnitWork_t *unit, const s32 *statDeltas);
 
-void ptyRecomputeMaxHpMp(datUnitWork_t *unit);
+void ptyRecomputeMaxHpMp(dds_datUnitWork_t *unit);
 
 extern DspMantraName *D_003BAA78;
 
@@ -2996,10 +3325,10 @@ s32 prfResolveMantraNameOrFallback(u16 profileId, u8 **out);
 u32 prfGetCapValue(u16 profileId);
 
 /* Store the configured capacity in an unchecked profile record. */
-void ptySetProfileRecordToCap(datUnitWork_t *unitAddress, u16 profileId);
+void ptySetProfileRecordToCap(dds_datUnitWork_t *unitAddress, u16 profileId);
 
 /* Add to the selected record and cap the unsigned result; no selection returns zero. */
-PtyProfileRecordValue ptyAddProfilePoints(datUnitWork_t *unit, s32 increment);
+PtyProfileRecordValue ptyAddProfilePoints(dds_datUnitWork_t *unit, s32 increment);
 
 void prfDecodeFlagPair(u32 v, u32 *a, u32 *b);
 
@@ -3007,34 +3336,34 @@ extern ScriptFlagSlot D_00393280[];
 
 /* Search the selected 16-entry table for an exact nonzero byte ID.
  * Set and return its global flag ID; return zero if no entry matches. */
-u32 ptySetMappedGlobalFlagForSlot(datUnitWork_t *unit, u32 slotId);
+u32 ptySetMappedGlobalFlagForSlot(dds_datUnitWork_t *unit, u32 slotId);
 
 /* Test the first bit of the decoded profile flag pair for this unit. */
-s32 ptyTestPrimaryProfileFlag(datUnitWork_t *partyRecord, u16 id);
+s32 ptyTestPrimaryProfileFlag(dds_datUnitWork_t *partyRecord, u16 id);
 
 /* Require the primary profile flag for every row not marked as excluded. */
-s32 scrCheckStateBits(datUnitWork_t *unit);
+s32 scrCheckStateBits(dds_datUnitWork_t *unit);
 
 /* Mark the second bit of the decoded mantra pair for this unit. */
-void ptySetSecondaryProfileFlag(datUnitWork_t *unit, u16 id);
+void ptySetSecondaryProfileFlag(dds_datUnitWork_t *unit, u16 id);
 
 /* Test the second bit of the decoded profile flag pair for this unit. */
-s32 ptyTestSecondaryProfileFlag(datUnitWork_t *partyRecord, u16 id);
+s32 ptyTestSecondaryProfileFlag(dds_datUnitWork_t *partyRecord, u16 id);
 
-s8 scrGetSelectedOperandIndex(datUnitWork_t *op);
+s8 scrGetSelectedOperandIndex(dds_datUnitWork_t *op);
 
 /* The party record supplies only the bank index; the returned profile record is writable. */
-DatProfileRecord *ptyGetProfileRecord(const datUnitWork_t *unit, u16 profileId);
+DatProfileRecord *ptyGetProfileRecord(const dds_datUnitWork_t *unit, u16 profileId);
 
-u32 ptyGetProfileRecordValue(const datUnitWork_t *unit, u16 profileId);
+u32 ptyGetProfileRecordValue(const dds_datUnitWork_t *unit, u16 profileId);
 
 /* Resolve the selected ID using the native low-16-bit conversion. */
-const DatProfileRecord *ptyGetCurrentProfileRecord(datUnitWork_t *unit);
+const DatProfileRecord *ptyGetCurrentProfileRecord(dds_datUnitWork_t *unit);
 
-s32 ptyGetCurrentProfileId(const datUnitWork_t *op);
+s32 ptyGetCurrentProfileId(const dds_datUnitWork_t *op);
 
 /* Store the narrowed selection, mark its paired profile flag, and return the stored ID. */
-s8 scrSelectOperandIndex(datUnitWork_t *unit, s32 profileId);
+s8 scrSelectOperandIndex(dds_datUnitWork_t *unit, s32 profileId);
 
 u32 func_002CD7F0(u32 unused, u32 value);
 
@@ -3046,10 +3375,10 @@ u32 mnuShopCommitMode1PurchaseNoOp(u32 itemId);
 
 /* Decode the low 16 bits: eight four-bit flag slots per word.
  * The unused first argument remains part of the existing calling convention. */
-void scrDecodePackedFlagIndex(const datUnitWork_t *unused, u32 flagId, u32 *wordIndex, u32 *bitShift);
+void scrDecodePackedFlagIndex(const dds_datUnitWork_t *unused, u32 flagId, u32 *wordIndex, u32 *bitShift);
 
 /* Set bit 0 of the selected nibble; the return value is always 1. */
-s32 scrSetFlag(datUnitWork_t *work, u16 flagId);
+s32 scrSetFlag(dds_datUnitWork_t *work, u16 flagId);
 
 /* Set the global bit for an ID in the supported half-open range. */
 void scrSetGlobalSeenBit(u32 flagId);
@@ -3058,44 +3387,44 @@ void scrSetGlobalSeenBit(u32 flagId);
 u32 scrTestGlobalSeenBit(u32 flagId);
 
 /* Set only bit 2 of the selected flag nibble. */
-void scrSetSecondaryScriptFlag(datUnitWork_t *work, u16 flagId);
+void scrSetSecondaryScriptFlag(dds_datUnitWork_t *work, u16 flagId);
 
 /* Clear only bit 2 of the selected flag nibble. */
-void scrClearSecondaryScriptFlag(datUnitWork_t *work, u16 flagId);
+void scrClearSecondaryScriptFlag(dds_datUnitWork_t *work, u16 flagId);
 
 /* Clear secondary bits over the fixed ID range, preserving other nibble bits. */
-void scrClearAllSecondaryScriptFlags(datUnitWork_t *work);
+void scrClearAllSecondaryScriptFlags(dds_datUnitWork_t *work);
 
 /* Return bit 2's raw word mask, not a normalized boolean. */
-u32 scrGetSecondaryScriptFlag(datUnitWork_t *work, u16 flagId);
+u32 scrGetSecondaryScriptFlag(dds_datUnitWork_t *work, u16 flagId);
 
 /* Bit 1 takes precedence and returns state 2; otherwise return boolean bit 0.
  * The secondary bit does not affect this state. */
-PtySkillNibbleState ptyGetSkillNibbleState(const datUnitWork_t *partyRecord, u16 flagId);
+PtySkillNibbleState ptyGetSkillNibbleState(const dds_datUnitWork_t *partyRecord, u16 flagId);
 
 /* Search all slots for the low 16-bit ID; zero can match an empty slot. */
-s32 ptyHasSkill(datUnitWork_t *unit, s32 skillId);
+s32 ptyHasSkill(dds_datUnitWork_t *unit, s32 skillId);
 
-extern s32 scrFindSlot(datUnitWork_t *unit, u16 skillId);
+extern s32 scrFindSlot(dds_datUnitWork_t *unit, u16 skillId);
 
-extern s32 scrRemoveSlot(datUnitWork_t *unit, u16 skillId);
+extern s32 scrRemoveSlot(dds_datUnitWork_t *unit, u16 skillId);
 
-void ptyRemoveProfileSkills(datUnitWork_t *unit, u16 profileId);
+void ptyRemoveProfileSkills(dds_datUnitWork_t *unit, u16 profileId);
 
 /* Return the first exact-ID slot, including zero IDs, or -1 when absent. */
-s32 scrFindSlot(datUnitWork_t *unit, u16 skillId);
+s32 scrFindSlot(dds_datUnitWork_t *unit, u16 skillId);
 
 /* Read a slot's ID, returning zero for an out-of-range unsigned index. */
-u16 scrGetSlot(datUnitWork_t *unit, u32 slotIndex);
+u16 scrGetSlot(dds_datUnitWork_t *unit, u32 slotIndex);
 
 /* Count nonzero skill IDs across every slot. */
-u32 scrCountSlots(datUnitWork_t *unit);
+u32 scrCountSlots(dds_datUnitWork_t *unit);
 
 /* Replace an unchecked skill-slot index and return its previous identifier. */
-u16 scrSetSlot(datUnitWork_t *unit, s32 slotIndex, u16 skillId);
+u16 scrSetSlot(dds_datUnitWork_t *unit, s32 slotIndex, u16 skillId);
 
 /* Clear the first exact-ID match and report whether a slot was found. */
-s32 scrRemoveSlot(datUnitWork_t *unit, u16 skillId);
+s32 scrRemoveSlot(dds_datUnitWork_t *unit, u16 skillId);
 
 /* Read the unchecked profile's label-display byte; DDS1 exposes it as a word. */
 s32 prfGetMantraDisplayParameter(u16 profileId);
@@ -3110,7 +3439,7 @@ u32 prfGetIndexedProfileByte(u16 profileId, s32 statIndex);
 
 /* DDS2 reads an indexed profile byte here; DDS1's native callee returns zero.
  * Retain both selection reads and the no-selection fall-through. */
-u32 scrCallIfOperandReady(datUnitWork_t *operand, u32 byteIndex);
+u32 scrCallIfOperandReady(dds_datUnitWork_t *operand, u32 byteIndex);
 
 /* Read one of the profile row's eight skills; an unsigned out-of-range slot returns zero. */
 u16 prfGetSkillAtIndex(u16 profileId, u32 skillIndex);
@@ -3118,48 +3447,48 @@ u16 prfGetSkillAtIndex(u16 profileId, u32 skillIndex);
 u32 func_002CDE60(void);
 
 /* Test whether a unit meets the profile's configured level requirement. */
-u8 ptyMeetsProfileLevelRequirement(const datUnitWork_t *unit, u16 profileId);
+u8 ptyMeetsProfileLevelRequirement(const dds_datUnitWork_t *unit, u16 profileId);
 
 /* Clear the paired output words; the first two arguments are unused. */
 void scrClearPairedEntryOutput(u32 unused0, u32 unused1, u32 output);
 
-u8 ptyIsCurrentProfileId(datUnitWork_t *operand, u32 profileId);
+u8 ptyIsCurrentProfileId(dds_datUnitWork_t *operand, u32 profileId);
 
 s32 prfBuildRawSkillList(u16 profile, PrfSkillList *output);
 
 /* Compact the selected profile's nonzero skills, optionally including nonzero
  * nibble states and marking them in the output. The profile argument is unused;
  * output may be NULL when only the resulting count is needed. */
-s32 prfBuildSkillList(datUnitWork_t *unit, const DatProfileRecord *unusedProfile, PrfSkillList *output, s32 includeFlagged);
+s32 prfBuildSkillList(dds_datUnitWork_t *unit, const DatProfileRecord *unusedProfile, PrfSkillList *output, s32 includeFlagged);
 
 /* Build the stored selection's list without flagged skills; the second argument is unused. */
-u32 prfBuildSkillListState0(datUnitWork_t *unit, const DatProfileRecord *unusedProfile, PrfSkillList *output);
+u32 prfBuildSkillListState0(dds_datUnitWork_t *unit, const DatProfileRecord *unusedProfile, PrfSkillList *output);
 
 /* Count leading IDs in a DDS1 requirement slot up to the first zero or bound. */
 u32 prfCountProfileList(PrfDds1RequirementSlot *operand);
 
 /* Require each listed profile's primary flag; an empty list succeeds. */
-s32 ptyHasAllReqProfiles(datUnitWork_t *unit, PrfDds1RequirementSlot *operand);
+s32 ptyHasAllReqProfiles(dds_datUnitWork_t *unit, PrfDds1RequirementSlot *operand);
 
 /* Compare the number of flagged IDs in the list with its minimum count. */
-s32 ptyReqProfileCountAtLeast(datUnitWork_t *unit, PrfDds1RequirementSlot *operand);
+s32 ptyReqProfileCountAtLeast(dds_datUnitWork_t *unit, PrfDds1RequirementSlot *operand);
 
 /* Count flagged profile rows whose byte-five value reaches the operand's threshold. */
-s32 ptyProfileCountAtLeast(datUnitWork_t *unit, PrfDds1RequirementSlot *operand);
+s32 ptyProfileCountAtLeast(dds_datUnitWork_t *unit, PrfDds1RequirementSlot *operand);
 
 /* Each listed profile must be flagged in at least one occupied party slot. */
 s32 ptyAreReqProfilesInParty(PrfDds1RequirementSlot *operand);
 
 /* Compare the unit's level word with the prerequisite's byte threshold. */
-u8 prfReqCheckUnitLevel(datUnitWork_t *unit, PrfDds1RequirementSlot *operand);
+u8 prfReqCheckUnitLevel(dds_datUnitWork_t *unit, PrfDds1RequirementSlot *operand);
 
 /* Test the global currency counter against a prerequisite threshold. */
 u8 prfReqCheckGlobalCounter(PrfDds1RequirementSlot *operand);
 
-s32 prfReqEvaluateRules(u32 state, datUnitWork_t *unit, u16 requirementId, u32 *mismatchCount);
+s32 prfReqEvaluateRules(u32 state, dds_datUnitWork_t *unit, u16 requirementId, u32 *mismatchCount);
 
 /* Evaluate the selected rule set for a party record without mismatch output. */
-s32 prfCheckRequirementRules(u32 state, datUnitWork_t *unit, u16 requirementId);
+s32 prfCheckRequirementRules(u32 state, dds_datUnitWork_t *unit, u16 requirementId);
 
 /* Read requirement flags for an unchecked profile ID. */
 u32 prfIsRequirementExcluded(u16 requirementId);
@@ -3177,7 +3506,7 @@ extern PrfFallbackGroup D_003931B0[];
 
 /* A zero evaluator return selects its result; otherwise test the fallback flags.
  * Missing fallback IDs succeed, as do entries with no nonzero flag requirements. */
-s32 prfReqCheckWithFallback(datUnitWork_t *operand, u16 requirementId);
+s32 prfReqCheckWithFallback(dds_datUnitWork_t *operand, u16 requirementId);
 
 /* Select the first active, satisfied prerequisite group whose flag is unset. */
 s32 prfSelectSatisfiedUnsetRequirementGroup(u32 start);
@@ -3208,11 +3537,7 @@ SdfFlagListWork *sdfInitializeFlagListFromResource(void *file);
 
 void sdfReleaseFlagListResource(SdfFlagListWork *work);
 
-extern f32 aViewEye[4];
-
 extern f32 sdfAtan(f32 ratio);
-
-extern EffRandState effSharedRandomState[];
 
 /* Advance the drop list: respawn a random number of free drops around the camera, move live drops along their
  * own direction, and fade them over their last ten frames. */

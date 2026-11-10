@@ -1,6 +1,6 @@
-#ifndef DAT_COMMAND_H
-#define DAT_COMMAND_H
+#ifndef DDS_DAT_COMMAND_H
 
+#define DDS_DAT_COMMAND_H
 #include "common.h"
 
 /* Inventory metadata maps item IDs to commands and base prices. */
@@ -12,8 +12,6 @@ typedef struct DatItemSkillRecord {
 } DatItemSkillRecord;
 
 typedef char DatItemSkillRecordSizeCheck[sizeof(DatItemSkillRecord) == 8 ? 1 : -1];
-typedef char DatItemSkillCommandOffsetCheck[((u32)&((DatItemSkillRecord *)0)->commandIndex == 2) ? 1 : -1];
-typedef char DatItemSkillPriceOffsetCheck[((u32)&((DatItemSkillRecord *)0)->price == 4) ? 1 : -1];
 
 extern DatItemSkillRecord *datItemSkillRecords;
 
@@ -28,12 +26,17 @@ typedef union DatCommandAttribute {
 } DatCommandAttribute;
 
 /* Named values used by the costMode byte; other values remain possible. */
+
 #define DAT_COMMAND_COST_MODE_HP 1
+
 #define DAT_COMMAND_COST_MODE_MP 2
 
 /* Named values used by attribute.parts.kind to interpret its mask. */
+
 #define DAT_COMMAND_ATTRIBUTE_KIND_ELEMENT_MASK 1
+
 #define DAT_COMMAND_ATTRIBUTE_KIND_FLAG_MASK 2
+
 #define DAT_COMMAND_ATTRIBUTE_KIND_RANDOM_ELEMENT_MASK 3
 
 typedef struct DatCommandRecord {
@@ -71,22 +74,8 @@ typedef struct DatCommandRecord {
 } DatCommandRecord;
 
 typedef char DatCommandAttributeSizeCheck[sizeof(DatCommandAttribute) == 4 ? 1 : -1];
-typedef char DatCommandRecordSizeCheck[sizeof(DatCommandRecord) == 0x38 ? 1 : -1];
 
-typedef char DatCommandCostOffsetCheck[((u32)&((DatCommandRecord *)0)->costMode == 3) ? 1 : -1];
-typedef char DatCommandMenuFlagsOffsetCheck[((u32)&((DatCommandRecord *)0)->menuFlags == 1) ? 1 : -1];
-typedef char DatCommandAttributeOffsetCheck[((u32)&((DatCommandRecord *)0)->attribute == 0x24) ? 1 : -1];
-typedef char DatCommandRequirementOffsetCheck[((u32)&((DatCommandRecord *)0)->requirementBits == 0x28) ? 1 : -1];
-typedef char DatCommandLastStatOffsetCheck[((u32)&((DatCommandRecord *)0)->stat36 == 0x36) ? 1 : -1];
-typedef char DatCommandCommandEffectIdOffsetCheck[((u32)&((DatCommandRecord *)0)->commandEffectId == 0x2E) ? 1 : -1];
-typedef char DatCommandEffectTypeOffsetCheck[((u32)&((DatCommandRecord *)0)->effectType == 0x02) ? 1 : -1];
-typedef char DatCommandHpTypeOffsetCheck[((u32)&((DatCommandRecord *)0)->hpType == 0x16) ? 1 : -1];
-typedef char DatCommandHpPowerOffsetCheck[((u32)&((DatCommandRecord *)0)->hpPower == 0x18) ? 1 : -1];
-typedef char DatCommandMpTypeOffsetCheck[((u32)&((DatCommandRecord *)0)->mpType == 0x1A) ? 1 : -1];
-typedef char DatCommandMpPowerOffsetCheck[((u32)&((DatCommandRecord *)0)->mpPower == 0x1C) ? 1 : -1];
-typedef char DatCommandHpBaseOffsetCheck[((u32)&((DatCommandRecord *)0)->hpBase == 0x1E) ? 1 : -1];
-typedef char DatCommandMpBaseOffsetCheck[((u32)&((DatCommandRecord *)0)->mpBase == 0x20) ? 1 : -1];
-typedef char DatCommandEffectPercentOffsetCheck[((u32)&((DatCommandRecord *)0)->effectPercent == 0x22) ? 1 : -1];
+typedef char DatCommandRecordSizeCheck[sizeof(DatCommandRecord) == 0x38 ? 1 : -1];
 
 /* Two-byte command selectors; DDS2 btlGetCommandUseError reads the signed kind at +1. */
 typedef struct DatCommandSelector {
@@ -97,16 +86,21 @@ typedef struct DatCommandSelector {
 typedef char DatCommandSelectorSizeCheck[sizeof(DatCommandSelector) == 2 ? 1 : -1];
 
 extern DatCommandRecord *datCommandRecords;
+
 extern DatCommandSelector *datCommandSelectors;
 
 #if defined(VERSION_DDS1)
+
 #define DAT_SKILL_LIST_MAX 16
+
 #elif defined(VERSION_DDS2)
+
 #define DAT_SKILL_LIST_MAX 24
+
 #endif
 
 typedef struct DatSkillList {
     s16 skills[DAT_SKILL_LIST_MAX];
 } DatSkillList;
 
-#endif /* DAT_COMMAND_H */
+#endif /* DDS_DAT_COMMAND_H */

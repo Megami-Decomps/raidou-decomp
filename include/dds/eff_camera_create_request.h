@@ -1,7 +1,8 @@
-#ifndef EFF_CAMERA_CREATE_REQUEST_H
-#define EFF_CAMERA_CREATE_REQUEST_H
+#ifndef DDS_EFF_CAMERA_CREATE_REQUEST_H
 
+#define DDS_EFF_CAMERA_CREATE_REQUEST_H
 #include "common.h"
+
 #include "eff_file_job_request.h"
 
 struct EffQueuedFileObject;

@@ -1,6 +1,6 @@
-#ifndef ITF_GRID_SLOT_H
-#define ITF_GRID_SLOT_H
+#ifndef DDS_ITF_GRID_SLOT_H
 
+#define DDS_ITF_GRID_SLOT_H
 #include "common.h"
 
 struct EffectSlotSet;
@@ -13,4 +13,4 @@ typedef struct MenuGridSlot {
 
 typedef char MenuGridSlot_size_must_be_8[(sizeof(MenuGridSlot) == 8) ? 1 : -1];
 
-#endif /* ITF_GRID_SLOT_H */
+#endif /* DDS_ITF_GRID_SLOT_H */

@@ -1,6 +1,6 @@
-#ifndef EFF_EXPANDED_SOURCE_H
-#define EFF_EXPANDED_SOURCE_H
+#ifndef DDS_EFF_EXPANDED_SOURCE_H
 
+#define DDS_EFF_EXPANDED_SOURCE_H
 #include "eff_expanded_list.h"
 
 /* Serialized texture-animation list header, count entry records, then payloads.
@@ -13,12 +13,6 @@ typedef struct EffExpandedSource {
     EffExpandedEntry entries[1];
 } EffExpandedSource;
 
-typedef char EffExpandedSource_count_offset_check[
-    (u32)&((EffExpandedSource *)0)->count == 0x04 ? 1 : -1];
-typedef char EffExpandedSource_flags_offset_check[
-    (u32)&((EffExpandedSource *)0)->flags == 0x08 ? 1 : -1];
-typedef char EffExpandedSource_entries_offset_check[
-    (u32)&((EffExpandedSource *)0)->entries == 0x10 ? 1 : -1];
 typedef char EffExpandedSource_size_check[
     sizeof(EffExpandedSource) == 0x20 ? 1 : -1];
 

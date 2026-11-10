@@ -1,6 +1,6 @@
-#ifndef SDF_LIST_NODE_H
-#define SDF_LIST_NODE_H
+#ifndef DDS_SDF_LIST_NODE_H
 
+#define DDS_SDF_LIST_NODE_H
 #include "common.h"
 
 /* The 0x14-byte indexed node shared by the native linked-list helpers. */

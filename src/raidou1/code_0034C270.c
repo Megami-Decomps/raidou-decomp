@@ -5,6 +5,26 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "newdata.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/kwln.h"
+
+#include "dds/sdf_chip.h"
+
+u32 dds3GetProcessData(const dds3ProcessID_t *task);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+/* Replace each child render word along the borrowed glyph chain. */
+void frSetFontColor(struct _FRQ *parentNode, u32 colorWord);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
 #include "dds/camp_menu_context.h"
 
 #include "dds/sdf_chip.h"
@@ -154,7 +174,7 @@ extern const u8 *D_003BAA8C;
 void mnuDrawAffinityParticipantLabels(u16 affinityId, s32 placeholderResource, s32 rangeResource);
 
 extern void mnuDrawRangeCostAndIcon(s32 x, s32 y, s32 depth, s32 xOffset, u32 fade,
-                   datUnitWork_t *actor, u16 rangeId, s32 style, s32 dim,
+                   dds_datUnitWork_t *actor, u16 rangeId, s32 style, s32 dim,
                    EffectSlotSet *specialResource, EffectSlotSet *costResource, u32 texture);
 
 extern void mnuDispatchEntryWords(EffectSlotSet *, s32, struct MenuListNode *);
@@ -166,7 +186,7 @@ void ptyDrawLinkageSkillEntry(s32 x, s32 y, s32 depth, struct MenuList *list,
                               struct MenuListNode *node, s32 texture);
 
 /* Collect up to max pointers to occupied, frontline party slots. */
-void mnuCollectFrontlinePartySlots(const datUnitWork_t **out, s32 max);
+void mnuCollectFrontlinePartySlots(const dds_datUnitWork_t **out, s32 max);
 
 u8 mnuHasStandardPartnerRequirements(BtlCommandId commandId);
 

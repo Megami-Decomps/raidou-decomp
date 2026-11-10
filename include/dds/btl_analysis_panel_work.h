@@ -1,7 +1,8 @@
-#ifndef BTL_ANALYSIS_PANEL_WORK_H
-#define BTL_ANALYSIS_PANEL_WORK_H
+#ifndef DDS_BTL_ANALYSIS_PANEL_WORK_H
 
+#define DDS_BTL_ANALYSIS_PANEL_WORK_H
 #include "common.h"
+
 #include "btl.h"
 
 enum {
@@ -11,7 +12,9 @@ enum {
 };
 
 /* The battle analysis panel's work. */
+
 #ifdef VERSION_DDS1
+
 typedef struct BtlAnalysisPanelWork {
     s8 transitionState;
     u8 pad01[3];
@@ -33,7 +36,9 @@ typedef struct BtlAnalysisPanelWork {
     s16 edgeAlpha;
     u8 pad92[0xE];
 } BtlAnalysisPanelWork;
+
 #else
+
 typedef struct BtlAnalysisPanelWork {
     s8 transitionState;
     u8 pad01[3];
@@ -55,6 +60,7 @@ typedef struct BtlAnalysisPanelWork {
     s16 edgeAlpha;
     u8 pad92[0xE];
 } BtlAnalysisPanelWork;
+
 #endif
 
 #endif

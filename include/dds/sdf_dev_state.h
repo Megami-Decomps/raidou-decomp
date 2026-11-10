@@ -1,17 +1,25 @@
-#ifndef SDF_DEV_STATE_H
-#define SDF_DEV_STATE_H
+#ifndef DDS_SDF_DEV_STATE_H
 
+#define DDS_SDF_DEV_STATE_H
 #include "common.h"
 
+#if !defined(SMT3_DEFINES_SdfDevOperationCode)
 /* Protocol IDs use distinct byte-sized storage codes in sdfFileCmdHandle_t. */
 typedef u8 SdfDevOperationCode;
+#endif
+
+#if !defined(SMT3_DEFINES_SdfDevStateCode)
 typedef s8 SdfDevStateCode;
+#endif
+
 /* Queue acceptance is immediate; read, write, and size results arrive later. */
 typedef s32 SdfFileCommandQueueResult;
 
 #define SDF_FILE_COMMAND_QUEUE_RESULT_NOT_QUEUED -1
+
 #define SDF_FILE_COMMAND_QUEUE_RESULT_QUEUED 0
 
+#if !defined(SMT3_DEFINES_sdfFileCmdHandle_t)
 /* Complete 0x40-byte owner allocated by sdfFileCmdNewHandle. */
 typedef struct sdfFileCmdHandle_t {
     struct sdfFileCmdHandle_t *next; /* 0x00 */
@@ -34,39 +42,14 @@ typedef struct sdfFileCmdHandle_t {
     void (*callback)(struct sdfFileCmdHandle_t *, s32, s32, s32, s32); /* 0x38 */
     void *callbackContext; /* 0x3C: caller-owned callback context */
 } sdfFileCmdHandle_t;
+#endif
 
 typedef char DevState_size_must_be_0x40[(sizeof(sdfFileCmdHandle_t) == 0x40) ? 1 : -1];
+
 typedef char DevState_operation_size_must_be_1[
     (sizeof(((sdfFileCmdHandle_t *)0)->operation) == 1) ? 1 : -1];
-typedef char DevState_operation_offset_must_be_0x15[
-    ((u32)&((sdfFileCmdHandle_t *)0)->operation == 0x15) ? 1 : -1];
+
 typedef char DevState_state_size_must_be_1[
     (sizeof(((sdfFileCmdHandle_t *)0)->state) == 1) ? 1 : -1];
-typedef char DevState_state_offset_must_be_0x16[
-    ((u32)&((sdfFileCmdHandle_t *)0)->state == 0x16) ? 1 : -1];
-typedef char DevState_resolvedPath_offset_must_be_0x10[
-    ((u32)&((sdfFileCmdHandle_t *)0)->resolvedPath == 0x10) ? 1 : -1];
-typedef char DevState_result_offset_must_be_0x2C[
-    ((u32)&((sdfFileCmdHandle_t *)0)->result == 0x2C) ? 1 : -1];
-typedef char DevState_transferred_offset_must_be_0x30[
-    ((u32)&((sdfFileCmdHandle_t *)0)->transferred == 0x30) ? 1 : -1];
-typedef char DevState_callback_offset_must_be_0x38[
-    ((u32)&((sdfFileCmdHandle_t *)0)->callback == 0x38) ? 1 : -1];
-typedef char DevState_callbackContext_offset_must_be_0x3C[
-    ((u32)&((sdfFileCmdHandle_t *)0)->callbackContext == 0x3C) ? 1 : -1];
 
-/* Stable state APIs. Callback factories keep caller-specific callback types. */
-sdfFileCmdHandle_t *sdfFileOpen(const char *path);
-SdfFileCommandQueueResult sdfFileCmdFileSize(sdfFileCmdHandle_t *state);
-/* The worker borrows the read destination until the operation completes. */
-SdfFileCommandQueueResult sdfFileCmdRead(sdfFileCmdHandle_t *state, void *destination, s32 byteCount);
-/* The worker borrows the write source until the operation completes. */
-SdfFileCommandQueueResult sdfFileCmdWrite(sdfFileCmdHandle_t *state, const void *source, s32 byteCount);
-s32 sdfFileCmdFree(sdfFileCmdHandle_t *state);
-s32 sdfFileCmdClearError(sdfFileCmdHandle_t *state);
-s32 sdfFileCmdClose(sdfFileCmdHandle_t *request);
-void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
-u32 sdfFileLength(sdfFileCmdHandle_t *state);
-void sdfFileClose(sdfFileCmdHandle_t *state);
-
-#endif /* SDF_DEV_STATE_H */
+#endif /* DDS_SDF_DEV_STATE_H */

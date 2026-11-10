@@ -1,6 +1,6 @@
-#ifndef FLD_TITLE_BANNER_MENU_H
-#define FLD_TITLE_BANNER_MENU_H
+#ifndef DDS_FLD_TITLE_BANNER_MENU_H
 
+#define DDS_FLD_TITLE_BANNER_MENU_H
 #include "common.h"
 
 struct dds3ProcessID_t;
@@ -14,6 +14,7 @@ enum {
 };
 
 typedef s32 FldTitleBannerDrawRequest;
+
 typedef u16 FldTitleBannerDrawRequestState;
 
 enum {
@@ -38,7 +39,4 @@ typedef struct FldTitleBannerMenu {
 typedef char FldTitleBannerMenu_size_must_be_8[
     (sizeof(FldTitleBannerMenu) == 8) ? 1 : -1];
 
-void fldInputPanelSetDraw(FldTitleBannerDrawRequest request);
-void fldInputPanelSetMessage(s32 choice);
-
-#endif /* FLD_TITLE_BANNER_MENU_H */
+#endif /* DDS_FLD_TITLE_BANNER_MENU_H */

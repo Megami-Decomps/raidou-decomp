@@ -5,6 +5,164 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/mdl.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_chunk.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_map_position_api.h"
+
+#include "dds/sdf_motion.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_projection.h"
+
+#include "dds/sdf_tex_create.h"
+
+#include "dds/sdf_tex_packet.h"
+
+#include "dds/sdf_texture_format.h"
+
+#include "dds/sdf_texture_submit.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdf_vu_transform_api.h"
+
+#include "dds/sdk_libc.h"
+
+/* Build a look-at basis from four-float target, eye, and up vectors. */
+void LookAtMatrix(const f32 *targetPoint, const f32 *eyePosition, const f32 *upVector);
+
+/* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
+void Mult(void);
+
+/* Rigid-invert the VU matrix in vf28-vf31 in place; translation becomes
+ * -(R^T * t). The rotation input is assumed to contain no scale. */
+void ReverseMatrix(void);
+
+enum {
+    SDF_PSMCT32 = 0x00,
+    SDF_PSMCT24 = 0x01,
+    SDF_PSMCT16 = 0x02,
+    SDF_PSMCT16S = 0x0A,
+    SDF_PSMT8 = 0x13,
+    SDF_PSMT4 = 0x14,
+    SDF_PSMT8H = 0x1B,
+};
+
+/* Model-context lifetime, per-frame update, and broadcast accessors. */
+/* Destroy one context. If it leaves its resource-owning group empty, group
+ * teardown also releases that group's registered assets. */
+void mdlFree(dds3ModelHandle_t *ctx);
+
+u32 mdlGetColor(const dds3ModelHandle_t *ctx);
+
+u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
+
+u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
+
+/* VU helpers transfer vectors through vf10 and basis rows through vf28-vf30. */
+void mdlGetPosition(dds3ModelHandle_t *ctx);
+
+void mdlGetScale(dds3ModelHandle_t *ctx);
+
+void mdlLink(dds3ModelHandle_t *ctx, struct sdfGrOt_t **surfaces);
+
+/* Allocate a distinct caller-owned context linked to the registered group.
+ * Contexts share the group node and assets; release each context with mdlFree. */
+dds3ModelHandle_t *mdlLoad(u32 group, u32 id);
+
+void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+void mdlSetColor(dds3ModelHandle_t *ctx, u32 value);
+
+void mdlSetPosition(dds3ModelHandle_t *ctx);
+
+void mdlSetRotate(dds3ModelHandle_t *ctx);
+
+void mdlSetScale(dds3ModelHandle_t *ctx);
+
+/* sdfMotionCtrlr_t-record selection and lookup. */
+void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+void *sdfChipAllocDirect(s32 size);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+void sdfLinkLoadImage(
+    sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,
+    s32 destinationY, s32 width, s32 height, s32 sourceAddress,
+    s32 (*allocatePacket)(s32));
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
+
+SdfMapPositionLookupResult sdfModelGetMarkPosMatrix(
+    struct dds_sdfModelRootNode_t *model, s32 id);
+
+void sdfMotionSeek(struct sdfMotionCtrlr_t *motion, f32 frame);
+
+/* Allocate and register a texture. The shared registration helper initializes
+ * its ordinary reference count to one; the caller releases that reference with
+ * sdfTexReleaseReference or its deferred form. */
+struct sdfTexHandle_t *sdfTexAlloc(s32 width, s32 height,
+    SdfGsPixelStorageFormat pixelFormat, u32 maxMipLevel,
+    SdfGsPixelStorageFormat clutFormat, u32 paletteCount);
+
+u32 sdfTexGetCLUTAddr(sdfTexHandle_t *texture);
+
+/* Texture resource accessors and palette helpers shared by both title providers. */
+u8 sdfTexGetCLUTCount(sdfTexHandle_t *texture);
+
+u32 sdfTexGetPixelAddr(sdfTexHandle_t *texture);
+
+/* Store the context-one resource packet on the texture's primary buffer. */
+void sdfTexMakeGIFPacket(struct sdfTexHandle_t *texture);
+
+/* Submit a palette using dimensions selected from the texture pixel format. */
+const u8 *sdfTexTransCLUT(sdfTexHandle_t *texture, u32 destination,
+                    const u8 *pixels,
+                    SdfTextureUploadOwnership borrowPixels);
+
+/* Reads the source bytes and returns its cursor advanced past the submitted image. */
+const u8 *sdfTexTransData(u32 destination, s32 width, s32 height, u32 format,
+                    const u8 *pixels,
+                    SdfTextureUploadOwnership borrowPixels);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/common.h"

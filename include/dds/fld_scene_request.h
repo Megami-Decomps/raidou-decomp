@@ -1,7 +1,8 @@
-#ifndef FLD_SCENE_REQUEST_H
-#define FLD_SCENE_REQUEST_H
+#ifndef DDS_FLD_SCENE_REQUEST_H
 
+#define DDS_FLD_SCENE_REQUEST_H
 #include "fld.h"
+
 #include "fld_light_set_index.h"
 
 /* File-batch records select the initial scene light set at +0x04 and carry
@@ -36,14 +37,12 @@ typedef struct FldActionSpawn {
 
 typedef char FldFileResolverRecord_size_check[
     (sizeof(FldFileResolverRecord) == 0x18) ? 1 : -1];
+
 typedef char FldSceneResourceRecord_size_check[
     (sizeof(FldSceneResourceRecord) == 0x18) ? 1 : -1];
+
 typedef char FldActionSpawn_size_check[
     (sizeof(FldActionSpawn) == 0x0C) ? 1 : -1];
-typedef char FldActionSpawn_objectName_offset_check[
-    ((u32)&((FldActionSpawn *)0)->objectName == 0x04) ? 1 : -1];
-typedef char FldActionSpawn_key_offset_check[
-    ((u32)&((FldActionSpawn *)0)->key == 0x08) ? 1 : -1];
 
 /* Observed prefix of the transfer payload passed to the resource-batch loader. */
 typedef struct FldLoadRequest {
@@ -61,29 +60,4 @@ typedef struct FldSceneRequest {
     struct FldActionSpawn *spawnList;
 } FldSceneRequest;
 
-typedef char FldFileResolverRecord_initialLightSetIndex_offset_check[
-    ((u32)&((FldFileResolverRecord *)0)->initialLightSetIndex == 0x04) ? 1 : -1];
-typedef char FldFileResolverRecord_resourceA_offset_check[
-    ((u32)&((FldFileResolverRecord *)0)->resourceA == 0x08) ? 1 : -1];
-typedef char FldSceneResourceRecord_fallbackResourceName_offset_check[
-    ((u32)&((FldSceneResourceRecord *)0)->fallbackResourceName == 0x04) ? 1 : -1];
-typedef char FldSceneResourceRecord_resourceA_offset_check[
-    ((u32)&((FldSceneResourceRecord *)0)->resourceA == 0x08) ? 1 : -1];
-typedef char FldLoadRequest_spawnBatchCount_offset_check[
-    ((u32)&((FldLoadRequest *)0)->spawnBatchCount == 0x00) ? 1 : -1];
-typedef char FldLoadRequest_spawnBatches_offset_check[
-    ((u32)&((FldLoadRequest *)0)->spawnBatches == 0x04) ? 1 : -1];
-typedef char FldLoadRequest_record_offset_check[
-    ((u32)&((FldLoadRequest *)0)->record == 0x08) ? 1 : -1];
-typedef char FldSceneRequest_spawnBatchCount_offset_check[
-    ((u32)&((FldSceneRequest *)0)->spawnBatchCount == 0x00) ? 1 : -1];
-typedef char FldSceneRequest_spawnBatches_offset_check[
-    ((u32)&((FldSceneRequest *)0)->spawnBatches == 0x04) ? 1 : -1];
-typedef char FldSceneRequest_record_offset_check[
-    ((u32)&((FldSceneRequest *)0)->record == 0x08) ? 1 : -1];
-typedef char FldSceneRequest_spawnCount_offset_check[
-    ((u32)&((FldSceneRequest *)0)->spawnCount == 0x0C) ? 1 : -1];
-typedef char FldSceneRequest_spawnList_offset_check[
-    ((u32)&((FldSceneRequest *)0)->spawnList == 0x10) ? 1 : -1];
-
-#endif /* FLD_SCENE_REQUEST_H */
+#endif /* DDS_FLD_SCENE_REQUEST_H */

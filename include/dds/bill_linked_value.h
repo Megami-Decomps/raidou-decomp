@@ -1,6 +1,6 @@
-#ifndef BILL_LINKED_VALUE_H
-#define BILL_LINKED_VALUE_H
+#ifndef DDS_BILL_LINKED_VALUE_H
 
+#define DDS_BILL_LINKED_VALUE_H
 #include "common.h"
 
 typedef struct BillLinkedValue {
@@ -10,7 +10,5 @@ typedef struct BillLinkedValue {
 
 typedef char BillLinkedValue_size[
     (sizeof(BillLinkedValue) == 8) ? 1 : -1];
-typedef char BillLinkedValue_value_offset[
-    ((u32)&((BillLinkedValue *)0)->value == 4) ? 1 : -1];
 
 #endif

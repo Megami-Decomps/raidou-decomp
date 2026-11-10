@@ -5,6 +5,330 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "fileManager.h"
+
+#include "newdata.h"
+
+#include "sdk_libc.h"
+
+#include "sdk_libkernl.h"
+
+#include "dds/bill_object_api.h"
+
+#include "dds/btl.h"
+
+#include "dds/btl_stage_task_cleanup.h"
+
+#include "dds/dds3_fade.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_world_primary.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/evt_world.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/file_request_entry.h"
+
+#include "dds/file_slot_flags.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/fr_font_context.h"
+
+#include "dds/kwln.h"
+
+#include "dds/mc_path_api.h"
+
+#include "dds/mc_poll.h"
+
+#include "dds/mc_read_api.h"
+
+#include "dds/mc_write_api.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_dev_state.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_texture_file.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdf_vu_matrix_multiply_api.h"
+
+#include "dds/sdf_vu_rotation_axes.h"
+
+#include "dds/sdf_vu_transform_api.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/sdk_libkernl.h"
+
+#include "dds/sdk_libm.h"
+
+#include "dds/snd_sequence_volume_pan.h"
+
+/* Convert three Euler angle components to the VU0 quaternion output.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void FromEuler(f32 x, f32 y, f32 z);
+
+/* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
+void Mult(void);
+
+/* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
+void MultMatrixRev(const struct Matrix4 *matrix);
+
+/* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
+void MultMatrixRevNoArg(void);
+
+/* Rigid-invert the VU matrix in vf28-vf31 in place; translation becomes
+ * -(R^T * t). The rotation input is assumed to contain no scale. */
+void ReverseMatrix(void);
+
+/* Load the X-axis rotation matrix into the primary VU0 matrix registers. */
+void SetRotateMatrixX(f32 angle);
+
+/* Load the secondary Y-axis rotation matrix into the primary VU0 matrix registers. */
+void SetRotateMatrixY_B(f32 angle);
+
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void ToMatrix(void);
+
+f32 acosf(f32 x);
+
+f32 atan2f(f32 y, f32 x);
+
+struct billHandle_t *dds3BillboardCopy(const struct billHandle_t *source);
+
+/* The selected kind interprets the opaque payload word. */
+struct billHandle_t *dds3BillboardCreate(s32 kind, u32 data);
+
+void dds3BillboardDelete(struct billHandle_t *obj);
+
+struct billHandle_t *dds3BillboardGeneral(s32 index);
+
+void dds3BillboardSetAnimColorAdvMode(struct billHandle_t *billboard);
+
+void dds3BillboardSetAnimKey(struct billHandle_t *billboard, u32 frame);
+
+void dds3BillboardSetMode(struct billHandle_t *billboard, s32 mode);
+
+void dds3BillboardSetRGBA(struct billHandle_t *billboard, u32 parameter);
+
+/* Radian rotation of the billboard quad in its plane. */
+void dds3BillboardSetRotate(struct billHandle_t *billboard, f32 angle);
+
+void dds3BillboardSetScale(struct billHandle_t *billboard, f32 x, f32 y);
+
+void dds3FadeIn(s32 red, s32 green, s32 blue, s32 duration);
+
+/* Foreground alpha transitions, stepped by dds3FadeUpdate. */
+void dds3FadeOut(s32 red, s32 green, s32 blue, s32 duration);
+
+/* Return the borrowed primary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetActiveScene(void);
+
+/* Advance caller-owned state, returning its next 32-bit value. NULL selects
+ * the shared effect RNG state. */
+u32 dds3GetRandA(EffRandState *state);
+
+/* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
+f32 dds3GetRandFloatA(EffRandState *state);
+
+dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+/* Return a borrowed scheduler-owned handle from the starting, active, or
+ * destroy-pending queue. The handle remains valid through its destroy callback
+ * and is freed when finalization completes; return NULL when no name matches. */
+dds3ProcessID_t *dds3SearchProcessName(const char *name);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+/* Preserve the signed-byte drawing gate; only a missing payload is ignored. */
+void dds3VisibleSceneBasic(dds3Basic_t *object, s8 enabled);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+/* Set and clear one flag using the providers' signed-index adjustment. */
+void evtBitOn(s32 flag);
+
+/* Return the address of the loaded resource payload as a byte pointer. */
+u8 *fileGetLoadPtr(const struct FileRequest *request);
+
+/* Return the signed byte count recorded by the file transfer request. */
+s32 fileGetLoadSize(const struct FileRequest *request);
+
+/* Return the payload allocation descriptor. For normal file loads, freeing the
+ * request wrapper does not free this allocation; its resource owner must keep
+ * or release it separately. */
+struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
+
+/* Free a completed request wrapper; return one while it remains pending. */
+FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
+
+void fileSync(struct FileRequest *request);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+void frSetDrawPosition(struct _FRQ *glyph, s32 x, s32 y);
+
+/* Replace each child render word along the borrowed glyph chain. */
+void frSetFontColor(struct _FRQ *parentNode, u32 colorWord);
+
+void frSetFontSpace(struct _FRQ *glyph, s32 spacing);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+/* Apply volume and pan to a sequence track through the command queue. */
+void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
+
+s32 pacFileCheckEnd(const struct FileRequest *request);
+
+/* These title-specific wrappers forward an opaque stage-task owner and its
+ * handled/not-handled result. */
+s32 pacFileHandleFree_(void *request);
+
+struct FileRequest *pacLoad(const char *requestName);
+
+void pacSync(struct FileRequest *request);
+
+s32 sceClose(s32 fd);
+
+s32 sceSync(const char *device, s32 flag);
+
+void *sdfChipAllocDirect(s32 size);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+f32 sdfCos(f32 angle);
+
+void sdfFileClose(sdfFileCmdHandle_t *state);
+
+u32 sdfFileLength(sdfFileCmdHandle_t *state);
+
+/* Stable state APIs. Callback factories keep caller-specific callback types. */
+sdfFileCmdHandle_t *sdfFileOpen(const char *path);
+
+void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
+
+void sdfMcClearCardStat(s32 request);
+
+void sdfMcClearSlotFlags(s32 request, s32 slot);
+
+void sdfMcFuncChdir(McPort port, const char *path);
+
+McPollResult sdfMcFuncChdir1(void);
+
+McPollResult sdfMcFuncClose1(void);
+
+void sdfMcFuncDelete(McPort port, const char *path);
+
+McPollResult sdfMcFuncDelete1(void);
+
+void sdfMcFuncFormat(u32 port);
+
+McPollResult sdfMcFuncFormat1(void);
+
+void sdfMcFuncGetDir(McPort port, const char *path, sceMcTblGetDir *directoryEntries, s32 entryLimit);
+
+McPollResult sdfMcFuncGetDir1(McDirectoryEntryCount *entryCountOut);
+
+FileReqPollResult sdfMcFuncGetInfo1(void);
+
+void sdfMcFuncMkdir(McPort port, const char *path);
+
+McPollResult sdfMcFuncMkdir1(void);
+
+void sdfMcFuncOpen(McPort port, const char *path, McOpenMode openMode);
+
+McPollResult sdfMcFuncOpen1(McFileDescriptor *fileDescriptorOut);
+
+/* Queue a memory-card read into a caller-owned buffer. The SDK keeps using
+ * that buffer asynchronously, so keep it allocated and do not access it until
+ * sdfMcFuncRead1 returns a result other than MC_POLL_PENDING. */
+void sdfMcFuncRead(McFileDescriptor fileDescriptor, void *buffer, s32 size);
+
+McPollResult sdfMcFuncRead1(void);
+
+/* Queue a memory-card write of a signed byte count, matching sceMcWrite.
+ * The SDK reads this caller-owned buffer asynchronously; keep it allocated
+ * and unchanged until sdfMcFuncWrite1 returns a result other than
+ * MC_POLL_PENDING. */
+void sdfMcFuncWrite(McFileDescriptor fileDescriptor, const void *data, s32 byteCount);
+
+McPollResult sdfMcFuncWrite1(void);
+
+FileReqStatus sdfMcGetFileInfoReady(s32 request);
+
+s32 sdfMcGetFreeBytes(s32 request);
+
+u32 sdfMcGetSlotFlags(s32 request, s32 slot);
+
+s8 sdfMcGetSlotIndex(s32 request);
+
+u8 sdfMcGetStatus(s32 request);
+
+void sdfMcRegetInfo(s32 request);
+
+void sdfMcSetCardStat(s32 request);
+
+void sdfMcSetSlotFlags(s32 request, s32 slot, s32 mask);
+
+void sdfMcSetSlotIndex(s32 request, s32 selectedSlot);
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+void sdfMemFreeHandleDirect(struct sdfMemHandle_t **slot);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+f32 sdfSin(f32 angle);
+
+void sdfTexFreeDelayed(sdfTexHandle_t *texture);
+
+/* Both entry points return one caller-owned texture reference. A nonzero
+ * resourceKey reuses a live matching texture and increments its count; a new
+ * texture starts at one. Release the returned reference once with
+ * sdfTexReleaseReference or sdfTexFreeDelayed. */
+/* For a new texture, copy payload bytes into queue-owned storage before return. */
+struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
+
+char *strcpy(char *dst, const char *src);
+
+u32 strlen(const char *text);
+
 #define SDK_SKIP_memset
 
 #include "dds/sdk_ps2.h"
@@ -692,10 +1016,6 @@ extern char fileNoSaveDataMessageLine2[];
 
 extern char fileNoSaveDataMessageLine3[];
 
-static inline void fileDrawDialogLine(s32 line, const char *glyphSource) {
-    mcdCreateFontDrawHandle(86, 114 + line * 24, 0x89FEFF80U, glyphSource);
-}
-
 void fileShowStatusDialog(void);
 
 void slSetInfo(u32 state);
@@ -908,37 +1228,6 @@ s32 fileMenuTaskExists(void);
 FileSelectionFlowState fileGetSelectionPendingFlag(void);
 
 extern FileSelectionCallback D_003BD908, D_003BD90C;
-
-/* Yes/no cursor input while the card request is idle. */
-static inline void filePollPromptChoice(void) {
-    if (D_003BC838 == 0 && slChkWindowOpenDone() != 0) {
-        if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x27] < 0) != 0) {
-            if (D_003BC830 != 1) {
-                p2sdPlaySE(0, 0x7F, 0x3F);
-            }
-            D_003BC830 = 1;
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x26] < 0) != 0) {
-            if (D_003BC830 != 0) {
-                p2sdPlaySE(0, 0x7F, 0x3F);
-            }
-            D_003BC830 = 0;
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x21] < 0) != 0) {
-            if (D_003BC830 == 0 && (D_003BC834 == 1 || D_003BC834 == 3)) {
-                p2sdPlaySE(0x11, 0x7F, 0x3F);
-            } else {
-                p2sdPlaySE(8, 0x7F, 0x3F);
-            }
-            if (D_003BC830 != 0) {
-                D_003BC838 = 2;
-            } else {
-                D_003BC838 = 1;
-            }
-        } else if (fileIsLoadedAndConditionTrue(dds3PadButtonState[0x23] < 0) != 0) {
-            p2sdPlaySE(0xA, 0x7F, 0x3F);
-            D_003BC838 = 2;
-        }
-    }
-}
 
 s32 fileUpdatePromptDialog(void);
 
@@ -1219,20 +1508,6 @@ FileJob *fileJobDuplicateAfter(FileQueue *queue, FileJob *src);
 extern FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
 
 extern FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id);
-
-/* Makes the first job chained to owner's sector the leader and rechains the rest to it. */
-static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *owner, FileJob *leader) {
-    FileJob *next;
-
-    leader->sector = 0;
-    leader->flags &= ~FILE_JOB_FLAG_SECTOR_FOLLOWER;
-    fileQueueLinkJobToSectorLeader(queue, leader, leader);
-    next = fileQueueFindBySector(queue, owner->id);
-    while (next != NULL) {
-        fileQueueLinkJobToSectorLeader(queue, next, leader);
-        next = fileQueueFindBySector(queue, owner->id);
-    }
-}
 
 void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref);
 

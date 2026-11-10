@@ -1,6 +1,6 @@
-#ifndef FILE_MENU_STATE_RESULT_H
-#define FILE_MENU_STATE_RESULT_H
+#ifndef DDS_FILE_MENU_STATE_RESULT_H
 
+#define DDS_FILE_MENU_STATE_RESULT_H
 #include "common.h"
 
 /* The dispatcher passes its task pointer to this unprototyped callback slot. */
@@ -20,4 +20,4 @@ enum {
 typedef char FileMenuStateResult_size_must_be_4[
     (sizeof(FileMenuStateResult) == 4) ? 1 : -1];
 
-#endif /* FILE_MENU_STATE_RESULT_H */
+#endif /* DDS_FILE_MENU_STATE_RESULT_H */

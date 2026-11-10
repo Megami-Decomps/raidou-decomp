@@ -1,53 +1,30 @@
-#ifndef EVT_UNIT_H
-#define EVT_UNIT_H
+#ifndef DDS_EVT_UNIT_H
 
+#define DDS_EVT_UNIT_H
 #include "common.h"
+
 #include "kwln.h"
+
 #include "eff_transform.h"
 
 struct dds3ModelHandle_t;
+
 struct dds3PathBasicControl_t;
+
 struct sdfTexHandle_t;
+
 struct sdf3DLightParallelPacket_t;
 
-/* Values stored in evtUnitHandle_t.motionState; the field remains a signed halfword. */
-typedef enum EvtUnitMotionState {
-    EVT_UNIT_MOTION_STATE_IDLE = 0,
-    EVT_UNIT_MOTION_STATE_SOURCE = 1,
-    EVT_UNIT_MOTION_STATE_MOTION = 2,
-    EVT_UNIT_MOTION_STATE_VECTOR = 3,
-    EVT_UNIT_MOTION_STATE_VALUE = 4
-} EvtUnitMotionState;
-
-/* Values observed in evtUnitHandle_t.transitionSourceKind; the field remains s16. */
-typedef enum EvtUnitTransitionSourceKind {
-    EVT_UNIT_TRANSITION_SOURCE_COPIED_VECTOR = 0,
-    EVT_UNIT_TRANSITION_SOURCE_WORLD_NODE = 1,
-    EVT_UNIT_TRANSITION_SOURCE_PATH_CURVE = 2
-} EvtUnitTransitionSourceKind;
-
 /* Observed evtUnitHandle_t.motionSubmode values; storage remains a halfword. */
+
 #define EVT_UNIT_MOTION_SUBMODE_TARGET_XZ 0
+
 #define EVT_UNIT_MOTION_SUBMODE_TARGET_XZ_WITH_VERTICAL_STEP 1
+
 #define EVT_UNIT_MOTION_SUBMODE_PATH_ENDPOINT 3
 
 enum EvtUnitReferenceAngleCacheFlags {
     EVT_UNIT_REFERENCE_ANGLE_CACHE_VALID = 1
-};
-
-/* Bits consumed by the event unit's motion, value and visual transitions. */
-enum EvtUnitFlags {
-    EVT_UNIT_FLAG_PATH_REVERSE = 0x4,
-    EVT_UNIT_FLAG_USE_UNIT_FIRST_COLOR = 0x100,
-    EVT_UNIT_FLAG_USE_UNIT_SECOND_COLOR = 0x200,
-    EVT_UNIT_FLAG_USE_UNIT_COLOR_CHANNELS = 0x300,
-    EVT_UNIT_FLAG_RGB_TRANSITION = 0x8000,
-    EVT_UNIT_FLAG_ALPHA_TRANSITION = 0x10000,
-    EVT_UNIT_FLAG_VALUE_CHANGED = 0x20000,
-    EVT_UNIT_FLAG_TARGET_TRANSITION = 0x40000,
-    EVT_UNIT_FLAG_TARGET_BLEND_IN = 0x80000,
-    EVT_UNIT_FLAG_TARGET_BLEND_OUT = 0x100000,
-    EVT_UNIT_FLAG_TARGET_BLEND_PHASES = 0x180000
 };
 
 /* Shared light-target payload used by the event manager and battle base-light task. */
@@ -64,10 +41,7 @@ typedef struct EvtTargetInfo {
 
 typedef char EvtTargetInfoSizeCheck[sizeof(EvtTargetInfo) == 0x68 ? 1 : -1];
 
-enum EvtTargetInfoFlags {
-    EVT_TARGET_INFO_FLAG_UNIT_OWNS_VECTOR = 0x8
-};
-
+#if !defined(SMT3_DEFINES_evtUnitHandle_t)
 /* Event motion work, not the world-list node which contains its address.
  * Setup opcodes pass this same object to evtSetUnitMotion and
  * evtConfigureUnitMotionSlot; the direction updater passes it to planar aim.
@@ -215,24 +189,17 @@ typedef struct evtUnitHandle_t {
     u8 pad1C6[10];
 #endif
 } evtUnitHandle_t;
+#endif
 
 /* Frames remaining for a script-requested event-unit direction transition. */
 typedef s32 EvtUnitDirectionTransitionFrames;
 
 evtUnitHandle_t *evtCreateUnitTransitionWork(dds3Basic_t *effObj, struct dds3ModelHandle_t *owner);
-/* Consume work: clear owner lighting and free owned endpoint/path work and the
- * handle; owner and effObj are not freed. NULL is a no-op; always returns 1. */
-s32 evtDeleteUnitHandle(evtUnitHandle_t *work);
 
 void evtSetUnitValueTransition(evtUnitHandle_t *unit, dds3Basic_t *target, s32 duration);
-void evtSetUnitLightDir(evtUnitHandle_t *unit, EvtUnitDirectionTransitionFrames durationFrames);
-void evtSetUnitColorRGB(evtUnitHandle_t *unit, s32 duration, u32 color);
-void evtSetUnitColorA(evtUnitHandle_t *unit, s32 duration, u32 color);
-void evtUnitLightOn(evtUnitHandle_t *unit);
-evtUnitHandle_t *evtGetUnitHandle2(dds3Basic_t *unit);
-void evtSetWaitMotion(evtUnitHandle_t *unit, s32 value);
 
 dds3TaskUpdateResult_t evtTickPackLoad(dds3ProcessID_t *task);
+
 void evtDestroyEventPackTask(dds3ProcessID_t *task);
 
-#endif /* EVT_UNIT_H */
+#endif /* DDS_EVT_UNIT_H */

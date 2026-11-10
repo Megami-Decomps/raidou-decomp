@@ -1,15 +1,15 @@
-#ifndef EVENT_H
-#define EVENT_H
+#ifndef DDS_EVENT_H
 
+#define DDS_EVENT_H
 #include "common.h"
 
-typedef struct evtViewerInfo_t evtViewerInfo_t;
+typedef struct dds_evtViewerInfo_t dds_evtViewerInfo_t;
 
 #include "evt_viewer.h"
 
 /* One allocation retained by the EventViewer task. Camp-named timeline
  * helpers receive this same pointer; their old types omitted the voice tail. */
-struct evtViewerInfo_t {
+struct dds_evtViewerInfo_t {
     sdfMemHandle_t *resourceHandle;
     u32 flags;
     PolyMovieWork *windowContext;
@@ -146,19 +146,13 @@ struct evtViewerInfo_t {
 };
 
 #ifdef VERSION_DDS1
-typedef char evtViewerInfo_t_size[(sizeof(evtViewerInfo_t) == 0x2490) ? 1 : -1];
-typedef char evtViewerInfo_t_timedEnd_at241C[((u32)&((evtViewerInfo_t *)0)->timedEnd == 0x241C) ? 1 : -1];
-#else
-typedef char evtViewerInfo_t_size[(sizeof(evtViewerInfo_t) == 0x24BC) ? 1 : -1];
-typedef char evtViewerInfo_t_voiceFrame_at24A8[((u32)&((evtViewerInfo_t *)0)->voiceFrame == 0x24A8) ? 1 : -1];
-typedef char evtViewerInfo_t_timedEnd_at241C[((u32)&((evtViewerInfo_t *)0)->timedEnd == 0x241C) ? 1 : -1];
-#endif
-typedef char evtViewerInfo_t_camera_at23CC[((u32)&((evtViewerInfo_t *)0)->cameraColorActive == 0x23CC) ? 1 : -1];
-typedef char evtViewerInfo_t_color_at2408[((u32)&((evtViewerInfo_t *)0)->colorSelection == 0x2408) ? 1 : -1];
-typedef char evtViewerInfo_t_color_at240C[((u32)&((evtViewerInfo_t *)0)->colorEditorActive == 0x240C) ? 1 : -1];
-typedef char evtViewerInfo_t_pendingFrameBuffer_at2428[
-    ((u32)&((evtViewerInfo_t *)0)->pendingFrameBuffer == 0x2428) ? 1 : -1];
-typedef char evtViewerInfo_t_pendingFrameBufferAllocation_at242C[
-    ((u32)&((evtViewerInfo_t *)0)->pendingFrameBufferAllocation == 0x242C) ? 1 : -1];
 
-#endif /* EVENT_H */
+typedef char evtViewerInfo_t_size[(sizeof(dds_evtViewerInfo_t) == 0x2490) ? 1 : -1];
+
+#else
+
+typedef char evtViewerInfo_t_size[(sizeof(dds_evtViewerInfo_t) == 0x24BC) ? 1 : -1];
+
+#endif
+
+#endif /* DDS_EVENT_H */

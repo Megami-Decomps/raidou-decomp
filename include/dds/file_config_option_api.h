@@ -1,6 +1,6 @@
-#ifndef FILE_CONFIG_OPTION_API_H
-#define FILE_CONFIG_OPTION_API_H
+#ifndef DDS_FILE_CONFIG_OPTION_API_H
 
+#define DDS_FILE_CONFIG_OPTION_API_H
 #include "common.h"
 
 /* Menu indices for the four configuration options persisted in world.slotFlags. */
@@ -12,6 +12,7 @@ typedef enum FileConfigOption {
 } FileConfigOption;
 
 u8 fileToggleSlotFlagsBit(FileConfigOption option, u32 *flags);
+
 s32 fileTestSavedSlotFlags(FileConfigOption option);
 
-#endif /* FILE_CONFIG_OPTION_API_H */
+#endif /* DDS_FILE_CONFIG_OPTION_API_H */

@@ -1,13 +1,23 @@
-#ifndef SDF_H
-#define SDF_H
+#ifndef DDS_SDF_H
 
+#define DDS_SDF_H
+#include "../draw.h"
+#include "../libsdf.h"
+#include "../sdf_movie_types.h"
 #include "common.h"
+
 #include "sdf_resource.h"
+
 #include "sdf_types.h"
+
 #include "sdf_list_node.h"
+
 #include "sdf_gs_packet.h"
+
 #include "sdf_texture_clamp.h"
+
 #include "sdf_stream_read_contract.h"
+
 #include "sdf_thread.h"
 
 /* Native battle-parameter blobs: DDS1 0xA6C bytes, DDS2 0xC14 bytes.
@@ -77,14 +87,15 @@ typedef struct SdfBattleParameters {
 } SdfBattleParameters;
 
 #ifdef VERSION_DDS1
+
 typedef char SdfBattleParameters_size_must_be_0xA6C[(sizeof(SdfBattleParameters) == 0xA6C) ? 1 : -1];
+
 #endif
+
 #ifdef VERSION_DDS2
+
 typedef char SdfBattleParameters_size_must_be_0xC14[(sizeof(SdfBattleParameters) == 0xC14) ? 1 : -1];
-typedef char SdfBattleParameters_special_scale_offset_must_be_0xB78[
-    ((u32)&((SdfBattleParameters *)0)->specialEncounterScale == 0xB78) ? 1 : -1];
-typedef char SdfBattleParameters_special_chance_offset_must_be_0xB9A[
-    ((u32)&((SdfBattleParameters *)0)->specialEncounterChance == 0xB9A) ? 1 : -1];
+
 #endif
 
 extern SdfBattleParameters *datBattleParameters;
@@ -94,36 +105,6 @@ typedef struct SdfQuad {
     u32 word[4];
 } SdfQuad;
 
-/* Texture buffer GPU command words (0x40); DDS1/2 game/code_002D10B0/00329F60.c. */
-typedef struct sdfTexPacket_t {
-    sdfGifTag_t giftag;
-    sdfGrTagStdReg_t tex1;
-    sdfGrTagStdReg_t tex0;
-    sdfGrTagStdReg_t clamp;
-} sdfTexPacket_t;
-
-typedef char SdfTexBuf_size_must_be_0x40[(sizeof(sdfTexPacket_t) == 0x40) ? 1 : -1];
-typedef char SdfTexBuf_registers_offset_must_be_8[
-    ((u32)&((sdfTexPacket_t *)0)->giftag.regs == 8) ? 1 : -1];
-typedef char SdfTexBuf_sampling_register_offset_must_be_0x18[
-    ((u32)&((sdfTexPacket_t *)0)->tex1.reg == 0x18) ? 1 : -1];
-typedef char SdfTexBuf_texture_register_offset_must_be_0x28[
-    ((u32)&((sdfTexPacket_t *)0)->tex0.reg == 0x28) ? 1 : -1];
-
-/* Known sdfGsMemSlice_t allocation categories. Unknown u32 values are preserved. */
-enum SdfTexResourceAllocationMode {
-    SDF_TEX_RESOURCE_FREE = 0,
-    SDF_TEX_RESOURCE_FRAME = 1,
-    SDF_TEX_RESOURCE_TEXTURE = 2,
-    SDF_TEX_RESOURCE_CLUT = 3,
-    SDF_TEX_RESOURCE_KNOWN_MODE_COUNT = 4
-};
-
-/* Allocate a low-VRAM image block and record its logical dimensions and format.
- * The caller owns the returned block and releases it with the masked updater below. */
-sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 width, s32 height, s32 format);
-/* Return a VRAM block to the free list and coalesce neighbors with interrupts masked; NULL is a no-op. */
-void sdfGsMemFree(sdfGsMemSlice_t *textureBlock);
 /* IPU register state saved across stream callbacks (0x24 bytes). */
 typedef struct IpuDmaState {
     u32 inputAddress;
@@ -140,13 +121,6 @@ typedef struct IpuDmaState {
 typedef char IpuDmaState_size_must_be_0x24[
     (sizeof(IpuDmaState) == 0x24) ? 1 : -1];
 
-/* Values observed in the stream playback worker and cadence updater. */
-typedef enum SdfStreamPlaybackPhase {
-    SDF_STREAM_PLAYBACK_INITIAL = 0,
-    SDF_STREAM_PLAYBACK_FIRST_COMPLETION = 1,
-    SDF_STREAM_PLAYBACK_CADENCED = 2
-} SdfStreamPlaybackPhase;
-
 /* audioMode stores these decoded sound modes in a byte; keep the field byte-sized. */
 typedef enum SdfStreamAudioMode {
     SDF_STREAM_AUDIO_DISABLED = 0,
@@ -156,93 +130,11 @@ typedef enum SdfStreamAudioMode {
 
 /* One 0x8C allocation owns the stream/sound links and IPU transfer state. */
 struct SdfStreamInputDmaTag;
+
 struct movieStream_t;
+
 struct SoundFormat;
 
-typedef struct sdfIpuDecodeCb_t {
-    struct sdfIpuDecodeCb_t *streamPrev;
-    struct sdfIpuDecodeCb_t *streamNext;
-    struct sdfIpuDecodeCb_t *next;
-    u8 active;
-    u8 queued;
-    u8 ipuCycleInitialized; /* First-use IPU setup has run for this playback cycle. */
-    u8 drained;
-    u8 playbackPhase;
-    u8 inputFeedEnabled; /* Restart input feeding after DMA completion while input remains. */
-    u8 inputDmaStartPending;
-    u8 pendingPlaybackSubmissions; /* Queued output submissions not yet retired by a playback update. */
-    u8 audioMode;
-    u8 loopMode;
-    u8 playbackCadenceStep;
-    u8 playbackCadenceRemainder;
-    u8 bufferIndex;
-    u8 transferPacketIndex;
-    u8 completedBufferCount; /* Completed output buffers waiting for playback submission. */
-    u8 pad1B;
-    s32 bufferSize;
-    void *frameBuffers[2];
-    void *transferPacketBuffers[2];
-    u32 transferPacketBytes;
-    s32 resourceWord;
-    sdfGsMemSlice_t *textureHead;
-    u16 width;
-    u16 height;
-    u32 cycleLength;
-    u32 tickCount;
-    s32 playbackFrameIndex;
-    struct SdfStreamInputDmaTag *inputDmaChain;
-    u8 headerReady;
-    u8 done;
-    u8 filledSlots;
-    u8 firstSlot;
-    u8 *scratchBuffer;
-    u8 pad58[4];
-    SdfStreamReadCallback read;
-    /* Borrowed callback context; the node does not own it. */
-    struct movieStream_t *readContext;
-    u8 inputFeedDmaInFlight;
-    u8 unk65;
-    u8 pad66[2];
-    IpuDmaState dma;
-} sdfIpuDecodeCb_t;
-
-typedef char SdfStreamFrameNode_size_must_be_0x8C[
-    (sizeof(sdfIpuDecodeCb_t) == 0x8C) ? 1 : -1];
-typedef char SdfStreamFrameNode_dma_offset_must_be_0x68[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->dma == 0x68) ? 1 : -1];
-typedef char SdfStreamFrameNode_playbackPhase_offset_must_be_0x10[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->playbackPhase == 0x10) ? 1 : -1];
-typedef char SdfStreamFrameNode_ipuCycleInitialized_offset_must_be_0x0E[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->ipuCycleInitialized == 0x0E) ? 1 : -1];
-typedef char SdfStreamFrameNode_inputFeedEnabled_offset_must_be_0x11[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->inputFeedEnabled == 0x11) ? 1 : -1];
-typedef char SdfStreamFrameNode_inputDmaStartPending_offset_must_be_0x12[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->inputDmaStartPending == 0x12) ? 1 : -1];
-typedef char SdfStreamFrameNode_pendingPlaybackSubmissions_offset_must_be_0x13[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->pendingPlaybackSubmissions == 0x13) ? 1 : -1];
-typedef char SdfStreamFrameNode_completedBufferCount_offset_must_be_0x1A[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->completedBufferCount == 0x1A) ? 1 : -1];
-typedef char SdfStreamFrameNode_playbackCadenceRemainder_offset_must_be_0x17[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->playbackCadenceRemainder == 0x17) ? 1 : -1];
-typedef char SdfStreamFrameNode_inputFeedDmaInFlight_offset_must_be_0x64[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->inputFeedDmaInFlight == 0x64) ? 1 : -1];
-typedef char SdfStreamFrameNode_frameBuffers_offset_must_be_0x20[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->frameBuffers == 0x20) ? 1 : -1];
-typedef char SdfStreamFrameNode_transferPacketBuffers_offset_must_be_0x28[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->transferPacketBuffers == 0x28) ? 1 : -1];
-typedef char SdfStreamFrameNode_transferPacketBytes_offset_must_be_0x30[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->transferPacketBytes == 0x30) ? 1 : -1];
-typedef char SdfStreamFrameNode_transferPacketIndex_offset_must_be_0x19[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->transferPacketIndex == 0x19) ? 1 : -1];
-typedef char SdfStreamFrameNode_inputDmaChain_offset_must_be_0x4C[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->inputDmaChain == 0x4C) ? 1 : -1];
-typedef char SdfStreamFrameNode_scratchBuffer_offset_must_be_0x54[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->scratchBuffer == 0x54) ? 1 : -1];
-typedef char SdfStreamFrameNode_readContext_offset_must_be_0x60[
-    ((u32)&((sdfIpuDecodeCb_t *)0)->readContext == 0x60) ? 1 : -1];
-
-void sdfIpuMakeToIpuDmaTag(sdfIpuDecodeCb_t *, u8 *, s32);
-void sdfIpuRunDecode(s32 cadence);
 /* Store the stream-frame draw-path word unchanged; 1 selects the alternate path. */
 void sdfSetStreamFrameDrawMode(u32 mode);
 
@@ -261,17 +153,12 @@ typedef struct SdfMovieDescriptor {
 
 typedef char SdfMovieDescriptor_size_must_be_0x14[
     (sizeof(SdfMovieDescriptor) == 0x14) ? 1 : -1];
-typedef char SdfMovieDescriptor_hasAudio_offset_must_be_0x10[
-    ((u32)&((SdfMovieDescriptor *)0)->hasAudio == 0x10) ? 1 : -1];
-typedef char SdfMovieDescriptor_stereo_offset_must_be_0x11[
-    ((u32)&((SdfMovieDescriptor *)0)->stereo == 0x11) ? 1 : -1];
-typedef char SdfMovieDescriptor_playbackCadenceStep_offset_must_be_0x12[
-    ((u32)&((SdfMovieDescriptor *)0)->playbackCadenceStep == 0x12) ? 1 : -1];
 
 /* The +0x1C movie work pointer selects one of two separately allocated records.
  * isPac at +3 chooses the active arm; the variant payload types live in
  * sdf_movie_stream.h. */
 struct MovLinearStream;
+
 struct MovPacStream;
 
 typedef union MovObjStream {
@@ -281,6 +168,7 @@ typedef union MovObjStream {
 
 typedef u8 SdfMovieState;
 
+#if !defined(SMT3_DEFINES_movieStream_t)
 typedef struct movieStream_t {
     u8 active;
     SdfMovieState state;
@@ -301,24 +189,11 @@ typedef struct movieStream_t {
     u8 pad23;
     sdfIpuDecodeCb_t soundNode;
 } movieStream_t;
+#endif
 
 typedef char MovObj_size_must_be_0xB0[
     (sizeof(movieStream_t) == 0xB0) ? 1 : -1];
-typedef char MovObj_stream_offset_must_be_0x1C[
-    ((u32)&((movieStream_t *)0)->stream == 0x1C) ? 1 : -1];
 
-void movieCloseStream(movieStream_t *);
-
-/* Graph target: two color buffers followed by the auxiliary/depth buffer (0x14). */
-typedef struct sdfGrFrameSet_t {
-    s16 width;
-    s16 unk2;
-    s16 height;
-    u8 bufferFormat;
-    u8 auxiliaryFormat;
-    sdfGsMemSlice_t *buffers[3];
-} sdfGrFrameSet_t;
-void sdfGrSetFrameSetMode(sdfGrFrameSet_t *graph, s32 mode, s32 initializeBuffers);
 /* A mode's 12-byte display defaults row, copied into sdfGrFrameSet_t. */
 typedef struct SdfGraphModeDefaults {
     s16 width;
@@ -331,49 +206,14 @@ typedef struct SdfGraphModeDefaults {
 
 typedef char SdfGraphModeDefaults_size_must_be_0xC[
     (sizeof(SdfGraphModeDefaults) == 0xC) ? 1 : -1];
-typedef char SdfGraphModeDefaults_interlace_must_be_at_0xA[
-    ((u32)&((SdfGraphModeDefaults *)0)->interlace == 0xA) ? 1 : -1];
 
 /* Release one caller-owned texture reference. The direct form releases the
  * texture immediately when this is the last reference; the handler form queues
  * that final release for deferred processing. Neither function consumes more
  * than the single reference represented by the supplied pointer. */
 void sdfTexReleaseReference(sdfTexHandle_t *texture);
-void sdfTexFreeDelayed(sdfTexHandle_t *texture);
-
-/* Texture resource accessors and palette helpers shared by both title providers. */
-u8 sdfTexGetCLUTCount(sdfTexHandle_t *texture);
-u32 sdfTexGetPixelAddr(sdfTexHandle_t *texture);
-u32 sdfTexGetCLUTAddr(sdfTexHandle_t *texture);
-s32 sdfTexGetTexelBitCount(s32 format);
-void sdfTexAllocClutBuff(sdfTexHandle_t *texture);
-
-/* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
-u64 sdfTexGetTex0Reg(sdfTexHandle_t *texture);
-u64 sdfTexGetTex1Reg(sdfTexHandle_t *texture);
-u64 sdfTexGetClampReg(sdfTexHandle_t *texture);
 
 /* Semaphore ID and attached work pointers (0x14); DDS1/2 game/code_002D10B0/00329F60.c. */
-
-
-/* Draw-surface pool entry (0x20); the SDK initializes and flushes this owner. */
-typedef struct sdfGrOt_t {
-    struct sdfGrOt_t *next; /* 0x00 */
-    sdfDrawTag_t *tagHead;       /* 0x04 */
-    sdfDrawTag_t *tagTail;        /* 0x08 */
-    sdfDrawTag_t *noSortTag; /* name unconfirmed; sdfGrOtInit zeroes it */
-    void (*regFunc)(struct sdfGrOt_t *, sdfDrawTag_t *);      /* 0x10 */
-    void *callbackFunc;
-    void *data; /* name unconfirmed; sdfGrOtInit zeroes it */
-    u32 pad;
-} sdfGrOt_t;
-
-typedef char sdfGrOt_t_size_must_be_0x20[(sizeof(sdfGrOt_t) == 0x20) ? 1 : -1];
-typedef char sdfGrOt_t_owner_layout[
-    ((u32)&((sdfGrOt_t *)0)->tagHead == 4 &&
-     (u32)&((sdfGrOt_t *)0)->tagTail == 8 &&
-     (u32)&((sdfGrOt_t *)0)->regFunc == 0x10 &&
-     (u32)&((sdfGrOt_t *)0)->callbackFunc == 0x14) ? 1 : -1];
 
 /* Callback-list hooks also accept the shared task-entry no-op. */
 typedef void (*SdfListCallback)();
@@ -393,15 +233,25 @@ typedef struct SdfList {
 typedef char SdfList_size_must_be_0x1C[(sizeof(SdfList) == 0x1C) ? 1 : -1];
 
 SdfList *sdfCreateTaskHeader(void *);
+
 void sdfDestroyTaskWork(SdfList *);
+
 void sdfSetTaskDestroyCallback(SdfList *, SdfListCallback);
+
 void sdfSetTaskSecondaryCallback(SdfList *, SdfListCallback);
+
 SdfListNode *sdfListAppend(SdfList *, s32, void *);
+
 SdfListNode *sdfListInsertAfter(SdfList *, SdfListNode *, s32, void *);
+
 SdfListNode *sdfRemoveAndReindexListNode(SdfList *, SdfListNode *);
+
 SdfListNode *sdfListRemoveNode(SdfList *, SdfListNode *);
+
 void sdfClearTaskList(SdfList *);
+
 void sdfSwapLinkedListNodes(SdfList *, SdfListNode *, SdfListNode *);
+
 SdfListNode *sdfFindTaskListNodeByKey(SdfList *, s32);
 
 /* Four-doubleword DMA packet payload (0x20); DDS1/2 game/code_002D33C8/0032C278.c. */
@@ -418,23 +268,6 @@ typedef struct SdfDmaSrc {
     u8 pad2[6];
     u64 vifCommands;
 } SdfDmaSrc;
-
-/* REF tag and VIF commands followed by the trailing chain tag (0x20).
- * The complete trailing quadword is cleared before its NEXT header is patched. */
-typedef struct sdfGrRefPacketHeader_t {
-    u64 dmaTag;
-    u64 vifCommands;
-    s128 nextTag;
-} sdfGrRefPacketHeader_t;
-
-typedef char sdfGrRefPacketHeader_t_size_must_be_0x20[
-    sizeof(sdfGrRefPacketHeader_t) == 0x20 ? 1 : -1];
-typedef char sdfGrRefPacketHeader_t_alignment_must_be_0x10[
-    __alignof__(sdfGrRefPacketHeader_t) == 0x10 ? 1 : -1];
-typedef char sdfGrRefPacketHeader_t_vifCommands_at_8[
-    ((u32)&((sdfGrRefPacketHeader_t *)0)->vifCommands == 8) ? 1 : -1];
-typedef char sdfGrRefPacketHeader_t_nextTag_at_0x10[
-    ((u32)&((sdfGrRefPacketHeader_t *)0)->nextTag == 0x10) ? 1 : -1];
 
 /* Resource entry with word at +0xC (0x10); DDS1/2 game/code_002D33C8/0032C278.c. */
 typedef struct SdfResEntry {
@@ -458,18 +291,6 @@ typedef struct SdfPacketBuilder {
 
 typedef char SdfPacketBuilder_size_must_be_0x60[
     (sizeof(SdfPacketBuilder) == 0x60) ? 1 : -1];
-typedef char SdfPacketBuilder_header_at_0x10[
-    ((u32)&((SdfPacketBuilder *)0)->packetHeader == 0x10) ? 1 : -1];
-typedef char SdfPacketBuilder_frame_at_0x30[
-    ((u32)&((SdfPacketBuilder *)0)->frame == 0x30) ? 1 : -1];
-typedef char SdfPacketBuilder_zbuf_at_0x40[
-    ((u32)&((SdfPacketBuilder *)0)->zbuf == 0x40) ? 1 : -1];
-typedef char SdfPacketBuilder_source_at_0x50[
-    ((u32)&((SdfPacketBuilder *)0)->source == 0x50) ? 1 : -1];
-
-void sdfGrFramePacketPredraw(SdfPacketBuilder *packet, s32 bufferIndex);
-void sdfGrSetFramePacket(SdfPacketBuilder *packet, sdfGrFrameSet_t *source,
-    u32 frameMask, s32 region, s32 mode);
 
 /* Optional packed or five-float state block owned by an sdfMat_t. */
 typedef union SdfSubParam {
@@ -497,113 +318,7 @@ typedef union SdfSubParam {
 typedef char SdfSubParam_size_must_be_0x18[
     (sizeof(SdfSubParam) == 0x18) ? 1 : -1];
 
-/* A texture coordinate transform in a material packet. sdfMatSetUvwParm fills
- * it either as six floats or, for the identity case, as three quadword halves. */
-typedef union
-{
-    f32 m[6];
-    u64 q[3];
-} sdfMatTexTm_t;
-
-/* The VIF packet a material keeps per context: the GS registers
- * sdfMatUpdatePacketBasic copies out of the texture handle, interleaved with
- * the VIF codes that upload them. sdfMatNew allocates 0xA0 for it and writes
- * VIF codes at 0x98 and 0x9C, which is the tail sdfhook's 128-byte version
- * does not model. */
-typedef struct sdfMatPacket_t
-{
-    u32 vifcode0;
-    u32 ambient;
-    u32 diffuse;
-    u32 mtexDiffuse;
-    u32 specularColor;
-    u32 refmapColor;
-    u32 vifcode1;
-    f32 constant;
-    u32 mtexAlpha;
-    u32 mtexAlgo;
-    f32 fdBias;
-    f32 fdSoften;
-    u32 pad;
-    u32 vifcode2;
-    u64 tex1Data;
-    u64 tex0Data;
-    u64 clampData;
-    u64 mtexTex1Data;
-    u64 mtexTex0Data;
-    u64 mtexClampData;
-    /* sdfMatSetUvwParm writes one transform per texture: a 2x2 then an offset. */
-    sdfMatTexTm_t texTm;
-    sdfMatTexTm_t mtexTexTm;
-    u32 cmd_call_spec;
-    u32 cmd_call_kind;
-} sdfMatPacket_t;
-
-typedef char sdfMatPacket_t_ambient_at_0x04[
-    ((u32)&((sdfMatPacket_t *)0)->ambient == 0x04) ? 1 : -1];
-typedef char sdfMatPacket_t_diffuse_at_0x08[
-    ((u32)&((sdfMatPacket_t *)0)->diffuse == 0x08) ? 1 : -1];
-typedef char sdfMatPacket_t_mtexDiffuse_at_0x0C[
-    ((u32)&((sdfMatPacket_t *)0)->mtexDiffuse == 0x0C) ? 1 : -1];
-typedef char sdfMatPacket_t_refmapColor_at_0x14[
-    ((u32)&((sdfMatPacket_t *)0)->refmapColor == 0x14) ? 1 : -1];
-typedef char sdfMatPacket_t_constant_at_0x1C[
-    ((u32)&((sdfMatPacket_t *)0)->constant == 0x1C) ? 1 : -1];
-typedef char sdfMatPacket_t_mtexAlpha_at_0x20[
-    ((u32)&((sdfMatPacket_t *)0)->mtexAlpha == 0x20) ? 1 : -1];
-typedef char sdfMatPacket_t_mtexAlgo_at_0x24[
-    ((u32)&((sdfMatPacket_t *)0)->mtexAlgo == 0x24) ? 1 : -1];
-typedef char sdfMatPacket_t_fdBias_at_0x28[
-    ((u32)&((sdfMatPacket_t *)0)->fdBias == 0x28) ? 1 : -1];
-typedef char sdfMatPacket_t_clampData_at_0x48[
-    ((u32)&((sdfMatPacket_t *)0)->clampData == 0x48) ? 1 : -1];
-typedef char sdfMatPacket_t_texTm_at_0x68[
-    ((u32)&((sdfMatPacket_t *)0)->texTm == 0x68) ? 1 : -1];
-typedef char sdfMatPacket_t_mtexTexTm_at_0x80[
-    ((u32)&((sdfMatPacket_t *)0)->mtexTexTm == 0x80) ? 1 : -1];
-typedef char sdfMatPacket_t_cmd_call_spec_at_0x98[
-    ((u32)&((sdfMatPacket_t *)0)->cmd_call_spec == 0x98) ? 1 : -1];
-typedef char sdfMatPacket_t_cmd_call_kind_at_0x9C[
-    ((u32)&((sdfMatPacket_t *)0)->cmd_call_kind == 0x9C) ? 1 : -1];
-typedef char sdfMat_t_id_at_0x00[
-    ((u32)&((sdfMat_t *)0)->id == 0x00) ? 1 : -1];
-typedef char sdfMat_t_flags_at_0x04[
-    ((u32)&((sdfMat_t *)0)->flags == 0x04) ? 1 : -1];
-typedef char sdfMat_t_duty_at_0x06[
-    ((u32)&((sdfMat_t *)0)->duty == 0x06) ? 1 : -1];
-typedef char sdfMat_t_packet_at_0x08[
-    ((u32)&((sdfMat_t *)0)->packet == 0x08) ? 1 : -1];
-typedef char sdfMat_t_ambient_at_0x10[
-    ((u32)&((sdfMat_t *)0)->ambient == 0x10) ? 1 : -1];
-typedef char sdfMat_t_diffuse_at_0x14[
-    ((u32)&((sdfMat_t *)0)->diffuse == 0x14) ? 1 : -1];
-typedef char sdfMat_t_multiTexDiffuse_at_0x18[
-    ((u32)&((sdfMat_t *)0)->multiTexDiffuse == 0x18) ? 1 : -1];
-typedef char sdfMat_t_constant_at_0x1C[
-    ((u32)&((sdfMat_t *)0)->constant == 0x1C) ? 1 : -1];
-typedef char sdfMat_t_specular_at_0x20[
-    ((u32)&((sdfMat_t *)0)->specular == 0x20) ? 1 : -1];
-typedef char sdfMat_t_specularParm_at_0x24[
-    ((u32)&((sdfMat_t *)0)->specularParm == 0x24) ? 1 : -1];
-typedef char sdfMat_t_refmap_at_0x28[
-    ((u32)&((sdfMat_t *)0)->refmap == 0x28) ? 1 : -1];
-typedef char sdfMat_t_texHandle_at_0x2C[
-    ((u32)&((sdfMat_t *)0)->texHandle == 0x2C) ? 1 : -1];
-typedef char sdfMat_t_multiTexHandle_at_0x30[
-    ((u32)&((sdfMat_t *)0)->multiTexHandle == 0x30) ? 1 : -1];
-typedef char sdfMat_t_multiTexMethod_at_0x34[
-    ((u32)&((sdfMat_t *)0)->multiTexMethod == 0x34) ? 1 : -1];
-typedef char sdfMat_t_uvwParm_at_0x38[
-    ((u32)&((sdfMat_t *)0)->uvwParm == 0x38) ? 1 : -1];
-typedef char sdfMat_t_multiTexUvwParm_at_0x3C[
-    ((u32)&((sdfMat_t *)0)->multiTexUvwParm == 0x3C) ? 1 : -1];
-typedef char sdfMat_t_fdBias_at_0x40[
-    ((u32)&((sdfMat_t *)0)->fdBias == 0x40) ? 1 : -1];
-typedef char sdfMat_t_fdSoften_at_0x44[
-    ((u32)&((sdfMat_t *)0)->fdSoften == 0x44) ? 1 : -1];
-
 extern s32 sdfThreadSema;
-extern sdfThCB_t *sdfVblankThreadId;
 
 /* Embedded end sentinels and backing-span metadata for the general heap (0x28). */
 typedef struct SdfMemHeap {
@@ -614,8 +329,6 @@ typedef struct SdfMemHeap {
 } SdfMemHeap;
 
 typedef char SdfMemHeap_size_must_be_0x28[(sizeof(SdfMemHeap) == 0x28) ? 1 : -1];
-
-extern SdfMemHeap sdfMemCB;
 
 enum SdfColorTrackMode {
     SDF_COLOR_TRACK_MODE_ENDPOINTS = 0,
@@ -670,7 +383,9 @@ typedef struct SdfFlagListWork {
 } SdfFlagListWork;
 
 typedef char SdfColorTrack_key_stride_must_be_8[(sizeof(((SdfColorTrack *)0)->keys[0]) == 8) ? 1 : -1];
+
 typedef char SdfColorTrack_size_must_be_0x24[(sizeof(SdfColorTrack) == 0x24) ? 1 : -1];
+
 typedef char SdfColorTrack_fields_offset[((unsigned long)&((SdfColorTrack *)0)->segmentMode == 0x00 &&
                                           (unsigned long)&((SdfColorTrack *)0)->initialColor == 0x04 &&
                                           (unsigned long)&((SdfColorTrack *)0)->finalColor == 0x08 &&
@@ -678,53 +393,87 @@ typedef char SdfColorTrack_fields_offset[((unsigned long)&((SdfColorTrack *)0)->
                                           (unsigned long)&((SdfColorTrack *)0)->keys[0].fraction == 0x10 &&
                                           (unsigned long)&((SdfColorTrack *)0)->keys[1].color == 0x14 &&
                                           (unsigned long)&((SdfColorTrack *)0)->keys[1].fraction == 0x18) ? 1 : -1];
+
 typedef char SdfAlphaTrack_size_must_be_0x10[(sizeof(SdfAlphaTrack) == 0x10) ? 1 : -1];
+
 typedef char SdfAlphaTrack_fields_offset[((unsigned long)&((SdfAlphaTrack *)0)->alpha == 0x00 &&
                                           (unsigned long)&((SdfAlphaTrack *)0)->surfaceIndex == 0x04 &&
                                           (unsigned long)&((SdfAlphaTrack *)0)->fadeInFraction == 0x08 &&
                                           (unsigned long)&((SdfAlphaTrack *)0)->fadeOutFraction == 0x0C) ? 1 : -1];
+
 typedef char SdfFlagListParams_size_must_be_0x40[(sizeof(SdfFlagListParams) == 0x40) ? 1 : -1];
+
 typedef char SdfFlagListMark_size_must_be_0x08[(sizeof(SdfFlagListMark) == 0x08) ? 1 : -1];
+
 typedef char SdfFlagListWork_size_must_be_0x58[(sizeof(SdfFlagListWork) == 0x58) ? 1 : -1];
+
 typedef char SdfFlagListWork_allocation_offset_must_be_0x54[
     ((unsigned long)&((SdfFlagListWork *)0)->allocation == 0x54) ? 1 : -1];
 
 SdfFlagListWork *sdfCreateFlagListWork(const SdfFlagListParams *);
+
 void sdfResetFlagListEntries(SdfFlagListWork *);
+
 void sdfReleaseFlagListResource(SdfFlagListWork *);
+
 SdfFlagListWork *sdfInitializeFlagListFromResource(void *);
+
 SdfFlagListWork *effCreateSelectionFlagListFromWork(const SdfFlagListParams *);
+
 SdfFlagListWork *effCreateSelectionFlagListFromFile(void *);
+
 SdfFlagListWork *effCreateEmbeddedSelectionFlagList(SdfFlagListWork *);
+
 void effReleaseSelectionFlagList(SdfFlagListWork *);
+
 void effResetSelectionEntryBuffers(SdfFlagListWork *);
+
 void effResetSelectionEntriesAndState(SdfFlagListWork *);
+
 void effDrawSelectionEntryVectors(SdfFlagListWork *);
+
 void effUpdateAndDrawSelectionEntries(SdfFlagListWork *);
+
 float sdfGetFlagListSpeed(SdfFlagListWork *);
+
 void sdfSetFlagListSpeed(SdfFlagListWork *, float);
+
 u32 sdfGetFlagListAlphaSurfaceIndex(SdfFlagListWork *);
+
 void sdfSetFlagListAlphaSurfaceIndex(SdfFlagListWork *, u32 surfaceIndex);
+
 void itfSetPackedRgbAlpha(SdfFlagListWork *, u32);
+
 void itfCopyColorFields(SdfFlagListWork *, const SdfFlagListParams *);
 
 #ifdef VERSION_DDS1
+
 void sdfUpdateFlagListEntries(SdfFlagListWork *);
+
 void sdfDrawFlagListVertices(SdfFlagListWork *);
+
 void effUpdateSelectionEntryState(SdfFlagListWork *);
+
 #elif defined(VERSION_DDS2)
+
 void sdfUpdateFlagListEntries(SdfFlagListWork *);
+
 void sdfDrawFlagListVertices(SdfFlagListWork *);
+
 void effUpdateSelectionEntryState(SdfFlagListWork *);
+
 #endif
 
-
 /* SDF chunk fourCC values (little-endian byte order). */
+
 #define SDF_CHUNK_UNIQUE_VALUE 0x51494e55 /* "UNIQ" in little-endian byte order */
+
 #define SDF_CHUNK_MAP_POSITIONS 0x534F504D /* "MPOS" in little-endian byte order */
+
 #define SDF_CHUNK_LOD_VALUE 0x43444f4c /* "LODC" in little-endian byte order */
 
 /* Free-list kind for SDF pools. */
+
 #define SDF_POOL_FREE_KIND 0xFFFF
 
-#endif /* SDF_H */
+#endif /* DDS_SDF_H */

@@ -1,6 +1,6 @@
-#ifndef SDF_SIF_COMMAND_H
-#define SDF_SIF_COMMAND_H
+#ifndef DDS_SDF_SIF_COMMAND_H
 
+#define DDS_SDF_SIF_COMMAND_H
 #include "common.h"
 
 /* Complete command header passed to sdfDevSetPrintCB and the SIF formatter. */
@@ -12,11 +12,5 @@ typedef struct SifCommand {
 } SifCommand;
 
 typedef char SifCommandSizeCheck[sizeof(SifCommand) == 0x10 ? 1 : -1];
-
-void sdfPktSetCmd(SifCommand *packet, s32 index);
-void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
-void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
-void *sdfDevPrintf(s32 source, s32 end, s32 argument, s32 index,
-                                  const char *format, ...);
 
 #endif

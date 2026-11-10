@@ -1,6 +1,6 @@
-#ifndef EFF_LOOK_AT_RING_H
-#define EFF_LOOK_AT_RING_H
+#ifndef DDS_EFF_LOOK_AT_RING_H
 
+#define DDS_EFF_LOOK_AT_RING_H
 #include "eff.h"
 
 /* Kind-specific extension used by the paired look-at ring emitter clients. */
@@ -17,11 +17,6 @@ typedef struct EffLookAtRingEmitter {
     u8 opaque168[8];      /* Complete 0x170-byte template allocation. */
 } EffLookAtRingEmitter;
 
-typedef char EffLookAtRingModeOffsetCheck[((u32)&((EffLookAtRingEmitter *)0)->mode) == 0x150 ? 1 : -1];
-typedef char EffLookAtRingLoopOffsetCheck[((u32)&((EffLookAtRingEmitter *)0)->loop) == 0x151 ? 1 : -1];
-typedef char EffLookAtRingPeriodOffsetCheck[((u32)&((EffLookAtRingEmitter *)0)->period) == 0x15C ? 1 : -1];
-typedef char EffLookAtRingFloat160OffsetCheck[((u32)&((EffLookAtRingEmitter *)0)->f160) == 0x160 ? 1 : -1];
-typedef char EffLookAtRingFloat164OffsetCheck[((u32)&((EffLookAtRingEmitter *)0)->f164) == 0x164 ? 1 : -1];
 typedef char EffLookAtRingSizeCheck[sizeof(EffLookAtRingEmitter) == 0x170 ? 1 : -1];
 
 #endif

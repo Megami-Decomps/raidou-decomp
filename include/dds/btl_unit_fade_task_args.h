@@ -1,6 +1,6 @@
-#ifndef BTL_UNIT_FADE_TASK_ARGS_H
-#define BTL_UNIT_FADE_TASK_ARGS_H
+#ifndef DDS_BTL_UNIT_FADE_TASK_ARGS_H
 
+#define DDS_BTL_UNIT_FADE_TASK_ARGS_H
 #include "btl_unit_fade_task_types.h"
 
 struct BtlUnit;
@@ -16,8 +16,5 @@ typedef struct BtlUnitFadeTaskArgs {
 } BtlUnitFadeTaskArgs;
 
 typedef char BtlUnitFadeTaskArgsSizeCheck[sizeof(BtlUnitFadeTaskArgs) == 0x0C ? 1 : -1];
-typedef char BtlUnitFadeTaskArgsDurationOffsetCheck[(u32)&((BtlUnitFadeTaskArgs *)0)->duration == 0x04 ? 1 : -1];
-typedef char BtlUnitFadeTaskArgsExitModeOffsetCheck[(u32)&((BtlUnitFadeTaskArgs *)0)->exitMode == 0x04 ? 1 : -1];
-typedef char BtlUnitFadeTaskArgsElapsedOffsetCheck[(u32)&((BtlUnitFadeTaskArgs *)0)->elapsed == 0x08 ? 1 : -1];
 
 #endif

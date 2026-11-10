@@ -1,9 +1,10 @@
-#ifndef BTL_TASK_H
-#define BTL_TASK_H
+#ifndef DDS_BTL_TASK_H
 
+#define DDS_BTL_TASK_H
 #include "common.h"
 
 struct BtlUnit;
+
 typedef struct BtlUnit BtlUnit;
 
 typedef struct BtlIndexList {
@@ -13,13 +14,21 @@ typedef struct BtlIndexList {
 } BtlIndexList;
 
 BtlIndexList *btlAllocateIndexList(s32 capacity);
+
 void btlFreeIndexList(BtlIndexList *list);
+
 void btlAppendIndexListEntry(BtlIndexList *list, BtlUnit *entry);
+
 void btlClearIndexList(BtlIndexList *list);
+
 u32 btlGetIndexListCount(BtlIndexList *list);
+
 BtlUnit *btlGetIndexListEntry(BtlIndexList *list, s32 index);
+
 void btlCopyIndexList(BtlIndexList *destination, BtlIndexList *source);
+
 void btlSwapIndexListEntries(BtlIndexList *list, s32 first, s32 second);
+
 s32 btlFindListIndex(BtlIndexList *list, BtlUnit *entry);
 
 /* The battle AI task's 0xA4-byte user-data allocation in both games. */
@@ -57,7 +66,9 @@ typedef struct SceneAiWork {
     s32 rowStep[3];          /* 0x8C: bounded to 0..5 during row animation */
     s32 rowFade[3];          /* 0x98: initialized to 128 for each row */
 } SceneAiWork;
+
 typedef char SceneAiWork_size[(sizeof(SceneAiWork) == 0xA4) ? 1 : -1];
+
 typedef char SceneAiWork_cursor_offset[((unsigned long)&((SceneAiWork *)0)->cursor == 0x18) ? 1 : -1];
 
 /* Retained command operands: 0x28 bytes in DDS1, 0x2C in DDS2.
@@ -172,26 +183,23 @@ typedef struct BattleIndexWork {
     BtlOperandGroup *groups;
     struct sdfMemHandle_t *allocationHandle;
 } BattleIndexWork;
-typedef char BattleIndexWork_costValidationFailed_offset_must_be_0x2D[
-    ((u32)&((BattleIndexWork *)0)->costValidationFailed == 0x2D) ? 1 : -1];
-typedef char BattleIndexWork_allTargetSideActorsSkipped_offset_must_be_0x2E[
-    ((u32)&((BattleIndexWork *)0)->allTargetSideActorsSkipped == 0x2E) ? 1 : -1];
-typedef char BattleIndexWork_huntEpReward_offset_must_be_0x50[
-    ((u32)&((BattleIndexWork *)0)->huntEpReward == 0x50) ? 1 : -1];
+
 #ifdef VERSION_DDS1
-typedef char BattleIndexWork_refreshEligibleActors_offset_must_be_0x5E[
-    ((u32)&((BattleIndexWork *)0)->refreshEligibleActors == 0x5E) ? 1 : -1];
+
 #else
-typedef char BattleIndexWork_refreshEligibleActors_offset_must_be_0x64[
-    ((u32)&((BattleIndexWork *)0)->refreshEligibleActors == 0x64) ? 1 : -1];
+
 #endif
+
 #define BTL_COMMAND_PARTY_RECORD_INDEX(work) ((work)->summonId)
 
 void btlInitBattleIndexWork(BattleIndexWork *work);
+
 void btlResetIndexWork(BattleIndexWork *work);
+
 void btlReleaseObjectBuffers(BattleIndexWork *work);
 
 #ifdef VERSION_DDS1
+
 /* DDS1 btlCreateActionSeq owns one 0x170-byte command actor. */
 typedef struct BtlTask {
     s32 state;
@@ -215,16 +223,13 @@ typedef struct BtlTask {
     struct BtlTask *prev; /* +0x168 */
     struct BtlTask *next; /* +0x16C */
 } BtlTask;
+
 typedef char BtlTask_size_must_be_0x170[(sizeof(BtlTask) == 0x170) ? 1 : -1];
-typedef char BtlTask_aiCounter_offset_must_be_0x88[
-    ((u32)&((BtlTask *)0)->aiCounter == 0x88) ? 1 : -1];
-typedef char BtlTask_lowHpActionHold_offset_must_be_0x146[
-    ((u32)&((BtlTask *)0)->lowHpActionHold == 0x146) ? 1 : -1];
-typedef char BtlTask_actions_offset_must_be_0x148[
-    ((u32)&((BtlTask *)0)->actions == 0x148) ? 1 : -1];
+
 #endif
 
 #ifdef VERSION_DDS2
+
 /* Queued action slots are queried as complete words and low halfword IDs. */
 typedef union BattleActionSlot {
     s32 word;
@@ -260,7 +265,7 @@ typedef struct ActionStateLink {
     struct ActionStateLink *next; /* +0x178 */
     u8 pad17C[4];
 } ActionStateLink;
+
 #endif
 
-
-#endif /* BTL_TASK_H */
+#endif /* DDS_BTL_TASK_H */

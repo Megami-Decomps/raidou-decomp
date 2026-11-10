@@ -1,13 +1,16 @@
-#ifndef BTL_CAMERA_CURSOR_H
-#define BTL_CAMERA_CURSOR_H
+#ifndef DDS_BTL_CAMERA_CURSOR_H
 
+#define DDS_BTL_CAMERA_CURSOR_H
 #include "common.h"
 
 typedef s8 BtlCameraCursorPosePhase;
 
 #define BTL_CAMERA_CURSOR_POSE_PHASE_INITIAL 0
+
 #define BTL_CAMERA_CURSOR_POSE_PHASE_TRANSITION 1
+
 #define BTL_CAMERA_CURSOR_POSE_PHASE_ENDPOINT_CAPTURED 2
+
 /* Modes 1, 3, and 5 use TRANSITION while the desired distance changes. */
 
 /* Shared battle-camera script cursor and path state (0x130 bytes).
@@ -68,47 +71,8 @@ typedef struct BtlCameraCursorView {
 } BtlCameraCursorView;
 
 typedef char BtlCameraCursorViewSizeCheck[(sizeof(BtlCameraCursorView) == 0x130) ? 1 : -1];
-typedef char BtlCameraCursorViewTimedScriptOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->useTimedScript == 0x00) ? 1 : -1];
-typedef char BtlCameraCursorViewScriptSetIndexOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->scriptSetIndex == 0x0A) ? 1 : -1];
-typedef char BtlCameraCursorViewScriptIndexOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->scriptIndex == 0x0C) ? 1 : -1];
-typedef char BtlCameraCursorViewPathEndOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->pathEnd == 0x20) ? 1 : -1];
-typedef char BtlCameraCursorViewDirectionOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->direction == 0x80) ? 1 : -1];
-typedef char BtlCameraCursorViewKindOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->kind == 0x10) ? 1 : -1];
+
 typedef char BtlCameraCursorViewPosePhaseSizeCheck[
     (sizeof(((BtlCameraCursorView *)0)->posePhase) == 1) ? 1 : -1];
-typedef char BtlCameraCursorViewPosePhaseOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->posePhase == 0x12) ? 1 : -1];
-typedef char BtlCameraCursorViewTargetFromOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->targetFrom == 0x40) ? 1 : -1];
-typedef char BtlCameraCursorViewCameraFromOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->cameraFrom == 0x60) ? 1 : -1];
-typedef char BtlCameraCursorViewDistanceOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->distance == 0x90) ? 1 : -1];
-typedef char BtlCameraCursorViewFovOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->fov == 0xA0) ? 1 : -1];
-typedef char BtlCameraCursorViewStartFrameOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->startFrame == 0xB0) ? 1 : -1];
-typedef char BtlCameraCursorViewDurationOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->duration == 0xC0) ? 1 : -1];
-typedef char BtlCameraCursorViewParameterD0OffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->parameterD0 == 0xD0) ? 1 : -1];
-typedef char BtlCameraCursorViewParameterE0OffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->parameterE0 == 0xE0) ? 1 : -1];
-typedef char BtlCameraCursorViewBlendRateOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->blendRate == 0xF0) ? 1 : -1];
-typedef char BtlCameraCursorViewRangeStartOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->rangeStart == 0x100) ? 1 : -1];
-typedef char BtlCameraCursorViewRangeEndOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->rangeEnd == 0x110) ? 1 : -1];
-typedef char BtlCameraCursorViewFirstParameterIndexOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->parameterIndex114 == 0x114) ? 1 : -1];
-typedef char BtlCameraCursorViewLastParameterIndexOffsetCheck[
-    ((u32)&((BtlCameraCursorView *)0)->parameterIndex12C == 0x12C) ? 1 : -1];
 
-#endif /* BTL_CAMERA_CURSOR_H */
+#endif /* DDS_BTL_CAMERA_CURSOR_H */

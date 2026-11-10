@@ -1,6 +1,6 @@
-#ifndef BTL_SCENE_COUNTER_MODE_H
-#define BTL_SCENE_COUNTER_MODE_H
+#ifndef DDS_BTL_SCENE_COUNTER_MODE_H
 
+#define DDS_BTL_SCENE_COUNTER_MODE_H
 #include "common.h"
 
 /* Action-result classification forwarded to the scene counter task. */
@@ -13,4 +13,4 @@ enum {
     BTL_SCENE_COUNTER_MODE_WEAKNESS = 3,
 };
 
-#endif /* BTL_SCENE_COUNTER_MODE_H */
+#endif /* DDS_BTL_SCENE_COUNTER_MODE_H */

@@ -1,6 +1,6 @@
-#ifndef DAT_NEW_CYCLE_STATE_H
-#define DAT_NEW_CYCLE_STATE_H
+#ifndef DDS_DAT_NEW_CYCLE_STATE_H
 
+#define DDS_DAT_NEW_CYCLE_STATE_H
 #include "common.h"
 
 /* The save header records whether this run was started as a New Cycle. */

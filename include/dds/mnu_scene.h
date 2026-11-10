@@ -1,6 +1,6 @@
-#ifndef MNU_SCENE_H
-#define MNU_SCENE_H
+#ifndef DDS_MNU_SCENE_H
 
+#define DDS_MNU_SCENE_H
 #include "common.h"
 
 #ifndef VERSION_DDS2
@@ -56,7 +56,7 @@ typedef struct MenuSceneMetadata {
             u16 entryId;
             u8 pad02E[0x19E];
         };
-        datUnitWork_t partySnapshot;
+        dds_datUnitWork_t partySnapshot;
     };
     DspParticleState sparkles; /* 0x1CC: shared timer and eight particles */
     struct MnuSpriteResourceGroup *spriteResources; /* 0x238: drifting sprite cues */

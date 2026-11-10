@@ -1,6 +1,6 @@
-#ifndef SND_COMMAND_PACKET_H
-#define SND_COMMAND_PACKET_H
+#ifndef DDS_SND_COMMAND_PACKET_H
 
+#define DDS_SND_COMMAND_PACKET_H
 #include "common.h"
 
 /* Sixteen-byte track-command payload shared by both titles. */
@@ -12,29 +12,6 @@ typedef struct CmdPacket {
     u32 unkC;    /* 0x0C */
 } CmdPacket;
 
-/* Queue sound command 0x40 without a payload. */
-void p2sdStopAllSe(void);
-
-/* The command ring copies the payload before publishing its queue entry, so
- * the caller need keep packet storage valid only through this call. A nonzero
- * result is the queue sequence, not proof of IOP delivery/completion; zero
- * means the ring was full at the enqueue check and this call queued nothing. */
-u32 sdfSndSendCmd(u32 command, u32 channel, const void *packet, s32 payloadBytes);
-
-/* Historical name: this submits through sdfSndSendCmd and calls a no-op sync
- * hook; it returns the queue sequence without waiting for IOP completion. */
-u32 sdfSndSendSyncCmd(u32 command, u32 channel, const void *packet, u32 size);
-
 typedef char CmdPacket_size_must_be_0x10[(sizeof(CmdPacket) == 0x10) ? 1 : -1];
-typedef char CmdPacket_trackId_offset_must_be_0[
-    ((u32)&((CmdPacket *)0)->trackId == 0) ? 1 : -1];
-typedef char CmdPacket_unk4_offset_must_be_4[
-    ((u32)&((CmdPacket *)0)->unk4 == 0x04) ? 1 : -1];
-typedef char CmdPacket_setting_offset_must_be_8[
-    ((u32)&((CmdPacket *)0)->setting == 0x08) ? 1 : -1];
-typedef char CmdPacket_unkA_offset_must_be_A[
-    ((u32)&((CmdPacket *)0)->unkA == 0x0A) ? 1 : -1];
-typedef char CmdPacket_unkC_offset_must_be_C[
-    ((u32)&((CmdPacket *)0)->unkC == 0x0C) ? 1 : -1];
 
-#endif /* SND_COMMAND_PACKET_H */
+#endif /* DDS_SND_COMMAND_PACKET_H */

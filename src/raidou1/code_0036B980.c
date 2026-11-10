@@ -5,6 +5,12 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "libdma.h"
+
+#include "sdfDevCons.h"
+
+#include "sdf_packet_alloc.h"
+
 #include "dds/common.h"
 
 #include "dds/libdma.h"
@@ -104,8 +110,6 @@ extern u64 sdfTexGetTex0Reg(sdfTexHandle_t *aHandle);
 
 extern void *sdfGrOpenPacketBuff(void);
 
-extern void sdfGrClosePacketBuff(saddr_t aBuffPtr);
-
 void sdfDevConsDrawBG(sdfDevConsCB_tag *aHndl, sdfDevConsDrawCB_t *aCB);
 
 extern void sdfDevConsDrawInit(sdfDevConsDrawCB_t *aCB, void *aPacketBuffer, s32 aBufferSize);
@@ -204,8 +208,6 @@ void sdfDevConsDrawAll(void);
 void *sdfDevVprintf(u32 *aCB, const char *aStr, void *LegacyParamArray);
 
 void *sdfDevPrintfEx(u32 *aCB, const char *aStr, ...);
-
-void *sdfDevPrintf(u32 aX, u32 aY, u32 aZ, s32 aAttr, const char *aStr, ...);
 
 void sdfPktSetCmd(u32 *aCB, s32 aMode);
 

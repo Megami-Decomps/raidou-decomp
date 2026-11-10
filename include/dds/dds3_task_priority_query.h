@@ -1,9 +1,6 @@
-#ifndef DDS3_TASK_PRIORITY_QUERY_H
-#define DDS3_TASK_PRIORITY_QUERY_H
+#ifndef DDS_DDS3_TASK_PRIORITY_QUERY_H
 
+#define DDS_DDS3_TASK_PRIORITY_QUERY_H
 #include "kwln.h"
 
-/* Returns a borrowed task from the scheduler queues, or NULL when none has this priority. */
-dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
-
-#endif /* DDS3_TASK_PRIORITY_QUERY_H */
+#endif /* DDS_DDS3_TASK_PRIORITY_QUERY_H */

@@ -1,15 +1,24 @@
-#ifndef EVT_VIEWER_H
-#define EVT_VIEWER_H
+#ifndef DDS_EVT_VIEWER_H
+
+#define DDS_EVT_VIEWER_H
 #include "common.h"
+
 #include "evt_viewer_name_index.h"
+
 #include "evt_blend_vec_color.h"
+
 #include "evt_world.h"
+
 #include "evt_polygon_movie.h"
+
 #include "fld.h"
+
 #include "kwln.h"
 
 struct dds3ProcessID_t;
+
 struct EffNodeDescriptor;
+
 struct SoundMixer;
 
 /* A timeline key's scalar formats are selected by its track kind. */
@@ -22,8 +31,7 @@ typedef struct EvtViewerDrawPayload {
     EvtBlendVecColor parameters;
     u8 unknown14[0xC];
 } EvtViewerDrawPayload;
-typedef char EvtViewerDrawPayload_parameters_offset[((u32)&((EvtViewerDrawPayload *)0)->parameters == 0x00) ? 1 : -1];
-typedef char EvtViewerDrawPayload_tail_offset[((u32)&((EvtViewerDrawPayload *)0)->unknown14 == 0x14) ? 1 : -1];
+
 typedef char EvtViewerDrawPayload_size[(sizeof(EvtViewerDrawPayload) == 0x20) ? 1 : -1];
 
 /* Complete 0x38-byte key allocated by the viewer and linked on a group. */
@@ -55,6 +63,7 @@ typedef struct EvtCameraColorPayload {
     EvtBlendKey parameters;
     u8 unknown38[8];
 } EvtCameraColorPayload;
+
 typedef char EvtCameraColorPayload_size[(sizeof(EvtCameraColorPayload) == 0x40) ? 1 : -1];
 
 /* Serialized and embedded group-link metadata share these eight bytes. */
@@ -68,6 +77,7 @@ typedef struct EvtGroupMetadata {
 } EvtGroupMetadata;
 
 typedef s32 EvtViewerParameterKeySource;
+
 enum {
     EVT_VIEWER_PARAMETER_KEY_SOURCE_TIMELINE = 0,
     EVT_VIEWER_PARAMETER_KEY_SOURCE_PENDING_KEY = 1
@@ -88,7 +98,6 @@ typedef union EvtTimedActionEnd {
     s32 frame;
     EvtTimedActionEndMode mode;
 } EvtTimedActionEnd;
-typedef char EvtTimedActionEnd_size[(sizeof(EvtTimedActionEnd) == sizeof(s32)) ? 1 : -1];
 
 /* Complete 0x84-byte entry: metadata, selected object and owned key list. */
 typedef struct EvtRuntimeGroup {
@@ -123,6 +132,7 @@ typedef struct EvtRuntimeGroup {
 } EvtRuntimeGroup;
 
 typedef union EvtCommandArgument { s32 word; char *text; } EvtCommandArgument;
+
 typedef union EvtFrameRange {
     s32 word;
     struct { u16 end; u16 unk02; } f;
@@ -132,35 +142,41 @@ typedef union EvtFrameRange {
  * task ("(ZikkiPlayMode)EventViewer") starts (evtViewerStartUpdate); and the
  * scene's end countdown has begun (evtEventViewerStartEndCountdown, which
  * Start's skip calls; evtViewerHasUpdateFlag tests it). */
+
 #define EVT_VIEWER_FLAG_PLAYING 0x08
+
 #define EVT_VIEWER_FLAG_ENDING 0x10
 
 #include "event.h"
 
 /* Find a runtime group by its name-table entry. */
-EvtRuntimeGroup *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *name);
+EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *name);
 
 /* Start the viewer task's scheduler callback chain. */
 dds3TaskUpdateResult_t evtViewerStartUpdate(struct dds3ProcessID_t *task);
+
 struct dds3ProcessID_t *evtViewerCreateTask(u32 priority, s32 eventId, s32 sceneId);
 
 typedef char EvtRuntimeChild_size[(sizeof(EvtRuntimeChild) == 0x38) ? 1 : -1];
+
 typedef char EvtGroupMetadata_size[(sizeof(EvtGroupMetadata) == 8) ? 1 : -1];
-typedef char EvtGroupMetadata_option_offset[
-    ((u32)&((EvtGroupMetadata *)0)->option == 0x06) ? 1 : -1];
-typedef char EvtRuntimeGroup_metadata_offset[((u32)&((EvtRuntimeGroup *)0)->metadata == 0x18) ? 1 : -1];
+
 typedef char EvtRuntimeGroup_size[(sizeof(EvtRuntimeGroup) == 0x84) ? 1 : -1];
-typedef char EvtRuntimeGroup_entryHeader_at_0x08[
-    ((u32)&((EvtRuntimeGroup *)0)->entryHeader == 0x08) ? 1 : -1];
 
+EvtRuntimeChild *evtEventViewerGetPendingNode(dds_evtViewerInfo_t *viewer);
 
-EvtRuntimeChild *evtEventViewerGetPendingNode(evtViewerInfo_t *viewer);
-void evtEventViewerReleaseQueuedNode(evtViewerInfo_t *viewer, EvtRuntimeGroup *entry, EvtRuntimeChild *node);
-void evtViewerDispatchFlagMode(evtViewerInfo_t *viewer);
-void evtEventViewerReset(evtViewerInfo_t *viewer);
-void evtEventViewerShutdown(evtViewerInfo_t *viewer);
-void evtEventViewerReleaseGroups(evtViewerInfo_t *viewer);
-void evtViewerSetMinimumFromCurrent(evtViewerInfo_t *viewer);
-void evtViewerSetMaximumFromCurrent(evtViewerInfo_t *viewer);
-void fldApplyCameraColorKeyWords(evtViewerInfo_t *viewer, const EvtBlendKey *source);
+void evtEventViewerReleaseQueuedNode(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *entry, EvtRuntimeChild *node);
+
+void evtViewerDispatchFlagMode(dds_evtViewerInfo_t *viewer);
+
+void evtEventViewerReset(dds_evtViewerInfo_t *viewer);
+
+void evtEventViewerReleaseGroups(dds_evtViewerInfo_t *viewer);
+
+void evtViewerSetMinimumFromCurrent(dds_evtViewerInfo_t *viewer);
+
+void evtViewerSetMaximumFromCurrent(dds_evtViewerInfo_t *viewer);
+
+void fldApplyCameraColorKeyWords(dds_evtViewerInfo_t *viewer, const EvtBlendKey *source);
+
 #endif

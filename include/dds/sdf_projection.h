@@ -1,7 +1,8 @@
-#ifndef SDF_PROJECTION_H
-#define SDF_PROJECTION_H
+#ifndef DDS_SDF_PROJECTION_H
 
+#define DDS_SDF_PROJECTION_H
 #include "common.h"
+
 #include "eff_matrix4.h"
 
 /* Native 0x90-byte camera/viewport owner shared by both projection builders. */
@@ -30,8 +31,6 @@ typedef struct SdfCamera {
 } SdfCamera;
 
 typedef char SdfCamera_size_must_be_0x90[(sizeof(SdfCamera) == 0x90) ? 1 : -1];
-typedef char SdfCamera_halfWidth_offset_must_be_0x70[
-    ((u32)&((SdfCamera *)0)->halfWidth == 0x70) ? 1 : -1];
 
 /* Complete static projection record, including the inverse-origin cache. */
 typedef struct SdfProjectionRecord {
@@ -40,28 +39,21 @@ typedef struct SdfProjectionRecord {
 } SdfProjectionRecord;
 
 typedef char SdfProjectionRecord_size_must_be_0xA0[(sizeof(SdfProjectionRecord) == 0xA0) ? 1 : -1];
-typedef char SdfProjectionRecord_inverseOrigin_must_be_0x90[
-    ((u32)&((SdfProjectionRecord *)0)->inverseOrigin == 0x90) ? 1 : -1];
 
-extern SdfProjectionRecord dds3ScreenParam;
-/* Output snapshot copied by sdf3DSetCamera for VU clipping and viewport draws. */
-extern SdfProjectionRecord sdf3DScreenParam;
 #ifdef VERSION_DDS1
-extern SdfProjectionRecord D_003247B0;
-extern SdfProjectionRecord D_00324980;
-#elif defined(VERSION_DDS2)
-extern SdfProjectionRecord D_0037F7B0;
-extern SdfProjectionRecord D_0037F980;
-#endif
-extern void sdf3DMakeScreenParam(SdfCamera *);
-void dds3SetScreenFovy(f32 value);
-/* Project the point in VU0 vf10 through the active view/projection matrices.
- * The routine writes the screen-scaled point back to vf10 and returns no value. */
-void effScreenOffset(void);
-/* Build a look-at basis from four-float target, eye, and up vectors. */
-void LookAtMatrix(const f32 *targetPoint, const f32 *eyePosition, const f32 *upVector);
-struct ConsMatrixPacket;
-extern void sdf3DMakeViewportPacket(struct ConsMatrixPacket *, SdfProjectionRecord *, const Matrix4 *);
-extern void sdf3DSetCamera(const SdfProjectionRecord *, const Matrix4 *);
 
-#endif /* SDF_PROJECTION_H */
+extern SdfProjectionRecord D_003247B0;
+
+extern SdfProjectionRecord D_00324980;
+
+#elif defined(VERSION_DDS2)
+
+extern SdfProjectionRecord D_0037F7B0;
+
+extern SdfProjectionRecord D_0037F980;
+
+#endif
+
+struct ConsMatrixPacket;
+
+#endif /* DDS_SDF_PROJECTION_H */

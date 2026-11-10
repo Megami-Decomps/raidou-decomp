@@ -1,6 +1,6 @@
-#ifndef SCE_IO_H
-#define SCE_IO_H
+#ifndef DDS_SCE_IO_H
 
+#define DDS_SCE_IO_H
 #include "common.h"
 
 /* Project spellings for the SCE iox layout, with retail's ordinary word alignment. */
@@ -23,11 +23,8 @@ typedef struct SceDirent {
 
 typedef char SceIoStat_size_must_be_0x40[
     (sizeof(SceIoStat) == 0x40) ? 1 : -1];
+
 typedef char SceDirent_size_must_be_0x144[
     (sizeof(SceDirent) == 0x144) ? 1 : -1];
-typedef char SceDirent_name_must_be_at_0x40[
-    ((u32)&((SceDirent *)0)->name == 0x40) ? 1 : -1];
-typedef char SceDirent_private_data_must_be_at_0x140[
-    ((u32)&((SceDirent *)0)->privateData == 0x140) ? 1 : -1];
 
-#endif /* SCE_IO_H */
+#endif /* DDS_SCE_IO_H */

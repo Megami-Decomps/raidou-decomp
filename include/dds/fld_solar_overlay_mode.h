@@ -1,9 +1,10 @@
-#ifndef FLD_SOLAR_OVERLAY_MODE_H
-#define FLD_SOLAR_OVERLAY_MODE_H
+#ifndef DDS_FLD_SOLAR_OVERLAY_MODE_H
 
+#define DDS_FLD_SOLAR_OVERLAY_MODE_H
 #include "common.h"
 
 typedef s32 FldSolarOverlayMode;
+
 enum {
     FLD_SOLAR_OVERLAY_MODE_HIDE_MOON = 0,
     FLD_SOLAR_OVERLAY_MODE_SHOW_MOON = 1,
@@ -15,4 +16,4 @@ enum {
     FLD_SOLAR_OVERLAY_MODE_PANEL_FADE_IN = 7
 };
 
-#endif /* FLD_SOLAR_OVERLAY_MODE_H */
+#endif /* DDS_FLD_SOLAR_OVERLAY_MODE_H */

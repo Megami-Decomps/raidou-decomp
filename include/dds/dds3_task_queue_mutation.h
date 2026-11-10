@@ -1,0 +1,6 @@
+#ifndef DDS_DDS3_TASK_QUEUE_MUTATION_H
+
+#define DDS_DDS3_TASK_QUEUE_MUTATION_H
+#include "kwln.h"
+
+#endif /* DDS_DDS3_TASK_QUEUE_MUTATION_H */

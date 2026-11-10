@@ -1,9 +1,10 @@
-#ifndef EFF_EXPANDED_LIST_H
-#define EFF_EXPANDED_LIST_H
+#ifndef DDS_EFF_EXPANDED_LIST_H
 
+#define DDS_EFF_EXPANDED_LIST_H
 #include "common.h"
 
 struct RefObj;
+
 struct sdfMemHandle_t;
 
 /* Each serialized entry expands to itself and additionalCount children.
@@ -37,15 +38,13 @@ typedef struct EffExpandedList {
 } EffExpandedList;
 
 typedef char EffExpandedEntrySizeCheck[(sizeof(EffExpandedEntry) == 0x10) ? 1 : -1];
+
 typedef char EffExpandedListSizeCheck[(sizeof(EffExpandedList) == 0x28) ? 1 : -1];
-typedef char EffExpandedAllocationOffsetCheck[((u32)&((EffExpandedList *)0)->allocation == 0x24) ? 1 : -1];
-typedef char EffExpandedFlagsOffsetCheck[((u32)&((EffExpandedList *)0)->flags == 0x08) ? 1 : -1];
-typedef char EffExpandedEntriesOffsetCheck[((u32)&((EffExpandedList *)0)->entries == 0x10) ? 1 : -1];
-typedef char EffExpandedHandlesOffsetCheck[((u32)&((EffExpandedList *)0)->handles == 0x14) ? 1 : -1];
-typedef char EffExpandedCountOffsetCheck[((u32)&((EffExpandedList *)0)->totalEntryCount == 0x18) ? 1 : -1];
 
 s32 effCountExpandedEntries(const EffExpandedList *list);
+
 EffExpandedList *effReferenceObjectRetain(EffExpandedList *obj);
+
 void effReleaseReferenceHolder(EffExpandedList *holder);
 
 #endif

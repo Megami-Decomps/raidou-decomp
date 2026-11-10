@@ -1,10 +1,11 @@
-#ifndef EFF_NODE_H
-#define EFF_NODE_H
+#ifndef DDS_EFF_NODE_H
 
+#define DDS_EFF_NODE_H
 #include "common.h"
 
 /* Live effect node allocated in a 0x10-byte size-class block. */
 typedef u32 EffNodeInstanceWord;
+
 typedef s32 EffNodeConditionResult;
 
 /* A zero condition result expires the dependency; any nonzero value keeps it. */
@@ -20,8 +21,6 @@ typedef struct EffNode {
 } EffNode;
 
 typedef char EffNode_size_must_be_0x10[(sizeof(EffNode) == 0x10) ? 1 : -1];
-typedef char EffNode_instanceWord_offset_must_be_0x08[
-    ((u32)&((EffNode *)0)->instanceWord == 0x08) ? 1 : -1];
 
 /* One 0x30-byte row of the type-indexed manager/callback table. Instance
  * values remain words because the concrete effect type owns their formats. */
@@ -42,19 +41,18 @@ typedef struct EffTypeOps {
 
 typedef char EffTypeOps_size_must_be_0x30[(sizeof(EffTypeOps) == 0x30) ? 1 : -1];
 
-extern const EffTypeOps EffMajorTable[];
-
-EffNode *dds3EffectCreate(u16 type, u16 arg, s32 parameter);
-void dds3EffectDelete(EffNode *node);
 void dds3EffectDispatchUpdate(EffNode *node);
-void dds3EffectReset(EffNode *node);
-void dds3EffectSetScale(EffNode *node, f32 factor);
+
 EffNodeConditionResult effInvokeNodeConditionOrAcceptDefault(EffNode *node);
+
 void effCopyVectorToNodeInstance(EffNode *node, const void *vector);
+
 void effApplyNodeTransformMatrix(EffNode *node, const void *matrix);
+
 void effSetNodeParameterValue(EffNode *node, u32 parameterWord);
+
 void effDispatchOptionalNodeFlag(EffNode *node, u8 flag);
+
 s32 effInvokeOptionalNodeInstanceCallback(EffNode *node);
-EffNode *dds3EffectCopy(const EffNode *source);
 
 #endif

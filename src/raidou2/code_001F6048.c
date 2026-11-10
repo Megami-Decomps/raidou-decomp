@@ -5,6 +5,153 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "dds/bill_object_api.h"
+
+#include "dds/btl.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/eff.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_asset_create.h"
+
+#include "dds/sdf_asset_state.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_gs_packet.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdk_libc.h"
+
+/* Serialized entry offsets are relative to BillData.base. */
+/* BillAnimationEntry.flags bits; distinct from entryModeFlags and billHandle_t.modeFlags. */
+enum {
+    BILL_ANIMATION_FLAG_FRAME_COLORS = 0x00000001,
+    BILL_ANIMATION_FLAG_PACKET_LIST_2 = 0x00000002,
+    BILL_ANIMATION_FLAG_PACKET_LIST_3 = 0x00000004,
+    BILL_ANIMATION_FLAG_PACKET_LIST_MASK = 0x00000006,
+    BILL_ANIMATION_FLAG_STOP_AT_END = 0x00000010,
+    BILL_ANIMATION_FLAG_PLURAL_ENTRIES = 0x10000000
+};
+
+/* Apply the primary VU0 matrix bank vf28-vf31 to basis vectors vf24-vf27,
+ * then replace vf28-vf31 with the four transformed vectors. Provider bodies:
+ * DDS1 game/code_002DD8B8.c and DDS2 game/code_00336768.c. */
+void MultMatrixNoArg(void);
+
+/* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
+void MultMatrixRev(const struct Matrix4 *matrix);
+
+/* Register selectors carried by GIF A+D writes in the two GS contexts. */
+enum {
+    SDF_GS_PRIM = 0x00,
+    SDF_GS_RGBAQ = 0x01,
+    SDF_GS_XYZ2 = 0x05,
+    SDF_GS_TEX0_1 = 0x06,
+    SDF_GS_TEX0_2 = 0x07,
+    SDF_GS_CLAMP_1 = 0x08,
+    SDF_GS_CLAMP_2 = 0x09,
+    SDF_GIF_REGISTER_AD = 0x0E,
+    SDF_GS_TEX1_1 = 0x14,
+    SDF_GS_TEX1_2 = 0x15,
+    SDF_GS_XYOFFSET_1 = 0x18,
+    SDF_GS_XYOFFSET_2 = 0x19,
+    SDF_GS_PRMODECONT = 0x1A,
+    SDF_GS_TEXA = 0x3B,
+    SDF_GS_TEXFLUSH = 0x3F,
+    SDF_GS_SCISSOR_1 = 0x40,
+    SDF_GS_SCISSOR_2 = 0x41,
+    SDF_GS_ALPHA_1 = 0x42,
+    SDF_GS_ALPHA_2 = 0x43,
+    SDF_GS_DTHE = 0x45,
+    SDF_GS_COLCLAMP = 0x46,
+    SDF_GS_TEST_1 = 0x47,
+    SDF_GS_TEST_2 = 0x48,
+    SDF_GS_FRAME_1 = 0x4C,
+    SDF_GS_FRAME_2 = 0x4D,
+    SDF_GS_ZBUF_1 = 0x4E,
+    SDF_GS_ZBUF_2 = 0x4F,
+    SDF_GS_BITBLTBUF = 0x50,
+    SDF_GS_TRXPOS = 0x51,
+    SDF_GS_TRXREG = 0x52,
+    SDF_GS_TRXDIR = 0x53
+};
+
+struct billHandle_t *dds3BillboardCopy(const struct billHandle_t *source);
+
+/* The selected kind interprets the opaque payload word. */
+struct billHandle_t *dds3BillboardCreate(s32 kind, u32 data);
+
+void dds3BillboardDelete(struct billHandle_t *obj);
+
+struct BillChildPayload *dds3Billboard_P2AAnimDraw(
+    struct billHandle_t *billboard, struct BillOut *entry);
+
+void dds3Billboard_P2ASetNumber(struct billHandle_t *billboard, s32 entryIndex);
+
+/* Return the current frame draw-buffer slot (0 or 1). */
+u32 dds3GetFrameID(void);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+/* Angles are in radians; cosine applies a pi/2 shift to the sine input. */
+f32 sdfAtan2(f32 y, f32 x);
+
+void *sdfChipAllocDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+f32 sdfCos(f32 angle);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+void sdfDrawTagLinkRefGif(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+/* Queue an asset owner for the deferred sdfMat_t release callback. */
+void sdfMatFreeDelayed(struct sdfMat_t *asset);
+
+struct sdfMat_t *sdfMatNew(void);
+
+void sdfMatSetAmbient(struct sdfMat_t *asset, u32 value);
+
+void sdfMatSetConstant(struct sdfMat_t *asset, f32 value);
+
+void sdfMatSetDiffuse(struct sdfMat_t *asset, u32 value);
+
+void sdfMatSetMultiTex(struct sdfMat_t *asset, struct sdfTexHandle_t *texture);
+
+void sdfMatSetSpecular(struct sdfMat_t *asset, u32 value);
+
+/* Store the primary or secondary texture owner and mark its draw state dirty. */
+void sdfMatSetTex(struct sdfMat_t *asset, struct sdfTexHandle_t *texture);
+
+f32 sdfSin(f32 angle);
+
+u64 sdfTexGetClampReg(sdfTexHandle_t *texture);
+
+/* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
+u64 sdfTexGetTex0Reg(sdfTexHandle_t *texture);
+
+u64 sdfTexGetTex1Reg(sdfTexHandle_t *texture);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/eff_composite_gs_descriptor.h"

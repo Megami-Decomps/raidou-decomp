@@ -1,6 +1,6 @@
-#ifndef BTL_PARTY_COMMAND_USE_RESULT_H
-#define BTL_PARTY_COMMAND_USE_RESULT_H
+#ifndef DDS_BTL_PARTY_COMMAND_USE_RESULT_H
 
+#define DDS_BTL_PARTY_COMMAND_USE_RESULT_H
 #include "common.h"
 
 /* Only ALLOW proceeds to field-skill use. The nonzero values identify
@@ -16,13 +16,17 @@ enum {
 };
 
 #ifdef VERSION_DDS1
+
 BtlPartyCommandUseGateResult btlCheckPartyCommandCounterEligibility(
     s32 commandId, u32 memberMask);
+
 #endif
 
 #ifdef VERSION_DDS2
+
 BtlPartyCommandUseGateResult btlCheckSelectedPartyCommandEligibility(
     s32 commandId, u32 memberMask);
+
 #endif
 
-#endif /* BTL_PARTY_COMMAND_USE_RESULT_H */
+#endif /* DDS_BTL_PARTY_COMMAND_USE_RESULT_H */

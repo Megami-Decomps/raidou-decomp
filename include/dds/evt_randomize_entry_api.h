@@ -1,8 +1,8 @@
-#ifndef EVT_RANDOMIZE_ENTRY_API_H
-#define EVT_RANDOMIZE_ENTRY_API_H
+#ifndef DDS_EVT_RANDOMIZE_ENTRY_API_H
 
-struct datUnitWork_t;
+#define DDS_EVT_RANDOMIZE_ENTRY_API_H
+struct dds_datUnitWork_t;
 
-void evtRandomizeEntryValue(struct datUnitWork_t *entry);
+void evtRandomizeEntryValue(struct dds_datUnitWork_t *entry);
 
 #endif

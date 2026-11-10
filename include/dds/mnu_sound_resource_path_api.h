@@ -1,10 +1,6 @@
-#ifndef MNU_SOUND_RESOURCE_PATH_API_H
-#define MNU_SOUND_RESOURCE_PATH_API_H
+#ifndef DDS_MNU_SOUND_RESOURCE_PATH_API_H
 
+#define DDS_MNU_SOUND_RESOURCE_PATH_API_H
 #include "common.h"
 
-/* Copy the title's sound-path prefix into caller-owned pathBuffer, append the
- * read-only filename, and return the resulting path buffer. */
-char *sdfSndMakeFilename(char *pathBuffer, const char *filename);
-
-#endif /* MNU_SOUND_RESOURCE_PATH_API_H */
+#endif /* DDS_MNU_SOUND_RESOURCE_PATH_API_H */

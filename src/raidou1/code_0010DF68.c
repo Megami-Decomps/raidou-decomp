@@ -5,6 +5,236 @@
 #define VERSION_DDS2 1
 #endif
 
+#include "event.h"
+
+#include "kernel_draw.h"
+
+#include "scr.h"
+
+#include "sdfDevCons.h"
+
+#include "sdf_packet_alloc.h"
+
+#include "sdk_libc.h"
+
+#include "dds/dds3_admin_control_api.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_task_priority_query.h"
+
+#include "dds/eff_quaternion_nlerp.h"
+
+#include "dds/fld_scene_sequence_api.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/kwln.h"
+
+#include "dds/mnu_camp_state_ack_api.h"
+
+#include "dds/scr.h"
+
+#include "dds/sdf_asset_create.h"
+
+#include "dds/sdf_asset_state.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_dev_cons.h"
+
+#include "dds/sdf_dev_console_node.h"
+
+#include "dds/sdf_general_heap_api.h"
+
+#include "dds/sdf_gs_blend.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_line_pair_packet_api.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_append.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_packet_header.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_primitive_packet_api.h"
+
+#include "dds/sdf_sif_command.h"
+
+#include "dds/sdf_texture_draw_packet.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/sdk_libkernl.h"
+
+s32 DIntr();
+
+s32 EIntr(void);
+
+/* Blend the quaternion in vf10 toward vf11 along the shorter arc using
+ * blendAmount, normalize the result, and leave it in vf10. Providers:
+ * DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void Lerp(f32 blendAmount);
+
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void ToMatrix(void);
+
+/* Consume CLEANED_UP back to IDLE, then report whether camp remains active. */
+MnuCampStateAcknowledgementResult campCheckExitState(void);
+
+/* Set bit 1 in the active administration task's flags; that task must exist. */
+void dds3AdminiExitSequence(void);
+
+struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
+
+/* Return the current frame draw-buffer slot (0 or 1). */
+u32 dds3GetFrameID(void);
+
+dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+/* Return a borrowed scheduler-owned handle from the starting, active, or
+ * destroy-pending queue. The handle remains valid through its destroy callback
+ * and is freed when finalization completes; return NULL when no name matches. */
+dds3ProcessID_t *dds3SearchProcessName(const char *name);
+
+/* Returns a borrowed task from the scheduler queues, or NULL when none has this priority. */
+dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+struct SdfPacket *effDebugDrawWireModel(const f32 vertices[][4], const u32 *colors,
+                                                 s32 vertexCount, u32 primitiveFlags);
+
+/* The packet is borrowed for this call. Mode zero copies its fields into
+ * persistent scene work before asynchronous tasks start. */
+void fldProcTrigSequence(const struct fldSceneParam_t *record, u32 mode);
+
+/* Link a glyph chain into the current draw-buffer slot. */
+s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
+
+void *memset(void *dst, s32 value, u32 size);
+
+extern scrProcessWork_s *scrHandleFirst;
+
+extern scrProcessWork_s *scrHandleLast;
+
+SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
+
+SdfDrawPacket *sdf2DMakePrimPacketHeader(SdfDrawPacket *packet, s32 primitiveFlags,
+                                       s32 registerCount, s64 registerList,
+                                       s32 loopCount);
+
+void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
+                              s32 (*allocatePacket)(s32));
+
+/* Append standard packets to a DMA packet list. A null allocator selects the
+   default packet allocator. Asset packets reference the selected draw entry. */
+void sdf3DPrimLinkResetTm(sdfDrawTag_t *packetList,
+                              s32 (*allocatePacket)(s32));
+
+/* Build the serialized VIF attribute stream and return its word cursor. */
+u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *request);
+
+void *sdfChipAllocDirect(s32 size);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+void sdfChipGetInfo(SdfChipHeapStats *stats);
+
+void sdfDevConsAttribute(sdfDevConsCB_tag *console, u8 attribute);
+
+void sdfDevConsClose(sdfDevConsCB_tag *node);
+
+sdfDevConsCB_tag *sdfDevConsOpen(u32 screenOriginX, u32 screenOriginY, s32 columns, s32 rows);
+
+s32 sdfDevConsPrintf(sdfDevConsCB_tag *console, const char *format, ...);
+
+/* Update the console state stored at the corresponding field offsets. */
+void sdfDevConsSetMode(sdfDevConsCB_tag *console, u8 controlByte);
+
+void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
+
+void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+void sdfDrawTagLinkRefGif(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+/* Read the active packet cursor or restore it at a quadword boundary. */
+s32 sdfGrOpenPacketBuff(void);
+
+/* Queue an asset owner for the deferred sdfMat_t release callback. */
+void sdfMatFreeDelayed(struct sdfMat_t *asset);
+
+struct sdfMat_t *sdfMatNew(void);
+
+/* Store the primary or secondary texture owner and mark its draw state dirty. */
+void sdfMatSetTex(struct sdfMat_t *asset, struct sdfTexHandle_t *texture);
+
+void sdfMemGetInfo(SdfGeneralHeapStats *stats);
+
+/* Return NULL when the following link is the end marker. */
+const struct sdfMemHandle_t *sdfMemGetNext(const struct sdfMemHandle_t *block);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+s32 sdfMemGetSize(const struct sdfMemHandle_t *block);
+
+/* Borrowed read-only descriptors; exclude heap mutation while traversing. */
+const struct sdfMemHandle_t *sdfMemGetTop(void);
+
+/* Return free/used/end-sentinel state, not a resource kind. */
+SdfMemBlockState sdfMemGetType(const struct sdfMemHandle_t *block);
+
+void sdfPrimLinkGt4(
+    sdfDrawTag_t *list, s32 primitive, s32 x0, s32 y0, s32 u0, s32 v0,
+    s32 color0, s32 x1, s32 y1, s32 u1, s32 v1, s32 color1, s32 x2, s32 y2,
+    s32 u2, s32 v2, s32 color2, s32 x3, s32 y3, s32 u3, s32 v3, s32 color3,
+    s32 depth, s32 (*allocatePacket)(s32));
+
+void sdfPrimLinkLine(
+    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
+    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
+
+void sdfPrimLinkRect(
+    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
+    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
+
+void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *packet);
+
+s32 vsprintf(char *dst, const char *format, void *args);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/evt_sel_state.h"
@@ -293,8 +523,6 @@ typedef struct EvtGsCommand {
     u64 registerId;
 } EvtGsCommand;
 
-extern sdfGrOt_t sdfGrOtTable[];
-
 #include "dds/sdf_packet_alloc.h"
 
 extern void *sdf2DMakeStdPacket(void *, s32);
@@ -391,13 +619,6 @@ void dds3SetFogColor(s32 blendFrames, f32 *color);
 
 /* Either replace the draw vector immediately or interpolate from its prior value. */
 void dds3SetFogPara(s32 blendFrames, f32 x, f32 y, f32 z, f32 w);
-
-/* SDK float-input unpack: the RGBA word and its 16-byte workspace stay in memory. */
-static inline void eeUnpackRGBAWordFloatReadOnly(u32 color, f32 unit) {
-    u32 rgba[4];
-    rgba[0] = color;
-    EE_MMI_RGBA_UNPACK_READONLY(rgba, unit);
-}
 
 /* The color-blend site passes ratio and the 128.0f pack scale as ordinary GPR operands
    (VU0_SCALE_VF / eePackRGBAWord), so their SF->GPR reloads advance the spill ring

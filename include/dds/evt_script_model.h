@@ -1,11 +1,14 @@
-#ifndef EVT_SCRIPT_MODEL_H
-#define EVT_SCRIPT_MODEL_H
+#ifndef DDS_EVT_SCRIPT_MODEL_H
 
+#define DDS_EVT_SCRIPT_MODEL_H
 #include "common.h"
 
 struct dds3Basic_t;
+
 struct DevRequest;
+
 struct MotionTable;
+
 struct sdfModelDef_t;
 
 /* Kind-10 script/model work. The operation-table allocator clears 0x1C bytes;
@@ -21,11 +24,4 @@ typedef struct EvtScriptModelWork {
 typedef char EvtScriptModelWork_size_must_be_0x1C[
     (sizeof(EvtScriptModelWork) == 0x1C) ? 1 : -1];
 
-struct dds3Basic_t *dds3AddModelBasic(s32 key, struct sdfModelDef_t *itemList,
-    struct MotionTable *motionTable, struct dds3Basic_t *fallbackModelObject,
-    const char *name);
-struct dds3Basic_t *dds3AddModelBasic2(s32 key,
-    struct sdfModelDef_t *itemList, struct MotionTable *motionTable,
-    struct DevRequest *loadedModelResource, const char *name);
-
-#endif /* EVT_SCRIPT_MODEL_H */
+#endif /* DDS_EVT_SCRIPT_MODEL_H */

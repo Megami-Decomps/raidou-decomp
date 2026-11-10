@@ -1,6 +1,6 @@
-#ifndef BTL_INDEXED_UI_RESOURCE_API_H
-#define BTL_INDEXED_UI_RESOURCE_API_H
+#ifndef DDS_BTL_INDEXED_UI_RESOURCE_API_H
 
+#define DDS_BTL_INDEXED_UI_RESOURCE_API_H
 #include "common.h"
 
 struct BtlUnit;

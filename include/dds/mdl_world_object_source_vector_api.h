@@ -1,9 +1,6 @@
-#ifndef MDL_WORLD_OBJECT_SOURCE_VECTOR_API_H
-#define MDL_WORLD_OBJECT_SOURCE_VECTOR_API_H
+#ifndef DDS_MDL_WORLD_OBJECT_SOURCE_VECTOR_API_H
 
+#define DDS_MDL_WORLD_OBJECT_SOURCE_VECTOR_API_H
 #include "common.h"
 
-/* Copy the source object's transform to the target object, with its rotation offset. */
-void evtSetUnitPos(u32 targetKey, u32 sourceKey);
-
-#endif /* MDL_WORLD_OBJECT_SOURCE_VECTOR_API_H */
+#endif /* DDS_MDL_WORLD_OBJECT_SOURCE_VECTOR_API_H */

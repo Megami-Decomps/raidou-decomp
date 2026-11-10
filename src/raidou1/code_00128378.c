@@ -5,6 +5,254 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "dds3obj.h"
+
+#include "field.h"
+
+#include "kernel.h"
+
+#include "newdata.h"
+
+#include "sdf_resource.h"
+
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/dds3_basic_array_cursor.h"
+
+#include "dds/dds3_fade.h"
+
+#include "dds/dds3_object_flags.h"
+
+#include "dds/dds3_object_payload.h"
+
+#include "dds/dds3_slot1_handler_api.h"
+
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
+#include "dds/dds3_task_priority_query.h"
+
+#include "dds/dds3_world_counter.h"
+
+#include "dds/dds3_world_primary.h"
+
+#include "dds/dds3_world_secondary.h"
+
+#include "dds/dds3_world_selection.h"
+
+#include "dds/dds3_world_value.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/eff_blur.h"
+
+#include "dds/eff_inner_float_api.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/evt_solar.h"
+
+#include "dds/evt_world.h"
+
+#include "dds/evt_world_object_api.h"
+
+#include "dds/evt_world_source_transform.h"
+
+#include "dds/fld_scene_ready_api.h"
+
+#include "dds/kwln.h"
+
+#include "dds/mdl.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/mdl_motion_api.h"
+
+#include "dds/mnu_camp_state_ack_api.h"
+
+#include "dds/scr.h"
+
+#include "dds/sdf_delayed_resource_check_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_message.h"
+
+#include "dds/sdf_model_scalars.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/snd_sequence_volume_pan.h"
+
+/* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
+void Mult(void);
+
+/* Consume CLEANED_UP back to IDLE, then report whether camp remains active. */
+MnuCampStateAcknowledgementResult campCheckExitState(void);
+
+dds3Basic_t *dds3AddPointBasic(u32 key, EvtWorldSourceTransformPrefix *source, const char *name);
+
+/* Advance the wrapping 16-bit world object sequence carried in a u32. */
+u32 dds3AllocObjectId(void);
+
+/* Factories accept the serialized parameter prefix used by effect callbacks. */
+EffBlurScatterWork *dds3EffectDistortionBlurCreate(dds3Effect_DistortionBlurParam_t *params);
+
+void dds3EffectDistortionBlurDelete(EffBlurScatterWork *work);
+
+/* Return nonzero while either foreground fade direction is enabled. */
+s32 dds3FadeCheck(void);
+
+void dds3FadeIn(s32 red, s32 green, s32 blue, s32 duration);
+
+void dds3FadeIn2(s32 duration);
+
+/* Foreground alpha transitions, stepped by dds3FadeUpdate. */
+void dds3FadeOut(s32 red, s32 green, s32 blue, s32 duration);
+
+void dds3FadeOut2(s32 duration);
+
+void dds3FreeBasicArrayHandle(WorldIndexNode *node);
+
+/* Return the borrowed primary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetActiveScene(void);
+
+dds3Basic_t *dds3GetActiveUnitSceneBasic(dds3Basic_t *world);
+
+dds3Basic_t *dds3GetBasicArray(const dds_dds3BasicArrayHandle_t *object);
+
+u16 dds3GetBasicArrayCount(const dds_dds3BasicArrayHandle_t *object);
+
+/* Return the borrowed secondary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetControlScene(void);
+
+void dds3GetPosPoseSet(dds3Basic_t *object);
+
+/* Set the radius stored by the world node's inner transform.
+ * Providers: DDS1 game/code_0010EEF0.c and DDS2 game/code_0010F118.c. */
+void dds3GetRadiusPoseSet(dds3Basic_t *node, f32 value);
+
+/* Advance caller-owned state, returning its next 32-bit value. NULL selects
+ * the shared effect RNG state. */
+u32 dds3GetRandA(EffRandState *state);
+
+void dds3GetRotPoseSet(dds3Basic_t *object);
+
+dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
+
+u32 dds3MatterObjectBasicGetAlpMode(const struct dds3Basic_t *object);
+
+/* Object data word 8 stores a kind-dependent 32-bit payload. */
+void dds3MatterObjectBasicSetAlpMode(struct dds3Basic_t *object, u32 value);
+
+void *dds3ObjectBaseGetModelHandle(dds3Basic_t *object);
+
+void dds3ObjectBaseOffFlag(struct dds3Basic_t *object, u32 mask);
+
+/* Set or clear requested bits in the object's flag word. */
+void dds3ObjectBaseOnFlag(struct dds3Basic_t *object, u32 mask);
+
+/* Set the callback on an object's slot-1 handler; returns whether it exists. */
+u8 dds3ObjectBaseSetPrimaryControl(struct dds3Basic_t *object,
+                               Dds3MoverUpdate update);
+
+WorldIndexNode *dds3SceneBasicGetList(dds3Basic_t *object, s32 kind);
+
+dds3Basic_t *dds3SceneBasicSearchNameAndType(dds3Basic_t *world, s32 slotIndex, const char *name);
+
+/* Return a borrowed scheduler-owned handle from the starting, active, or
+ * destroy-pending queue. The handle remains valid through its destroy callback
+ * and is freed when finalization completes; return NULL when no name matches. */
+dds3ProcessID_t *dds3SearchProcessName(const char *name);
+
+/* Returns a borrowed task from the scheduler queues, or NULL when none has this priority. */
+dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
+
+/* Setting either selection does not transfer ownership. */
+void dds3SetActiveScene(struct dds3Basic_t *primaryObject);
+
+/* Compatible redeclarations keep the broad object header unchanged. */
+Dds3BasicArrayCursorResult dds3SetFirstBasicArray(dds_dds3BasicArrayHandle_t *object);
+
+Dds3BasicArrayCursorResult dds3SetNextBasicArray(dds_dds3BasicArrayHandle_t *object);
+
+void dds3SetSclPoseSet(dds3Basic_t *object, u128 *vector);
+
+/* Store objectName directly as the node's lookup key; no copy is made.
+ * A NULL node is ignored and a NULL name clears the key. Keep non-NULL names
+ * alive while the node can be searched. */
+void dds3SetUnitObjectId(struct dds3Basic_t *node, const char *objectName);
+
+/*
+ * Allocate a task and place it in scheduler queues. Returns NULL on allocation
+ * failure. On success, the scheduler owns the task handle and frees it after
+ * its destroy callback; callers may borrow the handle only until finalization.
+ */
+dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
+
+/* Preserve the signed-byte drawing gate; only a missing payload is ignored. */
+void dds3VisibleSceneBasic(dds3Basic_t *object, s8 enabled);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+/* Set and clear one flag using the providers' signed-index adjustment. */
+void evtBitOn(s32 flag);
+
+EvtSolarCyclePhase evtGetAgeOfMoon16(void);
+
+/* Create and select the world object for an area/room pair; returns 1 after setup. */
+s32 evtLoadArea(s32 area, s32 room);
+
+FldSceneReadyState fldAutoMapChkMode(void);
+
+void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+void mdlSetMotionSpeedEx(dds3ModelHandle_t *ctx, MdlMotionSearchId searchId, f32 frameStep);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+/* Apply volume and pan to a sequence track through the command queue. */
+void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
+
+scrProcessWork_s *scrSearchScriptName(char *scriptname);
+
+/* Angles are in radians; cosine applies a pi/2 shift to the sine input. */
+f32 sdfAtan2(f32 y, f32 x);
+
+SdfDelayedResourceCheckResult sdfDelayedResrcCheck(void);
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+/* Queue the two heap owners separately: the general heap stores descriptors,
+ * while the chip heap stores the address of the cell to release. */
+void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *allocation);
+
+/* Return the descriptor's payload base as a byte address, not the descriptor. */
+u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
+
+/* A model provider's draw surfaces: a row of four pool entries in a surface
+ * group table. The second is a key-sorted pool (SdfPool), whose release
+ * callbacks the store installs. */
+void sdfModelOtInit(SdfModelDrawSurfaceSet surfaces, struct sdfGrOt_t *first,
+                                           struct sdfGrOt_t *pool, struct sdfGrOt_t *third,
+                                           struct sdfGrOt_t *fourth);
+
+void sdfModelSetFaceDivParm(struct dds_sdfModelRootNode_t *model, f32 first, f32 second);
+
+char *strcpy(char *dst, const char *src);
+
 #include "dds/sdk_ps2.h"
 
 #include "dds/scr.h"
@@ -170,8 +418,6 @@ extern u32 D_003BABE0;
 
 extern s32 fldNext_fld;
 
-extern u32 fldEncountFlags;
-
 extern FldSequenceController fldAutoMapSeqFlags;
 
 extern s32 D_003BABF0;
@@ -229,8 +475,6 @@ extern dds3ModelHandle_t *fldPlayerModelContext;
 extern void fldLoadNextFile_SetId_BtlRet(u32 area, u32 floor);
 
 extern void fldFreeNextFile(void);
-
-extern s8 dds3AdminiGetNextSequence(void);
 
 extern void func_0013F100(s32, u32);
 
@@ -672,7 +916,7 @@ s32 fldUpdateCampMenuTransition(void);
 
 FldSceneTransitionGateResult fldProcAmChk(void);
 
-struct dds3ObjectBaseControlWorkData_t;
+struct dds_dds3ObjectBaseControlWorkData_t;
 
 extern void func_00145B18(void);
 
@@ -842,13 +1086,6 @@ void fldRunPendingSceneAction(void);
 /* Consume the pending pair; write outputs only when a request is consumed. */
 FldNextSceneRequestResult fldConsumeNextSceneRequest(FldNextSceneRequestMapCode *outMapCode,
                                                       FldNextSceneRequestEntryIndex *outEntryIndex);
-
-/* Validate the packet where its native initialization is reconstructed. */
-typedef char FieldSequenceRecord_size_check[
-    (sizeof(fldSceneParam_t) == 0xA0) ? 1 : -1];
-
-typedef char FieldSequenceRecord_retainCachedAreaResource_offset_check[
-    ((u32)&((fldSceneParam_t *)0)->retainCachedAreaResource == 0x58) ? 1 : -1];
 /* End of declarations from src/dds1/game/code_00122030.c */
 
 f32 fldPointDistance(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz) {
@@ -876,13 +1113,13 @@ void fldToggleWorldNodeState(s64 clearMode) {
     dds3Basic_t *worldObject;
 
     valueChain = dds3SceneBasicGetList(dds3GetControlScene(), 6);
-    status = dds3GetBasicArrayCount((dds3BasicArrayHandle_t *)valueChain);
+    status = dds3GetBasicArrayCount((dds_dds3BasicArrayHandle_t *)valueChain);
     if (status == 0) {
         return;
     }
-    dds3SetFirstBasicArray((dds3BasicArrayHandle_t *)valueChain);
+    dds3SetFirstBasicArray((dds_dds3BasicArrayHandle_t *)valueChain);
     do {
-        worldObject = dds3GetBasicArray((dds3BasicArrayHandle_t *)valueChain);
+        worldObject = dds3GetBasicArray((dds_dds3BasicArrayHandle_t *)valueChain);
         status = dds3MatterObjectBasicGetAlpMode(worldObject);
         if (status == 4) {
             if (clearMode == 0) {
@@ -892,7 +1129,7 @@ void fldToggleWorldNodeState(s64 clearMode) {
                 dds3MatterObjectBasicSetAlpMode(worldObject, 0);
             }
         }
-        status = dds3SetNextBasicArray((dds3BasicArrayHandle_t *)valueChain);
+        status = dds3SetNextBasicArray((dds_dds3BasicArrayHandle_t *)valueChain);
     } while (status != DDS3_BASIC_ARRAY_CURSOR_EXHAUSTED);
     dds3FreeBasicArrayHandle(valueChain);
 }

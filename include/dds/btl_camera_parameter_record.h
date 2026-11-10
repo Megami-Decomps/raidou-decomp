@@ -1,6 +1,6 @@
-#ifndef BTL_CAMERA_PARAMETER_RECORD_H
-#define BTL_CAMERA_PARAMETER_RECORD_H
+#ifndef DDS_BTL_CAMERA_PARAMETER_RECORD_H
 
+#define DDS_BTL_CAMERA_PARAMETER_RECORD_H
 #include "common.h"
 
 /* Script camera-track rows are read at the native 0x80-byte bank stride. */
@@ -29,13 +29,21 @@ enum {
 };
 
 typedef char BtlCameraParameterRecord_size[(sizeof(BtlCameraParameterRecord) == 0x80) ? 1 : -1];
+
 typedef char BtlCameraParameterRecord_flags00_offset[((unsigned long)&((BtlCameraParameterRecord *)0)->flags00 == 0x00) ? 1 : -1];
+
 typedef char BtlCameraParameterRecord_value_offset[((unsigned long)&((BtlCameraParameterRecord *)0)->value == 0x10) ? 1 : -1];
+
 typedef char BtlCameraParameterRecord_transitionFlags_offset[((unsigned long)&((BtlCameraParameterRecord *)0)->transitionFlags == 0x20) ? 1 : -1];
+
 typedef char BtlCameraParameterRecord_fadeInDuration_offset[((unsigned long)&((BtlCameraParameterRecord *)0)->fadeInDuration == 0x30) ? 1 : -1];
+
 typedef char BtlCameraParameterRecord_fadeOutDuration_offset[((unsigned long)&((BtlCameraParameterRecord *)0)->fadeOutDuration == 0x40) ? 1 : -1];
+
 typedef char BtlCameraParameterRecord_curveScale5C_offset[((unsigned long)&((BtlCameraParameterRecord *)0)->curveScale5C == 0x5C) ? 1 : -1];
+
 typedef char BtlCameraParameterRecord_curveScale60_offset[((unsigned long)&((BtlCameraParameterRecord *)0)->curveScale60 == 0x60) ? 1 : -1];
+
 typedef char BtlCameraParameterRecord_stop_offset[((unsigned long)&((BtlCameraParameterRecord *)0)->stop == 0x70) ? 1 : -1];
 
 #endif

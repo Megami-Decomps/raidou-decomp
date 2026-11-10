@@ -5,6 +5,295 @@
 #define VERSION_DDS1 1
 #endif
 
+#include "dds3obj.h"
+
+#include "effBattle.h"
+
+#include "event.h"
+
+#include "model.h"
+
+#include "newdata.h"
+
+#include "sdf_model_packet_callback.h"
+
+#include "sdk_libc.h"
+
+#include "dds/btl.h"
+
+#include "dds/btl_effect_position.h"
+
+#include "dds/btl_sound.h"
+
+#include "dds/dds3_object_flags.h"
+
+#include "dds/dds3_world_counter.h"
+
+#include "dds/dds3_world_primary.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/eff_random.h"
+
+#include "dds/eff_random_mod.h"
+
+#include "dds/eff_transform.h"
+
+#include "dds/evt_unit.h"
+
+#include "dds/evt_unit_color_transition.h"
+
+#include "dds/evt_unit_motion_api.h"
+
+#include "dds/file_request_api.h"
+
+#include "dds/mdl.h"
+
+#include "dds/mdl_asset_request.h"
+
+#include "dds/mdl_flag_api.h"
+
+#include "dds/mdl_motion_api.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_dev_slot_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_map_position_api.h"
+
+#include "dds/sdf_model.h"
+
+#include "dds/sdf_motion.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+#include "dds/sdf_packet_builders.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdk_libc.h"
+
+#include "dds/snd_sequence_volume_pan.h"
+
+/* Sparse world-node identities recovered from the paired operation tables and
+ * concrete creators. Unlisted values stay unnamed; COUNT remains the full
+ * directory extent rather than an enum-completeness claim. */
+enum {
+    EFF_WORLD_KIND_WORLD_INFO = 0,
+    EFF_WORLD_KIND_EVENT_TABLE = 1,
+    EFF_WORLD_KIND_WORLD_INDEX_OWNER = 2,
+    EFF_WORLD_KIND_SLOT_RING = 3,
+    EFF_WORLD_KIND_CAMERA = 4,
+    EFF_WORLD_KIND_FOLLOW_MODEL = 5,
+    EFF_WORLD_KIND_EFFECT_TRANSFORM = 6,
+    EFF_WORLD_KIND_EFFECT_OBJECT = 7,
+    EFF_WORLD_KIND_RESOURCE_OWNER = 8,
+    EFF_WORLD_KIND_LIGHT = 9,
+    EFF_WORLD_KIND_SCRIPT_OBJECT = 10,
+    EFF_WORLD_KIND_ACTION_B = 11,
+    EFF_WORLD_KIND_ACTION_D = 13,
+    EFF_WORLD_KIND_ACTION_10 = 16,
+    EFF_WORLD_KIND_TRANSFORM_SOURCE = 17,
+    EFF_WORLD_KIND_COUNT = 18
+};
+
+/* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
+void Mult(void);
+
+enum {
+    OBJECT_TRANSFORM_FLAG_UPDATE_PENDING = 1,
+    OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID = 2,
+    OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
+};
+
+enum SdfMotionStateValue {
+    SDF_MOTION_STATE_UNINITIALIZED = 0,
+    SDF_MOTION_STATE_INITIALIZED = 1,
+    SDF_MOTION_STATE_SAMPLING = 4,
+    SDF_MOTION_STATE_TERMINAL = 5,
+    SDF_MOTION_STATE_SUSPENDED = 6,
+};
+
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void ToMatrix(void);
+
+/* Advance the wrapping 16-bit world object sequence carried in a u32. */
+u32 dds3AllocObjectId(void);
+
+void dds3DeleteSceneBasicData(dds3Basic_t *node);
+
+dds3Basic_t *dds3GetActiveCameraSceneBasic(dds3Basic_t *world);
+
+/* Return the borrowed primary world node, or NULL when no world is active. */
+struct dds3Basic_t *dds3GetActiveScene(void);
+
+void dds3GetPosPoseSet(dds3Basic_t *object);
+
+/* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
+f32 dds3GetRandFloatA(EffRandState *state);
+
+/* Return the next caller-owned or shared state value reduced modulo `modulus`. */
+u32 dds3GetRandIntA(EffRandState *state, u32 modulus);
+
+void dds3GetRotPoseSet(dds3Basic_t *object);
+
+void dds3ObjectBaseOffFlag(struct dds3Basic_t *object, u32 mask);
+
+/* Set or clear requested bits in the object's flag word. */
+void dds3ObjectBaseOnFlag(struct dds3Basic_t *object, u32 mask);
+
+/* Forward a callback to the object's slot-1 handler when one is present; returns 1 if it did. */
+u8 dds3ObjectBaseSetPadControl(dds3Basic_t *object,
+                                   s32 (*update)(struct dds3PoseSet_t *, struct dds3Basic_t *));
+
+dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *world, u32 key, s32 kind);
+
+void effBTLCutSetDrawEndFrame(effBTLCutHandle_t *effect, u32 endFrame);
+
+/* Leaves the unit's transformed muzzle position in vf10. */
+void effBTLModelGetSphereCenter(struct BtlUnit *unit);
+
+/* Return whether the selected flag bit is set, as EvtBitTestResult. */
+EvtBitTestResult evtBitCheck(s32 flag);
+
+void evtSetUnitColorA(evtUnitHandle_t *unit, s32 duration, u32 color);
+
+void evtSetUnitColorRGB(evtUnitHandle_t *unit, s32 duration, u32 color);
+
+/* Initialize an event unit's color transition for the requested duration. */
+void evtSetUnitLightAndAmbient(evtUnitHandle_t *unit, s32 duration, u32 firstColor, u32 secondColor);
+
+void evtSetUnitLightDir(evtUnitHandle_t *unit, EvtUnitDirectionTransitionFrames durationFrames);
+
+void evtSetUnitMotion(evtUnitHandle_t *unit, s32 motionId, s32 startFrame,
+                      s32 endFrame, EvtUnitMotionMode mode);
+
+void evtSetWaitMotion(evtUnitHandle_t *unit, s32 value);
+
+void evtUnitLightOn(evtUnitHandle_t *unit);
+
+/* Return the payload allocation descriptor. For normal file loads, freeing the
+ * request wrapper does not free this allocation; its resource owner must keep
+ * or release it separately. */
+struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
+
+/* Free a completed request wrapper; return one while it remains pending. */
+FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
+
+struct FileRequest *fileLoadUseTail(const char *requestName);
+
+u32 mdlGetColor(const dds3ModelHandle_t *ctx);
+
+u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
+
+u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
+
+/* Context-level motion APIs; per-sdfMotionCtrlr_t lifecycle methods are in sdf_motion.h. */
+MdlMotionIndexResult mdlGetMotionNum(const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
+
+/* VU helpers transfer vectors through vf10 and basis rows through vf28-vf30. */
+void mdlGetPosition(dds3ModelHandle_t *ctx);
+
+void mdlGetRotate(dds3ModelHandle_t *ctx);
+
+void mdlLink(dds3ModelHandle_t *ctx, struct sdfGrOt_t **surfaces);
+
+void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+/* A nonblocking request returns QUEUED when it starts work and
+ * ALREADY_PENDING when work for the key already exists. Otherwise the result
+ * is the ready dds3ModelResrc_t address. */
+MdlAssetRequestResult mdlPrepare(
+    s32 group, s32 id, MdlAssetRequestMode requestMode);
+
+void mdlSetColor(dds3ModelHandle_t *ctx, u32 value);
+
+void mdlSetEffectColor(dds3ModelHandle_t *ctx, u32 value);
+
+void mdlSetPosition(dds3ModelHandle_t *ctx);
+
+void mdlSetRotate(dds3ModelHandle_t *ctx);
+
+void mdlSetScale(dds3ModelHandle_t *ctx);
+
+/* sdfMotionCtrlr_t-record selection and lookup. */
+void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+void *memset(void *dst, s32 value, u32 size);
+
+/* Apply volume and pan to a sequence track through the command queue. */
+void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
+
+s32 pacFileCheckEnd(const struct FileRequest *request);
+
+void *sdfChipAllocZeroDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+void sdfDrawTagInit(struct sdfDrawTag_t *list);
+
+void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
+
+/* Release the sdfAllocAuto base in its source heap; interior pointers are
+ * invalid. */
+s32 sdfFreeAuto(void *data);
+
+/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
+ * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
+s32 sdfGrAllocPacketBuff(s32 size);
+
+void sdfLinkLoadImage(
+    sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,
+    s32 destinationY, s32 width, s32 height, s32 sourceAddress,
+    s32 (*allocatePacket)(s32));
+
+void sdfLinkStoreImage(
+    sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 sourceX, s32 sourceY,
+    s32 width, s32 height, s32 resourceAddress, s32 arg7, s32 arg8,
+    s32 (*allocatePacket)(s32));
+
+struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
+
+/* Queue the two heap owners separately: the general heap stores descriptors,
+ * while the chip heap stores the address of the cell to release. */
+void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *allocation);
+
+void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
+
+void *sdfMemLock(struct sdfMemHandle_t *allocation);
+
+/* Refresh the current per-node transforms from the model's selected frame. */
+void sdfModelEvalTm(dds_sdfModelRootNode_t *model);
+
+/* On success, write the requested MPOS record's position or matrix to VU state. */
+SdfMapPositionLookupResult sdfModelGetMarkPos(
+    struct dds_sdfModelRootNode_t *model, s32 id);
+
+SdfMapPositionLookupResult sdfModelGetMarkPosMatrix(
+    struct dds_sdfModelRootNode_t *model, s32 id);
+
+dds_sdfModelRootNode_t *sdfModelMake(DevRequest *resourceList, sdfModelDef_t *listRef);
+
+void sdfModelRootFree(struct dds_sdfModelRootNode_t *slot,
+                      SdfModelRootCleanupPolicy rootCleanupPolicy,
+                      SdfModelMaterialResourceReleasePolicy materialResourcePolicy);
+
+void sdfMotionSeek(struct sdfMotionCtrlr_t *motion, f32 frame);
+
+struct sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*allocator)(s32));
+
+#ifndef DDS_ENUM_EvtUnitMotionState
+#define DDS_ENUM_EvtUnitMotionState
+typedef int EvtUnitMotionState;
+#endif
+
 #include "dds/btl_motion_selection_result.h"
 
 #include "dds/sdk_ps2.h"
@@ -282,13 +571,13 @@ extern EffRandState effSharedRandomState[];
 
 extern void btlResetDeferredTaskQueue(void);
 
-s32 btlAdjustUnitHp(datUnitWork_t *object, s32 delta);
+s32 btlAdjustUnitHp(dds_datUnitWork_t *object, s32 delta);
 
-s32 btlAdjustUnitMp(datUnitWork_t *object, s32 delta);
+s32 btlAdjustUnitMp(dds_datUnitWork_t *object, s32 delta);
 
-u16 btlRefreshUnitMaximumHpAndClampCurrentHp(datUnitWork_t *object);
+u16 btlRefreshUnitMaximumHpAndClampCurrentHp(dds_datUnitWork_t *object);
 
-u16 btlRefreshUnitMaximumMpAndClampCurrentMp(datUnitWork_t *object);
+u16 btlRefreshUnitMaximumMpAndClampCurrentMp(dds_datUnitWork_t *object);
 
 extern EffRandState effSharedRandomState[];
 
@@ -302,7 +591,7 @@ void btlClearAllActorEntrySlots(BtlUnit *unit);
 
 s32 btlGetActorBedAssetIdFromIndex(s32 itemIndex);
 
-s32 btlGetEntryFlagsUnlessDisabled(datUnitWork_t *entry);
+s32 btlGetEntryFlagsUnlessDisabled(dds_datUnitWork_t *entry);
 
 struct evtUnitHandle_t;
 
@@ -328,7 +617,7 @@ s32 btlGetLoggedIndexedCommandItem(s32 index);
 
 void btlSetTrackedTaskDisplayMode(s32 mode);
 
-void btlClearPartyRecordStatusBits(datUnitWork_t *record, s32 mask);
+void btlClearPartyRecordStatusBits(dds_datUnitWork_t *record, s32 mask);
 
 void btlApplyMaskedActorEntryAdjustments(BtlUnit *unit, u32 flags, s16 delta);
 
@@ -343,18 +632,6 @@ typedef struct BtlRotationTaskArgs {
 
 typedef char BtlRotationTaskArgsSizeCheck[
     sizeof(BtlRotationTaskArgs) == 0x30 ? 1 : -1];
-
-typedef char BtlRotationTaskArgsRateOffsetCheck[
-    (u32)&((BtlRotationTaskArgs *)0)->rate == 0x20 ? 1 : -1];
-
-typedef char BtlRotationTaskArgsTOffsetCheck[
-    (u32)&((BtlRotationTaskArgs *)0)->t == 0x24 ? 1 : -1];
-
-typedef char BtlRotationTaskArgsCountOffsetCheck[
-    (u32)&((BtlRotationTaskArgs *)0)->count == 0x28 ? 1 : -1];
-
-typedef char BtlRotationTaskArgsUnitOffsetCheck[
-    (u32)&((BtlRotationTaskArgs *)0)->unit == 0x2C ? 1 : -1];
 
 extern s32 btlCountTasksByKind(u16 kind);
 
@@ -522,7 +799,7 @@ u32 btlClearQueuedActorEntrySelection(BtlUnit **taskArgs);
 /* Create an owner-bound task to clear the actor's queued entry selection. */
 BtlRuntimeTask *btlCreateClearActorEntrySelectionTask(BtlUnit *owner);
 
-extern datUnitWork_t *btlGetIndexedPartyEntryRecord(s32);
+extern dds_datUnitWork_t *btlGetIndexedPartyEntryRecord(s32);
 
 /* Award hunt experience; the sharing ability also rewards eligible party records. */
 u32 btlAwardHuntExperience(BtlHuntExpArgs *args);
@@ -759,8 +1036,6 @@ void btlSetUnitColor(BtlUnit *unit, u32 color, s32 mode);
 
 void btlBlendUnitColor(BtlUnit *unit, u32 color, s32 mode);
 
-extern void mdlSetClutColor(dds3ModelHandle_t *, s32, f32);
-
 void btlReleaseUnitModelColorResource(BtlUnit *unit, s32 value, f32 scalar);
 
 void btlRefreshUnitFxVectors(BtlUnit *unit);
@@ -769,18 +1044,18 @@ void btlUnitFaceTarget(BtlUnit *object, BtlUnit *target);
 
 void btlUnitFaceTargetScaled(BtlUnit *object, BtlUnit *target, f32 scale);
 
-void btlCopyUnitStats(BtlUnit *unit, datUnitWork_t *source);
+void btlCopyUnitStats(BtlUnit *unit, dds_datUnitWork_t *source);
 
 extern void mdlLinkEffect(dds3ModelHandle_t *, dds3ModelEffectCtrlr_t *);
 
 #include "dds/sdf_packet_alloc.h"
 
-extern void sdfModelCopyStat(sdfModelRootNode_t *, const sdfModelRootNode_t *);
+extern void sdfModelCopyStat(dds_sdfModelRootNode_t *, const dds_sdfModelRootNode_t *);
 
 extern u64 btlTransparencySurfaceTestValues[4];
 
 /* Draw the model into four surfaces in three GS TEST passes, then update its anchors. */
-void btlDrawUnitTransparencyPasses(BtlUnit *unit, dds3ModelHandle_t *model, sdfModelRootNode_t *overlay, sdfGrOt_t **surfaces, u32 color);
+void btlDrawUnitTransparencyPasses(BtlUnit *unit, dds3ModelHandle_t *model, dds_sdfModelRootNode_t *overlay, sdfGrOt_t **surfaces, u32 color);
 
 void btlCreateUnitTransparency(BtlUnit *unit);
 
@@ -885,12 +1160,6 @@ typedef struct BtlUnitLightDirectionTaskArgs {
 
 typedef char BtlUnitLightDirectionTaskArgs_size_check[
     sizeof(BtlUnitLightDirectionTaskArgs) == 0x18 ? 1 : -1];
-
-typedef char BtlUnitLightDirectionTaskArgs_directionMode_offset_check[
-    (u32)&((BtlUnitLightDirectionTaskArgs *)0)->directionMode == 0x10 ? 1 : -1];
-
-typedef char BtlUnitLightDirectionTaskArgs_unit_offset_check[
-    (u32)&((BtlUnitLightDirectionTaskArgs *)0)->unit == 0x14 ? 1 : -1];
 
 void btlPrepareUnitStatusFxOnStart(BtlUnitLightDirectionTaskArgs *task);
 
@@ -1255,17 +1524,6 @@ extern f32 btlMeasureIndexListBounds(BtlIndexList *, f32 *, f32 *);
 void btlFaceActionParticipantsTowardLinkedTarget(BtlLinkedCommand *action);
 
 void btlAimLinkedUnitAtMuzzle(BtlLinkedCommand *action);
-
-/* Let the runtime hook handle the actor before dispatching its camera step. */
-/* Validate retained command fields beside their native initialization. */
-typedef char BattleIndexWork_summonId_offset_check[
-    ((u32)&((BattleIndexWork *)0)->summonId == 0x18) ? 1 : -1];
-
-typedef char BattleIndexWork_battleExperienceReward_offset_check[
-    ((u32)&((BattleIndexWork *)0)->battleExperienceReward == 0x54) ? 1 : -1];
-
-typedef char BattleIndexWork_moneyReward_offset_check[
-    ((u32)&((BattleIndexWork *)0)->moneyReward == 0x58) ? 1 : -1];
 /* End of declarations from src/dds1/game/code_001D0BA0.c */
 
 u32 btlRunCameraMotionResetTask(void) {

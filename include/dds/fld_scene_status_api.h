@@ -1,6 +1,6 @@
-#ifndef FLD_SCENE_STATUS_API_H
-#define FLD_SCENE_STATUS_API_H
+#ifndef DDS_FLD_SCENE_STATUS_API_H
 
+#define DDS_FLD_SCENE_STATUS_API_H
 #include "common.h"
 
 typedef enum FldSceneStatus {
@@ -11,7 +11,5 @@ typedef enum FldSceneStatus {
     FLD_SCENE_STATUS_SISETU = 4,
     FLD_SCENE_STATUS_MINI_TITLE_UNLOCK = 5
 } FldSceneStatus;
-
-FldSceneStatus fldGetRestoreMode(void);
 
 #endif

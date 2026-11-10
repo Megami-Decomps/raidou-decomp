@@ -1,6 +1,6 @@
-#ifndef SDF_CD_CLOCK_H
-#define SDF_CD_CLOCK_H
+#ifndef DDS_SDF_CD_CLOCK_H
 
+#define DDS_SDF_CD_CLOCK_H
 #include "common.h"
 
 /* Byte view returned by the SDF CD clock query. */
@@ -18,4 +18,4 @@ typedef struct SdfCdClock {
 typedef char SdfCdClock_size_must_be_8[
     (sizeof(SdfCdClock) == 8) ? 1 : -1];
 
-#endif /* SDF_CD_CLOCK_H */
+#endif /* DDS_SDF_CD_CLOCK_H */

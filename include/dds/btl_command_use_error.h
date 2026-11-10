@@ -1,7 +1,8 @@
-#ifndef BTL_COMMAND_USE_ERROR_H
-#define BTL_COMMAND_USE_ERROR_H
+#ifndef DDS_BTL_COMMAND_USE_ERROR_H
 
+#define DDS_BTL_COMMAND_USE_ERROR_H
 #include "common.h"
+
 #include "btl_command_id.h"
 
 struct BtlUnit;
@@ -23,13 +24,16 @@ enum {
 
 BtlCommandUseError btlGetCommandFailureReason(
     struct BtlUnit *unit, BtlCommandId commandId);
+
 BtlCommandUseError btlGetLinkedPartyCommandFailureReason(
     struct BtlUnit *base, struct BtlUnit *first, struct BtlUnit *second,
     struct BtlUnit *third, BtlCommandId commandId);
+
 BtlCommandUseError btlGetCommandUseError(
     struct BtlUnit *unit, BtlCommandId commandId);
+
 BtlCommandUseError btlGetPartnerCommandUseError(
     struct BtlUnit *base, struct BtlUnit *first, struct BtlUnit *second,
     struct BtlUnit *third, BtlCommandId commandId);
 
-#endif /* BTL_COMMAND_USE_ERROR_H */
+#endif /* DDS_BTL_COMMAND_USE_ERROR_H */

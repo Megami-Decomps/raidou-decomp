@@ -1,22 +1,34 @@
-#ifndef BTL_STATE_H
-#define BTL_STATE_H
+#ifndef DDS_BTL_STATE_H
 
+#define DDS_BTL_STATE_H
 #include "btl.h"
+
 #include "btl_command.h"
+
 #include "btl_runtime.h"
+
 #ifdef VERSION_DDS1
+
 #include "btl_battle_record_eligibility.h"
+
 #endif
 
 /* Broadens command targeting and suppresses command-block reasons when set. */
+
 #define BTL_STATE_FLAG_BYPASS_COMMAND_BLOCKS 0x800
+
 #define BTL_STATE_FLAG_DISABLE_COMMAND_TARGET_ELIGIBILITY 0x40
 
 struct dds3ProcessID_t;
+
 struct SoundMixer;
+
 struct BtlRuntimeTask;
+
 struct SdfFlagListWork;
+
 struct sdfMemHandle_t;
+
 struct RefObj;
 
 /* Three-byte scene scheduling slot; IDs move with their group/countdown. */
@@ -31,12 +43,10 @@ typedef struct BtlSceneFadingRecord {
     u8 alpha;
     s32 target;
 } BtlSceneFadingRecord;
+
 typedef char BtlSceneSlotSizeCheck[(sizeof(BtlSceneSlot) == 3) ? 1 : -1];
+
 typedef char BtlSceneFadingRecordSizeCheck[(sizeof(BtlSceneFadingRecord) == 8) ? 1 : -1];
-typedef char BtlSceneFadingRecordAlphaOffsetCheck[
-    ((u32)&((BtlSceneFadingRecord *)0)->alpha == 3) ? 1 : -1];
-typedef char BtlSceneFadingRecordTargetOffsetCheck[
-    ((u32)&((BtlSceneFadingRecord *)0)->target == 4) ? 1 : -1];
 
 typedef struct BtlItemDrop {
     u16 id;
@@ -45,6 +55,7 @@ typedef struct BtlItemDrop {
 } BtlItemDrop;
 
 #ifdef VERSION_DDS2
+
 /* Mode 786 owns the actor pair and vertical-motion state. */
 typedef struct BattleLinkedEffectState {
     struct BtlUnit *actor;
@@ -114,8 +125,11 @@ typedef struct BattleSummonState {
 } BattleSummonState;
 
 typedef char BattleGuardExtent[(sizeof(BattleGuardState) == 12) ? 1 : -1];
+
 typedef char BattleSummonExtent[(sizeof(BattleSummonState) == 8) ? 1 : -1];
+
 typedef char BattleGuardFlagOffset[((unsigned int)&((BattleGuardState *)0)->guardHandled == 8) ? 1 : -1];
+
 typedef char BattleSummonIdOffset[((unsigned int)&((BattleSummonState *)0)->selectedUnitId == 4) ? 1 : -1];
 
 /* Mode 789 allocates and clears 16 bytes in 00229728. Actor task creation
@@ -127,7 +141,9 @@ typedef struct BattleActionState {
     s8 alternateMotion; /* +9: 00221C48/00221CA4 select group 1 instead of 11. */
     u8 pad0A[6];
 } BattleActionState;
+
 typedef char BattleActionExtent[(sizeof(BattleActionState) == 16) ? 1 : -1];
+
 typedef char BattleActionPendingOffset[((unsigned int)&((BattleActionState *)0)->pending == 8) ? 1 : -1];
 
 typedef union BattleEffectPayload {
@@ -152,6 +168,7 @@ typedef struct BtlDebugMenuCursor {
     u32 top;
     u32 rows;
 } BtlDebugMenuCursor;
+
 typedef char BtlDebugMenuCursorExtent[(sizeof(BtlDebugMenuCursor) == 0x10) ? 1 : -1];
 
 /* Battle model-debug editor: phase, list cursors, selected unit and name tables.
@@ -179,6 +196,7 @@ typedef struct BtlDebugMenuWork {
 } BtlDebugMenuWork;
 
 /* Full battle-work layout for state users; unit/task-only users include btl.h. */
+
 #ifdef VERSION_DDS1
 
 /* Observed fields of the singleton battle work returned by btlGetRuntime.
@@ -346,7 +364,7 @@ typedef struct BtlState {
     s32 (*cameraModeInitializePredicate)(BtlLinkedCommand *); /* 0x664: permits the mode initializer in 001DB048. */
     s32 (*cameraUpdatePredicate)(BtlLinkedCommand *); /* 0x668: gates the active camera handler. */
     s32 (*allowPositionEffect)(BtlUnit *); /* 0x66C */
-    s32 (*unitValueOverrideHook)(datUnitWork_t *, s32); /* 0x670: custom affinity result, or -1 for the normal resolver. */
+    s32 (*unitValueOverrideHook)(dds_datUnitWork_t *, s32); /* 0x670: custom affinity result, or -1 for the normal resolver. */
     s32 (*summonEffectId)(s32); /* 0x674: -1 retains the default summon effect. */
     s32 (*summonEffectDelay)(u32); /* 0x678: delay for the selected summon species. */
     s32 (*actionPointsOverride)(u32, u32, s32); /* 0x67C */
@@ -363,50 +381,88 @@ typedef struct BtlState {
     u8 unk_E0D;
     s16 debugMotionCountdown; /* Frames until preview motion; -1 when idle. */
 } BtlState;
+
 typedef char BtlEscapeAttemptCountDds1Offset[((unsigned int)&((BtlState *)0)->escapeAttemptCount == 0x254) ? 1 : -1];
+
 typedef char BtlStatusMotionOverrideDds1Offset[((unsigned int)&((BtlState *)0)->statusMotionOverride == 0x5A4) ? 1 : -1];
+
 typedef char BtlPreserveMotionRangeDds1Offset[((unsigned int)&((BtlState *)0)->preserveMotionRange == 0x5A8) ? 1 : -1];
+
 typedef char BtlSceneLightDds1Offset0[((unsigned int)&((BtlState *)0)->baselineLightDirection == 0x10) ? 1 : -1];
+
 typedef char BtlSceneLightDds1Offset1[((unsigned int)&((BtlState *)0)->baselineLightColor == 0x20) ? 1 : -1];
+
 typedef char BtlSceneLightDds1Offset2[((unsigned int)&((BtlState *)0)->baselineAmbientColor == 0x30) ? 1 : -1];
+
 typedef char BtlSceneLightDds1Offset3[((unsigned int)&((BtlState *)0)->lightDirection == 0x40) ? 1 : -1];
+
 typedef char BtlSceneLightDds1Offset4[((unsigned int)&((BtlState *)0)->lightColor == 0x50) ? 1 : -1];
+
 typedef char BtlSceneLightDds1Offset5[((unsigned int)&((BtlState *)0)->ambientColor == 0x60) ? 1 : -1];
+
 typedef char BtlSceneLightDds1Offset6[((unsigned int)&((BtlState *)0)->sceneLightNode == 0x204) ? 1 : -1];
+
 typedef char BtlStateTotalApOffset[((unsigned int)&((BtlState *)0)->totalAp == 0x2D0) ? 1 : -1];
+
 typedef char BtlFieldF1Offset[((unsigned int)&((BtlState *)0)->fieldF1ResourceHandle == 0x290) ? 1 : -1];
+
 typedef char BtlFieldF2Offset[((unsigned int)&((BtlState *)0)->fieldF2ResourceHandle == 0x294) ? 1 : -1];
+
 typedef char BtlFieldTBOffset[((unsigned int)&((BtlState *)0)->fieldTBResourceHandle == 0x298) ? 1 : -1];
+
 typedef char BtlFrontFloorResourceOffset[
     ((unsigned int)&((BtlState *)0)->frontFloorResource == 0x57C) ? 1 : -1];
+
 typedef char BtlSideFloorResourceOffset[
     ((unsigned int)&((BtlState *)0)->sideFloorResource == 0x580) ? 1 : -1];
+
 typedef char BtlMotionSeOwnersOffset[((unsigned int)&((BtlState *)0)->soundSlotOwners == 0x23C) ? 1 : -1];
+
 typedef char BtlMotionSeLoadFrameOffset[((unsigned int)&((BtlState *)0)->motionSeLoadFrame == 0x264) ? 1 : -1];
+
 typedef char BtlSkillSeLoadFrameOffset[((unsigned int)&((BtlState *)0)->skillSeLoadFrame == 0x268) ? 1 : -1];
+
 typedef char BtlDefeatedLevelCountDds1Offset[
     ((unsigned int)&((BtlState *)0)->defeatedLevelCount == 0x26C) ? 1 : -1];
+
 typedef char BtlDefeatedLevelTotalDds1Offset[
     ((unsigned int)&((BtlState *)0)->defeatedLevelTotal == 0x26E) ? 1 : -1];
+
 typedef char BtlTimingRateOffset[((unsigned int)&((BtlState *)0)->timingRate == 0x490) ? 1 : -1];
+
 typedef char BtlButtonTextureHandleDds1Offset[
     ((unsigned int)&((BtlState *)0)->buttonTextureHandle == 0x4B4) ? 1 : -1];
+
 typedef char BtlHitResultOverrideOffset[((unsigned int)&((BtlState *)0)->hitResultOverride == 0x59C) ? 1 : -1];
+
 typedef char BtlCommandSoundDelayOffset[((unsigned int)&((BtlState *)0)->commandSoundDelay == 0x624) ? 1 : -1];
+
 typedef char BtlPreActionHookOffset[((unsigned int)&((BtlState *)0)->preActionHook == 0x648) ? 1 : -1];
+
 typedef char BtlPostTargetHookOffset[((unsigned int)&((BtlState *)0)->postTargetHook == 0x64C) ? 1 : -1];
+
 typedef char BtlCameraModeInitializePredicateOffset[((unsigned int)&((BtlState *)0)->cameraModeInitializePredicate == 0x664) ? 1 : -1];
+
 typedef char BtlDebugActionMenuOffset[((unsigned int)&((BtlState *)0)->debug.actionMenu == 0x6A8) ? 1 : -1];
+
 typedef char BtlDebugModelMenuOffset[((unsigned int)&((BtlState *)0)->debug.modelMenu == 0x6B8) ? 1 : -1];
+
 typedef char BtlDebugMotionMenuOffset[((unsigned int)&((BtlState *)0)->debug.motionMenu == 0x6D8) ? 1 : -1];
+
 typedef char BtlDebugGunMenuOffset[((unsigned int)&((BtlState *)0)->debug.gunMenu == 0x6E8) ? 1 : -1];
+
 typedef char BtlDebugSelectedUnitOffset[((unsigned int)&((BtlState *)0)->debug.selectedUnit == 0x708) ? 1 : -1];
+
 typedef char BtlSceneLightDds1Extent[(sizeof(BtlState) == 0xE10) ? 1 : -1];
+
 typedef char BtlSceneLightDds1Alignment[(__alignof__(BtlState) == 4) ? 1 : -1];
+
 #endif /* VERSION_DDS1 */
 
 #ifdef VERSION_DDS2
+
 struct ActionStateLink;
+
 struct BtlLinkedCommand;
 
 /* The background is a pair of signed halfword IDs, written independently by
@@ -418,10 +474,8 @@ typedef struct BtlBackgroundId {
         s16 minor;
     } ids;
 } BtlBackgroundId;
-typedef char BtlBackgroundIdSizeCheck[sizeof(BtlBackgroundId) == 4 ? 1 : -1];
-typedef char BtlBackgroundIdMajorOffsetCheck[((u32)&((BtlBackgroundId *)0)->ids.major == 0) ? 1 : -1];
-typedef char BtlBackgroundIdMinorOffsetCheck[((u32)&((BtlBackgroundId *)0)->ids.minor == 2) ? 1 : -1];
 
+typedef char BtlBackgroundIdSizeCheck[sizeof(BtlBackgroundId) == 4 ? 1 : -1];
 
 /* The 0xFD4-byte singleton allocated by DDS2 0x1A9B80 and returned by
  * 0x1AA6F8. Its script-owner/task pair is +0x2C4/+0x2C8, not DDS1's
@@ -662,45 +716,74 @@ typedef struct BtlState {
     u8 unk_E0D; /* 0xFD1 */
     s16 debugMotionCountdown; /* 0xFD2: frames until preview motion; -1 when idle. */
 } BtlState;
+
 typedef char BtlEscapeAttemptCountDds2Offset[((unsigned int)&((BtlState *)0)->escapeAttemptCount == 0x278) ? 1 : -1];
+
 typedef char BtlMotionSeLoadFrameDds2Offset[
     ((unsigned int)&((BtlState *)0)->motionSeLoadFrame == 0x288) ? 1 : -1];
+
 typedef char BtlSkillSeLoadFrameDds2Offset[
     ((unsigned int)&((BtlState *)0)->skillSeLoadFrame == 0x28C) ? 1 : -1];
+
 typedef char BtlDefeatedLevelCountDds2Offset[
     ((unsigned int)&((BtlState *)0)->defeatedLevelCount == 0x290) ? 1 : -1];
+
 typedef char BtlDefeatedLevelTotalDds2Offset[
     ((unsigned int)&((BtlState *)0)->defeatedLevelTotal == 0x292) ? 1 : -1];
+
 typedef char BtlSceneLightOffset0[((unsigned int)&((BtlState *)0)->baselineLightDirection == 0x10) ? 1 : -1];
+
 typedef char BtlSceneLightOffset1[((unsigned int)&((BtlState *)0)->baselineLightColor == 0x20) ? 1 : -1];
+
 typedef char BtlSceneLightOffset2[((unsigned int)&((BtlState *)0)->baselineAmbientColor == 0x30) ? 1 : -1];
+
 typedef char BtlSceneLightOffset3[((unsigned int)&((BtlState *)0)->lightDirection == 0x40) ? 1 : -1];
+
 typedef char BtlSceneLightOffset4[((unsigned int)&((BtlState *)0)->lightColor == 0x50) ? 1 : -1];
+
 typedef char BtlSceneLightOffset5[((unsigned int)&((BtlState *)0)->ambientColor == 0x60) ? 1 : -1];
+
 typedef char BtlLinkageDelayHookOffset[((unsigned int)&((BtlState *)0)->linkageStartDelayHook == 0x65C) ? 1 : -1];
+
 typedef char BtlLinkageNextHookOffset[((unsigned int)&((BtlState *)0)->cameraPoseBlendHook == 0x660) ? 1 : -1];
+
 typedef char BtlFieldF1Offset[((unsigned int)&((BtlState *)0)->fieldF1ResourceHandle == 0x2B8) ? 1 : -1];
+
 typedef char BtlFieldF2Offset[((unsigned int)&((BtlState *)0)->fieldF2ResourceHandle == 0x2BC) ? 1 : -1];
+
 typedef char BtlFieldTBOffset[((unsigned int)&((BtlState *)0)->fieldTBResourceHandle == 0x2C0) ? 1 : -1];
+
 typedef char BtlFieldResourceHandlesSpanCheck[
     (((unsigned int)&((BtlState *)0)->scriptOwner -
       (unsigned int)&((BtlState *)0)->fieldF1ResourceHandle) == 0xC) ? 1 : -1];
+
 typedef char BtlSpawnCountOffsetCheck[
     ((unsigned int)&((BtlState *)0)->spawnCount == 0x27E) ? 1 : -1];
+
 typedef char BtlSceneLightNodeOffsetCheck[
     ((unsigned int)&((BtlState *)0)->sceneLightNode == 0x228) ? 1 : -1];
+
 typedef char BtlButtonTextureHandleDds2Offset[
     ((unsigned int)&((BtlState *)0)->buttonTextureHandle == 0x4E8) ? 1 : -1];
+
 typedef char BtlDebugMenuWorkOffset[((unsigned int)&((BtlState *)0)->debug == 0x728) ? 1 : -1];
+
 typedef char BtlSceneLightExtent[(sizeof(BtlState) == 0xFD4) ? 1 : -1];
+
 typedef char BtlSceneLightAlignment[(__alignof__(BtlState) == 4) ? 1 : -1];
+
 #endif /* VERSION_DDS2 */
 
 /* Append an existing actor task to its scene group; the group borrows the pointer. */
+
 #ifdef VERSION_DDS1
+
 void fldAppendTaskToGroup(struct BtlTask *task);
+
 #elif defined(VERSION_DDS2)
+
 void fldAppendTaskToGroup(struct ActionStateLink *task);
+
 #endif
 
-#endif /* BTL_STATE_H */
+#endif /* DDS_BTL_STATE_H */

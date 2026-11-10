@@ -349,6 +349,237 @@ extern u8 itfPanelLeftFadeStripVertexIndex[8];
 extern u8 itfPanelLeftFadeStripColorIndex[8];
 /* End of declarations from src/smt3/interface/itfPanel.c */
 
+/* Declarations from dds-decomp src/dds1/game/code_00199AD8.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_itfDrawColor_t 1
+
+#define SMT3_DEFINES_itfDrawVertex_t 1
+
+#define SMT3_DEFINES_itfPanelFacilityData_t 1
+
+#define SMT3_DEFINES_itfPanelLeftFadeData_t 1
+
+#define SMT3_DEFINES_itfPanelMesWinData_t 1
+
+#define SMT3_DEFINES_itfPanelNormalData_t 1
+
+#define SMT3_DEFINES_itfPanelPlainData_t 1
+
+#define SMT3_DEFINES_itfPanelSelWinData_t 1
+
+#define SMT3_DEFINES_itfPanelTextureData_t 1
+
+#include "dds/itf_mes_panel_mode.h"
+
+#include "dds/scr_command_timer_api.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+void itfMesMngChangeWindowType(ItfMesWindowIndex window, ItfMesPanelMode panelMode,
+    ItfMesPanelFadeLimit fadeLimit);
+
+/* During a command callback, return the number of earlier trace passes that
+ * yielded while it was pending. The first invocation sees zero; each yielded
+ * pass adds one, and a continuing or finishing handler resets the count. This
+ * is callback wait state, not wall-clock time, and is valid only in the callback. */
+ScrCommandYieldCount scrGetCommandTimer(void);
+
+/* Read a command parameter as a signed VM integer, converting floats and
+ * dereferencing global integer or float references. */
+ScrVmInteger scrGetIntPara(ScrCommandParameterIndex parameterIndex);
+
+/* Declared void for the callers that ignore its result: ee-gcc 2.96
+ * allocates registers around the call as retail did only then. The
+ * definition (scrTraceCode.c) returns the context it set the value in, for
+ * the script commands that pass it on as their result; their units declare
+ * it so. */
+void scrSetIntReturnValue(ScrVmInteger retVal);
+
+#include "dds/mnu.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/scr_command_parameter_index.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+#include "dds/scr_command_timer_api.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/itf.h"
+
+#include "dds/itf_mes_window.h"
+
+#include "dds/itf_mes_panel_mode.h"
+
+#include "dds/itf_mes_entry_start_api.h"
+
+#include "dds/sdf.h"
+
+#include "dds/itf_panel_draw.h"
+
+#include "dds/itf_text_vector.h"
+
+#include "dds/itf_panel_api.h"
+
+#include "dds/itf_panel_layouts.h"
+
+#include "dds/itf_held_panel_message_step.h"
+
+#define ITF_PANEL_MESSAGE_FADE_TICKS 30
+
+#define ITF_PANEL_MESSAGE_EXIT_TICKS 10
+
+#define ITF_PANEL_TINT_ALPHA_NUMERATOR 0x67
+
+#define ITF_PANEL_TINT_ALPHA_DENOMINATOR 128
+
+#define ITF_PANEL_TINT_BORDER_WIDTH 0x240
+
+extern PanelEntry pinst[];
+
+extern ItfMesWindowIndex scrGetMessageHandle(void);
+
+extern void itfMesBuildOptionList(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
+
+extern void itfMesMngRequestSelectRelease(s32 window);
+
+extern void itfMesMngRequestMessageRelease(s32 window, s32 releasePrimaryBlock);
+
+extern TextVector itfPanelColorTemplates[];
+
+extern TextVector D_00357B50[];
+
+extern u8 D_003BB1C8[8];
+
+extern u8 D_003BB1D0[8];
+
+#include "dds/sdf_packet_alloc.h"
+
+extern void itfDrawThreePanelBorderBands(PanelRect *rect, u32 *colors, u32 tail, s32 width, sdfDrawTag_t *command);
+
+extern u32 D_00357D68[];
+
+extern u8 D_003BB1D8[8];
+
+extern u8 D_003BB1E0[8];
+
+extern TextVector itfPanelGradientColorTemplate[];
+
+extern TextVector itfPanelGradientColorPair[];
+
+extern u8 D_00357BF0[], D_00357C08[], D_00357C20[];
+
+extern u8 D_00357C38[], D_00357C50[], D_00357C68[];
+
+extern u8 D_003BB1A8[8], D_003BB1B0[8];
+
+extern u8 D_00357C78[];
+
+extern u8 D_00357C88[];
+
+extern u8 D_003BB1B8[8];
+
+extern u8 D_003BB1C0[8];
+
+extern PanelHold itfHeldPanelCursor;
+
+extern s32 D_00357AE0[4];
+
+extern u8 D_00357BD0[];
+
+extern u8 D_00357BE0[];
+
+/*BEGIN itfDrawFramedPanelWithTextureStrips*/
+extern u32 D_00357C98[];
+
+extern DrawColorRec D_00357D08;
+
+extern DrawColorRec D_00357D18;
+
+/* Draw the framed panel: two bordered bands, then six texture-bound strips whose
+ * rectangles are rebuilt from the live panel bounds. */
+void itfDrawFramedPanelWithTextureStrips(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+extern DrawColorRec D_00357D28;
+
+extern DrawColorRec D_00357D38;
+
+extern u8 D_00357D48[];
+
+extern u8 D_00357D58[];
+
+extern DrawColorRec D_00357A78;
+
+extern DrawColorRec D_00357A88;
+
+extern DrawColorRec D_00357A98;
+
+extern DrawColorRec D_00357AA8;
+
+/* Copy bounds and draw the tinted border; alpha uses the native signed 103/128 scale. */
+void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+/* Poll/start an entry: one ends the command, zero keeps waiting.
+   A negative signed status is consumed by clearing it; positive status keeps waiting. */
+s32 itfMesMngMessage(void);
+
+/* Forward this record's layout sprite address and the supplied value; index is unchecked. */
+void itfMesMngSetOffsetY1(s32 windowIndex, s32 topDelta);
+
+/* Return the signed byte entry status; this is separate from the option-block s16 status. */
+s8 itfMesMngGetPhase(s32 windowIndex);
+
+/* Store the signed byte entry status; index and payload pointer are trusted. */
+void itfMesMngSetPhase(s32 windowIndex, s8 status);
+
+/* Capture the script window, reset its held queue, and switch to page three.
+   Invalid windows still return the native command-complete value of one. */
+s32 itfPanelAcquireHold(void);
+
+/* Clean up the active held window and reset its queue; an inactive hold is a no-op. */
+s32 itfPanelReleaseHold(void);
+
+/* Queue script words in native second/first/third field order; first and third narrow to s16.
+   Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
+s32 itfCommandQueueHeldPanelEntry(void);
+
+ItfHeldPanelMessageStepResult itfStepHeldPanelMessages(void);
+
+s32 itfMesMngSelect(void);
+
+extern void dds3SetFilter2Para(u32);
+
+extern void dds3SetFilter2RGBA(u32);
+
+extern void dds3Filter2On(s32);
+
+extern void dds3Filter2Off(s32);
+
+extern s32 D_003BD820;
+
+/* Configure the fade on timer zero, wait thirty ticks, then consume a negative option status.
+   Keep both timer reads: setup tests a second read, while later comparisons use the cached one. */
+s32 itfCommandSelectOptionWithFade(void);
+
+/* Return the option-block signed status word, not the separate entry status byte;
+ * its callers read the sign-extended halfword as a word. */
+s32 itfMesMngGetSelPhase(s32 windowIndex);
+
+/* Store the option-block signed status word without validating the slot. */
+void itfMesMngSetSelPhase(s32 windowIndex, s16 status);
+
+/* Return the same signed word forwarded as the script result when an option completes;
+ * its callers read the sign-extended halfword as a word. */
+s32 itfMesMngGetSelectNo(s32 windowIndex);
+/* End of declarations from src/dds1/game/code_00199AD8.c */
+
 INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlRegist2);
 
 /* A sprite with a retained payload owns a secondary allocation. Release that
@@ -625,7 +856,17 @@ INCLUDE_ASM(const s32, "interface/itfPanel", func_0019AFD8);
 
 INCLUDE_ASM(const s32, "interface/itfPanel", func_0019B590);
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfDrawTintedPanelRect);
+/* Copy bounds and draw the tinted border; alpha uses the native signed 103/128 scale. */
+void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command) {
+    PanelRect rect;
+
+    D_00357D68[3] = panel->alpha * ITF_PANEL_TINT_ALPHA_NUMERATOR / ITF_PANEL_TINT_ALPHA_DENOMINATOR;
+    rect.x0 = panel->left;
+    rect.y0 = panel->top;
+    rect.x1 = panel->right;
+    rect.y1 = panel->bottom;
+    itfDrawThreePanelBorderBands(&rect, D_00357D68, panel->renderValue, ITF_PANEL_TINT_BORDER_WIDTH, command);
+}
 
 INCLUDE_ASM(const s32, "interface/itfPanel", DrawTestAlphaPrim);
 

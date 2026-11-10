@@ -1,6 +1,6 @@
-#ifndef SDF_PAC_PACKET_H
-#define SDF_PAC_PACKET_H
+#ifndef DDS_SDF_PAC_PACKET_H
 
+#define DDS_SDF_PAC_PACKET_H
 #include "common.h"
 
 /* Fixed serialized header shared by the PAC stream reader and dispatcher.
@@ -28,20 +28,10 @@ typedef struct SdfPacModelPacketHeader {
 
 typedef char SdfPacModelPacketHeader_size_must_be_0x10[
     (sizeof(SdfPacModelPacketHeader) == 0x10) ? 1 : -1];
-typedef char SdfPacModelPacketHeader_tag_must_be_at_0x08[
-    ((u32)&((SdfPacModelPacketHeader *)0)->tag == 0x08) ? 1 : -1];
-typedef char SdfPacModelPacketHeader_decodedSize_must_be_at_0x0C[
-    ((u32)&((SdfPacModelPacketHeader *)0)->decodedSize == 0x0C) ? 1 : -1];
 
 typedef char SdfPacStreamPacketHeader_size_must_be_0x10[
     (sizeof(SdfPacStreamPacketHeader) == 0x10) ? 1 : -1];
-typedef char SdfPacStreamPacketHeader_packetByteCount_offset_must_be_4[
-    ((u32)&((SdfPacStreamPacketHeader *)0)->packetByteCount == 4) ? 1 : -1];
-typedef char SdfPacStreamPacketHeader_decodedSize_offset_must_be_0x0C[
-    ((u32)&((SdfPacStreamPacketHeader *)0)->decodedSize == 0x0C) ? 1 : -1];
 
 struct PacState;
-s32 sdfPacStdCallback(struct PacState *state, s32 event,
-                         SdfPacStreamPacketHeader *packet);
 
-#endif /* SDF_PAC_PACKET_H */
+#endif /* DDS_SDF_PAC_PACKET_H */

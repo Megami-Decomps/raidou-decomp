@@ -1,6 +1,6 @@
-#ifndef FILE_PROMPT_REVEAL_RESULT_H
-#define FILE_PROMPT_REVEAL_RESULT_H
+#ifndef DDS_FILE_PROMPT_REVEAL_RESULT_H
 
+#define DDS_FILE_PROMPT_REVEAL_RESULT_H
 #include "common.h"
 
 /* Prompt text stays hidden during the panel reveal, then becomes ready. */
@@ -11,4 +11,4 @@ enum {
     FILE_PROMPT_REVEAL_READY = 1,
 };
 
-#endif /* FILE_PROMPT_REVEAL_RESULT_H */
+#endif /* DDS_FILE_PROMPT_REVEAL_RESULT_H */

@@ -1,10 +1,6 @@
-#ifndef SDF_THREAD_SLEEP_H
-#define SDF_THREAD_SLEEP_H
+#ifndef DDS_SDF_THREAD_SLEEP_H
 
+#define DDS_SDF_THREAD_SLEEP_H
 #include "common.h"
 
-/* Record the current thread, lower its priority for sleep, and return the
- * result from the SDK SleepThread call. */
-s32 sdfSetMainThreadPriority(void);
-
-#endif /* SDF_THREAD_SLEEP_H */
+#endif /* DDS_SDF_THREAD_SLEEP_H */

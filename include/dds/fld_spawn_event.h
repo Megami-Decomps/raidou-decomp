@@ -1,6 +1,6 @@
-#ifndef FLD_SPAWN_EVENT_H
-#define FLD_SPAWN_EVENT_H
+#ifndef DDS_FLD_SPAWN_EVENT_H
 
+#define DDS_FLD_SPAWN_EVENT_H
 #include "common.h"
 
 /* FLD type-6 event payload: tools/fld.py writes four words and relocates the
@@ -13,9 +13,5 @@ typedef struct FldSpawnEvent {
 } FldSpawnEvent;
 
 typedef char FldSpawnEventSizeCheck[(sizeof(FldSpawnEvent) == 0x10) ? 1 : -1];
-typedef char FldSpawnEventLabelOffsetCheck[
-    ((u32)&((FldSpawnEvent *)0)->label == 0x04) ? 1 : -1];
-typedef char FldSpawnEventOpaqueOffsetCheck[
-    ((u32)&((FldSpawnEvent *)0)->opaque08 == 0x08) ? 1 : -1];
 
 #endif

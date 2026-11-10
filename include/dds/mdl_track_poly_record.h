@@ -1,6 +1,6 @@
-#ifndef MDL_TRACK_POLY_RECORD_H
-#define MDL_TRACK_POLY_RECORD_H
+#ifndef DDS_MDL_TRACK_POLY_RECORD_H
 
+#define DDS_MDL_TRACK_POLY_RECORD_H
 #include "common.h"
 
 /* Accessed fields in the viewer's kind-3 track-poly record. This view reads
@@ -18,4 +18,4 @@ typedef struct MdlTrackPolyRecordView {
     u32 gradientColors[4]; /* +0x18: copied to EffTrackPolyParams */
 } MdlTrackPolyRecordView;
 
-#endif /* MDL_TRACK_POLY_RECORD_H */
+#endif /* DDS_MDL_TRACK_POLY_RECORD_H */

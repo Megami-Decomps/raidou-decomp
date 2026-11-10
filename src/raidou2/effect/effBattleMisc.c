@@ -324,6 +324,91 @@ void effBTLModelCheckBoundsHide(nbFormation_t *pFormation, sdfVector4_t *w, sdfV
                                 sdfVector4_t *pTarget, f32 pEye, f32 pUp);
 /* End of declarations from src/smt3/effect/effBattleMisc.c */
 
+/* Declarations from dds-decomp src/dds1/effect/effBattleMisc.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#include "dds/sdf_projection.h"
+
+#include "dds/common.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/sdf_vu_rotation_axes.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/btl_effect_position.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/sdf_vu_transform_api.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/sdf_vu_matrix_multiply_api.h"
+
+#include "dds/btl.h"
+
+#include "dds/eff.h"
+
+#include "dds/eff_field_color.h"
+
+#include "dds/eff_battle_transition_duration.h"
+
+extern u32 effBTLFieldColorGetVariantSelector(void);
+
+#include "dds/dds3_world_primary.h"
+
+struct dds3Basic_t;
+
+extern void dds3CameraObjectBasicLoadWorldEyeIntoVu(struct dds3Basic_t *object);
+
+extern f32 effBattleAnchorHeightFactors[];
+
+extern f32 btlMeasureEffectTargetGroupBounds(s32 mask, f32 *outMaxTop, f32 *outMinTop);
+
+extern u32 effBTLFieldColorGetOverrideSelector(void);
+
+extern u32 effBTLFieldColorGetFinalSelector(void);
+
+extern void effBattleComputeTargetPosition(BtlUnit *unit, EffectVectorRequest *request);
+
+extern f32 btlGetMaxUnitTop(u32 mask);
+
+extern f32 btlGetExtremeUnitY(u32 mask);
+
+void effBattleMiscCallByOwnerA(u32 unused, EffectVectorRequest *request);
+
+void effBattleMiscCallByFinalSelector(u32 unused, EffectVectorRequest *request);
+
+void effApplyOverrideActorEffectParameter(u32 unused, EffectVectorRequest *request);
+
+void effApplyFinalActorEffectParameter(u32 unused, EffectVectorRequest *request);
+
+/* Query a unit-relative target position; camera-facing kinds use the view basis. */
+void effBattleComputeTargetPosition(BtlUnit *unit, EffectVectorRequest *request);
+
+void effBattleMiscQueryMaskedTargetPosition(u32 actorFlagsMask, EffectVectorRequest *request);
+
+void effBattleMiscQueryOriginalTargetPosition(u32 unused, EffectVectorRequest *request);
+
+void effBattleMiscQueryVariantTargetPosition(u32 unused, EffectVectorRequest *request);
+
+/* Target offset for a unit part; the vector is returned in vf10. */
+void effBattleMiscBuildUnitPartOffsetVU(BtlUnit *unit, EffectVectorRequest *request);
+
+void effBattleMiscApplyParamByte(BtlUnit *owner, EffectVectorRequest *request);
+
+f32 effBattleMiscQueryScalar(const BtlUnit *unit, const EffectVectorRequest *request);
+
+/* Unit vector from the queried position to the unit's effect or muzzle position. */
+void effBattleMiscDirectionTo(BtlUnit *unit, EffectVectorRequest *request, f32 *out);
+
+EffBattleTransitionDuration effBattleMiscGetTableEntry(EffBattleTransitionDurationIndex durationIndex);
+/* End of declarations from src/dds1/effect/effBattleMisc.c */
+
 /* The selected position provider leaves its vector in vf10. */
 void effBTLPartGetPositionPtr(nbFormation_t *pFormation, effBTLAimParams_t *pPosPtr, sdfVector4_t *pPos) {
     GetPositionPtrTable[pPosPtr->scaleKind](pFormation, pPosPtr);
@@ -346,9 +431,19 @@ void func_002014B8(void) {
 void func_002014C0(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", effBattleMiscQueryOriginalTargetPosition);
+void effBattleMiscQueryOriginalTargetPosition(u32 unused, EffectVectorRequest *request) {
+    BtlUnit *ctx = (BtlUnit *)effBTLSkillGetInvokeFormation();
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", effBattleMiscQueryVariantTargetPosition);
+    (void)unused;
+    effBattleMiscQueryMaskedTargetPosition(ctx->status.flags & 0xE00, request);
+}
+
+void effBattleMiscQueryVariantTargetPosition(u32 unused, EffectVectorRequest *request) {
+    BtlUnit *ctx = (BtlUnit *)effBTLFieldColorGetVariantSelector();
+
+    (void)unused;
+    effBattleMiscQueryMaskedTargetPosition(ctx->status.flags & 0xE00, request);
+}
 
 INCLUDE_ASM(const s32, "effect/effBattleMisc", func_00201528);
 

@@ -1,7 +1,8 @@
-#ifndef FLD_SKY_BUFFER_H
-#define FLD_SKY_BUFFER_H
+#ifndef DDS_FLD_SKY_BUFFER_H
 
+#define DDS_FLD_SKY_BUFFER_H
 #include "common.h"
+
 #include "fld_light_set.h"
 
 /* The packed resource has both a raw transfer view and a light-set table view. */
@@ -13,6 +14,7 @@ typedef union FldSkyBuffer {
 typedef char FldSkyBufferSizeCheck[sizeof(FldSkyBuffer) == 0xE000 ? 1 : -1];
 
 extern FldSkyBuffer *fldSkyLightSetBuffer;
+
 void fldUploadSkyBuffer(const FldSkyBuffer *source);
 
 #endif

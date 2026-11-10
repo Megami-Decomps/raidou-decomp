@@ -1,9 +1,10 @@
-#ifndef BTL_SCENE_FADE_H
-#define BTL_SCENE_FADE_H
+#ifndef DDS_BTL_SCENE_FADE_H
 
+#define DDS_BTL_SCENE_FADE_H
 #include "common.h"
 
 typedef s32 BtlSceneSlotCount;
+
 typedef s32 BtlSceneFadingRecordIndex;
 
 /* The scene-slot fade root is allocated and cleared as 0xD8 bytes.
@@ -28,11 +29,15 @@ typedef struct SceneSlotFadeWork {
 } SceneSlotFadeWork;
 
 typedef char SceneSlotFadeWork_size[(sizeof(SceneSlotFadeWork) == 0xD8) ? 1 : -1];
+
 typedef char SceneSlotFadeWork_phase_offset[((unsigned long)&((SceneSlotFadeWork *)0)->phase == 0x22) ? 1 : -1];
+
 typedef char SceneSlotFadeWork_fade_offset[((unsigned long)&((SceneSlotFadeWork *)0)->fade == 0x38) ? 1 : -1];
 
 #define ACTOR_SLOT_ORDER_FLAG_SCENE7_TRANSITION_MODE 0x1000
+
 #define ACTOR_SLOT_ORDER_PENDING_SLOT_MASK 0x0FFF
+
 #define ACTOR_SLOT_ORDER_MODE_BITS_MASK 0xF000
 
 /* Both bank buffers are allocated and cleared as 0x274 bytes. Existing
@@ -61,29 +66,43 @@ typedef struct ActorSlotOrder {
     s32 slotValues[8][2];
     f32 scalePercent[8][2];
 } ActorSlotOrder;
+
 typedef char ActorSlotOrder_size[(sizeof(ActorSlotOrder) == 0x274) ? 1 : -1];
+
 #ifdef VERSION_DDS2
+
 typedef char ActorSlotOrder_transitionFlags_offset[
     ((unsigned long)&((ActorSlotOrder *)0)->transitionFlags == 0x02) ? 1 : -1];
+
 #endif
+
 typedef char ActorSlotOrder_slotFade_offset[((unsigned long)&((ActorSlotOrder *)0)->slotFade == 0x2C) ? 1 : -1];
+
 typedef char ActorSlotOrder_rotationAngleDegrees_offset[
     ((unsigned long)&((ActorSlotOrder *)0)->rotationAngleDegrees == 0x6C) ? 1 : -1];
+
 typedef char ActorSlotOrder_drawOffsetScalePercent_offset[
     ((unsigned long)&((ActorSlotOrder *)0)->drawOffsetScalePercent == 0x8C) ? 1 : -1];
+
 typedef char ActorSlotOrder_drawOffsets_offset[((unsigned long)&((ActorSlotOrder *)0)->drawOffsets == 0x134) ? 1 : -1];
+
 typedef char ActorSlotOrder_slotValues_offset[((unsigned long)&((ActorSlotOrder *)0)->slotValues == 0x1F4) ? 1 : -1];
+
 typedef char ActorSlotOrder_scalePercent_offset[((unsigned long)&((ActorSlotOrder *)0)->scalePercent == 0x234) ? 1 : -1];
 
 typedef char ActorSlotOrder_secondaryState_offset[((unsigned long)&((ActorSlotOrder *)0)->secondaryState == 0xAC) ? 1 : -1];
+
 typedef char ActorSlotOrder_colorAdjustments_offset[((unsigned long)&((ActorSlotOrder *)0)->colorAdjustments == 0xB4) ? 1 : -1];
 
 /* Copy the selected fixed order into its actor-slot bank. */
 void btlInitializeActorSlotOrder(s32 selector, s32 count);
+
 /* Return occupied scene slots, refreshing cached fade-kind counts as needed. */
 BtlSceneSlotCount btlCountSceneSlots(void);
+
 /* The output is the last fading-record index, including -1 for an empty list. */
 struct BtlState;
+
 BtlSceneSlotCount fldCountSceneFadeKinds(
     struct BtlState *scene, BtlSceneFadingRecordIndex *outLastFadeIndex);
 

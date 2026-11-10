@@ -1,14 +1,20 @@
-#ifndef ITF_H
-#define ITF_H
+#ifndef DDS_ITF_H
 
+#define DDS_ITF_H
 #include "common.h"
+
 #include "itf_mes_window_index.h"
+
 #include "itf_mes_resource.h"
+
 #include "eff.h"
+
 #include "sdf.h"
+
 #include "fr_font.h"
 
 typedef s16 BtlFadePhase;
+
 enum {
     BTL_FADE_PHASE_ALPHA_RISING = 0,
     BTL_FADE_PHASE_ALPHA_FALLING = 1
@@ -25,12 +31,10 @@ typedef struct BtlFade {
 } BtlFade;
 
 typedef char BtlFade_size_must_be_0x0C[(sizeof(BtlFade) == 0x0C) ? 1 : -1];
-typedef char BtlFade_textAdvanceFrameCount_offset_must_be_0x08[
-    ((u32)&((BtlFade *)0)->textAdvanceFrameCount == 0x08) ? 1 : -1];
 
 /* Common draw record allocated by the interface object constructors (0x40). */
 /* Allocation fields own general-heap descriptors, not retained payload addresses. */
-typedef struct itfpanel_t {
+typedef struct dds_itfpanel_t {
     sdfMemHandle_t *allocation;
     sdfMemHandle_t *payloadAllocation;
     u32 *payload;
@@ -49,7 +53,7 @@ typedef struct itfpanel_t {
     s32 alpha;
     u8 kind; /* Unsigned index into the panel handler tables. */
     u8 pad3D[3];
-} itfpanel_t;
+} dds_itfpanel_t;
 
 /* Font items use their own 0x2C-byte pool, separate from parent chains. */
 typedef struct _TEXT {
@@ -107,12 +111,8 @@ typedef struct _TEXT {
 
 typedef char FrFontChildGlyph_size_must_be_0x2C[
     sizeof(_TEXT) == 0x2C ? 1 : -1];
-typedef char FrFontChildGlyph_owner_offsets[
-    ((u32)&((_TEXT *)0)->cellDimensions == 0x18 &&
-     (u32)&((_TEXT *)0)->cachedItem == 0x1C &&
-     (u32)&((_TEXT *)0)->sourceItem == 0x20 &&
-     (u32)&((_TEXT *)0)->next == 0x28) ? 1 : -1];
 
+#if !defined(SMT3_DEFINES__FRQ)
 /* Parent chain heads use the 0x44-byte glyph pool and own child-item links. */
 typedef struct _FRQ {
     union {
@@ -167,14 +167,10 @@ typedef struct _FRQ {
     s32 remainingWaitFrames; /* F215 uses 0xFFFF for title-sound completion. */
     s32 contextModeEnabled;
 } _FRQ;
+#endif
 
 typedef char FrFontGlyph_size_must_be_0x44[
     sizeof(_FRQ) == 0x44 ? 1 : -1];
-typedef char FrFontGlyph_owner_offsets[
-    ((u32)&((_FRQ *)0)->childCount == 0x18 &&
-     (u32)&((_FRQ *)0)->firstChild == 0x1C &&
-     (u32)&((_FRQ *)0)->lastChild == 0x20 &&
-     (u32)&((_FRQ *)0)->chainHead == 0x2C) ? 1 : -1];
 
 /* Encoded message controls consumed by the glyph timing/lipsync state. */
 typedef enum ItfGlyphControlCode {
@@ -215,14 +211,7 @@ typedef struct FrFontTextBank {
     FrFontTextIndex entries[1];
 } FrFontTextBank;
 
-void frSetDrawSpeed(_FRQ *glyph, s32 inputValue);
 void frFontEnableContextMode(_FRQ *glyph);
-void frSetFontSpace(_FRQ *glyph, s32 spacing);
-void frSetDrawPosition(_FRQ *glyph, s32 x, s32 y);
-void frSetPriority(_FRQ *glyph, u32 unshiftedValue);
-void frSetFontColor(_FRQ *parentGlyph, u32 colorWord);
-void frSetFontColorNo(_FRQ *glyph, u8 firstOption);
-void frSetFontSize(_FRQ *glyph, s32 cellAdvance, s32 cellHeight);
 
 typedef struct ItfMesBlk14 {
     u32 x;
@@ -247,8 +236,6 @@ typedef struct ItfMesEntryBlock {
 
 typedef char ItfMesEntryBlock_size_must_be_0x1C[
     (sizeof(ItfMesEntryBlock) == 0x1C) ? 1 : -1];
-typedef char ItfMesEntryBlock_textInterfaceMask_offset_must_be_0x11[
-    ((u32)&((ItfMesEntryBlock *)0)->textInterfaceMask == 0x11) ? 1 : -1];
 
 typedef struct ItfMesOption {
     s16 id;
@@ -257,6 +244,7 @@ typedef struct ItfMesOption {
 
 /* Sound-option chooser lifecycle; completion preserves the signed -1 sentinel. */
 typedef s16 ItfSoundSelectionState;
+
 enum {
     ITF_SOUND_SELECTION_STATE_INACTIVE = 0,
     ITF_SOUND_SELECTION_STATE_OPENING = 1,
@@ -284,9 +272,9 @@ typedef struct ItfMesBlk40 {
 
 /* The three sprite records occupy +0xA4/+0xA8/+0xAC in the window state. */
 typedef struct ItfMesBlkA4 {
-    itfpanel_t *frame;
-    itfpanel_t *sprite;
-    itfpanel_t *overlay;
+    dds_itfpanel_t *frame;
+    dds_itfpanel_t *sprite;
+    dds_itfpanel_t *overlay;
     s32 bounds[4];
     s32 red;
     s32 green;
@@ -299,7 +287,7 @@ typedef struct ItfMesTextSlots {
     sdfMemHandle_t *handles[0x20];
 } ItfMesTextSlots;
 
-typedef struct instanceMes_tag {
+typedef struct dds_instanceMes_tag {
     u32 flags;
     ItfMesSub *sub;
     u8 *temporaryFontEntry; /* 0x08: relocated font resource bytes from the MSG1 trailing entry. */
@@ -314,42 +302,27 @@ typedef struct instanceMes_tag {
     ItfMesTextSlots textSlots;
     BtlFade fade;
     void (*entryGlyphCallback)(void);
-} instanceMes_tag;
-
-typedef char ItfMesState_temporaryFontEntry_offset_must_be_0x08[
-    ((u32)&((instanceMes_tag *)0)->temporaryFontEntry == 0x08) ? 1 : -1];
+} dds_instanceMes_tag;
 
 typedef struct ItfMesSlot {
-    instanceMes_tag *mes;
+    dds_instanceMes_tag *mes;
     u8 unk4[0x10];
 } ItfMesSlot;
 
-void InitializeSpeaker(ItfMesBlk14 *cursor, s32 resetPosition);
-void InitializeMessage(ItfMesEntryBlock *cursor, s32 resetPosition);
-
 _FRQ *itfMesBuildNodeRows(const u32 *items, s32 itemCount, u32 mask,
     s32 x, s32 y, s32 renderValue);
-_FRQ *UnchainFontHandleUnit(_FRQ *glyph, s32 from, s32 to);
-_FRQ *GetLastLinkFontHandle(_FRQ *glyph);
-void ChangeZBuffer(_FRQ *glyph, s32 renderValue);
-void ChangeFontAlpha(_FRQ *glyph, u32 color);
-s32 CountLineMessage(_FRQ *last, _FRQ *first);
-void GetLastMessagePara(_FRQ *glyph, ItfMesEntryBlock *entryBlock);
+
 void itfMesEnableUnflaggedNodeContexts(_FRQ *glyph);
 
-void itfPnlRelease(itfpanel_t *sprite);
-/* Decode from borrowed encoded bytes; request helpers do not mutate or retain the source. */
-_FRQ *MessageRequest(s32 x, s32 y, const u8 *encodedText, _FRQ *sub);
-_FRQ *MessageRequestEx(s32 x, s32 y, s32 channel0, s32 channel1,
-    s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *sub);
-_FRQ *MessageRequestEx2(s32 x, s32 y, s32 depth, s32 channel0,
-    s32 channel1, s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *sub);
 _FRQ *itfDrawColor(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1,
     s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *unusedSub);
+
 _FRQ *itfDrawPlainEncodedTextWithByteColors(s32 x, s32 y, s32 depth,
     s32 channel0, s32 channel1, s32 channel2, s32 channel3,
     const u8 *encodedText, _FRQ *unusedSub);
+
 s32 frFontDrawGlyphInDefaultMode(_FRQ *glyph);
+
 s32 frFontDrawGlyphWithSharedFlags(_FRQ *glyph, s8 mode);
 
 /* The message manager owns a fixed pool of 64 windows in this 0x520-byte bank. */
@@ -357,7 +330,7 @@ typedef struct mesflow_tag {
     struct mesflow_tag *previous;
     struct mesflow_tag *next;
     ItfMesWindowIndex index;
-    instanceMes_tag *state;
+    dds_instanceMes_tag *state;
     sdfMemHandle_t *resourceHandle;
 } mesflow_tag;
 
@@ -386,34 +359,9 @@ typedef struct ItfMesGlobals {
 } ItfMesGlobals;
 
 typedef char ItfMesPoolNode_size_must_be_0x14[(sizeof(mesflow_tag) == 0x14) ? 1 : -1];
-typedef char ItfMesPoolNode_resourceHandle_offset_must_be_0x10[
-    ((u32)&((mesflow_tag *)0)->resourceHandle == 0x10) ? 1 : -1];
+
 typedef char ItfMesPool_size_must_be_0x10[(sizeof(ItfMesPool) == 0x10) ? 1 : -1];
+
 typedef char ItfMesGlobals_size_must_be_0x520[(sizeof(ItfMesGlobals) == 0x520) ? 1 : -1];
 
-/* Native interior symbols alias these fields without allocating another object. */
-typedef char ItfMesGlobals_windowTexture_offset_must_be_0x4[
-    ((u32)&((ItfMesGlobals *)0)->windowTexture == 0x4) ? 1 : -1];
-typedef char ItfMesGlobals_flags_offset_must_be_0xC[
-    ((u32)&((ItfMesGlobals *)0)->flags == 0xC) ? 1 : -1];
-typedef char ItfMesGlobals_pool_offset_must_be_0x10[
-    ((u32)&((ItfMesGlobals *)0)->pool == 0x10) ? 1 : -1];
-typedef char ItfMesGlobals_nodes_offset_must_be_0x20[
-    ((u32)&((ItfMesGlobals *)0)->nodes == 0x20) ? 1 : -1];
-typedef char ItfMesGlobals_firstStateAddress_offset_must_be_0x2C[
-    ((u32)&((ItfMesGlobals *)0)->nodes[0].state == 0x2C) ? 1 : -1];
-
-
-/* Message-window pool operations move nodes between the free and active lists.
- * Acquire returns NULL when the free list is empty; release expects an active
- * node belonging to the supplied pool and appends it to the free-list tail. */
-void itfMiscLinkInitialize(ItfMesPool *pool, mesflow_tag *nodes, s32 count, s32 stride);
-mesflow_tag *itfMiscLinkTake(ItfMesPool *pool);
-void itfMiscLinkGive(mesflow_tag *node, ItfMesPool *pool);
-
-/* Return a retained texture handle after releasing the temporary asset allocation. */
-sdfTexHandle_t *itfMiscLoadTexture(const char *path);
-
-
-
-#endif /* ITF_H */
+#endif /* DDS_ITF_H */

@@ -1,6 +1,6 @@
-#ifndef EFF_BLOCK128_H
-#define EFF_BLOCK128_H
+#ifndef DDS_EFF_BLOCK128_H
 
+#define DDS_EFF_BLOCK128_H
 #include "common.h"
 
 /* A 128-byte block the effect code copies whole (the effect file queue's saved state). */

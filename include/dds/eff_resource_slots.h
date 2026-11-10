@@ -1,16 +1,22 @@
-#ifndef EFF_RESOURCE_SLOTS_H
-#define EFF_RESOURCE_SLOTS_H
+#ifndef DDS_EFF_RESOURCE_SLOTS_H
 
+#define DDS_EFF_RESOURCE_SLOTS_H
 #include "common.h"
 
 #ifndef VERSION_DDS2
+
 #include "eff_mapped_resource_destroy_result.h"
+
 #endif
 
 struct EffectSlotSet;
+
 struct sdfMemHandle_t;
+
 struct EffMappedResource;
+
 struct EffMappedRecord;
+
 struct EffTimedState;
 
 /* EffTimedState.flags bits used by phase initialization and endpoint handling. */
@@ -28,30 +34,43 @@ enum EffTimedStateFlag {
 u32 effSetSlotIndexedResource(struct EffTimedState *target,
                               struct EffMappedResource *resources, s32 item,
                               u32 flags);
+
 u32 effSetSlotResourceAndFlags(struct EffTimedState *target,
                                struct EffMappedRecord *resource, u32 flags);
 
 struct EffMappedResource *effCreateStatusBatch(u32 category);
+
 /* Frees record status buffers, backing storage and the batch header; returns 1. */
+
 #ifdef VERSION_DDS2
+
 s32 effDestroyPackedBatch(struct EffMappedResource *batch);
+
 #else
+
 EffMappedResourceDestroyResult effDestroyPackedBatch(struct EffMappedResource *batch);
+
 #endif
+
 /* Serialized source bytes are borrowed; async mapped-resource outputs hold typed pointers. */
 struct EffMappedResource *effCreateMappedResource(const u8 *source);
+
 struct EffMappedResource *effLoadMappedResource(const char *base, const char *name);
+
 /* The request writes an owned batch to outMappedResource on completion. The
  * caller lends that slot until the callback finishes, so its storage must
  * outlive the pending request. */
 void effRequestMappedResource(const char *base, const char *name,
                               struct EffMappedResource **outMappedResource);
 
-
 #ifdef VERSION_DDS2
+
 struct EffectSlotSet *effLoadIndexedResource(const char *base, const char *name, s32 keepAllocation);
+
 #else
+
 struct EffectSlotSet *effLoadIndexedResource(const char *base, const char *name, u32 keepAllocation);
+
 #endif
 
 /* Nonzero keepAllocation transfers the source descriptor to the returned owner. */
@@ -61,50 +80,75 @@ struct EffectSlotSet *effCreateResourceSlotSetFromAllocation(
 /* The view owns its descriptions/work and borrows source's texture references; source must outlive it. */
 struct EffectSlotSet *effCreateResourceSlotSet(struct EffectSlotSet *borrowedSource,
                                                u32 slot, u32 count);
+
 u32 effReleaseSlotWorkAllocation(struct EffectSlotSet *owner);
+
 void effInitializeAllSlotWork(struct EffectSlotSet *owner);
+
 void effAttachSlotWorkOwner(struct EffectSlotSet *owner, s32 slotIndex,
                             void *payload);
+
 void effResetSlotWork(struct EffectSlotSet *owner, u32 slotIndex);
+
 /* Payloads may be full work entries or 0x6C-byte alternate records. */
 u32 effSetMaterialSlots(struct EffectSlotSet *owner, s32 slotIndex,
                         u32 materialFlags, void *payload);
+
 u32 effSetSlotOverrideWork(struct EffectSlotSet *owner, s32 slotIndex, void *payload);
+
 void effResolveAndReleaseResource(struct EffectSlotSet *owner);
+
 void effResolveAndReleaseSelectedResource(struct EffectSlotSet *owner, s32 slot);
+
 void effInitializeSlotWork(struct EffectSlotSet *owner, s32 slotIndex);
+
 void effInitializeSlotWorkFromDescription(struct EffectSlotSet *owner, s32 slotIndex,
                                           void *payload);
+
 #ifdef VERSION_DDS2
+
 void effReleaseSlotTextureReferencesAndResetWork(struct EffectSlotSet *owner, s32 preserveWork);
+
 #endif
+
 void effReleaseTextureHandlesAndResetSlots(struct EffectSlotSet *owner);
+
 u8 effHasFirstTextureHandle(const struct EffectSlotSet *owner);
+
 u32 effDestroyResourceSlotSet(struct EffectSlotSet *owner);
 
 #ifdef VERSION_DDS2
+
 s32 effConfigureIndexedSlotResource(struct EffectSlotSet *owner, u32 slot,
                                     struct EffMappedResource *resources, u32 item,
                                     u32 flags);
+
 #else
+
 u32 effConfigureIndexedSlotResource(struct EffectSlotSet *owner, s32 slot,
                                     struct EffMappedResource *resources, s32 item,
                                     u32 flags);
+
 #endif
 
 #ifdef VERSION_DDS2
+
 s32 effConfigureIndexedSlotMaterial(struct EffectSlotSet *owner, u32 slot,
                                     struct EffMappedResource *resources, u32 item,
                                     u32 materialFlags, u32 materialValue,
                                     u32 stateFlags);
+
 #else
+
 u32 effConfigureIndexedSlotMaterial(struct EffectSlotSet *owner, s32 slot,
                                     struct EffMappedResource *resources, s32 item,
                                     u32 materialFlags, u32 materialValue,
                                     u32 stateFlags);
+
 #endif
+
 u32 effConfigureWithDefaultSetting(struct EffectSlotSet *owner, u32 slot,
                                    struct EffMappedResource *resources, u32 item,
                                    u32 materialFlags, u32 stateFlags);
 
-#endif /* EFF_RESOURCE_SLOTS_H */
+#endif /* DDS_EFF_RESOURCE_SLOTS_H */

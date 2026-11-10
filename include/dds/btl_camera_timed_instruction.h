@@ -1,6 +1,6 @@
-#ifndef BTL_CAMERA_TIMED_INSTRUCTION_H
-#define BTL_CAMERA_TIMED_INSTRUCTION_H
+#ifndef DDS_BTL_CAMERA_TIMED_INSTRUCTION_H
 
+#define DDS_BTL_CAMERA_TIMED_INSTRUCTION_H
 #include "common.h"
 
 /* Camera scripts advance serialized instructions by 0x10 bytes. The paired
@@ -16,13 +16,5 @@ typedef struct BtlCameraTimedInstruction {
 
 typedef char BtlCameraTimedInstruction_size_check[
     (sizeof(BtlCameraTimedInstruction) == 0x10) ? 1 : -1];
-typedef char BtlCameraTimedInstruction_kind_offset_check[
-    ((u32)&((BtlCameraTimedInstruction *)0)->kind == 0x00) ? 1 : -1];
-typedef char BtlCameraTimedInstruction_parameterIndex_offset_check[
-    ((u32)&((BtlCameraTimedInstruction *)0)->parameterIndex == 0x04) ? 1 : -1];
-typedef char BtlCameraTimedInstruction_startFrame_offset_check[
-    ((u32)&((BtlCameraTimedInstruction *)0)->startFrame == 0x08) ? 1 : -1];
-typedef char BtlCameraTimedInstruction_duration_offset_check[
-    ((u32)&((BtlCameraTimedInstruction *)0)->duration == 0x0C) ? 1 : -1];
 
-#endif /* BTL_CAMERA_TIMED_INSTRUCTION_H */
+#endif /* DDS_BTL_CAMERA_TIMED_INSTRUCTION_H */

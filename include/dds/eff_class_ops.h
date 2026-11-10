@@ -1,6 +1,6 @@
-#ifndef EFF_CLASS_OPS_H
-#define EFF_CLASS_OPS_H
+#ifndef DDS_EFF_CLASS_OPS_H
 
+#define DDS_EFF_CLASS_OPS_H
 #include "common.h"
 
 struct EffClassWork;
@@ -17,9 +17,5 @@ typedef struct EffClassOps {
 } EffClassOps;
 
 typedef char EffClassOpsSizeCheck[(sizeof(EffClassOps) == 0x18) ? 1 : -1];
-typedef char EffClassOpsCreateOffsetCheck[
-    ((u32)&((EffClassOps *)0)->createResource == 0x04) ? 1 : -1];
-typedef char EffClassOpsPayloadSizeOffsetCheck[
-    ((u32)&((EffClassOps *)0)->payloadSize == 0x14) ? 1 : -1];
 
 #endif

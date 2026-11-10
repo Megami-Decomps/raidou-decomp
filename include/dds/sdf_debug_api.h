@@ -1,9 +1,6 @@
-#ifndef SDF_DEBUG_API_H
-#define SDF_DEBUG_API_H
+#ifndef DDS_SDF_DEBUG_API_H
 
+#define DDS_SDF_DEBUG_API_H
 #include "common.h"
-
-/* SDK printf: the native provider returns vfprintf's result unchanged. */
-s32 printf(const char *format, ...);
 
 #endif

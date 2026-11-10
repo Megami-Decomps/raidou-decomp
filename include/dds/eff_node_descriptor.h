@@ -1,6 +1,6 @@
-#ifndef EFF_NODE_DESCRIPTOR_H
-#define EFF_NODE_DESCRIPTOR_H
+#ifndef DDS_EFF_NODE_DESCRIPTOR_H
 
+#define DDS_EFF_NODE_DESCRIPTOR_H
 #include "common.h"
 
 /* Complete serialized effect-resource header. The payload's size and format
@@ -18,11 +18,6 @@ typedef struct EffNodeDescriptor {
 typedef char EffNodeDescriptor_header_size_must_be_16[
     (sizeof(EffNodeDescriptor) == 0x10) ? 1 : -1];
 
-/* Applies the version-dependent payload compatibility fixes in place. */
-void dds3EffectDataRevision(EffNodeDescriptor *descriptor);
-
 struct EffNode;
-struct EffNode *dds3EffectLoad(EffNodeDescriptor *descriptor);
-struct EffNode *dds3EffectFileLoad(const char *resourceName);
 
 #endif

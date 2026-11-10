@@ -153,14 +153,9 @@ def cmd_rename(args):
 
 def cmd_pairs(args):
     sides = load_sides(args)
-    smt3 = {(r["version"], r["function"]) for r in rc.read_pairs(rc.OUT / "pairs.tsv")
-            if r["status"] == "identical" and r["function"] == r["smt3_name"]}
     lines = ["version\tsrc\tfunction\taddress\tsmt3_address\tsmt3_name\tsmt3_src\twords\tstatus"]
     for version in VERSIONS:
-        # SMT3's and dds-decomp's headers define the same types differently: no unit gets both.
-        smt3_units = {r["src"] for r in rc.read_pairs(rc.OUT / "pairs.tsv")
-                      if r["version"] == version and (version, r["function"]) in smt3}
-        rows = [r for r in verified(version, sides) if r[0] and r[5] and r[0] not in smt3_units]
+        rows = [r for r in verified(version, sides) if r[0] and r[5]]
         # One DDS game per unit: two VERSION_DDS macros in one TU select conflicting headers.
         votes = defaultdict(Counter)
         for src, unit, fn, addr, words, good in rows:
@@ -185,6 +180,31 @@ def cmd_pairs(args):
     (rc.OUT / "pairs_dds.tsv").write_text("\n".join(lines) + "\n")
 
 
+def smt3_guard(item):
+    """A type definition an SMT3 file also defines is skipped in TUs carrying that file."""
+    types = {n for k, n in rc.smt3_source_types()}
+    names = sorted({n for k, n in rc.declared_names(item) if k != "macro"} & types)
+    if not names or rc.is_object_decl(item):
+        return item
+    return "#if " + " && ".join(f"!defined(SMT3_DEFINES_{n})" for n in names) + "\n" + item + "\n#endif"
+
+
+def smt3_header(path):
+    """A dds-decomp header that gives way to SMT3's: what SMT3's headers define is dropped
+    and those headers included instead; the include guard gets a DDS_ prefix."""
+    text = rc.dds_rename(path.read_text(errors="replace"))
+    guard = rc.header_guard(text)
+    items, need = rc.defer_to_smt3(b for b in rc.blocks(text) if rc.declared_names(b) != {("macro", guard)})
+    items = [smt3_guard(i) for i in items]
+    text = "\n\n".join(items) + "\n"
+    if guard:
+        text = re.sub(rf"\b{guard}\b", f"DDS_{guard}", text)
+    head = "".join(f'#include "../{h}"\n' for h in need)
+    m = re.search(r"^\s*#\s*ifndef\s+\w+\s*\n", text, re.M) if guard else None
+    at = m.end() if m else 0
+    return text[:at] + (f"#define DDS_{guard}\n" if guard else "") + head + text[at:]
+
+
 def cmd_headers(args):
     """Copy the dds-decomp headers the TUs' DDS declaration blocks include (and theirs) into include/dds/."""
     rc.DDS = args.dds.expanduser().resolve()
@@ -202,7 +222,7 @@ def cmd_headers(args):
     for name in sorted(want):
         dst = out / name
         dst.parent.mkdir(parents=True, exist_ok=True)
-        text = (rc.DDS / "include" / name).read_text(errors="replace")
+        text = smt3_header(rc.DDS / "include" / name)
         if not dst.exists() or dst.read_text(errors="replace") != text:
             dst.write_text(text)
     for name in have - want:
@@ -210,10 +230,69 @@ def cmd_headers(args):
     print(f"{len(want)} dds-decomp headers in include/dds ({len(want - have)} new, {len(have - want)} removed)")
 
 
+def type_sizes(inc, includes, exprs, defines):
+    """sizeof(expr) for each expr that compiles after includes, with ee-gcc's cc1 and include dir inc."""
+    import shlex
+    import subprocess
+    import tempfile
+    sys.path.insert(0, str(ROOT))
+    import configure
+    exprs, out = list(exprs), {}
+    with tempfile.TemporaryDirectory() as tmp:
+        src, asm = Path(tmp) / "probe.c", Path(tmp) / "probe.s"
+        while exprs:
+            src.write_text("".join(f'#include "{i}"\n' for i in includes)
+                           + "".join(f"const int probe_{i} = sizeof({e});\n" for i, e in enumerate(exprs)))
+            cmd = ["tools/glibc32/ld-linux.so.2", "--library-path", "tools/glibc32", str(configure.CC1),
+                   *shlex.split(configure.CC1_DEFINES), f"-I{inc}", "-DSKIP_ASM", *defines, *shlex.split(configure.CC1_FLAGS),
+                   str(src), "-o", str(asm)]
+            r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+            if r.returncode == 0:
+                vals = re.findall(r"^probe_(\d+):\s*\n\s*\.word\s+(\d+)", asm.read_text(), re.M)
+                out.update({exprs[int(i)]: int(v) for i, v in vals})
+                break
+            bad = {int(n) - len(includes) - 1 for n in re.findall(r"probe\.c:(\d+):", r.stderr)}
+            bad = {exprs[i] for i in bad if 0 <= i < len(exprs)}
+            if not bad:
+                print(f"{includes[-1]}: does not compile", file=sys.stderr)
+                break  # an include itself fails
+            exprs = [e for e in exprs if e not in bad]
+    return out
+
+
+def cmd_layouts(args):
+    """Types dds-decomp and SMT3 both define, with another size in DDS1 or DDS2: the list
+    config/dds_types.txt holds (the DDS types the carried code uses as dds_<name>)."""
+    dds_inc = args.dds.expanduser().resolve() / "include"
+    smt3 = rc.smt3_header_names()
+    want = defaultdict(set)
+    for h in sorted(dds_inc.rglob("*.h")):
+        for b in rc.blocks(h.read_text(errors="replace")):
+            cv = rc.code_view(b).strip()
+            for kind, name in rc.declared_names(b):
+                if (kind, name) not in smt3:
+                    continue
+                if kind == "tag" and (m := re.search(rf"\b(struct|union)\s+{name}\s*\{{", cv)):
+                    want[h.relative_to(dds_inc).as_posix()].add((name, f"{m.group(1)} {name}"))
+                elif kind == "ident" and cv.startswith("typedef") and not re.search(r"\(\s*\*", cv):
+                    want[h.relative_to(dds_inc).as_posix()].add((name, name))
+    exprs = sorted({e for pairs in want.values() for _, e in pairs})
+    smt3_inc = ROOT / "include"
+    base = type_sizes(smt3_inc, sorted(p.name for p in smt3_inc.glob("*.h")), exprs, ["-DVERSION_RAIDOU1"])
+    differ = set()
+    for game in ("DDS1", "DDS2"):
+        for h, pairs in sorted(want.items()):
+            got = type_sizes(dds_inc, [h], sorted(e for _, e in pairs), [f"-DVERSION_{game}=1"])
+            differ |= {n for n, e in pairs if e in got and e in base and got[e] != base[e]}
+    for name in sorted(differ, key=str.lower):
+        print(name)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name, func in (("names", cmd_names), ("rename", cmd_rename), ("pairs", cmd_pairs), ("headers", cmd_headers)):
+    for name, func in (("names", cmd_names), ("rename", cmd_rename), ("pairs", cmd_pairs), ("headers", cmd_headers),
+                       ("layouts", cmd_layouts)):
         p = sub.add_parser(name)
         p.add_argument("--dds", type=Path, default=rc.DDS, help="dds-decomp checkout, configured (split)")
         p.set_defaults(func=func)

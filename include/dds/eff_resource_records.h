@@ -1,6 +1,6 @@
-#ifndef EFF_RESOURCE_RECORDS_H
-#define EFF_RESOURCE_RECORDS_H
+#ifndef DDS_EFF_RESOURCE_RECORDS_H
 
+#define DDS_EFF_RESOURCE_RECORDS_H
 #include "common.h"
 
 struct sdfMemHandle_t;
@@ -24,6 +24,7 @@ typedef struct EffMappedResource {
 } EffMappedResource;
 
 typedef char EffMappedRecord_size_must_be_0x24[(sizeof(EffMappedRecord) == 0x24) ? 1 : -1];
+
 typedef char EffMappedResource_size_must_be_0x0C[(sizeof(EffMappedResource) == 0x0C) ? 1 : -1];
 
 /* Header for count 0x6C-byte records; allocation is retained as a resource handle. */
@@ -33,4 +34,4 @@ typedef struct EffPayload {
     u8 *records;
 } EffPayload;
 
-#endif /* EFF_RESOURCE_RECORDS_H */
+#endif /* DDS_EFF_RESOURCE_RECORDS_H */

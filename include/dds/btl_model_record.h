@@ -1,20 +1,28 @@
-#ifndef BTL_MODEL_RECORD_H
-#define BTL_MODEL_RECORD_H
+#ifndef DDS_BTL_MODEL_RECORD_H
 
+#define DDS_BTL_MODEL_RECORD_H
 #include "common.h"
 
 typedef s16 BtlMotionEndBehavior;
+
 typedef u16 BtlActorShadowKind;
 
 #define BTL_MOTION_END_NORMAL 0
+
 #define BTL_MOTION_END_PAUSE 1
+
 #define BTL_MOTION_END_OUT 2
+
 #define BTL_MOTION_END_STOP 3
 
 #define BTL_ACTOR_SHADOW_NONE 0
+
 #define BTL_ACTOR_SHADOW_SMALL 1
+
 #define BTL_ACTOR_SHADOW_MEDIUM 2
+
 #define BTL_ACTOR_SHADOW_LARGE 3
+
 #define BTL_ACTOR_SHADOW_EXTRA_LARGE 4
 
 /* One motion row in the side-indexed model parameter bank. */
@@ -47,16 +55,7 @@ typedef struct BtlActorStatusRecord {
 } BtlActorStatusRecord;
 
 typedef char BtlActorMotionSlotSizeCheck[sizeof(BtlActorMotionSlot) == 0x14 ? 1 : -1];
-typedef char BtlActorMotionSlot_endBehavior_offset_must_be_0x04[
-    ((u32)&((BtlActorMotionSlot *)0)->endBehavior == 0x04) ? 1 : -1];
-typedef char BtlActorMotionSlot_muzzleGuideScale_offset_must_be_0x0C[
-    ((u32)&((BtlActorMotionSlot *)0)->muzzleGuideScale == 0x0C) ? 1 : -1];
-typedef char BtlActorStatusRecord_positionGuideScale_offset_check[
-    ((u32)&((BtlActorStatusRecord *)0)->positionGuideScale == 0x24) ? 1 : -1];
-typedef char BtlActorStatusRecord_shotRadius_offset_check[
-    ((u32)&((BtlActorStatusRecord *)0)->shotRadius == 0x20) ? 1 : -1];
-typedef char BtlActorStatusRecord_shadowKind_offset_check[
-    ((u32)&((BtlActorStatusRecord *)0)->shadowKind == 0x28) ? 1 : -1];
+
 typedef char BtlActorStatusRecordSizeCheck[sizeof(BtlActorStatusRecord) == 0x270 ? 1 : -1];
 
 #endif

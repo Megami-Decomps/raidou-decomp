@@ -1,6 +1,6 @@
-#ifndef BTL_APPROACH_TASK_ARGS_H
-#define BTL_APPROACH_TASK_ARGS_H
+#ifndef DDS_BTL_APPROACH_TASK_ARGS_H
 
+#define DDS_BTL_APPROACH_TASK_ARGS_H
 #include "common.h"
 
 struct BtlUnit;
@@ -17,17 +17,5 @@ typedef struct BtlApproachTaskArgs {
 
 typedef char BtlApproachTaskArgsSizeCheck[
     (sizeof(BtlApproachTaskArgs) == 0x18) ? 1 : -1];
-typedef char BtlApproachTaskArgsUnitOffsetCheck[
-    ((u32)&((BtlApproachTaskArgs *)0)->unit == 0x00) ? 1 : -1];
-typedef char BtlApproachTaskArgsTargetOffsetCheck[
-    ((u32)&((BtlApproachTaskArgs *)0)->target == 0x04) ? 1 : -1];
-typedef char BtlApproachTaskArgsMotionReachOffsetCheck[
-    ((u32)&((BtlApproachTaskArgs *)0)->motionReachOffset == 0x08) ? 1 : -1];
-typedef char BtlApproachTaskArgsScaleOffsetCheck[
-    ((u32)&((BtlApproachTaskArgs *)0)->scale == 0x0C) ? 1 : -1];
-typedef char BtlApproachTaskArgsOpaqueOffsetCheck[
-    ((u32)&((BtlApproachTaskArgs *)0)->opaque10 == 0x10) ? 1 : -1];
-typedef char BtlApproachTaskArgsCountOffsetCheck[
-    ((u32)&((BtlApproachTaskArgs *)0)->count == 0x14) ? 1 : -1];
 
-#endif /* BTL_APPROACH_TASK_ARGS_H */
+#endif /* DDS_BTL_APPROACH_TASK_ARGS_H */

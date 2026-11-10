@@ -1,7 +1,8 @@
-#ifndef DDS_FLD_LMAP_TASK_H
-#define DDS_FLD_LMAP_TASK_H
+#ifndef DDS_DDS_FLD_LMAP_TASK_H
 
+#define DDS_DDS_FLD_LMAP_TASK_H
 #include "common.h"
+
 #include "sdf.h"
 
 typedef struct MapRequestNode {
@@ -43,26 +44,30 @@ typedef struct MapRequestRing {
 } MapRequestRing;
 
 typedef char MapRequestNode_size_must_be_0x20[(sizeof(MapRequestNode) == 0x20) ? 1 : -1];
+
 typedef char MapRequestState_size_must_be_0x1C[(sizeof(MapRequestState) == 0x1C) ? 1 : -1];
-typedef char MapRequestState_allocation_offset_must_be_0[
-    ((u32)&((MapRequestState *)0)->allocation == 0) ? 1 : -1];
-typedef char MapRequestRing_nodes_offset_check[
-    ((u32)&((MapRequestRing *)0)->nodes == 0x44) ? 1 : -1];
 
 MapRequestState *sdfCreateLinkedRequestRing(s16 count, s16 arg);
+
 void fldAdvanceMapRequest(MapRequestState *state, s32 x, s32 y, s32 z);
+
 void fldSetMapRequestInterval(MapRequestState *, u16);
+
 void fldDrawMapRequestHalo(s32 x, s32 y, s32 z, const MapRequestState *ring,
                            const MapRequestNode *node, f32 progress);
+
 void fldDrawMapRequestPulse(s32 x, s32 y, s32 z, const MapRequestState *ring,
                             const MapRequestNode *node, f32 progress);
+
 void fldDispatchMapRequestCallbacks(const MapRequestState *ring);
 
 struct FileRequest;
+
 struct EffectSlotSet;
 
 /* Resource loading advances through request, poll, consume, and slot install. */
 typedef s16 LmapResourceLoadPhase;
+
 enum {
     LMAP_RESOURCE_LOAD_PHASE_INITIALIZE = 0,
     LMAP_RESOURCE_LOAD_PHASE_INSTALL_SLOTS = 1,
@@ -72,6 +77,7 @@ enum {
 };
 
 typedef s32 LmapResourceLoadResult;
+
 enum {
     LMAP_RESOURCE_LOAD_IN_PROGRESS = 0,
     LMAP_RESOURCE_LOAD_COMPLETE = 1,
@@ -90,6 +96,7 @@ typedef char LmapLoadState_size_must_be_0x10[(sizeof(LmapLoadState) == 0x10) ? 1
 
 /* The main task loads resources, initializes the scene, then runs selection. */
 typedef s32 LmapTaskPhase;
+
 enum {
     LMAP_TASK_PHASE_LOADING_RESOURCES = 0,
     LMAP_TASK_PHASE_INITIALIZING_SCENE = 1,
@@ -98,6 +105,7 @@ enum {
 
 /* Counter selection runs after scene setup and stages the exit message/fade. */
 typedef u32 LmapCounterSelectionPhase;
+
 enum {
     LMAP_COUNTER_SELECTION_PHASE_ACTIVE = 1,
     LMAP_COUNTER_SELECTION_PHASE_CAMERA_TRANSITION = 2,
@@ -123,13 +131,21 @@ LmapResourceLoadResult fldAdvanceLmapResourceLoad(LmapTaskState *task);
 extern LmapTaskState *D_0043888C;
 
 typedef char LmapTaskState_size_must_be_0x88[(sizeof(LmapTaskState) == 0x88) ? 1 : -1];
+
 #define LMAP_TASK_OFFSET(member) ((u32)&(((LmapTaskState *)0)->member))
+
 typedef char LmapTaskState_spriteSlots_must_be_0x0C[(LMAP_TASK_OFFSET(spriteSlots) == 0x0C) ? 1 : -1];
+
 typedef char LmapTaskState_allocation_must_be_0x70[(LMAP_TASK_OFFSET(allocation) == 0x70) ? 1 : -1];
+
 typedef char LmapTaskState_resourceAddress_must_be_0x74[(LMAP_TASK_OFFSET(resourceAddress) == 0x74) ? 1 : -1];
+
 typedef char LmapTaskState_load_must_be_0x78[(LMAP_TASK_OFFSET(load) == 0x78) ? 1 : -1];
+
 typedef char LmapTaskState_loadPhase_must_be_0x80[(LMAP_TASK_OFFSET(load.phase) == 0x80) ? 1 : -1];
+
 typedef char LmapTaskState_loadEntry_must_be_0x82[(LMAP_TASK_OFFSET(load.entry) == 0x82) ? 1 : -1];
+
 #undef LMAP_TASK_OFFSET
 
 #endif

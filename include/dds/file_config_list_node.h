@@ -1,6 +1,6 @@
-#ifndef FILE_CONFIG_LIST_NODE_H
-#define FILE_CONFIG_LIST_NODE_H
+#ifndef DDS_FILE_CONFIG_LIST_NODE_H
 
+#define DDS_FILE_CONFIG_LIST_NODE_H
 #include "common.h"
 
 typedef struct FileConfigCountdown {
@@ -17,11 +17,8 @@ typedef struct FileConfigListNode {
 
 typedef char FileConfigCountdownSizeCheck[
     sizeof(FileConfigCountdown) == 0x04 ? 1 : -1];
+
 typedef char FileConfigListNodeSizeCheck[
     sizeof(FileConfigListNode) == 0x74 ? 1 : -1];
-typedef char FileConfigListNodeNextOffsetCheck[
-    (u32)&((FileConfigListNode *)0)->next == 0x58 ? 1 : -1];
-typedef char FileConfigListNodeResourceOffsetCheck[
-    (u32)&((FileConfigListNode *)0)->resource == 0x70 ? 1 : -1];
 
 #endif

@@ -95,6 +95,36 @@ s32 scrRunScript(scrProcessWork_s *h);
 s32 scrScriptProcess(dds3ProcessID_t *id);
 /* End of declarations from src/smt3/script/scrScriptProcess.c */
 
+/* Declarations from dds-decomp src/dds1/script/scrScriptProcess.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#include "newdata.h"
+
+#include "dds/common.h"
+
+#include "dds/sdf_resource.h"
+
+/* DDS's global work keeps the script variables at SMT3's offsets. */
+typedef struct
+{
+    u8 unk0[0x40];
+    s32 integers[256];
+    f32 floats[256];
+} dds_dds3GlobalWork_t;
+
+#include "dds/scr.h"
+
+extern s32 scrIsCurrentWorkTask(scrProcessWork_s *pw);
+
+#include "dds/sdk_libc.h"
+
+#include "dds/scr_command_table.h"
+
+extern const scrCommandTable_t scrCommandTable[];
+/* End of declarations from src/dds1/script/scrScriptProcess.c */
+
 scrProcessWork_s *scrLoadScriptFile(char *name, s32 messageHandle)
 {
     sdfMemHandle_t *mem;
@@ -147,7 +177,31 @@ INCLUDE_ASM(const s32, "script/scrScriptProcess", func_001125D8);
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", func_001125F0);
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrAllReleaseScript);
+/* DDS skips the running script's own process and does not print. */
+void scrAllReleaseScript(void)
+{
+    scrProcessWork_s *pw;
+    scrProcessWork_s *next;
+
+    pw = scrHandleFirst;
+    if (pw == NULL) {
+        return;
+    }
+    while (1) {
+        next = pw->next;
+        if (scrIsCurrentWorkTask(pw) == 0) {
+            if (pw->ProcessID != NULL) {
+                dds3KillProcess(pw->ProcessID, 0);
+            } else {
+                scrPrintProcedureEnd(pw);
+            }
+        }
+        pw = next;
+        if (pw == NULL) {
+            break;
+        }
+    }
+}
 
 /* Restart a procedure with an empty operand stack and fresh timers. */
 s32 scrStartProcessProcedure(scrProcessWork_s *pw, s32 procNo)
