@@ -4,6 +4,15 @@ Functions Raidou shares with SMT3 are compiled from smt3-decomp's C where the
 Raidou code is the same, one function at a time. Everything else in a unit
 stays `INCLUDE_ASM`.
 
+| | raidou1 | raidou2 |
+|---|---|---|
+| identical to SMT3 C (`pairs`) | 2,627 | 2,595 |
+| compiled from C | 2,305 | 2,285 |
+| units with C | 203 | 204 |
+| SMT3 names in `smt3_symbols.txt` | 941 | 937 |
+
+2,325 body files in `src/shared`, 2,265 of them used by both games.
+
 ## Layout
 
 - `src/shared/<smt3 unit>/<function>.c`: one SMT3 body, taken verbatim from
@@ -28,10 +37,10 @@ stays `INCLUDE_ASM`.
 
 ```sh
 python3 tools/raidou_c.py pairs                # build/raidou_c/pairs.tsv
-python3 tools/raidou_c.py port --units sdf sdk # write bodies, edit units
+python3 tools/raidou_c.py port                 # write bodies, edit units (--units sdf sdk ...)
 python3 configure.py && ninja -k 0 > log 2>&1  # objects; the link may fail
 python3 tools/raidou_c.py verify --log log     # check, write names and failures
-python3 tools/raidou_c.py port --units sdf sdk # failures back to INCLUDE_ASM
+python3 tools/raidou_c.py port                 # failures back to INCLUDE_ASM
 python3 configure.py && ninja                  # repeat verify/port until clean
 ```
 
@@ -57,7 +66,8 @@ splat moves the asm of a C function from `nonmatchings/` to `matchings/`.
 | `its rodata is in its asm file` | splat moved data only this function uses into its asm file and drops it once the function is C |
 | `compile error`, `declarations clash` | the SMT3 declarations do not compile in this unit (a struct both an SMT3 file and an included header define, an old-style definition, file-scope statics) |
 | `local jump` | a jump to code elsewhere in the unit at another distance than in SMT3 |
-| `N words differ` | same masked words in the split, different object code here (context) |
+| `<name> is/at 0x...` | a name the body uses would need two Raidou addresses (a static of the same name in two SMT3 files, or a table laid out differently) |
+| `N words differ`, `size` | same masked words in the split, different object code here (context) |
 | nested function | `movieParseHeader` defines `movieMemcpy` inside it; Raidou has both as functions |
 
 Data-emitting bodies are the main remainder. Carrying them needs the unit's
