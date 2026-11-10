@@ -1,14 +1,14 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3PauseOn);
+#include "shared/kernel/dds3KernelMain/dds3PauseOn.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3PauseOff);
+#include "shared/kernel/dds3KernelMain/dds3PauseOff.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3Stop);
+#include "shared/kernel/dds3KernelMain/dds3Stop.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SlowOn);
+#include "shared/kernel/dds3KernelMain/dds3SlowOn.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SlowOff);
+#include "shared/kernel/dds3KernelMain/dds3SlowOff.c"
 
 void dds3ScreenCaptureOn(void) {
 }
@@ -16,9 +16,9 @@ void dds3ScreenCaptureOn(void) {
 void dds3ScreenCaptureOff(void) {
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SoftResetOn);
+#include "shared/kernel/dds3KernelMain/dds3SoftResetOn.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SoftResetOff);
+#include "shared/kernel/dds3KernelMain/dds3SoftResetOff.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", func_001005C0);
 

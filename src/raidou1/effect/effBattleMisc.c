@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", effBTLPartGetPositionPtr);
+#include "shared/effect/effBattleMisc/effBTLPartGetPositionPtr.c"
 
 INCLUDE_ASM(const s32, "effect/effBattleMisc", func_001EA150);
 

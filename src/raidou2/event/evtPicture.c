@@ -1,10 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "event/evtPicture", evtPictureDrawOn);
+#include "shared/event/evtPicture/evtPictureDrawOn.c"
 
-INCLUDE_ASM(const s32, "event/evtPicture", evtPictureDrawOff);
+#include "shared/event/evtPicture/evtPictureDrawOff.c"
 
-INCLUDE_ASM(const s32, "event/evtPicture", evtKillPictureProcess);
+#include "shared/event/evtPicture/evtKillPictureProcess.c"
 
 INCLUDE_ASM(const s32, "event/evtPicture", func_001D0DB0);
 
@@ -22,7 +22,7 @@ INCLUDE_ASM(const s32, "event/evtPicture", func_001D1238);
 
 INCLUDE_ASM(const s32, "event/evtPicture", func_001D1348);
 
-INCLUDE_ASM(const s32, "event/evtPicture", evtStartPictureProcess2);
+#include "shared/event/evtPicture/evtStartPictureProcess2.c"
 
 INCLUDE_ASM(const s32, "event/evtPicture", evtStartPictureProcess);
 

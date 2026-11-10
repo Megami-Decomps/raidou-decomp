@@ -1,62 +1,62 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlInitManager);
+#include "shared/model/mdlManager/mdlInitManager.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSearchResrc);
+#include "shared/model/mdlManager/mdlSearchResrc.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlCheckLoading);
+#include "shared/model/mdlManager/mdlCheckLoading.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlRegLoading);
+#include "shared/model/mdlManager/mdlRegLoading.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlUnRegLoading);
+#include "shared/model/mdlManager/mdlUnRegLoading.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlRegist);
+#include "shared/model/mdlManager/mdlRegist.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlUnRegistResrc);
+#include "shared/model/mdlManager/mdlUnRegistResrc.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlUnRegist);
+#include "shared/model/mdlManager/mdlUnRegist.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlUnRegistAll);
+#include "shared/model/mdlManager/mdlUnRegistAll.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlCreateMotion);
+#include "shared/model/mdlManager/mdlCreateMotion.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlFreeMotionCtrlr);
+#include "shared/model/mdlManager/mdlFreeMotionCtrlr.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlFreeMotion);
+#include "shared/model/mdlManager/mdlFreeMotion.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlUnRegistResrcMotion);
+#include "shared/model/mdlManager/mdlUnRegistResrcMotion.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlUnRegistMotion);
+#include "shared/model/mdlManager/mdlUnRegistMotion.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlRegistMotion);
+#include "shared/model/mdlManager/mdlRegistMotion.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlRegistModelSet);
+#include "shared/model/mdlManager/mdlRegistModelSet.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlWaitLoadEnd);
+#include "shared/model/mdlManager/mdlWaitLoadEnd.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", TbMbAbLoadEnd);
+#include "shared/model/mdlManager/TbMbAbLoadEnd.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", MbLoadCallback);
+#include "shared/model/mdlManager/MbLoadCallback.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetFileName);
+#include "shared/model/mdlManager/mdlSetFileName.c"
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001AF958);
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlLoadPrepare);
+#include "shared/model/mdlManager/mdlLoadPrepare.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlUnlinkResrc);
+#include "shared/model/mdlManager/mdlUnlinkResrc.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetBlur);
+#include "shared/model/mdlManager/mdlSetBlur.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlFreeBlur);
+#include "shared/model/mdlManager/mdlFreeBlur.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlLinkBlur);
+#include "shared/model/mdlManager/mdlLinkBlur.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlLoad);
+#include "shared/model/mdlManager/mdlLoad.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlFree);
+#include "shared/model/mdlManager/mdlFree.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlLink);
+#include "shared/model/mdlManager/mdlLink.c"
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B0220);
 
@@ -66,89 +66,89 @@ INCLUDE_ASM(const s32, "model/mdlManager", func_001B0578);
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B05C0);
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlLoopMotion);
+#include "shared/model/mdlManager/mdlLoopMotion.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSingleMotion);
+#include "shared/model/mdlManager/mdlSingleMotion.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSmoothLoopMotion);
+#include "shared/model/mdlManager/mdlSmoothLoopMotion.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSmoothSingleMotion);
+#include "shared/model/mdlManager/mdlSmoothSingleMotion.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetMotionCtrlr);
+#include "shared/model/mdlManager/mdlGetMotionCtrlr.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetMotionNum);
+#include "shared/model/mdlManager/mdlGetMotionNum.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetMotionLengthEx);
+#include "shared/model/mdlManager/mdlGetMotionLengthEx.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetMotionFrameEx);
+#include "shared/model/mdlManager/mdlGetMotionFrameEx.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlChkMotionEndEx);
+#include "shared/model/mdlManager/mdlChkMotionEndEx.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetMotionSpeedEx);
+#include "shared/model/mdlManager/mdlGetMotionSpeedEx.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetMotionSpeedEx);
+#include "shared/model/mdlManager/mdlSetMotionSpeedEx.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetPosition);
+#include "shared/model/mdlManager/mdlGetPosition.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetPosition);
+#include "shared/model/mdlManager/mdlSetPosition.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetRotate);
+#include "shared/model/mdlManager/mdlGetRotate.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetRotate);
+#include "shared/model/mdlManager/mdlSetRotate.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetScale);
+#include "shared/model/mdlManager/mdlGetScale.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetScale);
+#include "shared/model/mdlManager/mdlSetScale.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetColor);
+#include "shared/model/mdlManager/mdlGetColor.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetEffectColor);
+#include "shared/model/mdlManager/mdlSetEffectColor.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetColor);
+#include "shared/model/mdlManager/mdlSetColor.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetColorWithEffect);
+#include "shared/model/mdlManager/mdlSetColorWithEffect.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetEffectScale);
+#include "shared/model/mdlManager/mdlSetEffectScale.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetScreenOffset);
+#include "shared/model/mdlManager/mdlGetScreenOffset.c"
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B0B70);
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlMotionPause);
+#include "shared/model/mdlManager/mdlMotionPause.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlMotionPauseOff);
+#include "shared/model/mdlManager/mdlMotionPauseOff.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlHasMotionEx);
+#include "shared/model/mdlManager/mdlHasMotionEx.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetMajorNum);
+#include "shared/model/mdlManager/mdlGetMajorNum.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetMinorNum);
+#include "shared/model/mdlManager/mdlGetMinorNum.c"
 
 INCLUDE_ASM(const s32, "model/mdlManager", mdlGetNumOfMajor);
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetNumOfMinor);
+#include "shared/model/mdlManager/mdlGetNumOfMinor.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlGetNumOfCut);
+#include "shared/model/mdlManager/mdlGetNumOfCut.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlSetClutColor);
+#include "shared/model/mdlManager/mdlSetClutColor.c"
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B0DA8);
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlPackCheck);
+#include "shared/model/mdlManager/mdlPackCheck.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlPackSetOld);
+#include "shared/model/mdlManager/mdlPackSetOld.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlPackSet);
+#include "shared/model/mdlManager/mdlPackSet.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlFileCbFree);
+#include "shared/model/mdlManager/mdlFileCbFree.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlFileLoadCallback);
+#include "shared/model/mdlManager/mdlFileLoadCallback.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlFileLoad);
+#include "shared/model/mdlManager/mdlFileLoad.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlPackDecode);
+#include "shared/model/mdlManager/mdlPackDecode.c"
 
-INCLUDE_ASM(const s32, "model/mdlManager", mdlFreeFileItem);
+#include "shared/model/mdlManager/mdlFreeFileItem.c"
 
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B1540);
 

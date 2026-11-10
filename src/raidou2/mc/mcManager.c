@@ -24,38 +24,38 @@ INCLUDE_ASM(const s32, "mc/mcManager", func_001EB0D8);
 
 INCLUDE_ASM(const s32, "mc/mcManager", func_001EB100);
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncFormat);
+#include "shared/mc/mcManager/sdfMcFuncFormat.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncFormat1);
+#include "shared/mc/mcManager/sdfMcFuncFormat1.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncChdir);
+#include "shared/mc/mcManager/sdfMcFuncChdir.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncChdir1);
+#include "shared/mc/mcManager/sdfMcFuncChdir1.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncMkdir);
+#include "shared/mc/mcManager/sdfMcFuncMkdir.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncMkdir1);
+#include "shared/mc/mcManager/sdfMcFuncMkdir1.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncGetDir);
+#include "shared/mc/mcManager/sdfMcFuncGetDir.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncGetDir1);
+#include "shared/mc/mcManager/sdfMcFuncGetDir1.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncDelete);
+#include "shared/mc/mcManager/sdfMcFuncDelete.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncDelete1);
+#include "shared/mc/mcManager/sdfMcFuncDelete1.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncOpen);
+#include "shared/mc/mcManager/sdfMcFuncOpen.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncOpen1);
+#include "shared/mc/mcManager/sdfMcFuncOpen1.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncClose);
+#include "shared/mc/mcManager/sdfMcFuncClose.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncClose1);
+#include "shared/mc/mcManager/sdfMcFuncClose1.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncRead);
+#include "shared/mc/mcManager/sdfMcFuncRead.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncRead1);
+#include "shared/mc/mcManager/sdfMcFuncRead1.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncWrite);
+#include "shared/mc/mcManager/sdfMcFuncWrite.c"
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcFuncWrite1);
+#include "shared/mc/mcManager/sdfMcFuncWrite1.c"

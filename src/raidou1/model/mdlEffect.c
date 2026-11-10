@@ -1,18 +1,18 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibGetChunk);
+#include "shared/model/mdlEffect/mdlPibGetChunk.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibGetFirstChunkItem);
+#include "shared/model/mdlEffect/mdlPibGetFirstChunkItem.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibGetNextChunkItem);
+#include "shared/model/mdlEffect/mdlPibGetNextChunkItem.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibGetChunkItemCount);
+#include "shared/model/mdlEffect/mdlPibGetChunkItemCount.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibCheckItemType);
+#include "shared/model/mdlEffect/mdlPibCheckItemType.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibGetEffectCount);
+#include "shared/model/mdlEffect/mdlPibGetEffectCount.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibGetMotionCount);
+#include "shared/model/mdlEffect/mdlPibGetMotionCount.c"
 
 INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibDrawEffectInfo);
 
@@ -20,53 +20,53 @@ INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibDrawTrackInfo);
 
 INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibEditTrackInfo);
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffectResrc_P2A);
+#include "shared/model/mdlEffect/mdlCreateEffectResrc_P2A.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffectResrc_D3P);
+#include "shared/model/mdlEffect/mdlCreateEffectResrc_D3P.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffectResrc_IPU);
+#include "shared/model/mdlEffect/mdlCreateEffectResrc_IPU.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlDeleteEffectResrc_IPU);
+#include "shared/model/mdlEffect/mdlDeleteEffectResrc_IPU.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlStartEffectResrc_IPU);
+#include "shared/model/mdlEffect/mdlStartEffectResrc_IPU.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlEffectResrcListNew);
+#include "shared/model/mdlEffect/mdlEffectResrcListNew.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlEffectResrcListFree);
+#include "shared/model/mdlEffect/mdlEffectResrcListFree.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffectCtrlr);
+#include "shared/model/mdlEffect/mdlCreateEffectCtrlr.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlEffectDup_P2A);
+#include "shared/model/mdlEffect/mdlEffectDup_P2A.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlEffectDup_D3P);
+#include "shared/model/mdlEffect/mdlEffectDup_D3P.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlGetEffectResrc);
+#include "shared/model/mdlEffect/mdlGetEffectResrc.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffect_P2A_D3P);
+#include "shared/model/mdlEffect/mdlCreateEffect_P2A_D3P.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffect_TRACK);
+#include "shared/model/mdlEffect/mdlCreateEffect_TRACK.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffect_BLUR);
+#include "shared/model/mdlEffect/mdlCreateEffect_BLUR.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffect_IPU);
+#include "shared/model/mdlEffect/mdlCreateEffect_IPU.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlDrawEffect_IPU);
+#include "shared/model/mdlEffect/mdlDrawEffect_IPU.c"
 
 INCLUDE_ASM(const s32, "model/mdlEffect", mdlCreateEffect);
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlGenEffect);
+#include "shared/model/mdlEffect/mdlGenEffect.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlFreeEffect);
+#include "shared/model/mdlEffect/mdlFreeEffect.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlStopEffect);
+#include "shared/model/mdlEffect/mdlStopEffect.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlEffect_P2A_D3P_GetPos);
+#include "shared/model/mdlEffect/mdlEffect_P2A_D3P_GetPos.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlLinkEffect);
+#include "shared/model/mdlEffect/mdlLinkEffect.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlSetEffectColorSub);
+#include "shared/model/mdlEffect/mdlSetEffectColorSub.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlSetEffectScaleSub);
+#include "shared/model/mdlEffect/mdlSetEffectScaleSub.c"
 
 INCLUDE_RODATA(const s32, "model/mdlEffect", D_0044D7E0);
 

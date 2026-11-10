@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngMessage);
+#include "shared/interface/itfMesManager/itfMesMngMessage.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186970);
 
@@ -8,9 +8,9 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_001869B8);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186A00);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetPhase);
+#include "shared/interface/itfMesManager/itfMesMngGetPhase.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetPhase);
+#include "shared/interface/itfMesManager/itfMesMngSetPhase.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186A68);
 
@@ -20,19 +20,19 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186B20);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186BC8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSelect);
+#include "shared/interface/itfMesManager/itfMesMngSelect.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186DA0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetSelPhase);
+#include "shared/interface/itfMesManager/itfMesMngGetSelPhase.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelPhase);
+#include "shared/interface/itfMesManager/itfMesMngSetSelPhase.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetSelectNo);
+#include "shared/interface/itfMesManager/itfMesMngGetSelectNo.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngMaskSelect);
+#include "shared/interface/itfMesManager/itfMesMngMaskSelect.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMng_SEL_SELNO);
+#include "shared/interface/itfMesManager/itfMesMng_SEL_SELNO.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186FD0);
 
@@ -40,25 +40,25 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187018);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187088);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngOpenSelectWindow);
+#include "shared/interface/itfMesManager/itfMesMngOpenSelectWindow.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngCloseSelectWindow);
+#include "shared/interface/itfMesManager/itfMesMngCloseSelectWindow.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetVarScr);
+#include "shared/interface/itfMesManager/itfMesMngSetVarScr.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngIgnoreConfig);
+#include "shared/interface/itfMesManager/itfMesMngIgnoreConfig.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetMesPositionScript);
+#include "shared/interface/itfMesManager/itfMesMngSetMesPositionScript.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetMesPosDefault);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngValidateNext);
+#include "shared/interface/itfMesManager/itfMesMngValidateNext.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngWindowType);
+#include "shared/interface/itfMesManager/itfMesMngWindowType.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngWindowTypeAlpha);
+#include "shared/interface/itfMesManager/itfMesMngWindowTypeAlpha.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSelectDefKey);
+#include "shared/interface/itfMesManager/itfMesMngSelectDefKey.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187478);
 
@@ -68,7 +68,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187498);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_001874B0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngRelease);
+#include "shared/interface/itfMesManager/itfMesMngRelease.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_001875F8);
 
@@ -76,21 +76,21 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187658);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187840);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngRequestMessageRelease);
+#include "shared/interface/itfMesManager/itfMesMngRequestMessageRelease.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_001879C0);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187AD8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetMaskSelect);
+#include "shared/interface/itfMesManager/itfMesMngSetMaskSelect.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelect);
+#include "shared/interface/itfMesManager/itfMesMngSetSelect.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSpeakerPosition);
+#include "shared/interface/itfMesManager/itfMesMngSetSpeakerPosition.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSpeakerPositionOffset);
+#include "shared/interface/itfMesManager/itfMesMngSetSpeakerPositionOffset.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetMesPosition);
+#include "shared/interface/itfMesManager/itfMesMngSetMesPosition.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187D80);
 
@@ -98,15 +98,15 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187DF0);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187E80);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetPriority);
+#include "shared/interface/itfMesManager/itfMesMngSetPriority.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetStat);
+#include "shared/interface/itfMesManager/itfMesMngGetStat.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetStat);
+#include "shared/interface/itfMesManager/itfMesMngSetStat.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngMarkBitStat);
+#include "shared/interface/itfMesManager/itfMesMngMarkBitStat.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngClearBitStat);
+#include "shared/interface/itfMesManager/itfMesMngClearBitStat.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188010);
 
@@ -118,13 +118,13 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetVar);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188098);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetVarImmediate);
+#include "shared/interface/itfMesManager/itfMesMngSetVarImmediate.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetVarImmediate2);
+#include "shared/interface/itfMesManager/itfMesMngSetVarImmediate2.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetResourcePtr);
+#include "shared/interface/itfMesManager/itfMesMngSetResourcePtr.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetDataPtrImmediate);
+#include "shared/interface/itfMesManager/itfMesMngGetDataPtrImmediate.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_001883C0);
 
@@ -134,17 +134,17 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelectDefKey);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetWidth);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetDefaultSpeed);
+#include "shared/interface/itfMesManager/itfMesMngSetDefaultSpeed.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetKutiCallback);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngInitializeManager);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetBitStatManager);
+#include "shared/interface/itfMesManager/itfMesMngSetBitStatManager.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngClearBitStatManager);
+#include "shared/interface/itfMesManager/itfMesMngClearBitStatManager.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetStatManager);
+#include "shared/interface/itfMesManager/itfMesMngGetStatManager.c"
 
 INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A600);
 
@@ -160,51 +160,51 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188B38);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DestructFlow);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", ResolveResourceAddress);
+#include "shared/interface/itfMesManager/ResolveResourceAddress.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", GetTypeHeader);
+#include "shared/interface/itfMesManager/GetTypeHeader.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", GetTypeHeader2);
+#include "shared/interface/itfMesManager/GetTypeHeader2.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188C70);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188CA8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", GetMessagePagePtr);
+#include "shared/interface/itfMesManager/GetMessagePagePtr.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188D00);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", SetVar);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", CommitVarTable);
+#include "shared/interface/itfMesManager/CommitVarTable.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", GetSpeakerName);
+#include "shared/interface/itfMesManager/GetSpeakerName.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", GetNumSelectItem);
+#include "shared/interface/itfMesManager/GetNumSelectItem.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_001890A8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", UnchainFontHandleUnit);
+#include "shared/interface/itfMesManager/UnchainFontHandleUnit.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", GetLastLinkFontHandle);
+#include "shared/interface/itfMesManager/GetLastLinkFontHandle.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_001892F0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", CountLineMessage);
+#include "shared/interface/itfMesManager/CountLineMessage.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", ChangeFontPosition);
+#include "shared/interface/itfMesManager/ChangeFontPosition.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", ChangeZBuffer);
+#include "shared/interface/itfMesManager/ChangeZBuffer.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", ChangeFontColor);
+#include "shared/interface/itfMesManager/ChangeFontColor.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", ChangeFontColorAll);
+#include "shared/interface/itfMesManager/ChangeFontColorAll.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", ChangeFontAlpha);
+#include "shared/interface/itfMesManager/ChangeFontAlpha.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", GetMessageWidth);
+#include "shared/interface/itfMesManager/GetMessageWidth.c"
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", GetMaskedIndex);
+#include "shared/interface/itfMesManager/GetMaskedIndex.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_001895B0);
 
@@ -222,7 +222,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189888);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_001898C8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", InitializeVariable);
+#include "shared/interface/itfMesManager/InitializeVariable.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189928);
 
@@ -230,7 +230,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189978);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189980);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", ReleaseAllVariable);
+#include "shared/interface/itfMesManager/ReleaseAllVariable.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189A58);
 
@@ -274,7 +274,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018B5C0);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018B5D8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", CalcMsgMng_Process);
+#include "shared/interface/itfMesManager/CalcMsgMng_Process.c"
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DrawMsgMng_Process);
 

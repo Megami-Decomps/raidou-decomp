@@ -8,50 +8,50 @@ INCLUDE_ASM(const s32, "basic/dds3SceneBasic", scenemainprocuder);
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_00118048);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3VisibleSceneBasic);
+#include "shared/basic/dds3SceneBasic/dds3VisibleSceneBasic.c"
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_001180F8);
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_001181A0);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SetActiveCameraSceneBasic);
+#include "shared/basic/dds3SceneBasic/dds3SetActiveCameraSceneBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3GetActiveCameraSceneBasic);
+#include "shared/basic/dds3SceneBasic/dds3GetActiveCameraSceneBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SetActiveUnitSceneBasic);
+#include "shared/basic/dds3SceneBasic/dds3SetActiveUnitSceneBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3GetActiveUnitSceneBasic);
+#include "shared/basic/dds3SceneBasic/dds3GetActiveUnitSceneBasic.c"
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_001182C0);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SearchSceneBasic);
+#include "shared/basic/dds3SceneBasic/dds3SearchSceneBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicGetList);
+#include "shared/basic/dds3SceneBasic/dds3SceneBasicGetList.c"
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_00118480);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicMakeScene_FromMemory);
+#include "shared/basic/dds3SceneBasic/dds3SceneBasicMakeScene_FromMemory.c"
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicFreeScene);
+#include "shared/basic/dds3SceneBasic/dds3SceneBasicFreeScene.c"
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_00118510);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicLoadScriptFile_FromMem);
+#include "shared/basic/dds3SceneBasic/dds3SceneBasicLoadScriptFile_FromMem.c"
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicReleaseScriptFile);
+#include "shared/basic/dds3SceneBasic/dds3SceneBasicReleaseScriptFile.c"
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_00118630);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicEndScript);
+#include "shared/basic/dds3SceneBasic/dds3SceneBasicEndScript.c"
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicExistBasicFromType);
+#include "shared/basic/dds3SceneBasic/dds3SceneBasicExistBasicFromType.c"
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_00118758);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SetMapNo);
+#include "shared/basic/dds3SceneBasic/dds3SetMapNo.c"
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3GetMapNo);
+#include "shared/basic/dds3SceneBasic/dds3GetMapNo.c"
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicSearchNameAndType);
+#include "shared/basic/dds3SceneBasic/dds3SceneBasicSearchNameAndType.c"
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_001188B0);

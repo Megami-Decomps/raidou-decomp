@@ -1,28 +1,28 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrackSizeInit);
+#include "shared/effect/effPCPBoss/effPCPCrackSizeInit.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrackInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrackCreate);
+#include "shared/effect/effPCPBoss/effPCPCrackCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00219990);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrackCopy);
+#include "shared/effect/effPCPBoss/effPCPCrackCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrackDelete);
+#include "shared/effect/effPCPBoss/effPCPCrackDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrackDraw);
+#include "shared/effect/effPCPBoss/effPCPCrackDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_0021A588);
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_0021A598);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPBossBaelCreate);
+#include "shared/effect/effPCPBoss/effPCPBossBaelCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_0021A640);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPBossBaelCopy);
+#include "shared/effect/effPCPBoss/effPCPBossBaelCopy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPBossBaelDelete);
 
@@ -147,11 +147,11 @@ void func_0021A8E0(void) {
 void func_0021A8E8(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrack2Create);
+#include "shared/effect/effPCPBoss/effPCPCrack2Create.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_0021A958);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrack2Copy);
+#include "shared/effect/effPCPBoss/effPCPCrack2Copy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_0021AA18);
 
@@ -161,10 +161,10 @@ INCLUDE_ASM(const s32, "effect/effPCPBoss", func_0021AA48);
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_0021AA60);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPBossMETATOBeamCreate);
+#include "shared/effect/effPCPBoss/effPCPBossMETATOBeamCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_0021AC80);
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_0021ACA0);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPBossMETATOBeamDelete);
+#include "shared/effect/effPCPBoss/effPCPBossMETATOBeamDelete.c"

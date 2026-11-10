@@ -1,16 +1,16 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_PhysicsCreate);
+#include "shared/effect/parManager/dds3Particle_PhysicsCreate.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EA5D8);
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_BasicCreate);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_BasicDelete);
+#include "shared/effect/parManager/dds3Particle_BasicDelete.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SpiralAllBuffInit);
+#include "shared/effect/parManager/dds3Particle_SpiralAllBuffInit.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SpiralSetScale);
+#include "shared/effect/parManager/dds3Particle_SpiralSetScale.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EA940);
 
@@ -42,11 +42,11 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001EB660);
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkBuffInit);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkDraw);
+#include "shared/effect/parManager/dds3Particle_SparkDraw.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_RadiateAllBuffInit);
+#include "shared/effect/parManager/dds3Particle_RadiateAllBuffInit.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_RadiateSetScale);
+#include "shared/effect/parManager/dds3Particle_RadiateSetScale.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EC188);
 
@@ -80,9 +80,9 @@ INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSmokeBuffInit);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001ED228);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereRingAllBuffInit);
+#include "shared/effect/parManager/dds3Particle_SphereRingAllBuffInit.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereRingSetScale);
+#include "shared/effect/parManager/dds3Particle_SphereRingSetScale.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001ED538);
 
@@ -102,11 +102,11 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001EDB60);
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_Spark2BuffInit);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_Spark2Draw);
+#include "shared/effect/parManager/dds3Particle_Spark2Draw.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereAtomAllBuffInit);
+#include "shared/effect/parManager/dds3Particle_SphereAtomAllBuffInit.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereAtomSetScale);
+#include "shared/effect/parManager/dds3Particle_SphereAtomSetScale.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EE088);
 
@@ -114,9 +114,9 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001EE108);
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereAtomBuffInit);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereAtomDraw);
+#include "shared/effect/parManager/dds3Particle_SphereAtomDraw.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SpiralRandomize);
+#include "shared/effect/parManager/dds3Particle_SpiralRandomize.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EE838);
 
@@ -126,27 +126,27 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001EE8E0);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EE908);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SpiralBlendColor);
+#include "shared/effect/parManager/dds3Particle_SpiralBlendColor.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EEA98);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EEAE0);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkOffsetCreate);
+#include "shared/effect/parManager/dds3Particle_SparkOffsetCreate.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EEBB0);
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkOffsetBuffInit);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkOffsetDraw);
+#include "shared/effect/parManager/dds3Particle_SparkOffsetDraw.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EF5C8);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EF610);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SmokeOffsetCreate);
+#include "shared/effect/parManager/dds3Particle_SmokeOffsetCreate.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SmokeOffsetDelete);
+#include "shared/effect/parManager/dds3Particle_SmokeOffsetDelete.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SmokeOffsetBuffInit);
 
@@ -156,53 +156,53 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001EFC38);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EFC80);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSpiral2Create);
+#include "shared/effect/parManager/dds3Particle_SphereSpiral2Create.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSpiral2Delete);
+#include "shared/effect/parManager/dds3Particle_SphereSpiral2Delete.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EFE58);
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SphereSpiral2Draw);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleSetColorTable);
+#include "shared/effect/parManager/dds3ParticleSetColorTable.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleColorAnim);
+#include "shared/effect/parManager/dds3ParticleColorAnim.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_BlurCreate);
+#include "shared/effect/parManager/dds3Particle_BlurCreate.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F0B88);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F0BA0);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_BlurSetExp);
+#include "shared/effect/parManager/dds3Particle_BlurSetExp.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_BlurDraw);
+#include "shared/effect/parManager/dds3Particle_BlurDraw.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F0DE0);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_TrackSetExp);
+#include "shared/effect/parManager/dds3Particle_TrackSetExp.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_Track2SetExp);
+#include "shared/effect/parManager/dds3Particle_Track2SetExp.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F11A8);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleCreate);
+#include "shared/effect/parManager/dds3ParticleCreate.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1270);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleDraw);
+#include "shared/effect/parManager/dds3ParticleDraw.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleCopy);
+#include "shared/effect/parManager/dds3ParticleCopy.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleReset);
+#include "shared/effect/parManager/dds3ParticleReset.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleSetScale);
+#include "shared/effect/parManager/dds3ParticleSetScale.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1590);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1598);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleSetRotateMatrix);
+#include "shared/effect/parManager/dds3ParticleSetRotateMatrix.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1608);
 
@@ -210,9 +210,9 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001F1610);
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleGetLoop);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleExpCreate);
+#include "shared/effect/parManager/dds3ParticleExpCreate.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleExpCopy);
+#include "shared/effect/parManager/dds3ParticleExpCopy.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1818);
 
@@ -220,7 +220,7 @@ INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleExpDraw);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1BA0);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleExpSetScale);
+#include "shared/effect/parManager/dds3ParticleExpSetScale.c"
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1BF8);
 
@@ -240,8 +240,8 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001F1CF0);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1D88);
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_TrackSet);
+#include "shared/effect/parManager/dds3Particle_TrackSet.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_Track2Set);
+#include "shared/effect/parManager/dds3Particle_Track2Set.c"
 
-INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_Track3Set);
+#include "shared/effect/parManager/dds3Particle_Track3Set.c"

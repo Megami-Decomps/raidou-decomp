@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "pb/pbGame", pbCheckPreviousRecord);
+#include "shared/pb/pbGame/pbCheckPreviousRecord.c"

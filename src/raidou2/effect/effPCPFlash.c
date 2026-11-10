@@ -1,12 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2Create);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere2Create.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002230A0);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002230C0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2Delete);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere2Delete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00223108);
 
@@ -14,13 +14,13 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00223118);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00223120);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2PartSetVC);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere2PartSetVC.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2PartSetVertex);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2Draw);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere2Draw.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereCreate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphereCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00223750);
 
@@ -34,15 +34,15 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002237C8);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002237D0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySpherePartSetVC);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySpherePartSetVC.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySpherePartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySpherePartSetVertex);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySpherePartSetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySpherePartRotate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySpherePartRotate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereDraw);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphereDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingCreate);
 
@@ -50,7 +50,7 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224108);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224128);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingDelete);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyRingDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224170);
 
@@ -58,13 +58,13 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224180);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224188);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingPartSetVC);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyRingPartSetVC.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingPartSetVertex);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyRingPartSetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingPartRotate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyRingPartRotate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingDraw);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyRingDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyPipeCreate);
 
@@ -80,11 +80,11 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002249A8);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002249B0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyPipePartSetVC);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyPipePartSetVC.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyPipePartSetVertex);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyPipePartSetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyPipePartRotate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyPipePartRotate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyPipeDraw);
 
@@ -110,13 +110,13 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225570);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225590);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereExpCreate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphereExpCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225AA8);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225AC8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereExpDelete);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphereExpDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225B10);
 
@@ -124,23 +124,23 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225B20);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225B28);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereExpPartSetVC);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphereExpPartSetVC.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereExpPartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereExpPartSetVertex);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphereExpPartSetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereExpPartRotate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphereExpPartRotate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphereExpDraw);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2ExpCreate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere2ExpCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002262D8);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002262F8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2ExpDelete);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere2ExpDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226340);
 
@@ -148,19 +148,19 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226350);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226358);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2ExpPartSetVC);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere2ExpPartSetVC.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2ExpPartSetVertex);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere2ExpDraw);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere2ExpDraw.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere3Create);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere3Create.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226A10);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226A30);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere3Delete);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere3Delete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226A78);
 
@@ -168,15 +168,15 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226A88);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226A90);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere3PartSetVC);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere3PartSetVC.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere3PartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere3PartSetVertex);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere3PartSetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere3PartRotate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere3PartRotate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolySphere3Draw);
+#include "shared/effect/effPCPFlash/effPCPFlashPolySphere3Draw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExp2Create);
 
@@ -192,15 +192,15 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227430);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227438);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExp2PartSetVC);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyRingExp2PartSetVC.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExp2PartSetVertex);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyRingExp2PartSetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExp2PartRotate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyRingExp2PartRotate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyRingExp2Draw);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyRingExp2Draw.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyCircleCreate);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyCircleCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227B38);
 
@@ -214,11 +214,11 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227BB0);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227BB8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyCirclePartSetVC);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyCirclePartSetVC.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyCirclePartSetVertex);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", effPCPFlashPolyCircleDraw);
+#include "shared/effect/effPCPFlash/effPCPFlashPolyCircleDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002280C8);
 
@@ -244,7 +244,7 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228688);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002286A8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyListCreate);
+#include "shared/effect/effPCPFlash/dds3FlashPolyListCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228B20);
 
@@ -260,27 +260,27 @@ INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228E38);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228E40);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyList2Create);
+#include "shared/effect/effPCPFlash/dds3FlashPolyList2Create.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228F40);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228F70);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyList2GetVertex);
+#include "shared/effect/effPCPFlash/dds3FlashPolyList2GetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyList2GetVC);
+#include "shared/effect/effPCPFlash/dds3FlashPolyList2GetVC.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyList3Create);
+#include "shared/effect/effPCPFlash/dds3FlashPolyList3Create.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00229248);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00229278);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyList3GetVertex);
+#include "shared/effect/effPCPFlash/dds3FlashPolyList3GetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyList3GetVC);
+#include "shared/effect/effPCPFlash/dds3FlashPolyList3GetVC.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyListHCreate);
+#include "shared/effect/effPCPFlash/dds3FlashPolyListHCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00229498);
 

@@ -8,31 +8,31 @@ INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_00119F38);
 
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011A020);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", MakeCamera);
+#include "shared/basic/dds3CameraObjectBasic/MakeCamera.c"
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3GetCameraObjectBaseControlWorkData);
+#include "shared/basic/dds3CameraObjectBasic/dds3GetCameraObjectBaseControlWorkData.c"
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3AllocCameraObjectBasic);
+#include "shared/basic/dds3CameraObjectBasic/dds3AllocCameraObjectBasic.c"
 
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3AddCameraObjectBasicTypeFree);
 
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3AddCameraObjectBasicTypeLookAt);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3AddCameraObjectBasic);
+#include "shared/basic/dds3CameraObjectBasic/dds3AddCameraObjectBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3DeleteCameraObjectBasic);
+#include "shared/basic/dds3CameraObjectBasic/dds3DeleteCameraObjectBasic.c"
 
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011A3B0);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3CameraObjectBasicGetCameraTM);
+#include "shared/basic/dds3CameraObjectBasic/dds3CameraObjectBasicGetCameraTM.c"
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3CameraObjectBasicGetTargetPos);
+#include "shared/basic/dds3CameraObjectBasic/dds3CameraObjectBasicGetTargetPos.c"
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3CameraObjectBasicSetFovy);
+#include "shared/basic/dds3CameraObjectBasic/dds3CameraObjectBasicSetFovy.c"
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3CameraObjectBasicGetFovy);
+#include "shared/basic/dds3CameraObjectBasic/dds3CameraObjectBasicGetFovy.c"
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3CameraObjectBasicGetTgtCam);
+#include "shared/basic/dds3CameraObjectBasic/dds3CameraObjectBasicGetTgtCam.c"
 
 INCLUDE_RODATA(const s32, "basic/dds3CameraObjectBasic", D_00446428);
 

@@ -6,17 +6,17 @@ INCLUDE_ASM(const s32, "field/fldProcess", func_0012CA98);
 
 INCLUDE_ASM(const s32, "field/fldProcess", func_0012F7A0);
 
-INCLUDE_ASM(const s32, "field/fldProcess", fldAutoMapSeqSetFlag);
+#include "shared/field/fldProcess/fldAutoMapSeqSetFlag.c"
 
-INCLUDE_ASM(const s32, "field/fldProcess", fldAutoMapSeqClearFlag);
+#include "shared/field/fldProcess/fldAutoMapSeqClearFlag.c"
 
-INCLUDE_ASM(const s32, "field/fldProcess", fldAutoMapSeqTestFlag);
+#include "shared/field/fldProcess/fldAutoMapSeqTestFlag.c"
 
-INCLUDE_ASM(const s32, "field/fldProcess", fldEncountSetFlag);
+#include "shared/field/fldProcess/fldEncountSetFlag.c"
 
-INCLUDE_ASM(const s32, "field/fldProcess", fldEncountClearFlag);
+#include "shared/field/fldProcess/fldEncountClearFlag.c"
 
-INCLUDE_ASM(const s32, "field/fldProcess", fldEncountTestFlag);
+#include "shared/field/fldProcess/fldEncountTestFlag.c"
 
 INCLUDE_ASM(const s32, "field/fldProcess", func_0012F950);
 

@@ -205,7 +205,7 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_002D7860);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_002D78B8);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", nbPlaySe);
+#include "shared/newbattle/nbSound/nbPlaySe.c"
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_002D78F0);
 

@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "newbattle/nbKoukaProcess", nbDelKoukaPacket);
+#include "shared/newbattle/nbKoukaProcess/nbDelKoukaPacket.c"

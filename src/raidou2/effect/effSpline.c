@@ -2,7 +2,7 @@
 
 INCLUDE_ASM(const s32, "effect/effSpline", dds3AllocSplineHandle);
 
-INCLUDE_ASM(const s32, "effect/effSpline", dds3FreeSplineHandle);
+#include "shared/effect/effSpline/dds3FreeSplineHandle.c"
 
 INCLUDE_ASM(const s32, "effect/effSpline", func_0020D230);
 
@@ -14,12 +14,12 @@ INCLUDE_ASM(const s32, "effect/effSpline", func_0020D530);
 
 INCLUDE_ASM(const s32, "effect/effSpline", func_0020D540);
 
-INCLUDE_ASM(const s32, "effect/effSpline", dds3AllocSplinePoints);
+#include "shared/effect/effSpline/dds3AllocSplinePoints.c"
 
-INCLUDE_ASM(const s32, "effect/effSpline", dds3BuildSplinePoints);
+#include "shared/effect/effSpline/dds3BuildSplinePoints.c"
 
-INCLUDE_ASM(const s32, "effect/effSpline", SolveTridiagonal);
+#include "shared/effect/effSpline/SolveTridiagonal.c"
 
-INCLUDE_ASM(const s32, "effect/effSpline", dds3BuildSplineCoefs);
+#include "shared/effect/effSpline/dds3BuildSplineCoefs.c"
 
-INCLUDE_ASM(const s32, "effect/effSpline", dds3BuildSplineCoefsSkipDup);
+#include "shared/effect/effSpline/dds3BuildSplineCoefsSkipDup.c"

@@ -1,8 +1,8 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList_00111FF8", scrLinkHandle);
+#include "shared/kernel/dds3SequenceList/scrLinkHandle.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList_00111FF8", scrUnlinkHandle);
+#include "shared/kernel/dds3SequenceList/scrUnlinkHandle.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList_00111FF8", func_00112090);
 

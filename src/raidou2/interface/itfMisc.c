@@ -1,52 +1,52 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscLinkInitialize);
+#include "shared/interface/itfMisc/itfMiscLinkInitialize.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscLinkTake);
+#include "shared/interface/itfMisc/itfMiscLinkTake.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscLinkGive);
+#include "shared/interface/itfMisc/itfMiscLinkGive.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscSetRatioRGB);
+#include "shared/interface/itfMisc/itfMiscSetRatioRGB.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscChangeFontVertexColor);
+#include "shared/interface/itfMisc/itfMiscChangeFontVertexColor.c"
 
 INCLUDE_ASM(const s32, "interface/itfMisc", func_00198FD8);
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscMoveFontPosition);
+#include "shared/interface/itfMisc/itfMiscMoveFontPosition.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscLoadTexture);
+#include "shared/interface/itfMisc/itfMiscLoadTexture.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawTrianglePrim);
+#include "shared/interface/itfMisc/itfMiscDrawTrianglePrim.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawRectanglePrim);
+#include "shared/interface/itfMisc/itfMiscDrawRectanglePrim.c"
 
 INCLUDE_ASM(const s32, "interface/itfMisc", func_00199310);
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawTexPoly);
+#include "shared/interface/itfMisc/itfMiscDrawTexPoly.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawSpritePrim);
+#include "shared/interface/itfMisc/itfMiscDrawSpritePrim.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawSpritePrim2);
+#include "shared/interface/itfMisc/itfMiscDrawSpritePrim2.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawSpritePlanePrim);
+#include "shared/interface/itfMisc/itfMiscDrawSpritePlanePrim.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawTriangleStripPrim);
+#include "shared/interface/itfMisc/itfMiscDrawTriangleStripPrim.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawLineStripPrim);
+#include "shared/interface/itfMisc/itfMiscDrawLineStripPrim.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawLinePrim);
+#include "shared/interface/itfMisc/itfMiscDrawLinePrim.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawTestPrim);
+#include "shared/interface/itfMisc/itfMiscDrawTestPrim.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawAlphaPrim);
+#include "shared/interface/itfMisc/itfMiscDrawAlphaPrim.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawClampPrim);
+#include "shared/interface/itfMisc/itfMiscDrawClampPrim.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfMiscDrawGauge);
+#include "shared/interface/itfMisc/itfMiscDrawGauge.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", dds3DebugDevDumpProcess);
+#include "shared/interface/itfMisc/dds3DebugDevDumpProcess.c"
 
-INCLUDE_ASM(const s32, "interface/itfMisc", itfCamp);
+#include "shared/interface/itfMisc/itfCamp.c"
 
 INCLUDE_ASM(const s32, "interface/itfMisc", func_0019A170);
 INCLUDE_SDATA(const s32, "interface/itfMisc", D_004DF4B0);

@@ -2,31 +2,31 @@
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", FreeEffectData);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicConstructor);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicConstructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicDestructor);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicDestructor.c"
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011BE60);
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicDrawProcedure);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicGetControlWorkData);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicGetControlWorkData.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddEffectObjectBasic);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddEffectObjectBasic.c"
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddP2AEffect);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddP2AEffectObjectBasic3);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddP2AEffectObjectBasic3.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddP2AEffectObjectBasic2);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddP2AEffectObjectBasic2.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddP2AEffectObjectBasic);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddP2AEffectObjectBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicSetAnmeID);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicSetAnmeID.c"
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddTMXEffect);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddTMXEffectObjectBasic3);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddTMXEffectObjectBasic3.c"
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011C6A8);
 
@@ -44,45 +44,45 @@ INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011C958);
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddBEDEffect);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddBEDEffectObjectBasic2);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddBEDEffectObjectBasic2.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddBEDEffectObjectBasic);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddBEDEffectObjectBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3StartBEDEffectObjectBasic);
+#include "shared/basic/dds3EffectObjectBasic/dds3StartBEDEffectObjectBasic.c"
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddESPEffect);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddESPEffectObjectBasic);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddESPEffectObjectBasic.c"
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddMG12Effect);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddMG12EffectObjectBasic2);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddMG12EffectObjectBasic2.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddMG12EffectObjectBasic);
+#include "shared/basic/dds3EffectObjectBasic/dds3AddMG12EffectObjectBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", CheckESP);
+#include "shared/basic/dds3EffectObjectBasic/CheckESP.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", GetESPPos);
+#include "shared/basic/dds3EffectObjectBasic/GetESPPos.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", GetESPR);
+#include "shared/basic/dds3EffectObjectBasic/GetESPR.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectPresetMG12);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectPresetMG12.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectSetMG12Pos);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectSetMG12Pos.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicStatOn);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicStatOn.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicStatOff);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicStatOff.c"
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicLinkObject);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicGetObjectIndex);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicGetObjectIndex.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicLinkObjectIndex);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicLinkObjectIndex.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicUnlinkObject);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicUnlinkObject.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicSetFldEx);
+#include "shared/basic/dds3EffectObjectBasic/dds3EffectObjectBasicSetFldEx.c"
 
 INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_00446500);
 

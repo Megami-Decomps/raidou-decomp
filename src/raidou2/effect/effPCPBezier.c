@@ -1,12 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", effPCPBezierBillCreate);
+#include "shared/effect/effPCPBezier/effPCPBezierBillCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBezier", func_00222800);
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", effPCPBezierBillCopy);
+#include "shared/effect/effPCPBezier/effPCPBezierBillCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", effPCPBezierBillDelete);
+#include "shared/effect/effPCPBezier/effPCPBezierBillDelete.c"
 
 void func_00222B48(void) {
 }
@@ -15,8 +15,8 @@ INCLUDE_ASM(const s32, "effect/effPCPBezier", func_00222B50);
 
 INCLUDE_ASM(const s32, "effect/effPCPBezier", func_00222B60);
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", dds3BezierTrackPolySetVertex);
+#include "shared/effect/effPCPBezier/dds3BezierTrackPolySetVertex.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPBezier", func_00222D68);
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", dds3BezierTrackPolyCreate);
+#include "shared/effect/effPCPBezier/dds3BezierTrackPolyCreate.c"

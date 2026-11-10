@@ -1,59 +1,59 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3PolygonManagerInit);
+#include "shared/effect/polyManager/dds3PolygonManagerInit.c"
 
 void func_001F68A0(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3PolygonCreate);
+#include "shared/effect/polyManager/dds3PolygonCreate.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3PolygonDelete);
+#include "shared/effect/polyManager/dds3PolygonDelete.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F6A60);
 
 INCLUDE_ASM(const s32, "effect/polyManager", dds3PolygonLinkOt);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3PolygonSetTex);
+#include "shared/effect/polyManager/dds3PolygonSetTex.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyInit);
+#include "shared/effect/polyManager/dds3TrackPolyInit.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyCreate);
+#include "shared/effect/polyManager/dds3TrackPolyCreate.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyDelete);
+#include "shared/effect/polyManager/dds3TrackPolyDelete.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyListInit);
+#include "shared/effect/polyManager/dds3TrackPolyListInit.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyDraw);
+#include "shared/effect/polyManager/dds3TrackPolyDraw.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolySet);
+#include "shared/effect/polyManager/dds3TrackPolySet.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F7030);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolySet2);
+#include "shared/effect/polyManager/dds3TrackPolySet2.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F7150);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVCRefresh_ParType1);
+#include "shared/effect/polyManager/dds3TrackPolyVCRefresh_ParType1.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F7338);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVCSet_Normal);
+#include "shared/effect/polyManager/dds3TrackPolyVCSet_Normal.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVCSet_Acute);
+#include "shared/effect/polyManager/dds3TrackPolyVCSet_Acute.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVCSet_AcuteW);
+#include "shared/effect/polyManager/dds3TrackPolyVCSet_AcuteW.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVCSet2_Normal);
+#include "shared/effect/polyManager/dds3TrackPolyVCSet2_Normal.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F79B0);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVCSet2_AcuteW);
+#include "shared/effect/polyManager/dds3TrackPolyVCSet2_AcuteW.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F7D78);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVC3Set_Acute);
+#include "shared/effect/polyManager/dds3TrackPolyVC3Set_Acute.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVC3Set_AcuteW);
+#include "shared/effect/polyManager/dds3TrackPolyVC3Set_AcuteW.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F8090);
 
@@ -63,77 +63,77 @@ INCLUDE_ASM(const s32, "effect/polyManager", func_001F81A8);
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F82A8);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVC5Set_Acute);
+#include "shared/effect/polyManager/dds3TrackPolyVC5Set_Acute.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVC5Set_AcuteR);
+#include "shared/effect/polyManager/dds3TrackPolyVC5Set_AcuteR.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVC5Set_AcuteW);
+#include "shared/effect/polyManager/dds3TrackPolyVC5Set_AcuteW.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F86C8);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyVCSet);
+#include "shared/effect/polyManager/dds3TrackPolyVCSet.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F8710);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrianglePolyCreate);
+#include "shared/effect/polyManager/dds3TrianglePolyCreate.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrianglePolyDelete);
+#include "shared/effect/polyManager/dds3TrianglePolyDelete.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrianglePolyLinkOt);
+#include "shared/effect/polyManager/dds3TrianglePolyLinkOt.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_Ring_Old_Create);
+#include "shared/effect/polyManager/dds3SpPoly_Ring_Old_Create.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_Ring_Old_Delete);
+#include "shared/effect/polyManager/dds3SpPoly_Ring_Old_Delete.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_Ring_Old_BuffInit);
+#include "shared/effect/polyManager/dds3SpPoly_Ring_Old_BuffInit.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F90D0);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_Ring_Old_Calc);
+#include "shared/effect/polyManager/dds3SpPoly_Ring_Old_Calc.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_Ring_Old_Draw);
+#include "shared/effect/polyManager/dds3SpPoly_Ring_Old_Draw.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_Ring_Old_New);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_Ring_Old_Move);
+#include "shared/effect/polyManager/dds3SpPoly_Ring_Old_Move.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_Color);
+#include "shared/effect/polyManager/dds3SpPoly_Color.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RingCreate);
+#include "shared/effect/polyManager/dds3SpPoly_RingCreate.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RingDelete);
+#include "shared/effect/polyManager/dds3SpPoly_RingDelete.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RingAllBuffInit);
+#include "shared/effect/polyManager/dds3SpPoly_RingAllBuffInit.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RingBuffInit);
+#include "shared/effect/polyManager/dds3SpPoly_RingBuffInit.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F9888);
 
 INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RingMove);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RingSetScale);
+#include "shared/effect/polyManager/dds3SpPoly_RingSetScale.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RingDraw);
+#include "shared/effect/polyManager/dds3SpPoly_RingDraw.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_SphereRingCreate);
+#include "shared/effect/polyManager/dds3SpPoly_SphereRingCreate.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_SphereRingDelete);
+#include "shared/effect/polyManager/dds3SpPoly_SphereRingDelete.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_SphereRingAllBuffInit);
+#include "shared/effect/polyManager/dds3SpPoly_SphereRingAllBuffInit.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_SphereRingBuffInit);
+#include "shared/effect/polyManager/dds3SpPoly_SphereRingBuffInit.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_SphereRingMove);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_SphereRingSetScale);
+#include "shared/effect/polyManager/dds3SpPoly_SphereRingSetScale.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_SphereRingDraw);
+#include "shared/effect/polyManager/dds3SpPoly_SphereRingDraw.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RollRingCreate);
+#include "shared/effect/polyManager/dds3SpPoly_RollRingCreate.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RollRingDelete);
+#include "shared/effect/polyManager/dds3SpPoly_RollRingDelete.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RollRingAllBuffInit);
+#include "shared/effect/polyManager/dds3SpPoly_RollRingAllBuffInit.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPoly_RollRingBuffInit);
 
@@ -145,35 +145,35 @@ INCLUDE_ASM(const s32, "effect/polyManager", func_001FA920);
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FAAB8);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPolyCreate);
+#include "shared/effect/polyManager/dds3SpPolyCreate.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPolyCopy);
+#include "shared/effect/polyManager/dds3SpPolyCopy.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FABC8);
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FAC00);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPolyReset);
+#include "shared/effect/polyManager/dds3SpPolyReset.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPolySetScale);
+#include "shared/effect/polyManager/dds3SpPolySetScale.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FACC0);
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FACC8);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPolySetRotateMatrix);
+#include "shared/effect/polyManager/dds3SpPolySetRotateMatrix.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FAD38);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3SpPolySetLoop);
+#include "shared/effect/polyManager/dds3SpPolySetLoop.c"
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FAD58);
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FAD60);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3PolygonTriangleSet);
+#include "shared/effect/polyManager/dds3PolygonTriangleSet.c"
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3TrackPolyColorSet);
+#include "shared/effect/polyManager/dds3TrackPolyColorSet.c"
 INCLUDE_SDATA(const s32, "effect/polyManager", D_004E16B4);
 
 INCLUDE_SDATA(const s32, "effect/polyManager", D_004E16B8);

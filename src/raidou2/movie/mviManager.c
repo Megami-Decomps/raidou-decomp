@@ -4,7 +4,7 @@ INCLUDE_ASM(const s32, "movie/mviManager", func_001E8A48);
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001E8AA0);
 
-INCLUDE_ASM(const s32, "movie/mviManager", movieStop);
+#include "shared/movie/mviManager/movieStop.c"
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001E8B18);
 
@@ -12,7 +12,7 @@ INCLUDE_ASM(const s32, "movie/mviManager", func_001E8B38);
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001E8B48);
 
-INCLUDE_ASM(const s32, "movie/mviManager", movieMan_Process);
+#include "shared/movie/mviManager/movieMan_Process.c"
 
 INCLUDE_ASM(const s32, "movie/mviManager", dds3StartMovieManager);
 
@@ -24,13 +24,13 @@ INCLUDE_ASM(const s32, "movie/mviManager", func_001E8C28);
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001E8CD0);
 
-INCLUDE_ASM(const s32, "movie/mviManager", movieViewerFree);
+#include "shared/movie/mviManager/movieViewerFree.c"
 
 INCLUDE_ASM(const s32, "movie/mviManager", func_001E8D58);
 
-INCLUDE_ASM(const s32, "movie/mviManager", movieViewerStep);
+#include "shared/movie/mviManager/movieViewerStep.c"
 
-INCLUDE_ASM(const s32, "movie/mviManager", movieDebugDrawInfo);
+#include "shared/movie/mviManager/movieDebugDrawInfo.c"
 INCLUDE_SDATA(const s32, "movie/mviManager", D_004E1518);
 
 INCLUDE_SDATA(const s32, "movie/mviManager", D_004E151C);

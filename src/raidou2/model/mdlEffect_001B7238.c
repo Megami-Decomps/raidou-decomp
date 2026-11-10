@@ -4,9 +4,9 @@ INCLUDE_ASM(const s32, "model/mdlEffect_001B7238", mdlSetDebugMatrix);
 
 INCLUDE_ASM(const s32, "model/mdlEffect_001B7238", mdlDebugPrintEffectScale);
 
-INCLUDE_ASM(const s32, "model/mdlEffect_001B7238", mdlDebugTextBox);
+#include "shared/model/mdlEffect/mdlDebugTextBox.c"
 
-INCLUDE_ASM(const s32, "model/mdlEffect_001B7238", mdlGetDebugEntry);
+#include "shared/model/mdlEffect/mdlGetDebugEntry.c"
 
 INCLUDE_ASM(const s32, "model/mdlEffect_001B7238", mdlDebugPrintEffectScale2);
 

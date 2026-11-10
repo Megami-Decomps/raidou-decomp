@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/fflush", fflush);
+#include "shared/sdk/libc/fflush.c"

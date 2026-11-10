@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSpherePolyCreate);
+#include "shared/effect/effPCPThunder/effPCPThunderSpherePolyCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021DE28);
 
@@ -20,11 +20,11 @@ INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021DED0);
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereRotate);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereRotateAxis);
+#include "shared/effect/effPCPThunder/effPCPThunderSphereRotateAxis.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021E658);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effBTLBindCreateTrack);
+#include "shared/effect/effPCPThunder/effBTLBindCreateTrack.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021E958);
 
@@ -44,7 +44,7 @@ INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021EA00);
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereLowRotate);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereLowRotateAxis);
+#include "shared/effect/effPCPThunder/effPCPThunderSphereLowRotateAxis.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021F080);
 
@@ -62,9 +62,9 @@ INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021F530);
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021FA98);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyCreate);
+#include "shared/effect/effPCPThunder/effPCP_ThunderPolyCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyDelete);
+#include "shared/effect/effPCPThunder/effPCP_ThunderPolyDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021FF88);
 
@@ -82,11 +82,11 @@ INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00220040);
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyPartRefresh);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyDraw);
+#include "shared/effect/effPCPThunder/effPCP_ThunderPolyDraw.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyLowCreate);
+#include "shared/effect/effPCPThunder/effPCP_ThunderPolyLowCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyLowDelete);
+#include "shared/effect/effPCPThunder/effPCP_ThunderPolyLowDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00220A88);
 
@@ -96,25 +96,25 @@ INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00220AC0);
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyLowPartRefresh);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyLowDraw);
+#include "shared/effect/effPCPThunder/effPCP_ThunderPolyLowDraw.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderRadiatePolyCreate);
+#include "shared/effect/effPCPThunder/effPCP_ThunderRadiatePolyCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderRadiatePolyDelete);
+#include "shared/effect/effPCPThunder/effPCP_ThunderRadiatePolyDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_002214A8);
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_002214B8);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderRadiatePolyDrawOff);
+#include "shared/effect/effPCPThunder/effPCP_ThunderRadiatePolyDrawOff.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderRadiatePolyPartRefresh);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderRadiatePolyDraw);
+#include "shared/effect/effPCPThunder/effPCP_ThunderRadiatePolyDraw.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyListCreate);
+#include "shared/effect/effPCPThunder/effPCP_ThunderPolyListCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyListDelete);
+#include "shared/effect/effPCPThunder/effPCP_ThunderPolyListDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00221D48);
 
@@ -122,4 +122,4 @@ INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00221D50);
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyListPartRefresh);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyListDraw);
+#include "shared/effect/effPCPThunder/effPCP_ThunderPolyListDraw.c"

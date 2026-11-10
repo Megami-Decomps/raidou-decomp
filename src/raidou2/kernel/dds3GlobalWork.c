@@ -2,8 +2,8 @@
 
 INCLUDE_ASM(const s32, "kernel/dds3GlobalWork", func_00127070);
 
-INCLUDE_ASM(const s32, "kernel/dds3GlobalWork", dds3PrimFrameRect);
+#include "shared/kernel/dds3GlobalWork/dds3PrimFrameRect.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3GlobalWork", dds3PrimLine);
+#include "shared/kernel/dds3GlobalWork/dds3PrimLine.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3GlobalWork", dds3PrimLine3D);

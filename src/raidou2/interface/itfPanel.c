@@ -2,7 +2,7 @@
 
 INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlRegist2);
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlRelease);
+#include "shared/interface/itfPanel/itfPnlRelease.c"
 
 INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlSetPosition);
 
@@ -18,27 +18,27 @@ INCLUDE_ASM(const s32, "interface/itfPanel", func_0019A480);
 
 INCLUDE_ASM(const s32, "interface/itfPanel", func_0019A4A8);
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateVertexNormal);
+#include "shared/interface/itfPanel/CreateVertexNormal.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateVertexMesWin);
+#include "shared/interface/itfPanel/CreateVertexMesWin.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateVertexSelWin);
+#include "shared/interface/itfPanel/CreateVertexSelWin.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateVertexPlain);
+#include "shared/interface/itfPanel/CreateVertexPlain.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateVertexLeftFade);
+#include "shared/interface/itfPanel/CreateVertexLeftFade.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateColorNormal);
+#include "shared/interface/itfPanel/CreateColorNormal.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateColorMesWin);
+#include "shared/interface/itfPanel/CreateColorMesWin.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateColorSelWin);
+#include "shared/interface/itfPanel/CreateColorSelWin.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateColorPlain);
+#include "shared/interface/itfPanel/CreateColorPlain.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateColorPera1);
+#include "shared/interface/itfPanel/CreateColorPera1.c"
 
-INCLUDE_ASM(const s32, "interface/itfPanel", CreateColorLeftFade);
+#include "shared/interface/itfPanel/CreateColorLeftFade.c"
 
 INCLUDE_ASM(const s32, "interface/itfPanel", DrawNormal);
 
@@ -46,7 +46,7 @@ INCLUDE_ASM(const s32, "interface/itfPanel", DrawMesWin);
 
 INCLUDE_ASM(const s32, "interface/itfPanel", DrawSelWin);
 
-INCLUDE_ASM(const s32, "interface/itfPanel", DrawPlain);
+#include "shared/interface/itfPanel/DrawPlain.c"
 
 INCLUDE_ASM(const s32, "interface/itfPanel", DrawPera1);
 

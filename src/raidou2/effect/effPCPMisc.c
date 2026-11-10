@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSparkleSphereCreate);
+#include "shared/effect/effPCPMisc/effPCPSparkleSphereCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00211668);
 
@@ -14,11 +14,11 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002117E8);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama01PartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama01Create);
+#include "shared/effect/effPCPMisc/effPCPHama01Create.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama01Delete);
+#include "shared/effect/effPCPMisc/effPCPHama01Delete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama01Copy);
+#include "shared/effect/effPCPMisc/effPCPHama01Copy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00211BD8);
 
@@ -30,11 +30,11 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00211D40);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02PartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02Create);
+#include "shared/effect/effPCPMisc/effPCPHama02Create.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02Delete);
+#include "shared/effect/effPCPMisc/effPCPHama02Delete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02Copy);
+#include "shared/effect/effPCPMisc/effPCPHama02Copy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHama02Draw);
 
@@ -48,7 +48,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonPartInit);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonDelete);
+#include "shared/effect/effPCPMisc/effPCPHamaonDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHamaonCopy);
 
@@ -62,11 +62,11 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00212750);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMHanma01PartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMHanma01Create);
+#include "shared/effect/effPCPMisc/effPCPMHanma01Create.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMHanma01Delete);
+#include "shared/effect/effPCPMisc/effPCPMHanma01Delete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMHanma01Copy);
+#include "shared/effect/effPCPMisc/effPCPMHanma01Copy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002129D8);
 
@@ -76,13 +76,13 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00212AD0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00212AD8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMudoPartInit);
+#include "shared/effect/effPCPMisc/effPCPMudoPartInit.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMudoCreate);
+#include "shared/effect/effPCPMisc/effPCPMudoCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMudoDelete);
+#include "shared/effect/effPCPMisc/effPCPMudoDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMudoCopy);
+#include "shared/effect/effPCPMisc/effPCPMudoCopy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMudoDraw);
 
@@ -92,11 +92,11 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00212FE0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00212FE8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHwave01Create);
+#include "shared/effect/effPCPMisc/effPCPHwave01Create.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHwave01Delete);
+#include "shared/effect/effPCPMisc/effPCPHwave01Delete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHwave01Copy);
+#include "shared/effect/effPCPMisc/effPCPHwave01Copy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHwave01Draw);
 
@@ -188,11 +188,11 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin02Init);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002148C0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin02Delete);
+#include "shared/effect/effPCPMisc/effPCPMZiodin02Delete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214950);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMZiodin02Draw);
+#include "shared/effect/effPCPMisc/effPCPMZiodin02Draw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214A78);
 
@@ -208,7 +208,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214B08);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214B38);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPShockWave01Draw);
+#include "shared/effect/effPCPMisc/effPCPShockWave01Draw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214CC8);
 
@@ -240,7 +240,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002151F0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215220);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHouden01Draw);
+#include "shared/effect/effPCPMisc/effPCPHouden01Draw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002153A8);
 
@@ -248,9 +248,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002153B8);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002153C0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBlinkMultiBlurCreate);
+#include "shared/effect/effPCPMisc/effPCPBlinkMultiBlurCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBlinkMultiBlurDelete);
+#include "shared/effect/effPCPMisc/effPCPBlinkMultiBlurDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBlinkMultiBlurDraw);
 
@@ -260,11 +260,11 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215638);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215648);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiBlurExpCreate);
+#include "shared/effect/effPCPMisc/effPCPMultiBlurExpCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002156F0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiBlurExpDraw);
+#include "shared/effect/effPCPMisc/effPCPMultiBlurExpDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215800);
 
@@ -272,15 +272,15 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215810);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215818);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiFilterExpCreate);
+#include "shared/effect/effPCPMisc/effPCPMultiFilterExpCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002158B0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiFilterExpCopy);
+#include "shared/effect/effPCPMisc/effPCPMultiFilterExpCopy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215970);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiFilterExpDraw);
+#include "shared/effect/effPCPMisc/effPCPMultiFilterExpDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215B48);
 
@@ -288,15 +288,15 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215B58);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215B60);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiBlurExp2Create);
+#include "shared/effect/effPCPMisc/effPCPMultiBlurExp2Create.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215BF8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiBlurExp2Copy);
+#include "shared/effect/effPCPMisc/effPCPMultiBlurExp2Copy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215CC8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMultiBlurExp2Draw);
+#include "shared/effect/effPCPMisc/effPCPMultiBlurExp2Draw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215EA0);
 
@@ -304,7 +304,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215EB0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215EB8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPFilterExpCreate);
+#include "shared/effect/effPCPMisc/effPCPFilterExpCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215F50);
 
@@ -312,11 +312,11 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215F70);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215F88);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPFilterExpDraw);
+#include "shared/effect/effPCPMisc/effPCPFilterExpDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002160B0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBlurExpCreate);
+#include "shared/effect/effPCPMisc/effPCPBlurExpCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216168);
 
@@ -324,7 +324,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216188);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002161A0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBlurExpDraw);
+#include "shared/effect/effPCPMisc/effPCPBlurExpDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002162D0);
 
@@ -336,7 +336,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216388);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216438);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPDistortionBlurExpDraw);
+#include "shared/effect/effPCPMisc/effPCPDistortionBlurExpDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216630);
 
@@ -350,7 +350,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002166F8);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002167A8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRippleBlurExpDraw);
+#include "shared/effect/effPCPMisc/effPCPRippleBlurExpDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002169C8);
 
@@ -364,7 +364,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216A50);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216A80);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMegidora01Draw);
+#include "shared/effect/effPCPMisc/effPCPMegidora01Draw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216C70);
 
@@ -392,9 +392,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBreathCreate);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217060);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBreathCopy);
+#include "shared/effect/effPCPMisc/effPCPBreathCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBreathDelete);
+#include "shared/effect/effPCPMisc/effPCPBreathDelete.c"
 
 void func_00217138(void) {
 }
@@ -405,15 +405,15 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217158);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217160);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiraoFireCreate);
+#include "shared/effect/effPCPMisc/effPCPAgiraoFireCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiraoFireCreatePCF);
+#include "shared/effect/effPCPMisc/effPCPAgiraoFireCreatePCF.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiraoFireCopy);
+#include "shared/effect/effPCPMisc/effPCPAgiraoFireCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiraoFireDelete);
+#include "shared/effect/effPCPMisc/effPCPAgiraoFireDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiraoFireDraw);
+#include "shared/effect/effPCPMisc/effPCPAgiraoFireDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217730);
 
@@ -421,40 +421,40 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217740);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballCreatePCF);
+#include "shared/effect/effPCPMisc/effPCPAgiFireballCreatePCF.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballCopySub);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballCopy);
+#include "shared/effect/effPCPMisc/effPCPAgiFireballCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballDelete);
+#include "shared/effect/effPCPMisc/effPCPAgiFireballDelete.c"
 
 void func_00217F80(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballSetPosition);
+#include "shared/effect/effPCPMisc/effPCPAgiFireballSetPosition.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217FA0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00217FA8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballSpCreatePCF);
+#include "shared/effect/effPCPMisc/effPCPAgiFireballSpCreatePCF.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballSpCopy);
+#include "shared/effect/effPCPMisc/effPCPAgiFireballSpCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballSp2CreatePCF);
+#include "shared/effect/effPCPMisc/effPCPAgiFireballSp2CreatePCF.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireballSp2Copy);
+#include "shared/effect/effPCPMisc/effPCPAgiFireballSp2Copy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireball2Create);
+#include "shared/effect/effPCPMisc/effPCPAgiFireball2Create.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireball2CreatePCF);
+#include "shared/effect/effPCPMisc/effPCPAgiFireball2CreatePCF.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireball2Copy);
+#include "shared/effect/effPCPMisc/effPCPAgiFireball2Copy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireball2Delete);
+#include "shared/effect/effPCPMisc/effPCPAgiFireball2Delete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPAgiFireball2Draw);
+#include "shared/effect/effPCPMisc/effPCPAgiFireball2Draw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002188F0);
 
@@ -466,9 +466,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuIceCreate);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuIceCopy);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuIceDelete);
+#include "shared/effect/effPCPMisc/effPCPBufuIceDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPBufuIceDraw);
+#include "shared/effect/effPCPMisc/effPCPBufuIceDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00218CA0);
 
@@ -567,7 +567,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219778);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002197C8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPEyeThunderDelete);
+#include "shared/effect/effPCPMisc/effPCPEyeThunderDelete.c"
 
 void func_00219810(void) {
 }
@@ -576,15 +576,15 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219818);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219828);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPThunderSphereExpCreate);
+#include "shared/effect/effPCPMisc/effPCPThunderSphereExpCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002198F0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPThunderSphereExpCopy);
+#include "shared/effect/effPCPMisc/effPCPThunderSphereExpCopy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219A30);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPThunderSphereExpDraw);
+#include "shared/effect/effPCPMisc/effPCPThunderSphereExpDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219BB8);
 
@@ -592,25 +592,25 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219BC8);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219BD0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", dds3RingPolyExpListCreate);
+#include "shared/effect/effPCPMisc/dds3RingPolyExpListCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", dds3RingPolyExpListDelete);
+#include "shared/effect/effPCPMisc/dds3RingPolyExpListDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219D50);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExpSetVertex);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExpInit);
+#include "shared/effect/effPCPMisc/effPCPRingPolyExpInit.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExpCreate);
+#include "shared/effect/effPCPMisc/effPCPRingPolyExpCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021A270);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021A290);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExpDelete);
+#include "shared/effect/effPCPMisc/effPCPRingPolyExpDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExpDraw);
+#include "shared/effect/effPCPMisc/effPCPRingPolyExpDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021A500);
 
@@ -626,15 +626,15 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExp2SetVertex);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExp2Init);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExp2Create);
+#include "shared/effect/effPCPMisc/effPCPRingPolyExp2Create.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021AA00);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021AA20);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExp2Delete);
+#include "shared/effect/effPCPMisc/effPCPRingPolyExp2Delete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRingPolyExp2Draw);
+#include "shared/effect/effPCPMisc/effPCPRingPolyExp2Draw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021AB90);
 
@@ -644,17 +644,17 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021ABB0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021ABB8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateThunderCreate);
+#include "shared/effect/effPCPMisc/effPCPRadiateThunderCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateThunderCreatePCF);
+#include "shared/effect/effPCPMisc/effPCPRadiateThunderCreatePCF.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateThunderCopy);
+#include "shared/effect/effPCPMisc/effPCPRadiateThunderCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateThunderDelete);
+#include "shared/effect/effPCPMisc/effPCPRadiateThunderDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateThunderPartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateThunderDraw);
+#include "shared/effect/effPCPMisc/effPCPRadiateThunderDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021B640);
 
@@ -666,9 +666,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMakkaCreat);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMakkaCopy);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMakkaDelete);
+#include "shared/effect/effPCPMisc/effPCPMakkaDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMakkaUpdateNode);
+#include "shared/effect/effPCPMisc/effPCPMakkaUpdateNode.c"
 
 void func_0021B928(void) {
 }
@@ -679,17 +679,17 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021B940);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021B948);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateBEDCreate);
+#include "shared/effect/effPCPMisc/effPCPRadiateBEDCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021BB58);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateBEDCopy);
+#include "shared/effect/effPCPMisc/effPCPRadiateBEDCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateBEDDelete);
+#include "shared/effect/effPCPMisc/effPCPRadiateBEDDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateBEDPartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateBEDDraw);
+#include "shared/effect/effPCPMisc/effPCPRadiateBEDDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021C1E0);
 
@@ -697,33 +697,33 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021C1F0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021C1F8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateTBCreate);
+#include "shared/effect/effPCPMisc/effPCPRadiateTBCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021C450);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateTBCopy);
+#include "shared/effect/effPCPMisc/effPCPRadiateTBCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateTBDelete);
+#include "shared/effect/effPCPMisc/effPCPRadiateTBDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateTBPartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPRadiateTBDraw);
+#include "shared/effect/effPCPMisc/effPCPRadiateTBDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021CC80);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021CC90);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSpiralBEDCreate);
+#include "shared/effect/effPCPMisc/effPCPSpiralBEDCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021CEB8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSpiralBEDCopy);
+#include "shared/effect/effPCPMisc/effPCPSpiralBEDCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSpiralBEDDelete);
+#include "shared/effect/effPCPMisc/effPCPSpiralBEDDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSpiralBEDPartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPSpiralBEDDraw);
+#include "shared/effect/effPCPMisc/effPCPSpiralBEDDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021D560);
 
@@ -737,9 +737,9 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHelperBEDCreate);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021D790);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHelperBEDCopy);
+#include "shared/effect/effPCPMisc/effPCPHelperBEDCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHelperBEDDelete);
+#include "shared/effect/effPCPMisc/effPCPHelperBEDDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHelperBEDDraw);
 INCLUDE_SDATA(const s32, "effect/effPCPMisc", D_004E17D8);

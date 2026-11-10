@@ -56,7 +56,7 @@ INCLUDE_ASM(const s32, "sdf/sdfIpu", func_00374058);
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", func_00374128);
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuInit);
+#include "shared/sdf/sdfIpu/sdfIpuInit.c"
 
 #include "shared/sdf/sdfIpu/sdfIpuClose.c"
 

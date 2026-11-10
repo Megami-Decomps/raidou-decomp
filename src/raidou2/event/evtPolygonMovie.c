@@ -1,28 +1,28 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanFloat);
+#include "shared/event/evtPolygonMovie/evtHokanFloat.c"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanInt);
+#include "shared/event/evtPolygonMovie/evtHokanInt.c"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanUInt);
+#include "shared/event/evtPolygonMovie/evtHokanUInt.c"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanColor);
+#include "shared/event/evtPolygonMovie/evtHokanColor.c"
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_001CEAF8);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanSceneFog);
+#include "shared/event/evtPolygonMovie/evtHokanSceneFog.c"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanBlur2);
+#include "shared/event/evtPolygonMovie/evtHokanBlur2.c"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanMultBlur);
+#include "shared/event/evtPolygonMovie/evtHokanMultBlur.c"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanFilter);
+#include "shared/event/evtPolygonMovie/evtHokanFilter.c"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanMultFilter);
+#include "shared/event/evtPolygonMovie/evtHokanMultFilter.c"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanDistBlur);
+#include "shared/event/evtPolygonMovie/evtHokanDistBlur.c"
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanRipBlur);
+#include "shared/event/evtPolygonMovie/evtHokanRipBlur.c"
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_001CF7D0);
 

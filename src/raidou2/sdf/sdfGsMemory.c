@@ -20,7 +20,7 @@ INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGetTexelBitCount);
 
 #include "shared/sdf/sdfGsMemory/sdfGsMemFreeDelayed.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemInit);
+#include "shared/sdf/sdfGsMemory/sdfGsMemInit.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsAllocFrameBuff);
 INCLUDE_SDATA(const s32, "sdf/sdfGsMemory", D_004E42AC);

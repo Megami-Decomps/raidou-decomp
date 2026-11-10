@@ -2,22 +2,22 @@
 
 INCLUDE_ASM(const s32, "effect/effMath", func_001FC710);
 
-INCLUDE_ASM(const s32, "effect/effMath", effPCPBlurScreenOffset);
+#include "shared/effect/effMath/effPCPBlurScreenOffset.c"
 
-INCLUDE_ASM(const s32, "effect/effMath", effColorBlend);
+#include "shared/effect/effMath/effColorBlend.c"
 
 INCLUDE_ASM(const s32, "effect/effMath", func_001FC930);
 
-INCLUDE_ASM(const s32, "effect/effMath", effLinePointLength);
+#include "shared/effect/effMath/effLinePointLength.c"
 
 INCLUDE_ASM(const s32, "effect/effMath", dds3Bezier4PCreate);
 
 INCLUDE_ASM(const s32, "effect/effMath", func_001FCAC8);
 
-INCLUDE_ASM(const s32, "effect/effMath", dds3Bezier4PPartRun);
+#include "shared/effect/effMath/dds3Bezier4PPartRun.c"
 
 INCLUDE_ASM(const s32, "effect/effMath", func_001FCC00);
 
 INCLUDE_ASM(const s32, "effect/effMath", func_001FCD10);
 
-INCLUDE_ASM(const s32, "effect/effMath", dds3Bezier4PGetPart);
+#include "shared/effect/effMath/dds3Bezier4PGetPart.c"

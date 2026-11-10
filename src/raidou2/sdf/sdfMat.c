@@ -12,7 +12,7 @@
 
 #include "shared/sdf/sdfMat/sdfTexListSetClutColor.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatInitSystem);
+#include "shared/sdf/sdfMat/sdfMatInitSystem.c"
 
 #include "shared/sdf/sdfMat/sdfMatListNew.c"
 

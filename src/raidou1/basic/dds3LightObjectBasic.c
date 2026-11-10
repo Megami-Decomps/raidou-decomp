@@ -2,28 +2,28 @@
 
 INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", lightconstructor);
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", lightdestructor);
+#include "shared/basic/dds3LightObjectBasic/lightdestructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", lightmainprocedure);
+#include "shared/basic/dds3LightObjectBasic/lightmainprocedure.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", lightdrawprocedure);
+#include "shared/basic/dds3LightObjectBasic/lightdrawprocedure.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3LightObjectBasicGetControlWorkData);
+#include "shared/basic/dds3LightObjectBasic/dds3LightObjectBasicGetControlWorkData.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3AddLightObjectBasic);
+#include "shared/basic/dds3LightObjectBasic/dds3AddLightObjectBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3DeleteLightObjectBasic);
+#include "shared/basic/dds3LightObjectBasic/dds3DeleteLightObjectBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3LinkSceneLight);
+#include "shared/basic/dds3LightObjectBasic/dds3LinkSceneLight.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3UnlinkSceneLight);
+#include "shared/basic/dds3LightObjectBasic/dds3UnlinkSceneLight.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3LinkLightObjectToUnitObject);
+#include "shared/basic/dds3LightObjectBasic/dds3LinkLightObjectToUnitObject.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3UnlinkLightObjectFromUnitObject);
+#include "shared/basic/dds3LightObjectBasic/dds3UnlinkLightObjectFromUnitObject.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3SetLightObjectResoruce);
+#include "shared/basic/dds3LightObjectBasic/dds3SetLightObjectResoruce.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3SetLightObjectPathResoruce);
+#include "shared/basic/dds3LightObjectBasic/dds3SetLightObjectPathResoruce.c"
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3AllocEventBasicWorkData);
+#include "shared/basic/dds3LightObjectBasic/dds3AllocEventBasicWorkData.c"

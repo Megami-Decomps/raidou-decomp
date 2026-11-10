@@ -86,4 +86,4 @@ INCLUDE_ASM(const s32, "sdf/sdfTex", func_003D0008);
 
 #include "shared/sdf/sdfTex/sdfTexSearch.c"
 
-#include "shared/sdf/sdfTex/sdfTexInit.c"
+INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexInit);

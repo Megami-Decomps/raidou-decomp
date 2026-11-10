@@ -47,9 +47,9 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F80);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001E4FF8);
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLPartCreate);
+#include "shared/effect/effBattle/effBTLPartCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effBattle", effBTLPartDelete);
+#include "shared/effect/effBattle/effBTLPartDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001E5230);
 

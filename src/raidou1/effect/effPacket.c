@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effPacket", effPkt2DAllocTriStrip);
+#include "shared/effect/effPacket/effPkt2DAllocTriStrip.c"
 
 INCLUDE_ASM(const s32, "effect/effPacket", func_001E3BE8);
 
@@ -10,9 +10,9 @@ INCLUDE_ASM(const s32, "effect/effPacket", func_001E3EE0);
 
 INCLUDE_ASM(const s32, "effect/effPacket", func_001E3FA0);
 
-INCLUDE_ASM(const s32, "effect/effPacket", effPkt2DAllocF4);
+#include "shared/effect/effPacket/effPkt2DAllocF4.c"
 
-INCLUDE_ASM(const s32, "effect/effPacket", effPkt3DPrimMakePoly);
+#include "shared/effect/effPacket/effPkt3DPrimMakePoly.c"
 
 INCLUDE_ASM(const s32, "effect/effPacket", func_001E4568);
 

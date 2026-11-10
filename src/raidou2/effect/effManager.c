@@ -6,7 +6,7 @@ INCLUDE_ASM(const s32, "effect/effManager", func_00200B80);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_00200BA8);
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectManagerRun);
+#include "shared/effect/effManager/dds3EffectManagerRun.c"
 
 void func_00200D58(void) {
 }
@@ -20,7 +20,7 @@ INCLUDE_ASM(const s32, "effect/effManager", func_00200D70);
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectCreate);
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectDelete);
+#include "shared/effect/effManager/dds3EffectDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effManager", func_00200E48);
 
@@ -46,7 +46,7 @@ INCLUDE_ASM(const s32, "effect/effManager", func_00201170);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_00201190);
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectCopy);
+#include "shared/effect/effManager/dds3EffectCopy.c"
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectDataRevision);
 

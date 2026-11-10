@@ -8,4 +8,4 @@
 
 #include "shared/sdk/libc/_cleanup.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/findfp", __sinit);
+#include "shared/sdk/libc/__sinit.c"

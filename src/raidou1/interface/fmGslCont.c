@@ -1,10 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "interface/fmGslCont", fmInitFontMemControl);
+#include "shared/interface/fmGslCont/fmInitFontMemControl.c"
 
-INCLUDE_ASM(const s32, "interface/fmGslCont", fmDestroyFontMemControl);
+#include "shared/interface/fmGslCont/fmDestroyFontMemControl.c"
 
-INCLUDE_ASM(const s32, "interface/fmGslCont", fmRentFontMem);
+#include "shared/interface/fmGslCont/fmRentFontMem.c"
 
-INCLUDE_ASM(const s32, "interface/fmGslCont", fmRetFontMem);
+#include "shared/interface/fmGslCont/fmRetFontMem.c"
 

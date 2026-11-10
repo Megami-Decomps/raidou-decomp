@@ -16,7 +16,7 @@
 
 #include "shared/sdf/sdfFile/sdfFileCallback.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileOpen);
+#include "shared/sdf/sdfFile/sdfFileOpen.c"
 
 #include "shared/sdf/sdfFile/sdfFileCheckExist.c"
 

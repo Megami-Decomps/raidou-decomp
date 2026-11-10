@@ -6,9 +6,9 @@ INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8278);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F82F0);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectBlurSetRect);
+#include "shared/effect/effBlur_Filter/dds3EffectBlurSetRect.c"
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectPartialMultiBlurCreate);
+#include "shared/effect/effBlur_Filter/dds3EffectPartialMultiBlurCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8488);
 
@@ -38,11 +38,11 @@ INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8B18);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8B48);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectRipBlurPartInit);
+#include "shared/effect/effBlur_Filter/dds3EffectRipBlurPartInit.c"
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectRippleBlurReset);
+#include "shared/effect/effBlur_Filter/dds3EffectRippleBlurReset.c"
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectRippleBlurCreate);
+#include "shared/effect/effBlur_Filter/dds3EffectRippleBlurCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F8D88);
 
@@ -56,7 +56,7 @@ INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectFilter);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F95E0);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectPartialMultiFilterCreate);
+#include "shared/effect/effBlur_Filter/dds3EffectPartialMultiFilterCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_001F9880);
 

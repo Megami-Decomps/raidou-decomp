@@ -1,27 +1,27 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathEvalSpline);
+#include "shared/basic/dds3PathBasic/dds3PathEvalSpline.c"
 
 INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3AddPathBasic);
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3AllocPathBasicWorkData);
+#include "shared/basic/dds3PathBasic/dds3AllocPathBasicWorkData.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3DeletePathControl);
+#include "shared/basic/dds3PathBasic/dds3DeletePathControl.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathBasicControlGetPos);
+#include "shared/basic/dds3PathBasic/dds3PathBasicControlGetPos.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathBasicControlGetRot);
+#include "shared/basic/dds3PathBasic/dds3PathBasicControlGetRot.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathBasicControlNextStep);
+#include "shared/basic/dds3PathBasic/dds3PathBasicControlNextStep.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathBasicControlGetFovy);
+#include "shared/basic/dds3PathBasic/dds3PathBasicControlGetFovy.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathBasicControlIsFinished);
+#include "shared/basic/dds3PathBasic/dds3PathBasicControlIsFinished.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathBasicControlAlterMode);
+#include "shared/basic/dds3PathBasic/dds3PathBasicControlAlterMode.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathBasicControlGetMode);
+#include "shared/basic/dds3PathBasic/dds3PathBasicControlGetMode.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathBasicControlSetRatio);
+#include "shared/basic/dds3PathBasic/dds3PathBasicControlSetRatio.c"
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3PathBasicControlGetRatio);
+#include "shared/basic/dds3PathBasic/dds3PathBasicControlGetRatio.c"

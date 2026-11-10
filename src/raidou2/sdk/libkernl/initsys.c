@@ -12,7 +12,7 @@ INCLUDE_ASM(const s32, "sdk/libkernl/initsys", FindAddress);
 
 #include "shared/sdk/libkernl/GetSystemCallEntry.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/initsys", GetSystemCallTableEntry);
+#include "shared/sdk/libkernl/GetSystemCallTableEntry.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/initsys", setup);
 

@@ -14,7 +14,7 @@ INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3DebugColorEdit);
 
 INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3MenuStepValue);
 
-INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3PrimDebugTextBox);
+#include "shared/kernel/dds3DebugStuff/dds3PrimDebugTextBox.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3DebugStuff", dds3PrimDebugTextBoxRGB);
 INCLUDE_SDATA(const s32, "kernel/dds3DebugStuff", D_0046B590);

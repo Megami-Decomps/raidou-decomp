@@ -8,4 +8,5 @@ INCLUDE_RODATA(const s32, "field/fldPlayer", D_004A9840);
 
 INCLUDE_ASM(const s32, "field/fldPlayer", fldPlayerCalc360_8);
 
-INCLUDE_ASM(const s32, "field/fldPlayer", fldPlayerCalc360_4);
+#include "shared/field/fldPlayer/fldPlayerCalc360_4.c"
+

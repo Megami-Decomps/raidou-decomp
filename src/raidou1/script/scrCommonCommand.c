@@ -4,17 +4,17 @@ INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_KEY);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00113FB8);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BIT_CHK);
+#include "shared/script/scrCommonCommand/scrCommand_BIT_CHK.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BIT_ON);
+#include "shared/script/scrCommonCommand/scrCommand_BIT_ON.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BIT_OFF);
+#include "shared/script/scrCommonCommand/scrCommand_BIT_OFF.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_RND);
+#include "shared/script/scrCommonCommand/scrCommand_RND.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SYNC);
+#include "shared/script/scrCommonCommand/scrCommand_SYNC.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_WAIT);
+#include "shared/script/scrCommonCommand/scrCommand_WAIT.c"
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00114110);
 
@@ -32,113 +32,113 @@ INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00114380);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_001143F0);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SEL_JMP);
+#include "shared/script/scrCommonCommand/scrCommand_SEL_JMP.c"
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_PAD_TRIG);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_PAD_PRESS);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_PAD_ACT);
+#include "shared/script/scrCommonCommand/scrCommand_PAD_ACT.c"
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SET_FOVY);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_001145E8);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCR_KILL);
+#include "shared/script/scrCommonCommand/scrCommand_SCR_KILL.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCR_WAIT);
+#include "shared/script/scrCommonCommand/scrCommand_SCR_WAIT.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCR_STAT);
+#include "shared/script/scrCommonCommand/scrCommand_SCR_STAT.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCR_TIME);
+#include "shared/script/scrCommonCommand/scrCommand_SCR_TIME.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_QUAKE_ON);
+#include "shared/script/scrCommonCommand/scrCommand_QUAKE_ON.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_QUAKE_OFF);
+#include "shared/script/scrCommonCommand/scrCommand_QUAKE_OFF.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCENE_LIGHT_RGB);
+#include "shared/script/scrCommonCommand/scrCommand_SCENE_LIGHT_RGB.c"
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCENE_LIGHT_DIR);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCENE_AMBIENT);
+#include "shared/script/scrCommonCommand/scrCommand_SCENE_AMBIENT.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCENE_FOG_RGB);
+#include "shared/script/scrCommonCommand/scrCommand_SCENE_FOG_RGB.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SCENE_FOG_PARA);
+#include "shared/script/scrCommonCommand/scrCommand_SCENE_FOG_PARA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_SOFTEN_BIAS);
+#include "shared/script/scrCommonCommand/scrCommand_SOFTEN_BIAS.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BLUR);
+#include "shared/script/scrCommonCommand/scrCommand_BLUR.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MUL_BLUR_PARA);
+#include "shared/script/scrCommonCommand/scrCommand_MUL_BLUR_PARA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MUL_BLUR_RGBA);
+#include "shared/script/scrCommonCommand/scrCommand_MUL_BLUR_RGBA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MUL_BLUR_AREA);
+#include "shared/script/scrCommonCommand/scrCommand_MUL_BLUR_AREA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MUL_BLUR_SWAP);
+#include "shared/script/scrCommonCommand/scrCommand_MUL_BLUR_SWAP.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MUL_BLUR_ON);
+#include "shared/script/scrCommonCommand/scrCommand_MUL_BLUR_ON.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MUL_BLUR_OFF);
+#include "shared/script/scrCommonCommand/scrCommand_MUL_BLUR_OFF.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_DIST_BLUR_PARA);
+#include "shared/script/scrCommonCommand/scrCommand_DIST_BLUR_PARA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_DIST_BLUR_RGBA);
+#include "shared/script/scrCommonCommand/scrCommand_DIST_BLUR_RGBA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_DIST_BLUR_AREA);
+#include "shared/script/scrCommonCommand/scrCommand_DIST_BLUR_AREA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_DIST_BLUR_SWAP);
+#include "shared/script/scrCommonCommand/scrCommand_DIST_BLUR_SWAP.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_DIST_BLUR_ON);
+#include "shared/script/scrCommonCommand/scrCommand_DIST_BLUR_ON.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_DIST_BLUR_OFF);
+#include "shared/script/scrCommonCommand/scrCommand_DIST_BLUR_OFF.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_RIP_BLUR_PARA);
+#include "shared/script/scrCommonCommand/scrCommand_RIP_BLUR_PARA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_RIP_BLUR_RGBA);
+#include "shared/script/scrCommonCommand/scrCommand_RIP_BLUR_RGBA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_RIP_BLUR_AREA);
+#include "shared/script/scrCommonCommand/scrCommand_RIP_BLUR_AREA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_RIP_BLUR_SWAP);
+#include "shared/script/scrCommonCommand/scrCommand_RIP_BLUR_SWAP.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_RIP_BLUR_ON);
+#include "shared/script/scrCommonCommand/scrCommand_RIP_BLUR_ON.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_RIP_BLUR_OFF);
+#include "shared/script/scrCommonCommand/scrCommand_RIP_BLUR_OFF.c"
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BLUR2_PARA);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BLUR2_RGBA);
+#include "shared/script/scrCommonCommand/scrCommand_BLUR2_RGBA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BLUR2_AREA);
+#include "shared/script/scrCommonCommand/scrCommand_BLUR2_AREA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BLUR2_SWAP);
+#include "shared/script/scrCommonCommand/scrCommand_BLUR2_SWAP.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BLUR2_ON);
+#include "shared/script/scrCommonCommand/scrCommand_BLUR2_ON.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_BLUR2_OFF);
+#include "shared/script/scrCommonCommand/scrCommand_BLUR2_OFF.c"
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FILTER2_PARA);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FILTER2_RGBA);
+#include "shared/script/scrCommonCommand/scrCommand_FILTER2_RGBA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FILTER2_SWAP);
+#include "shared/script/scrCommonCommand/scrCommand_FILTER2_SWAP.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FILTER2_ON);
+#include "shared/script/scrCommonCommand/scrCommand_FILTER2_ON.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_FILTER2_OFF);
+#include "shared/script/scrCommonCommand/scrCommand_FILTER2_OFF.c"
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MFILTER_PARA);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MFILTER_RGBA);
+#include "shared/script/scrCommonCommand/scrCommand_MFILTER_RGBA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MFILTER_AREA);
+#include "shared/script/scrCommonCommand/scrCommand_MFILTER_AREA.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MFILTER_SWAP);
+#include "shared/script/scrCommonCommand/scrCommand_MFILTER_SWAP.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MFILTER_ON);
+#include "shared/script/scrCommonCommand/scrCommand_MFILTER_ON.c"
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_MFILTER_OFF);
+#include "shared/script/scrCommonCommand/scrCommand_MFILTER_OFF.c"
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00115780);
 

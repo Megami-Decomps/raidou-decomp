@@ -1,74 +1,74 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacFileHandleFree);
+#include "shared/file/fileManager/pacFileHandleFree.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacFileHandleFree_);
+#include "shared/file/fileManager/pacFileHandleFree_.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileHandleFree);
+#include "shared/file/fileManager/fileHandleFree.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileLinkQueue);
+#include "shared/file/fileManager/fileLinkQueue.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileUnlinkQueue);
+#include "shared/file/fileManager/fileUnlinkQueue.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileLinkCloseWait);
+#include "shared/file/fileManager/fileLinkCloseWait.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileUnlinkCloseWait);
+#include "shared/file/fileManager/fileUnlinkCloseWait.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacLoadEx);
+#include "shared/file/fileManager/pacLoadEx.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacLoad);
+#include "shared/file/fileManager/pacLoad.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacLoadUseTail);
+#include "shared/file/fileManager/pacLoadUseTail.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileLoadEx);
+#include "shared/file/fileManager/fileLoadEx.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileLoad);
+#include "shared/file/fileManager/fileLoad.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileLoadUseTail);
+#include "shared/file/fileManager/fileLoadUseTail.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileGetMemHandle);
+#include "shared/file/fileManager/fileGetMemHandle.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileGetLoadPtr);
+#include "shared/file/fileManager/fileGetLoadPtr.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileGetLoadSize);
+#include "shared/file/fileManager/fileGetLoadSize.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileGetLoadRemain);
+#include "shared/file/fileManager/fileGetLoadRemain.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacFileCheckEnd);
+#include "shared/file/fileManager/pacFileCheckEnd.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacCheckEnd);
+#include "shared/file/fileManager/pacCheckEnd.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileSync);
+#include "shared/file/fileManager/fileSync.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacSync);
+#include "shared/file/fileManager/pacSync.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileSyncAll);
+#include "shared/file/fileManager/fileSyncAll.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileSaveEx);
+#include "shared/file/fileManager/fileSaveEx.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileSave);
+#include "shared/file/fileManager/fileSave.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacRead);
+#include "shared/file/fileManager/pacRead.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", pacLoadCallback);
+#include "shared/file/fileManager/pacLoadCallback.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileRead);
+#include "shared/file/fileManager/fileRead.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileLoadCallback);
+#include "shared/file/fileManager/fileLoadCallback.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileWrite);
+#include "shared/file/fileManager/fileWrite.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileSaveCallback);
+#include "shared/file/fileManager/fileSaveCallback.c"
 
 INCLUDE_ASM(const s32, "file/fileManager", fileExecQueue);
 
-INCLUDE_ASM(const s32, "file/fileManager", fileExecCallback);
+#include "shared/file/fileManager/fileExecCallback.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileManager);
+#include "shared/file/fileManager/fileManager.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileManagerProc);
+#include "shared/file/fileManager/fileManagerProc.c"
 
-INCLUDE_ASM(const s32, "file/fileManager", fileSysInit);
+#include "shared/file/fileManager/fileSysInit.c"
 INCLUDE_SDATA(const s32, "file/fileManager", D_004E1558);
 
 INCLUDE_SDATA(const s32, "file/fileManager", D_004E1560);

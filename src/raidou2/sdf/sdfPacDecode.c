@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacInit);
+#include "shared/sdf/sdfPacDecode/sdfPacInit.c"
 
 #include "shared/sdf/sdfPacDecode/sdfPacSetStay.c"
 
@@ -32,17 +32,17 @@ INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_003EB2E8);
 
 #include "shared/sdf/sdfPacDecode/sdfPacMemStayDecoderFunc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacMemDecoderFuncInit);
+#include "shared/sdf/sdfPacDecode/sdfPacMemDecoderFuncInit.c"
 
 #include "shared/sdf/sdfPacDecode/sdfPacMemDecoderInit.c"
 
 #include "shared/sdf/sdfPacDecode/sdfPacModelDecoderEndFunc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacModelDecoderInit);
+#include "shared/sdf/sdfPacDecode/sdfPacModelDecoderInit.c"
 
 #include "shared/sdf/sdfPacDecode/sdfPacMotionDecoderEndFunc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacMotionDecoderInit);
+#include "shared/sdf/sdfPacDecode/sdfPacMotionDecoderInit.c"
 
 #include "shared/sdf/sdfPacDecode/sdfPacTmxDecoderFunc.c"
 
@@ -50,11 +50,11 @@ INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacMotionDecoderInit);
 
 #include "shared/sdf/sdfPacDecode/sdfPacTmxStayDecoderFunc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacTmxDecoderInitFunc);
+#include "shared/sdf/sdfPacDecode/sdfPacTmxDecoderInitFunc.c"
 
 #include "shared/sdf/sdfPacDecode/sdfPacTmxDecoderEndFunc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacTmxDecoderInit);
+#include "shared/sdf/sdfPacDecode/sdfPacTmxDecoderInit.c"
 
 #include "shared/sdf/sdfPacDecode/sdfPacTexListDecoderTmxHeaderEndFunc.c"
 
@@ -66,4 +66,4 @@ INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_003EBEF8);
 
 #include "shared/sdf/sdfPacDecode/sdfPacTexListDecoder0.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacTexListDecoderInit);
+#include "shared/sdf/sdfPacDecode/sdfPacTexListDecoderInit.c"

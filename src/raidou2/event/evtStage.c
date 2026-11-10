@@ -2,9 +2,9 @@
 
 INCLUDE_ASM(const s32, "event/evtStage", evtSetUnitPos);
 
-INCLUDE_ASM(const s32, "event/evtStage", evtFreeStage);
+#include "shared/event/evtStage/evtFreeStage.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtFreeAllUnit);
+#include "shared/event/evtStage/evtFreeAllUnit.c"
 
 INCLUDE_RODATA(const s32, "event/evtStage", D_004B4460);
 
@@ -16,25 +16,25 @@ INCLUDE_ASM(const s32, "event/evtStage", func_001B97D0);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtKillFieldScript);
 
-INCLUDE_ASM(const s32, "event/evtStage", evtPathStop);
+#include "shared/event/evtStage/evtPathStop.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtPathStart);
+#include "shared/event/evtStage/evtPathStart.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtPathRate);
+#include "shared/event/evtStage/evtPathRate.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtPathDir);
+#include "shared/event/evtStage/evtPathDir.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtPathLinkAndMake);
+#include "shared/event/evtStage/evtPathLinkAndMake.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtCheckPathStat);
+#include "shared/event/evtStage/evtCheckPathStat.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtPathLoop);
+#include "shared/event/evtStage/evtPathLoop.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtAddCamera);
+#include "shared/event/evtStage/evtAddCamera.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtEffectLoopControl);
+#include "shared/event/evtStage/evtEffectLoopControl.c"
 
-INCLUDE_ASM(const s32, "event/evtStage", evtStageAnimeControl);
+#include "shared/event/evtStage/evtStageAnimeControl.c"
 INCLUDE_SDATA(const s32, "event/evtStage", D_004DF838);
 
 INCLUDE_SDATA(const s32, "event/evtStage", D_004DF83C);

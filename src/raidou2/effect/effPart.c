@@ -1,12 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartCreate);
+#include "shared/effect/effPart/dds3EffectPartCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartDelete);
+#include "shared/effect/effPart/dds3EffectPartDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartDraw);
+#include "shared/effect/effPart/dds3EffectPartDraw.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartCopy);
+#include "shared/effect/effPart/dds3EffectPartCopy.c"
 
 INCLUDE_ASM(const s32, "effect/effPart", func_00210DF8);
 
@@ -20,15 +20,15 @@ INCLUDE_ASM(const s32, "effect/effPart", func_00210EF8);
 
 INCLUDE_ASM(const s32, "effect/effPart", func_00210F38);
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartTMXBillboardCreate);
+#include "shared/effect/effPart/dds3EffectPartTMXBillboardCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartP2ABillboardCreate);
+#include "shared/effect/effPart/dds3EffectPartP2ABillboardCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartBillboardScale);
+#include "shared/effect/effPart/dds3EffectPartBillboardScale.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelInit);
+#include "shared/effect/effPart/dds3EffectPartModelInit.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelCreate);
+#include "shared/effect/effPart/dds3EffectPartModelCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effPart", func_002110D8);
 
@@ -38,19 +38,19 @@ INCLUDE_ASM(const s32, "effect/effPart", func_00211110);
 
 INCLUDE_ASM(const s32, "effect/effPart", func_00211168);
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelSetScale);
+#include "shared/effect/effPart/dds3EffectPartModelSetScale.c"
 
 INCLUDE_ASM(const s32, "effect/effPart", func_002111B0);
 
 INCLUDE_ASM(const s32, "effect/effPart", func_002111F0);
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPCreate);
+#include "shared/effect/effPart/dds3EffectPCPCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPDelete);
+#include "shared/effect/effPart/dds3EffectPCPDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPDraw);
+#include "shared/effect/effPart/dds3EffectPCPDraw.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPCopy);
+#include "shared/effect/effPart/dds3EffectPCPCopy.c"
 
 INCLUDE_ASM(const s32, "effect/effPart", func_002113E0);
 
@@ -68,13 +68,13 @@ INCLUDE_ASM(const s32, "effect/effPart", func_00211560);
 
 INCLUDE_ASM(const s32, "effect/effPart", func_00211568);
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPDataGetData);
+#include "shared/effect/effPart/dds3EffectPCPDataGetData.c"
 
 INCLUDE_ASM(const s32, "effect/effPart", func_00211588);
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPDataGetType);
+#include "shared/effect/effPart/dds3EffectPCPDataGetType.c"
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPDataPartCreate);
+#include "shared/effect/effPart/dds3EffectPCPDataPartCreate.c"
 
 INCLUDE_SDATA(const s32, "effect/effPart", D_004E17D4);
 

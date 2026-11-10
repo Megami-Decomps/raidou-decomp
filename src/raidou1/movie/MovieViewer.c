@@ -6,13 +6,13 @@ INCLUDE_ASM(const s32, "movie/MovieViewer", func_001D2F28);
 
 INCLUDE_ASM(const s32, "movie/MovieViewer", InitMovieViewer);
 
-INCLUDE_ASM(const s32, "movie/MovieViewer", FinishMovieViewer);
+#include "shared/movie/MovieViewer/FinishMovieViewer.c"
 
-INCLUDE_ASM(const s32, "movie/MovieViewer", movieViewerSetFlags);
+#include "shared/movie/MovieViewer/movieViewerSetFlags.c"
 
-INCLUDE_ASM(const s32, "movie/MovieViewer", movieViewerInitRegs);
+#include "shared/movie/MovieViewer/movieViewerInitRegs.c"
 
-INCLUDE_ASM(const s32, "movie/MovieViewer", movieViewerDrawInfo);
+#include "shared/movie/MovieViewer/movieViewerDrawInfo.c"
 
 INCLUDE_RODATA(const s32, "movie/MovieViewer", D_00455118);
 

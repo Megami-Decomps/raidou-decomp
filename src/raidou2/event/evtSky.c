@@ -1,16 +1,16 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "event/evtSky", evtSetSkyAlpha);
+#include "shared/event/evtSky/evtSetSkyAlpha.c"
 
-INCLUDE_ASM(const s32, "event/evtSky", evtCheckSkyAlphaAnime);
+#include "shared/event/evtSky/evtCheckSkyAlphaAnime.c"
 
-INCLUDE_ASM(const s32, "event/evtSky", evtUpdateSkyAlpha);
+#include "shared/event/evtSky/evtUpdateSkyAlpha.c"
 
 INCLUDE_ASM(const s32, "event/evtSky", func_001D18F0);
 
 INCLUDE_ASM(const s32, "event/evtSky", func_001D1940);
 
-INCLUDE_ASM(const s32, "event/evtSky", evtExitSky);
+#include "shared/event/evtSky/evtExitSky.c"
 
 INCLUDE_ASM(const s32, "event/evtSky", evtInitSky);
 INCLUDE_SDATA(const s32, "event/evtSky", D_004DFA80);

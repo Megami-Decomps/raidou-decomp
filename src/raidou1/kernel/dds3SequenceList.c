@@ -4,17 +4,17 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallDebug);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitDebug);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckDebug);
+#include "shared/kernel/dds3SequenceList/CheckDebug.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallBootMc);
+#include "shared/kernel/dds3SequenceList/CallBootMc.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitBootMc);
+#include "shared/kernel/dds3SequenceList/ExitBootMc.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckBootMc);
+#include "shared/kernel/dds3SequenceList/CheckBootMc.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallTitle);
+#include "shared/kernel/dds3SequenceList/CallTitle.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitTitle);
+#include "shared/kernel/dds3SequenceList/ExitTitle.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010D880);
 
@@ -35,13 +35,13 @@ void func_0010D990(void) {
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010D998);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckStaff);
+#include "shared/kernel/dds3SequenceList/CheckStaff.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallEndSave);
+#include "shared/kernel/dds3SequenceList/CallEndSave.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitEndSave);
+#include "shared/kernel/dds3SequenceList/ExitEndSave.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckEndSave);
+#include "shared/kernel/dds3SequenceList/CheckEndSave.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010DA18);
 
@@ -94,9 +94,9 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010DD58);
 void CallBattleFieldTest(void) {
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitBattleFieldTest);
+#include "shared/kernel/dds3SequenceList/ExitBattleFieldTest.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckBattleFieldTest);
+#include "shared/kernel/dds3SequenceList/CheckBattleFieldTest.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010DD90);
 

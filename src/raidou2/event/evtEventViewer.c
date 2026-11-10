@@ -8,7 +8,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", SortFrameInfo);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001C5560);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", AddFrameInfo2);
+#include "shared/event/evtEventViewer/AddFrameInfo2.c"
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_001C5C48);
 

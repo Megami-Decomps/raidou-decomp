@@ -38,7 +38,7 @@ INCLUDE_ASM(const s32, "effect/effEvent", func_001FD420);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FD428);
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_RippleBlurSetDefTex);
+#include "shared/effect/effEvent/Eve_RippleBlurSetDefTex.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FD460);
 
@@ -60,15 +60,15 @@ INCLUDE_ASM(const s32, "effect/effEvent", func_001FD550);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FD560);
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_PartialMultiFilterSetParam);
+#include "shared/effect/effEvent/Eve_PartialMultiFilterSetParam.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FD5B8);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FD5C0);
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_PartialMultiFilterSetDefTex);
+#include "shared/effect/effEvent/Eve_PartialMultiFilterSetDefTex.c"
 
-INCLUDE_ASM(const s32, "effect/effEvent", Eve_EffectInit);
+#include "shared/effect/effEvent/Eve_EffectInit.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FD658);
 
@@ -106,7 +106,7 @@ INCLUDE_ASM(const s32, "effect/effEvent", func_001FDCC0);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FDD78);
 
-INCLUDE_ASM(const s32, "effect/effEvent", mfilterSetParam);
+#include "shared/effect/effEvent/mfilterSetParam.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FDDE0);
 
@@ -118,11 +118,11 @@ INCLUDE_ASM(const s32, "effect/effEvent", func_001FDF10);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FDF28);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effEveBEDCutCreate);
+#include "shared/effect/effEvent/effEveBEDCutCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FE018);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effEveBEDCutSetParams);
+#include "shared/effect/effEvent/effEveBEDCutSetParams.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FE0B0);
 
@@ -132,25 +132,25 @@ INCLUDE_ASM(const s32, "effect/effEvent", func_001FE130);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FE138);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effSimpleBEDCreate);
+#include "shared/effect/effEvent/effSimpleBEDCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", effSimpleBEDDelete);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effSimpleBEDCopy);
+#include "shared/effect/effEvent/effSimpleBEDCopy.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FE620);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effSimpleBEDSetPosition);
+#include "shared/effect/effEvent/effSimpleBEDSetPosition.c"
 
-INCLUDE_ASM(const s32, "effect/effEvent", effSimpleBEDSetRGBA);
+#include "shared/effect/effEvent/effSimpleBEDSetRGBA.c"
 
-INCLUDE_ASM(const s32, "effect/effEvent", effEveBEDPartGetPositionPtr);
+#include "shared/effect/effEvent/effEveBEDPartGetPositionPtr.c"
 
 INCLUDE_RODATA(const s32, "effect/effEvent", D_004BC540);
 
 INCLUDE_ASM(const s32, "effect/effEvent", effEVECombParSmokeCreate);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effEVECombParSmokeDelete);
+#include "shared/effect/effEvent/effEVECombParSmokeDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_001FEB28);
 
@@ -170,19 +170,19 @@ INCLUDE_ASM(const s32, "effect/effEvent", func_00200040);
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_00200060);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effAPPoint4CreatePCF);
+#include "shared/effect/effEvent/effAPPoint4CreatePCF.c"
 
-INCLUDE_ASM(const s32, "effect/effEvent", effAPPoint4Copy);
+#include "shared/effect/effEvent/effAPPoint4Copy.c"
 
-INCLUDE_ASM(const s32, "effect/effEvent", effAPPoint4Delete);
+#include "shared/effect/effEvent/effAPPoint4Delete.c"
 
-INCLUDE_ASM(const s32, "effect/effEvent", effAPPoint4PartInit);
+#include "shared/effect/effEvent/effAPPoint4PartInit.c"
 
-INCLUDE_ASM(const s32, "effect/effEvent", effAPPoint4Draw);
+#include "shared/effect/effEvent/effAPPoint4Draw.c"
 
 INCLUDE_ASM(const s32, "effect/effEvent", func_002009B0);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effEveAPP4Randomize);
+#include "shared/effect/effEvent/effEveAPP4Randomize.c"
 INCLUDE_SDATA(const s32, "effect/effEvent", D_004E16E4);
 
 INCLUDE_SDATA(const s32, "effect/effEvent", D_004E16E5);

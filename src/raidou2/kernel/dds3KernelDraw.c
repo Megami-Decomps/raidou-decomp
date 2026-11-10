@@ -8,33 +8,33 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001055F8);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001058E0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3AllocRenderTexture);
+#include "shared/kernel/dds3KernelDraw/dds3AllocRenderTexture.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FreeRenderTexture);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RenderTextureON);
+#include "shared/kernel/dds3KernelDraw/dds3RenderTextureON.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RenderTextureOFF);
+#include "shared/kernel/dds3KernelDraw/dds3RenderTextureOFF.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3CheckRenderTexture);
+#include "shared/kernel/dds3KernelDraw/dds3CheckRenderTexture.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3GetRenderTexture);
+#include "shared/kernel/dds3KernelDraw/dds3GetRenderTexture.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00105D28);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetQuake);
+#include "shared/kernel/dds3KernelDraw/dds3SetQuake.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3StopQuake);
+#include "shared/kernel/dds3KernelDraw/dds3StopQuake.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00105F88);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitZClearDrawTag);
+#include "shared/kernel/dds3KernelDraw/dds3InitZClearDrawTag.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3LinkZClearDrawTag);
+#include "shared/kernel/dds3KernelDraw/dds3LinkZClearDrawTag.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeClear);
+#include "shared/kernel/dds3KernelDraw/dds3FadeClear.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeSet);
+#include "shared/kernel/dds3KernelDraw/dds3FadeSet.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001061C0);
 
@@ -56,9 +56,9 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106340);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001063B0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeCheck);
+#include "shared/kernel/dds3KernelDraw/dds3FadeCheck.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeUpdate);
+#include "shared/kernel/dds3KernelDraw/dds3FadeUpdate.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DrawDistRipOverError);
 
@@ -82,89 +82,89 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106B20);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106C28);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetScreenFovy);
+#include "shared/kernel/dds3KernelDraw/dds3SetScreenFovy.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetAmbient);
+#include "shared/kernel/dds3KernelDraw/dds3SetAmbient.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetFog);
+#include "shared/kernel/dds3KernelDraw/dds3SetFog.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetLight);
+#include "shared/kernel/dds3KernelDraw/dds3SetLight.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", setdraw_xy);
+#include "shared/kernel/dds3KernelDraw/setdraw_xy.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetFilter2Para);
+#include "shared/kernel/dds3KernelDraw/dds3SetFilter2Para.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetFilter2RGBA);
+#include "shared/kernel/dds3KernelDraw/dds3SetFilter2RGBA.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3Filter2Swap);
+#include "shared/kernel/dds3KernelDraw/dds3Filter2Swap.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3Filter2On);
+#include "shared/kernel/dds3KernelDraw/dds3Filter2On.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3Filter2Off);
+#include "shared/kernel/dds3KernelDraw/dds3Filter2Off.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetMFilterPara);
+#include "shared/kernel/dds3KernelDraw/dds3SetMFilterPara.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetMFilterRGBA);
+#include "shared/kernel/dds3KernelDraw/dds3SetMFilterRGBA.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetMFilterArea);
+#include "shared/kernel/dds3KernelDraw/dds3SetMFilterArea.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3MFilterSwap);
+#include "shared/kernel/dds3KernelDraw/dds3MFilterSwap.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3MFilterOn);
+#include "shared/kernel/dds3KernelDraw/dds3MFilterOn.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3MFilterOff);
+#include "shared/kernel/dds3KernelDraw/dds3MFilterOff.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetBlur);
+#include "shared/kernel/dds3KernelDraw/dds3SetBlur.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetBlur2Para);
+#include "shared/kernel/dds3KernelDraw/dds3SetBlur2Para.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetBlur2RGBA);
+#include "shared/kernel/dds3KernelDraw/dds3SetBlur2RGBA.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetBlur2Area);
+#include "shared/kernel/dds3KernelDraw/dds3SetBlur2Area.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3Blur2Swap);
+#include "shared/kernel/dds3KernelDraw/dds3Blur2Swap.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3Blur2On);
+#include "shared/kernel/dds3KernelDraw/dds3Blur2On.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3Blur2Off);
+#include "shared/kernel/dds3KernelDraw/dds3Blur2Off.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetMultiBlurPara);
+#include "shared/kernel/dds3KernelDraw/dds3SetMultiBlurPara.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetMultiBlurRGBA);
+#include "shared/kernel/dds3KernelDraw/dds3SetMultiBlurRGBA.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetMultiBlurArea);
+#include "shared/kernel/dds3KernelDraw/dds3SetMultiBlurArea.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3MultiBlurSwap);
+#include "shared/kernel/dds3KernelDraw/dds3MultiBlurSwap.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3MultiBlurOn);
+#include "shared/kernel/dds3KernelDraw/dds3MultiBlurOn.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3MultiBlurOff);
+#include "shared/kernel/dds3KernelDraw/dds3MultiBlurOff.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetDistBlurPara);
+#include "shared/kernel/dds3KernelDraw/dds3SetDistBlurPara.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetDistBlurRGBA);
+#include "shared/kernel/dds3KernelDraw/dds3SetDistBlurRGBA.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetDistBlurArea);
+#include "shared/kernel/dds3KernelDraw/dds3SetDistBlurArea.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DistBlurSwap);
+#include "shared/kernel/dds3KernelDraw/dds3DistBlurSwap.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DistBlurOn);
+#include "shared/kernel/dds3KernelDraw/dds3DistBlurOn.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DistBlurOff);
+#include "shared/kernel/dds3KernelDraw/dds3DistBlurOff.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetRipBlurPara);
+#include "shared/kernel/dds3KernelDraw/dds3SetRipBlurPara.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetRipBlurRGBA);
+#include "shared/kernel/dds3KernelDraw/dds3SetRipBlurRGBA.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetRipBlurArea);
+#include "shared/kernel/dds3KernelDraw/dds3SetRipBlurArea.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RipBlurSwap);
+#include "shared/kernel/dds3KernelDraw/dds3RipBlurSwap.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RipBlurOn);
+#include "shared/kernel/dds3KernelDraw/dds3RipBlurOn.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RipBlurOff);
+#include "shared/kernel/dds3KernelDraw/dds3RipBlurOff.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BlurUpdate);
+#include "shared/kernel/dds3KernelDraw/dds3BlurUpdate.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RotationArc);
 
@@ -172,19 +172,19 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetLightColor);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetLightDir);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetAmbientColor);
+#include "shared/kernel/dds3KernelDraw/dds3SetAmbientColor.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetFogColor);
+#include "shared/kernel/dds3KernelDraw/dds3SetFogColor.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetFogPara);
+#include "shared/kernel/dds3KernelDraw/dds3SetFogPara.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SceneLightUpdateFirst);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetSoftenBias);
+#include "shared/kernel/dds3KernelDraw/dds3SetSoftenBias.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglInit);
+#include "shared/kernel/dds3KernelDraw/eglInit.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglSetOt);
+#include "shared/kernel/dds3KernelDraw/eglSetOt.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00109548);
 

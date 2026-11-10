@@ -4,25 +4,25 @@ INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_001190E8);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_00119180);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseOnFlag);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseOnFlag.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseOffFlag);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseOffFlag.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseCheckFlag);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseCheckFlag.c"
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseSetUserValue);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseGetUserValue);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseSetControlBasic);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseSetControlBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseSetControlBasicType);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseSetControlBasicType.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseGetControlBasic);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseGetControlBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseGetEventArray);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseGetEventArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseGetModelHandle);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseGetModelHandle.c"
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreeModelHandle);
 
@@ -38,16 +38,16 @@ INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_001197E0);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_001198C0);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseCreateMover);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseCreateMover.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseSetPadControl);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseSetPadControl.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseSetPrimaryControl);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseSetPrimaryControl.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakePath);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseMakePath.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreePath);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseFreePath.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseGetPathControl);
+#include "shared/basic/dds3ObjectBase/dds3ObjectBaseGetPathControl.c"
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3GetBaseControlWorkData);

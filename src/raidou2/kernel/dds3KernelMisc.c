@@ -4,6 +4,6 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelMisc", SelectSub);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMisc", dds3SelectMenu);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMisc", dds3ConsPanelTagLink);
+#include "shared/kernel/dds3KernelMisc/dds3ConsPanelTagLink.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMisc", dds3ConsPanelTagLinkZ);
+#include "shared/kernel/dds3KernelMisc/dds3ConsPanelTagLinkZ.c"

@@ -1,27 +1,27 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", AreaBasicConstructor);
+#include "shared/basic/dds3AreaBasic/AreaBasicConstructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", AreaBasicDestructor);
+#include "shared/basic/dds3AreaBasic/AreaBasicDestructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", AreaBasicMainprocuder);
+#include "shared/basic/dds3AreaBasic/AreaBasicMainprocuder.c"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", AreaBasicDrawprocuder);
+#include "shared/basic/dds3AreaBasic/AreaBasicDrawprocuder.c"
 
 INCLUDE_ASM(const s32, "basic/dds3AreaBasic", CB_ReleaseObjectBasic);
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", CB_BasicDrawProcuder);
+#include "shared/basic/dds3AreaBasic/CB_BasicDrawProcuder.c"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", dds3AreaBasicTypeHasItems);
+#include "shared/basic/dds3AreaBasic/dds3AreaBasicTypeHasItems.c"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", dds3AddAreaBasic);
+#include "shared/basic/dds3AreaBasic/dds3AddAreaBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", dds3AreaBasicRegistItem);
+#include "shared/basic/dds3AreaBasic/dds3AreaBasicRegistItem.c"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", dds3AreaBasicGetItemArray);
+#include "shared/basic/dds3AreaBasic/dds3AreaBasicGetItemArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", dds3AreaBasicReleaseItem);
+#include "shared/basic/dds3AreaBasic/dds3AreaBasicReleaseItem.c"
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", dds3AreaBasicArrangeGetItemArray);
+#include "shared/basic/dds3AreaBasic/dds3AreaBasicArrangeGetItemArray.c"
 
 INCLUDE_ASM(const s32, "basic/dds3AreaBasic", func_0011B520);

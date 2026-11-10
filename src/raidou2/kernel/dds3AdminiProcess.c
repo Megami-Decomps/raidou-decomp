@@ -1,36 +1,36 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", GetAdminiProcessData);
+#include "shared/kernel/dds3AdminiProcess/GetAdminiProcessData.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_001029E0);
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiCallSequence);
+#include "shared/kernel/dds3AdminiProcess/dds3AdminiCallSequence.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiOverwriteSequence);
+#include "shared/kernel/dds3AdminiProcess/dds3AdminiOverwriteSequence.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiExitSequence);
+#include "shared/kernel/dds3AdminiProcess/dds3AdminiExitSequence.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiGetActiveSequence);
+#include "shared/kernel/dds3AdminiProcess/dds3AdminiGetActiveSequence.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiGetNextSequence);
+#include "shared/kernel/dds3AdminiProcess/dds3AdminiGetNextSequence.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiGetPrevSequence);
+#include "shared/kernel/dds3AdminiProcess/dds3AdminiGetPrevSequence.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiGetPrevHistoryFlag);
+#include "shared/kernel/dds3AdminiProcess/dds3AdminiGetPrevHistoryFlag.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_00102BF8);
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiEndCheck);
+#include "shared/kernel/dds3AdminiProcess/dds3AdminiEndCheck.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_00102DF0);
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiNeoShutdown);
+#include "shared/kernel/dds3AdminiProcess/dds3AdminiNeoShutdown.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3InitAdmini);
+#include "shared/kernel/dds3AdminiProcess/dds3InitAdmini.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycFindFreeSlot);
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycFreeEntry);
+#include "shared/kernel/dds3AdminiProcess/fclEncycFreeEntry.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycFreeEntries);
 

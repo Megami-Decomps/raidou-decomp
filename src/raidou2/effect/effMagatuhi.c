@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderAllocPart);
+#include "shared/effect/effMagatuhi/effMagaCylinderAllocPart.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_00209470);
 
@@ -8,49 +8,49 @@ INCLUDE_ASM(const s32, "effect/effMagatuhi", func_002094A0);
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderSetPartPtrs);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderAllocTex);
+#include "shared/effect/effMagatuhi/effMagaCylinderAllocTex.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_002096B8);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effSwordTrackDrawTex);
+#include "shared/effect/effMagatuhi/effSwordTrackDrawTex.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderSetPartPos);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderSetPart);
+#include "shared/effect/effMagatuhi/effMagaCylinderSetPart.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderBlendColor);
+#include "shared/effect/effMagatuhi/effMagaCylinderBlendColor.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_00209F78);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeConvCreate);
+#include "shared/effect/effMagatuhi/effMagaSmokeConvCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeConvDelete);
+#include "shared/effect/effMagatuhi/effMagaSmokeConvDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeConvPartInit);
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeConvDraw);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSCSetArea);
+#include "shared/effect/effMagatuhi/effMagaSCSetArea.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaPoint4Create);
+#include "shared/effect/effMagatuhi/effMagaPoint4Create.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaPoint4Delete);
+#include "shared/effect/effMagatuhi/effMagaPoint4Delete.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaPoint4PartInit);
+#include "shared/effect/effMagatuhi/effMagaPoint4PartInit.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaPoint4Draw);
+#include "shared/effect/effMagatuhi/effMagaPoint4Draw.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaP4SetPoint);
+#include "shared/effect/effMagatuhi/effMagaP4SetPoint.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaP4Randomize);
+#include "shared/effect/effMagatuhi/effMagaP4Randomize.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderCreate);
+#include "shared/effect/effMagatuhi/effMagaCylinderCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderDelete);
+#include "shared/effect/effMagatuhi/effMagaCylinderDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderPartInit);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderDraw);
+#include "shared/effect/effMagatuhi/effMagaCylinderDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020B8F8);
 
@@ -58,15 +58,15 @@ INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020B910);
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020B918);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderRandomize);
+#include "shared/effect/effMagatuhi/effMagaCylinderRandomize.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSpiralCreate);
+#include "shared/effect/effMagatuhi/effMagaSpiralCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSpiralDelete);
+#include "shared/effect/effMagatuhi/effMagaSpiralDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSpiralPartInit);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSpiralDraw);
+#include "shared/effect/effMagatuhi/effMagaSpiralDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020C148);
 
@@ -74,15 +74,15 @@ INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020C160);
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020C168);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSpiralRandomize);
+#include "shared/effect/effMagatuhi/effMagaSpiralRandomize.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeCreate);
+#include "shared/effect/effMagatuhi/effMagaSmokeCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeDelete);
+#include "shared/effect/effMagatuhi/effMagaSmokeDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokePartInit);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeDraw);
+#include "shared/effect/effMagatuhi/effMagaSmokeDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CAA0);
 
@@ -90,15 +90,15 @@ INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CAB8);
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CAC0);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeRandomize);
+#include "shared/effect/effMagatuhi/effMagaSmokeRandomize.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaRandomize);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", dds3MagatuhiParCreate);
+#include "shared/effect/effMagatuhi/dds3MagatuhiParCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", dds3MagatuhiParDraw);
+#include "shared/effect/effMagatuhi/dds3MagatuhiParDraw.c"
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", dds3MagatuhiParDelete);
+#include "shared/effect/effMagatuhi/dds3MagatuhiParDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CEB0);
 

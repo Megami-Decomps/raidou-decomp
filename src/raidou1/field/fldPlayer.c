@@ -6,4 +6,4 @@ INCLUDE_ASM(const s32, "field/fldPlayer", func_00127578);
 
 INCLUDE_ASM(const s32, "field/fldPlayer", fldPlayerCalc360_8);
 
-INCLUDE_ASM(const s32, "field/fldPlayer", fldPlayerCalc360_4);
+#include "shared/field/fldPlayer/fldPlayerCalc360_4.c"

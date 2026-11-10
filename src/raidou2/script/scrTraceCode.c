@@ -1,101 +1,101 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", PushInt);
+#include "shared/script/scrTraceCode/PushInt.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", PushFloat);
+#include "shared/script/scrTraceCode/PushFloat.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", PushStr);
+#include "shared/script/scrTraceCode/PushStr.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", PushRet);
+#include "shared/script/scrTraceCode/PushRet.c"
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", PopInt);
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", PopFloat);
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushI);
+#include "shared/script/scrTraceCode/CodeFunc_PushI.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushIS);
+#include "shared/script/scrTraceCode/CodeFunc_PushIS.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushF);
+#include "shared/script/scrTraceCode/CodeFunc_PushF.c"
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushIX);
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushFX);
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushLIX);
+#include "shared/script/scrTraceCode/CodeFunc_PushLIX.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushLFX);
+#include "shared/script/scrTraceCode/CodeFunc_PushLFX.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushSTR);
+#include "shared/script/scrTraceCode/CodeFunc_PushSTR.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushReg);
+#include "shared/script/scrTraceCode/CodeFunc_PushReg.c"
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PopIX);
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PopFX);
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PopLIX);
+#include "shared/script/scrTraceCode/CodeFunc_PopLIX.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PopLFX);
+#include "shared/script/scrTraceCode/CodeFunc_PopLFX.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Proc);
+#include "shared/script/scrTraceCode/CodeFunc_Proc.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Comm);
+#include "shared/script/scrTraceCode/CodeFunc_Comm.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_End);
+#include "shared/script/scrTraceCode/CodeFunc_End.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Jump);
+#include "shared/script/scrTraceCode/CodeFunc_Jump.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Call);
+#include "shared/script/scrTraceCode/CodeFunc_Call.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Run);
+#include "shared/script/scrTraceCode/CodeFunc_Run.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Goto);
+#include "shared/script/scrTraceCode/CodeFunc_Goto.c"
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_2Operation);
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Add);
+#include "shared/script/scrTraceCode/CodeFunc_Add.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Sub);
+#include "shared/script/scrTraceCode/CodeFunc_Sub.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Mul);
+#include "shared/script/scrTraceCode/CodeFunc_Mul.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Div);
+#include "shared/script/scrTraceCode/CodeFunc_Div.c"
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Minus);
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Not);
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Or);
+#include "shared/script/scrTraceCode/CodeFunc_Or.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_And);
+#include "shared/script/scrTraceCode/CodeFunc_And.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_EQ);
+#include "shared/script/scrTraceCode/CodeFunc_EQ.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_NEQ);
+#include "shared/script/scrTraceCode/CodeFunc_NEQ.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_S);
+#include "shared/script/scrTraceCode/CodeFunc_S.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_L);
+#include "shared/script/scrTraceCode/CodeFunc_L.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_SE);
+#include "shared/script/scrTraceCode/CodeFunc_SE.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_LE);
+#include "shared/script/scrTraceCode/CodeFunc_LE.c"
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_IF);
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", scrTraceCode);
+#include "shared/script/scrTraceCode/scrTraceCode.c"
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", scrGetIntPara);
 
 INCLUDE_ASM(const s32, "script/scrTraceCode", scrGetFloatPara);
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", scrGetStrPara);
+#include "shared/script/scrTraceCode/scrGetStrPara.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", scrSetIntReturnValue);
+#include "shared/script/scrTraceCode/scrSetIntReturnValue.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", scrSetFloatReturnValue);
+#include "shared/script/scrTraceCode/scrSetFloatReturnValue.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", scrGetProcedureCodeAddress);
+#include "shared/script/scrTraceCode/scrGetProcedureCodeAddress.c"
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", scrGetLabelCodeAddress);
+#include "shared/script/scrTraceCode/scrGetLabelCodeAddress.c"

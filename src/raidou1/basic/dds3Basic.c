@@ -2,52 +2,52 @@
 
 INCLUDE_ASM(const s32, "basic/dds3Basic", func_00116C80);
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3DeleteBasic);
+#include "shared/basic/dds3Basic/dds3DeleteBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3InitPoseSet);
+#include "shared/basic/dds3Basic/dds3InitPoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3FreePoseSet);
+#include "shared/basic/dds3Basic/dds3FreePoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3OnPoseSetFlag);
+#include "shared/basic/dds3Basic/dds3OnPoseSetFlag.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3OffPoseSetFlag);
+#include "shared/basic/dds3Basic/dds3OffPoseSetFlag.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3CheckPoseSetFlag);
+#include "shared/basic/dds3Basic/dds3CheckPoseSetFlag.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3BackupPoseSet);
+#include "shared/basic/dds3Basic/dds3BackupPoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3SetRadiusPoseSet);
+#include "shared/basic/dds3Basic/dds3SetRadiusPoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3GetRadiusPoseSet);
+#include "shared/basic/dds3Basic/dds3GetRadiusPoseSet.c"
 
 INCLUDE_ASM(const s32, "basic/dds3Basic", func_00116F38);
 
 INCLUDE_ASM(const s32, "basic/dds3Basic", func_00116F48);
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3SetRotPoseSet);
+#include "shared/basic/dds3Basic/dds3SetRotPoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3SetSclPoseSet);
+#include "shared/basic/dds3Basic/dds3SetSclPoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3GetPosPoseSet);
+#include "shared/basic/dds3Basic/dds3GetPosPoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3GetRotPoseSet);
+#include "shared/basic/dds3Basic/dds3GetRotPoseSet.c"
 
 INCLUDE_ASM(const s32, "basic/dds3Basic", func_00117010);
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3GetPosPoseSetMCR);
+#include "shared/basic/dds3Basic/dds3GetPosPoseSetMCR.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3AddRotPoseSet);
+#include "shared/basic/dds3Basic/dds3AddRotPoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3GetSclPoseSetMCR);
+#include "shared/basic/dds3Basic/dds3GetSclPoseSetMCR.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3MakeMatrix);
+#include "shared/basic/dds3Basic/dds3MakeMatrix.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3GetTMPoseSet);
+#include "shared/basic/dds3Basic/dds3GetTMPoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3ComparePosPoseSet);
+#include "shared/basic/dds3Basic/dds3ComparePosPoseSet.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3ComparePosPoseSet2);
+#include "shared/basic/dds3Basic/dds3ComparePosPoseSet2.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3CallBasicMainProc);
+#include "shared/basic/dds3Basic/dds3CallBasicMainProc.c"
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3CallBasicDrawProc);
+#include "shared/basic/dds3Basic/dds3CallBasicDrawProc.c"

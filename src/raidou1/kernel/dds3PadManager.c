@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadVibrationTest);
+#include "shared/kernel/dds3PadManager/dds3PadVibrationTest.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadInitialize);
 
@@ -12,7 +12,7 @@ INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_00104140);
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_00104210);
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3UpdateVibrationSlots);
+#include "shared/kernel/dds3PadManager/dds3UpdateVibrationSlots.c"
 INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_0046B1B0);
 
 INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_0046B1B1);

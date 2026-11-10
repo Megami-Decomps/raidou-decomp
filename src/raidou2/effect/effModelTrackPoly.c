@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", Eff_ModelTrackPolyGetMarkPosition);
+#include "shared/effect/effModelTrackPoly/Eff_ModelTrackPolyGetMarkPosition.c"
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020DC98);
 
@@ -10,21 +10,21 @@ INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020DCC0);
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020DCD8);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", Eff_ModelTrackPolyListCreate);
+#include "shared/effect/effModelTrackPoly/Eff_ModelTrackPolyListCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", Eff_ModelTrackPolyListDelete);
+#include "shared/effect/effModelTrackPoly/Eff_ModelTrackPolyListDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020DEA8);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", Eff_ModelTrackPolyListReset);
+#include "shared/effect/effModelTrackPoly/Eff_ModelTrackPolyListReset.c"
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020DEF8);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", Eff_ModelTrackPolyListDrawOnly);
+#include "shared/effect/effModelTrackPoly/Eff_ModelTrackPolyListDrawOnly.c"
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020DF80);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolyCreate);
+#include "shared/effect/effModelTrackPoly/dds3HermitianTrackPolyCreate.c"
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020E1E0);
 
@@ -32,14 +32,14 @@ INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020E210);
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_0020E230);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolySetVC);
+#include "shared/effect/effModelTrackPoly/dds3HermitianTrackPolySetVC.c"
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolyGetVertex);
+#include "shared/effect/effModelTrackPoly/dds3HermitianTrackPolyGetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolySetCurrent);
+#include "shared/effect/effModelTrackPoly/dds3HermitianTrackPolySetCurrent.c"
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolySetVertexSub);
+#include "shared/effect/effModelTrackPoly/dds3HermitianTrackPolySetVertexSub.c"
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolySetVertex);
+#include "shared/effect/effModelTrackPoly/dds3HermitianTrackPolySetVertex.c"
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", dds3HermitianTrackPolyDraw);

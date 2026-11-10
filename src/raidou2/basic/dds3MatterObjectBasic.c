@@ -1,24 +1,24 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3AddMatterObjectBasic);
+#include "shared/basic/dds3MatterObjectBasic/dds3AddMatterObjectBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3DeleteMatterObjectBasic);
+#include "shared/basic/dds3MatterObjectBasic/dds3DeleteMatterObjectBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3MatterObjectBasicSetOt);
+#include "shared/basic/dds3MatterObjectBasic/dds3MatterObjectBasicSetOt.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3MatterObjectBasicSetHojiID);
+#include "shared/basic/dds3MatterObjectBasic/dds3MatterObjectBasicSetHojiID.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3MatterObjectBasicGetHojiID);
+#include "shared/basic/dds3MatterObjectBasic/dds3MatterObjectBasicGetHojiID.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3MatterObjectBasicSetAlpMode);
+#include "shared/basic/dds3MatterObjectBasic/dds3MatterObjectBasicSetAlpMode.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3MatterObjectBasicGetAlpMode);
+#include "shared/basic/dds3MatterObjectBasic/dds3MatterObjectBasicGetAlpMode.c"
 
 INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_0011E378);
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3MatterObjectBasicConstructor);
+#include "shared/basic/dds3MatterObjectBasic/dds3MatterObjectBasicConstructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3MatterObjectBasicDestructor);
+#include "shared/basic/dds3MatterObjectBasic/dds3MatterObjectBasicDestructor.c"
 
 INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_0011E460);
 

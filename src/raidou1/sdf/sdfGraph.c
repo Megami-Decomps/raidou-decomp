@@ -24,7 +24,7 @@ INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDeliverDrawEnd);
 
 INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDrawThread);
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfGrInit);
+#include "shared/sdf/sdfGraph/sdfGrInit.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfGraph", func_00358128);
 INCLUDE_SDATA(const s32, "sdf/sdfGraph", D_0046F278);

@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelInitSystem);
+#include "shared/sdf/sdfModel/sdfModelInitSystem.c"
 
 #include "shared/sdf/sdfModel/sdfModelNodeNew.c"
 

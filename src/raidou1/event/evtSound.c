@@ -1,10 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "event/evtSound", evtGetSoundIndex);
+#include "shared/event/evtSound/evtGetSoundIndex.c"
 
-INCLUDE_ASM(const s32, "event/evtSound", evtLoadEventBgm);
+#include "shared/event/evtSound/evtLoadEventBgm.c"
 
-INCLUDE_ASM(const s32, "event/evtSound", evtCheckEventBgmLoaded);
+#include "shared/event/evtSound/evtCheckEventBgmLoaded.c"
 
 INCLUDE_ASM(const s32, "event/evtSound", evtPlayEventBgm);
 
@@ -12,13 +12,13 @@ INCLUDE_ASM(const s32, "event/evtSound", evtTransEventBgm);
 
 INCLUDE_ASM(const s32, "event/evtSound", evtFadeInEventBgm);
 
-INCLUDE_ASM(const s32, "event/evtSound", evtStopEventBgm);
+#include "shared/event/evtSound/evtStopEventBgm.c"
 
-INCLUDE_ASM(const s32, "event/evtSound", evtPlaySe);
+#include "shared/event/evtSound/evtPlaySe.c"
 
 INCLUDE_ASM(const s32, "event/evtSound", func_001C9C60);
 
-INCLUDE_ASM(const s32, "event/evtSound", evtMakeEventPackName);
+#include "shared/event/evtSound/evtMakeEventPackName.c"
 
 INCLUDE_SDATA(const s32, "event/evtSound", D_0046CCB0);
 

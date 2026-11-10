@@ -86,9 +86,9 @@ INCLUDE_ASM(const s32, "newdata/datCalc", func_001259A8);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00125A80);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datGetAisyoValue);
+#include "shared/newdata/datCalc/datGetAisyoValue.c"
 
-INCLUDE_ASM(const s32, "newdata/datCalc", datGetAisyoFlag);
+#include "shared/newdata/datCalc/datGetAisyoFlag.c"
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00125AD0);
 

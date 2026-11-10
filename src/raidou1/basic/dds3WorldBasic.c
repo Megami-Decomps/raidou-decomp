@@ -1,51 +1,51 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", worldconstructor);
+#include "shared/basic/dds3WorldBasic/worldconstructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", worlddestructor);
+#include "shared/basic/dds3WorldBasic/worlddestructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", worldmainprocuder);
+#include "shared/basic/dds3WorldBasic/worldmainprocuder.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", worlddrawprocuder);
+#include "shared/basic/dds3WorldBasic/worlddrawprocuder.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3AddWorld);
+#include "shared/basic/dds3WorldBasic/dds3AddWorld.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3DeleteWorld);
+#include "shared/basic/dds3WorldBasic/dds3DeleteWorld.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3SetActiveScene);
+#include "shared/basic/dds3WorldBasic/dds3SetActiveScene.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3GetActiveScene);
+#include "shared/basic/dds3WorldBasic/dds3GetActiveScene.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3SetControlScene);
+#include "shared/basic/dds3WorldBasic/dds3SetControlScene.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3GetControlScene);
+#include "shared/basic/dds3WorldBasic/dds3GetControlScene.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3AddScene);
+#include "shared/basic/dds3WorldBasic/dds3AddScene.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3DeleteScene);
+#include "shared/basic/dds3WorldBasic/dds3DeleteScene.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3GetBasicArrayHandle);
+#include "shared/basic/dds3WorldBasic/dds3GetBasicArrayHandle.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3FreeBasicArrayHandle);
+#include "shared/basic/dds3WorldBasic/dds3FreeBasicArrayHandle.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3DeleteBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3DeleteBasicArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3DeleteAllBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3DeleteAllBasicArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3SearchDeleteBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3SearchDeleteBasicArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3SetSearchNextBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3SetSearchNextBasicArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3AddBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3AddBasicArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3GetBasicArrayCount);
+#include "shared/basic/dds3WorldBasic/dds3GetBasicArrayCount.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3SetBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3SetBasicArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3GetBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3GetBasicArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3SetFirstBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3SetFirstBasicArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3SetNextBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3SetNextBasicArray.c"
 
-INCLUDE_ASM(const s32, "basic/dds3WorldBasic", dds3ForEachBasicArray);
+#include "shared/basic/dds3WorldBasic/dds3ForEachBasicArray.c"

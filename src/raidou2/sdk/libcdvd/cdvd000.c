@@ -18,7 +18,7 @@ INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", _Cdvd_cbLoop);
 
 #include "shared/sdk/libcdvd/_sceCd_Poff_Intr.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", PowerOffCB);
+#include "shared/sdk/libcdvd/PowerOffCB.c"
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdLayerSearchFile);
 

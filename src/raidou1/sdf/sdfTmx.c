@@ -6,11 +6,11 @@
 
 INCLUDE_ASM(const s32, "sdf/sdfTmx", sdfFileRpcReadCallback);
 
-INCLUDE_ASM(const s32, "sdf/sdfTmx", sdfFileRpcHandler);
+#include "shared/sdf/sdfTmx/sdfFileRpcHandler.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfTmx", SdfFileRpcServerThreadProc);
 
-INCLUDE_ASM(const s32, "sdf/sdfTmx", sdfStartFileRpcServer);
+#include "shared/sdf/sdfTmx/sdfStartFileRpcServer.c"
 
 #include "shared/sdf/sdfTmx/LoadMcModules.c"
 

@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", sceSifMInitRpc);
+#include "shared/sdk/libmrpc/sceSifMInitRpc.c"
 
 INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", func_003F2050);
 

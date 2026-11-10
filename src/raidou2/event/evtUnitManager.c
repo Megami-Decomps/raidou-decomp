@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtVu0SubVectorXZAxis);
+#include "shared/event/evtUnitManager/evtVu0SubVectorXZAxis.c"
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtGetUnitDirVector);
 
@@ -56,9 +56,9 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitLightOn);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitLightOff);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtGetUnitHandle);
+#include "shared/event/evtUnitManager/evtGetUnitHandle.c"
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtGetUnitHandle2);
+#include "shared/event/evtUnitManager/evtGetUnitHandle2.c"
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BC058);
 

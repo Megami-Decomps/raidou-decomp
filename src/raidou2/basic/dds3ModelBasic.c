@@ -1,9 +1,9 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "basic/dds3ModelBasic", dds3AddModelBasic);
+#include "shared/basic/dds3ModelBasic/dds3AddModelBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ModelBasic", dds3AddModelBasic2);
+#include "shared/basic/dds3ModelBasic/dds3AddModelBasic2.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ModelBasic", dds3ModelBasicMakeModel);
+#include "shared/basic/dds3ModelBasic/dds3ModelBasicMakeModel.c"
 
-INCLUDE_ASM(const s32, "basic/dds3ModelBasic", dds3ModelBasicSetMotion);
+#include "shared/basic/dds3ModelBasic/dds3ModelBasicSetMotion.c"

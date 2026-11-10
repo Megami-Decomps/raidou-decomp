@@ -6,7 +6,7 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_00101E20);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_001025D0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", dds3BasicMainProcess);
+#include "shared/kernel/dds3KernelProcess/dds3BasicMainProcess.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_00102978);
 

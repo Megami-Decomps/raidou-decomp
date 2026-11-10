@@ -2,7 +2,7 @@
 
 INCLUDE_ASM(const s32, "interface/itfTestMesManager_001A1DE0", itfDebugMesMngInitialize);
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager_001A1DE0", TestMsgReloadTexture);
+#include "shared/interface/itfTestMesManager/TestMsgReloadTexture.c"
 
 INCLUDE_ASM(const s32, "interface/itfTestMesManager_001A1DE0", TestMsgMngC_Process);
 

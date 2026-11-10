@@ -6,11 +6,11 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", func_00229A80);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralCopy);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralDelete);
+#include "shared/effect/effPCPScatter/effPCPHamaCardSpiralDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralPartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralDraw);
+#include "shared/effect/effPCPScatter/effPCPHamaCardSpiralDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022A408);
 
@@ -24,11 +24,11 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022A6D8);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSphereCopy);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSphereDelete);
+#include "shared/effect/effPCPScatter/effPCPHamaCardSphereDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpherePartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSphereDraw);
+#include "shared/effect/effPCPScatter/effPCPHamaCardSphereDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022B018);
 
@@ -42,11 +42,11 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022B2F8);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterCopy);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterDelete);
+#include "shared/effect/effPCPScatter/effPCPHamaCardScatterDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterPartInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterDraw);
+#include "shared/effect/effPCPScatter/effPCPHamaCardScatterDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022BB40);
 
@@ -55,39 +55,39 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022BB50);
 void func_0022BB58(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListCreate);
+#include "shared/effect/effPCPScatter/dds3ScatterPolyListCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListDelete);
+#include "shared/effect/effPCPScatter/dds3ScatterPolyListDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022BCA8);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListSetTex);
+#include "shared/effect/effPCPScatter/dds3ScatterPolyListSetTex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListCopyTex);
+#include "shared/effect/effPCPScatter/dds3ScatterPolyListCopyTex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListGetVertex);
+#include "shared/effect/effPCPScatter/dds3ScatterPolyListGetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListGetVC);
+#include "shared/effect/effPCPScatter/dds3ScatterPolyListGetVC.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListTexResourceCreate);
+#include "shared/effect/effPCPScatter/dds3ScatterPolyListTexResourceCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListTexResourceDelete);
+#include "shared/effect/effPCPScatter/dds3ScatterPolyListTexResourceDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3ScatterPolyListTexResourceCopy);
+#include "shared/effect/effPCPScatter/dds3ScatterPolyListTexResourceCopy.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwindPolyCreate);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022C1E0);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwindPolyCopy);
+#include "shared/effect/effPCPScatter/effPCPWhirlwindPolyCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwindPolyDelete);
+#include "shared/effect/effPCPScatter/effPCPWhirlwindPolyDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022C2A0);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwindPolyPartMove);
+#include "shared/effect/effPCPScatter/effPCPWhirlwindPolyPartMove.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwindPolyDraw);
+#include "shared/effect/effPCPScatter/effPCPWhirlwindPolyDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022C9B8);
 
@@ -101,15 +101,15 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind2PolyCreate);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022CC70);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind2PolyCopy);
+#include "shared/effect/effPCPScatter/effPCPWhirlwind2PolyCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind2PolyDelete);
+#include "shared/effect/effPCPScatter/effPCPWhirlwind2PolyDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022CD30);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind2PolyPartMove);
+#include "shared/effect/effPCPScatter/effPCPWhirlwind2PolyPartMove.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind2PolyDraw);
+#include "shared/effect/effPCPScatter/effPCPWhirlwind2PolyDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022D4F0);
 
@@ -123,15 +123,15 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind3PolyCreate);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022D778);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind3PolyCopy);
+#include "shared/effect/effPCPScatter/effPCPWhirlwind3PolyCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind3PolyDelete);
+#include "shared/effect/effPCPScatter/effPCPWhirlwind3PolyDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022D838);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind3PolyPartMove);
+#include "shared/effect/effPCPScatter/effPCPWhirlwind3PolyPartMove.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind3PolyDraw);
+#include "shared/effect/effPCPScatter/effPCPWhirlwind3PolyDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E0A0);
 
@@ -145,15 +145,15 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWwSpherePolyCreate);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E318);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWwSpherePolyCopy);
+#include "shared/effect/effPCPScatter/effPCPWwSpherePolyCopy.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWwSpherePolyDelete);
+#include "shared/effect/effPCPScatter/effPCPWwSpherePolyDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E3D8);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWwSpherePolyPartMove);
+#include "shared/effect/effPCPScatter/effPCPWwSpherePolyPartMove.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWwSpherePolyDraw);
+#include "shared/effect/effPCPScatter/effPCPWwSpherePolyDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E9F8);
 
@@ -163,20 +163,20 @@ INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022EA18);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022EA20);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3WhirlwindPolyListCreate);
+#include "shared/effect/effPCPScatter/dds3WhirlwindPolyListCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3WhirlwindPolyListDelete);
+#include "shared/effect/effPCPScatter/dds3WhirlwindPolyListDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3WhirlwindPolyListDraw);
+#include "shared/effect/effPCPScatter/dds3WhirlwindPolyListDraw.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3WhirlwindPolyListSetTex);
+#include "shared/effect/effPCPScatter/dds3WhirlwindPolyListSetTex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3WhirlwindPolyListCopyTex);
+#include "shared/effect/effPCPScatter/dds3WhirlwindPolyListCopyTex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3WhirlwindPolyListGetVertex);
+#include "shared/effect/effPCPScatter/dds3WhirlwindPolyListGetVertex.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3WhirlwindPolyListGetUV);
+#include "shared/effect/effPCPScatter/dds3WhirlwindPolyListGetUV.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", dds3WhirlwindPolyListGetABGR);
+#include "shared/effect/effPCPScatter/dds3WhirlwindPolyListGetABGR.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022EFC0);

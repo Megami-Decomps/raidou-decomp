@@ -18,4 +18,4 @@
 
 #include "shared/sdf/sdfSortOt/sdfGrSortOtCallback.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfModelSetOtCallbacks);
+#include "shared/sdf/sdfSortOt/sdfModelSetOtCallbacks.c"

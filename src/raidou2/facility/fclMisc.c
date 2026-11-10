@@ -2,7 +2,7 @@
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00127F48);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclLoadStage);
+#include "shared/facility/fclMisc/fclLoadStage.c"
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00128018);
 
@@ -10,25 +10,25 @@ INCLUDE_ASM(const s32, "facility/fclMisc", func_00128078);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00128098);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclScriptForcedEnd);
+#include "shared/facility/fclMisc/fclScriptForcedEnd.c"
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclScriptStart);
+#include "shared/facility/fclMisc/fclScriptStart.c"
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00128168);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00128190);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", shuffleIndices);
+#include "shared/facility/fclMisc/shuffleIndices.c"
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00128278);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_001282A8);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclInitMessage);
+#include "shared/facility/fclMisc/fclInitMessage.c"
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00128308);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclStartMessage);
+#include "shared/facility/fclMisc/fclStartMessage.c"
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_001283A0);
 
@@ -44,9 +44,9 @@ INCLUDE_ASM(const s32, "facility/fclMisc", func_00128430);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_001284B0);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclDestroyMessage);
+#include "shared/facility/fclMisc/fclDestroyMessage.c"
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclChkMessage);
+#include "shared/facility/fclMisc/fclChkMessage.c"
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_00128550);
 

@@ -46,7 +46,7 @@ INCLUDE_ASM(const s32, "sdf/sdfFileIO", func_003E3710);
 
 #include "shared/sdf/sdfFileIO/sdfFileCmdThreadCheckPrio.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdStartThread);
+#include "shared/sdf/sdfFileIO/sdfFileCmdStartThread.c"
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_004E43C8);
 
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_004E43CC);

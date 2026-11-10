@@ -1,12 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtSearchEventPack);
+#include "shared/event/evtEventPack/evtSearchEventPack.c"
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtGetEventPackStat);
+#include "shared/event/evtEventPack/evtGetEventPackStat.c"
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtGetPackProcessData);
+#include "shared/event/evtEventPack/evtGetPackProcessData.c"
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtGetResorceData);
+#include "shared/event/evtEventPack/evtGetResorceData.c"
 
 INCLUDE_ASM(const s32, "event/evtEventPack", func_001C9E18);
 
@@ -14,25 +14,25 @@ INCLUDE_ASM(const s32, "event/evtEventPack", func_001C9EA0);
 
 INCLUDE_ASM(const s32, "event/evtEventPack", evtInitMotionSeProcess);
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtRegistBEField);
+#include "shared/event/evtEventPack/evtRegistBEField.c"
 
 INCLUDE_ASM(const s32, "event/evtEventPack", evtMotionSeProcess1);
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtFreeScriptProcessData);
+#include "shared/event/evtEventPack/evtFreeScriptProcessData.c"
 
 INCLUDE_ASM(const s32, "event/evtEventPack", evtLoadModelSe);
 
 INCLUDE_ASM(const s32, "event/evtEventPack", evtLoadEventScript);
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtCheckEventScriptLoaded);
+#include "shared/event/evtEventPack/evtCheckEventScriptLoaded.c"
 
 INCLUDE_ASM(const s32, "event/evtEventPack", evtCheckScriptDone);
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtWaitEventPackLoad);
+#include "shared/event/evtEventPack/evtWaitEventPackLoad.c"
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtLoadEventPack);
+#include "shared/event/evtEventPack/evtLoadEventPack.c"
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtKillEventPack);
+#include "shared/event/evtEventPack/evtKillEventPack.c"
 
 INCLUDE_ASM(const s32, "event/evtEventPack", func_001CA848);
 INCLUDE_SDATA(const s32, "event/evtEventPack", D_0046CCB8);

@@ -12,6 +12,6 @@ INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageDataSize);
 
 #include "shared/sdf/sdfImageSet/sdfImageSetDmacHandler.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageSetTrans);
+#include "shared/sdf/sdfImageSet/sdfImageSetTrans.c"
 
 #include "shared/sdf/sdfImageSet/sdfImageSetInit.c"

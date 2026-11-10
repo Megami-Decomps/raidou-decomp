@@ -16,7 +16,7 @@ INCLUDE_ASM(const s32, "sdk/libkernl/filestub", _sceFs_Rcv_Intr);
 
 #include "shared/sdk/libkernl/_sceFs_Poff_Intr.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceFsInit);
+#include "shared/sdk/libkernl/sceFsInit.c"
 
 #include "shared/sdk/libkernl/_fs_version.c"
 

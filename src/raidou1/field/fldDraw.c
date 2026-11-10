@@ -10,7 +10,7 @@ INCLUDE_ASM(const s32, "field/fldDraw", DrwSprite2DC);
 
 INCLUDE_ASM(const s32, "field/fldDraw", DrwSprite2DF);
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldPoint3To2);
+#include "shared/field/fldDraw/fldPoint3To2.c"
 
 INCLUDE_ASM(const s32, "field/fldDraw", func_00132E28);
 
@@ -20,7 +20,7 @@ INCLUDE_ASM(const s32, "field/fldDraw", func_00132FC8);
 
 INCLUDE_ASM(const s32, "field/fldDraw", func_00133030);
 
-INCLUDE_ASM(const s32, "field/fldDraw", rsetOtOfs);
+#include "shared/field/fldDraw/rsetOtOfs.c"
 
 INCLUDE_ASM(const s32, "field/fldDraw", rsetTexa);
 
@@ -65,9 +65,9 @@ INCLUDE_ASM(const s32, "field/fldDraw", func_00134AA0);
 void func_00134B58(void) {
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldDrwZAlloc);
+#include "shared/field/fldDraw/fldDrwZAlloc.c"
 
-INCLUDE_ASM(const s32, "field/fldDraw", fldDrwZFree);
+#include "shared/field/fldDraw/fldDrwZFree.c"
 
 INCLUDE_ASM(const s32, "field/fldDraw", func_00134BB8);
 
@@ -79,9 +79,9 @@ INCLUDE_ASM(const s32, "field/fldDraw", func_00134D20);
 
 INCLUDE_ASM(const s32, "field/fldDraw", func_00134DA0);
 
-INCLUDE_ASM(const s32, "field/fldDraw", LF);
+#include "shared/field/fldDraw/LF.c"
 
-INCLUDE_ASM(const s32, "field/fldDraw", initDrawTag);
+#include "shared/field/fldDraw/initDrawTag.c"
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldDbgPrint3D);
 

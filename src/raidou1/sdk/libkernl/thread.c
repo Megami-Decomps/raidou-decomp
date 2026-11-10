@@ -2,7 +2,7 @@
 
 INCLUDE_ASM(const s32, "sdk/libkernl/thread", topThread);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/thread", InitThread);
+#include "shared/sdk/libkernl/InitThread.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/thread", iWakeupThread);
 

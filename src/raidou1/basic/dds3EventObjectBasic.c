@@ -1,9 +1,9 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "basic/dds3EventObjectBasic", EventObjectBasicConstructor);
+#include "shared/basic/dds3EventObjectBasic/EventObjectBasicConstructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EventObjectBasic", EventObjectBasicDestructor);
+#include "shared/basic/dds3EventObjectBasic/EventObjectBasicDestructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EventObjectBasic", EventObjectBasicMainProcuder);
+#include "shared/basic/dds3EventObjectBasic/EventObjectBasicMainProcuder.c"
 
-INCLUDE_ASM(const s32, "basic/dds3EventObjectBasic", dds3AddEventObjectBasic);
+#include "shared/basic/dds3EventObjectBasic/dds3AddEventObjectBasic.c"

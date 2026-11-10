@@ -1,77 +1,77 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", DeleteProcessList);
+#include "shared/kernel/dds3KernelCore/DeleteProcessList.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", AddProcessList);
+#include "shared/kernel/dds3KernelCore/AddProcessList.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", StartProcess);
+#include "shared/kernel/dds3KernelCore/StartProcess.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", StartingProcess);
+#include "shared/kernel/dds3KernelCore/StartingProcess.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelCore", RunProcess);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", RunningProcess);
+#include "shared/kernel/dds3KernelCore/RunningProcess.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_00100E68);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", EndProcess);
+#include "shared/kernel/dds3KernelCore/EndProcess.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3EndingProcess);
+#include "shared/kernel/dds3KernelCore/dds3EndingProcess.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", ChangeProcessFlagChild);
+#include "shared/kernel/dds3KernelCore/ChangeProcessFlagChild.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", ChangeProcessFlag);
+#include "shared/kernel/dds3KernelCore/ChangeProcessFlag.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3GetProcessCount);
+#include "shared/kernel/dds3KernelCore/dds3GetProcessCount.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3SearchProcessNumber);
+#include "shared/kernel/dds3KernelCore/dds3SearchProcessNumber.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_001012B0);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3PrintProcessList);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", DebugProcessTree);
+#include "shared/kernel/dds3KernelCore/DebugProcessTree.c"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_00101440);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3ProcessMain);
+#include "shared/kernel/dds3KernelCore/dds3ProcessMain.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3StartProcess);
+#include "shared/kernel/dds3KernelCore/dds3StartProcess.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3KillProcessName);
+#include "shared/kernel/dds3KernelCore/dds3KillProcessName.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3KillProcess);
+#include "shared/kernel/dds3KernelCore/dds3KillProcess.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3EndProcess);
+#include "shared/kernel/dds3KernelCore/dds3EndProcess.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3SetShutdownTimer);
+#include "shared/kernel/dds3KernelCore/dds3SetShutdownTimer.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3GetProcessStat);
+#include "shared/kernel/dds3KernelCore/dds3GetProcessStat.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3SearchProcessName);
+#include "shared/kernel/dds3KernelCore/dds3SearchProcessName.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3SearchProcessPriority);
+#include "shared/kernel/dds3KernelCore/dds3SearchProcessPriority.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3ExistProcess);
+#include "shared/kernel/dds3KernelCore/dds3ExistProcess.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3GetProcessStartTime);
+#include "shared/kernel/dds3KernelCore/dds3GetProcessStartTime.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3GetProcessRunTime);
+#include "shared/kernel/dds3KernelCore/dds3GetProcessRunTime.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3SetProcessData);
+#include "shared/kernel/dds3KernelCore/dds3SetProcessData.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3GetProcessData);
+#include "shared/kernel/dds3KernelCore/dds3GetProcessData.c"
 
 void func_00101A78(void) {
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3LinkProcess);
+#include "shared/kernel/dds3KernelCore/dds3LinkProcess.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3UnlinkProcess);
+#include "shared/kernel/dds3KernelCore/dds3UnlinkProcess.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3SetProcessFlag);
+#include "shared/kernel/dds3KernelCore/dds3SetProcessFlag.c"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3ResetProcessFlag);
+#include "shared/kernel/dds3KernelCore/dds3ResetProcessFlag.c"
 INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_004DE248);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_004DE24C);

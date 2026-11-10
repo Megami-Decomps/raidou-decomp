@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemInit);
+#include "shared/sdf/sdfMemory/sdfMemInit.c"
 
 #include "shared/sdf/sdfMemory/sdfMemGetType.c"
 

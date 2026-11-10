@@ -16,27 +16,27 @@ INCLUDE_ASM(const s32, "effect/billManager", func_001F40C8);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F4228);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_BasicInit);
+#include "shared/effect/billManager/dds3Billboard_BasicInit.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F43C8);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F4418);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_NormalDraw);
+#include "shared/effect/billManager/dds3Billboard_NormalDraw.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_P2ACreate);
+#include "shared/effect/billManager/dds3Billboard_P2ACreate.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_P2ACopy);
+#include "shared/effect/billManager/dds3Billboard_P2ACopy.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F4570);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_P2AAnimDraw);
+#include "shared/effect/billManager/dds3Billboard_P2AAnimDraw.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F4770);
 
 INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_P2ADraw);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_P2ASetAnim);
+#include "shared/effect/billManager/dds3Billboard_P2ASetAnim.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_P2ASetNumber);
 
@@ -46,21 +46,21 @@ INCLUDE_ASM(const s32, "effect/billManager", func_001F4E60);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F4EF0);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardCreate);
+#include "shared/effect/billManager/dds3BillboardCreate.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5010);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardCopy);
+#include "shared/effect/billManager/dds3BillboardCopy.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardDelete);
+#include "shared/effect/billManager/dds3BillboardDelete.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardDraw);
+#include "shared/effect/billManager/dds3BillboardDraw.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5160);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F51C8);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardGetGeneralTex);
+#include "shared/effect/billManager/dds3BillboardGetGeneralTex.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F51F0);
 
@@ -72,51 +72,51 @@ INCLUDE_ASM(const s32, "effect/billManager", func_001F5218);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5220);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardSetMode);
+#include "shared/effect/billManager/dds3BillboardSetMode.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5308);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardGetTex);
+#include "shared/effect/billManager/dds3BillboardGetTex.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5398);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardSetDrawType);
+#include "shared/effect/billManager/dds3BillboardSetDrawType.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F53D8);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardSetAnimNumber);
+#include "shared/effect/billManager/dds3BillboardSetAnimNumber.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5448);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5468);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardSetAnimKey);
+#include "shared/effect/billManager/dds3BillboardSetAnimKey.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardSetAnimKey2);
+#include "shared/effect/billManager/dds3BillboardSetAnimKey2.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardGetAnimFrame);
+#include "shared/effect/billManager/dds3BillboardGetAnimFrame.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardGetAnimState);
+#include "shared/effect/billManager/dds3BillboardGetAnimState.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5598);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardSetAnimColorAdvMode);
+#include "shared/effect/billManager/dds3BillboardSetAnimColorAdvMode.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardSetXYOffset);
+#include "shared/effect/billManager/dds3BillboardSetXYOffset.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5610);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardGetDirectionScale);
+#include "shared/effect/billManager/dds3BillboardGetDirectionScale.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3P2APolygonCreate);
+#include "shared/effect/billManager/dds3P2APolygonCreate.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3P2APolygonCopy);
+#include "shared/effect/billManager/dds3P2APolygonCopy.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3P2APolygonDelete);
+#include "shared/effect/billManager/dds3P2APolygonDelete.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5960);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3P2APolygonSetScale);
+#include "shared/effect/billManager/dds3P2APolygonSetScale.c"
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F5998);
 
@@ -124,6 +124,6 @@ INCLUDE_ASM(const s32, "effect/billManager", func_001F59C8);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_001F59E0);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3P2APolygonGetResource);
+#include "shared/effect/billManager/dds3P2APolygonGetResource.c"
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3P2APolygonDraw);
+#include "shared/effect/billManager/dds3P2APolygonDraw.c"

@@ -18,25 +18,25 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D5510);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D5678);
 
-INCLUDE_ASM(const s32, "mc/slMain", slSetInfo);
+#include "shared/mc/slMain/slSetInfo.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D5B30);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D5ED0);
 
-INCLUDE_ASM(const s32, "mc/slMain", slHeadLoad);
+#include "shared/mc/slMain/slHeadLoad.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D6048);
 
-INCLUDE_ASM(const s32, "mc/slMain", slHeadLoadProc_readFile);
+#include "shared/mc/slMain/slHeadLoadProc_readFile.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D6120);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D6258);
 
-INCLUDE_ASM(const s32, "mc/slMain", slEndingTop);
+#include "shared/mc/slMain/slEndingTop.c"
 
-INCLUDE_ASM(const s32, "mc/slMain", slEndingUpd2);
+#include "shared/mc/slMain/slEndingUpd2.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", slEndingExit);
 
@@ -52,7 +52,7 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D6460);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D64A0);
 
-INCLUDE_ASM(const s32, "mc/slMain", slExit);
+#include "shared/mc/slMain/slExit.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D6548);
 
@@ -94,7 +94,7 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D6900);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D6918);
 
-INCLUDE_ASM(const s32, "mc/slMain", slBootProc1st);
+#include "shared/mc/slMain/slBootProc1st.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D6978);
 
@@ -124,7 +124,7 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D7098);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D7168);
 
-INCLUDE_ASM(const s32, "mc/slMain", slExitWaitProc);
+#include "shared/mc/slMain/slExitWaitProc.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D7228);
 
@@ -136,9 +136,9 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D72F0);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D74F8);
 
-INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfo2);
+#include "shared/mc/slMain/slChooseData_getCardInfo2.c"
 
-INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfo3);
+#include "shared/mc/slMain/slChooseData_getCardInfo3.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D7640);
 
@@ -154,11 +154,11 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D7918);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D79B8);
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveData);
+#include "shared/mc/slMain/slSaveData.c"
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveData_chdir);
+#include "shared/mc/slMain/slSaveData_chdir.c"
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveProc_Write_mkdir);
+#include "shared/mc/slMain/slSaveProc_Write_mkdir.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D7B80);
 
@@ -170,25 +170,25 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D7C98);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D7CC0);
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveWriteEnd_saveData);
+#include "shared/mc/slMain/slSaveWriteEnd_saveData.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D7DA0);
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveData_deleteIconSys);
+#include "shared/mc/slMain/slSaveData_deleteIconSys.c"
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveWriteFile);
+#include "shared/mc/slMain/slSaveWriteFile.c"
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveProc_openFile);
+#include "shared/mc/slMain/slSaveProc_openFile.c"
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveProc_writeFile);
+#include "shared/mc/slMain/slSaveProc_writeFile.c"
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveProc_closeFile);
+#include "shared/mc/slMain/slSaveProc_closeFile.c"
 
-INCLUDE_ASM(const s32, "mc/slMain", slSaveProc_waitDataReady);
+#include "shared/mc/slMain/slSaveProc_waitDataReady.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D8658);
 
-INCLUDE_ASM(const s32, "mc/slMain", slFormatStart);
+#include "shared/mc/slMain/slFormatStart.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D8710);
 
@@ -196,7 +196,7 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D87A0);
 
 INCLUDE_ASM(const s32, "mc/slMain", slLoadProc_openFile);
 
-INCLUDE_ASM(const s32, "mc/slMain", slLoadProc_readFile);
+#include "shared/mc/slMain/slLoadProc_readFile.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D89A0);
 
@@ -206,7 +206,7 @@ INCLUDE_ASM(const s32, "mc/slMain", func_001D8A98);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001D8F88);
 
-INCLUDE_ASM(const s32, "mc/slMain", slCalc);
+#include "shared/mc/slMain/slCalc.c"
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001DA340);
 

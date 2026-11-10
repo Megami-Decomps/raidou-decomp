@@ -2,7 +2,7 @@
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralDelete);
+#include "shared/effect/effPCPNeedle/effPCPNeedleSpiralDelete.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F2E8);
 
@@ -17,11 +17,11 @@ INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F338);
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F350);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", dds3NeedleModelCreate);
+#include "shared/effect/effPCPNeedle/dds3NeedleModelCreate.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", dds3NeedleModelDelete);
+#include "shared/effect/effPCPNeedle/dds3NeedleModelDelete.c"
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", dds3NeedleModelDraw);
+#include "shared/effect/effPCPNeedle/dds3NeedleModelDraw.c"
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F748);
 
@@ -31,4 +31,4 @@ INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F9A0);
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F9D0);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", dds3NeedleModelSetColor);
+#include "shared/effect/effPCPNeedle/dds3NeedleModelSetColor.c"

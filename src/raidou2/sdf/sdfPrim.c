@@ -48,7 +48,7 @@
 
 #include "shared/sdf/sdfPrim/sdfPrimFrameMovePredraw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkFrameMovePacket);
+#include "shared/sdf/sdfPrim/sdfPrimLinkFrameMovePacket.c"
 
 #include "shared/sdf/sdfPrim/sdfPrimSetSpriteElem.c"
 

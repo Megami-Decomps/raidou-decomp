@@ -1,0 +1,187 @@
+/* Declarations of smt3-decomp src/smt3/movie/mviManager.c, for its bodies in this directory. */
+#ifndef SHARED_MOVIE_MVIMANAGER_H
+#define SHARED_MOVIE_MVIMANAGER_H
+
+#include "common.h"
+
+#include "facility.h"
+
+#include "fpu.h"
+
+#include "libsdf.h"
+
+#include "newdata.h"
+
+#include "ps2asm.h"
+
+#include "sdfFrame.h"
+
+#include "event.h"
+
+#include "sdf_movie_types.h"
+
+extern void *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
+                              void *drawExit, void *deleteExit, void *p);
+
+typedef struct
+{
+    /* 0x0000 */ u8 flags;
+    /* 0x0001 */ u8 unk_0001[0x13];
+    /* 0x0014 */ void *allocation;
+    /* 0x0018 */ u8 unk_0018[0x44B0];
+    /* 0x44C8 */ void *unk_44C8;
+    /* 0x44CC */ s32 unk_44CC;
+    /* 0x44D0 */ s32 unk_44D0;
+} rcvWork_t;
+
+extern rcvWork_t *shutdownfunc;
+
+extern void sdfChipFreeDirect(void *aPtr);
+
+extern sdfMovieCb_t movieCb;
+
+extern s32 sdfMovieIsFinished(sdfMovieCb_t *movie);
+
+extern void movieStop(void);
+
+extern char stfProcName[];
+
+extern s32 scrGetIntPara(s32 n);
+
+extern void scrSetIntReturnValue(s32 i);
+
+extern void dds3PlayMovieByIndex(s32 index);
+
+extern sdfGrOt_t sdfGrOtTable[85];
+
+extern void release_movieobj2(sdfMovieCb_t *movie, sdfGrOt_t *ot);
+
+typedef struct
+{
+    /* 0x00 */ const char *path;
+    /* 0x04 */ sdfMovieInitParm_t descriptor;
+} dds3MovieEntry_t;
+
+extern dds3MovieEntry_t movieEntryTable[];
+
+extern void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor);
+
+extern u16 dds3VblanksPerFrame;
+
+extern saddr_t PlayingNo;
+
+extern void sdfIpuRunDecode(s32 frames);
+
+extern void movieCloseStream(sdfMovieCb_t *stream);
+
+extern s32 dds3KillProcess(s32 id, s32 shutdowntimer);
+
+extern void (*DrawPhaseTable[])(fclEncyc_instance_tag *work);
+
+s32 movieDrawProc(void);
+
+extern void movieOpenStream(sdfMovieCb_t *stream, sdfMovieInitParm_t *descriptor, const char *path);
+
+extern char movieDrawProcName[];
+
+void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor);
+
+void dds3PlayMovieByIndex(s32 index);
+
+void movieStop(void);
+
+s32 dds3WaitMovieEnd(void);
+
+u8 func_0022B7F8(void);
+
+s32 movieMan_Process(void);
+
+extern void sdfIpuInit(void);
+
+extern char movieManProcName[];
+
+void *dds3StartMovieManager(void);
+
+s32 dds3_22B880(void);
+
+s32 dds3_22B8A8(void);
+
+s32 movie_22B8C8(void);
+
+s32 movie_22B8F0(void);
+
+typedef struct
+{
+    /* 0x00 */ u8 unk_00[4];
+    /* 0x04 */ void *chip;
+    /* 0x08 */ s16 top;
+    /* 0x0A */ s16 cursor;
+    /* 0x0C */ u16 unk_0C;
+    /* 0x0E */ s8 playing;
+    /* 0x0F */ u8 pad_0F;
+    /* 0x10 */ sdfDrawTag_t *packets;
+} movieViewerChipList_t;
+
+/* One entry: the next link, then the path it was scanned from. */
+typedef struct movieViewerChip_t
+{
+    /* 0x00 */ struct movieViewerChip_t *next;
+    /* 0x04 */ char path[1];
+} movieViewerChip_t;
+
+extern movieViewerChipList_t movieViewerWork;
+
+void movieViewerFree(void);
+
+typedef struct
+{
+    u32 mode;
+    u8 stat[0x3C];
+    char name[0x100];
+    u32 privateWords[2];
+} mviDirectoryEntry_t;
+
+extern u8 sdfHddValid;
+
+extern char movieDirPath[];
+
+extern char movieExtIpu[];
+
+extern char movieExtIps[];
+
+extern s32 sceDopen(const char *name);
+
+extern s32 sceDread(s32 handle, mviDirectoryEntry_t *entry);
+
+extern s32 sceDclose(s32 handle);
+
+extern char *strrchr(const char *text, s32 character);
+
+extern s32 strcasecmp(const char *first, const char *second);
+
+extern void *sdfChipAllocDirect(s32 aSize);
+
+extern void *memcpy(void *destination, const void *source, size_t bytes);
+
+void movieViewerScanDir(void);
+
+/* The entry the cursor sits on, walked from the head. */
+void *movieViewerStep(void);
+
+extern void *dds3PrimFrameRect(s32 aX, s32 aY, s32 aZ, s32 aW, s32 aH, u32 aBgCol, u32 aFrameCol);
+
+extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr, const char *aStr, ...);
+
+extern void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
+
+extern void sdfPrimLinkF3(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1,
+                          s32 aY1, s32 aX2, s32 aY2, s32 aZ, s32 (*aAllocator)(s32));
+
+/* "%c%s", in .sdata where a literal cannot go. */
+extern char movieDebugRowFmt[];
+
+/* One screen of the movie list, with an arrow on the selected row and a
+ * marker at each end the list continues past. */
+void movieDebugDrawInfo(void);
+
+#endif

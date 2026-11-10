@@ -1,10 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "event/EventBit", evtInitGlobalWork);
+#include "shared/event/EventBit/evtInitGlobalWork.c"
 
 INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff);
 
-INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff_FieldDebug);
+#include "shared/event/EventBit/evtBitAllOff_FieldDebug.c"
 
 INCLUDE_ASM(const s32, "event/EventBit", evtBitOn);
 

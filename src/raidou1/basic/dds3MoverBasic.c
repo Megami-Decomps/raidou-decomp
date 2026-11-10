@@ -1,20 +1,20 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "basic/dds3MoverBasic", MoverBasicConstructor);
+#include "shared/basic/dds3MoverBasic/MoverBasicConstructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MoverBasic", MoverBasicDestructor);
+#include "shared/basic/dds3MoverBasic/MoverBasicDestructor.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MoverBasic", MoverBasicMainprocuder);
+#include "shared/basic/dds3MoverBasic/MoverBasicMainprocuder.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MoverBasic", dds3AddMoverBasic);
+#include "shared/basic/dds3MoverBasic/dds3AddMoverBasic.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MoverBasic", dds3MoverBasicSetCallBackPrimaryControl);
+#include "shared/basic/dds3MoverBasic/dds3MoverBasicSetCallBackPrimaryControl.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MoverBasic", dds3MoverBasicSetPath);
+#include "shared/basic/dds3MoverBasic/dds3MoverBasicSetPath.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MoverBasic", dds3MoverBasicMakePath);
+#include "shared/basic/dds3MoverBasic/dds3MoverBasicMakePath.c"
 
-INCLUDE_ASM(const s32, "basic/dds3MoverBasic", dds3MoverBasicFreePath);
+#include "shared/basic/dds3MoverBasic/dds3MoverBasicFreePath.c"
 
 INCLUDE_SDATA(const s32, "basic/dds3MoverBasic", D_0046B488);
 

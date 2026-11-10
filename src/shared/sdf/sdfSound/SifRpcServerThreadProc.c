@@ -1,7 +1,5 @@
 #include "shared/sdf/sdfSound/decls.h"
 
-extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-extern s32 GetThreadId(void);
 void SifRpcServerThreadProc(void)
 {
     sifRpcDataQueue_t queue;

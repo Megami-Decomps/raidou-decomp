@@ -1,0 +1,71 @@
+#include "shared/effect/effPCPFlash/decls.h"
+
+void effPCPFlashPolyRingPartSetVertex(effPCPFlashPolyRing_tag *work, s32 index)
+{
+    effPCPFlashPolyRingExp2Part_tag *part = &work->parts[index];
+    f32 *quad = (f32 *)dds3FlashPolyListGetVertex(work->hPoly, index);
+    sdfVector4_t offset;
+    sdfVector4_t unit;
+    sdfVector4_t scaleA;
+    sdfVector4_t scaleB;
+    sdfVector4_t scaleC;
+    f32 size;
+    f32 ratio;
+    f32 sinv;
+    f32 height;
+    f32 widthB;
+    f32 widthC;
+
+    size = part->length;
+    ratio = size / part->length_max;
+    VEC3_SPLAT(&scaleA.x, size);
+    widthB = work->acrossSpan * ratio;
+    widthC = work->upSpan * ratio;
+    VEC3_SPLAT(&scaleB.x, widthB);
+    VEC3_SPLAT(&scaleC.x, widthC);
+    unit.x = sdfCos(part->rotate);
+    unit.y = 0;
+    sinv = sdfSin(part->rotate);
+    unit.z = sinv;
+    offset.x = unit.x * work->orbitRadius;
+    offset.y = 0;
+    offset.z = sinv * work->orbitRadius;
+    height = work->tilt;
+    effPCPFlashPolyRingVertex[0] = unit.x * height;
+    effPCPFlashPolyRingVertex[1] = height + -1.0f;
+    effPCPFlashPolyRingVertex[2] = sinv * height;
+    SDF_VU0_LOADVECTOR(effPCPFlashPolyRingVertex);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR(&unit);
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    SDF_VU0_LOADVECTOR(&scaleB);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR(&scaleB);
+    SDF_VU0_LOADVECTOR(&scaleC);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR(&scaleC);
+    SDF_VU0_COPYVECTOR_C_TO_A();
+    SDF_VU0_LOADVECTOR_B(&scaleA);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_LOADVECTOR(&offset);
+    SDF_VU0_LOADVECTOR_B(&scaleC);
+    SDF_VU0_STOREVECTOR(quad + 12);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(quad + 8);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_STOREVECTOR(quad + 16);
+    SDF_VU0_LOADVECTOR(&offset);
+    SDF_VU0_LOADVECTOR_B(&scaleB);
+    SDF_VU0_ADDVECTOR_A_C();
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(quad);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_STOREVECTOR(quad + 4);
+}

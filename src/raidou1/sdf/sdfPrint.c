@@ -2,7 +2,7 @@
 
 #include "shared/sdf/sdfPrint/sdfPrintRpcFunc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrint", sdfPrintRpcThread);
+#include "shared/sdf/sdfPrint/sdfPrintRpcThread.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfPrint", func_0036BA78);
 

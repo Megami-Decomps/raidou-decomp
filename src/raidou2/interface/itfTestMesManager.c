@@ -2,11 +2,11 @@
 
 INCLUDE_ASM(const s32, "interface/itfTestMesManager", func_0018FF30);
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager", pbAllocPrimPacket);
+#include "shared/interface/itfTestMesManager/pbAllocPrimPacket.c"
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager", pbMakeSpritePacket);
+#include "shared/interface/itfTestMesManager/pbMakeSpritePacket.c"
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager", pbMakePrimPacket);
+#include "shared/interface/itfTestMesManager/pbMakePrimPacket.c"
 
 INCLUDE_ASM(const s32, "interface/itfTestMesManager", pbDrawRotatedPrim);
 INCLUDE_SDATA(const s32, "interface/itfTestMesManager", D_004DF294);

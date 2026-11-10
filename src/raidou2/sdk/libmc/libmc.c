@@ -20,19 +20,19 @@ INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcInit);
 
 #include "shared/sdk/libmc/mceIntrReadFixAlign.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcRead);
+#include "shared/sdk/libmc/sceMcRead.c"
 
 #include "shared/sdk/libmc/sceMcWrite.c"
 
 #include "shared/sdk/libmc/mcHearAlarm.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", mcDelayThread);
+#include "shared/sdk/libmc/mcDelayThread.c"
 
 INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcSync);
 
 #include "shared/sdk/libmc/mceGetInfoApdx.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcGetInfo);
+#include "shared/sdk/libmc/sceMcGetInfo.c"
 
 INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcUdCheckNewCard);
 
@@ -40,7 +40,7 @@ INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcUdCheckNewCard);
 
 #include "shared/sdk/libmc/mceStorePwd.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcChdir);
+#include "shared/sdk/libmc/sceMcChdir.c"
 
 #include "shared/sdk/libmc/sceMcFormat.c"
 

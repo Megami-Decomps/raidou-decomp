@@ -1,10 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "interface/frWrap", frwGetStaffFontFRQ);
+#include "shared/interface/frWrap/frwGetStaffFontFRQ.c"
 
 INCLUDE_ASM(const s32, "interface/frWrap", frwLoadStaffFont);
 
-INCLUDE_ASM(const s32, "interface/frWrap", frwFreeStaffFont);
+#include "shared/interface/frWrap/frwFreeStaffFont.c"
 
 INCLUDE_ASM(const s32, "interface/frWrap", func_00182CA8);
 
@@ -44,21 +44,21 @@ INCLUDE_ASM(const s32, "interface/frWrap", func_00183818);
 
 INCLUDE_ASM(const s32, "interface/frWrap", func_00183820);
 
-INCLUDE_ASM(const s32, "interface/frWrap", frGetFontHeader);
+#include "shared/interface/frWrap/frGetFontHeader.c"
 
-INCLUDE_ASM(const s32, "interface/frWrap", frGetFontImagePtrs);
+#include "shared/interface/frWrap/frGetFontImagePtrs.c"
 
 INCLUDE_ASM(const s32, "interface/frWrap", func_00183860);
 
-INCLUDE_ASM(const s32, "interface/frWrap", frDecodeFontRow);
+#include "shared/interface/frWrap/frDecodeFontRow.c"
 
-INCLUDE_ASM(const s32, "interface/frWrap", frAllocFontTable);
+#include "shared/interface/frWrap/frAllocFontTable.c"
 
-INCLUDE_ASM(const s32, "interface/frWrap", frAllocFontNode);
+#include "shared/interface/frWrap/frAllocFontNode.c"
 
-INCLUDE_ASM(const s32, "interface/frWrap", frFreeFontNode);
+#include "shared/interface/frWrap/frFreeFontNode.c"
 
-INCLUDE_ASM(const s32, "interface/frWrap", frFreeFontTable);
+#include "shared/interface/frWrap/frFreeFontTable.c"
 
 INCLUDE_SDATA(const s32, "interface/frWrap", D_0046C1E8);
 

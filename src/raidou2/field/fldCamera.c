@@ -1,5 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "field/fldCamera", GetSphericalPosMove);
+#include "shared/field/fldCamera/GetSphericalPosMove.c"
 
 INCLUDE_ASM(const s32, "field/fldCamera", func_0012C498);

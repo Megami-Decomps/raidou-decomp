@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "kernel/dds3Randomize", dds3InitRandCB);
+#include "shared/kernel/dds3Randomize/dds3InitRandCB.c"

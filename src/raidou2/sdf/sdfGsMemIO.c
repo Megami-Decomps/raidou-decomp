@@ -6,7 +6,7 @@
 
 #include "shared/sdf/sdfGsMemIO/sdfLinkStoreFrameImagePredraw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemIO", sdfLinkStoreFrameImage);
+#include "shared/sdf/sdfGsMemIO/sdfLinkStoreFrameImage.c"
 
 #include "shared/sdf/sdfGsMemIO/sdfSetLoadImage.c"
 

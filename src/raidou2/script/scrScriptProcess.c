@@ -1,20 +1,20 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrLoadScriptFile);
+#include "shared/script/scrScriptProcess/scrLoadScriptFile.c"
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrStartScriptProcess);
+#include "shared/script/scrScriptProcess/scrStartScriptProcess.c"
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", dds3GlobalWorkClearFlags);
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrStartScriptByName);
+#include "shared/script/scrScriptProcess/scrStartScriptByName.c"
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114978);
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrStartScript2);
+#include "shared/script/scrScriptProcess/scrStartScript2.c"
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", func_001149C8);
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrRunScriptEx);
+#include "shared/script/scrScriptProcess/scrRunScriptEx.c"
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114A30);
 
@@ -24,16 +24,16 @@ INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114AE0);
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114B58);
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrSearchScriptName);
+#include "shared/script/scrScriptProcess/scrSearchScriptName.c"
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrSearchProcedureName);
+#include "shared/script/scrScriptProcess/scrSearchProcedureName.c"
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrSetUserData);
+#include "shared/script/scrScriptProcess/scrSetUserData.c"
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrGetUserData);
+#include "shared/script/scrScriptProcess/scrGetUserData.c"
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrScriptShutdown);
+#include "shared/script/scrScriptProcess/scrScriptShutdown.c"
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrRunScript);
+#include "shared/script/scrScriptProcess/scrRunScript.c"
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrScriptProcess);
+#include "shared/script/scrScriptProcess/scrScriptProcess.c"

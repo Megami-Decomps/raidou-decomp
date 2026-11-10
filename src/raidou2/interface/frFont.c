@@ -2,17 +2,17 @@
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001923A8);
 
-INCLUDE_ASM(const s32, "interface/frFont", frSwapColor);
+#include "shared/interface/frFont/frSwapColor.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frConvertVal2N);
+#include "shared/interface/frFont/frConvertVal2N.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frCreateDrawEnvPacket);
+#include "shared/interface/frFont/frCreateDrawEnvPacket.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001924D8);
 
-INCLUDE_ASM(const s32, "interface/frFont", frCreateUserFontPacket);
+#include "shared/interface/frFont/frCreateUserFontPacket.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frCopyFontClutToVram);
+#include "shared/interface/frFont/frCopyFontClutToVram.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", frClearTexBuf);
 
@@ -34,17 +34,17 @@ INCLUDE_ASM(const s32, "interface/frFont", frSetFontClut);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00192E60);
 
-INCLUDE_ASM(const s32, "interface/frFont", frDestroyFontRequest);
+#include "shared/interface/frFont/frDestroyFontRequest.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00192F10);
 
-INCLUDE_ASM(const s32, "interface/frFont", frDestroyFontRequestAfter);
+#include "shared/interface/frFont/frDestroyFontRequestAfter.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frGetGsFontNum);
+#include "shared/interface/frFont/frGetGsFontNum.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frGetTextHandleNum);
+#include "shared/interface/frFont/frGetTextHandleNum.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frGetFontHandleNum);
+#include "shared/interface/frFont/frGetFontHandleNum.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001930A8);
 
@@ -92,25 +92,25 @@ INCLUDE_ASM(const s32, "interface/frFont", func_00193E88);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00193F68);
 
-INCLUDE_ASM(const s32, "interface/frFont", frSetDrawPosition);
+#include "shared/interface/frFont/frSetDrawPosition.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frSetPriority);
+#include "shared/interface/frFont/frSetPriority.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frSetFontColorNo);
+#include "shared/interface/frFont/frSetFontColorNo.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frSetFontColor);
+#include "shared/interface/frFont/frSetFontColor.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001940D8);
 
-INCLUDE_ASM(const s32, "interface/frFont", frEnableMode);
+#include "shared/interface/frFont/frEnableMode.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frDisableMode);
+#include "shared/interface/frFont/frDisableMode.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frSetFontDrawOT);
+#include "shared/interface/frFont/frSetFontDrawOT.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00194158);
 
-INCLUDE_ASM(const s32, "interface/frFont", frEraseEffect);
+#include "shared/interface/frFont/frEraseEffect.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001941E8);
 
@@ -126,11 +126,11 @@ INCLUDE_ASM(const s32, "interface/frFont", func_00194A50);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00194A68);
 
-INCLUDE_ASM(const s32, "interface/frFont", frSetExtDic);
+#include "shared/interface/frFont/frSetExtDic.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frDestroyExtDic);
+#include "shared/interface/frFont/frDestroyExtDic.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frStrLen);
+#include "shared/interface/frFont/frStrLen.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", frGetStrWidth);
 
@@ -158,7 +158,7 @@ INCLUDE_ASM(const s32, "interface/frFont", func_00194FE8);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00195038);
 
-INCLUDE_ASM(const s32, "interface/frFont", MessageNumSearch);
+#include "shared/interface/frFont/MessageNumSearch.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001951D0);
 
@@ -166,7 +166,7 @@ INCLUDE_ASM(const s32, "interface/frFont", func_00195340);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001953B0);
 
-INCLUDE_ASM(const s32, "interface/frFont", frMessageReturnCode);
+#include "shared/interface/frFont/frMessageReturnCode.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00195448);
 
@@ -176,11 +176,11 @@ INCLUDE_ASM(const s32, "interface/frFont", func_001954C8);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00195DC8);
 
-INCLUDE_ASM(const s32, "interface/frFont", MessageRequest);
+#include "shared/interface/frFont/MessageRequest.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", MessageRequestEx);
+#include "shared/interface/frFont/MessageRequestEx.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", MessageRequestEx2);
+#include "shared/interface/frFont/MessageRequestEx2.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001960D8);
 
@@ -188,9 +188,9 @@ INCLUDE_ASM(const s32, "interface/frFont", func_00196118);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_00196168);
 
-INCLUDE_ASM(const s32, "interface/frFont", frGetMessageResult);
+#include "shared/interface/frFont/frGetMessageResult.c"
 
-INCLUDE_ASM(const s32, "interface/frFont", frSetVariableRequest);
+#include "shared/interface/frFont/frSetVariableRequest.c"
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001961E8);
 
