@@ -1,13 +1,13 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemIO", sdfSetStoreImage);
+#include "shared/sdf/sdfGsMemIO/sdfSetStoreImage.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemIO", sdfLinkStoreImage);
+#include "shared/sdf/sdfGsMemIO/sdfLinkStoreImage.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemIO", sdfLinkStoreFrameImagePredraw);
+#include "shared/sdf/sdfGsMemIO/sdfLinkStoreFrameImagePredraw.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfGsMemIO", sdfLinkStoreFrameImage);
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemIO", sdfSetLoadImage);
+#include "shared/sdf/sdfGsMemIO/sdfSetLoadImage.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemIO", sdfLinkLoadImage);
+#include "shared/sdf/sdfGsMemIO/sdfLinkLoadImage.c"

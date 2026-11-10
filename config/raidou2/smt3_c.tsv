@@ -1,0 +1,1063 @@
+# SMT3 bodies carried by tools/raidou_c.py: function, c|asm, reason it stays asm
+ApplyMatrix	c
+CheckAddress	c
+CopyMatrixAtoB	c
+CopyMatrixAtoC	c
+CopyMatrixBtoA	c
+CopyMatrixBtoC	c
+CopyMatrixCtoA	c
+CopyMatrixCtoB	c
+CreateThreadSimple	c
+DiagMatrix	c
+DmacAddHandler	asm	emits .rodata data
+EulerAngleAxisY	c
+ExecPS2	c
+FatalError	c
+FromEuler	c
+FromEulerXYZ	c
+FromRotation	c
+FromRotation_B	c
+GetSystemCallEntry	c
+GetSystemCallTableEntry	asm	emits .text data
+InitAlarm	c
+InitExecPS2	c
+InitTLBFunctions	c
+InitThread	asm	emits .text data
+InnerProduct	c
+InversMatrix	c
+Inverse	c
+IpuWriteCommand	c
+Lerp	c
+LoadIdentity	c
+LoadIdentity_B	c
+LoadMatrix	c
+LoadMatrix_B	c
+LoadMcModules	c
+LookAt	asm	emits .lit4 data
+LookAtMatrix	c
+Mult	c
+MultMatrix	c
+MultMatrixNoArg	c
+MultMatrixNoArg_C	c
+MultMatrixRev	c
+MultMatrixRevNoArg	c
+MultMatrixRevNoArg_C	c
+Normalize	c
+OuterProduct	c
+PatchIsNeeded_0	c
+PowerOffCB	asm	emits .text data
+QueuePeekReadDone	c
+QueuePeekWriteDone	c
+ReverseMatrix	c
+RotateMatrixX	c
+RotateMatrixY	c
+RotateMatrixZ	c
+SDF_QUAT_INNERPRODUCT	c
+SdfFileRpcServerThreadProc	asm	emits .text data
+SdfIopFileRpc	c
+SetArg	c
+SetDebugHandler	c
+SetRotateMatrixAxis	c
+SetRotateMatrixAxis_B	c
+SetRotateMatrixX	c
+SetRotateMatrixXYZ	c
+SetRotateMatrixX_B	c
+SetRotateMatrixY	c
+SetRotateMatrixY_B	c
+SetRotateMatrixZ	c
+SetRotateMatrixZ_B	c
+SetTLBHandler	c
+SifRpcServerThreadProc	c
+Slerp	asm	emits .lit4 data
+StoreIdentity	c
+StoreMatrix	c
+StoreMatrix_B	c
+StoreRotateMatrixAxis	c
+TerminateLibrary	c
+ToMatrix	c
+VSync	c
+VSync2	c
+VblankIntcHandler	c
+VblankThreadProc	c
+WaitDma	asm	emits .rodata data
+WatchDma	asm	emits .rodata data
+_Balloc	c
+_Bfree	c
+_InitSys	c
+__deregister_frame	c
+__deregister_frame_info	c
+__do_global_ctors	asm	emits .text data
+__do_global_dtors	c
+__fixunsdfdi	c
+__floatdidf	c
+__fpcmp_parts_df	c
+__ieee754_atan2f	asm	size 0x254, retail 0x1E0
+__ieee754_rem_pio2f	asm	size 0x3F4, retail 0x3B0
+__kernel_cosf	asm	size 0x1AC, retail 0x150
+__kernel_rem_pio2f	c
+__kernel_sinf	asm	size 0x140, retail 0x108
+__kernel_tanf	asm	size 0x30C, retail 0x288
+__main	c
+__make_dp	c
+__malloc_lock	c
+__malloc_unlock	c
+__mcmp	c
+__mdiff	c
+__pack_df	c
+__register_frame	c
+__register_frame_info	c
+__register_frame_info_table	c
+__register_frame_table	c
+__sclose	c
+__sfmoreglue	c
+__sfp	c
+__sfvwrite	c
+__sigtramp_r	c
+__sinit	asm	emits .text data
+__smakebuf	c
+__sread	c
+__sseek	c
+__swrite	c
+__swsetup	c
+_b2d	c
+_cleanup	c
+_cleanup_r	c
+_d2b	c
+_fs_version	c
+_fstat_r	c
+_fwalk	c
+_hi0bits	c
+_i2b	c
+_init_signal	c
+_init_signal_r	c
+_kill_r	c
+_lf_bind	c
+_lf_version	c
+_lmcGetClientPtr	c
+_lo0bits	c
+_lshift	c
+_malloc_trim_r	c
+_mbtowc_r	c
+_mprec_log10	c
+_multadd	c
+_pow5mult	c
+_printf_r	c
+_puts_r	asm	its rodata is in its asm file
+_raise_r	c
+_ratio	c
+_request_end	c
+_request_end_0	c
+_request_rdata	c
+_s2b	c
+_sceCallCode	c
+_sceCd_Poff_Intr	c
+_sceCd_cd_read_intr	c
+_sceCd_ncmd_prechk	asm	emits .rodata data
+_sceCd_scmd_prechk	asm	emits .rodata data
+_sceFsSemInit	c
+_sceFsSigSema	c
+_sceFsWaitS	c
+_sceFs_Poff_Intr	c
+_sceRpcFreePacket	c
+_sceRpcFreePacket_0	c
+_sceRpcGetFPacket	c
+_sceRpcGetFPacket2	c
+_sceRpcGetPacket	c
+_sceRpcGetPacket_0	c
+_sceSifLoadElfPart	c
+_sceSifLoadModule	c
+_sceSifLoadModuleBuffer	c
+_sceSifSendCmd	c
+_search_svdata	c
+_send_to_iop	asm	its rodata is in its asm file
+_setlocale_r	c
+_signal_r	c
+_sprintf_r	c
+_strtol_r	c
+_ulp	c
+atanf	asm	size 0x2A8, retail 0x290
+atexit	c
+atoi	c
+cdvd_exit	c
+checkModelVersion	asm	emits .rodata data
+cmd_sem_init	c
+corePktBuildBackFaceList	c
+corePktBuildFaceList	c
+corePktClipFace	c
+corePktClosePacket	c
+corePktEmitAllPasses	c
+corePktEmitBase	c
+corePktEmitMultiTexPass	c
+corePktEmitTexTrisCtx2	c
+corePktInitCb	c
+corePktLerpUVChain	c
+corePktLerpUVColorChain	c
+corePktLoadWorldLightMtx	c
+corePktMakeEdgePoint	c
+corePktMakeFaceDivParm	c
+corePktOpenAndEmit	c
+corePktSetConstColor	c
+corePktSetFaceDivParm	c
+corePktSetupPointBuff	c
+cosf	asm	size 0xEC, retail 0xD8
+cvt	c
+dds3InitSubsystems	c
+dpadd	c
+dpcmp	c
+dpdiv	c
+dpmul	c
+dpsub	c
+dptoli	c
+dptoul	c
+effDebugDrawWireModel	c
+exponent	c
+fabsf	asm	size 0x58, retail 0x28
+fflush	asm	emits .text data
+floorf	asm	size 0x114, retail 0xD8
+fptodp	c
+free	c
+get_iob	c
+iInvalidDCache	c
+iPutTLBEntry	c
+iRotateThreadReadyQueue	c
+iSyncDCache	c
+isceSifSendCmd	c
+kCopy	c
+kCopy_1	c
+kCopy_3	c
+kFindAddress	c
+kill	c
+kprintf	c
+kputs	c
+litodp	c
+malloc	c
+mcDelayThread	asm	emits .text data
+mcHearAlarm	c
+mceGetInfoApdx	c
+mceIntrReadFixAlign	c
+mceStorePwd	c
+memclr	c
+movieCloseStream	c
+movieCopyChunk	c
+movieGetStreamSize	c
+movieMemcpy	asm	nested function of movieParseHeader in SMT3 C
+movieOpenStream	c
+movieParseHeader	asm	defines nested movieMemcpy, a separate Raidou function
+movieReadChunk	asm	emits .rodata data
+movieReadHeaderChunk	c
+movieReadNextChunk	c
+movieWaitSema	c
+new_iob	c
+p2sdBgmVolDown	c
+p2sdBgmVolUp	c
+p2sdGetPcmState	c
+p2sdLoadPcmFile	c
+p2sdLoadSMGFile	asm	emits .rodata data
+p2sdPlayBGM	c
+p2sdPlayBGMFade	c
+p2sdPlayPcm	c
+p2sdPlaySE	asm	local jump at +0x1C
+p2sdPlaySe3DEx	asm	emits .lit4 data
+p2sdPlaySeDeg	asm	emits .lit4 data
+p2sdResumeBgm	c
+p2sdSendStopCmd	c
+p2sdSetBgmTrack	c
+p2sdSetPcmBuffer	c
+p2sdSetPcmCallback	c
+p2sdSetStandPos	asm	emits .lit4 data
+p2sdStopAllBgm	c
+p2sdStopAllSe	c
+p2sdStopBGM	c
+p2sdStopSe	c
+p2sdSyncMovie	c
+p2sdSyncSound	c
+printfloat	asm	emits .rodata data
+qsort	asm	size 0x654, retail 0x9F0
+raise	c
+sceAddDrv	c
+sceCdCallback	c
+sceCdDelayThread	c
+sceCdNcmdDiskReady	c
+sceCdPOffCallback	c
+sceCdPowerOff	c
+sceCdReadClock	asm	its rodata is in its asm file
+sceCdSearchFile	c
+sceCdStInit	c
+sceCdStPause	asm	emits .rodata data
+sceCdStResume	asm	emits .rodata data
+sceCdStSeek	c
+sceCdStSeekF	c
+sceCdStStart	c
+sceCdStStat	asm	emits .rodata data
+sceCdStStop	c
+sceCdStatus	asm	emits .rodata data
+sceCdSync	asm	emits .rodata data
+sceCdSyncS	asm	emits .rodata data
+sceChdir	c
+sceChstat	c
+sceClose	c
+sceDclose	c
+sceDeci2Close	c
+sceDeci2ExLock	c
+sceDeci2ExRecv	c
+sceDeci2ExReqSend	c
+sceDeci2ExSend	c
+sceDeci2ExUnLock	c
+sceDeci2Open	c
+sceDeci2Poll	c
+sceDeci2ReqSend	c
+sceDelDrv	c
+sceDmaGetChan	c
+sceDmaGetEnv	c
+sceDmaPause	c
+sceDmaPutStallAddr	c
+sceDmaRecv	c
+sceDmaRecvI	c
+sceDmaRecvN	c
+sceDmaReset	c
+sceDmaRestart	c
+sceDmaSend	c
+sceDmaSendI	c
+sceDmaSendN	c
+sceDmaSync	c
+sceDmaWatch	c
+sceDopen	c
+sceDread	c
+sceFormat	c
+sceFsInit	asm	emits .text data
+sceFsReset	c
+sceGetstat	c
+sceGsExecLoadImage	asm	its rodata is in its asm file
+sceGsGetGParam	c
+sceGsGetIMR	c
+sceGsPutDispEnv	c
+sceGsPutIMR	c
+sceGsSetDefLoadImage	asm	emits .rodata data
+sceGsSetDefStoreImage	c
+sceIoctl2	c
+sceIpuInit	c
+sceIpuRestartDMA	c
+sceIpuStopDMA	c
+sceIpuSync	c
+sceMcChangeThreadPriority	c
+sceMcChdir	asm	emits .text data
+sceMcClose	c
+sceMcDelete	c
+sceMcEnd	c
+sceMcFlush	c
+sceMcFormat	c
+sceMcGetDir	c
+sceMcGetEntSpace	c
+sceMcGetInfo	asm	emits .text data
+sceMcGetSlotMax	c
+sceMcInit	asm	emits .rodata data
+sceMcMkdir	c
+sceMcOpen	c
+sceMcRead	asm	emits .text data
+sceMcRename	c
+sceMcSeek	c
+sceMcSetFileInfo	c
+sceMcUdCheckNewCard	asm	its rodata is in its asm file
+sceMcUnformat	c
+sceMcWrite	c
+sceMkdir	c
+sceMount	c
+scePadEnd	c
+scePadEnterPressMode	c
+scePadExitPressMode	c
+scePadGetButtonMask	c
+scePadGetDmaStr	c
+scePadGetFrameCount	c
+scePadGetModVersion	c
+scePadGetPortMax	c
+scePadGetReqState	c
+scePadGetSlotMax	c
+scePadGetState	c
+scePadInfoAct	c
+scePadInfoComb	c
+scePadInfoMode	c
+scePadInfoPressMode	c
+scePadInit	asm	emits .rodata data
+scePadInit2	c
+scePadPortClose	c
+scePadRead	c
+scePadReqIntToStr	asm	emits .rodata data
+scePadSetActAlign	c
+scePadSetActDirect	c
+scePadSetButtonInfo	c
+scePadSetMainMode	c
+scePadSetReqState	c
+scePadSetVrefParam	c
+scePadSetWarningLevel	c
+scePadStateIntToStr	asm	emits .rodata data
+scePowerOffHandler	c
+scePrintf	c
+sceReadlink	c
+sceRemove	c
+sceRename	c
+sceResetttyinit	c
+sceRmdir	c
+sceSifAddCmdHandler	c
+sceSifAllocIopHeap	c
+sceSifAllocSysMemory	c
+sceSifBindRpc	c
+sceSifExecRequest	c
+sceSifExitCmd	c
+sceSifExitRpc	c
+sceSifFreeIopHeap	c
+sceSifFreeSysMemory	c
+sceSifGetDataTable	c
+sceSifGetIopAddr	c
+sceSifGetNextRequest	c
+sceSifGetOtherData	c
+sceSifGetSreg	c
+sceSifInitIopHeap	c
+sceSifIsAliveIop	c
+sceSifLoadElf	asm	emits .rodata data
+sceSifLoadElfPart	c
+sceSifLoadFileReset	c
+sceSifLoadIopHeap	c
+sceSifLoadModule	c
+sceSifLoadModuleBuffer	c
+sceSifLoadStartModule	c
+sceSifLoadStartModuleBuffer	c
+sceSifMBindRpc	c
+sceSifMBindRpcParam	c
+sceSifMCallRpc	asm	emits .rodata data
+sceSifMInitRpc	asm	emits .text data
+sceSifMUnBindRpc	c
+sceSifQueryBlockSize	c
+sceSifQueryBlockTopAddress	c
+sceSifQueryMaxFreeMemSize	c
+sceSifQueryMemSize	c
+sceSifQueryTotalFreeMemSize	c
+sceSifRegisterRpc	c
+sceSifRemoveCmdHandler	c
+sceSifRemoveRpc	c
+sceSifRemoveRpcQueue	c
+sceSifResetIop	c
+sceSifRpcLoop	c
+sceSifSearchModuleByAddress	c
+sceSifSearchModuleByName	c
+sceSifSendCmd	c
+sceSifSetIopAddr	c
+sceSifSetRpcQueue	c
+sceSifSetSreg	c
+sceSifStopModule	c
+sceSifSyncIop	c
+sceSifUnloadModule	c
+sceSymlink	c
+sceSync	c
+sceTtyHandler	asm	compile error: `receiveLength' undeclared (first use in this function)
+sceTtyInit	c
+sceTtyRead	c
+sceTtyWrite	c
+sceUmount	c
+sdf2DAllocSprite	c
+sdf2DGetPrimPacketSize	c
+sdf2DGetPrimPtr	c
+sdf2DLinkTexPacket	c
+sdf2DMakePrimPacketHeader	c
+sdf2DMakeStdPacket	c
+sdf2DMakeTexPacket	c
+sdf3DInit	c
+sdf3DInitSpecularTex2	asm	emits .lit4 data
+sdf3DLinkInitPacket	c
+sdf3DMakeDirectRefPacket	c
+sdf3DMakeFogPacket	c
+sdf3DMakeLightParallelPacket	asm	emits .lit4 data
+sdf3DMakeViewportPacket	c
+sdf3DPrimLinkMat	c
+sdf3DPrimLinkResetTm	c
+sdf3DPrimLinkTm	c
+sdf3DPrimMakePoly	c
+sdf3DPrimSetTmPacket	c
+sdf3DSetCamera	c
+sdf3DSetDefaultFog	c
+sdf3DSetDefaultLight	c
+sdfAcos	asm	emits .lit4 data
+sdfAddressResolver	c
+sdfAlarmWakeup	c
+sdfAllocAuto	c
+sdfAsin	asm	emits .lit4 data
+sdfAtan	asm	emits .lit4 data
+sdfAtan2	asm	emits .lit4 data
+sdfBcdToDecimal	c
+sdfBillBoardGetPacketSize	c
+sdfBillBoardMake1	c
+sdfBillBoardMakeN	c
+sdfBillBoardMakeTMPacket	c
+sdfBillBoardVcGetPacketSize	c
+sdfBillBoardVcMake1	c
+sdfBillBoardVcMakeN	c
+sdfCdImageCheckExist	c
+sdfCdImageClose	c
+sdfCdImageGetCurrFileSize	asm	emits .rodata data
+sdfCdImageGetFileSize	c
+sdfCdImageInit	asm	emits .rodata data
+sdfCdImageLoadDir	asm	emits .rodata data
+sdfCdImageRead	c
+sdfCdImageSearchFile	asm	1 words differ, first at +0x48
+sdfCdStStart	c
+sdfChipAllocDirect	c
+sdfChipAllocGetFree	c
+sdfChipAllocNewPage	asm	emits .text data
+sdfChipAllocNextPage	c
+sdfChipAllocPageGrow	asm	emits .text data
+sdfChipCheck	c
+sdfChipFreeDelayedDirect	c
+sdfChipFreeDirect	c
+sdfChipGetInfo	c
+sdfChipInit	asm	emits .text data
+sdfClipAngleValuePI	asm	emits .lit4 data
+sdfCoreDrawInit	c
+sdfCoreDrawScanOneSkinNodes	c
+sdfCoreDrawSetFog	c
+sdfCoreDrawSetLight	c
+sdfCoreDrawSetZBias	c
+sdfCos	asm	emits .lit4 data
+sdfCreateSema	c
+sdfCreateThreadWithStack	c
+sdfDecomp	asm	emits .rodata data
+sdfDecompInit	c
+sdfDelayThread	c
+sdfDelayedResrcCheck	c
+sdfDelayedResrcCheckFunc	c
+sdfDelayedResrcClose	c
+sdfDelayedResrcEntry	c
+sdfDelayedResrcInitCB	c
+sdfDelayedResrcRelease	c
+sdfDeliverDrawStart	c
+sdfDev9LoadModule	asm	emits .rodata data
+sdfDevConsAttribute	c
+sdfDevConsClear	c
+sdfDevConsClearInside	c
+sdfDevConsClose	c
+sdfDevConsDraw	c
+sdfDevConsDrawAll	c
+sdfDevConsDrawBG	c
+sdfDevConsDrawFlush	c
+sdfDevConsDrawInit	c
+sdfDevConsGetFontHandle	c
+sdfDevConsGetFontUvTable	c
+sdfDevConsGetMode	c
+sdfDevConsInit	c
+sdfDevConsLinkToTop	c
+sdfDevConsNewLine	c
+sdfDevConsOpen	c
+sdfDevConsPrintf	c
+sdfDevConsPut	c
+sdfDevConsPutInside	c
+sdfDevConsSetMode	c
+sdfDevConsTagClose	c
+sdfDevConsUnlink	c
+sdfDevLoadFile	c
+sdfDevLoadFileEx	c
+sdfDevPrintf	c
+sdfDevPrintfEx	c
+sdfDevVprintf	c
+sdfDrawModelWithMatrix	c
+sdfDrawRotatedModel	c
+sdfDrawSync	c
+sdfDrawTagInit	c
+sdfDrawTagLink	c
+sdfDrawTagLinkCall	c
+sdfDrawTagLinkRefGif	c
+sdfDrawThIntHandler	c
+sdfDumpChipMemory	asm	emits .rodata data
+sdfDumpDmaChain	asm	emits .rodata data
+sdfDumpGsMemory	c
+sdfDumpGsMemory2	c
+sdfDumpHexLine	c
+sdfDumpMemory	asm	emits .rodata data
+sdfFileCallback	c
+sdfFileChkCdFile	c
+sdfFileChkHddFile	c
+sdfFileChkHostFile	c
+sdfFileClose	c
+sdfFileCmdAllocHandle	c
+sdfFileCmdClearError	c
+sdfFileCmdClose	c
+sdfFileCmdDequeue	c
+sdfFileCmdFileSize	c
+sdfFileCmdFinish	c
+sdfFileCmdFree	c
+sdfFileCmdMakeRealFileName	c
+sdfFileCmdNewHandle	c
+sdfFileCmdRead	c
+sdfFileCmdReadFile	c
+sdfFileCmdReadOpen	c
+sdfFileCmdReleaseHandle	c
+sdfFileCmdSeek	c
+sdfFileCmdStartThread	asm	emits .text data
+sdfFileCmdThreadCheckPrio	c
+sdfFileCmdThreadSetHiPrio	c
+sdfFileCmdThreadSetLoPrio	c
+sdfFileCmdThreadSetPrio	c
+sdfFileCmdUnlink	c
+sdfFileCmdWrite	c
+sdfFileCmdWriteFile	c
+sdfFileCmdWriteOpen	c
+sdfFileGetHostRoot	c
+sdfFileLength	c
+sdfFileMakeFilename	c
+sdfFileOpen	asm	emits .text data
+sdfFileRead	c
+sdfFileRpcCallback	asm	emits .rodata data
+sdfFileRpcContinueRead	c
+sdfFileRpcHandleCmd	asm	emits .rodata data
+sdfFileRpcHandler	asm	emits .text data
+sdfFileRpcReadCallback	asm	emits .rodata data
+sdfFileSeek	c
+sdfFileSetCdFilename	c
+sdfFileSetHddFilename	c
+sdfFileSetHostFilename	c
+sdfFileSetHostRoot	c
+sdfFreeAuto	c
+sdfFreeAutoDelayed	c
+sdfGetCdClock	c
+sdfGetRunTimeCount	c
+sdfGetRunTimeCountBase	c
+sdfGetTexelBitCount	asm	emits .rodata data
+sdfGrAddExPacket	c
+sdfGrAllocPacketBuff	c
+sdfGrCapture	c
+sdfGrFlushOtChain	asm	emits .rodata data
+sdfGrFramePacketPredraw	c
+sdfGrFreeFrameSet	c
+sdfGrGetPacketBuffRemain	c
+sdfGrGsReset	c
+sdfGrInit	c
+sdfGrInitDraw	c
+sdfGrInitExPacket	c
+sdfGrJoinDrawTag	c
+sdfGrLinkDispFrameTex	c
+sdfGrLinkDrawFrameTex	c
+sdfGrLinkStdDrawEnv	c
+sdfGrMakeFrameSet	c
+sdfGrMakePacketBuff	c
+sdfGrNewExPacket	c
+sdfGrOtClose	c
+sdfGrOtFuncLinkToHead	c
+sdfGrOtInit	c
+sdfGrOtNormalCallback	c
+sdfGrOtNormalReg	c
+sdfGrReqCapture	c
+sdfGrReqDraw	c
+sdfGrReqDrawDelay	c
+sdfGrSetClearPacket	c
+sdfGrSetDisp	c
+sdfGrSetDrawDefParmPacket	c
+sdfGrSetDrawFrame	c
+sdfGrSetDrawFramePacket	c
+sdfGrSetFramePacket	c
+sdfGrSetFrameSetMode	c
+sdfGrSetRefGifPacket	c
+sdfGrSetRegsPacketHeader	c
+sdfGrSetScreen	c
+sdfGrSortOtCallback	c
+sdfGrSortOtFixup	c
+sdfGrSortOtReg	c
+sdfGrSortOtSetup	c
+sdfGrSortOtTraverse	c
+sdfGsAllocFrameBuff	asm	emits .rodata data
+sdfGsMemAllocFromHead	c
+sdfGsMemAllocFromTail	c
+sdfGsMemAllocRect	c
+sdfGsMemCheckHandle	c
+sdfGsMemCheckLinkConsistence	c
+sdfGsMemCheckMerge	c
+sdfGsMemFree	c
+sdfGsMemFreeDelayed	c
+sdfGsMemGetBitCount	asm	emits .rodata data
+sdfGsMemInit	asm	emits .text data
+sdfImageDataSize	asm	emits .rodata data
+sdfImageSetChainReleaseMem	c
+sdfImageSetChainTag	c
+sdfImageSetClearCb	c
+sdfImageSetDmacHandler	c
+sdfImageSetInit	c
+sdfImageSetReq	c
+sdfImageSetTrans	asm	emits .text data
+sdfInitThreadSystem	c
+sdfIpuAllocBuff	c
+sdfIpuAllocGsRect	c
+sdfIpuAttachQueue	c
+sdfIpuAttachTask	c
+sdfIpuClose	c
+sdfIpuDetachQueue	c
+sdfIpuDetachTask	c
+sdfIpuExecQueue	c
+sdfIpuFinishActiveFrame	c
+sdfIpuFree	c
+sdfIpuHandleDmaEnd	c
+sdfIpuInit	asm	emits .text data
+sdfIpuInitCb	c
+sdfIpuMakeBltPacket	c
+sdfIpuMakeToIpuDmaTag	c
+sdfIpuRemoveHandler	c
+sdfIpuSetChainTag	c
+sdfIpuSetDecodeParams	c
+sdfIpuSetFromIpuDma	c
+sdfIpuSetOutputTex	c
+sdfIpuSetToIpuDma	c
+sdfIpuStrmDecodeInit	c
+sdfIpuToDmacHandler	c
+sdfItemArrayFree	c
+sdfItemArrayNew	c
+sdfLinkLoadImage	c
+sdfLinkStoreFrameImage	asm	emits .text data
+sdfLinkStoreFrameImagePredraw	c
+sdfLinkStoreImage	c
+sdfMatAllocTexUvwParm	c
+sdfMatCopyStat	c
+sdfMatFree	c
+sdfMatFreeDelayed	c
+sdfMatGetMultiTexUvwParm	c
+sdfMatGetTexUvwParm	c
+sdfMatInitSystem	asm	emits .text data
+sdfMatListAdd	c
+sdfMatListCopyStat	c
+sdfMatListFree	c
+sdfMatListFreeResrc	c
+sdfMatListGrow	c
+sdfMatListMake	c
+sdfMatListNew	c
+sdfMatMakePacket	c
+sdfMatNew	c
+sdfMatSet	c
+sdfMatSetAmbient	c
+sdfMatSetConstant	c
+sdfMatSetDiffuse	c
+sdfMatSetFaceDivParm	c
+sdfMatSetMultiDiffuse	c
+sdfMatSetMultiMethod	c
+sdfMatSetMultiTex	c
+sdfMatSetMultiTexUvw	c
+sdfMatSetMultiTexUvwByPtr	c
+sdfMatSetRefMap	c
+sdfMatSetSpecular	c
+sdfMatSetTex	c
+sdfMatSetTexUvw	c
+sdfMatSetTexUvwByPtr	c
+sdfMatSetUvwParm	c
+sdfMatUpdatePacket	c
+sdfMatUpdatePacketFaceDiv	c
+sdfMatUpdatePacketMultiTex	c
+sdfMatUpdatePacketUvwParm	c
+sdfMemAlloc2Direct	c
+sdfMemAllocDirect	c
+sdfMemAllocFromTailDirect	c
+sdfMemFreeDelayedDirect	c
+sdfMemFreeDirect	c
+sdfMemFreeHandleDirect	c
+sdfMemFreeMerge	c
+sdfMemFreePtrDirect	c
+sdfMemGetHandleByPtr	c
+sdfMemGetInfo	c
+sdfMemGetNext	c
+sdfMemGetPtr	c
+sdfMemGetSize	c
+sdfMemGetTop	c
+sdfMemGetType	c
+sdfMemInit	asm	emits .text data
+sdfMemLock	c
+sdfMemReallocRecord	c
+sdfMemUnlock	c
+sdfModelAllocNodeList	c
+sdfModelAllocTmPacket	c
+sdfModelCheckBounds	c
+sdfModelCopyStat	c
+sdfModelDrawEnvLinkOt	c
+sdfModelEvalNode	c
+sdfModelEvalTm	c
+sdfModelEvalTm2	c
+sdfModelGetDrawPacketSize	asm	emits .rodata data
+sdfModelGetMarkPosCount	c
+sdfModelGetNodeIndexByName	c
+sdfModelInitSystem	asm	emits .text data
+sdfModelMake	c
+sdfModelMakeEarly	c
+sdfModelMakeLocalTm	c
+sdfModelMakeMarkPos	c
+sdfModelMakeMarkPosMatrix	c
+sdfModelMakeMorphList	c
+sdfModelMakeNodeList	c
+sdfModelMakeRoot	c
+sdfModelMorphListCopyStat	c
+sdfModelNewPacketHeader	c
+sdfModelNodeAdd	c
+sdfModelNodeBaseSet	c
+sdfModelNodeFree	c
+sdfModelNodeNew	c
+sdfModelNodeSet	c
+sdfModelNodeSetParent	c
+sdfModelNodeSetShape	c
+sdfModelNodeUnlink	c
+sdfModelPacketFree	c
+sdfModelRootFree	c
+sdfModelRootFreeResrc	c
+sdfModelSearchMarkPosData	c
+sdfModelSearchNode	c
+sdfModelSetDrawEnv	c
+sdfModelSetFaceDivParm	c
+sdfModelSetMatRefPacket	c
+sdfModelSetNormalDrawPacket	c
+sdfModelSetOtCallbacks	asm	emits .text data
+sdfModelSetTermPacket	c
+sdfModelSetTmRefPacket	c
+sdfMotCLBK_Destroy	c
+sdfMotCLBK_SetCut	c
+sdfMotCLBK_matAmbientBlendSeek	c
+sdfMotCLBK_matAmbientInitBlend	c
+sdfMotCLBK_matAmbientSeek	c
+sdfMotCLBK_matConstantBlendSeek	c
+sdfMotCLBK_matConstantInitBlend	c
+sdfMotCLBK_matConstantSeek	c
+sdfMotCLBK_matDiffuseBlendSeek	c
+sdfMotCLBK_matDiffuseInitBlend	c
+sdfMotCLBK_matDiffuseSeek	c
+sdfMotCLBK_matMultiDiffuseBlendSeek	c
+sdfMotCLBK_matMultiDiffuseInitBlend	c
+sdfMotCLBK_matMultiDiffuseSeek	c
+sdfMotCLBK_matMultiUvw2BlendSeek	c
+sdfMotCLBK_matMultiUvw2Seek	c
+sdfMotCLBK_matMultiUvwBlendSeek	c
+sdfMotCLBK_matMultiUvwInitBlend	c
+sdfMotCLBK_matMultiUvwSeek	c
+sdfMotCLBK_matRefMapBlendSeek	c
+sdfMotCLBK_matRefMapInitBlend	c
+sdfMotCLBK_matRefMapSeek	c
+sdfMotCLBK_matSpecularBlendSeek	c
+sdfMotCLBK_matSpecularInitBlend	c
+sdfMotCLBK_matSpecularSeek	c
+sdfMotCLBK_matUvw2BlendSeek	c
+sdfMotCLBK_matUvw2Seek	c
+sdfMotCLBK_matUvwBlendSeek	c
+sdfMotCLBK_matUvwInitBlend	c
+sdfMotCLBK_matUvwSeek	c
+sdfMotCLBK_modelLerpRotQuatBlendSeek	c
+sdfMotCLBK_modelLerpRotQuatSeek	c
+sdfMotCLBK_modelLinerPosBlendSeek	c
+sdfMotCLBK_modelLinerPosSeek	c
+sdfMotCLBK_modelLinerRotXYZBlendSeek	c
+sdfMotCLBK_modelLinerRotXYZSeek	c
+sdfMotCLBK_modelLinerScaleBlendSeek	c
+sdfMotCLBK_modelLinerScaleSeek	c
+sdfMotCLBK_modelPosInitBlend	c
+sdfMotCLBK_modelRotInitBlend	c
+sdfMotCLBK_modelScaleInitBlend	c
+sdfMotCLBK_modelVisibleBlendSeek	c
+sdfMotCLBK_modelVisibleInitBlend	c
+sdfMotCLBK_modelVisibleSeek	c
+sdfMotCLBK_morphBlendSeek	asm	emits .lit4 data
+sdfMotCLBK_morphInitBlend	c
+sdfMotCLBK_morphSeek	c
+sdfMotGenMatAmbient	c
+sdfMotGenMatConstant	c
+sdfMotGenMatDiffuse	c
+sdfMotGenMatInit	c
+sdfMotGenMatMultiDiffuse	c
+sdfMotGenMatMultiUvw	c
+sdfMotGenMatMultiUvw2	c
+sdfMotGenMatNode	c
+sdfMotGenMatRefMap	c
+sdfMotGenMatSpecular	c
+sdfMotGenMatUvw	c
+sdfMotGenMatUvw2	c
+sdfMotGenModelInit	c
+sdfMotGenModelLerpRotQuat	c
+sdfMotGenModelLinerPos	c
+sdfMotGenModelLinerRotXYZ	c
+sdfMotGenModelLinerScale	c
+sdfMotGenModelVisible	c
+sdfMotGenMorph	c
+sdfMotGenMorphInit	c
+sdfMotGenMorphNode	c
+sdfMotGenNode	c
+sdfMotGetKey	c
+sdfMotInterpolateKeyColor	c
+sdfMotInterpolateKeyFloat	c
+sdfMotInterpolateKeyUvw	c
+sdfMotInterpolateKeyUvwSub	c
+sdfMotInterpolateKeyXYZ	c
+sdfMotionChange	c
+sdfMotionChangeBlend	c
+sdfMotionCtrlrFree	c
+sdfMotionCtrlrNew	c
+sdfMotionNext	asm	emits .rodata data
+sdfMotionNodeBaseInit	c
+sdfMotionNodeFree	c
+sdfMotionNodeNew	c
+sdfMotionPause	c
+sdfMotionPauseOff	c
+sdfMotionSeek	c
+sdfMovieIsFinished	c
+sdfMultiBillBoardGetPacketSize	c
+sdfMultiBillBoardMake1	c
+sdfMultiBillBoardMakeN	c
+sdfMultiBillBoardVcGetPacketSize	c
+sdfMultiBillBoardVcMake1	c
+sdfMultiBillBoardVcMakeN	c
+sdfPacDecode	c
+sdfPacFree	c
+sdfPacFreeResrc	c
+sdfPacGetResrcFileName	c
+sdfPacInit	asm	emits .text data
+sdfPacMemDecoderFunc	c
+sdfPacMemDecoderFuncInit	asm	emits .text data
+sdfPacMemDecoderInit	c
+sdfPacMemDecompDecoderFunc	c
+sdfPacMemStayDecoderFunc	c
+sdfPacModelDecoderEndFunc	c
+sdfPacModelDecoderInit	asm	emits .text data
+sdfPacMotionDecoderEndFunc	c
+sdfPacMotionDecoderInit	asm	emits .text data
+sdfPacNewResrc	c
+sdfPacSetFromTail	c
+sdfPacSetStay	c
+sdfPacStdCallback	c
+sdfPacTexListDecoder0	c
+sdfPacTexListDecoderInit	asm	emits .text data
+sdfPacTexListDecoderTmxHeaderEndFunc	c
+sdfPacTmxDecoderEndFunc	c
+sdfPacTmxDecoderFunc	c
+sdfPacTmxDecoderInit	asm	emits .text data
+sdfPacTmxDecoderInitFunc	asm	emits .text data
+sdfPacTmxDecompDecoderFunc	c
+sdfPacTmxStayDecoderFunc	c
+sdfPacUseSrc	c
+sdfPadChangeMode	c
+sdfPadControl	asm	emits .rodata data
+sdfPadManager	c
+sdfPadSetAct	c
+sdfPadSetAct0	c
+sdfPadSetAct1	c
+sdfPreDrawChainInit	c
+sdfPreDrawChainLink	c
+sdfPreDrawTagInit	c
+sdfPreDrawTagLink	c
+sdfPrimAllocDrawTag	c
+sdfPrimFrameMovePredraw	c
+sdfPrimLinkBitBltPacket	c
+sdfPrimLinkBoxLine	c
+sdfPrimLinkF3	c
+sdfPrimLinkF4	c
+sdfPrimLinkFrameMovePacket	asm	emits .text data
+sdfPrimLinkFt3	c
+sdfPrimLinkFt4	c
+sdfPrimLinkG3	c
+sdfPrimLinkG4	c
+sdfPrimLinkGt3	c
+sdfPrimLinkGt4	c
+sdfPrimLinkLine	c
+sdfPrimLinkRect	c
+sdfPrimLinkSimplePacket	c
+sdfPrimLinkSprite	c
+sdfPrimSetAddTrans2Elem	c
+sdfPrimSetAddTrans2Packet	c
+sdfPrimSetAddTransElem	c
+sdfPrimSetAddTransPacket	c
+sdfPrimSetBitBltElem	c
+sdfPrimSetBitBltPacket	c
+sdfPrimSetBoxLineElem	c
+sdfPrimSetF3Elem	c
+sdfPrimSetF4Elem	c
+sdfPrimSetFt3Elem	c
+sdfPrimSetFt4Elem	c
+sdfPrimSetG3Elem	c
+sdfPrimSetG4Elem	c
+sdfPrimSetGt3Elem	c
+sdfPrimSetGt4Elem	c
+sdfPrimSetLineElem	c
+sdfPrimSetOpaque2Elem	c
+sdfPrimSetOpaque2Packet	c
+sdfPrimSetOpaqueElem	c
+sdfPrimSetOpaquePacket	c
+sdfPrimSetRectElem	c
+sdfPrimSetSemiTrans2Elem	c
+sdfPrimSetSemiTrans2Packet	c
+sdfPrimSetSemiTransElem	c
+sdfPrimSetSemiTransPacket	c
+sdfPrimSetSpriteElem	c
+sdfPrimSetSubTrans2Elem	c
+sdfPrimSetSubTrans2Packet	c
+sdfPrimSetSubTransElem	c
+sdfPrimSetSubTransPacket	c
+sdfPrimSetTexflushElem	c
+sdfPrimSetTexflushPacket	c
+sdfPrintRpcFunc	c
+sdfPrintRpcThread	asm	emits .text data
+sdfPrintf	c
+sdfPuts	c
+sdfRandomize	c
+sdfRandomizeByTime	c
+sdfSetLoadImage	c
+sdfSetMainThreadPriority	c
+sdfSetStoreImage	c
+sdfSin	asm	emits .lit4 data
+sdfSndCmdIFThread	c
+sdfSndLoadBDFile	c
+sdfSndLoadHDFile	c
+sdfSndLoadSQFile	c
+sdfSndSendCmd	c
+sdfSndSendSyncCmd	c
+sdfSndTransToIOP	c
+sdfSortOtAvlCheckBalance	c
+sdfSortOtAvlRegist	c
+sdfSortOtAvlRotateLR	c
+sdfSortOtAvlRotateRL	c
+sdfStartFileRpcServer	asm	emits .text data
+sdfStartThreadAndWait	c
+sdfStrdupChip	c
+sdfSystemThreadProc	c
+sdfTableInterpolation	c
+sdfTexAllocClutBuff	c
+sdfTexClutToGs	c
+sdfTexCopyClutData	c
+sdfTexGetCLUTAddr	c
+sdfTexGetCLUTCount	c
+sdfTexGetClampReg	c
+sdfTexGetPacketCtx2	c
+sdfTexGetPacketCtx2Length	c
+sdfTexGetPacketLength	c
+sdfTexGetPixelAddr	c
+sdfTexGetTex0Reg	c
+sdfTexGetTex1Reg	c
+sdfTexGetTexelBitCount	c
+sdfTexInit	c
+sdfTexLink	c
+sdfTexListAdd	c
+sdfTexListDup	c
+sdfTexListFree	c
+sdfTexListNew	c
+sdfTexListSetCapacity	c
+sdfTexListSetClutColor	c
+sdfTexMakeGIFPacket	c
+sdfTexMakeGIFPacketCtx2	c
+sdfTexMakeGIFPacketSub	c
+sdfTexRebuildPacket	c
+sdfTexSearch	c
+sdfTexSetFilter	c
+sdfTexSetFilterCtx2	c
+sdfTexSetMonoClut	c
+sdfTexSetTB	c
+sdfTexSetWrapMode	c
+sdfTexTransCLUT	c
+sdfTexTransData	c
+sdfTmxSetHeader	c
+sdfWaitVblank	c
+sdfZeroMemQuad	c
+setlocale	c
+signal	c
+sinf	asm	size 0x108, retail 0xE8
+strcasecmp	c
+strrchr	c
+strstr	c
+strtol	c
+supplement_crt0	c
+tanf	asm	size 0x98, retail 0x78
+topThread	asm	its rodata is in its asm file
+vfprintf	c
+vsprintf	c
+vsprintf_r	c

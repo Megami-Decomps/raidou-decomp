@@ -1,24 +1,24 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfGrSetFrameSetMode);
+#include "shared/sdf/sdfGraph/sdfGrSetFrameSetMode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfGrSetScreen);
+#include "shared/sdf/sdfGraph/sdfGrSetScreen.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfGrFreeFrameSet);
+#include "shared/sdf/sdfGraph/sdfGrFreeFrameSet.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfGrMakeFrameSet);
+#include "shared/sdf/sdfGraph/sdfGrMakeFrameSet.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfGrSetDisp);
+#include "shared/sdf/sdfGraph/sdfGrSetDisp.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfGrGsReset);
+#include "shared/sdf/sdfGraph/sdfGrGsReset.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDrawThIntHandler);
+#include "shared/sdf/sdfGraph/sdfDrawThIntHandler.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfGrReqCapture);
+#include "shared/sdf/sdfGraph/sdfGrReqCapture.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfGrCapture);
+#include "shared/sdf/sdfGraph/sdfGrCapture.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDeliverDrawStart);
+#include "shared/sdf/sdfGraph/sdfDeliverDrawStart.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDeliverDrawEnd);
 

@@ -1,15 +1,15 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdf2D", sdf2DMakeTexPacket);
+#include "shared/sdf/sdf2D/sdf2DMakeTexPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf2D", sdf2DLinkTexPacket);
+#include "shared/sdf/sdf2D/sdf2DLinkTexPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf2D", sdf2DMakeStdPacket);
+#include "shared/sdf/sdf2D/sdf2DMakeStdPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf2D", sdf2DGetPrimPacketSize);
+#include "shared/sdf/sdf2D/sdf2DGetPrimPacketSize.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf2D", sdf2DGetPrimPtr);
+#include "shared/sdf/sdf2D/sdf2DGetPrimPtr.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf2D", sdf2DMakePrimPacketHeader);
+#include "shared/sdf/sdf2D/sdf2DMakePrimPacketHeader.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf2D", sdf2DAllocSprite);
+#include "shared/sdf/sdf2D/sdf2DAllocSprite.c"

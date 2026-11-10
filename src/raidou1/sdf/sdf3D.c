@@ -1,26 +1,26 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DMakeViewportPacket);
+#include "shared/sdf/sdf3D/sdf3DMakeViewportPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DSetCamera);
+#include "shared/sdf/sdf3D/sdf3DSetCamera.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DSetDefaultLight);
+#include "shared/sdf/sdf3D/sdf3DSetDefaultLight.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DSetDefaultFog);
+#include "shared/sdf/sdf3D/sdf3DSetDefaultFog.c"
 
 INCLUDE_ASM(const s32, "sdf/sdf3D", func_003686B0);
 
 INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DMakeLightParallelPacket);
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DMakeFogPacket);
+#include "shared/sdf/sdf3D/sdf3DMakeFogPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DMakeDirectRefPacket);
+#include "shared/sdf/sdf3D/sdf3DMakeDirectRefPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DLinkInitPacket);
+#include "shared/sdf/sdf3D/sdf3DLinkInitPacket.c"
 
 INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DInitSpecularTex2);
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3DInit);
+#include "shared/sdf/sdf3D/sdf3DInit.c"
 INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F30C);
 
 INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F310);

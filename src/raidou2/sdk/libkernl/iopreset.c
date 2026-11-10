@@ -1,9 +1,9 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopreset", sceSifResetIop);
+#include "shared/sdk/libkernl/sceSifResetIop.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopreset", sceSifIsAliveIop);
+#include "shared/sdk/libkernl/sceSifIsAliveIop.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopreset", sceSifSyncIop);
+#include "shared/sdk/libkernl/sceSifSyncIop.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/iopreset", sceSifRebootIop);

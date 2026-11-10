@@ -1,5 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_addsub_df", dpadd);
+#include "shared/sdk/libgcc/dpadd.c"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_addsub_df", dpsub);
+#include "shared/sdk/libgcc/dpsub.c"

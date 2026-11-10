@@ -1,1 +1,4 @@
 # Per-unit cc1 flags: <dir>/<unit>  <flags>  # evidence (default is -O2)
+
+# SMT3 settings for SDK members with carried C (tools/raidou_c.py)
+sdk/libm/kf_rem_pio2  -G 0 -fno-builtin

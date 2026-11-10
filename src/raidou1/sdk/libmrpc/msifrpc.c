@@ -4,18 +4,19 @@ INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", sceSifMInitRpc);
 
 INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", func_0037C410);
 
-INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", _sceRpcGetPacket);
+#include "shared/sdk/libmrpc/_sceRpcGetPacket.c"
 
-INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", _sceRpcFreePacket);
+#include "shared/sdk/libmrpc/_sceRpcFreePacket.c"
 
-INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", _request_end);
+#include "shared/sdk/libmrpc/_request_end.c"
 
-INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", sceSifMBindRpc);
+#include "shared/sdk/libmrpc/sceSifMBindRpc.c"
 
-INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", sceSifMBindRpcParam);
+#include "shared/sdk/libmrpc/sceSifMBindRpcParam.c"
 
-INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", sceSifMUnBindRpc);
+#include "shared/sdk/libmrpc/sceSifMUnBindRpc.c"
 
 INCLUDE_RODATA(const s32, "sdk/libmrpc/msifrpc", D_004660E8);
 
 INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", sceSifMCallRpc);
+

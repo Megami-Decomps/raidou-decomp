@@ -1,93 +1,93 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfTexListNew);
+#include "shared/sdf/sdfMat/sdfTexListNew.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfTexListFree);
+#include "shared/sdf/sdfMat/sdfTexListFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfTexListAdd);
+#include "shared/sdf/sdfMat/sdfTexListAdd.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfTexListSetCapacity);
+#include "shared/sdf/sdfMat/sdfTexListSetCapacity.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfTexListDup);
+#include "shared/sdf/sdfMat/sdfTexListDup.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfTexListSetClutColor);
+#include "shared/sdf/sdfMat/sdfTexListSetClutColor.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatInitSystem);
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatListNew);
+#include "shared/sdf/sdfMat/sdfMatListNew.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatListFree);
+#include "shared/sdf/sdfMat/sdfMatListFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatListFreeResrc);
+#include "shared/sdf/sdfMat/sdfMatListFreeResrc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatListGrow);
+#include "shared/sdf/sdfMat/sdfMatListGrow.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatListAdd);
+#include "shared/sdf/sdfMat/sdfMatListAdd.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetAmbient);
+#include "shared/sdf/sdfMat/sdfMatSetAmbient.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetDiffuse);
+#include "shared/sdf/sdfMat/sdfMatSetDiffuse.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetSpecular);
+#include "shared/sdf/sdfMat/sdfMatSetSpecular.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetRefMap);
+#include "shared/sdf/sdfMat/sdfMatSetRefMap.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetConstant);
+#include "shared/sdf/sdfMat/sdfMatSetConstant.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetTex);
+#include "shared/sdf/sdfMat/sdfMatSetTex.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatAllocTexUvwParm);
+#include "shared/sdf/sdfMat/sdfMatAllocTexUvwParm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatGetTexUvwParm);
+#include "shared/sdf/sdfMat/sdfMatGetTexUvwParm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetTexUvw);
+#include "shared/sdf/sdfMat/sdfMatSetTexUvw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetTexUvwByPtr);
+#include "shared/sdf/sdfMat/sdfMatSetTexUvwByPtr.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetMultiDiffuse);
+#include "shared/sdf/sdfMat/sdfMatSetMultiDiffuse.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetMultiMethod);
+#include "shared/sdf/sdfMat/sdfMatSetMultiMethod.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetMultiTex);
+#include "shared/sdf/sdfMat/sdfMatSetMultiTex.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatGetMultiTexUvwParm);
+#include "shared/sdf/sdfMat/sdfMatGetMultiTexUvwParm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetMultiTexUvw);
+#include "shared/sdf/sdfMat/sdfMatSetMultiTexUvw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetMultiTexUvwByPtr);
+#include "shared/sdf/sdfMat/sdfMatSetMultiTexUvwByPtr.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetFaceDivParm);
+#include "shared/sdf/sdfMat/sdfMatSetFaceDivParm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatNew);
+#include "shared/sdf/sdfMat/sdfMatNew.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSet);
+#include "shared/sdf/sdfMat/sdfMatSet.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatFree);
+#include "shared/sdf/sdfMat/sdfMatFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatFreeDelayed);
+#include "shared/sdf/sdfMat/sdfMatFreeDelayed.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatMakePacket);
+#include "shared/sdf/sdfMat/sdfMatMakePacket.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMat", func_00361A78);
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatSetUvwParm);
+#include "shared/sdf/sdfMat/sdfMatSetUvwParm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatUpdatePacketUvwParm);
+#include "shared/sdf/sdfMat/sdfMatUpdatePacketUvwParm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatUpdatePacketMultiTex);
+#include "shared/sdf/sdfMat/sdfMatUpdatePacketMultiTex.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatUpdatePacketFaceDiv);
+#include "shared/sdf/sdfMat/sdfMatUpdatePacketFaceDiv.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatUpdatePacket);
+#include "shared/sdf/sdfMat/sdfMatUpdatePacket.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMat", func_00361D98);
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatListMake);
+#include "shared/sdf/sdfMat/sdfMatListMake.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMat", func_00361F20);
 
 INCLUDE_ASM(const s32, "sdf/sdfMat", func_00361F80);
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatCopyStat);
+#include "shared/sdf/sdfMat/sdfMatCopyStat.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfMatListCopyStat);
+#include "shared/sdf/sdfMat/sdfMatListCopyStat.c"

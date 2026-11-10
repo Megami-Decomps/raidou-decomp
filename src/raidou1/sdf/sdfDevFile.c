@@ -1,12 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", sdfDevLoadFile);
+#include "shared/sdf/sdfDevFile/sdfDevLoadFile.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", sdfDevLoadFileEx);
+#include "shared/sdf/sdfDevFile/sdfDevLoadFileEx.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_00372950);
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", sdfTexSetTB);
+#include "shared/sdf/sdfDevFile/sdfTexSetTB.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_00372A28);
 

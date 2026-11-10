@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieWaitSema);
+#include "shared/sdf/sdfMovie/movieWaitSema.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", func_00374350);
 
@@ -10,25 +10,25 @@ INCLUDE_ASM(const s32, "sdf/sdfMovie", func_00374390);
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", func_00374608);
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieReadNextChunk);
+#include "shared/sdf/sdfMovie/movieReadNextChunk.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieGetStreamSize);
+#include "shared/sdf/sdfMovie/movieGetStreamSize.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieReadHeaderChunk);
+#include "shared/sdf/sdfMovie/movieReadHeaderChunk.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", movieReadChunk);
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieCopyChunk);
+#include "shared/sdf/sdfMovie/movieCopyChunk.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", movieMemcpy);
 
 INCLUDE_ASM(const s32, "sdf/sdfMovie", movieParseHeader);
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieOpenStream);
+#include "shared/sdf/sdfMovie/movieOpenStream.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", movieCloseStream);
+#include "shared/sdf/sdfMovie/movieCloseStream.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", sdfMovieIsFinished);
+#include "shared/sdf/sdfMovie/sdfMovieIsFinished.c"
 INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5B0);
 
 INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5B4);

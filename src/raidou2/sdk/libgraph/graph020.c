@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgraph/graph020", sceGsPutIMR);
+#include "shared/sdk/libgraph/sceGsPutIMR.c"

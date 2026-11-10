@@ -1,18 +1,18 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfDelayedResrc", sdfDelayedResrcInitCB);
+#include "shared/sdf/sdfDelayedResrc/sdfDelayedResrcInitCB.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDelayedResrc", sdfDelayedResrcEntry);
+#include "shared/sdf/sdfDelayedResrc/sdfDelayedResrcEntry.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDelayedResrc", sdfDelayedResrcClose);
+#include "shared/sdf/sdfDelayedResrc/sdfDelayedResrcClose.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDelayedResrc", sdfDelayedResrcRelease);
+#include "shared/sdf/sdfDelayedResrc/sdfDelayedResrcRelease.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfDelayedResrc", sdfDelayedResrcProc);
 
-INCLUDE_ASM(const s32, "sdf/sdfDelayedResrc", sdfDelayedResrcCheckFunc);
+#include "shared/sdf/sdfDelayedResrc/sdfDelayedResrcCheckFunc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDelayedResrc", sdfDelayedResrcCheck);
+#include "shared/sdf/sdfDelayedResrc/sdfDelayedResrcCheck.c"
 
 INCLUDE_SDATA(const s32, "sdf/sdfDelayedResrc", D_0046F29C);
 

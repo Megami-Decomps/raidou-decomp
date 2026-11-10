@@ -1,50 +1,50 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdUnlink);
+#include "shared/sdf/sdfFileIO/sdfFileCmdUnlink.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdDequeue);
+#include "shared/sdf/sdfFileIO/sdfFileCmdDequeue.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdReleaseHandle);
+#include "shared/sdf/sdfFileIO/sdfFileCmdReleaseHandle.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdFinish);
+#include "shared/sdf/sdfFileIO/sdfFileCmdFinish.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdThread);
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdMakeRealFileName);
+#include "shared/sdf/sdfFileIO/sdfFileCmdMakeRealFileName.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfFileIO", func_0036D980);
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdNewHandle);
+#include "shared/sdf/sdfFileIO/sdfFileCmdNewHandle.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdReadOpen);
+#include "shared/sdf/sdfFileIO/sdfFileCmdReadOpen.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdWriteOpen);
+#include "shared/sdf/sdfFileIO/sdfFileCmdWriteOpen.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdSeek);
+#include "shared/sdf/sdfFileIO/sdfFileCmdSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdFileSize);
+#include "shared/sdf/sdfFileIO/sdfFileCmdFileSize.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdRead);
+#include "shared/sdf/sdfFileIO/sdfFileCmdRead.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdWrite);
+#include "shared/sdf/sdfFileIO/sdfFileCmdWrite.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdClearError);
+#include "shared/sdf/sdfFileIO/sdfFileCmdClearError.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdClose);
+#include "shared/sdf/sdfFileIO/sdfFileCmdClose.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdFree);
+#include "shared/sdf/sdfFileIO/sdfFileCmdFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdReadFile);
+#include "shared/sdf/sdfFileIO/sdfFileCmdReadFile.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdWriteFile);
+#include "shared/sdf/sdfFileIO/sdfFileCmdWriteFile.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdThreadSetPrio);
+#include "shared/sdf/sdfFileIO/sdfFileCmdThreadSetPrio.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdThreadSetLoPrio);
+#include "shared/sdf/sdfFileIO/sdfFileCmdThreadSetLoPrio.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdThreadSetHiPrio);
+#include "shared/sdf/sdfFileIO/sdfFileCmdThreadSetHiPrio.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdThreadCheckPrio);
+#include "shared/sdf/sdfFileIO/sdfFileCmdThreadCheckPrio.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdStartThread);
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_0046F3B0);

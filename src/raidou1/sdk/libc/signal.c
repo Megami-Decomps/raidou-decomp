@@ -1,15 +1,15 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/signal", _init_signal_r);
+#include "shared/sdk/libc/_init_signal_r.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/signal", _signal_r);
+#include "shared/sdk/libc/_signal_r.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/signal", _raise_r);
+#include "shared/sdk/libc/_raise_r.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/signal", __sigtramp_r);
+#include "shared/sdk/libc/__sigtramp_r.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/signal", raise);
+#include "shared/sdk/libc/raise.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/signal", signal);
+#include "shared/sdk/libc/signal.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/signal", _init_signal);
+#include "shared/sdk/libc/_init_signal.c"

@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/fstatr", _fstat_r);
+#include "shared/sdk/libc/_fstat_r.c"

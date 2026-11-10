@@ -1,7 +1,7 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libipu/libipu", sceIpuStopDMA);
+#include "shared/sdk/libipu/sceIpuStopDMA.c"
 
-INCLUDE_ASM(const s32, "sdk/libipu/libipu", sceIpuRestartDMA);
+#include "shared/sdk/libipu/sceIpuRestartDMA.c"
 
-INCLUDE_ASM(const s32, "sdk/libipu/libipu", sceIpuSync);
+#include "shared/sdk/libipu/sceIpuSync.c"

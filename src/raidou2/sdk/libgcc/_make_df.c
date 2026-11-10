@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_make_df", __make_dp);
+#include "shared/sdk/libgcc/__make_dp.c"

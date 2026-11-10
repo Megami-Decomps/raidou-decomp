@@ -1,30 +1,30 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", new_iob);
+#include "shared/sdk/libkernl/new_iob.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", get_iob);
+#include "shared/sdk/libkernl/get_iob.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/filestub", _sceFs_Rcv_Intr);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", _sceFsSemInit);
+#include "shared/sdk/libkernl/_sceFsSemInit.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", _sceFsWaitS);
+#include "shared/sdk/libkernl/_sceFsWaitS.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", _sceFsSigSema);
+#include "shared/sdk/libkernl/_sceFsSigSema.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", scePowerOffHandler);
+#include "shared/sdk/libkernl/scePowerOffHandler.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", _sceFs_Poff_Intr);
+#include "shared/sdk/libkernl/_sceFs_Poff_Intr.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceFsInit);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", _fs_version);
+#include "shared/sdk/libkernl/_fs_version.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceFsReset);
+#include "shared/sdk/libkernl/sceFsReset.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceOpen);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceClose);
+#include "shared/sdk/libkernl/sceClose.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceLseek);
 
@@ -34,49 +34,49 @@ INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceWrite);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceIoctl);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceIoctl2);
+#include "shared/sdk/libkernl/sceIoctl2.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", _sceCallCode);
+#include "shared/sdk/libkernl/_sceCallCode.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceRemove);
+#include "shared/sdk/libkernl/sceRemove.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceMkdir);
+#include "shared/sdk/libkernl/sceMkdir.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceRmdir);
+#include "shared/sdk/libkernl/sceRmdir.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceFormat);
+#include "shared/sdk/libkernl/sceFormat.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceAddDrv);
+#include "shared/sdk/libkernl/sceAddDrv.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceDelDrv);
+#include "shared/sdk/libkernl/sceDelDrv.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceDopen);
+#include "shared/sdk/libkernl/sceDopen.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceDclose);
+#include "shared/sdk/libkernl/sceDclose.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceDread);
+#include "shared/sdk/libkernl/sceDread.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceGetstat);
+#include "shared/sdk/libkernl/sceGetstat.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceChstat);
+#include "shared/sdk/libkernl/sceChstat.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceRename);
+#include "shared/sdk/libkernl/sceRename.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceChdir);
+#include "shared/sdk/libkernl/sceChdir.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceSync);
+#include "shared/sdk/libkernl/sceSync.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceMount);
+#include "shared/sdk/libkernl/sceMount.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceUmount);
+#include "shared/sdk/libkernl/sceUmount.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceLseek64);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceDevctl);
+#include "shared/sdk/libkernl/sceDevctl.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceSymlink);
+#include "shared/sdk/libkernl/sceSymlink.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/filestub", sceReadlink);
+#include "shared/sdk/libkernl/sceReadlink.c"
 
 INCLUDE_RODATA(const s32, "sdk/libkernl/filestub", D_00469238);
 

@@ -1,14 +1,14 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStInit);
+#include "shared/sdk/libcdvd/sceCdStInit.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStStart);
+#include "shared/sdk/libcdvd/sceCdStStart.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStSeekF);
+#include "shared/sdk/libcdvd/sceCdStSeekF.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStSeek);
+#include "shared/sdk/libcdvd/sceCdStSeek.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStStop);
+#include "shared/sdk/libcdvd/sceCdStStop.c"
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd047", sceCdStRead);
 

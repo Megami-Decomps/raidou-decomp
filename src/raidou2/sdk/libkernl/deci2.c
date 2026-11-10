@@ -1,21 +1,21 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", sceDeci2Open);
+#include "shared/sdk/libkernl/sceDeci2Open.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", sceDeci2Close);
+#include "shared/sdk/libkernl/sceDeci2Close.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", sceDeci2ReqSend);
+#include "shared/sdk/libkernl/sceDeci2ReqSend.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", sceDeci2Poll);
+#include "shared/sdk/libkernl/sceDeci2Poll.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", sceDeci2ExRecv);
+#include "shared/sdk/libkernl/sceDeci2ExRecv.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", sceDeci2ExSend);
+#include "shared/sdk/libkernl/sceDeci2ExSend.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", sceDeci2ExReqSend);
+#include "shared/sdk/libkernl/sceDeci2ExReqSend.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", sceDeci2ExLock);
+#include "shared/sdk/libkernl/sceDeci2ExLock.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", sceDeci2ExUnLock);
+#include "shared/sdk/libkernl/sceDeci2ExUnLock.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/deci2", kputs);
+#include "shared/sdk/libkernl/kputs.c"

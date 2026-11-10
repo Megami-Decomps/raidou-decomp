@@ -1,5 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/vsprintf", vsprintf);
+#include "shared/sdk/libc/vsprintf.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/vsprintf", vsprintf_r);
+#include "shared/sdk/libc/vsprintf_r.c"

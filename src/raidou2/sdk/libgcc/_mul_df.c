@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_mul_df", dpmul);
+#include "shared/sdk/libgcc/dpmul.c"

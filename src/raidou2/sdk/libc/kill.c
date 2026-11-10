@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/kill", kill);
+#include "shared/sdk/libkernl/kill.c"

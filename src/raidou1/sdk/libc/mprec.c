@@ -1,35 +1,35 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _Balloc);
+#include "shared/sdk/libc/_Balloc.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _Bfree);
+#include "shared/sdk/libc/_Bfree.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _multadd);
+#include "shared/sdk/libc/_multadd.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _s2b);
+#include "shared/sdk/libc/_s2b.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _hi0bits);
+#include "shared/sdk/libc/_hi0bits.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _lo0bits);
+#include "shared/sdk/libc/_lo0bits.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _i2b);
+#include "shared/sdk/libc/_i2b.c"
 
 INCLUDE_ASM(const s32, "sdk/libc/mprec", _multiply);
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _pow5mult);
+#include "shared/sdk/libc/_pow5mult.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _lshift);
+#include "shared/sdk/libc/_lshift.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", __mcmp);
+#include "shared/sdk/libc/__mcmp.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", __mdiff);
+#include "shared/sdk/libc/__mdiff.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _ulp);
+#include "shared/sdk/libc/_ulp.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _b2d);
+#include "shared/sdk/libc/_b2d.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _d2b);
+#include "shared/sdk/libc/_d2b.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _ratio);
+#include "shared/sdk/libc/_ratio.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mprec", _mprec_log10);
+#include "shared/sdk/libc/_mprec_log10.c"

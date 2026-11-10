@@ -4,39 +4,39 @@ INCLUDE_ASM(const s32, "sdk/libdma/libdma", WaitDma);
 
 INCLUDE_ASM(const s32, "sdk/libdma/libdma", WatchDma);
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", CheckAddress);
+#include "shared/sdk/libdma/CheckAddress.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", memclr);
+#include "shared/sdk/libdma/memclr.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaGetChan);
+#include "shared/sdk/libdma/sceDmaGetChan.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaReset);
+#include "shared/sdk/libdma/sceDmaReset.c"
 
 INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaPutEnv);
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaGetEnv);
+#include "shared/sdk/libdma/sceDmaGetEnv.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaPutStallAddr);
+#include "shared/sdk/libdma/sceDmaPutStallAddr.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaSend);
+#include "shared/sdk/libdma/sceDmaSend.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaSendN);
+#include "shared/sdk/libdma/sceDmaSendN.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaSendI);
+#include "shared/sdk/libdma/sceDmaSendI.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaRecv);
+#include "shared/sdk/libdma/sceDmaRecv.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaRecvN);
+#include "shared/sdk/libdma/sceDmaRecvN.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaRecvI);
+#include "shared/sdk/libdma/sceDmaRecvI.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaSync);
+#include "shared/sdk/libdma/sceDmaSync.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaWatch);
+#include "shared/sdk/libdma/sceDmaWatch.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaPause);
+#include "shared/sdk/libdma/sceDmaPause.c"
 
-INCLUDE_ASM(const s32, "sdk/libdma/libdma", sceDmaRestart);
+#include "shared/sdk/libdma/sceDmaRestart.c"
 
 INCLUDE_RODATA(const s32, "sdk/libdma/libdma", D_004D8400);
 

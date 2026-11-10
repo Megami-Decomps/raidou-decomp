@@ -1,11 +1,11 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdf3DPrim", sdf3DPrimLinkResetTm);
+#include "shared/sdf/sdf3DPrim/sdf3DPrimLinkResetTm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf3DPrim", sdf3DPrimSetTmPacket);
+#include "shared/sdf/sdf3DPrim/sdf3DPrimSetTmPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf3DPrim", sdf3DPrimLinkTm);
+#include "shared/sdf/sdf3DPrim/sdf3DPrimLinkTm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf3DPrim", sdf3DPrimLinkMat);
+#include "shared/sdf/sdf3DPrim/sdf3DPrimLinkMat.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf3DPrim", sdf3DPrimMakePoly);
+#include "shared/sdf/sdf3DPrim/sdf3DPrimMakePoly.c"

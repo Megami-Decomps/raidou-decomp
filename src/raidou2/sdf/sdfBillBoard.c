@@ -1,27 +1,27 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfBillBoardMakeTMPacket);
+#include "shared/sdf/sdfBillBoard/sdfBillBoardMakeTMPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfBillBoardMake1);
+#include "shared/sdf/sdfBillBoard/sdfBillBoardMake1.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfBillBoardGetPacketSize);
+#include "shared/sdf/sdfBillBoard/sdfBillBoardGetPacketSize.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfBillBoardMakeN);
+#include "shared/sdf/sdfBillBoard/sdfBillBoardMakeN.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfMultiBillBoardMake1);
+#include "shared/sdf/sdfBillBoard/sdfMultiBillBoardMake1.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfMultiBillBoardGetPacketSize);
+#include "shared/sdf/sdfBillBoard/sdfMultiBillBoardGetPacketSize.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfMultiBillBoardMakeN);
+#include "shared/sdf/sdfBillBoard/sdfMultiBillBoardMakeN.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfBillBoardVcMake1);
+#include "shared/sdf/sdfBillBoard/sdfBillBoardVcMake1.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfBillBoardVcGetPacketSize);
+#include "shared/sdf/sdfBillBoard/sdfBillBoardVcGetPacketSize.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfBillBoardVcMakeN);
+#include "shared/sdf/sdfBillBoard/sdfBillBoardVcMakeN.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfMultiBillBoardVcMake1);
+#include "shared/sdf/sdfBillBoard/sdfMultiBillBoardVcMake1.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfMultiBillBoardVcGetPacketSize);
+#include "shared/sdf/sdfBillBoard/sdfMultiBillBoardVcGetPacketSize.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfBillBoard", sdfMultiBillBoardVcMakeN);
+#include "shared/sdf/sdfBillBoard/sdfMultiBillBoardVcMakeN.c"

@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_floatdidf", __floatdidf);
+#include "shared/sdk/libgcc_floatdidf/__floatdidf.c"

@@ -1,56 +1,56 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsInit);
+#include "shared/sdf/sdfDevCons/sdfDevConsInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsGetFontHandle);
+#include "shared/sdf/sdfDevCons/sdfDevConsGetFontHandle.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsGetFontUvTable);
+#include "shared/sdf/sdfDevCons/sdfDevConsGetFontUvTable.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsLinkToTop);
+#include "shared/sdf/sdfDevCons/sdfDevConsLinkToTop.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsUnlink);
+#include "shared/sdf/sdfDevCons/sdfDevConsUnlink.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsClose);
+#include "shared/sdf/sdfDevCons/sdfDevConsClose.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsClearInside);
+#include "shared/sdf/sdfDevCons/sdfDevConsClearInside.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsClear);
+#include "shared/sdf/sdfDevCons/sdfDevConsClear.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsOpen);
+#include "shared/sdf/sdfDevCons/sdfDevConsOpen.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsNewLine);
+#include "shared/sdf/sdfDevCons/sdfDevConsNewLine.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsPutInside);
+#include "shared/sdf/sdfDevCons/sdfDevConsPutInside.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsPut);
+#include "shared/sdf/sdfDevCons/sdfDevConsPut.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsPrintf);
+#include "shared/sdf/sdfDevCons/sdfDevConsPrintf.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfDevCons", func_0036B128);
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsAttribute);
+#include "shared/sdf/sdfDevCons/sdfDevConsAttribute.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsGetMode);
+#include "shared/sdf/sdfDevCons/sdfDevConsGetMode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsSetMode);
+#include "shared/sdf/sdfDevCons/sdfDevConsSetMode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsTagClose);
+#include "shared/sdf/sdfDevCons/sdfDevConsTagClose.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsDrawFlush);
+#include "shared/sdf/sdfDevCons/sdfDevConsDrawFlush.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsDrawBG);
+#include "shared/sdf/sdfDevCons/sdfDevConsDrawBG.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsDraw);
+#include "shared/sdf/sdfDevCons/sdfDevConsDraw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsDrawInit);
+#include "shared/sdf/sdfDevCons/sdfDevConsDrawInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevConsDrawAll);
+#include "shared/sdf/sdfDevCons/sdfDevConsDrawAll.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevVprintf);
+#include "shared/sdf/sdfDevCons/sdfDevVprintf.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevPrintfEx);
+#include "shared/sdf/sdfDevCons/sdfDevPrintfEx.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", sdfDevPrintf);
+#include "shared/sdf/sdfDevCons/sdfDevPrintf.c"
 INCLUDE_SDATA(const s32, "sdf/sdfDevCons", D_0046F350);
 
 INCLUDE_SDATA(const s32, "sdf/sdfDevCons", D_0046F354);

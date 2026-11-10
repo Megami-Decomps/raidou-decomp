@@ -1,28 +1,28 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sceSifGetSreg);
+#include "shared/sdk/libkernl/sceSifGetSreg.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sceSifSetSreg);
+#include "shared/sdk/libkernl/sceSifSetSreg.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sceSifGetDataTable);
+#include "shared/sdk/libkernl/sceSifGetDataTable.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sceSifInitCmd);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sceSifExitCmd);
+#include "shared/sdk/libkernl/sceSifExitCmd.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", func_00395D70);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", func_00395D88);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sceSifAddCmdHandler);
+#include "shared/sdk/libkernl/sceSifAddCmdHandler.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sceSifRemoveCmdHandler);
+#include "shared/sdk/libkernl/sceSifRemoveCmdHandler.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", _sceSifSendCmd);
+#include "shared/sdk/libkernl/_sceSifSendCmd.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sceSifSendCmd);
+#include "shared/sdk/libkernl/sceSifSendCmd.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", isceSifSendCmd);
+#include "shared/sdk/libkernl/isceSifSendCmd.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", _sceSifCmdIntrHdlr);
 

@@ -1,7 +1,7 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/__main", __do_global_dtors);
+#include "shared/sdk/libgcc/__do_global_dtors.c"
 
 INCLUDE_ASM(const s32, "sdk/libgcc/__main", __do_global_ctors);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/__main", __main);
+#include "shared/sdk/libgcc/__main.c"

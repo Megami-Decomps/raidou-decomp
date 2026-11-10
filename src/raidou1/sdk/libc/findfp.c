@@ -1,11 +1,11 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/findfp", __sfmoreglue);
+#include "shared/sdk/libc/__sfmoreglue.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/findfp", __sfp);
+#include "shared/sdk/libc/__sfp.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/findfp", _cleanup_r);
+#include "shared/sdk/libc/_cleanup_r.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/findfp", _cleanup);
+#include "shared/sdk/libc/_cleanup.c"
 
 INCLUDE_ASM(const s32, "sdk/libc/findfp", __sinit);

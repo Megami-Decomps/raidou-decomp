@@ -6,17 +6,17 @@ INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_00386170);
 
 INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_00386268);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", __register_frame_info);
+#include "shared/sdk/libgcc/__register_frame_info.c"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", __register_frame);
+#include "shared/sdk/libgcc/__register_frame.c"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", __register_frame_info_table);
+#include "shared/sdk/libgcc/__register_frame_info_table.c"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", __register_frame_table);
+#include "shared/sdk/libgcc/__register_frame_table.c"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", __deregister_frame_info);
+#include "shared/sdk/libgcc/__deregister_frame_info.c"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", __deregister_frame);
+#include "shared/sdk/libgcc/__deregister_frame.c"
 
 INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_003869F0);
 

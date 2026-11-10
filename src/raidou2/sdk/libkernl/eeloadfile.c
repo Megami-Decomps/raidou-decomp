@@ -1,37 +1,37 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", _lf_bind);
+#include "shared/sdk/libkernl/_lf_bind.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", _lf_version);
+#include "shared/sdk/libkernl/_lf_version.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifLoadFileReset);
+#include "shared/sdk/libkernl/sceSifLoadFileReset.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", _sceSifLoadModuleBuffer);
+#include "shared/sdk/libkernl/_sceSifLoadModuleBuffer.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifStopModule);
+#include "shared/sdk/libkernl/sceSifStopModule.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifUnloadModule);
+#include "shared/sdk/libkernl/sceSifUnloadModule.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifSearchModuleByName);
+#include "shared/sdk/libkernl/sceSifSearchModuleByName.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifSearchModuleByAddress);
+#include "shared/sdk/libkernl/sceSifSearchModuleByAddress.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifLoadModuleBuffer);
+#include "shared/sdk/libkernl/sceSifLoadModuleBuffer.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifLoadStartModuleBuffer);
+#include "shared/sdk/libkernl/sceSifLoadStartModuleBuffer.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", _sceSifLoadModule);
+#include "shared/sdk/libkernl/_sceSifLoadModule.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifLoadModule);
+#include "shared/sdk/libkernl/sceSifLoadModule.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifLoadStartModule);
+#include "shared/sdk/libkernl/sceSifLoadStartModule.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", _sceSifLoadElfPart);
+#include "shared/sdk/libkernl/_sceSifLoadElfPart.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifLoadElfPart);
+#include "shared/sdk/libkernl/sceSifLoadElfPart.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifLoadElf);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifGetIopAddr);
+#include "shared/sdk/libkernl/sceSifGetIopAddr.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/eeloadfile", sceSifSetIopAddr);
+#include "shared/sdk/libkernl/sceSifSetIopAddr.c"

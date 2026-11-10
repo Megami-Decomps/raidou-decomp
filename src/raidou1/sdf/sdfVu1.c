@@ -1,14 +1,14 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktSetupPointBuff);
+#include "shared/sdf/sdfVu1/corePktSetupPointBuff.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktInitCb);
+#include "shared/sdf/sdfVu1/corePktInitCb.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktLoadWorldLightMtx);
+#include "shared/sdf/sdfVu1/corePktLoadWorldLightMtx.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktMakeFaceDivParm);
+#include "shared/sdf/sdfVu1/corePktMakeFaceDivParm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktSetFaceDivParm);
+#include "shared/sdf/sdfVu1/corePktSetFaceDivParm.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktSkinPointsFirst);
 
@@ -40,38 +40,38 @@ INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktRelightBackFaces);
 
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktXfmUV);
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktLerpUVChain);
+#include "shared/sdf/sdfVu1/corePktLerpUVChain.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktLerpUVColorChain);
+#include "shared/sdf/sdfVu1/corePktLerpUVColorChain.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktApplyFaceDivColor);
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktSetConstColor);
+#include "shared/sdf/sdfVu1/corePktSetConstColor.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktMakeEdgePoint);
+#include "shared/sdf/sdfVu1/corePktMakeEdgePoint.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktClipFace);
+#include "shared/sdf/sdfVu1/corePktClipFace.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktBuildFaceList);
+#include "shared/sdf/sdfVu1/corePktBuildFaceList.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktBuildBackFaceList);
+#include "shared/sdf/sdfVu1/corePktBuildBackFaceList.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktEmitTexTris);
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktEmitTexTrisCtx2);
+#include "shared/sdf/sdfVu1/corePktEmitTexTrisCtx2.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktEmitTris);
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktEmitBase);
+#include "shared/sdf/sdfVu1/corePktEmitBase.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktEmitMultiTexPass);
+#include "shared/sdf/sdfVu1/corePktEmitMultiTexPass.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktEmitRefMapPass);
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktEmitAllPasses);
+#include "shared/sdf/sdfVu1/corePktEmitAllPasses.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktOpenAndEmit);
+#include "shared/sdf/sdfVu1/corePktOpenAndEmit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktClosePacket);
+#include "shared/sdf/sdfVu1/corePktClosePacket.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfVu1", corePktVu0Run);

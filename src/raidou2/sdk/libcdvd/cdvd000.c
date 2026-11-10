@@ -1,32 +1,32 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdDelayThread);
+#include "shared/sdk/libcdvd/sceCdDelayThread.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdCallback);
+#include "shared/sdk/libcdvd/sceCdCallback.c"
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", _sceCd_cd_callback);
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", _Cdvd_cbLoop);
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", _sceCd_cd_read_intr);
+#include "shared/sdk/libcdvd/_sceCd_cd_read_intr.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", cmd_sem_init);
+#include "shared/sdk/libcdvd/cmd_sem_init.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", cdvd_exit);
+#include "shared/sdk/libcdvd/cdvd_exit.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdPOffCallback);
+#include "shared/sdk/libcdvd/sceCdPOffCallback.c"
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", _sceCd_Poff_Intr);
+#include "shared/sdk/libcdvd/_sceCd_Poff_Intr.c"
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", PowerOffCB);
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdLayerSearchFile);
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdSearchFile);
+#include "shared/sdk/libcdvd/sceCdSearchFile.c"
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", _sceCd_ncmd_prechk);
 
-INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdNcmdDiskReady);
+#include "shared/sdk/libcdvd/sceCdNcmdDiskReady.c"
 
 INCLUDE_ASM(const s32, "sdk/libcdvd/cdvd000", sceCdSync);
 

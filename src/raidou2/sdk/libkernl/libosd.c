@@ -1,11 +1,11 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/libosd", PatchIsNeeded_0);
+#include "shared/sdk/libkernl/PatchIsNeeded_0.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/libosd", InitExecPS2);
+#include "shared/sdk/libkernl/InitExecPS2.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/libosd", func_00414FB8);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/libosd", kCopy_1);
+#include "shared/sdk/libkernl/kCopy_1.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/libosd", PatchIsNeeded);

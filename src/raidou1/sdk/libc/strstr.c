@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/strstr", strstr);
+#include "shared/sdk/libc/strstr.c"

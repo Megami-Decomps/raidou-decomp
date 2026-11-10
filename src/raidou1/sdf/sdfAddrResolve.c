@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfAddrResolve", sdfAddressResolver);
+#include "shared/sdf/sdfAddrResolve/sdfAddressResolver.c"

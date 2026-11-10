@@ -1,7 +1,7 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/locale", _setlocale_r);
+#include "shared/sdk/libc/_setlocale_r.c"
 
 INCLUDE_ASM(const s32, "sdk/libc/locale", func_00409258);
 
-INCLUDE_ASM(const s32, "sdk/libc/locale", setlocale);
+#include "shared/sdk/libc/setlocale.c"

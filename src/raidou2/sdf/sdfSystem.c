@@ -1,42 +1,42 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfCreateSema);
+#include "shared/sdf/sdfSystem/sdfCreateSema.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", CreateThreadSimple);
+#include "shared/sdf/sdfSystem/CreateThreadSimple.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfCreateThreadWithStack);
+#include "shared/sdf/sdfSystem/sdfCreateThreadWithStack.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfAllocAuto);
+#include "shared/sdf/sdfSystem/sdfAllocAuto.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfFreeAuto);
+#include "shared/sdf/sdfSystem/sdfFreeAuto.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfFreeAutoDelayed);
+#include "shared/sdf/sdfSystem/sdfFreeAutoDelayed.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003CBDB8);
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", FatalError);
+#include "shared/sdf/sdfSystem/FatalError.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSystem", DmacAddHandler);
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfIpuRemoveHandler);
+#include "shared/sdf/sdfSystem/sdfIpuRemoveHandler.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003CC038);
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfAlarmWakeup);
+#include "shared/sdf/sdfSystem/sdfAlarmWakeup.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfDelayThread);
+#include "shared/sdf/sdfSystem/sdfDelayThread.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfGetRunTimeCountBase);
+#include "shared/sdf/sdfSystem/sdfGetRunTimeCountBase.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfGetRunTimeCount);
+#include "shared/sdf/sdfSystem/sdfGetRunTimeCount.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfSystemThreadProc);
+#include "shared/sdf/sdfSystem/sdfSystemThreadProc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", dds3InitSubsystems);
+#include "shared/sdf/sdfSystem/dds3InitSubsystems.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfStartThreadAndWait);
+#include "shared/sdf/sdfSystem/sdfStartThreadAndWait.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfWaitVblank);
+#include "shared/sdf/sdfSystem/sdfWaitVblank.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003CC2B8);
 
@@ -44,13 +44,13 @@ INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003CC350);
 
 INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003CC3B8);
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", VblankIntcHandler);
+#include "shared/sdf/sdfSystem/VblankIntcHandler.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", VblankThreadProc);
+#include "shared/sdf/sdfSystem/VblankThreadProc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfInitThreadSystem);
+#include "shared/sdf/sdfSystem/sdfInitThreadSystem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfSetMainThreadPriority);
+#include "shared/sdf/sdfSystem/sdfSetMainThreadPriority.c"
 INCLUDE_SDATA(const s32, "sdf/sdfSystem", D_004E4274);
 
 INCLUDE_SDATA(const s32, "sdf/sdfSystem", D_004E4278);

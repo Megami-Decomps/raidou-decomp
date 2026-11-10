@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/makebuf", __smakebuf);
+#include "shared/sdk/libc/__smakebuf.c"

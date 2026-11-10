@@ -1,64 +1,64 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuDetachQueue);
+#include "shared/sdf/sdfIpu/sdfIpuDetachQueue.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuAttachQueue);
+#include "shared/sdf/sdfIpu/sdfIpuAttachQueue.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuAttachTask);
+#include "shared/sdf/sdfIpu/sdfIpuAttachTask.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuDetachTask);
+#include "shared/sdf/sdfIpu/sdfIpuDetachTask.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuAllocBuff);
+#include "shared/sdf/sdfIpu/sdfIpuAllocBuff.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuMakeToIpuDmaTag);
+#include "shared/sdf/sdfIpu/sdfIpuMakeToIpuDmaTag.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuMakeBltPacket);
+#include "shared/sdf/sdfIpu/sdfIpuMakeBltPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuInitCb);
+#include "shared/sdf/sdfIpu/sdfIpuInitCb.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuSetDecodeParams);
+#include "shared/sdf/sdfIpu/sdfIpuSetDecodeParams.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuStrmDecodeInit);
+#include "shared/sdf/sdfIpu/sdfIpuStrmDecodeInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuAllocGsRect);
+#include "shared/sdf/sdfIpu/sdfIpuAllocGsRect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuFree);
+#include "shared/sdf/sdfIpu/sdfIpuFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuHandleDmaEnd);
+#include "shared/sdf/sdfIpu/sdfIpuHandleDmaEnd.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuSetToIpuDma);
+#include "shared/sdf/sdfIpu/sdfIpuSetToIpuDma.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuSetFromIpuDma);
+#include "shared/sdf/sdfIpu/sdfIpuSetFromIpuDma.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", IpuWriteCommand);
+#include "shared/sdf/sdfIpu/IpuWriteCommand.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuDecode);
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuExecQueue);
+#include "shared/sdf/sdfIpu/sdfIpuExecQueue.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuDecodeThread);
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuToDmacHandler);
+#include "shared/sdf/sdfIpu/sdfIpuToDmacHandler.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", func_003E99D8);
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", func_003E9A00);
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuFinishActiveFrame);
+#include "shared/sdf/sdfIpu/sdfIpuFinishActiveFrame.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuSetChainTag);
+#include "shared/sdf/sdfIpu/sdfIpuSetChainTag.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", func_003E9B30);
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", func_003E9C98);
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuSetOutputTex);
+#include "shared/sdf/sdfIpu/sdfIpuSetOutputTex.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", func_003E9D68);
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuInit);
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuClose);
+#include "shared/sdf/sdfIpu/sdfIpuClose.c"
 
 INCLUDE_SDATA(const s32, "sdf/sdfIpu", D_004E45C4);
 

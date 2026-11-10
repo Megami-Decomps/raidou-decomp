@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_fpcmp_parts_df", __fpcmp_parts_df);
+#include "shared/sdk/libgcc/__fpcmp_parts_df.c"

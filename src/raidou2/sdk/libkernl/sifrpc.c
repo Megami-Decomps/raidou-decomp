@@ -2,27 +2,27 @@
 
 INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifInitRpc);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifExitRpc);
+#include "shared/sdk/libkernl/sceSifExitRpc.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", _sceRpcGetPacket_0);
+#include "shared/sdk/libkernl/_sceRpcGetPacket_0.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", _sceRpcFreePacket_0);
+#include "shared/sdk/libkernl/_sceRpcFreePacket_0.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", _sceRpcGetFPacket);
+#include "shared/sdk/libkernl/_sceRpcGetFPacket.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", _sceRpcGetFPacket2);
+#include "shared/sdk/libkernl/_sceRpcGetFPacket2.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", _request_end_0);
+#include "shared/sdk/libkernl/_request_end_0.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", _request_rdata);
+#include "shared/sdk/libkernl/_request_rdata.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifGetOtherData);
+#include "shared/sdk/libkernl/sceSifGetOtherData.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", _search_svdata);
+#include "shared/sdk/libkernl/_search_svdata.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", _request_bind);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifBindRpc);
+#include "shared/sdk/libkernl/sceSifBindRpc.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", _request_call);
 
@@ -30,16 +30,16 @@ INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifCallRpc);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifCheckStatRpc);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifSetRpcQueue);
+#include "shared/sdk/libkernl/sceSifSetRpcQueue.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifRegisterRpc);
+#include "shared/sdk/libkernl/sceSifRegisterRpc.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifRemoveRpc);
+#include "shared/sdk/libkernl/sceSifRemoveRpc.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifRemoveRpcQueue);
+#include "shared/sdk/libkernl/sceSifRemoveRpcQueue.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifGetNextRequest);
+#include "shared/sdk/libkernl/sceSifGetNextRequest.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifExecRequest);
+#include "shared/sdk/libkernl/sceSifExecRequest.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifrpc", sceSifRpcLoop);
+#include "shared/sdk/libkernl/sceSifRpcLoop.c"

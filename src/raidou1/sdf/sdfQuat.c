@@ -1,29 +1,29 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", Mult);
+#include "shared/sdf/sdfQuat/Mult.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", Inverse);
+#include "shared/sdf/sdfQuat/Inverse.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", Normalize);
+#include "shared/sdf/sdfQuat/Normalize.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfQuat", func_0036EC78);
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", SDF_QUAT_INNERPRODUCT);
+#include "shared/sdf/sdfQuat/SDF_QUAT_INNERPRODUCT.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", FromRotation);
+#include "shared/sdf/sdfQuat/FromRotation.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", FromRotation_B);
+#include "shared/sdf/sdfQuat/FromRotation_B.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", ToMatrix);
+#include "shared/sdf/sdfQuat/ToMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", FromEulerXYZ);
+#include "shared/sdf/sdfQuat/FromEulerXYZ.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", FromEuler);
+#include "shared/sdf/sdfQuat/FromEuler.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfQuat", LookAt);
 
 INCLUDE_ASM(const s32, "sdf/sdfQuat", Slerp);
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", Lerp);
+#include "shared/sdf/sdfQuat/Lerp.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", EulerAngleAxisY);
+#include "shared/sdf/sdfQuat/EulerAngleAxisY.c"

@@ -1,54 +1,54 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfDrawTagInit);
+#include "shared/sdf/sdfDraw/sdfDrawTagInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfDrawTagLink);
+#include "shared/sdf/sdfDraw/sdfDrawTagLink.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035AF28);
 
 INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035AF60);
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfDrawTagLinkRefGif);
+#include "shared/sdf/sdfDraw/sdfDrawTagLinkRefGif.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfDrawTagLinkCall);
+#include "shared/sdf/sdfDraw/sdfDrawTagLinkCall.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrOtFuncLinkToHead);
+#include "shared/sdf/sdfDraw/sdfGrOtFuncLinkToHead.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrOtNormalReg);
+#include "shared/sdf/sdfDraw/sdfGrOtNormalReg.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrOtNormalCallback);
+#include "shared/sdf/sdfDraw/sdfGrOtNormalCallback.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrOtInit);
+#include "shared/sdf/sdfDraw/sdfGrOtInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrNewExPacket);
+#include "shared/sdf/sdfDraw/sdfGrNewExPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrAddExPacket);
+#include "shared/sdf/sdfDraw/sdfGrAddExPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrJoinDrawTag);
+#include "shared/sdf/sdfDraw/sdfGrJoinDrawTag.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrInitExPacket);
+#include "shared/sdf/sdfDraw/sdfGrInitExPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrOtClose);
+#include "shared/sdf/sdfDraw/sdfGrOtClose.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfPreDrawTagInit);
+#include "shared/sdf/sdfDraw/sdfPreDrawTagInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfPreDrawTagLink);
+#include "shared/sdf/sdfDraw/sdfPreDrawTagLink.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfPreDrawChainInit);
+#include "shared/sdf/sdfDraw/sdfPreDrawChainInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfPreDrawChainLink);
+#include "shared/sdf/sdfDraw/sdfPreDrawChainLink.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrSetRegsPacketHeader);
+#include "shared/sdf/sdfDraw/sdfGrSetRegsPacketHeader.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrSetRefGifPacket);
+#include "shared/sdf/sdfDraw/sdfGrSetRefGifPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrSetDrawFramePacket);
+#include "shared/sdf/sdfDraw/sdfGrSetDrawFramePacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrSetClearPacket);
+#include "shared/sdf/sdfDraw/sdfGrSetClearPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrSetDrawDefParmPacket);
+#include "shared/sdf/sdfDraw/sdfGrSetDrawDefParmPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrSetDrawFrame);
+#include "shared/sdf/sdfDraw/sdfGrSetDrawFrame.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035B760);
 
@@ -56,29 +56,29 @@ INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrStdDrawEnvPredraw);
 
 INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035BA58);
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrLinkStdDrawEnv);
+#include "shared/sdf/sdfDraw/sdfGrLinkStdDrawEnv.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035BB38);
 
 INCLUDE_ASM(const s32, "sdf/sdfDraw", func_0035BB80);
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrLinkDispFrameTex);
+#include "shared/sdf/sdfDraw/sdfGrLinkDispFrameTex.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrLinkDrawFrameTex);
+#include "shared/sdf/sdfDraw/sdfGrLinkDrawFrameTex.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrFramePacketPredraw);
+#include "shared/sdf/sdfDraw/sdfGrFramePacketPredraw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrSetFramePacket);
+#include "shared/sdf/sdfDraw/sdfGrSetFramePacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrReqDraw);
+#include "shared/sdf/sdfDraw/sdfGrReqDraw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrReqDrawDelay);
+#include "shared/sdf/sdfDraw/sdfGrReqDrawDelay.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrInitDraw);
+#include "shared/sdf/sdfDraw/sdfGrInitDraw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrDrawFrame);
+#include "shared/sdf/sdfDraw/sdfGrDrawFrame.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfDrawSync);
+#include "shared/sdf/sdfDraw/sdfDrawSync.c"
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2C4);
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_0046F2C8);

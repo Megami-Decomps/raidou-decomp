@@ -1,9 +1,9 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/stdio", __sread);
+#include "shared/sdk/libc/__sread.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/stdio", __swrite);
+#include "shared/sdk/libc/__swrite.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/stdio", __sseek);
+#include "shared/sdk/libc/__sseek.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/stdio", __sclose);
+#include "shared/sdk/libc/__sclose.c"

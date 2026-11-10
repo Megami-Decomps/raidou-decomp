@@ -1,179 +1,179 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionNodeNew);
+#include "shared/sdf/sdfMotion/sdfMotionNodeNew.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionNodeFree);
+#include "shared/sdf/sdfMotion/sdfMotionNodeFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionNodeBaseInit);
+#include "shared/sdf/sdfMotion/sdfMotionNodeBaseInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionCtrlrNew);
+#include "shared/sdf/sdfMotion/sdfMotionCtrlrNew.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionCtrlrFree);
+#include "shared/sdf/sdfMotion/sdfMotionCtrlrFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionChangeBlend);
+#include "shared/sdf/sdfMotion/sdfMotionChangeBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionChange);
+#include "shared/sdf/sdfMotion/sdfMotionChange.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionSeek);
+#include "shared/sdf/sdfMotion/sdfMotionSeek.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionNext);
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionPause);
+#include "shared/sdf/sdfMotion/sdfMotionPause.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotionPauseOff);
+#include "shared/sdf/sdfMotion/sdfMotionPauseOff.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_Destroy);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_Destroy.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_SetCut);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_SetCut.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGetKey);
+#include "shared/sdf/sdfMotion/sdfMotGetKey.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotInterpolateKeyFloat);
+#include "shared/sdf/sdfMotion/sdfMotInterpolateKeyFloat.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotInterpolateKeyXYZ);
+#include "shared/sdf/sdfMotion/sdfMotInterpolateKeyXYZ.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotInterpolateKeyColor);
+#include "shared/sdf/sdfMotion/sdfMotInterpolateKeyColor.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotInterpolateKeyUvwSub);
+#include "shared/sdf/sdfMotion/sdfMotInterpolateKeyUvwSub.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotInterpolateKeyUvw);
+#include "shared/sdf/sdfMotion/sdfMotInterpolateKeyUvw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenNode);
+#include "shared/sdf/sdfMotion/sdfMotGenNode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenModelInit);
+#include "shared/sdf/sdfMotion/sdfMotGenModelInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenModelLinerPos);
+#include "shared/sdf/sdfMotion/sdfMotGenModelLinerPos.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelLinerPosSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelLinerPosSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelLinerPosBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelLinerPosBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenModelLinerRotXYZ);
+#include "shared/sdf/sdfMotion/sdfMotGenModelLinerRotXYZ.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelLinerRotXYZSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelLinerRotXYZSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelLinerRotXYZBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelLinerRotXYZBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenModelLinerScale);
+#include "shared/sdf/sdfMotion/sdfMotGenModelLinerScale.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelLinerScaleSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelLinerScaleSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelLinerScaleBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelLinerScaleBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenModelLerpRotQuat);
+#include "shared/sdf/sdfMotion/sdfMotGenModelLerpRotQuat.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelLerpRotQuatSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelLerpRotQuatSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelLerpRotQuatBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelLerpRotQuatBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenModelVisible);
+#include "shared/sdf/sdfMotion/sdfMotGenModelVisible.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelVisibleSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelVisibleSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelVisibleBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelVisibleBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelVisibleInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelVisibleInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelPosInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelPosInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelRotInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelRotInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_modelScaleInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_modelScaleInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatNode);
+#include "shared/sdf/sdfMotion/sdfMotGenMatNode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatInit);
+#include "shared/sdf/sdfMotion/sdfMotGenMatInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatDiffuse);
+#include "shared/sdf/sdfMotion/sdfMotGenMatDiffuse.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matDiffuseSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matDiffuseSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matDiffuseBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matDiffuseBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matDiffuseInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matDiffuseInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatAmbient);
+#include "shared/sdf/sdfMotion/sdfMotGenMatAmbient.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matAmbientSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matAmbientSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matAmbientBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matAmbientBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matAmbientInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matAmbientInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatSpecular);
+#include "shared/sdf/sdfMotion/sdfMotGenMatSpecular.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matSpecularSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matSpecularSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matSpecularBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matSpecularBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matSpecularInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matSpecularInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatRefMap);
+#include "shared/sdf/sdfMotion/sdfMotGenMatRefMap.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matRefMapSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matRefMapSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matRefMapBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matRefMapBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matRefMapInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matRefMapInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatConstant);
+#include "shared/sdf/sdfMotion/sdfMotGenMatConstant.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matConstantSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matConstantSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matConstantBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matConstantBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matConstantInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matConstantInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatUvw);
+#include "shared/sdf/sdfMotion/sdfMotGenMatUvw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matUvwSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matUvwSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matUvwBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matUvwBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matUvwInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matUvwInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatMultiUvw);
+#include "shared/sdf/sdfMotion/sdfMotGenMatMultiUvw.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matMultiUvwSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matMultiUvwSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matMultiUvwBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matMultiUvwBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matMultiUvwInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matMultiUvwInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatMultiDiffuse);
+#include "shared/sdf/sdfMotion/sdfMotGenMatMultiDiffuse.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matMultiDiffuseSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matMultiDiffuseSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matMultiDiffuseBlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matMultiDiffuseBlendSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matMultiDiffuseInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matMultiDiffuseInitBlend.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatUvw2);
+#include "shared/sdf/sdfMotion/sdfMotGenMatUvw2.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matUvw2Seek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matUvw2Seek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matUvw2BlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matUvw2BlendSeek.c"
 
 void sdfMotCLBK_matUvw2InitBlend(void) {
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMatMultiUvw2);
+#include "shared/sdf/sdfMotion/sdfMotGenMatMultiUvw2.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matMultiUvw2Seek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matMultiUvw2Seek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_matMultiUvw2BlendSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_matMultiUvw2BlendSeek.c"
 
 void sdfMotCLBK_matMultiUvw2InitBlend(void) {
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMorphNode);
+#include "shared/sdf/sdfMotion/sdfMotGenMorphNode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMorphInit);
+#include "shared/sdf/sdfMotion/sdfMotGenMorphInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotGenMorph);
+#include "shared/sdf/sdfMotion/sdfMotGenMorph.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_morphSeek);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_morphSeek.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_morphBlendSeek);
 
-INCLUDE_ASM(const s32, "sdf/sdfMotion", sdfMotCLBK_morphInitBlend);
+#include "shared/sdf/sdfMotion/sdfMotCLBK_morphInitBlend.c"

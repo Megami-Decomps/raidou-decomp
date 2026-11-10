@@ -2,7 +2,7 @@
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", func_003E19D0);
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdStStart);
+#include "shared/sdf/sdfCd/sdfCdStStart.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", func_003E1B18);
 
@@ -16,13 +16,13 @@ INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageSearchFile);
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", func_003E2030);
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageRead);
+#include "shared/sdf/sdfCd/sdfCdImageRead.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageClose);
+#include "shared/sdf/sdfCd/sdfCdImageClose.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageCheckExist);
+#include "shared/sdf/sdfCd/sdfCdImageCheckExist.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageGetFileSize);
+#include "shared/sdf/sdfCd/sdfCdImageGetFileSize.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageGetCurrFileSize);
 

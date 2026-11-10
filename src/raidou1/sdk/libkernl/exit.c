@@ -1,10 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/exit", SetArg);
+#include "shared/sdk/libkernl/SetArg.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/exit", TerminateLibrary);
+#include "shared/sdk/libkernl/TerminateLibrary.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/exit", ExecPS2);
+#include "shared/sdk/libkernl/ExecPS2.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/exit", func_0039C318);
 

@@ -1,1 +1,34 @@
 # Per-unit compiler: <dir>/<unit>  <id>  # evidence (default is ee-gcc2.96)
+
+# SMT3 settings for SDK members with carried C (tools/raidou_c.py)
+sdk/libcdvd/cdvd000  ee-gcc2.9-991111-01
+sdk/libcdvd/cdvd035  ee-gcc2.9-991111-01
+sdk/libcdvd/cdvd047  ee-gcc2.9-991111-01
+sdk/libdma/libdma  ee-gcc2.9-991111-01
+sdk/libgraph/graph001  ee-gcc2.9-991111-01
+sdk/libgraph/graph004  ee-gcc2.9-991111-01
+sdk/libgraph/graph016  ee-gcc2.9-991111-01
+sdk/libgraph/graph020  ee-gcc2.9-991111-01
+sdk/libgraph/graph029  ee-gcc2.9-991111-01
+sdk/libipu/ipuinit  ee-gcc2.9-991111-01
+sdk/libipu/libipu  ee-gcc2.9-991111-01
+sdk/libkernl/alarm  ee-gcc2.9-991111-01
+sdk/libkernl/cache  ee-gcc2.9-991111-01
+sdk/libkernl/deci2  ee-gcc2.9-991111-01
+sdk/libkernl/eeloadfile  ee-gcc2.9-991111-01
+sdk/libkernl/exit  ee-gcc2.9-991111-01
+sdk/libkernl/filestub  ee-gcc2.9-991111-01
+sdk/libkernl/glue  ee-gcc2.9-991111-01
+sdk/libkernl/initsys  ee-gcc2.9-991111-01
+sdk/libkernl/iopheap  ee-gcc2.9-991111-01
+sdk/libkernl/iopreset  ee-gcc2.9-991111-01
+sdk/libkernl/kprintf  ee-gcc2.9-991111-01
+sdk/libkernl/libosd  ee-gcc2.9-991111-01
+sdk/libkernl/sifcmd  ee-gcc2.9-991111-01
+sdk/libkernl/sifrpc  ee-gcc2.9-991111-01
+sdk/libkernl/thread  ee-gcc2.9-991111-01
+sdk/libkernl/tlbfunc  ee-gcc2.9-991111-01
+sdk/libkernl/tty  ee-gcc2.9-991111-01
+sdk/libmc/libmc  ee-gcc2.9-991111-01
+sdk/libmrpc/msifrpc  ee-gcc2.9-991111-01
+sdk/libpad/libpad  ee-gcc2.9-991111-01

@@ -2,16 +2,16 @@
 
 INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadControl);
 
-INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadManager);
+#include "shared/sdf/sdf_PadManager/sdfPadManager.c"
 
 INCLUDE_ASM(const s32, "sdf/sdf_PadManager", func_0036A960);
 
-INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadChangeMode);
+#include "shared/sdf/sdf_PadManager/sdfPadChangeMode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadSetAct0);
+#include "shared/sdf/sdf_PadManager/sdfPadSetAct0.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadSetAct1);
+#include "shared/sdf/sdf_PadManager/sdfPadSetAct1.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadSetAct);
+#include "shared/sdf/sdf_PadManager/sdfPadSetAct.c"
 
 INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadInitManager);

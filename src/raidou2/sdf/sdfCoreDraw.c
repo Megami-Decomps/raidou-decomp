@@ -2,14 +2,14 @@
 
 INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", sdfCorePacketGen);
 
-INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", sdfCoreDrawScanOneSkinNodes);
+#include "shared/sdf/sdfCoreDraw/sdfCoreDrawScanOneSkinNodes.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", sdfCoreDrawSetLight);
+#include "shared/sdf/sdfCoreDraw/sdfCoreDrawSetLight.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", sdfCoreDrawSetFog);
+#include "shared/sdf/sdfCoreDraw/sdfCoreDrawSetFog.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", sdfCoreDrawSetZBias);
+#include "shared/sdf/sdfCoreDraw/sdfCoreDrawSetZBias.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", func_003DDF38);
 
-INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", sdfCoreDrawInit);
+#include "shared/sdf/sdfCoreDraw/sdfCoreDrawInit.c"

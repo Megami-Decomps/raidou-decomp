@@ -1,5 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/malloc", malloc);
+#include "shared/sdk/libc/malloc.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/malloc", free);
+#include "shared/sdk/libc/free.c"

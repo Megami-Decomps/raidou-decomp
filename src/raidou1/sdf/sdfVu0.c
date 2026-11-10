@@ -1,79 +1,79 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", LoadMatrix);
+#include "shared/sdf/sdfVu0/LoadMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", LoadMatrix_B);
+#include "shared/sdf/sdfVu0/LoadMatrix_B.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", StoreMatrix);
+#include "shared/sdf/sdfVu0/StoreMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", StoreMatrix_B);
+#include "shared/sdf/sdfVu0/StoreMatrix_B.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", CopyMatrixAtoB);
+#include "shared/sdf/sdfVu0/CopyMatrixAtoB.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", CopyMatrixAtoC);
+#include "shared/sdf/sdfVu0/CopyMatrixAtoC.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", CopyMatrixBtoA);
+#include "shared/sdf/sdfVu0/CopyMatrixBtoA.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", CopyMatrixBtoC);
+#include "shared/sdf/sdfVu0/CopyMatrixBtoC.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", CopyMatrixCtoA);
+#include "shared/sdf/sdfVu0/CopyMatrixCtoA.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", CopyMatrixCtoB);
+#include "shared/sdf/sdfVu0/CopyMatrixCtoB.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", LoadIdentity);
+#include "shared/sdf/sdfVu0/LoadIdentity.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", LoadIdentity_B);
+#include "shared/sdf/sdfVu0/LoadIdentity_B.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", StoreIdentity);
+#include "shared/sdf/sdfVu0/StoreIdentity.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", DiagMatrix);
+#include "shared/sdf/sdfVu0/DiagMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", ReverseMatrix);
+#include "shared/sdf/sdfVu0/ReverseMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", InversMatrix);
+#include "shared/sdf/sdfVu0/InversMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", SetRotateMatrixX);
+#include "shared/sdf/sdfVu0/SetRotateMatrixX.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", SetRotateMatrixY);
+#include "shared/sdf/sdfVu0/SetRotateMatrixY.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", SetRotateMatrixZ);
+#include "shared/sdf/sdfVu0/SetRotateMatrixZ.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", StoreRotateMatrixAxis);
+#include "shared/sdf/sdfVu0/StoreRotateMatrixAxis.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", SetRotateMatrixAxis);
+#include "shared/sdf/sdfVu0/SetRotateMatrixAxis.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", SetRotateMatrixX_B);
+#include "shared/sdf/sdfVu0/SetRotateMatrixX_B.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", SetRotateMatrixY_B);
+#include "shared/sdf/sdfVu0/SetRotateMatrixY_B.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", SetRotateMatrixZ_B);
+#include "shared/sdf/sdfVu0/SetRotateMatrixZ_B.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", SetRotateMatrixAxis_B);
+#include "shared/sdf/sdfVu0/SetRotateMatrixAxis_B.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", RotateMatrixX);
+#include "shared/sdf/sdfVu0/RotateMatrixX.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", RotateMatrixY);
+#include "shared/sdf/sdfVu0/RotateMatrixY.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", RotateMatrixZ);
+#include "shared/sdf/sdfVu0/RotateMatrixZ.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", SetRotateMatrixXYZ);
+#include "shared/sdf/sdfVu0/SetRotateMatrixXYZ.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", MultMatrixNoArg);
+#include "shared/sdf/sdfVu0/MultMatrixNoArg.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", MultMatrixRevNoArg);
+#include "shared/sdf/sdfVu0/MultMatrixRevNoArg.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", MultMatrixNoArg_C);
+#include "shared/sdf/sdfVu0/MultMatrixNoArg_C.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", MultMatrixRevNoArg_C);
+#include "shared/sdf/sdfVu0/MultMatrixRevNoArg_C.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", MultMatrix);
+#include "shared/sdf/sdfVu0/MultMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", MultMatrixRev);
+#include "shared/sdf/sdfVu0/MultMatrixRev.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", ApplyMatrix);
+#include "shared/sdf/sdfVu0/ApplyMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", InnerProduct);
+#include "shared/sdf/sdfVu0/InnerProduct.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", OuterProduct);
+#include "shared/sdf/sdfVu0/OuterProduct.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfVu0", LookAtMatrix);
+#include "shared/sdf/sdfVu0/LookAtMatrix.c"

@@ -1,13 +1,13 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tty", QueuePeekWriteDone);
+#include "shared/sdk/libkernl/QueuePeekWriteDone.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tty", QueuePeekReadDone);
+#include "shared/sdk/libkernl/QueuePeekReadDone.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/tty", sceTtyHandler);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tty", sceTtyWrite);
+#include "shared/sdk/libkernl/sceTtyWrite.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tty", sceTtyRead);
+#include "shared/sdk/libkernl/sceTtyRead.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tty", sceTtyInit);
+#include "shared/sdk/libkernl/sceTtyInit.c"

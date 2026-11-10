@@ -4,61 +4,61 @@ INCLUDE_ASM(const s32, "sdk/libpad/libpad", _send_to_iop);
 
 INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadInit);
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadInit2);
+#include "shared/sdk/libpad/scePadInit2.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadEnd);
+#include "shared/sdk/libpad/scePadEnd.c"
 
 INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadPortOpen);
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadPortClose);
+#include "shared/sdk/libpad/scePadPortClose.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadGetDmaStr);
+#include "shared/sdk/libpad/scePadGetDmaStr.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadGetFrameCount);
+#include "shared/sdk/libpad/scePadGetFrameCount.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadRead);
+#include "shared/sdk/libpad/scePadRead.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadGetState);
+#include "shared/sdk/libpad/scePadGetState.c"
 
 INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadStateIntToStr);
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadSetReqState);
+#include "shared/sdk/libpad/scePadSetReqState.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadGetReqState);
+#include "shared/sdk/libpad/scePadGetReqState.c"
 
 INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadReqIntToStr);
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadInfoAct);
+#include "shared/sdk/libpad/scePadInfoAct.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadInfoComb);
+#include "shared/sdk/libpad/scePadInfoComb.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadInfoMode);
+#include "shared/sdk/libpad/scePadInfoMode.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadSetMainMode);
+#include "shared/sdk/libpad/scePadSetMainMode.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadSetActDirect);
+#include "shared/sdk/libpad/scePadSetActDirect.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadSetActAlign);
+#include "shared/sdk/libpad/scePadSetActAlign.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadGetButtonMask);
+#include "shared/sdk/libpad/scePadGetButtonMask.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadSetButtonInfo);
+#include "shared/sdk/libpad/scePadSetButtonInfo.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadInfoPressMode);
+#include "shared/sdk/libpad/scePadInfoPressMode.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadEnterPressMode);
+#include "shared/sdk/libpad/scePadEnterPressMode.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadExitPressMode);
+#include "shared/sdk/libpad/scePadExitPressMode.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadSetVrefParam);
+#include "shared/sdk/libpad/scePadSetVrefParam.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadGetPortMax);
+#include "shared/sdk/libpad/scePadGetPortMax.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadGetSlotMax);
+#include "shared/sdk/libpad/scePadGetSlotMax.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadGetModVersion);
+#include "shared/sdk/libpad/scePadGetModVersion.c"
 
-INCLUDE_ASM(const s32, "sdk/libpad/libpad", scePadSetWarningLevel);
+#include "shared/sdk/libpad/scePadSetWarningLevel.c"
 
 INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_004D8568);
 

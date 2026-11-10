@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound_003E7830", sdfDumpHexLine);
+#include "shared/sdf/sdfSound/sdfDumpHexLine.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound_003E7830", sdfDumpDmaChain);
 
@@ -16,9 +16,9 @@ INCLUDE_RODATA(const s32, "sdf/sdfSound_003E7830", jtbl_004D7710);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound_003E7830", sdfGrFlushOtChain);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound_003E7830", sdfDumpGsMemory);
+#include "shared/sdf/sdfSound/sdfDumpGsMemory.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound_003E7830", sdfDumpGsMemory2);
+#include "shared/sdf/sdfSound/sdfDumpGsMemory2.c"
 
 INCLUDE_RODATA(const s32, "sdf/sdfSound_003E7830", D_004D7BA8);
 

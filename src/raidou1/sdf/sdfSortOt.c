@@ -1,21 +1,21 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfSortOtAvlRotateLR);
+#include "shared/sdf/sdfSortOt/sdfSortOtAvlRotateLR.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfSortOtAvlRotateRL);
+#include "shared/sdf/sdfSortOt/sdfSortOtAvlRotateRL.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfSortOtAvlCheckBalance);
+#include "shared/sdf/sdfSortOt/sdfSortOtAvlCheckBalance.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfSortOtAvlRegist);
+#include "shared/sdf/sdfSortOt/sdfSortOtAvlRegist.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfGrSortOtReg);
+#include "shared/sdf/sdfSortOt/sdfGrSortOtReg.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfGrSortOtFixup);
+#include "shared/sdf/sdfSortOt/sdfGrSortOtFixup.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfGrSortOtTraverse);
+#include "shared/sdf/sdfSortOt/sdfGrSortOtTraverse.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfGrSortOtSetup);
+#include "shared/sdf/sdfSortOt/sdfGrSortOtSetup.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfGrSortOtCallback);
+#include "shared/sdf/sdfSortOt/sdfGrSortOtCallback.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSortOt", sdfModelSetOtCallbacks);

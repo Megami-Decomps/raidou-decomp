@@ -2,103 +2,103 @@
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelInitSystem);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelNodeNew);
+#include "shared/sdf/sdfModel/sdfModelNodeNew.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelAllocTmPacket);
+#include "shared/sdf/sdfModel/sdfModelAllocTmPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelPacketFree);
+#include "shared/sdf/sdfModel/sdfModelPacketFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelNodeFree);
+#include "shared/sdf/sdfModel/sdfModelNodeFree.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelRootNew);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelRootFreeResrc);
+#include "shared/sdf/sdfModel/sdfModelRootFreeResrc.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelRootFree);
+#include "shared/sdf/sdfModel/sdfModelRootFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelAllocNodeList);
+#include "shared/sdf/sdfModel/sdfModelAllocNodeList.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMakeNodeList);
+#include "shared/sdf/sdfModel/sdfModelMakeNodeList.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelNodeAdd);
+#include "shared/sdf/sdfModel/sdfModelNodeAdd.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelNodeUnlink);
+#include "shared/sdf/sdfModel/sdfModelNodeUnlink.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelNodeSetParent);
+#include "shared/sdf/sdfModel/sdfModelNodeSetParent.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSearchNode);
+#include "shared/sdf/sdfModel/sdfModelSearchNode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSetTmRefPacket);
+#include "shared/sdf/sdfModel/sdfModelSetTmRefPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSetTermPacket);
+#include "shared/sdf/sdfModel/sdfModelSetTermPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSetMatRefPacket);
+#include "shared/sdf/sdfModel/sdfModelSetMatRefPacket.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetDrawPacketSize);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSetNormalDrawPacket);
+#include "shared/sdf/sdfModel/sdfModelSetNormalDrawPacket.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSetOneSkinDrawPacket);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelLinkShapedDrawPacket);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelNewPacketHeader);
+#include "shared/sdf/sdfModel/sdfModelNewPacketHeader.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelLinkDrawPacket);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMakeLocalTm);
+#include "shared/sdf/sdfModel/sdfModelMakeLocalTm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelNodeBaseSet);
+#include "shared/sdf/sdfModel/sdfModelNodeBaseSet.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelNodeSet);
+#include "shared/sdf/sdfModel/sdfModelNodeSet.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelNodeSetShape);
+#include "shared/sdf/sdfModel/sdfModelNodeSetShape.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMakeMorphList);
+#include "shared/sdf/sdfModel/sdfModelMakeMorphList.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMakeRoot);
+#include "shared/sdf/sdfModel/sdfModelMakeRoot.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMake);
+#include "shared/sdf/sdfModel/sdfModelMake.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMakeEarly);
+#include "shared/sdf/sdfModel/sdfModelMakeEarly.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelEvalNode);
+#include "shared/sdf/sdfModel/sdfModelEvalNode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelEvalTm2);
+#include "shared/sdf/sdfModel/sdfModelEvalTm2.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelEvalTm);
+#include "shared/sdf/sdfModel/sdfModelEvalTm.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_0035FB40);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelCheckBounds);
+#include "shared/sdf/sdfModel/sdfModelCheckBounds.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelTempPacketLinkOt);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_003600F0);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMorphListCopyStat);
+#include "shared/sdf/sdfModel/sdfModelMorphListCopyStat.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelCopyStat);
+#include "shared/sdf/sdfModel/sdfModelCopyStat.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSetDrawEnv);
+#include "shared/sdf/sdfModel/sdfModelSetDrawEnv.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelDrawEnvLinkOt);
+#include "shared/sdf/sdfModel/sdfModelDrawEnvLinkOt.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_003609C0);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360A08);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetNodeIndexByName);
+#include "shared/sdf/sdfModel/sdfModelGetNodeIndexByName.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetNodeName);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPosCount);
+#include "shared/sdf/sdfModel/sdfModelGetMarkPosCount.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMakeMarkPosMatrix);
+#include "shared/sdf/sdfModel/sdfModelMakeMarkPosMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMakeMarkPos);
+#include "shared/sdf/sdfModel/sdfModelMakeMarkPos.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSearchMarkPosData);
+#include "shared/sdf/sdfModel/sdfModelSearchMarkPosData.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360D10);
 
@@ -112,7 +112,7 @@ INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360E70);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360EA0);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSetFaceDivParm);
+#include "shared/sdf/sdfModel/sdfModelSetFaceDivParm.c"
 INCLUDE_SDATA(const s32, "sdf/sdfModel", D_0046F304);
 
 INCLUDE_SDATA(const s32, "sdf/sdfModel", D_0046F308);

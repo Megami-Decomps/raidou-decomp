@@ -1,8 +1,8 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfTmx", sdfTmxSetHeader);
+#include "shared/sdf/sdfTmx/sdfTmxSetHeader.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTmx", sdfFileRpcContinueRead);
+#include "shared/sdf/sdfTmx/sdfFileRpcContinueRead.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfTmx", sdfFileRpcReadCallback);
 
@@ -12,7 +12,7 @@ INCLUDE_ASM(const s32, "sdf/sdfTmx", SdfFileRpcServerThreadProc);
 
 INCLUDE_ASM(const s32, "sdf/sdfTmx", sdfStartFileRpcServer);
 
-INCLUDE_ASM(const s32, "sdf/sdfTmx", LoadMcModules);
+#include "shared/sdf/sdfTmx/LoadMcModules.c"
 
 INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_004656B0);
 

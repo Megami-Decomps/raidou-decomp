@@ -2,56 +2,56 @@
 
 INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcInit);
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcEnd);
+#include "shared/sdk/libmc/sceMcEnd.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", _lmcGetClientPtr);
+#include "shared/sdk/libmc/_lmcGetClientPtr.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcChangeThreadPriority);
+#include "shared/sdk/libmc/sceMcChangeThreadPriority.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcGetSlotMax);
+#include "shared/sdk/libmc/sceMcGetSlotMax.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcOpen);
+#include "shared/sdk/libmc/sceMcOpen.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcMkdir);
+#include "shared/sdk/libmc/sceMcMkdir.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcClose);
+#include "shared/sdk/libmc/sceMcClose.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcSeek);
+#include "shared/sdk/libmc/sceMcSeek.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", mceIntrReadFixAlign);
+#include "shared/sdk/libmc/mceIntrReadFixAlign.c"
 
 INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcRead);
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcWrite);
+#include "shared/sdk/libmc/sceMcWrite.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", mcHearAlarm);
+#include "shared/sdk/libmc/mcHearAlarm.c"
 
 INCLUDE_ASM(const s32, "sdk/libmc/libmc", mcDelayThread);
 
 INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcSync);
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", mceGetInfoApdx);
+#include "shared/sdk/libmc/mceGetInfoApdx.c"
 
 INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcGetInfo);
 
 INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcUdCheckNewCard);
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcGetDir);
+#include "shared/sdk/libmc/sceMcGetDir.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", mceStorePwd);
+#include "shared/sdk/libmc/mceStorePwd.c"
 
 INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcChdir);
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcFormat);
+#include "shared/sdk/libmc/sceMcFormat.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcDelete);
+#include "shared/sdk/libmc/sceMcDelete.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcFlush);
+#include "shared/sdk/libmc/sceMcFlush.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcSetFileInfo);
+#include "shared/sdk/libmc/sceMcSetFileInfo.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcRename);
+#include "shared/sdk/libmc/sceMcRename.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcUnformat);
+#include "shared/sdk/libmc/sceMcUnformat.c"
 
-INCLUDE_ASM(const s32, "sdk/libmc/libmc", sceMcGetEntSpace);
+#include "shared/sdk/libmc/sceMcGetEntSpace.c"

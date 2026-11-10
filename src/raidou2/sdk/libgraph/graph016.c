@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgraph/graph016", sceGsSetDefStoreImage);
+#include "shared/sdk/libgraph/sceGsSetDefStoreImage.c"

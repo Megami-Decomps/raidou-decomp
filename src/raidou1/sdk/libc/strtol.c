@@ -1,5 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/strtol", _strtol_r);
+#include "shared/sdk/libc/_strtol_r.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/strtol", strtol);
+#include "shared/sdk/libc/strtol.c"

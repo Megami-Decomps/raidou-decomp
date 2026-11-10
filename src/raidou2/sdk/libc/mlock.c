@@ -1,5 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libc/mlock", __malloc_lock);
+#include "shared/sdk/libc/__malloc_lock.c"
 
-INCLUDE_ASM(const s32, "sdk/libc/mlock", __malloc_unlock);
+#include "shared/sdk/libc/__malloc_unlock.c"

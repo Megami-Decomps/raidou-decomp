@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_sf_to_df", fptodp);
+#include "shared/sdk/libgcc/fptodp.c"

@@ -2,18 +2,18 @@
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E53A0);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndCmdIFThread);
+#include "shared/sdf/sdfSound/sdfSndCmdIFThread.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E5460);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndSendCmd);
+#include "shared/sdf/sdfSound/sdfSndSendCmd.c"
 
-void sdfSndSyncCmd(void) {
+void sdfSndSyncCmd(s32 aCmdId) {
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndSendSyncCmd);
+#include "shared/sdf/sdfSound/sdfSndSendSyncCmd.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndTransToIOP);
+#include "shared/sdf/sdfSound/sdfSndTransToIOP.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E5730);
 
@@ -23,27 +23,27 @@ INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E58B8);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E5990);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdPlayBGM);
+#include "shared/sdf/sdfSound/p2sdPlayBGM.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdSendStopCmd);
+#include "shared/sdf/sdfSound/p2sdSendStopCmd.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdResumeBgm);
+#include "shared/sdf/sdfSound/p2sdResumeBgm.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdStopSe);
+#include "shared/sdf/sdfSound/p2sdStopSe.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdStopAllBgm);
+#include "shared/sdf/sdfSound/p2sdStopAllBgm.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E5B88);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdStopAllSe);
+#include "shared/sdf/sdfSound/p2sdStopAllSe.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E5BD8);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndLoadHDFile);
+#include "shared/sdf/sdfSound/sdfSndLoadHDFile.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndLoadBDFile);
+#include "shared/sdf/sdfSound/sdfSndLoadBDFile.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndLoadSQFile);
+#include "shared/sdf/sdfSound/sdfSndLoadSQFile.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E5CD8);
 
@@ -61,7 +61,7 @@ INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdLoadSMGFile);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6290);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdSetPcmBuffer);
+#include "shared/sdf/sdfSound/p2sdSetPcmBuffer.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6328);
 
@@ -85,33 +85,33 @@ INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6488);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E64A8);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdPlayBGMFade);
+#include "shared/sdf/sdfSound/p2sdPlayBGMFade.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdStopBGM);
+#include "shared/sdf/sdfSound/p2sdStopBGM.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdBgmVolDown);
+#include "shared/sdf/sdfSound/p2sdBgmVolDown.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdBgmVolUp);
+#include "shared/sdf/sdfSound/p2sdBgmVolUp.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdSetBgmTrack);
+#include "shared/sdf/sdfSound/p2sdSetBgmTrack.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdLoadPcmFile);
+#include "shared/sdf/sdfSound/p2sdLoadPcmFile.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdGetPcmState);
+#include "shared/sdf/sdfSound/p2sdGetPcmState.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdSyncSound);
+#include "shared/sdf/sdfSound/p2sdSyncSound.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6688);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E66B8);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdSetPcmCallback);
+#include "shared/sdf/sdfSound/p2sdSetPcmCallback.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdPlayPcm);
+#include "shared/sdf/sdfSound/p2sdPlayPcm.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6760);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdSyncMovie);
+#include "shared/sdf/sdfSound/p2sdSyncMovie.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", func_003E6790);
 
@@ -119,7 +119,7 @@ INCLUDE_ASM(const s32, "sdf/sdfSound", sdfFileRpcCallback);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", sdfFileRpcHandleCmd);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", SifRpcServerThreadProc);
+#include "shared/sdf/sdfSound/SifRpcServerThreadProc.c"
 INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E4440);
 
 INCLUDE_SDATA(const s32, "sdf/sdfSound", D_004E4444);

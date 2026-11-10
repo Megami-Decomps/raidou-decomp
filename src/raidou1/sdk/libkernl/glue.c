@@ -1,7 +1,7 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/glue", sceResetttyinit);
+#include "shared/sdk/libkernl/sceResetttyinit.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/glue", VSync);
+#include "shared/sdk/libkernl/VSync.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/glue", VSync2);
+#include "shared/sdk/libkernl/VSync2.c"

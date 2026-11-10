@@ -2,16 +2,16 @@
 
 INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageDataSize);
 
-INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageSetReq);
+#include "shared/sdf/sdfImageSet/sdfImageSetReq.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageSetChainTag);
+#include "shared/sdf/sdfImageSet/sdfImageSetChainTag.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageSetChainReleaseMem);
+#include "shared/sdf/sdfImageSet/sdfImageSetChainReleaseMem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageSetClearCb);
+#include "shared/sdf/sdfImageSet/sdfImageSetClearCb.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageSetDmacHandler);
+#include "shared/sdf/sdfImageSet/sdfImageSetDmacHandler.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageSetTrans);
 
-INCLUDE_ASM(const s32, "sdf/sdfImageSet", sdfImageSetInit);
+#include "shared/sdf/sdfImageSet/sdfImageSetInit.c"

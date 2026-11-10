@@ -1,23 +1,23 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipAllocNextPage);
+#include "shared/sdf/sdfChip/sdfChipAllocNextPage.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipAllocGetFree);
+#include "shared/sdf/sdfChip/sdfChipAllocGetFree.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipAllocPageGrow);
 
 INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipAllocNewPage);
 
-INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipAllocDirect);
+#include "shared/sdf/sdfChip/sdfChipAllocDirect.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfChip", func_003CC708);
 
-INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipFreeDirect);
+#include "shared/sdf/sdfChip/sdfChipFreeDirect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipFreeDelayedDirect);
+#include "shared/sdf/sdfChip/sdfChipFreeDelayedDirect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipCheck);
+#include "shared/sdf/sdfChip/sdfChipCheck.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipInit);
 
-INCLUDE_ASM(const s32, "sdf/sdfChip", sdfChipGetInfo);
+#include "shared/sdf/sdfChip/sdfChipGetInfo.c"

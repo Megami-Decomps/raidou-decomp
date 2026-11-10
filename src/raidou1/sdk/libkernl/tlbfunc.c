@@ -1,18 +1,18 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", SetTLBHandler);
+#include "shared/sdk/libkernl/SetTLBHandler.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", SetDebugHandler);
+#include "shared/sdk/libkernl/SetDebugHandler.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", Copy_2);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", kCopy_3);
+#include "shared/sdk/libkernl/kCopy_3.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", GetEntryAddress_1);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", setup_0);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", InitTLBFunctions);
+#include "shared/sdk/libkernl/InitTLBFunctions.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_0039C910);
 
@@ -20,7 +20,7 @@ INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_0039C920);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", _SetTLBEntry);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", iPutTLBEntry);
+#include "shared/sdk/libkernl/iPutTLBEntry.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_0039C970);
 

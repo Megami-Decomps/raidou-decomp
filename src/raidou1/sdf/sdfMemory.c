@@ -2,45 +2,45 @@
 
 INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemInit);
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemGetType);
+#include "shared/sdf/sdfMemory/sdfMemGetType.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemGetTop);
+#include "shared/sdf/sdfMemory/sdfMemGetTop.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemGetNext);
+#include "shared/sdf/sdfMemory/sdfMemGetNext.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemGetSize);
+#include "shared/sdf/sdfMemory/sdfMemGetSize.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemGetPtr);
+#include "shared/sdf/sdfMemory/sdfMemGetPtr.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemAllocDirect);
+#include "shared/sdf/sdfMemory/sdfMemAllocDirect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemAllocFromTailDirect);
+#include "shared/sdf/sdfMemory/sdfMemAllocFromTailDirect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemAlloc2Direct);
+#include "shared/sdf/sdfMemory/sdfMemAlloc2Direct.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemReallocRecord);
+#include "shared/sdf/sdfMemory/sdfMemReallocRecord.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemFreeMerge);
+#include "shared/sdf/sdfMemory/sdfMemFreeMerge.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemFreeDirect);
+#include "shared/sdf/sdfMemory/sdfMemFreeDirect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemFreePtrDirect);
+#include "shared/sdf/sdfMemory/sdfMemFreePtrDirect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemFreeHandleDirect);
+#include "shared/sdf/sdfMemory/sdfMemFreeHandleDirect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemFreeDelayedDirect);
+#include "shared/sdf/sdfMemory/sdfMemFreeDelayedDirect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemLock);
+#include "shared/sdf/sdfMemory/sdfMemLock.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemUnlock);
+#include "shared/sdf/sdfMemory/sdfMemUnlock.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemGetHandleByPtr);
+#include "shared/sdf/sdfMemory/sdfMemGetHandleByPtr.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfMemGetInfo);
+#include "shared/sdf/sdfMemory/sdfMemGetInfo.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfMemory", func_00357688);
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", SdfIopFileRpc);
+#include "shared/sdf/sdfMemory/SdfIopFileRpc.c"
 INCLUDE_SDATA(const s32, "sdf/sdfMemory", D_0046F26C);
 
 INCLUDE_SDATA(const s32, "sdf/sdfMemory", D_0046F270);

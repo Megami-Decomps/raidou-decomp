@@ -1,12 +1,12 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfPacketBuff", sdfGrMakePacketBuff);
+#include "shared/sdf/sdfPacketBuff/sdfGrMakePacketBuff.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfPacketBuff", sdfGrSetupPacketBuff);
 
-INCLUDE_ASM(const s32, "sdf/sdfPacketBuff", sdfGrGetPacketBuffRemain);
+#include "shared/sdf/sdfPacketBuff/sdfGrGetPacketBuffRemain.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPacketBuff", sdfGrAllocPacketBuff);
+#include "shared/sdf/sdfPacketBuff/sdfGrAllocPacketBuff.c"
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2A0);
 
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2A4);

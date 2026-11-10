@@ -1,23 +1,23 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifInitIopHeap);
+#include "shared/sdk/libkernl/sceSifInitIopHeap.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifAllocIopHeap);
+#include "shared/sdk/libkernl/sceSifAllocIopHeap.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifAllocSysMemory);
+#include "shared/sdk/libkernl/sceSifAllocSysMemory.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifFreeSysMemory);
+#include "shared/sdk/libkernl/sceSifFreeSysMemory.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifFreeIopHeap);
+#include "shared/sdk/libkernl/sceSifFreeIopHeap.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifLoadIopHeap);
+#include "shared/sdk/libkernl/sceSifLoadIopHeap.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifQueryMemSize);
+#include "shared/sdk/libkernl/sceSifQueryMemSize.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifQueryMaxFreeMemSize);
+#include "shared/sdk/libkernl/sceSifQueryMaxFreeMemSize.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifQueryTotalFreeMemSize);
+#include "shared/sdk/libkernl/sceSifQueryTotalFreeMemSize.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifQueryBlockTopAddress);
+#include "shared/sdk/libkernl/sceSifQueryBlockTopAddress.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/iopheap", sceSifQueryBlockSize);
+#include "shared/sdk/libkernl/sceSifQueryBlockSize.c"

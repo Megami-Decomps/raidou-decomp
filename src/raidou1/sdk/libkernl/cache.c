@@ -4,10 +4,10 @@ INCLUDE_ASM(const s32, "sdk/libkernl/cache", _sceSDC);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/cache", SyncDCache);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/cache", iSyncDCache);
+#include "shared/sdk/libkernl/iSyncDCache.c"
 
 INCLUDE_ASM(const s32, "sdk/libkernl/cache", _sceIDC);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/cache", InvalidDCache);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/cache", iInvalidDCache);
+#include "shared/sdk/libkernl/iInvalidDCache.c"

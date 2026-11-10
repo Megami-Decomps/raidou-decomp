@@ -4,21 +4,21 @@ INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemGetBitCount);
 
 INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGetTexelBitCount);
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemCheckHandle);
+#include "shared/sdf/sdfGsMemory/sdfGsMemCheckHandle.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemAllocFromHead);
+#include "shared/sdf/sdfGsMemory/sdfGsMemAllocFromHead.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemAllocFromTail);
+#include "shared/sdf/sdfGsMemory/sdfGsMemAllocFromTail.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemAllocRect);
+#include "shared/sdf/sdfGsMemory/sdfGsMemAllocRect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemCheckMerge);
+#include "shared/sdf/sdfGsMemory/sdfGsMemCheckMerge.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemCheckLinkConsistence);
+#include "shared/sdf/sdfGsMemory/sdfGsMemCheckLinkConsistence.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemFree);
+#include "shared/sdf/sdfGsMemory/sdfGsMemFree.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemFreeDelayed);
+#include "shared/sdf/sdfGsMemory/sdfGsMemFreeDelayed.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfGsMemory", sdfGsMemInit);
 

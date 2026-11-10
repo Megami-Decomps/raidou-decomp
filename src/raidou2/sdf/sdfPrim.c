@@ -1,99 +1,99 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimAllocDrawTag);
+#include "shared/sdf/sdfPrim/sdfPrimAllocDrawTag.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkSimplePacket);
+#include "shared/sdf/sdfPrim/sdfPrimLinkSimplePacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetOpaqueElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetOpaqueElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetOpaque2Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetOpaque2Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetOpaquePacket);
+#include "shared/sdf/sdfPrim/sdfPrimSetOpaquePacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetOpaque2Packet);
+#include "shared/sdf/sdfPrim/sdfPrimSetOpaque2Packet.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetSemiTransElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetSemiTransElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetSemiTrans2Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetSemiTrans2Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetSemiTransPacket);
+#include "shared/sdf/sdfPrim/sdfPrimSetSemiTransPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetSemiTrans2Packet);
+#include "shared/sdf/sdfPrim/sdfPrimSetSemiTrans2Packet.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetAddTransElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetAddTransElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetAddTrans2Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetAddTrans2Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetAddTransPacket);
+#include "shared/sdf/sdfPrim/sdfPrimSetAddTransPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetAddTrans2Packet);
+#include "shared/sdf/sdfPrim/sdfPrimSetAddTrans2Packet.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetSubTransElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetSubTransElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetSubTrans2Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetSubTrans2Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetSubTransPacket);
+#include "shared/sdf/sdfPrim/sdfPrimSetSubTransPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetSubTrans2Packet);
+#include "shared/sdf/sdfPrim/sdfPrimSetSubTrans2Packet.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetTexflushElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetTexflushElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetTexflushPacket);
+#include "shared/sdf/sdfPrim/sdfPrimSetTexflushPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetBitBltElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetBitBltElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetBitBltPacket);
+#include "shared/sdf/sdfPrim/sdfPrimSetBitBltPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkBitBltPacket);
+#include "shared/sdf/sdfPrim/sdfPrimLinkBitBltPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimFrameMovePredraw);
+#include "shared/sdf/sdfPrim/sdfPrimFrameMovePredraw.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkFrameMovePacket);
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetSpriteElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetSpriteElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkSprite);
+#include "shared/sdf/sdfPrim/sdfPrimLinkSprite.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetF3Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetF3Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkF3);
+#include "shared/sdf/sdfPrim/sdfPrimLinkF3.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetF4Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetF4Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkF4);
+#include "shared/sdf/sdfPrim/sdfPrimLinkF4.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetG3Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetG3Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkG3);
+#include "shared/sdf/sdfPrim/sdfPrimLinkG3.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetG4Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetG4Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkG4);
+#include "shared/sdf/sdfPrim/sdfPrimLinkG4.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetFt3Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetFt3Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkFt3);
+#include "shared/sdf/sdfPrim/sdfPrimLinkFt3.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetFt4Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetFt4Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkFt4);
+#include "shared/sdf/sdfPrim/sdfPrimLinkFt4.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetGt3Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetGt3Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkGt3);
+#include "shared/sdf/sdfPrim/sdfPrimLinkGt3.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetGt4Elem);
+#include "shared/sdf/sdfPrim/sdfPrimSetGt4Elem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkGt4);
+#include "shared/sdf/sdfPrim/sdfPrimLinkGt4.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetRectElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetRectElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkRect);
+#include "shared/sdf/sdfPrim/sdfPrimLinkRect.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetLineElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetLineElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkLine);
+#include "shared/sdf/sdfPrim/sdfPrimLinkLine.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimSetBoxLineElem);
+#include "shared/sdf/sdfPrim/sdfPrimSetBoxLineElem.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfPrim", sdfPrimLinkBoxLine);
+#include "shared/sdf/sdfPrim/sdfPrimLinkBoxLine.c"

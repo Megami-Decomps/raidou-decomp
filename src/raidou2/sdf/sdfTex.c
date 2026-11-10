@@ -1,40 +1,40 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetPacketLength);
+#include "shared/sdf/sdfTex/sdfTexGetPacketLength.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetPacketCtx2);
+#include "shared/sdf/sdfTex/sdfTexGetPacketCtx2.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetPacketCtx2Length);
+#include "shared/sdf/sdfTex/sdfTexGetPacketCtx2Length.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetCLUTCount);
+#include "shared/sdf/sdfTex/sdfTexGetCLUTCount.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetCLUTAddr);
+#include "shared/sdf/sdfTex/sdfTexGetCLUTAddr.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetPixelAddr);
+#include "shared/sdf/sdfTex/sdfTexGetPixelAddr.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CEBD8);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetTexelBitCount);
+#include "shared/sdf/sdfTex/sdfTexGetTexelBitCount.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetTex0Reg);
+#include "shared/sdf/sdfTex/sdfTexGetTex0Reg.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetTex1Reg);
+#include "shared/sdf/sdfTex/sdfTexGetTex1Reg.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetClampReg);
+#include "shared/sdf/sdfTex/sdfTexGetClampReg.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexSetFilter);
+#include "shared/sdf/sdfTex/sdfTexSetFilter.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexSetFilterCtx2);
+#include "shared/sdf/sdfTex/sdfTexSetFilterCtx2.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexSetWrapMode);
+#include "shared/sdf/sdfTex/sdfTexSetWrapMode.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexTransData);
+#include "shared/sdf/sdfTex/sdfTexTransData.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexTransCLUT);
+#include "shared/sdf/sdfTex/sdfTexTransCLUT.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexClutToGs);
+#include "shared/sdf/sdfTex/sdfTexClutToGs.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexLink);
+#include "shared/sdf/sdfTex/sdfTexLink.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CEF40);
 
@@ -46,9 +46,9 @@ INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF240);
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetClutDataSize);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexAllocClutBuff);
+#include "shared/sdf/sdfTex/sdfTexAllocClutBuff.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexCopyClutData);
+#include "shared/sdf/sdfTex/sdfTexCopyClutData.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF3A8);
 
@@ -62,13 +62,13 @@ INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF768);
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexSetPacket);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexMakeGIFPacketSub);
+#include "shared/sdf/sdfTex/sdfTexMakeGIFPacketSub.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexMakeGIFPacket);
+#include "shared/sdf/sdfTex/sdfTexMakeGIFPacket.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexMakeGIFPacketCtx2);
+#include "shared/sdf/sdfTex/sdfTexMakeGIFPacketCtx2.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexRebuildPacket);
+#include "shared/sdf/sdfTex/sdfTexRebuildPacket.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CFB30);
 
@@ -80,10 +80,10 @@ INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CFEC8);
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CFEE0);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexSetMonoClut);
+#include "shared/sdf/sdfTex/sdfTexSetMonoClut.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", func_003D0008);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexSearch);
+#include "shared/sdf/sdfTex/sdfTexSearch.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexInit);
+#include "shared/sdf/sdfTex/sdfTexInit.c"

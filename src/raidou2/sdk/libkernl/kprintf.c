@@ -10,6 +10,6 @@ INCLUDE_RODATA(const s32, "sdk/libkernl/kprintf", D_004DBA68);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/kprintf", _printf);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/kprintf", kprintf);
+#include "shared/sdk/libkernl/kprintf.c"
 
-INCLUDE_ASM(const s32, "sdk/libkernl/kprintf", scePrintf);
+#include "shared/sdk/libkernl/scePrintf.c"

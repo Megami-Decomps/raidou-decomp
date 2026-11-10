@@ -1,42 +1,42 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileSetCdFilename);
+#include "shared/sdf/sdfFile/sdfFileSetCdFilename.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileSetHostFilename);
+#include "shared/sdf/sdfFile/sdfFileSetHostFilename.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileSetHddFilename);
+#include "shared/sdf/sdfFile/sdfFileSetHddFilename.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileChkCdFile);
+#include "shared/sdf/sdfFile/sdfFileChkCdFile.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileChkHostFile);
+#include "shared/sdf/sdfFile/sdfFileChkHostFile.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileChkHddFile);
+#include "shared/sdf/sdfFile/sdfFileChkHddFile.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileMakeFilename);
+#include "shared/sdf/sdfFile/sdfFileMakeFilename.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileCallback);
+#include "shared/sdf/sdfFile/sdfFileCallback.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileOpen);
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileCheckExist);
+#include "shared/sdf/sdfFile/sdfFileCheckExist.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileClose);
+#include "shared/sdf/sdfFile/sdfFileClose.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileRead);
+#include "shared/sdf/sdfFile/sdfFileRead.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileLength);
+#include "shared/sdf/sdfFile/sdfFileLength.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileSeek);
+#include "shared/sdf/sdfFile/sdfFileSeek.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileSetHostRoot);
+#include "shared/sdf/sdfFile/sdfFileSetHostRoot.c"
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileGetHostRoot);
+#include "shared/sdf/sdfFile/sdfFileGetHostRoot.c"
 
 INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileSetDefaultSrc);
 
 INCLUDE_ASM(const s32, "sdf/sdfFile", func_0036CD28);
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileCmdAllocHandle);
+#include "shared/sdf/sdfFile/sdfFileCmdAllocHandle.c"
 INCLUDE_SDATA(const s32, "sdf/sdfFile", D_0046F380);
 
 INCLUDE_SDATA(const s32, "sdf/sdfFile", D_0046F384);

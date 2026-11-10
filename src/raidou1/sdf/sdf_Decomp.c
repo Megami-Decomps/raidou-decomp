@@ -2,10 +2,10 @@
 
 INCLUDE_ASM(const s32, "sdf/sdf_Decomp", sdfDecomp);
 
-INCLUDE_ASM(const s32, "sdf/sdf_Decomp", sdfDecompInit);
+#include "shared/sdf/sdf_Decomp/sdfDecompInit.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf_Decomp", sdfDrawModelWithMatrix);
+#include "shared/sdf/sdf_Decomp/sdfDrawModelWithMatrix.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf_Decomp", effDebugDrawWireModel);
+#include "shared/sdf/sdf_Decomp/effDebugDrawWireModel.c"
 
-INCLUDE_ASM(const s32, "sdf/sdf_Decomp", sdfDrawRotatedModel);
+#include "shared/sdf/sdf_Decomp/sdfDrawRotatedModel.c"
