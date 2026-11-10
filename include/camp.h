@@ -1,0 +1,115 @@
+#ifndef CAMP_H
+#define CAMP_H
+
+#include "common.h"
+
+typedef struct
+{
+    /* 0x00 */ s8 Stat;
+    /* 0x01 */ s8 IconType;
+    /* 0x02 */ u8 reserved02[2];
+    /* 0x04 */ u32 IconColor;
+    /* 0x08 */ s8 MoveType;
+    /* 0x09 */ s8 Axis;
+    /* 0x0A */ u8 reserved0A[2];
+    /* 0x0C */ s32 AxisChg;
+    /* 0x10 */ s32 Wait1st;
+    /* 0x14 */ s32 Wait;
+    /* 0x18 */ f32 Angle;
+    /* 0x1C */ f32 DefAng;
+    /* 0x20 */ f32 DistAng;
+    /* 0x24 */ s32 DefCnt;
+    /* 0x28 */ s32 Cnt;
+    /* 0x2C */ s32 Timer;
+    /* 0x30 */ s32 TimerSpd;
+} cmpHeartsIcon_t;
+
+SIZE_CHECK(cmpHeartsIconSizeCheck, cmpHeartsIcon_t, 0x34);
+
+typedef struct
+{
+    /* 0x00 */ s32 StepY;
+    /* 0x04 */ s8 StopFlag;
+    /* 0x05 */ u8 unk_05[3];
+    /* 0x08 */ s32 CursorSize;
+    /* 0x0C */ s32 CursorPos;
+    /* 0x10 */ u16 unk_10;
+    /* 0x12 */ u16 unk_12;
+    /* 0x14 */ u16 unk_14;
+    /* 0x16 */ u16 unk_16;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ u8 unk_20;
+    /* 0x21 */ u8 unk_21;
+    /* 0x22 */ s16 unk_22;
+    /* 0x24 */ s8 unk_24;
+    /* 0x25 */ s8 unk_25;
+    /* 0x26 */ u8 unk_26;
+    /* 0x27 */ u8 unk_27;
+    /* 0x28 */ union {
+        s32 flag;
+        char **text;
+    } listData;
+    /* 0x2C */ union {
+        s32 value;
+        u8 *bytes;
+    } flagsData;
+    /* 0x30 */ s32 unk_30;
+    /* 0x34 */ s32 unk_34;
+} cmpCursorInfo_t;
+
+typedef void (*cmpListRowDraw_t)(s32 x, s32 y, s32 z, u16 width, u16 height2,
+                                 u16 height, s32 color0, s32 color1, s32 color2,
+                                 s8 phase, s32 scale, s32 ot);
+
+void cmpDrawScrollBar(s32 x, s32 y, s32 z, s32 width, s32 height, s32 color,
+                      s32 alpha, s8 row, cmpCursorInfo_t *cursor,
+                      cmpListRowDraw_t draw, s32 ot);
+
+struct datUnitWork_t;
+void cmpDrawStatusComEx(struct datUnitWork_t *unit, u8 alpha, s8 kind, s8 detail,
+                        s8 *delta, s8 mode, s32 color, s8 show, s8 option, s8 extra);
+void cmpDrawStatusComEx2(struct datUnitWork_t *unit, s32 x, s32 y, u8 alpha,
+                         s8 kind, s8 detail, s8 *delta, s8 mode, u32 color,
+                         s8 show, s8 option, s8 extra, s8 full);
+
+typedef struct
+{
+    s8 state;
+    u8 param;
+    u8 unk_02[2];
+    s32 value;
+} cmpCursorSlot_t;
+
+typedef struct
+{
+    /* 0x0000 */ u8 unk_0000[0xE];
+    /* 0x000E */ s16 unk_0E;
+    /* 0x0010 */ u8 unk_10;
+    /* 0x0011 */ u8 unk_0011[0x17];
+    /* 0x0028 */ struct {
+        cmpCursorSlot_t slot;
+        u8 reserved[8];
+    } rows[256];
+    /* 0x1028 */ u8 unk_1028[0x14];
+} cmpStockInfo_t;
+typedef struct {
+    cmpCursorInfo_t cursor;
+    u8 reserved[0x1004];
+} cmpCursorFullWork_t;
+
+typedef struct cmpPadStopWork_t {
+    cmpCursorInfo_t cursor;
+    s8 unk_38;
+} cmpPadStopWork_t;
+
+typedef struct
+{
+    /* 0x00 */ u8 unk_00[0x22];
+    /* 0x22 */ s16 cursor;
+    /* 0x24 */ u8 scroll;
+    /* 0x25 */ u8 unk_25[7];
+    /* 0x2C */ u8 *itemFlags;
+} rcvRootWork_t;
+
+#endif
