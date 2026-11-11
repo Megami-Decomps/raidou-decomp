@@ -39,9 +39,6 @@ import vu_include  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 VERSIONS = json.loads((ROOT / "config/versions.json").read_text())
-ORIGIN_NAMES = {"from_smt3": "found in SMT3", "from_dds": "found in DDS",
-                "raidou_only": "Raidou only"}
-ORIGINS = tuple(ORIGIN_NAMES)
 MEASURES = ("matched_code", "total_code", "matched_functions", "total_functions")
 
 
@@ -221,8 +218,6 @@ def render(version: str, report: dict, audit: dict, history: list[dict],
             f'<span>{html.escape(f["name"])}</span><span class="num">{number(int(f.get("size", 0)))}</span></li>'
             for f in functions)
         path = unit_source(version, unit["name"])
-        origin = ", ".join(ORIGIN_NAMES[c] for c in unit.get("metadata", {}).get("progress_categories", [])
-                           if c in ORIGINS)
         link = (source_link(repo, commit, path, path) if path
                 else "Still assembly: no C source yet")
         units.append(
@@ -232,7 +227,7 @@ def render(version: str, report: dict, audit: dict, history: list[dict],
             f'<span>{bar(m["matched_code"], m["total_code"])} {share:.2f}%</span>'
             f'<span class="num">{number(m["matched_code"])} / {number(m["total_code"])}</span>'
             f'<span class="num">{number(m["matched_functions"])} / {number(m["total_functions"])}</span>'
-            f'</summary><p>{link}{origin and " &middot; " + html.escape(origin)}</p>'
+            f'</summary><p>{link}</p>'
             f'<ol class="functions">{rows}</ol></details>')
 
     return TEMPLATE.format(
