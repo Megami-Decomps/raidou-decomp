@@ -507,9 +507,17 @@ def reconcile(report: dict, scope: str, root: Path = ROOT, *,
         if version not in VERSIONS:
             raise ValueError(f"unknown report version: {version}")
         if not (root / unit_source(root, version, name)).is_file():
-            # The game scope is deliberately limited to the C reconstruction
-            # target. An unexpected unit is a configuration error, not credit.
-            raise ValueError(f"missing source for game report unit: {version}/{name}")
+            # A unit still wholly in assembly has no C source to prove. It stays
+            # in the denominator and earns nothing, whatever objdiff scored it.
+            if not (root / f"asm/{version}/{name}.s").is_file():
+                raise ValueError(f"missing source for game report unit: {version}/{name}")
+            for entry in unit.get("functions", []):
+                entry["fuzzy_match_percent"] = 0.0
+            set_code_measures(measures, 0, 0)
+            for section in unit.get("sections", []):
+                if section["name"] == ".text":
+                    section["fuzzy_match_percent"] = 0.0
+            continue
         if version not in proofs:
             proofs[version] = Production(root, version)
         item = proofs[version].unit(unit, name)

@@ -1,0 +1,203 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+# Read-only token: the job runs repository build scripts.
+permissions:
+  contents: read
+
+# The progress site extends the history.json its last deployment served, so
+# pushes to main publish one at a time. Other refs are never queued.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && 'main' || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ steps.orig.outputs.available == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # The compiler, binutils, objdiff and glibc are all pinned URLs.
+      - name: Cache build tools
+        uses: actions/cache@v4
+        with:
+          path: |
+            tools/bin
+            tools/compilers
+            tools/glibc32
+          key: tools-${{ hashFiles('tools/download_tools.py', 'tools/ee_as_relax.py', 'tools/ee_gcc_aslr.py') }}
+
+      # The compiler is needed before the tool tests: tool tests.
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q ninja-build cpp
+          python3 -m pip install -q -r requirements.txt
+          python3 tools/download_tools.py
+
+      - name: Check scripts and configuration
+        run: |
+          python3 -m compileall -q configure.py diff_settings.py tools
+          python3 tools/check_config.py
+          python3 tools/test_progress_site.py
+          if git ls-files | grep -E '^orig/.+|\.(iso|elf|bin)$' | grep -v '^orig/\.gitkeep$'; then
+            echo "retail data is tracked" >&2
+            exit 1
+          fi
+
+      # The retail executable is copyrighted and is never committed here. A
+      # fork or a public clone has no way to obtain it, so the build, checksum
+      # and report steps below are skipped instead of pretending to verify
+      # anything. To run them, provide a private source of orig/raidou1/SLUS_214.31 and orig/raidou2/SLUS_218.45
+      # through the ORIG_REPO and ORIG_DEPLOY_KEY secrets.
+      - name: Check for the retail executable
+        id: orig
+        env:
+          REPO: ${{ secrets.ORIG_REPO }}
+          KEY: ${{ secrets.ORIG_DEPLOY_KEY }}
+        run: |
+          if [ -n "$REPO" ] && [ -n "$KEY" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No retail executable available: tooling tests ran, the matching build and SHA-1 verification were skipped."
+          fi
+
+      - name: Fetch the retail executable
+        if: steps.orig.outputs.available == 'true'
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ secrets.ORIG_REPO }}
+          ssh-key: ${{ secrets.ORIG_DEPLOY_KEY }}
+          path: .orig-src
+          persist-credentials: false
+
+      # Fails loudly rather than skipping: the secrets were set, so the file
+      # is meant to be here.
+      - name: Place the retail executable
+        if: steps.orig.outputs.available == 'true'
+        run: |
+          for file in raidou1/SLUS_214.31 raidou2/SLUS_218.45; do
+            test -f ".orig-src/orig/$file" || { echo "ORIG_REPO missing orig/$file" >&2; exit 1; }
+            mkdir -p "orig/$(dirname "$file")"
+            cp ".orig-src/orig/$file" "orig/$file"
+          done
+          rm -rf .orig-src
+          echo "a005ff18213eb72017119c7d666312507ad3b5ea  orig/raidou1/SLUS_214.31" | sha1sum -c -
+          echo "bc0d30b35a40324db1f6d43bb652c6ca1dab3629  orig/raidou2/SLUS_218.45" | sha1sum -c -
+
+      - name: Configure
+        if: steps.orig.outputs.available == 'true'
+        run: python3 configure.py raidou1 raidou2
+
+      # ninja's checksum step fails unless the linked ELF is byte-identical to
+      # retail.
+      - name: Build and verify
+        if: steps.orig.outputs.available == 'true'
+        run: ninja
+
+      - name: Source coverage
+        if: steps.orig.outputs.available == 'true'
+        run: python3 tools/progress.py
+
+      - name: Progress reports
+        if: steps.orig.outputs.available == 'true'
+        run: ninja build/raidou1/report.json build/raidou2/report.json build/raidou1/report.all.json build/raidou2/report.all.json
+
+      # The published report must stay the game scope of the full-binary audit.
+      # objdiff computes every measure from its project's own unit list, so a
+      # unit silently leaving or joining the game category would move the
+      # badges without any other step failing.
+      - name: Check report scope
+        if: steps.orig.outputs.available == 'true'
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          for version in ("raidou1", "raidou2"):
+              root = Path("build") / version
+              primary = json.loads((root / "report.json").read_text())
+              audit = json.loads((root / "report.all.json").read_text())
+              game_units = [unit for unit in audit["units"]
+                            if "game" in unit.get("metadata", {}).get("progress_categories", [])]
+              game_measures = next(category["measures"] for category in audit["categories"]
+                                   if category["id"] == "game")
+              assert primary["units"] == game_units, f"{version}: primary game units changed"
+              assert primary["measures"] == game_measures, f"{version}: primary game totals changed"
+          PY
+
+      # decomp.dev reads the game-code report, named <version>_report.
+      - name: Upload raidou1 report
+        if: steps.orig.outputs.available == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: raidou1_report
+          path: build/raidou1/report.json
+
+      - name: Upload raidou2 report
+        if: steps.orig.outputs.available == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: raidou2_report
+          path: build/raidou2/report.json
+
+      # Keeps the whole-binary, SDK and VU1 totals auditable without importing
+      # extra versions into decomp.dev. This name intentionally does not match
+      # decomp.dev's *_report pattern.
+      - name: Upload full-binary audit
+        if: steps.orig.outputs.available == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: build-audit
+          if-no-files-found: ignore
+          path: |
+            build/raidou*/report.all.json
+            build/raidou*/report*.raw
+            build/raidou*/report*.proof.json
+
+      # A 404 means nothing has been published yet and the history starts
+      # here. Any other failure stops the publish rather than reset it.
+      - name: Build progress site
+        if: steps.orig.outputs.available == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          python3 tools/progress_site.py --out build/site \
+            --history-url "https://${GITHUB_REPOSITORY_OWNER,,}.github.io/${REPO_NAME}"
+
+      - name: Upload progress site
+        if: steps.orig.outputs.available == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: build/site
+
+  # Kept apart from the build so the job that runs repository scripts never
+  # holds a token that can write anything.
+  deploy:
+    needs: build
+    if: needs.build.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy progress site
+        id: deployment
+        uses: actions/deploy-pages@v5

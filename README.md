@@ -1,5 +1,19 @@
 # Devil Summoner: Raidou Kuzunoha 1 and 2
 
+[![Build Status]][actions]
+
+Raidou 1: [![raidou1-code]][raidou1-progress] [![raidou1-functions]][raidou1-progress]<br>
+Raidou 2: [![raidou2-code]][raidou2-progress] [![raidou2-functions]][raidou2-progress]
+
+[Build Status]: https://github.com/Megami-Decomps/raidou-decomp/actions/workflows/build.yml/badge.svg
+[actions]: https://github.com/Megami-Decomps/raidou-decomp/actions/workflows/build.yml
+[raidou1-code]: https://img.shields.io/endpoint?url=https%3A%2F%2Fmegami-decomps.github.io%2Fraidou-decomp%2Fbadges%2Fraidou1-code.json
+[raidou1-functions]: https://img.shields.io/endpoint?url=https%3A%2F%2Fmegami-decomps.github.io%2Fraidou-decomp%2Fbadges%2Fraidou1-functions.json
+[raidou2-code]: https://img.shields.io/endpoint?url=https%3A%2F%2Fmegami-decomps.github.io%2Fraidou-decomp%2Fbadges%2Fraidou2-code.json
+[raidou2-functions]: https://img.shields.io/endpoint?url=https%3A%2F%2Fmegami-decomps.github.io%2Fraidou-decomp%2Fbadges%2Fraidou2-functions.json
+[raidou1-progress]: https://megami-decomps.github.io/raidou-decomp/raidou1/
+[raidou2-progress]: https://megami-decomps.github.io/raidou-decomp/raidou2/
+
 A work-in-progress matching decompilation of *Shin Megami Tensei: Devil
 Summoner* (Raidou Kuzunoha vs. the Soulless Army) and *Shin Megami Tensei:
 Devil Summoner 2* (Raidou Kuzunoha vs. King Abaddon) for PlayStation 2. Both
@@ -126,8 +140,19 @@ python tools/progress.py       # source coverage
 
 `ninja` ends by checking each linked ELF against `config/<version>/checksum.sha1`.
 `tools/check_unit.py <unit.c>` compares one unit's objects with retail.
-CI (`.github/workflows/check.yml`) cannot have the executables: it compiles the
-scripts and runs `tools/check_config.py` on the tables and source layout.
+CI checks the scripts and source layout without retail executables. When the
+private inputs are available, it also verifies both builds and publishes the
+[progress site](https://megami-decomps.github.io/raidou-decomp/) on pushes to
+`main`. Badges count matched game and engine code bytes and functions, excluding
+SDK code and assembly. `tools/progress.py` also includes SDK in its totals.
+
+## Progress publishing
+
+Set `ORIG_REPO` to `Megami-Decomps/raidou-orig` and `ORIG_DEPLOY_KEY` to a
+read-only deploy key for that private repository. It must contain
+`orig/raidou1/SLUS_214.31` and `orig/raidou2/SLUS_218.45`. Set the repository
+Pages source to GitHub Actions. Without these secrets, CI runs only the checks
+that do not need retail inputs.
 
 ## Documentation
 
