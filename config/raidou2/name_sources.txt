@@ -4385,3 +4385,4 @@
 0x0040FF68	gcc2_compiled__13	inferred	fuzzy name from SLUS_209.11 0x002DF468, score 1.00, tools/xgame/fuzzy_apply.py
 0x00415208	ExecOSD	inferred	fuzzy name from SLUS_209.11 0x002E4708, score 1.00, tools/xgame/fuzzy_apply.py
 0x0032F040	fldLmapDrawListTree	inferred	fuzzy name from SLUS_209.74 0x002C2A20, score 1.00, tools/xgame/fuzzy_apply.py
+0x003291F0	effResolveResourceSlots	inferred	fuzzy name from SLUS_214.31 0x002C8F40, score 0.94, tools/xgame/fuzzy_apply.py

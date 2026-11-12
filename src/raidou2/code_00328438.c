@@ -863,7 +863,7 @@ void effResetSlotWork(EffectSlotSet *work, u32 slotIndex) {
     effAttachSlotWorkOwner(work, slotIndex, entry);
 }
 
-INCLUDE_ASM(const s32, "code_00328438", func_003291F0);
+INCLUDE_ASM(const s32, "code_00328438", effResolveResourceSlots);
 
 void effResolveAndReleaseResource(EffectSlotSet *owner) {
     if (owner->sourceAllocation != 0) {
