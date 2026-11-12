@@ -635,11 +635,11 @@ INCLUDE_ASM(const s32, "code_001E5980", func_001E59B0);
 
 INCLUDE_ASM(const s32, "code_001E5980", func_001E5A70);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5A78);
+INCLUDE_ASM(const s32, "code_001E5980", mnuIncrementTitleEffectFrameCounter);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5AA8);
+INCLUDE_ASM(const s32, "code_001E5980", mnuDestroyTitleEffectTask);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5AD0);
+INCLUDE_ASM(const s32, "code_001E5980", mnuCreateTitleEffectTask);
 
 void mnuResetTitleEffectState(s32 command) {
     TitleEffectState *effectState = (TitleEffectState *)dds3GetProcessData(mnuTitleSoundTask);
@@ -778,7 +778,7 @@ void mnuInitTitleSoundRemoteRequest(u32 wordCount) {
     D_003BC5BC = 0;
 }
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E6488);
+INCLUDE_ASM(const s32, "code_001E5980", mnuCopySoundStreamOnStatusChange);
 
 INCLUDE_RODATA(const s32, "code_001E5980", D_004BB050);
 

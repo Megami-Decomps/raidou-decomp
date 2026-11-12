@@ -438,7 +438,7 @@ void uiDrawSurfaceAtNearDepth(u32 surface) {
     uiDrawUniformColorRect(0, 0, 0, 0x2000, 0xe00, 0, surface);
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032DBA8);
+INCLUDE_ASM(const s32, "code_0032DB50", uiScaleColorRgb);
 
 u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight)
 {
@@ -474,13 +474,13 @@ u32 itfReturnZeroDuplicate(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032DCC0);
+INCLUDE_ASM(const s32, "code_0032DB50", itfActivateGridTextWidget);
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032DCF0);
+INCLUDE_ASM(const s32, "code_0032DB50", itfSetWidgetFlagsAndActivateChild);
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032DD38);
+INCLUDE_ASM(const s32, "code_0032DB50", itfCreateGridTextWidget);
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032DE50);
+INCLUDE_ASM(const s32, "code_0032DB50", itfSetGridDimensions);
 
 u32 itfDestroyGridTextWidget(GridTextWidget *widget) {
     GridTextListItem *next;
@@ -512,7 +512,7 @@ u32 itfDestroyGridTextWidgetTree(GridTextWidget *widget) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032DF40);
+INCLUDE_ASM(const s32, "code_0032DB50", itfExpandWidgetColumnWidth);
 
 /* Bit 0: the visible node has a predecessor. Bit 1: at least rows successors remain. */
 u32 itfGetGridListLinkFlags(GridTextWidget *owner) {
@@ -731,9 +731,9 @@ void itfReverseSelectedGridScroll(GridTextWidget *widget, u32 steps) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032E678);
+INCLUDE_ASM(const s32, "code_0032DB50", itfGetGridTextColorTableIndex);
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032E6E8);
+INCLUDE_ASM(const s32, "code_0032DB50", itfFormatGridValueEntryText);
 
 INCLUDE_ASM(const s32, "code_0032DB50", func_0032E8E0);
 
@@ -746,7 +746,7 @@ GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
     return item;
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032EB88);
+INCLUDE_ASM(const s32, "code_0032DB50", sdfGridSeekSelectedNodeByIndex);
 
 INCLUDE_ASM(const s32, "code_0032DB50", func_0032EC00);
 INCLUDE_SDATA(const s32, "code_0032DB50", D_004E3740);

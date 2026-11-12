@@ -468,7 +468,7 @@ void effSubmitGeneratedTexturePacket(sdfGrOt_t *surface, EffGeneratedTextureDesc
     surface->regFunc(surface, packetList);
 }
 
-INCLUDE_ASM(const s32, "code_001DED50", func_001DF038);
+INCLUDE_ASM(const s32, "code_001DED50", effDrawCompositeTextureQuad);
 
 /* Allocate/init a packet list, generate its composite GS payload, then append it to the draw surface. */
 void effSubmitCompositeGsPacket(sdfGrOt_t *surface, EffCompositeGsDescriptor *source) {

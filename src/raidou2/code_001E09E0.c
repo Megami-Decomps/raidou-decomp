@@ -1397,7 +1397,7 @@ void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_001E09E0", func_001E0C50);
+INCLUDE_ASM(const s32, "code_001E09E0", mnuAdjustTimelineDurations);
 
 INCLUDE_ASM(const s32, "code_001E09E0", func_001E0E30);
 
@@ -1445,7 +1445,7 @@ void mnuSampleCampDisplayTrack(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *tra
     mnuBlendCampDisplayFields(lowerKey, upperKey, display, ratio);
 }
 
-INCLUDE_ASM(const s32, "code_001E09E0", func_001E11D0);
+INCLUDE_ASM(const s32, "code_001E09E0", mnuBlendCampDisplayFields);
 
 void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey) {
     s32 frameOffset;
@@ -1488,7 +1488,7 @@ void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsO
     *highBitsOut = key->p08.h[0] >> CAMP_KEY_HIGH_BITS_SHIFT;
 }
 
-INCLUDE_ASM(const s32, "code_001E09E0", func_001E1580);
+INCLUDE_ASM(const s32, "code_001E09E0", mnuCampFindMatchingEntryIndex);
 
 /* Return the first track with this fixed-width name, or NULL when absent. */
 EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *name) {
@@ -1502,15 +1502,15 @@ EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "code_001E09E0", func_001E1678);
+INCLUDE_ASM(const s32, "code_001E09E0", campResolvePendingValue);
 
 INCLUDE_ASM(const s32, "code_001E09E0", func_001E1728);
 
-INCLUDE_ASM(const s32, "code_001E09E0", func_001E19E8);
+INCLUDE_ASM(const s32, "code_001E09E0", fldResetCampSceneEntries);
 
 INCLUDE_ASM(const s32, "code_001E09E0", func_001E1A20);
 
-INCLUDE_ASM(const s32, "code_001E09E0", func_001E1A70);
+INCLUDE_ASM(const s32, "code_001E09E0", mnuCampLinkFontGlyph);
 
 /* Retail keeps only the divide-by-zero check (break 7) of a division whose result is never used. */
 void mnuCampCheckClockDivisor(void) {

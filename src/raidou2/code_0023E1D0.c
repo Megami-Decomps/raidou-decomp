@@ -6879,7 +6879,7 @@ EffTrackSet *effDuplicateResourceRefs(const EffTrackSet *original) {
     return effect;
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_00245B70);
+INCLUDE_ASM(const s32, "code_0023E1D0", effDrawTrackSet);
 
 void effLoadFlashTextures(void) {
     D_003BC960[0] = sdfDevLoadFileEx("/effect/flash00.tmx", (u32 *)&effFlashTextureHandles, 0);
@@ -7453,7 +7453,7 @@ void effAssetQueueRelease(EffPointSet *set) {
     sdfMemFreeDirect(set->allocation);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_002473B8);
+INCLUDE_ASM(const s32, "code_0023E1D0", effDrawFourPointGroups);
 
 /* Create an empty surface node for handleCount grid cells; no handles are allocated yet. */
 EffectSurfaceNode *effCreateSurfaceNode(u32 handleCount) {
@@ -7754,7 +7754,7 @@ void effIndexedFloatCallbackDispatch(ValPtr44 *p, float v) {
     dds3DispatchIndexedCallback(p->p44, v);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_00248F10);
+INCLUDE_ASM(const s32, "code_0023E1D0", effCreateSurfaceGridNode);
 
 /* vu0 routine: fade-blended vertex colours written into the surface node's tail */
 void effFillSurfaceGridColorGradient(EffSurfaceGridNode *node, u32 *colors) {
@@ -7997,7 +7997,7 @@ void effSubmitIndexedRenderPacket(u32 index) {
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_00249940);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_00249EE0);
+INCLUDE_ASM(const s32, "code_0023E1D0", effReleaseRenderResources);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_00249F40);
 
@@ -9310,7 +9310,7 @@ void effBlendBillboardInstanceColorsAndTransforms(u8 *work) {
     effDrawRibbon(out, (Matrix4 *)mtx);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_0024F400);
+INCLUDE_ASM(const s32, "code_0023E1D0", effResetBillboardFrameInstanceCounters);
 
 u8 *effAllocateBillFadeFrameEntries(EffBillColumnConfig *config) {
     struct sdfMemHandle_t *base = sdfMemAllocDirect(config->common.header.timed.count * sizeof(EffBillEmitterEntry) + 0xC);
@@ -9680,7 +9680,7 @@ void effBillBlendCellColorAndUpdateTransform(BillCellDrawWork *work) {
     effDrawRibbon(out, (Matrix4 *)mtx);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_00250070);
+INCLUDE_ASM(const s32, "code_0023E1D0", effResetParticleBillFrameCounters);
 
 u8 *effAllocateCompactRingFadeEntries(EffBillSpiralConfig *config) {
     struct sdfMemHandle_t *base = sdfMemAllocDirect(config->common.header.timed.count * 0x2C + 0xC);
@@ -10549,7 +10549,7 @@ void effReleaseBillboardFrameAsset(s32 work) {
     sdfMemFreeDirect(state->allocation);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_00253DC8);
+INCLUDE_ASM(const s32, "code_0023E1D0", effOffsetNodeRowsVU);
 
 /* vu0 routine: fade-blended colour and scaled transform of a mesh draw record */
 void effUpdateFadedMeshTransform(BillCellDrawWork *work) {
@@ -10703,7 +10703,7 @@ u32 effAllocateStripFromWorkAndRetainTexture(u8 *work) {
     return strip;
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_002545C0);
+INCLUDE_ASM(const s32, "code_0023E1D0", effDrawScalyTexturedStrip);
 
 void effLoadScalyTexture(void) {
     D_003BC994 = (u32)sdfDevLoadFileEx("/effect/scaly00.tmx", &effScalyTextureHandle, 0);
@@ -10751,7 +10751,7 @@ INCLUDE_ASM(const s32, "code_0023E1D0", effCreateParticleSpanTable);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", effReleaseParticleList);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_00254F98);
+INCLUDE_ASM(const s32, "code_0023E1D0", effUpdateParticleSpanGeometry);
 
 /* vu0 routine: quaternion matrix and SDK RGBA modulation. */
 void effDrawParticleSpanPointsAndReferences(EffModelResource *work) {
@@ -11129,7 +11129,7 @@ s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPack
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_002582A0);
+INCLUDE_ASM(const s32, "code_0023E1D0", effResetDefaultColorTables);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_002582E8);
 

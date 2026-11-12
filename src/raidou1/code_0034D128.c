@@ -1167,16 +1167,16 @@ void mnuDispatchEntryWords(EffectSlotSet *menu, s32 entryIndex, MenuListNode *en
     }
 }
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034D330);
+INCLUDE_ASM(const s32, "code_0034D128", mnuDrawWindowListEntries);
 
 /* Invoke the native window renderer at full fade with its size/flag arguments zeroed. */
 void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg) {
     mnuDrawWindowListEntries(x, y, depth, 0, 0, MNU_FULL_FADE, 0, (MenuList *)(u32)menu, drawArg);
 }
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034D5B0);
+INCLUDE_ASM(const s32, "code_0034D128", mnuCreateWindowContainer);
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034D640);
+INCLUDE_ASM(const s32, "code_0034D128", mnuDestroyWindowContainer);
 
 INCLUDE_ASM(const s32, "code_0034D128", func_0034D680);
 
@@ -1202,7 +1202,7 @@ void mnuInitializeBasicWindowLayout(MenuWindowContainer *menu, struct EffectSlot
 
 INCLUDE_ASM(const s32, "code_0034D128", func_0034D6F0);
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034D708);
+INCLUDE_ASM(const s32, "code_0034D128", mnuSetWindowPanelBounds);
 
 void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
                                u32 third, EffectSlotSet *spriteResource) {
@@ -1336,7 +1336,7 @@ void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
                   resource->sprite[2], 0, drawArg);
 }
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034DCD0);
+INCLUDE_ASM(const s32, "code_0034D128", mnuDrawWindowResourceSpriteRows);
 
 INCLUDE_ASM(const s32, "code_0034D128", func_0034DD00);
 
@@ -1346,11 +1346,11 @@ void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, MenuWindowContainer *
 
 INCLUDE_ASM(const s32, "code_0034D128", func_0034DE18);
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034DEF8);
+INCLUDE_ASM(const s32, "code_0034D128", mnuDrawWindowSelectionPanel);
 
 INCLUDE_ASM(const s32, "code_0034D128", func_0034DFC0);
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034E110);
+INCLUDE_ASM(const s32, "code_0034D128", mnuSpinForWindowListCount);
 
 INCLUDE_RODATA(const s32, "code_0034D128", D_00463EC0);
 
@@ -1543,9 +1543,9 @@ void mnuLinkItemList(MenuListNode **nodeArray, s32 count) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034EB80);
+INCLUDE_ASM(const s32, "code_0034D128", mnuCompareTertiaryKeyDescending);
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034EBA8);
+INCLUDE_ASM(const s32, "code_0034D128", mnuCompareTertiaryKeyAscending);
 
 INCLUDE_ASM(const s32, "code_0034D128", func_0034EBD8);
 
@@ -1575,7 +1575,7 @@ void mnuFreeListEntries(s32 *list) {
     } while (slotIndex < MNU_FADING_SLOT_COUNT);
 }
 
-INCLUDE_ASM(const s32, "code_0034D128", func_0034EE48);
+INCLUDE_ASM(const s32, "code_0034D128", mnuAppendFadingWindowEntry);
 
 /* Native removal only accepts indices at least five. Propagate the tail
  * record backward to the target, clearing each source's window pointer. */

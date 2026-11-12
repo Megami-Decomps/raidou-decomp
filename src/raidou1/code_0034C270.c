@@ -575,11 +575,11 @@ MenuListNode *mnuRemoveListCursorNode(MenuList *list) {
     return list->cursor;
 }
 
-INCLUDE_ASM(const s32, "code_0034C270", func_0034C978);
+INCLUDE_ASM(const s32, "code_0034C270", mnuSetGridSpriteSlot);
 
-INCLUDE_ASM(const s32, "code_0034C270", func_0034C9C0);
+INCLUDE_ASM(const s32, "code_0034C270", mnuWalkNodeList);
 
-INCLUDE_ASM(const s32, "code_0034C270", func_0034CA08);
+INCLUDE_ASM(const s32, "code_0034C270", mnuSeekListNode);
 
 INCLUDE_ASM(const s32, "code_0034C270", func_0034CA80);
 

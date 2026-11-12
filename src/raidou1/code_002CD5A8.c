@@ -438,7 +438,7 @@ void uiDrawSurfaceAtNearDepth(u32 surface) {
     uiDrawUniformColorRect(0, 0, 0, 0x2000, 0xe00, 0, surface);
 }
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CD600);
+INCLUDE_ASM(const s32, "code_002CD5A8", uiScaleColorRgb);
 
 u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight)
 {
@@ -474,13 +474,13 @@ u32 itfReturnZeroDuplicate(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CD718);
+INCLUDE_ASM(const s32, "code_002CD5A8", itfActivateGridTextWidget);
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CD748);
+INCLUDE_ASM(const s32, "code_002CD5A8", itfSetWidgetFlagsAndActivateChild);
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CD790);
+INCLUDE_ASM(const s32, "code_002CD5A8", itfCreateGridTextWidget);
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CD8A8);
+INCLUDE_ASM(const s32, "code_002CD5A8", itfSetGridDimensions);
 
 u32 itfDestroyGridTextWidget(GridTextWidget *widget) {
     GridTextListItem *next;
@@ -512,7 +512,7 @@ u32 itfDestroyGridTextWidgetTree(GridTextWidget *widget) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CD998);
+INCLUDE_ASM(const s32, "code_002CD5A8", itfExpandWidgetColumnWidth);
 
 /* Bit 0: the visible node has a predecessor. Bit 1: at least rows successors remain. */
 u32 itfGetGridListLinkFlags(GridTextWidget *owner) {
@@ -671,7 +671,7 @@ void itfReplaceGridTextAndExpandColumn(GridTextWidget *widget, GridTextListItem 
     }
 }
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CDDA8);
+INCLUDE_ASM(const s32, "code_002CD5A8", itfSetGridNumericItemDescriptor);
 
 /* Advance by at least one configured step; crossing the maximum wraps to minimum. */
 void itfAdvanceGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps) {
@@ -731,9 +731,9 @@ void itfReverseSelectedGridScroll(GridTextWidget *widget, u32 steps) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CE0B8);
+INCLUDE_ASM(const s32, "code_002CD5A8", itfGetGridTextColorTableIndex);
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CE128);
+INCLUDE_ASM(const s32, "code_002CD5A8", itfFormatGridValueEntryText);
 
 INCLUDE_ASM(const s32, "code_002CD5A8", func_002CE320);
 
@@ -746,7 +746,7 @@ GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
     return item;
 }
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CE5C8);
+INCLUDE_ASM(const s32, "code_002CD5A8", sdfGridSeekSelectedNodeByIndex);
 
 INCLUDE_ASM(const s32, "code_002CD5A8", func_002CE640);
 INCLUDE_SDATA(const s32, "code_002CD5A8", D_0046E7B8);

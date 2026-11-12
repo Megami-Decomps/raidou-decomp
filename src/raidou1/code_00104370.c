@@ -1007,7 +1007,7 @@ s32 dds3LoadDefaultResource(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00104370", func_00104EA0);
+INCLUDE_ASM(const s32, "code_00104370", kwlnTextureFindIncompleteResource);
 
 /* Draw one allocation-map block in address units, choosing color by mode.
  * Only the initial partial row forces a nonzero remainder to occupy one cell;

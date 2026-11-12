@@ -764,7 +764,7 @@ struct sdfMemHandle_t *effLoadMappedStatusRecords(const u8 *source, EffMappedHea
     return allocation;
 }
 
-INCLUDE_ASM(const s32, "code_002C8188", func_002C8A90);
+INCLUDE_ASM(const s32, "code_002C8188", effCreateMappedResource);
 
 /* Build one zeroed status record and allocate the category's required status storage. */
 EffMappedResource *effCreateStatusBatch(u32 category) {
@@ -830,7 +830,7 @@ void effInitializeSlotPhase(EffTimedState *effect) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_002C8188", func_002C8C70);
+INCLUDE_ASM(const s32, "code_002C8188", effInitializeSlotWorkFromDescription);
 
 /* Initialize the normal slot entry at the unchanged 0xA0-byte stride. */
 void effInitializeSlotWork(EffectSlotSet *owner, s32 slotIndex) {

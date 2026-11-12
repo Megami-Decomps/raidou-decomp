@@ -1314,9 +1314,9 @@ s32 evtIndexGroupTypeTwentyFiveChildren(dds_evtViewerInfo_t *runtime) {
     return index;
 }
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_001DB6B0);
+INCLUDE_ASM(const s32, "code_001DAC80", evtViewerWriteTrackDirectory);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_001DBC38);
+INCLUDE_ASM(const s32, "code_001DAC80", evtWriteRuntimeHeaderValues);
 
 /* Filter groups by file format and serialize each child body. Type-8 spans use the
  * next start or terminal range halfword, unless their body marker disables them. */
@@ -1381,7 +1381,7 @@ void evtWriteFixedSizeEntries(s32 output, dds_evtViewerInfo_t *table) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_001DBE88);
+INCLUDE_ASM(const s32, "code_001DAC80", evtWriteGroupHeader);
 
 INCLUDE_ASM(const s32, "code_001DAC80", func_001DBF00);
 

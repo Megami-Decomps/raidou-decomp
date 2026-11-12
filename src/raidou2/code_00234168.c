@@ -2778,7 +2778,7 @@ void CallShopTest(s32 flg, void *data)
     fclShopProcessStart(data);
 }
 
-INCLUDE_ASM(const s32, "code_00234168", func_00234ED8);
+INCLUDE_ASM(const s32, "code_00234168", fileQueueUpdate);
 
 /* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
  * an ID for other job kinds. Destroy children before their parent jobs. */
@@ -2982,7 +2982,7 @@ INCLUDE_ASM(const s32, "code_00234168", fileQueueDetachSectorFollower);
 
 INCLUDE_ASM(const s32, "code_00234168", fileQueueRemoveAndDestroyJob);
 
-INCLUDE_ASM(const s32, "code_00234168", func_00235B08);
+INCLUDE_ASM(const s32, "code_00234168", fileJobCopyHeader);
 
 INCLUDE_ASM(const s32, "code_00234168", fileQueueSaveImage);
 
@@ -3144,7 +3144,7 @@ EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
     return fileCreateSurfaceLoaderState(count <= 0x12C ? count : 0x12C);
 }
 
-INCLUDE_ASM(const s32, "code_00234168", func_00236B50);
+INCLUDE_ASM(const s32, "code_00234168", fileCreateEffectSurfaceFromJob);
 
 INCLUDE_ASM(const s32, "code_00234168", fileDestroyEffectSurfaceAndChildren);
 
@@ -3157,7 +3157,7 @@ EffectSurfaceNode *fileLoadObjectCreateChild(EffectSurfaceNode *owner) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", func_00236DD0);
+INCLUDE_ASM(const s32, "code_00234168", fileCloneEffectSurfaceResources);
 
 void fileLoadObjectSetResource(EffectSurfaceNode *node, u32 entryId, void *resource) {
     if (node->record != 0) {
@@ -3223,7 +3223,7 @@ void fileClearLoadObjectReferences(EffectSurfaceNode *obj) {
 
 INCLUDE_ASM(const s32, "code_00234168", func_00237478);
 
-INCLUDE_ASM(const s32, "code_00234168", func_002374A8);
+INCLUDE_ASM(const s32, "code_00234168", fileDrawLoadObjectSlots);
 
 INCLUDE_ASM(const s32, "code_00234168", func_00237E48);
 
@@ -3414,7 +3414,7 @@ f32 effSampleScalarCurve(const EffScalarCurve *curve, s32 frame, s32 duration) {
     return from + (to - from) * factor;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", func_002383B0);
+INCLUDE_ASM(const s32, "code_00234168", fileSampleKeyTracks);
 
 INCLUDE_ASM(const s32, "code_00234168", func_00238520);
 
@@ -3635,25 +3635,25 @@ void effScaleWaveEmitterParameters(ScaleOwner *owner, f32 scale) {
 
 INCLUDE_ASM(const s32, "code_00234168", effUpdateRadialEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", func_00239DD8);
+INCLUDE_ASM(const s32, "code_00234168", effScaleRadialEmitterParameters);
 
 INCLUDE_ASM(const s32, "code_00234168", effUpdateCircularEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", func_0023A698);
+INCLUDE_ASM(const s32, "code_00234168", effScaleCircularEmitterParameters);
 
 INCLUDE_ASM(const s32, "code_00234168", effUpdateOrientedRingEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", func_0023AF10);
+INCLUDE_ASM(const s32, "code_00234168", effScaleOrientedRingEmitterParameters);
 
 INCLUDE_ASM(const s32, "code_00234168", effUpdateDirectedEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", func_0023B690);
+INCLUDE_ASM(const s32, "code_00234168", effScaleDirectedEmitterParameters);
 
 INCLUDE_ASM(const s32, "code_00234168", effUpdateSectorEmitterSlots);
 
 INCLUDE_ASM(const s32, "code_00234168", func_0023BE38);
 
-INCLUDE_ASM(const s32, "code_00234168", func_0023BEC0);
+INCLUDE_ASM(const s32, "code_00234168", fileAllocateGridRecordSlots);
 INCLUDE_SDATA(const s32, "code_00234168", D_004E1820);
 
 INCLUDE_SDATA(const s32, "code_00234168", D_004E1828);

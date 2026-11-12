@@ -3748,7 +3748,7 @@ void sdfReleaseFlagListResource(SdfFlagListWork *work) {
     sdfMemFreeDirect(work->allocation);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_00259D48);
+INCLUDE_ASM(const s32, "code_00259620", sdfUpdateFlagListEntries);
 
 /* Copy vertex pairs, optionally add the view target, and submit the packet list.
  * count is reused first as an entry count and then as a vertex count. */
@@ -3997,7 +3997,7 @@ u32 effPollAttachedFile(void) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025ACA0);
+INCLUDE_ASM(const s32, "code_00259620", effFindAssetData);
 
 INCLUDE_ASM(const s32, "code_00259620", effFindAssetObject);
 
@@ -4012,7 +4012,7 @@ INCLUDE_RODATA(const s32, "code_00259620", D_004BDC50);
 
 INCLUDE_RODATA(const s32, "code_00259620", D_004BDC60);
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025ADD0);
+INCLUDE_ASM(const s32, "code_00259620", effUpdatePartsListEditor);
 
 u32 effAppendPositionedCameraFileJob(const EffCameraCreateRequest *request) {
     FileJob *entry;
@@ -4275,7 +4275,7 @@ u32 effStoreBattleCameraSnapshot(u32 value) {
     return value;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025C8B0);
+INCLUDE_ASM(const s32, "code_00259620", effSelectCameraFileJobFromRows);
 
 INCLUDE_ASM(const s32, "code_00259620", func_0025CC40);
 
@@ -4384,9 +4384,9 @@ INCLUDE_RODATA(const s32, "code_00259620", D_004BDD00);
 
 INCLUDE_RODATA(const s32, "code_00259620", D_004BDD18);
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025D0C8);
+INCLUDE_ASM(const s32, "code_00259620", effHandleDebugOrbitInput);
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025D378);
+INCLUDE_ASM(const s32, "code_00259620", effResetStaticState);
 
 /* Synchronize the diagnostic camera position and calculate its positional guides.
  * Return input flags; the native diagnostic drawing providers are retail stubs. */
@@ -4466,7 +4466,7 @@ INCLUDE_ASM(const s32, "code_00259620", func_0025D630);
 
 INCLUDE_ASM(const s32, "code_00259620", func_0025D658);
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025DB68);
+INCLUDE_ASM(const s32, "code_00259620", effResetCameraSnapshotSelection);
 
 u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *state, s8 useBattlePosition) {
     EffectCameraDebugScratch scratch;
@@ -4746,9 +4746,9 @@ void effPollResourceBank(s32 flags, EffectPollRecord *record) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025E840);
+INCLUDE_ASM(const s32, "code_00259620", effResetMappingFlags);
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025E870);
+INCLUDE_ASM(const s32, "code_00259620", effEditColorTrack);
 
 s32 effMapObjectWithTemporaryMappingTable(s32 request) {
     s32 result;
@@ -4950,9 +4950,9 @@ s32 effEditTwoDimensionalColorTrack(s32 request) {
 
 INCLUDE_ASM(const s32, "code_00259620", effEditMColorTrack);
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025FAB0);
+INCLUDE_ASM(const s32, "code_00259620", btlResetEffectWork);
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025FAF0);
+INCLUDE_ASM(const s32, "code_00259620", effEditScalarTrack);
 
 /* Edit the requested P-family SCALE track; return the native editor status. */
 s32 effEditPScaleTrack(BaObj *p) {

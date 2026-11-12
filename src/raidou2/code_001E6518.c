@@ -340,7 +340,7 @@ void mnuLoadTitleMenuAssets(void);
 void mnuCreateTitleCameraWorldEntry(void);
 /* End of declarations from src/dds1/game/code_00269C10.c */
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E6518);
+INCLUDE_ASM(const s32, "code_001E6518", sndUploadStreamToBothIopBuffers);
 
 /* Copy the second source, add the first, and clamp to [-32767, 32767].
  * The native lower limit intentionally excludes the s16 value -32768. */
@@ -446,13 +446,13 @@ INCLUDE_ASM(const s32, "code_001E6518", func_001E7D68);
 
 INCLUDE_RODATA(const s32, "code_001E6518", D_004BBAF8);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7E28);
+INCLUDE_ASM(const s32, "code_001E6518", mnuInitializeTitleSoundBuffer);
 
 INCLUDE_ASM(const s32, "code_001E6518", func_001E7ED0);
 
 INCLUDE_ASM(const s32, "code_001E6518", func_001E7FD8);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E8160);
+INCLUDE_ASM(const s32, "code_001E6518", mnuInstallTitleSoundBufferFromData);
 
 INCLUDE_ASM(const s32, "code_001E6518", func_001E82E8);
 

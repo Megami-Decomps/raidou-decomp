@@ -1052,7 +1052,7 @@ s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
 void func_0010F570(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0010F130", func_0010F578);
+INCLUDE_ASM(const s32, "code_0010F130", evtToggleDebugTimeGraphTask);
 
 /* Render an allocation span as partial rows and complete heap-map rows. */
 void sdfDrawHeapSpanOverlay(sdfDrawTag_t *packetList, s32 x, s32 y,

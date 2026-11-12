@@ -540,7 +540,7 @@ LmapNode *fldLmapRewindThroughWindow(LmapList *list) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_0032EC40", func_0032EF00);
+INCLUDE_ASM(const s32, "code_0032EC40", fldLocalMapDrawScrollIndicators);
 
 INCLUDE_ASM(const s32, "code_0032EC40", func_0032F040);
 

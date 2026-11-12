@@ -5221,11 +5221,11 @@ void itfSetGridEntryQuantizedAndRefresh(EffectSlotSet *resource, s32 resourceInd
     effInitializeSlotWorkFromDescription(resource, resourceIndex, record);
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", func_002CB2C8);
+INCLUDE_ASM(const s32, "code_002CAFD8", itfGridSetQuantizedBounds);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", func_002CB340);
+INCLUDE_ASM(const s32, "code_002CAFD8", itfGridSetBounds);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", func_002CB398);
+INCLUDE_ASM(const s32, "code_002CAFD8", itfGridCopyEntryQuad);
 
 INCLUDE_ASM(const s32, "code_002CAFD8", func_002CB3E0);
 
@@ -5435,7 +5435,7 @@ EffSlotPhaseStep itfGridApplyThresholdBoundsAndAlpha(BdWork *rectangle, BdWork *
     return EFF_SLOT_PHASE_ONE / table->divisor;
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", func_002CB9C0);
+INCLUDE_ASM(const s32, "code_002CAFD8", itfUpdateAngleAndGetCycleStep);
 
 /* Blend each saved corner color toward the table's target color. */
 EffSlotPhaseStep itfGridInterpolateCornerColorsToTarget(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
@@ -5739,7 +5739,7 @@ void cmpDrawBoxSolid(s32 a, s32 b, s32 c, s32 d, s32 e, s32 color, s32 g, s32 h)
 
 INCLUDE_ASM(const s32, "code_002CAFD8", func_002CCE18);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", func_002CCE38);
+INCLUDE_ASM(const s32, "code_002CAFD8", cmpDrawBoxG);
 
 INCLUDE_ASM(const s32, "code_002CAFD8", func_002CCFC8);
 

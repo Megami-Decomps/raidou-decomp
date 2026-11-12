@@ -1241,9 +1241,9 @@ INCLUDE_ASM(const s32, "code_00190800", func_001908C0);
 void btlDebugMenuRecordNoOp(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00190800", func_001908D0);
+INCLUDE_ASM(const s32, "code_00190800", btlFindEntryByCommand);
 
-INCLUDE_ASM(const s32, "code_00190800", func_00190918);
+INCLUDE_ASM(const s32, "code_00190800", btlCountNonPartOpcodes);
 
 s32 btlOpenPfsDebugDirectory(const char *directoryName) {
     char pathBuffer[BTL_DIRECTORY_PATH_BYTES];
@@ -1266,7 +1266,7 @@ void btlClosePfsDebugDirectory(s32 directoryHandle) {
     sceDclose(directoryHandle);
 }
 
-INCLUDE_ASM(const s32, "code_00190800", func_001909F8);
+INCLUDE_ASM(const s32, "code_00190800", btlReadBattleResourceDirectoryEntry);
 
 /* Build a scan-order list of built-in names and enabled resource-file categories. */
 BtlResourceEntryList *btlScanDirectory(const char *path, s32 flags) {
@@ -1420,9 +1420,9 @@ void btlAppendEntry(BtlResourceEntryList *list, const char *name, s32 category, 
     list->count++;
 }
 
-INCLUDE_ASM(const s32, "code_00190800", func_00191080);
+INCLUDE_ASM(const s32, "code_00190800", btlCreateResourceDescriptor);
 
-INCLUDE_ASM(const s32, "code_00190800", func_00191110);
+INCLUDE_ASM(const s32, "code_00190800", btlUpdateAndDrawResourceBrowser);
 
 /* Release an owned texture handle and the descriptor, but not its entry list. */
 void btlDestroyResourceDescriptor(BtlResourceDescriptor *descriptor) {
@@ -1562,7 +1562,7 @@ void btlDestroyResourceNameRecord(struct BtlResourceNameRecord *record) {
     sdfChipFreeDirect(record);
 }
 
-INCLUDE_ASM(const s32, "code_00190800", func_001919D8);
+INCLUDE_ASM(const s32, "code_00190800", btlUpdateResourceNameEditor);
 
 void btlSetResourceNamePosition(struct BtlResourceNameRecord *record, s32 x, s32 y) {
     record->x = x;

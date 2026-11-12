@@ -483,7 +483,7 @@ void effMarkFloorModelForDestruction(EffModelOwner *work) {
 
 INCLUDE_ASM(const s32, "code_002250F8", func_00225390);
 
-INCLUDE_ASM(const s32, "code_002250F8", func_002253F0);
+INCLUDE_ASM(const s32, "code_002250F8", effRenderModelOwnerWithGsTests);
 
 void effMarkFloorModelForUpdate(EffModelOwner *work) {
     u32 previous = work->flags;
@@ -553,11 +553,11 @@ void effSweepFloorModelList(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_002250F8", func_002257D8);
+INCLUDE_ASM(const s32, "code_002250F8", mdlPropagateObjectFlag);
 
-INCLUDE_ASM(const s32, "code_002250F8", func_00225818);
+INCLUDE_ASM(const s32, "code_002250F8", mdlClearListedObjectFlag);
 
-INCLUDE_ASM(const s32, "code_002250F8", func_00225850);
+INCLUDE_ASM(const s32, "code_002250F8", mdlSetListedObjectFlag);
 
 void mdlMarkAndProcessObjectNodes(void) {
     EffectObjectNode *node = effFloorModelListHead;

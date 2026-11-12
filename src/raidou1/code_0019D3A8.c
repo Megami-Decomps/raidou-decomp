@@ -1385,7 +1385,7 @@ INCLUDE_RODATA(const s32, "code_0019D3A8", D_0044D8F8);
 
 INCLUDE_RODATA(const s32, "code_0019D3A8", D_0044D908);
 
-INCLUDE_ASM(const s32, "code_0019D3A8", func_0019DBA0);
+INCLUDE_ASM(const s32, "code_0019D3A8", mdlHandleViewerAssetSelection);
 
 INCLUDE_ASM(const s32, "code_0019D3A8", mdlDrawViewerAssetSelection);
 
@@ -1408,7 +1408,7 @@ u32 mdlRunViewerIndexedLabelTask(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0019D3A8", func_0019E798);
+INCLUDE_ASM(const s32, "code_0019D3A8", mdlUpdateViewerSelectedModelFromPad);
 
 void mdlDrawViewerSelectionLabel(void) {
     mdlAppendViewerRectToDrawList(0x8A10, 0x7948, 0xFF007F, 0x4E0, 0x90, 0);
@@ -1423,7 +1423,7 @@ s32 mdlRunViewerSelectionLabelTask(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0019D3A8", func_0019EC28);
+INCLUDE_ASM(const s32, "code_0019D3A8", mdlAdjustViewerScale);
 
 INCLUDE_ASM(const s32, "code_0019D3A8", mdlDrawViewerMotionTimeline);
 
@@ -1612,7 +1612,7 @@ INCLUDE_RODATA(const s32, "code_0019D3A8", D_0044DAC0);
 
 INCLUDE_RODATA(const s32, "code_0019D3A8", D_0044DAD0);
 
-INCLUDE_ASM(const s32, "code_0019D3A8", func_0019F998);
+INCLUDE_ASM(const s32, "code_0019D3A8", mdlDrawViewerSettings);
 
 u32 mdlRunViewerSettingsTask(void) {
     mdlUpdateViewerSettingsInput();
@@ -1664,7 +1664,7 @@ MdlRecord *mdlGetSelectedRecord(void) {
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "code_0019D3A8", func_0019FDE0);
+INCLUDE_ASM(const s32, "code_0019D3A8", mdlUpdateViewerMarkEditorInput);
 
 void mdlDrawViewerEffectRecordList(void) {
     MdlViewState *state = &mdlViewerState;
@@ -1859,9 +1859,9 @@ void mdlViewerTaskDestroy(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0019D3A8", func_001A05A0);
+INCLUDE_ASM(const s32, "code_0019D3A8", mdlRestartViewerPhaseTask);
 
-INCLUDE_ASM(const s32, "code_0019D3A8", func_001A0620);
+INCLUDE_ASM(const s32, "code_0019D3A8", mdlViewer);
 
 /* Walk native 64-byte map-position records and submit their visualization in one packet list. */
 void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource) {
@@ -1891,7 +1891,7 @@ INCLUDE_ASM(const s32, "code_0019D3A8", func_001A0CB8);
 
 INCLUDE_ASM(const s32, "code_0019D3A8", func_001A1208);
 
-INCLUDE_ASM(const s32, "code_0019D3A8", func_001A14D0);
+INCLUDE_ASM(const s32, "code_0019D3A8", mdlInitializeViewerTasksAndResources);
 
 /* Clear each occupied resource slot before destroying its context; retain the native scan form. */
 void mdlFreeViewResources(void) {

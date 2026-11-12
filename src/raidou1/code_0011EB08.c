@@ -419,7 +419,7 @@ void evtLoadValueSecondaryVectorIntoVu(dds3Basic_t *node) {
 
 INCLUDE_ASM(const s32, "code_0011EB08", func_0011EB50);
 
-INCLUDE_ASM(const s32, "code_0011EB08", func_0011EBD8);
+INCLUDE_ASM(const s32, "code_0011EB08", sdfDestroyRuntimeTask);
 
 INCLUDE_ASM(const s32, "code_0011EB08", func_0011EC28);
 
