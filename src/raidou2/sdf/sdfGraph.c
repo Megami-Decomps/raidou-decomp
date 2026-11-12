@@ -397,7 +397,7 @@ void sdfDeliverDrawStart(s32 frameId, s32 buffId)
 
 INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDeliverDrawEnd);
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", func_003CDBA0);
+INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDrawThread);
 
 void sdfGrInit(s32 aPacketBuffSize) {
     s32 thread;

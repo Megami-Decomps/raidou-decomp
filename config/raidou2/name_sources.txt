@@ -2999,6 +2999,7 @@
 0x003CD8E8	sdfGrCapture	inferred	SMT3HD name via SLUS_209.11 0x002A9D40, reloc-identical; map-agrees
 0x003CDB38	sdfDeliverDrawStart	inferred	SMT3HD name via SLUS_209.11 0x002A9F90, reloc-identical; map-agrees
 0x003CDB70	sdfDeliverDrawEnd	inferred	SMT3HD name via SLUS_209.11 0x002A9FC8, unique-masked-hash; map-agrees
+0x003CDBA0	sdfDrawThread	inferred	SMT3HD name via SLUS_209.11 0x002A9FF8, instruction-identical to raidou1 0x00357E10
 0x003CDDA8	sdfGrInit	inferred	SMT3HD name via SLUS_209.11 0x002AA1F0, reloc-identical; map-agrees
 0x003CDEB0	sdfGrInitNewFrame	inferred	smt3-decomp C name via SLUS_209.11 0x002AA2F8, unique-masked-hash-c; map-agrees
 0x003CDF08	sdfGsMemGetBitCount	inferred	SMT3HD name via SLUS_209.11 0x002AA350, reloc-identical; map-agrees
@@ -3111,6 +3112,7 @@
 0x003D1B28	sdfGrReqDraw	inferred	SMT3HD name via SLUS_209.11 0x002ADA68, reloc-identical; map-agrees
 0x003D1C28	sdfGrReqDrawDelay	inferred	SMT3HD name via SLUS_209.11 0x002ADB68, reloc-identical; map-agrees
 0x003D1C40	sdfGrInitDraw	inferred	SMT3HD name via SLUS_209.11 0x002ADB80, reloc-identical; map-agrees
+0x003D1C58	sdfGrDrawFrame	inferred	SMT3HD name via SLUS_209.11 0x002ADB98, 288 of 288 instructions equal to raidou1 0x0035BED0 up to delay-slot fill
 0x003D20D8	sdfDrawSync	inferred	SMT3HD name via SLUS_209.11 0x002AE018, reloc-identical; map-agrees
 0x003D2150	sdfPrimAllocDrawTag	inferred	SMT3HD name via SLUS_209.11 0x002AE090, reloc-identical; map-agrees
 0x003D2198	sdfPrimLinkSimplePacket	inferred	SMT3HD name via SLUS_209.11 0x002AE0D8, reloc-identical; map-agrees

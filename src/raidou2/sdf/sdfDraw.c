@@ -1087,7 +1087,7 @@ void sdfGrInitDraw(void) {
     sdfDrawReqQueueIndex = 0;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", func_003D1C58);
+INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrDrawFrame);
 
 void sdfDrawSync(void) {
     sdfDrawReqRec_t *table = sdfGrDrawState;
