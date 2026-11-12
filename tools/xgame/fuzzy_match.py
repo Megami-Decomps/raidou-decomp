@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fuzzy-match Raidou functions to SMT3 and DDS functions (opcode n-gram index, difflib).
 
-Usage: fuzzy_match.py VERSION [--map-dir DIR] [--out DIR] [--jobs N]
+Usage: fuzzy_match.py VERSION [--sources LIST] [--map-dir DIR] [--out DIR] [--jobs N]
 Writes <out>/<v>_all.tsv: top candidates for every function; fuzzy_apply.py scores them.
 """
 import argparse
@@ -94,10 +94,11 @@ def load_target(version):
     return funcs, names
 
 
-def load_sources(map_dir):
+def load_sources(map_dir, games, out_dir):
     out = []
-    for g in SOURCES:
-        d = json.load(open(Path(map_dir) / f"{g}.json"))
+    for g in games:
+        path = Path(out_dir) / "src" / f"{g}.json"
+        d = json.load(open(path if path.exists() else Path(map_dir) / f"{g}.json"))
         by = {f["ea"]: f["name"] for f in d}
         for f in d:
             if len(f["words"]) >= MIN_WORDS and good_name(f["name"]):
@@ -161,12 +162,14 @@ def main():
     ap.add_argument("version")
     ap.add_argument("--map-dir", default=str(Path.home() / ".local/state/smt3-port-work/raidou-map"))
     ap.add_argument("--out", default=str(Path.home() / ".local/state/raidou-decomp-work/fuzzy"))
+    ap.add_argument("--sources", default=",".join(SOURCES), help="comma list: smt3 dds1 dds2 raidou1 raidou2")
     ap.add_argument("--jobs", type=int, default=12)
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
+    (out / "src").mkdir(exist_ok=True)
     funcs, names = load_target(a.version)
-    sources = load_sources(a.map_dir)
+    sources = load_sources(a.map_dir, a.sources.split(","), out)
     targets = [f for f in funcs if len(f["words"]) >= MIN_WORDS]
     print(f"{len(funcs)} functions, {len(targets)} targets, {sum(f['unnamed'] for f in targets)} unnamed, "
           f"{len(sources)} sources", flush=True)

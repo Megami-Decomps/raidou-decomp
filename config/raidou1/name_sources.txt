@@ -4433,3 +4433,4 @@
 0x0038F6B8	gcc2_compiled__2	inferred	fuzzy name from SLUS_209.11 0x002D96F8, score 1.00, tools/xgame/fuzzy_apply.py
 0x003970E8	gcc2_compiled__13	inferred	fuzzy name from SLUS_209.11 0x002DF468, score 1.00, tools/xgame/fuzzy_apply.py
 0x0039C388	ExecOSD	inferred	fuzzy name from SLUS_209.11 0x002E4708, score 1.00, tools/xgame/fuzzy_apply.py
+0x002CEA80	fldLmapDrawListTree	inferred	fuzzy name from SLUS_209.74 0x002C2A20, score 1.00, tools/xgame/fuzzy_apply.py

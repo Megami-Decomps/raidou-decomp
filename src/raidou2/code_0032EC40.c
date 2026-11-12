@@ -542,7 +542,7 @@ LmapNode *fldLmapRewindThroughWindow(LmapList *list) {
 
 INCLUDE_ASM(const s32, "code_0032EC40", fldLocalMapDrawScrollIndicators);
 
-INCLUDE_ASM(const s32, "code_0032EC40", func_0032F040);
+INCLUDE_ASM(const s32, "code_0032EC40", fldLmapDrawListTree);
 
 /* Build one positioned SIF command and submit it on the requested draw surface. */
 void fldLmapSubmitPositionedCommandPacket(s32 x, s32 y, s32 z,

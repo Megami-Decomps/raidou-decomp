@@ -16,31 +16,59 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-GAMES = {"SLUS_209.11": "smt3", "SLUS_209.74": "dds1", "SLUS_211.52": "dds2"}
+GAMES = {"SLUS_209.11": "smt3", "SLUS_209.74": "dds1", "SLUS_211.52": "dds2",
+         "SLUS_214.31": "raidou1", "SLUS_218.45": "raidou2"}
 SERIAL_OF = {v: k for k, v in GAMES.items()}
 MAP_DIR = Path.home() / ".local/state/smt3-port-work/raidou-map"
 THRESHOLD, SIZE_MAX, AGREE_MIN, GAP_MAX = 0.9, 0.2, 0.5, 12
 MARKER = "// Names from tools/xgame/fuzzy_apply.py (provenance: name_sources.txt)"
 
 
+def names_of(path):
+    out = {}
+    for line in Path(path).read_text().splitlines():
+        m = re.match(r"\s*(\S+)\s*=\s*0x([0-9A-Fa-f]+);.*type:func", line)
+        if m:
+            out.setdefault(m[1], int(m[2], 16))
+    return out
+
+
 class State:
     def __init__(self, version, work):
         self.version = version
+        self.work = Path(work)
         cfg = ROOT / "config" / version
         self.used = set()
         for line in (cfg / "symbol_addrs.txt").read_text().splitlines():
             if m := re.match(r"\s*(\S+)\s*=\s*0x", line):
                 self.used.add(m[1])
         self.anchors = defaultdict(list)
+        self.fuzzy = set()
         for line in (cfg / "name_sources.txt").read_text().splitlines():
             p = line.split("\t")
             if len(p) >= 4 and not line.startswith("#"):
-                m = re.search(r"via (SLUS_\S+) 0x([0-9A-Fa-f]+)", p[3])
+                m = re.search(r"(?:via|fuzzy name from) (SLUS_\S+) 0x([0-9A-Fa-f]+)", p[3])
                 if m and m[1] in GAMES:
                     self.anchors[GAMES[m[1]]].append((int(p[0], 16), int(m[2], 16)))
+                if p[3].startswith("fuzzy name"):
+                    self.fuzzy.add(int(p[0], 16))
+        self.src_eas = {}
+        for g in GAMES.values():
+            sp = self.work / "src" / f"{g}.json"
+            if not sp.exists():
+                sp = MAP_DIR / f"{g}.json"
+            if sp.exists():
+                d = json.load(open(sp))
+                self.src_eas[g] = sorted(f["ea"] for f in d)
+                if g.startswith("raidou") and g != version:
+                    # same name in both versions anchors the address order
+                    mine = names_of(cfg / "symbol_addrs.txt")
+                    theirs = {f["name"]: f["ea"] for f in d if not f["name"].startswith("func_")}
+                    for nm, ea in mine.items():
+                        if nm in theirs and not nm.startswith("func_"):
+                            self.anchors[g].append((ea, theirs[nm]))
         for a in self.anchors.values():
             a.sort()
-        self.src_eas = {g: sorted(f["ea"] for f in json.load(open(MAP_DIR / f"{g}.json"))) for g in GAMES.values()}
         self.rows = defaultdict(list)
         for line in (Path(work) / f"{version}_all.tsv").read_text().splitlines()[1:]:
             a, cur, game, cand, caddr, ro, rf, ag, n, sz = line.split("\t")
@@ -87,7 +115,7 @@ def evaluate(st):
         n = ok = 0
         for ea, rows in st.rows.items():
             cur = rows[0]["cur"]
-            if not cur or cur.startswith("func_"):
+            if not cur or cur.startswith("func_") or ea in st.fuzzy:
                 continue
             st.used.discard(cur)
             r = st.best(ea, skip=cur if neg else None)

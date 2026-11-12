@@ -4386,3 +4386,5 @@ gcc2_compiled__1 = 0x00406F78; // type:func
 gcc2_compiled__2 = 0x00408528; // type:func
 gcc2_compiled__13 = 0x0040FF68; // type:func
 ExecOSD = 0x00415208; // type:func
+// Names from tools/xgame/fuzzy_apply.py (provenance: name_sources.txt)
+fldLmapDrawListTree = 0x0032F040; // type:func
