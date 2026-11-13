@@ -1,14 +1,37 @@
 #include "common.h"
+/* This version names the save-work pointer by address. */
+#define DDS3_GBWK D_0046B4A0
+#include "newdata.h"
 
-INCLUDE_ASM(const s32, "event/evtMoon", evtGetAgeOfMoon);
+s32 evtGetAgeOfMoon(void)
+{
+    s32 phase = DDS3_GBWK->moonPhase;
+    if (phase >= 9) {
+        phase = 8 - (phase & 7);
+    }
+    return phase;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", evtGetAgeOfMoon16);
+s32 evtGetAgeOfMoon16(void)
+{
+    return DDS3_GBWK->moonPhase;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", evtSetAgeOfMoon);
+void evtSetAgeOfMoon(u8 age)
+{
+    DDS3_GBWK->moonPhase = age & 0xF;
+    DDS3_GBWK->moonTimer = 0.0f;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", evtEnableMoonCalc);
+void evtEnableMoonCalc(void)
+{
+    DDS3_GBWK->moonFlags |= 1;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", evtDisableMoonCalc);
+void evtDisableMoonCalc(void)
+{
+    DDS3_GBWK->moonFlags &= ~1;
+}
 
 INCLUDE_ASM(const s32, "event/evtMoon", func_001ADA50);
 

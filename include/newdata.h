@@ -141,10 +141,14 @@ typedef struct
     s32 integers[256];
     f32 floats[256];
     u32 EventBit[128]; /* 0x840: 4096 event bits */
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u8 unkA40[8];       /* Raidou keeps the moon state at 0x1C80 (1) or 0x1F80 (2) */
+#else
     u8 moonFlags;       /* 0xA40 */
     u8 moonPhase;       /* 0xA41 */
     u8 unkA42[2];
     f32 moonTimer;      /* 0xA44 */
+#endif
     s32 maka;
     u32 maFlags;                  /* 0xA4C */
     union {
@@ -169,7 +173,20 @@ typedef struct
         struct { u8 stockCountPadding[4]; u8 unk_01928[0x3D]; u8 unk_1965; };
     };
     s16 boss_press[40][2];            /* 0x19C8 */
+#ifdef VERSION_RAIDOU1
+    union {
+        u8 syakkincnt[640];
+        struct {
+            u8 unk1A68[0x218];
+            u8 moonFlags;       /* 0x1C80 */
+            u8 moonPhase;       /* 0x1C81 */
+            u8 unk1C82[2];
+            f32 moonTimer;      /* 0x1C84 */
+        };
+    };
+#else
     u8 syakkincnt[640];
+#endif
     u8 negoques[4];                /* 0x1CE8 */
     u8 kotowari[4];                /* 0x1CEC */
     u16 wakimi_id;                 /* 0x1CF0 */
@@ -185,6 +202,15 @@ typedef struct
         };
         struct { u8 heartsPrefix[0x40]; u8 devilSlot[0x100]; }; /* 0x1D3B */
         struct { u8 unk_01CFB[0x40]; u8 heartsskcnt[64]; };
+#ifdef VERSION_RAIDOU2
+        struct {
+            u8 unk1CFB[0x285];
+            u8 moonFlags;       /* 0x1F80 */
+            u8 moonPhase;       /* 0x1F81 */
+            u8 unk1F82[2];
+            f32 moonTimer;      /* 0x1F84 */
+        } __attribute__((packed));
+#endif
     };
     u8 nameCode[0xDC];
     fldGbTypeBlock_t gb[48];       /* 0x6658 */
