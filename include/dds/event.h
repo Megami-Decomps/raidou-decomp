@@ -118,6 +118,9 @@ struct dds_evtViewerInfo_t {
     s32 menuState;
     s32 shopFlag;
     u32 auxResource;
+#if !defined(VERSION_DDS1) && (defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2))
+    u8 padRaidou[0x80];
+#endif
     union { s32 headerMetadata; u32 optionFlags; };
     s32 titleStreamWaitFrames;
     s32 registeredCount;
@@ -148,6 +151,10 @@ struct dds_evtViewerInfo_t {
 #ifdef VERSION_DDS1
 
 typedef char evtViewerInfo_t_size[(sizeof(dds_evtViewerInfo_t) == 0x2490) ? 1 : -1];
+
+#elif defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+
+typedef char evtViewerInfo_t_optionFlags[((u32)&((dds_evtViewerInfo_t *)0)->optionFlags == 0x24BC) ? 1 : -1];
 
 #else
 

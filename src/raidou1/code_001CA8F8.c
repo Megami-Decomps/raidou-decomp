@@ -1536,13 +1536,21 @@ INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBDF0);
 void func_001CBE08(void) {
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBE10);
+void func_001CBE10(dds_evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex) {
+    scene->optionFlags = (scene->optionFlags & CAMP_PRIMARY_OPTION_CLEAR_MASK) | (optionIndex & CAMP_OPTION_VALUE_MASK);
+}
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBE30);
+MnuCampPrimaryOptionIndex func_001CBE30(dds_evtViewerInfo_t *scene) {
+    return scene->optionFlags & CAMP_OPTION_VALUE_MASK;
+}
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBE40);
+void func_001CBE40(dds_evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex) {
+    scene->optionFlags = (scene->optionFlags & CAMP_SECONDARY_OPTION_CLEAR_MASK) | ((optionIndex & CAMP_OPTION_VALUE_MASK) << CAMP_SECONDARY_OPTION_SHIFT);
+}
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBE60);
+MnuCampSecondaryOptionIndex func_001CBE60(dds_evtViewerInfo_t *scene) {
+    return (scene->optionFlags & CAMP_SECONDARY_OPTION_MASK) >> CAMP_SECONDARY_OPTION_SHIFT;
+}
 
 INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBE70);
 
