@@ -247,6 +247,11 @@ typedef struct evtUnit_t {
             u32 color5C;
         };
     };
+    /* Raidou: retail places color60 at 0x100, fields from 0x9C on at +0xA4,
+     * motionSetup at +0xA6 and the transition timers at +0xB8. Only the observed offsets are known. */
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u8 padRaidou60[0xA0];
+#endif
     u32 color60;
     union {
         u8 pad64[4];
@@ -265,6 +270,9 @@ typedef struct evtUnit_t {
     void *linkedUnit;
     s32 (*motionCallback)(struct evtUnit_t *, s32);
     f32 wobblePhase;
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u8 padRaidou9C[4];
+#endif
     saddr_t pathHandle;         /* 0x9C */
     f32 pathSpeed;
     u32 flags;                     /* 0xA4 */
@@ -278,6 +286,9 @@ typedef struct evtUnit_t {
     s16 waitMotion;
     s16 waitBlendStart;
     s16 waitBlendEnd;
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u8 padRaidouBE[2];
+#endif
     evtUnitMotionSetup_t motionSetup; /* 0xBE */
     s16 motionEndFrame;
     s16 movingTicks;
@@ -297,6 +308,9 @@ typedef struct evtUnit_t {
         s16 directionDuration;
         u16 directionFramesRemaining;
     };
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u8 padRaidou154[0x12];
+#endif
     union {
         u8 pad154[8];
         struct {

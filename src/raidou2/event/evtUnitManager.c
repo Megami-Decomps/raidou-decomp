@@ -174,7 +174,7 @@ typedef struct {
 } evtColorWork_t;
 
 /* vu0 routine: unpack the unit's colours into a parallel light packet. */
-void MakeLightPacket(evtUnit_t *h);
+void func_001BB780(evtUnit_t *h);
 
 void evtLinkLightObjectBasic(evtUnit_t *h, dds3Basic_t *light, s32 frame);
 
@@ -349,7 +349,10 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BB9E8);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BBA50);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnlinkExternalLightPacket);
+void evtUnlinkExternalLightPacket(evtUnit_t *h) {
+    h->flags = h->flags & ~EVT_UNIT_FLAG_VALUE_CHANGED;
+    func_001BB780(h);
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightAndAmbient);
 
@@ -361,15 +364,60 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BBC90);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BBD00);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitColorRGB);
+void evtSetUnitColorRGB(evtUnit_t *h, s32 frame, u32 rgb) {
+    h->rgbDuration = SDF_FRAMES(frame);
+    h->rgbElapsed = 0;
+    if (frame == 0) {
+        mdlSetColor((mdlObj_t *)h->owner,
+            (mdlGetColor((mdlObj_t *)h->owner) & 0xFF000000) | (rgb & 0xFFFFFF));
+        h->color60 = (h->color60 & 0xFF000000) | (rgb & 0xFFFFFF);
+        h->flags &= ~EVT_UNIT_FLAG_RGB_TRANSITION;
+    } else {
+        u32 currentRgb = mdlGetColor((mdlObj_t *)h->owner) & 0xFFFFFF;
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitColorA);
+        h->color60 = (h->color60 & 0xFF000000) | currentRgb;
+        h->color64 = (h->color64 & 0xFF000000) | (rgb & 0xFFFFFF);
+        h->flags |= EVT_UNIT_FLAG_RGB_TRANSITION;
+    }
+}
+
+void evtSetUnitColorA(evtUnit_t *h, s32 frame, u32 a) {
+    h->alphaDuration = SDF_FRAMES(frame);
+    h->alphaElapsed = 0;
+    if (frame == 0) {
+        mdlSetColor((mdlObj_t *)h->owner,
+            (mdlGetColor((mdlObj_t *)h->owner) & 0xFFFFFF) | (a & 0xFF000000));
+        h->color60 = (h->color60 & 0xFFFFFF) | (a & 0xFF000000);
+        h->flags &= ~EVT_UNIT_FLAG_ALPHA_TRANSITION;
+    } else {
+        u32 currentAlpha = mdlGetColor((mdlObj_t *)h->owner) & 0xFF000000;
+
+        h->color60 = (h->color60 & 0xFFFFFF) | currentAlpha;
+        h->color64 = (h->color64 & 0xFFFFFF) | (a & 0xFF000000);
+        h->flags |= EVT_UNIT_FLAG_ALPHA_TRANSITION;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitLightAnimeStat);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitLightOn);
+void evtUnitLightOn(evtUnit_t *h)
+{
+    h->flags = h->flags | EVT_UNIT_FLAG_USE_UNIT_COLOR_CHANNELS;
+}
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitLightOff);
+void evtUnitLightOff(evtUnit_t *h, s32 frame) {
+    if (frame == 0) {
+        h->flags &= ~0x700;
+        h->flags &= ~0x5000;
+        h->flags &= ~0x2800;
+    } else {
+        evtSetUnitLightAndAmbient(h, frame, 0, 0);
+        h->flags = (h->flags & ~0x800) | 0x1000;
+        SDF_VU0_LOADIDENTITYVECTOR();
+        evtSetUnitLightDir(h, frame);
+        h->flags = (h->flags & ~0x2000) | 0x4000;
+    }
+}
 
 evtUnit_t *evtGetUnitHandle(s32 serial) {
     dds3Basic_t *obj = dds3SearchSceneBasic(dds3GetActiveScene(), serial, EFF_WORLD_KIND_FOLLOW_MODEL);
@@ -389,9 +437,29 @@ evtUnit_t *evtGetUnitHandle2(dds3Basic_t *unit) {
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BC058);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtDeleteUnitHandle);
+s32 evtDeleteUnitHandle(evtUnit_t *h) {
+    void *endpointWork;
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtGetUnitStat);
+    if (h == NULL) {
+        return 1;
+    }
+    endpointWork = h->endpointWork;
+    h->owner->inner->light = 0;
+    if (endpointWork != NULL) {
+        sdfChipFreeDirect(endpointWork);
+        h->endpointWork = NULL;
+    }
+    if (h->pathHandle != 0) {
+        dds3DeletePathControl(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle));
+        h->pathHandle = 0;
+    }
+    sdfChipFreeDirect(h);
+    return 1;
+}
+
+s32 evtGetUnitStat(evtUnit_t *h) {
+    return h->motionState;
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BC270);
 
@@ -401,7 +469,18 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetWaitMotionSpeed);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BC290);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtCheckUnitWait);
+s32 evtCheckUnitWait(evtUnit_t *h) {
+    s32 state = evtGetUnitStat(h);
+
+    if (state == EVT_UNIT_MOTION_STATE_IDLE) {
+        return 1;
+    }
+    if (state == EVT_UNIT_MOTION_STATE_MOTION && h->motionTicks > 0 &&
+        h->owner->first->stat == SDF_MOTION_STATE_TERMINAL) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitKutiMotion);
 
@@ -409,7 +488,33 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BC318);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BC348);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMotion);
+void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode) {
+    h->flags &= ~0x1;
+    h->flags &= ~0x20;
+    h->flags &= ~0x40;
+    h->flags &= ~0x400000;
+    h->flags &= ~0x800000;
+    h->motionState = EVT_UNIT_MOTION_STATE_MOTION;
+    (&h->motionSetup)->motionId = motion;
+    (&h->motionSetup)->startFrame = before;
+    (&h->motionSetup)->endFrame = smooth;
+    h->flags |= 0x80;
+    h->motionTicks = 0;
+    h->motionCallback = 0;
+    switch (mode) {
+    case 0:
+        h->flags |= 0x20;
+        break;
+    case 1:
+        h->flags |= 0x1;
+        break;
+    case 2:
+        break;
+    case 3:
+        h->flags |= 0x40;
+        break;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BC4A0);
 
@@ -435,11 +540,42 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BCAB0);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitRot1);
 
+#ifdef NON_MATCHING
+/* retail codegen differs in the null-check and call order */
+void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1) {
+    dds3Basic_t *worldUnit;
+    evtWorldSourceTransformPrefix_t *source;
+
+    worldUnit = dds3SearchSceneBasic(dds3GetControlScene(), posID, 0x11);
+    if (worldUnit != NULL) {
+        source = worldUnit->workdata;
+        evtSetUnitRot1(h, (s128 *)&source->rotation, para1);
+        h->linkedUnit = worldUnit;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitRot2);
+#endif
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove1);
 
+#ifdef NON_MATCHING
+/* retail codegen differs in the null-check and call order */
+void evtSetUnitMove2(evtUnit_t *work, s32 motionSubmode, s32 worldObjectKey, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast) {
+    dds3Basic_t *worldUnit;
+    evtWorldSourceTransformPrefix_t *source;
+
+    worldUnit = dds3SearchSceneBasic(dds3GetControlScene(), worldObjectKey, 0x11);
+    if (worldUnit != NULL) {
+        source = worldUnit->workdata;
+        evtSetUnitMove1(work, motionSubmode, (s128 *)&source->position, unused, frames, directionOffset, callback, unusedLast);
+        work->transitionSourceKind = EVT_UNIT_TRANSITION_SOURCE_WORLD_NODE;
+        work->linkedUnit = worldUnit;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove2);
+#endif
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove3);
 
