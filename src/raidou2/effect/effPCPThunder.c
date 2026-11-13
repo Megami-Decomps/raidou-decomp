@@ -670,11 +670,21 @@ effPCPThunderSpherePoly_t *effPCPThunderSpherePolyCreate(effPCPThunderSpherePoly
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021DE28);
+void *func_0021DE28(void *pParam) {
+    void *parameters;
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021DE48);
+    parameters = dds3EffectPCPDataGetData(pParam, EFF_THUNDER_PARAMETER_BLOCK);
+    return effPCPThunderSpherePolyCreate(parameters);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021DE60);
+void *func_0021DE48(void *source) {
+    return effPCPThunderSpherePolyCreate(source);
+}
+
+void func_0021DE60(effPCPThunderSpherePoly_t *hData) {
+    dds3TrackPolyDelete(hData->hPoly);
+    sdfMemFreeDirect(hData->allocationHandle);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021DE90);
 
@@ -859,11 +869,21 @@ effPCPThunderSpherePoly_t *effBTLBindCreateTrack(effPCPThunderSpherePolyParam_t 
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021E958);
+void func_0021E958(effPCPThunderSpherePoly_t *hData) {
+    dds3TrackPolyDelete(hData->hPoly);
+    sdfMemFreeDirect(hData->allocationHandle);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021E988);
+void *func_0021E988(void *pParam) {
+    void *parameters;
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021E9A8);
+    parameters = dds3EffectPCPDataGetData(pParam, EFF_THUNDER_PARAMETER_BLOCK);
+    return effBTLBindCreateTrack(parameters);
+}
+
+void *func_0021E9A8(void *parameters) {
+    return effBTLBindCreateTrack(parameters);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021E9C0);
 
@@ -871,7 +891,9 @@ INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021E9D0);
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021E9D8);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021E9F8);
+u32 func_0021E9F8(u32 pThunderPoly) {
+    return pThunderPoly;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_0021EA00);
 
@@ -1676,7 +1698,9 @@ void effPCP_ThunderPolyListDelete(effPCP_ThunderPolyList_t *hData) {
     sdfChipFreeDirect(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00221D48);
+void *func_00221D48(void *pTPolyList) {
+    return pTPolyList;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_00221D50);
 

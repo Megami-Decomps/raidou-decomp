@@ -1505,7 +1505,10 @@ void dds3Particle_SpiralSetScale(effTemplatePacketList_t *hData, float scale) {
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EA940);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001EA9C0);
+void func_001EA9C0(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 /* Seed one ring packet's phase, radius and vertical motion, then its subeffect. */
 void dds3Particle_SpiralBuffInit(dds3Particle_Spiral_t3 *pSpiral, u32 number) {
@@ -1638,7 +1641,10 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001EAF40);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EAF90);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001EB010);
+void func_001EB010(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 /* Seed a random planar position and direction; radialDistance may be negative. */
 void dds3Particle_SmokeBuffInit(dds3Particle_Smoke_t3 *pSmoke, u32 number) {
@@ -1696,7 +1702,10 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001EB590);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EB5E0);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001EB660);
+void func_001EB660(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 INCLUDE_ASM(const s32, "effect/parManager", dds3Particle_SparkBuffInit);
 
@@ -1804,7 +1813,10 @@ void dds3Particle_RadiateSetScale(effTemplatePacketList_t *hData, float scale) {
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EC188);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001EC208);
+void func_001EC208(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 /* Seed a view-oriented ring packet and initialize its subeffect. */
 void dds3Particle_RadiateBuffInit(dds3Particle_Radiate_t3 *pRadiate, u32 number) {
@@ -1927,7 +1939,10 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001EC728);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EC768);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001EC7E8);
+void func_001EC7E8(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001EC810);
 
@@ -2019,7 +2034,10 @@ INCLUDE_ASM(const s32, "effect/parManager", func_001ECE28);
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001ECE78);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001ECEF8);
+void func_001ECEF8(void *hData) {
+    dds3Particle_BasicDelete(hData);
+    sdfChipFreeDirect(hData);
+}
 
 /* Seed a jittered spherical position and planar direction.
  * Native delay uses bitwise complement, not unary negation. */
@@ -3511,7 +3529,9 @@ void dds3ParticleSetScale(dds3Particle_Basic_t *hData, f32 scale) {
     dds3ParticleReset(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001F1590);
+u16 func_001F1590(dds3Particle_Basic_t *hData) {
+    return hData->state;
+}
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1598);
 
@@ -3680,24 +3700,34 @@ void dds3ParticleExpDraw(dds3Particle_Basic_t *hData) {
     SubmitKindDrawing(&hData->kindState);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001F1BA0);
+void func_001F1BA0(dds3Particle_Basic_t *hData) {
+    dds3ParticleReset(hData);
+}
 
 void dds3ParticleExpSetScale(dds3Particle_Basic_t *hData, float scale) {
     dds3ParticleSetScale(hData, scale);
     hData->scaleEnd *= scale;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001F1BF8);
+u16 func_001F1BF8(dds3Particle_Basic_t *hData) {
+    return func_001F1590(hData);
+}
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1C18);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001F1C28);
+void func_001F1C28(dds3Particle_Basic_t *hData, void *pMatrix) {
+    dds3ParticleSetRotateMatrix(hData, pMatrix);
+}
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001F1C40);
+void func_001F1C40(dds3Particle_Basic_t *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/parManager", func_001F1C48);
 
-INCLUDE_ASM(const s32, "effect/parManager", func_001F1C60);
+u8 func_001F1C60(dds3Particle_Basic_t *hData) {
+    return dds3ParticleGetLoop(hData);
+}
 
 /* Kinds 2-4 keep the scale at +8 of their own record; copy it into the
  * shared vector and store the (vf10 - vf11) difference. */

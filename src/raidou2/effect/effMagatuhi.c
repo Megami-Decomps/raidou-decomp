@@ -48,11 +48,11 @@ typedef struct effColorHandler_t {
     u8 unk4[0x14];
 } effColorHandler_t;
 
-extern effVectorHandler_t dds3MagatuhiSetPositionTable[];
+extern effVectorHandler_t D_0045B83C[];
 
-extern effColorHandler_t dds3MagatuhiSetRGBATable[];
+extern effColorHandler_t D_0045B840[];
 
-extern effVectorHandler_t dds3MagatuhiSetRotateMatrixTable[];
+extern effVectorHandler_t D_0045B844[];
 
 extern char *dds3EffectFileNameTable[];
 
@@ -1236,7 +1236,9 @@ dds3MagatuhiBill_tag *effMagaCylinderAllocTex(s32 count, s32 historyCount, f32 h
     return resource;
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_002096B8);
+void func_002096B8(dds3MagatuhiBill_tag *work) {
+    sdfMemFreeDirect(work->allocationHandle);
+}
 
 void effSwordTrackDrawTex(dds3MagatuhiBill_tag *work) {
     sdfVector4_t positions[15];
@@ -2020,7 +2022,9 @@ void effMagaCylinderDraw(effMagaCylinder_tag *pData) {
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020B8F8);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020B910);
+void func_0020B910(effMagaCylinder_tag *pData, u32 abgr) {
+    pData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020B918);
 
@@ -2212,7 +2216,9 @@ void effMagaSpiralDraw(effMagaSpiral_tag *pData) {
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020C148);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020C160);
+void func_0020C160(effMagaSpiral_tag *pData, u32 abgr) {
+    pData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020C168);
 
@@ -2428,7 +2434,9 @@ void effMagaSmokeDraw(effMagaSmoke_tag *pData) {
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CAA0);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CAB8);
+void func_0020CAB8(effMagaSmoke_tag *pData, u32 abgr) {
+    pData->abgr = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CAC0);
 
@@ -2551,20 +2559,44 @@ void dds3MagatuhiParDelete(dds3MagatuhiPar_tag *hData) {
     sdfChipFreeDirect(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CEB0);
+void *func_0020CEB0(dds3MagatuhiPar_tag *work) {
+    return work->pHandle;
+}
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CEB8);
+u32 func_0020CEB8(dds3MagatuhiPar_tag *work) {
+    return work->type;
+}
 
 void func_0020CEC0(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CEC8);
+u32 func_0020CEC8(void) {
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CED0);
+void func_0020CED0(dds3MagatuhiPar_tag *work, void *pPos) {
+    void (*handler)(void *, void *) = D_0045B83C[work->type].handler;
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CF10);
+    if (handler != NULL) {
+        handler(work->pHandle, pPos);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_0020CF50);
+void func_0020CF10(dds3MagatuhiPar_tag *work, void *pMatrix) {
+    void (*handler)(void *, void *) = D_0045B844[work->type].handler;
+
+    if (handler != NULL) {
+        handler(work->pHandle, pMatrix);
+    }
+}
+
+void func_0020CF50(dds3MagatuhiPar_tag *work, u32 abgr) {
+    void (*handler)(void *, u32) = D_0045B840[work->type].handler;
+
+    if (handler != NULL) {
+        handler(work->pHandle, abgr);
+    }
+}
 
 /* Store the low byte of slotValue at the type-specific subslot.
    Types two through four share the same location; other types are left unchanged. */

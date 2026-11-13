@@ -4682,7 +4682,9 @@ effPCPMultiBlurExp2_tag *effPCPMultiFilterExpCreate(effPCPMultiFilterExpParam_t 
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FE5B8);
+effPCPMultiBlurExp2_tag *func_001FE5B8(void *data) {
+    return effPCPMultiFilterExpCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPMultiBlurExp2_tag *effPCPMultiFilterExpCopy(effPCPMultiBlurExp2_tag *work) {
     effPCPMultiFilterExpParam_t params;
@@ -4762,7 +4764,9 @@ effPCPMultiBlurExp2_tag *effPCPMultiBlurExp2Create(effPCPMultiBlurExp2Param_t *p
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FE900);
+effPCPMultiBlurExp2_tag *func_001FE900(void *data) {
+    return effPCPMultiBlurExp2Create(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPMultiBlurExp2_tag *effPCPMultiBlurExp2Copy(effPCPMultiBlurExp2_tag *work) {
     effPCPMultiBlurExp2Param_t params;
@@ -4835,11 +4839,17 @@ effPCPFilterExp_tag *effPCPFilterExpCreate(effPCPFilterExpParam_t *pParam) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FEC58);
+effPCPFilterExp_tag *func_001FEC58(void *data) {
+    return effPCPFilterExpCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FEC78);
+effPCPFilterExp_tag *func_001FEC78(effPCPFilterExp_tag *work) {
+    return effPCPFilterExpCreate(&work->param);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FEC90);
+void func_001FEC90(effPCPFilterExp_tag *hData) {
+    sdfChipFreeDirect(hData);
+}
 
 void effPCPFilterExpDraw(effPCPFilterExp_tag *hData) {
     if (hData->frame <= SDF_FRAMES(hData->param.life)) {
@@ -4881,11 +4891,17 @@ effPCPBlurExp_tag *effPCPBlurExpCreate(effPCPBlurExpParam_t *pParam) {
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FEE70);
+effPCPBlurExp_tag *func_001FEE70(void *data) {
+    return effPCPBlurExpCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FEE90);
+effPCPBlurExp_tag *func_001FEE90(effPCPBlurExp_tag *work) {
+    return effPCPBlurExpCreate(&work->param);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FEEA8);
+void func_001FEEA8(effPCPBlurExp_tag *hData) {
+    sdfChipFreeDirect(hData);
+}
 
 void effPCPBlurExpDraw(effPCPBlurExp_tag *hData) {
     if (hData->frame <= SDF_FRAMES(hData->param.duration)) {
@@ -4921,7 +4937,11 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FEFD8);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FEFE0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FF070);
+effPCPDistortionBlurExp_tag *func_001FEFE0(effPCPDistortionBlurExpParam_t *pParam);
+
+effPCPDistortionBlurExp_tag *func_001FF070(void *data) {
+    return func_001FEFE0(dds3EffectPCPDataGetData(data, 0));
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_001FF090);
 
@@ -5456,7 +5476,9 @@ void effPCPAgiFireballSetPosition(effPCPAgiFireball_tag *hData, const void *pPos
     SDF_VU0_COPYVECTOR(hData->param.pos, pPos);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00200CA8);
+void func_00200CA8(effPCPAgiFireball_tag *hData, u32 abgr) {
+    hData->color = abgr;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00200CB0);
 
@@ -6006,7 +6028,9 @@ effPCPRingPolyExp_tag *effPCPRingPolyExpCreate(effPCPRingPolyExpParam_t *pParam)
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00202F78);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00202F98);
+effPCPRingPolyExp_tag *func_00202F98(effPCPRingPolyExp_tag *work) {
+    return effPCPRingPolyExpCreate(&work->param);
+}
 
 void effPCPRingPolyExpDelete(effPCPRingPolyExp_tag *hData) {
     dds3RingPolyExpListDelete(hData->hPoly);
@@ -6189,7 +6213,9 @@ effPCPRingPolyExp2_tag *effPCPRingPolyExp2Create(effPCPRingPolyExp2Param_t *hDat
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00203708);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00203728);
+effPCPRingPolyExp2_tag *func_00203728(effPCPRingPolyExp2_tag *work) {
+    return effPCPRingPolyExp2Create(&work->head);
+}
 
 void effPCPRingPolyExp2Delete(effPCPRingPolyExp2_tag *hData) {
     dds3RingPolyExpListDelete(hData->hPoly);

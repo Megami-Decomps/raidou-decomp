@@ -1008,7 +1008,15 @@ s32 itfMesMngSetMesPositionScript(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetMesPosDefault);
+s32 itfMesMngSetMesPosDefault(void) {
+    s32 window = scrGetMessageHandle();
+
+    if (window < 0) {
+        return 1;
+    }
+    itfMesMngSetMesPosition(window, 0x440, 0xA78);
+    return 1;
+}
 
 s32 itfMesMngValidateNext(void)
 {
@@ -1262,13 +1270,22 @@ void itfMesMngClearBitStat(s32 id, u32 flag)
     rec->stat &= ~flag | 0xFFFF;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188010);
+s16 func_00188010(s32 id) {
+    return pinst[id].mes->select.select;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188030);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188050);
 
+#ifdef NON_MATCHING
+/* Retail loads mes+0xD4, 0x10 past the header's variable.pptr offset. */
+u8 *itfMesMngGetVar(s32 id, s32 index) {
+    return (u8 *)pinst[id].mes->variable.pptr[index];
+}
+#else
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetVar);
+#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188098);
 
@@ -1321,7 +1338,14 @@ void itfMesMngSetDefaultSpeed(s32 id, u8 speed) {
     pinst[id].mes->message.color[3] = speed;
 }
 
+#ifdef NON_MATCHING
+/* Retail stores func_kuti at mes+0x21C, 0x4C past the header offset. */
+void itfMesMngSetKutiCallback(s32 id, void (*func)(void)) {
+    pinst[id].mes->func_kuti = (addr_t)func;
+}
+#else
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetKutiCallback);
+#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngInitializeManager);
 
@@ -1608,9 +1632,32 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189638);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", OpenCheckSpeakerWindow);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", InitializeSpeaker);
+void InitializeSpeaker(Speaker_tag *pspeaker, s32 defaultpos) {
+    if (defaultpos != 0) {
+        pspeaker->x = 0x3D0;
+        pspeaker->y = 0x988;
+    }
+    pspeaker->pfont = 0;
+    pspeaker->num = 0xffff;
+}
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", InitializeMessage);
+void InitializeMessage(message_tag *pmessage, s32 defaultpos) {
+    if (defaultpos != 0) {
+        pmessage->x = 0x440;
+        pmessage->y = 0xA78;
+    }
+    pmessage->pfont = NULL;
+    pmessage->phase = 0;
+    pmessage->textInterfaceMask = 0;
+    pmessage->lines = 0;
+    pmessage->page = 0;
+    pmessage->maxpage = 0;
+    pmessage->color[0] = 0;
+    pmessage->color[1] = 0;
+    pmessage->color[2] = 0;
+    pmessage->color[3] = 0x80;
+    pmessage->table = NULL;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189888);
 
