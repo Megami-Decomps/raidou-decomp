@@ -9998,7 +9998,13 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_00250F08);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_00250F68);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_00250FC8);
+void func_00250FC8(s32 work) {
+    EffFrameState *state;
+
+    state = (EffFrameState *)((EffClassWork *)work)->resource;
+    effSharedAssetReferenceRelease((EffRibbonWork *)state->asset);
+    sdfMemFreeDirect(state->allocation);
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_00250FF8);
 
@@ -10994,7 +11000,40 @@ INCLUDE_ASM(const s32, "code_0023E1D0", effReplaceEffectSlotModelAndDeviceResour
 
 INCLUDE_ASM(const s32, "code_0023E1D0", effRebuildResourceEntryClones);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", effClearSurfaceRecordReferences);
+typedef struct EffectSlotNode80 {
+    u32 count;
+    u32 color;
+    f32 opacity;
+    s32 resourceKind;
+    u8 randomDirection;
+    u8 pad11[3];
+    f32 seedDirection[3];
+    u8 pad20[4];
+    f32 angularSpeed;
+    f32 speedRandomness;
+    f32 angularAcceleration;
+    u16 scaleByOpacity;
+    u8 pad32[0x2E];
+    dds3ModelHandle_t *model;
+    void *deviceSlot;
+    FileQueue **resourceEntries;
+    struct sdfMemHandle_t *entryAllocation;
+    FileSlotTable *record;
+    u8 *positions;
+    struct sdfMemHandle_t *positionAllocation;
+    u16 active;
+} EffectSlotNode80;
+
+
+void func_0023C030(FileSlotTable *record);
+
+void effClearSurfaceRecordReferences(void *node) {
+    FileSlotTable *record = ((EffectSlotNode80 *)node)->record;
+
+    if (record != NULL) {
+        func_0023C030(record);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_00256AF8);
 
@@ -11002,13 +11041,20 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_00256BF0);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_00257230);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", effSetActiveSlotPrimaryRecordVector);
+void effSetActiveSlotPrimaryRecordVector(void *node, f32 vector[4]) {
+    mnuRecordSetVector(((EffectSlotNode80 *)node)->record, vector);
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", effSetActiveSlotSecondaryRecordVector);
+void effSetActiveSlotSecondaryRecordVector(void *node, f32 vector[4]) {
+    fileSetRecordSecondVector(((EffectSlotNode80 *)node)->record, vector);
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_002572C8);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", effSetActiveSlotOpacity);
+void effSetActiveSlotOpacity(void *work, f32 opacity) {
+    ((EffectSlotNode80 *)work)->opacity = opacity;
+    dds3DispatchIndexedCallback((u16 *)((EffectSlotNode80 *)work)->record, opacity);
+}
 
 /* Alternate particle handles share a header but occupy distinct slots. */
 EffParticleSharedResource *effCreateParticleSharedResourceFromFile(FileJobPayload *source) {

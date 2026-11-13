@@ -17,6 +17,7 @@
 
 #include "dds/bill_object_api.h"
 
+extern void *memcpy(void *, const void *, size_t);
 #include "dds/btl.h"
 
 #include "dds/btl_effect_position.h"
@@ -550,6 +551,9 @@ extern char D_003B39E0[];
 extern char D_003B3B88[];
 
 extern char D_003B3BA0[];
+extern char D_004BDC40[];
+extern char D_004BDDF8[];
+extern char D_004BDE10[];
 
 extern f32 effComputeProjectedOffsetAngle(const void *position, const void *offset);
 
@@ -2776,6 +2780,8 @@ typedef struct EffMappingObject {
     s32 valueD8;       // 0xD8
     u8 pad_DC[0x18];
     s32 valueF4;       // 0xF4
+    u8 pad_F8[0x10];
+    s32 value108;      // 0x108
 } EffMappingObject;
 
 s32 effMapObjectWithTemporaryMappingTable(s32 request);
@@ -3587,7 +3593,9 @@ void sdfEnableFlagListViewTargetRelativeMode(void);
 void sdfDisableFlagListViewTargetRelativeMode(void);
 /* End of declarations from src/dds1/game/code_002CC750.c */
 
-INCLUDE_ASM(const s32, "code_00259620", func_00259620);
+void func_00259620(void) {
+    effResetSlots();
+}
 
 INCLUDE_ASM(const s32, "code_00259620", func_00259638);
 
@@ -3686,7 +3694,12 @@ void effDispatchEnabledCallback(EffActiveResource *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_00259B38);
+void func_00259A60(EffActiveResource *work);
+
+void func_00259B38(EffActiveResource *work) {
+    func_00259A60(work);
+    effDispatchEnabledCallback(work);
+}
 
 INCLUDE_ASM(const s32, "code_00259620", func_00259B60);
 
@@ -3802,11 +3815,21 @@ INCLUDE_ASM(const s32, "code_00259620", func_0025A4F8);
 
 INCLUDE_ASM(const s32, "code_00259620", func_0025A500);
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025A528);
+extern s32 D_004E18CC;
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025A538);
+void func_0025A528(void) {
+    D_004E18CC = 1;
+}
+
+extern s32 D_004E18CC;
+
+void func_0025A538(void) {
+    D_004E18CC = 0;
+}
 
 INCLUDE_ASM(const s32, "code_00259620", func_0025A540);
+
+s32 effUpdatePartsListEditor(s32 mode);
 
 s32 btlUpdateEffectWork(void) {
     if (D_003BD074 != NULL) {
@@ -3821,7 +3844,13 @@ s32 btlUpdateEffectWork(void) {
 void func_0025A5C8(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025A5D0);
+void func_00232E90(void);
+
+void func_0025A5D0(void) {
+    effResetFileResources();
+    effResetFileResourceManager();
+    func_00232E90();
+}
 
 void effSetBattleOffset(void *src) {
     SDF_VU0_COPYVECTOR(effBattleOffset, src);
@@ -3997,9 +4026,55 @@ u32 effPollAttachedFile(void) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effFindAssetData);
+extern EffectAssetLink *D_004721A8[24];
 
-INCLUDE_ASM(const s32, "code_00259620", effFindAssetObject);
+u8 * effFindAssetData(FileJob *entry) {
+    FileJobPayload *requested = (FileJobPayload *)entry->id;
+    u16 type = requested->type;
+    u16 option = requested->option;
+    u16 i;
+    for (i = 0; i < 24; i++) {
+        EffectAssetLink *links = D_004721A8[i];
+        if (links != NULL) {
+            EffectAssetLink *current = links;
+            if (current->asset != NULL) {
+                do {
+                    u8 *asset = current->asset;
+                    if (((EffAssetIdentifier *)asset)->type == type && ((EffAssetIdentifier *)asset)->id == option) {
+                        return asset;
+                    }
+                    current++;
+                } while (current->asset != NULL);
+            }
+        }
+    }
+    return NULL;
+}
+
+extern EffectAssetLink *D_004721A8[24];
+
+EffQueuedFileObject * effFindAssetObject(FileJob *entry) {
+    FileJobPayload *requested = (FileJobPayload *)entry->id;
+    u16 type = requested->type;
+    u16 option = requested->option;
+    u16 i;
+    for (i = 0; i < 24; i++) {
+        EffectAssetLink *links = D_004721A8[i];
+        if (links != NULL) {
+            EffectAssetLink *current = links;
+            if (current->asset != NULL) {
+                do {
+                    u8 *asset = current->asset;
+                    if (((EffAssetIdentifier *)asset)->type == type && ((EffAssetIdentifier *)asset)->id == option) {
+                        return current->object;
+                    }
+                    current++;
+                } while (current->asset != NULL);
+            }
+        }
+    }
+    return NULL;
+}
 
 /* Return the selected queue row plus the offset of its visible window. */
 u32 effGetSelectedFileQueueIndex(void) {
@@ -4277,7 +4352,11 @@ u32 effStoreBattleCameraSnapshot(u32 value) {
 
 INCLUDE_ASM(const s32, "code_00259620", effSelectCameraFileJobFromRows);
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025CC40);
+extern char D_004BDBC8[];
+extern char D_004713E0[];
+s32 func_0025CC40(void) {
+    return effSelectCameraFileJobFromRows(D_004BDBC8, D_004713E0, 0xF);
+}
 
 s32 effCreatePolyTrackControlTask(void) {
     return effSelectCameraFileJobFromRows(D_003B3958, D_0038DF50, 6);
@@ -4299,7 +4378,11 @@ s32 effCreateEnvironmentTask(void) {
     return effSelectCameraFileJobFromRows(D_003B38C8, D_0038E280, 5);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025CD30);
+extern char D_004BDB88[];
+extern char D_00471880[];
+s32 func_0025CD30(void) {
+    return effSelectCameraFileJobFromRows(D_004BDB88, D_00471880, 0x3);
+}
 
 s32 effCreatePolyFlashTask(void) {
     return effSelectCameraFileJobFromRows(D_003B3928, D_0038E310, 0xB);
@@ -4317,7 +4400,11 @@ s32 effCreatePolyTwinkleTask(void) {
     return effSelectCameraFileJobFromRows("POLY TWINKLE", D_0038E570, 6);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025CDF8);
+extern char D_004BDB48[];
+extern char D_00471C80[];
+s32 func_0025CDF8(void) {
+    return effSelectCameraFileJobFromRows(D_004BDB48, D_00471C80, 0x8);
+}
 
 s32 effCreatePolyScalyTask(void) {
     return effSelectCameraFileJobFromRows(D_003B38E8, D_0038E6F0, 5);
@@ -4327,7 +4414,11 @@ s32 effCreatePolyCrackTask(void) {
     return effSelectCameraFileJobFromRows(D_003B38D8, D_0038E7C0, 2);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025CE70);
+extern char D_004BDAD8[];
+extern char D_00471E70[];
+s32 func_0025CE70(void) {
+    return effSelectCameraFileJobFromRows(D_004BDAD8, D_00471E70, 0xD);
+}
 
 s32 effCreateTwoDimensionalTask(void) {
     return effSelectCameraFileJobFromRows(D_003BD000, D_0038E9A0, 2);
@@ -4386,7 +4477,19 @@ INCLUDE_RODATA(const s32, "code_00259620", D_004BDD18);
 
 INCLUDE_ASM(const s32, "code_00259620", effHandleDebugOrbitInput);
 
-INCLUDE_ASM(const s32, "code_00259620", effResetStaticState);
+extern u32 D_00565280[];
+extern u8 D_005650A0[];
+
+s32 effResetStaticState(void) {
+    D_00565280[0] = 0;
+    D_00565280[1] = 0;
+    D_00565280[2] = 0;
+    D_00565280[3] = 0;
+    D_005650A0[0x88] = 8;
+    D_005650A0[0x89] = 0;
+    D_005650A0[0x8A] = 0;
+    return 0;
+}
 
 /* Synchronize the diagnostic camera position and calculate its positional guides.
  * Return input flags; the native diagnostic drawing providers are retail stubs. */
@@ -4462,7 +4565,16 @@ s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_0025D630);
+extern u8 D_005650A0[];
+extern u8 D_004E20E8;
+extern u8 D_004E20E9;
+extern u8 D_004E20EA;
+
+void func_0025D630(void) {
+    D_004E20E8 = D_005650A0[0x88];
+    D_004E20E9 = D_005650A0[0x89];
+    D_004E20EA = D_005650A0[0x8A];
+}
 
 INCLUDE_ASM(const s32, "code_00259620", func_0025D658);
 
@@ -4746,7 +4858,14 @@ void effPollResourceBank(s32 flags, EffectPollRecord *record) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effResetMappingFlags);
+void effResetMappingFlags(void) {
+    effColorEditRgbMenuOpen = 0;
+    effColorEditPage = 0;
+    effColorEditSelectedKey = 0;
+    effColorEditSelectedAlphaKey = 1;
+    effMappingState.cursor = 1;
+    effMappingState.flags |= 0x10;
+}
 
 INCLUDE_ASM(const s32, "code_00259620", effEditColorTrack);
 
@@ -4948,9 +5067,41 @@ s32 effEditTwoDimensionalColorTrack(s32 request) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effEditMColorTrack);
+extern EffEditorRow D_00472FD8[];
+extern EffEditorRow D_00472E58[];
 
-INCLUDE_ASM(const s32, "code_00259620", btlResetEffectWork);
+/* FUNC effEditMColorTrack */
+#ifdef NON_MATCHING
+/* 7 of 25 words differ, first at +0x20: retail loads the rows address before p->x0C and stores count and rows in a different order. */
+void effEditMColorTrack(BaObj *p) {
+    s32 object;
+
+    effMappingState.rows = D_00472FD8;
+    effMappingState.count = 8;
+    object = p->x0C;
+    effEditColorTrack(object + 0x7C, object + 0xA0, ((EffMappingObject *)object)->value108);
+    effMappingState.rows = D_00472E58;
+    effMappingState.count = 8;
+}
+#else
+INCLUDE_ASM(const s32, "code_00259620", effEditMColorTrack);
+#endif
+
+extern EffQueuedFileObject D_004731D0;
+extern EffQueuedFileObject D_004732E8;
+extern u32 D_004E2138;
+extern u32 D_004E213C;
+extern u32 D_004E2140;
+
+void btlResetEffectWork(void) {
+    D_004731D0.flags |= 0x10;
+    D_004731D0.cursor = 0;
+    D_004732E8.flags |= 0x10;
+    D_004732E8.cursor = 0;
+    D_004E2138 = 0;
+    D_004E213C = 0;
+    D_004E2140 = 0;
+}
 
 INCLUDE_ASM(const s32, "code_00259620", effEditScalarTrack);
 
@@ -4994,7 +5145,11 @@ s32 effEditTBoardScaleTrack(BaObj *p) {
     return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effEditTBoardRotationTrack);
+extern char D_00473238[];
+
+s32 effEditTBoardRotationTrack(BaObj *p) {
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->value8C, &D_004732E8, D_00473238);
+}
 
 /* SCALE property callback for native W-family descriptors. */
 s32 effEditWScaleTrack(BaObj *p) {
@@ -5041,9 +5196,16 @@ s32 effEditTwoDimensionalRotationTrack(BaObj *p) {
     return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effEditMScaleTrack);
 
-INCLUDE_ASM(const s32, "code_00259620", func_00260760);
+extern char D_004730E8[];
+
+s32 effEditMScaleTrack(BaObj *p) {
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0xB0), ((EffMappingObject *)p->x0C)->value108, &D_004731D0, &D_004730E8);
+}
+
+void func_00260760(void) {
+    effColorEditSelectedAlphaKey = 1;
+}
 
 INCLUDE_ASM(const s32, "code_00259620", func_00260770);
 
@@ -5188,11 +5350,17 @@ s32 effPollHlpPbResourceFile(void) {
     return effPollFileRecord(D_003B3BA0, BTL_RESOURCE_SCAN_PB);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effPollMMaterialPbFile);
+s32 effPollMMaterialPbFile(void) {
+    return effPollFileRecord(D_004BDDF8, BTL_RESOURCE_SCAN_PB);
+}
 
-INCLUDE_ASM(const s32, "code_00259620", effPollMMaterialEplFile);
+s32 effPollMMaterialEplFile(void) {
+    return effPollFileRecord(D_004BDC40, BTL_RESOURCE_SCAN_EPL);
+}
 
-INCLUDE_ASM(const s32, "code_00259620", effPollOMaterialPbFile);
+s32 effPollOMaterialPbFile(void) {
+    return effPollFileRecord(D_004BDE10, BTL_RESOURCE_SCAN_PB);
+}
 
 u32 fileLoadEffectSlotA(void) {
     EffResourceBankSlot fileInfo;

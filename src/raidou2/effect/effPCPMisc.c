@@ -2474,11 +2474,11 @@ void effEveBEDCutDelete(effEveBEDCutHandle_t *hEveBEDCut);
 
 void effEveBEDDelete(struct effBTL_t *hEveBED);
 
-extern u8 effPCP_ShockWave01_ThunderSpherePoly_Param[];
+extern u8 D_0045DAB8[];
 
 extern effPCP_ThunderPolyParam_t effPCPMZiodin01ThunderParam[];
 
-extern u8 effPCP_Houden01_ThunderSpherePoly_Param[];
+extern u8 D_0045DB68[];
 
 extern s32 effPCPBlurScreenOffset(f32 value);
 
@@ -2560,13 +2560,13 @@ effPCPBreath_tag *effPCPBreathCreate(void *params, effPCPAgiraoFirePartList_t *h
 
 void dds3EffectPartialMultiBlurDelete(dds3Effect_PartialMultiBlur_t *hPartialMultiBlur);
 
-extern u8 effPCP_Megidoraon01_ThunderSpherePoly_Param[];
+extern u8 D_0045DC08[];
 
 void dds3EffectSetRGBA(effHandle_t *pData, u32 abgr);
 
 extern effPCP_ThunderPolyParam_t effPCPZiodin01ThunderParam[];
 
-extern u8 effPCP_Megidora01_ThunderSpherePoly_Param[];
+extern u8 D_0045DBB8[];
 
 extern effPCP_ThunderPolyParam_t effPCPMZiodin02ThunderParam[];
 
@@ -3621,7 +3621,10 @@ effPCPSparkleSphere_tag *effPCPSparkleSphereCreate(effPCPSparkleSphereParam_t *p
     return billboard;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00211668);
+void func_00211668(effPCPSparkleSphere_tag *hData) {
+    dds3BillboardDelete(hData->hBill);
+    sdfChipFreeDirect(hData);
+}
 
 void effPCPSparkleSphereDraw(effPCPSparkleSphere_tag *hData) {
     sdfVector4_t pos;
@@ -4320,11 +4323,23 @@ void effPCPZiodin01Init(effPCPZiodin01_tag *pPCPZiodin01) {
     } while (i < 12);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213458);
+void *func_00213458(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x4c);
+    effPCPZiodin01Init(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213490);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002134E8);
+void *func_002134E8(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x4c);
+    effPCPZiodin01Init(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213520);
 
@@ -4336,11 +4351,23 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213628);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213630);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002138D0);
+void *func_002138D0(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x4c);
+    func_00213630(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213908);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213960);
+void *func_00213960(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x4c);
+    func_00213630(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213998);
 
@@ -4352,11 +4379,23 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213AA0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213AA8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213D68);
+void *func_00213D68(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x94);
+    func_00213AA8(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213DA0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213DF8);
+void *func_00213DF8(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x94);
+    func_00213AA8(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213E30);
 
@@ -4368,11 +4407,23 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213F38);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00213F40);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002141E0);
+void *func_002141E0(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x4c);
+    func_00213F40(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214218);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214270);
+void *func_00214270(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x4c);
+    func_00213F40(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002142A8);
 
@@ -4406,11 +4457,23 @@ void effPCPMZiodin01Init(effPCPZiodin01_tag *pPCPMZiodin01) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214550);
+void *func_00214550(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x4c);
+    effPCPMZiodin01Init(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214588);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002145E0);
+void *func_002145E0(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x4c);
+    effPCPMZiodin01Init(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214618);
 
@@ -4448,7 +4511,13 @@ void effPCPMZiodin02Init(effPCPZiodin01_tag *pPCPMZiodin02) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002148C0);
+void *func_002148C0(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x3c);
+    effPCPMZiodin02Init(work);
+    return work;
+}
 
 void effPCPMZiodin02Delete(effPCPZiodin01_tag *hData) {
     effPCP_ThunderPoly_t **handle = hData->handles;
@@ -4460,7 +4529,13 @@ void effPCPMZiodin02Delete(effPCPZiodin01_tag *hData) {
     sdfChipFreeDirect(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214950);
+void *func_00214950(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x3c);
+    effPCPMZiodin02Init(work);
+    return work;
+}
 
 void effPCPMZiodin02Draw(effPCPZiodin01_tag *hData) {
     ShiftThunderHandles(hData, 8);
@@ -4472,13 +4547,34 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214A88);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214A90);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214A98);
+void func_00214A98(effPCPShockWave01_tag *pPCPShockWave01) {
+    effPCPThunderSpherePoly_t *handle;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214AD0);
+    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)D_0045DAB8);
+    pPCPShockWave01->frame = 0;
+    pPCPShockWave01->pThunderPoly = handle;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214B08);
+void *func_00214AD0(void) {
+    void *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214B38);
+    work = sdfChipAllocDirect(0x20);
+    func_00214A98(work);
+    return work;
+}
+
+void func_00214B08(effPCPShockWave01_tag *hData) {
+    func_0021DE60(hData->pThunderPoly);
+    sdfChipFreeDirect(hData);
+}
+
+void *func_00214B38(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x20);
+    func_00214A98(work);
+    return work;
+}
 
 void effPCPShockWave01Draw(effPCPShockWave01_tag *hData) {
     effPCPThunderSpherePolyParam_t *parameterHead;
@@ -4514,11 +4610,23 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214CE0);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214CE8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214FA8);
+void *func_00214FA8(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x94);
+    func_00214CE8(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00214FE0);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215038);
+void *func_00215038(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x94);
+    func_00214CE8(work);
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215070);
 
@@ -4528,13 +4636,34 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215170);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215178);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215180);
+void func_00215180(effPCPShockWave01_tag *pPCPHouden01) {
+    effPCPThunderSpherePoly_t *handle;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002151B8);
+    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)D_0045DB68);
+    pPCPHouden01->frame = 0;
+    pPCPHouden01->pThunderPoly = handle;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002151F0);
+void *func_002151B8(void) {
+    void *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215220);
+    work = sdfChipAllocDirect(0x20);
+    func_00215180(work);
+    return work;
+}
+
+void func_002151F0(effPCPShockWave01_tag *hData) {
+    func_0021DE60(hData->pThunderPoly);
+    sdfChipFreeDirect(hData);
+}
+
+void *func_00215220(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x20);
+    func_00215180(work);
+    return work;
+}
 
 void effPCPHouden01Draw(effPCPShockWave01_tag *hData) {
     effPCPThunderSpherePolyParam_t *parameterHead;
@@ -4634,7 +4763,10 @@ effPCPMultiBlurExp_tag *effPCPMultiBlurExpCreate(effPCPBlinkMultiBlurParam_t *pa
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002156F0);
+void func_002156F0(effPCPMultiBlurExp_tag *hData) {
+    func_0020F780(hData->hBlur);
+    sdfChipFreeDirect(hData);
+}
 
 void effPCPMultiBlurExpDraw(effPCPMultiBlurExp_tag *hData) {
     dds3Effect_PartialMultiBlur_t *obj;
@@ -4699,7 +4831,10 @@ effPCPMultiBlurExp2_tag *effPCPMultiFilterExpCopy(effPCPMultiBlurExp2_tag *work)
     return effPCPMultiFilterExpCreate(&params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215970);
+void func_00215970(effPCPMultiBlurExp2_tag *hData) {
+    func_00210B78(hData->resource.rectangle);
+    sdfChipFreeDirect(hData);
+}
 
 void effPCPMultiFilterExpDraw(effPCPMultiBlurExp2_tag *hData) {
     sdfVector4_t projected;
@@ -4781,7 +4916,10 @@ effPCPMultiBlurExp2_tag *effPCPMultiBlurExp2Copy(effPCPMultiBlurExp2_tag *work) 
     return effPCPMultiBlurExp2Create(&params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00215CC8);
+void func_00215CC8(effPCPMultiBlurExp2_tag *hData) {
+    func_0020F780(hData->resource.blur);
+    sdfChipFreeDirect(hData);
+}
 
 void effPCPMultiBlurExp2Draw(effPCPMultiBlurExp2_tag *hData) {
     sdfVector4_t projected;
@@ -4945,7 +5083,10 @@ effPCPDistortionBlurExp_tag *func_00216368(void *data) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216388);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216438);
+void func_00216438(effPCPDistortionBlurExp_tag *hData) {
+    func_0020FB48(hData->resource.scatter);
+    sdfChipFreeDirect(hData);
+}
 
 void effPCPDistortionBlurExpDraw(effPCPDistortionBlurExp_tag *hData) {
     effBlurScatterWork_t *resource;
@@ -5002,11 +5143,16 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216640);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216648);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002166D8);
+effPCPDistortionBlurExp_tag *func_002166D8(void *data) {
+    return func_00216648(dds3EffectPCPDataGetData(data, 0));
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002166F8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002167A8);
+void func_002167A8(effPCPDistortionBlurExp_tag *hData) {
+    func_00210080(hData->resource.scale);
+    sdfChipFreeDirect(hData);
+}
 
 void effPCPRippleBlurExpDraw(effPCPDistortionBlurExp_tag *hData) {
     effBlurScaleWork_t *resource;
@@ -5067,13 +5213,34 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002169C8);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002169D8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002169E0);
+void func_002169E0(effPCPShockWave01_tag *pPCPMegidora01) {
+    effPCPThunderSpherePoly_t *handle;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216A18);
+    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)D_0045DBB8);
+    pPCPMegidora01->frame = 0;
+    pPCPMegidora01->pThunderPoly = handle;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216A50);
+void *func_00216A18(void) {
+    void *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216A80);
+    work = sdfChipAllocDirect(0x20);
+    func_002169E0(work);
+    return work;
+}
+
+void func_00216A50(effPCPShockWave01_tag *hData) {
+    func_0021DE60(hData->pThunderPoly);
+    sdfChipFreeDirect(hData);
+}
+
+void *func_00216A80(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x20);
+    func_002169E0(work);
+    return work;
+}
 
 void effPCPMegidora01Draw(effPCPShockWave01_tag *hData) {
     effPCPThunderSpherePolyParam_t *parameterHead;
@@ -5116,13 +5283,34 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216C80);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216C88);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216C90);
+void func_00216C90(effPCPShockWave01_tag *pPCPMegidoraon01) {
+    effPCPThunderSpherePoly_t *handle;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216CC8);
+    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)D_0045DC08);
+    pPCPMegidoraon01->frame = 0;
+    pPCPMegidoraon01->pThunderPoly = handle;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216D00);
+void *func_00216CC8(void) {
+    void *work;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00216D30);
+    work = sdfChipAllocDirect(0x20);
+    func_00216C90(work);
+    return work;
+}
+
+void func_00216D00(effPCPShockWave01_tag *hData) {
+    func_0021DE60(hData->pThunderPoly);
+    sdfChipFreeDirect(hData);
+}
+
+void *func_00216D30(void) {
+    void *work;
+
+    work = sdfChipAllocDirect(0x20);
+    func_00216C90(work);
+    return work;
+}
 
 void effPCPMegidoraon01Draw(effPCPShockWave01_tag *hData) {
     effPCPThunderSpherePolyParam_t *parameterHead;
@@ -5808,7 +5996,9 @@ effPCPThunderSphereExp_tag *effPCPThunderSphereExpCreate(effPCPThunderSphereExpP
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_002198F0);
+effPCPThunderSphereExp_tag *func_002198F0(void *data) {
+    return effPCPThunderSphereExpCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPThunderSphereExp_tag *effPCPThunderSphereExpCopy(effPCPThunderSphereExp_tag *work) {
     effPCPThunderSphereExpParam_t params;
@@ -5823,7 +6013,10 @@ effPCPThunderSphereExp_tag *effPCPThunderSphereExpCopy(effPCPThunderSphereExp_ta
     return effPCPThunderSphereExpCreate(&params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_00219A30);
+void func_00219A30(effPCPThunderSphereExp_tag *hData) {
+    func_0021DE60(hData->pThunderSpherePoly);
+    sdfChipFreeDirect(hData);
+}
 
 void effPCPThunderSphereExpDraw(effPCPThunderSphereExp_tag *hData) {
     s32 frame;
@@ -6026,7 +6219,9 @@ effPCPRingPolyExp_tag *effPCPRingPolyExpCreate(effPCPRingPolyExpParam_t *pParam)
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021A270);
+effPCPRingPolyExp_tag *func_0021A270(void *data) {
+    return effPCPRingPolyExpCreate(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPRingPolyExp_tag *func_0021A290(effPCPRingPolyExp_tag *work) {
     return effPCPRingPolyExpCreate(&work->param);
@@ -6211,7 +6406,9 @@ effPCPRingPolyExp2_tag *effPCPRingPolyExp2Create(effPCPRingPolyExp2Param_t *hDat
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", func_0021AA00);
+effPCPRingPolyExp2_tag *func_0021AA00(void *data) {
+    return effPCPRingPolyExp2Create(dds3EffectPCPDataGetData(data, 0));
+}
 
 effPCPRingPolyExp2_tag *func_0021AA20(effPCPRingPolyExp2_tag *work) {
     return effPCPRingPolyExp2Create(&work->head);

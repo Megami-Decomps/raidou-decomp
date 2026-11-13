@@ -1671,7 +1671,10 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231880);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231890);
+void func_00231890(effPCPCrack_t *hData, u32 abgr)
+{
+    hData->abgr = abgr;
+}
 
 effPCPBossBael_t *effPCPBossBaelCreate(void *pParam, void *pPB, void *pPCF)
 {
@@ -1713,13 +1716,25 @@ void func_00231A58(void) {
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231A60);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231A78);
+void func_00231A78(effPCPCrack_t *hData, s32 frames)
+{
+    hData->trailColorTransitionFrames = frames;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231A80);
+s32 func_00231A80(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231A88);
+s32 func_00231A88(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231A90);
+s32 func_00231A90(void)
+{
+    return 0;
+}
 
 void func_00231A98(void) {
 }
@@ -1730,11 +1745,20 @@ void func_00231AA0(void) {
 void func_00231AA8(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231AB0);
+s32 func_00231AB0(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231AB8);
+s32 func_00231AB8(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231AC0);
+s32 func_00231AC0(void)
+{
+    return 0;
+}
 
 void func_00231AC8(void) {
 }
@@ -1748,11 +1772,20 @@ void func_00231AD8(void) {
 void func_00231AE0(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231AE8);
+s32 func_00231AE8(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231AF0);
+s32 func_00231AF0(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231AF8);
+s32 func_00231AF8(void)
+{
+    return 0;
+}
 
 void func_00231B00(void) {
 }
@@ -1763,11 +1796,20 @@ void func_00231B08(void) {
 void func_00231B10(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231B18);
+s32 func_00231B18(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231B20);
+s32 func_00231B20(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231B28);
+s32 func_00231B28(void)
+{
+    return 0;
+}
 
 void func_00231B30(void) {
 }
@@ -1778,11 +1820,20 @@ void func_00231B38(void) {
 void func_00231B40(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231B48);
+s32 func_00231B48(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231B50);
+s32 func_00231B50(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231B58);
+s32 func_00231B58(void)
+{
+    return 0;
+}
 
 void func_00231B60(void) {
 }
@@ -1796,11 +1847,20 @@ void func_00231B70(void) {
 void func_00231B78(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231B80);
+s32 func_00231B80(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231B88);
+s32 func_00231B88(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231B90);
+s32 func_00231B90(void)
+{
+    return 0;
+}
 
 void func_00231B98(void) {
 }
@@ -1814,11 +1874,20 @@ void func_00231BA8(void) {
 void func_00231BB0(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231BB8);
+s32 func_00231BB8(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231BC0);
+s32 func_00231BC0(void)
+{
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231BC8);
+s32 func_00231BC8(void)
+{
+    return 0;
+}
 
 void func_00231BD0(void) {
 }
@@ -1859,9 +1928,17 @@ effPCPCrack_t *effPCPCrack2Copy(effPCPCrack_t *src)
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231D10);
+void func_00231D10(effPCPCrack_t *hData)
+{
+    effPCPCrackDelete(hData);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231D28);
+void effPCPCrackDraw(effPCPCrack_t *hData);
+
+void func_00231D28(effPCPCrack_t *hData)
+{
+    effPCPCrackDraw(hData);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231D40);
 
@@ -1882,9 +1959,19 @@ effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam)
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231F78);
+effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_00231F98);
+effPCPBossMETATOBeam_t *func_00231F78(void *hData, s32 bPos, s32 tbldata)
+{
+    return effPCPBossMETATOBeamCreate(dds3EffectPCPDataGetData(hData, 0));
+}
+
+effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
+
+effPCPBossMETATOBeam_t *func_00231F98(void *hData, s32 bPos, s32 tbldata)
+{
+    return effPCPBossMETATOBeamCreate(hData);
+}
 
 void effPCPBossMETATOBeamDelete(effPCPBossMETATOBeam_t *hData)
 {

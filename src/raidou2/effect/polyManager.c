@@ -750,7 +750,52 @@ void dds3PolygonDelete(dds3Polygon_t *hPolygon) {
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001F6A60);
 
-INCLUDE_ASM(const s32, "effect/polyManager", dds3PolygonLinkOt);
+void dds3PolygonLinkOt(void) {
+    dds3Polygon_t *record = hDrawListTop;
+    sdfDrawTag_t *packet;
+    s32 remaining;
+    s16 flags;
+    sdfGrOt_t *priorityPool;
+
+    if (record != NULL) {
+        priorityPool = &sdfGrOtTable[61];
+        do {
+            if (record->drawCount != 0 && record->flags != 1) {
+                packet = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+                sdfDrawTagInit(packet);
+                sdf3DPrimLinkResetTm(packet, 0);
+                sdf3DPrimLinkMat(packet, record->pMat, 0);
+                flags = record->flags;
+                remaining = record->drawCount;
+                record->parm.vertex = (sdfVector4_t *)record->pVertex;
+                record->parm.uv = (sdfVector2_t *)record->texcoords;
+                record->parm.vertexColor = record->pVertexColor;
+                record->parm.normal = (sdfVector4_t *)record->pNormal;
+                record->parm.faceCount = 16;
+                record->parm.pointCount = 48;
+                while (remaining >= 48) {
+                    sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(&record->parm)));
+                    record->parm.vertex += 48;
+                    if (flags & 1) record->parm.uv += 48;
+                    if (flags & 2) record->parm.normal += 48;
+                    remaining -= 48;
+                    if (flags & 4) record->parm.vertexColor += 48;
+                }
+                if (remaining > 0) {
+                    record->parm.faceCount = remaining / 3;
+                    record->parm.pointCount = remaining;
+                    sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(&record->parm)));
+                }
+                record->drawCount = 0;
+                if (flags & 0x10) parAppendDrawSurfacePool(priorityPool, packet);
+                else if (flags & 0x20) parAppendDrawSurfacePool(&sdfGrOtTable[65], packet);
+                else parAppendDrawSurfacePool(&sdfGrOtTable[44], packet);
+            }
+            record = record->next;
+        } while (record != NULL);
+    }
+    hDrawListTop = NULL;
+}
 
 void dds3PolygonSetTex(dds3Polygon_t *hPolygon, sdfTexHandle_t *hTex) {
     sdfMatSetTex(hPolygon->pMat, hTex);
@@ -1881,7 +1926,10 @@ void dds3SpPoly_Ring_Old_BuffInit(dds3SpPoly_Ring_Old_t3 *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001F90D0);
+void func_001F90D0(dds3SpPoly_Ring_Old_t3 *hData, f32 scale) {
+    hData->radius = hData->radius * scale;
+    hData->pairDisplacement = hData->pairDisplacement * scale;
+}
 
 void dds3SpPoly_Ring_Old_Calc(dds3SpPoly_Ring_Old_t3 *pRing) {
     u16 index;
@@ -2585,9 +2633,84 @@ void dds3SpPoly_RollRingMove(dds3SpPoly_RollRing_t3 *pRollRing, s32 number)
     SDF_VU0_COPYVECTOR(out + 4, first + 4);
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001FA900);
+void func_001FA900(dds3SpPoly_RollRing_t3 *hData, f32 scale) {
+    hData->radius_s = hData->radius_s * scale;
+    hData->radius_e = hData->radius_e * scale;
+}
 
+#ifdef NON_MATCHING
+/* 73 of 97 words differ (first at +0x54) */
+void func_001FA920(dds3SpPoly_RollRing_t3 *hData) {
+    s32 recordIndex = 0;
+    u32 completed = 0;
+    u8 loop;
+    dds3TrackPoly_t *strip;
+    s32 count;
+    dds3SpPoly_RollRingPhysics_t *record;
+    s32 duration;
+    u32 color;
+    dds3TrackPolyList_t *entry;
+
+    strip = hData->hTrackPoly;
+    count = hData->head.number;
+    record = hData->pPhysics;
+    duration = SDF_FRAMES(hData->head.frame);
+    loop = hData->head.loop;
+    color = hData->head.abgr;
+    entry = strip->trackList;
+
+    if (count > 0) {
+        do {
+            s32 age = record->frame;
+
+            if (age == POLY_INACTIVE_ENTRY_AGE) {
+                dds3SpPoly_RollRingBuffInit(hData, recordIndex);
+                age = record->frame;
+            }
+            if (age < 0) {
+                age++;
+            } else {
+                if ((u32)age < SDF_FRAMES(hData->head.alpha_s)) {
+                    entry->color = dds3SpPoly_Color(age, SDF_FRAMES(hData->head.alpha_s), color);
+                } else if (age <= duration &&
+                           (u32)age >= duration - SDF_FRAMES(hData->head.alpha_e)) {
+                    entry->color = dds3SpPoly_Color(duration - age, SDF_FRAMES(hData->head.alpha_e), color);
+                } else {
+                    entry->color = color;
+                }
+
+                if (entry->color & 0xFF000000) {
+                    dds3SpPoly_RollRingMove(hData, recordIndex);
+                    age++;
+                } else {
+                    entry->count = 0;
+                    age++;
+                }
+            }
+
+            if (age >= duration) {
+                if (loop != 0) {
+                    age = POLY_INACTIVE_ENTRY_AGE;
+                } else {
+                    completed++;
+                    if (completed >= (u32)count) {
+                        hData->head.state = 0;
+                    }
+                }
+                entry->count = 0;
+            }
+
+            record->frame = age;
+            recordIndex++;
+            entry++;
+            record++;
+        } while (recordIndex < count);
+    }
+    dds3TrackPolyDraw(hData->hTrackPoly);
+}
+#else
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FA920);
+#endif
 
 void dds3SpPoly_RollRingSetEndless(dds3SpPoly_RollRing_t3 *pRollRing) {
     u32 count;
@@ -2627,9 +2750,13 @@ void *dds3SpPolyCopy(dds3SpPoly_Basic_t *effect) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001FABC8);
+void func_001FABC8(dds3SpPoly_Basic_t *hData) {
+    dds3SpPolyTable[hData->type].destroy(hData);
+}
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001FAC00);
+void func_001FAC00(dds3SpPoly_Basic_t *hData) {
+    dds3SpPolyTable[hData->type].callback(hData);
+}
 
 void dds3SpPolyReset(dds3SpPoly_Basic_t *hData) {
     dds3SpPolyResetTable[hData->type](hData);
@@ -2641,7 +2768,9 @@ void dds3SpPolySetScale(dds3SpPoly_Basic_t *hData, f32 scale) {
     dds3SpPolyReset(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001FACC0);
+u16 func_001FACC0(dds3SpPoly_Basic_t *hData) {
+    return hData->state;
+}
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FACC8);
 
@@ -2653,7 +2782,9 @@ void dds3SpPolySetRotateMatrix(dds3SpPoly_Basic_t *hData, void *pMatrix) {
     SDF_VU0_STOREMATRIX(hData->matrix);
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001FAD38);
+void func_001FAD38(dds3SpPoly_Basic_t *hData, u32 abgr) {
+    hData->abgr = abgr;
+}
 
 void dds3SpPolySetLoop(dds3SpPolyLoopWork_t *hData, u8 loop) {
     if (hData->handler == 0) {
@@ -2662,7 +2793,9 @@ void dds3SpPolySetLoop(dds3SpPolyLoopWork_t *hData, u8 loop) {
     hData->loop = loop;
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001FAD58);
+u8 func_001FAD58(dds3SpPolyLoopWork_t *hData) {
+    return hData->loop;
+}
 
 INCLUDE_ASM(const s32, "effect/polyManager", func_001FAD60);
 
