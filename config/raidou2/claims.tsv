@@ -1,0 +1,10 @@
+# Unit claims, so two people or agents do not decompile the same unit twice.
+#
+# Claim a unit by adding a row before you start, and set done when you stop,
+# whether you finished or not. One claimant per unit. A row is advisory: it
+# records intent, and nothing in the build reads this file.
+#
+# state: open (claimed, in progress) | done (claimant stopped)
+# left:  INCLUDE_ASM functions and retail code bytes when the row was written
+#
+# unit	claimant	state	date	left	note
