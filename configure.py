@@ -312,6 +312,21 @@ def provide_data_symbols(version: str) -> None:
     path.write_text(text + "".join(f"PROVIDE({n} = 0x{n[2:]});\n" for n in sorted(names)))
 
 
+def smt3_link_symbols(version: str) -> Path:
+    """Write the link-time form of smt3_symbols.txt. A plain assignment makes a symbol
+    absolute even when an object defines it, so functions that INCLUDE_ASM or C
+    define get PROVIDE and keep their own symbol and size."""
+    funcs = set(re.findall(r"^(\w+) = 0x[0-9A-Fa-f]+;.*\btype:func\b",
+                           (ROOT / "config" / version / "symbol_addrs.txt").read_text(), re.M))
+    out = []
+    for line in (ROOT / "config" / version / "smt3_symbols.txt").read_text().splitlines():
+        m = re.match(r"(\w+) = (0x[0-9A-Fa-f]+);$", line)
+        out.append(f"PROVIDE({m.group(1)} = {m.group(2)});" if m and m.group(1) in funcs else line)
+    path = Path("build") / version / "smt3_symbols.ld"
+    (ROOT / path).write_text("\n".join(out) + "\n")
+    return path
+
+
 def align_data_files(version: str) -> None:
     """C objects align .rodata and .data to 16, so a C object can end short of the
     next split by its padding. Align split data on a 16-byte boundary the same way."""
@@ -674,6 +689,7 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
             str(elf), "ld", [str(o) for o in objects],
             implicit=[str(ld_script), f"config/{version}/undefined_syms_auto.txt",
                       f"config/{version}/undefined_funcs_auto.txt", f"config/{version}/smt3_symbols.txt",
+                      str(smt3_link_symbols(version)),
                       "tools/production_report.py"],
             implicit_outputs=[str(elf.with_suffix(".map")), str(elf) + ".proof.json"],
             variables={
@@ -681,7 +697,7 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
                 "undef_syms": f"config/{version}/undefined_syms_auto.txt",
                 "undef_funcs": f"config/{version}/undefined_funcs_auto.txt",
                 # SMT3 names that carried C bodies use for Raidou symbols (tools/raidou_c.py).
-                "smt3_syms": f"config/{version}/smt3_symbols.txt",
+                "smt3_syms": str(smt3_link_symbols(version)),
                 "map": str(elf.with_suffix(".map")),
             },
         )
