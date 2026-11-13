@@ -555,29 +555,47 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_001E4CA0);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001E4E48);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4ED8);
+u16 func_001E4ED8(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->kind;
+}
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4EE0);
+u32 func_001E4EE0(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->currentFrame;
+}
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4EE8);
+void *func_001E4EE8(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->formation;
+}
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4EF0);
+void func_001E4EF0(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
+    hBTLCutEffect->sourceFrameCallback = pCallback;
+}
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4EF8);
+void func_001E4EF8(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
+    hBTLCutEffect->triggerFrameCallback = pCallback;
+}
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F00);
+s32 func_001E4F00(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->list->callbackFrame;
+}
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F10);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F28);
+u32 func_001E4F28(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->triggerFrame;
+}
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F30);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F60);
+u32 func_001E4F60(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->colorRampEndFrame;
+}
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F68);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F70);
+void *func_001E4F70(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->userData;
+}
 
 void func_001E4F78(void) {
 }
@@ -649,9 +667,17 @@ void effBTLPartDelete(effBTL_t *pSkill) {
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001E5230);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E5250);
+extern s32 D_0046CF84;
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E5258);
+s32 func_001E5250(void) {
+    return D_0046CF84;
+}
+
+extern s32 D_0046CF88;
+
+s32 func_001E5258(void) {
+    return D_0046CF88;
+}
 
 u32 effBTLFieldColorGetOverrideSelector(void) {
     return effBTLSkillID;
@@ -665,7 +691,9 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_001E5270);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001E5290);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E5398);
+void func_001E5398(void *a0, s32 a1, s32 a2) {
+    func_001E5290(a0, (s16)a1, (s16)a2);
+}
 
 INCLUDE_RODATA(const s32, "effect/effBattle", D_00455700);
 

@@ -67,23 +67,26 @@ typedef struct effBTL_t {
     effBTLCut_t *hCutListTop;
 } effBTL_t;
 
-/* effBTLCutCreate allocates/clears 0x120 bytes. SMT3 has no DDS color/flags
- * words before currentFrame, so all subsequent fields are eight bytes earlier. */
+/* effBTLCutCreate allocates and clears 0x128 bytes in both Raidou games.
+ * smt3-decomp's layout lacks the color and flags words at 0x08. */
 struct effBTLCut_t {
-    void *formation;
-    effBTL_t *state;
-    u32 currentFrame; /* 0x08 */
-    u32 triggerFrame;
-    u32 colorRampEndFrame;
-    u16 kind;
-    u8 unk16[2];
-    s32 stat;
-    effBTL_SkillCutTable_t *list;
-    dds3EffectPart_t *parameterWorks[60]; /* 0x20 */
-    effBTLCallback_t sourceFrameCallback; /* 0x110 */
-    effBTLCallback_t triggerFrameCallback;
-    void *userData;
-    effBTLCut_t *next;
+    void *formation; /* 0x00 */
+    effBTL_t *state; /* 0x04 */
+    u32 color; /* 0x08 */
+    u16 flags; /* 0x0C */
+    u8 unk0E[2];
+    u32 currentFrame; /* 0x10 */
+    u32 triggerFrame; /* 0x14 */
+    u32 colorRampEndFrame; /* 0x18 */
+    u16 kind; /* 0x1C */
+    u8 unk1E[2];
+    s32 stat; /* 0x20 */
+    effBTL_SkillCutTable_t *list; /* 0x24 */
+    dds3EffectPart_t *parameterWorks[60]; /* 0x28 */
+    effBTLCallback_t sourceFrameCallback; /* 0x118 */
+    effBTLCallback_t triggerFrameCallback; /* 0x11C */
+    void *userData; /* 0x120 */
+    effBTLCut_t *next; /* 0x124 */
 };
 
 

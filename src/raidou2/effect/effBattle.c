@@ -555,29 +555,43 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_001FBF98);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC140);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC1D0);
+u16 func_001FC1D0(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->kind;
+}
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC1D8);
+u32 func_001FC1D8(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->currentFrame;
+}
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC1E0);
+void *func_001FC1E0(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->formation;
+}
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC1E8);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC1F0);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC1F8);
+s32 func_001FC1F8(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->list->callbackFrame;
+}
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC208);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC220);
+u32 func_001FC220(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->triggerFrame;
+}
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC228);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC258);
+u32 func_001FC258(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->colorRampEndFrame;
+}
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC260);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC268);
+void *func_001FC268(effBTLCut_t *hBTLCutEffect) {
+    return hBTLCutEffect->userData;
+}
 
 void func_001FC270(void) {
 }
@@ -649,9 +663,17 @@ void effBTLPartDelete(effBTL_t *pSkill) {
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC528);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC548);
+extern s32 D_004E16CC;
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC550);
+s32 func_001FC548(void) {
+    return D_004E16CC;
+}
+
+extern s32 D_004E16D0;
+
+s32 func_001FC550(void) {
+    return D_004E16D0;
+}
 
 u32 effBTLFieldColorGetOverrideSelector(void) {
     return effBTLSkillID;
@@ -665,7 +687,9 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_001FC568);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_001FC588);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001FC690);
+void func_001FC690(void *a0, s32 a1, s32 a2) {
+    func_001FC588(a0, (s16)a1, (s16)a2);
+}
 
 INCLUDE_RODATA(const s32, "effect/effBattle", D_004BC4D0);
 
