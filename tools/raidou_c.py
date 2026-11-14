@@ -1088,10 +1088,10 @@ def port_text(smt3, text, unit, carry, cands, ctx):
     return set_decl_blocks(smt3, text, rels, unsized, own)
 
 
-def write_tus(texts):
+def write_tus(texts, dry_run=False):
     """texts: unit -> {version: text}. A unit with the same text in both games is one
-    shared file; otherwise each game has its own. Returns the number of files changed."""
-    written = 0
+    shared file; otherwise each game has its own. Returns the files changed (or that would be)."""
+    written = []
     for unit, by_version in texts.items():
         shared = SHARED / f"{unit}.c"
         own = {v: SRC / v / f"{unit}.c" for v in VERSIONS}
@@ -1100,13 +1100,28 @@ def write_tus(texts):
         for path in [shared, *own.values()]:
             if path in want:
                 if not path.exists() or path.read_text() != want[path]:
-                    path.parent.mkdir(parents=True, exist_ok=True)
-                    path.write_text(want[path])
-                    written += 1
+                    written.append(path)
+                    if not dry_run:
+                        path.parent.mkdir(parents=True, exist_ok=True)
+                        path.write_text(want[path])
             elif path.exists():
-                path.unlink()
-                written += 1
+                written.append(path)
+                if not dry_run:
+                    path.unlink()
     return written
+
+
+def retried_functions(carry, done):
+    """The carried functions that are asm rows, i.e. carried only because --retry matched them."""
+    return {fn for fn in carry if done.get(fn, ("c", ""))[0] == "asm"}
+
+
+def units_holding(texts, fns):
+    """Units (unit -> TU text) with an INCLUDE_ASM line for one of fns."""
+    want = set(fns)
+    return {unit for unit, text in texts.items()
+            if want & {m.group(1) for m in re.finditer(r'^INCLUDE_ASM\([^,]+,[^,]+,\s*(\w+)\s*\);$', text, re.M)}}
+
 
 
 def ensure_pairs(args):
@@ -1138,6 +1153,22 @@ def cmd_port(args):
             if status == "asm" and not (retry and retry.search(why)):
                 continue
             carry[version][fn] = rel
+    # A retry touches only the units holding a retried function; the rest of the tree is not
+    # regenerated, since port's output for it has drifted from the hand-edited sources.
+    scope = None
+    if retry:
+        scope = {}
+        for version in VERSIONS:
+            retried = retried_functions(carry[version], outcomes(version))
+            sources = {u: src.read_text() for u, src in unit_sources(version).items()}
+            scope[version] = units_holding(sources, retried)
+            print(f"{version}: retrying {sorted(retried)} in {sorted(scope[version])}")
+        missed = sorted({fn for v in VERSIONS for fn, (st, why) in outcomes(v).items()
+                         if st == "asm" and retry.search(why) and fn not in cands[v]})
+        if missed:
+            print(f"not identical in pairs, carry by hand: {missed}")
+        if not any(scope.values()):
+            sys.exit("--retry matches no carryable function")
     texts = defaultdict(dict)
     ctx = {}
     for version in VERSIONS:
@@ -1152,8 +1183,16 @@ def cmd_port(args):
         for unit, src in unit_sources(version).items():
             if args.units and not any(unit.startswith(u) for u in args.units):
                 continue
+            # Both games' text, so write_tus does not split a shared unit for a one-game retry.
+            if scope is not None and not any(unit in units for units in scope.values()):
+                continue
             texts[unit][version] = port_text(smt3, src.read_text(), unit, carry[version], cands[version], ctx[version])
-    written = write_tus(texts)
+    written = write_tus(texts, args.dry_run)
+    if args.dry_run:
+        for path in written:
+            print(f"would change {path.relative_to(ROOT)}")
+        print(f"{len(written)} files would change")
+        return
     for version in VERSIONS:
         done = outcomes(version)
         kept, data = set(), set()
@@ -1171,7 +1210,7 @@ def cmd_port(args):
         write_outcomes(version, done)
         sdk_settings(smt3, version)
         print(f"{version}: {len(kept)} functions, {len(data)} data definitions from C")
-    print(f"{written} files changed; {len(shared_sources())} shared TUs")
+    print(f"{len(written)} files changed; {len(shared_sources())} shared TUs")
 
 
 WORK = Path.home() / ".local/state/raidou-decomp-work/stage4"
@@ -1806,7 +1845,8 @@ def main():
     p = sub.add_parser("port")
     p.add_argument("--smt3", type=Path, default=SMT3)
     p.add_argument("--units", nargs="*", help="only units under these paths (e.g. sdf sdk)")
-    p.add_argument("--retry", help="carry again asm rows whose reason matches this regex")
+    p.add_argument("--retry", help="carry again asm rows whose reason matches this regex (only their units)")
+    p.add_argument("--dry-run", action="store_true", help="list the files port would change, write nothing")
     p.set_defaults(func=cmd_port)
     p = sub.add_parser("verify")
     p.add_argument("--smt3", type=Path, default=SMT3)

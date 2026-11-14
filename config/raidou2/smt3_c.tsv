@@ -886,7 +886,7 @@ dds3SearchProcessName	c
 dds3SearchProcessNumber	c
 dds3SearchProcessPriority	c
 dds3SearchSceneBasic	c
-dds3SelectIncompleteResourceAtPageIndex	asm	compile error: structure has no member named `ref'
+dds3SelectIncompleteResourceAtPageIndex	c
 dds3SetActiveCameraSceneBasic	c
 dds3SetActiveScene	c
 dds3SetActiveUnitSceneBasic	c
@@ -977,7 +977,7 @@ dds3Stop	c
 dds3StopQuake	c
 dds3SwapActiveResource	c
 dds3TextureAttachTask	c
-dds3TextureCountIncompleteResources	asm	compile error: structure has no member named `ref'
+dds3TextureCountIncompleteResources	c
 dds3TextureDrawPageCounter	c
 dds3TextureGetPageIndex	c
 dds3TrackPolyColorSet	c

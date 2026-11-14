@@ -937,13 +937,58 @@ void dds3DrawTextureResourceDetails(sdfDrawTag_t *packetList, sdfTexHandle_t *te
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(0x77C0, 0x8300, 0x0FFFFF80, 0, text));
 }
 
-INCLUDE_ASM(const s32, "code_00104370", dds3TextureCountIncompleteResources);
+/* Count texture entries that are not duplicates of another texture. */
+s32 dds3TextureCountIncompleteResources(void) {
+    sdfTexHandle_t *texture = sdfTexHandleLink;
+    sdfTexHandle_t *nextTexture;
+    s32 incompleteCount = 0;
+    while (texture != NULL) {
+        while (texture->ref != NULL && texture->ref->origin != NULL) {
+            nextTexture = texture->next;
+            if (nextTexture == NULL) {
+                return incompleteCount;
+            }
+            texture = nextTexture;
+        }
+        incompleteCount++;
+        texture = texture->next;
+    }
+    return incompleteCount;
+}
 
 u32 dds3TextureGetPageIndex(void) {
     return dds3TextureViewerPageIndex;
 }
 
-INCLUDE_ASM(const s32, "code_00104370", dds3SelectIncompleteResourceAtPageIndex);
+/* Clamp a negative request and return the reached index; index zero selects the head
+ * without scanning duplicates, and tail exits keep the prior selection writes. */
+s32 dds3SelectIncompleteResourceAtPageIndex(s32 requestedIndex) {
+    sdfTexHandle_t *texture = sdfTexHandleLink;
+    sdfTexHandle_t *nextTexture;
+    s32 visitedIndex = 0;
+
+    if (requestedIndex < 0) {
+        requestedIndex = 0;
+    }
+    while (texture != NULL && visitedIndex != requestedIndex) {
+        dds3CurrentIncompleteResource = texture;
+        while (texture->ref != NULL && texture->ref->origin != NULL) {
+            nextTexture = texture->next;
+            if (nextTexture == NULL) {
+                return visitedIndex;
+            }
+            texture = nextTexture;
+        }
+        nextTexture = texture->next;
+        if (nextTexture == NULL) {
+            return visitedIndex;
+        }
+        visitedIndex++;
+        texture = nextTexture;
+    }
+    dds3CurrentIncompleteResource = texture;
+    return visitedIndex;
+}
 
 INCLUDE_ASM(const s32, "code_00104370", func_r1_00104B80);
 
