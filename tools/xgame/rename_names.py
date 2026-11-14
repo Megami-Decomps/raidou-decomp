@@ -80,8 +80,11 @@ def main():
             sym_new[v][ad] = new
     for v in (V1, V2):
         moved = set(renames[v])
+        by_name = {}
+        for x, n in sym[v].items():
+            by_name.setdefault(n, []).append(x)
         for ad, new in sym_new[v].items():
-            holders = [x for x, n in sym[v].items() if n == new and x != ad and n not in moved]
+            holders = [x for x in by_name.get(new, ()) if x != ad and new not in moved]
             if holders or (new in alias[v] and alias[v][new] != ad):
                 errors.append(f"{v}: {new} is already used")
     if errors:

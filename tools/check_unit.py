@@ -1358,7 +1358,8 @@ def main():
     def realigned(addr):
         """The retail item at addr is an included asm blob that eeas_compat
         16-aligns (`.align 4`), so the object supplies the padding before it."""
-        pat = re.compile(rf"^\.align 4\n(?:.*\n){{0,3}}dlabel (?:D|jtbl)_{addr:08X}\b", re.M)
+        names = [f"D_{addr:08X}", f"jtbl_{addr:08X}"] + [re.escape(n) for n, a in syms.items() if a == addr]
+        pat = re.compile(rf"^\.align 4\n(?:.*\n){{0,3}}dlabel (?:{'|'.join(names)})\b", re.M)
         return any(pat.search(p.read_text()) for p in (eeasm_dir / f"{n}.s" for n in included) if p.exists())
 
     def object_supplies_gap(table_off, retail_addr, size):
