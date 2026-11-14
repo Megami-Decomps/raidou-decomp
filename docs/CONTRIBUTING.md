@@ -55,6 +55,10 @@ matched build, `apply` writes the names into `config/<v>/` and renames `src/` an
 `include/`, and `tools/check_config.py` fails when a pair has two names. A new
 name for a paired symbol goes into both versions' `symbol_addrs.txt`.
 
+`config/<v>/ida_protos.txt` holds the prototypes the IDB analysis marked strong
+(`tools/xgame/sig_leads.py`), as leads for whoever decompiles the function. Nothing
+reads it.
+
 Before starting, claim the unit in `config/<version>/claims.tsv` and set the row
 to `done` when you stop, finished or not. The file is advisory and nothing in the
 build reads it. Check it before you pick a unit.
