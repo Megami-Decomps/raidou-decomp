@@ -345,7 +345,6 @@ extern void evtSetSkyAlpha(s32 frame, s32 a);
 
 extern s32 dds3ExistProcess(void *id);
 
-extern void *DDS3_GBWK;
 
 extern f32 sdfSin(f32 aRadius);
 

@@ -106,14 +106,6 @@ s32 scrScriptProcess(dds3ProcessID_t *id);
 
 #include "dds/sdf_resource.h"
 
-/* DDS's global work keeps the script variables at SMT3's offsets. */
-typedef struct
-{
-    u8 unk0[0x40];
-    s32 integers[256];
-    f32 floats[256];
-} dds_dds3GlobalWork_t;
-
 #include "dds/scr.h"
 
 extern s32 scrIsCurrentWorkTask(scrProcessWork_s *pw);

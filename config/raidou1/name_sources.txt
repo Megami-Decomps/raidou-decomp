@@ -2936,10 +2936,10 @@
 0x001ADA08	evtSetAgeOfMoon	inferred	SMT3HD name via SLUS_209.11 0x001E99D0, unique-masked-hash; map-agrees
 0x001ADA20	evtEnableMoonCalc	inferred	SMT3HD name via SLUS_209.11 0x001E99E8, shared-hash-in-run; map-agrees
 0x001ADA38	evtDisableMoonCalc	inferred	SMT3HD name via SLUS_209.11 0x001E9A00, shared-hash-in-run; map-agrees
-0x001ADA50	func_r1_001ADA50	placeholder	placeholder for the pair with raidou2 0x001C3968, unique-masked-hash
-0x001ADA80	func_r1_001ADA80	placeholder	placeholder for the pair with raidou2 0x001C3998, unique-masked-hash
-0x001ADAA0	func_r1_001ADAA0	placeholder	placeholder for the pair with raidou2 0x001C39B8, run-order-size
-0x001ADAC0	func_r1_001ADAC0	placeholder	placeholder for the pair with raidou2 0x001C39D8, run-order-size
+0x001ADA50	evtEnableMoonDraw	inferred	smt3-pair: sets moonFlags bit 1 and gMoonCnt to 1.0
+0x001ADA80	evtDisableMoonDraw	inferred	smt3-pair: clears moonFlags bit 1 and gMoonCnt
+0x001ADAA0	evtEnableMoonDraw2	inferred	smt3-pair: sets moonFlags bit 1 without touching gMoonCnt
+0x001ADAC0	evtDisableMoonDraw2	inferred	smt3-pair: clears moonFlags bit 1 without touching gMoonCnt
 0x001ADAE0	func_r1_001ADAE0	placeholder	placeholder for the pair with raidou2 0x001C39F8, unique-reloc-hash
 0x001ADB28	func_r1_001ADB28	placeholder	placeholder for the pair with raidou2 0x001C3A40, unique-masked-hash
 0x001ADB78	func_r1_001ADB78	placeholder	placeholder for the pair with raidou2 0x001C3A90, unique-reloc-hash
@@ -18049,7 +18049,7 @@
 0x0046B488	D_r1_0046B488	placeholder	placeholder for the pair with raidou2 0x004DE5D0, code-ref
 0x0046B48C	D_r1_0046B48C	placeholder	placeholder for the pair with raidou2 0x004DE5D4, code-ref
 0x0046B490	D_r1_0046B490	placeholder	placeholder for the pair with raidou2 0x004DE5E0, code-ref
-0x0046B4A0	D_r1_0046B4A0	placeholder	placeholder for the pair with raidou2 0x004DE600, code-ref
+0x0046B4A0	DDS3_GBWK	inferred	smt3-pair: dds3GlobalWorkInit stores the GBWK allocation here
 0x0046B4B0	D_r1_0046B4B0	placeholder	placeholder for the pair with raidou2 0x004DE618, code-ref
 0x0046B4BC	D_r1_0046B4BC	placeholder	placeholder for the pair with raidou2 0x004DE624, code-ref
 0x0046B4C0	D_r1_0046B4C0	placeholder	placeholder for the pair with raidou2 0x004DE628, code-ref
@@ -18757,7 +18757,7 @@
 0x0046C5F8	D_r1_0046C5F8	placeholder	placeholder for the pair with raidou2 0x004DF858, code-ref
 0x0046C5FC	D_r1_0046C5FC	placeholder	placeholder for the pair with raidou2 0x004DF85C, code-ref
 0x0046C600	D_r1_0046C600	placeholder	placeholder for the pair with raidou2 0x004DF860, code-ref
-0x0046C604	D_r1_0046C604	placeholder	placeholder for the pair with raidou2 0x004DF86C, code-ref
+0x0046C604	gMoonCnt	inferred	smt3-pair: evtEnableMoonDraw stores 1.0f, evtDisableMoonDraw 0
 0x0046C608	D_r1_0046C608	placeholder	placeholder for the pair with raidou2 0x004DF870, run-order-size
 0x0046C60C	D_r1_0046C60C	placeholder	placeholder for the pair with raidou2 0x004DF874, run-order-size
 0x0046C610	D_r1_0046C610	placeholder	placeholder for the pair with raidou2 0x004DF878, run-order-size

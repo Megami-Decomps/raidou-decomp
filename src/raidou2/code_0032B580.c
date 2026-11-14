@@ -2409,7 +2409,6 @@ extern void effCAMPBadDraw(void *hCAMPBadEffect);
 
 s32 cmpDrawStatusModel(void *scene);
 
-extern dds3GlobalWork_t *volatile cmpRebuildGlobalWork FAKEMATCH_ASM_NAME("DDS3_GBWK");
 
 void cmpRemoveStockSlot(s8 index);
 

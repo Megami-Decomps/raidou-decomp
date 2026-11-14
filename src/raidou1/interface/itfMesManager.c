@@ -590,7 +590,6 @@ s16 itfMesMngGetMesCurrentPage(s32 id);
 /* Return the replacement text stored in a window slot. */
 u8 *itfMesMngGetVar(s32 id, s32 index);
 
-extern u8 *DDS3_GBWK;
 
 /* Localised name text, 0x40 bytes after the manager. */
 extern char itfMesMngVarText[];

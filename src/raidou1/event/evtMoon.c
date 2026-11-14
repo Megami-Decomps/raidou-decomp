@@ -1,7 +1,10 @@
 #include "common.h"
-/* This version names the save-work pointer by address. */
-#define DDS3_GBWK D_r1_0046B4A0
 #include "newdata.h"
+
+extern s32 D_r1_0046C5F8;
+extern s32 D_r1_0046C5FC;
+extern s32 D_r1_0046C600;
+extern f32 gMoonCnt;
 
 s32 evtGetAgeOfMoon(void)
 {
@@ -33,21 +36,73 @@ void evtDisableMoonCalc(void)
     DDS3_GBWK->moonFlags &= ~1;
 }
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADA50);
+void evtEnableMoonDraw(void)
+{
+    DDS3_GBWK->moonFlags |= 2;
+    gMoonCnt = 1.0f;
+    D_r1_0046C5F8 = 1;
+    D_r1_0046C600 = 0;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADA80);
+void evtDisableMoonDraw(void)
+{
+    DDS3_GBWK->moonFlags &= ~2;
+    gMoonCnt = 0.0f;
+    D_r1_0046C5F8 = 0;
+    D_r1_0046C600 = 0;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADAA0);
+void evtEnableMoonDraw2(void)
+{
+    DDS3_GBWK->moonFlags |= 2;
+    D_r1_0046C5F8 = 1;
+    D_r1_0046C600 = 0;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADAC0);
+void evtDisableMoonDraw2(void)
+{
+    DDS3_GBWK->moonFlags &= ~2;
+    D_r1_0046C5F8 = 0;
+    D_r1_0046C600 = 0;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADAE0);
+void func_r1_001ADAE0(s32 count)
+{
+    if (count != 0) {
+        if (D_r1_0046C600 != 0) {
+            D_r1_0046C5FC = (count * D_r1_0046C5FC) / D_r1_0046C600;
+        } else {
+            if (D_r1_0046C5F8 == 0) {
+                count = 0;
+            }
+            D_r1_0046C5FC = count;
+        }
+    }
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADB28);
+void func_r1_001ADB28(s32 count)
+{
+    DDS3_GBWK->moonFlags |= 2;
+    gMoonCnt = 1.0f;
+    func_r1_001ADAE0(count);
+    D_r1_0046C600 = count;
+    D_r1_0046C5F8 = 1;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADB78);
+void func_r1_001ADB78(s32 count)
+{
+    func_r1_001ADAE0(count);
+    D_r1_0046C600 = count;
+    D_r1_0046C5F8 = 0;
+}
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADBA8);
+s32 func_r1_001ADBA8(void)
+{
+    if (D_r1_0046C5FC == 0) {
+        return 1;
+    }
+    return D_r1_0046C5FC == D_r1_0046C600;
+}
 
 INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADBC8);
 
@@ -72,7 +127,7 @@ INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5FC);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C600);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C604);
+INCLUDE_SDATA(const s32, "event/evtMoon", gMoonCnt);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C608);
 

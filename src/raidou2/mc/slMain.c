@@ -427,7 +427,6 @@ typedef struct slFileRec_t {
 
 SIZE_CHECK(slFileRecSizeCheck, slFileRec_t, 0x34);
 
-#define SL_FILE_HEAD ((GameFileInfo_t *)DDS3_GBWK)
 
 extern slFileRec_t slFileRecs[];
 

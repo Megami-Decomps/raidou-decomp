@@ -126,113 +126,298 @@ typedef struct
     datUnitWork_t unit;
 } cmbUnit_t;
 
-/* Shared persistent work, recovered through its consumers. These fields form
- * a partial view, not a claim about the complete save-work allocation. */
+/* Shared persistent work ("GBWK"), laid out per version from its consumers.
+ * unkXXXX fields are accessed at that offset with that width; the rest is unknown. */
 typedef struct
 {
-    u8 ver[8];      /* 0x0: "VER" plus a version byte, then four zeroed bytes */
-    s32 word08;
-    s16 half0C;
-    s16 transition; /* 0xE: fldMainLoadStart */
-    union { u8 unk10[0x24]; struct { u8 reserved10[0x20]; u32 headerWord30; }; };
-    sdfMemHandle_t *memHandle;
-    s32 unk38;
-    s32 playtime;
-    s32 integers[256];
-    f32 floats[256];
-    u32 EventBit[128]; /* 0x840: 4096 event bits */
-#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    u8 unkA40[8];       /* Raidou keeps the moon state at 0x1C80 (1) or 0x1F80 (2) */
-#else
-    u8 moonFlags;       /* 0xA40 */
-    u8 moonPhase;       /* 0xA41 */
-    u8 unkA42[2];
-    f32 moonTimer;      /* 0xA44 */
-#endif
-    s32 maka;
-    u32 maFlags;                  /* 0xA4C */
-    union {
-        struct { fldAnahoriAkuma_t akuma[16]; u8 unk1910[4]; };
-        struct { u32 unitPrefix; datUnitWork_t unitwork[16]; };
-        struct { s32 maxstock; cmbUnit_t party[16]; };
-    };
-    /* 0x1914..0x1CF4, split on the IDB's names for the span. */
-    union {
-        u8 unk1914[0x10];
-        u8 stockOrder[16];
-        s8 stock[16];
-    };
-    union {
-        struct {
-            u8 stocklist[65];      /* 0x1924 */
-            u8 stockcnt[80];
-            u8 item[19];
-        };
-        struct { s32 stockCount; u8 stockRemainder[160]; };
-        struct { u8 stockCountBytes[4]; u8 itemQuantity[160]; };
-        struct { u8 stockCountPadding[4]; u8 unk_01928[0x3D]; u8 unk_1965; };
-    };
-    s16 boss_press[40][2];            /* 0x19C8 */
 #ifdef VERSION_RAIDOU1
-    union {
-        u8 syakkincnt[640];
-        struct {
-            u8 unk1A68[0x218];
-            u8 moonFlags;       /* 0x1C80 */
-            u8 moonPhase;       /* 0x1C81 */
-            u8 unk1C82[2];
-            f32 moonTimer;      /* 0x1C84 */
-        };
-    };
+    /* 0x0 */ u8 ver[8];
+    /* 0x8 */ s32 word08;
+    /* 0xC */ s16 half0C;
+    /* 0xE */ s16 transition;
+    /* 0x10 */ u8 unk10[0x11];
+    /* 0x21 */ u8 unk21;
+    /* 0x22 */ u8 unk22[0x123E];
+    /* 0x1260 */ u8 unk1260[0x2];
+    /* 0x1262 */ u8 unk1262[0xE];
+    /* 0x1270 */ sdfMemHandle_t *memHandle;
+    /* 0x1274 */ u32 unk1274;
+    /* 0x1278 */ u32 unk1278;
+    /* 0x127C */ u8 unk127C[0x4];
+    /* 0x1280 */ s32 integers[256];
+    /* 0x1680 */ f32 floats[256];
+    /* 0x1A80 */ u32 EventBit[128];
+    /* 0x1C80 */ u8 moonFlags;
+    /* 0x1C81 */ u8 moonPhase;
+    /* 0x1C82 */ u8 unk1C82;
+    /* 0x1C83 */ u8 unk1C83;
+    /* 0x1C84 */ f32 moonTimer;
+    /* 0x1C88 */ u8 unk1C88;
+    /* 0x1C89 */ u8 unk1C89;
+    /* 0x1C8A */ u8 unk1C8A[0x6];
+    /* 0x1C90 */ u32 unk1C90;
+    /* 0x1C94 */ u32 unk1C94;
+    /* 0x1C98 */ u32 unk1C98;
+    /* 0x1C9C */ u32 unk1C9C;
+    /* 0x1CA0 */ u8 unk1CA0[0x20];
+    /* 0x1CC0 */ u32 unk1CC0;
+    /* 0x1CC4 */ u32 unk1CC4;
+    /* 0x1CC8 */ s32 maka;
+    /* 0x1CCC */ u8 unk1CCC[0x8];
+    /* 0x1CD4 */ u32 unk1CD4;
+    /* 0x1CD8 */ u8 unk1CD8[0x4];
+    /* 0x1CDC */ u8 unk1CDC;
+    /* 0x1CDD */ u8 unk1CDD[0xB];
+    /* 0x1CE8 */ u32 unk1CE8;
+    /* 0x1CEC */ u32 unk1CEC;
+    /* 0x1CF0 */ u32 unk1CF0;
+    /* 0x1CF4 */ u32 unk1CF4;
+    /* 0x1CF8 */ u32 unk1CF8;
+    /* 0x1CFC */ u16 unk1CFC;
+    /* 0x1CFE */ u16 unk1CFE;
+    /* 0x1D00 */ u16 unk1D00;
+    /* 0x1D02 */ u16 unk1D02;
+    /* 0x1D04 */ u8 unk1D04[0x10];
+    /* 0x1D14 */ u16 unk1D14;
+    /* 0x1D16 */ u16 unk1D16;
+    /* 0x1D18 */ u16 unk1D18;
+    /* 0x1D1A */ u8 unk1D1A[0x72];
+    /* 0x1D8C */ u32 unk1D8C;
+    /* 0x1D90 */ u8 unk1D90[0xC];
+    /* 0x1D9C */ u32 unk1D9C;
+    /* 0x1DA0 */ u8 unk1DA0[0x46];
+    /* 0x1DE6 */ u16 unk1DE6;
+    /* 0x1DE8 */ u16 unk1DE8;
+    /* 0x1DEA */ u8 unk1DEA[0x2];
+    /* 0x1DEC */ u32 unk1DEC;
+    /* 0x1DF0 */ u32 unk1DF0;
+    /* 0x1DF4 */ u32 unk1DF4;
+    /* 0x1DF8 */ u8 unk1DF8[0x40];
+    /* 0x1E38 */ u16 unk1E38;
+    /* 0x1E3A */ u8 unk1E3A[0x13E];
+    /* 0x1F78 */ u32 unk1F78;
+    /* 0x1F7C */ u8 unk1F7C[0x2];
+    /* 0x1F7E */ u16 unk1F7E;
+    /* 0x1F80 */ u8 unk1F80[0x10];
+    /* 0x1F90 */ u32 unk1F90;
+    /* 0x1F94 */ u32 unk1F94;
+    /* 0x1F98 */ u32 unk1F98;
+    /* 0x1F9C */ u32 unk1F9C;
+    /* 0x1FA0 */ u8 unk1FA0[0x90];
+    /* 0x2030 */ u32 unk2030;
+    /* 0x2034 */ u8 unk2034[0xAF4];
+    /* 0x2B28 */ u32 unk2B28;
+    /* 0x2B2C */ u8 unk2B2C[0x2];
+    /* 0x2B2E */ u16 unk2B2E;
+    /* 0x2B30 */ u8 unk2B30[0x10A];
+    /* 0x2C3A */ u16 unk2C3A;
+    /* 0x2C3C */ u8 unk2C3C;
+    /* 0x2C3D */ u8 unk2C3D[0x3];
+    /* 0x2C40 */ u32 unk2C40;
+    /* 0x2C44 */ u32 unk2C44;
+    /* 0x2C48 */ u8 unk2C48[0x28];
+    /* 0x2C70 */ u16 unk2C70;
+    /* 0x2C72 */ u16 unk2C72;
+    /* 0x2C74 */ u8 unk2C74[0x4];
+    /* 0x2C78 */ u32 unk2C78;
+    /* 0x2C7C */ u8 unk2C7C[0xA34];
+    /* 0x36B0 */ u32 unk36B0;
+    /* 0x36B4 */ u32 unk36B4;
+    /* 0x36B8 */ u8 unk36B8[0x1208];
+    /* 0x48C0 */ u16 unk48C0;
+    /* 0x48C2 */ u8 unk48C2[0x1E];
+    /* 0x48E0 */ u16 unk48E0;
+    /* 0x48E2 */ u8 unk48E2[0xE];
+    /* 0x48F0 */ u32 unk48F0;
+    /* 0x48F4 */ u8 unk48F4[0x264C];
+    /* 0x6F40 */ u16 unk6F40;
+    /* 0x6F42 */ u8 unk6F42[0x1E];
+    /* 0x6F60 */ u8 unk6F60;
+    /* 0x6F61 */ u8 unk6F61[0xF];
+    /* 0x6F70 */ u32 unk6F70;
+    /* 0x6F74 */ u32 unk6F74;
+    /* 0x6F78 */ u32 unk6F78;
+    /* 0x6F7C */ u32 unk6F7C;
+    /* 0x6F80 */ u32 unk6F80;
+    /* 0x6F84 */ u32 unk6F84;
+    /* 0x6F88 */ u32 unk6F88;
+    /* 0x6F8C */ u32 unk6F8C;
+    /* 0x6F90 */ u32 unk6F90;
+    /* 0x6F94 */ u32 unk6F94;
+    /* 0x6F98 */ u32 unk6F98;
+    /* 0x6F9C */ u32 unk6F9C;
+    /* 0x6FA0 */ u32 unk6FA0;
+    /* 0x6FA4 */ u32 unk6FA4;
+    /* 0x6FA8 */ u32 unk6FA8;
+    /* 0x6FAC */ u32 unk6FAC;
+    /* 0x6FB0 */ u32 unk6FB0;
+    /* 0x6FB4 */ u32 unk6FB4;
+    /* 0x6FB8 */ u32 unk6FB8;
+    /* 0x6FBC */ u32 unk6FBC;
+    /* 0x6FC0 */ u32 unk6FC0;
+    /* 0x6FC4 */ u8 unk6FC4[0x4];
+    /* 0x6FC8 */ u32 unk6FC8;
+    /* 0x6FCC */ u32 unk6FCC;
+    /* 0x6FD0 */ u8 unk6FD0[0x20];
+    /* 0x6FF0 */ u32 unk6FF0;
+    /* 0x6FF4 */ u8 unk6FF4[0x27C];
 #else
-    u8 syakkincnt[640];
+    /* 0x0 */ u8 ver[8];
+    /* 0x8 */ s32 word08;
+    /* 0xC */ s16 half0C;
+    /* 0xE */ s16 transition;
+    /* 0x10 */ u8 unk10[0x11];
+    /* 0x21 */ u8 unk21;
+    /* 0x22 */ u8 unk22;
+    /* 0x23 */ u8 unk23;
+    /* 0x24 */ u8 unk24;
+    /* 0x25 */ u8 unk25;
+    /* 0x26 */ u8 unk26[0x123A];
+    /* 0x1260 */ u8 unk1260[0x2];
+    /* 0x1262 */ u8 unk1262[0xE];
+    /* 0x1270 */ sdfMemHandle_t *memHandle;
+    /* 0x1274 */ u32 unk1274;
+    /* 0x1278 */ u32 unk1278;
+    /* 0x127C */ u32 unk127C;
+    /* 0x1280 */ s32 integers[256];
+    /* 0x1680 */ f32 floats[256];
+    /* 0x1A80 */ u32 EventBit[256];
+    /* 0x1E80 */ u8 unk1E80[0x100];
+    /* 0x1F80 */ u8 moonFlags;
+    /* 0x1F81 */ u8 moonPhase;
+    /* 0x1F82 */ u8 unk1F82;
+    /* 0x1F83 */ u8 unk1F83;
+    /* 0x1F84 */ f32 moonTimer;
+    /* 0x1F88 */ u8 unk1F88;
+    /* 0x1F89 */ u8 unk1F89;
+    /* 0x1F8A */ u8 unk1F8A;
+    /* 0x1F8B */ u8 unk1F8B;
+    /* 0x1F8C */ u8 unk1F8C;
+    /* 0x1F8D */ u8 unk1F8D;
+    /* 0x1F8E */ u8 unk1F8E[0x2];
+    /* 0x1F90 */ u32 unk1F90;
+    /* 0x1F94 */ u32 unk1F94;
+    /* 0x1F98 */ u32 unk1F98;
+    /* 0x1F9C */ u32 unk1F9C;
+    /* 0x1FA0 */ u8 unk1FA0[0x20];
+    /* 0x1FC0 */ u32 unk1FC0;
+    /* 0x1FC4 */ u32 unk1FC4;
+    /* 0x1FC8 */ s32 maka;
+    /* 0x1FCC */ u8 unk1FCC[0x8];
+    /* 0x1FD4 */ u32 unk1FD4;
+    /* 0x1FD8 */ u8 unk1FD8[0x4];
+    /* 0x1FDC */ u8 unk1FDC;
+    /* 0x1FDD */ u8 unk1FDD[0xB];
+    /* 0x1FE8 */ u32 unk1FE8;
+    /* 0x1FEC */ u32 unk1FEC;
+    /* 0x1FF0 */ u32 unk1FF0;
+    /* 0x1FF4 */ u32 unk1FF4;
+    /* 0x1FF8 */ u32 unk1FF8;
+    /* 0x1FFC */ u16 unk1FFC;
+    /* 0x1FFE */ u16 unk1FFE;
+    /* 0x2000 */ u16 unk2000;
+    /* 0x2002 */ u16 unk2002;
+    /* 0x2004 */ u8 unk2004[0x10];
+    /* 0x2014 */ u16 unk2014;
+    /* 0x2016 */ u16 unk2016;
+    /* 0x2018 */ u16 unk2018;
+    /* 0x201A */ u16 unk201A;
+    /* 0x201C */ u8 unk201C[0x16];
+    /* 0x2032 */ u8 unk2032[0x2];
+    /* 0x2034 */ u8 unk2034[0x16];
+    /* 0x204A */ u16 unk204A;
+    /* 0x204C */ u8 unk204C[0x16];
+    /* 0x2062 */ u16 unk2062;
+    /* 0x2064 */ u8 unk2064[0x68];
+    /* 0x20CC */ u32 unk20CC;
+    /* 0x20D0 */ u8 unk20D0[0x8];
+    /* 0x20D8 */ u32 unk20D8;
+    /* 0x20DC */ u8 unk20DC[0x72];
+    /* 0x214E */ u16 unk214E;
+    /* 0x2150 */ u16 unk2150;
+    /* 0x2152 */ u8 unk2152[0x6];
+    /* 0x2158 */ u32 unk2158;
+    /* 0x215C */ u32 unk215C;
+    /* 0x2160 */ u8 unk2160[0x40];
+    /* 0x21A0 */ u16 unk21A0;
+    /* 0x21A2 */ u8 unk21A2[0x56];
+    /* 0x21F8 */ u16 unk21F8;
+    /* 0x21FA */ u8 unk21FA[0x2E6];
+    /* 0x24E0 */ u32 unk24E0;
+    /* 0x24E4 */ u8 unk24E4[0x2];
+    /* 0x24E6 */ u16 unk24E6;
+    /* 0x24E8 */ u8 unk24E8[0x10];
+    /* 0x24F8 */ u32 unk24F8;
+    /* 0x24FC */ u32 unk24FC;
+    /* 0x2500 */ u32 unk2500;
+    /* 0x2504 */ u32 unk2504;
+    /* 0x2508 */ u8 unk2508[0xD0];
+    /* 0x25D8 */ u32 unk25D8;
+    /* 0x25DC */ u8 unk25DC[0x74];
+    /* 0x2650 */ u16 unk2650;
+    /* 0x2652 */ u8 unk2652[0xEB6];
+    /* 0x3508 */ u32 unk3508;
+    /* 0x350C */ u8 unk350C[0x2];
+    /* 0x350E */ u16 unk350E;
+    /* 0x3510 */ u8 unk3510[0xD32];
+    /* 0x4242 */ u16 unk4242;
+    /* 0x4244 */ u16 unk4244;
+    /* 0x4246 */ u8 unk4246;
+    /* 0x4247 */ u8 unk4247[0x1];
+    /* 0x4248 */ u16 unk4248;
+    /* 0x424A */ u8 unk424A[0x1A];
+    /* 0x4264 */ u8 unk4264;
+    /* 0x4265 */ u8 unk4265;
+    /* 0x4266 */ u8 unk4266;
+    /* 0x4267 */ u8 unk4267[0x681];
+    /* 0x48E8 */ u32 unk48E8;
+    /* 0x48EC */ u16 unk48EC;
+    /* 0x48EE */ u8 unk48EE[0x2];
+    /* 0x48F0 */ u32 unk48F0;
+    /* 0x48F4 */ u32 unk48F4;
+    /* 0x48F8 */ u32 unk48F8;
+    /* 0x48FC */ u32 unk48FC;
+    /* 0x4900 */ u8 unk4900[0x30];
+    /* 0x4930 */ u16 unk4930;
+    /* 0x4932 */ u16 unk4932;
+    /* 0x4934 */ u8 unk4934[0x158C];
+    /* 0x5EC0 */ u32 unk5EC0;
+    /* 0x5EC4 */ u32 unk5EC4;
+    /* 0x5EC8 */ u8 unk5EC8[0x1208];
+    /* 0x70D0 */ u16 unk70D0;
+    /* 0x70D2 */ u8 unk70D2[0x1E];
+    /* 0x70F0 */ u16 unk70F0;
+    /* 0x70F2 */ u8 unk70F2[0xE];
+    /* 0x7100 */ u32 unk7100;
+    /* 0x7104 */ u32 unk7104;
+    /* 0x7108 */ u32 unk7108;
+    /* 0x710C */ u8 unk710C[0x4];
+    /* 0x7110 */ u32 unk7110;
+    /* 0x7114 */ u8 unk7114[0x4E00];
+    /* 0xBF14 */ u32 unkBF14;
+    /* 0xBF18 */ u8 unkBF18[0x1298];
+    /* 0xD1B0 */ u8 unkD1B0;
+    /* 0xD1B1 */ u8 unkD1B1[0xF];
+    /* 0xD1C0 */ u32 unkD1C0;
+    /* 0xD1C4 */ u32 unkD1C4;
+    /* 0xD1C8 */ u32 unkD1C8;
+    /* 0xD1CC */ u32 unkD1CC;
+    /* 0xD1D0 */ u32 unkD1D0;
+    /* 0xD1D4 */ u32 unkD1D4;
+    /* 0xD1D8 */ u32 unkD1D8;
+    /* 0xD1DC */ u32 unkD1DC;
+    /* 0xD1E0 */ u8 unkD1E0;
+    /* 0xD1E1 */ u8 unkD1E1[0x3];
+    /* 0xD1E4 */ u16 unkD1E4;
+    /* 0xD1E6 */ u16 unkD1E6;
+    /* 0xD1E8 */ u8 unkD1E8[0x198];
 #endif
-    u8 negoques[4];                /* 0x1CE8 */
-    u8 kotowari[4];                /* 0x1CEC */
-    u16 wakimi_id;                 /* 0x1CF0 */
-    u16 bouga_cnt;                 /* 0x1CF2 */
-    f32 encountkyori;              /* 0x1CF4 */
-    u16 encountCount;              /* 0x1CF8 */
-    union { u8 heartsequip; u8 equipHearts; };
-    union {
-        struct {
-            u8 hearts[0x80];       /* 0x1CFB */
-            u8 heartscnt;          /* 0x1D7B */
-            u8 nameData[0x4800];   /* 0x1D7C */
-        };
-        struct { u8 heartsPrefix[0x40]; u8 devilSlot[0x100]; }; /* 0x1D3B */
-        struct { u8 unk_01CFB[0x40]; u8 heartsskcnt[64]; };
-#ifdef VERSION_RAIDOU2
-        struct {
-            u8 unk1CFB[0x285];
-            u8 moonFlags;       /* 0x1F80 */
-            u8 moonPhase;       /* 0x1F81 */
-            u8 unk1F82[2];
-            f32 moonTimer;      /* 0x1F84 */
-        } __attribute__((packed));
-#endif
-    };
-    u8 nameCode[0xDC];
-    fldGbTypeBlock_t gb[48];       /* 0x6658 */
-    u8 takaraOpen[0x20];           /* 0x11A58 */
-    s16 previewX;                 /* 0x11A78: slSetTmnlID */
-    s16 previewY;
-    s32 moonAnahoriCount;
-    u8 takaraOpenEx[0x20];         /* 0x11A80 */
-    u8 reserved11AA0[0x20];
-    union { u16 heartsSkills[32][12]; u16 hearts_sk[32][12]; }; /* 0x11AC0 */
-    u8 hearts_up_param[32][6];   /* 0x11DC0 */
-    union {
-        mselSaveData_t encyclopedia; /* 0x11E80 */
-        struct {
-            s32 encycNum;
-            u8 reserved11E84[0xC];
-            fclencyceelem_t encycRecords[168];
-        };
-    };
-    u8 reserved19D10[0x800];
 } dds3GlobalWork_t;
-SIZE_CHECK(dds3GlobalWorkSizeCheck, dds3GlobalWork_t, 0x1A510);
+#ifdef VERSION_RAIDOU1
+SIZE_CHECK(dds3GlobalWorkSizeCheck, dds3GlobalWork_t, 0x7270);
+#else
+SIZE_CHECK(dds3GlobalWorkSizeCheck, dds3GlobalWork_t, 0xD380);
+#endif
 
 extern dds3GlobalWork_t *DDS3_GBWK;
 

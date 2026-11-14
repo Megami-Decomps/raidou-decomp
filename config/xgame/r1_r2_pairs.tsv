@@ -2906,10 +2906,10 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001ADA08	0x001C38F0	evtSetAgeOfMoon	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash
 0x001ADA20	0x001C3938	evtEnableMoonCalc	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash
 0x001ADA38	0x001C3950	evtDisableMoonCalc	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash
-0x001ADA50	0x001C3968	func_r1_001ADA50	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash
-0x001ADA80	0x001C3998	func_r1_001ADA80	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash
-0x001ADAA0	0x001C39B8	func_r1_001ADAA0	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	run-order-size
-0x001ADAC0	0x001C39D8	func_r1_001ADAC0	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	run-order-size
+0x001ADA50	0x001C3968	evtEnableMoonDraw	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash
+0x001ADA80	0x001C3998	evtDisableMoonDraw	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash
+0x001ADAA0	0x001C39B8	evtEnableMoonDraw2	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	run-order-size
+0x001ADAC0	0x001C39D8	evtDisableMoonDraw2	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	run-order-size
 0x001ADAE0	0x001C39F8	func_r1_001ADAE0	no	yes	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-reloc-hash
 0x001ADB28	0x001C3A40	func_r1_001ADB28	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash
 0x001ADB78	0x001C3A90	func_r1_001ADB78	no	yes	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-reloc-hash

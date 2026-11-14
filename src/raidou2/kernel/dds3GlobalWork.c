@@ -275,7 +275,6 @@ extern s32 D_0054EA18;
 
 extern sdfMemHandle_t *D_0054EA1C;
 
-extern dds3GlobalWork_t *DDS3_GBWK;
 
 extern dds3FontReqFunc_t dds3FontReqTable;
 

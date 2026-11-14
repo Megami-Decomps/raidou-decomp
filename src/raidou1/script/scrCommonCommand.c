@@ -338,14 +338,6 @@ s32 scrCommand_FILTER_ALLOFF(void);
 
 #include "dds/sdk_libc.h"
 
-/* DDS's global work keeps the script variables at SMT3's offsets. */
-typedef struct
-{
-    u8 unk0[0x40];
-    s32 integers[256];
-    f32 floats[256];
-} dds_dds3GlobalWork_t;
-
 #define SCR_PROCESS_CONTROL_FLAG 210
 
 extern void dds3FadeBackgroundStartOut(s32 duration);
