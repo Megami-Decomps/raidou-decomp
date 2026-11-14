@@ -64,29 +64,29 @@ extern f32 floorf(f32 x);
 
 extern f32 scalbnf(f32 x, s32 n);
 
-extern const s32 D_0054B348[];
+extern const s32 D_r1_00468180[];
 
 /* Readonly fragment also contains neighboring math constants. */
-extern const f32 D_0054B358[];
+extern const f32 D_r1_00468190[];
 
 s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,
                        const s32 *ipio2);
 
 f32 __kernel_sinf(f32 x, f32 y, s32 useTail);
 
-extern const f32 D_0054B3C0[];
+extern const f32 D_r1_004681F8[];
 
 f32 __kernel_tanf(f32 x, f32 y, s32 selector);
 
-extern const f32 D_0054B3F8[];
+extern const f32 D_r1_00467918[];
 
-extern const f32 D_0054B404;
+extern const f32 D_r1_00467924;
 
-extern const f32 D_0054B408[];
+extern const f32 D_r1_00467928[];
 
-extern const f32 D_0054B414;
+extern const f32 D_r1_00467934;
 
-extern const f32 D_0054B418[];
+extern const f32 D_r1_00467938[];
 
 f32 atanf(f32 x);
 
@@ -104,21 +104,21 @@ extern const s32 two_over_pi[198];
 
 extern const s32 npio2_hw[52];
 
-extern const s32 D_0054B348[4];
+extern const s32 D_r1_00468180[4];
 
-extern const f32 D_0054B358[26];
+extern const f32 D_r1_00468190[26];
 
-extern const f32 D_0054B3C0[14];
+extern const f32 D_r1_004681F8[14];
 
-extern const f32 D_0054B3F8[3];
+extern const f32 D_r1_00467918[3];
 
-extern const f32 D_0054B404 __attribute__((section(".rodata")));
+extern const f32 D_r1_00467924 __attribute__((section(".rodata")));
 
-extern const f32 D_0054B408[3];
+extern const f32 D_r1_00467928[3];
 
-extern const f32 D_0054B414 __attribute__((section(".rodata")));
+extern const f32 D_r1_00467934 __attribute__((section(".rodata")));
 
-extern const f32 D_0054B418[18];
+extern const f32 D_r1_00467938[18];
 /* End of declarations from src/smt3/sdk/libm.c */
 
 s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,
@@ -127,7 +127,7 @@ s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,
     s32 jz, jx, jv, jp, jk, carry, n, iq[20], i, j, k, m, q0, ih;
     f32 z, fw, f[20], fq[20], q[20];
 
-    jk = D_0054B348[precision];
+    jk = D_r1_00468180[precision];
     jp = jk;
     jx = nx - 1;
     jv = (e0 - 3) / 8;
@@ -245,7 +245,7 @@ recompute:
     for (i = jz; i >= 0; i--) {
         fw = 0.0f;
         for (k = 0; k <= jp && k <= jz - i; k++) {
-            fw += D_0054B358[k] * q[i + k];
+            fw += D_r1_00468190[k] * q[i + k];
         }
         fq[jz - i] = fw;
     }

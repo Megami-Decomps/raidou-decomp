@@ -98,7 +98,7 @@ DmacAddHandler	c
 DrawLeftFade	c	compiles identical
 DrawMesWin	c	compiles identical
 DrawMsgMng_Process	asm	size 0x74, retail 0x70
-DrawMsgMng_Shutdown	asm	local jump at +0x28
+DrawMsgMng_Shutdown	c
 DrawNormal	c	compiles identical
 DrawPera1	c	compiles identical
 DrawPlain	c
@@ -255,12 +255,12 @@ __do_global_dtors	c
 __fixunsdfdi	c
 __floatdidf	c
 __fpcmp_parts_df	c
-__ieee754_atan2f	asm	size 0x254, retail 0x1E0
-__ieee754_rem_pio2f	asm	size 0x3F4, retail 0x3B0
-__kernel_cosf	asm	size 0x1AC, retail 0x150
+__ieee754_atan2f	c
+__ieee754_rem_pio2f	c
+__kernel_cosf	c
 __kernel_rem_pio2f	c
-__kernel_sinf	asm	size 0x140, retail 0x108
-__kernel_tanf	asm	size 0x30C, retail 0x288
+__kernel_sinf	c
+__kernel_tanf	c
 __main	c
 __make_dp	c
 __malloc_lock	c
@@ -347,7 +347,7 @@ aDrawLineDirect	c
 aDrawLineStripPrim	c
 aDrawTriG	c
 abort	c
-atanf	asm	size 0x2A8, retail 0x290
+atanf	c
 atexit	c
 atoi	c
 billAdvanceAnimatedFrameTransforms	c
@@ -467,7 +467,7 @@ corePktOpenAndEmit	c
 corePktSetConstColor	c
 corePktSetFaceDivParm	c
 corePktSetupPointBuff	c
-cosf	asm	size 0xEC, retail 0xD8
+cosf	c
 cvt	c
 datDebugPrintf	asm	.sdata differs at 0x0046B318
 datGetAisyoFlag	c
@@ -1277,7 +1277,7 @@ effDrawModelBlock	c
 effDrawParticleSpanPointsAndReferences	c
 effDrawRepeatedSpriteTiles	c
 effDrawRetainedPointSetRows	c
-effDrawRibbon	asm	size 0x3B4, retail 0x410
+effDrawRibbon	c
 effDrawSelectionEntryVectors	c
 effDrawSpriteWithCornerColors	c
 effDrawSpriteWithCornerFade	c
@@ -2161,7 +2161,7 @@ evtWriteSerializedBytes	c
 evt_1E50C0	c
 evt_1E92F8	c
 exponent	c
-fabsf	asm	size 0x58, retail 0x28
+fabsf	c
 fclBlendColor	c
 fclChkMessage	c
 fclDestroyMessage	c
@@ -2252,8 +2252,8 @@ fileQueueInsertAfter	c
 fileQueueLinkJobToSectorLeader	c	compiles identical
 fileQueueRemove	c
 fileQueueRemoveAndDestroyJob	asm	2 words differ, first at +0xC0
-fileQueueSaveImage	asm	local jump at +0x2E8
-fileQueueSaveVersionedImage	asm	local jump at +0x308
+fileQueueSaveImage	c
+fileQueueSaveVersionedImage	c
 fileQueueSetColor	c
 fileQueueSetPosition	c
 fileQueueSetRotation	c
@@ -2261,7 +2261,7 @@ fileQueueSetScale	c
 fileRead	c
 fileReadRecordSecondVector	c
 fileReadVectorPtr20	c
-fileReplaceEffectSurfaceJobs	asm	local jump at +0xB0
+fileReplaceEffectSurfaceJobs	c
 fileReplaceEffectSurfaceQueues	c	compiles identical
 fileReplaceReferenceHolder	c
 fileResetLoadContextSlide	c
@@ -2322,7 +2322,7 @@ fldSnapAngleToCompassPoint	asm	.rodata base 0x00446AE8, 0x00446AF0
 fldTitleMini_Shutdown	asm	sdfTexFreeDelayed at 0x00359998, others at 0x003599E0
 fldToggleWorldNodeState	c
 fld_1374F0	c
-floorf	asm	size 0x114, retail 0xD8
+floorf	c
 fmDestroyFontMemControl	c
 fmInitFontMemControl	c
 fmRentFontMem	c
@@ -2846,7 +2846,7 @@ pbMakePrimPacket	c
 pbMakeSpritePacket	c
 polyBandLayoutRing	c
 printfloat	c
-qsort	asm	size 0x654, retail 0x9F0
+qsort	c
 raise	c
 release_movieobj2	c
 rsetAlpha	c
@@ -3809,7 +3809,7 @@ setdraw_xy	c
 setlocale	c
 shuffleIndices	c
 signal	c
-sinf	asm	size 0x108, retail 0xE8
+sinf	c
 slBootError	c
 slBootError2	c
 slBootProc1st	c
@@ -3850,7 +3850,7 @@ strrchr	c
 strstr	c
 strtol	c
 supplement_crt0	c
-tanf	asm	size 0x98, retail 0x78
+tanf	c
 topThread	c
 uiDrawSurfaceAtNearDepth	c
 uiDrawTexturedSurfaceAtFarDepth	c

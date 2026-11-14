@@ -1733,13 +1733,13 @@ extern sdfGrOt_t *D_r1_00403610[];
 
 extern sdfGrOt_t *D_r1_004037A8[];
 
-extern u32 D_0037EB30[];
+extern u32 D_r1_00403440[];
 
 extern sdfGrOt_t *D_0037EB78[];
 
 #include "dds/bill_object_api.h"
 
-extern char D_003B39C8[];
+extern char D_r1_00456E58[];
 
 extern char D_r1_00456E70[];
 
@@ -1793,7 +1793,7 @@ extern u32 effWindTextureHandle;
 
 extern struct sdfMemHandle_t *D_003BC984;
 
-extern struct sdfMemHandle_t *D_003BC994;
+extern struct sdfMemHandle_t *D_r1_0046D14C;
 
 extern u8 D_r1_00415880[];
 
@@ -1807,7 +1807,7 @@ extern struct sdfDrawTag_t *effCurrentRenderPacket;
 
 extern s32 effSharedRibbonReferenceCount;
 
-extern u32 D_003BC990;
+extern u32 D_r1_0046D148;
 
 extern struct EffExpandedList *effCreateTextureAnimationSet(u32);
 
@@ -1857,19 +1857,19 @@ extern u32 effPartsListScroll;
 
 extern u32 D_r1_00416D44[];
 
-extern s32 D_003BC970[2];
+extern s32 D_r1_0046D128[2];
 
-extern RefObj *D_003BC978[2];
+extern RefObj *D_r1_0046D130[2];
 
 extern u32 effSharedTextureReferenceCount;
 
-extern s32 D_003BC9B0[2];
+extern s32 D_r1_0046D170[2];
 
-extern s32 D_003BC9B8[2];
+extern s32 D_r1_0046D178[2];
 
-extern u8 D_003BC9C0[2];
+extern u8 D_r1_0046D180[2];
 
-extern u8 D_003BC9C8[2];
+extern u8 D_r1_0046D188[2];
 
 /* Native resource operations add cloning before the frame callbacks.
  * The final word is the copied payload size, not another callback.
@@ -1999,27 +1999,27 @@ extern u32 effSelectCameraFileJobFromRows(const char *, const struct EffCameraCr
 
 extern char D_003B3968[];
 
-extern char D_003B3958[];
+extern char D_r1_00456DD8[];
 
 extern char D_r1_0046D208[];
 
 extern char D_r1_0046D8F8[];
 
-extern char D_003B38C8[];
+extern char D_r1_00456D48[];
 
 extern char D_003B3938[];
 
-extern char D_003B3928[];
+extern char D_r1_00456DA8[];
 
-extern char D_003B3918[];
+extern char D_r1_00456D98[];
 
-extern char D_003B3908[];
+extern char D_r1_00456D88[];
 
-extern char D_003B38F8[];
+extern char D_r1_00456DE8[];
 
-extern char D_003B38E8[];
+extern char D_r1_00456D68[];
 
-extern char D_003B38D8[];
+extern char D_r1_00456D58[];
 
 extern char D_003B3888[];
 
@@ -2571,7 +2571,7 @@ void effSetActiveInstanceMatrixComponent(EffClassWork *work, float value);
 
 EffTrackSet *effCreateTrackSet(s32 count, u16 kind);
 
-extern struct SdfTextureFileHeader *D_003BC96C;
+extern struct SdfTextureFileHeader *D_r1_0046D124;
 
 EffTrackSet *effCreateTrackSetWithSharedReferences(u32 count, u32 kind, u32 sharedRef);
 
@@ -2598,7 +2598,7 @@ struct sdfMat_t;
 /* Draw track-set positions/colors/UVs; a null matrix selects the identity transform. */
 void effDrawTrackSet(EffTrackSet *track, const Matrix4 *matrix);
 
-extern struct sdfMemHandle_t *D_003BC960[2];
+extern struct sdfMemHandle_t *D_r1_0046D118[2];
 
 void effLoadFlashTextures(void);
 
@@ -3104,7 +3104,7 @@ EffRibbonWork *effCreateRibbonWithSharedResource(u32 count, u32 repeat, struct S
 
 void effSharedAssetReferenceRelease(EffRibbonWork *work);
 
-extern sdfGrOt_t *D_0037ED78[];
+extern sdfGrOt_t *D_r1_004036B8[];
 
 EffRibbonWork *effCloneRibbonWithSharedResource(EffRibbonWork *source);
 
@@ -3362,7 +3362,7 @@ void effTransitionSelectedActorRgbColors(EffActiveResource *work);
 
 extern u128 D_r1_004D1DB0[];
 
-extern s8 D_003BC9AC;
+extern s8 D_r1_0046D169;
 
 extern u128 D_r1_004D1DC0[];
 
@@ -7153,16 +7153,16 @@ EffTrackSet *effCreateTrackSetWithSharedReferences(u32 count, u32 kind, u32 shar
         if (sharedRef == 0) {
             switch (effect->kind) {
             case 3:
-                if (D_003BC970[0] == 0) {
-                    D_003BC978[0] = effCloneSharedReferenceWithValue(effFlashTextureHandles, 0x100);
+                if (D_r1_0046D128[0] == 0) {
+                    D_r1_0046D130[0] = effCloneSharedReferenceWithValue(effFlashTextureHandles, 0x100);
                 }
-                D_003BC970[0]++;
+                D_r1_0046D128[0]++;
                 break;
             case 4:
-                if (D_003BC970[1] == 0) {
-                    D_003BC978[1] = effCloneSharedReferenceWithValue(D_003BC96C, 0x101);
+                if (D_r1_0046D128[1] == 0) {
+                    D_r1_0046D130[1] = effCloneSharedReferenceWithValue(D_r1_0046D124, 0x101);
                 }
-                D_003BC970[1]++;
+                D_r1_0046D128[1]++;
                 break;
             }
         } else {
@@ -7179,15 +7179,15 @@ void effReleaseResourceRefs(EffTrackSet *refs) {
         if (ref == NULL) {
             switch (refs->kind) {
             case 3:
-                if (--D_003BC970[0] == 0) {
-                    effReleaseSharedReference(D_003BC978[0]);
-                    D_003BC978[0] = NULL;
+                if (--D_r1_0046D128[0] == 0) {
+                    effReleaseSharedReference(D_r1_0046D130[0]);
+                    D_r1_0046D130[0] = NULL;
                 }
                 break;
             case 4:
-                if (--D_003BC970[1] == 0) {
-                    effReleaseSharedReference(D_003BC978[1]);
-                    D_003BC978[1] = NULL;
+                if (--D_r1_0046D128[1] == 0) {
+                    effReleaseSharedReference(D_r1_0046D130[1]);
+                    D_r1_0046D130[1] = NULL;
                 }
                 break;
             }
@@ -7209,10 +7209,10 @@ EffTrackSet *effDuplicateResourceRefs(const EffTrackSet *original) {
         } else {
             switch (effect->kind) {
             case 3:
-                D_003BC970[0]++;
+                D_r1_0046D128[0]++;
                 break;
             case 4:
-                D_003BC970[1]++;
+                D_r1_0046D128[1]++;
                 break;
             }
         }
@@ -7223,8 +7223,8 @@ EffTrackSet *effDuplicateResourceRefs(const EffTrackSet *original) {
 INCLUDE_ASM(const s32, "code_0023E1D0", effDrawTrackSet);
 
 void effLoadFlashTextures(void) {
-    D_003BC960[0] = sdfDevLoadFileEx("/effect/flash00.tmx", (u32 *)&effFlashTextureHandles, 0);
-    D_003BC960[1] = sdfDevLoadFileEx("/effect/flash01.tmx", (u32 *)(&effFlashTextureHandles + 1), 0);
+    D_r1_0046D118[0] = sdfDevLoadFileEx("/effect/flash00.tmx", (u32 *)&effFlashTextureHandles, 0);
+    D_r1_0046D118[1] = sdfDevLoadFileEx("/effect/flash01.tmx", (u32 *)(&effFlashTextureHandles + 1), 0);
 }
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0022EDD0);
@@ -10483,7 +10483,7 @@ EffRibbonWork *effCreateRibbonWithSharedResource(u32 count, u32 repeat, struct S
         s32 references = effSharedRibbonReferenceCount;
         node->resource = NULL;
         if (references == 0) {
-            D_003BC990 = (u32)effCloneSharedReferenceWithValue((struct SdfTextureFileHeader *)effWindTextureHandle, 0x300);
+            D_r1_0046D148 = (u32)effCloneSharedReferenceWithValue((struct SdfTextureFileHeader *)effWindTextureHandle, 0x300);
             references = effSharedRibbonReferenceCount;
         }
         references++;
@@ -10498,8 +10498,8 @@ void effSharedAssetReferenceRelease(EffRibbonWork *work) {
     if (work->resource == NULL) {
         effSharedRibbonReferenceCount = effSharedRibbonReferenceCount - 1;
         if (effSharedRibbonReferenceCount == 0) {
-            effReleaseSharedReference((RefObj *)D_003BC990);
-            D_003BC990 = 0;
+            effReleaseSharedReference((RefObj *)D_r1_0046D148);
+            D_r1_0046D148 = 0;
         }
     }
     else {
@@ -10522,7 +10522,120 @@ EffRibbonWork *effCloneRibbonWithSharedResource(EffRibbonWork *source) {
     return node;
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", effDrawRibbon);
+void effDrawRibbon(EffRibbonWork *work, const Matrix4 *matrix) {
+    sdfGrOt_t *surface;
+    void *list;
+    EffGsPacket *packet;
+    u32 segment;
+    u32 count;
+    s32 rowStride;
+    s32 remaining;
+    u32 *colors;
+    u8 *positions;
+    u8 *uvs;
+    u8 *extra;
+    u32 color;
+    u32 segmentColor;
+    f32 baseVector[4];
+    sdfTexHandle_t *texture;
+
+    count = work->count;
+    if (count == 0) {
+        return;
+    }
+    color = work->color;
+    if ((color & 0xFF000000) == 0) {
+        return;
+    }
+    surface = D_r1_004036B8[work->surfaceIndex];
+    eeUnpackRGBAWordFloat(color, 1.0f / 128.0f);
+    SDF_VU0_STOREVECTOR(baseVector);
+    list = (void *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    if (matrix == NULL) {
+        SDF_VU0_LOADIDENTITY();
+    } else {
+        VU0_LOAD_MATRIX(matrix);
+    }
+    sdf3DPrimLinkTm(list, 0);
+    if (work->resource == NULL) {
+        texture = sdfGetOrCreateTextureForReference(surface, (RefObj *)D_r1_0046D148);
+    } else {
+        texture = sdfGetOrCreateTextureForReference(surface, work->resource);
+    }
+    sdfMatSetTex(work->handle, texture);
+    sdf3DPrimLinkMat(list, work->handle, 0);
+    if (work->drawMode == 0) {
+        packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
+        packet->dmaTag = 2;
+        packet->vifTag = (((u64)0x50000002 << 16) | 0x1000) << 16;
+        packet->gifTag = ((u64)0x10000000 << 32) | 0x8001;
+        packet->registerList = 0xE;
+        packet->registerValue = 0x31801;
+        packet->registerAddress = 0x47;
+        sdfDrawTagLink(list, (u32)packet);
+    }
+    positions = work->positions;
+    uvs = work->uvs;
+    extra = work->extra;
+    colors = work->colors;
+    rowStride = work->rowStride;
+    segment = 0;
+    if (count != 0) {
+        s32 extraStep;
+        s32 uvStep;
+        s32 positionStep;
+
+        positionStep = rowStride * 16;
+        uvStep = rowStride * 8;
+        extraStep = rowStride * 4;
+
+        do {
+            segmentColor = *colors;
+            if (segmentColor & 0xFF000000) {
+                remaining = rowStride;
+                D_r1_004D1CE0.vertexColor = (u32 *)extra;
+                D_r1_004D1CE0.vertex = (u128 *)positions;
+                D_r1_004D1CE0.uv = (f32 *)uvs;
+                unpackNormalizedColor(segmentColor);
+                SDF_VU0_LOADVECTOR_B(baseVector);
+                SDF_VU0_MULVECTOR();
+                D_r1_004D1CE0.color = packNormalizedColor();
+                D_r1_004D1CE0.faceCount = 12;
+                D_r1_004D1CE0.pointCount = 12;
+                D_r1_004D1CE0.faceIndex = D_r1_00403440;
+                while (remaining >= 12) {
+                    remaining -= 8;
+                    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&D_r1_004D1CE0));
+                    D_r1_004D1CE0.vertex += 8;
+                    D_r1_004D1CE0.vertexColor += 8;
+                    D_r1_004D1CE0.uv += 8;
+                }
+                if (remaining >= 8) {
+                    D_r1_004D1CE0.faceCount = 6;
+                    D_r1_004D1CE0.pointCount = remaining;
+                    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&D_r1_004D1CE0));
+                }
+            }
+            positions += positionStep;
+            colors++;
+            segment++;
+            uvs += uvStep;
+            extra += extraStep;
+        } while (segment < count);
+    }
+    if (work->drawMode == 0) {
+        packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
+        packet->dmaTag = 2;
+        packet->vifTag = (((u64)0x50000002 << 16) | 0x1000) << 16;
+        packet->gifTag = ((u64)0x10000000 << 32) | 0x8001;
+        packet->registerList = 0xE;
+        packet->registerValue = 0x51801;
+        packet->registerAddress = 0x47;
+        sdfDrawTagLink(list, (u32)packet);
+    }
+    surface->regFunc(surface, (sdfDrawTag_t *)list);
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", effLoadWindTexture);
 
@@ -11075,7 +11188,7 @@ u32 effAllocateStripFromWorkAndRetainTexture(u8 *work) {
 INCLUDE_ASM(const s32, "code_0023E1D0", effDrawScalyTexturedStrip);
 
 void effLoadScalyTexture(void) {
-    D_003BC994 = (u32)sdfDevLoadFileEx("/effect/scaly00.tmx", &effScalyTextureHandle, 0);
+    D_r1_0046D14C = (u32)sdfDevLoadFileEx("/effect/scaly00.tmx", &effScalyTextureHandle, 0);
 }
 
 u32 effGetScalyTextureHandle(void) {
@@ -11607,7 +11720,7 @@ s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPack
     s32 result = btlIsRuntimeAllocated();
 
     if (result != 0) {
-        if (D_003BC9AC == 0) {
+        if (D_r1_0046D169 == 0) {
             return 0;
         }
         mdlGetPosition(vector);
@@ -11681,14 +11794,14 @@ void func_r1_002420A0(void) {
 }
 
 void effResetSlots(void) {
-    D_003BC9B0[0] = 0;
-    D_003BC9B8[0] = 0;
-    D_003BC9C0[0] = 0;
-    D_003BC9C8[0] = 0;
-    D_003BC9B0[1] = 0;
-    D_003BC9B8[1] = 0;
-    D_003BC9C0[1] = 0;
-    D_003BC9C8[1] = 0;
+    D_r1_0046D170[0] = 0;
+    D_r1_0046D178[0] = 0;
+    D_r1_0046D180[0] = 0;
+    D_r1_0046D188[0] = 0;
+    D_r1_0046D170[1] = 0;
+    D_r1_0046D178[1] = 0;
+    D_r1_0046D180[1] = 0;
+    D_r1_0046D188[1] = 0;
     kwlnPadResetMotorLevelsAndOutput();
 }
 

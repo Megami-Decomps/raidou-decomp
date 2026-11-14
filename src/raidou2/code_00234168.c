@@ -1389,11 +1389,11 @@ extern f32 fileSaveHighlightPhase;
 
 extern u8 sdfHddValid;
 
-extern char D_00437E10[];
+extern char D_r1_0046D0E0[];
 
-extern char D_00437E18[];
+extern char D_r1_0046D0E8[];
 
-extern char D_00437E20[];
+extern char D_r1_0046D0F0[];
 
 extern char *sdfFileGetHostRoot(void);
 
@@ -2224,7 +2224,7 @@ FileJob *fileAppendJob(FileQueue *queue, u32 id);
 
 FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source);
 
-extern u8 D_00437E28[];
+extern u8 D_r1_0046D0F8[];
 
 FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath);
 
@@ -2665,15 +2665,15 @@ void fileWriteToPfs(FileJobPayload *job, const char *filePath) {
     s32 fd;
 
     if (sdfHddValid != 0) {
-        sprintf(path, D_00437E10, filePath);
+        sprintf(path, D_r1_0046D0E0, filePath);
         fd = sceOpen(path, 0x602, 0x1B6);
     } else {
-        sprintf(path, D_00437E18, sdfFileGetHostRoot(), filePath);
+        sprintf(path, D_r1_0046D0E8, sdfFileGetHostRoot(), filePath);
         fd = sceOpen(path, 0x602);
     }
     fileJobWriteSerializedPayload(fd, job);
     sceClose(fd);
-    sceSync(D_00437E20, 0);
+    sceSync(D_r1_0046D0F0, 0);
 }
 
 INCLUDE_ASM(const s32, "code_00234168", fileDuplicateJob);
@@ -3031,7 +3031,7 @@ FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source) {
 }
 
 FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath) {
-    printf(D_00437E28);
+    printf(D_r1_0046D0F8);
     return fileAppendJob(queue, (u32)fileJobCreateFromCommandState(commandPath));
 }
 
@@ -3103,9 +3103,189 @@ INCLUDE_ASM(const s32, "code_00234168", fileQueueRemoveAndDestroyJob);
 
 INCLUDE_ASM(const s32, "code_00234168", fileJobCopyHeader);
 
-INCLUDE_ASM(const s32, "code_00234168", fileQueueSaveImage);
+/* Export a queue: the queue header, one relocated record per job, then each
+ * owning job's 16-byte-aligned payload. Child jobs store their parent's index. */
+void fileQueueSaveImage(FileQueue *queue, const char *filePath) {
+    char path[0xD0];
+    FileJobPayload payload;
+    FileQueue header;
+    FileJob record;
+    s32 fd;
+    s32 count;
+    s32 offset;
+    s32 size;
+    FileJob *job;
 
-INCLUDE_ASM(const s32, "code_00234168", fileQueueSaveVersionedImage);
+    if (sdfHddValid != 0) {
+        sprintf(path, D_r1_0046D0E0, filePath);
+        fd = sceOpen(path, 0x602, 0x1B6);
+    } else {
+        sprintf(path, D_r1_0046D0E8, sdfFileGetHostRoot(), filePath);
+        fd = sceOpen(path, 0x602);
+    }
+    header = *queue;
+    header.updateFrame = 0;
+    size = sizeof(FileQueue);
+    header.entryOffset = size;
+    header.first = NULL;
+    count = fileQueueCountLinkedJobs(queue);
+    sceWrite(fd, &header, sizeof(FileQueue));
+    offset = count * sizeof(FileJob) + sizeof(FileQueue);
+
+    for (job = queue->first; job != NULL; job = job->next) {
+        record = *job;
+        if ((job->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) == 0) {
+            if ((job->flags & FILE_JOB_FLAG_SECTOR_FOLLOWER) == 0) {
+                size = fileJobSerializedSize((FileJobPayload *)job->id);
+            } else {
+                payload = *(FileJobPayload *)job->id;
+                FILE_JOB_LOCATION_CLEAR(payload.secondary);
+                payload.secondary.size = 0;
+                payload.secondary.allocation = NULL;
+                size = fileJobSerializedSize(&payload);
+            }
+            record.id = offset;
+        } else {
+            size = 0;
+            record.id = fileFindQueuedJobIndex(queue, fileQueueFindById(queue, job->id));
+        }
+        if (job->flags & FILE_JOB_FLAG_SECTOR_FOLLOWER) {
+            record.sector = fileFindQueuedJobIndex(queue, fileQueueFindById(queue, job->sector));
+        }
+        record.next = NULL;
+        record.prev = NULL;
+        sceWrite(fd, &record, sizeof(FileJob));
+        offset += (size & 0xF) != 0 ? ((size >> 4) + 1) << 4 : (size >> 4) << 4;
+    }
+
+    for (job = queue->first; job != NULL; job = job->next) {
+        s32 blocks;
+        s32 aligned;
+        s32 padding;
+
+        if (job->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) {
+            continue;
+        }
+        if ((job->flags & FILE_JOB_FLAG_SECTOR_FOLLOWER) == 0) {
+            size = fileJobSerializedSize((FileJobPayload *)job->id);
+            fileJobWriteSerializedPayload(fd, (FileJobPayload *)job->id);
+        } else {
+            payload = *(FileJobPayload *)job->id;
+            FILE_JOB_LOCATION_CLEAR(payload.secondary);
+            payload.secondary.size = 0;
+            payload.secondary.allocation = NULL;
+            size = fileJobSerializedSize(&payload);
+            fileJobWriteSerializedPayload(fd, &payload);
+        }
+        blocks = size >> 4;
+        if ((size & 0xF) != 0) {
+            aligned = (blocks + 1) << 4;
+        } else {
+            aligned = blocks << 4;
+        }
+        padding = aligned - size;
+        if (padding > 0) {
+            sceWrite(fd, fileQueueImagePaddingBytes, padding);
+        }
+    }
+    sceClose(fd);
+    sceSync(D_r1_0046D0F0, 0);
+}
+
+/* Save a queue image: the queue header, one relocated record per job, then each
+ * owning job's 16-byte-aligned payload. Child jobs store their parent's index. */
+void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath) {
+    char path[0xD0];
+    FileJobPayload payload;
+    FileQueue header;
+    FileJob record;
+    FileQueueImageHeader image;
+    s32 fd;
+    s32 count;
+    s32 offset;
+    s32 size;
+    FileJob *job;
+
+    if (sdfHddValid != 0) {
+        sprintf(path, D_r1_0046D0E0, filePath);
+        fd = sceOpen(path, 0x602, 0x1B6);
+    } else {
+        sprintf(path, D_r1_0046D0E8, sdfFileGetHostRoot(), filePath);
+        fd = sceOpen(path, 0x602);
+    }
+    image.version = 5;
+    image.unk4 = 0;
+    image.unkC = 1.03f;
+    sceWrite(fd, &image, sizeof(image));
+
+    header = *queue;
+    header.updateFrame = 0;
+    size = sizeof(FileQueue);
+    header.entryOffset = size;
+    header.first = NULL;
+    count = fileQueueCountLinkedJobs(queue);
+    sceWrite(fd, &header, sizeof(FileQueue));
+    offset = count * sizeof(FileJob) + sizeof(FileQueue);
+
+    for (job = queue->first; job != NULL; job = job->next) {
+        record = *job;
+        if ((job->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) == 0) {
+            if ((job->flags & FILE_JOB_FLAG_SECTOR_FOLLOWER) == 0) {
+                size = fileJobSerializedSize((FileJobPayload *)job->id);
+            } else {
+                payload = *(FileJobPayload *)job->id;
+                FILE_JOB_LOCATION_CLEAR(payload.secondary);
+                payload.secondary.size = 0;
+                payload.secondary.allocation = NULL;
+                size = fileJobSerializedSize(&payload);
+            }
+            record.id = offset;
+        } else {
+            size = 0;
+            record.id = fileFindQueuedJobIndex(queue, fileQueueFindById(queue, job->id));
+        }
+        if (job->flags & FILE_JOB_FLAG_SECTOR_FOLLOWER) {
+            record.sector = fileFindQueuedJobIndex(queue, fileQueueFindById(queue, job->sector));
+        }
+        record.next = NULL;
+        record.prev = NULL;
+        sceWrite(fd, &record, sizeof(FileJob));
+        offset += (size & 0xF) != 0 ? ((size >> 4) + 1) << 4 : (size >> 4) << 4;
+    }
+
+    for (job = queue->first; job != NULL; job = job->next) {
+        s32 blocks;
+        s32 aligned;
+        s32 padding;
+
+        if (job->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) {
+            continue;
+        }
+        if ((job->flags & FILE_JOB_FLAG_SECTOR_FOLLOWER) == 0) {
+            size = fileJobSerializedSize((FileJobPayload *)job->id);
+            fileJobWriteSerializedPayload(fd, (FileJobPayload *)job->id);
+        } else {
+            payload = *(FileJobPayload *)job->id;
+            FILE_JOB_LOCATION_CLEAR(payload.secondary);
+            payload.secondary.size = 0;
+            payload.secondary.allocation = NULL;
+            size = fileJobSerializedSize(&payload);
+            fileJobWriteSerializedPayload(fd, &payload);
+        }
+        blocks = size >> 4;
+        if ((size & 0xF) != 0) {
+            aligned = (blocks + 1) << 4;
+        } else {
+            aligned = blocks << 4;
+        }
+        padding = aligned - size;
+        if (padding > 0) {
+            sceWrite(fd, fileQueueVersionedImagePaddingBytes, padding);
+        }
+    }
+    sceClose(fd);
+    sceSync(D_r1_0046D0F0, 0);
+}
 
 FileQueue *fileQueueCreateFromCommandState(const char *entry) {
     sdfFileCmdHandle_t *command = sdfFileOpen(entry);
@@ -3389,7 +3569,29 @@ void fileLoadObjectOpenAndStartDevice(EffectSurfaceNode *node, u32 resourceId) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00234168", fileReplaceEffectSurfaceJobs);
+void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job) {
+    u32 count = node->record->count;
+    u32 i;
+    s32 size;
+
+    if (node->jobAllocation != 0) {
+        for (i = 0; i < count; i++) {
+            fileJobDestroy(node->jobs[i]);
+        }
+        sdfMemFreeDirect(node->jobAllocation);
+        node->jobs = 0;
+        node->jobAllocation = 0;
+    }
+    size = count * 4;
+    if (size != 0) {
+        node->jobAllocation = sdfMemAllocDirect(size);
+        node->jobs = (FileJobPayload **)sdfMemLock(node->jobAllocation);
+        node->jobs[0] = fileJobCreateFromJob(job);
+        for (i = 1; i < count; i++) {
+            node->jobs[i] = fileJobCreateChild(node->jobs[0]);
+        }
+    }
+}
 
 void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue) {
     u32 count = node->record->count;

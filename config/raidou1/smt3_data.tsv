@@ -258,3 +258,4 @@ ttyMsgPacketTooLarge	0x00469000	RODATA	sdk/libc	c
 ttyMsgReceiveError	0x00469028	RODATA	sdk/libc	c
 ttyMsgSendError	0x00469040	RODATA	sdk/libc	c
 ttyMsgWlenError	0x00469058	RODATA	sdk/libc	c
+two_over_pi	0x00467C50	RODATA	sdk/libm	asm	size 0x318, retail 0x314

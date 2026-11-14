@@ -237,8 +237,6 @@ extern s32 raise(s32 sig);
 
 extern void _exit(s32 code) __attribute__((noreturn));
 
-extern u8 localeconvData[] __attribute__((section(".data")));
-
 extern s32 libcErrno __attribute__((section(".data")));
 
 extern s32 mallocLockCount __attribute__((section(".data")));
@@ -249,7 +247,7 @@ extern s32 mallocSema __attribute__((section(".data")));
 
 extern s32 _init_signal_r(_reent *r);
 
-extern void gcc2_compiled__2(FILE *fp, s32 flags, s32 file, _reent *data);
+extern void std(FILE *fp, s32 flags, s32 file, _reent *data);
 
 extern _glue *__sfmoreglue(_reent *r, s32 n);
 

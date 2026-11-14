@@ -148,6 +148,10 @@ class SpellingTests(unittest.TestCase):
         text = "extern u32 D_r1_00400000;\nextern f32 D_00300000;\nextern u8 D_00300010;\nextern s8 D_00300020;\n"
         self.assertEqual(self.spell(text), text)
 
+    def test_split_data_line_does_not_count_as_a_name(self) -> None:
+        text = 'extern u32 D_00300000;\nu32 f(void) { return D_00300000; }\nINCLUDE_RODATA(const s32, "u", D_r1_00400000);\n'
+        self.assertEqual(self.spell(text), text.replace("D_00300000", "D_r1_00400000"))
+
     def test_carried_body_is_found_in_either_spelling(self) -> None:
         body = "void f(void) { D_00300000 = 1; }"
         text = "void f(void) { D_r1_00400000 = 1; }\n"

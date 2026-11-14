@@ -898,6 +898,8 @@ ScrCommandYieldCount scrGetCommandTimer(void);
 
 #include "dds/itf_panel_layouts.h"
 
+#include "dds/itf_held_panel_message_step.h"
+
 #define ITF_PANEL_COLUMN_COUNT 4
 
 #define ITF_PANEL_ROW_COUNT 2
@@ -1009,8 +1011,7 @@ void CreateVertexLeftFade(DrawVertex *v, s32 x0, s32 y0, s32 x1, s32 y1);
    x0 and x1 are intentionally unused; do not replace the fixed horizontal positions. */
 void CreateVertexFacility(UiSpriteBandPayload *base, s32 x0, s32 y0, s32 x1, s32 y1);
 
-/* Populate RGBA rows at bytes 0x40/0x50; the first row is transparent.
-   The existing vertex-typed view addresses the same color records as the quad consumer. */
+/* Populate DrawColorRec RGBA rows at bytes 0x40/0x50; the first row is transparent. */
 void CreateColorNormal(DrawVertex *panelData, s32 red, s32 green, s32 blue, s32 alpha);
 
 /* Write the two color rows, then scale six template rows; the first fourth component is one. */
@@ -1022,12 +1023,10 @@ void CreateColorSelWin(u8 *base, u32 red, u32 green, u32 blue, u32 alpha);
 /* Set the base color, one alpha-scaled gradient row, and two rows at full color scale. */
 void CreateColorPlain(u8 *base, u32 red, u32 green, u32 blue, u32 alpha);
 
-/* Set the four color words at byte 0x20, consumed as a color record by the quad path.
-   Preserve the existing vertex-typed access and signed arguments. */
+/* Set the four components of the DrawColorRec at byte 0x20. */
 void CreateColorPera1(DrawVertex *panelData, s32 red, s32 green, s32 blue, s32 alpha);
 
-/* Populate RGBA rows at bytes 0x30/0x40; the first row is transparent.
-   The six-index quad path consumes its color rows from this same base offset. */
+/* Populate DrawColorRec RGBA rows at bytes 0x30/0x40; the first row is transparent. */
 void CreateColorLeftFade(DrawVertex *panelData, s32 red, s32 green, s32 blue, s32 alpha);
 
 /* Set both panel colors to the same blue tint with zero alpha. */
@@ -1108,8 +1107,6 @@ s32 itfPanelReleaseHold(void);
    Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
 s32 itfCommandQueueHeldPanelEntry(void);
 
-s32 itfStepHeldPanelMessages(void);
-
 extern void dds3SetFilter2Para(u32);
 
 extern void dds3SetFilter2RGBA(u32);
@@ -1164,6 +1161,12 @@ void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
 
 #include "dds/itf_mes_entry_start_api.h"
 
+#include "dds/itf_mes_voice_cue_result.h"
+
+#include "dds/itf_mes_selection_commit_result.h"
+
+#include "dds/itf_mes_select_def_key_result.h"
+
 #include "dds/scr_integer_return_value_api.h"
 
 #include "dds/itf.h"
@@ -1176,7 +1179,7 @@ void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
 
 #include "dds/sdf_packet_list.h"
 
-#include "dds/sdf_resource.h"
+#include "dds/sdf_heap_api.h"
 
 #include "dds/sdf_pac_reloc.h"
 
@@ -1202,7 +1205,7 @@ void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
 
 #include "dds/kwln.h"
 
-#include "dds/kwln_task_create.h"
+#include "dds/dds3_task_create.h"
 
 #include "dds/pcp_vu0.h"
 
@@ -1236,7 +1239,7 @@ void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
 
 #include "dds/mdl_resource_table.h"
 
-#include "dds/kwln_task_lifecycle.h"
+#include "dds/dds3_task_lifecycle.h"
 
 extern u32 itfMessageFlags;
 
@@ -1289,9 +1292,8 @@ ItfMesEntryStartResult itfMesStartEntry(ItfMesWindowIndex window, ItfMesEntryInd
 
 extern s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub);
 
-/* Cache the selected table and narrowed item index, then initialize its text.
- * Empty tables return 0; nonempty tables return the text initializer's result. */
-s32 itfMesSelectTableItemText(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
+/* Cache the selected table/item; report whether its text contains the F413 cue. */
+ItfMesVoiceCueResult itfMesSelectTableItemText(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
 
 /* Build the option panel around the widest measured row, using this game's
  * fixed row spacing. Preserve the existing panel creation/layout order. */
@@ -1339,7 +1341,7 @@ extern char D_00436620[];
 
 extern char D_00436628[];
 
-extern SdfPoolNode kwlnPositionedTextSurface;
+extern sdfGrOt_t sdfDebugGrOt;
 
 extern ItfMesWindowRec D_00452960[];
 
@@ -1386,11 +1388,11 @@ typedef union UiQuadColor {
 
 typedef char UiQuadColorSizeCheck[sizeof(UiQuadColor) == 0x10 ? 1 : -1];
 
-extern const UiQuadColor D_00414D50;
+extern const UiQuadColor D_r1_0044A820;
 
 #include "dds/sdf_packet_alloc.h"
 
-extern void itfPnlDraw(dds_itfpanel_t *sprite, SdfPoolNode *surface);
+extern void itfPnlDraw(dds_itfpanel_t *sprite, sdfGrOt_t *surface);
 
 /* Enable context rendering for every font object in the linked chain. */
 void frFontEnableNodeContextModes(_FRQ *fontObject);
@@ -1459,7 +1461,7 @@ extern s32 D_003B4A08[];
 /* Draw the sound selector frame, its fade layer and the expanding timer outline. */
 void itfDrawSoundSelectorFadeLayers(dds_instanceMes_tag *panel);
 
-extern SdfPoolNode D_00380708;
+extern sdfGrOt_t D_00380708;
 
 extern s32 D_003B4A18[];
 
@@ -1478,7 +1480,7 @@ extern s32 D_00438F30;
 
 extern s16 D_00438F38;
 
-extern SdfPoolNode D_003805A8;
+extern sdfGrOt_t D_003805A8;
 
 extern const s32 D_00414E20[7][4];
 
@@ -2569,7 +2571,17 @@ s32 CalcMsgMng_Process(void) {
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DrawMsgMng_Process);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", DrawMsgMng_Shutdown);
+void DrawMsgMng_Shutdown(void) {
+    itfMesLink_t *node = itfMesMngManager.pool.activeHead;
+    s32 window;
+    while (node != 0) {
+        window = node->index;
+        node = node->next;
+        DestructFlow(window);
+    }
+    sdfTexFreeDelayed(itfMesMngManager.windowTexture);
+    itfMesMngManager.windowTexture = NULL;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DebugDrawWindowLine);
 
@@ -2607,7 +2619,7 @@ void itfQueueOffsetTexturedRect(s32 *bounds, s32 *region, s32 x, s32 y,
                    s32 alpha, sdfTexHandle_t *texture, sdfDrawTag_t *command) {
     s32 positions[4];
     s32 uv[4];
-    UiQuadColor color = D_00414D50;
+    UiQuadColor color = D_r1_0044A820;
 
     positions[0] = (bounds[0] + x) << 4;
     positions[1] = (bounds[1] + y) << 3;

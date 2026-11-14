@@ -1355,10 +1355,14 @@ def raidou_spelling(text):
     that symbol or names it through two aliases, which can differ in type (common_names.rename_tree)."""
     names = placeholder_names()
     present = set(re.findall(r"\b[A-Za-z_]\w*", text))
+    # Only a declaration names the symbol: a use may be an earlier port's spelling, and an
+    # INCLUDE_RODATA or INCLUDE_SDATA line declares nothing.
+    declared = {n for b in blocks(text) if not b.lstrip().startswith("INCLUDE_")
+                for k, n in declared_names(b) if k == "ident"}
     targets = defaultdict(set)
     for n in present & names.keys():
         targets[names[n]].add(n)
-    keep = {n for n in present & names.keys() if names[n] in present or len(targets[names[n]]) > 1}
+    keep = {n for n in present & names.keys() if names[n] in declared or len(targets[names[n]]) > 1}
     return FOREIGN_PLACEHOLDER.sub(lambda m: m[0] if m[0] in keep else names.get(m[0], m[0]), text)
 
 

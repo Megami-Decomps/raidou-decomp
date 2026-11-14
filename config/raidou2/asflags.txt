@@ -1,4 +1,15 @@
 # Extra per-unit assembler flags, after toolchain defaults. Compiler flags stay separate.
 
 # SMT3 settings for SDK members with carried C (tools/raidou_c.py)
+sdk/libm/ef_atan2  -G0
+sdk/libm/ef_rem_pio2  -G0
+sdk/libm/kf_cos  -G0
 sdk/libm/kf_rem_pio2  -G0
+sdk/libm/kf_sin  -G0
+sdk/libm/kf_tan  -G0
+sdk/libm/sf_atan  -G0
+sdk/libm/sf_cos  -G0
+sdk/libm/sf_fabs  -G0
+sdk/libm/sf_floor  -G0
+sdk/libm/sf_sin  -G0
+sdk/libm/sf_tan  -G0

@@ -67,6 +67,7 @@ typedef struct
     u8 item[0xA0];
 } fclGlobalWorkItemInventory_t;
 
+extern fclGlobalWorkItemInventory_t *fclGlobalWorkItems FAKEMATCH_ASM_NAME("DDS3_GBWK");
 
 extern s32 datAddItem(s32 id, s32 num);
 
@@ -106,7 +107,7 @@ typedef struct
     /* 0x18 */ u8 *unk_18;
 } fclSceneObj_t;
 
-s32 fcl_213998(char *name, fclSceneObj_t *dst);
+s32 fclCopySceneObjValue(char *name, fclSceneObj_t *dst);
 
 extern s32 dds3GetMapNo(void *scene);
 
@@ -147,7 +148,7 @@ typedef struct
     /* 0x02 */ u16 item[0xA0];
 } fclItemList_t;
 
-void func_00213BB8(fclItemList_t *list);
+void fclCreateItemList(fclItemList_t *list);
 
 extern s32 cmpItemHasFlag(u16 item, s8 which);
 
@@ -155,7 +156,7 @@ void fclCreateItemListEx(fclItemList_t *list, s8 which);
 
 s32 cmpItemOrder(u8 *a, u8 *b);
 
-s32 func_00213CD8(u8 *list, s32 count, u8 value);
+s32 fclCompactList(u8 *list, s32 count, u8 value);
 
 void shuffleIndices(s8 *order, s32 count, s32 rounds);
 
@@ -219,7 +220,7 @@ void fclUpdateMessage(void);
 
 void fclSetMessageVar_20743088(s8 Index, saddr_t pStr);
 
-s8 fcl_214270(void);
+s8 fclGetMessageInvalid(void);
 
 extern void itfMesMngClearBitStat(s32 id, s32 flag);
 
@@ -229,7 +230,7 @@ extern void itfMesMngSetMesPosition(s32 id, s32 x, s32 y);
 
 extern void itfMesMngSetOffsetY1(s32 msgid, s32 y1);
 
-void fcl_2142F0(s32 x, s32 y);
+void fclSetMessagePos(s32 x, s32 y);
 
 s32 fclChkMessageDraw(void *PID);
 
@@ -241,9 +242,9 @@ s32 fclSetWorkValue(s8 index, s32 value);
 
 s8 fclGetWorkValue(s8 index);
 
-s32 fcl_214428(void);
+s32 fclSetFlagScript(void);
 
-s32 fcl_214458(void);
+s32 fclGetWorkValueScript(void);
 
 s32 fclLoadFileDone(s32 unused, s32 cmd, s32 value, s32 unused2, s32 *out);
 

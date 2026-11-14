@@ -1,4 +1,15 @@
 # Per-unit cc1 flags: <dir>/<unit>  <flags>  # evidence (default is -O2)
 
 # SMT3 settings for SDK members with carried C (tools/raidou_c.py)
+sdk/libm/ef_atan2  -G 0 -fno-builtin
+sdk/libm/ef_rem_pio2  -G 0 -fno-builtin
+sdk/libm/kf_cos  -G 0 -fno-builtin
 sdk/libm/kf_rem_pio2  -G 0 -fno-builtin
+sdk/libm/kf_sin  -G 0 -fno-builtin
+sdk/libm/kf_tan  -G 0 -fno-builtin
+sdk/libm/sf_atan  -G 0 -fno-builtin
+sdk/libm/sf_cos  -G 0 -fno-builtin
+sdk/libm/sf_fabs  -G 0 -fno-builtin
+sdk/libm/sf_floor  -G 0 -fno-builtin
+sdk/libm/sf_sin  -G 0 -fno-builtin
+sdk/libm/sf_tan  -G 0 -fno-builtin
