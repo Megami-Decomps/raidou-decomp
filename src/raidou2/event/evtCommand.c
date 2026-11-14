@@ -970,7 +970,7 @@ enum {
 
 #include "dds/fld_area_work.h"
 
-#include "dds/fld_encounter_runtime_api.h"
+#include "dds/evt_encounter_request_api.h"
 
 #include "dds/fld.h"
 
@@ -988,11 +988,15 @@ enum {
 
 #include "dds/dds3_admin_control_api.h"
 
-#include "dds/kwln_task_add_child.h"
+#include "dds/evt_stage_anime_control_api.h"
+
+#include "dds/dds3_task_add_child.h"
 
 #include "dds/sdf_vu_matrix.h"
 
 #include "dds/evt_world_object_api.h"
+
+#include "dds/evt_polygon_movie_flags_api.h"
 
 #include "dds/fld_resource_resolver.h"
 
@@ -1045,17 +1049,7 @@ typedef s32 EffWorldKind;
 
 #include "dds/sdf_debug_api.h"
 
-void scrDestroyAllNamedProcesses(void);
-
-void evtSubmitEventRequest(s32 eventId, s32 requestMode);
-
-extern u32 evtPendingEventSelection;
-
-void evtSubmitEventRequestImmediate(s32 eventId);
-
 extern s32 D_00389780[];
-
-void evtPrintDeveloperConsoleMessage(const char *fmt, ...);
 
 void dds3RefreshStoredVec3(dds3Basic_t *object);
 
@@ -1075,38 +1069,32 @@ extern void fldSetDeferredFieldCommand(s32 a, s32 b);
 
 ScrCommandResult evtCommandSignalAdminAtTimerZero(void);
 
-/* Queue an event request after preparing BGM/encounter state, then stop scripts.
- * The mode is retained separately; only its positivity controls dispatch mode. */
-void evtSubmitEventRequest(s32 eventId, s32 requestMode);
+/* Queue the encounter and retain a positive follow-up event ID for dispatch. */
+void evtSubmitEventRequest(FldBattleSceneRecordIndex sceneRecordIndex,
+                           EvtScriptEventId followupEventId);
 
-s32 evtCommandSubmitEvent(void);
+ScrCommandResult evtCommandSubmitEvent(void);
 
 /* Stop BGM and submit the event payload with immediate dispatch enabled. */
-void evtSubmitEventRequestImmediate(s32 eventId);
+void evtSubmitEventRequestImmediate(FldBattleSceneRecordIndex sceneRecordIndex);
 
 /* Forward the first VM integer as an opaque four-byte admin payload. */
-s32 evtCommandSubmitScalarAdminRequest(void);
+ScrCommandResult evtCommandSubmitScalarAdminRequest(void);
 
-s32 evtCommandAddEffectUnitToWorld(void);
+ScrCommandResult evtCommandAddEffectUnitToWorld(void);
 
 extern char D_00421E58[], D_00421E68[], D_00421E78[];
 
 extern char D_00421E98[];
 
-s32 evtCommandReattachObjectPath(void);
+ScrCommandResult evtCommandReattachObjectPath(void);
 
-/* Create an event/scene movie task using the active camp resource, set bit 0,
- * and return its handle through the VM result. Missing work skips creation. */
-extern dds3ProcessID_t * evtViewerCreateTask(s32 taskId, s32 event, s32 id);
+/* Create an event/scene movie task using the active camp resource, hold its
+ * viewer setup until the script releases it, and return its handle through the
+ * VM result. Missing work skips creation. */
+extern dds3ProcessID_t * evtViewerCreateTask(u32 priority, s32 eventId, s32 sceneId);
 
-extern void evtPolygonMovieSetFlagBits(dds3ProcessID_t *task, u32 bits);
-
-s32 evtCommandStartPolygonMovie(void);
-
-extern void evtPolygonMovieClearFlagBits(dds3ProcessID_t *task, u32 bits);
-
-/* Clear bit 0 and echo the movie ID through the VM result. */
-s32 evtCommandClearPolygonMovieFlag(void);
+ScrCommandResult evtCommandStartPolygonMovie(void);
 /* End of declarations from src/dds2/event/evtCommand.c */
 
 /* Declarations from dds-decomp src/dds2/event/evtUnitManager.c */
@@ -1172,11 +1160,15 @@ s32 evtCommandClearPolygonMovieFlag(void);
 
 #include "dds/sdf_float_counter.h"
 
+#include "dds/sdf_map_position_api.h"
+
 #include "dds/sdf_model_scalars.h"
 
 #include "dds/sdf_motion.h"
 
 #include "dds/sdf_trig.h"
+
+#include "dds/sdf_vu_matrix.h"
 
 #include "dds/sdk_libm.h"
 
@@ -1199,13 +1191,17 @@ enum {
  * DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
 void Lerp(f32 blendAmount);
 
-typedef enum {
+enum SdfMotionStateValue {
     SDF_MOTION_STATE_UNINITIALIZED = 0,
     SDF_MOTION_STATE_INITIALIZED = 1,
     SDF_MOTION_STATE_SAMPLING = 4,
     SDF_MOTION_STATE_TERMINAL = 5,
     SDF_MOTION_STATE_SUSPENDED = 6,
-} SdfMotionState;
+};
+
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
+ * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void ToMatrix(void);
 
 f32 acosf(f32 x);
 
@@ -1246,7 +1242,7 @@ void mdlGetPosition(dds3ModelHandle_t *ctx);
 
 void mdlSetColor(dds3ModelHandle_t *ctx, u32 value);
 
-void mdlSetMotionSpeedEx(dds3ModelHandle_t *ctx, s32 searchId, f32 frameStep);
+void mdlSetMotionSpeedEx(dds3ModelHandle_t *ctx, MdlMotionSearchId searchId, f32 frameStep);
 
 void mdlSmoothLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
                           f32 blendDurationFrames);
@@ -1263,17 +1259,25 @@ void *sdfChipAllocDirect(s32 size);
 
 void sdfChipFreeDirect(void *memory);
 
+/* On success, write the requested MPOS record's position or matrix to VU state. */
+SdfMapPositionLookupResult sdfModelGetMarkPos(
+    struct dds_sdfModelRootNode_t *model, s32 id);
+
 void sdfModelResetFaceDivParm(struct dds_sdfModelRootNode_t *model);
 
 void sdfModelSetFaceDivParm(struct dds_sdfModelRootNode_t *model, f32 first, f32 second);
 
 #include "dds/sdk_ps2.h"
 
-struct SdfPoolNode;
+struct sdfGrOt_t;
 
 struct EffNodeDescriptor;
 
 #include "dds/common.h"
+
+#include "dds/scr_command_result.h"
+
+#include "dds/sdf_map_position_api.h"
 
 #include "dds/scr_integer_parameter_api.h"
 
@@ -1292,6 +1296,10 @@ struct EffNodeDescriptor;
 #include "dds/dds3_path.h"
 
 #include "dds/evt_unit.h"
+
+#include "dds/evt_unit_object_key.h"
+
+#include "dds/evt_unit_path_mode.h"
 
 #include "dds/evt_path_direction.h"
 
@@ -1373,8 +1381,6 @@ extern f32 sdfFaceDivSoften, sdfFaceDivBias;
 
 #include "dds/dds3_scene_membership.h"
 
-extern s32 sdfModelGetMarkPos(dds_sdfModelRootNode_t *model, s32 mapRecordId);
-
 extern void dds3RotationArc(void);
 
 /* Advance the model, light-colour and directional transitions for one event unit. */
@@ -1446,7 +1452,7 @@ EvtUnitMotionStepResult evtUnitMoveType0(evtUnitHandle_t *unit);
 
 #include "dds/sdf_debug_api.h"
 
-s32 evtUnitPrepareVerticalMoveSteps(evtUnitHandle_t *unit);
+EvtUnitVerticalMoveStepCount evtUnitPrepareVerticalMoveSteps(evtUnitHandle_t *unit);
 
 #define EVT_UNIT_FLAG_USE_PATH_ROTATION 0x10
 
@@ -1460,7 +1466,7 @@ void evtCopyUnitTargetVector(evtUnitHandle_t *work, const f32 src[4]);
 
 #include "dds/sdf_unique_chunk_value_api.h"
 
-#include "dds/kwln_task_add_child.h"
+#include "dds/dds3_task_add_child.h"
 
 #include "dds/fpu.h"
 
@@ -1568,46 +1574,42 @@ void evtSetSlotVectors(s32 slotIndex, EvtUnitVectorSlotState slotState, evtUnitH
 void evtSetSlotVector(s32 slotIndex, f32 x, f32 y);
 
 /* Copy the second vector of the slot bound to `unitHandle` (else the first state-2 slot). */
-s32 evtCopyUnitVectorSlotEndpoint(evtUnitHandle_t *unitHandle, f32 *out);
+EvtUnitVectorSlotLookupResult evtCopyUnitVectorSlotEndpoint(evtUnitHandle_t *unitHandle, f32 *out);
 
 /* Select a matching slot and write its endpoint render work. */
 void evtApplyMatchingUnitSlotEndpoints(evtUnitHandle_t *unit);
 
 /* Find auxiliary coordinates for the unit-bound slot, else the shared fallback. */
-EvtUnitVectorSlotAuxCoordinatesResult evtFindUnitSlotAuxCoordinates(
+EvtUnitVectorSlotLookupResult evtFindUnitSlotAuxCoordinates(
     evtUnitHandle_t *unit, f32 *outX, f32 *outY);
 
-u32 evtOpQueueWorldObjectPendingValue(void);
-
-u32 evtOpClearWorldObjectPendingValue(void);
-
-u32 evtOpModelLodChg(void);
+ScrCommandResult evtOpModelLodChg(void);
 
 extern char D_00421810[];
 
-u32 evtOpDeprecatedModelMotion(void);
+ScrCommandResult evtOpDeprecatedModelMotion(void);
 
-u32 evtOpSetUnitParams5(void);
+ScrCommandResult evtOpSetUnitParams5(void);
 
-u32 evtOpSetUnitParams6(void);
+ScrCommandResult evtOpSetUnitParams6(void);
 
 void evtLipsExecFunction(s32 unitUniqueId, s32 motionId);
 
 void evtLipsStopFunction(void);
 
-u32 evtCmdDestroySelectedWorldUnit(void);
+ScrCommandResult evtCmdDestroySelectedWorldUnit(void);
 
-u32 evtOpStartUnitTransitionTowardWorldObject(void);
+ScrCommandResult evtOpStartUnitTransitionTowardWorldObject(void);
 
-u32 evtScriptSetUnitTableValueAndReset(void);
+ScrCommandResult evtScriptSetUnitTableValueAndReset(void);
 
 f32 evtGetShortestAngleDelta(f32 a, f32 b);
 
 extern f32 EulerAngleAxisY(void);
 
-u32 evtOpTurnUnitRelativeToWorldNode(void);
+ScrCommandResult evtOpTurnUnitRelativeToWorldNode(void);
 
-u32 evtOpRestoreUnitReferenceAngle(void);
+ScrCommandResult evtOpRestoreUnitReferenceAngle(void);
 
 extern const char D_00421A30[38];
 
@@ -1645,19 +1647,19 @@ extern const char D_00421BA0[30];
 
 #define SMT3_DEFINES_SDF_MOTION_STATE_UNINITIALIZED 1
 
+#include "dds/dds3_task_create.h"
+
+#include "dds/dds3_task_lifecycle.h"
+
 #include "dds/evt_solar.h"
 
 #include "dds/kwln.h"
-
-#include "dds/kwln_task_create.h"
-
-#include "dds/kwln_task_lifecycle.h"
 
 #include "dds/mdl_flag_api.h"
 
 u32 dds3GetProcessData(const dds3ProcessID_t *task);
 
-KwlnTaskKillRequestResult dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
+dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
 
 void dds3SetProcessData(dds3ProcessID_t *task, u32 userValue);
 
@@ -1667,8 +1669,8 @@ void dds3SetProcessData(dds3ProcessID_t *task, u32 userValue);
  * its destroy callback; callers may borrow the handle only until finalization.
  */
 dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
-                         s32 destroyDelay, KwlnTaskUpdateCallback update,
-                         TaskDestroy destroy, u32 userValue);
+                         s32 destroyDelay, dds3ProcessFunc_t update,
+                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
 
 /* Return whether the selected flag bit is set, as EvtBitTestResult. */
 EvtBitTestResult evtBitCheck(s32 flag);
@@ -1685,7 +1687,7 @@ extern dds3ProcessID_t *moonprocess_id;
 
 #include "dds/scr_process_handle_api.h"
 
-#include "dds/kwln_task_add_child.h"
+#include "dds/dds3_task_add_child.h"
 
 #include "dds/sdf_chip.h"
 
@@ -1701,9 +1703,9 @@ extern dds3ProcessID_t *moonprocess_id;
 
 #include "dds/kwln.h"
 
-#include "dds/kwln_process_registration.h"
+#include "dds/dds3_process_registration.h"
 
-#include "dds/kwln_task_create.h"
+#include "dds/dds3_task_create.h"
 
 #include "dds/evt_world.h"
 
@@ -1717,7 +1719,9 @@ extern dds3ProcessID_t *moonprocess_id;
 
 #include "dds/evt_solar.h"
 
-#include "dds/kwln_task_lifecycle.h"
+#include "dds/dds3_task_runner.h"
+
+#include "dds/dds3_task_lifecycle.h"
 
 #include "dds/mdl_flag_api.h"
 
@@ -1759,7 +1763,7 @@ void evtEnableMoonDraw2(void);
 
 void evtDisableMoonDraw2(void);
 
-s32 evtUpdateSolarOverlayFade(dds3ProcessID_t *task);
+dds3TaskUpdateResult_t evtUpdateSolarOverlayFade(dds3ProcessID_t *task);
 
 extern s32 D_004371FC;
 
@@ -1774,7 +1778,7 @@ extern void fldLightMaClearMsg(void);
 /* Advance the enabled solar clock and expire its associated field controls. */
 void evtAdvanceSolarClockAndExpireControls(f32 travelDistance);
 
-s32 evtCreateSolarOverlayWork(dds3ProcessID_t *task);
+dds3TaskUpdateResult_t evtCreateSolarOverlayWork(dds3ProcessID_t *task);
 
 void evtFreeSolarOverlayWork(dds3ProcessID_t *task);
 

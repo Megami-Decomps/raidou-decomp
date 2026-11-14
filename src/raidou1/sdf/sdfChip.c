@@ -173,7 +173,7 @@ void *sdfChipAllocDirect(s32 aSize)
     return chip;
 }
 
-void *sdfAllocAndClearQuadwords(s32 size) {
+void *sdfChipAllocZeroDirect(s32 size) {
     return sdfZeroMemQuad(sdfChipAllocDirect(size), (size + 15) >> 4);
 }
 

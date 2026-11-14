@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Tests for tools/raidou_c.py: the scope of port --retry and the candidate pairs."""
+"""Tests for tools/raidou_c.py: the scope of port --retry, the candidate pairs, the pinned dds-decomp
+revision and the Raidou spelling of placeholder aliases."""
 
 from __future__ import annotations
 
+import subprocess
 import sys
+import tempfile
 import unittest
 from unittest import mock
 from pathlib import Path
@@ -60,6 +63,70 @@ class MemberRenameTests(unittest.TestCase):
             out = raidou_c.dds_members(text)
         self.assertIn("b->abgr = slot->quad.center[0] + other->position[1];", out)
         self.assertIn("u32 color; s32 position[2]; } Blur;", out)
+
+
+class DdsPinTests(unittest.TestCase):
+    def git(self, root, *args):
+        subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True)
+
+    def checkout(self, root):
+        self.git(root, "init", "-q")
+        (root / "src").mkdir()
+        (root / "src" / "a.c").write_text("int a;\n")
+        self.git(root, "add", ".")
+        self.git(root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "a")
+        return subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True,
+                              text=True, check=True).stdout.strip()
+
+    def test_checkout_at_the_pin_passes(self) -> None:
+        with tempfile.TemporaryDirectory() as d:
+            head = self.checkout(Path(d))
+            with mock.patch.object(raidou_c, "dds_pin", return_value=head):
+                self.assertEqual(raidou_c.dds_checkout(Path(d)), Path(d).resolve())
+
+    def test_other_revision_or_edited_source_is_refused(self) -> None:
+        with tempfile.TemporaryDirectory() as d:
+            head = self.checkout(Path(d))
+            with mock.patch.object(raidou_c, "dds_pin", return_value="0" * 40), self.assertRaises(SystemExit):
+                raidou_c.dds_checkout(Path(d))
+            (Path(d) / "src" / "a.c").write_text("int b;\n")
+            with mock.patch.object(raidou_c, "dds_pin", return_value=head), self.assertRaises(SystemExit):
+                raidou_c.dds_checkout(Path(d))
+
+    def test_pin_file_names_a_full_revision(self) -> None:
+        self.assertRegex(raidou_c.dds_pin(), r"^[0-9a-f]{40}$")
+
+    def test_pairs_missing_a_game_are_refused(self) -> None:
+        rows = [{"version": "raidou1"}]
+        with tempfile.TemporaryDirectory() as d, mock.patch.object(raidou_c, "OUT", Path(d)), \
+                mock.patch.object(raidou_c, "read_pairs", return_value=rows), self.assertRaises(SystemExit):
+            for name in ("pairs.tsv", "pairs_dds.tsv"):
+                (Path(d) / name).write_text("")
+            (Path(d) / "pairs_dds.rev").write_text(raidou_c.dds_pin() + "\n")
+            raidou_c.ensure_pairs(None)
+
+
+class SpellingTests(unittest.TestCase):
+    names = {"D_00300000": "D_r1_00400000", "D_00300010": "D_r1_00400010", "D_00300020": "D_r1_00400010"}
+
+    def spell(self, text):
+        with mock.patch.object(raidou_c, "placeholder_names", return_value=self.names):
+            return raidou_c.raidou_spelling(text)
+
+    def test_alias_takes_the_raidou_name(self) -> None:
+        self.assertEqual(self.spell("extern u32 D_00300000;\nu32 f(void) { return D_00300000; }\n"),
+                         "extern u32 D_r1_00400000;\nu32 f(void) { return D_r1_00400000; }\n")
+
+    def test_alias_stays_where_the_tu_names_the_symbol_or_two_aliases_meet(self) -> None:
+        text = "extern u32 D_r1_00400000;\nextern f32 D_00300000;\nextern u8 D_00300010;\nextern s8 D_00300020;\n"
+        self.assertEqual(self.spell(text), text)
+
+    def test_carried_body_is_found_in_either_spelling(self) -> None:
+        body = "void f(void) { D_00300000 = 1; }"
+        text = "void f(void) { D_r1_00400000 = 1; }\n"
+        with mock.patch.object(raidou_c, "placeholder_names", return_value=self.names), \
+                mock.patch.object(raidou_c, "body_text", return_value=body):
+            self.assertEqual(raidou_c.tu_bodies(None, text, {"f": "sdf/x"}), {"f": ("sdf/x", 0, len(text) - 1)})
 
 
 if __name__ == "__main__":

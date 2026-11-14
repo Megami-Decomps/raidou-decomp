@@ -8909,7 +8909,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00356880	0x003CC590	sdfChipAllocPageGrow	no	yes	src/raidou1/sdf/sdfChip.c	src/raidou2/sdf/sdfChip.c	unique-reloc-hash
 0x00356900	0x003CC610	sdfChipAllocNewPage	no	yes	src/raidou1/sdf/sdfChip.c	src/raidou2/sdf/sdfChip.c	unique-reloc-hash
 0x00356948	0x003CC658	sdfChipAllocDirect	no	yes	src/raidou1/sdf/sdfChip.c	src/raidou2/sdf/sdfChip.c	unique-reloc-hash
-0x003569F8	0x003CC708	sdfAllocAndClearQuadwords	no	yes	src/raidou1/sdf/sdfChip.c	src/raidou2/sdf/sdfChip.c	unique-reloc-hash
+0x003569F8	0x003CC708	sdfChipAllocZeroDirect	no	yes	src/raidou1/sdf/sdfChip.c	src/raidou2/sdf/sdfChip.c	unique-reloc-hash
 0x00356A28	0x003CC738	sdfChipFreeDirect	no	yes	src/raidou1/sdf/sdfChip.c	src/raidou2/sdf/sdfChip.c	unique-reloc-hash
 0x00356B48	0x003CC858	sdfChipFreeDelayedDirect	no	yes	src/raidou1/sdf/sdfChip.c	src/raidou2/sdf/sdfChip.c	masked-hash-in-gap
 0x00356B68	0x003CC878	sdfChipCheck	no	yes	src/raidou1/sdf/sdfChip.c	src/raidou2/sdf/sdfChip.c	unique-reloc-hash

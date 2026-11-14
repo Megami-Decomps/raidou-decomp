@@ -2816,9 +2816,10 @@ FileQueue *fileCloneQueueEntries(FileQueue *source) {
                         FileJobPayload *secondary = (FileJobPayload *)((u8 *)source + records[entry->sector].id);
 
                         request->secondary.size = secondary->secondary.size;
-                        request->secondary.offset = (u32)fileResolveSecondaryBuffer(secondary) - (u32)request;
+                        FILE_JOB_LOCATION_AS_JOB_RELATIVE_OFFSET(request->secondary) =
+                            (u32)fileResolveSecondaryBuffer(secondary) - (u32)request;
                         job->id = (u32)fileJobCreateFromJob(request);
-                        request->secondary.offset = request->secondary.size = 0;
+                        FILE_JOB_LOCATION_AS_JOB_RELATIVE_OFFSET(request->secondary) = request->secondary.size = 0;
                     } else {
                         job->id = (u32)fileJobCreateFromJob(request);
                     }
@@ -3066,7 +3067,9 @@ void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref
     if (!(flags & FILE_JOB_FLAG_SHARED_PAYLOAD)) {
         fileJobFreeSecondaryBuffer((FileJobPayload *)job->id);
         source = (FileJobPayload *)ref->id;
-        fileJobSetSecondaryData((FileJobPayload *)job->id, (void *)source->secondary.offset, source->secondary.size,
+        fileJobSetSecondaryData((FileJobPayload *)job->id,
+                                (void *)FILE_JOB_LOCATION_AS_LOCKED_ADDRESS_WORD(source->secondary),
+                                source->secondary.size,
                                 source->primary.selector);
         flags = job->flags;
     }

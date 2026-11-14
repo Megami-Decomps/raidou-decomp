@@ -189,11 +189,23 @@ pair, same masked words and slot kinds, Raidou name equal to the DDS C name);
   with SMT3 bodies gets no DDS bodies, and a unit takes one DDS game (the one
   most of its functions pair with).
 - DDS data definitions are not carried yet.
+- Both tools read dds-decomp at the revision `config/dds_decomp.txt` pins and
+  refuse a checkout at another one, or one with edits in `src/` or `include/`:
+  `include/dds/`, the declaration blocks and the carried bodies are that
+  revision's text. `--dds` defaults to
+  `~/.local/state/raidou-decomp-work/dds-<first 8 hex digits>` when it exists.
+  Moving the pin means regenerating all three and verifying the build.
+- A differing pair takes the unit's DDS game when both games have a partner.
+- Generated text spells an SMT3 or DDS placeholder alias (`D_<addr>` in
+  `smt3_symbols.txt`) as the Raidou name at its address, under the rule
+  `tools/xgame/common_names.py` applies to the tree, so port and that rename
+  agree.
 
 ```sh
-python3 tools/raidou_c.py pairs && python3 tools/raidou_dds.py pairs --dds <dds-decomp, split>
-python3 tools/raidou_c.py port --dds <...> && python3 tools/raidou_dds.py headers --dds <...>
-python3 configure.py && ninja -k 0 > log; python3 tools/raidou_c.py verify --dds <...> --log log
+git -C <dds-decomp> worktree add --detach <dir> $(tail -1 config/dds_decomp.txt)   # copy orig/, configure.py
+python3 tools/raidou_c.py pairs && python3 tools/raidou_dds.py pairs --dds <dir>
+python3 tools/raidou_c.py port --dds <dir> && python3 tools/raidou_dds.py headers --dds <dir>
+python3 configure.py && ninja -k 0 > log; python3 tools/raidou_c.py verify --dds <dir> --log log
 ```
 
 `port` and `verify` rerun both `pairs` steps when `configure.py --clean` has

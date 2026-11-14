@@ -589,19 +589,12 @@ def alias_plan(renames, pairs):
     return to_alias, added, conflicts
 
 
-def compiled_text(version):
-    paths = list((ROOT / "src" / version).rglob("*.[ch]")) + list((ROOT / "src/shared").rglob("*.[ch]"))
-    paths += list((ROOT / "include").rglob("*.h"))
-    return "\n".join(p.read_text() for p in paths)
-
-
-def write_aliases(to_alias, added):
-    """Drop replaced aliases nothing compiled names any more; add the mirrored ones."""
+def write_aliases(added):
+    """Add the mirrored aliases. Replaced ones stay: raidou_c.py port regenerates text that spells
+    them and renames them by these rows."""
     for v in (V1, V2):
         path = ROOT / "config" / v / "smt3_symbols.txt"
-        used = set(re.findall(r"\b[A-Za-z_]\w*", compiled_text(v)))
-        out = [line for line in path.read_text().splitlines()
-               if not ((m := ALIAS.match(line)) and m[1] in to_alias[v] and m[1] not in used)]
+        out = path.read_text().splitlines()
         out += [f"{n} = 0x{a:08X};" for n, a in sorted(added[v].items(), key=lambda x: x[1])]
         path.write_text("\n".join(out) + "\n")
 
@@ -633,7 +626,7 @@ def apply():
     existing = {v: set(symbol_starts(v).values()) | set(aliases(v)) for v in (V1, V2)}
     changed, unresolved = rename_tree({v: {**renames[v], **to_alias[v]} for v in (V1, V2)}, existing,
                                       {v: set(to_alias[v]) for v in (V1, V2)})
-    write_aliases(to_alias, added)
+    write_aliases(added)
     print("\n".join(report))
     print("aliases replaced:", {v: len(to_alias[v]) for v in to_alias},
           "mirrored:", {v: len(added[v]) for v in added})

@@ -8944,7 +8944,7 @@
 0x00356880	sdfChipAllocPageGrow	inferred	SMT3HD name via SLUS_209.11 0x002A8A30, reloc-identical; map-agrees
 0x00356900	sdfChipAllocNewPage	inferred	SMT3HD name via SLUS_209.11 0x002A8AB0, reloc-identical; map-agrees
 0x00356948	sdfChipAllocDirect	inferred	SMT3HD name via SLUS_209.11 0x002A8AF8, reloc-identical; map-agrees
-0x003569F8	sdfAllocAndClearQuadwords	inferred	chip allocation zeroed by quadwords, called where DDS mnuCreateWindowContainer calls DDS sdfAllocAndClearQuadwords
+0x003569F8	sdfChipAllocZeroDirect	inferred	DDS name at config/dds_decomp.txt's revision; DDS mnuCreateWindowContainer calls it where Raidou calls this
 0x00356A28	sdfChipFreeDirect	inferred	SMT3HD name via SLUS_209.11 0x002A8BD8, reloc-identical; map-agrees
 0x00356B48	sdfChipFreeDelayedDirect	inferred	SMT3HD name via SLUS_209.11 0x002A8CF8, shared-hash-in-run; map-agrees
 0x00356B68	sdfChipCheck	inferred	SMT3HD name via SLUS_209.11 0x002A8D18, reloc-identical; map-agrees

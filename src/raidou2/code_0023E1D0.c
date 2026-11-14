@@ -2158,11 +2158,7 @@ void effFreeFadeVectorWork(EffFadeVectorWork *work);
 
 EffFadeVectorWork *effCloneFadeVectorWork(EffFadeVectorWork *work);
 
-void effResetFadeVectorFrame(EffFadeVectorWork *work);
-
 void effCopyFadeWorkVector(f32 *dst, const f32 *src);
-
-void effSetFadeVectorColor(EffFadeVectorWork *work, u32 color);
 
 void effResetSelectionEntryBuffers(SdfFlagListWork *work);
 
@@ -2181,9 +2177,6 @@ void effUpdateSelectionEntryState(SdfFlagListWork *work);
 void effDrawSelectionEntryVectors(SdfFlagListWork *work);
 
 void effUpdateAndDrawSelectionEntries(SdfFlagListWork *work);
-
-/* Set the selection/drop-list's packed modulation color. */
-void effSetSelectionFlagListColor(SdfFlagListWork *work, u32 color);
 
 typedef struct EffSelectionHeaderWork {
     s32 frame;
@@ -2301,8 +2294,6 @@ void effAdvanceKindWorkFrame(EffKindWork *work);
 
 void effCopyKindWorkPosition(void *dst, void *src);
 
-void effSetKindWorkColor(EffKindWork *work, u32 color);
-
 void effSetKindWorkMatrixComponent(EffKindWork *work, float value);
 
 /* Allocate work for the alternate kind table, copying its payload and creating its handle. */
@@ -2349,8 +2340,6 @@ void effUpdateScaledBillboardFrame(EffBillboardWork *work);
 void effCopyBillboardPosition(void *dst, void *src);
 
 void effCopyBillboardOrientation(void *work, void *src);
-
-void effSetBillboardColor(EffBillboardWork *work, u32 color);
 
 /* Set the billboard's scalar scale; the leading vectors are not a Matrix4. */
 void effSetBillboardMatrixComponent(EffBillboardWork *work, float value);
@@ -2578,8 +2567,6 @@ void effCopyActiveInstancePosition(void *dst, void *src);
 
 void effCopyActiveInstanceOrientation(void *work, void *src);
 
-void effSetActiveInstanceColor(EffClassWork *work, u32 color);
-
 void effSetActiveInstanceMatrixComponent(EffClassWork *work, float value);
 
 EffTrackSet *effCreateTrackSet(s32 count, u16 kind);
@@ -2727,10 +2714,6 @@ void effSetClassWorkPrimaryTransformVector(s128 *dst, const s128 *src);
 
 void effSetClassWorkSecondaryTransformVector(EffClassWork *work, const s128 *src);
 
-void effSetClassWorkColor(EffClassWork *work, u32 color);
-
-void effSetClassWorkScale(EffClassWork *work, f32 scale);
-
 extern sdf3DPrimPolyParm_t D_r1_004D1BF0[];
 
 EffPointSet *effCreatePointSet4(u32 count);
@@ -2799,8 +2782,6 @@ void effUpdateSurfaceRecordAndDraw(s32 node);
 void effMenuRecordVectorSet(s32 node, const u128 *value);
 
 void effSetSurfaceRecordSecondaryVector(s32 node, const u128 *value);
-
-void effSetSurfaceNodeColor(EffectSurfaceNode *work, u32 color);
 
 void effIndexedFloatCallbackDispatch(ValPtr44 *p, float v);
 
@@ -2886,8 +2867,6 @@ void effResetRenderResourceKind(EffQuadWork *work);
 void effCopyRenderResourcePosition(EffQuadWork *work, const f32 *source);
 
 void effCopyRenderResourceOrientation(EffQuadWork *work, const f32 *source);
-
-void effSetRenderResourceColor(EffQuadWork *work, u32 color);
 
 void effSetRenderResourceMatrixComponent(EffQuadWork *work, f32 value);
 
@@ -3020,8 +2999,6 @@ void effSetStripRecordVector(EffectStripNode *node, const u128 *value);
 
 void effSetStripRecordSecondaryVector(EffectStripNode *node, const u128 *value);
 
-void effSetStripRecordColor(EffectStripNode *work, u32 color);
-
 /* Store opacity and notify the strip's active-record callback. */
 void effSetStripOpacity(EffectStripNode *p, f32 v);
 
@@ -3116,8 +3093,6 @@ void effUpdateAndDrawBlockResource(EffClassWork *work);
 void effCopyBlockResourcePosition(void *dst, void *src);
 
 void effCopyBlockResourceOrientation(void *work, void *src);
-
-void effSetBlockResourceColor(EffClassWork *work, u32 color);
 
 void effSetBlockResourceMatrixComponent(EffClassWork *work, float value);
 
@@ -3237,8 +3212,6 @@ void effCopyModelBlockPosition(void *dst, void *src);
 
 void effCopyModelBlockOrientation(void *work, void *src);
 
-void effSetModelBlockColor(EffClassWork *work, u32 color);
-
 void effSetModelBlockMatrixComponent(EffClassWork *work, float value);
 
 /* Retain and return the lazy shared reference to /effect/scaly00.tmx. */
@@ -3328,10 +3301,6 @@ void effStepModelResourceCallbacks(EffModelResource *effect);
 void effSetModelResourcePrimaryTransformVector(EffModelResource *effect, const f32 *position);
 
 void effSetModelResourceSecondaryTransformVector(EffModelResource *effect, const f32 *orientation);
-
-void effSetModelResourceColor(EffModelResource *work, u32 color);
-
-void effSetModelResourceScale(EffModelResource *work, f32 scale);
 
 extern sdf3DPrimPolyParm_t D_r1_004D1D40[];
 
@@ -3573,9 +3542,6 @@ extern void sdfPrimLinkGt4(sdfDrawTag_t *list, s32 primitive, s32 x0, s32 y0, s3
 
 /* Submit frames below the exclusive limit; zero leaves the cursor unbounded. */
 void effDrawAndAdvanceSharedParticleFrame(EffParticleSharedResource *work);
-
-/* The shared particle header keeps its packed color in its first word. */
-void effSetParticleSharedColor(EffParticleSharedResource *work, u32 color);
 
 void btlInitializeEffectWork(void);
 

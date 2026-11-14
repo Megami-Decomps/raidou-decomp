@@ -183,13 +183,18 @@ def cmd_pairs(args):
         for src, unit, fn, addr, words, good in every:
             if not src or good:
                 continue
-            hit = next(((g, ea) for g, ea, _ in partners.get(addr, ()) if sides[g].c.get(ea, ("",))[0] == fn), None)
+            hits = [(g, ea) for g, ea, _ in partners.get(addr, ()) if sides[g].c.get(ea, ("",))[0] == fn]
+            # The unit's DDS game first, as for the identical rows.
+            hits.sort(key=lambda h: (h[0] != (min(votes[unit], key=lambda g: (-votes[unit][g], g)) if votes[unit] else None),))
+            hit = hits[0] if hits else None
             if hit:
                 name, path = sides[hit[0]].c[hit[1]]
                 counts["differs"] += 1
                 lines.append(f"{version}\t{src}\t{fn}\t0x{addr:08X}\t0x{hit[1]:08X}\t{name}\t{path}\t{len(words)}\tdiffers")
         print(version, dict(sorted(counts.items())))
+    rc.OUT.mkdir(parents=True, exist_ok=True)
     (rc.OUT / "pairs_dds.tsv").write_text("\n".join(lines) + "\n")
+    (rc.OUT / "pairs_dds.rev").write_text(rc.dds_pin() + "\n")
 
 
 def smt3_guard(item):
@@ -405,11 +410,13 @@ def main():
     for name, func in (("names", cmd_names), ("rename", cmd_rename), ("pairs", cmd_pairs), ("headers", cmd_headers),
                        ("layouts", cmd_layouts), ("members", cmd_members)):
         p = sub.add_parser(name)
-        p.add_argument("--dds", type=Path, default=rc.DDS, help="dds-decomp checkout, configured (split)")
+        p.add_argument("--dds", type=Path, default=rc.default_dds(),
+                       help="dds-decomp checkout at config/dds_decomp.txt's revision, configured (split)")
         if name == "headers":
             p.add_argument("--verbose", action="store_true")
         p.set_defaults(func=func)
     args = ap.parse_args()
+    args.dds = rc.DDS = rc.dds_checkout(args.dds)
     args.func(args)
 
 

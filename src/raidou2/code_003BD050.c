@@ -744,10 +744,6 @@ void mnuDrawWindowListEntries(s32 x, s32 y, s32 depth, s32 xOffset, s32 yOffset,
 /* Invoke the native window renderer at full fade with its size/flag arguments zeroed. */
 void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg);
 
-/* Allocate a zeroed window and its list; the last two arguments configure list rows. */
-MenuWindowContainer *mnuCreateWindowContainer(s32 id, s32 width, s32 height,
-                                                s32 visibleCount, s32 rowSpacing);
-
 /* Destroy the owned list and optional sprite resources before freeing the window. */
 void mnuDestroyWindowContainer(MenuWindowContainer *menu);
 
@@ -1176,7 +1172,7 @@ void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg) {
 
 /* Allocate a zeroed window and its list; the last two arguments configure list rows. */
 MenuWindowContainer *mnuCreateWindowContainer(s32 id, s32 width, s32 height, s32 visibleCount, s32 rowSpacing) {
-    MenuWindowContainer *window = (MenuWindowContainer *)sdfAllocAndClearQuadwords(sizeof(MenuWindowContainer));
+    MenuWindowContainer *window = (MenuWindowContainer *)sdfChipAllocZeroDirect(sizeof(MenuWindowContainer));
     MenuList *list;
     window->width = width;
     window->height = height;
@@ -1374,7 +1370,7 @@ MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
     s32 index;
     s32 first;
 
-    panel = sdfAllocAndClearQuadwords(sizeof(MenuIconState));
+    panel = sdfChipAllocZeroDirect(sizeof(MenuIconState));
     panel->kind = mode;
     switch (mode) {
     case 0:

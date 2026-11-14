@@ -1,0 +1,4 @@
+# dds-decomp revision raidou_c.py and raidou_dds.py read (a checkout at it, configured, passed as --dds).
+# include/dds, the DDS declaration blocks and the carried DDS bodies are this revision's text; a later
+# one renames headers and types, so moving the pin means regenerating those and verifying the build.
+d2b98d7de703ffca89f712a7234f1c0f2809ac44

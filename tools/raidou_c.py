@@ -10,6 +10,7 @@ import argparse
 import bisect
 import functools
 import re
+import subprocess
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -23,8 +24,38 @@ from units import SHARED, SRC, shared_sources, unit_name, unit_sources  # noqa: 
 OUT = ROOT / "build" / "raidou_c"
 # Read only: the smt3-port checkout follows smt3-decomp upstream.
 SMT3 = Path.home() / "projects/smt3-decomp"
-# Read only. A DDS source is `dds1/<path>` or `dds2/<path>` under its src/; SMT3 ones are relative to src/smt3.
-DDS = Path.home() / "projects/dds-decomp"
+# Read only, at the revision config/dds_decomp.txt pins. A DDS source is `dds1/<path>` or `dds2/<path>`
+# under its src/; SMT3 ones are relative to src/smt3.
+DDS_PIN = ROOT / "config" / "dds_decomp.txt"
+
+
+def dds_pin():
+    return next(line.strip() for line in DDS_PIN.read_text().splitlines() if line.strip() and not line.startswith("#"))
+
+
+def default_dds():
+    pinned = Path.home() / f".local/state/raidou-decomp-work/dds-{dds_pin()[:8]}"
+    return pinned if pinned.exists() else Path.home() / "projects/dds-decomp"
+
+
+def dds_checkout(path):
+    """path, resolved, once it is a dds-decomp checkout at the pinned revision with src/ and include/
+    as committed: other text gives other declaration blocks and bodies than the tree's."""
+    path = Path(path).expanduser().resolve()
+    pin = dds_pin()
+    git = ["git", "-C", str(path)]
+    head = subprocess.run(git + ["rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    if head != pin:
+        sys.exit(f"dds-decomp {path} is at {head or 'no revision'}; config/dds_decomp.txt pins {pin}.\n"
+                 f"Make a checkout at the pin (git worktree add --detach <dir> {pin[:9]}, copy orig/, "
+                 f"python configure.py) and pass --dds <dir>.")
+    dirty = subprocess.run(git + ["status", "--porcelain", "--", "src", "include"], capture_output=True, text=True).stdout
+    if dirty:
+        sys.exit(f"dds-decomp {path} has changes in src/ or include/:\n{dirty}")
+    return path
+
+
+DDS = default_dds()
 DDS_GAMES = ("dds1", "dds2")
 
 INSN = re.compile(r"^\s*/\* [0-9A-Fa-f]+ ([0-9A-Fa-f]+) ([0-9A-Fa-f]{8}) \*/\s+(.*?)\s*$")
@@ -960,7 +991,9 @@ def tu_bodies(smt3, text, candidates):
             continue
         # The data tools may have put INCLUDE_RODATA/SDATA lines between the comment and the definition.
         split = definitions(body)[fn][0]
-        if text[start:end] != body[split:] and not (is_dds(rel) and dds_rename(text[start:end]) == body[split:]):
+        mine = text[start:end]
+        if mine != body[split:] and not (is_dds(rel) and dds_rename(mine) == body[split:]) \
+                and raidou_spelling(mine) != raidou_spelling(body[split:]):
             continue
         lead, comment = start, body[:split]
         while (m := re.search(r"(^INCLUDE_(RODATA|SDATA)\(.*\);\n+)\Z", text[:lead], re.M)):
@@ -1265,6 +1298,39 @@ def nested_names(text):
     return names
 
 
+FOREIGN_PLACEHOLDER = re.compile(r"\b(?:func|D)_[0-9A-F]{8}\b")
+
+
+@functools.cache
+def placeholder_names():
+    """{SMT3 or DDS placeholder name: Raidou name} for each smt3_symbols.txt alias at the address of a
+    symbol_addrs.txt name, where both games agree: carried C spells it as that symbol, the one name
+    both games give it (tools/xgame/common_names.py)."""
+    out, clash = {}, set()
+    for version in VERSIONS:
+        own = repo_symbols(ROOT, version)
+        at = {}
+        for name, addr in own.items():
+            at.setdefault(addr, name)
+        for n, a in alias_rows(version):
+            if FOREIGN_PLACEHOLDER.fullmatch(n) and n not in own and a in at:
+                if out.setdefault(n, at[a]) != at[a]:
+                    clash.add(n)
+    return {n: r for n, r in out.items() if n not in clash}
+
+
+def raidou_spelling(text):
+    """text with each placeholder alias spelled as its Raidou name, except where the TU already names
+    that symbol or names it through two aliases, which can differ in type (common_names.rename_tree)."""
+    names = placeholder_names()
+    present = set(re.findall(r"\b[A-Za-z_]\w*", text))
+    targets = defaultdict(set)
+    for n in present & names.keys():
+        targets[names[n]].add(n)
+    keep = {n for n in present & names.keys() if names[n] in present or len(targets[names[n]]) > 1}
+    return FOREIGN_PLACEHOLDER.sub(lambda m: m[0] if m[0] in keep else names.get(m[0], m[0]), text)
+
+
 def port_text(smt3, text, unit, carry, cands, ctx):
     """A TU with carry's bodies written inline and every other carried body back to INCLUDE_ASM."""
     def asm_line(fn):
@@ -1289,10 +1355,13 @@ def port_text(smt3, text, unit, carry, cands, ctx):
     rels = {rel for rel, _, _ in carried.values()}
     # Inline helpers in the old declaration blocks are not the TU's own.
     own = set(definitions(DECL_BLOCK.sub("", text))) - set(carried)
+    # A carried body edited by hand keeps the block of its source, which declares what it uses.
+    blocks = {m.group(1) for m in DECL_BLOCK.finditer(text)}
+    rels |= {cands[fn] for fn in own if cands.get(fn) in blocks}
     text = port_data(smt3, text, unit, rels, ctx)
     # Only the defining TU needs the unsized declaration; elsewhere SMT3's size is harmless.
     unsized = {n for n in tu_data(smt3, text, ctx["rows"]) if ctx["rows"][n].get("size")}
-    return set_decl_blocks(smt3, text, rels, unsized, own)
+    return raidou_spelling(set_decl_blocks(smt3, text, rels, unsized, own))
 
 
 def write_tus(texts, dry_run=False):
@@ -1337,13 +1406,15 @@ def ensure_pairs(args):
     if not (OUT / "pairs.tsv").exists():
         print("build/raidou_c/pairs.tsv missing: running pairs")
         cmd_pairs(args)
-    if not (OUT / "pairs_dds.tsv").exists():
-        print("build/raidou_c/pairs_dds.tsv missing: running raidou_dds.py pairs")
+    stamp = OUT / "pairs_dds.rev"
+    if not (OUT / "pairs_dds.tsv").exists() or not stamp.exists() or stamp.read_text().strip() != dds_pin():
+        print("build/raidou_c/pairs_dds.tsv missing or from another dds-decomp revision: running raidou_dds.py pairs")
         import raidou_dds
         raidou_dds.cmd_pairs(args)
     for path in (OUT / "pairs.tsv", OUT / "pairs_dds.tsv"):
-        if len(read_pairs(path)) == 0:
-            sys.exit(f"{path.relative_to(ROOT)} has no rows")
+        missing = set(VERSIONS) - {r["version"] for r in read_pairs(path)}
+        if missing:
+            sys.exit(f"build/raidou_c/{path.name} has no rows for {sorted(missing)}")
 
 
 def cmd_port(args):
@@ -2065,11 +2136,11 @@ def main():
     p.add_argument("--smt3", type=Path, default=SMT3)
     p.set_defaults(func=cmd_names)
     for p in sub.choices.values():
-        p.add_argument("--dds", type=Path, default=Path.home() / "projects/dds-decomp",
-                       help="dds-decomp checkout, configured (split)")
+        p.add_argument("--dds", type=Path, default=default_dds(),
+                       help="dds-decomp checkout at config/dds_decomp.txt's revision, configured (split)")
     args = ap.parse_args()
     global DDS
-    DDS = args.dds.expanduser().resolve()
+    DDS = dds_checkout(args.dds)
     args.func(args)
 
 

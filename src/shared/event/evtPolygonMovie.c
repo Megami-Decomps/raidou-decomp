@@ -3,6 +3,8 @@
 /* Declarations from smt3-decomp src/smt3/event/evtPolygonMovie.c */
 #include "common.h"
 
+#include "kernel_draw.h"
+
 #include "kernel.h"
 
 #include "libsdf.h"
@@ -197,7 +199,7 @@ extern s16 dds3ScreenBlurScale;
 
 extern u8 dds3ScreenBlurFlag;
 
-extern u32 dds3LightParam[];
+extern dds3LightState_t dds3LightParam;
 
 extern pmdSceneFogTable_t evtSceneFogParam;
 
@@ -608,7 +610,7 @@ extern dds3Effect_DistortionBlurParam_t evtMovieDefaultBlurScatter;
 
 extern dds3Effect_RippleBlurParam_t evtMovieDefaultBlurScale;
 
-extern dds3Effect_Blur_t D_003686A0;
+extern dds3Effect_Blur_t D_r1_003EF010;
 
 extern ItfMesWindowIndex itfMesMngInitialize(ItfMesSub *messageSub);
 
@@ -985,10 +987,10 @@ void evtBlendParamsG(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Ef
         t = 0.0f;
     }
     if (a == NULL) {
-        a = &D_003686A0;
+        a = &D_r1_003EF010;
     }
     if (b == NULL) {
-        b = &D_003686A0;
+        b = &D_r1_003EF010;
     }
     out->abgr = evtHokanColor(enable, t, a->abgr, b->abgr);
     out->blend = a->blend;
