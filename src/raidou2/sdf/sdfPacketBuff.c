@@ -119,17 +119,17 @@ s32 sdfGrPacketBuffBase[2] = {0, 0};
 
 s32 sdfGrPacketBuffPtr = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_r1_0046F2B4);
+INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", sdfGrPacketBuffLimit);
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_r1_0046F2BC);
+INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", sdfDrawFrameFlag);
 
 volatile u8 sdfDrawSyncFlag = 0;
 
 u16 sdfDrawFrameCounter = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_r1_0046F2C0);
+INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", sdfDrawPublishFlag);
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_r1_0046F2C1);
+INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", sdfGrDrawFrameId);
 
 u8 sdfGrBufferSlot = 0;
 

@@ -283,9 +283,9 @@ extern void frEnableMode(s32 value);
 
 extern u8 frDisableMode(u8 value);
 
-extern u8 D_r1_003E8760[];
+extern u8 itfDrawThreePanelBorderBandsData[];
 
-extern u8 D_r1_003E8768[];
+extern u8 itfDrawThreePanelBorderBandsData2[];
 
 extern s32 frDefaultFontHandle;
 

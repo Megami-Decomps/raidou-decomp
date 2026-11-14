@@ -462,7 +462,7 @@ extern dds3Basic_t *fldPlayerObject;
 
 extern struct sdfMemHandle_t *fldPlayerModelResource;
 
-extern u32 D_0043EA44[];
+extern u32 fldReleaseUnitPadData[];
 
 extern struct sdfMemHandle_t *D_003BAB58;
 
@@ -1200,13 +1200,13 @@ INCLUDE_ASM(const s32, "code_0012C998", fldGbLocationSavePointStore);
 
 INCLUDE_ASM(const s32, "code_0012C998", mapChkTakaraEX);
 
-INCLUDE_RODATA(const s32, "code_0012C998", D_r1_00446B50);
+INCLUDE_RODATA(const s32, "code_0012C998", mapGetEyeTgtRotTable);
 
-INCLUDE_RODATA(const s32, "code_0012C998", D_r1_00446B60);
+INCLUDE_RODATA(const s32, "code_0012C998", mapRaidouBackUpPosResetTable);
 
-INCLUDE_RODATA(const s32, "code_0012C998", D_r1_00446B70);
+INCLUDE_RODATA(const s32, "code_0012C998", mapCallGetRotPoseSetTable);
 
-INCLUDE_RODATA(const s32, "code_0012C998", D_r1_00446B80);
+INCLUDE_RODATA(const s32, "code_0012C998", mapCallGetRotPoseSet2Table);
 
 INCLUDE_ASM(const s32, "code_0012C998", fldReturnSavePointPositionRestore);
 
@@ -1299,9 +1299,9 @@ void fldReleaseUnitPad(void) {
         fldEncountClearFlag(0x40);
         dds3ObjectBaseSetPrimaryControl(fldPlayerObject, 0);
     }
-    D_0043EA44[0] = 4;
+    fldReleaseUnitPadData[0] = 4;
 }
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B5E8);
+INCLUDE_SDATA(const s32, "code_0012C998", playerModel);
 
 INCLUDE_SDATA(const s32, "code_0012C998", raidoBasic);
 
@@ -1317,43 +1317,43 @@ INCLUDE_SDATA(const s32, "code_0012C998", summonDvModel);
 
 INCLUDE_SDATA(const s32, "code_0012C998", cameraBasic);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B608);
+INCLUDE_SDATA(const s32, "code_0012C998", fldData9);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_004DE770);
+INCLUDE_SDATA(const s32, "code_0012C998", fldReturnSavePointPositionRestoreData);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_004DE778);
+INCLUDE_SDATA(const s32, "code_0012C998", nbData21);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B690);
+INCLUDE_SDATA(const s32, "code_0012C998", Process_WarpIdx);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B614);
+INCLUDE_SDATA(const s32, "code_0012C998", effQueuedResourceNameRecord2);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B618);
+INCLUDE_SDATA(const s32, "code_0012C998", effQueuedResourceNameRecord3);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B61C);
+INCLUDE_SDATA(const s32, "code_0012C998", fldJDataLoadData);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B620);
+INCLUDE_SDATA(const s32, "code_0012C998", fldJDataLoadData2);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B624);
+INCLUDE_SDATA(const s32, "code_0012C998", fldData10);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B628);
+INCLUDE_SDATA(const s32, "code_0012C998", fldPlayerALoadEndCheckData);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B62C);
+INCLUDE_SDATA(const s32, "code_0012C998", fldData11);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B630);
+INCLUDE_SDATA(const s32, "code_0012C998", nbResultFreeTexturesData);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B634);
+INCLUDE_SDATA(const s32, "code_0012C998", nbResultFreeTexturesData2);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B638);
+INCLUDE_SDATA(const s32, "code_0012C998", fldNakamaCashLoad_ResrcData);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B63C);
+INCLUDE_SDATA(const s32, "code_0012C998", fldNakamaCashLoad_EndCheckData);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B640);
+INCLUDE_SDATA(const s32, "code_0012C998", fldData12);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B644);
+INCLUDE_SDATA(const s32, "code_0012C998", fldCallPackDecodeData);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B648);
+INCLUDE_SDATA(const s32, "code_0012C998", fldCallPackDecodeData2);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B64C);
+INCLUDE_SDATA(const s32, "code_0012C998", fldAiboCashLoad_ResrcData);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B650);
+INCLUDE_SDATA(const s32, "code_0012C998", fldData13);
 

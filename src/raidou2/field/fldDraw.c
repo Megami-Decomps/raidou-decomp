@@ -1021,13 +1021,13 @@ INCLUDE_ASM(const s32, "field/fldDraw", fldCallSetOt);
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawMaruKage);
 
-INCLUDE_SDATA(const s32, "field/fldDraw", D_r1_0046B730);
+INCLUDE_SDATA(const s32, "field/fldDraw", rsetFrameMaskOtOffset);
 
-INCLUDE_SDATA(const s32, "field/fldDraw", D_r1_0046B734);
+INCLUDE_SDATA(const s32, "field/fldDraw", fldDrawInitDone);
 
 void *fldDrwZBuf = 0;
 
-INCLUDE_SDATA(const s32, "field/fldDraw", D_r1_0046B740);
+INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtDec);
 
-INCLUDE_SDATA(const s32, "field/fldDraw", D_004DE8AC);
+INCLUDE_SDATA(const s32, "field/fldDraw", fldObjTaskSubData);
 

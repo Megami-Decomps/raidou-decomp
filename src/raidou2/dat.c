@@ -576,55 +576,55 @@ INCLUDE_ASM(const s32, "dat", cmpExSubMenuAnimFunc);
 INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK13);
 
 INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK14);
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B490);
+INCLUDE_SDATA(const s32, "dat", sdfRuntimeTaskName);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE5E8);
+INCLUDE_SDATA(const s32, "dat", datData13);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE5EA);
+INCLUDE_SDATA(const s32, "dat", NewGame2PushData3);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE5EC);
+INCLUDE_SDATA(const s32, "dat", NewGame2PushData4);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE5F0);
+INCLUDE_SDATA(const s32, "dat", datData14);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE5F1);
+INCLUDE_SDATA(const s32, "dat", datData15);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE5F4);
+INCLUDE_SDATA(const s32, "dat", datData16);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE5F8);
+INCLUDE_SDATA(const s32, "dat", datData17);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE5FC);
+INCLUDE_SDATA(const s32, "dat", datCallNewGame2PushData);
 
 INCLUDE_SDATA(const s32, "dat", DDS3_GBWK);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE604);
+INCLUDE_SDATA(const s32, "dat", sbtlData141);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE608);
+INCLUDE_SDATA(const s32, "dat", sbtlSbattle3Data);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4B0);
+INCLUDE_SDATA(const s32, "dat", evtCallMemset9Data);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4BC);
+INCLUDE_SDATA(const s32, "dat", datEnemyRecords);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4C0);
+INCLUDE_SDATA(const s32, "dat", evtData12);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4D4);
+INCLUDE_SDATA(const s32, "dat", datEncountCalcSubData);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4DC);
+INCLUDE_SDATA(const s32, "dat", datBattleAdjustmentRecords);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B508);
+INCLUDE_SDATA(const s32, "dat", datLeaf66Data);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B554);
+INCLUDE_SDATA(const s32, "dat", rstCallGetRandAData);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B558);
+INCLUDE_SDATA(const s32, "dat", datData4);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B55C);
+INCLUDE_SDATA(const s32, "dat", sbtlSetHangekiFlagData);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE6C8);
+INCLUDE_SDATA(const s32, "dat", datLoadLvUpTablesData3);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE6CC);
+INCLUDE_SDATA(const s32, "dat", datData18);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE6D0);
+INCLUDE_SDATA(const s32, "dat", datLoadLvUpTablesData4);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE6D4);
+INCLUDE_SDATA(const s32, "dat", rstCalcRankUpData);
 
-INCLUDE_SDATA(const s32, "dat", D_004DE6D8);
+INCLUDE_SDATA(const s32, "dat", datData19);
 

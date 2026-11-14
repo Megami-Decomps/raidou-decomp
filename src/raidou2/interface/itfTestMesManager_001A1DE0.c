@@ -43,7 +43,7 @@ extern pbPanelEditor_t pbDebugPanel2Pos, pbDebugPanel3X;
 
 extern pbColorRow_t D_00326C20[6];
 
-extern pbColor_t D_r1_003E7AF0;
+extern pbColor_t itfTestOverlayColor;
 
 extern sdf3DScreenParam_t dds3ScreenParam;
 
@@ -107,7 +107,7 @@ typedef struct
     sdfGrTagStdReg_t reg[2];
 } pbRegPacket_t;
 
-extern char *D_r1_003E9028[];
+extern char *TestMsgReloadTextureData[];
 
 extern s32 D_00326BD8[4];
 
@@ -305,7 +305,7 @@ void TestMsgReloadTexture(void)
     }
     testMsgTexIndex = (testMsgTexIndex + 1) & 3;
     if (testMsgTexIndex != 3) {
-        testMsgTexture = itfMiscLoadTexture(D_r1_003E9028[testMsgTexIndex]);
+        testMsgTexture = itfMiscLoadTexture(TestMsgReloadTextureData[testMsgTexIndex]);
     }
 }
 
@@ -319,11 +319,11 @@ s32 TestMsgMngC_Process(dds3ProcessID_t *id)
 
 INCLUDE_ASM(const s32, "interface/itfTestMesManager_001A1DE0", TestMsgMngD_Process);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_001A1DE0", D_r1_0044A980);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_001A1DE0", TestMsgReloadTextureDataStrFontSampleBg02Tmx);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_001A1DE0", D_r1_0044A998);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_001A1DE0", TestMsgReloadTextureDataStrFontSampleBg01Tmx);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_001A1DE0", D_r1_0044A9B0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_001A1DE0", TestMsgReloadTextureDataStrFontSampleBg00Tmx);
 
 void itfDebugPrintMark(void) {
     printf("********* AAAA ********\n");

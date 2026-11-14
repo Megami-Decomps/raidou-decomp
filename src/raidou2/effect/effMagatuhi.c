@@ -48,11 +48,11 @@ typedef struct effColorHandler_t {
     u8 unk4[0x14];
 } effColorHandler_t;
 
-extern effVectorHandler_t D_r1_003FFA7C[];
+extern effVectorHandler_t dds3MagatuhiSetRGBATable[];
 
-extern effColorHandler_t D_r1_003FFA80[];
+extern effColorHandler_t dds3MagatuhiSetRGBATable2[];
 
-extern effVectorHandler_t D_r1_003FFA84[];
+extern effVectorHandler_t dds3MagatuhiSetRGBATable3[];
 
 extern char *dds3EffectFileNameTable[];
 
@@ -2575,7 +2575,7 @@ u32 dds3MagatuhiParIsActive(void) {
 }
 
 void dds3MagatuhiParSetRotateMatrix(dds3MagatuhiPar_tag *work, void *pPos) {
-    void (*handler)(void *, void *) = D_r1_003FFA7C[work->type].handler;
+    void (*handler)(void *, void *) = dds3MagatuhiSetRGBATable[work->type].handler;
 
     if (handler != NULL) {
         handler(work->pHandle, pPos);
@@ -2583,7 +2583,7 @@ void dds3MagatuhiParSetRotateMatrix(dds3MagatuhiPar_tag *work, void *pPos) {
 }
 
 void effLeaf44(dds3MagatuhiPar_tag *work, void *pMatrix) {
-    void (*handler)(void *, void *) = D_r1_003FFA84[work->type].handler;
+    void (*handler)(void *, void *) = dds3MagatuhiSetRGBATable3[work->type].handler;
 
     if (handler != NULL) {
         handler(work->pHandle, pMatrix);
@@ -2591,7 +2591,7 @@ void effLeaf44(dds3MagatuhiPar_tag *work, void *pMatrix) {
 }
 
 void effLeaf45(dds3MagatuhiPar_tag *work, u32 abgr) {
-    void (*handler)(void *, u32) = D_r1_003FFA80[work->type].handler;
+    void (*handler)(void *, u32) = dds3MagatuhiSetRGBATable2[work->type].handler;
 
     if (handler != NULL) {
         handler(work->pHandle, abgr);

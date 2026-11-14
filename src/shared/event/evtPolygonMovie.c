@@ -610,7 +610,7 @@ extern dds3Effect_DistortionBlurParam_t evtMovieDefaultBlurScatter;
 
 extern dds3Effect_RippleBlurParam_t evtMovieDefaultBlurScale;
 
-extern dds3Effect_Blur_t D_r1_003EF010;
+extern dds3Effect_Blur_t evtBlur2DefaultParam2;
 
 extern ItfMesWindowIndex itfMesMngInitialize(ItfMesSub *messageSub);
 
@@ -987,10 +987,10 @@ void evtHokanHeikouBlur(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds
         t = 0.0f;
     }
     if (a == NULL) {
-        a = &D_r1_003EF010;
+        a = &evtBlur2DefaultParam2;
     }
     if (b == NULL) {
-        b = &D_r1_003EF010;
+        b = &evtBlur2DefaultParam2;
     }
     out->abgr = evtHokanColor(enable, t, a->abgr, b->abgr);
     out->blend = a->blend;
@@ -1049,7 +1049,7 @@ INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtAllocMovieWork);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtCallMemset8);
 
-INCLUDE_RODATA(const s32, "event/evtPolygonMovie", D_r1_0044FD18);
+INCLUDE_RODATA(const s32, "event/evtPolygonMovie", evtAllocMovieWorkTable);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", SetPMFileName);
 
@@ -1059,5 +1059,5 @@ INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtGetPolygonMovieWorkData2);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtStart2);
 
-INCLUDE_SDATA(const s32, "event/evtPolygonMovie", D_r1_0046C7F0);
+INCLUDE_SDATA(const s32, "event/evtPolygonMovie", evtCallMemset8Data);
 

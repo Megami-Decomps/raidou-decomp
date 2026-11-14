@@ -861,11 +861,11 @@ void dds3EffectObjectBasicSetFldEx(dds3Basic_t *basic, fldResourceEffect_t *pRes
     }
 }
 
-INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_r1_00446500);
+INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", dds3EffectEventDefaultParameters);
 
-INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_r1_00446530);
+INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", dds3EffectMagaSCAreaDefault);
 
-INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_r1_00446558);
+INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", dds3EffectMagaP4PointDefault);
 
-INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_r1_004465A8);
+INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", sdfStrSys);
 

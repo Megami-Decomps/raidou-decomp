@@ -36,7 +36,7 @@
 0x001AB6A0 evtCallMemset2 void evtCallMemset2(ScrVmInteger a1)
 0x001B45D8 dds3FontReqListAdd void dds3FontReqListAdd(void *a1)
 0x001BACE8 InitProcessData evtPictureProcessData_t * InitProcessData(void)
-0x001D0E80 func_001D0E80 void func_001D0E80(void)
+0x001D0E80 sndCallWaitVblankLabel void sndCallWaitVblankLabel(void)
 0x001D17F0 sndBgmStop void sndBgmStop(void)
 0x001D1878 sndBgmFadeOut void sndBgmFadeOut(void)
 0x001D20C8 sndCallWaitSema void sndCallWaitSema(void)

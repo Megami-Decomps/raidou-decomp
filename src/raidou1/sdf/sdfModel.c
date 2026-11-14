@@ -1435,7 +1435,7 @@ void sdfModelSetFaceDivParm(sdfModelRootNode_t *aRoot, f32 aSoften, f32 aBias)
     aRoot->faceDivBias = aBias;
     aRoot->flags = aRoot->flags | SDF_MODEL_FLAG_SELF_FACEDIV_PARM;
 }
-INCLUDE_SDATA(const s32, "sdf/sdfModel", D_r1_0046F304);
+INCLUDE_SDATA(const s32, "sdf/sdfModel", sdf3DLightDefault);
 
-INCLUDE_SDATA(const s32, "sdf/sdfModel", D_r1_0046F308);
+INCLUDE_SDATA(const s32, "sdf/sdfModel", sdf3DFogDefault);
 

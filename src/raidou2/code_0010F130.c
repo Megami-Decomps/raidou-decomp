@@ -489,7 +489,7 @@ extern u32 scrHandleCount;
 
 extern sdfGrOt_t sdfDebugGrOt;
 
-extern s8 D_r1_003AD3BB[];
+extern s8 jmsChkCommonInputData4[];
 
 extern void evtDrawHeapUsageOverlay(sdfGrOt_t *);
 
@@ -573,7 +573,7 @@ extern u16 D_00438DD0[4];
 
 extern u32 D_0043E320[4];
 
-extern u32 D_0043E330[4];
+extern u32 nbData10[4];
 
 /* Set an existing light slot's RGB target immediately or save packed blend endpoints. */
 void dds3SetLightColor(s32 blendFrames, s32 lightIndex, const f32 *color);
@@ -1205,7 +1205,7 @@ void evtDrawHeapUsageOverlay(sdfGrOt_t *surface) {
 
 /* Draw the overlay only when the control byte is zero; return zero in either case. */
 s32 evtDrawConditionalHeapUsageOverlay(void) {
-    if (D_r1_003AD3BB[0] != 0) {
+    if (jmsChkCommonInputData4[0] != 0) {
         return 0;
     }
     evtDrawHeapUsageOverlay(&sdfDebugGrOt);
@@ -1240,21 +1240,21 @@ s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task) {
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "code_0010F130", D_r1_00444B18);
+INCLUDE_RODATA(const s32, "code_0010F130", evtStrFh03Th03Gs03);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B308);
+INCLUDE_SDATA(const s32, "code_0010F130", evtConsoleFontResourceChain);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B310);
+INCLUDE_SDATA(const s32, "code_0010F130", datData);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B318);
+INCLUDE_SDATA(const s32, "code_0010F130", datDEBUGCONSOLEData);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B320);
+INCLUDE_SDATA(const s32, "code_0010F130", evtDrawGeneralHeapUsageGraphData);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B328);
+INCLUDE_SDATA(const s32, "code_0010F130", evtGeneralHeapPercentFormat);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B32C);
+INCLUDE_SDATA(const s32, "code_0010F130", sdfData2);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B330);
+INCLUDE_SDATA(const s32, "code_0010F130", evtDrawHeapUsageOverlayData);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B338);
+INCLUDE_SDATA(const s32, "code_0010F130", evtDrawHeapUsageOverlayData2);
 

@@ -876,7 +876,7 @@ effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src);
 
 void effPCPCrackDelete(effPCPCrack_t *hData);
 
-extern f32 D_r1_004028C0[4];
+extern f32 effPCPCrackDrawData[4];
 
 extern void mdlSetScale(mdlObj_t *model);
 
@@ -1495,7 +1495,7 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
                 historyCell->vertexCount += 3 * SDF_FRAME_DUE(work->frame);
                 taperStep = taperRange / frame;
                 blend = 1.0f;
-                SDF_VU0_LOADVECTOR_C(D_r1_004028C0);
+                SDF_VU0_LOADVECTOR_C(effPCPCrackDrawData);
                 if (frame > 0) {
                     const f32 *trailWidth = &widthVector.x;
                     j = frame;

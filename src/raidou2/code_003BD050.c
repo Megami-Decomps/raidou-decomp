@@ -1362,7 +1362,7 @@ INCLUDE_ASM(const s32, "code_003BD050", jmsFunc47);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuSpinForWindowListCount);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463EC0);
+INCLUDE_RODATA(const s32, "code_003BD050", mnuCreateListWithDefaultsTable);
 
 MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
     s32 keys[6] = { 0x20, 0x22, 0x1F, 0x21, 0x22, 0x1F };
@@ -1608,11 +1608,11 @@ INCLUDE_ASM(const s32, "code_003BD050", mnuCompareTertiaryKeyDescending);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuCompareTertiaryKeyAscending);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463F08);
+INCLUDE_RODATA(const s32, "code_003BD050", mnuDrawIconPanelFadeTable);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463F20);
+INCLUDE_RODATA(const s32, "code_003BD050", mnuDrawIconRow6Table);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463F50);
+INCLUDE_RODATA(const s32, "code_003BD050", mnuDrawIconPairTable);
 
 void mnuSortItems(MenuList *menu, s32 keyIndex, s32 ascending) {
     s32 (*comparators[MNU_SORT_COMPARATOR_COUNT])(MenuListNode **, MenuListNode **) = {
@@ -1706,65 +1706,65 @@ void mnuUpdateFade(s32 *list) {
     }
 }
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6240);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCompleted);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6250);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile10);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6260);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile9);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6270);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile8);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6280);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile7);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6290);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile6);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D62A0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile5);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D62B0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile4);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D62C0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile3);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D62D0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile2);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D62E0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCaseFile1);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D62F0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrEpisode12);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463F90);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode11);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FA0);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode10);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FB0);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode9);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FC0);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode8);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FD0);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode7);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FE0);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode6);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FF0);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode5);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464000);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode4);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464010);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode3);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464020);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode2);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464030);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrEpisode1);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D63B0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrMeetingLog);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D63C0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrGoToTheRoof);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D63D0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrPlayMahjong);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D63E0);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCheckCaseFiles);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464050);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrCaseFiles);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464060);
+INCLUDE_RODATA(const s32, "code_003BD050", SetCommand_jmsMenuData4StrCheckIn);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6418);
+INCLUDE_RODATA(const s32, "code_003BD050", cmpStrCommandMenu);
 
-INCLUDE_SDATA(const s32, "code_003BD050", D_r1_0046F130);
+INCLUDE_SDATA(const s32, "code_003BD050", mnuDrawWindowListEntriesData);
 

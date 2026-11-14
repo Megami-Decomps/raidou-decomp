@@ -721,7 +721,7 @@ extern struct _FRQ *itfCreateFont2TextGlyph(s32, s32, s32, u32, char *, struct _
 
 extern struct _FRQ *fileMenuStringGlyph;
 
-extern s32 D_r1_0046CDEC;
+extern s32 fmShutDownData2;
 
 extern s8 slLoadKillFlag;
 
@@ -731,7 +731,7 @@ extern dds3ProcessID_t *D_003BC7F0;
 extern FileLoadMenuState fileLoadMenuState;
 
 /* Far scalar: incomplete array forces non-small-data addressing. */
-extern s32 D_003F97F8[];
+extern s32 slNewCycleData2[];
 
 extern sdfGrOt_t *effPacketSubmissionSurfaces[6];
 
@@ -1392,7 +1392,7 @@ extern u8 sdfViewMatrix[];
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_r1_003AD4E0[];
+extern u8 dds3BillboardGetDirectionRotateData2[];
 
 /* vu0 routine: project the point in vf10 through view/projection and screen scale/bias. */
 void mnuProjectViewPoint(void);
@@ -1806,7 +1806,7 @@ void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 /* End of declarations from src/dds1/game/code_0028A150.c */
 
 void fileSetMenuValueAndInitializeFlags(u32 value) {
-    D_003F97F8[0] = value;
+    slNewCycleData2[0] = value;
     fileLoadMenuState.standardRowAlpha = 0x80;
     fileLoadMenuState.transitionTickCount = 0;
 }
@@ -1845,8 +1845,8 @@ void fileCursorStepUp(void) {
 }
 
 void fileFadeStepDown(void) {
-    D_003F97F8[0] -= 0x10;
-    D_003F97F8[0] = D_003F97F8[0] <= 0 ? 0 : D_003F97F8[0] > 0x80 ? 0x80 : D_003F97F8[0];
+    slNewCycleData2[0] -= 0x10;
+    slNewCycleData2[0] = slNewCycleData2[0] <= 0 ? 0 : slNewCycleData2[0] > 0x80 ? 0x80 : slNewCycleData2[0];
 }
 
 INCLUDE_ASM(const s32, "code_001DB8A0", cfgCallSetOt);
@@ -1885,49 +1885,49 @@ INCLUDE_ASM(const s32, "code_001DB8A0", dds3ToggleConfigFlag);
 
 INCLUDE_ASM(const s32, "code_001DB8A0", dds3RefDDS3GBWK);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004552E8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgCallSetOtTable);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455390);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectSmoke02Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004553A8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectFire00Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004553C0);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectFloorBloodTmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004553D8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectParticle00Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004553F0);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectTisibukiTmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455408);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectExpload04Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455420);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectFlare07Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455438);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectFlare06Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455450);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectFlare05Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455468);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectFlare04Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455480);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectFlare03Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455498);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectFlare02Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004554B0);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectFlare01Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004554C8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectGene7Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004554E0);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectGene6Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004554F8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectGene5Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455510);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectGene4Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455528);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectGene3Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455540);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectGene2Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455558);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectGene1Tmx);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455570);
+INCLUDE_RODATA(const s32, "code_001DB8A0", cfgStrEffectGene0Tmx);
 
-INCLUDE_SDATA(const s32, "code_001DB8A0", D_r1_0046CF68);
+INCLUDE_SDATA(const s32, "code_001DB8A0", cfgData);
 

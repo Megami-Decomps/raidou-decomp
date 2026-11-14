@@ -113,7 +113,7 @@ extern int scePrintf(const char *fmt, ...);
 
 /* The chunk this string opens also carries the float constants the next
  * unit needs, so it stays one INCLUDE_RODATA rather than an inline literal. */
-extern const char D_r1_00466290[];
+extern const char sceStrSceMcUdCheckNewCardRpc[];
 
 extern void sceSifWriteBackDCache(void *addr, s32 size);
 
@@ -569,7 +569,7 @@ s32 sceMcGetInfo(s32 a, s32 b, s32 *c, s32 *d, s32 *e)
 s32 sceMcUdCheckNewCard(void)
 {
     if (sceSifCallRpc(&mcRpcClient, 53, 0, &mcRequest, 48, &mcReplyBuf, 4, 0, 0) != 0) {
-        scePrintf(D_r1_00466290);
+        scePrintf(sceStrSceMcUdCheckNewCardRpc);
         return -1;
     }
     return mcReplyBuf.result;
@@ -848,5 +848,5 @@ s32 sceMcGetEntSpace(s32 port, s32 slot, char *name)
     return ret;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libmc/libmc", D_r1_00466290);
+INCLUDE_RODATA(const s32, "sdk/libmc/libmc", sceStrSceMcUdCheckNewCardRpc);
 

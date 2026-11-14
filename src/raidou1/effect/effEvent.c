@@ -153,38 +153,38 @@ extern void effDebugLinkDrawTag(void);
 
 extern s8 dds3PadBitTable[];
 
-extern effScreenDrawParams_t D_r1_003FEB40;
+extern effScreenDrawParams_t BlurEditorGetParamsData;
 
 extern s8 mblurDone;
 
 extern effDebugMenu_t mblurDebugMenu;
 
-extern dds3Effect_PartialMultiBlurParam_t D_r1_003FEC98;
+extern dds3Effect_PartialMultiBlurParam_t rblurParam;
 
 extern s8 dblurDone;
 
 extern effDebugMenu_t dblurDebugMenu;
 
-extern dds3Effect_DistortionBlurParam_t D_r1_003FEE10;
+extern dds3Effect_DistortionBlurParam_t rblurParam2;
 
 extern s8 evtViewerDirty;
 
 extern effDebugMenu_t filterDebugMenu;
 
-extern dds3Effect_Filter_t D_r1_003FEFE8;
+extern dds3Effect_Filter_t dblurData;
 
 extern s8 mfilterDone;
 
 extern effDebugMenu_t mfilterDebugMenu;
 
 extern dds3Effect_PartialMultiFilterParam_t mfilterParam;
-extern dds3Effect_PartialMultiFilterParam_t D_r1_003FF128;
+extern dds3Effect_PartialMultiFilterParam_t dblurParam2;
 
 extern s8 rblurDone;
 
 extern effDebugMenu_t rblurDebugMenu;
 
-extern dds3Effect_RippleBlurParam_t D_r1_003FF368;
+extern dds3Effect_RippleBlurParam_t rblurParam3;
 
 extern sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 number);
 
@@ -392,7 +392,7 @@ void dds3BillboardSetRotate(struct dds3Billboard_t *hBillboard, f32 rot);
 
 extern void dds3BillboardDraw(dds3Billboard_t *hData);
 
-extern effEVECombParSmokeParam_t D_r1_003FF590;
+extern effEVECombParSmokeParam_t effEVECombParSmokeCreate2Data;
 
 dds3EffectPart_t *dds3EffectPartCreate(u16 type, void *pData);
 
@@ -1034,7 +1034,7 @@ void mdlGetScale(dds3ModelHandle_t *ctx);
 
 #define EFF_EVENT_EVENT_RECORD_BYTES 0x30
 
-extern EffScreenDrawParams D_r1_003FEAA8;
+extern EffScreenDrawParams effData4;
 
 extern EffScreenDrawParams D_003559A0;
 
@@ -1050,7 +1050,7 @@ extern dds3Effect_PartialMultiFilterParam_t effResourceRectangleSetupParameters;
 
 extern dds3Effect_RippleBlurParam_t effStaggeredBlurSetupParameters;
 
-extern s8 D_r1_0046CF9B;
+extern s8 EffectDrawData2;
 
 extern u8 D_003558D8[];
 
@@ -1084,7 +1084,7 @@ extern EffEventSetupRecord effRectangleBlurSetupRecord;
 
 extern s8 effRectangleBlurSetupReady;
 
-extern s8 D_r1_0043EED9[];
+extern s8 effData22[];
 
 extern void effEventSetupBeforeRecordNoOp(void);
 
@@ -1235,21 +1235,21 @@ void Eve_RippleBlurSetDefTex(void) {
 }
 
 void effEnableFramebufferQuad(void) {
-    D_r1_0046CF9B = 1;
+    EffectDrawData2 = 1;
 }
 
 void effDisableFramebufferQuad(void) {
-    D_r1_0046CF9B = 0;
+    EffectDrawData2 = 0;
 }
 
 /* Copy only the framebuffer source prefix, not the trailing screen-record bytes. */
 void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source) {
-    memcpy(&D_r1_003FEAA8, source, EFF_EVENT_BLUR_SOURCE_BYTES);
+    memcpy(&effData4, source, EFF_EVENT_BLUR_SOURCE_BYTES);
 }
 
 /* Expose the framebuffer-quad parameter block by address. */
 EffScreenDrawParams *effGetCh73Params(void) {
-    return &D_r1_003FEAA8;
+    return &effData4;
 }
 
 INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub9);
@@ -1294,7 +1294,7 @@ INCLUDE_ASM(const s32, "effect/effEvent", EffectDraw);
 INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy);
 
 effScreenDrawParams_t *BlurEditorGetParams(void) {
-    return &D_r1_003FEB40;
+    return &BlurEditorGetParamsData;
 }
 
 INCLUDE_ASM(const s32, "effect/effEvent", BlurSetParam2);
@@ -1302,7 +1302,7 @@ INCLUDE_ASM(const s32, "effect/effEvent", BlurSetParam2);
 INCLUDE_ASM(const s32, "effect/effEvent", mblurProcess);
 
 dds3Effect_PartialMultiBlurParam_t *mblurGetParam(void) {
-    return &D_r1_003FEC98;
+    return &rblurParam;
 }
 
 INCLUDE_ASM(const s32, "effect/effEvent", rblurSetParam);
@@ -1310,7 +1310,7 @@ INCLUDE_ASM(const s32, "effect/effEvent", rblurSetParam);
 INCLUDE_ASM(const s32, "effect/effEvent", dblurProcess);
 
 dds3Effect_DistortionBlurParam_t *dblurGetParam(void) {
-    return &D_r1_003FEE10;
+    return &rblurParam2;
 }
 
 INCLUDE_ASM(const s32, "effect/effEvent", dblurSetParam);
@@ -1318,7 +1318,7 @@ INCLUDE_ASM(const s32, "effect/effEvent", dblurSetParam);
 INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy2);
 
 dds3Effect_Filter_t *dblurGetParam2(void) {
-    return &D_r1_003FEFE8;
+    return &dblurData;
 }
 
 INCLUDE_ASM(const s32, "effect/effEvent", effLeaf29);
@@ -1326,7 +1326,7 @@ INCLUDE_ASM(const s32, "effect/effEvent", effLeaf29);
 INCLUDE_ASM(const s32, "effect/effEvent", mfilterRun);
 
 dds3Effect_PartialMultiFilterParam_t *mfilterGetParam(void) {
-    return &D_r1_003FF128;
+    return &dblurParam2;
 }
 
 /* Replace the setup block rather than the active solid-rectangle parameters. */
@@ -1346,7 +1346,7 @@ void mfilterSetParam(dds3Effect_PartialMultiFilterParam_t *parameters) {
 INCLUDE_ASM(const s32, "effect/effEvent", rblurProcess);
 
 dds3Effect_RippleBlurParam_t *rblurGetParam(void) {
-    return &D_r1_003FF368;
+    return &rblurParam3;
 }
 
 INCLUDE_ASM(const s32, "effect/effEvent", effLeaf30);
@@ -1519,7 +1519,7 @@ void effEveBEDPartGetPositionPtr(effEveBEDParams_t *pParams, effBTLAimParams_t *
     SDF_VU0_LOADVECTOR(&out);
 }
 
-INCLUDE_RODATA(const s32, "effect/effEvent", D_r1_00455770);
+INCLUDE_RODATA(const s32, "effect/effEvent", effCallMultTable);
 
 effEVECombParSmoke_t *effEVECombParSmokeCreate(effEVECombParSmokeParam_t *pParam) {
     u32 particleCount = pParam->number;
@@ -1754,7 +1754,7 @@ void effEVECombParSmokeSetParams(effEVECombParSmokeParam_t *pCombParSmoke, const
 }
 
 void effEVECombParSmokeCreate2(void) {
-    effEVECombParSmokeCreate(&D_r1_003FF590);
+    effEVECombParSmokeCreate(&effEVECombParSmokeCreate2Data);
 }
 
 effAPPoint4_tag *effAPPoint4Create(const effAPPoint4Param_t *pParams, u16 type, void *pData) {
@@ -2030,65 +2030,65 @@ void effEveAPP4Randomize(effEmit_t *hEffect) {
         bezierSlot->t = cursorStep * (f32)randomStep;
     } while (recordIndex < recordCount);
 }
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CF9C);
+INCLUDE_SDATA(const s32, "effect/effEvent", EffectDrawData3);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CF9D);
+INCLUDE_SDATA(const s32, "effect/effEvent", EffectDrawData4);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CF9E);
+INCLUDE_SDATA(const s32, "effect/effEvent", EffectDrawData5);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFA0);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu2Entry2);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFA8);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu2Entry3);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFB0);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu2Entry4);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFB8);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu2Entry5);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFC0);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu2Entry6);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFC8);
+INCLUDE_SDATA(const s32, "effect/effEvent", mblurProcessDataEntry2);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFD0);
+INCLUDE_SDATA(const s32, "effect/effEvent", dblurProcessDataEntry2);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFD8);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenuEntry2);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFE0);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenuEntry3);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFE8);
+INCLUDE_SDATA(const s32, "effect/effEvent", evtUpdateEffectViewerGroupData);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFF0);
+INCLUDE_SDATA(const s32, "effect/effEvent", dblurProcessDataEntry3);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046CFF8);
+INCLUDE_SDATA(const s32, "effect/effEvent", effLabelBlend);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D000);
+INCLUDE_SDATA(const s32, "effect/effEvent", effLabelDistor);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D008);
+INCLUDE_SDATA(const s32, "effect/effEvent", rblurDebugMenuEntry2);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D010);
+INCLUDE_SDATA(const s32, "effect/effEvent", rblurDebugMenuEntry3);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D018);
+INCLUDE_SDATA(const s32, "effect/effEvent", dblurProcessDataEntry4);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D020);
+INCLUDE_SDATA(const s32, "effect/effEvent", rblurDebugMenuEntry4);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D028);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu2Entry7);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D030);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu2Entry8);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D038);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu2Entry9);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D03C);
+INCLUDE_SDATA(const s32, "effect/effEvent", evtViewerDirty2);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D040);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu3Entry2);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D048);
+INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu3Entry3);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D050);
+INCLUDE_SDATA(const s32, "effect/effEvent", evtCallGetProcessData19Data);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D054);
+INCLUDE_SDATA(const s32, "effect/effEvent", effCallMemcpy3Data);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D058);
+INCLUDE_SDATA(const s32, "effect/effEvent", evtUpdateEffectViewerGroupData2);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D060);
+INCLUDE_SDATA(const s32, "effect/effEvent", effLabelDistS);
 
 s32 EffEveCPSmokeCount = 0;
 
@@ -2096,5 +2096,5 @@ addr_t hEffEveCPSmokeBill01Tex = 0;
 
 addr_t hEffEveCPSmokeBill02Tex = 0;
 
-INCLUDE_SDATA(const s32, "effect/effEvent", D_r1_0046D074);
+INCLUDE_SDATA(const s32, "effect/effEvent", evtUpdateEffectViewerGroupData3);
 

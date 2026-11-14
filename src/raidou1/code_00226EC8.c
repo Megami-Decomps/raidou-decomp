@@ -876,7 +876,7 @@ effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src);
 
 void effPCPCrackDelete(effPCPCrack_t *hData);
 
-extern f32 D_r1_004028C0[4];
+extern f32 effPCPCrackDrawData[4];
 
 extern void mdlSetScale(mdlObj_t *model);
 
@@ -1727,25 +1727,25 @@ static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list
 
 #include "dds/sdf_packet_alloc.h"
 
-extern u32 D_r1_004035D0[];
+extern u32 effDrawFivePointGroupsData[];
 
-extern sdfGrOt_t *D_r1_00403610[];
+extern sdfGrOt_t *effDrawFivePointGroupsData2[];
 
-extern sdfGrOt_t *D_r1_004037A8[];
+extern sdfGrOt_t *effDrawThreePointGroupsData[];
 
-extern u32 D_r1_00403440[];
+extern u32 effData7[];
 
 extern sdfGrOt_t *D_0037EB78[];
 
 #include "dds/bill_object_api.h"
 
-extern char D_r1_00456E58[];
+extern char effStrToolEffectEp[];
 
-extern char D_r1_00456E70[];
+extern char effStrToolEffect[];
 
-extern char D_r1_00457028[];
+extern char effStrToolEffectMat[];
 
-extern char D_r1_00457040[];
+extern char effStrToolEffectHlp[];
 
 extern f32 effComputeProjectedOffsetAngle(const void *position, const void *offset);
 
@@ -1757,11 +1757,11 @@ extern u32 effColorEditSelectedKey;
 
 extern u32 effColorEditPage;
 
-extern u32 D_r1_0046D9F8;
+extern u32 effEditScalarTrackData;
 
-extern u32 D_r1_0046D9FC;
+extern u32 effEditScalarTrackData2;
 
-extern u32 D_r1_0046DA00;
+extern u32 effEditScalarTrackData3;
 
 extern u32 effColorEditSelectedAlphaKey;
 
@@ -1793,13 +1793,13 @@ extern u32 effWindTextureHandle;
 
 extern struct sdfMemHandle_t *D_003BC984;
 
-extern struct sdfMemHandle_t *D_r1_0046D14C;
+extern struct sdfMemHandle_t *effLoadScalyTextureData;
 
-extern u8 D_r1_00415880[];
+extern u8 effCreatePolyTrackTaskData[];
 
-extern u8 D_r1_00415E10[];
+extern u8 effCreatePolyTwinkleTaskData[];
 
-extern u8 *D_r1_00403508[];
+extern u8 *effSubmitIndexedRenderPacketData[];
 
 extern FileJobPayload *effQueuedFileHandle;
 
@@ -1807,7 +1807,7 @@ extern struct sdfDrawTag_t *effCurrentRenderPacket;
 
 extern s32 effSharedRibbonReferenceCount;
 
-extern u32 D_r1_0046D148;
+extern u32 effSharedAssetReferenceReleaseData;
 
 extern struct EffExpandedList *effCacheTexCreate(u32);
 
@@ -1823,7 +1823,7 @@ extern void effReleaseSurfaceGridBuffers(EffSurfaceGridNode *);
 
 extern s32 dds3BillboardGeneralNumber(void);
 
-extern sdf3DPrimPolyParm_t D_r1_004D1BC0;
+extern sdf3DPrimPolyParm_t effDrawTrackSetWork;
 
 extern EffTrackSet *effCreateTrackSetWithSharedReferences(u32, u32, u32);
 
@@ -1837,9 +1837,9 @@ extern void effBlurStepScaleSlotsAndDraw(void *);
 
 extern s32 effRequestResourceByMode(u32, u32, u32, void **);
 
-extern u32 D_r1_0046D108;
+extern u32 sdfGetOrCreateTextureForReferenceData;
 
-extern u32 D_r1_0046D10C;
+extern u32 sdfGetOrCreateTextureForReferenceData2;
 
 typedef struct EffectObjectFlag {
     u32 state;
@@ -1855,21 +1855,21 @@ void effDrawThreePointGroups(EffPointSet *, Matrix4 *);
 
 extern u32 effPartsListScroll;
 
-extern u32 D_r1_00416D44[];
+extern u32 effData12[];
 
-extern s32 D_r1_0046D128[2];
+extern s32 effCreateTrackSetWithSharedReferencesData2[2];
 
-extern RefObj *D_r1_0046D130[2];
+extern RefObj *effData34[2];
 
 extern u32 effSharedTextureReferenceCount;
 
-extern s32 D_r1_0046D170[2];
+extern s32 effResetSlotsData[2];
 
-extern s32 D_r1_0046D178[2];
+extern s32 effResetSlotsData2[2];
 
-extern u8 D_r1_0046D180[2];
+extern u8 effPadVibePower[2];
 
-extern u8 D_r1_0046D188[2];
+extern u8 effData37[2];
 
 /* Native resource operations add cloning before the frame callbacks.
  * The final word is the copied payload size, not another callback.
@@ -1965,31 +1965,31 @@ typedef struct BaObj {
 
 extern s32 effEditScalarTrack(EffScalarTrack *, u32, void *, void *);
 
-extern u8 D_r1_00417410[];
+extern u8 effData18[];
 
-extern u8 D_r1_00417528[];
+extern u8 effData20[];
 
-extern u8 D_r1_00417328[];
+extern u8 effData16[];
 
-extern u8 D_r1_00417478[];
+extern u8 effData19[];
 
-extern u8 D_r1_00417378[];
+extern u8 effData17[];
 
 extern struct BtlResourceNameRecord *effQueuedResourceNameRecord;
 
 extern void effReleaseQueuedResourceName(void);
 
-extern const char D_r1_0046D930[];
+extern const char effData41[];
 
-extern const char D_r1_0046D938[];
+extern const char effData42[];
 
-extern char D_r1_004D54F0[];
+extern char effWork8[];
 
 extern u8 D_0038F2B8[];
 
 extern u8 effBattleOffset[];
 
-extern u8 *D_r1_0046D91C;
+extern u8 *effData39;
 
 extern void effDrawSurfaceNode(s32);
 
@@ -1999,63 +1999,63 @@ extern u32 effSelectCameraFileJobFromRows(const char *, const struct EffCameraCr
 
 extern char D_003B3968[];
 
-extern char D_r1_00456DD8[];
+extern char effStrPolyTrack[];
 
-extern char D_r1_0046D208[];
+extern char effLabelBlur[];
 
-extern char D_r1_0046D8F8[];
+extern char effCreateFilterTaskData2[];
 
-extern char D_r1_00456D48[];
+extern char effStrEnvironment[];
 
 extern char D_003B3938[];
 
-extern char D_r1_00456DA8[];
+extern char effStrPolyFlash[];
 
-extern char D_r1_00456D98[];
+extern char effStrPolyRing[];
 
-extern char D_r1_00456D88[];
+extern char effStrPolyThunder[];
 
-extern char D_r1_00456DE8[];
+extern char effStrObjParticle[];
 
-extern char D_r1_00456D68[];
+extern char effStrPolyScaly[];
 
-extern char D_r1_00456D58[];
+extern char effStrPolyCrack[];
 
 extern char D_003B3888[];
 
-extern char D_r1_0046D870[];
+extern char effCreateTwoDimensionalTaskData2[];
 
 extern u8 D_0038DE70[];
 
-extern u8 D_r1_004157D0[];
+extern u8 effCreatePolyTrackControlTaskData[];
 
-extern u8 D_r1_00415970[];
+extern u8 effCreateBlurTaskData[];
 
-extern u8 D_r1_00415A20[];
+extern u8 effCreateFilterTaskData[];
 
-extern u8 D_r1_00415B20[];
+extern u8 effCreateEnvironmentTaskData[];
 
 extern u8 D_0038E240[];
 
-extern u8 D_r1_00415BB0[];
+extern u8 effCreatePolyFlashTaskData[];
 
-extern u8 D_r1_00415CF0[];
+extern u8 effCreatePolyRingTaskData[];
 
-extern u8 D_r1_00415DA0[];
+extern u8 effCreatePolyThunderTaskData[];
 
-extern u8 D_r1_00416320[];
+extern u8 effCreatePolyWindTaskData[];
 
-extern u8 D_r1_00415FA0[];
+extern u8 effCreatePolyScalyTaskData[];
 
-extern u8 D_r1_00416070[];
+extern u8 effCreatePolyCrackTaskData[];
 
 extern u8 D_0038E800[];
 
-extern u8 D_r1_004162E0[];
+extern u8 effCreateTwoDimensionalTaskData[];
 
-extern u8 D_r1_004D5460[];
+extern u8 effWork7[];
 
-extern u8 D_r1_004D5650[];
+extern u8 effWork9[];
 
 extern u8 D_003BD108;
 
@@ -2065,7 +2065,7 @@ extern u8 D_003BD10A;
 
 extern s32 effEditColorTrack(s32, s32, s32);
 
-extern u8 D_r1_004D3418[] __attribute__((aligned(4)));
+extern u8 effWork6[] __attribute__((aligned(4)));
 
 /* Value holder with a float field and a u16 data pointer (layout inferred). */
 typedef struct ValPtr44 {
@@ -2112,9 +2112,9 @@ typedef struct EffKindSource {
     s32 modeKind;
 } EffKindSource;
 
-extern EffKindDesc D_r1_00403080[];
+extern EffKindDesc effData5[];
 
-extern EffKindDesc D_r1_004030F8[];
+extern EffKindDesc effData6[];
 
 /* VU0 model helpers consume vf10 directly, matching the original macro-mode setup. */
 extern void effDrawScalyTexturedStrip(EffStripWork *, void *);
@@ -2125,7 +2125,7 @@ extern void Init_effModel(dds3ModelHandle_t *);
 
 extern s32 effComputeLightDirectionVU(dds3ModelHandle_t *, sdf3DLightParallelPacket_t *);
 
-extern char D_r1_00455D00[];
+extern char effStrEffFloorModelDelete[];
 
 void effDestroyModelContext(dds3ModelHandle_t *model);
 
@@ -2571,7 +2571,7 @@ void effSetActiveInstanceMatrixComponent(EffClassWork *work, float value);
 
 EffTrackSet *effCreateTrackSet(s32 count, u16 kind);
 
-extern struct SdfTextureFileHeader *D_r1_0046D124;
+extern struct SdfTextureFileHeader *effCreateTrackSetWithSharedReferencesData;
 
 EffTrackSet *effCreateTrackSetWithSharedReferences(u32 count, u32 kind, u32 sharedRef);
 
@@ -2598,7 +2598,7 @@ struct sdfMat_t;
 /* Draw track-set positions/colors/UVs; a null matrix selects the identity transform. */
 void effDrawTrackSet(EffTrackSet *track, const Matrix4 *matrix);
 
-extern struct sdfMemHandle_t *D_r1_0046D118[2];
+extern struct sdfMemHandle_t *effLoadFlashTexturesData[2];
 
 void effLoadFlashTextures(void);
 
@@ -2714,7 +2714,7 @@ void effSetClassWorkPrimaryTransformVector(s128 *dst, const s128 *src);
 
 void effSetClassWorkSecondaryTransformVector(EffClassWork *work, const s128 *src);
 
-extern sdf3DPrimPolyParm_t D_r1_004D1BF0[];
+extern sdf3DPrimPolyParm_t effWork[];
 
 EffPointSet *effCreatePointSet4(u32 count);
 
@@ -2785,11 +2785,11 @@ void effSetSurfaceRecordSecondaryVector(s32 node, const u128 *value);
 
 void effIndexedFloatCallbackDispatch(ValPtr44 *p, float v);
 
-extern sdf3DPrimPolyParm_t D_r1_004D1C20;
+extern sdf3DPrimPolyParm_t effDrawSurfaceTrailHistoryWork;
 
-extern sdf3DPrimPolyParm_t D_r1_004D1C50;
+extern sdf3DPrimPolyParm_t effWork2;
 
-extern u8 D_r1_004034A0[];
+extern u8 effData8[];
 
 extern u8 D_0037EBE0[];
 
@@ -2961,7 +2961,7 @@ void effSetClassResourceColor(EffClassWork *work, u32 color);
 
 void effSetClassResourceMatrixComponent(EffClassWork *work, float value);
 
-extern sdf3DPrimPolyParm_t D_r1_004D1CB0[];
+extern sdf3DPrimPolyParm_t effWork3[];
 
 EffPointSet *effCreatePointSet5(s32 count);
 
@@ -3096,7 +3096,7 @@ void effCopyBlockResourceOrientation(void *work, void *src);
 
 void effSetBlockResourceMatrixComponent(EffClassWork *work, float value);
 
-extern sdf3DPrimPolyParm_t D_r1_004D1CE0;
+extern sdf3DPrimPolyParm_t effDrawRibbonWork;
 
 EffRibbonWork *effCreateRibbonWork(u32 count, u32 repeat);
 
@@ -3104,7 +3104,7 @@ EffRibbonWork *effCreateRibbonWithSharedResource(u32 count, u32 repeat, struct S
 
 void effSharedAssetReferenceRelease(EffRibbonWork *work);
 
-extern sdfGrOt_t *D_r1_004036B8[];
+extern sdfGrOt_t *effDrawRibbonData[];
 
 EffRibbonWork *effCloneRibbonWithSharedResource(EffRibbonWork *source);
 
@@ -3302,7 +3302,7 @@ void effSetModelResourcePrimaryTransformVector(EffModelResource *effect, const f
 
 void effSetModelResourceSecondaryTransformVector(EffModelResource *effect, const f32 *orientation);
 
-extern sdf3DPrimPolyParm_t D_r1_004D1D40[];
+extern sdf3DPrimPolyParm_t effWork4[];
 
 EffPointSet *effCreatePointSet3(s32 count);
 
@@ -3360,15 +3360,15 @@ void effSyncLinkedActorChildParameter(void);
 /* Apply a temporary tint to eligible actors, then restore their original RGB. */
 void effTransitionSelectedActorRgbColors(EffActiveResource *work);
 
-extern u128 D_r1_004D1DB0[];
+extern u128 sbtlLeaf50Work2[];
 
-extern s8 D_r1_0046D169;
+extern s8 effData36;
 
-extern u128 D_r1_004D1DC0[];
+extern u128 effWork5[];
 
-extern u128 D_r1_004D1D80[];
+extern u128 effComputeLightDirectionVUWork[];
 
-extern sdf3DLight_t *D_r1_004037C0[3];
+extern sdf3DLight_t *effComputeLightDirectionVUData[3];
 
 s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPacket_t *target);
 
@@ -3581,9 +3581,9 @@ void effInvokeFileJobWithBattleCamera(u32 job);
 
 void effFileJobQueueRelease(u32 job);
 
-extern char D_r1_0046D928[];
+extern char effData40[];
 
-extern const char D_r1_0046D920[];
+extern const char effPollPrimaryFileData[];
 
 /* Payload option (+0x0C) selects the asset identifier at +0x08. */
 typedef struct EffAssetIdentifier {
@@ -3645,7 +3645,7 @@ extern s32 fileQueueCountLinkedJobs(FileQueue *);
 
 extern FileJob *effCurrentFileQueueEntry;
 
-extern u32 D_r1_0046D90C;
+extern u32 effData38;
 
 extern EffQueuedFileObject effPartsListMenu;
 
@@ -3654,15 +3654,15 @@ u32 effAppendPositionedCameraFileJob(const EffCameraCreateRequest *request);
 /* Load the selected job's payload and camera snapshots; return the refresh status. */
 u32 effLoadSelectedFileJob(void);
 
-extern u32 D_r1_00416484[];
+extern u32 effReinitializeFileQueueData[];
 
 u32 effReinitializeFileQueue(void);
 
-extern u32 D_r1_00416554[];
+extern u32 effResetFileQueueStateData[];
 
 u32 effResetFileQueueState(void);
 
-extern u32 D_r1_004164EC[];
+extern u32 effFinalizeQueuedFileData[];
 
 u32 effFinalizeQueuedFile(void);
 
@@ -3687,9 +3687,9 @@ typedef struct EffectAlignedBlock128 {
 
 extern EffQueuedFileObject effBattleCameraSnapshotSelection;
 
-extern EffEditorRow D_r1_00416650[];
+extern EffEditorRow effData10[];
 
-extern EffEditorRow D_r1_00416698[];
+extern EffEditorRow effData11[];
 
 extern u8 effPartsPreviewReload;
 
@@ -3748,7 +3748,7 @@ extern s8 dds3PadBitTable[];
 
 extern f32 D_0038F530[4];
 
-extern f32 D_r1_004D5640[4];
+extern f32 effHandleDebugOrbitInputWork[4];
 
 s32 effHandleDebugOrbitInput(void);
 
@@ -3767,9 +3767,9 @@ typedef char EffectStateSnapshotSizeCheck[(sizeof(EffectStateSnapshot) == 0x80) 
 
 extern s32 effUpdateCameraDiagnostics(EffectStateSnapshot *, s8);
 
-extern u8 D_r1_00416F38[];
+extern u8 effUpdateCameraDiagnosticsData[];
 
-extern s8 D_r1_0043EED9[];
+extern s8 effData22[];
 
 extern void btlDebugDrawPoint(f32 *position);
 
@@ -3820,9 +3820,9 @@ typedef struct EffectCameraDebugState {
     u32 unknown14[9];
 } EffectCameraDebugState;
 
-extern EffectCameraDebugState D_r1_00416FC8;
+extern EffectCameraDebugState effUpdateCameraSnapshotGuidesData;
 
-extern s8 D_r1_0043EED9[];
+extern s8 effData22[];
 
 extern f32 effWorldUpVector[4];
 
@@ -3857,7 +3857,7 @@ void effPollResourceBankSlot(char *path, u32 flags, EffResourceBankSlot *selecti
 
 extern struct BtlResourceNameRecord *effFileQueueNameRecord;
 
-extern const char D_r1_0046D7A0[];
+extern const char effInitializeResourceQueueData[];
 
 void effInitializeResourceQueue(void);
 
@@ -3884,11 +3884,11 @@ extern EffQueuedFileObject effMappingState;
 
 void effResetMappingFlags(void);
 
-extern EffEditorRow D_r1_00417218[];
+extern EffEditorRow effData15[];
 
-extern EffEditorRow D_r1_00417158[];
+extern EffEditorRow effData14[];
 
-extern EffEditorRow D_r1_00417098[];
+extern EffEditorRow effData13[];
 
 /* The effect mapping dispatcher stores its data pointer at +0x0C. */
 typedef struct EffMappingRequest {
@@ -4162,21 +4162,21 @@ typedef struct EffectFileHeader {
 
 extern void effResetFileResourceManager(void);
 
-extern EffectFileHeader D_r1_00414EA8;
+extern EffectFileHeader effLoadMaterialFileData;
 
-extern EffectFileHeader D_r1_00408D60;
+extern EffectFileHeader fileLoadEffectSlotAData;
 
-extern EffectFileHeader D_r1_00411E28;
+extern EffectFileHeader fileLoadEffectSlotBData;
 
 u32 fileLoadEffectSlotA(void);
 
-extern u8 D_r1_00409908[] __attribute__((aligned(4)));
+extern u8 fileLoadEffectSlotHelpData[] __attribute__((aligned(4)));
 
 u32 fileLoadEffectSlotHelp(void);
 
 u32 fileLoadEffectSlotB(void);
 
-extern EffectFileHeader D_r1_00414710;
+extern EffectFileHeader effLoadFileSlotF2Data;
 
 u32 effLoadFileSlotF2(void);
 
@@ -4779,7 +4779,7 @@ void effReplaceLinkedKindWorkTarget(EffKindWork *work, sdfTexHandle_t *target) {
 
 EffKindWork *effAllocateKindWork(u16 kind, u8 *source) {
     u32 headerSize = 0x40;
-    u32 size = D_r1_00403080[kind].payloadSize;
+    u32 size = effData5[kind].payloadSize;
     EffKindWork *work = sdfChipAllocZeroDirect(size + headerSize);
 
     work->kind = kind;
@@ -4805,8 +4805,8 @@ EffKindWork *effAllocateKindWork(u16 kind, u8 *source) {
         work->mode = 6;
         break;
     }
-    if (D_r1_00403080[kind].create != NULL) {
-        work->handle = D_r1_00403080[kind].create(source);
+    if (effData5[kind].create != NULL) {
+        work->handle = effData5[kind].create(source);
     }
     return work;
 }
@@ -4817,7 +4817,7 @@ EffKindWork *effCreateKindWorkFromFile(FileJobPayload *work) {
     u32 *secondary = fileResolveSecondaryBuffer(work);
 
     if (secondary != NULL) {
-        if (D_r1_00403080[effect->kind].initialize != NULL) {
+        if (effData5[effect->kind].initialize != NULL) {
             u32 kind = work->primary.selector;
             effect->sourceKind = kind;
             switch (kind) {
@@ -4828,7 +4828,7 @@ EffKindWork *effCreateKindWorkFromFile(FileJobPayload *work) {
                 effect->target = dds3BillboardGetGeneralTex(secondary[0]);
                 break;
             }
-            D_r1_00403080[effect->kind].initialize(effect, effect->target);
+            effData5[effect->kind].initialize(effect, effect->target);
         }
     }
     return effect;
@@ -4837,7 +4837,7 @@ EffKindWork *effCreateKindWorkFromFile(FileJobPayload *work) {
 void effReleaseLinkedTarget(EffKindWork *work) {
     void *handle = work->handle;
     if (handle != NULL) {
-        D_r1_00403080[work->kind].destroy(handle);
+        effData5[work->kind].destroy(handle);
     }
     if (work->target != 0 && work->sourceKind != 4) {
         sdfTexFreeDelayed(work->target);
@@ -4868,7 +4868,7 @@ void effSetKindWorkScale(EffKindWork *work, f32 scale) {
 /* Allocate work for the alternate kind table, copying its payload and creating its handle. */
 EffKindWork *effAllocateAlternateKindWork(u16 kind, u8 *source) {
     u32 headerSize = 0x40;
-    u32 size = D_r1_004030F8[kind].payloadSize;
+    u32 size = effData6[kind].payloadSize;
     EffKindWork *work = sdfChipAllocZeroDirect(size + headerSize);
 
     work->kind = kind;
@@ -4894,8 +4894,8 @@ EffKindWork *effAllocateAlternateKindWork(u16 kind, u8 *source) {
         work->mode = 6;
         break;
     }
-    if (D_r1_004030F8[kind].create != NULL) {
-        work->handle = D_r1_004030F8[kind].create(source);
+    if (effData6[kind].create != NULL) {
+        work->handle = effData6[kind].create(source);
     }
     return work;
 }
@@ -4906,7 +4906,7 @@ EffKindWork *effCreateKindWorkFromFileB(FileJobPayload *work) {
     u32 *secondary = fileResolveSecondaryBuffer(work);
 
     if (secondary != NULL) {
-        if (D_r1_004030F8[effect->kind].initialize != NULL) {
+        if (effData6[effect->kind].initialize != NULL) {
             u32 kind = work->primary.selector;
             effect->sourceKind = kind;
             switch (kind) {
@@ -4917,7 +4917,7 @@ EffKindWork *effCreateKindWorkFromFileB(FileJobPayload *work) {
                 effect->target = dds3BillboardGetGeneralTex(secondary[0]);
                 break;
             }
-            D_r1_004030F8[effect->kind].initialize(effect, effect->target);
+            effData6[effect->kind].initialize(effect, effect->target);
         }
     }
     return effect;
@@ -4927,7 +4927,7 @@ EffKindWork *effCreateKindWorkFromFileB(FileJobPayload *work) {
 void effReleaseAlternateKindWork(EffKindWork *work) {
     void *handle = work->handle;
     if (handle != NULL) {
-        D_r1_004030F8[work->kind].destroy(handle);
+        effData6[work->kind].destroy(handle);
     }
     if (work->target != 0 && work->sourceKind != 4) {
         sdfTexFreeDelayed(work->target);
@@ -7073,7 +7073,7 @@ void effSetActiveInstanceScale(EffClassWork *work, f32 scale) {
     work->scale = scale;
 }
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455D70);
+INCLUDE_RODATA(const s32, "code_00226EC8", Draw_effMuzzleFlashTable);
 
 EffTrackSet *effCreateTrackSet(s32 count, u16 kind) {
     s32 rows;
@@ -7133,18 +7133,18 @@ EffTrackSet *effCreateTrackSet(s32 count, u16 kind) {
     set->shared = 0;
     set->handle = sdfMatNew();
     sdfMatSetConstant(set->handle, 1.0f);
-    memset(&D_r1_004D1BC0, 0, 0x2C);
-    D_r1_004D1BC0.attr = 0x4000;
+    memset(&effDrawTrackSetWork, 0, 0x2C);
+    effDrawTrackSetWork.attr = 0x4000;
     return set;
 }
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D118);
+INCLUDE_SDATA(const s32, "code_00226EC8", effLoadFlashTexturesData);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D120);
+INCLUDE_SDATA(const s32, "code_00226EC8", effFlashTextureHandles);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D124);
+INCLUDE_SDATA(const s32, "code_00226EC8", effCreateTrackSetWithSharedReferencesData);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D128);
+INCLUDE_SDATA(const s32, "code_00226EC8", effCreateTrackSetWithSharedReferencesData2);
 
 EffTrackSet *effCreateTrackSetWithSharedReferences(u32 count, u32 kind, u32 sharedRef) {
     EffTrackSet *effect = effCreateTrackSet(count, (u16)kind);
@@ -7153,16 +7153,16 @@ EffTrackSet *effCreateTrackSetWithSharedReferences(u32 count, u32 kind, u32 shar
         if (sharedRef == 0) {
             switch (effect->kind) {
             case 3:
-                if (D_r1_0046D128[0] == 0) {
-                    D_r1_0046D130[0] = effCloneSharedReferenceWithValue(effFlashTextureHandles, 0x100);
+                if (effCreateTrackSetWithSharedReferencesData2[0] == 0) {
+                    effData34[0] = effCloneSharedReferenceWithValue(effFlashTextureHandles, 0x100);
                 }
-                D_r1_0046D128[0]++;
+                effCreateTrackSetWithSharedReferencesData2[0]++;
                 break;
             case 4:
-                if (D_r1_0046D128[1] == 0) {
-                    D_r1_0046D130[1] = effCloneSharedReferenceWithValue(D_r1_0046D124, 0x101);
+                if (effCreateTrackSetWithSharedReferencesData2[1] == 0) {
+                    effData34[1] = effCloneSharedReferenceWithValue(effCreateTrackSetWithSharedReferencesData, 0x101);
                 }
-                D_r1_0046D128[1]++;
+                effCreateTrackSetWithSharedReferencesData2[1]++;
                 break;
             }
         } else {
@@ -7179,15 +7179,15 @@ void effReleaseResourceRefs(EffTrackSet *refs) {
         if (ref == NULL) {
             switch (refs->kind) {
             case 3:
-                if (--D_r1_0046D128[0] == 0) {
-                    effReleaseSharedReference(D_r1_0046D130[0]);
-                    D_r1_0046D130[0] = NULL;
+                if (--effCreateTrackSetWithSharedReferencesData2[0] == 0) {
+                    effReleaseSharedReference(effData34[0]);
+                    effData34[0] = NULL;
                 }
                 break;
             case 4:
-                if (--D_r1_0046D128[1] == 0) {
-                    effReleaseSharedReference(D_r1_0046D130[1]);
-                    D_r1_0046D130[1] = NULL;
+                if (--effCreateTrackSetWithSharedReferencesData2[1] == 0) {
+                    effReleaseSharedReference(effData34[1]);
+                    effData34[1] = NULL;
                 }
                 break;
             }
@@ -7209,10 +7209,10 @@ EffTrackSet *effDuplicateResourceRefs(const EffTrackSet *original) {
         } else {
             switch (effect->kind) {
             case 3:
-                D_r1_0046D128[0]++;
+                effCreateTrackSetWithSharedReferencesData2[0]++;
                 break;
             case 4:
-                D_r1_0046D128[1]++;
+                effCreateTrackSetWithSharedReferencesData2[1]++;
                 break;
             }
         }
@@ -7223,8 +7223,8 @@ EffTrackSet *effDuplicateResourceRefs(const EffTrackSet *original) {
 INCLUDE_ASM(const s32, "code_00226EC8", effDrawTrackSet);
 
 void effLoadFlashTextures(void) {
-    D_r1_0046D118[0] = sdfDevLoadFileEx("/effect/flash00.tmx", (u32 *)&effFlashTextureHandles, 0);
-    D_r1_0046D118[1] = sdfDevLoadFileEx("/effect/flash01.tmx", (u32 *)(&effFlashTextureHandles + 1), 0);
+    effLoadFlashTexturesData[0] = sdfDevLoadFileEx("/effect/flash00.tmx", (u32 *)&effFlashTextureHandles, 0);
+    effLoadFlashTexturesData[1] = sdfDevLoadFileEx("/effect/flash01.tmx", (u32 *)(&effFlashTextureHandles + 1), 0);
 }
 
 INCLUDE_ASM(const s32, "code_00226EC8", effLeaf361);
@@ -7787,8 +7787,8 @@ EffPointSet *effCreatePointSet4(u32 count) {
     set->flag = 0;
     set->handle = sdfMatNew();
     sdfMatSetConstant(set->handle, 1.0f);
-    memset(D_r1_004D1BF0, 0, 0x2C);
-    D_r1_004D1BF0[0].attr = 0x4000;
+    memset(effWork, 0, 0x2C);
+    effWork[0].attr = 0x4000;
     return set;
 }
 
@@ -8302,9 +8302,9 @@ void effDrawSurfaceTrailHistory(EffSurfaceTrailHistory *history, u32 color) {
         length[0] = recent;
         length[1] = 0;
     }
-    D_r1_004D1C20.vertexColor = history->colors;
+    effDrawSurfaceTrailHistoryWork.vertexColor = history->colors;
     for (i = 0; i < 2; i++) {
-        draw = &D_r1_004D1C20;
+        draw = &effDrawSurfaceTrailHistoryWork;
         draw->vertex = history->points + start[i];
         draw->color = color;
         draw->faceCount = 16;
@@ -8313,9 +8313,9 @@ void effDrawSurfaceTrailHistory(EffSurfaceTrailHistory *history, u32 color) {
         while (remaining >= 15) {
             remaining -= 12;
             list = effCurrentRenderPacket;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&D_r1_004D1C20));
-            D_r1_004D1C20.vertex += 12;
-            D_r1_004D1C20.vertexColor += 12;
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawSurfaceTrailHistoryWork));
+            effDrawSurfaceTrailHistoryWork.vertex += 12;
+            effDrawSurfaceTrailHistoryWork.vertexColor += 12;
         }
         if (remaining >= 6) {
             draw->faceCount = (remaining / 3) * 4 - 4;
@@ -8326,18 +8326,18 @@ void effDrawSurfaceTrailHistory(EffSurfaceTrailHistory *history, u32 color) {
         }
     }
     colors = history->endColors;
-    D_r1_004D1C50.vertex = history->endPoints;
-    colors[0] = D_r1_004D1C20.vertexColor[-2];
-    D_r1_004D1C50.vertexColor = colors;
+    effWork2.vertex = history->endPoints;
+    colors[0] = effDrawSurfaceTrailHistoryWork.vertexColor[-2];
+    effWork2.vertexColor = colors;
     colors[7] = colors[6] = colors[5] = colors[4] =
-        colors[3] = colors[2] = colors[1] = D_r1_004D1C20.vertexColor[-3];
-    D_r1_004D1C50.color = color;
+        colors[3] = colors[2] = colors[1] = effDrawSurfaceTrailHistoryWork.vertexColor[-3];
+    effWork2.color = color;
     list = effCurrentRenderPacket;
-    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&D_r1_004D1C50));
+    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effWork2));
 }
 
 void effSubmitIndexedRenderPacket(u32 index) {
-    u8 *entry = D_r1_00403508[index];
+    u8 *entry = effSubmitIndexedRenderPacketData[index];
     ((EffDrawEntry *)entry)->draw(entry, effCurrentRenderPacket);
     effCurrentRenderPacket = NULL;
 }
@@ -9333,8 +9333,8 @@ EffPointSet *effCreatePointSet5(s32 count) {
     set->flag = 0;
     set->handle = sdfMatNew();
     sdfMatSetConstant(set->handle, 1.0f);
-    memset(D_r1_004D1CB0, 0, 0x2C);
-    D_r1_004D1CB0[0].attr = 0x4000;
+    memset(effWork3, 0, 0x2C);
+    effWork3[0].attr = 0x4000;
     return set;
 }
 
@@ -9370,22 +9370,22 @@ void effDrawFivePointGroups(EffPointSet *set, Matrix4 *matrix) {
             sdfDrawTagLink(list, (u32)packet);
         }
         remaining = set->rows;
-        D_r1_004D1CB0[0].vertexColor = (u32 *)set->tail;
-        D_r1_004D1CB0[0].vertex = (u128 *)set->buffer;
-        D_r1_004D1CB0[0].color = set->color;
-        D_r1_004D1CB0[0].faceCount = 0x10;
-        D_r1_004D1CB0[0].pointCount = 0xF;
-        D_r1_004D1CB0[0].faceIndex = D_r1_004035D0;
+        effWork3[0].vertexColor = (u32 *)set->tail;
+        effWork3[0].vertex = (u128 *)set->buffer;
+        effWork3[0].color = set->color;
+        effWork3[0].faceCount = 0x10;
+        effWork3[0].pointCount = 0xF;
+        effWork3[0].faceIndex = effDrawFivePointGroupsData;
         while (remaining >= 0xF) {
             remaining -= 0xA;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(D_r1_004D1CB0));
-            D_r1_004D1CB0[0].vertex += 0xA;
-            D_r1_004D1CB0[0].vertexColor += 0xA;
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork3));
+            effWork3[0].vertex += 0xA;
+            effWork3[0].vertexColor += 0xA;
         }
         if (remaining >= 0xA) {
-            D_r1_004D1CB0[0].faceCount = 8;
-            D_r1_004D1CB0[0].pointCount = remaining;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(D_r1_004D1CB0));
+            effWork3[0].faceCount = 8;
+            effWork3[0].pointCount = remaining;
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork3));
         }
         if (set->flag == 0) {
             packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
@@ -9397,7 +9397,7 @@ void effDrawFivePointGroups(EffPointSet *set, Matrix4 *matrix) {
             packet->registerAddress = 0x47;
             sdfDrawTagLink(list, (u32)packet);
         }
-        D_r1_00403610[set->type]->regFunc(D_r1_00403610[set->type], list);
+        effDrawFivePointGroupsData2[set->type]->regFunc(effDrawFivePointGroupsData2[set->type], list);
     }
 }
 
@@ -10670,8 +10670,8 @@ EffRibbonWork *effCreateRibbonWork(u32 count, u32 repeat) {
     }
     work->handle = sdfMatNew();
     sdfMatSetConstant(work->handle, 1.0f);
-    memset(&D_r1_004D1CE0, 0, sizeof(sdf3DPrimPolyParm_t));
-    D_r1_004D1CE0.attr = 0x4000;
+    memset(&effDrawRibbonWork, 0, sizeof(sdf3DPrimPolyParm_t));
+    effDrawRibbonWork.attr = 0x4000;
     return work;
 }
 
@@ -10682,7 +10682,7 @@ EffRibbonWork *effCreateRibbonWithSharedResource(u32 count, u32 repeat, struct S
         s32 references = effSharedRibbonReferenceCount;
         node->resource = NULL;
         if (references == 0) {
-            D_r1_0046D148 = (u32)effCloneSharedReferenceWithValue((struct SdfTextureFileHeader *)effWindTextureHandle, 0x300);
+            effSharedAssetReferenceReleaseData = (u32)effCloneSharedReferenceWithValue((struct SdfTextureFileHeader *)effWindTextureHandle, 0x300);
             references = effSharedRibbonReferenceCount;
         }
         references++;
@@ -10697,8 +10697,8 @@ void effSharedAssetReferenceRelease(EffRibbonWork *work) {
     if (work->resource == NULL) {
         effSharedRibbonReferenceCount = effSharedRibbonReferenceCount - 1;
         if (effSharedRibbonReferenceCount == 0) {
-            effReleaseSharedReference((RefObj *)D_r1_0046D148);
-            D_r1_0046D148 = 0;
+            effReleaseSharedReference((RefObj *)effSharedAssetReferenceReleaseData);
+            effSharedAssetReferenceReleaseData = 0;
         }
     }
     else {
@@ -10746,7 +10746,7 @@ void effDrawRibbon(EffRibbonWork *work, const Matrix4 *matrix) {
     if ((color & 0xFF000000) == 0) {
         return;
     }
-    surface = D_r1_004036B8[work->surfaceIndex];
+    surface = effDrawRibbonData[work->surfaceIndex];
     eeUnpackRGBAWordFloat(color, 1.0f / 128.0f);
     SDF_VU0_STOREVECTOR(baseVector);
     list = (void *)sdfGrAllocPacketBuff(0x20);
@@ -10758,7 +10758,7 @@ void effDrawRibbon(EffRibbonWork *work, const Matrix4 *matrix) {
     }
     sdf3DPrimLinkTm(list, 0);
     if (work->resource == NULL) {
-        texture = sdfGetOrCreateTextureForReference(surface, (RefObj *)D_r1_0046D148);
+        texture = sdfGetOrCreateTextureForReference(surface, (RefObj *)effSharedAssetReferenceReleaseData);
     } else {
         texture = sdfGetOrCreateTextureForReference(surface, work->resource);
     }
@@ -10793,27 +10793,27 @@ void effDrawRibbon(EffRibbonWork *work, const Matrix4 *matrix) {
             segmentColor = *colors;
             if (segmentColor & 0xFF000000) {
                 remaining = rowStride;
-                D_r1_004D1CE0.vertexColor = (u32 *)extra;
-                D_r1_004D1CE0.vertex = (u128 *)positions;
-                D_r1_004D1CE0.uv = (f32 *)uvs;
+                effDrawRibbonWork.vertexColor = (u32 *)extra;
+                effDrawRibbonWork.vertex = (u128 *)positions;
+                effDrawRibbonWork.uv = (f32 *)uvs;
                 unpackNormalizedColor(segmentColor);
                 SDF_VU0_LOADVECTOR_B(baseVector);
                 SDF_VU0_MULVECTOR();
-                D_r1_004D1CE0.color = packNormalizedColor();
-                D_r1_004D1CE0.faceCount = 12;
-                D_r1_004D1CE0.pointCount = 12;
-                D_r1_004D1CE0.faceIndex = D_r1_00403440;
+                effDrawRibbonWork.color = packNormalizedColor();
+                effDrawRibbonWork.faceCount = 12;
+                effDrawRibbonWork.pointCount = 12;
+                effDrawRibbonWork.faceIndex = effData7;
                 while (remaining >= 12) {
                     remaining -= 8;
-                    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&D_r1_004D1CE0));
-                    D_r1_004D1CE0.vertex += 8;
-                    D_r1_004D1CE0.vertexColor += 8;
-                    D_r1_004D1CE0.uv += 8;
+                    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawRibbonWork));
+                    effDrawRibbonWork.vertex += 8;
+                    effDrawRibbonWork.vertexColor += 8;
+                    effDrawRibbonWork.uv += 8;
                 }
                 if (remaining >= 8) {
-                    D_r1_004D1CE0.faceCount = 6;
-                    D_r1_004D1CE0.pointCount = remaining;
-                    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&D_r1_004D1CE0));
+                    effDrawRibbonWork.faceCount = 6;
+                    effDrawRibbonWork.pointCount = remaining;
+                    sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawRibbonWork));
                 }
             }
             positions += positionStep;
@@ -11387,7 +11387,7 @@ u32 effAllocateStripFromWorkAndRetainTexture(u8 *work) {
 INCLUDE_ASM(const s32, "code_00226EC8", effDrawScalyTexturedStrip);
 
 void effLoadScalyTexture(void) {
-    D_r1_0046D14C = (u32)sdfDevLoadFileEx("/effect/scaly00.tmx", &effScalyTextureHandle, 0);
+    effLoadScalyTextureData = (u32)sdfDevLoadFileEx("/effect/scaly00.tmx", &effScalyTextureHandle, 0);
 }
 
 u32 effGetScalyTextureHandle(void) {
@@ -11663,8 +11663,8 @@ EffPointSet *effCreatePointSet3(s32 count) {
     set->flag = 0;
     set->handle = sdfMatNew();
     sdfMatSetConstant(set->handle, 1.0f);
-    memset(D_r1_004D1D40, 0, 0x2C);
-    D_r1_004D1D40[0].attr = 0x4000;
+    memset(effWork4, 0, 0x2C);
+    effWork4[0].attr = 0x4000;
     return set;
 }
 
@@ -11700,22 +11700,22 @@ void effDrawThreePointGroups(EffPointSet *set, Matrix4 *matrix) {
             sdfDrawTagLink(list, (u32)packet);
         }
         remaining = set->rows;
-        D_r1_004D1D40[0].vertexColor = (u32 *)set->tail;
-        D_r1_004D1D40[0].vertex = (u128 *)set->buffer;
-        D_r1_004D1D40[0].color = set->color;
-        D_r1_004D1D40[0].faceCount = 0x10;
-        D_r1_004D1D40[0].pointCount = 0xF;
-        D_r1_004D1D40[0].faceIndex = (u32 *)D_r1_004034A0;
+        effWork4[0].vertexColor = (u32 *)set->tail;
+        effWork4[0].vertex = (u128 *)set->buffer;
+        effWork4[0].color = set->color;
+        effWork4[0].faceCount = 0x10;
+        effWork4[0].pointCount = 0xF;
+        effWork4[0].faceIndex = (u32 *)effData8;
         while (remaining >= 0xF) {
             remaining -= 0xC;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(D_r1_004D1D40));
-            D_r1_004D1D40[0].vertex += 0xC;
-            D_r1_004D1D40[0].vertexColor += 0xC;
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork4));
+            effWork4[0].vertex += 0xC;
+            effWork4[0].vertexColor += 0xC;
         }
         if (remaining >= 6) {
-            D_r1_004D1D40[0].faceCount = 4;
-            D_r1_004D1D40[0].pointCount = remaining;
-            sdfDrawTagLink(list, effPkt3DPrimMakePoly(D_r1_004D1D40));
+            effWork4[0].faceCount = 4;
+            effWork4[0].pointCount = remaining;
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork4));
         }
         if (set->flag == 0) {
             packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
@@ -11727,7 +11727,7 @@ void effDrawThreePointGroups(EffPointSet *set, Matrix4 *matrix) {
             packet->registerAddress = 0x47;
             sdfDrawTagLink(list, (u32)packet);
         }
-        D_r1_004037A8[set->type]->regFunc(D_r1_004037A8[set->type], list);
+        effDrawThreePointGroupsData[set->type]->regFunc(effDrawThreePointGroupsData[set->type], list);
     }
 }
 
@@ -11919,16 +11919,16 @@ s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPack
     s32 result = btlIsRuntimeAllocated();
 
     if (result != 0) {
-        if (D_r1_0046D169 == 0) {
+        if (effData36 == 0) {
             return 0;
         }
         mdlGetPosition(vector);
-        VU0_LOAD_VF($vf11, D_r1_004D1DC0);
+        VU0_LOAD_VF($vf11, effWork5);
         VU0_SUB($vf10, $vf10, $vf11);
         SDF_VU0_VECTOR_W_SET_ZERO();
         SDF_VU0_NORMALIZE();
-        VU0_STORE_VF($vf10, D_r1_004D1D80);
-        sdf3DMakeLightParallelPacket(target, D_r1_004037C0, D_r1_004D1DB0);
+        VU0_STORE_VF($vf10, effComputeLightDirectionVUWork);
+        sdf3DMakeLightParallelPacket(target, effComputeLightDirectionVUData, sbtlLeaf50Work2);
         return 1;
     }
     return result;
@@ -11993,366 +11993,366 @@ void effLeaf383(void) {
 }
 
 void effResetSlots(void) {
-    D_r1_0046D170[0] = 0;
-    D_r1_0046D178[0] = 0;
-    D_r1_0046D180[0] = 0;
-    D_r1_0046D188[0] = 0;
-    D_r1_0046D170[1] = 0;
-    D_r1_0046D178[1] = 0;
-    D_r1_0046D180[1] = 0;
-    D_r1_0046D188[1] = 0;
+    effResetSlotsData[0] = 0;
+    effResetSlotsData2[0] = 0;
+    effPadVibePower[0] = 0;
+    effData37[0] = 0;
+    effResetSlotsData[1] = 0;
+    effResetSlotsData2[1] = 0;
+    effPadVibePower[1] = 0;
+    effData37[1] = 0;
     dds3PadIsTypeCD();
 }
 
 INCLUDE_ASM(const s32, "code_00226EC8", effPadVibeFadeUpdate);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455EE8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sbtlCallBtlEffCreateUnitList2Table);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F00);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrAccurate);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F10);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrLength);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F20);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrResource);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F30);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrSaveEp);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F40);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrAmplitude);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F50);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrMaterial);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F60);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrVcEndOut);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F70);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrVcEndIn);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F80);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrVcStartOut);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455F90);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrVcStartIn);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455FA0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrTBoard2);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455FB0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrCycleRot);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455FC0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrLifeScl);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455FD0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrLifeCol);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455FE0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrEmtSpre);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455FF0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrEmtRadi);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456000);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrEQuake2);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456010);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrEdgeOut);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456020);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrBillboard);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456030);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrEmtCurve);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456040);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrEmtHeight);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456050);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrEmtRadius);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456060);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrScaleUv);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456070);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrCrackPolygon);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456080);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrFlashPolygon);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456090);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrDirection);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004560A0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrOF2Cam);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004560B0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrOLightS);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004560C0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrOMcolrS);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004560D0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePAspak1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004560F0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePAspak0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456110);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePHspak1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456130);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePHspak0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456150);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSphre1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456170);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSphre0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456190);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSpirl1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004561B0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSpirl0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004561D0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSpark2);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004561F0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSpark1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456210);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSpark0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456230);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSmoke2);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456250);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSmoke1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456270);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSamplePSmoke0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456290);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleGHspak0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004562B0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleGSphre0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004562D0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleGSpirl0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004562F0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleGSpark0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456310);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleGSmoke0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456330);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleKHspak0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456350);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleKSphre0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456370);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleKSpirl0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456390);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleKSpark0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004563B0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleKSmoke0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004563D0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleBParal0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004563F0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleBRiple0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456410);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleBDist0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456430);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleBMulti0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456450);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleBFull0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456470);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleFMulti0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456490);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleFFull0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004564B0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleTBoard1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004564D0);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleTBoard0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004564F0);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleEQuake20);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456518);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleEQuake0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456538);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleEFlare0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456558);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleERain0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456578);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSCylnd0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456598);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSRing0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004565B8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSSpark1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004565D8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSSpark0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004565F8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSRadi1Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456618);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSRngT0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456638);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSSctT0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456658);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSSpkT1Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456678);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSSpkT0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456698);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleSRadT0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004566B8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleRCrcle1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004566D8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleRCrcle0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004566F8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleRTrack0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456718);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleRNomal1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456738);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleRNomal0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456758);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleDBug1Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456778);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleDBug0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456798);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleDPoint0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004567B8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleWHspak0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004567D8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleWSphre0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004567F8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleWSpirl0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456818);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleWSpark0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456838);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleWSmoke0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456858);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleNCyldr0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456878);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleNCylnd1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456898);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleNCylnd0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004568B8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleNSphre0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004568D8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleNSpirl2);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004568F8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleNSpirl1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456918);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleNSpirl0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456938);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleUSpirl0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456958);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleUSmoke0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456978);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleUSphre0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456998);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleUCylnd0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004569B8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleCNomal0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004569D8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOMcolr2);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_004569F8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOLight2);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456A18);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOUnitd0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456A38);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOFovy0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456A58);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOVibe0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456A78);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOFldF0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456A98);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOFldL0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456AB8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOSe0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456AD8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOMot0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456AF8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOEffL0Ep);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456B18);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOMcolr0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456B38);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrToolEffectSampleOLight0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456B58);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleXNomal0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456B78);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleMAspak0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456B98);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleMHspak0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456BB8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleMSphre0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456BD8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleMSpirl0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456BF8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleMSpark0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456C18);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectSampleMSmoke0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456C38);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrResetOk);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456C48);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrInstanceOk);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456C58);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrDeleteOk);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456C68);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrCopyOk);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456C78);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrExitOk);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456C88);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrCameraY);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456C98);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrCamera);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456CA8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrGround);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456CB8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPosition);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456CC8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrOffset);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456CD8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrSize);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456CE8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrInstance);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456CF8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPoseture);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D08);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrBattleOnly);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D18);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrMuzzleFlash);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D28);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrF2Camera);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D38);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrFloorModel);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D48);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrEnvironment);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D58);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPolyCrack);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D68);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPolyScaly);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D78);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrPolyWind);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D88);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPolyThunder);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456D98);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPolyRing);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456DA8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPolyFlash);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456DB8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrPolyTex);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456DC8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPolyTrackS2);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456DD8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPolyTrack);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456DE8);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrObjParticle);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456DF8);
+INCLUDE_RODATA(const s32, "code_00226EC8", sysStrParticle);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456E08);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrTestMenu2);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456E18);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrTestMenu1);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456E28);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrTestMenu0);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456E38);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrPartsList);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456E48);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrEffectEditor);
 
-INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00456E58);
+INCLUDE_RODATA(const s32, "code_00226EC8", effStrToolEffectEp);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D130);
+INCLUDE_SDATA(const s32, "code_00226EC8", effData34);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D134);
+INCLUDE_SDATA(const s32, "code_00226EC8", effData35);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D138);
+INCLUDE_SDATA(const s32, "code_00226EC8", effCurrentRenderPacket);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D13C);
+INCLUDE_SDATA(const s32, "code_00226EC8", effLoadWindTextureData);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D140);
+INCLUDE_SDATA(const s32, "code_00226EC8", effWindTextureHandle);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D144);
+INCLUDE_SDATA(const s32, "code_00226EC8", effSharedRibbonReferenceCount);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D148);
+INCLUDE_SDATA(const s32, "code_00226EC8", effSharedAssetReferenceReleaseData);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D14C);
+INCLUDE_SDATA(const s32, "code_00226EC8", effLoadScalyTextureData);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D150);
+INCLUDE_SDATA(const s32, "code_00226EC8", effScalyTextureHandle);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D154);
+INCLUDE_SDATA(const s32, "code_00226EC8", effSharedStripReferenceCount);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D158);
+INCLUDE_SDATA(const s32, "code_00226EC8", effSharedScalyStripResource);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D160);
+INCLUDE_SDATA(const s32, "code_00226EC8", sbtlEffCreateUnitListData);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D164);
+INCLUDE_SDATA(const s32, "code_00226EC8", sbtlEffCreateUnitListData2);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D168);
+INCLUDE_SDATA(const s32, "code_00226EC8", sbtlLeaf51Data);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D169);
+INCLUDE_SDATA(const s32, "code_00226EC8", effData36);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D170);
+INCLUDE_SDATA(const s32, "code_00226EC8", effResetSlotsData);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D178);
+INCLUDE_SDATA(const s32, "code_00226EC8", effResetSlotsData2);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D180);
+INCLUDE_SDATA(const s32, "code_00226EC8", effPadVibePower);
 
-INCLUDE_SDATA(const s32, "code_00226EC8", D_r1_0046D188);
+INCLUDE_SDATA(const s32, "code_00226EC8", effData37);
 

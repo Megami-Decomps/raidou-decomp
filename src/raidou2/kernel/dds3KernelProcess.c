@@ -129,5 +129,5 @@ s32 dds3BasicMainProcess(dds3ProcessID_t *id) {
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", dds3BasicDrawProcess);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelProcess", D_r1_0046B194);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelProcess", dds3ClosedDrawTag);
 

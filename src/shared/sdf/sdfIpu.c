@@ -941,5 +941,5 @@ s32 sdfIpuClose(void) {
     return DisableDmac(4);
 }
 
-INCLUDE_SDATA(const s32, "sdf/sdfIpu", D_r1_0046F5AC);
+INCLUDE_SDATA(const s32, "sdf/sdfIpu", sdfAdvanceStreamPlaybackData);
 

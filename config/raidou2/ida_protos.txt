@@ -55,7 +55,7 @@
 0x001CA6A0 dds3FontReqListAdd void dds3FontReqListAdd(void *a1)
 0x001D0DB0 InitProcessData evtPictureProcessData_t * InitProcessData(void)
 0x001E66E0 sndCallSeStop void sndCallSeStop(void)
-0x001E7158 func_001E7158 void func_001E7158(void)
+0x001E7158 sndCallWaitVblankLabel2 void sndCallWaitVblankLabel2(void)
 0x001E7AF8 sndBgmStop void sndBgmStop(void)
 0x001E7B80 sndBgmFadeOut void sndBgmFadeOut(void)
 0x001E83E8 sndCallWaitSema void sndCallWaitSema(void)

@@ -1250,7 +1250,7 @@ extern u32 scrHandleCount;
 
 extern sdfGrOt_t sdfDebugGrOt;
 
-extern s8 D_r1_003AD3BB[];
+extern s8 jmsChkCommonInputData4[];
 
 extern void evtDrawHeapUsageOverlay(sdfGrOt_t *);
 

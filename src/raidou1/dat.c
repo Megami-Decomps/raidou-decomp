@@ -337,7 +337,7 @@ ScrCurrentWorkTaskResult scrIsCurrentWorkTask(const struct scrProcessWork_s *exp
 
 #include "dds/sdf_debug_api.h"
 
-extern const char D_r1_004465A8[10];
+extern const char sdfStrSys[10];
 
 /* Load a table's file and copy each size-prefixed segment into its own block. */
 void sdfReloadChannelSegments(SdfChannel *table);
@@ -484,7 +484,7 @@ void sdfReloadChannelSegments(SdfChannel *table) {
         address += sdfLoadChannelFileSegment(table->entries[i].slot, table->entries[i].unused);
     }
     sdfMemFreeDirect(block);
-    printf(D_r1_004465A8, table->path);
+    printf(sdfStrSys, table->path);
 }
 
 INCLUDE_ASM(const s32, "dat", datFunc24);
@@ -599,53 +599,53 @@ INCLUDE_ASM(const s32, "dat", sdatCalc_GetBadStatus);
 
 INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK4);
 
-INCLUDE_RODATA(const s32, "dat", D_004466A0);
+INCLUDE_RODATA(const s32, "dat", datCheckStrongSwordAttackTable);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B490);
+INCLUDE_SDATA(const s32, "dat", sdfRuntimeTaskName);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B498);
+INCLUDE_SDATA(const s32, "dat", datCallBitCheckData3);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B49C);
+INCLUDE_SDATA(const s32, "dat", datCallBitCheckData4);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B49D);
+INCLUDE_SDATA(const s32, "dat", datData2);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B49E);
+INCLUDE_SDATA(const s32, "dat", datData3);
 
 INCLUDE_SDATA(const s32, "dat", DDS3_GBWK);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4B0);
+INCLUDE_SDATA(const s32, "dat", evtCallMemset9Data);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4BC);
+INCLUDE_SDATA(const s32, "dat", datEnemyRecords);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4C0);
+INCLUDE_SDATA(const s32, "dat", evtData12);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4D4);
+INCLUDE_SDATA(const s32, "dat", datEncountCalcSubData);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B4DC);
+INCLUDE_SDATA(const s32, "dat", datBattleAdjustmentRecords);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B508);
+INCLUDE_SDATA(const s32, "dat", datLeaf66Data);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B554);
+INCLUDE_SDATA(const s32, "dat", rstCallGetRandAData);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B558);
+INCLUDE_SDATA(const s32, "dat", datData4);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B55C);
+INCLUDE_SDATA(const s32, "dat", sbtlSetHangekiFlagData);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B560);
+INCLUDE_SDATA(const s32, "dat", datLoadLvUpTablesData);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B564);
+INCLUDE_SDATA(const s32, "dat", datData5);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B568);
+INCLUDE_SDATA(const s32, "dat", datLoadLvUpTablesData2);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B56C);
+INCLUDE_SDATA(const s32, "dat", rstCallBitCheck2Data);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B570);
+INCLUDE_SDATA(const s32, "dat", rstCallBitCheck2Data2);
 
-INCLUDE_SDATA(const s32, "dat", D_0046B574);
+INCLUDE_SDATA(const s32, "dat", datCallCheckStrongSwordAttackData);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B578);
+INCLUDE_SDATA(const s32, "dat", cmpLoadModelTablesData);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B57C);
+INCLUDE_SDATA(const s32, "dat", datData6);
 
-INCLUDE_SDATA(const s32, "dat", D_r1_0046B580);
+INCLUDE_SDATA(const s32, "dat", datCallGetStockDevilIDData);
 

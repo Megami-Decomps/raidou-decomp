@@ -963,7 +963,7 @@ extern MenuPopupEntry mnuShopCommandPopupEntries[];
 
 extern u8 *datUnitNames;
 
-extern char D_r1_003B9360[];
+extern char mapData5[];
 
 extern s32 D_003C9A20[];
 
@@ -1316,7 +1316,7 @@ extern void evtClearActiveFlag();
 
 extern u32 D_003CE460[];
 
-extern char D_r1_003B9360[];
+extern char mapData5[];
 
 extern void dspAdvanceMessageWindowControl();
 
@@ -1564,5 +1564,5 @@ INCLUDE_ASM(const s32, "code_001E09E0", evtLeaf22);
 
 INCLUDE_ASM(const s32, "code_001E09E0", evtEventFadeOutAllBgm);
 
-INCLUDE_SDATA(const s32, "code_001E09E0", D_r1_0046CCD0);
+INCLUDE_SDATA(const s32, "code_001E09E0", evtData22);
 

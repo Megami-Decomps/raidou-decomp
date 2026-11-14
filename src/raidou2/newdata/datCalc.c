@@ -1584,11 +1584,11 @@ BtlConditionalEncounterGaugeThreshold btlGetConditionalEncounterInterval(s32 enc
 
 INCLUDE_ASM(const s32, "newdata/datCalc", nbEncountCalc);
 
-INCLUDE_RODATA(const s32, "newdata/datCalc", D_004A9188);
+INCLUDE_RODATA(const s32, "newdata/datCalc", datCallBitOn2Table);
 
-INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B584);
+INCLUDE_SDATA(const s32, "newdata/datCalc", btlGetConditionalEncounterIntervalData);
 
-INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B588);
+INCLUDE_SDATA(const s32, "newdata/datCalc", nbEncountCalcData);
 
-INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B58C);
+INCLUDE_SDATA(const s32, "newdata/datCalc", nbEncountCalcData2);
 

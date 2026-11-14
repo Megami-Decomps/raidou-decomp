@@ -1,19 +1,19 @@
 #include "common.h"
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3KernelMain);
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B128);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FrameRunTime);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B12A);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3LastDrawFrameCount);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B12C);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3VblanksPerFrame);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_0046B130);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3KernelDebugSign);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_0046B134);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FileCmdLoPrio);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B138);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FirstProcessName);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B140);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3DrawFirstProcessName);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B148);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3DrawProcessFlag);
 

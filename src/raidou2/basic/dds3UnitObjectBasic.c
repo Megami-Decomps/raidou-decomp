@@ -548,7 +548,7 @@ linkLight:
     }
 }
 
-INCLUDE_RODATA(const s32, "basic/dds3UnitObjectBasic", D_r1_00446450);
+INCLUDE_RODATA(const s32, "basic/dds3UnitObjectBasic", dds3UnitAdditionalRotation);
 
-INCLUDE_RODATA(const s32, "basic/dds3UnitObjectBasic", D_r1_00446460);
+INCLUDE_RODATA(const s32, "basic/dds3UnitObjectBasic", dds3UnitWobbleAxis);
 

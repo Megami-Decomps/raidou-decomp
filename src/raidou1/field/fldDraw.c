@@ -1012,11 +1012,11 @@ void initDrawTag(dbgConsCtl_tag *cons) {
 INCLUDE_ASM(const s32, "field/fldDraw", fldDbgPrint3D);
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawMaruKage);
-INCLUDE_SDATA(const s32, "field/fldDraw", D_r1_0046B730);
+INCLUDE_SDATA(const s32, "field/fldDraw", rsetFrameMaskOtOffset);
 
-INCLUDE_SDATA(const s32, "field/fldDraw", D_r1_0046B734);
+INCLUDE_SDATA(const s32, "field/fldDraw", fldDrawInitDone);
 
 void *fldDrwZBuf = 0;
 
-INCLUDE_SDATA(const s32, "field/fldDraw", D_r1_0046B740);
+INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtDec);
 

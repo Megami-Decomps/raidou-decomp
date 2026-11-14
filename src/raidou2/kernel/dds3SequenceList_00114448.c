@@ -565,5 +565,5 @@ s32 scrHandleCount = 0;
 
 scrProcessWork_s *scrHandleFirst = NULL;
 
-INCLUDE_SDATA(const s32, "kernel/dds3SequenceList_00114448", D_r1_0046B458);
+INCLUDE_SDATA(const s32, "kernel/dds3SequenceList_00114448", scrHandleLast);
 

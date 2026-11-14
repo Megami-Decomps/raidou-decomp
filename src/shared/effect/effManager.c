@@ -560,5 +560,5 @@ void dds3EffectDataRevision(effResourceHeader_t *header)
     }
 }
 
-INCLUDE_SDATA(const s32, "effect/effManager", D_r1_0046D078);
+INCLUDE_SDATA(const s32, "effect/effManager", dds3EffectProcessName);
 

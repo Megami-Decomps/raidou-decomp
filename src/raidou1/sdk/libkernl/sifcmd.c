@@ -302,7 +302,7 @@ extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
 
 extern s32 sifDmacHandlerId;
 
-extern s32 D_r1_00442CE0;
+extern s32 sceData15;
 
 void sceSifExitCmd(void);
 
@@ -1228,7 +1228,7 @@ void sceSifExitCmd(void)
 {
     DisableDmac(5);
     RemoveDmacHandler(5, sifDmacHandlerId);
-    D_r1_00442CE0 = 0;
+    sceData15 = 0;
 }
 
 INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sifcmdLeaf);

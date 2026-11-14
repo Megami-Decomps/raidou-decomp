@@ -1570,7 +1570,7 @@ extern void fldClrCollision(void);
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_r1_003AD4E0[];
+extern u8 dds3BillboardGetDirectionRotateData2[];
 
 extern char D_003C9200[];
 
@@ -2601,29 +2601,29 @@ void fldLeaf16(void) {
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLoadFile);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLoadFile_FromMemory);
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6F0);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldData15);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6F4);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6F8);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData2);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6FC);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData3);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B700);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData4);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B704);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData5);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B708);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData6);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B70C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldData16);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B710);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData7);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B714);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData8);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B718);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldData17);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B71C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData9);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B720);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", fldCallTexListFreeData10);
 

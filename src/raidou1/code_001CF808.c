@@ -777,29 +777,29 @@ void mnuInitTitleSoundRemoteRequest(u32 wordCount) {
 }
 
 INCLUDE_ASM(const s32, "code_001CF808", mnuCopySoundStreamOnStatusChange);
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD08);
+INCLUDE_SDATA(const s32, "code_001CF808", evtPicturePriList);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD0C);
+INCLUDE_SDATA(const s32, "code_001CF808", sndInitData2);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD10);
+INCLUDE_SDATA(const s32, "code_001CF808", sndPathPrefix);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD18);
+INCLUDE_SDATA(const s32, "code_001CF808", sndPathPrefix2);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD20);
+INCLUDE_SDATA(const s32, "code_001CF808", evtPicturePriProcName);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD28);
+INCLUDE_SDATA(const s32, "code_001CF808", fldNKIYData);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD2C);
+INCLUDE_SDATA(const s32, "code_001CF808", sndInitData3);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD30);
+INCLUDE_SDATA(const s32, "code_001CF808", sndInitData4);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD38);
+INCLUDE_SDATA(const s32, "code_001CF808", sndData);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD40);
+INCLUDE_SDATA(const s32, "code_001CF808", sndInitializeStreamTransferBuffersData);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD44);
+INCLUDE_SDATA(const s32, "code_001CF808", mnuCopySoundStreamOnStatusChangeData);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD48);
+INCLUDE_SDATA(const s32, "code_001CF808", sndBgmLoadId_XFData2);
 
-INCLUDE_SDATA(const s32, "code_001CF808", D_r1_0046CD4C);
+INCLUDE_SDATA(const s32, "code_001CF808", sndData2);
 

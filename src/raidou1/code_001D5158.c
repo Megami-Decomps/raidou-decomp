@@ -721,7 +721,7 @@ extern struct _FRQ *itfCreateFont2TextGlyph(s32, s32, s32, u32, char *, struct _
 
 extern struct _FRQ *fileMenuStringGlyph;
 
-extern s32 D_r1_0046CDEC;
+extern s32 fmShutDownData2;
 
 extern s8 slLoadKillFlag;
 
@@ -731,7 +731,7 @@ extern dds3ProcessID_t *D_003BC7F0;
 extern FileLoadMenuState fileLoadMenuState;
 
 /* Far scalar: incomplete array forces non-small-data addressing. */
-extern s32 D_003F97F8[];
+extern s32 slNewCycleData2[];
 
 extern sdfGrOt_t *effPacketSubmissionSurfaces[6];
 
@@ -1392,7 +1392,7 @@ extern u8 sdfViewMatrix[];
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_r1_003AD4E0[];
+extern u8 dds3BillboardGetDirectionRotateData2[];
 
 /* vu0 routine: project the point in vf10 through view/projection and screen scale/bias. */
 void mnuProjectViewPoint(void);
@@ -1814,16 +1814,16 @@ INCLUDE_ASM(const s32, "code_001D5158", setAutoSaveDisable);
 INCLUDE_ASM(const s32, "code_001D5158", setCallMemcpy);
 
 u8 fileIsLoadedAndConditionTrue(s32 condition) {
-    return condition != 0 && D_r1_0046CDEC == 1;
+    return condition != 0 && fmShutDownData2 == 1;
 }
 
 u8 fileIsLoadedWithActiveFlow(s32 loaded) {
-    return loaded != 0 && D_r1_0046CDEC == 1;
+    return loaded != 0 && fmShutDownData2 == 1;
 }
 
-INCLUDE_RODATA(const s32, "code_001D5158", D_r1_00455168);
+INCLUDE_RODATA(const s32, "code_001D5158", slStrFldProcSequence);
 
-INCLUDE_RODATA(const s32, "code_001D5158", D_r1_00455178);
+INCLUDE_RODATA(const s32, "code_001D5158", slIconPath);
 
 const char slIconSysName[9] = "icon.sys";
 

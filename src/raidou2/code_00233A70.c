@@ -721,7 +721,7 @@ extern struct _FRQ *itfCreateFont2TextGlyph(s32, s32, s32, u32, char *, struct _
 
 extern struct _FRQ *fileMenuStringGlyph;
 
-extern s32 D_r1_0046CDEC;
+extern s32 fmShutDownData2;
 
 extern s8 slLoadKillFlag;
 
@@ -731,7 +731,7 @@ extern dds3ProcessID_t *D_003BC7F0;
 extern FileLoadMenuState fileLoadMenuState;
 
 /* Far scalar: incomplete array forces non-small-data addressing. */
-extern s32 D_00555870[];
+extern s32 slNewCycleWork3[];
 
 extern sdfGrOt_t *effPacketSubmissionSurfaces[6];
 
@@ -1392,7 +1392,7 @@ extern u8 sdfViewMatrix[];
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_r1_003AD4E0[];
+extern u8 dds3BillboardGetDirectionRotateData2[];
 
 /* vu0 routine: project the point in vf10 through view/projection and screen scale/bias. */
 void mnuProjectViewPoint(void);

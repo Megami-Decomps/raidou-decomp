@@ -918,9 +918,9 @@ s8 gMsgFlag = 0;
 
 s8 gMsgInvFlag = 0;
 
-INCLUDE_SDATA(const s32, "facility/fclMisc", D_r1_0046B5C0);
+INCLUDE_SDATA(const s32, "facility/fclMisc", gSelMsgNo);
 
-INCLUDE_SDATA(const s32, "facility/fclMisc", D_r1_0046B5C4);
+INCLUDE_SDATA(const s32, "facility/fclMisc", gSelMsgPos);
 
-INCLUDE_SDATA(const s32, "facility/fclMisc", D_r1_0046B5C5);
+INCLUDE_SDATA(const s32, "facility/fclMisc", gLastSelMsgPos);
 

@@ -335,7 +335,7 @@ extern s8 D_003A5460[];
 
 extern s8 D_003A5488[];
 
-extern u8 D_r1_0046C168[];
+extern u8 btlFormatSelectedResourceNameData[];
 
 extern u8 sdfHddValid;
 
@@ -355,7 +355,7 @@ extern s8 D_003A5558[];
 
 extern u32 D_003BB6C8;
 
-extern u8 D_r1_0046C170[];
+extern u8 btlFormatSelectedResourceNameData2[];
 
 struct BtlRuntimeTask;
 
@@ -444,7 +444,7 @@ extern f32 sdfViewMatrix[];
 
 extern f32 sdfProjectionMatrix[];
 
-extern f32 D_r1_003AD4E0[];
+extern f32 dds3BillboardGetDirectionRotateData2[];
 
 /* vu0 routine: forward-cone projection from vf10 to integer screen XY */
 BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScreenPoint *outPoint);
@@ -1134,7 +1134,7 @@ BtlResourceDescriptor *btlCreateResourceDescriptor(BtlResourceEntryList *list);
 
 extern s8 dds3PadBitTable[0x20];
 
-extern s8 D_r1_0043EED9[];
+extern s8 effData22[];
 
 extern u64 *dds3PrimFrameRect(s32, s32, s32, s32, s32, u32, u32);
 
@@ -1264,7 +1264,7 @@ BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScre
     projection += 16;
     SDF_VU0_LOADVECTOR_B(projection);
     SDF_VU0_MULVECTOR();
-    SDF_VU0_LOADVECTOR_B(D_r1_003AD4E0);
+    SDF_VU0_LOADVECTOR_B(dds3BillboardGetDirectionRotateData2);
     SDF_VU0_ADDVECTOR();
     SDF_VU0_STOREVECTOR(&position);
     outPoint->x = (s32)position.f[0] - 0x700;
@@ -1389,95 +1389,95 @@ f32 sbtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f3
     return projection;
 }
 
-INCLUDE_RODATA(const s32, "sbtlSub_0027ED08", D_r1_00458CA8);
+INCLUDE_RODATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterTable);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB14);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetAisyoHelpFontData);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DB18);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlData96);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DB1C);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlData97);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DB20);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", cmpData9);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DB24);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallMessageNumSearch4Data);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB28);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlLeaf73DataEntry);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB30);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlLeaf73DataEntry2);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB38);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFontDataEntry);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB40);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFontDataEntry2);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB48);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFontDataEntry3);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB50);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFontDataEntry4);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB58);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFontDataEntry5);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB60);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFontDataEntry6);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB68);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFontDataEntry7);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB70);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFontDataEntry8);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB78);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB80);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry2);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB88);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry3);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB90);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry4);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB98);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry5);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBA0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry6);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBA8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry7);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBB0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry8);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBB8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry9);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBC0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry10);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBC8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry11);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBD0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry12);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBD8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfterDataEntry13);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DBE0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DBE8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry2);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DBF0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry3);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DBF8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry4);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC00);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry5);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DC08);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry6);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC10);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry7);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC18);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry8);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC20);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry9);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC28);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry10);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DC30);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry11);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC38);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry12);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC40);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry13);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC48);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry14);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC50);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry15);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC58);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry16);
 
-INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC60);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFontDataEntry17);
 

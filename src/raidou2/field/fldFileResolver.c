@@ -1059,7 +1059,7 @@ extern void fldClrCollision(void);
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_r1_003AD4E0[];
+extern u8 dds3BillboardGetDirectionRotateData2[];
 
 extern char D_003C9200[];
 
@@ -2679,11 +2679,11 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallBtlGetMotionVisualDataSBt
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalcNmlFldSub2);
 
-INCLUDE_RODATA(const s32, "field/fldFileResolver", D_r1_00447C80);
+INCLUDE_RODATA(const s32, "field/fldFileResolver", VRF_Disable);
 
-INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD40);
+INCLUDE_RODATA(const s32, "field/fldFileResolver", mapEnemy_SetFAtk_PlayerDirTable);
 
-INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD50);
+INCLUDE_RODATA(const s32, "field/fldFileResolver", mapSummonDvTaskTable2);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerMotionSe2);
 
@@ -2701,11 +2701,11 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayer_MoveGet);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerCalc_Nml);
 
-INCLUDE_RODATA(const s32, "field/fldFileResolver", D_r1_00447CA0);
+INCLUDE_RODATA(const s32, "field/fldFileResolver", fldPlayer_MoveCalcTable);
 
-INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD90);
+INCLUDE_RODATA(const s32, "field/fldFileResolver", PlayerCalc_Nml_fldTable);
 
-INCLUDE_RODATA(const s32, "field/fldFileResolver", D_r1_00447CC0);
+INCLUDE_RODATA(const s32, "field/fldFileResolver", fldCallEncountTestFlagTable2);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerCalc_Nml_fld);
 
@@ -2734,49 +2734,49 @@ void fldClearCameraObjectTransitionFlags(void) {
     dds3ObjectBaseOffFlag(fldPlayerObject, 0x400);
     dds3ObjectBaseOffFlag(fldPlayerObject, 0x200);
 }
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B750);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboAddData);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B754);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboAddData2);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B758);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboTaskData);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B75C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapData55);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B760);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboTaskData2);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B764);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapSummonDvAddData);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B768);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapSummonDvAddData2);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B76C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapSummonDvTaskData2);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B770);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", map_summondv_rot);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B774);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", gMapNakamaRunAtumaru);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B778);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboMinAlpDownData);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B77C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", fldAiboTaskSubData);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B780);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboTaskData3);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B784);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboMinAlpDownData2);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B788);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapData56);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B78C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapData57);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B790);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapData58);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B794);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", mapAiboTaskData4);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B798);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", fldCallPlaySEVolData);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B79C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", fldData18);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B7A0);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", fldData19);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B7A4);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", fldCallEncountTestFlagData2);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B7A8);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", fldCallEncountTestFlagData3);
 

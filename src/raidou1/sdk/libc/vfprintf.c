@@ -803,9 +803,9 @@ s32 vfprintf(FILE *fp, const char *fmt, va_list ap)
     return _vfprintf_r(fp->_data, fp, fmt, ap);
 }
 
-INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", D_r1_004686B0);
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", vfprintfAbcdefTable);
 
-INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", D_r1_004686C0);
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", vfprintfAbcdefTable2);
 
 INCLUDE_ASM(const s32, "sdk/libc/vfprintf", vfprintfAbcdef);
 
@@ -885,3 +885,20 @@ s32 exponent(char *output, s32 value, s32 marker)
     }
     return cursor - output;
 }
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfNanText);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfHexLower);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfNullText);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfHexUpper);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfBadBaseMsg);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfZeroDigit);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", printfDecimalPoint);
+
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", jtbl_00468750);
+

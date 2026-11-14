@@ -543,7 +543,7 @@ extern u32 fldEncountFlags;
 extern u32 fldEncountTimer[2];
 /* End of declarations from src/smt3/field/fldProcess.c */
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_00447450);
+INCLUDE_RODATA(const s32, "field/fldProcess", ProcSequenceTable);
 
 INCLUDE_ASM(const s32, "field/fldProcess", ProcSequence);
 
@@ -585,15 +585,15 @@ INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldCallDelayedResrcCheck);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_004477F0);
+INCLUDE_RODATA(const s32, "field/fldProcess", ProcSequenceStrBunriHajikiLabel);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447808);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrBunriHajiki3Label);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", jtbl_00447820);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447938);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrFldProcSequence);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447948);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldProcDrawName);
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldTest2);
 
@@ -618,49 +618,49 @@ INCLUDE_ASM(const s32, "field/fldProcess", fldHardSelect1Sub);
 
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_004479B8);
+INCLUDE_RODATA(const s32, "field/fldProcess", mapCallMapTable);
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldSaveLabel);
 
 INCLUDE_ASM(const s32, "field/fldProcess", MskL2Task);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_0046B6BC);
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData6);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_0046B6C0);
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData7);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_0046B6C4);
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData8);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_0046B6C8);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapData51);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6CC);
+INCLUDE_SDATA(const s32, "field/fldProcess", fldProcShutDownData);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6D0);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapData52);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6D4);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapData53);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6D8);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapData54);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6DC);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapCallMapNextData);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6E0);
+INCLUDE_SDATA(const s32, "field/fldProcess", fldAutoMapSeqFlags);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6E4);
+INCLUDE_SDATA(const s32, "field/fldProcess", nbCallGetIntPara8Data);
 
 u32 fldEncountFlags = 0;
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_00447AB0);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrBadMafuHajikiLabel);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_00447AC8);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrMwallDevilonlyLabel);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447AE0);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrMap13WarpLabel);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447AF0);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrRunwarpLabel);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447B00);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrHasigoLabel);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447B10);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrDexitwarpLabel);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447B20);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrElvLabel);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", jtbl_00447B30);
 

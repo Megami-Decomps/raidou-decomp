@@ -472,8 +472,8 @@ typedef struct MdlViewState {
     s16 entryHeight;      /* 0x2E: low bound offered to mdlAddEntry* */
     s16 entryWidth;       /* 0x30: high bound, limited to entryHeight when drawing */
     u8 pad32[2];
-    s16 labelIndexA;      /* 0x34: indexes D_r1_003EDB38 */
-    s16 labelIndexB;      /* 0x36: indexes D_r1_003EDB40 */
+    s16 labelIndexA;      /* 0x34: indexes mdlDrawViewerIndexedLabelOverlayData */
+    s16 labelIndexB;      /* 0x36: indexes mdlDrawViewerSelectionLabelData */
     s16 scrollPage;  /* 0x38: page stepped by mdlUpdateViewerCursorWithPageStep */
     s16 nodeCursor;  /* 0x3A: selection within the loaded node count */
     s16 settingsCursor; /* 0x3C: selected row among the ten viewer settings. */
@@ -522,7 +522,7 @@ static inline s8 mdlGetViewerDisplayMode(MdlViewState *state) {
 
 extern MdlCtrlState mdlDebugScaleWork;
 
-extern s8 D_r1_004B6CF0[];
+extern s8 mdlRunViewerSelectionLabelTaskWork[];
 
 typedef struct MdlViewerTaskDef {
     const char *name;
@@ -545,7 +545,7 @@ extern char D_003ABF88[];
 
 extern char D_003BBC80[];
 
-extern char D_r1_0044D8C8[];
+extern char mdlStrModel03[];
 
 extern char D_003ABCB0[];
 
@@ -720,19 +720,19 @@ typedef struct {
     f32 x, y, z, w;
 } __attribute__((aligned(16))) MdlEyeVec;
 
-extern MdlEyeVec D_r1_004B6DB0;
+extern MdlEyeVec mapCallFromRotationBWork;
 
-extern MdlEyeVec D_r1_004B6DC0;
+extern MdlEyeVec mapCallFromRotationBWork2;
 
-extern u128 D_r1_004B6DD0;
+extern u128 mapCallFromRotationBWork3;
 
-extern MdlEyeVec D_r1_003EDA20;
+extern MdlEyeVec mdlData10;
 
-extern MdlEyeVec D_r1_003EDA30;
+extern MdlEyeVec mdlData11;
 
-extern u128 D_r1_003EDA40;
+extern u128 mdlResetViewerBasisVectorsData;
 
-extern s16 D_r1_004B6D14[];
+extern s16 mdlResetViewerBasisVectorsWork[];
 
 void mdlResetViewerBasisVectors(void);
 
@@ -742,7 +742,7 @@ void mdlRotateViewResourcesRight(void);
 /* Move the first resource to the end of the active list without changing its allocation. */
 void mdlRotateViewList(void);
 
-extern const char *D_r1_003ED9E0[];
+extern const char *mdlData9[];
 
 extern char D_003BBC20[];
 
@@ -798,7 +798,7 @@ extern f32 sdfViewMatrix[];
 /* vu0 routine: move the viewer camera or orbit it about the look-at point. */
 void mdlUpdateViewerCameraFromPad(void);
 
-extern const char *D_r1_003EDB38[];
+extern const char *mdlDrawViewerIndexedLabelOverlayData[];
 
 void mdlDrawViewerIndexedLabelOverlay(void);
 
@@ -813,7 +813,7 @@ extern f32 D_003983A0[4];
 /* vu0 routine: edit the viewer transform with translation or quaternion steps. */
 void mdlUpdateViewerSelectedModelFromPad(void);
 
-extern const char *D_r1_003EDB40[];
+extern const char *mdlDrawViewerSelectionLabelData[];
 
 void mdlDrawViewerSelectionLabel(void);
 
@@ -827,9 +827,9 @@ void mdlDrawViewerMotionTimeline(void);
 
 u32 mdlUpdateViewerScaleTask(void);
 
-extern s8 D_r1_0043EEDB[];
+extern s8 mdlData14[];
 
-extern u8 D_r1_0046F800;
+extern u8 mdlUpdateViewerWorkspaceSetupWork;
 
 extern s8 sdf3DScreenAdjust;
 
@@ -849,7 +849,7 @@ u32 mdlUpdateViewerWorkspaceSetupTask(void);
 
 void mdlApplyViewerResourceMenuAction(void);
 
-extern const char *D_r1_003EDB48[];
+extern const char *mdlDrawViewerResourceMenuData[];
 
 /* Draw resource actions with independent eligibility and selection styles. */
 void mdlDrawViewerResourceMenu(void);
@@ -919,18 +919,18 @@ u32 mdlRunViewerEffectEditorTask(void);
 
 s32 mdlRequestViewerExitOnce(void);
 
-extern sdfGrOt_t D_r1_003ADFD8;
+extern sdfGrOt_t mdlData5;
 
-extern f32 D_r1_003EDBB0[][4];
+extern f32 mdlSubmitViewerIntermediateDrawPacketData[][4];
 
-extern u32 D_r1_003EDC10[];
+extern u32 mdlSubmitViewerIntermediateDrawPacketData2[];
 
 /* Submit the intermediate packet with an identity basis in phases 2 and 3. */
 void mdlSubmitViewerIntermediateDrawPacket(void);
 
-extern f32 D_r1_003EDC30[][4];
+extern f32 mdlSubmitViewerResourceDrawPacketData[][4];
 
-extern u32 D_r1_003EDC70[];
+extern u32 mdlSubmitViewerResourceDrawPacketData2[];
 
 extern s32 D_003BBCB8;
 
@@ -957,9 +957,9 @@ extern s32 sdfGrAllocPacketBuff(s32 size);
 
 s32 mdlViewer(dds3ProcessID_t *task);
 
-extern f32 D_r1_003EDC80[][4];
+extern f32 mdlDrawMapPositionRecordsData[][4];
 
-extern u32 D_r1_003EDCE0[];
+extern u32 mdlDrawMapPositionRecordsData2[];
 
 /* Walk native 64-byte map-position records and submit their visualization in one packet list. */
 void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource);
@@ -1230,10 +1230,10 @@ void mdlLoadViewerResourceAndResetCursors(void) {
 }
 
 void mdlResetViewerBasisVectors(void) {
-    SDF_VU0_COPYVECTOR(&D_r1_004B6DB0, &D_r1_003EDA20);
-    SDF_VU0_COPYVECTOR(&D_r1_004B6DC0, &D_r1_003EDA30);
-    SDF_VU0_COPYVECTOR(&D_r1_004B6DD0, &D_r1_003EDA40);
-    D_r1_004B6D14[0] = 0;
+    SDF_VU0_COPYVECTOR(&mapCallFromRotationBWork, &mdlData10);
+    SDF_VU0_COPYVECTOR(&mapCallFromRotationBWork2, &mdlData11);
+    SDF_VU0_COPYVECTOR(&mapCallFromRotationBWork3, &mdlResetViewerBasisVectorsData);
+    mdlResetViewerBasisVectorsWork[0] = 0;
 }
 
 /* Rotate the viewer resource list in place without moving its allocation. */
@@ -1276,7 +1276,7 @@ void mdlDrawViewerModeLabel(void) {
     } else {
         phase = phase - 1;
     }
-    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintfEx(&packet, D_r1_003ED9E0[phase])));
+    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintfEx(&packet, mdlData9[phase])));
 }
 
 /* Draw the phase-zero option list in two columns, with cursor/blink styling. */
@@ -1289,7 +1289,7 @@ void mdlDrawViewerOptionLabels(void) {
     }
 
     mdlAppendViewerRectToDrawList(0x7690, 0x7A08, 0xFF0080, 0xC60, 0x2D0, 0);
-    label = D_r1_003ED9E0;
+    label = mdlData9;
     i = 0;
     do {
         s32 style = (i == mdlViewerState.selectedTaskIndex && mdlViewerState.selectionHighlightPhase < 0x14) ? 4 : 0;
@@ -1324,7 +1324,7 @@ void mdlDrawViewerModelAndMotionSummary(void) {
     sdfDevSetPrintCB(&packet, 0x7E40, 0x8620, 0xFF0080, 0);
 
     if ((displayMode = mdlGetViewerDisplayMode(&mdlViewerState)) == 0) {
-        format = D_r1_0044D8C8;
+        format = mdlStrModel03;
     } else {
         format = D_003ABCB0;
     }
@@ -1379,11 +1379,11 @@ void mdlAddPlainViewerEntryForSelectedNode(void) {
     }
 }
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044D8E0);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrModel032);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044D8F8);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStr0202);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044D908);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStr02022);
 
 INCLUDE_ASM(const s32, "code_0019D3A8", mdlHandleViewerAssetSelection);
 
@@ -1399,7 +1399,7 @@ INCLUDE_ASM(const s32, "code_0019D3A8", mapCallFromRotationB);
 
 void mdlDrawViewerIndexedLabelOverlay(void) {
     mdlAppendViewerRectToDrawList(0x8A10, 0x7948, 0xFF007F, 0x4E0, 0x90, 0);
-    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintf(0x8A40, 0x7960, 0xFF0080, 0, D_r1_003EDB38[mdlViewerState.labelIndexA])));
+    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintf(0x8A40, 0x7960, 0xFF0080, 0, mdlDrawViewerIndexedLabelOverlayData[mdlViewerState.labelIndexA])));
 }
 
 u32 mdlRunViewerIndexedLabelTask(void) {
@@ -1412,12 +1412,12 @@ INCLUDE_ASM(const s32, "code_0019D3A8", mdlUpdateViewerSelectedModelFromPad);
 
 void mdlDrawViewerSelectionLabel(void) {
     mdlAppendViewerRectToDrawList(0x8A10, 0x7948, 0xFF007F, 0x4E0, 0x90, 0);
-    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintf(0x8A40, 0x7960, 0xFF0080, 0, D_r1_003EDB40[mdlViewerState.labelIndexB])));
+    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintf(0x8A40, 0x7960, 0xFF0080, 0, mdlDrawViewerSelectionLabelData[mdlViewerState.labelIndexB])));
 }
 
 s32 mdlRunViewerSelectionLabelTask(void) {
     mdlUpdateViewerSelectedModelFromPad();
-    if (D_r1_004B6CF0[0] == 0) {
+    if (mdlRunViewerSelectionLabelTaskWork[0] == 0) {
         mdlDrawViewerSelectionLabel();
     }
     return 0;
@@ -1439,14 +1439,14 @@ void mdlUpdateViewerWorkspaceSetup(void) {
 
     switch (mdlViewerState.workspaceSetupPhase) {
     case 0:
-        if (D_r1_0043EEDB[0] < 0) {
+        if (mdlData14[0] < 0) {
             f32 scale = mdlViewerState.captureScale;
 
             mdlViewerState.yawStepMode = initialPhase;
             mdlViewerState.unk50 = 0;
             mdlViewerState.unk52 = 0;
             mdlViewerState.taskPhase = -1;
-            D_r1_0046F800 = mdlViewerState.unitStepMode;
+            mdlUpdateViewerWorkspaceSetupWork = mdlViewerState.unitStepMode;
             mdlViewerState.unitStepMode = initialPhase;
             sdf3DScreenAdjust = initialPhase;
             sdf3DScreenAdjustScaleY = sdf3DScreenAdjustScaleX = scale;
@@ -1510,7 +1510,7 @@ void mdlDrawViewerResourceMenu(void) {
         }
         sdfDevSetPrintCB(&packet, 0x85C0, 0x7960 + row * 0x60, 0xFF0080, style);
         sdfDrawTagLink(mdlViewerState.packetList,
-            (u32)sdfDevPrintfEx(&packet, D_r1_003EDB48[row]));
+            (u32)sdfDevPrintfEx(&packet, mdlDrawViewerResourceMenuData[row]));
     }
 }
 
@@ -1582,17 +1582,17 @@ u32 mdlUpdateViewerNodeCursorTask(void) {
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044D988);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrSyncMotion);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044D998);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrSelectPrev);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044D9A8);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrSelectNext);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044D9B8);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrDeleteModel);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044D9C8);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrNewModel);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044D9D8);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStr22);
 
 s32 mdlIsDebugTimeGraph(void) {
     return dds3SearchProcessName("DebugTimeGrph") != 0;
@@ -1600,19 +1600,19 @@ s32 mdlIsDebugTimeGraph(void) {
 
 INCLUDE_ASM(const s32, "code_0019D3A8", mapModelViewerTmx);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DA50);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrBgViewerTmx);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DA68);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrModelHexNum);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DA80);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrRunTimeGraph);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DA98);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrDisplayMark);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DAB0);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrCaptureDivY);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DAC0);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrCaptureDivX);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DAD0);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrCaptureScale);
 
 INCLUDE_ASM(const s32, "code_0019D3A8", mdlDrawViewerSettings);
 
@@ -1828,8 +1828,8 @@ void mdlSubmitViewerIntermediateDrawPacket(void) {
         if (mdlViewerState.taskPhase >= 2) {
             packetList = dds3FontReqAllocDrawTag();
             SDF_VU0_LOADIDENTITY();
-            sdfDrawTagLink(packetList, (u32)((s32)sdfDrawRotatedModel(D_r1_003EDBB0, D_r1_003EDC10, 6, 0x80)));
-            D_r1_003ADFD8.regFunc(&D_r1_003ADFD8, packetList);
+            sdfDrawTagLink(packetList, (u32)((s32)sdfDrawRotatedModel(mdlSubmitViewerIntermediateDrawPacketData, mdlSubmitViewerIntermediateDrawPacketData2, 6, 0x80)));
+            mdlData5.regFunc(&mdlData5, packetList);
         }
     }
 }
@@ -1844,13 +1844,13 @@ void mdlSubmitViewerResourceDrawPacket(void) {
         packetList = dds3FontReqAllocDrawTag();
         resource = mdlViewerState.resources[0];
     VU0_LOAD_MATRIX(resource->inner->matrix);
-        drawPacket = (s32)sdfDrawRotatedModel(D_r1_003EDC30, D_r1_003EDC70, 4, 0x80);
+        drawPacket = (s32)sdfDrawRotatedModel(mdlSubmitViewerResourceDrawPacketData, mdlSubmitViewerResourceDrawPacketData2, 4, 0x80);
         if ((dds3PadBitTable[13] < 0) & (D_003BBCB8 == 0)) {
             D_003BBCB8 = 1;
             sdfDumpHexLine(drawPacket, 0x100);
         }
         sdfDrawTagLink(packetList, (u32)(drawPacket));
-        D_r1_003ADFD8.regFunc(&D_r1_003ADFD8, packetList);
+        mdlData5.regFunc(&mdlData5, packetList);
     }
 }
 
@@ -1879,15 +1879,15 @@ void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource) {
         for (recordIndex = 0; recordIndex != recordCount; recordIndex++) {
             sdfModelMakeMarkPosMatrix(resource->inner, recordCursor);
             recordCursor++;
-            sdfDrawTagLink(packetList, (u32)((s32)sdfDrawRotatedModel(D_r1_003EDC80, D_r1_003EDCE0, 6, 0x80)));
+            sdfDrawTagLink(packetList, (u32)((s32)sdfDrawRotatedModel(mdlDrawMapPositionRecordsData, mdlDrawMapPositionRecordsData2, 6, 0x80)));
         }
-        D_r1_003ADFD8.regFunc(&D_r1_003ADFD8, packetList);
+        mdlData5.regFunc(&mdlData5, packetList);
     }
 }
 
 INCLUDE_ASM(const s32, "code_0019D3A8", mapTrainCheckStartPos);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DB00);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrNoEffect);
 
 INCLUDE_ASM(const s32, "code_0019D3A8", mdlLoadViewerConfig);
 
@@ -1909,73 +1909,73 @@ void mdlFreeViewResources(void) {
 
 INCLUDE_ASM(const s32, "code_0019D3A8", mapTitleEnd);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DC58);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrModelViewer);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DC68);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlStrModelViewerEnd);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DC78);
+INCLUDE_RODATA(const s32, "code_0019D3A8", mdlDebugLabelAmbient);
 
-INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DC88);
+INCLUDE_RODATA(const s32, "code_0019D3A8", softenBiasTitle);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C438);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mapData153);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C440);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerModeLabelData);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C448);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlData15);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C450);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerAssetSelectionData);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C458);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerAssetSelectionData2);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C460);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerAssetSelectionData3);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C468);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerAssetSelectionData4);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C470);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerAssetSelectionData5);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C478);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerAssetSelectionData6);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C480);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerAssetSelectionData7);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C488);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerAssetSelectionData8);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C490);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerIndexedLabelOverlayDataEntry);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C498);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerIndexedLabelOverlayDataEntry2);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4A0);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerMotionTimelineData);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4A8);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerTexturePreviewData);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4B0);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerSettingsData4);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4B8);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerSettingsData5);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4C0);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerSettingsData6);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4C8);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlData16);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4D0);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDrawViewerEffectRecordListData);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4D8);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlSubmitViewerResourceDrawPacketData4);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4DC);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlInitializeViewerTasksAndResourcesData3);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4E0);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlLoadViewerConfigData);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4E8);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlLoadViewerConfigData2);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4F0);
+INCLUDE_SDATA(const s32, "code_0019D3A8", pbDebugFloatFormat);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C4F8);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlLoadViewerConfigData3);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C500);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlLoadViewerConfigData4);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C508);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlLoadViewerConfigData5);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C510);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDebugLabelLight2);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C518);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDebugLabelLight1);
 
-INCLUDE_SDATA(const s32, "code_0019D3A8", D_r1_0046C520);
+INCLUDE_SDATA(const s32, "code_0019D3A8", mdlDebugLabelLight0);
 

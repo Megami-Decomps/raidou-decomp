@@ -294,5 +294,5 @@ s32 scrScriptProcess(dds3ProcessID_t *id)
     }
 }
 
-INCLUDE_RODATA(const s32, "script/scrScriptProcess", D_r1_00444D88);
+INCLUDE_RODATA(const s32, "script/scrScriptProcess", scrCommandTable);
 

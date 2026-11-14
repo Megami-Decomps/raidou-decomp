@@ -931,11 +931,11 @@ extern f32 fileSaveHighlightPhase;
 
 extern u8 sdfHddValid;
 
-extern char D_r1_0046D0E0[];
+extern char fileWriteToPfsData[];
 
-extern char D_r1_0046D0E8[];
+extern char fileWriteToPfsData2[];
 
-extern char D_r1_0046D0F0[];
+extern char fileWriteToPfsData3[];
 
 extern char *sdfFileGetHostRoot(void);
 
@@ -1775,7 +1775,7 @@ FileJob *fileAppendJob(FileQueue *queue, u32 id);
 
 FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source);
 
-extern u8 D_r1_0046D0F8[];
+extern u8 fileAppendJobFromCommandPathData[];
 
 FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath);
 
@@ -2548,5 +2548,5 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", Delete);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effPCPAnalyzeBEDCopy);
 
-INCLUDE_SDATA(const s32, "effect/effPCPMisc_00224D10", D_r1_0046D0FC);
+INCLUDE_SDATA(const s32, "effect/effPCPMisc_00224D10", effHandleCreateData);
 

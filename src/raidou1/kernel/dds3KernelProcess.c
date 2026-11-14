@@ -132,5 +132,5 @@ s32 dds3BasicDrawProcess(dds3ProcessID_t *id) {
     return 0;
 }
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelProcess", D_r1_0046B194);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelProcess", dds3ClosedDrawTag);
 

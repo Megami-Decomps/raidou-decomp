@@ -613,7 +613,7 @@ ScrCurrentWorkTaskResult scrIsCurrentWorkTask(const struct scrProcessWork_s *exp
 
 #include "dds/sdf_debug_api.h"
 
-extern const char D_r1_004465A8[10];
+extern const char sdfStrSys[10];
 
 /* Load a table's file and copy each size-prefixed segment into its own block. */
 void sdfReloadChannelSegments(SdfChannel *table);
@@ -1528,9 +1528,9 @@ BtlConditionalEncounterGaugeThreshold btlGetConditionalEncounterInterval(s32 enc
 }
 
 INCLUDE_ASM(const s32, "newdata/datCalc", nbEncountCalc);
-INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B584);
+INCLUDE_SDATA(const s32, "newdata/datCalc", btlGetConditionalEncounterIntervalData);
 
-INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B588);
+INCLUDE_SDATA(const s32, "newdata/datCalc", nbEncountCalcData);
 
-INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B58C);
+INCLUDE_SDATA(const s32, "newdata/datCalc", nbEncountCalcData2);
 

@@ -736,19 +736,19 @@ s32 sdfMovieIsFinished(sdfMovieCb_t *aMov)
 }
 s32 movieStreamSema = -1;
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5B4);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", sdfData5);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5B8);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", sdfMovieDrawLeft);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5BC);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", sdfMovieDrawTop);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5C0);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", sdfMovieDrawRight);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5C4);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", sdfMovieDrawBottom);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5C8);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", sdfMovieDrawColor);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5CB);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", DrawPrimitive2CoreData);
 
 char sdfMovieIpsExt[4] = ".ips";
 

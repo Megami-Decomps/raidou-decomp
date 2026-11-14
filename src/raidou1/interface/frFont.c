@@ -1066,9 +1066,9 @@ extern s32 mnuGetTitleEffectFrameCounter(void);
 
 extern _FRQ *frFontLinkGlyph(_FRQ *, _FRQ *, s32);
 
-extern u8 D_r1_003E8760[];
+extern u8 itfDrawThreePanelBorderBandsData[];
 
-extern u8 D_r1_003E8768[];
+extern u8 itfDrawThreePanelBorderBandsData2[];
 
 extern u32 itfTextLipsMotionId;
 
@@ -2419,23 +2419,23 @@ u32 itfGetTextLipsMotionId(void) {
 INCLUDE_ASM(const s32, "interface/frFont", frDumpFontTexture);
 u32 gMessageRequestResult = 0xFFFFFFFF;
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_r1_0046C1A8);
+INCLUDE_SDATA(const s32, "interface/frFont", gMessageSpaceX);
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_r1_0046C1AC);
+INCLUDE_SDATA(const s32, "interface/frFont", gMessageStepY);
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_r1_0046C1B0);
+INCLUDE_SDATA(const s32, "interface/frFont", frData2);
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_r1_0046C1B4);
+INCLUDE_SDATA(const s32, "interface/frFont", frData3);
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_r1_0046C1B8);
+INCLUDE_SDATA(const s32, "interface/frFont", execData);
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_r1_0046C1BC);
+INCLUDE_SDATA(const s32, "interface/frFont", execData2);
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_r1_0046C1C0);
+INCLUDE_SDATA(const s32, "interface/frFont", gModeFlag);
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_r1_0046C1C4);
+INCLUDE_SDATA(const s32, "interface/frFont", gFontDrawOT);
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_0046C1C8);
+INCLUDE_SDATA(const s32, "interface/frFont", frSetFontStringData);
 
-INCLUDE_SDATA(const s32, "interface/frFont", D_r1_0046C1D0);
+INCLUDE_SDATA(const s32, "interface/frFont", frFontAppendIndexedTextToGlyphChainData);
 

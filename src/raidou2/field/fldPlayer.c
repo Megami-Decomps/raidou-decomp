@@ -671,7 +671,7 @@ extern dds3Basic_t *fldPlayerObject;
 
 extern struct sdfMemHandle_t *fldPlayerModelResource;
 
-extern u32 D_0043EA44[];
+extern u32 fldReleaseUnitPadData[];
 
 extern struct sdfMemHandle_t *D_003BAB58;
 

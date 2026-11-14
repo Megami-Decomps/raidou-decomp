@@ -974,17 +974,17 @@ sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdf
     return sdfGetOrCreateTextureForReference(target, set->handles[sample->segment]);
 }
 
-INCLUDE_RODATA(const s32, "code_002250F8", D_r1_00455D00);
+INCLUDE_RODATA(const s32, "code_002250F8", effStrEffFloorModelDelete);
 
-INCLUDE_RODATA(const s32, "code_002250F8", D_r1_00455D20);
+INCLUDE_RODATA(const s32, "code_002250F8", Draw_effHelperTable);
 
-INCLUDE_SDATA(const s32, "code_002250F8", D_r1_0046D100);
+INCLUDE_SDATA(const s32, "code_002250F8", effFloorModelListHead);
 
-INCLUDE_SDATA(const s32, "code_002250F8", D_r1_0046D104);
+INCLUDE_SDATA(const s32, "code_002250F8", effSharedTextureReferenceCount);
 
-INCLUDE_SDATA(const s32, "code_002250F8", D_r1_0046D108);
+INCLUDE_SDATA(const s32, "code_002250F8", sdfGetOrCreateTextureForReferenceData);
 
-INCLUDE_SDATA(const s32, "code_002250F8", D_r1_0046D10C);
+INCLUDE_SDATA(const s32, "code_002250F8", sdfGetOrCreateTextureForReferenceData2);
 
-INCLUDE_SDATA(const s32, "code_002250F8", D_r1_0046D110);
+INCLUDE_SDATA(const s32, "code_002250F8", sdfGetOrCreateTextureForReferenceData3);
 

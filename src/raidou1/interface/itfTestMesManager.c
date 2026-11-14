@@ -43,7 +43,7 @@ extern pbPanelEditor_t pbDebugPanel2Pos, pbDebugPanel3X;
 
 extern pbColorRow_t D_00326C20[6];
 
-extern pbColor_t D_r1_003E7AF0;
+extern pbColor_t itfTestOverlayColor;
 
 extern sdf3DScreenParam_t dds3ScreenParam;
 
@@ -107,7 +107,7 @@ typedef struct
     sdfGrTagStdReg_t reg[2];
 } pbRegPacket_t;
 
-extern char *D_r1_003E9028[];
+extern char *TestMsgReloadTextureData[];
 
 extern s32 D_00326BD8[4];
 
@@ -348,8 +348,8 @@ void pbDrawRotatedPrim(s32 surfaceIndex) {
 
     phase = (f32)(pbDebugPanel3State % 4096) * (1.0f / 4096.0f);
     phase = phase * 6.2831852f + 1.5707963f + 0.78539815f;
-    alpha = (s32)((sdfSin(phase) + 1.0f) * 0.5f * D_r1_003E7AF0.alpha);
-    component = D_r1_003E7AF0.channelBytes;
+    alpha = (s32)((sdfSin(phase) + 1.0f) * 0.5f * itfTestOverlayColor.alpha);
+    component = itfTestOverlayColor.channelBytes;
     for (i = 0; i != 3; i++, component++) {
         color |= component->value << (i * 8);
     }
@@ -361,15 +361,15 @@ void pbDrawRotatedPrim(s32 surfaceIndex) {
     surface = &sdfGrOtTable[surfaceIndex];
     ((sdfGrOtRegFunc_t)surface->regFunc)(surface, list);
 }
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager", D_r1_0046BFDC);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager", pbDebugPrintPanel3Data);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager", D_r1_0046BFE0);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager", pbDebugPanel3Title);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager", D_r1_0046BFE8);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager", pbDebugPanel3CursorMark);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager", D_r1_0046BFF0);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager", pbDebugPanel3RowFormat);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager", D_r1_0046BFF8);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager", pbDebugChannelFormat);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager", D_r1_0046C000);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager", pbDebugPrintPanel3Data2);
 

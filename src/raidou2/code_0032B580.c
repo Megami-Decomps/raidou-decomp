@@ -2629,7 +2629,7 @@ extern const char D_005401F8[16];
 
 extern const char D_00540208[16];
 
-extern const char D_00540218[16];
+extern const char mapFileLoadWork[16];
 
 extern const char D_00540228[16];
 
@@ -2661,7 +2661,7 @@ extern const char D_005402F8[16];
 
 extern const char D_00540308[16];
 
-extern const char D_00540318[16];
+extern const char mapMapSetAreaWork14[16];
 
 extern const char D_00540328[16];
 
@@ -2693,7 +2693,7 @@ extern const char D_005403F8[16];
 
 extern const char D_00540408[16];
 
-extern const char D_00540418[16];
+extern const char mapMapSetAreaWork15[16];
 
 extern const char D_00540428[16];
 
@@ -2725,7 +2725,7 @@ extern const char D_005404F8[16];
 
 extern const char D_00540508[16];
 
-extern const char D_00540518[16];
+extern const char mapFileLoadWork2[16];
 
 extern const char D_00540528[16];
 
@@ -2773,7 +2773,7 @@ extern const char D_005406F0[24];
 
 extern const char D_00540708[16];
 
-extern const char D_r1_004B1928[32];
+extern const char mapWork6[32];
 
 extern const char D_00540738[32];
 
@@ -2787,7 +2787,7 @@ extern const char D_005407A8[24];
 
 extern const char D_005407C0[24];
 
-extern const char D_r1_004B19A8[16];
+extern const char mapNpcTblRefresh_WaitWork[16];
 
 extern const char D_005407E8[16];
 
@@ -2807,7 +2807,7 @@ extern const char D_00540908[40];
 
 extern const char D_00540930[40];
 
-extern const char D_00540958[32];
+extern const char fldWork9[32];
 
 extern const char D_00540978[32];
 
@@ -2949,7 +2949,7 @@ extern const char D_005411F0[40];
 
 extern const char D_00541218[24];
 
-extern const char D_r1_004B20E0[24];
+extern const char mapWork7[24];
 
 extern const char D_00541248[32];
 
@@ -3935,7 +3935,7 @@ extern char D_0054FFF0[8];
 
 extern char D_0054FFF8[8];
 
-extern char D_00550000[8];
+extern char sndInitDataEntry11[8];
 
 extern char D_00550008[8];
 

@@ -395,11 +395,11 @@ void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm) {
 INCLUDE_ASM(const s32, "effect/effPacket", dds3CrossfadeStart);
 
 INCLUDE_ASM(const s32, "effect/effPacket", dds3UpdateCrossfade);
-INCLUDE_SDATA(const s32, "effect/effPacket", D_r1_0046CF74);
+INCLUDE_SDATA(const s32, "effect/effPacket", dds3CrossfadeRunFlag);
 
-INCLUDE_SDATA(const s32, "effect/effPacket", D_r1_0046CF78);
+INCLUDE_SDATA(const s32, "effect/effPacket", dds3CrossfadeFrame);
 
-INCLUDE_SDATA(const s32, "effect/effPacket", D_r1_0046CF7C);
+INCLUDE_SDATA(const s32, "effect/effPacket", dds3CrossfadeFrameMax);
 
-INCLUDE_SDATA(const s32, "effect/effPacket", D_r1_0046CF80);
+INCLUDE_SDATA(const s32, "effect/effPacket", effData23);
 

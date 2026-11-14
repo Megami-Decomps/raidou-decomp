@@ -444,7 +444,7 @@ extern f32 sdfViewMatrix[];
 
 extern f32 sdfProjectionMatrix[];
 
-extern f32 D_r1_003AD4E0[];
+extern f32 dds3BillboardGetDirectionRotateData2[];
 
 /* vu0 routine: forward-cone projection from vf10 to integer screen XY */
 BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScreenPoint *outPoint);
@@ -1092,7 +1092,7 @@ BtlResourceDescriptor *btlCreateResourceDescriptor(BtlResourceEntryList *list);
 
 extern s8 dds3PadBitTable[0x20];
 
-extern s8 D_r1_0043EED9[];
+extern s8 effData22[];
 
 extern u64 *dds3PrimFrameRect(s32, s32, s32, s32, s32, u32, u32);
 
@@ -1592,17 +1592,17 @@ void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 max
 }
 
 INCLUDE_ASM(const s32, "code_00190800", fmOVERWRITEOK);
-INCLUDE_SDATA(const s32, "code_00190800", D_r1_0046C168);
+INCLUDE_SDATA(const s32, "code_00190800", btlFormatSelectedResourceNameData);
 
-INCLUDE_SDATA(const s32, "code_00190800", D_r1_0046C170);
+INCLUDE_SDATA(const s32, "code_00190800", btlFormatSelectedResourceNameData2);
 
-INCLUDE_SDATA(const s32, "code_00190800", D_r1_0046C178);
+INCLUDE_SDATA(const s32, "code_00190800", btlUpdateResourceNameEditorData2);
 
-INCLUDE_SDATA(const s32, "code_00190800", D_r1_0046C180);
+INCLUDE_SDATA(const s32, "code_00190800", btlUpdateResourceNameEditorData3);
 
-INCLUDE_SDATA(const s32, "code_00190800", D_r1_0046C188);
+INCLUDE_SDATA(const s32, "code_00190800", fmData);
 
-INCLUDE_SDATA(const s32, "code_00190800", D_r1_0046C190);
+INCLUDE_SDATA(const s32, "code_00190800", fmOVERWRITEOKData);
 
-INCLUDE_SDATA(const s32, "code_00190800", D_r1_0046C198);
+INCLUDE_SDATA(const s32, "code_00190800", fmOVERWRITEOKData2);
 

@@ -443,9 +443,9 @@ void DrawMemFree(void) {
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", FreeEffect);
 
-INCLUDE_RODATA(const s32, "kernel/ModeSelect", D_r1_004601B8);
+INCLUDE_RODATA(const s32, "kernel/ModeSelect", InitExStrMahjonMainProcess);
 
-INCLUDE_RODATA(const s32, "kernel/ModeSelect", D_r1_004601D0);
+INCLUDE_RODATA(const s32, "kernel/ModeSelect", InitExStrMahjonDrawProcess);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", ManageModelPhase);
 
@@ -643,87 +643,87 @@ void nbPlaySe(s32 no)
 INCLUDE_ASM(const s32, "kernel/ModeSelect", Start_mjn);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", ShutDown);
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E7E0);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", gMjnRun);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E7E8);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", ManageEndHanchanPhaseData);
 
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", Work_mjn);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E7F8);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E800);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry2);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E808);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry3);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E810);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry4);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E818);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry5);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E820);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry6);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E828);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry7);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E830);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry8);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E838);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry9);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E840);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry10);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E848);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry11);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E850);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry12);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E858);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry13);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E860);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry14);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E868);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry15);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E870);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry16);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E878);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry17);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E880);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry18);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E888);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry19);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E890);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry20);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E898);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry21);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8A0);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry22);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8A8);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry23);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8B0);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry24);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8B8);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8C0);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry25);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8C8);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry2);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8D0);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry26);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8D8);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry27);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8E0);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallSprintfDataEntry28);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8E8);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry3);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8F0);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry4);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E8F8);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry5);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E900);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry6);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E908);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry7);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E910);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry8);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E918);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry9);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E920);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry10);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E928);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", sdfCallCounterDrawGlyphAtGridCellTableEntry11);
 

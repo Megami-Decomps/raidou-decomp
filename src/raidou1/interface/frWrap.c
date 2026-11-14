@@ -441,9 +441,9 @@ extern s32 mnuGetTitleEffectFrameCounter(void);
 
 extern _FRQ *frFontLinkGlyph(_FRQ *, _FRQ *, s32);
 
-extern u8 D_r1_003E8760[];
+extern u8 itfDrawThreePanelBorderBandsData[];
 
-extern u8 D_r1_003E8768[];
+extern u8 itfDrawThreePanelBorderBandsData2[];
 
 extern s32 frDefaultFontHandle;
 
@@ -972,5 +972,5 @@ u32 frFreeFontTable(frFontNode_t *ringBase) {
     return 1;
 }
 
-INCLUDE_SDATA(const s32, "interface/frWrap", D_r1_0046C1E8);
+INCLUDE_SDATA(const s32, "interface/frWrap", frWrapEmptyString);
 

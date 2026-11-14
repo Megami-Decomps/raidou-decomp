@@ -1382,7 +1382,7 @@ typedef union UiQuadColor {
 
 typedef char UiQuadColorSizeCheck[sizeof(UiQuadColor) == 0x10 ? 1 : -1];
 
-extern const UiQuadColor D_r1_0044A820;
+extern const UiQuadColor itfQueueOffsetTexturedRectTable;
 
 #include "dds/sdf_packet_alloc.h"
 
@@ -2085,13 +2085,13 @@ u16 itfMesMngGetStatManager(void) {
     return itfMesMngManager.flags;
 }
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A600);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelChange);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A610);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelPosition);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A620);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelRightBottom);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A630);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfMesDebugLabelLeftTop);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngDebugProc);
 
@@ -2549,7 +2549,7 @@ void itfQueueOffsetTexturedRect(s32 *bounds, s32 *region, s32 x, s32 y,
                    s32 alpha, sdfTexHandle_t *texture, sdfDrawTag_t *command) {
     s32 positions[4];
     s32 uv[4];
-    UiQuadColor color = D_r1_0044A820;
+    UiQuadColor color = itfQueueOffsetTexturedRectTable;
 
     positions[0] = (bounds[0] + x) << 4;
     positions[1] = (bounds[1] + y) << 3;
@@ -2569,47 +2569,47 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", InputPasswdDraw);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfInputPasswd);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A6A0);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCalcMesFlowItfSubTable);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A730);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfFunc2Table);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A760);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuffTable);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A7B0);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuffTable2);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A7D0);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuffTable3);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A7E0);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff2Table);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A810);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff2Table2);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A820);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfQueueOffsetTexturedRectTable);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A830);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff3Table);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A840);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff3Table2);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A910);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff3Table3);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C258);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfData3);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C260);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfData4);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C268);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesDebugMenuLabelsEntry);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C278);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesMarkerEdit);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C280);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesMarkerSelect);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C288);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesDebugItemFormat);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C290);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesMarkerNone);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C298);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesDebugFadeFormat);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C2A0);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfCallGetRandFloatAData);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C2A8);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesDebugLineVertIndex);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C2B0);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", itfMesDebugLineColorIndex);
 

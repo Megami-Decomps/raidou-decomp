@@ -397,7 +397,7 @@ extern sdfTexHandle_t *dds3RenderTexture;
 
 extern u32 dds3TextureViewerPageIndex;
 
-extern u8 D_r1_0046B1E0;
+extern u8 dds3Func13Data;
 
 extern s8 D_003BA7FC;
 
@@ -409,7 +409,7 @@ extern s16 dds3BackgroundFadeSecondRamp;
 
 extern u8 dds3BackgroundFadeColor[4];
 
-extern s8 D_r1_003AD3BB[];
+extern s8 jmsChkCommonInputData4[];
 
 extern f32 D_003245EC[];
 
@@ -417,7 +417,7 @@ extern sdfGrOt_t sdfDebugGrOt;
 
 extern s32 D_003BD6A0[2];
 
-extern u8 D_r1_0046F619;
+extern u8 Act2SubWork2;
 
 extern u16 fadenow;
 
@@ -591,19 +591,19 @@ s32 dds3TaskNoopCallback(dds3ProcessID_t *task);
 /* Seed the shared effect random state with the fixed initialization seed. */
 void dds3InitRandCB(void);
 
-extern s16 D_r1_0046B128;
+extern s16 dds3FrameRunTime;
 
 extern u16 sdfDrawFrameCounter;
 
-extern u16 D_r1_0046B1D0;
+extern u16 dds3DebugGraphUpdateData;
 
 extern u16 D_003BA882;
 
-extern u16 D_r1_0046B1D4;
+extern u16 dds3DebugGraphUpdateData2;
 
 extern u16 D_003BA886;
 
-extern char D_r1_0046B1D8[];
+extern char dds3DebugGraphUpdateData3[];
 
 s32 dds3DebugGraphUpdate(dds3ProcessID_t *task);
 
@@ -621,7 +621,7 @@ extern u32 dds3TextureGetPageIndex(void);
 /* Append the zero-based viewer page and final page index; an empty list prints -1. */
 void dds3TextureDrawPageCounter(sdfDrawTag_t *packetList);
 
-extern const char *D_r1_003AD3E0[];
+extern const char *dds3DrawTextureResourceDetailsData[];
 
 extern char D_0039E170[];
 
@@ -680,7 +680,7 @@ s32 dds3SelectIncompleteResourceAtPageIndex(s32 requestedIndex);
  * select its reached index, then optionally toggle the viewer mode and return 1. */
 s32 dds3TextureViewerHandlePad(void);
 
-extern s32 D_r1_0046B230;
+extern s32 dds3DrawTextureViewerFrameData;
 
 void dds3DrawTextureAllocationMapBlock(void *packetList, s32 x, s32 y, sdfGsMemSlice_t *block, u8 mode);
 
@@ -946,7 +946,7 @@ void dds3PadInitialize(void) {
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3RunProcessList);
 
 void Act2Sub(void) {
-    u8 target = D_r1_0046F619;
+    u8 target = Act2SubWork2;
 
     if (dds3PadVibrationState[1] < target) {
         if (target - dds3PadVibrationState[1] > 0x20) {
@@ -997,17 +997,17 @@ void dds3UpdateVibrationSlots(void) {
         }
     }
 }
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1B0);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", dds3PadStickPrev);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1B1);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", dds3RunProcessListData);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1BF);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", dds3Data26);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1C0);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", dds3PadStickState);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1C1);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", RunProcessData);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1C2);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", GetAnlogKeyData);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1C3);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", sbtlCallBtlSetDevilIDEnemyRotData);
 

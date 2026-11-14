@@ -525,9 +525,9 @@ void sdfCdImageInit(const char *imageFile, const char *dirFile) {
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", sdfInitDeviceSemaphores);
 
-INCLUDE_SDATA(const s32, "sdf/sdfCd", D_r1_0046F368);
+INCLUDE_SDATA(const s32, "sdf/sdfCd", cmpPanelEffList);
 
-INCLUDE_SDATA(const s32, "sdf/sdfCd", D_r1_0046F370);
+INCLUDE_SDATA(const s32, "sdf/sdfCd", sdfCdDirectPrefix);
 
-INCLUDE_SDATA(const s32, "sdf/sdfCd", D_r1_0046F378);
+INCLUDE_SDATA(const s32, "sdf/sdfCd", sdfCdTrayMode);
 

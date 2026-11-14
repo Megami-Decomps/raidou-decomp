@@ -877,5 +877,5 @@ char fileManagerProcName[8] = "fileMan";
 
 u32 mccb = 0;
 
-INCLUDE_SDATA(const s32, "file/fileManager", D_004E156C);
+INCLUDE_SDATA(const s32, "file/fileManager", fmProcTrigSequence_slMainData4);
 

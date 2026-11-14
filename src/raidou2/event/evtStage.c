@@ -243,7 +243,7 @@ void evtFreeAllUnit(void) {
     }
 }
 
-INCLUDE_RODATA(const s32, "event/evtStage", D_r1_0044DCD8);
+INCLUDE_RODATA(const s32, "event/evtStage", evtSetUnitPosTable);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea);
 
@@ -424,7 +424,7 @@ s32 evtStageAnimeControl(s32 type, s32 mode) {
 }
 const char evtKillFieldScriptFormat[0x20] = "kill field script -> [%s]\n";
 
-INCLUDE_SDATA(const s32, "event/evtStage", D_004DF838);
+INCLUDE_SDATA(const s32, "event/evtStage", evtStartEventData);
 
-INCLUDE_SDATA(const s32, "event/evtStage", D_004DF83C);
+INCLUDE_SDATA(const s32, "event/evtStage", evtPendingEventSelection);
 

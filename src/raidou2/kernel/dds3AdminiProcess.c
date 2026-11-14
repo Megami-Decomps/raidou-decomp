@@ -593,13 +593,13 @@ char dds3AdminiProcessName[8] = "Admini";
 
 s32 fclEncycHead = -1;
 
-INCLUDE_RODATA(const s32, "kernel/dds3AdminiProcess", D_r1_00444898);
+INCLUDE_RODATA(const s32, "kernel/dds3AdminiProcess", dds3DebugOwnerProcessName);
 
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_r1_0046B1A4);
+INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", fclEncycTail);
 
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_r1_0046B1A8);
+INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", fclEncycCount);
 
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_r1_0046B1AC);
+INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", fclEncycFree);
 
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_r1_0046B1AF);
+INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", dds3PadInitDone);
 

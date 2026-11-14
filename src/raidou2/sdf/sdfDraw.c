@@ -1107,7 +1107,7 @@ u16 sdfReqDrawDelaySleepCount = 0;
 
 s32 sdfDrawReqQueueIndex = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2CC);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", sdfGrDrawFrameTagHead);
 
 u32 sdfDrawFrameCount = 0;
 
@@ -1115,9 +1115,9 @@ u8 corePktSoftenBias = 0;
 
 s32 sdfMatAllocCount = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2DC);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", sdfForcedAssetTextureMode);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2E0);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", sdfCoreDrawBuffHandle);
 
 f32 sdfFaceDivSoften = 7.0f;
 
@@ -1125,11 +1125,11 @@ f32 sdfFaceDivBias = 0.0f;
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", GlobalParamFlag);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2F4);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", mapBgSetScrollData21);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2F8);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", mapBgSetScrollData22);
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", GlobalParamTransX);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F300);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", mapBgSetScrollData23);
 

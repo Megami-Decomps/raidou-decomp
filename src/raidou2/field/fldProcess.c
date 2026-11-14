@@ -583,21 +583,21 @@ INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldCallDelayedResrcCheck);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA548);
+INCLUDE_RODATA(const s32, "field/fldProcess", ProcSequenceStrBunriHajikiLabel2);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447808);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrBunriHajiki3Label);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA578);
+INCLUDE_RODATA(const s32, "field/fldProcess", EveHitTask_fldStrGitaiHajikiLabel);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA590);
+INCLUDE_RODATA(const s32, "field/fldProcess", ProcSequenceStrGitaiHajiki2Label);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", jtbl_004AA5B0);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", jtbl_004AA6F0);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447938);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldStrFldProcSequence);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447948);
+INCLUDE_RODATA(const s32, "field/fldProcess", fldProcDrawName);
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldTest2);
 
@@ -626,30 +626,30 @@ INCLUDE_ASM(const s32, "field/fldProcess", fldHardSelect1Sub);
 
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA7C0);
+INCLUDE_RODATA(const s32, "field/fldProcess", mapCallMapTable2);
 
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask_fld);
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE824);
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData11);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE828);
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData12);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE82C);
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData13);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE830);
+INCLUDE_SDATA(const s32, "field/fldProcess", ProcSequenceData14);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE838);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapData169);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6CC);
+INCLUDE_SDATA(const s32, "field/fldProcess", fldProcShutDownData);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6D0);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapData52);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6D4);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapData53);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6D8);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapData54);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6DC);
+INCLUDE_SDATA(const s32, "field/fldProcess", mapCallMapNextData);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6E0);
+INCLUDE_SDATA(const s32, "field/fldProcess", fldAutoMapSeqFlags);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6E4);
+INCLUDE_SDATA(const s32, "field/fldProcess", nbCallGetIntPara8Data);
 

@@ -2,8 +2,8 @@
 #include "newdata.h"
 
 extern s32 gMoonFadeFrameMax;
-extern s32 D_r1_0046C5FC;
-extern s32 D_r1_0046C600;
+extern s32 Process2_evtMoonData3;
+extern s32 Process2_evtMoonData4;
 extern f32 gMoonCnt;
 
 s32 evtGetAgeOfMoon(void)
@@ -45,7 +45,7 @@ void evtEnableMoonDraw(void)
     DDS3_GBWK->moonFlags |= 2;
     gMoonCnt = 1.0f;
     gMoonFadeFrameMax = 1;
-    D_r1_0046C600 = 0;
+    Process2_evtMoonData4 = 0;
 }
 
 void evtDisableMoonDraw(void)
@@ -53,33 +53,33 @@ void evtDisableMoonDraw(void)
     DDS3_GBWK->moonFlags &= ~2;
     gMoonCnt = 0.0f;
     gMoonFadeFrameMax = 0;
-    D_r1_0046C600 = 0;
+    Process2_evtMoonData4 = 0;
 }
 
 void evtEnableMoonDraw2(void)
 {
     DDS3_GBWK->moonFlags |= 2;
     gMoonFadeFrameMax = 1;
-    D_r1_0046C600 = 0;
+    Process2_evtMoonData4 = 0;
 }
 
 void evtDisableMoonDraw2(void)
 {
     DDS3_GBWK->moonFlags &= ~2;
     gMoonFadeFrameMax = 0;
-    D_r1_0046C600 = 0;
+    Process2_evtMoonData4 = 0;
 }
 
 void PreCalcFade(s32 count)
 {
     if (count != 0) {
-        if (D_r1_0046C600 != 0) {
-            D_r1_0046C5FC = (count * D_r1_0046C5FC) / D_r1_0046C600;
+        if (Process2_evtMoonData4 != 0) {
+            Process2_evtMoonData3 = (count * Process2_evtMoonData3) / Process2_evtMoonData4;
         } else {
             if (gMoonFadeFrameMax == 0) {
                 count = 0;
             }
-            D_r1_0046C5FC = count;
+            Process2_evtMoonData3 = count;
         }
     }
 }
@@ -89,23 +89,23 @@ void evtMoonFadeIn(s32 count)
     DDS3_GBWK->moonFlags |= 2;
     gMoonCnt = 1.0f;
     PreCalcFade(count);
-    D_r1_0046C600 = count;
+    Process2_evtMoonData4 = count;
     gMoonFadeFrameMax = 1;
 }
 
 void evtMoonFadeOut(s32 count)
 {
     PreCalcFade(count);
-    D_r1_0046C600 = count;
+    Process2_evtMoonData4 = count;
     gMoonFadeFrameMax = 0;
 }
 
 s32 evtMoonFadeCheck(void)
 {
-    if (D_r1_0046C5FC == 0) {
+    if (Process2_evtMoonData3 == 0) {
         return 1;
     }
-    return D_r1_0046C5FC == D_r1_0046C600;
+    return Process2_evtMoonData3 == Process2_evtMoonData4;
 }
 
 INCLUDE_ASM(const s32, "event/evtMoon", CalcBlendColor);
@@ -121,31 +121,31 @@ INCLUDE_ASM(const s32, "event/evtMoon", Shutdown_evtMoon);
 INCLUDE_ASM(const s32, "event/evtMoon", evtMoonInitProcess);
 
 INCLUDE_ASM(const s32, "event/evtMoon", fldFreeAddressProcess);
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F0);
+INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F4);
+INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData2);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", gMoonFadeFrameMax);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5FC);
+INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData3);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C600);
+INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData4);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF864);
+INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData8);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF868);
+INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData9);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", gMoonCnt);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C608);
+INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData5);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C60C);
+INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData6);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C610);
+INCLUDE_SDATA(const s32, "event/evtMoon", evtData13);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C614);
+INCLUDE_SDATA(const s32, "event/evtMoon", addressprocess_id);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C618);
+INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData7);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C620);
+INCLUDE_SDATA(const s32, "event/evtMoon", evtMoonProcessName);
 

@@ -306,21 +306,21 @@ u32 dds3SlowRunCount = 0;
 
 u32 dds3SlowEndCount = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B124);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3DebugSign);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B128);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FrameRunTime);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B12A);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3LastDrawFrameCount);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B12C);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3VblanksPerFrame);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE22E);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3CallEventSubData);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE22F);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FileCmdLoPrio);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B138);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FirstProcessName);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B140);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3DrawFirstProcessName);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B148);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3DrawProcessFlag);
 

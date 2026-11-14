@@ -383,7 +383,7 @@ typedef struct {
     s8 fields[8]; /* Per-row signed lookup values at +0x2. */
 } EvtTblEntry; /* 0xA bytes */
 
-extern EvtTblEntry D_r1_003EF768[];
+extern EvtTblEntry evtData6[];
 
 extern EvtSkyAlphaAnimationStatus skyanime;
 
@@ -485,7 +485,7 @@ extern const char *D_003AE0D8[];
 
 extern char D_003BC080[];
 
-extern char D_r1_0046C920[];
+extern char evtFmtStr[];
 
 /* Draw a project-menu command, including its current toggle/skip option. */
 void evtDrawProjectCommandRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
@@ -729,11 +729,11 @@ extern void evtDrawMotionChangeRow();
 /* sdfMotionCtrlr_t editor row: ctx->value packs group (byte 0), motion number (byte 1), loop flag (byte 2) and interpolation (byte 3). */
 s32 evtUpdateMotionChangeRow(s32 x, s32 y, dds_evtViewerInfo_t *ctx);
 
-extern char D_r1_0046CB78[];
+extern char evtDrawGroupListRowData2[];
 
-extern char D_r1_0046CB70[];
+extern char evtDrawGroupListRowData[];
 
-extern char D_r1_00450960[];
+extern char evtStrUnitAll[];
 
 void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 
@@ -836,7 +836,7 @@ s32 mnuDrawTimedPrompt(s32 x, s32 y, dds_evtViewerInfo_t *work);
 /* Store a countdown and the two optional strings used by timed prompts. */
 void evtSetRuntimeCommandValues(dds_evtViewerInfo_t *runtime, s32 frames, char *firstText, char *secondText);
 
-extern char D_r1_0046CC30[];
+extern char evtViewerDrawGroupRowData[];
 
 void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 
@@ -911,7 +911,7 @@ extern void *D_003BB130;
 
 s32 evtPollEffectFrameControl(s32 x, s32 y, dds_evtViewerInfo_t *runtime);
 
-extern s32 (*D_r1_003EF9A8[])(s32, s32, dds_evtViewerInfo_t *);
+extern s32 (*evtDispatchActionByIndexData[])(s32, s32, dds_evtViewerInfo_t *);
 
 s32 evtDispatchActionByIndex(s32 actionIndex, s32 x, s32 y, dds_evtViewerInfo_t *runtime);
 
@@ -1168,7 +1168,7 @@ s32 evtDispatchActionByIndex(s32 actionIndex, s32 x, s32 y, dds_evtViewerInfo_t 
     if (mode == 11 && actionIndex != mode) {
         return 0;
     }
-    return D_r1_003EF9A8[actionIndex](x, y, runtime);
+    return evtDispatchActionByIndexData[actionIndex](x, y, runtime);
 }
 
 void evtWriteSerializedBytes(s32 output, void *data, s32 size) {
@@ -1529,15 +1529,15 @@ INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub6);
 INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3);
 
 INCLUDE_ASM(const s32, "code_001DAC80", evtCallEventFadeOutAllBgm);
-INCLUDE_SDATA(const s32, "code_001DAC80", D_r1_0046CC80);
+INCLUDE_SDATA(const s32, "code_001DAC80", evtNpcSadaPBData);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", D_r1_0046CC88);
+INCLUDE_SDATA(const s32, "code_001DAC80", evtNpcSadaPBData2);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", D_r1_0046CC90);
+INCLUDE_SDATA(const s32, "code_001DAC80", evtNpcSadaPBData3);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", D_r1_0046CC98);
+INCLUDE_SDATA(const s32, "code_001DAC80", evtNpcSadaPBData4);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", D_r1_0046CCA0);
+INCLUDE_SDATA(const s32, "code_001DAC80", evtMsgSaveOpenError);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", D_r1_0046CCA8);
+INCLUDE_SDATA(const s32, "code_001DAC80", evtPfsDevice);
 

@@ -1889,7 +1889,7 @@ u32 evtOpClearWorldObjectPendingValue(void) {
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_r1_0044DE78);
+INCLUDE_RODATA(const s32, "event/evtCommand", evtStrFldProcSequence);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtWarningMODELLOD);
 
@@ -3331,7 +3331,7 @@ addr_t evtKutiUnit = 0;
 
 const char evtMsgSetSkyAlphaHigh[0x28] = "warning : SET_SKY_A alpha > 255\n";
 
-INCLUDE_SDATA(const s32, "event/evtCommand", D_r1_0046C5E0);
+INCLUDE_SDATA(const s32, "event/evtCommand", evtLipsStopFunction_evtCommandData);
 
-INCLUDE_SDATA(const s32, "event/evtCommand", D_004DF848);
+INCLUDE_SDATA(const s32, "event/evtCommand", evtCallMemset2Data);
 

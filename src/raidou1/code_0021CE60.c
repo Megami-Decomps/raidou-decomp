@@ -1389,11 +1389,11 @@ extern f32 fileSaveHighlightPhase;
 
 extern u8 sdfHddValid;
 
-extern char D_r1_0046D0E0[];
+extern char fileWriteToPfsData[];
 
-extern char D_r1_0046D0E8[];
+extern char fileWriteToPfsData2[];
 
-extern char D_r1_0046D0F0[];
+extern char fileWriteToPfsData3[];
 
 extern char *sdfFileGetHostRoot(void);
 
@@ -2224,7 +2224,7 @@ FileJob *fileAppendJob(FileQueue *queue, u32 id);
 
 FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source);
 
-extern u8 D_r1_0046D0F8[];
+extern u8 fileAppendJobFromCommandPathData[];
 
 FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath);
 
@@ -2665,15 +2665,15 @@ void fileWriteToPfs(FileJobPayload *job, const char *filePath) {
     s32 fd;
 
     if (sdfHddValid != 0) {
-        sprintf(path, D_r1_0046D0E0, filePath);
+        sprintf(path, fileWriteToPfsData, filePath);
         fd = sceOpen(path, 0x602, 0x1B6);
     } else {
-        sprintf(path, D_r1_0046D0E8, sdfFileGetHostRoot(), filePath);
+        sprintf(path, fileWriteToPfsData2, sdfFileGetHostRoot(), filePath);
         fd = sceOpen(path, 0x602);
     }
     fileJobWriteSerializedPayload(fd, job);
     sceClose(fd);
-    sceSync(D_r1_0046D0F0, 0);
+    sceSync(fileWriteToPfsData3, 0);
 }
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileDuplicateJob);
@@ -3031,7 +3031,7 @@ FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source) {
 }
 
 FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath) {
-    printf(D_r1_0046D0F8);
+    printf(fileAppendJobFromCommandPathData);
     return fileAppendJob(queue, (u32)fileJobCreateFromCommandState(commandPath));
 }
 
@@ -3117,10 +3117,10 @@ void fileQueueSaveImage(FileQueue *queue, const char *filePath) {
     FileJob *job;
 
     if (sdfHddValid != 0) {
-        sprintf(path, D_r1_0046D0E0, filePath);
+        sprintf(path, fileWriteToPfsData, filePath);
         fd = sceOpen(path, 0x602, 0x1B6);
     } else {
-        sprintf(path, D_r1_0046D0E8, sdfFileGetHostRoot(), filePath);
+        sprintf(path, fileWriteToPfsData2, sdfFileGetHostRoot(), filePath);
         fd = sceOpen(path, 0x602);
     }
     header = *queue;
@@ -3189,7 +3189,7 @@ void fileQueueSaveImage(FileQueue *queue, const char *filePath) {
         }
     }
     sceClose(fd);
-    sceSync(D_r1_0046D0F0, 0);
+    sceSync(fileWriteToPfsData3, 0);
 }
 
 /* Save a queue image: the queue header, one relocated record per job, then each
@@ -3207,10 +3207,10 @@ void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath) {
     FileJob *job;
 
     if (sdfHddValid != 0) {
-        sprintf(path, D_r1_0046D0E0, filePath);
+        sprintf(path, fileWriteToPfsData, filePath);
         fd = sceOpen(path, 0x602, 0x1B6);
     } else {
-        sprintf(path, D_r1_0046D0E8, sdfFileGetHostRoot(), filePath);
+        sprintf(path, fileWriteToPfsData2, sdfFileGetHostRoot(), filePath);
         fd = sceOpen(path, 0x602);
     }
     image.version = 5;
@@ -3284,7 +3284,7 @@ void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath) {
         }
     }
     sceClose(fd);
-    sceSync(D_r1_0046D0F0, 0);
+    sceSync(fileWriteToPfsData3, 0);
 }
 
 FileQueue *fileQueueCreateFromCommandState(const char *entry) {
@@ -4064,11 +4064,11 @@ INCLUDE_ASM(const s32, "code_0021CE60", effUpdateSectorEmitterSlots);
 INCLUDE_ASM(const s32, "code_0021CE60", effLeaf349);
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileAllocateGridRecordSlots);
-INCLUDE_SDATA(const s32, "code_0021CE60", D_r1_0046D0E0);
+INCLUDE_SDATA(const s32, "code_0021CE60", fileWriteToPfsData);
 
-INCLUDE_SDATA(const s32, "code_0021CE60", D_r1_0046D0E8);
+INCLUDE_SDATA(const s32, "code_0021CE60", fileWriteToPfsData2);
 
-INCLUDE_SDATA(const s32, "code_0021CE60", D_r1_0046D0F0);
+INCLUDE_SDATA(const s32, "code_0021CE60", fileWriteToPfsData3);
 
-INCLUDE_SDATA(const s32, "code_0021CE60", D_r1_0046D0F8);
+INCLUDE_SDATA(const s32, "code_0021CE60", fileAppendJobFromCommandPathData);
 

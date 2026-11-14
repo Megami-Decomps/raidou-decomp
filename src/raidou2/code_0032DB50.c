@@ -748,11 +748,11 @@ GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
 INCLUDE_ASM(const s32, "code_0032DB50", sdfGridSeekSelectedNodeByIndex);
 
 INCLUDE_ASM(const s32, "code_0032DB50", fclLeaf13);
-INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7B8);
+INCLUDE_SDATA(const s32, "code_0032DB50", itfFormatGridValueEntryTextData);
 
-INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7C0);
+INCLUDE_SDATA(const s32, "code_0032DB50", itfFormatGridValueEntryTextData2);
 
-INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7C8);
+INCLUDE_SDATA(const s32, "code_0032DB50", itfFormatGridValueEntryTextData3);
 
-INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7D0);
+INCLUDE_SDATA(const s32, "code_0032DB50", itfFormatGridValueEntryTextData4);
 

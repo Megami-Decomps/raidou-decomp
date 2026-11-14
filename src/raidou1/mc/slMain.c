@@ -1453,7 +1453,7 @@ extern dds3ProcessID_t *D_003BC7F0;
 extern FileLoadMenuState fileLoadMenuState;
 
 /* Far scalar: incomplete array forces non-small-data addressing. */
-extern s32 D_003F97F8[];
+extern s32 slNewCycleData2[];
 
 extern sdfGrOt_t *effPacketSubmissionSurfaces[6];
 
@@ -1984,7 +1984,7 @@ extern u8 sdfViewMatrix[];
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_r1_003AD4E0[];
+extern u8 dds3BillboardGetDirectionRotateData2[];
 
 /* vu0 routine: project the point in vf10 through view/projection and screen scale/bias. */
 void mnuProjectViewPoint(void);
@@ -2947,7 +2947,7 @@ s32 slCalc(dds3ProcessID_t *id) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slDraw_slMain);
 
-INCLUDE_RODATA(const s32, "mc/slMain", D_r1_00455250);
+INCLUDE_RODATA(const s32, "mc/slMain", fmStrSaveloadSpr);
 
 INCLUDE_ASM(const s32, "mc/slMain", fmProcTrigSequence_slMain);
 
@@ -2972,11 +2972,11 @@ INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoDraw);
 
 addr_t baseIconFileHandle = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CDE4);
+INCLUDE_SDATA(const s32, "mc/slMain", fmShutDownData);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CDE8);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData16);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CDEC);
+INCLUDE_SDATA(const s32, "mc/slMain", fmShutDownData2);
 
 s32 slExitWaitCnt = 0;
 
@@ -2990,123 +2990,123 @@ u32 gslDrawFlagFile = 0;
 
 s32 gslAnimCnt = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE08);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData17);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE0C);
+INCLUDE_SDATA(const s32, "mc/slMain", slDrawInfoData15);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE10);
+INCLUDE_SDATA(const s32, "mc/slMain", slFileSelCalcData);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE14);
+INCLUDE_SDATA(const s32, "mc/slMain", fmProcTrigSequence_slMainData);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE18);
+INCLUDE_SDATA(const s32, "mc/slMain", fmProcTrigSequence_slMainData2);
 
 s32 slChooseSaveIndex = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE20);
+INCLUDE_SDATA(const s32, "mc/slMain", slFileSelCalcData2);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE24);
+INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoCursor);
 
 u32 slQueryYesNoMsg = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE2C);
+INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoKeyFlag);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE30);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData18);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE34);
+INCLUDE_SDATA(const s32, "mc/slMain", slData2);
 
 s32 slFileSelError = 0;
 
 s32 gslMode = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE40);
+INCLUDE_SDATA(const s32, "mc/slMain", slData3);
 
 s32 gslInfoCode = 0;
 
 u32 gslErrorCode = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE4C);
+INCLUDE_SDATA(const s32, "mc/slMain", gslErrorKeyFlag);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE50);
+INCLUDE_SDATA(const s32, "mc/slMain", effDebugPrintfData);
 
 s32 gSlWindowCnt = 0;
 
-INCLUDE_RODATA(const s32, "mc/slMain", D_r1_00455270);
+INCLUDE_RODATA(const s32, "mc/slMain", fmStrFileMentCalc);
 
 INCLUDE_RODATA(const s32, "mc/slMain", jtbl_00455280);
 
-INCLUDE_RODATA(const s32, "mc/slMain", D_00455298);
+INCLUDE_RODATA(const s32, "mc/slMain", slQueryYesNoDrawTable);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE58);
+INCLUDE_SDATA(const s32, "mc/slMain", setCallMcGetSlotIndexData);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE5C);
+INCLUDE_SDATA(const s32, "mc/slMain", slData5);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE60);
+INCLUDE_SDATA(const s32, "mc/slMain", fmData2);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE64);
+INCLUDE_SDATA(const s32, "mc/slMain", fmData3);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE68);
+INCLUDE_SDATA(const s32, "mc/slMain", fmShutDownData3);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE6C);
+INCLUDE_SDATA(const s32, "mc/slMain", fmShutDownData4);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE70);
+INCLUDE_SDATA(const s32, "mc/slMain", fmShutDownData5);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE74);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData19);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE78);
+INCLUDE_SDATA(const s32, "mc/slMain", mcFormatSaveFilenameData);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE7C);
+INCLUDE_SDATA(const s32, "mc/slMain", slCallSin2Data);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE80);
+INCLUDE_SDATA(const s32, "mc/slMain", slCallPlaySE2Data);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CE88);
+INCLUDE_SDATA(const s32, "mc/slMain", slErrorWaitMcData);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE90);
+INCLUDE_SDATA(const s32, "mc/slMain", slSaveWriteEnd_baseIcon_slMainData2);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE94);
+INCLUDE_SDATA(const s32, "mc/slMain", slSaveWriteEnd_baseIcon_slMainData3);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CE98);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData20);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CEA0);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData21);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CEA8);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData22);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CEB0);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData23);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CEB8);
+INCLUDE_SDATA(const s32, "mc/slMain", fmProcTrigSequence_slMainData3);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CEC0);
+INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData39);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CEC8);
+INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData40);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CED8);
+INCLUDE_SDATA(const s32, "mc/slMain", slDrawInfoData17);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CEE0);
+INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData41);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CEF0);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData24);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF00);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData25);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF08);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData26);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF10);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData27);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF18);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData28);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF20);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData29);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF28);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData30);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF30);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData31);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF38);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData32);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF40);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData33);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF48);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData34);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF50);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData35);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF58);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData36);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_0046CF60);
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData37);
 

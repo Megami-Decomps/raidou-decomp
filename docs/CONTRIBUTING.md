@@ -55,6 +55,14 @@ matched build, `apply` writes the names into `config/<v>/` and renames `src/` an
 `include/`, and `tools/check_config.py` fails when a pair has two names. A new
 name for a paired symbol goes into both versions' `symbol_addrs.txt`.
 
+Every name's source is in `config/<v>/name_sources.txt`. Inferred names carry
+`method=..; p=..; tier=..` in the note: tier A has measured precision of at least
+0.90, B at least 0.75, C below that or measured on fewer than 20 names, and D is
+unmeasured (names derived from a user function, a string, a unit or a section).
+`config/<v>/revisit_names.tsv` lists every tier B, C and D name, functions and
+data, worst tier first; `tools/revisit_names.py` writes it from `name_sources.txt`
+and `tools/check_config.py` fails when it is stale.
+
 `config/<v>/ida_protos.txt` holds the prototypes the IDB analysis marked strong
 (`tools/xgame/sig_leads.py`), as leads for whoever decompiles the function. Nothing
 reads it.

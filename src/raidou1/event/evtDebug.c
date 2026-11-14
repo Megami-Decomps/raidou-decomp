@@ -123,50 +123,50 @@ void evtChkEndProcess(void)
     evtFreeStage();
 }
 
-INCLUDE_RODATA(const s32, "event/evtDebug", D_r1_0044E9D8);
+INCLUDE_RODATA(const s32, "event/evtDebug", evtSceneDispNameCamera);
 
-INCLUDE_RODATA(const s32, "event/evtDebug", D_r1_0044E9E8);
+INCLUDE_RODATA(const s32, "event/evtDebug", evtSceneDispNameMatter);
 
-INCLUDE_RODATA(const s32, "event/evtDebug", D_r1_0044E9F8);
+INCLUDE_RODATA(const s32, "event/evtDebug", evtSceneDispNameEffect);
 
-INCLUDE_RODATA(const s32, "event/evtDebug", D_r1_0044EA08);
+INCLUDE_RODATA(const s32, "event/evtDebug", evtSceneDispNameStatic);
 
-INCLUDE_RODATA(const s32, "event/evtDebug", D_r1_0044EA18);
+INCLUDE_RODATA(const s32, "event/evtDebug", evtSceneDispRows);
 
 INCLUDE_ASM(const s32, "event/evtDebug", evtSceneDispProcess);
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C628);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtDebugCameraStepData);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C62C);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispWork);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C630);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispTimer);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C634);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispState);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C638);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C640);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry2);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C648);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry3);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C650);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry4);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C658);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry5);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C660);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry6);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C668);
+INCLUDE_SDATA(const s32, "event/evtDebug", nbCameraStateNameEvent);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C670);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry7);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C678);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry8);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C680);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry9);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C688);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry10);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C690);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispRowsEntry11);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C698);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispCountFmt);
 
-INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C6A0);
+INCLUDE_SDATA(const s32, "event/evtDebug", evtSceneDispSerialFmt);
 

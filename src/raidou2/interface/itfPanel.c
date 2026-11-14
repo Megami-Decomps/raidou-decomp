@@ -464,7 +464,7 @@ extern u8 D_003BB1D0[8];
 
 extern void itfDrawThreePanelBorderBands(PanelRect *rect, u32 *colors, u32 tail, s32 width, sdfDrawTag_t *command);
 
-extern u32 D_r1_003E8AE0[];
+extern u32 itfDrawTintedPanelRectData[];
 
 extern u8 D_003BB1D8[8];
 
@@ -990,37 +990,37 @@ INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawSpritePrim);
 void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command) {
     PanelRect rect;
 
-    D_r1_003E8AE0[3] = panel->alpha * ITF_PANEL_TINT_ALPHA_NUMERATOR / ITF_PANEL_TINT_ALPHA_DENOMINATOR;
+    itfDrawTintedPanelRectData[3] = panel->alpha * ITF_PANEL_TINT_ALPHA_NUMERATOR / ITF_PANEL_TINT_ALPHA_DENOMINATOR;
     rect.x0 = panel->left;
     rect.y0 = panel->top;
     rect.x1 = panel->right;
     rect.y1 = panel->bottom;
-    itfDrawThreePanelBorderBands(&rect, D_r1_003E8AE0, panel->renderValue, ITF_PANEL_TINT_BORDER_WIDTH, command);
+    itfDrawThreePanelBorderBands(&rect, itfDrawTintedPanelRectData, panel->renderValue, ITF_PANEL_TINT_BORDER_WIDTH, command);
 }
 
 INCLUDE_ASM(const s32, "interface/itfPanel", DrawTestAlphaPrim);
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_r1_0046C208);
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelSelWinLineVertexIndex_itfPanel);
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_r1_0046C210);
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelSelWinLineVertexIndex);
 
 u8 itfPanelPlainRectVertexIndex[8] = {0, 1, 2, 3, 0, 0, 0, 0};
 
 u8 itfPanelPlainRectColorIndex[8] = {0, 0, 1, 1, 0, 0, 0, 0};
 
-INCLUDE_RODATA(const s32, "interface/itfPanel", D_r1_0044A4D8);
+INCLUDE_RODATA(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrimTable);
 
-INCLUDE_RODATA(const s32, "interface/itfPanel", D_r1_0044A528);
+INCLUDE_RODATA(const s32, "interface/itfPanel", itfCallMiscDrawSpritePrimTable);
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_r1_0046C228);
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelPera1RectVertexIndex);
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_r1_0046C230);
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelPera1RectColorIndex);
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_r1_0046C238);
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelLeftFadeStripVertexIndex);
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_r1_0046C240);
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelLeftFadeStripColorIndex);
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_r1_0046C248);
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrimData3);
 
-INCLUDE_SDATA(const s32, "interface/itfPanel", D_r1_0046C250);
+INCLUDE_SDATA(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrimData4);
 

@@ -283,9 +283,9 @@ extern void frEnableMode(s32 value);
 
 extern u8 frDisableMode(u8 value);
 
-extern u8 D_r1_003E8760[];
+extern u8 itfDrawThreePanelBorderBandsData[];
 
-extern u8 D_r1_003E8768[];
+extern u8 itfDrawThreePanelBorderBandsData2[];
 
 extern s32 frDefaultFontHandle;
 
@@ -619,7 +619,7 @@ s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task) {
     }
     return readyMask;
 }
-INCLUDE_SDATA(const s32, "code_00183B00", D_r1_0046C1EC);
+INCLUDE_SDATA(const s32, "code_00183B00", sdfFileSeekWork2);
 
-INCLUDE_SDATA(const s32, "code_00183B00", D_r1_0046C1F0);
+INCLUDE_SDATA(const s32, "code_00183B00", itfFontTestScriptTask);
 

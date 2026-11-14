@@ -664,16 +664,16 @@ void effBTLPartDelete(effBTL_t *pSkill) {
 
 INCLUDE_ASM(const s32, "effect/effBattle", effLeaf17);
 
-extern s32 D_r1_0046CF84;
+extern s32 effData24;
 
 s32 effBTLSkillGetState(void) {
-    return D_r1_0046CF84;
+    return effData24;
 }
 
-extern s32 D_r1_0046CF88;
+extern s32 effData25;
 
 s32 effBTLSkillGetID(void) {
-    return D_r1_0046CF88;
+    return effData25;
 }
 
 u32 effBTLFieldColorGetOverrideSelector(void) {
@@ -692,25 +692,25 @@ void effLeaf19(void *a0, s32 a1, s32 a2) {
     effBTLFieldColorGetBaseColor2(a0, (s16)a1, (s16)a2);
 }
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455700);
+INCLUDE_RODATA(const s32, "effect/effBattle", filterStrParameterInit);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455710);
+INCLUDE_RODATA(const s32, "effect/effBattle", mfilterDebugMenuStrCenterMove);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455720);
+INCLUDE_RODATA(const s32, "effect/effBattle", mblurStrMultiBlur);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455730);
+INCLUDE_RODATA(const s32, "effect/effBattle", dblurStrDistortionBlur);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455740);
+INCLUDE_RODATA(const s32, "effect/effBattle", filterStrParallelBlur);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455750);
+INCLUDE_RODATA(const s32, "effect/effBattle", mfilterDebugMenuStrMultiFilter);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455760);
+INCLUDE_RODATA(const s32, "effect/effBattle", rblurStrRippleBlur);
 
-INCLUDE_SDATA(const s32, "effect/effBattle", D_r1_0046CF84);
+INCLUDE_SDATA(const s32, "effect/effBattle", effData24);
 
-INCLUDE_SDATA(const s32, "effect/effBattle", D_r1_0046CF88);
+INCLUDE_SDATA(const s32, "effect/effBattle", effData25);
 
-INCLUDE_SDATA(const s32, "effect/effBattle", D_r1_0046CF8C);
+INCLUDE_SDATA(const s32, "effect/effBattle", effBTLSkillID);
 
-INCLUDE_SDATA(const s32, "effect/effBattle", D_r1_0046CF90);
+INCLUDE_SDATA(const s32, "effect/effBattle", effData26);
 

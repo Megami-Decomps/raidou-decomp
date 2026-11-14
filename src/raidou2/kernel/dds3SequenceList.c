@@ -668,5 +668,5 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitNewBattleTest);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckNewBattleTest);
 
-INCLUDE_SDATA(const s32, "kernel/dds3SequenceList", D_r1_0046B2F8);
+INCLUDE_SDATA(const s32, "kernel/dds3SequenceList", CheckNewBattleTestData);
 

@@ -139,11 +139,11 @@ extern u32 effColorEditSelectedKey;
 
 extern u32 effColorEditPage;
 
-extern u32 D_r1_0046D9F8;
+extern u32 effEditScalarTrackData;
 
-extern u32 D_r1_0046D9FC;
+extern u32 effEditScalarTrackData2;
 
-extern u32 D_r1_0046DA00;
+extern u32 effEditScalarTrackData3;
 
 extern u32 effColorEditSelectedAlphaKey;
 
@@ -159,19 +159,19 @@ extern u32 effWindTextureHandle;
 
 extern struct sdfMemHandle_t *D_003BC984;
 
-extern struct sdfMemHandle_t *D_r1_0046D14C;
+extern struct sdfMemHandle_t *effLoadScalyTextureData;
 
 extern s32 effSharedRibbonReferenceCount;
 
-extern u32 D_r1_0046D148;
+extern u32 effSharedAssetReferenceReleaseData;
 
 extern struct SdfTextureFileHeader *effFlashTextureHandles;
 
-extern struct SdfTextureFileHeader *D_r1_0046D124;
+extern struct SdfTextureFileHeader *effCreateTrackSetWithSharedReferencesData;
 
-extern u32 D_r1_0046D108;
+extern u32 sdfGetOrCreateTextureForReferenceData;
 
-extern u32 D_r1_0046D10C;
+extern u32 sdfGetOrCreateTextureForReferenceData2;
 
 typedef struct EffectObjectFlag {
     u8 pad00[0xC];
@@ -182,33 +182,33 @@ extern EffectObjectNode *effFloorModelListHead;
 
 extern u32 effPartsListScroll;
 
-extern s32 D_r1_0046D128[2];
+extern s32 effCreateTrackSetWithSharedReferencesData2[2];
 
-extern RefObj *D_r1_0046D130[2];
+extern RefObj *effData34[2];
 
-extern EffRecordBucket D_r1_00421B60[];
+extern EffRecordBucket effData21[];
 
 extern u32 effSharedTextureReferenceCount;
 
-extern u32 D_r1_0046D170[2];
+extern u32 effResetSlotsData[2];
 
-extern u32 D_r1_0046D178[2];
+extern u32 effResetSlotsData2[2];
 
-extern u8 D_r1_0046D180[2];
+extern u8 effPadVibePower[2];
 
-extern u8 D_r1_0046D188[2];
+extern u8 effData37[2];
 
-extern u8 D_r1_0046D930[];
+extern u8 effData41[];
 
-extern u8 D_r1_0046D938[];
+extern u8 effData42[];
 
-extern u8 *D_r1_0046D91C;
+extern u8 *effData39;
 
-extern u8 D_r1_0046D208[];
+extern u8 effLabelBlur[];
 
-extern u8 D_r1_0046D8F8[];
+extern u8 effCreateFilterTaskData2[];
 
-extern u8 D_r1_0046D870[];
+extern u8 effCreateTwoDimensionalTaskData2[];
 
 extern u8 D_003BD108;
 
@@ -232,21 +232,21 @@ typedef struct EffectResourceEntry {
 
 extern u16 D_003BC944;
 
-extern u8 *D_r1_0046D110;
+extern u8 *sdfGetOrCreateTextureForReferenceData3;
 
-extern struct sdfMemHandle_t *D_r1_0046D118[2];
+extern struct sdfMemHandle_t *effLoadFlashTexturesData[2];
 
-extern s8 D_r1_0046D169;
+extern s8 effData36;
 
 extern f32 D_003BC9A8;
 
-extern char D_r1_0046D928[];
+extern char effData40[];
 
-extern u8 D_r1_0046D920[];
+extern u8 effPollPrimaryFileData[];
 
-extern u8 D_r1_0046D7A0[];
+extern u8 effInitializeResourceQueueData[];
 
-extern u32 D_r1_0046D90C;
+extern u32 effData38;
 
 extern char D_003BD198[];
 
@@ -716,7 +716,7 @@ u32 effConvertParamValue(u32 *kind, void *out, void *in, void *toFloat) {
 
 /* Sum the status-storage byte requirements for the selected record category. */
 u32 effSumRecordStatuses(const EffMappedRecord *record) {
-    EffRecordBucket *group = &D_r1_00421B60[record->category];
+    EffRecordBucket *group = &effData21[record->category];
     u32 statusBytes = 0;
     u32 recordIndex;
 
@@ -1093,7 +1093,7 @@ EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entry
         EffMappedRecord *source = state->source;
 
         if (source != 0 && source->category != 0) {
-            EffRecordBucket *group = &D_r1_00421B60[source->category];
+            EffRecordBucket *group = &effData21[source->category];
             s32 phaseStep = group->step(record, entry, state);
 
             if (state->delay > 0) {
@@ -1248,43 +1248,43 @@ void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width,
     uiDrawGradientColorRect(x, y, z, width, height, (const u32 *)vertexColors, presetValue);
     sdfSubmitGsAlphaOneRegisterPacket(0x44, presetValue);
 }
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E718);
+INCLUDE_SDATA(const s32, "code_002C8188", effData43);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E720);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry15);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E728);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry16);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E730);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry17);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E738);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry18);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E740);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry19);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E748);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry20);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E750);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry21);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E758);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry22);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E760);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry23);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E768);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry24);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E770);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry25);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E778);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry26);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E780);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry27);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E788);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry28);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E790);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry29);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E798);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry30);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E7A0);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry31);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E7A8);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry32);
 
-INCLUDE_SDATA(const s32, "code_002C8188", D_r1_0046E7B0);
+INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry33);
 

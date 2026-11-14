@@ -179,9 +179,9 @@ extern u8 D_003D9178[];
 
 #include "dds/sdf_debug_api.h"
 
-extern u32 D_r1_0046CD38[2];
+extern u32 sndData[2];
 
-extern u32 D_r1_0046CD40;
+extern u32 sndInitializeStreamTransferBuffersData;
 
 extern void mnuInitializeTitleAudioStreams(void);
 
@@ -444,7 +444,7 @@ INCLUDE_ASM(const s32, "sndAt3", sndCallLoad);
 
 INCLUDE_ASM(const s32, "sndAt3", sndCallFileCheckEnd);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_r1_00454CE0);
+INCLUDE_RODATA(const s32, "sndAt3", sndStrSoundat3At3);
 
 INCLUDE_ASM(const s32, "sndAt3", mnuInitializeTitleSoundBuffer);
 
@@ -466,87 +466,87 @@ void sndDeadSePlay_VolAngle(void) {
     mnuReleaseSoundBuffer();
 }
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454D10);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2Demo03Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454D30);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2Demo02Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454D50);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2Demo01Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454D70);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2Ending2Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454D90);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2TitleBgIpu);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454DB0);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0SmovieLoop01Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454DD0);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2EndingIps);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454DF0);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2TgsIps);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454E08);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie616001Ipu);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454E28);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2661002Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454E48);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2661001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454E68);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2660003Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454E88);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2660002Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454EA8);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2660001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454EC8);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2654001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_r1_00454EE8);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie696001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454F08);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie657002Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454F28);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie657001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454F48);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie659001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454F68);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie658002Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454F88);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie658001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_r1_00454FA8);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie695001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454FC8);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie656001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00454FE8);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie653001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00455008);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie652003Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00455028);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie652002Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00455048);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie652001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00455068);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie651002Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_00455088);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie651001Ips);
 
-INCLUDE_RODATA(const s32, "sndAt3", D_004550A8);
+INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie606001Ipu);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_r1_0046CD50);
+INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData2);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_r1_0046CD54);
+INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData3);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_r1_0046CD58);
+INCLUDE_SDATA(const s32, "sndAt3", sndData3);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_r1_0046CD5C);
+INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData4);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_r1_0046CD60);
+INCLUDE_SDATA(const s32, "sndAt3", sndData4);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_r1_0046CD64);
+INCLUDE_SDATA(const s32, "sndAt3", sndData5);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_r1_0046CD68);
+INCLUDE_SDATA(const s32, "sndAt3", sndData6);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_r1_0046CD6C);
+INCLUDE_SDATA(const s32, "sndAt3", sndData7);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_r1_0046CD70);
+INCLUDE_SDATA(const s32, "sndAt3", evtData25);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_0046CD74);
+INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData5);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_0046CD78);
+INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData6);
 
-INCLUDE_SDATA(const s32, "sndAt3", D_0046CD7C);
+INCLUDE_SDATA(const s32, "sndAt3", sndCallSeStopData7);
 

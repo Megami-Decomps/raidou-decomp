@@ -637,15 +637,15 @@ s32 evtUnitMoveType0(evtUnit_t *h) {
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD40);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD50);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable2);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD60);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable3);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD70);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitRotationTarget_evtTable);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD80);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitRotationTarget_evtTable2);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtCalcFrame_UnitMoveType0);
 

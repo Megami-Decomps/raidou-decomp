@@ -1133,69 +1133,69 @@ char mdlPibLabelP2A[8] = "P2A";
 
 char mdlPibLabelD3P[8] = "D3P";
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C3A8);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlColorLabelA);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C3B0);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlColorLabelB);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C3B8);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlColorLabelG);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C3C0);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlColorLabelR);
 
 char mdlColorByteFormat[8] = "%02X";
 
 char mdlPibCursorMark[8] = ">";
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D7E0);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrFaceDiv);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D7F0);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrEffectMode);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D800);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrOptionMode);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D810);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrTextureMode);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D820);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrArrangeMode);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D830);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrFaceDivEdit);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D840);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrCaptureMode);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D850);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrFogEdit);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D860);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrLightEdit);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D870);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrMotionMode);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D880);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrObjectMode);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D890);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrCameraMode);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D8A0);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrModelMode);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D8B0);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrFaceDivParamEdit);
 
-INCLUDE_RODATA(const s32, "model/mdlEffect", D_r1_0044D8C8);
+INCLUDE_RODATA(const s32, "model/mdlEffect", mdlStrModel03);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C3D8);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C3E0);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry2);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C3E8);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry3);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C3F0);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry4);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C3F8);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry5);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C400);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry6);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C408);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry7);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C410);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry8);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C418);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry9);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C420);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry10);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C428);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry11);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect", D_r1_0046C430);
+INCLUDE_SDATA(const s32, "model/mdlEffect", mdlData9Entry12);
 

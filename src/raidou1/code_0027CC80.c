@@ -422,13 +422,13 @@ s32 GetPercentage(void) {
     btlPreviousAiCandidateBucket = slot;
     return slot;
 }
-INCLUDE_SDATA(const s32, "code_0027CC80", D_r1_0046DB00);
+INCLUDE_SDATA(const s32, "code_0027CC80", GetPercentageData);
 
-INCLUDE_SDATA(const s32, "code_0027CC80", D_r1_0046DB04);
+INCLUDE_SDATA(const s32, "code_0027CC80", sbtlData94);
 
-INCLUDE_SDATA(const s32, "code_0027CC80", D_r1_0046DB08);
+INCLUDE_SDATA(const s32, "code_0027CC80", g_itemNo);
 
-INCLUDE_SDATA(const s32, "code_0027CC80", D_r1_0046DB0C);
+INCLUDE_SDATA(const s32, "code_0027CC80", sbtlData95);
 
-INCLUDE_SDATA(const s32, "code_0027CC80", D_r1_0046DB10);
+INCLUDE_SDATA(const s32, "code_0027CC80", cmpSetupData4);
 

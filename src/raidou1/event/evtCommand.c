@@ -1721,7 +1721,7 @@ u32 evtOpClearWorldObjectPendingValue(void) {
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_r1_0044DE78);
+INCLUDE_RODATA(const s32, "event/evtCommand", evtStrFldProcSequence);
 
 ScrCommandResult evtOpModelLodChg(void) {
     s32 lod;
@@ -2373,7 +2373,7 @@ u32 evtCommand_EFFMG1_LOAD(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E298);
+INCLUDE_RODATA(const s32, "event/evtCommand", evtStrEffeplLoad);
 
 const char evtMsgEffmg1LoadHint[48] = "\xa5\xb9\xa5\xaf\xa5\xea\xa5\xd7\xa5\xc8\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\x45\x46\x46\x4d\x47\x31\x5f\x4c\x4f\x41\x44\x28\x29\xa4\xc7\xc2\xd0\xbe\xdd\xa5\xd5\xa5\xa1\xa5\xa4\xa5\xeb\x0a";
 
@@ -3018,7 +3018,7 @@ const char evtMsgObjPathPara0[16] = "PARA0:%08x\n";
 
 const char evtMsgObjPathPara1[16] = "PARA1:%08x\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E610);
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgObjPathMoveNoObj);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtPARA);
 
@@ -3166,7 +3166,7 @@ const char evtMsgReadBeStart[16] = "read BE (%d)..\n";
 
 const char evtMsgDelBeStart[16] = "del BE (%d)..\n";
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E6A0);
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgPmvLoadNoProc);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PMV_LOAD);
 
@@ -3241,7 +3241,7 @@ s32 evtCommand_PATH_LOOP_OFF(void)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E700);
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgPmvRunNoProc);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_LIGHT_PATH_MOVE);
 
@@ -3262,7 +3262,7 @@ s32 evtCommand_LIGHT_PATH_WAIT(void)
     }
 }
 
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E780);
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgTexBeNoProc);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_TEX_BE);
 
@@ -3405,7 +3405,7 @@ u32 evtCallGetIntPara15(void)
     }
     return 1;
 }
-INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E7E8);
+INCLUDE_RODATA(const s32, "event/evtCommand", evtMsgTexLoadNoProc);
 
 const char evtMsgSetSkyAlphaLow[40] = "warning : SET_SKY_A alpha < -255\n";
 
@@ -3413,7 +3413,7 @@ addr_t evtKutiUnit = 0;
 
 const char evtMsgSetSkyAlphaHigh[0x28] = "warning : SET_SKY_A alpha > 255\n";
 
-INCLUDE_SDATA(const s32, "event/evtCommand", D_r1_0046C5E0);
+INCLUDE_SDATA(const s32, "event/evtCommand", evtLipsStopFunction_evtCommandData);
 
-INCLUDE_SDATA(const s32, "event/evtCommand", D_0046C5E4);
+INCLUDE_SDATA(const s32, "event/evtCommand", evtCallMemsetData);
 

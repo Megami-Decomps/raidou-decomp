@@ -1362,7 +1362,7 @@ INCLUDE_ASM(const s32, "code_0034D128", jmsFunc47);
 
 INCLUDE_ASM(const s32, "code_0034D128", mnuSpinForWindowListCount);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463EC0);
+INCLUDE_RODATA(const s32, "code_0034D128", mnuCreateListWithDefaultsTable);
 
 MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
     s32 keys[6] = { 0x20, 0x22, 0x1F, 0x21, 0x22, 0x1F };
@@ -1608,11 +1608,11 @@ INCLUDE_ASM(const s32, "code_0034D128", mnuCompareTertiaryKeyDescending);
 
 INCLUDE_ASM(const s32, "code_0034D128", mnuCompareTertiaryKeyAscending);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F08);
+INCLUDE_RODATA(const s32, "code_0034D128", mnuDrawIconPanelFadeTable);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F20);
+INCLUDE_RODATA(const s32, "code_0034D128", mnuDrawIconRow6Table);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F50);
+INCLUDE_RODATA(const s32, "code_0034D128", mnuDrawIconPairTable);
 
 void mnuSortItems(MenuList *menu, s32 keyIndex, s32 ascending) {
     s32 (*comparators[MNU_SORT_COMPARATOR_COUNT])(MenuListNode **, MenuListNode **) = {
@@ -1706,37 +1706,37 @@ void mnuUpdateFade(s32 *list) {
     }
 }
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_00463F80);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode12);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F90);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode11);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463FA0);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode10);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463FB0);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode9);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463FC0);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode8);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463FD0);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode7);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463FE0);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode6);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463FF0);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode5);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00464000);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode4);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00464010);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode3);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00464020);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode2);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00464030);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrEpisode1);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_00464040);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrPlayMahjong);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00464050);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrCaseFiles);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00464060);
+INCLUDE_RODATA(const s32, "code_0034D128", SetCommand_jmsMenuData4StrCheckIn);
 
-INCLUDE_RODATA(const s32, "code_0034D128", D_00464070);
+INCLUDE_RODATA(const s32, "code_0034D128", jmsStrCommandMenu);
 
-INCLUDE_SDATA(const s32, "code_0034D128", D_r1_0046F130);
+INCLUDE_SDATA(const s32, "code_0034D128", mnuDrawWindowListEntriesData);
 

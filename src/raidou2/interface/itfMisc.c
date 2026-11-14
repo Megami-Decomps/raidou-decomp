@@ -414,9 +414,9 @@ extern void frEnableMode(s32 value);
 
 extern u8 frDisableMode(u8 value);
 
-extern u8 D_r1_003E8760[];
+extern u8 itfDrawThreePanelBorderBandsData[];
 
-extern u8 D_r1_003E8768[];
+extern u8 itfDrawThreePanelBorderBandsData2[];
 
 extern s32 frDefaultFontHandle;
 
@@ -844,17 +844,17 @@ void itfDrawThreePanelBorderBands(DrawVertex *bounds, DrawColorRec *color, u32 t
     vertices[3].x = bounds[0].x;
     vertices[3].y = bounds[1].y;
 
-    itfMiscDrawRectanglePrim(vertices, colors, D_r1_003E8760, D_r1_003E8768, tail, command);
+    itfMiscDrawRectanglePrim(vertices, colors, itfDrawThreePanelBorderBandsData, itfDrawThreePanelBorderBandsData2, tail, command);
     vertices[0].x += borderWidth;
     vertices[1].x += middleWidth;
     vertices[2].x += middleWidth;
     vertices[3].x += borderWidth;
-    itfMiscDrawRectanglePrim(vertices, colors, D_r1_003E8760, D_r1_003E8768 + 4, tail, command);
+    itfMiscDrawRectanglePrim(vertices, colors, itfDrawThreePanelBorderBandsData, itfDrawThreePanelBorderBandsData2 + 4, tail, command);
     vertices[0].x += middleWidth;
     vertices[1].x += borderWidth;
     vertices[2].x += borderWidth;
     vertices[3].x += middleWidth;
-    itfMiscDrawRectanglePrim(vertices, colors, D_r1_003E8760, D_r1_003E8768 + 8, tail, command);
+    itfMiscDrawRectanglePrim(vertices, colors, itfDrawThreePanelBorderBandsData, itfDrawThreePanelBorderBandsData2 + 8, tail, command);
 }
 
 /* Emit a textured triangle fan: each four-float input supplies S/T/Q only.

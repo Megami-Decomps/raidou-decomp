@@ -315,11 +315,11 @@ void movieDebugDrawInfo(void)
 }
 saddr_t PlayingNo = 0;
 
-INCLUDE_SDATA(const s32, "movie/mviManager", D_r1_0046CD88);
+INCLUDE_SDATA(const s32, "movie/mviManager", mnuUpdateMovieDrawShutdownCountdownData);
 
-INCLUDE_SDATA(const s32, "movie/mviManager", D_r1_0046CD90);
+INCLUDE_SDATA(const s32, "movie/mviManager", movieExtIpu);
 
-INCLUDE_SDATA(const s32, "movie/mviManager", D_r1_0046CD98);
+INCLUDE_SDATA(const s32, "movie/mviManager", movieExtIps);
 
-INCLUDE_SDATA(const s32, "movie/mviManager", D_r1_0046CDA0);
+INCLUDE_SDATA(const s32, "movie/mviManager", movieDebugRowFmt);
 

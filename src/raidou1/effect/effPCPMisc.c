@@ -2475,11 +2475,11 @@ void effEveBEDCutDelete(effEveBEDCutHandle_t *hEveBEDCut);
 
 void effEveBEDDelete(struct effBTL_t *hEveBED);
 
-extern u8 D_r1_00401CF8[];
+extern u8 effPCP_ShockWave01_ThunderSpherePoly_Param[];
 
 extern effPCP_ThunderPolyParam_t effPCPMZiodin01ThunderParam[];
 
-extern u8 D_r1_00401DA8[];
+extern u8 effPCP_Houden01_ThunderSpherePoly_Param[];
 
 extern s32 effPCPBlurScreenOffset(f32 value);
 
@@ -2561,13 +2561,13 @@ effPCPBreath_tag *effPCPBreathCreate(void *params, effPCPAgiraoFirePartList_t *h
 
 void dds3EffectPartialMultiBlurDelete(dds3Effect_PartialMultiBlur_t *hPartialMultiBlur);
 
-extern u8 D_r1_00401E48[];
+extern u8 effPCP_Megidoraon01_ThunderSpherePoly_Param[];
 
 void dds3EffectSetRGBA(effHandle_t *pData, u32 abgr);
 
 extern effPCP_ThunderPolyParam_t effPCPZiodin01ThunderParam[];
 
-extern u8 D_r1_00401DF8[];
+extern u8 effPCP_Megidora01_ThunderSpherePoly_Param[];
 
 extern effPCP_ThunderPolyParam_t effPCPMZiodin02ThunderParam[];
 
@@ -4551,7 +4551,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf96);
 void effPCPShockWave01Init(effPCPShockWave01_tag *pPCPShockWave01) {
     effPCPThunderSpherePoly_t *handle;
 
-    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)D_r1_00401CF8);
+    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)effPCP_ShockWave01_ThunderSpherePoly_Param);
     pPCPShockWave01->frame = 0;
     pPCPShockWave01->pThunderPoly = handle;
 }
@@ -4640,7 +4640,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf102);
 void effPCPHouden01Init(effPCPShockWave01_tag *pPCPHouden01) {
     effPCPThunderSpherePoly_t *handle;
 
-    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)D_r1_00401DA8);
+    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)effPCP_Houden01_ThunderSpherePoly_Param);
     pPCPHouden01->frame = 0;
     pPCPHouden01->pThunderPoly = handle;
 }
@@ -5217,7 +5217,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf123);
 void effPCPMegidora01Init(effPCPShockWave01_tag *pPCPMegidora01) {
     effPCPThunderSpherePoly_t *handle;
 
-    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)D_r1_00401DF8);
+    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)effPCP_Megidora01_ThunderSpherePoly_Param);
     pPCPMegidora01->frame = 0;
     pPCPMegidora01->pThunderPoly = handle;
 }
@@ -5287,7 +5287,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf126);
 void effPCPMegidoraon01Init(effPCPShockWave01_tag *pPCPMegidoraon01) {
     effPCPThunderSpherePoly_t *handle;
 
-    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)D_r1_00401E48);
+    handle = effPCPThunderSpherePolyCreate((effPCPThunderSpherePolyParam_t *)effPCP_Megidoraon01_ThunderSpherePoly_Param);
     pPCPMegidoraon01->frame = 0;
     pPCPMegidoraon01->pThunderPoly = handle;
 }
@@ -7637,5 +7637,5 @@ void effPCPHelperBEDDraw(effPCPHelperBED_tag *hData) {
 }
 s32 BlinkMultiBlurCount = 0;
 
-INCLUDE_SDATA(const s32, "effect/effPCPMisc", D_r1_0046D09C);
+INCLUDE_SDATA(const s32, "effect/effPCPMisc", effLeaf150Data);
 

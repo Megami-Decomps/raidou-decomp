@@ -1006,9 +1006,9 @@ dds3ProcessID_t *runninglistl = NULL;
 
 u32 runninglistcnt = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_r1_0046B174);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", runprocess);
 
 char dds3DebugBlockEnd[8] = "\n\n";
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_r1_0046B180);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", dds3DebugTreeLineFmt);
 

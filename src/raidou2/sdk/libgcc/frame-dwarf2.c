@@ -1132,19 +1132,19 @@ frameState_t *frameCallMemset(u32 pc, frameState_t *output)
     return output;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAB70);
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", dpdivStr9TypeInfo);
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAB80);
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", dpdivStr8BadCast);
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DAB90);
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", dpdivStr10BadTypeid);
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DABA0);
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", dpdivStr16UserTypeInfo);
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DABB8);
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", dpdivStr14SiTypeInfo);
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DABD0);
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", sysStr17ClassTypeInfo);
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DABE8);
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", sysStr9Exception);
 
-INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", D_004DABF8);
+INCLUDE_RODATA(const s32, "sdk/libgcc/frame-dwarf2", sysStr13BadException);
 

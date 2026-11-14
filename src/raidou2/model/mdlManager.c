@@ -1839,11 +1839,11 @@ INCLUDE_ASM(const s32, "model/mdlManager", mdlMakeHddFileListDummy);
 INCLUDE_ASM(const s32, "model/mdlManager", mdlMakeHddFileList);
 char mdlModelPathPrefix[8] = "/model/";
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_r1_0046C380);
+INCLUDE_SDATA(const s32, "model/mdlManager", mdlPackedBundleExt);
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_r1_0046C384);
+INCLUDE_SDATA(const s32, "model/mdlManager", mdlHddFileIndexHandle);
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_r1_0046C388);
+INCLUDE_SDATA(const s32, "model/mdlManager", mdlHddFileListHandle);
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_r1_0046C390);
+INCLUDE_SDATA(const s32, "model/mdlManager", mdlWorkPathPrefix);
 

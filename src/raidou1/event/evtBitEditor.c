@@ -2,17 +2,17 @@
 
 INCLUDE_ASM(const s32, "event/evtBitEditor", dds3BitEditorProcess);
 
-INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5B0);
+INCLUDE_SDATA(const s32, "event/evtBitEditor", dds3BitEditorRowBase);
 
-INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5B4);
+INCLUDE_SDATA(const s32, "event/evtBitEditor", dds3BitEditorTable);
 
-INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5B8);
+INCLUDE_SDATA(const s32, "event/evtBitEditor", dds3BitEditorTable2);
 
-INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5C0);
+INCLUDE_SDATA(const s32, "event/evtBitEditor", dds3BitEditorGlyphTemplate);
 
-INCLUDE_SDATA(const s32, "event/evtBitEditor", D_r1_0046C5C8);
+INCLUDE_SDATA(const s32, "event/evtBitEditor", dds3BitEditorColumnFormat);
 
-INCLUDE_SDATA(const s32, "event/evtBitEditor", D_r1_0046C5D0);
+INCLUDE_SDATA(const s32, "event/evtBitEditor", dds3BitEditorRowFormat);
 
-INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5D8);
+INCLUDE_SDATA(const s32, "event/evtBitEditor", evtPendingEventSelection);
 

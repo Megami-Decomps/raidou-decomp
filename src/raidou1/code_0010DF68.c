@@ -437,7 +437,7 @@ extern s32 fileMenuTaskExists(void);
 
 extern void fileStartMemoryCardMenuForMode(FileMenuStartMode mode);
 
-extern u32 D_0046B130;
+extern u32 dds3KernelDebugSign;
 
 extern s32 checkConfigState(void);
 
@@ -489,7 +489,7 @@ extern u32 scrHandleCount;
 
 extern sdfGrOt_t sdfDebugGrOt;
 
-extern s8 D_r1_003AD3BB[];
+extern s8 jmsChkCommonInputData4[];
 
 extern void evtDrawHeapUsageOverlay(sdfGrOt_t *);
 
@@ -997,14 +997,14 @@ scrProcessWork_s *fldFlowParse(const scrHeader_t *header, ScrProcedureIndex proc
 /* End of declarations from src/dds2/game/code_00107EF8.c */
 
 dds3ProcessID_t *evtCreateTestAndSkyTasks(void) {
-    D_0046B130 = 0;
+    dds3KernelDebugSign = 0;
     D_00435D28 = 0;
     evtInitEventTest();
     return evtInitSky();
 }
 
 u32 evtInitializeSelectionScene(void) {
-    D_0046B130 = 1;
+    dds3KernelDebugSign = 1;
     dds3FadeBackgroundStartOut(0);
     evtChkEndProcess();
     evtExitSky();
@@ -1017,14 +1017,14 @@ u32 evtKeepTestSkyModePending(void) {
 }
 
 void evtClearSecondaryWorldAndViewer(void) {
-    D_0046B130 = 0;
+    dds3KernelDebugSign = 0;
     evtFreeStage();
     evtViewerCreateTaskWithSky();
 }
 
 u32 evtInitializeSelectionScreen(void) {
     evtEventViewerDestroyTask();
-    D_0046B130 = 1;
+    dds3KernelDebugSign = 1;
     dds3FadeBackgroundStartOut(0);
     return 0;
 }
@@ -1381,7 +1381,7 @@ void evtDrawHeapUsageOverlay(sdfGrOt_t *surface) {
 
 /* Draw the overlay only when the control byte is zero; return zero in either case. */
 s32 evtDrawConditionalHeapUsageOverlay(void) {
-    if (D_r1_003AD3BB[0] != 0) {
+    if (jmsChkCommonInputData4[0] != 0) {
         return 0;
     }
     evtDrawHeapUsageOverlay(&sdfDebugGrOt);
@@ -1416,23 +1416,23 @@ s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task) {
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "code_0010DF68", D_r1_00444B18);
+INCLUDE_RODATA(const s32, "code_0010DF68", evtStrFh03Th03Gs03);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B300);
+INCLUDE_SDATA(const s32, "code_0010DF68", evtCreateTestAndSkyTasksData);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B308);
+INCLUDE_SDATA(const s32, "code_0010DF68", evtConsoleFontResourceChain);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B310);
+INCLUDE_SDATA(const s32, "code_0010DF68", datData);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B318);
+INCLUDE_SDATA(const s32, "code_0010DF68", datDEBUGCONSOLEData);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B320);
+INCLUDE_SDATA(const s32, "code_0010DF68", evtDrawGeneralHeapUsageGraphData);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B328);
+INCLUDE_SDATA(const s32, "code_0010DF68", evtGeneralHeapPercentFormat);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B32C);
+INCLUDE_SDATA(const s32, "code_0010DF68", sdfData2);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B330);
+INCLUDE_SDATA(const s32, "code_0010DF68", evtDrawHeapUsageOverlayData);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B338);
+INCLUDE_SDATA(const s32, "code_0010DF68", evtDrawHeapUsageOverlayData2);
 

@@ -12,6 +12,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from units import SHARED, SRC, VERSIONS  # noqa: E402
 from xgame.common_names import check as check_common_names  # noqa: E402
+from revisit_names import VERSIONS as REVISIT_VERSIONS, build as build_revisit  # noqa: E402
 
 ROOT = SRC.parent
 errors = []
@@ -52,6 +53,10 @@ for version, spec in VERSIONS.items():
     errors += [f"{version}: {u} is both shared and per-game" for u in sorted(own & shared)]
 
 errors += check_common_names()
+for version in REVISIT_VERSIONS:
+    path = ROOT / "config" / version / "revisit_names.tsv"
+    if not path.is_file() or path.read_text() != build_revisit(version):
+        errors.append(f"{version}: config/{version}/revisit_names.tsv is stale; run tools/revisit_names.py")
 
 if errors:
     print("\n".join(errors), file=sys.stderr)

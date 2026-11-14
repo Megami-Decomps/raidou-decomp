@@ -1564,5 +1564,5 @@ INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf22);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", evtEventFadeOutAllBgm);
 
-INCLUDE_SDATA(const s32, "code_001CA8F8", D_r1_0046CCD0);
+INCLUDE_SDATA(const s32, "code_001CA8F8", evtData22);
 

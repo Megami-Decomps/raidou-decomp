@@ -1,5 +1,6 @@
 # dds-decomp name -> Raidou name, applied to DDS text tools/raidou_c.py carries
 # (tools/xgame/rename_names.py writes it)
+DrawFlag	dds3DrawFlag
 DrawProcedure	dds3MatterObjectBasicDrawProcedure
 KWLN_H	DDS3_PROCESS_H
 KwlnDrawVectorParams	sdf3DFogParam_t
@@ -22,6 +23,7 @@ dds3PadUpdate	dds3RunProcessList
 dds3SceneBasicAdd	dds3AddSceneBasicData
 dds3SceneBasicDelete	dds3DeleteSceneBasicData
 dds3SceneBasicSearchName_dds3SceneBasic	dds3SceneBasicSearchName
+dds3TheWorld_dds3WorldBasic	dds3TheWorld
 dspReadWindowSecondPanelValue	fclGetSelMessagePos
 dspRequestMessageWindowModeOne	fclUpdateMessage
 effBillboardWorkRelease	Delete_effMuzzleFlash
@@ -60,6 +62,7 @@ eff_177850	effThunderSparkCreate
 eff_177A48	effThunderReleaseSparkWork
 eff_178128	effThunderUpdateOrbitingSparks
 eff_1AEC58	effCallBillboardSetMode
+endinglistf_dds3KernelCore	endinglistf
 evtBlendParamsG	evtHokanHeikouBlur
 evtCopyEntryStringToActiveWindow	fclSetMessageVar
 evtEventViewerAttachIndexedObject	ValidateUnitPosChange
@@ -98,9 +101,12 @@ fileQueueSetScale	effPartsScaleSet
 fileReplaceEffectSurfaceQueues	PartsListSet
 fldResetPlayerSceneObjectState	fldReleaseUnitPad
 fld_1374F0	fldCallMemset4
+gMsgFlag_fclMisc	gMsgFlag
 gcc2_compiled__1	quorem
 gcc2_compiled__2	std
 gohProcessEnd	campKillProcesses
+gslDrawFlagBg_slMain	gslDrawFlagBg
+gslMode_slMain	gslMode
 itfCommandSelectOptionWithFade	MesMngSelect
 itfMesGetEntryCount	itfGetMessageNo
 itfMesGetWindowEntryItems	itfGetMessageType

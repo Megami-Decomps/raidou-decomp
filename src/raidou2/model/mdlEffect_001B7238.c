@@ -730,37 +730,37 @@ void mdlGetDebugEntry(s32 valueEditIndex) {
 INCLUDE_ASM(const s32, "model/mdlEffect_001B7238", mdlDebugPrintEffectScale2);
 
 INCLUDE_ASM(const s32, "model/mdlEffect_001B7238", soften_bias_Process);
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C528);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", mdlDebugLightCursor);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C530);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", mdlDebugLightFormat);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C538);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", mdlDebugLabelFog);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C540);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", mdlDebugLabelFar);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C548);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", mdlDebugLabelMin);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C550);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", mdlDebugLabelNear);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C558);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", mdlDebugIntFormat);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C560);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", mdlDebugLabelMax);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C568);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", mdlDebugScaleCursor);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C570);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", softenBiasLabelDivide);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C578);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", softenBiasLabelBias);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C580);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", softenBiasLabelSoften);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_004DF7E8);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", softenBiasCursor);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C590);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", softenBiasValueFormat);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C598);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", softenBiasAdjustFormat);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C5A0);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", softenBiasLabelOn);
 
-INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", D_r1_0046C5A8);
+INCLUDE_SDATA(const s32, "model/mdlEffect_001B7238", softenBiasLabelOff);
 
