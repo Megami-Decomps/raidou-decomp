@@ -355,7 +355,7 @@ void sdf3DSetDefaultFog(u8 *aFog) {
     sdf3DFogDefault = EE_ADDR(aFog);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", func_r1_003686B0);
+INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3MakeScreenParam);
 
 /* vu0 routine: parallel-light packet and lighting basis construction */
 void sdf3DMakeLightParallelPacket(sdf3DLightParallelPacket_t *aPacket, sdf3DLight_t **aLights, sdfVector4_t *aAmbient) {

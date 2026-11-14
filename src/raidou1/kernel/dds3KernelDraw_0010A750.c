@@ -1721,7 +1721,7 @@ void eglLinkTri(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 rgba0, s32 r
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", func_r1_0010AF68);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", eglLinkMaru2D);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A750", func_r1_0010B0F0);
 

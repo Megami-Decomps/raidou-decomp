@@ -40,9 +40,9 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001824F8);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00182DC0);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00171EB0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSpotTask);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00172460);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaGankTask);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00183C20);
 
@@ -58,13 +58,13 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173088);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_001730A8);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_001730C0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_FLUSH);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173138);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001843A8);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_001732E8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaStockOnCheck);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001846A0);
 

@@ -294,9 +294,9 @@ extern char dds3ObjectBaseTiakiANodeName[8];
 extern u16 frMessageCode;
 /* End of declarations from src/smt3/basic/dds3ObjectBase.c */
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_r1_001190E8);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseInitControlWorkData_dds3ObjectBase);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_r1_00119180);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreeControlWorkData_dds3ObjectBase);
 
 void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 mask)
 {
@@ -361,7 +361,7 @@ void *dds3ObjectBaseGetModelHandle(dds3Basic_t *pObjectBasic)
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreeModelHandle);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_r1_00119518);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakeUnit);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakeMatter);
 
@@ -371,7 +371,7 @@ INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseRegistArea);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_r1_001197E0);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_r1_001198C0);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseModelLinkOt);
 
 void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic)
 {

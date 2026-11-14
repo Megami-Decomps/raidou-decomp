@@ -106,15 +106,15 @@ s32 func_r1_001ADBA8(void)
 
 INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADBC8);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADC50);
+INCLUDE_ASM(const s32, "event/evtMoon", Process2_evtMoon);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AE7E0);
+INCLUDE_ASM(const s32, "event/evtMoon", evtMoonAddMove);
 
 INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEA70);
 
 INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEAF0);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEAF8);
+INCLUDE_ASM(const s32, "event/evtMoon", evtMoonInitProcess);
 
 INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEB80);
 INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F0);

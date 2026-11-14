@@ -493,7 +493,7 @@ void dds3EffectObjectBasicDestructor(dds3Basic_t *aPtr) {
     aPtr->workdata = NULL;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011BE60);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicMainProcedure);
 
 s32 dds3EffectObjectBasicDrawProcedure(dds3Basic_t *aPtr) {
     dds3EffectObjectBasicWorkData_t *data;
@@ -601,13 +601,13 @@ INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C6F0);
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C738);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C808);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicAddD3P2);
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C848);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C888);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddEPLEffect);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C958);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicAddEPL);
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddBEDEffect);
 

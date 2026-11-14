@@ -2596,7 +2596,7 @@ void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135520);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135730);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldDrawFrushOt);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135968);
 
@@ -2627,39 +2627,39 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135EB8);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135F48);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135FC0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboFoceSet);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136068);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136128);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboFoceSet3);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136290);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001363B8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001363F8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboTask);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136DA0);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136E10);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136E90);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136F58);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapNakamaWachLock);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136FB8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137028);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001370E8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvAdd);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137228);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137268);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137288);
+INCLUDE_ASM(const s32, "field/fldFileResolver", sndSeStatus);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001372F8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvTask);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137C40);
 
@@ -2681,17 +2681,17 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138038);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138098);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001381D0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayer_MoveCalc);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138638);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138658);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138688);
+INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerCalc_Nml);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_00138698);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00139210);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalc);
 
 void fldEnableCameraObjectFlag(void) {
     dds3ObjectBaseOnFlag(fldPlayerObject, 1);

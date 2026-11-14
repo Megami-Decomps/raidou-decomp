@@ -1403,9 +1403,9 @@ sdfModelMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *aRoot, s32 aId)
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360D10);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360DB0);
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPosMatrix_sdfModel);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360DF0);
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPos_sdfModel);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360E30);
 

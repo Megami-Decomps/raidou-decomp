@@ -1506,7 +1506,7 @@ void camFollowOffsetVec(FileJob *job, void *dst);
 void camAimRotation(CamAim *obj, void *dst);
 
 /* Per-frame update: refreshes the queue rotation when an aim flag (0x60) is set, then repositions and re-notifies every job whose start time (job+0x80) has been reached. */
-void fileQueueUpdate(FileQueue *queue);
+void effPartsDraw(FileQueue *queue);
 
 void fileQueueDestroy(FileQueue *queue);
 

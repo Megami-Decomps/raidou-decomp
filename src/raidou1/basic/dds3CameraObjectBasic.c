@@ -170,11 +170,11 @@ void dds3CameraObjectBasicSetWorldEye(dds3Basic_t *camera, const u128 *worldEye)
 void dds3CameraObjectBasicLoadWorldEyeIntoVu(dds3Basic_t *camera);
 /* End of declarations from src/dds1/basic/dds3CameraObjectBasic.c */
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_r1_00119E98);
+INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", Constructor);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_r1_00119EF8);
+INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", Destructor);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_r1_00119F38);
+INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", Mainprocuder);
 
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_r1_0011A020);
 

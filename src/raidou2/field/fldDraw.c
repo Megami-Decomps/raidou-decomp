@@ -494,7 +494,7 @@ void fldPoint3To2(f32 *x3, f32 *y3, f32 z3, f32 x2, f32 y2) {
     *y3 = result.y;
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00132E28);
+INCLUDE_ASM(const s32, "field/fldDraw", fldPoint3ToZ);
 
 INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00132EF0);
 

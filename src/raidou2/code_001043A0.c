@@ -1152,7 +1152,7 @@ s32 dds3EnsureDefaultResource(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_001043A0", func_r1_00105238);
+INCLUDE_ASM(const s32, "code_001043A0", dds3InitDrawEnvSub);
 INCLUDE_SDATA(const s32, "code_001043A0", D_r1_0046B1D0);
 
 INCLUDE_SDATA(const s32, "code_001043A0", D_r1_0046B1D4);

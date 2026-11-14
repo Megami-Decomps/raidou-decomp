@@ -417,11 +417,11 @@ void evtLoadValueSecondaryVectorIntoVu(dds3Basic_t *node) {
 
 }
 
-INCLUDE_ASM(const s32, "code_0011EB08", func_r1_0011EB50);
+INCLUDE_ASM(const s32, "code_0011EB08", datGlobalWorkInit);
 
-INCLUDE_ASM(const s32, "code_0011EB08", sdfDestroyRuntimeTask);
+INCLUDE_ASM(const s32, "code_0011EB08", datGlobalWorkDestroy);
 
-INCLUDE_ASM(const s32, "code_0011EB08", func_r1_0011EC28);
+INCLUDE_ASM(const s32, "code_0011EB08", UserInit);
 
 INCLUDE_ASM(const s32, "code_0011EB08", func_0011EC50);
 
@@ -503,7 +503,7 @@ INCLUDE_ASM(const s32, "code_0011EB08", func_0011F5D0);
 
 INCLUDE_ASM(const s32, "code_0011EB08", func_0011F620);
 
-INCLUDE_ASM(const s32, "code_0011EB08", func_r1_0011F720);
+INCLUDE_ASM(const s32, "code_0011EB08", datGetStockDevilNums);
 
 INCLUDE_ASM(const s32, "code_0011EB08", func_0011F790);
 
@@ -595,7 +595,7 @@ INCLUDE_ASM(const s32, "code_0011EB08", func_r1_00121548);
 
 INCLUDE_ASM(const s32, "code_0011EB08", func_r1_00121560);
 
-INCLUDE_ASM(const s32, "code_0011EB08", func_r1_00121578);
+INCLUDE_ASM(const s32, "code_0011EB08", sdatCalc_GetBadStatus);
 
 INCLUDE_ASM(const s32, "code_0011EB08", func_00121590);
 

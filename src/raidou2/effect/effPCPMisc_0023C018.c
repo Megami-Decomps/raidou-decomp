@@ -1735,7 +1735,7 @@ struct CamAim;
 extern void camAimRotation(struct CamAim *obj, void *dst);
 
 /* Per-frame update: refreshes the queue rotation when an aim flag (0x60) is set, then repositions and re-notifies every job whose start frame (job+0x80) has been reached; the frame counter only advances when the effect-frame pause flag is clear. */
-void fileQueueUpdate(FileQueue *queue);
+void effPartsDraw(FileQueue *queue);
 
 /* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
  * an ID for other job kinds. Destroy children before their parent jobs. */
@@ -2522,7 +2522,7 @@ void effInitModelVUState(dds3ModelHandle_t *model) {
     model->flags &= ~MDL_SKIP_TRANSFORMS;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00224EB0);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", effHandleCreate);
 
 /* Clear the lighting attachment before destroying its model context. */
 void effDestroyModelContext(dds3ModelHandle_t *owner) {

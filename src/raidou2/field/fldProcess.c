@@ -543,7 +543,7 @@ extern u32 fldEncountFlags;
 extern u32 fldEncountTimer[2];
 /* End of declarations from src/smt3/field/fldProcess.c */
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012CA98);
+INCLUDE_ASM(const s32, "field/fldProcess", ProcSequence);
 
 INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012F7A0);
 
@@ -577,7 +577,7 @@ s32 fldEncountTestFlag(u32 flag)
     return (fldEncountFlags & flag) != 0;
 }
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012F950);
+INCLUDE_ASM(const s32, "field/fldProcess", fldProcTrigSequence);
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
 
@@ -620,11 +620,11 @@ INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEC0);
 
 INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEF8);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FF48);
+INCLUDE_ASM(const s32, "field/fldProcess", mapCallMap);
 
 INCLUDE_ASM(const s32, "field/fldProcess", func_r1_001301C0);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_001301D0);
+INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA7C0);
 

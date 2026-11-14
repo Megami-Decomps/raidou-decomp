@@ -1265,7 +1265,7 @@ void btlSurpriseChanceHook(s32 chance);
 s32 evtPushRequestedRosterPresence(void);
 /* End of declarations from src/dds1/newdata/datCalc.c */
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001215C8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datAddMoney);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001215F8);
 

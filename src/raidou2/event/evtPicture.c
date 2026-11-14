@@ -216,7 +216,7 @@ INCLUDE_ASM(const s32, "event/evtPicture", evtStartPictureProcess);
 
 INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB368);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB408);
+INCLUDE_ASM(const s32, "event/evtPicture", evtPictureLoadStartTexFile);
 
 INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB430);
 

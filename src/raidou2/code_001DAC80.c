@@ -1522,11 +1522,11 @@ INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C6BC0);
 
 INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C6C10);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C6D08);
+INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData1);
 
 INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C7258);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C7338);
+INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3);
 
 INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C9840);
 INCLUDE_SDATA(const s32, "code_001DAC80", D_r1_0046CC80);

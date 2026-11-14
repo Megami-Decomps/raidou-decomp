@@ -733,11 +733,11 @@ void fclLoadStage(s32 MajorNo, s32 MinorNo)
     evtLoadArea(MajorNo, MinorNo);
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123BF8);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclFilterOFF);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123C58);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclFreeStage);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123C78);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclInitPanelPos);
 
 void fclScriptForcedEnd(u8 *PID)
 {
@@ -833,7 +833,7 @@ s32 fclStartMessage(s32 MsgNo)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123F80);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclStartSelMessage);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123FB0);
 
@@ -846,7 +846,7 @@ s8 evtGetCapturedWindowPanelValue(void) {
     return dspCapturedSoundMode;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124010);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclEndMessageEx);
 
 /* Finish/reset the singleton window with notification and return whether it existed. */
 u32 evtFinishMessageWindowAndNotify(void) {
@@ -876,9 +876,9 @@ s32 fclChkMessage(void)
     return (s8)(u8)gMsgFlag;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124130);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclChkSelMessage);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124178);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclUpdateMessageEx);
 
 /* Request mode one from the existing message-window worker. */
 void dspRequestMessageWindowModeOne(void) {
@@ -891,7 +891,7 @@ void evtCopyEntryStringToActiveWindow(s32 slotIndex, const char *sourceText) {
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124298);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_001242A0);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclSetMessageInvalid);
 
 void fcl_2142F0(s32 x, s32 y)
 {
@@ -899,7 +899,7 @@ void fcl_2142F0(s32 x, s32 y)
     itfMesMngSetOffsetY1(gMsgID, -((0x15F - y) * 8));
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124358);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclChkMessageDraw);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_001287A0);
 

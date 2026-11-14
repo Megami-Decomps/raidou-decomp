@@ -408,7 +408,7 @@ dds3AdminiData_t *GetAdminiProcessData(void)
     return dds3GetProcessData(dds3SearchProcessName(dds3AdminiProcessName));
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_001029A0);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiCallSequence2);
 
 /* Requests retain byte-sized sequence/size storage: 256 bytes records zero.
  * Release the old payload before copying the new one. */
@@ -492,7 +492,7 @@ s32 dds3AdminiGetPrevHistoryFlag(void)
     return work->FlagHistory[(work->HistoryPointer + 7) & 7];
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_00102BB8);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", StartSequence);
 
 saddr_t dds3AdminiEndCheck(dds3ProcessID_t *id)
 {
@@ -515,7 +515,7 @@ saddr_t dds3AdminiEndCheck(dds3ProcessID_t *id)
     return EE_ADDR_S(dds3AdminiStartSequence);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_00102DB0);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", NeoProcess);
 
 void dds3AdminiNeoShutdown(dds3ProcessID_t *id)
 {

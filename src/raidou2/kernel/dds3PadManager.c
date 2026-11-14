@@ -937,7 +937,7 @@ void dds3PadInitialize(void) {
     dds3PadVibrationTable[1] = 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_r1_00103BE8);
+INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadUpdate);
 
 void kwlnPadStepLargeMotorLevel(void) {
     u8 target = kwlnLargeMotorTarget;
@@ -959,7 +959,7 @@ void kwlnPadStepLargeMotorLevel(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_r1_00104140);
+INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadAct);
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_r1_00104210);
 

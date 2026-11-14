@@ -1506,7 +1506,7 @@ void camFollowOffsetVec(FileJob *job, void *dst);
 void camAimRotation(CamAim *obj, void *dst);
 
 /* Per-frame update: refreshes the queue rotation when an aim flag (0x60) is set, then repositions and re-notifies every job whose start time (job+0x80) has been reached. */
-void fileQueueUpdate(FileQueue *queue);
+void effPartsDraw(FileQueue *queue);
 
 void fileQueueDestroy(FileQueue *queue);
 
@@ -1986,4 +1986,4 @@ FileJobPayload *fileJobCreateFromJob(FileJobPayload *request) {
     return job;
 }
 
-INCLUDE_ASM(const s32, "code_0021C768", func_r1_0021CDB8);
+INCLUDE_ASM(const s32, "code_0021C768", Delete_effParts);

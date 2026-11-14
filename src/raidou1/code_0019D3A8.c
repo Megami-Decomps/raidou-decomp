@@ -1907,7 +1907,7 @@ void mdlFreeViewResources(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0019D3A8", func_r1_001A16D8);
+INCLUDE_ASM(const s32, "code_0019D3A8", mapTitleEnd);
 
 INCLUDE_RODATA(const s32, "code_0019D3A8", D_r1_0044DC58);
 

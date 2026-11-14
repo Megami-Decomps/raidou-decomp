@@ -2224,7 +2224,7 @@ scrProcessWork_s *scrPrintProcedureStart(const scrHeader_t *header, const scrTyp
 scrProcessWork_s *fldFlowParse(const scrHeader_t *header, ScrProcedureIndex procedureIndex);
 /* End of declarations from src/dds1/game/code_00107FD8.c */
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00105400);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitDrawEnv);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitRenderDrawEnv);
 
@@ -2290,7 +2290,7 @@ void *dds3GetRenderTexture(void)
     return dds3RenderTexture;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00105CF8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RunQuake);
 
 /* Zero amplitude stops the quake; zero duration leaves it running indefinitely. */
 void dds3SetQuake(s32 frame, s32 range)
@@ -2436,21 +2436,21 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001064B8);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001067A8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001067E8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaIn);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106880);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106928);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaOut);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106940);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106AB8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001069C0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3ChangeBistaMode);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106A18);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaUpdate);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106B20);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DrawBista);
 
 void dds3SetScreenFovy(f32 fovy)
 {
@@ -3471,7 +3471,7 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001093D0);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001094E8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00109600);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkTest);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
 void evtSubmitFixedAlphaBlend(s32 fixedAlpha) {

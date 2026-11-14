@@ -2537,9 +2537,9 @@ void evtMessageExtraActionNoOp(void);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldMakeBlockBasicFL2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132100);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", MakeObjectBasic2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132308);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldFileResolverFL1);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132390);
 
@@ -2598,7 +2598,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132558);
 void func_r1_00132560(void) {
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132568);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLoadFile);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_001325D8);
 INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6F0);

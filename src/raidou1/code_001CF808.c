@@ -466,7 +466,7 @@ extern char D_003771D8[];
 
 #include "dds/sdf_debug_api.h"
 
-extern void mnuCreateTitleEffectTask(void);
+extern void ProcessInit(void);
 
 extern u8 D_003BC5A0[];
 
@@ -556,7 +556,7 @@ extern void p2sdLoadSMGFile(s32);
 
 extern void mnuInitializeTitleAudioStreams(void);
 
-extern void mnuCreateTitleEffectTask(void);
+extern void ProcessInit(void);
 
 void mnuInitializeTitleAudioAndEffects(void);
 
@@ -567,7 +567,7 @@ s32 mnuIncrementTitleEffectFrameCounter(dds3ProcessID_t *task);
 void mnuDestroyTitleEffectTask(dds3ProcessID_t *task);
 
 /* Allocate the two-word effect state and attach it to the frame-counter task. */
-void mnuCreateTitleEffectTask(void);
+void ProcessInit(void);
 
 void mnuResetTitleEffectState(s32 command);
 
@@ -631,7 +631,7 @@ char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename) {
     return strcat(pathBuffer, filename);
 }
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CF838);
+INCLUDE_ASM(const s32, "code_001CF808", sndInit);
 
 INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CF8F8);
 
@@ -639,7 +639,7 @@ INCLUDE_ASM(const s32, "code_001CF808", mnuIncrementTitleEffectFrameCounter);
 
 INCLUDE_ASM(const s32, "code_001CF808", mnuDestroyTitleEffectTask);
 
-INCLUDE_ASM(const s32, "code_001CF808", mnuCreateTitleEffectTask);
+INCLUDE_ASM(const s32, "code_001CF808", ProcessInit);
 
 void mnuResetTitleEffectState(s32 command) {
     TitleEffectState *effectState = (TitleEffectState *)dds3GetProcessData(mnuTitleSoundTask);

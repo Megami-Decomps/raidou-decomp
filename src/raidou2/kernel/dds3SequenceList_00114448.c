@@ -168,9 +168,9 @@ extern dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
 
 extern s32 dds3StartMenuProcess(dds3ProcessID_t *id);
 
-extern void func_r1_001DA7C0(void);
+extern void fmShutDownFade(void);
 
-extern void func_r1_001DA7C8(void);
+extern void fmShutDown(void);
 
 extern s32 fmShutDown2(void);
 
@@ -519,7 +519,7 @@ void scrUnlinkHandle(scrProcessWork_s *work)
     scrHandleCount--;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList_00114448", func_r1_00112090);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList_00114448", AddScript);
 
 scrProcessWork_s *fldFlowParse(scrHeader_t *header, s32 procno)
 {

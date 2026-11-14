@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "field/fldMain", func_r1_0012AF78);
+INCLUDE_ASM(const s32, "field/fldMain", fldSetUnitFollowCamera);
 
 INCLUDE_RODATA(const s32, "field/fldMain", D_r1_00446CB0);
 

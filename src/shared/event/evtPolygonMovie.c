@@ -765,7 +765,7 @@ u32 evtHokanColor(s32 hokan, f32 ratio, u32 c1, u32 c2)
     return c1;
 }
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B8A30);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanSceneLight);
 
 /* vu0 routine: blend a vector and an RGBA8888 colour by t (missing input =
  * default vector/colour) */
@@ -1025,25 +1025,25 @@ void evtBlendParamsH(s32 enable, f32 t, const EvtBlendKey *a, const EvtBlendKey 
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B99E0);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtRunUnitMode);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B9B90);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtSetFlag);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B9BC8);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtResetFlag);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B9C00);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtStopMover);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B9CA8);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtMoverFrameSet);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", InitPolygonMovieWorkData);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B9D78);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", GetWorkData1);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA008);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtGetWorkData2and3);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA378);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtFreeWorkData1);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA418);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtFreeWorkData2and3);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA498);
 
@@ -1057,7 +1057,7 @@ INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA740);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtGetPolygonMovieWorkData2);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BAAF0);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtStart2);
 
 INCLUDE_SDATA(const s32, "event/evtPolygonMovie", D_r1_0046C7F0);
 

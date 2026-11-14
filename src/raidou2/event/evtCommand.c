@@ -1977,7 +1977,7 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8B40);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8C50);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8C68);
+INCLUDE_ASM(const s32, "event/evtCommand", evtLipsExecFunction);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_001BED70);
 
@@ -2706,7 +2706,7 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AB4C0);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AB500);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AB530);
+INCLUDE_ASM(const s32, "event/evtCommand", CallBattleSub_evtCommand);
 
 s32 evtCommand_CALL_BATTLE(void)
 {

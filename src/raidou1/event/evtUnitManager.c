@@ -40,7 +40,7 @@ enum EvtTargetInfoFlags {
 extern dds3LightState_t dds3LightParam;
 
 /* vu0 routine: unpack the unit's colours into a parallel light packet. */
-void func_r1_001A5AB8(evtUnit_t *h);
+void MakeLightPacket(evtUnit_t *h);
 
 void evtLinkLightObjectBasic(evtUnit_t *h, dds3Basic_t *light, s32 frame);
 
@@ -397,7 +397,7 @@ f32 GetSplineLength(dds3PathBasicControl_t *path) {
     return length;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A4318);
+INCLUDE_ASM(const s32, "event/evtUnitManager", UnitAnime);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseLightRGB);
 
@@ -411,30 +411,30 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5920);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A59A8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5A30);
+INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseLightDir2);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5AB8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", MakeLightPacket);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5CB0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkLightObjectBasic_evt);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5D20);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5D88);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkExternalLightPacket);
 
 void evtUnlinkExternalLightPacket(evtUnit_t *h) {
     h->flags = h->flags & ~EVT_UNIT_FLAG_VALUE_CHANGED;
-    func_r1_001A5AB8(h);
+    MakeLightPacket(h);
 }
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightAndAmbient);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5E68);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightAndAmbient3);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5F58);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir_evt);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5FC8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir1);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6038);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir2);
 
 void evtSetUnitColorRGB(evtUnit_t *h, s32 frame, u32 rgb) {
     h->rgbDuration = SDF_FRAMES(frame);
@@ -510,7 +510,7 @@ evtUnit_t *evtGetUnitHandle2(dds3Basic_t *unit) {
     return ((dds3UnitObjectBasicWorkData_t *)unit->workdata)->hUnit;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6390);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtCreateUnitHandle);
 
 s32 evtDeleteUnitHandle(evtUnit_t *h) {
     void *endpointWork;
@@ -536,15 +536,15 @@ s32 evtGetUnitStat(evtUnit_t *h) {
     return h->motionState;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A65A8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitStat);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A65B8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetWaitMotion);
 
 void evtSetWaitMotionSpeed(evtUnit_t *h, f32 sp) {
     h->transitionMotionScale = sp;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A65C8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetWaitHokanFrame);
 
 s32 evtCheckUnitWait(evtUnit_t *h) {
     s32 state = evtGetUnitStat(h);
@@ -596,7 +596,7 @@ void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A67D8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitRotationTarget_evt);
 
 /* Flat, negated direction of the rotation in quat, offset by the effect object's point, aimed with evtRotateUnitTowardTarget. */
 s32 evtUnitRotationQuat(evtUnit_t *h, f32 *rot, f32 radio) {
@@ -647,7 +647,7 @@ INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD70);
 
 INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD80);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6B08);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtCalcFrame_UnitMoveType0);
 
 s32 evtUnitMoveTypePathTrace(evtUnit_t *h) {
     sdfVector4_t v;
@@ -667,7 +667,7 @@ s32 evtUnitMoveTypePathTrace(evtUnit_t *h) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6DE8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMovePos);
 
 void evtSetUnitRot1(evtUnit_t *h, s128 *rot, s32 para1) {
     if (para1 > 0 && para1 <= 100) {
@@ -738,16 +738,16 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A72A8);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7310);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7338);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitManagerPrimaryFunc);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7A20);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtInitCustomSceneLight);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7AC8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetCustomSceneLightData);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7BB0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetCustomSceneLightData_SoftenAndBias);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7BE0);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7CF0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtMakeCustomSLightPacket);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7EF0);

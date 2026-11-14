@@ -580,13 +580,13 @@ void mdlMarkAndProcessObjectNodes(void) {
     } while (node != NULL);
 }
 
-INCLUDE_ASM(const s32, "code_002250F8", func_r1_002258D0);
+INCLUDE_ASM(const s32, "code_002250F8", Create_effModel);
 
-INCLUDE_ASM(const s32, "code_002250F8", func_r1_00225998);
+INCLUDE_ASM(const s32, "code_002250F8", Delete_effModel);
 
-INCLUDE_ASM(const s32, "code_002250F8", func_r1_002259E8);
+INCLUDE_ASM(const s32, "code_002250F8", Copy_effModel);
 
-INCLUDE_ASM(const s32, "code_002250F8", func_r1_00225A40);
+INCLUDE_ASM(const s32, "code_002250F8", ResourceCopy_effModel);
 
 INCLUDE_ASM(const s32, "code_002250F8", func_r1_00225B00);
 
@@ -693,7 +693,7 @@ void effCopyResourceOwner(EffResourceOwner *dst, EffResourceOwner *src) {
 
 INCLUDE_ASM(const s32, "code_002250F8", func_r1_00226110);
 
-INCLUDE_ASM(const s32, "code_002250F8", func_r1_00226188);
+INCLUDE_ASM(const s32, "code_002250F8", Draw_effHelper);
 
 /* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
 void effLoadModelPrimaryVector(EffResourceOwner *work, const f32 *position) {

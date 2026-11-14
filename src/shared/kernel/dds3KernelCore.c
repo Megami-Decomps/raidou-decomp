@@ -507,7 +507,7 @@ void RunningProcess(void)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_r1_00100E38);
+INCLUDE_ASM(const s32, "kernel/dds3KernelCore", _KillProcess);
 
 void EndProcess(dds3ProcessID_t *setp)
 {

@@ -2856,7 +2856,7 @@ extern u32 D_0037EC20[];
 
 EffQuadWork *effCreateQuadWork(FileJobPayload *job);
 
-void effReleaseRenderResources(EffQuadWork *work);
+void Delete_effPolygonTex(EffQuadWork *work);
 
 EffQuadWork *effCloneRenderResourceWork(const EffQuadWork *source);
 
@@ -5006,7 +5006,7 @@ void effBillboardEntryFrameReset(EffBillboardWork *work) {
     work->frame = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00229060);
+INCLUDE_ASM(const s32, "code_00226EC8", Draw_effMuzzleFlash);
 
 INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00229168);
 
@@ -8342,13 +8342,13 @@ void effSubmitIndexedRenderPacket(u32 index) {
     effCurrentRenderPacket = NULL;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00232638);
+INCLUDE_ASM(const s32, "code_00226EC8", PartsCreate);
 
-INCLUDE_ASM(const s32, "code_00226EC8", effReleaseRenderResources);
+INCLUDE_ASM(const s32, "code_00226EC8", Delete_effPolygonTex);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00232C38);
+INCLUDE_ASM(const s32, "code_00226EC8", Copy_effPolygonTex);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00232E30);
+INCLUDE_ASM(const s32, "code_00226EC8", ResourceCopy_effPolygonTex);
 
 void effResetRenderResourceFrame(EffQuadWork *work) {
     work->frame = 0;
@@ -8368,11 +8368,11 @@ void effSetRenderResourceScale(EffQuadWork *work, f32 scale) {
     work->scale = scale;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00232F80);
+INCLUDE_ASM(const s32, "code_00226EC8", Update_effPolygonTex);
 
 INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00233AA0);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00233AD8);
+INCLUDE_ASM(const s32, "code_00226EC8", Render);
 
 void effRandomizeParticleFields(EffClassWork *work) {
     u32 index = 0;
@@ -11741,7 +11741,7 @@ INCLUDE_ASM(const s32, "code_00226EC8", effCreateConfiguredSlotNode);
 
 INCLUDE_ASM(const s32, "code_00226EC8", effCreateSlotNodeFromFileJob);
 
-INCLUDE_ASM(const s32, "code_00226EC8", effDestroyOwnedResources);
+INCLUDE_ASM(const s32, "code_00226EC8", Delete_effObjectParticle);
 
 INCLUDE_ASM(const s32, "code_00226EC8", effCloneOwnedState);
 

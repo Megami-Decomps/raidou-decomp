@@ -168,9 +168,9 @@ extern dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
 
 extern s32 dds3StartMenuProcess(dds3ProcessID_t *id);
 
-extern void func_r1_001DA7C0(void);
+extern void fmShutDownFade(void);
 
-extern void func_r1_001DA7C8(void);
+extern void fmShutDown(void);
 
 extern s32 fmShutDown2(void);
 
@@ -2184,7 +2184,7 @@ struct CamAim;
 extern void camAimRotation(struct CamAim *obj, void *dst);
 
 /* Per-frame update: refreshes the queue rotation when an aim flag (0x60) is set, then repositions and re-notifies every job whose start frame (job+0x80) has been reached; the frame counter only advances when the effect-frame pause flag is clear. */
-void fileQueueUpdate(FileQueue *queue);
+void effPartsDraw(FileQueue *queue);
 
 /* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
  * an ID for other job kinds. Destroy children before their parent jobs. */
@@ -2848,7 +2848,7 @@ void CallShopTest(s32 flg, void *data)
     fclShopProcessStart(data);
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", fileQueueUpdate);
+INCLUDE_ASM(const s32, "code_0021CE60", effPartsDraw);
 
 /* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
  * an ID for other job kinds. Destroy children before their parent jobs. */

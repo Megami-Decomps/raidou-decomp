@@ -1290,7 +1290,7 @@ INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F158);
 
 INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F188);
 
-INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F1B8);
+INCLUDE_ASM(const s32, "code_002AB610", sBtlGetBezier);
 
 INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F218);
 
@@ -1308,7 +1308,7 @@ INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F3D8);
 
 INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F3F0);
 
-INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F470);
+INCLUDE_ASM(const s32, "code_002AB610", sdatDevilName);
 
 INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F490);
 
@@ -1332,7 +1332,7 @@ INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F340);
 
 INCLUDE_ASM(const s32, "code_002AB610", func_002AC438);
 
-INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F970);
+INCLUDE_ASM(const s32, "code_002AB610", sBtlGetBSTNameFont);
 
 INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027F988);
 
@@ -1340,7 +1340,7 @@ INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027FA08);
 
 INCLUDE_ASM(const s32, "code_002AB610", func_002AC610);
 
-INCLUDE_ASM(const s32, "code_002AB610", func_r1_0027FB40);
+INCLUDE_ASM(const s32, "code_002AB610", sBtlCheckVerticalArea);
 
 /* vu0 routine: vf10.xyz = normalize(e x (e x f)),
  * e = vertexB - vertexA, f = vertexC - vertexA.

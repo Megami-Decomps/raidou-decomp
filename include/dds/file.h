@@ -117,7 +117,7 @@ void fileQueueSetRotation(struct FileQueue *queue, const f32 rotation[4]);
 
 void fileQueueSetScale(struct FileQueue *queue, f32 scale);
 
-void fileQueueUpdate(struct FileQueue *queue);
+void effPartsDraw(struct FileQueue *queue);
 
 void fileQueueNotifyAllJobsComplete(struct FileQueue *queue);
 

@@ -238,13 +238,13 @@ INCLUDE_ASM(const s32, "event/evtStage", func_001A2F60);
 
 INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A30F0);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3100);
+INCLUDE_ASM(const s32, "event/evtStage", evtGetDefaultPosBustUp);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3270);
+INCLUDE_ASM(const s32, "event/evtStage", evtLoadUnitBustUp);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A34E8);
+INCLUDE_ASM(const s32, "event/evtStage", evtSetLightBustup);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A36D8);
+INCLUDE_ASM(const s32, "event/evtStage", evtGetDrawBustupNums);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtSetUnitPos);
 
@@ -275,7 +275,7 @@ INCLUDE_RODATA(const s32, "event/evtStage", D_r1_0044DCD8);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3A00);
+INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea_FromMemory_evt);
 
 void evtStartEvent(s32 no) {
     sprintf(evtStageScriptPath, "/event/e%03d/e%03d/scr/e%03d.bf", no - no % 10, no, no);

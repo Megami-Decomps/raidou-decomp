@@ -397,7 +397,7 @@ INCLUDE_ASM(const s32, "code_001D02F8", mnuLoadTitleStreamFrameData);
 
 INCLUDE_ASM(const s32, "code_001D02F8", mnuStoreTaskResult);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D11D0);
+INCLUDE_ASM(const s32, "code_001D02F8", GetVolume);
 
 /* Install the fixed title track and queue its compressed frames under the lock. */
 void mnuStartFixedSoundStream(void) {
@@ -412,25 +412,25 @@ void mnuStartFixedSoundStream(void) {
     SignalSema(mnuTitleStreamSemaphore);
 }
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D12F8);
+INCLUDE_ASM(const s32, "code_001D02F8", sndBgmLoadId);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D1458);
+INCLUDE_ASM(const s32, "code_001D02F8", BgmPlaySub);
 
 INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D14D8);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D1570);
+INCLUDE_ASM(const s32, "code_001D02F8", sndBgmPlay);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D1630);
+INCLUDE_ASM(const s32, "code_001D02F8", sndBgmFadeIn);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D1708);
+INCLUDE_ASM(const s32, "code_001D02F8", sndBgmContinue);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D17F0);
+INCLUDE_ASM(const s32, "code_001D02F8", sndBgmStop);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D1848);
+INCLUDE_ASM(const s32, "code_001D02F8", sndBgmTop);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D1878);
+INCLUDE_ASM(const s32, "code_001D02F8", sndBgmFadeOut);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D1928);
+INCLUDE_ASM(const s32, "code_001D02F8", sndBgmFadeOut2);
 
 INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D19A0);
 
@@ -456,7 +456,7 @@ INCLUDE_ASM(const s32, "code_001D02F8", mnuInstallTitleSoundBufferFromData);
 
 INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D1FC8);
 
-INCLUDE_ASM(const s32, "code_001D02F8", func_r1_001D2028);
+INCLUDE_ASM(const s32, "code_001D02F8", sndSePlay);
 
 INCLUDE_ASM(const s32, "code_001D02F8", func_001D20C8);
 

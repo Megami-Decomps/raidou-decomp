@@ -374,7 +374,7 @@ s32 effInvokeOptionalNodeInstanceCallback(EffNode *node);
 EffNode *effCreateNodeFromParameter(u32 parameter);
 /* End of declarations from src/dds1/effect/effManager.c */
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E97E0);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectManagerInit);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9888);
 
@@ -462,7 +462,7 @@ void dds3EffectDelete(effNode_t *pData)
     sdfChipFreeDirect(pData);
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9B50);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectDraw_dds3Effect);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9B88);
 
@@ -476,7 +476,7 @@ INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9C78);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9CB0);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9CE8);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetLoop_dds3Effect);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9D28);
 
@@ -507,7 +507,7 @@ effNode_t *dds3EffectLoad(effResourceHeader_t *pD3P)
     return node;
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9E78);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectLoadEPL);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9E98);
 

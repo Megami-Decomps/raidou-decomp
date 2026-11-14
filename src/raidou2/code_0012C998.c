@@ -1146,11 +1146,11 @@ INCLUDE_ASM(const s32, "code_0012C998", func_0012D068);
 
 INCLUDE_ASM(const s32, "code_0012C998", func_0012D0E0);
 
-INCLUDE_ASM(const s32, "code_0012C998", func_r1_00128C98);
+INCLUDE_ASM(const s32, "code_0012C998", mapRndEncParamSet);
 
 INCLUDE_ASM(const s32, "code_0012C998", func_r1_00128CE0);
 
-INCLUDE_ASM(const s32, "code_0012C998", func_r1_00128D70);
+INCLUDE_ASM(const s32, "code_0012C998", mapSetPlayersVisible);
 
 INCLUDE_ASM(const s32, "code_0012C998", func_0012D5C8);
 
@@ -1170,7 +1170,7 @@ INCLUDE_ASM(const s32, "code_0012C998", func_r1_001291E8);
 
 INCLUDE_ASM(const s32, "code_0012C998", func_r1_00129228);
 
-INCLUDE_ASM(const s32, "code_0012C998", func_r1_00129270);
+INCLUDE_ASM(const s32, "code_0012C998", mapRaidouBackUpPosReset);
 
 INCLUDE_ASM(const s32, "code_0012C998", func_r1_001293A0);
 
@@ -1242,9 +1242,9 @@ INCLUDE_ASM(const s32, "code_0012C998", func_r1_00129B20);
 
 INCLUDE_ASM(const s32, "code_0012C998", func_r1_00129B58);
 
-INCLUDE_ASM(const s32, "code_0012C998", func_r1_00129B68);
+INCLUDE_ASM(const s32, "code_0012C998", fldPlayerALoadStart);
 
-INCLUDE_ASM(const s32, "code_0012C998", func_r1_00129BA0);
+INCLUDE_ASM(const s32, "code_0012C998", fldPlayerALoadEndCheck);
 
 INCLUDE_ASM(const s32, "code_0012C998", func_r1_00129C40);
 
@@ -1292,7 +1292,7 @@ INCLUDE_ASM(const s32, "code_0012C998", func_0012EB78);
 
 INCLUDE_ASM(const s32, "code_0012C998", fldCleanupFieldScene);
 
-INCLUDE_ASM(const s32, "code_0012C998", func_r1_0012A238);
+INCLUDE_ASM(const s32, "code_0012C998", fldRegistUnitPad);
 
 void fldResetPlayerSceneObjectState(void) {
     if (fldPlayerObject != 0) {

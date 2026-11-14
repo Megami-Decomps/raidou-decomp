@@ -430,7 +430,7 @@ extern s32 nbMaeFlag;
 extern s32 nbMaeLoadDone;
 /* End of declarations from src/smt3/newbattle/nbSound.c */
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002CEE00);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", InitEx);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002CF148);
 
@@ -441,21 +441,21 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002CF240);
 void func_r1_002CF280(void) {
 }
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002CF288);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", FreeEffect);
 
 INCLUDE_RODATA(const s32, "kernel/ModeSelect", D_r1_004601B8);
 
 INCLUDE_RODATA(const s32, "kernel/ModeSelect", D_r1_004601D0);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002CF2C0);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", ManageModelPhase);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002CF8A8);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", PadDealer);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D00B8);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", InitHanchan);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D0190);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D0238);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", TsumikomiDecide);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D0368);
 
@@ -491,49 +491,49 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_002D16D8);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_002D1778);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D1960);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", SetHaipai);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D1A30);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D1A68);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", NextKyoku);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D1B00);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", InitKyoku);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D1D38);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D1D68);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D1DD0);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", Ryukyoku);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D2090);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", TochuRyukyoku);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D21C0);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", SetTehai14);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D2250);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D2310);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D23B0);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", Suteru);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D24B8);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D27F0);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", AITurn);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D2A68);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D2A90);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D2C48);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", Ignore);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D2E18);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", mjnAfterConfirmationKan);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D2E70);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", NakiWait);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D30F8);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D3CF0);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4390);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", ApplyRonRyukyoku);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D45A0);
 
@@ -557,7 +557,7 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4D40);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4DC0);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4DF0);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", AskRon);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4E90);
 
@@ -595,7 +595,7 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D5C28);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D5DE0);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D60C8);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", ApplyRon);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D6100);
 
@@ -605,7 +605,7 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D61D8);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D6228);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D6280);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", InitDevil);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_002D6390);
 
@@ -615,11 +615,11 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_002D65F8);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D69D0);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D6AF8);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", ManageSummonPhase);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_002D6B70);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D7040);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", InitInterface);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D7080);
 
@@ -627,11 +627,11 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D70B0);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D7540);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D75B0);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", ManageEndHanchanPhase);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D7840);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", EndMahjong);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D7860);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", ModelLoad_mjn);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D78B8);
 
@@ -642,7 +642,7 @@ void nbPlaySe(s32 no)
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D78F0);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D7918);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", ShutDown);
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E7E0);
 
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E7E8);

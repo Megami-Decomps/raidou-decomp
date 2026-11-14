@@ -216,9 +216,9 @@ void evtUpdateSkyAlpha(void)
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtSky", func_r1_001BB7E8);
+INCLUDE_ASM(const s32, "event/evtSky", Process1);
 
-INCLUDE_ASM(const s32, "event/evtSky", func_r1_001BB838);
+INCLUDE_ASM(const s32, "event/evtSky", Shutdown_evtSky);
 
 void evtExitSky(void)
 {

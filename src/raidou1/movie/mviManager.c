@@ -202,7 +202,7 @@ void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor)
     }
 }
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D2728);
+INCLUDE_ASM(const s32, "movie/mviManager", moviePlay);
 
 void movieStop(void)
 {

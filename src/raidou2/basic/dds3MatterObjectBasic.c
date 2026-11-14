@@ -179,9 +179,9 @@ void dds3MatterObjectBasicDestructor(dds3Basic_t *aPtr) {
     sdfChipFreeDirect(work);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_r1_0011B860);
+INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", MainProcedure);
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_r1_0011BA60);
+INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", DrawProcedure);
 
 INCLUDE_SDATA(const s32, "basic/dds3MatterObjectBasic", D_r1_0046B48C);
 

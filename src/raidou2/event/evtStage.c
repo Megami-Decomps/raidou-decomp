@@ -247,7 +247,7 @@ INCLUDE_RODATA(const s32, "event/evtStage", D_r1_0044DCD8);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3A00);
+INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea_FromMemory_evt);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtStartEvent);
 

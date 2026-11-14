@@ -1,7 +1,7 @@
 #include "common.h"
 
 extern void *func_r1_00267550(void);
-extern void func_r1_0024F520(void *work);
+extern void sBtlSetCutScroll(void *work);
 
 #ifdef NON_MATCHING
 /* Same bytes as retail, but +0x40 is a raw offset into the work block that
@@ -9,7 +9,7 @@ extern void func_r1_0024F520(void *work);
 s32 btlRunCameraMotionResetTask(void) {
     void *work = func_r1_00267550();
 
-    func_r1_0024F520((u8 *)work + 0x40);
+    sBtlSetCutScroll((u8 *)work + 0x40);
     return 1;
 }
 #else

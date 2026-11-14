@@ -930,11 +930,11 @@ sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 number) {
 
 INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DDEF8);
 
-void func_r1_001DDF08(billHandle_t *hBillboard, float rot) {
+void dds3BillboardSetRotate_dds3Billboard(billHandle_t *hBillboard, float rot) {
     hBillboard->rot = rot;
 }
 
-void func_r1_001DDF10(billHandle_t *hBillboard, float x, float y) {
+void dds3BillboardSetScale_dds3Billboard(billHandle_t *hBillboard, float x, float y) {
     hBillboard->childScaleX = x;
     hBillboard->childScaleY = y;
 }
@@ -1119,7 +1119,7 @@ void dds3BillboardSetXYOffset(billHandle_t *hBillboard, float x, float y) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DE318);
+INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardGetDirectionRotate);
 
 /* vu0 routine: 1 - |axis . normalized view direction|. */
 f32 dds3BillboardGetDirectionScale(void *pPos, f32 *pVec) {

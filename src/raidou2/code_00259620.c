@@ -1691,7 +1691,7 @@ extern u32 D_0037EC20[];
 
 EffQuadWork *effCreateQuadWork(FileJobPayload *job);
 
-void effReleaseRenderResources(EffQuadWork *work);
+void Delete_effPolygonTex(EffQuadWork *work);
 
 EffQuadWork *effCloneRenderResourceWork(const EffQuadWork *source);
 

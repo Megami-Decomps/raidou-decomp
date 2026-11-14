@@ -3453,7 +3453,7 @@ dds3Particle_Basic_t *dds3ParticleCreate(s32 dispatchIndex, void *creationData) 
     return createdObject;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", func_r1_001F1270);
+INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleDelete);
 
 /* Draw live particles after applying the requested number of emitter updates. */
 void dds3ParticleDraw(dds3Particle_Basic_t *hData) {
@@ -3529,11 +3529,11 @@ void dds3ParticleSetScale(dds3Particle_Basic_t *hData, f32 scale) {
     dds3ParticleReset(hData);
 }
 
-u16 func_r1_001F1590(dds3Particle_Basic_t *hData) {
+u16 dds3ParticleGetState(dds3Particle_Basic_t *hData) {
     return hData->state;
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", func_r1_001F1598);
+INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleSetPosition);
 
 /* vu0 routine: compose the supplied matrix with the emitter's source matrix. */
 void dds3ParticleSetRotateMatrix(dds3Particle_Basic_t *hData, void *pMatrix) {
@@ -3543,7 +3543,7 @@ void dds3ParticleSetRotateMatrix(dds3Particle_Basic_t *hData, void *pMatrix) {
     SDF_VU0_STOREMATRIX(hData->rot);
 }
 
-INCLUDE_ASM(const s32, "effect/parManager", func_r1_001F1608);
+INCLUDE_ASM(const s32, "effect/parManager", dds3ParticleSetRGBA);
 
 void dds3ParticleSetTypeFlag(dds3Particle_Basic_t *object, s32 mode) {
     mode &= 0xFF;
@@ -3710,7 +3710,7 @@ void dds3ParticleExpSetScale(dds3Particle_Basic_t *hData, float scale) {
 }
 
 u16 func_r1_001F1BF8(dds3Particle_Basic_t *hData) {
-    return func_r1_001F1590(hData);
+    return dds3ParticleGetState(hData);
 }
 
 INCLUDE_ASM(const s32, "effect/parManager", func_r1_001F1C18);

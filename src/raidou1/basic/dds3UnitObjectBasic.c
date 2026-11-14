@@ -447,7 +447,7 @@ f32 dds3ShortestAngleDelta(f32 fromDegrees, f32 toDegrees) {
     return toDegrees - fromDegrees;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011A818);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicSetKubiTerget);
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011A970);
 

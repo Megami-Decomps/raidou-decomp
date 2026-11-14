@@ -1401,7 +1401,7 @@ INCLUDE_ASM(const s32, "code_001CA8F8", mnuAdjustTimelineDurations);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CAD48);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CADB8);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtGetValueNewSLightFrame);
 
 void mnuCampInitializeDisplayDefaults(CampDisplayDefaults *display) {
     display->x = 0x100;
@@ -1504,7 +1504,7 @@ EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *
 
 INCLUDE_ASM(const s32, "code_001CA8F8", campResolvePendingValue);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CB640);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtDrawTexture);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", fldResetCampSceneEntries);
 
@@ -1562,7 +1562,7 @@ INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CC058);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CC0F8);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CC160);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtEventFadeOutAllBgm);
 
 INCLUDE_SDATA(const s32, "code_001CA8F8", D_r1_0046CCD0);
 

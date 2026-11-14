@@ -910,7 +910,7 @@ void p2sdSetStandPos(f32 Cposx, f32 Cposy, f32 Cposz,
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003703A8);
+INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdLoadCheckMidi_sdfSound);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdLoadSMGFile);
 

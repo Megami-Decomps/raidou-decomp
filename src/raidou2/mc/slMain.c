@@ -2098,7 +2098,7 @@ void camFollowOffsetVec(FileJob *job, void *dst);
 void camAimRotation(CamAim *obj, void *dst);
 
 /* Per-frame update: refreshes the queue rotation when an aim flag (0x60) is set, then repositions and re-notifies every job whose start time (job+0x80) has been reached. */
-void fileQueueUpdate(FileQueue *queue);
+void effPartsDraw(FileQueue *queue);
 
 void fileQueueDestroy(FileQueue *queue);
 
@@ -2397,7 +2397,7 @@ void fileReadRecordSecondVector(FileSlotTable *record, u128 *out);
 void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 /* End of declarations from src/dds1/game/code_0028A150.c */
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5240);
+INCLUDE_ASM(const s32, "mc/slMain", slKanjiDraw3);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001EB758);
 
@@ -2465,7 +2465,7 @@ saddr_t slHeadLoad(void) {
     return EE_ADDR_S(slHeadLoadProc_openFile);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6048);
+INCLUDE_ASM(const s32, "mc/slMain", slHeadLoadProc_openFile_slMain);
 
 saddr_t slHeadLoadProc_readFile(void) {
     slMcResult_t status = sdfMcFuncRead1();
@@ -2551,7 +2551,7 @@ s32 fileRestartSlotScan(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6640);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6708);
+INCLUDE_ASM(const s32, "mc/slMain", slCancel);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6760);
 
@@ -2592,9 +2592,9 @@ INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D69A8);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6A10);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6A40);
+INCLUDE_ASM(const s32, "mc/slMain", slHardSelect2N);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6A80);
+INCLUDE_ASM(const s32, "mc/slMain", slHardSelect3);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6AB8);
 
@@ -2941,20 +2941,20 @@ s32 slCalc(dds3ProcessID_t *id) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA340);
+INCLUDE_ASM(const s32, "mc/slMain", slDraw_slMain);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA4A8);
+INCLUDE_ASM(const s32, "mc/slMain", fmProcTrigSequence_slMain);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA7A8);
 
-void func_r1_001DA7C0(void) {
+void fmShutDownFade(void) {
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA7C8);
+INCLUDE_ASM(const s32, "mc/slMain", fmShutDown);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA908);
+INCLUDE_ASM(const s32, "mc/slMain", fmShutDown2_slMain);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA910);
+INCLUDE_ASM(const s32, "mc/slMain", fmProcessChk_slMain);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA938);
 
