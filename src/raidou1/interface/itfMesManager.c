@@ -2088,7 +2088,32 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188420);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelectDefKey);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetWidth);
+/* Build and release a temporary glyph chain to measure the widest grouped row.
+ * Empty tables and zero/missing encoded items return zero. */
+s32 itfMesMngGetWidth(s32 id, s32 message, s32 page) {
+    instanceMes_tag *mes = pinst[id].mes;
+    itfMesBinMesHeader_t *table;
+    u8 *encodedText;
+    frFontHandle_t *glyphChain;
+    s32 textExtent;
+
+    table = GetTypeHeader(mes, message)->ptr;
+    if (table->page == 0) {
+        return 0;
+    }
+    CommitVarTable((s32 *)mes->variable.pptr);
+    if (mes->pext != 0) {
+        frSetExtDic(mes->pext);
+    }
+    encodedText = GetMessagePagePtr(table, page);
+    if (encodedText == 0) {
+        return 0;
+    }
+    glyphChain = MessageRequest(0, 0, encodedText, 0);
+    textExtent = GetMessageWidth(glyphChain);
+    frDestroyFontRequestAfter(glyphChain);
+    return textExtent;
+}
 
 /* Set the fourth color channel used when this window's entry glyphs are built. */
 void itfMesMngSetDefaultSpeed(s32 id, u8 speed) {
@@ -2128,7 +2153,24 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngDebugProc);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188B38);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", DestructFlow);
+/* Tear down installed content/resources, return the pool record and decrement
+ * the pool-array-relative counter. An empty record is a no-op. */
+void DestructFlow(s32 id) {
+    itfMesLink_t *windowRecord = &itfMesMngManager.nodes[id];
+    instanceMes_tag *mes = windowRecord->state;
+
+    if (mes != NULL) {
+        itfMesMngRequestMessageRelease(id, 1);
+        itfMesMngRequestSelectRelease(id);
+        ReleaseAllWindow(mes);
+        ReleaseAllVariable(&mes->variable);
+        mes->stat = 0;
+        sdfMemFreeDirect(windowRecord->resourceHandle);
+        windowRecord->state = NULL;
+        itfMiscLinkGive(windowRecord, &itfMesMngManager.pool);
+        itfMesMngManager.activeWindowCount -= 1;
+    }
+}
 
 void ResolveResourceAddress(itfMesResource_t *pdata)
 {
@@ -2468,7 +2510,33 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018A3C0);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", SelectItemMove);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", SelectItemDefKey);
+s32 SelectItemDefKey(select_tag *psel) {
+    s32 i;
+
+    for (i = 0; i < psel->numdef; i++) {
+        defkey_tag *option = &psel->defkey[i];
+
+        if (dds3PadButtonState.buttons[option->key] < 0) {
+            s32 prefixLength = option->index;
+            s32 rank = 0;
+            u32 mask = psel->mask;
+
+            if (prefixLength > 0) {
+                s32 remaining = prefixLength;
+                do {
+                    if ((mask & 1) == 0) {
+                        rank++;
+                    }
+                    mask >>= 1;
+                } while (--remaining != 0);
+            }
+            if ((mask & 1) == 0) {
+                return rank;
+            }
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018A658);
 
@@ -2509,7 +2577,31 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", DebugMoveWinVert);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DebugMoveWinAlpha);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", DebugChangeInstance);
+itfMesLink_t *DebugChangeInstance(itfMesLink_t *pflow) {
+    s32 index = 0;
+    s32 count = itfMesMngManager.activeWindowCount;
+
+    if (count <= 0) {
+        return NULL;
+    }
+    for (;;) {
+        if (pflow != NULL) {
+            pflow = pflow->previous;
+        }
+        if (pflow == NULL) {
+            pflow = itfMesMngManager.pool.activeTail;
+        }
+        if ((pflow->state)->window.mes != NULL) {
+            break;
+        }
+        index++;
+        if (count < index) {
+            pflow = NULL;
+            break;
+        }
+    }
+    return pflow;
+}
 
 void itfQueueOffsetTexturedRect(s32 *bounds, s32 *region, s32 x, s32 y,
                    s32 alpha, sdfTexHandle_t *texture, sdfDrawTag_t *command) {

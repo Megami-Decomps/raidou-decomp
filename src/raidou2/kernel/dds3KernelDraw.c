@@ -3192,9 +3192,70 @@ void dds3RotationArc(void)
     Normalize();
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetLightColor);
+/* vu0 routine: stage an immediate or interpolated parallel light color. */
+void dds3SetLightColor(s32 frame, s32 no, f32 *col)
+{
+    sdf3DLight_t *light = dds3LightParam.parallel[no];
+    u32 baseColorWords[4];
+    u32 targetColorWords[4];
+    u32 packedBaseColor;
+    u32 packedTargetColor;
+    u32 blendFlag;
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SetLightDir);
+    if (light != NULL) {
+        blendFlag = 4 << (no * 2);
+        if (frame == 0) {
+            dds3DrawFlag &= ~blendFlag;
+            SDF_VU0_LOADVECTOR(col);
+            SDF_VU0_VECTOR_W_SET_ZERO();
+            SDF_VU0_STOREVECTOR(&dds3LightParam.parallel[no]->color);
+        } else {
+            lightcolormax[no] = SDF_FRAMES(frame);
+            lightcolornow[no] = 0;
+            dds3DrawFlag |= blendFlag;
+            SDF_VU0_LOADVECTOR(light);
+            MMI_RGBA_PACK_128(packedBaseColor);
+            baseColorWords[0] = packedBaseColor;
+            dds3LightColor[no] = packedBaseColor;
+            SDF_VU0_LOADVECTOR(col);
+            SDF_VU0_VECTOR_W_SET_ZERO();
+            MMI_RGBA_PACK_128(packedTargetColor);
+            dds3LightTargetColor[no] = packedTargetColor;
+            targetColorWords[0] = packedTargetColor;
+        }
+    }
+}
+
+void dds3SetLightDir(s32 frame, s32 no, f32 *dir)
+{
+    u32 blendFlag;
+
+    if (dds3LightParam.parallel[no] != NULL) {
+        blendFlag = 8 << (no * 2);
+        if (frame == 0) {
+            dds3DrawFlag &= ~blendFlag;
+            SDF_VU0_LOADVECTOR(dir);
+            SDF_VU0_NORMALIZE();
+            SDF_VU0_VECTOR_W_SET_ZERO();
+            SDF_VU0_STOREVECTOR(&dds3LightParam.parallel[no]->v);
+        } else {
+            lightdirmax[no] = SDF_FRAMES(frame);
+            lightdirnow[no] = 0;
+            dds3DrawFlag |= blendFlag;
+            SDF_VU0_LOADVECTOR(dir);
+            SDF_VU0_VECTOR_W_SET_ZERO();
+            SDF_VU0_NORMALIZE();
+            SDF_VU0_COPYVECTOR_A_TO_B();
+            SDF_VU0_LOADVECTOR(&dds3LightParam.parallel[no]->v);
+            SDF_VU0_VECTOR_W_SET_ZERO();
+            SDF_VU0_NORMALIZE();
+            /* No memory clobber here: retail recomputes the slot offset after the call. */
+            SDF_VU0_STOREVECTOR_NOMEM(dds3LightArcFrom[no]);
+            dds3RotationArc();
+            SDF_VU0_STOREVECTOR(dds3LightArcTo[no]);
+        }
+    }
+}
 
 /* vu0 routine: stage an immediate or interpolated ambient color. */
 void dds3SetAmbientColor(s32 frame, f32 *col)
@@ -3273,7 +3334,106 @@ void dds3SetFogPara(s32 frame, f32 max, f32 min, f32 near, f32 far)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3SceneLightUpdateFirst);
+/* vu0 routine: advance staged light, ambient, fog and face divide blends. */
+void dds3SceneLightUpdateFirst(void) {
+    s32 i;
+    u32 mask;
+    f32 ratio;
+
+    for (i = 0, mask = 4; i < 3; i++, mask <<= 2) {
+        if (dds3LightParam.parallel[i] == NULL) {
+            dds3DrawFlag &= ~(mask | (mask << 1));
+        } else {
+            if (dds3DrawFlag & mask) {
+                ++lightcolornow[i];
+                ratio = (f32)lightcolornow[i] / lightcolormax[i];
+                dds3UnpackLightColor(dds3LightColor[i], 0.0078125f);
+                SDF_VU0_SCALEVECTOR_BITS(1.0f - ratio);
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                dds3UnpackLightColor(dds3LightTargetColor[i], 0.0078125f);
+                SDF_VU0_SCALEVECTOR_V0(ratio);
+                SDF_VU0_ADDVECTOR();
+                SDF_VU0_STOREVECTOR_NOMEM(dds3LightParam.parallel[i]);
+                if (lightcolornow[i] >= lightcolormax[i]) {
+                    dds3DrawFlag &= ~mask;
+                }
+            }
+            if (dds3DrawFlag & (mask << 1)) {
+                ++lightdirnow[i];
+                ratio = (f32)lightdirnow[i] / lightdirmax[i];
+                SDF_VU0_LOADIDENTITYVECTOR();
+                SDF_VU0_VECTOR_W_SET_ONE();
+                SDF_VU0_LOADVECTOR_B(&dds3LightArcTo[i]);
+                Lerp(ratio);
+                ToMatrix();
+                SDF_VU0_LOADVECTOR(&dds3LightArcFrom[i]);
+                SDF_VU0_APPLYMATRIX();
+                SDF_VU0_STOREVECTOR_NOMEM(&dds3LightParam.parallel[i]->v);
+                if (lightdirnow[i] >= lightdirmax[i]) {
+                    dds3DrawFlag &= ~(mask << 1);
+                }
+            }
+        }
+    }
+    if (dds3DrawFlag & 0x100) {
+        ++ambientnow;
+        ratio = (f32)ambientnow / ambientmax;
+        dds3UnpackLightColor(ambientbase, 0.0078125f);
+        SDF_VU0_SCALEVECTOR_BITS(1.0f - ratio);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        dds3UnpackLightColor(ambienttarget, 0.0078125f);
+        SDF_VU0_SCALEVECTOR_V0(ratio);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_VECTOR_W_SET_ONE();
+        SDF_VU0_STOREVECTOR_NOMEM(&dds3AmbientColor);
+        if (ambientnow >= ambientmax) {
+            dds3DrawFlag &= ~0x100;
+        }
+    }
+    if (dds3DrawFlag & 0x200) {
+        ++fogrgbnow;
+        ratio = (f32)fogrgbnow / fogrgbmax;
+        dds3UnpackLightColor(fogrgbbase, 0.0078125f);
+        SDF_VU0_SCALEVECTOR_BITS(1.0f - ratio);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        dds3UnpackLightColor(fogrgbtarget, 0.0078125f);
+        SDF_VU0_SCALEVECTOR_BITS(ratio);
+        SDF_VU0_ADDVECTOR();
+        {
+            u32 rgba[4] __attribute__((aligned(16)));
+            MMI_RGBA_PACK_UNIT(rgba[0], 128.0f);
+            dds3FogState.color = rgba[0];
+        }
+        if (fogrgbnow >= fogrgbmax) {
+            dds3DrawFlag &= ~0x200;
+        }
+    }
+    if (dds3DrawFlag & 0x400) {
+        ++fogparanow;
+        ratio = (f32)fogparanow / fogparamax;
+        SDF_VU0_LOADVECTOR(&dds3FogParam);
+        SDF_VU0_LOADVECTOR_B(&dds3FogColor);
+        SDF_VU0_SCALEVECTOR_BITS(1.0f - ratio);
+        SDF_VU0_SCALEVECTOR_B_V0(ratio);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_GETVECTOR_X(dds3FogState.fogMax);
+        SDF_VU0_GETVECTOR_Y(dds3FogState.fogMin);
+        SDF_VU0_GETVECTOR_Z(dds3FogState.fogNear);
+        SDF_VU0_GETVECTOR_W(dds3FogState.fogFar);
+        if (fogparanow >= fogparamax) {
+            dds3DrawFlag &= ~0x400;
+        }
+    }
+    if (dds3DrawFlag & 0x4000) {
+        ++sbnow;
+        ratio = (f32)sbnow / sbmax;
+        sdfFaceDivSoften = softenbase * (1.0f - ratio) + softentarget * ratio;
+        sdfFaceDivBias = biasbase * (1.0f - ratio) + biastarget * ratio;
+        if (sbnow >= sbmax) {
+            dds3DrawFlag &= ~0x4000;
+        }
+    }
+}
 
 void dds3SetSoftenBias(s32 frame, f32 soften, f32 bias)
 {

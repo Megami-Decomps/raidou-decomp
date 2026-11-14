@@ -4,6 +4,8 @@
 /* Declarations from smt3-decomp src/smt3/event/evtUnitManager.c */
 #include "common.h"
 
+#include "kernel_draw.h"
+
 #include "event.h"
 
 #include "kernel.h"
@@ -35,13 +37,10 @@ enum EvtTargetInfoFlags {
     EVT_TARGET_INFO_FLAG_UNIT_OWNS_VECTOR = 0x8
 };
 
-/* The fallback ambient vector follows the four source pointers at +0x10. */
-typedef struct {
-    f32 *sources[4];
-    f32 ambient[4];
-} evtLightParams_t;
+extern dds3LightState_t dds3LightParam;
 
-extern evtLightParams_t dds3LightParam;
+/* vu0 routine: unpack the unit's colours into a parallel light packet. */
+void func_r1_001A5AB8(evtUnit_t *h);
 
 void evtLinkLightObjectBasic(evtUnit_t *h, dds3Basic_t *light, s32 frame);
 
@@ -175,7 +174,7 @@ typedef struct {
 } evtColorWork_t;
 
 /* vu0 routine: unpack the unit's colours into a parallel light packet. */
-void func_r1_001A5AB8(evtUnit_t *h);
+void MakeLightPacket(evtUnit_t *h);
 
 void evtLinkLightObjectBasic(evtUnit_t *h, dds3Basic_t *light, s32 frame);
 
@@ -294,11 +293,83 @@ void evtVu0SubVectorXZAxis(f32 *a, f32 *b) {
     SDF_VU0_SETVECTOR_Y_V0(0.0f);
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtGetUnitDirVector);
+/* vf10 = the unit's rotated y axis flattened to the ground plane, negated */
+void evtGetUnitDirVector(evtUnit_t *h) {
+    sdfVector4_t v;
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtCheckMoveEnd);
+    SDF_VU0_LOADVECTOR(&h->effObj->poseset->rot);
+    ToMatrix();
+    SDF_VU0_STORE_ROW2(&v);
+    v.y = 0.0f;
+    v.w = 1.0f;
+    SDF_VU0_LOADVECTOR(&v);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_SCALEVECTOR_V0(-1.0f);
+}
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtGetNextMovePos);
+/* vu0 routine: test target range or the selected path endpoint. */
+s32 evtCheckMoveEnd(evtUnit_t *h) {
+    f32 value;
+
+    switch (h->motionSubmode) {
+    case 0:
+    case 1:
+    case 2:
+        evtVu0SubVectorXZAxis(h->targetVector, (f32 *)&h->effObj->poseset->pos);
+        SDF_VU0_GETLENGTH(value);
+        if (value <= 20.0f) {
+            return 1;
+        }
+        break;
+    case 3:
+        value = dds3PathBasicControlGetRatio(EE_ADDR_AS(void *, h->pathHandle));
+        if (h->flags & EVT_UNIT_FLAG_PATH_REVERSE) {
+            if (value == 0.0f) {
+                return 1;
+            }
+        } else if (value == 1.0f) {
+            return 1;
+        }
+        break;
+    }
+    return 0;
+}
+
+s32 evtGetNextMovePos(evtUnit_t *h) {
+    f32 t;
+
+    if (h->motionState != EVT_UNIT_MOTION_STATE_SOURCE) {
+        return 0;
+    }
+    switch (h->transitionSourceKind) {
+    case EVT_UNIT_TRANSITION_SOURCE_COPIED_VECTOR:
+    case EVT_UNIT_TRANSITION_SOURCE_WORLD_NODE:
+        break;
+    case EVT_UNIT_TRANSITION_SOURCE_PATH_CURVE:
+        t = dds3PathBasicControlGetRatio(EE_ADDR_AS(void *, h->pathHandle));
+        if (h->flags & EVT_UNIT_FLAG_PATH_REVERSE) {
+            if (t == 0.0f) {
+                return 0;
+            }
+        } else {
+            if (t == 1.0f) {
+                return 0;
+            }
+        }
+        t += SDF_FRAME_STEP(h->pathSpeed);
+        if (t < 0.0f) {
+            t = 0.0f;
+        }
+        if (1.0f < t) {
+            t = 1.0f;
+        }
+        dds3PathBasicControlSetRatio(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle), t);
+        dds3PathBasicControlGetPos(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle));
+        SDF_VU0_STOREVECTOR(h->targetVector);
+        return 1;
+    }
+    return 0;
+}
 
 /* Length of the path's vec4 trajectory sampled at 20 steps of the value multiplier. */
 f32 GetSplineLength(dds3PathBasicControl_t *path) {
@@ -399,7 +470,10 @@ void evtSetUnitColorA(evtUnit_t *h, s32 frame, u32 a) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitLightAnimeStat);
+u8 evtUnitLightAnimeStat(evtUnit_t *h)
+{
+    return (h->flags & 0x7800) != 0;
+}
 
 void evtUnitLightOn(evtUnit_t *h)
 {
@@ -466,7 +540,9 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A65A8);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A65B8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetWaitMotionSpeed);
+void evtSetWaitMotionSpeed(evtUnit_t *h, f32 sp) {
+    h->transitionMotionScale = sp;
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A65C8);
 
@@ -483,7 +559,10 @@ s32 evtCheckUnitWait(evtUnit_t *h) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitKutiMotion);
+void evtSetUnitKutiMotion(evtUnit_t *h, s32 group, s32 motion) {
+    h->firstSlot = group;
+    h->secondSlot = motion;
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6650);
 
@@ -519,9 +598,44 @@ void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A67D8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitRotationQuat);
+/* Flat, negated direction of the rotation in quat, offset by the effect object's point, aimed with evtRotateUnitTowardTarget. */
+s32 evtUnitRotationQuat(evtUnit_t *h, f32 *rot, f32 radio) {
+    sdfVector4_t v;
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitMoveType0);
+    SDF_VU0_LOADVECTOR(rot);
+    ToMatrix();
+    SDF_VU0_GET_ROW2();
+    VU0_SET_VF10_Y_CLEAR_W(0.0f);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_SCALEVECTOR_V0(-1.0f);
+    SDF_VU0_LOADVECTOR_B(&h->effObj->poseset->pos);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&v);
+    return evtUnitRotationTarget(h, &v.x, radio);
+}
+
+s32 evtUnitMoveType0(evtUnit_t *h) {
+    sdfVector4_t v;
+    f32 scale;
+    dds3Basic_t *obj;
+
+    evtUnitRotationTarget(h, h->targetVector, h->directionOffset * 0.01f);
+    if (h->directionOffset != 0) {
+        evtGetUnitDirVector(h);
+        obj = h->effObj;
+    } else {
+        SDF_VU0_LOADVECTOR(h->targetVector);
+        obj = h->effObj;
+        SDF_VU0_LOADVECTOR_B(&obj->poseset->pos);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_NORMALIZE();
+    }
+    scale = h->motionParameter * 0.1f;
+    SDF_VU0_SCALEVECTOR_V0(scale);
+    SDF_VU0_STOREVECTOR(&v);
+    dds3GetPosPoseSetMCR(obj, (u128 *)&v);
+    return 1;
+}
 
 INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD40);
 
@@ -535,11 +649,37 @@ INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD80);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6B08);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitMoveTypePathTrace);
+s32 evtUnitMoveTypePathTrace(evtUnit_t *h) {
+    sdfVector4_t v;
+
+    dds3PathBasicControlIsFinished(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle));
+    dds3PathBasicControlGetPos(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle));
+    SDF_VU0_STOREVECTOR(&v);
+    dds3SetPosPoseSet(h->effObj, (u128 *)&v);
+    if (h->flags & 0x10) {
+        dds3PathBasicControlGetRot(EE_ADDR_AS(dds3PathBasicControl_t *, h->pathHandle));
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        FromEuler(0.0f, 3.14159265f, 0.0f);
+        Mult();
+        SDF_VU0_STOREVECTOR(&v);
+        dds3SetRotPoseSet(h->effObj, (u128 *)&v);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6DE8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitRot1);
+void evtSetUnitRot1(evtUnit_t *h, s128 *rot, s32 para1) {
+    if (para1 > 0 && para1 <= 100) {
+        h->linkedUnit = NULL;
+        h->motionState = EVT_UNIT_MOTION_STATE_VECTOR;
+        SDF_VU0_COPYVECTOR(h->targetVector, rot);
+        h->motionParameter = para1;
+        h->directionOffset = 0;
+        h->motionCallback = 0;
+        h->motionTicks = 0;
+    }
+}
 
 #ifdef NON_MATCHING
 /* retail codegen differs in the null-check and call order */
@@ -558,7 +698,17 @@ void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1) {
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitRot2);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove1);
+void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast) {
+    work->motionSubmode = motionSubmode;
+    work->motionState = EVT_UNIT_MOTION_STATE_SOURCE;
+    work->transitionSourceKind = EVT_UNIT_TRANSITION_SOURCE_COPIED_VECTOR;
+    work->linkedUnit = NULL;
+    SDF_VU0_COPYVECTOR(work->targetVector, vector);
+    work->motionParameter = frames;
+    work->directionOffset = directionOffset;
+    work->motionCallback = callback;
+    work->motionTicks = 0;
+}
 
 #ifdef NON_MATCHING
 /* retail codegen differs in the null-check and call order */

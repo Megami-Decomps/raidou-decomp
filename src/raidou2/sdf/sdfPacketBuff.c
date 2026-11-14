@@ -95,7 +95,10 @@ void sdfGrMakePacketBuff(s32 aPacketBuffSize) {
     sdfGrPacketBuffBase[1] = allocationAddress + aPacketBuffSize;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfPacketBuff", sdfGrSetupPacketBuff);
+void sdfGrSetupPacketBuff(s32 aFrameId) {
+    sdfGrPacketBuffPtr = sdfGrPacketBuffBase[aFrameId];
+    sdfGrPacketBuffLimit = sdfGrPacketBuffBase[aFrameId] + sdfGrPacketBuffSize;
+}
 
 s32 sdfGrGetPacketBuffRemain(void) {
     return sdfGrPacketBuffLimit - sdfGrPacketBuffPtr;

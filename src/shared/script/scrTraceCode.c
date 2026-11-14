@@ -478,7 +478,7 @@ extern s32 evtCommand_EFFMG1_POS();
 
 extern s32 evtCommand_EFFMG2_POS();
 
-extern s32 evt_1E9168();
+extern s32 evtCommandStartBgmWithFade();
 
 extern s32 evtCommand_CAM_ROT_Q();
 
@@ -614,13 +614,13 @@ extern s32 trm_210AF8();
 
 extern s32 func_00210B38();
 
-extern s32 fcl_214428();
+extern s32 fclSetFlagScript();
 
-extern s32 fcl_214458();
+extern s32 fclGetWorkValueScript();
 
 extern s32 func_00210B68();
 
-extern s32 func_r1_001F9898();
+extern s32 func_00210B90();
 
 extern s32 nme_298698();
 
@@ -700,7 +700,7 @@ extern s32 scrCommand_RIP_BLUR_AREA();
 
 extern s32 scrCommand_RIP_BLUR_SWAP();
 
-extern s32 evt_1E9298();
+extern s32 evtOpcodeRefreshTaskData();
 
 extern s32 evt_1E92D8();
 
@@ -768,7 +768,7 @@ extern s32 evtCommand_EFFBED_START_EVO();
 
 extern s32 nbCommand_AI_CHK_ESCAPE();
 
-extern s32 evt_1E92F8();
+extern s32 evtCommandSetDrawFlagWhileWaiting();
 
 extern s32 movie_22B8F0();
 
@@ -1077,9 +1077,44 @@ void PushRet(scrProcessWork_s *pwork, s32 cp)
     pwork->SP++;
 }
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", PopInt);
+s32 PopInt(scrProcessWork_s *pwork)
+{
+    s32 stackIndex = pwork->SP;
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", PopFloat);
+    pwork->SP = stackIndex - 1;
+    switch ((s8)pwork->StackType[stackIndex - 1]) {
+    case SCR_STACK_TYPE_INT:
+    case SCR_STACK_TYPE_RET:
+        return pwork->StackData[pwork->SP].i;
+    case SCR_STACK_TYPE_FLOAT:
+        return pwork->StackData[pwork->SP].f;
+    case SCR_STACK_TYPE_INTVAR:
+        return DDS3_GBWK->integers[pwork->StackData[pwork->SP].i];
+    case SCR_STACK_TYPE_FLOATVAR:
+        return DDS3_GBWK->floats[pwork->StackData[pwork->SP].i];
+    }
+    return 0;
+}
+
+f32 PopFloat(scrProcessWork_s *pwork)
+{
+    s32 stackIndex = pwork->SP;
+
+    pwork->SP = stackIndex - 1;
+    switch ((s8)pwork->StackType[stackIndex - 1]) {
+    case SCR_STACK_TYPE_INT:
+        return (f32)pwork->StackData[pwork->SP].i;
+    case SCR_STACK_TYPE_RET:
+        return 0.0f;
+    case SCR_STACK_TYPE_FLOAT:
+        return pwork->StackData[pwork->SP].f;
+    case SCR_STACK_TYPE_INTVAR:
+        return (f32)DDS3_GBWK->integers[pwork->StackData[pwork->SP].i];
+    case SCR_STACK_TYPE_FLOATVAR:
+        return DDS3_GBWK->floats[pwork->StackData[pwork->SP].i];
+    }
+    return 0.0f;
+}
 
 s32 CodeFunc_PushI(scrProcessWork_s *pwork)
 {
@@ -1104,9 +1139,19 @@ s32 CodeFunc_PushF(scrProcessWork_s *pwork)
     return CODE_RET_NEXT;
 }
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushIX);
+s32 CodeFunc_PushIX(scrProcessWork_s *pwork)
+{
+    PushInt(pwork, DDS3_GBWK->integers[pwork->Code[pwork->CP].s.s1]);
+    pwork->CP++;
+    return CODE_RET_NEXT;
+}
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PushFX);
+s32 CodeFunc_PushFX(scrProcessWork_s *pwork)
+{
+    PushFloat(pwork, DDS3_GBWK->floats[pwork->Code[pwork->CP].s.s1]);
+    pwork->CP++;
+    return CODE_RET_NEXT;
+}
 
 s32 CodeFunc_PushLIX(scrProcessWork_s *pwork)
 {
@@ -1138,9 +1183,21 @@ s32 CodeFunc_PushReg(scrProcessWork_s *pwork)
     return CODE_RET_NEXT;
 }
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PopIX);
+s32 CodeFunc_PopIX(scrProcessWork_s *pwork)
+{
+    DDS3_GBWK->integers[pwork->Code[pwork->CP].s.s1] = PopInt(pwork);
+    pwork->CP++;
+    return CODE_RET_NEXT;
+}
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_PopFX);
+s32 CodeFunc_PopFX(scrProcessWork_s *pwork)
+{
+    f32 value = PopFloat(pwork);
+
+    DDS3_GBWK->floats[pwork->Code[pwork->CP].s.s1] = value;
+    pwork->CP++;
+    return CODE_RET_NEXT;
+}
 
 s32 CodeFunc_PopLIX(scrProcessWork_s *pwork)
 {
@@ -1407,7 +1464,29 @@ s32 CodeFunc_Div(scrProcessWork_s *pwork)
     return CODE_RET_NEXT;
 }
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", CodeFunc_Minus);
+s32 CodeFunc_Minus(scrProcessWork_s *pwork)
+{
+    switch ((s8)pwork->StackType[pwork->SP - 1]) {
+    case SCR_STACK_TYPE_INT:
+        pwork->StackData[pwork->SP - 1].i = -pwork->StackData[pwork->SP - 1].i;
+        break;
+    case SCR_STACK_TYPE_FLOAT:
+        pwork->StackData[pwork->SP - 1].f = -pwork->StackData[pwork->SP - 1].f;
+        break;
+    case SCR_STACK_TYPE_INTVAR:
+        DDS3_GBWK->integers[pwork->StackData[pwork->SP - 1].i] =
+            -DDS3_GBWK->integers[pwork->StackData[pwork->SP - 1].i];
+        break;
+    case SCR_STACK_TYPE_FLOATVAR:
+        DDS3_GBWK->floats[pwork->StackData[pwork->SP - 1].i] =
+            -DDS3_GBWK->floats[pwork->StackData[pwork->SP - 1].i];
+        break;
+    case SCR_STACK_TYPE_RET:
+        break;
+    }
+    pwork->CP++;
+    return CODE_RET_NEXT;
+}
 
 s32 CodeFunc_Not(scrProcessWork_s *pwork)
 {
@@ -1534,9 +1613,43 @@ s32 scrTraceCode(scrProcessWork_s *pwork)
     return SCR_RESULT_CONTINUE;
 }
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", scrGetIntPara);
+s32 scrGetIntPara(s32 n)
+{
+    scrProcessWork_s *pw = nowpwork;
+    s32 stackIndex = pw->SP - n - 1;
 
-INCLUDE_ASM(const s32, "script/scrTraceCode", scrGetFloatPara);
+    switch ((s8)pw->StackType[stackIndex]) {
+    case SCR_STACK_TYPE_INT:
+    case SCR_STACK_TYPE_RET:
+        return pw->StackData[stackIndex].i;
+    case SCR_STACK_TYPE_FLOAT:
+        return pw->StackData[stackIndex].f;
+    case SCR_STACK_TYPE_INTVAR:
+        return DDS3_GBWK->integers[pw->StackData[stackIndex].i];
+    case SCR_STACK_TYPE_FLOATVAR:
+        return DDS3_GBWK->floats[pw->StackData[stackIndex].i];
+    }
+    return 0;
+}
+
+f32 scrGetFloatPara(s32 n)
+{
+    scrProcessWork_s *pw = nowpwork;
+    s32 stackIndex = pw->SP - n - 1;
+
+    switch ((s8)pw->StackType[stackIndex]) {
+    case SCR_STACK_TYPE_INT:
+    case SCR_STACK_TYPE_RET:
+        return (f32)pw->StackData[stackIndex].i;
+    case SCR_STACK_TYPE_FLOAT:
+        return pw->StackData[stackIndex].f;
+    case SCR_STACK_TYPE_INTVAR:
+        return (f32)DDS3_GBWK->integers[pw->StackData[stackIndex].i];
+    case SCR_STACK_TYPE_FLOATVAR:
+        return DDS3_GBWK->floats[pw->StackData[stackIndex].i];
+    }
+    return 0.0f;
+}
 
 u8 *scrGetStrPara(s32 n)
 {

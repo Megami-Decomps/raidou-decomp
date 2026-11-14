@@ -95,28 +95,6 @@ s32 scrRunScript(scrProcessWork_s *h);
 s32 scrScriptProcess(dds3ProcessID_t *id);
 /* End of declarations from src/smt3/script/scrScriptProcess.c */
 
-/* Declarations from dds-decomp src/dds1/script/scrScriptProcess.c */
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "newdata.h"
-
-#include "dds/common.h"
-
-#include "dds/sdf_resource.h"
-
-#include "dds/scr.h"
-
-extern s32 scrIsCurrentWorkTask(scrProcessWork_s *pw);
-
-#include "dds/sdk_libc.h"
-
-#include "dds/scr_command_table.h"
-
-extern const scrCommandTable_t scrCommandTable[];
-/* End of declarations from src/dds1/script/scrScriptProcess.c */
-
 scrProcessWork_s *scrLoadScriptFile(char *name, s32 messageHandle)
 {
     sdfMemHandle_t *mem;
@@ -141,7 +119,15 @@ dds3ProcessID_t *scrStartScriptProcess(s32 priority, scrProcessWork_s *pw)
                                             scrScriptProcess, scrScriptShutdown, pw);
 }
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", dds3GlobalWorkClearFlags);
+void dds3GlobalWorkClearFlags(void)
+{
+    s32 countdown;
+
+    for (countdown = 255; countdown >= 0; countdown--) {
+        DDS3_GBWK->integers[255 - countdown] = 0;
+        DDS3_GBWK->floats[255 - countdown] = 0;
+    }
+}
 
 void scrStartScriptByName(s32 priority, char *name, s32 messageHandle)
 {

@@ -456,7 +456,20 @@ void sdfModelNodeFree(sdfModelNode_t *aNode)
     sdfChipFreeDirect(aNode);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelRootNew);
+/* vu0 routine: native SDK vector/matrix operations around model state. */
+sdfModelRootNode_t *sdfModelRootNew(void) {
+    sdfModelRootNode_t *slot;
+
+    slot = sdfChipAllocZeroDirect(sizeof(sdfModelRootNode_t));
+    slot->nodeList = (sdfModelNodeList_t *)sdfItemArrayNew(0, 4, 0x20);
+    SDF_VU0_STOREIDENTITY(&slot->tm);
+    SDF_VU0_STOREIDENTITYVECTOR(&slot->rotate);
+    SDF_VU0_SETSCALE1VECTOR();
+    SDF_VU0_STOREVECTOR(&slot->scale);
+    slot->drawAttr = -1;
+    slot->color = 0x80808080;
+    return slot;
+}
 
 void sdfModelRootFreeResrc(sdfModelRootNode_t *aRoot)
 {
@@ -1303,7 +1316,30 @@ s32 sdfModelGetNodeIndexByName(sdfModelRootNode_t *aRoot, const char *aName)
     return -1;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetNodeName);
+const char *sdfModelGetNodeName(sdfModelRootNode_t *aRoot, s32 aIndex) {
+    sdfModelChunkHeader_t *chunk = sdfModelGetExtraChunk(aRoot, 0x4D4E444E);
+    const u8 *name;
+    const u8 *end;
+    if (chunk == NULL) {
+        return sdfModelDefaultName;
+    }
+    name = (const u8 *)(chunk + 1);
+    end = (const u8 *)chunk + chunk->size;
+    do {
+        const u8 *cursor = name;
+        const s32 *id;
+        while (*cursor++ != 0) {
+        }
+        id = EE_ADDR_AS(const s32 *, ((EE_ADDR(cursor) + 3) & ~3U));
+        if (*id == aIndex) {
+            return (const char *)name;
+        }
+        name = (const u8 *)(id + 1);
+        if (name >= end) {
+            return sdfModelDefaultName;
+        }
+    } while (1);
+}
 
 u32 sdfModelGetMarkPosCount(sdfModelRootNode_t *aRoot)
 {

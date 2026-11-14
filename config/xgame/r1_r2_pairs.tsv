@@ -3510,8 +3510,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001D4918	0x001EAD28	fileManagerProc	no	yes	asm/raidou1/file/fileManager.s	asm/raidou2/file/fileManager.s	masked-hash-in-gap
 0x001D4938	0x001EAD48	fileSysInit	no	yes	asm/raidou1/file/fileManager.s	asm/raidou2/file/fileManager.s	unique-reloc-hash
 0x001D49D0	0x001EADE0	sdfMcFuncGetInfo	no	yes	asm/raidou1/code_001D49D0.s	asm/raidou2/code_001EADE0.s	unique-reloc-hash
-0x001D4A20	0x001EAE30	func_r1_001D4A20	no	yes	src/raidou1/mc/mcManager.c	src/raidou2/mc/mcManager.c	unique-reloc-hash
-0x001D4A68	0x001EAE78	func_r1_001D4A68	no	yes	src/raidou1/mc/mcManager.c	src/raidou2/mc/mcManager.c	unique-reloc-hash
+0x001D4A20	0x001EAE30	sdfMcRegetInfo	no	yes	src/raidou1/mc/mcManager.c	src/raidou2/mc/mcManager.c	unique-reloc-hash
+0x001D4A68	0x001EAE78	sdfMcFuncGetInfo1	no	yes	src/raidou1/mc/mcManager.c	src/raidou2/mc/mcManager.c	unique-reloc-hash
 0x001D4B60	0x001EAF70	sdfMcGetFileInfoReady	no	yes	src/raidou1/mc/mcManager.c	src/raidou2/mc/mcManager.c	masked-hash-in-gap
 0x001D4B88	0x001EAF98	sdfMcGetFreeBytes	no	yes	src/raidou1/mc/mcManager.c	src/raidou2/mc/mcManager.c	unique-reloc-hash
 0x001D4BB0	0x001EAFC0	sdfMcGetStatus	no	yes	src/raidou1/mc/mcManager.c	src/raidou2/mc/mcManager.c	masked-hash-in-gap

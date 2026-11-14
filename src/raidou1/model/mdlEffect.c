@@ -3,6 +3,8 @@
 /* Declarations from smt3-decomp src/smt3/model/mdlEffect.c */
 #include "common.h"
 
+#include "kernel_draw.h"
+
 #include "libsdf.h"
 
 #include "model.h"
@@ -207,14 +209,6 @@ typedef struct
     u32 gradientColors[4];
 } mdlTrackCreateParams_t;
 
-typedef struct
-{
-    f32 (*lights[4])[4];
-    f32 ambient[4];
-    u8 unk20[0x10];
-    u32 fogColor;
-} mdlLightParams_t;
-
 typedef void (*mdlOtRegFunc_t)(sdfGrOt_t *, sdfDrawTag_t *);
 
 extern sdfGrOt_t sdfGrOtTable[];
@@ -227,7 +221,7 @@ extern f32 sdfViewMatrix[16];
 
 extern u8 aViewEye[];
 
-extern mdlLightParams_t dds3LightParam;
+extern dds3LightState_t dds3LightParam;
 
 extern mdlDebugLight_t mdlDebugLightWork;
 
@@ -735,7 +729,58 @@ void mdlPibDrawTrackInfo(sdfDrawTag_t *tag, s32 x, s32 y, s32 z, mdlTrackParams_
     }
 }
 
-INCLUDE_ASM(const s32, "model/mdlEffect", mdlPibEditTrackInfo);
+/* Edit the marker parameters with the pad: rows 0-6 are the scalar fields, 7-22 the color bytes. */
+void mdlPibEditTrackInfo(mdlTrackParams_t *data, s16 *cursor_p) {
+    s32 selectedField = *cursor_p;
+    u8 *colorChannel;
+
+    if (dds3PadButtonState[0x27] < 0) {
+        selectedField = selectedField != MDL_MARK_LAST_FIELD ? selectedField + 1 : 0;
+    } else if (((u8)dds3PadButtonState[0x27] & MDL_PAD_REPEAT_FLAG) != 0 && selectedField < MDL_MARK_LAST_FIELD) {
+        selectedField++;
+    } else if (dds3PadButtonState[0x26] < 0) {
+        selectedField = selectedField != 0 ? selectedField - 1 : MDL_MARK_LAST_FIELD;
+    } else if (((u8)dds3PadButtonState[0x26] & MDL_PAD_REPEAT_FLAG) != 0 && selectedField > 0) {
+        selectedField--;
+    } else {
+        switch (selectedField) {
+        case 0:
+            dds3DebugIntEditEx(&data->mark0, 4, 0, 99999, 0, 1, dds3PadButtonState);
+            break;
+        case 1:
+            dds3DebugIntEditEx(&data->mark1, 4, 0, 99999, 0, 1, dds3PadButtonState);
+            break;
+        case 2:
+            dds3DebugIntEditEx(&data->start, 2, 0, 9999, 0, 1, dds3PadButtonState);
+            break;
+        case 3:
+            dds3DebugIntEditEx(&data->end, 2, 0, 9999, 0, 1, dds3PadButtonState);
+            break;
+        case 4:
+            dds3DebugIntEditEx(&data->interval, 2, 1, 10, 0, 1, dds3PadButtonState);
+            break;
+        case 5:
+            dds3DebugIntEditEx(&data->face, 1, 1, 10, 0, 1, dds3PadButtonState);
+            break;
+        case 6:
+            dds3DebugIntEditEx(&data->blend, 1, 0, 4, 0, 1, dds3PadButtonState);
+            break;
+        default:
+            colorChannel = (u8 *)data->colors + selectedField - MDL_MARK_COLOR_FIRST_FIELD;
+            if (dds3PadButtonState[0x25] < 0) {
+                *colorChannel += 1;
+            } else if (((u8)dds3PadButtonState[0x25] & MDL_PAD_REPEAT_FLAG) != 0 && *colorChannel < MDL_COLOR_BYTE_MASK) {
+                *colorChannel += 1;
+            } else if (dds3PadButtonState[0x24] < 0) {
+                *colorChannel -= 1;
+            } else if (((u8)dds3PadButtonState[0x24] & MDL_PAD_REPEAT_FLAG) != 0 && *colorChannel != 0) {
+                *colorChannel -= 1;
+            }
+            break;
+        }
+    }
+    *cursor_p = selectedField;
+}
 
 /* Append a newly created billboard to the next part-list slot. */
 void mdlCreateEffectResrc_P2A(sdfItemArray_t *partList, void *descriptor) {

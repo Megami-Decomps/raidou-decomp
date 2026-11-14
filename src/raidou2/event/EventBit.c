@@ -70,10 +70,20 @@ INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff);
 
 INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff_FieldDebug);
 
-INCLUDE_ASM(const s32, "event/EventBit", evtBitOn);
+/* Signed flag indices need a bias before arithmetic right shift divides by 32. */
+void evtBitOn(s32 no) {
+    s32 adjustedFlag = (no < 0) ? no + 0x1f : no;
+    DDS3_GBWK->EventBit[adjustedFlag >> 5] |= 1 << BIT_SHIFT(no);
+}
 
-INCLUDE_ASM(const s32, "event/EventBit", evtBitOff);
+void evtBitOff(s32 no) {
+    s32 adjustedFlag = (no < 0) ? no + 0x1f : no;
+    DDS3_GBWK->EventBit[adjustedFlag >> 5] &= ~(1 << BIT_SHIFT(no));
+}
 
 INCLUDE_ASM(const s32, "event/EventBit", func_001B83E8);
 
-INCLUDE_ASM(const s32, "event/EventBit", evtBitCheck);
+s32 evtBitCheck(s32 no) {
+    s32 adjustedFlag = (no < 0) ? no + 0x1f : no;
+    return (((s32)DDS3_GBWK->EventBit[adjustedFlag >> 5] >> BIT_SHIFT(no)) & 1);
+}

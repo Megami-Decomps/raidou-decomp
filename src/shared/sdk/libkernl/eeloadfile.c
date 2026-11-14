@@ -302,7 +302,7 @@ extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
 
 extern s32 sifDmacHandlerId;
 
-extern s32 D_r1_00442CE0;
+extern s32 D_0052C2B8;
 
 void sceSifExitCmd(void);
 
@@ -353,9 +353,54 @@ s32 sceSifSendCmd(s32 command, void *packet, s32 packetBytes,
 s32 isceSifSendCmd(s32 command, void *packet, s32 packetBytes,
                    void *source, void *destination, s32 dataBytes);
 
+/* Request pool: common 32-byte header followed by its command payload. */
+typedef struct rpcRequestHeader {
+    u32 commandHeader[4];
+    u32 flags;
+    void *packetAddress;
+    u32 sequence;
+    void *clientAddress;
+} rpcRequestHeader;
+
+SIZE_CHECK(rpcRequestHeader_size, rpcRequestHeader, 32);
+
+SIZE_CHECK(rpcRequestHeader_pointer_size, void *, 4);
+
+SIZE_CHECK(rpcRequestHeader_word_size, u32, 4);
+
 typedef struct rpcPacket {
-    u32 w[16];
+    rpcRequestHeader header;
+    union {
+        u32 words[8];
+        struct {
+            s32 function;
+            s32 sendBytes;
+            void *receive;
+            s32 receiveBytes;
+            u32 responseMode;
+            void *server;
+            u32 tail[2];
+        } call;
+    } payload;
 } rpcPacket;
+
+SIZE_CHECK(rpcPacket_payload_size, rpcPacket, 64);
+
+/* Response pools retain a common nine-word header and a bind payload. */
+typedef struct rpcResponsePacket {
+    u32 header[9];
+    union {
+        u32 words[3];
+        struct {
+            sifRpcServerData_t *server;
+            void *buffer;
+            void *callbackBuffer;
+        } bind;
+    } payload;
+    u32 tail[4];
+} rpcResponsePacket;
+
+SIZE_CHECK(rpcResponsePacket_size, rpcResponsePacket, 0x40);
 
 typedef struct rpcQueue {
     u32 seq;
@@ -363,9 +408,9 @@ typedef struct rpcQueue {
     s32 count;
     u32 unk_C; /* Cleared by sceSifInitRpc. */
     u32 unk_10; /* Cleared by sceSifInitRpc. */
-    rpcPacket *forwardBase;
+    rpcResponsePacket *forwardBase;
     s32 forwardCount;
-    rpcPacket *indexedBase;
+    rpcResponsePacket *indexedBase;
     s32 indexedCount;
     s32 forwardIndex;
     sifRpcDataQueue_t *queues;
@@ -375,9 +420,9 @@ extern rpcQueue sifRpcQueue;
 
 extern rpcPacket rpcPackets[32];
 
-extern rpcPacket rpcForwardPackets[32];
+extern rpcResponsePacket rpcForwardPackets[32];
 
-extern rpcPacket rpcIndexedPackets[32];
+extern rpcResponsePacket rpcIndexedPackets[32];
 
 extern s32 sifRpcInitialized;
 
@@ -409,9 +454,9 @@ rpcPacket *_sceRpcGetPacket_0(rpcQueue *queue);
 
 void _sceRpcFreePacket_0(rpcPacket *packet);
 
-rpcPacket *_sceRpcGetFPacket(rpcQueue *queue);
+rpcResponsePacket *_sceRpcGetFPacket(rpcQueue *queue);
 
-rpcPacket *_sceRpcGetFPacket2(rpcQueue *queue, s32 index);
+rpcResponsePacket *_sceRpcGetFPacket2(rpcQueue *queue, s32 index);
 
 /* Shared transaction fields used by RPC completion. */
 typedef struct rpcTransactionPrefix {
@@ -462,12 +507,38 @@ s32 sceSifGetOtherData(rpcTransactionPrefix *client, void *source, void *destina
 
 sifRpcServerData_t *_search_svdata(s32 serviceId, rpcQueue *queue);
 
+/* Incoming ISR scratch command, not an overlay on the outgoing packet pool. */
+typedef struct rpcBindRequest {
+    u32 commandHeader[4];
+    u32 flags;
+    u32 packetAddress;
+    u32 sequence;
+    u32 client;
+    s32 serviceId;
+} rpcBindRequest;
+
+SIZE_CHECK(rpcBindRequest_size, rpcBindRequest, 0x24);
+
+void _request_bind(void *incoming, void *queueArg);
+
 s32 sceSifBindRpc(rpcClient *client, u32 serverId, s32 mode);
+
+/* Current typed request payload, with native queue publication before metadata. */
+extern s32 iWakeupThread(s32 threadId);
+
+void _request_call(void *incoming, void *unusedQueue);
+
+s32 sceSifCallRpc(void *clientAddress, s32 function, s32 mode, void *send,
+                   s32 sendBytes, void *receive, s32 receiveBytes,
+                   void *endFunction, void *endParameter);
 
 typedef struct rpcClientPrefix {
     void *packet;
     u32 sequence;
 } rpcClientPrefix;
+
+/* Keep the shared zero exit before the successful return. */
+s32 sceSifCheckStatRpc(rpcClientPrefix *client);
 
 void sceSifSetRpcQueue(sifRpcDataQueue_t *queue, s32 threadId);
 
@@ -787,6 +858,9 @@ typedef union fsRequest_t {
 
 extern fsRequest_t fsRequest;
 
+/* Publish the returned descriptor after waiting for the I/O table lock. */
+s32 sceOpen(const char *name, s32 flags, ...);
+
 s32 sceClose(s32 descriptor);
 
 typedef union fsIoctlStatus_t {
@@ -1019,7 +1093,7 @@ u32 GetSystemCallEntry(s32 index);
 
 typedef struct {
     u32 index;
-    void *entry;
+    void (*entry)(void);
 } kernelEntryPair_t;
 
 extern kernelEntryPair_t systemCallEntryPairs[2];
@@ -1205,6 +1279,33 @@ extern s32 _SetTLBEntry(u32 index, u32 pageMask, u32 entryHi, u32 entryLo0, u32 
 s32 iPutTLBEntry(u32 index, u32 pageMask, u32 entryHi, u32 entryLo0, u32 entryLo1);
 
 extern const char execDefaultPath[8];
+
+typedef struct {
+    u32 pageMask;
+    u32 entryHi;
+    u32 entryLo0;
+    u32 entryLo1;
+} kernelTlbEntry_t;
+
+/* InitTLB32MB loads the kernel and default entries, stores how many it wrote in
+ * loadedCount, then loads the extended ones. */
+typedef struct {
+    s32 kernelCount;
+    s32 defaultCount;
+    s32 extendedCount;
+    s32 loadedCount;
+    kernelTlbEntry_t *kernelEntries;
+    kernelTlbEntry_t *defaultEntries;
+    kernelTlbEntry_t *extendedEntries;
+} kernelTlbTable_t;
+
+extern kernelTlbEntry_t tlbKernelEntries[13];
+
+extern kernelTlbEntry_t tlbDefaultEntries[18];
+
+extern kernelTlbEntry_t tlbExtendedEntries[8];
+
+extern kernelTlbTable_t tlbTable;
 /* End of declarations from src/smt3/sdk/libkernl.c */
 
 s32 _lf_bind(void)

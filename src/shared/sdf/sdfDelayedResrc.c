@@ -192,7 +192,19 @@ void sdfDelayedResrcRelease(sdfDelayedResrcChunk_t *aChunk) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDelayedResrc", sdfDelayedResrcProc);
+void sdfDelayedResrcProc(void) {
+    u32 slotIndex;
+
+    sdfDelayedResrcFlag = 1;
+    WaitSema(sdfDelayedResrcSemaId);
+    sdfDelayedResrcRelease(EE_ADDR_AS(sdfDelayedResrcChunk_t *, sdfPendingQueueSlots[0]));
+    for (slotIndex = 0; slotIndex < SDF_PENDING_LAST_SLOT; slotIndex++) {
+        sdfPendingQueueSlots[slotIndex] = sdfPendingQueueSlots[slotIndex + 1];
+    }
+    sdfPendingQueueSlots[SDF_PENDING_LAST_SLOT] = EE_ADDR_S(sdfDelayedResrcClose());
+    SignalSema(sdfDelayedResrcSemaId);
+    sdfDelayedResrcFlag = 0;
+}
 
 u64 sdfDelayedResrcCheckFunc(void) {
     u32 slotIndex;

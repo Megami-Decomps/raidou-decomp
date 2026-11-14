@@ -57,7 +57,7 @@ typedef struct
     u8 fileInfoReady;
     u8 cardStat;
     s8 slotIndex;
-    u32 slotFlags[5];
+    u32 slotFlags[20]; /* Raidou: 0x64 stride, SMT3 has 5 */
 } sdfMcCb_tag;
 
 extern sdfMcCb_tag sdfMcCb[];
@@ -127,29 +127,114 @@ void sdfMcFuncWrite(s32 descriptor, const void *buffer, s32 size);
 McPollResult sdfMcFuncWrite1(void);
 /* End of declarations from src/smt3/mc/mcManager.c */
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_r1_001D4A20);
+void sdfMcRegetInfo(s32 port)
+{
+    sdfMcInfo = port;
+    sdfMcFuncGetInfo(port);
+    sdfMcCb[port].retry = 0;
+}
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_r1_001D4A68);
+McPollResult sdfMcFuncGetInfo1(void)
+{
+    sdfMcCb_tag *cb = &sdfMcCb[sdfMcInfo];
+    u32 commandId;
+    s32 commandResult;
+    s32 pollResult = sceMcSync(MC_SYNC_POLL_MODE, &commandId, &commandResult);
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetFileInfoReady);
+    if (pollResult == MC_SYNC_COMPLETE) {
+        cb->syncResult = commandResult;
+        if (commandResult == -1) {
+            cb->cardStat = 1;
+            cb->slotIndex = 0;
+        }
+        switch (cb->type) {
+        case 0:
+            cb->cardStat = 1;
+            cb->fileInfoReady = 0;
+            cb->slotIndex = 0;
+            break;
+        case 2:
+            if (cb->format == 0) {
+                s32 retry = cb->retry;
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetFreeBytes);
+                if (retry < 5) {
+                    cb->retry = retry + 1;
+                    sdfMcFuncGetInfo(sdfMcInfo);
+                    return MC_POLL_PENDING;
+                }
+                cb->fileInfoReady = 2;
+                cb->cardStat = 1;
+                cb->slotIndex = 0;
+            } else {
+                cb->fileInfoReady = 1;
+            }
+            break;
+        default:
+            cb->fileInfoReady = 3;
+            cb->cardStat = 1;
+            cb->slotIndex = 0;
+            break;
+        }
+        return MC_POLL_SUCCESS;
+    }
+    return MC_POLL_PENDING;
+}
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetStatus);
+s32 sdfMcGetFileInfoReady(s32 port)
+{
+    return sdfMcCb[port].fileInfoReady;
+}
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcClearCardStat);
+s32 sdfMcGetFreeBytes(s32 port)
+{
+    return sdfMcCb[port].free << 10;
+}
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcSetCardStat);
+s32 sdfMcGetStatus(s32 port)
+{
+    return sdfMcCb[port].cardStat;
+}
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcClearSlotFlags);
+void sdfMcClearCardStat(s32 port)
+{
+    sdfMcCb[port].cardStat = 0;
+}
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcSetSlotFlags);
+void sdfMcSetCardStat(s32 port)
+{
+    sdfMcCb[port].cardStat = 1;
+}
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetSlotFlags);
+void sdfMcClearSlotFlags(s32 port, s32 slot)
+{
+    sdfMcCb_tag *cb = &sdfMcCb[port];
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetSlotIndex);
+    cb->slotFlags[slot] = 0;
+}
 
-INCLUDE_ASM(const s32, "mc/mcManager", sdfMcSetSlotIndex);
+void sdfMcSetSlotFlags(s32 port, s32 slot, u32 flags)
+{
+    sdfMcCb_tag *cb = &sdfMcCb[port];
+
+    cb->slotFlags[slot] |= flags;
+}
+
+u32 sdfMcGetSlotFlags(s32 port, s32 slot)
+{
+    sdfMcCb_tag *cb = &sdfMcCb[port];
+
+    return cb->slotFlags[slot];
+}
+
+s32 sdfMcGetSlotIndex(s32 port)
+{
+    return sdfMcCb[port].slotIndex;
+}
+
+void sdfMcSetSlotIndex(s32 port, s32 slot)
+{
+    sdfMcCb[port].slotIndex = slot;
+}
 
 void sdfMcFuncFormat(u32 port)
 {

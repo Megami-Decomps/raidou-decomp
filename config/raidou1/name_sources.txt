@@ -3541,8 +3541,8 @@
 0x001D4918	fileManagerProc	inferred	SMT3HD name via SLUS_209.11 0x00297870, shared-hash-in-run; map-agrees
 0x001D4938	fileSysInit	inferred	SMT3HD name via SLUS_209.11 0x00297890, reloc-identical; map-agrees
 0x001D49D0	sdfMcFuncGetInfo	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00289A08, masked-words-identical (strict map pair); dds-decomp: SMT3HD name
-0x001D4A20	func_r1_001D4A20	placeholder	placeholder for the pair with raidou2 0x001EAE30, unique-reloc-hash
-0x001D4A68	func_r1_001D4A68	placeholder	placeholder for the pair with raidou2 0x001EAE78, unique-reloc-hash
+0x001D4A20	sdfMcRegetInfo	inferred	calls sdfMcFuncGetInfo and clears the port's retry byte, as SMT3 sdfMcRegetInfo
+0x001D4A68	sdfMcFuncGetInfo1	inferred	polls sceMcSync for the port in sdfMcInfo, as SMT3 sdfMcFuncGetInfo1
 0x001D4B60	sdfMcGetFileInfoReady	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00289B98, masked-words-identical (order map pair); dds-decomp: SMT3HD name
 0x001D4B88	sdfMcGetFreeBytes	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00289BC0, masked-words-identical (strict map pair); dds-decomp: SMT3HD name
 0x001D4BB0	sdfMcGetStatus	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00289BE8, masked-words-identical (order map pair); dds-decomp: SMT3HD name
@@ -20433,7 +20433,7 @@
 0x0046F834	D_r1_0046F834	placeholder	placeholder for the pair with raidou2 0x004E484C, code-ref
 0x0046F838	D_r1_0046F838	placeholder	placeholder for the pair with raidou2 0x004E4850, code-ref
 0x0046F83C	D_r1_0046F83C	placeholder	placeholder for the pair with raidou2 0x004E4854, run-order-size
-0x0046F840	D_r1_0046F840	placeholder	placeholder for the pair with raidou2 0x004E4858, code-ref
+0x0046F840	sdfMcInfo	inferred	port index read by sdfMcFuncGetInfo1, as SMT3 sdfMcInfo
 0x0046F844	D_r1_0046F844	placeholder	placeholder for the pair with raidou2 0x004E485C, code-ref
 0x0046F854	D_r1_0046F854	placeholder	placeholder for the pair with raidou2 0x004E4870, code-ref
 0x0046F858	D_r1_0046F858	placeholder	placeholder for the pair with raidou2 0x004E4874, code-ref
@@ -20785,7 +20785,7 @@
 0x004C5AD0	D_r1_004C5AD0	placeholder	placeholder for the pair with raidou2 0x005556E0, code-ref
 0x004C5AD8	D_r1_004C5AD8	placeholder	placeholder for the pair with raidou2 0x005556E8, code-ref
 0x004C5B28	D_r1_004C5B28	placeholder	placeholder for the pair with raidou2 0x00555738, code-ref
-0x004C5B68	D_r1_004C5B68	placeholder	placeholder for the pair with raidou2 0x00555778, code-ref
+0x004C5B68	sdfMcCb	inferred	per-port control block, 0x64 stride in sdfMcGetStatus, as SMT3 sdfMcCb
 0x004C5B70	D_r1_004C5B70	placeholder	placeholder for the pair with raidou2 0x00555780, code-ref
 0x004C5B78	D_r1_004C5B78	placeholder	placeholder for the pair with raidou2 0x00555788, code-ref
 0x004C5B79	D_r1_004C5B79	placeholder	placeholder for the pair with raidou2 0x00555789, code-ref

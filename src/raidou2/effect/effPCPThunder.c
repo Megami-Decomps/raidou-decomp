@@ -897,7 +897,83 @@ u32 func_r1_00207700(u32 pThunderPoly) {
 
 INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00207708);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereLowRotate);
+void effPCPThunderSphereLowRotate(effPCPThunderSpherePoly_t *work, s32 index) {
+    f32 position[4] __attribute__((aligned(16)));
+    f32 placement[4] __attribute__((aligned(16)));
+    f32 axis[4] __attribute__((aligned(16)));
+    f32 originalAxis[4] __attribute__((aligned(16)));
+    f32 cameraDirection[4] __attribute__((aligned(16)));
+    f32 origin[4] __attribute__((aligned(16)));
+    f32 width[4] __attribute__((aligned(16)));
+    f32 rotation[4] __attribute__((aligned(16)));
+    parSystem_t *system = work->hPoly;
+    parCell_t *cell = &system->cells[index];
+    effPCPThunderSpherePolyPart_t *source;
+    u128 *vertices;
+    s32 count;
+    s32 i;
+    f32 widthScale;
+    f32 rotationScale;
+    f32 angleJitter;
+    f32 radius;
+
+    count = system->vertexWordCount >> 1;
+    cell->vertexCount = system->vertexWordCount;
+    source = &work->pPart[index];
+    vertices = cell->history;
+    widthScale = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 0.3f + 1.0f;
+    VEC3_SPLAT(width, work->head.width_border * widthScale);
+    originalAxis[0] = source->axis[0];
+    originalAxis[1] = source->axis[1];
+    originalAxis[2] = source->axis[2];
+    originalAxis[3] = 0.0f;
+    radius = source->radius;
+    SDF_VU0_LOADVECTOR(aViewTarget);
+    SDF_VU0_LOADVECTOR_B(aViewEye);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_STOREVECTOR_NOMEM(cameraDirection);
+    placement[0] = source->dir[0];
+    placement[1] = 0.0f;
+    placement[2] = source->dir[2];
+    SDF_VU0_COPYVECTOR(origin, work->head.origin);
+    origin[1] += source->dir[1];
+
+    for (i = 0; i < count; i++) {
+        position[0] = origin[0] + placement[0] * radius;
+        position[1] = origin[1] + placement[1] * radius;
+        position[2] = origin[2] + placement[2] * radius;
+        SDF_VU0_COPYVECTOR(axis, originalAxis);
+        rotation[0] = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
+        rotation[1] = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
+        rotation[2] = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
+        SetRotateMatrixXYZ((const struct sdfVector3_t *)rotation);
+        SDF_VU0_LOADVECTOR(axis);
+        SDF_VU0_APPLYMATRIX_XYZ();
+        SDF_VU0_STOREVECTOR_NOMEM(axis);
+        angleJitter = dds3GetRandFloatA(dds3EffectBase);
+        rotationScale = -source->rotate;
+        SetRotateMatrixAxis(((angleJitter - 0.5f) * 2.0f * 0.8f) * rotationScale + rotationScale, (const struct sdfVector3_t *)axis);
+        SDF_VU0_LOADVECTOR(placement);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_APPLYMATRIX_XYZ();
+        SDF_VU0_STOREVECTOR_NOMEM(placement);
+        SDF_VU0_SUBVECTOR();
+        SDF_VU0_LOADVECTOR_B(cameraDirection);
+        SDF_VU0_OUTERPRODUCT();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_LOADVECTOR_B(width);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_COPYVECTOR_A_TO_C();
+        SDF_VU0_LOADVECTOR(position);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR_NOMEM(vertices);
+        SDF_VU0_COPYVECTOR_C_TO_A();
+        SDF_VU0_SUBVECTOR_B_A();
+        SDF_VU0_STOREVECTOR_B_NOMEM(vertices + 1);
+        vertices += 2;
+    }
+}
 
 void effPCPThunderSphereLowRotateAxis(effPCPThunderSpherePoly_t *work, s32 index) {
     f32 axis[4] __attribute__((aligned(16)));
@@ -1641,7 +1717,155 @@ void effPCP_ThunderRadiatePolyDrawOff(effPCP_ThunderRadiatePoly_t *work, s32 ind
     cell->activeFrames = dds3GetRandA((effRandState_t *)dds3EffectBase) % work->head.activeFrameRange + EFF_THUNDER_MIN_ACTIVE_FRAMES;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderRadiatePolyPartRefresh);
+void effPCP_ThunderRadiatePolyPartRefresh(effPCP_ThunderRadiatePoly_t *pThunderRadiatePoly, s32 number) {
+    f32 width[4] __attribute__((aligned(16)));
+    f32 bandWidth[4] __attribute__((aligned(16)));
+    f32 outerWidth[4] __attribute__((aligned(16)));
+    f32 negativeOuterWidth[4] __attribute__((aligned(16)));
+    f32 stepScale[4] __attribute__((aligned(16)));
+    f32 position[4] __attribute__((aligned(16)));
+    f32 basis[4] __attribute__((aligned(16)));
+    f32 direction[4] __attribute__((aligned(16)));
+    f32 cameraDirection[4] __attribute__((aligned(16)));
+    f32 side[4] __attribute__((aligned(16)));
+    parSystem_t *system = pThunderRadiatePoly->hPoly;
+    effPCP_ThunderRadiatePolyPart_t *source = &pThunderRadiatePoly->pPart[number];
+    parCell_t *cell = &system->cells[number];
+    u128 *vertices;
+    u128 *join;
+    s32 i;
+    s32 segments;
+    f32 distance;
+    f32 facing;
+    f32 stepLength;
+
+    VEC3_SPLAT(width, pThunderRadiatePoly->head.coreWidth);
+    VEC3_SPLAT(bandWidth, width[0] + pThunderRadiatePoly->head.bandWidth);
+    VEC3_SPLAT(outerWidth, bandWidth[0] + pThunderRadiatePoly->head.edgeWidth);
+    VEC3_SPLAT(negativeOuterWidth, -outerWidth[0]);
+    cell->vertexCount = system->vertexWordCount;
+    vertices = cell->history;
+    segments = pThunderRadiatePoly->head.split;
+    SDF_VU0_LOADVECTOR(aViewTarget);
+    SDF_VU0_LOADVECTOR_B(aViewEye);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_STOREVECTOR_NOMEM(cameraDirection);
+    direction[0] = source->directionX;
+    direction[1] = source->directionY;
+    direction[2] = source->directionZ;
+    SDF_VU0_LOADVECTOR_B(direction);
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR_NOMEM(side);
+    distance = pThunderRadiatePoly->head.length / pThunderRadiatePoly->head.split;
+    SDF_VU0_COPYVECTOR(position, pThunderRadiatePoly->head.origin);
+
+    for (i = 0; i < segments; i++) {
+        SDF_VU0_LOADVECTOR(direction);
+        SDF_VU0_LOADVECTOR_B(cameraDirection);
+        SDF_VU0_OUTERPRODUCT();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_STOREVECTOR_NOMEM(basis);
+        SDF_VU0_LOADVECTOR_B(width);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_COPYVECTOR_A_TO_C();
+        SDF_VU0_LOADVECTOR(position);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR_NOMEM(vertices + 2);
+        SDF_VU0_COPYVECTOR_C_TO_A();
+        SDF_VU0_SUBVECTOR_B_A();
+        SDF_VU0_STOREVECTOR_B_NOMEM(vertices + 3);
+        SDF_VU0_LOADVECTOR(basis);
+        SDF_VU0_LOADVECTOR_B(bandWidth);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_COPYVECTOR_A_TO_C();
+        SDF_VU0_LOADVECTOR(position);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR_NOMEM(vertices + 1);
+        SDF_VU0_COPYVECTOR_C_TO_A();
+        SDF_VU0_SUBVECTOR_B_A();
+        SDF_VU0_STOREVECTOR_B_NOMEM(vertices + 4);
+        SDF_VU0_LOADVECTOR(basis);
+        SDF_VU0_LOADVECTOR_B(outerWidth);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_COPYVECTOR_A_TO_C();
+        SDF_VU0_LOADVECTOR(position);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR_NOMEM(vertices);
+        SDF_VU0_COPYVECTOR_C_TO_A();
+        SDF_VU0_SUBVECTOR_B_A();
+        SDF_VU0_STOREVECTOR_B_NOMEM(vertices + 5);
+        vertices += 6;
+        stepLength = distance * (1.0f - dds3GetRandFloatA(dds3EffectBase) * 0.9f);
+        VEC3_SPLAT(stepScale, stepLength);
+        SDF_VU0_LOADVECTOR(direction);
+        SDF_VU0_LOADVECTOR_B(stepScale);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_LOADVECTOR_B(position);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR_NOMEM(position);
+        SDF_VU0_LOADVECTOR(basis);
+        SDF_VU0_LOADVECTOR_B(width);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_COPYVECTOR_A_TO_C();
+        SDF_VU0_LOADVECTOR(position);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR_NOMEM(vertices + 2);
+        SDF_VU0_COPYVECTOR_C_TO_A();
+        SDF_VU0_SUBVECTOR_B_A();
+        SDF_VU0_STOREVECTOR_B_NOMEM(vertices + 3);
+        SDF_VU0_LOADVECTOR(basis);
+        SDF_VU0_LOADVECTOR_B(bandWidth);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_COPYVECTOR_A_TO_C();
+        SDF_VU0_LOADVECTOR(position);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR_NOMEM(vertices + 1);
+        SDF_VU0_COPYVECTOR_C_TO_A();
+        SDF_VU0_SUBVECTOR_B_A();
+        SDF_VU0_STOREVECTOR_B_NOMEM(vertices + 4);
+        SDF_VU0_LOADVECTOR(basis);
+        SDF_VU0_LOADVECTOR_B(outerWidth);
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_COPYVECTOR_A_TO_C();
+        SDF_VU0_LOADVECTOR(position);
+        SDF_VU0_COPYVECTOR_A_TO_B();
+        SDF_VU0_ADDVECTOR_A_C();
+        SDF_VU0_STOREVECTOR_NOMEM(vertices);
+        SDF_VU0_COPYVECTOR_C_TO_A();
+        SDF_VU0_SUBVECTOR_B_A();
+        SDF_VU0_STOREVECTOR_B_NOMEM(vertices + 5);
+        vertices += 6;
+        SetRotateMatrixAxis(((dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f) * (70.0f * (EFF_THUNDER_HALF_TURN / 180.0f)), (const struct sdfVector3_t *)cameraDirection);
+        SDF_VU0_LOADVECTOR(direction);
+        SDF_VU0_APPLYMATRIX_XYZ();
+        SDF_VU0_STOREVECTOR_NOMEM(direction);
+        SDF_VU0_LOADVECTOR_B(basis);
+        SDF_VU0_INNERPRODUCT(facing);
+        if (facing < 0.0f) {
+            join = vertices - 1;
+            SDF_VU0_LOADVECTOR_C(outerWidth);
+        } else {
+            join = vertices - 6;
+            SDF_VU0_LOADVECTOR_C(negativeOuterWidth);
+        }
+        SDF_VU0_LOADVECTOR(direction);
+        SDF_VU0_LOADVECTOR_B(cameraDirection);
+        SDF_VU0_OUTERPRODUCT();
+        SDF_VU0_NORMALIZE();
+        SDF_VU0_STOREVECTOR_NOMEM(basis);
+        SDF_VU0_COPYVECTOR_C_TO_B();
+        SDF_VU0_MULVECTOR();
+        SDF_VU0_LOADVECTOR_B(join);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR_NOMEM(position);
+    }
+}
 
 void effPCP_ThunderRadiatePolyDraw(effPCP_ThunderRadiatePoly_t *hData) {
     s32 i = 0;

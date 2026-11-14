@@ -410,7 +410,11 @@ char *sdfFileGetHostRoot(void)
     return sdfFileHostRootPath;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileSetDefaultSrc);
+void sdfFileSetDefaultSrc(s32 aType)
+{
+    sdfFileDefaultSrcType = aType;
+    sdfFileCmdSetDefaultDevice(aType);
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfFile", func_r1_0036CD28);
 

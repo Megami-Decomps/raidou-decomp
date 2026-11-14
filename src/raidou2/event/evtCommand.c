@@ -2044,7 +2044,25 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9040);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9098);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_MOVE2);
+u32 evtCommand_MODEL_MOVE2(void) {
+    evtUnit_t *unit;
+
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    if (unit == NULL) {
+        return 1;
+    }
+    unit->motionTicks = 0;
+    {
+        s32 pathObjectKey = scrGetIntPara(1);
+        s32 frames = scrGetIntPara(5);
+        s32 directionOffset = scrGetIntPara(6);
+        s32 pathFollowMode = scrGetIntPara(2);
+        s32 dirFlag = scrGetIntPara(4);
+        s32 sideMode = scrGetIntPara(3);
+        evtSetUnitMove3(unit, pathObjectKey, frames, directionOffset, pathFollowMode, dirFlag, sideMode);
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9230);
 
@@ -2056,11 +2074,40 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A95A0);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9640);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_WAIT_HOKAN);
+/* Store the two script-supplied world-unit state values. */
+u32 evtCommand_MODEL_WAIT_HOKAN(void) {
+    s32 worldObjectKey;
+    evtUnit_t *unit;
+
+    worldObjectKey = scrGetIntPara(0);
+    unit = evtGetUnitHandle(worldObjectKey);
+    if (unit == NULL) {
+        return 1;
+    }
+    unit->waitBlendStart = scrGetIntPara(1);
+    unit->waitBlendEnd = scrGetIntPara(2);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_MOVE_MOT);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ROT);
+u32 evtCommand_MODEL_ROT(void) {
+    s32 unitObjectKey;
+    evtUnit_t *unit;
+    s32 worldObjectKey;
+    s32 frames;
+
+    unitObjectKey = scrGetIntPara(0);
+    unit = evtGetUnitHandle(unitObjectKey);
+    if (unit == NULL) {
+        return 1;
+    }
+    unit->motionTicks = 0;
+    worldObjectKey = scrGetIntPara(1);
+    frames = scrGetIntPara(2);
+    evtSetUnitRot2(unit, worldObjectKey, frames);
+    return 1;
+}
 
 f32 evtGetShortestAngleDelta(f32 a, f32 b) {
     f32 diff;
@@ -2497,7 +2544,33 @@ s32 evtCommand_EFFMG1_POS(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFMG2_POS);
+s32 evtCommand_EFFMG2_POS(void)
+{
+    dds3Basic_t *effect;
+    dds3Basic_t *point0;
+    dds3Basic_t *point1;
+    dds3Basic_t *point2;
+    dds3Basic_t *point3;
+
+    effect = evtSearchBasic(7, scrGetIntPara(0));
+    if (effect == NULL) {
+        datDebugPrintf("EFFMG2_POS mg2 ID error!\n");
+        return 1;
+    }
+    point0 = evtSearchBasic(7, scrGetIntPara(1));
+    point1 = evtSearchBasic(7, scrGetIntPara(2));
+    point2 = evtSearchBasic(7, scrGetIntPara(3));
+    point3 = evtSearchBasic(7, scrGetIntPara(4));
+    if (point0 == NULL || point1 == NULL || point2 == NULL || point3 == NULL) {
+        datDebugPrintf("EFFMG2_POS point ID not found!\n");
+        return 1;
+    }
+    if (dds3EffectObjectSetMG12Pos(effect, point0, point1, point2, point3) == 0) {
+        datDebugPrintf("EFFMG2_POS set error!\n");
+        return 1;
+    }
+    return 1;
+}
 
 s32 evtCommand_EFFECT_ON(void)
 {

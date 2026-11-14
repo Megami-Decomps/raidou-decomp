@@ -395,7 +395,15 @@ void sdfDeliverDrawStart(s32 frameId, s32 buffId)
     SDF_FLAG_SET(&sdfGrDrawBusy, sdfGrDrawBusy, buffId);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDeliverDrawEnd);
+void sdfDeliverDrawEnd(s32 mode, s32 frameId, s32 halfOffset) {
+    if (mode == 0) {
+        sdfDispFrameId[0] = frameId;
+        sdfDispFrameId[1] = frameId;
+    } else {
+        sdfDispFrameId[halfOffset] = frameId;
+    }
+    SDF_FLAG_SET(&sdfGrDrawBusy, sdfGrDrawBusy, -1);
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDrawThread);
 

@@ -9883,7 +9883,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046F834	0x004E484C	D_r1_0046F834	.sbss	0x4	no	code-ref
 0x0046F838	0x004E4850	D_r1_0046F838	.sbss	0x4	no	code-ref
 0x0046F83C	0x004E4854	D_r1_0046F83C	.sbss	0x4	no	run-order-size
-0x0046F840	0x004E4858	D_r1_0046F840	.sbss	0x4	no	code-ref
+0x0046F840	0x004E4858	sdfMcInfo	.sbss	0x4	no	code-ref
 0x0046F844	0x004E485C	D_r1_0046F844	.sbss	0x4	no	code-ref
 0x0046F854	0x004E4870	D_r1_0046F854	.sbss	0x4	no	code-ref
 0x0046F858	0x004E4874	D_r1_0046F858	.sbss	0x4	no	code-ref
@@ -10235,7 +10235,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x004C5AD0	0x005556E0	D_r1_004C5AD0	.bss	0x8	no	code-ref
 0x004C5AD8	0x005556E8	D_r1_004C5AD8	.bss	0x50	no	code-ref
 0x004C5B28	0x00555738	D_r1_004C5B28	.bss	0x40	no	code-ref
-0x004C5B68	0x00555778	D_r1_004C5B68	.bss	0x8	no	code-ref
+0x004C5B68	0x00555778	sdfMcCb	.bss	0x8	no	code-ref
 0x004C5B70	0x00555780	D_r1_004C5B70	.bss	0x8	no	code-ref
 0x004C5B78	0x00555788	D_r1_004C5B78	.bss	0x1	no	code-ref
 0x004C5B79	0x00555789	D_r1_004C5B79	.bss	0x1	no	code-ref

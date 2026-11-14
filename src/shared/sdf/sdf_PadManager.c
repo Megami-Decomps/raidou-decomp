@@ -349,4 +349,29 @@ void sdfPadSetAct(s32 pad, s32 value0, s32 value1) {
     sdfPadCb[pad].actDataBack = value1 & 0xFF;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadInitManager);
+void sdfPadInitManager(void) {
+    s32 padIndex;
+
+    scePadInit(0);
+    for (padIndex = 0; padIndex != SDF_PAD_ENTRY_COUNT; padIndex++) {
+        s32 port = sdfPadPortSlotPairs[padIndex * 2];
+        s32 slot = sdfPadPortSlotPairs[padIndex * 2 + 1];
+        sdfPadCb_t *entry;
+
+        scePadPortOpen(port, slot, &sdfPadPortBuffers[padIndex * SDF_PAD_PORT_BUFFER_BYTES]);
+        entry = &sdfPadCb[padIndex];
+        entry->port = port;
+        entry->slot = slot;
+        entry->stat = 0;
+        entry->mode = 0;
+        entry->reqMode = 0;
+        entry->padData = 0;
+        entry->lastPadData = 0;
+        entry->actData = 0;
+        entry->actDataBack = 0;
+    }
+    memset(dds3PadBitTable, 0, SDF_PAD_BUTTON_STATE_BYTES);
+    memset(sdfPadAnalogSticks, SDF_PAD_STICK_CENTER, SDF_PAD_STICK_STATE_BYTES);
+    memset(sdfPadPressure, 0, SDF_PAD_PRESSURE_STATE_BYTES);
+    sdfPadManagerMode = 0;
+}

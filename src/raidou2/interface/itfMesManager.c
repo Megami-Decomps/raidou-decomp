@@ -1504,7 +1504,32 @@ extern s8 D_0037F531[];
 s32 itfMesScriptStartEntryAndWait(void);
 /* End of declarations from src/dds2/interface/itfMesManager.c */
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngMessage);
+/* Poll/start an entry: one ends the command, zero keeps waiting.
+   A negative signed status is consumed by clearing it; positive status keeps waiting. */
+s32 itfMesMngMessage(void) {
+    s32 window = scrGetMessageHandle();
+    instanceMes_tag *record;
+    message_tag *entryState;
+    s32 entryIndex;
+    s8 status;
+
+    if (window < 0) {
+        return 1;
+    }
+    record = pinst[window].mes;
+    entryIndex = scrGetIntPara(0);
+    entryState = &record->message;
+    status = entryState->phase;
+    if (status == 0) {
+        if (itfMesMngRequestMessage(window, entryIndex, 0) == 0) {
+            return 1;
+        }
+    } else if (status < 0) {
+        entryState->phase = 0;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00186970);
 
@@ -1616,7 +1641,29 @@ s32 itfStepHeldPanelMessages(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSelect);
+s32 itfMesMngSelect(void) {
+    s32 window;
+    s32 entry;
+    instanceMes_tag *record;
+    select_tag *options;
+
+    window = scrGetMessageHandle();
+    if (window < 0) {
+        return 1;
+    }
+    record = pinst[window].mes;
+    entry = scrGetIntPara(0);
+    options = &record->select;
+    if (options->phase == 0) {
+        itfMesMngRequestSelect(window, entry);
+    } else if (options->phase < 0) {
+        options->phase = 0;
+        scrSetIntReturnValue(options->select);
+        itfMesMngRequestSelectRelease(window);
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfCommandSelectOptionWithFade);
 
@@ -1628,7 +1675,10 @@ void itfMesMngSetSelPhase(s32 msgid, s16 phase) {
     pinst[msgid].mes->select.phase = phase;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetSelectNo);
+/* Return the same signed word forwarded as the script result when an option completes. */
+s16 itfMesMngGetSelectNo(s32 msgid) {
+    return pinst[msgid].mes->select.select;
+}
 
 /* Store the script's panel mask; a negative script window is a no-op. Return 1. */
 s32 itfMesMngMaskSelect(void) {
@@ -1816,7 +1866,28 @@ void itfMesMngSetMaskSelect(s32 id, u32 maskpattern) {
     pinst[id].mes->select.mask = maskpattern;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelect);
+void itfMesMngSetSelect(s32 id, s32 selno)
+{
+    select_tag *blk = &pinst[id].mes->select;
+    u32 mask = blk->mask;
+    s32 bit = mask & 1;
+    s32 n = bit == 0;
+    s32 i = 0;
+
+    if (selno > 0) {
+        do {
+            i++;
+            mask >>= 1;
+            bit = mask & 1;
+            if (bit == 0) {
+                n++;
+            }
+        } while (i < selno);
+    }
+    n = bit == 0 ? n - 1 : 0;
+    blk->select = n;
+    blk->select_imm = n;
+}
 
 /* Move primary text to an absolute position; an unchanged position is a no-op. */
 void itfMesMngSetSpeakerPosition(s32 id, s32 x, s32 y) {
@@ -1870,7 +1941,18 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelPosition);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelPositionOffset);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetPriority);
+/* Propagate a changed render value to all three glyph chains before caching it. */
+void itfMesMngSetPriority(s32 id, s32 z_buf) {
+    instanceMes_tag *mes = pinst[id].mes;
+
+    if (mes->z == z_buf) {
+        return;
+    }
+    ChangeZBuffer(mes->speaker.pfont, z_buf);
+    ChangeZBuffer(mes->message.pfont, z_buf);
+    ChangeZBuffer(mes->select.pfont, z_buf);
+    mes->z = z_buf;
+}
 
 u32 itfMesMngGetStat(s32 id)
 {
@@ -1954,9 +2036,37 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188420);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelectDefKey);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetWidth);
+/* Build and release a temporary glyph chain to measure the widest grouped row.
+ * Empty tables and zero/missing encoded items return zero. */
+s32 itfMesMngGetWidth(s32 id, s32 message, s32 page) {
+    instanceMes_tag *mes = pinst[id].mes;
+    itfMesBinMesHeader_t *table;
+    u8 *encodedText;
+    frFontHandle_t *glyphChain;
+    s32 textExtent;
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetDefaultSpeed);
+    table = GetTypeHeader(mes, message)->ptr;
+    if (table->page == 0) {
+        return 0;
+    }
+    CommitVarTable((s32 *)mes->variable.pptr);
+    if (mes->pext != 0) {
+        frSetExtDic(mes->pext);
+    }
+    encodedText = GetMessagePagePtr(table, page);
+    if (encodedText == 0) {
+        return 0;
+    }
+    glyphChain = MessageRequest(0, 0, encodedText, 0);
+    textExtent = GetMessageWidth(glyphChain);
+    frDestroyFontRequestAfter(glyphChain);
+    return textExtent;
+}
+
+/* Set the fourth color channel used when this window's entry glyphs are built. */
+void itfMesMngSetDefaultSpeed(s32 id, u8 speed) {
+    pinst[id].mes->message.color[3] = speed;
+}
 
 void itfMesMngSetKutiCallback(s32 id, void (*func)(void)) {
     pinst[id].mes->func_kuti = (addr_t)func;
@@ -1991,7 +2101,24 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngDebugProc);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188B38);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", DestructFlow);
+/* Tear down installed content/resources, return the pool record and decrement
+ * the pool-array-relative counter. An empty record is a no-op. */
+void DestructFlow(s32 id) {
+    itfMesLink_t *windowRecord = &itfMesMngManager.nodes[id];
+    instanceMes_tag *mes = windowRecord->state;
+
+    if (mes != NULL) {
+        itfMesMngRequestMessageRelease(id, 1);
+        itfMesMngRequestSelectRelease(id);
+        ReleaseAllWindow(mes);
+        ReleaseAllVariable(&mes->variable);
+        mes->stat = 0;
+        sdfMemFreeDirect(windowRecord->resourceHandle);
+        windowRecord->state = NULL;
+        itfMiscLinkGive(windowRecord, &itfMesMngManager.pool);
+        itfMesMngManager.activeWindowCount -= 1;
+    }
+}
 
 void ResolveResourceAddress(itfMesResource_t *pdata)
 {
@@ -2315,7 +2442,33 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018A3C0);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", SelectItemMove);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", SelectItemDefKey);
+s32 SelectItemDefKey(select_tag *psel) {
+    s32 i;
+
+    for (i = 0; i < psel->numdef; i++) {
+        defkey_tag *option = &psel->defkey[i];
+
+        if (dds3PadButtonState.buttons[option->key] < 0) {
+            s32 prefixLength = option->index;
+            s32 rank = 0;
+            u32 mask = psel->mask;
+
+            if (prefixLength > 0) {
+                s32 remaining = prefixLength;
+                do {
+                    if ((mask & 1) == 0) {
+                        rank++;
+                    }
+                    mask >>= 1;
+                } while (--remaining != 0);
+            }
+            if ((mask & 1) == 0) {
+                return rank;
+            }
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018A658);
 
@@ -2356,7 +2509,31 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", DebugMoveWinVert);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DebugMoveWinAlpha);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", DebugChangeInstance);
+itfMesLink_t *DebugChangeInstance(itfMesLink_t *pflow) {
+    s32 index = 0;
+    s32 count = itfMesMngManager.activeWindowCount;
+
+    if (count <= 0) {
+        return NULL;
+    }
+    for (;;) {
+        if (pflow != NULL) {
+            pflow = pflow->previous;
+        }
+        if (pflow == NULL) {
+            pflow = itfMesMngManager.pool.activeTail;
+        }
+        if ((pflow->state)->window.mes != NULL) {
+            break;
+        }
+        index++;
+        if (count < index) {
+            pflow = NULL;
+            break;
+        }
+    }
+    return pflow;
+}
 
 void itfQueueOffsetTexturedRect(s32 *bounds, s32 *region, s32 x, s32 y,
                    s32 alpha, sdfTexHandle_t *texture, sdfDrawTag_t *command) {

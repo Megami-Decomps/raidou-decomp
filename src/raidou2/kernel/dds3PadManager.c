@@ -906,7 +906,36 @@ void dds3SetScreenFovy(f32 fieldOfView);
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadVibrationTest);
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadInitialize);
+void dds3PadInitialize(void) {
+    s32 pad;
+    s32 half;
+    s32 key;
+
+    for (pad = 0; pad < 2; pad++) {
+        for (half = 0; half < 2; half++) {
+            for (key = 0; key < 16; key++) {
+                dds3PadButtonHoldCounters[pad * 16 + half * 32 + key] = 0;
+                dds3PadButtonPrev[pad * 16 + half * 32 + key] = 0;
+                dds3PadButtonState[pad * 16 + half * 32 + key] = 0;
+            }
+        }
+        for (key = 0; key < 2; key++) {
+            dds3PadStickHoldCounters[pad * 2 + key] = 0;
+            dds3PadStickPrev[pad * 4 + key * 2] = 0;
+            dds3PadStickPrev[pad * 4 + key * 2 + 1] = 0;
+            dds3PadStickStatusPrev[pad * 2 + key] = 0;
+            dds3PadStickState[pad * 4 + key * 2] = 0;
+            dds3PadStickState[pad * 4 + key * 2 + 1] = 0;
+            dds3PadStickStatusState[pad * 2 + key] = 0;
+        }
+    }
+    dds3PadVibrationState[0] = 0;
+    dds3PadVibrationMode[0] = 0;
+    dds3PadVibrationTable[0] = 0;
+    dds3PadVibrationState[1] = 0;
+    dds3PadVibrationMode[1] = 0;
+    dds3PadVibrationTable[1] = 0;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_r1_00103BE8);
 

@@ -6749,9 +6749,39 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", func_r1_00204358);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_r1_00204360);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMakkaCreat);
+effPCPMakka_tag *effPCPMakkaCreat(void *src) {
+    effPCPMakka_tag *work = sdfChipAllocDirect(sizeof(effPCPMakka_tag));
+    u32 i;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPMakkaCopy);
+    work->scale = 1.0f;
+    work->abgr = 0x80808080;
+    work->number = 10;
+    work->frame = 0;
+    for (i = 0; i < work->number; i++) {
+        work->handle[i] = 0;
+        work->startFrame[i] = i;
+        work->rotationY[i] = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 0.87266457f + 3.14159265f;
+    }
+    work->handle[0] = dds3EffectPCPDataPartCreate(src, 0);
+    return work;
+}
+
+effPCPMakka_tag *effPCPMakkaCopy(effPCPMakka_tag *src) {
+    effPCPMakka_tag *work = sdfChipAllocDirect(sizeof(effPCPMakka_tag));
+    u32 i;
+
+    work->frame = 0;
+    work->scale = src->scale;
+    work->number = src->number;
+    work->abgr = 0x80808080;
+    for (i = 0; i < work->number; i++) {
+        work->handle[i] = 0;
+        work->startFrame[i] = i;
+        work->rotationY[i] = (dds3GetRandFloatA(dds3EffectBase) - 0.5f) * 2.0f * 0.87266457f + 3.14159265f;
+    }
+    work->handle[0] = dds3EffectPartCopy(src->handle[0]);
+    return work;
+}
 
 void effPCPMakkaDelete(effPCPMakka_tag *hData) {
     u32 i = 0;
@@ -7455,7 +7485,27 @@ void effPCPHelperInit(effPCPHelperBED_tag *pHelperBED) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPHelperBEDCreate);
+effPCPHelperBED_tag *effPCPHelperBEDCreate(effPCPHelperBEDParam_t *pParam, void *pPBData, void *pBEDData) {
+    effPCPHelperBED_tag *work = sdfChipAllocDirect(sizeof(effPCPHelperBED_tag));
+
+    work->param = *pParam;
+    work->color = 0x80808080;
+    work->scale = 1.0f;
+    work->hBED = 0;
+    work->pPart = 0;
+    work->hHelper = 0;
+    work->frame = 0;
+    if (pPBData != 0) {
+        work->hHelper = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_VIEWER_CONTEXT, pPBData);
+    }
+    if (pBEDData != 0) {
+        work->hBED = effEveBEDCreate(pBEDData);
+    }
+    if (work->hBED != 0) {
+        effPCPHelperInit(work);
+    }
+    return work;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", func_r1_00206498);
 

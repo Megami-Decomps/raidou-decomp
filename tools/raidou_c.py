@@ -1036,13 +1036,25 @@ def sdk_settings(smt3, version):
         path.write_text(text)
 
 
+# smt3_c.tsv reason prefix for a pair that differs from SMT3's split assembly but whose C
+# compiles to the Raidou words with Raidou's headers (a Raidou layout); port carries it.
+COMPILES = "compiles identical"
+
+
+def marked(why):
+    return why.startswith(COMPILES)
+
+
 def candidates(version):
     """fn -> source rel for every Raidou function identical to SMT3 C of the same name,
-    then to DDS C (raidou_dds.py pairs) for the rest."""
+    then to DDS C (raidou_dds.py pairs) for the rest; a differing pair counts when its
+    smt3_c.tsv row is marked COMPILES."""
+    compiles = {fn for fn, (_, why) in outcomes(version).items() if marked(why)}
     out = {}
     for path in (OUT / "pairs.tsv", OUT / "pairs_dds.tsv"):
         for r in read_pairs(path):
-            if r["version"] == version and r["status"] == "identical" and r["function"] == r["smt3_name"]:
+            same = r["status"] == "identical" or (r["status"] == "differs" and r["function"] in compiles)
+            if r["version"] == version and same and r["function"] == r["smt3_name"]:
                 out.setdefault(r["function"], shared_rel(r["smt3_src"]))
     return out
 
@@ -1206,7 +1218,7 @@ def cmd_port(args):
         names = {n for n, _ in dropped}
         write_alias_rows(version, [(n, a) for n, a in alias_rows(version) if n not in data and n not in names] + dropped)
         for fn in kept:
-            done[fn] = ("c", "")
+            done[fn] = ("c", COMPILES if marked(done.get(fn, ("", ""))[1]) else "")
         write_outcomes(version, done)
         sdk_settings(smt3, version)
         print(f"{version}: {len(kept)} functions, {len(data)} data definitions from C")
@@ -1758,7 +1770,8 @@ def cmd_verify(args):
                 fails.setdefault(fn, why)
         aliases = {n: a for n, a in aliases.items() if not users[n] <= set(fails) and n not in defined}
         for fn, why in fails.items():
-            done[fn] = ("asm", why)
+            # A marked row stays a candidate, so the next port puts its body back to asm.
+            done[fn] = ("asm", f"{COMPILES}, then {why}" if marked(done.get(fn, ("", ""))[1]) else why)
         write_outcomes(version, done)
         for n, why in data_fails.items():
             rows[n] = dict(rows[n], status="asm", reason=why)

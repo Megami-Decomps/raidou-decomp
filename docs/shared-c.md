@@ -60,6 +60,12 @@ python3 configure.py && ninja                  # repeat verify/port until clean
 `name_sources.txt`) is C in smt3-decomp, has the same name, and has the same
 instruction words with j/jal targets and `%hi/%lo/%gp_rel` fields masked.
 smt3-decomp's split assembly gives the SMT3 words, keyed by address.
+A pair whose words differ (`differs` in `pairs.tsv`, or a same-name DDS map
+partner in `pairs_dds.tsv`) is carried too when its `smt3_c.tsv` reason starts
+with `compiles identical`: the C compiles to the Raidou words once Raidou's
+headers carry its layout. Mark such rows `asm	compiles identical` and run
+`port --retry '^compiles identical$'`; a failure keeps the prefix, so the next
+`port` puts it back to asm.
 
 `verify` reads each compiled object, not the source: every word must equal
 retail except relocated fields, and each relocation's symbol must resolve to

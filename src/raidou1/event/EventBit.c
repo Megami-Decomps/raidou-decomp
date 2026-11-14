@@ -66,7 +66,16 @@ void evtInitGlobalWork(void) {
     evtDisableMoonCalc();
 }
 
-INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff);
+void evtBitAllOff(void) {
+    s32 i = 0x7f;
+    u32 *word = DDS3_GBWK->EventBit;
+
+    do {
+        i -= 1;
+        *word = 0;
+        word += 1;
+    } while (i >= 0);
+}
 
 void evtBitAllOff_FieldDebug(void) {
     s32 i = 0;
@@ -79,8 +88,18 @@ void evtBitAllOff_FieldDebug(void) {
     } while (i < 0x1000);
 }
 
-INCLUDE_ASM(const s32, "event/EventBit", evtBitOn);
+/* Signed flag indices need a bias before arithmetic right shift divides by 32. */
+void evtBitOn(s32 no) {
+    s32 adjustedFlag = (no < 0) ? no + 0x1f : no;
+    DDS3_GBWK->EventBit[adjustedFlag >> 5] |= 1 << BIT_SHIFT(no);
+}
 
-INCLUDE_ASM(const s32, "event/EventBit", evtBitOff);
+void evtBitOff(s32 no) {
+    s32 adjustedFlag = (no < 0) ? no + 0x1f : no;
+    DDS3_GBWK->EventBit[adjustedFlag >> 5] &= ~(1 << BIT_SHIFT(no));
+}
 
-INCLUDE_ASM(const s32, "event/EventBit", evtBitCheck);
+s32 evtBitCheck(s32 no) {
+    s32 adjustedFlag = (no < 0) ? no + 0x1f : no;
+    return (((s32)DDS3_GBWK->EventBit[adjustedFlag >> 5] >> BIT_SHIFT(no)) & 1);
+}

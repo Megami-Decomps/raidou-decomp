@@ -210,74 +210,6 @@ extern char dds3DebugFieldClose[8];
 extern char dds3DebugBlockEnd[8];
 /* End of declarations from src/smt3/kernel/dds3KernelCore.c */
 
-/* Declarations from dds-decomp src/dds1/kernel/dds3KernelCore.c */
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/common.h"
-
-#include "dds/dds3_task_add_child.h"
-
-#include "dds/sdf_chip.h"
-
-#include "dds/kwln.h"
-
-#include "dds/dds3_task_update_count.h"
-
-#include "dds/dds3_process_registration.h"
-
-#include "dds/dds3_task_queue_query.h"
-
-#include "dds/dds3_task_priority_query.h"
-
-#include "dds/dds3_task_create.h"
-
-#include "dds/dds3_task_flags.h"
-
-#include "dds/dds3_task_state.h"
-
-#include "dds/dds3_task_state_query.h"
-
-#include "dds/dds3_task_lifecycle.h"
-
-#include "dds/dds3_task_queue_mutation.h"
-
-#include "dds/dds3_task_runner.h"
-
-#include "dds/dds3_process_main_result.h"
-
-extern void kwlnTaskFinalizeDestroy(dds3ProcessID_t* task);
-
-#include "dds/sdf_debug_api.h"
-
-extern u8 D_003BA828[];
-
-extern u8 D_003BA830[];
-
-extern u8 D_003BA860[2][2][2];
-
-extern s8 D_003BA868[2][2];
-
-extern u8 D_003BA870[2][2][2];
-
-extern u8 D_003BA878[2][2];
-
-extern u8 D_0039DE88[];
-
-extern u8 D_0039DEB8[];
-
-extern u8 D_0039DEC8[];
-
-extern u8 D_0039DEF8[];
-
-void kwlnTaskFinalizeDestroy(dds3ProcessID_t* task);
-
-void kwlnTraverseDiagnosticTaskQueue(dds3ProcessID_t* task, void* unused);
-
-void func_r1_00101A48(void);
-/* End of declarations from src/dds1/kernel/dds3KernelCore.c */
-
 void DeleteProcessList(dds3ProcessID_t *setp)
 {
     if ((setp->flag & 0xF) == 0) {
@@ -461,7 +393,58 @@ void StartingProcess(void)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", RunProcess);
+s32 RunProcess(dds3ProcessID_t *pro)
+{
+    s32 port;
+    s32 inputIndex;
+    s32 nextUpdate;
+
+    if (pro->flag & 0x20) {
+        return 1;
+    }
+    runprocess = pro;
+
+    if (pro->flag & 0x10) {
+        for (port = 0; port < 2; port++) {
+            for (inputIndex = 0; inputIndex < 16; inputIndex++) {
+                dds3PadButtonState[0][port][inputIndex] = 0;
+                dds3PadButtonState[1][port][inputIndex] = 0;
+            }
+            for (inputIndex = 0; inputIndex < 2; inputIndex++) {
+                dds3PadStickState[port][inputIndex][0] = 0;
+                dds3PadStickStatusState[port][inputIndex] = 0;
+                dds3PadStickState[port][inputIndex][1] = 0;
+            }
+        }
+    } else {
+        for (port = 0; port < 2; port++) {
+            for (inputIndex = 0; inputIndex < 16; inputIndex++) {
+                dds3PadButtonState[0][port][inputIndex] = dds3PadButtonPrev[0][port][inputIndex];
+                dds3PadButtonState[1][port][inputIndex] = dds3PadButtonPrev[1][port][inputIndex];
+            }
+            for (inputIndex = 0; inputIndex < 2; inputIndex++) {
+                dds3PadStickState[port][inputIndex][0] = dds3PadStickPrev[port][inputIndex][0];
+                dds3PadStickState[port][inputIndex][1] = dds3PadStickPrev[port][inputIndex][1];
+                dds3PadStickStatusState[port][inputIndex] = dds3PadStickStatusPrev[port][inputIndex];
+            }
+        }
+    }
+
+    if (pro->processfunc != NULL && pro->processfunc != (dds3ProcessFunc_t)-1) {
+        nextUpdate = pro->processfunc(pro);
+        if (nextUpdate != 0) {
+            pro->processfunc = EE_ADDR_AS(dds3ProcessFunc_t, nextUpdate);
+        }
+        if (nextUpdate == -1 && (pro->flag & 0xF) == 2) {
+            EndProcess(pro);
+            runprocess = 0;
+            return 0;
+        }
+    }
+    pro->runtime++;
+    runprocess = 0;
+    return 1;
+}
 
 void RunningProcess(void)
 {

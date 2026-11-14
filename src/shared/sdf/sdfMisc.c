@@ -107,4 +107,14 @@ void sdfItemArrayFree(sdfItemArray_t *aArray)
     sdfChipFreeDirect(aArray);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMisc", sdfItemArrayGrow);
+void sdfItemArrayGrow(sdfItemArray_t *aArray)
+{
+    if (aArray->memHandle == NULL) {
+        sdfDevResizeBufferedRequest(aArray, aArray->growStep);
+        return;
+    }
+    sdfMemUnlock(aArray->memHandle);
+    aArray->capacity = aArray->capacity + aArray->growStep;
+    sdfMemReallocRecord(aArray->memHandle, aArray->capacity * aArray->elemSize);
+    aArray->items = EE_ADDR_AS(void *, sdfMemLock(aArray->memHandle));
+}

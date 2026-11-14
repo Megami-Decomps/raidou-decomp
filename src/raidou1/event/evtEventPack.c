@@ -191,7 +191,7 @@ evtPackProcessData_t *evtGetPackProcessData(u32 eventno);
 
 void *evtGetResorceData(u32 eventno, s32 rid);
 
-void func_001FA310(s32 taskId, s32 key);
+void evtRefreshTaskEffectTexture(s32 taskId, s32 key);
 
 extern f32 D_003494C0[];
 
@@ -210,7 +210,7 @@ extern void dds3EffectObjectBasicStatOn(void *basic, s32 s);
 
 extern void effEveBEDCutSetScale(void *hEveBEDCut, f32 scale);
 
-void *evt_1FA398(s32 taskId, s32 key, s32 modelId);
+void *evtSpawnResourceObject(s32 taskId, s32 key, s32 modelId);
 
 /* Decode one retained unit payload and return its new viewer-object key. */
 s32 evtInitMotionSeProcess(s32 eventId, s32 resourceId);
@@ -250,7 +250,7 @@ dds3ProcessID_t *evtLoadEventPack(s32 eventno);
 void evtKillEventPack(s32 eventno);
 
 /* Drain every event-pack process at the priority used during creation. */
-void evt_1FAD40(void);
+void evtKillAllEventPack(void);
 
 typedef struct evtCmbMenuCursor_t {
     u8 pad00[0x21];
@@ -464,7 +464,53 @@ s32 evtRegistBEField(s32 eventno, s32 rid) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtMotionSeProcess1);
+s32 evtMotionSeProcess1(dds3ProcessID_t *id) {
+    evtMotionSeTaskParams_t *motionSeParams;
+    dds3Basic_t *motionNode;
+    evtPackProcessData_t *packState;
+    evtUnit_t *unit;
+    u16 motionId;
+    s32 motionFrame;
+    s32 entryIndex;
+    s32 cueIndex;
+    beMotionSeTable_s *cues;
+
+    motionSeParams = (evtMotionSeTaskParams_t *)dds3GetProcessData(id);
+    if (dds3GetActiveScene() == NULL) {
+        return -1;
+    }
+    motionNode = dds3SearchSceneBasic(dds3GetActiveScene(), motionSeParams->modelKey, EFF_WORLD_KIND_FOLLOW_MODEL);
+    if (motionNode == NULL) {
+        return -1;
+    }
+    packState = evtGetPackProcessData(motionSeParams->eventTaskId);
+    if (packState == NULL) {
+        return -1;
+    }
+    if (motionSeParams->eventTaskId < 600) {
+        return 0;
+    }
+    unit = ((dds3UnitObjectBasicWorkData_t *)motionNode->workdata)->hUnit;
+    if (unit == NULL) {
+        return -1;
+    }
+    motionId = mdlGetMotionCtrlr(unit->owner, 0)->cutNumber;
+    motionFrame = unit->owner->first->frame;
+    for (entryIndex = 0; entryIndex < packState->header->entryCount; entryIndex++) {
+        if (packState->entries[entryIndex].kind == 6 &&
+            packState->entries[entryIndex].resourceId == motionSeParams->resourceId &&
+            packState->entries[entryIndex].motionId == motionId) {
+            cues = (beMotionSeTable_s *)(packState->payload + packState->entries[entryIndex].dataOffset);
+            for (cueIndex = 0; cueIndex < packState->entries[entryIndex].cueCount; cueIndex++) {
+                if (cues[cueIndex].Frame == motionFrame) {
+                    evtPlaySe(motionSeParams->eventTaskId, cues[cueIndex].Se);
+                    printf("EVE_SE motno = %d, frame = %d\n", motionId, motionFrame);
+                }
+            }
+        }
+    }
+    return 0;
+}
 
 /* Free the three-word parameter block owned by the motion-SE task. */
 void evtFreeScriptProcessData(dds3ProcessID_t *task)
@@ -530,7 +576,23 @@ void evtCheckEventScriptLoaded(evtPackProcessData_t *state) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventPack", evtCheckScriptDone);
+s32 evtCheckScriptDone(dds3ProcessID_t *task) {
+    evtPackProcessData_t *packState = (evtPackProcessData_t *)dds3GetProcessData(task);
+
+    switch (packState->stat) {
+    default:
+        if (packState->stat < 2) {
+            if (packState->stat == 0) {
+                evtLoadEventScript(packState);
+            }
+        }
+        break;
+    case 1:
+        evtCheckEventScriptLoaded(packState);
+        break;
+    }
+    return 0;
+}
 
 /* Release the event task's owned handles, then free its state.
  * File I/O is waited on even when the user-value handle is zero. */

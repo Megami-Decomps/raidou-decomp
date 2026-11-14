@@ -43,16 +43,21 @@ CodeFunc_IF	c
 CodeFunc_Jump	c
 CodeFunc_L	c
 CodeFunc_LE	c
+CodeFunc_Minus	c	compiles identical
 CodeFunc_Mul	c
 CodeFunc_NEQ	c
 CodeFunc_Not	c
 CodeFunc_Or	c
+CodeFunc_PopFX	c	compiles identical
+CodeFunc_PopIX	c	compiles identical
 CodeFunc_PopLFX	c
 CodeFunc_PopLIX	c
 CodeFunc_Proc	c
 CodeFunc_PushF	c
+CodeFunc_PushFX	c	compiles identical
 CodeFunc_PushI	c
 CodeFunc_PushIS	c
+CodeFunc_PushIX	c	compiles identical
 CodeFunc_PushLFX	c
 CodeFunc_PushLIX	c
 CodeFunc_PushReg	c
@@ -81,16 +86,23 @@ CreateVertexMesWin	c
 CreateVertexNormal	c
 CreateVertexPlain	c
 CreateVertexSelWin	c
+DebugChangeInstance	c	compiles identical
 DebugDrawWindowLine	asm	sdfGrOtTable at 0x003ADD78, others at 0x003AD9D8
 DebugProcessTree	c
 DeleteProcessList	c
+DestructFlow	c	compiles identical
 DiagMatrix	c
 DispBaseData	c
 DispObjectBaseData	c
 DmacAddHandler	c
+DrawLeftFade	c	compiles identical
+DrawMesWin	c	compiles identical
 DrawMsgMng_Process	asm	size 0x74, retail 0x70
 DrawMsgMng_Shutdown	asm	local jump at +0x28
+DrawNormal	c	compiles identical
+DrawPera1	c	compiles identical
 DrawPlain	c
+DrawSelWin	c	compiles identical
 DrwSprite2D	c
 DrwSprite2DC	c
 DrwSprite2DF	c
@@ -177,6 +189,8 @@ MultMatrixRevNoArg_C	c
 Normalize	c
 OuterProduct	c
 PatchIsNeeded_0	c
+PopFloat	c	compiles identical
+PopInt	c	compiles identical
 PowerOffCB	c
 PushFloat	c
 PushInt	c
@@ -190,10 +204,12 @@ ReverseMatrix	c
 RotateMatrixX	c
 RotateMatrixY	c
 RotateMatrixZ	c
+RunProcess	c	compiles identical
 RunningProcess	c
 SDF_QUAT_INNERPRODUCT	c
 SdfFileRpcServerThreadProc	c
 SdfIopFileRpc	c
+SelectItemDefKey	c	compiles identical
 SelectSub	c
 SetArg	c
 SetDebugHandler	c
@@ -313,6 +329,8 @@ _sceRpcGetFPacket2	c
 _sceRpcGetPacket	c
 _sceRpcGetPacket_0	c
 _sceSifLoadElfPart	c
+_sceSifLoadModule	c	compiles identical
+_sceSifLoadModuleBuffer	c	compiles identical
 _sceSifSendCmd	c
 _search_svdata	c
 _send_to_iop	c
@@ -696,6 +714,7 @@ dds3GetSclPoseSetMCR	c
 dds3GetStatusUnitObjectBasic	c
 dds3GetTMPoseSet	c
 dds3GetUnitHandleObjectBasic	c
+dds3GlobalWorkClearFlags	c	compiles identical
 dds3HermitianTrackPolyCreate	c
 dds3HermitianTrackPolyDraw	c
 dds3HermitianTrackPolyGetVertex	c
@@ -769,6 +788,7 @@ dds3P2APolygonDelete	c
 dds3P2APolygonDraw	c
 dds3P2APolygonGetResource	c
 dds3P2APolygonSetScale	c
+dds3PadInitialize	c	compiles identical
 dds3PadVibrationTest	c
 dds3ParticleColorAnim	c
 dds3ParticleCopy	c
@@ -881,6 +901,7 @@ dds3SceneBasicLoadScriptFile_FromMem	c
 dds3SceneBasicMakeScene_FromMemory	c
 dds3SceneBasicReleaseScriptFile	c
 dds3SceneBasicSearchNameAndType	c
+dds3SceneLightUpdateFirst	c	compiles identical
 dds3SearchDeleteBasicArray	c
 dds3SearchProcessName	c
 dds3SearchProcessNumber	c
@@ -908,6 +929,8 @@ dds3SetFog	c
 dds3SetFogColor	c
 dds3SetFogPara	c
 dds3SetLight	c
+dds3SetLightColor	c	compiles identical
+dds3SetLightDir	c	compiles identical
 dds3SetLightObjectPathResoruce	c
 dds3SetLightObjectResoruce	c
 dds3SetMFilterArea	c
@@ -1541,7 +1564,7 @@ effPCPHamaonDelete	c
 effPCPHamaonDraw	c
 effPCPHamaonPartInit	c
 effPCPHelperBEDCopy	c
-effPCPHelperBEDCreate	asm	1 words differ, first at +0xC0
+effPCPHelperBEDCreate	c	compiles identical
 effPCPHelperBEDDelete	c
 effPCPHelperBEDDraw	c
 effPCPHelperBEDGetModel	asm	dds3EffectPartGetHandle at 0x003573A8, others at 0x001F9990
@@ -1560,6 +1583,8 @@ effPCPMZiodin01Init	c
 effPCPMZiodin02Delete	c
 effPCPMZiodin02Draw	c
 effPCPMZiodin02Init	c
+effPCPMakkaCopy	c	compiles identical
+effPCPMakkaCreat	c	compiles identical
 effPCPMakkaDelete	c
 effPCPMakkaUpdateNode	c
 effPCPMegidora01Draw	c
@@ -1618,6 +1643,7 @@ effPCPSpiralBEDPartInit	c
 effPCPThunderSphereExpCopy	c
 effPCPThunderSphereExpCreate	c
 effPCPThunderSphereExpDraw	c
+effPCPThunderSphereLowRotate	c	compiles identical
 effPCPThunderSphereLowRotateAxis	c
 effPCPThunderSpherePolyCreate	c
 effPCPThunderSphereRotate	c
@@ -1659,6 +1685,7 @@ effPCP_ThunderRadiatePolyCreate	c
 effPCP_ThunderRadiatePolyDelete	c
 effPCP_ThunderRadiatePolyDraw	c
 effPCP_ThunderRadiatePolyDrawOff	c
+effPCP_ThunderRadiatePolyPartRefresh	c	compiles identical
 effPkt2DAllocF4	c
 effPkt2DAllocTriStrip	c
 effPkt3DPrimMakePoly	c
@@ -1871,13 +1898,18 @@ eglLinkTri	c
 eglSetOt	c
 evtAddCamera	c
 evtAssignRuntimeChildSequenceAndCount	c
+evtBitAllOff	c	compiles identical
 evtBitAllOff_FieldDebug	c
+evtBitCheck	c	compiles identical
+evtBitOff	c	compiles identical
+evtBitOn	c	compiles identical
 evtBlendParamsG	asm	compile error: structure has no member named `color'
 evtBlendParamsH	c
 evtCheckEventBgmLoaded	c
 evtCheckEventScriptLoaded	c
+evtCheckMoveEnd	c	compiles identical
 evtCheckPathStat	c
-evtCheckScriptDone	asm	1 words differ, first at +0x30
+evtCheckScriptDone	c	compiles identical
 evtCheckSelectionState	c
 evtCheckSkyAlphaAnime	c
 evtChkEndProcess	c
@@ -1923,6 +1955,7 @@ evtCommand_EFFMG1_LOAD	c
 evtCommand_EFFMG1_POS	c
 evtCommand_EFFMG2_BE	c
 evtCommand_EFFMG2_LOAD	c
+evtCommand_EFFMG2_POS	c	compiles identical
 evtCommand_EFFMG2_PRESET	c
 evtCommand_FADEOUT_E	c
 evtCommand_FIELD_ANIME_START	c
@@ -1947,13 +1980,16 @@ evtCommand_MODEL_LIGHT_ON	c
 evtCommand_MODEL_LIGHT_RGB	c
 evtCommand_MODEL_LIGHT_UNLINK	c
 evtCommand_MODEL_LIGHT_WAIT	c
+evtCommand_MODEL_MOVE2	c	compiles identical
 evtCommand_MODEL_MOVE_MOT	c
 evtCommand_MODEL_PLAYER	c
 evtCommand_MODEL_POS_XYZ	c
 evtCommand_MODEL_RGB	c
+evtCommand_MODEL_ROT	c	compiles identical
 evtCommand_MODEL_ROT_XYZ	c
 evtCommand_MODEL_SCL_XYZ	c
 evtCommand_MODEL_WAIT	c
+evtCommand_MODEL_WAIT_HOKAN	c	compiles identical
 evtCommand_MOON_START	c
 evtCommand_MOON_STOP	c
 evtCommand_OBJ_PATH_WAIT	c
@@ -2008,10 +2044,12 @@ evtFreeScriptProcessData	c
 evtFreeStage	c
 evtGetCapturedWindowPanelValue	c
 evtGetEventPackStat	c
+evtGetNextMovePos	c	compiles identical
 evtGetPackProcessData	c
 evtGetResorceData	c
 evtGetShortestAngleDelta	c
 evtGetSoundIndex	c
+evtGetUnitDirVector	c	compiles identical
 evtGetUnitHandle	c
 evtGetUnitHandle2	c
 evtHokanBlur2	c
@@ -2053,6 +2091,7 @@ evtLoadResourcePair	c
 evtLoadValueSecondaryVectorIntoVu	c
 evtLoadValueVectorIntoVu	c
 evtMakeEventPackName	c
+evtMotionSeProcess1	c	compiles identical
 evtOpClearWorldObjectPendingValue	c
 evtOpModelLodChg	asm	compile error: structure has no member named `data'
 evtOpQueueWorldObjectPendingValue	c
@@ -2077,6 +2116,10 @@ evtSelStateDestroy	c
 evtSetMessageWindowPageValue	c
 evtSetSkyAlpha	c
 evtSetTestCamera	c
+evtSetUnitKutiMotion	c	compiles identical
+evtSetUnitMove1	c	compiles identical
+evtSetUnitRot1	c	compiles identical
+evtSetWaitMotionSpeed	c	compiles identical
 evtStageAnimeControl	c
 evtStartEvent	c
 evtStartPictureProcess2	c
@@ -2085,6 +2128,10 @@ evtSubmitDefaultDepthGradientRect	c
 evtSubmitFixedAlphaBlend	c
 evtTestSolarPhaseOrModelFlag	c
 evtTransEventBgm	c
+evtUnitLightAnimeStat	c	compiles identical
+evtUnitMoveType0	c	compiles identical
+evtUnitMoveTypePathTrace	c	compiles identical
+evtUnitRotationQuat	c	compiles identical
 evtUpdateGroupListDialog	c
 evtUpdateSkyAlpha	c
 evtViewCmdCancelSelection	c
@@ -2369,6 +2416,7 @@ itfMesMngGetSelPhase	c
 itfMesMngGetSelectNo	c
 itfMesMngGetStat	c
 itfMesMngGetStatManager	c
+itfMesMngGetWidth	c	compiles identical
 itfMesMngIgnoreConfig	c
 itfMesMngMarkBitStat	c
 itfMesMngMaskSelect	c
@@ -2425,7 +2473,11 @@ itfMiscMoveFontPosition	c
 itfMiscSetRatioRGB	c
 itfPanelAcquireHold	c
 itfPanelReleaseHold	c
+itfPnlRegist2	c	compiles identical
 itfPnlRelease	c
+itfPnlSetColor	c	compiles identical
+itfPnlSetPosition	c	compiles identical
+itfPnlSetPositionOffset	c	compiles identical
 itfQueueOffsetTexturedRect	c
 itfReadEncodedCode	c
 itfReadEncodedTextLead	c
@@ -2565,6 +2617,7 @@ mdlPackSetOld	c
 mdlPibCheckItemType	c
 mdlPibDrawEffectInfo	c
 mdlPibDrawTrackInfo	c
+mdlPibEditTrackInfo	c	compiles identical
 mdlPibGetChunk	c
 mdlPibGetChunkItemCount	c
 mdlPibGetEffectCount	c
@@ -2969,6 +3022,7 @@ sceSifSendCmd	c
 sceSifSetIopAddr	c
 sceSifSetRpcQueue	c
 sceSifSetSreg	c
+sceSifStopModule	c	compiles identical
 sceSifSyncIop	c
 sceSifUnloadModule	c
 sceSymlink	c
@@ -3042,6 +3096,8 @@ scrCommand_SET_FOVY	c
 scrCommand_SOFTEN_BIAS	c
 scrCommand_SYNC	c
 scrCommand_WAIT	c
+scrGetFloatPara	c	compiles identical
+scrGetIntPara	c	compiles identical
 scrGetLabelCodeAddress	c
 scrGetProcedureCodeAddress	c
 scrGetStrPara	c
@@ -3141,8 +3197,10 @@ sdfDelayedResrcCheckFunc	c
 sdfDelayedResrcClose	c
 sdfDelayedResrcEntry	c
 sdfDelayedResrcInitCB	c
+sdfDelayedResrcProc	c	compiles identical
 sdfDelayedResrcRelease	c
 sdfDeleteTrackedThread	c
+sdfDeliverDrawEnd	c	compiles identical
 sdfDeliverDrawStart	c
 sdfDev9LoadModule	c
 sdfDevConsAttribute	c
@@ -3188,6 +3246,7 @@ sdfDrawTagLinkRef	c
 sdfDrawTagLinkRefGif	c
 sdfDrawTexturedQuad	asm	46 words differ, first at +0x33C
 sdfDrawThIntHandler	c
+sdfDrawThread	asm	compiles identical, then size 0x144, retail 0x210
 sdfDumpChipMemory	c
 sdfDumpDmaChain	c
 sdfDumpGsMemory	c
@@ -3215,6 +3274,7 @@ sdfFileCmdReadOpen	c
 sdfFileCmdReleaseHandle	c
 sdfFileCmdSeek	c
 sdfFileCmdStartThread	c
+sdfFileCmdThread	asm	compiles identical, then size 0x488, retail 0x6F8
 sdfFileCmdThreadCheckPrio	c
 sdfFileCmdThreadSetHiPrio	c
 sdfFileCmdThreadSetLoPrio	c
@@ -3235,6 +3295,7 @@ sdfFileRpcHandler	c
 sdfFileRpcReadCallback	asm	.rodata differs at 0x00465670
 sdfFileSeek	c
 sdfFileSetCdFilename	c
+sdfFileSetDefaultSrc	c	compiles identical
 sdfFileSetHddFilename	c
 sdfFileSetHostFilename	c
 sdfFileSetHostRoot	c
@@ -3292,6 +3353,7 @@ sdfGrSetRefGifPacket	c
 sdfGrSetRegsPacketHeader	c
 sdfGrSetScreen	c
 sdfGrSetStdDrawEnv	c
+sdfGrSetupPacketBuff	c	compiles identical
 sdfGrSortOtCallback	c
 sdfGrSortOtFixup	c
 sdfGrSortOtReg	c
@@ -3323,6 +3385,7 @@ sdfIpuAllocGsRect	c
 sdfIpuAttachQueue	c
 sdfIpuAttachTask	c
 sdfIpuClose	c
+sdfIpuDecodeThread	asm	compiles identical, then size 0xCC, retail 0x100
 sdfIpuDetachQueue	c
 sdfIpuDetachTask	c
 sdfIpuExecQueue	c
@@ -3342,6 +3405,7 @@ sdfIpuSetToIpuDma	c
 sdfIpuStrmDecodeInit	c
 sdfIpuToDmacHandler	c
 sdfItemArrayFree	c
+sdfItemArrayGrow	c	compiles identical
 sdfItemArrayNew	c
 sdfLinkLoadImage	c
 sdfLinkStoreFrameImage	c
@@ -3383,8 +3447,8 @@ sdfMatUpdatePacket	c
 sdfMatUpdatePacketFaceDiv	c
 sdfMatUpdatePacketMultiTex	c
 sdfMatUpdatePacketUvwParm	c
-sdfMcClearCardStat	asm	size 0x20, retail 0x28
-sdfMcClearSlotFlags	asm	9 words differ, first at +0x0
+sdfMcClearCardStat	c
+sdfMcClearSlotFlags	c
 sdfMcFuncChdir	c
 sdfMcFuncChdir1	c
 sdfMcFuncClose	c
@@ -3403,14 +3467,14 @@ sdfMcFuncRead	c
 sdfMcFuncRead1	c
 sdfMcFuncWrite	c
 sdfMcFuncWrite1	c
-sdfMcGetFileInfoReady	asm	size 0x20, retail 0x28
-sdfMcGetFreeBytes	asm	size 0x20, retail 0x28
-sdfMcGetSlotFlags	asm	9 words differ, first at +0x0
-sdfMcGetSlotIndex	asm	size 0x20, retail 0x28
-sdfMcGetStatus	asm	size 0x20, retail 0x28
-sdfMcSetCardStat	asm	size 0x24, retail 0x30
-sdfMcSetSlotFlags	asm	size 0x30, retail 0x38
-sdfMcSetSlotIndex	asm	size 0x20, retail 0x28
+sdfMcGetFileInfoReady	c
+sdfMcGetFreeBytes	c
+sdfMcGetSlotFlags	c
+sdfMcGetSlotIndex	c
+sdfMcGetStatus	c
+sdfMcSetCardStat	c
+sdfMcSetSlotFlags	c
+sdfMcSetSlotIndex	c
 sdfMemAlloc2Direct	c
 sdfMemAllocDirect	c
 sdfMemAllocFromTailDirect	c
@@ -3442,6 +3506,7 @@ sdfModelEvalTm2	c
 sdfModelGetDrawPacketSize	c
 sdfModelGetMarkPosCount	c
 sdfModelGetNodeIndexByName	c
+sdfModelGetNodeName	c	compiles identical
 sdfModelInitSystem	c
 sdfModelMake	c
 sdfModelMakeEarly	c
@@ -3464,6 +3529,7 @@ sdfModelNodeUnlink	c
 sdfModelPacketFree	c
 sdfModelRootFree	c
 sdfModelRootFreeResrc	c
+sdfModelRootNew	c	compiles identical
 sdfModelSearchMarkPosData	c
 sdfModelSearchNode	c
 sdfModelSetDrawEnv	c
@@ -3603,6 +3669,7 @@ sdfPacTmxStayDecoderFunc	c
 sdfPacUseSrc	c
 sdfPadChangeMode	c
 sdfPadControl	c
+sdfPadInitManager	c	compiles identical
 sdfPadManager	c
 sdfPadSetAct	c
 sdfPadSetAct0	c

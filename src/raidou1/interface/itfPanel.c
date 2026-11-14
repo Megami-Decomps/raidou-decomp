@@ -580,7 +580,36 @@ void itfMesMngSetSelPhase(s32 windowIndex, s16 status);
 s32 itfMesMngGetSelectNo(s32 windowIndex);
 /* End of declarations from src/dds1/game/code_00199AD8.c */
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlRegist2);
+/* Allocate the common record and the kind's payload; kinds 6 to 8 take the
+ * caller's value as the first payload word. */
+itfpanel_t *itfPnlRegist2(s32 type, saddr_t texhandle) {
+    sdfMemHandle_t *allocation;
+    itfpanel_t *panel;
+    u32 *payload;
+
+    allocation = sdfMemAllocDirect(sizeof(itfpanel_t));
+    panel = (itfpanel_t *)sdfMemLock(allocation);
+    panel->kind = type;
+    panel->allocation = allocation;
+    allocation = sdfMemAllocDirect(itfPanelPayloadSize[type]);
+    panel->payloadAllocation = allocation;
+    payload = (u32 *)sdfMemLock(allocation);
+    panel->pwork = payload;
+    if (texhandle != 0) {
+        switch (type) {
+        case 6:
+            payload[0] = texhandle;
+            break;
+        case 7:
+            payload[0] = texhandle;
+            break;
+        case 8:
+            payload[0] = texhandle;
+            break;
+        }
+    }
+    return panel;
+}
 
 /* A sprite with a retained payload owns a secondary allocation. Release that
  * before its primary allocation; NULL is a no-op. */
@@ -593,11 +622,45 @@ void itfPnlRelease(itfpanel_t *handle) {
     }
 }
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlSetPosition);
+/* Store rectangle corners and the caller's render value before notifying the
+ * kind-specific handler with context only. No kind-range or context checks. */
+void itfPnlSetPosition(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z) {
+    handle->z = z;
+    handle->left = x0;
+    handle->top = y0;
+    handle->right = x1;
+    handle->bottom = y1;
+    if (CreateVertexTable[handle->kind] != 0) {
+        CreateVertexTable[handle->kind](handle->pwork);
+    }
+}
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlSetPositionOffset);
+/* Add independent corner/render-value deltas, then notify with the updated
+ * corners as well as context. */
+void itfPnlSetPositionOffset(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z) {
+    void (*handler)() = CreateVertexTable[handle->kind];
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlSetColor);
+    handle->left += x0;
+    handle->top += y0;
+    handle->right += x1;
+    handle->bottom += y1;
+    handle->z += z;
+    if (handler != 0) {
+        handler(handle->pwork, handle->left, handle->top, handle->right, handle->bottom);
+    }
+}
+
+/* Store the RGBA words in packet order, then notify with context.
+ * The panel renderers consume these channels directly. */
+void itfPnlSetColor(itfpanel_t *handle, s32 r, s32 g, s32 b, s32 a) {
+    handle->red = r;
+    handle->green = g;
+    handle->blue = b;
+    handle->alpha = a;
+    if (CreateColorTable[handle->kind] != 0) {
+        CreateColorTable[handle->kind](handle->pwork);
+    }
+}
 
 INCLUDE_ASM(const s32, "interface/itfPanel", func_r1_00185388);
 
@@ -813,11 +876,60 @@ void CreateColorLeftFade(itfPanelLeftFadeData_t *pwork, u32 red, u32 green, u32 
     SetVec4(colorRow, red, green, blue, alpha);
 }
 
-INCLUDE_ASM(const s32, "interface/itfPanel", DrawNormal);
+/* Draw the panel's three flat quads from one vertex/color buffer; each quad uses its own 4-byte index rows. */
+void DrawNormal(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
+    itfPanelNormalData_t *data = (itfPanelNormalData_t *)handle->pwork;
+    sdfIVector2_t *drawBuffer = data->vertices;
+    itfDrawColor_t *colors = data->colors;
+    s32 quadIndex;
 
-INCLUDE_ASM(const s32, "interface/itfPanel", DrawMesWin);
+    colors[1].rgba.alpha = handle->alpha;
+    for (quadIndex = 0; quadIndex < ITF_PANEL_WIDE_PASS_COUNT; quadIndex++) {
+        itfMiscDrawRectanglePrim(drawBuffer, colors, &itfPanelNormalVertexIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], &itfPanelNormalColorIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], handle->z, pdrawtag);
+    }
+}
 
-INCLUDE_ASM(const s32, "interface/itfPanel", DrawSelWin);
+/* Update seven alpha words, then emit three wide and six side strips.
+   The first color row is deliberately excluded from the alpha update. */
+void DrawMesWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
+    itfPanelMesWinData_t *data = (itfPanelMesWinData_t *)handle->pwork;
+    sdfIVector2_t *drawBuffer = data->vertices;
+    itfDrawColor_t *colors = data->colors + 1;
+    s32 alpha = handle->alpha;
+    s32 rowIndex;
+
+    for (rowIndex = 0; rowIndex < ITF_PANEL_SEVEN_COLOR_COUNT; rowIndex++, colors++) {
+        colors->rgba.alpha = alpha;
+    }
+    colors = data->colors;
+    for (rowIndex = 0; rowIndex < ITF_PANEL_WIDE_PASS_COUNT; rowIndex++) {
+        itfMiscDrawTriangleStripPrim(drawBuffer, colors, &itfPanelMesWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelMesWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
+    }
+    for (rowIndex = 0; rowIndex < ITF_PANEL_SEVEN_SIDE_PASS_COUNT; rowIndex++) {
+        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, colors, itfPanelMesWinLineVertexIndex, &itfPanelMesWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
+    }
+}
+
+/* Update five alpha words, then emit three wide and two side strips.
+   The first color row is deliberately excluded from the alpha update. */
+void DrawSelWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
+    itfPanelSelWinData_t *data = (itfPanelSelWinData_t *)handle->pwork;
+    sdfIVector2_t *drawBuffer = data->vertices;
+    itfDrawColor_t *colors = data->colors + 1;
+    s32 alpha = handle->alpha;
+    s32 rowIndex;
+
+    for (rowIndex = 0; rowIndex < ITF_PANEL_FIVE_COLOR_COUNT; rowIndex++, colors++) {
+        colors->rgba.alpha = alpha;
+    }
+    colors = data->colors;
+    for (rowIndex = 0; rowIndex < ITF_PANEL_WIDE_PASS_COUNT; rowIndex++) {
+        itfMiscDrawTriangleStripPrim(drawBuffer, colors, &itfPanelSelWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelSelWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
+    }
+    for (rowIndex = 0; rowIndex < ITF_PANEL_FIVE_SIDE_PASS_COUNT; rowIndex++) {
+        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, colors, itfPanelSelWinLineVertexIndex, &itfPanelSelWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
+    }
+}
 
 void DrawPlain(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     sdfIVector2_t vertices[12];
@@ -848,9 +960,27 @@ void DrawPlain(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     }
 }
 
-INCLUDE_ASM(const s32, "interface/itfPanel", DrawPera1);
+/* Update the first color row's alpha and emit one indexed quad. */
+void DrawPera1(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
+    itfPanelPlainData_t *data = (itfPanelPlainData_t *)handle->pwork;
+    sdfIVector2_t *drawBuffer = data->vertices;
+    itfDrawColor_t *colors = data->colors;
 
-INCLUDE_ASM(const s32, "interface/itfPanel", DrawLeftFade);
+    colors[0].rgba.alpha = handle->alpha;
+    itfMiscDrawRectanglePrim(drawBuffer, colors, itfPanelPera1RectVertexIndex, itfPanelPera1RectColorIndex, handle->z, pdrawtag);
+}
+
+/* Bracket the six-index panel draw with table-state two and its native reset to zero. */
+void DrawLeftFade(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
+    itfPanelLeftFadeData_t *data = (itfPanelLeftFadeData_t *)handle->pwork;
+    sdfIVector2_t *drawBuffer = data->vertices;
+    itfDrawColor_t *colors = data->colors;
+
+    colors[1].rgba.alpha = handle->alpha;
+    itfMiscDrawAlphaPrim(pdrawtag, 2, 0);
+    itfMiscDrawTriangleStripPrim(drawBuffer, colors, itfPanelLeftFadeStripVertexIndex, itfPanelLeftFadeStripColorIndex, 6, handle->z, pdrawtag);
+    itfMiscDrawAlphaPrim(pdrawtag, 0, 0);
+}
 
 INCLUDE_ASM(const s32, "interface/itfPanel", func_r1_00185F88);
 
