@@ -1,6 +1,6 @@
 #ifndef DDS_DDS3_TASK_PRIORITY_QUERY_H
 
 #define DDS_DDS3_TASK_PRIORITY_QUERY_H
-#include "kwln.h"
+#include "dds3_process.h"
 
 #endif /* DDS_DDS3_TASK_PRIORITY_QUERY_H */

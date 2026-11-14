@@ -35,7 +35,7 @@
 
 #include "dds/fr_font.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mdl.h"
 
@@ -252,7 +252,7 @@ s32 sdfGrAllocPacketBuff(s32 size);
 
 #include "dds/sdf_sif_command.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_create.h"
 

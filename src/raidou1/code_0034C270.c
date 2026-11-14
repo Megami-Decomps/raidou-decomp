@@ -7,9 +7,9 @@
 
 #include "newdata.h"
 
-#include "dds/fr_font.h"
+#include "dds/dds3_process.h"
 
-#include "dds/kwln.h"
+#include "dds/fr_font.h"
 
 #include "dds/sdf_chip.h"
 
@@ -37,7 +37,7 @@ void sdfChipFreeDirect(void *memory);
 
 #include "dds/mnu_input.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mnu.h"
 

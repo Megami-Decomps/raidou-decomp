@@ -41,7 +41,7 @@
 
 #include "dds/fr_font_context.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mc_path_api.h"
 
@@ -435,7 +435,7 @@ u32 strlen(const char *text);
 
 #include "dds/sdf_vu_matrix_multiply_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_create.h"
 

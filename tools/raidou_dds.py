@@ -250,8 +250,10 @@ def cmd_headers(args):
     sha1 = lambda s: hashlib.sha1(s.encode()).hexdigest()
     rc.DDS = args.dds.expanduser().resolve()
     want, todo = set(), []
+    # Header file names take config/dds_names.txt's renames too; `source` maps a renamed one back.
+    source = {rc.dds_rename(p.name): p.name for p in (rc.DDS / "include").glob("*.h")}
     for src in rc.SRC.rglob("*.c"):
-        todo += re.findall(r'^\s*#\s*include\s+"dds/([^"]+)"', src.read_text(errors="replace"), re.M)
+        todo += [source.get(n, n) for n in re.findall(r'^\s*#\s*include\s+"dds/([^"]+)"', src.read_text(errors="replace"), re.M)]
     while todo:
         name = todo.pop()
         if name in want or not (rc.DDS / "include" / name).exists():
@@ -265,10 +267,11 @@ def cmd_headers(args):
     def owned(name):
         return manifest.get(name) == sha1((out / name).read_text(errors="replace"))
 
+    want = {rc.dds_rename(n): n for n in want}
     new = kept = changed = 0
-    for name in sorted(want):
+    for name, dds_name in sorted(want.items()):
         dst = out / name
-        text = smt3_header(rc.DDS / "include" / name)
+        text = smt3_header(rc.DDS / "include" / dds_name)
         if dst.exists():
             if dst.read_text(errors="replace") == text:
                 manifest[name] = sha1(text)
@@ -285,7 +288,7 @@ def cmd_headers(args):
         dst.write_text(text)
         manifest[name] = sha1(text)
     removed = 0
-    for name in sorted(have - want):
+    for name in sorted(have - set(want)):
         if owned(name):
             (out / name).unlink()
             manifest.pop(name)

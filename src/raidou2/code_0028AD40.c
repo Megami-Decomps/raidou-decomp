@@ -420,7 +420,7 @@ typedef int EvtUnitMotionState;
 
 #include "dds/snd_slot.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/btl_task_state.h"
 

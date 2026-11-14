@@ -3,7 +3,7 @@
 #define DDS_EVT_SOLAR_H
 #include "common.h"
 
-#include "kwln.h"
+#include "dds3_process.h"
 
 /* DatWorldState control bits used by the shared solar clock and overlay. */
 

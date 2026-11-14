@@ -3,7 +3,7 @@
 #define DDS_DDS3_TASK_QUEUE_QUERY_H
 #include "common.h"
 
-#include "kwln.h"
+#include "dds3_process.h"
 
 #include "dds3_task_state.h"
 

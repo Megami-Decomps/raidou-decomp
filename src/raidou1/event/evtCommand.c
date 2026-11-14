@@ -1018,7 +1018,7 @@ enum {
 
 #include "dds/pcp_vu0.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/evt_task.h"
 

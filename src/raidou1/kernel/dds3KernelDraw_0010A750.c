@@ -854,7 +854,7 @@ extern dds3QuakeGain_t dds3QuakeGainTable[1];
 
 #include "dds/fld_scene_sequence_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mnu_camp_state_ack_api.h"
 
@@ -1035,7 +1035,7 @@ s32 vsprintf(char *dst, const char *format, void *args);
 
 #include "dds/sdf_primitive_packet_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_priority_query.h"
 
@@ -1228,7 +1228,7 @@ typedef struct EvtDrawState {
     f32 value1C;
 } EvtDrawState;
 
-extern KwlnDrawVectorParams D_dds1_00324790;
+extern sdf3DFogParam_t D_dds1_00324790;
 
 extern DrawVec4 D_003C2C20;
 

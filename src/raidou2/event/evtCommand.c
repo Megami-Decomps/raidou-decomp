@@ -1018,7 +1018,7 @@ enum {
 
 #include "dds/pcp_vu0.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/evt_task.h"
 
@@ -1647,13 +1647,13 @@ extern const char D_00421BA0[30];
 
 #define SMT3_DEFINES_SDF_MOTION_STATE_UNINITIALIZED 1
 
+#include "dds/dds3_process.h"
+
 #include "dds/dds3_task_create.h"
 
 #include "dds/dds3_task_lifecycle.h"
 
 #include "dds/evt_solar.h"
-
-#include "dds/kwln.h"
 
 #include "dds/mdl_flag_api.h"
 
@@ -1701,7 +1701,7 @@ extern dds3ProcessID_t *moonprocess_id;
 
 #include "dds/scr_string_parameter_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_process_registration.h"
 

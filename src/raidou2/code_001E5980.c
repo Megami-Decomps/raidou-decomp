@@ -153,7 +153,7 @@ void fldCreateFieldEffectTask(void);
 
 #include "dds/fr_font_measure.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/sdf_chip.h"
 
@@ -370,7 +370,7 @@ s32 brsCalcProgressAnimationStep(BrsSkillPackageWork *work, BrsProgressRow *prog
 
 #include "dds/sdf_heap_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_create.h"
 

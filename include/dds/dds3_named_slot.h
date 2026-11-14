@@ -3,7 +3,7 @@
 #define DDS_DDS3_NAMED_SLOT_H
 #include "common.h"
 
-#include "kwln.h"
+#include "dds3_process.h"
 
 #if !defined(SMT3_DEFINES_fclNamedSlot_t)
 /* Linked named-task slots shared by the DDS1 and DDS2 kernel windows. */

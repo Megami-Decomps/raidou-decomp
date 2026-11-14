@@ -25,7 +25,7 @@
 
 #include "dds/evt_unit.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/scr.h"
 
@@ -257,7 +257,7 @@ u32 strlen(const char *text);
 
 #include "dds/sdf_vu_transform_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/scr.h"
 

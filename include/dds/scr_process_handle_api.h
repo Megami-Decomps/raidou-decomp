@@ -1,7 +1,7 @@
 #ifndef DDS_DDS_SCR_PROCESS_HANDLE_API_H
 
 #define DDS_DDS_SCR_PROCESS_HANDLE_API_H
-#include "kwln.h"
+#include "dds3_process.h"
 
 #include "scr_vm_integer.h"
 

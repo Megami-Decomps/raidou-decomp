@@ -1041,7 +1041,7 @@ extern FileStatBonus ptyUnlockedUnitStatBonusRows[24];
 
 extern s32 mnuAdvanceTitleStateUnderSemaphore(void);
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_create.h"
 

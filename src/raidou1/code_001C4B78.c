@@ -46,7 +46,7 @@
 
 #include "dds/itf_mes_window.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mdl.h"
 
@@ -275,7 +275,7 @@ u32 strlen(const char *text);
 
 #include "dds/sdf_sif_command.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_runner.h"
 

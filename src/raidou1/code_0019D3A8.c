@@ -31,7 +31,7 @@
 
 #include "dds/fld_integer_editor_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mdl.h"
 
@@ -286,7 +286,7 @@ u32 strlen(const char *text);
 
 #include "dds/sdf_request.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_create.h"
 
@@ -980,7 +980,7 @@ extern char D_003BBCD0[];
 
 extern char D_003BBCD8[];
 
-extern KwlnDrawVectorParams D_dds1_00324790;
+extern sdf3DFogParam_t D_dds1_00324790;
 
 void mdlLoadViewerPresentationConfig(void);
 

@@ -962,7 +962,7 @@ struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
 
 #include "dds/fr_font_measure.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_create.h"
 
@@ -1457,7 +1457,7 @@ dds_itfpanel_t *itfCreateUiSpriteByKind(s32 kind, const sdfTexHandle_t *borrowed
 
 #include "dds/itf_resource_segments.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_draw_buffer.h"
 

@@ -1,7 +1,7 @@
 #ifndef DDS_PTY_SKILL_MENU_API_H
 
 #define DDS_PTY_SKILL_MENU_API_H
-#include "kwln.h"
+#include "dds3_process.h"
 
 typedef s32 PtySkillUnavailableMarking;
 

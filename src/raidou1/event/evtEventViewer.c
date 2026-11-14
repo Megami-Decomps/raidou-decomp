@@ -679,7 +679,7 @@ void sdfMotionChangeBlend(struct sdfMotionCtrlr_t *motion, s32 motionIndex, SdfM
 
 #include "dds/sdf_heap_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_fade.h"
 
@@ -840,7 +840,7 @@ void evtViewerApplyInterpolatedNodeKey(dds_evtViewerInfo_t *viewer, EvtRuntimeGr
  * when keyMode is 1. Traversal uses the shared timeline-key record. */
 void evtViewerApplyParameterKeyTracks(dds_evtViewerInfo_t *viewer);
 
-extern KwlnDrawVectorParams D_dds1_00324790;
+extern sdf3DFogParam_t D_dds1_00324790;
 
 extern u128 *D_0037F770[];
 
@@ -990,7 +990,7 @@ extern void mnuBlendCampDisplayFields(EvtRuntimeChild *from, EvtRuntimeChild *to
 extern void mnuDrawCampScaledTexture(sdfTexHandle_t *texture, CampDisplayDefaults *display);
 
 /* Timeline payloads store fogFar before fogNear. */
-extern KwlnDrawVectorParams D_dds1_00324790;
+extern sdf3DFogParam_t D_dds1_00324790;
 
 extern u128 *D_0037F770[];
 

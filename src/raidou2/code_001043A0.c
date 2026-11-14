@@ -33,7 +33,7 @@
 
 #include "dds/evt_frame_state_packet.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/sdf_chip.h"
 
@@ -221,7 +221,7 @@ void sdfTexSetWrapMode(struct sdfTexHandle_t *texture, SdfTextureClampMode mode)
 
 #include "dds/sdf_tex_packet.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_update_count.h"
 

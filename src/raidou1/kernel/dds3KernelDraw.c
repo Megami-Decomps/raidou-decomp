@@ -850,7 +850,7 @@ extern dds3QuakeGain_t dds3QuakeGainTable[1];
 
 #include "dds/eff_random_mod.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/sdf_chip.h"
 
@@ -967,7 +967,7 @@ extern struct sdfTexHandle_t *sdfTexHandleLink;
 
 #include "dds/sdf_tex_packet.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_update_count.h"
 
@@ -1629,7 +1629,7 @@ s32 vsprintf(char *dst, const char *format, void *args);
 
 #include "dds/sdf_primitive_packet_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_priority_query.h"
 
@@ -1818,7 +1818,7 @@ typedef struct EvtDrawState {
     f32 value1C;
 } EvtDrawState;
 
-extern KwlnDrawVectorParams D_dds1_00324790;
+extern sdf3DFogParam_t D_dds1_00324790;
 
 extern DrawVec4 D_003C2C20;
 

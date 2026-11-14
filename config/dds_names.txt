@@ -1,5 +1,8 @@
 # dds-decomp name -> Raidou name, applied to DDS text tools/raidou_c.py carries
 # (tools/xgame/rename_names.py writes it)
+KWLN_H	DDS3_PROCESS_H
+KwlnDrawVectorParams	sdf3DFogParam_t
+KwlnDrawVectorParams_size	sdf3DFogParam_size
 btlClearTintAndEnableCamera	mapBadEffDrawTask
 btlNextScaledRandom	GetRand
 btlRandomInclusiveRange	GetIntervalRand
@@ -41,6 +44,7 @@ fileQueueSetRotation	effPartsRotateSet
 fileQueueSetScale	effPartsScaleSet
 fldResetPlayerSceneObjectState	fldReleaseUnitPad
 itfCommandSelectOptionWithFade	MesMngSelect
+kwln	dds3_process
 kwlnAdvanceShakeOffsets	func_dds1_00105630
 kwlnConfigureNamedSlotMode2	func_dds1_00103540
 kwlnConfigureNamedSlotMode3	func_dds1_00103400

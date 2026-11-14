@@ -3,7 +3,7 @@
 #define DDS_DDS3_TASK_RUNNER_H
 #include "common.h"
 
-#include "kwln.h"
+#include "dds3_process.h"
 
 typedef enum dds3TaskCursorAction_t {
     /* The callback finished an active task; EndProcess may unlink and free it. */

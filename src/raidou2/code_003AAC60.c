@@ -9,9 +9,9 @@
 
 #include "sdk_libc.h"
 
-#include "dds/fr_font.h"
+#include "dds/dds3_process.h"
 
-#include "dds/kwln.h"
+#include "dds/fr_font.h"
 
 u32 dds3GetProcessData(const dds3ProcessID_t *task);
 
@@ -31,7 +31,7 @@ void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
 
 #include "dds/itf_draw_grid.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mnu.h"
 

@@ -25,7 +25,7 @@
 
 #include "dds/fr_font_context.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/sdf_chip.h"
 
@@ -119,7 +119,7 @@ void *sdfMemLock(struct sdfMemHandle_t *allocation);
 
 #include "dds/mnu_input.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/pty_skill_menu_api.h"
 

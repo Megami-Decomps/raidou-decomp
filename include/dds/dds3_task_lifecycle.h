@@ -1,7 +1,7 @@
 #ifndef DDS_DDS3_TASK_LIFECYCLE_H
 
 #define DDS_DDS3_TASK_LIFECYCLE_H
-#include "kwln.h"
+#include "dds3_process.h"
 
 /* Whether the scheduler accepted a destruction request; this does not mean
  * that the task has completed destruction. */

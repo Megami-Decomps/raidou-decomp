@@ -31,7 +31,7 @@
 
 #include "dds/evt_world_object_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mdl_flag_api.h"
 
@@ -145,7 +145,7 @@ void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *allocation);
 
 #include "dds/sdf_packet_list.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_runner.h"
 

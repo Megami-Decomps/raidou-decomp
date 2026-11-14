@@ -1,7 +1,7 @@
 #ifndef DDS_DDS3_TASK_FLAGS_H
 
 #define DDS_DDS3_TASK_FLAGS_H
-#include "kwln.h"
+#include "dds3_process.h"
 
 /* Flag updates preserve the scheduler state and the upper four bits. */
 

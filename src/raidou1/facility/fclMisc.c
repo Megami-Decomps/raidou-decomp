@@ -294,7 +294,7 @@ extern char fclStrYes[4];
 
 #include "dds/eff_transform.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mdl_flag_api.h"
 
@@ -396,7 +396,7 @@ struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
 
 #include "dds/sdf_heap_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_fade.h"
 

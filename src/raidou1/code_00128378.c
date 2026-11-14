@@ -63,7 +63,7 @@
 
 #include "dds/fld_scene_ready_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mdl.h"
 
@@ -271,7 +271,7 @@ char *strcpy(char *dst, const char *src);
 
 #include "dds/ee_mmi.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_runner.h"
 

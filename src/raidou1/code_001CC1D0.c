@@ -17,6 +17,8 @@
 
 #include "dds/dds3_fade.h"
 
+#include "dds/dds3_process.h"
+
 #include "dds/dds3_task_add_child.h"
 
 #include "dds/dds3_task_create.h"
@@ -42,8 +44,6 @@
 #include "dds/fr_font_context.h"
 
 #include "dds/itf_panel_draw.h"
-
-#include "dds/kwln.h"
 
 #include "dds/mdl_flag_api.h"
 
@@ -290,7 +290,7 @@ s32 strcmp(const char *a, const char *b);
 
 #include "dds/itf_panel_draw.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_priority_query.h"
 
@@ -916,7 +916,7 @@ void mnuQueueCampTextGlyphWithChildColor(s32 fontValue, s32 enabled, s32 unused2
 
 #include "dds/mnu_list.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #define EVT_DISPATCH_OPERATION_POLL 0
 
@@ -1288,7 +1288,7 @@ s32 evtIsLastSlot(s32 slotIndex);
 /* Set the model flag owned by the given slot. */
 void mnuSetFlagForMenuEntry(s32 slotIndex);
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mnu.h"
 

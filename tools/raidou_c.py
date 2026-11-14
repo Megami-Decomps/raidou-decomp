@@ -975,7 +975,7 @@ def decl_block(smt3, rel, unsized=(), taken=(), text_macros=()):
             else:
                 own.append((h, d))
         # The file's own declarations use these, so they come first.
-        decls = [f'#include "dds/{h}"' for h in sorted({h for h, _ in own})] + [d for _, d in own] + own_text + decls
+        decls = [f'#include "dds/{h}"' for h in sorted({dds_rename(h) for h, _ in own})] + [d for _, d in own] + own_text + decls
         # An SMT3 header that redeclares what the TU's SMT3 files define locally would clash.
         types = smt3_source_types()
         local = (set(taken) & types) | {("ident", n) for k, n in taken if k == "extern"}

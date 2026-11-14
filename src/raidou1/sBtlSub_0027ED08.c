@@ -17,6 +17,8 @@
 
 #include "dds/bill_object_api.h"
 
+#include "dds/dds3_process.h"
+
 #include "dds/dds3_task_add_child.h"
 
 #include "dds/dds3_world_primary.h"
@@ -24,8 +26,6 @@
 #include "dds/dds3obj.h"
 
 #include "dds/evt_unit.h"
-
-#include "dds/kwln.h"
 
 #include "dds/scr.h"
 
@@ -257,7 +257,7 @@ u32 strlen(const char *text);
 
 #include "dds/sdf_vu_transform_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/scr.h"
 

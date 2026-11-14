@@ -8,7 +8,7 @@
 
 #include "common.h"
 
-#include "kwln.h"
+#include "dds3_process.h"
 
 #include "scr_trace_result.h"
 

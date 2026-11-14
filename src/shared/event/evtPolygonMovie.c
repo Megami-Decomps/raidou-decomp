@@ -560,7 +560,7 @@ SdfFileExistenceResult sdfFileCheckExist(const char *path);
 
 #include "dds/file_request_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_create.h"
 
@@ -657,7 +657,7 @@ void evtPolygonMovieFreeWork(PolyMovieWork *work);
 
 #include "dds/event.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/sdf.h"
 

@@ -15,6 +15,8 @@
 
 #include "dds/dds3_fade.h"
 
+#include "dds/dds3_process.h"
+
 #include "dds/dds3_task_lifecycle.h"
 
 #include "dds/dds3_task_state_query.h"
@@ -36,8 +38,6 @@
 #include "dds/itf_mes_select_def_key_result.h"
 
 #include "dds/itf_mes_window.h"
-
-#include "dds/kwln.h"
 
 #include "dds/mdl_flag_api.h"
 
@@ -200,7 +200,7 @@ struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
 
 #include "dds/sdf_heap_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_fade.h"
 

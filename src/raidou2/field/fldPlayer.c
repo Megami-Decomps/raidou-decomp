@@ -303,7 +303,7 @@ extern s32 fldSkyEnable;
 
 #include "dds/evt_world_source_transform.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mdl_flag_api.h"
 
@@ -482,7 +482,7 @@ char *strcpy(char *dst, const char *src);
 
 #include "dds/ee_mmi.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_runner.h"
 

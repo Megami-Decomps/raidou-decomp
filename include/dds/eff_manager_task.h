@@ -1,7 +1,7 @@
 #ifndef DDS_EFF_MANAGER_TASK_H
 
 #define DDS_EFF_MANAGER_TASK_H
-#include "kwln.h"
+#include "dds3_process.h"
 
 /* These updates run each scheduler pass; RETAIN keeps each callback installed. */
 dds3TaskUpdateResult_t ManagerRunF(dds3ProcessID_t *task);

@@ -45,7 +45,7 @@
 
 #include "dds/fr_font_context.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/mc_path_api.h"
 
@@ -583,7 +583,7 @@ extern FileStatBonus ptyUnlockedUnitStatBonusRows[24];
 
 extern s32 mnuAdvanceTitleStateUnderSemaphore(void);
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_create.h"
 

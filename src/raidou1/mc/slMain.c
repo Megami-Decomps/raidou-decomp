@@ -1189,7 +1189,7 @@ char *strcpy(char *dst, const char *src);
 
 #include "dds/sdf_vu_matrix_multiply_api.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/dds3_task_create.h"
 

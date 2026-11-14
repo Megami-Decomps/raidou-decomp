@@ -314,7 +314,7 @@ f32 tanf(f32 x);
 
 #include "dds/active_sound_node.h"
 
-#include "dds/kwln.h"
+#include "dds/dds3_process.h"
 
 #include "dds/btl_task_state.h"
 
