@@ -21,7 +21,7 @@ STRING = re.compile(
 )
 ROW = re.compile(r"^(\w+) = 0x([0-9A-Fa-f]+);(.*)$", re.M)
 DLABEL = re.compile(r"^dlabel (\w+)$", re.M)
-D_NAME = re.compile(r"D_[0-9A-F]{8}")
+D_NAME = re.compile(r"D_(r1_)?[0-9A-F]{8}")
 ONE_BYTE = re.compile(r"\bsize:0x1\b")
 
 

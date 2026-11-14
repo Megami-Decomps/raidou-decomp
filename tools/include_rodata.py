@@ -85,8 +85,9 @@ def place(version):
             if m.group(1) in unit_rodata
         }
         # An SMT3 data definition carried into C stands for the label at its address.
+        at_addr = {int(a, 16): n for n, a in labels.items()}
         for m in DATA_DEF.finditer(text):
-            if m.group(1) in carried and (sym := f"D_{carried[m.group(1)]:08X}") in unit_rodata:
+            if m.group(1) in carried and (sym := at_addr.get(carried[m.group(1)])) in unit_rodata:
                 defined_at.setdefault(sym, m.start())
         # Rodata a C function no longer names is compiled by that function itself
         # (a string literal): nothing to include.

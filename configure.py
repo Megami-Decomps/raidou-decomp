@@ -306,10 +306,15 @@ def provide_data_symbols(version: str) -> None:
     defines a symbol no object defines."""
     names = set()
     for path in (ROOT / "asm" / version).rglob("*.s"):
-        names.update(re.findall(r"\bD_[0-9A-F]{8}\b", path.read_text()))
+        names.update(re.findall(r"\bD_(?:r1_)?[0-9A-F]{8}\b", path.read_text()))
+    # D_r1_<addr> names a symbol both games have by its Raidou 1 address.
+    addrs = {m[1]: int(m[2], 16) for m in re.finditer(
+        r"^(D_r1_[0-9A-F]{8}) = 0x([0-9A-Fa-f]+);",
+        (ROOT / "config" / version / "symbol_addrs.txt").read_text(), re.M)}
     path = ROOT / "config" / version / "undefined_syms_auto.txt"
     text = path.read_text() if path.exists() else ""
-    path.write_text(text + "".join(f"PROVIDE({n} = 0x{n[2:]});\n" for n in sorted(names)))
+    path.write_text(text + "".join(f"PROVIDE({n} = 0x{addrs.get(n, int(n[-8:], 16)):08X});\n"
+                                   for n in sorted(names) if n in addrs or n[2:5] != "r1_"))
 
 
 def smt3_link_symbols(version: str) -> Path:

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import bisect
+import functools
 import re
 import sys
 from collections import defaultdict
@@ -880,8 +881,21 @@ def write_data_rows(version, rows):
     path.write_text("\n".join(lines) + "\n")
 
 
-def data_line(unit, kind, address):
-    return f'INCLUDE_{kind}(const s32, "{unit}", D_{address:08X});'
+@functools.cache
+def data_names(version):
+    """{address: name} and {name: address} of the names symbol_addrs.txt gives data."""
+    text = (ROOT / "config" / version / "symbol_addrs.txt").read_text()
+    rows = re.findall(r"^(D_\w+) = 0x([0-9A-Fa-f]+);", text, re.M)
+    return {int(a, 16): n for n, a in rows}, {n: int(a, 16) for n, a in rows}
+
+
+def data_address(version, name):
+    return data_names(version)[1].get(name, int(name[2:], 16) if re.fullmatch(r"D_[0-9A-F]{8}", name) else None)
+
+
+def data_line(version, unit, kind, address):
+    name = data_names(version)[0].get(address, f"D_{address:08X}")
+    return f'INCLUDE_{kind}(const s32, "{unit}", {name});'
 
 
 def resize(d, name, size):
@@ -930,10 +944,10 @@ def port_data(smt3, text, unit, rels, ctx):
     for name, (rel, a, b) in sorted(tu_data(smt3, text, rows).items(), key=lambda x: -x[1][1]):
         row = rows[name]
         if row["status"] == "asm":
-            text = text[:a] + data_line(unit, row["kind"], row["address"]) + text[b:]
+            text = text[:a] + data_line(ctx["version"], unit, row["kind"], row["address"]) + text[b:]
 
     def to_c(m):
-        address = int(m.group(2), 16)
+        address = data_address(ctx["version"], m.group(2))
         found = []
         for name in ctx["alias"].get(address, ()):
             if re.fullmatch(r"(D|jtbl)_[0-9A-F]{8}", name):
@@ -951,7 +965,7 @@ def port_data(smt3, text, unit, rels, ctx):
         rows[name] = {"address": address, "kind": m.group(1), "rel": rel, "status": "c", "reason": "", "size": size}
         return resize(d, name, size)
 
-    return re.sub(rf'^INCLUDE_(RODATA|SDATA)\(const s32, "{re.escape(unit)}", D_([0-9A-F]{{8}})\);$', to_c, text, flags=re.M)
+    return re.sub(rf'^INCLUDE_(RODATA|SDATA)\(const s32, "{re.escape(unit)}", (D_(?:r1_)?[0-9A-F]{{8}})\);$', to_c, text, flags=re.M)
 
 
 def alias_rows(version):

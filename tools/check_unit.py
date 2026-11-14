@@ -1607,7 +1607,7 @@ def main():
     # (a stale local asm tree still defines the old label, so the local build hides it).
     renamed = {f"func_{int(a, 16):08X}": n for n, a in re.findall(
         r"^\s*(\w+)\s*=\s*0x([0-9A-Fa-f]+)\s*;[^\n]*type:func", (ROOT / "config" / version / "symbol_addrs.txt").read_text(), re.M)
-        if not n.startswith("func_")}
+        if n != f"func_{int(a, 16):08X}"}
     for old in sorted(set(re.findall(r"\bfunc_[0-9A-F]{8}\b", unit.read_text())) & renamed.keys()):
         bad += 1
         print(f"STALE {old}: symbol_addrs names it {renamed[old]}; use that name")
