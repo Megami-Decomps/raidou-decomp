@@ -1,4 +1,5 @@
 #include "common.h"
+#include "raidou_alloc.h"
 
 /* Declarations from smt3-decomp src/smt3/effect/effEvent.c */
 #include "common.h"

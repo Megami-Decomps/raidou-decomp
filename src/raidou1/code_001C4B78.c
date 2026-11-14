@@ -1,4 +1,5 @@
 #include "common.h"
+#include "raidou_alloc.h"
 
 /* Declarations from dds-decomp src/dds1/game/code_00235270.c */
 #ifndef VERSION_DDS1
