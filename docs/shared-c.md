@@ -167,7 +167,9 @@ pair, same masked words and slot kinds, Raidou name equal to the DDS C name);
   `#if VERSION_DDS1/2` in the source is decided for that game; the block
   defines `VERSION_DDSn` for the headers.
 - dds-decomp's headers are in `include/dds/` (`raidou_dds.py headers` copies
-  those the blocks include). They define many SMT3 types differently, so a unit
+  those the blocks include). `config/dds_headers.sha1` records what it wrote;
+  a header edited since (or never written by it) is kept, not overwritten or
+  removed. Delete a header to have it regenerated. They define many SMT3 types differently, so a unit
   with SMT3 bodies gets no DDS bodies, and a unit takes one DDS game (the one
   most of its functions pair with).
 - DDS data definitions are not carried yet.
@@ -177,3 +179,7 @@ python3 tools/raidou_c.py pairs && python3 tools/raidou_dds.py pairs --dds <dds-
 python3 tools/raidou_c.py port --dds <...> && python3 tools/raidou_dds.py headers --dds <...>
 python3 configure.py && ninja -k 0 > log; python3 tools/raidou_c.py verify --dds <...> --log log
 ```
+
+`port` and `verify` rerun both `pairs` steps when `configure.py --clean` has
+deleted their lists. `verify` rewrites only the `smt3_symbols.txt` rows it
+decides; names added by hand or `scripts/rename.py` stay.

@@ -1109,7 +1109,23 @@ def write_tus(texts):
     return written
 
 
+def ensure_pairs(args):
+    """Rebuild the pair lists that configure --clean deleted with build/; port and verify
+    without them would carry and check nothing and still report success."""
+    if not (OUT / "pairs.tsv").exists():
+        print("build/raidou_c/pairs.tsv missing: running pairs")
+        cmd_pairs(args)
+    if not (OUT / "pairs_dds.tsv").exists():
+        print("build/raidou_c/pairs_dds.tsv missing: running raidou_dds.py pairs")
+        import raidou_dds
+        raidou_dds.cmd_pairs(args)
+    for path in (OUT / "pairs.tsv", OUT / "pairs_dds.tsv"):
+        if len(read_pairs(path)) == 0:
+            sys.exit(f"{path.relative_to(ROOT)} has no rows")
+
+
 def cmd_port(args):
+    ensure_pairs(args)
     smt3 = args.smt3.expanduser().resolve()
     retry = re.compile(args.retry) if args.retry else None
     carry, cands = {}, {}
@@ -1614,6 +1630,7 @@ def choose_addresses(want, named_at, smt3_fns=frozenset()):
 def cmd_verify(args):
     from retail_elf import RETAIL, VERSIONS as INFO, load_segments
 
+    ensure_pairs(args)
     smt3 = args.smt3.expanduser().resolve()
     compile_fails = compile_failures(args.log)
     for version in VERSIONS:
@@ -1707,10 +1724,11 @@ def cmd_verify(args):
         for n, why in data_fails.items():
             rows[n] = dict(rows[n], status="asm", reason=why)
         write_data_rows(version, rows)
-        path = ROOT / "config" / version / "smt3_symbols.txt"
-        lines = [path.read_text().splitlines()[0]]
-        lines += [f"{n} = 0x{a:08X};" for n, a in sorted(aliases.items(), key=lambda x: (x[1], x[0]))]
-        path.write_text("\n".join(lines) + "\n")
+        # Hand-written C and scripts/rename.py also put names here; verify only sees carried
+        # bodies, so it overrides the rows it decided and keeps the rest.
+        merged = {n: a for n, a in alias_rows(version) if n not in defined}
+        merged.update(aliases)
+        write_alias_rows(version, merged.items())
         kept = sum(1 for fn in needs if fn not in fails)
         print(f"{version}: {kept} match, {len(fails)} back to asm, {len(aliases)} SMT3 names; "
               f"data {len(defined)} match, {len(data_fails)} back to the split")
