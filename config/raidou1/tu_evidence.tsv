@@ -386,7 +386,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0037CF10	0037CF10	sdk/libipu/ipuinit	c	sdk:bytes:1 of 1	sdk/libipu
 0037D148	0037D5C8	code_0037D148	asm	none	
 0037D6A8	0037EDF8	sdk/libmc/libmc	c	sdk:name:24+sdk:bytes:4 of 28	sdk/libmc
-0037EF10	003816E0	code_0037EF10	asm	none	
+0037EF10	003816E0	libat3dec	asm	none	
 00381818	00381818	sdk/libm/sf_atan	c	sdk:name:1 of 1	sdk/libm
 00381AA8	00381AA8	sdk/libm/sf_cos	c	sdk:name:1 of 1	sdk/libm
 00381B80	00381B80	sdk/libm/sf_fabs	c	sdk:bytes:1 of 1	sdk/libm

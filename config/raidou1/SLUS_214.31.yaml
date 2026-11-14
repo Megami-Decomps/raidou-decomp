@@ -442,7 +442,7 @@ segments:
       - [0x27DF10, c, sdk/libipu/ipuinit]
       - [0x27E148, asm, code_0037D148]
       - [0x27E6A8, c, sdk/libmc/libmc]
-      - [0x27FF10, asm, code_0037EF10]
+      - [0x27FF10, asm, libat3dec]
       - [0x282818, c, sdk/libm/sf_atan]
       - [0x282AA8, c, sdk/libm/sf_cos]
       - [0x282B80, c, sdk/libm/sf_fabs]

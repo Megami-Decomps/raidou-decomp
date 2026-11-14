@@ -454,7 +454,7 @@ segments:
       - [0x2F3B50, c, sdk/libipu/ipuinit]
       - [0x2F3D88, asm, code_003F2D88]
       - [0x2F42E8, c, sdk/libmc/libmc]
-      - [0x2F5B50, asm, code_003F4B50]
+      - [0x2F5B50, asm, libat3dec]
       - [0x2F8458, c, sdk/libm/sf_atan]
       - [0x2F86E8, c, sdk/libm/sf_cos]
       - [0x2F87C0, c, sdk/libm/sf_fabs]
