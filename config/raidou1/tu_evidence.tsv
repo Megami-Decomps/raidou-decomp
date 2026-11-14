@@ -247,16 +247,16 @@ start	last_func	unit	kind	evidence	smt3_unit
 002692F0	002692F0	code_002692F0	c	dds:1 of 1	
 00269318	0026CA00	code_00269318	asm	none	
 0026CA20	0026CA20	code_0026CA20	c	dds:1 of 1	
-0026FBC8	0027CA90	sBtlActAI	asm	none	
+0026FBC8	0027CA90	sbtlActAI	asm	none	
 0027CBE8	0027CC18	code_0027CBE8	c	dds:2 of 2	
 0027CC80	0027CC80	code_0027CC80	c	dds:1 of 1	
-0027CD48	0027EC00	sBtlSub	asm	none	
-0027ED08	0027FD18	sBtlSub_0027ED08	c	dds:5 of 36 part	
-0027FD88	00289CA0	sBtlDMG	asm	none	
+0027CD48	0027EC00	sbtlSub	asm	none	
+0027ED08	0027FD18	sbtlSub_0027ED08	c	dds:5 of 36 part	
+0027FD88	00289CA0	sbtlDMG	asm	none	
 00289E08	00289E08	field/fldPanel	c	smt3:map:1 of 1	field/fldPanel
-00289E50	00299E40	sBtlEff_00289E50	asm	none	
+00289E50	00299E40	sbtlEff_00289E50	asm	none	
 00299E80	00299E80	newbattle/nbActionProcess	c	smt3:map:1 of 1	newbattle/nbActionProcess
-00299EC8	002C7C90	sbattle	asm	none	
+00299EC8	002C7C90	sbtl	asm	none	
 002C7E58	002C7E58	newbattle/nbDebugProcess	c	smt3:map:1 of 1	newbattle/nbDebugProcess
 002C7EB0	002C7EC8	code_002C7EB0	asm	none	
 002C7ED0	002C7FE0	code_002C7ED0	c	dds:3 of 3 part	

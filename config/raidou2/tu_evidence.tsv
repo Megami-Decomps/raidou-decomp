@@ -255,16 +255,16 @@ start	last_func	unit	kind	evidence	smt3_unit
 00288200	00288200	code_00288200	c	dds:1 of 1	
 00288220	0028AD38	code_00288220	asm	none	
 0028AD40	0028AD40	code_0028AD40	c	dds:1 of 1	
-0028AD68	002A93C8	sBtlActAI	asm	none	
+0028AD68	002A93C8	sbtlActAI	asm	none	
 002A9518	002A9548	code_002A9518	c	dds:2 of 2	
 002A95B0	002A95B0	code_002A95B0	c	dds:1 of 1	
-002A9678	002AB508	sBtlSub	asm	none	
-002AB610	002AC8F0	sBtlSub_0027ED08	c	dds:6 of 42 part	
-002AC940	002BAF80	sBtlDMG	asm	none	
+002A9678	002AB508	sbtlSub	asm	none	
+002AB610	002AC8F0	sbtlSub_0027ED08	c	dds:6 of 42 part	
+002AC940	002BAF80	sbtlDMG	asm	none	
 002BB0E8	002BB0E8	field/fldPanel	c	smt3:map:1 of 1	field/fldPanel
-002BB130	002CE238	sBtlEff_00289E50	asm	none	
+002BB130	002CE238	sbtlEff_00289E50	asm	none	
 002CE278	002CE278	newbattle/nbActionProcess	c	smt3:map:1 of 1	newbattle/nbActionProcess
-002CE2C0	00309F58	sbattle	asm	none	
+002CE2C0	00309F58	sbtl	asm	none	
 00309F88	00309F88	code_00309F88	c	dds:1 of 1	
 00309FE0	00328178	code_00309FE0	asm	none	
 00328180	00328290	code_00328180	c	dds:3 of 3 part	

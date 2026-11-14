@@ -1216,11 +1216,11 @@ INCLUDE_ASM(const s32, "code_0012C998", sdfMcPollMkdir);
 
 INCLUDE_ASM(const s32, "code_0012C998", sdfLoadMapFromMemorySub);
 
-INCLUDE_ASM(const s32, "code_0012C998", sBtlRefDDS3GBWK);
+INCLUDE_ASM(const s32, "code_0012C998", sbtlRefDDS3GBWK);
 
-INCLUDE_ASM(const s32, "code_0012C998", sBtlCountClear);
+INCLUDE_ASM(const s32, "code_0012C998", sbtlCountClear);
 
-INCLUDE_ASM(const s32, "code_0012C998", sBtlTitleNewGameStartSub);
+INCLUDE_ASM(const s32, "code_0012C998", sbtlTitleNewGameStartSub);
 
 INCLUDE_ASM(const s32, "code_0012C998", fclCombineDraw);
 

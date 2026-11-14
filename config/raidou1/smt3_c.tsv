@@ -247,7 +247,7 @@ SifRpcServerThreadProc	c
 Slerp	c
 SolveTridiagonal	c
 StartProcess	c
-Start_sBtl	c
+Start_sbtl	c
 StartingProcess	c
 StoreIdentity	c
 StoreMatrix	c
@@ -441,7 +441,7 @@ btlGetResourcePathVariant	c
 btlLoadAndReplaceResourceHandle	c
 btlOpenPfsDebugDirectory	c
 btlProjectForwardPositionToScreen	c
-sBtlGetVerticalLength_Point	c
+sbtlGetVerticalLength_Point	c
 btlReplaceResourceHandle	c
 btlResourceRecordSetName	c
 GetPercentage	c
@@ -2850,8 +2850,8 @@ rsetAlpha	c
 rsetOtOfs	c
 rsetTest	c
 rsetTexa	c
-sBtlGetVerticalLength	c
-sBtlGetVerticalVector	c
+sbtlGetVerticalLength	c
+sbtlGetVerticalVector	c
 sceAddDrv	c
 sceCdCallback	c
 sceCdDelayThread	c

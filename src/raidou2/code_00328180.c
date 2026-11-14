@@ -2966,7 +2966,7 @@ s32 effPollAlternateResourceQueueWithTlp(void);
 /* Poll the queue without adding the TLP flag to its format mask. */
 s32 effPollResourceQueueWithoutTlp(void);
 
-extern u16 Start_sBtl(s32);
+extern u16 Start_sbtl(s32);
 
 typedef struct EffFileResourceRecord {
     char *name;
@@ -3041,7 +3041,7 @@ u32 effLoadMaterialFile(void);
 
 void effResetFileResourceManager(void);
 
-u16 Start_sBtl(s32 flags);
+u16 Start_sbtl(s32 flags);
 
 EffectList *mnuAllocateValueRecord(u32 mode);
 

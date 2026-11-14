@@ -1,15 +1,15 @@
 #include "common.h"
 
-extern void *sBtlRefSbtl38(void);
-extern void sBtlSetCutScroll(void *work);
+extern void *sbtlRefSbtl38(void);
+extern void sbtlSetCutScroll(void *work);
 
 #ifdef NON_MATCHING
 /* Same bytes as retail, but +0x40 is a raw offset into the work block that
- * sBtlRefSbtl38 returns, whose struct is not defined yet. */
+ * sbtlRefSbtl38 returns, whose struct is not defined yet. */
 s32 btlRunCameraMotionResetTask(void) {
-    void *work = sBtlRefSbtl38();
+    void *work = sbtlRefSbtl38();
 
-    sBtlSetCutScroll((u8 *)work + 0x40);
+    sbtlSetCutScroll((u8 *)work + 0x40);
     return 1;
 }
 #else

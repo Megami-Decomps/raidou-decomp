@@ -4109,7 +4109,7 @@ s32 effPollAlternateResourceQueueWithTlp(void);
 /* Poll the queue without adding the TLP flag to its format mask. */
 s32 effPollResourceQueueWithoutTlp(void);
 
-extern u16 Start_sBtl(s32);
+extern u16 Start_sbtl(s32);
 
 typedef struct EffFileResourceRecord {
     char *name;
@@ -4184,7 +4184,7 @@ u32 effLoadMaterialFile(void);
 
 void effResetFileResourceManager(void);
 
-u16 Start_sBtl(s32 flags);
+u16 Start_sbtl(s32 flags);
 
 EffectList *mnuAllocateValueRecord(u32 mode);
 
@@ -11898,22 +11898,22 @@ void effSetParticleSharedColor(EffParticleSharedResource *work, u32 color) {
 void effDrawEffHelperSub(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlEffSetActer);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlEffSetActer);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlEffSetTarget);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlEffSetTarget);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlEffCreateUnitList);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlEffCreateUnitList);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlLeaf48);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlLeaf48);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallBtlSetLightMap);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlCallBtlSetLightMap);
 
-void sBtlLeaf49(void) {
+void sbtlLeaf49(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallSetUnitColorRGB);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlCallSetUnitColorRGB);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallSetUnitColorRGB2);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlCallSetUnitColorRGB2);
 
 s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPacket_t *target) {
     s32 result = btlIsRuntimeAllocated();
@@ -11936,17 +11936,17 @@ s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPack
 
 INCLUDE_ASM(const s32, "code_00226EC8", effResetDefaultColorTables);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlLeaf50);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlLeaf50);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallBtlEffCreateUnitList);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlCallBtlEffCreateUnitList);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlLeaf51);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlLeaf51);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallBtlSetLightMap2);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlCallBtlSetLightMap2);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlLeaf52);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlLeaf52);
 
-INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallBtlEffCreateUnitList2);
+INCLUDE_ASM(const s32, "code_00226EC8", sbtlCallBtlEffCreateUnitList2);
 
 INCLUDE_ASM(const s32, "code_00226EC8", effCallSetUnitColorRGB);
 

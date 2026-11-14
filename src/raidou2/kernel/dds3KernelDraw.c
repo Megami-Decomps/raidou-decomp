@@ -2314,7 +2314,7 @@ void dds3StopQuake(void)
     dds3QuakeFlag = 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", sBtlResetJump);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", sbtlResetJump);
 
 /* The two live XYZ2 payload locals follow the matched DDS engine source.
  * Creating each before its RGBAQ pair preserves the native hoisted constants. */

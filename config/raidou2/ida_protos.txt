@@ -85,7 +85,7 @@
 0x0023C030 effCalc void effCalc(FileSlotTable *a1)
 0x0025A728 effApplyBattleCameraToObject void effApplyBattleCameraToObject(FileJobPayload *a1)
 0x00278CB8 UnitRegist u32 UnitRegist(u32 a1, u32 a2)
-0x002A9BB8 sBtlGetQuatFromMatrix f32 sBtlGetQuatFromMatrix(float *a1)
+0x002A9BB8 sbtlGetQuatFromMatrix f32 sbtlGetQuatFromMatrix(float *a1)
 0x00328898 effReleaseRecordBuckets void effReleaseRecordBuckets(u32 a1)
 0x00345BF0 ctnMemFree void ctnMemFree(void)
 0x0034A940 nekoCallMemFreeDelayedDirect void nekoCallMemFreeDelayedDirect(void)

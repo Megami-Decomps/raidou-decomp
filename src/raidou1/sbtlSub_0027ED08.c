@@ -394,7 +394,7 @@ extern s32 btlReadCurrentUnitHp(dds_datUnitWork_t *);
 
 extern void btlGetUnitWorldPos(BtlUnit *, f32 *);
 
-extern f32 sBtlGetVerticalLength(const f32 *, const f32 *, const f32 *);
+extern f32 sbtlGetVerticalLength(const f32 *, const f32 *, const f32 *);
 
 typedef union BtlVec4 {
     f32 f[4];
@@ -537,10 +537,10 @@ s32 btlAimHorizontalDirectionClampedVU(const f32 *origin, const f32 *targetPosit
 /* vu0 routine: vf10.xyz = normalize(e x (e x f)),
  * e = vertexB - vertexA, f = vertexC - vertexA.
  * The double cross lies in the triangle plane, despite the legacy normal name. */
-void sBtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
+void sbtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 /* Dot the normalized double-cross direction with vertexA - vertexC. */
-f32 sBtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
+f32 sbtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 /* vu0 routine: vf10 = vertexC + normalize(point - vertexC) * projection,
  * where projection is the double-cross direction dotted with vertexA - vertexC. */
@@ -548,7 +548,7 @@ void btlPointOffPlaneVU(f32 *vertexA, f32 *vertexB, f32 *vertexC, f32 *point);
 
 /* vu0 routine: vf10 = vertexC + direction * dot(direction, vertexA - vertexC).
  * Direction is the normalized in-plane double cross, not a triangle normal. */
-f32 sBtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
+f32 sbtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 /* Inclusive box test; either corner order is accepted independently per axis. */
 s32 btlPointInBox(BtlVec3 *cornerA, BtlVec3 *cornerB, BtlVec3 *point);
@@ -1272,74 +1272,74 @@ BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScre
     return BTL_PROJECTED_SCREEN_POINT_WRITTEN;
 }
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallGrAllocPacketBuff);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallGrAllocPacketBuff);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetLargePara);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetLargePara);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaAdd);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaAdd);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaAdd_16);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaAdd_16);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaAdd_8);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaAdd_8);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaDec);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaDec);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaDec_16);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaDec_16);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaDec_8);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlParaDec_8);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetBezier);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetBezier);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetMeireiFont);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetMeireiFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallBtlGetMeireiFont);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallBtlGetMeireiFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallDrawFontEx2);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallDrawFontEx2);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallGetSmallNumFontFRQ);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallGetSmallNumFontFRQ);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetWajutsuNameFont);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetWajutsuNameFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallBtlGetWajutsuNameFont);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallBtlGetWajutsuNameFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlLeaf73);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlLeaf73);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallGetSmallFontFRQ23);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallGetSmallFontFRQ23);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sdatDevilName);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sdatDevilName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallDevilName);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallDevilName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallDestroyFontRequestAfter);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallDestroyFontRequestAfter);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", slKanjiDrawN);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", slKanjiDrawN);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetSkillNameFont);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetSkillNameFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlDrawSkillName);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlDrawSkillName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlLeaf74);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlLeaf74);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallGetSmallFontFRQ24);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCallGetSmallFontFRQ24);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetAisyoHelpFont);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetAisyoHelpFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlDrawAisyoName);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlDrawAisyoName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetBSTNameFont);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetBSTNameFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlDrawBSTName);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlDrawBSTName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetSkillMenu);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetSkillMenu);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetDevilData_sBtlSub);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlGetDevilData_sbtlSub);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCheckVerticalArea);
+INCLUDE_ASM(const s32, "sbtlSub_0027ED08", sbtlCheckVerticalArea);
 
 /* vu0 routine: vf10.xyz = normalize(e x (e x f)),
  * e = vertexB - vertexA, f = vertexC - vertexA.
  * The double cross lies in the triangle plane, despite the legacy normal name. */
-void sBtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
+void sbtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
     SDF_VU0_LOADVECTOR(vertexB);
     SDF_VU0_LOADVECTOR_B(vertexA);
     SDF_VU0_SUBVECTOR();
@@ -1356,10 +1356,10 @@ void sBtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *ve
 }
 
 /* Dot the normalized double-cross direction with vertexA - vertexC. */
-f32 sBtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
+f32 sbtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
     f32 direction[4];
     f32 projection;
-    sBtlGetVerticalVector(vertexA, vertexB, vertexC);
+    sbtlGetVerticalVector(vertexA, vertexB, vertexC);
     VU0_STORE_VF($vf10, direction);
     VU0_LOAD_VF($vf10, vertexA);
     VU0_LOAD_VF($vf11, vertexC);
@@ -1372,10 +1372,10 @@ f32 sBtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *ver
 
 /* vu0 routine: vf10 = vertexC + direction * dot(direction, vertexA - vertexC).
  * Direction is the normalized in-plane double cross, not a triangle normal. */
-f32 sBtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
+f32 sbtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
     f32 direction[4];
     f32 projection;
-    sBtlGetVerticalVector(vertexA, vertexB, vertexC);
+    sbtlGetVerticalVector(vertexA, vertexB, vertexC);
     SDF_VU0_STOREVECTOR(direction);
     SDF_VU0_LOADVECTOR(vertexA);
     SDF_VU0_LOADVECTOR_B(vertexC);
@@ -1389,95 +1389,95 @@ f32 sBtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f3
     return projection;
 }
 
-INCLUDE_RODATA(const s32, "sBtlSub_0027ED08", D_r1_00458CA8);
+INCLUDE_RODATA(const s32, "sbtlSub_0027ED08", D_r1_00458CA8);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB14);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB14);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DB18);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DB18);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DB1C);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DB1C);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DB20);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DB20);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DB24);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DB24);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB28);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB28);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB30);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB30);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB38);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB38);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB40);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB40);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB48);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB48);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB50);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB50);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB58);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB58);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB60);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB60);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB68);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB68);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB70);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB70);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB78);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB78);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB80);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB80);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB88);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB88);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB90);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB90);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB98);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DB98);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBA0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBA0);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBA8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBA8);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBB0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBB0);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBB8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBB8);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBC0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBC0);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBC8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBC8);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBD0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBD0);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBD8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DBD8);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DBE0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DBE0);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DBE8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DBE8);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DBF0);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DBF0);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DBF8);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DBF8);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC00);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC00);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DC08);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DC08);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC10);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC10);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC18);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC18);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC20);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC20);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC28);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC28);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DC30);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_r1_0046DC30);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC38);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC38);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC40);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC40);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC48);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC48);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC50);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC50);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC58);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC58);
 
-INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_0046DC60);
+INCLUDE_SDATA(const s32, "sbtlSub_0027ED08", D_0046DC60);
 

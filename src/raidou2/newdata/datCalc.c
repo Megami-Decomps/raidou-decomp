@@ -1445,7 +1445,7 @@ INCLUDE_ASM(const s32, "newdata/datCalc", datCallGetRandIntA);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf80);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", sBtlGetRndEncTbl_t);
+INCLUDE_ASM(const s32, "newdata/datCalc", sbtlGetRndEncTbl_t);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datCallGetStockDevilNums);
 

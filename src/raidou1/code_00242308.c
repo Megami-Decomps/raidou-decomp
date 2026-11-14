@@ -2972,7 +2972,7 @@ s32 effPollAlternateResourceQueueWithTlp(void);
 /* Poll the queue without adding the TLP flag to its format mask. */
 s32 effPollResourceQueueWithoutTlp(void);
 
-extern u16 Start_sBtl(s32);
+extern u16 Start_sbtl(s32);
 
 typedef struct EffFileResourceRecord {
     char *name;
@@ -3047,7 +3047,7 @@ u32 effLoadMaterialFile(void);
 
 void effResetFileResourceManager(void);
 
-u16 Start_sBtl(s32 flags);
+u16 Start_sbtl(s32 flags);
 
 EffectList *mnuAllocateValueRecord(u32 mode);
 
@@ -5281,7 +5281,7 @@ s32 effPollFileRecord(char *path, s32 flags) {
         type = record.type;
         if (type != 8) {
             fileJobCopyCommandIntoSecondaryData(effQueuedFileHandle,
-                                                (const char *)&record, Start_sBtl(type));
+                                                (const char *)&record, Start_sbtl(type));
         } else {
             fileJobSetSecondaryData(effQueuedFileHandle, &record.pathVariant, 4, 4);
         }
@@ -5372,7 +5372,7 @@ u32 fileLoadEffectSlotA(void) {
         fileJobSetPrimaryData(job, D_r1_00408D60.start, D_r1_00408D60.length,
                       D_r1_00408D60.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
-                      Start_sBtl(fileInfo.type));
+                      Start_sbtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
@@ -5476,7 +5476,7 @@ u32 fileLoadEffectSlotB(void) {
         fileJobSetPrimaryData(job, D_r1_00411E28.start, D_r1_00411E28.length,
                       D_r1_00411E28.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
-                      Start_sBtl(fileInfo.type));
+                      Start_sbtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
@@ -5535,7 +5535,7 @@ u32 effLoadFileSlotF2(void) {
         fileJobSetPrimaryData(job, D_r1_00414710.start, D_r1_00414710.length,
                       D_r1_00414710.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
-                      Start_sBtl(fileInfo.type));
+                      Start_sbtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
@@ -5576,7 +5576,7 @@ u32 effLoadMaterialFile(void) {
         fileJobSetPrimaryData(job, D_r1_00414EA8.start, D_r1_00414EA8.length,
                       D_r1_00414EA8.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
-                      Start_sBtl(fileInfo.type));
+                      Start_sbtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
@@ -5608,7 +5608,7 @@ void effResetFileResourceManager(void) {
     D_003BD160 = 0;
 }
 
-u16 Start_sBtl(s32 flags) {
+u16 Start_sbtl(s32 flags) {
     switch (flags) {
         case 1:   return 1;
         case 2:   return 2;
