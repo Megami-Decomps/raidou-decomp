@@ -1007,7 +1007,7 @@ INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B9C00);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B9CA8);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B9D00);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", InitPolygonMovieWorkData);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001B9D78);
 
@@ -1023,11 +1023,11 @@ INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA598);
 
 INCLUDE_RODATA(const s32, "event/evtPolygonMovie", D_r1_0044FD18);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA640);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", SetPMFileName);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA740);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA7E0);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtGetPolygonMovieWorkData2);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BAAF0);
 

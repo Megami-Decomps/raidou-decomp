@@ -4,6 +4,51 @@
 #include "event.h"
 #include "effect.h"
 
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+/* Raidou's work (0x934, sdfMemAllocDirect): PM1 and PM2 directories, then a pointer to each
+   PM2 and PM3 cut record. */
+typedef struct evtPolygonMovieWork_t {
+    sdfMemHandle_t *mem;          /* 0x000 */
+    u32 unk004;                   /* 0x004 */
+    s32 eventNo;                  /* 0x008 */
+    s32 cutNo;                    /* 0x00C */
+    u32 unk010;                   /* 0x010 */
+    void *chipBlock;              /* 0x014: 0x1FC bytes from sdfChipAllocDirect */
+    s32 unk018;                   /* 0x018 */
+    u32 unk01C;                   /* 0x01C */
+    s32 pm2CutCount;              /* 0x020 */
+    s32 pm3CutCount;              /* 0x024 */
+    s32 cutIndex;                 /* 0x028: cutNo - 1 */
+    u32 unk02C;                   /* 0x02C */
+    void *header1;                /* 0x030: PM1 file */
+    pmdEntry_t *entryTable1;      /* 0x034 */
+    void *pm1Type1Data;           /* 0x038 */
+    s32 pm1Type1Value;            /* 0x03C */
+    void *pm1Type2Data;           /* 0x040 */
+    s32 pm1Type2Value;            /* 0x044 */
+    u32 unk048[3];                /* 0x048 */
+    void *pm1Type3Data;           /* 0x054 */
+    s32 pm1Type3Value;            /* 0x058 */
+    u32 unk05C[9];                /* 0x05C */
+    void *header2;                /* 0x080: PM2 cut */
+    pmdEntry_t *entryTable2;      /* 0x084 */
+    void *pm2Type1Data;           /* 0x088 */
+    s32 pm2Type1Value;            /* 0x08C */
+    void *pm2Type0Data;           /* 0x090 */
+    u32 unk094[32];               /* 0x094 */
+    void *pm1File;                /* 0x114 */
+    u32 unk118;                   /* 0x118 */
+    void *pm2Cuts[256];           /* 0x11C */
+    void *pm3Cuts[256];           /* 0x51C */
+    s32 pm2Size;                  /* 0x91C */
+    sdfMemHandle_t *pm2Mem;       /* 0x920 */
+    void *pm2Data;                /* 0x924 */
+    s32 pm3Size;                  /* 0x928 */
+    sdfMemHandle_t *pm3Mem;       /* 0x92C */
+    void *pm3Data;                /* 0x930 */
+} evtPolygonMovieWork_t;
+SIZE_CHECK(evtPolygonMovieWorkSizeCheck, evtPolygonMovieWork_t, 0x934);
+#else
 typedef struct evtPolygonMovieWork_t {
     u32 movieFlags;
     void *file04;
@@ -59,5 +104,6 @@ typedef struct evtPolygonMovieWork_t {
     s32 nowFrame;
     dds3Basic_t **effectBasicTable;
 } evtPolygonMovieWork_t;
+#endif
 
 #endif

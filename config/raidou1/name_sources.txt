@@ -3106,16 +3106,16 @@
 0x001B9BC8	func_r1_001B9BC8	placeholder	placeholder for the pair with raidou2 0x001CFC90, unique-reloc-hash
 0x001B9C00	func_r1_001B9C00	placeholder	placeholder for the pair with raidou2 0x001CFCC8, unique-reloc-hash
 0x001B9CA8	func_r1_001B9CA8	placeholder	placeholder for the pair with raidou2 0x001CFD70, unique-reloc-hash
-0x001B9D00	func_r1_001B9D00	placeholder	placeholder for the pair with raidou2 0x001CFDC8, unique-reloc-hash
+0x001B9D00	InitPolygonMovieWorkData	inferred	allocates and clears the 0x934 evtPolygonMovieWork_t, as SMT3 InitPolygonMovieWorkData
 0x001B9D78	func_r1_001B9D78	placeholder	placeholder for the pair with raidou2 0x001CFE40, unique-reloc-hash
 0x001BA008	func_r1_001BA008	placeholder	placeholder for the pair with raidou2 0x001D00D0, unique-reloc-hash
 0x001BA378	func_r1_001BA378	placeholder	placeholder for the pair with raidou2 0x001D0440, unique-reloc-hash
 0x001BA418	func_r1_001BA418	placeholder	placeholder for the pair with raidou2 0x001D04E0, unique-reloc-hash
 0x001BA498	func_r1_001BA498	placeholder	placeholder for the pair with raidou2 0x001D0560, unique-reloc-hash
 0x001BA598	func_r1_001BA598	placeholder	placeholder for the pair with raidou2 0x001D0660, unique-reloc-hash
-0x001BA640	func_r1_001BA640	placeholder	placeholder for the pair with raidou2 0x001D0708, unique-reloc-hash
+0x001BA640	SetPMFileName	inferred	builds the PM file names for evtGetPolygonMovieWorkData2, as SMT3 SetPMFileName
 0x001BA740	func_r1_001BA740	placeholder	placeholder for the pair with raidou2 0x001D0808, unique-reloc-hash
-0x001BA7E0	func_r1_001BA7E0	placeholder	placeholder for the pair with raidou2 0x001D08A8, unique-reloc-hash
+0x001BA7E0	evtGetPolygonMovieWorkData2	inferred	debug strings evtGetPolygonMovieWorkData2:0..3
 0x001BAAF0	func_r1_001BAAF0	placeholder	placeholder for the pair with raidou2 0x001D0BB8, unique-reloc-hash
 0x001BAC78	evtPictureDrawOn	inferred	SMT3HD name via SLUS_209.11 0x001F3DC8, reloc-identical; map-agrees
 0x001BACA0	evtPictureDrawOff	inferred	SMT3HD name via SLUS_209.11 0x001F3DF0, reloc-identical; map-agrees
