@@ -439,10 +439,10 @@ btlGetResourcePathVariant	c
 btlLoadAndReplaceResourceHandle	c
 btlOpenPfsDebugDirectory	c
 btlProjectForwardPositionToScreen	c
-btlProjectOnPlaneVU	c
+sBtlGetVerticalLength_Point	c
 btlReplaceResourceHandle	c
 btlResourceRecordSetName	c
-btlRollAiBucket	c
+GetPercentage	c
 btlRunCameraMotionResetTask	c
 btlScanDirectory	c
 btlScriptReturnOneBasedAiBucket	asm	btlRollAiBucket is 0x002A95B0, code wants 0x003C1A60
@@ -1129,7 +1129,7 @@ effBattleResourceDescriptorRelease	c
 effBeginMatrixVuDrawPacket	c
 effBillBlendCellColorAndUpdateTransform	c
 effBillboardEntryFrameReset	c
-effBillboardWorkRelease	c
+Delete_effMuzzleFlash	c
 effBlendBillboardInstanceColorsAndTransforms	c
 effBroadcastModelMask	c
 effBuildQuantizedTexturedStrip	c
@@ -1149,7 +1149,7 @@ effCloneClassResourceWork	c
 effCloneClassWork	c
 effCloneFadeVectorWork	c
 effCloneKindWork	c
-effCloneModelWithVUState	c
+effHandleCopy	c
 effCloneRibbonWithSharedResource	c
 effCloneSelectedFileJob	c
 effCloneSelectionHeaderFromWork	c
@@ -1182,7 +1182,7 @@ effCreateAnimationState	c
 effCreateBattleCameraJob	c
 effCreateBillFadeTable	c
 effCreateBillFrameNode	c
-effCreateBillboardWork	c
+Create_effMuzzleFlash	c
 effCreateBlockResourceFromFile	c
 effCreateBlurTask	c
 effCreateClassResourceFromFile	c
@@ -1200,9 +1200,9 @@ effCreateFixedSlotBlurWorkFromFadeOutput	c
 effCreateKindWorkFromFile	c
 effCreateKindWorkFromFileB	c
 effCreateModelBlockFromFile	c
-effCreateModelResource	c
-effCreateModelResourceFromFile	c
-effCreateModelResourceWithInlineData	c
+Copy_effPolygonCrack	c
+PartsCreate_effPolygonCrack	c
+Create_effPolygonCrack	c
 effCreateOwnerRecordList	c
 effCreateParticleSpanTable	c	SMT3 member names
 effCreatePayload	c
@@ -1242,7 +1242,7 @@ effCreateStripNode	c
 effCreateStripNodeFromGrid	c
 effCreateSurfaceNode	c
 effCreateSurfaceNodeForGrid	c
-effCreateTextureAnimationSet	c
+effCacheTexCreate	c
 effCreateTexturedStripWithSharedTexture	c
 effCreateTrackSet	c
 effCreateTrackSetWithSharedReferences	c
@@ -1265,7 +1265,7 @@ effDestroyClassWork	c
 effDestroyCopiedEffectPayload	c
 effDestroyModelBlockWork	c
 effDestroyModelContext	c
-effDestroyModelResource	c
+Delete_effPolygonCrack	c
 effDestroyOwnerRecordList	c
 effDestroyPackedBatch	c
 effDestroyPayload	c
@@ -1298,7 +1298,7 @@ effDrawThreePointGroups	c
 effDrawTintedFivePointGroupRows	c
 effDuplicateActiveResource	c
 effDuplicateActiveResourceB	c
-effDuplicateBillState	c
+Copy_effMuzzleFlash	c
 effDuplicatePayloadHeader	c
 effDuplicateResourceRefs	c
 effEVECombParSmokeCreate	c
@@ -1758,7 +1758,7 @@ effReleaseParticleList	c	compiles identical
 effReleaseParticleResources	c
 effReleasePointSetAsset	c
 effReleaseQueuedResourceName	c
-effReleaseReferenceHolder	c
+effCacheTexDelete	c
 effReleaseResourceBankDescriptors	c
 effReleaseResourceRefs	c
 effReleaseRingFadeTable	c
@@ -1776,7 +1776,7 @@ effReleaseTextureHandlesAndResetSlots	c
 effReleaseVariableSlotBlurWork	c
 effRemoveListEntry	c
 effRemoveSlotRecord	c
-effReplaceBillboardClone	c
+ResourceCopy_effMuzzleFlash	c
 effReplaceFileResourceRef	c
 effReplaceKindLinkedTarget	c
 effReplaceLinkedKindWorkTarget	c
@@ -1814,8 +1814,8 @@ effRetainSharedReference	c
 effRunClassPostFrame	c
 effRunWithStateBackup	c
 effSCopy	c
-effSampleAnimSet	c
-effSampleColorAlphaTracks	c
+effCacheTexAnimGet	c
+effColorAnimation	c
 effSampleScalarCurve	c
 effScaleModelVec	c
 effScaleWaveEmitterParameters	c
@@ -2030,7 +2030,7 @@ evtEventViewerSumNodeCounts	c
 evtExitSky	c
 evtFadeInEventBgm	c
 evtFileName2Head	asm	.rodata differs at 0x004B6478
-evtFinishMessageWindowAndNotify	c
+fclEndMessage	c
 evtFreeAllUnit	c
 evtFreeScriptProcessData	c
 evtFreeStage	c
@@ -2115,7 +2115,7 @@ evtStageAnimeControl	c
 evtStartPictureProcess2	c
 evtStopEventBgm	c
 evtSubmitDefaultDepthGradientRect	c
-evtSubmitFixedAlphaBlend	c
+eglLinkAlpha	c
 evtTestSolarPhaseOrModelFlag	c
 evtTransEventBgm	c
 evtUnitLightAnimeStat	c	compiles identical
@@ -2195,15 +2195,15 @@ fileIsLoadedAndConditionTrue	c
 fileIsLoadedWithActiveFlow	c
 fileJobCopyCommandIntoPrimaryData	c
 fileJobCopyCommandIntoSecondaryData	c
-fileJobCreateChild	c
+Copy_effParts	c
 fileJobCreateFromCommandState	c
-fileJobCreateFromJob	c
+Create_effParts	c
 fileJobDuplicateAfter	c
 fileJobFreeSecondaryBuffer	c
 fileJobInvokeRotationCallback	c
 fileJobInvokeScaleCallback	c
 fileJobInvokeTypeCallback	c
-fileJobNotifyComplete	c
+ScaleSet_effParts	c
 fileJobNotifyPair	c
 fileJobSerializedSize	c
 fileJobSetPrimaryData	c
@@ -2216,16 +2216,16 @@ fileLoadEffectSlotA	c
 fileLoadEffectSlotB	c
 fileLoadEffectSlotHelp	c
 fileLoadEx	c
-fileLoadObjectOpenAndStartDevice	c
-fileLoadObjectOpenDevice	c
+BillboardGeneralSet	c
+BillboardSet	c
 fileLoadObjectOpenNamedDevice	c
-fileLoadObjectSetResource	c
+effCreate	c
 fileLoadSetMode	c
 fileLoadUseTail	c
 fileManager	c
 fileManagerProc	c
 fileQueueAppend	c
-fileQueueCopyRotationFromSource	c
+effPartsRotateMatrixSet	c
 fileQueueCountLinkedJobs	c
 fileQueueCreateFromCommandState	c	compiles identical
 fileQueueDetachSectorFollower	c	compiles identical
@@ -2243,7 +2243,7 @@ fileRead	c
 fileReadRecordSecondVector	c
 fileReadVectorPtr20	c
 fileReplaceEffectSurfaceJobs	c
-fileReplaceEffectSurfaceQueues	c	compiles identical
+PartsListSet	c	compiles identical
 fileReplaceReferenceHolder	c
 fileResetLoadContextSlide	c
 fileResetSlotStates	c
@@ -2389,8 +2389,8 @@ itfGridInterpolateCornerColorsToTarget	c
 itfGridLookupValueOrDefault	c
 itfInitTextDrawArgs	c
 itfInitializeAdminInterfaceNoop	c
-itfMesGetEntryCount	c	carried by hand with SMT3 member names
-itfMesGetWindowEntryItems	c	carried by hand with SMT3 member names
+itfGetMessageNo	c	carried by hand with SMT3 member names
+itfGetMessageType	c	carried by hand with SMT3 member names
 itfMesGetWindowTexture	c
 itfMesMngClearBitStat	c
 itfMesMngClearBitStatManager	c
@@ -2655,27 +2655,27 @@ mnuAdvanceListSelection	c
 mnuAdvanceListWindowStart	c
 mnuAdvanceWindowListSelection	c
 mnuAllocateListEntries	c
-mnuAppendWindowListNode	c
-mnuApplyPanelTransitionAction	c
+jmsAddCmdMenuItem	c
+CalcSeqHandle	c
 mnuBlendListNodeColorByFlags	c
 mnuBuildVoiceResourcePath	c
 mnuCallInitWide	c
 mnuCampCheckClockDivisor	c
 mnuCampFindEntryByName	c
-mnuCampInitializeDisplayDefaults	c
+SetDefaultTmxData	c
 mnuClearEntryFlags	c
 mnuClearPanelTransitionState	c
 mnuClearWindowListSelectionFlags	c
 mnuCreateListState	c
 mnuCreateListWithDefaults	c
 mnuCreatePanelIconState	c	compiles identical
-mnuCreateWindowContainer	c	compiles identical
+jmsCreateCmdMenu	c	compiles identical
 mnuCreateWindowSpriteResources	c
 mnuDecreaseListNodeFadeCounters	c
 mnuDestroyListState	c
 mnuDispatchEntryWords	c
 mnuDispatchStaffMenuWithIdlePopup	c
-mnuDrainPanelTransitions	c
+jmsSeqDestroyAll	c
 mnuDrawCutFlagLabel	c
 mnuDrawFadingWindows	c
 mnuDrawFourEntries	c
@@ -2708,11 +2708,11 @@ mnuListAdvanceCursor	c
 mnuListContainsFinalNode	c
 mnuListRetreatCursor	c
 mnuLoadTitleStreamFrameData	asm	sdfMemFreeDelayedDirect at 0x003CD0B8, others at 0x003CD1B0
-mnuMapPadMaskToFlags	asm	dds3PadButtonState at 0x00427812, others at 0x00427810
+jmsChkCommonInput	asm	dds3PadButtonState at 0x00427812, others at 0x00427810
 mnuMeasureProjectedPerpendicularDistance	c
 mnuNoOpTitleAudio	c
 mnuProjectViewPoint	c
-mnuQueryTitleSoundBusy	c
+scrCheckEnableMovieCancel	c
 mnuReadTitleStreamStatusLocked	c
 mnuRebuildListFirstFromCursor	c
 mnuRebuildListLastFromCursor	c
@@ -2723,7 +2723,7 @@ mnuRemoveFadingWindowEntry	c
 mnuRemoveListCursorNode	c
 mnuRemoveWindowListCursorNode	c
 mnuResetNodeLinks	c
-mnuResetSoundBuffer	c
+sndDeadSePlay_VolAngle	c
 mnuResetTitleEffectState	c
 mnuRetreatListCursorDefault	c
 mnuRetreatListWindowStart	c
@@ -2733,11 +2733,11 @@ mnuScrollListToEnd	c
 mnuScrollListToPreviousPage	asm	size 0x16C, retail 0x168
 mnuSetTitleVoicePrefixIndex	c
 mnuSetWindowContainerLayout	c
-mnuShouldBlockViewerEndCountdown	c
+evtFindInputBranchMessage	c
 mnuSolveCubicBezierYForX	c
 mnuSortItems	c
-mnuStartFixedSoundStream	c
-mnuStopTitleVoicePlayback	c
+sndBgmLoadFile	c
+scrGetAfterSkipBgmFlag	c
 mnuUnpackNibbleFields	c
 mnuUpdateFade	c
 mnuUpdateListScrollFlags	c
@@ -3273,7 +3273,7 @@ sdfGetOrCreateTextureForReference	c
 sdfGetRunTimeCount	c
 sdfGetRunTimeCountBase	c
 sdfGetTexelBitCount	c
-sdfGetUniqueChunkValue	c
+sdfModelGetUniqueID	c
 sdfGrAddExPacket	c
 sdfGrAllocPacketBuff	c
 sdfGrCapture	c

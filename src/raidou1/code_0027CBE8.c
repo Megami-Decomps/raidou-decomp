@@ -171,7 +171,7 @@ void func_001FC990(void);
 /* Use a map anchor for X/Z while retaining the actor's own height. */
 void btlDrawUnitStatusShadowDisc(BtlUnit *unit);
 
-extern s32 btlRollAiBucket(void);
+extern s32 GetPercentage(void);
 
 /* Requires task bit 6 clear and a matching 0x2A49 status bit.
  * The masked-status switch assigns 25-bucket tests to cases 0x40/0x400. */

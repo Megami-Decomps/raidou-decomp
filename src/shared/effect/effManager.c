@@ -466,11 +466,11 @@ INCLUDE_ASM(const s32, "effect/effManager", dds3EffectDraw_dds3Effect);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9B88);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9BC0);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetScale);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9BF8);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9C40);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetPosition);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9C78);
 

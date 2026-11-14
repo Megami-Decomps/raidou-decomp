@@ -575,9 +575,9 @@ void mnuSetTitleVoicePrefixIndex(s32 prefixIndex);
 
 void mnuPlayTitleVoiceFile(char *voiceArgument);
 
-void mnuStopTitleVoicePlayback(void);
+void scrGetAfterSkipBgmFlag(void);
 
-MnuTitleSoundBusyState mnuQueryTitleSoundBusy(void);
+MnuTitleSoundBusyState scrCheckEnableMovieCancel(void);
 
 void mnuNoOpTitleAudio(void);
 
@@ -660,11 +660,11 @@ INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFAF8);
 
 INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFB30);
 
-void mnuStopTitleVoicePlayback(void) {
+void scrGetAfterSkipBgmFlag(void) {
     p2sdSyncSound();
 }
 
-MnuTitleSoundBusyState mnuQueryTitleSoundBusy(void) {
+MnuTitleSoundBusyState scrCheckEnableMovieCancel(void) {
     return p2sdGetPcmState();
 }
 

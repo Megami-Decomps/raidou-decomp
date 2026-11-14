@@ -632,7 +632,7 @@ typedef struct {
 
 /* Load-normalize-store of one packed vector in a single block ("+m" operand
  * with a memory clobber). Splitting this into LOAD/NORMALIZE/STORE reshapes
- * the caller's scheduling (DDS2 effInitializeParticleDirection), so the
+ * the caller's scheduling (DDS2 PartsInit), so the
  * fused form is kept. */
 
 /*

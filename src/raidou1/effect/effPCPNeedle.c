@@ -412,9 +412,9 @@ INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218450);
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218678);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_002186A8);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", dds3NeedleModelSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_002186D8);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", dds3NeedleModelGetPosition);
 
 void dds3NeedleModelSetColor(dds3NeedleModel_tag *hNModel, s32 index, u32 abgr)
 {

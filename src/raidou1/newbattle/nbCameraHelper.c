@@ -250,9 +250,9 @@ void dds3EffectFileListDelete(nbCameraHelper_effFileListHandle_t *a) {
     sdfChipFreeDirect(a);
 }
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B2C8);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectFileListWindowCreate);
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B358);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectFileListWindowDraw);
 
 void dds3EffectFileListWindowDelete(nbCameraHelper_effFLWinHandle_t *a) {
     sdfTexHandle_t *texture = a->textureHandle;

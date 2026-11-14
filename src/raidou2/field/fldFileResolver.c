@@ -2617,7 +2617,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135D78);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135DE0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135E00);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboWakeUp);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135E48);
 
@@ -2629,13 +2629,13 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135F48);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboFoceSet);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136068);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAtumaru2);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboFoceSet3);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136290);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAdd);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001363B8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboGet);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboTask);
 
@@ -2655,7 +2655,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet2);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvAdd);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137228);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvGet);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137268);
 

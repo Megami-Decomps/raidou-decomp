@@ -151,7 +151,7 @@ extern AiSpecies D_00360640[];
 
 extern s32 btlSelectConditionalAiRoute(BtlUnit *, s32, s32 *, s32);
 
-extern s32 btlRollAiBucket(void);
+extern s32 GetPercentage(void);
 
 extern s32 btlHasAdjacentActorRecordStatus(BtlUnit *);
 
@@ -181,7 +181,7 @@ static inline u32 btlRollTwice(void) {
 }
 
 /* Rolls a bucket; if it lands within 3 of the previous one, rolls again. */
-s32 btlRollAiBucket(void);
+s32 GetPercentage(void);
 
 /* Out parameters of the action-id lookup. */
 typedef struct BtlActionLookup {
@@ -412,7 +412,7 @@ BtlEnemySpawnCapacityResult btlCheckEnemySpawnCapacity(void);
 /* End of declarations from src/dds1/game/code_001FF0C8.c */
 
 /* Rolls a bucket; if it lands within 3 of the previous one, rolls again. */
-s32 btlRollAiBucket(void) {
+s32 GetPercentage(void) {
     u32 slot = btlRollTwice() / 0x29;
     if (btlPreviousAiCandidateBucket >= slot - 3 && btlPreviousAiCandidateBucket <= slot + 3) {
         u32 reroll = btlRollTwice();

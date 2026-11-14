@@ -36,7 +36,7 @@ struct SdfColorTrack;
 
 struct SdfAlphaTrack;
 
-u32 effSampleColorAlphaTracks(const struct SdfColorTrack *colorTrack,
+u32 effColorAnimation(const struct SdfColorTrack *colorTrack,
                               const struct SdfAlphaTrack *alphaTrack,
                               s32 frame, s32 duration);
 

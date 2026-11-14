@@ -515,7 +515,7 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D2310);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", Suteru);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D24B8);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", PlayerTurn);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", AITurn);
 
@@ -549,7 +549,7 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4AF0);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4B68);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4BE8);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", CheckAgariKokushi);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4C68);
 
@@ -559,7 +559,7 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4DC0);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", AskRon);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4E90);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", AskRonKokushi);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D4F08);
 
@@ -571,9 +571,9 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D5060);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D5138);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D5230);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", Agari);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D52F0);
+INCLUDE_ASM(const s32, "kernel/ModeSelect", ApplyTsumo);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", func_r1_002D5328);
 

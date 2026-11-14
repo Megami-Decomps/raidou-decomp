@@ -1809,11 +1809,11 @@ extern s32 effSharedRibbonReferenceCount;
 
 extern u32 D_r1_0046D148;
 
-extern struct EffExpandedList *effCreateTextureAnimationSet(u32);
+extern struct EffExpandedList *effCacheTexCreate(u32);
 
 extern struct SdfTextureFileHeader *effFlashTextureHandles;
 
-extern struct EffModelResource *effCreateModelResourceWithInlineData(u16, void *, void *, u32);
+extern struct EffModelResource *Create_effPolygonCrack(u16, void *, void *, u32);
 
 extern EffSurfaceGridNode *effCreateSurfaceGridNode(u32, u32);
 
@@ -2322,15 +2322,15 @@ void effSetAlternateKindColor(EffKindWork *work, u32 color);
 /* Set the alternate kind-table work's scalar scale. */
 void effSetAlternateKindScale(EffKindWork *work, float scale);
 
-u8 *effCreateBillboardWork(FileJobPayload *source);
+u8 *Create_effMuzzleFlash(FileJobPayload *source);
 
-void effBillboardWorkRelease(EffBillboardWork *work);
+void Delete_effMuzzleFlash(EffBillboardWork *work);
 
-void effReplaceBillboardClone(s32 dst, s32 src);
+void ResourceCopy_effMuzzleFlash(s32 dst, s32 src);
 
-u8 *effDuplicateBillState(const u8 *source);
+u8 *Copy_effMuzzleFlash(const u8 *source);
 
-void effReplaceBillboardClone(s32 dst, s32 src);
+void ResourceCopy_effMuzzleFlash(s32 dst, s32 src);
 
 void effBillboardEntryFrameReset(EffBillboardWork *work);
 
@@ -3272,9 +3272,9 @@ void effReleaseParticleList(EffSpanTable *list);
 /* vu0 routine: quaternion matrix and SDK RGBA modulation. */
 void effDrawParticleSpanPointsAndReferences(EffModelResource *work);
 
-EffModelResource *effCreateModelResourceWithInlineData(u16 kind, void *source, void *secondary, u32 param);
+EffModelResource *Create_effPolygonCrack(u16 kind, void *source, void *secondary, u32 param);
 
-u32 effCreateModelResourceFromFile(FileJobPayload *work);
+u32 PartsCreate_effPolygonCrack(FileJobPayload *work);
 
 typedef struct EffModelCreateRequest {
     u8 pad0[0x2C];
@@ -3286,9 +3286,9 @@ typedef struct EffModelCreateRequest {
     void *source;
 } EffModelCreateRequest;
 
-void effDestroyModelResource(EffModelResource *effect);
+void Delete_effPolygonCrack(EffModelResource *effect);
 
-EffModelResource *effCreateModelResource(EffModelCreateRequest *work);
+EffModelResource *Copy_effPolygonCrack(EffModelCreateRequest *work);
 
 void effResetModelResourceUpdateCount(EffModelResource *effect);
 
@@ -4369,7 +4369,7 @@ void effUpdateFadeBlendA(EffKindWork *work) {
     out->xy[0][1] = 0;
     out->xy[1][0] = 0x200;
     out->xy[1][1] = 0x1C0;
-    second = effSampleColorAlphaTracks(&config->blendA, &config->blendB2, frame, duration);
+    second = effColorAnimation(&config->blendA, &config->blendB2, frame, duration);
     color1[0] = work->color;
     unit = 0x3C000000;
     EE_MMI_RGBA_UNPACK(color1, unit);
@@ -4439,7 +4439,7 @@ void effUpdateProjectedBlurFadeRectangle(EffKindWork *work) {
         out->body.Blur.center[0] = px;
         out->body.Blur.center[1] = py << 1;
     }
-    second = effSampleColorAlphaTracks(&config->blendA, &config->blendB2, frame, duration);
+    second = effColorAnimation(&config->blendA, &config->blendB2, frame, duration);
     color1[0] = work->color;
     unit = 0x3C000000;
     EE_MMI_RGBA_UNPACK(color1, unit);
@@ -4516,7 +4516,7 @@ void effUpdateFadeMapA(EffKindWork *work) {
         out->params.center[0] = (s32)pos[0] - 0x800;
         out->params.center[1] = ((s32)pos[1] - 0x800) << 1;
     }
-    second = effSampleColorAlphaTracks(&config->blendA, &config->blendB2, frame, duration);
+    second = effColorAnimation(&config->blendA, &config->blendB2, frame, duration);
     color1[0] = work->color;
     unit = 0x3C000000;
     EE_MMI_RGBA_UNPACK(color1, unit);
@@ -4593,7 +4593,7 @@ void effUpdateFadeMapB(EffKindWork *work) {
         out->params.center[0] = (s32)pos[0] - 0x800;
         out->params.center[1] = ((s32)pos[1] - 0x800) << 1;
     }
-    second = effSampleColorAlphaTracks(&config->blendA, &config->blendB2, frame, duration);
+    second = effColorAnimation(&config->blendA, &config->blendB2, frame, duration);
     color1[0] = work->color;
     unit = 0x3C000000;
     EE_MMI_RGBA_UNPACK(color1, unit);
@@ -4647,7 +4647,7 @@ void effUpdateFadeBlendB(EffKindWork *work) {
     out->xy[0][1] = 0;
     out->xy[1][0] = 0x200;
     out->xy[1][1] = 0x1C0;
-    second = effSampleColorAlphaTracks(&config->blendA, &config->blendB2, frame, duration);
+    second = effColorAnimation(&config->blendA, &config->blendB2, frame, duration);
     color1[0] = work->color;
     unit = 0x3C000000;
     EE_MMI_RGBA_UNPACK(color1, unit);
@@ -4686,7 +4686,7 @@ void effUpdateFadeBlendC(EffKindWork *work) {
     out->xy[0][1] = 0;
     out->xy[1][0] = 0x200;
     out->xy[1][1] = 0x1C0;
-    second = effSampleColorAlphaTracks(&config->blendA, &config->blendB2, frame, duration);
+    second = effColorAnimation(&config->blendA, &config->blendB2, frame, duration);
     /* Capture the base word before the unit: see docs/idioms.md,
      * "Trace-justified base color capture: effUpdateFadeBlendC". */
     baseColor = work->color;
@@ -4752,7 +4752,7 @@ void effUpdateProjectedFadeColor(EffKindWork *work) {
         out->params.center[0] = px;
         out->params.center[1] = py << 1;
     }
-    second = effSampleColorAlphaTracks(&config->blendA, &config->blendB2, frame, duration);
+    second = effColorAnimation(&config->blendA, &config->blendB2, frame, duration);
     color1[0] = work->color;
     EE_MMI_RGBA_UNPACK(color1, 1.0f / 128.0f);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -4956,7 +4956,7 @@ void effSetAlternateKindWorkScale(EffKindWork *work, f32 scale) {
     work->scale = scale;
 }
 
-u8 *effCreateBillboardWork(FileJobPayload *source) {
+u8 *Create_effMuzzleFlash(FileJobPayload *source) {
     u8 *work = (u8 *)sdfChipAllocDirect(0x68);
     memset(work, 0, 0x68);
     ((EffBillboardWork *)work)->frame = 0;
@@ -4974,7 +4974,7 @@ u8 *effCreateBillboardWork(FileJobPayload *source) {
     return work;
 }
 
-void effBillboardWorkRelease(EffBillboardWork *work) {
+void Delete_effMuzzleFlash(EffBillboardWork *work) {
     billHandle_t *billboard;
 
     billboard = work->billboard;
@@ -4984,14 +4984,14 @@ void effBillboardWorkRelease(EffBillboardWork *work) {
     sdfChipFreeDirect(work);
 }
 
-u8 *effDuplicateBillState(const u8 *source) {
-    u8 *effect = (u8 *)effCreateBillboardWork(NULL);
+u8 *Copy_effMuzzleFlash(const u8 *source) {
+    u8 *effect = (u8 *)Create_effMuzzleFlash(NULL);
     memcpy(effect + 0x2C, source + 0x2C, 0x38);
-    effReplaceBillboardClone((s32)effect, (s32)source);
+    ResourceCopy_effMuzzleFlash((s32)effect, (s32)source);
     return effect;
 }
 
-void effReplaceBillboardClone(s32 dst, s32 src) {
+void ResourceCopy_effMuzzleFlash(s32 dst, s32 src) {
     billHandle_t *billboard;
 
     if (((EffBillboardWork *)dst)->billboard != 0) {
@@ -5248,7 +5248,7 @@ void billUpdateFrameDrawColorAndTransform(BillCellDrawWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(work->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -5533,7 +5533,7 @@ void billUpdateCellDrawColorAndTransform(BillCellDrawWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(work->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -5607,7 +5607,7 @@ void billUpdateParticleDrawColorAndTransform(BillCellDrawWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(work->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -5897,7 +5897,7 @@ void billUpdateAlternatingDrawColorAndTransform(BillCellDrawWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(work->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -6200,7 +6200,7 @@ void billUpdateEmitterDrawColorAndTransform(u8 *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(((BillCellDrawWork *)work)->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -6533,7 +6533,7 @@ void billUpdateStripDrawColorAndTransform(u8 *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(((BillCellDrawWork *)work)->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -6608,7 +6608,7 @@ void billUpdateTrailDrawColorAndTransform(u8 *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(((BillCellDrawWork *)work)->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -6965,7 +6965,7 @@ void billUpdateQuadDrawColorAndTransform(u8 *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(((BillCellDrawWork *)work)->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -7360,7 +7360,7 @@ void billDrawCellBlendA(BillCellDrawWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(work->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -7519,7 +7519,7 @@ void billDrawClassUpdatedCellBlend(BillCellDrawWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillTimedHeader *)config)->colorTrack, &((EffBillTimedHeader *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     color1[0] = work->baseColor;
     EE_MMI_RGBA_UNPACK(color1, unit);
@@ -7681,7 +7681,7 @@ void billDrawCellBlendB(EffClassWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&config->colorTrack, &config->alphaTrack, limit, progress);
+    second = effColorAnimation(&config->colorTrack, &config->alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(work->color, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -7883,7 +7883,7 @@ void effDestroySurfaceNode(EffectSurfaceNode *node) {
         sdfMemFreeDirect(node->handleBuffer);
     }
     if (node->resourceHolder != 0) {
-        effReleaseReferenceHolder(node->resourceHolder);
+        effCacheTexDelete(node->resourceHolder);
     }
     if (node->record != 0) {
         effPCPHelperBEDGetModel(node->record);
@@ -7947,13 +7947,13 @@ void effCloneSurfaceGridResources(EffectSurfaceNode *dst, u8 *work) {
         dst->jobAllocation = sdfMemAllocDirect(size);
         dst->jobs = (FileJobPayload **)sdfMemLock(dst->jobAllocation);
         for (i = 0; i < count; i++) {
-            dst->jobs[i] = fileJobCreateChild(src->jobs[0]);
+            dst->jobs[i] = Copy_effParts(src->jobs[0]);
         }
         break;
     }
     case 7:
         if (dst->resourceHolder != 0) {
-            effReleaseReferenceHolder(dst->resourceHolder);
+            effCacheTexDelete(dst->resourceHolder);
         }
         dst->resourceHolder = Copy_effCacheTexList(src->resourceHolder);
         break;
@@ -8049,9 +8049,9 @@ void effRebuildSurfaceJobs(EffectSurfaceNode *node, void *source) {
     if (size != 0) {
         node->jobAllocation = sdfMemAllocDirect(size);
         node->jobs = (FileJobPayload **)sdfMemLock(node->jobAllocation);
-        node->jobs[0] = fileJobCreateFromJob((FileJobPayload *)source);
+        node->jobs[0] = Create_effParts((FileJobPayload *)source);
         for (i = 1; i < count; i++) {
-            node->jobs[i] = fileJobCreateChild(node->jobs[0]);
+            node->jobs[i] = Copy_effParts(node->jobs[0]);
         }
     }
 }
@@ -8060,9 +8060,9 @@ void effReplaceSurfaceResourceHolder(EffectSurfaceNode *node, u32 resource) {
     struct EffExpandedList *holder;
 
     if (node->resourceHolder != 0) {
-        effReleaseReferenceHolder(node->resourceHolder);
+        effCacheTexDelete(node->resourceHolder);
     }
-    holder = effCreateTextureAnimationSet(resource);
+    holder = effCacheTexCreate(resource);
     node->resourceHolder = holder;
 }
 
@@ -8354,7 +8354,7 @@ void effResetRenderResourceFrame(EffQuadWork *work) {
     work->frame = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00232F10);
+INCLUDE_ASM(const s32, "code_00226EC8", Draw_effPolygonTex);
 
 INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00232F48);
 
@@ -8675,7 +8675,7 @@ void effDrawTintedFivePointGroupRows(EffClassWork *work) {
         return;
     }
     count = header->count;
-    second = effSampleColorAlphaTracks(&header->colorTrack, &header->alphaTrack, frame, time);
+    second = effColorAnimation(&header->colorTrack, &header->alphaTrack, frame, time);
     color1[0] = work->color;
     unit = 0x3C000000;
     EE_MMI_RGBA_UNPACK(color1, unit);
@@ -8809,7 +8809,7 @@ void effUpdateRadialClassInstances(EffClassWork *work) {
     }
     count = config->point.timed.count;
     radius = config->radius;
-    second = effSampleColorAlphaTracks(&config->point.timed.colorTrack, &config->point.timed.alphaTrack, frame, progress);
+    second = effColorAnimation(&config->point.timed.colorTrack, &config->point.timed.alphaTrack, frame, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(work->color, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -9205,7 +9205,7 @@ void effDrawRetainedPointSetRows(EffClassWork *work) {
         return;
     }
     count = config->point.timed.count;
-    fade = effSampleColorAlphaTracks(&config->point.timed.colorTrack,
+    fade = effColorAnimation(&config->point.timed.colorTrack,
         &config->point.timed.alphaTrack, frame, duration);
     classColor[0] = work->color;
     unit = 0x3C000000;
@@ -9842,7 +9842,7 @@ void effBlendBillboardInstanceColorsAndTransforms(u8 *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&config->common.header.timed.colorTrack, &config->common.header.timed.alphaTrack, limit, progress);
+    second = effColorAnimation(&config->common.header.timed.colorTrack, &config->common.header.timed.alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(((BillCellDrawWork *)work)->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -10184,7 +10184,7 @@ void effUpdateColumnParticlesAndRibbons(EffClassWork *work) {
                         VU0_ADD_EXTENDED(vf12, vf12, vf10);
                     }
 
-                    *colors++ = effSampleColorAlphaTracks(&common->header.emitterColorTrack,
+                    *colors++ = effColorAnimation(&common->header.emitterColorTrack,
                                                            &common->header.emitterAlphaTrack, age, life);
                     particle->age = (s32)((u32)particle->age + 1U);
                     particle->height += rise;
@@ -10212,7 +10212,7 @@ void effBillBlendCellColorAndUpdateTransform(BillCellDrawWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&config->common.header.timed.colorTrack, &config->common.header.timed.alphaTrack, limit, progress);
+    second = effColorAnimation(&config->common.header.timed.colorTrack, &config->common.header.timed.alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(work->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -10494,7 +10494,7 @@ void effUpdateBillSpiral(EffClassWork *work) {
                     heights[7] = rowHeight;
                     heights += 8;
                 }
-                *colors++ = effSampleColorAlphaTracks(&config->common.header.emitterColorTrack, &config->common.header.emitterAlphaTrack, timer, life);
+                *colors++ = effColorAnimation(&config->common.header.emitterColorTrack, &config->common.header.emitterAlphaTrack, timer, life);
                 particle->height += rise;
                 particle->timer++;
                 continue;
@@ -10520,7 +10520,7 @@ void effUpdateCompactRingDrawColorAndTransform(u8 *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&config->common.header.timed.colorTrack, &config->common.header.timed.alphaTrack, limit, progress);
+    second = effColorAnimation(&config->common.header.timed.colorTrack, &config->common.header.timed.alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(((BillCellDrawWork *)work)->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -10958,7 +10958,7 @@ void effUpdateTintedScaledMesh(BillCellDrawWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillFlameConfig *)config)->header.timed.colorTrack, &((EffBillFlameConfig *)config)->header.timed.alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillFlameConfig *)config)->header.timed.colorTrack, &((EffBillFlameConfig *)config)->header.timed.alphaTrack, limit, progress);
     unit = 0x3C000000;
     eeUnpackRGBAWord(work->baseColor, unit);
     SDF_VU0_COPYVECTOR_A_TO_B();
@@ -11247,7 +11247,7 @@ void effUpdateFadedMeshTransform(BillCellDrawWork *work) {
     if (progress < limit && progress != 0) {
         return;
     }
-    second = effSampleColorAlphaTracks(&((EffBillQuantizedConfig *)config)->colorTrack, &((EffBillQuantizedConfig *)config)->alphaTrack, limit, progress);
+    second = effColorAnimation(&((EffBillQuantizedConfig *)config)->colorTrack, &((EffBillQuantizedConfig *)config)->alphaTrack, limit, progress);
     unit = 0x3C000000;
     color1[0] = work->baseColor;
     EE_MMI_RGBA_UNPACK(color1, unit);
@@ -11534,7 +11534,7 @@ void effDrawParticleSpanPointsAndReferences(EffModelResource *work) {
     count = table->count;
 
     if (config->drawPoints != 0 && work->updateCount < config->progress) {
-        color = effSampleColorAlphaTracks(&config->pointColorTrack, &config->pointAlphaTrack, work->updateCount, config->progress);
+        color = effColorAnimation(&config->pointColorTrack, &config->pointAlphaTrack, work->updateCount, config->progress);
         color1[0] = work->color;
         EE_MMI_RGBA_UNPACK(color1, 0.0078125f);
         SDF_VU0_COPYVECTOR_A_TO_B();
@@ -11566,7 +11566,7 @@ void effDrawParticleSpanPointsAndReferences(EffModelResource *work) {
     }
 }
 
-EffModelResource *effCreateModelResourceWithInlineData(u16 kind, void *source, void *secondary, u32 param) {
+EffModelResource *Create_effPolygonCrack(u16 kind, void *source, void *secondary, u32 param) {
     u32 headerSize = 0x40;
     u32 size = effModelResourceOperations[kind].payloadSize;
     EffModelResource *effect = (EffModelResource *)sdfChipAllocDirect(size + headerSize);
@@ -11588,20 +11588,20 @@ EffModelResource *effCreateModelResourceWithInlineData(u16 kind, void *source, v
     return effect;
 }
 
-u32 effCreateModelResourceFromFile(FileJobPayload *work) {
+u32 PartsCreate_effPolygonCrack(FileJobPayload *work) {
     void *first = fileResolvePrimaryBuffer(work);
     void *second = fileResolveSecondaryBuffer(work);
-    return (u32)effCreateModelResourceWithInlineData(work->option, first, second, work->secondary.size);
+    return (u32)Create_effPolygonCrack(work->option, first, second, work->secondary.size);
 }
 
-void effDestroyModelResource(EffModelResource *effect) {
+void Delete_effPolygonCrack(EffModelResource *effect) {
     effModelResourceOperations[effect->kind].destroyResource(effect->childResource);
     effDestroyModelContext(effect->model);
     sdfChipFreeDirect(effect);
 }
 
-EffModelResource *effCreateModelResource(EffModelCreateRequest *work) {
-    EffModelResource *effect = effCreateModelResourceWithInlineData(work->kind, work->source, 0, 0);
+EffModelResource *Copy_effPolygonCrack(EffModelCreateRequest *work) {
+    EffModelResource *effect = Create_effPolygonCrack(work->kind, work->source, 0, 0);
     s32 x = mdlGetMajorNum(work->assetId);
     s32 y = mdlGetMinorNum(work->assetId);
     dds3ModelHandle_t *model = mdlLoad(x, y);
@@ -11731,13 +11731,13 @@ void effDrawThreePointGroups(EffPointSet *set, Matrix4 *matrix) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", effInitializeParticleDirection);
+INCLUDE_ASM(const s32, "code_00226EC8", PartsInit);
 
-INCLUDE_ASM(const s32, "code_00226EC8", effSetRotationFromAcceleratedFrameAngle);
+INCLUDE_ASM(const s32, "code_00226EC8", PartsCalc);
 
 INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023EFE0);
 
-INCLUDE_ASM(const s32, "code_00226EC8", effCreateConfiguredSlotNode);
+INCLUDE_ASM(const s32, "code_00226EC8", ParamsCreate);
 
 INCLUDE_ASM(const s32, "code_00226EC8", effCreateSlotNodeFromFileJob);
 
@@ -11747,11 +11747,11 @@ INCLUDE_ASM(const s32, "code_00226EC8", effCloneOwnedState);
 
 INCLUDE_ASM(const s32, "code_00226EC8", effCloneSlotNodeSecondaryResources);
 
-INCLUDE_ASM(const s32, "code_00226EC8", effRebuildResourceEntries);
+INCLUDE_ASM(const s32, "code_00226EC8", BehaviorSet);
 
-INCLUDE_ASM(const s32, "code_00226EC8", effReplaceEffectSlotModelAndDeviceResources);
+INCLUDE_ASM(const s32, "code_00226EC8", ModelSet);
 
-INCLUDE_ASM(const s32, "code_00226EC8", effRebuildResourceEntryClones);
+INCLUDE_ASM(const s32, "code_00226EC8", PartsListSet_effObjectParticle);
 
 typedef struct EffectSlotNode80 {
     u32 count;
@@ -11790,9 +11790,9 @@ void effClearSurfaceRecordReferences(void *node) {
 
 INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023F7F0);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023F8E8);
+INCLUDE_ASM(const s32, "code_00226EC8", Draw_effObjectParticle);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023FF28);
+INCLUDE_ASM(const s32, "code_00226EC8", CalcAndDraw);
 
 void effSetActiveSlotPrimaryRecordVector(void *node, f32 vector[4]) {
     mnuRecordSetVector(((EffectSlotNode80 *)node)->record, vector);
@@ -11839,7 +11839,7 @@ EffParticleSharedResource *eff2PartsCreate(FileJobPayload *source) {
             work->billHandle = dds3BillboardGeneral(*(s32 *)buffer);
             break;
         case 7:
-            work->reference = effCreateTextureAnimationSet((u32)buffer);
+            work->reference = effCacheTexCreate((u32)buffer);
             break;
         }
         if (work->billHandle != NULL) {
@@ -11855,7 +11855,7 @@ void effReleaseParticleResources(EffParticleSharedResource *work) {
         dds3BillboardDelete(particle);
     }
     if (work->reference != NULL) {
-        effReleaseReferenceHolder(work->reference);
+        effCacheTexDelete(work->reference);
     }
     sdfChipFreeDirect(work);
 }
@@ -11880,7 +11880,7 @@ void eff2ResourceCopy(EffParticleSharedResource *work, EffParticleSharedResource
         return;
     }
     if (work->reference != NULL) {
-        effReleaseReferenceHolder(work->reference);
+        effCacheTexDelete(work->reference);
     }
     work->reference = Copy_effCacheTexList(source->reference);
 }
@@ -11889,7 +11889,7 @@ void effResetParticleSharedState(EffParticleSharedResource *work) {
     work->state = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002403F0);
+INCLUDE_ASM(const s32, "code_00226EC8", eff2Draw);
 
 void effSetParticleSharedColor(EffParticleSharedResource *work, u32 color) {
     work->color = color;

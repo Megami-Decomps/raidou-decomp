@@ -538,9 +538,9 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4A08);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4B48);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4BA0);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLGetMotionChangeFrame);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4BD0);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLGetCutEndFrame);
 
 s32 effBTLGetDrawEndFrame(effBTL_t *hBTLEffect, u16 CutNum) {
     s32 bank = CutNum >= 2;
@@ -554,7 +554,7 @@ INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4C58);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4CA0);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4E48);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutDelete);
 
 u16 func_r1_001E4ED8(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->kind;
@@ -582,7 +582,7 @@ u32 func_r1_001E4F28(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->triggerFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4F30);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutSetDrawEndFrame);
 
 u32 func_r1_001E4F60(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->colorRampEndFrame;
@@ -597,7 +597,7 @@ void *func_r1_001E4F70(effBTLCut_t *hBTLCutEffect) {
 void func_r1_001E4F78(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4F80);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutSetScale);
 
 INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4FF8);
 

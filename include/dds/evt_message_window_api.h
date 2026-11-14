@@ -9,7 +9,7 @@
 
 struct ItfMesSub;
 
-u32 evtFinishMessageWindowAndNotify(void);
+s8 fclEndMessage(void);
 
 typedef s32 EvtMessageWindowControlResult;
 

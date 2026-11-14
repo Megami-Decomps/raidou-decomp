@@ -2541,7 +2541,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", MakeObjectBasic2);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldFileResolverFL1);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132390);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldFileResolverFL2);
 
 void fldProcessFieldRequestAlternate(const FldSceneRequest *request) {
     fldSpawnPlacementObjectsFromBatches(request->spawnBatches, request->spawnBatchCount,
@@ -2600,7 +2600,7 @@ void func_r1_00132560(void) {
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLoadFile);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_001325D8);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLoadFile_FromMemory);
 INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6F0);
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6F4);

@@ -864,10 +864,10 @@ void mnuDrawAndAdvanceProfilePanel(s32 x, s32 y, s32 z, MenuProfilePanel *panel,
 /* Clear the complete native popup-transition state, including saved entry addresses. */
 void mnuClearPanelTransitionState(MenuPopupState *state);
 
-void mnuApplyPanelTransitionAction(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument);
+void CalcSeqHandle(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument);
 
 /* Pop saved entries with their leave callbacks until the state count reaches zero. */
-void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *task);
+void jmsSeqDestroyAll(MenuPopupState *state, struct dds3ProcessID_t *task);
 
 s32 mnuHasPopupSelectionFlag(s32 *flags);
 
@@ -898,7 +898,7 @@ extern u8 D_0037F530[];
 
 /* Translate requested inputs using native sign-bit/trigger-bit and nonzero tests.
  * Input bit zero has exclusive priority over every other result bit. */
-MnuInputActionFlags mnuMapPadMaskToFlags(MnuPadButtonQueryMask requestedButtons);
+MnuInputActionFlags jmsChkCommonInput(MnuPadButtonQueryMask requestedButtons);
 
 void mnuHandleListPageJumpInput(const void *resource, MenuWindowContainer *window,
                                 MnuInputActionFlags *actionFlags);

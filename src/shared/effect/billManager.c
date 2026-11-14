@@ -643,19 +643,19 @@ void billCopyCurrentRecordToSnapshot(billHandle_t *obj, BillSnapshot *snapshot);
 billHandle_t *billCreateFromResource(s32 kind, const char *path);
 /* End of declarations from src/dds1/effect/billManager.c */
 
-INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC020);
+INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardManagerExit);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC078);
+INCLUDE_ASM(const s32, "effect/billManager", BillboardLoadTex);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC190);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC1E0);
+INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardTagLink);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC680);
+INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardLinkOt);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC770);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DCDD0);
+INCLUDE_ASM(const s32, "effect/billManager", dds3MultiBillboardPktLink);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DCF30);
 
@@ -928,7 +928,7 @@ sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 number) {
     return hGeneralBillboard[number]->u.child->hTex;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DDEF8);
+INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardSetPosition);
 
 void dds3BillboardSetRotate_dds3Billboard(billHandle_t *hBillboard, float rot) {
     hBillboard->rot = rot;
@@ -1026,7 +1026,7 @@ void dds3BillboardSetDrawType(billHandle_t *hBillboard, s32 type) {
     }
 }
 
-u16 func_r1_001DE0E0(billHandle_t *hBillboard) {
+u16 dds3BillboardGetDrawType(billHandle_t *hBillboard) {
     switch (hBillboard->type) {
     case 0:
         return hBillboard->u.child->type;
@@ -1170,7 +1170,7 @@ void dds3P2APolygonDelete(dds3P2APolygon_tag *hData) {
 }
 
 void func_r1_001DE668(dds3P2APolygon_tag *hData, s128 *pPos) {
-    func_r1_001DDEF8(hData->hBillboard, pPos);
+    dds3BillboardSetPosition(hData->hBillboard, pPos);
 }
 
 void dds3P2APolygonSetScale(s32 hData, float scale) {

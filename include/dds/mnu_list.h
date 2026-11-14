@@ -117,7 +117,7 @@ struct MenuWindowContainer;
 /* Append a node borrowing display text that must outlive its use by the list. */
 struct MenuListNode *mnuListAppendNode(struct MenuList *list, const void *text);
 
-struct MenuListNode *mnuAppendWindowListNode(struct MenuWindowContainer *window, const void *text);
+struct MenuListNode *jmsAddCmdMenuItem(struct MenuWindowContainer *window, const void *text);
 
 #define MNU_LIST_INSERT_AFTER_ANCHOR 0x2
 

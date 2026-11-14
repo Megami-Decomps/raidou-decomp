@@ -592,7 +592,7 @@ void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket) {
     aTag->tail = aPacket;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", func_r1_0035AF28);
+INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfDrawTagLink2);
 
 void sdfDrawTagLinkRef(sdfDrawTag_t *aTag, addr_t aPacket) {
     s32 previousTailAddress;

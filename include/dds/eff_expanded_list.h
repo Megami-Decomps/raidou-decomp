@@ -45,6 +45,6 @@ s32 effCountExpandedEntries(const EffExpandedList *list);
 
 EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj);
 
-void effReleaseReferenceHolder(EffExpandedList *holder);
+void effCacheTexDelete(EffExpandedList *holder);
 
 #endif

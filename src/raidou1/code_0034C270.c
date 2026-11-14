@@ -209,7 +209,7 @@ extern void mnuSetWindowFadeScale(MenuWindowContainer *, u32);
  * plus blank rows for unrecorded skills with standard partner requirements. */
 void ptySkillMenuBuildLinkageSkills(dds3ProcessID_t *task);
 
-extern void mnuDestroyWindowContainer(MenuWindowContainer *window);
+extern void jmsDestroyCmdMenu(MenuWindowContainer *window);
 
 u32 mnuDestroySkillSelectionWindow(dds3ProcessID_t *task);
 

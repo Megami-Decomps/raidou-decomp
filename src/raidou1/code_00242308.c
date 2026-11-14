@@ -623,11 +623,11 @@ extern s32 effSharedRibbonReferenceCount;
 
 extern u32 D_r1_0046D148;
 
-extern struct EffExpandedList *effCreateTextureAnimationSet(u32);
+extern struct EffExpandedList *effCacheTexCreate(u32);
 
 extern struct SdfTextureFileHeader *effFlashTextureHandles;
 
-extern struct EffModelResource *effCreateModelResourceWithInlineData(u16, void *, void *, u32);
+extern struct EffModelResource *Create_effPolygonCrack(u16, void *, void *, u32);
 
 extern EffSurfaceGridNode *effCreateSurfaceGridNode(u32, u32);
 
@@ -1147,15 +1147,15 @@ void effSetAlternateKindColor(EffKindWork *work, u32 color);
 /* Set the alternate kind-table work's scalar scale. */
 void effSetAlternateKindScale(EffKindWork *work, float scale);
 
-u8 *effCreateBillboardWork(FileJobPayload *source);
+u8 *Create_effMuzzleFlash(FileJobPayload *source);
 
-void effBillboardWorkRelease(EffBillboardWork *work);
+void Delete_effMuzzleFlash(EffBillboardWork *work);
 
-void effReplaceBillboardClone(s32 dst, s32 src);
+void ResourceCopy_effMuzzleFlash(s32 dst, s32 src);
 
-u8 *effDuplicateBillState(const u8 *source);
+u8 *Copy_effMuzzleFlash(const u8 *source);
 
-void effReplaceBillboardClone(s32 dst, s32 src);
+void ResourceCopy_effMuzzleFlash(s32 dst, s32 src);
 
 void effBillboardEntryFrameReset(EffBillboardWork *work);
 
@@ -2124,9 +2124,9 @@ void effReleaseParticleList(EffSpanTable *list);
 /* vu0 routine: quaternion matrix and SDK RGBA modulation. */
 void effDrawParticleSpanPointsAndReferences(EffModelResource *work);
 
-EffModelResource *effCreateModelResourceWithInlineData(u16 kind, void *source, void *secondary, u32 param);
+EffModelResource *Create_effPolygonCrack(u16 kind, void *source, void *secondary, u32 param);
 
-u32 effCreateModelResourceFromFile(FileJobPayload *work);
+u32 PartsCreate_effPolygonCrack(FileJobPayload *work);
 
 typedef struct EffModelCreateRequest {
     u8 pad0[0x2C];
@@ -2138,9 +2138,9 @@ typedef struct EffModelCreateRequest {
     void *source;
 } EffModelCreateRequest;
 
-void effDestroyModelResource(EffModelResource *effect);
+void Delete_effPolygonCrack(EffModelResource *effect);
 
-EffModelResource *effCreateModelResource(EffModelCreateRequest *work);
+EffModelResource *Copy_effPolygonCrack(EffModelCreateRequest *work);
 
 void effResetModelResourceUpdateCount(EffModelResource *effect);
 
@@ -3804,7 +3804,7 @@ INCLUDE_ASM(const s32, "code_00242308", func_r1_00243188);
 
 /* Sample color/alpha at frame zero with duration zero; discard the return value. */
 void sdfSampleFlagListStartColor(SdfFlagListWork *work) {
-    effSampleColorAlphaTracks(&work->params.color, &work->params.alpha, 0, 0);
+    effColorAnimation(&work->params.color, &work->params.alpha, 0, 0);
 }
 
 INCLUDE_ASM(const s32, "code_00242308", func_r1_002431B8);
@@ -3906,7 +3906,7 @@ u32 effCreateBattleCameraJob(u8 *request) {
         }
         fileJobSetPrimaryData(effQueuedFileHandle, outputBuffer, ((EffFileJobRequest *)request)->size, ((EffFileJobRequest *)request)->transferMode);
     }
-    job = (u32)fileJobCreateFromJob(effQueuedFileHandle);
+    job = (u32)Create_effParts(effQueuedFileHandle);
     effApplyBattleCameraToObject(job);
     return job;
 }

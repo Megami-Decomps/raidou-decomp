@@ -222,7 +222,7 @@ const u8 *sdfTexTransData(u32 destination, s32 width, s32 height, u32 format,
 
 #include "dds/btl.h"
 
-extern struct EffExpandedList *effCreateTextureAnimationSet(u32);
+extern struct EffExpandedList *effCacheTexCreate(u32);
 
 /* Battle state: resource headers for texture slots 1 and 2. */
 typedef struct EffBattleTexHeaders {
@@ -412,13 +412,13 @@ s32 effCountExpandedEntries(const EffExpandedList *list);
 
 /* Serialized expanded list: 0x10-byte header, the entry table, then each entry's payload. */
 /* Copy a serialized list into one allocation and retain a shared texture reference per entry. */
-struct EffExpandedList *effCreateTextureAnimationSet(u32 sourceAddress);
+struct EffExpandedList *effCacheTexCreate(u32 sourceAddress);
 
-void effReleaseReferenceHolder(EffExpandedList *holder);
+void effCacheTexDelete(EffExpandedList *holder);
 
 EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj);
 
-void effSampleAnimSet(const EffExpandedList *set, u32 frame, EffAnimSample *out);
+void effCacheTexAnimGet(const EffExpandedList *set, u32 frame, EffAnimSample *out);
 
 sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdfGrOt_t *target,
                                                  const EffAnimSample *sample);
@@ -876,7 +876,7 @@ s32 effCountExpandedEntries(const EffExpandedList *list) {
 
 /* Serialized expanded list: 0x10-byte header, the entry table, then each entry's payload. */
 /* Copy a serialized list into one allocation and retain a shared texture reference per entry. */
-struct EffExpandedList *effCreateTextureAnimationSet(u32 sourceAddress) {
+struct EffExpandedList *effCacheTexCreate(u32 sourceAddress) {
     const EffExpandedSource *source = (const EffExpandedSource *)sourceAddress;
     u32 count = source->count;
     const EffExpandedEntry *sourceEntry = source->entries;
@@ -908,7 +908,7 @@ struct EffExpandedList *effCreateTextureAnimationSet(u32 sourceAddress) {
     return list;
 }
 
-void effReleaseReferenceHolder(EffExpandedList *holder) {
+void effCacheTexDelete(EffExpandedList *holder) {
     u32 i;
     if (--holder->refCount != 0) {
         return;
@@ -924,7 +924,7 @@ EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj) {
     return obj;
 }
 
-void effSampleAnimSet(const EffExpandedList *set, u32 frame, EffAnimSample *out) {
+void effCacheTexAnimGet(const EffExpandedList *set, u32 frame, EffAnimSample *out) {
     u32 count = set->count;
     u32 local = 0;
     s32 segment = -1;

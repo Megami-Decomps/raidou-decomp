@@ -92,8 +92,8 @@ typedef struct MenuWindowContainer {
     struct MenuIconState panel; /* 0x58: embedded drawable panel layout */
     struct MenuIconSprites *resource; /* 0x90: owned sprite-resource bundle */
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    u32 unk94;             /* 0x94: cleared by mnuCreateWindowContainer */
-    u32 unk98;             /* 0x98: cleared by mnuCreateWindowContainer */
+    u32 unk94;             /* 0x94: cleared by jmsCreateCmdMenu */
+    u32 unk98;             /* 0x98: cleared by jmsCreateCmdMenu */
     u32 fadeScale;         /* 0x9C: read as the opacity by the window draw functions */
 #else
     u32 fadeScale;         /* 0x94: window/list opacity scale; full fade is 0x100 */

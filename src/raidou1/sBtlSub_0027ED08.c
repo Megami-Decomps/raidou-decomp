@@ -548,7 +548,7 @@ void btlPointOffPlaneVU(f32 *vertexA, f32 *vertexB, f32 *vertexC, f32 *point);
 
 /* vu0 routine: vf10 = vertexC + direction * dot(direction, vertexA - vertexC).
  * Direction is the normalized in-plane double cross, not a triangle normal. */
-f32 btlProjectOnPlaneVU(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
+f32 sBtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 /* Inclusive box test; either corner order is accepted independently per axis. */
 s32 btlPointInBox(BtlVec3 *cornerA, BtlVec3 *cornerB, BtlVec3 *point);
@@ -1276,17 +1276,17 @@ INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027EEB0);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F060);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F0B0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaAdd);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F0D0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaAdd_16);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F108);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaAdd_8);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F140);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaDec);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F158);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaDec_16);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F188);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaDec_8);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetBezier);
 
@@ -1328,9 +1328,9 @@ INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F8F0);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetBSTNameFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F988);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlDrawBSTName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027FA08);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetSkillMenu);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_0027FB28);
 
@@ -1372,7 +1372,7 @@ f32 sBtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *ver
 
 /* vu0 routine: vf10 = vertexC + direction * dot(direction, vertexA - vertexC).
  * Direction is the normalized in-plane double cross, not a triangle normal. */
-f32 btlProjectOnPlaneVU(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
+f32 sBtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
     f32 direction[4];
     f32 projection;
     sBtlGetVerticalVector(vertexA, vertexB, vertexC);

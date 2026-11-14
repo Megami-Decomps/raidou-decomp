@@ -387,7 +387,7 @@ extern void sdfResourceListApplyEntryChanges(sdfMatList_t *aMatList, s32 aId);
 
 extern void sdfSetForcedAssetTextureMode(s32 aMode);
 
-u32 sdfGetUniqueChunkValue(dds_sdfModelRootNode_t *aRoot);
+u32 sdfModelGetUniqueID(dds_sdfModelRootNode_t *aRoot);
 
 u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *aRoot);
 /* End of declarations from src/dds1/sdf/sdfModel.c */
@@ -974,7 +974,7 @@ void sdfModelEvalTm(sdfModelRootNode_t *aRoot)
     sdfModelEvalTm2(aRoot, (s8)sdfFrameId);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_0035FB40);
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelOtInit);
 
 /* vu0 routine: native SDK vector/matrix operations around model state. */
 s32 sdfModelCheckBounds(const f32 *aMinMax) {
@@ -1409,7 +1409,7 @@ INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPos_sdfModel);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360E30);
 
-u32 sdfGetUniqueChunkValue(dds_sdfModelRootNode_t *aRoot)
+u32 sdfModelGetUniqueID(dds_sdfModelRootNode_t *aRoot)
 {
     u32 *chunk = sdfModelGetExtraChunk(aRoot, 0x51494E55); /* "UNIQ" */
 

@@ -11,7 +11,7 @@ enum {
     MNU_TITLE_SOUND_BUSY = 1
 };
 
-MnuTitleSoundBusyState mnuQueryTitleSoundBusy(void);
+MnuTitleSoundBusyState scrCheckEnableMovieCancel(void);
 
 /* Decoder format selectors used by the title sound buffer installer. */
 typedef s32 MnuTitleSoundFormat;

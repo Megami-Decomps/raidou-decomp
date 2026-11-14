@@ -637,9 +637,6 @@ s8 evtGetCapturedWindowPanelValue(void);
  * Cleanup leaves the singleton handle intact; fclDestroyMessage destroys it. */
 u32 evtCleanupMessageWindow(s32 notify);
 
-/* Finish/reset the singleton window with notification and return whether it existed. */
-u32 evtFinishMessageWindowAndNotify(void);
-
 /* Snapshot the second panel halfword only after the first halfword is nonnegative. */
 s32 dspCaptureWindowSecondPanelValue(void);
 
@@ -759,7 +756,7 @@ s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID)
     return handle;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123D48);
+INCLUDE_ASM(const s32, "facility/fclMisc", cmpItemOrder);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123D70);
 
@@ -843,10 +840,7 @@ s8 evtGetCapturedWindowPanelValue(void) {
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclEndMessageEx);
 
-/* Finish/reset the singleton window with notification and return whether it existed. */
-u32 evtFinishMessageWindowAndNotify(void) {
-    return evtCleanupMessageWindow(1);
-}
+INCLUDE_ASM(const s32, "facility/fclMisc", fclEndMessage);
 
 s32 fclDestroyMessage(void)
 {

@@ -662,9 +662,9 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitJimusyo);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckJimusyo);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DDF0);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallNewBattleTest);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DEC8);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitNewBattleTest);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckNewBattleTest);
 

@@ -238,7 +238,7 @@ void dds3GetRotPoseSet(dds3Basic_t *pBasic)
     Normalize();
 }
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", func_r1_00117010);
+INCLUDE_ASM(const s32, "basic/dds3Basic", dds3GetSclPoseSet);
 
 void dds3GetPosPoseSetMCR(dds3Basic_t *basic, const sdfVector4_t *offset)
 {

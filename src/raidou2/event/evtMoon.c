@@ -70,7 +70,7 @@ void evtDisableMoonDraw2(void)
     D_r1_0046C600 = 0;
 }
 
-void func_r1_001ADAE0(s32 count)
+void PreCalcFade(s32 count)
 {
     if (count != 0) {
         if (D_r1_0046C600 != 0) {
@@ -88,14 +88,14 @@ void func_r1_001ADB28(s32 count)
 {
     DDS3_GBWK->moonFlags |= 2;
     gMoonCnt = 1.0f;
-    func_r1_001ADAE0(count);
+    PreCalcFade(count);
     D_r1_0046C600 = count;
     gMoonFadeFrameMax = 1;
 }
 
 void func_r1_001ADB78(s32 count)
 {
-    func_r1_001ADAE0(count);
+    PreCalcFade(count);
     D_r1_0046C600 = count;
     gMoonFadeFrameMax = 0;
 }

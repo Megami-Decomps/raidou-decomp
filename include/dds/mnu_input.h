@@ -18,7 +18,7 @@ typedef u32 MnuInputActionFlags;
  * Sample the requested native pad buttons and return their menu actions.
  * If query bit zero is requested and active, it suppresses all other actions.
  */
-MnuInputActionFlags mnuMapPadMaskToFlags(MnuPadButtonQueryMask requestedButtons);
+MnuInputActionFlags jmsChkCommonInput(MnuPadButtonQueryMask requestedButtons);
 
 #ifdef VERSION_DDS2
 

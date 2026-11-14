@@ -2239,11 +2239,11 @@ itfMesBinTypeHeader_t *GetTypeHeader2(itfMesResource_t *pfileheader)
     return &entries[pfileheader->entryCount];
 }
 
-ItfMesEntryItemsResult itfMesGetWindowEntryItems(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex) {
+ItfMesEntryItemsResult itfGetMessageType(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex) {
     return (ItfMesEntryItemsResult)GetTypeHeader(pinst[window].mes, entryIndex)->type;
 }
 
-u32 itfMesGetEntryCount(ItfMesWindowIndex window) {
+u32 itfGetMessageNo(ItfMesWindowIndex window) {
     return pinst[window].mes->pdata->entryCount;
 }
 

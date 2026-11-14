@@ -564,9 +564,9 @@ void evtSetUnitKutiMotion(evtUnit_t *h, s32 group, s32 motion) {
     h->secondSlot = motion;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6650);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtRunUnitKutiMotion);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6680);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitExMotion);
 
 void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode) {
     h->flags &= ~0x1;

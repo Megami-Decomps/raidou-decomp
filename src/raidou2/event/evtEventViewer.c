@@ -828,7 +828,7 @@ extern u8 evtViewerHasUpdateFlag(dds_evtViewerInfo_t *);
 
 typedef struct CampDisplayDefaults CampDisplayDefaults;
 
-extern void mnuBlendCampDisplayFields(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
+extern void evtHokanTmx(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
 
 extern void mnuDrawCampScaledTexture(sdfTexHandle_t *texture, CampDisplayDefaults *display);
 
@@ -897,7 +897,7 @@ extern void dds3FadeBackgroundStartIn(s32 duration);
 
 extern void itfMesBuildOptionList(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
 
-extern void mnuStopTitleVoicePlayback(void);
+extern void scrGetAfterSkipBgmFlag(void);
 
 extern void datDebugPrintf(const char *format, ...);
 
@@ -985,7 +985,7 @@ extern s8 evtViewerFrameColumnCategories[];
 
 typedef struct CampDisplayDefaults CampDisplayDefaults;
 
-extern void mnuBlendCampDisplayFields(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
+extern void evtHokanTmx(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
 
 extern void mnuDrawCampScaledTexture(sdfTexHandle_t *texture, CampDisplayDefaults *display);
 
@@ -1190,13 +1190,13 @@ void evtViewerActivateWindowForGlyphEntry(s32 timelinePosition, dds_evtViewerInf
 
 void evtViewerCountFlaggedUpdates(dds_evtViewerInfo_t *viewer);
 
-extern u32 mnuShouldBlockViewerEndCountdown(void);
+extern u32 evtFindInputBranchMessage(void);
 
 extern ScrCommandResult scrCommandIsProcessControlFlagClear(void);
 
 extern void mnuReleaseCampSceneRegisteredIds(dds_evtViewerInfo_t *viewer);
 
-extern void mnuStopTitleVoicePlayback(void);
+extern void scrGetAfterSkipBgmFlag(void);
 
 extern void sdfSndSetChannelCount(u32 channels);
 
@@ -1784,7 +1784,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtMessageDelete);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B40B8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B40E8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", CalcNextMesSet);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", EventSkipStart);
 

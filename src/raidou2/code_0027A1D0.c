@@ -265,7 +265,7 @@ s32 btlCompareSkippedAndActiveTargetCounts(BtlIndexList *targets, BtlOperandGrou
 
 extern const char D_003A1C88[29];
 
-extern s32 btlRollAiBucket(void);
+extern s32 GetPercentage(void);
 
 s32 btlRollEscapeChance(BtlUnit *actor);
 

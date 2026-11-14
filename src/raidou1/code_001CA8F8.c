@@ -539,11 +539,11 @@ void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeC
 void mnuSampleCampPanelVisualTrack(dds_evtViewerInfo_t *runtime, EvtRuntimeGroup *group, s32 frame,
                    f32 (*outVectors)[4], f32 *outValueA, f32 *outValueB);
 
-void mnuCampInitializeDisplayDefaults(CampDisplayDefaults *display);
+void SetDefaultTmxData(CampDisplayDefaults *display);
 
 void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey);
 
-void mnuBlendCampDisplayFields(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
+void evtHokanTmx(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
 
 /* Use defaults before the first key; otherwise blend the bounding keys. */
 void evtGetValueNewTMXFrame(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display);
@@ -553,13 +553,13 @@ void mnuInitializeCampListLayoutDefaults(EvtBlendKey *layout);
 void mnuSampleCampListLayoutTrack(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, EvtBlendKey *out);
 
 /* Blend the display fields; control bytes always come from the lower key. */
-void mnuBlendCampDisplayFields(EvtRuntimeChild *from, EvtRuntimeChild *to,
+void evtHokanTmx(EvtRuntimeChild *from, EvtRuntimeChild *to,
                    CampDisplayDefaults *display, f32 ratio);
 
 void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey);
 
 /* Retail never blocks the event viewer's end countdown through this hook. */
-u32 mnuShouldBlockViewerEndCountdown(void);
+u32 evtFindInputBranchMessage(void);
 
 /* Split the key's packed halfword into its low 12 bits and upper four bits. */
 void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsOut);
@@ -1403,7 +1403,7 @@ INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CAD48);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", evtGetValueNewSLightFrame);
 
-void mnuCampInitializeDisplayDefaults(CampDisplayDefaults *display) {
+void SetDefaultTmxData(CampDisplayDefaults *display) {
     display->x = 0x100;
     display->y = 0xE0;
     display->color[0] = 0x80;
@@ -1429,7 +1429,7 @@ void evtGetValueNewTMXFrame(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track,
     if (lowerKey != 0) {
         startFrame = lowerKey->frame;
     } else {
-        mnuCampInitializeDisplayDefaults(display);
+        SetDefaultTmxData(display);
         return;
     }
     if (upperKey != 0) {
@@ -1442,10 +1442,10 @@ void evtGetValueNewTMXFrame(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track,
     } else {
         ratio = 0.0f;
     }
-    mnuBlendCampDisplayFields(lowerKey, upperKey, display, ratio);
+    evtHokanTmx(lowerKey, upperKey, display, ratio);
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", mnuBlendCampDisplayFields);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtHokanTmx);
 
 void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey) {
     s32 frameOffset;
@@ -1478,7 +1478,7 @@ void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeC
 }
 
 /* Retail never blocks the event viewer's end countdown through this hook. */
-u32 mnuShouldBlockViewerEndCountdown(void) {
+u32 evtFindInputBranchMessage(void) {
     return 0;
 }
 

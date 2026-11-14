@@ -20,9 +20,9 @@ typedef u32 ItfMesStatusWord;
 typedef u32 ItfMesHighStatusBits;
 
 /* Return the entry's item-list address, NONE, or the BRANCH sentinel. */
-ItfMesEntryItemsResult itfMesGetWindowEntryItems(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
+ItfMesEntryItemsResult itfGetMessageType(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
 
-u32 itfMesGetEntryCount(ItfMesWindowIndex window);
+u32 itfGetMessageNo(ItfMesWindowIndex window);
 
 void evtLipsExecFunction(s32 unitUniqueId, s32 motionId);
 

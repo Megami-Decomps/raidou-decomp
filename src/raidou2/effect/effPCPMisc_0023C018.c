@@ -691,7 +691,7 @@ extern u32 fileSavedSlotFlags;
 
 extern u32 effModelUpdateControlFlags;
 
-extern struct EffExpandedList *effCreateTextureAnimationSet(u32);
+extern struct EffExpandedList *effCacheTexCreate(u32);
 
 extern s8 slLoadKillFlag;
 
@@ -863,17 +863,17 @@ extern LoadMirror fileSlotFlagMirror;
 
 extern void fileCacheSlotFlagsFromState(void);
 
-extern void fileLoadObjectSetResource(EffectSurfaceNode *node, u32 entryId, void *resource);
+extern void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource);
 
-extern void fileLoadObjectOpenDevice(EffectSurfaceNode *node, u32 resourceId);
+extern void BillboardSet(EffectSurfaceNode *node, u32 resourceId);
 
-extern void fileLoadObjectOpenAndStartDevice(EffectSurfaceNode *node, u32 resourceId);
+extern void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId);
 
 extern void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId);
 
 extern void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job);
 
-extern void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue);
+extern void PartsListSet(EffectSurfaceNode *node, FileQueue *queue);
 
 extern void fileReplaceReferenceHolder(EffectSurfaceNode *node, u32 resource);
 
@@ -1664,7 +1664,7 @@ void *fileResolvePrimaryBuffer(FileJobPayload *job);
 
 void *fileResolveSecondaryBuffer(FileJobPayload *job);
 
-FileJobPayload *fileJobCreateFromJob(FileJobPayload *request);
+FileJobPayload *Create_effParts(FileJobPayload *request);
 
 void fileJobDestroy(FileJobPayload *job);
 
@@ -1672,11 +1672,11 @@ void fileJobFreePrimaryBuffer(FileJobPayload *job);
 
 void fileJobFreeSecondaryBuffer(FileJobPayload *job);
 
-FileJobPayload *fileJobCreateChild(FileJobPayload *request);
+FileJobPayload *Copy_effParts(FileJobPayload *request);
 
 void fileJobNotifyPair(FileJobPayload *left, FileJobPayload *right);
 
-void fileJobNotifyComplete(FileJobPayload *job);
+void ScaleSet_effParts(FileJobPayload *job);
 
 void fileJobInvokeTypeCallback(FileJobPayload *job);
 
@@ -1767,7 +1767,7 @@ f32 fileGetQueueScale(FileQueue *queue);
 
 u32 fileGetQueueColor(FileQueue *queue);
 
-void fileQueueCopyRotationFromSource(FileQueue *queue, f32 matrix[4][4]);
+void effPartsRotateMatrixSet(FileQueue *queue, f32 matrix[4][4]);
 
 extern void fileQueueAppend(FileQueue *queue, FileJob *job);
 
@@ -1853,7 +1853,7 @@ EffectSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity);
 
 EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
 
-EffectSurfaceNode *fileCreateEffectSurfaceFromJob(FileJobPayload *job);
+EffectSurfaceNode *PartsCreate_effParticle(FileJobPayload *job);
 
 void Delete_effParticle(EffectSurfaceNode *node);
 
@@ -1863,17 +1863,17 @@ EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner);
 
 void ResourceCopy(EffectSurfaceNode *dst, EffectSurfaceNode *src);
 
-void fileLoadObjectSetResource(EffectSurfaceNode *node, u32 entryId, void *resource);
+void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource);
 
 void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId);
 
-void fileLoadObjectOpenDevice(EffectSurfaceNode *node, u32 resourceId);
+void BillboardSet(EffectSurfaceNode *node, u32 resourceId);
 
-void fileLoadObjectOpenAndStartDevice(EffectSurfaceNode *node, u32 resourceId);
+void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId);
 
 void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job);
 
-void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue);
+void PartsListSet(EffectSurfaceNode *node, FileQueue *queue);
 
 void fileReplaceReferenceHolder(EffectSurfaceNode *obj, u32 resource);
 
@@ -1911,7 +1911,7 @@ void fileSetLoadObjectScale(EffectSurfaceNode *obj, f32 scale);
 void fileResetSlotStates(FileSlotTable *table);
 
 /* vu0 routine: preserve the packed RGB snapshot while applying the alpha track. */
-u32 effSampleColorAlphaTracks(const SdfColorTrack *colorTrack,
+u32 effColorAnimation(const SdfColorTrack *colorTrack,
                               const SdfAlphaTrack *alphaTrack,
                               s32 frame, s32 duration);
 
@@ -2328,7 +2328,7 @@ dds3ModelHandle_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataS
 /* Clear the lighting attachment before destroying its model context. */
 void effDestroyModelContext(dds3ModelHandle_t *owner);
 
-dds3ModelHandle_t *effCloneModelWithVUState(dds3ModelHandle_t *sourceModel);
+dds3ModelHandle_t *effHandleCopy(dds3ModelHandle_t *sourceModel);
 
 EffModelOwner *effCreateModelOwner(FileJobPayload *source);
 
@@ -2463,13 +2463,13 @@ sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, RefObj *so
 
 s32 effCountExpandedEntries(const EffExpandedList *list);
 
-void effReleaseReferenceHolder(EffExpandedList *holder);
+void effCacheTexDelete(EffExpandedList *holder);
 
 EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj);
 
 /* One animation track: segments contribute their length plus a boundary frame;
  * the loop flag wraps the frame by the total track length. */
-void effSampleAnimSet(const EffExpandedList *set, u32 frame, EffAnimSample *out);
+void effCacheTexAnimGet(const EffExpandedList *set, u32 frame, EffAnimSample *out);
 
 sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdfGrOt_t *target,
                                                  const EffAnimSample *sample);
@@ -2530,7 +2530,7 @@ void effDestroyModelContext(dds3ModelHandle_t *owner) {
     mdlFree(owner);
 }
 
-dds3ModelHandle_t *effCloneModelWithVUState(dds3ModelHandle_t *sourceModel) {
+dds3ModelHandle_t *effHandleCopy(dds3ModelHandle_t *sourceModel) {
     s32 group;
     s32 id;
     dds3ModelHandle_t *model;
@@ -2544,7 +2544,7 @@ dds3ModelHandle_t *effCloneModelWithVUState(dds3ModelHandle_t *sourceModel) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00224FB8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00225058);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", Delete);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_002250A8);
 

@@ -1097,7 +1097,7 @@ f32 fldPointDistance(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz) {
 
 INCLUDE_ASM(const s32, "code_0012C998", func_r1_001283A8);
 
-INCLUDE_ASM(const s32, "code_0012C998", func_r1_00128418);
+INCLUDE_ASM(const s32, "code_0012C998", mapGetEyeTgtRot);
 
 INCLUDE_ASM(const s32, "code_0012C998", func_r1_00128528);
 
@@ -1148,7 +1148,7 @@ INCLUDE_ASM(const s32, "code_0012C998", func_0012D0E0);
 
 INCLUDE_ASM(const s32, "code_0012C998", mapRndEncParamSet);
 
-INCLUDE_ASM(const s32, "code_0012C998", func_r1_00128CE0);
+INCLUDE_ASM(const s32, "code_0012C998", mapGetPlayersBasic);
 
 INCLUDE_ASM(const s32, "code_0012C998", mapSetPlayersVisible);
 

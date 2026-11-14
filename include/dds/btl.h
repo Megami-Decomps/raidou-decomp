@@ -293,7 +293,7 @@ static inline u64 btlUnitStatusPair(BtlUnit *unit) {
 }
 
 /* Returns the signed projection length in f0; the projected point is in vf10. */
-f32 btlProjectOnPlaneVU(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
+f32 sBtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 /* Preserve the field token for compiler matching; source uses its side-slot role. */
 

@@ -202,7 +202,7 @@
 0x00109548	func_r1_001093D0	placeholder	placeholder for the pair with raidou1 0x001093D0, masked-hash-in-gap
 0x00109660	func_r1_001094E8	placeholder	placeholder for the pair with raidou1 0x001094E8, unique-reloc-hash
 0x00109778	eglLinkTest	hd	hd: Raidou HD egl.eglLinkTest, score 10.4 band A
-0x001098B0	evtSubmitFixedAlphaBlend	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00108DC0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x001098B0	eglLinkAlpha	hd	hd: Raidou HD egl.eglLinkAlpha, score 10.8 band A, hd-ab: calls2 prev gap=exact st1:gap r1+r2; replaces evtSubmitFixedAlphaBlend: dds-decomp DDS1 name via SLUS_209.74 0x00108DC0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00109950	func_r1_001097D8	placeholder	placeholder for the pair with raidou1 0x001097D8, masked-hash-in-gap
 0x001099E8	func_r1_00109870	placeholder	placeholder for the pair with raidou1 0x00109870, masked-hash-in-gap
 0x00109A80	func_r1_00109908	placeholder	placeholder for the pair with raidou1 0x00109908, masked-hash-in-gap
@@ -296,8 +296,8 @@
 0x0010E838	func_r1_0010DD90	placeholder	placeholder for the pair with raidou1 0x0010DD90, size
 0x0010E858	ExitJimusyo	hd	hd: Raidou HD dds3SequenceList.ExitJimusyo, score 9.0 band B
 0x0010E878	CheckJimusyo	hd	hd: Raidou HD dds3SequenceList.CheckJimusyo, score 7.7 band B
-0x0010E898	func_r1_0010DDF0	placeholder	placeholder for the pair with raidou1 0x0010DDF0, near-size
-0x0010E978	func_r1_0010DEC8	placeholder	placeholder for the pair with raidou1 0x0010DEC8, unique-reloc-hash
+0x0010E898	CallNewBattleTest	hd	hd: Raidou HD dds3SequenceList.CallNewBattleTest, score 11.9 band A, hd-ab: calls1 prev next gap=exact votes2 st1:gap r1+r2
+0x0010E978	ExitNewBattleTest	hd	hd: Raidou HD dds3SequenceList.ExitNewBattleTest, score 5.0 band C, hd-consensus: next gap17/11 st1:gap r1+r2; 10/10 fold runs agree, fold scores 9.5,5.0,7.5,5.0,5.0,7.5,9.5,5.0,9.5,5.0
 0x0010E9A0	CheckNewBattleTest	hd	hd: Raidou HD dds3SequenceList.CheckNewBattleTest, score 11.0 band A
 0x0010EA00	func_r1_0010DF50	placeholder	placeholder for the pair with raidou1 0x0010DF50, masked-hash-in-gap
 0x0010EA08	func_r1_0010DF58	placeholder	placeholder for the pair with raidou1 0x0010DF58, masked-hash-in-gap
@@ -576,7 +576,7 @@
 0x00117FA0	func_r1_00115928	placeholder	placeholder for the pair with raidou1 0x00115928, masked-hash-in-gap
 0x00117FC8	func_r1_00115950	placeholder	placeholder for the pair with raidou1 0x00115950, masked-hash-in-gap
 0x00118010	func_r1_00115998	placeholder	placeholder for the pair with raidou1 0x00115998, masked-hash-in-gap
-0x00118038	func_r1_001159C0	placeholder	placeholder for the pair with raidou1 0x001159C0, masked-hash-in-gap
+0x00118038	gohScrCmd_PresentItem	hd-inferred	hd: Raidou HD gohInit.gohScrCmd_PresentItem, score 7.7 band B, hd-ab: calls3 callers-of-match votes2 st1:call r1-only
 0x00118080	func_r1_00115A08	placeholder	placeholder for the pair with raidou1 0x00115A08, masked-hash-in-gap
 0x001180A8	func_r1_00115A30	placeholder	placeholder for the pair with raidou1 0x00115A30, masked-hash-in-gap
 0x00118288	func_r1_00115B20	placeholder	placeholder for the pair with raidou1 0x00115B20, size
@@ -607,7 +607,7 @@
 0x001197D8	dds3SetSclPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DF08, byte-identical; map-agrees
 0x00119808	dds3GetPosPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DF38, byte-identical; map-agrees
 0x00119820	dds3GetRotPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DF50, reloc-identical; map-agrees
-0x00119840	func_r1_00117010	placeholder	placeholder for the pair with raidou1 0x00117010, unique-reloc-hash
+0x00119840	dds3GetSclPoseSet	hd	hd: Raidou HD dds3Basic.dds3GetSclPoseSet, score 4.6 band D, hd-consensus: prev gap2/1 st1:gap r1+r2; 10/10 fold runs agree, fold scores 4.6,9.6,9.6,4.6,9.6,4.6,4.6,9.6,9.6,4.6
 0x00119858	dds3GetPosPoseSetMCR	inferred	SMT3HD name via SLUS_209.11 0x0010DF88, byte-identical; map-agrees
 0x00119890	dds3AddRotPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DFC0, reloc-identical; map-agrees
 0x001198E0	dds3GetSclPoseSetMCR	inferred	SMT3HD name via SLUS_209.11 0x0010E010, byte-identical; map-agrees
@@ -997,7 +997,7 @@
 0x00128098	fclInitPanelPos	hd	hd: Raidou HD fclMisc.fclInitPanelPos, score 7.6 band B
 0x001280B8	fclScriptForcedEnd	inferred	SMT3HD name via SLUS_209.11 0x00213B08, reloc-identical; map-agrees
 0x001280F8	fclScriptStart	inferred	SMT3HD name via SLUS_209.11 0x00213B48, reloc-identical; map-agrees
-0x00128168	func_r1_00123D48	placeholder	placeholder for the pair with raidou1 0x00123D48, unique-reloc-hash
+0x00128168	cmpItemOrder	inferred	smt3-decomp name via SLUS_209.11 0x00213CB0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.45
 0x00128190	func_r1_00123D70	placeholder	placeholder for the pair with raidou1 0x00123D70, unique-reloc-hash
 0x001281E0	shuffleIndices	inferred	SMT3HD name via SLUS_209.11 0x00213D28, reloc-identical; map-agrees
 0x00128278	evtLoadResourcePair	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024D990, masked-words-identical (strict map pair); dds-decomp: no provenance row
@@ -1011,7 +1011,7 @@
 0x001283F0	fclGetSelMessagePos	hd	hd: Raidou HD fclMisc.fclGetSelMessagePos, score 7.0 band B; replaces dspReadWindowSecondPanelValue: dds-decomp DDS1 name via SLUS_209.74 0x0024DB08, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00128428	evtGetCapturedWindowPanelValue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024DB40, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00128430	fclEndMessageEx	hd	hd: Raidou HD fclMisc.fclEndMessageEx, score 10.3 band A
-0x001284B0	evtFinishMessageWindowAndNotify	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024DBB0, masked-words-identical (order map pair); dds-decomp: descriptive
+0x001284B0	fclEndMessage	hd	hd: Raidou HD fclMisc.fclEndMessage, score 8.5 band B, hd-ab: calls1 prev gap3/1 st1:gap r1+r2; replaces evtFinishMessageWindowAndNotify: dds-decomp DDS1 name via SLUS_209.74 0x0024DBB0, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001284C8	fclDestroyMessage	inferred	SMT3HD name via SLUS_209.11 0x002140A0, reloc-identical; map-agrees
 0x00128508	fclChkMessage	inferred	SMT3HD name via SLUS_209.11 0x002140E0, reloc-identical; map-agrees
 0x00128550	fclChkSelMessage	hd	hd: Raidou HD fclMisc.fclChkSelMessage, score 8.5 band B
@@ -1038,7 +1038,7 @@
 0x00128CC0	fclSetParamTitle	hd-inferred	hd: Raidou HD fclMenu.fclSetParamTitle, score 8.8 band B
 0x00128D08	func_r1_001248C8	placeholder	placeholder for the pair with raidou1 0x001248C8, unique-reloc-hash
 0x00128DB8	func_r1_00124978	placeholder	placeholder for the pair with raidou1 0x00124978, unique-reloc-hash
-0x00128E00	func_r1_001249C0	placeholder	placeholder for the pair with raidou1 0x001249C0, unique-reloc-hash
+0x00128E00	fclSetFlagSelect	hd-inferred	hd: Raidou HD fclMenu.fclSetFlagSelect, score 10.0 band A, hd-ab: gap=exact st1:gap r1+r2
 0x00128E70	func_r1_00124A30	placeholder	placeholder for the pair with raidou1 0x00124A30, unique-reloc-hash
 0x00128EC8	fclSetCursor	hd-inferred	hd: Raidou HD fclMenu.fclSetCursor, score 9.15 band B
 0x00128F28	func_r1_00124AE8	placeholder	placeholder for the pair with raidou1 0x00124AE8, unique-reloc-hash
@@ -1049,12 +1049,12 @@
 0x001291E8	func_r1_00124DA8	placeholder	placeholder for the pair with raidou1 0x00124DA8, unique-reloc-hash
 0x001293D0	fclStartUpdate	hd-inferred	hd: Raidou HD fclMenu.fclStartUpdate, score 10.3 band A
 0x001293E8	fclGetSelectId	hd-inferred	hd: Raidou HD fclMenu.fclGetSelectId, score 7.4 band B
-0x00129420	func_r1_00124FE0	placeholder	placeholder for the pair with raidou1 0x00124FE0, unique-reloc-hash
+0x00129420	fclGetSelectIdEx	hd-inferred	hd: Raidou HD fclMenu.fclGetSelectIdEx, score 6.2 band C, hd-consensus: calls1 prev gap6/5 st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.2,8.2,9.2,5.7,5.7,9.2,3.7,6.2,5.7,6.2
 0x00129448	fclGetHierarchy	hd-inferred	hd: Raidou HD fclMenu.fclGetHierarchy, score 10.8 band A
 0x00129460	fclSetTargetId	hd-inferred	hd: Raidou HD fclMenu.fclSetTargetId, score 8.8 band B
 0x00129580	fclGetTitleAlphaRate	hd-inferred	hd: Raidou HD fclMenu.fclGetTitleAlphaRate, score 7.5 band B
 0x001295D8	func_r1_00125198	placeholder	placeholder for the pair with raidou1 0x00125198, unique-reloc-hash
-0x001296C8	func_r1_00125290	placeholder	placeholder for the pair with raidou1 0x00125290, unique-masked-hash
+0x001296C8	Select_fclMenu	hd	hd: Raidou HD fclMenu.Select, score 6.2 band C, hd-consensus: calls1 next gap25/21 st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.2,4.2,10.2,6.2,6.2,10.2,3.7,6.2,6.2,6.2
 0x00129818	fclUpdate	hd-inferred	hd: Raidou HD fclMenu.fclUpdate, score 8.2 band B
 0x00129BC0	DrawSpriteAlpha	hd	hd: Raidou HD fclMenu.DrawSpriteAlpha, score 7.9 band B
 0x00129BE8	DrawSpriteList	hd	hd: Raidou HD fclMenu.DrawSpriteList, score 9.9 band B
@@ -1062,7 +1062,7 @@
 0x00129C98	func_r1_00125860	placeholder	placeholder for the pair with raidou1 0x00125860, unique-reloc-hash
 0x00129D40	func_r1_00125908	placeholder	placeholder for the pair with raidou1 0x00125908, unique-reloc-hash
 0x00129DC8	DrawCursor	hd	hd: Raidou HD fclMenu.DrawCursor, score 10.0 band A
-0x00129DF0	func_r1_001259B8	placeholder	placeholder for the pair with raidou1 0x001259B8, unique-reloc-hash
+0x00129DF0	DrawCursorSelect	hd	hd: Raidou HD fclMenu.DrawCursorSelect, score 9.8 band B, hd-ab: calls1 next~ gap2/2 votes2 st1:gap r1+r2
 0x00129EE0	CalcAlpha	hd	hd: Raidou HD fclMenu.CalcAlpha, score 7.95 band B
 0x00129F78	fclGetPanelAlpha	hd-inferred	hd: Raidou HD fclMenu.fclGetPanelAlpha, score 8.5 band B
 0x0012A008	func_r1_00125BD0	placeholder	placeholder for the pair with raidou1 0x00125BD0, unique-reloc-hash
@@ -1072,7 +1072,7 @@
 0x0012A4F0	func_r1_001260B8	placeholder	placeholder for the pair with raidou1 0x001260B8, unique-reloc-hash
 0x0012A530	func_r1_001260F8	placeholder	placeholder for the pair with raidou1 0x001260F8, unique-reloc-hash
 0x0012A5B8	fclLoadData	hd-inferred	hd: Raidou HD fclMsg.fclLoadData, score 8.95 band B
-0x0012A5D8	func_r1_001261A0	placeholder	placeholder for the pair with raidou1 0x001261A0, run-order-near
+0x0012A5D8	fclLinkDataEx	hd-inferred	hd: Raidou HD fclMsg.fclLinkDataEx, score 10.45 band A, hd-ab: calls1 prev next gap=exact st1:gap r1+r2
 0x0012A650	fclLinkData	hd-inferred	hd: Raidou HD fclMsg.fclLinkData, score 7.65 band B
 0x0012A670	fclResetEx	hd-inferred	hd: Raidou HD fclMsg.fclResetEx, score 7.95 band B
 0x0012A6C8	ButtonLineHelpDispSet	hd-inferred	hd: Raidou HD ButtonGuide.ButtonLineHelpDispSet, score 7.75 band B
@@ -1112,13 +1112,13 @@
 0x0012C738	func_r1_00128118	placeholder	placeholder for the pair with raidou1 0x00128118, unique-reloc-hash
 0x0012C998	fldPointDistance	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00122BB0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0012C9C8	func_r1_001283A8	placeholder	placeholder for the pair with raidou1 0x001283A8, unique-reloc-hash
-0x0012CA38	func_r1_00128418	placeholder	placeholder for the pair with raidou1 0x00128418, unique-reloc-hash
+0x0012CA38	mapGetEyeTgtRot	hd	hd: Raidou HD fld.mapGetEyeTgtRot, score 6.8 band C, hd-consensus: calls1 callers-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 8.3,6.8,8.3,6.8,6.8,6.8,6.8,6.8,6.8,6.8
 0x0012CB48	func_r1_00128528	placeholder	placeholder for the pair with raidou1 0x00128528, unique-reloc-hash
 0x0012CBA0	func_r1_00128580	placeholder	placeholder for the pair with raidou1 0x00128580, unique-reloc-hash
 0x0012CC38	func_r1_00128618	placeholder	placeholder for the pair with raidou1 0x00128618, unique-reloc-hash
 0x0012CC70	fldToggleWorldNodeState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00122BE0, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0012D290	mapRndEncParamSet	hd	hd: Raidou HD fld.mapRndEncParamSet, score 8.7 band B
-0x0012D2D8	func_r1_00128CE0	placeholder	placeholder for the pair with raidou1 0x00128CE0, unique-reloc-hash
+0x0012D2D8	mapGetPlayersBasic	hd	hd: Raidou HD fld.mapGetPlayersBasic, score 6.4 band C, hd-consensus: calls1 next calls-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 7.5,6.4,7.5,6.4,7.5,6.4,6.4,6.4,6.4,6.4
 0x0012D368	mapSetPlayersVisible	hd	hd: Raidou HD fld.mapSetPlayersVisible, score 9.15 band B
 0x0012D690	func_r1_001290D0	placeholder	placeholder for the pair with raidou1 0x001290D0, unique-reloc-hash
 0x0012D6B8	func_r1_001290F8	placeholder	placeholder for the pair with raidou1 0x001290F8, masked-hash-in-gap
@@ -1210,7 +1210,7 @@
 0x001391D8	fldMakeBlockBasicFL2	inferred	SMT3HD name via SLUS_209.11 0x00126A58, unique-masked-hash; map-agrees
 0x00139258	MakeObjectBasic2	hd	hd: Raidou HD fld.MakeObjectBasic2, score 11.5 band A
 0x00139460	fldFileResolverFL1	hd	hd: Raidou HD fld.fldFileResolverFL1, score 9.9 band B
-0x001394E8	func_r1_00132390	placeholder	placeholder for the pair with raidou1 0x00132390, unique-reloc-hash
+0x001394E8	fldFileResolverFL2	hd	hd: Raidou HD fld.fldFileResolverFL2, score 6.8 band C, hd-consensus: calls1 callers-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.8,6.8,6.8,7.3,6.8,6.8,7.3,6.8,6.8,6.8
 0x00139520	fldProcessFieldRequestAlternate	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00127788, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00139540	func_r1_001323E8	placeholder	placeholder for the pair with raidou1 0x001323E8, masked-hash-in-gap
 0x00139548	sdfAddressResolverReset	inferred	smt3-decomp C name via SLUS_209.11 0x00127230, unique-masked-hash-c; map-silent
@@ -1225,7 +1225,7 @@
 0x001396B0	func_r1_00132558	placeholder	placeholder for the pair with raidou1 0x00132558, masked-hash-in-gap
 0x001396B8	func_r1_00132560	placeholder	placeholder for the pair with raidou1 0x00132560, masked-hash-in-gap
 0x001396C0	fldLoadFile	hd	hd: Raidou HD fld.fldLoadFile, score 10.0 band A
-0x00139730	func_r1_001325D8	placeholder	placeholder for the pair with raidou1 0x001325D8, unique-reloc-hash
+0x00139730	fldLoadFile_FromMemory	hd	hd: Raidou HD fld.fldLoadFile_FromMemory, score 6.95 band C, hd-consensus: calls2 calls-of-match-uniq votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 7.0,7.0,7.0,7.5,7.0,7.0,7.5,7.0,7.0,7.0
 0x00139818	func_r1_001326C0	placeholder	placeholder for the pair with raidou1 0x001326C0, unique-masked-hash
 0x001399A0	func_r1_00132848	placeholder	placeholder for the pair with raidou1 0x00132848, masked-hash-in-gap
 0x001399A8	func_r1_00132850	placeholder	placeholder for the pair with raidou1 0x00132850, unique-reloc-hash
@@ -1282,16 +1282,16 @@
 0x0013D560	func_r1_00135D20	placeholder	placeholder for the pair with raidou1 0x00135D20, unique-reloc-hash
 0x0013D5B8	func_r1_00135D78	placeholder	placeholder for the pair with raidou1 0x00135D78, masked-hash-in-gap
 0x0013D620	func_r1_00135DE0	placeholder	placeholder for the pair with raidou1 0x00135DE0, masked-hash-in-gap
-0x0013D640	func_r1_00135E00	placeholder	placeholder for the pair with raidou1 0x00135E00, unique-reloc-hash
+0x0013D640	mapAiboWakeUp	hd	hd: Raidou HD fld.mapAiboWakeUp, score 6.6 band C, hd-consensus: calls2 calls-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 6.8,6.6,6.6,7.1,5.1,8.3,8.6,4.6,6.6,8.8
 0x0013D688	func_r1_00135E48	placeholder	placeholder for the pair with raidou1 0x00135E48, unique-masked-hash
 0x0013D6F0	func_r1_00135EB0	placeholder	placeholder for the pair with raidou1 0x00135EB0, masked-hash-in-gap
 0x0013D6F8	func_r1_00135EB8	placeholder	placeholder for the pair with raidou1 0x00135EB8, unique-reloc-hash
 0x0013D788	func_r1_00135F48	placeholder	placeholder for the pair with raidou1 0x00135F48, unique-reloc-hash
 0x0013D800	mapAiboFoceSet	hd	hd: Raidou HD fld.mapAiboFoceSet, score 10.8 band A
-0x0013D8A8	func_r1_00136068	placeholder	placeholder for the pair with raidou1 0x00136068, masked-hash-in-gap
+0x0013D8A8	mapAiboAtumaru2	hd	hd: Raidou HD fld.mapAiboAtumaru2, score 5.95 band C, hd-consensus: calls1 next callers-of-match st1:call r1-only; 10/10 fold runs agree, fold scores 8.0,6.0,8.0,8.0,8.0,8.0,6.0,8.0,8.0,6.0
 0x0013D968	mapAiboFoceSet3	hd	hd: Raidou HD fld.mapAiboFoceSet3, score 12.3 band A
-0x0013DAD0	func_r1_00136290	placeholder	placeholder for the pair with raidou1 0x00136290, unique-reloc-hash
-0x0013DBF8	func_r1_001363B8	placeholder	placeholder for the pair with raidou1 0x001363B8, masked-hash-in-gap
+0x0013DAD0	mapAiboAdd	hd	hd: Raidou HD fld.mapAiboAdd, score 6.1 band C, hd-consensus: calls1 prev calls-of-match votes2 st1:call r1-only; 10/10 fold runs agree, fold scores 8.1,8.9,8.9,8.1,8.1,8.9,8.9,8.1,8.1,8.1
+0x0013DBF8	mapAiboGet	hd	hd: Raidou HD fld.mapAiboGet, score 5.8 band C, hd-consensus: calls1 prev calls-of-match votes2 st1:call r1-only; 10/10 fold runs agree, fold scores 7.8,7.8,7.8,7.8,7.8,8.3,8.3,7.8,7.8,7.8
 0x0013DC38	mapAiboTask	hd	hd: Raidou HD fld.mapAiboTask, score 8.2 band B
 0x0013E6C8	func_r1_00136DA0	placeholder	placeholder for the pair with raidou1 0x00136DA0, unique-masked-hash
 0x0013E738	func_r1_00136E10	placeholder	placeholder for the pair with raidou1 0x00136E10, unique-reloc-hash
@@ -1300,7 +1300,7 @@
 0x0013E8E0	func_r1_00136FB8	placeholder	placeholder for the pair with raidou1 0x00136FB8, unique-masked-hash
 0x0013E950	mapSummonDvFoceSet2	hd	hd: Raidou HD fld.mapSummonDvFoceSet2, score 8.3 band B
 0x0013EA10	mapSummonDvAdd	hd	hd: Raidou HD fld.mapSummonDvAdd, score 10.9 band A
-0x0013EB50	func_r1_00137228	placeholder	placeholder for the pair with raidou1 0x00137228, masked-hash-in-gap
+0x0013EB50	mapSummonDvGet	hd	hd: Raidou HD fld.mapSummonDvGet, score 6.0 band C, hd-consensus: prev gap=exact st1:gap r1-only; 10/10 fold runs agree, fold scores 8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,8.0,6.0
 0x0013EB90	func_r1_00137268	placeholder	placeholder for the pair with raidou1 0x00137268, unique-reloc-hash
 0x0013EBB0	sndSeStatus	hd-inferred	hd: Raidou HD sndAt3.sndSeStatus, score 8.8 band B
 0x0013EC20	mapSummonDvTask	hd	hd: Raidou HD fld.mapSummonDvTask, score 10.7 band A
@@ -1359,9 +1359,9 @@
 0x00143800	func_r1_0013B0F8	placeholder	placeholder for the pair with raidou1 0x0013B0F8, run-order-near
 0x001451D8	mapBgSetScrollReset	hd	hd: Raidou HD fld.mapBgSetScrollReset, score 9.2 band B
 0x00145220	func_r1_0013CE28	placeholder	placeholder for the pair with raidou1 0x0013CE28, masked-hash-in-gap
-0x001452F8	func_r1_0013CF00	placeholder	placeholder for the pair with raidou1 0x0013CF00, unique-masked-hash
-0x00145400	func_r1_0013D008	placeholder	placeholder for the pair with raidou1 0x0013D008, unique-reloc-hash
-0x00145518	func_r1_0013D120	placeholder	placeholder for the pair with raidou1 0x0013D120, unique-reloc-hash
+0x001452F8	map_fldPoint3To2O	hd	hd: Raidou HD fld.map_fldPoint3To2O, score 4.1 band D, hd-consensus: calls1 next~ calls-of-match st1:call r2-disagree:0x145518; 10/10 fold runs agree, fold scores 8.1,8.1,8.1,4.1,8.1,8.1,4.1,8.1,8.1,4.1
+0x00145400	map_fldPoint3To2O2	hd	hd: Raidou HD fld.map_fldPoint3To2O2, score 6.3 band C, hd-consensus: calls1 calls-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 8.8,6.3,8.8,6.3,6.3,6.3,6.3,6.3,6.3,6.3
+0x00145518	map_fldPoint3To2O3	hd	hd: Raidou HD fld.map_fldPoint3To2O3, score 3.6 band D, hd-consensus: calls1 next gap2/1 st1:gap r2-disagree:0x1452f8; 10/10 fold runs agree, fold scores 7.6,7.6,7.6,3.6,7.6,7.6,3.6,7.6,8.6,3.6
 0x00145600	fldBgZoomTest	hd-inferred	hd: Raidou HD fld.fldBgZoomTest, score 10.1 band A
 0x001458B8	fldBgZoomTest2	hd-inferred	hd: Raidou HD fld.fldBgZoomTest2, score 8.8 band B
 0x001459D8	mapZoomSetGoal	hd	hd: Raidou HD fld.mapZoomSetGoal, score 7.55 band B
@@ -1450,7 +1450,7 @@
 0x00153270	func_r1_001493C0	placeholder	placeholder for the pair with raidou1 0x001493C0, unique-reloc-hash
 0x00153300	func_r1_00149450	placeholder	placeholder for the pair with raidou1 0x00149450, unique-reloc-hash
 0x00153360	func_r1_001494B0	placeholder	placeholder for the pair with raidou1 0x001494B0, unique-reloc-hash
-0x001534E0	func_r1_00149630	placeholder	placeholder for the pair with raidou1 0x00149630, run-order-near
+0x001534E0	mapWarpGet_Pos	hd	hd: Raidou HD fld.mapWarpGet_Pos, score 5.45 band C, hd-consensus: calls2 gap5/99 st1:gap r1+r2; 10/10 fold runs agree, fold scores 5.5,3.5,5.5,7.5,5.5,7.5,3.5,5.5,3.5,5.5
 0x00153860	func_r1_00149A08	placeholder	placeholder for the pair with raidou1 0x00149A08, unique-reloc-hash
 0x001538C0	mapWarpGo_Idx	hd	hd: Raidou HD fld.mapWarpGo_Idx, score 9.25 band B
 0x00154880	func_r1_0014A290	placeholder	placeholder for the pair with raidou1 0x0014A290, unique-masked-hash
@@ -1463,7 +1463,7 @@
 0x00155D88	func_r1_0014B610	placeholder	placeholder for the pair with raidou1 0x0014B610, unique-reloc-hash
 0x00155DD8	func_r1_0014B660	placeholder	placeholder for the pair with raidou1 0x0014B660, unique-reloc-hash
 0x00155FA0	mapCHitAdd	hd	hd: Raidou HD fld.mapCHitAdd, score 11.45 band A
-0x00155FF8	func_r1_0014B880	placeholder	placeholder for the pair with raidou1 0x0014B880, unique-reloc-hash
+0x00155FF8	mapWHitAdd	hd	hd: Raidou HD fld.mapWHitAdd, score 5.75 band C, hd-consensus: calls1 calls-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 5.8,7.8,5.8,5.8,5.8,5.8,7.8,5.8,5.8,5.8
 0x00156088	func_r1_0014B910	placeholder	placeholder for the pair with raidou1 0x0014B910, unique-reloc-hash
 0x00156110	mapNpcTblAdd	hd	hd: Raidou HD fld.mapNpcTblAdd, score 8.7 band B
 0x00156760	func_r1_0014BDD0	placeholder	placeholder for the pair with raidou1 0x0014BDD0, size
@@ -1546,7 +1546,7 @@
 0x00167A10	func_r1_0015B488	placeholder	placeholder for the pair with raidou1 0x0015B488, masked-hash-in-gap
 0x00167A28	func_r1_0015B4A0	placeholder	placeholder for the pair with raidou1 0x0015B4A0, unique-reloc-hash
 0x00167A88	func_r1_0015B500	placeholder	placeholder for the pair with raidou1 0x0015B500, unique-reloc-hash
-0x00167C88	func_r1_0015B700	placeholder	placeholder for the pair with raidou1 0x0015B700, unique-reloc-hash
+0x00167C88	mefMistDraw	hd	hd: Raidou HD fld.mefMistDraw, score 5.9 band C, hd-consensus: calls2 callers-of-match votes2 st1:call r1-only; 10/10 fold runs agree, fold scores 8.2,10.6,5.9,4.9,5.4,4.9,5.4,10.6,8.6,4.9
 0x00167D78	mefMistTexDestroy	hd	hd: Raidou HD fld.mefMistTexDestroy, score 7.0 band B
 0x00167DC0	func_r1_0015B838	placeholder	placeholder for the pair with raidou1 0x0015B838, unique-reloc-hash
 0x00167E70	func_r1_0015B8E8	placeholder	placeholder for the pair with raidou1 0x0015B8E8, unique-reloc-hash
@@ -1609,7 +1609,7 @@
 0x001734F0	fldIsMapTitleActive	inferred	string: returns dds3SearchProcessName("mapTitle") != 0; caller fldDestroyTitleTask
 0x00173518	func_r1_001651A0	placeholder	placeholder for the pair with raidou1 0x001651A0, unique-reloc-hash
 0x001735B0	func_r1_00165238	placeholder	placeholder for the pair with raidou1 0x00165238, unique-reloc-hash
-0x001738A0	func_r1_00165528	placeholder	placeholder for the pair with raidou1 0x00165528, unique-reloc-hash
+0x001738A0	mapTitleSkip	hd	hd: Raidou HD fld.mapTitleSkip, score 6.8 band C, hd-consensus: calls2 calls-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 7.2,6.8,6.8,7.2,7.2,6.8,6.8,7.2,6.8,6.8
 0x001738C0	func_r1_00165548	placeholder	placeholder for the pair with raidou1 0x00165548, masked-hash-in-gap
 0x001738C8	func_r1_00165550	placeholder	placeholder for the pair with raidou1 0x00165550, unique-masked-hash
 0x00173B28	func_r1_001657B0	placeholder	placeholder for the pair with raidou1 0x001657B0, unique-reloc-hash
@@ -1625,7 +1625,7 @@
 0x00174FE8	func_r1_00166660	placeholder	placeholder for the pair with raidou1 0x00166660, unique-reloc-hash
 0x00175070	func_r1_001666E8	placeholder	placeholder for the pair with raidou1 0x001666E8, unique-reloc-hash
 0x001750C8	func_r1_00166740	placeholder	placeholder for the pair with raidou1 0x00166740, unique-reloc-hash
-0x00175150	func_r1_001667C8	placeholder	placeholder for the pair with raidou1 0x001667C8, unique-reloc-hash
+0x00175150	mapSoundMoveSeTask	hd	hd: Raidou HD fld.mapSoundMoveSeTask, score 6.0 band C, hd-consensus: calls1 calls-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 5.0,5.5,6.0,3.0,8.0,3.0,5.0,6.0,3.0,8.0
 0x00175220	func_r1_00166898	placeholder	placeholder for the pair with raidou1 0x00166898, unique-reloc-hash
 0x001752E0	func_r1_00166958	placeholder	placeholder for the pair with raidou1 0x00166958, masked-hash-in-gap
 0x001752E8	func_r1_00166960	placeholder	placeholder for the pair with raidou1 0x00166960, masked-hash-in-gap
@@ -1670,9 +1670,9 @@
 0x0017CC98	func_r1_0016CAA8	placeholder	placeholder for the pair with raidou1 0x0016CAA8, masked-hash-in-gap
 0x0017CCA0	func_r1_0016CAB0	placeholder	placeholder for the pair with raidou1 0x0016CAB0, unique-reloc-hash
 0x0017CD00	func_r1_0016CB10	placeholder	placeholder for the pair with raidou1 0x0016CB10, unique-reloc-hash
-0x0017CD20	func_r1_0016CB30	placeholder	placeholder for the pair with raidou1 0x0016CB30, masked-hash-in-gap
+0x0017CD20	mapNakamaMinAlpDown	hd	hd: Raidou HD fld.mapNakamaMinAlpDown, score 6.8 band C, hd-consensus: calls1 next~ gap8/167 votes2 st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.8,8.3,6.8,6.8,4.8,9.8,8.8,4.8,6.8,6.8
 0x0017CD88	func_r1_0016CB98	placeholder	placeholder for the pair with raidou1 0x0016CB98, masked-bytes-at-unmarked-region
-0x0017CDA8	func_r1_0016CBB8	placeholder	placeholder for the pair with raidou1 0x0016CBB8, unique-reloc-hash
+0x0017CDA8	mapNakamaWakeUp	hd	hd: Raidou HD fld.mapNakamaWakeUp, score 6.5 band C, hd-consensus: calls2 calls-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 6.5,6.2,6.5,6.5,4.2,9.0,10.3,4.2,6.2,9.0
 0x0017CE08	mapNakamaPosRot	hd	hd: Raidou HD fld.mapNakamaPosRot, score 11.1 band A
 0x0017D460	func_r1_0016CFC0	placeholder	placeholder for the pair with raidou1 0x0016CFC0, masked-hash-in-gap
 0x0017D490	func_r1_0016CFF0	placeholder	placeholder for the pair with raidou1 0x0016CFF0, masked-hash-in-gap
@@ -1714,7 +1714,7 @@
 0x00186A70	func_r1_00174110	placeholder	placeholder for the pair with raidou1 0x00174110, masked-hash-in-gap
 0x00186C48	func_r1_001742E8	placeholder	placeholder for the pair with raidou1 0x001742E8, unique-reloc-hash
 0x00186E38	func_r1_001744D8	placeholder	placeholder for the pair with raidou1 0x001744D8, masked-hash-in-gap
-0x00186E40	func_r1_001744E0	placeholder	placeholder for the pair with raidou1 0x001744E0, unique-reloc-hash
+0x00186E40	encMode	hd	hd: Raidou HD fld.encMode, score 5.0 band C, hd-consensus: next gap11/109 st1:gap r1+r2; 10/10 fold runs agree, fold scores 8.0,5.0,5.0,8.0,5.0,5.0,5.0,5.0,5.0,5.0
 0x00186E80	encDrawProc	hd	hd: Raidou HD fld.encDrawProc, score 9.45 band B
 0x00186FC8	encStop	hd	hd: Raidou HD fld.encStop, score 8.7 band B
 0x00186FF8	encStart	hd	hd: Raidou HD fld.encStart, score 9.45 band B
@@ -1785,12 +1785,12 @@
 0x0018A6E8	mapCtnAndMdlLinkOff	hd	hd: Raidou HD fld.mapCtnAndMdlLinkOff, score 8.5 band B
 0x0018A738	mapCtnAndMdlLinkOff2	hd	hd: Raidou HD fld.mapCtnAndMdlLinkOff2, score 8.5 band B
 0x0018A7B8	mapCtnAndMdlLinkGet	hd	hd: Raidou HD fld.mapCtnAndMdlLinkGet, score 10.5 band A
-0x0018A7D0	func_r1_00177D50	placeholder	placeholder for the pair with raidou1 0x00177D50, unique-reloc-hash
+0x0018A7D0	mapCtnSyncFast	hd	hd: Raidou HD fld.mapCtnSyncFast, score 6.2 band C, hd-consensus: calls1 callers-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.2,7.8,6.2,6.2,6.2,6.2,7.8,6.2,6.2,6.2
 0x0018A7F8	mapCtnLoad	hd	hd: Raidou HD fld.mapCtnLoad, score 8.0 band B
 0x0018A918	func_r1_00177E98	placeholder	placeholder for the pair with raidou1 0x00177E98, unique-reloc-hash
 0x0018AA38	func_r1_00177FB8	placeholder	placeholder for the pair with raidou1 0x00177FB8, unique-reloc-hash
 0x0018AAE8	mapCtnSync	hd	hd: Raidou HD fld.mapCtnSync, score 10.0 band A
-0x0018ACC8	func_r1_00178248	placeholder	placeholder for the pair with raidou1 0x00178248, unique-reloc-hash
+0x0018ACC8	mapCtnFree	hd	hd: Raidou HD fld.mapCtnFree, score 5.1 band C, hd-consensus: calls1 callers-of-match-uniq st1:call r1+r2; 10/10 fold runs agree, fold scores 7.6,5.1,5.1,5.1,5.1,5.1,5.1,7.6,5.1,5.1
 0x0018AD18	func_r1_00178298	placeholder	placeholder for the pair with raidou1 0x00178298, unique-reloc-hash
 0x0018AE70	func_r1_001783F0	placeholder	placeholder for the pair with raidou1 0x001783F0, masked-hash-in-gap
 0x0018AE78	mapCtnGet	hd	hd: Raidou HD fld.mapCtnGet, score 13.2 band A
@@ -1820,8 +1820,8 @@
 0x0018E5F8	func_r1_0017AA80	placeholder	placeholder for the pair with raidou1 0x0017AA80, unique-reloc-hash
 0x0018F738	pbDebugPrintPanel	inferred	SMT3HD name via SLUS_209.11 0x001D1660, reloc-identical; map-agrees
 0x0018F870	pbCalcFovDegrees	inferred	SMT3HD name via SLUS_209.11 0x001D1798, reloc-identical; map-agrees
-0x0018F9D0	func_r1_0017ADA8	placeholder	placeholder for the pair with raidou1 0x0017ADA8, unique-masked-hash
-0x0018FF30	func_r1_0017B308	placeholder	placeholder for the pair with raidou1 0x0017B308, unique-masked-hash
+0x0018F9D0	pbDebugPrintPanel2	inferred	smt3-decomp name via SLUS_209.11 0x001D18F8, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.422
+0x0018FF30	pbDebugPrintPanel3	inferred	smt3-decomp name via SLUS_209.11 0x001D1E58, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.407
 0x00190380	pbAllocPrimPacket	inferred	SMT3HD name via SLUS_209.11 0x001D22A8, reloc-identical; map-agrees
 0x001904E8	pbMakeSpritePacket	inferred	SMT3HD name via SLUS_209.11 0x001D2410, reloc-identical; map-agrees
 0x00190540	pbMakePrimPacket	inferred	SMT3HD name via SLUS_209.11 0x001D2468, reloc-identical; map-agrees
@@ -2198,8 +2198,8 @@
 0x0019DC88	ResolveResourceAddress	inferred	SMT3HD name via SLUS_209.11 0x001CF100, reloc-identical; map-agrees
 0x0019DCD0	GetTypeHeader	inferred	SMT3HD name via SLUS_209.11 0x001CF178, byte-identical; map-agrees
 0x0019DCE8	GetTypeHeader2	inferred	SMT3HD name via SLUS_209.11 0x001CF190, byte-identical; map-agrees
-0x0019DD00	itfMesGetWindowEntryItems	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0019D208, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0019DD38	itfMesGetEntryCount	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0019D240, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0019DD00	itfGetMessageType	hd-inferred	hd: Raidou HD itf.itfGetMessageType, score 7.95 band B, hd-ab: calls2 callers-of-match votes2 st1:call r1+r2; replaces itfMesGetWindowEntryItems: dds-decomp DDS1 name via SLUS_209.74 0x0019D208, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0019DD38	itfGetMessageNo	hd-inferred	hd: Raidou HD itf.itfGetMessageNo, score 6.1 band C, hd-consensus: calls1 prev gap1/25 st1:gap r1+r2; 10/10 fold runs agree, fold scores 7.5,6.1,6.1,6.1,7.1,6.1,6.1,6.1,6.1,6.1; replaces itfMesGetEntryCount: dds-decomp DDS1 name via SLUS_209.74 0x0019D240, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0019DD60	GetMessagePagePtr	inferred	SMT3HD name via SLUS_209.11 0x001CF1A8, byte-identical; map-agrees
 0x0019DD90	CallEventVoice	hd	hd: Raidou HD itf.CallEventVoice, score 7.6 band B
 0x0019DF58	SetVar	inferred	SMT3HD name via SLUS_209.11 0x001CF320, unique-masked-hash; map-agrees
@@ -2342,7 +2342,7 @@
 0x001A5330	func_r1_0018FE20	placeholder	placeholder for the pair with raidou1 0x0018FE20, size
 0x001A53E0	func_r1_0018FED0	placeholder	placeholder for the pair with raidou1 0x0018FED0, run-order-near
 0x001A5530	func_r1_00190028	placeholder	placeholder for the pair with raidou1 0x00190028, run-order-near
-0x001A5690	func_r1_00190190	placeholder	placeholder for the pair with raidou1 0x00190190, size
+0x001A5690	itfMenuSetOt	hd-inferred	hd: Raidou HD itf.itfMenuSetOt, score 9.2 band B, hd-ab: calls2 calls-of-match st1:call r1+r2
 0x001A56B8	itfMenuStart	hd-inferred	hd: Raidou HD itf.itfMenuStart, score 10.95 band A
 0x001A5718	itfMenuGetSelectID	hd-inferred	hd: Raidou HD itf.itfMenuGetSelectID, score 10.45 band A
 0x001A5748	func_r1_00190248	placeholder	placeholder for the pair with raidou1 0x00190248, masked-hash-in-gap
@@ -2358,10 +2358,10 @@
 0x001A5E88	itfMenuSetSpriteData	hd-inferred	hd: Raidou HD itf.itfMenuSetSpriteData, score 9.7 band B
 0x001A5F70	func_r1_001908A8	placeholder	placeholder for the pair with raidou1 0x001908A8, run-order-near
 0x001A5FC8	itfMenuSetImageColor	hd-inferred	hd: Raidou HD itf.itfMenuSetImageColor, score 7.2 band B
-0x001A6038	func_r1_00190968	placeholder	placeholder for the pair with raidou1 0x00190968, run-order-near
+0x001A6038	GetSelectRootID	hd	hd: Raidou HD sBtlMenu.GetSelectRootID, score 7.5 band B, hd-ab: calls3 calls-of-match votes2 st2:call r2-only
 0x001A6080	func_r1_001909A8	placeholder	placeholder for the pair with raidou1 0x001909A8, size
 0x001A6120	func_r1_00190A48	placeholder	placeholder for the pair with raidou1 0x00190A48, masked-hash-in-gap
-0x001A6148	func_r1_00190A70	placeholder	placeholder for the pair with raidou1 0x00190A70, run-order-near
+0x001A6148	itfMoverSetMenu	hd-inferred	hd: Raidou HD itf.itfMoverSetMenu, score 11.8 band A, hd-ab: calls4 calls-of-match votes3 st1:call r1+r2
 0x001A61B0	func_r1_00190AD0	placeholder	placeholder for the pair with raidou1 0x00190AD0, run-order-near
 0x001A6208	func_r1_00190B20	placeholder	placeholder for the pair with raidou1 0x00190B20, run-order-near
 0x001A6260	func_r1_00190B70	placeholder	placeholder for the pair with raidou1 0x00190B70, unique-masked-hash
@@ -2369,10 +2369,10 @@
 0x001A6438	itfMenuSetDrawFunc	hd-inferred	hd: Raidou HD itf.itfMenuSetDrawFunc, score 7.2 band B
 0x001A64B0	func_r1_00190DC0	placeholder	placeholder for the pair with raidou1 0x00190DC0, masked-hash-in-gap
 0x001A6528	itfMenuSetDrawParam	hd-inferred	hd: Raidou HD itf.itfMenuSetDrawParam, score 10.3 band A
-0x001A65A0	func_r1_00190EB0	placeholder	placeholder for the pair with raidou1 0x00190EB0, size
+0x001A65A0	cmpGetWork	hd-inferred	hd: Raidou HD cmpMain.cmpGetWork, score 7.5 band B, hd-ab: calls4 calls-of-match votes3 st1:call r2-disagree:0x1a4b78
 0x001A65E8	func_r1_00190EF8	placeholder	placeholder for the pair with raidou1 0x00190EF8, unique-masked-hash
 0x001A6610	func_r1_00190F20	placeholder	placeholder for the pair with raidou1 0x00190F20, unique-masked-hash
-0x001A6668	func_r1_00190F78	placeholder	placeholder for the pair with raidou1 0x00190F78, masked-hash-in-gap
+0x001A6668	itfMenuUpdateLink	hd-inferred	hd: Raidou HD itf.itfMenuUpdateLink, score 8.95 band B, hd-ab: calls3 calls-of-match votes2 st1:call r1+r2
 0x001A6690	func_r1_00190FA0	placeholder	placeholder for the pair with raidou1 0x00190FA0, masked-hash-in-gap
 0x001A6750	func_r1_00191060	placeholder	placeholder for the pair with raidou1 0x00191060, masked-hash-in-gap
 0x001A6810	func_r1_00191120	placeholder	placeholder for the pair with raidou1 0x00191120, near-size
@@ -2405,16 +2405,16 @@
 0x001A9A20	itfCountProcessStartMoney	hd-inferred	hd: Raidou HD itf.itfCountProcessStartMoney, score 10.45 band A
 0x001A9A40	itfCountProcessEnd	hd-inferred	hd: Raidou HD itf.itfCountProcessEnd, score 11.3 band A
 0x001A9A90	itfCountProcessCheck	hd-inferred	hd: Raidou HD itf.itfCountProcessCheck, score 10.3 band A
-0x001A9AE0	func_r1_00193EC0	placeholder	placeholder for the pair with raidou1 0x00193EC0, unique-reloc-hash
+0x001A9AE0	DvlMsgCreateCB	hd	hd: Raidou HD itf.DvlMsgCreateCB, score 8.3 band B, hd-ab: prev gap=exact st1:gap r1+r2
 0x001A9B50	DvlMsgDeleteCB	hd	hd: Raidou HD itf.DvlMsgDeleteCB, score 8.4 band B
 0x001A9BF8	func_r1_00193FD8	placeholder	placeholder for the pair with raidou1 0x00193FD8, unique-reloc-hash
 0x001A9C38	func_r1_00194018	placeholder	placeholder for the pair with raidou1 0x00194018, unique-reloc-hash
 0x001A9C78	func_r1_00194058	placeholder	placeholder for the pair with raidou1 0x00194058, unique-reloc-hash
-0x001A9CB8	func_r1_00194098	placeholder	placeholder for the pair with raidou1 0x00194098, unique-reloc-hash
-0x001A9DB0	func_r1_00194190	placeholder	placeholder for the pair with raidou1 0x00194190, unique-reloc-hash
+0x001A9CB8	DvlMsgLoadFile	hd	hd: Raidou HD itf.DvlMsgLoadFile, score 5.1 band C, hd-consensus: gap=exact st1:gap r1+r2; 10/10 fold runs agree, fold scores 5.1,7.1,7.1,5.1,5.1,7.1,7.1,5.1,5.1,5.1
+0x001A9DB0	itfDvlMsgCreateData	hd-inferred	hd: Raidou HD itf.itfDvlMsgCreateData, score 7.8 band B, hd-ab: calls1 gap=exact st1:gap r1+r2
 0x001A9E18	_DvlMsgDeleteData	hd	hd: Raidou HD itf._DvlMsgDeleteData, score 8.0 band B
-0x001A9E70	func_r1_00194250	placeholder	placeholder for the pair with raidou1 0x00194250, unique-reloc-hash
-0x001A9EC0	func_r1_001942A0	placeholder	placeholder for the pair with raidou1 0x001942A0, unique-reloc-hash
+0x001A9E70	itfDvlMsgDeleteData	hd-inferred	hd: Raidou HD itf.itfDvlMsgDeleteData, score 7.8 band B, hd-ab: calls1 gap=exact st1:gap r1+r2
+0x001A9EC0	DvlMsgLoadSprite	hd	hd: Raidou HD itf.DvlMsgLoadSprite, score 8.3 band B, hd-ab: prev next gap=exact st1:gap r1+r2
 0x001A9F18	func_r1_001942F8	placeholder	placeholder for the pair with raidou1 0x001942F8, unique-reloc-hash
 0x001A9F60	itfDvlMsgEnd	hd-inferred	hd: Raidou HD itf.itfDvlMsgEnd, score 9.1 band B
 0x001A9F90	func_r1_00194370	placeholder	placeholder for the pair with raidou1 0x00194370, unique-reloc-hash
@@ -2450,7 +2450,7 @@
 0x001AB658	func_r1_00195A40	placeholder	placeholder for the pair with raidou1 0x00195A40, unique-reloc-hash
 0x001AB6C8	func_r1_00195AB0	placeholder	placeholder for the pair with raidou1 0x00195AB0, unique-reloc-hash
 0x001AB710	itfGeneralMenuCreatePID	hd-inferred	hd: Raidou HD itf.itfGeneralMenuCreatePID, score 8.3 band B
-0x001ABCD0	func_r1_001962E8	placeholder	placeholder for the pair with raidou1 0x001962E8, unique-masked-hash
+0x001ABCD0	ListMakeListStation	hd	hd: Raidou HD lmap.ListMakeListStation, score 8.75 band B, hd-ab: calls4 callers-of-match votes2 st2:call r2-only
 0x001AC650	func_r1_00196868	placeholder	placeholder for the pair with raidou1 0x00196868, masked-hash-in-gap
 0x001AC668	func_r1_00196880	placeholder	placeholder for the pair with raidou1 0x00196880, masked-hash-in-gap
 0x001AC978	func_r1_00196A00	placeholder	placeholder for the pair with raidou1 0x00196A00, masked-hash-in-gap
@@ -2459,7 +2459,7 @@
 0x001ACA68	func_r1_00196AB0	placeholder	placeholder for the pair with raidou1 0x00196AB0, unique-reloc-hash
 0x001ACAA0	func_r1_00196AE8	placeholder	placeholder for the pair with raidou1 0x00196AE8, masked-hash-in-gap
 0x001ACAE0	func_r1_00196B28	placeholder	placeholder for the pair with raidou1 0x00196B28, near-size
-0x001ACBA0	func_r1_00196BE0	placeholder	placeholder for the pair with raidou1 0x00196BE0, masked-hash-in-gap
+0x001ACBA0	awdMenuProcessEnd	hd	hd: Raidou HD itf.awdMenuProcessEnd, score 7.5 band B, hd-ab: calls3 prev gap4/12 st1:gap r1-only
 0x001ACC08	func_r1_00196C48	placeholder	placeholder for the pair with raidou1 0x00196C48, masked-hash-in-gap
 0x001ACC58	awdMenuMakeList	hd	hd: Raidou HD itf.awdMenuMakeList, score 10.15 band A
 0x001ACE48	func_r1_00196F38	placeholder	placeholder for the pair with raidou1 0x00196F38, masked-hash-in-gap
@@ -2516,7 +2516,7 @@
 0x001AFEF8	mdlLoad	inferred	SMT3HD name via SLUS_209.11 0x001DD0D0, reloc-identical; map-agrees
 0x001B0048	mdlFree	inferred	SMT3HD name via SLUS_209.11 0x001DD220, reloc-identical; map-agrees
 0x001B00F0	mdlLink	inferred	SMT3HD name via SLUS_209.11 0x001DD2C8, reloc-identical; map-agrees
-0x001B0220	func_r1_0019A6A8	placeholder	placeholder for the pair with raidou1 0x0019A6A8, unique-reloc-hash
+0x001B0220	LinkMotion	hd	hd: Raidou HD mdl.LinkMotion, score 6.3 band C, hd-consensus: calls1 callers-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 7.3,6.3,6.3,9.3,7.3,9.3,6.3,9.3,6.3,9.3
 0x001B02C0	mdlBlendEntryPitchYawAndUpdate	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002179A8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001B0578	mdlHideAllNode	inferred	smt3-decomp C name via SLUS_209.11 0x001DD3F8, unique-masked-hash-c; map-silent
 0x001B05C0	mdlMotion	inferred	twin-of-raidou1-0x0019AA48, run-order-near
@@ -2730,8 +2730,8 @@
 0x001BC290	evtSetWaitHokanFrame	hd	hd: Raidou HD evt.evtSetWaitHokanFrame, score 9.6 band B
 0x001BC2A0	evtCheckUnitWait	inferred	SMT3HD name via SLUS_209.11 0x001E3B88, unique-masked-hash; map-agrees
 0x001BC308	evtSetUnitKutiMotion	inferred	SMT3HD name via SLUS_209.11 0x001E3BF0, shared-hash-in-run; map-agrees
-0x001BC318	func_r1_001A6650	placeholder	placeholder for the pair with raidou1 0x001A6650, unique-reloc-hash
-0x001BC348	func_r1_001A6680	placeholder	placeholder for the pair with raidou1 0x001A6680, unique-reloc-hash
+0x001BC318	evtRunUnitKutiMotion	hd	hd: Raidou HD evt.evtRunUnitKutiMotion, score 6.8 band C, hd-consensus: prev gap=exact st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.8,7.6,6.8,6.8,6.8,6.8,7.6,6.8,6.8,6.8
+0x001BC348	evtSetUnitExMotion	hd	hd: Raidou HD evt.evtSetUnitExMotion, score 6.75 band C, hd-consensus: next gap=exact st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.8,6.8,6.8,8.8,6.8,8.8,6.8,6.8,8.8,6.8
 0x001BC3E0	evtSetUnitMotion	inferred	SMT3HD name via SLUS_209.11 0x001E3CC0, unique-masked-hash; map-agrees
 0x001BC4A0	evtUnitRotationTarget_evt	hd	hd: Raidou HD evt.evtUnitRotationTarget, score 15.5 band A
 0x001BC660	evtUnitRotationQuat	inferred	SMT3HD name via SLUS_209.11 0x001E3F10, unique-masked-hash; map-agrees
@@ -2916,7 +2916,7 @@
 0x001C3998	evtDisableMoonDraw	inferred	twin-of-raidou1-0x001ADA80
 0x001C39B8	evtEnableMoonDraw2	inferred	twin-of-raidou1-0x001ADAA0
 0x001C39D8	evtDisableMoonDraw2	inferred	twin-of-raidou1-0x001ADAC0
-0x001C39F8	func_r1_001ADAE0	placeholder	placeholder for the pair with raidou1 0x001ADAE0, unique-reloc-hash
+0x001C39F8	PreCalcFade	hd	hd: Raidou HD evtMoon.PreCalcFade, score 5.0 band C, hd-consensus: calls1 calls-of-match-uniq votes2 st1:call r1-only; 10/10 fold runs agree, fold scores 5.0,7.0,5.0,5.0,5.0,5.0,7.0,5.0,5.0,5.0
 0x001C3A40	func_r1_001ADB28	placeholder	placeholder for the pair with raidou1 0x001ADB28, unique-masked-hash
 0x001C3A90	func_r1_001ADB78	placeholder	placeholder for the pair with raidou1 0x001ADB78, unique-reloc-hash
 0x001C3AC0	func_r1_001ADBA8	placeholder	placeholder for the pair with raidou1 0x001ADBA8, unique-reloc-hash
@@ -2990,7 +2990,7 @@
 0x001C9F20	ValidateUnitPosChange	hd	hd: Raidou HD evtViewer.ValidateUnitPosChange, score 10.3 band A; replaces evtEventViewerAttachIndexedObject: dds-decomp DDS1 name via SLUS_209.74 0x0022F038, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CA0A8	evtMessageDelete	hd-inferred	hd: Raidou HD evtViewer.evtMessageDelete, score 10.3 band A
 0x001CA180	func_r1_001B40B8	placeholder	placeholder for the pair with raidou1 0x001B40B8, unique-reloc-hash
-0x001CA1B0	func_r1_001B40E8	placeholder	placeholder for the pair with raidou1 0x001B40E8, unique-reloc-hash
+0x001CA1B0	CalcNextMesSet	hd	hd: Raidou HD evtViewer.CalcNextMesSet, score 9.0 band B, hd-ab: calls2 prev~ calls-of-match votes2 st1:call r1+r2
 0x001CA1E8	EventSkipStart	hd	hd: Raidou HD evtViewer.EventSkipStart, score 9.3 band B
 0x001CA330	evtViewerHasUpdateFlag	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0022F408, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x001CA340	func_r1_001B4278	placeholder	placeholder for the pair with raidou1 0x001B4278, unique-reloc-hash
@@ -3057,7 +3057,7 @@
 0x001CE510	func_r1_001B8448	placeholder	placeholder for the pair with raidou1 0x001B8448, masked-hash-in-gap
 0x001CE518	func_r1_001B8450	placeholder	placeholder for the pair with raidou1 0x001B8450, masked-hash-in-gap
 0x001CE538	func_r1_001B8470	placeholder	placeholder for the pair with raidou1 0x001B8470, unique-reloc-hash
-0x001CE580	func_r1_001B84B8	placeholder	placeholder for the pair with raidou1 0x001B84B8, unique-reloc-hash
+0x001CE580	evtIgnoreAtracPlay	hd-inferred	hd: Raidou HD evtViewer.evtIgnoreAtracPlay, score 5.95 band C, hd-consensus: calls2 calls-of-match-uniq votes2 st1:call r1-only; 10/10 fold runs agree, fold scores 5.0,6.0,8.2,6.0,6.0,8.2,4.2,6.0,5.0,8.0
 0x001CE5B0	func_r1_001B84E8	placeholder	placeholder for the pair with raidou1 0x001B84E8, unique-reloc-hash
 0x001CE660	evtCheckLoad	hd-inferred	hd: Raidou HD evtPMV.evtCheckLoad, score 9.9 band B
 0x001CE800	func_r1_001B8738	placeholder	placeholder for the pair with raidou1 0x001B8738, unique-reloc-hash
@@ -3111,7 +3111,7 @@
 0x001D15D0	func_r1_001BB4C8	placeholder	placeholder for the pair with raidou1 0x001BB4C8, unique-reloc-hash
 0x001D1600	func_r1_001BB4F8	placeholder	placeholder for the pair with raidou1 0x001BB4F8, unique-reloc-hash
 0x001D1660	func_r1_001BB558	placeholder	placeholder for the pair with raidou1 0x001BB558, unique-reloc-hash
-0x001D1690	func_r1_001BB588	placeholder	placeholder for the pair with raidou1 0x001BB588, unique-reloc-hash
+0x001D1690	StartProcess_evtPicture	hd	hd: Raidou HD evtPicture.StartProcess, score 9.0 band B, hd-ab: calls1 str1 callers-of-match-uniq votes2 st1:call r1+r2
 0x001D1700	func_r1_001BB5F8	placeholder	placeholder for the pair with raidou1 0x001BB5F8, unique-reloc-hash
 0x001D17F0	evtSetBokasi	inferred	SMT3HD name via SLUS_209.11 0x001F4518, shared-hash-in-run; map-agrees
 0x001D17F8	evtSetSkyAlpha	inferred	SMT3HD name via SLUS_209.11 0x001F4520, reloc-identical; map-agrees
@@ -3272,11 +3272,11 @@
 0x001E0C50	mnuAdjustTimelineDurations	inferred	fuzzy name from SLUS_209.74 0x002429F0, score 0.96, tools/xgame/fuzzy_apply.py
 0x001E0E30	func_r1_001CAD48	placeholder	placeholder for the pair with raidou1 0x001CAD48, unique-reloc-hash
 0x001E0EA0	evtGetValueNewSLightFrame	hd-inferred	hd: Raidou HD evt.evtGetValueNewSLightFrame, score 8.5 band B
-0x001E10D8	mnuCampInitializeDisplayDefaults	inferred	dds-decomp DDS2 name via SLUS_211.52 0x0025E240, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x001E10D8	SetDefaultTmxData	hd	hd: Raidou HD evt.SetDefaultTmxData, score 10.0 band A, hd-ab: prev next gap=exact st1:gap r1+r2; replaces mnuCampInitializeDisplayDefaults: dds-decomp DDS2 name via SLUS_211.52 0x0025E240, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001E1120	evtGetValueNewTMXFrame	hd-inferred	hd: Raidou HD evt.evtGetValueNewTMXFrame, score 10.5 band A; replaces mnuSampleCampDisplayTrack: dds-decomp DDS1 name via SLUS_209.74 0x00242E70, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001E11D0	mnuBlendCampDisplayFields	inferred	fuzzy name from SLUS_211.52 0x0025E460, score 0.95, tools/xgame/fuzzy_apply.py
+0x001E11D0	evtHokanTmx	hd-inferred	hd: Raidou HD evt.evtHokanTmx, score 7.8 band B, hd-ab: calls1 calls-of-match votes2 st1:call r1+r2; replaces mnuBlendCampDisplayFields: fuzzy name from SLUS_211.52 0x0025E460, score 0.95, tools/xgame/fuzzy_apply.py
 0x001E1498	mnuFindCampKeyTrackNeighbors	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002432D0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001E1558	mnuShouldBlockViewerEndCountdown	inferred	dds-decomp DDS2 name via SLUS_211.52 0x0025E7B0, masked-words-identical (order map pair); dds-decomp: descriptive
+0x001E1558	evtFindInputBranchMessage	hd-inferred	hd: Raidou HD evt.evtFindInputBranchMessage, score 10.25 band A, hd-ab: calls1 prev next gap=exact st1:gap r1+r2; replaces mnuShouldBlockViewerEndCountdown: dds-decomp DDS2 name via SLUS_211.52 0x0025E7B0, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001E1560	mnuUnpackNibbleFields	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00243440, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x001E1580	mnuCampFindMatchingEntryIndex	inferred	fuzzy name from SLUS_209.74 0x00243460, score 1.00, tools/xgame/fuzzy_apply.py
 0x001E1600	mnuCampFindEntryByName	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002434E0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -3382,8 +3382,8 @@
 0x001E5BD0	func_r1_001CFA58	placeholder	placeholder for the pair with raidou1 0x001CFA58, unique-reloc-hash
 0x001E5C70	func_r1_001CFAF8	placeholder	placeholder for the pair with raidou1 0x001CFAF8, unique-reloc-hash
 0x001E5CA8	func_r1_001CFB30	placeholder	placeholder for the pair with raidou1 0x001CFB30, unique-reloc-hash
-0x001E5CF0	mnuStopTitleVoicePlayback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002696F8, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x001E5D08	mnuQueryTitleSoundBusy	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00269710, masked-words-identical (gap map pair); dds-decomp: descriptive
+0x001E5CF0	scrGetAfterSkipBgmFlag	hd-inferred	hd: Raidou HD scrCommand.scrGetAfterSkipBgmFlag, score 8.2 band B, hd-ab: calls2 calls-of-match votes2 st1:call r1+r2; replaces mnuStopTitleVoicePlayback: dds-decomp DDS1 name via SLUS_209.74 0x002696F8, masked-words-identical (gap map pair); dds-decomp: descriptive
+0x001E5D08	scrCheckEnableMovieCancel	hd-inferred	hd: Raidou HD scrCommand.scrCheckEnableMovieCancel, score 7.7 band B, hd-ab: calls2 calls-of-match votes2 st1:call r1+r2; replaces mnuQueryTitleSoundBusy: dds-decomp DDS1 name via SLUS_209.74 0x00269710, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001E5D20	mnuNoOpTitleAudio	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00269728, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001E5D28	mnuGetTitleEffectFrameCounter	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00269730, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001E5DC8	func_r1_001CFBD8	placeholder	placeholder for the pair with raidou1 0x001CFBD8, unique-reloc-hash
@@ -3421,7 +3421,7 @@
 0x001E73F8	mnuLoadTitleStreamFrameData	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A3E0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001E7478	File_BgmLoadStart	hd	hd: Raidou HD sndAt3.File_BgmLoadStart, score 7.45 band B; replaces mnuStoreTaskResult: dds-decomp DDS1 name via SLUS_209.74 0x0026A460, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001E74A8	GetVolume	hd	hd: Raidou HD ConfigAudio.GetVolume, score 8.55 band B
-0x001E7590	mnuStartFixedSoundStream	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A588, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x001E7590	sndBgmLoadFile	hd-inferred	hd: Raidou HD sndAt3.sndBgmLoadFile, score 6.95 band C, hd-consensus: str1 ustr votes2 st1:str r1+r2; 10/10 fold runs agree, fold scores 7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0,7.0; replaces mnuStartFixedSoundStream: dds-decomp DDS1 name via SLUS_209.74 0x0026A588, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001E75F8	sndBgmLoadId	hd-inferred	hd: Raidou HD sndAt3.sndBgmLoadId, score 8.5 band B
 0x001E7760	BgmPlaySub	hd	hd: Raidou HD sndAt3.BgmPlaySub, score 11.7 band A
 0x001E77E0	func_r1_001D14D8	placeholder	placeholder for the pair with raidou1 0x001D14D8, unique-masked-hash
@@ -3442,11 +3442,11 @@
 0x001E8160	mnuInstallTitleSoundBufferFromData	inferred	fuzzy name from SLUS_209.74 0x0026ABA8, score 0.95, tools/xgame/fuzzy_apply.py
 0x001E82E8	func_r1_001D1FC8	placeholder	placeholder for the pair with raidou1 0x001D1FC8, unique-reloc-hash
 0x001E8348	sndSePlay	hd-inferred	hd: Raidou HD sndAt3.sndSePlay, score 7.65 band B
-0x001E84B0	mnuResetSoundBuffer	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026ADE8, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x001E84D8	func_r1_001D2178	placeholder	placeholder for the pair with raidou1 0x001D2178, unique-reloc-hash
+0x001E84B0	sndDeadSePlay_VolAngle	hd-inferred	hd: Raidou HD sndAt3.sndDeadSePlay_VolAngle, score 4.5 band D, hd-consensus: prev gap=exact st1:gap r1-only; 10/10 fold runs agree, fold scores 4.5,4.0,4.5,4.5,6.5,8.0,4.5,8.0,8.0,4.5; replaces mnuResetSoundBuffer: dds-decomp DDS1 name via SLUS_209.74 0x0026ADE8, masked-words-identical (strict map pair); dds-decomp: no provenance row
+0x001E84D8	sndSeStop	hd-inferred	hd: Raidou HD sndAt3.sndSeStop, score 7.2 band B, hd-ab: prev next gap=exact st1:gap r1-only
 0x001E8518	func_r1_001D21B8	placeholder	placeholder for the pair with raidou1 0x001D21B8, masked-hash-in-gap
-0x001E8548	func_r1_001D21E8	placeholder	placeholder for the pair with raidou1 0x001D21E8, masked-hash-in-gap
-0x001E8578	func_r1_001D2218	placeholder	placeholder for the pair with raidou1 0x001D2218, unique-reloc-hash
+0x001E8548	sndSeFree	hd-inferred	hd: Raidou HD sndAt3.sndSeFree, score 5.7 band C, hd-consensus: next gap=exact st1:gap r1-only; 10/10 fold runs agree, fold scores 5.7,5.7,5.7,5.7,7.7,7.7,5.7,7.7,7.7,5.7
+0x001E8578	sndSeFadeOut	hd-inferred	hd: Raidou HD sndAt3.sndSeFadeOut, score 3.5 band D, hd-consensus: calls1 gap=exact st1:gap r2-disagree:0x117e30; 10/10 fold runs agree, fold scores 3.5,3.5,3.5,3.5,7.5,7.5,3.5,7.5,7.5,5.5
 0x001E85F0	func_r1_001D2290	placeholder	placeholder for the pair with raidou1 0x001D2290, unique-masked-hash
 0x001E8708	func_r1_001D23A8	placeholder	placeholder for the pair with raidou1 0x001D23A8, unique-reloc-hash
 0x001E8788	sndBgmLoadId_XF	hd-inferred	hd: Raidou HD sndAt3.sndBgmLoadId_XF, score 9.3 band B
@@ -3569,7 +3569,7 @@
 0x001EC8E8	slHeadLoadProc_openFile_slMain	hd	hd: Raidou HD slMain.slHeadLoadProc_openFile, score 8.25 band B
 0x001EC960	slHeadLoadProc_readFile	inferred	SMT3HD name via SLUS_209.11 0x00153168, reloc-identical; map-agrees
 0x001EC9C0	func_r1_001D6120	placeholder	placeholder for the pair with raidou1 0x001D6120, unique-reloc-hash
-0x001ECAF8	func_r1_001D6258	placeholder	placeholder for the pair with raidou1 0x001D6258, unique-reloc-hash
+0x001ECAF8	slExitWait	inferred	smt3-decomp name via SLUS_209.11 0x00153300, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.323
 0x001ECB40	slEndingTop	inferred	SMT3HD name via SLUS_209.11 0x00153348, reloc-identical; map-agrees
 0x001ECB88	slEndingUpd2	inferred	SMT3HD name via SLUS_209.11 0x00153390, reloc-identical; map-agrees
 0x001ECBC8	slEndingExit	inferred	SMT3HD name via SLUS_209.11 0x001533D0, reloc-identical; map-agrees
@@ -3606,7 +3606,7 @@
 0x001ED348	slHardSelect3	hd	hd: Raidou HD slMain.slHardSelect3, score 9.5 band B
 0x001ED380	func_r1_001D6AB8	placeholder	placeholder for the pair with raidou1 0x001D6AB8, masked-hash-in-gap
 0x001ED388	func_r1_001D6AC0	placeholder	placeholder for the pair with raidou1 0x001D6AC0, unique-reloc-hash
-0x001ED4D0	func_r1_001D6C08	placeholder	placeholder for the pair with raidou1 0x001D6C08, unique-reloc-hash
+0x001ED4D0	sl1Ken	inferred	smt3-decomp name via SLUS_209.11 0x00153B28, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.346
 0x001ED540	slSizeChk	inferred	SMT3HD name via SLUS_209.11 0x00153B98, reloc-identical; map-agrees
 0x001ED570	func_r1_001D6CA8	placeholder	placeholder for the pair with raidou1 0x001D6CA8, masked-hash-in-gap
 0x001ED638	func_r1_001D6D70	placeholder	placeholder for the pair with raidou1 0x001D6D70, masked-hash-in-gap
@@ -3616,18 +3616,18 @@
 0x001EDA98	slExitWaitProc	inferred	SMT3HD name via SLUS_209.11 0x001541C8, reloc-identical; map-agrees
 0x001EDAE8	func_r1_001D7228	placeholder	placeholder for the pair with raidou1 0x001D7228, unique-reloc-hash
 0x001EDB00	func_r1_001D7240	placeholder	placeholder for the pair with raidou1 0x001D7240, unique-reloc-hash
-0x001EDB80	func_r1_001D72C0	placeholder	placeholder for the pair with raidou1 0x001D72C0, unique-reloc-hash
+0x001EDB80	slHitAnyKey	inferred	smt3-decomp name via SLUS_209.11 0x001542B8, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.318
 0x001EDBB0	func_r1_001D72F0	placeholder	placeholder for the pair with raidou1 0x001D72F0, unique-reloc-hash
 0x001EDDB8	func_r1_001D74F8	placeholder	placeholder for the pair with raidou1 0x001D74F8, masked-hash-in-gap
 0x001EDDF8	slChooseData_getCardInfo2	inferred	SMT3HD name via SLUS_209.11 0x00154620, reloc-identical; map-agrees
 0x001EDE80	slChooseData_getCardInfo3	inferred	SMT3HD name via SLUS_209.11 0x001546A8, reloc-identical; map-agrees
 0x001EDF00	func_r1_001D7640	placeholder	placeholder for the pair with raidou1 0x001D7640, unique-reloc-hash
-0x001EDFD0	func_r1_001D7710	placeholder	placeholder for the pair with raidou1 0x001D7710, unique-reloc-hash
+0x001EDFD0	slChooseData	inferred	smt3-decomp name via SLUS_209.11 0x001547F8, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.292
 0x001EE068	func_r1_001D77A8	placeholder	placeholder for the pair with raidou1 0x001D77A8, masked-hash-in-gap
 0x001EE0A8	slChooseData_getCardInfo2_B	inferred	smt3-decomp C name via SLUS_209.11 0x001548D0, unique-masked-hash-c; map-agrees
 0x001EE148	slChooseData_getCardInfo3_B	inferred	smt3-decomp C name via SLUS_209.11 0x00154970, unique-masked-hash-c; map-silent
-0x001EE1D8	func_r1_001D7918	placeholder	placeholder for the pair with raidou1 0x001D7918, unique-reloc-hash
-0x001EE278	func_r1_001D79B8	placeholder	placeholder for the pair with raidou1 0x001D79B8, unique-reloc-hash
+0x001EE1D8	slChooseData_getCardInfoNext_B	inferred	smt3-decomp name via SLUS_209.11 0x00154A00, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.588
+0x001EE278	slChooseData_B	inferred	smt3-decomp name via SLUS_209.11 0x00154AA0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.292
 0x001EE2E8	slSaveData	inferred	SMT3HD name via SLUS_209.11 0x00154B10, reloc-identical; map-agrees
 0x001EE388	slSaveData_chdir	inferred	SMT3HD name via SLUS_209.11 0x00154BB0, reloc-identical; map-agrees
 0x001EE3D8	slSaveProc_Write_mkdir	inferred	SMT3HD name via SLUS_209.11 0x00154C00, reloc-identical; map-agrees
@@ -3684,13 +3684,13 @@
 0x001F3190	func_r1_001DBE98	placeholder	placeholder for the pair with raidou1 0x001DBE98, unique-masked-hash
 0x001F31B0	func_r1_001DBEB8	placeholder	placeholder for the pair with raidou1 0x001DBEB8, unique-masked-hash
 0x001F3230	dds3BillboardManagerInit	inferred	smt3-pair: SMT3 dds3BillboardManagerInit body: pacLoad("/bill/billtmx.LB"), pacSync, dds3BillboardCreate per resource, pacFileHandleFree_; directly before dds3BillboardManagerExit
-0x001F3318	func_r1_001DC020	placeholder	placeholder for the pair with raidou1 0x001DC020, unique-reloc-hash
-0x001F3370	func_r1_001DC078	placeholder	placeholder for the pair with raidou1 0x001DC078, unique-reloc-hash
+0x001F3318	dds3BillboardManagerExit	inferred	smt3-decomp name via SLUS_209.11 0x0015B158, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.182
+0x001F3370	BillboardLoadTex	inferred	smt3-decomp name via SLUS_209.11 0x0015B1B0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.652
 0x001F3488	func_r1_001DC190	placeholder	placeholder for the pair with raidou1 0x001DC190, unique-reloc-hash
-0x001F34D8	func_r1_001DC1E0	placeholder	placeholder for the pair with raidou1 0x001DC1E0, unique-masked-hash
-0x001F3978	func_r1_001DC680	placeholder	placeholder for the pair with raidou1 0x001DC680, unique-reloc-hash
+0x001F34D8	dds3BillboardTagLink	inferred	smt3-decomp name via SLUS_209.11 0x0015B320, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.457
+0x001F3978	dds3BillboardLinkOt	inferred	smt3-decomp name via SLUS_209.11 0x0015B7C0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.613
 0x001F3A68	func_r1_001DC770	placeholder	placeholder for the pair with raidou1 0x001DC770, unique-masked-hash
-0x001F40C8	func_r1_001DCDD0	placeholder	placeholder for the pair with raidou1 0x001DCDD0, unique-reloc-hash
+0x001F40C8	dds3MultiBillboardPktLink	inferred	smt3-decomp name via SLUS_209.11 0x0015BF20, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.784
 0x001F4228	func_r1_001DCF30	placeholder	placeholder for the pair with raidou1 0x001DCF30, unique-reloc-hash
 0x001F4380	dds3Billboard_BasicInit	inferred	SMT3HD name via SLUS_209.11 0x0015C1E8, byte-identical; map-agrees
 0x001F43C8	func_r1_001DD0D0	placeholder	placeholder for the pair with raidou1 0x001DD0D0, unique-reloc-hash
@@ -3715,7 +3715,7 @@
 0x001F5160	func_r1_001DDE68	placeholder	placeholder for the pair with raidou1 0x001DDE68, unique-reloc-hash
 0x001F51C8	func_r1_001DDED0	placeholder	placeholder for the pair with raidou1 0x001DDED0, masked-hash-in-gap
 0x001F51D0	dds3BillboardGetGeneralTex	inferred	SMT3HD name via SLUS_209.11 0x0015D000, reloc-identical; map-agrees
-0x001F51F0	func_r1_001DDEF8	placeholder	placeholder for the pair with raidou1 0x001DDEF8, masked-hash-in-gap
+0x001F51F0	dds3BillboardSetPosition	hd	hd: Raidou HD dds3Billboard.dds3BillboardSetPosition, score 7.7 band B, hd-ab: calls1 prev calls-of-match votes2 st1:call r1+r2
 0x001F5200	dds3BillboardSetRotate_dds3Billboard	hd	hd: Raidou HD dds3Billboard.dds3BillboardSetRotate, score 7.05 band B
 0x001F5208	dds3BillboardSetScale_dds3Billboard	hd	hd: Raidou HD dds3Billboard.dds3BillboardSetScale, score 9.05 band B
 0x001F5218	func_r1_001DDF20	placeholder	placeholder for the pair with raidou1 0x001DDF20, masked-hash-in-gap
@@ -3725,7 +3725,7 @@
 0x001F5378	dds3BillboardGetTex	inferred	SMT3HD name via SLUS_209.11 0x0015D1A8, byte-identical; map-agrees
 0x001F5398	func_r1_001DE0A0	placeholder	placeholder for the pair with raidou1 0x001DE0A0, masked-hash-in-gap
 0x001F53A0	dds3BillboardSetDrawType	inferred	SMT3HD name via SLUS_209.11 0x0015D1D0, byte-identical; map-agrees
-0x001F53D8	func_r1_001DE0E0	placeholder	placeholder for the pair with raidou1 0x001DE0E0, unique-reloc-hash
+0x001F53D8	dds3BillboardGetDrawType	inferred	smt3-decomp name via SLUS_209.11 0x0015D208, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.462
 0x001F5408	dds3BillboardSetAnimNumber	inferred	SMT3HD name via SLUS_209.11 0x0015D238, reloc-identical; map-agrees
 0x001F5448	func_r1_001DE150	placeholder	placeholder for the pair with raidou1 0x001DE150, unique-reloc-hash
 0x001F5468	func_r1_001DE170	placeholder	placeholder for the pair with raidou1 0x001DE170, unique-reloc-hash
@@ -3847,17 +3847,17 @@
 0x001FB298	effAppendTexturedTrianglePacket	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0015FC48, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001FB3E8	effPkt2DAllocF4	inferred	SMT3HD name via SLUS_209.11 0x0016A098, reloc-identical; map-agrees
 0x001FB470	effPkt3DPrimMakePoly	inferred	SMT3HD name via SLUS_209.11 0x0016A120, reloc-identical; map-agrees
-0x001FB860	func_r1_001E4568	placeholder	placeholder for the pair with raidou1 0x001E4568, unique-reloc-hash
+0x001FB860	dds3CrossfadeStart	inferred	smt3-decomp name via SLUS_209.11 0x0016A510, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.68
 0x001FB948	func_r1_001E4650	placeholder	placeholder for the pair with raidou1 0x001E4650, unique-reloc-hash
-0x001FBCD0	func_r1_001E49D8	placeholder	placeholder for the pair with raidou1 0x001E49D8, unique-reloc-hash
+0x001FBCD0	dds3CrossfadeEnd	inferred	smt3-decomp name via SLUS_209.11 0x0016A990, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.154
 0x001FBD00	func_r1_001E4A08	placeholder	placeholder for the pair with raidou1 0x001E4A08, unique-reloc-hash
 0x001FBE40	func_r1_001E4B48	placeholder	placeholder for the pair with raidou1 0x001E4B48, unique-reloc-hash
-0x001FBE98	func_r1_001E4BA0	placeholder	placeholder for the pair with raidou1 0x001E4BA0, unique-reloc-hash
-0x001FBEC8	func_r1_001E4BD0	placeholder	placeholder for the pair with raidou1 0x001E4BD0, unique-reloc-hash
+0x001FBE98	effBTLGetMotionChangeFrame	inferred	smt3-decomp name via SLUS_209.11 0x0016AB70, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.409
+0x001FBEC8	effBTLGetCutEndFrame	inferred	smt3-decomp name via SLUS_209.11 0x0016ABA0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.409
 0x001FBEF8	effBTLGetDrawEndFrame	inferred	smt3-decomp C name via SLUS_209.11 0x0016ABD0, unique-masked-hash-c; map-silent
 0x001FBF50	func_r1_001E4C58	placeholder	placeholder for the pair with raidou1 0x001E4C58, unique-reloc-hash
 0x001FBF98	func_r1_001E4CA0	placeholder	placeholder for the pair with raidou1 0x001E4CA0, unique-reloc-hash
-0x001FC140	func_r1_001E4E48	placeholder	placeholder for the pair with raidou1 0x001E4E48, unique-reloc-hash
+0x001FC140	effBTLCutDelete	inferred	smt3-decomp name via SLUS_209.11 0x0016AE08, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.284
 0x001FC1D0	func_r1_001E4ED8	placeholder	placeholder for the pair with raidou1 0x001E4ED8, masked-hash-in-gap
 0x001FC1D8	func_r1_001E4EE0	placeholder	placeholder for the pair with raidou1 0x001E4EE0, masked-hash-in-gap
 0x001FC1E0	func_r1_001E4EE8	placeholder	placeholder for the pair with raidou1 0x001E4EE8, masked-hash-in-gap
@@ -3866,12 +3866,12 @@
 0x001FC1F8	func_r1_001E4F00	placeholder	placeholder for the pair with raidou1 0x001E4F00, masked-hash-in-gap
 0x001FC208	func_r1_001E4F10	placeholder	placeholder for the pair with raidou1 0x001E4F10, unique-reloc-hash
 0x001FC220	func_r1_001E4F28	placeholder	placeholder for the pair with raidou1 0x001E4F28, masked-hash-in-gap
-0x001FC228	func_r1_001E4F30	placeholder	placeholder for the pair with raidou1 0x001E4F30, unique-reloc-hash
+0x001FC228	effBTLCutSetDrawEndFrame	inferred	smt3-decomp name via SLUS_209.11 0x0016AEF0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.561
 0x001FC258	func_r1_001E4F60	placeholder	placeholder for the pair with raidou1 0x001E4F60, masked-hash-in-gap
 0x001FC260	func_r1_001E4F68	placeholder	placeholder for the pair with raidou1 0x001E4F68, run-order-size
 0x001FC268	func_r1_001E4F70	placeholder	placeholder for the pair with raidou1 0x001E4F70, masked-hash-in-gap
 0x001FC270	func_r1_001E4F78	placeholder	placeholder for the pair with raidou1 0x001E4F78, masked-hash-in-gap
-0x001FC278	func_r1_001E4F80	placeholder	placeholder for the pair with raidou1 0x001E4F80, unique-reloc-hash
+0x001FC278	effBTLCutSetScale	inferred	smt3-decomp name via SLUS_209.11 0x0016B510, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.46
 0x001FC2F0	func_r1_001E4FF8	placeholder	placeholder for the pair with raidou1 0x001E4FF8, unique-reloc-hash
 0x001FC340	effBTLPartCreate	inferred	SMT3HD name via SLUS_209.11 0x0016B588, reloc-identical; map-agrees
 0x001FC480	effBTLPartDelete	inferred	SMT3HD name via SLUS_209.11 0x0016B6C8, reloc-identical; map-agrees
@@ -3902,7 +3902,7 @@
 0x001FCD50	func_r1_001E5A58	placeholder	placeholder for the pair with raidou1 0x001E5A58, unique-reloc-hash
 0x001FCDE0	func_r1_001E5AE8	placeholder	placeholder for the pair with raidou1 0x001E5AE8, masked-hash-in-gap
 0x001FCDF8	func_r1_001E5B00	placeholder	placeholder for the pair with raidou1 0x001E5B00, unique-reloc-hash
-0x001FCF40	func_r1_001E5C48	placeholder	placeholder for the pair with raidou1 0x001E5C48, unique-reloc-hash
+0x001FCF40	effPCPBezierEval	inferred	smt3-decomp name via SLUS_209.11 0x001AC298, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.288
 0x001FD080	func_r1_001E5D88	placeholder	placeholder for the pair with raidou1 0x001E5D88, unique-reloc-hash
 0x001FD170	func_r1_001E5E78	placeholder	placeholder for the pair with raidou1 0x001E5E78, unique-reloc-hash
 0x001FD198	func_r1_001E5EA0	placeholder	placeholder for the pair with raidou1 0x001E5EA0, unique-reloc-hash
@@ -4011,9 +4011,9 @@
 0x00200E00	dds3EffectDelete	inferred	SMT3HD name via SLUS_209.11 0x0015AB58, reloc-identical; map-agrees
 0x00200E48	dds3EffectDraw_dds3Effect	hd	hd: Raidou HD dds3Effect.dds3EffectDraw, score 8.5 band B
 0x00200E80	func_r1_001E9B88	placeholder	placeholder for the pair with raidou1 0x001E9B88, masked-hash-in-gap
-0x00200EB8	func_r1_001E9BC0	placeholder	placeholder for the pair with raidou1 0x001E9BC0, masked-hash-in-gap
+0x00200EB8	dds3EffectSetScale	hd	hd: Raidou HD dds3Effect.dds3EffectSetScale, score 7.0 band B, hd-ab: calls1 calls-of-match-uniq votes2 st1:call r1+r2
 0x00200EF0	func_r1_001E9BF8	placeholder	placeholder for the pair with raidou1 0x001E9BF8, masked-hash-in-gap
-0x00200F38	func_r1_001E9C40	placeholder	placeholder for the pair with raidou1 0x001E9C40, masked-hash-in-gap
+0x00200F38	dds3EffectSetPosition	hd	hd: Raidou HD dds3Effect.dds3EffectSetPosition, score 9.15 band B, hd-ab: calls3 calls-of-match votes4 st1:call r1+r2
 0x00200F70	func_r1_001E9C78	placeholder	placeholder for the pair with raidou1 0x001E9C78, masked-hash-in-gap
 0x00200FA8	func_r1_001E9CB0	placeholder	placeholder for the pair with raidou1 0x001E9CB0, masked-hash-in-gap
 0x00200FE0	dds3EffectSetLoop_dds3Effect	hd	hd: Raidou HD dds3Effect.dds3EffectSetLoop, score 8.5 band B
@@ -5062,8 +5062,8 @@
 0x0022F4B0	dds3NeedleModelDraw	inferred	SMT3HD name via SLUS_209.11 0x00189BA0, reloc-identical; map-agrees
 0x0022F748	func_r1_00218450	placeholder	placeholder for the pair with raidou1 0x00218450, unique-reloc-hash
 0x0022F970	func_r1_00218678	placeholder	placeholder for the pair with raidou1 0x00218678, unique-reloc-hash
-0x0022F9A0	func_r1_002186A8	placeholder	placeholder for the pair with raidou1 0x002186A8, unique-reloc-hash
-0x0022F9D0	func_r1_002186D8	placeholder	placeholder for the pair with raidou1 0x002186D8, unique-reloc-hash
+0x0022F9A0	dds3NeedleModelSetPosition	inferred	smt3-decomp name via SLUS_209.11 0x0018A0C0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.292
+0x0022F9D0	dds3NeedleModelGetPosition	inferred	smt3-decomp name via SLUS_209.11 0x0018A0F0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.292
 0x0022FA00	dds3NeedleModelSetColor	inferred	SMT3HD name via SLUS_209.11 0x0018A120, byte-identical; map-agrees
 0x0022FA20	func_r1_00218728	placeholder	placeholder for the pair with raidou1 0x00218728, run-order-size
 0x0022FA48	effDebugPointDraw	inferred	SMT3HD name via SLUS_209.11 0x001AC508, reloc-identical; map-agrees
@@ -5173,8 +5173,8 @@
 0x00232088	dds3EffectDirRead	inferred	SMT3HD name via SLUS_209.11 0x001AAD80, reloc-identical; map-agrees
 0x00232130	dds3EffectFileListCreate	inferred	SMT3HD name via SLUS_209.11 0x001AAE28, reloc-identical; map-agrees
 0x00232568	dds3EffectFileListDelete	inferred	SMT3HD name via SLUS_209.11 0x001AB260, reloc-identical; map-agrees
-0x002325C0	func_r1_0021B2C8	placeholder	placeholder for the pair with raidou1 0x0021B2C8, unique-masked-hash
-0x00232650	func_r1_0021B358	placeholder	placeholder for the pair with raidou1 0x0021B358, unique-masked-hash
+0x002325C0	dds3EffectFileListWindowCreate	inferred	smt3-decomp name via SLUS_209.11 0x001AB2B8, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.421
+0x00232650	dds3EffectFileListWindowDraw	inferred	smt3-decomp name via SLUS_209.11 0x001AB348, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.72
 0x00232AD0	dds3EffectFileListWindowDelete	inferred	SMT3HD name via SLUS_209.11 0x001AB7C8, reloc-identical; map-agrees
 0x00232B10	func_r1_0021B818	placeholder	placeholder for the pair with raidou1 0x0021B818, run-order-size
 0x00232B20	func_r1_0021B828	placeholder	placeholder for the pair with raidou1 0x0021B828, masked-hash-in-gap
@@ -5187,7 +5187,7 @@
 0x00232C08	dds3EffectFileListWindowDrawSprite	inferred	SMT3HD name via SLUS_209.11 0x001AB900, reloc-identical; map-agrees
 0x00232D20	func_r1_0021BA28	placeholder	placeholder for the pair with raidou1 0x0021BA28, masked-hash-in-gap
 0x00232D48	func_r1_0021BA50	placeholder	placeholder for the pair with raidou1 0x0021BA50, masked-hash-in-gap
-0x00232D70	func_r1_0021BA78	placeholder	placeholder for the pair with raidou1 0x0021BA78, masked-hash-in-gap
+0x00232D70	effSRAnimation	hd-inferred	hd: Raidou HD effBehavior.effSRAnimation, score 7.25 band B, hd-ab: calls2 calls-of-match votes2 st1:call r1+r2
 0x00232D88	func_r1_0021BA80	placeholder	placeholder for the pair with raidou1 0x0021BA80, unique-reloc-hash
 0x00232DD0	func_r1_0021BAC8	placeholder	placeholder for the pair with raidou1 0x0021BAC8, unique-reloc-hash
 0x00232E08	func_r1_0021BB00	placeholder	placeholder for the pair with raidou1 0x0021BB00, unique-reloc-hash
@@ -5228,13 +5228,13 @@
 0x00233FC8	func_r1_0021CCC0	placeholder	placeholder for the pair with raidou1 0x0021CCC0, unique-reloc-hash
 0x00234000	fileResolvePrimaryBuffer	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293400, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234028	fileResolveSecondaryBuffer	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293428, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00234050	fileJobCreateFromJob	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293450, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00234050	Create_effParts	hd	hd: Raidou HD effParts.Create, score 8.8 band B, hd-ab: calls2 calls-of-match votes2 st1:call r1+r2; replaces fileJobCreateFromJob: dds-decomp DDS1 name via SLUS_209.74 0x00293450, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002340C0	Delete_effParts	hd	hd: Raidou HD effParts.Delete, score 8.65 band B
 0x00234128	func_r1_0021CE20	placeholder	placeholder for the pair with raidou1 0x0021CE20, unique-reloc-hash
 0x00234168	fileJobFreeSecondaryBuffer	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293568, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002341A8	fileJobCreateChild	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002935A8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002341A8	Copy_effParts	hd	hd: Raidou HD effParts.Copy, score 9.8 band B, hd-ab: calls2 prev~ calls-of-match votes2 st1:call r1+r2; replaces fileJobCreateChild: dds-decomp DDS1 name via SLUS_209.74 0x002935A8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234220	fileJobNotifyPair	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293620, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00234268	fileJobNotifyComplete	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293668, masked-words-identical (callee map pair); dds-decomp: descriptive
+0x00234268	ScaleSet_effParts	hd	hd: Raidou HD effParts.ScaleSet, score 7.0 band B, hd-ab: next~ gap=exact st1:gap r1+r2; replaces fileJobNotifyComplete: dds-decomp DDS1 name via SLUS_209.74 0x00293668, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x002342A8	fileJobInvokeTypeCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002936A8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002342E0	PositionSet	hd	hd: Raidou HD effParts.PositionSet, score 7.65 band B; replaces fileJobInvokePositionCallback: dds-decomp DDS1 name via SLUS_209.74 0x002936E0, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00234320	fileJobInvokeRotationCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293720, masked-words-identical (callee map pair); dds-decomp: descriptive
@@ -5267,7 +5267,7 @@
 0x00235350	effPartsRotateSet	hd-inferred	hd: Raidou HD effPartsList.effPartsRotateSet, score 8.95 band B; replaces fileQueueSetRotation: dds-decomp DDS1 name via SLUS_209.74 0x00294798, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00235408	effPartsScaleSet	hd-inferred	hd: Raidou HD effPartsList.effPartsScaleSet, score 11.2 band A; replaces fileQueueSetScale: dds-decomp DDS1 name via SLUS_209.74 0x00294850, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002354F0	ColorSet	hd	hd: Raidou HD effPartsList.ColorSet, score 9.9 band B; replaces fileQueueSetColor: dds-decomp DDS1 name via SLUS_209.74 0x00294938, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002355D0	fileQueueCopyRotationFromSource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294A18, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002355D0	effPartsRotateMatrixSet	hd-inferred	hd: Raidou HD effPartsList.effPartsRotateMatrixSet, score 7.55 band B, hd-ab: calls2 callers-of-match votes3 st1:call r1+r2; replaces fileQueueCopyRotationFromSource: dds-decomp DDS1 name via SLUS_209.74 0x00294A18, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00235608	fileAppendJob	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294A50, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00235658	fileDuplicateAndAppendJob	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294AA0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00235688	fileAppendJobFromCommandPath	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294AD0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5289,16 +5289,16 @@
 0x002369B8	PoseRotBillboard	hd	hd: Raidou HD effPartsList.PoseRotBillboard, score 8.1 band B; replaces camAimRotation: dds-decomp DDS1 name via SLUS_209.74 0x00295E00, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00236AB0	fileCreateSurfaceLoaderState	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D5FB8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00236B18	fileCreateGridLoaderRecord	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00295F58, masked-words-identical (callee map pair); dds-decomp: no provenance row
-0x00236B50	fileCreateEffectSurfaceFromJob	inferred	fuzzy name from SLUS_211.52 0x002D6058, score 1.00, tools/xgame/fuzzy_apply.py
+0x00236B50	PartsCreate_effParticle	hd	hd: Raidou HD effParticle.PartsCreate, score 10.05 band A, hd-ab: calls4 callers-of-match votes6 st1:call r1+r2; replaces fileCreateEffectSurfaceFromJob: fuzzy name from SLUS_211.52 0x002D6058, score 1.00, tools/xgame/fuzzy_apply.py
 0x00236C58	Delete_effParticle	hd	hd: Raidou HD effParticle.Delete, score 7.3 band B; replaces fileDestroyEffectSurfaceAndChildren: dds-decomp DDS2 name via SLUS_211.52 0x002D6160, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00236D68	Copy_effParticle	hd	hd: Raidou HD effParticle.Copy, score 11.3 band A; replaces fileLoadObjectCreateChild: dds-decomp DDS2 name via SLUS_211.52 0x002D6270, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x00236DD0	ResourceCopy	hd	hd: Raidou HD effParticle.ResourceCopy, score 8.5 band B; replaces fileCloneEffectSurfaceResources: fuzzy name from SLUS_211.52 0x002D62D8, score 1.00, tools/xgame/fuzzy_apply.py
-0x00237030	fileLoadObjectSetResource	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6538, masked-words-identical (callee map pair); dds-decomp: no provenance row
+0x00237030	effCreate	hd-inferred	hd: Raidou HD effBehavior.effCreate, score 8.4 band B, hd-ab: calls2 calls-of-match votes2 st1:call r1+r2; replaces fileLoadObjectSetResource: dds-decomp DDS2 name via SLUS_211.52 0x002D6538, masked-words-identical (callee map pair); dds-decomp: no provenance row
 0x00237090	fileLoadObjectOpenNamedDevice	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6598, masked-words-identical (callee map pair); dds-decomp: no provenance row
-0x00237108	fileLoadObjectOpenDevice	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6610, masked-words-identical (callee map pair); dds-decomp: no provenance row
-0x00237188	fileLoadObjectOpenAndStartDevice	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6690, masked-words-identical (callee map pair); dds-decomp: no provenance row
+0x00237108	BillboardSet	hd	hd: Raidou HD effParticle.BillboardSet, score 8.45 band B, hd-ab: calls2 next gap4/4 votes4 st1:gap r1+r2; replaces fileLoadObjectOpenDevice: dds-decomp DDS2 name via SLUS_211.52 0x002D6610, masked-words-identical (callee map pair); dds-decomp: no provenance row
+0x00237188	BillboardGeneralSet	hd	hd: Raidou HD effParticle.BillboardGeneralSet, score 6.8 band C, hd-consensus: calls1 next gap5/5 st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.8,6.8,4.3,7.3,4.3,6.8,5.3,6.3,7.3,4.3; replaces fileLoadObjectOpenAndStartDevice: dds-decomp DDS2 name via SLUS_211.52 0x002D6690, masked-words-identical (callee map pair); dds-decomp: no provenance row
 0x00237208	fileReplaceEffectSurfaceJobs	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6710, masked-words-identical (callee map pair); dds-decomp: descriptive
-0x00237300	fileReplaceEffectSurfaceQueues	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6808, masked-words-identical (callee map pair); dds-decomp: descriptive
+0x00237300	PartsListSet	hd	hd: Raidou HD effParticle.PartsListSet, score 10.0 band A, hd-ab: calls3 prev callers-of-match votes2 st1:call r1+r2; replaces fileReplaceEffectSurfaceQueues: dds-decomp DDS2 name via SLUS_211.52 0x002D6808, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x002373F8	fileReplaceReferenceHolder	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6900, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00237448	fileClearLoadObjectReferences	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6950, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00237478	func_r1_00220170	placeholder	placeholder for the pair with raidou1 0x00220170, masked-hash-in-gap
@@ -5309,7 +5309,7 @@
 0x00237EB8	fileSetRecordWordFour	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00296EF0, masked-words-identical (gap map pair); dds-decomp: no provenance row
 0x00237EC0	fileSetLoadObjectScale	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D73F8, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00237EE0	fileResetSlotStates	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00296F18, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00237F20	effSampleColorAlphaTracks	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00296F58, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00237F20	effColorAnimation	hd-inferred	hd: Raidou HD effBehavior.effColorAnimation, score 6.9 band C, hd-consensus: calls2 calls-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 8.4,6.9,8.4,6.9,6.9,6.9,6.9,6.9,6.9,6.9; replaces effSampleColorAlphaTracks: dds-decomp DDS1 name via SLUS_209.74 0x00296F58, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00238238	effSampleScalarCurve	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00297270, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002383B0	fileSampleKeyTracks	inferred	fuzzy name from SLUS_209.74 0x002973E8, score 1.00, tools/xgame/fuzzy_apply.py
 0x00238520	func_r1_00221218	placeholder	placeholder for the pair with raidou1 0x00221218, unique-reloc-hash
@@ -5340,9 +5340,9 @@
 0x0023C120	Init_effModel	hd	hd: Raidou HD effModel.Init, score 10.0 band A; replaces effInitModelVUState: dds-decomp DDS1 name via SLUS_209.74 0x0029A840, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0023C1B8	effHandleCreate	hd-inferred	hd: Raidou HD effModel.effHandleCreate, score 8.7 band B
 0x0023C248	effDestroyModelContext	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A938, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023C268	effCloneModelWithVUState	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002DC280, masked-words-identical (callee map pair); dds-decomp: descriptive
+0x0023C268	effHandleCopy	hd-inferred	hd: Raidou HD effModel.effHandleCopy, score 11.95 band A, hd-ab: calls4 prev~ callee-index votes2 st1:cidx r1+r2; replaces effCloneModelWithVUState: dds-decomp DDS2 name via SLUS_211.52 0x002DC280, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x0023C2C0	func_r1_00224FB8	placeholder	placeholder for the pair with raidou1 0x00224FB8, unique-reloc-hash
-0x0023C360	func_r1_00225058	placeholder	placeholder for the pair with raidou1 0x00225058, unique-reloc-hash
+0x0023C360	Delete	hd	hd: Raidou HD effModel.Delete, score 10.3 band A, hd-ab: prev next gap=exact st1:gap r1+r2
 0x0023C3B0	func_r1_002250A8	placeholder	placeholder for the pair with raidou1 0x002250A8, unique-reloc-hash
 0x0023C400	effRecreateModelFromSource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029AA90, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023C498	func_r1_00225190	placeholder	placeholder for the pair with raidou1 0x00225190, unique-reloc-hash
@@ -5391,10 +5391,10 @@
 0x0023DCC8	effRetainSharedReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C028, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0023DCE8	sdfGetOrCreateTextureForReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C048, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023DE90	effCountExpandedEntries	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C1F0, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x0023DED0	effCreateTextureAnimationSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C230, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023E018	effReleaseReferenceHolder	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C378, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0023DED0	effCacheTexCreate	hd-inferred	hd: Raidou HD effCacheTexList.effCacheTexCreate, score 8.0 band B, hd-ab: calls1 next calls-of-match-uniq votes2 st1:call r1+r2; replaces effCreateTextureAnimationSet: dds-decomp DDS1 name via SLUS_209.74 0x0029C230, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0023E018	effCacheTexDelete	hd-inferred	hd: Raidou HD effCacheTexList.effCacheTexDelete, score 8.05 band B, hd-ab: calls2 calls-of-match votes2 st1:call r1+r2; replaces effReleaseReferenceHolder: dds-decomp DDS1 name via SLUS_209.74 0x0029C378, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E0A8	Copy_effCacheTexList	hd	hd: Raidou HD effCacheTexList.Copy, score 10.1 band A; replaces effReferenceObjectRetain: dds-decomp DDS1 name via SLUS_209.74 0x0029C408, masked-words-identical (callee map pair); dds-decomp: descriptive
-0x0023E0C0	effSampleAnimSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C420, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0023E0C0	effCacheTexAnimGet	hd-inferred	hd: Raidou HD effCacheTexList.effCacheTexAnimGet, score 8.9 band B, hd-ab: calls2 prev calls-of-match votes3 st1:call r1+r2; replaces effSampleAnimSet: dds-decomp DDS1 name via SLUS_209.74 0x0029C420, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E1A0	effAssignSampledSegmentReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C500, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E1D0	func_r1_00226EC8	placeholder	placeholder for the pair with raidou1 0x00226EC8, unique-reloc-hash
 0x0023E228	effCreateSmallHeaderFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C570, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -5463,10 +5463,10 @@
 0x00240128	func_r1_00228E20	placeholder	placeholder for the pair with raidou1 0x00228E20, run-order-size
 0x00240138	effSetAlternateKindWorkColor	inferred	twin-of-raidou1-0x00228E30
 0x00240140	effSetAlternateKindWorkScale	inferred	twin-of-raidou1-0x00228E38
-0x00240148	effCreateBillboardWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E410, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x002401F8	effBillboardWorkRelease	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E4C0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00240230	effDuplicateBillState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E4F8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002402E8	effReplaceBillboardClone	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E5B0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00240148	Create_effMuzzleFlash	hd	hd: Raidou HD effMuzzleFlash.Create, score 8.5 band B, hd-ab: calls2 calls-of-match-uniq votes3 st1:call r1+r2; replaces effCreateBillboardWork: dds-decomp DDS1 name via SLUS_209.74 0x0029E410, masked-words-identical (strict map pair); dds-decomp: no provenance row
+0x002401F8	Delete_effMuzzleFlash	hd	hd: Raidou HD effMuzzleFlash.Delete, score 11.8 band A, hd-ab: calls1 prev next gap=exact st1:gap r1+r2; replaces effBillboardWorkRelease: dds-decomp DDS1 name via SLUS_209.74 0x0029E4C0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00240230	Copy_effMuzzleFlash	hd	hd: Raidou HD effMuzzleFlash.Copy, score 9.3 band B, hd-ab: calls1 next callers-of-match-uniq votes2 st1:call r1+r2; replaces effDuplicateBillState: dds-decomp DDS1 name via SLUS_209.74 0x0029E4F8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002402E8	ResourceCopy_effMuzzleFlash	hd	hd: Raidou HD effMuzzleFlash.ResourceCopy, score 8.1 band B, hd-ab: calls2 next~ callers-of-match votes3 st1:call r1+r2; replaces effReplaceBillboardClone: dds-decomp DDS1 name via SLUS_209.74 0x0029E5B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00240338	effBillboardEntryFrameReset	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E600, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00240368	Draw_effMuzzleFlash	hd	hd: Raidou HD effMuzzleFlash.Draw, score 11.8 band A
 0x00240470	func_r1_00229168	placeholder	placeholder for the pair with raidou1 0x00229168, run-order-size
@@ -5613,7 +5613,7 @@
 0x00249F40	Copy_effPolygonTex	hd	hd: Raidou HD effPolygonTex.Copy, score 11.1 band A
 0x0024A138	ResourceCopy_effPolygonTex	hd	hd: Raidou HD effPolygonTex.ResourceCopy, score 10.8 band A
 0x0024A210	effResetRenderResourceFrame	inferred	twin-of-raidou1-0x00232F08
-0x0024A218	func_r1_00232F10	placeholder	placeholder for the pair with raidou1 0x00232F10, unique-reloc-hash
+0x0024A218	Draw_effPolygonTex	hd	hd: Raidou HD effPolygonTex.Draw, score 6.05 band C, hd-consensus: calls1 callers-of-match-uniq votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.0,6.0,7.0,6.0,7.0,6.0,6.0,7.0,6.0,7.0
 0x0024A250	func_r1_00232F48	placeholder	placeholder for the pair with raidou1 0x00232F48, run-order-size
 0x0024A260	func_r1_00232F58	placeholder	placeholder for the pair with raidou1 0x00232F58, run-order-size
 0x0024A278	effSetRenderResourceColor	inferred	twin-of-raidou1-0x00232F70
@@ -5769,10 +5769,10 @@
 0x00254F20	effReleaseParticleList	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B14E8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00254F98	effUpdateParticleSpanGeometry	inferred	fuzzy name from SLUS_209.74 0x002B1560, score 0.99, tools/xgame/fuzzy_apply.py
 0x002557B0	effDrawParticleSpanPointsAndReferences	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B1D68, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002559A0	effCreateModelResourceWithInlineData	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B1F58, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x00255AD0	effCreateModelResourceFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2088, masked-words-identical (order map pair); dds-decomp: descriptive
-0x00255B18	effDestroyModelResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B20D0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00255B68	effCreateModelResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2120, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002559A0	Create_effPolygonCrack	hd	hd: Raidou HD effPolygonCrack.Create, score 8.5 band B, hd-ab: calls2 calls-of-match-uniq votes3 st1:call r1+r2; replaces effCreateModelResourceWithInlineData: dds-decomp DDS1 name via SLUS_209.74 0x002B1F58, masked-words-identical (strict map pair); dds-decomp: no provenance row
+0x00255AD0	PartsCreate_effPolygonCrack	hd	hd: Raidou HD effPolygonCrack.PartsCreate, score 8.55 band B, hd-ab: prev next gap=exact st1:gap r1+r2; replaces effCreateModelResourceFromFile: dds-decomp DDS1 name via SLUS_209.74 0x002B2088, masked-words-identical (order map pair); dds-decomp: descriptive
+0x00255B18	Delete_effPolygonCrack	hd	hd: Raidou HD effPolygonCrack.Delete, score 8.3 band B, hd-ab: next gap=exact st1:gap r1+r2; replaces effDestroyModelResource: dds-decomp DDS1 name via SLUS_209.74 0x002B20D0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00255B68	Copy_effPolygonCrack	hd	hd: Raidou HD effPolygonCrack.Copy, score 11.8 band A, hd-ab: calls4 callers-of-match votes5 st1:call r1+r2; replaces effCreateModelResource: dds-decomp DDS1 name via SLUS_209.74 0x002B2120, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00255C38	effResetModelResourceUpdateCount	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B21F0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00255C80	effAdvanceModelResourceUpdateCount	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2238, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00255CD0	effDispatchModelResourceCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2288, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -5784,21 +5784,21 @@
 0x00255D98	effCreatePointSet3	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2320, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00255E88	effReleaseModelPointSetAsset	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2410, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00255EB8	effDrawThreePointGroups	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2440, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00256128	effInitializeParticleDirection	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FA390, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00256268	effSetRotationFromAcceleratedFrameAngle	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FA4D0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00256128	PartsInit	hd	hd: Raidou HD effObjectParticle.PartsInit, score 7.3 band B, hd-ab: calls1 calls-of-match votes2 st1:call r1+r2; replaces effInitializeParticleDirection: dds-decomp DDS2 name via SLUS_211.52 0x002FA390, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00256268	PartsCalc	hd	hd: Raidou HD effObjectParticle.PartsCalc, score 8.3 band B, hd-ab: prev gap=exact st1:gap r1+r2; replaces effSetRotationFromAcceleratedFrameAngle: dds-decomp DDS2 name via SLUS_211.52 0x002FA4D0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002562E8	func_r1_0023EFE0	placeholder	placeholder for the pair with raidou1 0x0023EFE0, unique-reloc-hash
-0x00256350	effCreateConfiguredSlotNode	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FA5B8, masked-words-identical (callee map pair); dds-decomp: no provenance row
+0x00256350	ParamsCreate	hd	hd: Raidou HD effObjectParticle.ParamsCreate, score 7.9 band B, hd-ab: next gap=exact st1:gap r1+r2; replaces effCreateConfiguredSlotNode: dds-decomp DDS2 name via SLUS_211.52 0x002FA5B8, masked-words-identical (callee map pair); dds-decomp: no provenance row
 0x00256388	effCreateSlotNodeFromFileJob	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FA5F0, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x00256510	Delete_effObjectParticle	hd	hd: Raidou HD effObjectParticle.Delete, score 7.3 band B; replaces effDestroyOwnedResources: dds-decomp DDS2 name via SLUS_211.52 0x002FA778, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002565E0	effCloneOwnedState	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FA848, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00256710	effCloneSlotNodeSecondaryResources	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FA978, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x00256878	effRebuildResourceEntries	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FAAE0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00256940	effReplaceEffectSlotModelAndDeviceResources	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FABA8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002569D0	effRebuildResourceEntryClones	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FAC38, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00256878	BehaviorSet	hd	hd: Raidou HD effObjectParticle.BehaviorSet, score 7.0 band B, hd-ab: calls1 next calls-of-match votes2 st1:call r1+r2; replaces effRebuildResourceEntries: dds-decomp DDS2 name via SLUS_211.52 0x002FAAE0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00256940	ModelSet	hd	hd: Raidou HD effObjectParticle.ModelSet, score 9.2 band B, hd-ab: arity3>2 calls3 next calls-of-match votes5 st1:call r1+r2; replaces effReplaceEffectSlotModelAndDeviceResources: dds-decomp DDS2 name via SLUS_211.52 0x002FABA8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002569D0	PartsListSet_effObjectParticle	hd	hd: Raidou HD effObjectParticle.PartsListSet, score 10.0 band A, hd-ab: calls3 callers-of-match votes4 st1:call r1+r2; replaces effRebuildResourceEntryClones: dds-decomp DDS2 name via SLUS_211.52 0x002FAC38, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00256AC8	effClearSurfaceRecordReferences	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FAD30, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00256AF8	func_r1_0023F7F0	placeholder	placeholder for the pair with raidou1 0x0023F7F0, unique-reloc-hash
-0x00256BF0	func_r1_0023F8E8	placeholder	placeholder for the pair with raidou1 0x0023F8E8, unique-reloc-hash
-0x00257230	func_r1_0023FF28	placeholder	placeholder for the pair with raidou1 0x0023FF28, unique-reloc-hash
+0x00256BF0	Draw_effObjectParticle	hd	hd: Raidou HD effObjectParticle.Draw, score 10.6 band A, hd-ab: calls1 prev next gap=exact st1:gap r1+r2
+0x00257230	CalcAndDraw	hd	hd: Raidou HD effObjectParticle.CalcAndDraw, score 7.3 band B, hd-ab: calls1 callers-of-match-uniq votes2 st1:call r1+r2
 0x00257298	effSetActiveSlotPrimaryRecordVector	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB428, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002572B0	effSetActiveSlotSecondaryRecordVector	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB440, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002572C8	effSetActiveSlotColor	inferred	twin-of-raidou1-0x0023FFC0
@@ -5808,7 +5808,7 @@
 0x00257540	Copy_eff2D	hd	hd: Raidou HD eff2D.Copy, score 10.9 band A; replaces effCloneParticleSharedResource: dds-decomp DDS1 name via SLUS_209.74 0x002B49E8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00257660	eff2ResourceCopy	hd-inferred	hd: Raidou HD eff2D.eff2ResourceCopy, score 8.0 band B; replaces effReplaceSharedResource: dds-decomp DDS1 name via SLUS_209.74 0x002B4B08, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002576F0	effResetParticleSharedState	inferred	twin-of-raidou1-0x002403E8
-0x002576F8	func_r1_002403F0	placeholder	placeholder for the pair with raidou1 0x002403F0, unique-reloc-hash
+0x002576F8	eff2Draw	hd-inferred	hd: Raidou HD eff2D.eff2Draw, score 9.7 band B, hd-ab: calls4 callers-of-match votes2 st1:call r1+r2
 0x00257C90	effSetParticleSharedColor	inferred	twin-of-raidou1-0x00240988
 0x00257C98	func_r1_00240990	placeholder	placeholder for the pair with raidou1 0x00240990, masked-hash-in-gap
 0x00257CA0	func_r1_00240998	placeholder	placeholder for the pair with raidou1 0x00240998, masked-hash-in-gap
@@ -6076,9 +6076,9 @@
 0x0026F4C0	func_r1_00251600	placeholder	placeholder for the pair with raidou1 0x00251600, masked-hash-in-gap
 0x0026F4E0	func_r1_00251620	placeholder	placeholder for the pair with raidou1 0x00251620, near-size
 0x0026F790	Init_sBtlUnit	hd	hd: Raidou HD sBtlUnit.Init, score 11.0 band A
-0x0026F810	func_r1_002517E0	placeholder	placeholder for the pair with raidou1 0x002517E0, run-order-near
-0x0026F8E8	func_r1_00251898	placeholder	placeholder for the pair with raidou1 0x00251898, run-order-near
-0x0026FD50	func_r1_00251C50	placeholder	placeholder for the pair with raidou1 0x00251C50, unique-masked-hash
+0x0026F810	sBtlSetEndBadStatus	hd-inferred	hd: Raidou HD sBtlUnit.sBtlSetEndBadStatus, score 8.0 band B, hd-ab: calls3 callers-of-match votes3 st2:call r2-only
+0x0026F8E8	sBtlSetEndData	hd-inferred	hd: Raidou HD sBtlUnit.sBtlSetEndData, score 8.7 band B, hd-ab: calls4 callers-of-match votes3 st2:call r2-only
+0x0026FD50	Exit_sBtlUnit	hd	hd: Raidou HD sBtlUnit.Exit, score 6.0 band C, hd-consensus: calls1 callers-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 7.5,6.0,7.5,6.0,6.0,6.0,7.5,2.0,7.5,6.0
 0x0026FE30	func_r1_00251D30	placeholder	placeholder for the pair with raidou1 0x00251D30, unique-masked-hash
 0x0026FEC8	func_r1_00251DC8	placeholder	placeholder for the pair with raidou1 0x00251DC8, run-order-size
 0x0026FFB8	Draw_sBtlUnit	hd	hd: Raidou HD sBtlUnit.Draw, score 7.7 band B
@@ -6093,7 +6093,7 @@
 0x00270560	sBtlEntryUnitList	hd-inferred	hd: Raidou HD sBtlUnit.sBtlEntryUnitList, score 9.3 band B
 0x00270A08	func_r1_002527B8	placeholder	placeholder for the pair with raidou1 0x002527B8, unique-masked-hash
 0x00270A78	func_r1_00252828	placeholder	placeholder for the pair with raidou1 0x00252828, unique-masked-hash
-0x00270B38	func_r1_002528E8	placeholder	placeholder for the pair with raidou1 0x002528E8, run-order-near
+0x00270B38	sBtlDeleteUnit	hd-inferred	hd: Raidou HD sBtlUnit.sBtlDeleteUnit, score 10.3 band A, hd-ab: calls2 callers-of-match votes3 st1:call r1+r2
 0x00270D28	func_r1_00252AB0	placeholder	placeholder for the pair with raidou1 0x00252AB0, unique-masked-hash
 0x00270DC8	func_r1_00252B50	placeholder	placeholder for the pair with raidou1 0x00252B50, unique-masked-hash
 0x00271178	func_r1_00253420	placeholder	placeholder for the pair with raidou1 0x00253420, unique-masked-hash
@@ -6118,16 +6118,16 @@
 0x002731A8	func_r1_002546C0	placeholder	placeholder for the pair with raidou1 0x002546C0, unique-masked-hash
 0x002732C8	sBtlCreateTargetList_AI	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCreateTargetList_AI, score 8.5 band B
 0x002733A8	sBtlCreateTargetList	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCreateTargetList, score 7.3 band B
-0x00273550	func_r1_002549A0	placeholder	placeholder for the pair with raidou1 0x002549A0, size
-0x00273BB8	func_r1_00254DE8	placeholder	placeholder for the pair with raidou1 0x00254DE8, unique-masked-hash
+0x00273550	ChangeTarget_BSHelper	hd	hd: Raidou HD sBtlAI.ChangeTarget_BSHelper, score 8.75 band B, hd-ab: calls3 callee-index votes3 st1:cidx r1+r2
+0x00273BB8	sBtlCreateTargetList_Group	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCreateTargetList_Group, score 6.45 band C, hd-consensus: calls2 next gap27/11 votes3 st2:gap r2-only; 10/10 fold runs agree, fold scores 9.5,9.5,9.5,9.5,9.5,9.5,9.5,9.5,8.4,9.5
 0x00273CB0	sBtlCreateTargetList_PForward	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCreateTargetList_PForward, score 8.5 band B
 0x00273F60	CheckLiveTarget	hd	hd: Raidou HD sBtlUnit.CheckLiveTarget, score 11.1 band A
 0x00273FC0	func_r1_002550F0	placeholder	placeholder for the pair with raidou1 0x002550F0, unique-masked-hash
 0x00274060	sBtlCheckTateSkillSelectTarget	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCheckTateSkillSelectTarget, score 8.4 band B
-0x002742D8	func_r1_002551B8	placeholder	placeholder for the pair with raidou1 0x002551B8, unique-masked-hash
+0x002742D8	sBtlCheckExist	hd-inferred	hd: Raidou HD sBtlUnit.sBtlCheckExist, score 8.1 band B, hd-ab: calls2 calls-of-match-uniq votes3 st1:call r1+r2
 0x00274318	func_r1_002551F8	placeholder	placeholder for the pair with raidou1 0x002551F8, unique-masked-hash
 0x00274490	func_r1_002553C8	placeholder	placeholder for the pair with raidou1 0x002553C8, masked-hash-in-gap
-0x00274498	func_r1_002553D0	placeholder	placeholder for the pair with raidou1 0x002553D0, unique-masked-hash
+0x00274498	sBtlGetDevilData	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetDevilData, score 7.1 band B, hd-ab: calls3 calls-of-match votes3 st1:call r1-only
 0x002747F8	func_r1_00255730	placeholder	placeholder for the pair with raidou1 0x00255730, masked-bytes-at-unmarked-region
 0x00274888	func_r1_002557C0	placeholder	placeholder for the pair with raidou1 0x002557C0, masked-bytes-at-unmarked-region
 0x00274920	func_r1_00255858	placeholder	placeholder for the pair with raidou1 0x00255858, unique-masked-hash
@@ -6135,7 +6135,7 @@
 0x00274B50	func_r1_00255A88	placeholder	placeholder for the pair with raidou1 0x00255A88, unique-masked-hash
 0x00274F40	func_r1_00255F30	placeholder	placeholder for the pair with raidou1 0x00255F30, size
 0x00274F58	func_r1_00255F48	placeholder	placeholder for the pair with raidou1 0x00255F48, unique-masked-hash
-0x00275310	func_r1_00256270	placeholder	placeholder for the pair with raidou1 0x00256270, unique-masked-hash
+0x00275310	sBtlSetHangekiFlag	hd-inferred	hd: Raidou HD sBtlAction.sBtlSetHangekiFlag, score 6.8 band C, hd-consensus: calls2 callee-index votes2 st2:cidx r2-only; 10/10 fold runs agree, fold scores 8.4,8.8,8.8,8.4,8.8,8.8,8.8,8.4,6.3,8.8
 0x00275468	sBtlSetSummon	hd-inferred	hd: Raidou HD sBtlUnit.sBtlSetSummon, score 9.45 band B
 0x00275F48	func_r1_00256DC8	placeholder	placeholder for the pair with raidou1 0x00256DC8, unique-masked-hash
 0x00275FB8	func_r1_00256E38	placeholder	placeholder for the pair with raidou1 0x00256E38, unique-masked-hash
@@ -6175,7 +6175,7 @@
 0x002807D8	func_r1_00261568	placeholder	placeholder for the pair with raidou1 0x00261568, unique-reloc-hash
 0x002807F0	sBtlGetDamage	hd-inferred	hd: Raidou HD sBtlCalc.sBtlGetDamage, score 7.0 band B
 0x002820E0	func_r1_002624D0	placeholder	placeholder for the pair with raidou1 0x002624D0, unique-masked-hash
-0x00282B88	func_r1_002624F8	placeholder	placeholder for the pair with raidou1 0x002624F8, unique-masked-hash
+0x00282B88	sBtlCheckSkillEquation	hd-inferred	hd: Raidou HD sBtlAI.sBtlCheckSkillEquation, score 8.3 band B, hd-ab: calls3 callers-of-match votes2 st2:call r2-only
 0x00282E60	sBtlCheckTargetEquation	hd-inferred	hd: Raidou HD sBtlAI.sBtlCheckTargetEquation, score 8.8 band B
 0x00282FF8	func_r1_00262938	placeholder	placeholder for the pair with raidou1 0x00262938, masked-bytes-at-unmarked-region
 0x00283760	func_r1_00262F68	placeholder	placeholder for the pair with raidou1 0x00262F68, unique-masked-hash
@@ -6200,14 +6200,14 @@
 0x00284D00	sBtlCheckArea_Atk	hd-inferred	hd: Raidou HD sBtlEquat.sBtlCheckArea_Atk, score 8.1 band B
 0x00284E18	sBtlCheckArea_Masic	hd-inferred	hd: Raidou HD sBtlEquat.sBtlCheckArea_Masic, score 8.8 band B
 0x00285060	func_r1_002646D0	placeholder	placeholder for the pair with raidou1 0x002646D0, near-size
-0x00285190	func_r1_002647F8	placeholder	placeholder for the pair with raidou1 0x002647F8, size
-0x00285718	func_r1_002649E8	placeholder	placeholder for the pair with raidou1 0x002649E8, unique-masked-hash
+0x00285190	SetNextTarget	hd	hd: Raidou HD sBtlEquat.SetNextTarget, score 7.3 band B, hd-ab: arity3>1 calls4 prev callers-of-match votes2 st2:call r2-only
+0x00285718	CheckEnemyTarget	hd	hd: Raidou HD sBtlEquat.CheckEnemyTarget, score 7.8 band B, hd-ab: calls2 prev calls-of-match st2:call r2-only
 0x00285770	sBtlGetTargetUnit	hd-inferred	hd: Raidou HD sBtlAI.sBtlGetTargetUnit, score 7.8 band B
 0x00285840	func_r1_00264B10	placeholder	placeholder for the pair with raidou1 0x00264B10, unique-masked-hash
-0x00285AF8	func_r1_00264D58	placeholder	placeholder for the pair with raidou1 0x00264D58, size
-0x00285C78	func_r1_00264ED8	placeholder	placeholder for the pair with raidou1 0x00264ED8, unique-masked-hash
-0x00285D88	func_r1_00264FE8	placeholder	placeholder for the pair with raidou1 0x00264FE8, unique-masked-hash
-0x00285E50	func_r1_002650B0	placeholder	placeholder for the pair with raidou1 0x002650B0, unique-reloc-hash
+0x00285AF8	TEquationno_0c	hd	hd: Raidou HD sBtlAI.TEquationno_0c, score 7.0 band B, hd-ab: calls3 prev callers-of-match st2:call r2-only
+0x00285C78	TEquationno_0d	hd	hd: Raidou HD sBtlAI.TEquationno_0d, score 10.0 band A, hd-ab: calls3 prev callers-of-match votes3 st2:call r2-only
+0x00285D88	TEquationno_0e	hd	hd: Raidou HD sBtlAI.TEquationno_0e, score 8.8 band B, hd-ab: calls2 prev callers-of-match-uniq votes2 st2:call r2-only
+0x00285E50	sBtlCheckScriptData	hd-inferred	hd: Raidou HD sBtlAI.sBtlCheckScriptData, score 9.6 band B, hd-ab: calls2 next calls-of-match votes2 st1:call r1+r2
 0x00285E78	CheckAIScript	hd	hd: Raidou HD sBtlAI.CheckAIScript, score 10.0 band A
 0x00285F30	func_r1_00265190	placeholder	placeholder for the pair with raidou1 0x00265190, masked-hash-in-gap
 0x00285F38	func_r1_00265198	placeholder	placeholder for the pair with raidou1 0x00265198, unique-masked-hash
@@ -6229,7 +6229,7 @@
 0x00288F58	sBtlCheckEffectCancel	hd-inferred	hd: Raidou HD sBtlScript.sBtlCheckEffectCancel, score 7.0 band B
 0x00289008	func_r1_00267550	placeholder	placeholder for the pair with raidou1 0x00267550, masked-hash-in-gap
 0x002890B0	func_r1_00267668	placeholder	placeholder for the pair with raidou1 0x00267668, unique-masked-hash
-0x00289158	func_r1_00267710	placeholder	placeholder for the pair with raidou1 0x00267710, run-order-near
+0x00289158	Support_RunWarpProcess	hd	hd: Raidou HD sBtlScript.Support_RunWarpProcess, score 10.0 band A, hd-ab: calls3 callers-of-match votes2 st1:call r1+r2
 0x00289548	func_r1_00267A88	placeholder	placeholder for the pair with raidou1 0x00267A88, unique-masked-hash
 0x00289CD8	func_r1_002681B8	placeholder	placeholder for the pair with raidou1 0x002681B8, unique-masked-hash
 0x00289E00	func_r1_002682E0	placeholder	placeholder for the pair with raidou1 0x002682E0, unique-masked-hash
@@ -6308,7 +6308,7 @@
 0x0028C4C8	func_r1_0026A8C0	placeholder	placeholder for the pair with raidou1 0x0026A8C0, run-order-near
 0x0028C538	func_r1_0026A930	placeholder	placeholder for the pair with raidou1 0x0026A930, masked-hash-in-gap
 0x0028C560	func_r1_0026A958	placeholder	placeholder for the pair with raidou1 0x0026A958, unique-masked-hash
-0x0028C630	func_r1_0026AA28	placeholder	placeholder for the pair with raidou1 0x0026AA28, unique-masked-hash
+0x0028C630	PosReSet	hd	hd: Raidou HD sBtlBossEvent.PosReSet, score 8.5 band B, hd-ab: calls4 callers-of-match votes4 st1:call r1-only
 0x0028D280	func_r1_0026B1A0	placeholder	placeholder for the pair with raidou1 0x0026B1A0, unique-masked-hash
 0x0028D378	func_r1_0026B298	placeholder	placeholder for the pair with raidou1 0x0026B298, unique-masked-hash
 0x0028D470	func_r1_0026B378	placeholder	placeholder for the pair with raidou1 0x0026B378, unique-reloc-hash
@@ -6377,8 +6377,8 @@
 0x00297AB8	sBtlCheckEnemyTarget	hd-inferred	hd: Raidou HD sBtlActAI.sBtlCheckEnemyTarget, score 7.8 band B
 0x00297C58	func_r1_00272BF8	placeholder	placeholder for the pair with raidou1 0x00272BF8, unique-masked-hash
 0x00297E30	func_r1_00272D50	placeholder	placeholder for the pair with raidou1 0x00272D50, masked-hash-in-gap
-0x00297E38	func_r1_00272D58	placeholder	placeholder for the pair with raidou1 0x00272D58, unique-masked-hash
-0x00297ED8	func_r1_00272DF8	placeholder	placeholder for the pair with raidou1 0x00272DF8, run-order-near
+0x00297E38	sBtlEAIInit_None	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIInit_None, score 8.3 band B, hd-ab: calls2 callers-of-match votes3 st1:call r1+r2
+0x00297ED8	sBtlEAIInit_Summon	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIInit_Summon, score 5.0 band C, hd-consensus: prev gap5/4 st1:gap r1+r2; 10/10 fold runs agree, fold scores 3.0,5.0,5.0,3.0,3.0,3.0,5.0,8.0,5.0,8.0
 0x00298138	func_r1_00273050	placeholder	placeholder for the pair with raidou1 0x00273050, unique-masked-hash
 0x002981A8	func_r1_002730C0	placeholder	placeholder for the pair with raidou1 0x002730C0, unique-masked-hash
 0x00298220	func_r1_00273138	placeholder	placeholder for the pair with raidou1 0x00273138, unique-masked-hash
@@ -6389,11 +6389,11 @@
 0x002983E0	sBtlEAIProc_Ctact	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIProc_Ctact, score 12.3 band A
 0x002984C8	sBtlEAIProc_Search	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIProc_Search, score 12.8 band A
 0x00298540	sBtlEAIProc_Chase	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIProc_Chase, score 11.8 band A
-0x00298658	func_r1_00273570	placeholder	placeholder for the pair with raidou1 0x00273570, masked-hash-in-gap
-0x00298660	func_r1_00273578	placeholder	placeholder for the pair with raidou1 0x00273578, unique-masked-hash
-0x00298788	func_r1_002736A0	placeholder	placeholder for the pair with raidou1 0x002736A0, unique-masked-hash
-0x002988D8	func_r1_002737F0	placeholder	placeholder for the pair with raidou1 0x002737F0, unique-masked-hash
-0x00298920	func_r1_00273838	placeholder	placeholder for the pair with raidou1 0x00273838, unique-masked-hash
+0x00298658	sBtlEAIProc_Escape	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIProc_Escape, score 8.75 band B, hd-ab: prev gap=exact st1:gap r1+r2
+0x00298660	sBtlEAIProc_Summonw	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIProc_Summonw, score 8.3 band B, hd-ab: next gap=exact st1:gap r1+r2
+0x00298788	sBtlEAIProc_BtlAI	hd-inferred	hd: Raidou HD sBtlActAI.sBtlEAIProc_BtlAI, score 7.5 band B, hd-ab: calls2 callers-of-match votes3 st1:call r1+r2
+0x002988D8	sBtlSetSearchEnemyMode	hd-inferred	hd: Raidou HD sBtlActAI.sBtlSetSearchEnemyMode, score 7.45 band B, hd-ab: calls1 next callers-of-match-uniq st1:call r1+r2
+0x00298920	sBtlSetGroupAction	hd-inferred	hd: Raidou HD sBtlActAI.sBtlSetGroupAction, score 8.8 band B, hd-ab: calls2 callers-of-match votes2 st1:call r1+r2
 0x00298C20	sBtlSetNoMP	hd-inferred	hd: Raidou HD sBtlActAI.sBtlSetNoMP, score 7.8 band B
 0x00298CA0	func_r1_00273BB8	placeholder	placeholder for the pair with raidou1 0x00273BB8, unique-masked-hash
 0x00298CD0	func_r1_00273BE8	placeholder	placeholder for the pair with raidou1 0x00273BE8, run-order-near
@@ -6408,12 +6408,12 @@
 0x00299CA0	func_r1_00274BB0	placeholder	placeholder for the pair with raidou1 0x00274BB0, masked-hash-in-gap
 0x00299CA8	func_r1_00274BB8	placeholder	placeholder for the pair with raidou1 0x00274BB8, masked-hash-in-gap
 0x00299CB0	func_r1_00274BC0	placeholder	placeholder for the pair with raidou1 0x00274BC0, unique-masked-hash
-0x00299D28	func_r1_00274C38	placeholder	placeholder for the pair with raidou1 0x00274C38, run-order-near
+0x00299D28	sBtlSetNormalAction	hd-inferred	hd: Raidou HD sBtlActAI.sBtlSetNormalAction, score 8.15 band B, hd-ab: calls3 callers-of-match votes3 st1:call r1+r2
 0x0029A130	func_r1_00274F90	placeholder	placeholder for the pair with raidou1 0x00274F90, unique-masked-hash
 0x0029AEA8	sBtlGetMovePos_MapHit	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit, score 10.3 band A
 0x0029B268	sBtlGetMovePos_MapHit_2	hd-inferred	hd: Raidou HD sBtlActAI.sBtlGetMovePos_MapHit_2, score 7.3 band B
-0x0029B4C8	func_r1_002758A0	placeholder	placeholder for the pair with raidou1 0x002758A0, masked-hash-in-gap
-0x0029B5B0	func_r1_00275948	placeholder	placeholder for the pair with raidou1 0x00275948, masked-hash-in-gap
+0x0029B4C8	sBtlAAIInit_None	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_None, score 8.25 band B, hd-ab: prev next gap=exact st1:gap r1+r2
+0x0029B5B0	sBtlAAIInit_Free	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_Free, score 8.0 band B, hd-ab: calls1 next~ callers-of-match-uniq votes2 st1:call r1+r2
 0x0029B6C8	func_r1_002759F8	placeholder	placeholder for the pair with raidou1 0x002759F8, unique-masked-hash
 0x0029B6E8	sBtlAAIInit_N_Escape	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_N_Escape, score 7.4 band B
 0x0029B9B8	sBtlAAIInit_N_Kaihi	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_N_Kaihi, score 9.9 band B
@@ -6422,7 +6422,7 @@
 0x0029BC90	sBtlAAIInit_N_GardeT	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_N_GardeT, score 8.8 band B
 0x0029BDD0	sBtlAAIInit_N_Renkei	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_N_Renkei, score 10.35 band A
 0x0029C1A0	func_r1_00276480	placeholder	placeholder for the pair with raidou1 0x00276480, unique-masked-hash
-0x0029C248	func_r1_00276528	placeholder	placeholder for the pair with raidou1 0x00276528, run-order-near
+0x0029C248	sBtlAAIInit_Skl_S	hd-inferred	hd: Raidou HD sBtlActAI.sBtlAAIInit_Skl_S, score 8.8 band B, hd-ab: calls2 prev gap=exact st1:gap r1-only
 0x0029C340	func_r1_00276608	placeholder	placeholder for the pair with raidou1 0x00276608, unique-masked-hash
 0x0029C3D0	func_r1_00276698	placeholder	placeholder for the pair with raidou1 0x00276698, unique-masked-hash
 0x0029C480	func_r1_00276748	placeholder	placeholder for the pair with raidou1 0x00276748, unique-masked-hash
@@ -6451,7 +6451,7 @@
 0x002A6E90	func_r1_0027C878	placeholder	placeholder for the pair with raidou1 0x0027C878, masked-hash-in-gap
 0x002A9518	GetRand	hd	hd: Raidou HD Smnr.GetRand, score 7.0 band B; replaces btlNextScaledRandom: dds-decomp DDS1 name via SLUS_209.74 0x001FEA78, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002A9548	GetIntervalRand	hd	hd: Raidou HD Smnr.GetIntervalRand, score 7.3 band B; replaces btlRandomInclusiveRange: dds-decomp DDS1 name via SLUS_209.74 0x001FEAA8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002A95B0	btlRollAiBucket	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001FFCD8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002A95B0	GetPercentage	hd	hd: Raidou HD Smnr.GetPercentage, score 7.1 band B, hd-ab: calls4 calls-of-match votes2 st2:call r1-disagree:0x270358; replaces btlRollAiBucket: dds-decomp DDS1 name via SLUS_209.74 0x001FFCD8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002A9678	func_r1_0027CD48	placeholder	placeholder for the pair with raidou1 0x0027CD48, unique-masked-hash
 0x002A96C0	func_r1_0027CD90	placeholder	placeholder for the pair with raidou1 0x0027CD90, unique-masked-hash
 0x002A9700	func_r1_0027CDD0	placeholder	placeholder for the pair with raidou1 0x0027CDD0, unique-masked-hash
@@ -6484,12 +6484,12 @@
 0x002AB610	btlProjectForwardPositionToScreen	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001F6158, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002AB958	func_r1_0027EEB0	placeholder	placeholder for the pair with raidou1 0x0027EEB0, unique-reloc-hash
 0x002ABB08	func_r1_0027F060	placeholder	placeholder for the pair with raidou1 0x0027F060, unique-reloc-hash
-0x002ABB58	func_r1_0027F0B0	placeholder	placeholder for the pair with raidou1 0x0027F0B0, unique-reloc-hash
-0x002ABB78	func_r1_0027F0D0	placeholder	placeholder for the pair with raidou1 0x0027F0D0, unique-reloc-hash
-0x002ABBB0	func_r1_0027F108	placeholder	placeholder for the pair with raidou1 0x0027F108, unique-reloc-hash
-0x002ABBE8	func_r1_0027F140	placeholder	placeholder for the pair with raidou1 0x0027F140, unique-reloc-hash
-0x002ABC00	func_r1_0027F158	placeholder	placeholder for the pair with raidou1 0x0027F158, unique-reloc-hash
-0x002ABC30	func_r1_0027F188	placeholder	placeholder for the pair with raidou1 0x0027F188, unique-reloc-hash
+0x002ABB58	sBtlParaAdd	hd-inferred	hd: Raidou HD sBtlSub.sBtlParaAdd, score 8.1 band B, hd-ab: calls2 calls-of-match votes2 st1:call r1+r2
+0x002ABB78	sBtlParaAdd_16	hd-inferred	hd: Raidou HD sBtlSub.sBtlParaAdd_16, score 12.1 band A, hd-ab: calls1 prev next gap=exact votes2 st1:gap r1+r2
+0x002ABBB0	sBtlParaAdd_8	hd-inferred	hd: Raidou HD sBtlSub.sBtlParaAdd_8, score 10.1 band A, hd-ab: calls1 next gap10/6 votes2 st1:gap r1+r2
+0x002ABBE8	sBtlParaDec	hd-inferred	hd: Raidou HD sBtlSub.sBtlParaDec, score 8.2 band B, hd-ab: calls1 next calls-of-match votes2 st1:call r1+r2
+0x002ABC00	sBtlParaDec_16	hd-inferred	hd: Raidou HD sBtlSub.sBtlParaDec_16, score 7.6 band B, hd-ab: next gap12/8 st1:gap r1+r2
+0x002ABC30	sBtlParaDec_8	hd-inferred	hd: Raidou HD sBtlSub.sBtlParaDec_8, score 7.6 band B, hd-ab: next gap13/10 st1:gap r1+r2
 0x002ABC60	sBtlGetBezier	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetBezier, score 10.1 band A
 0x002ABCC0	func_r1_0027F218	placeholder	placeholder for the pair with raidou1 0x0027F218, masked-hash-in-gap
 0x002ABCD8	func_r1_0027F230	placeholder	placeholder for the pair with raidou1 0x0027F230, unique-masked-hash
@@ -6510,12 +6510,12 @@
 0x002AC3A0	func_r1_0027F8F0	placeholder	placeholder for the pair with raidou1 0x0027F8F0, masked-hash-in-gap
 0x002AC420	func_r1_0027F340	placeholder	placeholder for the pair with raidou1 0x0027F340, unique-reloc-hash
 0x002AC458	sBtlGetBSTNameFont	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetBSTNameFont, score 8.9 band B
-0x002AC470	func_r1_0027F988	placeholder	placeholder for the pair with raidou1 0x0027F988, masked-hash-in-gap
-0x002AC4F0	func_r1_0027FA08	placeholder	placeholder for the pair with raidou1 0x0027FA08, unique-masked-hash
+0x002AC470	sBtlDrawBSTName	hd-inferred	hd: Raidou HD sBtlSub.sBtlDrawBSTName, score 7.8 band B, hd-ab: calls1 gap35/20 votes2 st1:gap r1+r2
+0x002AC4F0	sBtlGetSkillMenu	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetSkillMenu, score 6.5 band C, hd-consensus: calls2 calls-of-match votes3 st2:call r2-only; 10/10 fold runs agree, fold scores 8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.2
 0x002AC630	sBtlCheckVerticalArea	hd-inferred	hd: Raidou HD sBtlSub.sBtlCheckVerticalArea, score 11.8 band A
 0x002AC748	sBtlGetVerticalVector	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetVerticalVector, score 8.25 band B; replaces btlTriangleNormalVU: dds-decomp DDS1 name via SLUS_209.74 0x001F7940, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002AC7A8	sBtlGetVerticalLength	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetVerticalLength, score 8.8 band B; replaces btlTriangleNormalDotEdge: dds-decomp DDS1 name via SLUS_209.74 0x001F79A0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002AC808	btlProjectOnPlaneVU	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001F7A70, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002AC808	sBtlGetVerticalLength_Point	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetVerticalLength_Point, score 9.4 band B, hd-ab: calls2 prev~ calls-of-match-uniq votes3 st1:call r1+r2; replaces btlProjectOnPlaneVU: dds-decomp DDS1 name via SLUS_209.74 0x001F7A70, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002ACFE0	sBtlAnimListProc	hd-inferred	hd: Raidou HD sBtlDMG.sBtlAnimListProc, score 7.0 band B
 0x002AD5C0	func_r1_002800C8	placeholder	placeholder for the pair with raidou1 0x002800C8, unique-reloc-hash
 0x002AD618	func_r1_00280120	placeholder	placeholder for the pair with raidou1 0x00280120, unique-reloc-hash
@@ -6575,7 +6575,7 @@
 0x002BB260	func_r1_0028A048	placeholder	placeholder for the pair with raidou1 0x0028A048, unique-masked-hash
 0x002BB438	func_r1_0028A1B8	placeholder	placeholder for the pair with raidou1 0x0028A1B8, unique-masked-hash
 0x002BB468	func_r1_0028A1E8	placeholder	placeholder for the pair with raidou1 0x0028A1E8, unique-masked-hash
-0x002BB638	func_r1_0028A3A0	placeholder	placeholder for the pair with raidou1 0x0028A3A0, size
+0x002BB638	sBtlDeleteOnData	hd-inferred	hd: Raidou HD sBtlEff.sBtlDeleteOnData, score 5.8 band C, hd-consensus: calls1 gap14/9 votes2 st1:gap r1+r2; 10/10 fold runs agree, fold scores 7.5,5.8,7.5,4.6,3.8,5.8,7.5,5.8,7.5,5.8
 0x002BB700	func_r1_0028A468	placeholder	placeholder for the pair with raidou1 0x0028A468, unique-masked-hash
 0x002BB7A0	func_r1_0028A508	placeholder	placeholder for the pair with raidou1 0x0028A508, unique-masked-hash
 0x002BB828	func_r1_0028A590	placeholder	placeholder for the pair with raidou1 0x0028A590, unique-reloc-hash
@@ -6608,12 +6608,12 @@
 0x002BFAE8	sBtlCheckDeleteEffect	hd-inferred	hd: Raidou HD sBtlEff.sBtlCheckDeleteEffect, score 9.1 band B
 0x002BFE50	sBtlForceResetDecAlpha	hd-inferred	hd: Raidou HD sBtlEff.sBtlForceResetDecAlpha, score 9.5 band B
 0x002BFF18	sBtlReleaseEff	hd-inferred	hd: Raidou HD sBtlEff.sBtlReleaseEff, score 11.3 band A
-0x002C0150	func_r1_0028D910	placeholder	placeholder for the pair with raidou1 0x0028D910, unique-reloc-hash
+0x002C0150	sBtlDeleteEffList	hd-inferred	hd: Raidou HD sBtlEff.sBtlDeleteEffList, score 5.45 band C, hd-consensus: calls1 callers-of-match-uniq st1:call r1+r2; 10/10 fold runs agree, fold scores 8.0,5.5,8.0,5.5,5.5,6.5,7.0,5.5,7.0,5.5
 0x002C0190	sBtlGetNumOfEffect_SAB	hd-inferred	hd: Raidou HD sBtlEff.sBtlGetNumOfEffect_SAB, score 8.4 band B
 0x002C0218	sBtlSearchEffect_SAB	hd-inferred	hd: Raidou HD sBtlEff.sBtlSearchEffect_SAB, score 8.8 band B
 0x002C0290	func_r1_0028DA50	placeholder	placeholder for the pair with raidou1 0x0028DA50, unique-masked-hash
 0x002C0350	func_r1_0028DB10	placeholder	placeholder for the pair with raidou1 0x0028DB10, run-order-size
-0x002C03A0	func_r1_0028DB60	placeholder	placeholder for the pair with raidou1 0x0028DB60, run-order-size
+0x002C03A0	sBtlSearchEffect_WorkID	hd-inferred	hd: Raidou HD sBtlEff.sBtlSearchEffect_WorkID, score 4.6 band D, hd-consensus: prev gap13/9 st1:gap r1+r2; 10/10 fold runs agree, fold scores 9.6,2.6,9.6,4.6,4.6,9.6,4.6,4.6,9.6,4.6
 0x002C03F0	sBtlInitEffectWork	hd-inferred	hd: Raidou HD sBtlEff.sBtlInitEffectWork, score 7.5 band B
 0x002C04A0	func_r1_0028DC30	placeholder	placeholder for the pair with raidou1 0x0028DC30, masked-hash-in-gap
 0x002C04C8	func_r1_0028DC58	placeholder	placeholder for the pair with raidou1 0x0028DC58, unique-reloc-hash
@@ -6668,12 +6668,12 @@
 0x002C52E0	func_r1_002920A0	placeholder	placeholder for the pair with raidou1 0x002920A0, unique-masked-hash
 0x002C5348	func_r1_00292108	placeholder	placeholder for the pair with raidou1 0x00292108, masked-hash-in-gap
 0x002C5368	func_r1_00292128	placeholder	placeholder for the pair with raidou1 0x00292128, run-order-size
-0x002C53F0	func_r1_002921B0	placeholder	placeholder for the pair with raidou1 0x002921B0, unique-masked-hash
+0x002C53F0	sBtlResetMidashiAnim	hd-inferred	hd: Raidou HD sBtlPanel.sBtlResetMidashiAnim, score 8.0 band B, hd-ab: calls3 calls-of-match votes4 st2:call r2-only
 0x002C5470	func_r1_00292230	placeholder	placeholder for the pair with raidou1 0x00292230, run-order-size
 0x002C5488	func_r1_00292248	placeholder	placeholder for the pair with raidou1 0x00292248, unique-masked-hash
 0x002C54A0	func_r1_00292260	placeholder	placeholder for the pair with raidou1 0x00292260, masked-hash-in-gap
 0x002C54C0	func_r1_00292280	placeholder	placeholder for the pair with raidou1 0x00292280, unique-masked-hash
-0x002C54D8	func_r1_00292298	placeholder	placeholder for the pair with raidou1 0x00292298, run-order-near
+0x002C54D8	sBtlSetSelectAnim	hd-inferred	hd: Raidou HD sBtlPanel.sBtlSetSelectAnim, score 6.3 band C, hd-consensus: calls2 calls-of-match votes2 st2:call r2-only; 10/10 fold runs agree, fold scores 9.8,10.3,8.3,8.3,10.3,8.8,10.3,8.3,10.3,10.3
 0x002C5A08	func_r1_002927D8	placeholder	placeholder for the pair with raidou1 0x002927D8, unique-masked-hash
 0x002C5CE0	func_r1_00292930	placeholder	placeholder for the pair with raidou1 0x00292930, unique-masked-hash
 0x002C5D78	func_r1_002929C8	placeholder	placeholder for the pair with raidou1 0x002929C8, unique-masked-hash
@@ -6693,15 +6693,15 @@
 0x002C6DD0	func_r1_00293B80	placeholder	placeholder for the pair with raidou1 0x00293B80, run-order-near
 0x002C6E70	func_r1_00293C20	placeholder	placeholder for the pair with raidou1 0x00293C20, unique-masked-hash
 0x002C6E80	func_r1_00293C30	placeholder	placeholder for the pair with raidou1 0x00293C30, unique-masked-hash
-0x002C6E90	func_r1_00293C40	placeholder	placeholder for the pair with raidou1 0x00293C40, unique-masked-hash
-0x002C6EA8	func_r1_00293C58	placeholder	placeholder for the pair with raidou1 0x00293C58, run-order-near
+0x002C6E90	sBtlCancelMenuPara	hd-inferred	hd: Raidou HD sBtlPanel.sBtlCancelMenuPara, score 2.7 band D, hd-consensus: next gap11/20 st2:gap r2-only; 10/10 fold runs agree, fold scores 4.7,8.7,8.7,8.7,8.7,4.7,4.7,8.7,8.7,2.7
+0x002C6EA8	sBtlSetMenuPara	hd-inferred	hd: Raidou HD sBtlPanel.sBtlSetMenuPara, score 4.0 band D, hd-consensus: calls1 calls-of-match st2:call r2-only; 10/10 fold runs agree, fold scores 6.0,6.0,6.0,6.7,8.5,6.0,6.0,6.0,8.5,3.1
 0x002C6FA8	func_r1_00293D28	placeholder	placeholder for the pair with raidou1 0x00293D28, unique-masked-hash
 0x002C70A8	func_r1_00293E28	placeholder	placeholder for the pair with raidou1 0x00293E28, run-order-near
 0x002C7100	SummonMenuFunc_20	hd	hd: Raidou HD sBtlPlayer.SummonMenuFunc_20, score 7.7 band B
 0x002C7178	SummonMenuFunc_30	hd	hd: Raidou HD sBtlPlayer.SummonMenuFunc_30, score 8.4 band B
-0x002C7508	func_r1_00294298	placeholder	placeholder for the pair with raidou1 0x00294298, size
-0x002C76A8	func_r1_00294438	placeholder	placeholder for the pair with raidou1 0x00294438, unique-masked-hash
-0x002C7A88	func_r1_00294818	placeholder	placeholder for the pair with raidou1 0x00294818, unique-masked-hash
+0x002C7508	SummonMenuFunc_40	hd	hd: Raidou HD sBtlPlayer.SummonMenuFunc_40, score 6.9 band C, hd-consensus: calls4 callers-of-match votes5 st2:call r2-only; 10/10 fold runs agree, fold scores 10.2,10.2,10.7,10.2,10.7,10.7,10.7,10.7,10.7,7.7
+0x002C76A8	SummonMenuFunc_70	hd	hd: Raidou HD sBtlPlayer.SummonMenuFunc_70, score 8.65 band B, hd-ab: calls3 callers-of-match votes2 st1:call r1+r2
+0x002C7A88	sBtlResetColorFlag	hd-inferred	hd: Raidou HD sBtlPlayer.sBtlResetColorFlag, score 6.0 band C, hd-consensus: calls1 prev~ calls-of-match votes2 st2:call r2-only; 10/10 fold runs agree, fold scores 9.0,7.0,9.0,8.5,8.5,9.0,9.5,8.0,8.0,9.5
 0x002C7B28	func_r1_002948B8	placeholder	placeholder for the pair with raidou1 0x002948B8, unique-masked-hash
 0x002C7BD8	func_r1_00294968	placeholder	placeholder for the pair with raidou1 0x00294968, masked-hash-in-gap
 0x002C7C00	func_r1_00294990	placeholder	placeholder for the pair with raidou1 0x00294990, unique-masked-hash
@@ -6721,7 +6721,7 @@
 0x002C8E18	func_r1_00295DB8	placeholder	placeholder for the pair with raidou1 0x00295DB8, size
 0x002C8F90	func_r1_00295F30	placeholder	placeholder for the pair with raidou1 0x00295F30, unique-masked-hash
 0x002C94E0	sBtlLoadHuuma_MesData	hd-inferred	hd: Raidou HD sBtlEvent.sBtlLoadHuuma_MesData, score 8.2 band B
-0x002C95F8	func_r1_002964C8	placeholder	placeholder for the pair with raidou1 0x002964C8, unique-masked-hash
+0x002C95F8	EventProcTbl_07	hd	hd: Raidou HD sBtlEvent.EventProcTbl_07, score 6.5 band C, hd-consensus: calls2 callers-of-match votes3 st2:call r2-only; 10/10 fold runs agree, fold scores 8.5,8.5,8.5,8.5,8.5,8.5,8.5,8.5,6.5,8.5
 0x002C9720	func_r1_002965F0	placeholder	placeholder for the pair with raidou1 0x002965F0, run-order-near
 0x002C97C0	EventProcTbl_08	hd	hd: Raidou HD sBtlEvent.EventProcTbl_08, score 10.2 band A
 0x002C9968	EventProcTbl_09	hd	hd: Raidou HD sBtlEvent.EventProcTbl_09, score 11.2 band A
@@ -6744,7 +6744,7 @@
 0x002CD098	func_r1_00299160	placeholder	placeholder for the pair with raidou1 0x00299160, masked-hash-in-gap
 0x002CD448	func_r1_00299470	placeholder	placeholder for the pair with raidou1 0x00299470, masked-hash-in-gap
 0x002CD460	func_r1_00299488	placeholder	placeholder for the pair with raidou1 0x00299488, unique-reloc-hash
-0x002CD9C0	func_r1_00299750	placeholder	placeholder for the pair with raidou1 0x00299750, unique-masked-hash
+0x002CD9C0	sBtlSetNextPathData	hd-inferred	hd: Raidou HD sBtlPath.sBtlSetNextPathData, score 8.3 band B, hd-ab: calls2 callers-of-match votes2 st1:call r1+r2
 0x002CDB70	func_r1_00299900	placeholder	placeholder for the pair with raidou1 0x00299900, unique-reloc-hash
 0x002CDB90	func_r1_00299920	placeholder	placeholder for the pair with raidou1 0x00299920, unique-reloc-hash
 0x002CDBC0	func_r1_00299950	placeholder	placeholder for the pair with raidou1 0x00299950, unique-reloc-hash
@@ -6790,7 +6790,7 @@
 0x002D7428	func_r1_0029CFB8	placeholder	placeholder for the pair with raidou1 0x0029CFB8, size
 0x002D7470	func_r1_0029D000	placeholder	placeholder for the pair with raidou1 0x0029D000, run-order-near
 0x002D7890	func_r1_0029D3B0	placeholder	placeholder for the pair with raidou1 0x0029D3B0, unique-masked-hash
-0x002D78B0	func_r1_0029D3D0	placeholder	placeholder for the pair with raidou1 0x0029D3D0, run-order-near
+0x002D78B0	sBtlResetBadStatus	hd-inferred	hd: Raidou HD sBtlCalc.sBtlResetBadStatus, score 9.8 band B, hd-ab: calls3 callers-of-match votes2 st1:call r1+r2
 0x002D7980	func_r1_0029D490	placeholder	placeholder for the pair with raidou1 0x0029D490, run-order-near
 0x002D7A70	sBtlCheckBadStatus	hd-inferred	hd: Raidou HD sBtlCalc.sBtlCheckBadStatus, score 7.15 band B
 0x002D81E8	sBtlResetUnit	hd-inferred	hd: Raidou HD sBtlCalc.sBtlResetUnit, score 7.45 band B
@@ -6814,11 +6814,11 @@
 0x002DC670	func_r1_002A0E40	placeholder	placeholder for the pair with raidou1 0x002A0E40, size
 0x002DCE50	func_r1_002A1630	placeholder	placeholder for the pair with raidou1 0x002A1630, unique-masked-hash
 0x002DCE80	func_r1_002A1660	placeholder	placeholder for the pair with raidou1 0x002A1660, unique-masked-hash
-0x002DCED0	func_r1_002A16B0	placeholder	placeholder for the pair with raidou1 0x002A16B0, masked-hash-in-gap
+0x002DCED0	sBtlGetDamage_P_STR	hd-inferred	hd: Raidou HD sBtlCalc.sBtlGetDamage_P_STR, score 5.3 band C, hd-consensus: calls1 next gap2/14 votes2 st2:gap r2-only; 10/10 fold runs agree, fold scores 7.3,7.8,7.3,7.3,7.3,7.3,7.3,7.3,5.3,7.3
 0x002DCFD8	func_r1_002A17B8	placeholder	placeholder for the pair with raidou1 0x002A17B8, masked-hash-in-gap
 0x002DD0E0	func_r1_002A18C0	placeholder	placeholder for the pair with raidou1 0x002A18C0, masked-hash-in-gap
 0x002DD1E8	func_r1_002A19C8	placeholder	placeholder for the pair with raidou1 0x002A19C8, masked-hash-in-gap
-0x002DD2F0	func_r1_002A1AD0	placeholder	placeholder for the pair with raidou1 0x002A1AD0, unique-masked-hash
+0x002DD2F0	sBtlGetDamage_CHUUSEI	hd-inferred	hd: Raidou HD sBtlCalc.sBtlGetDamage_CHUUSEI, score 6.3 band C, hd-consensus: calls2 callers-of-match votes2 st2:call r2-only; 10/10 fold runs agree, fold scores 9.8,8.8,9.8,8.3,9.8,9.8,9.8,9.8,6.3,9.8
 0x002DD430	func_r1_002A1C10	placeholder	placeholder for the pair with raidou1 0x002A1C10, unique-masked-hash
 0x002DD4D8	func_r1_002A1CB8	placeholder	placeholder for the pair with raidou1 0x002A1CB8, masked-hash-in-gap
 0x002DD4E0	func_r1_002A1CC0	placeholder	placeholder for the pair with raidou1 0x002A1CC0, unique-reloc-hash
@@ -6836,7 +6836,7 @@
 0x002DEC28	func_r1_002A3350	placeholder	placeholder for the pair with raidou1 0x002A3350, unique-reloc-hash
 0x002DEC80	func_r1_002A33A8	placeholder	placeholder for the pair with raidou1 0x002A33A8, run-order-near
 0x002DED30	sBtlExt_ShutDown	hd-inferred	hd: Raidou HD sBtlDvltk.sBtlExt_ShutDown, score 11.95 band A
-0x002DED78	func_r1_002A3498	placeholder	placeholder for the pair with raidou1 0x002A3498, run-order-near
+0x002DED78	sBtlExt_CreateBuffer	hd-inferred	hd: Raidou HD sBtlDvltk.sBtlExt_CreateBuffer, score 6.0 band C, hd-consensus: calls1 calls-of-match-uniq st1:call r1+r2; 10/10 fold runs agree, fold scores 6.0,7.0,8.5,7.0,8.5,6.0,6.0,8.5,6.0,6.0
 0x002DEEF0	sBtlExt_FreeBuffer	hd-inferred	hd: Raidou HD sBtlDvltk.sBtlExt_FreeBuffer, score 10.0 band A
 0x002DEF50	sBtlExt_MesReqEx	hd-inferred	hd: Raidou HD sBtlDvltk.sBtlExt_MesReqEx, score 11.0 band A
 0x002DF020	sBtlExt_MesReq	hd-inferred	hd: Raidou HD sBtlDvltk.sBtlExt_MesReq, score 7.8 band B
@@ -6861,7 +6861,7 @@
 0x002E0930	func_r1_002A4AE0	placeholder	placeholder for the pair with raidou1 0x002A4AE0, size
 0x002E0970	sBtlGetSkilltbl	hd-inferred	hd: Raidou HD sBtlSkill.sBtlGetSkilltbl, score 10.0 band A
 0x002E0998	func_r1_002A4B40	placeholder	placeholder for the pair with raidou1 0x002A4B40, unique-reloc-hash
-0x002E09A8	func_r1_002A4B50	placeholder	placeholder for the pair with raidou1 0x002A4B50, run-order-near
+0x002E09A8	sBtlSetSkill_MotionData	hd-inferred	hd: Raidou HD sBtlSkill.sBtlSetSkill_MotionData, score 7.85 band B, hd-ab: calls2 prev calls-of-match votes2 st2:call r2-only
 0x002E0B80	func_r1_002A4D08	placeholder	placeholder for the pair with raidou1 0x002A4D08, unique-masked-hash
 0x002E10B0	func_r1_002A4EA8	placeholder	placeholder for the pair with raidou1 0x002A4EA8, unique-masked-hash
 0x002E1108	func_r1_002A4F00	placeholder	placeholder for the pair with raidou1 0x002A4F00, unique-masked-hash
@@ -6904,7 +6904,7 @@
 0x002E42D0	func_r1_002A7A58	placeholder	placeholder for the pair with raidou1 0x002A7A58, run-order-near
 0x002E43F0	func_r1_002A7BC0	placeholder	placeholder for the pair with raidou1 0x002A7BC0, masked-hash-in-gap
 0x002E4470	func_r1_002A7C40	placeholder	placeholder for the pair with raidou1 0x002A7C40, masked-hash-in-gap
-0x002E4478	func_r1_002A7C48	placeholder	placeholder for the pair with raidou1 0x002A7C48, run-order-near
+0x002E4478	sbattleVisualDraw	hd-inferred	hd: Raidou HD sbattle.sbattleVisualDraw, score 6.65 band C, hd-consensus: calls3 callee-index votes2 st1:cidx r1-only; 10/10 fold runs agree, fold scores 8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7,8.7
 0x002E4D80	func_r1_002A8588	placeholder	placeholder for the pair with raidou1 0x002A8588, unique-reloc-hash
 0x002E4DA0	func_r1_002A85A8	placeholder	placeholder for the pair with raidou1 0x002A85A8, unique-reloc-hash
 0x002E4E68	func_r1_002A8670	placeholder	placeholder for the pair with raidou1 0x002A8670, unique-reloc-hash
@@ -6912,7 +6912,7 @@
 0x002E5140	func_r1_002A8948	placeholder	placeholder for the pair with raidou1 0x002A8948, unique-masked-hash
 0x002E5718	func_r1_002A8F20	placeholder	placeholder for the pair with raidou1 0x002A8F20, unique-masked-hash
 0x002E5E48	sbattleEditDraw_MOVE	hd-inferred	hd: Raidou HD sbattle.sbattleEditDraw_MOVE, score 8.65 band B
-0x002E5F58	func_r1_002A9760	placeholder	placeholder for the pair with raidou1 0x002A9760, unique-masked-hash
+0x002E5F58	sbattleEditDraw	hd-inferred	hd: Raidou HD sbattle.sbattleEditDraw, score 6.3 band C, hd-consensus: calls2 str1 callers-of-match votes2 st1:call r2-disagree:0x2e91c0; 10/10 fold runs agree, fold scores 10.5,11.3,10.3,10.5,10.5,10.5,11.3,10.5,6.3,10.5
 0x002E60F8	func_r1_002A9900	placeholder	placeholder for the pair with raidou1 0x002A9900, unique-reloc-hash
 0x002E61D0	sbattleLoadDraw	hd-inferred	hd: Raidou HD sbattle.sbattleLoadDraw, score 13.0 band A
 0x002E63A0	sbattlePBLoadDraw	hd-inferred	hd: Raidou HD sbattle.sbattlePBLoadDraw, score 9.5 band B
@@ -6957,7 +6957,7 @@
 0x002EC518	sbattleGetUnit	hd-inferred	hd: Raidou HD sbattle.sbattleGetUnit, score 7.8 band B
 0x002ECFF8	func_r1_002B0420	placeholder	placeholder for the pair with raidou1 0x002B0420, unique-reloc-hash
 0x002ED0A0	func_r1_002B04A8	placeholder	placeholder for the pair with raidou1 0x002B04A8, unique-reloc-hash
-0x002ED0D8	func_r1_002B04E0	placeholder	placeholder for the pair with raidou1 0x002B04E0, unique-masked-hash
+0x002ED0D8	ModelSelectProc	hd	hd: Raidou HD sbattle.ModelSelectProc, score 7.95 band B, hd-ab: calls2 callers-of-match votes3 st1:call r1+r2
 0x002ED288	func_r1_002B0690	placeholder	placeholder for the pair with raidou1 0x002B0690, unique-masked-hash
 0x002ED378	func_r1_002B0780	placeholder	placeholder for the pair with raidou1 0x002B0780, unique-masked-hash
 0x002ED488	func_r1_002B0890	placeholder	placeholder for the pair with raidou1 0x002B0890, run-order-near
@@ -6975,7 +6975,7 @@
 0x002EEBE0	sbattleMDLMODE_Func_Open	hd-inferred	hd: Raidou HD sbattle.sbattleMDLMODE_Func_Open, score 10.6 band A
 0x002EEE50	sBtlDebug_MOVEMODE_Func_Open	hd	hd: Raidou HD sbattle.sBtlDebug_MOVEMODE_Func_Open, score 11.2 band A
 0x002EF070	sBtlDebug_LoadMotionMoveData	hd	hd: Raidou HD sbattle.sBtlDebug_LoadMotionMoveData, score 8.0 band B
-0x002EF238	func_r1_002B2610	placeholder	placeholder for the pair with raidou1 0x002B2610, unique-masked-hash
+0x002EF238	sBtlDebug_LoadMHTData	hd	hd: Raidou HD sbattle.sBtlDebug_LoadMHTData, score 6.5 band C, hd-consensus: calls2 callers-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.5,6.5,6.5,7.0,6.5,6.5,6.5,6.5,6.5,7.0
 0x002EF380	sbattleCheckOpenMenu	hd-inferred	hd: Raidou HD sbattle.sbattleCheckOpenMenu, score 8.0 band B
 0x002EF818	func_r1_002B2BF0	placeholder	placeholder for the pair with raidou1 0x002B2BF0, unique-masked-hash
 0x002EF880	func_r1_002B2C58	placeholder	placeholder for the pair with raidou1 0x002B2C58, unique-reloc-hash
@@ -7026,7 +7026,7 @@
 0x002F6798	sbattleSetEffHitPara	hd-inferred	hd: Raidou HD sbattle.sbattleSetEffHitPara, score 7.15 band B
 0x002F6BF0	func_r1_002B9FB8	placeholder	placeholder for the pair with raidou1 0x002B9FB8, unique-reloc-hash
 0x002F6C20	func_r1_002B9FE8	placeholder	placeholder for the pair with raidou1 0x002B9FE8, unique-reloc-hash
-0x002F6C78	func_r1_002BA040	placeholder	placeholder for the pair with raidou1 0x002BA040, near-size
+0x002F6C78	sbattleSetVisualPara	hd-inferred	hd: Raidou HD sbattle.sbattleSetVisualPara, score 5.9 band C, hd-consensus: calls2 callers-of-match votes3 st1:call r1-only; 10/10 fold runs agree, fold scores 8.4,8.4,5.9,8.4,8.4,8.4,8.4,8.4,8.4,8.4
 0x002F7310	func_r1_002BA6D0	placeholder	placeholder for the pair with raidou1 0x002BA6D0, unique-masked-hash
 0x002F7BC0	func_r1_002BB000	placeholder	placeholder for the pair with raidou1 0x002BB000, unique-masked-hash
 0x002F7CE0	sBtlDebug_UnitPad	hd	hd: Raidou HD sbattle.sBtlDebug_UnitPad, score 10.4 band A
@@ -7042,8 +7042,8 @@
 0x002F9D20	func_r1_002BC9F8	placeholder	placeholder for the pair with raidou1 0x002BC9F8, unique-masked-hash
 0x002F9D68	func_r1_002BCA40	placeholder	placeholder for the pair with raidou1 0x002BCA40, unique-masked-hash
 0x002F9E10	sBtlDebug_DrawNormalList_Col	hd	hd: Raidou HD sbattle.sBtlDebug_DrawNormalList_Col, score 7.95 band B
-0x002F9EE8	func_r1_002BCBC0	placeholder	placeholder for the pair with raidou1 0x002BCBC0, run-order-near
-0x002FA7B0	func_r1_002BD470	placeholder	placeholder for the pair with raidou1 0x002BD470, unique-masked-hash
+0x002F9EE8	sBtlDebug_SetStatusflg	hd	hd: Raidou HD sbattle.sBtlDebug_SetStatusflg, score 9.0 band B, hd-ab: calls2 callers-of-match votes2 st1:call r1+r2
+0x002FA7B0	sBtlDebug_DrawONOFFList_Motion	hd	hd: Raidou HD sbattle.sBtlDebug_DrawONOFFList_Motion, score 5.1 band C, hd-consensus: calls1 prev~ calls-of-match st1:call r1-only; 10/10 fold runs agree, fold scores 7.1,7.1,7.1,6.5,6.5,7.1,7.1,7.1,7.1,7.1
 0x002FA868	func_r1_002BD528	placeholder	placeholder for the pair with raidou1 0x002BD528, unique-masked-hash
 0x002FB0F8	func_r1_002BD860	placeholder	placeholder for the pair with raidou1 0x002BD860, unique-reloc-hash
 0x002FB110	func_r1_002BD878	placeholder	placeholder for the pair with raidou1 0x002BD878, unique-reloc-hash
@@ -7062,12 +7062,12 @@
 0x002FBD60	func_r1_002BE4C8	placeholder	placeholder for the pair with raidou1 0x002BE4C8, unique-reloc-hash
 0x002FBF38	func_r1_002BE6A0	placeholder	placeholder for the pair with raidou1 0x002BE6A0, unique-reloc-hash
 0x002FC318	sBtlDebug_DrawC	hd	hd: Raidou HD sbattle.sBtlDebug_DrawC, score 7.2 band B
-0x002FC7F8	func_r1_002BEF60	placeholder	placeholder for the pair with raidou1 0x002BEF60, unique-reloc-hash
+0x002FC7F8	_3DCylinderDraw	hd	hd: Raidou HD sbattle._3DCylinderDraw, score 6.05 band C, hd-consensus: calls3 calls-of-match st1:call r1-only; 10/10 fold runs agree, fold scores 8.1,7.7,7.7,8.1,8.1,7.7,7.7,8.1,8.1,8.1
 0x002FCD40	func_r1_002BF4A8	placeholder	placeholder for the pair with raidou1 0x002BF4A8, unique-reloc-hash
 0x002FCEB0	func_r1_002BF618	placeholder	placeholder for the pair with raidou1 0x002BF618, unique-reloc-hash
 0x002FD060	sBtlDebug_DeleteHitList	hd	hd: Raidou HD sbattle.sBtlDebug_DeleteHitList, score 9.0 band B
 0x002FD0A0	sbattleDrawHitList	hd-inferred	hd: Raidou HD sbattle.sbattleDrawHitList, score 9.5 band B
-0x002FD628	func_r1_002BFD98	placeholder	placeholder for the pair with raidou1 0x002BFD98, unique-reloc-hash
+0x002FD628	sbattleDraw3DSphere	hd-inferred	hd: Raidou HD sbattle.sbattleDraw3DSphere, score 6.45 band C, hd-consensus: calls3 calls-of-match st1:call r1-only; 10/10 fold runs agree, fold scores 8.4,8.0,8.0,8.4,8.4,8.0,8.0,8.4,8.4,8.4
 0x002FD8C0	func_r1_002C0030	placeholder	placeholder for the pair with raidou1 0x002C0030, unique-masked-hash
 0x002FD928	func_r1_002C0098	placeholder	placeholder for the pair with raidou1 0x002C0098, unique-reloc-hash
 0x002FDA50	func_r1_002C01C0	placeholder	placeholder for the pair with raidou1 0x002C01C0, unique-reloc-hash
@@ -7075,7 +7075,7 @@
 0x002FDDB0	func_r1_002C0520	placeholder	placeholder for the pair with raidou1 0x002C0520, masked-hash-in-gap
 0x002FDDB8	func_r1_002C0528	placeholder	placeholder for the pair with raidou1 0x002C0528, masked-hash-in-gap
 0x002FDDC0	func_r1_002C0530	placeholder	placeholder for the pair with raidou1 0x002C0530, masked-hash-in-gap
-0x002FDDC8	func_r1_002C0588	placeholder	placeholder for the pair with raidou1 0x002C0588, size
+0x002FDDC8	sBtlFuncKatana	hd-inferred	hd: Raidou HD sBtlMenu.sBtlFuncKatana, score 8.7 band B, hd-ab: calls4 callers-of-match votes2 st2:call r2-only
 0x002FE210	func_r1_002C05C0	placeholder	placeholder for the pair with raidou1 0x002C05C0, size
 0x002FF7F0	DrawFuncSkl	hd	hd: Raidou HD sBtlCmndMenuNew.DrawFuncSkl, score 7.5 band B
 0x002FFB70	func_r1_002C22B0	placeholder	placeholder for the pair with raidou1 0x002C22B0, size
@@ -7206,7 +7206,7 @@
 0x0032C998	func_r1_002CC3F0	placeholder	placeholder for the pair with raidou1 0x002CC3F0, unique-reloc-hash
 0x0032CB00	func_r1_002CC558	placeholder	placeholder for the pair with raidou1 0x002CC558, unique-reloc-hash
 0x0032CBD8	func_r1_002CC630	placeholder	placeholder for the pair with raidou1 0x002CC630, masked-hash-in-gap
-0x0032CC10	func_r1_002CC668	placeholder	placeholder for the pair with raidou1 0x002CC668, unique-masked-hash
+0x0032CC10	cmpDrawSetup3DView	inferred	smt3-decomp name via SLUS_209.11 0x002399D8, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.5
 0x0032CD60	cmpDrawSpriteFlag	inferred	SMT3HD name via SLUS_209.11 0x00239B28, reloc-identical; map-agrees
 0x0032CE40	func_r1_002CC898	placeholder	placeholder for the pair with raidou1 0x002CC898, unique-reloc-hash
 0x0032CE60	cmpDrawSprite	inferred	SMT3HD name via SLUS_209.11 0x00239C28, reloc-identical; map-agrees
@@ -7308,7 +7308,7 @@
 0x00332960	func_r1_002D2250	placeholder	placeholder for the pair with raidou1 0x002D2250, run-order-near
 0x00332A30	func_r1_002D2310	placeholder	placeholder for the pair with raidou1 0x002D2310, unique-masked-hash
 0x00332AD0	Suteru	hd	hd: Raidou HD mjn.Suteru, score 9.95 band B
-0x00332BD8	func_r1_002D24B8	placeholder	placeholder for the pair with raidou1 0x002D24B8, size
+0x00332BD8	PlayerTurn	hd	hd: Raidou HD mjn.PlayerTurn, score 3.5 band D, hd-consensus: calls1 callers-of-match st1:call r1-only; 10/10 fold runs agree, fold scores 9.3,4.5,6.5,6.3,6.3,8.3,6.5,9.3,6.3,6.3
 0x00332F10	AITurn	hd	hd: Raidou HD mjn.AITurn, score 8.8 band B
 0x00333188	func_r1_002D2A68	placeholder	placeholder for the pair with raidou1 0x002D2A68, unique-reloc-hash
 0x003331B0	func_r1_002D2A90	placeholder	placeholder for the pair with raidou1 0x002D2A90, unique-masked-hash
@@ -7325,19 +7325,19 @@
 0x00335008	func_r1_002D48C0	placeholder	placeholder for the pair with raidou1 0x002D48C0, unique-masked-hash
 0x00335238	func_r1_002D4AF0	placeholder	placeholder for the pair with raidou1 0x002D4AF0, run-order-near
 0x003352B8	func_r1_002D4B68	placeholder	placeholder for the pair with raidou1 0x002D4B68, masked-hash-in-gap
-0x00335338	func_r1_002D4BE8	placeholder	placeholder for the pair with raidou1 0x002D4BE8, masked-hash-in-gap
+0x00335338	CheckAgariKokushi	hd	hd: Raidou HD mjn.CheckAgariKokushi, score 4.3 band D, hd-consensus: calls1 calls-of-match-uniq st1:call r1-only; 10/10 fold runs agree, fold scores 6.3,4.3,6.3,8.8,6.8,6.3,6.3,6.3,4.3,8.8
 0x003353B8	func_r1_002D4C68	placeholder	placeholder for the pair with raidou1 0x002D4C68, unique-masked-hash
 0x00335490	func_r1_002D4D40	placeholder	placeholder for the pair with raidou1 0x002D4D40, unique-masked-hash
 0x00335510	func_r1_002D4DC0	placeholder	placeholder for the pair with raidou1 0x002D4DC0, unique-reloc-hash
 0x00335540	AskRon	hd	hd: Raidou HD mjn.AskRon, score 10.3 band A
-0x003355E0	func_r1_002D4E90	placeholder	placeholder for the pair with raidou1 0x002D4E90, unique-masked-hash
+0x003355E0	AskRonKokushi	hd	hd: Raidou HD mjn.AskRonKokushi, score 5.3 band C, hd-consensus: calls1 callers-of-match votes2 st1:call r1-only; 10/10 fold runs agree, fold scores 7.3,5.3,7.3,7.3,3.1,7.3,7.3,7.3,5.3,6.3
 0x00335658	func_r1_002D4F08	placeholder	placeholder for the pair with raidou1 0x002D4F08, unique-masked-hash
 0x003357A0	func_r1_002D5050	placeholder	placeholder for the pair with raidou1 0x002D5050, masked-hash-in-gap
 0x003357A8	func_r1_002D5058	placeholder	placeholder for the pair with raidou1 0x002D5058, masked-hash-in-gap
 0x003357B0	func_r1_002D5060	placeholder	placeholder for the pair with raidou1 0x002D5060, unique-masked-hash
 0x00335888	func_r1_002D5138	placeholder	placeholder for the pair with raidou1 0x002D5138, unique-masked-hash
-0x00335980	func_r1_002D5230	placeholder	placeholder for the pair with raidou1 0x002D5230, unique-reloc-hash
-0x00335A40	func_r1_002D52F0	placeholder	placeholder for the pair with raidou1 0x002D52F0, unique-reloc-hash
+0x00335980	Agari	hd	hd: Raidou HD mjn.Agari, score 3.5 band D, hd-consensus: calls1 callers-of-match-uniq st1:call r1-only; 10/10 fold runs agree, fold scores 5.5,6.0,5.5,6.5,8.0,6.5,5.5,5.5,6.5,8.0
+0x00335A40	ApplyTsumo	hd	hd: Raidou HD mjn.ApplyTsumo, score 5.0 band C, hd-consensus: next gap8/37 st1:gap r1+r2; 10/10 fold runs agree, fold scores 5.0,7.5,5.0,7.5,5.0,7.5,5.0,5.0,5.0,5.0
 0x00335A78	func_r1_002D5328	placeholder	placeholder for the pair with raidou1 0x002D5328, unique-masked-hash
 0x00335B28	func_r1_002D53D8	placeholder	placeholder for the pair with raidou1 0x002D53D8, unique-masked-hash
 0x00335BD0	func_r1_002D5480	placeholder	placeholder for the pair with raidou1 0x002D5480, unique-masked-hash
@@ -7383,7 +7383,7 @@
 0x003399D8	func_r1_002D9070	placeholder	placeholder for the pair with raidou1 0x002D9070, unique-reloc-hash
 0x00339D20	func_r1_002D93B8	placeholder	placeholder for the pair with raidou1 0x002D93B8, unique-masked-hash
 0x0033A078	CalcTensu	hd	hd: Raidou HD mjn.CalcTensu, score 7.2 band B
-0x0033AAD0	func_r1_002DA168	placeholder	placeholder for the pair with raidou1 0x002DA168, unique-masked-hash
+0x0033AAD0	CalcAgari	hd	hd: Raidou HD mjn.CalcAgari, score 3.3 band D, hd-consensus: calls1 calls-of-match st1:call r1-only; 10/10 fold runs agree, fold scores 5.3,3.3,5.3,5.3,8.4,8.4,5.3,5.3,5.3,5.3
 0x0033AC90	func_r1_002DA328	placeholder	placeholder for the pair with raidou1 0x002DA328, unique-masked-hash
 0x0033AD38	func_r1_002DA3D0	placeholder	placeholder for the pair with raidou1 0x002DA3D0, unique-masked-hash
 0x0033AED8	func_r1_002DA570	placeholder	placeholder for the pair with raidou1 0x002DA570, run-order-size
@@ -7459,7 +7459,7 @@
 0x00340A80	func_r1_002E00B8	placeholder	placeholder for the pair with raidou1 0x002E00B8, unique-reloc-hash
 0x00340AB0	func_r1_002E00E8	placeholder	placeholder for the pair with raidou1 0x002E00E8, unique-reloc-hash
 0x00340BC8	func_r1_002E0200	placeholder	placeholder for the pair with raidou1 0x002E0200, unique-reloc-hash
-0x00340C50	func_r1_002E0288	placeholder	placeholder for the pair with raidou1 0x002E0288, unique-masked-hash
+0x00340C50	DrawTable	hd	hd: Raidou HD mjn.DrawTable, score 6.0 band C, hd-consensus: calls1 callers-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 8.5,6.0,6.0,8.5,6.0,8.5,6.0,8.5,6.0,8.5
 0x00340CA8	func_r1_002E02E0	placeholder	placeholder for the pair with raidou1 0x002E02E0, unique-masked-hash
 0x00341060	func_r1_002E0698	placeholder	placeholder for the pair with raidou1 0x002E0698, unique-masked-hash
 0x00341590	func_r1_002E0BC8	placeholder	placeholder for the pair with raidou1 0x002E0BC8, unique-masked-hash
@@ -7476,7 +7476,7 @@
 0x00343560	func_r1_002E2B40	placeholder	placeholder for the pair with raidou1 0x002E2B40, unique-reloc-hash
 0x003435F0	func_r1_002E2BD0	placeholder	placeholder for the pair with raidou1 0x002E2BD0, unique-reloc-hash
 0x00343630	func_r1_002E2C10	placeholder	placeholder for the pair with raidou1 0x002E2C10, unique-masked-hash
-0x00343930	func_r1_002E2F08	placeholder	placeholder for the pair with raidou1 0x002E2F08, unique-masked-hash
+0x00343930	StartCutin	hd	hd: Raidou HD mjn.StartCutin, score 6.5 band C, hd-consensus: calls2 calls-of-match st1:call r1+r2; 10/10 fold runs agree, fold scores 6.5,7.0,6.5,7.0,7.0,6.5,7.0,6.5,6.5,7.0
 0x00343B18	MenuInit	hd	hd: Raidou HD mjn.MenuInit, score 11.8 band A
 0x003446E0	MenuLoop	hd	hd: Raidou HD mjn.MenuLoop, score 8.45 band B
 0x00344C10	BridgeLoop	hd	hd: Raidou HD mjn.BridgeLoop, score 10.65 band A
@@ -7494,7 +7494,7 @@
 0x00345C88	func_r1_002E4FE8	placeholder	placeholder for the pair with raidou1 0x002E4FE8, unique-reloc-hash
 0x00345C98	func_r1_002E4FF8	placeholder	placeholder for the pair with raidou1 0x002E4FF8, unique-reloc-hash
 0x00345CA8	func_r1_002E5008	placeholder	placeholder for the pair with raidou1 0x002E5008, unique-reloc-hash
-0x00345CD0	func_r1_002E5030	placeholder	placeholder for the pair with raidou1 0x002E5030, unique-reloc-hash
+0x00345CD0	KillCitizen	hd	hd: Raidou HD ctn.KillCitizen, score 6.7 band C, hd-consensus: calls2 calls-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 8.3,8.3,6.7,8.3,6.7,6.7,8.3,8.3,6.7,6.7
 0x00345DD8	FindAheadList	hd	hd: Raidou HD ctn.FindAheadList, score 7.75 band B
 0x00345FC8	func_r1_002E5328	placeholder	placeholder for the pair with raidou1 0x002E5328, unique-reloc-hash
 0x00346118	FindHeadOn	hd	hd: Raidou HD ctn.FindHeadOn, score 13.2 band A
@@ -7614,8 +7614,8 @@
 0x003537A8	Chr_UpdatePadRandom	hd	hd: Raidou HD lmap.Chr_UpdatePadRandom, score 7.8 band B
 0x00353910	ChrRouteCalcPadParam	hd	hd: Raidou HD lmap.ChrRouteCalcPadParam, score 12.3 band A
 0x003539D8	_Chr_UpdatePadRoute	hd	hd: Raidou HD lmap._Chr_UpdatePadRoute, score 10.5 band A
-0x00353C78	func_r1_002F13A8	placeholder	placeholder for the pair with raidou1 0x002F13A8, unique-masked-hash
-0x00353DD8	func_r1_002F1508	placeholder	placeholder for the pair with raidou1 0x002F1508, run-order-near
+0x00353C78	Chr_UpdatePadRoute	hd	hd: Raidou HD lmap.Chr_UpdatePadRoute, score 6.8 band C, hd-consensus: calls1 next gap13/18 st1:gap r1+r2; 10/10 fold runs agree, fold scores 3.3,9.3,3.3,3.3,4.8,3.3,7.3,6.8,5.3,6.8
+0x00353DD8	Chr_UpdatePadTrain	hd	hd: Raidou HD lmap.Chr_UpdatePadTrain, score 6.7 band C, hd-consensus: calls1 callers-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 4.2,8.0,6.5,6.5,6.5,6.0,6.5,6.7,8.0,8.5
 0x003542A8	func_r1_002F1988	placeholder	placeholder for the pair with raidou1 0x002F1988, unique-reloc-hash
 0x003543C8	func_r1_002F1AA8	placeholder	placeholder for the pair with raidou1 0x002F1AA8, unique-masked-hash
 0x00354490	func_r1_002F1B70	placeholder	placeholder for the pair with raidou1 0x002F1B70, unique-reloc-hash
@@ -7633,7 +7633,7 @@
 0x00356A08	func_r1_002F2BC0	placeholder	placeholder for the pair with raidou1 0x002F2BC0, unique-reloc-hash
 0x00356A78	func_r1_002F2C30	placeholder	placeholder for the pair with raidou1 0x002F2C30, unique-reloc-hash
 0x00356AD0	ActWnd_Init	hd	hd: Raidou HD lmap.ActWnd_Init, score 8.5 band B
-0x00356B40	func_r1_002F2CF8	placeholder	placeholder for the pair with raidou1 0x002F2CF8, unique-reloc-hash
+0x00356B40	ActWnd_Main	hd	hd: Raidou HD lmap.ActWnd_Main, score 5.8 band C, hd-consensus: calls1 gap24/54 votes2 st1:gap r1+r2; 10/10 fold runs agree, fold scores 5.8,5.3,5.8,8.3,8.3,5.8,5.8,8.3,5.8,8.3
 0x00356C68	ActWnd_Draw	hd	hd: Raidou HD lmap.ActWnd_Draw, score 7.5 band B
 0x00356D18	ActWnd_Reset	hd	hd: Raidou HD lmap.ActWnd_Reset, score 8.95 band B
 0x00356D30	ActWnd_DrawProcess	hd	hd: Raidou HD lmap.ActWnd_DrawProcess, score 7.45 band B
@@ -7908,7 +7908,7 @@
 0x003653F8	func_r1_003010B0	placeholder	placeholder for the pair with raidou1 0x003010B0, masked-hash-in-gap
 0x00365488	func_r1_00301140	placeholder	placeholder for the pair with raidou1 0x00301140, unique-reloc-hash
 0x00365508	func_r1_003011C0	placeholder	placeholder for the pair with raidou1 0x003011C0, unique-reloc-hash
-0x00365588	func_r1_00301240	placeholder	placeholder for the pair with raidou1 0x00301240, unique-reloc-hash
+0x00365588	sBtlSetDevilID_EnemyRot	hd-inferred	hd: Raidou HD sBtlPlayer.sBtlSetDevilID_EnemyRot, score 5.1 band C, hd-consensus: calls2 callers-of-match st2:call r2-only; 10/10 fold runs agree, fold scores 5.1,7.1,5.1,7.1,5.1,5.1,7.1,5.1,5.1,5.1
 0x00365608	func_r1_003012C0	placeholder	placeholder for the pair with raidou1 0x003012C0, unique-reloc-hash
 0x00365688	func_r1_00301340	placeholder	placeholder for the pair with raidou1 0x00301340, unique-reloc-hash
 0x003658E8	func_r1_003015A0	placeholder	placeholder for the pair with raidou1 0x003015A0, unique-reloc-hash
@@ -8050,7 +8050,7 @@
 0x00371298	fldJmsQuestMapLoad	hd-inferred	hd: Raidou HD fld.fldJmsQuestMapLoad, score 8.75 band B
 0x00371530	func_r1_00314F68	placeholder	placeholder for the pair with raidou1 0x00314F68, size
 0x00371570	func_r1_00314FA8	placeholder	placeholder for the pair with raidou1 0x00314FA8, size
-0x003715B0	func_r1_00314FE8	placeholder	placeholder for the pair with raidou1 0x00314FE8, size
+0x003715B0	cmpLoadSpriteHnd	hd-inferred	hd: Raidou HD cmpFile.cmpLoadSpriteHnd, score 8.1 band B, hd-ab: calls1 calls-of-match st1:call r1+r2
 0x003715D8	cmpGetSpriteHnd	hd-inferred	hd: Raidou HD cmpFile.cmpGetSpriteHnd, score 9.6 band B
 0x00371658	func_r1_00315038	placeholder	placeholder for the pair with raidou1 0x00315038, masked-hash-in-gap
 0x003716A8	func_r1_00315088	placeholder	placeholder for the pair with raidou1 0x00315088, unique-reloc-hash
@@ -8079,13 +8079,13 @@
 0x00373058	func_r1_003164B0	placeholder	placeholder for the pair with raidou1 0x003164B0, unique-reloc-hash
 0x00373380	func_r1_003167A8	placeholder	placeholder for the pair with raidou1 0x003167A8, unique-reloc-hash
 0x003733C8	cmpLoadModelTables	inferred	string: loads /camp/tblStatusModel.dat and /camp/tblViewerModel.dat; next to cmpLoadStatusModel
-0x00373400	func_r1_003167F0	placeholder	placeholder for the pair with raidou1 0x003167F0, masked-hash-in-gap
+0x00373400	cmpGetFlagScreenShot	hd-inferred	hd: Raidou HD cmpStatus.cmpGetFlagScreenShot, score 5.8 band C, hd-consensus: calls2 calls-of-match votes2 st2:call r2-only; 10/10 fold runs agree, fold scores 5.8,5.8,5.8,5.8,7.8,5.8,5.8,7.8,5.8,5.8
 0x00373418	func_r1_00316848	placeholder	placeholder for the pair with raidou1 0x00316848, size
 0x00373430	cmpSetLight	hd-inferred	hd: Raidou HD cmpModel.cmpSetLight, score 10.6 band A
 0x003735A8	cmpInitCore2	hd-inferred	hd: Raidou HD cmpModel.cmpInitCore2, score 8.2 band B
 0x003736B0	cmpSetLightUnit	hd-inferred	hd: Raidou HD cmpModel.cmpSetLightUnit, score 7.2 band B
 0x00373800	cmpInitDstEff2	hd-inferred	hd: Raidou HD cmpModel.cmpInitDstEff2, score 9.3 band B
-0x00373870	func_r1_00316CA0	placeholder	placeholder for the pair with raidou1 0x00316CA0, unique-reloc-hash
+0x00373870	cmpInitDstEff	hd-inferred	hd: Raidou HD cmpModel.cmpInitDstEff, score 7.2 band B, hd-ab: calls3 prev gap=exact votes4 st2:gap r1-disagree:0x19f6c0
 0x003738F8	cmpCreateBstEff	hd-inferred	hd: Raidou HD cmpModel.cmpCreateBstEff, score 7.7 band B
 0x00373988	cmpDeleteBstEff	hd-inferred	hd: Raidou HD cmpModel.cmpDeleteBstEff, score 8.0 band B
 0x00373A18	cmpDrawBstEff	hd-inferred	hd: Raidou HD cmpModel.cmpDrawBstEff, score 9.3 band B
@@ -8099,7 +8099,7 @@
 0x00373EA0	func_r1_00317278	placeholder	placeholder for the pair with raidou1 0x00317278, unique-reloc-hash
 0x00373EF0	func_r1_003172C8	placeholder	placeholder for the pair with raidou1 0x003172C8, masked-hash-in-gap
 0x00373F60	func_r1_00317338	placeholder	placeholder for the pair with raidou1 0x00317338, masked-hash-in-gap
-0x00374028	func_r1_003173A8	placeholder	placeholder for the pair with raidou1 0x003173A8, masked-hash-in-gap
+0x00374028	cmpGetMotionNum	hd-inferred	hd: Raidou HD cmpModel.cmpGetMotionNum, score 6.1 band C, hd-consensus: calls1 next calls-of-match-uniq votes2 st1:call r1-only; 10/10 fold runs agree, fold scores 6.5,6.1,8.1,8.5,8.5,8.1,8.1,8.5,8.1,8.1
 0x00374060	func_r1_003173E0	placeholder	placeholder for the pair with raidou1 0x003173E0, masked-hash-in-gap
 0x00374098	func_r1_00317418	placeholder	placeholder for the pair with raidou1 0x00317418, unique-reloc-hash
 0x003740D0	cmpSetModelScale	hd-inferred	hd: Raidou HD cmpModel.cmpSetModelScale, score 8.4 band B
@@ -8114,7 +8114,7 @@
 0x00374968	func_r1_00317B68	placeholder	placeholder for the pair with raidou1 0x00317B68, unique-reloc-hash
 0x00374978	itfMesMngDebugShutdown	inferred	SMT3HD name via SLUS_209.11 0x001CF040, reloc-identical; map-agrees
 0x00374990	func_r1_00317B90	placeholder	placeholder for the pair with raidou1 0x00317B90, unique-reloc-hash
-0x003749D0	func_r1_00317BD0	placeholder	placeholder for the pair with raidou1 0x00317BD0, masked-hash-in-gap
+0x003749D0	cmpDrawStatusModel	hd-inferred	hd: Raidou HD cmpModel.cmpDrawStatusModel, score 6.1 band C, hd-consensus: calls2 callers-of-match-uniq votes3 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.1,5.6,5.6,7.1,5.6,7.6,6.1,6.1,5.6,7.6
 0x00374AD0	func_r1_00317C98	placeholder	placeholder for the pair with raidou1 0x00317C98, masked-hash-in-gap
 0x00374AD8	func_r1_00317CA0	placeholder	placeholder for the pair with raidou1 0x00317CA0, run-order-size
 0x00374AE0	func_r1_00317CA8	placeholder	placeholder for the pair with raidou1 0x00317CA8, masked-hash-in-gap
@@ -8123,7 +8123,7 @@
 0x00374B00	func_r1_00317CC8	placeholder	placeholder for the pair with raidou1 0x00317CC8, run-order-size
 0x00374B10	func_r1_00317CD8	placeholder	placeholder for the pair with raidou1 0x00317CD8, masked-hash-in-gap
 0x00374BB8	func_r1_00317D80	placeholder	placeholder for the pair with raidou1 0x00317D80, masked-hash-in-gap
-0x00374C00	func_r1_00317DC8	placeholder	placeholder for the pair with raidou1 0x00317DC8, unique-reloc-hash
+0x00374C00	cmpEffectSetRGBA	hd-inferred	hd: Raidou HD cmpModel.cmpEffectSetRGBA, score 6.8 band C, hd-consensus: calls1 next gap10/9 st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.8,6.8,7.8,6.8,6.8,8.0,6.8,8.0,4.8,6.8
 0x00374C38	cmpDrawEffect	hd-inferred	hd: Raidou HD cmpModel.cmpDrawEffect, score 9.2 band B
 0x00375448	func_r1_00317E98	placeholder	placeholder for the pair with raidou1 0x00317E98, unique-reloc-hash
 0x003754F8	func_r1_00317F48	placeholder	placeholder for the pair with raidou1 0x00317F48, unique-masked-hash
@@ -8140,7 +8140,7 @@
 0x003760B0	cmpLvUpSeqFadeInStepUpdate	hd-inferred	hd: Raidou HD cmpStatus.cmpLvUpSeqFadeInStepUpdate, score 7.8 band B
 0x003779C0	cmpSeqRankUp	hd-inferred	hd: Raidou HD cmpStatus.cmpSeqRankUp, score 7.7 band B
 0x00377CA0	func_r1_00319940	placeholder	placeholder for the pair with raidou1 0x00319940, masked-hash-in-gap
-0x00377CA8	func_r1_00319948	placeholder	placeholder for the pair with raidou1 0x00319948, masked-hash-in-gap
+0x00377CA8	Process_cmpStatus	hd	hd: Raidou HD cmpStatus.Process, score 5.15 band C, hd-consensus: calls2 callers-of-match-uniq votes2 st1:call r1-only; 10/10 fold runs agree, fold scores 4.7,7.2,5.2,7.2,7.2,7.2,6.2,4.7,7.2,7.2
 0x00377E80	func_r1_00319AC0	placeholder	placeholder for the pair with raidou1 0x00319AC0, unique-masked-hash
 0x00377EF0	func_r1_00319B30	placeholder	placeholder for the pair with raidou1 0x00319B30, masked-hash-in-gap
 0x00377F60	func_r1_00319BA0	placeholder	placeholder for the pair with raidou1 0x00319BA0, size
@@ -8158,7 +8158,7 @@
 0x0037D008	func_r1_0031C850	placeholder	placeholder for the pair with raidou1 0x0031C850, size
 0x0037D238	DrawProcess_cmpStatus	hd	hd: Raidou HD cmpStatus.DrawProcess, score 9.1 band B
 0x0037DE28	func_r1_0031D230	placeholder	placeholder for the pair with raidou1 0x0031D230, size
-0x0037DE98	func_r1_0031D6E8	placeholder	placeholder for the pair with raidou1 0x0031D6E8, size
+0x0037DE98	cmpChkEnd	hd-inferred	hd: Raidou HD cmpStatus.cmpChkEnd, score 8.3 band B, hd-ab: calls4 prev calls-of-match votes3 st2:call r1-disagree:0x31d230
 0x0037E3D8	func_r1_0031D730	placeholder	placeholder for the pair with raidou1 0x0031D730, size
 0x0037E418	func_r1_0031D770	placeholder	placeholder for the pair with raidou1 0x0031D770, run-order-near
 0x0037E558	func_r1_0031D8A0	placeholder	placeholder for the pair with raidou1 0x0031D8A0, size
@@ -8200,7 +8200,7 @@
 0x0038AA18	func_r1_00322F18	placeholder	placeholder for the pair with raidou1 0x00322F18, unique-reloc-hash
 0x0038AC38	func_r1_00323138	placeholder	placeholder for the pair with raidou1 0x00323138, unique-masked-hash
 0x0038AD80	func_r1_00323280	placeholder	placeholder for the pair with raidou1 0x00323280, unique-masked-hash
-0x0038AF58	func_r1_00323458	placeholder	placeholder for the pair with raidou1 0x00323458, unique-reloc-hash
+0x0038AF58	DrawProcess	hd	hd: Raidou HD cmpMap.DrawProcess, score 7.95 band B, hd-ab: calls2 prev callers-of-match-uniq votes3 st2:call r2-only
 0x0038AFB8	func_r1_003234B8	placeholder	placeholder for the pair with raidou1 0x003234B8, unique-reloc-hash
 0x0038B020	itfDvlMsgProcessEnd	hd-inferred	hd: Raidou HD itf.itfDvlMsgProcessEnd, score 7.4 band B
 0x0038B078	ProcessStart_cmpMap	hd	hd: Raidou HD cmpMap.ProcessStart, score 9.5 band B
@@ -8246,7 +8246,7 @@
 0x0038F280	Shutdown_nwdNews	hd	hd: Raidou HD nwdNews.Shutdown, score 10.05 band A
 0x0038F2D8	nwdProcessStart	hd-inferred	hd: Raidou HD nwdNews.nwdProcessStart, score 11.5 band A
 0x0038F388	nwdProcessEnd	hd-inferred	hd: Raidou HD nwdNews.nwdProcessEnd, score 12.0 band A
-0x0038F3F0	func_r1_0032B520	placeholder	placeholder for the pair with raidou1 0x0032B520, masked-hash-in-gap
+0x0038F3F0	nwdProcessCheck	hd-inferred	hd: Raidou HD nwdNews.nwdProcessCheck, score 10.5 band A, hd-ab: calls2 prev calls-of-match votes2 st1:call r1+r2
 0x0038F440	shpCreateScene	hd-inferred	hd: Raidou HD shpModel.shpCreateScene, score 12.5 band A
 0x0038F490	shpDeleteScene	hd-inferred	hd: Raidou HD shpModel.shpDeleteScene, score 9.0 band B
 0x0038F4C8	shpMakeLightPacket	hd-inferred	hd: Raidou HD shpModel.shpMakeLightPacket, score 11.6 band A
@@ -8277,10 +8277,10 @@
 0x003906D8	shpSetDrwModelAll	hd-inferred	hd: Raidou HD shpModel.shpSetDrwModelAll, score 12.4 band A
 0x00390728	shpSetColor	hd-inferred	hd: Raidou HD shpModel.shpSetColor, score 9.3 band B
 0x00390790	shpSetParamInit	hd-inferred	hd: Raidou HD shpModel.shpSetParamInit, score 10.6 band A
-0x003908B0	func_r1_0032CB00	placeholder	placeholder for the pair with raidou1 0x0032CB00, unique-reloc-hash
-0x003908E8	func_r1_0032CB38	placeholder	placeholder for the pair with raidou1 0x0032CB38, unique-reloc-hash
-0x00390920	func_r1_0032CB70	placeholder	placeholder for the pair with raidou1 0x0032CB70, unique-reloc-hash
-0x00390A30	func_r1_0032CC80	placeholder	placeholder for the pair with raidou1 0x0032CC80, unique-reloc-hash
+0x003908B0	shpSetTrans	hd-inferred	hd: Raidou HD shpModel.shpSetTrans, score 4.0 band D, hd-consensus: prev edge st1:edge r1+r2; 10/10 fold runs agree, fold scores 8.0,8.0,8.0,4.0,8.0,8.0,4.0,4.0,8.0,4.0
+0x003908E8	shpSetDebugPrint	hd-inferred	hd: Raidou HD shpModel.shpSetDebugPrint, score 4.0 band D, hd-consensus: prev edge st1:edge r1+r2; 10/10 fold runs agree, fold scores 8.0,8.0,8.0,4.0,8.0,6.0,4.0,4.0,8.0,4.0
+0x00390920	shpDrawFieldLine	hd-inferred	hd: Raidou HD shpModel.shpDrawFieldLine, score 7.5 band B, hd-ab: prev next gap=exact st1:gap r1+r2
+0x00390A30	shpGetBasic	hd-inferred	hd: Raidou HD shpModel.shpGetBasic, score 7.0 band B, hd-ab: calls1 calls-of-match-uniq votes2 st1:call r1+r2
 0x00390A58	func_r1_0032CCA8	placeholder	placeholder for the pair with raidou1 0x0032CCA8, unique-reloc-hash
 0x00390BE0	func_r1_0032CDA8	placeholder	placeholder for the pair with raidou1 0x0032CDA8, masked-hash-in-gap
 0x00390C30	func_r1_0032CDF8	placeholder	placeholder for the pair with raidou1 0x0032CDF8, run-order-near
@@ -8304,8 +8304,8 @@
 0x00392350	ScrollBar	hd	hd: Raidou HD shpDraw.ScrollBar, score 7.7 band B
 0x00392428	PartsList	hd	hd: Raidou HD shpDraw.PartsList, score 8.1 band B
 0x00392630	shpItemListTest	hd-inferred	hd: Raidou HD shpDraw.shpItemListTest, score 8.95 band B
-0x00392718	func_r1_0032E4C0	placeholder	placeholder for the pair with raidou1 0x0032E4C0, unique-masked-hash
-0x003927D0	func_r1_0032E578	placeholder	placeholder for the pair with raidou1 0x0032E578, unique-masked-hash
+0x00392718	knyDrawKeyHelp	hd	hd: Raidou HD shpDraw.knyDrawKeyHelp, score 6.1 band C, hd-consensus: calls1 callers-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.1,6.1,6.1,7.1,6.1,6.1,4.1,6.1,7.6,6.1
+0x003927D0	nwdDrawKeyHelp	hd	hd: Raidou HD shpDraw.nwdDrawKeyHelp, score 6.8 band C, hd-consensus: calls1 callers-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.8,6.8,6.8,7.8,6.3,6.2,4.8,6.8,8.3,6.8
 0x00392948	func_r1_0032E658	placeholder	placeholder for the pair with raidou1 0x0032E658, unique-reloc-hash
 0x00392978	shpRootCursorInit	hd-inferred	hd: Raidou HD shpDraw.shpRootCursorInit, score 7.3 band B
 0x00392990	shpResetRootLine	hd-inferred	hd: Raidou HD shpDraw.shpResetRootLine, score 7.7 band B
@@ -8313,7 +8313,7 @@
 0x003929D0	shpCursorLine	hd-inferred	hd: Raidou HD shpDraw.shpCursorLine, score 7.6 band B
 0x00392D38	shpRootLine	hd-inferred	hd: Raidou HD shpDraw.shpRootLine, score 7.15 band B
 0x00392E18	shpRootCursorSelect	hd-inferred	hd: Raidou HD shpDraw.shpRootCursorSelect, score 7.1 band B
-0x00393178	func_r1_0032EE78	placeholder	placeholder for the pair with raidou1 0x0032EE78, run-order-near
+0x00393178	shpBackSpr	hd-inferred	hd: Raidou HD shpDraw.shpBackSpr, score 6.45 band C, hd-consensus: calls1 calls-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.5,6.5,6.5,6.5,7.0,6.5,4.4,6.5,6.5,7.0
 0x00393260	func_r1_0032EF40	placeholder	placeholder for the pair with raidou1 0x0032EF40, unique-masked-hash
 0x003936F8	func_r1_0032F150	placeholder	placeholder for the pair with raidou1 0x0032F150, masked-hash-in-gap
 0x00393708	func_r1_0032F160	placeholder	placeholder for the pair with raidou1 0x0032F160, masked-hash-in-gap
@@ -8374,7 +8374,7 @@
 0x003975E0	func_r1_00332E48	placeholder	placeholder for the pair with raidou1 0x00332E48, unique-reloc-hash
 0x00397798	func_r1_00333000	placeholder	placeholder for the pair with raidou1 0x00333000, unique-reloc-hash
 0x003977D0	func_r1_00333038	placeholder	placeholder for the pair with raidou1 0x00333038, unique-reloc-hash
-0x00397808	func_r1_00333070	placeholder	placeholder for the pair with raidou1 0x00333070, unique-masked-hash
+0x00397808	LineWide	hd	hd: Raidou HD shpDrawMisc.LineWide, score 6.9 band C, hd-consensus: calls1 calls-of-match votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 8.4,8.4,6.9,6.9,6.9,6.9,6.4,8.4,6.9,6.9
 0x00397A28	GetPosBezierCurve	hd	hd: Raidou HD shpDrawMisc.GetPosBezierCurve, score 9.3 band B
 0x00397B10	shpDrawBezierCurveWide	hd-inferred	hd: Raidou HD shpDrawMisc.shpDrawBezierCurveWide, score 7.3 band B
 0x00397C90	func_r1_003334F8	placeholder	placeholder for the pair with raidou1 0x003334F8, unique-reloc-hash
@@ -8403,12 +8403,12 @@
 0x0039AE58	func_r1_003362A8	placeholder	placeholder for the pair with raidou1 0x003362A8, unique-masked-hash
 0x0039AF80	func_r1_003363D0	placeholder	placeholder for the pair with raidou1 0x003363D0, run-order-size
 0x0039AFB8	shpSetStatDraw	hd-inferred	hd: Raidou HD shpMain.shpSetStatDraw, score 8.2 band B
-0x0039B010	func_r1_00336460	placeholder	placeholder for the pair with raidou1 0x00336460, unique-masked-hash
-0x0039B050	func_r1_003364A0	placeholder	placeholder for the pair with raidou1 0x003364A0, size
-0x0039B0C8	func_r1_00336518	placeholder	placeholder for the pair with raidou1 0x00336518, size
+0x0039B010	shpGetSelectItemID	hd-inferred	hd: Raidou HD shpMain.shpGetSelectItemID, score 6.1 band C, hd-consensus: calls1 next gap2/1 st1:gap r1+r2; 10/10 fold runs agree, fold scores 7.1,7.1,6.1,6.1,7.1,6.1,6.1,6.1,6.1,6.1
+0x0039B050	shpGetModelHandle	hd-inferred	hd: Raidou HD shpMain.shpGetModelHandle, score 8.0 band B, hd-ab: calls2 next gap3/2 st1:gap r1+r2
+0x0039B0C8	shpSetModelMotion	hd-inferred	hd: Raidou HD shpMain.shpSetModelMotion, score 4.5 band D, hd-consensus: calls1 gap12/7 st1:gap r1+r2; 10/10 fold runs agree, fold scores 7.5,7.5,9.5,4.5,7.5,6.5,4.5,4.5,7.5,4.5
 0x0039B150	shpCallRelease	hd-inferred	hd: Raidou HD shpMain.shpCallRelease, score 10.0 band A
 0x0039B180	shpWaitRelease	hd-inferred	hd: Raidou HD shpMain.shpWaitRelease, score 7.3 band B
-0x0039B188	func_r1_003365D8	placeholder	placeholder for the pair with raidou1 0x003365D8, run-order-near
+0x0039B188	nwdGetSelectModelID	hd	hd: Raidou HD shpMain.nwdGetSelectModelID, score 6.1 band C, hd-consensus: calls1 gap12/7 st1:gap r1+r2; 10/10 fold runs agree, fold scores 9.1,9.1,9.1,6.1,9.1,6.1,6.1,6.1,6.1,6.1
 0x0039B1E0	knyGetIntimateRank	hd	hd: Raidou HD shpMain.knyGetIntimateRank, score 8.5 band B
 0x0039B208	shpCallProcEnd	hd-inferred	hd: Raidou HD shpMain.shpCallProcEnd, score 8.3 band B
 0x0039B3B8	ProcessStart_shpMain	hd	hd: Raidou HD shpMain.ProcessStart, score 12.65 band A
@@ -8458,13 +8458,13 @@
 0x0039D818	ScrControl	hd	hd: Raidou HD jmsMain.ScrControl, score 7.75 band B
 0x0039DDC0	gohStopStatusDraw	hd-inferred	hd: Raidou HD gohMain.gohStopStatusDraw, score 9.45 band B
 0x0039DE80	func_r1_00338A00	placeholder	placeholder for the pair with raidou1 0x00338A00, unique-reloc-hash
-0x0039DE98	func_r1_00338A18	placeholder	placeholder for the pair with raidou1 0x00338A18, near-size
-0x0039E0A8	func_r1_00338AF0	placeholder	placeholder for the pair with raidou1 0x00338AF0, unique-masked-hash
+0x0039DE98	gohCreateSwordList	hd-inferred	hd: Raidou HD gohMain.gohCreateSwordList, score 8.0 band B, hd-ab: calls2 next callers-of-match votes3 st1:call r1-only
+0x0039E0A8	gohCreateRecoverList	hd-inferred	hd: Raidou HD gohMain.gohCreateRecoverList, score 10.4 band A, hd-ab: calls2 next calls-of-match votes2 st1:call r1+r2
 0x0039E150	gohRootWaitCalcProcess	hd-inferred	hd: Raidou HD gohMain.gohRootWaitCalcProcess, score 9.75 band B
 0x0039E218	gohRootWaitDrawProcess	hd-inferred	hd: Raidou HD gohMain.gohRootWaitDrawProcess, score 10.45 band A
 0x0039E268	gohRootWaitUpdateProcess	hd-inferred	hd: Raidou HD gohMain.gohRootWaitUpdateProcess, score 10.45 band A
-0x0039E2A0	func_r1_00338D38	placeholder	placeholder for the pair with raidou1 0x00338D38, masked-hash-in-gap
-0x0039E2C0	func_r1_00338D58	placeholder	placeholder for the pair with raidou1 0x00338D58, masked-hash-in-gap
+0x0039E2A0	gohRootInit	hd-inferred	hd: Raidou HD gohMain.gohRootInit, score 6.25 band C, hd-consensus: prev gap=exact st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.2,7.8,6.2,7.8,7.8,6.2,8.2,7.8,6.2,6.2
+0x0039E2C0	gohRootDestroy	hd-inferred	hd: Raidou HD gohMain.gohRootDestroy, score 6.75 band C, hd-consensus: next gap=exact st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.8,7.2,6.8,8.8,8.8,6.8,7.2,8.8,6.8,6.8
 0x0039E2C8	gohRootCalcProcess	hd-inferred	hd: Raidou HD gohMain.gohRootCalcProcess, score 8.85 band B
 0x0039E490	gohRootDrawProcess	hd-inferred	hd: Raidou HD gohMain.gohRootDrawProcess, score 8.55 band B
 0x0039E4E0	gohRootUpdateProcess	hd-inferred	hd: Raidou HD gohMain.gohRootUpdateProcess, score 7.95 band B
@@ -8630,7 +8630,7 @@
 0x003AD400	gohGetBackStat	hd-inferred	hd: Raidou HD gohMenu.gohGetBackStat, score 11.1 band A
 0x003AD458	gohStart	hd-inferred	hd: Raidou HD gohMenu.gohStart, score 10.5 band A
 0x003AD4B0	gohSetFocus	hd-inferred	hd: Raidou HD gohMenu.gohSetFocus, score 9.4 band B
-0x003AD4E8	func_r1_00348068	placeholder	placeholder for the pair with raidou1 0x00348068, masked-hash-in-gap
+0x003AD4E8	gohCallDrawBack	hd-inferred	hd: Raidou HD gohMenu.gohCallDrawBack, score 12.0 band A, hd-ab: calls3 next calls-of-match-uniq votes3 st1:call r1+r2
 0x003AD518	gohSetDrawBack	hd-inferred	hd: Raidou HD gohMenu.gohSetDrawBack, score 8.8 band B
 0x003AD5B8	func_r1_00348138	placeholder	placeholder for the pair with raidou1 0x00348138, unique-reloc-hash
 0x003AD630	ProcessStart_gohMenu	hd	hd: Raidou HD gohMenu.ProcessStart, score 11.5 band A
@@ -8705,8 +8705,8 @@
 0x003BADC8	func_r1_0034B1B0	placeholder	placeholder for the pair with raidou1 0x0034B1B0, masked-hash-in-gap
 0x003BB0C0	func_r1_0034B570	placeholder	placeholder for the pair with raidou1 0x0034B570, unique-masked-hash
 0x003BB7C0	mnuClearPanelTransitionState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00285490, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x003BB7E0	mnuApplyPanelTransitionAction	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002854B0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x003BB930	mnuDrainPanelTransitions	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00285600, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x003BB7E0	CalcSeqHandle	hd	hd: Raidou HD jmsMisc.CalcSeqHandle, score 8.0 band B, hd-ab: calls1 next calls-of-match-uniq st1:call r1+r2; replaces mnuApplyPanelTransitionAction: dds-decomp DDS1 name via SLUS_209.74 0x002854B0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x003BB930	jmsSeqDestroyAll	hd-inferred	hd: Raidou HD jmsMisc.jmsSeqDestroyAll, score 8.2 band B, hd-ab: calls2 calls-of-match votes2 st1:call r1+r2; replaces mnuDrainPanelTransitions: dds-decomp DDS1 name via SLUS_209.74 0x00285600, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BB988	func_r1_0034BA60	placeholder	placeholder for the pair with raidou1 0x0034BA60, unique-reloc-hash
 0x003BB9A0	jmsSeqChange	hd-inferred	hd: Raidou HD jmsMisc.jmsSeqChange, score 9.9 band B; replaces mnuDispatchPopupTransition: dds-decomp DDS1 name via SLUS_209.74 0x00285670, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BBC08	func_r1_0034BCE0	placeholder	placeholder for the pair with raidou1 0x0034BCE0, unique-reloc-hash
@@ -8714,7 +8714,7 @@
 0x003BBC28	jmsSeqJumpAndFree	hd-inferred	hd: Raidou HD jmsMisc.jmsSeqJumpAndFree, score 11.0 band A; replaces mnuSetPopupEntryFlagged: dds-decomp DDS1 name via SLUS_209.74 0x002858F8, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x003BBC40	func_r1_0034BD18	placeholder	placeholder for the pair with raidou1 0x0034BD18, run-order-size
 0x003BBC58	jmsSeqReturn	hd-inferred	hd: Raidou HD jmsMisc.jmsSeqReturn, score 8.5 band B; replaces mnuBindPresentMenuEntry: dds-decomp DDS1 name via SLUS_209.74 0x00285928, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x003BBC90	mnuMapPadMaskToFlags	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00285B20, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x003BBC90	jmsChkCommonInput	hd-inferred	hd: Raidou HD jmsMisc.jmsChkCommonInput, score 8.5 band B, hd-ab: calls2 calls-of-match votes3 st1:call r1+r2; replaces mnuMapPadMaskToFlags: dds-decomp DDS1 name via SLUS_209.74 0x00285B20, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BBF70	mnuHandleListPageJumpInput	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002C47C8, masked-words-identical (order map pair); dds-decomp: descriptive
 0x003BC070	mnuHandlePanelListPageJumpInput	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002C48C8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BC098	func_r1_0034C170	placeholder	placeholder for the pair with raidou1 0x0034C170, unique-reloc-hash
@@ -8748,8 +8748,8 @@
 0x003BD1C8	mnuDispatchEntryWords	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0027C0B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BD258	mnuDrawWindowListEntries	inferred	fuzzy name from SLUS_211.52 0x002B9218, score 0.99, tools/xgame/fuzzy_apply.py
 0x003BD4A8	mnuCallInitWide	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0027C370, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x003BD4D8	mnuCreateWindowContainer	inferred	fuzzy name from SLUS_211.52 0x002B9490, score 1.00, tools/xgame/fuzzy_apply.py
-0x003BD568	mnuDestroyWindowContainer	inferred	fuzzy name from SLUS_211.52 0x002B9520, score 1.00, tools/xgame/fuzzy_apply.py
+0x003BD4D8	jmsCreateCmdMenu	hd-inferred	hd: Raidou HD jmsCmdMenu.jmsCreateCmdMenu, score 9.0 band B, hd-ab: next edge st1:edge r1+r2; replaces mnuCreateWindowContainer: fuzzy name from SLUS_211.52 0x002B9490, score 1.00, tools/xgame/fuzzy_apply.py
+0x003BD568	jmsDestroyCmdMenu	hd-inferred	hd: Raidou HD jmsCmdMenu.jmsDestroyCmdMenu, score 7.9 band B, hd-ab: calls1 calls-of-match votes2 st1:call r1+r2; replaces mnuDestroyWindowContainer: fuzzy name from SLUS_211.52 0x002B9520, score 1.00, tools/xgame/fuzzy_apply.py
 0x003BD5A8	func_r1_0034D680	placeholder	placeholder for the pair with raidou1 0x0034D680, run-order-size
 0x003BD5B0	func_r1_0034D688	placeholder	placeholder for the pair with raidou1 0x0034D688, masked-hash-in-gap
 0x003BD5B8	mnuSetWindowContainerLayout	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002B9570, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -8758,7 +8758,7 @@
 0x003BD630	mnuSetWindowPanelBounds	inferred	fuzzy name from SLUS_211.52 0x002B95E8, score 1.00, tools/xgame/fuzzy_apply.py
 0x003BD6C0	mnuCreateListWithDefaults	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002B9678, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BD720	func_r1_0034D7F8	placeholder	placeholder for the pair with raidou1 0x0034D7F8, unique-reloc-hash
-0x003BD738	mnuAppendWindowListNode	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002B96F0, masked-words-identical (gap map pair); dds-decomp: descriptive
+0x003BD738	jmsAddCmdMenuItem	hd-inferred	hd: Raidou HD jmsCmdMenu.jmsAddCmdMenuItem, score 7.55 band B, hd-ab: calls2 calls-of-match votes3 st1:call r1+r2; replaces mnuAppendWindowListNode: dds-decomp DDS2 name via SLUS_211.52 0x002B96F0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x003BD750	mnuInsertWindowListNodeRelativeToAnchor	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002B9708, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x003BD768	mnuRemoveWindowListCursorNode	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002B9720, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x003BD780	mnuAdvanceListSelection	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002B9738, masked-words-identical (gap map pair); dds-decomp: no provenance row
@@ -8904,7 +8904,7 @@
 0x003CBE10	FatalError	inferred	SMT3HD name via SLUS_209.11 0x002A82B0, byte-identical; map-agrees
 0x003CBE70	DmacAddHandler	inferred	SMT3HD name via SLUS_209.11 0x002A8310, reloc-identical; map-agrees
 0x003CBF58	sdfIpuRemoveHandler	inferred	SMT3HD name via SLUS_209.11 0x002A83F8, reloc-identical; map-agrees
-0x003CC038	func_r1_00356320	placeholder	placeholder for the pair with raidou1 0x00356320, unique-reloc-hash
+0x003CC038	dds3FontReqListRunAll	inferred	smt3-decomp name via SLUS_209.11 0x00117800, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.227
 0x003CC068	sdfAlarmWakeup	inferred	SMT3HD name via SLUS_209.11 0x002A8508, reloc-identical; map-agrees
 0x003CC080	sdfDelayThread	inferred	SMT3HD name via SLUS_209.11 0x002A8520, reloc-identical; map-agrees
 0x003CC0D0	sdfGetRunTimeCountBase	inferred	SMT3HD name via SLUS_209.11 0x002A8570, byte-identical; map-agrees
@@ -9055,7 +9055,7 @@
 0x003D0C38	sdfGrClosePacketBuff	inferred	SMT3HD name via SLUS_209.11 0x002ACB78, reloc-identical; map-agrees
 0x003D0C50	sdfDrawTagInit	inferred	SMT3HD name via SLUS_209.11 0x002ACB90, byte-identical; map-agrees
 0x003D0C78	sdfDrawTagLink	inferred	SMT3HD name via SLUS_209.11 0x002ACBB8, byte-identical; map-agrees
-0x003D0CB0	func_r1_0035AF28	placeholder	placeholder for the pair with raidou1 0x0035AF28, unique-reloc-hash
+0x003D0CB0	sdfDrawTagLink2	inferred	smt3-decomp name via SLUS_209.11 0x002ACBF0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.192
 0x003D0CE8	sdfDrawTagLinkRef	inferred	smt3-decomp C name via SLUS_209.11 0x002ACC28, unique-masked-hash-c; map-agrees
 0x003D0D28	sdfDrawTagLinkRefGif	inferred	SMT3HD name via SLUS_209.11 0x002ACC68, byte-identical; map-agrees
 0x003D0D60	sdfDrawTagLinkCall	inferred	SMT3HD name via SLUS_209.11 0x002ACCA0, byte-identical; map-agrees
@@ -9176,7 +9176,7 @@
 0x003D5760	sdfModelEvalNode	inferred	SMT3HD name via SLUS_209.11 0x002B16A0, reloc-identical; map-agrees
 0x003D5840	sdfModelEvalTm2	inferred	SMT3HD name via SLUS_209.11 0x002B1780, reloc-identical; map-agrees
 0x003D58A8	sdfModelEvalTm	inferred	SMT3HD name via SLUS_209.11 0x002B17E8, reloc-identical; map-agrees
-0x003D58C8	func_r1_0035FB40	placeholder	placeholder for the pair with raidou1 0x0035FB40, unique-reloc-hash
+0x003D58C8	sdfModelOtInit	inferred	smt3-decomp name via SLUS_209.11 0x002B1808, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.286
 0x003D58F8	sdfModelCheckBounds	inferred	SMT3HD name via SLUS_209.11 0x002B1838, byte-identical; map-agrees
 0x003D5A10	sdfModelTempPacketLinkOt	inferred	SMT3HD name via SLUS_209.11 0x002B1950, reloc-identical; map-agrees
 0x003D5E78	func_r1_003600F0	placeholder	placeholder for the pair with raidou1 0x003600F0, unique-reloc-hash
@@ -9196,7 +9196,7 @@
 0x003D6B38	sdfModelGetMarkPosMatrix_sdfModel	hd	hd: Raidou HD sdfModel.sdfModelGetMarkPosMatrix, score 12.2 band A
 0x003D6B78	sdfModelGetMarkPos_sdfModel	hd	hd: Raidou HD sdfModel.sdfModelGetMarkPos, score 11.2 band A
 0x003D6BB8	func_r1_00360E30	placeholder	placeholder for the pair with raidou1 0x00360E30, masked-hash-in-gap
-0x003D6BF8	sdfGetUniqueChunkValue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002D9ED8, masked-words-identical (gap map pair); dds-decomp: descriptive
+0x003D6BF8	sdfModelGetUniqueID	hd-inferred	hd: Raidou HD sdfModel.sdfModelGetUniqueID, score 7.75 band B, hd-ab: calls2 prev~ calls-of-match votes3 st1:call r1+r2; replaces sdfGetUniqueChunkValue: dds-decomp DDS1 name via SLUS_209.74 0x002D9ED8, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x003D6C28	sdfGetLodChunkValue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002D9F08, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x003D6C58	sdfModelSetFaceDivParm	inferred	SMT3HD name via SLUS_209.11 0x002B29F8, byte-identical; map-agrees
 0x003D6C70	sdfModelResetFaceDivParm	inferred	SMT3HD name via SLUS_209.11 0x002B2A10, byte-identical; map-agrees
@@ -9461,7 +9461,7 @@
 0x003E00B0	sdfMultiBillBoardVcMakeN	inferred	SMT3HD name via SLUS_209.11 0x002BBCA8, reloc-identical; map-agrees
 0x003E02E8	sdfPadControl	inferred	SMT3HD name via SLUS_209.11 0x002BBEE0, reloc-identical; map-agrees
 0x003E0690	sdfPadManager	inferred	SMT3HD name via SLUS_209.11 0x002BC288, reloc-identical; map-agrees
-0x003E06E8	func_r1_0036A960	placeholder	placeholder for the pair with raidou1 0x0036A960, size
+0x003E06E8	sdfPadWork	inferred	smt3-decomp name via SLUS_209.11 0x002BC2E0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.73
 0x003E0860	sdfPadChangeMode	inferred	SMT3HD name via SLUS_209.11 0x002BC458, shared-hash-in-run; map-agrees
 0x003E0880	sdfPadSetAct0	inferred	SMT3HD name via SLUS_209.11 0x002BC478, reloc-identical; map-agrees
 0x003E08A0	sdfPadSetAct1	inferred	SMT3HD name via SLUS_209.11 0x002BC498, reloc-identical; map-agrees
@@ -10040,7 +10040,7 @@
 0x00400A60	func_r1_00387BF0	placeholder	placeholder for the pair with raidou1 0x00387BF0, masked-hash-in-gap
 0x00400AB8	malloc	inferred	SMT3HD name via SLUS_209.11 0x002D38F0, reloc-identical; map-agrees
 0x00400B10	free	inferred	SMT3HD name via SLUS_209.11 0x002D3948, reloc-identical; map-agrees
-0x00400B58	func_r1_00387CE8	placeholder	placeholder for the pair with raidou1 0x00387CE8, unique-masked-hash
+0x00400B58	malloc_extend_top	inferred	smt3-decomp name via SLUS_209.11 0x002D3990, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.744
 0x00400DB0	_malloc_r	inferred	SMT3HD name via SLUS_209.11 0x002D3BE8, unique-masked-hash; map-agrees
 0x004014D8	memcmp	inferred	SMT3HD name via SLUS_209.11 0x002D4310, byte-identical; map-agrees
 0x0040156C	memcpy	inferred	SMT3HD name via SLUS_209.11 0x002D43A4, byte-identical; map-agrees
@@ -10099,10 +10099,10 @@
 0x00406E30	__swsetup	inferred	SMT3HD name via SLUS_209.11 0x002D8038, reloc-identical; map-agrees
 0x00406F40	func_r1_0038E0D0	placeholder	placeholder for the pair with raidou1 0x0038E0D0, masked-hash-in-gap
 0x00406F58	func_r1_0038E0E8	placeholder	placeholder for the pair with raidou1 0x0038E0E8, unique-reloc-hash
-0x00406F78	gcc2_compiled__1	inferred	fuzzy name from SLUS_209.11 0x002D8148, score 1.00, tools/xgame/fuzzy_apply.py
+0x00406F78	quorem	inferred	smt3-decomp name via SLUS_209.11 0x002D8148, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.68; replaces gcc2_compiled__1: fuzzy name from SLUS_209.11 0x002D8148, score 1.00, tools/xgame/fuzzy_apply.py
 0x004071A8	_dtoa_r	inferred	SMT3HD name via SLUS_209.11 0x002D8378, reloc-identical; map-agrees
 0x00408410	fflush	inferred	SMT3HD name via SLUS_209.11 0x002D95E0, reloc-identical; map-agrees
-0x00408528	gcc2_compiled__2	inferred	fuzzy name from SLUS_209.11 0x002D96F8, score 1.00, tools/xgame/fuzzy_apply.py
+0x00408528	std	inferred	smt3-decomp name via SLUS_209.11 0x002D96F8, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.587; replaces gcc2_compiled__2: fuzzy name from SLUS_209.11 0x002D96F8, score 1.00, tools/xgame/fuzzy_apply.py
 0x00408588	__sfmoreglue	inferred	SMT3HD name via SLUS_209.11 0x002D9758, reloc-identical; map-agrees
 0x00408600	__sfp	inferred	SMT3HD name via SLUS_209.11 0x002D97D0, reloc-identical; map-agrees
 0x004086F8	_cleanup_r	inferred	SMT3HD name via SLUS_209.11 0x002D98C8, shared-hash-in-run; map-agrees

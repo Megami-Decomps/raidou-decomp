@@ -38,7 +38,7 @@ typedef char MenuPopupState_size_must_be_0x4C[
 void mnuClearPanelTransitionState(MenuPopupState *state);
 
 /* The scheduler task is forwarded to each saved entry's leave callback. */
-void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *task);
+void jmsSeqDestroyAll(MenuPopupState *state, struct dds3ProcessID_t *task);
 
 void jmsSeqReturn(MenuPopupState *state, s32 *entrySlot);
 

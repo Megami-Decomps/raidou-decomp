@@ -12,4 +12,4 @@ INCLUDE_ASM(const s32, "script/scrParameterCommand", func_r1_00115950);
 
 INCLUDE_ASM(const s32, "script/scrParameterCommand", func_r1_00115998);
 
-INCLUDE_ASM(const s32, "script/scrParameterCommand", func_r1_001159C0);
+INCLUDE_ASM(const s32, "script/scrParameterCommand", gohScrCmd_PresentItem);

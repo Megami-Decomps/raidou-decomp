@@ -69,9 +69,9 @@ void *fileResolvePrimaryBuffer(FileJobPayload *job);
 
 void *fileResolveSecondaryBuffer(FileJobPayload *job);
 
-FileJobPayload *fileJobCreateFromJob(FileJobPayload *request);
+FileJobPayload *Create_effParts(FileJobPayload *request);
 
-FileJobPayload *fileJobCreateChild(FileJobPayload *request);
+FileJobPayload *Copy_effParts(FileJobPayload *request);
 
 FileJobPayload *fileDuplicateJob(FileJobPayload *request);
 
@@ -81,7 +81,7 @@ FileJobPayload *fileCreateJob(FileJobType type);
 
 void fileJobDestroy(FileJobPayload *job);
 
-void fileJobNotifyComplete(FileJobPayload *job);
+void ScaleSet_effParts(FileJobPayload *job);
 
 void fileJobInvokeTypeCallback(FileJobPayload *job);
 
@@ -203,7 +203,7 @@ void fileQueueReadPosition(const FileQueue *queue, f32 position[4]);
 
 FileQueue *fileQueueCreateFromCommandState(const char *entry);
 
-void fileQueueCopyRotationFromSource(FileQueue *queue, f32 matrix[4][4]);
+void effPartsRotateMatrixSet(FileQueue *queue, f32 matrix[4][4]);
 
 void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath);
 

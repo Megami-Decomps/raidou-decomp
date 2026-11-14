@@ -295,7 +295,7 @@ extern char pbDebugMenuCursorMark[8];
 extern char pbDebugFloatFormat[8];
 /* End of declarations from src/smt3/interface/itfTestMesManager.c */
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager", func_r1_0017B308);
+INCLUDE_ASM(const s32, "interface/itfTestMesManager", pbDebugPrintPanel3);
 
 u64 *pbAllocPrimPacket(u32 x, u32 y, u32 depth, u32 width, u32 height, u32 color0, u32 color1) {
     u64 *packet = (u64 *)sdfGrAllocPacketBuff(0x80);

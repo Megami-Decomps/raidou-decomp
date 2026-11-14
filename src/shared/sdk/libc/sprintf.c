@@ -255,7 +255,7 @@ extern s32 mallocSema __attribute__((section(".data")));
 
 extern s32 _init_signal_r(_reent *r);
 
-extern void gcc2_compiled__2(FILE *fp, s32 flags, s32 file, _reent *data);
+extern void std(FILE *fp, s32 flags, s32 file, _reent *data);
 
 extern _glue *__sfmoreglue(_reent *r, s32 n);
 
@@ -614,7 +614,7 @@ _Bigint *_lshift(_reent *r, _Bigint *b, s32 shift);
 
 _Bigint *__mdiff(_reent *r, _Bigint *a, _Bigint *b);
 
-s32 gcc2_compiled__1(_Bigint *dividend, _Bigint *divisor);
+s32 quorem(_Bigint *dividend, _Bigint *divisor);
 
 extern const char dtoaInfinityText[], dtoaNanText[];
 
@@ -648,7 +648,7 @@ extern const char dtoaNanText[8] __attribute__((section(".rodata")));
 
 s32 fflush(void *stream);
 
-void gcc2_compiled__2(FILE *fp, s32 flags, s32 file, _reent *data);
+void std(FILE *fp, s32 flags, s32 file, _reent *data);
 
 _glue *__sfmoreglue(_reent *r, s32 n);
 

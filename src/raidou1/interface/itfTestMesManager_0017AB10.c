@@ -372,7 +372,7 @@ s32 pbCalcFovDegrees(f32 *value, f32 minimum, f32 maximum, f32 coarseStep, f32 f
     return 0;
 }
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager_0017AB10", func_r1_0017ADA8);
+INCLUDE_ASM(const s32, "interface/itfTestMesManager_0017AB10", pbDebugPrintPanel2);
 
 INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0017AB10", D_r1_00449E00);
 

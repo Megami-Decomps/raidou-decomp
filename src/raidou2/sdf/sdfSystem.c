@@ -461,7 +461,7 @@ void sdfIpuRemoveHandler(sdfHandlerNode_t *target) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", func_r1_00356320);
+INCLUDE_ASM(const s32, "sdf/sdfSystem", dds3FontReqListRunAll);
 
 void sdfAlarmWakeup(s32 arg0, s32 arg1, s32 thid)
 {

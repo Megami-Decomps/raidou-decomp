@@ -1149,7 +1149,7 @@ extern u32 fileSavedSlotFlags;
 
 extern u32 effModelUpdateControlFlags;
 
-extern struct EffExpandedList *effCreateTextureAnimationSet(u32);
+extern struct EffExpandedList *effCacheTexCreate(u32);
 
 extern s8 slLoadKillFlag;
 
@@ -1321,17 +1321,17 @@ extern LoadMirror fileSlotFlagMirror;
 
 extern void fileCacheSlotFlagsFromState(void);
 
-extern void fileLoadObjectSetResource(EffectSurfaceNode *node, u32 entryId, void *resource);
+extern void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource);
 
-extern void fileLoadObjectOpenDevice(EffectSurfaceNode *node, u32 resourceId);
+extern void BillboardSet(EffectSurfaceNode *node, u32 resourceId);
 
-extern void fileLoadObjectOpenAndStartDevice(EffectSurfaceNode *node, u32 resourceId);
+extern void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId);
 
 extern void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId);
 
 extern void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job);
 
-extern void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue);
+extern void PartsListSet(EffectSurfaceNode *node, FileQueue *queue);
 
 extern void fileReplaceReferenceHolder(EffectSurfaceNode *node, u32 resource);
 
@@ -2116,7 +2116,7 @@ void *fileResolvePrimaryBuffer(FileJobPayload *job);
 
 void *fileResolveSecondaryBuffer(FileJobPayload *job);
 
-FileJobPayload *fileJobCreateFromJob(FileJobPayload *request);
+FileJobPayload *Create_effParts(FileJobPayload *request);
 
 void fileJobDestroy(FileJobPayload *job);
 
@@ -2124,11 +2124,11 @@ void fileJobFreePrimaryBuffer(FileJobPayload *job);
 
 void fileJobFreeSecondaryBuffer(FileJobPayload *job);
 
-FileJobPayload *fileJobCreateChild(FileJobPayload *request);
+FileJobPayload *Copy_effParts(FileJobPayload *request);
 
 void fileJobNotifyPair(FileJobPayload *left, FileJobPayload *right);
 
-void fileJobNotifyComplete(FileJobPayload *job);
+void ScaleSet_effParts(FileJobPayload *job);
 
 void fileJobInvokeTypeCallback(FileJobPayload *job);
 
@@ -2216,7 +2216,7 @@ f32 fileGetQueueScale(FileQueue *queue);
 
 u32 fileGetQueueColor(FileQueue *queue);
 
-void fileQueueCopyRotationFromSource(FileQueue *queue, f32 matrix[4][4]);
+void effPartsRotateMatrixSet(FileQueue *queue, f32 matrix[4][4]);
 
 extern void fileQueueAppend(FileQueue *queue, FileJob *job);
 
@@ -2302,7 +2302,7 @@ EffectSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity);
 
 EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
 
-EffectSurfaceNode *fileCreateEffectSurfaceFromJob(FileJobPayload *job);
+EffectSurfaceNode *PartsCreate_effParticle(FileJobPayload *job);
 
 void Delete_effParticle(EffectSurfaceNode *node);
 
@@ -2312,17 +2312,17 @@ EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner);
 
 void ResourceCopy(EffectSurfaceNode *dst, EffectSurfaceNode *src);
 
-void fileLoadObjectSetResource(EffectSurfaceNode *node, u32 entryId, void *resource);
+void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource);
 
 void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId);
 
-void fileLoadObjectOpenDevice(EffectSurfaceNode *node, u32 resourceId);
+void BillboardSet(EffectSurfaceNode *node, u32 resourceId);
 
-void fileLoadObjectOpenAndStartDevice(EffectSurfaceNode *node, u32 resourceId);
+void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId);
 
 void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job);
 
-void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue);
+void PartsListSet(EffectSurfaceNode *node, FileQueue *queue);
 
 void fileReplaceReferenceHolder(EffectSurfaceNode *obj, u32 resource);
 
@@ -2360,7 +2360,7 @@ void fileSetLoadObjectScale(EffectSurfaceNode *obj, f32 scale);
 void fileResetSlotStates(FileSlotTable *table);
 
 /* vu0 routine: preserve the packed RGB snapshot while applying the alpha track. */
-u32 effSampleColorAlphaTracks(const SdfColorTrack *colorTrack,
+u32 effColorAnimation(const SdfColorTrack *colorTrack,
                               const SdfAlphaTrack *alphaTrack,
                               s32 frame, s32 duration);
 
@@ -2533,7 +2533,7 @@ void fileJobFreeSecondaryBuffer(FileJobPayload *job) {
     }
 }
 
-FileJobPayload *fileJobCreateChild(FileJobPayload *request) {
+FileJobPayload *Copy_effParts(FileJobPayload *request) {
     FileJobPayload *job = fileCreateJob(request->type);
     FileTypeCallbacks *cb = &fileJobTypeOperations[job->type];
 
@@ -2551,7 +2551,7 @@ void fileJobNotifyPair(FileJobPayload *left, FileJobPayload *right) {
     }
 }
 
-void fileJobNotifyComplete(FileJobPayload *job) {
+void ScaleSet_effParts(FileJobPayload *job) {
     u16 id = job->type;
 
     if (fileJobTypeOperations[id].reset != NULL) {
@@ -2786,13 +2786,13 @@ FileQueue *Create_effPartsList(FileQueue *source) {
             job = fileJobCreate();
 
             if ((entry->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) == 0) {
-                job->id = (u32)fileJobCreateFromJob((FileJobPayload *)entry->id);
+                job->id = (u32)Create_effParts((FileJobPayload *)entry->id);
             } else {
                 FileJob *parent = fileQueueFindById(source, entry->id);
                 s32 index = fileFindQueuedJobIndex(source, parent);
 
                 parent = fileQueueGetAt(queue, index);
-                job->id = (u32)fileJobCreateChild((FileJobPayload *)parent->id);
+                job->id = (u32)Copy_effParts((FileJobPayload *)parent->id);
             }
             fileJobCopyHeader(job, entry);
             strcpy(job->name, entry->name);
@@ -2818,15 +2818,15 @@ FileQueue *Create_effPartsList(FileQueue *source) {
                         request->secondary.size = secondary->secondary.size;
                         FILE_JOB_LOCATION_AS_JOB_RELATIVE_OFFSET(request->secondary) =
                             (u32)fileResolveSecondaryBuffer(secondary) - (u32)request;
-                        job->id = (u32)fileJobCreateFromJob(request);
+                        job->id = (u32)Create_effParts(request);
                         FILE_JOB_LOCATION_AS_JOB_RELATIVE_OFFSET(request->secondary) = request->secondary.size = 0;
                     } else {
-                        job->id = (u32)fileJobCreateFromJob(request);
+                        job->id = (u32)Create_effParts(request);
                     }
                 } else {
                     FileJob *parent = fileQueueGetAt(queue, entry->id);
 
-                    job->id = (u32)fileJobCreateChild((FileJobPayload *)parent->id);
+                    job->id = (u32)Copy_effParts((FileJobPayload *)parent->id);
                 }
                 fileJobCopyHeader(job, entry);
                 strcpy(job->name, entry->name);
@@ -2876,7 +2876,7 @@ FileQueue *effPartsCreateFinish(const FileQueue *source) {
     queue->transformFlags = source->transformFlags;
     for (src = source->first; src != NULL; src = src->next) {
         FileJob *job = fileJobCreate();
-        job->id = (u32)fileJobCreateChild((FileJobPayload *)src->id);
+        job->id = (u32)Copy_effParts((FileJobPayload *)src->id);
         fileJobCopyHeader(job, src);
         fileQueueAppend(queue, job);
     }
@@ -3010,7 +3010,7 @@ void ColorSet(FileQueue *queue, u32 color) {
     }
 }
 
-void fileQueueCopyRotationFromSource(FileQueue *queue, f32 matrix[4][4]) {
+void effPartsRotateMatrixSet(FileQueue *queue, f32 matrix[4][4]) {
     f32 vec[4] __attribute__((aligned(16)));
     sdfVuMatrixToQuaternion(matrix);
     SDF_VU0_STOREVECTOR(vec);
@@ -3482,7 +3482,7 @@ EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
     return fileCreateSurfaceLoaderState(count <= 0x12C ? count : 0x12C);
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", fileCreateEffectSurfaceFromJob);
+INCLUDE_ASM(const s32, "code_0021CE60", PartsCreate_effParticle);
 
 void Delete_effParticle(EffectSurfaceNode *node) {
     u32 count;
@@ -3506,7 +3506,7 @@ void Delete_effParticle(EffectSurfaceNode *node) {
         sdfMemFreeDirect(node->queueAllocation);
     }
     if (node->resourceHolder != NULL) {
-        effReleaseReferenceHolder(node->resourceHolder);
+        effCacheTexDelete(node->resourceHolder);
     }
     if (node->record != 0) {
         effPCPHelperBEDGetModel(node->record);
@@ -3518,14 +3518,14 @@ EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner) {
     FileKeyBlock *source = (FileKeyBlock *)owner->record->data1;
     EffectSurfaceNode *result = fileCreateGridLoaderRecord(source);
 
-    fileLoadObjectSetResource(result, owner->record->type, source);
+    effCreate(result, owner->record->type, source);
     ResourceCopy(result, owner);
     return result;
 }
 
 INCLUDE_ASM(const s32, "code_0021CE60", ResourceCopy);
 
-void fileLoadObjectSetResource(EffectSurfaceNode *node, u32 entryId, void *resource) {
+void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource) {
     if (node->record != 0) {
         effPCPHelperBEDGetModel(node->record);
     }
@@ -3544,7 +3544,7 @@ void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId) {
     }
 }
 
-void fileLoadObjectOpenDevice(EffectSurfaceNode *node, u32 resourceId) {
+void BillboardSet(EffectSurfaceNode *node, u32 resourceId) {
     struct billHandle_t *resource = node->resource;
     if (resource != 0) {
         dds3BillboardDelete(resource);
@@ -3556,7 +3556,7 @@ void fileLoadObjectOpenDevice(EffectSurfaceNode *node, u32 resourceId) {
     }
 }
 
-void fileLoadObjectOpenAndStartDevice(EffectSurfaceNode *node, u32 resourceId) {
+void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId) {
     struct billHandle_t *resource = node->resource;
     if (resource != 0) {
         dds3BillboardDelete(resource);
@@ -3586,14 +3586,14 @@ void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job) 
     if (size != 0) {
         node->jobAllocation = sdfMemAllocDirect(size);
         node->jobs = (FileJobPayload **)sdfMemLock(node->jobAllocation);
-        node->jobs[0] = fileJobCreateFromJob(job);
+        node->jobs[0] = Create_effParts(job);
         for (i = 1; i < count; i++) {
-            node->jobs[i] = fileJobCreateChild(node->jobs[0]);
+            node->jobs[i] = Copy_effParts(node->jobs[0]);
         }
     }
 }
 
-void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue) {
+void PartsListSet(EffectSurfaceNode *node, FileQueue *queue) {
     u32 count = node->record->count;
     u32 i;
     s32 size;
@@ -3619,9 +3619,9 @@ void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue) {
 
 void fileReplaceReferenceHolder(EffectSurfaceNode *obj, u32 resource) {
     if (obj->resourceHolder != NULL) {
-        effReleaseReferenceHolder(obj->resourceHolder);
+        effCacheTexDelete(obj->resourceHolder);
     }
-    obj->resourceHolder = effCreateTextureAnimationSet(resource);
+    obj->resourceHolder = effCacheTexCreate(resource);
 }
 
 void fileClearLoadObjectReferences(EffectSurfaceNode *obj) {
@@ -3672,7 +3672,7 @@ void fileResetSlotStates(FileSlotTable *table) {
 }
 
 /* vu0 routine: preserve the packed RGB snapshot while applying the alpha track. */
-u32 effSampleColorAlphaTracks(const SdfColorTrack *colorTrack,
+u32 effColorAnimation(const SdfColorTrack *colorTrack,
                               const SdfAlphaTrack *alphaTrack,
                               s32 frame, s32 duration) {
     u32 color0;

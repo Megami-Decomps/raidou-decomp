@@ -745,7 +745,7 @@ void mnuDrawWindowListEntries(s32 x, s32 y, s32 depth, s32 xOffset, s32 yOffset,
 void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg);
 
 /* Destroy the owned list and optional sprite resources before freeing the window. */
-void mnuDestroyWindowContainer(MenuWindowContainer *menu);
+void jmsDestroyCmdMenu(MenuWindowContainer *menu);
 
 void mnuSetWindowOverlaySprite(MenuWindowContainer *menu, struct EffectSlotSet *sprite);
 
@@ -770,7 +770,7 @@ void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
 /* Clear only the window's panel-transition bit. */
 void mnuClearWindowPanelTransitionFlag(MenuWindowContainer *window);
 
-MenuListNode *mnuAppendWindowListNode(MenuWindowContainer *menu, const void *text);
+MenuListNode *jmsAddCmdMenuItem(MenuWindowContainer *menu, const void *text);
 
 /* Insert `value` beside anchor in the window's list (see mnuInsertListNodeRelativeToAnchor). */
 MenuListNode *mnuInsertWindowListNodeRelativeToAnchor(MenuWindowContainer *menu, MenuListNode *anchor, const void *text, s32 mode, u32 options);
@@ -1171,7 +1171,7 @@ void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg) {
 }
 
 /* Allocate a zeroed window and its list; the last two arguments configure list rows. */
-MenuWindowContainer *mnuCreateWindowContainer(s32 id, s32 width, s32 height, s32 visibleCount, s32 rowSpacing) {
+MenuWindowContainer *jmsCreateCmdMenu(s32 id, s32 width, s32 height, s32 visibleCount, s32 rowSpacing) {
     MenuWindowContainer *window = (MenuWindowContainer *)sdfChipAllocZeroDirect(sizeof(MenuWindowContainer));
     MenuList *list;
     window->width = width;
@@ -1183,7 +1183,7 @@ MenuWindowContainer *mnuCreateWindowContainer(s32 id, s32 width, s32 height, s32
     return window;
 }
 
-INCLUDE_ASM(const s32, "code_0034D128", mnuDestroyWindowContainer);
+INCLUDE_ASM(const s32, "code_0034D128", jmsDestroyCmdMenu);
 
 INCLUDE_ASM(const s32, "code_0034D128", func_r1_0034D680);
 
@@ -1221,7 +1221,7 @@ void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
 
 INCLUDE_ASM(const s32, "code_0034D128", func_r1_0034D7F8);
 
-MenuListNode *mnuAppendWindowListNode(MenuWindowContainer *menu, const void *text) {
+MenuListNode *jmsAddCmdMenuItem(MenuWindowContainer *menu, const void *text) {
     return mnuListAppendNode(menu->list, text);
 }
 
@@ -1671,7 +1671,7 @@ void mnuRemoveFadingWindowEntry(s32 *list, u32 slotIndex) {
         entries = list + 1;
         slot = entries + slotIndex;
         if (((MenuFadeEntry *)*slot)->active != 0) {
-            mnuDestroyWindowContainer(((MenuFadeEntry *)*slot)->window);
+            jmsDestroyCmdMenu(((MenuFadeEntry *)*slot)->window);
         }
         tailIndex = list[0] - 1;
         ((MenuFadeEntry *)*slot)->window = 0;

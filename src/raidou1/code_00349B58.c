@@ -510,7 +510,7 @@ extern void itfMesMngRequestMessageRelease(s32 window, s32 releasePrimaryBlock);
 u32 evtCleanupMessageWindow(s32 notify);
 
 /* Finish/reset the singleton window with notification and return whether it existed. */
-u32 evtFinishMessageWindowAndNotify(void);
+s8 fclEndMessage(void);
 
 /* Destroy an existing singleton window and invalidate its handle and control gates. */
 s32 fclDestroyMessage(void);

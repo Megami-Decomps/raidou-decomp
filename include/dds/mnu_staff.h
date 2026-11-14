@@ -38,7 +38,7 @@ struct EffectList;
 struct MenuWindowContainer;
 
 /* Destroy the window's owned list, optional sprite resources, and window. */
-void mnuDestroyWindowContainer(struct MenuWindowContainer *window);
+void jmsDestroyCmdMenu(struct MenuWindowContainer *window);
 
 void mnuAppendCampSpriteRequests(struct EffectList *resourceList,
                                  StaffSlots *resourceSlots);

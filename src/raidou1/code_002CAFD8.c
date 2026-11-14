@@ -5572,7 +5572,7 @@ INCLUDE_ASM(const s32, "code_002CAFD8", func_r1_002CC558);
 
 INCLUDE_ASM(const s32, "code_002CAFD8", func_r1_002CC630);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", func_r1_002CC668);
+INCLUDE_ASM(const s32, "code_002CAFD8", cmpDrawSetup3DView);
 
 void cmpDrawSpriteFlag(u8 id, s32 flag, s32 ot)
 {

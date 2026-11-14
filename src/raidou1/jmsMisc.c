@@ -739,10 +739,10 @@ void mnuDrawAndAdvanceProfilePanel(s32 x, s32 y, s32 z, MenuProfilePanel *panel,
 /* Clear the complete native popup-transition state, including saved entry addresses. */
 void mnuClearPanelTransitionState(MenuPopupState *state);
 
-void mnuApplyPanelTransitionAction(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument);
+void CalcSeqHandle(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument);
 
 /* Pop saved entries with their leave callbacks until the state count reaches zero. */
-void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *task);
+void jmsSeqDestroyAll(MenuPopupState *state, struct dds3ProcessID_t *task);
 
 s32 mnuHasPopupSelectionFlag(s32 *flags);
 
@@ -774,7 +774,7 @@ extern u8 D_00324530[];
 
 /* Translate requested inputs using native sign-bit/trigger-bit and nonzero tests.
  * Input bit zero has exclusive priority over every other result bit. */
-MnuInputActionFlags mnuMapPadMaskToFlags(MnuPadButtonQueryMask requestedButtons);
+MnuInputActionFlags jmsChkCommonInput(MnuPadButtonQueryMask requestedButtons);
 
 /* Bits 0x8000 and 0x4000 return early in that order; state bits may suppress navigation SE. */
 void mnuPlayInputSound(s32 unused, s32 inputFlags, u32 *stateFlags);
@@ -1093,7 +1093,7 @@ void mnuClearPanelTransitionState(MenuPopupState *state) {
     memset(state, 0, MNU_POPUP_STATE_BYTES);
 }
 
-void mnuApplyPanelTransitionAction(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument) {
+void CalcSeqHandle(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument) {
     MenuPopupCallback callback;
     MenuPopupEntry *saved;
     s32 i;
@@ -1135,12 +1135,12 @@ void mnuApplyPanelTransitionAction(s32 action, MenuPopupEntry *entry, MenuPopupS
 }
 
 /* Pop saved entries with their leave callbacks until the state count reaches zero. */
-void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *task) {
+void jmsSeqDestroyAll(MenuPopupState *state, struct dds3ProcessID_t *task) {
     s32 entryCount;
 
     entryCount = state->count;
     while (entryCount != 0) {
-        mnuApplyPanelTransitionAction(1, 0, state, (u32)task);
+        CalcSeqHandle(1, 0, state, (u32)task);
         entryCount = state->count;
     }
 }
@@ -1178,7 +1178,7 @@ s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
         }
         if (accepted || ((*slot)->flags & 1)) {
             if (!((*slot)->flags & 0x10000)) {
-                mnuApplyPanelTransitionAction(0, *slot, state, (u32)callback);
+                CalcSeqHandle(0, *slot, state, (u32)callback);
                 (*slot)->flags |= 0x10000;
             }
         }
@@ -1210,9 +1210,9 @@ s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
             if (flags & 0x200000) {
                 if (flags & 0x20000) {
                     if (flags & 0x40000) {
-                        mnuApplyPanelTransitionAction(2, NULL, state, (u32)callback);
+                        CalcSeqHandle(2, NULL, state, (u32)callback);
                     } else {
-                        mnuApplyPanelTransitionAction(1, NULL, state, (u32)callback);
+                        CalcSeqHandle(1, NULL, state, (u32)callback);
                     }
                 }
                 /* Keep only the low 16 flag bits, read as a halfword. */
@@ -1262,4 +1262,4 @@ void jmsSeqReturn(MenuPopupState *state, s32 *entrySlot) {
     }
 }
 
-INCLUDE_ASM(const s32, "jmsMisc", mnuMapPadMaskToFlags);
+INCLUDE_ASM(const s32, "jmsMisc", jmsChkCommonInput);

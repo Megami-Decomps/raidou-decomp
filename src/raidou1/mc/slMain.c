@@ -1330,7 +1330,7 @@ extern s32 fileDrawMenuFrame(s32);
 
 #include "dds/eff_emitter_type.h"
 
-extern struct EffExpandedList *effCreateTextureAnimationSet(u32);
+extern struct EffExpandedList *effCacheTexCreate(u32);
 
 struct sdfMemHandle_t;
 
@@ -2019,7 +2019,7 @@ void *fileResolvePrimaryBuffer(FileJobPayload *job);
 
 void *fileResolveSecondaryBuffer(FileJobPayload *job);
 
-FileJobPayload *fileJobCreateFromJob(FileJobPayload *request);
+FileJobPayload *Create_effParts(FileJobPayload *request);
 
 void fileJobDestroy(FileJobPayload *job);
 
@@ -2027,11 +2027,11 @@ void fileJobFreePrimaryBuffer(FileJobPayload *job);
 
 void fileJobFreeSecondaryBuffer(FileJobPayload *job);
 
-FileJobPayload *fileJobCreateChild(FileJobPayload *request);
+FileJobPayload *Copy_effParts(FileJobPayload *request);
 
 void fileJobNotifyPair(FileJobPayload *left, FileJobPayload *right);
 
-void fileJobNotifyComplete(FileJobPayload *job);
+void ScaleSet_effParts(FileJobPayload *job);
 
 void fileJobInvokeTypeCallback(FileJobPayload *job);
 
@@ -2122,7 +2122,7 @@ void effPartsScaleSet(FileQueue *queue, f32 scale);
  * store from feeding the argument load. */
 void ColorSet(FileQueue *queue, u32 color);
 
-void fileQueueCopyRotationFromSource(FileQueue *queue, f32 matrix[4][4]);
+void effPartsRotateMatrixSet(FileQueue *queue, f32 matrix[4][4]);
 
 FileJob *fileAppendJob(FileQueue *queue, u32 id);
 
@@ -2213,11 +2213,11 @@ typedef struct FileCellGrid {
 
 LoadObj *fileCreateGridLoaderRecord(FileCellGrid *grid);
 
-void fileLoadObjectSetResource(LoadObj *obj, u32 type, void *data);
+void effCreate(LoadObj *obj, u32 type, void *data);
 
-void fileLoadObjectOpenDevice(LoadObj *obj, void *name);
+void BillboardSet(LoadObj *obj, void *name);
 
-void fileLoadObjectOpenAndStartDevice(LoadObj *obj, void *name);
+void BillboardGeneralSet(LoadObj *obj, void *name);
 
 void fileLoadObjectOpenNamedDevice(LoadObj *obj, s32 resourceIndex);
 
@@ -2233,13 +2233,13 @@ LoadObj *Copy_effParticle(LoadObj *owner);
 
 void ResourceCopy(LoadObj *dst, LoadObj *src);
 
-void fileLoadObjectSetResource(LoadObj *obj, u32 type, void *data);
+void effCreate(LoadObj *obj, u32 type, void *data);
 
 void fileLoadObjectOpenNamedDevice(LoadObj *obj, s32 resourceIndex);
 
-void fileLoadObjectOpenDevice(LoadObj *obj, void *name);
+void BillboardSet(LoadObj *obj, void *name);
 
-void fileLoadObjectOpenAndStartDevice(LoadObj *obj, void *name);
+void BillboardGeneralSet(LoadObj *obj, void *name);
 
 void fileReplaceEffectSurfaceJobs(LoadObj *obj, FileJobPayload *job);
 
@@ -2274,7 +2274,7 @@ void fileSetLoadObjectScale(LoadObj *obj, f32 scale);
 void fileResetSlotStates(FileSlotTable *record);
 
 /* vu0 routine: preserve the packed RGB snapshot while applying the alpha track. */
-u32 effSampleColorAlphaTracks(const SdfColorTrack *colorTrack,
+u32 effColorAnimation(const SdfColorTrack *colorTrack,
                               const SdfAlphaTrack *alphaTrack,
                               s32 frame, s32 duration);
 
@@ -2480,7 +2480,7 @@ saddr_t slHeadLoadProc_readFile(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6120);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6258);
+INCLUDE_ASM(const s32, "mc/slMain", slExitWait);
 
 s32 slEndingTop(void) {
     gslMode = 0;
@@ -2604,7 +2604,7 @@ INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6AB8);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6AC0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6C08);
+INCLUDE_ASM(const s32, "mc/slMain", sl1Ken);
 
 INCLUDE_ASM(const s32, "mc/slMain", slSizeChk);
 
@@ -2634,7 +2634,7 @@ INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7228);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7240);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D72C0);
+INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKey);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D72F0);
 
@@ -2678,7 +2678,7 @@ s32 slChooseData_getCardInfo3(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7640);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7710);
+INCLUDE_ASM(const s32, "mc/slMain", slChooseData);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D77A8);
 
@@ -2724,9 +2724,9 @@ s32 slChooseData_getCardInfo3_B(void) {
     return slChooseData_getCardInfoNext_B();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7918);
+INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfoNext_B);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D79B8);
+INCLUDE_ASM(const s32, "mc/slMain", slChooseData_B);
 
 saddr_t slSaveData(void) {
     u8 name[0x50];

@@ -270,7 +270,7 @@ extern void at3decReset(u32 *);
 s32 mnuCompleteTitleStreamFileLoad(TitleAudioStreamState *destinationState);
 
 /* Install the fixed title track and queue its compressed frames under the lock. */
-void mnuStartFixedSoundStream(void);
+void sndBgmLoadFile(void);
 
 extern MnuTitleStreamEntry D_00377650[];
 
@@ -324,7 +324,7 @@ MnuTitleSoundBufferStatus mnuGetSoundBufferStateLocked(void);
 
 void mnuPrintTitleDebugBanner(void);
 
-void mnuResetSoundBuffer(void);
+void sndDeadSePlay_VolAngle(void);
 
 /* Release the allocation handle, not the data address, then clear its slot. */
 void mnuReleaseSoundBuffer(void);
@@ -400,7 +400,7 @@ INCLUDE_ASM(const s32, "sndAt3", File_BgmLoadStart);
 INCLUDE_ASM(const s32, "sndAt3", GetVolume);
 
 /* Install the fixed title track and queue its compressed frames under the lock. */
-void mnuStartFixedSoundStream(void) {
+void sndBgmLoadFile(void) {
     WaitSema(mnuTitleStreamSemaphore);
     mnuTitleStreamStatus.decoder = mnuTitleStreamDecoderState;
     mnuTitleStreamStatus.samples = (s16 *)mnuTitleAudioSilenceBuffer;
@@ -460,7 +460,7 @@ INCLUDE_ASM(const s32, "sndAt3", sndSePlay);
 
 INCLUDE_ASM(const s32, "sndAt3", func_001D20C8);
 
-void mnuResetSoundBuffer(void) {
+void sndDeadSePlay_VolAngle(void) {
     mnuTitleSoundBufferState.frameIndex = 0;
     mnuTitleSoundBufferState.control = 2;
     mnuReleaseSoundBuffer();

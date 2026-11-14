@@ -548,7 +548,7 @@ void btlPointOffPlaneVU(f32 *vertexA, f32 *vertexB, f32 *vertexC, f32 *point);
 
 /* vu0 routine: vf10 = vertexC + direction * dot(direction, vertexA - vertexC).
  * Direction is the normalized in-plane double cross, not a triangle normal. */
-f32 btlProjectOnPlaneVU(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
+f32 sBtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 /* Inclusive box test; either corner order is accepted independently per axis. */
 s32 btlPointInBox(BtlVec3 *cornerA, BtlVec3 *cornerB, BtlVec3 *point);

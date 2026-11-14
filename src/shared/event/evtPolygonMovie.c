@@ -614,7 +614,7 @@ extern dds3Effect_Blur_t D_r1_003EF010;
 
 extern ItfMesWindowIndex itfMesMngInitialize(ItfMesSub *messageSub);
 
-extern void mnuStopTitleVoicePlayback(void);
+extern void scrGetAfterSkipBgmFlag(void);
 
 #include "dds/sdf_debug_api.h"
 

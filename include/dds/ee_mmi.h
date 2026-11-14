@@ -162,7 +162,7 @@
     : "=r"(out) : "f"(128.0f))
 
 /*
- * SDK word carriers used by effSampleColorAlphaTracks and the bit-scaled
+ * SDK word carriers used by effColorAnimation and the bit-scaled
  * billboard blends. Each conversion owns its native 16-byte workspace.
  * Other unpack/pack operand contracts keep their existing macros.
  * See docs/idioms.md, "SDK RGBA word carriers".
