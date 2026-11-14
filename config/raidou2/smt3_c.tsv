@@ -1882,8 +1882,8 @@ evtCheckScriptDone	asm	1 words differ, first at +0x30
 evtCheckSelectionState	c
 evtCheckSkyAlphaAnime	c
 evtChkEndProcess	asm	evtFreeStage at 0x00167618, 0x001B9538
-evtCommandClearPolygonMovieFlag	asm	declarations clash: conflicting types for `DDS3_GBWK'
-evtCommandStartBgmWithFade	asm	declarations clash: conflicting types for `DDS3_GBWK'
+evtCommandClearPolygonMovieFlag	c
+evtCommandStartBgmWithFade	c
 evtCommand_BGM_PLAY_E	c
 evtCommand_BGM_TRANS_E	c
 evtCommand_BOKASI_OFF	c
@@ -1998,7 +1998,7 @@ evtGetCapturedWindowPanelValue	c
 evtGetEventPackStat	c
 evtGetPackProcessData	c
 evtGetResorceData	c
-evtGetShortestAngleDelta	asm	declarations clash: conflicting types for `DDS3_GBWK'
+evtGetShortestAngleDelta	c
 evtGetSoundIndex	c
 evtGetUnitHandle	c
 evtGetUnitHandle2	c
@@ -2038,11 +2038,11 @@ evtLoadResourcePair	c
 evtLoadValueSecondaryVectorIntoVu	c
 evtLoadValueVectorIntoVu	c
 evtMakeEventPackName	c
-evtOpClearWorldObjectPendingValue	asm	declarations clash: conflicting types for `DDS3_GBWK'
-evtOpQueueWorldObjectPendingValue	asm	declarations clash: conflicting types for `DDS3_GBWK'
-evtOpcodeInitializeEffectSoundChannel	asm	declarations clash: conflicting types for `DDS3_GBWK'
-evtOpcodeRefreshTaskData	asm	declarations clash: conflicting types for `DDS3_GBWK'
-evtOpcodeSetBgmVolumePan	asm	declarations clash: conflicting types for `DDS3_GBWK'
+evtOpClearWorldObjectPendingValue	c
+evtOpQueueWorldObjectPendingValue	c
+evtOpcodeInitializeEffectSoundChannel	c
+evtOpcodeRefreshTaskData	c
+evtOpcodeSetBgmVolumePan	c
 evtPathDir	c
 evtPathLinkAndMake	c
 evtPathLoop	c
@@ -2319,7 +2319,7 @@ itfAdvanceGridScrollPosition	c
 itfAdvanceSelectedGridScroll	c
 itfAppendGridTextItem	c
 itfCamp	c
-itfCommandQueueHeldPanelEntry	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfCommandQueueHeldPanelEntry	c
 itfConvertText	c
 itfCreateGridPacketWithDefaultFlags	c
 itfDebugPrintMark	c
@@ -2344,9 +2344,9 @@ itfGridInterpolateCornerColorsToTarget	c
 itfGridLookupValueOrDefault	c
 itfInitTextDrawArgs	c
 itfInitializeAdminInterfaceNoop	c
-itfMesGetEntryCount	asm	declarations clash: conflicting types for `DDS3_GBWK'
-itfMesGetWindowEntryItems	asm	declarations clash: conflicting types for `DDS3_GBWK'
-itfMesGetWindowTexture	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfMesGetEntryCount	asm	compile error: structure has no member named `sub'
+itfMesGetWindowEntryItems	asm	compile error: structure has no member named `itemList'
+itfMesGetWindowTexture	c
 itfMesMngClearBitStat	c
 itfMesMngClearBitStatManager	c
 itfMesMngCloseSelectWindow	c
@@ -2394,10 +2394,10 @@ itfMiscLinkTake	c
 itfMiscLoadTexture	c
 itfMiscMoveFontPosition	c
 itfMiscSetRatioRGB	c
-itfPanelAcquireHold	asm	declarations clash: conflicting types for `DDS3_GBWK'
-itfPanelReleaseHold	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfPanelAcquireHold	c
+itfPanelReleaseHold	c
 itfPnlRelease	c
-itfQueueOffsetTexturedRect	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfQueueOffsetTexturedRect	c
 itfReadEncodedCode	c
 itfReadEncodedTextLead	c
 itfReleaseBackgroundSpriteTexture	c
@@ -2409,7 +2409,7 @@ itfReverseSelectedGridScroll	c
 itfRotateScreenOffset	c
 itfScanEncodedTextControls	asm	1 words differ, first at +0xEC
 itfSetGridEntryQuantizedAndRefresh	c
-itfStepHeldPanelMessages	asm	declarations clash: conflicting types for `DDS3_GBWK'
+itfStepHeldPanelMessages	c
 itfUpdateGridSlotDescription	c
 kCopy	c
 kCopy_1	c

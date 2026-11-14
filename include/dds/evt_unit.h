@@ -202,4 +202,10 @@ dds3TaskUpdateResult_t evtTickPackLoad(dds3ProcessID_t *task);
 
 void evtDestroyEventPackTask(dds3ProcessID_t *task);
 
+/* The constants are event.h's evtUnitMotionState_t. */
+#ifndef DDS_ENUM_EvtUnitMotionState
+#define DDS_ENUM_EvtUnitMotionState
+typedef int EvtUnitMotionState;
+#endif
+
 #endif /* DDS_EVT_UNIT_H */

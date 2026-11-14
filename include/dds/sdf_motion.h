@@ -9,7 +9,4 @@ struct MotionTable;
 
 struct dds_sdfModelRootNode_t;
 
-/* Controller storage keeps the current and suspended state in one byte. */
-typedef u8 SdfMotionState;
-
 #endif /* DDS_SDF_MOTION_H */

@@ -3,6 +3,8 @@
 /* Declarations from smt3-decomp src/smt3/interface/itfMesManager.c */
 #include "interface.h"
 
+#include "newdata.h"
+
 #include "itfMesManager.h"
 
 #include "kernel.h"
@@ -590,7 +592,6 @@ s16 itfMesMngGetMesCurrentPage(s32 id);
 /* Return the replacement text stored in a window slot. */
 u8 *itfMesMngGetVar(s32 id, s32 index);
 
-
 /* Localised name text, 0x40 bytes after the manager. */
 extern char itfMesMngVarText[];
 
@@ -690,6 +691,10 @@ u8 *GetMessagePagePtr(itfMesBinMesHeader_t *table, s32 index);
 
 /* Called above its definition, where ee-gcc assumed int. */
 frFontHandle_t *GetLastLinkFontHandle(frFontHandle_t *pfont);
+
+void GetLastMessagePara(frFontHandle_t *pfont, message_tag *pmessage);
+
+void RaiseMessageSpeedMax(frFontHandle_t *pfont);
 
 void ReadytoMessage(instanceMes_tag *panel);
 
@@ -832,6 +837,673 @@ extern u8 itfMesDebugLineVertIndex[5];
 extern u8 itfMesDebugLineColorIndex[5];
 /* End of declarations from src/smt3/interface/itfMesManager.c */
 
+/* Declarations from dds-decomp src/dds2/game/code_001A1B08.c */
+#ifndef VERSION_DDS2
+#define VERSION_DDS2 1
+#endif
+
+#define SMT3_DEFINES_debug_tag 1
+
+#define SMT3_DEFINES_itfMesBinMesHeader_t 1
+
+#define SMT3_DEFINES_itfMesBinTypeHeader_t 1
+
+#define SMT3_DEFINES_itfMesLinkControl_t 1
+
+#define SMT3_DEFINES_itfMesLink_t 1
+
+#define SMT3_DEFINES_itfMesManager_t 1
+
+#define SMT3_DEFINES_itfMesResource_t 1
+
+#define SMT3_DEFINES_itfPadState_t 1
+
+#define SMT3_DEFINES_itfProcessShutdown_t 1
+
+#include "dds/scr_command_timer_api.h"
+
+/* During a command callback, return the number of earlier trace passes that
+ * yielded while it was pending. The first invocation sees zero; each yielded
+ * pass adds one, and a continuing or finishing handler resets the count. This
+ * is callback wait state, not wall-clock time, and is valid only in the callback. */
+ScrCommandYieldCount scrGetCommandTimer(void);
+
+#include "dds/mnu.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/scr_command_parameter_index.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+#include "dds/scr_command_timer_api.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/itf.h"
+
+#include "dds/itf_mes_window.h"
+
+#include "dds/itf_mes_panel_mode.h"
+
+#include "dds/itf_mes_entry_start_api.h"
+
+#include "dds/sdf.h"
+
+#include "dds/itf_panel_draw.h"
+
+#include "dds/itf_text_vector.h"
+
+#include "dds/itf_panel_api.h"
+
+#include "dds/itf_panel_layouts.h"
+
+#define ITF_PANEL_COLUMN_COUNT 4
+
+#define ITF_PANEL_ROW_COUNT 2
+
+#define ITF_PANEL_COLUMN_INSET 0x200
+
+#define ITF_PANEL_CORNER_COLUMN_COUNT 3
+
+#define ITF_PANEL_CORNER_STRIP_WIDTH 0x5A0
+
+#define ITF_PANEL_FULL_COLOR_SCALE 0x80
+
+#define ITF_PANEL_STATE_PACKET_BYTES 0x40
+
+#define ITF_PANEL_QUAD_INDEX_COUNT 4
+
+#define ITF_PANEL_WIDE_INDEX_COUNT 8
+
+#define ITF_PANEL_WIDE_PASS_COUNT 3
+
+#define ITF_PANEL_SEVEN_COLOR_COUNT 7
+
+#define ITF_PANEL_FIVE_COLOR_COUNT 5
+
+#define ITF_PANEL_SEVEN_SIDE_PASS_COUNT 6
+
+#define ITF_PANEL_FIVE_SIDE_PASS_COUNT 2
+
+#define ITF_PANEL_MESSAGE_FADE_TICKS 30
+
+#define ITF_PANEL_MESSAGE_EXIT_TICKS 10
+
+#define ITF_PANEL_TINT_ALPHA_NUMERATOR 0x67
+
+#define ITF_PANEL_TINT_ALPHA_DENOMINATOR 128
+
+#define ITF_PANEL_TINT_BORDER_WIDTH 0x240
+
+extern void (*DrawTable[])(dds_itfpanel_t *, sdfDrawTag_t *);
+
+extern PanelHold itfHeldPanelCursor;
+
+extern void itfMesBuildOptionList(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
+
+extern void itfMiscSetRatioRGB(DrawColorRec *output, s32 scaleX, s32 scaleY, s32 scaleZ, s32 w, const TextVector *input, s32 count);
+
+extern TextVector itfPanelColorTemplates[];
+
+extern TextVector D_003B4548[];
+
+extern TextVector itfPanelGradientColorTemplate[];
+
+extern TextVector itfPanelGradientColorPair[];
+
+extern u8 D_004365C8[8];
+
+extern u8 D_004365D0[8];
+
+extern void itfMiscDrawTriangleStripPrim(void *vertices, void *colors, u8 *vertexIndex, u8 *colorIndex, s32 count, u32 tail, sdfDrawTag_t *command);
+
+extern u8 D_004365D8[8];
+
+extern u8 D_004365E0[8];
+
+extern void itfDrawThreePanelBorderBands(PanelRect *bounds, u32 *color, u32 tail, s32 borderWidth, sdfDrawTag_t *command);
+
+extern u32 D_003B4760[];
+
+#include "dds/sdf_packet_alloc.h"
+
+extern void *sdf2DMakeStdPacket(void *packet, s32 packetBytes);
+
+extern u8 D_003B45E8[], D_003B4600[], D_003B4618[];
+
+extern u8 D_003B4630[], D_003B4648[], D_003B4660[];
+
+extern u8 D_004365A8[8], D_004365B0[8];
+
+extern u8 D_003B4670[];
+
+extern u8 D_003B4680[];
+
+extern u8 D_004365B8[8];
+
+extern u8 D_004365C0[8];
+
+/* Invoke the indexed panel handler; panel and kind are trusted. */
+void itfPnlDrawTag(dds_itfpanel_t *panel, sdfDrawTag_t *list);
+
+/* Emit top/bottom vertices for four columns; collapse overlapping inner columns to the midpoint.
+   Coordinates and inset remain in the renderer's native integer units. */
+void CreateVertexNormal(DrawVertex *vertices, s32 x0, s32 y0, s32 x1, s32 y1);
+
+extern s32 D_003B44D8[4];
+
+/* Emit the outer frame grid, then the table-spaced top/bottom edge rows. */
+void CreateVertexMesWin(DrawVertex *vertices, s32 x0, s32 y0, s32 x1, s32 y1);
+
+/* Emit the outer frame grid, then the close top/bottom edge rows. */
+void CreateVertexSelWin(DrawVertex *vertices, s32 x0, s32 y0, s32 x1, s32 y1);
+
+/* Write the rectangle corners in top-left, top-right, bottom-right, bottom-left order. */
+void CreateVertexPlain(DrawVertex *v, s32 x0, s32 y0, s32 x1, s32 y1);
+
+/* Write two rows of three columns; the middle column is the right edge minus a fixed strip width. */
+void CreateVertexLeftFade(DrawVertex *v, s32 x0, s32 y0, s32 x1, s32 y1);
+
+/* Write four fixed horizontal columns with inset top/bottom coordinates.
+   x0 and x1 are intentionally unused; do not replace the fixed horizontal positions. */
+void CreateVertexFacility(UiSpriteBandPayload *base, s32 x0, s32 y0, s32 x1, s32 y1);
+
+/* Populate RGBA rows at bytes 0x40/0x50; the first row is transparent.
+   The existing vertex-typed view addresses the same color records as the quad consumer. */
+void CreateColorNormal(DrawVertex *panelData, s32 red, s32 green, s32 blue, s32 alpha);
+
+/* Write the two color rows, then scale six template rows; the first fourth component is one. */
+void CreateColorMesWin(u8 *base, u32 red, u32 green, u32 blue, u32 alpha);
+
+/* Write the two color rows, then scale four template rows; the first fourth component is one. */
+void CreateColorSelWin(u8 *base, u32 red, u32 green, u32 blue, u32 alpha);
+
+/* Set the base color, one alpha-scaled gradient row, and two rows at full color scale. */
+void CreateColorPlain(u8 *base, u32 red, u32 green, u32 blue, u32 alpha);
+
+/* Set the four color words at byte 0x20, consumed as a color record by the quad path.
+   Preserve the existing vertex-typed access and signed arguments. */
+void CreateColorPera1(DrawVertex *panelData, s32 red, s32 green, s32 blue, s32 alpha);
+
+/* Populate RGBA rows at bytes 0x30/0x40; the first row is transparent.
+   The six-index quad path consumes its color rows from this same base offset. */
+void CreateColorLeftFade(DrawVertex *panelData, s32 red, s32 green, s32 blue, s32 alpha);
+
+/* Set both panel colors to the same blue tint with zero alpha. */
+void CreateColorFacility(UiSpriteBandPayload *panel);
+
+extern u8 D_003B45C8[];
+
+extern u8 D_003B45D8[];
+
+/* Draw the panel's three flat quads from one vertex/color buffer; each quad uses its own 4-byte index rows. */
+void DrawNormal(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+/* Update seven alpha words, then emit three wide and six side strips.
+   The first color row is deliberately excluded from the alpha update. */
+void DrawMesWin(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+/* Update five alpha words, then emit three wide and two side strips.
+   The first color row is deliberately excluded from the alpha update. */
+void DrawSelWin(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+void DrawPlain(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+/* Update the first color row's alpha and emit one indexed quad. */
+void DrawPera1(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+/* Bracket the six-index panel draw with table-state two and its native reset to zero. */
+void DrawLeftFade(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+/*BEGIN itfDrawFramedPanelWithTextureStrips*/
+extern u32 D_003B4690[];
+
+extern DrawColorRec D_003B4700;
+
+extern DrawColorRec D_003B4710;
+
+/* Draw the framed panel: two bordered bands, then six texture-bound strips whose
+ * rectangles are rebuilt from the live panel bounds. */
+void itfDrawFramedPanelWithTextureStrips(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+extern DrawColorRec D_003B4720;
+
+extern DrawColorRec D_003B4730;
+
+/* Bind the texture for the left cap, then draw the center and reversed right
+ * cap. Insets are captured before the first submission; Y bounds are live. */
+void DrawSpkWin2(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+extern u8 D_003B4740[];
+
+extern u8 D_003B4750[];
+
+extern DrawColorRec D_003B4470;
+
+extern DrawColorRec D_003B4480;
+
+extern DrawColorRec D_003B4490;
+
+extern DrawColorRec D_003B44A0;
+
+/* Draw the three inset flat quads, then split a tall texture into top, stretch
+ * and bottom bands. The short path uses the live rectangle in the panel. */
+void DrawFacility(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+/* Copy bounds and draw the tinted border; alpha uses the native signed 103/128 scale. */
+void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+
+/* Append two GS A+D state writes: TEST_1 (0x47), then ALPHA_1 (0x42). */
+void DrawTestAlphaPrim(sdfDrawTag_t *list);
+
+/* Capture the script window, reset its held queue, and switch to page three.
+   Invalid windows still return the native command-complete value of one. */
+s32 itfPanelAcquireHold(void);
+
+/* Clean up the active held window and reset its queue; an inactive hold is a no-op. */
+s32 itfPanelReleaseHold(void);
+
+/* Queue script words in native second/first/third field order; first and third narrow to s16.
+   Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
+s32 itfCommandQueueHeldPanelEntry(void);
+
+s32 itfStepHeldPanelMessages(void);
+
+extern void dds3SetFilter2Para(u32);
+
+extern void dds3SetFilter2RGBA(u32);
+
+extern void dds3Filter2On(s32);
+
+extern void dds3Filter2Off(s32);
+
+extern s32 D_00438F28;
+
+/* Configure the fade on timer zero, wait thirty ticks, then consume a negative option status.
+   Keep both timer reads: setup tests a second read, while later comparisons use the cached one. */
+s32 itfCommandSelectOptionWithFade(void);
+/* End of declarations from src/dds2/game/code_001A1B08.c */
+
+/* Declarations from dds-decomp src/dds2/interface/itfMesManager.c */
+#ifndef VERSION_DDS2
+#define VERSION_DDS2 1
+#endif
+
+#include "sdk_libc.h"
+
+#include "dds/fr_font.h"
+
+#include "dds/fr_font_context.h"
+
+#include "dds/itf.h"
+
+#include "dds/itf_text_slots_api.h"
+
+_FRQ *MessageRequestEx(s32 x, s32 y, s32 channel0, s32 channel1,
+    s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *sub);
+
+/* Test the active text-interface flags and return the requested bits. */
+u32 frGetMessageResult(u32 mask);
+
+void frSetDrawPosition(struct _FRQ *glyph, s32 x, s32 y);
+
+/* Replace each child render word along the borrowed glyph chain. */
+void frSetFontColor(struct _FRQ *parentNode, u32 colorWord);
+
+/* Update the first-option byte of every child on this glyph chain. */
+void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/btl_enc_bg_entry.h"
+
+#include "dds/common.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/itf_mes_entry_start_api.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+#include "dds/itf.h"
+
+#include "dds/itf_message_manager_task.h"
+
+#include "dds/itf_option_bit_index_api.h"
+
+#include "dds/snd_pad.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_resource.h"
+
+#include "dds/sdf_pac_reloc.h"
+
+#include "dds/fr_font_temporary_entry_api.h"
+
+#include "dds/itf_mes_state_api.h"
+
+#include "dds/itf_text_slots_api.h"
+
+#include "dds/itf_mes_window.h"
+
+#include "dds/itf_mes_panel_mode.h"
+
+#include "dds/itf_panel_api.h"
+
+#include "dds/fld_area_work.h"
+
+#include "dds/fr_font_measure.h"
+
+#include "dds/eff_resource_slots.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/kwln.h"
+
+#include "dds/kwln_task_create.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/btl_scene_fade.h"
+
+#include "dds/btl_resource.h"
+
+#include "dds/eff.h"
+
+#include "dds/itf_panel_draw.h"
+
+#include "dds/btl_state.h"
+
+#include "dds/btl_ui.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_projection.h"
+
+#include "dds/btl_action.h"
+
+#include "dds/scr.h"
+
+#include "dds/dat_state.h"
+
+#include "dds/mnu_result.h"
+
+#include "dds/dat_command.h"
+
+#include "dds/sdf_sif_command.h"
+
+#include "dds/mdl_resource_table.h"
+
+#include "dds/kwln_task_lifecycle.h"
+
+extern u32 itfMessageFlags;
+
+typedef mesflow_tag ItfMesWindowRec;
+
+extern ItfMesDebugState D_003B4770;
+
+void fldNoopWithMode(s32 mode);
+
+void itfMesSetTextSlotFromValue(ItfMesWindowIndex window, s32 slotIndex, s32 value, s32 selector);
+
+extern void frFontCenterGlyphChainAt(s32 x, s32 y, _FRQ *glyphChain);
+
+void itfMesInitializePanelPlacementSprite(dds_instanceMes_tag *panel);
+
+#define ITF_MES_SCRIPT_PANEL_BIT 0x200000
+
+#define ITF_MES_SKIP_CONTEXT_ENABLE_BIT 0x400000
+
+#define ITF_MES_TEXT_X_SHIFT 4
+
+#define ITF_MES_TEXT_Y_SHIFT 3
+
+#define ITF_MES_OPTION_LIST_READY 0x10
+
+#define ITF_MES_LOW_FLAGS_MASK 0xffff
+
+#define ITF_MES_OPTION_ROW_SPACING 25
+
+#define ITF_MES_DEFAULT_COLOR_VALUE 0x80
+
+#define ITF_MES_TEXT_SLOT_COUNT 0x20
+
+#define ITF_MES_MASK_BIT_COUNT ITF_MES_OPTION_BIT_INDEX_NOT_FOUND
+
+/* Return the loaded message-window texture resource, not a window index. */
+sdfTexHandle_t *itfMesGetWindowTexture(void);
+
+/* Set requested bits in the separate message-global word. */
+void itfMesSetFlags(u32 mask);
+
+/* Clear requested bits in the separate message-global word. */
+void itfMesClearFlags(u32 mask);
+
+void itfMesBuildEntryGlyph(dds_instanceMes_tag *mes);
+
+/* Install an entry's table into the window, rebuild its text glyphs and the
+ * selected-item caption, then mark the entry block active. */
+ItfMesEntryStartResult itfMesStartEntry(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
+
+extern s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub);
+
+/* Cache the selected table and narrowed item index, then initialize its text.
+ * Empty tables return 0; nonempty tables return the text initializer's result. */
+s32 itfMesSelectTableItemText(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
+
+/* Build the option panel around the widest measured row, using this game's
+ * fixed row spacing. Preserve the existing panel creation/layout order. */
+void itfMesBuildOptionFrame(dds_instanceMes_tag *mes);
+
+extern const char *datUnitNames;
+
+extern const char *D_00435E4C;
+
+extern const char *D_00435E5C;
+
+extern const char *D_00435E60;
+
+extern const char *datSkillNames;
+
+extern char D_003A41A8[][0x20];
+
+extern char D_003A47E8[][0x20];
+
+extern char *D_00386048[];
+
+extern char D_004365F0[];
+
+extern void itfConvertText(char *dst, const char *src);
+
+extern u16 *txtFormatNumberU16(s32 value, u16 *dst);
+
+/* Copy one of the built-in interface strings into a window replacement slot. */
+void itfMesSetTextSlotFromValue(ItfMesWindowIndex window, s32 slotIndex, s32 value, s32 selector);
+
+extern void itfMesConfigurePanelBoundsAndFadeLimit(ItfMesBlkA4 *blk, ItfMesPanelMode panelMode,
+    ItfMesPanelFadeLimit fadeLimit);
+
+extern char *D_003B4990[];
+
+extern char *D_00436600[2];
+
+extern char D_00436608[];
+
+extern char D_00436610[];
+
+extern char D_00436618[];
+
+extern char D_00436620[];
+
+extern char D_00436628[];
+
+extern SdfPoolNode kwlnPositionedTextSurface;
+
+extern ItfMesWindowRec D_00452960[];
+
+/* Return the entry's item-address table or branch sentinel 1; index unchecked. */
+ItfMesEntryItemsResult itfMesGetWindowEntryItems(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
+
+/* Read the installed sub-resource's entry count without slot/resource validation. */
+u32 itfMesGetEntryCount(ItfMesWindowIndex window);
+
+extern s32 frFontCountGlyphBands(_FRQ *glyph);
+
+extern u32 itfGetTextLipsUnitId(void);
+
+extern u32 itfGetTextLipsMotionId(void);
+
+/* Rebuild colored entry glyphs, synchronize interface flags/hooks and cache
+ * the span count. Existing span helpers require a valid created chain. */
+void itfMesBuildEntryGlyph(dds_instanceMes_tag *mes);
+
+/* Append text for each clear mask bit. Masked items are still consumed, while
+ * y advances only for built text. Return NULL if nothing was built. */
+_FRQ *itfMesBuildNodeRows(const u32 *items, s32 itemCount, u32 mask, s32 x, s32 y, s32 renderValue);
+
+/* Resolve the zero-based visible-option ordinal to its clear bit, or 32 if
+ * absent. Keep the predecrement; the ordinal itself is not validated. */
+ItfMesOptionBitIndex itfMesFindOptionBitIndex(ItfMesVisibleOptionOrdinal optionOrdinal, u32 optionMask);
+
+/* Enable parent contexts whose first child's tested flag is zero.
+ * NULL chain is allowed, but every visited node must have a first child. */
+void itfMesEnableUnflaggedNodeContexts(_FRQ *glyph);
+
+extern char *D_00436600[2] __attribute__((section(".sdata")));
+
+/* Named and indexed views of the same four signed 32-bit color channels. */
+typedef union UiQuadColor {
+    struct {
+        s32 red;
+        s32 green;
+        s32 blue;
+        s32 alpha;
+    };
+    s32 channels[4];
+} UiQuadColor;
+
+typedef char UiQuadColorSizeCheck[sizeof(UiQuadColor) == 0x10 ? 1 : -1];
+
+extern const UiQuadColor D_00414D50;
+
+#include "dds/sdf_packet_alloc.h"
+
+extern void itfPnlDraw(dds_itfpanel_t *sprite, SdfPoolNode *surface);
+
+/* Enable context rendering for every font object in the linked chain. */
+void frFontEnableNodeContextModes(_FRQ *fontObject);
+
+void itfMesInitializePanelPlacementSprite(dds_instanceMes_tag *panel);
+
+void itfInitializeCursorResetState(ItfMesBlk40 *cursor);
+
+extern void itfMesConfigurePanelBoundsAndFadeLimit(ItfMesBlkA4 *block, ItfMesPanelMode panelMode,
+    ItfMesPanelFadeLimit fadeLimit);
+
+void itfResetWindowResourceBlock(ItfMesBlkA4 *block);
+
+void btlReleaseEffectResourceHandles(dds_instanceMes_tag *effect);
+
+u16 *txtFormatNumberU16(s32 number, u16 *out);
+
+/* Select the message panel's bounds by layout mode (2 is the wide panel) and
+ * reset its fade channels; nonpositive limits default to 0x80. */
+void itfMesConfigurePanelBoundsAndFadeLimit(ItfMesBlkA4 *block, ItfMesPanelMode panelMode,
+    ItfMesPanelFadeLimit fadeLimit);
+
+void itfMesUpdatePanelFades(dds_instanceMes_tag *panel);
+
+void itfUpdateSoundSelectionTransition(dds_instanceMes_tag *panel);
+
+void itfMesAdvanceEntryText(dds_instanceMes_tag *mes);
+
+void itfUpdateBattleDisplayAndFadeIndicator(dds_instanceMes_tag *panel);
+
+void itfMesUpdatePanelFades(dds_instanceMes_tag *panel);
+
+void itfMesAdvanceEntryText(dds_instanceMes_tag *mes);
+
+extern ItfMesOptionBitIndex itfMesFindOptionBitIndex(ItfMesVisibleOptionOrdinal optionOrdinal, u32 optionMask);
+
+extern void itfMesShiftPanelVertically(dds_instanceMes_tag *panel, s32 dy);
+
+void itfUpdateSoundSelectionTransition(dds_instanceMes_tag *panel);
+
+void itfMesShiftPanelVertically(dds_instanceMes_tag *panel, s32 dy);
+
+extern void itfMesRenderActivePanelSprites(dds_instanceMes_tag *);
+
+extern void itfDrawSoundSelectorFadeLayers(dds_instanceMes_tag *);
+
+extern void itfDrawSoundSelectorOptionPanel(dds_instanceMes_tag *);
+
+extern void itfDrawSelectedSoundRow(dds_instanceMes_tag *);
+
+void itfUpdateSoundSelectorPanel(dds_instanceMes_tag *panel);
+
+void itfMesRenderActivePanelSprites(dds_instanceMes_tag *panel);
+
+extern DrawColorRec D_003B49B8[];
+
+/* Draw the selected sound row and its expanding fade outline. */
+void itfDrawSelectedSoundRow(dds_instanceMes_tag *panel);
+
+extern u8 D_003B49F8[];
+
+extern u8 D_003B49E8[];
+
+extern s32 D_003B4A08[];
+
+/* Draw the sound selector frame, its fade layer and the expanding timer outline. */
+void itfDrawSoundSelectorFadeLayers(dds_instanceMes_tag *panel);
+
+extern SdfPoolNode D_00380708;
+
+extern s32 D_003B4A18[];
+
+extern u8 D_00436630[5];
+
+extern u8 D_00436638[5];
+
+void itfQueueOffsetTexturedRect(s32 *bounds, s32 *region, s32 x, s32 y,
+                   s32 alpha, sdfTexHandle_t *texture, sdfDrawTag_t *command);
+
+extern const s32 D_00414D60[12][4];
+
+extern s16 D_00438F34;
+
+extern s32 D_00438F30;
+
+extern s16 D_00438F38;
+
+extern SdfPoolNode D_003805A8;
+
+extern const s32 D_00414E20[7][4];
+
+extern void sdfSubmitGsTestOneRegisterPacket(u64 data, u32 kind);
+
+extern void sdfSubmitGsAlphaOneRegisterPacket(u32 data, u32 kind);
+
+void itfMesDrawWindowBackground(s32 mode);
+
+extern const s32 D_00414E20[7][4] __attribute__((aligned(8)));
+
+extern s32 D_00438F2C;
+
+extern u8 D_00438F36;
+
+extern s16 D_00452E60[8];
+
+void itfUpdateSoundSelectorOptions(void);
+
+extern s8 D_0037F531[];
+
+/* Start the window entry, then poll completion and restore its normal flags. */
+s32 itfMesScriptStartEntryAndWait(void);
+/* End of declarations from src/dds2/interface/itfMesManager.c */
+
 /* Poll/start an entry: one ends the command, zero keeps waiting.
    A negative signed status is consumed by clearing it; positive status keeps waiting. */
 s32 itfMesMngMessage(void) {
@@ -875,13 +1547,101 @@ void itfMesMngSetPhase(s32 msgid, s8 phase) {
     pinst[msgid].mes->message.phase = phase;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfPanelAcquireHold);
+/* Capture the script window, reset its held queue, and switch to page three.
+   Invalid windows still return the native command-complete value of one. */
+s32 itfPanelAcquireHold(void) {
+    PanelHold *hold;
+    ItfMesWindowIndex window;
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfPanelReleaseHold);
+    window = scrGetMessageHandle();
+    if (window < 0) {
+        return 1;
+    }
+    hold = &itfHeldPanelCursor;
+    hold->window = window;
+    hold->unk4 = -1;
+    hold->entryEndFrame = -1;
+    hold->queuedCount = 0;
+    itfMesMngChangeWindowType(window, ITF_MES_PANEL_MODE_NO_SPRITE_TRANSITION, 0);
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfCommandQueueHeldPanelEntry);
+/* Clean up the active held window and reset its queue; an inactive hold is a no-op. */
+s32 itfPanelReleaseHold(void) {
+    PanelHold *hold = &itfHeldPanelCursor;
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfStepHeldPanelMessages);
+    if (hold->window < 0) {
+        return 1;
+    }
+    itfMesMngRequestMessageRelease(hold->window, 1);
+    hold->window = -1;
+    hold->unk4 = -1;
+    hold->entryEndFrame = -1;
+    hold->queuedCount = 0;
+    return 1;
+}
+
+/* Queue script words in native second/first/third field order; first and third narrow to s16.
+   Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
+s32 itfCommandQueueHeldPanelEntry(void) {
+    PanelHold *cursor = &itfHeldPanelCursor;
+    s32 first;
+    s32 second;
+    s32 third;
+
+    if (cursor->window < 0) {
+        return 1;
+    }
+    if (cursor->queuedCount >= ITF_PANEL_HOLD_CAPACITY) {
+        return 1;
+    }
+    first = scrGetIntPara(0);
+    second = scrGetIntPara(1);
+    third = scrGetIntPara(2);
+    cursor->items[cursor->queuedCount].second = first;
+    cursor->items[cursor->queuedCount].first = second;
+    cursor->items[cursor->queuedCount].third = third;
+    cursor->queuedCount++;
+    return 1;
+}
+
+s32 itfStepHeldPanelMessages(void) {
+    s32 frame;
+    s32 latest = -1;
+    s32 i;
+
+    if (itfHeldPanelCursor.window < 0) {
+        return 1;
+    }
+    frame = scrGetCommandTimer();
+    if (itfHeldPanelCursor.queuedCount == 0) {
+        return 1;
+    }
+    for (i = 0; i < itfHeldPanelCursor.queuedCount; i++) {
+        s32 start = itfHeldPanelCursor.items[i].first;
+
+        if (start >= latest) {
+            latest = start;
+        }
+        if (start == frame) {
+            s16 entry = itfHeldPanelCursor.items[i].second;
+            s32 deadline = frame + itfHeldPanelCursor.items[i].third;
+
+            itfMesStartEntry(itfHeldPanelCursor.window, entry, 0);
+            itfHeldPanelCursor.unk4 = entry;
+            itfHeldPanelCursor.entryEndFrame = deadline;
+        }
+    }
+    if (frame == itfHeldPanelCursor.entryEndFrame) {
+        itfMesMngRequestMessageRelease(itfHeldPanelCursor.window, 1);
+        itfHeldPanelCursor.unk4 = itfHeldPanelCursor.entryEndFrame = -1;
+    }
+    if (frame >= latest && frame >= itfHeldPanelCursor.entryEndFrame) {
+        itfPanelReleaseHold();
+        return 1;
+    }
+    return 0;
+}
 
 s32 itfMesMngSelect(void) {
     s32 window;
@@ -1075,7 +1835,10 @@ s32 itfMesMngSelectDefKey(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetWindowTexture);
+/* Return the loaded message-window texture resource, not a window index. */
+sdfTexHandle_t *itfMesGetWindowTexture(void) {
+    return itfMesMngManager.windowTexture;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187488);
 
@@ -1748,7 +2511,23 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", DebugMoveWinAlpha);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DebugChangeInstance);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfQueueOffsetTexturedRect);
+void itfQueueOffsetTexturedRect(s32 *bounds, s32 *region, s32 x, s32 y,
+                   s32 alpha, sdfTexHandle_t *texture, sdfDrawTag_t *command) {
+    s32 positions[4];
+    s32 uv[4];
+    UiQuadColor color = D_00414D50;
+
+    positions[0] = (bounds[0] + x) << 4;
+    positions[1] = (bounds[1] + y) << 3;
+    positions[2] = (bounds[2] + x) << 4;
+    positions[3] = (bounds[3] + y) << 3;
+    uv[0] = region[0] << 4;
+    uv[1] = region[1] << 4;
+    uv[2] = (region[0] + region[2]) << 4;
+    uv[3] = (region[1] + region[3]) << 4;
+    color.alpha = alpha;
+    itfMiscDrawSpritePrim((DrawVertex *)positions, (DrawColorRec *)uv, (DrawColorRec *)&color, 0, texture, 0, command);
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018C030);
 

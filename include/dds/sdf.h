@@ -476,4 +476,16 @@ void effUpdateSelectionEntryState(SdfFlagListWork *);
 
 #define SDF_POOL_FREE_KIND 0xFFFF
 
+/* Draw-surface pool entry (0x20); the SDK initializes and flushes this owner. */
+typedef struct SdfPoolNode {
+    struct SdfPoolNode *next; /* 0x00 */
+    sdfDrawTag_t *first;      /* 0x04 */
+    sdfDrawTag_t *last;       /* 0x08 */
+    u32 unkC;
+    void (*append)(struct SdfPoolNode *, sdfDrawTag_t *);      /* 0x10 */
+    s32 (*prepend)(struct SdfPoolNode *, s32, sdfDrawTag_t *); /* 0x14 */
+    u32 unk18;
+    u32 unk1C;
+} SdfPoolNode;
+
 #endif /* DDS_SDF_H */

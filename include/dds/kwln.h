@@ -28,4 +28,8 @@ typedef s32 dds3TaskUpdateResult_t;
  * frees it after the callback returns. */
 typedef void (*dds3ProcessShutdownFunc_t)(dds3ProcessID_t *task);
 
+typedef dds3TaskUpdateResult_t KwlnTaskUpdateResult;
+typedef KwlnTaskUpdateResult (*KwlnTaskUpdateCallback)(dds3ProcessID_t *task);
+typedef void (*TaskDestroy)(dds3ProcessID_t *task);
+
 #endif /* DDS_KWLN_H */

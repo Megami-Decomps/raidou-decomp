@@ -3,6 +3,8 @@
 /* Declarations from smt3-decomp src/smt3/event/evtCommand.c */
 #include "common.h"
 
+#include "newdata.h"
+
 #include "sdf_resource.h"
 
 #include "event.h"
@@ -76,11 +78,11 @@ extern s32 evtStopEventBgm(s32 eventId, s32 variation);
 
 extern s32 evtPlaySe(s32 eventno, s32 seno);
 
-extern s32 func_001FA158(s32 eventId, s32 variation);
+extern s32 evtStartBgmBySoundIdAndFade(s32 eventId, s32 variation);
 
 extern void datAddKotowariPoint(s32 type, s32 point);
 
-extern void func_001FA310(s32 taskId, s32 key);
+extern void evtRefreshTaskEffectTexture(s32 taskId, s32 key);
 
 extern s32 scrGetMessageHandle(void);
 
@@ -344,7 +346,6 @@ extern s32 scrGetCommandTimer(void);
 extern void evtSetSkyAlpha(s32 frame, s32 a);
 
 extern s32 dds3ExistProcess(void *id);
-
 
 extern f32 sdfSin(f32 aRadius);
 
@@ -866,7 +867,7 @@ u32 evtCommand_BGM_VOL_UP(void);
 
 u32 evtCommand_SE_PLAY_E(void);
 
-u32 evt_1E9168(void);
+u32 evtCommandStartBgmWithFade(void);
 
 u32 evt_1E91A8(void);
 
@@ -878,11 +879,11 @@ s32 evt_1E9248(void);
 
 s32 evt_1E9270(void);
 
-u32 evt_1E9298(void);
+u32 evtOpcodeRefreshTaskData(void);
 
 u32 evt_1E92D8(void);
 
-u32 evt_1E92F8(void);
+u32 evtCommandSetDrawFlagWhileWaiting(void);
 
 void evtDrawDeadMoonSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32 vh,
                            s32 rgb, sdfTexHandle_t *th, s32 ox, s32 oy,
@@ -903,6 +904,719 @@ extern addr_t evtKutiUnit;
 
 extern sdfTexHandle_t *DeadMoonTmx;
 /* End of declarations from src/smt3/event/evtCommand.c */
+
+/* Declarations from dds-decomp src/dds1/event/evtCommand.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_EVT_CAMP_TASK_READY_VALUE 1
+
+#define SMT3_DEFINES_EVT_PAIRED_REQUEST_SIZE 1
+
+#define SMT3_DEFINES_EVT_SCALAR_REQUEST_SIZE 1
+
+#define SMT3_DEFINES_EVT_WORLD_OBJECT_KIND_FIRST 1
+
+#define SMT3_DEFINES_EVT_WORLD_OBJECT_KIND_LIMIT 1
+
+#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID 1
+
+#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_UPDATE_PENDING 1
+
+#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION 1
+
+#define SMT3_DEFINES_datModelParam_t 1
+
+#define SMT3_DEFINES_dds3MoverUpdate_t 1
+
+#define SMT3_DEFINES_dds3SlotResource_t 1
+
+#define SMT3_DEFINES_effEventWork_t 1
+
+#define SMT3_DEFINES_evtColorWork_t 1
+
+#define SMT3_DEFINES_evtModelHeader_t 1
+
+#define SMT3_DEFINES_evtVec_t 1
+
+#define SMT3_DEFINES_sdfTextureClampMode_t 1
+
+#include "dds/eff_transform.h"
+
+/* Sparse world-node identities recovered from the paired operation tables and
+ * concrete creators. Unlisted values stay unnamed; COUNT remains the full
+ * directory extent rather than an enum-completeness claim. */
+enum {
+    EFF_WORLD_KIND_WORLD_INFO = 0,
+    EFF_WORLD_KIND_EVENT_TABLE = 1,
+    EFF_WORLD_KIND_WORLD_INDEX_OWNER = 2,
+    EFF_WORLD_KIND_SLOT_RING = 3,
+    EFF_WORLD_KIND_CAMERA = 4,
+    EFF_WORLD_KIND_FOLLOW_MODEL = 5,
+    EFF_WORLD_KIND_EFFECT_TRANSFORM = 6,
+    EFF_WORLD_KIND_EFFECT_OBJECT = 7,
+    EFF_WORLD_KIND_RESOURCE_OWNER = 8,
+    EFF_WORLD_KIND_LIGHT = 9,
+    EFF_WORLD_KIND_SCRIPT_OBJECT = 10,
+    EFF_WORLD_KIND_ACTION_B = 11,
+    EFF_WORLD_KIND_ACTION_D = 13,
+    EFF_WORLD_KIND_ACTION_10 = 16,
+    EFF_WORLD_KIND_TRANSFORM_SOURCE = 17,
+    EFF_WORLD_KIND_COUNT = 18
+};
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/fld_area_work.h"
+
+#include "dds/fld_encounter_runtime_api.h"
+
+#include "dds/fld.h"
+
+#include "dds/dds3_admin_control_api.h"
+
+#include "dds/common.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/dds3_camera_update_flags.h"
+
+#include "dds/sdf_delayed_resource_check_api.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+#include "dds/kwln_task_add_child.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/evt_world_object_api.h"
+
+#include "dds/fld_resource_resolver.h"
+
+#include "dds/dds3_path.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/dds3_object_control_slot.h"
+
+#include "dds/dds3_world_selection.h"
+
+#include "dds/eff_dependency.h"
+
+#include "dds/eff_object.h"
+
+#include "dds/fld_player_scene_state.h"
+
+#include "dds/eff_inner_float_api.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/kwln.h"
+
+#include "dds/evt_task.h"
+
+#include "dds/evt_world.h"
+
+#include "dds/evt_path_direction.h"
+
+#include "dds/evt_event_pack.h"
+
+#include "dds/scr.h"
+
+#include "dds/scr_command_result.h"
+
+#include "dds/scr_command_timer_api.h"
+
+#include "dds/scr_process_handle_api.h"
+
+#include "dds/scr_string_parameter_api.h"
+
+#include "dds/scr_arg_read.h"
+
+#include "dds/evt_solar.h"
+
+#include "dds/dds3_world_counter.h"
+
+/* Selects both the world-node tag and its per-kind scene slot. */
+typedef s32 EffWorldKind;
+
+void evtSubmitEventRequest(s32 eventId, s32 mode);
+
+void evtSubmitEventRequestImmediate(s32 eventId);
+
+void evtPrintDeveloperConsoleMessage(const char *fmt, ...);
+
+#include "dds/sdf_debug_api.h"
+
+void scrDestroyAllNamedProcesses(void);
+
+void dds3RefreshStoredVec3(dds3Basic_t *object);
+
+void fldSetMapSlotValueFlag(s32 mapId, u32 slotIndex, s32 bit, s32 enabled);
+
+extern char D_003AC968[];
+
+extern char D_003AC978[];
+
+extern char D_003AC988[];
+
+extern char D_003ACA40[];
+
+extern char D_003ACA58[];
+
+extern s32 D_0032E3C0[];
+
+extern u32 evtPendingEventSelection;
+
+extern void fldSetDeferredFieldCommand(s32 a, s32 b);
+
+extern char D_003AC700[];
+
+extern char D_003AC728[];
+
+extern char D_003AC9F8[];
+
+extern char D_003AC998[];
+
+extern char D_003AC9E0[];
+
+extern char D_003AC958[];
+
+extern char D_003AC750[];
+
+ScrCommandResult evtCommandSignalAdminAtTimerZero(void);
+
+/* Queue an event request after preparing BGM/encounter state, then stop scripts.
+ * The mode is retained separately; only its positivity controls dispatch mode. */
+void evtSubmitEventRequest(s32 eventId, s32 requestMode);
+
+s32 evtCommandSubmitEvent(void);
+
+/* Stop BGM and submit the event payload with immediate dispatch enabled. */
+void evtSubmitEventRequestImmediate(s32 eventId);
+
+/* Forward the first VM integer as an opaque four-byte admin payload. */
+s32 evtCommandSubmitScalarAdminRequest(void);
+
+s32 evtCommandAddEffectUnitToWorld(void);
+
+extern char D_003AC8E8[], D_003AC8F8[], D_003AC908[];
+
+extern char D_003AC928[];
+
+s32 evtCommandReattachObjectPath(void);
+
+extern dds3ProcessID_t * evtViewerCreateTask(s32 taskId, s32 event, s32 id);
+
+extern void evtPolygonMovieSetFlagBits(dds3ProcessID_t *task, u32 bits);
+
+/* Create an event/scene movie task at the owning task's priority, set bit 0,
+ * and return its handle through the VM result. Missing work skips creation. */
+s32 evtCommandStartPolygonMovie(void);
+
+extern void evtPolygonMovieClearFlagBits(dds3ProcessID_t *task, u32 bits);
+
+/* Clear bit 0 and echo the movie ID through the VM result. */
+s32 evtCommandClearPolygonMovieFlag(void);
+/* End of declarations from src/dds1/event/evtCommand.c */
+
+/* Declarations from dds-decomp src/dds1/event/evtUnitManager.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_ACTION_10 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_ACTION_B 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_ACTION_D 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_CAMERA 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_COUNT 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_EFFECT_OBJECT 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_EFFECT_TRANSFORM 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_EVENT_TABLE 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_FOLLOW_MODEL 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_LIGHT 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_RESOURCE_OWNER 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_SCRIPT_OBJECT 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_SLOT_RING 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_TRANSFORM_SOURCE 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_WORLD_INDEX_OWNER 1
+
+#define SMT3_DEFINES_EFF_WORLD_KIND_WORLD_INFO 1
+
+#include "dds/btl.h"
+
+#include "dds/dds3_path.h"
+
+#include "dds/dds3_scene_membership.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/eff_quaternion_nlerp.h"
+
+#include "dds/evt_unit.h"
+
+#include "dds/evt_unit_move_end_api.h"
+
+#include "dds/evt_unit_path_advance_api.h"
+
+#include "dds/evt_world.h"
+
+#include "dds/mdl.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_float_counter.h"
+
+#include "dds/sdf_model_scalars.h"
+
+#include "dds/sdf_motion.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdk_libm.h"
+
+enum EvtTargetInfoFlags {
+    EVT_TARGET_INFO_FLAG_UNIT_OWNS_VECTOR = 0x8
+};
+
+/* The primary object returned by dds3GetActiveScene is distinct from the active
+ * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
+ * object +0x18 -> table +0x08 -> 0x0C-byte slot entries, each with head +0x04.
+ * DDS1 and DDS2 use the same observed layout. Node payloads depend on the slot. */
+enum {
+    EVT_WORLD_SLOT_MOVIE = 3, /* viewer movie-time lists: byte offset 0x28 */
+    EVT_WORLD_SLOT_CAMERA = 4, /* linked cameras; active nodes supply the view transform */
+    EVT_WORLD_SLOT_UNIT = 5   /* unit/group/lip-sync lists: byte offset 0x40 */
+};
+
+/* Blend the quaternion in vf10 toward vf11 along the shorter arc using
+ * blendAmount, normalize the result, and leave it in vf10. Providers:
+ * DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+void Lerp(f32 blendAmount);
+
+typedef enum {
+    SDF_MOTION_STATE_UNINITIALIZED = 0,
+    SDF_MOTION_STATE_INITIALIZED = 1,
+    SDF_MOTION_STATE_SAMPLING = 4,
+    SDF_MOTION_STATE_TERMINAL = 5,
+    SDF_MOTION_STATE_SUSPENDED = 6,
+} SdfMotionState;
+
+f32 acosf(f32 x);
+
+void dds3AddRotPoseSet(dds3Basic_t *object, u128 *vector);
+
+dds3PathBasicControl_t *dds3AllocPathBasicWorkData(struct dds3Basic_t *object);
+
+void dds3DeletePathControl(dds3PathBasicControl_t *path);
+
+void dds3GetPosPoseSet(dds3Basic_t *object);
+
+void dds3GetPosPoseSetMCR(dds3Basic_t *object, u128 *vector);
+
+void dds3GetRotPoseSet(dds3Basic_t *object);
+
+void dds3PathBasicControlGetPos(dds3PathBasicControl_t *path);
+
+f32 dds3PathBasicControlGetRatio(const SdfFloatCounter *counter);
+
+void dds3PathBasicControlGetRot(dds3PathBasicControl_t *path);
+
+void dds3PathBasicControlSetRatio(SdfFloatCounter *counter, f32 multiplier);
+
+Dds3SceneMembershipResult dds3SceneBasicExistBasicFromType(
+    const struct dds3Basic_t *object, s32 slotIndex, const struct dds3Basic_t *targetNode);
+
+EvtUnitMoveEndResult evtCheckMoveEnd(evtUnitHandle_t *unit);
+
+EvtUnitPathAdvanceResult evtGetNextMovePos(evtUnitHandle_t *unit);
+
+u32 mdlGetColor(const dds3ModelHandle_t *ctx);
+
+/* The referenced halfword is promoted to a word-sized SDK result. */
+s32 mdlGetNumOfCut(const dds3ModelHandle_t *ctx, s32 searchId);
+
+/* VU helpers transfer vectors through vf10 and basis rows through vf28-vf30. */
+void mdlGetPosition(dds3ModelHandle_t *ctx);
+
+void mdlSetColor(dds3ModelHandle_t *ctx, u32 value);
+
+void mdlSmoothLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+                          f32 blendDurationFrames);
+
+void mdlSmoothSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+                       f32 blendDurationFrames);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+/* Angles are in radians; cosine applies a pi/2 shift to the sine input. */
+f32 sdfAtan2(f32 y, f32 x);
+
+void *sdfChipAllocDirect(s32 size);
+
+void sdfChipFreeDirect(void *memory);
+
+void sdfModelResetFaceDivParm(struct dds_sdfModelRootNode_t *model);
+
+void sdfModelSetFaceDivParm(struct dds_sdfModelRootNode_t *model, f32 first, f32 second);
+
+#include "dds/sdk_ps2.h"
+
+struct SdfPoolNode;
+
+struct EffNodeDescriptor;
+
+#include "dds/common.h"
+
+#include "dds/scr_integer_parameter_api.h"
+
+#include "dds/dds3_object_flags.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/btl_model_record.h"
+
+#include "dds/sdf_model_scalars.h"
+
+#include "dds/sdf_motion.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/dds3_path.h"
+
+#include "dds/evt_unit.h"
+
+#include "dds/evt_path_direction.h"
+
+#include "dds/evt_unit_motion_api.h"
+
+#include "dds/evt_unit_motion_callback_result.h"
+
+#include "dds/evt_unit_motion_step_result.h"
+
+#include "dds/evt_unit_move_end_api.h"
+
+#include "dds/evt_unit_path_advance_api.h"
+
+#include "dds/evt_unit_wait_api.h"
+
+#include "dds/evt_unit_facing_result_api.h"
+
+#include "dds/evt_unit_light_animation_status.h"
+
+#include "dds/evt_unit_vector_slot.h"
+
+#include "dds/evt_unit_motion_slot_flags.h"
+
+#include "dds/evt_unit_transition_flags.h"
+
+#include "dds/evt_effect_scale_object.h"
+
+#include "dds/evt_unit_motion_setup.h"
+
+#include "dds/sdf_float_counter.h"
+
+#include "dds/evt_unit_motion_slot.h"
+
+#include "dds/evt_unit_color_transition.h"
+
+#include "dds/evt_unit_vertical_move.h"
+
+#include "dds/eff_transform.h"
+
+#include "dds/eff_object.h"
+
+#include "dds/dds3obj.h"
+
+#include "dds/mdl.h"
+
+#include "dds/sdf_draw.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/ee_mmi.h"
+
+#include "dds/sdf_vu_matrix.h"
+
+#include "dds/eff_quaternion_nlerp.h"
+
+extern f32 *D_00324770[];
+
+extern u8 kwlnDefaultColorVector[];
+
+extern void evtGetUnitDirVector(evtUnitHandle_t *unit);
+
+/* Length of the path's vec4 trajectory sampled at 20 steps of the value multiplier. */
+f32 GetSplineLength(dds3PathBasicControl_t *path);
+
+extern f32 sdfFaceDivSoften, sdfFaceDivBias;
+
+#include "dds/dds3_world_primary.h"
+
+#include "dds/dds3_scene_membership.h"
+
+extern s32 sdfModelGetMarkPos(dds_sdfModelRootNode_t *model, s32 mapRecordId);
+
+extern void dds3RotationArc(void);
+
+/* Advance the model, light-colour and directional transitions for one event unit. */
+void evtAdvanceUnitVisualTransitions(evtUnitHandle_t *unit);
+
+/* vu0 routine: load vf10 with the unit's colour (flag 0x100), its target's vector, or the default */
+void GetBaseLightRGB(evtUnitHandle_t *unit);
+
+/* vu0 routine: load the target info secondColor vector when unit-owned. */
+void GetBaseAmbientRGB(evtUnitHandle_t *unit);
+
+/* vu0 routine: load vf10 with the unit's vector, or the default one */
+void GetBaseLightDir(evtUnitHandle_t *unit);
+
+extern void evtApplyMatchingUnitSlotEndpoints(evtUnitHandle_t *unit);
+
+/* Refresh endpoint render work after the value-change flag is cleared; defer
+ * to the matching-slot selector when no target or color transition is active. */
+void evtRefreshUnitEndpointWork(evtUnitHandle_t *unit);
+
+void evtSetUnitValueTransition(evtUnitHandle_t *unit, dds3Basic_t *target, s32 duration);
+
+void evtEndUnitValueTransition(evtUnitHandle_t *unit, s32 duration);
+
+void evtUnitSetValueAndFlag(evtUnitHandle_t *unit, u32 value);
+
+void evtUnlinkExternalLightPacket(evtUnitHandle_t *unit);
+
+evtUnitHandle_t *evtGetUnitHandle2(dds3Basic_t *obj);
+
+extern const s32 D_003AC060[];
+
+evtUnitHandle_t *evtCreateUnitTransitionWork(dds3Basic_t *effObj, dds3ModelHandle_t *owner);
+
+s32 evtDeleteUnitHandle(evtUnitHandle_t *transitionWork);
+
+EvtUnitMotionState evtGetUnitStat(evtUnitHandle_t *unit);
+
+/* Callers pass the promoted full-width value (one reads a byte table field);
+ * only the low halfword is stored. */
+void evtSetWaitMotion(evtUnitHandle_t *unit, s32 storedParameter);
+
+void evtSetWaitMotionSpeed(evtUnitHandle_t *unit, f32 transitionMotionScale);
+
+void evtSetWaitHokanFrame(evtUnitHandle_t *unit, s32 firstParameter, s32 secondParameter);
+
+void evtActivateStoredUnitMotionSlot(evtUnitHandle_t *unit);
+
+void evtConfigureUnitMotionSlot(evtUnitHandle_t *unit, s32 slot, s32 slotAValue, s32 slotBValue,
+                                s32 slotCValue, EvtUnitMotionSlotMode mode);
+
+#define EVT_UNIT_FLAG_MOTION_START_PENDING 0x80
+
+#define EVT_UNIT_FLAG_MOTION_WOBBLE 0x40
+
+extern const s32 D_003AC070[];
+
+extern const s32 D_003AC080[];
+
+extern void evtVu0SubVectorXZAxis(f32 *a, f32 *b);
+
+extern void FromRotation(f32 angle);
+
+EvtUnitFacingTargetResult evtRotateUnitTowardTarget(evtUnitHandle_t *unit, f32 *dir, f32 scale);
+
+/* Flat, negated direction of the rotation in quat, offset by the effect object's point, aimed with evtRotateUnitTowardTarget. */
+EvtUnitFacingTargetResult evtUnitRotationQuat(evtUnitHandle_t *unit, f32 *quat, f32 angle);
+
+EvtUnitMotionStepResult evtUnitMoveType0(evtUnitHandle_t *unit);
+
+#include "dds/sdf_debug_api.h"
+
+s32 evtUnitPrepareVerticalMoveSteps(evtUnitHandle_t *unit);
+
+#define EVT_UNIT_FLAG_USE_PATH_ROTATION 0x10
+
+EvtUnitMotionStepResult evtUnitMoveTypePathTrace(evtUnitHandle_t *unit);
+
+void evtCopyUnitTargetVector(evtUnitHandle_t *work, const f32 src[4]);
+
+#include "dds/sdf_trig.h"
+
+#include "dds/scr_integer_return_value_api.h"
+
+#include "dds/sdf_unique_chunk_value_api.h"
+
+#include "dds/kwln_task_add_child.h"
+
+#include "dds/fpu.h"
+
+#include "dds/mdl_motion_api.h"
+
+#include "dds/mdl_motion_end_status.h"
+
+#include "dds/mdl_world_object_source_vector_api.h"
+
+#include "dds/itf_mes_window.h"
+
+#include "dds/evt_world.h"
+
+#include "dds/evt_world_source_transform.h"
+
+#include "dds/evt_model_header.h"
+
+#include "dds/evt_lips_link.h"
+
+#include "dds/evt_reset_unit_vector_slots_api.h"
+
+#include "dds/evt_task.h"
+
+#include "dds/evt_event_pack.h"
+
+#include "dds/eff_object.h"
+
+#include "dds/eff_object_dispatch_api.h"
+
+#include "dds/eff_event.h"
+
+#include "dds/scr.h"
+
+#include "dds/scr_string_parameter_api.h"
+
+#include "dds/scr_arg_read.h"
+
+/* Declared before first use (were implicit int). */
+struct SoundMixer;
+
+extern EvtUnitVectorSlot D_003D7BD8[7];
+
+extern BtlActorStatusRecord *D_003BAA20;
+
+extern evtUnitHandle_t *evtWindowMotionUnit;
+
+extern s32 D_003BBDB0;
+
+#include "dds/dds3_world_secondary.h"
+
+extern void evtSetUnitMove1(evtUnitHandle_t *work, s32 motionSubmode, const f32 vector[4], s32 unused, s32 frames, s32 valueB6, EvtUnitMotionCallback callback, s32 unusedLast);
+
+extern void evtResetObjectPendingValue(dds3Basic_t *object);
+
+extern void evtArmEffectObjectPendingValue(dds3Basic_t *object, s32 value);
+
+extern u8 D_003AC480[];
+
+/* World object views used by the model-parameter opcodes. */
+extern char D_003AC588[];
+
+extern u8 D_003AC2A0[];
+
+extern u8 D_003AC550[];
+
+extern u8 D_003AC5B0[];
+
+extern u8 D_003AC600[];
+
+extern u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *model);
+
+extern dds3Basic_t *effObjSpawnLoadedResourceEffect(const char *resourceName, void *firstVector, void *secondVector);
+
+extern u8 D_003AC520[];
+
+extern void evtEndUnitValueTransition(evtUnitHandle_t *unit, s32 duration);
+
+extern dds3Basic_t *effObjSpawnDescriptorBoundEffect(struct EffNodeDescriptor *descriptor, void *firstVector, void *secondVector);
+
+extern const char D_003AC508[];
+
+void evtSetUnitRot1(evtUnitHandle_t *work, const f32 vector[4], s32 frames);
+
+void evtSetUnitMove1(evtUnitHandle_t *work, s32 motionSubmode, const f32 vector[4], s32 unused, s32 frames, s32 valueB6, EvtUnitMotionCallback callback, s32 unusedLast);
+
+s32 evtStartUnitModeWithValue(evtUnitHandle_t *work, EvtUnitMotionCallback callback);
+
+extern void evtAdvanceUnitVisualTransitions(evtUnitHandle_t *);
+
+extern EvtUnitMotionStepResult evtUnitMoveType0(evtUnitHandle_t *);
+
+extern EvtUnitMotionStepResult evtUnitMoveTypePathTrace(evtUnitHandle_t *);
+
+extern void evtRefreshUnitEndpointWork(evtUnitHandle_t *);
+
+EvtUnitMotionStepResult evtUpdateUnitMotion(dds3PoseSet_t *unused, dds3Basic_t *object);
+
+extern void mnuInitializeCampPanelVisualDefaults(f32 *firstVector, f32 *secondVector, f32 *thirdVector, f32 *scalarA, f32 *scalarB);
+
+void evtResetUnitVectorSlots(void);
+
+void evtSetSlotVectors(s32 slotIndex, EvtUnitVectorSlotState slotState, evtUnitHandle_t *unitHandle,
+                       const f32 *firstEndpoint, const f32 *secondEndpoint, const f32 *color);
+
+void evtSetSlotVector(s32 slotIndex, f32 x, f32 y);
+
+/* Copy the second vector of the slot bound to `unitHandle` (else the first state-2 slot). */
+s32 evtCopyUnitVectorSlotEndpoint(evtUnitHandle_t *unitHandle, f32 *out);
+
+/* Select a matching slot and write its endpoint render work. */
+void evtApplyMatchingUnitSlotEndpoints(evtUnitHandle_t *unit);
+
+/* Find auxiliary coordinates for the unit-bound slot, else the shared fallback. */
+EvtUnitVectorSlotAuxCoordinatesResult evtFindUnitSlotAuxCoordinates(
+    evtUnitHandle_t *unit, f32 *outX, f32 *outY);
+
+u32 evtOpQueueWorldObjectPendingValue(void);
+
+u32 evtOpClearWorldObjectPendingValue(void);
+
+u32 evtOpModelLodChg(void);
+
+u32 evtOpDeprecatedModelMotion(void);
+
+u32 evtOpSetUnitParams5(void);
+
+u32 evtOpSetUnitParams6(void);
+
+void evtLipsExecFunction(s32 unitUniqueId, s32 motionId);
+
+void evtLipsStopFunction(void);
+
+u32 evtCmdDestroySelectedWorldUnit(void);
+
+u32 evtOpStartUnitTransitionTowardWorldObject(void);
+
+f32 evtGetShortestAngleDelta(f32 fromDegrees, f32 toDegrees);
+
+extern f32 EulerAngleAxisY(void);
+
+u32 evtOpTurnUnitRelativeToWorldNode(void);
+
+u32 evtOpRestoreUnitReferenceAngle(void);
+
+extern const char D_003AC4C0[38];
+
+extern const char D_003AC4E8[30];
+
+f32 evtComputeClampedModelScale(s32 modelRecordIndex);
+
+extern f32 evtComputeClampedModelScale(s32);
+
+struct EffNodeDescriptor;
+
+struct dds3Basic_t;
+/* End of declarations from src/dds1/event/evtUnitManager.c */
 
 void *evtSearchBasic(s32 type, s32 serial)
 {
@@ -973,9 +1687,37 @@ INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8500);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8570);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtOpQueueWorldObjectPendingValue);
+u32 evtOpQueueWorldObjectPendingValue(void) {
+    dds3Basic_t *ctx;
+    s32 worldObjectKey;
+    dds3Basic_t *unit;
+    u32 ret = 1;
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtOpClearWorldObjectPendingValue);
+    ctx = dds3GetActiveScene();
+    worldObjectKey = scrGetIntPara(0);
+    unit = dds3SearchSceneBasic(ctx, worldObjectKey, 5);
+    if (unit == NULL) {
+        return ret;
+    }
+    evtArmEffectObjectPendingValue(unit, scrGetIntPara(1));
+    return 1;
+}
+
+u32 evtOpClearWorldObjectPendingValue(void) {
+    dds3Basic_t *ctx;
+    s32 worldObjectKey;
+    dds3Basic_t *unit;
+    u32 ret = 1;
+
+    ctx = dds3GetActiveScene();
+    worldObjectKey = scrGetIntPara(0);
+    unit = dds3SearchSceneBasic(ctx, worldObjectKey, 5);
+    if (unit == NULL) {
+        return ret;
+    }
+    evtResetObjectPendingValue(unit);
+    return 1;
+}
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_r1_0044DE78);
 
@@ -1176,7 +1918,25 @@ u32 evtCommand_MODEL_MOVE_MOT(void)
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ROT);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtGetShortestAngleDelta);
+f32 evtGetShortestAngleDelta(f32 fromDegrees, f32 toDegrees) {
+    f32 difference;
+
+    if (fromDegrees < 0.0f || toDegrees < 0.0f) {
+        fromDegrees += 360.0f;
+        toDegrees += 360.0f;
+    }
+    fromDegrees = (s32)fromDegrees % 360;
+    toDegrees = (s32)toDegrees % 360;
+    difference = fromDegrees - toDegrees;
+    if (difference > 180.0f || difference < -180.0f) {
+        if (fromDegrees < toDegrees) {
+            fromDegrees += 360.0f;
+        } else {
+            toDegrees += 360.0f;
+        }
+    }
+    return toDegrees - fromDegrees;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A98C0);
 
@@ -2293,7 +3053,16 @@ INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E6A0);
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AC738);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommandClearPolygonMovieFlag);
+/* Clear bit 0 and echo the movie ID through the VM result. */
+s32 evtCommandClearPolygonMovieFlag(void)
+{
+    dds3ProcessID_t *movieTask;
+
+    movieTask = scrVmIntegerToProcessHandle(scrGetIntPara(0));
+    evtPolygonMovieClearFlagBits(movieTask, 1);
+    scrSetIntReturnValue(scrProcessHandleToVmInteger(movieTask));
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AC858);
 

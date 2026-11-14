@@ -43,4 +43,6 @@ EvtUnitVectorSlotLookupResult evtCopyUnitVectorSlotEndpoint(
 EvtUnitVectorSlotLookupResult evtFindUnitSlotAuxCoordinates(
     struct evtUnitHandle_t *unit, f32 *outX, f32 *outY);
 
+typedef s32 EvtUnitVectorSlotAuxCoordinatesResult;
+
 #endif /* DDS_EVT_UNIT_VECTOR_SLOT_H */
