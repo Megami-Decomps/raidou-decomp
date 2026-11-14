@@ -974,7 +974,7 @@ void effResetFadeVectorFrame(EffFadeVectorWork *work);
 
 void effCopyFadeWorkVector(f32 *dst, const f32 *src);
 
-void effSetFadeVectorColor(EffFadeVectorWork *work, u32 value);
+void effSetFadeVectorColor(EffFadeVectorWork *work, u32 color);
 
 void effResetSelectionEntryBuffers(SdfFlagListWork *work);
 
@@ -995,7 +995,7 @@ void effDrawSelectionEntryVectors(SdfFlagListWork *work);
 void effUpdateAndDrawSelectionEntries(SdfFlagListWork *work);
 
 /* Set the selection/drop-list's packed modulation color. */
-void effSetSelectionFlagListColor(SdfFlagListWork *work, u32 value);
+void effSetSelectionFlagListColor(SdfFlagListWork *work, u32 color);
 
 typedef struct EffSelectionHeaderWork {
     s32 frame;
@@ -1113,7 +1113,7 @@ void effAdvanceKindWorkFrame(EffKindWork *work);
 
 void effCopyKindWorkPosition(void *dst, void *src);
 
-void effSetKindWorkColor(EffKindWork *work, u32 value);
+void effSetKindWorkColor(EffKindWork *work, u32 color);
 
 void effSetKindWorkMatrixComponent(EffKindWork *work, float value);
 
@@ -1162,7 +1162,7 @@ void effCopyBillboardPosition(void *dst, void *src);
 
 void effCopyBillboardOrientation(void *work, void *src);
 
-void effSetBillboardColor(s32 work, u32 color);
+void effSetBillboardColor(EffBillboardWork *work, u32 color);
 
 /* Set the billboard's scalar scale; the leading vectors are not a Matrix4. */
 void effSetBillboardMatrixComponent(EffBillboardWork *work, float value);
@@ -1541,7 +1541,7 @@ void effSetClassWorkSecondaryTransformVector(EffClassWork *work, const s128 *src
 
 void effSetClassWorkColor(EffClassWork *work, u32 color);
 
-void effSetClassWorkScale(EffClassWork *work, float value);
+void effSetClassWorkScale(EffClassWork *work, f32 scale);
 
 extern sdf3DPrimPolyParm_t D_r1_004D1BF0[];
 
@@ -1612,7 +1612,7 @@ void effMenuRecordVectorSet(s32 node, const u128 *value);
 
 void effSetSurfaceRecordSecondaryVector(s32 node, const u128 *value);
 
-void effSetSurfaceNodeColor(s32 node, u32 value);
+void effSetSurfaceNodeColor(EffectSurfaceNode *work, u32 color);
 
 void effIndexedFloatCallbackDispatch(ValPtr44 *p, float v);
 
@@ -1841,7 +1841,7 @@ void effSetStripRecordVector(EffectStripNode *node, const u128 *value);
 
 void effSetStripRecordSecondaryVector(EffectStripNode *node, const u128 *value);
 
-void effSetStripRecordColor(EffectStripNode *node, u32 value);
+void effSetStripRecordColor(EffectStripNode *work, u32 color);
 
 /* Store opacity and notify the strip's active-record callback. */
 void effSetStripOpacity(EffectStripNode *p, f32 v);
@@ -2150,9 +2150,9 @@ void effSetModelResourcePrimaryTransformVector(EffModelResource *effect, const f
 
 void effSetModelResourceSecondaryTransformVector(EffModelResource *effect, const f32 *orientation);
 
-void effSetModelResourceColor(EffModelResource *effect, u32 color);
+void effSetModelResourceColor(EffModelResource *work, u32 color);
 
-void effSetModelResourceScale(EffModelResource *effect, f32 scale);
+void effSetModelResourceScale(EffModelResource *work, f32 scale);
 
 extern sdf3DPrimPolyParm_t D_r1_004D1D40[];
 
@@ -2398,7 +2398,7 @@ extern void sdfPrimLinkGt4(sdfDrawTag_t *list, s32 primitive, s32 x0, s32 y0, s3
 void effDrawAndAdvanceSharedParticleFrame(EffParticleSharedResource *work);
 
 /* The shared particle header keeps its packed color in its first word. */
-void effSetParticleSharedColor(u32 *dst, u32 value);
+void effSetParticleSharedColor(EffParticleSharedResource *work, u32 color);
 
 void btlInitializeEffectWork(void);
 

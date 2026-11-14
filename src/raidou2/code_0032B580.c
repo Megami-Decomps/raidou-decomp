@@ -2207,7 +2207,6 @@ void cmpDrawPanelEffBar(cmpPanelEffState_t *state, s32 ot);
 
 void cmpUpdatePanelEffEntry(cmpPanelEffState_t *state);
 
-s32 func_r1_002279E8(s32 index);
 
 typedef struct
 {

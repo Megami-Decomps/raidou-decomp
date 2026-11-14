@@ -5400,16 +5400,16 @@
 0x0023E228	effCreateSmallHeaderFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C570, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023E248	func_r1_00226F40	placeholder	placeholder for the pair with raidou1 0x00226F40, unique-reloc-hash
 0x0023E278	effCloneSmallHeaderFromWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C5B8, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x0023E290	func_r1_00226F88	placeholder	placeholder for the pair with raidou1 0x00226F88, run-order-size
+0x0023E290	effResetSmallHeaderFrame	inferred	twin-of-raidou1-0x00226F88
 0x0023E298	func_r1_00226F90	placeholder	placeholder for the pair with raidou1 0x00226F90, unique-reloc-hash
 0x0023E310	effCreateFadeVectorWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C620, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E3E0	effCreateFadeVectorFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C6F0, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0023E400	effFreeFadeVectorWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C710, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0023E418	effCloneFadeVectorWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C728, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023E430	func_r1_00227128	placeholder	placeholder for the pair with raidou1 0x00227128, run-order-size
+0x0023E430	effResetFadeVectorFrame	inferred	twin-of-raidou1-0x00227128
 0x0023E438	effDrawLensFlare	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C748, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023EAD0	func_r1_002277C8	placeholder	placeholder for the pair with raidou1 0x002277C8, run-order-size
-0x0023EAE0	func_r1_002277D8	placeholder	placeholder for the pair with raidou1 0x002277D8, run-order-size
+0x0023EAE0	effSetFadeVectorColor	inferred	twin-of-raidou1-0x002277D8
 0x0023EAE8	effResetSelectionEntryBuffers	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CDF8, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x0023EB40	effCreateSelectionFlagListFromWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CE50, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0023EB58	effCreateSelectionFlagListFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CE68, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5419,12 +5419,12 @@
 0x0023EBC8	effUpdateSelectionEntryState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CED8, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023EBE0	effDrawSelectionEntryVectors	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CEF0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023EBF8	func_r1_002278F0	placeholder	placeholder for the pair with raidou1 0x002278F0, masked-hash-in-gap
-0x0023EC38	func_r1_00227930	placeholder	placeholder for the pair with raidou1 0x00227930, run-order-size
+0x0023EC38	effSetSelectionFlagListColor	inferred	twin-of-raidou1-0x00227930
 0x0023EC40	effDuplicatePayloadHeader	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CF38, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023EC90	effCreateSelectionHeaderFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CF88, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023ECB0	effReleaseSelectionHeaderAllocation	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CFA8, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023ECD8	effCloneSelectionHeaderFromWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CFD0, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x0023ECF0	func_r1_002279E8	placeholder	placeholder for the pair with raidou1 0x002279E8, run-order-size
+0x0023ECF0	effResetSelectionHeaderFrame	inferred	twin-of-raidou1-0x002279E8
 0x0023ECF8	effSelectionFrameAdvance	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CFF0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023ED48	effUpdateFadeBlendA	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029D040, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023EEC0	effCreateFadeBlendWorkFromOutput	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029D1B8, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5449,20 +5449,20 @@
 0x0023FC08	effCreateKindWorkFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029DF00, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023FCE8	effReleaseLinkedTarget	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029DFE0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023FD60	effCloneKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E058, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x0023FD80	func_r1_00228A78	placeholder	placeholder for the pair with raidou1 0x00228A78, run-order-size
+0x0023FD80	effResetKindWorkFrame	inferred	twin-of-raidou1-0x00228A78
 0x0023FD88	func_r1_00228A80	placeholder	placeholder for the pair with raidou1 0x00228A80, masked-hash-in-gap
 0x0023FDF0	func_r1_00228AE8	placeholder	placeholder for the pair with raidou1 0x00228AE8, run-order-size
-0x0023FE00	func_r1_00228AF8	placeholder	placeholder for the pair with raidou1 0x00228AF8, run-order-size
-0x0023FE08	func_r1_00228B00	placeholder	placeholder for the pair with raidou1 0x00228B00, run-order-size
+0x0023FE00	effSetKindWorkColor	inferred	twin-of-raidou1-0x00228AF8
+0x0023FE08	effSetKindWorkScale	inferred	twin-of-raidou1-0x00228B00
 0x0023FE10	effAllocateAlternateKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E0F0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023FF40	effCreateKindWorkFromFileB	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E220, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00240020	effReleaseAlternateKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E300, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00240098	effCloneAlternateKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E378, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x002400B8	func_r1_00228DB0	placeholder	placeholder for the pair with raidou1 0x00228DB0, run-order-size
+0x002400B8	effResetAlternateKindWorkFrame	inferred	twin-of-raidou1-0x00228DB0
 0x002400C0	func_r1_00228DB8	placeholder	placeholder for the pair with raidou1 0x00228DB8, masked-hash-in-gap
 0x00240128	func_r1_00228E20	placeholder	placeholder for the pair with raidou1 0x00228E20, run-order-size
-0x00240138	func_r1_00228E30	placeholder	placeholder for the pair with raidou1 0x00228E30, run-order-size
-0x00240140	func_r1_00228E38	placeholder	placeholder for the pair with raidou1 0x00228E38, run-order-size
+0x00240138	effSetAlternateKindWorkColor	inferred	twin-of-raidou1-0x00228E30
+0x00240140	effSetAlternateKindWorkScale	inferred	twin-of-raidou1-0x00228E38
 0x00240148	effCreateBillboardWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E410, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x002401F8	effBillboardWorkRelease	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E4C0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00240230	effDuplicateBillState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E4F8, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5471,8 +5471,8 @@
 0x00240368	func_r1_00229060	placeholder	placeholder for the pair with raidou1 0x00229060, unique-reloc-hash
 0x00240470	func_r1_00229168	placeholder	placeholder for the pair with raidou1 0x00229168, run-order-size
 0x00240480	func_r1_00229178	placeholder	placeholder for the pair with raidou1 0x00229178, run-order-size
-0x00240498	func_r1_00229190	placeholder	placeholder for the pair with raidou1 0x00229190, run-order-size
-0x002404A0	func_r1_00229198	placeholder	placeholder for the pair with raidou1 0x00229198, run-order-size
+0x00240498	effSetBillboardColor	inferred	twin-of-raidou1-0x00229190
+0x002404A0	effSetBillboardScale	inferred	twin-of-raidou1-0x00229198
 0x002404A8	effClearBillFrames	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E760, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00240520	effCreateBillFrameNode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E7D8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002405B0	effReleaseBillFrameNode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E868, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5536,8 +5536,8 @@
 0x00245728	func_r1_0022E420	placeholder	placeholder for the pair with raidou1 0x0022E420, masked-hash-in-gap
 0x00245768	func_r1_0022E460	placeholder	placeholder for the pair with raidou1 0x0022E460, run-order-size
 0x00245778	func_r1_0022E470	placeholder	placeholder for the pair with raidou1 0x0022E470, run-order-size
-0x00245790	func_r1_0022E488	placeholder	placeholder for the pair with raidou1 0x0022E488, run-order-size
-0x00245798	func_r1_0022E490	placeholder	placeholder for the pair with raidou1 0x0022E490, run-order-size
+0x00245790	effSetActiveInstanceColor	inferred	twin-of-raidou1-0x0022E488
+0x00245798	effSetActiveInstanceScale	inferred	twin-of-raidou1-0x0022E490
 0x002457A0	effCreateTrackSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A3A40, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00245938	effCreateTrackSetWithSharedReferences	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A3BD8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00245A10	effReleaseResourceRefs	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A3CB0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5570,8 +5570,8 @@
 0x00247258	effUpdateClassFrame	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A54E0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00247280	func_r1_0022FF78	placeholder	placeholder for the pair with raidou1 0x0022FF78, run-order-size
 0x00247290	func_r1_0022FF88	placeholder	placeholder for the pair with raidou1 0x0022FF88, run-order-size
-0x002472A8	func_r1_0022FFA0	placeholder	placeholder for the pair with raidou1 0x0022FFA0, run-order-size
-0x002472B0	func_r1_0022FFA8	placeholder	placeholder for the pair with raidou1 0x0022FFA8, run-order-size
+0x002472A8	effSetClassWorkColor	inferred	twin-of-raidou1-0x0022FFA0
+0x002472B0	effSetClassWorkScale	inferred	twin-of-raidou1-0x0022FFA8
 0x002472B8	effCreatePointSet4	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5540, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00247388	effAssetQueueRelease	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5610, masked-words-identical (order map pair); dds-decomp: descriptive
 0x002473B8	effDrawFourPointGroups	inferred	fuzzy name from SLUS_209.74 0x002A5640, score 1.00, tools/xgame/fuzzy_apply.py
@@ -5596,7 +5596,7 @@
 0x00248E78	func_r1_00231B70	placeholder	placeholder for the pair with raidou1 0x00231B70, masked-hash-in-gap
 0x00248EB8	effMenuRecordVectorSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A70D8, masked-words-identical (gap map pair); dds-decomp: no provenance row
 0x00248ED0	effSetSurfaceRecordSecondaryVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A70F0, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x00248EE8	func_r1_00231BE0	placeholder	placeholder for the pair with raidou1 0x00231BE0, run-order-size
+0x00248EE8	effSetSurfaceNodeColor	inferred	twin-of-raidou1-0x00231BE0
 0x00248EF0	effIndexedFloatCallbackDispatch	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A7110, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00248F10	effCreateSurfaceGridNode	inferred	fuzzy name from SLUS_209.74 0x002A7130, score 0.94, tools/xgame/fuzzy_apply.py
 0x00249060	effFillSurfaceGridColorGradient	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A7288, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5612,12 +5612,12 @@
 0x00249EE0	effReleaseRenderResources	inferred	fuzzy name from SLUS_209.74 0x002A7DF8, score 1.00, tools/xgame/fuzzy_apply.py
 0x00249F40	func_r1_00232C38	placeholder	placeholder for the pair with raidou1 0x00232C38, unique-reloc-hash
 0x0024A138	func_r1_00232E30	placeholder	placeholder for the pair with raidou1 0x00232E30, unique-reloc-hash
-0x0024A210	func_r1_00232F08	placeholder	placeholder for the pair with raidou1 0x00232F08, run-order-size
+0x0024A210	effResetRenderResourceFrame	inferred	twin-of-raidou1-0x00232F08
 0x0024A218	func_r1_00232F10	placeholder	placeholder for the pair with raidou1 0x00232F10, unique-reloc-hash
 0x0024A250	func_r1_00232F48	placeholder	placeholder for the pair with raidou1 0x00232F48, run-order-size
 0x0024A260	func_r1_00232F58	placeholder	placeholder for the pair with raidou1 0x00232F58, run-order-size
-0x0024A278	func_r1_00232F70	placeholder	placeholder for the pair with raidou1 0x00232F70, run-order-size
-0x0024A280	func_r1_00232F78	placeholder	placeholder for the pair with raidou1 0x00232F78, run-order-size
+0x0024A278	effSetRenderResourceColor	inferred	twin-of-raidou1-0x00232F70
+0x0024A280	effSetRenderResourceScale	inferred	twin-of-raidou1-0x00232F78
 0x0024A288	func_r1_00232F80	placeholder	placeholder for the pair with raidou1 0x00232F80, unique-reloc-hash
 0x0024ADA8	func_r1_00233AA0	placeholder	placeholder for the pair with raidou1 0x00233AA0, unique-reloc-hash
 0x0024ADE0	func_r1_00233AD8	placeholder	placeholder for the pair with raidou1 0x00233AD8, unique-masked-hash
@@ -5663,7 +5663,7 @@
 0x0024E720	effUpdateAndDrawStripRecord	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB968, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0024E748	effSetStripRecordVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB990, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0024E760	effSetStripRecordSecondaryVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB9A8, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x0024E778	func_r1_00237470	placeholder	placeholder for the pair with raidou1 0x00237470, run-order-size
+0x0024E778	effSetStripRecordColor	inferred	twin-of-raidou1-0x00237470
 0x0024E780	effSetStripOpacity	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB9C8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0024E7A0	effResetBillTable	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB9E8, masked-words-identical (order map pair); dds-decomp: no provenance row
 0x0024E7F0	effAllocateRingFadeEntries	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002ABA38, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5708,8 +5708,8 @@
 0x00251BC8	func_r1_0023A8C0	placeholder	placeholder for the pair with raidou1 0x0023A8C0, masked-hash-in-gap
 0x00251C08	func_r1_0023A900	placeholder	placeholder for the pair with raidou1 0x0023A900, run-order-size
 0x00251C18	func_r1_0023A910	placeholder	placeholder for the pair with raidou1 0x0023A910, run-order-size
-0x00251C30	func_r1_0023A928	placeholder	placeholder for the pair with raidou1 0x0023A928, run-order-size
-0x00251C38	func_r1_0023A930	placeholder	placeholder for the pair with raidou1 0x0023A930, run-order-size
+0x00251C30	effSetBlockResourceColor	inferred	twin-of-raidou1-0x0023A928
+0x00251C38	effSetBlockResourceScale	inferred	twin-of-raidou1-0x0023A930
 0x00251C40	effCreateRibbonWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AE208, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x00251D88	effCreateRibbonWithSharedResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AE350, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00251E00	effSharedAssetReferenceRelease	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AE3C8, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5753,8 +5753,8 @@
 0x002542F0	func_r1_0023CFE8	placeholder	placeholder for the pair with raidou1 0x0023CFE8, masked-hash-in-gap
 0x00254330	func_r1_0023D028	placeholder	placeholder for the pair with raidou1 0x0023D028, run-order-size
 0x00254340	func_r1_0023D038	placeholder	placeholder for the pair with raidou1 0x0023D038, run-order-size
-0x00254358	func_r1_0023D050	placeholder	placeholder for the pair with raidou1 0x0023D050, run-order-size
-0x00254360	func_r1_0023D058	placeholder	placeholder for the pair with raidou1 0x0023D058, run-order-size
+0x00254358	effSetModelBlockColor	inferred	twin-of-raidou1-0x0023D050
+0x00254360	effSetModelBlockScale	inferred	twin-of-raidou1-0x0023D058
 0x00254368	effRetainScalyTextureReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B0918, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002543A8	effReleaseScalyTextureReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B0958, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002543D8	effAllocateTexturedStripWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B0988, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5779,8 +5779,8 @@
 0x00255D08	func_r1_0023EA00	placeholder	placeholder for the pair with raidou1 0x0023EA00, unique-reloc-hash
 0x00255D60	func_r1_0023EA58	placeholder	placeholder for the pair with raidou1 0x0023EA58, run-order-size
 0x00255D70	func_r1_0023EA68	placeholder	placeholder for the pair with raidou1 0x0023EA68, run-order-size
-0x00255D88	func_r1_0023EA80	placeholder	placeholder for the pair with raidou1 0x0023EA80, run-order-size
-0x00255D90	func_r1_0023EA88	placeholder	placeholder for the pair with raidou1 0x0023EA88, run-order-size
+0x00255D88	effSetModelResourceColor	inferred	twin-of-raidou1-0x0023EA80
+0x00255D90	effSetModelResourceScale	inferred	twin-of-raidou1-0x0023EA88
 0x00255D98	effCreatePointSet3	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2320, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00255E88	effReleaseModelPointSetAsset	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2410, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00255EB8	effDrawThreePointGroups	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2440, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5801,15 +5801,15 @@
 0x00257230	func_r1_0023FF28	placeholder	placeholder for the pair with raidou1 0x0023FF28, unique-reloc-hash
 0x00257298	effSetActiveSlotPrimaryRecordVector	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB428, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002572B0	effSetActiveSlotSecondaryRecordVector	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB440, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x002572C8	func_r1_0023FFC0	placeholder	placeholder for the pair with raidou1 0x0023FFC0, run-order-size
+0x002572C8	effSetActiveSlotColor	inferred	twin-of-raidou1-0x0023FFC0
 0x002572D0	effSetActiveSlotOpacity	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB460, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002572F0	effCreateParticleSharedResourceFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B4798, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002574F0	effReleaseParticleResources	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B4998, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00257540	effCloneParticleSharedResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B49E8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00257660	effReplaceSharedResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B4B08, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002576F0	func_r1_002403E8	placeholder	placeholder for the pair with raidou1 0x002403E8, run-order-size
+0x002576F0	effResetParticleSharedState	inferred	twin-of-raidou1-0x002403E8
 0x002576F8	func_r1_002403F0	placeholder	placeholder for the pair with raidou1 0x002403F0, unique-reloc-hash
-0x00257C90	func_r1_00240988	placeholder	placeholder for the pair with raidou1 0x00240988, run-order-size
+0x00257C90	effSetParticleSharedColor	inferred	twin-of-raidou1-0x00240988
 0x00257C98	func_r1_00240990	placeholder	placeholder for the pair with raidou1 0x00240990, masked-hash-in-gap
 0x00257CA0	func_r1_00240998	placeholder	placeholder for the pair with raidou1 0x00240998, masked-hash-in-gap
 0x00257CD0	func_r1_002409C8	placeholder	placeholder for the pair with raidou1 0x002409C8, masked-hash-in-gap

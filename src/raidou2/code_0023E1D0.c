@@ -2161,7 +2161,7 @@ void effResetFadeVectorFrame(EffFadeVectorWork *work);
 
 void effCopyFadeWorkVector(f32 *dst, const f32 *src);
 
-void effSetFadeVectorColor(EffFadeVectorWork *work, u32 value);
+void effSetFadeVectorColor(EffFadeVectorWork *work, u32 color);
 
 void effResetSelectionEntryBuffers(SdfFlagListWork *work);
 
@@ -2182,7 +2182,7 @@ void effDrawSelectionEntryVectors(SdfFlagListWork *work);
 void effUpdateAndDrawSelectionEntries(SdfFlagListWork *work);
 
 /* Set the selection/drop-list's packed modulation color. */
-void effSetSelectionFlagListColor(SdfFlagListWork *work, u32 value);
+void effSetSelectionFlagListColor(SdfFlagListWork *work, u32 color);
 
 typedef struct EffSelectionHeaderWork {
     s32 frame;
@@ -2300,7 +2300,7 @@ void effAdvanceKindWorkFrame(EffKindWork *work);
 
 void effCopyKindWorkPosition(void *dst, void *src);
 
-void effSetKindWorkColor(EffKindWork *work, u32 value);
+void effSetKindWorkColor(EffKindWork *work, u32 color);
 
 void effSetKindWorkMatrixComponent(EffKindWork *work, float value);
 
@@ -2349,7 +2349,7 @@ void effCopyBillboardPosition(void *dst, void *src);
 
 void effCopyBillboardOrientation(void *work, void *src);
 
-void effSetBillboardColor(s32 work, u32 color);
+void effSetBillboardColor(EffBillboardWork *work, u32 color);
 
 /* Set the billboard's scalar scale; the leading vectors are not a Matrix4. */
 void effSetBillboardMatrixComponent(EffBillboardWork *work, float value);
@@ -2728,7 +2728,7 @@ void effSetClassWorkSecondaryTransformVector(EffClassWork *work, const s128 *src
 
 void effSetClassWorkColor(EffClassWork *work, u32 color);
 
-void effSetClassWorkScale(EffClassWork *work, float value);
+void effSetClassWorkScale(EffClassWork *work, f32 scale);
 
 extern sdf3DPrimPolyParm_t D_r1_004D1BF0[];
 
@@ -2799,7 +2799,7 @@ void effMenuRecordVectorSet(s32 node, const u128 *value);
 
 void effSetSurfaceRecordSecondaryVector(s32 node, const u128 *value);
 
-void effSetSurfaceNodeColor(s32 node, u32 value);
+void effSetSurfaceNodeColor(EffectSurfaceNode *work, u32 color);
 
 void effIndexedFloatCallbackDispatch(ValPtr44 *p, float v);
 
@@ -3019,7 +3019,7 @@ void effSetStripRecordVector(EffectStripNode *node, const u128 *value);
 
 void effSetStripRecordSecondaryVector(EffectStripNode *node, const u128 *value);
 
-void effSetStripRecordColor(EffectStripNode *node, u32 value);
+void effSetStripRecordColor(EffectStripNode *work, u32 color);
 
 /* Store opacity and notify the strip's active-record callback. */
 void effSetStripOpacity(EffectStripNode *p, f32 v);
@@ -3328,9 +3328,9 @@ void effSetModelResourcePrimaryTransformVector(EffModelResource *effect, const f
 
 void effSetModelResourceSecondaryTransformVector(EffModelResource *effect, const f32 *orientation);
 
-void effSetModelResourceColor(EffModelResource *effect, u32 color);
+void effSetModelResourceColor(EffModelResource *work, u32 color);
 
-void effSetModelResourceScale(EffModelResource *effect, f32 scale);
+void effSetModelResourceScale(EffModelResource *work, f32 scale);
 
 extern sdf3DPrimPolyParm_t D_r1_004D1D40[];
 
@@ -3574,7 +3574,7 @@ extern void sdfPrimLinkGt4(sdfDrawTag_t *list, s32 primitive, s32 x0, s32 y0, s3
 void effDrawAndAdvanceSharedParticleFrame(EffParticleSharedResource *work);
 
 /* The shared particle header keeps its packed color in its first word. */
-void effSetParticleSharedColor(u32 *dst, u32 value);
+void effSetParticleSharedColor(EffParticleSharedResource *work, u32 color);
 
 void btlInitializeEffectWork(void);
 
@@ -4250,7 +4250,9 @@ EffFadeHeaderWork *effCloneSmallHeaderFromWork(EffFadeHeaderWork *work) {
     return effDuplicateSmallHeader(work->payload);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00226F88);
+void effResetSmallHeaderFrame(EffFadeHeaderWork *work) {
+    work->frame = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00226F90);
 
@@ -4271,13 +4273,17 @@ EffFadeVectorWork *effCloneFadeVectorWork(EffFadeVectorWork *work) {
     return effCreateFadeVectorWork(&work->source);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00227128);
+void effResetFadeVectorFrame(EffFadeVectorWork *work) {
+    work->frame = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", effDrawLensFlare);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_002277C8);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_002277D8);
+void effSetFadeVectorColor(EffFadeVectorWork *work, u32 color) {
+    work->color = color;
+}
 
 void effResetSelectionEntryBuffers(SdfFlagListWork *work) {
     u32 count;
@@ -4328,7 +4334,9 @@ void effDrawSelectionEntryVectors(SdfFlagListWork *work) {
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_002278F0);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00227930);
+void effSetSelectionFlagListColor(SdfFlagListWork *work, u32 color) {
+    work->unk04 = color;
+}
 
 EffSelectionHeaderWork *effDuplicatePayloadHeader(const void *source) {
     EffSelectionHeaderWork *buffer = sdfChipAllocDirect(sizeof(EffSelectionHeaderWork));
@@ -4353,7 +4361,9 @@ EffSelectionHeaderWork *effCloneSelectionHeaderFromWork(EffSelectionHeaderWork *
     return effDuplicatePayloadHeader(work->payload);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_002279E8);
+void effResetSelectionHeaderFrame(EffSelectionHeaderWork *work) {
+    work->frame = 0;
+}
 
 void effSelectionFrameAdvance(EffSelectionHeaderWork *counter) {
     s32 frame;
@@ -4528,15 +4538,21 @@ EffKindWork *effCloneKindWork(EffKindWork *work) {
     return effAllocateKindWork((u16)work->kind, work->payload);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228A78);
+void effResetKindWorkFrame(EffKindWork *work) {
+    work->frame = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228A80);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228AE8);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228AF8);
+void effSetKindWorkColor(EffKindWork *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228B00);
+void effSetKindWorkScale(EffKindWork *work, f32 scale) {
+    work->scale = scale;
+}
 
 /* Allocate work for the alternate kind table, copying its payload and creating its handle. */
 EffKindWork *effAllocateAlternateKindWork(u16 kind, u8 *source) {
@@ -4613,15 +4629,21 @@ EffKindWork *effCloneAlternateKindWork(EffKindWork *work) {
     return effAllocateAlternateKindWork((u16)work->kind, work->payload);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228DB0);
+void effResetAlternateKindWorkFrame(EffKindWork *work) {
+    work->frame = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228DB8);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228E20);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228E30);
+void effSetAlternateKindWorkColor(EffKindWork *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00228E38);
+void effSetAlternateKindWorkScale(EffKindWork *work, f32 scale) {
+    work->scale = scale;
+}
 
 u8 *effCreateBillboardWork(FileJobPayload *source) {
     u8 *work = (u8 *)sdfChipAllocDirect(0x68);
@@ -4679,9 +4701,13 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00229168);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00229178);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00229190);
+void effSetBillboardColor(EffBillboardWork *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00229198);
+void effSetBillboardScale(EffBillboardWork *work, f32 scale) {
+    work->scale = scale;
+}
 
 void effClearBillFrames(u8 *work) {
     u8 *state = (u8 *)((EffClassWork *)work)->resource;
@@ -6728,9 +6754,13 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0022E460);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0022E470);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0022E488);
+void effSetActiveInstanceColor(EffClassWork *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0022E490);
+void effSetActiveInstanceScale(EffClassWork *work, f32 scale) {
+    work->scale = scale;
+}
 
 INCLUDE_RODATA(const s32, "code_0023E1D0", D_r1_00455D70);
 
@@ -7417,9 +7447,13 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0022FF78);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0022FF88);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0022FFA0);
+void effSetClassWorkColor(EffClassWork *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0022FFA8);
+void effSetClassWorkScale(EffClassWork *work, f32 scale) {
+    work->scale = scale;
+}
 
 EffPointSet *effCreatePointSet4(u32 count) {
     s32 rows = count * 4 + 4;
@@ -7747,7 +7781,9 @@ void effSetSurfaceRecordSecondaryVector(s32 node, const u128 *value) {
     fileSetRecordSecondVector(((EffectSurfaceNode *)node)->record, value);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00231BE0);
+void effSetSurfaceNodeColor(EffectSurfaceNode *work, u32 color) {
+    work->color = color;
+}
 
 void effIndexedFloatCallbackDispatch(ValPtr44 *p, float v) {
     p->f08 = v;
@@ -8003,7 +8039,9 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00232C38);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00232E30);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00232F08);
+void effResetRenderResourceFrame(EffQuadWork *work) {
+    work->frame = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00232F10);
 
@@ -8011,9 +8049,13 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00232F48);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00232F58);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00232F70);
+void effSetRenderResourceColor(EffQuadWork *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00232F78);
+void effSetRenderResourceScale(EffQuadWork *work, f32 scale) {
+    work->scale = scale;
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00232F80);
 
@@ -9136,7 +9178,9 @@ void effSetStripRecordSecondaryVector(EffectStripNode *node, const u128 *value) 
     fileSetRecordSecondVector(node->active, value);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00237470);
+void effSetStripRecordColor(EffectStripNode *work, u32 color) {
+    work->color = color;
+}
 
 /* Store opacity and notify the strip's active-record callback. */
 void effSetStripOpacity(EffectStripNode *p, f32 v) {
@@ -10080,9 +10124,13 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023A900);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023A910);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023A928);
+void effSetBlockResourceColor(EffClassWork *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023A930);
+void effSetBlockResourceScale(EffClassWork *work, f32 scale) {
+    work->scale = scale;
+}
 
 EffRibbonWork *effCreateRibbonWork(u32 count, u32 repeat) {
     u32 rowStride = repeat * 4 + 4;
@@ -10665,9 +10713,13 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023D028);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023D038);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023D050);
+void effSetModelBlockColor(EffClassWork *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023D058);
+void effSetModelBlockScale(EffClassWork *work, f32 scale) {
+    work->scale = scale;
+}
 
 /* Retain and return the lazy shared reference to /effect/scaly00.tmx. */
 u32 effRetainScalyTextureReference(void) {
@@ -10885,9 +10937,13 @@ INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023EA58);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023EA68);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023EA80);
+void effSetModelResourceColor(EffModelResource *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023EA88);
+void effSetModelResourceScale(EffModelResource *work, f32 scale) {
+    work->scale = scale;
+}
 
 EffPointSet *effCreatePointSet3(s32 count) {
     s32 rows = count * 3 + 3;
@@ -11049,7 +11105,9 @@ void effSetActiveSlotSecondaryRecordVector(void *node, f32 vector[4]) {
     fileSetRecordSecondVector(((EffectSlotNode80 *)node)->record, vector);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_0023FFC0);
+void effSetActiveSlotColor(EffectSlotNode80 *work, u32 color) {
+    work->color = color;
+}
 
 void effSetActiveSlotOpacity(void *work, f32 opacity) {
     ((EffectSlotNode80 *)work)->opacity = opacity;
@@ -11130,11 +11188,15 @@ void effReplaceSharedResource(EffParticleSharedResource *work, EffParticleShared
     work->reference = effReferenceObjectRetain(source->reference);
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_002403E8);
+void effResetParticleSharedState(EffParticleSharedResource *work) {
+    work->state = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_002403F0);
 
-INCLUDE_ASM(const s32, "code_0023E1D0", func_r1_00240988);
+void effSetParticleSharedColor(EffParticleSharedResource *work, u32 color) {
+    work->color = color;
+}
 
 void func_r1_00240990(void) {
 }

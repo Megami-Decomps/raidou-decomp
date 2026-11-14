@@ -5426,16 +5426,16 @@
 0x00226F20	effCreateSmallHeaderFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C570, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00226F40	func_r1_00226F40	placeholder	placeholder for the pair with raidou2 0x0023E248, unique-reloc-hash
 0x00226F70	effCloneSmallHeaderFromWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C5B8, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x00226F88	func_r1_00226F88	placeholder	placeholder for the pair with raidou2 0x0023E290, run-order-size
+0x00226F88	effResetSmallHeaderFrame	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00226F90	func_r1_00226F90	placeholder	placeholder for the pair with raidou2 0x0023E298, unique-reloc-hash
 0x00227008	effCreateFadeVectorWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C620, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002270D8	effCreateFadeVectorFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C6F0, masked-words-identical (order map pair); dds-decomp: descriptive
 0x002270F8	effFreeFadeVectorWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C710, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00227110	effCloneFadeVectorWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C728, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00227128	func_r1_00227128	placeholder	placeholder for the pair with raidou2 0x0023E430, run-order-size
+0x00227128	effResetFadeVectorFrame	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00227130	effDrawLensFlare	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C748, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002277C8	func_r1_002277C8	placeholder	placeholder for the pair with raidou2 0x0023EAD0, run-order-size
-0x002277D8	func_r1_002277D8	placeholder	placeholder for the pair with raidou2 0x0023EAE0, run-order-size
+0x002277D8	effSetFadeVectorColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x002277E0	effResetSelectionEntryBuffers	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CDF8, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00227838	effCreateSelectionFlagListFromWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CE50, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00227850	effCreateSelectionFlagListFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CE68, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5445,12 +5445,12 @@
 0x002278C0	effUpdateSelectionEntryState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CED8, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002278D8	effDrawSelectionEntryVectors	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CEF0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002278F0	func_r1_002278F0	placeholder	placeholder for the pair with raidou2 0x0023EBF8, masked-hash-in-gap
-0x00227930	func_r1_00227930	placeholder	placeholder for the pair with raidou2 0x0023EC38, run-order-size
+0x00227930	effSetSelectionFlagListColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00227938	effDuplicatePayloadHeader	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CF38, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00227988	effCreateSelectionHeaderFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CF88, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002279A8	effReleaseSelectionHeaderAllocation	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CFA8, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002279D0	effCloneSelectionHeaderFromWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CFD0, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x002279E8	func_r1_002279E8	placeholder	placeholder for the pair with raidou2 0x0023ECF0, run-order-size
+0x002279E8	effResetSelectionHeaderFrame	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x002279F0	effSelectionFrameAdvance	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029CFF0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00227A40	effUpdateFadeBlendA	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029D040, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00227BB8	effCreateFadeBlendWorkFromOutput	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029D1B8, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5475,20 +5475,20 @@
 0x00228900	effCreateKindWorkFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029DF00, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002289E0	effReleaseLinkedTarget	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029DFE0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00228A58	effCloneKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E058, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x00228A78	func_r1_00228A78	placeholder	placeholder for the pair with raidou2 0x0023FD80, run-order-size
+0x00228A78	effResetKindWorkFrame	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00228A80	func_r1_00228A80	placeholder	placeholder for the pair with raidou2 0x0023FD88, masked-hash-in-gap
 0x00228AE8	func_r1_00228AE8	placeholder	placeholder for the pair with raidou2 0x0023FDF0, run-order-size
-0x00228AF8	func_r1_00228AF8	placeholder	placeholder for the pair with raidou2 0x0023FE00, run-order-size
-0x00228B00	func_r1_00228B00	placeholder	placeholder for the pair with raidou2 0x0023FE08, run-order-size
+0x00228AF8	effSetKindWorkColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
+0x00228B00	effSetKindWorkScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00228B08	effAllocateAlternateKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E0F0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00228C38	effCreateKindWorkFromFileB	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E220, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00228D18	effReleaseAlternateKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E300, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00228D90	effCloneAlternateKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E378, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x00228DB0	func_r1_00228DB0	placeholder	placeholder for the pair with raidou2 0x002400B8, run-order-size
+0x00228DB0	effResetAlternateKindWorkFrame	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00228DB8	func_r1_00228DB8	placeholder	placeholder for the pair with raidou2 0x002400C0, masked-hash-in-gap
 0x00228E20	func_r1_00228E20	placeholder	placeholder for the pair with raidou2 0x00240128, run-order-size
-0x00228E30	func_r1_00228E30	placeholder	placeholder for the pair with raidou2 0x00240138, run-order-size
-0x00228E38	func_r1_00228E38	placeholder	placeholder for the pair with raidou2 0x00240140, run-order-size
+0x00228E30	effSetAlternateKindWorkColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
+0x00228E38	effSetAlternateKindWorkScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00228E40	effCreateBillboardWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E410, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x00228EF0	effBillboardWorkRelease	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E4C0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00228F28	effDuplicateBillState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E4F8, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5497,8 +5497,8 @@
 0x00229060	func_r1_00229060	placeholder	placeholder for the pair with raidou2 0x00240368, unique-reloc-hash
 0x00229168	func_r1_00229168	placeholder	placeholder for the pair with raidou2 0x00240470, run-order-size
 0x00229178	func_r1_00229178	placeholder	placeholder for the pair with raidou2 0x00240480, run-order-size
-0x00229190	func_r1_00229190	placeholder	placeholder for the pair with raidou2 0x00240498, run-order-size
-0x00229198	func_r1_00229198	placeholder	placeholder for the pair with raidou2 0x002404A0, run-order-size
+0x00229190	effSetBillboardColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
+0x00229198	effSetBillboardScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x002291A0	effClearBillFrames	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E760, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00229218	effCreateBillFrameNode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E7D8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002292A8	effReleaseBillFrameNode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E868, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5562,8 +5562,8 @@
 0x0022E420	func_r1_0022E420	placeholder	placeholder for the pair with raidou2 0x00245728, masked-hash-in-gap
 0x0022E460	func_r1_0022E460	placeholder	placeholder for the pair with raidou2 0x00245768, run-order-size
 0x0022E470	func_r1_0022E470	placeholder	placeholder for the pair with raidou2 0x00245778, run-order-size
-0x0022E488	func_r1_0022E488	placeholder	placeholder for the pair with raidou2 0x00245790, run-order-size
-0x0022E490	func_r1_0022E490	placeholder	placeholder for the pair with raidou2 0x00245798, run-order-size
+0x0022E488	effSetActiveInstanceColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
+0x0022E490	effSetActiveInstanceScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x0022E498	effCreateTrackSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A3A40, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0022E630	effCreateTrackSetWithSharedReferences	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A3BD8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0022E708	effReleaseResourceRefs	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A3CB0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5596,8 +5596,8 @@
 0x0022FF50	effUpdateClassFrame	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A54E0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0022FF78	func_r1_0022FF78	placeholder	placeholder for the pair with raidou2 0x00247280, run-order-size
 0x0022FF88	func_r1_0022FF88	placeholder	placeholder for the pair with raidou2 0x00247290, run-order-size
-0x0022FFA0	func_r1_0022FFA0	placeholder	placeholder for the pair with raidou2 0x002472A8, run-order-size
-0x0022FFA8	func_r1_0022FFA8	placeholder	placeholder for the pair with raidou2 0x002472B0, run-order-size
+0x0022FFA0	effSetClassWorkColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
+0x0022FFA8	effSetClassWorkScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x0022FFB0	effCreatePointSet4	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5540, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00230080	effAssetQueueRelease	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5610, masked-words-identical (order map pair); dds-decomp: descriptive
 0x002300B0	effDrawFourPointGroups	inferred	fuzzy name from SLUS_209.74 0x002A5640, score 1.00, tools/xgame/fuzzy_apply.py
@@ -5622,7 +5622,7 @@
 0x00231B70	func_r1_00231B70	placeholder	placeholder for the pair with raidou2 0x00248E78, masked-hash-in-gap
 0x00231BB0	effMenuRecordVectorSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A70D8, masked-words-identical (gap map pair); dds-decomp: no provenance row
 0x00231BC8	effSetSurfaceRecordSecondaryVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A70F0, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x00231BE0	func_r1_00231BE0	placeholder	placeholder for the pair with raidou2 0x00248EE8, run-order-size
+0x00231BE0	effSetSurfaceNodeColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00231BE8	effIndexedFloatCallbackDispatch	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A7110, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00231C08	effCreateSurfaceGridNode	inferred	fuzzy name from SLUS_209.74 0x002A7130, score 0.94, tools/xgame/fuzzy_apply.py
 0x00231D58	effFillSurfaceGridColorGradient	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A7288, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5638,12 +5638,12 @@
 0x00232BD8	effReleaseRenderResources	inferred	fuzzy name from SLUS_209.74 0x002A7DF8, score 1.00, tools/xgame/fuzzy_apply.py
 0x00232C38	func_r1_00232C38	placeholder	placeholder for the pair with raidou2 0x00249F40, unique-reloc-hash
 0x00232E30	func_r1_00232E30	placeholder	placeholder for the pair with raidou2 0x0024A138, unique-reloc-hash
-0x00232F08	func_r1_00232F08	placeholder	placeholder for the pair with raidou2 0x0024A210, run-order-size
+0x00232F08	effResetRenderResourceFrame	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00232F10	func_r1_00232F10	placeholder	placeholder for the pair with raidou2 0x0024A218, unique-reloc-hash
 0x00232F48	func_r1_00232F48	placeholder	placeholder for the pair with raidou2 0x0024A250, run-order-size
 0x00232F58	func_r1_00232F58	placeholder	placeholder for the pair with raidou2 0x0024A260, run-order-size
-0x00232F70	func_r1_00232F70	placeholder	placeholder for the pair with raidou2 0x0024A278, run-order-size
-0x00232F78	func_r1_00232F78	placeholder	placeholder for the pair with raidou2 0x0024A280, run-order-size
+0x00232F70	effSetRenderResourceColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
+0x00232F78	effSetRenderResourceScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00232F80	func_r1_00232F80	placeholder	placeholder for the pair with raidou2 0x0024A288, unique-reloc-hash
 0x00233AA0	func_r1_00233AA0	placeholder	placeholder for the pair with raidou2 0x0024ADA8, unique-reloc-hash
 0x00233AD8	func_r1_00233AD8	placeholder	placeholder for the pair with raidou2 0x0024ADE0, unique-masked-hash
@@ -5689,7 +5689,7 @@
 0x00237418	effUpdateAndDrawStripRecord	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB968, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00237440	effSetStripRecordVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB990, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00237458	effSetStripRecordSecondaryVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB9A8, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x00237470	func_r1_00237470	placeholder	placeholder for the pair with raidou2 0x0024E778, run-order-size
+0x00237470	effSetStripRecordColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00237478	effSetStripOpacity	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB9C8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00237498	effResetBillTable	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB9E8, masked-words-identical (order map pair); dds-decomp: no provenance row
 0x002374E8	effAllocateRingFadeEntries	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002ABA38, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5734,8 +5734,8 @@
 0x0023A8C0	func_r1_0023A8C0	placeholder	placeholder for the pair with raidou2 0x00251BC8, masked-hash-in-gap
 0x0023A900	func_r1_0023A900	placeholder	placeholder for the pair with raidou2 0x00251C08, run-order-size
 0x0023A910	func_r1_0023A910	placeholder	placeholder for the pair with raidou2 0x00251C18, run-order-size
-0x0023A928	func_r1_0023A928	placeholder	placeholder for the pair with raidou2 0x00251C30, run-order-size
-0x0023A930	func_r1_0023A930	placeholder	placeholder for the pair with raidou2 0x00251C38, run-order-size
+0x0023A928	effSetBlockResourceColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
+0x0023A930	effSetBlockResourceScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x0023A938	effCreateRibbonWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AE208, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0023AA80	effCreateRibbonWithSharedResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AE350, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023AAF8	effSharedAssetReferenceRelease	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AE3C8, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5779,8 +5779,8 @@
 0x0023CFE8	func_r1_0023CFE8	placeholder	placeholder for the pair with raidou2 0x002542F0, masked-hash-in-gap
 0x0023D028	func_r1_0023D028	placeholder	placeholder for the pair with raidou2 0x00254330, run-order-size
 0x0023D038	func_r1_0023D038	placeholder	placeholder for the pair with raidou2 0x00254340, run-order-size
-0x0023D050	func_r1_0023D050	placeholder	placeholder for the pair with raidou2 0x00254358, run-order-size
-0x0023D058	func_r1_0023D058	placeholder	placeholder for the pair with raidou2 0x00254360, run-order-size
+0x0023D050	effSetModelBlockColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
+0x0023D058	effSetModelBlockScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x0023D060	effRetainScalyTextureReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B0918, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023D0A0	effReleaseScalyTextureReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B0958, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023D0D0	effAllocateTexturedStripWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B0988, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5805,8 +5805,8 @@
 0x0023EA00	func_r1_0023EA00	placeholder	placeholder for the pair with raidou2 0x00255D08, unique-reloc-hash
 0x0023EA58	func_r1_0023EA58	placeholder	placeholder for the pair with raidou2 0x00255D60, run-order-size
 0x0023EA68	func_r1_0023EA68	placeholder	placeholder for the pair with raidou2 0x00255D70, run-order-size
-0x0023EA80	func_r1_0023EA80	placeholder	placeholder for the pair with raidou2 0x00255D88, run-order-size
-0x0023EA88	func_r1_0023EA88	placeholder	placeholder for the pair with raidou2 0x00255D90, run-order-size
+0x0023EA80	effSetModelResourceColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
+0x0023EA88	effSetModelResourceScale	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x0023EA90	effCreatePointSet3	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2320, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023EB80	effReleaseModelPointSetAsset	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2410, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0023EBB0	effDrawThreePointGroups	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B2440, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5827,15 +5827,15 @@
 0x0023FF28	func_r1_0023FF28	placeholder	placeholder for the pair with raidou2 0x00257230, unique-reloc-hash
 0x0023FF90	effSetActiveSlotPrimaryRecordVector	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB428, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023FFA8	effSetActiveSlotSecondaryRecordVector	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB440, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x0023FFC0	func_r1_0023FFC0	placeholder	placeholder for the pair with raidou2 0x002572C8, run-order-size
+0x0023FFC0	effSetActiveSlotColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x0023FFC8	effSetActiveSlotOpacity	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB460, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023FFE8	effCreateParticleSharedResourceFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B4798, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002401E8	effReleaseParticleResources	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B4998, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00240238	effCloneParticleSharedResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B49E8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00240358	effReplaceSharedResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B4B08, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002403E8	func_r1_002403E8	placeholder	placeholder for the pair with raidou2 0x002576F0, run-order-size
+0x002403E8	effResetParticleSharedState	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x002403F0	func_r1_002403F0	placeholder	placeholder for the pair with raidou2 0x002576F8, unique-reloc-hash
-0x00240988	func_r1_00240988	placeholder	placeholder for the pair with raidou2 0x00257C90, run-order-size
+0x00240988	effSetParticleSharedColor	inferred	fileJobTypeOperations setter slot of its effect module row; stores its argument in the module work
 0x00240990	func_r1_00240990	placeholder	placeholder for the pair with raidou2 0x00257C98, masked-hash-in-gap
 0x00240998	func_r1_00240998	placeholder	placeholder for the pair with raidou2 0x00257CA0, masked-hash-in-gap
 0x002409C8	func_r1_002409C8	placeholder	placeholder for the pair with raidou2 0x00257CD0, masked-hash-in-gap
