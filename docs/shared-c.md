@@ -196,6 +196,13 @@ pair, same masked words and slot kinds, Raidou name equal to the DDS C name);
   `~/.local/state/raidou-decomp-work/dds-<first 8 hex digits>` when it exists.
   Moving the pin means regenerating all three and verifying the build.
 - A differing pair takes the unit's DDS game when both games have a partner.
+- smt3-decomp is read at its HEAD, not pinned: its renames and new names should
+  reach Raidou on the next port. A type whose Raidou layout differs from the
+  SMT3 or DDS type of the same name goes in `config/raidou_types.h`; port writes
+  that definition in place of the source's in every declaration block.
+- Carried data provides its own name, so its `smt3_symbols.txt` row goes,
+  except when the other game aliases the name (`common_names.py check` pairs
+  the games by these rows); the link script gives such a row `PROVIDE`.
 - Generated text spells an SMT3 or DDS placeholder alias (`D_<addr>` in
   `smt3_symbols.txt`) as the Raidou name at its address, under the rule
   `tools/xgame/common_names.py` applies to the tree, so port and that rename

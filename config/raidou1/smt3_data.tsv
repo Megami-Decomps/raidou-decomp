@@ -88,6 +88,7 @@ fldDrwZBuf	0x0046B738	SDATA	field/fldDraw	c
 fldEncountFlags	0x0046B6E8	SDATA	field/fldProcess	c
 fldHojiNameKey	0x0046BF60	SDATA	field/fldSe	c
 fldTestDrawName	0x00447278	RODATA	field/fldTest	asm	bytes differ at +0x3
+gFontDrawOT	0x0046C1C4	SDATA	interface/frFont	asm	bytes differ at +0x0
 gMessageRequestResult	0x0046C1A4	SDATA	interface/frFont	c
 gMessageStepY	0x0046C1AC	SDATA	interface/frFont	asm	bytes differ at +0x0
 gModeFlag	0x0046C1C0	SDATA	interface/frFont	asm	bytes differ at +0x0

@@ -106,6 +106,33 @@ class DdsPinTests(unittest.TestCase):
             raidou_c.ensure_pairs(None)
 
 
+class AliasRowTests(unittest.TestCase):
+    rows = {"carried": {"address": 0x100}, "paired": {"address": 0x200}, "back": {"address": 0x300}}
+
+    def port(self, aliases, other):
+        return sorted(raidou_c.port_alias_rows(aliases, self.rows, {"carried", "paired"}, [("back", 0x300)], other))
+
+    def test_carried_data_drops_its_row(self) -> None:
+        self.assertEqual(self.port([("carried", 0x100), ("plain", 0x400)], set()), [("back", 0x300), ("plain", 0x400)])
+
+    def test_carried_data_the_other_game_aliases_keeps_its_row(self) -> None:
+        self.assertEqual(self.port([("paired", 0x200)], {"paired"}), [("back", 0x300), ("paired", 0x200)])
+        self.assertEqual(self.port([], {"paired"}), [("back", 0x300), ("paired", 0x200)])
+
+
+class RaidouTypeTests(unittest.TestCase):
+    def test_overridden_definition_takes_the_raidou_layout(self) -> None:
+        own = {("tag", "Font"): "/* Raidou's */\nstruct Font {\n    s32 a;\n};"}
+        with mock.patch.object(raidou_c, "raidou_types", return_value=own):
+            self.assertEqual(raidou_c.raidou_layout("struct Font {\n    s32 a;\n    s32 data;\n};"), own[("tag", "Font")])
+            for decl in ("typedef struct Font Font;", "struct Other {\n    s32 a;\n};", "extern struct Font gFont;"):
+                self.assertEqual(raidou_c.raidou_layout(decl), decl)
+
+    def test_frfont_data_has_eight_words(self) -> None:
+        text = raidou_c.raidou_types()[("tag", "frFontData_t")]
+        self.assertEqual(len(raidou_c.struct_members(raidou_c.struct_body(text, "tag", "frFontData_t")[1])), 8)
+
+
 class SpellingTests(unittest.TestCase):
     names = {"D_00300000": "D_r1_00400000", "D_00300010": "D_r1_00400010", "D_00300020": "D_r1_00400010"}
 

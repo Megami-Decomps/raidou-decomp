@@ -320,9 +320,11 @@ def provide_data_symbols(version: str) -> None:
 def smt3_link_symbols(version: str) -> Path:
     """Write the link-time form of smt3_symbols.txt. A plain assignment makes a symbol
     absolute even when an object defines it, so functions that INCLUDE_ASM or C
-    define get PROVIDE and keep their own symbol and size."""
+    define, and data carried as C, get PROVIDE and keep their own symbol and size."""
     funcs = set(re.findall(r"^(\w+) = 0x[0-9A-Fa-f]+;.*\btype:func\b",
                            (ROOT / "config" / version / "symbol_addrs.txt").read_text(), re.M))
+    funcs |= set(re.findall(r"^(\w+)\t[^\t]*\t[^\t]*\t[^\t]*\tc\b",
+                            (ROOT / "config" / version / "smt3_data.tsv").read_text(), re.M))
     out = []
     for line in (ROOT / "config" / version / "smt3_symbols.txt").read_text().splitlines():
         m = re.match(r"(\w+) = (0x[0-9A-Fa-f]+);$", line)

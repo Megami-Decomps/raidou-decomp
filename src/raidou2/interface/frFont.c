@@ -54,6 +54,7 @@ struct frFontResource_t {
     s32 thirdDelta; /* 0x18 */
 };
 
+/* SMT3's has a ninth word (data); Raidou's frFontSystem_t entries are 0x20 apart. */
 struct frFontData_t {
     sdfMemHandle_t *allocation;
     frFontHeader_t *resourceHeader;
@@ -71,7 +72,7 @@ struct frFontNodeHeader_t {
     struct frFontNodeHeader_t *next;
 };
 
-/* gFT + 0x13C; the small texture label aliases this owned subobject. */
+/* frFontWork + 0x160; the small texture label aliases this owned subobject. */
 struct frFontAtlas_t {
     s32 width;
     u32 widthExponent;
@@ -393,7 +394,7 @@ s32 frDrawFont(frFontHandle_t *pFRQ);
 
 extern s32 frDrawFontEx(frFontHandle_t *pFRQ, s8 Mode);
 
-s32 func_001C7E38(frFontHandle_t *pFRQ, s8 Mode, u32 Ot);
+s32 frDrawFontOt(frFontHandle_t *pFRQ, s8 Mode, u32 Ot);
 
 s32 frFlipPacketBuf(dds3ProcessID_t *id);
 
@@ -697,7 +698,7 @@ extern u32 frDrawFontWork;
 
 /* DDS1 frFontDrawGlyphChain supplies the shared child/parent traversal;
  * Nocturne adds its ASCII bearings and per-parent draw count, not DDS waits. */
-s32 func_001C7E38(frFontHandle_t *glyph, s8 mode, u32 renderFlags);
+s32 frDrawFontOt(frFontHandle_t *glyph, s8 mode, u32 renderFlags);
 
 /* Release queue slot 1 when the draw-buffer index's low byte is zero, otherwise
  * slot 0; return 0. This is buffer selection, not a current-font selection. */
@@ -1099,8 +1100,6 @@ u32 itfReadEncodedTextLead(FrFontCtx *stream);
 /* Decode a little-endian pair; encoded high byte 0xFF is the zero escape.
  * Neither reader checks the input length. */
 u32 itfReadEncodedCode(FrFontCtx *stream);
-
-extern void frFontCheckPendingGlyphState(FrFontCtx *);
 
 extern void frFontAppendIndexedTextToGlyphChain(u8, FrFontCtx *);
 

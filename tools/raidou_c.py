@@ -891,9 +891,32 @@ def enum_alias(item):
     return None
 
 
+RAIDOU_TYPES = ROOT / "config" / "raidou_types.h"
+_RAIDOU_TYPES = []
+
+
+def raidou_types():
+    """(kind, name) -> Raidou's definition, for each type config/raidou_types.h defines."""
+    if not _RAIDOU_TYPES:
+        text = RAIDOU_TYPES.read_text() if RAIDOU_TYPES.exists() else ""
+        _RAIDOU_TYPES.append({n: b.strip("\n") for b in blocks(text) if "{" in code_view(b)
+                              for n in declared_names(b) if n[0] == "tag"})
+    return _RAIDOU_TYPES[0]
+
+
+def raidou_layout(decl):
+    """decl, or Raidou's definition when it defines a type config/raidou_types.h overrides."""
+    if "{" not in code_view(decl):
+        return decl
+    own = raidou_types()
+    hit = [own[n] for n in declared_names(decl) if n in own]
+    return hit[0] if hit else decl
+
+
 def decl_block(smt3, rel, unsized=(), taken=(), text_macros=()):
     """Every declaration of one source file (types, prototypes, its data as extern);
-    arrays named in unsized are declared without a size (Raidou's differs). A DDS file's
+    arrays named in unsized are declared without a size (Raidou's differs), and a type
+    config/raidou_types.h defines takes that definition. A DDS file's
     declarations give way to SMT3's headers and to the names in taken."""
     decls, unprototyped = [], set()
     for d in (declaration(b) for b in blocks(smt3_text(smt3, rel))):
@@ -907,7 +930,7 @@ def decl_block(smt3, rel, unsized=(), taken=(), text_macros=()):
                 continue
         if (name := data_name(d.replace("extern", "", 1))) in unsized:
             d = re.sub(rf"\b{name}\s*\[[^\]]*\]", f"{name}[]", d, count=1)
-        decls.append(d)
+        decls.append(raidou_layout(d))
     if is_dds(rel):
         # dds-decomp's headers live in include/dds/; its headers include each other by bare name.
         macro = f"VERSION_{rel.split('/', 1)[0].upper()}"
@@ -1195,6 +1218,14 @@ def write_alias_rows(version, rows):
         path.write_text(text)
 
 
+def port_alias_rows(aliases, rows, data, dropped, other):
+    """smt3_symbols.txt rows after a port. A carried definition provides its name, but a name the
+    other game aliases keeps its row: common_names.check pairs the two games by these rows."""
+    names = {n for n, _ in dropped}
+    keep = [(n, a) for n, a in aliases if n not in data and n not in names]
+    return keep + dropped + [(n, rows[n]["address"]) for n in sorted(data) if n in other]
+
+
 def outcomes(version):
     """config/<v>/smt3_c.tsv: function -> (status, reason)."""
     path = ROOT / "config" / version / "smt3_c.tsv"
@@ -1480,9 +1511,8 @@ def cmd_port(args):
         rows = ctx[version]["rows"]
         dropped = [(n, r["address"]) for n, r in rows.items() if n not in data]
         write_data_rows(version, {n: r for n, r in rows.items() if r["status"] == "asm" or n in data})
-        # A carried definition provides its name; the linker script must not.
-        names = {n for n, _ in dropped}
-        write_alias_rows(version, [(n, a) for n, a in alias_rows(version) if n not in data and n not in names] + dropped)
+        other = {n for v in VERSIONS if v != version for n, _ in alias_rows(v)}
+        write_alias_rows(version, port_alias_rows(alias_rows(version), rows, data, dropped, other))
         for fn in kept:
             done[fn] = ("c", marker(done.get(fn, ("", ""))[1]))
         write_outcomes(version, done)
@@ -2034,7 +2064,9 @@ def cmd_verify(args):
                 continue
             for fn in users[name]:
                 fails.setdefault(fn, why)
-        aliases = {n: a for n, a in aliases.items() if not users[n] <= set(fails) and n not in defined}
+        # A name the other game aliases keeps its row (port_alias_rows).
+        other = {n for v in VERSIONS if v != version for n, _ in alias_rows(v)}
+        aliases = {n: a for n, a in aliases.items() if not users[n] <= set(fails) and (n not in defined or n in other)}
         for fn, why in fails.items():
             # A marked row stays a candidate, so the next port puts its body back to asm.
             mark = marker(done.get(fn, ("", ""))[1])
@@ -2045,7 +2077,7 @@ def cmd_verify(args):
         write_data_rows(version, rows)
         # Hand-written C and scripts/rename.py also put names here; verify only sees carried
         # bodies, so it overrides the rows it decided and keeps the rest.
-        merged = {n: a for n, a in alias_rows(version) if n not in defined}
+        merged = {n: a for n, a in alias_rows(version) if n not in defined or n in other}
         merged.update(aliases)
         write_alias_rows(version, merged.items())
         kept = sum(1 for fn in needs if fn not in fails)
