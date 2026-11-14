@@ -32,8 +32,9 @@ typedef struct {
     u32 components[4];
 } itfColor_t;
 
-/* Common draw record allocated by the interface object constructors (0x34). */
-/* Allocation fields own general-heap descriptors, not retained payload addresses. */
+/* Common draw record allocated by the interface object constructors: 0x34 in
+ * SMT3, 0x40 in Raidou (itfPnlRegist2), which has dds_itfpanel_t's layout.
+ * Allocation fields own general-heap descriptors, not retained payload addresses. */
 typedef struct itfpanel_t {
     sdfMemHandle_t *allocation;
     sdfMemHandle_t *payloadAllocation;
@@ -43,6 +44,11 @@ typedef struct itfpanel_t {
     s32 top;
     s32 right;
     s32 bottom;
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    s32 textRightX;
+    s32 screenY;
+    s32 scrollSpan;
+#endif
     /* RGBA words consumed by the panel packet renderers. */
     s32 red;
     s32 green;
@@ -51,6 +57,11 @@ typedef struct itfpanel_t {
     u8 kind; /* Unsigned index into the panel handler tables. */
     u8 unk31[3];
 } itfpanel_t;
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+SIZE_CHECK(itfpanelSizeCheck, itfpanel_t, 0x40);
+#else
+SIZE_CHECK(itfpanelSizeCheck, itfpanel_t, 0x34);
+#endif
 
 /* Point written by the panel vertex builders. */
 #endif /* INTERFACE_H */

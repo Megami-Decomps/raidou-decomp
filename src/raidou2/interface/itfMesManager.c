@@ -841,23 +841,13 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001869B8);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_0019BA50);
 
-#ifdef NON_MATCHING
-/* Retail message.phase is 8 bytes past the header offset (raidou2 layout). */
 s8 itfMesMngGetPhase(s32 msgid) {
     return pinst[msgid].mes->message.phase;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetPhase);
-#endif
 
-#ifdef NON_MATCHING
-/* Retail message.phase is 8 bytes past the header offset (raidou2 layout). */
 void itfMesMngSetPhase(s32 msgid, s8 phase) {
     pinst[msgid].mes->message.phase = phase;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetPhase);
-#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfPanelAcquireHold);
 
@@ -871,23 +861,13 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSelect);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfCommandSelectOptionWithFade);
 
-#ifdef NON_MATCHING
-/* Retail select.phase is 8 bytes past the header offset (raidou2 layout). */
 s16 itfMesMngGetSelPhase(s32 msgid) {
     return pinst[msgid].mes->select.phase;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetSelPhase);
-#endif
 
-#ifdef NON_MATCHING
-/* Retail select.phase is 8 bytes past the header offset (raidou2 layout). */
 void itfMesMngSetSelPhase(s32 msgid, s16 phase) {
     pinst[msgid].mes->select.phase = phase;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelPhase);
-#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetSelectNo);
 
@@ -1070,14 +1050,9 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001879C0);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187AD8);
 
-#ifdef NON_MATCHING
-/* Retail select.mask is 8 bytes past the header offset (raidou2 layout). */
 void itfMesMngSetMaskSelect(s32 id, u32 maskpattern) {
     pinst[id].mes->select.mask = maskpattern;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetMaskSelect);
-#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelect);
 
@@ -1161,27 +1136,17 @@ void itfMesMngClearBitStat(s32 id, u32 flag)
     rec->stat &= ~flag | 0xFFFF;
 }
 
-#ifdef NON_MATCHING
-/* Retail select field is 8 bytes past the header offset (raidou2 layout). */
 s16 func_r1_00188010(s32 id) {
     return pinst[id].mes->select.select;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188010);
-#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188030);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188050);
 
-#ifdef NON_MATCHING
-/* Retail loads mes+0xE0, 0x1C past the header's variable.pptr offset. */
 u8 *itfMesMngGetVar(s32 id, s32 index) {
     return (u8 *)pinst[id].mes->variable.pptr[index];
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetVar);
-#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188098);
 
@@ -1231,14 +1196,9 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetWidth);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetDefaultSpeed);
 
-#ifdef NON_MATCHING
-/* Retail stores func_kuti at mes+0x228, 0x58 past the header offset. */
 void itfMesMngSetKutiCallback(s32 id, void (*func)(void)) {
     pinst[id].mes->func_kuti = (addr_t)func;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetKutiCallback);
-#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngInitializeManager);
 

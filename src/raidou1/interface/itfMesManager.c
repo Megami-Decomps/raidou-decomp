@@ -1278,14 +1278,9 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188030);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188050);
 
-#ifdef NON_MATCHING
-/* Retail loads mes+0xD4, 0x10 past the header's variable.pptr offset. */
 u8 *itfMesMngGetVar(s32 id, s32 index) {
     return (u8 *)pinst[id].mes->variable.pptr[index];
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetVar);
-#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188098);
 
@@ -1338,14 +1333,9 @@ void itfMesMngSetDefaultSpeed(s32 id, u8 speed) {
     pinst[id].mes->message.color[3] = speed;
 }
 
-#ifdef NON_MATCHING
-/* Retail stores func_kuti at mes+0x21C, 0x4C past the header offset. */
 void itfMesMngSetKutiCallback(s32 id, void (*func)(void)) {
     pinst[id].mes->func_kuti = (addr_t)func;
 }
-#else
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetKutiCallback);
-#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngInitializeManager);
 
