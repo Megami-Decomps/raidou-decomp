@@ -9473,7 +9473,206 @@ void effAcquireStripRecord(EffectStripNode *node) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0023E1D0", effDrawEffectStrip);
+void effDrawEffectStrip(EffectStripNode *node) {
+    Matrix4 matrix;
+    f32 nodeTint[4];
+    f32 tint[4];
+    u128 translation[1];
+    u128 rotation[1];
+    f32 view[4];
+    f32 rightAxis[4];
+    f32 viewUp[4];
+    f32 right[4];
+    f32 up[4];
+    f32 position[4];
+    f32 innerTint[4];
+    f32 outerTint[4];
+    u32 packedInnerColor;
+    u32 packedOuterColor;
+    u32 childColor;
+    FileKeyBlock *info;
+    EffTrackSet *output;
+    FileSlot *entry;
+    f32 (*positions)[4];
+    f32 (*quad)[4];
+    u32 *colors;
+    u32 *quadColors;
+    struct billHandle_t *billboard;
+    s32 count;
+    s32 remaining;
+    u32 hasTransform;
+    s32 i;
+    f32 opacity;
+    f32 billSize;
+    f32 crossSize;
+    f32 longSize;
+    f32 sideSize;
+    f32 scale;
+    f32 cross;
+    f32 billExtent;
+    f32 along;
+    f32 side;
+
+    info = (FileKeyBlock *)node->active->data0;
+    eeUnpackRGBAWordFloat(node->color, 1.0f / 128.0f);
+    SDF_VU0_STOREVECTOR_NOMEM(nodeTint);
+    eeUnpackRGBAWordFloat(node->copiedHeader.tint, 1.0f / 128.0f);
+    SDF_VU0_LOADVECTOR_B(nodeTint);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_STOREVECTOR_NOMEM(tint);
+    hasTransform = node->active->flags & 1;
+    if (!hasTransform) {
+        EE_MMI_UNIT_MATRIX(&matrix);
+    } else {
+        fileReadRecordSecondVector(node->active, rotation);
+        fileReadVectorPtr20(node->active, translation);
+        SDF_VU0_LOADVECTOR(rotation);
+        ToMatrix();
+        SDF_VU0_LOADVECTOR(translation);
+        SDF_VU0_VECTOR_W_SET_ONE();
+        SDF_VU0_SET_ROW3();
+        VU0_STORE_MATRIX(&matrix);
+    }
+    billboard = node->resource;
+    opacity = node->opacity;
+    billSize = node->copiedHeader.billSize;
+    dds3BillboardSetMode(billboard, (s16)info->alphaTrack.surfaceIndex);
+    SDF_VU0_LOADVECTOR(aViewTarget);
+    SDF_VU0_LOADVECTOR_B(aViewEye);
+    SDF_VU0_SUBVECTOR();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR_NOMEM(view);
+    SDF_VU0_LOADVECTOR_B(aViewDown);
+    SDF_VU0_STOREVECTOR_B_NOMEM(up);
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_STOREVECTOR_NOMEM(right);
+    output = node->trackSet;
+    entry = node->active->slots;
+    count = node->percent;
+    positions = (f32 (*)[4])output->buffer;
+    colors = (u32 *)output->tail;
+    if (info->length <= 0 || count == 0) {
+        return;
+    }
+    longSize = node->copiedHeader.longSize;
+    sideSize = node->copiedHeader.sideSize;
+    crossSize = node->copiedHeader.crossSize;
+    eeUnpackRGBAWordFloat(node->copiedHeader.innerColor, 1.0f / 128.0f);
+    SDF_VU0_STOREVECTOR_NOMEM(innerTint);
+    eeUnpackRGBAWordFloat(node->copiedHeader.outerColor, 1.0f / 128.0f);
+    SDF_VU0_STOREVECTOR_NOMEM(outerTint);
+    if (count > 0) {
+        remaining = count;
+        do {
+            if ((u32)(FILE_SLOT_FRAME(entry) + 2) < 2) {
+                quad = positions;
+                for (i = 0; i < 4; i++, quad += 4) {
+                    VU0_STORE_VF(vf0, quad[0]);
+                    VU0_STORE_VF(vf0, quad[1]);
+                    VU0_STORE_VF(vf0, quad[2]);
+                    VU0_STORE_VF(vf0, quad[3]);
+                }
+            } else if (FILE_SLOT_FRAME(entry) > 0) {
+                scale = entry->scale * opacity;
+                if (hasTransform) {
+                    VU0_LOAD_MATRIX(&matrix);
+                    SDF_VU0_LOADVECTOR(entry->pos);
+                    SDF_VU0_APPLYMATRIX_XYZ1();
+                    SDF_VU0_STOREVECTOR(position);
+                } else {
+                    SDF_VU0_COPYVECTOR(position, entry->pos);
+                }
+                eeUnpackRGBAWordFloat(entry->color, 1.0f / 128.0f);
+                SDF_VU0_LOADVECTOR_B(tint);
+                SDF_VU0_MULVECTOR();
+                childColor = eePackRGBAWord(128.0f);
+                cross = crossSize * scale;
+                billExtent = billSize * scale;
+                dds3BillboardSetRGBA(billboard, childColor);
+                dds3BillboardSetScale(billboard, billExtent, billExtent);
+                dds3BillboardSetRotate(billboard, entry->angle);
+                effCopyVector(billboard->pos, position);
+                dds3BillboardDraw(billboard);
+                along = longSize * scale * 1.5f;
+                side = sideSize * scale * 1.5f;
+                SetRotateMatrixAxis(entry->angle, (const RwV3d *)view);
+                SDF_VU0_LOADVECTOR(right);
+                SDF_VU0_APPLYMATRIX_XYZ();
+                SDF_VU0_STOREVECTOR_NOMEM(rightAxis);
+                SDF_VU0_LOADVECTOR(up);
+                SDF_VU0_APPLYMATRIX_XYZ();
+                SDF_VU0_STOREVECTOR_NOMEM(viewUp);
+                SDF_VU0_LOADVECTOR_C(entry->pos);
+                SDF_VU0_STOREVECTOR_C(positions[2]);
+                SDF_VU0_STOREVECTOR_C(positions[6]);
+                SDF_VU0_LOADVECTOR(rightAxis);
+                VU0_SCALE_VF(vf10, along);
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                SDF_VU0_ADDVECTOR_A_C();
+                SDF_VU0_STOREVECTOR(positions[0]);
+                VU0_NEGATE_XYZ(vf11);
+                SDF_VU0_ADDVECTOR_B_C();
+                SDF_VU0_STOREVECTOR_B(positions[4]);
+                SDF_VU0_LOADVECTOR(viewUp);
+                VU0_SCALE_VF(vf10, cross);
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                SDF_VU0_ADDVECTOR_A_C();
+                SDF_VU0_STOREVECTOR(positions[1]);
+                SDF_VU0_STOREVECTOR(positions[5]);
+                VU0_NEGATE_XYZ(vf11);
+                SDF_VU0_ADDVECTOR_B_C();
+                SDF_VU0_STOREVECTOR_B(positions[3]);
+                SDF_VU0_STOREVECTOR_B(positions[7]);
+                quad = positions + 8;
+                /* Retail addresses this store from positions (+0xA0) but the next one from quad (+0x60):
+                 * a bare volatile asm (no memory clobber) flushes cse's table, so the second address is not
+                 * folded (cc1probe --cse, hooked==unhooked: uid599 stays quad+96). */
+                VU0_STORE_VF_UNCLOBBERED(vf12, quad[2]);
+                SDF_VU0_STOREVECTOR_C(quad[6]);
+                SDF_VU0_LOADVECTOR(viewUp);
+                VU0_SCALE_VF(vf10, side);
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                SDF_VU0_ADDVECTOR_A_C();
+                SDF_VU0_STOREVECTOR(quad[0]);
+                VU0_NEGATE_XYZ(vf11);
+                SDF_VU0_ADDVECTOR_B_C();
+                SDF_VU0_STOREVECTOR_B(quad[4]);
+                SDF_VU0_LOADVECTOR(rightAxis);
+                VU0_SCALE_VF(vf10, cross);
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                SDF_VU0_ADDVECTOR_A_C();
+                SDF_VU0_STOREVECTOR(quad[1]);
+                SDF_VU0_STOREVECTOR(quad[5]);
+                VU0_NEGATE_XYZ(vf11);
+                SDF_VU0_ADDVECTOR_B_C();
+                SDF_VU0_STOREVECTOR_B(quad[3]);
+                SDF_VU0_STOREVECTOR_B(quad[7]);
+                eeUnpackRGBAWordFloat((entry->color & 0xFF000000) | 0x808080, 1.0f / 128.0f);
+                SDF_VU0_COPYVECTOR_A_TO_B();
+                SDF_VU0_LOADVECTOR(innerTint);
+                SDF_VU0_MULVECTOR();
+                packedInnerColor = eePackRGBAWord(128.0f);
+                SDF_VU0_LOADVECTOR(outerTint);
+                SDF_VU0_MULVECTOR();
+                packedOuterColor = eePackRGBAWord(128.0f);
+                quadColors = colors;
+                for (i = 3; i >= 0; i--, quadColors += 4) {
+                    quadColors[0] = packedOuterColor;
+                    quadColors[1] = packedOuterColor;
+                    quadColors[2] = packedInnerColor;
+                    quadColors[3] = packedOuterColor;
+                }
+            }
+            entry++;
+            positions += 16;
+            colors += 16;
+        } while (--remaining != 0);
+    }
+    output->color = node->color;
+    output->flag = node->copiedHeader.flag;
+    output->type = info->alphaTrack.surfaceIndex;
+    effDrawTrackSet(output, &matrix);
+}
 
 /* Advance the active strip record, rebuild its geometry, and submit its tracks. */
 void effUpdateAndDrawStripRecord(EffectStripNode *node) {

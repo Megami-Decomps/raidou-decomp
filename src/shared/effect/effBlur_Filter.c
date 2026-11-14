@@ -181,6 +181,127 @@ void dds3EffectPartialMultiFilterDelete(dds3Effect_PartialMultiFilter_t *hPartia
 void dds3EffectPartialMultiFilterDraw(dds3Effect_PartialMultiFilter_t *hPartialMultiFilter);
 /* End of declarations from src/smt3/effect/effBlur_Filter.c */
 
+/* Declarations from dds-decomp src/dds1/game/code_00185E18.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_effBlurDrawBank_t 1
+
+#include "dds/btl_effect_position.h"
+
+#include "dds/eff.h"
+
+#include "dds/eff_math.h"
+
+#include "dds/sdf_trig.h"
+
+void effBTLModelGetMarkPosition2(struct BtlUnit *unit, s32 mode);
+
+/* Blend packed RGBA8888 colors; t >= 1 returns colorB unchanged. */
+u32 effColorBlend(u32 colorA, u32 colorB, f32 t);
+
+EffThunderGroupParams *effPCP_ThunderPolyListGetParam(EffThunderGroup *resource);
+
+void effPCP_ThunderPolyListSetColor(EffThunderGroup *resource, u32 color);
+
+f32 sdfCos(f32 angle);
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/sdf_gs_header.h"
+
+#include "dds/bill_object_api.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/common.h"
+
+#include "dds/dds3_background_fade_api.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/dds3_frame_draw_buffer.h"
+
+#include "dds/sdf_texture_draw_packet.h"
+
+#include "dds/btl_effect_position.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/eff_blur.h"
+
+#include "dds/eff.h"
+
+#include "dds/eff_math.h"
+
+#include "dds/pcp_vu0.h"
+
+typedef struct {
+    u8 pad00[0x124];
+    u16 kind; /* 0x124: kind 0x109 selects separate slots for the two resources */
+} BlurActor;
+
+extern void effPCP_ThunderPolyListDraw(EffThunderGroup *group);
+
+extern void effPCP_ThunderPolyListDelete(EffThunderGroup *group);
+
+void effPCPBossMETATOBeamDelete(PairedEffectResources *pair);
+
+extern u32 effBTLSkillGetInvokeFormation(void);
+
+void effUpdatePairedResources(PairedEffectResources *work);
+
+/* Copy the endpoint vector; the remaining paired-resource state is unchanged. */
+void effCopyPairedResourceEndpoint(PairedEffectResources *dst, PairedEffectResources *src);
+
+void effSetPairedResourceColor(PairedEffectResources *pair, u32 colorWithAlpha);
+
+typedef dds3Effect_Blur_t BlurSource;
+
+struct sdfDrawTag_t;
+
+struct sdfGrRefPacketHeader_t;
+
+extern sdfGrOt_t D_003253E8;
+
+extern dds3FrameDrawBuffer_t dds3FrameDrawPacketRecords[];
+
+#include "dds/sdf_packet_alloc.h"
+
+void effBuildBlurTransformedQuad(const BlurSource *source, BlurPacketQuad *quad, u8 fixedPointCoordinates);
+
+void effBuildBlurUnitTextureQuad(const BlurSource *source, BlurPacketQuad *quad, u8 fixedPointCoordinates);
+
+void effDrawBlurRectangle(const dds3Effect_Blur_t *source);
+
+void effAppendBlurRenderState(struct sdfDrawTag_t *list, s32 blendControl, sdfTexHandle_t *resource);
+
+/* Build the two draw packets for `source` and append them to `list`. */
+void effAppendBlurRectanglePackets(struct sdfDrawTag_t *list, const BlurSource *source,
+                                   u8 fixedPointCoordinates);
+
+/* Queue a 0x40-byte textured packet for the current frame buffer onto `list`, then let the filter ops draw it. */
+void effDrawBlurListWithFramePacket(struct sdfDrawTag_t *list);
+
+extern void effAppendBlurRenderState(struct sdfDrawTag_t *list, s32 blendControl, sdfTexHandle_t *resource);
+
+/* Queue blend setup and both rectangle packets, then finish with the filter draw. */
+void effDrawBlurSource(const BlurSource *source, sdfTexHandle_t *resource, u8 fixedPointCoordinates);
+
+/* Pixel-coordinate variant of the fixed-point rectangle below: the extent is not halved for Y. */
+void effDrawBlurPixelRectWithResource(EffBlurTemplate *rect);
+
+/* GS coordinates use sixteenth-pixel X and half-height Y; extent is halved for Y. */
+void effDrawBlurFixedPointRectangle(EffBlurTemplate *owner);
+/* End of declarations from src/dds1/game/code_00185E18.c */
+
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F81D0);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8278);
@@ -212,7 +333,22 @@ INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8488);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F84A0);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", effDrawBlurFixedPointRectangle);
+/* GS coordinates use sixteenth-pixel X and half-height Y; extent is halved for Y. */
+void effDrawBlurFixedPointRectangle(EffBlurTemplate *owner) {
+    s32 centerX, centerY, halfExtent;
+
+    if (dds3NullDrawProc() == 0) {
+        centerX = owner->body.Blur.center[0] + 0x1000;
+        centerY = (owner->body.Blur.center[1] + 0xE00) >> 1;
+        halfExtent = owner->body.area;
+        owner->body.Blur.xy[0][0] = centerX - halfExtent;
+        owner->body.Blur.xy[1][0] = centerX + halfExtent;
+        halfExtent >>= 1;
+        owner->body.Blur.xy[0][1] = centerY - halfExtent;
+        owner->body.Blur.xy[1][1] = centerY + halfExtent;
+        effDrawBlurSource(&owner->body.Blur, owner->texture, 1);
+    }
+}
 
 /* Copy only the serialized parameters, leaving the owned work tail intact. */
 void dds3EffectPartialMultiBlurSetParam(effBlurTemplate_t *hPartialMultiBlur, const dds3Effect_PartialMultiBlurParam_t *pParam) {

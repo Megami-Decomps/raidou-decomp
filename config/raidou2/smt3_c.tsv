@@ -361,7 +361,7 @@ billCloneAnimatedTransform	c
 billCloneEmitterTransform	c
 billCloneQuadTransform	c
 billCloneStripTransform	c
-billCopyCurrentRecordToSnapshot	asm	compile error: structure has no member named `kind'
+billCopyCurrentRecordToSnapshot	c	SMT3 member names
 billCreateAnimatedTransform	c
 billCreateCellNode	c
 billCreateEmitterTransform	c
@@ -1270,9 +1270,9 @@ effDispatchEnabledCallback	c
 effDispatchModelResourceCallback	c
 effDispatchRecordBuckets	c
 effDrawBlockResourceWork	c
-effDrawBlurFixedPointRectangle	asm	compile error: structure has no member named `source'
+effDrawBlurFixedPointRectangle	c	SMT3 member names
 effDrawClassResourceWork	c
-effDrawEffectStrip	asm	compile error: structure has no member named `position'
+effDrawEffectStrip	c	SMT3 member names
 effDrawFivePointGroups	c
 effDrawGeneratedTextureQuad	c
 effDrawModelBlock	c
@@ -1841,7 +1841,7 @@ effSplCalcRegist	c
 effSplRun	c
 effStoreBattleCameraSnapshot	c
 effSubmitCompositeGsPacket	c
-effSubmitFieldBlendStateTask	asm	compile error: structure has no member named `dmaTag'
+effSubmitFieldBlendStateTask	asm	SMT3 member names, then compile error: structure has no member named `dmaTag'
 effSubmitGeneratedTexturePacket	c
 effSubmitIndexedRenderPacket	c
 effSumRecordStatuses	c
@@ -1849,7 +1849,7 @@ effSweepFloorModelList	c
 effSwordTrackDrawTex	c
 effSynchronizeFileTransform	c
 effTextureReferenceRelease	c
-effTrackPolyUpdate	asm	compile error: structure has no member named `currentFrame'
+effTrackPolyUpdate	asm	SMT3 member names, then compile error: structure has no member named `color'
 effUpdateAndDrawStripRecord	c
 effUpdateBillSpiral	c
 effUpdateCameraDiagnostics	c
@@ -2011,7 +2011,7 @@ evtEmitGroupTypeTwentyFivePayloads	c
 evtEmitGroupTypeTwentySevenPayloads	c
 evtEmitGroupTypeTwentyThreePayloads	c
 evtEnsureFontResourceChain	c
-evtEventViewerAttachIndexedObject	asm	compile error: structure has no member named `smoothedPosition'
+evtEventViewerAttachIndexedObject	c	SMT3 member names
 evtEventViewerCommitGroupSelection	asm	1 words differ, first at +0xAC
 evtEventViewerCountEntries	c
 evtEventViewerDestroyActive	c
@@ -2388,8 +2388,8 @@ itfGridInterpolateCornerColorsToTarget	c
 itfGridLookupValueOrDefault	c
 itfInitTextDrawArgs	c
 itfInitializeAdminInterfaceNoop	c
-itfMesGetEntryCount	asm	compile error: structure has no member named `sub'
-itfMesGetWindowEntryItems	asm	compile error: structure has no member named `itemList'
+itfMesGetEntryCount	asm	SMT3 member names, then compile error: structure has no member named `sub'
+itfMesGetWindowEntryItems	asm	SMT3 member names, then compile error: structure has no member named `itemList'
 itfMesGetWindowTexture	c
 itfMesMngClearBitStat	c
 itfMesMngClearBitStatManager	c

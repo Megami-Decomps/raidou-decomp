@@ -131,6 +131,8 @@ dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay
 
 void effEveBEDCutSetScale(effEveBEDCutHandle_t *work, f32 scale);
 
+EffEventSetupReadiness effUpdateCh72Params(void);
+
 void evtEventViewerShutdown(dds_evtViewerInfo_t *viewer);
 
 PolyMovieWork *evtGetPolygonMovieWorkData2(s32 eventId, s32 sceneId, EvtPolygonMovieResourceMode resourceMode);
@@ -484,7 +486,7 @@ extern const char *D_003AE0D8[];
 
 extern char D_003BC080[];
 
-extern char D_003BC088[];
+extern char D_r1_0046C920[];
 
 /* Draw a project-menu command, including its current toggle/skip option. */
 void evtDrawProjectCommandRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
@@ -728,11 +730,11 @@ extern void evtDrawMotionChangeRow();
 /* sdfMotionCtrlr_t editor row: ctx->value packs group (byte 0), motion number (byte 1), loop flag (byte 2) and interpolation (byte 3). */
 s32 evtUpdateMotionChangeRow(s32 x, s32 y, dds_evtViewerInfo_t *ctx);
 
-extern char D_003BC288[];
+extern char D_r1_0046CB78[];
 
-extern char D_003BC280[];
+extern char D_r1_0046CB70[];
 
-extern char D_003AEA80[];
+extern char D_r1_00450960[];
 
 void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 
@@ -835,7 +837,7 @@ s32 mnuDrawTimedPrompt(s32 x, s32 y, dds_evtViewerInfo_t *work);
 /* Store a countdown and the two optional strings used by timed prompts. */
 void evtSetRuntimeCommandValues(dds_evtViewerInfo_t *runtime, s32 frames, char *firstText, char *secondText);
 
-extern char D_003BC300[];
+extern char D_r1_0046CC30[];
 
 void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 
@@ -1360,19 +1362,19 @@ void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtVie
         color = 0;
     }
     if (index == 0) {
-        sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_003BC288));
+        sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_r1_0046CB78));
     } else if (index == 1) {
-        sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_003BC280));
+        sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_r1_0046CB70));
         return;
     } else if (index == 2) {
-        sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_003AEA80));
+        sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_r1_00450960));
         return;
     }
     n = 3;
     for (group = ctx->groups; group != NULL; group = group->next) {
         if (group->type == 1) {
             if (n == index) {
-                sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_003BC088, ((char *)group->info->name)));
+                sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_r1_0046C920, ((char *)group->info->name)));
                 return;
             }
             n++;
@@ -1477,7 +1479,7 @@ void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtV
         color = 0;
     }
     if (index == 0) {
-        sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_003BC300));
+        sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_r1_0046CC30));
         return;
     }
     if (index == 1) {
@@ -1488,7 +1490,7 @@ void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtV
     for (group = ctx->groups; group != NULL; group = group->next) {
         if (group->type == 0x18) {
             if (n == index) {
-                sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_003BC088, ctx->entryName[group->entryHeader]));
+                sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, D_r1_0046C920, ctx->entryName[group->entryHeader]));
                 return;
             }
             n++;

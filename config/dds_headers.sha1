@@ -4,6 +4,7 @@
 e28b22badbc28ad55054f3269b319a83ea5fe966  basic.h
 3453fa449e7707d4a56d150eee7369370a96d46a  bill_linked_value.h
 7a6ce00b90bb28b963dc982075a5d4d87e887cde  bill_object_api.h
+04134116ce4299a21cd635d16d21eaa86fac42a5  bill_state_packet.h
 cd1122907e4510a8e348d60ee3f4eb690983d48e  brs_level_progress_api.h
 d29dcfd9eb66c2e787ed85290f09e86d77a41287  brs_progress_animation_kind.h
 78c10faf08cd75a54124a09871a88445a5b3ecc1  brs_result_counter.h

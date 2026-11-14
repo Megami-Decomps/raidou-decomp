@@ -1724,7 +1724,61 @@ void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerAttachIndexedObject);
+/* At an exact kind-7 key frame, attaches the indexed world object. Index -1
+ * restores the saved vectors; losing the active key restores them once too. */
+void evtEventViewerAttachIndexedObject(s32 position, dds_evtViewerInfo_t *viewer) {
+    EvtRuntimeGroup *node = viewer->groups;
+
+    while (node != NULL) {
+        if (node->type == 1) {
+            EvtRuntimeChild *glyph = node->children;
+            s32 bestFrame = -1;
+            EvtRuntimeChild *best = NULL;
+
+            if (glyph != NULL) {
+                do {
+                    if (glyph->p08.sb[0] == 7 && position >= glyph->frame &&
+                        bestFrame < glyph->frame) {
+                        bestFrame = glyph->frame;
+                        best = glyph;
+                    }
+                    glyph = glyph->next;
+                } while (glyph != NULL);
+            }
+            if (best == NULL) {
+                if (node->attachmentState == EVT_OBJECT_ATTACHMENT_ATTACHED) {
+                    dds3SetPosPoseSet(node->info,
+                                           (u128 *)node->savedPosition);
+                    dds3SetRotPoseSet(node->info,
+                                            (u128 *)node->savedRotation);
+                    dds3GetPosPoseSet(node->info);
+                    SDF_VU0_STOREVECTOR(&node->info->poseset->pos2);
+                    node->attachmentState = EVT_OBJECT_ATTACHMENT_DETACHED;
+                }
+            } else if (best->frame == position) {
+                s16 channel = best->p0C.sh[0];
+
+                if (channel == -1) {
+                    dds3SetPosPoseSet(node->info,
+                                           (u128 *)node->savedPosition);
+                    dds3SetRotPoseSet(node->info,
+                                            (u128 *)node->savedRotation);
+                    dds3GetPosPoseSet(node->info);
+                    SDF_VU0_STOREVECTOR(&node->info->poseset->pos2);
+                    node->attachmentState = EVT_OBJECT_ATTACHMENT_DETACHED;
+                } else {
+                    dds3Basic_t *object = dds3SceneBasicSearchName(
+                        dds3GetActiveScene(), viewer->entryName[channel]);
+
+                    evtSetUnitPos(
+                        node->info->serialID, object->serialID);
+                    node->attachmentState = EVT_OBJECT_ATTACHMENT_ATTACHED;
+                }
+            }
+        }
+        node = node->next;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B3FE0);
 

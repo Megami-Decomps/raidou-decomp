@@ -338,6 +338,19 @@ void dds3BillboardTagLink(billHandle_t *obj, dds3BillResource_tag *child);
 
 void dds3BillboardLinkOt(void);
 
+/* Paired quads retain each child's eight native UV halfword transfers. */
+extern f32 dds3MultiBillboardUpAxis[4];
+
+extern f32 dds3MultiBillboardTagParam[4];
+
+extern void sdfGrSetFrameMaskRGB(const u8 *env, void *packet, s32 context);
+
+extern sdfTexPacket_t *sdfTexGetPacketCtx2(sdfTexHandle_t *handle);
+
+extern s32 sdfTexGetPacketCtx2Length(sdfTexHandle_t *handle);
+
+void dds3MultiBillboardTagLink(billHandle_t *obj, billRenderPair_t *node);
+
 void dds3MultiBillboardPktLink(billRenderPair_t *hResource);
 
 void dds3MultiBillboardLinkOt(void);
@@ -490,6 +503,145 @@ extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *);
 
 void dds3P2APolygonDraw(dds3P2APolygon_tag *instance);
 /* End of declarations from src/smt3/effect/billManager.c */
+
+/* Declarations from dds-decomp src/dds1/effect/billManager.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_BILL_ANIMATION_FLAG_FRAME_COLORS 1
+
+#define SMT3_DEFINES_BILL_ANIMATION_FLAG_PACKET_LIST_2 1
+
+#define SMT3_DEFINES_BILL_ANIMATION_FLAG_PACKET_LIST_3 1
+
+#define SMT3_DEFINES_BILL_ANIMATION_FLAG_PACKET_LIST_MASK 1
+
+#define SMT3_DEFINES_BILL_ANIMATION_FLAG_PLURAL_ENTRIES 1
+
+#define SMT3_DEFINES_BILL_ANIMATION_FLAG_STOP_AT_END 1
+
+#define SMT3_DEFINES_P2A_ANIMATION_tag 1
+
+#define SMT3_DEFINES_P2A_HEAD_t 1
+
+#define SMT3_DEFINES_P2A_TEXANIM_tag 1
+
+#define SMT3_DEFINES_billColorWork_t 1
+
+#define SMT3_DEFINES_billData_t 1
+
+#define SMT3_DEFINES_billGeneralEntry_t 1
+
+#define SMT3_DEFINES_billGeneralRow_t 1
+
+#define SMT3_DEFINES_billOut_t 1
+
+#define SMT3_DEFINES_billPluralEntry_t 1
+
+#define SMT3_DEFINES_dds3BillAnimResource_tag 1
+
+#define SMT3_DEFINES_dds3BillAnim_tag 1
+
+#define SMT3_DEFINES_dds3EffectFunc3_t 1
+
+#define SMT3_DEFINES_dds3P2APolygonResource_t 1
+
+#define SMT3_DEFINES_dds3P2APolygon_tag 1
+
+#define SMT3_DEFINES_effBlurDrawBank_t 1
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/sdf_gs_header.h"
+
+#include "dds/common.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/dds3_draw_buffer.h"
+
+#include "dds/dds3_frame_draw_buffer.h"
+
+#include "dds/bill_state_packet.h"
+
+#include "dds/sdf_trig.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_compact_vertex_vif_packet.h"
+
+#include "dds/bill_object_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/sdf_texture_file.h"
+
+#include "dds/eff.h"
+
+#include "dds/ee_mmi.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_texture_primary_buffer_api.h"
+
+extern BillDispatch D_0034E060[];
+
+BillData *billCreateAnimationDataFromResource(void *resourceData);
+
+#include "dds/sdf_packet_alloc.h"
+
+typedef struct DmaPacketHeader DmaPacketHeader;
+
+extern f32 billChildFacingReferenceAxis[4];
+
+extern sdfGrOt_t *D_0034E030[5];
+
+void billFlushPendingChildPackets(void);
+
+extern dds3FrameDrawBuffer_t dds3FrameDrawPacketRecords[];
+
+extern f32 billPairFacingReferenceAxis[4];
+
+extern f32 billPairFacingScale[4];
+
+extern BillRenderPair *billPendingRenderPairList;
+
+/* Initialize the paired texture/state list, then append one quad to each
+ * child stream. The second child owns the geometry and common batch count. */
+void billAppendPairedQuadEntry(billHandle_t *obj, BillRenderPair *node);
+
+extern sdfGrOt_t D_00325228;
+
+void billFlushPendingRenderPairs(void);
+
+billHandle_t *billAllocChild(SdfTextureFileHeader *resourceData);
+
+void billReleaseChild(billHandle_t *obj);
+
+#include "dds/sdf_debug_api.h"
+
+enum {
+    BILL_ANIMATION_ENTRY_MODE_MTEX = 0x00000040,
+    BILL_ANIMATION_ENTRY_MODE_AMTEX = 0x00000080,
+    BILL_ANIMATION_ENTRY_MODE_TWO_ENTRY_MASK = 0x000000C0,
+    BILL_ANIMATION_ENTRY_MODE_P2A_POLYGON_LOG = 0x00000100
+};
+
+BillData *billCreateAnimationDataFromResource(void *resourceData);
+
+/* Drop one reference; the last one releases every entry and the block itself. */
+void billReleaseSharedEntryBlock(BillData *block);
+
+/* Copy the billboard's current source record (by kind) into a snapshot. */
+void billCopyCurrentRecordToSnapshot(billHandle_t *obj, BillSnapshot *snapshot);
+
+billHandle_t *billCreateFromResource(s32 kind, const char *path);
+/* End of declarations from src/dds1/effect/billManager.c */
 
 INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC020);
 
@@ -702,7 +854,24 @@ INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DD998);
 
 INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DDB68);
 
-INCLUDE_ASM(const s32, "effect/billManager", billCopyCurrentRecordToSnapshot);
+/* Copy the billboard's current source record (by kind) into a snapshot. */
+void billCopyCurrentRecordToSnapshot(billHandle_t *obj, BillSnapshot *snapshot) {
+    BillChildPayload *record;
+
+    if (obj->type == 1) {
+        record = dds3Billboard_P2AAnimDraw(obj, obj->resolvedEntries);
+    } else if (obj->type == 0 || obj->type == 3) {
+        record = obj->u.child;
+    } else {
+        return;
+    }
+    snapshot->x = record->x;
+    snapshot->texture = record->texture;
+    snapshot->y = record->y;
+    snapshot->halfWidth = record->halfWidth;
+    snapshot->halfHeight = record->halfHeight;
+    memcpy(&snapshot->uv, &record->uv, sizeof(snapshot->uv));
+}
 
 billHandle_t *dds3BillboardCreate(s32 index, addr_t data) {
     billHandle_t *newobj;

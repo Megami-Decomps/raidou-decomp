@@ -36,6 +36,8 @@ extern dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s3
 
 s32 FrameVarProcess(dds3ProcessID_t *id);
 
+s32 FrameVarProcess(dds3ProcessID_t *id);
+
 dds3ProcessID_t *evtInitFrameVar(void);
 
 extern const char evtFrameVarName[24];
