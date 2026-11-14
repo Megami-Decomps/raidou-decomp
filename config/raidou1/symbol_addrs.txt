@@ -5644,6 +5644,7 @@ func_r1_0017F830 = 0x0017F830; // type:func
 func_r1_0017FBA0 = 0x0017FBA0; // type:func
 func_r1_0017FBF0 = 0x0017FBF0; // type:func
 func_r1_0017FC08 = 0x0017FC08; // type:func
+frGetStrWidth = 0x0017FCE0; // type:func size:0x98
 func_r1_0017FDC8 = 0x0017FDC8; // type:func
 func_r1_0017FEB8 = 0x0017FEB8; // type:func
 func_r1_0017FFB8 = 0x0017FFB8; // type:func

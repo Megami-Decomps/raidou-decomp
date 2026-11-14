@@ -1962,6 +1962,7 @@
 0x0017FC68	frSetExtDic	inferred	SMT3HD name via SLUS_209.11 0x001C81B8, reloc-identical; map-agrees
 0x0017FC88	frDestroyExtDic	inferred	SMT3HD name via SLUS_209.11 0x001C81D8, reloc-identical; map-agrees
 0x0017FCA0	frStrLen	inferred	SMT3HD name via SLUS_209.11 0x001C81F0, byte-identical; map-agrees
+0x0017FCE0	frGetStrWidth	inferred	r1-pair: callee of frSetFontSpace as in R2; sums child advances plus spacing, scaled by a global in R1
 0x0017FD78	frGetStrWidth2	inferred	SMT3HD name via SLUS_209.11 0x001C8268, unique-masked-hash; map-agrees
 0x0017FDC8	func_r1_0017FDC8	placeholder	placeholder for the pair with raidou2 0x00194BC8, unique-reloc-hash
 0x0017FEB8	func_r1_0017FEB8	placeholder	placeholder for the pair with raidou2 0x00194CB8, unique-reloc-hash

@@ -1998,15 +1998,10 @@ INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017F0B0);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017F0D0);
 
-#ifdef NON_MATCHING
-/* Matches; frGetStrWidth has no Raidou 1 name yet, so it does not link. */
 void frSetFontSpace(frFontHandle_t *pFRQ, s32 Space) {
     pFRQ->spacing = Space;
     pFRQ->advance = frGetStrWidth(pFRQ);
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frSetFontSpace);
-#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017F138);
 
@@ -2147,7 +2142,7 @@ s32 frStrLen(s8 *pStr) {
     return characterCount;
 }
 
-INCLUDE_ASM(const s32, "interface/frFont", func_0017FCE0);
+INCLUDE_ASM(const s32, "interface/frFont", frGetStrWidth);
 
 u32 frGetStrWidth2(frFontHandle_t *pFRQ) {
     frFontHandle_t *parentGlyph;
