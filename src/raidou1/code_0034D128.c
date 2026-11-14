@@ -1596,19 +1596,49 @@ void mnuLinkItemList(MenuListNode **nodeArray, s32 count) {
     }
 }
 
+INCLUDE_ASM(const s32, "code_0034D128", mnuComparePrimaryKeyDescending);
+
+INCLUDE_ASM(const s32, "code_0034D128", mnuComparePrimaryKeyAscending);
+
+INCLUDE_ASM(const s32, "code_0034D128", mnuCompareSecondaryKeyDescending);
+
+INCLUDE_ASM(const s32, "code_0034D128", mnuCompareSecondaryKeyAscending);
+
 INCLUDE_ASM(const s32, "code_0034D128", mnuCompareTertiaryKeyDescending);
 
 INCLUDE_ASM(const s32, "code_0034D128", mnuCompareTertiaryKeyAscending);
 
-INCLUDE_ASM(const s32, "code_0034D128", func_r1_0034EBD8);
+INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F08);
 
-INCLUDE_ASM(const s32, "code_0034D128", func_r1_0034EC00);
+INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F20);
 
-INCLUDE_ASM(const s32, "code_0034D128", func_r1_0034EC30);
+INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F50);
 
-INCLUDE_ASM(const s32, "code_0034D128", func_r1_0034EC58);
+void mnuSortItems(MenuList *menu, s32 keyIndex, s32 ascending) {
+    s32 (*comparators[MNU_SORT_COMPARATOR_COUNT])(MenuListNode **, MenuListNode **) = {
+        mnuComparePrimaryKeyDescending, mnuCompareSecondaryKeyDescending, mnuCompareTertiaryKeyDescending,
+        mnuComparePrimaryKeyAscending, mnuCompareSecondaryKeyAscending, mnuCompareTertiaryKeyAscending
+    };
+    s32 nodeCount = 0;
+    struct sdfMemHandle_t *allocation = sdfMemAllocDirect(menu->count * MNU_LIST_POINTER_BYTES);
+    MenuListNode **items = (MenuListNode **)sdfMemLock(allocation);
+    MenuListNode **writeCursor = items;
+    MenuListNode *node;
 
-INCLUDE_ASM(const s32, "code_0034D128", mnuSortItems);
+    for (node = menu->first; node != NULL; node = node->next) {
+        *writeCursor++ = node;
+        nodeCount++;
+    }
+    if (ascending != 0) {
+        keyIndex += MNU_SORT_KEY_COUNT;
+    }
+    qsort(items, nodeCount, MNU_LIST_POINTER_BYTES, comparators[keyIndex]);
+    mnuLinkItemList(items, nodeCount);
+    mnuRebuildListFirstFromCursor(menu);
+    mnuRebuildListLastFromCursor(menu);
+    mnuResetNodeLinks(menu, 0);
+    sdfMemFreeDirect(allocation);
+}
 
 /* Allocate four native fade records into pointer slots after the list header. */
 void mnuAllocateListEntries(s32 *list) {
@@ -1675,14 +1705,6 @@ void mnuUpdateFade(s32 *list) {
         }
     }
 }
-
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F08);
-
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F20);
-
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F50);
-
-INCLUDE_RODATA(const s32, "code_0034D128", D_r1_00463F60);
 
 INCLUDE_RODATA(const s32, "code_0034D128", D_00463F80);
 

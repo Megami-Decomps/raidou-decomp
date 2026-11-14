@@ -8793,12 +8793,12 @@
 0x003BE948	mnuRebuildListLastFromCursor	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0027DE98, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BE980	mnuResetNodeLinks	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0027DED0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BE9F8	mnuLinkItemList	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0027DF48, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x003BEAA8	mnuCompareTertiaryKeyDescending	inferred	fuzzy name from SLUS_209.74 0x0027E0A8, score 1.00, tools/xgame/fuzzy_apply.py
-0x003BEAD0	mnuCompareTertiaryKeyAscending	inferred	fuzzy name from SLUS_209.74 0x0027E0D0, score 1.00, tools/xgame/fuzzy_apply.py
-0x003BEB00	func_r1_0034EBD8	placeholder	placeholder for the pair with raidou1 0x0034EBD8, unique-reloc-hash
-0x003BEB28	func_r1_0034EC00	placeholder	placeholder for the pair with raidou1 0x0034EC00, unique-reloc-hash
-0x003BEB58	func_r1_0034EC30	placeholder	placeholder for the pair with raidou1 0x0034EC30, unique-reloc-hash
-0x003BEB80	func_r1_0034EC58	placeholder	placeholder for the pair with raidou1 0x0034EC58, unique-reloc-hash
+0x003BEAA8	mnuComparePrimaryKeyDescending	evidence	mnuSortItems comparator 0 (+0x60); DDS 0x0027DFF8 reads the same field
+0x003BEAD0	mnuComparePrimaryKeyAscending	evidence	mnuSortItems comparator 3 (+0x60)
+0x003BEB00	mnuCompareSecondaryKeyDescending	inferred	twin-of-raidou1-0x0034EBD8
+0x003BEB28	mnuCompareSecondaryKeyAscending	inferred	twin-of-raidou1-0x0034EC00
+0x003BEB58	mnuCompareTertiaryKeyDescending	inferred	twin-of-raidou1-0x0034EC30
+0x003BEB80	mnuCompareTertiaryKeyAscending	inferred	twin-of-raidou1-0x0034EC58
 0x003BEBB0	mnuSortItems	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0027E100, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BECD8	mnuAllocateListEntries	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0027E228, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BED20	mnuFreeListEntries	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0027E270, masked-words-identical (strict map pair); dds-decomp: descriptive

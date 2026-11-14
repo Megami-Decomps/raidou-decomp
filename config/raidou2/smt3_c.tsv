@@ -2737,7 +2737,7 @@ mnuSetTitleVoicePrefixIndex	c
 mnuSetWindowContainerLayout	c
 mnuShouldBlockViewerEndCountdown	c
 mnuSolveCubicBezierYForX	c
-mnuSortItems	asm	comparator table order differs from DDS's names
+mnuSortItems	c
 mnuStartFixedSoundStream	c
 mnuStopTitleVoicePlayback	c
 mnuStoreTaskResult	asm	fileLoad at 0x001E9F40, others at 0x001E9F20
@@ -3728,7 +3728,7 @@ sdfTableInterpolation	c
 sdfTexAllocClutBuff	c
 sdfTexClutToGs	c
 sdfTexCopyClutData	c
-sdfTexFreeDelayed	asm	compile error: structure has no member named `ref'
+sdfTexFreeDelayed	c	carried by hand with SdfTexRef
 sdfTexGetCLUTAddr	c
 sdfTexGetCLUTCount	c
 sdfTexGetClampReg	c
@@ -3752,7 +3752,7 @@ sdfTexMakeGIFPacket	c
 sdfTexMakeGIFPacketCtx2	c
 sdfTexMakeGIFPacketSub	c
 sdfTexRebuildPacket	c
-sdfTexReleaseReference	asm	compile error: structure has no member named `ref'
+sdfTexReleaseReference	c	carried by hand with SdfTexRef
 sdfTexSearch	c
 sdfTexSetFilter	c
 sdfTexSetFilterCtx2	c
