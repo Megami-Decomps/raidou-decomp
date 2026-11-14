@@ -6,17 +6,6 @@
 
 #include "common.h"
 
-/* Allocated by evtAddFrameInfo. */
-typedef struct EvtFrameInfoWork20 {
-    f32 unk00; /* 0x00 */
-    f32 unk04; /* 0x04 */
-    f32 unk08; /* 0x08 */
-    f32 unk0C; /* 0x0C */
-    s32 unk10; /* 0x10 */
-    u8 pad14[12]; /* 0x14 */
-} EvtFrameInfoWork20;
-SIZE_CHECK(EvtFrameInfoWork20SizeCheck, EvtFrameInfoWork20, 0x20);
-
 /* Allocated by dds3EffectFileListCreate. */
 typedef struct Dds3EffectFileListCreateWork {
     s32 unk00; /* 0x00 */
@@ -56,20 +45,6 @@ typedef struct EvtFrameInfoWork {
     u8 pad64[12]; /* 0x64 */
 } EvtFrameInfoWork;
 SIZE_CHECK(EvtFrameInfoWorkSizeCheck, EvtFrameInfoWork, 0x70);
-
-/* Allocated by dds3InitPoseSet. */
-typedef struct Dds3PoseSet {
-    u8 pad00[64]; /* 0x00 */
-    f32 unk40[4]; /* 0x40 */
-    f32 unk50[4]; /* 0x50 */
-    u8 pad60[80]; /* 0x60 */
-    f32 unkB0[4]; /* 0xB0 */
-    s32 unkC0; /* 0xC0 */
-    s32 unkC4; /* 0xC4 */
-    s32 unkC8; /* 0xC8 */
-    u8 padCC[4]; /* 0xCC */
-} Dds3PoseSet;
-SIZE_CHECK(Dds3PoseSetSizeCheck, Dds3PoseSet, 0xD0);
 
 /* Allocated by dds3ObjectBaseInitControlWorkData. */
 typedef struct Dds3ObjectBaseInitControlWork {
