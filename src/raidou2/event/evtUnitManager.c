@@ -401,15 +401,15 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", UnitAnime);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseLightRGB);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5708);
+INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseLightRGB_2);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A57B8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseLightRGB2);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseAmbientRGB);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5920);
+INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseLightDir);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A59A8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir1Sub);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseLightDir2);
 
@@ -417,7 +417,7 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", MakeLightPacket);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkLightObjectBasic);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5D20);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnlinkLightObjectBasic_evt);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkExternalLightPacket);
 
@@ -730,13 +730,13 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove2);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove3);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A71F0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", CheckMoveEndBustup);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7200);
+INCLUDE_ASM(const s32, "event/evtUnitManager", UnitMoveTypeBustup);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001BCF70);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtLeaf);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7310);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitAction);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitManagerPrimaryFunc);
 
@@ -746,8 +746,8 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetCustomSceneLightData);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetCustomSceneLightData_SoftenAndBias);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7BE0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtLeaf4);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtMakeCustomSLightPacket);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7EF0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtGetCustomSLight_SoftenAndBias);

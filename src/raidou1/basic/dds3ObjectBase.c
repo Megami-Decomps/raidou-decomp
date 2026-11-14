@@ -369,7 +369,7 @@ INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMatterAnimeSpeed);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseRegistArea);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_r1_001197E0);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3CallMemset);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseModelLinkOt);
 

@@ -367,7 +367,7 @@ extern u32 fldDrawInitDone;
 extern void *fldDrwZBuf;
 /* End of declarations from src/smt3/field/fldDraw.c */
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00132850);
+INCLUDE_ASM(const s32, "field/fldDraw", mapEffEplInit);
 
 sdfGrOt_t *fldDrawGetOt(void)
 {
@@ -496,11 +496,11 @@ void fldPoint3To2(f32 *x3, f32 *y3, f32 z3, f32 x2, f32 y2) {
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldPoint3ToZ);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00132EF0);
+INCLUDE_ASM(const s32, "field/fldDraw", fldPoint3To2H);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00132FC8);
+INCLUDE_ASM(const s32, "field/fldDraw", fldCallMultMatrixRev);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00133030);
+INCLUDE_ASM(const s32, "field/fldDraw", fldPoint3To2_B);
 
 void rsetOtOfs(s32 otofs)
 {
@@ -823,7 +823,7 @@ void aDrawTriG(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, u32 r0, u32 g0, u
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00133CD0);
+INCLUDE_ASM(const s32, "field/fldDraw", aDrawBoxG);
 
 void aDrawBoxGF(f32 x, f32 y, f32 w, f32 h, u32 r0, u32 g0, u32 b0, u32 a0, u32 r1, u32 g1, u32 b1, u32 a1, u32 r2, u32 g2, u32 b2, u32 a2, u32 r3, u32 g3, u32 b3, u32 a3) {
     s32 coords[8];
@@ -873,7 +873,7 @@ void aDrawBoxGF(f32 x, f32 y, f32 w, f32 h, u32 r0, u32 g0, u32 b0, u32 a0, u32 
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00134208);
+INCLUDE_ASM(const s32, "field/fldDraw", fldCallGrAllocPacketBuff);
 
 void drawSprite3D(sdfTexHandle_t *th, Sprite3D_t *spr3d) {
     sdfDrawTag_t *command = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
@@ -898,9 +898,9 @@ void drawSprite3D(sdfTexHandle_t *th, Sprite3D_t *spr3d) {
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_001344B8);
+INCLUDE_ASM(const s32, "field/fldDraw", rsetFrameMaskRgbOn);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00134550);
+INCLUDE_ASM(const s32, "field/fldDraw", rsetFrameMaskRgbOff);
 
 void ooyTestLine3D(u32 x0, u32 y0, f32 z0, f32 col0, f32 x1, f32 y1, f32 z1, f32 col1) {
     sdfDrawTag_t *list;
@@ -959,17 +959,17 @@ void fldDrawPoly3(s32 x0, s32 y0, s32 z0,
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00134818);
+INCLUDE_ASM(const s32, "field/fldDraw", fldDrawFrameSprite);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_0013BB38);
+INCLUDE_ASM(const s32, "field/fldDraw", fldDrawBokasi);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_0013BD00);
+INCLUDE_ASM(const s32, "field/fldDraw", fldDrawFrameSpriteAlpha);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_0013BEC8);
+INCLUDE_ASM(const s32, "field/fldDraw", fldDrawPos);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_0013BF88);
+INCLUDE_ASM(const s32, "field/fldDraw", fldCallOtOfs);
 
-void func_r1_00134B58(void) {
+void fldLeaf17(void) {
 }
 
 void fldDrwZAlloc(void)
@@ -987,15 +987,15 @@ void fldDrwZFree(void)
     }
 }
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00134BB8);
+INCLUDE_ASM(const s32, "field/fldDraw", fldDrwZSave);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00134C48);
+INCLUDE_ASM(const s32, "field/fldDraw", fldCallPrimAllocDrawTag);
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldKanjiDraw);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00134D20);
+INCLUDE_ASM(const s32, "field/fldDraw", fldCallSetFontString);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_r1_00134DA0);
+INCLUDE_ASM(const s32, "field/fldDraw", fldCallSetFontString2);
 
 void LF(dbgConsCtl_tag *cons)
 {
@@ -1015,9 +1015,9 @@ void initDrawTag(dbgConsCtl_tag *cons) {
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldDbgPrint3D);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_0013C510);
+INCLUDE_ASM(const s32, "field/fldDraw", fldObjTaskSub);
 
-INCLUDE_ASM(const s32, "field/fldDraw", func_0013C528);
+INCLUDE_ASM(const s32, "field/fldDraw", fldCallSetOt);
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawMaruKage);
 

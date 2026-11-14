@@ -291,9 +291,9 @@ void dds3SoftResetOff(void)
     dds3SoftResetDisableFlag = 1;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", func_001005C0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3CallEventSub);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", func_r1_00100598);
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3KernelMain);
 u32 dds3PauseSign = 0;
 
 u32 dds3PauseTime = 0;

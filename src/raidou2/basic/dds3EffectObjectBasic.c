@@ -595,15 +595,15 @@ dds3Basic_t *dds3AddTMXEffectObjectBasic3(dds3Basic_t *ebasic, void *pos, saddr_
     return AddTMXEffect(bill, pos, rot);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C6A8);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3AddTMXEffectObjectBasic2);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C6F0);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", effObjCreateIndexedKindZero);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C738);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddD3PEffect);
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicAddD3P2);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C848);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3CallDevLoadTexList);
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddEPLEffect);
 

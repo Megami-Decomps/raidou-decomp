@@ -662,13 +662,13 @@ void itfPnlSetColor(itfpanel_t *handle, s32 r, s32 g, s32 b, s32 a) {
     }
 }
 
-INCLUDE_ASM(const s32, "interface/itfPanel", func_r1_00185388);
+INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlDraw);
 
-INCLUDE_ASM(const s32, "interface/itfPanel", func_r1_00185408);
+INCLUDE_ASM(const s32, "interface/itfPanel", itfLeaf6);
 
-INCLUDE_ASM(const s32, "interface/itfPanel", func_r1_00185430);
+INCLUDE_ASM(const s32, "interface/itfPanel", itfLeaf7);
 
-INCLUDE_ASM(const s32, "interface/itfPanel", func_r1_00185458);
+INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlDrawSub);
 
 /* Emit top/bottom vertices for four columns; collapse overlapping inner columns to the midpoint.
    Coordinates and inset remain in the renderer's native integer units. */
@@ -982,9 +982,9 @@ void DrawLeftFade(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     itfMiscDrawAlphaPrim(pdrawtag, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "interface/itfPanel", func_r1_00185F88);
+INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrim);
 
-INCLUDE_ASM(const s32, "interface/itfPanel", func_r1_00186540);
+INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawSpritePrim);
 
 /* Copy bounds and draw the tinted border; alpha uses the native signed 103/128 scale. */
 void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command) {

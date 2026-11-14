@@ -1148,9 +1148,9 @@ effMagatuhiOwner_t *effMagaCylinderAllocPart(const u32 *source) {
     return effect;
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F2178);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effBTLSys_Nego_Stone_Delete);
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F21A8);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeConvDrawSub);
 
 void effMagaCylinderSetPartPtrs(dds3MagatuhiBill_tag *work, s32 slotIndex) {
     f32 *angleRow;
@@ -1236,7 +1236,7 @@ dds3MagatuhiBill_tag *effMagaCylinderAllocTex(s32 count, s32 historyCount, f32 h
     return resource;
 }
 
-void func_r1_001F23C0(dds3MagatuhiBill_tag *work) {
+void effMagaCylinderFreeParts(dds3MagatuhiBill_tag *work) {
     sdfMemFreeDirect(work->allocationHandle);
 }
 
@@ -1459,7 +1459,7 @@ void effMagaCylinderBlendColor(dds3MagatuhiBill_tag *work, u32 colorA, u32 color
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F2C80);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeConvPartInitSub);
 
 /* Clone the first-family parameters; return the work after its state array.
  * Clamp only the copied delay modulus, leaving the caller's parameters intact. */
@@ -2020,13 +2020,13 @@ void effMagaCylinderDraw(effMagaCylinder_tag *pData) {
     effMagaCylinderDrawTrack(pData->pMagatuhi);
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F4600);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderSetPosition);
 
-void func_r1_001F4618(effMagaCylinder_tag *pData, u32 abgr) {
+void effMagaCylinderSetRGBA(effMagaCylinder_tag *pData, u32 abgr) {
     pData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F4620);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaCylinderSetRotateMatrix);
 
 /* Replay the first slot of each three-slot group from a random age. */
 void effMagaCylinderRandomize(effMagatuhiCallback_t *hEffect) {
@@ -2214,13 +2214,13 @@ void effMagaSpiralDraw(effMagaSpiral_tag *pData) {
     effMagaCylinderDrawTrack(pData->pMagatuhi);
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F4E50);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSpiralSetPosition);
 
-void func_r1_001F4E68(effMagaSpiral_tag *pData, u32 abgr) {
+void effMagaSpiralSetRGBA(effMagaSpiral_tag *pData, u32 abgr) {
     pData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F4E70);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSpiralSetRotateMatrix);
 
 /* Advance the orbiting-particle family: each group of three slots is replayed from a random delay, one orbit step at a time, into the value table. */
 void effMagaSpiralRandomize(effMagatuhiCallback_t *hEffect) {
@@ -2432,13 +2432,13 @@ void effMagaSmokeDraw(effMagaSmoke_tag *pData) {
     effMagaCylinderDrawTrack(pData->pMagatuhi);
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F57A8);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeSetPosition);
 
-void func_r1_001F57C0(effMagaSmoke_tag *pData, u32 abgr) {
+void effMagaSmokeSetRGBA(effMagaSmoke_tag *pData, u32 abgr) {
     pData->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F57C8);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeSetRotateMatrix);
 
 /* Replay the first slot of each three-slot drift group from a random age. */
 void effMagaSmokeRandomize(effMagatuhiCallback_t *hEffect) {
@@ -2559,22 +2559,22 @@ void dds3MagatuhiParDelete(dds3MagatuhiPar_tag *hData) {
     sdfChipFreeDirect(hData);
 }
 
-void *func_r1_001F5BB8(dds3MagatuhiPar_tag *work) {
+void *effMagaSCSetAreaSub(dds3MagatuhiPar_tag *work) {
     return work->pHandle;
 }
 
-u32 func_r1_001F5BC0(dds3MagatuhiPar_tag *work) {
+u32 effMagaCylinderRandomizeSub(dds3MagatuhiPar_tag *work) {
     return work->type;
 }
 
-void func_r1_001F5BC8(void) {
+void effLeaf43(void) {
 }
 
-u32 func_r1_001F5BD0(void) {
+u32 dds3MagatuhiParIsActive(void) {
     return 1;
 }
 
-void func_r1_001F5BD8(dds3MagatuhiPar_tag *work, void *pPos) {
+void dds3MagatuhiParSetRotateMatrix(dds3MagatuhiPar_tag *work, void *pPos) {
     void (*handler)(void *, void *) = D_r1_003FFA7C[work->type].handler;
 
     if (handler != NULL) {
@@ -2582,7 +2582,7 @@ void func_r1_001F5BD8(dds3MagatuhiPar_tag *work, void *pPos) {
     }
 }
 
-void func_r1_001F5C18(dds3MagatuhiPar_tag *work, void *pMatrix) {
+void effLeaf44(dds3MagatuhiPar_tag *work, void *pMatrix) {
     void (*handler)(void *, void *) = D_r1_003FFA84[work->type].handler;
 
     if (handler != NULL) {
@@ -2590,7 +2590,7 @@ void func_r1_001F5C18(dds3MagatuhiPar_tag *work, void *pMatrix) {
     }
 }
 
-void func_r1_001F5C58(dds3MagatuhiPar_tag *work, u32 abgr) {
+void effLeaf45(dds3MagatuhiPar_tag *work, u32 abgr) {
     void (*handler)(void *, u32) = D_r1_003FFA80[work->type].handler;
 
     if (handler != NULL) {
@@ -2625,7 +2625,7 @@ void dds3MagatuhiParSetByType(dds3MagatuhiPar_tag *work, s32 slotValue) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", func_r1_001F5CF0);
+INCLUDE_ASM(const s32, "effect/effMagatuhi", effGetSubSlot);
 
 /* Types zero/one dispatch from the payload base; two through four skip its prefix.
    Other types still dispatch with a zero argument; no type bounds check is added. */

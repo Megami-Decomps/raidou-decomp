@@ -1395,7 +1395,7 @@ u32 mdlRunViewerAssetSelectionTask(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_r1_0019E2B0);
+INCLUDE_ASM(const s32, "code_001B2E60", mapCallFromRotationB);
 
 void mdlDrawViewerIndexedLabelOverlay(void) {
     mdlAppendViewerRectToDrawList(0x8A10, 0x7948, 0xFF007F, 0x4E0, 0x90, 0);
@@ -1598,7 +1598,7 @@ s32 mdlIsDebugTimeGraph(void) {
     return dds3SearchProcessName("DebugTimeGrph") != 0;
 }
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_r1_0019F6C0);
+INCLUDE_ASM(const s32, "code_001B2E60", mapModelViewerTmx);
 
 INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DA50);
 
@@ -1885,13 +1885,13 @@ void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_r1_001A0A70);
+INCLUDE_ASM(const s32, "code_001B2E60", mapTrainCheckStartPos);
 
 INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DB00);
 
 INCLUDE_ASM(const s32, "code_001B2E60", mdlLoadViewerConfig);
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_r1_001A1208);
+INCLUDE_ASM(const s32, "code_001B2E60", mdlBgColorEye);
 
 INCLUDE_ASM(const s32, "code_001B2E60", mdlInitializeViewerTasksAndResources);
 

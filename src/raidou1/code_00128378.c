@@ -1095,15 +1095,15 @@ f32 fldPointDistance(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz) {
     return fsqrtf(dx * dx + dy * dy + dz * dz);
 }
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_001283A8);
+INCLUDE_ASM(const s32, "code_00128378", mapGetCircleCircleH);
 
 INCLUDE_ASM(const s32, "code_00128378", mapGetEyeTgtRot);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00128528);
+INCLUDE_ASM(const s32, "code_00128378", mapCallAtan2);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00128580);
+INCLUDE_ASM(const s32, "code_00128378", mapGetEyeTgt_Rot_OfsPos);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00128618);
+INCLUDE_ASM(const s32, "code_00128378", mapGetTaniVector);
 
 /* For kind-6 objects in mode 4, set mode 3 or clear it to 0.
  * status covers the count, payload mode word and cursor result. */
@@ -1134,17 +1134,17 @@ void fldToggleWorldNodeState(s64 clearMode) {
     dds3FreeBasicArrayHandle(valueChain);
 }
 
-INCLUDE_ASM(const s32, "code_00128378", func_00128728);
+INCLUDE_ASM(const s32, "code_00128378", mapRefDDS3GBWK);
 
-INCLUDE_ASM(const s32, "code_00128378", func_001287B0);
+INCLUDE_ASM(const s32, "code_00128378", mapProcSequenceSub);
 
-INCLUDE_ASM(const s32, "code_00128378", func_001288F0);
+INCLUDE_ASM(const s32, "code_00128378", mapRefDDS3GBWK2);
 
-INCLUDE_ASM(const s32, "code_00128378", func_00128990);
+INCLUDE_ASM(const s32, "code_00128378", mapRefDDS3GBWK3);
 
-INCLUDE_ASM(const s32, "code_00128378", func_00128A38);
+INCLUDE_ASM(const s32, "code_00128378", mapRefDDS3GBWK4);
 
-INCLUDE_ASM(const s32, "code_00128378", func_00128AE8);
+INCLUDE_ASM(const s32, "code_00128378", mapCallBitCheck);
 
 INCLUDE_ASM(const s32, "code_00128378", mapRndEncParamSet);
 
@@ -1152,33 +1152,33 @@ INCLUDE_ASM(const s32, "code_00128378", mapGetPlayersBasic);
 
 INCLUDE_ASM(const s32, "code_00128378", mapSetPlayersVisible);
 
-INCLUDE_ASM(const s32, "code_00128378", func_00128FD0);
+INCLUDE_ASM(const s32, "code_00128378", mapCheckDying);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_001290D0);
+INCLUDE_ASM(const s32, "code_00128378", mapRefBasic);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_001290F8);
+INCLUDE_ASM(const s32, "code_00128378", mapCallObjectBaseCheckFlag);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129138);
+INCLUDE_ASM(const s32, "code_00128378", mapRefBasic2);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129150);
+INCLUDE_ASM(const s32, "code_00128378", effCallObjectBaseCheckFlag);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129190);
+INCLUDE_ASM(const s32, "code_00128378", effRefDvBasic);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_001291A8);
+INCLUDE_ASM(const s32, "code_00128378", effBTLFieldColorDraw);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_001291E8);
+INCLUDE_ASM(const s32, "code_00128378", effRefDvBasic2);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129228);
+INCLUDE_ASM(const s32, "code_00128378", fldFreeInputPanel);
 
 INCLUDE_ASM(const s32, "code_00128378", mapRaidouBackUpPosReset);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_001293A0);
+INCLUDE_ASM(const s32, "code_00128378", mapCallGetRotPoseSet);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129460);
+INCLUDE_ASM(const s32, "code_00128378", mapCallGetRotPoseSet2);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129510);
+INCLUDE_ASM(const s32, "code_00128378", fldCtnGetSub);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129530);
+INCLUDE_ASM(const s32, "code_00128378", fldSetSceneParamBattleReturnSub);
 
 INCLUDE_RODATA(const s32, "code_00128378", D_r1_00446B50);
 
@@ -1188,69 +1188,69 @@ INCLUDE_RODATA(const s32, "code_00128378", D_r1_00446B70);
 
 INCLUDE_RODATA(const s32, "code_00128378", D_r1_00446B80);
 
-INCLUDE_ASM(const s32, "code_00128378", func_00129540);
+INCLUDE_ASM(const s32, "code_00128378", fldFirstInit);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129608);
+INCLUDE_ASM(const s32, "code_00128378", mapCutFileLoad);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129618);
+INCLUDE_ASM(const s32, "code_00128378", mapCallMemset);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129680);
+INCLUDE_ASM(const s32, "code_00128378", mapSetSceneParam_BattleReturn);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129778);
+INCLUDE_ASM(const s32, "code_00128378", fldElvReset);
 
-INCLUDE_ASM(const s32, "code_00128378", func_001297A8);
+INCLUDE_ASM(const s32, "code_00128378", fldReadyScene);
 
-INCLUDE_ASM(const s32, "code_00128378", func_001299B8);
+INCLUDE_ASM(const s32, "code_00128378", fldModelFieldLB);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129B20);
+INCLUDE_ASM(const s32, "code_00128378", fldPlayerALoad);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129B58);
+INCLUDE_ASM(const s32, "code_00128378", fldPlayerALoad_OnDataCheck);
 
 INCLUDE_ASM(const s32, "code_00128378", fldPlayerALoadStart);
 
 INCLUDE_ASM(const s32, "code_00128378", fldPlayerALoadEndCheck);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129C40);
+INCLUDE_ASM(const s32, "code_00128378", fldPlayerAFree);
 
-INCLUDE_ASM(const s32, "code_00128378", func_00129C70);
+INCLUDE_ASM(const s32, "code_00128378", fldJDataLoad);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129D08);
+INCLUDE_ASM(const s32, "code_00128378", fldCallMemFreeDelayedDirect);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129D38);
+INCLUDE_ASM(const s32, "code_00128378", fldCallMemFreeDelayedDirect2);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129D70);
+INCLUDE_ASM(const s32, "code_00128378", fldNakamaCashLoad_Start);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129DA8);
+INCLUDE_ASM(const s32, "code_00128378", fldNakamaCashLoad_Resrc);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129E28);
+INCLUDE_ASM(const s32, "code_00128378", nbResultFreeTextures);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129E70);
+INCLUDE_ASM(const s32, "code_00128378", fldNakamaCashLoad_Block);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129EA0);
+INCLUDE_ASM(const s32, "code_00128378", fldNakamaCashLoad_RndEncRetStart);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129EE8);
+INCLUDE_ASM(const s32, "code_00128378", fldNakamaCashLoad_EndCheck);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129F98);
+INCLUDE_ASM(const s32, "code_00128378", fldSetUnitSub);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129FA8);
+INCLUDE_ASM(const s32, "code_00128378", fldCallMemFreeDelayedDirect3);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_00129FE0);
+INCLUDE_ASM(const s32, "code_00128378", fldModelNpcLb);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_0012A018);
+INCLUDE_ASM(const s32, "code_00128378", fldAiboCashLoad_Resrc);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_0012A098);
+INCLUDE_ASM(const s32, "code_00128378", fldCallPackDecode);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_0012A0D8);
+INCLUDE_ASM(const s32, "code_00128378", fldAiboCashLoad_Block);
 
-INCLUDE_ASM(const s32, "code_00128378", func_0012A108);
+INCLUDE_ASM(const s32, "code_00128378", fldAiboCashLoad_RndEncRetStart);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_0012A158);
+INCLUDE_ASM(const s32, "code_00128378", fldAiboCashLoad_EndCheck);
 
-INCLUDE_ASM(const s32, "code_00128378", func_r1_0012A1A0);
+INCLUDE_ASM(const s32, "code_00128378", fldSetUnitSub2);
 
-INCLUDE_ASM(const s32, "code_00128378", func_0012A1B0);
+INCLUDE_ASM(const s32, "code_00128378", cmpModelFreeResource);
 
-INCLUDE_ASM(const s32, "code_00128378", func_0012A210);
+INCLUDE_ASM(const s32, "code_00128378", cmpCallModelFreeResource);
 
 INCLUDE_ASM(const s32, "code_00128378", fldRegistUnitPad);
 

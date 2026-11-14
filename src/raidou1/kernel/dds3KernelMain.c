@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", func_r1_00100598);
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3KernelMain);
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B128);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B12A);

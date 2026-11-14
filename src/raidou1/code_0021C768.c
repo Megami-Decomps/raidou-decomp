@@ -1956,7 +1956,7 @@ void sdfVuMatrixToQuaternion(const f32 matrix[4][4]) {
     SDF_VU0_LOADVECTOR(quaternion);
 }
 
-INCLUDE_ASM(const s32, "code_0021C768", func_r1_0021CCC0);
+INCLUDE_ASM(const s32, "code_0021C768", effGet);
 
 void *fileResolvePrimaryBuffer(FileJobPayload *job) {
     if (job->primary.allocation != NULL) {

@@ -176,7 +176,7 @@ INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", Destructor);
 
 INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", Mainprocuder);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_r1_0011A020);
+INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", dds3Leaf27);
 
 /* Rotate the local vectors and cache their world-space look-at matrix. */
 void MakeCamera(dds3Basic_t *pBasic)

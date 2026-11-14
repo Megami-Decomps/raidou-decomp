@@ -520,7 +520,7 @@ extern void fileReadVectorPtr20(FileSlotTable *record, u128 *out);
 
 extern void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 
-extern void func_r1_00104210(void);
+extern void dds3PadIsTypeCD(void);
 
 extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 
@@ -3466,7 +3466,7 @@ u32 scrCallIfOperandReady(dds_datUnitWork_t *operand, u32 byteIndex);
 /* Read one of the profile row's eight skills; an unsigned out-of-range slot returns zero. */
 u16 prfGetSkillAtIndex(u16 profileId, u32 skillIndex);
 
-u32 func_r1_00299B58(void);
+u32 sBtlGetItemtbl(void);
 
 /* Test whether a unit meets the profile's configured level requirement. */
 u8 ptyMeetsProfileLevelRequirement(const dds_datUnitWork_t *unit, u16 profileId);
@@ -3593,19 +3593,19 @@ void sdfEnableFlagListViewTargetRelativeMode(void);
 void sdfDisableFlagListViewTargetRelativeMode(void);
 /* End of declarations from src/dds1/game/code_002CC750.c */
 
-void func_r1_00242308(void) {
+void effLeaf384(void) {
     effResetSlots();
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00242320);
+INCLUDE_ASM(const s32, "code_00259620", effCallPadVibeFadeIN);
 
-void func_r1_002423E0(void) {
+void effLeaf385(void) {
 }
 
-void func_r1_002423E8(void) {
+void effLeaf386(void) {
 }
 
-void func_r1_002423F0(void) {
+void effLeaf387(void) {
 }
 
 EffActiveResource *effAllocateResourcePayload(u16 kind, void *source) {
@@ -3683,7 +3683,7 @@ void effClearCallbackFrame(EffActiveResource *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00242748);
+INCLUDE_ASM(const s32, "code_00259620", effCallProcSBtl);
 
 void effDispatchEnabledCallback(EffActiveResource *work) {
     if (btlIsRuntimeAllocated() != 0) {
@@ -3694,20 +3694,20 @@ void effDispatchEnabledCallback(EffActiveResource *work) {
     }
 }
 
-void func_r1_00242748(EffActiveResource *work);
+void effCallProcSBtl(EffActiveResource *work);
 
-void func_r1_00242820(EffActiveResource *work) {
-    func_r1_00242748(work);
+void effFunc18(EffActiveResource *work) {
+    effCallProcSBtl(work);
     effDispatchEnabledCallback(work);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00242848);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf388);
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00242858);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf389);
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00242870);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf390);
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00242878);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf391);
 
 /* Reset each entry's timer to free, then clear both colour words per entry. */
 void sdfResetFlagListEntries(SdfFlagListWork *work) {
@@ -3798,36 +3798,36 @@ void sdfDrawFlagListVertices(SdfFlagListWork *work) {
     sdfMemFreeDirect(vertexAllocation);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00243180);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf392);
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00243188);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf393);
 
 /* Sample color/alpha at frame zero with duration zero; discard the return value. */
 void sdfSampleFlagListStartColor(SdfFlagListWork *work) {
     effColorAnimation(&work->params.color, &work->params.alpha, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_002431B8);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf394);
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_002431D8);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf395);
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_002431E0);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf396);
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_002431E8);
+INCLUDE_ASM(const s32, "code_00259620", effLeaf397);
 
 extern s32 D_r1_0046D18C;
 
-void func_r1_00243210(void) {
+void effLeaf398(void) {
     D_r1_0046D18C = 1;
 }
 
 extern s32 D_r1_0046D18C;
 
-void func_r1_00243220(void) {
+void effLeaf399(void) {
     D_r1_0046D18C = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00243228);
+INCLUDE_ASM(const s32, "code_00259620", effBtlDebugSetStatusflgSub);
 
 s32 effUpdatePartsListEditor(s32 mode);
 
@@ -3841,15 +3841,15 @@ s32 btlUpdateEffectWork(void) {
     return 1;
 }
 
-void func_r1_002432B0(void) {
+void effLeaf400(void) {
 }
 
-void func_r1_0021BB88(void);
+void effLeaf341(void);
 
-void func_r1_002432B8(void) {
+void effFunc19(void) {
     effResetFileResources();
     effResetFileResourceManager();
-    func_r1_0021BB88();
+    effLeaf341();
 }
 
 void effSetBattleOffset(void *src) {
@@ -4354,7 +4354,7 @@ INCLUDE_ASM(const s32, "code_00259620", effSelectCameraFileJobFromRows);
 
 extern char D_r1_00456DF8[];
 extern char D_r1_00415620[];
-s32 func_r1_00245928(void) {
+s32 sysPARTICLE(void) {
     return effSelectCameraFileJobFromRows(D_r1_00456DF8, D_r1_00415620, 0xF);
 }
 
@@ -4380,7 +4380,7 @@ s32 effCreateEnvironmentTask(void) {
 
 extern char D_r1_00456DB8[];
 extern char D_r1_00415AC0[];
-s32 func_r1_00245A18(void) {
+s32 sysPOLYTEX(void) {
     return effSelectCameraFileJobFromRows(D_r1_00456DB8, D_r1_00415AC0, 0x3);
 }
 
@@ -4402,7 +4402,7 @@ s32 effCreatePolyTwinkleTask(void) {
 
 extern char D_r1_00456D78[];
 extern char D_r1_00415EC0[];
-s32 func_r1_00245AE0(void) {
+s32 sysPOLYWIND(void) {
     return effSelectCameraFileJobFromRows(D_r1_00456D78, D_r1_00415EC0, 0x8);
 }
 
@@ -4416,7 +4416,7 @@ s32 effCreatePolyCrackTask(void) {
 
 extern char D_r1_00456D08[];
 extern char D_r1_004160B0[];
-s32 func_r1_00245B58(void) {
+s32 sysBATTLEONLY(void) {
     return effSelectCameraFileJobFromRows(D_r1_00456D08, D_r1_004160B0, 0xD);
 }
 
@@ -4570,13 +4570,13 @@ extern u8 D_r1_0046D9A8;
 extern u8 D_r1_0046D9A9;
 extern u8 D_r1_0046D9AA;
 
-void func_r1_00246318(void) {
+void sysLeaf45(void) {
     D_r1_0046D9A8 = D_r1_004D5460[0x88];
     D_r1_0046D9A9 = D_r1_004D5460[0x89];
     D_r1_0046D9AA = D_r1_004D5460[0x8A];
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00246340);
+INCLUDE_ASM(const s32, "code_00259620", sysUPDOWNHEIGHT);
 
 INCLUDE_ASM(const s32, "code_00259620", effResetCameraSnapshotSelection);
 
@@ -5203,11 +5203,11 @@ s32 effEditMScaleTrack(BaObj *p) {
     return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0xB0), ((EffMappingObject *)p->x0C)->value108, &D_r1_00417410, &D_r1_00417328);
 }
 
-void func_r1_00249448(void) {
+void effLeaf401(void) {
     effColorEditSelectedAlphaKey = 1;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00249458);
+INCLUDE_ASM(const s32, "code_00259620", effFunc20);
 
 /* ALPHA callback for POLYGON children of the native S-family descriptors. */
 s32 effEditSPolygonAlphaTrack(s32 work) {
@@ -5403,7 +5403,7 @@ u32 fileLoadEffectSlotA(void) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", func_r1_00249FA0);
+INCLUDE_ASM(const s32, "code_00259620", effPollAndQueueCopiedFileResource);
 
 u32 fileLoadEffectSlotHelp(void) {
     EffResourceBankSlot fileInfo;

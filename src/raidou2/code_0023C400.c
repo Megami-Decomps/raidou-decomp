@@ -440,9 +440,9 @@ void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source) {
     owner->model = model;
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225190);
+INCLUDE_ASM(const s32, "code_0023C400", effCallMotionSeek);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_002251E8);
+INCLUDE_ASM(const s32, "code_0023C400", effCallSRAnimation2);
 
 /* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
 void effApplyModelPrimaryVector(EffModelOwner *owner, const f32 *position) {
@@ -469,10 +469,10 @@ void effApplyScaledModelTertiaryVector(EffModelOwner *owner, float scale) {
     mdlSetScale(owner->model);
 }
 
-void func_r1_00225308(void) {
+void effLeaf350(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225310);
+INCLUDE_ASM(const s32, "code_0023C400", effFunc13);
 
 void effMarkFloorModelForDestruction(EffModelOwner *work) {
     u32 flags = work->flags | EFF_MODEL_OWNER_FLAG_DESTROY_REQUESTED;
@@ -482,7 +482,7 @@ void effMarkFloorModelForDestruction(EffModelOwner *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225390);
+INCLUDE_ASM(const s32, "code_0023C400", effFunc14);
 
 INCLUDE_ASM(const s32, "code_0023C400", effRenderModelOwnerWithGsTests);
 
@@ -588,17 +588,17 @@ INCLUDE_ASM(const s32, "code_0023C400", Copy_effModel);
 
 INCLUDE_ASM(const s32, "code_0023C400", ResourceCopy_effModel);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225B00);
+INCLUDE_ASM(const s32, "code_0023C400", effCallMotionSeek2);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225B78);
+INCLUDE_ASM(const s32, "code_0023C400", effCallSRAnimation3);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C08);
+INCLUDE_ASM(const s32, "code_0023C400", effLeaf351);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C28);
+INCLUDE_ASM(const s32, "code_0023C400", effLeaf352);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C48);
+INCLUDE_ASM(const s32, "code_0023C400", effLeaf353);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C60);
+INCLUDE_ASM(const s32, "code_0023C400", effCallSetScale);
 
 /* Create an empty owner, or load its model and per-record queues from a file job. */
 EffResourceOwner *Create_effHelper(FileJobPayload *source) {
@@ -691,7 +691,7 @@ void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", func_r1_00226110);
+INCLUDE_ASM(const s32, "code_0023C400", effReleaseReferenceHolder);
 
 INCLUDE_ASM(const s32, "code_0023C400", Draw_effHelper);
 

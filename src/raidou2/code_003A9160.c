@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "code_003A9160", func_r1_00344F28);
+INCLUDE_ASM(const s32, "code_003A9160", gohCallGetProcessData45);

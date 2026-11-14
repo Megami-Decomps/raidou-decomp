@@ -563,13 +563,13 @@ sdfMemHandle_t *sdfMemSearchHandle(s32 ptr)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", func_003CD408);
+INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfCallMemAllocDirect);
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", func_003CD428);
+INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfCallMemAllocDirect2);
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", func_003CD448);
+INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfCallMemFreePtrDirect);
 
-INCLUDE_ASM(const s32, "sdf/sdfMemory", func_003CD468);
+INCLUDE_ASM(const s32, "sdf/sdfMemory", sdfCallMemFreePtrDirect2);
 
 /* Pack the two lengths, the terminated name and the optional payload, then
  * return the transport error or the server's result. */

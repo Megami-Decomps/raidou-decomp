@@ -143,7 +143,7 @@ u32 dds3MatterObjectBasicGetAlpMode(const dds3Basic_t *aPtr) {
     return ((dds3MatterObjectBasicWorkData_t *)aPtr->workdata)->alpmode;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_r1_0011B778);
+INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3Leaf28);
 
 s32 dds3MatterObjectBasicConstructor(dds3Basic_t *aPtr) {
     dds3MatterObjectBasicWorkData_t *work;

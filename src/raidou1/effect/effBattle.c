@@ -534,9 +534,9 @@ f32 effBTLFieldColorGetActorScale(BtlUnit *unit);
 f32 effGetActorScaleForParameterWork(BtlUnit *unit);
 /* End of declarations from src/dds1/game/code_00161838.c */
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4A08);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLCreate);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4B48);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLDelete);
 
 INCLUDE_ASM(const s32, "effect/effBattle", effBTLGetMotionChangeFrame);
 
@@ -550,60 +550,60 @@ s32 effBTLGetDrawEndFrame(effBTL_t *hBTLEffect, u16 CutNum) {
     return hBTLEffect->banks[bank].list.colorRampEndFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4C58);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutListRelease);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4CA0);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTL);
 
 INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutDelete);
 
-u16 func_r1_001E4ED8(effBTLCut_t *hBTLCutEffect) {
+u16 effBTLCutGetCutNumber(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->kind;
 }
 
-u32 func_r1_001E4EE0(effBTLCut_t *hBTLCutEffect) {
+u32 effBTLCutGetFrame(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->currentFrame;
 }
 
-void *func_r1_001E4EE8(effBTLCut_t *hBTLCutEffect) {
+void *effBTLCutGetFormation(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->formation;
 }
 
-void func_r1_001E4EF0(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
+void effLeaf12(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
     hBTLCutEffect->sourceFrameCallback = pCallback;
 }
 
-void func_r1_001E4EF8(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
+void effLeaf13(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
     hBTLCutEffect->triggerFrameCallback = pCallback;
 }
 
-s32 func_r1_001E4F00(effBTLCut_t *hBTLCutEffect) {
+s32 effBTLCutGetMotionChangeFrame(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->list->callbackFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4F10);
+INCLUDE_ASM(const s32, "effect/effBattle", effLeaf14);
 
-u32 func_r1_001E4F28(effBTLCut_t *hBTLCutEffect) {
+u32 effBTLCutGetCutEndFrame(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->triggerFrame;
 }
 
 INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutSetDrawEndFrame);
 
-u32 func_r1_001E4F60(effBTLCut_t *hBTLCutEffect) {
+u32 effBTLCutGetDrawEndFrame(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->colorRampEndFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4F68);
+INCLUDE_ASM(const s32, "effect/effBattle", effLeaf15);
 
-void *func_r1_001E4F70(effBTLCut_t *hBTLCutEffect) {
+void *effBTLCutGetUserData(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->userData;
 }
 
-void func_r1_001E4F78(void) {
+void effLeaf16(void) {
 }
 
 INCLUDE_ASM(const s32, "effect/effBattle", effBTLCutSetScale);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4FF8);
+INCLUDE_ASM(const s32, "effect/effBattle", effBattleHasActiveKind);
 
 /* Rebuild each cloned bank's parameter work, resolving shared-entry references
  * and preserving disabled descriptors. */
@@ -666,17 +666,17 @@ void effBTLPartDelete(effBTL_t *pSkill) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E5230);
+INCLUDE_ASM(const s32, "effect/effBattle", effLeaf17);
 
 extern s32 D_r1_0046CF84;
 
-s32 func_r1_001E5250(void) {
+s32 effBTLSkillGetState(void) {
     return D_r1_0046CF84;
 }
 
 extern s32 D_r1_0046CF88;
 
-s32 func_r1_001E5258(void) {
+s32 effBTLSkillGetID(void) {
     return D_r1_0046CF88;
 }
 
@@ -688,12 +688,12 @@ u32 effBTLFieldColorGetFinalSelector(void) {
     return effFieldColorFinalSelector;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E5270);
+INCLUDE_ASM(const s32, "effect/effBattle", effLeaf18);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E5290);
+INCLUDE_ASM(const s32, "effect/effBattle", effBTLFieldColorGetBaseColor2);
 
-void func_r1_001E5398(void *a0, s32 a1, s32 a2) {
-    func_r1_001E5290(a0, (s16)a1, (s16)a2);
+void effLeaf19(void *a0, s32 a1, s32 a2) {
+    effBTLFieldColorGetBaseColor2(a0, (s16)a1, (s16)a2);
 }
 
 INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455700);

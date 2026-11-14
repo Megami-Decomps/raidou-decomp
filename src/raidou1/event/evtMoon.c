@@ -80,7 +80,7 @@ void PreCalcFade(s32 count)
     }
 }
 
-void func_r1_001ADB28(s32 count)
+void evtMoonFadeIn(s32 count)
 {
     DDS3_GBWK->moonFlags |= 2;
     gMoonCnt = 1.0f;
@@ -89,14 +89,14 @@ void func_r1_001ADB28(s32 count)
     gMoonFadeFrameMax = 1;
 }
 
-void func_r1_001ADB78(s32 count)
+void evtMoonFadeOut(s32 count)
 {
     PreCalcFade(count);
     D_r1_0046C600 = count;
     gMoonFadeFrameMax = 0;
 }
 
-s32 func_r1_001ADBA8(void)
+s32 evtMoonFadeCheck(void)
 {
     if (D_r1_0046C5FC == 0) {
         return 1;
@@ -104,19 +104,19 @@ s32 func_r1_001ADBA8(void)
     return D_r1_0046C5FC == D_r1_0046C600;
 }
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADBC8);
+INCLUDE_ASM(const s32, "event/evtMoon", CalcBlendColor);
 
 INCLUDE_ASM(const s32, "event/evtMoon", Process2_evtMoon);
 
 INCLUDE_ASM(const s32, "event/evtMoon", evtMoonAddMove);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEA70);
+INCLUDE_ASM(const s32, "event/evtMoon", Process1_evtMoon);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEAF0);
+INCLUDE_ASM(const s32, "event/evtMoon", Shutdown_evtMoon);
 
 INCLUDE_ASM(const s32, "event/evtMoon", evtMoonInitProcess);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEB80);
+INCLUDE_ASM(const s32, "event/evtMoon", fldFreeAddressProcess);
 INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F0);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F4);

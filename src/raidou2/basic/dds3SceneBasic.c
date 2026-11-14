@@ -121,13 +121,13 @@ dds3Basic_t *dds3SceneBasicSearchNameAndType(dds3Basic_t *scene, s32 type, const
 dds3Basic_t *dds3SceneBasicSearchName(dds3Basic_t *scene, const char *name);
 /* End of declarations from src/smt3/basic/dds3SceneBasic.c */
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00117DF8);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", sceneconstructor);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00117EB8);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", scenedestructor);
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", scenemainprocuder);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00118048);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", scenedrawprocuder);
 
 void dds3VisibleSceneBasic(dds3Basic_t *basic, s8 visible)
 {
@@ -233,7 +233,7 @@ void dds3SceneBasicFreeScene(dds3Basic_t *pBasic)
     work->hFileHandle = 0;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00118510);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicLoadScriptFile);
 
 /* A null handle preserves the old script; replacement releases it first. */
 s32 dds3SceneBasicLoadScriptFile_FromMem(dds3Basic_t *scene, sdfMemHandle_t *mem)

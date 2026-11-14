@@ -302,11 +302,11 @@ void effDrawBlurPixelRectWithResource(EffBlurTemplate *rect);
 void effDrawBlurFixedPointRectangle(EffBlurTemplate *owner);
 /* End of declarations from src/dds1/game/code_00185E18.c */
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F81D0);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectBlurDrawAlphaMulti);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8278);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectBlurDrawFrameMaskReset);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F82F0);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effCallNullDrawProc);
 
 void dds3EffectBlurSetRect(dds3Effect_PartialMultiBlurParam_t *work) {
     s32 x = work->Blur.center[0] + 0x100;
@@ -329,9 +329,9 @@ effBlurTemplate_t *dds3EffectPartialMultiBlurCreate(const dds3Effect_PartialMult
     return dst;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8488);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effStopSub);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F84A0);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effCallNullDrawProc2);
 
 /* GS coordinates use sixteenth-pixel X and half-height Y; extent is halved for Y. */
 void effDrawBlurFixedPointRectangle(EffBlurTemplate *owner) {
@@ -355,9 +355,9 @@ void dds3EffectPartialMultiBlurSetParam(effBlurTemplate_t *hPartialMultiBlur, co
     hPartialMultiBlur->body = *pParam;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F85F8);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effLeaf56);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8600);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectDistortionBlurSetTex);
 
 void dds3EffectDistBlurPartInit(effBlurScatterWork_t *pParam, effBlurScatterSlot_t *pPart) {
     dds3Effect_Blur_t *quad = &pPart->quad;
@@ -406,7 +406,7 @@ effBlurScatterWork_t *dds3EffectDistortionBlurCreate(dds3Effect_DistortionBlurPa
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8850);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effPCPDistortionBlurExpDeleteSub);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", effBlurStepScatterSlotsAndDraw);
 
@@ -418,11 +418,11 @@ void dds3EffectDistortionBlurSetParam(effBlurScaleWork_t *hDistortionBlur, dds3E
     hDistortionBlur->params.number = count;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8B10);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effLeaf57);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8B18);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectPartialMultiBlurSetTexDef);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8B48);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectRipBlurPartAreaSet);
 
 /* Reset a slot for a new burst: zero phase and angle, then copy the colour, the two spare fields and the centre from the work parameters. */
 void dds3EffectRipBlurPartInit(effBlurScaleWork_t *pParam, effBlurScaleSlot_t *pPart) {
@@ -473,17 +473,17 @@ effBlurScaleWork_t *dds3EffectRippleBlurCreate(dds3Effect_RippleBlurParam_t *pPa
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8D88);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effPCPRippleBlurExpDeleteSub);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", effBlurStepScaleSlotsAndDraw);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8F90);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effBlurBuildSamplingQuad);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", effBlurDrawFramebufferQuad);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectFilter);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F95E0);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effResourceQuadDraw);
 
 /* Clone rectangle parameters and select a fresh source handle. */
 dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *pParam) {
@@ -494,9 +494,9 @@ dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_P
     return dst;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F9880);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effBTLSysEncountDeleteSub);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F9898);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effPCPMultiFilterExpDrawSub);
 
 INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455968);
 

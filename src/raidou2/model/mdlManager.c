@@ -974,7 +974,7 @@ char *mdlSetFileName(char *buff, const char *fname) {
     return strcat(buff, fname);
 }
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001AF958);
+INCLUDE_ASM(const s32, "model/mdlManager", mdlCallWaitSema);
 
 dds3ModelResrc_t *mdlLoadPrepare(u32 group, u32 id)
 {
@@ -1832,11 +1832,11 @@ void mdlFreeFileItem(void *aItem)
     sdfChipFreeDirect(aItem);
 }
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001B1540);
+INCLUDE_ASM(const s32, "model/mdlManager", mdlReleaseHddFileList);
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001B15D8);
+INCLUDE_ASM(const s32, "model/mdlManager", mdlMakeHddFileListDummy);
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001B16F0);
+INCLUDE_ASM(const s32, "model/mdlManager", mdlMakeHddFileList);
 char mdlModelPathPrefix[8] = "/model/";
 
 INCLUDE_SDATA(const s32, "model/mdlManager", D_r1_0046C380);

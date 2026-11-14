@@ -414,7 +414,7 @@ u32 itfReturnZero(void);
 
 void func_00198010(void);
 
-void func_00198018(void);
+void mphGetOt(void);
 
 u32 itfReturnThirdCallbackValue(u32 unused0, u32 unused1, u32 value);
 
@@ -593,7 +593,7 @@ extern s32 D_00357AB8[];
 dds_itfpanel_t *itfCreateUiSpriteByKind(s32 kind, const sdfTexHandle_t *borrowedTexture);
 /* End of declarations from src/dds1/game/code_00196478.c */
 
-INCLUDE_ASM(const s32, "code_001814F0", func_r1_001814F0);
+INCLUDE_ASM(const s32, "code_001814F0", frLeaf3);
 
 INCLUDE_ASM(const s32, "code_001814F0", itfScanEncodedTextControls);
 

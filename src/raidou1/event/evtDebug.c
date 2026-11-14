@@ -106,7 +106,7 @@ extern const char evtSceneDispNameStatic[16];
 void func_001EBC90(void);
 /* End of declarations from src/smt3/event/evtDebug.c */
 
-INCLUDE_ASM(const s32, "event/evtDebug", func_r1_001AEBC0);
+INCLUDE_ASM(const s32, "event/evtDebug", evtDebugCameraStep);
 
 void evtInitEventTest(void)
 {
@@ -133,7 +133,7 @@ INCLUDE_RODATA(const s32, "event/evtDebug", D_r1_0044EA08);
 
 INCLUDE_RODATA(const s32, "event/evtDebug", D_r1_0044EA18);
 
-INCLUDE_ASM(const s32, "event/evtDebug", func_r1_001AEC60);
+INCLUDE_ASM(const s32, "event/evtDebug", evtSceneDispProcess);
 INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C628);
 
 INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C62C);

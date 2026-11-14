@@ -151,7 +151,7 @@ dds3ProcessID_t *scrRunScriptEx(s32 priority, scrHeader_t *header, scrTypeTable_
                                                            code, messageData, stringData, procNo));
 }
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", func_r1_001125D8);
+INCLUDE_ASM(const s32, "script/scrScriptProcess", scrLeaf2);
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", scrReleaseScript);
 

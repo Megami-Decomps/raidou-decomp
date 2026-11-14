@@ -584,7 +584,7 @@ void func_dds1_00103B10(void);
 void Act2Sub(void);
 
 /* Clear motor levels and countdowns, then send both zero strengths to pad 0. */
-void func_r1_00104210(void);
+void dds3PadIsTypeCD(void);
 
 s32 dds3TaskNoopCallback(dds3ProcessID_t *task);
 
@@ -967,7 +967,7 @@ void Act2Sub(void) {
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadAct);
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_r1_00104210);
+INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadIsTypeCD);
 
 void dds3UpdateVibrationSlots(void) {
     s32 largeMotor = 1;

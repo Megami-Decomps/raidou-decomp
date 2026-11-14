@@ -2399,23 +2399,23 @@ void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 
 INCLUDE_ASM(const s32, "mc/slMain", slKanjiDraw3);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EB758);
+INCLUDE_ASM(const s32, "mc/slMain", slKanjiDrawH);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EB800);
+INCLUDE_ASM(const s32, "mc/slMain", slCallEnableMode);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D53A0);
+INCLUDE_ASM(const s32, "mc/slMain", slCallEnableMode2);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5438);
+INCLUDE_ASM(const s32, "mc/slMain", slCallSin2);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D54C0);
+INCLUDE_ASM(const s32, "mc/slMain", effDebugPrintf);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D54F0);
+INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProcSub);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5500);
+INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProcSub2);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5510);
+INCLUDE_ASM(const s32, "mc/slMain", slCallSetOt5);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EBB90);
+INCLUDE_ASM(const s32, "mc/slMain", slDrawError);
 
 void slSetInfo(u32 id) {
     s32 previous;
@@ -2427,7 +2427,7 @@ void slSetInfo(u32 id) {
     }
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5B30);
+INCLUDE_ASM(const s32, "mc/slMain", slDrawInfo);
 
 void fileClearAllSlotFlags(void) {
     sdfMcSetCardStat(fileMemoryCardRequestIndex);
@@ -2480,7 +2480,7 @@ saddr_t slHeadLoadProc_readFile(void) {
     return slNoCard();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6120);
+INCLUDE_ASM(const s32, "mc/slMain", slCallMcFuncClose1);
 
 INCLUDE_ASM(const s32, "mc/slMain", slExitWait);
 
@@ -2502,9 +2502,9 @@ s32 slEndingUpd2(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slEndingExit);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6368);
+INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6390);
+INCLUDE_ASM(const s32, "mc/slMain", slBootTop_slMain);
 
 s32 slBootError(void) {
     gslDrawFlagBg = 1;
@@ -2520,9 +2520,9 @@ s32 slBootError2(void) {
     return slQueryYesNo(&slExitToTitle, &slBootRetry, 1);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6460);
+INCLUDE_ASM(const s32, "mc/slMain", slBootRetry_slMain);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D64A0);
+INCLUDE_ASM(const s32, "mc/slMain", slHardSelect2);
 
 s32 slExit(void) {
     slSetInfo(0);
@@ -2531,15 +2531,15 @@ s32 slExit(void) {
     return 0xffffffff;
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6548);
+INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo2);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECE10);
+INCLUDE_ASM(const s32, "mc/slMain", slExitToTitle2);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D65A0);
+INCLUDE_ASM(const s32, "mc/slMain", slLeaf4);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECE70);
+INCLUDE_ASM(const s32, "mc/slMain", slCallAdminiCallSequence);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D65F8);
+INCLUDE_ASM(const s32, "mc/slMain", slLoadProc1st);
 
 s32 fileRestartSlotScan(void) {
     fileClearAllSlotFlags();
@@ -2549,33 +2549,33 @@ s32 fileRestartSlotScan(void) {
     return fileResetSelection();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6640);
+INCLUDE_ASM(const s32, "mc/slMain", slCallMcGetSlotFlags);
 
 INCLUDE_ASM(const s32, "mc/slMain", slCancel);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6760);
+INCLUDE_ASM(const s32, "mc/slMain", slMcSumIco);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D67B0);
+INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo3);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D67D8);
+INCLUDE_ASM(const s32, "mc/slMain", slRefSystem);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6808);
+INCLUDE_ASM(const s32, "mc/slMain", slLeaf5);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6820);
+INCLUDE_ASM(const s32, "mc/slMain", slLeaf6);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6830);
+INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo4);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6870);
+INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo5);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6898);
+INCLUDE_ASM(const s32, "mc/slMain", slLeaf7);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D68A8);
+INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo6);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D68E8);
+INCLUDE_ASM(const s32, "mc/slMain", slLeaf8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6900);
+INCLUDE_ASM(const s32, "mc/slMain", slLeaf9);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6918);
+INCLUDE_ASM(const s32, "mc/slMain", slEndingProc1st);
 
 s32 slBootProc1st(void) {
     sdfMcRegetInfo(0);
@@ -2586,33 +2586,33 @@ s32 slBootProc1st(void) {
     return slBootTop();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6978);
+INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo7);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D69A8);
+INCLUDE_ASM(const s32, "mc/slMain", slCallPlaySE2);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6A10);
+INCLUDE_ASM(const s32, "mc/slMain", slCallBitOn);
 
 INCLUDE_ASM(const s32, "mc/slMain", slHardSelect2N);
 
 INCLUDE_ASM(const s32, "mc/slMain", slHardSelect3);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6AB8);
+INCLUDE_ASM(const s32, "mc/slMain", slHardSelect4);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6AC0);
+INCLUDE_ASM(const s32, "mc/slMain", slSaveProc_CheckCard);
 
 INCLUDE_ASM(const s32, "mc/slMain", sl1Ken);
 
 INCLUDE_ASM(const s32, "mc/slMain", slSizeChk);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6CA8);
+INCLUDE_ASM(const s32, "mc/slMain", slBootProc_CheckCardR);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6D70);
+INCLUDE_ASM(const s32, "mc/slMain", slBootProc_CheckCard);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6E38);
+INCLUDE_ASM(const s32, "mc/slMain", slErrorWaitMc);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7098);
+INCLUDE_ASM(const s32, "mc/slMain", slErrorWaitToFileMc);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7168);
+INCLUDE_ASM(const s32, "mc/slMain", slCallPlaySE3);
 
 s32 slExitWaitProc(void) {
     s32 remaining = slExitWaitCnt - 1;
@@ -2626,15 +2626,15 @@ s32 slExitWaitProc(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7228);
+INCLUDE_ASM(const s32, "mc/slMain", slLeaf10);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7240);
+INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKeyNoChkProc);
 
 INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKey);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D72F0);
+INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKeyProc);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D74F8);
+INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfo_B);
 
 saddr_t slChooseData_getCardInfo2(void) {
     slMcResult_t t = sdfMcFuncChdir1();
@@ -2672,11 +2672,11 @@ s32 slChooseData_getCardInfo3(void) {
     return slHeadLoad();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7640);
+INCLUDE_ASM(const s32, "mc/slMain", slCallMcClearCardStat);
 
 INCLUDE_ASM(const s32, "mc/slMain", slChooseData);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D77A8);
+INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfo);
 
 saddr_t slChooseData_getCardInfo2_B(void) {
     slMcResult_t t = sdfMcFuncChdir1();
@@ -2765,22 +2765,22 @@ saddr_t slSaveProc_Write_mkdir(void) {
     return EE_ADDR_S(slErrorWait);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7B80);
+INCLUDE_ASM(const s32, "mc/slMain", slCallMcFuncChdir1);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7BE0);
+INCLUDE_ASM(const s32, "mc/slMain", slLoadData_slMain);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7C40);
+INCLUDE_ASM(const s32, "mc/slMain", slSaveProc_doNothing);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7C98);
+INCLUDE_ASM(const s32, "mc/slMain", slVersionConvert_Step1);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7CC0);
+INCLUDE_ASM(const s32, "mc/slMain", slSaveWriteEnd_baseIcon_slMain);
 
 s32 slSaveWriteEnd_saveData(void) {
     return slSaveWriteFile(slBaseIconName, &slBaseIconBuff, &slBaseIconBuffSize,
                           slSaveWriteEnd_baseIcon, &baseIconFileHandle);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7DA0);
+INCLUDE_ASM(const s32, "mc/slMain", slSystemDataProc);
 
 saddr_t slSaveData_deleteIconSys(void) {
     u32 entry = mccb;
@@ -2886,9 +2886,9 @@ saddr_t slFormatStart(void) {
     return EE_ADDR_S(slProc_Format);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D8710);
+INCLUDE_ASM(const s32, "mc/slMain", slFormatCancel);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D87A0);
+INCLUDE_ASM(const s32, "mc/slMain", slLoadData);
 
 INCLUDE_ASM(const s32, "mc/slMain", slLoadProc_openFile);
 
@@ -2907,13 +2907,13 @@ saddr_t slLoadProc_readFile(void) {
     return EE_ADDR_S(slErrorWait);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D89A0);
+INCLUDE_ASM(const s32, "mc/slMain", slCallMcFuncClose12);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D8A20);
+INCLUDE_ASM(const s32, "mc/slMain", slCallPlaySE4);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D8A98);
+INCLUDE_ASM(const s32, "mc/slMain", slFileSelCalc);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EF800);
+INCLUDE_ASM(const s32, "mc/slMain", slNewCycle);
 
 s32 slCalc(dds3ProcessID_t *id) {
     s32 next;
@@ -2945,7 +2945,7 @@ INCLUDE_ASM(const s32, "mc/slMain", slDraw_slMain);
 
 INCLUDE_ASM(const s32, "mc/slMain", fmProcTrigSequence_slMain);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA7A8);
+INCLUDE_ASM(const s32, "mc/slMain", slShutDownProcess);
 
 void fmShutDownFade(void) {
 }
@@ -2956,13 +2956,13 @@ INCLUDE_ASM(const s32, "mc/slMain", fmShutDown2_slMain);
 
 INCLUDE_ASM(const s32, "mc/slMain", fmProcessChk_slMain);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA938);
+INCLUDE_ASM(const s32, "mc/slMain", slRetuenFromLoadSub);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA940);
+INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProc);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DAEC0);
+INCLUDE_ASM(const s32, "mc/slMain", slCallMcRegetInfo);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DAF28);
+INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoDraw);
 
 addr_t baseIconFileHandle = 0;
 

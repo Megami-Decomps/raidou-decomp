@@ -369,13 +369,13 @@ INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMatterAnimeSpeed);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseRegistArea);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_0011C048);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseModelLinkOtSvs);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_0011C150);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3CallSetOt2);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_0011C1F8);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", itfCampStartProcess);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", func_r1_001197E0);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3CallMemset);
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseModelLinkOt);
 

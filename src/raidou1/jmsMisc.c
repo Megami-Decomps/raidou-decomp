@@ -1145,7 +1145,7 @@ void jmsSeqDestroyAll(MenuPopupState *state, struct dds3ProcessID_t *task) {
     }
 }
 
-INCLUDE_ASM(const s32, "jmsMisc", func_r1_0034BA60);
+INCLUDE_ASM(const s32, "jmsMisc", jmsChkSeqChange);
 
 s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
                                void *callback) {
@@ -1232,7 +1232,7 @@ s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
     return result;
 }
 
-INCLUDE_ASM(const s32, "jmsMisc", func_r1_0034BCE0);
+INCLUDE_ASM(const s32, "jmsMisc", jmsSeqChkLast);
 
 /* Bind the entry address and retain only the entry's low sixteen flag bits. */
 void jmsSeqJump(s32 *entrySlot, MenuPopupEntry *entry) {
@@ -1252,7 +1252,7 @@ void jmsSeqJumpAndFree(s32 *entrySlot, MenuPopupEntry *entry) {
     entry->flags = retainedFlags | MNU_POPUP_INSERT_BEFORE_TOP;
 }
 
-INCLUDE_ASM(const s32, "jmsMisc", func_r1_0034BD18);
+INCLUDE_ASM(const s32, "jmsMisc", jmsSeqJumpAndPop);
 
 /* Bind the current popup entry only when its saved address is nonzero. */
 void jmsSeqReturn(MenuPopupState *state, s32 *entrySlot) {

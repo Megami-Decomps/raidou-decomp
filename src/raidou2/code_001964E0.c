@@ -593,7 +593,7 @@ extern s32 D_00357AB8[];
 dds_itfpanel_t *itfCreateUiSpriteByKind(s32 kind, const sdfTexHandle_t *borrowedTexture);
 /* End of declarations from src/dds1/game/code_00196478.c */
 
-INCLUDE_ASM(const s32, "code_001964E0", func_r1_001814F0);
+INCLUDE_ASM(const s32, "code_001964E0", frLeaf3);
 
 INCLUDE_ASM(const s32, "code_001964E0", itfScanEncodedTextControls);
 

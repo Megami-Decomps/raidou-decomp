@@ -545,7 +545,7 @@ u32 itfReturnZero(void);
 
 void func_00198010(void);
 
-void func_00198018(void);
+void mphGetOt(void);
 
 u32 itfReturnThirdCallbackValue(u32 unused0, u32 unused1, u32 value);
 
@@ -1119,7 +1119,7 @@ u32 itfCamp(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMisc", func_r1_00185120);
+INCLUDE_ASM(const s32, "interface/itfMisc", itfQuickSaveExeCheck);
 u8 itfGaugeQuadVertexIndex[8] = { 0, 1, 4, 3, 1, 2, 5, 4 };
 
 u8 itfGaugeQuadColorIndex[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };

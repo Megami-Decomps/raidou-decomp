@@ -2477,9 +2477,9 @@ sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdf
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", effPCPHelperBEDGetModel);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00224D28);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", effCalc);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00224D40);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", effCalcSub);
 
 void fileReadVectorPtr20(u8 *recordBytes, void *dst) {
     FileSlotTable *record = (FileSlotTable *)recordBytes;
@@ -2542,11 +2542,11 @@ dds3ModelHandle_t *effHandleCopy(dds3ModelHandle_t *sourceModel) {
     return model;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00224FB8);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", effCallChipAllocZeroDirect3);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", Delete);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_002250A8);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", effPCPAnalyzeBEDCopy);
 
 INCLUDE_SDATA(const s32, "effect/effPCPMisc_0023C018", D_r1_0046D0FC);
 

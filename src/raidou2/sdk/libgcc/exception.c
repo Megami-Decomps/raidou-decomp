@@ -1,21 +1,21 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF338);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF358);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc2);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF390);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc3);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF3F0);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc4);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF480);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc5);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF5A8);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc6);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF608);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc7);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF7D0);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc8);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF838);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc9);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/exception", func_003FF8D8);
+INCLUDE_ASM(const s32, "sdk/libgcc/exception", exceptionFunc10);

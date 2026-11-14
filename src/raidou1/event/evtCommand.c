@@ -501,7 +501,7 @@ u32 evtCommand_MODEL_ROT_XYZ(void);
 
 u32 evtCommand_MODEL_SCL_XYZ(void);
 
-u32 evt_1E50C0(void);
+u32 evtCallGetIntPara5(void);
 
 u32 evt_1E5158(void);
 
@@ -1644,13 +1644,13 @@ u32 evtCommand_MODEL_PLAYER(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8000);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara4);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8040);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_DSP);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001A8098);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001A8130);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara2);
 
 u32 evtCommand_MODEL_BE(void) {
     s32 eventId;
@@ -1681,13 +1681,13 @@ u32 evtCommand_MODEL_BE(void) {
     scrSetIntReturnValue(modelKey);
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A82E8);
+INCLUDE_ASM(const s32, "event/evtCommand", evtFldProcSequence);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8490);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_SHADOW_OFF);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8500);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_SHADOW_ON2);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8570);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetActiveScene4);
 
 u32 evtOpQueueWorldObjectPendingValue(void) {
     dds3Basic_t *ctx;
@@ -1839,7 +1839,7 @@ u32 evtCommand_MODEL_SCL_XYZ(void)
     return 1;
 }
 
-u32 evt_1E50C0(void)
+u32 evtCallGetIntPara5(void)
 {
     void *unit;
 
@@ -1854,15 +1854,15 @@ u32 evt_1E50C0(void)
 
 const char evtMsgModelMotionDeprecated[64] = "\xa2\xa8\xc3\xed\xb0\xd5\x3a\x4d\x4f\x44\x45\x4c\x5f\x4d\x4f\x54\x49\x4f\x4e\x28\x29\xa4\xb3\xa4\xce\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\xa4\xcf\xba\xa3\xb8\xe5\xbb\xc8\xcd\xd1\xb6\xd8\xbb\xdf\xa4\xcb\xa4\xca\xa4\xea\xa4\xde\xa4\xb9\xa1\xa3\x0a";
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001A8A58);
+INCLUDE_ASM(const s32, "event/evtCommand", gohScrCmd_GOH_EXIT);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8B40);
+INCLUDE_ASM(const s32, "event/evtCommand", evtMODELEXMOTION);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A8C50);
+INCLUDE_ASM(const s32, "event/evtCommand", KutiFunction);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtLipsExecFunction);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001A8D38);
+INCLUDE_ASM(const s32, "event/evtCommand", evtLipsStopFunction_evtCommand);
 
 u32 evtCommand_KUTISET(void) {
     evtUnit_t *unit;
@@ -1927,9 +1927,9 @@ u32 evtCommand_MODEL_WAIT(void)
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_EXWAIT);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9040);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetActiveScene5);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9098);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_MOVE);
 
 u32 evtCommand_MODEL_MOVE2(void) {
     evtUnit_t *unit;
@@ -1951,15 +1951,15 @@ u32 evtCommand_MODEL_MOVE2(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9230);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara6);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9388);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallMemset6);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9548);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara7);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A95A0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtWAITEXMOT);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9640);
+INCLUDE_ASM(const s32, "event/evtCommand", evtWAITMOT);
 
 /* Store the two script-supplied world-unit state values. */
 u32 evtCommand_MODEL_WAIT_HOKAN(void) {
@@ -2029,9 +2029,9 @@ f32 evtGetShortestAngleDelta(f32 fromDegrees, f32 toDegrees) {
     return toDegrees - fromDegrees;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A98C0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara8);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001A9B30);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara9);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_ON);
 
@@ -2329,7 +2329,7 @@ u32 evtCommand_EFFBED_START(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AA5C8);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommandEFFBEDSTARTEVOSub);
 
 u32 evtCommand_EFFBED_START_EVO(void) {
     void *unit;
@@ -2355,7 +2355,7 @@ u32 evtCommand_EFFBED_START_EVO(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001AA6F8);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallMemset);
 
 u32 evtCommand_EFFMG1_LOAD(void)
 {
@@ -2704,7 +2704,7 @@ u32 evtCommand_SEARCH_ID(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001AB368);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_RTRN_TITLE);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_STAFF);
 
@@ -2714,7 +2714,7 @@ s32 evtCommand_CALL_ENDSAVE(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AB408);
+INCLUDE_ASM(const s32, "event/evtCommand", titleCallNameEntry);
 
 const char evtMsgIdNotFound[32] = "ID : id not found!! <%s>\n";
 
@@ -2733,9 +2733,9 @@ s32 evtCommand_CALL_NEXT(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AB4C0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_EVENT);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AB500);
+INCLUDE_ASM(const s32, "event/evtCommand", campDhWaitMessageEnd);
 
 INCLUDE_ASM(const s32, "event/evtCommand", CallBattleSub_evtCommand);
 
@@ -2748,7 +2748,7 @@ s32 evtCommand_CALL_BATTLE(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001AB6A0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallMemset2);
 
 s32 evtCommand_CALL_BATTLE2(void)
 {
@@ -2770,11 +2770,11 @@ s32 evtCommand_RESTORE_BATTLE(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AB7B0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara10);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AB810);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_FIELD2);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AB880);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallBgTexClear);
 
 s32 evtCommand_FIELD_BE(void)
 {
@@ -2870,7 +2870,7 @@ s32 evtCommand_UNIT_CLS_STOP(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001ABB48);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CAM_SEL);
 
 u32 evtCommand_CAM_SEL_FOVY(void)
 {
@@ -3012,7 +3012,7 @@ s32 evtCommand_CAM_ROT_Q(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001AC060);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_OBJ_PATH_MOVE);
 
 const char evtMsgObjPathPara0[16] = "PARA0:%08x\n";
 
@@ -3020,7 +3020,7 @@ const char evtMsgObjPathPara1[16] = "PARA1:%08x\n";
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E610);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_001AC1D8);
+INCLUDE_ASM(const s32, "event/evtCommand", evtPARA);
 
 s32 evtCommand_OBJ_PATH_WAIT(void)
 {
@@ -3168,7 +3168,7 @@ const char evtMsgDelBeStart[16] = "del BE (%d)..\n";
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_0044E6A0);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AC738);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PMV_LOAD);
 
 /* Clear bit 0 and echo the movie ID through the VM result. */
 s32 evtCommandClearPolygonMovieFlag(void)
@@ -3181,23 +3181,23 @@ s32 evtCommandClearPolygonMovieFlag(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AC858);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PMV_RUN);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AC910);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara11);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AC9A0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara12);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AC9F0);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara13);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001ACA50);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara14);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001ACAB8);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PATH_START);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001ACB38);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PATH_STOP);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001ACBB8);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PATH_RATE);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001ACC50);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PATH_DIR);
 
 s32 evtCommand_PATH_LOOP_ON(void)
 {
@@ -3381,9 +3381,9 @@ u32 evtCommand_FADEOUT_E(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AD328);
+INCLUDE_ASM(const s32, "event/evtCommand", fldCommand_PAD_DISABLE);
 
-INCLUDE_ASM(const s32, "event/evtCommand", func_r1_001AD360);
+INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_BGM_VOL_UP);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtOpcodeSetBgmVolumePan);
 
@@ -3393,7 +3393,7 @@ INCLUDE_ASM(const s32, "event/evtCommand", evtOpcodeRefreshTaskData);
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtOpcodeInitializeEffectSoundChannel);
 
-u32 evt_1E92F8(void)
+u32 evtCallGetIntPara15(void)
 {
     if (scrGetIntPara(0) <= 0) {
         dds3DrawFlag |= 0x2000000;

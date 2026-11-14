@@ -414,7 +414,7 @@ u32 itfReturnZero(void);
 
 void func_00198010(void);
 
-void func_00198018(void);
+void mphGetOt(void);
 
 u32 itfReturnThirdCallbackValue(u32 unused0, u32 unused1, u32 value);
 
@@ -598,13 +598,13 @@ void itfReleaseBackgroundSpriteTexture(void) {
     sdfTexReleaseReference(itfBackgroundSpriteTexture);
 }
 
-INCLUDE_ASM(const s32, "code_00183B00", func_r1_00183B18);
+INCLUDE_ASM(const s32, "code_00183B00", mjnFunc);
 
-INCLUDE_ASM(const s32, "code_00183B00", func_r1_00183BA8);
+INCLUDE_ASM(const s32, "code_00183B00", M_InitScene);
 
-INCLUDE_ASM(const s32, "code_00183B00", func_r1_00183C08);
+INCLUDE_ASM(const s32, "code_00183B00", mjnDeleteScene);
 
-INCLUDE_ASM(const s32, "code_00183B00", func_r1_00183C30);
+INCLUDE_ASM(const s32, "code_00183B00", mjnCallGetProcessStat);
 
 /* Draw first, then report all bits set only for a task awaiting destruction. */
 s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task) {

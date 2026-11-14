@@ -106,7 +106,7 @@ typedef struct
     /* 0x18 */ u8 *unk_18;
 } fclSceneObj_t;
 
-s32 fcl_213998(char *name, fclSceneObj_t *dst);
+s32 fclSetModelLight(char *name, fclSceneObj_t *dst);
 
 extern s32 dds3GetMapNo(void *scene);
 
@@ -229,7 +229,7 @@ extern void itfMesMngSetMesPosition(s32 id, s32 x, s32 y);
 
 extern void itfMesMngSetOffsetY1(s32 msgid, s32 y1);
 
-void fcl_2142F0(s32 x, s32 y);
+void fclSetMessagePos(s32 x, s32 y);
 
 s32 fclChkMessageDraw(void *PID);
 
@@ -243,7 +243,7 @@ s8 fclGetWorkValue(s8 index);
 
 s32 fcl_214428(void);
 
-s32 fcl_214458(void);
+s32 fclCallGetIntPara2(void);
 
 s32 fclLoadFileDone(s32 unused, s32 cmd, s32 value, s32 unused2, s32 *out);
 
@@ -462,7 +462,7 @@ u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight)
     return (a0 << 24) | (r0 << 16) | (g0 << 8) | b0;
 }
 
-void func_r1_002CD700(void) {
+void fclLeaf12(void) {
 }
 
 void itfInitializeAdminInterfaceNoop(void) {
@@ -571,7 +571,7 @@ GridTextListItem *itfAppendGridTextItem(GridTextWidget *owner, const char *text,
     return item;
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_r1_002CDB50);
+INCLUDE_ASM(const s32, "code_0032DB50", fclGohInitSkillChangeSub);
 
 GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *widget) {
     GridTextListItem *node;
@@ -734,7 +734,7 @@ INCLUDE_ASM(const s32, "code_0032DB50", itfGetGridTextColorTableIndex);
 
 INCLUDE_ASM(const s32, "code_0032DB50", itfFormatGridValueEntryText);
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_r1_002CE320);
+INCLUDE_ASM(const s32, "code_0032DB50", fclCallDrawBoxF);
 
 GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
     GridTextListItem *item = widget->head;
@@ -747,7 +747,7 @@ GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
 
 INCLUDE_ASM(const s32, "code_0032DB50", sdfGridSeekSelectedNodeByIndex);
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_r1_002CE640);
+INCLUDE_ASM(const s32, "code_0032DB50", fclLeaf13);
 INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7B8);
 
 INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7C0);

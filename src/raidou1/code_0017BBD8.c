@@ -1203,7 +1203,7 @@ void btlDebugDrawMappingColorSpan(void) {
 void btlDebugDrawLine2D(void) {
 }
 
-void func_r1_0017BC40(void) {
+void pbLeaf15(void) {
 }
 
 void btlDebugDrawPoint2DNoOp(void) {
@@ -1212,7 +1212,7 @@ void btlDebugDrawPoint2DNoOp(void) {
 void btlDebugDrawPoint(void) {
 }
 
-void func_r1_0017BC58(void) {
+void pbLeaf16(void) {
 }
 
 void btlDebugDrawRadiusGuide(void) {
@@ -1224,7 +1224,7 @@ void btlDebugDrawOrientedExtentGuide(void) {
 void btlDebugDrawScaledPositionGuide(void) {
 }
 
-void func_r1_0017BC78(void) {
+void pbLeaf17(void) {
 }
 
 void btlDebugDrawSegment(void) {
@@ -1236,7 +1236,7 @@ void btlDebugMenuBeforeRecordNoOp(void) {
 void btlDebugMenuAfterRecordNoOp(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", func_r1_0017BC98);
+INCLUDE_ASM(const s32, "code_0017BBD8", pbLeaf18);
 
 void btlDebugMenuRecordNoOp(void) {
 }
@@ -1591,7 +1591,7 @@ void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 max
     record->maximumNameLength = maximumNameLength;
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", func_r1_0017D288);
+INCLUDE_ASM(const s32, "code_0017BBD8", fmOVERWRITEOK);
 INCLUDE_SDATA(const s32, "code_0017BBD8", D_r1_0046C168);
 
 INCLUDE_SDATA(const s32, "code_0017BBD8", D_r1_0046C170);

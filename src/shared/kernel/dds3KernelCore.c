@@ -649,7 +649,7 @@ dds3ProcessID_t *dds3SearchProcessNumber(u32 type, s32 n)
     return p;
 }
 
-void func_r1_00101280(dds3ProcessID_t* task, void* unused)
+void dds3PrintProcessListSub(dds3ProcessID_t* task, void* unused)
 {
     if (task == 0) {
         return;
@@ -695,7 +695,7 @@ void DebugProcessTree(dds3ProcessID_t *ps, s32 level)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_r1_00101410);
+INCLUDE_ASM(const s32, "kernel/dds3KernelCore", dds3PrintProcessTree);
 
 s32 dds3ProcessMain(void)
 {
@@ -935,7 +935,7 @@ void *dds3GetProcessData(dds3ProcessID_t *id)
     return id->workdata;
 }
 
-void func_r1_00101A48(void) {
+void dds3Leaf22(void) {
 }
 
 void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *target)

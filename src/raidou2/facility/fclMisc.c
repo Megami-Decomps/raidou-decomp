@@ -704,7 +704,7 @@ void evtDrawListViewportPanel(s32 x, s32 y, s32 width, EvtListPanelRecord *recor
 void evtDrawPlainPanel(u32 x, u32 y, u32 width, u32 height);
 /* End of declarations from src/dds1/game/code_0024CFB0.c */
 
-s32 fcl_213998(char *name, fclSceneObj_t *dst)
+s32 fclSetModelLight(char *name, fclSceneObj_t *dst)
 {
     fclSceneObj_t *obj = dds3SceneBasicSearchNameAndType(dds3GetControlScene(), 9, name);
 
@@ -758,7 +758,7 @@ s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID)
 
 INCLUDE_ASM(const s32, "facility/fclMisc", cmpItemOrder);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123D70);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclLeaf3);
 
 void shuffleIndices(s8 *order, s32 count, s32 rounds)
 {
@@ -827,9 +827,9 @@ s32 fclStartMessage(s32 MsgNo)
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclStartSelMessage);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123FB0);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclSetSelMessagePos);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123FC8);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclGetCurrentSelMessagePos);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclGetSelMessagePos);
 
@@ -878,11 +878,11 @@ void fclSetMessageVar(s32 slotIndex, const char *sourceText) {
     itfMesMngSetVarImmediate(gMsgID, slotIndex, sourceText);
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124298);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclChkMessageInvalid);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclSetMessageInvalid);
 
-void fcl_2142F0(s32 x, s32 y)
+void fclSetMessagePos(s32 x, s32 y)
 {
     itfMesMngSetMesPosition(gMsgID, x * 16, y * 8);
     itfMesMngSetOffsetY1(gMsgID, -((0x15F - y) * 8));
@@ -890,19 +890,19 @@ void fcl_2142F0(s32 x, s32 y)
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclChkMessageDraw);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_001287A0);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclRefMsgIDFclMisc);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124380);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclScriptStartSub);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124390);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclLeaf4);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_001243A0);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclSetWorkValue);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_001243C8);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclLeaf5);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_001243F0);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclCallGetIntPara);
 
-s32 fcl_214458(void)
+s32 fclCallGetIntPara2(void)
 {
     s32 index = scrGetIntPara(0);
 

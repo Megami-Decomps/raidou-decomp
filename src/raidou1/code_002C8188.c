@@ -1151,7 +1151,7 @@ u32 effSetMaterialSlots(EffectSlotSet *owner, s32 index, u32 materialFlags, void
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002C8188", func_r1_002C9A60);
+INCLUDE_ASM(const s32, "code_002C8188", sysLeaf46);
 
 u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags) {
     BdWork *effect = &((EffectSlotSet *)work)->workEntries[index];

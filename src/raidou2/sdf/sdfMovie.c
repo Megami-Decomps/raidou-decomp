@@ -221,7 +221,7 @@ void sdfSetGridScaledDrawBounds(s32 column, s32 row, s32 width, s32 height, u32 
     sdfMovieDrawColor = mode;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", func_r1_00374390);
+INCLUDE_ASM(const s32, "sdf/sdfMovie", DrawPrimitive2Core);
 
 void release_movieobj2(sdfMovieCb_t *obj, sdfGrOt_t *ot)
 {

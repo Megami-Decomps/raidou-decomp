@@ -571,9 +571,9 @@ void effPCPThunderSphereLowRotateAxis(effPCPThunderSpherePoly_t *work, s32 index
 
 void effPCPThunderSpherePolyLowDraw(effPCPThunderSpherePoly_t *hData);
 
-effPCP_ThunderColumnPolyLow_t *eff_177850(effPCP_ThunderColumnPolyLowParam_t *parameters);
+effPCP_ThunderColumnPolyLow_t *effThunderSparkCreate(effPCP_ThunderColumnPolyLowParam_t *parameters);
 
-void eff_177A48(effPCP_ThunderColumnPolyLow_t *work);
+void effThunderReleaseSparkWork(effPCP_ThunderColumnPolyLow_t *work);
 
 void func_00177AB0(void *destination, void *source);
 
@@ -583,7 +583,7 @@ void func_00177AC8(effPCP_ThunderColumnPolyLow_t *work, s32 index);
 
 void func_00177BC0(effPCP_ThunderColumnPolyLow_t *work, s32 index);
 
-void eff_178128(effPCP_ThunderColumnPolyLow_t *work);
+void effThunderUpdateOrbitingSparks(effPCP_ThunderColumnPolyLow_t *work);
 
 effPCP_ThunderPoly_t *effPCP_ThunderPolyCreate(effPCP_ThunderPolyParam_t *parameters);
 
@@ -670,31 +670,31 @@ effPCPThunderSpherePoly_t *effPCPThunderSpherePolyCreate(effPCPThunderSpherePoly
     return work;
 }
 
-void *func_r1_00206B30(void *pParam) {
+void *effPCPThunderSpherePolyCreatePCF(void *pParam) {
     void *parameters;
 
     parameters = dds3EffectPCPDataGetData(pParam, EFF_THUNDER_PARAMETER_BLOCK);
     return effPCPThunderSpherePolyCreate(parameters);
 }
 
-void *func_r1_00206B50(void *source) {
+void *effPCPThunderSpherePolyCopy(void *source) {
     return effPCPThunderSpherePolyCreate(source);
 }
 
-void func_r1_00206B68(effPCPThunderSpherePoly_t *hData) {
+void effPCPFlashPolyCircleDelete(effPCPThunderSpherePoly_t *hData) {
     dds3TrackPolyDelete(hData->hPoly);
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00206B98);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPShockWave01DrawSub);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00206BA8);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPShockWave01DrawSub2);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00206BB0);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereExpDrawSub);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00206BD0);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPShockWave01DrawSub3);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00206BD8);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereLowInit);
 
 void effPCPThunderSphereRotate(effPCPThunderSpherePoly_t *work, s32 index) {
     f32 position[4] __attribute__((aligned(16)));
@@ -845,7 +845,7 @@ void effPCPThunderSphereRotateAxis(effPCPThunderSpherePoly_t *work, s32 index) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00207360);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSpherePolyLowDraw);
 
 effPCPThunderSpherePoly_t *effBTLBindCreateTrack(effPCPThunderSpherePolyParam_t *parameters) {
     sdfMemHandle_t *allocationHandle = sdfMemAllocDirect(parameters->cellCount * sizeof(effPCPThunderSpherePolyPart_t) + sizeof(effPCPThunderSpherePoly_t));
@@ -869,33 +869,33 @@ effPCPThunderSpherePoly_t *effBTLBindCreateTrack(effPCPThunderSpherePolyParam_t 
     return work;
 }
 
-void func_r1_00207660(effPCPThunderSpherePoly_t *hData) {
+void effPCPFlashPolyRingExp2Delete(effPCPThunderSpherePoly_t *hData) {
     dds3TrackPolyDelete(hData->hPoly);
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-void *func_r1_00207690(void *pParam) {
+void *effCallEffectPCPDataGetData(void *pParam) {
     void *parameters;
 
     parameters = dds3EffectPCPDataGetData(pParam, EFF_THUNDER_PARAMETER_BLOCK);
     return effBTLBindCreateTrack(parameters);
 }
 
-void *func_r1_002076B0(void *parameters) {
+void *effLeaf195(void *parameters) {
     return effBTLBindCreateTrack(parameters);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_002076C8);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf196);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_002076D8);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf197);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_002076E0);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf198);
 
-u32 func_r1_00207700(u32 pThunderPoly) {
+u32 effPCPThunderSpherePolyLowGetParam(u32 pThunderPoly) {
     return pThunderPoly;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00207708);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderSphereInit);
 
 void effPCPThunderSphereLowRotate(effPCPThunderSpherePoly_t *work, s32 index) {
     f32 position[4] __attribute__((aligned(16)));
@@ -1017,9 +1017,9 @@ void effPCPThunderSphereLowRotateAxis(effPCPThunderSpherePoly_t *work, s32 index
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00207D88);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effCallPCPThunderSphereLowRotate);
 
-effPCP_ThunderColumnPolyLow_t *eff_177850(effPCP_ThunderColumnPolyLowParam_t *parameters) {
+effPCP_ThunderColumnPolyLow_t *effThunderSparkCreate(effPCP_ThunderColumnPolyLowParam_t *parameters) {
     sdfMemHandle_t *allocationHandle = sdfMemAllocDirect(parameters->sparkCount * sizeof(effPCP_ThunderColumnPolyLowPart_t) + sizeof(effPCP_ThunderColumnPolyLow_t));
     effPCP_ThunderColumnPolyLow_t *work = (effPCP_ThunderColumnPolyLow_t *)sdfMemLock(allocationHandle);
     s32 delaySpread;
@@ -1043,7 +1043,7 @@ effPCP_ThunderColumnPolyLow_t *eff_177850(effPCP_ThunderColumnPolyLowParam_t *pa
     return work;
 }
 
-void eff_177A48(effPCP_ThunderColumnPolyLow_t *work) {
+void effThunderReleaseSparkWork(effPCP_ThunderColumnPolyLow_t *work) {
     s32 sparkCount = (s32)work->param.sparkCount;
     s32 sparkIndex = 0;
 
@@ -1056,15 +1056,15 @@ void eff_177A48(effPCP_ThunderColumnPolyLow_t *work) {
     sdfMemFreeDirect(work->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208128);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf199);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208138);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf200);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208140);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effThunderSparkInit);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208238);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effThunderBuildSparkStripCell);
 
-void eff_178128(effPCP_ThunderColumnPolyLow_t *work) {
+void effThunderUpdateOrbitingSparks(effPCP_ThunderColumnPolyLow_t *work) {
     f32 position[3];
     f32 origin[4] __attribute__((aligned(16)));
     u32 tintColor;
@@ -1158,19 +1158,19 @@ void effPCP_ThunderPolyDelete(effPCP_ThunderPoly_t *hData) {
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208C90);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolyLowSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208CC0);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPRadiateThunderDrawSub);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208CC8);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPZiodin01DrawSub);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208CD0);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effThunderApplyFragmentColorBands);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208CF8);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderPolyListCreateSub);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208D20);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCPThunderPolyListCreateSub2);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00208D48);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effCallGetRandA);
 
 void effPCP_ThunderPolyPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number) {
     f32 width[4] __attribute__((aligned(16)));
@@ -1434,11 +1434,11 @@ void effPCP_ThunderPolyLowDelete(effPCP_ThunderPoly_t *hData) {
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_00209790);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effPCP_ThunderPolySetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_002097C0);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf201);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_002097C8);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effCallGetRandA2);
 
 void effPCP_ThunderPolyLowPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number) {
     f32 width[4] __attribute__((aligned(16)));
@@ -1699,9 +1699,9 @@ void effPCP_ThunderRadiatePolyDelete(effPCP_ThunderRadiatePoly_t *hData) {
     sdfMemFreeDirect(hData->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_0020A1B0);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf202);
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_0020A1C0);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf203);
 
 void effPCP_ThunderRadiatePolyDrawOff(effPCP_ThunderRadiatePoly_t *work, s32 index) {
     effPCP_ThunderRadiatePolyPart_t *cell = work->pPart + index;
@@ -1922,11 +1922,11 @@ void effPCP_ThunderPolyListDelete(effPCP_ThunderPolyList_t *hData) {
     sdfChipFreeDirect(hData);
 }
 
-void *func_r1_0020AA50(void *pTPolyList) {
+void *effLeaf204(void *pTPolyList) {
     return pTPolyList;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPThunder", func_r1_0020AA58);
+INCLUDE_ASM(const s32, "effect/effPCPThunder", effLeaf205);
 
 void effPCP_ThunderPolyListPartRefresh(effPCP_ThunderPoly_t *work, s32 index, const u128 *seed) {
     f32 width[4] __attribute__((aligned(16)));

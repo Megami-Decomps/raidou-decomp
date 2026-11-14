@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "event/evtDebug", func_r1_001AEBC0);
+INCLUDE_ASM(const s32, "event/evtDebug", evtDebugCameraStep);
 
 INCLUDE_ASM(const s32, "event/evtDebug", evtInitEventTest);
 
@@ -18,7 +18,7 @@ INCLUDE_RODATA(const s32, "event/evtDebug", D_r1_0044EA08);
 
 INCLUDE_RODATA(const s32, "event/evtDebug", D_r1_0044EA18);
 
-INCLUDE_ASM(const s32, "event/evtDebug", func_r1_001AEC60);
+INCLUDE_ASM(const s32, "event/evtDebug", evtSceneDispProcess);
 INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C628);
 
 INCLUDE_SDATA(const s32, "event/evtDebug", D_r1_0046C62C);

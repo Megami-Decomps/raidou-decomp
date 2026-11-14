@@ -1374,7 +1374,7 @@ void mnuAwardCampProgressCurrency(void);
 s32 evtMenuSetTypeProgressFlagOnce(MenuTerminalContext *object);
 /* End of declarations from src/dds2/game/code_0025DA20.c */
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CA8F8);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtCallMessageDelete);
 
 /* Process keys at or beyond threshold, restarting at the head after each call. */
 void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold) {
@@ -1399,7 +1399,7 @@ void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold) {
 
 INCLUDE_ASM(const s32, "code_001CA8F8", mnuAdjustTimelineDurations);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CAD48);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtInitCustomSceneLightSub);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", evtGetValueNewSLightFrame);
 
@@ -1508,7 +1508,7 @@ INCLUDE_ASM(const s32, "code_001CA8F8", evtDrawTexture);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", fldResetCampSceneEntries);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CB938);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtCallSetFontString);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", mnuCampLinkFontGlyph);
 
@@ -1521,46 +1521,46 @@ void mnuCampCheckClockDivisor(void) {
     quotient = 1 / heapStats.totalBytes;
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CB9E0);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtRenderTexStart);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBA08);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtCallAllocRenderTexture);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBAD0);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtCallMemAllocFromTailDirect);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBBA8);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtCallPrimAllocDrawTag);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBC28);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtCallGrAllocPacketBuff);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBDF0);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf15);
 
-void func_r1_001CBE08(void) {
+void evtLeaf16(void) {
 }
 
-void func_r1_001CBE10(dds_evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex) {
+void evtLeaf17(dds_evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex) {
     scene->optionFlags = (scene->optionFlags & CAMP_PRIMARY_OPTION_CLEAR_MASK) | (optionIndex & CAMP_OPTION_VALUE_MASK);
 }
 
-MnuCampPrimaryOptionIndex func_r1_001CBE30(dds_evtViewerInfo_t *scene) {
+MnuCampPrimaryOptionIndex evtMainMenuItemSub(dds_evtViewerInfo_t *scene) {
     return scene->optionFlags & CAMP_OPTION_VALUE_MASK;
 }
 
-void func_r1_001CBE40(dds_evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex) {
+void evtLeaf18(dds_evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex) {
     scene->optionFlags = (scene->optionFlags & CAMP_SECONDARY_OPTION_CLEAR_MASK) | ((optionIndex & CAMP_OPTION_VALUE_MASK) << CAMP_SECONDARY_OPTION_SHIFT);
 }
 
-MnuCampSecondaryOptionIndex func_r1_001CBE60(dds_evtViewerInfo_t *scene) {
+MnuCampSecondaryOptionIndex evtEventSkipStartSub(dds_evtViewerInfo_t *scene) {
     return (scene->optionFlags & CAMP_SECONDARY_OPTION_MASK) >> CAMP_SECONDARY_OPTION_SHIFT;
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBE70);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtRefDDS3GBWK);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBF80);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf19);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBFD8);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf20);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CC058);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf21);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CC0F8);
+INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf22);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", evtEventFadeOutAllBgm);
 

@@ -244,7 +244,7 @@ extern char pbDebugChannelFormat[8];
 
 extern char D_0054F5A8[8];
 
-extern s32 func_r1_001BD4E8(s16 x, s16 y, s32 mode);
+extern s32 evtFileNameHead(s16 x, s16 y, s32 mode);
 
 extern u8 pbFindBlockSlot(s16 x, s16 y, s32 mode);
 

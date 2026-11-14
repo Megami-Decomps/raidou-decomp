@@ -1525,17 +1525,17 @@ effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc)
     return hEffPart;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9B00);
+INCLUDE_ASM(const s32, "effect/effPart", effAPPoint4DrawSub);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9B40);
+INCLUDE_ASM(const s32, "effect/effPart", effBTLCutSetScaleSub);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9B80);
+INCLUDE_ASM(const s32, "effect/effPart", effPCPHama01PartInitSub);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9BC0);
+INCLUDE_ASM(const s32, "effect/effPart", effAPPoint4PartInitSub);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9C00);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartSetDirection);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9C40);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartSetArea);
 
 void *dds3EffectPartTMXBillboardCreate(u32 data)
 {
@@ -1579,13 +1579,13 @@ mdlObj_t *dds3EffectPartModelCreate(dds3EffectPartModelData_t *pData)
     return hModel;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9DE0);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelDraw);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9E00);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelDelete);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9E18);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelCopy);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9E70);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelSetPosition);
 
 void dds3EffectPartModelSetScale(void *hData, f32 scale)
 {
@@ -1604,7 +1604,7 @@ void dds3EffectPartModelSetRotateMatrix(mdlObj_t *hData, sdfMatrix4_t *pMatrix)
     SDF_VU0_STORE_ROW2(&hData->inner->tm.m[8]);
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9EF8);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelSetColor);
 
 dds3EffectPCP_t *dds3EffectPCPCreate(dds3EffectPCPData_t *hPCPData)
 {
@@ -1647,21 +1647,21 @@ dds3EffectPCP_t *dds3EffectPCPCopy(dds3EffectPCP_t *hPCPSrc)
     return hPCP;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA0E8);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA128);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetScale);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA168);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetRotateMatrix);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA1A8);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetDirection);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA1E8);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetColor);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA228);
+INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetArea);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA268);
+INCLUDE_ASM(const s32, "effect/effPart", effEctPCPCreateSub);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA270);
+INCLUDE_ASM(const s32, "effect/effPart", effEctPCPCreateSub2);
 
 void *dds3EffectPCPDataGetData(dds3EffectPCPData_t *hPCPData, u32 number)
 {
@@ -1670,7 +1670,7 @@ void *dds3EffectPCPDataGetData(dds3EffectPCPData_t *hPCPData, u32 number)
     return (u8 *)hPCPData + part->offset;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA290);
+INCLUDE_ASM(const s32, "effect/effPart", effLeaf58);
 
 u32 dds3EffectPCPDataGetType(dds3EffectPCPData_t *hPCPData, u32 number)
 {

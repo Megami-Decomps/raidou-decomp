@@ -1805,11 +1805,11 @@ void fileReadRecordSecondVector(FileSlotTable *record, u128 *out);
 void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 /* End of declarations from src/dds1/game/code_0028A150.c */
 
-INCLUDE_ASM(const s32, "code_001EB5E0", func_r1_001D5180);
+INCLUDE_ASM(const s32, "code_001EB5E0", setCallMcGetSlotIndex);
 
-INCLUDE_ASM(const s32, "code_001EB5E0", func_r1_001D51B8);
+INCLUDE_ASM(const s32, "code_001EB5E0", setAutoSaveDisable);
 
-INCLUDE_ASM(const s32, "code_001EB5E0", func_r1_001D51C0);
+INCLUDE_ASM(const s32, "code_001EB5E0", setCallMemcpy);
 
 u8 fileIsLoadedAndConditionTrue(s32 condition) {
     return condition != 0 && D_r1_0046CDEC == 1;

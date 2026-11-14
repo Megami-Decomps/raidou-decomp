@@ -545,7 +545,7 @@ extern u32 fldEncountTimer[2];
 
 INCLUDE_ASM(const s32, "field/fldProcess", ProcSequence);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012F7A0);
+INCLUDE_ASM(const s32, "field/fldProcess", IsFldKeyFree);
 
 void fldAutoMapSeqSetFlag(u32 flag)
 {
@@ -581,7 +581,7 @@ INCLUDE_ASM(const s32, "field/fldProcess", fldProcTrigSequence);
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FBF8);
+INCLUDE_ASM(const s32, "field/fldProcess", fldCallDelayedResrcCheck);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA548);
 
@@ -599,36 +599,36 @@ INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447938);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447948);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FC18);
+INCLUDE_ASM(const s32, "field/fldProcess", fldTest2);
 
-void func_r1_0012FCF0(void) {
+void fldExitEventSub(void) {
 }
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00135C50);
+INCLUDE_ASM(const s32, "field/fldProcess", fldCallBtlResetRndEncCount);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00135DD8);
+INCLUDE_ASM(const s32, "field/fldProcess", mapReturnFromRndEncBattle);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00135E40);
+INCLUDE_ASM(const s32, "field/fldProcess", fldCallStrlen);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00135ED0);
+INCLUDE_ASM(const s32, "field/fldProcess", mapReturnFromGohmaden);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00135F60);
+INCLUDE_ASM(const s32, "field/fldProcess", fldCallBitCheck);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEA8);
+INCLUDE_ASM(const s32, "field/fldProcess", fldLeaf7);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEC0);
+INCLUDE_ASM(const s32, "field/fldProcess", autoNakamaToRaidou);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEF8);
+INCLUDE_ASM(const s32, "field/fldProcess", mapCallMapNext);
 
 INCLUDE_ASM(const s32, "field/fldProcess", mapCallMap);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_001301C0);
+INCLUDE_ASM(const s32, "field/fldProcess", fldHardSelect1Sub);
 
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA7C0);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00136438);
+INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask_fld);
 INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE824);
 
 INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE828);

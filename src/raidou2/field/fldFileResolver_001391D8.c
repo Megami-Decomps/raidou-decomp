@@ -2548,7 +2548,7 @@ void fldProcessFieldRequestAlternate(const FldSceneRequest *request) {
                                         FLD_PLACEMENT_BATCH_MODE_APPEND);
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_001323E8);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldGetInfoHeader);
 
 void sdfAddressResolverReset(u32 *aDataBody, u32 aOffset, const u8 *aAddrInfoPtr, s32 aAddrInfoLeng) {
     const u8 *p = aAddrInfoPtr;
@@ -2577,25 +2577,25 @@ void sdfAddressResolverReset(u32 *aDataBody, u32 aOffset, const u8 *aAddrInfoPtr
     }
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_001324D8);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldAddressResolverReset);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132500);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldAddressResolver);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132528);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLeaf9);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132530);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLeaf10);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132538);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLeaf11);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132540);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLeaf12);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132548);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLeaf13);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132550);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLeaf14);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132558);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLeaf15);
 
-void func_r1_00132560(void) {
+void fldLeaf16(void) {
 }
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldLoadFile);

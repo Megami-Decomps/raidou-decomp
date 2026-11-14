@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libm/e_rem_pio2", func_r1_00381D68);
+INCLUDE_ASM(const s32, "sdk/libm/e_rem_pio2", __ieee754_rem_pio2);
 
 INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467970);
 

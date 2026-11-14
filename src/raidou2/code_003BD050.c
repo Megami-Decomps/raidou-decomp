@@ -1185,9 +1185,9 @@ MenuWindowContainer *jmsCreateCmdMenu(s32 id, s32 width, s32 height, s32 visible
 
 INCLUDE_ASM(const s32, "code_003BD050", jmsDestroyCmdMenu);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D680);
+INCLUDE_ASM(const s32, "code_003BD050", jmsLeaf22);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D688);
+INCLUDE_ASM(const s32, "code_003BD050", jmsLeaf23);
 
 void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct EffectSlotSet *layout2C, u32 layout30, struct EffectSlotSet *layout34,
                                     u32 layout48, u32 layout38, struct EffectSlotSet *layout3C, u32 layout40,
@@ -1207,7 +1207,7 @@ void mnuInitializeBasicWindowLayout(MenuWindowContainer *menu, struct EffectSlot
     mnuSetWindowContainerLayout(menu, first, second, 0, 0, 0, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D6F0);
+INCLUDE_ASM(const s32, "code_003BD050", jmsLeaf24);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuSetWindowPanelBounds);
 
@@ -1219,7 +1219,7 @@ void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
                                        defaults.indices, 3);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D7F8);
+INCLUDE_ASM(const s32, "code_003BD050", CmdMenuCursorDrawUnlock);
 
 MenuListNode *jmsAddCmdMenuItem(MenuWindowContainer *menu, const void *text) {
     return mnuListAppendNode(menu->list, text);
@@ -1262,7 +1262,7 @@ MenuListNode *mnuRetreatWindowListSelection(MenuWindowContainer *menu) {
     return mnuReverseListSelection(menu, 0);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D928);
+INCLUDE_ASM(const s32, "code_003BD050", jmsLeaf25);
 
 void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu) {
     mnuClearListFlagsOneAndTwo(&menu->list->stateFlags);
@@ -1300,7 +1300,7 @@ void mnuReleaseWindowTextures(MenuIconSprites *menu) {
     sdfMemFreeDirect(menu->allocation);
 }
 
-void func_r1_0034DB58(void) {
+void jmsLeaf26(void) {
 }
 
 void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
@@ -1348,17 +1348,17 @@ void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, MenuWindowContaine
                   window->list, window->resource, option);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034DD00);
+INCLUDE_ASM(const s32, "code_003BD050", jmsFunc45);
 
 void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, MenuWindowContainer *window, u32 option) {
     mnuDrawWindowIconRows(x, y, flags, window, window->list->visibleCount, option);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034DE18);
+INCLUDE_ASM(const s32, "code_003BD050", jmsFunc46);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuDrawWindowSelectionPanel);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034DFC0);
+INCLUDE_ASM(const s32, "code_003BD050", jmsFunc47);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuSpinForWindowListCount);
 

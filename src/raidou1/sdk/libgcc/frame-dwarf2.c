@@ -535,14 +535,14 @@ u32 dptoul(f64 value);
 
 u8 *libc_2D1E08(u8 *p, u32 *out);
 
-u8 *libc_2D1E50(u8 *p, s32 *out);
+u8 *frameLeaf(u8 *p, s32 *out);
 
 static inline s32 fde_compare(u32 *left, u32 *right)
 {
     return (s32)(left[2] - right[2]);
 }
 
-void libc_2D1EA8(fde_vector *left, const fde_vector *right);
+void frameLeaf2(fde_vector *left, const fde_vector *right);
 
 void __register_frame_info(void *fn, void *entry);
 
@@ -556,11 +556,11 @@ void *__deregister_frame_info(void *fn);
 
 void __deregister_frame(void *fn);
 
-s32 libc_2D2728(u32 *p);
+s32 frameLeaf3(u32 *p);
 
-void libc_2D2768(u32 *p, fde_vector *list, u32 *pmin, u32 *pmax);
+void frameLeaf4(u32 *p, fde_vector *list, u32 *pmin, u32 *pmax);
 
-void *libc_2D27F8(u32 *p, u32 addr);
+void *frameLeaf5(u32 *p, u32 addr);
 
 typedef struct {
     fde_vector linear;
@@ -579,9 +579,9 @@ static inline s32 start_fde_sort(fde_accumulator *vectors, u32 count)
     return vectors->linear.array != NULL;
 }
 
-void libc_2D2850(object *entry);
+void frameCallMalloc(object *entry);
 
-u32 *libc_2D29B8(u32 pc);
+u32 *frameCallWaitSema(u32 pc);
 
 typedef struct {
     char *augmentation;
@@ -604,7 +604,7 @@ extern s32 strcmp(const char *left, const char *right);
 
 extern u32 strlen(const char *text);
 
-u8 *libc_2D2B60(u32 *frame, cieInfo_t *info);
+u8 *frameCallStrcmp(u32 *frame, cieInfo_t *info);
 
 typedef struct {
     void *cfa;
@@ -621,7 +621,7 @@ typedef struct {
 
 SIZE_CHECK(frameState_size_must_be_0x478, frameState_t, 0x478);
 
-u8 *libc_2D2C70(u8 *p, frameState_t *state);
+u8 *frameCallAbort2(u8 *p, frameState_t *state);
 
 typedef struct frameStateInternal {
     frameState_t state;
@@ -639,9 +639,9 @@ extern const char libgccCieAugEmpty[8] __attribute__((section(".rodata")));
 
 extern const char libgccCieAugEh[8] __attribute__((section(".rodata")));
 
-u8 *libc_2D2D90(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location);
+u8 *frameCallMalloc2(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location);
 
-frameState_t *libc_2D31E0(u32 pc, frameState_t *output);
+frameState_t *frameCallMemset(u32 pc, frameState_t *output);
 
 void sdfUnpackFloat(const void *input, fp_number_type *number);
 
@@ -660,7 +660,7 @@ static inline s32 sfIsZero(const fp_number_type *number) {
 f32 sdfPackFloat(const fp_number_type *number);
 /* End of declarations from src/smt3/sdk/libgcc.c */
 
-u8 *libc_2D1E50(u8 *p, s32 *out) {
+u8 *frameLeaf(u8 *p, s32 *out) {
     s32 shift = 0;
     u32 v = 0;
     u32 b;
@@ -677,7 +677,7 @@ u8 *libc_2D1E50(u8 *p, s32 *out) {
     return p;
 }
 
-void libc_2D1EA8(fde_vector *left, const fde_vector *right)
+void frameLeaf2(fde_vector *left, const fde_vector *right)
 {
     u32 leftIndex;
     u32 rightIndex;
@@ -700,7 +700,7 @@ void libc_2D1EA8(fde_vector *left, const fde_vector *right)
     }
 }
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_r1_00386268);
+INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", frameCallAbort);
 
 void __register_frame_info(void *fn, void *entry) {
     object *e = entry;
@@ -768,7 +768,7 @@ void __deregister_frame(void *fn) {
     free(__deregister_frame_info(fn));
 }
 
-s32 libc_2D2728(u32 *p) {
+s32 frameLeaf3(u32 *p) {
     s32 n = 0;
 
     while (p[0] != 0) {
@@ -780,7 +780,7 @@ s32 libc_2D2728(u32 *p) {
     return n;
 }
 
-void libc_2D2768(u32 *p, fde_vector *list, u32 *pmin, u32 *pmax) {
+void frameLeaf4(u32 *p, fde_vector *list, u32 *pmin, u32 *pmax) {
     u32 lo = *pmin;
     u32 hi = *pmax;
 
@@ -806,7 +806,7 @@ void libc_2D2768(u32 *p, fde_vector *list, u32 *pmin, u32 *pmax) {
     *pmax = hi;
 }
 
-void *libc_2D27F8(u32 *p, u32 addr) {
+void *frameLeaf5(u32 *p, u32 addr) {
     while (p[0] != 0) {
         if (p[1] != 0 && p[2] != 0 && addr - p[2] < p[3]) {
             return p;
@@ -816,7 +816,7 @@ void *libc_2D27F8(u32 *p, u32 addr) {
     return NULL;
 }
 
-void libc_2D2850(object *entry)
+void frameCallMalloc(object *entry)
 {
     fde_accumulator vectors;
     u32 minimum;
@@ -829,9 +829,9 @@ void libc_2D2850(object *entry)
     } else if (entry->fde_array != NULL) {
         u32 **table = entry->fde_array;
         for (count = 0; *table != NULL; table++)
-            count += libc_2D2728(*table);
+            count += frameLeaf3(*table);
     } else {
-        count = libc_2D2728(entry->fde_begin);
+        count = frameLeaf3(entry->fde_begin);
     }
     entry->count = count;
     if (!start_fde_sort(&vectors, count) && entry->pc_begin != NULL)
@@ -841,9 +841,9 @@ void libc_2D2850(object *entry)
     if (entry->fde_array != NULL) {
         u32 **table = entry->fde_array;
         for (; *table != NULL; table++)
-            libc_2D2768(*table, &vectors.linear, &minimum, &maximum);
+            frameLeaf4(*table, &vectors.linear, &minimum, &maximum);
     } else {
-        libc_2D2768(entry->fde_begin, &vectors.linear, &minimum, &maximum);
+        frameLeaf4(entry->fde_begin, &vectors.linear, &minimum, &maximum);
     }
     sorted = libc_2D1FA0(&vectors, count);
     if (sorted != NULL)
@@ -852,7 +852,7 @@ void libc_2D2850(object *entry)
     entry->pc_end = EE_ADDR_AS(void *, maximum);
 }
 
-u32 *libc_2D29B8(u32 pc)
+u32 *frameCallWaitSema(u32 pc)
 {
     object *entry;
     u32 low;
@@ -862,7 +862,7 @@ u32 *libc_2D29B8(u32 pc)
     WaitSema(frameObjectSema);
     for (entry = frameObjectList; entry != NULL; entry = entry->next) {
         if (entry->pc_begin == NULL)
-            libc_2D2850(entry);
+            frameCallMalloc(entry);
         if (pc >= EE_ADDR(entry->pc_begin) && pc < EE_ADDR(entry->pc_end))
             break;
     }
@@ -871,7 +871,7 @@ u32 *libc_2D29B8(u32 pc)
         return NULL;
     }
     if (entry->fde_array == NULL || entry->fde_array == entry->fde_begin)
-        libc_2D2850(entry);
+        frameCallMalloc(entry);
     if (entry->fde_array != NULL && entry->fde_array != entry->fde_begin) {
         SignalSema(frameObjectSema);
         for (low = 0, high = entry->count; low < high;) {
@@ -888,10 +888,10 @@ u32 *libc_2D29B8(u32 pc)
         if (entry->fde_array != NULL) {
             u32 **table = entry->fde_array;
             do {
-                found = libc_2D27F8(*table, pc);
+                found = frameLeaf5(*table, pc);
             } while (found == NULL && *++table != NULL);
         } else {
-            found = libc_2D27F8(entry->fde_begin, pc);
+            found = frameLeaf5(entry->fde_begin, pc);
         }
         SignalSema(frameObjectSema);
         return found;
@@ -899,7 +899,7 @@ u32 *libc_2D29B8(u32 pc)
     return NULL;
 }
 
-u8 *libc_2D2B60(u32 *frame, cieInfo_t *info)
+u8 *frameCallStrcmp(u32 *frame, cieInfo_t *info)
 {
     u8 *p;
     u32 length;
@@ -918,7 +918,7 @@ u8 *libc_2D2B60(u32 *frame, cieInfo_t *info)
         info->ehPointer = NULL;
     }
     p = libc_2D1E08(p, &info->codeAlignment);
-    p = libc_2D1E50(p, &info->dataAlignment);
+    p = frameLeaf(p, &info->dataAlignment);
     info->returnRegister = *p++;
     if (info->augmentation[0] == 'z') {
         u32 payloadSize;
@@ -928,7 +928,7 @@ u8 *libc_2D2B60(u32 *frame, cieInfo_t *info)
     return p;
 }
 
-u8 *libc_2D2C70(u8 *p, frameState_t *state)
+u8 *frameCallAbort2(u8 *p, frameState_t *state)
 {
     u32 opcode = *p++;
     union {
@@ -941,18 +941,18 @@ u8 *libc_2D2C70(u8 *p, frameState_t *state)
         state->cfaRegister = opcode - 0x50;
         break;
     case 0x90:
-        p = libc_2D1E50(p, &value.signedValue);
+        p = frameLeaf(p, &value.signedValue);
         state->cfaRegister = value.signedValue;
         /* The native regx case falls through and replaces this register. */
     case 0x70 ... 0x8f:
         state->cfaRegister = opcode - 0x70;
-        p = libc_2D1E50(p, &value.signedValue);
+        p = frameLeaf(p, &value.signedValue);
         state->baseOffset = value.signedValue;
         break;
     case 0x92:
-        p = libc_2D1E50(p, &value.signedValue);
+        p = frameLeaf(p, &value.signedValue);
         state->cfaRegister = value.signedValue;
-        p = libc_2D1E50(p, &value.signedValue);
+        p = frameLeaf(p, &value.signedValue);
         state->baseOffset = value.signedValue;
         break;
     case 0x06:
@@ -972,7 +972,7 @@ const char libgccCieAugEmpty[8] __attribute__((section(".rodata"))) = "";
 
 const char libgccCieAugEh[8] __attribute__((section(".rodata"))) = "eh";
 
-u8 *libc_2D2D90(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location)
+u8 *frameCallMalloc2(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location)
 {
     union {
         s32 signedValue;
@@ -1057,7 +1057,7 @@ u8 *libc_2D2D90(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *locati
         p = libc_2D1E08(p, &offset.unsignedValue);
         end = p + offset.unsignedValue;
         while (p < end)
-            p = libc_2D2C70(p, &state->state);
+            p = frameCallAbort2(p, &state->state);
         break;
     }
     case 0x0a: {
@@ -1095,7 +1095,7 @@ u8 *libc_2D2D90(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *locati
     return p;
 }
 
-frameState_t *libc_2D31E0(u32 pc, frameState_t *output)
+frameState_t *frameCallMemset(u32 pc, frameState_t *output)
 {
     cieInfo_t info;
     frameStateInternal_t state;
@@ -1106,10 +1106,10 @@ frameState_t *libc_2D31E0(u32 pc, frameState_t *output)
     u32 location;
     u32 *cie;
 
-    frame = libc_2D29B8(pc);
+    frame = frameCallWaitSema(pc);
     if (frame == NULL)
         return NULL;
-    p = libc_2D2B60(frame, &info);
+    p = frameCallStrcmp(frame, &info);
     if (p == NULL)
         return NULL;
     memset(&state, 0, sizeof(state));
@@ -1118,7 +1118,7 @@ frameState_t *libc_2D31E0(u32 pc, frameState_t *output)
     cie = (u32 *)((u8 *)frame - frame[1] + 4);
     end = (u8 *)cie + cie[0] + 4;
     while (p < end)
-        p = libc_2D2D90(p, &state, &info, NULL);
+        p = frameCallMalloc2(p, &state, &info, NULL);
     p = (u8 *)frame + 16;
     if (info.augmentation[0] == 'z') {
         p = libc_2D1E08(p, &payloadSize);
@@ -1127,7 +1127,7 @@ frameState_t *libc_2D31E0(u32 pc, frameState_t *output)
     end = (u8 *)frame + frame[0] + 4;
     location = frame[2];
     while (p < end && pc >= location)
-        p = libc_2D2D90(p, &state, &info, &location);
+        p = frameCallMalloc2(p, &state, &info, &location);
     *output = state.state;
     return output;
 }

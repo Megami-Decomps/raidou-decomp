@@ -745,7 +745,7 @@ void Eve_PartialMultiFilterSetDefTex(void);
 
 void evtPolygonMovieFreeWork(PolyMovieWork *table);
 
-void func_r1_00104210(void);
+void dds3PadIsTypeCD(void);
 
 EvtRuntimeChild *evtEventViewerGetPendingNode(dds_evtViewerInfo_t *viewer);
 
@@ -1478,13 +1478,13 @@ evtFrameInfo_t *AddFrameInfo2(evtViewerObject_s *group, s32 frame, evtViewerInfo
     return evtAddFrameInfo(group, frame);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001AFB80);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetPIDfromUID);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", DelFrameInfo);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001AFC40);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtDelProcess);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001AFD28);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallDelEffectTableEvtEventViewer);
 
 /* Consume queued viewer events until the pending check reports none. */
 void evtEventViewerProcessPending(dds_evtViewerInfo_t *viewer) {
@@ -1493,13 +1493,13 @@ void evtEventViewerProcessPending(dds_evtViewerInfo_t *viewer) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001AFE48);
+INCLUDE_ASM(const s32, "event/evtEventViewer", LinkViewerObject);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001AFEE8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", UnlinkViewerObject);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001AFF38);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtAddViewerObject);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001AFFB0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetViewerObjectTypeCount);
 
 s32 evtEventViewerCountEntries(dds_evtViewerInfo_t *viewer) {
     EvtRuntimeGroup *entry;
@@ -1535,31 +1535,31 @@ s32 evtEventViewerSumNodeCounts(EvtViewerTrackFileFormat format, dds_evtViewerIn
     return total;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B00A0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallDelFrameInfo);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B0150);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtSetFirstFrame);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B0170);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtSetLastFrame);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B0190);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallMemset7);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", FreeInfo);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtUnRegistUnit);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B0310);
+INCLUDE_ASM(const s32, "event/evtEventViewer", SearchNameTable);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtAddNameTable);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B03F8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", SearchBasicFromNameIndex);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", LinkEffectBasic);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", AddEffectTable2);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B07F8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", DelEffectTable_evtEventViewer);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B0838);
+INCLUDE_ASM(const s32, "event/evtEventViewer", AddBED);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", DelBED);
 
@@ -1567,7 +1567,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", GetModelHandleFromUID);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", CreateMotion);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B0A58);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetModelHandleFromUID);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", DrawTmxTextureFrom2Frame);
 
@@ -1581,7 +1581,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", RunFrame1);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B19A0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtRunFrameSub);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", ValidatePLTMX);
 
@@ -1782,7 +1782,7 @@ void ValidateUnitPosChange(s32 position, dds_evtViewerInfo_t *viewer) {
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtMessageDelete);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B40B8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", rcvIsHealPhase);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", CalcNextMesSet);
 
@@ -1793,22 +1793,22 @@ u8 evtViewerHasUpdateFlag(dds_evtViewerInfo_t *viewer) {
     return (flags & 0x10) > 0;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B4278);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetFrameID);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B43B0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallVoiceStatus);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B45D8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", dds3FontReqListAdd);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateMovie);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateRenderTex);
 
-void func_r1_001B48A8(void) {
+void evtProcess3Sub(void) {
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B48B0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallDrawFont);
 
-void func_r1_001B4918(void) {
+void evtProcess3Sub2(void) {
 }
 
 /* Returns the latest eligible kind-5 motion key at/before frame for channel,
@@ -1845,11 +1845,11 @@ void evtViewerDispatchFlagMode(dds_evtViewerInfo_t *viewer) {
     evtEventViewerApplyPlaybackMode(EVT_VIEWER_PLAYBACK_RUNNING, viewer->nowframe, viewer);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B4CE8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtLeaf6);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B4D68);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtLeaf7);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B4DE8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", PushMenu);
 
 u16 evtViewerPopHistory(dds_evtViewerInfo_t *viewer) {
     u16 historyId;
@@ -1884,9 +1884,9 @@ INCLUDE_RODATA(const s32, "event/evtEventViewer", D_r1_0044F090);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", D_r1_0044F0A0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B5100);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtFRAMESETOK);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B52E8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallSetFirstFrame);
 
 u32 evtViewerPushMode5CommandHistory(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer) {
     evtViewerPushCommandHistory(5, 0x90, 0x48, viewer);
@@ -1937,11 +1937,11 @@ INCLUDE_RODATA(const s32, "event/evtEventViewer", D_r1_0044F410);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", D_r1_0044F420);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B5778);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtDELETEFRAMEOK);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B67F8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", EnterFrameChange);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B6928);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID);
 
 /* Store the command value as a halfword and clear its extra halfword when tagged. */
 s32 evtViewCmdSetValue(s32 unused0, s32 unused1, dds_evtViewerInfo_t *viewer) {
@@ -2005,13 +2005,13 @@ u32 evtViewCmdNoOp(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B6CE0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID2);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtEventViewerCommitGroupSelection);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B6E30);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID3);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B6ED0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID4);
 
 u32 evtViewCmdCancelSelection(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer) {
     evtViewerPopHistory(viewer);
@@ -2020,11 +2020,11 @@ u32 evtViewCmdCancelSelection(u32 unused0, u32 unused1, dds_evtViewerInfo_t *vie
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewCmdResolveSlot);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B7030);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID5);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B7088);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallSprintf);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B7158);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewCmdSetObjectTarget);
 
 u32 evtViewerClearPendingNodeAndPushHistory(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer) {
     if (evtEventViewerGetPendingNode(viewer) != 0) {
@@ -2038,7 +2038,7 @@ u32 evtViewerClearPendingNodeAndPushHistory(u32 unused0, u32 unused1, dds_evtVie
 
 INCLUDE_RODATA(const s32, "event/evtEventViewer", D_r1_0044FAA0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B7488);
+INCLUDE_ASM(const s32, "event/evtEventViewer", EnterData);
 
 /* Hand control back to the frame update whether or not the task still owns a viewer. */
 dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task) {
@@ -2048,7 +2048,7 @@ dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task) {
     return (s32)evtViewerUpdateFrame;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B7790);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallEveRippleBlurSetDefTex);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", UnitMotionChangeForWait);
 
@@ -2058,13 +2058,13 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", Process3);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", Process2_evtViewer);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B7E78);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData10);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtProcess2_RealPlay);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B7F48);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData11);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B7FD8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEndEvtViewerSub);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", End_evtViewer);
 
@@ -2086,7 +2086,7 @@ void evtEventViewerInitCampFontResource(dds_evtViewerInfo_t *viewer) {
     mnuCampInitFontResource(viewer);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B81F0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", mapInit);
 
 void evtEventViewerDestroyTask(void) {
     dds3KillProcessName(evtViewerTaskName, 1);
@@ -2100,19 +2100,19 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtIgnoreFade);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtNoSkipMes);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B83A0);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData12);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCheckProcess);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B8448);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCheckLastSkipStat);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B8450);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtSkipStart);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B8470);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtSetFrame);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtIgnoreAtracPlay);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", func_r1_001B84E8);
+INCLUDE_ASM(const s32, "event/evtEventViewer", oldEventSceneUnload);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCheckLoad);
 

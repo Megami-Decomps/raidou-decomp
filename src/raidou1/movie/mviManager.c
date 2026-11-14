@@ -213,11 +213,11 @@ void movieStop(void)
     }
 }
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D27A0);
+INCLUDE_ASM(const s32, "movie/mviManager", mviValidateMovieSub);
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D27C0);
+INCLUDE_ASM(const s32, "movie/mviManager", mviDrawMessageSub);
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D27D0);
+INCLUDE_ASM(const s32, "movie/mviManager", mviLeaf);
 
 s32 movieMan_Process(void)
 {
@@ -231,13 +231,13 @@ void *dds3StartMovieManager(void)
     return dds3StartProcess(movieManProcName, 0x385, 1, 0, movieMan_Process, NULL, NULL);
 }
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D2850);
+INCLUDE_ASM(const s32, "movie/mviManager", fldCommand_FLD_BGM_CONTINUE);
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D2880);
+INCLUDE_ASM(const s32, "movie/mviManager", titleFreeWork);
 
 INCLUDE_ASM(const s32, "movie/mviManager", mnuUpdateMovieDrawShutdownCountdown);
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D2958);
+INCLUDE_ASM(const s32, "movie/mviManager", mviFunc);
 
 void movieViewerFree(void)
 {
@@ -261,7 +261,7 @@ const char movieDrawProcName[16] = "movieDraw";
 
 const char movieManProcName[16] = "movieMan";
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D29E0);
+INCLUDE_ASM(const s32, "movie/mviManager", movieViewerScanDir);
 
 /* The entry the cursor sits on, walked from the head. */
 void *movieViewerStep(void)

@@ -376,7 +376,7 @@ EffNode *effCreateNodeFromParameter(u32 parameter);
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectManagerInit);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9888);
+INCLUDE_ASM(const s32, "effect/effManager", ManagerExit);
 
 /* Submit the test and alpha state packets to both field draw buffers. */
 dds3TaskUpdateResult_t ManagerRunF(dds3ProcessID_t *task) {
@@ -435,15 +435,15 @@ s32 dds3EffectManagerRun(dds3ProcessID_t *ProcessID)
     return 0;
 }
 
-void func_r1_001E9A60(void) {
+void dds3EffectPCFSetLoop(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9A68);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectPCFGetLoop);
 
-void func_r1_001E9A70(void) {
+void dds3EffectPCFReset(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9A78);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectPCFGetState);
 
 effNode_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param)
 {
@@ -464,21 +464,21 @@ void dds3EffectDelete(effNode_t *pData)
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectDraw_dds3Effect);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9B88);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectReset);
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetScale);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9BF8);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectGetState);
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetPosition);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9C78);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetRotateMatrix);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9CB0);
+INCLUDE_ASM(const s32, "effect/effManager", effSetEffectColorSubSub);
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetLoop_dds3Effect);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9D28);
+INCLUDE_ASM(const s32, "effect/effManager", dds3EffectGetLoop);
 
 effNode_t *dds3EffectLoad(effResourceHeader_t *pD3P)
 {
@@ -509,7 +509,7 @@ effNode_t *dds3EffectLoad(effResourceHeader_t *pD3P)
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectLoadEPL);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9E98);
+INCLUDE_ASM(const s32, "effect/effManager", sdfDevLoadTexList);
 
 effNode_t *dds3EffectCopy(effNode_t *node)
 {

@@ -423,159 +423,159 @@ INCLUDE_ASM(const s32, "dat", datGlobalWorkDestroy);
 
 INCLUDE_ASM(const s32, "dat", UserInit);
 
-INCLUDE_ASM(const s32, "dat", func_00121850);
+INCLUDE_ASM(const s32, "dat", UserInit_dat);
 
-void func_r1_0011EC98(void) {
+void datGlobalWorkDestroySub(void) {
 }
 
-INCLUDE_ASM(const s32, "dat", func_001218C8);
+INCLUDE_ASM(const s32, "dat", NewGame2Push);
 
-INCLUDE_ASM(const s32, "dat", func_00121C50);
+INCLUDE_ASM(const s32, "dat", datCallBitOn);
 
-INCLUDE_ASM(const s32, "dat", func_00121EE8);
+INCLUDE_ASM(const s32, "dat", datLeaf);
 
-INCLUDE_ASM(const s32, "dat", func_00121F20);
+INCLUDE_ASM(const s32, "dat", datLeaf2);
 
-INCLUDE_ASM(const s32, "dat", func_00121F40);
+INCLUDE_ASM(const s32, "dat", datCallNewGame2Push);
 
-void func_r1_0011F0C8(void) {
+void datLeaf42(void) {
 }
 
-void func_r1_0011F0D0(void) {
+void datLeaf43(void) {
 }
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011F0D8);
+INCLUDE_ASM(const s32, "dat", datAllReleaseScriptSub);
 
 INCLUDE_ASM(const s32, "dat", sdfLoadChannelFileSegment);
 
 INCLUDE_ASM(const s32, "dat", sdfReloadChannelSegments);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011F280);
+INCLUDE_ASM(const s32, "dat", datFunc24);
 
-INCLUDE_ASM(const s32, "dat", func_00122238);
+INCLUDE_ASM(const s32, "dat", datInitPlayer);
 
-INCLUDE_ASM(const s32, "dat", func_001222F0);
+INCLUDE_ASM(const s32, "dat", datGetPlayerParam);
 
-INCLUDE_ASM(const s32, "dat", func_001223A8);
+INCLUDE_ASM(const s32, "dat", datSetPlayerParam);
 
-INCLUDE_ASM(const s32, "dat", func_00122428);
+INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK10);
 
-INCLUDE_ASM(const s32, "dat", func_001225C0);
+INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK11);
 
-INCLUDE_ASM(const s32, "dat", func_00122600);
+INCLUDE_ASM(const s32, "dat", datAdjustStock);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011F570);
+INCLUDE_ASM(const s32, "dat", datGetEmptyStock);
 
-INCLUDE_ASM(const s32, "dat", func_001227D8);
+INCLUDE_ASM(const s32, "dat", datGetStockDevilIndex);
 
 INCLUDE_ASM(const s32, "dat", datGetStockDevilNums);
 
-INCLUDE_ASM(const s32, "dat", func_001228B8);
+INCLUDE_ASM(const s32, "dat", datCalcDevilMaxParCheck);
 
-INCLUDE_ASM(const s32, "dat", func_001228F0);
+INCLUDE_ASM(const s32, "dat", Unlock_2);
 
-INCLUDE_ASM(const s32, "dat", func_00122918);
+INCLUDE_ASM(const s32, "dat", datChangeFromMskGetNoToSKLIDSub);
 
-INCLUDE_ASM(const s32, "dat", func_00122940);
+INCLUDE_ASM(const s32, "dat", fldChangeFromMskGetNoToSKLID);
 
-INCLUDE_ASM(const s32, "dat", func_00122988);
+INCLUDE_ASM(const s32, "dat", datBtlUpdateDamageKajaSub);
 
-INCLUDE_ASM(const s32, "dat", func_00122A20);
+INCLUDE_ASM(const s32, "dat", datBtlUpdateDamageKajaSub2);
 
-INCLUDE_ASM(const s32, "dat", func_00122A98);
+INCLUDE_ASM(const s32, "dat", datBtlGetCalcDamageExSub);
 
-INCLUDE_ASM(const s32, "dat", func_00122B00);
+INCLUDE_ASM(const s32, "dat", datCallCalcDevilMaxParCheck);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011F880);
+INCLUDE_ASM(const s32, "dat", datLeaf44);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011F8C0);
+INCLUDE_ASM(const s32, "dat", CheckJidouSkillPrio);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011F978);
+INCLUDE_ASM(const s32, "dat", datCheckSkillEnable);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011FAC0);
+INCLUDE_ASM(const s32, "dat", datGetSkillCopyIndex);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011FB00);
+INCLUDE_ASM(const s32, "dat", datReplaceHaveSkill);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011FBE8);
+INCLUDE_ASM(const s32, "dat", datAddSkill);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011FC38);
+INCLUDE_ASM(const s32, "dat", datCreateDevilUnitEx);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011FE08);
+INCLUDE_ASM(const s32, "dat", datCreateDevilUnit);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011FE28);
+INCLUDE_ASM(const s32, "dat", datAddCheckDevilUnit);
 
-INCLUDE_ASM(const s32, "dat", func_00123168);
+INCLUDE_ASM(const s32, "dat", datAddDevilUnit);
 
-INCLUDE_ASM(const s32, "dat", func_001232B0);
+INCLUDE_ASM(const s32, "dat", datAddDevilEx);
 
-INCLUDE_ASM(const s32, "dat", func_r1_0011FFF0);
+INCLUDE_ASM(const s32, "dat", datAddDevil);
 
-INCLUDE_ASM(const s32, "dat", func_00123380);
+INCLUDE_ASM(const s32, "dat", datDelDevil);
 
 INCLUDE_ASM(const s32, "dat", datLoadLvUpTables);
 
-void func_00123548(void) {
+void datLoadGohmadenTable(void) {
 }
 
-INCLUDE_ASM(const s32, "dat", func_r1_00120158);
+INCLUDE_ASM(const s32, "dat", datGetPlayerExp);
 
-INCLUDE_ASM(const s32, "dat", func_r1_00120198);
+INCLUDE_ASM(const s32, "dat", datGetPlayerLevelUpNums);
 
-INCLUDE_ASM(const s32, "dat", func_r1_00120210);
+INCLUDE_ASM(const s32, "dat", datGetPlayerMaxHP);
 
-INCLUDE_ASM(const s32, "dat", func_00123698);
+INCLUDE_ASM(const s32, "dat", datGetPlayerOnceLevelUpParam);
 
-INCLUDE_ASM(const s32, "dat", func_001236D0);
+INCLUDE_ASM(const s32, "dat", datCallGetPlayerLevelUpNums);
 
-INCLUDE_ASM(const s32, "dat", func_r1_00120520);
+INCLUDE_ASM(const s32, "dat", datGetPlayerLevelUpUnit);
 
-INCLUDE_ASM(const s32, "dat", func_00123938);
+INCLUDE_ASM(const s32, "dat", datGetDevilExp);
 
-INCLUDE_ASM(const s32, "dat", func_r1_00120610);
+INCLUDE_ASM(const s32, "dat", datGetDevilLevelUpNums);
 
-INCLUDE_ASM(const s32, "dat", func_00123A88);
+INCLUDE_ASM(const s32, "dat", datCallCalcDevilMaxParCheck2);
 
-INCLUDE_ASM(const s32, "dat", func_00123BA0);
+INCLUDE_ASM(const s32, "dat", datGetDevilOnceLevelUpParam);
 
-INCLUDE_ASM(const s32, "dat", func_00123F68);
+INCLUDE_ASM(const s32, "dat", datCallGetDevilLevelUpNums);
 
-INCLUDE_ASM(const s32, "dat", func_r1_00120D40);
+INCLUDE_ASM(const s32, "dat", datGetDevilLevelUpUnit);
 
-INCLUDE_ASM(const s32, "dat", func_001241D0);
+INCLUDE_ASM(const s32, "dat", datCalcNowParam);
 
-INCLUDE_ASM(const s32, "dat", func_001246F0);
+INCLUDE_ASM(const s32, "dat", datGetSword4Param);
 
-INCLUDE_ASM(const s32, "dat", func_00124790);
+INCLUDE_ASM(const s32, "dat", datGetSwordParamHP);
 
-INCLUDE_ASM(const s32, "dat", func_001247B8);
+INCLUDE_ASM(const s32, "dat", datGetSwordAisyoEx);
 
-INCLUDE_ASM(const s32, "dat", func_r1_00121060);
+INCLUDE_ASM(const s32, "dat", datGetSwordAisyo);
 
-INCLUDE_ASM(const s32, "dat", func_001247E0);
+INCLUDE_ASM(const s32, "dat", fldGetRestoreMode);
 
-INCLUDE_ASM(const s32, "dat", func_00124828);
+INCLUDE_ASM(const s32, "dat", datSetPlayerUnitSwordSub);
 
-INCLUDE_ASM(const s32, "dat", func_00124830);
+INCLUDE_ASM(const s32, "dat", datSetPlayerUnitSword);
 
-INCLUDE_ASM(const s32, "dat", func_00124998);
+INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK12);
 
-INCLUDE_ASM(const s32, "dat", func_001249B8);
+INCLUDE_ASM(const s32, "dat", datLeaf3);
 
-INCLUDE_ASM(const s32, "dat", func_r1_001214F8);
+INCLUDE_ASM(const s32, "dat", datCheckDying);
 
-INCLUDE_ASM(const s32, "dat", func_r1_00121530);
+INCLUDE_ASM(const s32, "dat", datLeaf45);
 
-INCLUDE_ASM(const s32, "dat", func_r1_00121548);
+INCLUDE_ASM(const s32, "dat", datTakumiKoukaDSub);
 
-INCLUDE_ASM(const s32, "dat", func_r1_00121560);
+INCLUDE_ASM(const s32, "dat", datMoonAddMoveSub);
 
 INCLUDE_ASM(const s32, "dat", sdatCalc_GetBadStatus);
 
-INCLUDE_ASM(const s32, "dat", func_00124A58);
+INCLUDE_ASM(const s32, "dat", cmpExSubMenuAnimFunc);
 
-INCLUDE_ASM(const s32, "dat", func_00124A98);
+INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK13);
 
-INCLUDE_ASM(const s32, "dat", func_00124B18);
+INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK14);
 INCLUDE_SDATA(const s32, "dat", D_r1_0046B490);
 
 INCLUDE_SDATA(const s32, "dat", D_004DE5E8);

@@ -232,11 +232,11 @@ void evtSetTestCamera(void) {
     dds3ObjectBaseSetPadControl(object, 0);
 }
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A2E60);
+INCLUDE_ASM(const s32, "event/evtStage", evtSetRegistUnit_evt);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A2F60);
+INCLUDE_ASM(const s32, "event/evtStage", evtLoadUnit);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A30F0);
+INCLUDE_ASM(const s32, "event/evtStage", evtLeaf3);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtGetDefaultPosBustUp);
 

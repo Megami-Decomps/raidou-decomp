@@ -508,7 +508,7 @@ void Act2Sub(void);
 void dds3PadVibrationSet(u32 motor, u8 level, s32 duration);
 
 /* Clear motor levels and countdowns, then send both zero strengths to pad 0. */
-void func_r1_00104210(void);
+void dds3PadIsTypeCD(void);
 
 /* Tick both rumble countdowns; stop expired motors and refresh the active large motor. */
 void dds3UpdateVibrationSlots(void);
@@ -899,7 +899,7 @@ void dds3DebugGraphSetEnabled(s8 enabled) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00104370", func_r1_00104758);
+INCLUDE_ASM(const s32, "code_00104370", dds3CallDLinkTexPacket);
 
 /* Append the zero-based viewer page and final page index; an empty list prints -1. */
 void dds3TextureDrawPageCounter(sdfDrawTag_t *packetList) {
@@ -990,7 +990,7 @@ s32 dds3SelectIncompleteResourceAtPageIndex(s32 requestedIndex) {
     return visitedIndex;
 }
 
-INCLUDE_ASM(const s32, "code_00104370", func_r1_00104B80);
+INCLUDE_ASM(const s32, "code_00104370", dds3Func13);
 
 void dds3DrawTextureViewerFrame(sdfGrOt_t *surface, sdfTexHandle_t *image) {
     sdfDrawTag_t *packetList;
@@ -1052,7 +1052,7 @@ s32 dds3LoadDefaultResource(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00104370", func_r1_00104EA0);
+INCLUDE_ASM(const s32, "code_00104370", dds3Leaf23);
 
 /* Draw one allocation-map block in address units, choosing color by mode.
  * Only the initial partial row forces a nonzero remainder to occupy one cell;

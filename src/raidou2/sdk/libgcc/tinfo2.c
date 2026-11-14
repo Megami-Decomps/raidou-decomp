@@ -1,19 +1,19 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", func_00400210);
+INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", tinfo2Func);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", func_00400238);
+INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", tinfo2Func2);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", func_00400288);
+INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", tinfo2Leaf);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", func_004002A8);
+INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", tinfo2Leaf2);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", func_004002D0);
+INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", tinfo2Leaf3);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", func_004002F0);
+INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", tinfo2Leaf4);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", func_00400310);
+INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", tinfo2Leaf5);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", func_00400330);
+INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", tinfo2Leaf6);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", func_00400350);
+INCLUDE_ASM(const s32, "sdk/libgcc/tinfo2", tinfo2CallAbort);

@@ -559,7 +559,7 @@ u32 itfReturnZero(void);
 
 void func_00198010(void);
 
-void func_00198018(void);
+void mphGetOt(void);
 
 u32 itfReturnThirdCallbackValue(u32 unused0, u32 unused1, u32 value);
 
@@ -747,7 +747,7 @@ void frwFreeStaffFont(void) {
     frDelFontStyle(5);
 }
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00182CA8);
+INCLUDE_ASM(const s32, "interface/frWrap", frGetSmallFontFRQ2Sub);
 
 /* Preserve single-byte text and substitute 0x8080 for unmapped glyph pairs. */
 void itfConvertText(u8 *output, const char *input) {
@@ -772,21 +772,21 @@ void itfConvertText(u8 *output, const char *input) {
     }
 }
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00182DC0);
+INCLUDE_ASM(const s32, "interface/frWrap", frwGetFontEx);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00182F50);
+INCLUDE_ASM(const s32, "interface/frWrap", frCallGetFontEx);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00182F78);
+INCLUDE_ASM(const s32, "interface/frWrap", frLinkKanjiSub);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00182FA8);
+INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallFontFRQ2);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00183138);
+INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallNumFontFRQ);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00183218);
+INCLUDE_ASM(const s32, "interface/frWrap", frwGetNumFontFRQ);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_001832E8);
+INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallCaptionFontFRQ);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_001833C8);
+INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallFont1FRQ);
 
 _FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, FrFontTextBank *bank, s32 flags) {
     const u8 *text = MessageNumSearch(textId, bank, 0);
@@ -835,21 +835,21 @@ _FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, FrFont
     return handle;
 }
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_00183658);
+INCLUDE_ASM(const s32, "interface/frWrap", frDrawMiscHelpSub);
 
 INCLUDE_ASM(const s32, "interface/frWrap", itfDrawUnderscoreTextSegment);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00183800);
+INCLUDE_ASM(const s32, "interface/frWrap", frLeaf4);
 
-void func_r1_00183808(void) {
+void frLeaf5(void) {
 }
 
-void func_r1_00183810(void) {
+void frLeaf6(void) {
 }
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00183818);
+INCLUDE_ASM(const s32, "interface/frWrap", frLeaf7);
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00183820);
+INCLUDE_ASM(const s32, "interface/frWrap", frLeaf8);
 
 u32 frGetFontHeader(addr_t resourceBase) {
     return resourceBase;
@@ -866,7 +866,7 @@ void frGetFontImagePtrs(frRelativeImage_t *block, frImagePtrs_t *out) {
     out->packedBitstream = (u8 *)block + thirdOffset;
 }
 
-INCLUDE_ASM(const s32, "interface/frWrap", func_r1_00183860);
+INCLUDE_ASM(const s32, "interface/frWrap", frCallGetFontHeader);
 
 /* Decode entryIndex's bit span through the resource's six-byte prefix-tree records.
  * Write terminal bytes to decodedBytes and return/cache the count. The font atlas

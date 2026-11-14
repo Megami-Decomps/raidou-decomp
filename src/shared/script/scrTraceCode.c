@@ -94,7 +94,7 @@ extern s32 evt_1E54B8();
 
 extern s32 evtCommand_MODEL_MOVE();
 
-extern s32 evt_1E50C0();
+extern s32 evtCallGetIntPara5();
 
 extern s32 evtCommand_CAM_SEL_FOVY();
 

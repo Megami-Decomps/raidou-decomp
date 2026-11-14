@@ -1159,9 +1159,9 @@ extern EvtModelScaleEntry *D_003BAA20;
 dds3Basic_t *evtSpawnResourceObject(EvtPackEventId eventId, EvtPackSecondaryResourceId key, s32 index);
 /* End of declarations from src/dds1/game/code_00235270.c */
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C4B78);
+INCLUDE_ASM(const s32, "code_001DAC80", evtNpcSadaPB);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C4FE0);
+INCLUDE_ASM(const s32, "code_001DAC80", evtUpdateEffectViewerGroup);
 
 s32 evtDispatchActionByIndex(s32 actionIndex, s32 x, s32 y, dds_evtViewerInfo_t *runtime) {
     s32 mode = runtime->actionMode;
@@ -1384,7 +1384,7 @@ void evtWriteFixedSizeEntries(s32 output, dds_evtViewerInfo_t *table) {
 
 INCLUDE_ASM(const s32, "code_001DAC80", evtWriteGroupHeader);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C5DF8);
+INCLUDE_ASM(const s32, "code_001DAC80", evtFunc6);
 
 void evtEmitGroupTypeElevenPayloads(s32 output, dds_evtViewerInfo_t *runtime) {
     EvtRuntimeGroup *group;
@@ -1508,27 +1508,27 @@ void evtEmitGroupTypeTwentyFivePayloads(s32 output, dds_evtViewerInfo_t *runtime
     }
 }
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C63C8);
+INCLUDE_ASM(const s32, "code_001DAC80", evtPfsEventPmvtool);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C6A80);
+INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C6AD0);
+INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub2);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C6B20);
+INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub3);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C6B70);
+INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub4);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C6BC0);
+INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub5);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C6C10);
+INCLUDE_ASM(const s32, "code_001DAC80", evtNotFoundLinkslight);
 
 INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData1);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C7258);
+INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub6);
 
 INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3);
 
-INCLUDE_ASM(const s32, "code_001DAC80", func_r1_001C9840);
+INCLUDE_ASM(const s32, "code_001DAC80", evtCallEventFadeOutAllBgm);
 INCLUDE_SDATA(const s32, "code_001DAC80", D_r1_0046CC80);
 
 INCLUDE_SDATA(const s32, "code_001DAC80", D_r1_0046CC88);

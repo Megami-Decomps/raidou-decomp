@@ -4,8 +4,8 @@ INCLUDE_RODATA(const s32, "code_00183C98", D_r1_0044A4A8);
 
 INCLUDE_RODATA(const s32, "code_00183C98", D_r1_0044A4B8);
 
-INCLUDE_ASM(const s32, "code_00183C98", func_r1_00183C98);
+INCLUDE_ASM(const s32, "code_00183C98", mjnTestFontCalc);
 
-INCLUDE_ASM(const s32, "code_00183C98", func_r1_00183D20);
+INCLUDE_ASM(const s32, "code_00183C98", itfTestFontCalc);
 
-INCLUDE_ASM(const s32, "code_00183C98", func_r1_00183D50);
+INCLUDE_ASM(const s32, "code_00183C98", itfTestFontCalc2);

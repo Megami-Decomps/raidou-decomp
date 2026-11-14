@@ -199,7 +199,7 @@ void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r)
     basic->poseset->r = r;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", func_r1_00116F38);
+INCLUDE_ASM(const s32, "basic/dds3Basic", dds3Leaf25);
 
 INCLUDE_ASM(const s32, "basic/dds3Basic", dds3SetPosPoseSet_dds3Basic);
 

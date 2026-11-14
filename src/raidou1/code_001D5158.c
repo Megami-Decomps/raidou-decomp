@@ -1807,11 +1807,11 @@ void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 
 INCLUDE_ASM(const s32, "code_001D5158", mcFormatSaveFilename);
 
-INCLUDE_ASM(const s32, "code_001D5158", func_r1_001D5180);
+INCLUDE_ASM(const s32, "code_001D5158", setCallMcGetSlotIndex);
 
-INCLUDE_ASM(const s32, "code_001D5158", func_r1_001D51B8);
+INCLUDE_ASM(const s32, "code_001D5158", setAutoSaveDisable);
 
-INCLUDE_ASM(const s32, "code_001D5158", func_r1_001D51C0);
+INCLUDE_ASM(const s32, "code_001D5158", setCallMemcpy);
 
 u8 fileIsLoadedAndConditionTrue(s32 condition) {
     return condition != 0 && D_r1_0046CDEC == 1;

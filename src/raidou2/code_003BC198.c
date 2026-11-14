@@ -581,9 +581,9 @@ INCLUDE_ASM(const s32, "code_003BC198", mnuWalkNodeList);
 
 INCLUDE_ASM(const s32, "code_003BC198", mnuSeekListNode);
 
-INCLUDE_ASM(const s32, "code_003BC198", func_r1_0034CA80);
+INCLUDE_ASM(const s32, "code_003BC198", jmsLeaf17);
 
-INCLUDE_ASM(const s32, "code_003BC198", func_r1_0034CAA0);
+INCLUDE_ASM(const s32, "code_003BC198", jmsLeaf18);
 
 /* Advance the visible head when a prior window offset can be reduced. */
 MenuListNode *mnuAdvanceListWindowStart(MenuList *list) {

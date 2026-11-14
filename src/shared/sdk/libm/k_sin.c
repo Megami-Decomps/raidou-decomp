@@ -1,6 +1,6 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libm/k_sin", func_r1_00383F70);
+INCLUDE_ASM(const s32, "sdk/libm/k_sin", __kernel_sin);
 
 INCLUDE_RODATA(const s32, "sdk/libm/k_sin", D_r1_00468128);
 

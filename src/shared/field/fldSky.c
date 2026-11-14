@@ -280,7 +280,7 @@ void fldSkySetTblLightMa(s32 idx, s32 hokan);
 
 void fldSetFileResolverIdx(u32 state);
 
-void fld_1374F0(void);
+void fldCallMemset4(void);
 
 void fldSkyRefreshTbl(void);
 
@@ -356,7 +356,7 @@ extern s32 fldHitMatterIndex;
 extern addr_t fldItemBoxObjBuf;
 /* End of declarations from src/smt3/field/fldSky.c */
 
-void fld_1374F0(void) {
+void fldCallMemset4(void) {
     u32 *displayPointers = fldSkyDisplayPointers;
 
     memset(displayPointers, 0, 0x14);

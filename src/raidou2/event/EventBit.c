@@ -81,7 +81,7 @@ void evtBitOff(s32 no) {
     DDS3_GBWK->EventBit[adjustedFlag >> 5] &= ~(1 << BIT_SHIFT(no));
 }
 
-INCLUDE_ASM(const s32, "event/EventBit", func_001B83E8);
+INCLUDE_ASM(const s32, "event/EventBit", fldProc_CallSisetuReturn);
 
 s32 evtBitCheck(s32 no) {
     s32 adjustedFlag = (no < 0) ? no + 0x1f : no;

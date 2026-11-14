@@ -547,7 +547,7 @@ INCLUDE_RODATA(const s32, "field/fldProcess", D_00447450);
 
 INCLUDE_ASM(const s32, "field/fldProcess", ProcSequence);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012F7A0);
+INCLUDE_ASM(const s32, "field/fldProcess", IsFldKeyFree);
 
 void fldAutoMapSeqSetFlag(u32 flag)
 {
@@ -583,7 +583,7 @@ INCLUDE_ASM(const s32, "field/fldProcess", fldProcTrigSequence);
 
 INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FBF8);
+INCLUDE_ASM(const s32, "field/fldProcess", fldCallDelayedResrcCheck);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_004477F0);
 
@@ -595,34 +595,34 @@ INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447938);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447948);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FC18);
+INCLUDE_ASM(const s32, "field/fldProcess", fldTest2);
 
-void func_r1_0012FCF0(void) {
+void fldExitEventSub(void) {
 }
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_0012FCF8);
+INCLUDE_ASM(const s32, "field/fldProcess", mapReturnFromShop);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_0012FE08);
+INCLUDE_ASM(const s32, "field/fldProcess", fldCallAdminiCallSequence);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_0012FE50);
+INCLUDE_ASM(const s32, "field/fldProcess", mselStartGame);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEA8);
+INCLUDE_ASM(const s32, "field/fldProcess", fldLeaf7);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEC0);
+INCLUDE_ASM(const s32, "field/fldProcess", autoNakamaToRaidou);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEF8);
+INCLUDE_ASM(const s32, "field/fldProcess", mapCallMapNext);
 
 INCLUDE_ASM(const s32, "field/fldProcess", mapCallMap);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_001301C0);
+INCLUDE_ASM(const s32, "field/fldProcess", fldHardSelect1Sub);
 
 INCLUDE_ASM(const s32, "field/fldProcess", EveHitTask);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_004479B8);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00130240);
+INCLUDE_ASM(const s32, "field/fldProcess", fldSaveLabel);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00131718);
+INCLUDE_ASM(const s32, "field/fldProcess", MskL2Task);
 
 INCLUDE_SDATA(const s32, "field/fldProcess", D_0046B6BC);
 

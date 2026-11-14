@@ -1272,11 +1272,11 @@ BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScre
     return BTL_PROJECTED_SCREEN_POINT_WRITTEN;
 }
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AB7B8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallFptodp);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027EEB0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallGrAllocPacketBuff);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F060);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetLargePara);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaAdd);
 
@@ -1292,45 +1292,45 @@ INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlParaDec_8);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetBezier);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F218);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetMeireiFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F230);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallBtlGetMeireiFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F2B0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallDrawFontEx2);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F2F8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallGetSmallNumFontFRQ);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002ABDE8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlLeaf29);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F358);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallBtlGetWajutsuNameFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F3D8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlLeaf73);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F3F0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallGetSmallFontFRQ23);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sdatDevilName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F490);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallDevilName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F510);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallDestroyFontRequestAfter);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F748);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", slKanjiDrawN);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F798);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetSkillNameFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F7B8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlDrawSkillName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F838);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlLeaf74);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F858);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCallGetSmallFontFRQ24);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F8D8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetAisyoHelpFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F8F0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlDrawAisyoName);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F340);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetWajutsuNameFont);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC438);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetPlayerRankNameFont);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetBSTNameFont);
 
@@ -1338,7 +1338,7 @@ INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlDrawBSTName);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetSkillMenu);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC610);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlIfDrawActionSub);
 
 INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCheckVerticalArea);
 
@@ -1395,11 +1395,11 @@ f32 sBtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f3
     return projection;
 }
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC878);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlInitOutInPara);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC888);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCalcOutInPara);
 
-INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC8F0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlInitInOutPara);
 
 INCLUDE_RODATA(const s32, "sBtlSub_0027ED08", D_r1_00458CA8);
 

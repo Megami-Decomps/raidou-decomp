@@ -1231,9 +1231,9 @@ void sceSifExitCmd(void)
     D_r1_00442CE0 = 0;
 }
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", func_r1_00395D70);
+INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sifcmdLeaf);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", func_r1_00395D88);
+INCLUDE_ASM(const s32, "sdk/libkernl/sifcmd", sifcmdLeaf2);
 
 /* The sign selects the table. Scaling in 32 bits drops that selector and
  * gives the native eight-byte entry offset. Once tested, command is reused

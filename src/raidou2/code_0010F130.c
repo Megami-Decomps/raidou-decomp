@@ -650,7 +650,7 @@ void evtSubmitSecondaryGsTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, 
 void evtSubmitPrimaryAlphaBlendMode(s32 blendMode);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
-void func_r1_00109738(s32 fixedAlpha);
+void evtSubmitFixedAlphaBlend(s32 fixedAlpha);
 
 void evtSubmitPrimaryFramePacket(void);
 
@@ -1014,7 +1014,7 @@ void evtDestroyFontResourceChain(void) {
 
 INCLUDE_ASM(const s32, "code_0010F130", datDebugPrintf);
 
-INCLUDE_ASM(const s32, "code_0010F130", func_r1_0010E7C8);
+INCLUDE_ASM(const s32, "code_0010F130", datDEBUGCONSOLE);
 
 s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     SdfGeneralHeapStats heapStats;
@@ -1049,7 +1049,7 @@ s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     return 0;
 }
 
-void func_r1_0010EB00(void) {
+void datLeaf41(void) {
 }
 
 INCLUDE_ASM(const s32, "code_0010F130", evtToggleDebugTimeGraphTask);

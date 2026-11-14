@@ -535,14 +535,14 @@ u32 dptoul(f64 value);
 
 u8 *libc_2D1E08(u8 *p, u32 *out);
 
-u8 *libc_2D1E50(u8 *p, s32 *out);
+u8 *frameLeaf(u8 *p, s32 *out);
 
 static inline s32 fde_compare(u32 *left, u32 *right)
 {
     return (s32)(left[2] - right[2]);
 }
 
-void libc_2D1EA8(fde_vector *left, const fde_vector *right);
+void frameLeaf2(fde_vector *left, const fde_vector *right);
 
 void __register_frame_info(void *fn, void *entry);
 
@@ -556,11 +556,11 @@ void *__deregister_frame_info(void *fn);
 
 void __deregister_frame(void *fn);
 
-s32 libc_2D2728(u32 *p);
+s32 frameLeaf3(u32 *p);
 
-void libc_2D2768(u32 *p, fde_vector *list, u32 *pmin, u32 *pmax);
+void frameLeaf4(u32 *p, fde_vector *list, u32 *pmin, u32 *pmax);
 
-void *libc_2D27F8(u32 *p, u32 addr);
+void *frameLeaf5(u32 *p, u32 addr);
 
 typedef struct {
     fde_vector linear;
@@ -579,9 +579,9 @@ static inline s32 start_fde_sort(fde_accumulator *vectors, u32 count)
     return vectors->linear.array != NULL;
 }
 
-void libc_2D2850(object *entry);
+void frameCallMalloc(object *entry);
 
-u32 *libc_2D29B8(u32 pc);
+u32 *frameCallWaitSema(u32 pc);
 
 typedef struct {
     char *augmentation;
@@ -604,7 +604,7 @@ extern s32 strcmp(const char *left, const char *right);
 
 extern u32 strlen(const char *text);
 
-u8 *libc_2D2B60(u32 *frame, cieInfo_t *info);
+u8 *frameCallStrcmp(u32 *frame, cieInfo_t *info);
 
 typedef struct {
     void *cfa;
@@ -621,7 +621,7 @@ typedef struct {
 
 SIZE_CHECK(frameState_size_must_be_0x478, frameState_t, 0x478);
 
-u8 *libc_2D2C70(u8 *p, frameState_t *state);
+u8 *frameCallAbort2(u8 *p, frameState_t *state);
 
 typedef struct frameStateInternal {
     frameState_t state;
@@ -639,9 +639,9 @@ extern const char libgccCieAugEmpty[8] __attribute__((section(".rodata")));
 
 extern const char libgccCieAugEh[8] __attribute__((section(".rodata")));
 
-u8 *libc_2D2D90(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location);
+u8 *frameCallMalloc2(u8 *p, frameStateInternal_t *state, cieInfo_t *info, u32 *location);
 
-frameState_t *libc_2D31E0(u32 pc, frameState_t *output);
+frameState_t *frameCallMemset(u32 pc, frameState_t *output);
 
 void sdfUnpackFloat(const void *input, fp_number_type *number);
 

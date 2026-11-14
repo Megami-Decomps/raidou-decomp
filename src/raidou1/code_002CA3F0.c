@@ -80,11 +80,11 @@ void sdfCopyCornerWordsWithEdgeByte(u32 *source, u32 *destination, u8 *edgeValue
     }
 }
 
-INCLUDE_ASM(const s32, "code_002CA3F0", func_r1_002CA4C8);
+INCLUDE_ASM(const s32, "code_002CA3F0", cmpFunc3);
 
-INCLUDE_ASM(const s32, "code_002CA3F0", func_r1_002CA7D8);
+INCLUDE_ASM(const s32, "code_002CA3F0", cmpFunc4);
 
-INCLUDE_ASM(const s32, "code_002CA3F0", func_r1_002CA978);
+INCLUDE_ASM(const s32, "code_002CA3F0", cmpCallDrawPanelSprite2);
 
 void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, EffectSlotSet *set, s32 slot, BdWork *entry, s32 layer) {
     effDrawTextureSlot(x, y, z, (s32)entry->geometry.cornerColors, flags, set, slot, entry, layer);

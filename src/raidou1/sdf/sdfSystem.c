@@ -576,7 +576,7 @@ sdfThCB_t *sdfFindThreadNode(s32 threadId) {
     return node;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", func_r1_003566A0);
+INCLUDE_ASM(const s32, "sdf/sdfSystem", sdfCallFindThreadNode);
 
 INCLUDE_ASM(const s32, "sdf/sdfSystem", VblankIntcHandler);
 

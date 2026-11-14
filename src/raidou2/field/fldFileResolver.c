@@ -2594,15 +2594,15 @@ void sdfSetPackedValuePreservingFlag(dds_datUnitWork_t *item, u16 channelValue);
 void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 /* End of declarations from src/dds1/game/code_00117438.c */
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135520);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldDrawExpandedSpriteStrip);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldDrawFrushOt);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135968);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallOtOfs2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135AF8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallSin2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135C70);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldGetPlayerCameraPos);
 
 void sdfFirePendingCallback(void) {
     if (cameraBasic == 0) {
@@ -2611,21 +2611,21 @@ void sdfFirePendingCallback(void) {
     scrDestroyWorkTask();
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135D20);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldAiboTaskSub);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135D78);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboMinAlpDown);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135DE0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldRefModel);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboWakeUp);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135E48);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldGbInitSystemSub);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135EB0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldProcMskSubBSub);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135EB8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboAtumaru);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135F48);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldNakamaBranchTaskSub);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboFoceSet);
 
@@ -2639,17 +2639,17 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboGet);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapAiboTask);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013E5E0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapEnemy_SetFAtk_PlayerDir);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136DA0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet_NotRot);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136E10);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvAtumaru);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapNakamaWachLock);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136FB8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet_DeadReturn);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvFoceSet2);
 
@@ -2657,27 +2657,27 @@ INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvAdd);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvGet);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137268);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldCatGetNakamaSub);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", sndSeStatus);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", mapSummonDvTask);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137C40);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldLeaf18);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137C90);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldLeaf19);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F5E8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalcNmlFldSub);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137CE0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", rstDrawEvoBgFade);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137D10);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldSetUnitSub3);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137D40);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldLeaf20);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F6D0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallBtlGetMotionVisualDataSBtlVi);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F7F0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalcNmlFldSub2);
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", D_r1_00447C80);
 
@@ -2685,19 +2685,19 @@ INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD40);
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD50);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F840);
+INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerMotionSe2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138010);
+INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerMotionSe);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138038);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldCallNakamaMotion3DSE);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138098);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayer_MoveStart);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayer_MoveCalc);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138638);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldProcMskSubBSub2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138658);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayer_MoveGet);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerCalc_Nml);
 
@@ -2707,7 +2707,7 @@ INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD90);
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", D_r1_00447CC0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_001406B8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", PlayerCalc_Nml_fld);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldPlayerCalc);
 
@@ -2720,7 +2720,7 @@ void fldDisableCameraObjectFlag(void) {
     dds3ObjectBaseOffFlag(fldPlayerObject, 1);
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001392C0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", fldLeaf21);
 
 void fldRestoreCameraModelColor(void) {
     fldPlayerModelContext->inner->color = 0x80808080;

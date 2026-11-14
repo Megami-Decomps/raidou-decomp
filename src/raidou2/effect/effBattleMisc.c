@@ -415,20 +415,20 @@ void effBTLPartGetPositionPtr(nbFormation_t *pFormation, effBTLAimParams_t *pPos
     SDF_VU0_STOREVECTOR(pPos);
 }
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", func_r1_001EA150);
+INCLUDE_ASM(const s32, "effect/effBattleMisc", nbGetUnitFromAction);
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", func_r1_001EA180);
+INCLUDE_ASM(const s32, "effect/effBattleMisc", effBTLPartGetTargetPartyPositionPtr);
 
-void func_r1_001EA1B0(void) {
+void effLeaf36(void) {
 }
 
-void func_r1_001EA1B8(void) {
+void effLeaf37(void) {
 }
 
-void func_r1_001EA1C0(void) {
+void effLeaf38(void) {
 }
 
-void func_r1_001EA1C8(void) {
+void effLeaf39(void) {
 }
 
 void effBattleMiscQueryOriginalTargetPosition(u32 unused, EffectVectorRequest *request) {
@@ -445,14 +445,14 @@ void effBattleMiscQueryVariantTargetPosition(u32 unused, EffectVectorRequest *re
     effBattleMiscQueryMaskedTargetPosition(ctx->status.flags & 0xE00, request);
 }
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", func_r1_001EA230);
+INCLUDE_ASM(const s32, "effect/effBattleMisc", effBTLPartGetWorldPositionPtr);
 
-void func_r1_001EA400(void) {
+void effLeaf40(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effBattleMisc", func_r1_001EA408);
+INCLUDE_ASM(const s32, "effect/effBattleMisc", effLeaf41);
 
-void func_r1_001EA418(void) {
+void effLeaf42(void) {
 }
 
 /* Build a 4x4 basis matrix into `out`: look-at for anchor kind 4 / direction mode 9, else a table-driven rotation. */

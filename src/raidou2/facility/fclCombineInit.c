@@ -2,119 +2,119 @@
 
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", D_004AD330);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_0017D8B0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclModelDevilLb);
 
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", D_r1_004493B0);
 
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", jtbl_004AD370);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_0017E468);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallSummonDvTask);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_0017E840);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclBunriStartLabel);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_0017EBC8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclHoukokuStartLabel);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_0017EDE0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_0017F350);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel2);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_0017FB40);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclInnenLabel);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001801D8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakaneLabel);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00180870);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel3);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00180D50);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel4);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00181230);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaChikaraTask);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00181720);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel5);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00181C18);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel6);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001820F8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallSummonDvTask2);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001823A8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallSummonDvTask3);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001824F8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclGitaiStartLabel);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00182DC0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclGitaiEndLabel);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSpotTask);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaGankTask);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00183C20);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiLabel);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184220);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotGdc);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184258);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotMagic);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184290);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotBstwait);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001842C8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotWait);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173088);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCombineInitWork);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_001730A8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapLeaf25);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_FLUSH);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173138);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_CheckEffStart);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001843A8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSkilIs_SetBit);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaStockOnCheck);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001846A0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallBitOff);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184878);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallNakamaStockOnCheck);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184A30);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mskGet);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184BA8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclFunc);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184D10);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallNakamaSkilIsSetBit);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173868);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvReturnLoad_LB);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173898);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvReturnLoad_LB_EndCheck);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173938);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvReturnStart);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_001739A0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapCallEffectGetState2);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173A30);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvReturnEnd);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173A80);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvSummonLoad_LB);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173AB0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvSummonLoad_LB_EndCheck);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173B50);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvSummonStart);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173BB8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapCallEffectGetState3);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173C88);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvSummonEnd);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173CD8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapLeaf26);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001852B8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclLeaf);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001852C8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallSmoothSingleMotion);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001853B0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclLeaf2);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001853C0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallGetRandIntA);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00185610);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallBgZoomTest);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00185900);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", fclAIUpdateSub);
 
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", D_004ADCC8);
 
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", D_004ADCD8);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00185908);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", AI_Update);
 INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF050);
 
 INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF054);

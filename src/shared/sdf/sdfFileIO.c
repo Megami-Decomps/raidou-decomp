@@ -475,7 +475,7 @@ char *sdfFileCmdMakeRealFileName(const char *aSrcName, s32 aDeviceType) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", func_r1_0036D980);
+INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfCdrom);
 
 /* Allocate a request state and retain the callback's opaque context word. */
 sdfFileCmdHandle_t *sdfFileCmdNewHandle(void *resource, s32 workerIndex, s32 operation,

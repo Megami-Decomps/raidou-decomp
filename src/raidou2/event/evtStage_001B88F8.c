@@ -232,9 +232,9 @@ void evtSetTestCamera(void) {
     dds3ObjectBaseSetPadControl(object, 0);
 }
 
-INCLUDE_ASM(const s32, "event/evtStage_001B88F8", func_001B89B0);
+INCLUDE_ASM(const s32, "event/evtStage_001B88F8", itfCriLipSyncManagerOff);
 
-INCLUDE_ASM(const s32, "event/evtStage_001B88F8", func_001B89E8);
+INCLUDE_ASM(const s32, "event/evtStage_001B88F8", evtCallMemset);
 
-INCLUDE_ASM(const s32, "event/evtStage_001B88F8", func_001B8AF0);
+INCLUDE_ASM(const s32, "event/evtStage_001B88F8", evtLoadUnit);
 

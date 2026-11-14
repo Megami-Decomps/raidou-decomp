@@ -1849,7 +1849,7 @@ void fileFadeStepDown(void) {
     D_003F97F8[0] = D_003F97F8[0] <= 0 ? 0 : D_003F97F8[0] > 0x80 ? 0x80 : D_003F97F8[0];
 }
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DB9E0);
+INCLUDE_ASM(const s32, "code_001DB8A0", cfgCallSetOt);
 
 void fileLoadSetMode(FileLoadMenuSlideMode mode) {
     fileLoadMenuState.rowVerticalOffset = 0;
@@ -1869,21 +1869,21 @@ void fileResetLoadContextSlide(void) {
     fileLoadMenuState.transitionTickCount = 0;
 }
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBBD8);
+INCLUDE_ASM(const s32, "code_001DB8A0", cfgLeaf2);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDA0);
+INCLUDE_ASM(const s32, "code_001DB8A0", cfgRetuenFromLoadSub);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDB0);
+INCLUDE_ASM(const s32, "code_001DB8A0", cfgCopyFlagGblToBak);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDC8);
+INCLUDE_ASM(const s32, "code_001DB8A0", cfgCopyFlagBakToGbl);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDE0);
+INCLUDE_ASM(const s32, "code_001DB8A0", cfgTitleConfigCalcProcessSub);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDF0);
+INCLUDE_ASM(const s32, "code_001DB8A0", dds3ToggleConfigFlagSub);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBE10);
+INCLUDE_ASM(const s32, "code_001DB8A0", dds3ToggleConfigFlag);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBE98);
+INCLUDE_ASM(const s32, "code_001DB8A0", dds3RefDDS3GBWK);
 
 INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004552E8);
 

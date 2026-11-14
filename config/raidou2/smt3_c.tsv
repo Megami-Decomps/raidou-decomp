@@ -1894,10 +1894,10 @@ effUpdateTimedStates	c
 effUpdateTintedScaledMesh	c
 effUpdateWaveEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
 effWriteGouraudTexturedQuadPacket	c
-eff_177850	c
-eff_177A48	c
-eff_178128	c
-eff_1AEC58	c
+effThunderSparkCreate	c
+effThunderReleaseSparkWork	c
+effThunderUpdateOrbitingSparks	c
+effCallBillboardSetMode	c
 eglInit	c
 eglLinkKanji	asm	frwGetSmallFontFRQ at 0x00197FA0, 0x00197FD0
 eglLinkLine	c
@@ -2115,7 +2115,7 @@ evtStageAnimeControl	c
 evtStartPictureProcess2	c
 evtStopEventBgm	c
 evtSubmitDefaultDepthGradientRect	c
-func_r1_00109738	c
+evtSubmitFixedAlphaBlend	c
 evtTestSolarPhaseOrModelFlag	c
 evtTransEventBgm	c
 evtUnitLightAnimeStat	c	compiles identical
@@ -2146,7 +2146,7 @@ evtWaitEventPackLoad	c
 evtWriteFixedSizeEntries	c
 evtWriteGroupMetadata	c
 evtWriteSerializedBytes	c
-evt_1E92F8	c
+evtCallGetIntPara15	c
 exponent	c
 fabsf	c
 fclBlendColor	c
@@ -2163,9 +2163,9 @@ fclScriptStart	c
 fclSetMessageVar	c
 fclStartMessage	c
 fclUpdateMessage	c
-fcl_213998	c
-fcl_2142F0	c
-fcl_214458	c
+fclSetModelLight	c
+fclSetMessagePos	c
+fclCallGetIntPara2	c
 fflush	c
 fileAppendJob	c
 fileAppendJobFromCommandPath	c
@@ -2303,7 +2303,7 @@ fldSetCameraObjectTransitionFlag	c
 fldSnapAngleToCompassPoint	c
 fldTitleMini_Shutdown	asm	sdfTexFreeDelayed at 0x003CF720, others at 0x003CF768
 fldToggleWorldNodeState	c
-fld_1374F0	c
+fldCallMemset4	c
 floorf	c
 fmDestroyFontMemControl	c
 fmInitFontMemControl	c
@@ -2352,7 +2352,7 @@ frwFreeStaffFont	c
 frwGetStaffFontFRQ	c
 frwLoadStaffFont	c
 func_00101A78	c
-func_r1_00101280	c
+dds3PrintProcessListSub	c
 get_iob	c
 iInvalidDCache	c
 iPutTLBEntry	c
@@ -2478,17 +2478,17 @@ kFindAddress	c
 kill	c
 kprintf	c
 kputs	c
-libc_2D1E50	c
-libc_2D1EA8	c
-libc_2D2728	c
-libc_2D2768	c
-libc_2D27F8	c
-libc_2D2850	c
-libc_2D29B8	c
-libc_2D2B60	c
-libc_2D2C70	c
-libc_2D2D90	c
-libc_2D31E0	c
+frameLeaf	c
+frameLeaf2	c
+frameLeaf3	c
+frameLeaf4	c
+frameLeaf5	c
+frameCallMalloc	c
+frameCallWaitSema	c
+frameCallStrcmp	c
+frameCallAbort2	c
+frameCallMalloc2	c
+frameCallMemset	c
 lightconstructor	c
 lightdestructor	c
 lightdrawprocedure	c

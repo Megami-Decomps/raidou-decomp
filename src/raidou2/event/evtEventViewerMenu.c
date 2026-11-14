@@ -1160,17 +1160,17 @@ extern EvtModelScaleEntry *D_003BAA20;
 dds3Basic_t *evtSpawnResourceObject(EvtPackEventId eventId, EvtPackSecondaryResourceId key, s32 index);
 /* End of declarations from src/dds1/game/code_00235270.c */
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC3E0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtMenuDisp);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC5B0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFloatChangeHead);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_0044FFA0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC600);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFloatChangeItem);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC7C0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFloatChangeMenu);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC928);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtIntChangeHead);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_0044FFF0);
 
@@ -1180,31 +1180,31 @@ INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", jtbl_004B61E0);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450028);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC978);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtIntChangeItem);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCAB0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtIntChangeMenu);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCBF8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFrameChangeHead);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCC48);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFrameChangeItem);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCE10);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFrameChangeMenu);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCFC8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtMainMenuItem);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD228);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtMainMenu);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD2F8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtSelectHead);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD358);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtSelectItem);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD3E8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtSelectMenu);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD4E8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFileNameHead);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD570);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFileNameItem);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD670);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFileNameMenu);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450268);
 
@@ -1214,17 +1214,17 @@ INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450288);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFileName2Head);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD910);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFileName2Item);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BDC40);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFileName2Menu);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE018);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtObjectListSub);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE100);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtObjectListItem);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE240);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtOjbectListMenu);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE320);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFrameListHead);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450308);
 
@@ -1252,17 +1252,17 @@ INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004503B8);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004503C8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE4D0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtNORMAL);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BF750);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFrameListItem);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BF8B8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallMenuDisp);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BFB60);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtBasicListItem);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BFCF0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtBasicListMenu);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BFE50);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtEventPosItem);
 
 /* Draw the pending-node selector for group types 20/21; other types return -1. */
 s32 mnuDrawInfoWindowB(s32 x, s32 y, dds_evtViewerInfo_t *work) {
@@ -1286,7 +1286,7 @@ s32 mnuDrawInfoWindowB(s32 x, s32 y, dds_evtViewerInfo_t *work) {
     return dds3SelectMenu(0, 1, rows, 1, rows, 0, 0, 0, &work->inputB);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C00C0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtMESSAGEMENUMESMAX);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004507B0);
 
@@ -1310,9 +1310,9 @@ INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450840);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450850);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0138);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtNONEMESDATA);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C03B0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallMenuDisp2);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004508B0);
 
@@ -1325,32 +1325,32 @@ s32 mnuDrawCutFlagLabel(sdfDrawTag_t *target, s32 x, s32 y) {
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004508F0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0608);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCMPVALUE);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0810);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallMenuDisp3);
 
 EvtMenuTableEntryAvailability evtIsMenuTableEntryEnabled(s32 *index) {
     return D_r1_003EF768[*index].enabled != EVT_MENU_TABLE_ENTRY_DISABLED;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0A00);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtLeaf10);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0A30);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtSOUTAI);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450950);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450960);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0CF8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtUpdateGroupPropertyDialog);
 
 s32 mnuDrawMotionChangeLabel(sdfDrawTag_t *target, s32 x, s32 y) {
     sdfDrawTagLink(target, (u32)sdfDevPrintf(x, y, 0xFEFFFF, 0, "MOTION CHANGE MENU"));
     return 2;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C1098);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtGROUPMAX);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C14A8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallMenuDisp4);
 
 void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx) {
     EvtRuntimeGroup *group;
@@ -1406,7 +1406,7 @@ s32 evtUpdateGroupListDialog(s32 x, s32 y, dds_evtViewerInfo_t *ctx) {
     return dds3SelectMenu(0, 1, count, 1, shown, 0, &ctx->groupFirst, 0, &ctx->groupCursor);
 }
 
-void func_r1_001C1C70(void) {
+void evtLeaf11(void) {
 }
 
 /* vu0 routine: apply the selected camera-axis rotations to a position. */
@@ -1448,22 +1448,22 @@ void evtRotateViewerPositionFromPad(f32 *position)
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C1E40);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCOPYCOLOR);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C27E8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C2E48);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFunc5);
 
-void func_r1_001C2EE0(void) {
+void evtLeaf12(void) {
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C2EE8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallMenuDisp6);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3530);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallDevPrintf);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C35E0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallMenuDisp7);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C36C0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtLeaf13);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450AC0);
 
@@ -1524,11 +1524,11 @@ s32 evtViewerDrawGroupWindow(s32 x, s32 y, dds_evtViewerInfo_t *ctx) {
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450AF8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3918);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtViewerDrawShadowConfigRow);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3B28);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallGetPIDfromUID6);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3E60);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallGetProcessData19);
 
 /* Poll solid-rectangle setup until it clears runtime control and finishes. */
 dds3TaskUpdateResult_t evtPollRuntimeControlReady(dds3ProcessID_t *task) {
@@ -1542,9 +1542,9 @@ dds3TaskUpdateResult_t evtPollRuntimeControlReady(dds3ProcessID_t *task) {
     return DDS3_TASK_UPDATE_RETAIN_CALLBACK;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3F30);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtBLEND);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C4748);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallConsPanelTagLinkZ);
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450BB8);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450BC8);

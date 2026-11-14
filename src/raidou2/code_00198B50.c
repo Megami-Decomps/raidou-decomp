@@ -598,13 +598,13 @@ void itfReleaseBackgroundSpriteTexture(void) {
     sdfTexReleaseReference(itfBackgroundSpriteTexture);
 }
 
-INCLUDE_ASM(const s32, "code_00198B50", func_r1_00183B18);
+INCLUDE_ASM(const s32, "code_00198B50", mjnFunc);
 
-INCLUDE_ASM(const s32, "code_00198B50", func_r1_00183BA8);
+INCLUDE_ASM(const s32, "code_00198B50", M_InitScene);
 
-INCLUDE_ASM(const s32, "code_00198B50", func_r1_00183C08);
+INCLUDE_ASM(const s32, "code_00198B50", mjnDeleteScene);
 
-INCLUDE_ASM(const s32, "code_00198B50", func_r1_00183C30);
+INCLUDE_ASM(const s32, "code_00198B50", mjnCallGetProcessStat);
 
 /* Draw first, then report all bits set only for a task awaiting destruction. */
 s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task) {

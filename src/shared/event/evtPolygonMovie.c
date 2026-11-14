@@ -1045,15 +1045,15 @@ INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtFreeWorkData1);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtFreeWorkData2and3);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA498);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtAllocMovieWork);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA598);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtCallMemset8);
 
 INCLUDE_RODATA(const s32, "event/evtPolygonMovie", D_r1_0044FD18);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", SetPMFileName);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", func_r1_001BA740);
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtSetDofTblFileName);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtGetPolygonMovieWorkData2);
 

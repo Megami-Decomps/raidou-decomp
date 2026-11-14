@@ -1,44 +1,44 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB440);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effLeaf2);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB468);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effLeaf3);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB670);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effLeaf4);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB688);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effFunc);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB6F0);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effEditOPlsclColorTrack);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB758);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effCallGetThreadId);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB7E0);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effCallAbort);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB8C0);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effFunc2);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB950);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effLeaf5);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FB978);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effFunc3);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FBC48);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effLeaf6);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FBC50);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effLeaf7);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FBC58);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effLeaf8);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FBD28);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effLeaf9);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FBE68);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effLeaf10);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FBEF8);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effFunc4);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FBF60);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effFunc5);
 
-void func_003FC010(void) {
+void effLeaf11(void) {
 }
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FC018);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effFunc6);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FC3A8);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effFunc7);
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_eh", func_003FC4F8);
+INCLUDE_ASM(const s32, "sdk/libgcc/_eh", effFunc8);

@@ -1177,7 +1177,7 @@ void sdfModelTempPacketLinkOt(sdfGrOt_t **ot, sdfModelRootNode_t *root)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_003600F0);
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelLinkOt_sdfModel);
 
 void sdfModelMorphListCopyStat(sdfModelMorphList_t *aDst, sdfModelMorphList_t *aSrc)
 {
@@ -1289,7 +1289,7 @@ void *sdfChunkFindById(void *data, u32 chunkId) {
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360A08);
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMake_2);
 
 s32 sdfModelGetNodeIndexByName(sdfModelRootNode_t *aRoot, const char *aName)
 {
@@ -1401,13 +1401,13 @@ sdfModelMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *aRoot, s32 aId)
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360D10);
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfCallModelMake2);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPosMatrix_sdfModel);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPos_sdfModel);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360E30);
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfCallModelMakeMarkPos);
 
 u32 sdfModelGetUniqueID(dds_sdfModelRootNode_t *aRoot)
 {

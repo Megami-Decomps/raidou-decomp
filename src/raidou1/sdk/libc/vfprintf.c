@@ -807,7 +807,7 @@ INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", D_r1_004686B0);
 
 INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", D_r1_004686C0);
 
-INCLUDE_ASM(const s32, "sdk/libc/vfprintf", func_r1_0038B870);
+INCLUDE_ASM(const s32, "sdk/libc/vfprintf", vfprintfAbcdef);
 
 char *cvt(_reent *r, f64 value, s32 precision, s32 flags, char *sign,
           s32 *decimalPoint, s32 format, s32 *length)

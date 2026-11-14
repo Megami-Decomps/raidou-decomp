@@ -1241,7 +1241,7 @@ void InitExecPS2(void)
     }
 }
 
-INCLUDE_ASM(const s32, "sdk/libkernl/libosd", func_r1_0039C138);
+INCLUDE_ASM(const s32, "sdk/libkernl/libosd", libosdSetArgSub);
 
 s32 kCopy_1(u8 *dst, const u8 *src, u32 count)
 {

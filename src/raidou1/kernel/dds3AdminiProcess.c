@@ -583,11 +583,11 @@ s32 fclEncycFreeEntry(const char *name)
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycFreeEntries);
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_001034D8);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3CallEncycFindFreeSlot);
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycAllocEntry);
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_00103618);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3CallEncycFindFreeSlot2);
 
 char dds3AdminiProcessName[8] = "Admini";
 

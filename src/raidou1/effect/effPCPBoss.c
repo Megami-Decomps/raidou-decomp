@@ -1344,7 +1344,7 @@ effPCPCrack_t *effPCPCrackCreate(effPCPCrackParam_t *pParam, void *pPB)
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_r1_00219990);
+INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrackCreatePCF);
 
 effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src)
 {
@@ -1670,9 +1670,9 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
     work->frame++;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_r1_0021A588);
+INCLUDE_ASM(const s32, "effect/effPCPBoss", effLeaf286);
 
-void func_r1_0021A598(effPCPCrack_t *hData, u32 abgr)
+void effLeaf287(effPCPCrack_t *hData, u32 abgr)
 {
     hData->abgr = abgr;
 }
@@ -1690,7 +1690,7 @@ effPCPBossBael_t *effPCPBossBaelCreate(void *pParam, void *pPB, void *pPCF)
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_r1_0021A640);
+INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPBossBaelCreatePCF);
 
 effPCPBossBael_t *effPCPBossBaelCopy(effPCPBossBael_t *hData, s32 bPos, s32 tbldata)
 {
@@ -1712,191 +1712,191 @@ void effPCPBossBaelDelete(effPCPBossBael_t *hData)
     sdfChipFreeDirect(hData);
 }
 
-void func_r1_0021A760(void) {
+void effLeaf288(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_r1_0021A768);
+INCLUDE_ASM(const s32, "effect/effPCPBoss", effLeaf289);
 
-void func_r1_0021A780(effPCPCrack_t *hData, s32 frames)
+void effLeaf290(effPCPCrack_t *hData, s32 frames)
 {
     hData->trailColorTransitionFrames = frames;
 }
 
-s32 func_r1_0021A788(void)
+s32 effLeaf291(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A790(void)
+s32 effLeaf292(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A798(void)
+s32 effLeaf293(void)
 {
     return 0;
 }
 
-void func_r1_0021A7A0(void) {
+void effLeaf294(void) {
 }
 
-void func_r1_0021A7A8(void) {
+void effLeaf295(void) {
 }
 
-void func_r1_0021A7B0(void) {
+void effLeaf296(void) {
 }
 
-s32 func_r1_0021A7B8(void)
+s32 effLeaf297(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A7C0(void)
+s32 effLeaf298(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A7C8(void)
+s32 effLeaf299(void)
 {
     return 0;
 }
 
-void func_r1_0021A7D0(void) {
+void effLeaf300(void) {
 }
 
-void func_r1_0021A7D8(void) {
+void effLeaf301(void) {
 }
 
-void func_r1_0021A7E0(void) {
+void effLeaf302(void) {
 }
 
-void func_r1_0021A7E8(void) {
+void effLeaf303(void) {
 }
 
-s32 func_r1_0021A7F0(void)
+s32 effLeaf304(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A7F8(void)
+s32 effLeaf305(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A800(void)
+s32 effLeaf306(void)
 {
     return 0;
 }
 
-void func_r1_0021A808(void) {
+void effLeaf307(void) {
 }
 
-void func_r1_0021A810(void) {
+void effLeaf308(void) {
 }
 
-void func_r1_0021A818(void) {
+void effLeaf309(void) {
 }
 
-s32 func_r1_0021A820(void)
+s32 effLeaf310(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A828(void)
+s32 effLeaf311(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A830(void)
+s32 effLeaf312(void)
 {
     return 0;
 }
 
-void func_r1_0021A838(void) {
+void effLeaf313(void) {
 }
 
-void func_r1_0021A840(void) {
+void effLeaf314(void) {
 }
 
-void func_r1_0021A848(void) {
+void effLeaf315(void) {
 }
 
-s32 func_r1_0021A850(void)
+s32 effLeaf316(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A858(void)
+s32 effLeaf317(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A860(void)
+s32 effLeaf318(void)
 {
     return 0;
 }
 
-void func_r1_0021A868(void) {
+void effLeaf319(void) {
 }
 
-void func_r1_0021A870(void) {
+void effLeaf320(void) {
 }
 
-void func_r1_0021A878(void) {
+void effLeaf321(void) {
 }
 
-void func_r1_0021A880(void) {
+void effLeaf322(void) {
 }
 
-s32 func_r1_0021A888(void)
+s32 effLeaf323(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A890(void)
+s32 effLeaf324(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A898(void)
+s32 effLeaf325(void)
 {
     return 0;
 }
 
-void func_r1_0021A8A0(void) {
+void effLeaf326(void) {
 }
 
-void func_r1_0021A8A8(void) {
+void effLeaf327(void) {
 }
 
-void func_r1_0021A8B0(void) {
+void effLeaf328(void) {
 }
 
-void func_r1_0021A8B8(void) {
+void effLeaf329(void) {
 }
 
-s32 func_r1_0021A8C0(void)
+s32 effLeaf330(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A8C8(void)
+s32 effLeaf331(void)
 {
     return 0;
 }
 
-s32 func_r1_0021A8D0(void)
+s32 effLeaf332(void)
 {
     return 0;
 }
 
-void func_r1_0021A8D8(void) {
+void effLeaf333(void) {
 }
 
-void func_r1_0021A8E0(void) {
+void effLeaf334(void) {
 }
 
-void func_r1_0021A8E8(void) {
+void effLeaf335(void) {
 }
 
 effPCPCrack_t *effPCPCrack2Create(effPCPCrackParam_t *pParam, void *pPB)
@@ -1913,7 +1913,7 @@ effPCPCrack_t *effPCPCrack2Create(effPCPCrackParam_t *pParam, void *pPB)
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_r1_0021A958);
+INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrack2CreatePCF);
 
 effPCPCrack_t *effPCPCrack2Copy(effPCPCrack_t *src)
 {
@@ -1931,21 +1931,21 @@ effPCPCrack_t *effPCPCrack2Copy(effPCPCrack_t *src)
 
 void effPCPCrackDelete(effPCPCrack_t *hData);
 
-void func_r1_0021AA18(effPCPCrack_t *hData)
+void effPCPCrack2Delete(effPCPCrack_t *hData)
 {
     effPCPCrackDelete(hData);
 }
 
 void effPCPCrackDraw(effPCPCrack_t *hData);
 
-void func_r1_0021AA30(effPCPCrack_t *hData)
+void effPCPCrack2Draw(effPCPCrack_t *hData)
 {
     effPCPCrackDraw(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_r1_0021AA48);
+INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrack2SetPosition);
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", func_r1_0021AA60);
+INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrack2SetColor);
 
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam)
 {
@@ -1964,14 +1964,14 @@ effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam)
 
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
 
-effPCPBossMETATOBeam_t *func_r1_0021AC80(void *hData, s32 bPos, s32 tbldata)
+effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreatePCF(void *hData, s32 bPos, s32 tbldata)
 {
     return effPCPBossMETATOBeamCreate(dds3EffectPCPDataGetData(hData, 0));
 }
 
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
 
-effPCPBossMETATOBeam_t *func_r1_0021ACA0(void *hData, s32 bPos, s32 tbldata)
+effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCopy(void *hData, s32 bPos, s32 tbldata)
 {
     return effPCPBossMETATOBeamCreate(hData);
 }

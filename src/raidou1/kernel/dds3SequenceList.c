@@ -605,23 +605,23 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallField);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitField);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DB40);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckField);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DB48);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallFieldMcLoad);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DB60);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitFieldMcLoad);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DB68);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckFieldMcLoad);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DB70);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallNewBattle);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DB88);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitNewBattle);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DB90);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckNewBattle);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010DB98);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallEvent);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_0010DC20);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitEvent);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckEvent);
 
@@ -631,17 +631,17 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitCamp);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckCamp);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DCB0);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallModeSelect);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DCE0);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3CallShowSceneModels);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DD00);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3Func14);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DD20);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3Leaf24);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DD38);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3CallProcessEndRstInit);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DD58);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", dds3CallProcessCheckRstInit);
 
 void CallBattleFieldTest(void) {
 }
@@ -656,7 +656,7 @@ s32 CheckBattleFieldTest(void)
     return 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", func_r1_0010DD90);
+INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallJimusyo);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitJimusyo);
 

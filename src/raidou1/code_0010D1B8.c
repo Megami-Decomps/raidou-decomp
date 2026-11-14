@@ -646,7 +646,7 @@ void evtSubmitSecondaryGsTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, 
 void evtSubmitPrimaryAlphaBlendMode(s32 blendMode);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
-void func_r1_00109738(s32 fixedAlpha);
+void evtSubmitFixedAlphaBlend(s32 fixedAlpha);
 
 extern dds3FrameDrawBuffer_t dds3FrameDrawPacketRecords[];
 

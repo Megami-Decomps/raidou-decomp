@@ -1267,47 +1267,47 @@ s32 evtPushRequestedRosterPresence(void);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datAddMaka);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001215F8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datCheckMoney);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121610);
+INCLUDE_ASM(const s32, "newdata/datCalc", datAddItem);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001216D0);
+INCLUDE_ASM(const s32, "newdata/datCalc", datCheckItem);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121720);
+INCLUDE_ASM(const s32, "newdata/datCalc", datGetItemMaxNum);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121780);
+INCLUDE_ASM(const s32, "newdata/datCalc", datAddMag);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001217A8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datCheckMag);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001217C0);
+INCLUDE_ASM(const s32, "newdata/datCalc", datPartyRecovery);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121830);
+INCLUDE_ASM(const s32, "newdata/datCalc", datPartyDevilRecovery);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001218A8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datGetTotalCyuusei);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001218C0);
+INCLUDE_ASM(const s32, "newdata/datCalc", datAddTotalCyuusei);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001218F8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datCallCalcGetBadStatus);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121AE8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datCallCalcGetBadStatus2);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121B68);
+INCLUDE_ASM(const s32, "newdata/datCalc", datResetBadStat);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121B88);
+INCLUDE_ASM(const s32, "newdata/datCalc", datRefDDS3GBWK5);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C10);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf46);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C18);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf47);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C20);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf48);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C28);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf49);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C30);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf50);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C38);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf51);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C40);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf52);
 
 /* Raise the packed value to `minimumValue` (never lower it); reaching 0x40, 0x80 or 0x400 re-randomizes the entry. */
 void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue) {
@@ -1326,15 +1326,15 @@ void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue) {
     }
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121CD8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf53);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121CE0);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf54);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121CE8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf55);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121D10);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf56);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121D38);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf57);
 
 /* Only an exact masked status of 0x1000 forces one; combinations of low
  * status bits do not take this path. Otherwise use the profile-adjusted stat. */
@@ -1346,11 +1346,11 @@ DatCalculatedStatValue datGetStatWithStatusOverride(
     return datGetClampedProfileAdjustedStat(unit, statIndex);
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121D78);
+INCLUDE_ASM(const s32, "newdata/datCalc", datCheckSyojiSkill);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121E20);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf58);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121EF8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datGetAisyoValueSub);
 
 u32 datGetAisyoValue(datUnitWork_t *work, s32 attr)
 {
@@ -1362,67 +1362,67 @@ u32 datGetAisyoFlag(datUnitWork_t *work, s32 attr)
     return datGetAisyo(work, attr) & 0xFFFF0000;
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121F48);
+INCLUDE_ASM(const s32, "newdata/datCalc", datGetBadStatusAttr);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122078);
+INCLUDE_ASM(const s32, "newdata/datCalc", datRefDDS3GBWK23);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122098);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf59);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001220D8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf60);
 
-void func_001220E0(void) {
+void datLeaf8(void) {
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001220E8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf61);
 
-void func_r1_001220F8(void) {
+void datLeaf62(void) {
 }
 
-void func_r1_00122100(void) {
+void datLeaf63(void) {
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122108);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf64);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122110);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf65);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122118);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf66);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122130);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf67);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122148);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf68);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122150);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf69);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122158);
+INCLUDE_ASM(const s32, "newdata/datCalc", datFunc25);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122178);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf70);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122180);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf71);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122188);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf72);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122190);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf73);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122198);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf74);
 
-void func_r1_001221A0(void) {
+void datLeaf75(void) {
 }
 
-void func_r1_001221A8(void) {
+void datLeaf76(void) {
 }
 
-void func_r1_001221B0(void) {
+void datLeaf77(void) {
 }
 
-void func_r1_001221B8(void) {
+void datLeaf78(void) {
 }
 
-void func_r1_001221C0(void) {
+void datLeaf79(void) {
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001221C8);
+INCLUDE_ASM(const s32, "newdata/datCalc", datCallGetRandIntA);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122200);
+INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf80);
 
 u8 evtTestSolarPhaseOrModelFlag(DatBattleAdjustmentCondition condition) {
     u32 conditionType = condition >> 16;
@@ -1497,7 +1497,7 @@ u8 btlSelectConditionalEncounterGroup(s32 encounterIndex) {
     return code == 8 ? 0 : code;
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122498);
+INCLUDE_ASM(const s32, "newdata/datCalc", datEncountCalcSub);
 
 /* Reuse an active interval, or seed one for a nonempty encounter group. */
 BtlConditionalEncounterGaugeThreshold btlGetConditionalEncounterInterval(s32 encounterIndex) {
@@ -1527,7 +1527,7 @@ BtlConditionalEncounterGaugeThreshold btlGetConditionalEncounterInterval(s32 enc
     return btlConditionalEncounterCachedInterval;
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001225D8);
+INCLUDE_ASM(const s32, "newdata/datCalc", nbEncountCalc);
 INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B584);
 
 INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B588);

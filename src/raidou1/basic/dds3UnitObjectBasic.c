@@ -449,11 +449,11 @@ f32 dds3ShortestAngleDelta(f32 fromDegrees, f32 toDegrees) {
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicSetKubiTerget);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011A970);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicSetKubiModori);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011AA70);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3ClaimSoundSlot);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011AAB8);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3CtnGetSub);
 
 s32 effObjInitializeFollowModelData(dds3Basic_t *object) {
     EffectObjectData *data;
@@ -498,9 +498,9 @@ void dds3UnitObjectBasicDestructor(dds3Basic_t *aPtr) {
     sdfChipFreeDirect(aPtr->workdata);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011ABF8);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicMainProcedure);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011AED0);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3CallMemset2);
 
 void dds3UnitObjectBasicEL_LinkFree(dds3Basic_t *unitBasic) {
     dds3UnitObjectBasicWorkData_t *work;

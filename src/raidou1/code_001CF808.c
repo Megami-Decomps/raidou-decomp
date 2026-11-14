@@ -633,7 +633,7 @@ char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename) {
 
 INCLUDE_ASM(const s32, "code_001CF808", sndInit);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CF8F8);
+INCLUDE_ASM(const s32, "code_001CF808", sndLeaf);
 
 INCLUDE_ASM(const s32, "code_001CF808", mnuIncrementTitleEffectFrameCounter);
 
@@ -654,11 +654,11 @@ void mnuSetTitleVoicePrefixIndex(s32 prefixIndex) {
     ((TitleEffectState *)dds3GetProcessData(mnuTitleSoundTask))->soundNameIndex = prefixIndex;
 }
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFA58);
+INCLUDE_ASM(const s32, "code_001CF808", fldNowPlayengStart);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFAF8);
+INCLUDE_ASM(const s32, "code_001CF808", fldNKIY);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFB30);
+INCLUDE_ASM(const s32, "code_001CF808", fldCheckNextFile);
 
 void scrGetAfterSkipBgmFlag(void) {
     p2sdSyncSound();
@@ -675,15 +675,15 @@ s32 mnuGetTitleEffectFrameCounter(void) {
     return ((TitleEffectState *)dds3GetProcessData(mnuTitleSoundTask))->frameCounter;
 }
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFBD8);
+INCLUDE_ASM(const s32, "code_001CF808", scrCallLoadCheckMidi);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFC50);
+INCLUDE_ASM(const s32, "code_001CF808", scrCallGetIntPara7);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFC98);
+INCLUDE_ASM(const s32, "code_001CF808", scrCallGetIntPara8);
 
 INCLUDE_ASM(const s32, "code_001CF808", sndOpStopNamedPlayback);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFD08);
+INCLUDE_ASM(const s32, "code_001CF808", slCallGetIntPara);
 
 /* Handle an occupied sound-command channel before dispatching a named sound. */
 s32 fldCommandSendNamedSound(void) {
@@ -701,21 +701,21 @@ u32 sndOpUpdateTitleBgmState(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFDA0);
+INCLUDE_ASM(const s32, "code_001CF808", slCallGetPcmState);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFDC8);
+INCLUDE_ASM(const s32, "code_001CF808", slLeaf3);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFDD0);
+INCLUDE_ASM(const s32, "code_001CF808", slHardSelect1);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFE88);
+INCLUDE_ASM(const s32, "code_001CF808", slCallBgmPlay);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFEB0);
+INCLUDE_ASM(const s32, "code_001CF808", evtCloseSkyEventTask);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFEE0);
+INCLUDE_ASM(const s32, "code_001CF808", At3Play);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFF08);
+INCLUDE_ASM(const s32, "code_001CF808", evtCallBgmFadeOut);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFF30);
+INCLUDE_ASM(const s32, "code_001CF808", evtCallBgmContinue);
 
 u8 mnuIsTitleStreamIdle(void) {
     MnuTitleStreamLoadState loadState;
@@ -724,13 +724,13 @@ u8 mnuIsTitleStreamIdle(void) {
     return loadState == MNU_STREAM_LOAD_IDLE;
 }
 
-INCLUDE_ASM(const s32, "code_001CF808", func_001CFF78);
+INCLUDE_ASM(const s32, "code_001CF808", evtCallSePlay);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFFD0);
+INCLUDE_ASM(const s32, "code_001CF808", evtFunc7);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001CFFF0);
+INCLUDE_ASM(const s32, "code_001CF808", evtCallEffectShutdown);
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001D0010);
+INCLUDE_ASM(const s32, "code_001CF808", evtCallSeFadeOut);
 
 /* Flush EE cache, submit one word-sized transfer to IOP, and busy-wait for DMA.
  * Return the native request ID; there is no failure retry or timeout here. */
@@ -768,7 +768,7 @@ void sndInitializeStreamTransferBuffers(s32 wordCount) {
     sndCopyWordsToIopSynchronously((const void *)D_003BC5B8, D_003BC5B0[1], wordCount);
 }
 
-INCLUDE_ASM(const s32, "code_001CF808", func_r1_001D0150);
+INCLUDE_ASM(const s32, "code_001CF808", evtFunc8);
 
 void mnuInitTitleSoundRemoteRequest(u32 wordCount) {
     sceSdRemoteInit();

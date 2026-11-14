@@ -634,10 +634,10 @@ void effEVECombParSmokeDelete(effEVECombParSmoke_t *pCombParSmoke);
    the base-scale random factor; motion's Y component begins as zero height. */
 void effEVECombParSmokePartInit(effEVECombParSmoke_t *pCombParSmoke, s32 index);
 
-void eff_1AEC58(effEVECombParSmoke_t *work);
+void effCallBillboardSetMode(effEVECombParSmoke_t *work);
 
 /* vu0 routine: advance and draw every live particle of one smoke set. */
-void eff_1AEC58(effEVECombParSmoke_t *work);
+void effCallBillboardSetMode(effEVECombParSmoke_t *work);
 
 extern void *sdfGrAllocPacketBuff(s32 aSize);
 
@@ -1185,47 +1185,47 @@ extern sdfGrOt_t D_003252A8;
 void effCopyVertRows(EffChan *channel, f32 *source);
 /* End of declarations from src/dds1/effect/effEvent.c */
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E5ED0);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlur2OnSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E5F30);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlur2SwapSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E5F40);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub3);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E5F50);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub4);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E5F58);
+INCLUDE_ASM(const s32, "effect/effEvent", effMultiBlurOnSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E5FB8);
+INCLUDE_ASM(const s32, "effect/effEvent", effMultiBlurSwapSub);
 
-void func_r1_001E5FC0(sdfTexHandle_t *hTex) {
+void Eve_PartialMultiBlurSetTex(sdfTexHandle_t *hTex) {
     hEve_PartialMultiBlur->texture = hTex;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E5FD0);
+INCLUDE_ASM(const s32, "effect/effEvent", effCallBillboardGetGeneralTex);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E5FF8);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub5);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6008);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub6);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6010);
+INCLUDE_ASM(const s32, "effect/effEvent", effDistBlurOnSub);
 
-effBlurScatterWork_t *func_r1_001E6070(void) {
+effBlurScatterWork_t *effDistBlurSwapSub(void) {
     return hEve_DistortionBlur;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6078);
+INCLUDE_ASM(const s32, "effect/effEvent", Eve_DistortionBlurSetTex);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6088);
+INCLUDE_ASM(const s32, "effect/effEvent", effCallBillboardGetGeneralTex2);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E60B0);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub7);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E60C0);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub8);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E60C8);
+INCLUDE_ASM(const s32, "effect/effEvent", effRipBlurOnSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6128);
+INCLUDE_ASM(const s32, "effect/effEvent", effRipBlurSwapSub);
 
-void func_r1_001E6130(sdfTexHandle_t *hTex) {
+void Eve_RippleBlurSetTex(sdfTexHandle_t *hTex) {
     hEve_RippleBlur->texture = hTex;
 }
 
@@ -1252,26 +1252,26 @@ EffScreenDrawParams *effGetCh73Params(void) {
     return &D_r1_003FEAA8;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E61F0);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub9);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6200);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub10);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6208);
+INCLUDE_ASM(const s32, "effect/effEvent", dblurSetParam2);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6248);
+INCLUDE_ASM(const s32, "effect/effEvent", effFilter2SwapSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6258);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub11);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6268);
+INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub12);
 
 /* Copy the resource template body while preserving its selected resource. */
 void Eve_PartialMultiFilterSetParam(dds3Effect_PartialMultiFilterParam_t *pParam) {
     hEve_PartialMultiFilter->param = *pParam;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E62C0);
+INCLUDE_ASM(const s32, "effect/effEvent", effMFilterSwapSub);
 
-void func_r1_001E62C8(sdfTexHandle_t *hTex) {
+void Eve_PartialMultiFilterSetTex(sdfTexHandle_t *hTex) {
     hEve_PartialMultiFilter->hAlphaTex = hTex;
 }
 
@@ -1289,43 +1289,43 @@ void Eve_EffectInit(void) {
     Eve_RippleBlurGetParams()->params.number = EFF_EVENT_STAGGERED_SLOT_COUNT;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6360);
+INCLUDE_ASM(const s32, "effect/effEvent", EffectDraw);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6410);
+INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy);
 
-effScreenDrawParams_t *func_r1_001E64C8(void) {
+effScreenDrawParams_t *BlurEditorGetParams(void) {
     return &D_r1_003FEB40;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E64D8);
+INCLUDE_ASM(const s32, "effect/effEvent", BlurSetParam2);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6538);
+INCLUDE_ASM(const s32, "effect/effEvent", mblurProcess);
 
-dds3Effect_PartialMultiBlurParam_t *func_r1_001E65F0(void) {
+dds3Effect_PartialMultiBlurParam_t *mblurGetParam(void) {
     return &D_r1_003FEC98;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6600);
+INCLUDE_ASM(const s32, "effect/effEvent", rblurSetParam);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6668);
+INCLUDE_ASM(const s32, "effect/effEvent", dblurProcess);
 
-dds3Effect_DistortionBlurParam_t *func_r1_001E6720(void) {
+dds3Effect_DistortionBlurParam_t *dblurGetParam(void) {
     return &D_r1_003FEE10;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6730);
+INCLUDE_ASM(const s32, "effect/effEvent", dblurSetParam);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6798);
+INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy2);
 
-dds3Effect_Filter_t *func_r1_001E6850(void) {
+dds3Effect_Filter_t *dblurGetParam2(void) {
     return &D_r1_003FEFE8;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6860);
+INCLUDE_ASM(const s32, "effect/effEvent", effLeaf29);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E68C0);
+INCLUDE_ASM(const s32, "effect/effEvent", mfilterRun);
 
-dds3Effect_PartialMultiFilterParam_t *func_r1_001E6978(void) {
+dds3Effect_PartialMultiFilterParam_t *mfilterGetParam(void) {
     return &D_r1_003FF128;
 }
 
@@ -1334,26 +1334,26 @@ void effEventSetSolidRectangleParameters(dds3Effect_Filter_t *parameters) {
     D_00355F88 = *parameters;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E69C8);
+INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy3);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6A80);
+INCLUDE_ASM(const s32, "effect/effEvent", effEnterDataSub);
 
 /* Replace the setup body without replacing the active textured-square work. */
 void mfilterSetParam(dds3Effect_PartialMultiFilterParam_t *parameters) {
     mfilterParam = *parameters;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6AE8);
+INCLUDE_ASM(const s32, "effect/effEvent", rblurProcess);
 
-dds3Effect_RippleBlurParam_t *func_r1_001E6BA0(void) {
+dds3Effect_RippleBlurParam_t *rblurGetParam(void) {
     return &D_r1_003FF368;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6BB0);
+INCLUDE_ASM(const s32, "effect/effEvent", effLeaf30);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6C18);
+INCLUDE_ASM(const s32, "effect/effEvent", effAddBEDEffectSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6C30);
+INCLUDE_ASM(const s32, "effect/effEvent", effFreeEffectDataSub);
 
 /* Allocate the compact record, copy its init prefix, then attach the new effect. */
 effEveBEDCut_t *effEveBEDCutCreate(effBTL_t *hEveBED, u16 CutNum, const void *pParams) {
@@ -1367,7 +1367,7 @@ effEveBEDCut_t *effEveBEDCutCreate(effBTL_t *hEveBED, u16 CutNum, const void *pP
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6D20);
+INCLUDE_ASM(const s32, "effect/effEvent", effBTLSys_Nego_Stone_Delete2);
 
 /* Copy the packed 0x30-byte record while retaining its native packed layout. */
 void effEveBEDCutSetParams(effEveBEDCut_t *hEveBEDCut, const void *pParams) {
@@ -1379,11 +1379,11 @@ void effEveBEDCutGetParams(const effEveBEDRecord_t *hEveBEDCut, effEveBEDRecord_
     *pParams = *hEveBEDCut;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6E20);
+INCLUDE_ASM(const s32, "effect/effEvent", effCommandEFFBEDSTARTEVOSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6E38);
+INCLUDE_ASM(const s32, "effect/effEvent", effLeaf31);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E6E40);
+INCLUDE_ASM(const s32, "effect/effEvent", effCallMult);
 
 /* Initialize a holder and its effect record; the teardown flag starts set. */
 effSimpleBED_t *effSimpleBEDCreate(effBTL_t *pData, f32 scale) {
@@ -1421,7 +1421,7 @@ effSimpleBED_t *effSimpleBEDCopy(effSimpleBED_t *hSimpleBEDSrc) {
     return work;
 }
 
-void func_r1_001E7328(effSimpleBED_t *hSimpleBED) {
+void effSimpleBEDDraw(effSimpleBED_t *hSimpleBED) {
     effEveBEDCutDraw(hSimpleBED->hCut);
 }
 
@@ -1616,7 +1616,7 @@ void effEVECombParSmokePartInit(effEVECombParSmoke_t *pCombParSmoke, s32 index) 
 }
 
 /* vu0 routine: advance and draw every live particle of one smoke set. */
-void eff_1AEC58(effEVECombParSmoke_t *work) {
+void effCallBillboardSetMode(effEVECombParSmoke_t *work) {
     sdfVector4_t offset;
     sdfVector4_t origin;
     f32 side[EFF_EVENT_VECTOR_COMPONENTS];
@@ -1729,9 +1729,9 @@ void eff_1AEC58(effEVECombParSmoke_t *work) {
 
 INCLUDE_ASM(const s32, "effect/effEvent", effEVECombParSmokeDraw);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E8B30);
+INCLUDE_ASM(const s32, "effect/effEvent", effLeaf32);
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E8B40);
+INCLUDE_ASM(const s32, "effect/effEvent", effLeaf33);
 
 /* Copy the serialized emitter parameters without changing their values. */
 void effEVECombParSmokeGetParams(const effEVECombParSmokeParam_t *pCombParSmoke, effEVECombParSmokeParam_t *pParam) {
@@ -1753,7 +1753,7 @@ void effEVECombParSmokeSetParams(effEVECombParSmokeParam_t *pCombParSmoke, const
     }
 }
 
-void func_r1_001E8D48(void) {
+void effEVECombParSmokeCreate2(void) {
     effEVECombParSmokeCreate(&D_r1_003FF590);
 }
 
@@ -2001,7 +2001,7 @@ void effAPPoint4Draw(effAPPoint4_tag *hData) {
     } while (recordIndex < recordCount);
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", func_r1_001E96B8);
+INCLUDE_ASM(const s32, "effect/effEvent", effLeaf34);
 
 /* Jitter each slot and choose its initial unsigned-modulo step.
  * Stored record time is one ahead of the Bezier cursor parameter's sampled step. */

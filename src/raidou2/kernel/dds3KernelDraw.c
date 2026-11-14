@@ -1231,7 +1231,7 @@ void Act2Sub(void);
 void dds3PadVibrationSet(u32 motor, u8 level, s32 duration);
 
 /* Clear motor levels and countdowns, then send both zero strengths to pad 0. */
-void func_r1_00104210(void);
+void dds3PadIsTypeCD(void);
 
 /* Tick both rumble countdowns; stop expired motors and refresh the active large motor. */
 void dds3UpdateVibrationSlots(void);
@@ -1913,7 +1913,7 @@ typedef struct EvtGsCommand {
 void evtSubmitSecondaryGsTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 unusedZte, s32 ztst);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
-void func_r1_00109738(s32 fixedAlpha);
+void evtSubmitFixedAlphaBlend(s32 fixedAlpha);
 
 extern dds3FrameDrawBuffer_t dds3FrameDrawPacketRecords[];
 
@@ -2228,9 +2228,9 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitDrawEnv);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitRenderDrawEnv);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001055C8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefCameraTM);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001058B0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefCameraTM2);
 
 /* Replacing a render texture releases the old texture first. A texture-creation
  * failure leaves the allocated framebuffer handle tracked, as in retail. */
@@ -2314,7 +2314,7 @@ void dds3StopQuake(void)
     dds3QuakeFlag = 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00105F58);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", sBtlResetJump);
 
 /* The two live XYZ2 payload locals follow the matched DDS engine source.
  * Creating each before its RGBAQ pair preserves the native hoisted constants. */
@@ -2390,23 +2390,23 @@ void dds3FadeColorGet(dds3FadeColor_t **outColor) {
     *outColor = &fadergba;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001061A0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeSet_2);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001061B8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeModeSet);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001061F0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeTypeGet);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001061F8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", FadeTypeSet);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106200);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeIn);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106270);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeIn2);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001062D8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefDrawFlag);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106340);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeOut);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001063B0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefDrawFlag2);
 
 s32 dds3FadeCheck(void)
 {
@@ -2432,19 +2432,19 @@ void dds3FadeUpdate(void)
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DrawDistRipOverError);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001064B8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3CallGetFrameID);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001067A8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaClear);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaIn);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106880);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaOutEx);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaOut);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106940);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106AB8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3IsBistaZBufferClear);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3ChangeBistaMode);
 
@@ -3469,12 +3469,12 @@ void eglSetOt(u32 ot)
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkTest);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001094E8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", nbPnl_rsetTest);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkAlpha);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
-void func_r1_00109738(s32 fixedAlpha) {
+void evtSubmitFixedAlphaBlend(s32 fixedAlpha) {
     void *list = (void *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);
     void *packet;
     EvtGsCommand *command;
@@ -3490,11 +3490,11 @@ void func_r1_00109738(s32 fixedAlpha) {
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001097D8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3CallGrAllocPacketBuff3);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00109870);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3CallGrAllocPacketBuff4);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00109908);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkSprite);
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B238);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B23C);

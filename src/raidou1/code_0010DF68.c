@@ -650,7 +650,7 @@ void evtSubmitSecondaryGsTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, 
 void evtSubmitPrimaryAlphaBlendMode(s32 blendMode);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
-void func_r1_00109738(s32 fixedAlpha);
+void evtSubmitFixedAlphaBlend(s32 fixedAlpha);
 
 void evtSubmitPrimaryFramePacket(void);
 
@@ -1029,148 +1029,148 @@ u32 evtInitializeSelectionScreen(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E018);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf26);
 
-void func_r1_0010E020(void) {
+void sysLeaf27(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E028);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf28);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E030);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf29);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E038);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf30);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E050);
+INCLUDE_ASM(const s32, "code_0010DF68", sysFunc22);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E070);
+INCLUDE_ASM(const s32, "code_0010DF68", sysFunc23);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E090);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf31);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E0A8);
+INCLUDE_ASM(const s32, "code_0010DF68", sysFunc24);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E0C8);
+INCLUDE_ASM(const s32, "code_0010DF68", sysFunc25);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E0E8);
+INCLUDE_ASM(const s32, "code_0010DF68", sysCallInitSky);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E108);
+INCLUDE_ASM(const s32, "code_0010DF68", sysCallExitSky);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E128);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf32);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E130);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf33);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E148);
+INCLUDE_ASM(const s32, "code_0010DF68", sysCallProcessEndRstInit);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E168);
+INCLUDE_ASM(const s32, "code_0010DF68", sysCallProcessCheckRstInit);
 
-void func_r1_0010E188(void) {
+void sysLeaf34(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E190);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf35);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E198);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf36);
 
-void func_r1_0010E1A0(void) {
+void sysLeaf37(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1A8);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf38);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1B0);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf39);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1B8);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf40);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1D0);
+INCLUDE_ASM(const s32, "code_0010DF68", sysFunc26);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1F0);
+INCLUDE_ASM(const s32, "code_0010DF68", sysFunc27);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E210);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf41);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E228);
+INCLUDE_ASM(const s32, "code_0010DF68", sysCallFinishMovieViewer);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E248);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf42);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E250);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf43);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E268);
+INCLUDE_ASM(const s32, "code_0010DF68", sysFunc28);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E288);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf44);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E290);
+INCLUDE_ASM(const s32, "code_0010DF68", sysLeaf);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E2C0);
+INCLUDE_ASM(const s32, "code_0010DF68", ExitLmap);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E2E0);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E2E8);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf2);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E300);
+INCLUDE_ASM(const s32, "code_0010DF68", datCallShutDown);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E320);
+INCLUDE_ASM(const s32, "code_0010DF68", CheckLmap);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E328);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf32);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E340);
+INCLUDE_ASM(const s32, "code_0010DF68", datCallShutDown2);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E360);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf33);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E368);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf34);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E380);
+INCLUDE_ASM(const s32, "code_0010DF68", datCallInit);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E3A0);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf35);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E3A8);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf36);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E3D8);
+INCLUDE_ASM(const s32, "code_0010DF68", datFunc18);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E3F8);
+INCLUDE_ASM(const s32, "code_0010DF68", datFunc19);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E418);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf37);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E448);
+INCLUDE_ASM(const s32, "code_0010DF68", datFunc20);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E468);
+INCLUDE_ASM(const s32, "code_0010DF68", datFunc21);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E488);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf3);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E4A0);
+INCLUDE_ASM(const s32, "code_0010DF68", datFunc);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E4C0);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf4);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E4C8);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf38);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E4E0);
+INCLUDE_ASM(const s32, "code_0010DF68", ExitHanafudaTest);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E500);
+INCLUDE_ASM(const s32, "code_0010DF68", CheckHanafudaTest);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E508);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf5);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E520);
+INCLUDE_ASM(const s32, "code_0010DF68", datFunc2);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E540);
+INCLUDE_ASM(const s32, "code_0010DF68", datFunc3);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E560);
+INCLUDE_ASM(const s32, "code_0010DF68", CallGomaden);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E590);
+INCLUDE_ASM(const s32, "code_0010DF68", ExitGomaden);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E5B0);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf39);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E5C8);
+INCLUDE_ASM(const s32, "code_0010DF68", datRefDDS3GBWK);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E5E8);
+INCLUDE_ASM(const s32, "code_0010DF68", datCallDebugProcessEnd);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E608);
+INCLUDE_ASM(const s32, "code_0010DF68", datCallDebugProcessCheck);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E628);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf40);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E640);
+INCLUDE_ASM(const s32, "code_0010DF68", datFunc22);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E660);
+INCLUDE_ASM(const s32, "code_0010DF68", datFunc23);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E680);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf6);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E698);
+INCLUDE_ASM(const s32, "code_0010DF68", datCallInit2);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E6B8);
+INCLUDE_ASM(const s32, "code_0010DF68", datLeaf7);
 
 u32 evtEnsureFontResourceChain(void) {
     if (evtConsoleFontResourceChain == 0) {
@@ -1190,7 +1190,7 @@ void evtDestroyFontResourceChain(void) {
 
 INCLUDE_ASM(const s32, "code_0010DF68", datDebugPrintf);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E7C8);
+INCLUDE_ASM(const s32, "code_0010DF68", datDEBUGCONSOLE);
 
 s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     SdfGeneralHeapStats heapStats;
@@ -1225,7 +1225,7 @@ s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     return 0;
 }
 
-void func_r1_0010EB00(void) {
+void datLeaf41(void) {
 }
 
 INCLUDE_ASM(const s32, "code_0010DF68", evtToggleDebugTimeGraphTask);

@@ -2719,9 +2719,9 @@ u32 fileJobSerializedSize(FileJobPayload *job) {
     return size;
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_r1_0021D798);
+INCLUDE_ASM(const s32, "code_0021CE60", effLeaf346);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_r1_0021D7F0);
+INCLUDE_ASM(const s32, "code_0021CE60", effLeaf347);
 
 void fileQueueAppend(FileQueue *queue, FileJob *job) {
     job->next = NULL;
@@ -2763,9 +2763,9 @@ void fileQueueRemove(FileQueue *queue, FileJob *job) {
     queue->count--;
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_r1_0021D8E8);
+INCLUDE_ASM(const s32, "code_0021CE60", effCallChipAllocZeroDirect);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_r1_0021D920);
+INCLUDE_ASM(const s32, "code_0021CE60", effCallChipAllocZeroDirect2);
 
 void fileDestroyJob(FileJob *job) {
     sdfChipFreeDirect(job);
@@ -3631,11 +3631,11 @@ void fileClearLoadObjectReferences(EffectSurfaceNode *obj) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_r1_00220170);
+INCLUDE_ASM(const s32, "code_0021CE60", effLeaf348);
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileDrawLoadObjectSlots);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_r1_00220B40);
+INCLUDE_ASM(const s32, "code_0021CE60", effCallSRAnimation);
 
 void fileSendLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value) {
     mnuRecordSetVector(obj->record, value);
@@ -3826,7 +3826,7 @@ f32 effSampleScalarCurve(const EffScalarCurve *curve, s32 frame, s32 duration) {
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileSampleKeyTracks);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_r1_00221218);
+INCLUDE_ASM(const s32, "code_0021CE60", effCallColorAnimation);
 
 void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot) {
     FileKeyBlock *grid = (FileKeyBlock *)table->data0;
@@ -4061,7 +4061,7 @@ INCLUDE_ASM(const s32, "code_0021CE60", effScaleDirectedEmitterParameters);
 
 INCLUDE_ASM(const s32, "code_0021CE60", effUpdateSectorEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_r1_00224B30);
+INCLUDE_ASM(const s32, "code_0021CE60", effLeaf349);
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileAllocateGridRecordSlots);
 INCLUDE_SDATA(const s32, "code_0021CE60", D_r1_0046D0E0);

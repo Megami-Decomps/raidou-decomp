@@ -198,7 +198,7 @@ void MovieViewerDrawFrameInfo(void)
     }
 }
 
-INCLUDE_ASM(const s32, "movie/MovieViewer", func_001E92A0);
+INCLUDE_ASM(const s32, "movie/MovieViewer", MovieViewerProc);
 
 INCLUDE_ASM(const s32, "movie/MovieViewer", InitMovieViewer);
 

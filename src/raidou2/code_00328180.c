@@ -519,7 +519,7 @@ extern void fileReadVectorPtr20(FileSlotTable *record, u128 *out);
 
 extern void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 
-extern void func_r1_00104210(void);
+extern void dds3PadIsTypeCD(void);
 
 extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 
@@ -2935,7 +2935,7 @@ extern char effColorEditFrameCountFormat[];
 extern void btlDebugDrawMappingColorSpan(s32, s32, s32, s32, u32, u32);
 
 /* Edit the alpha fade interval and its four-breakpoint graph. */
-s32 func_r1_00249458(SdfAlphaTrack *range, s32 frames);
+s32 effFunc20(SdfAlphaTrack *range, s32 frames);
 
 /* ALPHA callback for POLYGON children of the native S-family descriptors. */
 s32 effEditSPolygonAlphaTrack(s32 work);

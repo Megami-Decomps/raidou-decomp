@@ -297,18 +297,18 @@ void effPCPNeedleSpiralDelete(effPCPNeedleSpiral_tag *hData) {
     sdfMemFreeDirect(hData->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00217FF0);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralCreatePCF);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218010);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralCopy);
 
-void func_r1_00218028(void) {
+void effLeaf264(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218030);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", effLeaf265);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218040);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", effLeaf266);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218058);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", effLeaf267);
 
 dds3NeedleModel_tag *dds3NeedleModelCreate(u32 number)
 {
@@ -408,9 +408,9 @@ void dds3NeedleModelDraw(dds3NeedleModel_tag *hNModel)
     dds3NeedleModelDrawSurfaces[hNModel->blend]->append(dds3NeedleModelDrawSurfaces[hNModel->blend], packet);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218450);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", effBuildRadialFanStreams);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218678);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", effReleaseOptionalResource);
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", dds3NeedleModelSetPosition);
 

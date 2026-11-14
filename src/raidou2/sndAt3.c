@@ -367,13 +367,13 @@ void sndMixSampleBuffers(s16 *destinationSamples, TitleAudioStreamState *firstSo
     }
 }
 
-INCLUDE_ASM(const s32, "sndAt3", func_r1_001D0400);
+INCLUDE_ASM(const s32, "sndAt3", sndLeaf2);
 
-INCLUDE_ASM(const s32, "sndAt3", func_r1_001D04C0);
+INCLUDE_ASM(const s32, "sndAt3", sndCallSeStop);
 
-INCLUDE_ASM(const s32, "sndAt3", func_r1_001D0E50);
+INCLUDE_ASM(const s32, "sndAt3", sndCallWaitVblank);
 
-INCLUDE_ASM(const s32, "sndAt3", func_r1_001D0ED0);
+INCLUDE_ASM(const s32, "sndAt3", sndCallMemset);
 
 /* Read state words 0, 1 and 3; the frame-byte word 2 is not in this snapshot. */
 void mnuReadTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusSnapshot) {
@@ -416,7 +416,7 @@ INCLUDE_ASM(const s32, "sndAt3", sndBgmLoadId);
 
 INCLUDE_ASM(const s32, "sndAt3", BgmPlaySub);
 
-INCLUDE_ASM(const s32, "sndAt3", func_r1_001D14D8);
+INCLUDE_ASM(const s32, "sndAt3", sndCallWaitSema2);
 
 INCLUDE_ASM(const s32, "sndAt3", sndBgmPlay);
 
@@ -432,7 +432,7 @@ INCLUDE_ASM(const s32, "sndAt3", sndBgmFadeOut);
 
 INCLUDE_ASM(const s32, "sndAt3", sndBgmFadeOut2);
 
-INCLUDE_ASM(const s32, "sndAt3", func_r1_001D19A0);
+INCLUDE_ASM(const s32, "sndAt3", sndCallMemFreeDirect);
 
 void sndBgmFree(void) {
     WaitSema(mnuTitleStreamSemaphore);
@@ -440,9 +440,9 @@ void sndBgmFree(void) {
     SignalSema(mnuTitleStreamSemaphore);
 }
 
-INCLUDE_ASM(const s32, "sndAt3", func_r1_001D1A30);
+INCLUDE_ASM(const s32, "sndAt3", sndCallLoad);
 
-INCLUDE_ASM(const s32, "sndAt3", func_r1_001D1A60);
+INCLUDE_ASM(const s32, "sndAt3", sndCallFileCheckEnd);
 
 INCLUDE_RODATA(const s32, "sndAt3", D_r1_00454CE0);
 
@@ -454,11 +454,11 @@ INCLUDE_ASM(const s32, "sndAt3", mnuLoadTitleSoundBufferEntry);
 
 INCLUDE_ASM(const s32, "sndAt3", mnuInstallTitleSoundBufferFromData);
 
-INCLUDE_ASM(const s32, "sndAt3", func_r1_001D1FC8);
+INCLUDE_ASM(const s32, "sndAt3", sndFunc2);
 
 INCLUDE_ASM(const s32, "sndAt3", sndSePlay);
 
-INCLUDE_ASM(const s32, "sndAt3", func_001E83E8);
+INCLUDE_ASM(const s32, "sndAt3", sndCallWaitSema);
 
 void sndDeadSePlay_VolAngle(void) {
     mnuTitleSoundBufferState.frameIndex = 0;

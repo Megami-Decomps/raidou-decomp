@@ -1338,7 +1338,7 @@ void evtSubmitSecondaryGsTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, 
 void evtSubmitPrimaryAlphaBlendMode(s32 blendMode);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
-void func_r1_00109738(s32 fixedAlpha);
+void evtSubmitFixedAlphaBlend(s32 fixedAlpha);
 
 extern dds3FrameDrawBuffer_t dds3FrameDrawPacketRecords[];
 
@@ -1657,7 +1657,7 @@ scrProcessWork_s *scrPrintProcedureStart(const scrHeader_t *header, const scrTyp
 scrProcessWork_s *fldFlowParse(const scrHeader_t *header, ScrProcedureIndex procedureIndex);
 /* End of declarations from src/dds1/game/code_00107FD8.c */
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010A750);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", eglLinkBox);
 
 /* Submit the four-corner gradient rectangle with the native default depth.
    The inserted 0xFFFFFF is depth, not a white color. */
@@ -1665,7 +1665,7 @@ void evtSubmitDefaultDepthGradientRect(s32 x, s32 y, s32 width, s32 height, s32 
     evtSubmitGradientRectAtDepth(x, y, width, height, EVT_QUAD_DEFAULT_DEPTH, topLeftColor, topRightColor, bottomRightColor, bottomLeftColor);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010AA48);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", dds3CallGrAllocPacketBuff5);
 
 void eglLinkTri(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 rgba0, s32 rgba1, s32 rgba2)
 {
@@ -1721,13 +1721,13 @@ void eglLinkTri(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 rgba0, s32 r
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010B0E0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", dds3CallGrAllocPacketBuff);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", eglLinkMaru2D);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010B0F0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", fldDrwZLoad);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010B150);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", dds3CallGrAllocPacketBuff6);
 
 /* Preserve native vertex order 0,2,3,1; W components are not initialized. */
 void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32 x3, f32 y3, f32 z3, u32 color0, u32 color1, u32 color2, u32 color3)
@@ -1772,7 +1772,7 @@ void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010B490);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", dds3CallGrAllocPacketBuff7);
 
 /* Preserve native vertex order 0,2,3,1; W components are not initialized. */
 void eglLinkTexPoly4(s32 color0, f32 x0, f32 y0, f32 z0, s32 color1, f32 x1, f32 y1, f32 z1, s32 color2, f32 x2, f32 y2, f32 z2, s32 color3, f32 x3, f32 y3, f32 z3, sdfTexHandle_t *texture, f32 u0, f32 v0, f32 u1, f32 v1)
@@ -1831,15 +1831,15 @@ void eglLinkTexPoly4(s32 color0, f32 x0, f32 y0, f32 z0, s32 color1, f32 x1, f32
     sdfMatFreeDelayed(asset);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010B888);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", dds3CallMatNew);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010BAB0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", dds3CallMatNew2);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010BAF0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", dds3FileLoadSub);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010BB08);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", dds3CallGrAllocPacketBuff8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010C0F8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", dds3CallGrAllocPacketBuff2);
 
 void eglLinkLine(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, u32 color0, u32 color1)
 {

@@ -1717,7 +1717,7 @@ extern void fileReadVectorPtr20(FileSlotTable *record, u128 *out);
 
 extern void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 
-extern void func_r1_00104210(void);
+extern void dds3PadIsTypeCD(void);
 
 extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 
@@ -4078,7 +4078,7 @@ extern char effColorEditFrameCountFormat[];
 extern void btlDebugDrawMappingColorSpan(s32, s32, s32, s32, u32, u32);
 
 /* Edit the alpha fade interval and its four-breakpoint graph. */
-s32 func_r1_00249458(SdfAlphaTrack *range, s32 frames);
+s32 effFunc20(SdfAlphaTrack *range, s32 frames);
 
 /* ALPHA callback for POLYGON children of the native S-family descriptors. */
 s32 effEditSPolygonAlphaTrack(s32 work);
@@ -4202,7 +4202,7 @@ s32 effRemoveListEntry(EffectList *list);
 s32 effPollResourceList(EffectList *list);
 /* End of declarations from src/dds1/game/code_0029C530.c */
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00226EC8);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallChipAllocDirect14);
 
 EffFadeHeaderWork *effCreateSmallHeaderFromFile(void *work) {
     void *resource;
@@ -4211,7 +4211,7 @@ EffFadeHeaderWork *effCreateSmallHeaderFromFile(void *work) {
     return effDuplicateSmallHeader(resource);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00226F40);
+INCLUDE_ASM(const s32, "code_00226EC8", effFunc15);
 
 EffFadeHeaderWork *effCloneSmallHeaderFromWork(EffFadeHeaderWork *work) {
     return effDuplicateSmallHeader(work->payload);
@@ -4221,7 +4221,7 @@ void effResetSmallHeaderFrame(EffFadeHeaderWork *work) {
     work->frame = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00226F90);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation4);
 
 INCLUDE_ASM(const s32, "code_00226EC8", effCreateFadeVectorWork);
 
@@ -4246,7 +4246,7 @@ void effResetFadeVectorFrame(EffFadeVectorWork *work) {
 
 INCLUDE_ASM(const s32, "code_00226EC8", effDrawLensFlare);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002277C8);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf354);
 
 void effSetFadeVectorColor(EffFadeVectorWork *work, u32 color) {
     work->color = color;
@@ -4299,7 +4299,7 @@ void effDrawSelectionEntryVectors(SdfFlagListWork *work) {
     sdfDrawFlagListVertices(work);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002278F0);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation5);
 
 void effSetSelectionFlagListColor(SdfFlagListWork *work, u32 color) {
     work->unk04 = color;
@@ -4853,9 +4853,9 @@ void effResetKindWorkFrame(EffKindWork *work) {
     work->frame = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00228A80);
+INCLUDE_ASM(const s32, "code_00226EC8", effKindWorkFrameUpdate);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00228AE8);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf355);
 
 void effSetKindWorkColor(EffKindWork *work, u32 color) {
     work->color = color;
@@ -4944,9 +4944,9 @@ void effResetAlternateKindWorkFrame(EffKindWork *work) {
     work->frame = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00228DB8);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation6);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00228E20);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf356);
 
 void effSetAlternateKindWorkColor(EffKindWork *work, u32 color) {
     work->color = color;
@@ -5008,9 +5008,9 @@ void effBillboardEntryFrameReset(EffBillboardWork *work) {
 
 INCLUDE_ASM(const s32, "code_00226EC8", Draw_effMuzzleFlash);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00229168);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf357);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00229178);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf358);
 
 void effSetBillboardColor(EffBillboardWork *work, u32 color) {
     work->color = color;
@@ -7059,11 +7059,11 @@ void effDispatchActiveInstanceDraw(EffClassWork *work) {
     effActiveInstanceOperations[work->kind].draw(work);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0022E420);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation7);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0022E460);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf359);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0022E470);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf360);
 
 void effSetActiveInstanceColor(EffClassWork *work, u32 color) {
     work->color = color;
@@ -7227,9 +7227,9 @@ void effLoadFlashTextures(void) {
     D_r1_0046D118[1] = sdfDevLoadFileEx("/effect/flash01.tmx", (u32 *)(&effFlashTextureHandles + 1), 0);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0022EDD0);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf361);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0022EDE8);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf362);
 
 /* Create a point-set reference and initialize four colors per segment. */
 u32 *effSegmentPointerSet(u8 *work) {
@@ -7553,7 +7553,7 @@ void billDrawClassUpdatedCellBlend(BillCellDrawWork *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0022F840);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf363);
 
 /* Create a point-set reference and initialize four colors per segment. */
 EffRingResource *effCreateRingHandle(EffRadialRingParams *work) {
@@ -7743,7 +7743,7 @@ void effInitializeClassFrame(EffClassWork *work) {
     work->frame = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0022FEB0);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation8);
 
 void effRunClassPostFrame(EffClassWork *work) {
     effClassWorkOperations[work->kind].draw(work);
@@ -7754,9 +7754,9 @@ void effUpdateClassFrame(EffClassWork *work) {
     effRunClassPostFrame(work);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0022FF78);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf364);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0022FF88);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf365);
 
 void effSetClassWorkColor(EffClassWork *work, u32 color) {
     work->color = color;
@@ -8080,9 +8080,9 @@ void effAcquireSurfaceRecord(s32 node) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00230EB0);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallToMatrix);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00231B70);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation9);
 
 void effMenuRecordVectorSet(s32 node, const u128 *value) {
     mnuRecordSetVector(((EffectSurfaceNode *)node)->record, value);
@@ -8356,9 +8356,9 @@ void effResetRenderResourceFrame(EffQuadWork *work) {
 
 INCLUDE_ASM(const s32, "code_00226EC8", Draw_effPolygonTex);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00232F48);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf366);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00232F58);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf367);
 
 void effSetRenderResourceColor(EffQuadWork *work, u32 color) {
     work->color = color;
@@ -8370,7 +8370,7 @@ void effSetRenderResourceScale(EffQuadWork *work, f32 scale) {
 
 INCLUDE_ASM(const s32, "code_00226EC8", Update_effPolygonTex);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00233AA0);
+INCLUDE_ASM(const s32, "code_00226EC8", GetOT);
 
 INCLUDE_ASM(const s32, "code_00226EC8", Render);
 
@@ -9293,7 +9293,7 @@ void effDrawClassResourceWork(EffClassWork *work) {
     effClassResourceWorkOperations[work->kind].draw(work);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00236618);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation10);
 
 void effCopyClassResourcePosition(void *dst, void *src) {
     SDF_VU0_COPYVECTOR(dst, src);
@@ -9826,7 +9826,7 @@ void effReleaseRingFadeTable(s32 work) {
     sdfMemFreeDirect(state->allocation);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00237890);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallGetRandFloatA);
 
 void effBlendBillboardInstanceColorsAndTransforms(u8 *work) {
     EffBillVortexConfig *config = (EffBillVortexConfig *)((BillCellDrawWork *)work)->config;
@@ -10542,17 +10542,17 @@ void effUpdateCompactRingDrawColorAndTransform(u8 *work) {
     effDrawRibbon(out, (Matrix4 *)mtx);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002398F8);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf368);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00239948);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallMemAllocDirect2);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002399B8);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallMemcpy4);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00239C00);
+INCLUDE_ASM(const s32, "code_00226EC8", effFunc16);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00239C60);
+INCLUDE_ASM(const s32, "code_00226EC8", effBillboardMotionResourceInitialize);
 
-void func_r1_00239CC0(s32 work) {
+void effFunc17(s32 work) {
     EffFrameState *state;
 
     state = (EffFrameState *)((EffClassWork *)work)->resource;
@@ -10560,9 +10560,9 @@ void func_r1_00239CC0(s32 work) {
     sdfMemFreeDirect(state->allocation);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00239CF0);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallGetRandFloatA2);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023A3F8);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallColorAnimation2);
 
 EffClassWork *effAllocateBlock(u16 kind, void *source) {
     u32 headerSize = 0x40;
@@ -10628,11 +10628,11 @@ void effDrawBlockResourceWork(EffClassWork *work) {
     effBlockResourceOperations[work->kind].draw(work);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023A8C0);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation11);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023A900);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf369);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023A910);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf370);
 
 void effSetBlockResourceColor(EffClassWork *work, u32 color) {
     work->color = color;
@@ -11047,7 +11047,7 @@ void effSynchronizeFileTransform(u8 *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023BE28);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallToMatrix2);
 
 EffAnimationState *effCreatePrimarySlotAnimationState(u8 *work) {
     FileKeyBlock *mapping = (FileKeyBlock *)(work + 0x3C);
@@ -11067,7 +11067,7 @@ EffAnimationState *effCreateAlternateSlotAnimationState(u8 *work) {
     return state;
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023C510);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf371);
 
 u32 *effAllocateQuantizedBuffer(EffBillQuantizedConfig *work) {
     struct sdfMemHandle_t *allocation = sdfMemAllocDirect(0xC);
@@ -11330,11 +11330,11 @@ void effDrawModelBlock(EffClassWork *work) {
     effModelBlockOperations[work->kind].draw(work);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023CFE8);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation12);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023D028);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf372);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023D038);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf373);
 
 void effSetModelBlockColor(EffClassWork *work, u32 color) {
     work->color = color;
@@ -11628,11 +11628,11 @@ void effDispatchModelResourceCallback(EffModelResource *effect) {
     effModelResourceOperations[effect->kind].draw(effect);
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023EA00);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSRAnimation13);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023EA58);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf374);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023EA68);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf375);
 
 void effSetModelResourceColor(EffModelResource *work, u32 color) {
     work->color = color;
@@ -11735,7 +11735,7 @@ INCLUDE_ASM(const s32, "code_00226EC8", PartsInit);
 
 INCLUDE_ASM(const s32, "code_00226EC8", PartsCalc);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023EFE0);
+INCLUDE_ASM(const s32, "code_00226EC8", Create_effObjectParticle);
 
 INCLUDE_ASM(const s32, "code_00226EC8", ParamsCreate);
 
@@ -11778,17 +11778,17 @@ typedef struct EffectSlotNode80 {
 } EffectSlotNode80;
 
 
-void func_r1_00224D28(FileSlotTable *record);
+void effCalc(FileSlotTable *record);
 
 void effClearSurfaceRecordReferences(void *node) {
     FileSlotTable *record = ((EffectSlotNode80 *)node)->record;
 
     if (record != NULL) {
-        func_r1_00224D28(record);
+        effCalc(record);
     }
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_0023F7F0);
+INCLUDE_ASM(const s32, "code_00226EC8", Calc);
 
 INCLUDE_ASM(const s32, "code_00226EC8", Draw_effObjectParticle);
 
@@ -11895,25 +11895,25 @@ void effSetParticleSharedColor(EffParticleSharedResource *work, u32 color) {
     work->color = color;
 }
 
-void func_r1_00240990(void) {
+void effDrawEffHelperSub(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00240998);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlEffSetActer);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002409C8);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlEffSetTarget);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002409F8);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlEffCreateUnitList);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00240B90);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlLeaf48);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00240BA8);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallBtlSetLightMap);
 
-void func_r1_00240C70(void) {
+void sBtlLeaf49(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00240C78);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallSetUnitColorRGB);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00240D38);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallSetUnitColorRGB2);
 
 s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPacket_t *target) {
     s32 result = btlIsRuntimeAllocated();
@@ -11936,28 +11936,28 @@ s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPack
 
 INCLUDE_ASM(const s32, "code_00226EC8", effResetDefaultColorTables);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00240FE0);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlLeaf50);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002410B0);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallBtlEffCreateUnitList);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002411F8);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlLeaf51);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00241230);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallBtlSetLightMap2);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002412D8);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlLeaf52);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00241370);
+INCLUDE_ASM(const s32, "code_00226EC8", sBtlCallBtlEffCreateUnitList2);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00241D20);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallSetUnitColorRGB);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00241DC8);
+INCLUDE_ASM(const s32, "code_00226EC8", effCallBtlEffCreateUnitList);
 
-void func_r1_00241FD8(void) {
+void effLeaf376(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00241FE0);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf377);
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_00241FE8);
+INCLUDE_ASM(const s32, "code_00226EC8", effLeaf378);
 
 void effDestroyCopiedEffectPayload(EffCopiedPayload *payload) {
     dds3Basic_t **effects = payload->effects;
@@ -11977,19 +11977,19 @@ void effDestroyCopiedEffectPayload(EffCopiedPayload *payload) {
     sdfMemFreeDirect(payload->allocation);
 }
 
-void func_r1_00242080(void) {
+void effLeaf379(void) {
 }
 
-void func_r1_00242088(void) {
+void effLeaf380(void) {
 }
 
-void func_r1_00242090(void) {
+void effLeaf381(void) {
 }
 
-void func_r1_00242098(void) {
+void effLeaf382(void) {
 }
 
-void func_r1_002420A0(void) {
+void effLeaf383(void) {
 }
 
 void effResetSlots(void) {
@@ -12001,10 +12001,10 @@ void effResetSlots(void) {
     D_r1_0046D178[1] = 0;
     D_r1_0046D180[1] = 0;
     D_r1_0046D188[1] = 0;
-    func_r1_00104210();
+    dds3PadIsTypeCD();
 }
 
-INCLUDE_ASM(const s32, "code_00226EC8", func_r1_002420F0);
+INCLUDE_ASM(const s32, "code_00226EC8", effPadVibeFadeUpdate);
 
 INCLUDE_RODATA(const s32, "code_00226EC8", D_r1_00455EE8);
 
