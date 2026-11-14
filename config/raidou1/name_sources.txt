@@ -1932,7 +1932,7 @@
 0x0017E888	func_r1_0017E888	placeholder	placeholder for the pair with raidou2 0x00193400, unique-masked-hash
 0x0017E9C8	func_r1_0017E9C8	placeholder	placeholder for the pair with raidou2 0x00193540, unique-reloc-hash
 0x0017EA18	frTranslateUserData	inferred	SMT3HD name via SLUS_209.11 0x001C7408, unique-masked-hash; map-agrees
-0x0017EAF8	func_r1_0017EAF8	placeholder	placeholder for the pair with raidou2 0x00193670, unique-reloc-hash
+0x0017EAF8	frDecodeFontImage	inferred	smt3-pair: frFont.c caller passes it to frTranslateUserData as the decoded glyph image
 0x0017EB70	func_r1_0017EB70	placeholder	placeholder for the pair with raidou2 0x001936E8, unique-reloc-hash
 0x0017EC60	func_r1_0017EC60	placeholder	placeholder for the pair with raidou2 0x001937D8, unique-reloc-hash
 0x0017ECF0	func_r1_0017ECF0	placeholder	placeholder for the pair with raidou2 0x00193868, unique-masked-hash
@@ -1966,8 +1966,8 @@
 0x0017FD78	frGetStrWidth2	inferred	SMT3HD name via SLUS_209.11 0x001C8268, unique-masked-hash; map-agrees
 0x0017FDC8	func_r1_0017FDC8	placeholder	placeholder for the pair with raidou2 0x00194BC8, unique-reloc-hash
 0x0017FEB8	func_r1_0017FEB8	placeholder	placeholder for the pair with raidou2 0x00194CB8, unique-reloc-hash
-0x0017FFB8	func_r1_0017FFB8	placeholder	placeholder for the pair with raidou2 0x00194DB8, masked-hash-in-gap
-0x0017FFD8	func_r1_0017FFD8	placeholder	placeholder for the pair with raidou2 0x00194DD8, masked-hash-in-gap
+0x0017FFB8	frGetFontWidth	inferred	smt3-pair: returns gFT.entries[n].resourceHeader->cellWidth
+0x0017FFD8	frGetFontHeight	inferred	smt3-pair: returns gFT.entries[n].resourceHeader->cellHeight
 0x0017FFF8	func_r1_0017FFF8	placeholder	placeholder for the pair with raidou2 0x00194DF8, masked-hash-in-gap
 0x00180008	func_r1_00180008	placeholder	placeholder for the pair with raidou2 0x00194E08, masked-hash-in-gap
 0x00180010	func_r1_00180010	placeholder	placeholder for the pair with raidou2 0x00194E10, unique-reloc-hash
@@ -10835,7 +10835,7 @@
 0x003E83D8	D_r1_003E83D8	placeholder	placeholder for the pair with raidou2 0x00444338, code-ref
 0x003E84D0	D_r1_003E84D0	placeholder	placeholder for the pair with raidou2 0x00444430, code-ref
 0x003E84F8	D_r1_003E84F8	placeholder	placeholder for the pair with raidou2 0x00444458, code-ref
-0x003E8500	D_r1_003E8500	placeholder	placeholder for the pair with raidou2 0x00444460, code-ref
+0x003E8500	frFontClutTable	inferred	smt3-pair: frSetFontClut copies it into gFT.imageBuffers
 0x003E8680	D_r1_003E8680	placeholder	placeholder for the pair with raidou2 0x004445E0, run-order-size
 0x003E8688	D_r1_003E8688	placeholder	placeholder for the pair with raidou2 0x004445E8, code-ref
 0x003E8700	D_r1_003E8700	placeholder	placeholder for the pair with raidou2 0x00444660, code-ref
@@ -20680,7 +20680,7 @@
 0x004B5FA0	D_r1_004B5FA0	placeholder	placeholder for the pair with raidou2 0x00545BB0, code-ref
 0x004B60A0	D_r1_004B60A0	placeholder	placeholder for the pair with raidou2 0x00545CB0, code-ref
 0x004B60E0	D_r1_004B60E0	placeholder	placeholder for the pair with raidou2 0x00545CF0, code-ref
-0x004B6300	D_r1_004B6300	placeholder	placeholder for the pair with raidou2 0x00545F10, code-ref
+0x004B6300	gFT	inferred	smt3-pair: frFont.c reads its font entries and atlas; SMT3 gFT with 0x20-byte frFontData_t
 0x004B6304	D_r1_004B6304	placeholder	placeholder for the pair with raidou2 0x00545F14, code-ref
 0x004B6420	D_r1_004B6420	placeholder	placeholder for the pair with raidou2 0x00546030, code-ref
 0x004B6424	D_r1_004B6424	placeholder	placeholder for the pair with raidou2 0x00546034, code-ref

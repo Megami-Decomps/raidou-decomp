@@ -285,7 +285,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x003E83D8	0x00444338	D_r1_003E83D8	.data	0xF8	no	code-ref
 0x003E84D0	0x00444430	D_r1_003E84D0	.data	0x28	yes	code-ref
 0x003E84F8	0x00444458	D_r1_003E84F8	.data	0x8	yes	code-ref
-0x003E8500	0x00444460	D_r1_003E8500	.data	0x180	yes	code-ref
+0x003E8500	0x00444460	frFontClutTable	.data	0x180	yes	code-ref
 0x003E8680	0x004445E0	D_r1_003E8680	.data	0x8	yes	run-order-size
 0x003E8688	0x004445E8	D_r1_003E8688	.data	0x78	yes	code-ref
 0x003E8700	0x00444660	D_r1_003E8700	.data	0x48	no	code-ref
@@ -10130,7 +10130,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x004B5FA0	0x00545BB0	D_r1_004B5FA0	.bss	0x100	no	code-ref
 0x004B60A0	0x00545CB0	D_r1_004B60A0	.bss	0x40	no	code-ref
 0x004B60E0	0x00545CF0	D_r1_004B60E0	.bss	0x220	no	code-ref
-0x004B6300	0x00545F10	D_r1_004B6300	.bss	0x4	no	code-ref
+0x004B6300	0x00545F10	gFT	.bss	0x4	no	code-ref
 0x004B6304	0x00545F14	D_r1_004B6304	.bss	0x11C	no	code-ref
 0x004B6420	0x00546030	D_r1_004B6420	.bss	0x4	no	code-ref
 0x004B6424	0x00546034	D_r1_004B6424	.bss	0x4	no	code-ref

@@ -1079,7 +1079,6 @@ dds3MFilterBuf = 0x00474DE0;
 mfiltertarget = 0x00474E08;
 fclWorkValue = 0x00474E90;
 gFGC = 0x004B5F40;
-gFT = 0x004B62DC;
 gVarStr = 0x004B6478;
 itfMesMngManager = 0x004B67C0;
 pinst = 0x004B67EC;

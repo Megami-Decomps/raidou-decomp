@@ -63,7 +63,6 @@ struct frFontData_t {
     void *ysht;
     GsFont_t **trans;
     struct frFontResource_t *resource;
-    addr_t data;
 };
 
 /* Free-list header stored immediately before each interface-pool payload. */
@@ -72,7 +71,7 @@ struct frFontNodeHeader_t {
     struct frFontNodeHeader_t *next;
 };
 
-/* frFontWork + 0x160; the small texture label aliases this owned subobject. */
+/* gFT + 0x13C; the small texture label aliases this owned subobject. */
 struct frFontAtlas_t {
     s32 width;
     u32 widthExponent;
@@ -1584,17 +1583,12 @@ void frFontGetGlyphPositionAtIndex(FrFontPosition *position, s32 requestedIndex,
 void frFontCreateContext();
 /* End of declarations from src/dds2/interface/frFont.c */
 
-#ifdef NON_MATCHING
-/* runs past the next function at 0x001923D8 */
 void func_r1_0017D778(s32 StyleNo, s32 Width) {
     frFontData_t *entry = &gFT.entries[StyleNo & FR_FONT_BYTE_MASK];
 
     entry->prop[0] = FR_FONT_ENTRY_ENABLED;
     entry->prop[1] = Width + 1;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017D778);
-#endif
 
 /* Reverse the four byte positions of a 32-bit word. */
 u32 frSwapColor(u32 Col) {
@@ -1722,8 +1716,6 @@ void frCopyFontClutToVram(s32 GS_LocalAddr, saddr_t pClut) {
     SignalSema(dds3GsSema);
 }
 
-#ifdef NON_MATCHING
-/* 6 of 54 words differ (first at +0x20) */
 void frClearTexBuf(void) {
     u8 loadImage[0x60];
     sdfMemHandle_t *allocation;
@@ -1743,16 +1735,11 @@ void frClearTexBuf(void) {
     SignalSema(dds3GsSema);
     sdfMemFreeDirect(allocation);
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frClearTexBuf);
-#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017DCC8);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017DD08);
 
-#ifdef NON_MATCHING
-/* 6 of 23 words differ (first at +0x1C) */
 void frDestroyFontTable(dds3ProcessID_t *id) {
     frDelStyleAll();
     frDestroyFontRequestNow(gFT.glyphSlots[0]);
@@ -1763,9 +1750,6 @@ void frDestroyFontTable(dds3ProcessID_t *id) {
     sdfGsMemFree(gFT.textureHead0);
     sdfGsMemFree(gFT.textureHead1);
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frDestroyFontTable);
-#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017DF88);
 
@@ -1779,8 +1763,6 @@ void frLoadStyleAll(void) {
     frLoadFontData(3, "/font/font3.fnt");
 }
 
-#ifdef NON_MATCHING
-/* 1 of 23 words differ (first at +0x2C) */
 void frDelStyleAll(void) {
     s32 fontIndex;
 
@@ -1790,12 +1772,7 @@ void frDelStyleAll(void) {
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frDelStyleAll);
-#endif
 
-#ifdef NON_MATCHING
-/* 1 of 48 words differ (first at +0x28) */
 void frSetFontClut(void) {
     u32 imageWords[FR_FONT_IMAGE_WORD_COUNT];
     s32 bufferIndex = 0;
@@ -1822,12 +1799,7 @@ void frSetFontClut(void) {
         sourceWordOffset += FR_FONT_IMAGE_WORD_COUNT;
     } while (bufferIndex < FR_FONT_IMAGE_BUFFER_COUNT);
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frSetFontClut);
-#endif
 
-#ifdef NON_MATCHING
-/* runs past the next function at 0x00192ED0 */
 void func_r1_0017E230(frTextHandle_t *pText) {
     GsFont_t *cachedItem = pText->cachedItem;
 
@@ -1839,9 +1811,6 @@ void func_r1_0017E230(frTextHandle_t *pText) {
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017E230);
-#endif
 
 /* Retain the chain if any fade value changed; otherwise release it and return NULL. */
 frFontHandle_t *frDestroyFontRequest(frFontHandle_t *pFRQ) {
@@ -1900,8 +1869,6 @@ frFontHandle_t *func_r1_0017E9C8(GsFont_t *pFont, frFontHandle_t *pFRQ) {
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017E9C8);
 #endif
 
-#ifdef NON_MATCHING
-/* 2 of 56 words differ (first at +0x80) */
 GsFont_t *frTranslateUserData(s32 Width, s32 Height, void *pData, s8 DataFreeMode) {
     s32 imagePosition[2];
     sdfImageRequest_t uploadRequest;
@@ -1931,13 +1898,8 @@ GsFont_t *frTranslateUserData(s32 Width, s32 Height, void *pData, s8 DataFreeMod
     sdfImageSetReq(&uploadRequest);
     return cachedItem;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frTranslateUserData);
-#endif
 
-#ifdef NON_MATCHING
-/* 30 of 31 words differ (first at +0x4) */
-u8 *func_r1_0017EAF8(u8 Style, s32 FontNo) {
+u8 *frDecodeFontImage(u8 Style, s32 FontNo) {
     frFontData_t *entry = &gFT.entries[Style];
     u8 *clonedResource = sdfChipAllocDirect(FR_FONT_RESOURCE_CLONE_BYTES);
     frFontImage_t segments;
@@ -1952,12 +1914,7 @@ u8 *func_r1_0017EAF8(u8 Style, s32 FontNo) {
     frDecodeFontRow(clonedResource, FontNo, entry->resource, &segments);
     return clonedResource;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017EAF8);
-#endif
 
-#ifdef NON_MATCHING
-/* 45 of 61 words differ (first at +0x3C) */
 GsFont_t *func_r1_0017EB70(frTextHandle_t *pText, s32 FontNo) {
     frFontData_t *entry = &gFT.entries[pText->renderValueOrSetupOrShade.setupBytes.fontIndex];
     GsFont_t *cachedItem;
@@ -1982,9 +1939,6 @@ GsFont_t *func_r1_0017EB70(frTextHandle_t *pText, s32 FontNo) {
     gFT.cachedItemCount++;
     return cachedItem;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017EB70);
-#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017EC60);
 
@@ -2131,17 +2085,12 @@ INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017F830);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_001945B8);
 
-#ifdef NON_MATCHING
-/* 4 of 20 words differ (first at +0x20) */
 s32 func_r1_0017FBA0(dds3ProcessID_t *id) {
     s32 queueIndex = (dds3GetFrameID() & FR_FONT_BYTE_MASK) == 0;
 
     gFT.glyphSlots[queueIndex] = frDestroyFontRequestNow(gFT.glyphSlots[queueIndex]);
     return 0;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017FBA0);
-#endif
 
 frFontHandle_t *func_r1_0017FBF0(frFontHandle_t *pFRQ1, frFontHandle_t *pFRQ2) {
     return frCombineFontRequestEx(pFRQ1, pFRQ2, 1);
@@ -2215,23 +2164,13 @@ INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017FDC8);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017FEB8);
 
-#ifdef NON_MATCHING
-/* 8 of 9 words differ (first at +0x4) */
-u16 func_r1_0017FFB8(s32 slotIndex) {
+u16 frGetFontWidth(s32 slotIndex) {
     return gFT.entries[slotIndex & FR_FONT_BYTE_MASK].resourceHeader->cellWidth;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017FFB8);
-#endif
 
-#ifdef NON_MATCHING
-/* 8 of 9 words differ (first at +0x4) */
-u16 func_r1_0017FFD8(s32 slotIndex) {
+u16 frGetFontHeight(s32 slotIndex) {
     return gFT.entries[slotIndex & FR_FONT_BYTE_MASK].resourceHeader->cellHeight;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017FFD8);
-#endif
 
 #ifdef NON_MATCHING
 /* 1 of 3 words differ (first at +0x0) */

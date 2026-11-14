@@ -1922,7 +1922,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0017E888	0x00193400	func_r1_0017E888	no	no	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-masked-hash
 0x0017E9C8	0x00193540	func_r1_0017E9C8	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017EA18	0x00193590	frTranslateUserData	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
-0x0017EAF8	0x00193670	func_r1_0017EAF8	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
+0x0017EAF8	0x00193670	frDecodeFontImage	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017EB70	0x001936E8	func_r1_0017EB70	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017EC60	0x001937D8	func_r1_0017EC60	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017ECF0	0x00193868	func_r1_0017ECF0	no	no	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-masked-hash
@@ -1955,8 +1955,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0017FD78	0x00194B78	frGetStrWidth2	yes	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017FDC8	0x00194BC8	func_r1_0017FDC8	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
 0x0017FEB8	0x00194CB8	func_r1_0017FEB8	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash
-0x0017FFB8	0x00194DB8	func_r1_0017FFB8	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	masked-hash-in-gap
-0x0017FFD8	0x00194DD8	func_r1_0017FFD8	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	masked-hash-in-gap
+0x0017FFB8	0x00194DB8	frGetFontWidth	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	masked-hash-in-gap
+0x0017FFD8	0x00194DD8	frGetFontHeight	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	masked-hash-in-gap
 0x0017FFF8	0x00194DF8	func_r1_0017FFF8	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	masked-hash-in-gap
 0x00180008	0x00194E08	func_r1_00180008	no	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	masked-hash-in-gap
 0x00180010	0x00194E10	func_r1_00180010	yes	yes	asm/raidou1/interface/frFont.s	asm/raidou2/interface/frFont.s	unique-reloc-hash

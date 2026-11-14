@@ -1924,7 +1924,7 @@
 0x00193400	func_r1_0017E888	placeholder	placeholder for the pair with raidou1 0x0017E888, unique-masked-hash
 0x00193540	func_r1_0017E9C8	placeholder	placeholder for the pair with raidou1 0x0017E9C8, unique-reloc-hash
 0x00193590	frTranslateUserData	inferred	SMT3HD name via SLUS_209.11 0x001C7408, unique-masked-hash; map-agrees
-0x00193670	func_r1_0017EAF8	placeholder	placeholder for the pair with raidou1 0x0017EAF8, unique-reloc-hash
+0x00193670	frDecodeFontImage	inferred	twin-of-raidou1-0x0017EAF8
 0x001936E8	func_r1_0017EB70	placeholder	placeholder for the pair with raidou1 0x0017EB70, unique-reloc-hash
 0x001937D8	func_r1_0017EC60	placeholder	placeholder for the pair with raidou1 0x0017EC60, unique-reloc-hash
 0x00193868	func_r1_0017ECF0	placeholder	placeholder for the pair with raidou1 0x0017ECF0, unique-masked-hash
@@ -1959,8 +1959,8 @@
 0x00194B78	frGetStrWidth2	inferred	SMT3HD name via SLUS_209.11 0x001C8268, unique-masked-hash; map-agrees
 0x00194BC8	func_r1_0017FDC8	placeholder	placeholder for the pair with raidou1 0x0017FDC8, unique-reloc-hash
 0x00194CB8	func_r1_0017FEB8	placeholder	placeholder for the pair with raidou1 0x0017FEB8, unique-reloc-hash
-0x00194DB8	func_r1_0017FFB8	placeholder	placeholder for the pair with raidou1 0x0017FFB8, masked-hash-in-gap
-0x00194DD8	func_r1_0017FFD8	placeholder	placeholder for the pair with raidou1 0x0017FFD8, masked-hash-in-gap
+0x00194DB8	frGetFontWidth	inferred	twin-of-raidou1-0x0017FFB8
+0x00194DD8	frGetFontHeight	inferred	twin-of-raidou1-0x0017FFD8
 0x00194DF8	func_r1_0017FFF8	placeholder	placeholder for the pair with raidou1 0x0017FFF8, masked-hash-in-gap
 0x00194E08	func_r1_00180008	placeholder	placeholder for the pair with raidou1 0x00180008, masked-hash-in-gap
 0x00194E10	func_r1_00180010	placeholder	placeholder for the pair with raidou1 0x00180010, unique-reloc-hash
@@ -10818,7 +10818,7 @@
 0x00444338	D_r1_003E83D8	placeholder	placeholder for the pair with raidou1 0x003E83D8, code-ref
 0x00444430	D_r1_003E84D0	placeholder	placeholder for the pair with raidou1 0x003E84D0, code-ref
 0x00444458	D_r1_003E84F8	placeholder	placeholder for the pair with raidou1 0x003E84F8, code-ref
-0x00444460	D_r1_003E8500	placeholder	placeholder for the pair with raidou1 0x003E8500, code-ref
+0x00444460	frFontClutTable	inferred	twin-of-raidou1-0x003E8500
 0x004445E0	D_r1_003E8680	placeholder	placeholder for the pair with raidou1 0x003E8680, run-order-size
 0x004445E8	D_r1_003E8688	placeholder	placeholder for the pair with raidou1 0x003E8688, code-ref
 0x00444660	D_r1_003E8700	placeholder	placeholder for the pair with raidou1 0x003E8700, code-ref
@@ -20668,7 +20668,7 @@
 0x00545BB0	D_r1_004B5FA0	placeholder	placeholder for the pair with raidou1 0x004B5FA0, code-ref
 0x00545CB0	D_r1_004B60A0	placeholder	placeholder for the pair with raidou1 0x004B60A0, code-ref
 0x00545CF0	D_r1_004B60E0	placeholder	placeholder for the pair with raidou1 0x004B60E0, code-ref
-0x00545F10	D_r1_004B6300	placeholder	placeholder for the pair with raidou1 0x004B6300, code-ref
+0x00545F10	gFT	inferred	smt3-pair: frFont.c reads its font entries and atlas; SMT3 gFT with 0x20-byte frFontData_t
 0x00545F14	D_r1_004B6304	placeholder	placeholder for the pair with raidou1 0x004B6304, code-ref
 0x00546030	D_r1_004B6420	placeholder	placeholder for the pair with raidou1 0x004B6420, code-ref
 0x00546034	D_r1_004B6424	placeholder	placeholder for the pair with raidou1 0x004B6424, code-ref
