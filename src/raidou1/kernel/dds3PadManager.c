@@ -943,7 +943,7 @@ void dds3PadInitialize(void) {
     dds3PadVibrationTable[1] = 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadUpdate);
+INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3RunProcessList);
 
 void Act2Sub(void) {
     u8 target = D_r1_0046F619;

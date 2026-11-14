@@ -72,7 +72,7 @@
 0x00102BC8	dds3AdminiGetPrevHistoryFlag	inferred	SMT3HD name via SLUS_209.11 0x00102A10, reloc-identical; map-agrees
 0x00102BF8	StartSequence	hd	hd: Raidou HD dds3AdminiProcess.StartSequence, score 9.45 band B
 0x00102D70	dds3AdminiEndCheck	inferred	SMT3HD name via SLUS_209.11 0x00102C60, reloc-identical; map-agrees
-0x00102DF0	NeoProcess	hd	hd: Raidou HD dds3AdminiProcess.NeoProcess, score 8.45 band B
+0x00102DF0	dds3AdminiNeoProcess	inferred	smt3-decomp name dds3AdminiNeoProcess, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=0.95 full=0.86 margin=0.55 callees=4 size=0.931; R2 top op=0.95 full=0.86 margin=0.55 callees=4 size=0.931; replaces NeoProcess: hd: Raidou HD dds3AdminiProcess.NeoProcess, score 8.45 band B
 0x00102F70	dds3AdminiNeoShutdown	inferred	SMT3HD name via SLUS_209.11 0x00102E78, reloc-identical; map-agrees
 0x00102FF0	dds3InitAdmini	inferred	SMT3HD name via SLUS_209.11 0x00102EF8, unique-masked-hash; map-agrees
 0x001030B0	fclEncycFindFreeSlot	inferred	SMT3HD name via SLUS_209.11 0x00102FB8, unique-masked-hash; map-agrees
@@ -88,7 +88,7 @@
 0x00103A20	dds3ConsPanelTagLinkZ	inferred	SMT3HD name via SLUS_209.11 0x00103928, reloc-identical; map-agrees
 0x00103A88	dds3PadVibrationTest	inferred	twin-of-raidou1-0x00103A48, run-order-near
 0x00103AE8	dds3PadInitialize	inferred	SMT3HD name via SLUS_209.11 0x00103A00, reloc-identical; map-agrees
-0x00103C18	dds3PadUpdate	hd	hd: Raidou HD dds3PadManager.dds3PadUpdate, score 9.0 band B
+0x00103C18	dds3RunProcessList	inferred	smt3-decomp name dds3RunProcessList, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.70 callees=4 size=0.994; R2 top op=1.00 full=1.00 margin=0.70 callees=4 size=0.994; replaces dds3PadUpdate: hd: Raidou HD dds3PadManager.dds3PadUpdate, score 9.0 band B
 0x00104110	Act2Sub	hd	hd: Raidou HD dds3PadManager.Act2Sub, score 8.7 band B; replaces kwlnPadStepLargeMotorLevel: dds-decomp DDS1 name via SLUS_209.74 0x00104008, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00104170	dds3PadAct	hd	hd: Raidou HD dds3PadManager.dds3PadAct, score 10.3 band A
 0x00104240	func_r1_00104210	placeholder	placeholder for the pair with raidou1 0x00104210, unique-reloc-hash
@@ -591,7 +591,7 @@
 0x00119000	DispBaseData	inferred	SMT3HD name via SLUS_209.11 0x0010D730, reloc-identical; map-agrees
 0x00119300	DispObjectBaseData	inferred	SMT3HD name via SLUS_209.11 0x0010DA30, reloc-identical; map-agrees
 0x00119388	dds3DebugBasic	inferred	SMT3HD name via SLUS_209.11 0x0010DAB8, reloc-identical; map-agrees
-0x001194B0	dds3Add	hd-inferred	hd: Raidou HD dds3Basic.dds3Add, score 8.8 band B
+0x001194B0	dds3AllocBasic	inferred	smt3-decomp name dds3AllocBasic, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.53 callees=2 size=1.000; R2 top op=1.00 full=1.00 margin=0.53 callees=2 size=1.000; replaces dds3Add: hd: Raidou HD dds3Basic.dds3Add, score 8.8 band B
 0x00119588	dds3DeleteBasic	inferred	SMT3HD name via SLUS_209.11 0x0010DCB8, reloc-identical; map-agrees
 0x00119608	dds3InitPoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DD38, reloc-identical; map-agrees
 0x00119680	dds3FreePoseSet	inferred	SMT3HD name via SLUS_209.11 0x0010DDB0, reloc-identical; map-agrees
@@ -650,8 +650,8 @@
 0x0011A7C0	scenemainprocuder	inferred	SMT3HD name via SLUS_209.11 0x0010EED0, unique-masked-hash; map-agrees
 0x0011A878	func_r1_00118048	placeholder	placeholder for the pair with raidou1 0x00118048, unique-reloc-hash
 0x0011A908	dds3VisibleSceneBasic	inferred	SMT3HD name via SLUS_209.11 0x0010F020, byte-identical; map-agrees
-0x0011A928	dds3SceneBasicAdd	hd-inferred	hd: Raidou HD dds3SceneBasic.dds3SceneBasicAdd, score 11.8 band A
-0x0011A9D0	dds3SceneBasicDelete	hd-inferred	hd: Raidou HD dds3SceneBasic.dds3SceneBasicDelete, score 10.3 band A
+0x0011A928	dds3AddSceneBasicData	inferred	smt3-decomp name dds3AddSceneBasicData, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.32 callees=2 size=1.000; R2 top op=1.00 full=1.00 margin=0.32 callees=2 size=1.000; replaces dds3SceneBasicAdd: hd: Raidou HD dds3SceneBasic.dds3SceneBasicAdd, score 11.8 band A
+0x0011A9D0	dds3DeleteSceneBasicData	inferred	smt3-decomp name dds3DeleteSceneBasicData, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.39 callees=1 size=1.000; R2 top op=1.00 full=1.00 margin=0.39 callees=1 size=1.000; replaces dds3SceneBasicDelete: hd: Raidou HD dds3SceneBasic.dds3SceneBasicDelete, score 10.3 band A
 0x0011AA60	dds3SetActiveCameraSceneBasic	inferred	SMT3HD name via SLUS_209.11 0x0010F178, reloc-identical; map-agrees
 0x0011AA98	dds3GetActiveCameraSceneBasic	inferred	SMT3HD name via SLUS_209.11 0x0010F1B0, shared-hash-in-run; map-agrees
 0x0011AAA8	dds3SetActiveUnitSceneBasic	inferred	SMT3HD name via SLUS_209.11 0x0010F1C0, reloc-identical; map-agrees
@@ -672,7 +672,7 @@
 0x0011B000	dds3SetMapNo	inferred	SMT3HD name via SLUS_209.11 0x0010F6B0, byte-identical; map-agrees
 0x0011B018	dds3GetMapNo	inferred	SMT3HD name via SLUS_209.11 0x0010F6C8, byte-identical; map-agrees
 0x0011B030	dds3SceneBasicSearchNameAndType	inferred	SMT3HD name via SLUS_209.11 0x0010F6E0, byte-identical; map-agrees
-0x0011B0E0	dds3SceneBasicSearchName_dds3SceneBasic	hd	hd: Raidou HD dds3SceneBasic.dds3SceneBasicSearchName, score 13.8 band A
+0x0011B0E0	dds3SceneBasicSearchName	inferred	smt3-decomp name dds3SceneBasicSearchName, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.26 callees=1 size=1.000; R2 top op=1.00 full=1.00 margin=0.26 callees=1 size=1.000; replaces dds3SceneBasicSearchName_dds3SceneBasic: hd: Raidou HD dds3SceneBasic.dds3SceneBasicSearchName, score 13.8 band A
 0x0011B188	AreaBasicConstructor	inferred	SMT3HD name via SLUS_209.11 0x0010F800, reloc-identical; map-agrees
 0x0011B1E8	AreaBasicDestructor	inferred	SMT3HD name via SLUS_209.11 0x0010F860, reloc-identical; map-agrees
 0x0011B268	AreaBasicMainprocuder	inferred	SMT3HD name via SLUS_209.11 0x0010F8E0, shared-hash-in-run; map-agrees
@@ -697,8 +697,8 @@
 0x0011B8C8	dds3MoverBasicGetPathControl	inferred	SMT3HD name via SLUS_209.11 0x0010FF68, shared-hash-in-run; map-agrees
 0x0011B8D8	dds3MoverBasicUpdate	inferred	SMT3HD name via SLUS_209.11 0x0010FF78, shared-hash-in-run; map-agrees
 0x0011B8F0	func_r1_00119088	placeholder	placeholder for the pair with raidou1 0x00119088, unique-reloc-hash
-0x0011B950	dds3ObjectBaseInitControlWorkData_dds3ObjectBase	hd	hd: Raidou HD dds3ObjectBase.dds3ObjectBaseInitControlWorkData, score 11.0 band A
-0x0011B9E8	dds3ObjectBaseFreeControlWorkData_dds3ObjectBase	hd	hd: Raidou HD dds3ObjectBase.dds3ObjectBaseFreeControlWorkData, score 10.8 band A
+0x0011B950	dds3ObjectBaseInitControlWorkData	inferred	smt3-decomp name dds3ObjectBaseInitControlWorkData, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=0.97 full=0.97 margin=0.23 callees=3 size=1.057; R2 top op=0.97 full=0.97 margin=0.23 callees=3 size=1.057; replaces dds3ObjectBaseInitControlWorkData_dds3ObjectBase: hd: Raidou HD dds3ObjectBase.dds3ObjectBaseInitControlWorkData, score 11.0 band A
+0x0011B9E8	dds3ObjectBaseFreeControlWorkData	inferred	smt3-decomp name dds3ObjectBaseFreeControlWorkData, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.42 callees=7 size=1.000; R2 top op=1.00 full=1.00 margin=0.42 callees=7 size=1.000; replaces dds3ObjectBaseFreeControlWorkData_dds3ObjectBase: hd: Raidou HD dds3ObjectBase.dds3ObjectBaseFreeControlWorkData, score 10.8 band A
 0x0011BAB0	dds3ObjectBaseOnFlag	inferred	SMT3HD name via SLUS_209.11 0x00110138, shared-hash-in-run; map-agrees
 0x0011BAE0	dds3ObjectBaseOffFlag	inferred	SMT3HD name via SLUS_209.11 0x00110168, shared-hash-in-run; map-agrees
 0x0011BB18	dds3ObjectBaseCheckFlag	inferred	SMT3HD name via SLUS_209.11 0x001101A0, shared-hash-in-run; map-agrees
@@ -773,7 +773,7 @@
 0x0011E380	dds3MatterObjectBasicConstructor	inferred	SMT3HD name via SLUS_209.11 0x00113468, reloc-identical; map-agrees
 0x0011E420	dds3MatterObjectBasicDestructor	inferred	SMT3HD name via SLUS_209.11 0x00113508, shared-hash-in-run; map-agrees
 0x0011E460	MainProcedure	hd	hd: Raidou HD dds3MatterObjectBasic.MainProcedure, score 10.8 band A
-0x0011E660	DrawProcedure	hd	hd: Raidou HD dds3MatterObjectBasic.DrawProcedure, score 10.3 band A
+0x0011E660	dds3MatterObjectBasicDrawProcedure	inferred	smt3-decomp name dds3MatterObjectBasicDrawProcedure, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=0.96 full=0.96 margin=0.43 callees=14 size=1.034; R2 top op=0.96 full=0.96 margin=0.43 callees=14 size=1.034; replaces DrawProcedure: hd: Raidou HD dds3MatterObjectBasic.DrawProcedure, score 10.3 band A
 0x0011E850	dds3RefreshStoredVec3	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001143B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0011E878	FreeEffectData	inferred	SMT3HD name via SLUS_209.11 0x001139A8, reloc-identical; map-agrees
 0x0011E9A8	dds3EffectObjectBasicConstructor	inferred	SMT3HD name via SLUS_209.11 0x00113AD8, reloc-identical; map-agrees
@@ -901,7 +901,7 @@
 0x00124A10	func_r1_00121548	placeholder	placeholder for the pair with raidou1 0x00121548, masked-hash-in-gap
 0x00124A28	func_r1_00121560	placeholder	placeholder for the pair with raidou1 0x00121560, masked-hash-in-gap
 0x00124A40	sdatCalc_GetBadStatus	hd-inferred	hd: Raidou HD sdat.sdatCalc_GetBadStatus, score 8.7 band B
-0x00124B28	datAddMoney	hd-inferred	hd: Raidou HD dat.datAddMoney, score 8.4 band B
+0x00124B28	datAddMaka	inferred	smt3-decomp name datAddMaka, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.79 callees=0 size=1.000; R2 top op=1.00 full=1.00 margin=0.79 callees=0 size=1.000; replaces datAddMoney: hd: Raidou HD dat.datAddMoney, score 8.4 band B
 0x00124B58	func_r1_001215F8	placeholder	placeholder for the pair with raidou1 0x001215F8, masked-hash-in-gap
 0x00124EA0	func_r1_00121780	placeholder	placeholder for the pair with raidou1 0x00121780, unique-masked-hash
 0x00124EC8	func_r1_001217A8	placeholder	placeholder for the pair with raidou1 0x001217A8, masked-hash-in-gap
@@ -1101,7 +1101,7 @@
 0x0012AED8	fclBackSprite	hd-inferred	hd: Raidou HD fclDrawBack.fclBackSprite, score 9.3 band B
 0x0012B150	fclCommandHelp	hd-inferred	hd: Raidou HD fclDrawBack.fclCommandHelp, score 8.1 band B
 0x0012B1D0	fldAllTblLoad	inferred	smt3-pair: SMT3 fldAllTblLoad body: sdfFileOpen of the all-table file (/map/all/MAPALL.TBL here, /fld/f/bin/FLDALL.TBL in SMT3) then a run of sdfFileRead into tables, sdfFileClose
-0x0012BAC8	mapGetLight	hd	hd: Raidou HD fld.mapGetLight, score 7.0 band B
+0x0012BAC8	R360_LR	inferred	smt3-decomp name R360_LR, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.55 callees=0 size=1.000; R2 top op=1.00 full=1.00 margin=0.55 callees=0 size=1.000; replaces mapGetLight: hd: Raidou HD fld.mapGetLight, score 7.0 band B
 0x0012BB98	fldSnapAngleToCompassPoint	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00122100, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0012BF30	fldPlayerCalc360_8	inferred	SMT3HD name via SLUS_209.11 0x0012FE08, reloc-identical; map-agrees
 0x0012C1A8	fldPlayerCalc360_4	inferred	SMT3HD name via SLUS_209.11 0x00130080, reloc-identical; map-agrees
@@ -2152,14 +2152,14 @@
 0x0019C4E0	itfMesGetWindowTexture	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0019B870, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0019C4F0	func_r1_00187488	placeholder	placeholder for the pair with raidou1 0x00187488, run-order-size
 0x0019C500	func_r1_00187498	placeholder	placeholder for the pair with raidou1 0x00187498, run-order-size
-0x0019C518	itfMesMngInitialize_itf	hd	hd: Raidou HD itf.itfMesMngInitialize, score 9.9 band B
+0x0019C518	itfMesMngInitialize	inferred	smt3-decomp name itfMesMngInitialize, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=0.98 full=0.98 margin=0.40 callees=10 size=1.049; R2 top op=0.98 full=0.98 margin=0.40 callees=10 size=1.049; replaces itfMesMngInitialize_itf: hd: Raidou HD itf.itfMesMngInitialize, score 9.9 band B
 0x0019C618	itfMesMngRelease	inferred	SMT3HD name via SLUS_209.11 0x001CDB38, reloc-identical; map-agrees
 0x0019C660	func_r1_001875F8	placeholder	placeholder for the pair with raidou1 0x001875F8, unique-masked-hash
 0x0019C6C0	itfMesMngRequestMessage_itf	hd	hd: Raidou HD itf.itfMesMngRequestMessage, score 10.7 band A
 0x0019C8A8	itfMesSelectTableItemText	inferred	twin-of-raidou1-0x00187840, unique-masked-hash
 0x0019C948	itfMesMngRequestMessageRelease	inferred	twin-of-raidou1-0x001878E0, run-order-near
 0x0019CA40	itfMesMngRequestSelect_itf	hd	hd: Raidou HD itf.itfMesMngRequestSelect, score 10.25 band A
-0x0019CB58	itfMesMngRequestSelectRelease_itf	hd	hd: Raidou HD itf.itfMesMngRequestSelectRelease, score 11.3 band A
+0x0019CB58	itfMesMngRequestSelectRelease	inferred	smt3-decomp name itfMesMngRequestSelectRelease, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=0.97 full=0.97 margin=0.38 callees=1 size=1.059; R2 top op=0.97 full=0.97 margin=0.38 callees=1 size=1.059; replaces itfMesMngRequestSelectRelease_itf: hd: Raidou HD itf.itfMesMngRequestSelectRelease, score 11.3 band A
 0x0019CBE8	itfMesMngSetMaskSelect	inferred	SMT3HD name via SLUS_209.11 0x001CE008, shared-hash-in-run; map-agrees
 0x0019CC08	itfMesMngSetSelect	inferred	SMT3HD name via SLUS_209.11 0x001CE028, reloc-identical; map-agrees
 0x0019CC70	itfMesMngSetSpeakerPosition	inferred	SMT3HD name via SLUS_209.11 0x001CE090, shared-hash-in-run; map-silent
@@ -2678,7 +2678,7 @@
 0x001B9538	evtFreeStage	inferred	SMT3HD name via SLUS_209.11 0x001E1770, shared-hash-in-run; map-agrees
 0x001B9570	evtFreeAllUnit	inferred	SMT3HD name via SLUS_209.11 0x001E17A8, reloc-identical; map-agrees
 0x001B95C0	evtLoadArea	inferred	twin-of-raidou1-0x001A3908
-0x001B96B8	evtLoadArea_FromMemory_evt	hd	hd: Raidou HD evt.evtLoadArea_FromMemory, score 9.65 band B
+0x001B96B8	evtLoadArea_FromMemory	inferred	smt3-decomp name evtLoadArea_FromMemory, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=0.97 full=0.97 margin=0.27 callees=15 size=0.946; R2 top op=0.97 full=0.97 margin=0.27 callees=15 size=0.946; replaces evtLoadArea_FromMemory_evt: hd: Raidou HD evt.evtLoadArea_FromMemory, score 9.65 band B
 0x001B97D0	evtStartEvent	inferred	twin-of-raidou1-0x001A3B18, run-order-near
 0x001B9848	evtKillFieldScript	inferred	SMT3HD name via SLUS_209.11 0x001E1AB0, reloc-identical; map-agrees
 0x001B98F8	evtPathStop	inferred	SMT3HD name via SLUS_209.11 0x001E1B60, shared-hash-in-run; map-agrees
@@ -2705,13 +2705,13 @@
 0x001BB670	func_r1_001A59A8	placeholder	placeholder for the pair with raidou1 0x001A59A8, unique-reloc-hash
 0x001BB6F8	GetBaseLightDir2	hd	hd: Raidou HD evt.GetBaseLightDir2, score 9.3 band B
 0x001BB780	MakeLightPacket	hd	hd: Raidou HD evt.MakeLightPacket, score 8.8 band B
-0x001BB978	evtLinkLightObjectBasic_evt	hd	hd: Raidou HD evt.evtLinkLightObjectBasic, score 8.0 band B
+0x001BB978	evtLinkLightObjectBasic	inferred	smt3-decomp name evtLinkLightObjectBasic, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=0.98 full=0.98 margin=0.52 callees=0 size=1.038; R2 top op=0.98 full=0.98 margin=0.52 callees=0 size=1.038; replaces evtLinkLightObjectBasic_evt: hd: Raidou HD evt.evtLinkLightObjectBasic, score 8.0 band B
 0x001BB9E8	func_r1_001A5D20	placeholder	placeholder for the pair with raidou1 0x001A5D20, unique-reloc-hash
 0x001BBA50	evtLinkExternalLightPacket	hd	hd: Raidou HD evt.evtLinkExternalLightPacket, score 10.0 band A
 0x001BBA68	evtUnlinkExternalLightPacket	inferred	SMT3HD name via SLUS_209.11 0x001E35C8, unique-masked-hash; map-agrees
 0x001BBA98	evtSetUnitLightAndAmbient	inferred	SMT3HD name via SLUS_209.11 0x001E35F8, unique-masked-hash; map-agrees
 0x001BBB30	evtSetUnitLightAndAmbient3	hd-inferred	hd: Raidou HD evt.evtSetUnitLightAndAmbient3, score 8.1 band B
-0x001BBC20	evtSetUnitLightDir_evt	hd	hd: Raidou HD evt.evtSetUnitLightDir, score 8.4 band B
+0x001BBC20	evtSetUnitLightDir	inferred	smt3-decomp name evtSetUnitLightDir, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.54 callees=1 size=1.000; R2 top op=1.00 full=1.00 margin=0.54 callees=1 size=1.000; replaces evtSetUnitLightDir_evt: hd: Raidou HD evt.evtSetUnitLightDir, score 8.4 band B
 0x001BBC90	evtSetUnitLightDir1	hd-inferred	hd: Raidou HD evt.evtSetUnitLightDir1, score 8.4 band B
 0x001BBD00	evtSetUnitLightDir2	hd-inferred	hd: Raidou HD evt.evtSetUnitLightDir2, score 10.8 band A
 0x001BBD70	evtSetUnitColorRGB	inferred	SMT3HD name via SLUS_209.11 0x001E3700, unique-masked-hash; map-agrees
@@ -3566,7 +3566,7 @@
 0x001EC3D0	func_r1_001D5B30	placeholder	placeholder for the pair with raidou1 0x001D5B30, unique-masked-hash
 0x001EC770	fileClearAllSlotFlags	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028AE68, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001EC808	slHeadLoad	inferred	SMT3HD name via SLUS_209.11 0x00153010, reloc-identical; map-agrees
-0x001EC8E8	slHeadLoadProc_openFile_slMain	hd	hd: Raidou HD slMain.slHeadLoadProc_openFile, score 8.25 band B
+0x001EC8E8	slHeadLoadProc_openFile	inferred	smt3-decomp name slHeadLoadProc_openFile, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.31 callees=5 size=1.000; R2 top op=1.00 full=1.00 margin=0.31 callees=5 size=1.000; replaces slHeadLoadProc_openFile_slMain: hd: Raidou HD slMain.slHeadLoadProc_openFile, score 8.25 band B
 0x001EC960	slHeadLoadProc_readFile	inferred	SMT3HD name via SLUS_209.11 0x00153168, reloc-identical; map-agrees
 0x001EC9C0	func_r1_001D6120	placeholder	placeholder for the pair with raidou1 0x001D6120, unique-reloc-hash
 0x001ECAF8	slExitWait	inferred	smt3-decomp name via SLUS_209.11 0x00153300, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.323
@@ -8447,7 +8447,7 @@
 0x0039C830	gohBgmStop	hd-inferred	hd: Raidou HD gohInit.gohBgmStop, score 9.45 band B
 0x0039C878	gohLoad2ndProcess	hd-inferred	hd: Raidou HD gohInit.gohLoad2ndProcess, score 10.25 band A
 0x0039C938	Destroy_gohInit	hd	hd: Raidou HD gohInit.Destroy, score 15.65 band A
-0x0039CE20	gohProcessEnd	hd-inferred	hd: Raidou HD gohInit.gohProcessEnd, score 14.0 band A
+0x0039CE20	campKillProcesses	inferred	smt3-decomp name campKillProcesses, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.17 callees=3 size=1.000; R2 top op=1.00 full=1.00 margin=0.17 callees=3 size=1.000; replaces gohProcessEnd: hd: Raidou HD gohInit.gohProcessEnd, score 14.0 band A
 0x0039CE60	func_r1_00338220	placeholder	placeholder for the pair with raidou1 0x00338220, masked-hash-in-gap
 0x0039D018	func_r1_00338270	placeholder	placeholder for the pair with raidou1 0x00338270, masked-hash-in-gap
 0x0039D030	func_r1_00338288	placeholder	placeholder for the pair with raidou1 0x00338288, masked-hash-in-gap
@@ -9629,7 +9629,7 @@
 0x003E5E50	p2sdPlaySeDeg	inferred	SMT3HD name via SLUS_209.11 0x002C1938, shared-hash-in-run; map-silent
 0x003E5FB8	p2sdPlaySe3DEx	inferred	SMT3HD name via SLUS_209.11 0x002C1AA0, shared-hash-in-run; map-silent
 0x003E6010	p2sdSetStandPos	inferred	SMT3HD name via SLUS_209.11 0x002C1AF8, shared-hash-in-run; map-silent
-0x003E6138	p2sdLoadCheckMidi_sdfSound	hd	hd: Raidou HD sdfSound.p2sdLoadCheckMidi, score 11.4 band A
+0x003E6138	p2sdLoadCheckMidi	inferred	smt3-decomp name p2sdLoadCheckMidi, method=smt3-fuzzy-stage3; p=1.00; tier=A; evidence=R1 top op=1.00 full=1.00 margin=0.42 callees=1 size=1.000; R2 top op=1.00 full=1.00 margin=0.42 callees=1 size=1.000; replaces p2sdLoadCheckMidi_sdfSound: hd: Raidou HD sdfSound.p2sdLoadCheckMidi, score 11.4 band A
 0x003E61B8	p2sdLoadSMGFile	inferred	SMT3HD name via SLUS_209.11 0x002C1CA0, reloc-identical; map-agrees
 0x003E6290	func_r1_00370500	placeholder	placeholder for the pair with raidou1 0x00370500, unique-reloc-hash
 0x003E62C8	p2sdSetPcmBuffer	inferred	SMT3HD name via SLUS_209.11 0x002C1DB0, reloc-identical; map-agrees

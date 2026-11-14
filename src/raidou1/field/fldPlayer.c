@@ -254,7 +254,7 @@ extern s32 fldSyukanState;
 extern s32 fldSkyEnable;
 /* End of declarations from src/smt3/field/fldPlayer.c */
 
-INCLUDE_ASM(const s32, "field/fldPlayer", mapGetLight);
+INCLUDE_ASM(const s32, "field/fldPlayer", R360_LR);
 
 INCLUDE_ASM(const s32, "field/fldPlayer", fldSnapAngleToCompassPoint);
 

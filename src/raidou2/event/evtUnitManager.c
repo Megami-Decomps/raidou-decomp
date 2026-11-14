@@ -415,7 +415,7 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseLightDir2);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", MakeLightPacket);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkLightObjectBasic_evt);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkLightObjectBasic);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5D20);
 
@@ -430,7 +430,7 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightAndAmbient);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightAndAmbient3);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir_evt);
+INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir1);
 

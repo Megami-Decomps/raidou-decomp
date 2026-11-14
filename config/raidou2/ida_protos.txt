@@ -1,7 +1,7 @@
 # from the IDB signature proposal, strong rows only; leads, nothing reads this. 0xADDR name prototype
 0x001001F8 dds3FirstInit void dds3FirstInit(void)
 0x00100498 dds3NewGameStart void dds3NewGameStart(void)
-0x00103C18 dds3PadUpdate void dds3PadUpdate(void)
+0x00103C18 dds3RunProcessList void dds3RunProcessList(void)
 0x00104788 func_r1_00104758 void func_r1_00104758(sdfDrawTag_t *a1, sdfTexHandle_t *a2)
 0x00104BB0 func_r1_00104B80 s32 func_r1_00104B80(void)
 0x00105430 dds3InitDrawEnv void dds3InitDrawEnv(void)

@@ -275,7 +275,7 @@ INCLUDE_RODATA(const s32, "event/evtStage", D_r1_0044DCD8);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea);
 
-INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea_FromMemory_evt);
+INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea_FromMemory);
 
 void evtStartEvent(s32 no) {
     sprintf(evtStageScriptPath, "/event/e%03d/e%03d/scr/e%03d.bf", no - no % 10, no, no);

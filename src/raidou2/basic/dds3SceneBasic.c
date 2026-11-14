@@ -136,9 +136,9 @@ void dds3VisibleSceneBasic(dds3Basic_t *basic, s8 visible)
     }
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicAdd);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3AddSceneBasicData);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicDelete);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3DeleteSceneBasicData);
 
 dds3Basic_t *dds3SetActiveCameraSceneBasic(dds3Basic_t *pSceneBasic, dds3Basic_t *pCameraBasic)
 {
@@ -351,4 +351,4 @@ dds3Basic_t *dds3SceneBasicSearchNameAndType(dds3Basic_t *scene, s32 type, const
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicSearchName_dds3SceneBasic);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicSearchName);

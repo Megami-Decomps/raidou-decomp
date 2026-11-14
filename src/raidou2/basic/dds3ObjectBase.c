@@ -294,9 +294,9 @@ extern char dds3ObjectBaseTiakiANodeName[8];
 extern u16 frMessageCode;
 /* End of declarations from src/smt3/basic/dds3ObjectBase.c */
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseInitControlWorkData_dds3ObjectBase);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseInitControlWorkData);
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreeControlWorkData_dds3ObjectBase);
+INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreeControlWorkData);
 
 void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 mask)
 {

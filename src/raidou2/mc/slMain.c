@@ -2465,7 +2465,7 @@ saddr_t slHeadLoad(void) {
     return EE_ADDR_S(slHeadLoadProc_openFile);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", slHeadLoadProc_openFile_slMain);
+INCLUDE_ASM(const s32, "mc/slMain", slHeadLoadProc_openFile);
 
 saddr_t slHeadLoadProc_readFile(void) {
     slMcResult_t status = sdfMcFuncRead1();

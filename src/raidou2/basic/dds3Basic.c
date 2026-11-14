@@ -104,7 +104,7 @@ extern u32 dds3ObjectIdCounter;
 extern dds3Basic_t *dds3TheWorld;
 /* End of declarations from src/smt3/basic/dds3Basic.c */
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", dds3Add);
+INCLUDE_ASM(const s32, "basic/dds3Basic", dds3AllocBasic);
 
 void dds3DeleteBasic(dds3Basic_t *basic)
 {

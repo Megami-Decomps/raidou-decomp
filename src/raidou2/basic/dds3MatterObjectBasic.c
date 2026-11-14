@@ -181,7 +181,7 @@ void dds3MatterObjectBasicDestructor(dds3Basic_t *aPtr) {
 
 INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", MainProcedure);
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", DrawProcedure);
+INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", dds3MatterObjectBasicDrawProcedure);
 
 INCLUDE_SDATA(const s32, "basic/dds3MatterObjectBasic", D_r1_0046B48C);
 

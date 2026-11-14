@@ -1875,7 +1875,7 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187488);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187498);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngInitialize_itf);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngInitialize);
 
 /* Destroy an installed nonnegative window slot; no upper-bound validation. */
 void itfMesMngRelease(s32 id) {
@@ -1934,7 +1934,7 @@ void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker) {
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngRequestSelect_itf);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngRequestSelectRelease_itf);
+INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngRequestSelectRelease);
 
 void itfMesMngSetMaskSelect(s32 id, u32 maskpattern)
 {

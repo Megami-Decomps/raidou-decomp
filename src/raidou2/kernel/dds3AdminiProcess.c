@@ -515,7 +515,7 @@ saddr_t dds3AdminiEndCheck(dds3ProcessID_t *id)
     return EE_ADDR_S(dds3AdminiStartSequence);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", NeoProcess);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", dds3AdminiNeoProcess);
 
 void dds3AdminiNeoShutdown(dds3ProcessID_t *id)
 {
