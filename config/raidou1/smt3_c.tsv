@@ -1743,7 +1743,7 @@ effReleaseFixedSlotBlurWork	c
 effReleaseLinkedTarget	c
 effReleaseModelPointSetAsset	c
 effReleaseModelResources	c
-effReleaseParticleList	asm	local jump at +0x40
+effReleaseParticleList	c	compiles identical
 effReleaseParticleResources	c
 effReleasePointSetAsset	c
 effReleaseQueuedResourceName	c
@@ -2181,13 +2181,13 @@ fileAppendJobFromCommandPath	c
 fileClampPackedColorByte	c
 fileClearAllSlotFlags	c
 fileClearLoadObjectReferences	c
-fileCloneQueueEntries	asm	local jump at +0x90
+fileCloneQueueEntries	c	compiles identical
 fileCopyAndInvalidateSlotGroup	c
 fileCopyLoadObjectRecordVector	c
 fileCreateGridLoaderRecord	c
 fileCreateSurfaceLoaderState	c
 fileCursorStepUp	c
-fileDestroyEffectSurfaceAndChildren	asm	local jump at +0xAC
+fileDestroyEffectSurfaceAndChildren	c	compiles identical
 fileDestroyJob	c
 fileDispatchJobTypeCallback	c
 fileDuplicateAndAppendJob	c
@@ -2241,15 +2241,15 @@ fileQueueAppend	c
 fileQueueClone	c
 fileQueueCopyRotationFromSource	c
 fileQueueCountLinkedJobs	c
-fileQueueCreateFromCommandState	asm	local jump at +0xCC
+fileQueueCreateFromCommandState	c	compiles identical
 fileQueueDestroy	c
-fileQueueDetachSectorFollower	asm	size 0x68, retail 0xB0
+fileQueueDetachSectorFollower	c	compiles identical
 fileQueueFindById	c
 fileQueueFindBySector	c
 fileQueueFindFlaggedById	c
 fileQueueGetAt	c
 fileQueueInsertAfter	c
-fileQueueLinkJobToSectorLeader	asm	size 0x13C, retail 0x170
+fileQueueLinkJobToSectorLeader	c	compiles identical
 fileQueueRemove	c
 fileQueueRemoveAndDestroyJob	asm	2 words differ, first at +0xC0
 fileQueueSaveImage	asm	local jump at +0x2E8
@@ -2262,7 +2262,7 @@ fileRead	c
 fileReadRecordSecondVector	c
 fileReadVectorPtr20	c
 fileReplaceEffectSurfaceJobs	asm	local jump at +0xB0
-fileReplaceEffectSurfaceQueues	asm	local jump at +0x4C
+fileReplaceEffectSurfaceQueues	c	compiles identical
 fileReplaceReferenceHolder	c
 fileResetLoadContextSlide	c
 fileResetSlotStates	c
@@ -2343,7 +2343,7 @@ frDisableMode	c
 frEnableMode	c
 frEraseEffect	c
 frFontAppendIndexedTextToGlyphChain	asm	size 0x168, retail 0x170
-frFontCheckPendingGlyphState	asm	local jump at +0x50
+frFontCheckPendingGlyphState	c	compiles identical
 frFontMoveChainTo	c
 frFreeFontNode	c
 frFreeFontTable	c
@@ -2596,7 +2596,7 @@ mdlHandleViewerNodeCursorInput	c
 mdlHasMotionEx	c
 mdlHideAllNode	c
 mdlInitManager	c
-mdlIsDebugTimeGraph	asm	.rodata base 0x0044D920, 0x0044D930
+mdlIsDebugTimeGraph	c	compiles identical
 mdlLink	c
 mdlLinkBlur	c
 mdlLinkEffect	c
@@ -2700,7 +2700,8 @@ mnuClearTerminalPanelSelection	c
 mnuClearWindowListSelectionFlags	c
 mnuCreateListState	c
 mnuCreateListWithDefaults	c
-mnuCreatePanelIconState	asm	.rodata base 0x00463ED0, 0x00463F28
+mnuCreatePanelIconState	c	compiles identical
+mnuCreateWindowContainer	c	compiles identical
 mnuCreateWindowSpriteResources	c
 mnuDecreaseListNodeFadeCounters	c
 mnuDestroyListState	c
@@ -2721,6 +2722,7 @@ mnuDrawInfoWindowB	c
 mnuDrawListScrollbar	c
 mnuDrawMotionChangeLabel	c
 mnuDrawVisibleWindowIconRows	c
+mnuDrawWindowResourceSpriteRows	c	compiles identical
 mnuEvaluateCubicBezierPoint	c
 mnuFindCampKeyTrackNeighbors	c
 mnuFreeListEntries	c
@@ -2770,7 +2772,7 @@ mnuSetTitleVoicePrefixIndex	c
 mnuSetWindowContainerLayout	c
 mnuShouldBlockViewerEndCountdown	c
 mnuSolveCubicBezierYForX	c
-mnuSortItems	asm	.rodata base 0x00463ED0, 0x00463F28
+mnuSortItems	asm	comparator table order differs from DDS's names
 mnuStartFixedSoundStream	c
 mnuStopTitleVoicePlayback	c
 mnuStoreTaskResult	asm	fileLoad at 0x001D3B30, others at 0x001D3B10

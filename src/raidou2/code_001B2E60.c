@@ -1594,7 +1594,9 @@ INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D9C8);
 
 INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D9D8);
 
-INCLUDE_ASM(const s32, "code_001B2E60", mdlIsDebugTimeGraph);
+s32 mdlIsDebugTimeGraph(void) {
+    return dds3SearchProcessName("DebugTimeGrph") != 0;
+}
 
 INCLUDE_ASM(const s32, "code_001B2E60", func_r1_0019F6C0);
 

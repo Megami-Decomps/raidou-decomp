@@ -1970,7 +1970,7 @@
 0x00195038	frFontCenterGlyphChainAt	inferred	dds-decomp DDS2 name via SLUS_211.52 0x0019DD48, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00195160	MessageNumSearch	inferred	SMT3HD name via SLUS_209.11 0x001C8498, byte-identical; map-agrees
 0x001951D0	frFontAppendIndexedTextToGlyphChain	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00196220, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00195340	func_r1_00180540	placeholder	placeholder for the pair with raidou1 0x00180540, unique-reloc-hash
+0x00195340	frFontCreateContext	inferred	called where DDS frFontCheckPendingGlyphState calls DDS frFontCreateContext
 0x001953B0	frFontCheckPendingGlyphState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001963E0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00195420	frMessageReturnCode	inferred	SMT3HD name via SLUS_209.11 0x001C8730, reloc-identical; map-agrees
 0x00195448	itfReadEncodedTextLead	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00196478, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -8925,7 +8925,7 @@
 0x003CC590	sdfChipAllocPageGrow	inferred	SMT3HD name via SLUS_209.11 0x002A8A30, reloc-identical; map-agrees
 0x003CC610	sdfChipAllocNewPage	inferred	SMT3HD name via SLUS_209.11 0x002A8AB0, reloc-identical; map-agrees
 0x003CC658	sdfChipAllocDirect	inferred	SMT3HD name via SLUS_209.11 0x002A8AF8, reloc-identical; map-agrees
-0x003CC708	func_r1_003569F8	placeholder	placeholder for the pair with raidou1 0x003569F8, unique-reloc-hash
+0x003CC708	sdfAllocAndClearQuadwords	inferred	chip allocation zeroed by quadwords, called where DDS mnuCreateWindowContainer calls DDS sdfAllocAndClearQuadwords
 0x003CC738	sdfChipFreeDirect	inferred	SMT3HD name via SLUS_209.11 0x002A8BD8, reloc-identical; map-agrees
 0x003CC858	sdfChipFreeDelayedDirect	inferred	SMT3HD name via SLUS_209.11 0x002A8CF8, shared-hash-in-run; map-agrees
 0x003CC878	sdfChipCheck	inferred	SMT3HD name via SLUS_209.11 0x002A8D18, reloc-identical; map-agrees

@@ -10808,7 +10808,18 @@ void effSeedParticleSpanParameters(EffModelResource *work) {
 
 INCLUDE_ASM(const s32, "code_00226EC8", effCreateParticleSpanTable);
 
-INCLUDE_ASM(const s32, "code_00226EC8", effReleaseParticleList);
+void effReleaseParticleList(EffSpanTable *list) {
+    u32 i;
+    EffSpanRecord *entry = list->records;
+
+    for (i = 0; i < list->count; i++, entry++) {
+        effReleaseModelPointSetAsset(entry->pointSet);
+        if (entry->references != 0) {
+            effReleaseResourceRefs(entry->references);
+        }
+    }
+    sdfMemFreeDirect(list->allocation);
+}
 
 INCLUDE_ASM(const s32, "code_00226EC8", effUpdateParticleSpanGeometry);
 

@@ -2771,7 +2771,76 @@ void fileDestroyJob(FileJob *job) {
     sdfChipFreeDirect(job);
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", fileCloneQueueEntries);
+FileQueue *fileCloneQueueEntries(FileQueue *source) {
+    FileQueue *queue = fileQueueCreate();
+    FileJob *entry;
+    FileJob *job;
+    f32 vec[4] __attribute__((aligned(16)));
+
+    SDF_VU0_COPYVECTOR(queue->offset, source->offset);
+    SDF_VU0_COPYVECTOR(queue->axis, source->offset);
+    queue->scaleMultiplier = source->scaleMultiplier;
+    queue->transformFlags = source->transformFlags;
+    if (source->first != NULL) {
+        for (entry = source->first; entry != NULL; entry = entry->next) {
+            job = fileJobCreate();
+
+            if ((entry->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) == 0) {
+                job->id = (u32)fileJobCreateFromJob((FileJobPayload *)entry->id);
+            } else {
+                FileJob *parent = fileQueueFindById(source, entry->id);
+                s32 index = fileFindQueuedJobIndex(source, parent);
+
+                parent = fileQueueGetAt(queue, index);
+                job->id = (u32)fileJobCreateChild((FileJobPayload *)parent->id);
+            }
+            fileJobCopyHeader(job, entry);
+            strcpy(job->name, entry->name);
+            fileQueueAppend(queue, job);
+        }
+    } else {
+        FileJob *records;
+
+        entry = (FileJob *)((u8 *)source + (u32)source->last);
+        records = entry;
+        if (source->count > 0) {
+            s32 count = source->count;
+
+            do {
+                job = fileJobCreate();
+
+                if ((entry->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) == 0) {
+                    FileJobPayload *request = (FileJobPayload *)((u8 *)source + entry->id);
+
+                    if (entry->flags & FILE_JOB_FLAG_SECTOR_FOLLOWER) {
+                        FileJobPayload *secondary = (FileJobPayload *)((u8 *)source + records[entry->sector].id);
+
+                        request->secondary.size = secondary->secondary.size;
+                        request->secondary.offset = (u32)fileResolveSecondaryBuffer(secondary) - (u32)request;
+                        job->id = (u32)fileJobCreateFromJob(request);
+                        request->secondary.offset = request->secondary.size = 0;
+                    } else {
+                        job->id = (u32)fileJobCreateFromJob(request);
+                    }
+                } else {
+                    FileJob *parent = fileQueueGetAt(queue, entry->id);
+
+                    job->id = (u32)fileJobCreateChild((FileJobPayload *)parent->id);
+                }
+                fileJobCopyHeader(job, entry);
+                strcpy(job->name, entry->name);
+                fileQueueAppend(queue, job);
+                entry++;
+            } while (--count != 0);
+        }
+    }
+    VU0_STORE_VF(vf0, vec);
+    fileQueueSetPosition(queue, vec);
+    fileQueueSetRotation(queue, vec);
+    fileQueueSetScale(queue, 1.0f);
+    fileQueueSetColor(queue, 0x80808080);
+    return queue;
+}
 
 void CallShopTest(s32 flg, void *data)
 {
@@ -2976,9 +3045,56 @@ FileJob *fileJobDuplicateAfter(FileQueue *queue, FileJob *src) {
     return job;
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", fileQueueLinkJobToSectorLeader);
+void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref) {
+    FileJob *node;
+    FileJob *found;
+    FileJobPayload *source;
+    u32 refIndex;
+    u32 flags;
 
-INCLUDE_ASM(const s32, "code_0021CE60", fileQueueDetachSectorFollower);
+    if (!(job->flags & FILE_JOB_FLAG_SHARED_PAYLOAD)) {
+        for (node = queue->first; node != NULL; node = node->next) {
+            if ((node->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) && node->id == job->id) {
+                fileQueueLinkJobToSectorLeader(queue, node, ref);
+            }
+        }
+    }
+    if (job == ref) {
+        return;
+    }
+    flags = job->flags;
+    if (!(flags & FILE_JOB_FLAG_SHARED_PAYLOAD)) {
+        fileJobFreeSecondaryBuffer((FileJobPayload *)job->id);
+        source = (FileJobPayload *)ref->id;
+        fileJobSetSecondaryData((FileJobPayload *)job->id, (void *)source->secondary.offset, source->secondary.size,
+                                source->primary.selector);
+        flags = job->flags;
+    }
+    job->flags = flags | FILE_JOB_FLAG_SECTOR_FOLLOWER;
+    job->sector = ref->id;
+    refIndex = fileFindQueuedJobIndex(queue, ref);
+    if (fileFindQueuedJobIndex(queue, job) < refIndex) {
+        found = fileQueueFindBySector(queue, ref->id);
+        if (found != NULL) {
+            fileQueueRechainSectorFollowers(queue, ref, found);
+            fileQueueLinkJobToSectorLeader(queue, ref, found);
+        }
+    }
+}
+
+void fileQueueDetachSectorFollower(FileQueue *queue, FileJob *job) {
+    u32 flags = job->flags;
+    FileJob *first;
+
+    job->flags = flags & ~FILE_JOB_FLAG_SECTOR_FOLLOWER;
+    if (!(flags & FILE_JOB_FLAG_SHARED_PAYLOAD)) {
+        first = fileQueueFindBySector(queue, job->id);
+        if (first != NULL) {
+            fileQueueRechainSectorFollowers(queue, job, first);
+        }
+    }
+    job->sector = 0;
+}
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileQueueRemoveAndDestroyJob);
 
@@ -2988,7 +3104,46 @@ INCLUDE_ASM(const s32, "code_0021CE60", fileQueueSaveImage);
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileQueueSaveVersionedImage);
 
-INCLUDE_ASM(const s32, "code_0021CE60", fileQueueCreateFromCommandState);
+FileQueue *fileQueueCreateFromCommandState(const char *entry) {
+    sdfFileCmdHandle_t *command = sdfFileOpen(entry);
+    s32 size;
+    struct sdfMemHandle_t *allocation;
+    FileQueue *image;
+    FileQueue *queue;
+    FileJob *copy;
+    FileJob *src;
+    u32 i;
+
+    if (command == NULL) {
+        return NULL;
+    }
+    size = sdfFileLength(command);
+    allocation = sdfMemAllocDirect(size);
+    image = (FileQueue *)sdfMemLock(allocation);
+    sdfFileRead(command, image, size);
+    sdfFileClose(command);
+    queue = fileQueueCreate();
+    SDF_VU0_COPYVECTOR(queue->offset, image->offset);
+    SDF_VU0_COPYVECTOR(queue->axis, image->offset);
+    queue->scaleMultiplier = image->scaleMultiplier;
+    queue->transformFlags = image->transformFlags;
+    for (i = 0, src = (FileJob *)((u8 *)image + image->entryOffset);
+         i < image->count; i++, src++) {
+        if ((src->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) == 0) {
+            copy = fileDuplicateAndAppendJob(queue, (FileJobPayload *)((u8 *)image + src->id));
+        } else {
+            copy = fileJobDuplicateAfter(queue, fileQueueGetAt(queue, src->id));
+        }
+        if (src->flags & FILE_JOB_FLAG_SECTOR_FOLLOWER) {
+            fileQueueLinkJobToSectorLeader(queue, copy, fileQueueGetAt(queue, src->sector));
+        }
+        fileJobCopyHeader(copy, src);
+        strcpy(copy->name, src->name);
+        copy->flags = src->flags;
+    }
+    sdfMemFreeDirect(allocation);
+    return queue;
+}
 
 FileJob *fileQueueFindById(FileQueue *queue, u32 id) {
     FileJob *job = queue->first;
@@ -3146,7 +3301,35 @@ EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileCreateEffectSurfaceFromJob);
 
-INCLUDE_ASM(const s32, "code_0021CE60", fileDestroyEffectSurfaceAndChildren);
+void fileDestroyEffectSurfaceAndChildren(EffectSurfaceNode *node) {
+    u32 count;
+    u32 i;
+
+    if (node->resource != NULL) {
+        dds3BillboardDelete(node->resource);
+    }
+    if (node->jobAllocation != 0) {
+        count = node->record->count;
+        for (i = 0; i < count; i++) {
+            fileJobDestroy(node->jobs[i]);
+        }
+        sdfMemFreeDirect(node->jobAllocation);
+    }
+    if (node->queueAllocation != 0) {
+        count = node->record->count;
+        for (i = 0; i < count; i++) {
+            fileQueueDestroy(node->queues[i]);
+        }
+        sdfMemFreeDirect(node->queueAllocation);
+    }
+    if (node->resourceHolder != NULL) {
+        effReleaseReferenceHolder(node->resourceHolder);
+    }
+    if (node->record != 0) {
+        effPCPHelperBEDGetModel(node->record);
+    }
+    sdfChipFreeDirect(node);
+}
 
 EffectSurfaceNode *fileLoadObjectCreateChild(EffectSurfaceNode *owner) {
     FileKeyBlock *source = (FileKeyBlock *)owner->record->data1;
@@ -3205,7 +3388,29 @@ void fileLoadObjectOpenAndStartDevice(EffectSurfaceNode *node, u32 resourceId) {
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileReplaceEffectSurfaceJobs);
 
-INCLUDE_ASM(const s32, "code_0021CE60", fileReplaceEffectSurfaceQueues);
+void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue) {
+    u32 count = node->record->count;
+    u32 i;
+    s32 size;
+
+    if (node->queueAllocation != 0) {
+        for (i = 0; i < count; i++) {
+            fileQueueDestroy(node->queues[i]);
+        }
+        sdfMemFreeDirect(node->queueAllocation);
+        node->queues = 0;
+        node->queueAllocation = 0;
+    }
+    size = count * 4;
+    if (size != 0) {
+        node->queueAllocation = sdfMemAllocDirect(size);
+        node->queues = sdfMemLock(node->queueAllocation);
+        node->queues[0] = fileCloneQueueEntries(queue);
+        for (i = 1; i < count; i++) {
+            node->queues[i] = fileQueueClone(node->queues[0]);
+        }
+    }
+}
 
 void fileReplaceReferenceHolder(EffectSurfaceNode *obj, u32 resource) {
     if (obj->resourceHolder != NULL) {

@@ -155,7 +155,8 @@ def cmd_pairs(args):
     sides = load_sides(args)
     lines = ["version\tsrc\tfunction\taddress\tsmt3_address\tsmt3_name\tsmt3_src\twords\tstatus"]
     for version in VERSIONS:
-        rows = [r for r in verified(version, sides) if r[0] and r[5]]
+        every = verified(version, sides)
+        rows = [r for r in every if r[0] and r[5]]
         # One DDS game per unit: two VERSION_DDS macros in one TU select conflicting headers.
         votes = defaultdict(Counter)
         for src, unit, fn, addr, words, good in rows:
@@ -176,6 +177,17 @@ def cmd_pairs(args):
                 status = "identical" if name == fn else "name-differs"
             counts[status] += 1
             lines.append(f"{version}\t{src}\t{fn}\t0x{addr:08X}\t0x{ea:08X}\t{name}\t{path}\t{len(words)}\t{status}")
+        # A map partner of the same name whose words differ: raidou_c carries it only when
+        # smt3_c.tsv marks it as compiling identical with Raidou's headers.
+        partners = map_rows(version)
+        for src, unit, fn, addr, words, good in every:
+            if not src or good:
+                continue
+            hit = next(((g, ea) for g, ea, _ in partners.get(addr, ()) if sides[g].c.get(ea, ("",))[0] == fn), None)
+            if hit:
+                name, path = sides[hit[0]].c[hit[1]]
+                counts["differs"] += 1
+                lines.append(f"{version}\t{src}\t{fn}\t0x{addr:08X}\t0x{hit[1]:08X}\t{name}\t{path}\t{len(words)}\tdiffers")
         print(version, dict(sorted(counts.items())))
     (rc.OUT / "pairs_dds.tsv").write_text("\n".join(lines) + "\n")
 

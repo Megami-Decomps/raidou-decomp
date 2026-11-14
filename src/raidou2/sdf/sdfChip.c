@@ -173,7 +173,9 @@ void *sdfChipAllocDirect(s32 aSize)
     return chip;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfChip", func_r1_003569F8);
+void *sdfAllocAndClearQuadwords(s32 size) {
+    return sdfZeroMemQuad(sdfChipAllocDirect(size), (size + 15) >> 4);
+}
 
 void sdfChipFreeDirect(void *aPtr)
 {

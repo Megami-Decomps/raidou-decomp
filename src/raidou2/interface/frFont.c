@@ -2328,9 +2328,32 @@ u8 *MessageNumSearch(s32 Index, frTextBank_t *pData, s32 Size) {
 
 INCLUDE_ASM(const s32, "interface/frFont", frFontAppendIndexedTextToGlyphChain);
 
-INCLUDE_ASM(const s32, "interface/frFont", func_r1_00180540);
+INCLUDE_ASM(const s32, "interface/frFont", frFontCreateContext);
 
-INCLUDE_ASM(const s32, "interface/frFont", frFontCheckPendingGlyphState);
+/* Cancel creation for an empty child, process pending creation, then process
+ * the independent pair refresh. The refresh phase has no NULL-child guard. */
+void frFontCheckPendingGlyphState(FrFontCtx *ctx) {
+    s8 pending;
+
+    if (ctx->glyphChain == NULL) {
+        pending = ctx->pendingCreate;
+    } else {
+        if (ctx->glyphChain->firstChild == NULL) {
+            ctx->pendingCreate = 0;
+        }
+        pending = ctx->pendingCreate;
+    }
+    if (pending == 0) {
+        pending = ctx->pendingPosition;
+    } else {
+        frFontCreateContext();
+        pending = ctx->pendingPosition;
+    }
+    if (pending != 0) {
+        frSetDrawPosition(ctx->glyphChain, ctx->x, ctx->y);
+        ctx->pendingPosition = 0;
+    }
+}
 
 /* Advance by eight times cursor spacing and request both context updates. */
 void frMessageReturnCode(frMsgInfo_t *pMsgInfo) {

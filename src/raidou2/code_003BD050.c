@@ -1174,7 +1174,18 @@ void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg) {
     mnuDrawWindowListEntries(x, y, depth, 0, 0, MNU_FULL_FADE, 0, (MenuList *)(u32)menu, drawArg);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", mnuCreateWindowContainer);
+/* Allocate a zeroed window and its list; the last two arguments configure list rows. */
+MenuWindowContainer *mnuCreateWindowContainer(s32 id, s32 width, s32 height, s32 visibleCount, s32 rowSpacing) {
+    MenuWindowContainer *window = (MenuWindowContainer *)sdfAllocAndClearQuadwords(sizeof(MenuWindowContainer));
+    MenuList *list;
+    window->width = width;
+    window->height = height;
+    window->id = id;
+    list = mnuCreateListState(id, visibleCount, rowSpacing);
+    window->fadeScale = 0;
+    window->list = list;
+    return window;
+}
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuDestroyWindowContainer);
 
@@ -1336,7 +1347,10 @@ void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
                   resource->sprite[2], 0, drawArg);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", mnuDrawWindowResourceSpriteRows);
+void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, u32 option) {
+    mnuDrawListScrollbar(x - 0xf0, y - 8, flags, window->fadeScale,
+                  window->list, window->resource, option);
+}
 
 INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034DD00);
 
@@ -1354,7 +1368,50 @@ INCLUDE_ASM(const s32, "code_003BD050", mnuSpinForWindowListCount);
 
 INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463EC0);
 
-INCLUDE_ASM(const s32, "code_003BD050", mnuCreatePanelIconState);
+MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
+    s32 keys[6] = { 0x20, 0x22, 0x1F, 0x21, 0x22, 0x1F };
+    MenuIconState *panel;
+    s32 index;
+    s32 first;
+
+    panel = sdfAllocAndClearQuadwords(sizeof(MenuIconState));
+    panel->kind = mode;
+    switch (mode) {
+    case 0:
+    case 1:
+        panel->count = 3;
+        first = mode == 1 ? 3 : 0;
+        for (index = 0; index < panel->count; index++) {
+            panel->sprite[index] = effCreateResourceSlotSet((EffectSlotSet *)resource, keys[first + index], 1);
+        }
+        break;
+    case 2:
+    case 3:
+        panel->count = 2;
+        first = mode == 3 ? 3 : 0;
+        for (index = 0; index < panel->count; index++) {
+            panel->sprite[index] = effCreateResourceSlotSet((EffectSlotSet *)resource, keys[first + index], 1);
+        }
+        break;
+    case 4:
+        panel->count = 6;
+        panel->sprite[0] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x16, 1);
+        panel->sprite[1] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x15, 1);
+        panel->sprite[2] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0D, 1);
+        panel->sprite[3] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0D, 1);
+        panel->sprite[4] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0E, 1);
+        panel->sprite[5] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0E, 1);
+        effConfigureIndexedSlotMaterial(panel->sprite[2], 0, (struct EffMappedResource *)material, 1, 0, 0, 0x0C);
+        effConfigureIndexedSlotMaterial(panel->sprite[4], 0, (struct EffMappedResource *)material, 1, 0, 0, 0x0C);
+        break;
+    case 5:
+        panel->count = 2;
+        panel->sprite[0] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0D, 1);
+        panel->sprite[1] = effCreateResourceSlotSet((EffectSlotSet *)resource, 0x0E, 1);
+        break;
+    }
+    return panel;
+}
 
 /* Reset low sprite flags only for a present first sprite and a supported panel kind. */
 void mnuClearEntryFlags(MenuIconState *group) {
