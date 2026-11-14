@@ -5,7 +5,7 @@
 0x001001E0	func_r1_001001E0	placeholder	placeholder for the pair with raidou2 0x001001E0, masked-hash-in-gap
 0x001001E8	func_r1_001001E8	placeholder	placeholder for the pair with raidou2 0x001001E8, masked-hash-in-gap
 0x001001F0	func_r1_001001F0	placeholder	placeholder for the pair with raidou2 0x001001F0, masked-hash-in-gap
-0x001001F8	func_r1_001001F8	placeholder	placeholder for the pair with raidou2 0x001001F8, run-order-near
+0x001001F8	dds3FirstInit	inferred	smt3-pair: same process names (1st, draw1st, RequestDraw, basic_main, basic_draw, font_sys, DbgDevDump) and init call order as SMT3 dds3FirstInit
 0x00100470	func_r1_00100470	placeholder	placeholder for the pair with raidou2 0x00100498, unique-reloc-hash
 0x001004D0	func_r1_001004D0	placeholder	placeholder for the pair with raidou2 0x001004F8, run-order-size
 0x001004E0	dds3GetKernelCount	inferred	SMT3HD name via SLUS_209.11 0x00100410, twin-of-raidou2-0x00100508; map-agrees
@@ -896,7 +896,8 @@
 0x0011FE08	func_r1_0011FE08	placeholder	placeholder for the pair with raidou2 0x00123110, masked-hash-in-gap
 0x0011FE28	func_r1_0011FE28	placeholder	placeholder for the pair with raidou2 0x00123130, unique-reloc-hash
 0x0011FFF0	func_r1_0011FFF0	placeholder	placeholder for the pair with raidou2 0x00123368, masked-hash-in-gap
-0x00120120	func_r1_00120120	placeholder	placeholder for the pair with raidou2 0x003733C8, unique-reloc-hash
+0x001200C0	datLoadLvUpTables	inferred	string: loads /data/sdatLvUpDevilGift.dat, sdatLvUpDevilParamUp.dat, sdatLvUpPlayerParamUp.dat, sdatLvUpPlayerRankUp.dat; next to datAddMaka
+0x00120120	cmpLoadModelTables	inferred	twin-of-raidou2-0x003733C8
 0x00120158	func_r1_00120158	placeholder	placeholder for the pair with raidou2 0x00123550, unique-reloc-hash
 0x00120198	func_r1_00120198	placeholder	placeholder for the pair with raidou2 0x00123590, unique-reloc-hash
 0x00120210	func_r1_00120210	placeholder	placeholder for the pair with raidou2 0x00123608, masked-hash-in-gap
@@ -1108,6 +1109,7 @@
 0x00126938	func_r1_00126938	placeholder	placeholder for the pair with raidou2 0x0012AD80, unique-reloc-hash
 0x00126A90	func_r1_00126A90	placeholder	placeholder for the pair with raidou2 0x0012AED8, run-order-near
 0x00126CF0	func_r1_00126CF0	placeholder	placeholder for the pair with raidou2 0x0012B150, size
+0x00126D70	fldAllTblLoad	inferred	smt3-pair: SMT3 fldAllTblLoad body: sdfFileOpen of the all-table file (/map/all/MAPALL.TBL here, /fld/f/bin/FLDALL.TBL in SMT3) then a run of sdfFileRead into tables, sdfFileClose
 0x001274A8	func_r1_001274A8	placeholder	placeholder for the pair with raidou2 0x0012BAC8, masked-hash-in-gap
 0x00127578	fldSnapAngleToCompassPoint	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00122100, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00127910	fldPlayerCalc360_8	inferred	SMT3HD name via SLUS_209.11 0x0012FE08, reloc-identical; map-agrees
@@ -1179,6 +1181,7 @@
 0x0012B758	func_r1_0012B758	placeholder	placeholder for the pair with raidou2 0x00130928, masked-hash-in-gap
 0x0012B7C0	func_r1_0012B7C0	placeholder	placeholder for the pair with raidou2 0x00130990, masked-hash-in-gap
 0x0012B828	func_r1_0012B828	placeholder	placeholder for the pair with raidou2 0x001309F8, unique-masked-hash
+0x0012B8A8	mapRetuenFromLoad	evidence	string: its own debug message "mapRetuenFromLoad() %d"
 0x0012BD10	func_r1_0012BD10	placeholder	placeholder for the pair with raidou2 0x00131410, masked-hash-in-gap
 0x0012BD18	func_r1_0012BD18	placeholder	placeholder for the pair with raidou2 0x00131418, masked-hash-in-gap
 0x0012BD20	func_r1_0012BD20	placeholder	placeholder for the pair with raidou2 0x00131420, unique-reloc-hash
@@ -1198,7 +1201,7 @@
 0x0012F928	fldEncountClearFlag	inferred	SMT3HD name via SLUS_209.11 0x001259E0, reloc-identical; map-silent
 0x0012F940	fldEncountTestFlag	inferred	SMT3HD name via SLUS_209.11 0x001259F8, shared-hash-in-run; map-silent
 0x0012F950	func_r1_0012F950	placeholder	placeholder for the pair with raidou2 0x001358D0, unique-masked-hash
-0x0012FA80	func_r1_0012FA80	placeholder	placeholder for the pair with raidou2 0x00135A00, run-order-near
+0x0012FA80	fldProcShutDown	inferred	smt3-pair: SMT3 fldProcShutDown body: clears its guard flag, fldAutoMapSeqSetFlag(1/2), kills fldProcSequence and fldProcDraw, scrAllReleaseScript
 0x0012FBF8	func_r1_0012FBF8	placeholder	placeholder for the pair with raidou2 0x00135B50, masked-hash-in-gap
 0x0012FC18	func_r1_0012FC18	placeholder	placeholder for the pair with raidou2 0x00135B70, unique-reloc-hash
 0x0012FCF0	func_r1_0012FCF0	placeholder	placeholder for the pair with raidou2 0x00135C48, masked-hash-in-gap
@@ -1379,7 +1382,7 @@
 0x0013FFE0	func_r1_0013FFE0	placeholder	placeholder for the pair with raidou2 0x001483D8, unique-reloc-hash
 0x00140160	func_r1_00140160	placeholder	placeholder for the pair with raidou2 0x00148A20, unique-reloc-hash
 0x001401E8	func_r1_001401E8	placeholder	placeholder for the pair with raidou2 0x00148AA8, unique-reloc-hash
-0x00140258	func_r1_00140258	placeholder	placeholder for the pair with raidou2 0x00148B18, unique-reloc-hash
+0x00140258	fldAllTblPacLoad	inferred	string: pacLoad("/map/all/ALLTBL.LB") and memcpy of each resource; same callers as fldAllTblLoad
 0x001403E0	func_r1_001403E0	placeholder	placeholder for the pair with raidou2 0x00148CA0, unique-masked-hash
 0x00140798	func_r1_00140798	placeholder	placeholder for the pair with raidou2 0x00149058, unique-reloc-hash
 0x00140910	fld_1374F0	inferred	smt3-decomp C name via SLUS_209.11 0x001374F0, unique-masked-hash-c; map-agrees
@@ -1410,7 +1413,7 @@
 0x001439B8	func_r1_001439B8	placeholder	placeholder for the pair with raidou2 0x0014C748, unique-reloc-hash
 0x00143A28	func_r1_00143A28	placeholder	placeholder for the pair with raidou2 0x0014C7B8, size
 0x00143B58	func_r1_00143B58	placeholder	placeholder for the pair with raidou2 0x0014C8E8, masked-hash-in-gap
-0x00143B78	func_r1_00143B78	placeholder	placeholder for the pair with raidou2 0x0014C908, run-order-near
+0x00143B78	mapAddMapObject	inferred	string: dds3AddUnitObjectBasic with object id "MAP_OBJ" from /model/field_lb/FIELD%03X.LB, devil_lb/DEVIL%03X.LB or npc_lb/EVE%03X.LB
 0x00144130	func_r1_00144130	placeholder	placeholder for the pair with raidou2 0x0014D008, unique-reloc-hash
 0x00144170	func_r1_00144170	placeholder	placeholder for the pair with raidou2 0x0014D048, unique-reloc-hash
 0x00144190	func_r1_00144190	placeholder	placeholder for the pair with raidou2 0x0014D068, unique-reloc-hash
@@ -1461,8 +1464,8 @@
 0x0014A290	func_r1_0014A290	placeholder	placeholder for the pair with raidou2 0x00154880, unique-masked-hash
 0x0014A2E0	func_r1_0014A2E0	placeholder	placeholder for the pair with raidou2 0x001548D0, unique-masked-hash
 0x0014AE28	func_r1_0014AE28	placeholder	placeholder for the pair with raidou2 0x00155620, unique-reloc-hash
-0x0014B0D8	func_r1_0014B0D8	placeholder	placeholder for the pair with raidou2 0x001558D0, size
-0x0014B328	func_r1_0014B328	placeholder	placeholder for the pair with raidou2 0x00155B20, unique-reloc-hash
+0x0014B0D8	mapAddLightObject	inferred	string: dds3AddLightObjectBasic with object id "maplight", sets pose and light resource; callers mapFileLoad and the map label setup
+0x0014B328	mapAddPointObject	inferred	string: dds3AddPointBasic with object id "mappos"
 0x0014B498	func_r1_0014B498	placeholder	placeholder for the pair with raidou2 0x00155C90, unique-reloc-hash
 0x0014B4B8	func_r1_0014B4B8	placeholder	placeholder for the pair with raidou2 0x00155CB0, unique-reloc-hash
 0x0014B610	func_r1_0014B610	placeholder	placeholder for the pair with raidou2 0x00155D88, unique-reloc-hash
@@ -1476,10 +1479,10 @@
 0x0014C880	func_r1_0014C880	placeholder	placeholder for the pair with raidou2 0x00157628, unique-reloc-hash
 0x0014C898	func_r1_0014C898	placeholder	placeholder for the pair with raidou2 0x00157640, size
 0x0014F368	func_r1_0014F368	placeholder	placeholder for the pair with raidou2 0x0015AD40, unique-reloc-hash
-0x0014F378	func_r1_0014F378	placeholder	placeholder for the pair with raidou2 0x0015AD50, run-order-near
+0x0014F378	mapFileLoad	evidence	string: its own debug message "mapFileLoad() %d"; loads /map/map%02d/PAC00K.LB, PAC00.LB, /map/all/water01.tmx
 0x00151728	func_r1_00151728	placeholder	placeholder for the pair with raidou2 0x0015D1D0, masked-hash-in-gap
-0x00151730	func_r1_00151730	placeholder	placeholder for the pair with raidou2 0x0015D1D8, run-order-near
-0x00151980	func_r1_00151980	placeholder	placeholder for the pair with raidou2 0x0015D430, unique-masked-hash
+0x00151730	fldFreeMapData	inferred	twin-of-raidou2-0x0015D1D8
+0x00151980	mapMapSetArea	evidence	string: its own debug message "mapMapSetArea(%d)" printing its argument
 0x00151DC0	func_r1_00151DC0	placeholder	placeholder for the pair with raidou2 0x0015D870, run-order-near
 0x00153438	func_r1_00153438	placeholder	placeholder for the pair with raidou2 0x0015F108, masked-hash-in-gap
 0x001534C0	func_r1_001534C0	placeholder	placeholder for the pair with raidou2 0x0015F190, masked-hash-in-gap
@@ -1544,7 +1547,7 @@
 0x0015AE68	func_r1_0015AE68	placeholder	placeholder for the pair with raidou2 0x00164EA8, unique-reloc-hash
 0x0015B178	func_r1_0015B178	placeholder	placeholder for the pair with raidou2 0x001651B8, size
 0x0015B228	func_r1_0015B228	placeholder	placeholder for the pair with raidou2 0x00167760, near-size
-0x0015B380	func_r1_0015B380	placeholder	placeholder for the pair with raidou2 0x001678C0, run-order-near
+0x0015B380	mapLoadMistTexture	inferred	string: sdfDevLoadFileEx of /map/all/mist01.tmx or mist02.tmx and sdfTexSet; only caller mapFileLoad
 0x0015B410	func_r1_0015B410	placeholder	placeholder for the pair with raidou2 0x00167948, unique-reloc-hash
 0x0015B438	func_r1_0015B438	placeholder	placeholder for the pair with raidou2 0x001679C0, masked-hash-in-gap
 0x0015B450	func_r1_0015B450	placeholder	placeholder for the pair with raidou2 0x001679D8, unique-reloc-hash
@@ -1578,7 +1581,7 @@
 0x0015C720	func_r1_0015C720	placeholder	placeholder for the pair with raidou2 0x00168D00, unique-reloc-hash
 0x0015C750	func_r1_0015C750	placeholder	placeholder for the pair with raidou2 0x00168D30, unique-reloc-hash
 0x0015CA20	func_r1_0015CA20	placeholder	placeholder for the pair with raidou2 0x00168F98, unique-reloc-hash
-0x0015CBF8	func_r1_0015CBF8	placeholder	placeholder for the pair with raidou2 0x00169210, unique-reloc-hash
+0x0015CBF8	mapLoadGenbaEpl	inferred	string: sdfDevLoadFileEx("/map/all/GENBA_T.EPL"); only caller is the map label setup
 0x0015CCA8	func_r1_0015CCA8	placeholder	placeholder for the pair with raidou2 0x001692C0, unique-reloc-hash
 0x0015CCD8	func_r1_0015CCD8	placeholder	placeholder for the pair with raidou2 0x001692F0, unique-reloc-hash
 0x0015CD00	func_r1_0015CD00	placeholder	placeholder for the pair with raidou2 0x00169318, unique-reloc-hash
@@ -1611,7 +1614,7 @@
 0x00164A08	func_r1_00164A08	placeholder	placeholder for the pair with raidou2 0x001726B0, unique-masked-hash
 0x00164CE8	func_r1_00164CE8	placeholder	placeholder for the pair with raidou2 0x00172990, unique-masked-hash
 0x00164F28	func_r1_00164F28	placeholder	placeholder for the pair with raidou2 0x001732A0, unique-reloc-hash
-0x00165178	func_r1_00165178	placeholder	placeholder for the pair with raidou2 0x001734F0, masked-hash-in-gap
+0x00165178	fldIsMapTitleActive	inferred	string: returns dds3SearchProcessName("mapTitle") != 0; caller fldDestroyTitleTask
 0x001651A0	func_r1_001651A0	placeholder	placeholder for the pair with raidou2 0x00173518, unique-reloc-hash
 0x00165238	func_r1_00165238	placeholder	placeholder for the pair with raidou2 0x001735B0, unique-reloc-hash
 0x00165528	func_r1_00165528	placeholder	placeholder for the pair with raidou2 0x001738A0, unique-reloc-hash
@@ -1712,7 +1715,7 @@
 0x00173BB8	func_r1_00173BB8	placeholder	placeholder for the pair with raidou2 0x00185168, run-order-near
 0x00173C88	func_r1_00173C88	placeholder	placeholder for the pair with raidou2 0x00185220, masked-hash-in-gap
 0x00173CD8	func_r1_00173CD8	placeholder	placeholder for the pair with raidou2 0x00185270, size
-0x00173D20	func_r1_00173D20	placeholder	placeholder for the pair with raidou2 0x00186680, unique-reloc-hash
+0x00173D20	encLoadTexture	inferred	string: pacLoad of /map/map39/PAC00B.LB and sdfTexSet; only caller encStart
 0x00173DE8	func_r1_00173DE8	placeholder	placeholder for the pair with raidou2 0x00186748, unique-reloc-hash
 0x00173E20	func_r1_00173E20	placeholder	placeholder for the pair with raidou2 0x00186780, unique-masked-hash
 0x00173F38	func_r1_00173F38	placeholder	placeholder for the pair with raidou2 0x00186898, unique-reloc-hash
@@ -2029,7 +2032,7 @@
 0x00182938	func_r1_00182938	placeholder	placeholder for the pair with raidou2 0x00197950, masked-hash-in-gap
 0x00182A40	func_r1_00182A40	placeholder	placeholder for the pair with raidou2 0x00197A58, run-order-near
 0x00182AE8	func_r1_00182AE8	placeholder	placeholder for the pair with raidou2 0x00197B10, masked-hash-in-gap
-0x00182B10	func_r1_00182B10	placeholder	placeholder for the pair with raidou2 0x00197B38, unique-reloc-hash
+0x00182B10	frLoadExchangeTable	inferred	string: sdfDevLoadFileEx("/font/exchg_01.bin"); only caller frInitFontTable
 0x00182B48	frwGetStaffFontFRQ	inferred	SMT3HD name via SLUS_209.11 0x001C9EB8, reloc-identical; map-agrees
 0x00182C58	frwLoadStaffFont	inferred	SMT3HD name via SLUS_209.11 0x001C9FC8, reloc-identical; map-agrees
 0x00182C88	frwFreeStaffFont	inferred	SMT3HD name via SLUS_209.11 0x001C9FF8, reloc-identical; map-agrees
@@ -2299,7 +2302,7 @@
 0x0018E650	func_r1_0018E650	placeholder	placeholder for the pair with raidou2 0x001A39B0, unique-reloc-hash
 0x0018E6E0	func_r1_0018E6E0	placeholder	placeholder for the pair with raidou2 0x001A3A40, unique-reloc-hash
 0x0018E7E8	func_r1_0018E7E8	placeholder	placeholder for the pair with raidou2 0x001A3B48, masked-hash-in-gap
-0x0018E820	func_r1_0018E820	placeholder	placeholder for the pair with raidou2 0x001A3B80, unique-reloc-hash
+0x0018E820	itfLoadIconSprite	inferred	string: sdfDevLoadFileEx("/itf/icon.spr")
 0x0018E860	func_r1_0018E860	placeholder	placeholder for the pair with raidou2 0x001A3BC0, masked-hash-in-gap
 0x0018E898	func_r1_0018E898	placeholder	placeholder for the pair with raidou2 0x001A3BF8, unique-reloc-hash
 0x0018E8F0	func_r1_0018E8F0	placeholder	placeholder for the pair with raidou2 0x001A3C50, unique-reloc-hash
@@ -2658,7 +2661,7 @@
 0x001A0620	mdlViewer	inferred	fuzzy name from SLUS_209.74 0x0021D800, score 0.90, tools/xgame/fuzzy_apply.py
 0x001A0990	mdlDrawMapPositionRecords	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0021DAE0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001A0A70	func_r1_001A0A70	placeholder	placeholder for the pair with raidou2 0x001B6528, unique-masked-hash
-0x001A0CB8	func_r1_001A0CB8	placeholder	placeholder for the pair with raidou2 0x001B6770, size
+0x001A0CB8	mdlLoadViewerConfig	inferred	string: parses /model/viewer.cnf (bg-color, eye-position, fovy, fog, light); caller mdlInitializeViewerTasksAndResources
 0x001A1208	func_r1_001A1208	placeholder	placeholder for the pair with raidou2 0x001B6CC0, unique-reloc-hash
 0x001A14D0	mdlInitializeViewerTasksAndResources	inferred	fuzzy name from SLUS_209.74 0x0021E1C8, score 0.94, tools/xgame/fuzzy_apply.py
 0x001A1678	mdlFreeViewResources	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0021E360, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -2685,7 +2688,7 @@
 0x001A3798	evtSetUnitPos	inferred	SMT3HD name via SLUS_209.11 0x001E1688, unique-masked-hash; map-agrees
 0x001A3880	evtFreeStage	inferred	SMT3HD name via SLUS_209.11 0x001E1770, shared-hash-in-run; map-agrees
 0x001A38B8	evtFreeAllUnit	inferred	SMT3HD name via SLUS_209.11 0x001E17A8, reloc-identical; map-agrees
-0x001A3908	func_r1_001A3908	placeholder	placeholder for the pair with raidou2 0x001B95C0, unique-reloc-hash
+0x001A3908	evtLoadArea	inferred	r2-decomp: same body as R2 evtLoadArea (decomp name): new scene, dds3SetMapNo, "1st_area"
 0x001A3A00	func_r1_001A3A00	placeholder	placeholder for the pair with raidou2 0x001B96B8, unique-reloc-hash
 0x001A3B18	evtStartEvent	inferred	smt3-decomp C name via SLUS_209.11 0x001E1A48, unique-masked-hash-c; map-silent
 0x001A3B80	evtKillFieldScript	inferred	SMT3HD name via SLUS_209.11 0x001E1AB0, reloc-identical; map-agrees
@@ -3336,7 +3339,7 @@
 0x001CCDD0	func_r1_001CCDD0	placeholder	placeholder for the pair with raidou2 0x001E2EB8, unique-reloc-hash
 0x001CCE98	func_r1_001CCE98	placeholder	placeholder for the pair with raidou2 0x001E2F80, unique-reloc-hash
 0x001CCEF8	func_r1_001CCEF8	placeholder	placeholder for the pair with raidou2 0x001E2FE0, unique-reloc-hash
-0x001CD510	func_r1_001CD510	placeholder	placeholder for the pair with raidou2 0x001E35F8, unique-reloc-hash
+0x001CD510	evtScreenBreakCreate	inferred	string: allocates work and starts process "evtScreenBreak"
 0x001CD660	func_r1_001CD660	placeholder	placeholder for the pair with raidou2 0x001E3748, masked-hash-in-gap
 0x001CD6A0	itfCreateGridPacketWithDefaultFlags	inferred	dds-decomp DDS2 name via SLUS_211.52 0x00307398, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CD6D8	func_r1_001CD6D8	placeholder	placeholder for the pair with raidou2 0x001E37C0, unique-reloc-hash
@@ -3344,7 +3347,7 @@
 0x001CD860	func_r1_001CD860	placeholder	placeholder for the pair with raidou2 0x001E3948, unique-masked-hash
 0x001CDA30	func_r1_001CDA30	placeholder	placeholder for the pair with raidou2 0x001E3B18, unique-reloc-hash
 0x001CDCF8	func_r1_001CDCF8	placeholder	placeholder for the pair with raidou2 0x001E3DE0, unique-reloc-hash
-0x001CDD60	func_r1_001CDD60	placeholder	placeholder for the pair with raidou2 0x001E3E48, unique-reloc-hash
+0x001CDD60	evtCrossFadeCreate	inferred	string: allocates work and starts process "evtCrossFade"
 0x001CDEB8	func_r1_001CDEB8	placeholder	placeholder for the pair with raidou2 0x001E3FA0, masked-hash-in-gap
 0x001CDEF8	func_r1_001CDEF8	placeholder	placeholder for the pair with raidou2 0x001E3FE0, unique-reloc-hash
 0x001CDF58	func_r1_001CDF58	placeholder	placeholder for the pair with raidou2 0x001E4040, unique-reloc-hash
@@ -3368,6 +3371,7 @@
 0x001CE968	func_r1_001CE968	placeholder	placeholder for the pair with raidou2 0x001E4A50, masked-hash-in-gap
 0x001CE980	func_r1_001CE980	placeholder	placeholder for the pair with raidou2 0x001E4A68, masked-hash-in-gap
 0x001CE988	func_r1_001CE988	placeholder	placeholder for the pair with raidou2 0x001E4A70, masked-hash-in-gap
+0x001CE9A0	evtCutInCreate	inferred	string: sprintf "%s%s" with "/cutin/", starts a process with destructor name "CutInDestructor"
 0x001CEAF8	func_r1_001CEAF8	placeholder	placeholder for the pair with raidou2 0x001E4C70, unique-reloc-hash
 0x001CEBC8	func_r1_001CEBC8	placeholder	placeholder for the pair with raidou2 0x001E4D40, unique-reloc-hash
 0x001CEBF8	func_r1_001CEBF8	placeholder	placeholder for the pair with raidou2 0x001E4D70, unique-reloc-hash
@@ -3456,7 +3460,7 @@
 0x001D1A30	func_r1_001D1A30	placeholder	placeholder for the pair with raidou2 0x001E7D38, masked-hash-in-gap
 0x001D1A60	func_r1_001D1A60	placeholder	placeholder for the pair with raidou2 0x001E7D68, masked-hash-in-gap
 0x001D1B20	mnuInitializeTitleSoundBuffer	inferred	fuzzy name from SLUS_209.74 0x0026A980, score 1.00, tools/xgame/fuzzy_apply.py
-0x001D1BC8	func_r1_001D1BC8	placeholder	placeholder for the pair with raidou2 0x001E7ED0, run-order-near
+0x001D1BC8	mnuQueueTitleSoundStreamEntry	inferred	twin-of-raidou2-0x001E7ED0
 0x001D1CC0	mnuLoadTitleSoundBufferEntry	inferred	fuzzy name from SLUS_209.74 0x0026AA28, score 1.00, tools/xgame/fuzzy_apply.py
 0x001D1E40	mnuInstallTitleSoundBufferFromData	inferred	fuzzy name from SLUS_209.74 0x0026ABA8, score 0.96, tools/xgame/fuzzy_apply.py
 0x001D1FC8	func_r1_001D1FC8	placeholder	placeholder for the pair with raidou2 0x001E82E8, unique-reloc-hash
@@ -3704,7 +3708,7 @@
 0x001DBE10	func_r1_001DBE10	placeholder	placeholder for the pair with raidou2 0x001F3108, unique-reloc-hash
 0x001DBE98	func_r1_001DBE98	placeholder	placeholder for the pair with raidou2 0x001F3190, unique-masked-hash
 0x001DBEB8	func_r1_001DBEB8	placeholder	placeholder for the pair with raidou2 0x001F31B0, unique-masked-hash
-0x001DBF38	func_r1_001DBF38	placeholder	placeholder for the pair with raidou2 0x001F3230, unique-reloc-hash
+0x001DBF38	dds3BillboardManagerInit	inferred	smt3-pair: SMT3 dds3BillboardManagerInit body: pacLoad("/bill/billtmx.LB"), pacSync, dds3BillboardCreate per resource, pacFileHandleFree_; directly before dds3BillboardManagerExit
 0x001DC020	func_r1_001DC020	placeholder	placeholder for the pair with raidou2 0x001F3318, unique-reloc-hash
 0x001DC078	func_r1_001DC078	placeholder	placeholder for the pair with raidou2 0x001F3370, unique-reloc-hash
 0x001DC190	func_r1_001DC190	placeholder	placeholder for the pair with raidou2 0x001F3488, unique-reloc-hash
@@ -6547,7 +6551,7 @@
 0x00280810	func_r1_00280810	placeholder	placeholder for the pair with raidou2 0x002ADE30, unique-masked-hash
 0x00280840	func_r1_00280840	placeholder	placeholder for the pair with raidou2 0x002ADE60, masked-hash-in-gap
 0x00280868	func_r1_00280868	placeholder	placeholder for the pair with raidou2 0x002ADE88, unique-masked-hash
-0x00280978	func_r1_00280978	placeholder	placeholder for the pair with raidou2 0x002ADF98, run-order-near
+0x00280978	btlLoadModelHit	inferred	string: loads /battle/mdlhit/%03X.MHT (or P%03X.MHT) via fileLoad and copies it
 0x00280D60	func_r1_00280D60	placeholder	placeholder for the pair with raidou2 0x002AE368, unique-masked-hash
 0x002816C0	func_r1_002816C0	placeholder	placeholder for the pair with raidou2 0x002AEDD0, unique-masked-hash
 0x002818D0	func_r1_002818D0	placeholder	placeholder for the pair with raidou2 0x002AEFE0, unique-masked-hash
@@ -6588,7 +6592,7 @@
 0x00285DB8	func_r1_00285DB8	placeholder	placeholder for the pair with raidou2 0x002B3848, unique-masked-hash
 0x00285E50	func_r1_00285E50	placeholder	placeholder for the pair with raidou2 0x002B38E0, unique-masked-hash
 0x00286A40	func_r1_00286A40	placeholder	placeholder for the pair with raidou2 0x002B5C40, unique-reloc-hash
-0x00289CA0	func_r1_00289CA0	placeholder	placeholder for the pair with raidou2 0x002BAF80, unique-masked-hash
+0x00289CA0	btlLoadSbPack	inferred	string: pacLoad("/battle/SB_PACK4.LB"), copies each resource to tail memory
 0x00289E08	func_r1_00289E08	placeholder	placeholder for the pair with raidou2 0x002BB0E8, unique-reloc-hash
 0x00289E50	func_r1_00289E50	placeholder	placeholder for the pair with raidou2 0x002BB130, size
 0x00289EF8	func_r1_00289EF8	placeholder	placeholder for the pair with raidou2 0x002BB1D8, masked-hash-in-gap
@@ -9950,8 +9954,8 @@
 0x0037EBC8	sceMcRename	inferred	SMT3HD name via SLUS_209.11 0x002CF1B0, unique-masked-hash; map-agrees
 0x0037ED30	sceMcUnformat	inferred	SMT3HD name via SLUS_209.11 0x002CF318, reloc-identical; map-agrees
 0x0037EDF8	sceMcGetEntSpace	inferred	SMT3HD name via SLUS_209.11 0x002CF3E0, unique-masked-hash; map-agrees
-0x0037EF10	func_r1_0037EF10	placeholder	placeholder for the pair with raidou2 0x003F4B50, unique-reloc-hash
-0x0037EFD8	func_r1_0037EFD8	placeholder	placeholder for the pair with raidou2 0x003F4C18, unique-reloc-hash
+0x0037EF10	at3DecInit	inferred	string: first of 22 functions split from one libat3dec.c block (its __assert file string); picks unit counts from param +8, memsets the 0x68CA work at param +0xC; callers are the title audio stream setup
+0x0037EFD8	at3DecDecode	inferred	string: libat3dec.c block entry: decodes one unit into param +4 as four 256-sample writes; called once per stream by the title stream decoder
 0x0037F0F8	func_r1_0037F0F8	placeholder	placeholder for the pair with raidou2 0x003F4D38, unique-reloc-hash
 0x0037F2E0	func_r1_0037F2E0	placeholder	placeholder for the pair with raidou2 0x003F4F20, unique-reloc-hash
 0x0037F8F8	func_r1_0037F8F8	placeholder	placeholder for the pair with raidou2 0x003F5538, unique-reloc-hash

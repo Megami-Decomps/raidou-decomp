@@ -537,9 +537,9 @@ INCLUDE_ASM(const s32, "code_0011EB08", func_r1_0011FFF0);
 
 INCLUDE_ASM(const s32, "code_0011EB08", func_00120008);
 
-INCLUDE_ASM(const s32, "code_0011EB08", func_001200C0);
+INCLUDE_ASM(const s32, "code_0011EB08", datLoadLvUpTables);
 
-INCLUDE_ASM(const s32, "code_0011EB08", func_r1_00120120);
+INCLUDE_ASM(const s32, "code_0011EB08", cmpLoadModelTables);
 
 INCLUDE_ASM(const s32, "code_0011EB08", func_r1_00120158);
 

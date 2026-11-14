@@ -113,17 +113,18 @@ typedef char FrFontChildGlyph_size_must_be_0x2C[
     sizeof(_TEXT) == 0x2C ? 1 : -1];
 
 #if !defined(SMT3_DEFINES__FRQ)
-/* Parent chain heads use the 0x44-byte glyph pool and own child-item links. */
+/* Parent chain heads: frInitFontTable's glyph pool, 0x58 bytes in Raidou 1 and
+ * 0x5C in Raidou 2. */
 typedef struct _FRQ {
     union {
         u16 glyphCode;
         struct {
             u8 encodedContextByte;
-            s8 spacing;
+            u8 baseContextByte; /* copied back to +0 when the chain's context is reset */
         } byteRoles;
     } glyphCodeOrContext;
-    /* Preserved by parent-chain initialization. */
-    u16 drawCount;
+    s8 spacing; /* frSetFontSpace writes it; frGetStrWidth adds it per child */
+    u8 pad03;
     s32 x;
     s32 y;
     s32 advance;
@@ -166,11 +167,20 @@ typedef struct _FRQ {
     u32 skipLipsStopWait; /* Set when a timing control follows F117. */
     s32 remainingWaitFrames; /* F215 uses 0xFFFF for title-sound completion. */
     s32 contextModeEnabled;
+    u8 pad44[8];
+#ifdef VERSION_RAIDOU2
+    u8 pad4C[4];
+#endif
+    s32 contextResetWord; /* cleared on every chain node with the context byte */
+    u8 pad_end[8];
 } _FRQ;
 #endif
 
-typedef char FrFontGlyph_size_must_be_0x44[
-    sizeof(_FRQ) == 0x44 ? 1 : -1];
+#ifdef VERSION_RAIDOU2
+typedef char FrFontGlyph_size_must_be_0x5C[sizeof(_FRQ) == 0x5C ? 1 : -1];
+#else
+typedef char FrFontGlyph_size_must_be_0x58[sizeof(_FRQ) == 0x58 ? 1 : -1];
+#endif
 
 /* Encoded message controls consumed by the glyph timing/lipsync state. */
 typedef enum ItfGlyphControlCode {

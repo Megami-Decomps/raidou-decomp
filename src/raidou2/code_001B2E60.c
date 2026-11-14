@@ -1887,7 +1887,7 @@ INCLUDE_ASM(const s32, "code_001B2E60", func_r1_001A0A70);
 
 INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DB00);
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_r1_001A0CB8);
+INCLUDE_ASM(const s32, "code_001B2E60", mdlLoadViewerConfig);
 
 INCLUDE_ASM(const s32, "code_001B2E60", func_r1_001A1208);
 

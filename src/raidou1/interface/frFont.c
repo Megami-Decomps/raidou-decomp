@@ -1999,9 +1999,9 @@ INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017F0B0);
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017F0D0);
 
 #ifdef NON_MATCHING
-/* 1 of 11 words differ (first at +0x14) */
+/* Matches; frGetStrWidth has no Raidou 1 name yet, so it does not link. */
 void frSetFontSpace(frFontHandle_t *pFRQ, s32 Space) {
-    pFRQ->glyphCodeOrContext.byteRoles.spacing = Space;
+    pFRQ->spacing = Space;
     pFRQ->advance = frGetStrWidth(pFRQ);
 }
 #else
@@ -2149,8 +2149,6 @@ s32 frStrLen(s8 *pStr) {
 
 INCLUDE_ASM(const s32, "interface/frFont", func_0017FCE0);
 
-#ifdef NON_MATCHING
-/* 1 of 20 words differ (first at +0x18) */
 u32 frGetStrWidth2(frFontHandle_t *pFRQ) {
     frFontHandle_t *parentGlyph;
     frTextHandle_t *childGlyph;
@@ -2159,7 +2157,7 @@ u32 frGetStrWidth2(frFontHandle_t *pFRQ) {
     for (parentGlyph = pFRQ->chainHead; parentGlyph != NULL; parentGlyph = parentGlyph->next) {
         childGlyph = parentGlyph->firstChild;
         if (childGlyph != NULL) {
-            s8 childSpacing = parentGlyph->glyphCodeOrContext.byteRoles.spacing;
+            s8 childSpacing = parentGlyph->spacing;
 
             do {
                 totalAdvance += childGlyph->advance;
@@ -2170,9 +2168,6 @@ u32 frGetStrWidth2(frFontHandle_t *pFRQ) {
     }
     return totalAdvance;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frGetStrWidth2);
-#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017FDC8);
 

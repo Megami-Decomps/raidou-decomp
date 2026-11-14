@@ -448,7 +448,7 @@ INCLUDE_RODATA(const s32, "code_001E6518", D_r1_00454CE0);
 
 INCLUDE_ASM(const s32, "code_001E6518", mnuInitializeTitleSoundBuffer);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1BC8);
+INCLUDE_ASM(const s32, "code_001E6518", mnuQueueTitleSoundStreamEntry);
 
 INCLUDE_ASM(const s32, "code_001E6518", mnuLoadTitleSoundBufferEntry);
 

@@ -1469,7 +1469,7 @@ void btlUpdateJobPositionFromModel(SoundHandleNode *node);
 
 void sndDestroyFileQueueWrapper(SoundHandleNode *node);
 
-void func_r1_001DBF38(void);
+void dds3BillboardManagerInit(void);
 
 void sndSetStationedSeVolume(u32 sequence);
 

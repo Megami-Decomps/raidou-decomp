@@ -6,7 +6,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001001E0	0x001001E0	func_r1_001001E0	yes	yes	asm/raidou1/code_001001D8.s	asm/raidou2/code_001001D8.s	masked-hash-in-gap
 0x001001E8	0x001001E8	func_r1_001001E8	yes	yes	asm/raidou1/code_001001D8.s	asm/raidou2/code_001001D8.s	masked-hash-in-gap
 0x001001F0	0x001001F0	func_r1_001001F0	yes	yes	asm/raidou1/code_001001D8.s	asm/raidou2/code_001001D8.s	masked-hash-in-gap
-0x001001F8	0x001001F8	func_r1_001001F8	no	no	asm/raidou1/code_001001D8.s	asm/raidou2/code_001001D8.s	run-order-near
+0x001001F8	0x001001F8	dds3FirstInit	no	no	asm/raidou1/code_001001D8.s	asm/raidou2/code_001001D8.s	run-order-near
 0x00100470	0x00100498	func_r1_00100470	no	yes	asm/raidou1/code_001001D8.s	asm/raidou2/code_001001D8.s	unique-reloc-hash
 0x001004D0	0x001004F8	func_r1_001004D0	no	yes	asm/raidou1/code_001001D8.s	asm/raidou2/code_001001D8.s	run-order-size
 0x001004E0	0x00100508	dds3GetKernelCount	no	yes	asm/raidou1/code_001001D8.s	asm/raidou2/code_001001D8.s	masked-hash-in-gap
@@ -889,7 +889,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0011FE08	0x00123110	func_r1_0011FE08	no	yes	asm/raidou1/code_0011EB08.s	asm/raidou2/code_00121708.s	masked-hash-in-gap
 0x0011FE28	0x00123130	func_r1_0011FE28	no	yes	asm/raidou1/code_0011EB08.s	asm/raidou2/code_00121708.s	unique-reloc-hash
 0x0011FFF0	0x00123368	func_r1_0011FFF0	no	yes	asm/raidou1/code_0011EB08.s	asm/raidou2/code_00121708.s	masked-hash-in-gap
-0x00120120	0x003733C8	func_r1_00120120	no	yes	asm/raidou1/code_0011EB08.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
+0x00120120	0x003733C8	cmpLoadModelTables	no	yes	asm/raidou1/code_0011EB08.s	asm/raidou2/code_003648C0.s	unique-reloc-hash
 0x00120158	0x00123550	func_r1_00120158	no	yes	asm/raidou1/code_0011EB08.s	asm/raidou2/code_00121708.s	unique-reloc-hash
 0x00120198	0x00123590	func_r1_00120198	no	yes	asm/raidou1/code_0011EB08.s	asm/raidou2/code_00121708.s	unique-reloc-hash
 0x00120210	0x00123608	func_r1_00120210	no	yes	asm/raidou1/code_0011EB08.s	asm/raidou2/code_00121708.s	masked-hash-in-gap
@@ -1191,7 +1191,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0012F928	0x001358A8	fldEncountClearFlag	no	yes	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	unique-masked-hash
 0x0012F940	0x001358C0	fldEncountTestFlag	no	yes	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	masked-hash-in-gap
 0x0012F950	0x001358D0	func_r1_0012F950	no	no	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	unique-masked-hash
-0x0012FA80	0x00135A00	func_r1_0012FA80	no	no	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	run-order-near
+0x0012FA80	0x00135A00	fldProcShutDown	no	no	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	run-order-near
 0x0012FBF8	0x00135B50	func_r1_0012FBF8	no	yes	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	masked-hash-in-gap
 0x0012FC18	0x00135B70	func_r1_0012FC18	no	yes	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	unique-reloc-hash
 0x0012FCF0	0x00135C48	func_r1_0012FCF0	yes	yes	asm/raidou1/field/fldProcess.s	asm/raidou2/field/fldProcess.s	masked-hash-in-gap
@@ -1372,7 +1372,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0013FFE0	0x001483D8	func_r1_0013FFE0	no	yes	asm/raidou1/code_00139330.s	asm/raidou2/code_001416C0.s	unique-reloc-hash
 0x00140160	0x00148A20	func_r1_00140160	no	yes	asm/raidou1/code_00139330.s	asm/raidou2/code_001416C0.s	unique-reloc-hash
 0x001401E8	0x00148AA8	func_r1_001401E8	no	yes	asm/raidou1/code_00139330.s	asm/raidou2/code_001416C0.s	unique-reloc-hash
-0x00140258	0x00148B18	func_r1_00140258	no	yes	asm/raidou1/code_00139330.s	asm/raidou2/code_001416C0.s	unique-reloc-hash
+0x00140258	0x00148B18	fldAllTblPacLoad	no	yes	asm/raidou1/code_00139330.s	asm/raidou2/code_001416C0.s	unique-reloc-hash
 0x001403E0	0x00148CA0	func_r1_001403E0	no	no	asm/raidou1/code_00139330.s	asm/raidou2/code_001416C0.s	unique-masked-hash
 0x00140798	0x00149058	func_r1_00140798	no	yes	asm/raidou1/code_00139330.s	asm/raidou2/code_001416C0.s	unique-reloc-hash
 0x00140910	0x00149258	fld_1374F0	no	yes	src/shared/field/fldSky.c	src/shared/field/fldSky.c	unique-reloc-hash
@@ -1403,7 +1403,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001439B8	0x0014C748	func_r1_001439B8	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x00143A28	0x0014C7B8	func_r1_00143A28	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	size
 0x00143B58	0x0014C8E8	func_r1_00143B58	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	masked-hash-in-gap
-0x00143B78	0x0014C908	func_r1_00143B78	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	run-order-near
+0x00143B78	0x0014C908	mapAddMapObject	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	run-order-near
 0x00144130	0x0014D008	func_r1_00144130	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x00144170	0x0014D048	func_r1_00144170	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x00144190	0x0014D068	func_r1_00144190	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
@@ -1454,8 +1454,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0014A290	0x00154880	func_r1_0014A290	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-masked-hash
 0x0014A2E0	0x001548D0	func_r1_0014A2E0	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-masked-hash
 0x0014AE28	0x00155620	func_r1_0014AE28	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
-0x0014B0D8	0x001558D0	func_r1_0014B0D8	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	size
-0x0014B328	0x00155B20	func_r1_0014B328	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
+0x0014B0D8	0x001558D0	mapAddLightObject	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	size
+0x0014B328	0x00155B20	mapAddPointObject	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x0014B498	0x00155C90	func_r1_0014B498	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x0014B4B8	0x00155CB0	func_r1_0014B4B8	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x0014B610	0x00155D88	func_r1_0014B610	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
@@ -1469,10 +1469,10 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0014C880	0x00157628	func_r1_0014C880	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x0014C898	0x00157640	func_r1_0014C898	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	size
 0x0014F368	0x0015AD40	func_r1_0014F368	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
-0x0014F378	0x0015AD50	func_r1_0014F378	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	run-order-near
+0x0014F378	0x0015AD50	mapFileLoad	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	run-order-near
 0x00151728	0x0015D1D0	func_r1_00151728	yes	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	masked-hash-in-gap
-0x00151730	0x0015D1D8	func_r1_00151730	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	run-order-near
-0x00151980	0x0015D430	func_r1_00151980	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-masked-hash
+0x00151730	0x0015D1D8	fldFreeMapData	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	run-order-near
+0x00151980	0x0015D430	mapMapSetArea	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-masked-hash
 0x00151DC0	0x0015D870	func_r1_00151DC0	no	no	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	run-order-near
 0x00153438	0x0015F108	func_r1_00153438	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	masked-hash-in-gap
 0x001534C0	0x0015F190	func_r1_001534C0	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	masked-hash-in-gap
@@ -1537,7 +1537,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0015AE68	0x00164EA8	func_r1_0015AE68	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
 0x0015B178	0x001651B8	func_r1_0015B178	no	no	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	size
 0x0015B228	0x00167760	func_r1_0015B228	no	no	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	near-size
-0x0015B380	0x001678C0	func_r1_0015B380	no	no	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	run-order-near
+0x0015B380	0x001678C0	mapLoadMistTexture	no	no	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	run-order-near
 0x0015B410	0x00167948	func_r1_0015B410	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
 0x0015B438	0x001679C0	func_r1_0015B438	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	masked-hash-in-gap
 0x0015B450	0x001679D8	func_r1_0015B450	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
@@ -1571,7 +1571,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0015C720	0x00168D00	func_r1_0015C720	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
 0x0015C750	0x00168D30	func_r1_0015C750	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
 0x0015CA20	0x00168F98	func_r1_0015CA20	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
-0x0015CBF8	0x00169210	func_r1_0015CBF8	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
+0x0015CBF8	0x00169210	mapLoadGenbaEpl	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
 0x0015CCA8	0x001692C0	func_r1_0015CCA8	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
 0x0015CCD8	0x001692F0	func_r1_0015CCD8	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
 0x0015CD00	0x00169318	func_r1_0015CD00	no	yes	asm/raidou1/code_00156778.s	asm/raidou2/code_001626B0.s	unique-reloc-hash
@@ -1604,7 +1604,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00164A08	0x001726B0	func_r1_00164A08	no	no	asm/raidou1/code_0015D490.s	asm/raidou2/code_00169A40.s	unique-masked-hash
 0x00164CE8	0x00172990	func_r1_00164CE8	no	no	asm/raidou1/code_0015D490.s	asm/raidou2/code_00169A40.s	unique-masked-hash
 0x00164F28	0x001732A0	func_r1_00164F28	no	yes	asm/raidou1/code_0015D490.s	asm/raidou2/code_00169A40.s	unique-reloc-hash
-0x00165178	0x001734F0	func_r1_00165178	no	yes	asm/raidou1/code_0015D490.s	asm/raidou2/code_00169A40.s	masked-hash-in-gap
+0x00165178	0x001734F0	fldIsMapTitleActive	no	yes	asm/raidou1/code_0015D490.s	asm/raidou2/code_00169A40.s	masked-hash-in-gap
 0x001651A0	0x00173518	func_r1_001651A0	no	yes	asm/raidou1/code_0015D490.s	asm/raidou2/code_00169A40.s	unique-reloc-hash
 0x00165238	0x001735B0	func_r1_00165238	no	yes	asm/raidou1/code_0015D490.s	asm/raidou2/code_00169A40.s	unique-reloc-hash
 0x00165528	0x001738A0	func_r1_00165528	no	yes	asm/raidou1/code_0015D490.s	asm/raidou2/code_00169A40.s	unique-reloc-hash
@@ -1705,7 +1705,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00173BB8	0x00185168	func_r1_00173BB8	no	no	asm/raidou1/code_001730A8.s	asm/raidou2/facility/fclCombineInit.s	run-order-near
 0x00173C88	0x00185220	func_r1_00173C88	no	yes	asm/raidou1/code_001730A8.s	asm/raidou2/facility/fclCombineInit.s	masked-hash-in-gap
 0x00173CD8	0x00185270	func_r1_00173CD8	no	no	asm/raidou1/code_001730A8.s	asm/raidou2/facility/fclCombineInit.s	size
-0x00173D20	0x00186680	func_r1_00173D20	no	yes	asm/raidou1/code_001730A8.s	asm/raidou2/code_00186680.s	unique-reloc-hash
+0x00173D20	0x00186680	encLoadTexture	no	yes	asm/raidou1/code_001730A8.s	asm/raidou2/code_00186680.s	unique-reloc-hash
 0x00173DE8	0x00186748	func_r1_00173DE8	no	yes	asm/raidou1/code_001730A8.s	asm/raidou2/code_00186680.s	unique-reloc-hash
 0x00173E20	0x00186780	func_r1_00173E20	no	no	asm/raidou1/code_001730A8.s	asm/raidou2/code_00186680.s	unique-masked-hash
 0x00173F38	0x00186898	func_r1_00173F38	no	yes	asm/raidou1/code_001730A8.s	asm/raidou2/code_00186680.s	unique-reloc-hash
@@ -2022,7 +2022,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00182938	0x00197950	func_r1_00182938	no	yes	asm/raidou1/code_00181858.s	asm/raidou2/code_00196848.s	masked-hash-in-gap
 0x00182A40	0x00197A58	func_r1_00182A40	no	no	asm/raidou1/code_00181858.s	asm/raidou2/code_00196848.s	run-order-near
 0x00182AE8	0x00197B10	func_r1_00182AE8	no	yes	asm/raidou1/code_00181858.s	asm/raidou2/code_00196848.s	masked-hash-in-gap
-0x00182B10	0x00197B38	func_r1_00182B10	no	yes	asm/raidou1/code_00181858.s	asm/raidou2/code_00196848.s	unique-reloc-hash
+0x00182B10	0x00197B38	frLoadExchangeTable	no	yes	asm/raidou1/code_00181858.s	asm/raidou2/code_00196848.s	unique-reloc-hash
 0x00182B48	0x00197B70	frwGetStaffFontFRQ	no	yes	asm/raidou1/interface/frWrap.s	asm/raidou2/interface/frWrap.s	unique-reloc-hash
 0x00182C58	0x00197C80	frwLoadStaffFont	no	yes	asm/raidou1/interface/frWrap.s	asm/raidou2/interface/frWrap.s	unique-reloc-hash
 0x00182C88	0x00197CB0	frwFreeStaffFont	no	yes	asm/raidou1/interface/frWrap.s	asm/raidou2/interface/frWrap.s	unique-reloc-hash
@@ -2292,7 +2292,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0018E650	0x001A39B0	func_r1_0018E650	yes	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E6E0	0x001A3A40	func_r1_0018E6E0	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E7E8	0x001A3B48	func_r1_0018E7E8	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	masked-hash-in-gap
-0x0018E820	0x001A3B80	func_r1_0018E820	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
+0x0018E820	0x001A3B80	itfLoadIconSprite	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E860	0x001A3BC0	func_r1_0018E860	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	masked-hash-in-gap
 0x0018E898	0x001A3BF8	func_r1_0018E898	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
 0x0018E8F0	0x001A3C50	func_r1_0018E8F0	no	yes	asm/raidou1/code_0018CE10.s	asm/raidou2/code_001A1FD0.s	unique-reloc-hash
@@ -2645,7 +2645,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001A0620	0x001B60D8	mdlViewer	no	no	asm/raidou1/code_0019D3A8.s	asm/raidou2/code_001B2E60.s	unique-masked-hash
 0x001A0990	0x001B6448	mdlDrawMapPositionRecords	no	yes	asm/raidou1/code_0019D3A8.s	asm/raidou2/code_001B2E60.s	unique-reloc-hash
 0x001A0A70	0x001B6528	func_r1_001A0A70	no	no	asm/raidou1/code_0019D3A8.s	asm/raidou2/code_001B2E60.s	unique-masked-hash
-0x001A0CB8	0x001B6770	func_r1_001A0CB8	no	no	asm/raidou1/code_0019D3A8.s	asm/raidou2/code_001B2E60.s	size
+0x001A0CB8	0x001B6770	mdlLoadViewerConfig	no	no	asm/raidou1/code_0019D3A8.s	asm/raidou2/code_001B2E60.s	size
 0x001A1208	0x001B6CC0	func_r1_001A1208	no	yes	asm/raidou1/code_0019D3A8.s	asm/raidou2/code_001B2E60.s	unique-reloc-hash
 0x001A14D0	0x001B6F88	mdlInitializeViewerTasksAndResources	no	no	asm/raidou1/code_0019D3A8.s	asm/raidou2/code_001B2E60.s	unique-masked-hash
 0x001A1678	0x001B7130	mdlFreeViewResources	no	yes	asm/raidou1/code_0019D3A8.s	asm/raidou2/code_001B2E60.s	unique-reloc-hash
@@ -2672,7 +2672,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001A3798	0x001B9450	evtSetUnitPos	no	yes	asm/raidou1/event/evtStage.s	asm/raidou2/event/evtStage.s	unique-reloc-hash
 0x001A3880	0x001B9538	evtFreeStage	no	yes	asm/raidou1/event/evtStage.s	asm/raidou2/event/evtStage.s	masked-hash-in-gap
 0x001A38B8	0x001B9570	evtFreeAllUnit	no	yes	asm/raidou1/event/evtStage.s	asm/raidou2/event/evtStage.s	unique-reloc-hash
-0x001A3908	0x001B95C0	func_r1_001A3908	no	yes	asm/raidou1/event/evtStage.s	asm/raidou2/event/evtStage.s	unique-reloc-hash
+0x001A3908	0x001B95C0	evtLoadArea	no	yes	asm/raidou1/event/evtStage.s	asm/raidou2/event/evtStage.s	unique-reloc-hash
 0x001A3A00	0x001B96B8	func_r1_001A3A00	no	yes	asm/raidou1/event/evtStage.s	asm/raidou2/event/evtStage.s	unique-reloc-hash
 0x001A3B18	0x001B97D0	evtStartEvent	no	no	asm/raidou1/event/evtStage.s	asm/raidou2/event/evtStage.s	run-order-near
 0x001A3B80	0x001B9848	evtKillFieldScript	no	yes	asm/raidou1/event/evtStage.s	asm/raidou2/event/evtStage.s	unique-reloc-hash
@@ -3310,7 +3310,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001CCDD0	0x001E2EB8	func_r1_001CCDD0	no	yes	asm/raidou1/code_001CC380.s	asm/raidou2/code_001E2468.s	unique-reloc-hash
 0x001CCE98	0x001E2F80	func_r1_001CCE98	no	yes	asm/raidou1/code_001CC380.s	asm/raidou2/code_001E2468.s	unique-reloc-hash
 0x001CCEF8	0x001E2FE0	func_r1_001CCEF8	no	yes	asm/raidou1/code_001CC380.s	asm/raidou2/code_001E2468.s	unique-reloc-hash
-0x001CD510	0x001E35F8	func_r1_001CD510	no	yes	asm/raidou1/code_001CC380.s	asm/raidou2/code_001E2468.s	unique-reloc-hash
+0x001CD510	0x001E35F8	evtScreenBreakCreate	no	yes	asm/raidou1/code_001CC380.s	asm/raidou2/code_001E2468.s	unique-reloc-hash
 0x001CD660	0x001E3748	func_r1_001CD660	no	yes	asm/raidou1/code_001CC380.s	asm/raidou2/code_001E2468.s	masked-hash-in-gap
 0x001CD6A0	0x001E3788	itfCreateGridPacketWithDefaultFlags	no	yes	src/raidou1/code_001CD6A0.c	src/raidou2/code_001E3788.c	unique-reloc-hash
 0x001CD6D8	0x001E37C0	func_r1_001CD6D8	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-reloc-hash
@@ -3318,7 +3318,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001CD860	0x001E3948	func_r1_001CD860	no	no	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-masked-hash
 0x001CDA30	0x001E3B18	func_r1_001CDA30	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-reloc-hash
 0x001CDCF8	0x001E3DE0	func_r1_001CDCF8	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-reloc-hash
-0x001CDD60	0x001E3E48	func_r1_001CDD60	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-reloc-hash
+0x001CDD60	0x001E3E48	evtCrossFadeCreate	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-reloc-hash
 0x001CDEB8	0x001E3FA0	func_r1_001CDEB8	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	masked-hash-in-gap
 0x001CDEF8	0x001E3FE0	func_r1_001CDEF8	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-reloc-hash
 0x001CDF58	0x001E4040	func_r1_001CDF58	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-reloc-hash
@@ -3430,7 +3430,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001D1A30	0x001E7D38	func_r1_001D1A30	no	yes	asm/raidou1/code_001D02F8.s	asm/raidou2/code_001E6518.s	masked-hash-in-gap
 0x001D1A60	0x001E7D68	func_r1_001D1A60	no	yes	asm/raidou1/code_001D02F8.s	asm/raidou2/code_001E6518.s	masked-hash-in-gap
 0x001D1B20	0x001E7E28	mnuInitializeTitleSoundBuffer	no	yes	asm/raidou1/code_001D02F8.s	asm/raidou2/code_001E6518.s	unique-reloc-hash
-0x001D1BC8	0x001E7ED0	func_r1_001D1BC8	no	no	asm/raidou1/code_001D02F8.s	asm/raidou2/code_001E6518.s	run-order-near
+0x001D1BC8	0x001E7ED0	mnuQueueTitleSoundStreamEntry	no	no	asm/raidou1/code_001D02F8.s	asm/raidou2/code_001E6518.s	run-order-near
 0x001D1CC0	0x001E7FD8	mnuLoadTitleSoundBufferEntry	no	no	asm/raidou1/code_001D02F8.s	asm/raidou2/code_001E6518.s	near-size
 0x001D1E40	0x001E8160	mnuInstallTitleSoundBufferFromData	no	no	asm/raidou1/code_001D02F8.s	asm/raidou2/code_001E6518.s	size
 0x001D1FC8	0x001E82E8	func_r1_001D1FC8	no	yes	asm/raidou1/code_001D02F8.s	asm/raidou2/code_001E6518.s	unique-reloc-hash
@@ -3676,7 +3676,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001DBE10	0x001F3108	func_r1_001DBE10	no	yes	asm/raidou1/code_001DB8A0.s	asm/raidou2/code_001F2B98.s	unique-reloc-hash
 0x001DBE98	0x001F3190	func_r1_001DBE98	no	no	asm/raidou1/code_001DB8A0.s	asm/raidou2/code_001F2B98.s	unique-masked-hash
 0x001DBEB8	0x001F31B0	func_r1_001DBEB8	no	no	asm/raidou1/code_001DBEB8.s	asm/raidou2/code_001F31B0.s	unique-masked-hash
-0x001DBF38	0x001F3230	func_r1_001DBF38	no	yes	asm/raidou1/code_001DBEB8.s	asm/raidou2/code_001F31B0.s	unique-reloc-hash
+0x001DBF38	0x001F3230	dds3BillboardManagerInit	no	yes	asm/raidou1/code_001DBEB8.s	asm/raidou2/code_001F31B0.s	unique-reloc-hash
 0x001DC020	0x001F3318	func_r1_001DC020	no	yes	asm/raidou1/effect/billManager.s	asm/raidou2/effect/billManager.s	unique-reloc-hash
 0x001DC078	0x001F3370	func_r1_001DC078	no	yes	asm/raidou1/effect/billManager.s	asm/raidou2/effect/billManager.s	unique-reloc-hash
 0x001DC190	0x001F3488	func_r1_001DC190	no	yes	asm/raidou1/effect/billManager.s	asm/raidou2/effect/billManager.s	unique-reloc-hash
@@ -6519,7 +6519,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00280810	0x002ADE30	func_r1_00280810	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-masked-hash
 0x00280840	0x002ADE60	func_r1_00280840	no	yes	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	masked-hash-in-gap
 0x00280868	0x002ADE88	func_r1_00280868	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-masked-hash
-0x00280978	0x002ADF98	func_r1_00280978	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	run-order-near
+0x00280978	0x002ADF98	btlLoadModelHit	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	run-order-near
 0x00280D60	0x002AE368	func_r1_00280D60	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-masked-hash
 0x002816C0	0x002AEDD0	func_r1_002816C0	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-masked-hash
 0x002818D0	0x002AEFE0	func_r1_002818D0	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-masked-hash
@@ -6560,7 +6560,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00285DB8	0x002B3848	func_r1_00285DB8	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-masked-hash
 0x00285E50	0x002B38E0	func_r1_00285E50	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-masked-hash
 0x00286A40	0x002B5C40	func_r1_00286A40	yes	yes	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-reloc-hash
-0x00289CA0	0x002BAF80	func_r1_00289CA0	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-masked-hash
+0x00289CA0	0x002BAF80	btlLoadSbPack	no	no	asm/raidou1/code_0027FD88.s	asm/raidou2/code_002AC940.s	unique-masked-hash
 0x00289E08	0x002BB0E8	func_r1_00289E08	no	yes	asm/raidou1/field/fldPanel.s	asm/raidou2/field/fldPanel.s	unique-reloc-hash
 0x00289E50	0x002BB130	func_r1_00289E50	no	no	asm/raidou1/code_00289E50.s	asm/raidou2/code_002BB130.s	size
 0x00289EF8	0x002BB1D8	func_r1_00289EF8	yes	yes	asm/raidou1/code_00289E50.s	asm/raidou2/code_002BB130.s	masked-hash-in-gap
@@ -9920,8 +9920,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0037EBC8	0x003F4808	sceMcRename	no	no	asm/raidou1/sdk/libmc/libmc.s	asm/raidou2/sdk/libmc/libmc.s	unique-masked-hash
 0x0037ED30	0x003F4970	sceMcUnformat	no	yes	asm/raidou1/sdk/libmc/libmc.s	asm/raidou2/sdk/libmc/libmc.s	unique-reloc-hash
 0x0037EDF8	0x003F4A38	sceMcGetEntSpace	no	no	asm/raidou1/sdk/libmc/libmc.s	asm/raidou2/sdk/libmc/libmc.s	unique-masked-hash
-0x0037EF10	0x003F4B50	func_r1_0037EF10	no	yes	asm/raidou1/code_0037EF10.s	asm/raidou2/code_003F4B50.s	unique-reloc-hash
-0x0037EFD8	0x003F4C18	func_r1_0037EFD8	no	yes	asm/raidou1/code_0037EF10.s	asm/raidou2/code_003F4B50.s	unique-reloc-hash
+0x0037EF10	0x003F4B50	at3DecInit	no	yes	asm/raidou1/code_0037EF10.s	asm/raidou2/code_003F4B50.s	unique-reloc-hash
+0x0037EFD8	0x003F4C18	at3DecDecode	no	yes	asm/raidou1/code_0037EF10.s	asm/raidou2/code_003F4B50.s	unique-reloc-hash
 0x0037F0F8	0x003F4D38	func_r1_0037F0F8	yes	yes	asm/raidou1/code_0037EF10.s	asm/raidou2/code_003F4B50.s	unique-reloc-hash
 0x0037F2E0	0x003F4F20	func_r1_0037F2E0	no	yes	asm/raidou1/code_0037EF10.s	asm/raidou2/code_003F4B50.s	unique-reloc-hash
 0x0037F8F8	0x003F5538	func_r1_0037F8F8	no	yes	asm/raidou1/code_0037EF10.s	asm/raidou2/code_003F4B50.s	unique-reloc-hash

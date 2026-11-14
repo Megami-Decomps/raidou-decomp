@@ -512,7 +512,7 @@ INCLUDE_ASM(const s32, "code_00121708", func_r1_0011FFF0);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00123380);
 
-INCLUDE_ASM(const s32, "code_00121708", func_001234E0);
+INCLUDE_ASM(const s32, "code_00121708", datLoadLvUpTables);
 
 void func_00123548(void) {
 }

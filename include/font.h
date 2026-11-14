@@ -93,17 +93,18 @@ struct frTextHandle_t {
     struct frTextHandle_t *next;
 };
 
-/* Parent chain heads use the native 0x30-byte pool and own child-item links. */
+/* Parent chain heads: frInitFontTable's glyph pool, 0x58 bytes in Raidou 1 and
+ * 0x5C in Raidou 2. */
 struct frFontHandle_t {
     union {
         u16 glyphCode;
         struct {
             u8 encodedContextByte;
-            s8 spacing;
+            u8 baseContextByte; /* copied back to +0 when the chain's context is reset */
         } byteRoles;
     } glyphCodeOrContext;
-    /* Preserved by parent-chain initialization. */
-    u16 drawCount;
+    s8 spacing; /* frSetFontSpace writes it; frGetStrWidth adds it per child */
+    u8 pad03;
     s32 x;
     s32 y;
     s32 advance;
@@ -141,6 +142,17 @@ struct frFontHandle_t {
     struct frFontHandle_t *previous;
     struct frFontHandle_t *next;
     struct frFontHandle_t *chainHead;
+    u32 timedControlCode;
+    u32 pendingLipsStopCode;
+    u32 skipLipsStopWait;
+    s32 remainingWaitFrames;
+    s32 contextModeEnabled;
+    u8 pad44[8];
+#ifdef VERSION_RAIDOU2
+    u8 pad4C[4];
+#endif
+    s32 contextResetWord; /* cleared on every chain node with the context byte */
+    u8 pad_end[8];
 };
 
 #endif /* FONT_H */

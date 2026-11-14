@@ -2024,15 +2024,10 @@ INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017F0B0);
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017F0D0);
 
-#ifdef NON_MATCHING
-/* 1 of 11 words differ (first at +0x14) */
 void frSetFontSpace(frFontHandle_t *pFRQ, s32 Space) {
-    pFRQ->glyphCodeOrContext.byteRoles.spacing = Space;
+    pFRQ->spacing = Space;
     pFRQ->advance = frGetStrWidth(pFRQ);
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frSetFontSpace);
-#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017F138);
 
@@ -2180,14 +2175,12 @@ s32 frStrLen(s8 *pStr) {
     return characterCount;
 }
 
-#ifdef NON_MATCHING
-/* 1 of 13 words differ: retail reads the spacing byte at +2, the shared frFontHandle_t has it at +1 */
 u32 frGetStrWidth(frFontHandle_t *pFRQ) {
     frTextHandle_t *childGlyph = pFRQ->firstChild;
     s32 totalAdvance = 0;
 
     if (childGlyph != NULL) {
-        s8 childSpacing = pFRQ->glyphCodeOrContext.byteRoles.spacing;
+        s8 childSpacing = pFRQ->spacing;
 
         do {
             totalAdvance += childGlyph->advance;
@@ -2197,12 +2190,7 @@ u32 frGetStrWidth(frFontHandle_t *pFRQ) {
     }
     return totalAdvance;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frGetStrWidth);
-#endif
 
-#ifdef NON_MATCHING
-/* 1 of 20 words differ (first at +0x18) */
 u32 frGetStrWidth2(frFontHandle_t *pFRQ) {
     frFontHandle_t *parentGlyph;
     frTextHandle_t *childGlyph;
@@ -2211,7 +2199,7 @@ u32 frGetStrWidth2(frFontHandle_t *pFRQ) {
     for (parentGlyph = pFRQ->chainHead; parentGlyph != NULL; parentGlyph = parentGlyph->next) {
         childGlyph = parentGlyph->firstChild;
         if (childGlyph != NULL) {
-            s8 childSpacing = parentGlyph->glyphCodeOrContext.byteRoles.spacing;
+            s8 childSpacing = parentGlyph->spacing;
 
             do {
                 totalAdvance += childGlyph->advance;
@@ -2222,9 +2210,6 @@ u32 frGetStrWidth2(frFontHandle_t *pFRQ) {
     }
     return totalAdvance;
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", frGetStrWidth2);
-#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", func_r1_0017FDC8);
 

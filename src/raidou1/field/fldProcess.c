@@ -581,7 +581,7 @@ s32 fldEncountTestFlag(u32 flag)
 
 INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012F950);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FA80);
+INCLUDE_ASM(const s32, "field/fldProcess", fldProcShutDown);
 
 INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FBF8);
 
