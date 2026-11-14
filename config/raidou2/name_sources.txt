@@ -4278,7 +4278,7 @@
 0x0020E7D0	dds3HermitianTrackPolyDraw	inferred	SMT3HD name via SLUS_209.11 0x001A3F40, reloc-identical; map-agrees
 0x0020EA98	func_r1_001F77A0	placeholder	placeholder for the pair with raidou1 0x001F77A0, unique-reloc-hash
 0x0020EE08	func_r1_001F7B10	placeholder	placeholder for the pair with raidou1 0x001F7B10, unique-reloc-hash
-0x0020EF48	func_r1_001F7C50	placeholder	placeholder for the pair with raidou1 0x001F7C50, masked-hash-in-gap
+0x0020EF48	effDrawBlurRectangle	inferred	called where DDS effUpdateFadeBlendA calls DDS effDrawBlurRectangle
 0x0020F1D8	func_r1_001F7EE0	placeholder	placeholder for the pair with raidou1 0x001F7EE0, unique-reloc-hash
 0x0020F4C8	func_r1_001F81D0	placeholder	placeholder for the pair with raidou1 0x001F81D0, unique-reloc-hash
 0x0020F570	func_r1_001F8278	placeholder	placeholder for the pair with raidou1 0x001F8278, unique-reloc-hash
@@ -4294,7 +4294,7 @@
 0x0020F928	dds3EffectDistBlurPartInit	inferred	SMT3HD name via SLUS_209.11 0x001A21C0, reloc-identical; map-agrees
 0x0020FA58	dds3EffectDistortionBlurCreate	inferred	SMT3HD name via SLUS_209.11 0x001A22F0, reloc-identical; map-agrees
 0x0020FB48	func_r1_001F8850	placeholder	placeholder for the pair with raidou1 0x001F8850, masked-hash-in-gap
-0x0020FB60	func_r1_001F8868	placeholder	placeholder for the pair with raidou1 0x001F8868, unique-reloc-hash
+0x0020FB60	effBlurStepScatterSlotsAndDraw	inferred	called where DDS effUpdateFadeMapA calls DDS effBlurStepScatterSlotsAndDraw
 0x0020FDA0	dds3EffectDistortionBlurSetParam	inferred	SMT3HD name via SLUS_209.11 0x001A2600, byte-identical; map-agrees
 0x0020FE08	func_r1_001F8B10	placeholder	placeholder for the pair with raidou1 0x001F8B10, run-order-size
 0x0020FE10	func_r1_001F8B18	placeholder	placeholder for the pair with raidou1 0x001F8B18, masked-hash-in-gap
@@ -4303,9 +4303,9 @@
 0x0020FEE0	dds3EffectRippleBlurReset	inferred	SMT3HD name via SLUS_209.11 0x001A2728, reloc-identical; map-agrees
 0x0020FF60	dds3EffectRippleBlurCreate	inferred	SMT3HD name via SLUS_209.11 0x001A27A8, reloc-identical; map-agrees
 0x00210080	func_r1_001F8D88	placeholder	placeholder for the pair with raidou1 0x001F8D88, masked-hash-in-gap
-0x00210098	func_r1_001F8DA0	placeholder	placeholder for the pair with raidou1 0x001F8DA0, unique-reloc-hash
+0x00210098	effBlurStepScaleSlotsAndDraw	inferred	called where DDS effUpdateFadeMapB calls DDS effBlurStepScaleSlotsAndDraw
 0x00210288	func_r1_001F8F90	placeholder	placeholder for the pair with raidou1 0x001F8F90, unique-reloc-hash
-0x002104A0	func_r1_001F91A8	placeholder	placeholder for the pair with raidou1 0x001F91A8, masked-hash-in-gap
+0x002104A0	effBlurDrawFramebufferQuad	inferred	called where DDS effUpdateFadeBlendB calls DDS effBlurDrawFramebufferQuad
 0x00210730	dds3EffectFilter	inferred	SMT3HD name via SLUS_209.11 0x001A2AC8, reloc-identical; map-agrees
 0x002108D8	func_r1_001F95E0	placeholder	placeholder for the pair with raidou1 0x001F95E0, unique-reloc-hash
 0x00210AE8	dds3EffectPartialMultiFilterCreate	inferred	SMT3HD name via SLUS_209.11 0x001A2E28, reloc-identical; map-agrees

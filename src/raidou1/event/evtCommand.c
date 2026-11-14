@@ -1721,7 +1721,49 @@ u32 evtOpClearWorldObjectPendingValue(void) {
 
 INCLUDE_RODATA(const s32, "event/evtCommand", D_r1_0044DE78);
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtOpModelLodChg);
+u32 evtOpModelLodChg(void) {
+    s32 lod;
+    dds3Basic_t *world;
+    dds3Basic_t *unit;
+    EffectObjectData *data;
+    dds_dds3ObjectBaseControlWorkData_t *modelHolder;
+    dds3ModelHandle_t *context;
+    dds_sdfModelRootNode_t *model;
+    s32 max;
+
+    lod = scrGetIntPara(1);
+    printf("call: MODEL_LOD_CHG(int,int)\n");
+    world = dds3GetActiveScene();
+    unit = dds3SearchSceneBasic(world, scrGetIntPara(0), 5);
+    if (unit == NULL) {
+        printf("warning!! MODEL_LOD_CHG(int,int) unit pointer null\n");
+        return 1;
+    }
+    data = unit->workdata;
+    if (data->modelHolder == NULL) {
+        printf("warning!! MODEL_LOD_CHG(int,int) workbase pointer null\n");
+        return 1;
+    }
+    modelHolder = data->modelHolder;
+    if (modelHolder->resourceHandle == 0) {
+        printf("warning!! MODEL_LOD_CHG(int,int) mh pointer null\n");
+        return 1;
+    }
+    context = (dds3ModelHandle_t *)modelHolder->resourceHandle;
+    model = context->inner;
+    if (model == NULL) {
+        printf("warning!! MODEL_LOD_CHG(int,int) root pointer null\n");
+        return 1;
+    }
+    max = (s32)sdfGetLodChunkValue(model);
+    if (max < lod) {
+        printf("warning!! MODEL_LOD_CHG(int,int) lodno over!! max=%d setval=%d\n", max, lod);
+        return 1;
+    }
+    model->lodIndex = lod;
+    printf("success: MODEL_LOD_CHG(int,int)\n");
+    return 1;
+}
 
 u32 evtCommand_MODEL_POS_XYZ(void)
 {

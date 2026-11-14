@@ -499,6 +499,7 @@ evtFilterDefaultParam = 0x004490E0;
 evtMultFilterDefaultParam = 0x00449100;
 evtDistBlurDefaultParam = 0x00449130;
 evtRipBlurDefaultParam = 0x00449160;
+D_003686A0 = 0x00449190;
 movieCb = 0x004547B8;
 dds3BillboardFuncTable = 0x00456270;
 dds3P2APolygonFaceIndex = 0x004562A0;

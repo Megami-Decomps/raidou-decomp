@@ -289,8 +289,9 @@ def cmd_headers(args):
           f"{kept} differ and kept (--verbose lists them)")
 
 
-def type_sizes(inc, includes, exprs, defines):
-    """sizeof(expr) for each expr that compiles after includes, with ee-gcc's cc1 and include dir inc."""
+def type_sizes(inc, includes, exprs, defines, raw=False):
+    """sizeof(expr) (expr itself with raw) for each expr that compiles after includes, with ee-gcc's cc1
+    and include dir inc."""
     import shlex
     import subprocess
     import tempfile
@@ -301,14 +302,14 @@ def type_sizes(inc, includes, exprs, defines):
         src, asm = Path(tmp) / "probe.c", Path(tmp) / "probe.s"
         while exprs:
             src.write_text("".join(f'#include "{i}"\n' for i in includes)
-                           + "".join(f"const int probe_{i} = sizeof({e});\n" for i, e in enumerate(exprs)))
+                           + "".join((f"const int probe_{i} = {e};\n" if raw else f"const int probe_{i} = sizeof({e});\n") for i, e in enumerate(exprs)))
             cmd = ["tools/glibc32/ld-linux.so.2", "--library-path", "tools/glibc32", str(configure.CC1),
                    *shlex.split(configure.CC1_DEFINES), f"-I{inc}", "-DSKIP_ASM", *defines, *shlex.split(configure.CC1_FLAGS),
                    str(src), "-o", str(asm)]
             r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
             if r.returncode == 0:
-                vals = re.findall(r"^probe_(\d+):\s*\n\s*\.word\s+(\d+)", asm.read_text(), re.M)
-                out.update({exprs[int(i)]: int(v) for i, v in vals})
+                vals = re.findall(r"^probe_(\d+):\s*\n\s*(?:\.word\s+(\d+)|\.space\s+4)", asm.read_text(), re.M)
+                out.update({exprs[int(i)]: int(v or 0) for i, v in vals})
                 break
             bad = {int(n) - len(includes) - 1 for n in re.findall(r"probe\.c:(\d+):", r.stderr)}
             bad = {exprs[i] for i in bad if 0 <= i < len(exprs)}
@@ -347,11 +348,62 @@ def cmd_layouts(args):
         print(name)
 
 
+def cmd_members(args):
+    """DDS member names that SMT3 spells differently at the same offset and size, per type both
+    define with one layout: config/dds_members.txt, which raidou_c applies to carried DDS code."""
+    dds = args.dds.expanduser().resolve()
+    smt3 = rc.smt3_header_names()
+    renamed = {ln.split("#")[0].strip() for ln in (ROOT / "config/dds_types.txt").read_text().splitlines()}
+    structs, _ = rc.dds_structs(dds, sources=False)
+    shared = {}  # name -> (type expression, dds members, dds header, smt3 members)
+    for name, defs in structs.items():
+        for kind, su, members, path in defs:
+            if name in renamed or (kind, name) not in smt3:
+                continue
+            text = (ROOT / "include" / smt3[(kind, name)]).read_text(errors="replace")
+            got = next((g for b in rc.blocks(text) if (kind, name) in rc.declared_names(b)
+                        and (g := rc.struct_body(b, kind, name))), None)
+            if got:
+                expr = f"{su} {name}" if kind == "tag" else name
+                shared[name] = (expr, [m for m, _ in members], path.relative_to(dds / "include").as_posix(),
+                                [m for m, _ in rc.struct_members(got[1], nested=True)])
+    probe = lambda expr, m: (f"(int)&((({expr} *)0)->{m})", f"sizeof(((({expr} *)0)->{m}))")
+    smt3_inc = ROOT / "include"
+    exprs = [e for expr, _, _, sm in shared.values() for m in sm for e in probe(expr, m)]
+    base = type_sizes(smt3_inc, sorted(p.name for p in smt3_inc.glob("*.h")), exprs, ["-DVERSION_RAIDOU1"], raw=True)
+    by_header = defaultdict(list)
+    for name, (expr, dm, h, _) in shared.items():
+        by_header[h] += [e for m in dm for e in probe(expr, m)]
+    games = [{} for _ in ("DDS1", "DDS2")]
+    for h, ex in sorted(by_header.items()):
+        for got, game in zip(games, ("DDS1", "DDS2")):
+            got.update(type_sizes(dds / "include", [h], ex, [f"-DVERSION_{game}=1"], raw=True))
+    lines = ["# type, DDS member, SMT3 member at the same offset and size (raidou_dds.py members).",
+             "# raidou_c rewrites carried DDS code's accesses through a variable of that type."]
+    for name, (expr, dm, _, sm) in sorted(shared.items()):
+        at = defaultdict(list)
+        for m in sm:
+            if all(e in base for e in probe(expr, m)):
+                at[tuple(base[e] for e in probe(expr, m))].append(m)
+        found = {}
+        for m in dm:
+            keys = {tuple(g.get(e) for e in probe(expr, m)) for g in games} - {(None, None)}
+            hit = at.get(next(iter(keys)), []) if len(keys) == 1 else []
+            same = [h for h in hit if h.rsplit(".", 1)[-1] == m]
+            if m not in sm and (len(same) == 1 or len(hit) == 1):
+                found[m] = (same or hit)[0]
+        # Two DDS members on one SMT3 member are a union SMT3 names as a whole: not a rename.
+        targets = Counter(found.values())
+        lines += [f"{name}\t{m}\t{s}" for m, s in found.items() if targets[s] == 1]
+    (ROOT / "config/dds_members.txt").write_text("\n".join(lines) + "\n")
+    print(f"{len(shared)} shared types; {len(lines) - 2} members renamed")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name, func in (("names", cmd_names), ("rename", cmd_rename), ("pairs", cmd_pairs), ("headers", cmd_headers),
-                       ("layouts", cmd_layouts)):
+                       ("layouts", cmd_layouts), ("members", cmd_members)):
         p = sub.add_parser(name)
         p.add_argument("--dds", type=Path, default=rc.DDS, help="dds-decomp checkout, configured (split)")
         if name == "headers":

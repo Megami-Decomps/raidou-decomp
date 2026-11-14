@@ -4271,7 +4271,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001F74D8	0x0020E7D0	dds3HermitianTrackPolyDraw	no	yes	src/raidou1/effect/effModelTrackPoly.c	src/raidou2/effect/effModelTrackPoly.c	unique-reloc-hash
 0x001F77A0	0x0020EA98	func_r1_001F77A0	no	yes	asm/raidou1/code_001F77A0.s	asm/raidou2/code_0020EA98.s	unique-reloc-hash
 0x001F7B10	0x0020EE08	func_r1_001F7B10	no	yes	asm/raidou1/code_001F7B10.s	asm/raidou2/code_0020EE08.s	unique-reloc-hash
-0x001F7C50	0x0020EF48	func_r1_001F7C50	no	yes	asm/raidou1/code_001F7B10.s	asm/raidou2/code_0020EE08.s	masked-hash-in-gap
+0x001F7C50	0x0020EF48	effDrawBlurRectangle	no	yes	asm/raidou1/code_001F7B10.s	asm/raidou2/code_0020EE08.s	masked-hash-in-gap
 0x001F7EE0	0x0020F1D8	func_r1_001F7EE0	no	yes	asm/raidou1/code_001F7B10.s	asm/raidou2/code_0020EE08.s	unique-reloc-hash
 0x001F81D0	0x0020F4C8	func_r1_001F81D0	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F8278	0x0020F570	func_r1_001F8278	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
@@ -4287,7 +4287,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001F8630	0x0020F928	dds3EffectDistBlurPartInit	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F8760	0x0020FA58	dds3EffectDistortionBlurCreate	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F8850	0x0020FB48	func_r1_001F8850	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	masked-hash-in-gap
-0x001F8868	0x0020FB60	func_r1_001F8868	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
+0x001F8868	0x0020FB60	effBlurStepScatterSlotsAndDraw	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F8AA8	0x0020FDA0	dds3EffectDistortionBlurSetParam	yes	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F8B10	0x0020FE08	func_r1_001F8B10	yes	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	run-order-size
 0x001F8B18	0x0020FE10	func_r1_001F8B18	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	masked-hash-in-gap
@@ -4296,9 +4296,9 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001F8BE8	0x0020FEE0	dds3EffectRippleBlurReset	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F8C68	0x0020FF60	dds3EffectRippleBlurCreate	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F8D88	0x00210080	func_r1_001F8D88	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	masked-hash-in-gap
-0x001F8DA0	0x00210098	func_r1_001F8DA0	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
+0x001F8DA0	0x00210098	effBlurStepScaleSlotsAndDraw	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F8F90	0x00210288	func_r1_001F8F90	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
-0x001F91A8	0x002104A0	func_r1_001F91A8	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	masked-hash-in-gap
+0x001F91A8	0x002104A0	effBlurDrawFramebufferQuad	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	masked-hash-in-gap
 0x001F9438	0x00210730	dds3EffectFilter	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F95E0	0x002108D8	func_r1_001F95E0	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash
 0x001F97F0	0x00210AE8	dds3EffectPartialMultiFilterCreate	no	yes	asm/raidou1/effect/effBlur_Filter.s	asm/raidou2/effect/effBlur_Filter.s	unique-reloc-hash

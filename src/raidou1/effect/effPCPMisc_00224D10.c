@@ -2506,7 +2506,21 @@ void dds3DispatchIndexedCallback(u16 *record, f32 scale) {
     effEmitterTypeDescriptors[*record].scaleParameters(record, scale);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effInitModelVUState);
+/* Initialize the VU transforms and the first node's float slot, if present. */
+void effInitModelVUState(dds3ModelHandle_t *model) {
+    SDF_VU0_LOADIDENTITYVECTOR();
+    mdlSetPosition(model);
+    SDF_VU0_LOADIDENTITYVECTOR();
+    mdlSetRotate(model);
+    SDF_VU0_SETSCALE1VECTOR();
+    mdlSetScale(model);
+    mdlSetColor(model, 0x80808080);
+    if (model->first != NULL) {
+        mdlSingleMotion(model, 0, 0);
+        model->first->speed = 1.0f;
+    }
+    model->flags &= ~MDL_SKIP_TRANSFORMS;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", func_r1_00224EB0);
 

@@ -67,6 +67,16 @@ headers carry its layout. Mark such rows `asm	compiles identical` and run
 `port --retry '^compiles identical$'`; a failure keeps the prefix, so the next
 `port` puts it back to asm.
 
+dds-decomp and SMT3 sometimes name one member differently in a type both
+define with the same layout. `raidou_dds.py members` probes each such type's
+member offsets and sizes on both sides and writes `config/dds_members.txt`
+(type, DDS name, SMT3 name). A DDS body whose `smt3_c.tsv` reason starts with
+`SMT3 member names` is carried with SMT3's names where the access's base type
+can be followed: a variable or parameter declared in the function or the
+file, a `((T *)p)` cast, and the members along the chain. Unmarked bodies keep
+DDS's names, since some TUs see dds-decomp's definition of the type. SMT3's
+names are never changed.
+
 `verify` reads each compiled object, not the source: every word must equal
 retail except relocated fields, and each relocation's symbol must resolve to
 the Raidou address the retail word implies. A name Raidou already has must

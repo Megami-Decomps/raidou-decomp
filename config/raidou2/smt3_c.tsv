@@ -1192,7 +1192,7 @@ effCreateModelResourceFromFile	c
 effCreateModelResourceWithInlineData	c
 effCreateOwnerRecordList	c
 effCreateParticleSharedResourceFromFile	c
-effCreateParticleSpanTable	asm	compile error: structure has no member named `frameCount'
+effCreateParticleSpanTable	c	SMT3 member names
 effCreatePayload	c
 effCreatePointSet3	c
 effCreatePointSet4	c
@@ -1370,7 +1370,7 @@ effGetSlotWorkOrOverride	c
 effGetWindTextureHandle	c
 effHasFirstTextureHandle	c
 effIndexedFloatCallbackDispatch	c
-effInitModelVUState	asm	compile error: structure has no member named `frameStep'
+effInitModelVUState	c	SMT3 member names
 effInitParticleRecord	c
 effInitializeAllSlotWork	c
 effInitializeAlternatingTransformRows	c
@@ -1861,17 +1861,17 @@ effUpdateColumnParticlesAndRibbons	c
 effUpdateCompactRingDrawColorAndTransform	c
 effUpdateDirectedEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
 effUpdateExpandingRingPoints	c
-effUpdateFadeBlendA	asm	compile error: structure has no member named `position'
-effUpdateFadeBlendB	asm	compile error: structure has no member named `position'
-effUpdateFadeBlendC	asm	compile error: structure has no member named `corners'
-effUpdateFadeMapA	asm	compile error: structure has no member named `positionSpread'
-effUpdateFadeMapB	asm	compile error: structure has no member named `size'
+effUpdateFadeBlendA	c	SMT3 member names
+effUpdateFadeBlendB	c	SMT3 member names
+effUpdateFadeBlendC	c	SMT3 member names
+effUpdateFadeMapA	c	SMT3 member names
+effUpdateFadeMapB	c	SMT3 member names
 effUpdateFadedMeshTransform	c
 effUpdateGridRecordSlotHistory	c
 effUpdateOrbitalPointSpanWaves	c
 effUpdateOrientedRingEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
-effUpdateProjectedBlurFadeRectangle	asm	compile error: structure has no member named `source'
-effUpdateProjectedFadeColor	asm	compile error: structure has no member named `extent'
+effUpdateProjectedBlurFadeRectangle	c	SMT3 member names
+effUpdateProjectedFadeColor	c	SMT3 member names
 effUpdateRadialClassInstances	c
 effUpdateRadialEmitterSlots	asm	fileSampleKeyTracks at 0x002383B0, 0x00238520
 effUpdateRadialWavePointRows	c
@@ -1901,7 +1901,7 @@ evtAssignRuntimeChildSequenceAndCount	c
 evtBitCheck	c	compiles identical
 evtBitOff	c	compiles identical
 evtBitOn	c	compiles identical
-evtBlendParamsG	asm	compile error: structure has no member named `color'
+evtBlendParamsG	c	SMT3 member names
 evtBlendParamsH	c
 evtCheckEventBgmLoaded	c
 evtCheckEventScriptLoaded	c

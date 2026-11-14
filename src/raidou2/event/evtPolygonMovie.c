@@ -976,7 +976,33 @@ void evtHokanRipBlur(s32 hokan, f32 ratio, dds3Effect_RippleBlurParam_t *key1, d
     d->area = evtHokanUInt(hokan, ratio, key1->area, key2->area);
 }
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtBlendParamsG);
+void evtBlendParamsG(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Effect_Blur_t *b, dds3Effect_Blur_t *out)
+{
+    s32 positionOrCornerIndex;
+    s32 coordinateIndex;
+
+    if (enable == 0) {
+        t = 0.0f;
+    }
+    if (a == NULL) {
+        a = &D_003686A0;
+    }
+    if (b == NULL) {
+        b = &D_003686A0;
+    }
+    out->abgr = evtHokanColor(enable, t, a->abgr, b->abgr);
+    out->blend = a->blend;
+    out->rotate = evtHokanFloat(enable, t, a->rotate, b->rotate);
+    out->scale = evtHokanFloat(enable, t, a->scale, b->scale);
+    for (positionOrCornerIndex = 0; positionOrCornerIndex < 2; positionOrCornerIndex++) {
+        out->center[positionOrCornerIndex] = evtHokanInt(enable, t, a->center[positionOrCornerIndex], b->center[positionOrCornerIndex]);
+    }
+    for (positionOrCornerIndex = 0; positionOrCornerIndex < 2; positionOrCornerIndex++) {
+        for (coordinateIndex = 0; coordinateIndex < 2; coordinateIndex++) {
+            out->xy[positionOrCornerIndex][coordinateIndex] = evtHokanInt(enable, t, a->xy[positionOrCornerIndex][coordinateIndex], b->xy[positionOrCornerIndex][coordinateIndex]);
+        }
+    }
+}
 
 void evtBlendParamsH(s32 enable, f32 t, const EvtBlendKey *a, const EvtBlendKey *b, EvtBlendKey *out)
 {

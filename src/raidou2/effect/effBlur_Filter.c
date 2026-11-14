@@ -272,7 +272,7 @@ effBlurScatterWork_t *dds3EffectDistortionBlurCreate(dds3Effect_DistortionBlurPa
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8850);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8868);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effBlurStepScatterSlotsAndDraw);
 
 /* Update scale parameters but preserve the allocated destination slot count. */
 void dds3EffectDistortionBlurSetParam(effBlurScaleWork_t *hDistortionBlur, dds3Effect_RippleBlurParam_t *pParam) {
@@ -339,11 +339,11 @@ effBlurScaleWork_t *dds3EffectRippleBlurCreate(dds3Effect_RippleBlurParam_t *pPa
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8D88);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8DA0);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effBlurStepScaleSlotsAndDraw);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8F90);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F91A8);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", effBlurDrawFramebufferQuad);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectFilter);
 

@@ -491,6 +491,7 @@ evtFilterDefaultParam = 0x003EEF60;
 evtMultFilterDefaultParam = 0x003EEF80;
 evtDistBlurDefaultParam = 0x003EEFB0;
 evtRipBlurDefaultParam = 0x003EEFE0;
+D_003686A0 = 0x003EF010;
 movieCb = 0x003F9338;
 fileLoadMenuState = 0x003F97C8;
 dds3BillboardFuncTable = 0x003FA4B0;

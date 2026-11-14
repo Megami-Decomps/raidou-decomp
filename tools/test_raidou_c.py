@@ -44,5 +44,23 @@ class CandidateTests(unittest.TestCase):
             self.assertEqual(set(raidou_c.candidates("raidou1")), {"same", "marked"})
 
 
+class MemberRenameTests(unittest.TestCase):
+    def test_renames_follow_the_access_type(self) -> None:
+        text = (
+            "typedef struct Blur { u32 color; s32 position[2]; } Blur;\n"
+            "typedef struct Slot { s32 delay; Blur quad; } Slot;\n"
+            "typedef struct Other { s32 position[2]; } Other;\n"
+            "void f(Slot *slot, Other *other) {\n"
+            "    Blur *b = &slot->quad;\n"
+            "    b->color = slot->quad.position[0] + other->position[1];\n"
+            "}\n")
+        renames = {"Blur": {"color": "abgr", "position": "center"}}
+        with mock.patch.object(raidou_c, "dds_member_renames", return_value=renames), \
+                mock.patch.object(raidou_c, "dds_structs", return_value=({}, {})):
+            out = raidou_c.dds_members(text)
+        self.assertIn("b->abgr = slot->quad.center[0] + other->position[1];", out)
+        self.assertIn("u32 color; s32 position[2]; } Blur;", out)
+
+
 if __name__ == "__main__":
     unittest.main()

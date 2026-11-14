@@ -459,6 +459,183 @@ def dds_rename(text):
     return _DDS_TYPES[0].sub(r"dds_\1", text) if _DDS_TYPES[0] else text
 
 
+def closing(text, at):
+    """Offset of the brace that closes the one at text[at]."""
+    depth = 0
+    for i in range(at, len(text)):
+        depth += {"{": 1, "}": -1}.get(text[i], 0)
+        if depth == 0:
+            return i
+    return len(text)
+
+
+def split_top(text, char):
+    """text split at each `char` outside brackets."""
+    parts, depth, start = [], 0, 0
+    for i, ch in enumerate(text):
+        if ch in "({[":
+            depth += 1
+        elif ch in ")}]":
+            depth -= 1
+        elif ch == char and depth == 0:
+            parts.append(text[start:i])
+            start = i + 1
+    return parts + [text[start:]]
+
+
+TYPE_WORDS = {"const", "volatile", "unsigned", "signed", "struct", "union", "enum", "static", "extern", "register"}
+
+
+def base_type(decl):
+    """The first identifier of a declaration that is not a qualifier or tag keyword."""
+    return next((w for w in re.findall(r"\w+", decl) if w not in TYPE_WORDS), None)
+
+
+def struct_members(body, nested=False):
+    """[(member, base type)] of a struct or union body (code view, between its braces); an
+    anonymous member contributes its own members, an inline struct type has type None, and with
+    nested a named inline struct's members follow it as `name.member`."""
+    out = []
+    body = re.sub(r"^\s*#.*$", "", body, flags=re.M)
+    for stmt in split_top(body, ";")[:-1]:
+        stmt = stmt.strip()
+        kind = base_type(stmt)
+        if "{" in stmt:
+            a = stmt.index("{")
+            b = closing(stmt, a)
+            inner = struct_members(stmt[a + 1:b], nested)
+            if not stmt[b + 1:].strip():
+                out += inner
+                continue
+            stmt, kind = "x " + stmt[b + 1:], None
+            if nested and (m := re.fullmatch(r"\s*(\w+)\s*", stmt[2:])):
+                out += [(m.group(1), None)] + [(f"{m.group(1)}.{n}", k) for n, k in inner]
+                continue
+        for part in split_top(stmt, ","):
+            if m := re.search(r"\(\s*\*\s*(\w+)", part):
+                out.append((m.group(1), None))
+            elif m := re.search(r"(\w+)\s*(\[[^\]]*\]\s*)*(:[^,]*)?$", part.strip()):
+                out.append((m.group(1), kind))
+    return out
+
+
+def struct_body(block, kind, name):
+    """(struct|union, body code view) of what `block` defines under (kind, name), or None."""
+    cv = code_view(block)
+    m = re.search(rf"\b(struct|union)\s+{name}\s*\{{", cv) if kind == "tag" else \
+        re.match(r"\s*typedef\s+(struct|union)\b[^{;]*\{", cv)
+    if not m:
+        return None
+    return m.group(1), cv[m.end():closing(cv, m.end() - 1)]
+
+
+def text_structs(text, out, aliases, where=None):
+    """Add text's struct definitions to out (name -> [(kind, struct|union, members, where)]) and its
+    plain typedefs of a struct name to aliases (new name -> old)."""
+    for b in blocks(text):
+        cv = code_view(b).strip()
+        if m := re.fullmatch(r"typedef\s+(?:(?:struct|union)\s+)?(\w+)\s+(\w+)\s*;", cv):
+            aliases[m.group(2)] = m.group(1)
+            continue
+        for kind, name in declared_names(b):
+            if kind != "macro" and (got := struct_body(b, kind, name)):
+                out[name].append((kind, got[0], struct_members(got[1]), where))
+
+
+_DDS_STRUCTS = {}
+
+
+def dds_structs(dds, sources=True):
+    """(structs, aliases) of dds-decomp's headers, and its sources with sources."""
+    key = (dds, sources)
+    if key not in _DDS_STRUCTS:
+        out, aliases = defaultdict(list), {}
+        files = sorted((dds / "include").rglob("*.h"))
+        files += sorted((dds / "src").glob("dds[12]/**/*.c")) if sources else []
+        for path in files:
+            text_structs(path.read_text(errors="replace"), out, aliases, path)
+        _DDS_STRUCTS[key] = (out, aliases)
+    return _DDS_STRUCTS[key]
+
+
+_DDS_MEMBERS = []
+
+
+def dds_member_renames():
+    """type -> {DDS member: SMT3 member} from config/dds_members.txt."""
+    if not _DDS_MEMBERS:
+        out = defaultdict(dict)
+        path = ROOT / "config/dds_members.txt"
+        for line in path.read_text().splitlines() if path.exists() else ():
+            cols = line.split("#")[0].split()
+            if len(cols) == 3:
+                out[cols[0]][cols[1]] = cols[2]
+        _DDS_MEMBERS.append(out)
+    return _DDS_MEMBERS[0]
+
+
+INDEX = r"(?:\s*\[(?:[^\[\]]|\[[^\[\]]*\])*\])*"
+ACCESS = re.compile(r"(?<![\w.>])(?:(?P<cast>\(\s*\(\s*(?:(?:struct|union)\s+)?(?P<ctype>\w+)\s*\*\s*\)[^()]*\))|(?P<var>[A-Za-z_]\w*))"
+                    rf"(?P<chain>{INDEX}(?:\s*(?:->|\.)\s*\w+{INDEX})+)")
+
+
+def declared_types(code, known):
+    """name -> struct type for each variable or parameter of a known struct type declared in code."""
+    out = {}
+    for m in re.finditer(r"\b(?:(?:struct|union)\s+)?(\w+)\b((?:\s*\*|\s+const\b|\s+volatile\b)*\s*)(\w+)\s*(?=[;,=\[)])", code):
+        if m.group(1) in known and m.group(3) not in TYPE_WORDS:
+            out[m.group(3)] = m.group(1)
+    return out
+
+
+def rename_members(code, text, scope, member_types, renames, aliases):
+    """text with each DDS member access whose base type it can follow renamed to SMT3's member
+    (code is text's code view; scope maps variable names to struct types)."""
+    edits = []
+    resolve = lambda t: aliases.get(t, t) if t not in member_types else t
+    for m in ACCESS.finditer(code):
+        kind = resolve(m.group("ctype") or scope.get(m.group("var")))
+        base = m.start("chain")
+        for a in re.finditer(r"(->|\.)\s*(\w+)", m.group("chain")):
+            if kind is None:
+                break
+            member = a.group(2)
+            if member in renames.get(kind, {}):
+                edits.append((base + a.start(2), base + a.end(2), renames[kind][member]))
+            kind = resolve(member_types.get(kind, {}).get(member))
+    for start, end, new in sorted(edits, reverse=True):
+        text = text[:start] + new + text[end:]
+    return text
+
+
+def dds_members(text, only=None, dds=None):
+    """DDS text with member accesses spelled as SMT3 spells them in the functions named in only (all
+    by default), for the types config/dds_members.txt lists; each function's own declarations, then
+    the file's and dds-decomp's headers', give the types. A dds_<name> type is followed as <name>."""
+    renames = dds_member_renames()
+    if not renames:
+        return text
+    structs, aliases = dds_structs(dds or DDS, sources=False)
+    structs, aliases = defaultdict(list, structs), dict(aliases)
+    text_structs(text, structs, aliases)
+    member_types = {n: {m: t for d in defs for m, t in d[2]} for n, defs in structs.items()}
+    aliases.update({f"dds_{n}": n for n in member_types})
+    known = set(member_types) | set(aliases)
+    code = code_view(text)
+    flat = code
+    while "{" in flat:
+        flat = re.sub(r"\{[^{}]*\}", "", flat)
+    file_scope = declared_types(flat, known)
+    out, last = [], 0
+    for fn, (start, end) in sorted(definitions(text).items(), key=lambda kv: kv[1]):
+        if only is not None and fn not in only:
+            continue
+        scope = {**file_scope, **declared_types(code[start:end], known)}
+        out += [text[last:start], rename_members(code[start:end], text[start:end], scope, member_types, renames, aliases)]
+        last = end
+    return "".join(out) + text[last:]
+
+
 def smt3_text(smt3, rel):
     if rel not in _SMT3_TEXT:
         text = drop_nonmatching(source_file(smt3, rel).read_text(errors="replace"))
@@ -752,6 +929,9 @@ def body_text(smt3, rel, fn):
         if ("defs", rel) not in _BODY:
             _BODY[("defs", rel)] = definitions(text)
         start, end = _BODY[("defs", rel)][fn]
+        if is_dds(rel) and fn in member_functions():
+            text = dds_members(text, {fn})
+            start, end = definitions(text)[fn]
         cv = code_view(text)
         lead = start
         while lead > 0:
@@ -1041,8 +1221,23 @@ def sdk_settings(smt3, version):
 COMPILES = "compiles identical"
 
 
+# smt3_c.tsv reason for a DDS body carried with SMT3's member names (config/dds_members.txt).
+MEMBERS = "SMT3 member names"
+
+
 def marked(why):
     return why.startswith(COMPILES)
+
+
+def marker(why):
+    """The marker a smt3_c.tsv reason starts with, kept across port and verify, or ""."""
+    return next((m for m in (COMPILES, MEMBERS) if why.startswith(m)), "")
+
+
+@functools.cache
+def member_functions():
+    """Functions either game's smt3_c.tsv marks MEMBERS: their DDS bodies take SMT3's member names."""
+    return {fn for v in VERSIONS for fn, (_, why) in outcomes(v).items() if why.startswith(MEMBERS)}
 
 
 def candidates(version):
@@ -1218,7 +1413,7 @@ def cmd_port(args):
         names = {n for n, _ in dropped}
         write_alias_rows(version, [(n, a) for n, a in alias_rows(version) if n not in data and n not in names] + dropped)
         for fn in kept:
-            done[fn] = ("c", COMPILES if marked(done.get(fn, ("", ""))[1]) else "")
+            done[fn] = ("c", marker(done.get(fn, ("", ""))[1]))
         write_outcomes(version, done)
         sdk_settings(smt3, version)
         print(f"{version}: {len(kept)} functions, {len(data)} data definitions from C")
@@ -1771,7 +1966,8 @@ def cmd_verify(args):
         aliases = {n: a for n, a in aliases.items() if not users[n] <= set(fails) and n not in defined}
         for fn, why in fails.items():
             # A marked row stays a candidate, so the next port puts its body back to asm.
-            done[fn] = ("asm", f"{COMPILES}, then {why}" if marked(done.get(fn, ("", ""))[1]) else why)
+            mark = marker(done.get(fn, ("", ""))[1])
+            done[fn] = ("asm", f"{mark}, then {why}" if mark else why)
         write_outcomes(version, done)
         for n, why in data_fails.items():
             rows[n] = dict(rows[n], status="asm", reason=why)
