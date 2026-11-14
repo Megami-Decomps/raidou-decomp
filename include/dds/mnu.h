@@ -894,7 +894,12 @@ typedef struct MenuFadeFields {
 
 typedef char MenuIconSprites_size_must_be_0x18[(sizeof(MenuIconSprites) == 0x18) ? 1 : -1];
 
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+/* Raidou's MenuWindowContainer is 8 bytes longer; the fade functions read currentProgress at 0xC8. */
+typedef char MenuFadeFields_size_must_be_0xCC[(sizeof(MenuFadeFields) == 0xCC) ? 1 : -1];
+#else
 typedef char MenuFadeFields_size_must_be_0xC4[(sizeof(MenuFadeFields) == 0xC4) ? 1 : -1];
+#endif
 
 #endif
 
@@ -1032,8 +1037,11 @@ typedef struct MenuStaffContext {
     s32 highlightOpacity; /* 0xB1DC */
 } MenuStaffContext;
 
+/* Not measured in Raidou. */
+#if !defined(VERSION_RAIDOU1) && !defined(VERSION_RAIDOU2)
 typedef char MenuStaffContext_size_must_be_0xB1E0[
     sizeof(MenuStaffContext) == 0xB1E0 ? 1 : -1];
+#endif
 
 /* Five owned windows and their selection/transition state share one 0x54 allocation. */
 typedef struct MenuStaffChoices {
