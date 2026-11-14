@@ -26,26 +26,6 @@ typedef struct Dds3EffectFileListCreateWork {
 } Dds3EffectFileListCreateWork;
 SIZE_CHECK(Dds3EffectFileListCreateWorkSizeCheck, Dds3EffectFileListCreateWork, 0x3C);
 
-/* Allocated by effPCPBlinkMultiBlurCreate. */
-typedef struct EffPCPBlinkMultiBlurCreateWork {
-    s32 unk00; /* 0x00 */
-    s32 unk04; /* 0x04 */
-    s32 unk08; /* 0x08 */
-    u8 pad0C[4]; /* 0x0C */
-    s32 unk10; /* 0x10 */
-    s32 unk14; /* 0x14 */
-    s32 unk18; /* 0x18 */
-    s32 unk1C; /* 0x1C */
-    s32 unk20; /* 0x20 */
-    s32 unk24; /* 0x24 */
-    s32 unk28; /* 0x28 */
-    s32 unk2C; /* 0x2C */
-    f32 unk30; /* 0x30 */
-    s32 unk34; /* 0x34 */
-    s32 unk38; /* 0x38 */
-} EffPCPBlinkMultiBlurCreateWork;
-SIZE_CHECK(EffPCPBlinkMultiBlurCreateWorkSizeCheck, EffPCPBlinkMultiBlurCreateWork, 0x3C);
-
 /* Allocated by evtAddFrameInfo. */
 typedef struct EvtFrameInfoWork40 {
     s32 unk00; /* 0x00 */
