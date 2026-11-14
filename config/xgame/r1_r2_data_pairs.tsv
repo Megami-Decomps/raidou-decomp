@@ -9967,7 +9967,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046FA10	0x004E4A50	D_r1_0046FA10	.sbss	0x4	no	code-ref
 0x0046FA14	0x004E4A54	D_r1_0046FA14	.sbss	0x4	no	code-ref
 0x0046FA18	0x004E4A58	D_r1_0046FA18	.sbss	0x8	no	code-ref
-0x0046FA20	0x004E4A60	D_r1_0046FA20	.sbss	0x8	no	code-ref
+0x0046FA20	0x004E4A60	sdfTexDelayedResrcCB	.sbss	0x8	no	code-ref
 0x0046FA28	0x004E4A68	D_r1_0046FA28	.sbss	0x4	no	code-ref
 0x0046FA2C	0x004E4A6C	D_r1_0046FA2C	.sbss	0x4	no	code-ref
 0x0046FA30	0x004E4A70	D_r1_0046FA30	.sbss	0x4	no	code-ref

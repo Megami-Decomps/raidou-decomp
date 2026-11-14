@@ -9008,16 +9008,16 @@
 0x003CEE68	sdfTexTransCLUT	inferred	SMT3HD name via SLUS_209.11 0x002AB2B0, reloc-identical; map-agrees
 0x003CEEC0	sdfTexClutToGs	inferred	SMT3HD name via SLUS_209.11 0x002AB308, reloc-identical; map-agrees
 0x003CEF18	sdfTexLink	inferred	SMT3HD name via SLUS_209.11 0x002AB360, reloc-identical; map-agrees
-0x003CEF40	func_r1_003591B8	placeholder	placeholder for the pair with raidou1 0x003591B8, unique-reloc-hash
-0x003CF018	func_r1_00359290	placeholder	placeholder for the pair with raidou1 0x00359290, unique-reloc-hash
-0x003CF168	func_r1_003593E0	placeholder	placeholder for the pair with raidou1 0x003593E0, masked-hash-in-gap
-0x003CF240	func_r1_003594B8	placeholder	placeholder for the pair with raidou1 0x003594B8, masked-hash-in-gap
+0x003CEF40	sdfTexNew	inferred	twin-of-raidou1-0x003591B8
+0x003CF018	sdfTexDup	inferred	twin-of-raidou1-0x00359290
+0x003CF168	sdfTexAllocClut	inferred	twin-of-raidou1-0x003593E0
+0x003CF240	sdfTexAllocClutFromHead	inferred	twin-of-raidou1-0x003594B8
 0x003CF318	sdfTexGetClutDataSize	inferred	SMT3HD name via SLUS_209.11 0x002AB658, byte-identical; map-agrees
 0x003CF348	sdfTexAllocClutBuff	inferred	SMT3HD name via SLUS_209.11 0x002AB688, reloc-identical; map-agrees
 0x003CF388	sdfTexCopyClutData	inferred	SMT3HD name via SLUS_209.11 0x002AB6C8, reloc-identical; map-agrees
-0x003CF3A8	func_r1_00359620	placeholder	placeholder for the pair with raidou1 0x00359620, masked-hash-in-gap
-0x003CF520	func_r1_00359798	placeholder	placeholder for the pair with raidou1 0x00359798, masked-hash-in-gap
-0x003CF698	func_r1_00359910	placeholder	placeholder for the pair with raidou1 0x00359910, unique-reloc-hash
+0x003CF3A8	sdfTexAlloc	inferred	twin-of-raidou1-0x00359620
+0x003CF520	sdfTexAllocFromHead	inferred	twin-of-raidou1-0x00359798
+0x003CF698	sdfTexFree	inferred	twin-of-raidou1-0x00359910
 0x003CF720	sdfTexReleaseReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002D2CB8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003CF768	sdfTexFreeDelayed	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002D2D00, masked-words-identical (strict map pair); dds-decomp: SMT3HD name
 0x003CF7B0	sdfTexSetPacket	inferred	SMT3HD name via SLUS_209.11 0x002AB910, byte-identical; map-agrees
@@ -9025,13 +9025,13 @@
 0x003CF9B8	sdfTexMakeGIFPacket	inferred	SMT3HD name via SLUS_209.11 0x002ABB18, reloc-identical; map-agrees
 0x003CF9E8	sdfTexMakeGIFPacketCtx2	inferred	SMT3HD name via SLUS_209.11 0x002ABB48, reloc-identical; map-agrees
 0x003CFA18	sdfTexRebuildPacket	inferred	SMT3HD name via SLUS_209.11 0x002ABB78, reloc-identical; map-agrees
-0x003CFB30	func_r1_00359DA8	placeholder	placeholder for the pair with raidou1 0x00359DA8, masked-hash-in-gap
-0x003CFCF0	func_r1_00359F68	placeholder	placeholder for the pair with raidou1 0x00359F68, masked-hash-in-gap
-0x003CFEB0	func_r1_0035A128	placeholder	placeholder for the pair with raidou1 0x0035A128, masked-hash-in-gap
-0x003CFEC8	func_r1_0035A140	placeholder	placeholder for the pair with raidou1 0x0035A140, masked-hash-in-gap
-0x003CFEE0	func_r1_0035A158	placeholder	placeholder for the pair with raidou1 0x0035A158, masked-hash-in-gap
+0x003CFB30	sdfTexSetEx	inferred	twin-of-raidou1-0x00359DA8
+0x003CFCF0	sdfTexSetExFromHead	inferred	twin-of-raidou1-0x00359F68
+0x003CFEB0	sdfTexSet	inferred	twin-of-raidou1-0x0035A128
+0x003CFEC8	sdfTexSetDirect	inferred	twin-of-raidou1-0x0035A140
+0x003CFEE0	sdfTexSetFromHead	inferred	twin-of-raidou1-0x0035A158
 0x003CFEF8	sdfTexSetMonoClut	inferred	SMT3HD name via SLUS_209.11 0x002ABE38, reloc-identical; map-agrees
-0x003D0008	func_r1_0035A280	placeholder	placeholder for the pair with raidou1 0x0035A280, unique-reloc-hash
+0x003D0008	sdfTexSetClutColor	inferred	twin-of-raidou1-0x0035A280
 0x003D0198	sdfTexSearch	inferred	SMT3HD name via SLUS_209.11 0x002AC0D8, reloc-identical; map-agrees
 0x003D01D8	sdfTexInit	inferred	SMT3HD name via SLUS_209.11 0x002AC118, shared-hash-in-run; map-agrees
 0x003D01F8	sdfSetStoreImage	inferred	SMT3HD name via SLUS_209.11 0x002AC138, reloc-identical; map-agrees
@@ -20499,7 +20499,7 @@
 0x004E4A50	D_r1_0046FA10	placeholder	placeholder for the pair with raidou1 0x0046FA10, code-ref
 0x004E4A54	D_r1_0046FA14	placeholder	placeholder for the pair with raidou1 0x0046FA14, code-ref
 0x004E4A58	D_r1_0046FA18	placeholder	placeholder for the pair with raidou1 0x0046FA18, code-ref
-0x004E4A60	D_r1_0046FA20	placeholder	placeholder for the pair with raidou1 0x0046FA20, code-ref
+0x004E4A60	sdfTexDelayedResrcCB	inferred	twin-of-raidou1-0x0046FA20
 0x004E4A68	D_r1_0046FA28	placeholder	placeholder for the pair with raidou1 0x0046FA28, code-ref
 0x004E4A6C	D_r1_0046FA2C	placeholder	placeholder for the pair with raidou1 0x0046FA2C, code-ref
 0x004E4A70	D_r1_0046FA30	placeholder	placeholder for the pair with raidou1 0x0046FA30, code-ref

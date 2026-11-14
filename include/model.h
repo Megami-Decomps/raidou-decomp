@@ -121,7 +121,15 @@ struct sdfModelRootNode_t
     f32 faceDivBias;
     void *extraData; /* the file's material def block, per sdfModelMakeRoot */
     f32 zBias;
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u8 lod; /* sdfModelLinkOt draws only packets whose otIndex high nibble equals it */
+    u8 pad99[3];
+#endif
 };
+
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+SIZE_CHECK(sdfModelRootNodeSizeCheck, sdfModelRootNode_t, 0x9C);
+#endif
 
 /* One joint. sdfModelNodeNew allocates 256 bytes; prev and next are the
  * circular sibling links, children points at one child. */

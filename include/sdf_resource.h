@@ -43,11 +43,24 @@ typedef struct sdfGsMemSlice_t
     s32 pixelFormat;
 } sdfGsMemSlice_t;
 
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+/* Shared by a texture and its duplicates; DDS's SdfTexRef (0x8). */
+typedef struct SdfTexRef
+{
+    struct sdfTexHandle_t *origin; /* the duplicated texture; NULL when this one owns the pixels */
+    s32 refCount;
+} SdfTexRef;
+#endif
+
 typedef struct sdfTexHandle_t
 {
     struct sdfTexHandle_t *prev;
     struct sdfTexHandle_t *next;
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    SdfTexRef *ref; /* allocated by sdfTexNew and sdfTexDup, freed by sdfTexFree */
+#else
     struct sdfTexHandle_t *origin; /* unconfirmed */
+#endif
     s16 width;
     s16 height;
     sdfGsMemSlice_t *pixelGsHandle;
@@ -70,6 +83,11 @@ typedef struct sdfTexHandle_t
      * on first use and written a byte per entry. */
     u8 *monoClutData;
 } sdfTexHandle_t;
+
+SIZE_CHECK(sdfTexHandleSizeCheck, sdfTexHandle_t, 0x40);
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+SIZE_CHECK(SdfTexRefSizeCheck, SdfTexRef, 0x8);
+#endif
 
 typedef u8 sdfTextureClampMode_t;
 

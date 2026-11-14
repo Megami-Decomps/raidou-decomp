@@ -52,6 +52,9 @@ struct GridTextWidget {
     void (*onSelect)(GridTextWidget *); /* 0x34 */
     void (*onDraw)(s32, s32, s32, GridTextWidget *, s32); /* 0x38 */
     s32 rowOffset;                  /* 0x3C */
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u32 unk40;                      /* 0x40: cleared by itfCreateGridTextWidget, no reader found */
+#endif
 };
 
 /* Text rows share this 0x2C-byte node layout in both renderers. */
@@ -70,7 +73,11 @@ struct GridTextListItem {
     void (*format)(void *, void *, char *, s32); /* 0x28 */
 };
 
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+typedef char GridTextWidgetSizeCheck[sizeof(GridTextWidget) == 0x44 ? 1 : -1];
+#else
 typedef char GridTextWidgetSizeCheck[sizeof(GridTextWidget) == 0x40 ? 1 : -1];
+#endif
 
 typedef char GridTextListItemSizeCheck[sizeof(GridTextListItem) == 0x2C ? 1 : -1];
 
