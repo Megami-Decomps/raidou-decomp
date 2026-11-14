@@ -647,7 +647,7 @@ INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E7E0);
 
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E7E8);
 
-INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E7F0);
+INCLUDE_SDATA(const s32, "kernel/ModeSelect", Work_mjn);
 
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", D_r1_0046E7F8);
 

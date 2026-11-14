@@ -1303,19 +1303,19 @@ void fldResetPlayerSceneObjectState(void) {
 }
 INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B5E8);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B5EC);
+INCLUDE_SDATA(const s32, "code_0012C998", raidoBasic);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B5F0);
+INCLUDE_SDATA(const s32, "code_0012C998", raidoModel);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B5F4);
+INCLUDE_SDATA(const s32, "code_0012C998", aiboBasic);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B5F8);
+INCLUDE_SDATA(const s32, "code_0012C998", aiboModel);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B5FC);
+INCLUDE_SDATA(const s32, "code_0012C998", summonDvBasic);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B600);
+INCLUDE_SDATA(const s32, "code_0012C998", summonDvModel);
 
-INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B604);
+INCLUDE_SDATA(const s32, "code_0012C998", cameraBasic);
 
 INCLUDE_SDATA(const s32, "code_0012C998", D_r1_0046B608);
 

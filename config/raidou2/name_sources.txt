@@ -10555,7 +10555,7 @@
 0x00427841	D_r1_003AD3C1	placeholder	placeholder for the pair with raidou1 0x003AD3C1, code-ref
 0x00427850	D_r1_003AD3D0	placeholder	placeholder for the pair with raidou1 0x003AD3D0, code-ref
 0x00427860	D_r1_003AD3E0	placeholder	placeholder for the pair with raidou1 0x003AD3E0, code-ref
-0x00427890	D_r1_003AD410	placeholder	placeholder for the pair with raidou1 0x003AD410, code-ref
+0x00427890	gMapScrollReset	hd	hd: Raidou HD fld.gMapScrollReset, 6 of 6 functions agree, high confidence
 0x004278A0	D_r1_003AD420	placeholder	placeholder for the pair with raidou1 0x003AD420, code-ref
 0x004278B0	D_r1_003AD430	placeholder	placeholder for the pair with raidou1 0x003AD430, code-ref
 0x004278D0	D_r1_003AD450	placeholder	placeholder for the pair with raidou1 0x003AD450, code-ref
@@ -10633,7 +10633,7 @@
 0x00428BD8	D_r1_003AE738	placeholder	placeholder for the pair with raidou1 0x003AE738, code-ref
 0x00428C38	D_r1_003AE798	placeholder	placeholder for the pair with raidou1 0x003AE798, code-ref
 0x00428C78	D_r1_003AE7D8	placeholder	placeholder for the pair with raidou1 0x003AE7D8, code-ref
-0x00428CB8	D_r1_003AE818	placeholder	placeholder for the pair with raidou1 0x003AE818, code-ref
+0x00428CB8	ModelOt	hd	hd: Raidou HD dds3KernelDraw.ModelOt, 7 of 8 functions agree, high confidence
 0x00428CD8	D_r1_003AE838	placeholder	placeholder for the pair with raidou1 0x003AE838, code-ref
 0x00428D78	D_r1_003AE8D8	placeholder	placeholder for the pair with raidou1 0x003AE8D8, code-ref
 0x00428D88	D_r1_003AE8E8	placeholder	placeholder for the pair with raidou1 0x003AE8E8, run-order-size
@@ -10648,7 +10648,7 @@
 0x0042ADB0	D_r1_003B0910	placeholder	placeholder for the pair with raidou1 0x003B0910, run-order-size
 0x0042AEB0	D_r1_003B0A10	placeholder	placeholder for the pair with raidou1 0x003B0A10, run-order-size
 0x0042AF80	D_r1_003B0AE0	placeholder	placeholder for the pair with raidou1 0x003B0AE0, run-order-size
-0x0042D300	D_r1_003B2E60	placeholder	placeholder for the pair with raidou1 0x003B2E60, code-ref
+0x0042D300	CameraTM	hd	hd: Raidou HD dds3KernelDraw.CameraTM, 15 of 15 functions agree, high confidence
 0x0042D340	D_r1_003B2EA0	placeholder	placeholder for the pair with raidou1 0x003B2EA0, code-ref
 0x0042D360	D_r1_003B2EC0	placeholder	placeholder for the pair with raidou1 0x003B2EC0, code-ref
 0x0042D3A0	D_r1_003B2F00	placeholder	placeholder for the pair with raidou1 0x003B2F00, code-ref
@@ -10707,7 +10707,7 @@
 0x00439670	D_r1_003BB190	placeholder	placeholder for the pair with raidou1 0x003BB190, run-order-size
 0x004396A0	D_r1_003BB1C0	placeholder	placeholder for the pair with raidou1 0x003BB1C0, run-order-size
 0x004396D0	D_r1_003BB1F0	placeholder	placeholder for the pair with raidou1 0x003BB1F0, code-ref
-0x0043B620	D_r1_003BD120	placeholder	placeholder for the pair with raidou1 0x003BD120, code-ref
+0x0043B620	fldGenbaTbl	hd	hd: Raidou HD fld.fldGenbaTbl, 6 of 6 functions agree, high confidence
 0x0043C220	D_r1_003BDD20	placeholder	placeholder for the pair with raidou1 0x003BDD20, code-ref
 0x0043C8F0	D_r1_003BEFF0	placeholder	placeholder for the pair with raidou1 0x003BEFF0, code-ref
 0x0043E9B0	D_r1_003BF130	placeholder	placeholder for the pair with raidou1 0x003BF130, code-ref
@@ -10739,10 +10739,10 @@
 0x0043ED6C	D_r1_003BF474	placeholder	placeholder for the pair with raidou1 0x003BF474, code-ref
 0x0043ED74	D_r1_003BF47C	placeholder	placeholder for the pair with raidou1 0x003BF47C, run-order-size
 0x0043ED84	D_r1_003BF48C	placeholder	placeholder for the pair with raidou1 0x003BF48C, code-ref
-0x004408B0	D_r1_003BF4A0	placeholder	placeholder for the pair with raidou1 0x003BF4A0, code-ref
+0x004408B0	ppos01Point	hd	hd: Raidou HD fld.ppos01Point, 5 of 5 functions agree, high confidence
 0x00440920	D_r1_003BF4D0	placeholder	placeholder for the pair with raidou1 0x003BF4D0, code-ref
 0x00440A00	D_r1_003BF5A0	placeholder	placeholder for the pair with raidou1 0x003BF5A0, code-ref
-0x00440A38	D_r1_003BF5E8	placeholder	placeholder for the pair with raidou1 0x003BF5E8, code-ref
+0x00440A38	SequenceControl	hd	hd: Raidou HD fld.SequenceControl, 4 of 5 functions agree, high confidence
 0x00440B00	D_r1_003BF6A0	placeholder	placeholder for the pair with raidou1 0x003BF6A0, code-ref
 0x00440B20	D_r1_003BF6C0	placeholder	placeholder for the pair with raidou1 0x003BF6C0, code-ref
 0x00440B30	D_r1_003BF6D0	placeholder	placeholder for the pair with raidou1 0x003BF6D0, code-ref
@@ -10753,9 +10753,9 @@
 0x00440BB0	D_r1_003BF790	placeholder	placeholder for the pair with raidou1 0x003BF790, code-ref
 0x00440BF0	D_r1_003BF7D0	placeholder	placeholder for the pair with raidou1 0x003BF7D0, code-ref
 0x00440C30	D_r1_003BF810	placeholder	placeholder for the pair with raidou1 0x003BF810, code-ref
-0x00440C40	D_r1_003BF820	placeholder	placeholder for the pair with raidou1 0x003BF820, code-ref
+0x00440C40	map_obj	hd	hd: Raidou HD fld.map_obj, 29 of 29 functions agree, high confidence
 0x00441018	D_r1_00441018	placeholder	placeholder for the pair with raidou1 0x00441018, data-word
-0x00441180	D_r1_003E2930	placeholder	placeholder for the pair with raidou1 0x003E2930, code-ref
+0x00441180	gMapMoveHitWork	hd	hd: Raidou HD fld.gMapMoveHitWork, 3 of 3 functions agree, high confidence
 0x00441300	D_r1_003E4928	placeholder	placeholder for the pair with raidou1 0x003E4928, code-ref
 0x00441400	D_r1_003E4A28	placeholder	placeholder for the pair with raidou1 0x003E4A28, code-ref
 0x00441688	D_r1_003E5A50	placeholder	placeholder for the pair with raidou1 0x003E5A50, code-ref
@@ -12179,7 +12179,7 @@
 0x00481D20	D_r1_0041E7B8	placeholder	placeholder for the pair with raidou1 0x0041E7B8, code-ref
 0x00481D38	D_r1_0041E7D0	placeholder	placeholder for the pair with raidou1 0x0041E7D0, code-ref
 0x00481D50	D_r1_0041E7E8	placeholder	placeholder for the pair with raidou1 0x0041E7E8, code-ref
-0x00481D68	D_r1_0041E800	placeholder	placeholder for the pair with raidou1 0x0041E800, code-ref
+0x00481D68	sblist_effhitemenu03_a1	hd	hd: Raidou HD sbattle.sblist_effhitemenu03_a1, 3 of 3 functions agree, high confidence
 0x00481D88	D_r1_0041E820	placeholder	placeholder for the pair with raidou1 0x0041E820, code-ref
 0x00481DC0	D_r1_0041E858	placeholder	placeholder for the pair with raidou1 0x0041E858, code-ref
 0x00481DE0	D_r1_0041E870	placeholder	placeholder for the pair with raidou1 0x0041E870, code-ref
@@ -12382,7 +12382,7 @@
 0x0049DF38	D_r1_0043B390	placeholder	placeholder for the pair with raidou1 0x0043B390, code-ref
 0x0049E06A	D_r1_0043B48A	placeholder	placeholder for the pair with raidou1 0x0043B48A, code-ref
 0x0049E3F8	D_r1_0043BB40	placeholder	placeholder for the pair with raidou1 0x0043BB40, code-ref
-0x0049E4C8	D_r1_0043BC0C	placeholder	placeholder for the pair with raidou1 0x0043BC0C, code-ref
+0x0049E4C8	gohSeqUnit	hd	hd: Raidou HD gohMain.gohSeqUnit, 6 of 7 functions agree, high confidence
 0x0049E528	D_r1_0043BC60	placeholder	placeholder for the pair with raidou1 0x0043BC60, code-ref
 0x0049E568	D_r1_0043BC7C	placeholder	placeholder for the pair with raidou1 0x0043BC7C, code-ref
 0x0049E648	D_r1_0043BD24	placeholder	placeholder for the pair with raidou1 0x0043BD24, code-ref
@@ -17880,10 +17880,10 @@
 0x004DE230	D_r1_0046B138	placeholder	placeholder for the pair with raidou1 0x0046B138, unique-contents
 0x004DE238	D_r1_0046B140	placeholder	placeholder for the pair with raidou1 0x0046B140, unique-contents
 0x004DE240	D_r1_0046B148	placeholder	placeholder for the pair with raidou1 0x0046B148, code-ref
-0x004DE248	D_r1_0046B150	placeholder	placeholder for the pair with raidou1 0x0046B150, code-ref
+0x004DE248	startinglistf_dds3KernelCore	hd	hd: Raidou HD dds3KernelCore.startinglistf, 8 of 8 functions agree, high confidence
 0x004DE24C	D_r1_0046B154	placeholder	placeholder for the pair with raidou1 0x0046B154, code-ref
 0x004DE250	D_r1_0046B158	placeholder	placeholder for the pair with raidou1 0x0046B158, code-ref
-0x004DE254	D_r1_0046B15C	placeholder	placeholder for the pair with raidou1 0x0046B15C, code-ref
+0x004DE254	endinglistf_dds3KernelCore	hd	hd: Raidou HD dds3KernelCore.endinglistf, 4 of 5 functions agree, high confidence
 0x004DE258	D_r1_0046B160	placeholder	placeholder for the pair with raidou1 0x0046B160, code-ref
 0x004DE25C	D_r1_0046B164	placeholder	placeholder for the pair with raidou1 0x0046B164, code-ref
 0x004DE260	D_r1_0046B168	placeholder	placeholder for the pair with raidou1 0x0046B168, code-ref
@@ -17930,17 +17930,17 @@
 0x004DE348	D_r1_0046B24C	placeholder	placeholder for the pair with raidou1 0x0046B24C, code-ref
 0x004DE34A	D_r1_0046B24E	placeholder	placeholder for the pair with raidou1 0x0046B24E, code-ref
 0x004DE34C	D_r1_0046B250	placeholder	placeholder for the pair with raidou1 0x0046B250, code-ref
-0x004DE350	D_r1_0046B254	placeholder	placeholder for the pair with raidou1 0x0046B254, code-ref
-0x004DE354	D_r1_0046B258	placeholder	placeholder for the pair with raidou1 0x0046B258, code-ref
+0x004DE350	DrawFlag	hd	hd: Raidou HD dds3KernelDraw.DrawFlag, 17 of 17 functions agree, high confidence
+0x004DE354	ScreenBlurFlag	hd	hd: Raidou HD dds3KernelDraw.ScreenBlurFlag, 3 of 3 functions agree, high confidence
 0x004DE356	D_r1_0046B25A	placeholder	placeholder for the pair with raidou1 0x0046B25A, code-ref
 0x004DE358	D_r1_0046B25C	placeholder	placeholder for the pair with raidou1 0x0046B25C, code-ref
 0x004DE360	D_r1_0046B260	placeholder	placeholder for the pair with raidou1 0x0046B260, code-ref
 0x004DE364	D_r1_0046B264	placeholder	placeholder for the pair with raidou1 0x0046B264, code-ref
-0x004DE368	D_r1_0046B268	placeholder	placeholder for the pair with raidou1 0x0046B268, code-ref
+0x004DE368	QuakeFrame	hd	hd: Raidou HD dds3KernelDraw.QuakeFrame, 3 of 3 functions agree, high confidence
 0x004DE36A	D_r1_0046B26A	placeholder	placeholder for the pair with raidou1 0x0046B26A, code-ref
 0x004DE36C	D_r1_0046B26C	placeholder	placeholder for the pair with raidou1 0x0046B26C, code-ref
 0x004DE36E	D_r1_0046B26E	placeholder	placeholder for the pair with raidou1 0x0046B26E, code-ref
-0x004DE374	D_r1_0046B274	placeholder	placeholder for the pair with raidou1 0x0046B274, code-ref
+0x004DE374	Zoom	hd	hd: Raidou HD dds3KernelDraw.Zoom, 5 of 5 functions agree, high confidence
 0x004DE378	D_r1_0046B278	placeholder	placeholder for the pair with raidou1 0x0046B278, code-ref
 0x004DE37B	D_r1_0046B27B	placeholder	placeholder for the pair with raidou1 0x0046B27B, code-ref
 0x004DE37C	D_r1_0046B27C	placeholder	placeholder for the pair with raidou1 0x0046B27C, code-ref
@@ -18027,7 +18027,7 @@
 0x004DE5B8	D_r1_0046B470	placeholder	placeholder for the pair with raidou1 0x0046B470, code-ref
 0x004DE5C0	D_r1_0046B478	placeholder	placeholder for the pair with raidou1 0x0046B478, code-ref
 0x004DE5C8	D_r1_0046B480	placeholder	placeholder for the pair with raidou1 0x0046B480, code-ref
-0x004DE5CC	D_r1_0046B484	placeholder	placeholder for the pair with raidou1 0x0046B484, code-ref
+0x004DE5CC	dds3TheWorld_dds3WorldBasic	hd	hd: Raidou HD dds3WorldBasic.dds3TheWorld, 18 of 19 functions agree, high confidence
 0x004DE5D0	D_r1_0046B488	placeholder	placeholder for the pair with raidou1 0x0046B488, code-ref
 0x004DE5D4	D_r1_0046B48C	placeholder	placeholder for the pair with raidou1 0x0046B48C, code-ref
 0x004DE5E0	D_r1_0046B490	placeholder	placeholder for the pair with raidou1 0x0046B490, code-ref
@@ -18049,25 +18049,25 @@
 0x004DE6F8	D_r1_0046B5A0	placeholder	placeholder for the pair with raidou1 0x0046B5A0, code-ref
 0x004DE700	D_r1_0046B5A8	placeholder	placeholder for the pair with raidou1 0x0046B5A8, code-ref
 0x004DE708	D_r1_0046B5B0	placeholder	placeholder for the pair with raidou1 0x0046B5B0, code-ref
-0x004DE710	D_r1_0046B5B8	placeholder	placeholder for the pair with raidou1 0x0046B5B8, code-ref
-0x004DE714	D_r1_0046B5BC	placeholder	placeholder for the pair with raidou1 0x0046B5BC, code-ref
+0x004DE710	gMsgID_fclMisc	hd	hd: Raidou HD fclMisc.gMsgID, 14 of 15 functions agree, high confidence
+0x004DE714	gMsgFlag_fclMisc	hd	hd: Raidou HD fclMisc.gMsgFlag, 4 of 4 functions agree, high confidence
 0x004DE715	D_r1_0046B5BD	placeholder	placeholder for the pair with raidou1 0x0046B5BD, code-ref
 0x004DE718	D_r1_0046B5C0	placeholder	placeholder for the pair with raidou1 0x0046B5C0, code-ref
 0x004DE71C	D_r1_0046B5C4	placeholder	placeholder for the pair with raidou1 0x0046B5C4, code-ref
 0x004DE71D	D_r1_0046B5C5	placeholder	placeholder for the pair with raidou1 0x0046B5C5, code-ref
-0x004DE720	D_r1_0046B5C8	placeholder	placeholder for the pair with raidou1 0x0046B5C8, code-ref
-0x004DE730	D_r1_0046B5D0	placeholder	placeholder for the pair with raidou1 0x0046B5D0, code-ref
+0x004DE720	wk_fclMenu	hd	hd: Raidou HD fclMenu.wk, 18 of 18 functions agree, high confidence
+0x004DE730	g_mainPID_fclMsg	hd	hd: Raidou HD fclMsg.g_mainPID, 8 of 9 functions agree, high confidence
 0x004DE738	D_r1_0046B5D8	placeholder	placeholder for the pair with raidou1 0x0046B5D8, code-ref
 0x004DE740	D_r1_0046B5E0	placeholder	placeholder for the pair with raidou1 0x0046B5E0, code-ref
-0x004DE748	D_r1_0046B5E4	placeholder	placeholder for the pair with raidou1 0x0046B5E4, code-ref
+0x004DE748	playerBasic	hd	hd: Raidou HD fld.playerBasic, 17 of 17 functions agree, high confidence
 0x004DE74C	D_r1_0046B5E8	placeholder	placeholder for the pair with raidou1 0x0046B5E8, code-ref
-0x004DE750	D_r1_0046B5EC	placeholder	placeholder for the pair with raidou1 0x0046B5EC, code-ref
-0x004DE754	D_r1_0046B5F0	placeholder	placeholder for the pair with raidou1 0x0046B5F0, code-ref
-0x004DE758	D_r1_0046B5F4	placeholder	placeholder for the pair with raidou1 0x0046B5F4, run-order-size
-0x004DE75C	D_r1_0046B5F8	placeholder	placeholder for the pair with raidou1 0x0046B5F8, run-order-size
-0x004DE760	D_r1_0046B5FC	placeholder	placeholder for the pair with raidou1 0x0046B5FC, code-ref
-0x004DE764	D_r1_0046B600	placeholder	placeholder for the pair with raidou1 0x0046B600, code-ref
-0x004DE768	D_r1_0046B604	placeholder	placeholder for the pair with raidou1 0x0046B604, code-ref
+0x004DE750	raidoBasic	hd	hd: Raidou HD fld.raidoBasic, 6 of 6 functions agree, high confidence
+0x004DE754	raidoModel	hd	hd: Raidou HD fld.raidoModel, 3 of 3 functions agree, high confidence
+0x004DE758	aiboBasic	hd	hd: Raidou HD fld.aiboBasic, 8 of 8 functions agree, high confidence
+0x004DE75C	aiboModel	hd	hd: Raidou HD fld.aiboModel, 3 of 3 functions agree, high confidence
+0x004DE760	summonDvBasic	hd	hd: Raidou HD fld.summonDvBasic, 13 of 13 functions agree, high confidence
+0x004DE764	summonDvModel	hd	hd: Raidou HD fld.summonDvModel, 8 of 8 functions agree, high confidence
+0x004DE768	cameraBasic	hd	hd: Raidou HD fld.cameraBasic, 8 of 9 functions agree, high confidence
 0x004DE76C	D_r1_0046B608	placeholder	placeholder for the pair with raidou1 0x0046B608, code-ref
 0x004DE780	D_r1_0046B690	placeholder	placeholder for the pair with raidou1 0x0046B690, code-ref
 0x004DE784	D_r1_0046B614	placeholder	placeholder for the pair with raidou1 0x0046B614, code-ref
@@ -18093,7 +18093,7 @@
 0x004DE7F8	D_r1_0046B688	placeholder	placeholder for the pair with raidou1 0x0046B688, unique-contents
 0x004DE808	D_r1_0046B6A0	placeholder	placeholder for the pair with raidou1 0x0046B6A0, code-ref
 0x004DE80C	D_r1_0046B6A4	placeholder	placeholder for the pair with raidou1 0x0046B6A4, code-ref
-0x004DE810	D_r1_0046B6A8	placeholder	placeholder for the pair with raidou1 0x0046B6A8, code-ref
+0x004DE810	gMapRndEncLoad_Mode	hd	hd: Raidou HD fld.gMapRndEncLoad_Mode, 3 of 3 functions agree, high confidence
 0x004DE814	D_r1_0046B6AC	placeholder	placeholder for the pair with raidou1 0x0046B6AC, code-ref
 0x004DE83C	D_r1_0046B6CC	placeholder	placeholder for the pair with raidou1 0x0046B6CC, code-ref
 0x004DE840	D_r1_0046B6D0	placeholder	placeholder for the pair with raidou1 0x0046B6D0, code-ref
@@ -18150,7 +18150,7 @@
 0x004DE93C	D_r1_0046B7B0	placeholder	placeholder for the pair with raidou1 0x0046B7B0, code-ref
 0x004DE940	D_r1_0046B7B4	placeholder	placeholder for the pair with raidou1 0x0046B7B4, code-ref
 0x004DE944	D_r1_0046B7B8	placeholder	placeholder for the pair with raidou1 0x0046B7B8, code-ref
-0x004DE948	D_r1_0046B7BC	placeholder	placeholder for the pair with raidou1 0x0046B7BC, code-ref
+0x004DE948	tzoom_event	hd	hd: Raidou HD fld.tzoom_event, 3 of 3 functions agree, high confidence
 0x004DE94C	D_r1_0046B7C0	placeholder	placeholder for the pair with raidou1 0x0046B7C0, code-ref
 0x004DE950	D_r1_0046B7C4	placeholder	placeholder for the pair with raidou1 0x0046B7C4, code-ref
 0x004DE954	D_r1_0046B7C8	placeholder	placeholder for the pair with raidou1 0x0046B7C8, code-ref
@@ -18254,7 +18254,7 @@
 0x004DEADC	D_r1_0046B9B0	placeholder	placeholder for the pair with raidou1 0x0046B9B0, code-ref
 0x004DEAE0	D_r1_0046B9B4	placeholder	placeholder for the pair with raidou1 0x0046B9B4, code-ref
 0x004DEAE4	D_r1_0046B9B8	placeholder	placeholder for the pair with raidou1 0x0046B9B8, code-ref
-0x004DEAE8	D_r1_0046B9BC	placeholder	placeholder for the pair with raidou1 0x0046B9BC, code-ref
+0x004DEAE8	bg_tex_load_last	hd	hd: Raidou HD fld.bg_tex_load_last, 5 of 6 functions agree, high confidence
 0x004DEAEC	D_r1_0046B9C0	placeholder	placeholder for the pair with raidou1 0x0046B9C0, code-ref
 0x004DEAF0	D_r1_0046B9C4	placeholder	placeholder for the pair with raidou1 0x0046B9C4, code-ref
 0x004DEAF4	D_r1_0046B9C8	placeholder	placeholder for the pair with raidou1 0x0046B9C8, code-ref
@@ -18283,9 +18283,9 @@
 0x004DEB68	D_r1_0046BA38	placeholder	placeholder for the pair with raidou1 0x0046BA38, run-order-size
 0x004DEB6C	D_r1_0046BA3C	placeholder	placeholder for the pair with raidou1 0x0046BA3C, run-order-size
 0x004DEB70	D_r1_0046BA40	placeholder	placeholder for the pair with raidou1 0x0046BA40, run-order-size
-0x004DEB74	D_r1_0046BA44	placeholder	placeholder for the pair with raidou1 0x0046BA44, code-ref
-0x004DEB78	D_r1_0046BA48	placeholder	placeholder for the pair with raidou1 0x0046BA48, code-ref
-0x004DEB7C	D_r1_0046BA4C	placeholder	placeholder for the pair with raidou1 0x0046BA4C, code-ref
+0x004DEB74	pMapAreaNow	hd	hd: Raidou HD fld.pMapAreaNow, 10 of 10 functions agree, high confidence
+0x004DEB78	pMapAreaDat	hd	hd: Raidou HD fld.pMapAreaDat, 3 of 3 functions agree, high confidence
+0x004DEB7C	pMapColmNow	hd	hd: Raidou HD fld.pMapColmNow, 8 of 8 functions agree, high confidence
 0x004DEB80	D_r1_0046BA50	placeholder	placeholder for the pair with raidou1 0x0046BA50, code-ref
 0x004DEB84	D_r1_0046BA54	placeholder	placeholder for the pair with raidou1 0x0046BA54, code-ref
 0x004DEB88	D_r1_0046BA58	placeholder	placeholder for the pair with raidou1 0x0046BA58, code-ref
@@ -18293,7 +18293,7 @@
 0x004DEB90	D_r1_0046BA60	placeholder	placeholder for the pair with raidou1 0x0046BA60, code-ref
 0x004DEB94	D_r1_0046BA64	placeholder	placeholder for the pair with raidou1 0x0046BA64, code-ref
 0x004DEB98	D_r1_0046BA68	placeholder	placeholder for the pair with raidou1 0x0046BA68, code-ref
-0x004DEB9C	D_r1_0046BA6C	placeholder	placeholder for the pair with raidou1 0x0046BA6C, code-ref
+0x004DEB9C	pMapObjNow	hd	hd: Raidou HD fld.pMapObjNow, 3 of 3 functions agree, high confidence
 0x004DEBA0	D_r1_0046BA70	placeholder	placeholder for the pair with raidou1 0x0046BA70, code-ref
 0x004DEBA4	D_r1_0046BA74	placeholder	placeholder for the pair with raidou1 0x0046BA74, code-ref
 0x004DEBA8	D_r1_0046BA78	placeholder	placeholder for the pair with raidou1 0x0046BA78, code-ref
@@ -18332,7 +18332,7 @@
 0x004DEC2C	D_r1_0046BAFC	placeholder	placeholder for the pair with raidou1 0x0046BAFC, run-order-size
 0x004DEC30	D_r1_0046BB00	placeholder	placeholder for the pair with raidou1 0x0046BB00, code-ref
 0x004DEC34	D_r1_0046BB04	placeholder	placeholder for the pair with raidou1 0x0046BB04, code-ref
-0x004DEC38	D_r1_0046BB08	placeholder	placeholder for the pair with raidou1 0x0046BB08, code-ref
+0x004DEC38	gSubFloorID	hd	hd: Raidou HD fld.gSubFloorID, 8 of 8 functions agree, high confidence
 0x004DEC3C	D_r1_0046BB0C	placeholder	placeholder for the pair with raidou1 0x0046BB0C, code-ref
 0x004DEC40	D_r1_0046BB10	placeholder	placeholder for the pair with raidou1 0x0046BB10, code-ref
 0x004DEC44	D_r1_0046BB14	placeholder	placeholder for the pair with raidou1 0x0046BB14, code-ref
@@ -18340,7 +18340,7 @@
 0x004DEC5C	D_r1_0046BB20	placeholder	placeholder for the pair with raidou1 0x0046BB20, code-ref
 0x004DEC60	D_r1_0046BB28	placeholder	placeholder for the pair with raidou1 0x0046BB28, code-ref
 0x004DEC6C	D_r1_0046BB2C	placeholder	placeholder for the pair with raidou1 0x0046BB2C, code-ref
-0x004DEC70	D_r1_0046BB30	placeholder	placeholder for the pair with raidou1 0x0046BB30, code-ref
+0x004DEC70	pacHandle_EplLoad	hd	hd: Raidou HD fld.pacHandle_EplLoad, 8 of 8 functions agree, high confidence
 0x004DEC74	D_r1_0046BB34	placeholder	placeholder for the pair with raidou1 0x0046BB34, code-ref
 0x004DEC78	D_r1_0046BB38	placeholder	placeholder for the pair with raidou1 0x0046BB38, code-ref
 0x004DEC7C	D_r1_0046BB3C	placeholder	placeholder for the pair with raidou1 0x0046BB3C, code-ref
@@ -18507,7 +18507,7 @@
 0x004DF1AC	D_r1_0046BF1C	placeholder	placeholder for the pair with raidou1 0x0046BF1C, code-ref
 0x004DF1B0	D_r1_0046BF20	placeholder	placeholder for the pair with raidou1 0x0046BF20, code-ref
 0x004DF1B4	D_r1_0046BF24	placeholder	placeholder for the pair with raidou1 0x0046BF24, code-ref
-0x004DF1B8	D_r1_0046BF28	placeholder	placeholder for the pair with raidou1 0x0046BF28, code-ref
+0x004DF1B8	ctn_floor	hd	hd: Raidou HD fld.ctn_floor, 3 of 3 functions agree, high confidence
 0x004DF1BC	D_r1_0046BF2C	placeholder	placeholder for the pair with raidou1 0x0046BF2C, code-ref
 0x004DF1C0	D_r1_0046BF30	placeholder	placeholder for the pair with raidou1 0x0046BF30, code-ref
 0x004DF1C4	D_r1_0046BF34	placeholder	placeholder for the pair with raidou1 0x0046BF34, code-ref
@@ -18732,7 +18732,7 @@
 0x004DF844	D_r1_0046C5E0	placeholder	placeholder for the pair with raidou1 0x0046C5E0, code-ref
 0x004DF850	D_r1_0046C5F0	placeholder	placeholder for the pair with raidou1 0x0046C5F0, code-ref
 0x004DF854	D_r1_0046C5F4	placeholder	placeholder for the pair with raidou1 0x0046C5F4, run-order-size
-0x004DF858	D_r1_0046C5F8	placeholder	placeholder for the pair with raidou1 0x0046C5F8, code-ref
+0x004DF858	gMoonFadeFrameMax	hd	hd: Raidou HD evtMoon.gMoonFadeFrameMax, 3 of 3 functions agree, high confidence
 0x004DF85C	D_r1_0046C5FC	placeholder	placeholder for the pair with raidou1 0x0046C5FC, code-ref
 0x004DF860	D_r1_0046C600	placeholder	placeholder for the pair with raidou1 0x0046C600, code-ref
 0x004DF86C	gMoonCnt	inferred	twin-of-raidou1-0x0046C604
@@ -18808,7 +18808,7 @@
 0x004DFA50	D_r1_0046C7E8	placeholder	placeholder for the pair with raidou1 0x0046C7E8, code-ref
 0x004DFA58	D_r1_0046C7F0	placeholder	placeholder for the pair with raidou1 0x0046C7F0, code-ref
 0x004DFA70	D_r1_0046C800	placeholder	placeholder for the pair with raidou1 0x0046C800, code-ref
-0x004DFA78	D_r1_0046C808	placeholder	placeholder for the pair with raidou1 0x0046C808, code-ref
+0x004DFA78	skyanime_evtSky	hd	hd: Raidou HD evtSky.skyanime, 4 of 5 functions agree, high confidence
 0x004DFA7C	D_r1_0046C80C	placeholder	placeholder for the pair with raidou1 0x0046C80C, code-ref
 0x004DFA80	D_r1_0046C810	placeholder	placeholder for the pair with raidou1 0x0046C810, code-ref
 0x004DFA90	D_r1_0046C820	placeholder	placeholder for the pair with raidou1 0x0046C820, data-word
@@ -18967,7 +18967,7 @@
 0x004DFF50	D_r1_0046CCE0	placeholder	placeholder for the pair with raidou1 0x0046CCE0, code-ref
 0x004DFF54	D_r1_0046CCE4	placeholder	placeholder for the pair with raidou1 0x0046CCE4, code-ref
 0x004DFF58	D_r1_0046CCE8	placeholder	placeholder for the pair with raidou1 0x0046CCE8, code-ref
-0x004DFF60	D_r1_0046CCF0	placeholder	placeholder for the pair with raidou1 0x0046CCF0, code-ref
+0x004DFF60	TmxPreLoadPID	hd	hd: Raidou HD evtTmxPreLoad.TmxPreLoadPID, 8 of 8 functions agree, high confidence
 0x004DFF64	D_r1_0046CCF4	placeholder	placeholder for the pair with raidou1 0x0046CCF4, code-ref
 0x004DFF68	D_r1_0046CCF8	placeholder	placeholder for the pair with raidou1 0x0046CCF8, run-order-size
 0x004DFF70	D_r1_0046CD00	placeholder	placeholder for the pair with raidou1 0x0046CD00, run-order-size
@@ -19015,8 +19015,8 @@
 0x004E158C	D_r1_0046CDF0	placeholder	placeholder for the pair with raidou1 0x0046CDF0, code-ref
 0x004E1590	D_r1_0046CDF4	placeholder	placeholder for the pair with raidou1 0x0046CDF4, code-ref
 0x004E1594	D_r1_0046CDF8	placeholder	placeholder for the pair with raidou1 0x0046CDF8, code-ref
-0x004E1598	D_r1_0046CDFC	placeholder	placeholder for the pair with raidou1 0x0046CDFC, code-ref
-0x004E159C	D_r1_0046CE00	placeholder	placeholder for the pair with raidou1 0x0046CE00, code-ref
+0x004E1598	gslDrawFlagBg_slMain	hd	hd: Raidou HD slMain.gslDrawFlagBg, 4 of 4 functions agree, high confidence
+0x004E159C	gslDrawFlagFile_slMain	hd	hd: Raidou HD slMain.gslDrawFlagFile, 8 of 9 functions agree, high confidence
 0x004E15A0	D_r1_0046CE04	placeholder	placeholder for the pair with raidou1 0x0046CE04, code-ref
 0x004E15A4	D_r1_0046CE08	placeholder	placeholder for the pair with raidou1 0x0046CE08, run-order-size
 0x004E15A8	D_r1_0046CE0C	placeholder	placeholder for the pair with raidou1 0x0046CE0C, code-ref
@@ -19026,15 +19026,15 @@
 0x004E15B8	D_r1_0046CE1C	placeholder	placeholder for the pair with raidou1 0x0046CE1C, code-ref
 0x004E15BC	D_r1_0046CE20	placeholder	placeholder for the pair with raidou1 0x0046CE20, code-ref
 0x004E15C0	D_r1_0046CE24	placeholder	placeholder for the pair with raidou1 0x0046CE24, code-ref
-0x004E15C4	D_r1_0046CE28	placeholder	placeholder for the pair with raidou1 0x0046CE28, code-ref
+0x004E15C4	saveloadSystem	hd	hd: Raidou HD slMain.saveloadSystem, 3 of 3 functions agree, high confidence
 0x004E15C8	D_r1_0046CE2C	placeholder	placeholder for the pair with raidou1 0x0046CE2C, code-ref
 0x004E15CC	D_r1_0046CE30	placeholder	placeholder for the pair with raidou1 0x0046CE30, run-order-size
 0x004E15D0	D_r1_0046CE34	placeholder	placeholder for the pair with raidou1 0x0046CE34, run-order-size
 0x004E15D4	D_r1_0046CE38	placeholder	placeholder for the pair with raidou1 0x0046CE38, code-ref
-0x004E15D8	D_r1_0046CE3C	placeholder	placeholder for the pair with raidou1 0x0046CE3C, code-ref
+0x004E15D8	gslMode_slMain	hd	hd: Raidou HD slMain.gslMode, 3 of 3 functions agree, high confidence
 0x004E15DC	D_r1_0046CE40	placeholder	placeholder for the pair with raidou1 0x0046CE40, code-ref
 0x004E15E0	D_r1_0046CE44	placeholder	placeholder for the pair with raidou1 0x0046CE44, code-ref
-0x004E15E4	D_r1_0046CE48	placeholder	placeholder for the pair with raidou1 0x0046CE48, code-ref
+0x004E15E4	gslErrorCode_slMain	hd	hd: Raidou HD slMain.gslErrorCode, 5 of 6 functions agree, high confidence
 0x004E15E8	D_r1_0046CE4C	placeholder	placeholder for the pair with raidou1 0x0046CE4C, code-ref
 0x004E15EC	D_r1_0046CE50	placeholder	placeholder for the pair with raidou1 0x0046CE50, code-ref
 0x004E15F0	D_r1_0046CE54	placeholder	placeholder for the pair with raidou1 0x0046CE54, code-ref
@@ -19458,7 +19458,7 @@
 0x004E2168	D_r1_0046DA28	placeholder	placeholder for the pair with raidou1 0x0046DA28, data-word
 0x004E2170	D_r1_0046DA30	placeholder	placeholder for the pair with raidou1 0x0046DA30, data-word
 0x004E2178	D_r1_0046DA38	placeholder	placeholder for the pair with raidou1 0x0046DA38, code-ref
-0x004E2180	D_r1_0046DA40	placeholder	placeholder for the pair with raidou1 0x0046DA40, run-order-size
+0x004E2180	wk_sbtl	hd	hd: Raidou HD sbtl.wk, 128 of 135 functions agree, high confidence
 0x004E2190	D_r1_0046DA50	placeholder	placeholder for the pair with raidou1 0x0046DA50, code-ref
 0x004E21A0	D_r1_0046DA60	placeholder	placeholder for the pair with raidou1 0x0046DA60, code-ref
 0x004E21A4	D_r1_0046DA64	placeholder	placeholder for the pair with raidou1 0x0046DA64, run-order-size
@@ -19522,10 +19522,10 @@
 0x004E2610	D_r1_0046DD0C	placeholder	placeholder for the pair with raidou1 0x0046DD0C, code-ref
 0x004E2614	D_r1_0046DD10	placeholder	placeholder for the pair with raidou1 0x0046DD10, run-order-size
 0x004E2618	D_r1_0046DD14	placeholder	placeholder for the pair with raidou1 0x0046DD14, code-ref
-0x004E261C	D_r1_0046DD18	placeholder	placeholder for the pair with raidou1 0x0046DD18, code-ref
+0x004E261C	tbldata	hd	hd: Raidou HD sBtlItem.tbldata, 5 of 6 functions agree, high confidence
 0x004E263C	D_r1_0046DD1C	placeholder	placeholder for the pair with raidou1 0x0046DD1C, code-ref
-0x004E2640	D_r1_0046DD20	placeholder	placeholder for the pair with raidou1 0x0046DD20, code-ref
-0x004E2B54	D_r1_0046DD28	placeholder	placeholder for the pair with raidou1 0x0046DD28, code-ref
+0x004E2640	GlobalPID	hd	hd: Raidou HD sBtlDvltk.GlobalPID, 5 of 5 functions agree, high confidence
+0x004E2B54	GlobalCurrentArray	hd	hd: Raidou HD sBtlDvltk.GlobalCurrentArray, 3 of 3 functions agree, high confidence
 0x004E2B58	D_r1_0046DD2C	placeholder	placeholder for the pair with raidou1 0x0046DD2C, code-ref
 0x004E2B5C	D_r1_0046DD30	placeholder	placeholder for the pair with raidou1 0x0046DD30, code-ref
 0x004E2B74	D_r1_0046DD3C	placeholder	placeholder for the pair with raidou1 0x0046DD3C, code-ref
@@ -19839,7 +19839,7 @@
 0x004E3760	D_r1_0046E7D8	placeholder	placeholder for the pair with raidou1 0x0046E7D8, code-ref
 0x004E3770	D_r1_0046E7E0	placeholder	placeholder for the pair with raidou1 0x0046E7E0, code-ref
 0x004E3778	D_r1_0046E7E8	placeholder	placeholder for the pair with raidou1 0x0046E7E8, code-ref
-0x004E3780	D_r1_0046E7F0	placeholder	placeholder for the pair with raidou1 0x0046E7F0, run-order-size
+0x004E3780	Work_mjn	hd	hd: Raidou HD mjn.Work, 38 of 38 functions agree, high confidence
 0x004E3788	D_r1_0046E7F8	placeholder	placeholder for the pair with raidou1 0x0046E7F8, data-word
 0x004E3790	D_r1_0046E800	placeholder	placeholder for the pair with raidou1 0x0046E800, data-word
 0x004E3798	D_r1_0046E808	placeholder	placeholder for the pair with raidou1 0x0046E808, data-word
@@ -19907,11 +19907,11 @@
 0x004E3990	D_r1_0046E9F8	placeholder	placeholder for the pair with raidou1 0x0046E9F8, unique-contents
 0x004E3998	D_r1_0046EA00	placeholder	placeholder for the pair with raidou1 0x0046EA00, unique-contents
 0x004E39A4	D_r1_0046EA0C	placeholder	placeholder for the pair with raidou1 0x0046EA0C, code-ref
-0x004E39B0	D_r1_0046EA10	placeholder	placeholder for the pair with raidou1 0x0046EA10, code-ref
+0x004E39B0	Work_ctn	hd	hd: Raidou HD ctn.Work, 4 of 5 functions agree, high confidence
 0x004E39B8	D_r1_0046EA18	placeholder	placeholder for the pair with raidou1 0x0046EA18, code-ref
 0x004E39C0	D_r1_0046EA20	placeholder	placeholder for the pair with raidou1 0x0046EA20, code-ref
-0x004E39D0	D_r1_0046EA30	placeholder	placeholder for the pair with raidou1 0x0046EA30, code-ref
-0x004E39D8	D_r1_0046EA38	placeholder	placeholder for the pair with raidou1 0x0046EA38, code-ref
+0x004E39D0	Work_neko	hd	hd: Raidou HD neko.Work, 3 of 3 functions agree, high confidence
+0x004E39D8	g_mainPID_LmpList	hd	hd: Raidou HD lmap.g_mainPID_LmpList, 3 of 3 functions agree, high confidence
 0x004E39E8	D_r1_0046EA40	placeholder	placeholder for the pair with raidou1 0x0046EA40, unique-contents
 0x004E3A00	D_r1_0046EA68	placeholder	placeholder for the pair with raidou1 0x0046EA68, code-ref
 0x004E3A08	D_r1_0046EA6C	placeholder	placeholder for the pair with raidou1 0x0046EA6C, code-ref
@@ -19983,7 +19983,7 @@
 0x004E3C40	D_r1_0046ED08	placeholder	placeholder for the pair with raidou1 0x0046ED08, code-ref
 0x004E3C44	D_r1_0046ED0C	placeholder	placeholder for the pair with raidou1 0x0046ED0C, code-ref
 0x004E3C45	D_r1_0046ED0D	placeholder	placeholder for the pair with raidou1 0x0046ED0D, code-ref
-0x004E3C48	D_r1_0046ED10	placeholder	placeholder for the pair with raidou1 0x0046ED10, code-ref
+0x004E3C48	g_bstID	hd	hd: Raidou HD cmpModel.g_bstID, 3 of 3 functions agree, high confidence
 0x004E3C4C	D_r1_0046ED14	placeholder	placeholder for the pair with raidou1 0x0046ED14, run-order-size
 0x004E3C50	D_r1_0046ED18	placeholder	placeholder for the pair with raidou1 0x0046ED18, code-ref
 0x004E3C54	D_r1_0046ED1C	placeholder	placeholder for the pair with raidou1 0x0046ED1C, code-ref
@@ -20015,9 +20015,9 @@
 0x004E3D64	D_r1_0046EE20	placeholder	placeholder for the pair with raidou1 0x0046EE20, code-ref
 0x004E3D68	D_r1_0046EE24	placeholder	placeholder for the pair with raidou1 0x0046EE24, run-order-size
 0x004E3D6C	D_r1_0046EE28	placeholder	placeholder for the pair with raidou1 0x0046EE28, code-ref
-0x004E3DF8	D_r1_0046EE3C	placeholder	placeholder for the pair with raidou1 0x0046EE3C, code-ref
+0x004E3DF8	g_mainPID_cmpMap	hd	hd: Raidou HD cmpMap.g_mainPID, 3 of 3 functions agree, high confidence
 0x004E3DFC	D_r1_0046EE40	placeholder	placeholder for the pair with raidou1 0x0046EE40, code-ref
-0x004E3E00	D_r1_0046EE48	placeholder	placeholder for the pair with raidou1 0x0046EE48, run-order-size
+0x004E3E00	g_mainPID_cmpMain	hd	hd: Raidou HD cmpMain.g_mainPID, 3 of 3 functions agree, high confidence
 0x004E3E04	D_r1_0046EE4C	placeholder	placeholder for the pair with raidou1 0x0046EE4C, code-ref
 0x004E3E18	D_r1_0046EE50	placeholder	placeholder for the pair with raidou1 0x0046EE50, unique-contents
 0x004E3E20	D_r1_0046EE58	placeholder	placeholder for the pair with raidou1 0x0046EE58, unique-contents
@@ -20031,16 +20031,16 @@
 0x004E3E68	D_r1_0046EEA0	placeholder	placeholder for the pair with raidou1 0x0046EEA0, unique-contents
 0x004E3E78	D_r1_0046EEB0	placeholder	placeholder for the pair with raidou1 0x0046EEB0, unique-contents
 0x004E3E94	D_r1_0046EEC4	placeholder	placeholder for the pair with raidou1 0x0046EEC4, code-ref
-0x004E3EA0	D_r1_0046EF64	placeholder	placeholder for the pair with raidou1 0x0046EF64, code-ref
-0x004E3EA4	D_r1_0046EF68	placeholder	placeholder for the pair with raidou1 0x0046EF68, code-ref
+0x004E3EA0	g_mainPID_nwdNews	hd	hd: Raidou HD nwdNews.g_mainPID, 3 of 3 functions agree, high confidence
+0x004E3EA4	s_wk	hd	hd: Raidou HD shpModel.s_wk, 16 of 16 functions agree, high confidence
 0x004E3EA8	D_r1_0046EF6C	placeholder	placeholder for the pair with raidou1 0x0046EF6C, code-ref
-0x004E3EB0	D_r1_0046EF70	placeholder	placeholder for the pair with raidou1 0x0046EF70, code-ref
+0x004E3EB0	wk_shpDraw	hd	hd: Raidou HD shpDraw.wk, 5 of 5 functions agree, high confidence
 0x004E3EB8	D_r1_0046EF78	placeholder	placeholder for the pair with raidou1 0x0046EF78, code-ref
 0x004E3EC0	D_r1_0046EF80	placeholder	placeholder for the pair with raidou1 0x0046EF80, code-ref
 0x004E3EC8	D_r1_0046EF88	placeholder	placeholder for the pair with raidou1 0x0046EF88, code-ref
 0x004E3ECC	D_r1_0046EF84	placeholder	placeholder for the pair with raidou1 0x0046EF84, code-ref
-0x004E3ED4	D_r1_0046EF8C	placeholder	placeholder for the pair with raidou1 0x0046EF8C, code-ref
-0x004E3ED8	D_r1_0046EF90	placeholder	placeholder for the pair with raidou1 0x0046EF90, code-ref
+0x004E3ED4	wk_shpMessage	hd	hd: Raidou HD shpMessage.wk, 3 of 3 functions agree, high confidence
+0x004E3ED8	wk_shpAction	hd	hd: Raidou HD shpAction.wk, 17 of 20 functions agree, high confidence
 0x004E3EDC	D_r1_0046EF94	placeholder	placeholder for the pair with raidou1 0x0046EF94, run-order-size
 0x004E3EE0	D_r1_0046EF98	placeholder	placeholder for the pair with raidou1 0x0046EF98, run-order-size
 0x004E3EE4	D_r1_0046EF9C	placeholder	placeholder for the pair with raidou1 0x0046EF9C, code-ref
@@ -20077,7 +20077,7 @@
 0x004E3FE8	D_r1_0046F070	placeholder	placeholder for the pair with raidou1 0x0046F070, code-ref
 0x004E401C	D_r1_0046F090	placeholder	placeholder for the pair with raidou1 0x0046F090, code-ref
 0x004E4028	D_r1_0046F0A0	placeholder	placeholder for the pair with raidou1 0x0046F0A0, code-ref
-0x004E4038	D_r1_0046F0A8	placeholder	placeholder for the pair with raidou1 0x0046F0A8, code-ref
+0x004E4038	g_mainPID_gohMenu	hd	hd: Raidou HD gohMenu.g_mainPID, 8 of 9 functions agree, high confidence
 0x004E4040	D_r1_0046F0B0	placeholder	placeholder for the pair with raidou1 0x0046F0B0, unique-contents
 0x004E4048	D_r1_0046F0B8	placeholder	placeholder for the pair with raidou1 0x0046F0B8, unique-contents
 0x004E4050	D_r1_0046F0C0	placeholder	placeholder for the pair with raidou1 0x0046F0C0, unique-contents
@@ -20150,10 +20150,10 @@
 0x004E42F8	D_r1_0046F2E0	placeholder	placeholder for the pair with raidou1 0x0046F2E0, code-ref
 0x004E4300	D_r1_0046F2E8	placeholder	placeholder for the pair with raidou1 0x0046F2E8, code-ref
 0x004E4304	D_r1_0046F2EC	placeholder	placeholder for the pair with raidou1 0x0046F2EC, code-ref
-0x004E4308	D_r1_0046F2F0	placeholder	placeholder for the pair with raidou1 0x0046F2F0, code-ref
+0x004E4308	GlobalParamFlag	hd	hd: Raidou HD sdf3D.GlobalParamFlag, 5 of 6 functions agree, high confidence
 0x004E430C	D_r1_0046F2F4	placeholder	placeholder for the pair with raidou1 0x0046F2F4, code-ref
 0x004E4310	D_r1_0046F2F8	placeholder	placeholder for the pair with raidou1 0x0046F2F8, code-ref
-0x004E4314	D_r1_0046F2FC	placeholder	placeholder for the pair with raidou1 0x0046F2FC, code-ref
+0x004E4314	GlobalParamTransX	hd	hd: Raidou HD sdf3D.GlobalParamTransX, 3 of 3 functions agree, high confidence
 0x004E4318	D_r1_0046F300	placeholder	placeholder for the pair with raidou1 0x0046F300, code-ref
 0x004E431C	D_r1_0046F304	placeholder	placeholder for the pair with raidou1 0x0046F304, code-ref
 0x004E4320	D_r1_0046F308	placeholder	placeholder for the pair with raidou1 0x0046F308, code-ref
@@ -20347,7 +20347,7 @@
 0x004E4700	D_r1_0046F700	placeholder	placeholder for the pair with raidou1 0x0046F700, code-ref
 0x004E4704	D_r1_0046F704	placeholder	placeholder for the pair with raidou1 0x0046F704, code-ref
 0x004E4708	D_r1_0046F708	placeholder	placeholder for the pair with raidou1 0x0046F708, code-ref
-0x004E470C	D_r1_0046F70C	placeholder	placeholder for the pair with raidou1 0x0046F70C, code-ref
+0x004E470C	s_hNowpWork	hd	hd: Raidou HD scr.s_hNowpWork, 11 of 12 functions agree, high confidence
 0x004E4710	D_r1_0046F710	placeholder	placeholder for the pair with raidou1 0x0046F710, code-ref
 0x004E4714	D_r1_0046F714	placeholder	placeholder for the pair with raidou1 0x0046F714, code-ref
 0x004E4730	D_r1_0046F730	placeholder	placeholder for the pair with raidou1 0x0046F730, code-ref
@@ -20411,7 +20411,7 @@
 0x004E4830	D_r1_0046F818	placeholder	placeholder for the pair with raidou1 0x0046F818, run-order-size
 0x004E4838	D_r1_0046F820	placeholder	placeholder for the pair with raidou1 0x0046F820, code-ref
 0x004E4840	D_r1_0046F828	placeholder	placeholder for the pair with raidou1 0x0046F828, code-ref
-0x004E4848	D_r1_0046F830	placeholder	placeholder for the pair with raidou1 0x0046F830, code-ref
+0x004E4848	at3_bgm_skip	hd	hd: Raidou HD sndAt3.at3_bgm_skip, 6 of 6 functions agree, high confidence
 0x004E484C	D_r1_0046F834	placeholder	placeholder for the pair with raidou1 0x0046F834, code-ref
 0x004E4850	D_r1_0046F838	placeholder	placeholder for the pair with raidou1 0x0046F838, code-ref
 0x004E4854	D_r1_0046F83C	placeholder	placeholder for the pair with raidou1 0x0046F83C, run-order-size
@@ -20772,7 +20772,7 @@
 0x005556DC	D_r1_004C5ACC	placeholder	placeholder for the pair with raidou1 0x004C5ACC, code-ref
 0x005556E0	D_r1_004C5AD0	placeholder	placeholder for the pair with raidou1 0x004C5AD0, code-ref
 0x005556E8	D_r1_004C5AD8	placeholder	placeholder for the pair with raidou1 0x004C5AD8, code-ref
-0x00555738	D_r1_004C5B28	placeholder	placeholder for the pair with raidou1 0x004C5B28, code-ref
+0x00555738	fileMngCb	hd	hd: Raidou HD file.fileMngCb, 4 of 4 functions agree, high confidence
 0x00555778	sdfMcCb	inferred	twin-of-raidou1-0x004C5B68
 0x00555780	D_r1_004C5B70	placeholder	placeholder for the pair with raidou1 0x004C5B70, code-ref
 0x00555788	D_r1_004C5B78	placeholder	placeholder for the pair with raidou1 0x004C5B78, code-ref

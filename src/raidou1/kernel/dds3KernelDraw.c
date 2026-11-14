@@ -3581,7 +3581,7 @@ u16 dds3QuakeXRange = 0;
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B26E);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B274);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", Zoom);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B278);
 

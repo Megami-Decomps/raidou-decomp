@@ -459,7 +459,7 @@ extern void scrDestroyWorkTask(void);
 
 extern void dds3WorkInit(const scrHeader_t *header);
 
-extern scrHeader_t *D_r1_0046B604;
+extern scrHeader_t *cameraBasic;
 
 #define SDF_PACKED_STATUS_BIT 0x8000
 

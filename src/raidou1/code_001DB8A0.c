@@ -693,11 +693,11 @@ extern u32 D_003BC81C;
 
 extern FileSelectionFlowState fileSelectionPending;
 
-extern u32 D_r1_0046CE48;
+extern u32 gslErrorCode_slMain;
 
 extern u32 D_003BC80C;
 
-extern u32 D_r1_0046CE00;
+extern u32 gslDrawFlagFile_slMain;
 
 extern u32 fileMemoryCardRequestIndex;
 

@@ -1415,11 +1415,11 @@ extern u32 D_003BC81C;
 
 extern FileSelectionFlowState fileSelectionPending;
 
-extern u32 D_r1_0046CE48;
+extern u32 gslErrorCode_slMain;
 
 extern u32 D_003BC80C;
 
-extern u32 D_r1_0046CE00;
+extern u32 gslDrawFlagFile_slMain;
 
 extern u32 fileMemoryCardRequestIndex;
 
@@ -2544,8 +2544,8 @@ INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D65F8);
 s32 fileRestartSlotScan(void) {
     fileClearAllSlotFlags();
     slSetInfo(1);
-    D_r1_0046CE48 = 0;
-    D_r1_0046CE00 = 0;
+    gslErrorCode_slMain = 0;
+    gslDrawFlagFile_slMain = 0;
     return fileResetSelection();
 }
 

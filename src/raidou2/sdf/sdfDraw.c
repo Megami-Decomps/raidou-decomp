@@ -1123,13 +1123,13 @@ f32 sdfFaceDivSoften = 7.0f;
 
 f32 sdfFaceDivBias = 0.0f;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2F0);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", GlobalParamFlag);
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2F4);
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2F8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2FC);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", GlobalParamTransX);
 
 INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F300);
 

@@ -1,7 +1,7 @@
 #include "common.h"
 #include "newdata.h"
 
-extern s32 D_r1_0046C5F8;
+extern s32 gMoonFadeFrameMax;
 extern s32 D_r1_0046C5FC;
 extern s32 D_r1_0046C600;
 extern f32 gMoonCnt;
@@ -44,7 +44,7 @@ void evtEnableMoonDraw(void)
 {
     DDS3_GBWK->moonFlags |= 2;
     gMoonCnt = 1.0f;
-    D_r1_0046C5F8 = 1;
+    gMoonFadeFrameMax = 1;
     D_r1_0046C600 = 0;
 }
 
@@ -52,21 +52,21 @@ void evtDisableMoonDraw(void)
 {
     DDS3_GBWK->moonFlags &= ~2;
     gMoonCnt = 0.0f;
-    D_r1_0046C5F8 = 0;
+    gMoonFadeFrameMax = 0;
     D_r1_0046C600 = 0;
 }
 
 void evtEnableMoonDraw2(void)
 {
     DDS3_GBWK->moonFlags |= 2;
-    D_r1_0046C5F8 = 1;
+    gMoonFadeFrameMax = 1;
     D_r1_0046C600 = 0;
 }
 
 void evtDisableMoonDraw2(void)
 {
     DDS3_GBWK->moonFlags &= ~2;
-    D_r1_0046C5F8 = 0;
+    gMoonFadeFrameMax = 0;
     D_r1_0046C600 = 0;
 }
 
@@ -76,7 +76,7 @@ void func_r1_001ADAE0(s32 count)
         if (D_r1_0046C600 != 0) {
             D_r1_0046C5FC = (count * D_r1_0046C5FC) / D_r1_0046C600;
         } else {
-            if (D_r1_0046C5F8 == 0) {
+            if (gMoonFadeFrameMax == 0) {
                 count = 0;
             }
             D_r1_0046C5FC = count;
@@ -90,14 +90,14 @@ void func_r1_001ADB28(s32 count)
     gMoonCnt = 1.0f;
     func_r1_001ADAE0(count);
     D_r1_0046C600 = count;
-    D_r1_0046C5F8 = 1;
+    gMoonFadeFrameMax = 1;
 }
 
 void func_r1_001ADB78(s32 count)
 {
     func_r1_001ADAE0(count);
     D_r1_0046C600 = count;
-    D_r1_0046C5F8 = 0;
+    gMoonFadeFrameMax = 0;
 }
 
 s32 func_r1_001ADBA8(void)
@@ -125,7 +125,7 @@ INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F0);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F4);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F8);
+INCLUDE_SDATA(const s32, "event/evtMoon", gMoonFadeFrameMax);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5FC);
 

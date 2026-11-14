@@ -6222,5 +6222,5 @@ INCLUDE_SDATA(const s32, "code_00259620", D_r1_0046DA30);
 
 INCLUDE_SDATA(const s32, "code_00259620", D_r1_0046DA38);
 
-INCLUDE_SDATA(const s32, "code_00259620", D_r1_0046DA40);
+INCLUDE_SDATA(const s32, "code_00259620", wk_sbtl);
 
