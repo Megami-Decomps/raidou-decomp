@@ -1913,7 +1913,7 @@ typedef struct EvtGsCommand {
 void evtSubmitSecondaryGsTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 unusedZte, s32 ztst);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
-void eglLinkAlpha(s32 fixedAlpha);
+void func_r1_00109738(s32 fixedAlpha);
 
 extern dds3FrameDrawBuffer_t dds3FrameDrawPacketRecords[];
 
@@ -3467,14 +3467,14 @@ void eglSetOt(u32 ot)
     egl_OT_Offset = ot;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001093D0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkTest);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001094E8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkTest);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkAlpha);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
-void eglLinkAlpha(s32 fixedAlpha) {
+void func_r1_00109738(s32 fixedAlpha) {
     void *list = (void *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);
     void *packet;
     EvtGsCommand *command;

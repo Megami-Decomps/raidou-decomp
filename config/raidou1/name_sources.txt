@@ -204,10 +204,10 @@
 0x00109340	dds3SetSoftenBias	inferred	SMT3HD name via SLUS_209.11 0x00107AF0, reloc-identical; map-agrees
 0x00109390	eglInit	inferred	SMT3HD name via SLUS_209.11 0x00107B40, reloc-identical; map-agrees
 0x001093C8	eglSetOt	inferred	SMT3HD name via SLUS_209.11 0x00107B78, shared-hash-in-run; map-agrees
-0x001093D0	func_r1_001093D0	placeholder	placeholder for the pair with raidou2 0x00109548, masked-hash-in-gap
+0x001093D0	eglLinkTest	evidence	smt3-decomp eglLinkTest 0x00107B80: size 0x114, same prologue, called from the same code as eglLinkAlpha
 0x001094E8	func_r1_001094E8	placeholder	placeholder for the pair with raidou2 0x00109660, unique-reloc-hash
-0x00109600	eglLinkTest	hd	hd: Raidou HD egl.eglLinkTest, score 10.4 band A
-0x00109738	eglLinkAlpha	hd	hd: Raidou HD egl.eglLinkAlpha, score 10.8 band A, hd-ab: calls2 prev gap=exact st1:gap r1+r2; replaces evtSubmitFixedAlphaBlend: dds-decomp DDS1 name via SLUS_209.74 0x00108DC0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00109600	eglLinkAlpha	evidence	smt3-decomp eglLinkAlpha 0x00107C98: same 13-case jump table and constants 0x48 0x42 0x84 0x06 0x89; HD eglLinkAlpha(s32 mode); replaces eglLinkTest: hd: Raidou HD egl.eglLinkTest, score 10.4 band A
+0x00109738	func_r1_00109738	placeholder	placeholder for the pair, 0xA0 fixed-alpha packet submit (not the mode switch); replaces eglLinkAlpha: hd: Raidou HD egl.eglLinkAlpha, score 10.8 band A, hd-ab: calls2 prev gap=exact st1:gap r1+r2; replaces evtSubmitFixedAlphaBlend: dds-decomp DDS1 name via SLUS_209.74 0x00108DC0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001097D8	func_r1_001097D8	placeholder	placeholder for the pair with raidou2 0x00109950, masked-hash-in-gap
 0x00109870	func_r1_00109870	placeholder	placeholder for the pair with raidou2 0x001099E8, masked-hash-in-gap
 0x00109908	func_r1_00109908	placeholder	placeholder for the pair with raidou2 0x00109A80, masked-hash-in-gap

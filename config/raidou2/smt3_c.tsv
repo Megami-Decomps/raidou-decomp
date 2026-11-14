@@ -2115,7 +2115,7 @@ evtStageAnimeControl	c
 evtStartPictureProcess2	c
 evtStopEventBgm	c
 evtSubmitDefaultDepthGradientRect	c
-eglLinkAlpha	c
+func_r1_00109738	c
 evtTestSolarPhaseOrModelFlag	c
 evtTransEventBgm	c
 evtUnitLightAnimeStat	c	compiles identical
