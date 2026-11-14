@@ -169,13 +169,13 @@ void dds3CameraObjectBasicSetWorldEye(dds3Basic_t *camera, const u128 *worldEye)
 void dds3CameraObjectBasicLoadWorldEyeIntoVu(dds3Basic_t *camera);
 /* End of declarations from src/dds1/basic/dds3CameraObjectBasic.c */
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011C900);
+INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_r1_00119E98);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011C960);
+INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_r1_00119EF8);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011C9A0);
+INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_r1_00119F38);
 
-INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_0011CA88);
+INCLUDE_ASM(const s32, "basic/dds3CameraObjectBasic", func_r1_0011A020);
 
 /* Rotate the local vectors and cache their world-space look-at matrix. */
 void MakeCamera(dds3Basic_t *pBasic)

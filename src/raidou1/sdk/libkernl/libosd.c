@@ -302,7 +302,7 @@ extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
 
 extern s32 sifDmacHandlerId;
 
-extern s32 D_0052C2B8;
+extern s32 D_r1_00442CE0;
 
 void sceSifExitCmd(void);
 
@@ -1241,7 +1241,7 @@ void InitExecPS2(void)
     }
 }
 
-INCLUDE_ASM(const s32, "sdk/libkernl/libosd", func_0039C138);
+INCLUDE_ASM(const s32, "sdk/libkernl/libosd", func_r1_0039C138);
 
 s32 kCopy_1(u8 *dst, const u8 *src, u32 count)
 {

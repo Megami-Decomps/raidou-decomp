@@ -492,7 +492,7 @@ void dds3EffectObjectBasicDestructor(dds3Basic_t *aPtr) {
     aPtr->workdata = NULL;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011EA60);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011BE60);
 
 s32 dds3EffectObjectBasicDrawProcedure(dds3Basic_t *aPtr) {
     dds3EffectObjectBasicWorkData_t *data;
@@ -594,19 +594,19 @@ dds3Basic_t *dds3AddTMXEffectObjectBasic3(dds3Basic_t *ebasic, void *pos, saddr_
     return AddTMXEffect(bill, pos, rot);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011F2A8);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C6A8);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011F2F0);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C6F0);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011F338);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C738);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011F408);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C808);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011F448);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C848);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011F488);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C888);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_0011F558);
+INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", func_r1_0011C958);
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddBEDEffect);
 
@@ -860,11 +860,11 @@ void dds3EffectObjectBasicSetFldEx(dds3Basic_t *basic, fldResourceEffect_t *pRes
     }
 }
 
-INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_004A8FC0);
+INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_r1_00446500);
 
-INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_004A8FF0);
+INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_r1_00446530);
 
-INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_004A9018);
+INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_r1_00446558);
 
-INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_004A9068);
+INCLUDE_RODATA(const s32, "basic/dds3EffectObjectBasic", D_r1_004465A8);
 

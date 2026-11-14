@@ -439,9 +439,9 @@ void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source) {
     owner->model = model;
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023C498);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225190);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023C4F0);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_002251E8);
 
 /* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
 void effApplyModelPrimaryVector(EffModelOwner *owner, const f32 *position) {
@@ -468,10 +468,10 @@ void effApplyScaledModelTertiaryVector(EffModelOwner *owner, float scale) {
     mdlSetScale(owner->model);
 }
 
-void func_0023C610(void) {
+void func_r1_00225308(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023C618);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225310);
 
 void effMarkFloorModelForDestruction(EffModelOwner *work) {
     u32 flags = work->flags | EFF_MODEL_OWNER_FLAG_DESTROY_REQUESTED;
@@ -481,7 +481,7 @@ void effMarkFloorModelForDestruction(EffModelOwner *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023C698);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225390);
 
 INCLUDE_ASM(const s32, "code_0023C400", effRenderModelOwnerWithGsTests);
 
@@ -579,25 +579,25 @@ void mdlMarkAndProcessObjectNodes(void) {
     } while (node != NULL);
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CBD8);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_002258D0);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CCA0);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225998);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CCF0);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_002259E8);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CD48);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225A40);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CE08);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225B00);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CE80);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225B78);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CF10);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C08);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CF30);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C28);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CF50);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C48);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023CF68);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C60);
 
 /* Create an empty owner, or load its model and per-record queues from a file job. */
 EffResourceOwner *effCreateResourceOwner(FileJobPayload *source) {
@@ -690,9 +690,9 @@ void effCopyResourceOwner(EffResourceOwner *dst, EffResourceOwner *src) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023D418);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00226110);
 
-INCLUDE_ASM(const s32, "code_0023C400", func_0023D490);
+INCLUDE_ASM(const s32, "code_0023C400", func_r1_00226188);
 
 /* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
 void effLoadModelPrimaryVector(EffResourceOwner *work, const f32 *position) {
@@ -973,17 +973,17 @@ sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdf
     return sdfGetOrCreateTextureForReference(target, set->handles[sample->segment]);
 }
 
-INCLUDE_RODATA(const s32, "code_0023C400", D_004BCAD0);
+INCLUDE_RODATA(const s32, "code_0023C400", D_r1_00455D00);
 
-INCLUDE_RODATA(const s32, "code_0023C400", D_004BCAF0);
+INCLUDE_RODATA(const s32, "code_0023C400", D_r1_00455D20);
 
-INCLUDE_SDATA(const s32, "code_0023C400", D_004E1840);
+INCLUDE_SDATA(const s32, "code_0023C400", D_r1_0046D100);
 
-INCLUDE_SDATA(const s32, "code_0023C400", D_004E1844);
+INCLUDE_SDATA(const s32, "code_0023C400", D_r1_0046D104);
 
-INCLUDE_SDATA(const s32, "code_0023C400", D_004E1848);
+INCLUDE_SDATA(const s32, "code_0023C400", D_r1_0046D108);
 
-INCLUDE_SDATA(const s32, "code_0023C400", D_004E184C);
+INCLUDE_SDATA(const s32, "code_0023C400", D_r1_0046D10C);
 
-INCLUDE_SDATA(const s32, "code_0023C400", D_004E1850);
+INCLUDE_SDATA(const s32, "code_0023C400", D_r1_0046D110);
 

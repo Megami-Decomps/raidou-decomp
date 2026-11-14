@@ -103,7 +103,7 @@ extern u32 dds3ObjectIdCounter;
 extern dds3Basic_t *dds3TheWorld;
 /* End of declarations from src/smt3/basic/dds3Basic.c */
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", func_001194B0);
+INCLUDE_ASM(const s32, "basic/dds3Basic", func_r1_00116C80);
 
 void dds3DeleteBasic(dds3Basic_t *basic)
 {
@@ -198,9 +198,9 @@ void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r)
     basic->poseset->r = r;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", func_00119768);
+INCLUDE_ASM(const s32, "basic/dds3Basic", func_r1_00116F38);
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", func_00119778);
+INCLUDE_ASM(const s32, "basic/dds3Basic", func_r1_00116F48);
 
 void dds3SetRotPoseSet(dds3Basic_t *pBasic, const sdfVector4_t *rot)
 {
@@ -237,7 +237,7 @@ void dds3GetRotPoseSet(dds3Basic_t *pBasic)
     Normalize();
 }
 
-INCLUDE_ASM(const s32, "basic/dds3Basic", func_00119840);
+INCLUDE_ASM(const s32, "basic/dds3Basic", func_r1_00117010);
 
 void dds3GetPosPoseSetMCR(dds3Basic_t *basic, const sdfVector4_t *offset)
 {

@@ -1178,9 +1178,9 @@ INCLUDE_ASM(const s32, "code_003BD050", mnuCreateWindowContainer);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuDestroyWindowContainer);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BD5A8);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D680);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BD5B0);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D688);
 
 void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct EffectSlotSet *layout2C, u32 layout30, struct EffectSlotSet *layout34,
                                     u32 layout48, u32 layout38, struct EffectSlotSet *layout3C, u32 layout40,
@@ -1200,7 +1200,7 @@ void mnuInitializeBasicWindowLayout(MenuWindowContainer *menu, struct EffectSlot
     mnuSetWindowContainerLayout(menu, first, second, 0, 0, 0, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BD618);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D6F0);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuSetWindowPanelBounds);
 
@@ -1212,7 +1212,7 @@ void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
                                        defaults.indices, 3);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BD720);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D7F8);
 
 MenuListNode *mnuAppendWindowListNode(MenuWindowContainer *menu, const void *text) {
     return mnuListAppendNode(menu->list, text);
@@ -1255,7 +1255,7 @@ MenuListNode *mnuRetreatWindowListSelection(MenuWindowContainer *menu) {
     return mnuReverseListSelection(menu, 0);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BD850);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034D928);
 
 void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu) {
     mnuClearListFlagsOneAndTwo(&menu->list->stateFlags);
@@ -1293,7 +1293,7 @@ void mnuReleaseWindowTextures(MenuIconSprites *menu) {
     sdfMemFreeDirect(menu->allocation);
 }
 
-void func_003BDA80(void) {
+void func_r1_0034DB58(void) {
 }
 
 void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
@@ -1338,21 +1338,21 @@ void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuDrawWindowResourceSpriteRows);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BDC28);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034DD00);
 
 void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, MenuWindowContainer *window, u32 option) {
     mnuDrawWindowIconRows(x, y, flags, window, window->list->visibleCount, option);
 }
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BDD40);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034DE18);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuDrawWindowSelectionPanel);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BDEE8);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034DFC0);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuSpinForWindowListCount);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6180);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463EC0);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuCreatePanelIconState);
 
@@ -1547,13 +1547,13 @@ INCLUDE_ASM(const s32, "code_003BD050", mnuCompareTertiaryKeyDescending);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuCompareTertiaryKeyAscending);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BEB00);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034EBD8);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BEB28);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034EC00);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BEB58);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034EC30);
 
-INCLUDE_ASM(const s32, "code_003BD050", func_003BEB80);
+INCLUDE_ASM(const s32, "code_003BD050", func_r1_0034EC58);
 
 INCLUDE_ASM(const s32, "code_003BD050", mnuSortItems);
 
@@ -1623,13 +1623,13 @@ void mnuUpdateFade(s32 *list) {
     }
 }
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D61C8);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463F08);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D61E0);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463F20);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6210);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463F50);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6220);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463F60);
 
 INCLUDE_RODATA(const s32, "code_003BD050", D_004D6240);
 
@@ -1655,27 +1655,27 @@ INCLUDE_RODATA(const s32, "code_003BD050", D_004D62E0);
 
 INCLUDE_RODATA(const s32, "code_003BD050", D_004D62F0);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6300);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463F90);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6310);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FA0);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6320);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FB0);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6330);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FC0);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6340);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FD0);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6350);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FE0);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6360);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00463FF0);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6370);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464000);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6380);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464010);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6390);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464020);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D63A0);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464030);
 
 INCLUDE_RODATA(const s32, "code_003BD050", D_004D63B0);
 
@@ -1685,11 +1685,11 @@ INCLUDE_RODATA(const s32, "code_003BD050", D_004D63D0);
 
 INCLUDE_RODATA(const s32, "code_003BD050", D_004D63E0);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D63F8);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464050);
 
-INCLUDE_RODATA(const s32, "code_003BD050", D_004D6408);
+INCLUDE_RODATA(const s32, "code_003BD050", D_r1_00464060);
 
 INCLUDE_RODATA(const s32, "code_003BD050", D_004D6418);
 
-INCLUDE_SDATA(const s32, "code_003BD050", D_004E4148);
+INCLUDE_SDATA(const s32, "code_003BD050", D_r1_0046F130);
 

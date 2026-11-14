@@ -352,7 +352,7 @@ sdfFileCmdHandle_t *sdfFileOpen(const char *aFileName) {
     return state;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", func_003E28D0);
+INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileCheckExist);
 
 void sdfFileClose(void *aHandle)
 {
@@ -402,7 +402,7 @@ char *sdfFileGetHostRoot(void)
 
 INCLUDE_ASM(const s32, "sdf/sdfFile", sdfFileSetDefaultSrc);
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", func_003E2AB8);
+INCLUDE_ASM(const s32, "sdf/sdfFile", func_r1_0036CD28);
 
 /* Queue a request on the global list and on its worker's list; wake the worker when its list was empty. */
 void sdfFileCmdAllocHandle(sdfFileCmdHandle_t *state) {

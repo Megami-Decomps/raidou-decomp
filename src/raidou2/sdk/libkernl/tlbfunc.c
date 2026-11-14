@@ -302,7 +302,7 @@ extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
 
 extern s32 sifDmacHandlerId;
 
-extern s32 D_0052C2B8;
+extern s32 D_r1_00442CE0;
 
 void sceSifExitCmd(void);
 
@@ -1271,9 +1271,9 @@ void InitTLBFunctions(void)
     execArgumentBlock = GetEntryAddress_1(3);
 }
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_00415790);
+INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_r1_0039C910);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_004157A0);
+INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_r1_0039C920);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", _SetTLBEntry);
 
@@ -1287,17 +1287,17 @@ s32 iPutTLBEntry(u32 index, u32 pageMask, u32 entryHi, u32 entryLo0, u32 entryLo
     return _SetTLBEntry(index, pageMask, entryHi, entryLo0, entryLo1);
 }
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_004157F0);
+INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_r1_0039C970);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_00415800);
+INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_r1_0039C980);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_00415810);
+INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_r1_0039C990);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_00415820);
+INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_r1_0039C9A0);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_00415830);
+INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_r1_0039C9B0);
 
-INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_00415840);
+INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", func_r1_0039C9C0);
 
 INCLUDE_ASM(const s32, "sdk/libkernl/tlbfunc", InitTLB);
 

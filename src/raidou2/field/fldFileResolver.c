@@ -1059,7 +1059,7 @@ extern void fldClrCollision(void);
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_00324660[];
+extern u8 D_r1_003AD4E0[];
 
 extern char D_003C9200[];
 
@@ -2378,7 +2378,7 @@ extern void scrDestroyWorkTask(void);
 
 extern void dds3WorkInit(const scrHeader_t *header);
 
-extern scrHeader_t *D_003BAAAC;
+extern scrHeader_t *D_r1_0046B604;
 
 #define SDF_PACKED_STATUS_BIT 0x8000
 
@@ -2594,92 +2594,92 @@ void sdfSetPackedValuePreservingFlag(dds_datUnitWork_t *item, u16 channelValue);
 void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 /* End of declarations from src/dds1/game/code_00117438.c */
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013CD60);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135520);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013CF70);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135730);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D1A8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135968);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D338);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135AF8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D4B0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135C70);
 
 void sdfFirePendingCallback(void) {
-    if (D_003BAAAC == 0) {
+    if (D_r1_0046B604 == 0) {
         return;
     }
     scrDestroyWorkTask();
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D560);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135D20);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D5B8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135D78);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D620);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135DE0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D640);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135E00);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D688);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135E48);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D6F0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135EB0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D6F8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135EB8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D788);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135F48);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D800);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00135FC0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D8A8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136068);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013D968);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136128);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013DAD0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136290);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013DBF8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001363B8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013DC38);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001363F8);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013E5E0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013E6C8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136DA0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013E738);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136E10);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013E7B8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136E90);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013E880);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136F58);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013E8E0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00136FB8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013E950);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137028);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013EA10);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001370E8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013EB50);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137228);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013EB90);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137268);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013EBB0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137288);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013EC20);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001372F8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F548);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137C40);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F598);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137C90);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F5E8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F630);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137CE0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F660);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137D10);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F690);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00137D40);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F6D0);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F7F0);
 
-INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD30);
+INCLUDE_RODATA(const s32, "field/fldFileResolver", D_r1_00447C80);
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD40);
 
@@ -2687,29 +2687,29 @@ INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD50);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_0013F840);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00140030);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138010);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00140058);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138038);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_001400B8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138098);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_001401F0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001381D0);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00140658);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138638);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00140678);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138658);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_001406A8);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00138688);
 
-INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD80);
+INCLUDE_RODATA(const s32, "field/fldFileResolver", D_r1_00447CA0);
 
 INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AAD90);
 
-INCLUDE_RODATA(const s32, "field/fldFileResolver", D_004AADA0);
+INCLUDE_RODATA(const s32, "field/fldFileResolver", D_r1_00447CC0);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", func_001406B8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_001415A0);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_00139210);
 
 void fldEnableCameraObjectFlag(void) {
     dds3ObjectBaseOnFlag(fldPlayerObject, 1);
@@ -2720,7 +2720,7 @@ void fldDisableCameraObjectFlag(void) {
     dds3ObjectBaseOffFlag(fldPlayerObject, 1);
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver", func_00141650);
+INCLUDE_ASM(const s32, "field/fldFileResolver", func_r1_001392C0);
 
 void fldRestoreCameraModelColor(void) {
     fldPlayerModelContext->inner->color = 0x80808080;
@@ -2734,49 +2734,49 @@ void fldClearCameraObjectTransitionFlags(void) {
     dds3ObjectBaseOffFlag(fldPlayerObject, 0x400);
     dds3ObjectBaseOffFlag(fldPlayerObject, 0x200);
 }
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8BC);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B750);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8C0);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B754);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8C4);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B758);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8C8);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B75C);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8CC);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B760);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8D0);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B764);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8D4);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B768);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8D8);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B76C);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8DC);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B770);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8E0);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B774);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8E4);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B778);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8E8);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B77C);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8EC);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B780);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8F0);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B784);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8F4);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B788);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8F8);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B78C);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE8FC);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B790);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE900);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B794);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE904);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B798);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE908);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B79C);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE90C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B7A0);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE910);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B7A4);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver", D_004DE914);
+INCLUDE_SDATA(const s32, "field/fldFileResolver", D_r1_0046B7A8);
 

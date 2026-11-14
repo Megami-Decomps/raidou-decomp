@@ -702,7 +702,7 @@ void libc_2D1EA8(fde_vector *left, const fde_vector *right)
     }
 }
 
-INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_00386268);
+INCLUDE_ASM(const s32, "sdk/libgcc/frame-dwarf2", func_r1_00386268);
 
 void __register_frame_info(void *fn, void *entry) {
     object *e = entry;

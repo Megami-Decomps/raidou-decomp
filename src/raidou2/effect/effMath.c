@@ -166,7 +166,7 @@ u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate)
     return blended;
 }
 
-INCLUDE_ASM(const s32, "effect/effMath", func_001FC930);
+INCLUDE_ASM(const s32, "effect/effMath", func_r1_001E5638);
 
 /* vu0 routine: distance from `to` to the line through `from` along `dir` */
 f32 effLinePointLength(sdfVector4_t *pDir, sdfVector4_t *pLinePos, sdfVector4_t *pPos)
@@ -213,7 +213,7 @@ effBezier4P_t *dds3Bezier4PCreate(s32 number) {
     return (effBezier4P_t *)headerAddress;
 }
 
-INCLUDE_ASM(const s32, "effect/effMath", func_001FCAC8);
+INCLUDE_ASM(const s32, "effect/effMath", func_r1_001E57D0);
 
 s32 dds3Bezier4PPartRun(effBezier4P_t *table, s32 slotIndex, f32 *out) {
     dds3Bezier4PPart_t *slot = &((dds3Bezier4PPart_t *)table->pPart)[slotIndex];
@@ -259,7 +259,7 @@ s32 nbCameraLerpVec(dds3Bezier4PPart_t *slot, f32 *out) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "effect/effMath", func_001FCD10);
+INCLUDE_ASM(const s32, "effect/effMath", func_r1_001E5A18);
 
 dds3Bezier4PPart_t *dds3Bezier4PGetPart(effBezier4P_t *pEffBezier4P, s32 index) {
     return &((dds3Bezier4PPart_t *)pEffBezier4P->pPart)[index];

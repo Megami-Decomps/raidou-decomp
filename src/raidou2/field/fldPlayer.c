@@ -671,7 +671,7 @@ extern dds3Basic_t *fldPlayerObject;
 
 extern struct sdfMemHandle_t *fldPlayerModelResource;
 
-extern u32 D_0032E498[];
+extern u32 D_0043EA44[];
 
 extern struct sdfMemHandle_t *D_003BAB58;
 
@@ -1278,7 +1278,7 @@ FldNextSceneRequestResult fldConsumeNextSceneRequest(FldNextSceneRequestMapCode 
                                                       FldNextSceneRequestEntryIndex *outEntryIndex);
 /* End of declarations from src/dds1/game/code_00122030.c */
 
-INCLUDE_ASM(const s32, "field/fldPlayer", func_0012BAC8);
+INCLUDE_ASM(const s32, "field/fldPlayer", func_r1_001274A8);
 
 f32 fldSnapAngleToCompassPoint(f32 angle) {
     f32 compass[16] = {0.0f, 22.5f, 45.0f, 67.5f, 90.0f, 112.5f, 135.0f, 157.5f, 180.0f, 202.5f, 225.0f, 247.5f, 270.0f, 292.5f, 315.0f, 337.5f};

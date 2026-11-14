@@ -382,7 +382,7 @@ typedef struct {
     s8 fields[8]; /* Per-row signed lookup values at +0x2. */
 } EvtTblEntry; /* 0xA bytes */
 
-extern EvtTblEntry D_00368950[];
+extern EvtTblEntry D_r1_003EF768[];
 
 extern EvtSkyAlphaAnimationStatus skyanime;
 
@@ -910,7 +910,7 @@ extern void *D_003BB130;
 
 s32 evtPollEffectFrameControl(s32 x, s32 y, dds_evtViewerInfo_t *runtime);
 
-extern s32 (*D_00368B48[])(s32, s32, dds_evtViewerInfo_t *);
+extern s32 (*D_r1_003EF9A8[])(s32, s32, dds_evtViewerInfo_t *);
 
 s32 evtDispatchActionByIndex(s32 actionIndex, s32 x, s32 y, dds_evtViewerInfo_t *runtime);
 
@@ -1158,109 +1158,109 @@ extern EvtModelScaleEntry *D_003BAA20;
 dds3Basic_t *evtSpawnResourceObject(EvtPackEventId eventId, EvtPackSecondaryResourceId key, s32 index);
 /* End of declarations from src/dds1/game/code_00235270.c */
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D24E8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC3E0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D26B8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC5B0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6170);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_0044FFA0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D2708);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC600);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D28C8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC7C0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D2A30);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC928);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B61C0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_0044FFF0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B61D0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450000);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", jtbl_004B61E0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B61F8);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450028);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D2A80);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BC978);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D2BB8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCAB0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D2D00);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCBF8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D2D50);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCC48);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D2F18);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCE10);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D30D0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BCFC8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D3330);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD228);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D3400);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD2F8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D3460);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD358);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D34F0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD3E8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D35F0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD4E8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D3678);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD570);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D3778);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD670);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6438);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450268);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6448);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450278);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6458);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450288);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtFileName2Head);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D3A18);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BD910);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D3D48);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BDC40);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D4120);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE018);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D4208);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE100);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D4348);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE240);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D4428);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE320);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B64D8);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450308);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B64E8);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450318);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B64F8);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450328);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6508);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450338);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6518);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450348);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6528);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450358);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6538);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450368);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6548);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450378);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6558);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450388);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6568);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450398);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6578);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004503A8);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6588);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004503B8);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6598);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004503C8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D45D8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BE4D0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D5858);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BF750);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D59C0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BF8B8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D5C68);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BFB60);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D5DF8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BFCF0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D5F58);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001BFE50);
 
 /* Draw the pending-node selector for group types 20/21; other types return -1. */
 s32 mnuDrawInfoWindowB(s32 x, s32 y, dds_evtViewerInfo_t *work) {
@@ -1284,35 +1284,35 @@ s32 mnuDrawInfoWindowB(s32 x, s32 y, dds_evtViewerInfo_t *work) {
     return dds3SelectMenu(0, 1, rows, 1, rows, 0, 0, 0, &work->inputB);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D61C8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C00C0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6980);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004507B0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6990);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004507C0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B69A0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004507D0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B69B0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004507E0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B69C0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004507F0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B69D0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450800);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B69E0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450810);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B69F0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450820);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6A00);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450830);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6A10);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450840);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6A20);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450850);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D6240);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0138);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D64B8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C03B0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6A80);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004508B0);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", jtbl_004B6A90);
 
@@ -1321,34 +1321,34 @@ s32 mnuDrawCutFlagLabel(sdfDrawTag_t *target, s32 x, s32 y) {
     return 2;
 }
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6AC0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_004508F0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D6710);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0608);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D6918);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0810);
 
 EvtMenuTableEntryAvailability evtIsMenuTableEntryEnabled(s32 *index) {
-    return D_00368950[*index].enabled != EVT_MENU_TABLE_ENTRY_DISABLED;
+    return D_r1_003EF768[*index].enabled != EVT_MENU_TABLE_ENTRY_DISABLED;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D6B08);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0A00);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D6B38);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0A30);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6B20);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450950);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6B30);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450960);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D6E00);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C0CF8);
 
 s32 mnuDrawMotionChangeLabel(sdfDrawTag_t *target, s32 x, s32 y) {
     sdfDrawTagLink(target, (u32)sdfDevPrintf(x, y, 0xFEFFFF, 0, "MOTION CHANGE MENU"));
     return 2;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D71A0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C1098);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D75B0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C14A8);
 
 void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx) {
     EvtRuntimeGroup *group;
@@ -1404,7 +1404,7 @@ s32 evtUpdateGroupListDialog(s32 x, s32 y, dds_evtViewerInfo_t *ctx) {
     return dds3SelectMenu(0, 1, count, 1, shown, 0, &ctx->groupFirst, 0, &ctx->groupCursor);
 }
 
-void func_001D7D78(void) {
+void func_r1_001C1C70(void) {
 }
 
 /* vu0 routine: apply the selected camera-axis rotations to a position. */
@@ -1446,26 +1446,26 @@ void evtRotateViewerPositionFromPad(f32 *position)
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D7F48);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C1E40);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D88F0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C27E8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D8F50);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C2E48);
 
-void func_001D8FE8(void) {
+void func_r1_001C2EE0(void) {
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D8FF0);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C2EE8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D9638);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3530);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D96E8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C35E0);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D97C8);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C36C0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6C90);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450AC0);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6CA8);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450AD8);
 
 void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx) {
     EvtRuntimeGroup *group;
@@ -1520,13 +1520,13 @@ s32 evtViewerDrawGroupWindow(s32 x, s32 y, dds_evtViewerInfo_t *ctx) {
     return dds3SelectMenu(0, 1, count, 1, shown, 0, &ctx->groupFirst, 0, &ctx->groupCursor);
 }
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6CC8);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450AF8);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D9A20);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3918);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D9C30);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3B28);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001D9F68);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3E60);
 
 /* Poll solid-rectangle setup until it clears runtime control and finishes. */
 dds3TaskUpdateResult_t evtPollRuntimeControlReady(dds3ProcessID_t *task) {
@@ -1540,246 +1540,246 @@ dds3TaskUpdateResult_t evtPollRuntimeControlReady(dds3ProcessID_t *task) {
     return DDS3_TASK_UPDATE_RETAIN_CALLBACK;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001DA038);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C3F30);
 
-INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_001DA850);
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6D88);
+INCLUDE_ASM(const s32, "event/evtEventViewerMenu", func_r1_001C4748);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450BB8);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6D98);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450BC8);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6DA8);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450BD8);
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_004B6DB8);
+INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", D_r1_00450BE8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB48);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C8D8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB50);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C8E0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB58);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C8E8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB60);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C8F0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB68);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C8F8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB70);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C900);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB78);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C908);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB80);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C910);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB88);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C918);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB90);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C920);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFB98);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C928);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBA0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C930);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBA8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C938);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBB0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C940);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBB8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C948);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBC0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C950);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBC8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C958);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBD0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C960);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBD8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C968);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBE0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C970);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBE8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C978);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBF0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C980);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFBF8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C988);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC00);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C990);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC08);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C998);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC10);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9A0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC18);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9A8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC20);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9B0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC28);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9B8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC30);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9C0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC38);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9C8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC40);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9D0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC48);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9D8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC50);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9E0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC58);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9E8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC60);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9F0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC68);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046C9F8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC70);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA00);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC78);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA08);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC80);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA10);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC88);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA18);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC90);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA20);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFC98);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA28);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCA0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA30);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCA8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA38);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCB0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA40);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCB8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA48);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCC0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA50);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCC8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA58);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCD0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA60);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCD8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA68);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCE0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA70);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCE8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA78);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCF0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA80);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFCF8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA88);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD00);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA90);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD08);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CA98);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD10);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAA0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD18);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAA8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD20);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAB0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD28);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAB8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD30);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAC0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD38);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAC8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD40);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAD0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD48);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAD8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD50);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAE0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD58);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAE8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD60);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAF0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD68);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CAF8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD70);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB00);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD78);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB08);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD80);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB10);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD88);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB18);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD90);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB20);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFD98);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB28);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDA0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB30);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDA8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB38);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDB0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB40);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDB8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB48);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDC0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB50);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDD0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB60);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDD8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB68);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDE0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB70);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDE8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB78);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDF0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB80);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFDF8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB88);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE00);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB90);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE08);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CB98);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE10);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBA0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE18);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBA8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE20);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBB0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE28);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBB8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE30);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBC0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE38);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBC8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE40);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBD0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE48);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBD8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE50);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBE0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE58);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBE8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE60);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBF0);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE68);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CBF8);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE70);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC00);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE78);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC08);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE80);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC10);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE88);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC18);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE90);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC20);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFE98);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC28);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFEA0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC30);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFEA8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC38);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFEB0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC40);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFEB8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC48);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFEC0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC50);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFEC8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC58);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFED0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC60);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFED8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC68);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFEE0);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC70);
 
-INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_004DFEE8);
+INCLUDE_SDATA(const s32, "event/evtEventViewerMenu", D_r1_0046CC78);
 

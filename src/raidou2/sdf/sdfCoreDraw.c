@@ -95,7 +95,7 @@ void sdfCoreDrawSetZBias(f32 z) {
     corePktZBias = z;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", func_003DDF38);
+INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", func_r1_003681B0);
 
 void sdfCoreDrawInit(s32 buffSize) {
     u32 *dmaChannel = sceDmaGetChan(0);

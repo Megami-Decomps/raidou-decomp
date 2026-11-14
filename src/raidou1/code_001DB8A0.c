@@ -693,11 +693,11 @@ extern u32 D_003BC81C;
 
 extern FileSelectionFlowState fileSelectionPending;
 
-extern u32 D_003BC854;
+extern u32 D_r1_0046CE48;
 
 extern u32 D_003BC80C;
 
-extern u32 D_003BC810;
+extern u32 D_r1_0046CE00;
 
 extern u32 fileMemoryCardRequestIndex;
 
@@ -721,7 +721,7 @@ extern struct _FRQ *itfCreateFont2TextGlyph(s32, s32, s32, u32, char *, struct _
 
 extern struct _FRQ *fileMenuStringGlyph;
 
-extern s32 D_003BC7FC;
+extern s32 D_r1_0046CDEC;
 
 extern s8 slLoadKillFlag;
 
@@ -731,7 +731,7 @@ extern dds3ProcessID_t *D_003BC7F0;
 extern FileLoadMenuState fileLoadMenuState;
 
 /* Far scalar: incomplete array forces non-small-data addressing. */
-extern s32 D_0037D4D0[];
+extern s32 D_003F97F8[];
 
 extern sdfGrOt_t *effPacketSubmissionSurfaces[6];
 
@@ -1392,7 +1392,7 @@ extern u8 sdfViewMatrix[];
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_00324660[];
+extern u8 D_r1_003AD4E0[];
 
 /* vu0 routine: project the point in vf10 through view/projection and screen scale/bias. */
 void mnuProjectViewPoint(void);
@@ -1806,7 +1806,7 @@ void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 /* End of declarations from src/dds1/game/code_0028A150.c */
 
 void fileSetMenuValueAndInitializeFlags(u32 value) {
-    D_0037D4D0[0] = value;
+    D_003F97F8[0] = value;
     fileLoadMenuState.standardRowAlpha = 0x80;
     fileLoadMenuState.transitionTickCount = 0;
 }
@@ -1845,11 +1845,11 @@ void fileCursorStepUp(void) {
 }
 
 void fileFadeStepDown(void) {
-    D_0037D4D0[0] -= 0x10;
-    D_0037D4D0[0] = D_0037D4D0[0] <= 0 ? 0 : D_0037D4D0[0] > 0x80 ? 0x80 : D_0037D4D0[0];
+    D_003F97F8[0] -= 0x10;
+    D_003F97F8[0] = D_003F97F8[0] <= 0 ? 0 : D_003F97F8[0] > 0x80 ? 0x80 : D_003F97F8[0];
 }
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_001DB9E0);
+INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DB9E0);
 
 void fileLoadSetMode(FileLoadMenuSlideMode mode) {
     fileLoadMenuState.rowVerticalOffset = 0;
@@ -1869,65 +1869,65 @@ void fileResetLoadContextSlide(void) {
     fileLoadMenuState.transitionTickCount = 0;
 }
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBBD8);
+INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBBD8);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDA0);
+INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDA0);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDB0);
+INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDB0);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDC8);
+INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDC8);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDE0);
+INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDE0);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBDF0);
+INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBDF0);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBE10);
+INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBE10);
 
-INCLUDE_ASM(const s32, "code_001DB8A0", func_001DBE98);
+INCLUDE_ASM(const s32, "code_001DB8A0", func_r1_001DBE98);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_004552E8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004552E8);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455390);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455390);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_004553A8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004553A8);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_004553C0);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004553C0);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_004553D8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004553D8);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_004553F0);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004553F0);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455408);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455408);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455420);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455420);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455438);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455438);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455450);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455450);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455468);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455468);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455480);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455480);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455498);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455498);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_004554B0);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004554B0);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_004554C8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004554C8);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_004554E0);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004554E0);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_004554F8);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_004554F8);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455510);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455510);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455528);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455528);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455540);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455540);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455558);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455558);
 
-INCLUDE_RODATA(const s32, "code_001DB8A0", D_00455570);
+INCLUDE_RODATA(const s32, "code_001DB8A0", D_r1_00455570);
 
-INCLUDE_SDATA(const s32, "code_001DB8A0", D_0046CF68);
+INCLUDE_SDATA(const s32, "code_001DB8A0", D_r1_0046CF68);
 

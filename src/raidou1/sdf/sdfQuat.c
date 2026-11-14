@@ -142,7 +142,7 @@ void Normalize(void)
     VU0_SEQ_NORMALIZE();
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfQuat", func_0036EC78);
+INCLUDE_ASM(const s32, "sdf/sdfQuat", func_r1_0036EC78);
 
 /* vu0 routine: return the four-lane dot product of vf10 and vf11. */
 f32 SDF_QUAT_INNERPRODUCT(void)

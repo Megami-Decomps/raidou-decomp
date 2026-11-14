@@ -306,7 +306,7 @@ extern s16 dds3BackgroundFadeSecondRamp;
 
 extern u8 dds3BackgroundFadeColor[4];
 
-extern s8 D_0032453B[];
+extern s8 D_r1_003AD3BB[];
 
 extern f32 D_003245EC[];
 
@@ -518,7 +518,7 @@ s32 dds3TaskNoopCallback(dds3ProcessID_t *task);
 /* Seed the shared effect random state with the fixed initialization seed. */
 void dds3InitRandCB(void);
 
-extern s16 D_003BA728;
+extern s16 D_r1_0046B128;
 
 extern u16 sdfDrawFrameCounter;
 
@@ -546,7 +546,7 @@ extern u32 dds3TextureGetPageIndex(void);
 /* Append the zero-based viewer page and final page index; an empty list prints -1. */
 void dds3TextureDrawPageCounter(sdfDrawTag_t *packetList);
 
-extern const char *D_00324560[];
+extern const char *D_r1_003AD3E0[];
 
 extern char D_0039E170[];
 
@@ -844,14 +844,14 @@ s32 dds3DebugGraphUpdate(dds3ProcessID_t *task) {
     sdfDrawTagLink(packetList, (u32)dds3PrimFrameRect(0x70D0, 0x85A8,
                     0xFFFF7F, 0x1260, 0xF0, 0x20000000, 0x40806040));
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(originX,
-                    0x85C0, 0xFFFF80, 0, D_003BA888, (u16)D_003BA728));
+                    0x85C0, 0xFFFF80, 0, D_003BA888, (u16)D_r1_0046B128));
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(originX,
                     0x8620, 0xFFFF80, 0, D_003BA888, sdfDrawFrameCounter));
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(0x8080,
                     0x85C0, 0xFFFF80, 6, D_003BA888, D_003BA880));
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(0x8080,
                     0x8620, 0xFFFF80, 6, D_003BA888, D_003BA882));
-    pixels = (s32)((f32)(u16)D_003BA728 / 224.0f * 200.0f);
+    pixels = (s32)((f32)(u16)D_r1_0046B128 / 224.0f * 200.0f);
     sdfPrimLinkRect(packetList, 0x8000C000, 0, 0x73A0, 0x85F0,
                     originX + ((pixels + 0x2A) << 4),
                     0x8600, 0xFF0000, NULL);
@@ -872,8 +872,8 @@ s32 dds3DebugGraphUpdate(dds3ProcessID_t *task) {
                     originX + 0x20 + ((pixels + 0x2B) << 4),
                     0x8670, 0xFF0000, NULL);
     sdfDebugGrOt.regFunc(&sdfDebugGrOt, packetList);
-    if (D_003BA884 >= 0x47 || D_003BA880 < (u16)D_003BA728) {
-        D_003BA880 = D_003BA728;
+    if (D_003BA884 >= 0x47 || D_003BA880 < (u16)D_r1_0046B128) {
+        D_003BA880 = D_r1_0046B128;
         D_003BA884 = 0;
     } else {
         D_003BA884++;
@@ -899,7 +899,7 @@ void dds3DebugGraphSetEnabled(s8 enabled) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00104370", func_00104758);
+INCLUDE_ASM(const s32, "code_00104370", func_r1_00104758);
 
 /* Append the zero-based viewer page and final page index; an empty list prints -1. */
 void dds3TextureDrawPageCounter(sdfDrawTag_t *packetList) {
@@ -910,7 +910,7 @@ void dds3TextureDrawPageCounter(sdfDrawTag_t *packetList) {
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(0x7180, 0x79C0, DDS3_DIAG_DEPTH, 0, pageText));
 }
 
-INCLUDE_RODATA(const s32, "code_00104370", D_004448F8);
+INCLUDE_RODATA(const s32, "code_00104370", D_r1_004448F8);
 
 void dds3DrawTextureResourceDetails(sdfDrawTag_t *packetList, sdfTexHandle_t *texture) {
     char text[0x70];
@@ -932,7 +932,7 @@ void dds3DrawTextureResourceDetails(sdfDrawTag_t *packetList, sdfTexHandle_t *te
     default: break;
     }
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(0x7180, 0x8300, 0x0FFFFF80,
-                                                                formatMode, D_00324560[formatIndex]));
+                                                                formatMode, D_r1_003AD3E0[formatIndex]));
     sprintf(text, "ID[%2d,%2d]", texture->texId, texture->clutId);
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(0x77C0, 0x8300, 0x0FFFFF80, 0, text));
 }
@@ -945,7 +945,7 @@ u32 dds3TextureGetPageIndex(void) {
 
 INCLUDE_ASM(const s32, "code_00104370", dds3SelectIncompleteResourceAtPageIndex);
 
-INCLUDE_ASM(const s32, "code_00104370", func_00104B80);
+INCLUDE_ASM(const s32, "code_00104370", func_r1_00104B80);
 
 void dds3DrawTextureViewerFrame(sdfGrOt_t *surface, sdfTexHandle_t *image) {
     sdfDrawTag_t *packetList;
@@ -1100,41 +1100,41 @@ void dds3TextureAttachTask(sdfGrOt_t *surface) {
 
 /* Submit the default surface's map only when the control array's first byte is zero. */
 s32 dds3EnsureDefaultResource(void) {
-    if (D_0032453B[0] != 0) {
+    if (D_r1_003AD3BB[0] != 0) {
         return 0;
     }
     dds3TextureAttachTask(&sdfDebugGrOt);
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_00104370", func_00105238);
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B1D0);
+INCLUDE_ASM(const s32, "code_00104370", func_r1_00105238);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B1D0);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B1D4);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B1D4);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B1D8);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B1D8);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B1E0);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B1E0);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B1E8);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B1E8);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B1F0);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B1F0);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B1F8);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B1F8);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B200);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B200);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B208);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B208);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B210);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B210);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B218);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B218);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B220);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B220);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B228);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B228);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B22C);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B22C);
 
-INCLUDE_SDATA(const s32, "code_00104370", D_0046B230);
+INCLUDE_SDATA(const s32, "code_00104370", D_r1_0046B230);
 

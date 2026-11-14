@@ -446,13 +446,13 @@ f32 dds3ShortestAngleDelta(f32 fromDegrees, f32 toDegrees) {
     return toDegrees - fromDegrees;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011A818);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011A818);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011A970);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011A970);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011AA70);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011AA70);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011AAB8);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011AAB8);
 
 s32 effObjInitializeFollowModelData(dds3Basic_t *object) {
     EffectObjectData *data;
@@ -499,7 +499,7 @@ void dds3UnitObjectBasicDestructor(dds3Basic_t *aPtr) {
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011ABF8);
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_0011AED0);
+INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", func_r1_0011AED0);
 
 void dds3UnitObjectBasicEL_LinkFree(dds3Basic_t *unitBasic) {
     dds3UnitObjectBasicWorkData_t *work;
@@ -569,7 +569,7 @@ linkLight:
     }
 }
 
-INCLUDE_RODATA(const s32, "basic/dds3UnitObjectBasic", D_00446450);
+INCLUDE_RODATA(const s32, "basic/dds3UnitObjectBasic", D_r1_00446450);
 
-INCLUDE_RODATA(const s32, "basic/dds3UnitObjectBasic", D_00446460);
+INCLUDE_RODATA(const s32, "basic/dds3UnitObjectBasic", D_r1_00446460);
 

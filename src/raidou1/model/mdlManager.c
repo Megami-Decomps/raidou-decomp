@@ -1312,7 +1312,7 @@ void mdlLink(mdlObj_t *aHandle, void *aModelOt)
     mdlLinkBlur(aHandle, aModelOt);
 }
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_0019A6A8);
+INCLUDE_ASM(const s32, "model/mdlManager", func_r1_0019A6A8);
 
 /* mdlLink, first turning node aNode's local rotation towards aPitch and aYaw
  * (degrees) by abs(aPitch) / 25, at most one. aNode -1 skips the turn. */

@@ -302,7 +302,7 @@ extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
 
 extern s32 sifDmacHandlerId;
 
-extern s32 D_0052C2B8;
+extern s32 D_r1_00442CE0;
 
 void sceSifExitCmd(void);
 

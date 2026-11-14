@@ -17,9 +17,9 @@ INCLUDE_ASM(const s32, "effect/effDebug", effDebugSelectCursorDraw);
 INCLUDE_ASM(const s32, "effect/effDebug", effDebugWireframeCylinderDraw);
 
 INCLUDE_ASM(const s32, "effect/effDebug", effDebugWindowDraw);
-INCLUDE_SDATA(const s32, "effect/effDebug", D_0046D0A0);
+INCLUDE_SDATA(const s32, "effect/effDebug", D_r1_0046D0A0);
 
-INCLUDE_SDATA(const s32, "effect/effDebug", D_0046D0A4);
+INCLUDE_SDATA(const s32, "effect/effDebug", D_r1_0046D0A4);
 
-INCLUDE_SDATA(const s32, "effect/effDebug", D_0046D0A8);
+INCLUDE_SDATA(const s32, "effect/effDebug", D_r1_0046D0A8);
 

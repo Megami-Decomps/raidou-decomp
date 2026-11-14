@@ -491,21 +491,21 @@ extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *);
 void dds3P2APolygonDraw(dds3P2APolygon_tag *instance);
 /* End of declarations from src/smt3/effect/billManager.c */
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DC020);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC020);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DC078);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC078);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DC190);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC190);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DC1E0);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC1E0);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DC680);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC680);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DC770);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DC770);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DCDD0);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DCDD0);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DCF30);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DCF30);
 
 void dds3Billboard_BasicInit(billHandle_t *pBasic) {
     f32 zero = 0.0f;
@@ -523,9 +523,9 @@ void dds3Billboard_BasicInit(billHandle_t *pBasic) {
     pBasic->rot = zero;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DD0D0);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DD0D0);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DD120);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DD120);
 
 void dds3Billboard_NormalDraw(billHandle_t *hData) {
     dds3BillboardTagLink(hData, hData->u.child);
@@ -571,7 +571,7 @@ billHandle_t *dds3Billboard_P2ACopy(const billHandle_t *pCopyP2A) {
     return newobj;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DD278);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DD278);
 
 dds3BillResource_tag *dds3Billboard_P2AAnimDraw(billHandle_t *pP2A, dds3BillAnim_tag *pBillAnim) {
     P2A_ANIMATION_tag *entry = pBillAnim->pAnim;
@@ -637,7 +637,7 @@ dds3BillResource_tag *dds3Billboard_P2AAnimDraw(billHandle_t *pP2A, dds3BillAnim
     return child;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DD478);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DD478);
 
 INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_P2ADraw);
 
@@ -698,9 +698,9 @@ void dds3Billboard_P2ASetNumber(billHandle_t *pP2A, s32 number) {
     pP2A->animationActive = 1;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DD998);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DD998);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DDB68);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DDB68);
 
 INCLUDE_ASM(const s32, "effect/billManager", billCopyCurrentRecordToSnapshot);
 
@@ -714,7 +714,7 @@ billHandle_t *dds3BillboardCreate(s32 index, addr_t data) {
     return newobj;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DDD18);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DDD18);
 
 billHandle_t *dds3BillboardCopy(const billHandle_t *hBillboard) {
     billHandle_t *copy;
@@ -749,9 +749,9 @@ void dds3BillboardDraw(billHandle_t *hData) {
     hData->callback(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DDE68);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DDE68);
 
-u32 func_001DDED0(void) {
+u32 func_r1_001DDED0(void) {
     return 0x15;
 }
 
@@ -759,22 +759,22 @@ sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 number) {
     return hGeneralBillboard[number]->u.child->hTex;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DDEF8);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DDEF8);
 
-void func_001DDF08(billHandle_t *hBillboard, float rot) {
+void func_r1_001DDF08(billHandle_t *hBillboard, float rot) {
     hBillboard->rot = rot;
 }
 
-void func_001DDF10(billHandle_t *hBillboard, float x, float y) {
+void func_r1_001DDF10(billHandle_t *hBillboard, float x, float y) {
     hBillboard->childScaleX = x;
     hBillboard->childScaleY = y;
 }
 
-void func_001DDF20(billHandle_t *hBillboard, u32 abgr) {
+void func_r1_001DDF20(billHandle_t *hBillboard, u32 abgr) {
     hBillboard->abgr = abgr;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DDF28);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DDF28);
 
 void dds3BillboardSetMode(billHandle_t *hBillboard, s32 mode) {
     mode = (s16)mode;
@@ -840,7 +840,7 @@ saddr_t dds3BillboardGetTex(billHandle_t *hBillboard) {
     return 0;
 }
 
-u16 func_001DE0A0(billHandle_t *hBillboard) {
+u16 func_r1_001DE0A0(billHandle_t *hBillboard) {
     return hBillboard->type;
 }
 
@@ -857,7 +857,7 @@ void dds3BillboardSetDrawType(billHandle_t *hBillboard, s32 type) {
     }
 }
 
-u16 func_001DE0E0(billHandle_t *hBillboard) {
+u16 func_r1_001DE0E0(billHandle_t *hBillboard) {
     switch (hBillboard->type) {
     case 0:
         return hBillboard->u.child->type;
@@ -873,9 +873,9 @@ void dds3BillboardSetAnimNumber(billHandle_t *hBillboard, u32 number) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DE150);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DE150);
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DE170);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DE170);
 
 void dds3BillboardSetAnimKey(billHandle_t *hBillboard, u32 frame) {
     if (hBillboard->type == 1) {
@@ -934,7 +934,7 @@ u16 dds3BillboardGetAnimState(const billHandle_t *hBillboard) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DE2A0);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DE2A0);
 
 void dds3BillboardSetAnimColorAdvMode(billHandle_t *hBillboard) {
     if (hBillboard->type == 1) {
@@ -950,7 +950,7 @@ void dds3BillboardSetXYOffset(billHandle_t *hBillboard, float x, float y) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DE318);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DE318);
 
 /* vu0 routine: 1 - |axis . normalized view direction|. */
 f32 dds3BillboardGetDirectionScale(void *pPos, f32 *pVec) {
@@ -1000,21 +1000,21 @@ void dds3P2APolygonDelete(dds3P2APolygon_tag *hData) {
     sdfChipFreeDirect(hData);
 }
 
-void func_001DE668(dds3P2APolygon_tag *hData, s128 *pPos) {
-    func_001DDEF8(hData->hBillboard, pPos);
+void func_r1_001DE668(dds3P2APolygon_tag *hData, s128 *pPos) {
+    func_r1_001DDEF8(hData->hBillboard, pPos);
 }
 
 void dds3P2APolygonSetScale(s32 hData, float scale) {
     dds3BillboardSetScale((EE_ADDR_AS(dds3P2APolygon_tag *, hData))->hBillboard, scale, scale);
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DE6A0);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DE6A0);
 
-void func_001DE6D0(dds3P2APolygon_tag *hData, u32 abgr) {
-    func_001DDF20(hData->hBillboard, abgr);
+void func_r1_001DE6D0(dds3P2APolygon_tag *hData, u32 abgr) {
+    func_r1_001DDF20(hData->hBillboard, abgr);
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", func_001DE6E8);
+INCLUDE_ASM(const s32, "effect/billManager", func_r1_001DE6E8);
 
 void dds3P2APolygonGetResource(dds3P2APolygon_tag *hP2APoly, dds3P2APolygonResource_t *pP2APolyRes) {
     billHandle_t *billboard = hP2APoly->hBillboard;

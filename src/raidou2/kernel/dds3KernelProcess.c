@@ -116,11 +116,11 @@ s32 dds3BasicMainProcess(dds3ProcessID_t *id);
 s32 dds3BasicDrawProcess(dds3ProcessID_t *id);
 /* End of declarations from src/smt3/kernel/dds3KernelProcess.c */
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_00101D60);
+INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_r1_00101D30);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_00101E20);
+INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_r1_00101DF0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_001025D0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_r1_001025B0);
 
 s32 dds3BasicMainProcess(dds3ProcessID_t *id) {
     dds3CallBasicMainProc(dds3TheWorld);
@@ -129,5 +129,5 @@ s32 dds3BasicMainProcess(dds3ProcessID_t *id) {
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", func_00102978);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelProcess", D_004DE28C);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelProcess", D_r1_0046B194);
 

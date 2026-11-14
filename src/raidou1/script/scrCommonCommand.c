@@ -387,7 +387,7 @@ s32 scrCommand_SCR_EXISTS(void);
 
 INCLUDE_ASM(const s32, "script/scrCommonCommand", scrCommand_KEY);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00113FB8);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_00113FB8);
 
 s32 scrCommand_BIT_CHK(void)
 {
@@ -431,13 +431,13 @@ s32 scrCommand_WAIT(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00114110);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_00114110);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00114140);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_00114140);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00114170);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_00114170);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00114220);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_00114220);
 
 s32 scrCommandFadeBackgroundOut(void)
 {
@@ -449,11 +449,11 @@ s32 scrCommandFadeBackgroundOut(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00114310);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_00114310);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00114380);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_00114380);
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_001143F0);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_001143F0);
 
 s32 scrCommand_SEL_JMP(void)
 {
@@ -511,7 +511,7 @@ s32 scrCommand_SET_FOVY(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_001145E8);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_001145E8);
 
 s32 scrCommand_SCR_KILL(void)
 {
@@ -1119,7 +1119,7 @@ s32 scrCommand_MFILTER_OFF(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "script/scrCommonCommand", func_00115780);
+INCLUDE_ASM(const s32, "script/scrCommonCommand", func_r1_00115780);
 
 s32 scrCommand_FILTER_ALLOFF(void)
 {

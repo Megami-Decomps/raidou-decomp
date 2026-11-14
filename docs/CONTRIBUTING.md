@@ -35,7 +35,25 @@ Many functions exist in both games with the same code. `config/xgame/r1_r2_pairs
 lists them by address (`r1_addr`, `r2_addr`, name, whether the bytes are
 identical or identical after masking relocations, and the unit in each version).
 Match a function once, then put the same C in the other version's unit and check
-both, so no function is matched twice.
+both, so no function is matched twice. `config/xgame/r1_r2_data_pairs.tsv` pairs
+the data symbols the same way.
+
+### Names in both games
+
+A function or data symbol both games have carries one name in both, so C moves
+between versions unchanged:
+
+- A real name in either version is the name in both.
+- Otherwise the name is `func_r1_<addr>` or `D_r1_<addr>`, with the Raidou 1
+  address. Splat's `func_<addr>` and `D_<addr>` are left only for symbols one
+  game has, so an address name never means two things.
+- The `r1_` names keep the `func_`/`D_` prefix the tools read as "not named yet".
+  They name no unit, because unit names change while the symbol stays.
+
+`tools/xgame/common_names.py pairs --from PAIRS` rebuilds both tables from the
+matched build, `apply` writes the names into `config/<v>/` and renames `src/` and
+`include/`, and `tools/check_config.py` fails when a pair has two names. A new
+name for a paired symbol goes into both versions' `symbol_addrs.txt`.
 
 Before starting, claim the unit in `config/<version>/claims.tsv` and set the row
 to `done` when you stop, finished or not. The file is advisory and nothing in the

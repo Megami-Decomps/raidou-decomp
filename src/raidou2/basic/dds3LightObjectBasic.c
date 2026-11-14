@@ -270,7 +270,7 @@ void dds3LinkSceneLight(dds3Basic_t *basic, s32 frame)
     }
 }
 
-INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", func_00120880);
+INCLUDE_ASM(const s32, "basic/dds3LightObjectBasic", dds3UnlinkSceneLight);
 
 void dds3LinkLightObjectToUnitObject(dds3Basic_t *lightbasic, dds3Basic_t *unitbasic, s32 frame)
 {

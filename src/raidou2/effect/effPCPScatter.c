@@ -1061,7 +1061,7 @@ void dds3WhirlwindPolyListSetRotateMatrix(dds3WhirlwindPolyList_tag *hPoly, cons
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_00229A80);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00212788);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralCopy);
 
@@ -1273,15 +1273,15 @@ void effPCPHamaCardSpiralDraw(effPCPHamaCardSpiral_tag *hData) {
     dds3ScatterPolyListDraw(hData->hPoly);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022A408);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00213110);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022A418);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00213120);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022A420);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00213128);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSphereCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022A6D8);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_002133E0);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSphereCopy);
 
@@ -1496,15 +1496,15 @@ void effPCPHamaCardSphereDraw(effPCPHamaCardSphere_tag *hData) {
     dds3ScatterPolyListDraw(hData->hPoly);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022B018);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00213D20);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022B028);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00213D30);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022B030);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00213D38);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022B2F8);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00214000);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardScatterCopy);
 
@@ -1708,11 +1708,11 @@ void effPCPHamaCardScatterDraw(effPCPHamaCardScatter_tag *hData) {
     dds3ScatterPolyListDraw(hData->hPoly);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022BB40);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00214848);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022BB50);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00214858);
 
-void func_0022BB58(void) {
+void func_r1_00214860(void) {
 }
 
 dds3ScatterPolyList_tag *dds3ScatterPolyListCreate(s32 face) {
@@ -1850,7 +1850,7 @@ dds3ScatterPolyListTexResource_tag *dds3ScatterPolyListTexResourceCopy(dds3Scatt
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwindPolyCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022C1E0);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00214EE8);
 
 effPCPWhirlwindPoly_tag *effPCPWhirlwindPolyCopy(effPCPWhirlwindPoly_tag *work) {
     effPCPWhirlwindPoly_tag *child;
@@ -2031,17 +2031,17 @@ void effPCPWhirlwindPolyDraw(effPCPWhirlwindPoly_tag *hData) {
     dds3WhirlwindPolyListDraw(draw);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022C9B8);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_002156C0);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022C9D0);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_002156D8);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022C9D8);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_002156E0);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022C9E0);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_002156E8);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind2PolyCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022CC70);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00215978);
 
 effPCPWhirlwind2Poly_tag *effPCPWhirlwind2PolyCopy(effPCPWhirlwind2Poly_tag *work)
 {
@@ -2242,17 +2242,17 @@ void effPCPWhirlwind2PolyDraw(effPCPWhirlwind2Poly_tag *hData) {
     dds3WhirlwindPolyListDraw(draw);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022D4F0);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_002161F8);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022D508);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00216210);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022D510);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00216218);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022D518);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00216220);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWhirlwind3PolyCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022D778);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00216480);
 
 effPCPWhirlwind3Poly_tag *effPCPWhirlwind3PolyCopy(effPCPWhirlwind3Poly_tag *work)
 {
@@ -2460,17 +2460,17 @@ void effPCPWhirlwind3PolyDraw(effPCPWhirlwind3Poly_tag *hData) {
     dds3WhirlwindPolyListDraw(draw);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E0A0);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00216DA8);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E0B8);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00216DC0);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E0C0);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00216DC8);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E0C8);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00216DD0);
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPWwSpherePolyCreate);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E318);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00217020);
 
 effPCPWwSpherePoly_tag *effPCPWwSpherePolyCopy(effPCPWwSpherePoly_tag *work)
 {
@@ -2627,13 +2627,13 @@ void effPCPWwSpherePolyDraw(effPCPWwSpherePoly_tag *hData) {
     dds3WhirlwindPolyListDraw(draw);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022E9F8);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00217700);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022EA10);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00217718);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022EA18);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00217720);
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022EA20);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00217728);
 
 dds3WhirlwindPolyList_tag *dds3WhirlwindPolyListCreate(u32 number, u32 face) {
     s32 vectors = face * 2 + 2;
@@ -2786,4 +2786,4 @@ u32 dds3WhirlwindPolyListGetABGR(dds3WhirlwindPolyList_tag *hPoly, s32 index) {
     return hPoly->colors[index];
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPScatter", func_0022EFC0);
+INCLUDE_ASM(const s32, "effect/effPCPScatter", func_r1_00217CC8);

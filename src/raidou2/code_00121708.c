@@ -183,7 +183,7 @@ extern void scrDestroyWorkTask(void);
 
 extern void dds3WorkInit(const scrHeader_t *header);
 
-extern scrHeader_t *D_003BAAAC;
+extern scrHeader_t *D_r1_0046B604;
 
 #define SDF_PACKED_STATUS_BIT 0x8000
 
@@ -417,15 +417,15 @@ void evtLoadValueSecondaryVectorIntoVu(dds3Basic_t *node) {
 
 }
 
-INCLUDE_ASM(const s32, "code_00121708", func_00121750);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011EB50);
 
-INCLUDE_ASM(const s32, "code_00121708", func_001217D8);
+INCLUDE_ASM(const s32, "code_00121708", sdfDestroyRuntimeTask);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00121828);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011EC28);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00121850);
 
-void func_001218C0(void) {
+void func_r1_0011EC98(void) {
 }
 
 INCLUDE_ASM(const s32, "code_00121708", func_001218C8);
@@ -438,19 +438,19 @@ INCLUDE_ASM(const s32, "code_00121708", func_00121F20);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00121F40);
 
-void func_00122078(void) {
+void func_r1_0011F0C8(void) {
 }
 
-void func_00122080(void) {
+void func_r1_0011F0D0(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122088);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011F0D8);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122090);
+INCLUDE_ASM(const s32, "code_00121708", sdfLoadChannelFileSegment);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122120);
+INCLUDE_ASM(const s32, "code_00121708", sdfReloadChannelSegments);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122218);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011F280);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00122238);
 
@@ -464,11 +464,11 @@ INCLUDE_ASM(const s32, "code_00121708", func_001225C0);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00122600);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122778);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011F570);
 
 INCLUDE_ASM(const s32, "code_00121708", func_001227D8);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122848);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011F720);
 
 INCLUDE_ASM(const s32, "code_00121708", func_001228B8);
 
@@ -486,29 +486,29 @@ INCLUDE_ASM(const s32, "code_00121708", func_00122A98);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00122B00);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122B80);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011F880);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122BC0);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011F8C0);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122C78);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011F978);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122DA0);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011FAC0);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122DE0);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011FB00);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122EC8);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011FBE8);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00122F18);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011FC38);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00123110);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011FE08);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00123130);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011FE28);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00123168);
 
 INCLUDE_ASM(const s32, "code_00121708", func_001232B0);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00123368);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_0011FFF0);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00123380);
 
@@ -517,21 +517,21 @@ INCLUDE_ASM(const s32, "code_00121708", func_001234E0);
 void func_00123548(void) {
 }
 
-INCLUDE_ASM(const s32, "code_00121708", func_00123550);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00120158);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00123590);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00120198);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00123608);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00120210);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00123698);
 
 INCLUDE_ASM(const s32, "code_00121708", func_001236D0);
 
-INCLUDE_ASM(const s32, "code_00121708", func_001238E8);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00120520);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00123938);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00123A10);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00120610);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00123A88);
 
@@ -539,7 +539,7 @@ INCLUDE_ASM(const s32, "code_00121708", func_00123BA0);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00123F68);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00124180);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00120D40);
 
 INCLUDE_ASM(const s32, "code_00121708", func_001241D0);
 
@@ -549,7 +549,7 @@ INCLUDE_ASM(const s32, "code_00121708", func_00124790);
 
 INCLUDE_ASM(const s32, "code_00121708", func_001247B8);
 
-INCLUDE_ASM(const s32, "code_00121708", func_001247C0);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00121060);
 
 INCLUDE_ASM(const s32, "code_00121708", func_001247E0);
 
@@ -561,22 +561,22 @@ INCLUDE_ASM(const s32, "code_00121708", func_00124998);
 
 INCLUDE_ASM(const s32, "code_00121708", func_001249B8);
 
-INCLUDE_ASM(const s32, "code_00121708", func_001249C0);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_001214F8);
 
-INCLUDE_ASM(const s32, "code_00121708", func_001249F8);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00121530);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00124A10);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00121548);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00124A28);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00121560);
 
-INCLUDE_ASM(const s32, "code_00121708", func_00124A40);
+INCLUDE_ASM(const s32, "code_00121708", func_r1_00121578);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00124A58);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00124A98);
 
 INCLUDE_ASM(const s32, "code_00121708", func_00124B18);
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE5E0);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B490);
 
 INCLUDE_SDATA(const s32, "code_00121708", D_004DE5E8);
 
@@ -594,29 +594,29 @@ INCLUDE_SDATA(const s32, "code_00121708", D_004DE5F8);
 
 INCLUDE_SDATA(const s32, "code_00121708", D_004DE5FC);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE600);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B4A0);
 
 INCLUDE_SDATA(const s32, "code_00121708", D_004DE604);
 
 INCLUDE_SDATA(const s32, "code_00121708", D_004DE608);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE618);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B4B0);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE624);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B4BC);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE628);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B4C0);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE63C);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B4D4);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE644);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B4DC);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE670);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B508);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE6BC);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B554);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE6C0);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B558);
 
-INCLUDE_SDATA(const s32, "code_00121708", D_004DE6C4);
+INCLUDE_SDATA(const s32, "code_00121708", D_r1_0046B55C);
 
 INCLUDE_SDATA(const s32, "code_00121708", D_004DE6C8);
 

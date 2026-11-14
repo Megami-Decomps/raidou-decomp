@@ -848,5 +848,5 @@ s32 sceMcGetEntSpace(s32 port, s32 slot, char *name)
     return ret;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libmc/libmc", D_004D8A90);
+INCLUDE_RODATA(const s32, "sdk/libmc/libmc", D_r1_00466290);
 

@@ -463,7 +463,7 @@ u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight)
     return (a0 << 24) | (r0 << 16) | (g0 << 8) | b0;
 }
 
-void func_002CD700(void) {
+void func_r1_002CD700(void) {
 }
 
 void itfInitializeAdminInterfaceNoop(void) {
@@ -572,7 +572,7 @@ GridTextListItem *itfAppendGridTextItem(GridTextWidget *owner, const char *text,
     return item;
 }
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CDB50);
+INCLUDE_ASM(const s32, "code_002CD5A8", func_r1_002CDB50);
 
 GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *widget) {
     GridTextListItem *node;
@@ -735,7 +735,7 @@ INCLUDE_ASM(const s32, "code_002CD5A8", itfGetGridTextColorTableIndex);
 
 INCLUDE_ASM(const s32, "code_002CD5A8", itfFormatGridValueEntryText);
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CE320);
+INCLUDE_ASM(const s32, "code_002CD5A8", func_r1_002CE320);
 
 GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
     GridTextListItem *item = widget->head;
@@ -748,12 +748,12 @@ GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
 
 INCLUDE_ASM(const s32, "code_002CD5A8", sdfGridSeekSelectedNodeByIndex);
 
-INCLUDE_ASM(const s32, "code_002CD5A8", func_002CE640);
-INCLUDE_SDATA(const s32, "code_002CD5A8", D_0046E7B8);
+INCLUDE_ASM(const s32, "code_002CD5A8", func_r1_002CE640);
+INCLUDE_SDATA(const s32, "code_002CD5A8", D_r1_0046E7B8);
 
-INCLUDE_SDATA(const s32, "code_002CD5A8", D_0046E7C0);
+INCLUDE_SDATA(const s32, "code_002CD5A8", D_r1_0046E7C0);
 
-INCLUDE_SDATA(const s32, "code_002CD5A8", D_0046E7C8);
+INCLUDE_SDATA(const s32, "code_002CD5A8", D_r1_0046E7C8);
 
-INCLUDE_SDATA(const s32, "code_002CD5A8", D_0046E7D0);
+INCLUDE_SDATA(const s32, "code_002CD5A8", D_r1_0046E7D0);
 

@@ -444,7 +444,7 @@ extern f32 sdfViewMatrix[];
 
 extern f32 sdfProjectionMatrix[];
 
-extern f32 D_00324660[];
+extern f32 D_r1_003AD4E0[];
 
 /* vu0 routine: forward-cone projection from vf10 to integer screen XY */
 BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScreenPoint *outPoint);
@@ -1092,7 +1092,7 @@ BtlResourceDescriptor *btlCreateResourceDescriptor(BtlResourceEntryList *list);
 
 extern s8 dds3PadBitTable[0x20];
 
-extern s8 D_0039862B[];
+extern s8 D_r1_0043EED9[];
 
 extern u64 *dds3PrimFrameRect(s32, s32, s32, s32, s32, u32, u32);
 
@@ -1203,7 +1203,7 @@ void btlDebugDrawMappingColorSpan(void) {
 void btlDebugDrawLine2D(void) {
 }
 
-void func_0017BC40(void) {
+void func_r1_0017BC40(void) {
 }
 
 void btlDebugDrawPoint2DNoOp(void) {
@@ -1212,7 +1212,7 @@ void btlDebugDrawPoint2DNoOp(void) {
 void btlDebugDrawPoint(void) {
 }
 
-void func_0017BC58(void) {
+void func_r1_0017BC58(void) {
 }
 
 void btlDebugDrawRadiusGuide(void) {
@@ -1224,7 +1224,7 @@ void btlDebugDrawOrientedExtentGuide(void) {
 void btlDebugDrawScaledPositionGuide(void) {
 }
 
-void func_0017BC78(void) {
+void func_r1_0017BC78(void) {
 }
 
 void btlDebugDrawSegment(void) {
@@ -1236,7 +1236,7 @@ void btlDebugMenuBeforeRecordNoOp(void) {
 void btlDebugMenuAfterRecordNoOp(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", func_0017BC98);
+INCLUDE_ASM(const s32, "code_0017BBD8", func_r1_0017BC98);
 
 void btlDebugMenuRecordNoOp(void) {
 }
@@ -1591,18 +1591,18 @@ void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 max
     record->maximumNameLength = maximumNameLength;
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", func_0017D288);
-INCLUDE_SDATA(const s32, "code_0017BBD8", D_0046C168);
+INCLUDE_ASM(const s32, "code_0017BBD8", func_r1_0017D288);
+INCLUDE_SDATA(const s32, "code_0017BBD8", D_r1_0046C168);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", D_0046C170);
+INCLUDE_SDATA(const s32, "code_0017BBD8", D_r1_0046C170);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", D_0046C178);
+INCLUDE_SDATA(const s32, "code_0017BBD8", D_r1_0046C178);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", D_0046C180);
+INCLUDE_SDATA(const s32, "code_0017BBD8", D_r1_0046C180);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", D_0046C188);
+INCLUDE_SDATA(const s32, "code_0017BBD8", D_r1_0046C188);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", D_0046C190);
+INCLUDE_SDATA(const s32, "code_0017BBD8", D_r1_0046C190);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", D_0046C198);
+INCLUDE_SDATA(const s32, "code_0017BBD8", D_r1_0046C198);
 

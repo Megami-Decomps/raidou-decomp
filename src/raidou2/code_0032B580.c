@@ -2207,7 +2207,7 @@ void cmpDrawPanelEffBar(cmpPanelEffState_t *state, s32 ot);
 
 void cmpUpdatePanelEffEntry(cmpPanelEffState_t *state);
 
-s32 func_0023ECF0(s32 index);
+s32 func_r1_002279E8(s32 index);
 
 typedef struct
 {
@@ -2775,7 +2775,7 @@ extern const char D_005406F0[24];
 
 extern const char D_00540708[16];
 
-extern const char D_00540718[32];
+extern const char D_r1_004B1928[32];
 
 extern const char D_00540738[32];
 
@@ -2789,7 +2789,7 @@ extern const char D_005407A8[24];
 
 extern const char D_005407C0[24];
 
-extern const char D_005407D8[16];
+extern const char D_r1_004B19A8[16];
 
 extern const char D_005407E8[16];
 
@@ -2951,7 +2951,7 @@ extern const char D_005411F0[40];
 
 extern const char D_00541218[24];
 
-extern const char D_00541230[24];
+extern const char D_r1_004B20E0[24];
 
 extern const char D_00541248[32];
 
@@ -5227,7 +5227,7 @@ INCLUDE_ASM(const s32, "code_0032B580", itfGridSetBounds);
 
 INCLUDE_ASM(const s32, "code_0032B580", itfGridCopyEntryQuad);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032B988);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CB3E0);
 
 EffSlotPhaseStep itfGridApplySqrtBoundsAndColorScale(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
     GridAngleTable *table;
@@ -5559,21 +5559,21 @@ EffSlotPhaseStep itfGridApplyLinearBoundsAndColorScale(BdWork *rectangle, BdWork
     return EFF_SLOT_PHASE_ONE / table->divisor;
 }
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032C3E0);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CBE38);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032C688);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CC0E0);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032C7D8);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CC230);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032C900);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CC358);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032C998);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CC3F0);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032CB00);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CC558);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032CBD8);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CC630);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032CC10);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CC668);
 
 void cmpDrawSpriteFlag(u8 id, s32 flag, s32 ot)
 {
@@ -5598,7 +5598,7 @@ void cmpDrawSpriteFlag(u8 id, s32 flag, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032CE40);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CC898);
 
 void cmpDrawSprite(s32 id, s32 flag, s32 ot)
 {
@@ -5623,7 +5623,7 @@ void cmpDrawSprite(s32 id, s32 flag, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032CF38);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CC990);
 
 void cmpDrawSprite2(s32 id, s32 flag, s32 ot)
 {
@@ -5648,7 +5648,7 @@ void cmpDrawSprite2(s32 id, s32 flag, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032D030);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CCA88);
 
 void cmpDrawSpriteIndexed(s32 id, s32 ot)
 {
@@ -5688,7 +5688,7 @@ void cmpDrawSpriteIndexed2(s32 id, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032D1C0);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CCC18);
 
 void uiDrawUniformRgbRange(const u32 *xs, const u32 *ys, u32 z, u32 color, u32 ot)
 {
@@ -5737,13 +5737,13 @@ void cmpDrawBoxSolid(s32 a, s32 b, s32 c, s32 d, s32 e, s32 color, s32 g, s32 h)
     cmpDrawBoxG(a, b, c, d, e, colors, g, h);
 }
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032D3C0);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CCE18);
 
 INCLUDE_ASM(const s32, "code_0032B580", cmpDrawBoxG);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032D570);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CCFC8);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032D590);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CCFE8);
 
 void cmpDrawPanelEffCell(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h)
 {
@@ -5823,9 +5823,9 @@ void cmpDraw3DPoly(const f32 *first, const f32 *second, const f32 *third,
     surface->regFunc(surface, list);
 }
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032D968);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CD3C0);
 
-INCLUDE_ASM(const s32, "code_0032B580", func_0032DA08);
+INCLUDE_ASM(const s32, "code_0032B580", func_r1_002CD460);
 
 void uiDrawTexturedSurfaceAtFarDepth(s32 surface) {
     sdfSubmitGsTestOneRegisterPacket(0x30000, surface);

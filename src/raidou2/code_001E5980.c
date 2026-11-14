@@ -631,9 +631,9 @@ char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename) {
     return strcat(pathBuffer, filename);
 }
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E59B0);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CF838);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5A70);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CF8F8);
 
 INCLUDE_ASM(const s32, "code_001E5980", mnuIncrementTitleEffectFrameCounter);
 
@@ -654,11 +654,11 @@ void mnuSetTitleVoicePrefixIndex(s32 prefixIndex) {
     ((TitleEffectState *)dds3GetProcessData(mnuTitleSoundTask))->soundNameIndex = prefixIndex;
 }
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5BD0);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFA58);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5C70);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFAF8);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5CA8);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFB30);
 
 void mnuStopTitleVoicePlayback(void) {
     p2sdSyncSound();
@@ -677,15 +677,15 @@ s32 mnuGetTitleEffectFrameCounter(void) {
 
 INCLUDE_ASM(const s32, "code_001E5980", func_001E5D50);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5DC8);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFBD8);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5E40);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFC50);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5E88);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFC98);
 
 INCLUDE_ASM(const s32, "code_001E5980", sndOpStopNamedPlayback);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5EF8);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFD08);
 
 /* Handle an occupied sound-command channel before dispatching a named sound. */
 s32 fldCommandSendNamedSound(void) {
@@ -703,21 +703,21 @@ u32 sndOpUpdateTitleBgmState(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5F90);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFDA0);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5FB8);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFDC8);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E5FC0);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFDD0);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E6088);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFE88);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E60B0);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFEB0);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E60E0);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFEE0);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E6108);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFF08);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E6130);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFF30);
 
 u8 mnuIsTitleStreamIdle(void) {
     MnuTitleStreamLoadState loadState;
@@ -728,11 +728,11 @@ u8 mnuIsTitleStreamIdle(void) {
 
 INCLUDE_ASM(const s32, "code_001E5980", func_001E6178);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E61F0);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFFD0);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E6210);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001CFFF0);
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E6230);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001D0010);
 
 /* Flush EE cache, submit one word-sized transfer to IOP, and busy-wait for DMA.
  * Return the native request ID; there is no failure retry or timeout here. */
@@ -770,7 +770,7 @@ void sndInitializeStreamTransferBuffers(s32 wordCount) {
     sndCopyWordsToIopSynchronously((const void *)D_003BC5B8, D_003BC5B0[1], wordCount);
 }
 
-INCLUDE_ASM(const s32, "code_001E5980", func_001E6370);
+INCLUDE_ASM(const s32, "code_001E5980", func_r1_001D0150);
 
 void mnuInitTitleSoundRemoteRequest(u32 wordCount) {
     sceSdRemoteInit();
@@ -1118,27 +1118,27 @@ INCLUDE_RODATA(const s32, "code_001E5980", D_004BBAC0);
 
 INCLUDE_RODATA(const s32, "code_001E5980", D_004BBAD0);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFF78);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD08);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFF7C);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD0C);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFF80);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD10);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFF88);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD18);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFF90);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD20);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFF98);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD28);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFF9C);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD2C);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFFA0);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD30);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFFA8);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD38);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFFB0);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD40);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004DFFB4);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD44);
 
 INCLUDE_SDATA(const s32, "code_001E5980", D_004DFFB8);
 
@@ -2492,7 +2492,7 @@ INCLUDE_SDATA(const s32, "code_001E5980", D_004E14C0);
 
 INCLUDE_SDATA(const s32, "code_001E5980", D_004E14C8);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004E14D0);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD48);
 
-INCLUDE_SDATA(const s32, "code_001E5980", D_004E14D4);
+INCLUDE_SDATA(const s32, "code_001E5980", D_r1_0046CD4C);
 

@@ -392,14 +392,14 @@ void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm) {
     return packet;
 }
 
-INCLUDE_ASM(const s32, "effect/effPacket", func_001E4568);
+INCLUDE_ASM(const s32, "effect/effPacket", func_r1_001E4568);
 
-INCLUDE_ASM(const s32, "effect/effPacket", func_001E4650);
-INCLUDE_SDATA(const s32, "effect/effPacket", D_0046CF74);
+INCLUDE_ASM(const s32, "effect/effPacket", func_r1_001E4650);
+INCLUDE_SDATA(const s32, "effect/effPacket", D_r1_0046CF74);
 
-INCLUDE_SDATA(const s32, "effect/effPacket", D_0046CF78);
+INCLUDE_SDATA(const s32, "effect/effPacket", D_r1_0046CF78);
 
-INCLUDE_SDATA(const s32, "effect/effPacket", D_0046CF7C);
+INCLUDE_SDATA(const s32, "effect/effPacket", D_r1_0046CF7C);
 
-INCLUDE_SDATA(const s32, "effect/effPacket", D_0046CF80);
+INCLUDE_SDATA(const s32, "effect/effPacket", D_r1_0046CF80);
 

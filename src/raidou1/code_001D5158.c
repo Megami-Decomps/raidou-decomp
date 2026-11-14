@@ -693,11 +693,11 @@ extern u32 D_003BC81C;
 
 extern FileSelectionFlowState fileSelectionPending;
 
-extern u32 D_003BC854;
+extern u32 D_r1_0046CE48;
 
 extern u32 D_003BC80C;
 
-extern u32 D_003BC810;
+extern u32 D_r1_0046CE00;
 
 extern u32 fileMemoryCardRequestIndex;
 
@@ -721,7 +721,7 @@ extern struct _FRQ *itfCreateFont2TextGlyph(s32, s32, s32, u32, char *, struct _
 
 extern struct _FRQ *fileMenuStringGlyph;
 
-extern s32 D_003BC7FC;
+extern s32 D_r1_0046CDEC;
 
 extern s8 slLoadKillFlag;
 
@@ -731,7 +731,7 @@ extern dds3ProcessID_t *D_003BC7F0;
 extern FileLoadMenuState fileLoadMenuState;
 
 /* Far scalar: incomplete array forces non-small-data addressing. */
-extern s32 D_0037D4D0[];
+extern s32 D_003F97F8[];
 
 extern sdfGrOt_t *effPacketSubmissionSurfaces[6];
 
@@ -1392,7 +1392,7 @@ extern u8 sdfViewMatrix[];
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_00324660[];
+extern u8 D_r1_003AD4E0[];
 
 /* vu0 routine: project the point in vf10 through view/projection and screen scale/bias. */
 void mnuProjectViewPoint(void);
@@ -1807,23 +1807,23 @@ void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 
 INCLUDE_ASM(const s32, "code_001D5158", mcFormatSaveFilename);
 
-INCLUDE_ASM(const s32, "code_001D5158", func_001D5180);
+INCLUDE_ASM(const s32, "code_001D5158", func_r1_001D5180);
 
-INCLUDE_ASM(const s32, "code_001D5158", func_001D51B8);
+INCLUDE_ASM(const s32, "code_001D5158", func_r1_001D51B8);
 
-INCLUDE_ASM(const s32, "code_001D5158", func_001D51C0);
+INCLUDE_ASM(const s32, "code_001D5158", func_r1_001D51C0);
 
 u8 fileIsLoadedAndConditionTrue(s32 condition) {
-    return condition != 0 && D_003BC7FC == 1;
+    return condition != 0 && D_r1_0046CDEC == 1;
 }
 
 u8 fileIsLoadedWithActiveFlow(s32 loaded) {
-    return loaded != 0 && D_003BC7FC == 1;
+    return loaded != 0 && D_r1_0046CDEC == 1;
 }
 
-INCLUDE_RODATA(const s32, "code_001D5158", D_00455168);
+INCLUDE_RODATA(const s32, "code_001D5158", D_r1_00455168);
 
-INCLUDE_RODATA(const s32, "code_001D5158", D_00455178);
+INCLUDE_RODATA(const s32, "code_001D5158", D_r1_00455178);
 
 const char slIconSysName[9] = "icon.sys";
 

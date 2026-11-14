@@ -961,7 +961,7 @@ void sdfModelEvalTm(sdfModelRootNode_t *aRoot)
     sdfModelEvalTm2(aRoot, (s8)sdfFrameId);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_0035FB40);
+INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_0035FB40);
 
 /* vu0 routine: native SDK vector/matrix operations around model state. */
 s32 sdfModelCheckBounds(const f32 *aMinMax) {
@@ -1164,7 +1164,7 @@ void sdfModelTempPacketLinkOt(sdfGrOt_t **ot, sdfModelRootNode_t *root)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_003600F0);
+INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_003600F0);
 
 void sdfModelMorphListCopyStat(sdfModelMorphList_t *aDst, sdfModelMorphList_t *aSrc)
 {
@@ -1276,7 +1276,7 @@ void *sdfChunkFindById(void *data, u32 chunkId) {
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360A08);
+INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360A08);
 
 s32 sdfModelGetNodeIndexByName(sdfModelRootNode_t *aRoot, const char *aName)
 {
@@ -1365,13 +1365,13 @@ sdfModelMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *aRoot, s32 aId)
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360D10);
+INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360D10);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360DB0);
+INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360DB0);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360DF0);
+INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360DF0);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", func_00360E30);
+INCLUDE_ASM(const s32, "sdf/sdfModel", func_r1_00360E30);
 
 u32 sdfGetUniqueChunkValue(dds_sdfModelRootNode_t *aRoot)
 {
@@ -1399,7 +1399,7 @@ void sdfModelSetFaceDivParm(sdfModelRootNode_t *aRoot, f32 aSoften, f32 aBias)
     aRoot->faceDivBias = aBias;
     aRoot->flags = aRoot->flags | SDF_MODEL_FLAG_SELF_FACEDIV_PARM;
 }
-INCLUDE_SDATA(const s32, "sdf/sdfModel", D_0046F304);
+INCLUDE_SDATA(const s32, "sdf/sdfModel", D_r1_0046F304);
 
-INCLUDE_SDATA(const s32, "sdf/sdfModel", D_0046F308);
+INCLUDE_SDATA(const s32, "sdf/sdfModel", D_r1_0046F308);
 

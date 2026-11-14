@@ -460,7 +460,7 @@ extern void scrDestroyWorkTask(void);
 
 extern void dds3WorkInit(const scrHeader_t *header);
 
-extern scrHeader_t *D_003BAAAC;
+extern scrHeader_t *D_r1_0046B604;
 
 #define SDF_PACKED_STATUS_BIT 0x8000
 
@@ -614,7 +614,7 @@ ScrCurrentWorkTaskResult scrIsCurrentWorkTask(const struct scrProcessWork_s *exp
 
 #include "dds/sdf_debug_api.h"
 
-extern const char D_0039F930[10];
+extern const char D_r1_004465A8[10];
 
 /* Load a table's file and copy each size-prefixed segment into its own block. */
 void sdfReloadChannelSegments(SdfChannel *table);
@@ -1266,9 +1266,9 @@ void btlSurpriseChanceHook(s32 chance);
 s32 evtPushRequestedRosterPresence(void);
 /* End of declarations from src/dds1/newdata/datCalc.c */
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001215C8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001215C8);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001215F8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001215F8);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00121610);
 
@@ -1276,39 +1276,39 @@ INCLUDE_ASM(const s32, "newdata/datCalc", func_001216D0);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00121720);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121780);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121780);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001217A8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001217A8);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001217C0);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001217C0);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121830);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121830);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001218A8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001218A8);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001218C0);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001218C0);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_001218F8);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00121AE8);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121B68);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121B68);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", func_00121B88);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121C10);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C10);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121C18);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C18);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121C20);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C20);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121C28);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C28);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121C30);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C30);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121C38);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C38);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121C40);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121C40);
 
 /* Raise the packed value to `minimumValue` (never lower it); reaching 0x40, 0x80 or 0x400 re-randomizes the entry. */
 void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue) {
@@ -1327,15 +1327,15 @@ void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue) {
     }
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121CD8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121CD8);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121CE0);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121CE0);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121CE8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121CE8);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121D10);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121D10);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121D38);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121D38);
 
 /* Only an exact masked status of 0x1000 forces one; combinations of low
  * status bits do not take this path. Otherwise use the profile-adjusted stat. */
@@ -1347,11 +1347,11 @@ DatCalculatedStatValue datGetStatWithStatusOverride(
     return datGetClampedProfileAdjustedStat(unit, statIndex);
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121D78);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121D78);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121E20);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121E20);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121EF8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121EF8);
 
 u32 datGetAisyoValue(datUnitWork_t *work, s32 attr)
 {
@@ -1363,67 +1363,67 @@ u32 datGetAisyoFlag(datUnitWork_t *work, s32 attr)
     return datGetAisyo(work, attr) & 0xFFFF0000;
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00121F48);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00121F48);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122078);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122078);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122098);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122098);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001220D8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001220D8);
 
 void func_001220E0(void) {
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001220E8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001220E8);
 
-void func_001220F8(void) {
+void func_r1_001220F8(void) {
 }
 
-void func_00122100(void) {
+void func_r1_00122100(void) {
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122108);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122108);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122110);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122110);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122118);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122118);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122130);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122130);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122148);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122148);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122150);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122150);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122158);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122158);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122178);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122178);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122180);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122180);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122188);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122188);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122190);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122190);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122198);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122198);
 
-void func_001221A0(void) {
+void func_r1_001221A0(void) {
 }
 
-void func_001221A8(void) {
+void func_r1_001221A8(void) {
 }
 
-void func_001221B0(void) {
+void func_r1_001221B0(void) {
 }
 
-void func_001221B8(void) {
+void func_r1_001221B8(void) {
 }
 
-void func_001221C0(void) {
+void func_r1_001221C0(void) {
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001221C8);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001221C8);
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122200);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122200);
 
 u8 evtTestSolarPhaseOrModelFlag(DatBattleAdjustmentCondition condition) {
     u32 conditionType = condition >> 16;
@@ -1498,7 +1498,7 @@ u8 btlSelectConditionalEncounterGroup(s32 encounterIndex) {
     return code == 8 ? 0 : code;
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_00122498);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_00122498);
 
 /* Reuse an active interval, or seed one for a nonempty encounter group. */
 BtlConditionalEncounterGaugeThreshold btlGetConditionalEncounterInterval(s32 encounterIndex) {
@@ -1528,10 +1528,10 @@ BtlConditionalEncounterGaugeThreshold btlGetConditionalEncounterInterval(s32 enc
     return btlConditionalEncounterCachedInterval;
 }
 
-INCLUDE_ASM(const s32, "newdata/datCalc", func_001225D8);
-INCLUDE_SDATA(const s32, "newdata/datCalc", D_0046B584);
+INCLUDE_ASM(const s32, "newdata/datCalc", func_r1_001225D8);
+INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B584);
 
-INCLUDE_SDATA(const s32, "newdata/datCalc", D_0046B588);
+INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B588);
 
-INCLUDE_SDATA(const s32, "newdata/datCalc", D_0046B58C);
+INCLUDE_SDATA(const s32, "newdata/datCalc", D_r1_0046B58C);
 

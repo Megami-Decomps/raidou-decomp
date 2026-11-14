@@ -177,7 +177,7 @@ void sdfPrintRpcThread(void)
     sceSifRpcLoop(&queue);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfPrint", func_003E1800);
+INCLUDE_ASM(const s32, "sdf/sdfPrint", func_r1_0036BA78);
 
 /* Print text through the bound IOP dev client, or locally when it is unbound. */
 void sdfPuts(const char *str) {

@@ -1163,59 +1163,59 @@ char sdfVifMaskedName[8] = "mask";
 
 char sdfVifXferOkName[8] = "xfer-ok";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4D0);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F4D0);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4D8);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F4D8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4E0);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F4E0);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4E8);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F4E8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4F0);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F4F0);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F4F8);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F4F8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F500);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F500);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F508);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F508);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F510);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F510);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F518);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F518);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F520);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F520);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F528);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F528);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F530);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F530);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F538);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F538);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F540);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F540);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F548);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F548);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F550);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F550);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F558);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F558);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F560);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F560);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F568);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F568);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F570);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F570);
 
 char sdfDumpIndentStr[8] = "    ";
 
 char sdfDumpWordFmt[8] = "%08X";
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F588);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F588);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F590);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F590);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F598);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F598);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F5A0);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F5A0);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_0046F5A8);
+INCLUDE_SDATA(const s32, "sdf/sdfSound_00371BF0", D_r1_0046F5A8);
 

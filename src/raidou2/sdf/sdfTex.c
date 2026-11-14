@@ -358,13 +358,13 @@ void sdfTexLink(sdfTexHandle_t *handle)
     sdfTexHandleLink = handle;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CEF40);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_003591B8);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF018);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_00359290);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF168);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_003593E0);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF240);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_003594B8);
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetClutDataSize);
 
@@ -382,11 +382,11 @@ void sdfTexCopyClutData(sdfTexHandle_t *aHandle, void *aData)
     memcpy(aHandle->clutData, aData, aHandle->clutDataSize);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF3A8);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_00359620);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF520);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_00359798);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CF698);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_00359910);
 
 INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexReleaseReference);
 
@@ -440,15 +440,15 @@ void sdfTexRebuildPacket(sdfTexHandle_t *aHandle)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CFB30);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_00359DA8);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CFCF0);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_00359F68);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CFEB0);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_0035A128);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CFEC8);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_0035A140);
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003CFEE0);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_0035A158);
 
 void sdfTexSetMonoClut(sdfTexHandle_t *aHandle)
 {
@@ -496,7 +496,7 @@ void sdfTexSetMonoClut(sdfTexHandle_t *aHandle)
     } while (entryCount != 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", func_003D0008);
+INCLUDE_ASM(const s32, "sdf/sdfTex", func_r1_0035A280);
 
 sdfTexHandle_t *sdfTexSearch(u32 id)
 {

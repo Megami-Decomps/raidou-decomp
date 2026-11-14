@@ -270,7 +270,7 @@ effPCPBezierBill_tag *effPCPBezierBillCreate(const effPCPBezierBillParam_t *pPar
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", func_00222800);
+INCLUDE_ASM(const s32, "effect/effPCPBezier", func_r1_0020B508);
 
 effPCPBezierBill_tag *effPCPBezierBillCopy(effPCPBezierBill_tag *src) {
     u32 count = src->param.number;
@@ -349,12 +349,12 @@ void effPCPBezierBillDelete(effPCPBezierBill_tag *hData) {
     sdfMemFreeDirect(hData->hMem);
 }
 
-void func_00222B48(void) {
+void func_r1_0020B850(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", func_00222B50);
+INCLUDE_ASM(const s32, "effect/effPCPBezier", func_r1_0020B858);
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", func_00222B60);
+INCLUDE_ASM(const s32, "effect/effPCPBezier", func_r1_0020B868);
 
 dds3BezierTrackPoly_tag *dds3BezierTrackPolySetVertex(s32 hPoly, s32 pVertex) {
     s32 count = hPoly * pVertex * 3 + 6;
@@ -394,7 +394,7 @@ dds3BezierTrackPoly_tag *dds3BezierTrackPolySetVertex(s32 hPoly, s32 pVertex) {
     return history;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBezier", func_00222D68);
+INCLUDE_ASM(const s32, "effect/effPCPBezier", func_r1_0020BA70);
 
 void dds3BezierTrackPolyCreate(dds3BezierTrackPoly_tag *face, u32 *split) {
     f32 t = 0.0f;

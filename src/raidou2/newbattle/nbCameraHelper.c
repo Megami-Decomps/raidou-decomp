@@ -216,7 +216,7 @@ s32 dds3EffectDirOpen(void *name) {
     }
 }
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232058);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021AD60);
 
 /* Debug mode delegates to the native iterator. Built-in mode copies the next name,
    clears flag mask 0x1000, and returns name length; zero also marks table exhaustion. */
@@ -249,9 +249,9 @@ void dds3EffectFileListDelete(nbCameraHelper_effFileListHandle_t *a) {
     sdfChipFreeDirect(a);
 }
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_002325C0);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B2C8);
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232650);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B358);
 
 void dds3EffectFileListWindowDelete(nbCameraHelper_effFLWinHandle_t *a) {
     sdfTexHandle_t *texture = a->textureHandle;
@@ -263,22 +263,22 @@ void dds3EffectFileListWindowDelete(nbCameraHelper_effFLWinHandle_t *a) {
     sdfChipFreeDirect(a);
 }
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232B10);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B818);
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232B20);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B828);
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232B28);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B830);
 
 u32 dds3EffectFileListWindowGetFilename(nbCameraHelper_effFLWinHandle_t *a, char *b) {
     sprintf(b, dds3EffectResourcePathFormat, a->resourceList->directoryPath, a->selectedEntry->name);
     return a->selectedEntry->type;
 }
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232B78);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B880);
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232B80);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B888);
 
-INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_00232B88);
+INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", func_r1_0021B890);
 
 void dds3EffectListSetTexture(nbCameraHelper_effFLWinHandle_t *work, char *textureResource) {
     sdfTexHandle_t *texture;

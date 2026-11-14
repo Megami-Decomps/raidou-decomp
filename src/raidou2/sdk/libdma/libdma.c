@@ -338,9 +338,9 @@ int sceDmaRestart(sceDmaChan *chan, u32 chcr)
 
 const int sceDmaChanResetFlag[10] = { 1, 1, 1, 1, 1, 0, 0, 0, 1, 1 };
 
-INCLUDE_RODATA(const s32, "sdk/libdma/libdma", D_004D8440);
+INCLUDE_RODATA(const s32, "sdk/libdma/libdma", D_r1_00465C40);
 
-INCLUDE_RODATA(const s32, "sdk/libdma/libdma", D_004D8450);
+INCLUDE_RODATA(const s32, "sdk/libdma/libdma", D_r1_00465C50);
 
-INCLUDE_RODATA(const s32, "sdk/libdma/libdma", D_004D8460);
+INCLUDE_RODATA(const s32, "sdk/libdma/libdma", D_r1_00465C60);
 

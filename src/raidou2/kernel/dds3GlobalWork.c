@@ -282,7 +282,7 @@ extern dds3FontReqFunc_t dds3FontReqTable;
 extern dds3FontReqFunc_t dds3FontReqBoxTable;
 /* End of declarations from src/smt3/kernel/dds3GlobalWork.c */
 
-INCLUDE_ASM(const s32, "kernel/dds3GlobalWork", func_00127070);
+INCLUDE_ASM(const s32, "kernel/dds3GlobalWork", func_r1_00122C50);
 
 u64 *dds3PrimFrameRect(s32 aX, s32 aY, s32 aZ, s32 aW, s32 aH, u32 aBgCol, u32 aFrameCol) {
     u64 *packet;

@@ -343,4 +343,4 @@ f32 GetSphericalPosMove(f32 fromX, f32 fromZ, f32 toX, f32 toZ) {
     return (f32)(angle % 360);
 }
 
-INCLUDE_ASM(const s32, "field/fldCamera", func_0012C498);
+INCLUDE_ASM(const s32, "field/fldCamera", func_r1_00127E78);

@@ -174,7 +174,7 @@ typedef struct {
 } evtColorWork_t;
 
 /* vu0 routine: unpack the unit's colours into a parallel light packet. */
-void func_001A5AB8(evtUnit_t *h);
+void func_r1_001A5AB8(evtUnit_t *h);
 
 void evtLinkLightObjectBasic(evtUnit_t *h, dds3Basic_t *light, s32 frame);
 
@@ -325,44 +325,44 @@ f32 GetSplineLength(dds3PathBasicControl_t *path) {
     return length;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A4318);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A4318);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseLightRGB);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5708);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5708);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A57B8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A57B8);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseAmbientRGB);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5920);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5920);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A59A8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A59A8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5A30);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5A30);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5AB8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5AB8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5CB0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5CB0);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5D20);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5D20);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5D88);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5D88);
 
 void evtUnlinkExternalLightPacket(evtUnit_t *h) {
     h->flags = h->flags & ~EVT_UNIT_FLAG_VALUE_CHANGED;
-    func_001A5AB8(h);
+    func_r1_001A5AB8(h);
 }
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightAndAmbient);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5E68);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5E68);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5F58);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5F58);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A5FC8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A5FC8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A6038);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6038);
 
 void evtSetUnitColorRGB(evtUnit_t *h, s32 frame, u32 rgb) {
     h->rgbDuration = SDF_FRAMES(frame);
@@ -435,7 +435,7 @@ evtUnit_t *evtGetUnitHandle2(dds3Basic_t *unit) {
     return ((dds3UnitObjectBasicWorkData_t *)unit->workdata)->hUnit;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A6390);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6390);
 
 s32 evtDeleteUnitHandle(evtUnit_t *h) {
     void *endpointWork;
@@ -461,13 +461,13 @@ s32 evtGetUnitStat(evtUnit_t *h) {
     return h->motionState;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A65A8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A65A8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A65B8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A65B8);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetWaitMotionSpeed);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A65C8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A65C8);
 
 s32 evtCheckUnitWait(evtUnit_t *h) {
     s32 state = evtGetUnitStat(h);
@@ -484,9 +484,9 @@ s32 evtCheckUnitWait(evtUnit_t *h) {
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitKutiMotion);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A6650);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6650);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A6680);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6680);
 
 void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode) {
     h->flags &= ~0x1;
@@ -516,27 +516,27 @@ void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A67D8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A67D8);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitRotationQuat);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitMoveType0);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_0044DD40);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD40);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_0044DD50);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD50);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_0044DD60);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD60);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_0044DD70);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD70);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", D_0044DD80);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", D_r1_0044DD80);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A6B08);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6B08);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitMoveTypePathTrace);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A6DE8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A6DE8);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitRot1);
 
@@ -579,24 +579,24 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove2);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitMove3);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A71F0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A71F0);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A7200);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7200);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A72A8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A7310);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7310);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A7338);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7338);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A7A20);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7A20);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A7AC8);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7AC8);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A7BB0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7BB0);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A7BE0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7BE0);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A7CF0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7CF0);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", func_001A7EF0);
+INCLUDE_ASM(const s32, "event/evtUnitManager", func_r1_001A7EF0);

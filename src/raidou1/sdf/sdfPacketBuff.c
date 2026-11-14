@@ -116,7 +116,7 @@ s32 sdfGrPacketBuffBase[2] = {0, 0};
 
 s32 sdfGrPacketBuffPtr = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_0046F2B4);
+INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", D_r1_0046F2B4);
 
 volatile u8 sdfDrawFrameFlag = 0;
 

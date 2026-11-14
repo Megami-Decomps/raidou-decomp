@@ -142,7 +142,7 @@ u32 dds3MatterObjectBasicGetAlpMode(const dds3Basic_t *aPtr) {
     return ((dds3MatterObjectBasicWorkData_t *)aPtr->workdata)->alpmode;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_0011E378);
+INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_r1_0011B778);
 
 s32 dds3MatterObjectBasicConstructor(dds3Basic_t *aPtr) {
     dds3MatterObjectBasicWorkData_t *work;
@@ -178,9 +178,9 @@ void dds3MatterObjectBasicDestructor(dds3Basic_t *aPtr) {
     sdfChipFreeDirect(work);
 }
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_0011E460);
+INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_r1_0011B860);
 
-INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_0011E660);
+INCLUDE_ASM(const s32, "basic/dds3MatterObjectBasic", func_r1_0011BA60);
 
-INCLUDE_SDATA(const s32, "basic/dds3MatterObjectBasic", D_004DE5D4);
+INCLUDE_SDATA(const s32, "basic/dds3MatterObjectBasic", D_r1_0046B48C);
 

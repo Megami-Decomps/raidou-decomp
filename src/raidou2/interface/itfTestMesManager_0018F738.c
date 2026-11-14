@@ -43,7 +43,7 @@ extern pbPanelEditor_t pbDebugPanel2Pos, pbDebugPanel3X;
 
 extern pbColorRow_t D_00326C20[6];
 
-extern pbColor_t D_00326C50;
+extern pbColor_t D_r1_003E7AF0;
 
 extern sdf3DScreenParam_t dds3ScreenParam;
 
@@ -107,7 +107,7 @@ typedef struct
     sdfGrTagStdReg_t reg[2];
 } pbRegPacket_t;
 
-extern char *D_00326BC8[];
+extern char *D_r1_003E9028[];
 
 extern s32 D_00326BD8[4];
 
@@ -244,7 +244,7 @@ extern char pbDebugChannelFormat[8];
 
 extern char D_0054F5A8[8];
 
-extern s32 func_001D35F0(s16 x, s16 y, s32 mode);
+extern s32 func_r1_001BD4E8(s16 x, s16 y, s32 mode);
 
 extern u8 pbFindBlockSlot(s16 x, s16 y, s32 mode);
 
@@ -372,187 +372,187 @@ s32 pbCalcFovDegrees(f32 *value, f32 minimum, f32 maximum, f32 coarseStep, f32 f
     return 0;
 }
 
-INCLUDE_ASM(const s32, "interface/itfTestMesManager_0018F738", func_0018F9D0);
+INCLUDE_ASM(const s32, "interface/itfTestMesManager_0018F738", func_r1_0017ADA8);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEB20);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E00);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEB30);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E10);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEB40);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E20);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEB50);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E30);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEB60);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E40);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEB70);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E50);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEB80);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E60);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEB90);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E70);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEBA0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E80);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEBB0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449E90);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEBC0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449EA0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEBD0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449EB0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEBE0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449EC0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEBF0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449ED0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC00);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449EE0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC10);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449EF0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC20);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F00);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC30);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F10);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC40);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F20);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC50);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F30);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC60);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F40);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC70);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F50);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC80);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F60);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEC90);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F70);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AECA0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F80);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AECB0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449F90);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AECC0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449FA0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AECD0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449FB0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AECE0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449FC0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AECF0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449FD0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED00);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449FE0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED10);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_00449FF0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED20);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A000);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED30);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A010);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED40);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A020);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED50);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A030);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED60);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A040);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED70);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A050);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED80);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A060);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AED90);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A070);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEDA0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A080);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEDB0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A090);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEDC0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A0A0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEDD0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A0B0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEDE0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A0C0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEDF0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A0D0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE00);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A0E0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE10);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A0F0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE20);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A100);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE30);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A110);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE40);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A120);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE50);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A130);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE60);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A140);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE70);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A150);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE80);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A160);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEE90);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A170);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEEA0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A180);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEEB0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A190);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEEC0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A1A0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEED0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A1B0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEEE0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A1C0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEEF0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A1D0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF00);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A1E0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF10);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A1F0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF20);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A200);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF30);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A210);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF40);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A220);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF50);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A230);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF60);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A240);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF70);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A250);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF80);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A260);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEF90);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A270);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEFA0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A280);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEFB0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A290);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEFC0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A2A0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEFD0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A2B0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEFE0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A2C0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AEFF0);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A2D0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AF000);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A2E0);
 
-INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_004AF010);
+INCLUDE_RODATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0044A2F0);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF240);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BF88);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF248);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BF90);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF250);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BF98);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF258);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BFA0);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF260);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BFA8);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF268);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BFB0);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF270);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BFB8);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF278);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BFC0);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF280);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BFC8);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF288);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BFD0);
 
-INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_004DF290);
+INCLUDE_SDATA(const s32, "interface/itfTestMesManager_0018F738", D_r1_0046BFD8);
 

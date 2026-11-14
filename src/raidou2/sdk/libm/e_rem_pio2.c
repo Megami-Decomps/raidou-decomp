@@ -1,38 +1,38 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libm/e_rem_pio2", func_003F79A8);
+INCLUDE_ASM(const s32, "sdk/libm/e_rem_pio2", func_r1_00381D68);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA170);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467970);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA274);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467A74);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA348);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B48);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA350);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B50);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA358);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B58);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA360);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B60);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA368);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B68);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA370);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B70);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA378);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B78);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA380);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B80);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA388);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B88);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA390);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B90);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA398);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467B98);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA3A0);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467BA0);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA3A8);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467BA8);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA3B0);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467BB0);
 
-INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_004DA3B8);
+INCLUDE_RODATA(const s32, "sdk/libm/e_rem_pio2", D_r1_00467BB8);
 

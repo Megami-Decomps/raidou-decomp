@@ -463,7 +463,7 @@ u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight)
     return (a0 << 24) | (r0 << 16) | (g0 << 8) | b0;
 }
 
-void func_0032DCA8(void) {
+void func_r1_002CD700(void) {
 }
 
 void itfInitializeAdminInterfaceNoop(void) {
@@ -572,7 +572,7 @@ GridTextListItem *itfAppendGridTextItem(GridTextWidget *owner, const char *text,
     return item;
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032E0F8);
+INCLUDE_ASM(const s32, "code_0032DB50", func_r1_002CDB50);
 
 GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *widget) {
     GridTextListItem *node;
@@ -671,7 +671,7 @@ void itfReplaceGridTextAndExpandColumn(GridTextWidget *widget, GridTextListItem 
     }
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032E350);
+INCLUDE_ASM(const s32, "code_0032DB50", itfSetGridNumericItemDescriptor);
 
 /* Advance by at least one configured step; crossing the maximum wraps to minimum. */
 void itfAdvanceGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps) {
@@ -735,7 +735,7 @@ INCLUDE_ASM(const s32, "code_0032DB50", itfGetGridTextColorTableIndex);
 
 INCLUDE_ASM(const s32, "code_0032DB50", itfFormatGridValueEntryText);
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032E8E0);
+INCLUDE_ASM(const s32, "code_0032DB50", func_r1_002CE320);
 
 GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
     GridTextListItem *item = widget->head;
@@ -748,12 +748,12 @@ GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
 
 INCLUDE_ASM(const s32, "code_0032DB50", sdfGridSeekSelectedNodeByIndex);
 
-INCLUDE_ASM(const s32, "code_0032DB50", func_0032EC00);
-INCLUDE_SDATA(const s32, "code_0032DB50", D_004E3740);
+INCLUDE_ASM(const s32, "code_0032DB50", func_r1_002CE640);
+INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7B8);
 
-INCLUDE_SDATA(const s32, "code_0032DB50", D_004E3748);
+INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7C0);
 
-INCLUDE_SDATA(const s32, "code_0032DB50", D_004E3750);
+INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7C8);
 
-INCLUDE_SDATA(const s32, "code_0032DB50", D_004E3758);
+INCLUDE_SDATA(const s32, "code_0032DB50", D_r1_0046E7D0);
 

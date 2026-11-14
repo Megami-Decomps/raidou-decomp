@@ -619,11 +619,11 @@ const char sdfIopModulePathCdrom[32] = "cdrom0:\\USERIRX\\SDFIOPFL.IRX;1";
 
 const char sdfIopModulePathHost[27] = "pfs0:/userirx/sdfiopfl.irx";
 
-INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_004656B0);
+INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_r1_004656B0);
 
-INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_004656C0);
+INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_r1_004656C0);
 
-INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_004656D0);
+INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_r1_004656D0);
 
-INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_004656E0);
+INCLUDE_RODATA(const s32, "sdf/sdfTmx", D_r1_004656E0);
 

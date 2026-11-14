@@ -355,7 +355,7 @@ void sdf3DSetDefaultFog(u8 *aFog) {
     sdf3DFogDefault = EE_ADDR(aFog);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdf3D", func_003686B0);
+INCLUDE_ASM(const s32, "sdf/sdf3D", func_r1_003686B0);
 
 /* vu0 routine: parallel-light packet and lighting basis construction */
 void sdf3DMakeLightParallelPacket(sdf3DLightParallelPacket_t *aPacket, sdf3DLight_t **aLights, sdfVector4_t *aAmbient) {
@@ -531,21 +531,21 @@ void sdf3DInit(void) {
     sdfModelInitSystem();
     sdfMatInitSystem();
 }
-INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F30C);
+INCLUDE_SDATA(const s32, "sdf/sdf3D", D_r1_0046F30C);
 
-INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F310);
+INCLUDE_SDATA(const s32, "sdf/sdf3D", D_r1_0046F310);
 
-INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F318);
+INCLUDE_SDATA(const s32, "sdf/sdf3D", D_r1_0046F318);
 
-INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F320);
+INCLUDE_SDATA(const s32, "sdf/sdf3D", D_r1_0046F320);
 
 u8 sdfPadManagerMode = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F330);
+INCLUDE_SDATA(const s32, "sdf/sdf3D", D_r1_0046F330);
 
-INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F338);
+INCLUDE_SDATA(const s32, "sdf/sdf3D", D_r1_0046F338);
 
-INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F339);
+INCLUDE_SDATA(const s32, "sdf/sdf3D", D_r1_0046F339);
 
-INCLUDE_SDATA(const s32, "sdf/sdf3D", D_0046F33A);
+INCLUDE_SDATA(const s32, "sdf/sdf3D", D_r1_0046F33A);
 

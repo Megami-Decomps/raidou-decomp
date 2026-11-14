@@ -240,7 +240,7 @@ int _send_to_iop(int port, int slot)
     return 1;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465C70);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_r1_00465C70);
 
 int scePadInit(int mode)
 {
@@ -376,13 +376,13 @@ int scePadGetState(int port, int slot)
     return d->state;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465D68);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_r1_00465D68);
 
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465D70);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_r1_00465D70);
 
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465D78);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_r1_00465D78);
 
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465D80);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_r1_00465D80);
 
 void scePadStateIntToStr(u32 state, char *str)
 {
@@ -701,11 +701,11 @@ int scePadSetWarningLevel(int level)
     return padRpcPacket.slot;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465D98);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_r1_00465D98);
 
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465DA8);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_r1_00465DA8);
 
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465DB0);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_r1_00465DB0);
 
-INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_00465DB8);
+INCLUDE_RODATA(const s32, "sdk/libpad/libpad", D_r1_00465DB8);
 

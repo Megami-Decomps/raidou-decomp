@@ -683,7 +683,7 @@ extern char sdfGsMemFreeName[8];
 extern char sdfGsMemTypeFmt[8];
 /* End of declarations from src/smt3/sdf/sdfSound.c */
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036F610);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_0036F610);
 
 void sdfSndCmdIFThread(void)
 {
@@ -697,7 +697,7 @@ void sdfSndCmdIFThread(void)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036F6D0);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_0036F6D0);
 
 s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize) {
     s32 nextWriteIndex;
@@ -770,13 +770,13 @@ void sdfSndTransToIOP(s32 aIOPAddr, void *aEEAddr, s32 aSize)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036F9A0);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_0036F9A0);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036FA80);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_0036FA80);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036FB28);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_0036FB28);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036FC00);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_0036FC00);
 
 /* Starts a track with the default 0x7f setting after preparing its identifier. */
 void p2sdPlayBGM(s32 MidiNo) {
@@ -818,14 +818,14 @@ s32 p2sdStopAllBgm(void)
     return sdfSndSendCmd(0x1A0, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036FDF8);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_0036FDF8);
 
 s32 p2sdStopAllSe(void)
 {
     return sdfSndSendCmd(0x40, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036FE48);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_0036FE48);
 
 /* Send a NUL-terminated command string; the transport excludes the terminator. */
 u32 sdfSndLoadHDFile(s32 aVcChNum, char *aFilename) {
@@ -844,7 +844,7 @@ u32 sdfSndLoadSQFile(s32 aSqChNum, char *aFilename) {
     return sdfSndSendSyncCmd(aSqChNum | 0x80, 0, aFilename, length);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_0036FF48);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_0036FF48);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdPlaySE);
 
@@ -910,11 +910,11 @@ void p2sdSetStandPos(f32 Cposx, f32 Cposy, f32 Cposz,
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003703A8);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003703A8);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdLoadSMGFile);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_00370500);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_00370500);
 
 void p2sdSetPcmBuffer(saddr_t data, s32 size) {
     s32 *packet;
@@ -929,11 +929,11 @@ void p2sdSetPcmBuffer(saddr_t data, s32 size) {
     p2sdSmgHandle = -1;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_00370598);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_00370598);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003705C8);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003705C8);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003705F8);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003705F8);
 
 void sdfSndReleaseMidiTrack(s32 id) {
     u32 packet[4];
@@ -947,19 +947,19 @@ void sdfSndReleaseMidiTrack(s32 id) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_00370680);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_00370680);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_00370698);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_00370698);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003706B0);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003706B0);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003706D8);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003706D8);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003706E8);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003706E8);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003706F8);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003706F8);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_00370718);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_00370718);
 
 /* Sends a prepared track identifier with the 0x17f setting. */
 void p2sdPlayBGMFade(s32 trackId) {
@@ -1013,7 +1013,7 @@ s32 p2sdSyncSound(void)
     return sdfSndSendSyncCmd(0x100, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003708F8);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003708F8);
 
 s32 sdfSndSetChannelCount(u32 aCh)
 {
@@ -1046,14 +1046,14 @@ s32 p2sdPlayPcm(u8 channel) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_003709D0);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_003709D0);
 
 s32 p2sdSyncMovie(void)
 {
     return sdfSndSendSyncCmd(0x100, 0, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", func_00370A00);
+INCLUDE_ASM(const s32, "sdf/sdfSound", func_r1_00370A00);
 
 s32 sdfFileRpcCallback(s32 unused, u32 event) {
     switch (event) {
@@ -1105,23 +1105,23 @@ u32 p2sdPcmBusy = 0;
 
 u32 sdfSndSendCmd_cmd_id = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_0046F43C);
+INCLUDE_SDATA(const s32, "sdf/sdfSound", D_r1_0046F43C);
 
 s32 (*p2sdSmgBuf)(void) = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_0046F448);
+INCLUDE_SDATA(const s32, "sdf/sdfSound", D_r1_0046F448);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_0046F450);
+INCLUDE_SDATA(const s32, "sdf/sdfSound", D_r1_0046F450);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_0046F458);
+INCLUDE_SDATA(const s32, "sdf/sdfSound", D_r1_0046F458);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_0046F460);
+INCLUDE_SDATA(const s32, "sdf/sdfSound", D_r1_0046F460);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_0046F468);
+INCLUDE_SDATA(const s32, "sdf/sdfSound", D_r1_0046F468);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_0046F470);
+INCLUDE_SDATA(const s32, "sdf/sdfSound", D_r1_0046F470);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_0046F478);
+INCLUDE_SDATA(const s32, "sdf/sdfSound", D_r1_0046F478);
 
-INCLUDE_SDATA(const s32, "sdf/sdfSound", D_0046F480);
+INCLUDE_SDATA(const s32, "sdf/sdfSound", D_r1_0046F480);
 

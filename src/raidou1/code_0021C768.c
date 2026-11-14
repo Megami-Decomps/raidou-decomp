@@ -693,11 +693,11 @@ extern u32 D_003BC81C;
 
 extern FileSelectionFlowState fileSelectionPending;
 
-extern u32 D_003BC854;
+extern u32 D_r1_0046CE48;
 
 extern u32 D_003BC80C;
 
-extern u32 D_003BC810;
+extern u32 D_r1_0046CE00;
 
 extern u32 fileMemoryCardRequestIndex;
 
@@ -721,7 +721,7 @@ extern struct _FRQ *itfCreateFont2TextGlyph(s32, s32, s32, u32, char *, struct _
 
 extern struct _FRQ *fileMenuStringGlyph;
 
-extern s32 D_003BC7FC;
+extern s32 D_r1_0046CDEC;
 
 extern s8 slLoadKillFlag;
 
@@ -731,7 +731,7 @@ extern dds3ProcessID_t *D_003BC7F0;
 extern FileLoadMenuState fileLoadMenuState;
 
 /* Far scalar: incomplete array forces non-small-data addressing. */
-extern s32 D_0037D4D0[];
+extern s32 D_003F97F8[];
 
 extern sdfGrOt_t *effPacketSubmissionSurfaces[6];
 
@@ -1392,7 +1392,7 @@ extern u8 sdfViewMatrix[];
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_00324660[];
+extern u8 D_r1_003AD4E0[];
 
 /* vu0 routine: project the point in vf10 through view/projection and screen scale/bias. */
 void mnuProjectViewPoint(void);
@@ -1956,7 +1956,7 @@ void sdfVuMatrixToQuaternion(const f32 matrix[4][4]) {
     SDF_VU0_LOADVECTOR(quaternion);
 }
 
-INCLUDE_ASM(const s32, "code_0021C768", func_0021CCC0);
+INCLUDE_ASM(const s32, "code_0021C768", func_r1_0021CCC0);
 
 void *fileResolvePrimaryBuffer(FileJobPayload *job) {
     if (job->primary.allocation != NULL) {
@@ -1986,4 +1986,4 @@ FileJobPayload *fileJobCreateFromJob(FileJobPayload *request) {
     return job;
 }
 
-INCLUDE_ASM(const s32, "code_0021C768", func_0021CDB8);
+INCLUDE_ASM(const s32, "code_0021C768", func_r1_0021CDB8);

@@ -179,9 +179,9 @@ extern u8 D_003D9178[];
 
 #include "dds/sdf_debug_api.h"
 
-extern u32 D_003BC5B0[2];
+extern u32 D_r1_0046CD38[2];
 
-extern u32 D_003BC5B8;
+extern u32 D_r1_0046CD40;
 
 extern void mnuInitializeTitleAudioStreams(void);
 
@@ -367,13 +367,13 @@ void sndMixSampleBuffers(s16 *destinationSamples, TitleAudioStreamState *firstSo
     }
 }
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E6620);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D0400);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E66E0);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D04C0);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7128);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D0E50);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E71A8);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D0ED0);
 
 /* Read state words 0, 1 and 3; the frame-byte word 2 is not in this snapshot. */
 void mnuReadTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusSnapshot) {
@@ -397,7 +397,7 @@ INCLUDE_ASM(const s32, "code_001E6518", mnuLoadTitleStreamFrameData);
 
 INCLUDE_ASM(const s32, "code_001E6518", mnuStoreTaskResult);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E74A8);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D11D0);
 
 /* Install the fixed title track and queue its compressed frames under the lock. */
 void mnuStartFixedSoundStream(void) {
@@ -412,27 +412,27 @@ void mnuStartFixedSoundStream(void) {
     SignalSema(mnuTitleStreamSemaphore);
 }
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E75F8);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D12F8);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7760);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1458);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E77E0);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D14D8);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7878);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1570);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7938);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1630);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7A10);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1708);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7AF8);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D17F0);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7B50);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1848);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7B80);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1878);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7C30);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1928);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7CA8);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D19A0);
 
 void mnuResetTitleStreamLocked(void) {
     WaitSema(mnuTitleStreamSemaphore);
@@ -440,23 +440,23 @@ void mnuResetTitleStreamLocked(void) {
     SignalSema(mnuTitleStreamSemaphore);
 }
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7D38);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1A30);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7D68);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1A60);
 
-INCLUDE_RODATA(const s32, "code_001E6518", D_004BBAF8);
+INCLUDE_RODATA(const s32, "code_001E6518", D_r1_00454CE0);
 
 INCLUDE_ASM(const s32, "code_001E6518", mnuInitializeTitleSoundBuffer);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7ED0);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1BC8);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E7FD8);
+INCLUDE_ASM(const s32, "code_001E6518", mnuLoadTitleSoundBufferEntry);
 
 INCLUDE_ASM(const s32, "code_001E6518", mnuInstallTitleSoundBufferFromData);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E82E8);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D1FC8);
 
-INCLUDE_ASM(const s32, "code_001E6518", func_001E8348);
+INCLUDE_ASM(const s32, "code_001E6518", func_r1_001D2028);
 
 INCLUDE_ASM(const s32, "code_001E6518", func_001E83E8);
 
@@ -488,7 +488,7 @@ INCLUDE_RODATA(const s32, "code_001E6518", D_004BBC48);
 
 INCLUDE_RODATA(const s32, "code_001E6518", D_004BBC68);
 
-INCLUDE_RODATA(const s32, "code_001E6518", D_004BBC88);
+INCLUDE_RODATA(const s32, "code_001E6518", D_r1_00454EE8);
 
 INCLUDE_RODATA(const s32, "code_001E6518", D_004BBCA8);
 
@@ -498,7 +498,7 @@ INCLUDE_RODATA(const s32, "code_001E6518", D_004BBCE8);
 
 INCLUDE_RODATA(const s32, "code_001E6518", D_004BBD08);
 
-INCLUDE_RODATA(const s32, "code_001E6518", D_004BBD28);
+INCLUDE_RODATA(const s32, "code_001E6518", D_r1_00454FA8);
 
 INCLUDE_RODATA(const s32, "code_001E6518", D_004BBD48);
 
@@ -514,23 +514,23 @@ INCLUDE_RODATA(const s32, "code_001E6518", D_004BBDE8);
 
 INCLUDE_RODATA(const s32, "code_001E6518", D_004BBE08);
 
-INCLUDE_SDATA(const s32, "code_001E6518", D_004E14D8);
+INCLUDE_SDATA(const s32, "code_001E6518", D_r1_0046CD50);
 
-INCLUDE_SDATA(const s32, "code_001E6518", D_004E14DC);
+INCLUDE_SDATA(const s32, "code_001E6518", D_r1_0046CD54);
 
-INCLUDE_SDATA(const s32, "code_001E6518", D_004E14E0);
+INCLUDE_SDATA(const s32, "code_001E6518", D_r1_0046CD58);
 
-INCLUDE_SDATA(const s32, "code_001E6518", D_004E14E4);
+INCLUDE_SDATA(const s32, "code_001E6518", D_r1_0046CD5C);
 
-INCLUDE_SDATA(const s32, "code_001E6518", D_004E14E8);
+INCLUDE_SDATA(const s32, "code_001E6518", D_r1_0046CD60);
 
-INCLUDE_SDATA(const s32, "code_001E6518", D_004E14EC);
+INCLUDE_SDATA(const s32, "code_001E6518", D_r1_0046CD64);
 
-INCLUDE_SDATA(const s32, "code_001E6518", D_004E14F0);
+INCLUDE_SDATA(const s32, "code_001E6518", D_r1_0046CD68);
 
-INCLUDE_SDATA(const s32, "code_001E6518", D_004E14F4);
+INCLUDE_SDATA(const s32, "code_001E6518", D_r1_0046CD6C);
 
-INCLUDE_SDATA(const s32, "code_001E6518", D_004E14F8);
+INCLUDE_SDATA(const s32, "code_001E6518", D_r1_0046CD70);
 
 INCLUDE_SDATA(const s32, "code_001E6518", D_004E14FC);
 

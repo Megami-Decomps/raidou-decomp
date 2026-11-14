@@ -68,7 +68,7 @@ void evtInitGlobalWork(void) {
 
 INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff);
 
-INCLUDE_ASM(const s32, "event/EventBit", func_001B8308);
+INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff_FieldDebug);
 
 INCLUDE_ASM(const s32, "event/EventBit", evtBitOn);
 

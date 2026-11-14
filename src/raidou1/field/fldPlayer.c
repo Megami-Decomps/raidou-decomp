@@ -254,7 +254,7 @@ extern s32 fldSyukanState;
 extern s32 fldSkyEnable;
 /* End of declarations from src/smt3/field/fldPlayer.c */
 
-INCLUDE_ASM(const s32, "field/fldPlayer", func_001274A8);
+INCLUDE_ASM(const s32, "field/fldPlayer", func_r1_001274A8);
 
 INCLUDE_ASM(const s32, "field/fldPlayer", fldSnapAngleToCompassPoint);
 

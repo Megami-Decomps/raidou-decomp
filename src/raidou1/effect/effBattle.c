@@ -533,13 +533,13 @@ f32 effBTLFieldColorGetActorScale(BtlUnit *unit);
 f32 effGetActorScaleForParameterWork(BtlUnit *unit);
 /* End of declarations from src/dds1/game/code_00161838.c */
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4A08);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4A08);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4B48);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4B48);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4BA0);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4BA0);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4BD0);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4BD0);
 
 s32 effBTLGetDrawEndFrame(effBTL_t *hBTLEffect, u16 CutNum) {
     s32 bank = CutNum >= 2;
@@ -549,60 +549,60 @@ s32 effBTLGetDrawEndFrame(effBTL_t *hBTLEffect, u16 CutNum) {
     return hBTLEffect->banks[bank].list.colorRampEndFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4C58);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4C58);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4CA0);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4CA0);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4E48);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4E48);
 
-u16 func_001E4ED8(effBTLCut_t *hBTLCutEffect) {
+u16 func_r1_001E4ED8(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->kind;
 }
 
-u32 func_001E4EE0(effBTLCut_t *hBTLCutEffect) {
+u32 func_r1_001E4EE0(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->currentFrame;
 }
 
-void *func_001E4EE8(effBTLCut_t *hBTLCutEffect) {
+void *func_r1_001E4EE8(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->formation;
 }
 
-void func_001E4EF0(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
+void func_r1_001E4EF0(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
     hBTLCutEffect->sourceFrameCallback = pCallback;
 }
 
-void func_001E4EF8(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
+void func_r1_001E4EF8(effBTLCut_t *hBTLCutEffect, effBTLCallback_t pCallback) {
     hBTLCutEffect->triggerFrameCallback = pCallback;
 }
 
-s32 func_001E4F00(effBTLCut_t *hBTLCutEffect) {
+s32 func_r1_001E4F00(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->list->callbackFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F10);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4F10);
 
-u32 func_001E4F28(effBTLCut_t *hBTLCutEffect) {
+u32 func_r1_001E4F28(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->triggerFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F30);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4F30);
 
-u32 func_001E4F60(effBTLCut_t *hBTLCutEffect) {
+u32 func_r1_001E4F60(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->colorRampEndFrame;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F68);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4F68);
 
-void *func_001E4F70(effBTLCut_t *hBTLCutEffect) {
+void *func_r1_001E4F70(effBTLCut_t *hBTLCutEffect) {
     return hBTLCutEffect->userData;
 }
 
-void func_001E4F78(void) {
+void func_r1_001E4F78(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4F80);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4F80);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E4FF8);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E4FF8);
 
 /* Rebuild each cloned bank's parameter work, resolving shared-entry references
  * and preserving disabled descriptors. */
@@ -665,18 +665,18 @@ void effBTLPartDelete(effBTL_t *pSkill) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E5230);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E5230);
 
-extern s32 D_0046CF84;
+extern s32 D_r1_0046CF84;
 
-s32 func_001E5250(void) {
-    return D_0046CF84;
+s32 func_r1_001E5250(void) {
+    return D_r1_0046CF84;
 }
 
-extern s32 D_0046CF88;
+extern s32 D_r1_0046CF88;
 
-s32 func_001E5258(void) {
-    return D_0046CF88;
+s32 func_r1_001E5258(void) {
+    return D_r1_0046CF88;
 }
 
 u32 effBTLFieldColorGetOverrideSelector(void) {
@@ -687,33 +687,33 @@ u32 effBTLFieldColorGetFinalSelector(void) {
     return effFieldColorFinalSelector;
 }
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E5270);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E5270);
 
-INCLUDE_ASM(const s32, "effect/effBattle", func_001E5290);
+INCLUDE_ASM(const s32, "effect/effBattle", func_r1_001E5290);
 
-void func_001E5398(void *a0, s32 a1, s32 a2) {
-    func_001E5290(a0, (s16)a1, (s16)a2);
+void func_r1_001E5398(void *a0, s32 a1, s32 a2) {
+    func_r1_001E5290(a0, (s16)a1, (s16)a2);
 }
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_00455700);
+INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455700);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_00455710);
+INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455710);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_00455720);
+INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455720);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_00455730);
+INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455730);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_00455740);
+INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455740);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_00455750);
+INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455750);
 
-INCLUDE_RODATA(const s32, "effect/effBattle", D_00455760);
+INCLUDE_RODATA(const s32, "effect/effBattle", D_r1_00455760);
 
-INCLUDE_SDATA(const s32, "effect/effBattle", D_0046CF84);
+INCLUDE_SDATA(const s32, "effect/effBattle", D_r1_0046CF84);
 
-INCLUDE_SDATA(const s32, "effect/effBattle", D_0046CF88);
+INCLUDE_SDATA(const s32, "effect/effBattle", D_r1_0046CF88);
 
-INCLUDE_SDATA(const s32, "effect/effBattle", D_0046CF8C);
+INCLUDE_SDATA(const s32, "effect/effBattle", D_r1_0046CF8C);
 
-INCLUDE_SDATA(const s32, "effect/effBattle", D_0046CF90);
+INCLUDE_SDATA(const s32, "effect/effBattle", D_r1_0046CF90);
 

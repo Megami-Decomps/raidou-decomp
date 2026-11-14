@@ -155,7 +155,7 @@ s32 evtPlaySe(s32 eventno, s32 seno)
     return soundIndex;
 }
 
-INCLUDE_ASM(const s32, "event/evtSound", func_001C9C60);
+INCLUDE_ASM(const s32, "event/evtSound", func_r1_001C9C60);
 
 void evtMakeEventPackName(s32 index, char *buffer)
 {

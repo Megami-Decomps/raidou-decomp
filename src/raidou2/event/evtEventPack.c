@@ -364,9 +364,9 @@ void *evtGetResorceData(u32 eventno, s32 rid) {
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "event/evtEventPack", func_001DFF00);
+INCLUDE_ASM(const s32, "event/evtEventPack", func_r1_001C9E18);
 
-INCLUDE_ASM(const s32, "event/evtEventPack", func_001DFF88);
+INCLUDE_ASM(const s32, "event/evtEventPack", func_r1_001C9EA0);
 
 /* Decode one retained unit payload and return its new viewer-object key. */
 s32 evtInitMotionSeProcess(s32 eventId, s32 resourceId) {
@@ -600,7 +600,7 @@ void evtKillEventPack(s32 eventno) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtEventPack", func_001E0930);
+INCLUDE_ASM(const s32, "event/evtEventPack", func_r1_001CA848);
 
 const char evtMotionSeNameFormat[0x10] __attribute__((aligned(8))) = "mse_%d_%d";
 

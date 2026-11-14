@@ -600,7 +600,7 @@ sdfDmaTag_t *sdfMatMakePacket(sdfMat_t *aMat, sdfDmaTag_t *aBuffer, s32 aId)
     return (sdfDmaTag_t *)((u8 *)aBuffer + 0x10);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", func_00361A78);
+INCLUDE_ASM(const s32, "sdf/sdfMat", func_r1_00361A78);
 
 void sdfMatSetUvwParm(sdfMatTexTm_t *aUvwPacket, const sdfMatUvwParm_t *aParm)
 {
@@ -709,9 +709,9 @@ sdfItemArray_t *sdfMatListMake(sdfItemArray_t *aTexList, u32 *aData)
     return list;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", func_00361F20);
+INCLUDE_ASM(const s32, "sdf/sdfMat", func_r1_00361F20);
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", func_00361F80);
+INCLUDE_ASM(const s32, "sdf/sdfMat", func_r1_00361F80);
 
 void sdfMatCopyStat(sdfMat_t *aDstMat, sdfMat_t *aSrcMat)
 {

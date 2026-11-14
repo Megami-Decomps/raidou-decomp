@@ -121,13 +121,13 @@ dds3Basic_t *dds3SceneBasicSearchNameAndType(dds3Basic_t *scene, s32 type, const
 dds3Basic_t *dds3SceneBasicSearchName(dds3Basic_t *scene, const char *name);
 /* End of declarations from src/smt3/basic/dds3SceneBasic.c */
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011A628);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00117DF8);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011A6E8);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00117EB8);
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", scenemainprocuder);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011A878);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00118048);
 
 void dds3VisibleSceneBasic(dds3Basic_t *basic, s8 visible)
 {
@@ -136,9 +136,9 @@ void dds3VisibleSceneBasic(dds3Basic_t *basic, s8 visible)
     }
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011A928);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_001180F8);
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011A9D0);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_001181A0);
 
 dds3Basic_t *dds3SetActiveCameraSceneBasic(dds3Basic_t *pSceneBasic, dds3Basic_t *pCameraBasic)
 {
@@ -172,7 +172,7 @@ dds3Basic_t *dds3GetActiveUnitSceneBasic(dds3Basic_t *pSceneBasic)
     return ((dds3SceneBasic_t *)pSceneBasic->workdata)->activeunit;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011AAF0);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_001182C0);
 
 dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type)
 {
@@ -210,7 +210,7 @@ dds3BasicArrayHandle_t *dds3SceneBasicGetList(dds3Basic_t *pBasic, s32 type)
     return handle;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011ACB0);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00118480);
 
 void dds3SceneBasicMakeScene_FromMemory(dds3Basic_t *pBasic, u32 field, u32 area,
                                        void *pF1, void *pF2,
@@ -233,7 +233,7 @@ void dds3SceneBasicFreeScene(dds3Basic_t *pBasic)
     work->hFileHandle = 0;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011AD40);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00118510);
 
 /* A null handle preserves the old script; replacement releases it first. */
 s32 dds3SceneBasicLoadScriptFile_FromMem(dds3Basic_t *scene, sdfMemHandle_t *mem)
@@ -268,7 +268,7 @@ void dds3SceneBasicReleaseScriptFile(dds3Basic_t *scene)
     work->pScrFileData = NULL;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011AE60);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00118630);
 
 void dds3SceneBasicEndScript(dds3Basic_t *scene, const char *procname)
 {
@@ -300,7 +300,7 @@ s32 dds3SceneBasicExistBasicFromType(dds3Basic_t *scene, s32 type, dds3Basic_t *
     return 0;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011AF88);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_00118758);
 
 void dds3SetMapNo(dds3Basic_t *scene, u32 mapno)
 {
@@ -351,4 +351,4 @@ dds3Basic_t *dds3SceneBasicSearchNameAndType(dds3Basic_t *scene, s32 type, const
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_0011B0E0);
+INCLUDE_ASM(const s32, "basic/dds3SceneBasic", func_r1_001188B0);

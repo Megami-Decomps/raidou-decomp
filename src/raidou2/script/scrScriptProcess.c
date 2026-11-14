@@ -156,14 +156,14 @@ void scrStartScriptByName(s32 priority, char *name, s32 messageHandle)
     scrStartScriptProcess(priority, scrLoadScriptFile(name, messageHandle));
 }
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114978);
+INCLUDE_ASM(const s32, "script/scrScriptProcess", func_r1_00112520);
 
 dds3ProcessID_t *scrStartScript2(s32 priority, void *scrdata, s32 startproc)
 {
     return scrStartScriptProcess(priority, fldFlowParse(scrdata, startproc));
 }
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", func_001149C8);
+INCLUDE_ASM(const s32, "script/scrScriptProcess", func_r1_00112570);
 
 dds3ProcessID_t *scrRunScriptEx(s32 priority, scrHeader_t *header, scrTypeTable_t *typeTable,
                     scrProcTable_t *procTable, scrLabelTable_t *labelTable, scrCode_u *code,
@@ -173,9 +173,9 @@ dds3ProcessID_t *scrRunScriptEx(s32 priority, scrHeader_t *header, scrTypeTable_
                                                            code, messageData, stringData, procNo));
 }
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114A30);
+INCLUDE_ASM(const s32, "script/scrScriptProcess", func_r1_001125D8);
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", func_00114A48);
+INCLUDE_ASM(const s32, "script/scrScriptProcess", func_r1_001125F0);
 
 /* DDS skips the running script's own process and does not print. */
 void scrAllReleaseScript(void)

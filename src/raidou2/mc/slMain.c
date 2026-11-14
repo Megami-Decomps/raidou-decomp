@@ -1416,11 +1416,11 @@ extern u32 D_003BC81C;
 
 extern FileSelectionFlowState fileSelectionPending;
 
-extern u32 D_003BC854;
+extern u32 D_r1_0046CE48;
 
 extern u32 D_003BC80C;
 
-extern u32 D_003BC810;
+extern u32 D_r1_0046CE00;
 
 extern u32 fileMemoryCardRequestIndex;
 
@@ -1454,7 +1454,7 @@ extern dds3ProcessID_t *D_003BC7F0;
 extern FileLoadMenuState fileLoadMenuState;
 
 /* Far scalar: incomplete array forces non-small-data addressing. */
-extern s32 D_0037D4D0[];
+extern s32 D_00555870[];
 
 extern sdfGrOt_t *effPacketSubmissionSurfaces[6];
 
@@ -1985,7 +1985,7 @@ extern u8 sdfViewMatrix[];
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_00324660[];
+extern u8 D_r1_003AD4E0[];
 
 /* vu0 routine: project the point in vf10 through view/projection and screen scale/bias. */
 void mnuProjectViewPoint(void);
@@ -2398,23 +2398,23 @@ void fileReadRecordSecondVector(FileSlotTable *record, u128 *out);
 void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 /* End of declarations from src/dds1/game/code_0028A150.c */
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EB6A0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5240);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001EB758);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001EB800);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EB8B8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D53A0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EB950);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5438);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EB9D8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D54C0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EBA08);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D54F0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EBA18);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5500);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EBA28);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5510);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001EBB90);
 
@@ -2428,7 +2428,7 @@ void slSetInfo(u32 id) {
     }
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EC3D0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D5B30);
 
 void fileClearAllSlotFlags(void) {
     sdfMcSetCardStat(fileMemoryCardRequestIndex);
@@ -2466,7 +2466,7 @@ saddr_t slHeadLoad(void) {
     return EE_ADDR_S(slHeadLoadProc_openFile);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EC8E8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6048);
 
 saddr_t slHeadLoadProc_readFile(void) {
     slMcResult_t status = sdfMcFuncRead1();
@@ -2481,9 +2481,9 @@ saddr_t slHeadLoadProc_readFile(void) {
     return slNoCard();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EC9C0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6120);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECAF8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6258);
 
 s32 slEndingTop(void) {
     gslMode = 0;
@@ -2503,9 +2503,9 @@ s32 slEndingUpd2(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slEndingExit);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECC08);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6368);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECC30);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6390);
 
 s32 slBootError(void) {
     gslDrawFlagBg = 1;
@@ -2521,9 +2521,9 @@ s32 slBootError2(void) {
     return slQueryYesNo(&slExitToTitle, &slBootRetry, 1);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECD00);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6460);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECD40);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D64A0);
 
 s32 slExit(void) {
     slSetInfo(0);
@@ -2532,51 +2532,51 @@ s32 slExit(void) {
     return 0xffffffff;
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECDE8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6548);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001ECE10);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECE58);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D65A0);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001ECE70);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECEC0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D65F8);
 
 s32 fileRestartSlotScan(void) {
     fileClearAllSlotFlags();
     slSetInfo(1);
-    D_003BC854 = 0;
-    D_003BC810 = 0;
+    D_r1_0046CE48 = 0;
+    D_r1_0046CE00 = 0;
     return fileResetSelection();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECF08);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6640);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ECFD0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6708);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED028);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6760);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED078);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D67B0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED0A0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D67D8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED0D0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6808);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED0E8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6820);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED0F8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6830);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED138);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6870);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED160);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6898);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED170);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D68A8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED1B0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D68E8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED1C8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6900);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED1E0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6918);
 
 s32 slBootProc1st(void) {
     sdfMcRegetInfo(0);
@@ -2587,33 +2587,33 @@ s32 slBootProc1st(void) {
     return slBootTop();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED240);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6978);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED270);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D69A8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED2D8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6A10);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED308);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6A40);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED348);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6A80);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED380);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6AB8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED388);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6AC0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED4D0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6C08);
 
 INCLUDE_ASM(const s32, "mc/slMain", slSizeChk);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED570);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6CA8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED638);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6D70);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED700);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D6E38);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001ED958);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7098);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EDA28);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7168);
 
 s32 slExitWaitProc(void) {
     s32 remaining = slExitWaitCnt - 1;
@@ -2627,15 +2627,15 @@ s32 slExitWaitProc(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EDAE8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7228);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EDB00);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7240);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EDB80);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D72C0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EDBB0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D72F0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EDDB8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D74F8);
 
 saddr_t slChooseData_getCardInfo2(void) {
     slMcResult_t t = sdfMcFuncChdir1();
@@ -2673,11 +2673,11 @@ s32 slChooseData_getCardInfo3(void) {
     return slHeadLoad();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EDF00);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7640);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EDFD0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7710);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EE068);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D77A8);
 
 saddr_t slChooseData_getCardInfo2_B(void) {
     slMcResult_t t = sdfMcFuncChdir1();
@@ -2721,9 +2721,9 @@ s32 slChooseData_getCardInfo3_B(void) {
     return slChooseData_getCardInfoNext_B();
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EE1D8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7918);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EE278);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D79B8);
 
 saddr_t slSaveData(void) {
     u8 name[0x50];
@@ -2766,22 +2766,22 @@ saddr_t slSaveProc_Write_mkdir(void) {
     return EE_ADDR_S(slErrorWait);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EE440);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7B80);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EE4A0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7BE0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EE500);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7C40);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EE558);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7C98);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EE580);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7CC0);
 
 s32 slSaveWriteEnd_saveData(void) {
     return slSaveWriteFile(slBaseIconName, &slBaseIconBuff, &slBaseIconBuffSize,
                           slSaveWriteEnd_baseIcon, &baseIconFileHandle);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EE660);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D7DA0);
 
 saddr_t slSaveData_deleteIconSys(void) {
     u32 entry = mccb;
@@ -2887,9 +2887,9 @@ saddr_t slFormatStart(void) {
     return EE_ADDR_S(slProc_Format);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EEF88);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D8710);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EF018);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D87A0);
 
 INCLUDE_ASM(const s32, "mc/slMain", slLoadProc_openFile);
 
@@ -2908,11 +2908,11 @@ saddr_t slLoadProc_readFile(void) {
     return EE_ADDR_S(slErrorWait);
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EF218);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D89A0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EF298);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D8A20);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001EF318);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001D8A98);
 
 INCLUDE_ASM(const s32, "mc/slMain", func_001EF800);
 
@@ -2942,36 +2942,36 @@ s32 slCalc(dds3ProcessID_t *id) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F1550);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA340);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F16B8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA4A8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F1A60);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA7A8);
 
-void func_001F1A78(void) {
+void func_r1_001DA7C0(void) {
 }
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F1A80);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA7C8);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F1BD8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA908);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F1BE0);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA910);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F1C08);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA938);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F1C10);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DA940);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F2190);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DAEC0);
 
-INCLUDE_ASM(const s32, "mc/slMain", func_001F21F8);
+INCLUDE_ASM(const s32, "mc/slMain", func_r1_001DAF28);
 
 addr_t baseIconFileHandle = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1580);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CDE4);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1584);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CDE8);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1588);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CDEC);
 
 s32 slExitWaitCnt = 0;
 
@@ -2985,77 +2985,77 @@ u32 gslDrawFlagFile = 0;
 
 s32 gslAnimCnt = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15A4);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE08);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15A8);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE0C);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15AC);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE10);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15B0);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE14);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15B4);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE18);
 
 s32 slChooseSaveIndex = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15BC);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE20);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15C0);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE24);
 
 u32 slQueryYesNoMsg = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15C8);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE2C);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15CC);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE30);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15D0);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE34);
 
 s32 slFileSelError = 0;
 
 s32 gslMode = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15DC);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE40);
 
 s32 gslInfoCode = 0;
 
 u32 gslErrorCode = 0;
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15E8);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE4C);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15EC);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE50);
 
 s32 gSlWindowCnt = 0;
 
-INCLUDE_RODATA(const s32, "mc/slMain", D_004BC040);
+INCLUDE_RODATA(const s32, "mc/slMain", D_r1_00455270);
 
 INCLUDE_RODATA(const s32, "mc/slMain", jtbl_004BC050);
 
 INCLUDE_RODATA(const s32, "mc/slMain", D_004BC070);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15F4);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE58);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15F8);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE5C);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E15FC);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE60);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1600);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE64);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1604);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE68);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1608);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE6C);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E160C);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE70);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1610);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE74);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1614);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE78);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1618);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE7C);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E161C);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE80);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1620);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE90);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1624);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CE94);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E1628);
 
@@ -3063,9 +3063,9 @@ INCLUDE_SDATA(const s32, "mc/slMain", D_004E1630);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E1638);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1640);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CEB8);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1648);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CEC0);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E1650);
 
@@ -3081,7 +3081,7 @@ INCLUDE_SDATA(const s32, "mc/slMain", D_004E1678);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E1680);
 
-INCLUDE_SDATA(const s32, "mc/slMain", D_004E1688);
+INCLUDE_SDATA(const s32, "mc/slMain", D_r1_0046CEE0);
 
 INCLUDE_SDATA(const s32, "mc/slMain", D_004E1698);
 

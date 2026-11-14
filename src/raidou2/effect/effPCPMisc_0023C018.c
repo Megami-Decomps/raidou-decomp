@@ -931,11 +931,11 @@ extern f32 fileSaveHighlightPhase;
 
 extern u8 sdfHddValid;
 
-extern char D_00437E10[];
+extern char D_r1_0046D0E0[];
 
-extern char D_00437E18[];
+extern char D_r1_0046D0E8[];
 
-extern char D_00437E20[];
+extern char D_r1_0046D0F0[];
 
 extern char *sdfFileGetHostRoot(void);
 
@@ -1775,7 +1775,7 @@ FileJob *fileAppendJob(FileQueue *queue, u32 id);
 
 FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source);
 
-extern u8 D_00437E28[];
+extern u8 D_r1_0046D0F8[];
 
 FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath);
 
@@ -2477,9 +2477,9 @@ sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdf
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", effPCPHelperBEDGetModel);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_0023C030);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00224D28);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_0023C048);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00224D40);
 
 void fileReadVectorPtr20(u8 *recordBytes, void *dst) {
     FileSlotTable *record = (FileSlotTable *)recordBytes;
@@ -2508,7 +2508,7 @@ void dds3DispatchIndexedCallback(u16 *record, f32 scale) {
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", effInitModelVUState);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_0023C1B8);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00224EB0);
 
 /* Clear the lighting attachment before destroying its model context. */
 void effDestroyModelContext(dds3ModelHandle_t *owner) {
@@ -2528,11 +2528,11 @@ dds3ModelHandle_t *effCloneModelWithVUState(dds3ModelHandle_t *sourceModel) {
     return model;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_0023C2C0);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00224FB8);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_0023C360);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_00225058);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_0023C3B0);
+INCLUDE_ASM(const s32, "effect/effPCPMisc_0023C018", func_r1_002250A8);
 
-INCLUDE_SDATA(const s32, "effect/effPCPMisc_0023C018", D_004E183C);
+INCLUDE_SDATA(const s32, "effect/effPCPMisc_0023C018", D_r1_0046D0FC);
 

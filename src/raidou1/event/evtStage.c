@@ -236,15 +236,15 @@ INCLUDE_ASM(const s32, "event/evtStage", func_001A2E60);
 
 INCLUDE_ASM(const s32, "event/evtStage", func_001A2F60);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A30F0);
+INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A30F0);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A3100);
+INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3100);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A3270);
+INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3270);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A34E8);
+INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A34E8);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A36D8);
+INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A36D8);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtSetUnitPos);
 
@@ -271,11 +271,11 @@ void evtFreeAllUnit(void) {
     }
 }
 
-INCLUDE_RODATA(const s32, "event/evtStage", D_0044DCD8);
+INCLUDE_RODATA(const s32, "event/evtStage", D_r1_0044DCD8);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A3908);
+INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3908);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001A3A00);
+INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3A00);
 
 void evtStartEvent(s32 no) {
     sprintf(evtStageScriptPath, "/event/e%03d/e%03d/scr/e%03d.bf", no - no % 10, no, no);

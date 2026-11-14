@@ -293,7 +293,7 @@ void dds3SoftResetOff(void)
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", func_001005C0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", func_001005C8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", func_r1_00100598);
 u32 dds3PauseSign = 0;
 
 u32 dds3PauseTime = 0;
@@ -306,21 +306,21 @@ u32 dds3SlowRunCount = 0;
 
 u32 dds3SlowEndCount = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE224);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B124);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE228);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B128);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE22A);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B12A);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE22C);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B12C);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE22E);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE22F);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE230);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B138);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE238);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B140);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_004DE240);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", D_r1_0046B148);
 

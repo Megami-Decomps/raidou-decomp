@@ -283,9 +283,9 @@ extern void frEnableMode(s32 value);
 
 extern u8 frDisableMode(u8 value);
 
-extern u8 D_00357980[];
+extern u8 D_r1_003E8760[];
 
-extern u8 D_00357988[];
+extern u8 D_r1_003E8768[];
 
 extern s32 frDefaultFontHandle;
 
@@ -593,7 +593,7 @@ extern s32 D_00357AB8[];
 dds_itfpanel_t *itfCreateUiSpriteByKind(s32 kind, const sdfTexHandle_t *borrowedTexture);
 /* End of declarations from src/dds1/game/code_00196478.c */
 
-INCLUDE_ASM(const s32, "code_001814F0", func_001814F0);
+INCLUDE_ASM(const s32, "code_001814F0", func_r1_001814F0);
 
 INCLUDE_ASM(const s32, "code_001814F0", itfScanEncodedTextControls);
 

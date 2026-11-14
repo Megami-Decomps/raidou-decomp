@@ -860,9 +860,9 @@ s32 itfMesMngMessage(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186970);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00186970);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001869B8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001869B8);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186A00);
 
@@ -947,11 +947,11 @@ s32 itfMesMng_SEL_SELNO(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00186FD0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00186FD0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187018);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187018);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187088);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187088);
 
 u32 itfMesMngOpenSelectWindow(void) {
     return 1;
@@ -1078,11 +1078,11 @@ s32 itfMesMngSelectDefKey(void)
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetWindowTexture);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187488);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187488);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187498);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187498);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001874B0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001874B0);
 
 /* Destroy an installed nonnegative window slot; no upper-bound validation. */
 void itfMesMngRelease(s32 id) {
@@ -1091,9 +1091,9 @@ void itfMesMngRelease(s32 id) {
     }
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001875F8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001875F8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187658);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187658);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesSelectTableItemText);
 
@@ -1127,9 +1127,9 @@ void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker) {
     InitializeSpeaker(primaryTextBlock, 0);
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001879C0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001879C0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00187AD8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187AD8);
 
 void itfMesMngSetMaskSelect(s32 id, u32 maskpattern)
 {
@@ -1270,13 +1270,13 @@ void itfMesMngClearBitStat(s32 id, u32 flag)
     rec->stat &= ~flag | 0xFFFF;
 }
 
-s16 func_00188010(s32 id) {
+s16 func_r1_00188010(s32 id) {
     return pinst[id].mes->select.select;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188030);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188030);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188050);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188050);
 
 #ifdef NON_MATCHING
 /* Retail loads mes+0xD4, 0x10 past the header's variable.pptr offset. */
@@ -1287,7 +1287,7 @@ u8 *itfMesMngGetVar(s32 id, s32 index) {
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngGetVar);
 #endif
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188098);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188098);
 
 /* Replace a text slot with a copied NUL-terminated encoded string. */
 void itfMesMngSetVarImmediate(s32 id, u32 index, const char *pstr) {
@@ -1325,9 +1325,9 @@ u8 *itfMesMngGetDataPtrImmediate(s32 id, s32 message, s32 page) {
     return GetMessagePagePtr(GetTypeHeader(pinst[id].mes, message)->ptr, page);
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001883C0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001883C0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188420);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188420);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngSetSelectDefKey);
 
@@ -1364,17 +1364,17 @@ u16 itfMesMngGetStatManager(void) {
     return itfMesMngManager.flags;
 }
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A600);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A600);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A610);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A610);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A620);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A620);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A630);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A630);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesMngDebugProc);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188B38);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188B38);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DestructFlow);
 
@@ -1416,7 +1416,7 @@ u8 *GetMessagePagePtr(itfMesBinMesHeader_t *table, s32 index)
     return EE_ADDR_AS(u8 *, table->addr[index]);
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00188D00);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00188D00);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", SetVar);
 
@@ -1452,7 +1452,7 @@ s32 GetNumSelectItem(s32 allitem, u32 mask)
     return n;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001890A8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001890A8);
 
 /* Discard (to - from - 1) preceding rows when positive, retain the next
  * complete y-group and queue everything after it. Requires non-NULL input;
@@ -1509,7 +1509,7 @@ frFontHandle_t *GetLastLinkFontHandle(frFontHandle_t *pfont)
     return pfont;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001892F0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001892F0);
 
 s32 CountLineMessage(frFontHandle_t *pfont_top, frFontHandle_t *pfont)
 {
@@ -1624,11 +1624,11 @@ s32 GetMaskedIndex(s32 index, u32 mask)
     return i;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001895B0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001895B0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001895F8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001895F8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189638);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189638);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", OpenCheckSpeakerWindow);
 
@@ -1659,9 +1659,9 @@ void InitializeMessage(message_tag *pmessage, s32 defaultpos) {
     pmessage->table = NULL;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189888);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189888);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_001898C8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001898C8);
 
 void InitializeVariable(variable_tag *pvariable)
 {
@@ -1675,11 +1675,11 @@ void InitializeVariable(variable_tag *pvariable)
     } while (n >= 0);
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189928);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189928);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189978);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189978);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189980);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189980);
 
 void ReleaseAllVariable(variable_tag *pvariable)
 {
@@ -1696,47 +1696,47 @@ void ReleaseAllVariable(variable_tag *pvariable)
     } while (remaining >= 0);
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189A58);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189A58);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189AE0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189AE0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189B28);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189B28);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189B68);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189B68);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189D58);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189D58);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189D68);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189D68);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_00189FF8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00189FF8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018A2E8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018A2E8);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018A3C0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018A3C0);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", SelectItemMove);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", SelectItemDefKey);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018A658);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018A658);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018A978);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018A978);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018AB68);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018AB68);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018AB98);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018AB98);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018ABB0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018ABB0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018AE00);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018AE00);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018B060);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018B060);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018B178);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018B178);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018B5C0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018B5C0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018B5D8);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018B5D8);
 
 s32 CalcMsgMng_Process(void) {
     itfMesLink_t *node = itfMesMngManager.pool.activeHead;
@@ -1761,53 +1761,53 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", DebugChangeInstance);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfQueueOffsetTexturedRect);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018C030);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018C030);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018C7B0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018C7B0);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", func_0018CAD0);
+INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_0018CAD0);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A6A0);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A6A0);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A730);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A730);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A760);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A760);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A7B0);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A7B0);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A7D0);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A7D0);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A7E0);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A7E0);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A810);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A810);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A820);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A820);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A830);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A830);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A840);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A840);
 
-INCLUDE_RODATA(const s32, "interface/itfMesManager", D_0044A910);
+INCLUDE_RODATA(const s32, "interface/itfMesManager", D_r1_0044A910);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C258);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C258);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C260);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C260);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C268);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C268);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C278);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C278);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C280);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C280);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C288);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C288);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C290);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C290);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C298);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C298);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C2A0);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C2A0);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C2A8);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C2A8);
 
-INCLUDE_SDATA(const s32, "interface/itfMesManager", D_0046C2B0);
+INCLUDE_SDATA(const s32, "interface/itfMesManager", D_r1_0046C2B0);
 

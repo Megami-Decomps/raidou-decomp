@@ -1,6 +1,6 @@
 #include "common.h"
 /* This version names the save-work pointer by address. */
-#define DDS3_GBWK D_004DE600
+#define DDS3_GBWK D_r1_0046B4A0
 #include "newdata.h"
 
 s32 evtGetAgeOfMoon(void)
@@ -37,60 +37,60 @@ void evtDisableMoonCalc(void)
     DDS3_GBWK->moonFlags &= ~1;
 }
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C3968);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADA50);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C3998);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADA80);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C39B8);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADAA0);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C39D8);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADAC0);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C39F8);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADAE0);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C3A40);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADB28);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C3A90);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADB78);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C3AC0);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADBA8);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C3AE0);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADBC8);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C3B68);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001ADC50);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C4830);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AE7E0);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C4B38);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEA70);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C4BB8);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEAF0);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C4BC0);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEAF8);
 
-INCLUDE_ASM(const s32, "event/evtMoon", func_001C4C48);
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF850);
+INCLUDE_ASM(const s32, "event/evtMoon", func_r1_001AEB80);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F0);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF854);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F4);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF858);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5F8);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF85C);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C5FC);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF860);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C600);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF864);
 
 INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF868);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF86C);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C604);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF870);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C608);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF874);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C60C);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF878);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C610);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF87C);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C614);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF880);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C618);
 
-INCLUDE_SDATA(const s32, "event/evtMoon", D_004DF888);
+INCLUDE_SDATA(const s32, "event/evtMoon", D_r1_0046C620);
 

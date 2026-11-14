@@ -329,7 +329,7 @@ extern void dds3SetProcessFlag(dds3ProcessID_t *target, u32 flag, s32 type);
 
 extern void setRoundBlockData(pbGroupData_t *grp, s32 dir);
 
-extern void func_001D2D00(pbProcHandle_t *panel, s32 arg);
+extern void func_r1_001BCBF8(pbProcHandle_t *panel, s32 arg);
 
 extern pbProcHandle_t *mychar[];
 
@@ -473,7 +473,7 @@ extern void pbClearRecord(pbProcHandle_t *panel);
 
 extern void pbNextCharacter(void);
 
-extern void func_001D2D00(pbProcHandle_t *panel, s32 arg);
+extern void func_r1_001BCBF8(pbProcHandle_t *panel, s32 arg);
 
 extern s32 getCharacterNum(void);
 

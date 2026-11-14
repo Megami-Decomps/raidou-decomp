@@ -302,7 +302,7 @@ extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
 
 extern s32 sifDmacHandlerId;
 
-extern s32 D_0052C2B8;
+extern s32 D_r1_00442CE0;
 
 void sceSifExitCmd(void);
 
@@ -2243,7 +2243,7 @@ s32 sceReadlink(const char *path, char *buffer, u32 count)
     return result;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libkernl/filestub", D_00469238);
+INCLUDE_RODATA(const s32, "sdk/libkernl/filestub", D_r1_00469238);
 
-INCLUDE_RODATA(const s32, "sdk/libkernl/filestub", D_00469240);
+INCLUDE_RODATA(const s32, "sdk/libkernl/filestub", D_r1_00469240);
 

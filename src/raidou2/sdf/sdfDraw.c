@@ -592,7 +592,7 @@ void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket) {
     aTag->tail = aPacket;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", func_003D0CB0);
+INCLUDE_ASM(const s32, "sdf/sdfDraw", func_r1_0035AF28);
 
 void sdfDrawTagLinkRef(sdfDrawTag_t *aTag, addr_t aPacket) {
     s32 previousTailAddress;
@@ -1107,7 +1107,7 @@ u16 sdfReqDrawDelaySleepCount = 0;
 
 s32 sdfDrawReqQueueIndex = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E42E4);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2CC);
 
 u32 sdfDrawFrameCount = 0;
 
@@ -1115,21 +1115,21 @@ u8 corePktSoftenBias = 0;
 
 s32 sdfMatAllocCount = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E42F4);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2DC);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E42F8);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2E0);
 
 f32 sdfFaceDivSoften = 7.0f;
 
 f32 sdfFaceDivBias = 0.0f;
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E4308);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2F0);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E430C);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2F4);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E4310);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2F8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E4314);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F2FC);
 
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_004E4318);
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", D_r1_0046F300);
 

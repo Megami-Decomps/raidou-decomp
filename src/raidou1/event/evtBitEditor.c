@@ -10,9 +10,9 @@ INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5B8);
 
 INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5C0);
 
-INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5C8);
+INCLUDE_SDATA(const s32, "event/evtBitEditor", D_r1_0046C5C8);
 
-INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5D0);
+INCLUDE_SDATA(const s32, "event/evtBitEditor", D_r1_0046C5D0);
 
 INCLUDE_SDATA(const s32, "event/evtBitEditor", D_0046C5D8);
 

@@ -175,7 +175,7 @@ void sceSifMInitRpc(s32 mode)
     }
 }
 
-INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", func_0037C410);
+INCLUDE_ASM(const s32, "sdk/libmrpc/msifrpc", func_r1_0037C410);
 
 rpcPacket *_sceRpcGetPacket(rpcQueue *queue)
 {

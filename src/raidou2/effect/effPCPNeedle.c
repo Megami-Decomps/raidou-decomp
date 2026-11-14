@@ -297,18 +297,18 @@ void effPCPNeedleSpiralDelete(effPCPNeedleSpiral_tag *hData) {
     sdfMemFreeDirect(hData->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F2E8);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00217FF0);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F308);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218010);
 
-void func_0022F320(void) {
+void func_r1_00218028(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F328);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218030);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F338);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218040);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F350);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218058);
 
 dds3NeedleModel_tag *dds3NeedleModelCreate(u32 number)
 {
@@ -408,13 +408,13 @@ void dds3NeedleModelDraw(dds3NeedleModel_tag *hNModel)
     dds3NeedleModelDrawSurfaces[hNModel->blend]->append(dds3NeedleModelDrawSurfaces[hNModel->blend], packet);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F748);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218450);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F970);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_00218678);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F9A0);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_002186A8);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_0022F9D0);
+INCLUDE_ASM(const s32, "effect/effPCPNeedle", func_r1_002186D8);
 
 void dds3NeedleModelSetColor(dds3NeedleModel_tag *hNModel, s32 index, u32 abgr)
 {

@@ -287,9 +287,9 @@ void effSplCalcRegist(dds3Spline_t *primitive, s32 recordIndex, f32 t)
     SDF_VU0_LOADVECTOR_MEMOPS(*(u128 *)&vertex);
 }
 
-INCLUDE_ASM(const s32, "effect/effSpline", func_0020D530);
+INCLUDE_ASM(const s32, "effect/effSpline", func_r1_001F6238);
 
-INCLUDE_ASM(const s32, "effect/effSpline", func_0020D540);
+INCLUDE_ASM(const s32, "effect/effSpline", func_r1_001F6248);
 
 void dds3AllocSplinePoints(dds3Spline_t *primitive, s32 flattenEqualComponents) {
     sdfMemHandle_t *handle = sdfMemAllocDirect(primitive->count * 12);

@@ -437,7 +437,7 @@ extern s32 fileMenuTaskExists(void);
 
 extern void fileStartMemoryCardMenuForMode(FileMenuStartMode mode);
 
-extern u32 D_00435BB0;
+extern u32 D_0046B130;
 
 extern s32 checkConfigState(void);
 
@@ -489,7 +489,7 @@ extern u32 scrHandleCount;
 
 extern sdfGrOt_t sdfDebugGrOt;
 
-extern s8 D_0037F53B[];
+extern s8 D_r1_003AD3BB[];
 
 extern void evtDrawHeapUsageOverlay(sdfGrOt_t *);
 
@@ -997,14 +997,14 @@ scrProcessWork_s *fldFlowParse(const scrHeader_t *header, ScrProcedureIndex proc
 /* End of declarations from src/dds2/game/code_00107EF8.c */
 
 dds3ProcessID_t *evtCreateTestAndSkyTasks(void) {
-    D_00435BB0 = 0;
+    D_0046B130 = 0;
     D_00435D28 = 0;
     evtInitEventTest();
     return evtInitSky();
 }
 
 u32 evtInitializeSelectionScene(void) {
-    D_00435BB0 = 1;
+    D_0046B130 = 1;
     dds3FadeBackgroundStartOut(0);
     evtChkEndProcess();
     evtExitSky();
@@ -1017,82 +1017,82 @@ u32 evtKeepTestSkyModePending(void) {
 }
 
 void evtClearSecondaryWorldAndViewer(void) {
-    D_00435BB0 = 0;
+    D_0046B130 = 0;
     evtFreeStage();
     evtViewerCreateTaskWithSky();
 }
 
 u32 evtInitializeSelectionScreen(void) {
     evtEventViewerDestroyTask();
-    D_00435BB0 = 1;
+    D_0046B130 = 1;
     dds3FadeBackgroundStartOut(0);
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E018);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E018);
 
-void func_0010E020(void) {
+void func_r1_0010E020(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E028);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E028);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E030);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E030);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E038);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E038);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E050);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E050);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E070);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E070);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E090);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E090);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E0A8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E0A8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E0C8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E0C8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E0E8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E0E8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E108);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E108);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E128);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E128);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E130);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E130);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E148);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E148);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E168);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E168);
 
-void func_0010E188(void) {
+void func_r1_0010E188(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E190);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E190);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E198);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E198);
 
-void func_0010E1A0(void) {
+void func_r1_0010E1A0(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E1A8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1A8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E1B0);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1B0);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E1B8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1B8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E1D0);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1D0);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E1F0);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E1F0);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E210);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E210);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E228);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E228);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E248);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E248);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E250);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E250);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E268);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E268);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E288);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E288);
 
 INCLUDE_ASM(const s32, "code_0010DF68", func_0010E290);
 
@@ -1102,33 +1102,33 @@ INCLUDE_ASM(const s32, "code_0010DF68", func_0010E2E0);
 
 INCLUDE_ASM(const s32, "code_0010DF68", func_0010E2E8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E300);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E300);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E320);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E320);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E328);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E328);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E340);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E340);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E360);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E360);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E368);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E368);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E380);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E380);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E3A0);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E3A0);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E3A8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E3A8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E3D8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E3D8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E3F8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E3F8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E418);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E418);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E448);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E448);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E468);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E468);
 
 INCLUDE_ASM(const s32, "code_0010DF68", func_0010E488);
 
@@ -1136,11 +1136,11 @@ INCLUDE_ASM(const s32, "code_0010DF68", func_0010E4A0);
 
 INCLUDE_ASM(const s32, "code_0010DF68", func_0010E4C0);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E4C8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E4C8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E4E0);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E4E0);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E500);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E500);
 
 INCLUDE_ASM(const s32, "code_0010DF68", func_0010E508);
 
@@ -1148,23 +1148,23 @@ INCLUDE_ASM(const s32, "code_0010DF68", func_0010E520);
 
 INCLUDE_ASM(const s32, "code_0010DF68", func_0010E540);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E560);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E560);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E590);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E590);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E5B0);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E5B0);
 
 INCLUDE_ASM(const s32, "code_0010DF68", func_0010E5C8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E5E8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E5E8);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E608);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E608);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E628);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E628);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E640);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E640);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E660);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E660);
 
 INCLUDE_ASM(const s32, "code_0010DF68", func_0010E680);
 
@@ -1190,7 +1190,7 @@ void evtDestroyFontResourceChain(void) {
 
 INCLUDE_ASM(const s32, "code_0010DF68", datDebugPrintf);
 
-INCLUDE_ASM(const s32, "code_0010DF68", func_0010E7C8);
+INCLUDE_ASM(const s32, "code_0010DF68", func_r1_0010E7C8);
 
 s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     SdfGeneralHeapStats heapStats;
@@ -1225,7 +1225,7 @@ s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     return 0;
 }
 
-void func_0010EB00(void) {
+void func_r1_0010EB00(void) {
 }
 
 INCLUDE_ASM(const s32, "code_0010DF68", evtToggleDebugTimeGraphTask);
@@ -1381,7 +1381,7 @@ void evtDrawHeapUsageOverlay(sdfGrOt_t *surface) {
 
 /* Draw the overlay only when the control byte is zero; return zero in either case. */
 s32 evtDrawConditionalHeapUsageOverlay(void) {
-    if (D_0037F53B[0] != 0) {
+    if (D_r1_003AD3BB[0] != 0) {
         return 0;
     }
     evtDrawHeapUsageOverlay(&sdfDebugGrOt);
@@ -1416,23 +1416,23 @@ s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task) {
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "code_0010DF68", D_00444B18);
+INCLUDE_RODATA(const s32, "code_0010DF68", D_r1_00444B18);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_0046B300);
+INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B300);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_0046B308);
+INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B308);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_0046B310);
+INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B310);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_0046B318);
+INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B318);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_0046B320);
+INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B320);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_0046B328);
+INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B328);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_0046B32C);
+INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B32C);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_0046B330);
+INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B330);
 
-INCLUDE_SDATA(const s32, "code_0010DF68", D_0046B338);
+INCLUDE_SDATA(const s32, "code_0010DF68", D_r1_0046B338);
 

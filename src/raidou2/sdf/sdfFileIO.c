@@ -475,7 +475,7 @@ char *sdfFileCmdMakeRealFileName(const char *aSrcName, s32 aDeviceType) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", func_003E3710);
+INCLUDE_ASM(const s32, "sdf/sdfFileIO", func_r1_0036D980);
 
 /* Allocate a request state and retain the callback's opaque context word. */
 sdfFileCmdHandle_t *sdfFileCmdNewHandle(void *resource, s32 workerIndex, s32 operation,
@@ -705,7 +705,7 @@ sdfFileCmdHandle_t *sdfFileCmdCacheTail = NULL;
 
 s16 sdfFileCmdFreeCount = 0;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_004E43D6);
+INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_r1_0046F3BE);
 
 u8 sdfFileCmdThreadPrioCheckCounter = 0;
 
@@ -713,7 +713,7 @@ s32 sdfFileCmdThreadPrio = 0x48;
 
 u16 sdfFileCmdDefaultCreateMode = 0x180;
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_004E43E0);
+INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_r1_0046F3C8);
 
 char sdfFileCmdCdromPrefix[8] = "cdrom0:";
 
@@ -721,7 +721,7 @@ char sdfFileCmdHostPrefix[8] = "host0:";
 
 char sdfFileCmdPfsPrefix[8] = "pfs0:";
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_004E4400);
+INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_r1_0046F3E8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_004E4408);
+INCLUDE_SDATA(const s32, "sdf/sdfFileIO", D_r1_0046F3F0);
 

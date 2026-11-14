@@ -181,7 +181,7 @@ void *sdfDevLoadFileEx(const char *aFileName, u32 *aOutData, u32 *aOutSize)
     return sdfDevLoadFile(aFileName, aOutData, aOutSize, 0);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_00372950);
+INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_r1_00372950);
 
 sdfItemArray_t *sdfTexSetTB(const sdfTextureOffsetListHeader_t *aData) {
     s32 i = 0;
@@ -200,12 +200,12 @@ sdfItemArray_t *sdfTexSetTB(const sdfTextureOffsetListHeader_t *aData) {
     return handle;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_00372A28);
+INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_r1_00372A28);
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_00372A78);
+INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_r1_00372A78);
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_00372AB8);
+INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_r1_00372AB8);
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_00372B00);
+INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_r1_00372B00);
 
-INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_00372B40);
+INCLUDE_ASM(const s32, "sdf/sdfDevFile", func_r1_00372B40);

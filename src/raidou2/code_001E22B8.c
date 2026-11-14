@@ -963,7 +963,7 @@ extern MenuPopupEntry mnuShopCommandPopupEntries[];
 
 extern u8 *datUnitNames;
 
-extern char D_00437840[];
+extern char D_r1_003B9360[];
 
 extern s32 D_003C9A20[];
 
@@ -1316,7 +1316,7 @@ extern void evtClearActiveFlag();
 
 extern u32 D_003CE460[];
 
-extern char D_00437840[];
+extern char D_r1_003B9360[];
 
 extern void dspAdvanceMessageWindowControl();
 

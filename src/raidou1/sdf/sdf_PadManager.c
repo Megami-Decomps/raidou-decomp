@@ -329,7 +329,7 @@ void sdfPadManager(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdf_PadManager", func_0036A960);
+INCLUDE_ASM(const s32, "sdf/sdf_PadManager", func_r1_0036A960);
 
 void sdfPadChangeMode(s32 aPadNum, u8 mode) {
     sdfPadCb[aPadNum].reqMode = mode;

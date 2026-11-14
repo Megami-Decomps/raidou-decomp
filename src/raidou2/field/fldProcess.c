@@ -543,9 +543,9 @@ extern u32 fldEncountFlags;
 extern u32 fldEncountTimer[2];
 /* End of declarations from src/smt3/field/fldProcess.c */
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00132520);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012CA98);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00135710);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012F7A0);
 
 void fldAutoMapSeqSetFlag(u32 flag)
 {
@@ -577,15 +577,15 @@ s32 fldEncountTestFlag(u32 flag)
     return (fldEncountFlags & flag) != 0;
 }
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_001358D0);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012F950);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00135A00);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FA80);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00135B50);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FBF8);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA548);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA560);
+INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447808);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA578);
 
@@ -595,13 +595,13 @@ INCLUDE_RODATA(const s32, "field/fldProcess", jtbl_004AA5B0);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", jtbl_004AA6F0);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA718);
+INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447938);
 
-INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA728);
+INCLUDE_RODATA(const s32, "field/fldProcess", D_r1_00447948);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00135B70);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FC18);
 
-void func_00135C48(void) {
+void func_r1_0012FCF0(void) {
 }
 
 INCLUDE_ASM(const s32, "field/fldProcess", func_00135C50);
@@ -614,17 +614,17 @@ INCLUDE_ASM(const s32, "field/fldProcess", func_00135ED0);
 
 INCLUDE_ASM(const s32, "field/fldProcess", func_00135F60);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00136050);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEA8);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_00136068);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEC0);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_001360A0);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FEF8);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_001360F0);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_0012FF48);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_001363B8);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_001301C0);
 
-INCLUDE_ASM(const s32, "field/fldProcess", func_001363C8);
+INCLUDE_ASM(const s32, "field/fldProcess", func_r1_001301D0);
 
 INCLUDE_RODATA(const s32, "field/fldProcess", D_004AA7C0);
 
@@ -639,17 +639,17 @@ INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE830);
 
 INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE838);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE83C);
+INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6CC);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE840);
+INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6D0);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE844);
+INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6D4);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE848);
+INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6D8);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE84C);
+INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6DC);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE850);
+INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6E0);
 
-INCLUDE_SDATA(const s32, "field/fldProcess", D_004DE854);
+INCLUDE_SDATA(const s32, "field/fldProcess", D_r1_0046B6E4);
 

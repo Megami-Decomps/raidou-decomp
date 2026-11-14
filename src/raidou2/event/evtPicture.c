@@ -188,21 +188,21 @@ void evtKillPictureProcess(dds3ProcessID_t *id)
     dds3KillProcess(id, 1);
 }
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D0DB0);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BACE8);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D0E50);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BAD70);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D0E80);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BADA0);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D0EA0);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BADC0);
 
 INCLUDE_ASM(const s32, "event/evtPicture", func_001D1078);
 
 INCLUDE_ASM(const s32, "event/evtPicture", func_001D1080);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1238);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB130);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1348);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB240);
 
 dds3ProcessID_t *evtStartPictureProcess2(u32 priority, const char *texdata)
 {
@@ -214,23 +214,23 @@ dds3ProcessID_t *evtStartPictureProcess2(u32 priority, const char *texdata)
 
 INCLUDE_ASM(const s32, "event/evtPicture", evtStartPictureProcess);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1470);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB368);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1510);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB408);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1538);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB430);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1560);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB458);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D15D0);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB4C8);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1600);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB4F8);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1660);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB558);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1690);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB588);
 
-INCLUDE_ASM(const s32, "event/evtPicture", func_001D1700);
+INCLUDE_ASM(const s32, "event/evtPicture", func_r1_001BB5F8);
 INCLUDE_SDATA(const s32, "event/evtPicture", D_004DFA60);
 
 INCLUDE_SDATA(const s32, "event/evtPicture", D_004DFA68);

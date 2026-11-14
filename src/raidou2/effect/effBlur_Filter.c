@@ -181,11 +181,11 @@ void dds3EffectPartialMultiFilterDelete(dds3Effect_PartialMultiFilter_t *hPartia
 void dds3EffectPartialMultiFilterDraw(dds3Effect_PartialMultiFilter_t *hPartialMultiFilter);
 /* End of declarations from src/smt3/effect/effBlur_Filter.c */
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020F4C8);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F81D0);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020F570);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8278);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020F5E8);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F82F0);
 
 void dds3EffectBlurSetRect(dds3Effect_PartialMultiBlurParam_t *work) {
     s32 x = work->Blur.center[0] + 0x100;
@@ -208,9 +208,9 @@ effBlurTemplate_t *dds3EffectPartialMultiBlurCreate(const dds3Effect_PartialMult
     return dst;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020F780);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8488);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020F798);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F84A0);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", effDrawBlurFixedPointRectangle);
 
@@ -219,9 +219,9 @@ void dds3EffectPartialMultiBlurSetParam(effBlurTemplate_t *hPartialMultiBlur, co
     hPartialMultiBlur->body = *pParam;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020F8F0);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F85F8);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020F8F8);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8600);
 
 void dds3EffectDistBlurPartInit(effBlurScatterWork_t *pParam, effBlurScatterSlot_t *pPart) {
     dds3Effect_Blur_t *quad = &pPart->quad;
@@ -270,9 +270,9 @@ effBlurScatterWork_t *dds3EffectDistortionBlurCreate(dds3Effect_DistortionBlurPa
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020FB48);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8850);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020FB60);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8868);
 
 /* Update scale parameters but preserve the allocated destination slot count. */
 void dds3EffectDistortionBlurSetParam(effBlurScaleWork_t *hDistortionBlur, dds3Effect_RippleBlurParam_t *pParam) {
@@ -282,11 +282,11 @@ void dds3EffectDistortionBlurSetParam(effBlurScaleWork_t *hDistortionBlur, dds3E
     hDistortionBlur->params.number = count;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020FE08);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8B10);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020FE10);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8B18);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_0020FE40);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8B48);
 
 /* Reset a slot for a new burst: zero phase and angle, then copy the colour, the two spare fields and the centre from the work parameters. */
 void dds3EffectRipBlurPartInit(effBlurScaleWork_t *pParam, effBlurScaleSlot_t *pPart) {
@@ -337,17 +337,17 @@ effBlurScaleWork_t *dds3EffectRippleBlurCreate(dds3Effect_RippleBlurParam_t *pPa
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_00210080);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8D88);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_00210098);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8DA0);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_00210288);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F8F90);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_002104A0);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F91A8);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectFilter);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_002108D8);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F95E0);
 
 /* Clone rectangle parameters and select a fresh source handle. */
 dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *pParam) {
@@ -358,103 +358,103 @@ dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_P
     return dst;
 }
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_00210B78);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F9880);
 
-INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_00210B90);
+INCLUDE_ASM(const s32, "effect/effBlur_Filter", func_r1_001F9898);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC738);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455968);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC740);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455970);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC748);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455978);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC758);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455988);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC768);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455998);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC778);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_004559A8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC788);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_004559B8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC798);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_004559C8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC7A8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_004559D8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC7B8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_004559E8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC7C8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_004559F8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC7D8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A08);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC7E8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A18);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC7F8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A28);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC808);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A38);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC818);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A48);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC828);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A58);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC838);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A68);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC848);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A78);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC858);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A88);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC868);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455A98);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC878);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455AA8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC888);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455AB8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC898);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455AC8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC8A8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455AD8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC8B8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455AE8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC8C8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455AF8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC8D8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B08);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC8E8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B18);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC8F8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B28);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC908);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B38);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC918);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B48);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC928);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B58);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC938);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B68);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC948);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B78);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC958);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B88);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC968);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455B98);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC978);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455BA8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC988);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455BB8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC998);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455BC8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC9A8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455BD8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC9B8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455BE8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC9C8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455BF8);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC9D8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455C08);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC9E8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455C18);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BC9F8);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455C28);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BCA08);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455C38);
 
-INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_004BCA18);
+INCLUDE_RODATA(const s32, "effect/effBlur_Filter", D_r1_00455C48);
 

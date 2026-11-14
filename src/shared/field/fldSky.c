@@ -125,7 +125,7 @@ extern u32 fldSkyLightMaTbl;
 
 extern u32 fldSkyDisplayPointers[];
 
-extern u32 D_002FCAA0[];
+extern u32 D_r1_003BF810[];
 
 extern f32 fldSkyPlayerIdx[];
 
@@ -360,6 +360,6 @@ void fld_1374F0(void) {
     u32 *displayPointers = fldSkyDisplayPointers;
 
     memset(displayPointers, 0, 0x14);
-    displayPointers[0] = EE_ADDR(D_002FCAA0);
+    displayPointers[0] = EE_ADDR(D_r1_003BF810);
     displayPointers[1] = EE_ADDR(fldSkyPlayerIdx);
 }

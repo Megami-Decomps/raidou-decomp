@@ -243,13 +243,13 @@ void evtFreeAllUnit(void) {
     }
 }
 
-INCLUDE_RODATA(const s32, "event/evtStage", D_004B4460);
+INCLUDE_RODATA(const s32, "event/evtStage", D_r1_0044DCD8);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001B95C0);
+INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3908);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001B96B8);
+INCLUDE_ASM(const s32, "event/evtStage", func_r1_001A3A00);
 
-INCLUDE_ASM(const s32, "event/evtStage", func_001B97D0);
+INCLUDE_ASM(const s32, "event/evtStage", evtStartEvent);
 
 void evtKillFieldScript(void)
 {

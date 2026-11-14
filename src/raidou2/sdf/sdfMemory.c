@@ -602,7 +602,7 @@ s32 SdfIopFileRpc(const char *aName, s32 aDataSize, const void *aData, s32 *aOut
 }
 void (*sdfMemFullCallback)(s32 size) = NULL;
 
-INCLUDE_SDATA(const s32, "sdf/sdfMemory", D_004E4288);
+INCLUDE_SDATA(const s32, "sdf/sdfMemory", D_r1_0046F270);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMemory", D_004E4289);
+INCLUDE_SDATA(const s32, "sdf/sdfMemory", D_r1_0046F271);
 

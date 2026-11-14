@@ -80,11 +80,11 @@ void sdfCopyCornerWordsWithEdgeByte(u32 *source, u32 *destination, u8 *edgeValue
     }
 }
 
-INCLUDE_ASM(const s32, "code_0032A6A0", func_0032A778);
+INCLUDE_ASM(const s32, "code_0032A6A0", func_r1_002CA4C8);
 
-INCLUDE_ASM(const s32, "code_0032A6A0", func_0032AA88);
+INCLUDE_ASM(const s32, "code_0032A6A0", func_r1_002CA7D8);
 
-INCLUDE_ASM(const s32, "code_0032A6A0", func_0032AC28);
+INCLUDE_ASM(const s32, "code_0032A6A0", func_r1_002CA978);
 
 INCLUDE_ASM(const s32, "code_0032A6A0", func_0032AF00);
 

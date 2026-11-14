@@ -1250,7 +1250,7 @@ extern u32 scrHandleCount;
 
 extern sdfGrOt_t sdfDebugGrOt;
 
-extern s8 D_0032453B[];
+extern s8 D_r1_003AD3BB[];
 
 extern void evtDrawHeapUsageOverlay(sdfGrOt_t *);
 
@@ -1657,7 +1657,7 @@ scrProcessWork_s *scrPrintProcedureStart(const scrHeader_t *header, const scrTyp
 scrProcessWork_s *fldFlowParse(const scrHeader_t *header, ScrProcedureIndex procedureIndex);
 /* End of declarations from src/dds1/game/code_00107FD8.c */
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010A8C8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010A750);
 
 /* Submit the four-corner gradient rectangle with the native default depth.
    The inserted 0xFFFFFF is depth, not a white color. */
@@ -1665,7 +1665,7 @@ void evtSubmitDefaultDepthGradientRect(s32 x, s32 y, s32 width, s32 height, s32 
     evtSubmitGradientRectAtDepth(x, y, width, height, EVT_QUAD_DEFAULT_DEPTH, topLeftColor, topRightColor, bottomRightColor, bottomLeftColor);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010ABC0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010AA48);
 
 void eglLinkTri(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 rgba0, s32 rgba1, s32 rgba2)
 {
@@ -1723,11 +1723,11 @@ void eglLinkTri(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 rgba0, s32 r
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010B0E0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010B350);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010AF68);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010B4D8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010B0F0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010B538);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010B150);
 
 /* Preserve native vertex order 0,2,3,1; W components are not initialized. */
 void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32 x3, f32 y3, f32 z3, u32 color0, u32 color1, u32 color2, u32 color3)
@@ -1772,7 +1772,7 @@ void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010B878);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010B490);
 
 /* Preserve native vertex order 0,2,3,1; W components are not initialized. */
 void eglLinkTexPoly4(s32 color0, f32 x0, f32 y0, f32 z0, s32 color1, f32 x1, f32 y1, f32 z1, s32 color2, f32 x2, f32 y2, f32 z2, s32 color3, f32 x3, f32 y3, f32 z3, sdfTexHandle_t *texture, f32 u0, f32 v0, f32 u1, f32 v1)
@@ -1831,13 +1831,13 @@ void eglLinkTexPoly4(s32 color0, f32 x0, f32 y0, f32 z0, s32 color1, f32 x1, f32
     sdfMatFreeDelayed(asset);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010BC70);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010B888);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010BE98);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010BAB0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010BED8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010BAF0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010BEF0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_r1_0010BB08);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw_0010A8C8", func_0010C0F8);
 

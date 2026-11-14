@@ -803,11 +803,11 @@ s32 vfprintf(FILE *fp, const char *fmt, va_list ap)
     return _vfprintf_r(fp->_data, fp, fmt, ap);
 }
 
-INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", D_004DB080);
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", D_r1_004686B0);
 
-INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", D_004DB090);
+INCLUDE_RODATA(const s32, "sdk/libc/vfprintf", D_r1_004686C0);
 
-INCLUDE_ASM(const s32, "sdk/libc/vfprintf", func_004046E0);
+INCLUDE_ASM(const s32, "sdk/libc/vfprintf", func_r1_0038B870);
 
 char *cvt(_reent *r, f64 value, s32 precision, s32 flags, char *sign,
           s32 *decimalPoint, s32 format, s32 *length)

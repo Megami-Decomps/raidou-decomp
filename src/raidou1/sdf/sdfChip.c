@@ -173,7 +173,7 @@ void *sdfChipAllocDirect(s32 aSize)
     return chip;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfChip", func_003569F8);
+INCLUDE_ASM(const s32, "sdf/sdfChip", func_r1_003569F8);
 
 void sdfChipFreeDirect(void *aPtr)
 {

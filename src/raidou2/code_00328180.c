@@ -531,11 +531,11 @@ static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list
 
 extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *);
 
-extern u32 D_0037ECB0[];
+extern u32 D_r1_004035D0[];
 
-extern sdfGrOt_t *D_0037ECF0[];
+extern sdfGrOt_t *D_r1_00403610[];
 
-extern sdfGrOt_t *D_0037EE68[];
+extern sdfGrOt_t *D_r1_004037A8[];
 
 extern u32 D_0037EB30[];
 
@@ -543,13 +543,13 @@ extern sdfGrOt_t *D_0037EB78[];
 
 #include "dds/bill_object_api.h"
 
-extern char D_003B39C8[];
+extern char D_r1_00456E58[];
 
-extern char D_003B39E0[];
+extern char D_r1_00456E70[];
 
-extern char D_003B3B88[];
+extern char D_r1_00457028[];
 
-extern char D_003B3BA0[];
+extern char D_r1_00457040[];
 
 extern f32 effComputeProjectedOffsetAngle(const void *position, const void *offset);
 
@@ -565,11 +565,11 @@ extern u32 effColorEditSelectedKey;
 
 extern u32 effColorEditPage;
 
-extern u32 D_003BD158;
+extern u32 D_r1_0046D9F8;
 
-extern u32 D_003BD15C;
+extern u32 D_r1_0046D9FC;
 
-extern u32 D_003BD160;
+extern u32 D_r1_0046DA00;
 
 extern u32 effColorEditSelectedAlphaKey;
 
@@ -603,13 +603,13 @@ extern u32 effWindTextureHandle;
 
 extern struct sdfMemHandle_t *D_003BC984;
 
-extern struct sdfMemHandle_t *D_003BC994;
+extern struct sdfMemHandle_t *D_r1_0046D14C;
 
-extern u8 D_0038E000[];
+extern u8 D_r1_00415880[];
 
-extern u8 D_0038E570[];
+extern u8 D_r1_00415E10[];
 
-extern u8 *D_0037EBF8[];
+extern u8 *D_r1_00403508[];
 
 extern FileJobPayload *effQueuedFileHandle;
 
@@ -617,7 +617,7 @@ extern struct sdfDrawTag_t *effCurrentRenderPacket;
 
 extern s32 effSharedRibbonReferenceCount;
 
-extern u32 D_003BC990;
+extern u32 D_r1_0046D148;
 
 extern struct EffExpandedList *effCreateTextureAnimationSet(u32);
 
@@ -635,7 +635,7 @@ extern s32 dds3BillboardGeneralNumber(void);
 
 extern sdfMat_t *sdfMatNew(void);
 
-extern sdf3DPrimPolyParm_t D_003DC9E0;
+extern sdf3DPrimPolyParm_t D_r1_004D1BC0;
 
 extern EffTrackSet *effCreateTrackSetWithSharedReferences(u32, u32, u32);
 
@@ -649,9 +649,9 @@ extern void effBlurStepScaleSlotsAndDraw(void *);
 
 extern s32 effRequestResourceByMode(u32, u32, u32, void **);
 
-extern u32 D_003BC950;
+extern u32 D_r1_0046D108;
 
-extern u32 D_003BC954;
+extern u32 D_r1_0046D10C;
 
 typedef struct EffectObjectFlag {
     u32 state;
@@ -667,21 +667,21 @@ void effDrawThreePointGroups(EffPointSet *, Matrix4 *);
 
 extern u32 effPartsListScroll;
 
-extern u32 D_0038F2FC[];
+extern u32 D_r1_00416D44[];
 
-extern s32 D_003BC970[2];
+extern s32 D_r1_0046D128[2];
 
-extern RefObj *D_003BC978[2];
+extern RefObj *D_r1_0046D130[2];
 
 extern u32 effSharedTextureReferenceCount;
 
-extern s32 D_003BC9B0[2];
+extern s32 D_r1_0046D170[2];
 
-extern s32 D_003BC9B8[2];
+extern s32 D_r1_0046D178[2];
 
-extern u8 D_003BC9C0[2];
+extern u8 D_r1_0046D180[2];
 
-extern u8 D_003BC9C8[2];
+extern u8 D_r1_0046D188[2];
 
 /* Native resource operations add cloning before the frame callbacks.
  * The final word is the copied payload size, not another callback.
@@ -777,31 +777,31 @@ typedef struct BaObj {
 
 extern s32 effEditScalarTrack(EffScalarTrack *, u32, void *, void *);
 
-extern u8 D_0038F9D0[];
+extern u8 D_r1_00417410[];
 
-extern u8 D_0038FAD0[];
+extern u8 D_r1_00417528[];
 
-extern u8 D_0038F8E8[];
+extern u8 D_r1_00417328[];
 
-extern u8 D_0038FA20[];
+extern u8 D_r1_00417478[];
 
-extern u8 D_0038F938[];
+extern u8 D_r1_00417378[];
 
 extern struct BtlResourceNameRecord *effQueuedResourceNameRecord;
 
 extern void effReleaseQueuedResourceName(void);
 
-extern const char D_003BD088[];
+extern const char D_r1_0046D930[];
 
-extern const char D_003BD090[];
+extern const char D_r1_0046D938[];
 
-extern char D_003DF8D0[];
+extern char D_r1_004D54F0[];
 
 extern u8 D_0038F2B8[];
 
 extern u8 effBattleOffset[];
 
-extern u8 *D_003BD074;
+extern u8 *D_r1_0046D91C;
 
 extern void effDrawSurfaceNode(s32);
 
@@ -811,63 +811,63 @@ extern u32 effSelectCameraFileJobFromRows(const char *, const struct EffCameraCr
 
 extern char D_003B3968[];
 
-extern char D_003B3958[];
+extern char D_r1_00456DD8[];
 
-extern char D_003BCA40[];
+extern char D_r1_0046D208[];
 
-extern char D_003BD050[];
+extern char D_r1_0046D8F8[];
 
-extern char D_003B38C8[];
+extern char D_r1_00456D48[];
 
 extern char D_003B3938[];
 
-extern char D_003B3928[];
+extern char D_r1_00456DA8[];
 
-extern char D_003B3918[];
+extern char D_r1_00456D98[];
 
-extern char D_003B3908[];
+extern char D_r1_00456D88[];
 
-extern char D_003B38F8[];
+extern char D_r1_00456DE8[];
 
-extern char D_003B38E8[];
+extern char D_r1_00456D68[];
 
-extern char D_003B38D8[];
+extern char D_r1_00456D58[];
 
 extern char D_003B3888[];
 
-extern char D_003BD000[];
+extern char D_r1_0046D870[];
 
 extern u8 D_0038DE70[];
 
-extern u8 D_0038DF50[];
+extern u8 D_r1_004157D0[];
 
-extern u8 D_0038E0F0[];
+extern u8 D_r1_00415970[];
 
-extern u8 D_0038E1A0[];
+extern u8 D_r1_00415A20[];
 
-extern u8 D_0038E280[];
+extern u8 D_r1_00415B20[];
 
 extern u8 D_0038E240[];
 
-extern u8 D_0038E310[];
+extern u8 D_r1_00415BB0[];
 
-extern u8 D_0038E450[];
+extern u8 D_r1_00415CF0[];
 
-extern u8 D_0038E500[];
+extern u8 D_r1_00415DA0[];
 
-extern u8 D_0038E620[];
+extern u8 D_r1_00416320[];
 
-extern u8 D_0038E6F0[];
+extern u8 D_r1_00415FA0[];
 
-extern u8 D_0038E7C0[];
+extern u8 D_r1_00416070[];
 
 extern u8 D_0038E800[];
 
-extern u8 D_0038E9A0[];
+extern u8 D_r1_004162E0[];
 
-extern u8 D_003DF840[];
+extern u8 D_r1_004D5460[];
 
-extern u8 D_003DFA30[];
+extern u8 D_r1_004D5650[];
 
 extern u8 D_003BD108;
 
@@ -877,7 +877,7 @@ extern u8 D_003BD10A;
 
 extern s32 effEditColorTrack(s32, s32, s32);
 
-extern u8 D_003DE148[] __attribute__((aligned(4)));
+extern u8 D_r1_004D3418[] __attribute__((aligned(4)));
 
 /* Value holder with a float field and a u16 data pointer (layout inferred). */
 typedef struct ValPtr44 {
@@ -924,9 +924,9 @@ typedef struct EffKindSource {
     s32 modeKind;
 } EffKindSource;
 
-extern EffKindDesc D_0037E770[];
+extern EffKindDesc D_r1_00403080[];
 
-extern EffKindDesc D_0037E7E8[];
+extern EffKindDesc D_r1_004030F8[];
 
 /* VU0 model helpers consume vf10 directly, matching the original macro-mode setup. */
 extern void effDrawScalyTexturedStrip(EffStripWork *, void *);
@@ -937,7 +937,7 @@ extern void effInitModelVUState(dds3ModelHandle_t *);
 
 extern s32 effComputeLightDirectionVU(dds3ModelHandle_t *, sdf3DLightParallelPacket_t *);
 
-extern char D_003B2AA0[];
+extern char D_r1_00455D00[];
 
 void effDestroyModelContext(dds3ModelHandle_t *model);
 
@@ -1396,7 +1396,7 @@ void effSetActiveInstanceMatrixComponent(EffClassWork *work, float value);
 
 EffTrackSet *effCreateTrackSet(s32 count, u16 kind);
 
-extern struct SdfTextureFileHeader *D_003BC96C;
+extern struct SdfTextureFileHeader *D_r1_0046D124;
 
 EffTrackSet *effCreateTrackSetWithSharedReferences(u32 count, u32 kind, u32 sharedRef);
 
@@ -1423,7 +1423,7 @@ struct sdfMat_t;
 /* Draw track-set positions/colors/UVs; a null matrix selects the identity transform. */
 void effDrawTrackSet(EffTrackSet *track, const Matrix4 *matrix);
 
-extern struct sdfMemHandle_t *D_003BC960[2];
+extern struct sdfMemHandle_t *D_r1_0046D118[2];
 
 void effLoadFlashTextures(void);
 
@@ -1543,7 +1543,7 @@ void effSetClassWorkColor(EffClassWork *work, u32 color);
 
 void effSetClassWorkScale(EffClassWork *work, float value);
 
-extern sdf3DPrimPolyParm_t D_003DCA10[];
+extern sdf3DPrimPolyParm_t D_r1_004D1BF0[];
 
 EffPointSet *effCreatePointSet4(u32 count);
 
@@ -1616,11 +1616,11 @@ void effSetSurfaceNodeColor(s32 node, u32 value);
 
 void effIndexedFloatCallbackDispatch(ValPtr44 *p, float v);
 
-extern sdf3DPrimPolyParm_t D_003DCA40;
+extern sdf3DPrimPolyParm_t D_r1_004D1C20;
 
-extern sdf3DPrimPolyParm_t D_003DCA70;
+extern sdf3DPrimPolyParm_t D_r1_004D1C50;
 
-extern u8 D_0037EB90[];
+extern u8 D_r1_004034A0[];
 
 extern u8 D_0037EBE0[];
 
@@ -1803,7 +1803,7 @@ void effSetClassResourceColor(EffClassWork *work, u32 color);
 
 void effSetClassResourceMatrixComponent(EffClassWork *work, float value);
 
-extern sdf3DPrimPolyParm_t D_003DCAD0[];
+extern sdf3DPrimPolyParm_t D_r1_004D1CB0[];
 
 EffPointSet *effCreatePointSet5(s32 count);
 
@@ -1942,7 +1942,7 @@ void effSetBlockResourceColor(EffClassWork *work, u32 color);
 
 void effSetBlockResourceMatrixComponent(EffClassWork *work, float value);
 
-extern sdf3DPrimPolyParm_t D_003DCB00;
+extern sdf3DPrimPolyParm_t D_r1_004D1CE0;
 
 EffRibbonWork *effCreateRibbonWork(u32 count, u32 repeat);
 
@@ -2154,7 +2154,7 @@ void effSetModelResourceColor(EffModelResource *effect, u32 color);
 
 void effSetModelResourceScale(EffModelResource *effect, f32 scale);
 
-extern sdf3DPrimPolyParm_t D_003DCB60[];
+extern sdf3DPrimPolyParm_t D_r1_004D1D40[];
 
 EffPointSet *effCreatePointSet3(s32 count);
 
@@ -2214,15 +2214,15 @@ void effSyncLinkedActorChildParameter(void);
 /* Apply a temporary tint to eligible actors, then restore their original RGB. */
 void effTransitionSelectedActorRgbColors(EffActiveResource *work);
 
-extern u128 D_003DCBD0[];
+extern u128 D_r1_004D1DB0[];
 
-extern s8 D_003BC9AC;
+extern s8 D_r1_0046D169;
 
-extern u128 D_003DCBE0[];
+extern u128 D_r1_004D1DC0[];
 
-extern u128 D_003DCBA0[];
+extern u128 D_r1_004D1D80[];
 
-extern sdf3DLight_t *D_0037EE80[3];
+extern sdf3DLight_t *D_r1_004037C0[3];
 
 s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPacket_t *target);
 
@@ -2438,9 +2438,9 @@ void effInvokeFileJobWithBattleCamera(u32 job);
 
 void effFileJobQueueRelease(u32 job);
 
-extern char D_003BD080[];
+extern char D_r1_0046D928[];
 
-extern const char D_003BD078[];
+extern const char D_r1_0046D920[];
 
 /* Payload option (+0x0C) selects the asset identifier at +0x08. */
 typedef struct EffAssetIdentifier {
@@ -2502,7 +2502,7 @@ extern s32 fileQueueCountLinkedJobs(FileQueue *);
 
 extern FileJob *effCurrentFileQueueEntry;
 
-extern u32 D_003BD064;
+extern u32 D_r1_0046D90C;
 
 extern EffQueuedFileObject effPartsListMenu;
 
@@ -2511,15 +2511,15 @@ u32 effAppendPositionedCameraFileJob(const EffCameraCreateRequest *request);
 /* Load the selected job's payload and camera snapshots; return the refresh status. */
 u32 effLoadSelectedFileJob(void);
 
-extern u32 D_0038EA6C[];
+extern u32 D_r1_00416484[];
 
 u32 effReinitializeFileQueue(void);
 
-extern u32 D_0038EB3C[];
+extern u32 D_r1_00416554[];
 
 u32 effResetFileQueueState(void);
 
-extern u32 D_0038EAD4[];
+extern u32 D_r1_004164EC[];
 
 u32 effFinalizeQueuedFile(void);
 
@@ -2544,9 +2544,9 @@ typedef struct EffectAlignedBlock128 {
 
 extern EffQueuedFileObject effBattleCameraSnapshotSelection;
 
-extern EffEditorRow D_0038EC38[];
+extern EffEditorRow D_r1_00416650[];
 
-extern EffEditorRow D_0038EC80[];
+extern EffEditorRow D_r1_00416698[];
 
 extern u8 effPartsPreviewReload;
 
@@ -2605,7 +2605,7 @@ extern s8 dds3PadBitTable[];
 
 extern f32 D_0038F530[4];
 
-extern f32 D_003DFA20[4];
+extern f32 D_r1_004D5640[4];
 
 s32 effHandleDebugOrbitInput(void);
 
@@ -2624,9 +2624,9 @@ typedef char EffectStateSnapshotSizeCheck[(sizeof(EffectStateSnapshot) == 0x80) 
 
 extern s32 effUpdateCameraDiagnostics(EffectStateSnapshot *, s8);
 
-extern u8 D_0038F4F0[];
+extern u8 D_r1_00416F38[];
 
-extern s8 D_0039862B[];
+extern s8 D_r1_0043EED9[];
 
 extern void btlDebugDrawPoint(f32 *position);
 
@@ -2677,9 +2677,9 @@ typedef struct EffectCameraDebugState {
     u32 unknown14[9];
 } EffectCameraDebugState;
 
-extern EffectCameraDebugState D_0038F588;
+extern EffectCameraDebugState D_r1_00416FC8;
 
-extern s8 D_0039862B[];
+extern s8 D_r1_0043EED9[];
 
 extern f32 effWorldUpVector[4];
 
@@ -2714,7 +2714,7 @@ void effPollResourceBankSlot(char *path, u32 flags, EffResourceBankSlot *selecti
 
 extern struct BtlResourceNameRecord *effFileQueueNameRecord;
 
-extern const char D_003BCF30[];
+extern const char D_r1_0046D7A0[];
 
 void effInitializeResourceQueue(void);
 
@@ -2741,11 +2741,11 @@ extern EffQueuedFileObject effMappingState;
 
 void effResetMappingFlags(void);
 
-extern EffEditorRow D_0038F7D8[];
+extern EffEditorRow D_r1_00417218[];
 
-extern EffEditorRow D_0038F718[];
+extern EffEditorRow D_r1_00417158[];
 
-extern EffEditorRow D_0038F658[];
+extern EffEditorRow D_r1_00417098[];
 
 /* The effect mapping dispatcher stores its data pointer at +0x0C. */
 typedef struct EffMappingRequest {
@@ -2935,7 +2935,7 @@ extern char effColorEditFrameCountFormat[];
 extern void btlDebugDrawMappingColorSpan(s32, s32, s32, s32, u32, u32);
 
 /* Edit the alpha fade interval and its four-breakpoint graph. */
-s32 func_002BB188(SdfAlphaTrack *range, s32 frames);
+s32 func_r1_00249458(SdfAlphaTrack *range, s32 frames);
 
 /* ALPHA callback for POLYGON children of the native S-family descriptors. */
 s32 effEditSPolygonAlphaTrack(s32 work);
@@ -3019,21 +3019,21 @@ typedef struct EffectFileHeader {
 
 extern void effResetFileResourceManager(void);
 
-extern EffectFileHeader D_0038DC08;
+extern EffectFileHeader D_r1_00414EA8;
 
-extern EffectFileHeader D_00383F18;
+extern EffectFileHeader D_r1_00408D60;
 
-extern EffectFileHeader D_0038C758;
+extern EffectFileHeader D_r1_00411E28;
 
 u32 fileLoadEffectSlotA(void);
 
-extern u8 D_00384A08[] __attribute__((aligned(4)));
+extern u8 D_r1_00409908[] __attribute__((aligned(4)));
 
 u32 fileLoadEffectSlotHelp(void);
 
 u32 fileLoadEffectSlotB(void);
 
-extern EffectFileHeader D_0038D470;
+extern EffectFileHeader D_r1_00414710;
 
 u32 effLoadFileSlotF2(void);
 

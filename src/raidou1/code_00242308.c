@@ -532,11 +532,11 @@ static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list
 
 extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *);
 
-extern u32 D_0037ECB0[];
+extern u32 D_r1_004035D0[];
 
-extern sdfGrOt_t *D_0037ECF0[];
+extern sdfGrOt_t *D_r1_00403610[];
 
-extern sdfGrOt_t *D_0037EE68[];
+extern sdfGrOt_t *D_r1_004037A8[];
 
 extern u32 D_0037EB30[];
 
@@ -544,16 +544,16 @@ extern sdfGrOt_t *D_0037EB78[];
 
 #include "dds/bill_object_api.h"
 
-extern char D_003B39C8[];
+extern char D_r1_00456E58[];
 
 extern char D_003B39E0[];
 
 extern char D_003B3B88[];
 
 extern char D_003B3BA0[];
-extern char D_00456E70[];
-extern char D_00457028[];
-extern char D_00457040[];
+extern char D_r1_00456E70[];
+extern char D_r1_00457028[];
+extern char D_r1_00457040[];
 
 extern f32 effComputeProjectedOffsetAngle(const void *position, const void *offset);
 
@@ -607,13 +607,13 @@ extern u32 effWindTextureHandle;
 
 extern struct sdfMemHandle_t *D_003BC984;
 
-extern struct sdfMemHandle_t *D_003BC994;
+extern struct sdfMemHandle_t *D_r1_0046D14C;
 
-extern u8 D_0038E000[];
+extern u8 D_r1_00415880[];
 
-extern u8 D_0038E570[];
+extern u8 D_r1_00415E10[];
 
-extern u8 *D_0037EBF8[];
+extern u8 *D_r1_00403508[];
 
 extern FileJobPayload *effQueuedFileHandle;
 
@@ -621,7 +621,7 @@ extern struct sdfDrawTag_t *effCurrentRenderPacket;
 
 extern s32 effSharedRibbonReferenceCount;
 
-extern u32 D_003BC990;
+extern u32 D_r1_0046D148;
 
 extern struct EffExpandedList *effCreateTextureAnimationSet(u32);
 
@@ -639,7 +639,7 @@ extern s32 dds3BillboardGeneralNumber(void);
 
 extern sdfMat_t *sdfMatNew(void);
 
-extern sdf3DPrimPolyParm_t D_003DC9E0;
+extern sdf3DPrimPolyParm_t D_r1_004D1BC0;
 
 extern EffTrackSet *effCreateTrackSetWithSharedReferences(u32, u32, u32);
 
@@ -653,9 +653,9 @@ extern void effBlurStepScaleSlotsAndDraw(void *);
 
 extern s32 effRequestResourceByMode(u32, u32, u32, void **);
 
-extern u32 D_003BC950;
+extern u32 D_r1_0046D108;
 
-extern u32 D_003BC954;
+extern u32 D_r1_0046D10C;
 
 typedef struct EffectObjectFlag {
     u32 state;
@@ -671,21 +671,21 @@ void effDrawThreePointGroups(EffPointSet *, Matrix4 *);
 
 extern u32 effPartsListScroll;
 
-extern u32 D_0038F2FC[];
+extern u32 D_r1_00416D44[];
 
-extern s32 D_003BC970[2];
+extern s32 D_r1_0046D128[2];
 
-extern RefObj *D_003BC978[2];
+extern RefObj *D_r1_0046D130[2];
 
 extern u32 effSharedTextureReferenceCount;
 
-extern s32 D_003BC9B0[2];
+extern s32 D_r1_0046D170[2];
 
-extern s32 D_003BC9B8[2];
+extern s32 D_r1_0046D178[2];
 
-extern u8 D_003BC9C0[2];
+extern u8 D_r1_0046D180[2];
 
-extern u8 D_003BC9C8[2];
+extern u8 D_r1_0046D188[2];
 
 /* Native resource operations add cloning before the frame callbacks.
  * The final word is the copied payload size, not another callback.
@@ -789,7 +789,7 @@ extern u8 D_0038F8E8[];
 
 extern u8 D_0038FA20[];
 
-extern u8 D_0038F938[];
+extern u8 D_r1_00417378[];
 
 extern struct BtlResourceNameRecord *effQueuedResourceNameRecord;
 
@@ -799,7 +799,7 @@ extern const char D_003BD088[];
 
 extern const char D_003BD090[];
 
-extern char D_003DF8D0[];
+extern char D_r1_004D54F0[];
 
 extern u8 D_0038F2B8[];
 
@@ -815,27 +815,27 @@ extern u32 effSelectCameraFileJobFromRows(const char *, const struct EffCameraCr
 
 extern char D_003B3968[];
 
-extern char D_003B3958[];
+extern char D_r1_00456DD8[];
 
 extern char D_003BCA40[];
 
 extern char D_003BD050[];
 
-extern char D_003B38C8[];
+extern char D_r1_00456D48[];
 
 extern char D_003B3938[];
 
-extern char D_003B3928[];
+extern char D_r1_00456DA8[];
 
-extern char D_003B3918[];
+extern char D_r1_00456D98[];
 
-extern char D_003B3908[];
+extern char D_r1_00456D88[];
 
-extern char D_003B38F8[];
+extern char D_r1_00456DE8[];
 
-extern char D_003B38E8[];
+extern char D_r1_00456D68[];
 
-extern char D_003B38D8[];
+extern char D_r1_00456D58[];
 
 extern char D_003B3888[];
 
@@ -843,35 +843,35 @@ extern char D_003BD000[];
 
 extern u8 D_0038DE70[];
 
-extern u8 D_0038DF50[];
+extern u8 D_r1_004157D0[];
 
-extern u8 D_0038E0F0[];
+extern u8 D_r1_00415970[];
 
-extern u8 D_0038E1A0[];
+extern u8 D_r1_00415A20[];
 
-extern u8 D_0038E280[];
+extern u8 D_r1_00415B20[];
 
 extern u8 D_0038E240[];
 
-extern u8 D_0038E310[];
+extern u8 D_r1_00415BB0[];
 
-extern u8 D_0038E450[];
+extern u8 D_r1_00415CF0[];
 
-extern u8 D_0038E500[];
+extern u8 D_r1_00415DA0[];
 
-extern u8 D_0038E620[];
+extern u8 D_r1_00416320[];
 
-extern u8 D_0038E6F0[];
+extern u8 D_r1_00415FA0[];
 
-extern u8 D_0038E7C0[];
+extern u8 D_r1_00416070[];
 
 extern u8 D_0038E800[];
 
-extern u8 D_0038E9A0[];
+extern u8 D_r1_004162E0[];
 
 extern u8 D_003DF840[];
 
-extern u8 D_003DFA30[];
+extern u8 D_r1_004D5650[];
 
 extern u8 D_003BD108;
 
@@ -881,7 +881,7 @@ extern u8 D_003BD10A;
 
 extern s32 effEditColorTrack(s32, s32, s32);
 
-extern u8 D_003DE148[] __attribute__((aligned(4)));
+extern u8 D_r1_004D3418[] __attribute__((aligned(4)));
 
 /* Value holder with a float field and a u16 data pointer (layout inferred). */
 typedef struct ValPtr44 {
@@ -928,9 +928,9 @@ typedef struct EffKindSource {
     s32 modeKind;
 } EffKindSource;
 
-extern EffKindDesc D_0037E770[];
+extern EffKindDesc D_r1_00403080[];
 
-extern EffKindDesc D_0037E7E8[];
+extern EffKindDesc D_r1_004030F8[];
 
 /* VU0 model helpers consume vf10 directly, matching the original macro-mode setup. */
 extern void effDrawScalyTexturedStrip(EffStripWork *, void *);
@@ -941,7 +941,7 @@ extern void effInitModelVUState(dds3ModelHandle_t *);
 
 extern s32 effComputeLightDirectionVU(dds3ModelHandle_t *, sdf3DLightParallelPacket_t *);
 
-extern char D_003B2AA0[];
+extern char D_r1_00455D00[];
 
 void effDestroyModelContext(dds3ModelHandle_t *model);
 
@@ -1400,7 +1400,7 @@ void effSetActiveInstanceMatrixComponent(EffClassWork *work, float value);
 
 EffTrackSet *effCreateTrackSet(s32 count, u16 kind);
 
-extern struct SdfTextureFileHeader *D_003BC96C;
+extern struct SdfTextureFileHeader *D_r1_0046D124;
 
 EffTrackSet *effCreateTrackSetWithSharedReferences(u32 count, u32 kind, u32 sharedRef);
 
@@ -1427,7 +1427,7 @@ struct sdfMat_t;
 /* Draw track-set positions/colors/UVs; a null matrix selects the identity transform. */
 void effDrawTrackSet(EffTrackSet *track, const Matrix4 *matrix);
 
-extern struct sdfMemHandle_t *D_003BC960[2];
+extern struct sdfMemHandle_t *D_r1_0046D118[2];
 
 void effLoadFlashTextures(void);
 
@@ -1547,7 +1547,7 @@ void effSetClassWorkColor(EffClassWork *work, u32 color);
 
 void effSetClassWorkScale(EffClassWork *work, float value);
 
-extern sdf3DPrimPolyParm_t D_003DCA10[];
+extern sdf3DPrimPolyParm_t D_r1_004D1BF0[];
 
 EffPointSet *effCreatePointSet4(u32 count);
 
@@ -1620,11 +1620,11 @@ void effSetSurfaceNodeColor(s32 node, u32 value);
 
 void effIndexedFloatCallbackDispatch(ValPtr44 *p, float v);
 
-extern sdf3DPrimPolyParm_t D_003DCA40;
+extern sdf3DPrimPolyParm_t D_r1_004D1C20;
 
-extern sdf3DPrimPolyParm_t D_003DCA70;
+extern sdf3DPrimPolyParm_t D_r1_004D1C50;
 
-extern u8 D_0037EB90[];
+extern u8 D_r1_004034A0[];
 
 extern u8 D_0037EBE0[];
 
@@ -1807,7 +1807,7 @@ void effSetClassResourceColor(EffClassWork *work, u32 color);
 
 void effSetClassResourceMatrixComponent(EffClassWork *work, float value);
 
-extern sdf3DPrimPolyParm_t D_003DCAD0[];
+extern sdf3DPrimPolyParm_t D_r1_004D1CB0[];
 
 EffPointSet *effCreatePointSet5(s32 count);
 
@@ -1946,7 +1946,7 @@ void effSetBlockResourceColor(EffClassWork *work, u32 color);
 
 void effSetBlockResourceMatrixComponent(EffClassWork *work, float value);
 
-extern sdf3DPrimPolyParm_t D_003DCB00;
+extern sdf3DPrimPolyParm_t D_r1_004D1CE0;
 
 EffRibbonWork *effCreateRibbonWork(u32 count, u32 repeat);
 
@@ -2158,7 +2158,7 @@ void effSetModelResourceColor(EffModelResource *effect, u32 color);
 
 void effSetModelResourceScale(EffModelResource *effect, f32 scale);
 
-extern sdf3DPrimPolyParm_t D_003DCB60[];
+extern sdf3DPrimPolyParm_t D_r1_004D1D40[];
 
 EffPointSet *effCreatePointSet3(s32 count);
 
@@ -2218,15 +2218,15 @@ void effSyncLinkedActorChildParameter(void);
 /* Apply a temporary tint to eligible actors, then restore their original RGB. */
 void effTransitionSelectedActorRgbColors(EffActiveResource *work);
 
-extern u128 D_003DCBD0[];
+extern u128 D_r1_004D1DB0[];
 
-extern s8 D_003BC9AC;
+extern s8 D_r1_0046D169;
 
-extern u128 D_003DCBE0[];
+extern u128 D_r1_004D1DC0[];
 
-extern u128 D_003DCBA0[];
+extern u128 D_r1_004D1D80[];
 
-extern sdf3DLight_t *D_0037EE80[3];
+extern sdf3DLight_t *D_r1_004037C0[3];
 
 s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPacket_t *target);
 
@@ -2515,15 +2515,15 @@ u32 effAppendPositionedCameraFileJob(const EffCameraCreateRequest *request);
 /* Load the selected job's payload and camera snapshots; return the refresh status. */
 u32 effLoadSelectedFileJob(void);
 
-extern u32 D_0038EA6C[];
+extern u32 D_r1_00416484[];
 
 u32 effReinitializeFileQueue(void);
 
-extern u32 D_0038EB3C[];
+extern u32 D_r1_00416554[];
 
 u32 effResetFileQueueState(void);
 
-extern u32 D_0038EAD4[];
+extern u32 D_r1_004164EC[];
 
 u32 effFinalizeQueuedFile(void);
 
@@ -2548,9 +2548,9 @@ typedef struct EffectAlignedBlock128 {
 
 extern EffQueuedFileObject effBattleCameraSnapshotSelection;
 
-extern EffEditorRow D_0038EC38[];
+extern EffEditorRow D_r1_00416650[];
 
-extern EffEditorRow D_0038EC80[];
+extern EffEditorRow D_r1_00416698[];
 
 extern u8 effPartsPreviewReload;
 
@@ -2628,9 +2628,9 @@ typedef char EffectStateSnapshotSizeCheck[(sizeof(EffectStateSnapshot) == 0x80) 
 
 extern s32 effUpdateCameraDiagnostics(EffectStateSnapshot *, s8);
 
-extern u8 D_0038F4F0[];
+extern u8 D_r1_00416F38[];
 
-extern s8 D_0039862B[];
+extern s8 D_r1_0043EED9[];
 
 extern void btlDebugDrawPoint(f32 *position);
 
@@ -2681,9 +2681,9 @@ typedef struct EffectCameraDebugState {
     u32 unknown14[9];
 } EffectCameraDebugState;
 
-extern EffectCameraDebugState D_0038F588;
+extern EffectCameraDebugState D_r1_00416FC8;
 
-extern s8 D_0039862B[];
+extern s8 D_r1_0043EED9[];
 
 extern f32 effWorldUpVector[4];
 
@@ -2747,7 +2747,7 @@ void effResetMappingFlags(void);
 
 extern EffEditorRow D_0038F7D8[];
 
-extern EffEditorRow D_0038F718[];
+extern EffEditorRow D_r1_00417158[];
 
 extern EffEditorRow D_0038F658[];
 
@@ -3025,21 +3025,21 @@ typedef struct EffectFileHeader {
 
 extern void effResetFileResourceManager(void);
 
-extern EffectFileHeader D_0038DC08;
+extern EffectFileHeader D_r1_00414EA8;
 
-extern EffectFileHeader D_00383F18;
+extern EffectFileHeader D_r1_00408D60;
 
-extern EffectFileHeader D_0038C758;
+extern EffectFileHeader D_r1_00411E28;
 
 u32 fileLoadEffectSlotA(void);
 
-extern u8 D_00384A08[] __attribute__((aligned(4)));
+extern u8 D_r1_00409908[] __attribute__((aligned(4)));
 
 u32 fileLoadEffectSlotHelp(void);
 
 u32 fileLoadEffectSlotB(void);
 
-extern EffectFileHeader D_0038D470;
+extern EffectFileHeader D_r1_00414710;
 
 u32 effLoadFileSlotF2(void);
 
@@ -3565,7 +3565,7 @@ extern f32 sdfAtan(f32 ratio);
  * own direction, and fade them over their last ten frames. */
 void sdfUpdateFlagListEntries(SdfFlagListWork *work);
 
-extern sdfGrOt_t *D_00398098[];
+extern sdfGrOt_t *D_r1_004039D0[];
 
 /* Copy vertex pairs, optionally add the view target, and submit the packet list.
  * count is reused first as an entry count and then as a vertex count. */
@@ -3593,19 +3593,19 @@ void sdfEnableFlagListViewTargetRelativeMode(void);
 void sdfDisableFlagListViewTargetRelativeMode(void);
 /* End of declarations from src/dds1/game/code_002CC750.c */
 
-void func_00242308(void) {
+void func_r1_00242308(void) {
     effResetSlots();
 }
 
-INCLUDE_ASM(const s32, "code_00242308", func_00242320);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00242320);
 
-void func_002423E0(void) {
+void func_r1_002423E0(void) {
 }
 
-void func_002423E8(void) {
+void func_r1_002423E8(void) {
 }
 
-void func_002423F0(void) {
+void func_r1_002423F0(void) {
 }
 
 EffActiveResource *effAllocateResourcePayload(u16 kind, void *source) {
@@ -3683,7 +3683,7 @@ void effClearCallbackFrame(EffActiveResource *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00242308", func_00242748);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00242748);
 
 void effDispatchEnabledCallback(EffActiveResource *work) {
     if (btlIsRuntimeAllocated() != 0) {
@@ -3694,20 +3694,20 @@ void effDispatchEnabledCallback(EffActiveResource *work) {
     }
 }
 
-void func_00242748(EffActiveResource *work);
+void func_r1_00242748(EffActiveResource *work);
 
-void func_00242820(EffActiveResource *work) {
-    func_00242748(work);
+void func_r1_00242820(EffActiveResource *work) {
+    func_r1_00242748(work);
     effDispatchEnabledCallback(work);
 }
 
-INCLUDE_ASM(const s32, "code_00242308", func_00242848);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00242848);
 
-INCLUDE_ASM(const s32, "code_00242308", func_00242858);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00242858);
 
-INCLUDE_ASM(const s32, "code_00242308", func_00242870);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00242870);
 
-INCLUDE_ASM(const s32, "code_00242308", func_00242878);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00242878);
 
 /* Reset each entry's timer to free, then clear both colour words per entry. */
 void sdfResetFlagListEntries(SdfFlagListWork *work) {
@@ -3793,41 +3793,41 @@ void sdfDrawFlagListVertices(SdfFlagListWork *work) {
     packetList = (sdfDrawTag_t *)sdfGrAllocPacketBuff(SDF_FLAG_LIST_PACKET_BYTES);
     sdfDrawTagInit(packetList);
     sdfDrawTagLink(packetList, (u32)effDebugDrawWireModel(copiedVertices, work->colors, work->params.count * SDF_FLAG_LIST_VERTICES_PER_ENTRY, 0x40));
-    surface = D_00398098[work->params.alpha.surfaceIndex];
+    surface = D_r1_004039D0[work->params.alpha.surfaceIndex];
     surface->regFunc(surface, packetList);
     sdfMemFreeDirect(vertexAllocation);
 }
 
-INCLUDE_ASM(const s32, "code_00242308", func_00243180);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00243180);
 
-INCLUDE_ASM(const s32, "code_00242308", func_00243188);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00243188);
 
 /* Sample color/alpha at frame zero with duration zero; discard the return value. */
 void sdfSampleFlagListStartColor(SdfFlagListWork *work) {
     effSampleColorAlphaTracks(&work->params.color, &work->params.alpha, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "code_00242308", func_002431B8);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_002431B8);
 
-INCLUDE_ASM(const s32, "code_00242308", func_002431D8);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_002431D8);
 
-INCLUDE_ASM(const s32, "code_00242308", func_002431E0);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_002431E0);
 
-INCLUDE_ASM(const s32, "code_00242308", func_002431E8);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_002431E8);
 
-extern s32 D_0046D18C;
+extern s32 D_r1_0046D18C;
 
-void func_00243210(void) {
-    D_0046D18C = 1;
+void func_r1_00243210(void) {
+    D_r1_0046D18C = 1;
 }
 
-extern s32 D_0046D18C;
+extern s32 D_r1_0046D18C;
 
-void func_00243220(void) {
-    D_0046D18C = 0;
+void func_r1_00243220(void) {
+    D_r1_0046D18C = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00242308", func_00243228);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00243228);
 
 s32 effUpdatePartsListEditor(s32 mode);
 
@@ -3841,15 +3841,15 @@ s32 btlUpdateEffectWork(void) {
     return 1;
 }
 
-void func_002432B0(void) {
+void func_r1_002432B0(void) {
 }
 
-void func_0021BB88(void);
+void func_r1_0021BB88(void);
 
-void func_002432B8(void) {
+void func_r1_002432B8(void) {
     effResetFileResources();
     effResetFileResourceManager();
-    func_0021BB88();
+    func_r1_0021BB88();
 }
 
 void effSetBattleOffset(void *src) {
@@ -3901,7 +3901,7 @@ u32 effCreateBattleCameraJob(u8 *request) {
 
     if (outputBuffer != NULL) {
         if (((EffFileJobRequest *)request)->fileKind == 6) {
-            memcpy(outputBuffer, D_003DE148, 0x3C);
+            memcpy(outputBuffer, D_r1_004D3418, 0x3C);
             outputBuffer = ((EffFileJobRequest *)request)->outputBuffer;
         }
         fileJobSetPrimaryData(effQueuedFileHandle, outputBuffer, ((EffFileJobRequest *)request)->size, ((EffFileJobRequest *)request)->transferMode);
@@ -3960,13 +3960,13 @@ u32 effPollPrimaryFile(void) {
     u32 state;
     u32 result = 0x400001;
 
-    effUpdateResourceQueue(D_003B39C8, D_003BD078, &record);
+    effUpdateResourceQueue(D_r1_00456E58, D_003BD078, &record);
     state = record.completion.state;
     if (state == BTL_RESOURCE_SELECTION_CANCELED) {
         result = 0x400000;
     } else if (state == BTL_RESOURCE_SELECTION_ACCEPTED) {
         if (effQueuedFileHandle != 0) {
-            sprintf(path, D_003BD080, D_003B39C8, record.nameWithExtension);
+            sprintf(path, D_003BD080, D_r1_00456E58, record.nameWithExtension);
             fileWriteToPfs(effQueuedFileHandle, path);
             result = 0x400002;
         }
@@ -3976,7 +3976,7 @@ u32 effPollPrimaryFile(void) {
 
 void effQueueNamedResourceRequest(void) {
     effReleaseQueuedResourceName();
-    effQueueResource(D_003BD088, D_003DF8D0);
+    effQueueResource(D_003BD088, D_r1_004D54F0);
 }
 
 u32 effPollNamedFile(void) {
@@ -3991,7 +3991,7 @@ u32 effPollNamedFile(void) {
         result = 0x400000;
     } else if (state == BTL_RESOURCE_SELECTION_ACCEPTED) {
         if (effFileQueue != 0) {
-            strcpy(D_003DF8D0, record.name);
+            strcpy(D_r1_004D54F0, record.name);
             sprintf(path, D_003BD080, D_003B39E0, record.nameWithExtension);
             fileQueueSaveImage(effFileQueue, path);
             result = 0x400002;
@@ -4002,7 +4002,7 @@ u32 effPollNamedFile(void) {
 
 void effQueueAttachedResourceRequest(void) {
     effReleaseQueuedResourceName();
-    effQueueResource(D_003BD090, D_003DF8D0);
+    effQueueResource(D_003BD090, D_r1_004D54F0);
 }
 
 u32 effPollAttachedFile(void) {
@@ -4017,7 +4017,7 @@ u32 effPollAttachedFile(void) {
         result = 0x400000;
     } else if (state == BTL_RESOURCE_SELECTION_ACCEPTED) {
         if (effFileQueue != 0) {
-            strcpy(D_003DF8D0, record.name);
+            strcpy(D_r1_004D54F0, record.name);
             sprintf(path, D_003BD080, D_003B39E0, record.nameWithExtension);
             fileQueueSaveVersionedImage(effFileQueue, path);
             result = 0x400002;
@@ -4026,7 +4026,7 @@ u32 effPollAttachedFile(void) {
     return result;
 }
 
-extern EffectAssetLink *D_004163E8[24];
+extern EffectAssetLink *D_r1_004163E8[24];
 
 u8 * effFindAssetData(FileJob *entry) {
     FileJobPayload *requested = (FileJobPayload *)entry->id;
@@ -4034,7 +4034,7 @@ u8 * effFindAssetData(FileJob *entry) {
     u16 option = requested->option;
     u16 i;
     for (i = 0; i < 24; i++) {
-        EffectAssetLink *links = D_004163E8[i];
+        EffectAssetLink *links = D_r1_004163E8[i];
         if (links != NULL) {
             EffectAssetLink *current = links;
             if (current->asset != NULL) {
@@ -4051,7 +4051,7 @@ u8 * effFindAssetData(FileJob *entry) {
     return NULL;
 }
 
-extern EffectAssetLink *D_004163E8[24];
+extern EffectAssetLink *D_r1_004163E8[24];
 
 EffQueuedFileObject * effFindAssetObject(FileJob *entry) {
     FileJobPayload *requested = (FileJobPayload *)entry->id;
@@ -4059,7 +4059,7 @@ EffQueuedFileObject * effFindAssetObject(FileJob *entry) {
     u16 option = requested->option;
     u16 i;
     for (i = 0; i < 24; i++) {
-        EffectAssetLink *links = D_004163E8[i];
+        EffectAssetLink *links = D_r1_004163E8[i];
         if (links != NULL) {
             EffectAssetLink *current = links;
             if (current->asset != NULL) {
@@ -4078,14 +4078,14 @@ EffQueuedFileObject * effFindAssetObject(FileJob *entry) {
 
 /* Return the selected queue row plus the offset of its visible window. */
 u32 effGetSelectedFileQueueIndex(void) {
-    return D_0038F2FC[0] + effPartsListScroll;
+    return D_r1_00416D44[0] + effPartsListScroll;
 }
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456E70);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456E70);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456E80);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456E80);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456E90);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456E90);
 
 INCLUDE_ASM(const s32, "code_00242308", effUpdatePartsListEditor);
 
@@ -4161,7 +4161,7 @@ u32 effLoadSelectedFileJob(void) {
         fileData = (u8 *)fileResolvePrimaryBuffer(payload);
         memcpy(request->outputBuffer, fileData,
                effQueuedFileHandle->primary.size);
-        memcpy(D_003DE148, fileData, 0x3C);
+        memcpy(D_r1_004D3418, fileData, 0x3C);
     }
 
     job = effCreateBattleCameraJob((u8 *)request);
@@ -4189,8 +4189,8 @@ u32 effReinitializeFileQueue(void) {
         fileQueueDestroy(effFileQueue);
     }
     effFileQueue = fileQueueCreate();
-    D_0038EA6C[0] = 0;
-    D_003DF8D0[0] = 0;
+    D_r1_00416484[0] = 0;
+    D_r1_004D54F0[0] = 0;
     effPartsListScroll = 0;
     effPartsListMenu.cursor = 0;
     effQueuedFileObject = &effPartsListMenu;
@@ -4199,7 +4199,7 @@ u32 effReinitializeFileQueue(void) {
 
 u32 effResetFileQueueState(void) {
     fileQueueRemoveAndDestroyJob(effFileQueue, fileQueueGetAt(effFileQueue, effGetSelectedFileQueueIndex()));
-    D_0038EB3C[0] = 0;
+    D_r1_00416554[0] = 0;
     effPartsListScroll = 0;
     effPartsListMenu.cursor = 0;
     effQueuedFileObject = &effPartsListMenu;
@@ -4210,7 +4210,7 @@ u32 effFinalizeQueuedFile(void) {
     s32 index = effGetSelectedFileQueueIndex();
     FileJob *record = fileQueueGetAt(effFileQueue, index);
     FileJob *copy = fileJobDuplicateAfter(effFileQueue, record);
-    D_0038EAD4[0] = 0;
+    D_r1_004164EC[0] = 0;
     fileJobCopyHeader(copy, record);
     effQueuedFileObject = &effPartsListMenu;
     return 0;
@@ -4269,7 +4269,7 @@ u32 effCloneSelectedFileJob(void) {
         }
         memcpy(resource->outputBuffer, fileData,
                effQueuedFileHandle->primary.size);
-        memcpy(D_003DE148, fileData, 0x3C);
+        memcpy(D_r1_004D3418, fileData, 0x3C);
     }
 
     D_003BD064 = effCreateBattleCameraJob((u8 *)resource);
@@ -4313,13 +4313,13 @@ u32 effLoadBattleCameraSnapshot(u32 value) {
     *(EffectBlock90 *)D_003DF840 = *(EffectBlock90 *)record;
     *(EffectAlignedBlock128 *)D_003DF840 = *(EffectAlignedBlock128 *)effSelectedJobHeader;
     if (((EffectBlock90 *)D_003DF840)->word[26] & 2) {
-        effBattleCameraSnapshotSelection.rows = D_0038EC38;
+        effBattleCameraSnapshotSelection.rows = D_r1_00416650;
         effBattleCameraSnapshotSelection.count = 3;
         if (effBattleCameraSnapshotSelection.cursor > effBattleCameraSnapshotSelection.count) {
             effBattleCameraSnapshotSelection.cursor = 0;
         }
     } else {
-        effBattleCameraSnapshotSelection.rows = D_0038EC80;
+        effBattleCameraSnapshotSelection.rows = D_r1_00416698;
         effBattleCameraSnapshotSelection.count = 9;
         if (effBattleCameraSnapshotSelection.cursor == 0) {
             effBattleCameraSnapshotSelection.cursor = 1;
@@ -4335,13 +4335,13 @@ u32 effStoreBattleCameraSnapshot(u32 value) {
     *(EffectAlignedBlock128 *)effSelectedJobHeader = *(EffectAlignedBlock128 *)D_003DF840;
     effPartsPreviewReload = 1;
     if (((EffectBlock90 *)D_003DF840)->word[26] & 2) {
-        effBattleCameraSnapshotSelection.rows = D_0038EC38;
+        effBattleCameraSnapshotSelection.rows = D_r1_00416650;
         effBattleCameraSnapshotSelection.count = 3;
         if (effBattleCameraSnapshotSelection.cursor > effBattleCameraSnapshotSelection.count) {
             effBattleCameraSnapshotSelection.cursor = 0;
         }
     } else {
-        effBattleCameraSnapshotSelection.rows = D_0038EC80;
+        effBattleCameraSnapshotSelection.rows = D_r1_00416698;
         effBattleCameraSnapshotSelection.count = 9;
         if (effBattleCameraSnapshotSelection.cursor == 0) {
             effBattleCameraSnapshotSelection.cursor = 1;
@@ -4352,80 +4352,80 @@ u32 effStoreBattleCameraSnapshot(u32 value) {
 
 INCLUDE_ASM(const s32, "code_00242308", effSelectCameraFileJobFromRows);
 
-extern char D_00456DF8[];
-extern char D_00415620[];
-s32 func_00245928(void) {
-    return effSelectCameraFileJobFromRows(D_00456DF8, D_00415620, 0xF);
+extern char D_r1_00456DF8[];
+extern char D_r1_00415620[];
+s32 func_r1_00245928(void) {
+    return effSelectCameraFileJobFromRows(D_r1_00456DF8, D_r1_00415620, 0xF);
 }
 
 s32 effCreatePolyTrackControlTask(void) {
-    return effSelectCameraFileJobFromRows(D_003B3958, D_0038DF50, 6);
+    return effSelectCameraFileJobFromRows(D_r1_00456DD8, D_r1_004157D0, 6);
 }
 
 s32 effCreatePolyTrackTask(void) {
-    return effSelectCameraFileJobFromRows("POLY TRACK S", D_0038E000, 6);
+    return effSelectCameraFileJobFromRows("POLY TRACK S", D_r1_00415880, 6);
 }
 
 s32 effCreateBlurTask(void) {
-    return effSelectCameraFileJobFromRows(D_003BCA40, D_0038E0F0, 6);
+    return effSelectCameraFileJobFromRows(D_003BCA40, D_r1_00415970, 6);
 }
 
 s32 effCreateFilterTask(void) {
-    return effSelectCameraFileJobFromRows(D_003BD050, D_0038E1A0, 3);
+    return effSelectCameraFileJobFromRows(D_003BD050, D_r1_00415A20, 3);
 }
 
 s32 effCreateEnvironmentTask(void) {
-    return effSelectCameraFileJobFromRows(D_003B38C8, D_0038E280, 5);
+    return effSelectCameraFileJobFromRows(D_r1_00456D48, D_r1_00415B20, 5);
 }
 
-extern char D_00456DB8[];
-extern char D_00415AC0[];
-s32 func_00245A18(void) {
-    return effSelectCameraFileJobFromRows(D_00456DB8, D_00415AC0, 0x3);
+extern char D_r1_00456DB8[];
+extern char D_r1_00415AC0[];
+s32 func_r1_00245A18(void) {
+    return effSelectCameraFileJobFromRows(D_r1_00456DB8, D_r1_00415AC0, 0x3);
 }
 
 s32 effCreatePolyFlashTask(void) {
-    return effSelectCameraFileJobFromRows(D_003B3928, D_0038E310, 0xB);
+    return effSelectCameraFileJobFromRows(D_r1_00456DA8, D_r1_00415BB0, 0xB);
 }
 
 s32 effCreatePolyRingTask(void) {
-    return effSelectCameraFileJobFromRows(D_003B3918, D_0038E450, 6);
+    return effSelectCameraFileJobFromRows(D_r1_00456D98, D_r1_00415CF0, 6);
 }
 
 s32 effCreatePolyThunderTask(void) {
-    return effSelectCameraFileJobFromRows(D_003B3908, D_0038E500, 4);
+    return effSelectCameraFileJobFromRows(D_r1_00456D88, D_r1_00415DA0, 4);
 }
 
 s32 effCreatePolyTwinkleTask(void) {
-    return effSelectCameraFileJobFromRows("POLY TWINKLE", D_0038E570, 6);
+    return effSelectCameraFileJobFromRows("POLY TWINKLE", D_r1_00415E10, 6);
 }
 
-extern char D_00456D78[];
-extern char D_00415EC0[];
-s32 func_00245AE0(void) {
-    return effSelectCameraFileJobFromRows(D_00456D78, D_00415EC0, 0x8);
+extern char D_r1_00456D78[];
+extern char D_r1_00415EC0[];
+s32 func_r1_00245AE0(void) {
+    return effSelectCameraFileJobFromRows(D_r1_00456D78, D_r1_00415EC0, 0x8);
 }
 
 s32 effCreatePolyScalyTask(void) {
-    return effSelectCameraFileJobFromRows(D_003B38E8, D_0038E6F0, 5);
+    return effSelectCameraFileJobFromRows(D_r1_00456D68, D_r1_00415FA0, 5);
 }
 
 s32 effCreatePolyCrackTask(void) {
-    return effSelectCameraFileJobFromRows(D_003B38D8, D_0038E7C0, 2);
+    return effSelectCameraFileJobFromRows(D_r1_00456D58, D_r1_00416070, 2);
 }
 
-extern char D_00456D08[];
-extern char D_004160B0[];
-s32 func_00245B58(void) {
-    return effSelectCameraFileJobFromRows(D_00456D08, D_004160B0, 0xD);
+extern char D_r1_00456D08[];
+extern char D_r1_004160B0[];
+s32 func_r1_00245B58(void) {
+    return effSelectCameraFileJobFromRows(D_r1_00456D08, D_r1_004160B0, 0xD);
 }
 
 s32 effCreateTwoDimensionalTask(void) {
-    return effSelectCameraFileJobFromRows(D_003BD000, D_0038E9A0, 2);
+    return effSelectCameraFileJobFromRows(D_003BD000, D_r1_004162E0, 2);
 }
 
 s32 effCreatePolyWindTask(void) {
-    return effSelectCameraFileJobFromRows(D_003B38F8, D_0038E620, 7);
+    return effSelectCameraFileJobFromRows(D_r1_00456DE8, D_r1_00416320, 7);
 }
 
 u32 effPollPartResource(void) {
@@ -4433,7 +4433,7 @@ u32 effPollPartResource(void) {
     u32 state;
     u32 result = 0x400001;
 
-    effPollResourceBankSlot(D_003B39C8, BTL_RESOURCE_SCAN_EP, &record);
+    effPollResourceBankSlot(D_r1_00456E58, BTL_RESOURCE_SCAN_EP, &record);
     state = record.selectionStatus;
     if (state == BTL_RESOURCE_SELECTION_CANCELED) {
         result = 0x400000;
@@ -4461,47 +4461,47 @@ u32 effPollNamedFileJob(void) {
         if (effFileQueue != 0) {
             fileQueueDestroy(effFileQueue);
         }
-        strcpy(D_003DF8D0, record.name);
+        strcpy(D_r1_004D54F0, record.name);
         effFileQueue = fileQueueCreateFromCommandState((const char *)&record);
         effEditedQueueHeader = *(EffectBlock128 *)effFileQueue;
         effPartsListScroll = 0;
-        D_0038F2FC[0] = 0;
+        D_r1_00416D44[0] = 0;
         result = 0x400002;
     }
     return result;
 }
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456F30);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456F30);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456F48);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456F48);
 
 INCLUDE_ASM(const s32, "code_00242308", effHandleDebugOrbitInput);
 
-extern u32 D_004D5640[];
-extern u8 D_004D5460[];
+extern u32 D_r1_004D5640[];
+extern u8 D_r1_004D5460[];
 
 s32 effResetStaticState(void) {
-    D_004D5640[0] = 0;
-    D_004D5640[1] = 0;
-    D_004D5640[2] = 0;
-    D_004D5640[3] = 0;
-    D_004D5460[0x88] = 8;
-    D_004D5460[0x89] = 0;
-    D_004D5460[0x8A] = 0;
+    D_r1_004D5640[0] = 0;
+    D_r1_004D5640[1] = 0;
+    D_r1_004D5640[2] = 0;
+    D_r1_004D5640[3] = 0;
+    D_r1_004D5460[0x88] = 8;
+    D_r1_004D5460[0x89] = 0;
+    D_r1_004D5460[0x8A] = 0;
     return 0;
 }
 
 /* Synchronize the diagnostic camera position and calculate its positional guides.
  * Return input flags; the native diagnostic drawing providers are retail stubs. */
 s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode) {
-    u8 *camera = D_0038F4F0;
+    u8 *camera = D_r1_00416F38;
     f32 vectors[6][4] __attribute__((aligned(16)));
     f32 length;
     f32 deltaY;
     s32 result = 1;
 
     if ((*(u32 *)(camera + 0x10) & 2) == 0) {
-        if (D_0039862B[0] < 0) {
+        if (D_r1_0043EED9[0] < 0) {
             result = 0;
         }
     }
@@ -4565,9 +4565,9 @@ s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00242308", func_00246318);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00246318);
 
-INCLUDE_ASM(const s32, "code_00242308", func_00246340);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00246340);
 
 INCLUDE_ASM(const s32, "code_00242308", effResetCameraSnapshotSelection);
 
@@ -4575,13 +4575,13 @@ u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *state, s8 useBattleP
     EffectCameraDebugScratch scratch;
     u32 result = 1;
 
-    if ((D_0038F588.flags & 2) == 0) {
-        if (D_0039862B[0] < 0) {
+    if ((D_r1_00416FC8.flags & 2) == 0) {
+        if (D_r1_0043EED9[0] < 0) {
             result = 0;
         }
     }
 
-    SDF_VU0_COPYVECTOR(D_003DFA30, state->camera.quat);
+    SDF_VU0_COPYVECTOR(D_r1_004D5650, state->camera.quat);
     if (useBattlePosition != 0) {
         effComputeBattleCameraPositionVU((u8 *)state);
     } else {
@@ -4590,12 +4590,12 @@ u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *state, s8 useBattleP
     SDF_VU0_STOREVECTOR_NOMEM(&scratch.basePosition);
     SDF_VU0_STOREVECTOR(D_003DFA20);
 
-    btlDebugMenuSetupNoOp(&D_0038F588);
+    btlDebugMenuSetupNoOp(&D_r1_00416FC8);
     btlDebugMenuBeforeRecordNoOp();
-    btlDebugMenuRecordNoOp(&D_0038F588);
+    btlDebugMenuRecordNoOp(&D_r1_00416FC8);
     btlDebugMenuAfterRecordNoOp();
-    SDF_VU0_COPYVECTOR(state->camera.quat, D_003DFA30);
-    if (D_0038F588.flags & 8) {
+    SDF_VU0_COPYVECTOR(state->camera.quat, D_r1_004D5650);
+    if (D_r1_00416FC8.flags & 8) {
         result |= 2;
     }
     SDF_VU0_LOADVECTOR(&scratch.basePosition);
@@ -4692,7 +4692,7 @@ u32 effProcessQueuedFileRecordAndPersistChanges(void) {
 }
 
 void effResetFileResources(void) {
-    D_0038F2FC[0] = 0;
+    D_r1_00416D44[0] = 0;
     effPartsPreviewReload = 0;
     effPartsListScroll = 0;
     if (effFileQueue != 0) {
@@ -4895,7 +4895,7 @@ s32 effEditBfColorTrack(s32 request) {
 
 /* HELPER's COLOR callback edits the shared default color/alpha data. */
 s32 effEditHlpColorTrack(void) {
-    return effEditColorTrack((s32)D_003DE148, (s32)D_003DE148 + 0x24, ((EffMappingObject *)D_003DE148)->value34);
+    return effEditColorTrack((s32)D_r1_004D3418, (s32)D_r1_004D3418 + 0x24, ((EffMappingObject *)D_r1_004D3418)->value34);
 }
 
 /* Edit T-BOARD color/alpha tracks using the alternate property-option table. */
@@ -4940,7 +4940,7 @@ s32 effEditRColorTrack(s32 request) {
     s32 result;
     s32 object = ((EffMappingRequest *)request)->object;
 
-    effMappingState.rows = D_0038F718;
+    effMappingState.rows = D_r1_00417158;
     effMappingState.count = 8;
     result = effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
     effMappingState.rows = D_0038F658;
@@ -5050,7 +5050,7 @@ s32 effEditTwoDimensionalColorTrack(s32 request) {
     s32 result;
     s32 object = ((EffMappingRequest *)request)->object;
 
-    effMappingState.rows = D_0038F718;
+    effMappingState.rows = D_r1_00417158;
     effMappingState.count = 8;
     result = effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value8C);
     effMappingState.rows = D_0038F658;
@@ -5058,8 +5058,8 @@ s32 effEditTwoDimensionalColorTrack(s32 request) {
     return result;
 }
 
-extern EffEditorRow D_00417218[];
-extern EffEditorRow D_00417098[];
+extern EffEditorRow D_r1_00417218[];
+extern EffEditorRow D_r1_00417098[];
 
 /* FUNC effEditMColorTrack */
 #ifdef NON_MATCHING
@@ -5067,31 +5067,31 @@ extern EffEditorRow D_00417098[];
 void effEditMColorTrack(BaObj *p) {
     s32 object;
 
-    effMappingState.rows = D_00417218;
+    effMappingState.rows = D_r1_00417218;
     effMappingState.count = 8;
     object = p->x0C;
     effEditColorTrack(object + 0x7C, object + 0xA0, ((EffMappingObject *)object)->value108);
-    effMappingState.rows = D_00417098;
+    effMappingState.rows = D_r1_00417098;
     effMappingState.count = 8;
 }
 #else
 INCLUDE_ASM(const s32, "code_00242308", effEditMColorTrack);
 #endif
 
-extern EffQueuedFileObject D_00417410;
-extern EffQueuedFileObject D_00417528;
-extern u32 D_0046D9F8;
-extern u32 D_0046D9FC;
-extern u32 D_0046DA00;
+extern EffQueuedFileObject D_r1_00417410;
+extern EffQueuedFileObject D_r1_00417528;
+extern u32 D_r1_0046D9F8;
+extern u32 D_r1_0046D9FC;
+extern u32 D_r1_0046DA00;
 
 void btlResetEffectWork(void) {
-    D_00417410.flags |= 0x10;
-    D_00417410.cursor = 0;
-    D_00417528.flags |= 0x10;
-    D_00417528.cursor = 0;
-    D_0046D9F8 = 0;
-    D_0046D9FC = 0;
-    D_0046DA00 = 0;
+    D_r1_00417410.flags |= 0x10;
+    D_r1_00417410.cursor = 0;
+    D_r1_00417528.flags |= 0x10;
+    D_r1_00417528.cursor = 0;
+    D_r1_0046D9F8 = 0;
+    D_r1_0046D9FC = 0;
+    D_r1_0046DA00 = 0;
 }
 
 INCLUDE_ASM(const s32, "code_00242308", effEditScalarTrack);
@@ -5136,10 +5136,10 @@ s32 effEditTBoardScaleTrack(BaObj *p) {
     return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
 }
 
-extern char D_00417478[];
+extern char D_r1_00417478[];
 
 s32 effEditTBoardRotationTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->value8C, &D_00417528, D_00417478);
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->value8C, &D_r1_00417528, D_r1_00417478);
 }
 
 /* SCALE property callback for native W-family descriptors. */
@@ -5154,7 +5154,7 @@ s32 effEditWRotationTrack(BaObj *p) {
 
 /* Edit the SCALE_UV curve in U-CYLND's POLYGON child; forward editor status. */
 s32 effEditUCylinderPolygonUvScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x90), ((EffMappingObject *)p->x0C)->value80, D_0038F9D0, D_0038F938);
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x90), ((EffMappingObject *)p->x0C)->value80, D_0038F9D0, D_r1_00417378);
 }
 
 /* Edit the shared U-SMOKE/U-SPIRL root SCALE curve; forward editor status. */
@@ -5169,12 +5169,12 @@ s32 effEditUSmokeSpiralRotationTrack(BaObj *p) {
 
 /* Edit SCALE_UV in their POLYGON children; forward the numeric editor's status. */
 s32 effEditUSmokeSpiralPolygonUvScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C), ((EffMappingObject *)p->x0C)->valueF4, D_0038F9D0, D_0038F938);
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C), ((EffMappingObject *)p->x0C)->valueF4, D_0038F9D0, D_r1_00417378);
 }
 
 /* Edit the native U-SPHRE root SCALE curve; forward editor status. */
 s32 effEditUSphereScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value70, D_0038F9D0, D_0038F938);
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value70, D_0038F9D0, D_r1_00417378);
 }
 
 /* Edit the native 2D root SCALE curve; forward editor status. */
@@ -5188,17 +5188,17 @@ s32 effEditTwoDimensionalRotationTrack(BaObj *p) {
 }
 
 
-extern char D_00417328[];
+extern char D_r1_00417328[];
 
 s32 effEditMScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0xB0), ((EffMappingObject *)p->x0C)->value108, &D_00417410, &D_00417328);
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0xB0), ((EffMappingObject *)p->x0C)->value108, &D_r1_00417410, &D_r1_00417328);
 }
 
-void func_00249448(void) {
+void func_r1_00249448(void) {
     effColorEditSelectedAlphaKey = 1;
 }
 
-INCLUDE_ASM(const s32, "code_00242308", func_00249458);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00249458);
 
 /* ALPHA callback for POLYGON children of the native S-family descriptors. */
 s32 effEditSPolygonAlphaTrack(s32 work) {
@@ -5302,7 +5302,7 @@ s32 effPollAlternateTextureResourceFile(void) {
 
 /* Poll EP resources from /tool/effect/ep/ and return the chooser status. */
 s32 effPollEpResourceFile(void) {
-    return effPollFileRecord(D_003B39C8, BTL_RESOURCE_SCAN_EP);
+    return effPollFileRecord(D_r1_00456E58, BTL_RESOURCE_SCAN_EP);
 }
 
 /* Poll EPL resources from /tool/effect/ and return the chooser status. */
@@ -5312,7 +5312,7 @@ s32 effPollEplResourceFile(void) {
 
 /* Separate native EP descriptor callback using the same directory and format. */
 s32 effPollAlternateEpResourceFile(void) {
-    return effPollFileRecord(D_003B39C8, BTL_RESOURCE_SCAN_EP);
+    return effPollFileRecord(D_r1_00456E58, BTL_RESOURCE_SCAN_EP);
 }
 
 /* TMX-only TEXTURE chooser for B-/F-family MATERIAL groups. */
@@ -5342,15 +5342,15 @@ s32 effPollHlpPbResourceFile(void) {
 }
 
 s32 effPollMMaterialPbFile(void) {
-    return effPollFileRecord(D_00457028, BTL_RESOURCE_SCAN_PB);
+    return effPollFileRecord(D_r1_00457028, BTL_RESOURCE_SCAN_PB);
 }
 
 s32 effPollMMaterialEplFile(void) {
-    return effPollFileRecord(D_00456E70, BTL_RESOURCE_SCAN_EPL);
+    return effPollFileRecord(D_r1_00456E70, BTL_RESOURCE_SCAN_EPL);
 }
 
 s32 effPollOMaterialPbFile(void) {
-    return effPollFileRecord(D_00457040, BTL_RESOURCE_SCAN_PB);
+    return effPollFileRecord(D_r1_00457040, BTL_RESOURCE_SCAN_PB);
 }
 
 u32 fileLoadEffectSlotA(void) {
@@ -5369,8 +5369,8 @@ u32 fileLoadEffectSlotA(void) {
         result = 0x400000;
     } else if (status == BTL_RESOURCE_SELECTION_ACCEPTED) {
         job = fileCreateJob(3);
-        fileJobSetPrimaryData(job, D_00383F18.start, D_00383F18.length,
-                      D_00383F18.mode);
+        fileJobSetPrimaryData(job, D_r1_00408D60.start, D_r1_00408D60.length,
+                      D_r1_00408D60.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
                       effClassifyResourceMask(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
@@ -5394,7 +5394,7 @@ u32 fileLoadEffectSlotA(void) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00242308", func_00249FA0);
+INCLUDE_ASM(const s32, "code_00242308", func_r1_00249FA0);
 
 u32 fileLoadEffectSlotHelp(void) {
     EffResourceBankSlot fileInfo;
@@ -5443,7 +5443,7 @@ u32 fileLoadEffectSlotHelp(void) {
         resource->buffer = buffer;
         resource->size = dataLength + headerBytes;
         resource->mode = 0;
-        memcpy(D_003DE148, D_00384A08, 0x3C);
+        memcpy(D_r1_004D3418, D_r1_00409908, 0x3C);
         D_003BD064 = effCreateBattleCameraJob(resource);
         effQueuedFileObject = effFindAssetObject(entry);
         ((EffQueuedFileObject *)effQueuedFileObject)->linkedState = (u8 *)&effPartsListMenu;
@@ -5473,8 +5473,8 @@ u32 fileLoadEffectSlotB(void) {
         result = 0x400000;
     } else if (status == BTL_RESOURCE_SELECTION_ACCEPTED) {
         job = fileCreateJob(18);
-        fileJobSetPrimaryData(job, D_0038C758.start, D_0038C758.length,
-                      D_0038C758.mode);
+        fileJobSetPrimaryData(job, D_r1_00411E28.start, D_r1_00411E28.length,
+                      D_r1_00411E28.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
                       effClassifyResourceMask(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
@@ -5498,23 +5498,23 @@ u32 fileLoadEffectSlotB(void) {
     return result;
 }
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456FB8);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456FB8);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456FC8);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456FC8);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456FD8);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456FD8);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456FE8);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456FE8);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00456FF8);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00456FF8);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00457008);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00457008);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00457018);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00457018);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00457028);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00457028);
 
-INCLUDE_RODATA(const s32, "code_00242308", D_00457040);
+INCLUDE_RODATA(const s32, "code_00242308", D_r1_00457040);
 
 u32 effLoadFileSlotF2(void) {
     EffResourceBankSlot fileInfo;
@@ -5532,8 +5532,8 @@ u32 effLoadFileSlotF2(void) {
         result = 0x400000;
     } else if (status == BTL_RESOURCE_SELECTION_ACCEPTED) {
         job = fileCreateJob(0x14);
-        fileJobSetPrimaryData(job, D_0038D470.start, D_0038D470.length,
-                      D_0038D470.mode);
+        fileJobSetPrimaryData(job, D_r1_00414710.start, D_r1_00414710.length,
+                      D_r1_00414710.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
                       effClassifyResourceMask(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
@@ -5573,8 +5573,8 @@ u32 effLoadMaterialFile(void) {
         result = 0x400000;
     } else if (status == BTL_RESOURCE_SELECTION_ACCEPTED) {
         job = fileCreateJob(0x16);
-        fileJobSetPrimaryData(job, D_0038DC08.start, D_0038DC08.length,
-                      D_0038DC08.mode);
+        fileJobSetPrimaryData(job, D_r1_00414EA8.start, D_r1_00414EA8.length,
+                      D_r1_00414EA8.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
                       effClassifyResourceMask(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
@@ -5621,597 +5621,597 @@ u16 effClassifyResourceMask(s32 flags) {
         default:  return 0;
     }
 }
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D18C);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D18C);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D190);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D190);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D198);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D198);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1A0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1A0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1A8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1A8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1B0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1B0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1B8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1B8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1C0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1C0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1C8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1C8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1D0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1D0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1D8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1D8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1E0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1E0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1E8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1E8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1F0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1F0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D1F8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D1F8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D200);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D200);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D208);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D208);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D210);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D210);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D218);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D218);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D220);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D220);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D228);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D228);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D230);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D230);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D238);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D238);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D240);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D240);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D248);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D248);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D250);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D250);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D258);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D258);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D260);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D260);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D268);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D268);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D270);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D270);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D278);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D278);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D280);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D280);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D288);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D288);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D290);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D290);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D298);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D298);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2A0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2A0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2A8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2A8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2B0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2B0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2B8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2B8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2C0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2C0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2C8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2C8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2D0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2D0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2D8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2D8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2E0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2E0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2E8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2E8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2F0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2F0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D2F8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D2F8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D300);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D300);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D308);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D308);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D310);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D310);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D318);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D318);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D320);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D320);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D328);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D328);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D330);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D330);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D338);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D338);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D340);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D340);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D348);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D348);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D350);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D350);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D358);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D358);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D360);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D360);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D364);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D364);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D368);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D368);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D370);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D370);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D378);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D378);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D380);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D380);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D388);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D388);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D390);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D390);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D398);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D398);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3A0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3A0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3A8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3A8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3B0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3B0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3B8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3B8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3C0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3C0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3C8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3C8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3D0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3D0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3D8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3D8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3E0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3E0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3E8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3E8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3F0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3F0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D3F8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D3F8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D400);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D400);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D408);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D408);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D410);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D410);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D418);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D418);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D420);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D420);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D428);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D428);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D430);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D430);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D438);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D438);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D440);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D440);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D448);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D448);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D450);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D450);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D458);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D458);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D460);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D460);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D468);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D468);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D470);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D470);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D478);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D478);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D480);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D480);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D488);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D488);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D490);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D490);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D498);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D498);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4A0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4A0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4A8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4A8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4B0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4B0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4B8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4B8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4C0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4C0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4C8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4C8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4D0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4D0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4D8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4D8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4E0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4E0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4E8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4E8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4F0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4F0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D4F8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D4F8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D500);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D500);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D508);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D508);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D510);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D510);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D518);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D518);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D520);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D520);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D528);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D528);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D530);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D530);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D538);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D538);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D540);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D540);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D548);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D548);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D550);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D550);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D558);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D558);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D560);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D560);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D568);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D568);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D570);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D570);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D578);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D578);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D580);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D580);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D588);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D588);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D590);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D590);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D598);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D598);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5A0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5A0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5A8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5A8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5B0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5B0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5B8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5B8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5C0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5C0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5C8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5C8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5D0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5D0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5D8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5D8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5E0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5E0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5E8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5E8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5F0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5F0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D5F8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D5F8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D600);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D600);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D608);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D608);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D610);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D610);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D618);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D618);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D620);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D620);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D628);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D628);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D630);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D630);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D638);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D638);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D640);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D640);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D648);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D648);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D650);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D650);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D658);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D658);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D660);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D660);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D668);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D668);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D670);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D670);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D678);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D678);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D680);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D680);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D688);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D688);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D690);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D690);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D698);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D698);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6A0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6A0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6A8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6A8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6B0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6B0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6B8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6B8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6C0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6C0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6C8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6C8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6D0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6D0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6D8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6D8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6E0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6E0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6E8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6E8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6F0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6F0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D6F8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D6F8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D700);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D700);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D708);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D708);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D710);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D710);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D718);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D718);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D720);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D720);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D728);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D728);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D730);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D730);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D738);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D738);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D740);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D740);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D748);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D748);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D750);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D750);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D758);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D758);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D760);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D760);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D768);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D768);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D770);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D770);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D778);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D778);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D780);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D780);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D788);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D788);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D790);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D790);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D798);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D798);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7A0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7A0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7A8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7A8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7B0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7B0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7B8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7B8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7C0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7C0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7C8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7C8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7D0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7D0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7D8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7D8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7E0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7E0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7E8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7E8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7F0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7F0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D7F8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D7F8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D800);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D800);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D808);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D808);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D810);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D810);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D818);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D818);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D820);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D820);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D828);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D828);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D830);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D830);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D838);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D838);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D840);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D840);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D848);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D848);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D850);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D850);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D858);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D858);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D860);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D860);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D868);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D868);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D870);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D870);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D878);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D878);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D880);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D880);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D888);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D888);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D890);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D890);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D898);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D898);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8A0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8A0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8A8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8A8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8B0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8B0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8B8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8B8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8C0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8C0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8C8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8C8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8D0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8D0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8D8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8D8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8E0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8E0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8E8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8E8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8F0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8F0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D8F8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D8F8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D900);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D900);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D904);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D904);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D908);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D908);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D90C);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D90C);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D910);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D910);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D914);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D914);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D918);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D918);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D91C);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D91C);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D920);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D920);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D928);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D928);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D930);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D930);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D938);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D938);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D940);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D940);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D944);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D944);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D948);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D948);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D950);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D950);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D958);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D958);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D960);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D960);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D968);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D968);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D970);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D970);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D978);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D978);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D980);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D980);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D988);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D988);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D990);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D990);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D998);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D998);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9A0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9A0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9A8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9A8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9A9);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9A9);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9AA);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9AA);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9AB);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9AB);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9AC);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9AC);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9B0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9B0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9B4);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9B4);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9B8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9B8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9BC);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9BC);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9C0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9C0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9C4);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9C4);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9C8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9C8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9CC);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9CC);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9D0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9D0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9D8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9D8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9E0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9E0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9E8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9E8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9F0);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9F0);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9F8);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9F8);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046D9FC);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046D9FC);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA00);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA00);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA04);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA04);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA08);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA08);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA0C);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA0C);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA10);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA10);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA18);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA18);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA20);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA20);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA28);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA28);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA30);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA30);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA38);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA38);
 
-INCLUDE_SDATA(const s32, "code_00242308", D_0046DA40);
+INCLUDE_SDATA(const s32, "code_00242308", D_r1_0046DA40);
 

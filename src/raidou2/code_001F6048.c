@@ -312,7 +312,7 @@ extern u8 sdfProjectionMatrix[];
 
 extern u8 D_00324650[];
 
-extern u8 D_00324660[];
+extern u8 D_r1_003AD4E0[];
 
 extern u8 D_0034E080[];
 

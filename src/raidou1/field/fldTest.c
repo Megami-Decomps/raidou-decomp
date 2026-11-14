@@ -574,5 +574,5 @@ void InitOoyTest(void)
     dds3StartProcess(fldTestDrawName, DDS3_USERDRAW_PRIORITY, 0, 0, ooyTestDrawProc, NULL, NULL);
 }
 
-INCLUDE_RODATA(const s32, "field/fldTest", D_00447278);
+INCLUDE_RODATA(const s32, "field/fldTest", D_r1_00447278);
 

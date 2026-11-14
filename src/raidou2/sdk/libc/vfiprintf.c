@@ -1,7 +1,7 @@
 #include "common.h"
 
-INCLUDE_RODATA(const s32, "sdk/libc/vfiprintf", D_004DAE90);
+INCLUDE_RODATA(const s32, "sdk/libc/vfiprintf", D_r1_004684C0);
 
-INCLUDE_RODATA(const s32, "sdk/libc/vfiprintf", D_004DAEA0);
+INCLUDE_RODATA(const s32, "sdk/libc/vfiprintf", D_r1_004684D0);
 
-INCLUDE_ASM(const s32, "sdk/libc/vfiprintf", func_00403970);
+INCLUDE_ASM(const s32, "sdk/libc/vfiprintf", func_r1_0038AB00);

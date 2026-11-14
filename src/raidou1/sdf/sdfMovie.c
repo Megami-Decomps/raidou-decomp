@@ -221,7 +221,7 @@ void sdfSetGridScaledDrawBounds(s32 column, s32 row, s32 width, s32 height, u32 
     sdfMovieDrawColor = mode;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", func_00374390);
+INCLUDE_ASM(const s32, "sdf/sdfMovie", func_r1_00374390);
 
 void release_movieobj2(sdfMovieCb_t *obj, sdfGrOt_t *ot)
 {
@@ -736,19 +736,19 @@ s32 sdfMovieIsFinished(sdfMovieCb_t *aMov)
 }
 s32 movieStreamSema = -1;
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5B4);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5B4);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5B8);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5B8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5BC);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5BC);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5C0);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5C0);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5C4);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5C4);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5C8);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5C8);
 
-INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_0046F5CB);
+INCLUDE_SDATA(const s32, "sdf/sdfMovie", D_r1_0046F5CB);
 
 char sdfMovieIpsExt[4] = ".ips";
 

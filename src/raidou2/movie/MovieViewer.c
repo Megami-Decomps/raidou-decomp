@@ -247,9 +247,9 @@ void movieViewerDrawInfo(void)
 const char movieViewerProcName[16] = "movieViewer";
 
 INCLUDE_ASM(const s32, "movie/MovieViewer", movieViewerDebugDraw);
-INCLUDE_SDATA(const s32, "movie/MovieViewer", D_004E1540);
+INCLUDE_SDATA(const s32, "movie/MovieViewer", D_r1_0046CDA8);
 
-INCLUDE_SDATA(const s32, "movie/MovieViewer", D_004E1548);
+INCLUDE_SDATA(const s32, "movie/MovieViewer", D_r1_0046CDB0);
 
-INCLUDE_SDATA(const s32, "movie/MovieViewer", D_004E1550);
+INCLUDE_SDATA(const s32, "movie/MovieViewer", D_r1_0046CDB8);
 

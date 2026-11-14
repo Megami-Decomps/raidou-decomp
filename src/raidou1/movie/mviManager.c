@@ -202,7 +202,7 @@ void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor)
     }
 }
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001D2728);
+INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D2728);
 
 void movieStop(void)
 {
@@ -213,11 +213,11 @@ void movieStop(void)
     }
 }
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001D27A0);
+INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D27A0);
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001D27C0);
+INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D27C0);
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001D27D0);
+INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D27D0);
 
 s32 movieMan_Process(void)
 {
@@ -231,13 +231,13 @@ void *dds3StartMovieManager(void)
     return dds3StartProcess(movieManProcName, 0x385, 1, 0, movieMan_Process, NULL, NULL);
 }
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001D2850);
+INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D2850);
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001D2880);
+INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D2880);
 
 INCLUDE_ASM(const s32, "movie/mviManager", mnuUpdateMovieDrawShutdownCountdown);
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001D2958);
+INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D2958);
 
 void movieViewerFree(void)
 {
@@ -261,7 +261,7 @@ const char movieDrawProcName[16] = "movieDraw";
 
 const char movieManProcName[16] = "movieMan";
 
-INCLUDE_ASM(const s32, "movie/mviManager", func_001D29E0);
+INCLUDE_ASM(const s32, "movie/mviManager", func_r1_001D29E0);
 
 /* The entry the cursor sits on, walked from the head. */
 void *movieViewerStep(void)
@@ -315,11 +315,11 @@ void movieDebugDrawInfo(void)
 }
 saddr_t PlayingNo = 0;
 
-INCLUDE_SDATA(const s32, "movie/mviManager", D_0046CD88);
+INCLUDE_SDATA(const s32, "movie/mviManager", D_r1_0046CD88);
 
-INCLUDE_SDATA(const s32, "movie/mviManager", D_0046CD90);
+INCLUDE_SDATA(const s32, "movie/mviManager", D_r1_0046CD90);
 
-INCLUDE_SDATA(const s32, "movie/mviManager", D_0046CD98);
+INCLUDE_SDATA(const s32, "movie/mviManager", D_r1_0046CD98);
 
-INCLUDE_SDATA(const s32, "movie/mviManager", D_0046CDA0);
+INCLUDE_SDATA(const s32, "movie/mviManager", D_r1_0046CDA0);
 

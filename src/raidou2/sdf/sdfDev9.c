@@ -112,7 +112,7 @@ void sdfDev9LoadModule(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDev9", func_003E4150);
+INCLUDE_ASM(const s32, "sdf/sdfDev9", func_r1_0036E3C0);
 
 /* Clear `count` quadwords at dst: four per pass, then a falling 3/2/1
  * remainder. The pass is a goto loop (no loop notes, so no loop alignment),

@@ -805,5 +805,5 @@ s32 _puts_r(_reent *r, const char *s)
     return __sfvwrite(r->_stdout, &request) != 0 ? -1 : 10;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libc/puts", D_004DAE88);
+INCLUDE_RODATA(const s32, "sdk/libc/puts", D_r1_004684B0);
 

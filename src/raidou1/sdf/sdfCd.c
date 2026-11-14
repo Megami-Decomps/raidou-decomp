@@ -313,7 +313,7 @@ void sdfDevSignalPendingSemaphore(void);
 void sdfDevSeekDiscWithRequestGate(s32 lsn);
 /* End of declarations from src/dds1/sdf/sdfCd.c */
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036BC48);
+INCLUDE_ASM(const s32, "sdf/sdfCd", func_r1_0036BC48);
 
 void sdfCdStStart(s32 lsn) {
     u8 options[4];
@@ -381,13 +381,13 @@ void sdfDevSeekDiscWithRequestGate(s32 lsn)
     sdfCdCurrLsn = lsn;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036BE78);
+INCLUDE_ASM(const s32, "sdf/sdfCd", func_r1_0036BE78);
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036BF48);
+INCLUDE_ASM(const s32, "sdf/sdfCd", func_r1_0036BF48);
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageSearchFile);
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036C2A8);
+INCLUDE_ASM(const s32, "sdf/sdfCd", func_r1_0036C2A8);
 
 /* Consume up to size disc-file bytes, retaining a partial sector; return the byte count. */
 s32 sdfCdImageRead(void *buff, s32 length) {
@@ -523,11 +523,11 @@ void sdfCdImageInit(const char *imageFile, const char *dirFile) {
     sceCdStInit(0x50, 5, (iopHeapAddress + 15) & -16);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfCd", func_0036C748);
+INCLUDE_ASM(const s32, "sdf/sdfCd", func_r1_0036C748);
 
-INCLUDE_SDATA(const s32, "sdf/sdfCd", D_0046F368);
+INCLUDE_SDATA(const s32, "sdf/sdfCd", D_r1_0046F368);
 
-INCLUDE_SDATA(const s32, "sdf/sdfCd", D_0046F370);
+INCLUDE_SDATA(const s32, "sdf/sdfCd", D_r1_0046F370);
 
-INCLUDE_SDATA(const s32, "sdf/sdfCd", D_0046F378);
+INCLUDE_SDATA(const s32, "sdf/sdfCd", D_r1_0046F378);
 

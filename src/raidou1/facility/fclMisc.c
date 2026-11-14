@@ -733,11 +733,11 @@ void fclLoadStage(s32 MajorNo, s32 MinorNo)
     evtLoadArea(MajorNo, MinorNo);
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123BF8);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123BF8);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123C58);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123C58);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123C78);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123C78);
 
 void fclScriptForcedEnd(u8 *PID)
 {
@@ -764,9 +764,9 @@ s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID)
     return handle;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123D48);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123D48);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123D70);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123D70);
 
 void shuffleIndices(s8 *order, s32 count, s32 rounds)
 {
@@ -833,11 +833,11 @@ s32 fclStartMessage(s32 MsgNo)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123F80);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123F80);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123FB0);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123FB0);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00123FC8);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123FC8);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", dspReadWindowSecondPanelValue);
 
@@ -846,7 +846,7 @@ s8 evtGetCapturedWindowPanelValue(void) {
     return dspCapturedSoundMode;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124010);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124010);
 
 /* Finish/reset the singleton window with notification and return whether it existed. */
 u32 evtFinishMessageWindowAndNotify(void) {
@@ -876,9 +876,9 @@ s32 fclChkMessage(void)
     return (s8)(u8)gMsgFlag;
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124130);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124130);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124178);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124178);
 
 /* Request mode one from the existing message-window worker. */
 void dspRequestMessageWindowModeOne(void) {
@@ -889,9 +889,9 @@ void evtCopyEntryStringToActiveWindow(s32 slotIndex, const char *sourceText) {
     itfMesMngSetVarImmediate(gMsgID, slotIndex, sourceText);
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124298);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124298);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_001242A0);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_001242A0);
 
 void fcl_2142F0(s32 x, s32 y)
 {
@@ -899,17 +899,17 @@ void fcl_2142F0(s32 x, s32 y)
     itfMesMngSetOffsetY1(gMsgID, -((0x15F - y) * 8));
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124358);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124358);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124380);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124380);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_00124390);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00124390);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_001243A0);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_001243A0);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_001243C8);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_001243C8);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", func_001243F0);
+INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_001243F0);
 
 s32 fcl_214458(void)
 {
@@ -927,9 +927,9 @@ s8 gMsgFlag = 0;
 
 s8 gMsgInvFlag = 0;
 
-INCLUDE_SDATA(const s32, "facility/fclMisc", D_0046B5C0);
+INCLUDE_SDATA(const s32, "facility/fclMisc", D_r1_0046B5C0);
 
-INCLUDE_SDATA(const s32, "facility/fclMisc", D_0046B5C4);
+INCLUDE_SDATA(const s32, "facility/fclMisc", D_r1_0046B5C4);
 
-INCLUDE_SDATA(const s32, "facility/fclMisc", D_0046B5C5);
+INCLUDE_SDATA(const s32, "facility/fclMisc", D_r1_0046B5C5);
 

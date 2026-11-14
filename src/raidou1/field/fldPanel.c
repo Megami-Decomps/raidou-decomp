@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "field/fldPanel", func_00289E08);
+INCLUDE_ASM(const s32, "field/fldPanel", func_r1_00289E08);

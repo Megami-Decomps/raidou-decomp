@@ -1374,7 +1374,7 @@ void mnuAwardCampProgressCurrency(void);
 s32 evtMenuSetTypeProgressFlagOnce(MenuTerminalContext *object);
 /* End of declarations from src/dds2/game/code_0025DA20.c */
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CA8F8);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CA8F8);
 
 /* Process keys at or beyond threshold, restarting at the head after each call. */
 void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold) {
@@ -1399,9 +1399,9 @@ void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold) {
 
 INCLUDE_ASM(const s32, "code_001CA8F8", mnuAdjustTimelineDurations);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CAD48);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CAD48);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CADB8);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CADB8);
 
 void mnuCampInitializeDisplayDefaults(CampDisplayDefaults *display) {
     display->x = 0x100;
@@ -1504,11 +1504,11 @@ EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *
 
 INCLUDE_ASM(const s32, "code_001CA8F8", campResolvePendingValue);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CB640);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CB640);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", fldResetCampSceneEntries);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CB938);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CB938);
 
 INCLUDE_ASM(const s32, "code_001CA8F8", mnuCampLinkFontGlyph);
 
@@ -1521,48 +1521,48 @@ void mnuCampCheckClockDivisor(void) {
     quotient = 1 / heapStats.totalBytes;
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CB9E0);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CB9E0);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBA08);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBA08);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBAD0);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBAD0);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBBA8);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBBA8);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBC28);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBC28);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBDF0);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBDF0);
 
-void func_001CBE08(void) {
+void func_r1_001CBE08(void) {
 }
 
-void func_001CBE10(dds_evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex) {
+void func_r1_001CBE10(dds_evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex) {
     scene->optionFlags = (scene->optionFlags & CAMP_PRIMARY_OPTION_CLEAR_MASK) | (optionIndex & CAMP_OPTION_VALUE_MASK);
 }
 
-MnuCampPrimaryOptionIndex func_001CBE30(dds_evtViewerInfo_t *scene) {
+MnuCampPrimaryOptionIndex func_r1_001CBE30(dds_evtViewerInfo_t *scene) {
     return scene->optionFlags & CAMP_OPTION_VALUE_MASK;
 }
 
-void func_001CBE40(dds_evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex) {
+void func_r1_001CBE40(dds_evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex) {
     scene->optionFlags = (scene->optionFlags & CAMP_SECONDARY_OPTION_CLEAR_MASK) | ((optionIndex & CAMP_OPTION_VALUE_MASK) << CAMP_SECONDARY_OPTION_SHIFT);
 }
 
-MnuCampSecondaryOptionIndex func_001CBE60(dds_evtViewerInfo_t *scene) {
+MnuCampSecondaryOptionIndex func_r1_001CBE60(dds_evtViewerInfo_t *scene) {
     return (scene->optionFlags & CAMP_SECONDARY_OPTION_MASK) >> CAMP_SECONDARY_OPTION_SHIFT;
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBE70);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBE70);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBF80);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBF80);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CBFD8);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CBFD8);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CC058);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CC058);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CC0F8);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CC0F8);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", func_001CC160);
+INCLUDE_ASM(const s32, "code_001CA8F8", func_r1_001CC160);
 
-INCLUDE_SDATA(const s32, "code_001CA8F8", D_0046CCD0);
+INCLUDE_SDATA(const s32, "code_001CA8F8", D_r1_0046CCD0);
 

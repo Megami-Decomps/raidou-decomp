@@ -283,9 +283,9 @@ extern void frEnableMode(s32 value);
 
 extern u8 frDisableMode(u8 value);
 
-extern u8 D_00357980[];
+extern u8 D_r1_003E8760[];
 
-extern u8 D_00357988[];
+extern u8 D_r1_003E8768[];
 
 extern s32 frDefaultFontHandle;
 
@@ -598,13 +598,13 @@ void itfReleaseBackgroundSpriteTexture(void) {
     sdfTexReleaseReference(itfBackgroundSpriteTexture);
 }
 
-INCLUDE_ASM(const s32, "code_00183B00", func_00183B18);
+INCLUDE_ASM(const s32, "code_00183B00", func_r1_00183B18);
 
-INCLUDE_ASM(const s32, "code_00183B00", func_00183BA8);
+INCLUDE_ASM(const s32, "code_00183B00", func_r1_00183BA8);
 
-INCLUDE_ASM(const s32, "code_00183B00", func_00183C08);
+INCLUDE_ASM(const s32, "code_00183B00", func_r1_00183C08);
 
-INCLUDE_ASM(const s32, "code_00183B00", func_00183C30);
+INCLUDE_ASM(const s32, "code_00183B00", func_r1_00183C30);
 
 /* Draw first, then report all bits set only for a task awaiting destruction. */
 s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task) {
@@ -619,7 +619,7 @@ s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task) {
     }
     return readyMask;
 }
-INCLUDE_SDATA(const s32, "code_00183B00", D_0046C1EC);
+INCLUDE_SDATA(const s32, "code_00183B00", D_r1_0046C1EC);
 
-INCLUDE_SDATA(const s32, "code_00183B00", D_0046C1F0);
+INCLUDE_SDATA(const s32, "code_00183B00", D_r1_0046C1F0);
 

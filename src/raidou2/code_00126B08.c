@@ -1,9 +1,9 @@
 #include "common.h"
 
-extern s32 func_00122848(void);
+extern s32 func_r1_0011F720(void);
 extern void scrSetIntReturnValue(s32 value);
 
-s32 func_00126B08(void) {
-    scrSetIntReturnValue(func_00122848());
+s32 scrCmdHasEnoughOwnedMantras(void) {
+    scrSetIntReturnValue(func_r1_0011F720());
     return 1;
 }

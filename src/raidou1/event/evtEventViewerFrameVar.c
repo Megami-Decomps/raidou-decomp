@@ -50,5 +50,5 @@ dds3ProcessID_t *evtInitFrameVar(void)
 
 const char evtFrameVarName[24] = "FrameVar";
 
-INCLUDE_RODATA(const s32, "event/evtEventViewerFrameVar", D_0044FEC0);
+INCLUDE_RODATA(const s32, "event/evtEventViewerFrameVar", D_r1_0044FEC0);
 

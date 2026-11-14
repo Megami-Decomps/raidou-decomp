@@ -11,6 +11,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from units import SHARED, SRC, VERSIONS  # noqa: E402
+from xgame.common_names import check as check_common_names  # noqa: E402
 
 ROOT = SRC.parent
 errors = []
@@ -49,6 +50,8 @@ for version, spec in VERSIONS.items():
     own = {p.relative_to(SRC / version).with_suffix("").as_posix() for p in (SRC / version).rglob("*.c")}
     shared = {p.relative_to(SHARED).with_suffix("").as_posix() for p in SHARED.rglob("*.c")}
     errors += [f"{version}: {u} is both shared and per-game" for u in sorted(own & shared)]
+
+errors += check_common_names()
 
 if errors:
     print("\n".join(errors), file=sys.stderr)

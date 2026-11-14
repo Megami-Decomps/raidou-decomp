@@ -1031,7 +1031,7 @@ extern sdfGsMemSlice_t *D_003BA8F4;
 
 extern u32 dds3TextureViewerPageIndex;
 
-extern u8 D_003BA890;
+extern u8 D_r1_0046B1E0;
 
 extern s8 D_003BA7FC;
 
@@ -1043,7 +1043,7 @@ extern s16 dds3BackgroundFadeSecondRamp;
 
 extern u8 dds3BackgroundFadeColor[4];
 
-extern s8 D_0032453B[];
+extern s8 D_r1_003AD3BB[];
 
 extern f32 D_003245EC[];
 
@@ -1241,19 +1241,19 @@ s32 dds3TaskNoopCallback(dds3ProcessID_t *task);
 /* Seed the shared effect random state with the fixed initialization seed. */
 void dds3InitRandCB(void);
 
-extern s16 D_003BA728;
+extern s16 D_r1_0046B128;
 
 extern u16 sdfDrawFrameCounter;
 
-extern u16 D_003BA880;
+extern u16 D_r1_0046B1D0;
 
 extern u16 D_003BA882;
 
-extern u16 D_003BA884;
+extern u16 D_r1_0046B1D4;
 
 extern u16 D_003BA886;
 
-extern char D_003BA888[];
+extern char D_r1_0046B1D8[];
 
 s32 dds3DebugGraphUpdate(dds3ProcessID_t *task);
 
@@ -1271,7 +1271,7 @@ extern u32 dds3TextureGetPageIndex(void);
 /* Append the zero-based viewer page and final page index; an empty list prints -1. */
 void dds3TextureDrawPageCounter(sdfDrawTag_t *packetList);
 
-extern const char *D_00324560[];
+extern const char *D_r1_003AD3E0[];
 
 extern char D_0039E170[];
 
@@ -1330,7 +1330,7 @@ s32 dds3SelectIncompleteResourceAtPageIndex(s32 requestedIndex);
  * select its reached index, then optionally toggle the viewer mode and return 1. */
 s32 dds3TextureViewerHandlePad(void);
 
-extern s32 D_003BA8E0;
+extern s32 D_r1_0046B230;
 
 void dds3DrawTextureAllocationMapBlock(void *packetList, s32 x, s32 y, sdfGsMemSlice_t *block, u8 mode);
 
@@ -2224,13 +2224,13 @@ scrProcessWork_s *scrPrintProcedureStart(const scrHeader_t *header, const scrTyp
 scrProcessWork_s *fldFlowParse(const scrHeader_t *header, ScrProcedureIndex procedureIndex);
 /* End of declarations from src/dds1/game/code_00107FD8.c */
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00105400);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00105400);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3InitRenderDrawEnv);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001055C8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001055C8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001058B0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001058B0);
 
 /* Replacing a render texture releases the old texture first. A texture-creation
  * failure leaves the allocated framebuffer handle tracked, as in retail. */
@@ -2290,7 +2290,7 @@ void *dds3GetRenderTexture(void)
     return dds3RenderTexture;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00105CF8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00105CF8);
 
 /* Zero amplitude stops the quake; zero duration leaves it running indefinitely. */
 void dds3SetQuake(s32 frame, s32 range)
@@ -2314,7 +2314,7 @@ void dds3StopQuake(void)
     dds3QuakeFlag = 0;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00105F58);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00105F58);
 
 /* The two live XYZ2 payload locals follow the matched DDS engine source.
  * Creating each before its RGBAQ pair preserves the native hoisted constants. */
@@ -2390,9 +2390,9 @@ void dds3FadeColorGet(dds3FadeColor_t **outColor) {
     *outColor = &fadergba;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001061A0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001061A0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001061B8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001061B8);
 
 void dds3FadeIn(s32 r, s32 g, s32 b, s32 frame)
 {
@@ -2484,23 +2484,23 @@ void dds3FadeUpdate(void)
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DrawDistRipOverError);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001064B8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001064B8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001067A8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001067A8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001067E8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001067E8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106880);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106880);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106928);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106928);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106940);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106940);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001069C0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001069C0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106A18);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106A18);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00106B20);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00106B20);
 
 void dds3SetScreenFovy(f32 fovy)
 {
@@ -3357,11 +3357,11 @@ void eglSetOt(u32 ot)
     egl_OT_Offset = ot;
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001093D0);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001093D0);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001094E8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001094E8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00109600);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00109600);
 
 /* Submit ALPHA_1 = (Cs - Cd) * FIX / 128 + Cd; retain the native unmasked FIX input. */
 void evtSubmitFixedAlphaBlend(s32 fixedAlpha) {
@@ -3380,14 +3380,14 @@ void evtSubmitFixedAlphaBlend(s32 fixedAlpha) {
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_001097D8);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_001097D8);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00109870);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00109870);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_00109908);
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B238);
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", func_r1_00109908);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B238);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B23C);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B23C);
 
 u32 dds3RenderTex = 0;
 
@@ -3399,7 +3399,7 @@ u16 dds3RenderTexWidth = 0x80;
 
 u16 dds3RenderTexHeight = 0x80;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B250);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B250);
 
 u32 dds3DrawFlag = 0;
 
@@ -3409,9 +3409,9 @@ s16 dds3ScreenBlurAlpha = 0x60;
 
 s16 dds3ScreenBlurScale = 0x10;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B260);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B260);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B264);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B264);
 
 u16 dds3QuakeFlag = 0;
 
@@ -3419,29 +3419,29 @@ s16 dds3QuakeFrame = 0;
 
 u16 dds3QuakeXRange = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B26E);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B26E);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B274);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B274);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B278);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B278);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B27B);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B27B);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B27C);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B27C);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B280);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B280);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B283);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B283);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B284);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B284);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B286);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B286);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B288);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B288);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B28A);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B28A);
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_0046B28C);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", D_r1_0046B28C);
 
 u32 distblurovercnt = 0;
 

@@ -194,7 +194,7 @@ void sdfPacFree(sdfPacDecodeCb_t *cb)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_00375598);
+INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_r1_00375598);
 
 void sdfPacUseSrc(sdfPacDecodeCb_t *cb, s32 size)
 {
@@ -597,7 +597,7 @@ void sdfPacTexListDecoderTmxHeaderEndFunc(sdfPacDecodeCb_t *cb)
     cb->onEnd = sdfPacTexListDecoderTmxBodyEndFunc;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_00376210);
+INCLUDE_ASM(const s32, "sdf/sdfPacDecode", func_r1_00376210);
 
 void sdfPacTexListDecoderTmxBodyEndFunc(sdfPacDecodeCb_t *cb)
 {

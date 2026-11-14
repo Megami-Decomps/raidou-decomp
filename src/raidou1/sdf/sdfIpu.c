@@ -853,9 +853,9 @@ s32 sdfIpuToDmacHandler(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", func_00373D98);
+INCLUDE_ASM(const s32, "sdf/sdfIpu", func_r1_00373D98);
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", func_00373DC0);
+INCLUDE_ASM(const s32, "sdf/sdfIpu", func_r1_00373DC0);
 
 /* Consume a pending buffer when present, but always advance processed; loop only on exact equality. */
 void sdfIpuFinishActiveFrame(sdfIpuDecodeCb_t *cb) {
@@ -894,9 +894,9 @@ s32 sdfIpuSetChainTag(sdfIpuDecodeCb_t *cb)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", func_00373EF0);
+INCLUDE_ASM(const s32, "sdf/sdfIpu", func_r1_00373EF0);
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", func_00374058);
+INCLUDE_ASM(const s32, "sdf/sdfIpu", func_r1_00374058);
 
 void sdfIpuSetOutputTex(sdfIpuDecodeCb_t *node, struct sdfIpuInitParm_t *params, u8 *sourceData, s32 sourceSize, sdfTexHandle_t *source) {
     struct sdfIpuInitParm_t streamParams = *params;
@@ -911,7 +911,7 @@ void sdfIpuSetOutputTex(sdfIpuDecodeCb_t *node, struct sdfIpuInitParm_t *params,
     sdfIpuStartDecodeTask(node, &streamParams, (SdfStreamRead)sourceData, EE_ADDR_AS(struct sdfMovieCb_t *, sourceSize), sdfTexGetPixelAddr(source));
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", func_00374128);
+INCLUDE_ASM(const s32, "sdf/sdfIpu", func_r1_00374128);
 
 void sdfIpuInit(void) {
     s32 thread;
@@ -941,5 +941,5 @@ s32 sdfIpuClose(void) {
     return DisableDmac(4);
 }
 
-INCLUDE_SDATA(const s32, "sdf/sdfIpu", D_0046F5AC);
+INCLUDE_SDATA(const s32, "sdf/sdfIpu", D_r1_0046F5AC);
 

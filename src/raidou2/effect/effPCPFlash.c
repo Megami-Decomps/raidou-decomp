@@ -1159,7 +1159,7 @@ void effPCPFlashPolyPipePartRotate(effPCPFlashPolyPipe_tag *pFlashPoly, s32 numb
 
 void effPCPFlashPolyPipeDraw(effPCPFlashPolyPipe_tag *hData);
 
-effPCPFlashPolyRingExp_tag *func_00224FE0(effPCPFlashPolyRingExpParam_t *pParam);
+effPCPFlashPolyRingExp_tag *func_r1_0020DCE8(effPCPFlashPolyRingExpParam_t *pParam);
 
 effPCPFlashPolyRingExp_tag *effPCPFlashPolyRingExpCreatePCF(void *data);
 
@@ -1293,7 +1293,7 @@ void effPCPFlashPolyCirclePartSetVertex(effPCPFlashPolyCircle_tag *work, s32 ind
 
 void effPCPFlashPolyCircleDraw(effPCPFlashPolyCircle_tag *hData);
 
-effPCPFlashPolyRingExpH_tag *func_002280C8(effPCPFlashPolyRingExpH_tag *pParam);
+effPCPFlashPolyRingExpH_tag *func_r1_00210DD0(effPCPFlashPolyRingExpH_tag *pParam);
 
 effPCPFlashPolyRingExpH_tag *effPCPFlashPolyRingExpHCreatePCF(void *table);
 
@@ -1395,9 +1395,9 @@ effPCPFlashPolySphere2_tag *effPCPFlashPolySphere2Create(effPCPFlashPolySphere2P
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002230A0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020BDA8);
 
-effPCPFlashPolySphere2_tag *func_002230C0(effPCPFlashPolySphere2Param_t *params)
+effPCPFlashPolySphere2_tag *func_r1_0020BDC8(effPCPFlashPolySphere2Param_t *params)
 {
     return effPCPFlashPolySphere2Create(params);
 }
@@ -1408,11 +1408,11 @@ void effPCPFlashPolySphere2Delete(effPCPFlashPolySphere2_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00223108);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020BE10);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00223118);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020BE20);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00223120);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020BE28);
 
 void effPCPFlashPolySphere2PartSetVC(effPCPFlashPolySphere2_tag *work, s32 index, s32 color)
 {
@@ -1572,20 +1572,20 @@ effPCPFlashPolySphere_tag *effPCPFlashPolySphereCreate(effPCPFlashPolySpherePara
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00223750);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020C458);
 
-effPCPFlashPolySphere_tag *func_00223770(effPCPFlashPolySphereParam_t *src)
+effPCPFlashPolySphere_tag *func_r1_0020C478(effPCPFlashPolySphereParam_t *src)
 {
     return effPCPFlashPolySphereCreate(src);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00223788);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020C490);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002237B8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020C4C0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002237C8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020C4D0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002237D0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020C4D8);
 
 void effPCPFlashPolySpherePartSetVC(effPCPFlashPolySphere_tag *work, s32 index, s32 color)
 {
@@ -1826,9 +1826,9 @@ effPCPFlashPolyRing_tag *effPCPFlashPolyRingCreate(effPCPFlashPolyRingParam_t *p
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224108);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020CE10);
 
-effPCPFlashPolyRing_tag *func_00224128(effPCPFlashPolyRingParam_t *params)
+effPCPFlashPolyRing_tag *func_r1_0020CE30(effPCPFlashPolyRingParam_t *params)
 {
     return effPCPFlashPolyRingCreate(params);
 }
@@ -1839,11 +1839,11 @@ void effPCPFlashPolyRingDelete(effPCPFlashPolyRing_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224170);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020CE78);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224180);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020CE88);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224188);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020CE90);
 
 void effPCPFlashPolyRingPartSetVC(effPCPFlashPolyRing_tag *work, s32 index, s32 color)
 {
@@ -2054,20 +2054,20 @@ effPCPFlashPolyPipe_tag *effPCPFlashPolyPipeCreate(effPCPFlashPolyPipeParam_t *p
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224930);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020D638);
 
-effPCPFlashPolyPipe_tag *func_00224950(effPCPFlashPolyPipeParam_t *params)
+effPCPFlashPolyPipe_tag *func_r1_0020D658(effPCPFlashPolyPipeParam_t *params)
 {
     return effPCPFlashPolyPipeCreate(params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224968);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020D670);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224998);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020D6A0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002249A8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020D6B0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002249B0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020D6B8);
 
 void effPCPFlashPolyPipePartSetVC(effPCPFlashPolyPipe_tag *work, s32 index, u32 colorMultiplier) {
     u32 *colors;
@@ -2249,30 +2249,30 @@ void effPCPFlashPolyPipeDraw(effPCPFlashPolyPipe_tag *hData)
     dds3FlashPolyList3Draw(handle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00224FE0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020DCE8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225230);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020DF38);
 
-effPCPFlashPolyRingExp_tag *func_00225250(effPCPFlashPolyRingExpParam_t *params)
+effPCPFlashPolyRingExp_tag *func_r1_0020DF58(effPCPFlashPolyRingExpParam_t *params)
 {
-    return func_00224FE0(params);
+    return func_r1_0020DCE8(params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225268);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020DF70);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225298);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020DFA0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002252A8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020DFB0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002252B0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020DFB8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002252B8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020DFC0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002253A8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020E0B0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225570);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020E278);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225590);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020E298);
 
 effPCPFlashPolySphereExp_tag *effPCPFlashPolySphereExpCreate(effPCPFlashPolySphereExpParam_t *pParam)
 {
@@ -2301,9 +2301,9 @@ effPCPFlashPolySphereExp_tag *effPCPFlashPolySphereExpCreate(effPCPFlashPolySphe
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225AA8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020E7B0);
 
-effPCPFlashPolySphereExp_tag *func_00225AC8(effPCPFlashPolySphereExpParam_t *params)
+effPCPFlashPolySphereExp_tag *func_r1_0020E7D0(effPCPFlashPolySphereExpParam_t *params)
 {
     return effPCPFlashPolySphereExpCreate(params);
 }
@@ -2314,11 +2314,11 @@ void effPCPFlashPolySphereExpDelete(effPCPFlashPolySphereExp_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225B10);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020E818);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225B20);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020E828);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00225B28);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020E830);
 
 void effPCPFlashPolySphereExpPartSetVC(effPCPFlashPolySphereExp_tag *work, s32 index, s32 color)
 {
@@ -2540,9 +2540,9 @@ effPCPFlashPolySphere2Exp_tag *effPCPFlashPolySphere2ExpCreate(effPCPFlashPolySp
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002262D8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020EFE0);
 
-effPCPFlashPolySphere2Exp_tag *func_002262F8(effPCPFlashPolySphere2ExpParam_t *params)
+effPCPFlashPolySphere2Exp_tag *func_r1_0020F000(effPCPFlashPolySphere2ExpParam_t *params)
 {
     return effPCPFlashPolySphere2ExpCreate(params);
 }
@@ -2553,11 +2553,11 @@ void effPCPFlashPolySphere2ExpDelete(effPCPFlashPolySphere2Exp_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226340);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020F048);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226350);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020F058);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226358);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020F060);
 
 void effPCPFlashPolySphere2ExpPartSetVC(effPCPFlashPolySphere2Exp_tag *work, s32 index, s32 color)
 {
@@ -2725,9 +2725,9 @@ effPCPFlashPolySphere3_tag *effPCPFlashPolySphere3Create(effFlashRadialStripPara
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226A10);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020F718);
 
-effPCPFlashPolySphere3_tag *func_00226A30(effFlashRadialStripParam_t *params)
+effPCPFlashPolySphere3_tag *func_r1_0020F738(effFlashRadialStripParam_t *params)
 {
     return effPCPFlashPolySphere3Create(params);
 }
@@ -2738,11 +2738,11 @@ void effPCPFlashPolySphere3Delete(effPCPFlashPolySphere3_tag *hData)
     sdfMemFreeDirect(hData->allocationHandle);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226A78);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020F780);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226A88);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020F790);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00226A90);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_0020F798);
 
 void effPCPFlashPolySphere3PartSetVC(effPCPFlashPolySphere3_tag *work, s32 index, u32 colorMultiplier) {
     u32 *colors;
@@ -2979,20 +2979,20 @@ effPCPFlashPolyRingExp2_tag *effPCPFlashPolyRingExp2Create(effPCPFlashPolyRingEx
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002273B8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002100C0);
 
-effPCPFlashPolyRingExp2_tag *func_002273D8(effPCPFlashPolyRingExp2Param_t *params)
+effPCPFlashPolyRingExp2_tag *func_r1_002100E0(effPCPFlashPolyRingExp2Param_t *params)
 {
     return effPCPFlashPolyRingExp2Create(params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002273F0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002100F8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227420);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00210128);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227430);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00210138);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227438);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00210140);
 
 void effPCPFlashPolyRingExp2PartSetVC(effPCPFlashPolyRingExp2_tag *work, s32 index, s32 color)
 {
@@ -3199,20 +3199,20 @@ effPCPFlashPolyCircle_tag *effPCPFlashPolyCircleCreate(effPCPFlashPolyCirclePara
     return work;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227B38);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00210840);
 
-effPCPFlashPolyCircle_tag *func_00227B58(effPCPFlashPolyCircleParam_t *params)
+effPCPFlashPolyCircle_tag *func_r1_00210860(effPCPFlashPolyCircleParam_t *params)
 {
     return effPCPFlashPolyCircleCreate(params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227B70);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00210878);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227BA0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002108A8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227BB0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002108B8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00227BB8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002108C0);
 
 void effPCPFlashPolyCirclePartSetVC(effPCPFlashPolyCircle_tag *work, s32 index, s32 color)
 {
@@ -3354,32 +3354,32 @@ void effPCPFlashPolyCircleDraw(effPCPFlashPolyCircle_tag *hData) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002280C8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00210DD0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228318);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211020);
 
-effPCPFlashPolyRingExpH_tag *func_00228338(effPCPFlashPolyRingExpH_tag *params)
+effPCPFlashPolyRingExpH_tag *func_r1_00211040(effPCPFlashPolyRingExpH_tag *params)
 {
-    return func_002280C8(params);
+    return func_r1_00210DD0(params);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228350);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211058);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228380);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211088);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228390);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211098);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228398);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002110A0);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002283A0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002110A8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002283D0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002110D8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002284C0);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002111C8);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228688);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211390);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_002286A8);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_002113B0);
 
 dds3FlashPolyList_t *dds3FlashPolyListCreate(u32 face) {
     dds3FlashPolyList_t *pool;
@@ -3413,19 +3413,19 @@ dds3FlashPolyList_t *dds3FlashPolyListCreate(u32 face) {
     return pool;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228B20);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211828);
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyListDraw);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228E00);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211B08);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228E18);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211B20);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228E30);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211B38);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228E38);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211B40);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228E40);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211B48);
 
 dds3FlashPolyList_t *dds3FlashPolyList2Create(s32 face) {
     dds3FlashPolyList_t *pool;
@@ -3458,7 +3458,7 @@ dds3FlashPolyList_t *dds3FlashPolyList2Create(s32 face) {
     return pool;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00228F40);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211C48);
 
 void dds3FlashPolyList2Draw(dds3FlashPolyList_t *pool)
 {
@@ -3537,7 +3537,7 @@ dds3FlashPolyList_t *dds3FlashPolyList3Create(s32 face) {
     return pool;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00229248);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00211F50);
 
 void dds3FlashPolyList3Draw(dds3FlashPolyList_t *pool)
 {
@@ -3594,13 +3594,13 @@ dds3FlashPolyList_t *dds3FlashPolyListHCreate(u32 face) {
     return pool;
 }
 
-void func_00229498(dds3FlashPolyList_t *hPoly)
+void func_r1_002121A0(dds3FlashPolyList_t *hPoly)
 {
     dds3FlashPolyListDelete(hPoly);
 }
 
 INCLUDE_ASM(const s32, "effect/effPCPFlash", dds3FlashPolyListHDraw);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00229750);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00212458);
 
-INCLUDE_ASM(const s32, "effect/effPCPFlash", func_00229768);
+INCLUDE_ASM(const s32, "effect/effPCPFlash", func_r1_00212470);

@@ -265,11 +265,11 @@ void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly)
     dds3HermitianTrackPolySetVertex(hMTPoly->trackPoly, (const u128 *)pair);
 }
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F69A0);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F69A0);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F69B8);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F69B8);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F69C8);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F69C8);
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effTrackPolyUpdate);
 
@@ -298,13 +298,13 @@ void Eff_ModelTrackPolyListDelete(effMTPolyListHandle_t *list) {
     sdfMemFreeDirect(list->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F6BB0);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F6BB0);
 
 void Eff_ModelTrackPolyListReset(effMTPolyListHandle_t *hMTPolyList, s32 index) {
     Eff_ModelTrackPolyReset(hMTPolyList->hPolyList[index]);
 }
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F6C00);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F6C00);
 
 void Eff_ModelTrackPolyListDrawOnly(effMTPolyListHandle_t *hMTPolyList) {
     u32 count = hMTPolyList->number;
@@ -405,11 +405,11 @@ dds3HermitianTrackPoly_tag *dds3HermitianTrackPolyCreate(s32 face, s32 split) {
     return data;
 }
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F6EE8);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F6EE8);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F6F18);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F6F18);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_001F6F38);
+INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F6F38);
 
 void dds3HermitianTrackPolySetVC(dds3HermitianTrackPoly_tag *hPoly, u32 *pABGR) {
     f32 t = 0.0f;

@@ -800,7 +800,7 @@ char *_setlocale_r(_reent *r, s32 category, const char *locale)
     return localeCName;
 }
 
-INCLUDE_ASM(const s32, "sdk/libc/locale", func_003903E8);
+INCLUDE_ASM(const s32, "sdk/libc/locale", func_r1_003903E8);
 
 char *setlocale(s32 category, const char *locale) {
     return _setlocale_r(_impure_ptr, category, locale);

@@ -218,7 +218,7 @@ void sdfRandomizeByTime(sdfRandCB_t *aCB) {
     sdfRandomize(aCB, secondsSinceEpoch * 0x3C + now.sec);
 }
 
-INCLUDE_SDATA(const s32, "sdf/sdfRand", D_0046F420);
+INCLUDE_SDATA(const s32, "sdf/sdfRand", D_r1_0046F420);
 
 s32 sdfGetCdClock(sdfClock_t *now) {
     sdfCdClock_t clock;

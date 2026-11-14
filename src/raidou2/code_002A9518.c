@@ -414,5 +414,5 @@ s32 btlRandomInclusiveRange(s32 lower, s32 upper) {
     return (s32)btlNextScaledRandom(0xFFFF) % lo + hi;
 }
 
-INCLUDE_SDATA(const s32, "code_002A9518", D_004E2424);
+INCLUDE_SDATA(const s32, "code_002A9518", D_r1_0046DAFC);
 

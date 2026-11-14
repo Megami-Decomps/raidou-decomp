@@ -381,7 +381,7 @@ s32 sdfDevConsPrintf(sdfDevConsCB_tag *aHndl, const char *aFmt, ...)
     return count;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDevCons", func_003E0EB0);
+INCLUDE_ASM(const s32, "sdf/sdfDevCons", func_r1_0036B128);
 
 void sdfDevConsAttribute(sdfDevConsCB_tag *aHndl, s32 aAttr)
 {

@@ -489,7 +489,7 @@ extern u32 scrHandleCount;
 
 extern sdfGrOt_t sdfDebugGrOt;
 
-extern s8 D_0037F53B[];
+extern s8 D_r1_003AD3BB[];
 
 extern void evtDrawHeapUsageOverlay(sdfGrOt_t *);
 
@@ -1014,7 +1014,7 @@ void evtDestroyFontResourceChain(void) {
 
 INCLUDE_ASM(const s32, "code_0010F130", datDebugPrintf);
 
-INCLUDE_ASM(const s32, "code_0010F130", func_0010F238);
+INCLUDE_ASM(const s32, "code_0010F130", func_r1_0010E7C8);
 
 s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     SdfGeneralHeapStats heapStats;
@@ -1049,7 +1049,7 @@ s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     return 0;
 }
 
-void func_0010F570(void) {
+void func_r1_0010EB00(void) {
 }
 
 INCLUDE_ASM(const s32, "code_0010F130", evtToggleDebugTimeGraphTask);
@@ -1205,7 +1205,7 @@ void evtDrawHeapUsageOverlay(sdfGrOt_t *surface) {
 
 /* Draw the overlay only when the control byte is zero; return zero in either case. */
 s32 evtDrawConditionalHeapUsageOverlay(void) {
-    if (D_0037F53B[0] != 0) {
+    if (D_r1_003AD3BB[0] != 0) {
         return 0;
     }
     evtDrawHeapUsageOverlay(&sdfDebugGrOt);
@@ -1240,21 +1240,21 @@ s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task) {
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "code_0010F130", D_004A7288);
+INCLUDE_RODATA(const s32, "code_0010F130", D_r1_00444B18);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_004DE410);
+INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B308);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_004DE418);
+INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B310);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_004DE420);
+INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B318);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_004DE428);
+INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B320);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_004DE430);
+INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B328);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_004DE434);
+INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B32C);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_004DE438);
+INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B330);
 
-INCLUDE_SDATA(const s32, "code_0010F130", D_004DE440);
+INCLUDE_SDATA(const s32, "code_0010F130", D_r1_0046B338);
 

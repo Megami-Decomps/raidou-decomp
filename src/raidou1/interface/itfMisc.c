@@ -414,9 +414,9 @@ extern void frEnableMode(s32 value);
 
 extern u8 frDisableMode(u8 value);
 
-extern u8 D_00357980[];
+extern u8 D_r1_003E8760[];
 
-extern u8 D_00357988[];
+extern u8 D_r1_003E8768[];
 
 extern s32 frDefaultFontHandle;
 
@@ -852,17 +852,17 @@ void itfDrawThreePanelBorderBands(DrawVertex *bounds, DrawColorRec *color, u32 t
     vertices[3].x = bounds[0].x;
     vertices[3].y = bounds[1].y;
 
-    itfMiscDrawRectanglePrim(vertices, colors, D_00357980, D_00357988, tail, command);
+    itfMiscDrawRectanglePrim(vertices, colors, D_r1_003E8760, D_r1_003E8768, tail, command);
     vertices[0].x += borderWidth;
     vertices[1].x += middleWidth;
     vertices[2].x += middleWidth;
     vertices[3].x += borderWidth;
-    itfMiscDrawRectanglePrim(vertices, colors, D_00357980, D_00357988 + 4, tail, command);
+    itfMiscDrawRectanglePrim(vertices, colors, D_r1_003E8760, D_r1_003E8768 + 4, tail, command);
     vertices[0].x += middleWidth;
     vertices[1].x += borderWidth;
     vertices[2].x += borderWidth;
     vertices[3].x += middleWidth;
-    itfMiscDrawRectanglePrim(vertices, colors, D_00357980, D_00357988 + 8, tail, command);
+    itfMiscDrawRectanglePrim(vertices, colors, D_r1_003E8760, D_r1_003E8768 + 8, tail, command);
 }
 
 /* Emit a textured triangle fan: each four-float input supplies S/T/Q only.
@@ -1119,7 +1119,7 @@ u32 itfCamp(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMisc", func_00185120);
+INCLUDE_ASM(const s32, "interface/itfMisc", func_r1_00185120);
 u8 itfGaugeQuadVertexIndex[8] = { 0, 1, 4, 3, 1, 2, 5, 4 };
 
 u8 itfGaugeQuadColorIndex[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };

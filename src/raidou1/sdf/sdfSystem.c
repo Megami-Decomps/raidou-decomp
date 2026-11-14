@@ -461,7 +461,7 @@ void sdfIpuRemoveHandler(sdfHandlerNode_t *target) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", func_00356320);
+INCLUDE_ASM(const s32, "sdf/sdfSystem", func_r1_00356320);
 
 void sdfAlarmWakeup(s32 arg0, s32 arg1, s32 thid)
 {
@@ -576,9 +576,9 @@ sdfThCB_t *sdfFindThreadNode(s32 threadId) {
     return node;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003566A0);
+INCLUDE_ASM(const s32, "sdf/sdfSystem", func_r1_003566A0);
 
-INCLUDE_ASM(const s32, "sdf/sdfSystem", func_003566C0);
+INCLUDE_ASM(const s32, "sdf/sdfSystem", VblankIntcHandler);
 
 void VblankThreadProc(void) {
     sdfThCB_t *threadEntry;

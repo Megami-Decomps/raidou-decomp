@@ -168,9 +168,9 @@ extern dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
 
 extern s32 dds3StartMenuProcess(dds3ProcessID_t *id);
 
-extern void func_00157050(void);
+extern void func_r1_001DA7C0(void);
 
-extern void func_00157058(void);
+extern void func_r1_001DA7C8(void);
 
 extern s32 fmShutDown2(void);
 
@@ -2719,9 +2719,9 @@ u32 fileJobSerializedSize(FileJobPayload *job) {
     return size;
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_0021D798);
+INCLUDE_ASM(const s32, "code_0021CE60", func_r1_0021D798);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_0021D7F0);
+INCLUDE_ASM(const s32, "code_0021CE60", func_r1_0021D7F0);
 
 void fileQueueAppend(FileQueue *queue, FileJob *job) {
     job->next = NULL;
@@ -2763,9 +2763,9 @@ void fileQueueRemove(FileQueue *queue, FileJob *job) {
     queue->count--;
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_0021D8E8);
+INCLUDE_ASM(const s32, "code_0021CE60", func_r1_0021D8E8);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_0021D920);
+INCLUDE_ASM(const s32, "code_0021CE60", func_r1_0021D920);
 
 void fileDestroyJob(FileJob *job) {
     sdfChipFreeDirect(job);
@@ -3221,11 +3221,11 @@ void fileClearLoadObjectReferences(EffectSurfaceNode *obj) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_00220170);
+INCLUDE_ASM(const s32, "code_0021CE60", func_r1_00220170);
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileDrawLoadObjectSlots);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_00220B40);
+INCLUDE_ASM(const s32, "code_0021CE60", func_r1_00220B40);
 
 void fileSendLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value) {
     mnuRecordSetVector(obj->record, value);
@@ -3416,7 +3416,7 @@ f32 effSampleScalarCurve(const EffScalarCurve *curve, s32 frame, s32 duration) {
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileSampleKeyTracks);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_00221218);
+INCLUDE_ASM(const s32, "code_0021CE60", func_r1_00221218);
 
 void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot) {
     FileKeyBlock *grid = (FileKeyBlock *)table->data0;
@@ -3651,14 +3651,14 @@ INCLUDE_ASM(const s32, "code_0021CE60", effScaleDirectedEmitterParameters);
 
 INCLUDE_ASM(const s32, "code_0021CE60", effUpdateSectorEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_0021CE60", func_00224B30);
+INCLUDE_ASM(const s32, "code_0021CE60", func_r1_00224B30);
 
 INCLUDE_ASM(const s32, "code_0021CE60", fileAllocateGridRecordSlots);
-INCLUDE_SDATA(const s32, "code_0021CE60", D_0046D0E0);
+INCLUDE_SDATA(const s32, "code_0021CE60", D_r1_0046D0E0);
 
-INCLUDE_SDATA(const s32, "code_0021CE60", D_0046D0E8);
+INCLUDE_SDATA(const s32, "code_0021CE60", D_r1_0046D0E8);
 
-INCLUDE_SDATA(const s32, "code_0021CE60", D_0046D0F0);
+INCLUDE_SDATA(const s32, "code_0021CE60", D_r1_0046D0F0);
 
-INCLUDE_SDATA(const s32, "code_0021CE60", D_0046D0F8);
+INCLUDE_SDATA(const s32, "code_0021CE60", D_r1_0046D0F8);
 

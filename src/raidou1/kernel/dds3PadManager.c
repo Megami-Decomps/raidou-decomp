@@ -397,7 +397,7 @@ extern sdfTexHandle_t *dds3RenderTexture;
 
 extern u32 dds3TextureViewerPageIndex;
 
-extern u8 D_003BA890;
+extern u8 D_r1_0046B1E0;
 
 extern s8 D_003BA7FC;
 
@@ -409,7 +409,7 @@ extern s16 dds3BackgroundFadeSecondRamp;
 
 extern u8 dds3BackgroundFadeColor[4];
 
-extern s8 D_0032453B[];
+extern s8 D_r1_003AD3BB[];
 
 extern f32 D_003245EC[];
 
@@ -591,19 +591,19 @@ s32 dds3TaskNoopCallback(dds3ProcessID_t *task);
 /* Seed the shared effect random state with the fixed initialization seed. */
 void dds3InitRandCB(void);
 
-extern s16 D_003BA728;
+extern s16 D_r1_0046B128;
 
 extern u16 sdfDrawFrameCounter;
 
-extern u16 D_003BA880;
+extern u16 D_r1_0046B1D0;
 
 extern u16 D_003BA882;
 
-extern u16 D_003BA884;
+extern u16 D_r1_0046B1D4;
 
 extern u16 D_003BA886;
 
-extern char D_003BA888[];
+extern char D_r1_0046B1D8[];
 
 s32 dds3DebugGraphUpdate(dds3ProcessID_t *task);
 
@@ -621,7 +621,7 @@ extern u32 dds3TextureGetPageIndex(void);
 /* Append the zero-based viewer page and final page index; an empty list prints -1. */
 void dds3TextureDrawPageCounter(sdfDrawTag_t *packetList);
 
-extern const char *D_00324560[];
+extern const char *D_r1_003AD3E0[];
 
 extern char D_0039E170[];
 
@@ -680,7 +680,7 @@ s32 dds3SelectIncompleteResourceAtPageIndex(s32 requestedIndex);
  * select its reached index, then optionally toggle the viewer mode and return 1. */
 s32 dds3TextureViewerHandlePad(void);
 
-extern s32 D_003BA8E0;
+extern s32 D_r1_0046B230;
 
 void dds3DrawTextureAllocationMapBlock(void *packetList, s32 x, s32 y, sdfGsMemSlice_t *block, u8 mode);
 
@@ -914,7 +914,7 @@ s32 dds3PadVibrationTest(dds3ProcessID_t *task) {
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadInitialize);
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_00103BE8);
+INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_r1_00103BE8);
 
 void kwlnPadStepLargeMotorLevel(void) {
     u8 target = kwlnLargeMotorTarget;
@@ -936,9 +936,9 @@ void kwlnPadStepLargeMotorLevel(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_00104140);
+INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_r1_00104140);
 
-INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_00104210);
+INCLUDE_ASM(const s32, "kernel/dds3PadManager", func_r1_00104210);
 
 void dds3UpdateVibrationSlots(void) {
     s32 largeMotor = 1;
@@ -968,17 +968,17 @@ void dds3UpdateVibrationSlots(void) {
         }
     }
 }
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_0046B1B0);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1B0);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_0046B1B1);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1B1);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_0046B1BF);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1BF);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_0046B1C0);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1C0);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_0046B1C1);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1C1);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_0046B1C2);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1C2);
 
-INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_0046B1C3);
+INCLUDE_SDATA(const s32, "kernel/dds3PadManager", D_r1_0046B1C3);
 

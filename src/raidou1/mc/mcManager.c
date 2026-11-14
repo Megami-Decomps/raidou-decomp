@@ -127,9 +127,9 @@ void sdfMcFuncWrite(s32 descriptor, const void *buffer, s32 size);
 McPollResult sdfMcFuncWrite1(void);
 /* End of declarations from src/smt3/mc/mcManager.c */
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001D4A20);
+INCLUDE_ASM(const s32, "mc/mcManager", func_r1_001D4A20);
 
-INCLUDE_ASM(const s32, "mc/mcManager", func_001D4A68);
+INCLUDE_ASM(const s32, "mc/mcManager", func_r1_001D4A68);
 
 INCLUDE_ASM(const s32, "mc/mcManager", sdfMcGetFileInfoReady);
 

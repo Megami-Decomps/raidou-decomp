@@ -695,7 +695,7 @@ void dds3PolygonManagerInit(void)
     sdfRandomizeByTime(dds3PolygonRandState);
 }
 
-void func_001DF5A8(void) {
+void func_r1_001DF5A8(void) {
 }
 
 dds3Polygon_t *dds3PolygonCreate(s32 face, s16 type, s16 attr) {
@@ -748,7 +748,7 @@ void dds3PolygonDelete(dds3Polygon_t *hPolygon) {
     sdfMemFreeDirect(hPolygon->hMem);
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001DF768);
+INCLUDE_ASM(const s32, "effect/polyManager", func_r1_001DF768);
 
 void dds3PolygonLinkOt(void) {
     dds3Polygon_t *record = hDrawListTop;
@@ -1664,7 +1664,7 @@ void dds3TrackPolyVC5Set_AcuteW(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abg
     }
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E13D0);
+INCLUDE_ASM(const s32, "effect/polyManager", func_r1_001E13D0);
 
 void dds3TrackPolyVCSet(dds3TrackPoly_t *hTrackPoly, s32 type, void *abgr_in, void *abgr_out) {
     u16 id = hTrackPoly->type;
@@ -1926,7 +1926,7 @@ void dds3SpPoly_Ring_Old_BuffInit(dds3SpPoly_Ring_Old_t3 *hData) {
     }
 }
 
-void func_001E1DD8(dds3SpPoly_Ring_Old_t3 *hData, f32 scale) {
+void func_r1_001E1DD8(dds3SpPoly_Ring_Old_t3 *hData, f32 scale) {
     hData->radius = hData->radius * scale;
     hData->pairDisplacement = hData->pairDisplacement * scale;
 }
@@ -2633,14 +2633,14 @@ void dds3SpPoly_RollRingMove(dds3SpPoly_RollRing_t3 *pRollRing, s32 number)
     SDF_VU0_COPYVECTOR(out + 4, first + 4);
 }
 
-void func_001E3608(dds3SpPoly_RollRing_t3 *hData, f32 scale) {
+void func_r1_001E3608(dds3SpPoly_RollRing_t3 *hData, f32 scale) {
     hData->radius_s = hData->radius_s * scale;
     hData->radius_e = hData->radius_e * scale;
 }
 
 #ifdef NON_MATCHING
 /* 73 of 97 words differ (first at +0x54) */
-void func_001E3628(dds3SpPoly_RollRing_t3 *hData) {
+void func_r1_001E3628(dds3SpPoly_RollRing_t3 *hData) {
     s32 recordIndex = 0;
     u32 completed = 0;
     u8 loop;
@@ -2709,7 +2709,7 @@ void func_001E3628(dds3SpPoly_RollRing_t3 *hData) {
     dds3TrackPolyDraw(hData->hTrackPoly);
 }
 #else
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E3628);
+INCLUDE_ASM(const s32, "effect/polyManager", func_r1_001E3628);
 #endif
 
 void dds3SpPoly_RollRingSetEndless(dds3SpPoly_RollRing_t3 *pRollRing) {
@@ -2750,11 +2750,11 @@ void *dds3SpPolyCopy(dds3SpPoly_Basic_t *effect) {
     return result;
 }
 
-void func_001E38D0(dds3SpPoly_Basic_t *hData) {
+void func_r1_001E38D0(dds3SpPoly_Basic_t *hData) {
     dds3SpPolyTable[hData->type].destroy(hData);
 }
 
-void func_001E3908(dds3SpPoly_Basic_t *hData) {
+void func_r1_001E3908(dds3SpPoly_Basic_t *hData) {
     dds3SpPolyTable[hData->type].callback(hData);
 }
 
@@ -2768,11 +2768,11 @@ void dds3SpPolySetScale(dds3SpPoly_Basic_t *hData, f32 scale) {
     dds3SpPolyReset(hData);
 }
 
-u16 func_001E39C8(dds3SpPoly_Basic_t *hData) {
+u16 func_r1_001E39C8(dds3SpPoly_Basic_t *hData) {
     return hData->state;
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E39D0);
+INCLUDE_ASM(const s32, "effect/polyManager", func_r1_001E39D0);
 
 /* vu0 routine: compose the new rotation with the retained source matrix. */
 void dds3SpPolySetRotateMatrix(dds3SpPoly_Basic_t *hData, void *pMatrix) {
@@ -2782,7 +2782,7 @@ void dds3SpPolySetRotateMatrix(dds3SpPoly_Basic_t *hData, void *pMatrix) {
     SDF_VU0_STOREMATRIX(hData->matrix);
 }
 
-void func_001E3A40(dds3SpPoly_Basic_t *hData, u32 abgr) {
+void func_r1_001E3A40(dds3SpPoly_Basic_t *hData, u32 abgr) {
     hData->abgr = abgr;
 }
 
@@ -2793,11 +2793,11 @@ void dds3SpPolySetLoop(dds3SpPolyLoopWork_t *hData, u8 loop) {
     hData->loop = loop;
 }
 
-u8 func_001E3A60(dds3SpPolyLoopWork_t *hData) {
+u8 func_r1_001E3A60(dds3SpPolyLoopWork_t *hData) {
     return hData->loop;
 }
 
-INCLUDE_ASM(const s32, "effect/polyManager", func_001E3A68);
+INCLUDE_ASM(const s32, "effect/polyManager", func_r1_001E3A68);
 
 void dds3PolygonTriangleSet(dds3Polygon_t *hPolygon, const f32 *center) {
     s32 count = hPolygon->drawCount;

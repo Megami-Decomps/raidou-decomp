@@ -422,13 +422,13 @@ s32 btlRollAiBucket(void) {
     btlPreviousAiCandidateBucket = slot;
     return slot;
 }
-INCLUDE_SDATA(const s32, "code_002A95B0", D_004E2428);
+INCLUDE_SDATA(const s32, "code_002A95B0", D_r1_0046DB00);
 
-INCLUDE_SDATA(const s32, "code_002A95B0", D_004E242C);
+INCLUDE_SDATA(const s32, "code_002A95B0", D_r1_0046DB04);
 
-INCLUDE_SDATA(const s32, "code_002A95B0", D_004E2430);
+INCLUDE_SDATA(const s32, "code_002A95B0", D_r1_0046DB08);
 
-INCLUDE_SDATA(const s32, "code_002A95B0", D_004E2434);
+INCLUDE_SDATA(const s32, "code_002A95B0", D_r1_0046DB0C);
 
-INCLUDE_SDATA(const s32, "code_002A95B0", D_004E2438);
+INCLUDE_SDATA(const s32, "code_002A95B0", D_r1_0046DB10);
 

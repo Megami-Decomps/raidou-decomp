@@ -300,9 +300,9 @@ extern const char billPathBil00[16];
 extern char dds3EffectProcessName[7];
 /* End of declarations from src/smt3/effect/effManager.c */
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200AD8);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E97E0);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200B80);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9888);
 
 INCLUDE_ASM(const s32, "effect/effManager", effSubmitFieldBlendStateTask);
 
@@ -317,15 +317,15 @@ s32 dds3EffectManagerRun(dds3ProcessID_t *ProcessID)
     return 0;
 }
 
-void func_00200D58(void) {
+void func_r1_001E9A60(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200D60);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9A68);
 
-void func_00200D68(void) {
+void func_r1_001E9A70(void) {
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200D70);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9A78);
 
 effNode_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param)
 {
@@ -344,23 +344,23 @@ void dds3EffectDelete(effNode_t *pData)
     sdfChipFreeDirect(pData);
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200E48);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9B50);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200E80);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9B88);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200EB8);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9BC0);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200EF0);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9BF8);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200F38);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9C40);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200F70);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9C78);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200FA8);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9CB0);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00200FE0);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9CE8);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00201020);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9D28);
 
 effNode_t *dds3EffectLoad(effResourceHeader_t *pD3P)
 {
@@ -389,9 +389,9 @@ effNode_t *dds3EffectLoad(effResourceHeader_t *pD3P)
     return node;
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00201170);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9E78);
 
-INCLUDE_ASM(const s32, "effect/effManager", func_00201190);
+INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9E98);
 
 effNode_t *dds3EffectCopy(effNode_t *node)
 {
@@ -442,5 +442,5 @@ void dds3EffectDataRevision(effResourceHeader_t *header)
     }
 }
 
-INCLUDE_SDATA(const s32, "effect/effManager", D_004E17C0);
+INCLUDE_SDATA(const s32, "effect/effManager", D_r1_0046D078);
 

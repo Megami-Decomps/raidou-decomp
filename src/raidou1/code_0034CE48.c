@@ -520,7 +520,7 @@ typedef struct MenuListDefaults {
     s32 indices[3];
 } MenuListDefaults;
 
-extern MenuListDefaults D_0042AF00;
+extern MenuListDefaults D_r1_00463EC0;
 
 extern const MenuListDefaults D_0042AE18;
 
@@ -1189,11 +1189,11 @@ typedef struct MenuPosTable3 {
     MenuPos pos[3];
 } MenuPosTable3;
 
-extern MenuPosTable3 D_0042AF48;
+extern MenuPosTable3 D_r1_00463F08;
 
 void mnuDrawIconPanelFade(s32 x, s32 y, s32 z, s32 alpha, MenuIconState *state, s32 mode, s32 surface);
 
-extern MenuPosTable D_0042AF60;
+extern MenuPosTable D_r1_00463F20;
 
 void mnuDrawIconRow6(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surface);
 
@@ -1204,7 +1204,7 @@ typedef struct MenuOffsets {
     s32 y1;
 } MenuOffsets;
 
-extern MenuOffsets D_0042AF90;
+extern MenuOffsets D_r1_00463F50;
 
 void mnuDrawIconPair(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surface);
 

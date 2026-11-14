@@ -524,7 +524,7 @@ extern u32 scrHandleCount;
 
 extern sdfGrOt_t sdfDebugGrOt;
 
-extern s8 D_0032453B[];
+extern s8 D_r1_003AD3BB[];
 
 extern void evtDrawHeapUsageOverlay(sdfGrOt_t *);
 
@@ -1037,15 +1037,15 @@ void evtSelStateDestroy(void) {
         SDF_VU0_STOREVECTOR(sdfViewShakeVector);
     }
 }
-INCLUDE_SDATA(const s32, "code_0010D1B8", D_0046B2DC);
+INCLUDE_SDATA(const s32, "code_0010D1B8", D_r1_0046B2DC);
 
-INCLUDE_SDATA(const s32, "code_0010D1B8", D_0046B2E0);
+INCLUDE_SDATA(const s32, "code_0010D1B8", D_r1_0046B2E0);
 
-INCLUDE_SDATA(const s32, "code_0010D1B8", D_0046B2E4);
+INCLUDE_SDATA(const s32, "code_0010D1B8", D_r1_0046B2E4);
 
-INCLUDE_SDATA(const s32, "code_0010D1B8", D_0046B2E8);
+INCLUDE_SDATA(const s32, "code_0010D1B8", D_r1_0046B2E8);
 
-INCLUDE_SDATA(const s32, "code_0010D1B8", D_0046B2EC);
+INCLUDE_SDATA(const s32, "code_0010D1B8", D_r1_0046B2EC);
 
-INCLUDE_SDATA(const s32, "code_0010D1B8", D_0046B2F0);
+INCLUDE_SDATA(const s32, "code_0010D1B8", D_r1_0046B2F0);
 

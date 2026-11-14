@@ -382,7 +382,7 @@ typedef struct {
     s8 fields[8]; /* Per-row signed lookup values at +0x2. */
 } EvtTblEntry; /* 0xA bytes */
 
-extern EvtTblEntry D_00368950[];
+extern EvtTblEntry D_r1_003EF768[];
 
 extern EvtSkyAlphaAnimationStatus skyanime;
 
@@ -484,7 +484,7 @@ extern const char *D_003AE0D8[];
 
 extern char D_003BC080[];
 
-extern char D_003BC088[];
+extern char D_r1_0046C920[];
 
 /* Draw a project-menu command, including its current toggle/skip option. */
 void evtDrawProjectCommandRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
@@ -656,9 +656,9 @@ extern char D_003AE8F0[];
 
 extern char D_003AE900[];
 
-extern char D_003AE910[];
+extern char D_r1_003AE910[];
 
-extern char D_003AE920[];
+extern char D_r1_003AE920[];
 
 extern char D_003AE930[];
 
@@ -666,7 +666,7 @@ extern char D_003AE940[];
 
 extern char D_003AE950[];
 
-extern char D_003AE960[];
+extern char D_r1_003AE960[];
 
 void evtDrawMessageDataRow(sdfDrawTag_t *list, s32 x, s32 y, u32 kind, dds_evtViewerInfo_t *ctx);
 
@@ -728,11 +728,11 @@ extern void evtDrawMotionChangeRow();
 /* sdfMotionCtrlr_t editor row: ctx->value packs group (byte 0), motion number (byte 1), loop flag (byte 2) and interpolation (byte 3). */
 s32 evtUpdateMotionChangeRow(s32 x, s32 y, dds_evtViewerInfo_t *ctx);
 
-extern char D_003BC288[];
+extern char D_r1_0046CB78[];
 
-extern char D_003BC280[];
+extern char D_r1_0046CB70[];
 
-extern char D_003AEA80[];
+extern char D_r1_00450960[];
 
 void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 
@@ -835,7 +835,7 @@ s32 mnuDrawTimedPrompt(s32 x, s32 y, dds_evtViewerInfo_t *work);
 /* Store a countdown and the two optional strings used by timed prompts. */
 void evtSetRuntimeCommandValues(dds_evtViewerInfo_t *runtime, s32 frames, char *firstText, char *secondText);
 
-extern char D_003BC300[];
+extern char D_r1_0046CC30[];
 
 void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 
@@ -910,7 +910,7 @@ extern void *D_003BB130;
 
 s32 evtPollEffectFrameControl(s32 x, s32 y, dds_evtViewerInfo_t *runtime);
 
-extern s32 (*D_00368B48[])(s32, s32, dds_evtViewerInfo_t *);
+extern s32 (*D_r1_003EF9A8[])(s32, s32, dds_evtViewerInfo_t *);
 
 s32 evtDispatchActionByIndex(s32 actionIndex, s32 x, s32 y, dds_evtViewerInfo_t *runtime);
 
@@ -1158,16 +1158,16 @@ extern EvtModelScaleEntry *D_003BAA20;
 dds3Basic_t *evtSpawnResourceObject(EvtPackEventId eventId, EvtPackSecondaryResourceId key, s32 index);
 /* End of declarations from src/dds1/game/code_00235270.c */
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C4B78);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C4B78);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C4FE0);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C4FE0);
 
 s32 evtDispatchActionByIndex(s32 actionIndex, s32 x, s32 y, dds_evtViewerInfo_t *runtime) {
     s32 mode = runtime->actionMode;
     if (mode == 11 && actionIndex != mode) {
         return 0;
     }
-    return D_00368B48[actionIndex](x, y, runtime);
+    return D_r1_003EF9A8[actionIndex](x, y, runtime);
 }
 
 void evtWriteSerializedBytes(s32 output, void *data, s32 size) {
@@ -1383,7 +1383,7 @@ void evtWriteFixedSizeEntries(s32 output, dds_evtViewerInfo_t *table) {
 
 INCLUDE_ASM(const s32, "code_001C4B78", evtWriteGroupHeader);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C5DF8);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C5DF8);
 
 void evtEmitGroupTypeElevenPayloads(s32 output, dds_evtViewerInfo_t *runtime) {
     EvtRuntimeGroup *group;
@@ -1507,36 +1507,36 @@ void evtEmitGroupTypeTwentyFivePayloads(s32 output, dds_evtViewerInfo_t *runtime
     }
 }
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C63C8);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C63C8);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C6A80);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C6A80);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C6AD0);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C6AD0);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C6B20);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C6B20);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C6B70);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C6B70);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C6BC0);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C6BC0);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C6C10);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C6C10);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C6D08);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C6D08);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C7258);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C7258);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C7338);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C7338);
 
-INCLUDE_ASM(const s32, "code_001C4B78", func_001C9840);
-INCLUDE_SDATA(const s32, "code_001C4B78", D_0046CC80);
+INCLUDE_ASM(const s32, "code_001C4B78", func_r1_001C9840);
+INCLUDE_SDATA(const s32, "code_001C4B78", D_r1_0046CC80);
 
-INCLUDE_SDATA(const s32, "code_001C4B78", D_0046CC88);
+INCLUDE_SDATA(const s32, "code_001C4B78", D_r1_0046CC88);
 
-INCLUDE_SDATA(const s32, "code_001C4B78", D_0046CC90);
+INCLUDE_SDATA(const s32, "code_001C4B78", D_r1_0046CC90);
 
-INCLUDE_SDATA(const s32, "code_001C4B78", D_0046CC98);
+INCLUDE_SDATA(const s32, "code_001C4B78", D_r1_0046CC98);
 
-INCLUDE_SDATA(const s32, "code_001C4B78", D_0046CCA0);
+INCLUDE_SDATA(const s32, "code_001C4B78", D_r1_0046CCA0);
 
-INCLUDE_SDATA(const s32, "code_001C4B78", D_0046CCA8);
+INCLUDE_SDATA(const s32, "code_001C4B78", D_r1_0046CCA8);
 

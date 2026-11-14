@@ -4,7 +4,7 @@ INCLUDE_RODATA(const s32, "facility/fclCombineInit", D_004AD330);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_0017D8B0);
 
-INCLUDE_RODATA(const s32, "facility/fclCombineInit", D_004AD360);
+INCLUDE_RODATA(const s32, "facility/fclCombineInit", D_r1_004493B0);
 
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", jtbl_004AD370);
 
@@ -40,9 +40,9 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001824F8);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00182DC0);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001830C0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00171EB0);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00183670);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00172460);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00183C20);
 
@@ -54,17 +54,17 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184290);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001842C8);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001842E8);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173088);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184308);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_001730A8);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184320);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_001730C0);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184398);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173138);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001843A8);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184660);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_001732E8);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001846A0);
 
@@ -76,27 +76,27 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184BA8);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184D10);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184E30);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173868);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184E60);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173898);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184F00);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173938);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184F68);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_001739A0);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00184FE0);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173A30);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00185030);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173A80);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00185060);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173AB0);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00185100);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173B50);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00185168);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173BB8);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00185220);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173C88);
 
-INCLUDE_ASM(const s32, "facility/fclCombineInit", func_00185270);
+INCLUDE_ASM(const s32, "facility/fclCombineInit", func_r1_00173CD8);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", func_001852B8);
 
@@ -191,29 +191,29 @@ INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF0E0);
 
 INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF0E4);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF0E8);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BE98);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF0EC);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BE9C);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF0F0);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEA0);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF0F4);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEA4);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF0F8);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEA8);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF0FC);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEAC);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF100);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEB0);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF104);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEB4);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF108);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEB8);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF10C);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEBC);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF110);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEC0);
 
-INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF114);
+INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_r1_0046BEC4);
 
 INCLUDE_SDATA(const s32, "facility/fclCombineInit", D_004DF118);
 

@@ -1236,7 +1236,7 @@ void mdlLink(mdlObj_t *aHandle, void *aModelOt)
     mdlLinkBlur(aHandle, aModelOt);
 }
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001B0220);
+INCLUDE_ASM(const s32, "model/mdlManager", func_r1_0019A6A8);
 
 /* mdlLink, first turning node aNode's local rotation towards aPitch and aYaw
  * (degrees) by abs(aPitch) / 25, at most one. aNode -1 skips the turn. */
@@ -1335,7 +1335,7 @@ void mdlHideAllNode(mdlObj_t *aHandle)
     }
 }
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001B05C0);
+INCLUDE_ASM(const s32, "model/mdlManager", mdlMotion);
 
 void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber)
 {
@@ -1617,7 +1617,7 @@ void mdlSetClutColor(mdlObj_t *ctx, s32 color, f32 ratio)
     sdfTexListSetClutColor((sdfItemArray_t *)ctx->inner->texList, color, ratio);
 }
 
-INCLUDE_ASM(const s32, "model/mdlManager", func_001B0DA8);
+INCLUDE_ASM(const s32, "model/mdlManager", mdlGetFilebase);
 
 s32 mdlPackCheck(sdfPacDecodeResrc_t *resrc)
 {
@@ -1839,11 +1839,11 @@ INCLUDE_ASM(const s32, "model/mdlManager", func_001B15D8);
 INCLUDE_ASM(const s32, "model/mdlManager", func_001B16F0);
 char mdlModelPathPrefix[8] = "/model/";
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_004DF5E0);
+INCLUDE_SDATA(const s32, "model/mdlManager", D_r1_0046C380);
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_004DF5E4);
+INCLUDE_SDATA(const s32, "model/mdlManager", D_r1_0046C384);
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_004DF5E8);
+INCLUDE_SDATA(const s32, "model/mdlManager", D_r1_0046C388);
 
-INCLUDE_SDATA(const s32, "model/mdlManager", D_004DF5F0);
+INCLUDE_SDATA(const s32, "model/mdlManager", D_r1_0046C390);
 

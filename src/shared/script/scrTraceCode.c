@@ -620,7 +620,7 @@ extern s32 fcl_214458();
 
 extern s32 func_00210B68();
 
-extern s32 func_00210B90();
+extern s32 func_r1_001F9898();
 
 extern s32 nme_298698();
 

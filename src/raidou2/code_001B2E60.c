@@ -472,8 +472,8 @@ typedef struct MdlViewState {
     s16 entryHeight;      /* 0x2E: low bound offered to mdlAddEntry* */
     s16 entryWidth;       /* 0x30: high bound, limited to entryHeight when drawing */
     u8 pad32[2];
-    s16 labelIndexA;      /* 0x34: indexes D_00367B10 */
-    s16 labelIndexB;      /* 0x36: indexes D_00367B18 */
+    s16 labelIndexA;      /* 0x34: indexes D_r1_003EDB38 */
+    s16 labelIndexB;      /* 0x36: indexes D_r1_003EDB40 */
     s16 scrollPage;  /* 0x38: page stepped by mdlUpdateViewerCursorWithPageStep */
     s16 nodeCursor;  /* 0x3A: selection within the loaded node count */
     s16 settingsCursor; /* 0x3C: selected row among the ten viewer settings. */
@@ -522,7 +522,7 @@ static inline s8 mdlGetViewerDisplayMode(MdlViewState *state) {
 
 extern MdlCtrlState mdlDebugScaleWork;
 
-extern s8 D_003D7A60[];
+extern s8 D_r1_004B6CF0[];
 
 typedef struct MdlViewerTaskDef {
     const char *name;
@@ -545,7 +545,7 @@ extern char D_003ABF88[];
 
 extern char D_003BBC80[];
 
-extern char D_003ABC98[];
+extern char D_r1_0044D8C8[];
 
 extern char D_003ABCB0[];
 
@@ -720,19 +720,19 @@ typedef struct {
     f32 x, y, z, w;
 } __attribute__((aligned(16))) MdlEyeVec;
 
-extern MdlEyeVec D_003D7B20;
+extern MdlEyeVec D_r1_004B6DB0;
 
-extern MdlEyeVec D_003D7B30;
+extern MdlEyeVec D_r1_004B6DC0;
 
-extern u128 D_003D7B40;
+extern u128 D_r1_004B6DD0;
 
-extern MdlEyeVec D_00367A10;
+extern MdlEyeVec D_r1_003EDA20;
 
-extern MdlEyeVec D_00367A20;
+extern MdlEyeVec D_r1_003EDA30;
 
-extern u128 D_00367A30;
+extern u128 D_r1_003EDA40;
 
-extern s16 D_003D7A84[];
+extern s16 D_r1_004B6D14[];
 
 void mdlResetViewerBasisVectors(void);
 
@@ -742,7 +742,7 @@ void mdlRotateViewResourcesRight(void);
 /* Move the first resource to the end of the active list without changing its allocation. */
 void mdlRotateViewList(void);
 
-extern const char *D_003679D0[];
+extern const char *D_r1_003ED9E0[];
 
 extern char D_003BBC20[];
 
@@ -798,7 +798,7 @@ extern f32 sdfViewMatrix[];
 /* vu0 routine: move the viewer camera or orbit it about the look-at point. */
 void mdlUpdateViewerCameraFromPad(void);
 
-extern const char *D_00367B10[];
+extern const char *D_r1_003EDB38[];
 
 void mdlDrawViewerIndexedLabelOverlay(void);
 
@@ -813,7 +813,7 @@ extern f32 D_003983A0[4];
 /* vu0 routine: edit the viewer transform with translation or quaternion steps. */
 void mdlUpdateViewerSelectedModelFromPad(void);
 
-extern const char *D_00367B18[];
+extern const char *D_r1_003EDB40[];
 
 void mdlDrawViewerSelectionLabel(void);
 
@@ -827,9 +827,9 @@ void mdlDrawViewerMotionTimeline(void);
 
 u32 mdlUpdateViewerScaleTask(void);
 
-extern s8 D_00398629[];
+extern s8 D_r1_0043EEDB[];
 
-extern u8 D_003BD888;
+extern u8 D_r1_0046F800;
 
 extern s8 sdf3DScreenAdjust;
 
@@ -849,7 +849,7 @@ u32 mdlUpdateViewerWorkspaceSetupTask(void);
 
 void mdlApplyViewerResourceMenuAction(void);
 
-extern const char *D_00367B20[];
+extern const char *D_r1_003EDB48[];
 
 /* Draw resource actions with independent eligibility and selection styles. */
 void mdlDrawViewerResourceMenu(void);
@@ -919,18 +919,18 @@ u32 mdlRunViewerEffectEditorTask(void);
 
 s32 mdlRequestViewerExitOnce(void);
 
-extern sdfGrOt_t D_00325048;
+extern sdfGrOt_t D_r1_003ADFD8;
 
-extern f32 D_00367B80[][4];
+extern f32 D_r1_003EDBB0[][4];
 
-extern u32 D_00367BE0[];
+extern u32 D_r1_003EDC10[];
 
 /* Submit the intermediate packet with an identity basis in phases 2 and 3. */
 void mdlSubmitViewerIntermediateDrawPacket(void);
 
-extern f32 D_00367C00[][4];
+extern f32 D_r1_003EDC30[][4];
 
-extern u32 D_00367C40[];
+extern u32 D_r1_003EDC70[];
 
 extern s32 D_003BBCB8;
 
@@ -957,9 +957,9 @@ extern s32 sdfGrAllocPacketBuff(s32 size);
 
 s32 mdlViewer(dds3ProcessID_t *task);
 
-extern f32 D_00367C50[][4];
+extern f32 D_r1_003EDC80[][4];
 
-extern u32 D_00367CB0[];
+extern u32 D_r1_003EDCE0[];
 
 /* Walk native 64-byte map-position records and submit their visualization in one packet list. */
 void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource);
@@ -1230,10 +1230,10 @@ void mdlLoadViewerResourceAndResetCursors(void) {
 }
 
 void mdlResetViewerBasisVectors(void) {
-    SDF_VU0_COPYVECTOR(&D_003D7B20, &D_00367A10);
-    SDF_VU0_COPYVECTOR(&D_003D7B30, &D_00367A20);
-    SDF_VU0_COPYVECTOR(&D_003D7B40, &D_00367A30);
-    D_003D7A84[0] = 0;
+    SDF_VU0_COPYVECTOR(&D_r1_004B6DB0, &D_r1_003EDA20);
+    SDF_VU0_COPYVECTOR(&D_r1_004B6DC0, &D_r1_003EDA30);
+    SDF_VU0_COPYVECTOR(&D_r1_004B6DD0, &D_r1_003EDA40);
+    D_r1_004B6D14[0] = 0;
 }
 
 /* Rotate the viewer resource list in place without moving its allocation. */
@@ -1276,7 +1276,7 @@ void mdlDrawViewerModeLabel(void) {
     } else {
         phase = phase - 1;
     }
-    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintfEx(&packet, D_003679D0[phase])));
+    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintfEx(&packet, D_r1_003ED9E0[phase])));
 }
 
 /* Draw the phase-zero option list in two columns, with cursor/blink styling. */
@@ -1289,7 +1289,7 @@ void mdlDrawViewerOptionLabels(void) {
     }
 
     mdlAppendViewerRectToDrawList(0x7690, 0x7A08, 0xFF0080, 0xC60, 0x2D0, 0);
-    label = D_003679D0;
+    label = D_r1_003ED9E0;
     i = 0;
     do {
         s32 style = (i == mdlViewerState.selectedTaskIndex && mdlViewerState.selectionHighlightPhase < 0x14) ? 4 : 0;
@@ -1324,7 +1324,7 @@ void mdlDrawViewerModelAndMotionSummary(void) {
     sdfDevSetPrintCB(&packet, 0x7E40, 0x8620, 0xFF0080, 0);
 
     if ((displayMode = mdlGetViewerDisplayMode(&mdlViewerState)) == 0) {
-        format = D_003ABC98;
+        format = D_r1_0044D8C8;
     } else {
         format = D_003ABCB0;
     }
@@ -1379,11 +1379,11 @@ void mdlAddPlainViewerEntryForSelectedNode(void) {
     }
 }
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4050);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D8E0);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4068);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D8F8);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4078);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D908);
 
 INCLUDE_ASM(const s32, "code_001B2E60", mdlHandleViewerAssetSelection);
 
@@ -1395,11 +1395,11 @@ u32 mdlRunViewerAssetSelectionTask(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_001B3D68);
+INCLUDE_ASM(const s32, "code_001B2E60", func_r1_0019E2B0);
 
 void mdlDrawViewerIndexedLabelOverlay(void) {
     mdlAppendViewerRectToDrawList(0x8A10, 0x7948, 0xFF007F, 0x4E0, 0x90, 0);
-    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintf(0x8A40, 0x7960, 0xFF0080, 0, D_00367B10[mdlViewerState.labelIndexA])));
+    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintf(0x8A40, 0x7960, 0xFF0080, 0, D_r1_003EDB38[mdlViewerState.labelIndexA])));
 }
 
 u32 mdlRunViewerIndexedLabelTask(void) {
@@ -1412,12 +1412,12 @@ INCLUDE_ASM(const s32, "code_001B2E60", mdlUpdateViewerSelectedModelFromPad);
 
 void mdlDrawViewerSelectionLabel(void) {
     mdlAppendViewerRectToDrawList(0x8A10, 0x7948, 0xFF007F, 0x4E0, 0x90, 0);
-    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintf(0x8A40, 0x7960, 0xFF0080, 0, D_00367B18[mdlViewerState.labelIndexB])));
+    sdfDrawTagLink(mdlViewerState.packetList, (u32)(sdfDevPrintf(0x8A40, 0x7960, 0xFF0080, 0, D_r1_003EDB40[mdlViewerState.labelIndexB])));
 }
 
 s32 mdlRunViewerSelectionLabelTask(void) {
     mdlUpdateViewerSelectedModelFromPad();
-    if (D_003D7A60[0] == 0) {
+    if (D_r1_004B6CF0[0] == 0) {
         mdlDrawViewerSelectionLabel();
     }
     return 0;
@@ -1439,14 +1439,14 @@ void mdlUpdateViewerWorkspaceSetup(void) {
 
     switch (mdlViewerState.workspaceSetupPhase) {
     case 0:
-        if (D_00398629[0] < 0) {
+        if (D_r1_0043EEDB[0] < 0) {
             f32 scale = mdlViewerState.captureScale;
 
             mdlViewerState.yawStepMode = initialPhase;
             mdlViewerState.unk50 = 0;
             mdlViewerState.unk52 = 0;
             mdlViewerState.taskPhase = -1;
-            D_003BD888 = mdlViewerState.unitStepMode;
+            D_r1_0046F800 = mdlViewerState.unitStepMode;
             mdlViewerState.unitStepMode = initialPhase;
             sdf3DScreenAdjust = initialPhase;
             sdf3DScreenAdjustScaleY = sdf3DScreenAdjustScaleX = scale;
@@ -1510,7 +1510,7 @@ void mdlDrawViewerResourceMenu(void) {
         }
         sdfDevSetPrintCB(&packet, 0x85C0, 0x7960 + row * 0x60, 0xFF0080, style);
         sdfDrawTagLink(mdlViewerState.packetList,
-            (u32)sdfDevPrintfEx(&packet, D_00367B20[row]));
+            (u32)sdfDevPrintfEx(&packet, D_r1_003EDB48[row]));
     }
 }
 
@@ -1582,35 +1582,35 @@ u32 mdlUpdateViewerNodeCursorTask(void) {
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B40F8);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D988);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4108);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D998);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4118);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D9A8);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4128);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D9B8);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4138);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D9C8);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4148);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044D9D8);
 
 INCLUDE_ASM(const s32, "code_001B2E60", mdlIsDebugTimeGraph);
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_001B5178);
+INCLUDE_ASM(const s32, "code_001B2E60", func_r1_0019F6C0);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B41C0);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DA50);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B41D8);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DA68);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B41F0);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DA80);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4208);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DA98);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4220);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DAB0);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4230);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DAC0);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4240);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DAD0);
 
 INCLUDE_ASM(const s32, "code_001B2E60", mdlDrawViewerSettings);
 
@@ -1826,8 +1826,8 @@ void mdlSubmitViewerIntermediateDrawPacket(void) {
         if (mdlViewerState.taskPhase >= 2) {
             packetList = dds3FontReqAllocDrawTag();
             SDF_VU0_LOADIDENTITY();
-            sdfDrawTagLink(packetList, (u32)((s32)sdfDrawRotatedModel(D_00367B80, D_00367BE0, 6, 0x80)));
-            D_00325048.regFunc(&D_00325048, packetList);
+            sdfDrawTagLink(packetList, (u32)((s32)sdfDrawRotatedModel(D_r1_003EDBB0, D_r1_003EDC10, 6, 0x80)));
+            D_r1_003ADFD8.regFunc(&D_r1_003ADFD8, packetList);
         }
     }
 }
@@ -1842,13 +1842,13 @@ void mdlSubmitViewerResourceDrawPacket(void) {
         packetList = dds3FontReqAllocDrawTag();
         resource = mdlViewerState.resources[0];
     VU0_LOAD_MATRIX(resource->inner->matrix);
-        drawPacket = (s32)sdfDrawRotatedModel(D_00367C00, D_00367C40, 4, 0x80);
+        drawPacket = (s32)sdfDrawRotatedModel(D_r1_003EDC30, D_r1_003EDC70, 4, 0x80);
         if ((dds3PadBitTable[13] < 0) & (D_003BBCB8 == 0)) {
             D_003BBCB8 = 1;
             sdfDumpHexLine(drawPacket, 0x100);
         }
         sdfDrawTagLink(packetList, (u32)(drawPacket));
-        D_00325048.regFunc(&D_00325048, packetList);
+        D_r1_003ADFD8.regFunc(&D_r1_003ADFD8, packetList);
     }
 }
 
@@ -1877,19 +1877,19 @@ void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource) {
         for (recordIndex = 0; recordIndex != recordCount; recordIndex++) {
             sdfModelMakeMarkPosMatrix(resource->inner, recordCursor);
             recordCursor++;
-            sdfDrawTagLink(packetList, (u32)((s32)sdfDrawRotatedModel(D_00367C50, D_00367CB0, 6, 0x80)));
+            sdfDrawTagLink(packetList, (u32)((s32)sdfDrawRotatedModel(D_r1_003EDC80, D_r1_003EDCE0, 6, 0x80)));
         }
-        D_00325048.regFunc(&D_00325048, packetList);
+        D_r1_003ADFD8.regFunc(&D_r1_003ADFD8, packetList);
     }
 }
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_001B6528);
+INCLUDE_ASM(const s32, "code_001B2E60", func_r1_001A0A70);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B4270);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DB00);
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_001B6770);
+INCLUDE_ASM(const s32, "code_001B2E60", func_r1_001A0CB8);
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_001B6CC0);
+INCLUDE_ASM(const s32, "code_001B2E60", func_r1_001A1208);
 
 INCLUDE_ASM(const s32, "code_001B2E60", mdlInitializeViewerTasksAndResources);
 
@@ -1905,75 +1905,75 @@ void mdlFreeViewResources(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_001B2E60", func_001B7190);
+INCLUDE_ASM(const s32, "code_001B2E60", func_r1_001A16D8);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B43C8);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DC58);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B43D8);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DC68);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B43E8);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DC78);
 
-INCLUDE_RODATA(const s32, "code_001B2E60", D_004B43F8);
+INCLUDE_RODATA(const s32, "code_001B2E60", D_r1_0044DC88);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF698);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C438);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6A0);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C440);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6A8);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C448);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6B0);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C450);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6B8);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C458);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6C0);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C460);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6C8);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C468);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6D0);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C470);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6D8);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C478);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6E0);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C480);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6E8);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C488);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6F0);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C490);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF6F8);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C498);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF700);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4A0);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF708);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4A8);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF710);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4B0);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF718);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4B8);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF720);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4C0);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF728);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4C8);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF730);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4D0);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF738);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4D8);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF73C);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4DC);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF740);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4E0);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF748);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4E8);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF750);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4F0);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF758);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C4F8);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF760);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C500);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF768);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C508);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF770);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C510);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF778);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C518);
 
-INCLUDE_SDATA(const s32, "code_001B2E60", D_004DF780);
+INCLUDE_SDATA(const s32, "code_001B2E60", D_r1_0046C520);
 

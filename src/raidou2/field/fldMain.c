@@ -1,10 +1,10 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "field/fldMain", func_0012FFB8);
+INCLUDE_ASM(const s32, "field/fldMain", func_r1_0012AF78);
 
-INCLUDE_RODATA(const s32, "field/fldMain", D_004A9A68);
+INCLUDE_RODATA(const s32, "field/fldMain", D_r1_00446CB0);
 
-INCLUDE_RODATA(const s32, "field/fldMain", D_004A9A78);
+INCLUDE_RODATA(const s32, "field/fldMain", D_r1_00446CC0);
 
 INCLUDE_RODATA(const s32, "field/fldMain", D_004A9A88);
 
@@ -12,7 +12,7 @@ INCLUDE_RODATA(const s32, "field/fldMain", D_004A9A98);
 
 INCLUDE_RODATA(const s32, "field/fldMain", D_004A9AA8);
 
-INCLUDE_RODATA(const s32, "field/fldMain", D_004A9AB8);
+INCLUDE_RODATA(const s32, "field/fldMain", D_r1_00446D60);
 
 INCLUDE_RODATA(const s32, "field/fldMain", D_004A9AC8);
 
@@ -92,7 +92,7 @@ INCLUDE_RODATA(const s32, "field/fldMain", D_004A9DB0);
 
 INCLUDE_RODATA(const s32, "field/fldMain", D_004A9DC0);
 
-INCLUDE_SDATA(const s32, "field/fldMain", D_004DE7D8);
+INCLUDE_SDATA(const s32, "field/fldMain", D_r1_0046B668);
 
 INCLUDE_SDATA(const s32, "field/fldMain", D_004DE7E0);
 

@@ -408,7 +408,7 @@ dds3AdminiData_t *GetAdminiProcessData(void)
     return dds3GetProcessData(dds3SearchProcessName(dds3AdminiProcessName));
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_001029E0);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_001029A0);
 
 /* Requests retain byte-sized sequence/size storage: 256 bytes records zero.
  * Release the old payload before copying the new one. */
@@ -492,7 +492,7 @@ s32 dds3AdminiGetPrevHistoryFlag(void)
     return work->FlagHistory[(work->HistoryPointer + 7) & 7];
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_00102BF8);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_00102BB8);
 
 saddr_t dds3AdminiEndCheck(dds3ProcessID_t *id)
 {
@@ -515,7 +515,7 @@ saddr_t dds3AdminiEndCheck(dds3ProcessID_t *id)
     return EE_ADDR_S(dds3AdminiStartSequence);
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_00102DF0);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_00102DB0);
 
 void dds3AdminiNeoShutdown(dds3ProcessID_t *id)
 {
@@ -583,23 +583,23 @@ s32 fclEncycFreeEntry(const char *name)
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycFreeEntries);
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_00103518);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_001034D8);
 
 INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", fclEncycAllocEntry);
 
-INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_00103658);
+INCLUDE_ASM(const s32, "kernel/dds3AdminiProcess", func_r1_00103618);
 
 char dds3AdminiProcessName[8] = "Admini";
 
 s32 fclEncycHead = -1;
 
-INCLUDE_RODATA(const s32, "kernel/dds3AdminiProcess", D_004A6F98);
+INCLUDE_RODATA(const s32, "kernel/dds3AdminiProcess", D_r1_00444898);
 
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_004DE29C);
+INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_r1_0046B1A4);
 
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_004DE2A0);
+INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_r1_0046B1A8);
 
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_004DE2A4);
+INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_r1_0046B1AC);
 
-INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_004DE2A7);
+INCLUDE_SDATA(const s32, "kernel/dds3AdminiProcess", D_r1_0046B1AF);
 

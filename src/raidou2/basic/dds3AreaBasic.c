@@ -222,4 +222,4 @@ dds3BasicArrayHandle_t *dds3AreaBasicArrangeGetItemArray(dds3Basic_t *area, u32 
     return dst;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", func_0011B520);
+INCLUDE_ASM(const s32, "basic/dds3AreaBasic", func_r1_00118CB8);

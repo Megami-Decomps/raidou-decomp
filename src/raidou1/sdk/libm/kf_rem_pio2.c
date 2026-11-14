@@ -292,7 +292,7 @@ recompute:
     return n & 7;
 }
 
-INCLUDE_RODATA(const s32, "sdk/libm/kf_rem_pio2", D_00468180);
+INCLUDE_RODATA(const s32, "sdk/libm/kf_rem_pio2", D_r1_00468180);
 
-INCLUDE_RODATA(const s32, "sdk/libm/kf_rem_pio2", D_00468190);
+INCLUDE_RODATA(const s32, "sdk/libm/kf_rem_pio2", D_r1_00468190);
 

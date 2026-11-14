@@ -524,7 +524,7 @@ void RunningProcess(void)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_00100E38);
+INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_r1_00100E38);
 
 void EndProcess(dds3ProcessID_t *setp)
 {
@@ -712,7 +712,7 @@ void DebugProcessTree(dds3ProcessID_t *ps, s32 level)
     }
 }
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_00101410);
+INCLUDE_ASM(const s32, "kernel/dds3KernelCore", func_r1_00101410);
 
 s32 dds3ProcessMain(void)
 {
@@ -952,7 +952,7 @@ void *dds3GetProcessData(dds3ProcessID_t *id)
     return id->workdata;
 }
 
-void func_00101A48(void) {
+void func_r1_00101A48(void) {
 }
 
 void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *target)
@@ -1023,9 +1023,9 @@ dds3ProcessID_t *runninglistl = NULL;
 
 u32 runninglistcnt = 0;
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B174);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_r1_0046B174);
 
 char dds3DebugBlockEnd[8] = "\n\n";
 
-INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_0046B180);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelCore", D_r1_0046B180);
 

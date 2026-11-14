@@ -570,5 +570,5 @@ void fldLmapSubmitScaledSpritePacket(s32 x, s32 y, s32 z, s32 width, s32 height,
     drawSurface->regFunc(drawSurface, packetList);
 }
 
-INCLUDE_SDATA(const s32, "code_002CE680", D_0046E7D8);
+INCLUDE_SDATA(const s32, "code_002CE680", D_r1_0046E7D8);
 

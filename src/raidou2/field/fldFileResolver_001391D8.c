@@ -1570,7 +1570,7 @@ extern void fldClrCollision(void);
 
 extern u8 sdfProjectionMatrix[];
 
-extern u8 D_00324660[];
+extern u8 D_r1_003AD4E0[];
 
 extern char D_003C9200[];
 
@@ -2537,18 +2537,18 @@ void evtMessageExtraActionNoOp(void);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", fldMakeBlockBasicFL2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139258);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132100);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139460);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132308);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_001394E8);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132390);
 
 void fldProcessFieldRequestAlternate(const FldSceneRequest *request) {
     fldSpawnPlacementObjectsFromBatches(request->spawnBatches, request->spawnBatchCount,
                                         FLD_PLACEMENT_BATCH_MODE_APPEND);
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139540);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_001323E8);
 
 void sdfAddressResolverReset(u32 *aDataBody, u32 aOffset, const u8 *aAddrInfoPtr, s32 aAddrInfoLeng) {
     const u8 *p = aAddrInfoPtr;
@@ -2577,53 +2577,53 @@ void sdfAddressResolverReset(u32 *aDataBody, u32 aOffset, const u8 *aAddrInfoPtr
     }
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139630);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_001324D8);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139658);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132500);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139680);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132528);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139688);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132530);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139690);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132538);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139698);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132540);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_001396A0);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132548);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_001396A8);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132550);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_001396B0);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132558);
 
-void func_001396B8(void) {
+void func_r1_00132560(void) {
 }
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_001396C0);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_00132568);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_00139730);
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE85C);
+INCLUDE_ASM(const s32, "field/fldFileResolver_001391D8", func_r1_001325D8);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6F0);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE860);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6F4);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE864);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6F8);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE868);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B6FC);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE86C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B700);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE870);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B704);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE874);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B708);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE878);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B70C);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE87C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B710);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE880);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B714);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE884);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B718);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE888);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B71C);
 
-INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_004DE88C);
+INCLUDE_SDATA(const s32, "field/fldFileResolver_001391D8", D_r1_0046B720);
 

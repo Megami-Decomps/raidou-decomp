@@ -1525,17 +1525,17 @@ effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc)
     return hEffPart;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00210DF8);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9B00);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00210E38);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9B40);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00210E78);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9B80);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00210EB8);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9BC0);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00210EF8);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9C00);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00210F38);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9C40);
 
 void *dds3EffectPartTMXBillboardCreate(u32 data)
 {
@@ -1579,13 +1579,13 @@ mdlObj_t *dds3EffectPartModelCreate(dds3EffectPartModelData_t *pData)
     return hModel;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_002110D8);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9DE0);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_002110F8);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9E00);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00211110);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9E18);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00211168);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9E70);
 
 void dds3EffectPartModelSetScale(void *hData, f32 scale)
 {
@@ -1604,7 +1604,7 @@ void dds3EffectPartModelSetRotateMatrix(mdlObj_t *hData, sdfMatrix4_t *pMatrix)
     SDF_VU0_STORE_ROW2(&hData->inner->tm.m[8]);
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_002111F0);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001F9EF8);
 
 dds3EffectPCP_t *dds3EffectPCPCreate(dds3EffectPCPData_t *hPCPData)
 {
@@ -1647,21 +1647,21 @@ dds3EffectPCP_t *dds3EffectPCPCopy(dds3EffectPCP_t *hPCPSrc)
     return hPCP;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_002113E0);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA0E8);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00211420);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA128);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00211460);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA168);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_002114A0);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA1A8);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_002114E0);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA1E8);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00211520);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA228);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00211560);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA268);
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00211568);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA270);
 
 void *dds3EffectPCPDataGetData(dds3EffectPCPData_t *hPCPData, u32 number)
 {
@@ -1670,7 +1670,7 @@ void *dds3EffectPCPDataGetData(dds3EffectPCPData_t *hPCPData, u32 number)
     return (u8 *)hPCPData + part->offset;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", func_00211588);
+INCLUDE_ASM(const s32, "effect/effPart", func_r1_001FA290);
 
 u32 dds3EffectPCPDataGetType(dds3EffectPCPData_t *hPCPData, u32 number)
 {

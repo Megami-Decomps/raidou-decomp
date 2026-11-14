@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM(const s32, "sdk/libgcc/_fixdfdi", func_004177F0);
+INCLUDE_ASM(const s32, "sdk/libgcc/_fixdfdi", func_r1_0039E970);
