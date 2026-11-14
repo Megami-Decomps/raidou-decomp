@@ -1116,10 +1116,6 @@ extern void dds3Filter2On(s32);
 extern void dds3Filter2Off(s32);
 
 extern s32 D_00438F28;
-
-/* Configure the fade on timer zero, wait thirty ticks, then consume a negative option status.
-   Keep both timer reads: setup tests a second read, while later comparisons use the cached one. */
-s32 itfCommandSelectOptionWithFade(void);
 /* End of declarations from src/dds2/game/code_001A1B08.c */
 
 /* Declarations from dds-decomp src/dds2/interface/itfMesManager.c */
@@ -1292,9 +1288,6 @@ ItfMesEntryStartResult itfMesStartEntry(ItfMesWindowIndex window, ItfMesEntryInd
 
 extern s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub);
 
-/* Cache the selected table/item; report whether its text contains the F413 cue. */
-ItfMesVoiceCueResult itfMesSelectTableItemText(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
-
 /* Build the option panel around the widest measured row, using this game's
  * fixed row spacing. Preserve the existing panel creation/layout order. */
 void itfMesBuildOptionFrame(dds_instanceMes_tag *mes);
@@ -1344,12 +1337,6 @@ extern char D_00436628[];
 extern sdfGrOt_t sdfDebugGrOt;
 
 extern ItfMesWindowRec D_00452960[];
-
-/* Return the entry's item-address table or branch sentinel 1; index unchecked. */
-ItfMesEntryItemsResult itfMesGetWindowEntryItems(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
-
-/* Read the installed sub-resource's entry count without slot/resource validation. */
-u32 itfMesGetEntryCount(ItfMesWindowIndex window);
 
 extern s32 frFontCountGlyphBands(_FRQ *glyph);
 
@@ -1669,7 +1656,49 @@ s32 itfMesMngSelect(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfCommandSelectOptionWithFade);
+extern s32 D_r1_0046F7B0;
+
+s32 itfCommandSelectOptionWithFade(void) {
+    s32 window;
+    s32 elapsedTicks;
+    s32 entry;
+    instanceMes_tag *record;
+    select_tag *options;
+
+    window = scrGetMessageHandle();
+    if (window < 0) {
+        return 1;
+    }
+    elapsedTicks = scrGetCommandTimer();
+    if (scrGetCommandTimer() == 0) {
+        dds3SetFilter2Para(0x44);
+        dds3SetFilter2RGBA(0x5E1C1C1C);
+        dds3Filter2On(ITF_PANEL_MESSAGE_FADE_TICKS);
+        D_r1_0046F7B0 = -1;
+        return 0;
+    }
+    if (elapsedTicks < ITF_PANEL_MESSAGE_FADE_TICKS) {
+        return 0;
+    }
+    if (elapsedTicks == ITF_PANEL_MESSAGE_FADE_TICKS) {
+        itfMesMngChangeWindowType(window, ITF_MES_PANEL_MODE_NO_SPRITE_TRANSITION, 0);
+    } else if (D_r1_0046F7B0 == -1) {
+        record = pinst[window].mes;
+        entry = scrGetIntPara(0);
+        options = &record->select;
+        if (options->phase == 0) {
+            itfMesMngRequestSelect(window, entry);
+        } else if (options->phase < 0) {
+            options->phase = 0;
+            scrSetIntReturnValue(options->select);
+            itfMesMngRequestSelectRelease(window);
+            dds3Filter2Off(ITF_PANEL_MESSAGE_EXIT_TICKS);
+            D_r1_0046F7B0 = 0;
+            return 1;
+        }
+    }
+    return 0;
+}
 
 /* Return the option-block signed status word, not the separate entry status byte. */
 s16 itfMesMngGetSelPhase(s32 msgid) {
@@ -1859,7 +1888,19 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_001875F8);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", func_r1_00187658);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesSelectTableItemText);
+ItfMesVoiceCueResult itfMesSelectTableItemText(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex) {
+    instanceMes_tag *mes = pinst[window].mes;
+    itfMesBinMesHeader_t *table = GetTypeHeader(mes, entryIndex)->ptr;
+    message_tag *message = &mes->message;
+
+    message->page = itemIndex;
+    message->table = table;
+    message->maxpage = table->page;
+    if (table->page != 0) {
+        return itfInitTextDrawArgs(GetMessagePagePtr(table, (s16)itemIndex), 0);
+    }
+    return 0;
+}
 
 /* Release/reset selected-entry glyphs and their status; optionally do the same
  * for primary text. Negative window is a no-op; no other slot validation. */
@@ -2198,9 +2239,13 @@ itfMesBinTypeHeader_t *GetTypeHeader2(itfMesResource_t *pfileheader)
     return &entries[pfileheader->entryCount];
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetWindowEntryItems);
+ItfMesEntryItemsResult itfMesGetWindowEntryItems(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex) {
+    return (ItfMesEntryItemsResult)GetTypeHeader(pinst[window].mes, entryIndex)->type;
+}
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetEntryCount);
+u32 itfMesGetEntryCount(ItfMesWindowIndex window) {
+    return pinst[window].mes->pdata->entryCount;
+}
 
 u8 *GetMessagePagePtr(itfMesBinMesHeader_t *table, s32 index)
 {

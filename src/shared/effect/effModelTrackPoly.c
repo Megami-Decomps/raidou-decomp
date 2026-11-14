@@ -253,6 +253,86 @@ void effSwordTrackDraw(Eff_ModelTrackPoly_tag *hSwordTrack);
 void effSwordTrackReset(Eff_ModelTrackPoly_tag *hSwordTrack);
 /* End of declarations from src/smt3/effect/effModelTrackPoly.c */
 
+/* Declarations from dds-decomp src/dds1/effect/effModelTrackPoly.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_Eff_ModelTrackPolyParam_t 1
+
+#define SMT3_DEFINES_Eff_ModelTrackPoly_tag 1
+
+#define SMT3_DEFINES_dds3HermitianTrackPoly_tag 1
+
+#define SMT3_DEFINES_effDrawBank_t 1
+
+#define SMT3_DEFINES_effMTPolyListHandle_t 1
+
+#define SMT3_DEFINES_effModelTrackPoly_t 1
+
+#define SMT3_DEFINES_effSwordTrackParams_t 1
+
+#include "dds/sdk_ps2.h"
+
+#include "dds/common.h"
+
+#include "dds/sdf_map_position_api.h"
+
+#include "dds/sdf_vu0.h"
+
+#include "dds/sdf_asset_state.h"
+
+#include "dds/sdf_asset_create.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_packet_append.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/eff.h"
+
+#include "dds/eff_math.h"
+
+#include "dds/eff_track_poly_list.h"
+
+#include "dds/mdl.h"
+
+#include "dds/sdf.h"
+
+#include "dds/sdf_chunk.h"
+
+#include "dds/pcp_vu0.h"
+
+#include "dds/eff_track_poly_data.h"
+
+#include "dds/eff_packet_params.h"
+
+/* Release both owned resources before freeing this track. */
+void effTrackPolyRelease(EffTrackPolyWork *work);
+
+void effTrackPolyReset(EffTrackPolyWork *work);
+
+void effTrackPolySetColor(EffTrackPolyWork *work, u32 color);
+
+/* Sample endpoints between startFrame and endFrame (inclusive), fade after
+ * endFrame, and reset history before startFrame. */
+void effTrackPolyUpdate(EffTrackPolyWork *work);
+
+extern sdf3DPrimPolyParm_t effTrackPolyDrawParams;
+
+extern const u32 effTrackPolyTriangleIndices[];
+
+/* Select the draw target on the data created by the track constructor. */
+void dds3HermitianTrackPolySetDrawTarget(dds3HermitianTrackPoly_tag *data, u32 drawTarget);
+
+extern sdfGrOt_t *effTrackPolyDrawSurfaces[];
+
+#include "dds/sdf_packet_alloc.h"
+/* End of declarations from src/dds1/effect/effModelTrackPoly.c */
+
 void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly)
 {
     sdfVector4_t pair[2];
@@ -271,7 +351,31 @@ INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F69B8);
 
 INCLUDE_ASM(const s32, "effect/effModelTrackPoly", func_r1_001F69C8);
 
-INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effTrackPolyUpdate);
+/* Sample endpoints between startFrame and endFrame (inclusive), fade after
+ * endFrame, and reset history before startFrame. */
+void effTrackPolyUpdate(EffTrackPolyWork *work) {
+    dds3ModelHandle_t *model = work->params.model;
+    f32 currentFrame = model->first->frame;
+
+    if (work->params.startFrame <= currentFrame) {
+        if (currentFrame <= work->params.endFrame) {
+            if (work->updateCount % work->params.sampleInterval == 0) {
+                Eff_ModelTrackPolyGetMarkPosition(work);
+            }
+            dds3HermitianTrackPolyDraw(work->data);
+        } else {
+            dds3HermitianTrackPoly_tag *data = work->data;
+
+            if (data->abgr & 0xFF000000) {
+                data->abgr += 0xE0000000;
+            }
+            dds3HermitianTrackPolyDraw(data);
+        }
+        work->updateCount++;
+    } else {
+        effTrackPolyReset(work);
+    }
+}
 
 effMTPolyListHandle_t *Eff_ModelTrackPolyListCreate(Eff_ModelTrackPolyParam_t *pParam, u32 number) {
     sdfMemHandle_t *handle = sdfMemAllocDirect(number * sizeof(effModelTrackPoly_t *) + sizeof(effMTPolyListHandle_t));

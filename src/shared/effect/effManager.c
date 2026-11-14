@@ -300,11 +300,129 @@ extern const char billPathBil00[16];
 extern char dds3EffectProcessName[7];
 /* End of declarations from src/smt3/effect/effManager.c */
 
+/* Declarations from dds-decomp src/dds1/effect/effManager.c */
+#ifndef VERSION_DDS1
+#define VERSION_DDS1 1
+#endif
+
+#define SMT3_DEFINES_effLegacyInstance_t 1
+
+#define SMT3_DEFINES_effMajorEntry_t 1
+
+#define SMT3_DEFINES_effNode_t 1
+
+#define SMT3_DEFINES_effResourceHeader_t 1
+
+#include "dds/common.h"
+
+#include "dds/sdf_chip.h"
+
+#include "dds/par_cell_api.h"
+
+#include "dds/sdf_heap_api.h"
+
+#include "dds/ee_mmi.h"
+
+#include "dds/eff.h"
+
+#include "dds/eff_node.h"
+
+#include "dds/eff_create_node_from_parameter.h"
+
+#include "dds/eff_node_descriptor.h"
+
+#include "dds/sdf_packet_list.h"
+
+#include "dds/sdf_gs_packet.h"
+
+#include "dds/eff_manager_task.h"
+
+#include "dds/dds3_task_runner.h"
+
+#include "dds/eff_legacy_node_instance.h"
+
+#include "dds/sdf_packet_alloc.h"
+
+extern void effObjectListCountersReset(void);
+
+extern void effBillDispatchAll(void);
+
+void effManagerInitializeSubsystems(dds3ProcessID_t *task);
+
+extern void billFlushPendingChildPackets(void);
+
+extern void billFlushPendingRenderPairs(void);
+
+extern void effDispatchActive(void);
+
+void dds3EffectDispatchUpdate(EffNode *node);
+
+EffNodeConditionResult effInvokeNodeConditionOrAcceptDefault(EffNode *node);
+
+void effCopyVectorToNodeInstance(EffNode *node, const void *vector);
+
+void effApplyNodeTransformMatrix(EffNode *node, const void *matrix);
+
+void effSetNodeParameterValue(EffNode *node, u32 parameterWord);
+
+void effDispatchOptionalNodeFlag(EffNode *node, u8 flag);
+
+s32 effInvokeOptionalNodeInstanceCallback(EffNode *node);
+
+#include "dds/sdf_debug_api.h"
+
+EffNode *effCreateNodeFromParameter(u32 parameter);
+/* End of declarations from src/dds1/effect/effManager.c */
+
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E97E0);
 
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9888);
 
-INCLUDE_ASM(const s32, "effect/effManager", effSubmitFieldBlendStateTask);
+/* Submit the test and alpha state packets to both field draw buffers. */
+dds3TaskUpdateResult_t effSubmitFieldBlendStateTask(dds3ProcessID_t *task) {
+    sdfDrawTag_t *list;
+    sdfPrimTransPacket_t *state;
+    sdfGrOt_t *surface;
+
+    (void)task;
+    list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    state = (sdfPrimTransPacket_t *)sdfGrAllocPacketBuff(0x40);
+    state->header.dmaWords.tag = 3;
+    state->header.dmaWords.vif = 0x5000000310000000ULL;
+    state->header.giftag.parm = 0x1000000000008002ULL;
+    state->header.giftag.regs = 0xE;
+    state->elem.test.data = 0x51801;
+    state->elem.test.reg = 0x47;
+    state->elem.alpha.data = 0x44;
+    state->elem.alpha.reg = 0x42;
+    sdfDrawTagLink(list, (u32)state);
+    /* DDS's surface 51; Raidou's draw list has more surfaces before it. */
+#ifdef VERSION_RAIDOU1
+    surface = &sdfGrOtTable[60];
+#else
+    surface = &sdfGrOtTable[61];
+#endif
+    surface->regFunc(surface, list);
+
+    list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    state = (sdfPrimTransPacket_t *)sdfGrAllocPacketBuff(0x40);
+    state->header.dmaWords.tag = 3;
+    state->header.dmaWords.vif = 0x5000000310000000ULL;
+    state->header.giftag.parm = 0x1000000000008002ULL;
+    state->header.giftag.regs = 0xE;
+    state->elem.test.data = 0x71801;
+    state->elem.test.reg = 0x47;
+    state->elem.alpha.data = 0x42;
+    state->elem.alpha.reg = 0x42;
+    sdfDrawTagLink(list, (u32)state);
+    surface++;
+    surface->regFunc(surface, list);
+
+    effObjectListCountersReset();
+    return DDS3_TASK_UPDATE_RETAIN_CALLBACK;
+}
 
 s32 dds3EffectManagerRun(dds3ProcessID_t *ProcessID)
 {

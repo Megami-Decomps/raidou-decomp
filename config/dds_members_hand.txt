@@ -1,0 +1,11 @@
+# type, DDS member, SMT3 member: rows `raidou_dds.py members` cannot probe, because SMT3 names the
+# type differently or defines it in a source file. Offsets and sizes checked by hand; same use.
+# SdfGsPacketHeader is SMT3's sdfGrPacketHeader_t, SdfGsRegisterWrite its sdfGrTagStdReg_t.
+SdfGsPacketHeader	dmaTag	dmaWords.tag
+SdfGsPacketHeader	vifCommands	dmaWords.vif
+SdfGsPacketHeader	gifTag	giftag.parm
+SdfGsPacketHeader	gifRegisters	giftag.regs
+SdfGsRegisterWrite	value	data
+SdfGsRegisterWrite	registerId	reg
+# Defined in smt3-decomp src/smt3/effect/effModelTrackPoly.c.
+dds3HermitianTrackPoly_tag	color	abgr

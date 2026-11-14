@@ -593,14 +593,16 @@ _DDS_MEMBERS = []
 
 
 def dds_member_renames():
-    """type -> {DDS member: SMT3 member} from config/dds_members.txt."""
+    """type -> {DDS member: SMT3 member} from config/dds_members.txt and the hand-checked rows in
+    config/dds_members_hand.txt."""
     if not _DDS_MEMBERS:
         out = defaultdict(dict)
-        path = ROOT / "config/dds_members.txt"
-        for line in path.read_text().splitlines() if path.exists() else ():
-            cols = line.split("#")[0].split()
-            if len(cols) == 3:
-                out[cols[0]][cols[1]] = cols[2]
+        for name in ("dds_members.txt", "dds_members_hand.txt"):
+            path = ROOT / "config" / name
+            for line in path.read_text().splitlines() if path.exists() else ():
+                cols = line.split("#")[0].split()
+                if len(cols) == 3:
+                    out[cols[0]][cols[1]] = cols[2]
         _DDS_MEMBERS.append(out)
     return _DDS_MEMBERS[0]
 

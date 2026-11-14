@@ -251,6 +251,7 @@ dds3MagatuhiGetType = 0x0020CEB8;
 Eff_ModelTrackPolyCreate = 0x0020DB10;
 Eff_ModelTrackPolyDelete = 0x0020DBE8;
 Eff_ModelTrackPolyReset = 0x0020DC18;
+effTrackPolyReset = 0x0020DC18;
 Eff_ModelTrackPolyDrawOnly = 0x0020DCC0;
 Eff_ModelTrackPolyDraw = 0x0020DCD8;
 Eff_ModelTrackPolyListVertexSet = 0x0020DEA8;

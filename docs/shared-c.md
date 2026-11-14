@@ -70,7 +70,9 @@ headers carry its layout. Mark such rows `asm	compiles identical` and run
 dds-decomp and SMT3 sometimes name one member differently in a type both
 define with the same layout. `raidou_dds.py members` probes each such type's
 member offsets and sizes on both sides and writes `config/dds_members.txt`
-(type, DDS name, SMT3 name). A DDS body whose `smt3_c.tsv` reason starts with
+(type, DDS name, SMT3 name). `config/dds_members_hand.txt` holds rows the probe
+cannot find, checked by hand: types SMT3 names differently or defines in a
+source file. A DDS body whose `smt3_c.tsv` reason starts with
 `SMT3 member names` is carried with SMT3's names where the access's base type
 can be followed: a variable or parameter declared in the function or the
 file, a `((T *)p)` cast, and the members along the chain. Unmarked bodies keep

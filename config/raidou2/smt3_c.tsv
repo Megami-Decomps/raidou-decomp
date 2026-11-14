@@ -1841,7 +1841,7 @@ effSplCalcRegist	c
 effSplRun	c
 effStoreBattleCameraSnapshot	c
 effSubmitCompositeGsPacket	c
-effSubmitFieldBlendStateTask	asm	SMT3 member names, then compile error: structure has no member named `dmaTag'
+effSubmitFieldBlendStateTask	c	SMT3 member names
 effSubmitGeneratedTexturePacket	c
 effSubmitIndexedRenderPacket	c
 effSumRecordStatuses	c
@@ -1849,7 +1849,7 @@ effSweepFloorModelList	c
 effSwordTrackDrawTex	c
 effSynchronizeFileTransform	c
 effTextureReferenceRelease	c
-effTrackPolyUpdate	asm	SMT3 member names, then compile error: structure has no member named `color'
+effTrackPolyUpdate	c	SMT3 member names
 effUpdateAndDrawStripRecord	c
 effUpdateBillSpiral	c
 effUpdateCameraDiagnostics	c
@@ -2388,8 +2388,8 @@ itfGridInterpolateCornerColorsToTarget	c
 itfGridLookupValueOrDefault	c
 itfInitTextDrawArgs	c
 itfInitializeAdminInterfaceNoop	c
-itfMesGetEntryCount	asm	SMT3 member names, then compile error: structure has no member named `sub'
-itfMesGetWindowEntryItems	asm	SMT3 member names, then compile error: structure has no member named `itemList'
+itfMesGetEntryCount	c	carried by hand with SMT3 member names
+itfMesGetWindowEntryItems	c	carried by hand with SMT3 member names
 itfMesGetWindowTexture	c
 itfMesMngClearBitStat	c
 itfMesMngClearBitStatManager	c

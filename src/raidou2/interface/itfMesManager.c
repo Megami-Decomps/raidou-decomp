@@ -1345,12 +1345,6 @@ extern sdfGrOt_t sdfDebugGrOt;
 
 extern ItfMesWindowRec D_00452960[];
 
-/* Return the entry's item-address table or branch sentinel 1; index unchecked. */
-ItfMesEntryItemsResult itfMesGetWindowEntryItems(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
-
-/* Read the installed sub-resource's entry count without slot/resource validation. */
-u32 itfMesGetEntryCount(ItfMesWindowIndex window);
-
 extern s32 frFontCountGlyphBands(_FRQ *glyph);
 
 extern u32 itfGetTextLipsUnitId(void);
@@ -2146,9 +2140,13 @@ itfMesBinTypeHeader_t *GetTypeHeader2(itfMesResource_t *pfileheader)
     return &entries[pfileheader->entryCount];
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetWindowEntryItems);
+ItfMesEntryItemsResult itfMesGetWindowEntryItems(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex) {
+    return (ItfMesEntryItemsResult)GetTypeHeader(pinst[window].mes, entryIndex)->type;
+}
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfMesGetEntryCount);
+u32 itfMesGetEntryCount(ItfMesWindowIndex window) {
+    return pinst[window].mes->pdata->entryCount;
+}
 
 u8 *GetMessagePagePtr(itfMesBinMesHeader_t *table, s32 index)
 {
