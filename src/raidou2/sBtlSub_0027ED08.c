@@ -394,7 +394,7 @@ extern s32 btlReadCurrentUnitHp(dds_datUnitWork_t *);
 
 extern void btlGetUnitWorldPos(BtlUnit *, f32 *);
 
-extern f32 btlTriangleNormalDotEdge(const f32 *, const f32 *, const f32 *);
+extern f32 sBtlGetVerticalLength(const f32 *, const f32 *, const f32 *);
 
 typedef union BtlVec4 {
     f32 f[4];
@@ -537,10 +537,10 @@ s32 btlAimHorizontalDirectionClampedVU(const f32 *origin, const f32 *targetPosit
 /* vu0 routine: vf10.xyz = normalize(e x (e x f)),
  * e = vertexB - vertexA, f = vertexC - vertexA.
  * The double cross lies in the triangle plane, despite the legacy normal name. */
-void btlTriangleNormalVU(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
+void sBtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 /* Dot the normalized double-cross direction with vertexA - vertexC. */
-f32 btlTriangleNormalDotEdge(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
+f32 sBtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 /* vu0 routine: vf10 = vertexC + normalize(point - vertexC) * projection,
  * where projection is the double-cross direction dotted with vertexA - vertexC. */
@@ -1145,7 +1145,7 @@ void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *, const char *);
 void btlReplaceResourceHandle(BtlResourceDescriptor *, void *);
 
 /* Update list selection and submit the visible browser rows to its surface. */
-s32 btlUpdateAndDrawResourceBrowser(BtlResourceDescriptor *descriptor);
+s32 Draw_effLensFlare(BtlResourceDescriptor *descriptor);
 
 /* Release an owned texture handle and the descriptor, but not its entry list. */
 void btlDestroyResourceDescriptor(BtlResourceDescriptor *descriptor);
@@ -1345,7 +1345,7 @@ INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCheckVerticalArea);
 /* vu0 routine: vf10.xyz = normalize(e x (e x f)),
  * e = vertexB - vertexA, f = vertexC - vertexA.
  * The double cross lies in the triangle plane, despite the legacy normal name. */
-void btlTriangleNormalVU(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
+void sBtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
     SDF_VU0_LOADVECTOR(vertexB);
     SDF_VU0_LOADVECTOR_B(vertexA);
     SDF_VU0_SUBVECTOR();
@@ -1362,10 +1362,10 @@ void btlTriangleNormalVU(const f32 *vertexA, const f32 *vertexB, const f32 *vert
 }
 
 /* Dot the normalized double-cross direction with vertexA - vertexC. */
-f32 btlTriangleNormalDotEdge(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
+f32 sBtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
     f32 direction[4];
     f32 projection;
-    btlTriangleNormalVU(vertexA, vertexB, vertexC);
+    sBtlGetVerticalVector(vertexA, vertexB, vertexC);
     VU0_STORE_VF($vf10, direction);
     VU0_LOAD_VF($vf10, vertexA);
     VU0_LOAD_VF($vf11, vertexC);
@@ -1381,7 +1381,7 @@ f32 btlTriangleNormalDotEdge(const f32 *vertexA, const f32 *vertexB, const f32 *
 f32 btlProjectOnPlaneVU(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC) {
     f32 direction[4];
     f32 projection;
-    btlTriangleNormalVU(vertexA, vertexB, vertexC);
+    sBtlGetVerticalVector(vertexA, vertexB, vertexC);
     SDF_VU0_STOREVECTOR(direction);
     SDF_VU0_LOADVECTOR(vertexA);
     SDF_VU0_LOADVECTOR_B(vertexC);

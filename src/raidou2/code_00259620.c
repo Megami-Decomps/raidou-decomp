@@ -520,7 +520,7 @@ extern void fileReadVectorPtr20(FileSlotTable *record, u128 *out);
 
 extern void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 
-extern void kwlnPadResetMotorLevelsAndOutput(void);
+extern void func_r1_00104210(void);
 
 extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 
@@ -937,7 +937,7 @@ extern void effDrawScalyTexturedStrip(EffStripWork *, void *);
 
 extern u16 D_003BC944;
 
-extern void effInitModelVUState(dds3ModelHandle_t *);
+extern void Init_effModel(dds3ModelHandle_t *);
 
 extern s32 effComputeLightDirectionVU(dds3ModelHandle_t *, sdf3DLightParallelPacket_t *);
 
@@ -1586,7 +1586,7 @@ EffectSurfaceNode *effRecreateSurfaceNodeFromWork(u8 *work);
 
 extern void effCloneSurfaceGridResources(EffectSurfaceNode *, u8 *);
 
-EffectSurfaceNode *effCreateSurfaceGridWithConfiguration(u8 *work);
+EffectSurfaceNode *effSCopy(u8 *work);
 
 /* Replace the destination's kind-selected resources with clones or retained references. */
 void effCloneSurfaceGridResources(EffectSurfaceNode *dst, u8 *work);
@@ -1824,7 +1824,7 @@ extern void effReplaceFileResourceRef(EffectStripNode *, u32, const void *);
 
 EffectStripNode *effFileResourceReferenceReplace(FileJobPayload *work);
 
-void effReleaseModelResources(EffectStripNode *work);
+void Delete_effPolygonTrack(EffectStripNode *work);
 
 EffectStripNode *effCloneStripResourceFromOwner(EffectStripNode *work);
 
@@ -2234,7 +2234,7 @@ extern u128 *D_00324770[];
 
 extern u128 D_003DCB90[];
 
-extern u128 kwlnDefaultColorVector[];
+extern u128 D_dds1_00324780[];
 
 void effResetDefaultColorTables(void);
 
@@ -2382,15 +2382,15 @@ void effSetActiveResourceColor(EffActiveResource *work, u32 color);
 void effSetActiveResourceScale(EffActiveResource *work, f32 value);
 
 /* Alternate particle handles share a header but occupy distinct slots. */
-EffParticleSharedResource *effCreateParticleSharedResourceFromFile(FileJobPayload *source);
+EffParticleSharedResource *eff2PartsCreate(FileJobPayload *source);
 
 void effReleaseParticleResources(EffParticleSharedResource *work);
 
-void effReplaceSharedResource(EffParticleSharedResource *, EffParticleSharedResource *);
+void eff2ResourceCopy(EffParticleSharedResource *, EffParticleSharedResource *);
 
-EffParticleSharedResource *effCloneParticleSharedResource(EffParticleSharedResource *source);
+EffParticleSharedResource *Copy_eff2D(EffParticleSharedResource *source);
 
-void effReplaceSharedResource(EffParticleSharedResource *work, EffParticleSharedResource *source);
+void eff2ResourceCopy(EffParticleSharedResource *work, EffParticleSharedResource *source);
 
 void effResetParticleStateWord(EffParticleSharedResource *work);
 
@@ -2424,7 +2424,7 @@ extern void camFollowOffsetVec(u8 *, void *);
 
 void effComputeBattleCameraPositionVU(u8 *effect);
 
-extern void camAimRotation(void *, void *);
+extern void PoseRotBillboard(void *, void *);
 
 void effMultiplyQuatWithFlag(u8 *effect);
 
@@ -2972,7 +2972,7 @@ s32 effPollAlternateResourceQueueWithTlp(void);
 /* Poll the queue without adding the TLP flag to its format mask. */
 s32 effPollResourceQueueWithoutTlp(void);
 
-extern u16 effClassifyResourceMask(s32);
+extern u16 Start_sBtl(s32);
 
 typedef struct EffFileResourceRecord {
     char *name;
@@ -3047,7 +3047,7 @@ u32 effLoadMaterialFile(void);
 
 void effResetFileResourceManager(void);
 
-u16 effClassifyResourceMask(s32 flags);
+u16 Start_sBtl(s32 flags);
 
 EffectList *mnuAllocateValueRecord(u32 mode);
 
@@ -3882,7 +3882,7 @@ void effComputeBattleCameraPositionVU(u8 *effect) {
 void effMultiplyQuatWithFlag(u8 *effect) {
     if ((((FileJob *)effect)->xformFlags & 0x60) != 0) {
         u128 quaternion;
-        camAimRotation(effect, &quaternion);
+        PoseRotBillboard(effect, &quaternion);
         VU0_LOAD_VF($vf10, effFileQueue->quat);
         VU0_LOAD_VF($vf11, &quaternion);
         Mult();
@@ -3944,7 +3944,7 @@ void effInvokeFileJobWithBattleCamera(u32 job) {
 
 void effFileJobQueueRelease(u32 job) {
     if (effAuxiliaryFileQueue != 0) {
-        fileQueueDestroy(effAuxiliaryFileQueue);
+        effPartsDelete(effAuxiliaryFileQueue);
         effAuxiliaryFileQueue = 0;
     }
     if (effTemporaryFileJob != 0) {
@@ -4178,7 +4178,7 @@ u32 effLoadSelectedFileJob(void) {
 
 u32 effReinitializeFileQueue(void) {
     if (effTemporaryFileJob != 0) {
-        fileQueueDestroy(effAuxiliaryFileQueue);
+        effPartsDelete(effAuxiliaryFileQueue);
         effAuxiliaryFileQueue = 0;
     }
     if (effTemporaryFileJob != 0) {
@@ -4186,7 +4186,7 @@ u32 effReinitializeFileQueue(void) {
         effTemporaryFileJob = 0;
     }
     if (effFileQueue != 0) {
-        fileQueueDestroy(effFileQueue);
+        effPartsDelete(effFileQueue);
     }
     effFileQueue = fileQueueCreate();
     D_r1_00416484[0] = 0;
@@ -4459,7 +4459,7 @@ u32 effPollNamedFileJob(void) {
         result = 0x400000;
     } else if (state == BTL_RESOURCE_SELECTION_ACCEPTED) {
         if (effFileQueue != 0) {
-            fileQueueDestroy(effFileQueue);
+            effPartsDelete(effFileQueue);
         }
         strcpy(D_r1_004D54F0, record.name);
         effFileQueue = fileQueueCreateFromCommandState((const char *)&record);
@@ -4705,11 +4705,11 @@ void effResetFileResources(void) {
     effPartsPreviewReload = 0;
     effPartsListScroll = 0;
     if (effFileQueue != 0) {
-        fileQueueDestroy(effFileQueue);
+        effPartsDelete(effFileQueue);
         effFileQueue = 0;
     }
     if (effAuxiliaryFileQueue != 0) {
-        fileQueueDestroy(effAuxiliaryFileQueue);
+        effPartsDelete(effAuxiliaryFileQueue);
         effAuxiliaryFileQueue = 0;
     }
     if (effTemporaryFileJob != 0) {
@@ -4737,7 +4737,7 @@ void effPollResourceBankSlot(char *path, u32 flags, EffResourceBankSlot *selecti
         btlSetResourceBrowserPosition(effResourceBankDescriptor, 0xBA, 0x1C);
         return;
     }
-    btlUpdateAndDrawResourceBrowser(effResourceBankDescriptor);
+    Draw_effLensFlare(effResourceBankDescriptor);
     selection->selectionStatus = btlGetResourceBrowserSelectionStatus(effResourceBankDescriptor);
     selection->type = btlFormatSelectedResourceName(effResourceBankDescriptor, selection->fullName);
     selection->pathVariant = btlGetResourcePathVariant(effResourceBankDescriptor);
@@ -4845,7 +4845,7 @@ void effPollResourceBank(s32 flags, EffectPollRecord *record) {
         effResourceBankDescriptor = btlCreateResourceDescriptor(effResourceBankEntries);
         btlSetResourceBrowserPosition(effResourceBankDescriptor, 0xBA, 0x1C);
     } else {
-        btlUpdateAndDrawResourceBrowser(effResourceBankDescriptor);
+        Draw_effLensFlare(effResourceBankDescriptor);
         record->selectionStatus = btlGetResourceBrowserSelectionStatus(effResourceBankDescriptor);
         record->type = btlFormatSelectedResourceName(effResourceBankDescriptor, record->fullName);
         record->pathVariant = btlGetResourcePathVariant(effResourceBankDescriptor);
@@ -5290,7 +5290,7 @@ s32 effPollFileRecord(char *path, s32 flags) {
         type = record.type;
         if (type != 8) {
             fileJobCopyCommandIntoSecondaryData(effQueuedFileHandle,
-                                                (const char *)&record, effClassifyResourceMask(type));
+                                                (const char *)&record, Start_sBtl(type));
         } else {
             fileJobSetSecondaryData(effQueuedFileHandle, &record.pathVariant, 4, 4);
         }
@@ -5381,7 +5381,7 @@ u32 fileLoadEffectSlotA(void) {
         fileJobSetPrimaryData(job, D_r1_00408D60.start, D_r1_00408D60.length,
                       D_r1_00408D60.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
-                      effClassifyResourceMask(fileInfo.type));
+                      Start_sBtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
@@ -5485,7 +5485,7 @@ u32 fileLoadEffectSlotB(void) {
         fileJobSetPrimaryData(job, D_r1_00411E28.start, D_r1_00411E28.length,
                       D_r1_00411E28.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
-                      effClassifyResourceMask(fileInfo.type));
+                      Start_sBtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
@@ -5544,7 +5544,7 @@ u32 effLoadFileSlotF2(void) {
         fileJobSetPrimaryData(job, D_r1_00414710.start, D_r1_00414710.length,
                       D_r1_00414710.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
-                      effClassifyResourceMask(fileInfo.type));
+                      Start_sBtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
@@ -5585,7 +5585,7 @@ u32 effLoadMaterialFile(void) {
         fileJobSetPrimaryData(job, D_r1_00414EA8.start, D_r1_00414EA8.length,
                       D_r1_00414EA8.mode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
-                      effClassifyResourceMask(fileInfo.type));
+                      Start_sBtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
@@ -5617,7 +5617,7 @@ void effResetFileResourceManager(void) {
     D_003BD160 = 0;
 }
 
-u16 effClassifyResourceMask(s32 flags) {
+u16 Start_sBtl(s32 flags) {
     switch (flags) {
         case 1:   return 1;
         case 2:   return 2;

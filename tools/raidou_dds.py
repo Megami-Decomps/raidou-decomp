@@ -28,10 +28,11 @@ class Side:
     def __init__(self, root, game):
         self.game = game
         syms = rc.repo_symbols(root, game)
+        renames = rc.dds_names()  # Raidou's names for dds-decomp's, as carried text has them
         self.name_at = {}
         for name, addr in syms.items():
-            self.name_at.setdefault(addr, name)
-        self.c = rc.c_functions(root, game)
+            self.name_at.setdefault(addr, renames.get(name, name))
+        self.c = {a: (renames.get(n, n), p) for a, (n, p) in rc.c_functions(root, game).items()}
         for addr, (name, _) in self.c.items():
             self.name_at.setdefault(addr, name)
         self.bodies = rc.split_bodies(root, game)

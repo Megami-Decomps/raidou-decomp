@@ -1119,7 +1119,7 @@ extern s32 D_00438F28;
 
 /* Configure the fade on timer zero, wait thirty ticks, then consume a negative option status.
    Keep both timer reads: setup tests a second read, while later comparisons use the cached one. */
-s32 itfCommandSelectOptionWithFade(void);
+s32 MesMngSelect(void);
 /* End of declarations from src/dds2/game/code_001A1B08.c */
 
 /* Declarations from dds-decomp src/dds2/interface/itfMesManager.c */
@@ -1661,7 +1661,7 @@ s32 itfMesMngSelect(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", itfCommandSelectOptionWithFade);
+INCLUDE_ASM(const s32, "interface/itfMesManager", MesMngSelect);
 
 s16 itfMesMngGetSelPhase(s32 msgid) {
     return pinst[msgid].mes->select.phase;

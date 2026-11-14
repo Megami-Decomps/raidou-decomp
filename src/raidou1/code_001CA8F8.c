@@ -546,7 +546,7 @@ void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeC
 void mnuBlendCampDisplayFields(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
 
 /* Use defaults before the first key; otherwise blend the bounding keys. */
-void mnuSampleCampDisplayTrack(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display);
+void evtGetValueNewTMXFrame(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display);
 
 void mnuInitializeCampListLayoutDefaults(EvtBlendKey *layout);
 
@@ -780,7 +780,7 @@ void mnuCampDestroyPanelTasks(void);
 s32 mnuCampConsumePanelTaskCompletion(void);
 
 static inline s32 campSetHandler(MenuTerminalContext *context, s32 mode, void *callback) {
-    return mnuDispatchPopupTransition(&context->transitionWork, &context->popupState, mode, callback);
+    return jmsSeqChange(&context->transitionWork, &context->popupState, mode, callback);
 }
 
 s32 mnuPreparePopupAndDispatchSelection(dds3ProcessID_t *callback);
@@ -967,7 +967,7 @@ extern char D_00437840[];
 
 extern s32 D_003C9A20[];
 
-extern void evtCopyEntryStringToActiveWindow(s32, const char *);
+extern void fclSetMessageVar(s32, const char *);
 
 extern void evtClearActiveFlag();
 
@@ -995,7 +995,7 @@ extern s32 mnuDrawCommandClosePhase(MenuTerminalContext *);
 
 extern void mnuSetCommandPhase(MenuTerminalContext *, u32);
 
-extern void dspRequestMessageWindowModeOne(void);
+extern void fclUpdateMessage(void);
 
 extern MenuPopupEntry mnuShopCatalogPopupEntries[];
 
@@ -1024,7 +1024,7 @@ s32 evtIsFadeDispatchIdle(void);
 #define MNU_INSTALL_STATE_TABLE(ctx, table, entry) \
     do { \
         (ctx)->popupTable = (table); \
-        mnuSetPopupEntry(&(ctx)->popupState, (entry)); \
+        jmsSeqJump(&(ctx)->popupState, (entry)); \
     } while (0)
 
 void evtInstallStateTable(MenuTerminalContext *state);
@@ -1296,7 +1296,7 @@ void mnuSetFlagForMenuEntry(s32 slotIndex);
 
 #include "dds/mnu_list.h"
 
-extern void dspRequestMessageWindowModeOne(void);
+extern void fclUpdateMessage(void);
 
 extern MenuPopupEntry mnuShopGrantedRewardPopupEntry[];
 
@@ -1322,7 +1322,7 @@ extern void dspAdvanceMessageWindowControl();
 
 extern s32 mnuCampResolveProgressTierValue();
 
-extern void evtCopyEntryStringToActiveWindow(s32, const char *);
+extern void fclSetMessageVar(s32, const char *);
 
 extern s32 evtIsLastSlot(s32);
 
@@ -1418,7 +1418,7 @@ void mnuCampInitializeDisplayDefaults(CampDisplayDefaults *display) {
 }
 
 /* Use defaults before the first key; otherwise blend the bounding keys. */
-void mnuSampleCampDisplayTrack(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display) {
+void evtGetValueNewTMXFrame(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display) {
     EvtRuntimeChild *lowerKey;
     EvtRuntimeChild *upperKey;
     s32 startFrame;

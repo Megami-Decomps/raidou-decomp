@@ -566,7 +566,7 @@ extern s32 D_003BD820;
 
 /* Configure the fade on timer zero, wait thirty ticks, then consume a negative option status.
    Keep both timer reads: setup tests a second read, while later comparisons use the cached one. */
-s32 itfCommandSelectOptionWithFade(void);
+s32 MesMngSelect(void);
 
 /* Return the option-block signed status word, not the separate entry status byte;
  * its callers read the sign-extended halfword as a word. */

@@ -91,7 +91,7 @@ btlCreateResourceDescriptor(struct BtlResourceEntryList *list);
 
 void btlDestroyResourceDescriptor(struct BtlResourceDescriptor *descriptor);
 
-s32 btlUpdateAndDrawResourceBrowser(struct BtlResourceDescriptor *descriptor);
+s32 Draw_effLensFlare(struct BtlResourceDescriptor *descriptor);
 
 s32 btlFormatSelectedResourceName(struct BtlResourceDescriptor *descriptor,
                                   char *output);

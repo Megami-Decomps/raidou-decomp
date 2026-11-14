@@ -461,7 +461,7 @@ s32 evtOpClearWorldObjectPendingValue(void);
 
 s32 evtOpModelLodChg(void);
 
-s32 itfCommandSelectOptionWithFade(void);
+s32 MesMngSelect(void);
 
 s32 itfPanelAcquireHold(void);
 
@@ -1005,7 +1005,7 @@ s32 fldCmdSetStateFlag(void);
     { evtOpQueueWorldObjectPendingValue, 2 },         \
     { evtOpClearWorldObjectPendingValue, 1 },         \
     { evtOpModelLodChg, 2 },                          \
-    { itfCommandSelectOptionWithFade, 1 },            \
+    { MesMngSelect, 1 },            \
     { itfPanelAcquireHold, 0 },                       \
     { itfCommandQueueHeldPanelEntry, 3 },             \
     { itfStepHeldPanelMessages, 0 },                  \
@@ -1578,7 +1578,7 @@ s32 evtOpClearWorldObjectPendingValue(void);
 
 s32 evtOpModelLodChg(void);
 
-s32 itfCommandSelectOptionWithFade(void);
+s32 MesMngSelect(void);
 
 s32 itfPanelAcquireHold(void);
 
@@ -2138,7 +2138,7 @@ s32 fldCmdSetStateFlag(void);
     { evtOpQueueWorldObjectPendingValue, 2 },           \
     { evtOpClearWorldObjectPendingValue, 1 },           \
     { evtOpModelLodChg, 2 },                            \
-    { itfCommandSelectOptionWithFade, 1 },              \
+    { MesMngSelect, 1 },              \
     { itfPanelAcquireHold, 0 },                         \
     { itfCommandQueueHeldPanelEntry, 3 },               \
     { itfStepHeldPanelMessages, 0 },                    \

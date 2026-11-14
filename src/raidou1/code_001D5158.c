@@ -879,7 +879,7 @@ extern void mnuCallInitWide(s32, s32, s32, u32, s32);
 
 extern LoadObj *fileLoadObjectCreate(void *owner);
 
-extern void fileCloneEffectSurfaceResources(LoadObj *result, LoadObj *owner);
+extern void ResourceCopy(LoadObj *result, LoadObj *owner);
 
 extern void fileJobFreePrimaryBuffer(FileJobPayload *job);
 
@@ -1443,7 +1443,7 @@ void fileJobNotifyComplete(FileJobPayload *job);
 
 void fileJobInvokeTypeCallback(FileJobPayload *job);
 
-void fileJobInvokePositionCallback(FileJobPayload *job, const f32 position[4]);
+void PositionSet(FileJobPayload *job, const f32 position[4]);
 
 void fileJobInvokeRotationCallback(FileJobPayload *job, const f32 rotation[4]);
 
@@ -1496,31 +1496,31 @@ FileJob *fileJobCreate(void);
 
 void fileDestroyJob(FileJob *job);
 
-FileQueue *fileCloneQueueEntries(FileQueue *source);
+FileQueue *Create_effPartsList(FileQueue *source);
 
 /* Effect-node creation callback: ignore its option and clone the supplied queue. */
 FileQueue *CallShopTest(u32 unused, FileQueue *source);
 
 void camFollowOffsetVec(FileJob *job, void *dst);
 
-void camAimRotation(CamAim *obj, void *dst);
+void PoseRotBillboard(CamAim *obj, void *dst);
 
 /* Per-frame update: refreshes the queue rotation when an aim flag (0x60) is set, then repositions and re-notifies every job whose start time (job+0x80) has been reached. */
 void effPartsDraw(FileQueue *queue);
 
-void fileQueueDestroy(FileQueue *queue);
+void effPartsDelete(FileQueue *queue);
 
-FileQueue *fileQueueClone(const FileQueue *source);
+FileQueue *effPartsCreateFinish(const FileQueue *source);
 
 void fileQueueNotifyAllJobsComplete(FileQueue *queue);
 
 /* Moves the queue to *vec and repositions every job: position = *vec + offset, plus each job's offset rotated by the queue quaternion (scaled when flag 0x80, y lowered by 5 for flag 0x04). */
-void fileQueueSetPosition(FileQueue *queue, const f32 vec[4]);
+void effPartsPositionSet(FileQueue *queue, const f32 vec[4]);
 
 /* Sets the queue rotation to *rot: stores it as queue->quat, rotates queue->axis into queue->offset, notifies each job with its quat multiplied by *rot, then repositions the jobs at queue->position. */
-void fileQueueSetRotation(FileQueue *queue, const f32 rot[4]);
+void effPartsRotateSet(FileQueue *queue, const f32 rot[4]);
 
-void fileQueueSetScale(FileQueue *queue, f32 scale);
+void effPartsScaleSet(FileQueue *queue, f32 scale);
 
 /* Store the queue's modulation colour, then send every job its own colour
  * modulated by it ((job / 128) * (queue / 128) * 128 per channel). The tint
@@ -1528,7 +1528,7 @@ void fileQueueSetScale(FileQueue *queue, f32 scale);
  * CSE table, so the loop's 1/128 is rematerialized rather than copied from the
  * first unpack's FPR. Reading the payload before the packed store keeps the
  * store from feeding the argument load. */
-void fileQueueSetColor(FileQueue *queue, u32 color);
+void ColorSet(FileQueue *queue, u32 color);
 
 void fileQueueCopyRotationFromSource(FileQueue *queue, f32 matrix[4][4]);
 
@@ -1606,7 +1606,7 @@ s32 fileQueueCountLinkedJobs(FileQueue *queue);
 void camFollowOffsetVec(FileJob *obj, void *dst);
 
 /* dst = rotation facing unit(aViewEye - aViewTarget) (pitch and yaw); flag 0x40 composes it onto obj->quat, no flag 0x60 copies obj->quat */
-void camAimRotation(CamAim *obj, void *dst);
+void PoseRotBillboard(CamAim *obj, void *dst);
 
 LoadObj *fileLoadObjectCreate(void *owner);
 
@@ -1637,9 +1637,9 @@ LoadObj *effLoadObjectCreateFromJob(FileJobPayload *job);
 
 void effLoadObjectDestroy(LoadObj *obj);
 
-LoadObj *fileLoadObjectCreateChild(LoadObj *owner);
+LoadObj *Copy_effParticle(LoadObj *owner);
 
-void fileCloneEffectSurfaceResources(LoadObj *dst, LoadObj *src);
+void ResourceCopy(LoadObj *dst, LoadObj *src);
 
 void fileLoadObjectSetResource(LoadObj *obj, u32 type, void *data);
 

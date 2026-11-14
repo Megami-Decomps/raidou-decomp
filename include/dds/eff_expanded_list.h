@@ -43,7 +43,7 @@ typedef char EffExpandedListSizeCheck[(sizeof(EffExpandedList) == 0x28) ? 1 : -1
 
 s32 effCountExpandedEntries(const EffExpandedList *list);
 
-EffExpandedList *effReferenceObjectRetain(EffExpandedList *obj);
+EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj);
 
 void effReleaseReferenceHolder(EffExpandedList *holder);
 

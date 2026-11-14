@@ -506,7 +506,7 @@ typedef struct EvtDrawState {
     f32 value1C;
 } EvtDrawState;
 
-extern KwlnDrawVectorParams kwlnDrawVector;
+extern KwlnDrawVectorParams D_dds1_00324790;
 
 extern DrawVec4 D_0043E3A0;
 
@@ -599,7 +599,7 @@ extern u32 D_00438DEC;
 
 extern u32 D_00438DF0;
 
-extern u8 kwlnDefaultColorVector[];
+extern u8 D_dds1_00324780[];
 
 /* vu0 routine: replace the background color immediately or blend over blendFrames frames. */
 void dds3SetAmbientColor(s32 blendFrames, f32 *color);

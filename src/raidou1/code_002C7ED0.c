@@ -519,7 +519,7 @@ extern void fileReadVectorPtr20(FileSlotTable *record, u128 *out);
 
 extern void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
 
-extern void kwlnPadResetMotorLevelsAndOutput(void);
+extern void func_r1_00104210(void);
 
 extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 
@@ -933,7 +933,7 @@ extern void effDrawScalyTexturedStrip(EffStripWork *, void *);
 
 extern u16 D_003BC944;
 
-extern void effInitModelVUState(dds3ModelHandle_t *);
+extern void Init_effModel(dds3ModelHandle_t *);
 
 extern s32 effComputeLightDirectionVU(dds3ModelHandle_t *, sdf3DLightParallelPacket_t *);
 
@@ -1582,7 +1582,7 @@ EffectSurfaceNode *effRecreateSurfaceNodeFromWork(u8 *work);
 
 extern void effCloneSurfaceGridResources(EffectSurfaceNode *, u8 *);
 
-EffectSurfaceNode *effCreateSurfaceGridWithConfiguration(u8 *work);
+EffectSurfaceNode *effSCopy(u8 *work);
 
 /* Replace the destination's kind-selected resources with clones or retained references. */
 void effCloneSurfaceGridResources(EffectSurfaceNode *dst, u8 *work);
@@ -1820,7 +1820,7 @@ extern void effReplaceFileResourceRef(EffectStripNode *, u32, const void *);
 
 EffectStripNode *effFileResourceReferenceReplace(FileJobPayload *work);
 
-void effReleaseModelResources(EffectStripNode *work);
+void Delete_effPolygonTrack(EffectStripNode *work);
 
 EffectStripNode *effCloneStripResourceFromOwner(EffectStripNode *work);
 
@@ -2230,7 +2230,7 @@ extern u128 *D_00324770[];
 
 extern u128 D_003DCB90[];
 
-extern u128 kwlnDefaultColorVector[];
+extern u128 D_dds1_00324780[];
 
 void effResetDefaultColorTables(void);
 
@@ -2378,15 +2378,15 @@ void effSetActiveResourceColor(EffActiveResource *work, u32 color);
 void effSetActiveResourceScale(EffActiveResource *work, f32 value);
 
 /* Alternate particle handles share a header but occupy distinct slots. */
-EffParticleSharedResource *effCreateParticleSharedResourceFromFile(FileJobPayload *source);
+EffParticleSharedResource *eff2PartsCreate(FileJobPayload *source);
 
 void effReleaseParticleResources(EffParticleSharedResource *work);
 
-void effReplaceSharedResource(EffParticleSharedResource *, EffParticleSharedResource *);
+void eff2ResourceCopy(EffParticleSharedResource *, EffParticleSharedResource *);
 
-EffParticleSharedResource *effCloneParticleSharedResource(EffParticleSharedResource *source);
+EffParticleSharedResource *Copy_eff2D(EffParticleSharedResource *source);
 
-void effReplaceSharedResource(EffParticleSharedResource *work, EffParticleSharedResource *source);
+void eff2ResourceCopy(EffParticleSharedResource *work, EffParticleSharedResource *source);
 
 void effResetParticleStateWord(EffParticleSharedResource *work);
 
@@ -2420,7 +2420,7 @@ extern void camFollowOffsetVec(u8 *, void *);
 
 void effComputeBattleCameraPositionVU(u8 *effect);
 
-extern void camAimRotation(void *, void *);
+extern void PoseRotBillboard(void *, void *);
 
 void effMultiplyQuatWithFlag(u8 *effect);
 
@@ -2966,7 +2966,7 @@ s32 effPollAlternateResourceQueueWithTlp(void);
 /* Poll the queue without adding the TLP flag to its format mask. */
 s32 effPollResourceQueueWithoutTlp(void);
 
-extern u16 effClassifyResourceMask(s32);
+extern u16 Start_sBtl(s32);
 
 typedef struct EffFileResourceRecord {
     char *name;
@@ -3041,7 +3041,7 @@ u32 effLoadMaterialFile(void);
 
 void effResetFileResourceManager(void);
 
-u16 effClassifyResourceMask(s32 flags);
+u16 Start_sBtl(s32 flags);
 
 EffectList *mnuAllocateValueRecord(u32 mode);
 

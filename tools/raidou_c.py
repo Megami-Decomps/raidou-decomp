@@ -480,14 +480,27 @@ _SMT3_TEXT = {}
 _DDS_TYPES = []
 
 
+def dds_names():
+    """{dds-decomp name: Raidou name} from config/dds_names.txt."""
+    path = ROOT / "config/dds_names.txt"
+    rows = [ln.split("\t") for ln in path.read_text().splitlines() if ln and not ln.startswith("#")] if path.exists() else []
+    return {r[0]: r[1] for r in rows}
+
+
 def dds_rename(text):
-    """dds_<name> for each type config/dds_types.txt lists: dds-decomp defines it with
-    another layout than SMT3's type of that name, and the DDS code needs its own."""
+    """dds_<name> for each type config/dds_types.txt lists (dds-decomp defines it with another
+    layout than SMT3's), and Raidou's name for each symbol config/dds_names.txt renames."""
     if not _DDS_TYPES:
         lines = (ROOT / "config/dds_types.txt").read_text().splitlines()
         names = [ln.split("#")[0].strip() for ln in lines if ln.split("#")[0].strip()]
         _DDS_TYPES.append(re.compile(r"\b(" + "|".join(map(re.escape, names)) + r")\b") if names else None)
-    return _DDS_TYPES[0].sub(r"dds_\1", text) if _DDS_TYPES[0] else text
+        renames = dds_names()
+        _DDS_TYPES.append((re.compile(r"\b(" + "|".join(map(re.escape, renames)) + r")\b"), renames) if renames else None)
+    if _DDS_TYPES[0]:
+        text = _DDS_TYPES[0].sub(r"dds_\1", text)
+    if _DDS_TYPES[1]:
+        text = _DDS_TYPES[1][0].sub(lambda m: _DDS_TYPES[1][1][m[1]], text)
+    return text
 
 
 def closing(text, at):

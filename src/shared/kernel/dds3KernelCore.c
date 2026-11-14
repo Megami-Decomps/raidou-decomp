@@ -649,7 +649,7 @@ dds3ProcessID_t *dds3SearchProcessNumber(u32 type, s32 n)
     return p;
 }
 
-void kwlnTraverseDiagnosticTaskQueue(dds3ProcessID_t* task, void* unused)
+void func_r1_00101280(dds3ProcessID_t* task, void* unused)
 {
     if (task == 0) {
         return;

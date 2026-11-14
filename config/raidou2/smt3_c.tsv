@@ -1,4 +1,5 @@
 # SMT3 and DDS bodies carried by tools/raidou_c.py: function, c|asm, reason it stays asm
+Act2Sub	c
 AddFrameInfo2	c
 AddProcessList	c
 ApplyMatrix	c
@@ -64,6 +65,7 @@ CodeFunc_Run	c
 CodeFunc_S	c
 CodeFunc_SE	c
 CodeFunc_Sub	c
+ColorSet	c
 CommitVarTable	c
 CopyMatrixAtoB	c
 CopyMatrixAtoC	c
@@ -71,6 +73,10 @@ CopyMatrixBtoA	c
 CopyMatrixBtoC	c
 CopyMatrixCtoA	c
 CopyMatrixCtoB	c
+Copy_eff2D	c
+Copy_effCacheTexList	c
+Copy_effHelper	c
+Copy_effParticle	c
 CountLineMessage	c
 CreateColorLeftFade	c
 CreateColorMesWin	c
@@ -84,10 +90,15 @@ CreateVertexMesWin	c
 CreateVertexNormal	c
 CreateVertexPlain	c
 CreateVertexSelWin	c
+Create_effHelper	c
+Create_effPartsList	c	compiles identical
 DebugChangeInstance	c	compiles identical
 DebugDrawWindowLine	asm	sdfGrOtTable at 0x00428218, others at 0x00427E58
 DebugProcessTree	c
 DeleteProcessList	c
+Delete_effHelper	c
+Delete_effParticle	c	compiles identical
+Delete_effPolygonTrack	c
 DestructFlow	c	compiles identical
 DiagMatrix	c
 DispBaseData	c
@@ -126,6 +137,7 @@ ExitDebug	c
 ExitEndSave	c
 ExitTitle	c
 FatalError	c
+File_BgmLoadStart	asm	fileLoad at 0x001E9F40, others at 0x001E9F20
 FinishMovieViewer	c
 FreeEffectData	c
 FromEuler	c
@@ -135,11 +147,13 @@ FromRotation_B	c
 GetAdminiProcessData	c
 GetESPPos	c
 GetESPR	c
+GetIntervalRand	c
 GetLastLinkFontHandle	c
 GetMaskedIndex	c
 GetMessagePagePtr	c
 GetMessageWidth	c
 GetNumSelectItem	c
+GetRand	c
 GetSpeakerName	c
 GetSphericalPosMove	c
 GetSplineLength	c
@@ -147,11 +161,13 @@ GetSystemCallEntry	c
 GetSystemCallTableEntry	c
 GetTypeHeader	c
 GetTypeHeader2	c
+GetUnitMotionChangeFrame	c
 InitAlarm	c
 InitExecPS2	c
 InitOoyTest	c
 InitTLBFunctions	c
 InitThread	c
+Init_effModel	c	SMT3 member names
 InitializeVariable	c
 InnerProduct	c
 InversMatrix	c
@@ -168,6 +184,7 @@ LoadMcModules	c
 LookAt	c
 LookAtMatrix	c
 MakeCamera	c
+ManagerRunF	c	SMT3 member names
 MbLoadCallback	c
 MessageNumSearch	c
 MessageRequest	c
@@ -189,6 +206,8 @@ OuterProduct	c
 PatchIsNeeded_0	c
 PopFloat	c	compiles identical
 PopInt	c	compiles identical
+PoseRotBillboard	c
+PositionSet	c
 PowerOffCB	c
 PushFloat	c
 PushInt	c
@@ -225,6 +244,7 @@ SifRpcServerThreadProc	c
 Slerp	c
 SolveTridiagonal	c
 StartProcess	c
+Start_sBtl	c
 StartingProcess	c
 StoreIdentity	c
 StoreMatrix	c
@@ -239,6 +259,8 @@ ToMatrix	c
 UnchainFontHandleUnit	c
 VSync	c
 VSync2	c
+ValidatePathFrame	c
+ValidateUnitPosChange	c	SMT3 member names
 VblankIntcHandler	c
 VblankThreadProc	c
 WaitDma	c
@@ -400,7 +422,6 @@ btlAppendEntry	c
 btlAverageActorAttribute	c
 btlBossDebugPrintfN	c
 btlCheckEnemySpawnCapacity	asm	size 0x18, retail 0x20
-btlClearTintAndEnableCamera	c
 btlClosePfsDebugDirectory	c
 btlCreateResourceNameRecord	c
 btlDestroyEntryList	c
@@ -416,11 +437,9 @@ btlGetResourceBrowserSelectionStatus	c
 btlGetResourceNameSelectionStatus	c
 btlGetResourcePathVariant	c
 btlLoadAndReplaceResourceHandle	c
-btlNextScaledRandom	c
 btlOpenPfsDebugDirectory	c
 btlProjectForwardPositionToScreen	c
 btlProjectOnPlaneVU	c
-btlRandomInclusiveRange	c
 btlReplaceResourceHandle	c
 btlResourceRecordSetName	c
 btlRollAiBucket	c
@@ -431,11 +450,8 @@ btlSelectConditionalEncounterGroup	c
 btlSetResourceBrowserPosition	c
 btlSetResourceNameLengthLimit	c
 btlSetResourceNamePosition	c
-btlTriangleNormalDotEdge	c
-btlTriangleNormalVU	c
 btlTrimResourceName	c
 btlUpdateEffectWork	c
-camAimRotation	c
 camFollowOffsetVec	c
 cdvd_exit	c
 checkModelVersion	c
@@ -1058,8 +1074,8 @@ dpsub	c
 dptoli	c
 dptoul	c
 drawSprite3D	c
-dspReadWindowSecondPanelValue	asm	size 0x2C, retail 0x38
-dspRequestMessageWindowModeOne	c
+eff2PartsCreate	c
+eff2ResourceCopy	c
 effAPPoint4Copy	c
 effAPPoint4Create	c
 effAPPoint4CreatePCF	c
@@ -1120,7 +1136,6 @@ effBuildQuantizedTexturedStrip	c
 effClampSlotCount	c
 effClampSlotPhaseAtEnd	c
 effClampSlotPhaseAtStart	c
-effClassifyResourceMask	c
 effClearAnimatedFrames	c
 effClearBillFrames	c
 effClearCallbackFrame	c
@@ -1135,7 +1150,6 @@ effCloneClassWork	c
 effCloneFadeVectorWork	c
 effCloneKindWork	c
 effCloneModelWithVUState	c
-effCloneParticleSharedResource	c
 effCloneRibbonWithSharedResource	c
 effCloneSelectedFileJob	c
 effCloneSelectionHeaderFromWork	c
@@ -1157,7 +1171,6 @@ effConfigureWithDefaultSetting	c
 effConvertParamValue	c
 effCopyClassResourcePosition	c
 effCopyFramebufferQuadParameters	c
-effCopyResourceOwner	c
 effCopyRingFrameVectors	c
 effCountExpandedEntries	c
 effCreateActiveInstanceFromFile	c
@@ -1191,7 +1204,6 @@ effCreateModelResource	c
 effCreateModelResourceFromFile	c
 effCreateModelResourceWithInlineData	c
 effCreateOwnerRecordList	c
-effCreateParticleSharedResourceFromFile	c
 effCreateParticleSpanTable	c	SMT3 member names
 effCreatePayload	c
 effCreatePointSet3	c
@@ -1212,7 +1224,6 @@ effCreateResourceInstance	c
 effCreateResourceInstanceA	c
 effCreateResourceInstanceB	c
 effCreateResourceInstanceC	c
-effCreateResourceOwner	c
 effCreateResourceSlotSet	c
 effCreateResourceSlotSetFromAllocation	c
 effCreateRetainedPointSetColorRows	c
@@ -1229,7 +1240,6 @@ effCreateSmallHeaderFromFile	c
 effCreateStatusBatch	c
 effCreateStripNode	c
 effCreateStripNodeFromGrid	c
-effCreateSurfaceGridWithConfiguration	c
 effCreateSurfaceNode	c
 effCreateSurfaceNodeForGrid	c
 effCreateTextureAnimationSet	c
@@ -1261,7 +1271,6 @@ effDestroyPackedBatch	c
 effDestroyPayload	c
 effDestroyRadialClassResourceEntries	c
 effDestroyResourceInstance	c
-effDestroyResourceOwner	c
 effDestroyResourceSlotSet	c
 effDestroySurfaceNode	c
 effDisableFramebufferQuad	c
@@ -1290,7 +1299,6 @@ effDrawTintedFivePointGroupRows	c
 effDuplicateActiveResource	c
 effDuplicateActiveResourceB	c
 effDuplicateBillState	c
-effDuplicateModelOwner	c
 effDuplicatePayloadHeader	c
 effDuplicateResourceRefs	c
 effEVECombParSmokeCreate	c
@@ -1370,7 +1378,6 @@ effGetSlotWorkOrOverride	c
 effGetWindTextureHandle	c
 effHasFirstTextureHandle	c
 effIndexedFloatCallbackDispatch	c
-effInitModelVUState	c	SMT3 member names
 effInitParticleRecord	c
 effInitializeAllSlotWork	c
 effInitializeAlternatingTransformRows	c
@@ -1687,6 +1694,11 @@ effPCP_ThunderRadiatePolyDelete	c
 effPCP_ThunderRadiatePolyDraw	c
 effPCP_ThunderRadiatePolyDrawOff	c
 effPCP_ThunderRadiatePolyPartRefresh	c	compiles identical
+effPartsCreateFinish	c
+effPartsDelete	c
+effPartsPositionSet	c
+effPartsRotateSet	c
+effPartsScaleSet	c
 effPkt2DAllocF4	c
 effPkt2DAllocTriStrip	c
 effPkt3DPrimMakePoly	c
@@ -1728,7 +1740,6 @@ effRebuildSurfaceJobs	c
 effRecreateActiveByClass	c
 effRecreateModelFromSource	c
 effRecreateSurfaceNodeFromWork	c
-effReferenceObjectRetain	c
 effReinitializeFileQueue	c
 effReleaseAlternateKindWork	c
 effReleaseAnimationFrameResources	c
@@ -1743,7 +1754,6 @@ effReleaseFadeColorWork	c
 effReleaseFixedSlotBlurWork	c
 effReleaseLinkedTarget	c
 effReleaseModelPointSetAsset	c
-effReleaseModelResources	c
 effReleaseParticleList	c	compiles identical
 effReleaseParticleResources	c
 effReleasePointSetAsset	c
@@ -1771,7 +1781,6 @@ effReplaceFileResourceRef	c
 effReplaceKindLinkedTarget	c
 effReplaceLinkedKindWorkTarget	c
 effReplaceResourceRef	c
-effReplaceSharedResource	c
 effReplaceSurfaceFlaggedBillboard	c
 effReplaceSurfacePrimaryBillboard	c
 effReplaceSurfaceResourceHolder	c
@@ -1798,11 +1807,13 @@ effResetSurfaceGridFrame	c
 effResolveAndReleaseResource	c
 effResolveAndReleaseSelectedResource	c
 effResolveMappingWithTemporaryTable	c
+effResourceCopy	c
 effResourceReferenceReplaceFromFile	c
 effRetainScalyTextureReference	c
 effRetainSharedReference	c
 effRunClassPostFrame	c
 effRunWithStateBackup	c
+effSCopy	c
 effSampleAnimSet	c
 effSampleColorAlphaTracks	c
 effSampleScalarCurve	c
@@ -1841,7 +1852,6 @@ effSplCalcRegist	c
 effSplRun	c
 effStoreBattleCameraSnapshot	c
 effSubmitCompositeGsPacket	c
-effSubmitFieldBlendStateTask	c	SMT3 member names
 effSubmitGeneratedTexturePacket	c
 effSubmitIndexedRenderPacket	c
 effSumRecordStatuses	c
@@ -1901,7 +1911,6 @@ evtAssignRuntimeChildSequenceAndCount	c
 evtBitCheck	c	compiles identical
 evtBitOff	c	compiles identical
 evtBitOn	c	compiles identical
-evtBlendParamsG	c	SMT3 member names
 evtBlendParamsH	c
 evtCheckEventBgmLoaded	c
 evtCheckEventScriptLoaded	c
@@ -1991,7 +2000,6 @@ evtCommand_SET_SKY_A	c
 evtCommand_TEX_CLS	c
 evtCommand_TEX_OFF	c
 evtCommand_TEX_ON	c
-evtCopyEntryStringToActiveWindow	c
 evtDestroyFontResourceChain	c
 evtDestroySelectionState	c
 evtDispatchActionByIndex	c
@@ -2011,7 +2019,6 @@ evtEmitGroupTypeTwentyFivePayloads	c
 evtEmitGroupTypeTwentySevenPayloads	c
 evtEmitGroupTypeTwentyThreePayloads	c
 evtEnsureFontResourceChain	c
-evtEventViewerAttachIndexedObject	c	SMT3 member names
 evtEventViewerCommitGroupSelection	asm	1 words differ, first at +0xAC
 evtEventViewerCountEntries	c
 evtEventViewerDestroyActive	c
@@ -2037,11 +2044,13 @@ evtGetSoundIndex	c
 evtGetUnitDirVector	c	compiles identical
 evtGetUnitHandle	c
 evtGetUnitHandle2	c
+evtGetValueNewTMXFrame	c
 evtHokanBlur2	c
 evtHokanColor	c
 evtHokanDistBlur	c
 evtHokanFilter	c
 evtHokanFloat	c
+evtHokanHeikouBlur	c	SMT3 member names
 evtHokanInt	c
 evtHokanMultBlur	c
 evtHokanMultFilter	c
@@ -2096,7 +2105,6 @@ evtSearchBasic	c
 evtSearchEventPack	c
 evtSelStateCreate	c
 evtSelStateDestroy	c
-evtSetMessageWindowPageValue	c
 evtSetSkyAlpha	c
 evtSetTestCamera	c
 evtSetUnitKutiMotion	c	compiles identical
@@ -2122,12 +2130,10 @@ evtViewCmdResolveSlot	asm	1 words differ, first at +0x94
 evtViewCmdSetValue	c
 evtViewFindGlyphAtOrBefore	c
 evtViewerApplyGlyphLodChannel	c
-evtViewerClampMovieTimes	c
 evtViewerClearPendingNodeAndPushHistory	c
 evtViewerDispatchFlagMode	c
 evtViewerDrawGroupRow	c
 evtViewerDrawGroupWindow	c
-evtViewerFindLatestMatchingMotionKey	c
 evtViewerHasUpdateFlag	c
 evtViewerPickNextHandler	c
 evtViewerPopHistory	c
@@ -2144,15 +2150,19 @@ evt_1E92F8	c
 exponent	c
 fabsf	c
 fclBlendColor	c
+fclChangeMessageWindowAlpha	c
 fclChkMessage	c
 fclDestroyMessage	c
 fclEncycFreeEntry	c
+fclGetSelMessagePos	asm	size 0x2C, retail 0x38
 fclInitMessage	c
 fclLoadStage	c
 fclLoadTexture	c
 fclScriptForcedEnd	c
 fclScriptStart	c
+fclSetMessageVar	c
 fclStartMessage	c
+fclUpdateMessage	c
 fcl_213998	c
 fcl_2142F0	c
 fcl_214458	c
@@ -2162,13 +2172,11 @@ fileAppendJobFromCommandPath	c
 fileClampPackedColorByte	c
 fileClearAllSlotFlags	c
 fileClearLoadObjectReferences	c
-fileCloneQueueEntries	c	compiles identical
 fileCopyAndInvalidateSlotGroup	c
 fileCopyLoadObjectRecordVector	c
 fileCreateGridLoaderRecord	c
 fileCreateSurfaceLoaderState	c
 fileCursorStepUp	c
-fileDestroyEffectSurfaceAndChildren	c	compiles identical
 fileDestroyJob	c
 fileDispatchJobTypeCallback	c
 fileDuplicateAndAppendJob	c
@@ -2192,7 +2200,6 @@ fileJobCreateFromCommandState	c
 fileJobCreateFromJob	c
 fileJobDuplicateAfter	c
 fileJobFreeSecondaryBuffer	c
-fileJobInvokePositionCallback	c
 fileJobInvokeRotationCallback	c
 fileJobInvokeScaleCallback	c
 fileJobInvokeTypeCallback	c
@@ -2209,7 +2216,6 @@ fileLoadEffectSlotA	c
 fileLoadEffectSlotB	c
 fileLoadEffectSlotHelp	c
 fileLoadEx	c
-fileLoadObjectCreateChild	c
 fileLoadObjectOpenAndStartDevice	c
 fileLoadObjectOpenDevice	c
 fileLoadObjectOpenNamedDevice	c
@@ -2219,11 +2225,9 @@ fileLoadUseTail	c
 fileManager	c
 fileManagerProc	c
 fileQueueAppend	c
-fileQueueClone	c
 fileQueueCopyRotationFromSource	c
 fileQueueCountLinkedJobs	c
 fileQueueCreateFromCommandState	c	compiles identical
-fileQueueDestroy	c
 fileQueueDetachSectorFollower	c	compiles identical
 fileQueueFindById	c
 fileQueueFindBySector	c
@@ -2235,10 +2239,6 @@ fileQueueRemove	c
 fileQueueRemoveAndDestroyJob	asm	2 words differ, first at +0xC0
 fileQueueSaveImage	c
 fileQueueSaveVersionedImage	c
-fileQueueSetColor	c
-fileQueueSetPosition	c
-fileQueueSetRotation	c
-fileQueueSetScale	c
 fileRead	c
 fileReadRecordSecondVector	c
 fileReadVectorPtr20	c
@@ -2297,7 +2297,7 @@ fldPlayerCalc360_8	c
 fldPoint3To2	c
 fldPointDistance	c
 fldProcessFieldRequestAlternate	c
-fldResetPlayerSceneObjectState	c
+fldReleaseUnitPad	c
 fldRestoreCameraModelColor	c
 fldSetCameraObjectTransitionFlag	c
 fldSnapAngleToCompassPoint	c
@@ -2352,6 +2352,7 @@ frwFreeStaffFont	c
 frwGetStaffFontFRQ	c
 frwLoadStaffFont	c
 func_00101A78	c
+func_r1_00101280	c
 get_iob	c
 iInvalidDCache	c
 iPutTLBEntry	c
@@ -2466,6 +2467,10 @@ itfScanEncodedTextControls	asm	1 words differ, first at +0xEC
 itfSetGridEntryQuantizedAndRefresh	c
 itfStepHeldPanelMessages	c
 itfUpdateGridSlotDescription	c
+jmsSeqChange	c
+jmsSeqJump	c
+jmsSeqJumpAndFree	c
+jmsSeqReturn	c
 kCopy	c
 kCopy_1	c
 kCopy_3	c
@@ -2473,8 +2478,6 @@ kFindAddress	c
 kill	c
 kprintf	c
 kputs	c
-kwlnPadStepLargeMotorLevel	c
-kwlnTraverseDiagnosticTaskQueue	c
 libc_2D1E50	c
 libc_2D1EA8	c
 libc_2D2728	c
@@ -2492,6 +2495,7 @@ lightdrawprocedure	c
 lightmainprocedure	c
 litodp	c
 malloc	c
+mapBadEffDrawTask	c
 mcDelayThread	c
 mcHearAlarm	c
 mceGetInfoApdx	c
@@ -2653,7 +2657,6 @@ mnuAdvanceWindowListSelection	c
 mnuAllocateListEntries	c
 mnuAppendWindowListNode	c
 mnuApplyPanelTransitionAction	c
-mnuBindPresentMenuEntry	c
 mnuBlendListNodeColorByFlags	c
 mnuBuildVoiceResourcePath	c
 mnuCallInitWide	c
@@ -2671,7 +2674,6 @@ mnuCreateWindowSpriteResources	c
 mnuDecreaseListNodeFadeCounters	c
 mnuDestroyListState	c
 mnuDispatchEntryWords	c
-mnuDispatchPopupTransition	c
 mnuDispatchStaffMenuWithIdlePopup	c
 mnuDrainPanelTransitions	c
 mnuDrawCutFlagLabel	c
@@ -2723,16 +2725,12 @@ mnuRemoveWindowListCursorNode	c
 mnuResetNodeLinks	c
 mnuResetSoundBuffer	c
 mnuResetTitleEffectState	c
-mnuResetTitleStreamLocked	c
 mnuRetreatListCursorDefault	c
 mnuRetreatListWindowStart	c
 mnuRetreatWindowListSelection	c
 mnuReverseListSelection	c
-mnuSampleCampDisplayTrack	c
 mnuScrollListToEnd	c
 mnuScrollListToPreviousPage	asm	size 0x16C, retail 0x168
-mnuSetPopupEntry	c
-mnuSetPopupEntryFlagged	c
 mnuSetTitleVoicePrefixIndex	c
 mnuSetWindowContainerLayout	c
 mnuShouldBlockViewerEndCountdown	c
@@ -2740,7 +2738,6 @@ mnuSolveCubicBezierYForX	c
 mnuSortItems	c
 mnuStartFixedSoundStream	c
 mnuStopTitleVoicePlayback	c
-mnuStoreTaskResult	asm	fileLoad at 0x001E9F40, others at 0x001E9F20
 mnuUnpackNibbleFields	c
 mnuUpdateFade	c
 mnuUpdateListScrollFlags	c
@@ -2819,6 +2816,8 @@ rsetAlpha	c
 rsetOtOfs	c
 rsetTest	c
 rsetTexa	c
+sBtlGetVerticalLength	c
+sBtlGetVerticalVector	c
 sceAddDrv	c
 sceCdCallback	c
 sceCdDelayThread	c
@@ -3800,6 +3799,7 @@ slSaveProc_writeFile	c
 slSaveWriteEnd_saveData	c
 slSaveWriteFile	c
 slSetInfo	c
+sndBgmFree	c
 sndCopyWordsToIopSynchronously	c
 sndInitializeStreamTransferBuffers	c
 sndMixSampleBuffers	c

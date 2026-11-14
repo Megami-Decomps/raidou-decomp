@@ -966,7 +966,7 @@ void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource);
 
 extern sdfGrOt_t D_003255A8;
 
-extern sdfGrOt_t *kwlnSceneSurfaceSets[13][4];
+extern sdfGrOt_t *D_dds1_00325788[13][4];
 
 s32 mdlViewerEnd(dds3ProcessID_t *task);
 
@@ -980,7 +980,7 @@ extern char D_003BBCD0[];
 
 extern char D_003BBCD8[];
 
-extern KwlnDrawVectorParams kwlnDrawVector;
+extern KwlnDrawVectorParams D_dds1_00324790;
 
 void mdlLoadViewerPresentationConfig(void);
 
@@ -1014,7 +1014,7 @@ extern s8 D_00324520[16];
 
 extern sdf3DLight_t *D_00324770[3];
 
-extern f32 kwlnDefaultColorVector[4];
+extern f32 D_dds1_00324780[4];
 
 extern char D_003BBCF8[];
 

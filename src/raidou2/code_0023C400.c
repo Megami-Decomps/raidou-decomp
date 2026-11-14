@@ -254,13 +254,13 @@ extern sdfTexHandle_t *D_003BC958;
 extern void effFloorModelListRemove(EffectObjectNode *);
 
 /* Initialize the VU transforms and the first node's float slot, if present. */
-void effInitModelVUState(dds3ModelHandle_t *model);
+void Init_effModel(dds3ModelHandle_t *model);
 
 extern u16 D_003BC944;
 
 extern void mdlPackDecode(s32, u16, s32, const u8 *, s32);
 
-extern void effInitModelVUState(dds3ModelHandle_t *);
+extern void Init_effModel(dds3ModelHandle_t *);
 
 dds3ModelHandle_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
 
@@ -283,7 +283,7 @@ extern s32 effComputeLightDirectionVU(dds3ModelHandle_t *, sdf3DLightParallelPac
 
 #include "dds/sdf_packet_alloc.h"
 
-extern sdfGrOt_t *kwlnSceneSurfaceSets[13][4];
+extern sdfGrOt_t *D_dds1_00325788[13][4];
 
 extern u64 D_0037E5B0[];
 
@@ -350,17 +350,17 @@ typedef char EffResourceModelConfig_size_check[
     sizeof(EffResourceModelConfig) == 0x3C ? 1 : -1];
 
 /* Create an empty owner, or load its model and per-record queues from a file job. */
-EffResourceOwner *effCreateResourceOwner(FileJobPayload *source);
+EffResourceOwner *Create_effHelper(FileJobPayload *source);
 
-void effDestroyResourceOwner(EffResourceOwner *owner);
+void Delete_effHelper(EffResourceOwner *owner);
 
-extern EffResourceOwner *effCreateResourceOwner(FileJobPayload *);
+extern EffResourceOwner *Create_effHelper(FileJobPayload *);
 
-extern void effCopyResourceOwner(EffResourceOwner *, EffResourceOwner *);
+extern void effResourceCopy(EffResourceOwner *, EffResourceOwner *);
 
-EffResourceOwner *effDuplicateModelOwner(EffResourceOwner *source);
+EffResourceOwner *Copy_effHelper(EffResourceOwner *source);
 
-void effCopyResourceOwner(EffResourceOwner *dst, EffResourceOwner *src);
+void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src);
 
 void effResetModelMotionAndOwnerFlag(EffResourceOwner *work);
 
@@ -416,7 +416,7 @@ struct EffExpandedList *effCreateTextureAnimationSet(u32 sourceAddress);
 
 void effReleaseReferenceHolder(EffExpandedList *holder);
 
-EffExpandedList *effReferenceObjectRetain(EffExpandedList *obj);
+EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj);
 
 void effSampleAnimSet(const EffExpandedList *set, u32 frame, EffAnimSample *out);
 
@@ -433,7 +433,7 @@ void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source) {
         effDestroyModelContext(owner->model);
     }
     model = mdlLoad(mdlGetMajorNum(original->model), mdlGetMinorNum(original->model));
-    effInitModelVUState(model);
+    Init_effModel(model);
     SDF_VU0_SETSCALE1VECTOR();
     VU0_SCALE_VF_MFC1(vf10, owner->scale);
     mdlSetScale(model);
@@ -601,7 +601,7 @@ INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C48);
 INCLUDE_ASM(const s32, "code_0023C400", func_r1_00225C60);
 
 /* Create an empty owner, or load its model and per-record queues from a file job. */
-EffResourceOwner *effCreateResourceOwner(FileJobPayload *source) {
+EffResourceOwner *Create_effHelper(FileJobPayload *source) {
     EffResourceOwner *owner = sdfChipAllocDirect(sizeof(EffResourceOwner));
     u8 *data;
     u32 i;
@@ -627,16 +627,16 @@ EffResourceOwner *effCreateResourceOwner(FileJobPayload *source) {
         if (data != NULL) {
             owner->queueAllocation = sdfMemAllocDirect(owner->count * 4);
             owner->entries = sdfMemLock(owner->queueAllocation);
-            owner->entries[0] = fileCloneQueueEntries((struct FileQueue *)data);
+            owner->entries[0] = Create_effPartsList((struct FileQueue *)data);
             for (i = 1; i < owner->count; i++) {
-                owner->entries[i] = fileQueueClone(owner->entries[0]);
+                owner->entries[i] = effPartsCreateFinish(owner->entries[0]);
             }
         }
     }
     return owner;
 }
 
-void effDestroyResourceOwner(EffResourceOwner *owner) {
+void Delete_effHelper(EffResourceOwner *owner) {
     u32 i;
 
     if (owner->model != 0) {
@@ -644,30 +644,30 @@ void effDestroyResourceOwner(EffResourceOwner *owner) {
     }
     if (owner->queueAllocation != 0) {
         for (i = 0; i < owner->count; i++) {
-            fileQueueDestroy(owner->entries[i]);
+            effPartsDelete(owner->entries[i]);
         }
         sdfMemFreeDirect(owner->queueAllocation);
     }
     sdfChipFreeDirect(owner);
 }
 
-EffResourceOwner *effDuplicateModelOwner(EffResourceOwner *source) {
-    EffResourceOwner *effect = effCreateResourceOwner(0);
+EffResourceOwner *Copy_effHelper(EffResourceOwner *source) {
+    EffResourceOwner *effect = Create_effHelper(0);
 
     *(EffResourceModelConfig *)((u8 *)effect + 8) =
         *(EffResourceModelConfig *)((u8 *)source + 8);
-    effCopyResourceOwner(effect, source);
+    effResourceCopy(effect, source);
     return effect;
 }
 
-void effCopyResourceOwner(EffResourceOwner *dst, EffResourceOwner *src) {
+void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src) {
     u32 i;
 
     if (dst->model != 0) {
         effDestroyModelContext(dst->model);
     }
     dst->model = mdlLoad(mdlGetMajorNum(src->model), mdlGetMinorNum(src->model));
-    effInitModelVUState(dst->model);
+    Init_effModel(dst->model);
     if (dst->model->first != NULL) {
         if (dst->plainEntry != 0) {
             mdlSingleMotion(dst->model, 0, 0);
@@ -679,14 +679,14 @@ void effCopyResourceOwner(EffResourceOwner *dst, EffResourceOwner *src) {
     if (src->queueAllocation != 0) {
         if (dst->queueAllocation != 0) {
             for (i = 0; i < dst->count; i++) {
-                fileQueueDestroy(dst->entries[i]);
+                effPartsDelete(dst->entries[i]);
             }
             sdfMemFreeDirect(dst->queueAllocation);
         }
         dst->queueAllocation = sdfMemAllocDirect(dst->count * 4);
         dst->entries = sdfMemLock(dst->queueAllocation);
         for (i = 0; i < dst->count; i++) {
-            dst->entries[i] = fileQueueClone(*src->entries);
+            dst->entries[i] = effPartsCreateFinish(*src->entries);
         }
     }
 }
@@ -919,7 +919,7 @@ void effReleaseReferenceHolder(EffExpandedList *holder) {
     sdfMemFreeDirect(holder->allocation);
 }
 
-EffExpandedList *effReferenceObjectRetain(EffExpandedList *obj) {
+EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj) {
     obj->refCount++;
     return obj;
 }

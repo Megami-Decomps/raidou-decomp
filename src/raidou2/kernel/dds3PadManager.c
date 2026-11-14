@@ -417,7 +417,7 @@ extern sdfGrOt_t sdfDebugGrOt;
 
 extern s32 D_003BD6A0[2];
 
-extern u8 kwlnLargeMotorTarget;
+extern u8 D_r1_0046F619;
 
 extern u16 fadenow;
 
@@ -547,11 +547,11 @@ s32 fclEncycFreeEntry(const char *name);
 /* Unregister a named slot: stop its task, clear it and unlink it from the slot chain. */
 s32 fclEncycFreeEntries(const char *name);
 
-s32 kwlnConfigureNamedSlotMode3(const char *name, void (*setState)(s32));
+s32 func_dds1_00103400(const char *name, void (*setState)(s32));
 
 s32 fclEncycAllocEntry(const char *name, dds3ProcessFunc_t update, dds3ProcessShutdownFunc_t destroy, void *userValue);
 
-s32 kwlnConfigureNamedSlotMode2(const char *name, dds3ProcessFunc_t update, dds3ProcessShutdownFunc_t destroy, void *userValue);
+s32 func_dds1_00103540(const char *name, dds3ProcessFunc_t update, dds3ProcessShutdownFunc_t destroy, void *userValue);
 
 void dds3InitDebugSystem(void);
 
@@ -579,12 +579,12 @@ extern u8 D_003BA878[2][2];
 
 extern u8 D_003BD698[2];
 
-void kwlnUpdatePadInputState(void);
+void func_dds1_00103B10(void);
 
-void kwlnPadStepLargeMotorLevel(void);
+void Act2Sub(void);
 
 /* Clear motor levels and countdowns, then send both zero strengths to pad 0. */
-void kwlnPadResetMotorLevelsAndOutput(void);
+void func_r1_00104210(void);
 
 s32 dds3TaskNoopCallback(dds3ProcessID_t *task);
 
@@ -717,15 +717,15 @@ extern sdfGrFrameSet_t sdfGrFrameSet;
 
 extern sdf3DLight_t *D_00324770[3];
 
-extern f32 kwlnDefaultColorVector[4];
+extern f32 D_dds1_00324780[4];
 
 extern Matrix4 sdfViewMatrix;
 
 extern Matrix4 D_00329790;
 
-extern sdf3DLight_t *kwlnOverlayLightSources[3];
+extern sdf3DLight_t *D_dds1_00324B10[3];
 
-extern f32 kwlnOverlayAmbientColor[4];
+extern f32 D_dds1_00324B20[4];
 
 extern void sdf3DLinkInitPacket(sdfDrawTag_t *, DmaPacketHeader *);
 
@@ -790,7 +790,7 @@ extern f32 D_003BA940[];
 extern f32 fabsf(f32 value);
 
 /* Advance the two bounded shake offsets and taper finite-duration amplitudes. */
-void kwlnAdvanceShakeOffsets(void);
+void func_dds1_00105630(void);
 
 #define DDS3_FADE_TICKS_PER_FRAME 10
 
@@ -939,8 +939,8 @@ void dds3PadInitialize(void) {
 
 INCLUDE_ASM(const s32, "kernel/dds3PadManager", dds3PadUpdate);
 
-void kwlnPadStepLargeMotorLevel(void) {
-    u8 target = kwlnLargeMotorTarget;
+void Act2Sub(void) {
+    u8 target = D_r1_0046F619;
 
     if (dds3PadVibrationState[1] < target) {
         if (target - dds3PadVibrationState[1] > 0x20) {

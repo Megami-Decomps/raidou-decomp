@@ -2020,7 +2020,7 @@ extern struct MenuList *mnuCreateListState(s32, s32, s32);
 
 extern void fileDrawConfigurationMenuEntry(s32 x, s32 y, s32 depth, struct MenuList *list, FileConfigListNode *node, s32 drawArg);
 
-extern void mnuResetTitleStreamLocked(void);
+extern void sndBgmFree(void);
 
 extern void mnuResetTitleStreamAfterFileIdle(void);
 
@@ -2132,7 +2132,7 @@ void fileJobNotifyComplete(FileJobPayload *job);
 
 void fileJobInvokeTypeCallback(FileJobPayload *job);
 
-void fileJobInvokePositionCallback(FileJobPayload *job, const f32 position[4]);
+void PositionSet(FileJobPayload *job, const f32 position[4]);
 
 void fileJobInvokeRotationCallback(FileJobPayload *job, const f32 rotation[4]);
 
@@ -2175,30 +2175,30 @@ FileJob *fileJobCreate(void);
 
 void fileDestroyJob(FileJob *job);
 
-FileQueue *fileCloneQueueEntries(FileQueue *source);
+FileQueue *Create_effPartsList(FileQueue *source);
 
 void camFollowOffsetVec(FileJob *job, void *dst);
 
 struct CamAim;
 
-extern void camAimRotation(struct CamAim *obj, void *dst);
+extern void PoseRotBillboard(struct CamAim *obj, void *dst);
 
 /* Per-frame update: refreshes the queue rotation when an aim flag (0x60) is set, then repositions and re-notifies every job whose start frame (job+0x80) has been reached; the frame counter only advances when the effect-frame pause flag is clear. */
 void effPartsDraw(FileQueue *queue);
 
 /* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
  * an ID for other job kinds. Destroy children before their parent jobs. */
-void fileQueueDestroy(FileQueue *queue);
+void effPartsDelete(FileQueue *queue);
 
-FileQueue *fileQueueClone(const FileQueue *source);
+FileQueue *effPartsCreateFinish(const FileQueue *source);
 
 void fileQueueNotifyAllJobsComplete(FileQueue *queue);
 
-void fileQueueSetPosition(FileQueue *queue, const f32 vec[4]);
+void effPartsPositionSet(FileQueue *queue, const f32 vec[4]);
 
-void fileQueueSetRotation(FileQueue *queue, const f32 rot[4]);
+void effPartsRotateSet(FileQueue *queue, const f32 rot[4]);
 
-void fileQueueSetScale(FileQueue *queue, f32 scale);
+void effPartsScaleSet(FileQueue *queue, f32 scale);
 
 /* Store the queue's modulation colour, then send every job its own colour
  * modulated by it ((job / 128) * (queue / 128) * 128 per channel). The tint
@@ -2206,7 +2206,7 @@ void fileQueueSetScale(FileQueue *queue, f32 scale);
  * CSE table, so the loop's 1/128 is rematerialized rather than copied from the
  * first unpack's FPR. Reading the payload before the packed store keeps the
  * store from feeding the argument load. */
-void fileQueueSetColor(FileQueue *queue, u32 color);
+void ColorSet(FileQueue *queue, u32 color);
 
 void fileQueueReadPosition(const FileQueue *queue, f32 position[4]);
 
@@ -2296,7 +2296,7 @@ s32 fileQueueCountLinkedJobs(FileQueue *queue);
 void camFollowOffsetVec(FileJob *obj, void *dst);
 
 /* dst = rotation facing unit(aViewEye - aViewTarget) (pitch and yaw); flag 0x40 composes it onto obj->quat, no flag 0x60 copies obj->quat */
-void camAimRotation(CamAim *obj, void *dst);
+void PoseRotBillboard(CamAim *obj, void *dst);
 
 EffectSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity);
 
@@ -2304,13 +2304,13 @@ EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
 
 EffectSurfaceNode *fileCreateEffectSurfaceFromJob(FileJobPayload *job);
 
-void fileDestroyEffectSurfaceAndChildren(EffectSurfaceNode *node);
+void Delete_effParticle(EffectSurfaceNode *node);
 
-void fileCloneEffectSurfaceResources(EffectSurfaceNode *dst, EffectSurfaceNode *src);
+void ResourceCopy(EffectSurfaceNode *dst, EffectSurfaceNode *src);
 
-EffectSurfaceNode *fileLoadObjectCreateChild(EffectSurfaceNode *owner);
+EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner);
 
-void fileCloneEffectSurfaceResources(EffectSurfaceNode *dst, EffectSurfaceNode *src);
+void ResourceCopy(EffectSurfaceNode *dst, EffectSurfaceNode *src);
 
 void fileLoadObjectSetResource(EffectSurfaceNode *node, u32 entryId, void *resource);
 
@@ -2566,7 +2566,7 @@ void fileJobInvokeTypeCallback(FileJobPayload *job) {
     fileJobTypeOperations[idx].invoke(data);
 }
 
-void fileJobInvokePositionCallback(FileJobPayload *job, const f32 position[4]) {
+void PositionSet(FileJobPayload *job, const f32 position[4]) {
     u16 id = job->type;
 
     if (fileJobTypeOperations[id].setPosition != NULL) {
@@ -2771,7 +2771,7 @@ void fileDestroyJob(FileJob *job) {
     sdfChipFreeDirect(job);
 }
 
-FileQueue *fileCloneQueueEntries(FileQueue *source) {
+FileQueue *Create_effPartsList(FileQueue *source) {
     FileQueue *queue = fileQueueCreate();
     FileJob *entry;
     FileJob *job;
@@ -2836,10 +2836,10 @@ FileQueue *fileCloneQueueEntries(FileQueue *source) {
         }
     }
     VU0_STORE_VF(vf0, vec);
-    fileQueueSetPosition(queue, vec);
-    fileQueueSetRotation(queue, vec);
-    fileQueueSetScale(queue, 1.0f);
-    fileQueueSetColor(queue, 0x80808080);
+    effPartsPositionSet(queue, vec);
+    effPartsRotateSet(queue, vec);
+    effPartsScaleSet(queue, 1.0f);
+    ColorSet(queue, 0x80808080);
     return queue;
 }
 
@@ -2852,7 +2852,7 @@ INCLUDE_ASM(const s32, "code_00234168", effPartsDraw);
 
 /* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
  * an ID for other job kinds. Destroy children before their parent jobs. */
-void fileQueueDestroy(FileQueue *queue) {
+void effPartsDelete(FileQueue *queue) {
     FileJob *job = queue->first;
     while (job != NULL) {
         FileJob *next = job->next;
@@ -2865,7 +2865,7 @@ void fileQueueDestroy(FileQueue *queue) {
     sdfChipFreeDirect(queue);
 }
 
-FileQueue *fileQueueClone(const FileQueue *source) {
+FileQueue *effPartsCreateFinish(const FileQueue *source) {
     FileQueue *queue = fileQueueCreate();
     const FileJob *src;
     f32 vec[4] __attribute__((aligned(16)));
@@ -2881,16 +2881,16 @@ FileQueue *fileQueueClone(const FileQueue *source) {
         fileQueueAppend(queue, job);
     }
     VU0_STORE_VF(vf0, vec);
-    fileQueueSetPosition(queue, vec);
-    fileQueueSetRotation(queue, vec);
-    fileQueueSetScale(queue, 1.0f);
-    fileQueueSetColor(queue, 0x80808080);
+    effPartsPositionSet(queue, vec);
+    effPartsRotateSet(queue, vec);
+    effPartsScaleSet(queue, 1.0f);
+    ColorSet(queue, 0x80808080);
     return queue;
 }
 
 INCLUDE_ASM(const s32, "code_00234168", fileQueueNotifyAllJobsComplete);
 
-void fileQueueSetPosition(FileQueue *queue, const f32 vec[4])
+void effPartsPositionSet(FileQueue *queue, const f32 vec[4])
 {
     f32 rot[16];
     f32 base[4];
@@ -2920,11 +2920,11 @@ void fileQueueSetPosition(FileQueue *queue, const f32 vec[4])
         VU0_ROTATE_VEC(vf11, vf11);
         SDF_VU0_ADDVECTOR();
         SDF_VU0_STOREVECTOR_NOMEM(pos);
-        fileJobInvokePositionCallback((FileJobPayload *)job->id, pos);
+        PositionSet((FileJobPayload *)job->id, pos);
     }
 }
 
-void fileQueueSetRotation(FileQueue *queue, const f32 rot[4])
+void effPartsRotateSet(FileQueue *queue, const f32 rot[4])
 {
     f32 quat[4];
     f32 pos[4];
@@ -2944,10 +2944,10 @@ void fileQueueSetRotation(FileQueue *queue, const f32 rot[4])
         SDF_VU0_STOREVECTOR_NOMEM(pos);
         fileJobInvokeRotationCallback((FileJobPayload *)job->id, pos);
     }
-    fileQueueSetPosition(queue, queue->position);
+    effPartsPositionSet(queue, queue->position);
 }
 
-void fileQueueSetScale(FileQueue *queue, f32 scale)
+void effPartsScaleSet(FileQueue *queue, f32 scale)
 {
     s128 pos;
     FileJob *job;
@@ -2973,7 +2973,7 @@ void fileQueueSetScale(FileQueue *queue, f32 scale)
             VU0_SCALAR_OP(total, "vmulx.xyzw vf11, vf11, vf2x");
             SDF_VU0_ADDVECTOR();
             SDF_VU0_STOREVECTOR_NOMEM(&pos);
-            fileJobInvokePositionCallback((FileJobPayload *)job->id, (f32 *)&pos);
+            PositionSet((FileJobPayload *)job->id, (f32 *)&pos);
         }
     }
 }
@@ -2984,7 +2984,7 @@ void fileQueueSetScale(FileQueue *queue, f32 scale)
  * CSE table, so the loop's 1/128 is rematerialized rather than copied from the
  * first unpack's FPR. Reading the payload before the packed store keeps the
  * store from feeding the argument load. */
-void fileQueueSetColor(FileQueue *queue, u32 color) {
+void ColorSet(FileQueue *queue, u32 color) {
     f32 tint[4] __attribute__((aligned(16)));
     u32 queueColor[4] __attribute__((aligned(16)));
     u32 jobColor[4] __attribute__((aligned(16)));
@@ -3014,7 +3014,7 @@ void fileQueueCopyRotationFromSource(FileQueue *queue, f32 matrix[4][4]) {
     f32 vec[4] __attribute__((aligned(16)));
     sdfVuMatrixToQuaternion(matrix);
     SDF_VU0_STOREVECTOR(vec);
-    fileQueueSetRotation(queue, vec);
+    effPartsRotateSet(queue, vec);
 }
 
 FileJob *fileAppendJob(FileQueue *queue, u32 id) {
@@ -3430,7 +3430,7 @@ void camFollowOffsetVec(FileJob *obj, void *dst)
 }
 
 /* dst = rotation facing unit(aViewEye - aViewTarget) (pitch and yaw); flag 0x40 composes it onto obj->quat, no flag 0x60 copies obj->quat */
-void camAimRotation(CamAim *obj, void *dst)
+void PoseRotBillboard(CamAim *obj, void *dst)
 {
     f32 v[4];
     f32 pitch;
@@ -3484,7 +3484,7 @@ EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
 
 INCLUDE_ASM(const s32, "code_00234168", fileCreateEffectSurfaceFromJob);
 
-void fileDestroyEffectSurfaceAndChildren(EffectSurfaceNode *node) {
+void Delete_effParticle(EffectSurfaceNode *node) {
     u32 count;
     u32 i;
 
@@ -3501,7 +3501,7 @@ void fileDestroyEffectSurfaceAndChildren(EffectSurfaceNode *node) {
     if (node->queueAllocation != 0) {
         count = node->record->count;
         for (i = 0; i < count; i++) {
-            fileQueueDestroy(node->queues[i]);
+            effPartsDelete(node->queues[i]);
         }
         sdfMemFreeDirect(node->queueAllocation);
     }
@@ -3514,16 +3514,16 @@ void fileDestroyEffectSurfaceAndChildren(EffectSurfaceNode *node) {
     sdfChipFreeDirect(node);
 }
 
-EffectSurfaceNode *fileLoadObjectCreateChild(EffectSurfaceNode *owner) {
+EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner) {
     FileKeyBlock *source = (FileKeyBlock *)owner->record->data1;
     EffectSurfaceNode *result = fileCreateGridLoaderRecord(source);
 
     fileLoadObjectSetResource(result, owner->record->type, source);
-    fileCloneEffectSurfaceResources(result, owner);
+    ResourceCopy(result, owner);
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", fileCloneEffectSurfaceResources);
+INCLUDE_ASM(const s32, "code_00234168", ResourceCopy);
 
 void fileLoadObjectSetResource(EffectSurfaceNode *node, u32 entryId, void *resource) {
     if (node->record != 0) {
@@ -3600,7 +3600,7 @@ void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue) {
 
     if (node->queueAllocation != 0) {
         for (i = 0; i < count; i++) {
-            fileQueueDestroy(node->queues[i]);
+            effPartsDelete(node->queues[i]);
         }
         sdfMemFreeDirect(node->queueAllocation);
         node->queues = 0;
@@ -3610,9 +3610,9 @@ void fileReplaceEffectSurfaceQueues(EffectSurfaceNode *node, FileQueue *queue) {
     if (size != 0) {
         node->queueAllocation = sdfMemAllocDirect(size);
         node->queues = sdfMemLock(node->queueAllocation);
-        node->queues[0] = fileCloneQueueEntries(queue);
+        node->queues[0] = Create_effPartsList(queue);
         for (i = 1; i < count; i++) {
-            node->queues[i] = fileQueueClone(node->queues[0]);
+            node->queues[i] = effPartsCreateFinish(node->queues[0]);
         }
     }
 }

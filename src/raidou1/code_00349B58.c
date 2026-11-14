@@ -312,7 +312,7 @@ extern void mnuDrawTerminalEffectIfAvailable(s32 state);
 
 #include "dds/dds3_world_secondary.h"
 
-extern void evtCopyEntryStringToActiveWindow(s32 slotIndex, const char *sourceText);
+extern void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 
 extern void itfMesMngSetPhase(s32 windowIndex, s32 status);
 
@@ -477,12 +477,12 @@ extern ItfMesWindowIndex itfMesMngInitialize(struct ItfMesSub *sub);
 s32 fclInitMessage(struct ItfMesSub *sub);
 
 /* Apply page mode zero and the caller's opaque page value to an open window. */
-EvtMessageWindowPageValueResult evtSetMessageWindowPageValue(s32 pageValue);
+EvtMessageWindowPageValueResult fclChangeMessageWindowAlpha(s32 pageValue);
 
 /* Start an entry, mark the first panel value pending, and enable control state one. */
 s32 fclStartMessage(s32 entry);
 
-extern s32 dspReadWindowSecondPanelValue(void);
+extern s32 fclGetSelMessagePos(void);
 
 /* Store an option-list entry for deferred construction and snapshot the
  * panel's second halfword. */
@@ -498,7 +498,7 @@ extern s32 itfMesMngGetSelectNo(s32 windowIndex);
 
 /* Read the second panel halfword, or -1 when no message window exists.
  * Despite the inherited name, this is not a sound-driver query. */
-s32 dspReadWindowSecondPanelValue(void);
+s32 fclGetSelMessagePos(void);
 
 /* Return the captured signed-byte panel value without querying the live window. */
 s8 evtGetCapturedWindowPanelValue(void);
@@ -531,12 +531,12 @@ extern void itfMesBuildOptionList(ItfMesWindowIndex window, ItfMesEntryIndex ent
 void dspAdvanceMessageWindowControl(s32 notify);
 
 /* Request mode one from the existing message-window worker. */
-void dspRequestMessageWindowModeOne(void);
+void fclUpdateMessage(void);
 
 /* Copy a string address into a window table slot; neither argument is an item id. */
 extern void itfMesMngSetVarImmediate(s32 window, u32 slotIndex, const char *sourceText);
 
-void evtCopyEntryStringToActiveWindow(s32 slotIndex, const char *sourceText);
+void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 
 /* Return the gate byte independently of the singleton window's existence. */
 s8 dspGetWindowStateGate(void);

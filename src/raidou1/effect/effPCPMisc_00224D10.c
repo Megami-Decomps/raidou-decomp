@@ -1562,7 +1562,7 @@ extern struct MenuList *mnuCreateListState(s32, s32, s32);
 
 extern void fileDrawConfigurationMenuEntry(s32 x, s32 y, s32 depth, struct MenuList *list, FileConfigListNode *node, s32 drawArg);
 
-extern void mnuResetTitleStreamLocked(void);
+extern void sndBgmFree(void);
 
 extern void mnuResetTitleStreamAfterFileIdle(void);
 
@@ -1680,7 +1680,7 @@ void fileJobNotifyComplete(FileJobPayload *job);
 
 void fileJobInvokeTypeCallback(FileJobPayload *job);
 
-void fileJobInvokePositionCallback(FileJobPayload *job, const f32 position[4]);
+void PositionSet(FileJobPayload *job, const f32 position[4]);
 
 void fileJobInvokeRotationCallback(FileJobPayload *job, const f32 rotation[4]);
 
@@ -1723,7 +1723,7 @@ FileJob *fileJobCreate(void);
 
 void fileDestroyJob(FileJob *job);
 
-FileQueue *fileCloneQueueEntries(FileQueue *source);
+FileQueue *Create_effPartsList(FileQueue *source);
 
 /* Effect-node creation callback: ignore its option and clone the supplied queue. */
 FileQueue *CallShopTest(u32 unused, FileQueue *source);
@@ -1732,24 +1732,24 @@ void camFollowOffsetVec(FileJob *job, void *dst);
 
 struct CamAim;
 
-extern void camAimRotation(struct CamAim *obj, void *dst);
+extern void PoseRotBillboard(struct CamAim *obj, void *dst);
 
 /* Per-frame update: refreshes the queue rotation when an aim flag (0x60) is set, then repositions and re-notifies every job whose start frame (job+0x80) has been reached; the frame counter only advances when the effect-frame pause flag is clear. */
 void effPartsDraw(FileQueue *queue);
 
 /* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
  * an ID for other job kinds. Destroy children before their parent jobs. */
-void fileQueueDestroy(FileQueue *queue);
+void effPartsDelete(FileQueue *queue);
 
-FileQueue *fileQueueClone(const FileQueue *source);
+FileQueue *effPartsCreateFinish(const FileQueue *source);
 
 void fileQueueNotifyAllJobsComplete(FileQueue *queue);
 
-void fileQueueSetPosition(FileQueue *queue, const f32 vec[4]);
+void effPartsPositionSet(FileQueue *queue, const f32 vec[4]);
 
-void fileQueueSetRotation(FileQueue *queue, const f32 rot[4]);
+void effPartsRotateSet(FileQueue *queue, const f32 rot[4]);
 
-void fileQueueSetScale(FileQueue *queue, f32 scale);
+void effPartsScaleSet(FileQueue *queue, f32 scale);
 
 /* Store the queue's modulation colour, then send every job its own colour
  * modulated by it ((job / 128) * (queue / 128) * 128 per channel). The tint
@@ -1757,7 +1757,7 @@ void fileQueueSetScale(FileQueue *queue, f32 scale);
  * CSE table, so the loop's 1/128 is rematerialized rather than copied from the
  * first unpack's FPR. Reading the payload before the packed store keeps the
  * store from feeding the argument load. */
-void fileQueueSetColor(FileQueue *queue, u32 color);
+void ColorSet(FileQueue *queue, u32 color);
 
 void fileQueueReadPosition(const FileQueue *queue, f32 position[4]);
 
@@ -1847,7 +1847,7 @@ s32 fileQueueCountLinkedJobs(FileQueue *queue);
 void camFollowOffsetVec(FileJob *obj, void *dst);
 
 /* dst = rotation facing unit(aViewEye - aViewTarget) (pitch and yaw); flag 0x40 composes it onto obj->quat, no flag 0x60 copies obj->quat */
-void camAimRotation(CamAim *obj, void *dst);
+void PoseRotBillboard(CamAim *obj, void *dst);
 
 EffectSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity);
 
@@ -1855,13 +1855,13 @@ EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
 
 EffectSurfaceNode *fileCreateEffectSurfaceFromJob(FileJobPayload *job);
 
-void fileDestroyEffectSurfaceAndChildren(EffectSurfaceNode *node);
+void Delete_effParticle(EffectSurfaceNode *node);
 
-void fileCloneEffectSurfaceResources(EffectSurfaceNode *dst, EffectSurfaceNode *src);
+void ResourceCopy(EffectSurfaceNode *dst, EffectSurfaceNode *src);
 
-EffectSurfaceNode *fileLoadObjectCreateChild(EffectSurfaceNode *owner);
+EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner);
 
-void fileCloneEffectSurfaceResources(EffectSurfaceNode *dst, EffectSurfaceNode *src);
+void ResourceCopy(EffectSurfaceNode *dst, EffectSurfaceNode *src);
 
 void fileLoadObjectSetResource(EffectSurfaceNode *node, u32 entryId, void *resource);
 
@@ -2311,7 +2311,7 @@ extern void effFloorModelListRemove(EffectObjectNode *);
 
 #include "dds/sdf_packet_alloc.h"
 
-extern sdfGrOt_t *kwlnSceneSurfaceSets[13][4];
+extern sdfGrOt_t *D_dds1_00325788[13][4];
 
 extern u64 D_003E9640[];
 
@@ -2320,7 +2320,7 @@ extern u32 effSharedTextureReferenceCount;
 extern sdfTexHandle_t *D_00437E40;
 
 /* Initialize the VU transforms and the first node's float slot, if present. */
-void effInitModelVUState(dds3ModelHandle_t *model);
+void Init_effModel(dds3ModelHandle_t *model);
 
 /* Load under an unused group-6 viewer ID and initialize the model's VU state. */
 dds3ModelHandle_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
@@ -2390,18 +2390,18 @@ void mdlMarkAndProcessObjectNodes(void);
 
 #include "dds/eff_resource_owner.h"
 
-extern EffResourceOwner *effCreateResourceOwner(FileJobPayload *);
+extern EffResourceOwner *Create_effHelper(FileJobPayload *);
 
 /* Decode the type-6 configuration, load its model and clone per-position queues. */
-EffResourceOwner *effCreateResourceOwner(FileJobPayload *job);
+EffResourceOwner *Create_effHelper(FileJobPayload *job);
 
-void effDestroyResourceOwner(EffResourceOwner *owner);
+void Delete_effHelper(EffResourceOwner *owner);
 
-extern void effCopyResourceOwner(EffResourceOwner *, EffResourceOwner *);
+extern void effResourceCopy(EffResourceOwner *, EffResourceOwner *);
 
-EffResourceOwner *effDuplicateModelOwner(EffResourceOwner *source, u16 unusedType);
+EffResourceOwner *Copy_effHelper(EffResourceOwner *source, u16 unusedType);
 
-void effCopyResourceOwner(EffResourceOwner *dst, EffResourceOwner *src);
+void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src);
 
 /* Complete queued jobs, sample the first model motion at zero, and clear the owner word. */
 void effResetModelMotionAndOwnerFlag(EffResourceOwner *owner);
@@ -2465,7 +2465,7 @@ s32 effCountExpandedEntries(const EffExpandedList *list);
 
 void effReleaseReferenceHolder(EffExpandedList *holder);
 
-EffExpandedList *effReferenceObjectRetain(EffExpandedList *obj);
+EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj);
 
 /* One animation track: segments contribute their length plus a boundary frame;
  * the loop flag wraps the frame by the total track length. */
@@ -2507,7 +2507,7 @@ void dds3DispatchIndexedCallback(u16 *record, f32 scale) {
 }
 
 /* Initialize the VU transforms and the first node's float slot, if present. */
-void effInitModelVUState(dds3ModelHandle_t *model) {
+void Init_effModel(dds3ModelHandle_t *model) {
     SDF_VU0_LOADIDENTITYVECTOR();
     mdlSetPosition(model);
     SDF_VU0_LOADIDENTITYVECTOR();
@@ -2538,7 +2538,7 @@ dds3ModelHandle_t *effCloneModelWithVUState(dds3ModelHandle_t *sourceModel) {
     group = mdlGetMajorNum(sourceModel);
     id = mdlGetMinorNum(sourceModel);
     model = mdlLoad(group, id);
-    effInitModelVUState(model);
+    Init_effModel(model);
     return model;
 }
 

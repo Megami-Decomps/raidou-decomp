@@ -655,7 +655,7 @@ extern s32 D_0032E4DC[];
 
 extern sdfGrOt_t D_00324F88[];
 
-extern sdfGrOt_t *kwlnSceneSurfaceSets[13][4];
+extern sdfGrOt_t *D_dds1_00325788[13][4];
 
 extern u8 D_00324530[];
 
@@ -935,7 +935,7 @@ extern void fldRefreshAreaStateFromPosition(f32 *position);
  * the fetched player position. Existing larger mode/state values are retained. */
 void fldPreparePlayerSceneCameraTarget(void);
 
-void fldResetPlayerSceneObjectState(void);
+void fldReleaseUnitPad(void);
 
 extern s32 D_0032F1DC[];
 

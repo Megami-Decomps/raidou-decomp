@@ -316,7 +316,7 @@ extern u8 dds3PadVibrationState[2];
 
 extern s32 D_003BD6A0[2];
 
-extern u8 kwlnLargeMotorTarget;
+extern u8 D_r1_0046F619;
 
 extern u16 fadenow;
 
@@ -450,11 +450,11 @@ s32 fclEncycFreeEntry(const char *name);
 /* Unregister a named slot: stop its task, clear it and unlink it from the slot chain. */
 s32 fclEncycFreeEntries(const char *name);
 
-s32 kwlnConfigureNamedSlotMode3(const char *name, void (*setState)(s32));
+s32 func_dds1_00103400(const char *name, void (*setState)(s32));
 
 s32 fclEncycAllocEntry(const char *name, dds3ProcessFunc_t update, dds3ProcessShutdownFunc_t destroy, void *userValue);
 
-s32 kwlnConfigureNamedSlotMode2(const char *name, dds3ProcessFunc_t update, dds3ProcessShutdownFunc_t destroy, void *userValue);
+s32 func_dds1_00103540(const char *name, dds3ProcessFunc_t update, dds3ProcessShutdownFunc_t destroy, void *userValue);
 
 void dds3InitDebugSystem(void);
 
@@ -499,16 +499,16 @@ extern u8 sdfPadAnalogSticks[8];
 
 extern void dds3UpdateVibrationSlots(void);
 
-void kwlnUpdatePadInputState(void);
+void func_dds1_00103B10(void);
 
-void kwlnPadStepLargeMotorLevel(void);
+void Act2Sub(void);
 
 /* Honor the saved rumble option, normalize small-motor strength and clamp
  * motor indices to the large motor. Preserve target update before output. */
 void dds3PadVibrationSet(u32 motor, u8 level, s32 duration);
 
 /* Clear motor levels and countdowns, then send both zero strengths to pad 0. */
-void kwlnPadResetMotorLevelsAndOutput(void);
+void func_r1_00104210(void);
 
 /* Tick both rumble countdowns; stop expired motors and refresh the active large motor. */
 void dds3UpdateVibrationSlots(void);
@@ -642,15 +642,15 @@ extern sdfGrFrameSet_t sdfGrFrameSet;
 
 extern sdf3DLight_t *D_00324770[3];
 
-extern f32 kwlnDefaultColorVector[4];
+extern f32 D_dds1_00324780[4];
 
 extern Matrix4 sdfViewMatrix;
 
 extern Matrix4 D_00329790;
 
-extern sdf3DLight_t *kwlnOverlayLightSources[3];
+extern sdf3DLight_t *D_dds1_00324B10[3];
 
-extern f32 kwlnOverlayAmbientColor[4];
+extern f32 D_dds1_00324B20[4];
 
 extern void sdf3DLinkInitPacket(sdfDrawTag_t *, DmaPacketHeader *);
 
@@ -715,7 +715,7 @@ extern f32 D_003BA940[];
 extern f32 fabsf(f32 value);
 
 /* Advance the two bounded shake offsets and taper finite-duration amplitudes. */
-void kwlnAdvanceShakeOffsets(void);
+void func_dds1_00105630(void);
 
 #define DDS3_FADE_TICKS_PER_FRAME 10
 
@@ -1052,7 +1052,7 @@ s32 dds3LoadDefaultResource(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_001043A0", kwlnTextureFindIncompleteResource);
+INCLUDE_ASM(const s32, "code_001043A0", func_r1_00104EA0);
 
 /* Draw one allocation-map block in address units, choosing color by mode.
  * Only the initial partial row forces a nonzero remainder to occupy one cell;

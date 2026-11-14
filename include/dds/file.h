@@ -85,7 +85,7 @@ void fileJobNotifyComplete(FileJobPayload *job);
 
 void fileJobInvokeTypeCallback(FileJobPayload *job);
 
-void fileJobInvokePositionCallback(FileJobPayload *job, const f32 position[4]);
+void PositionSet(FileJobPayload *job, const f32 position[4]);
 
 void fileJobInvokeRotationCallback(FileJobPayload *job, const f32 rotation[4]);
 
@@ -105,17 +105,17 @@ void fileJobCopyCommandIntoPrimaryData(FileJobPayload *job, const char *commandP
 
 void fileJobCopyCommandIntoSecondaryData(FileJobPayload *job, const char *commandPath, u16 selector);
 
-struct FileQueue *fileCloneQueueEntries(struct FileQueue *source);
+struct FileQueue *Create_effPartsList(struct FileQueue *source);
 
-struct FileQueue *fileQueueClone(const struct FileQueue *source);
+struct FileQueue *effPartsCreateFinish(const struct FileQueue *source);
 
-void fileQueueDestroy(struct FileQueue *queue);
+void effPartsDelete(struct FileQueue *queue);
 
-void fileQueueSetPosition(struct FileQueue *queue, const f32 position[4]);
+void effPartsPositionSet(struct FileQueue *queue, const f32 position[4]);
 
-void fileQueueSetRotation(struct FileQueue *queue, const f32 rotation[4]);
+void effPartsRotateSet(struct FileQueue *queue, const f32 rotation[4]);
 
-void fileQueueSetScale(struct FileQueue *queue, f32 scale);
+void effPartsScaleSet(struct FileQueue *queue, f32 scale);
 
 void effPartsDraw(struct FileQueue *queue);
 
@@ -197,7 +197,7 @@ typedef char FileQueue_size_must_be_0x90[
 
 FileQueue *fileQueueCreate(void);
 
-void fileQueueSetColor(FileQueue *queue, u32 color);
+void ColorSet(FileQueue *queue, u32 color);
 
 void fileQueueReadPosition(const FileQueue *queue, f32 position[4]);
 

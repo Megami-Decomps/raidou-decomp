@@ -258,7 +258,7 @@ void mnuWriteTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusValue
 
 void mnuLoadTitleStreamFrameData(char *filePath, TitleAudioStreamState *streamState);
 
-void mnuStoreTaskResult(char *audioPath);
+void File_BgmLoadStart(char *audioPath);
 
 extern u32 mnuTitleStreamDecoderState[];
 
@@ -302,7 +302,7 @@ void mnuCommitTitleStreamReadyState(void);
 /* Reset load/data slots only when an allocation is present; otherwise do nothing. */
 void mnuResetTitleStream(void);
 
-void mnuResetTitleStreamLocked(void);
+void sndBgmFree(void);
 
 extern u32 mnuTitleSoundBufferDecoderState[];
 
@@ -395,7 +395,7 @@ void mnuWriteTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusValue
 
 INCLUDE_ASM(const s32, "sndAt3", mnuLoadTitleStreamFrameData);
 
-INCLUDE_ASM(const s32, "sndAt3", mnuStoreTaskResult);
+INCLUDE_ASM(const s32, "sndAt3", File_BgmLoadStart);
 
 INCLUDE_ASM(const s32, "sndAt3", GetVolume);
 
@@ -408,7 +408,7 @@ void mnuStartFixedSoundStream(void) {
     mnuTitleStreamStatus.repeatFrame = 0;
     mnuTitleStreamStatus.frameBytes = MNU_SOUND_FRAME_BYTES_MEDIUM;
     mnuTitleStreamDecoderState[2] = 2;
-    mnuStoreTaskResult("/soundat3/b_bgm2-2.at3");
+    File_BgmLoadStart("/soundat3/b_bgm2-2.at3");
     SignalSema(mnuTitleStreamSemaphore);
 }
 
@@ -434,7 +434,7 @@ INCLUDE_ASM(const s32, "sndAt3", sndBgmFadeOut2);
 
 INCLUDE_ASM(const s32, "sndAt3", func_r1_001D19A0);
 
-void mnuResetTitleStreamLocked(void) {
+void sndBgmFree(void) {
     WaitSema(mnuTitleStreamSemaphore);
     mnuResetTitleStream();
     SignalSema(mnuTitleStreamSemaphore);

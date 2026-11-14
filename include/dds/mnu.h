@@ -64,27 +64,27 @@ struct MenuListNode *mnuAdvanceWindowListSelection(struct MenuWindowContainer *w
 void mnuClearWindowPanelTransitionFlag(struct MenuWindowContainer *window);
 
 /* Advance one popup transition state using its current scheduler word. */
-s32 mnuDispatchPopupTransition(MenuPopupState *work, s32 *entrySlot, s32 mode,
+s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
                                void *callback);
 
-void mnuSetPopupEntry(s32 *entrySlot, MenuPopupEntry *entry);
+void jmsSeqJump(s32 *entrySlot, MenuPopupEntry *entry);
 
-void mnuSetPopupEntryFlagged(s32 *entrySlot, MenuPopupEntry *entry);
+void jmsSeqJumpAndFree(s32 *entrySlot, MenuPopupEntry *entry);
 
 static inline s32 menuSetHandler(void *context, s32 mode, void *callback) {
-    return mnuDispatchPopupTransition((MenuPopupState *)((u8 *)context + 8),
+    return jmsSeqChange((MenuPopupState *)((u8 *)context + 8),
                                       (s32 *)((u8 *)context + 0x54), mode,
                                       callback);
 }
 
 static inline s32 menuRunPanel(void *context, s32 mode, void *callback) {
-    return mnuDispatchPopupTransition((MenuPopupState *)((u8 *)context + 8),
+    return jmsSeqChange((MenuPopupState *)((u8 *)context + 8),
                                       (s32 *)((u8 *)context + 0x54), mode,
                                       callback);
 }
 
 static inline s32 evtMenuSetHandler(void *context, s32 mode, void *callback) {
-    return mnuDispatchPopupTransition((MenuPopupState *)((u8 *)context + 0xC),
+    return jmsSeqChange((MenuPopupState *)((u8 *)context + 0xC),
                                       (s32 *)((u8 *)context + 0x58), mode,
                                       callback);
 }

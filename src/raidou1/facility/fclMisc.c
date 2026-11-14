@@ -498,7 +498,7 @@ extern void mnuDrawTerminalEffectIfAvailable(s32 state);
 
 #include "dds/dds3_world_secondary.h"
 
-extern void evtCopyEntryStringToActiveWindow(s32 slotIndex, const char *sourceText);
+extern void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 
 extern MenuPopupEntry mnuTerminalPopupEntries[];
 
@@ -620,9 +620,8 @@ void evtReleaseResourcePairHandle(EvtResourcePair *record);
 struct ItfMesSub;
 
 /* Apply page mode zero and the caller's opaque page value to an open window. */
-EvtMessageWindowPageValueResult evtSetMessageWindowPageValue(s32 pageValue);
+EvtMessageWindowPageValueResult fclChangeMessageWindowAlpha(s32 pageValue);
 
-extern s32 dspReadWindowSecondPanelValue(void);
 
 /* Store an option-list entry for deferred construction and snapshot the
  * panel's second halfword. */
@@ -630,10 +629,6 @@ s32 evtStoreValueAndCaptureWindowPanelValue(ItfMesEntryIndex entryIndex);
 
 /* Update the byte-sized option only while the singleton window is open. */
 void evtSetMessageWindowOptionWhenOpen(ItfMesOptionBitIndex selectedBitIndex);
-
-/* Read the second panel halfword, or -1 when no message window exists.
- * Despite the inherited name, this is not a sound-driver query. */
-s32 dspReadWindowSecondPanelValue(void);
 
 /* Return the captured signed-byte panel value without querying the live window. */
 s8 evtGetCapturedWindowPanelValue(void);
@@ -654,9 +649,9 @@ extern void itfMesBuildOptionList(ItfMesWindowIndex window, ItfMesEntryIndex ent
 void dspAdvanceMessageWindowControl(s32 notify);
 
 /* Request mode one from the existing message-window worker. */
-void dspRequestMessageWindowModeOne(void);
+void fclUpdateMessage(void);
 
-void evtCopyEntryStringToActiveWindow(s32 slotIndex, const char *sourceText);
+void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 
 /* Return the gate byte independently of the singleton window's existence. */
 s8 dspGetWindowStateGate(void);
@@ -812,7 +807,7 @@ s8 fclInitMessage(void *pData)
 }
 
 /* Apply page mode zero and the caller's opaque page value to an open window. */
-EvtMessageWindowPageValueResult evtSetMessageWindowPageValue(s32 pageValue) {
+EvtMessageWindowPageValueResult fclChangeMessageWindowAlpha(s32 pageValue) {
     if (gMsgID < 0) {
         return EVT_MESSAGE_WINDOW_PAGE_VALUE_NO_WINDOW;
     }
@@ -839,7 +834,7 @@ INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123FB0);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", func_r1_00123FC8);
 
-INCLUDE_ASM(const s32, "facility/fclMisc", dspReadWindowSecondPanelValue);
+INCLUDE_ASM(const s32, "facility/fclMisc", fclGetSelMessagePos);
 
 /* Return the captured signed-byte panel value without querying the live window. */
 s8 evtGetCapturedWindowPanelValue(void) {
@@ -881,11 +876,11 @@ INCLUDE_ASM(const s32, "facility/fclMisc", fclChkSelMessage);
 INCLUDE_ASM(const s32, "facility/fclMisc", fclUpdateMessageEx);
 
 /* Request mode one from the existing message-window worker. */
-void dspRequestMessageWindowModeOne(void) {
+void fclUpdateMessage(void) {
     dspAdvanceMessageWindowControl(1);
 }
 
-void evtCopyEntryStringToActiveWindow(s32 slotIndex, const char *sourceText) {
+void fclSetMessageVar(s32 slotIndex, const char *sourceText) {
     itfMesMngSetVarImmediate(gMsgID, slotIndex, sourceText);
 }
 

@@ -580,7 +580,7 @@ extern void effBattleUpdate(effBTLCutHandle_t *);
 
 extern f32 *D_00324770[];
 
-extern u8 kwlnDefaultColorVector[];
+extern u8 D_dds1_00324780[];
 
 extern void btlClearRuntimeFlag2000(void);
 
@@ -905,7 +905,7 @@ extern s16 D_003BB678[];
 
 extern s16 D_003BB680[];
 
-extern u32 btlNextScaledRandom(u32);
+extern u32 GetRand(u32);
 
 extern void btlBuildPresetCameraPose(BtlLinkedCommand *, BtlCamState *, s16, s16);
 
@@ -932,7 +932,7 @@ extern const BtlCameraTimedInstruction *D_0035DA40[];
 /* Evaluate the skill camera script, apply its pose, then advance the cursor. */
 void btlAdvanceSkillCameraCursor(BtlLinkedCommand *action, BtlCamState *state);
 
-extern u32 btlNextScaledRandom(u32);
+extern u32 GetRand(u32);
 
 extern void btlBuildPresetCameraPose(BtlLinkedCommand *, BtlCamState *, s16, s16);
 
@@ -1155,7 +1155,7 @@ void btlFreeFieldBlocks(void);
 
 extern f32 *D_00324770[];
 
-extern u8 kwlnDefaultColorVector[];
+extern u8 D_dds1_00324780[];
 
 extern void fldSkyBattle(void);
 
@@ -1198,7 +1198,7 @@ void effBTLFieldFilterDraw(void);
 
 void sndResetTransition(void);
 
-void btlClearTintAndEnableCamera(void);
+void mapBadEffDrawTask(void);
 
 extern f32 *D_00324770[];
 
@@ -1728,7 +1728,7 @@ BtlRuntimeTask *btlCreateLinkageFormationTask(BtlTask *owner, BtlUnit *firstActo
         BtlUnit *secondActor, u32 skillId, u32 flags);
 /* End of declarations from src/dds1/game/code_001DEFE0.c */
 
-void btlClearTintAndEnableCamera(void) {
+void mapBadEffDrawTask(void) {
     btlQueueTintTransitionToZero(0);
     effObjSetOpacityPassEnabled(1);
 }

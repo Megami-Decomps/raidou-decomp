@@ -1367,7 +1367,7 @@ struct EffNodeDescriptor;
 
 extern f32 *D_00324770[];
 
-extern u8 kwlnDefaultColorVector[];
+extern u8 D_dds1_00324780[];
 
 extern void evtGetUnitDirVector(evtUnitHandle_t *unit);
 

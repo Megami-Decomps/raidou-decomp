@@ -746,22 +746,22 @@ void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *tas
 
 s32 mnuHasPopupSelectionFlag(s32 *flags);
 
-s32 mnuDispatchPopupTransition(MenuPopupState *work, s32 *entrySlot, s32 mode,
+s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
                                void *callback);
 
 u8 mnuIsPopupEntryValue(s32 stateAddress, s32 entryAddress);
 
 /* Bind the entry address and retain only the entry's low sixteen flag bits. */
-void mnuSetPopupEntry(s32 *entrySlot, MenuPopupEntry *entry);
+void jmsSeqJump(s32 *entrySlot, MenuPopupEntry *entry);
 
 /* Bind the entry with the native insert-before-top bit after preserving low flags. */
-void mnuSetPopupEntryFlagged(s32 *entrySlot, MenuPopupEntry *entry);
+void jmsSeqJumpAndFree(s32 *entrySlot, MenuPopupEntry *entry);
 
 /* Bind the entry with both native marking bits after preserving low flags. */
 void mnuAttachAndMarkMenuEntry(s32 entrySlotAddress, s32 entryAddress);
 
 /* Bind the current popup entry only when its saved address is nonzero. */
-void mnuBindPresentMenuEntry(MenuPopupState *state, s32 *entrySlot);
+void jmsSeqReturn(MenuPopupState *state, s32 *entrySlot);
 
 void mnuPopulatePartyPanelSlot(dds_datUnitWork_t *partyRecord, s32 unused, u32 index, PartyPanel *panel);
 
@@ -1147,7 +1147,7 @@ void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *tas
 
 INCLUDE_ASM(const s32, "jmsMisc", func_r1_0034BA60);
 
-s32 mnuDispatchPopupTransition(MenuPopupState *work, s32 *entrySlot, s32 mode,
+s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
                                void *callback) {
     MenuPopupState *state = work;
     MenuPopupEntry **slot = (MenuPopupEntry **)entrySlot;
@@ -1235,7 +1235,7 @@ s32 mnuDispatchPopupTransition(MenuPopupState *work, s32 *entrySlot, s32 mode,
 INCLUDE_ASM(const s32, "jmsMisc", func_r1_0034BCE0);
 
 /* Bind the entry address and retain only the entry's low sixteen flag bits. */
-void mnuSetPopupEntry(s32 *entrySlot, MenuPopupEntry *entry) {
+void jmsSeqJump(s32 *entrySlot, MenuPopupEntry *entry) {
     u16 retainedFlags;
 
     retainedFlags = entry->flags;
@@ -1244,7 +1244,7 @@ void mnuSetPopupEntry(s32 *entrySlot, MenuPopupEntry *entry) {
 }
 
 /* Bind the entry with the native insert-before-top bit after preserving low flags. */
-void mnuSetPopupEntryFlagged(s32 *entrySlot, MenuPopupEntry *entry) {
+void jmsSeqJumpAndFree(s32 *entrySlot, MenuPopupEntry *entry) {
     u16 retainedFlags;
 
     retainedFlags = entry->flags;
@@ -1255,9 +1255,9 @@ void mnuSetPopupEntryFlagged(s32 *entrySlot, MenuPopupEntry *entry) {
 INCLUDE_ASM(const s32, "jmsMisc", func_r1_0034BD18);
 
 /* Bind the current popup entry only when its saved address is nonzero. */
-void mnuBindPresentMenuEntry(MenuPopupState *state, s32 *entrySlot) {
+void jmsSeqReturn(MenuPopupState *state, s32 *entrySlot) {
     if (state->entryAddress != NULL) {
-        mnuSetPopupEntryFlagged(entrySlot, state->entryAddress);
+        jmsSeqJumpAndFree(entrySlot, state->entryAddress);
         return;
     }
 }

@@ -331,7 +331,7 @@ s32 sdfGrAllocPacketBuff(s32 size);
 
 extern s32 datAddMp(dds_datUnitWork_t *unit, s32 delta);
 
-extern void evtCopyEntryStringToActiveWindow(s32 slotIndex, const char *sourceText);
+extern void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 
 extern void evtFreeStage(void);
 
@@ -871,23 +871,23 @@ void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *tas
 
 s32 mnuHasPopupSelectionFlag(s32 *flags);
 
-s32 mnuDispatchPopupTransition(MenuPopupState *work, s32 *entrySlot, s32 mode,
+s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
                                void *callback);
 
 /* Compare the popup state's current entry address, not an entry payload value. */
 u8 mnuIsPopupEntryValue(s32 stateAddress, s32 entryAddress);
 
 /* Bind the entry address and retain only the entry's low sixteen flag bits. */
-void mnuSetPopupEntry(s32 *entrySlot, MenuPopupEntry *entry);
+void jmsSeqJump(s32 *entrySlot, MenuPopupEntry *entry);
 
 /* Bind the entry with the native insert-before-top bit after preserving low flags. */
-void mnuSetPopupEntryFlagged(s32 *entrySlot, MenuPopupEntry *entry);
+void jmsSeqJumpAndFree(s32 *entrySlot, MenuPopupEntry *entry);
 
 /* Bind the entry with both native marking bits after preserving low flags. */
 void mnuAttachAndMarkMenuEntry(s32 entrySlotAddress, s32 entryAddress);
 
 /* Bind the current popup entry only when its saved address is nonzero. */
-void mnuBindPresentMenuEntry(MenuPopupState *state, s32 *entrySlot);
+void jmsSeqReturn(MenuPopupState *state, s32 *entrySlot);
 
 void mnuPopulatePartyPanelSlot(dds_datUnitWork_t *partyRecord, s32 unused, u32 index, PartyPanel *panel);
 

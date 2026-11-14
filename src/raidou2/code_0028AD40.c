@@ -1059,7 +1059,7 @@ void btlDrawUnitTransparencyPasses(BtlUnit *unit, dds3ModelHandle_t *model, dds_
 
 void btlCreateUnitTransparency(BtlUnit *unit);
 
-extern struct sdfGrOt_t *kwlnSceneSurfaceSets[13][4];
+extern struct sdfGrOt_t *D_dds1_00325788[13][4];
 
 extern sdfGrOt_t *btlUnitTransparencySurfaces[];
 
@@ -1223,7 +1223,7 @@ BtlRuntimeTask *btlCreateNoOpTask(void);
 
 extern f32 *D_00324770[];
 
-extern u8 kwlnDefaultColorVector[];
+extern u8 D_dds1_00324780[];
 
 u32 btlUnitBaseLightTask(BtlUnitBaseLightArgs *work);
 

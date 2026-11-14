@@ -745,7 +745,7 @@ void Eve_PartialMultiFilterSetDefTex(void);
 
 void evtPolygonMovieFreeWork(PolyMovieWork *table);
 
-void kwlnPadResetMotorLevelsAndOutput(void);
+void func_r1_00104210(void);
 
 EvtRuntimeChild *evtEventViewerGetPendingNode(dds_evtViewerInfo_t *viewer);
 
@@ -840,11 +840,11 @@ void evtViewerApplyInterpolatedNodeKey(dds_evtViewerInfo_t *viewer, EvtRuntimeGr
  * when keyMode is 1. Traversal uses the shared timeline-key record. */
 void evtViewerApplyParameterKeyTracks(dds_evtViewerInfo_t *viewer);
 
-extern KwlnDrawVectorParams kwlnDrawVector;
+extern KwlnDrawVectorParams D_dds1_00324790;
 
 extern u128 *D_0037F770[];
 
-extern u128 kwlnDefaultColorVector[];
+extern u128 D_dds1_00324780[];
 
 extern f32 sdfFaceDivSoften;
 
@@ -990,11 +990,11 @@ extern void mnuBlendCampDisplayFields(EvtRuntimeChild *from, EvtRuntimeChild *to
 extern void mnuDrawCampScaledTexture(sdfTexHandle_t *texture, CampDisplayDefaults *display);
 
 /* Timeline payloads store fogFar before fogNear. */
-extern KwlnDrawVectorParams kwlnDrawVector;
+extern KwlnDrawVectorParams D_dds1_00324790;
 
 extern u128 *D_0037F770[];
 
-extern u128 kwlnDefaultColorVector[];
+extern u128 D_dds1_00324780[];
 
 extern f32 sdfFaceDivSoften;
 
@@ -1083,7 +1083,7 @@ extern void evtHokanDistBlur(s32, f32, const dds3Effect_DistortionBlurParam_t *,
 
 extern void evtHokanRipBlur(s32, f32, const dds3Effect_RippleBlurParam_t *, const dds3Effect_RippleBlurParam_t *, dds3Effect_RippleBlurParam_t *);
 
-extern void evtBlendParamsG(s32, f32, const dds3Effect_Blur_t *, const dds3Effect_Blur_t *, dds3Effect_Blur_t *);
+extern void evtHokanHeikouBlur(s32, f32, const dds3Effect_Blur_t *, const dds3Effect_Blur_t *, dds3Effect_Blur_t *);
 
 extern void evtHokanFilter(s32, f32, const dds3Effect_Filter_t *, const dds3Effect_Filter_t *, dds3Effect_Filter_t *);
 
@@ -1120,13 +1120,13 @@ extern s32 evtHokanInt(s32 enable, f32 t, s32 a, s32 b);
  * enabled key of the same kind. */
 void evtStepPolygonMovieConditionalKeys(EvtRuntimeGroup *track, s32 time);
 
-extern void evtViewerClampMovieTimes(s32 endTime, dds_evtViewerInfo_t *viewer);
+extern void ValidatePathFrame(s32 endTime, dds_evtViewerInfo_t *viewer);
 
 extern void evtViewerSyncWorldGroups(s32 position, dds_evtViewerInfo_t *viewer);
 
 extern void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer);
 
-extern void evtEventViewerAttachIndexedObject(s32 position, dds_evtViewerInfo_t *viewer);
+extern void ValidateUnitPosChange(s32 position, dds_evtViewerInfo_t *viewer);
 
 extern void evtViewerActivateWindowForGlyphEntry(s32 position, dds_evtViewerInfo_t *viewer);
 
@@ -1158,9 +1158,9 @@ extern void evtSetMovieClipPositionClampedToDuration(dds3Basic_t *movie, s32 unu
 
 /* Clamps each movie object's playback interval using its linked track's first
  * key frame (or track offset), endTime, and the current key's extra parameter. */
-void evtViewerClampMovieTimes(s32 endTime, dds_evtViewerInfo_t *viewer);
+void ValidatePathFrame(s32 endTime, dds_evtViewerInfo_t *viewer);
 
-extern EvtRuntimeChild *evtViewerFindLatestMatchingMotionKey(EvtRuntimeGroup *group, s32 frame,
+extern EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
                                                              MdlMotionSearchId channel);
 
 void evtViewerSyncModelMotionChannels(s32 frame, dds3Basic_t *object, EvtRuntimeGroup *track,
@@ -1178,7 +1178,7 @@ void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer);
 
 /* At an exact kind-7 key frame, attaches the indexed world object. Index -1
  * restores the saved vectors; losing the active key restores them once too. */
-void evtEventViewerAttachIndexedObject(s32 position, dds_evtViewerInfo_t *viewer);
+void ValidateUnitPosChange(s32 position, dds_evtViewerInfo_t *viewer);
 
 extern void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsOut);
 
@@ -1229,7 +1229,7 @@ void evtViewerFlag8ClearFrameHookNoOp(dds_evtViewerInfo_t *viewer);
 
 /* Returns the latest eligible kind-5 motion key at/before frame for channel,
  * or NULL. Its condition must pass; equal-frame ties retain the first key. */
-EvtRuntimeChild *evtViewerFindLatestMatchingMotionKey(EvtRuntimeGroup *group, s32 frame,
+EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
                                                       MdlMotionSearchId channel);
 
 enum {
@@ -1635,7 +1635,7 @@ EvtRuntimeChild *evtViewFindGlyphAtOrBefore(dds_evtViewerInfo_t *viewer) {
 
 /* Clamps each movie object's playback interval using its linked track's first
  * key frame (or track offset), endTime, and the current key's extra parameter. */
-void evtViewerClampMovieTimes(s32 endTime, dds_evtViewerInfo_t *viewer) {
+void ValidatePathFrame(s32 endTime, dds_evtViewerInfo_t *viewer) {
     evtWorldTable_t *worldTable;
     evtWorldSlot_t *worldSlots;
     dds3Basic_t *movieObject;
@@ -1726,7 +1726,7 @@ void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer) {
 
 /* At an exact kind-7 key frame, attaches the indexed world object. Index -1
  * restores the saved vectors; losing the active key restores them once too. */
-void evtEventViewerAttachIndexedObject(s32 position, dds_evtViewerInfo_t *viewer) {
+void ValidateUnitPosChange(s32 position, dds_evtViewerInfo_t *viewer) {
     EvtRuntimeGroup *node = viewer->groups;
 
     while (node != NULL) {
@@ -1813,7 +1813,7 @@ void func_r1_001B4918(void) {
 
 /* Returns the latest eligible kind-5 motion key at/before frame for channel,
  * or NULL. Its condition must pass; equal-frame ties retain the first key. */
-EvtRuntimeChild *evtViewerFindLatestMatchingMotionKey(EvtRuntimeGroup *group, s32 frame,
+EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
                                                       MdlMotionSearchId channel) {
     s32 bestFrame = -1;
     EvtRuntimeChild *best = NULL;

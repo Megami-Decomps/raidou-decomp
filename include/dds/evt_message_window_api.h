@@ -36,7 +36,7 @@ typedef s32 EvtMessageWindowPageValueResult;
 
 /* Apply page mode zero and the caller's page value when a window is open.
  * Returns UPDATED when applied, or NO_WINDOW when no window is open. */
-EvtMessageWindowPageValueResult evtSetMessageWindowPageValue(s32 pageValue);
+EvtMessageWindowPageValueResult fclChangeMessageWindowAlpha(s32 pageValue);
 
 /* Defer selecting this option-mask bit until the open window reaches its gate. */
 void evtSetMessageWindowOptionWhenOpen(ItfMesOptionBitIndex selectedBitIndex);

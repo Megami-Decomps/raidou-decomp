@@ -379,7 +379,7 @@ INCLUDE_ASM(const s32, "effect/effManager", dds3EffectManagerInit);
 INCLUDE_ASM(const s32, "effect/effManager", func_r1_001E9888);
 
 /* Submit the test and alpha state packets to both field draw buffers. */
-dds3TaskUpdateResult_t effSubmitFieldBlendStateTask(dds3ProcessID_t *task) {
+dds3TaskUpdateResult_t ManagerRunF(dds3ProcessID_t *task) {
     sdfDrawTag_t *list;
     sdfPrimTransPacket_t *state;
     sdfGrOt_t *surface;

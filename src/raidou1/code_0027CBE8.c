@@ -313,11 +313,11 @@ extern u32 btlRequestAnalysisPanelClose(void);
 
 BtlRuntimeTask *btlCreateEffectTask44(BtlUnit *owner);
 
-u32 btlNextScaledRandom(u32 limit);
+u32 GetRand(u32 limit);
 
-extern u32 btlNextScaledRandom(u32 limit);
+extern u32 GetRand(u32 limit);
 
-s32 btlRandomInclusiveRange(s32 lower, s32 upper);
+s32 GetIntervalRand(s32 lower, s32 upper);
 
 s32 btlAllocAndCheck(BtlTask *task);
 
@@ -396,12 +396,12 @@ void btlAddEffectActorTargetToCommand(BtlTask *context);
 void btlPickCommandElementBlockTarget(BtlTask *actor, s32 mask);
 /* End of declarations from src/dds1/game/code_001FC7D8.c */
 
-u32 btlNextScaledRandom(u32 limit) {
+u32 GetRand(u32 limit) {
     btlRandomState = btlRandomState * 0x41c64e6d + 0x3039;
     return (btlRandomState >> 0x10) * (limit & 0xffff) >> 0x10;
 }
 
-s32 btlRandomInclusiveRange(s32 lower, s32 upper) {
+s32 GetIntervalRand(s32 lower, s32 upper) {
     s32 lo = upper;
     s32 hi = lower;
 
@@ -411,7 +411,7 @@ s32 btlRandomInclusiveRange(s32 lower, s32 upper) {
         hi = t;
     }
     lo = lo - hi + 1;
-    return (s32)btlNextScaledRandom(0xFFFF) % lo + hi;
+    return (s32)GetRand(0xFFFF) % lo + hi;
 }
 
 INCLUDE_SDATA(const s32, "code_0027CBE8", D_r1_0046DAFC);

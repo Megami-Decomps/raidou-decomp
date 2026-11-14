@@ -33,7 +33,7 @@
 0x00101060	ChangeProcessFlag	inferred	SMT3HD name via SLUS_209.11 0x00100F78, reloc-identical; map-agrees
 0x001011C0	dds3GetProcessCount	inferred	SMT3HD name via SLUS_209.11 0x001010D8, reloc-identical; map-agrees
 0x00101218	dds3SearchProcessNumber	inferred	SMT3HD name via SLUS_209.11 0x00101130, reloc-identical; map-agrees
-0x001012B0	kwlnTraverseDiagnosticTaskQueue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001012B0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x001012B0	func_r1_00101280	placeholder	placeholder; kwln prefix is not a Raidou system; replaces kwlnTraverseDiagnosticTaskQueue: dds-decomp DDS1 name via SLUS_209.74 0x001012B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001012E8	dds3PrintProcessList	inferred	SMT3HD name via SLUS_209.11 0x00101318, reloc-identical; map-agrees
 0x00101368	DebugProcessTree	inferred	SMT3HD name via SLUS_209.11 0x00101398, unique-masked-hash; map-agrees
 0x00101440	func_r1_00101410	placeholder	placeholder for the pair with raidou1 0x00101410, unique-masked-hash
@@ -89,7 +89,7 @@
 0x00103A88	dds3PadVibrationTest	inferred	twin-of-raidou1-0x00103A48, run-order-near
 0x00103AE8	dds3PadInitialize	inferred	SMT3HD name via SLUS_209.11 0x00103A00, reloc-identical; map-agrees
 0x00103C18	dds3PadUpdate	hd	hd: Raidou HD dds3PadManager.dds3PadUpdate, score 9.0 band B
-0x00104110	kwlnPadStepLargeMotorLevel	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00104008, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00104110	Act2Sub	hd	hd: Raidou HD dds3PadManager.Act2Sub, score 8.7 band B; replaces kwlnPadStepLargeMotorLevel: dds-decomp DDS1 name via SLUS_209.74 0x00104008, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00104170	dds3PadAct	hd	hd: Raidou HD dds3PadManager.dds3PadAct, score 10.3 band A
 0x00104240	func_r1_00104210	placeholder	placeholder for the pair with raidou1 0x00104210, unique-reloc-hash
 0x00104278	dds3UpdateVibrationSlots	inferred	SMT3HD name via SLUS_209.11 0x001041A8, reloc-identical; map-agrees
@@ -108,7 +108,7 @@
 0x00104CA0	dds3DrawTextureViewerFrame	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00104B88, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00104E38	dds3SwapActiveResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00104D20, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00104E88	dds3LoadDefaultResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00104D70, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00104ED0	kwlnTextureFindIncompleteResource	inferred	fuzzy name from SLUS_209.74 0x00104DB8, score 1.00, tools/xgame/fuzzy_apply.py
+0x00104ED0	func_r1_00104EA0	placeholder	placeholder; kwln prefix is not a Raidou system; replaces kwlnTextureFindIncompleteResource: fuzzy name from SLUS_209.74 0x00104DB8, score 1.00, tools/xgame/fuzzy_apply.py
 0x00104F38	dds3DrawTextureAllocationMapBlock	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00104E20, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00105128	dds3DrawTextureListDiagnostic	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00105010, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001051D0	dds3TextureAttachTask	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001050B8, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -1003,12 +1003,12 @@
 0x00128278	evtLoadResourcePair	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024D990, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x001282A8	evtReleaseResourcePairHandle	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024D9C0, masked-words-identical (order map pair); dds-decomp: no provenance row
 0x001282C0	fclInitMessage	inferred	SMT3HD name via SLUS_209.11 0x00213EF0, reloc-identical; map-agrees
-0x00128308	evtSetMessageWindowPageValue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024DA20, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00128308	fclChangeMessageWindowAlpha	hd-inferred	hd: Raidou HD fclMisc.fclChangeMessageWindowAlpha, score 7.3 band B; replaces evtSetMessageWindowPageValue: dds-decomp DDS1 name via SLUS_209.74 0x0024DA20, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00128340	fclStartMessage	inferred	SMT3HD name via SLUS_209.11 0x00213F38, reloc-identical; map-agrees
 0x001283A0	fclStartSelMessage	hd	hd: Raidou HD fclMisc.fclStartSelMessage, score 9.95 band B
 0x001283D0	func_r1_00123FB0	placeholder	placeholder for the pair with raidou1 0x00123FB0, unique-reloc-hash
 0x001283E8	func_r1_00123FC8	placeholder	placeholder for the pair with raidou1 0x00123FC8, masked-hash-in-gap
-0x001283F0	dspReadWindowSecondPanelValue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024DB08, masked-words-identical (order map pair); dds-decomp: descriptive
+0x001283F0	fclGetSelMessagePos	hd	hd: Raidou HD fclMisc.fclGetSelMessagePos, score 7.0 band B; replaces dspReadWindowSecondPanelValue: dds-decomp DDS1 name via SLUS_209.74 0x0024DB08, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00128428	evtGetCapturedWindowPanelValue	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024DB40, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00128430	fclEndMessageEx	hd	hd: Raidou HD fclMisc.fclEndMessageEx, score 10.3 band A
 0x001284B0	evtFinishMessageWindowAndNotify	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024DBB0, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -1016,8 +1016,8 @@
 0x00128508	fclChkMessage	inferred	SMT3HD name via SLUS_209.11 0x002140E0, reloc-identical; map-agrees
 0x00128550	fclChkSelMessage	hd	hd: Raidou HD fclMisc.fclChkSelMessage, score 8.5 band B
 0x00128598	fclUpdateMessageEx	hd-inferred	hd: Raidou HD fclMisc.fclUpdateMessageEx, score 10.15 band A
-0x00128678	dspRequestMessageWindowModeOne	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024DD78, masked-words-identical (order map pair); dds-decomp: descriptive
-0x00128690	evtCopyEntryStringToActiveWindow	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0024DD90, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00128678	fclUpdateMessage	hd	hd: Raidou HD fclMisc.fclUpdateMessage, score 8.5 band B; replaces dspRequestMessageWindowModeOne: dds-decomp DDS1 name via SLUS_209.74 0x0024DD78, masked-words-identical (order map pair); dds-decomp: descriptive
+0x00128690	fclSetMessageVar	hd	hd: Raidou HD fclMisc.fclSetMessageVar, score 8.3 band B; replaces evtCopyEntryStringToActiveWindow: dds-decomp DDS1 name via SLUS_209.74 0x0024DD90, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001286B8	func_r1_00124298	placeholder	placeholder for the pair with raidou1 0x00124298, masked-hash-in-gap
 0x001286C0	fclSetMessageInvalid	hd	hd: Raidou HD fclMisc.fclSetMessageInvalid, score 10.3 band A
 0x00128730	fcl_2142F0	inferred	smt3-decomp C name via SLUS_209.11 0x002142F0, unique-masked-hash-c; map-agrees
@@ -1160,7 +1160,7 @@
 0x0012EB28	func_r1_0012A1A0	placeholder	placeholder for the pair with raidou1 0x0012A1A0, masked-hash-in-gap
 0x0012EBE0	fldCleanupFieldScene	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00123D98, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0012EC18	fldRegistUnitPad	hd	hd: Raidou HD fld.fldRegistUnitPad, score 9.7 band B
-0x0012EC80	fldResetPlayerSceneObjectState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00123EA8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0012EC80	fldReleaseUnitPad	hd	hd: Raidou HD fld.fldReleaseUnitPad, score 10.0 band A; replaces fldResetPlayerSceneObjectState: dds-decomp DDS1 name via SLUS_209.74 0x00123EA8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0012ECC0	fldSetUnit	hd	hd: Raidou HD fld.fldSetUnit, score 18.5 band A
 0x0012F4A8	fldPlayerToNakama	hd	hd: Raidou HD fld.fldPlayerToNakama, score 9.5 band B
 0x0012FFB8	fldSetUnitFollowCamera	hd	hd: Raidou HD fld.fldSetUnitFollowCamera, score 12.0 band A
@@ -1587,7 +1587,7 @@
 0x00169828	func_r1_0015D210	placeholder	placeholder for the pair with raidou1 0x0015D210, unique-masked-hash
 0x001698A0	func_r1_0015D288	placeholder	placeholder for the pair with raidou1 0x0015D288, masked-hash-in-gap
 0x00169980	func_r1_0015D3D0	placeholder	placeholder for the pair with raidou1 0x0015D3D0, unique-reloc-hash
-0x00169A20	btlClearTintAndEnableCamera	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001EFC30, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00169A20	mapBadEffDrawTask	hd	hd: Raidou HD fld.mapBadEffDrawTask, score 10.0 band A; replaces btlClearTintAndEnableCamera: dds-decomp DDS1 name via SLUS_209.74 0x001EFC30, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00169C28	mapEffMskMaruDraw	hd	hd: Raidou HD fld.mapEffMskMaruDraw, score 10.0 band A
 0x00169C80	func_r1_0015D6F8	placeholder	placeholder for the pair with raidou1 0x0015D6F8, unique-masked-hash
 0x00169D88	func_r1_0015D800	placeholder	placeholder for the pair with raidou1 0x0015D800, unique-reloc-hash
@@ -1869,7 +1869,7 @@
 0x00190F48	btlDestroyEntryList	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001FB870, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00190FA0	btlAppendEntry	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001FB8C8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00191080	btlCreateResourceDescriptor	inferred	fuzzy name from SLUS_209.74 0x001FB9A8, score 1.00, tools/xgame/fuzzy_apply.py
-0x00191110	btlUpdateAndDrawResourceBrowser	inferred	fuzzy name from SLUS_209.74 0x001FBA38, score 1.00, tools/xgame/fuzzy_apply.py
+0x00191110	Draw_effLensFlare	hd	hd: Raidou HD effLensFlare.Draw, score 8.9 band B; replaces btlUpdateAndDrawResourceBrowser: fuzzy name from SLUS_209.74 0x001FBA38, score 1.00, tools/xgame/fuzzy_apply.py
 0x001915C0	btlDestroyResourceDescriptor	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001FBEE8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00191608	btlSetResourceBrowserPosition	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001FBF30, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00191618	btlGetResourceBrowserSelectedIndex	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001FBF40, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -2130,7 +2130,7 @@
 0x0019BB88	itfCommandQueueHeldPanelEntry	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0019AF30, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0019BC30	itfStepHeldPanelMessages	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0019AFD8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0019BD60	itfMesMngSelect	inferred	SMT3HD name via SLUS_209.11 0x001CD408, reloc-identical; map-agrees
-0x0019BE08	itfCommandSelectOptionWithFade	inferred	twin-of-raidou1-0x00186DA0, unique-reloc-hash
+0x0019BE08	MesMngSelect	hd	hd: Raidou HD itf.MesMngSelect, score 9.2 band B; replaces itfCommandSelectOptionWithFade: twin-of-raidou1-0x00186DA0, unique-reloc-hash
 0x0019BF38	itfMesMngGetSelPhase	inferred	SMT3HD name via SLUS_209.11 0x001CD4B0, shared-hash-in-run; map-agrees
 0x0019BF58	itfMesMngSetSelPhase	inferred	SMT3HD name via SLUS_209.11 0x001CD4D0, reloc-identical; map-agrees
 0x0019BF78	itfMesMngGetSelectNo	inferred	SMT3HD name via SLUS_209.11 0x001CD4F0, shared-hash-in-run; map-silent
@@ -2983,11 +2983,11 @@
 0x001C9080	RunFrameUnit	hd	hd: Raidou HD evtViewer.RunFrameUnit, score 15.5 band A
 0x001C9420	evtRunFrame	hd	hd: Raidou HD evtViewer.evtRunFrame, score 11.5 band A
 0x001C98C0	evtViewFindGlyphAtOrBefore	inferred	dds-decomp DDS2 name via SLUS_211.52 0x00249518, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001C9940	evtViewerClampMovieTimes	inferred	dds-decomp DDS2 name via SLUS_211.52 0x00249598, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x001C9940	ValidatePathFrame	hd	hd: Raidou HD evtViewer.ValidatePathFrame, score 9.8 band B; replaces evtViewerClampMovieTimes: dds-decomp DDS2 name via SLUS_211.52 0x00249598, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001C9A58	evtUnitMotionChange	hd-inferred	hd: Raidou HD evtViewer.evtUnitMotionChange, score 11.8 band A
 0x001C9D70	ValidateUnitMotionFrame	hd	hd: Raidou HD evtViewer.ValidateUnitMotionFrame, score 10.3 band A
 0x001C9E20	evtViewerApplyGlyphLodChannel	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0022EF38, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001C9F20	evtEventViewerAttachIndexedObject	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0022F038, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x001C9F20	ValidateUnitPosChange	hd	hd: Raidou HD evtViewer.ValidateUnitPosChange, score 10.3 band A; replaces evtEventViewerAttachIndexedObject: dds-decomp DDS1 name via SLUS_209.74 0x0022F038, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CA0A8	evtMessageDelete	hd-inferred	hd: Raidou HD evtViewer.evtMessageDelete, score 10.3 band A
 0x001CA180	func_r1_001B40B8	placeholder	placeholder for the pair with raidou1 0x001B40B8, unique-reloc-hash
 0x001CA1B0	func_r1_001B40E8	placeholder	placeholder for the pair with raidou1 0x001B40E8, unique-reloc-hash
@@ -3001,7 +3001,7 @@
 0x001CA970	func_r1_001B48A8	placeholder	placeholder for the pair with raidou1 0x001B48A8, masked-hash-in-gap
 0x001CA978	func_r1_001B48B0	placeholder	placeholder for the pair with raidou1 0x001B48B0, unique-reloc-hash
 0x001CA9E0	func_r1_001B4918	placeholder	placeholder for the pair with raidou1 0x001B4918, masked-hash-in-gap
-0x001CA9E8	evtViewerFindLatestMatchingMotionKey	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0022FA68, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x001CA9E8	GetUnitMotionChangeFrame	hd	hd: Raidou HD evtViewer.GetUnitMotionChangeFrame, score 7.3 band B; replaces evtViewerFindLatestMatchingMotionKey: dds-decomp DDS1 name via SLUS_209.74 0x0022FA68, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CAAB0	evtViewerStopFrame	hd	hd: Raidou HD evtViewer.evtViewerStopFrame, score 8.7 band B
 0x001CAD68	evtViewerDispatchFlagMode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0022FDE8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CADB0	func_r1_001B4CE8	placeholder	placeholder for the pair with raidou1 0x001B4CE8, unique-reloc-hash
@@ -3075,7 +3075,7 @@
 0x001CF398	evtHokanMultFilter	inferred	SMT3HD name via SLUS_209.11 0x001F2B60, reloc-identical; map-agrees
 0x001CF4A8	evtHokanDistBlur	inferred	SMT3HD name via SLUS_209.11 0x001F2C70, reloc-identical; map-agrees
 0x001CF650	evtHokanRipBlur	inferred	SMT3HD name via SLUS_209.11 0x001F2E18, reloc-identical; map-agrees
-0x001CF7D0	evtBlendParamsG	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00233E48, masked-words-identical (order map pair); dds-decomp: descriptive
+0x001CF7D0	evtHokanHeikouBlur	hd-inferred	hd: Raidou HD evtPMV.evtHokanHeikouBlur, score 8.3 band B; replaces evtBlendParamsG: dds-decomp DDS1 name via SLUS_209.74 0x00233E48, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001CF940	evtBlendParamsH	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00233FB8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001CFAA8	evtRunUnitMode	hd	hd: Raidou HD evtPMV.evtRunUnitMode, score 10.0 band A
 0x001CFC58	evtSetFlag	hd-inferred	hd: Raidou HD evtPMV.evtSetFlag, score 8.7 band B
@@ -3273,7 +3273,7 @@
 0x001E0E30	func_r1_001CAD48	placeholder	placeholder for the pair with raidou1 0x001CAD48, unique-reloc-hash
 0x001E0EA0	evtGetValueNewSLightFrame	hd-inferred	hd: Raidou HD evt.evtGetValueNewSLightFrame, score 8.5 band B
 0x001E10D8	mnuCampInitializeDisplayDefaults	inferred	dds-decomp DDS2 name via SLUS_211.52 0x0025E240, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001E1120	mnuSampleCampDisplayTrack	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00242E70, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x001E1120	evtGetValueNewTMXFrame	hd-inferred	hd: Raidou HD evt.evtGetValueNewTMXFrame, score 10.5 band A; replaces mnuSampleCampDisplayTrack: dds-decomp DDS1 name via SLUS_209.74 0x00242E70, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001E11D0	mnuBlendCampDisplayFields	inferred	fuzzy name from SLUS_211.52 0x0025E460, score 0.95, tools/xgame/fuzzy_apply.py
 0x001E1498	mnuFindCampKeyTrackNeighbors	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002432D0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001E1558	mnuShouldBlockViewerEndCountdown	inferred	dds-decomp DDS2 name via SLUS_211.52 0x0025E7B0, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -3419,7 +3419,7 @@
 0x001E7358	mnuReadTitleStreamStatusLocked	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A340, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001E73A8	mnuWriteTitleStreamStatusLocked	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A390, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001E73F8	mnuLoadTitleStreamFrameData	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A3E0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001E7478	mnuStoreTaskResult	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A460, masked-words-identical (order map pair); dds-decomp: descriptive
+0x001E7478	File_BgmLoadStart	hd	hd: Raidou HD sndAt3.File_BgmLoadStart, score 7.45 band B; replaces mnuStoreTaskResult: dds-decomp DDS1 name via SLUS_209.74 0x0026A460, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001E74A8	GetVolume	hd	hd: Raidou HD ConfigAudio.GetVolume, score 8.55 band B
 0x001E7590	mnuStartFixedSoundStream	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A588, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001E75F8	sndBgmLoadId	hd-inferred	hd: Raidou HD sndAt3.sndBgmLoadId, score 8.5 band B
@@ -3433,7 +3433,7 @@
 0x001E7B80	sndBgmFadeOut	hd-inferred	hd: Raidou HD sndAt3.sndBgmFadeOut, score 9.1 band B
 0x001E7C30	sndBgmFadeOut2	hd-inferred	hd: Raidou HD sndAt3.sndBgmFadeOut2, score 8.5 band B
 0x001E7CA8	func_r1_001D19A0	placeholder	placeholder for the pair with raidou1 0x001D19A0, unique-reloc-hash
-0x001E7D08	mnuResetTitleStreamLocked	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A950, masked-words-identical (gap map pair); dds-decomp: descriptive
+0x001E7D08	sndBgmFree	hd-inferred	hd: Raidou HD sndAt3.sndBgmFree, score 10.7 band A; replaces mnuResetTitleStreamLocked: dds-decomp DDS1 name via SLUS_209.74 0x0026A950, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001E7D38	func_r1_001D1A30	placeholder	placeholder for the pair with raidou1 0x001D1A30, masked-hash-in-gap
 0x001E7D68	func_r1_001D1A60	placeholder	placeholder for the pair with raidou1 0x001D1A60, masked-hash-in-gap
 0x001E7E28	mnuInitializeTitleSoundBuffer	inferred	fuzzy name from SLUS_209.74 0x0026A980, score 1.00, tools/xgame/fuzzy_apply.py
@@ -4001,7 +4001,7 @@
 0x00200A10	effEveAPP4Randomize	inferred	SMT3HD name via SLUS_209.11 0x001B0790, reloc-identical; map-agrees
 0x00200AD8	dds3EffectManagerInit	hd	hd: Raidou HD dds3Effect.dds3EffectManagerInit, score 13.5 band A
 0x00200B80	func_r1_001E9888	placeholder	placeholder for the pair with raidou1 0x001E9888, masked-hash-in-gap
-0x00200BA8	effSubmitFieldBlendStateTask	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0014F860, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00200BA8	ManagerRunF	hd	hd: Raidou HD dds3Effect.ManagerRunF, score 10.05 band A; replaces effSubmitFieldBlendStateTask: dds-decomp DDS1 name via SLUS_209.74 0x0014F860, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00200D10	dds3EffectManagerRun	inferred	SMT3HD name via SLUS_209.11 0x0015AA68, reloc-identical; map-agrees
 0x00200D58	func_r1_001E9A60	placeholder	placeholder for the pair with raidou1 0x001E9A60, masked-hash-in-gap
 0x00200D60	func_r1_001E9A68	placeholder	placeholder for the pair with raidou1 0x001E9A68, masked-hash-in-gap
@@ -5236,7 +5236,7 @@
 0x00234220	fileJobNotifyPair	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293620, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234268	fileJobNotifyComplete	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293668, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x002342A8	fileJobInvokeTypeCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002936A8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002342E0	fileJobInvokePositionCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002936E0, masked-words-identical (callee map pair); dds-decomp: descriptive
+0x002342E0	PositionSet	hd	hd: Raidou HD effParts.PositionSet, score 7.65 band B; replaces fileJobInvokePositionCallback: dds-decomp DDS1 name via SLUS_209.74 0x002936E0, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00234320	fileJobInvokeRotationCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293720, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00234360	fileJobInvokeScaleCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293760, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x002343A0	fileDispatchJobTypeCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002937A0, masked-words-identical (callee map pair); dds-decomp: descriptive
@@ -5257,16 +5257,16 @@
 0x00234BF0	func_r1_0021D8E8	placeholder	placeholder for the pair with raidou1 0x0021D8E8, unique-reloc-hash
 0x00234C28	func_r1_0021D920	placeholder	placeholder for the pair with raidou1 0x0021D920, unique-reloc-hash
 0x00234C60	fileDestroyJob	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002940B8, masked-words-identical (order map pair); dds-decomp: descriptive
-0x00234C78	fileCloneQueueEntries	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002940D0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00234C78	Create_effPartsList	hd	hd: Raidou HD effPartsList.Create, score 8.15 band B; replaces fileCloneQueueEntries: dds-decomp DDS1 name via SLUS_209.74 0x002940D0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234EC0	CallShopTest	inferred	SMT3HD name via SLUS_209.11 0x00109320, twin-of-raidou1-0x0021DBB8; map-agrees
 0x00234ED8	effPartsDraw	hd-inferred	hd: Raidou HD effPartsList.effPartsDraw, score 8.8 band B; replaces fileQueueUpdate: fuzzy name from SLUS_209.74 0x00294330, score 0.95, tools/xgame/fuzzy_apply.py
-0x00235090	fileQueueDestroy	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002944D8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00235100	fileQueueClone	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294548, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00235090	effPartsDelete	hd-inferred	hd: Raidou HD effPartsList.effPartsDelete, score 9.0 band B; replaces fileQueueDestroy: dds-decomp DDS1 name via SLUS_209.74 0x002944D8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00235100	effPartsCreateFinish	hd-inferred	hd: Raidou HD effPartsList.effPartsCreateFinish, score 8.85 band B; replaces fileQueueClone: dds-decomp DDS1 name via SLUS_209.74 0x00294548, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002351E8	fileQueueNotifyAllJobsComplete	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294630, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00235228	fileQueueSetPosition	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294670, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00235350	fileQueueSetRotation	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294798, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00235408	fileQueueSetScale	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294850, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002354F0	fileQueueSetColor	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294938, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00235228	effPartsPositionSet	hd-inferred	hd: Raidou HD effPartsList.effPartsPositionSet, score 11.05 band A; replaces fileQueueSetPosition: dds-decomp DDS1 name via SLUS_209.74 0x00294670, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00235350	effPartsRotateSet	hd-inferred	hd: Raidou HD effPartsList.effPartsRotateSet, score 8.95 band B; replaces fileQueueSetRotation: dds-decomp DDS1 name via SLUS_209.74 0x00294798, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00235408	effPartsScaleSet	hd-inferred	hd: Raidou HD effPartsList.effPartsScaleSet, score 11.2 band A; replaces fileQueueSetScale: dds-decomp DDS1 name via SLUS_209.74 0x00294850, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002354F0	ColorSet	hd	hd: Raidou HD effPartsList.ColorSet, score 9.9 band B; replaces fileQueueSetColor: dds-decomp DDS1 name via SLUS_209.74 0x00294938, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002355D0	fileQueueCopyRotationFromSource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294A18, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00235608	fileAppendJob	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294A50, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00235658	fileDuplicateAndAppendJob	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00294AA0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5286,13 +5286,13 @@
 0x00236848	fileFindQueuedJobIndex	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00295C90, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00236888	fileQueueCountLinkedJobs	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00295CD0, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x002368C0	camFollowOffsetVec	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00295D08, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002369B8	camAimRotation	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00295E00, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002369B8	PoseRotBillboard	hd	hd: Raidou HD effPartsList.PoseRotBillboard, score 8.1 band B; replaces camAimRotation: dds-decomp DDS1 name via SLUS_209.74 0x00295E00, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00236AB0	fileCreateSurfaceLoaderState	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D5FB8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00236B18	fileCreateGridLoaderRecord	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00295F58, masked-words-identical (callee map pair); dds-decomp: no provenance row
 0x00236B50	fileCreateEffectSurfaceFromJob	inferred	fuzzy name from SLUS_211.52 0x002D6058, score 1.00, tools/xgame/fuzzy_apply.py
-0x00236C58	fileDestroyEffectSurfaceAndChildren	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6160, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00236D68	fileLoadObjectCreateChild	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6270, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x00236DD0	fileCloneEffectSurfaceResources	inferred	fuzzy name from SLUS_211.52 0x002D62D8, score 1.00, tools/xgame/fuzzy_apply.py
+0x00236C58	Delete_effParticle	hd	hd: Raidou HD effParticle.Delete, score 7.3 band B; replaces fileDestroyEffectSurfaceAndChildren: dds-decomp DDS2 name via SLUS_211.52 0x002D6160, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00236D68	Copy_effParticle	hd	hd: Raidou HD effParticle.Copy, score 11.3 band A; replaces fileLoadObjectCreateChild: dds-decomp DDS2 name via SLUS_211.52 0x002D6270, masked-words-identical (strict map pair); dds-decomp: no provenance row
+0x00236DD0	ResourceCopy	hd	hd: Raidou HD effParticle.ResourceCopy, score 8.5 band B; replaces fileCloneEffectSurfaceResources: fuzzy name from SLUS_211.52 0x002D62D8, score 1.00, tools/xgame/fuzzy_apply.py
 0x00237030	fileLoadObjectSetResource	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6538, masked-words-identical (callee map pair); dds-decomp: no provenance row
 0x00237090	fileLoadObjectOpenNamedDevice	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6598, masked-words-identical (callee map pair); dds-decomp: no provenance row
 0x00237108	fileLoadObjectOpenDevice	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6610, masked-words-identical (callee map pair); dds-decomp: no provenance row
@@ -5337,7 +5337,7 @@
 0x0023C0C0	fileReadRecordSecondVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A7E0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023C0D8	fileSetRecordSecondVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A7F8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023C0F0	dds3DispatchIndexedCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A810, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x0023C120	effInitModelVUState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A840, masked-words-identical (strict map pair); dds-decomp: no provenance row
+0x0023C120	Init_effModel	hd	hd: Raidou HD effModel.Init, score 10.0 band A; replaces effInitModelVUState: dds-decomp DDS1 name via SLUS_209.74 0x0029A840, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0023C1B8	effHandleCreate	hd-inferred	hd: Raidou HD effModel.effHandleCreate, score 8.7 band B
 0x0023C248	effDestroyModelContext	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A938, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023C268	effCloneModelWithVUState	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002DC280, masked-words-identical (callee map pair); dds-decomp: descriptive
@@ -5374,10 +5374,10 @@
 0x0023CF30	func_r1_00225C28	placeholder	placeholder for the pair with raidou1 0x00225C28, masked-hash-in-gap
 0x0023CF50	func_r1_00225C48	placeholder	placeholder for the pair with raidou1 0x00225C48, masked-hash-in-gap
 0x0023CF68	func_r1_00225C60	placeholder	placeholder for the pair with raidou1 0x00225C60, unique-reloc-hash
-0x0023CFA0	effCreateResourceOwner	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029B368, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023D160	effDestroyResourceOwner	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029B528, masked-words-identical (strict map pair); dds-decomp: no provenance row
-0x0023D1F0	effDuplicateModelOwner	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029B5B8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023D2B0	effCopyResourceOwner	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029B678, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0023CFA0	Create_effHelper	hd	hd: Raidou HD effHelper.Create, score 8.5 band B; replaces effCreateResourceOwner: dds-decomp DDS1 name via SLUS_209.74 0x0029B368, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0023D160	Delete_effHelper	hd	hd: Raidou HD effHelper.Delete, score 8.8 band B; replaces effDestroyResourceOwner: dds-decomp DDS1 name via SLUS_209.74 0x0029B528, masked-words-identical (strict map pair); dds-decomp: no provenance row
+0x0023D1F0	Copy_effHelper	hd	hd: Raidou HD effHelper.Copy, score 8.9 band B; replaces effDuplicateModelOwner: dds-decomp DDS1 name via SLUS_209.74 0x0029B5B8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x0023D2B0	effResourceCopy	hd-inferred	hd: Raidou HD effHelper.effResourceCopy, score 11.8 band A; replaces effCopyResourceOwner: dds-decomp DDS1 name via SLUS_209.74 0x0029B678, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023D418	func_r1_00226110	placeholder	placeholder for the pair with raidou1 0x00226110, unique-reloc-hash
 0x0023D490	Draw_effHelper	hd	hd: Raidou HD effHelper.Draw, score 11.0 band A
 0x0023D998	effLoadModelPrimaryVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029BCF8, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5393,7 +5393,7 @@
 0x0023DE90	effCountExpandedEntries	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C1F0, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0023DED0	effCreateTextureAnimationSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C230, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E018	effReleaseReferenceHolder	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C378, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023E0A8	effReferenceObjectRetain	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C408, masked-words-identical (callee map pair); dds-decomp: descriptive
+0x0023E0A8	Copy_effCacheTexList	hd	hd: Raidou HD effCacheTexList.Copy, score 10.1 band A; replaces effReferenceObjectRetain: dds-decomp DDS1 name via SLUS_209.74 0x0029C408, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x0023E0C0	effSampleAnimSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C420, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E1A0	effAssignSampledSegmentReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C500, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E1D0	func_r1_00226EC8	placeholder	placeholder for the pair with raidou1 0x00226EC8, unique-reloc-hash
@@ -5581,7 +5581,7 @@
 0x00247880	effInitializeSurfaceForKind	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5B08, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00247950	effDestroySurfaceNode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5BD8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00247A68	effRecreateSurfaceNodeFromWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5CF0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00247AD8	effCreateSurfaceGridWithConfiguration	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5D60, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00247AD8	effSCopy	hd-inferred	hd: Raidou HD effPolygonTrack.effSCopy, score 7.5 band B; replaces effCreateSurfaceGridWithConfiguration: dds-decomp DDS1 name via SLUS_209.74 0x002A5D60, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00247B58	effCloneSurfaceGridResources	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5DE0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00247CF8	effRebuildSurfaceHandles	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5F80, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00247E38	effReplaceResourceRef	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A60C0, masked-words-identical (callee map pair); dds-decomp: no provenance row
@@ -5654,7 +5654,7 @@
 0x0024DD28	effCreateStripNode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AAF70, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0024DDA8	effCreateStripNodeFromGrid	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AAFF0, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x0024DDE0	effFileResourceReferenceReplace	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB028, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0024DE88	effReleaseModelResources	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB0D0, masked-words-identical (strict map pair); dds-decomp: no provenance row
+0x0024DE88	Delete_effPolygonTrack	hd	hd: Raidou HD effPolygonTrack.Delete, score 7.3 band B; replaces effReleaseModelResources: dds-decomp DDS1 name via SLUS_209.74 0x002AB0D0, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0024DEE8	effCloneStripResourceFromOwner	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB130, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0024DF88	effReplaceFileResourceRef	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB1D0, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0024DFE8	effClearStripRecordReferences	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AB230, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5803,10 +5803,10 @@
 0x002572B0	effSetActiveSlotSecondaryRecordVector	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB440, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002572C8	effSetActiveSlotColor	inferred	twin-of-raidou1-0x0023FFC0
 0x002572D0	effSetActiveSlotOpacity	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002FB460, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002572F0	effCreateParticleSharedResourceFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B4798, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002572F0	eff2PartsCreate	hd-inferred	hd: Raidou HD eff2D.eff2PartsCreate, score 9.0 band B; replaces effCreateParticleSharedResourceFromFile: dds-decomp DDS1 name via SLUS_209.74 0x002B4798, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002574F0	effReleaseParticleResources	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B4998, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00257540	effCloneParticleSharedResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B49E8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00257660	effReplaceSharedResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B4B08, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00257540	Copy_eff2D	hd	hd: Raidou HD eff2D.Copy, score 10.9 band A; replaces effCloneParticleSharedResource: dds-decomp DDS1 name via SLUS_209.74 0x002B49E8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00257660	eff2ResourceCopy	hd-inferred	hd: Raidou HD eff2D.eff2ResourceCopy, score 8.0 band B; replaces effReplaceSharedResource: dds-decomp DDS1 name via SLUS_209.74 0x002B4B08, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002576F0	effResetParticleSharedState	inferred	twin-of-raidou1-0x002403E8
 0x002576F8	func_r1_002403F0	placeholder	placeholder for the pair with raidou1 0x002403F0, unique-reloc-hash
 0x00257C90	effSetParticleSharedColor	inferred	twin-of-raidou1-0x00240988
@@ -6023,7 +6023,7 @@
 0x00261970	effLoadFileSlotF2	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BC140, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00261B58	effLoadMaterialFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BC328, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00261D40	effResetFileResourceManager	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BC510, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00261D68	effClassifyResourceMask	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002BC538, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x00261D68	Start_sBtl	hd	hd: Raidou HD sBtl.Start, score 14.25 band A; replaces effClassifyResourceMask: dds-decomp DDS1 name via SLUS_209.74 0x002BC538, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00262A98	func_r1_0024B4E8	placeholder	placeholder for the pair with raidou1 0x0024B4E8, unique-masked-hash
 0x00262AC0	func_r1_0024B510	placeholder	placeholder for the pair with raidou1 0x0024B510, run-order-near
 0x00262D20	func_r1_0024B788	placeholder	placeholder for the pair with raidou1 0x0024B788, masked-hash-in-gap
@@ -6449,8 +6449,8 @@
 0x002A5708	sBtlSetUseSkill	hd-inferred	hd: Raidou HD sBtlAction.sBtlSetUseSkill, score 8.05 band B
 0x002A6E10	func_r1_0027C7F8	placeholder	placeholder for the pair with raidou1 0x0027C7F8, unique-masked-hash
 0x002A6E90	func_r1_0027C878	placeholder	placeholder for the pair with raidou1 0x0027C878, masked-hash-in-gap
-0x002A9518	btlNextScaledRandom	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001FEA78, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002A9548	btlRandomInclusiveRange	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001FEAA8, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002A9518	GetRand	hd	hd: Raidou HD Smnr.GetRand, score 7.0 band B; replaces btlNextScaledRandom: dds-decomp DDS1 name via SLUS_209.74 0x001FEA78, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002A9548	GetIntervalRand	hd	hd: Raidou HD Smnr.GetIntervalRand, score 7.3 band B; replaces btlRandomInclusiveRange: dds-decomp DDS1 name via SLUS_209.74 0x001FEAA8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002A95B0	btlRollAiBucket	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001FFCD8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002A9678	func_r1_0027CD48	placeholder	placeholder for the pair with raidou1 0x0027CD48, unique-masked-hash
 0x002A96C0	func_r1_0027CD90	placeholder	placeholder for the pair with raidou1 0x0027CD90, unique-masked-hash
@@ -6513,8 +6513,8 @@
 0x002AC470	func_r1_0027F988	placeholder	placeholder for the pair with raidou1 0x0027F988, masked-hash-in-gap
 0x002AC4F0	func_r1_0027FA08	placeholder	placeholder for the pair with raidou1 0x0027FA08, unique-masked-hash
 0x002AC630	sBtlCheckVerticalArea	hd-inferred	hd: Raidou HD sBtlSub.sBtlCheckVerticalArea, score 11.8 band A
-0x002AC748	btlTriangleNormalVU	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001F7940, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x002AC7A8	btlTriangleNormalDotEdge	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001F79A0, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002AC748	sBtlGetVerticalVector	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetVerticalVector, score 8.25 band B; replaces btlTriangleNormalVU: dds-decomp DDS1 name via SLUS_209.74 0x001F7940, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x002AC7A8	sBtlGetVerticalLength	hd-inferred	hd: Raidou HD sBtlSub.sBtlGetVerticalLength, score 8.8 band B; replaces btlTriangleNormalDotEdge: dds-decomp DDS1 name via SLUS_209.74 0x001F79A0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002AC808	btlProjectOnPlaneVU	inferred	dds-decomp DDS1 name via SLUS_209.74 0x001F7A70, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002ACFE0	sBtlAnimListProc	hd-inferred	hd: Raidou HD sBtlDMG.sBtlAnimListProc, score 7.0 band B
 0x002AD5C0	func_r1_002800C8	placeholder	placeholder for the pair with raidou1 0x002800C8, unique-reloc-hash
@@ -8708,12 +8708,12 @@
 0x003BB7E0	mnuApplyPanelTransitionAction	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002854B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BB930	mnuDrainPanelTransitions	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00285600, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BB988	func_r1_0034BA60	placeholder	placeholder for the pair with raidou1 0x0034BA60, unique-reloc-hash
-0x003BB9A0	mnuDispatchPopupTransition	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00285670, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x003BB9A0	jmsSeqChange	hd-inferred	hd: Raidou HD jmsMisc.jmsSeqChange, score 9.9 band B; replaces mnuDispatchPopupTransition: dds-decomp DDS1 name via SLUS_209.74 0x00285670, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BBC08	func_r1_0034BCE0	placeholder	placeholder for the pair with raidou1 0x0034BCE0, unique-reloc-hash
-0x003BBC18	mnuSetPopupEntry	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002858E8, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x003BBC28	mnuSetPopupEntryFlagged	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002858F8, masked-words-identical (callee map pair); dds-decomp: descriptive
+0x003BBC18	jmsSeqJump	hd-inferred	hd: Raidou HD jmsMisc.jmsSeqJump, score 7.0 band B; replaces mnuSetPopupEntry: dds-decomp DDS1 name via SLUS_209.74 0x002858E8, masked-words-identical (gap map pair); dds-decomp: descriptive
+0x003BBC28	jmsSeqJumpAndFree	hd-inferred	hd: Raidou HD jmsMisc.jmsSeqJumpAndFree, score 11.0 band A; replaces mnuSetPopupEntryFlagged: dds-decomp DDS1 name via SLUS_209.74 0x002858F8, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x003BBC40	func_r1_0034BD18	placeholder	placeholder for the pair with raidou1 0x0034BD18, run-order-size
-0x003BBC58	mnuBindPresentMenuEntry	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00285928, masked-words-identical (strict map pair); dds-decomp: descriptive
+0x003BBC58	jmsSeqReturn	hd-inferred	hd: Raidou HD jmsMisc.jmsSeqReturn, score 8.5 band B; replaces mnuBindPresentMenuEntry: dds-decomp DDS1 name via SLUS_209.74 0x00285928, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BBC90	mnuMapPadMaskToFlags	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00285B20, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003BBF70	mnuHandleListPageJumpInput	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002C47C8, masked-words-identical (order map pair); dds-decomp: descriptive
 0x003BC070	mnuHandlePanelListPageJumpInput	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002C48C8, masked-words-identical (strict map pair); dds-decomp: descriptive

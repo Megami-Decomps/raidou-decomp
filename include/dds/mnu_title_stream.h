@@ -39,6 +39,6 @@ MnuTitleStreamLoadState mnuPollTitleStreamStateLocked(void);
 
 void mnuMarkTitleStreamResetPending(void);
 
-void mnuResetTitleStreamLocked(void);
+void sndBgmFree(void);
 
 #endif /* DDS_MNU_TITLE_STREAM_H */

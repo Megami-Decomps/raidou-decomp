@@ -628,7 +628,7 @@ static inline void evtSetBlendVecW(f32 w)
     VU0_SCALAR_OP_CLOBBER(w, "vmulx.w vf10, vf0, vf2x");
 }
 
-void evtBlendParamsG(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Effect_Blur_t *b, dds3Effect_Blur_t *out);
+void evtHokanHeikouBlur(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Effect_Blur_t *b, dds3Effect_Blur_t *out);
 
 void evtBlendParamsH(s32 enable, f32 t, const EvtBlendKey *a, const EvtBlendKey *b, EvtBlendKey *out);
 
@@ -978,7 +978,7 @@ void evtHokanRipBlur(s32 hokan, f32 ratio, dds3Effect_RippleBlurParam_t *key1, d
     d->area = evtHokanUInt(hokan, ratio, key1->area, key2->area);
 }
 
-void evtBlendParamsG(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Effect_Blur_t *b, dds3Effect_Blur_t *out)
+void evtHokanHeikouBlur(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Effect_Blur_t *b, dds3Effect_Blur_t *out)
 {
     s32 positionOrCornerIndex;
     s32 coordinateIndex;

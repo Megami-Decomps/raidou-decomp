@@ -117,7 +117,7 @@ s32 mnuDispatchStaffMenuWithIdlePopup(dds3ProcessID_t *callback) {
     s32 state = menuRunPanel((void *)context, 0, (void *)callback);
     if (state == 0) {
         if (checkConfigState() == 0) {
-            mnuSetPopupEntryFlagged(dispatchEntry, mnuCampCommandReturnPopupEntry);
+            jmsSeqJumpAndFree(dispatchEntry, mnuCampCommandReturnPopupEntry);
         }
         return 0;
     }

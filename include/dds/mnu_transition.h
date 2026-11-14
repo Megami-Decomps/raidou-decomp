@@ -40,6 +40,6 @@ void mnuClearPanelTransitionState(MenuPopupState *state);
 /* The scheduler task is forwarded to each saved entry's leave callback. */
 void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *task);
 
-void mnuBindPresentMenuEntry(MenuPopupState *state, s32 *entrySlot);
+void jmsSeqReturn(MenuPopupState *state, s32 *entrySlot);
 
 #endif /* DDS_MNU_TRANSITION_H */

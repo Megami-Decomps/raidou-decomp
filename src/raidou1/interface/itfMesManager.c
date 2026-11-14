@@ -1658,7 +1658,7 @@ s32 itfMesMngSelect(void) {
 
 extern s32 D_r1_0046F7B0;
 
-s32 itfCommandSelectOptionWithFade(void) {
+s32 MesMngSelect(void) {
     s32 window;
     s32 elapsedTicks;
     s32 entry;

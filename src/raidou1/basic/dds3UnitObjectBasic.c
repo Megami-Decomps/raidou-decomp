@@ -356,7 +356,7 @@ extern void effObjApplyTransformParameters(sdfGrOt_t **, dds3Basic_t *);
 
 extern void fldDrawEffectObjectShadow(dds3Basic_t *);
 
-extern sdfGrOt_t *kwlnSceneSurfaceSets[13][4];
+extern sdfGrOt_t *D_dds1_00325788[13][4];
 
 struct WorldIndexNode;
 

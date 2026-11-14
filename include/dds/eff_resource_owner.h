@@ -40,7 +40,7 @@ typedef struct EffResourceConfig {
     f32 frameStep;
 } EffResourceConfig;
 
-/* Option-1 resource payload: copied as 0x74 bytes by effCreateResourceOwner.
+/* Option-1 resource payload: copied as 0x74 bytes by Create_effHelper.
  * Requests and signed indices are consumed by effResolveRequestPositionIntoVu. */
 typedef struct EffResourceExtendedConfig {
     EffResourceConfig base;

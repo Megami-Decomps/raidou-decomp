@@ -15,6 +15,8 @@
 
 #include "dds/dsp_entry_api.h"
 
+#include "dds/dsp_message_window_api.h"
+
 #include "dds/eff_random.h"
 
 #include "dds/evt_message_window_api.h"
@@ -53,6 +55,9 @@ EvtMessageWindowControlResult fclChkMessage(void);
 
 /* Start a display entry; return zero if no window is open, one if it starts. */
 s32 fclStartMessage(s32 entry);
+
+/* Request the existing message-window worker's mode-one transition. */
+void fclUpdateMessage(void);
 
 /* Link a glyph chain into the current draw-buffer slot. */
 s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
@@ -191,7 +196,7 @@ struct StaffMenuRuntime;
 
 #include "dds/menu_fade_entry.h"
 
-extern void evtCopyEntryStringToActiveWindow(s32, const char *);
+extern void fclSetMessageVar(s32, const char *);
 
 extern DatAssignedItemId mnuGetPartyEntryCurrentId(dds_datUnitWork_t *);
 
@@ -347,7 +352,7 @@ extern u8 frDisableMode(u8);
 
 extern MenuPopupEntry mnuCampPartySelectionReturnPopupEntry[];
 
-extern struct sdfGrOt_t *kwlnSceneSurfaceSets[13][4];
+extern struct sdfGrOt_t *D_dds1_00325788[13][4];
 
 extern s8 evtStageTestUpdate(struct sdfGrOt_t **);
 

@@ -285,7 +285,7 @@ extern ConsMatrixPacket D_0045C600[2];
 
 extern sdf3DLight_t *D_0037F770[3];
 
-extern f32 kwlnDefaultColorVector[4];
+extern f32 D_dds1_00324780[4];
 
 extern Matrix4 sdfViewMatrix;
 

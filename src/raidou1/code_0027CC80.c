@@ -139,7 +139,7 @@ extern u32 btlAverageLevelsForMaskExcludingStatus20(s32);
 
 extern s32 btlRunAiAction();
 
-extern u32 btlNextScaledRandom(u32);
+extern u32 GetRand(u32);
 
 extern u32 btlPreviousAiCandidateBucket;
 
@@ -175,8 +175,8 @@ u32 btlPickWeightedAiSlot(BtlUnit *unusedUnit, s32 speciesId, s32 rowIndex);
 
 /* Sum of two 0..0xFFF rolls, folded into 0..0xFFF; /41 turns it into one of 100 buckets. */
 static inline u32 btlRollTwice(void) {
-    u32 value = btlNextScaledRandom(0x1000);
-    value += btlNextScaledRandom(0x1000);
+    u32 value = GetRand(0x1000);
+    value += GetRand(0x1000);
     return value & 0xFFF;
 }
 

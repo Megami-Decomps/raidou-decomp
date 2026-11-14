@@ -263,7 +263,7 @@ extern void frDisableMode();
 
 extern char mnuCampPartySelectionReturnPopupEntry[];
 
-extern struct sdfGrOt_t *kwlnSceneSurfaceSets[13][4];
+extern struct sdfGrOt_t *D_dds1_00325788[13][4];
 
 extern s8 evtStageTestUpdate(struct sdfGrOt_t **);
 
@@ -388,7 +388,7 @@ extern void scrClearSecondaryScriptFlag(dds_datUnitWork_t *unit, u16 flagId);
 
 #include "dds/fr_font_draw_glyph.h"
 
-extern void dspRequestMessageWindowModeOne(void);
+extern void fclUpdateMessage(void);
 
 typedef struct MenuListDefaults {
     s32 indices[3];

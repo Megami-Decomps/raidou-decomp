@@ -25,6 +25,8 @@
 
 #include "dds/dsp_entry_api.h"
 
+#include "dds/dsp_message_window_api.h"
+
 #include "dds/evt_message_window_api.h"
 
 #include "dds/evt_world_object_api.h"
@@ -99,6 +101,9 @@ s32 fclInitMessage(struct ItfMesSub *definition);
 
 /* Start a display entry; return zero if no window is open, one if it starts. */
 s32 fclStartMessage(s32 entry);
+
+/* Request the existing message-window worker's mode-one transition. */
+void fclUpdateMessage(void);
 
 void p2sdPlayBGM(s32 trackId);
 
@@ -182,7 +187,7 @@ extern u32 D_003BD970;
 
 extern s32 D_003BD974;
 
-extern void evtCopyEntryStringToActiveWindow(s32, const char *);
+extern void fclSetMessageVar(s32, const char *);
 
 extern char D_003BD250[];
 
