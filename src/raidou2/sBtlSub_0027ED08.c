@@ -1272,69 +1272,75 @@ BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScre
     return BTL_PROJECTED_SCREEN_POINT_WRITTEN;
 }
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027EEB0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AB7B8);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F060);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027EEB0);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F0B0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F060);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F0D0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F0B0);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F108);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F0D0);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F140);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F108);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F158);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F140);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F188);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F158);
 
-INCLUDE_ASM(const s32, "code_0027ED08", sBtlGetBezier);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F188);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F218);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetBezier);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F230);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F218);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F2B0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F230);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F2F8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F2B0);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F340);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F2F8);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F358);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002ABDE8);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F3D8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F358);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F3F0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F3D8);
 
-INCLUDE_ASM(const s32, "code_0027ED08", sdatDevilName);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F3F0);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F490);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sdatDevilName);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F510);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F490);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F748);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F510);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F798);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F748);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F7B8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F798);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F838);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F7B8);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F858);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F838);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F8D8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F858);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F8F0);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F8D8);
 
-INCLUDE_ASM(const s32, "code_0027ED08", sBtlGetBSTNameFont);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F8F0);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027F988);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F340);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_r1_0027FA08);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC438);
 
-INCLUDE_ASM(const s32, "code_0027ED08", func_0027FB28);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlGetBSTNameFont);
 
-INCLUDE_ASM(const s32, "code_0027ED08", sBtlCheckVerticalArea);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027F988);
+
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_r1_0027FA08);
+
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC610);
+
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", sBtlCheckVerticalArea);
 
 /* vu0 routine: vf10.xyz = normalize(e x (e x f)),
  * e = vertexB - vertexA, f = vertexC - vertexA.
@@ -1389,95 +1395,105 @@ f32 btlProjectOnPlaneVU(const f32 *vertexA, const f32 *vertexB, const f32 *verte
     return projection;
 }
 
-INCLUDE_RODATA(const s32, "code_0027ED08", D_r1_00458CA8);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC878);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB14);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC888);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DB18);
+INCLUDE_ASM(const s32, "sBtlSub_0027ED08", func_002AC8F0);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DB1C);
+INCLUDE_RODATA(const s32, "sBtlSub_0027ED08", D_r1_00458CA8);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DB20);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB14);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DB24);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2440);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB28);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2444);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB30);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2448);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB38);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E244C);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB40);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2450);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB48);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2454);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB50);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB30);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB58);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB38);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB60);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB40);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB68);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB48);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB70);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB50);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB78);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB58);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB80);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB60);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB88);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB68);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB90);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB70);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DB98);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB78);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DBA0);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB80);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DBA8);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB88);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DBB0);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB90);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DBB8);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DB98);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DBC0);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBA0);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DBC8);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBA8);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DBD0);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBB0);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DBD8);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBB8);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DBE0);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBC0);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DBE8);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBC8);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DBF0);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBD0);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DBF8);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_r1_0046DBD8);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC00);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2508);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DC08);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2510);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC10);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2518);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC18);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2520);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC20);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2528);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC28);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2530);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_r1_0046DC30);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2538);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC38);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2540);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC40);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2548);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC48);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2550);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC50);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2558);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC58);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2560);
 
-INCLUDE_SDATA(const s32, "code_0027ED08", D_0046DC60);
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2568);
+
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2570);
+
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2578);
+
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2580);
+
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2588);
+
+INCLUDE_SDATA(const s32, "sBtlSub_0027ED08", D_004E2590);
 

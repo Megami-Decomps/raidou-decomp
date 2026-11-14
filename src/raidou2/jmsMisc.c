@@ -1145,7 +1145,7 @@ void mnuDrainPanelTransitions(MenuPopupState *state, struct dds3ProcessID_t *tas
     }
 }
 
-INCLUDE_ASM(const s32, "code_0034B898", func_r1_0034BA60);
+INCLUDE_ASM(const s32, "jmsMisc", func_r1_0034BA60);
 
 s32 mnuDispatchPopupTransition(MenuPopupState *work, s32 *entrySlot, s32 mode,
                                void *callback) {
@@ -1232,7 +1232,7 @@ s32 mnuDispatchPopupTransition(MenuPopupState *work, s32 *entrySlot, s32 mode,
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_0034B898", func_r1_0034BCE0);
+INCLUDE_ASM(const s32, "jmsMisc", func_r1_0034BCE0);
 
 /* Bind the entry address and retain only the entry's low sixteen flag bits. */
 void mnuSetPopupEntry(s32 *entrySlot, MenuPopupEntry *entry) {
@@ -1252,7 +1252,7 @@ void mnuSetPopupEntryFlagged(s32 *entrySlot, MenuPopupEntry *entry) {
     entry->flags = retainedFlags | MNU_POPUP_INSERT_BEFORE_TOP;
 }
 
-INCLUDE_ASM(const s32, "code_0034B898", func_r1_0034BD18);
+INCLUDE_ASM(const s32, "jmsMisc", func_r1_0034BD18);
 
 /* Bind the current popup entry only when its saved address is nonzero. */
 void mnuBindPresentMenuEntry(MenuPopupState *state, s32 *entrySlot) {
@@ -1262,4 +1262,4 @@ void mnuBindPresentMenuEntry(MenuPopupState *state, s32 *entrySlot) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0034B898", mnuMapPadMaskToFlags);
+INCLUDE_ASM(const s32, "jmsMisc", mnuMapPadMaskToFlags);
