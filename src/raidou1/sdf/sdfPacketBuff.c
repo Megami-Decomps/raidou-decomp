@@ -1,10 +1,5 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfPacketBuff.c */
-#include "common.h"
-
 #include "sdf_types.h"
-
 #include "sdf_resource.h"
 
 /* Declared here because no header carries these. */
@@ -19,17 +14,11 @@ struct sdfMemHandle_t;
 #define SDF_PACKET_BUFFER_COUNT 2
 
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
-
 extern struct sdfMemHandle_t *sdfGrPacketBuffHandle;
-
 u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
-
 extern s32 sdfGrPacketBuffSize;
-
 extern s32 sdfGrPacketBuffBase[2];
-
 extern s32 sdfGrPacketBuffPtr;
-
 extern s32 sdfGrPacketBuffLimit;
 
 typedef struct effDebugPolyParams_t {
@@ -49,37 +38,9 @@ typedef struct effDebugPolyParams_t {
 } effDebugPolyParams_t;
 
 void sdfGrMakePacketBuff(s32 aPacketBuffSize);
-
 void sdfGrSetupPacketBuff(s32 aFrameId);
-
 s32 sdfGrAllocPacketBuff(s32 aSize);
-
-void sdfGrClosePacketBuff(saddr_t aBuffPtr);
-
-void sdfGrMakePacketBuff(s32 aPacketBuffSize);
-
-void sdfGrSetupPacketBuff(s32 aFrameId);
-
 s32 sdfGrGetPacketBuffRemain(void);
-
-s32 sdfGrAllocPacketBuff(s32 aSize);
-
-s32 sdfGrOpenPacketBuff(void);
-
-void sdfGrClosePacketBuff(saddr_t aBuffPtr);
-
-extern struct sdfMemHandle_t *sdfGrPacketBuffHandle;
-
-extern s32 sdfGrPacketBuffSize;
-
-extern s32 sdfGrPacketBuffBase[2];
-
-extern s32 sdfGrPacketBuffPtr;
-
-extern s32 sdfGrPacketBuffLimit;
-
-extern u32 D_00551880;
-/* End of declarations from src/smt3/sdf/sdfPacketBuff.c */
 
 void sdfGrMakePacketBuff(s32 aPacketBuffSize) {
     s32 allocationAddress;
@@ -134,4 +95,3 @@ u8 sdfGrDrawFrameId = 0;
 u8 sdfGrBufferSlot = 0;
 
 volatile s8 sdfReqDrawDelayCount = 0;
-

@@ -1,14 +1,7 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfSound.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
-
 #include "sif_rpc.h"
 
 struct sdfGsMemSlice_t;
@@ -24,22 +17,6 @@ typedef struct {
     u32 privateData[6];
 } sdfSceIoStat_t;
 
-extern s32 sceSifLoadModule(const char *path, s32 argSize, const char *args);
-
-extern s32 sceGetstat(const char *path, sdfSceIoStat_t *info);
-
-extern s32 SdfIopFileRpc(const char *name, s32 dataSize, const void *data, s32 *outSize);
-
-extern u8 sdfHddValid;
-
-s32 strlen(const char *aStr);
-
-s32 sdfSndCmdTrans(void);
-
-s32 SleepThread(void);
-
-extern s8 sdfSndBurstReqMode;
-
 typedef struct
 {
     u32 unk0;
@@ -48,22 +25,12 @@ typedef struct
     u16 unk6;
 } p2sdLoadEntry_t;
 
-s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
-
-extern s32 SignalSema(s32 aSemaId);
-
 /* The PCM fill hook, held as an address and called through a cast. */
 typedef u8 *(*p2sdPcmFunc_t)(s32);
-
-extern u32 p2sdPcmCallback;
 
 extern u32 sdfSndMap[];
 
 #define LastLoad ((p2sdLoadEntry_t *)((u8 *)sdfSndMap + 0x190))
-
-extern u32 p2sdPcmState;
-
-extern u32 p2sdPcmBusy;
 
 enum SdfFileIOCmdStat {
     SDF_FILE_CMD_STAT_INIT = 0,
@@ -199,146 +166,36 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-extern void sdfSndTransToIOP(s32 aIOPAddr, void *aEEAddr, s32 aSize);
-
 extern void *memcpy(void *, const void *, size_t);
-
-extern void sdfDelayThread(u32 delay);
-
-extern char * strcpy(char *, const char *);
-
-extern sndRingPacket_t sdfSndCmdPacketRing[32];
-
-extern u32 sdfSndSendCmd_cmd_id;
-
-extern vu16 sdfSndCmdIndex;
-
-extern vu16 sdfSndCmdTailIndex;
-
-extern s32 sdfSndCmdBuf;
-
-extern s32 WakeupThread(s32 thread);
-
-extern void FlushCache(s32);
-
-extern sndListenerState_t sdfSndListenerPrevState;
-
-char *sdfSndMakeFilename(char *aDstName, const char *aSrcName);
-
-extern s32 p2sdLoadCheckMidi(s32 MidiNo);
-
-extern s32 p2sdSmgHandle;
 
 #include "sdk_libc.h"
 
-extern sndFileRequestState_t sdfSndPcmRequest;
-
-extern s32 sdfSndPcmBufferAddr;
-
-extern char sdfSndPcmFileName[];
-
-extern s32 sifRpcServerSema;
-
 extern char sdfDumpAddrFmt[];
-
 extern char sdfDumpPadStr[];
-
 extern char sdfDumpMidGapStr[];
-
 extern char sdfDumpByteSepStr[];
-
 extern char sdfDumpByteFmt[];
-
 extern char sdfDumpLineBuf[];
-
 extern char sdfDumpEndStr[];
-
 extern const char sdfDmaDumpStartFmt[];
-
 extern const char sdfDmaNotQwordFmt[];
-
 extern const char sdfDmaTagLineFmt[];
-
 extern const char sdfDmaNestOverflowMsg[];
-
 extern char *sdfDmaTagNameTable[];
-
 sdfGsMemSlice_t *sdfGsMemGetLinkHead(void);
-
 extern const char sdfGsMemInfoTitle[];
-
 extern const char sdfGsMemNodeFmt[];
-
 extern char sdfGsMemTypeFmt[];
-
 extern char *sdfGsMemTypeNames[];
-
 sdfGsMemSlice_t *sdfGsMemGetLinkTail(void);
-
 extern char *sdfGsMemTypeNamesTail[];
-
 void sdfMemGetInfo(sdfMemInfo_t *aInfo);
-
 void sdfChipGetInfo(sdfChipInfo_t *aInfo);
-
-extern s32 (*p2sdSmgBuf)(void);
-
-void p2sdLoadSMGFile(s32 MidiNo);
-
-void *sdfFileRpcHandleCmd(s32 function, void *requestData, s32 requestSize);
 
 typedef struct sdfFileCmdHandle_t sdfFileCmdHandle_t;
 
-extern sdfFileCmdHandle_t *sdfFileRpcArg;
-
-extern sdfSoundRpcRequest_t *sdfFileRpcResult;
-
-extern s32 sdfFileRpcCmdState;
-
-/* This handler writes the first word of the RPC reply block. */
-extern u32 sdfFileRpcQueue[];
-
-/* The first cell stores the PCM base pointer. This unsized view keeps the
- * non-small-data address form; see docs/levers/addressing-and-types.md. */
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 size);
-
-extern void *sdfMemLock(sdfMemHandle_t *handle);
-
-extern void sdfMemFreeDirect(sdfMemHandle_t *handle);
-
-extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(
-    const char *path,
-    void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
-    s32 callbackContext);
-
-extern s32 sdfFileCmdClearError(sdfFileCmd_t *handle);
-
-extern s32 sdfFileCmdFree(sdfFileCmd_t *handle);
-
-extern s32 sdfFileCmdRead(void *handle, void *buffer, s32 byteCount);
-
-extern s32 sdfFileCmdClose(void *handle);
-
 void sdfGrFlushOtChain(u32 *source);
-
 s32 sdfPrintf(const char *str, ...);
-
-extern s32 sceSifAllocIopHeap(s32 size);
-
-extern s32 sceSifQueryMaxFreeMemSize(void);
-
-extern s32 sceSifQueryMemSize(void);
-
-extern s32 sceSifQueryTotalFreeMemSize(void);
-
-s32 sdfSndIopAlloc(s32 size);
-
-extern s32 sceSifSendCmd(s32 command, void *packet, s32 packetBytes,
-                         void *source, void *destination, s32 dataBytes);
-
-s32 sdfSndCmdTrans(void);
-
-void sdfSndCmdIFThread(void);
 
 typedef struct sdfSndInitThreadParam_t {
     s32 status;
@@ -350,338 +207,63 @@ typedef struct sdfSndInitThreadParam_t {
     u8 reserved[0x18];
 } sdfSndInitThreadParam_t;
 
-extern sdfSndInitThreadParam_t sdfSndCmdThreadParam;
-
-extern u8 sdfSndCmdThreadStack[];
-
-extern u8 sdfSifRpcThreadStack[];
-
-extern s32 sdfSifRpcThreadId;
-
-extern s32 _gp;
-
-extern s32 sceSifGetSreg(s32 index);
-
-extern s32 CreateThread(sdfSndInitThreadParam_t *parameter);
-
-extern s32 CreateThreadSimple(void *entryAddress, void *workspace, s32 stackBytes, s32 priority);
-
-extern void SifRpcServerThreadProc(void);
-
-void sdfSndInitCmdIF(void);
-
-s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
-
-void sdfSndSyncCmd(s32 aCmdId);
-
-s32 sdfSndSendSyncCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
-
-/* The SIF DMA request block, reused for every transfer. */
-extern struct
-{
-    u32 source;
-    s32 destination;
-    s32 size;
-    s32 attributes;
-} sdfSndTransBuf;
-
 #include "sdk_libkernl.h"
 
-extern s32 sceSifDmaStat(s32 aId);
-
-void sdfSndTransToIOP(s32 aIOPAddr, void *aEEAddr, s32 aSize);
-
-void sdfSndLoadIRXModules(void);
-
-extern char sdfSndIopSizeMsg[];
-
-extern const char sdfSndSeqMapInitMsg[];
-
-void sdfSndVoiceMapInit(char *aVoiceInfo, s32 aVoiceCount);
-
-void sdfSndVoiceMapInit(char *aVoiceInfo, s32 aVoiceCount);
-
-void sdfSndSeqMapInit(u32 *aSequenceInfo, s32 aSequenceCount);
-
-extern s32 sceSifInitIopHeap(void);
-
-extern s32 sdfSndIopWorkAddr;
-
-extern const char sdfSndSeqMapInitMsg[18];
-
-void sdfSndInit(char *aVoiceInfo, s32 aVoiceCount, char *aSequenceInfo, s32 aSequenceCount);
-
-/* Starts a track with the default 0x7f setting after preparing its identifier. */
-void p2sdPlayBGM(s32 MidiNo);
-
-s32 p2sdSendStopCmd(s32 aId);
-
-/* Starts the alternate track command, leaving the other packet fields untouched. */
-void p2sdResumeBgm(s32 trackId);
-
-/* Command 0x30 copies a full 16-byte payload; only its identifier is set. */
-void p2sdStopSe(u32 soundId);
-
-s32 p2sdStopAllBgm(void);
-
-s32 sdfSndQueueNoPayloadCommand210(void);
-
-s32 p2sdStopAllSe(void);
-
-s32 sdfSndDispatchCommandWithoutPayload(s32 aSeId);
-
-/* Send a NUL-terminated command string; the transport excludes the terminator. */
-u32 sdfSndLoadHDFile(s32 aVcChNum, char *aFilename);
-
-u32 sdfSndLoadBDFile(s32 aVcChNum, char *aFilename);
-
-/* Send text with command bit 0x80; payload length excludes its NUL terminator. */
-u32 sdfSndLoadSQFile(s32 aSqChNum, char *aFilename);
-
-/* Send a 12-byte sequence command; the trailing struct word is not transmitted. */
-void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
-
-/* The angle normalization and attenuation share one frame through the SE tail call. */
-void p2sdPlaySeDeg(s32 trackId, f32 angle, f32 distance);
-
-/* Converts world coordinates to the sound engine's one-tenth scale. */
-void p2sdPlaySe3DEx(s32 MidiNo, s32 posx, f32 posy, f32 posz, f32 limit);
-
-/* Scale six world-space values and send them to the sound engine when they changed. */
-void p2sdSetStandPos(f32 Cposx, f32 Cposy, f32 Cposz,
-                                 f32 Pposx, f32 Pposy, f32 Pposz);
-
-extern void InvalidDCache(void *start, void *end);
-
-s32 p2sdLoadCheckMidi(s32 MidiNo);
-
-/* Make sure the MIDI bank named by the packed track id is resident, loading it if not. */
-void p2sdLoadSMGFile(s32 MidiNo);
-
-u64 sdfSndSendFilenameCommand(const char *aName);
-
-void p2sdSetPcmBuffer(saddr_t data, s32 size);
-
-u64 sdfSndSendChannelControlCommand(s32 aCh);
-
-u64 sdfSndSendChannelGroupCommand140(u8 aCh);
-
-u64 sdfSndSendChannelGroupCommand150(u8 aCh);
-
-void sdfSndReleaseMidiTrack(s32 id);
-
-u8 sdfSndGetTrackBalanceFirstComponent(s32 aIndex);
-
-u8 sdfSndGetTrackBalanceSecondComponent(s32 aIndex);
-
-s32 sdfSndGetNonnegativeEntryBalance(s32 aIndex);
-
-u8 *sdfSndGetMidiChannelTable(void);
-
-p2sdLoadEntry_t *sdfSndGetTrackSlotTable(void);
-
-u32 sdfSndGetMidiStateWordPair(u32 *aOutValue);
-
-/* Pack two 24-byte MIDI state groups into out; NULL leaves the state untouched. */
-void sdfSndCopyGroupedMidiStateBytes(u8 *out);
-
-/* Sends a prepared track identifier with the 0x17f setting. */
-void p2sdPlayBGMFade(s32 trackId);
-
-s32 p2sdFadeOutBgm(s32 aId);
-
-s32 p2sdStopBGM(s32 aId);
-
-s32 p2sdBgmVolDown(void);
-
-s32 p2sdBgmVolUp(void);
-
-void p2sdSetBgmTrack(s32 aTrack);
-
-s32 p2sdLoadPcmFile(const char *name, u8 channel);
-
-u32 p2sdGetPcmState(void);
-
-s32 p2sdSyncSound(void);
-
-void sdfSndSendChannelGroupCommand110(u8 channel);
-
-s32 sdfSndSetChannelCount(u32 aCh);
-
-u32 p2sdSetPcmCallback(addr_t aCallback);
-
-/* Send opcode 0x120 with the channel's group (bits 3-6) unless a command is
- * pending; returns nonzero when busy. */
-s32 p2sdPlayPcm(u8 channel);
-
-u32 sdfSndGetCommandStatus(void);
-
-s32 p2sdSyncMovie(void);
-
-/* Separate native copy of the command-0x110 channel-group sender. */
-void sdfSndSendChannelGroupCommand110Duplicate(u8 channel);
-
-s32 sdfFileRpcCallback(s32 unused, u32 event);
-
-/* Handle sound-file and PCM-buffer RPC commands. */
-extern s32 WaitSema(s32 sema);
-
-void *sdfFileRpcHandleCmd(s32 function, void *requestData, s32 requestSize);
-
-extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-
-extern s32 GetThreadId(void);
-
-void SifRpcServerThreadProc(void);
-
-void sdfSndSetTableEntry(u32 kind, const u8 *data);
-
-void sdfSndGetTableEntry(u32 kind, u8 *data);
-
-/* Print size bytes in address-aligned, sixteen-column hexadecimal rows. */
 void sdfDumpHexLine(const u8 *data, s32 size);
-
 extern const char sdfDmaDumpStartFmt[29];
-
 extern const char sdfDmaNotQwordFmt[21];
-
 extern const char sdfDmaTagLineFmt[33];
-
 extern const char sdfDmaNestOverflowMsg[27];
-
 void sdfDumpDmaChain(sdfDmaDumpTag_t *source);
-
 extern char *sdfGrVifUnpackNames[];
-
 extern s32 sdfGrVifUnpackBits[];
-
 extern char sdfVifMaskedName[];
-
 extern char sdfVifXferOkName[];
-
 extern char sdfDumpIndentStr[];
-
 extern char sdfDumpWordFmt[];
-
-void sdfGrFlushOtChain(u32 *source);
-
 void sdfDumpGsMemory(void);
-
 void sdfDumpGsMemory2(void);
-
 extern const char sdfGsMemInfoTitle[116];
-
 extern const char sdfGsMemNodeFmt[31];
-
 void sdfDumpMemory(void);
-
-/* Print the chip heap totals and how many cells are in use per size class (1..16, 17..32, ...). */
 void sdfDumpChipMemory(void);
-
-extern s32 p2sdSmgHandle;
-
-extern u32 p2sdPcmCallback;
-
-extern u32 p2sdPcmState;
-
-extern u32 p2sdPcmBusy;
-
-extern u32 sdfSndSendCmd_cmd_id;
-
-extern s32 sdfSifRpcThreadId;
-
-extern s32 (*p2sdSmgBuf)(void);
-
-extern char sdfDmaTagEndName[8];
-
-extern char sdfDmaTagRetName[8];
-
-extern char sdfDmaTagCallName[8];
-
-extern char sdfDmaTagRefsName[8];
-
-extern char sdfDmaTagRefName[8];
-
-extern char sdfDmaTagNextName[8];
-
-extern char sdfDmaTagCntName[8];
-
-extern char sdfDmaTagRefeName[8];
-
 extern char sdfDumpAddrFmt[8];
-
 extern char sdfDumpPadStr[8];
-
 extern char sdfDumpMidGapStr[8];
-
 extern char sdfDumpByteSepStr[8];
-
 extern char sdfDumpByteFmt[8];
-
 extern char sdfDumpLineBuf[2];
-
 extern char sdfDumpEndStr[8];
-
 extern char sdfVifMaskedName[8];
-
 extern char sdfVifXferOkName[8];
-
 extern char sdfVifUnpackV4_5Name[8];
-
 extern char sdfVifUnpackV4_8Name[8];
-
 extern char sdfVifUnpackV4_16Name[8];
-
 extern char sdfVifUnpackV4_32Name[8];
-
 extern char sdfVifUnpackV3_8Name[8];
-
 extern char sdfVifUnpackV3_16Name[8];
-
 extern char sdfVifUnpackV3_32Name[8];
-
 extern char sdfVifUnpackV2_8Name[8];
-
 extern char sdfVifUnpackV2_16Name[8];
-
 extern char sdfVifUnpackV2_32Name[8];
-
 extern char sdfVifUnpackS_8Name[8];
-
 extern char sdfVifUnpackS_16Name[8];
-
 extern char sdfVifUnpackS_32Name[8];
-
 extern char sdfVifFlagsMruName[8];
-
 extern char sdfVifFlagsRuName[8];
-
 extern char sdfVifFlagsMrName[8];
-
 extern char sdfVifFlagsRName[8];
-
 extern char sdfVifFlagsMuName[8];
-
 extern char sdfVifFlagsUName[8];
-
 extern char sdfVifFlagsMName[8];
-
 extern char sdfVifFlagsNoneName[8];
-
 extern char sdfDumpIndentStr[8];
-
 extern char sdfDumpWordFmt[8];
-
 extern char sdfGsMemClutName[8];
-
 extern char sdfGsMemTexName[8];
-
 extern char sdfGsMemFrameName[8];
-
 extern char sdfGsMemFreeName[8];
-
 extern char sdfGsMemTypeFmt[8];
-/* End of declarations from src/smt3/sdf/sdfSound.c */
 
 /* Print size bytes in address-aligned, sixteen-column hexadecimal rows. */
 void sdfDumpHexLine(const u8 *data, s32 size) {

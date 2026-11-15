@@ -1,40 +1,20 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfFileIO.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 s32 strlen(const char *aStr);
-
 s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-
 s32 sdfFileCmdClose(void *aHandle);
-
 s32 sdfFileCmdFree(sdfFileCmd_t *aHandle);
-
 s32 sdfFileCmdFileSize(void *aHandle);
-
 s32 sdfFileCmdSeek(void *aHandle, s32 aOffset, s32 aWhence);
-
-extern s32 WaitSema(s32 aSemaId);
-
 extern s32 SignalSema(s32 aSemaId);
-
 extern u8 sdfFileCmdThreadPrioCheckCounter;
-
 void sdfFileCmdThreadSetPrio(s32 prio);
-
 s32 sdfFileCmdRead(void *aHandle, void *aBuffer, s32 aLength);
-
 void sdfFileCmdUnlink(void *aHandle);
-
 void sdfFileCmdDequeue(void *aCmd);
-
 s32 sceClose(s32 a);
 
 typedef u8 sdfDevOperationCode_t;
@@ -122,195 +102,79 @@ enum sdf_stream_playback {
 
 #include "sdk_libkernl.h"
 
-/* Declared here because no header carries these. */
-extern s32 sdfCdImageLoadStart(const char *filename);
-
 extern void *memcpy(void *, const void *, size_t);
-
-extern s32 sceLseek(s32 fileHandle, s32 offset, s32 origin);
-
-extern s32 sceRead(s32 fileHandle, saddr_t buffer, s32 byteCount);
-
 extern char * strcpy(char *, const char *);
-
 void *sdfChipAllocDirect(s32 aSize);
-
 extern sdfFileDeviceCB_t sdfFileDeviceCB[];
-
 extern s32 DIntr(void);
-
 extern void EIntr(void);
-
 extern void sdfChipFreeDirect(void *aPtr);
-
 extern sdfFileCmdHandle_t *sdfFileCmdActiveHead;
-
 extern sdfFileCmdHandle_t *sdfFileCmdFreeList;
-
 extern s16 sdfFileCmdCount;
-
 extern sdfFileCmdHandle_t *sdfFileCmdCacheHead;
-
 extern sdfFileCmdHandle_t *sdfFileCmdCacheTail;
-
 extern s16 sdfFileCmdFreeCount;
-
-u32 sdfMemLock(sdfMemHandle_t *aHandle);
-
 extern char sdfFileCmdCdromPrefix[];
-
 extern char sdfFileCmdHostPrefix[];
-
 extern char sdfFileCmdPfsPrefix[];
-
 extern char sdfFileCmdMoviePath[];
-
 extern char sdfFileCmdCdimgPrefix[];
-
 extern u8 sdfFileCmdDefaultDevice;
-
-extern s32 memcmp(const void *aFirst, const void *aSecond, size_t aSize);
-
-extern char *strchr(const char *aString, s32 aCharacter);
-
 void *sdfChipAllocZeroDirect(s32 aSize);
-
 extern s32 sdfFileCmdAnalyzeFileName(const char *aFileName, char **aRealNamePtr);
-
 extern u16 sdfFileCmdDefaultCreateMode;
-
 extern s32 sdfFileCmdThreadPrio;
-
 extern s32 ChangeThreadPriority(s32 tid, s32 prio);
-
 extern s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priority);
-
-sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-
-void sdfCdImageClose(void);
 
 extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext);
 
 s32 sdfFileCmdClearError(sdfFileCmd_t *aHandle);
-
 void sdfFileCmdStartThread(s32 deviceType);
-
-extern s32 (*p2sdSmgBuf)(void);
-
-s32 sdfCdImageGetCurrFileSize(void);
-
-/* Consume up to size disc-file bytes, retaining a partial sector; return the byte count. */ s32 sdfCdImageRead(void *buffer, s32 byteCount);
 
 /* Queue a request on the global list and on its worker's list; wake the worker when its list was empty. */ void sdfFileCmdAllocHandle(sdfFileCmdHandle_t *state);
 
 char *sdfFileGetHostRoot(void);
-
-/* Unlink a cached request under interrupt protection, then release its storage. */
-void sdfFileCmdUnlink(void *aHandle);
-
-/* Move a completed request off both active lists and into the bounded cache. */
-void sdfFileCmdDequeue(void *aCmd);
-
 void sdfFileCmdReleaseHandle(sdfFileCmd_t *aHandle);
-
-/* Store an error/result, release the request, and notify its callback of inactivity. */
 void sdfFileCmdFinish(sdfFileCmdHandle_t *state, s32 result);
-
 void sdfFileCmdThread(sdfFileDeviceCB_t *aCB);
 
 /* Worker slot 3 services disc-backed requests through serialized disc operations. */
 void sdfFileCdImageCmdThread(sdfFileDeviceCB_t *aCB);
-
-/* Allocate a worker-specific device path; an unsupported worker returns NULL. */
 char *sdfFileCmdMakeRealFileName(const char *aSrcName, s32 aDeviceType);
 
 /* DDS engine donor: dds-decomp (redthing1), sdfFileCmdAnalyzeFileName.
  * SMT3 has the /movie/ exception, but not DDS's extra /movie2/ prefix. */
 s32 sdfFileCmdAnalyzeFileName(const char *aFileName, char **aRealNamePtr);
 
-/* Allocate a request state and retain the callback's opaque context word. */
 sdfFileCmdHandle_t *sdfFileCmdNewHandle(void *resource, s32 workerIndex, s32 operation,
                         void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32), s32 callbackContext);
 
-/* Resolve a path to its worker and enqueue an asynchronous read-only open. */
 sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext);
 
-/* Enqueue a write open; zero options select the device's default creation options. */
 sdfFileCmdHandle_t *sdfFileCmdWriteOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext, s32 options);
 
-/* Queue a seek with its offset and origin; return -1 unless the request is active. */
-s32 sdfFileCmdSeek(void *aHandle, s32 aOffset, s32 aWhence);
-
-/* Query file size without changing the file position; return -1 unless active. */
-s32 sdfFileCmdFileSize(void *aHandle);
-
-/* Queue a byte-counted read; return -1 without changing an inactive request. */
-s32 sdfFileCmdRead(void *aHandle, void *aBuffer, s32 aLength);
-
-/* Queue a byte-counted write; return -1 without changing an inactive request. */
 s32 sdfFileCmdWrite(sdfFileCmdHandle_t *aHandle, const void *aBuffer, s32 aLength);
 
-s32 sdfFileCmdClearError(sdfFileCmd_t *aHandle);
-
-/* Active state and close operation share an ID; retain the original byte assignment. */
-s32 sdfFileCmdClose(void *aHandle);
-
-s32 sdfFileCmdFree(sdfFileCmd_t *aHandle);
-
-/* Enqueue a one-shot read: negative byte count requests the whole file. */
 sdfFileCmdHandle_t *sdfFileCmdReadFile(const char *path, s32 buffer, s32 byteCount,
                         void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32), s32 callbackContext);
 
-/* Enqueue a one-shot write using the supplied buffer, byte count and creation options. */
 sdfFileCmdHandle_t *sdfFileCmdWriteFile(const char *path, s32 buffer, s32 byteCount,
                         void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext, s32 options);
 
-/* Update non-negative worker IDs only; skip an unchanged numeric priority. */
-void sdfFileCmdThreadSetPrio(s32 prio);
-
 void sdfFileCmdThreadSetLoPrio(void);
-
 void sdfFileCmdThreadSetHiPrio(void);
-
 void sdfFileCmdThreadCheckPrio(void);
-
-/* Start worker thread `index` if it isn't running; slot 3 runs the alternate entry point. */
-void sdfFileCmdStartThread(s32 deviceType);
-
-extern sdfFileCmdHandle_t *sdfFileCmdActiveHead;
-
-extern sdfFileCmdHandle_t *sdfFileCmdFreeList;
-
-extern s16 sdfFileCmdCount;
-
-extern sdfFileCmdHandle_t *sdfFileCmdCacheHead;
-
-extern sdfFileCmdHandle_t *sdfFileCmdCacheTail;
-
-extern s16 sdfFileCmdFreeCount;
-
-extern u8 sdfFileCmdDefaultDevice;
-
-extern u8 sdfFileCmdThreadPrioCheckCounter;
-
-extern s32 sdfFileCmdThreadPrio;
-
-extern u16 sdfFileCmdDefaultCreateMode;
-
 extern char sdfFileCmdCdromPrefix[8];
-
 extern char sdfFileCmdHostPrefix[8];
-
 extern char sdfFileCmdPfsPrefix[8];
-
 extern char sdfFileCmdMoviePath[8];
-
 extern char sdfFileCmdCdimgPrefix[8];
-/* End of declarations from src/smt3/sdf/sdfFileIO.c */
 
 /* Unlink a cached request under interrupt protection, then release its storage. */
 void sdfFileCmdUnlink(void *aHandle)

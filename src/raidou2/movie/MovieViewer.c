@@ -1,30 +1,14 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/movie/MovieViewer.c */
-#include "common.h"
-
 #include "eeregs.h"
-
 #include "mviManager.h"
-
 #include "facility.h"
-
 #include "fpu.h"
-
 #include "libsdf.h"
-
 #include "newdata.h"
-
 #include "ps2asm.h"
-
 #include "event.h"
-
 #include "kernel.h"
-
 #include "sdf_movie_types.h"
-
-extern dds3ProcessID_t *dds3StartProcess(char *name, u32 priority, s32 startTimer, s32 shutdownTimer,
-                                      dds3ProcessFunc_t update, dds3ProcessFunc_t shutdown, void *work);
 
 extern void *dds3SearchProcessName(const char *namestr);
 
@@ -39,10 +23,7 @@ typedef struct
     /* 0x44D0 */ s32 unk_44D0;
 } rcvWork_t;
 
-extern rcvWork_t *shutdownfunc;
-
 extern sdfMovieCb_t movieCb;
-
 extern void movieStop(void);
 
 /* The viewer's memory window: one word and one 0x40-byte block, each copied
@@ -60,13 +41,9 @@ typedef struct
 } movieViewerWork_t;
 
 extern movieViewerWork_t movieViewerDebugFlag;
-
 extern s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
-
 extern void (*DrawPhaseTable[])(fclEncyc_instance_tag *work);
-
 extern s32 dds3WaitMovieEnd(void);
-
 extern void *dds3PrimFrameRect(s32 aX, s32 aY, s32 aZ, s32 aW, s32 aH, u32 aBgCol, u32 aFrameCol);
 
 /* The viewer process' own state; the draw tag is at 0x10. */
@@ -83,106 +60,28 @@ typedef struct
 } movieViewerProcWork_t;
 
 extern movieViewerProcWork_t movieViewerWork;
-
-extern s8 dds3PadButtonState[];
-
-extern sdfMovieInitParm_t movieViewerPlayParm;
-
-extern u16 sdfPadButtons[2];
-
-extern u16 movieViewerPrevButtons;
-
-extern s32 movieViewerPhase;
-
-extern sdfGrOt_t sdfGrOtTable[];
-
-extern sdfGrOt_t D_002F67F8;
-
-extern void *movieViewerStep(void);
-
-extern void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor);
-
-extern void dds3PlayMovieByIndex(s32 index);
-
-extern sdfDrawTag_t *sdfPrimAllocDrawTag(void *aAllocator);
-
-extern void movieDebugDrawInfo(void);
-
-extern char *strcpy(char *dst, const char *src);
-
-extern char *strcat(char *dst, const char *src);
-
 extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr, const char *aStr, ...);
-
 extern void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
-
 void MovieViewerDrawFrameInfo(void);
-
-s32 MovieViewerProc(dds3ProcessID_t *process);
-
-extern void movieViewerScanDir(void);
-
-extern s32 MovieViewerProc(dds3ProcessID_t *process);
-
 extern const char movieViewerProcName[];
-
-void InitMovieViewer(void);
-
-extern const char movieViewerProcName[];
-
 extern void movieViewerFree(void);
-
 void FinishMovieViewer(void);
-
 void movieViewerSetFlags(void);
-
 void movieViewerInitRegs(void);
-
 extern void *memcpy(void *a, const void *b, size_t c);
-
-/* Refresh the window from its two source addresses. */
 void movieViewerDrawInfo(void);
-
-extern s8 dds3PadBitTable[];
-
-extern sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
-
-extern void sdfPrimLinkRect(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0,
-                            s32 aX1, s32 aY1, s32 aZ, s32 (*aAllocator)(s32));
-
-extern sdfGrOt_t D_002F6938;
 
 /* "%08X", "%02X" and "**", in .sdata where a literal cannot go. */
 extern char movieViewerFmtWord[];
-
 extern char movieViewerFmtByte[];
-
 extern char movieViewerBlankByte[];
 
 /* The memory window: a cursor over the eight nibbles of either source address,
  * the word above and the 8x8 block below. */
 extern const char movieViewerProcName[16];
-
-s32 movieViewerDebugDraw(void);
-
-extern const char D_0053F438[16];
-
-extern const char D_0053F448[16];
-
-extern const char D_0053F458[16];
-
-extern const char D_0053F468[16];
-
-extern const char cmpCampTmxPath[24];
-
-extern s32 movieViewerPhase;
-
 extern char movieViewerFmtWord[8];
-
 extern char movieViewerFmtByte[8];
-
 extern char movieViewerBlankByte[8];
-/* End of declarations from src/smt3/movie/MovieViewer.c */
 
 void MovieViewerDrawFrameInfo(void)
 {

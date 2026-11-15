@@ -1,13 +1,8 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfDelayedResrc.c */
-#include "common.h"
-
 #include "sdf_types.h"
 
 /* Declared here because no header carries these. */
 extern s32 SignalSema(s32 aSemaId);
-
 extern s32 WaitSema(s32 sema);
 
 #define SDF_PENDING_LAST_SLOT 1
@@ -21,7 +16,6 @@ typedef struct sdfDelayedResrcChunk_t sdfDelayedResrcChunk_t;
 /* Deferred handlers share one address-word argument at the native dispatch
  * boundary, while their C consumers interpret that word as different owners. */
 typedef void (*SdfPendingCallback)(void *);
-
 void sdfChipFreeDirect(void *aPtr);
 
 #define SDF_PENDING_BUFFER_CAPACITY 0x3F
@@ -43,17 +37,11 @@ typedef struct sdfDelayedResrcItems_t {
 } sdfDelayedResrcItems_t;
 
 extern sdfDelayedResrcChunk_t *sdfDelayedResrcLink;
-
 void *sdfChipAllocDirect(s32 aSize);
-
 extern s32 EIntr(void);
-
 extern saddr_t sdfPendingQueueSlots[2];
-
 extern s32 DIntr(void);
-
 extern s32 sdfDelayedResrcSemaId;
-
 extern s32 sdfCreateSema(u32, u32, u32);
 
 typedef struct effDebugPolyParams_t {
@@ -80,33 +68,12 @@ struct sdfDelayedResrcChunk_t {
 };
 
 void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, SdfPendingCallback aFreeFunc);
-
 void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
-
 sdfDelayedResrcChunk_t *sdfDelayedResrcClose(void);
-
 void sdfDelayedResrcRelease(sdfDelayedResrcChunk_t *aChunk);
-
 u64 sdfDelayedResrcCheckFunc(void);
-
 u64 sdfDelayedResrcCheck(void);
-
-void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, SdfPendingCallback aFreeFunc);
-
-void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
-
-sdfDelayedResrcChunk_t *sdfDelayedResrcClose(void);
-
-void sdfDelayedResrcRelease(sdfDelayedResrcChunk_t *aChunk);
-
 void sdfDelayedResrcProc(void);
-
-u64 sdfDelayedResrcCheckFunc(void);
-
-u64 sdfDelayedResrcCheck(void);
-
-extern s32 sdfDelayedResrcSemaId;
-/* End of declarations from src/smt3/sdf/sdfDelayedResrc.c */
 
 void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, SdfPendingCallback aFreeFunc) {
     if (sdfDelayedResrcSemaId < 0) {
@@ -240,4 +207,3 @@ u64 sdfDelayedResrcCheck(void) {
 }
 
 s32 sdfDelayedResrcSemaId = -1;
-

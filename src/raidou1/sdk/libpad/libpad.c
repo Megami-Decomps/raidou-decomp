@@ -1,8 +1,5 @@
 #include "common.h"
 
-/* Declarations from smt3-decomp src/smt3/sdk/libpad.c */
-#include "common.h"
-
 /* One half of a port's double-buffered pad data DMA buffer. */
 typedef struct padDma {
     u8 data[0x30];     /* 0x00 button data, scePadRead copies length bytes */
@@ -77,19 +74,12 @@ typedef struct padRpcClient_t {
 } padRpcClient_t;
 
 extern padRpcClient_t padRpcClient[2] __attribute__((section(".data")));
-
 extern padRpc padRpcPacket __attribute__((section(".data")));
-
 extern s32 padInitialized __attribute__((section(".data")));
-
 extern const char *padStateNames[8] __attribute__((section(".data")));
-
 extern const char *padRequestNames[4] __attribute__((section(".data")));
-
 extern void SyncDCache(void *start, void *end);
-
 extern void *memcpy(void *a, const void *b, size_t c);
-
 extern char *strcpy(char *dst, const char *src);
 
 extern s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize,
@@ -106,104 +96,52 @@ typedef struct sceSifDmaData {
     s32 attr;
 } sceSifDmaData;
 
-extern padCmd padCmdBlock[2][4] __attribute__((section(".data")));
-
 extern s32 padDebugPrint __attribute__((section(".data")));
-
-extern void *memset(void *a, int b, size_t c);
-
 extern int scePrintf(const char *fmt, ...);
-
 extern s32 sceSifDmaStat(u32 id);
-
 extern u32 sceSifSetDma(sceSifDmaData *data, s32 count);
-
 extern const char padDmaFailMsg[];
-
 int _send_to_iop(int port, int slot);
-
 extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
-
 extern int scePadGetModVersion(void);
-
 extern int scePadInit2(int mode);
-
 extern const char padDmaFailMsg[72];
-
 int scePadInit(int mode);
-
 int scePadInit2(int mode);
-
 int scePadEnd(void);
-
 int scePadPortClose(int port, int slot);
-
-/* The IOP writes the newer frame counter into whichever half it filled last,
- * so the reader picks the half with the higher count. */
 padDma *scePadGetDmaStr(int port, int slot);
-
 u32 scePadGetFrameCount(int port, int slot);
-
 int scePadRead(int port, int slot, u8 *data);
-
 int scePadGetState(int port, int slot);
-
 extern const char padStateNameError[8] __attribute__((section(".rodata")));
-
 extern const char padStateNameStable[8] __attribute__((section(".rodata")));
-
 extern const char padStateNameExecCmd[8] __attribute__((section(".rodata")));
-
 extern const char padStateNameFindCtp1[16];
-
 void scePadStateIntToStr(u32 state, char *str);
-
 int scePadSetReqState(int port, int slot, int state);
-
 int scePadGetReqState(int port, int slot);
-
 void scePadReqIntToStr(u32 req, char *str);
-
 int scePadInfoAct(int port, int slot, int actno, int term);
-
 int scePadInfoComb(int port, int slot, int listno, int offs);
-
 int scePadInfoMode(int port, int slot, int term, int offs);
-
 int scePadSetMainMode(int port, int slot, int offs, int lock);
-
 int scePadSetActDirect(int port, int slot, const u8 *data);
-
 int scePadSetActAlign(int port, int slot, const u8 *align);
-
 u32 scePadGetButtonMask(int port, int slot);
-
 int scePadSetButtonInfo(int port, int slot, u32 buttonInfo);
-
 int scePadInfoPressMode(int port, int slot);
-
 int scePadEnterPressMode(int port, int slot);
-
 int scePadExitPressMode(int port, int slot);
-
 int scePadSetVrefParam(int port, int slot, const vrefParam *param);
-
 int scePadGetPortMax(void);
-
 int scePadGetSlotMax(int port);
-
 int scePadGetModVersion(void);
-
 int scePadSetWarningLevel(int level);
-
 extern const char padStateNameDisconnect[16];
-
 extern const char padRequestNameBusy[8] __attribute__((section(".rodata")));
-
 extern const char padRequestNameFailed[8] __attribute__((section(".rodata")));
-
 extern const char padRequestNameComplete[16];
-/* End of declarations from src/smt3/sdk/libpad.c */
 
 int _send_to_iop(int port, int slot)
 {

@@ -1,16 +1,8 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/effect/effPCPScatter.c */
-#include "common.h"
-
 #include "sdf_types.h"
-
 #include "effPCPData.h"
-
 #include "ps2asm.h"
-
 #include "sdf_resource.h"
-
 #include "sdfFrame.h"
 
 struct effDebugPolyParams_t;
@@ -695,9 +687,7 @@ struct effRandState_t {
 };
 
 extern effRandState_t dds3EffectBase[];
-
 void dds3EffectPartDelete(effPartHandle_t *hEffPart);
-
 extern u32 dds3WhirlwindPolyListGetABGR(dds3WhirlwindPolyList_tag *hPoly, s32 index);
 
 /* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
@@ -719,29 +709,19 @@ effPCPWhirlwind3Poly_tag *effPCPWhirlwind3PolyCreate(
     effPCPWhirlwind3PolyParam_t *pParam, addr_t pTex);
 
 extern effDebugPolyParams_t effDebugPoly;
-
 extern sdfGrOt_t *effPCPScatterSurfaceByQueue[];
-
 extern effDebugPolyParams_t effPCPScatterDrawParams[];
-
 extern sdfGrOt_t *effPCPScatterSurfaceByPool[];
-
 extern u32 effPCPScatterTexcoords[];
-
 extern u32 effPCPScatterParams[];
-
 extern u8 effScatterTriangleIndices[];
-
 extern void *memset(void *a, s32 b, size_t c);
-
 struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 s32 sdfGrAllocPacketBuff(s32 aSize);
-
 void *sdfChipAllocDirect(s32 aSize);
-
 void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Apply the primary VU0 matrix bank vf28-vf31 to basis vectors vf24-vf27,
@@ -755,9 +735,7 @@ extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
                            s32 (*aAllocator)(s32));
 
 struct sdfMat_t *sdfMatNew(void);
-
 f32 sdfCos(f32 aRadius);
-
 void sdfDrawTagInit(struct sdfDrawTag_t *a);
 
 /* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
@@ -765,23 +743,17 @@ void MultMatrixRevNoArg(void);
 
 /* Queue an asset owner for the deferred SdfAsset release callback. */
 void sdfMatFreeDelayed(struct sdfMat_t *aMat);
-
 void sdfChipFreeDirect(void *aPtr);
-
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
-
 u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 
 /* Store the primary or secondary texture owner and mark its draw state dirty. */
 void sdfMatSetTex(struct sdfMat_t *aMat, struct sdfTexHandle_t *aTex);
-
 void sdfMatSetConstant(struct sdfMat_t *aMat, f32 aRatio);
-
 f32 sdfSin(f32 aRadius);
 
 /* Acquire a texture from a serialized texture-file header. */
 struct sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
-
 void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
 
 /* Load the X-axis rotation matrix into the primary VU0 matrix registers. */
@@ -789,70 +761,32 @@ void SetRotateMatrixX(f32 aAngle);
 
 /* Load the secondary Y-axis rotation matrix into the primary VU0 matrix registers. */
 void SetRotateMatrixY_B(f32 aAngle);
-
 extern void SetRotateMatrixXYZ(f32 *aAngles);
-
-/* Dependencies for the restored DDS effect implementations. */
-extern effPartHandle_t *dds3EffectPartCreate(s32 type, void *pData);
-
-extern effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc);
-
 extern void dds3EffectPartDraw(effPartHandle_t *hEffPart);
-
 extern void dds3EffectPartSetPosition(effPartHandle_t *hEffPart, f32 *pPos);
-
 extern void dds3EffectPartSetColor(effPartHandle_t *hEffPart, u32 abgr);
-
 extern u32 dds3GetRandA(effRandState_t *name);
-
 extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
-
 extern s32 effMagaCylinderCalcColor(s32 color, s32 tint);
-
 extern f32 sdfAtan(f32 aX);
-
 extern void SetRotateMatrixAxis(f32 aAngle, const void *aAxis);
-
 extern void *memcpy(void *a, const void *b, size_t c);
-
-effPCPHamaCardSpiral_tag *effPCPHamaCardSpiralCreate(const effPCPHamaCardSpiralParam_t *pParam, addr_t pTex, void *pData);
-
-effPCPHamaCardSphere_tag *effPCPHamaCardSphereCreate(const effPCPHamaCardSphereParam_t *pParam, addr_t pTex, void *pData);
-
-effPCPHamaCardScatter_tag *effPCPHamaCardScatterCreate(const effPCPHamaCardScatterParam_t *pParam, addr_t pTex, void *pData);
-
 dds3WhirlwindPolyList_tag *dds3WhirlwindPolyListCreate(u32 number, u32 face);
-
 void dds3WhirlwindPolyListSetRotateMatrix(dds3WhirlwindPolyList_tag *hPoly, const void *pMatrix);
-
 dds3ScatterPolyList_tag *dds3ScatterPolyListCreate(s32 face);
-
 void dds3ScatterPolyListDelete(dds3ScatterPolyList_tag *hPoly);
-
 void dds3ScatterPolyListDraw(dds3ScatterPolyList_tag *hPoly);
-
 void dds3ScatterPolyListSetTex(dds3ScatterPolyList_tag *hPoly, u32 pTex);
-
 void dds3ScatterPolyListCopyTex(dds3ScatterPolyList_tag *hPoly, dds3ScatterPolyList_tag *hPolySrc);
-
 u128 *dds3ScatterPolyListGetVertex(dds3ScatterPolyList_tag *hPoly, s32 index);
-
 u32 *dds3ScatterPolyListGetVC(dds3ScatterPolyList_tag *hPoly, s32 index);
-
 dds3ScatterPolyListTexResource_tag *dds3ScatterPolyListTexResourceCreate(u32 pTex);
-
 void dds3ScatterPolyListTexResourceDelete(dds3ScatterPolyListTexResource_tag *hSplTexRes);
-
 void dds3WhirlwindPolyListDelete(dds3WhirlwindPolyList_tag *hPoly);
-
 void dds3WhirlwindPolyListDraw(dds3WhirlwindPolyList_tag *object);
-
 void dds3WhirlwindPolyListSetTex(dds3WhirlwindPolyList_tag *hPoly, u32 pTex);
-
 void dds3WhirlwindPolyListCopyTex(dds3WhirlwindPolyList_tag *hPoly, dds3WhirlwindPolyList_tag *hPolySrc);
-
 f32 *dds3WhirlwindPolyListGetVertex(dds3WhirlwindPolyList_tag *hPoly, s32 index);
-
 f32 *dds3WhirlwindPolyListGetUV(dds3WhirlwindPolyList_tag *hPoly, s32 index);
 
 #define EFF_SCATTER_PARAM_BLOCK 0
@@ -871,193 +805,42 @@ f32 *dds3WhirlwindPolyListGetUV(dds3WhirlwindPolyList_tag *hPoly, s32 index);
 
 #define VEC3_SPLAT(v, x) ((v)[0] = (x), (v)[1] = (x), (v)[2] = (x))
 
-effPCPHamaCardSpiral_tag *effPCPHamaCardSpiralCreate();
-
-effPCPHamaCardSpiral_tag *effPCPHamaCardSpiralCreatePCF(void *parameterTable);
-
-effPCPHamaCardSpiral_tag *effPCPHamaCardSpiralCopy();
-
 void effPCPHamaCardSpiralDelete(effPCPHamaCardSpiral_tag *hData);
-
 void effPCPHamaCardSpiralPartInit(effPCPHamaCardSpiral_tag *pHCardSpiral, u32 number);
-
 void effPCPHamaCardSpiralDraw(effPCPHamaCardSpiral_tag *hData);
-
-void effPCPHamaCardSpiralSetPosition(void *hData, void *pPos);
-
-void effPCPHamaCardSpiralSetColor(effPCPHamaCardSpiral_tag *hData, u32 abgr);
-
-void effPCPHamaCardSpiralSetScale(effPCPHamaCardSpiral_tag *hData, f32 scale);
-
-effPCPHamaCardSphere_tag *effPCPHamaCardSphereCreate();
-
-effPCPHamaCardSphere_tag *effPCPHamaCardSphereCreatePCF(void *parameterTable);
-
-effPCPHamaCardSphere_tag *effPCPHamaCardSphereCopy();
-
 void effPCPHamaCardSphereDelete(effPCPHamaCardSphere_tag *hData);
-
 void effPCPHamaCardSpherePartInit(effPCPHamaCardSphere_tag *pHCardSphere, s32 number);
-
 void effPCPHamaCardSphereDraw(effPCPHamaCardSphere_tag *hData);
-
-void effPCPHamaCardSphereSetPosition(void *hData, void *pPos);
-
-void effPCPHamaCardSphereSetColor(effPCPHamaCardSphere_tag *hData, u32 abgr);
-
-void effPCPHamaCardSphereSetScale(effPCPHamaCardSphere_tag *hData, f32 scale);
-
-effPCPHamaCardScatter_tag *effPCPHamaCardScatterCreate();
-
-void effPCPHamaCardScatterCreatePCF(void *parameterTable);
-
-effPCPHamaCardScatter_tag *effPCPHamaCardScatterCopy();
-
 void effPCPHamaCardScatterDelete(effPCPHamaCardScatter_tag *hData);
-
 void effPCPHamaCardScatterPartInit(effPCPHamaCardScatter_tag *pHCardScatter, s32 number);
-
-/* vu0 routine: each particle sweeps three ribbon quads around its tilt angle,
- * and the tilt reverses once it passes half its stored span. */
 void effPCPHamaCardScatterDraw(effPCPHamaCardScatter_tag *hData);
-
-void effPCPHamaCardScatterSetPosition(void *pHCardScatter, void *pPos);
-
-void effPCPHamaCardScatterSetColor(effPCPHamaCardScatter_tag *pHCardScatter, u32 abgr);
-
 void effPCPHamaCardScatterSetScale(void);
-
-dds3ScatterPolyList_tag *dds3ScatterPolyListCreate(s32 face);
-
-void dds3ScatterPolyListDelete(dds3ScatterPolyList_tag *hPoly);
-
-void dds3ScatterPolyListDraw(dds3ScatterPolyList_tag *hPoly);
-
-void dds3ScatterPolyListSetTex(dds3ScatterPolyList_tag *hPoly, u32 pTex);
-
-void dds3ScatterPolyListCopyTex(dds3ScatterPolyList_tag *hPoly, dds3ScatterPolyList_tag *hPolySrc);
-
-u128 *dds3ScatterPolyListGetVertex(dds3ScatterPolyList_tag *hPoly, s32 index);
-
-u32 *dds3ScatterPolyListGetVC(dds3ScatterPolyList_tag *hPoly, s32 index);
-
-dds3ScatterPolyListTexResource_tag *dds3ScatterPolyListTexResourceCreate(u32 pTex);
-
-void dds3ScatterPolyListTexResourceDelete(dds3ScatterPolyListTexResource_tag *hSplTexRes);
-
 dds3ScatterPolyListTexResource_tag *dds3ScatterPolyListTexResourceCopy(dds3ScatterPolyListTexResource_tag *hSplTexResSrc);
-
 effPCPWhirlwindPoly_tag *effPCPWhirlwindPolyCreate();
-
-effPCPWhirlwindPoly_tag *effPCPWhirlwindPolyCreatePCF(void *parameterTable);
-
 effPCPWhirlwindPoly_tag *effPCPWhirlwindPolyCopy(effPCPWhirlwindPoly_tag *work);
-
 void effPCPWhirlwindPolyDelete(effPCPWhirlwindPoly_tag *hData);
-
 void effPCPWhirlwindPolyPartInit(effPCPWhirlwindPoly_tag *pWhirlwindPoly, s32 index);
-
 void effPCPWhirlwindPolyPartMove(effPCPWhirlwindPoly_tag *pWhirlwindPoly, s32 index);
-
 void effPCPWhirlwindPolyDraw(effPCPWhirlwindPoly_tag *hData);
-
-void effPCPWhirlwindPolySetPosition(effPCPWhirlwindPoly_tag *hData, void *pPos);
-
-void effPCPWhirlwindPolySetScale(effPCPWhirlwindPoly_tag *hData, f32 scale);
-
-void effPCPWhirlwindPolySetColor(effPCPWhirlwindPoly_tag *hData, u32 abgr);
-
-/* vu0 routine: compose params.matrix and source via the native product into work->matrix. */
-void effPCPWhirlwindPolySetRotateMatrix(effPCPWhirlwindPoly_tag *hData, void *pMatrix);
-
 effPCPWhirlwind2Poly_tag *effPCPWhirlwind2PolyCreate();
-
-effPCPWhirlwind2Poly_tag *effPCPWhirlwind2PolyCreatePCF(void *parameterTable);
-
 effPCPWhirlwind2Poly_tag *effPCPWhirlwind2PolyCopy(effPCPWhirlwind2Poly_tag *work);
-
 void effPCPWhirlwind2PolyDelete(effPCPWhirlwind2Poly_tag *hData);
-
 void effPCPWhirlwind2PolyPartInit(effPCPWhirlwind2Poly_tag *pWhirlwind2Poly, s32 index);
-
 void effPCPWhirlwind2PolyPartMove(effPCPWhirlwind2Poly_tag *pWhirlwind2Poly, s32 index);
-
 void effPCPWhirlwind2PolyDraw(effPCPWhirlwind2Poly_tag *hData);
-
-void effPCPWhirlwind2PolySetPosition(effPCPWhirlwind2Poly_tag *hData, void *pPos);
-
-void effPCPWhirlwind2PolySetScale(effPCPWhirlwind2Poly_tag *hData, f32 scale);
-
-void effPCPWhirlwind2PolySetColor(effPCPWhirlwind2Poly_tag *hData, u32 abgr);
-
-/* vu0 routine: compose params.matrix and source via the native product into work->matrix. */
-void effPCPWhirlwind2PolySetRotateMatrix(effPCPWhirlwind2Poly_tag *hData, void *pMatrix);
-
 effPCPWhirlwind3Poly_tag *effPCPWhirlwind3PolyCreate();
-
-effPCPWhirlwind3Poly_tag *effPCPWhirlwind3PolyCreatePCF(void *parameterTable);
-
 effPCPWhirlwind3Poly_tag *effPCPWhirlwind3PolyCopy(effPCPWhirlwind3Poly_tag *work);
-
 void effPCPWhirlwind3PolyDelete(effPCPWhirlwind3Poly_tag *hData);
-
 void effPCPWhirlwind3PolyPartInit(effPCPWhirlwind3Poly_tag *pWhirlwind3Poly, s32 index);
-
 void effPCPWhirlwind3PolyPartMove(effPCPWhirlwind3Poly_tag *pWhirlwind3Poly, s32 index);
-
 void effPCPWhirlwind3PolyDraw(effPCPWhirlwind3Poly_tag *hData);
-
-void effPCPWhirlwind3PolySetPosition(effPCPWhirlwind3Poly_tag *hData, void *pPos);
-
-void effPCPWhirlwind3PolySetScale(effPCPWhirlwind3Poly_tag *hData, f32 scale);
-
-void effPCPWhirlwind3PolySetColor(effPCPWhirlwind3Poly_tag *hData, u32 abgr);
-
-/* vu0 routine: compose params.matrix and source via the native product into work->matrix. */
-void effPCPWhirlwind3PolySetRotateMatrix(effPCPWhirlwind3Poly_tag *hData, void *pMatrix);
-
 effPCPWwSpherePoly_tag *effPCPWwSpherePolyCreate();
-
-effPCPWwSpherePoly_tag *effPCPWwSpherePolyCreatePCF(void *parameterTable);
-
 effPCPWwSpherePoly_tag *effPCPWwSpherePolyCopy(effPCPWwSpherePoly_tag *work);
-
 void effPCPWwSpherePolyDelete(effPCPWwSpherePoly_tag *hData);
-
 void effPCPWwSpherePolyPartInit(effPCPWwSpherePoly_tag *pWwSpherePoly, s32 index);
-
 void effPCPWwSpherePolyPartMove(effPCPWwSpherePoly_tag *pWwSpherePoly, s32 index);
-
 void effPCPWwSpherePolyDraw(effPCPWwSpherePoly_tag *hData);
-
-void effPCPWwSpherePolySetPosition(effPCPWwSpherePoly_tag *hData, void *pPos);
-
-void effPCPWwSpherePolySetScale(effPCPWwSpherePoly_tag *hData, f32 scale);
-
-void effPCPWwSpherePolySetColor(effPCPWwSpherePoly_tag *hData, u32 abgr);
-
-/* vu0 routine: copy four transform rows through the matrix bank. */
-void effPCPWwSpherePolySetRotateMatrix(effPCPWwSpherePoly_tag *hData, void *pMatrix);
-
-dds3WhirlwindPolyList_tag *dds3WhirlwindPolyListCreate(u32 number, u32 face);
-
-void dds3WhirlwindPolyListDelete(dds3WhirlwindPolyList_tag *hPoly);
-
-void dds3WhirlwindPolyListDraw(dds3WhirlwindPolyList_tag *object);
-
-void dds3WhirlwindPolyListSetTex(dds3WhirlwindPolyList_tag *hPoly, u32 pTex);
-
-void dds3WhirlwindPolyListCopyTex(dds3WhirlwindPolyList_tag *hPoly, dds3WhirlwindPolyList_tag *hPolySrc);
-
-f32 *dds3WhirlwindPolyListGetVertex(dds3WhirlwindPolyList_tag *hPoly, s32 index);
-
-f32 *dds3WhirlwindPolyListGetUV(dds3WhirlwindPolyList_tag *hPoly, s32 index);
-
 u32 dds3WhirlwindPolyListGetABGR(dds3WhirlwindPolyList_tag *hPoly, s32 index);
-
-/* vu0 routine: copy four transform rows through the matrix bank. */
-void dds3WhirlwindPolyListSetRotateMatrix(dds3WhirlwindPolyList_tag *hPoly, const void *pMatrix);
-/* End of declarations from src/smt3/effect/effPCPScatter.c */
 
 INCLUDE_ASM(const s32, "effect/effPCPScatter", effPCPHamaCardSpiralCreate);
 

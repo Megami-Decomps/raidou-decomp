@@ -1,14 +1,7 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdk/libc.c */
 #include "sdk_libc.h"
-
-#include "common.h"
-
 #include "sdk_libgcc.h"
-
 #include "newlib_stat.h"
-
 #include "ps2asm.h"
 
 enum {
@@ -33,18 +26,6 @@ struct sdfGrOt_t;
 #define SDF_POOL_FREE_KIND 0xFFFF
 
 #include "sdk_libkernl.h"
-
-extern void SleepThread(void);
-
-extern s32 sceSifLoadModule(const char *, s32, const char *);
-
-extern char *strcpy(char *, const char *);
-
-extern char *strcat(char *, const char *);
-
-extern void sceMcInit(void);
-
-extern void sdfGrJoinDrawTag(void *aFore, void *aBack);
 
 /* Pool release logic tests the packet head address and kind at 0xC;
  * bytes at 0x8 remain opaque. The float-key tree insertion helper reads the
@@ -75,40 +56,7 @@ typedef struct sdfGrOt_t {
     sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
 } sdfGrOt_t;
 
-/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
- * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 aSize);
-
-extern s32 WaitSema(s32);
-
-extern void FlushCache(s32);
-
-extern s32 SignalSema(s32);
-
-extern s32 sceSifDmaStat(s32);
-
-extern s32 GetThreadId(void);
-
 extern void *memcpy(void *, const void *, size_t);
-
-sdfSortOtNode_tag *sdfSortOtAvlRotateLR(sdfSortOtNode_tag *node, sdfSortOtNode_tag *parent);
-
-sdfSortOtNode_tag *sdfSortOtAvlRotateRL(sdfSortOtNode_tag *node, sdfSortOtNode_tag *parent);
-
-void sdfSortOtAvlCheckBalance(sdfSortOtNode_tag **stack, s32 stack_depth, sdfSortOtNode_tag *node,
-                   sdfSortOtNode_tag **root_p);
-
-void sdfSortOtAvlRegist(sdfSortOtNode_tag **root_p, sdfDrawTag_t *tag);
-
-void sdfGrSortOtReg(sdfGrOt_t *aOt, sdfDrawTag_t *aTag);
-
-void sdfGrSortOtFixup(void *tag, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p);
-
-void sdfGrSortOtTraverse(sdfSortOtNode_tag *node, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p);
-
-void sdfGrSortOtSetup(sdfGrOt_t *aOt);
-
-void sdfGrSortOtCallback(sdfGrOt_t *aOt, s32 aFunc, sdfDrawTag_t *aData);
 
 typedef struct _reent _reent;
 
@@ -216,140 +164,8 @@ struct _reent {
 };
 
 extern _reent *_impure_ptr __attribute__((section(".data")));
-
-extern s32 _puts_r(_reent *r, const char *s);
-
-extern s32 _raise_r(_reent *r, s32 sig);
-
-extern void *_signal_r(_reent *r, s32 sig, void *handler);
-
-extern char *_setlocale_r(_reent *r, s32 category, const char *locale);
-
-extern void *_localeconv_r(_reent *r);
-
-extern void _cleanup_r(_reent *r);
-
-extern s32 fflush(void *fp);
-
-extern s32 _fwalk(_reent *r, s32 (*func)(void *));
-
-extern s32 libc_2DC670(void);
-
 extern long _strtol_r(_reent *r, const char *s, char **end, s32 base);
-
 extern long strtol(const char *s, char **end, s32 base);
-
-extern s32 raise(s32 sig);
-
-extern void _exit(s32 code) __attribute__((noreturn));
-
-extern u8 localeconvData[] __attribute__((section(".data")));
-
-extern s32 libcErrno __attribute__((section(".data")));
-
-extern s32 mallocLockCount __attribute__((section(".data")));
-
-extern s32 mallocLockOwner __attribute__((section(".data")));
-
-extern s32 mallocSema __attribute__((section(".data")));
-
-extern s32 _init_signal_r(_reent *r);
-
-extern void std(FILE *fp, s32 flags, s32 file, _reent *data);
-
-extern _glue *__sfmoreglue(_reent *r, s32 n);
-
-extern void __sinit(_reent *r);
-
-extern void __smakebuf(FILE *fp);
-
-extern s32 __sigtramp_r(_reent *r, s32 sig);
-
-extern void *__deregister_frame_info(void *fn);
-
-extern void free(void *ptr);
-
-extern void *malloc(size_t size);
-
-extern void __malloc_lock(_reent *r);
-
-extern void __malloc_unlock(_reent *r);
-
-extern void *_malloc_r(_reent *r, u32 size);
-
-extern void _free_r(_reent *r, void *ptr);
-
-extern s32 SignalSema(s32 sema);
-
-extern void *sbrk(s32 incr);
-
-extern void *_sbrk_r(_reent *r, s32 incr);
-
-extern s32 close(s32 fd);
-
-extern _Bigint *_Balloc(_reent *r, s32 k);
-
-extern void __register_frame_info(void *fn, void *entry);
-
-extern s32 __register_frame_info_table(void *fn, void *entry);
-
-extern s32 write(s32 fd, const void *buf, s32 count);
-
-extern s32 read(s32 fd, void *buf, s32 count);
-
-extern long lseek(s32 fd, s32 offset, s32 whence);
-
-extern s32 fstat(s32 fd, struct stat *buf);
-
-extern s32 kill(s32 pid, s32 sig);
-
-extern long _read_r(_reent *r, s32 fd, char *buf, s32 n);
-
-extern long _write_r(_reent *r, s32 fd, const char *buf, s32 n);
-
-extern long _lseek_r(_reent *r, s32 fd, s32 offset, s32 whence);
-
-extern s32 __sfvwrite(FILE *fp, __suio *uio);
-
-extern s32 __sread(void *cookie, char *buf, s32 n);
-
-extern s32 __swrite(void *cookie, const char *buf, s32 n);
-
-extern long __sseek(void *cookie, s32 offset, s32 whence);
-
-extern s32 __sclose(void *cookie);
-
-extern s32 GetThreadId(void);
-
-extern s32 WaitSema(s32 sema);
-
-extern s32 vfprintf(FILE *fp, const char *fmt, va_list ap);
-
-extern void *memset(void *a, s32 b, size_t c);
-
-extern void *_calloc_r(_reent *r, u32 n, u32 size);
-
-extern const double pow10Table[];
-
-extern void abort(void);
-
-extern void __do_global_ctors(void);
-
-extern s32 atexit(void (*fn)(void));
-
-extern void (**dtorListCursor)(void) __attribute__((section(".data")));
-
-extern s32 dtorFrameDeregistered __attribute__((section(".data")));
-
-extern s32 frameObjectSema __attribute__((section(".data")));
-
-extern u8 __EH_FRAME_BEGIN__[] __attribute__((section(".data")));
-
-extern void (*__CTOR_LIST__[])(void) __attribute__((section(".data")));
-
-extern s32 mainCtorsDone __attribute__((section(".data")));
-
-extern object *frameObjectList __attribute__((section(".data")));
 
 typedef struct fp_number_type {
     s32 class;
@@ -358,15 +174,7 @@ typedef struct fp_number_type {
     u32 fraction;
 } fp_number_type;
 
-extern void sdfUnpackFloat(const void *x, fp_number_type *u);
-
-extern f32 sdfPackFloat(const fp_number_type *u);
-
-extern f64 __make_dp(s32 kind, s32 sign, s32 exp, s64 mant);
-
 #define va_start(ap, last) __builtin_stdarg_start((ap), last)
-
-extern s32 _vfprintf_r(_reent *r, FILE *fp, const char *fmt, va_list ap);
 
 typedef union f32_bits {
     f32 f;
@@ -380,24 +188,6 @@ typedef struct fp_number_type_df {
     s32 normal_exp;
     long fraction;
 } fp_number_type_df;
-
-extern f64 __pack_df(const fp_number_type_df *u);
-
-extern void sdfUnpackDouble(const double *x, fp_number_type_df *u);
-
-extern fp_number_type_df *libc_2D1590(const fp_number_type_df *a, const fp_number_type_df *b, fp_number_type_df *r);
-
-extern long __fpcmp_parts_df(const fp_number_type_df *a, const fp_number_type_df *b);
-
-void abort(void);
-
-s32 atexit(void (*fn)(void));
-
-s32 atoi(const char *s);
-
-void *malloc(size_t size);
-
-void free(void *ptr);
 
 typedef struct mallocChunkPrefix_t {
     u32 previousSize;
@@ -424,44 +214,11 @@ typedef struct mallocInfo_t {
     u8 opaque04[0x24];
 } mallocInfo_t;
 
-extern mallocArenaPrefix_t __malloc_av_;
-
-extern mallocInfo_t __malloc_current_mallinfo;
-
-extern void *__malloc_sbrk_base __attribute__((section(".data")));
-
-extern u64 __malloc_trim_threshold __attribute__((section(".data")));
-
-extern u64 __malloc_top_pad __attribute__((section(".data")));
-
-s32 _malloc_trim_r(_reent *r, u32 pad);
-
 typedef struct mallocFenceposts_t {
     u32 previousSize;
     u32 firstSize;
     u32 secondSize;
 } mallocFenceposts_t;
-
-extern u64 __malloc_max_sbrked_mem __attribute__((section(".data")));
-
-extern u64 __malloc_max_total_mem __attribute__((section(".data")));
-
-void __malloc_lock(_reent *r);
-
-void __malloc_unlock(_reent *r);
-
-s32 _printf_r(_reent *r, const char *fmt, ...);
-
-s32 printf(const char *fmt, ...);
-
-extern u32 strlen(const char *s);
-
-/* The newline owns a padded 16-byte read-only block in retail. */
-extern const char putsNewline[];
-
-s32 _puts_r(_reent *r, const char *s);
-
-s32 puts(const char *s);
 
 typedef s32 (*qsortCompare_t)(const void *, const void *);
 
@@ -505,46 +262,6 @@ static inline void qsortSwapRange(char *first, char *second, s32 bytes, s32 swap
     } \
 }
 
-void qsort(void *array, u32 count, u32 size, qsortCompare_t compare);
-
-void *_sbrk_r(_reent *r, s32 incr);
-
-s32 _init_signal_r(_reent *r);
-
-void *_signal_r(_reent *r, s32 sig, void *handler);
-
-extern s32 _getpid_r(_reent *r);
-
-extern s32 _kill_r(_reent *r, s32 pid, s32 sig);
-
-s32 _raise_r(_reent *r, s32 sig);
-
-s32 __sigtramp_r(_reent *r, s32 sig);
-
-s32 raise(s32 sig);
-
-void *signal(s32 sig, void *handler);
-
-s32 _init_signal(void);
-
-s32 __sigtramp(s32 sig);
-
-s32 _kill_r(_reent *r, s32 pid, s32 sig);
-
-s32 _getpid_r(_reent *r);
-
-s32 _sprintf_r(_reent *r, char *str, const char *fmt, ...);
-
-s32 sprintf(char *str, const char *fmt, ...);
-
-extern const u8 _ctype_[];
-
-s32 strcasecmp(const char *left, const char *right);
-
-char *strrchr(const char *s, s32 c);
-
-char *strstr(const char *haystack, const char *needle);
-
 extern const u8 _ctype_[];
 
 #define STRTOL_MAX 0x7fffffffffffffffUL
@@ -552,42 +269,11 @@ extern const u8 _ctype_[];
 #define STRTOL_MIN 0x8000000000000000UL
 
 long _strtol_r(_reent *r, const char *input, char **end, s32 base);
-
 long strtol(const char *s, char **end, s32 base);
-
-s32 gcc2_compiled__0(FILE *fp, __suio *uio);
-
-/* Buffer an unbuffered stream using only the fields the native path initializes. */
-s32 __sbprintf(FILE *fp, const char *fmt, va_list ap);
-
-s32 vfprintf(FILE *fp, const char *fmt, va_list ap);
 
 /* NON_MATCHING: formatter control flow, frame and allocation remain different. */
 extern const u8 _ctype_[264];
-
-extern const char D_0054B658[8] __attribute__((section(".rodata")));
-
-extern const char putsNewline[16];
-
-extern const char printfSpaces[16];
-
-extern const char printfZeros[16];
-
-extern char *_dtoa_r(_reent *r, f64 value, s32 mode, s32 digits,
-                     s32 *decimalPoint, s32 *sign, char **end);
-
-char *cvt(_reent *r, f64 value, s32 precision, s32 flags, char *sign,
-          s32 *decimalPoint, s32 format, s32 *length);
-
 s32 exponent(char *output, s32 value, s32 marker);
-
-s32 vsprintf(char *str, const char *fmt, va_list ap);
-
-s32 vsprintf_r(_reent *r, char *str, const char *fmt, va_list ap);
-
-s32 __swsetup(FILE *fp);
-
-s32 __mcmp(_Bigint *a, _Bigint *b);
 
 /* Little-endian IEEE binary64 word view used by the numeric helpers. */
 typedef union libcDoubleBits_t {
@@ -596,198 +282,8 @@ typedef union libcDoubleBits_t {
     u64 bits;
 } libcDoubleBits_t;
 
-void _Bfree(_reent *r, _Bigint *v);
-
-s32 _hi0bits(u32 x);
-
-_Bigint *_d2b(_reent *r, f64 d, s32 *e, s32 *bitsOut);
-
-_Bigint *_i2b(_reent *r, s32 i);
-
-_Bigint *_multadd(_reent *r, _Bigint *b, s32 m, s32 a);
-
-_Bigint *_multiply(_reent *r, _Bigint *a, _Bigint *b);
-
-_Bigint *_pow5mult(_reent *r, _Bigint *b, s32 n);
-
-_Bigint *_lshift(_reent *r, _Bigint *b, s32 shift);
-
-_Bigint *__mdiff(_reent *r, _Bigint *a, _Bigint *b);
-
-s32 quorem(_Bigint *dividend, _Bigint *divisor);
-
 extern const char dtoaInfinityText[], dtoaNanText[];
-
-extern const f64 dtoaLog10Slope __attribute__((section(".rodata")));
-
-extern const f64 dtoaLog10Offset __attribute__((section(".rodata")));
-
-extern const f64 dtoaLog10Of2 __attribute__((section(".rodata")));
-
-extern const f64 dtoaPow10Big[];
-
-extern const f64 dtoaPow10Limit __attribute__((section(".rodata")));
-
-extern const char printfNanText[8] __attribute__((section(".rodata")));
-
-extern const char printfHexLower[24];
-
-extern const char printfNullText[8] __attribute__((section(".rodata")));
-
-extern const char printfHexUpper[24];
-
-extern const char printfBadBaseMsg[32];
-
-extern const char printfZeroDigit[8] __attribute__((section(".rodata")));
-
-extern const char printfDecimalPoint[16];
-
 extern const char dtoaInfinityText[16];
-
-extern const char dtoaNanText[8] __attribute__((section(".rodata")));
-
-s32 fflush(void *stream);
-
-void std(FILE *fp, s32 flags, s32 file, _reent *data);
-
-_glue *__sfmoreglue(_reent *r, s32 n);
-
-FILE *__sfp(_reent *r);
-
-void _cleanup_r(_reent *r);
-
-void _cleanup(void);
-
-void __sinit(_reent *r);
-
-s32 _malloc_trim_r(_reent *r, u32 pad);
-
-extern void *memmove(void *destination, const void *source, size_t size);
-
-extern void *memchr(const void *source, s32 character, u32 size);
-
-s32 __sfvwrite(FILE *fp, __suio *uio);
-
-s32 _fwalk(_reent *r, s32 (*func)(void *));
-
-extern const char localeEmptyStr[];
-
-extern const char localeCName[];
-
-extern s32 strcmp(const char *left, const char *right);
-
-char *_setlocale_r(_reent *r, s32 category, const char *locale);
-
-void *_localeconv_r(_reent *r);
-
-char *setlocale(s32 category, const char *locale);
-
-void *localeconv(void);
-
-extern s32 _fstat_r(_reent *r, s32 fd, struct stat *buf);
-
-extern s32 isatty(s32 fd);
-
-void __smakebuf(FILE *fp);
-
-s32 _mbtowc_r(_reent *r, s32 *pwc, const char *s, u32 n, s32 *state);
-
-_Bigint *_Balloc(_reent *r, s32 k);
-
-void _Bfree(_reent *r, _Bigint *v);
-
-_Bigint *_multadd(_reent *r, _Bigint *b, s32 m, s32 a);
-
-/* Ordinary source reconstruction of the newlib decimal-string to Bigint helper. */
-_Bigint *_s2b(_reent *r, const char *s, s32 nd0, s32 nd, u32 y9);
-
-s32 _hi0bits(u32 x);
-
-s32 _lo0bits(u32 *y);
-
-_Bigint *_i2b(_reent *r, s32 i);
-
-/* Native indexed constants span the separately labeled word at 0x0054B928. */
-extern const s32 pow5MultTable[];
-
-_Bigint *_multiply(_reent *r, _Bigint *a, _Bigint *b);
-
-_Bigint *_pow5mult(_reent *r, _Bigint *b, s32 n);
-
-/* Qualified allocator controls for the two count lifetimes are recorded in
- * docs/levers/cross-block-locals.md, "Retain bigint limb and bit counts". */
-_Bigint *_lshift(_reent *r, _Bigint *b, s32 shift);
-
-s32 __mcmp(_Bigint *a, _Bigint *b);
-
-/* The shared pointer and limb intermediates have qualified allocator controls;
- * see docs/levers/cross-block-locals.md, "Retain bigint subtraction values". */
-_Bigint *__mdiff(_reent *r, _Bigint *a, _Bigint *b);
-
-f64 _ulp(f64 x);
-
-f64 _b2d(_Bigint *b, s32 *exponent);
-
-_Bigint *_d2b(_reent *r, f64 d, s32 *e, s32 *bitsOut);
-
-f64 _b2d(_Bigint *b, s32 *exponent);
-
-f64 _ratio(_Bigint *a, _Bigint *b);
-
-double _mprec_log10(s32 dig);
-
-s32 __sread(void *cookie, char *buf, s32 n);
-
-s32 __swrite(void *cookie, const char *buf, s32 n);
-
-long __sseek(void *cookie, s32 offset, s32 whence);
-
-extern s32 _close_r(_reent *r, s32 fd);
-
-s32 __sclose(void *cookie);
-
-long _write_r(_reent *r, s32 fd, const char *buf, s32 n);
-
-s32 _close_r(_reent *r, s32 fd);
-
-s32 _fstat_r(_reent *r, s32 fd, struct stat *buf);
-
-long _lseek_r(_reent *r, s32 fd, s32 offset, s32 whence);
-
-long _read_r(_reent *r, s32 fd, char *buf, s32 n);
-
-extern f64 dtoaLog10Slope __attribute__((section(".rodata")));
-
-extern f64 dtoaLog10Offset __attribute__((section(".rodata")));
-
-extern const f64 dtoaLog10Of2 __attribute__((section(".rodata")));
-
-extern const char localeEmptyStr[8] __attribute__((section(".rodata")));
-
-extern const char localeDecimalPoint[8] __attribute__((section(".rodata")));
-
-extern const char localeCName[4] __attribute__((section(".rodata")));
-
-extern const s32 pow5MultTable[2] __attribute__((section(".rodata")));
-
-extern const f64 pow10Table[25];
-
-extern const f64 dtoaPow10Big[4];
-
-extern const f64 dtoaPow10Limit __attribute__((section(".rodata")));
-
-extern const f64 dtoaPow10Tiny[5];
-
-extern const char kernlInternalErrorMsg[40];
-
-extern const char ttyMsgPacketTooLarge[40];
-
-extern const char ttyMsgReceiveError[24];
-
-extern const char ttyMsgSendError[24];
-
-extern const char ttyMsgWlenError[24];
-/* End of declarations from src/smt3/sdk/libc.c */
 
 long _strtol_r(_reent *r, const char *input, char **end, s32 base)
 {

@@ -1,48 +1,22 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfFile.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 s32 strlen(const char *aStr);
-
 s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-
 s32 sdfFileCmdClose(void *aHandle);
-
 s32 sdfFileCmdFree(sdfFileCmd_t *aHandle);
-
-void sdfChipFreeDirect(void *aPtr);
-
 extern u32 sdfFileLengthWork;
-
 extern u32 sdfFileSeekWork;
-
 s32 sdfFileCmdFileSize(void *aHandle);
-
 s32 sdfFileCmdSeek(void *aHandle, s32 aOffset, s32 aWhence);
-
 extern s32 WaitSema(s32 aSemaId);
-
 extern s32 SignalSema(s32 aSemaId);
-
 extern s32 sdfFileSemaId;
-
 extern u8 sdfFileDefaultSrcType;
-
-extern u8 sdfFileCmdDefaultDevice;
-
 s32 sdfFileCmdRead(void *aHandle, void *aBuffer, s32 aLength);
-
 extern char sdfFileHostRootPath[];
-
-s32 sceClose(s32 a);
-
 char *strcat(char *aDest, const char *aSrc);
 
 typedef struct sdfHostPrefix_t {
@@ -138,105 +112,51 @@ enum sdf_stream_playback {
 };
 
 extern s32 DIntr();
-
 extern void *memcpy(void *, const void *, size_t);
 
 #include "sdk_libkernl.h"
 
 extern char sdfFileCdromPrefix[];
-
 extern char * strcpy(char *, const char *);
-
 extern char sdfFileHostPrefix[];
-
 extern u8 sdfFileHddPrefix[];
-
 void *sdfChipAllocDirect(s32 aSize);
-
 extern char * strchr(const char *, s32);
-
 extern char sdfFileCdromName[];
-
 extern s32 strncmp(const char *, const char *, size_t);
-
 extern sdfFileDeviceCB_t sdfFileDeviceCB[];
-
 extern void EIntr(void);
-
 extern sdfFileCmdHandle_t *sdfFileCmdActiveHead;
-
 extern sdfFileCmdHandle_t *sdfFileCmdFreeList;
-
 extern s16 sdfFileCmdFreeCount;
 
 extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext);
 
 s32 sdfFileCmdClearError(sdfFileCmd_t *aHandle);
-
 void sdfFileCmdStartThread(s32 deviceType);
-
-extern s32 (*p2sdSmgBuf)(void);
-
-s32 sdfCdImageCheckExist(const char *fname);
-
-/* Convert a relative disc path to the drive's uppercase backslash form with ;1 suffix. */
 void sdfFileSetCdFilename(char *aDst, char *aSrc);
-
 char *sdfFileSetHostFilename(char *aDst, char *aSrc);
-
 void sdfFileSetHddFilename(char *aDst, char *aSrc);
-
 s32 sdfFileChkCdFile(char *aFilename);
-
 s32 sdfFileChkHostFile(char *aFilename);
-
 s32 sdfFileChkHddFile(char *aFilename);
-
-/* Return an allocated device path, normalizing disc-path case and separators. */
 char *sdfFileMakeFilename(char *aFilename);
-
 s32 sdfFileCallback(void *aCmd, s32 aOp, s32 aArg, s32 aResult);
-
-/* Open a path using the shared reply callback and wait for its initial completion. */
 sdfFileCmdHandle_t *sdfFileOpen(const char *aFileName);
-
-s32 sdfFileCheckExist(char *aFilename);
-
 void sdfFileClose(void *aHandle);
-
 s32 sdfFileRead(void *aHandle, void *aPtr, s32 aLeng);
-
 u32 sdfFileLength(void *aHandle);
-
 u32 sdfFileSeek(void *aHandle, s32 aPos, s32 aWhence);
-
-/* Set the current device directory, ending in a slash; path is assumed nonempty. */
 void sdfFileSetHostRoot(char *aRootPath);
-
 char *sdfFileGetHostRoot(void);
-
 void sdfFileCmdSetDefaultDevice(s32 aDevice);
-
 void sdfFileSetDefaultSrc(s32 aType);
-
-void sdfFileCmdSetDefaultDevice(s32 aDevice);
-
-/* Queue a request on the global list and on its worker's list; wake the worker when its list was empty. */
 void sdfFileCmdAllocHandle(sdfFileCmdHandle_t *state);
-
-extern u8 sdfFileDefaultSrcType;
-
-extern s32 sdfFileSemaId;
-
 extern char sdfFileCdromPrefix[8];
-
 extern char sdfFileHostPrefix[8];
-
 extern u8 sdfFileHddPrefix[8];
-
 extern char sdfFileCdromName[8];
-/* End of declarations from src/smt3/sdf/sdfFile.c */
 
 /* Convert a relative disc path to the drive's uppercase backslash form with ;1 suffix. */
 void sdfFileSetCdFilename(char *aDst, char *aSrc) {
@@ -458,4 +378,3 @@ char sdfFileCdromName[8] = "cdrom";
 sdfFileCmdHandle_t *sdfFileCmdActiveHead = NULL;
 
 sdfFileCmdHandle_t *sdfFileCmdFreeList = NULL;
-

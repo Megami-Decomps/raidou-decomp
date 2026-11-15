@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfDev9.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 s32 strlen(const char *aStr);
@@ -59,41 +53,19 @@ enum sdf_stream_playback {
 };
 
 extern void *memcpy(void *, const void *, size_t);
-
 void *sdfChipAllocDirect(s32 aSize);
-
 extern const char sdfDev9ResidentFailMsg[];
-
 extern u8 sdfDev9LoadFlag;
-
 extern u8 sdfDev9Ready;
-
 extern s32 sceSifLoadStartModule(const char *modulePath, s32 flags, void *moduleArguments, s32 *resident);
 
 #include "sdk_libc.h"
 
-extern s32 (*p2sdSmgBuf)(void);
-
 void sdfDev9LoadModule(void);
-
-/* Clear `count` quadwords at dst: four per pass, then a falling 3/2/1
- * remainder. The pass is a goto loop (no loop notes, so no loop alignment),
- * and its exit test is taken before the four stores. */
 u128 *sdfZeroMemQuad(u128 *dst, s32 count);
-
 char *sdfStrdupChip(const char *text);
-
 s32 sdfBcdToDecimal(s32 aBcd);
-
-/* Pack positive decimal digits into nibbles; non-positive input returns zero.
- * The original signed shifts and lack of an overflow check are retained.
- */
-s32 sdfDecimalToPackedDigits(s32 number);
-
 extern const char sdfDev9ResidentFailMsg[40];
-
-extern u8 sdfDev9Ready;
-/* End of declarations from src/smt3/sdf/sdfDev9.c */
 
 void sdfDev9LoadModule(void) {
     s32 resident;
@@ -171,4 +143,3 @@ s32 sdfBcdToDecimal(s32 aBcd)
 }
 
 const char sdfDev9ResidentFailMsg[40] = "cdrom0:\\IRX\\DEV9.IRX;1 resident fail.\n";
-

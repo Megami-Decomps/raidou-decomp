@@ -1,10 +1,6 @@
 #include "common.h"
 
-/* Declarations from smt3-decomp src/smt3/sdk/libgcc_floatdidf.c */
-#include "common.h"
-
 f64 __floatdidf(s64 value);
-/* End of declarations from src/smt3/sdk/libgcc_floatdidf.c */
 
 f64 __floatdidf(s64 value)
 {

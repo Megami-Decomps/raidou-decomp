@@ -1,10 +1,5 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfPrim.c */
-#include "common.h"
-
 #include "sdf_types.h"
-
 #include "sdf_resource.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
@@ -41,14 +36,6 @@ enum {
     SDF_GS_TRXREG = 0x52,
     SDF_GS_TRXDIR = 0x53
 };
-
-extern u8 sdfGrBufferSlot;
-
-extern u16 sdfReqDrawDelaySleepCount;
-
-extern u32 sdfDrawFrameCount;
-
-extern volatile u8 sdfDrawSyncFlag;
 
 struct sdfPrimRectElem_t;
 
@@ -174,8 +161,6 @@ typedef struct sdfPrimBoxLineElem_t {
 #define SDF_VIF_FLUSHE_HALFWORD 0x1000
 
 #define SDF_GIF_TWO_AD_LOOPS_EOP 0x8002
-
-extern volatile s8 sdfReqDrawDelayCount;
 
 /* TEST and ALPHA form the two A+D writes shared by the blend builders. */
 typedef struct sdfPrimTransElem_t {
@@ -342,8 +327,6 @@ typedef struct sdfPrimBoxLinePacket_t {
     u64 unwrittenAllocationWord;
 } sdfPrimBoxLinePacket_t;
 
-extern struct sdfMemHandle_t *sdfGrPacketBuffHandle;
-
 /* Fixed packets allocated by the paired blend and composite-quad renderers. */
 typedef struct sdfPrimTransPacket_t {
     sdfGrPacketHeader_t header;
@@ -425,18 +408,6 @@ typedef struct sdfPreDrawTag_t {
     u32 pad;
 } sdfPreDrawTag_t;
 
-extern s32 sdfGrPacketBuffSize;
-
-extern s32 sdfGrPacketBuffBase[2];
-
-extern s32 sdfGrPacketBuffPtr;
-
-extern s32 sdfGrPacketBuffLimit;
-
-extern s32 sdfDelayedResrcSemaId;
-
-extern s32 sdfDrawReqQueueIndex;
-
 extern sdfGrFrameSet_t sdfGrFrameSet;
 
 typedef struct effDebugPolyParams_t {
@@ -456,51 +427,28 @@ typedef struct effDebugPolyParams_t {
 } effDebugPolyParams_t;
 
 s32 sdfGrAllocPacketBuff(s32 aSize);
-
 void sdfDrawTagInit(sdfDrawTag_t *a);
-
 void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
 void sdfPreDrawTagLink(sdfPreDrawTag_t *aTag, sdfPreDrawHook_t *aHook);
-
 extern sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*aAllocator)(s32));
-
 extern void sdfPrimLinkSimplePacket(s32 aTag, void (*aFunc)(s32), s32 aPacketSize, s32 (*aAllocator)(s32));
-
 void sdfPrimSetOpaqueElem(sdfPrimTransElem_t *aElem);
-
 void sdfPrimSetOpaque2Elem(sdfPrimTransElem_t *aElem);
-
 void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *aPkt);
-
 void sdfPrimSetOpaque2Packet(sdfPrimTransPacket_t *aPkt);
-
 void sdfPrimSetSemiTransElem(sdfPrimTransElem_t *aElem);
-
 void sdfPrimSetSemiTrans2Elem(sdfPrimTransElem_t *aElem);
-
 void sdfPrimSetSemiTransPacket(sdfPrimTransPacket_t *aPkt);
-
 void sdfPrimSetSemiTrans2Packet(sdfPrimTransPacket_t *aPkt);
-
 void sdfPrimSetAddTransElem(sdfPrimTransElem_t *aElem);
-
 void sdfPrimSetAddTrans2Elem(sdfPrimTransElem_t *aElem);
-
 void sdfPrimSetAddTransPacket(sdfPrimTransPacket_t *aPkt);
-
 void sdfPrimSetAddTrans2Packet(sdfPrimTransPacket_t *aPkt);
-
 void sdfPrimSetSubTransElem(sdfPrimTransElem_t *aElem);
-
 void sdfPrimSetSubTrans2Elem(sdfPrimTransElem_t *aElem);
-
 void sdfPrimSetSubTransPacket(sdfPrimTransPacket_t *aPkt);
-
 void sdfPrimSetSubTrans2Packet(sdfPrimTransPacket_t *aPkt);
-
 void sdfPrimSetTexflushElem(sdfGrTagStdReg_t *aElem);
-
 void sdfPrimSetTexflushPacket(sdfPrimTexflushPacket_t *aPkt);
 
 void sdfPrimSetBitBltElem(sdfPrimBitBltElem_t *aElem, u32 aDstGsAddr, s32 aDstBuffWidth,
@@ -537,13 +485,9 @@ extern void sdfPrimLinkF3(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s3
                    s32 aY1, s32 aX2, s32 aY2, s32 aZ, s32 (*aAllocator)(s32));
 
 void sdfPrimSetF4Elem(sdfPrimF4Elem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aX2, s32 aY2, s32 aX3, s32 aY3, s32 aZ);
-
 extern void sdfPrimLinkF4(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aX2, s32 aY2, s32 aX3, s32 aY3, s32 aZ, s32 (*aAllocator)(s32));
-
 void sdfPrimSetG3Elem(sdfPrimG3Elem_t *aElem, s32 aPrim, s32 aX0, s32 aY0, s32 aColor0, s32 aX1, s32 aY1, s32 aColor1, s32 aX2, s32 aY2, s32 aColor2, s32 aZ);
-
 extern void sdfPrimLinkG3(sdfDrawTag_t *aTag, s32 aPrim, s32 aX0, s32 aY0, s32 aColor0, s32 aX1, s32 aY1, s32 aColor1, s32 aX2, s32 aY2, s32 aColor2, s32 aZ, s32 (*aAllocator)(s32));
-
 void sdfPrimSetG4Elem(sdfPrimG4Elem_t *aElem, s32 aPrim, s32 aX0, s32 aY0, s32 aColor0, s32 aX1, s32 aY1, s32 aColor1, s32 aX2, s32 aY2, s32 aColor2, s32 aX3, s32 aY3, s32 aColor3, s32 aZ);
 
 extern void sdfPrimLinkG4(s32 aTag, s32 aPrim, s32 aX0, s32 aY0, s32 aColor0, s32 aX1,
@@ -584,66 +528,13 @@ extern void sdfPrimLinkGt4(sdfDrawTag_t *aTag, s32 aPrim, s32 aX0, s32 aY0, s32 
                    s32 aU3, s32 aV3, s32 aColor3, s32 aZ, s32 (*aAllocator)(s32));
 
 void sdfPrimSetRectElem(sdfPrimRectElem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ);
-
 extern void sdfPrimLinkRect(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ, s32 (*aAllocator)(s32));
-
 void sdfPrimSetLineElem(sdfPrimRectElem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ);
-
 extern void sdfPrimLinkLine(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ, s32 (*aAllocator)(s32));
-
 void sdfPrimSetBoxLineElem(sdfPrimBoxLineElem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ);
-
 extern void sdfPrimLinkBoxLine(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ, s32 (*aAllocator)(s32));
-
 sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*aAllocator)(s32));
-
 void sdfPrimLinkSimplePacket(s32 aTag, void (*aFunc)(s32), s32 aPacketSize, s32 (*aAllocator)(s32));
-
-void sdfPrimSetOpaqueElem(sdfPrimTransElem_t *aElem);
-
-void sdfPrimSetOpaque2Elem(sdfPrimTransElem_t *aElem);
-
-void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *aPkt);
-
-void sdfPrimSetOpaque2Packet(sdfPrimTransPacket_t *aPkt);
-
-void sdfPrimSetSemiTransElem(sdfPrimTransElem_t *aElem);
-
-void sdfPrimSetSemiTrans2Elem(sdfPrimTransElem_t *aElem);
-
-void sdfPrimSetSemiTransPacket(sdfPrimTransPacket_t *aPkt);
-
-void sdfPrimSetSemiTrans2Packet(sdfPrimTransPacket_t *aPkt);
-
-void sdfPrimSetAddTransElem(sdfPrimTransElem_t *aElem);
-
-void sdfPrimSetAddTrans2Elem(sdfPrimTransElem_t *aElem);
-
-void sdfPrimSetAddTransPacket(sdfPrimTransPacket_t *aPkt);
-
-void sdfPrimSetAddTrans2Packet(sdfPrimTransPacket_t *aPkt);
-
-void sdfPrimSetSubTransElem(sdfPrimTransElem_t *aElem);
-
-void sdfPrimSetSubTrans2Elem(sdfPrimTransElem_t *aElem);
-
-void sdfPrimSetSubTransPacket(sdfPrimTransPacket_t *aPkt);
-
-void sdfPrimSetSubTrans2Packet(sdfPrimTransPacket_t *aPkt);
-
-void sdfPrimSetTexflushElem(sdfGrTagStdReg_t *aElem);
-
-void sdfPrimSetTexflushPacket(sdfPrimTexflushPacket_t *aPkt);
-
-void sdfPrimSetBitBltElem(sdfPrimBitBltElem_t *aElem, u32 aDstGsAddr, s32 aDstBuffWidth,
-                  s64 aDstPixelFormat, s64 aDstX, s64 aDstY,
-                  u32 aSrcGsAddr, s32 aSrcBuffWidth, s32 aSrcPixelFormat,
-                  s32 aSrcX, s32 aSrcY, s32 aWidth, s32 aHeight, s32 aDirMode);
-
-void sdfPrimSetBitBltPacket(sdfPrimBitBltPacket_t *aPacket, u32 aDstGsAddr, s32 aDstBuffWidth,
-                                    s64 aDstPixelFormat, s64 aDstX, s64 aDstY,
-                                    u32 aSrcGsAddr, s32 aSrcBuffWidth, s32 aSrcPixelFormat,
-                                    s32 aSrcX, s32 aSrcY, s32 aWidth, s32 aHeight, s32 aDirMode);
 
 void sdfPrimLinkBitBltPacket(s32 aTag, u32 aDstGsAddr, s32 aDstBuffWidth,
                              s64 aDstPixelFormat, s64 aDstX, s64 aDstY,
@@ -651,82 +542,46 @@ void sdfPrimLinkBitBltPacket(s32 aTag, u32 aDstGsAddr, s32 aDstBuffWidth,
                              s32 aSrcX, s32 aSrcY, s32 aWidth, s32 aHeight,
                              s32 aDirMode, s32 (*aAllocator)(s32));
 
-void sdfPrimFrameMovePredraw(sdfPrimFrameMovePacket_t *aPre, s32 aEvenOdd);
-
 void sdfPrimLinkFrameMovePacket(sdfDrawTag_t *aDrawTag, sdfPreDrawTag_t *aPreDrawTag,
                    sdfGsMemSlice_t *aBuffHandle, s32 aDstX, s32 aDstY,
                    s32 aSrcX, s32 aSrcY, s32 aWidth, s32 aHeight,
                    s32 aFrameSw, s32 (*aAllocator)(s32));
 
-void sdfPrimSetSpriteElem(sdfPrimSpriteElem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aU0, s32 aV0, s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aZ);
-
 void sdfPrimLinkSprite(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aU0,
                    s32 aV0, s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aZ, s32 (*aAllocator)(s32));
-
-void sdfPrimSetF3Elem(sdfPrimF3Elem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aX2, s32 aY2, s32 aZ);
 
 void sdfPrimLinkF3(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1,
                    s32 aY1, s32 aX2, s32 aY2, s32 aZ, s32 (*aAllocator)(s32));
 
-void sdfPrimSetF4Elem(sdfPrimF4Elem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aX2, s32 aY2, s32 aX3, s32 aY3, s32 aZ);
-
 void sdfPrimLinkF4(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aX2, s32 aY2, s32 aX3, s32 aY3, s32 aZ, s32 (*aAllocator)(s32));
-
-void sdfPrimSetG3Elem(sdfPrimG3Elem_t *aElem, s32 aPrim, s32 aX0, s32 aY0, s32 aColor0, s32 aX1, s32 aY1, s32 aColor1, s32 aX2, s32 aY2, s32 aColor2, s32 aZ);
-
 void sdfPrimLinkG3(sdfDrawTag_t *aTag, s32 aPrim, s32 aX0, s32 aY0, s32 aColor0, s32 aX1, s32 aY1, s32 aColor1, s32 aX2, s32 aY2, s32 aColor2, s32 aZ, s32 (*aAllocator)(s32));
-
-void sdfPrimSetG4Elem(sdfPrimG4Elem_t *aElem, s32 aPrim, s32 aX0, s32 aY0, s32 aColor0, s32 aX1, s32 aY1, s32 aColor1, s32 aX2, s32 aY2, s32 aColor2, s32 aX3, s32 aY3, s32 aColor3, s32 aZ);
 
 void sdfPrimLinkG4(s32 aTag, s32 aPrim, s32 aX0, s32 aY0, s32 aColor0, s32 aX1,
                    s32 aY1, s32 aColor1, s32 aX2, s32 aY2, s32 aColor2, s32 aX3,
                    s32 aY3, s32 aColor3, s32 aZ, s32 (*aAllocator)(s32));
 
-void sdfPrimSetFt3Elem(sdfPrimFt3Elem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aU0, s32 aV0, s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aX2, s32 aY2, s32 aU2, s32 aV2, s32 aZ);
-
 void sdfPrimLinkFt3(s32 aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aU0,
                    s32 aV0, s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aX2, s32 aY2,
                    s32 aU2, s32 aV2, s32 aZ, s32 (*aAllocator)(s32));
-
-void sdfPrimSetFt4Elem(sdfPrimFt4Elem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aU0, s32 aV0,
-                   s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aX2, s32 aY2, s32 aU2, s32 aV2,
-                   s32 aX3, s32 aY3, s32 aU3, s32 aV3, s32 aZ);
 
 void sdfPrimLinkFt4(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aU0,
                    s32 aV0, s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aX2, s32 aY2,
                    s32 aU2, s32 aV2, s32 aX3, s32 aY3, s32 aU3, s32 aV3, s32 aZ,
                    s32 (*aAllocator)(s32));
 
-void sdfPrimSetGt3Elem(sdfPrimGt3Elem_t *aElem, s32 aPrim, s32 aX0, s32 aY0, s32 aU0, s32 aV0, s32 aColor0,
-                   s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aColor1, s32 aX2, s32 aY2,
-                   s32 aU2, s32 aV2, s32 aColor2, s32 aZ);
-
 void sdfPrimLinkGt3(s32 aTag, s32 aPrim, s32 aX0, s32 aY0, s32 aU0, s32 aV0,
                    s32 aColor0, s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aColor1,
                    s32 aX2, s32 aY2, s32 aU2, s32 aV2, s32 aColor2, s32 aZ,
                    s32 (*aAllocator)(s32));
-
-void sdfPrimSetGt4Elem(sdfPrimGt4Elem_t *aElem, s32 aPrim, s32 aX0, s32 aY0, s32 aU0, s32 aV0, s32 aColor0,
-                   s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aColor1, s32 aX2, s32 aY2, s32 aU2,
-                   s32 aV2, s32 aColor2, s32 aX3, s32 aY3, s32 aU3, s32 aV3, s32 aColor3, s32 aZ);
 
 void sdfPrimLinkGt4(sdfDrawTag_t *aTag, s32 aPrim, s32 aX0, s32 aY0, s32 aU0, s32 aV0,
                    s32 aColor0, s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aColor1,
                    s32 aX2, s32 aY2, s32 aU2, s32 aV2, s32 aColor2, s32 aX3, s32 aY3,
                    s32 aU3, s32 aV3, s32 aColor3, s32 aZ, s32 (*aAllocator)(s32));
 
-void sdfPrimSetRectElem(sdfPrimRectElem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ);
-
 void sdfPrimLinkRect(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ, s32 (*aAllocator)(s32));
-
-void sdfPrimSetLineElem(sdfPrimRectElem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ);
-
 void sdfPrimLinkLine(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ, s32 (*aAllocator)(s32));
-
-void sdfPrimSetBoxLineElem(sdfPrimBoxLineElem_t *aElem, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ);
-
 void sdfPrimLinkBoxLine(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1, s32 aY1, s32 aZ, s32 (*aAllocator)(s32));
-/* End of declarations from src/smt3/sdf/sdfPrim.c */
 
 sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*aAllocator)(s32)) {
     sdfDrawTag_t *list;

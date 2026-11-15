@@ -1,121 +1,55 @@
 #include "common.h"
 
-/* Declarations from dds-decomp src/dds2/game/code_002B8FC8.c */
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1
 #endif
 
 #include "newdata.h"
-
 #include "sdk_libc.h"
-
 #include "dds/btl.h"
-
 #include "dds/fr_font.h"
-
 #include "dds/mdl_flag_api.h"
-
 #include "dds/sdf_chip.h"
-
 #include "dds/sdf_heap_api.h"
-
 #include "dds/sdk_libc.h"
-
 #include "dds/ui_color.h"
-
-/* Return whether the selected flag bit is set, as EvtBitTestResult. */
-EvtBitTestResult evtBitCheck(s32 flag);
 
 /* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
-
-/* Link a glyph chain into the current draw-buffer slot. */
-s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
-
-/* Update the first-option byte of every child on this glyph chain. */
-void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
-
 extern void *memcpy(void *, const void *, unsigned int);
-
 void *memset(void *dst, s32 value, u32 size);
-
 void qsort(void *base, u32 count, u32 size, s32 (*compare)(const void *, const void *));
-
-void *sdfChipAllocDirect(s32 size);
-
 void *sdfChipAllocZeroDirect(s32 size);
-
 void sdfChipFreeDirect(void *memory);
-
 struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-
 void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-
 void *sdfMemLock(struct sdfMemHandle_t *allocation);
 
 #include "dds/sdk_ps2.h"
-
-#include "dds/fr_font.h"
-
 #include "dds/evt_stage_test_api.h"
-
 #include "dds/evt_stage_test_resource_work_result.h"
-
 #include "dds/dsp_entry_api.h"
-
 #include "dds/snd_sequence_volume_pan.h"
-
-#include "dds/ui_color.h"
-
 #include "dds/fr_font_context.h"
-
-#include "dds/sdf_chip.h"
-
 #include "dds/itf_draw_grid.h"
-
 #include "dds/eff_resource_slots.h"
-
 #include "dds/eff_resource_records.h"
-
 #include "dds/mnu_input.h"
-
 #include "dds/dds3_process.h"
-
 #include "dds/pty_skill_menu_api.h"
-
 #include "dds/mnu_list.h"
-
-#include "dds/sdf_heap_api.h"
-
 #include "dds/mnu_staff.h"
-
 #include "dds/fpu.h"
-
 #include "dds/dat_state.h"
-
 #include "dds/eff.h"
-
 #include "dds/mnu_shop.h"
-
 #include "dds/mnu_scroll_panel.h"
-
 #include "dds/menu_fade_entry.h"
-
 #include "dds/eff_random.h"
-
-#include "dds/mdl_flag_api.h"
-
-#include "dds/btl.h"
-
 #include "dds/mnu_party_menu_data.h"
-
 #include "dds/mnu_standard_partner_requirements_api.h"
 
 struct StaffMenuRuntime;
-
-extern void itfGridStorePosition(MenuGridSlot *, EffectSlotSet *, s32);
-
-extern void mnuClearPageSelectionHandles(MenuPageWindow *);
 
 #define MNU_ENTRY_SPRITE_COUNT 4
 
@@ -234,98 +168,11 @@ typedef struct MenuList MenuList;
 typedef struct MenuIconState MenuIconState;
 
 extern void itfSetGridEntryQuantizedAndRefresh(EffectSlotSet *, s32, s32, s32, s32, s32);
-
 extern s32 itfGridLookupValueOrDefault(EffectSlotSet *object, s32 key);
-
-extern u8 *D_00435E5C;
-
 extern void mnuClearListFlagsOneAndTwo(u32 *flags);
-
-extern EvtStageTestResourceWorkResult evtStageTestAdvanceResourceWork(void);
-
-extern char mnuStaffCampPagePopupEntry[];
-
-extern void mnuDrawWindowDecorations(s32, s32, s32, MenuWindowContainer *, s32);
-
-extern void mnuReleasePartyIconBundles(MenuPageWindow *);
-
-extern void mnuClearEntries(MenuPageWindow *);
-
-extern u8 *D_00435E54;
-
-extern u8 *datUnitNames;
-
-extern void mnuDrawSlotIcons(s32 x, MenuPageWindow *page);
-
-extern void frEnableMode();
-
-extern void frDisableMode();
-
-extern char mnuCampPartySelectionReturnPopupEntry[];
-
-extern struct sdfGrOt_t *D_dds1_00325788[13][4];
-
-extern s8 evtStageTestUpdate(struct sdfGrOt_t **);
-
-extern char mnuSkillMenuDetailPopupEntry[];
-
-extern char mnuCampFieldSkillPopupEntry[];
-
-extern char mnuSkillMenuFieldUsePopupEntry[];
-
-extern char mnuSkillMenuEquippedSlotsPopupEntry[];
-
-extern char mnuSkillMenuPagePopupEntry[];
-
-extern s32 ptySkillMenuApplyFieldUseAndCost();
-
-extern void mnuPlayInputSound(s32, s32, u32 *);
-
-extern u32 mnuCampBackdropFrameMap[];
-
-extern const CampEffectRows mnuCampBackdropEffectRows;
-
-extern char *mnuCampBackdropSpriteResourceNames[];
-
-extern char *mnuCampBackdropAnimationResourceNames[];
-
-extern void effRequestResourceByMode(const char *, const char *, s32, u32 *);
-
-extern void mnuFreeWindowSprites();
-
-extern s8 evtGetCapturedWindowPanelValue(void);
-
-extern s32 mnuApplyRandomStatItemEffect();
-
-extern void mnuPrepareStaffValueChangeDialog(MenuStaffContext *, dds_datUnitWork_t *, s32, s32);
-
-extern char mnuCampRingCustomizationPopupEntry[];
-
-extern void mnuDrawCampGridAndLabel();
-
-extern u8 *datSkillMessages;
-
-extern void mnuDrawCampIconBackdropByKind();
-
-extern void mnuDrawCampGridAndLabelDefault();
-
-extern char mnuCampCommandHelpTextBank[];
-
-extern void mnuIdleVoiceTimer(struct StaffMenuRuntime *object);
-
-extern void mnuDrawPartySelectionPreview();
-
 extern void mnuDrawIconPanel(s32, s32, s32, s32, MenuIconState *, s32, s32);
-
 extern void mnuUpdateWindowPanelHandleStatesKindFourFive(MenuIconState *);
-
 extern void effDrawTextureSlotWithBlendedCornerColors(s32, s32, s32, u32, s32, EffectSlotSet *, s32, s32);
-
-extern char mnuStaffPartyBrowsePopupEntry[];
-
-extern char mnuStaffFieldSkillDisplayPopupEntry[];
-
-extern void mnuSelectPage(MenuPageWindow *window, s32 selected);
 
 /* Menu runtime fields shared by the party, panel and resource handlers. */
 typedef struct MenuContext {
@@ -382,201 +229,13 @@ typedef struct MenuVoiceState {
     s32 motionSelection; /* -1 enables periodic motion */
 } MenuVoiceState;
 
-extern void ptyRecomputeMaxHpMp(dds_datUnitWork_t *unit);
-
-extern void scrClearSecondaryScriptFlag(dds_datUnitWork_t *unit, u16 flagId);
-
 #include "dds/fr_font_draw_glyph.h"
-
-extern void fclUpdateMessage(void);
 
 typedef struct MenuListDefaults {
     s32 indices[3];
 } MenuListDefaults;
 
 extern MenuListDefaults D_0042AF00;
-
-extern void mnuDrawStaffPartySelectionPanel(s32);
-
-s32 mnuAdvanceStaffValuePopup(s32 callback);
-
-s32 mnuFinishStaffValuePopup(s32 callback);
-
-/* Initialize the menu display using a value from the resource chain. */
-u32 mnuEnterSelectedResourceLabel(dds3ProcessID_t *task);
-
-u32 mnuPartySlotAssignmentLeaveNoOp(void);
-
-s32 mnuUpdatePartySlotAssignmentPopup(s32 callback);
-
-s32 mnuStartPanelDispatch(s32 callback);
-
-s32 mnuStartPanelExit(s32 callback);
-
-/* Clear the selected item's five stat bonuses and its requirement count,
- * then recalculate the party record's maximum HP and MP. */
-void mnuClearPartySelectionValues(dds_datUnitWork_t *entry, s32 selection);
-
-u32 mnuEnterSlotLabel(dds3ProcessID_t *task);
-
-u32 mnuPartySlotClearLeaveNoOp(void);
-
-s32 mnuPartySlotConfirmClearUpdate(s32 callback);
-
-s32 mnuAdvancePartyClearPopup(s32 callback);
-
-s32 mnuFinishPartyClearPopup(s32 callback);
-
-u32 mnuAllowPartySelectionReturn(void);
-
-void mnuSelectPartySelectionVisuals(u32 context);
-
-void mnuNoOpPartySelectionCleanup(u32 callback);
-
-s32 mnuIsFinalItemIndex(s32 index, const struct MenuList *list);
-
-void mnuDestroyPartySelectionWindow(MenuContext *context);
-
-/* Snapshot the five party entries and cap the menu's displayed slot count. */
-void mnuCopyPartyEntries(MenuContext *context);
-
-extern void mnuAssignSelectedPartyEntry();
-
-/* Notify active snapshot entries, restore the backup, then refresh panel resources.
- * The second loop counts down while the backup byte offset advances forward. */
-void mnuRestorePartyEntriesAndRefresh(MenuContext *context);
-
-/* Count active entries in the five-slot party array, capped at three. */
-s32 mnuCountActiveSlots(void);
-
-/* Reset selection/backup state, activate all panel slots, and enable list nodes.
- * Keep the native short-arity snapshot call unchanged. */
-void mnuClearPartySelectionAndActivateSlots(MenuContext *context);
-
-/* Release panel textures before reinitializing slots and updating handle state. */
-void mnuRefreshPartyPanelSlots(MenuContext *context);
-
-u32 mnuReleasePartySelectionResources(dds3ProcessID_t *task);
-
-void mnuPreparePartyPanelTransition(MenuContext *menu);
-
-/* Two-stage fade: B rises first when opening, A falls first when closing.
- * The second ramp begins strictly past its threshold; clamps follow each step. */
-void mnuUpdateStaffFade(s32 opening, PartyMenuData *menuWork);
-
-/* Update the final-row flag, draw the panel, and suppress its contents update
- * once the party transition has frozen it. */
-s32 mnuOpenStaffPartySelectionPanel(s32 callback);
-
-s32 mnuStepPartySelectionControl(s32 callback);
-
-u8 mnuIsStateNotOne(void);
-
-void mnuSelectStaffSelectionVisuals(u32 context);
-
-void mnuReleaseMenuWindowHandles(s32 context);
-
-u32 mnuCreateSelectState(u32 unused, s32 staffView);
-
-s32 mnuStaffCloseSelectionState(dds3ProcessID_t *task);
-
-u32 mnuOpenStaffSelectionEntry(u32 context);
-
-s32 mnuFinishStaffSelectionEntry(dds3ProcessID_t *task);
-
-u32 mnuOpenPartySelectionEntry(u32 context);
-
-s32 mnuFinishPartySelectionEntry(dds3ProcessID_t *task);
-
-/* Update the popup first; accept confirm/cancel only while its state is zero.
- * Return a nonzero popup-update word unchanged, or zero after handling input. */
-s32 mnuStaffPopupUpdate(s32 callback);
-
-s32 mnuDrawStaffCampPageWithImage(s32 callback);
-
-s32 mnuStepStaffCampPageControl(s32 callback);
-
-extern MenuProfilePanel *mnuCreateProfilePanel(dds_datUnitWork_t *selectionState);
-
-extern void mnuConfigurePartyPanelPage(s32, s32, s32, s32);
-
-s32 mnuCreatePanels(s32 callback);
-
-s32 mnuDestroyPanels(s32 callback);
-
-void mnuResetSelectedPanelOpacity(s32 context);
-
-/* Switch the party page, rebuilding its panels; previous takes priority.
- * The opaque request argument is forwarded unchanged. Return one if switched. */
-s32 mnuStaffSwitchPartyPage(s32 requestArgument);
-
-/* Update popup state before page navigation, view toggles, and exit requests.
- * stateWord holds the update result first, then the stored popup state. */
-s32 mnuStaffBrowsePartyUpdate(s32 callback);
-
-void mnuDrawSlotIcons(s32 x, MenuPageWindow *page);
-
-void mnuDrawSelectedPartySlotMarkers(s32 context, StaffSlots *resources);
-
-void mnuDrawTextSprite(s32 x, s32 y, s32 width, u32 color, const char *text, s32 flags);
-
-void mnuDrawPartySkillAndStatusPanel(dds_datUnitWork_t *entry, MenuPageWindow *page, MenuPanelGroup *packedGroup, MenuSpriteState *spriteState, s32 unused, s32 spriteFlags);
-
-void mnuDrawProfilePanelAndSprite(dds_datUnitWork_t *entry, u32 unused1, MenuSpriteState *spriteState,
-                                    MenuProfilePanel *resource,
-                                    u32 unused4, u32 spriteFlags);
-
-void mnuIdleVoiceTimer(struct StaffMenuRuntime *object);
-
-s32 mnuStaffIdlePartyUpdate(s32 callback);
-
-u32 mnuAllowSkillMenuReturn(void);
-
-u32 mnuDestroySelectedPartyWindow(u32 callback);
-
-/* Seek the first node with a nonzero sort key and no unavailable flag.
- * Leave the cursor unchanged if no such node exists. */
-void mnuSeekFirstAvailableStaffListNode(dds3ProcessID_t *task);
-
-MenuWindowContainer *mnuSeekSelectedWindowCursor(s32 selectionMode, s32 callback);
-
-void mnuSelectSkillSelectionVisuals(u32 context);
-
-void mnuNoOpItemSelectionTeardown(s32 context);
-
-u32 *mnuBuildOwnedSkillBits(void);
-
-void mnuReleaseSkillCodeBitset(u32 *bits);
-
-s32 mnuIsSkillCodeInBitset(s32 skillCode, u32 *bits);
-
-void mnuDestroySkillMenuWindows(s32 context);
-
-u32 mnuCreateItemState(s32 callback);
-
-s32 mnuCloseItemSelectionState(s32 selection);
-
-s32 mnuCampMenuDrawSlotLabel(s32 callback);
-
-s32 mnuStepSkillSlotControl(s32 callback);
-
-/* Set the selected flag only on nodes whose index matches the saved selection. */
-void mnuHighlightSelectedListNode();
-
-u32 mnuClearSkillSelectionImageState(dds3ProcessID_t *task);
-
-/* Narrow the ID to its native 16-bit skill code before duplicate detection.
- * Insert only missing skills, then recompute maxima and clear the script flag. */
-void mnuAddPartySkillIfMissing(dds_datUnitWork_t *partyEntry, s32 skillId, s32 skillSlot);
-
-/* Clear one skill slot, retaining the native short-arity maxima recomputation. */
-void mnuClearPartySkillSlot(dds_datUnitWork_t *partyEntry, s32 skillSlot);
-
-/* Open the selected skill's popup or cancel, then process list navigation.
- * Native list reads precede the late window guard; preserve that ordering. */
-void mnuCampMenuHandleInput(s32 callback);
-
-void mnuSwapPartySkillSlots(dds_datUnitWork_t *party, s32 firstSlot, s32 secondSlot);
 
 /* First confirm stores a slot; a different second slot swaps and rebuilds.
  * Cancel clears the saved slot, opening the exit popup only if none was saved. */
@@ -595,78 +254,6 @@ typedef struct MenuPanelWindow {
     s32 field94;
 } MenuPanelWindow;
 
-void ptySkillMenuCopyPageState(s32 context);
-
-s32 ptySkillMenuEnterPage(s32 callback);
-
-s32 ptySkillMenuDispatchPageRequest(s32 callback);
-
-s32 ptySkillMenuApplyFieldUseAndCost();
-
-/* Mark entries whose field-use cost cannot be paid by the selected party member. */
-void mnuFlagMatchingEntries(s32 context);
-
-s32 ptySkillMenuHandleFieldUse(s32 callback);
-
-s32 ptySkillMenuOpenSelectedSkillPage(s32 callback);
-
-s32 ptySkillMenuDispatchConfirmRequest(s32 callback);
-
-u32 ptySkillMenuClosePartyPage(u32 callback);
-
-s32 ptySkillMenuHandlePageSwitch(s32 callback);
-
-/* Shift a selected child window's list to the requested row. Keep the
- * double-dereferenced cursor load raw: the typed form does not match. */
-void mnuSeekSelectedWindowRow(s32 menu, s32 target);
-
-s32 ptySkillMenuBrowseCandidatePages(s32 callback);
-
-s32 mnuOpenSkillDetailPanel(s32 callback);
-
-s32 mnuStepSkillDetailControl(s32 callback);
-
-void mnuDrawSelectionLabel(u16 id);
-
-/* Collect up to max pointers to occupied, frontline party slots. */
-void mnuCollectFrontlinePartySlots(const dds_datUnitWork_t **out, s32 max);
-
-u32 mnuDestroySkillSelectionWindow(u32 callback);
-
-u32 mnuResetSelection(u32 callback);
-
-u32 mnuCloseSkillSelection(u32 callback);
-
-s32 mnuUpdateSkillListInput(s32 callback);
-
-void mnuDrawListFrames(s32 context);
-
-s32 mnuCampMenuDrawStatus(s32 callback);
-
-s32 mnuStepCampStatusControl(s32 callback);
-
-void mnuInitializeMapPacket(u32 value, u32 *values, s32 count, MapPacket *packet);
-
-void mnuOrEntryFlags(u32 flags, u32 *entryFlags);
-
-void mnuCopyCampEffectRowData(const CampEffectRows *, MenuEffectResources *);
-
-void mnuBindCampEffectAnimation(MenuEffectResources *);
-
-void mnuLoadEffectResources(MenuEffectResources *);
-
-void mnuRequestEffectResources(MenuEffectResources *);
-
-u32 mnuBindCampEffectWhenLoaded(MenuEffectResources *);
-
-void mnuDestroyEffectResources(MenuEffectResources *);
-
-void mnuSpawnSpark(MenuCampEffect *fx);
-
-void mnuRetireCampSpark(MenuCampEffect *, s32 index);
-
-void mnuDrawAndAdvanceCampSparks(MenuCampEffect *fx, s32 surface);
-
 typedef struct MenuBadgePlace {
     s32 slot;
     s32 x;
@@ -677,8 +264,6 @@ typedef struct MenuBadgeLayout {
     MenuBadgePlace place[2];
 } MenuBadgeLayout;
 
-extern MenuBadgeLayout D_0042AED0;
-
 #define MNU_ADVANCE_FADE(value, amount, maximum) { \
     if ((value) < (maximum)) { \
         (value) += (amount); \
@@ -688,68 +273,22 @@ extern MenuBadgeLayout D_0042AED0;
     } \
 }
 
-void mnuDrawBadgeFade(MenuCampEffect *set, s32 surface);
-
-extern MenuBadgeLayout D_0042AEE8;
-
-void mnuDrawCampIconBackdrop(MenuCampEffect *set, s32 surface);
-
-void mnuEnableCampBadgeFade(u32 *flags);
-
 MenuList *mnuCreateListState(u32 owner, u32 visibleCount, s32 rowSpacing);
-
-void mnuUpdateListScrollFlags(MenuList *list);
-
-s32 mnuListContainsFinalNode(MenuList *list);
-
-void mnuSetGridSpriteSlot(MenuListNode *node, s32 row, s32 col, s32 x, s32 y, s32 sprite, s32 effect);
-
-void mnuSelectFirstListNode(MenuList *list);
-
-void mnuSelectLastListNode(MenuList *list);
-
 MenuListNode *mnuListAdvanceCursor(MenuList *list, s32 noScroll, s32 keepFade);
-
 MenuListNode *mnuListRetreatCursor(MenuList *list, s32 noScroll, s32 keepFade);
-
-u32 mnuTestListFlagTwo(u32 *flags);
-
-/* Return the stored row step times the visible row count, in native units. */
-s32 mnuGetListViewportHeight(const MenuList *list);
-
-/* Cancel the pending animation on every node in this list. */
-void mnuResetListNodeFadeCounters(MenuList *list);
-
-/* Subtract the fade step only when positive, then clamp any negative result to zero. */
 void mnuDecreaseListNodeFadeCounters(MenuList *list);
-
-/* Draw one four-sprite bank; the cursor entry selects the second bank. */
 void mnuDrawFourEntries(s32 x, s32 y, s32 depth, MenuList *list, MenuListNode *node, s32 drawArg);
-
-/* Blend the flag-selected packed color with the caller's previous color.
- * Flag one takes precedence over DDS2's additional flag-four color choice. */
 u32 mnuBlendListNodeColorByFlags(u32 previousColor, MenuListNode *entry);
-
-/* Apply the same entry-state blend to all four packed colors in one slot. */
 void mnuDispatchEntryWords(EffectSlotSet *menu, s32 entryIndex, MenuListNode *entry);
-
-extern struct _FRQ *itfCreateFont2TextGlyph(s32, s32, s32, u32, char *, struct _FRQ *);
-
-extern const char D_00437C28[];
 
 /* Draw visible rows, preserving each row's glyph chain and callback state. */
 void mnuDrawWindowListEntries(s32 x, s32 y, s32 depth, s32 xOffset, s32 yOffset,
                    s32 fadeScale, u32 unusedFlags, MenuList *list, s32 drawArg);
 
-/* Invoke the native window renderer at full fade with its size/flag arguments zeroed. */
 void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg);
 
 /* Destroy the owned list and optional sprite resources before freeing the window. */
 void jmsDestroyCmdMenu(MenuWindowContainer *menu);
-
-void mnuSetWindowOverlaySprite(MenuWindowContainer *menu, struct EffectSlotSet *sprite);
-
-void mnuSetWindowFadeScale(MenuWindowContainer *menu, u32 fadeScale);
 
 void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct EffectSlotSet *layout2C, u32 layout30, struct EffectSlotSet *layout34,
                                     u32 layout48, u32 layout38, struct EffectSlotSet *layout3C, u32 layout40,
@@ -757,79 +296,37 @@ void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct EffectSlotSet
 
 void mnuInitializeBasicWindowLayout(MenuWindowContainer *menu, struct EffectSlotSet *first, u32 second);
 
-void mnuSetWindowEntryParameters(u32 first, MenuWindowContainer *menu, EffectSlotSet *spriteResource, u32 third, u32 fourth);
-
-/* Copy the native panel layout, override its bounds, and mark its transition flag. */
-void mnuSetWindowPanelBounds(MenuWindowContainer *panel, const struct MenuIconState *layout,
-                             u32 left, u32 top,
-                   u32 right, u32 bottom);
-
 void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
                                u32 third, EffectSlotSet *spriteResource);
 
-/* Clear only the window's panel-transition bit. */
-void mnuClearWindowPanelTransitionFlag(MenuWindowContainer *window);
-
 MenuListNode *jmsAddCmdMenuItem(MenuWindowContainer *menu, const void *text);
-
-/* Insert `value` beside anchor in the window's list (see mnuInsertListNodeRelativeToAnchor). */
 MenuListNode *mnuInsertWindowListNodeRelativeToAnchor(MenuWindowContainer *menu, MenuListNode *anchor, const void *text, s32 mode, u32 options);
-
 void mnuRemoveWindowListCursorNode(MenuWindowContainer *menu);
-
-/* Advance selection; clear its byte and panel sprite flags only when a node is returned. */
 MenuListNode *mnuAdvanceListSelection(MenuWindowContainer *menu, s32 step);
-
-/* Retreat selection with the same conditional byte/panel cleanup as advancement. */
 MenuListNode *mnuReverseListSelection(MenuWindowContainer *menu, s32 step);
-
 MenuListNode *mnuAdvanceWindowListSelection(MenuWindowContainer *menu);
-
 MenuListNode *mnuRetreatWindowListSelection(MenuWindowContainer *menu);
-
 void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu);
-
-void mnuCheckWindowListStatus(MenuWindowContainer *menu);
 
 void mnuInitIconSprites(MenuIconSprites *obj, s32 w, s32 h, u32 value,
                         EffectSlotSet *resource, s32 *idx, s32 unused);
 
-/* Create an owned three-sprite bundle using the caller's slot-index array. */
 MenuIconSprites *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
                     EffectSlotSet *resourceHandle, s32 *indices, u32 unused);
 
-/* Destroy every native sprite slot, then release the bundle's allocation handle. */
 void mnuReleaseWindowTextures(MenuIconSprites *menu);
-
-void func_002B9A38(void);
 
 void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
                    MenuIconSprites *resource, s32 drawArg);
 
 void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, u32 option);
-
 void mnuDrawWindowIconRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, s32 count, s32 option);
-
 void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, MenuWindowContainer *window, u32 option);
-
-/* Draw the three optional decoration sprites at their individual X offsets. */
-void mnuDrawWindowDecorations(s32 x, s32 y, s32 depth, MenuWindowContainer *window, s32 option);
-
-/* Draw at the selected row before advancing the panel's transition value.
- * DDS2's alternate selection flag overrides its ordinary selection flag. */
-void mnuDrawWindowSelectionPanel(s32 x, s32 y, s32 depth, MenuWindowContainer *window, s32 drawArg);
 
 /* Draw the window, then advance its fade scale without a post-addition clamp. */
 void mnuDrawWindowContainer(s32 x, s32 y, s32 depth, MenuWindowContainer *menu, s32 drawArg);
-
-void mnuSpinForWindowListCount(MenuWindowContainer *window);
-
 MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material);
-
-/* Reset low sprite flags only for a present first sprite and a supported panel kind. */
 void mnuClearEntryFlags(MenuIconState *group);
-
-/* Destroy nonzero resource slots, retaining the native per-iteration count read, then free. */
 void mnuReleaseResourceList(MenuIconState *list);
 
 typedef struct MenuPos {
@@ -846,11 +343,8 @@ typedef struct MenuPosTable3 {
 } MenuPosTable3;
 
 extern const MenuPosTable3 D_0042AF48;
-
 void mnuDrawIconPanelFade(s32 x, s32 y, s32 z, s32 alpha, MenuIconState *state, s32 mode, s32 surface);
-
 extern const MenuPosTable D_0042AF60;
-
 void mnuDrawIconRow6(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surface);
 
 typedef struct MenuOffsets {
@@ -861,36 +355,17 @@ typedef struct MenuOffsets {
 } MenuOffsets;
 
 extern const MenuOffsets D_0042AF90;
-
 void mnuDrawIconPair(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surface);
-
 extern void mnuDrawIconPanelFade();
-
 extern void mnuDrawIconRow6();
-
 extern void mnuDrawIconPair();
-
-/* Dispatch six DDS2 panel kinds; only kind four forces full fade. */
 void mnuDrawIconPanel(s32 x, s32 y, s32 depth, s32 fade, MenuIconState *panel, s32 selectionMode, s32 drawArg);
-
 void mnuDrawIconState(u32 x, u32 y, u32 depth, u32 fade, MenuIconState *panel, u32 selectionMode, u32 drawArg);
-
 void mnuDrawIconPanelFullFade(u32 x, u32 y, u32 depth, MenuIconState *panel, s32 drawArg);
-
 void mnuUpdateWindowPanelHandleStatesKindFourFive(MenuIconState *obj);
-
-/* Rebuild the first-node pointer by walking backward from the cursor. */
 void mnuRebuildListFirstFromCursor(MenuList *list);
-
-/* Rebuild the last-node pointer by walking forward from the cursor. */
 void mnuRebuildListLastFromCursor(MenuList *list);
-
-/* Reset the viewport/cursor to the first node; exactly one requests replay
- * toward the saved cursor, rather than treating every nonzero value as true. */
 void mnuResetNodeLinks(MenuList *list, s32 restoreCursor);
-
-/* Relink and reindex the pointer array. Native endpoint writes require at
- * least two entries; zero/one-entry calls are not guarded here. */
 void mnuLinkItemList(MenuListNode **nodeArray, s32 count);
 
 /* Three-way comparison of unsigned primary keys, descending without subtraction. */
@@ -910,75 +385,12 @@ s32 mnuCompareTertiaryKeyDescending(MenuListNode **left, MenuListNode **right);
 
 /* Three-way comparison of unsigned tertiary keys, ascending without subtraction. */
 s32 mnuCompareTertiaryKeyAscending(MenuListNode **left, MenuListNode **right);
-
-/* Sort the walked node pointers and rebuild the list from the cursor.
- * Nonzero ascending selects the last three comparators, not descending order.
- * Allocation uses the stored count; key bounds and the relinker's minimum count remain unchecked. */
-extern const MenuPosTable3 D_0042AF48;
-
-extern const MenuPosTable D_0042AF60;
-
-extern const MenuOffsets D_0042AF90;
-
 void mnuSortItems(MenuList *menu, s32 keyIndex, s32 ascending);
-
-/* Allocate four native fade records into pointer slots after the list header. */
 void mnuAllocateListEntries(s32 *list);
-
-/* Free the four record blocks, not their nested window pointers. */
 void mnuFreeListEntries(s32 *list);
-
-/* Store the active word and window address in the header-selected slot.
- * Preserve the native below-five early return; it is not an upper capacity bound. */
-void mnuAppendFadingWindowEntry(s32 activeValue, s32 windowAddress, s32 *list);
-
-/* Native removal only accepts indices at least five. Propagate the tail
- * record backward to the target, clearing each source's window pointer. */
 void mnuRemoveFadingWindowEntry(s32 *list, u32 slotIndex);
-
-/* Use each record's stored position/window, with the caller supplying draw depth. */
 void mnuDrawFadingWindows(s32 depth, s32 *list, s32 drawArg);
-
-/* Subtract from every nonzero fade word without clamping. An already-zero
- * word calls the native remover, whose at-least-five index guard is retained. */
 void mnuUpdateFade(s32 *list);
-
-/* Reset the original 0x98-byte prefix, then initialize the later fade fields. */
-void mnuInitializeWindowFadeState(MenuFadeFields *menu);
-
-/* Snapshot the outgoing window and its resources before starting the next fade. */
-void mnuBeginWindowFadeTransition(MenuWindowContainer *windowAddress, MenuFadeFields *work);
-
-void mnuResetWindowFadeParameters(MenuFadeFields *menu);
-
-void mnuUpdateAndDrawWindowTransition(s32 x, s32 y, s32 depth, MenuFadeFields *menu, s32 option);
-
-void mnuInitScrollHandles(MenuScrollPanel *menu);
-
-void mnuReleaseScrollPanelAnimations();
-
-MenuScrollPanel *mnuCreateScrollPanel(struct EffectSlotSet *owner);
-
-void mnuDestroyScrollPanel(MenuScrollPanel *menu);
-
-void mnuActivatePendingPanelResource(MenuScrollPanel *context);
-
-void mnuConfigurePanelResource(MenuScrollPanel *menu, struct EffectSlotSet *model,
-                               u32 resourceIndex, u32 retract);
-
-u8 mnuHasActivePanelResource(MenuScrollPanel *resources);
-
-void mnuLoadPanelSectionResources(MenuPageSlot *slot,
-                                  EffectSlotSet *model, u32 firstValue,
-                                  u32 secondValue, s32 thirdValue);
-
-void mnuReleasePartyPanelTextures(MenuPageWindow *window);
-
-void mnuResetPartyPanelFade(MenuPageWindow *window, s32 slotIndex, u32 unused, u32 preserve);
-
-void mnuSetMenuPageFlags(MenuSprites *page, u32 flags);
-
-void mnuSetPageParams(MenuSprites *page, s32 pageTransitionMode);
 
 typedef struct MenuSpritePlacement {
     EffectSlotSet *source;
@@ -995,27 +407,6 @@ typedef struct MenuGatedSpritePlacement {
     s8 requiresFlag;
 } MenuGatedSpritePlacement;
 
-MenuSprites *mnuCreatePageSpriteSet(s32 kind, EffectSlotSet *mainResource,
-                                    EffectSlotSet *itemResource,
-                                    EffectSlotSet *iconResource,
-                                    EffectSlotSet *cursorResource,
-                                    EffectSlotSet *alternateResource);
-
-void mnuFreeIconSprites(MenuSprites *menu);
-
-void mnuDrawIconRow(s32 unusedA, s32 unusedB, s32 depth, s32 skip, MenuSprites *set, s32 drawArg);
-
-void mnuSetWindowResource(s32 pageIndex, MenuPageWindow *menu,
-                          EffectSlotSet *mainResource,
-                          EffectSlotSet *itemResource,
-                          EffectSlotSet *iconResource,
-                          EffectSlotSet *cursorResource,
-                          EffectSlotSet *alternateResource);
-
-void mnuSetIndexedWindowPageSpriteFlags(s32 index, MenuPageWindow *menu, u32 first, u32 second);
-
-void mnuClearEntries(MenuPageWindow *menu);
-
 typedef struct MenuIconEntry {
     u32 id;
     s32 x;
@@ -1026,87 +417,10 @@ typedef struct MenuIconLayout {
     MenuIconEntry entry[3];
 } MenuIconLayout;
 
-extern const MenuIconLayout D_0042AFD8;
-
-MenuIconBundle *mnuCreateIconBundle(EffectSlotSet *resource);
-
-void mnuReleaseIconBundleAndSprites(MenuIconBundle *menu);
-
-void mnuDrawFadeIcons(s32 x, s32 y, s32 depth, s32 unused, MenuIconBundle *obj, s32 drawArg);
-
-void mnuAttachPartyIconBundle(s32 slotIndex, MenuPageWindow *menu, EffectSlotSet *resource);
-
-void mnuReleasePartyIconBundles(MenuPageWindow *menu);
-
-s32 mnuPercentOrHundred(s32 currentAmount, s32 maximumAmount);
-
 typedef struct MenuPanelSequenceSettings {
     s32 rows[5][4];
     const char *captions[2];
 } MenuPanelSequenceSettings;
-
-extern MenuPanelSequenceSettings D_003E7878;
-
-extern void mnuDrawPanelSequenceByRow(MenuPageBar *, s32, s32 *, s32, s32, EffectSlotSet *);
-
-void mnuDrawPartyVitalPanelSequences(MenuPageWindow *window, EffectSlotSet *texture);
-
-void mnuReleasePartyPanelSpriteTextures(MenuPageWindow *window);
-
-/* Copy eight resource handles into the window's primary handle bank. */
-void mnuCopyPrimaryWindowHandles(MenuPageWindow *menu, struct EffectSlotSet **source);
-
-/* Copy eight resource handles into the window's secondary handle bank. */
-void mnuCopySecondaryWindowHandles(MenuPageWindow *menu, struct EffectSlotSet **source);
-
-void mnuRegisterResourceHandles(MenuPageWindow *destination, struct EffectSlotSet **source);
-
-void mnuRebuildPartySlotResources(MenuPageWindow *menu, s32 partySlotIndex, s32 kind);
-
-void mnuRefreshWindowSlots(MenuPageWindow *menu, s32 preserveResourceHandles);
-
-void mnuReleaseAndRefreshWindowSlots(MenuPageWindow *menu);
-
-extern void mnuUpdatePairedEffectBounds(MenuPageBar *bar);
-
-void mnuRefreshPartyPanelBars(MenuPageWindow *page);
-
-extern char D_00437C30[];
-
-/* Create both party-panel lists and append their shared row labels. */
-void mnuInitScrollLists(MenuPageWindow *menu, PartyPanel *records);
-
-void mnuDestroyWindowOwnedLists();
-
-void mnuRebuildScrollLists(MenuPageWindow *context, PartyPanel *records);
-
-void mnuClearPageSelection(MenuPageWindow *menu);
-
-void mnuInitPageWindow(MenuPageWindow *window, PartyPanel *records,
-                       EffectSlotSet *resources, s32 slot,
-                       EffectSlotSet *secondaryResource, s32 secondarySlot,
-                       EffectSlotSet *alternateResource, s32 alternateSlot);
-
-void mnuShutdownContext(MenuPageWindow *window);
-
-void mnuResolveUnselectedPageHandles(MenuPageWindow *window);
-
-void mnuRefreshPageHandles(MenuPageWindow *window);
-
-void mnuSelectPage(MenuPageWindow *window, s32 selected);
-
-void mnuClearPageSelectionHandles(MenuPageWindow *window);
-
-void mnuFlagActiveWindows(MenuPageWindow *window);
-
-void mnuClearPartyPanelActiveFlags(MenuPageWindow *window);
-
-void mnuClearActionFlags(s32 kind, MenuPageWindow *page);
-
-void mnuStepPartyPanelListFromInput(s32 mode, MenuPageWindow *window);
-
-extern const MenuIconLayout D_0042AFD8;
-/* End of declarations from src/dds2/game/code_002B8FC8.c */
 
 /* Subtract the fade step only when positive, then clamp any negative result to zero. */
 void mnuDecreaseListNodeFadeCounters(MenuList *list) {

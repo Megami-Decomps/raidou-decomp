@@ -1,6 +1,5 @@
 #include "common.h"
 
-/* Declarations from dds-decomp src/dds1/game/code_002BEDC8.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
@@ -11,36 +10,15 @@
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
 
 #include "dds/common.h"
-
-#include "dds/ui_color.h"
-
 #include "dds/eff.h"
 
 extern void *effGetSlotWorkOrOverride(EffectSlotSet *, s32);
-
-/* 0x80 leaves the copied corner words unchanged. */
 void sdfCopyCornerWordsWithEdgeByte(u32 *source, u32 *destination, u8 *edgeValues, u32 edge);
-
-extern void sdfDrawTexturedQuad(s32, s32, s32, s32, s32, const u32 *, const u32 *, u32,
-                          f32, u32, u32, sdfTexHandle_t *, u32);
-
-/* Draw enabled border strips and restore the temporary texture-coordinate changes. */
-void effDrawTexturedRectBorderStrips(s32 x, s32 y, s32 depth, s32 width, s32 height,
-                  const u32 *edgeExtents, u8 *edgeColorBytes,
-                  u32 *textureCoordinates, u32 *sourceCornerColors, u32 kind,
-                  u32 mode, u32 flip, u32 texture, u32 buffer);
-
-extern void sdfSubmitGsTestOneRegisterPacket(u64, u32);
-
-extern void effSelectPresetAndDispatch(u32, u32, u32, u32, u32, u32, u32, u32);
-
-extern EffectSlotSet *effUpdateTimedStates(EffectSlotSet *, u32, void *);
 
 void effDrawTextureSlot(s32 x, s32 y, s32 z, s32 color, u32 flags,
                   EffectSlotSet *set, s32 slotIndex, BdWork *draw, s32 buffer);
 
 void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, EffectSlotSet *set, s32 slot, BdWork *entry, s32 layer);
-
 void effDrawSpriteWithCornerColors(s32 x, s32 y, s32 z, u32 *palette, s32 flags, EffectSlotSet *set, s32 slot, s32 layer);
 
 void effDrawSpriteWithCornerFade(s32 x, s32 y, s32 depth, u32 blend, s32 flags,
@@ -48,7 +26,6 @@ void effDrawSpriteWithCornerFade(s32 x, s32 y, s32 depth, u32 blend, s32 flags,
 
 void effDrawRepeatedSpriteTiles(s32 x, s32 y, s32 z, s32 length, u32 weight, u32 flags,
                   EffectSlotSet *set, s32 slot, s32 layer);
-/* End of declarations from src/dds1/game/code_002BEDC8.c */
 
 /* 0x80 leaves the copied corner words unchanged. */
 void sdfCopyCornerWordsWithEdgeByte(u32 *source, u32 *destination, u8 *edgeValues, u32 edge) {

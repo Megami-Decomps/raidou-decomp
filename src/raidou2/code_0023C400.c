@@ -1,60 +1,30 @@
 #include "common.h"
 #include "raidou_alloc.h"
 
-/* Declarations from dds-decomp src/dds1/game/code_0029A840.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
 
 #include "sdk_libc.h"
-
 #include "dds/btl.h"
-
 #include "dds/mdl.h"
-
 #include "dds/sdf.h"
-
 #include "dds/sdf_chip.h"
-
 #include "dds/sdf_chunk.h"
-
 #include "dds/sdf_heap_api.h"
-
 #include "dds/sdf_map_position_api.h"
-
 #include "dds/sdf_motion.h"
-
 #include "dds/sdf_packet_alloc.h"
-
 #include "dds/sdf_packet_builders.h"
-
 #include "dds/sdf_packet_list.h"
-
 #include "dds/sdf_projection.h"
-
 #include "dds/sdf_tex_create.h"
-
 #include "dds/sdf_tex_packet.h"
-
 #include "dds/sdf_texture_format.h"
-
 #include "dds/sdf_texture_submit.h"
-
 #include "dds/sdf_vu_matrix.h"
-
 #include "dds/sdf_vu_transform_api.h"
-
 #include "dds/sdk_libc.h"
-
-/* Build a look-at basis from four-float target, eye, and up vectors. */
-void LookAtMatrix(const f32 *targetPoint, const f32 *eyePosition, const f32 *upVector);
-
-/* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
-void Mult(void);
-
-/* Rigid-invert the VU matrix in vf28-vf31 in place; translation becomes
- * -(R^T * t). The rotation input is assumed to contain no scale. */
-void ReverseMatrix(void);
 
 enum {
     SDF_PSMCT32 = 0x00,
@@ -67,53 +37,27 @@ enum {
 };
 
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
-/* Destroy one context. If it leaves its resource-owning group empty, group
- * teardown also releases that group's registered assets. */
-void mdlFree(dds3ModelHandle_t *ctx);
-
-u32 mdlGetColor(const dds3ModelHandle_t *ctx);
 
 u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
-
 u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
-
-/* VU helpers transfer vectors through vf10 and basis rows through vf28-vf30. */
-void mdlGetPosition(dds3ModelHandle_t *ctx);
-
-void mdlGetScale(dds3ModelHandle_t *ctx);
-
-void mdlLink(dds3ModelHandle_t *ctx, struct sdfGrOt_t **surfaces);
 
 /* Allocate a distinct caller-owned context linked to the registered group.
  * Contexts share the group node and assets; release each context with mdlFree. */
 dds3ModelHandle_t *mdlLoad(u32 group, u32 id);
-
 void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
-
 void mdlSetColor(dds3ModelHandle_t *ctx, u32 value);
-
 void mdlSetPosition(dds3ModelHandle_t *ctx);
-
 void mdlSetRotate(dds3ModelHandle_t *ctx);
-
 void mdlSetScale(dds3ModelHandle_t *ctx);
 
 /* sdfMotionCtrlr_t-record selection and lookup. */
 void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
-
 extern void *memcpy(void *, const void *, unsigned int);
-
 void *memset(void *dst, s32 value, u32 size);
-
 void *sdfChipAllocDirect(s32 size);
-
 void *sdfChipAllocZeroDirect(s32 size);
-
 void sdfChipFreeDirect(void *memory);
-
 void sdfDrawTagInit(struct sdfDrawTag_t *list);
-
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
@@ -125,17 +69,9 @@ void sdfLinkLoadImage(
     s32 (*allocatePacket)(s32));
 
 struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-
 void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-
 void *sdfMemLock(struct sdfMemHandle_t *allocation);
-
 u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
-
-SdfMapPositionLookupResult sdfModelGetMarkPosMatrix(
-    struct dds_sdfModelRootNode_t *model, s32 id);
-
-void sdfMotionSeek(struct sdfMotionCtrlr_t *motion, f32 frame);
 
 /* Allocate and register a texture. The shared registration helper initializes
  * its ordinary reference count to one; the caller releases that reference with
@@ -144,83 +80,24 @@ struct sdfTexHandle_t *sdfTexAlloc(s32 width, s32 height,
     SdfGsPixelStorageFormat pixelFormat, u32 maxMipLevel,
     SdfGsPixelStorageFormat clutFormat, u32 paletteCount);
 
-u32 sdfTexGetCLUTAddr(sdfTexHandle_t *texture);
-
-/* Texture resource accessors and palette helpers shared by both title providers. */
-u8 sdfTexGetCLUTCount(sdfTexHandle_t *texture);
-
-u32 sdfTexGetPixelAddr(sdfTexHandle_t *texture);
-
 /* Store the context-one resource packet on the texture's primary buffer. */
 void sdfTexMakeGIFPacket(struct sdfTexHandle_t *texture);
 
-/* Submit a palette using dimensions selected from the texture pixel format. */
-const u8 *sdfTexTransCLUT(sdfTexHandle_t *texture, u32 destination,
-                    const u8 *pixels,
-                    SdfTextureUploadOwnership borrowPixels);
-
-/* Reads the source bytes and returns its cursor advanced past the submitted image. */
-const u8 *sdfTexTransData(u32 destination, s32 width, s32 height, u32 format,
-                    const u8 *pixels,
-                    SdfTextureUploadOwnership borrowPixels);
-
 #include "dds/sdk_ps2.h"
-
 #include "dds/common.h"
-
-#include "dds/sdf_map_position_api.h"
-
 #include "dds/eff_texture_table.h"
-
 #include "dds/sdf_vu0.h"
-
 #include "dds/eff_object_node.h"
-
 #include "dds/eff_model_owner.h"
-
-#include "dds/sdf_motion.h"
-
-#include "dds/sdf_packet_list.h"
-
-#include "dds/sdf_packet_builders.h"
-
-#include "dds/sdf_chip.h"
-
 #include "dds/eff_ref_obj.h"
-
-#include "dds/sdf_heap_api.h"
-
 #include "dds/eff_anim.h"
-
 #include "dds/file.h"
-
 #include "dds/ee_mmi.h"
-
 #include "dds/pcp_vu0.h"
-
-#include "dds/sdf_projection.h"
-
-#include "dds/mdl.h"
-
-#include "dds/sdf.h"
-
-#include "dds/sdf_texture_submit.h"
-
 #include "dds/sdf_texture_file.h"
-
-#include "dds/sdf_tex_packet.h"
-
-#include "dds/sdf_tex_create.h"
-
-#include "dds/sdf_chunk.h"
-
 #include "dds/eff_expanded_source.h"
-
 #include "dds/eff_update_flags.h"
-
 #include "dds/btl_runtime.h"
-
-#include "dds/btl.h"
 
 extern struct EffExpandedList *effCacheTexCreate(u32);
 
@@ -236,105 +113,39 @@ typedef struct EffBattleTexHeaders {
 } EffBattleTexHeaders;
 
 extern u32 D_003BC950;
-
 extern u32 D_003BC954;
-
 extern EffectObjectNode *effFloorModelListHead;
-
-extern u8 btlIsRuntimeAllocated(void);
-
-extern u8 btlIsCurrentActorFullyMarked(void);
-
-extern EffModelOwner *effCreateModelOwner(FileJobPayload *);
-
 extern u32 effSharedTextureReferenceCount;
-
 extern sdfTexHandle_t *D_003BC958;
-
 extern void effFloorModelListRemove(EffectObjectNode *);
 
 /* Initialize the VU transforms and the first node's float slot, if present. */
 void Init_effModel(dds3ModelHandle_t *model);
-
-extern u16 D_003BC944;
-
-extern void mdlPackDecode(s32, u16, s32, const u8 *, s32);
-
 extern void Init_effModel(dds3ModelHandle_t *);
-
 dds3ModelHandle_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
 
 /* Clear the lighting attachment before destroying its model context. */
 void effDestroyModelContext(dds3ModelHandle_t *model);
-
-EffModelOwner *effCreateModelOwner(FileJobPayload *source);
-
 void effDestroyModelOwner(EffModelOwner *owner);
-
 extern void effRecreateModelFromSource(EffModelOwner *, EffModelOwner *);
-
-EffModelOwner *effDuplicateEffectHeader(EffModelOwner *source);
-
 void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source);
-
-void effModelAnimationStop(EffModelOwner *owner);
-
-extern s32 effComputeLightDirectionVU(dds3ModelHandle_t *, sdf3DLightParallelPacket_t *);
-
-#include "dds/sdf_packet_alloc.h"
-
-extern sdfGrOt_t *D_dds1_00325788[13][4];
-
-extern u64 D_0037E5B0[];
-
-/* Attach the owner's lighting buffer when the direction update succeeds. */
-void effRefreshModelLighting(EffModelOwner *work);
-
-/* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
 void effApplyModelPrimaryVector(EffModelOwner *owner, const f32 *position);
-
 void effApplyModelVecB(EffModelOwner *owner, const f32 *rotation);
-
 void effBroadcastModelMask(EffModelOwner *owner, u32 color);
-
 void effApplyScaledModelTertiaryVector(EffModelOwner *owner, float scale);
-
-void effUploadModelTextures(EffModelOwner *owner);
-
 void effFloorModelListPush(EffModelOwner *obj);
-
-/* Track floor models only while battle is active and the current actor is not fully marked. */
-EffModelOwner *effCreateFloorModelOwner(FileJobPayload *source);
-
 void effMarkFloorModelForDestruction(EffModelOwner *work);
-
-extern void effRecreateModelFromSource(EffModelOwner *, EffModelOwner *);
-
-EffModelOwner *effDuplicateFloorModelOwner(EffModelOwner *source);
 
 /* Render the model owner with staged GS TEST_2 packets, then restore the tests. */
 void effRenderModelOwnerWithGsTests(EffModelOwner *owner);
-
 extern u32 effModelUpdateControlFlags;
-
 void effMarkFloorModelForUpdate(EffModelOwner *work);
-
-void effFloorModelListPush(EffModelOwner *obj);
-
 extern char D_003B2AA0[];
 
 #include "dds/sdf_debug_api.h"
 
 void effFloorModelListRemove(EffectObjectNode *node);
-
 void effSweepFloorModelList(void);
-
-void mdlPropagateObjectFlag(void);
-
-void mdlClearListedObjectFlag(void);
-
-void mdlSetListedObjectFlag(void);
-
 void mdlMarkAndProcessObjectNodes(void);
 
 #include "dds/eff_resource_owner.h"
@@ -349,80 +160,33 @@ typedef struct EffResourceModelConfig {
 typedef char EffResourceModelConfig_size_check[
     sizeof(EffResourceModelConfig) == 0x3C ? 1 : -1];
 
-/* Create an empty owner, or load its model and per-record queues from a file job. */
 EffResourceOwner *Create_effHelper(FileJobPayload *source);
-
 void Delete_effHelper(EffResourceOwner *owner);
-
 extern EffResourceOwner *Create_effHelper(FileJobPayload *);
-
 extern void effResourceCopy(EffResourceOwner *, EffResourceOwner *);
-
 EffResourceOwner *Copy_effHelper(EffResourceOwner *source);
-
 void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src);
-
-void effResetModelMotionAndOwnerFlag(EffResourceOwner *work);
-
-extern void effGetWorldVector(u32);
-
-extern void sdfVuMatrixToQuaternion(const f32 [4][4]);
-
-extern void btlDebugDrawSegment(f32 *, f32 *, u32);
-
-extern void btlDebugDrawPoint(f32 *);
-
-extern f32 effWorldUpVector[4];
-
-extern f32 D_0037E110[4];
-
-extern f32 D_0037E100[4];
-
-extern f32 D_003B2AC0[4];
-
-void func_0029B818(EffResourceOwner *owner);
-
-/* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
 void effLoadModelPrimaryVector(EffResourceOwner *work, const f32 *position);
-
 void effSetModelRotationQuaternion(EffResourceOwner *work, const f32 *rotationQuaternion);
-
 void effPropagateResourceModelMask(EffResourceOwner *work, u32 color);
-
 void effScaleModelVec(EffResourceOwner *work, float scale);
-
 void effObjectListCountersReset(void);
-
 extern s32 sdfImageDataSize(u32 format, s32 width, s32 height);
-
 RefObj *effCreateSharedTextureReference(SdfTextureFileHeader *source);
-
 RefObj *effCloneSharedReferenceWithValue(SdfTextureFileHeader *source, u32 textureIndex);
-
 void effReleaseSharedReference(RefObj *obj);
-
 RefObj *effRetainSharedReference(RefObj *obj);
-
-/* Native GS dimension SDK calls: 0029C16C/0029C17C.
- * Address normalization before TEX0 packing is also traced in
- * texture_renew_secondary_epoch_probe (parity OK, local-alloc q14/q16). */
 sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, RefObj *source);
-
 s32 effCountExpandedEntries(const EffExpandedList *list);
 
 /* Serialized expanded list: 0x10-byte header, the entry table, then each entry's payload. */
-/* Copy a serialized list into one allocation and retain a shared texture reference per entry. */
 struct EffExpandedList *effCacheTexCreate(u32 sourceAddress);
-
 void effCacheTexDelete(EffExpandedList *holder);
-
 EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj);
-
 void effCacheTexAnimGet(const EffExpandedList *set, u32 frame, EffAnimSample *out);
 
 sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdfGrOt_t *target,
                                                  const EffAnimSample *sample);
-/* End of declarations from src/dds1/game/code_0029A840.c */
 
 void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source) {
     EffModelOwner *owner = work;

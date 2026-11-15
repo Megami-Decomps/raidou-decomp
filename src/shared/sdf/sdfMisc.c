@@ -1,16 +1,9 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfMisc.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-
 void sdfChipFreeDirect(void *aPtr);
 
 enum SdfFileIOCmdStat {
@@ -61,28 +54,14 @@ enum sdf_stream_playback {
 };
 
 void *sdfChipAllocDirect(s32 aSize);
-
 u32 sdfMemLock(sdfMemHandle_t *aHandle);
-
 sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-
-extern s32 (*p2sdSmgBuf)(void);
-
-/* Allocate element storage with a fixed element stride and growth increment. */
 sdfItemArray_t *sdfItemArrayNew(s32 aInitCapa, s32 aElemSize, s32 aGrowStep);
-
 void sdfItemArrayFree(sdfItemArray_t *aArray);
-
 void sdfMemUnlock(sdfMemHandle_t *aHandle);
-
 void sdfMemReallocRecord(sdfMemHandle_t *aHandle, s32 aSize);
-
 void sdfDevResizeBufferedRequest(sdfItemArray_t *aArray, s32 aCapacity);
-
 void sdfItemArrayGrow(sdfItemArray_t *aArray);
-
-void sdfDevResizeBufferedRequest(sdfItemArray_t *aArray, s32 aCapacity);
-/* End of declarations from src/smt3/sdf/sdfMisc.c */
 
 /* Allocate element storage with a fixed element stride and growth increment. */
 sdfItemArray_t *sdfItemArrayNew(s32 aInitCapa, s32 aElemSize, s32 aGrowStep) {

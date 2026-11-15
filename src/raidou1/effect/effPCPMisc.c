@@ -1,19 +1,10 @@
 #include "common.h"
 #include "raidou_alloc.h"
-
-/* Declarations from smt3-decomp src/smt3/effect/effPCPMisc.c */
-#include "common.h"
-
 #include "effPCPData.h"
-
 #include "fpu.h"
-
 #include "ps2asm.h"
-
 #include "sdf_resource.h"
-
 #include "sdf_types.h"
-
 #include "sdfFrame.h"
 
 struct dds3ModelResrc_t;
@@ -668,16 +659,8 @@ struct sdfGrOt_t {
 };
 
 extern struct sdfGrOt_t *sdfModelOtTable[4];
-
 extern u8 effPCPZiodin01Vec[];
-
 extern s32 BlinkMultiBlurCount;
-
-extern s8 effPCPBufuLight_Start;
-
-extern f32 effPCPBufuLightDirection[4];
-
-extern f32 effPCPBufuLightAxis[4];
 
 /* The two titles register these eight compact table rows at matching indices.
  * These names describe registrations only; serialized kinds remain u16. */
@@ -2377,11 +2360,8 @@ struct dds3ModelHandle_t {
 };
 
 extern void dds3BillboardDraw(billHandle_t *hData);
-
 void dds3BillboardSetMode(struct billHandle_t *hBillboard, s32 mode);
-
 void dds3BillboardSetRGBA(struct billHandle_t *hBillboard, u32 abgr);
-
 void dds3BillboardSetScale(struct billHandle_t *hBillboard, f32 x, f32 y);
 
 struct effDebugPolyParams_t {
@@ -2401,67 +2381,26 @@ struct effDebugPolyParams_t {
 };
 
 extern effDebugPolyParams_t dds3RingPolyExpListPolyParam;
-
 extern sdfGrOt_t *dds3RingPolyExpListBlendOt[];
-
 extern u8 dds3RingPolyExpListParameters[];
-
-/* Factories accept the serialized parameter prefix used by effect callbacks. */
-effBlurScatterWork_t *dds3EffectDistortionBlurCreate(dds3Effect_DistortionBlurParam_t *pParam);
-
-extern u8 effPCPEyeThunderParam04_0[];
-
-extern u8 effPCPEyeThunderParam04_1[];
-
 dds3Effect_PartialMultiBlur_t *dds3EffectPartialMultiBlurCreate(const dds3Effect_PartialMultiBlurParam_t *pParam);
-
-effBlurScaleWork_t *dds3EffectRippleBlurCreate(dds3Effect_RippleBlurParam_t *pParam);
-
 dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *pParam);
-
-void dds3EffectPartialMultiFilterDelete(dds3Effect_PartialMultiFilter_t *hPartialMultiFilter);
-
-void dds3EffectDistortionBlurDelete(effBlurScatterWork_t *hDistortionBlur);
-
-void dds3EffectRippleBlurDelete(effBlurScaleWork_t *hRippleBlur);
-
 void dds3EffectFilter(effResourceRectDrawParams_t *params);
-
 void dds3EffectBlur(dds3Effect_Blur_t *quad);
-
 u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
-
 effHandle_t *dds3EffectCopy(const effHandle_t *source);
-
-extern effPCP_ThunderPolyParam_t effPCPShockWave02Param[];
 
 /* Copy one 128-bit vector from the read-only source to destination storage. */
 void dds3BillboardSetPosition(void *hBillboard, const void *pPos);
-
 void dds3EffectSetPosition(struct effHandle_t *pData, const void *pPos);
-
 struct billHandle_t *dds3BillboardGeneral(s32 number);
-
 effPCPThunderSpherePoly_t *effPCPThunderSpherePolyCreate(effPCPThunderSpherePolyParam_t *parameters);
-
-void effPCPThunderSpherePolyDelete(effPCPThunderSpherePoly_t *hData);
-
 effPCPThunderSpherePolyParam_t *effPCPThunderSpherePolyGetParam(effPCPThunderSpherePoly_t *pThunderPoly);
-
 void dds3BillboardDelete(struct billHandle_t *hData);
-
 extern void *effPkt3DPrimMakePoly(effDebugPolyParams_t *aParm);
-
-extern u8 effPCPEyeThunderParam01_0[];
-
-extern u8 effPCPEyeThunderParam01_1[];
-
 extern effRandState_t dds3EffectBase[];
-
 void dds3EffectDelete(effHandle_t *pData);
-
 void dds3EffectPartDelete(effPartHandle_t *hEffPart);
-
 void dds3EffectPartialMultiBlurDraw(dds3Effect_PartialMultiBlur_t *owner);
 
 /* Clone a mixer owner or release all of its active voices. */
@@ -2470,17 +2409,11 @@ struct effBTL_t *effEveBEDCreate(struct effBTL_t *pData);
 /* The event constructor copies a serialized, caller-specific 0x30-byte
  * parameter record. Its retained work owner is opaque to external users. */
 effEveBEDCutHandle_t *effEveBEDCutCreate(struct effBTL_t *hEveBED, u16 CutNum, const void *pParams);
-
 void effEveBEDCutDelete(effEveBEDCutHandle_t *hEveBEDCut);
-
 void effEveBEDDelete(struct effBTL_t *hEveBED);
-
 extern u8 effPCP_ShockWave01_ThunderSpherePoly_Param[];
-
 extern effPCP_ThunderPolyParam_t effPCPMZiodin01ThunderParam[];
-
 extern u8 effPCP_Houden01_ThunderSpherePoly_Param[];
-
 extern s32 effPCPBlurScreenOffset(f32 value);
 
 /* Advance caller-owned state, returning its next 32-bit value. NULL selects
@@ -2489,64 +2422,29 @@ u32 dds3GetRandA(effRandState_t *name);
 
 /* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
 f32 dds3GetRandFloatA(effRandState_t *name);
-
 extern u32 effMagaCylinderCalcColor(u32 flags, u32 color);
-
-extern u8 effPCPEyeThunderParam00_0[];
-
-extern effPCP_ThunderPolyParam_t effPCPZiodin02Param[];
-
-extern u8 effPCPEyeThunderParam00_1[];
-
-extern u8 effPCPEyeThunderParam05_0[];
-
-extern u8 effPCPEyeThunderParam05_1[];
-
 effPartHandle_t *dds3EffectPCPDataPartCreate(dds3EffectPCPData_t *hPCPData, u32 number);
 
 /* Optional source and matrix operations retain their generic pointer domains. */
 void dds3EffectPartSetPosition(effPartHandle_t *hEffPart, void *pPos);
-
 void dds3EffectPartSetScale(effPartHandle_t *hEffPart, f32 scale);
-
 void dds3EffectPartSetRotateMatrix(effPartHandle_t *hEffPart, void *pMatrix);
-
 void dds3EffectPartSetColor(effPartHandle_t *hEffPart, u32 abgr);
-
 effPartHandle_t *dds3EffectPartCreate(u16 type, void *pData);
-
 effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc);
-
 void *dds3EffectPartGetHandle(effPartHandle_t *hEffPart);
-
 void dds3EffectPartDraw(effPartHandle_t *hEffPart);
-
 void effPCPAgiFireballSetColor(effPCPAgiFireball_tag *hData, u32 abgr);
-
 extern void effPCPRingPolyExpSetVertex(f32 pPCPRingPolyExp, struct effPCPRingPolyExp_tag *radius);
-
 void effPCPRingPolyExp2SetVertex(effPCPRingPolyExp2_tag *pPCPRingPolyExp2, f32 radius);
-
 effPCPRingPolyExp_tag *effPCPRingPolyExpCreate(effPCPRingPolyExpParam_t *pParam);
-
 effPCPRingPolyExp2_tag *effPCPRingPolyExp2Create(effPCPRingPolyExp2Param_t *hData);
-
 void dds3RingPolyExpListDelete(dds3RingPolyExpList_tag *hData);
-
 effPCPSpiralBED_tag *effPCPSpiralBEDCreate(effPCPSpiralBEDParam_t *pParam, void *pBEDData);
-
 effPCPRadiateBED_tag *effPCPRadiateBEDCreate(effPCPRadiateBEDParam_t *pParam, void *pBEDData);
 
 effPCPRadiateTB_tag *effPCPRadiateTBCreate(
     effPCPRadiateTBParam_t *pParam, void *pBEDData0, void *pBEDData1);
-
-effPCPAnalyzeBED_tag *effPCPAnalyzeBEDCreate(void *pBEDData);
-
-void effPCPAnalyzeInit(effPCPAnalyzeBED_tag *pAnalyzeBED);
-
-effPCPFLEACHBlur_tag *effPCPFLEACHBlurCreate(effPCPFLEACHBlurParam_t *pFLEACHBlurParam);
-
-void effPCPAgiFireballSetRotateMatrix(effPCPAgiFireball_tag *hData, const void *pMatrix);
 
 void effPCPAgiFireballSetPosition(effPCPAgiFireball_tag *hData, const void *pPos);
 
@@ -2554,53 +2452,21 @@ effPCPAgiFireball_tag *effPCPAgiFireballCreate(
     const effPCPAgiFireballParam_t *pParam, const effPCPAgiFireballPartList_t *pPart);
 
 effPCPRadiateThunder_tag *effPCPRadiateThunderCreate(const effPCPRadiateThunderParam_t *pParam, void *pData);
-
 extern effPCPBlinkMultiBlurBase_tag *pBlinkMultiBlurBase;
-
 effPCPBreath_tag *effPCPBreathCreate(void *params, effPCPAgiraoFirePartList_t *handleParams);
-
 void dds3EffectPartialMultiBlurDelete(dds3Effect_PartialMultiBlur_t *hPartialMultiBlur);
-
 extern u8 effPCP_Megidoraon01_ThunderSpherePoly_Param[];
-
 void dds3EffectSetRGBA(effHandle_t *pData, u32 abgr);
-
 extern effPCP_ThunderPolyParam_t effPCPZiodin01ThunderParam[];
-
 extern u8 effPCP_Megidora01_ThunderSpherePoly_Param[];
-
 extern effPCP_ThunderPolyParam_t effPCPMZiodin02ThunderParam[];
-
 effPCP_ThunderPoly_t *effPCP_ThunderPolyCreate(effPCP_ThunderPolyParam_t *parameters);
 
 /* Borrow the parameter block stored at the beginning of the owner. */
 effPCP_ThunderPolyParam_t *effPCP_ThunderPolyGetParam(effPCP_ThunderPoly_t *pThunderPoly);
-
 void effPCP_ThunderPolyDelete(effPCP_ThunderPoly_t *hData);
-
 void effPCP_ThunderPolyDraw(effPCP_ThunderPoly_t *hData);
-
 void dds3EffectDraw(effHandle_t *pData);
-
-u32 effBTLSkillCheckRun(void);
-
-u8 *effBTLSkillGetTargetFormation(s32 number);
-
-void mdlSetRotate(dds3ModelHandle_t *aHandle);
-
-void sdfMotionNext(sdfMotionCtrlr_t *aCtrlr);
-
-void sdfModelEvalTm(sdfModelRootNode_t *aRoot);
-
-void sdfModelLinkOt(struct sdfGrOt_t **aOt, sdfModelRootNode_t *aRoot);
-
-/* Euler angles into the primary VU0 matrix bank. */
-void FromEuler(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
-
-/* vf10 = vf10 * vf11 through the primary matrix bank. */
-void Mult(void);
-
-extern const f32 effPCPMakkaUnitY[4];
 
 /* The model root's node list, whose item array sits at 0x0C. */
 typedef struct {
@@ -2608,49 +2474,19 @@ typedef struct {
     sdfModelNode_t **PartList;
 } effPCPAgiFireball2PartList_t;
 
-u32 effBTLSkillCheckRun(void);
-
-u8 *effBTLSkillGetTargetFormation(s32 number);
-
-void effBTLModelGetSphereCenter(void *pFormation);
-
-s32 effBTLModelGetID(void *pFormation);
-
-void effBTLPartGetPositionPtr(void *pFormation, effBTL_SkillPositionPtr_t *pPosPtr, f32 *pPos);
-
-extern effPCP_ThunderPolyParam_t effPCPZiodin03Param[];
-
-extern u8 effPCPEyeThunderParam02_0[];
-
-extern u8 effPCPEyeThunderParam02_1[];
-
-extern effPCP_ThunderPolyParam_t effPCPZiodin04Param[];
-
-extern u8 effPCPEyeThunderParam03_0[];
-
-extern u8 effPCPEyeThunderParam03_1[];
-
 /* Motion-record selection and lookup. */
 void mdlSingleMotion(dds3ModelHandle_t *aHandle, s32 aGroup, s32 aNumber);
-
 void mdlSetColor(dds3ModelHandle_t *aHandle, u32 aColor);
-
 void mdlLink(dds3ModelHandle_t *aHandle, struct sdfGrOt_t **aModelOt);
-
 void mdlSetPosition(dds3ModelHandle_t *aHandle);
-
 extern void *memcpy(void *, const void *, size_t);
-
 extern void *memset(void *a, int b, size_t c);
-
 struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 s32 sdfGrAllocPacketBuff(s32 aSize);
-
 void *sdfChipAllocDirect(s32 aSize);
-
 void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Load axis-angle rotation into VU0 vf28-vf31. */
@@ -2660,12 +2496,6 @@ void SetRotateMatrixAxis(f32 aAngle, const sdfVector3_t *aAxis);
  * then replace vf28-vf31 with the four transformed vectors. */
 void MultMatrixNoArg(void);
 
-void effBTLFieldLightDirectionSet(const f32 *pDir);
-
-void effBTLFieldLightAxisSet(const f32 *pAxis);
-
-void effBTLFieldLightAnimationSet(s32 frame, f32 angle);
-
 extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
                               s32 (*aAllocator)(s32));
 
@@ -2673,34 +2503,21 @@ extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
                            s32 (*aAllocator)(s32));
 
 u32 sdfModelGetMarkPosCount(const struct sdfModelRootNode_t *aRoot);
-
 struct sdfMat_t *sdfMatNew(void);
-
 void sdfMatFreeDelayed(sdfMat_t *aMat);
-
 f32 sdfCos(f32 aRadius);
-
 void sdfDrawTagInit(struct sdfDrawTag_t *a);
-
 extern s32 sdfModelGetMarkPos(sdfModelRootNode_t *aRoot, s32 aId);
 
 /* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
 void MultMatrixRevNoArg(void);
-
 void sdfChipFreeDirect(void *aPtr);
-
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
-
 u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
-
 void sdfMatSetConstant(struct sdfMat_t *aMat, f32 aRatio);
-
 f32 sdfSin(f32 aRadius);
-
 extern u8 aViewTarget[];
-
 extern u8 aViewEye[];
-
 extern u8 aViewDown[];
 
 /* Read vector inputs; VU0 forms first minus second and stores second in vf31. */
@@ -2711,11 +2528,8 @@ void SetRotateMatrixX(f32 aAngle);
 
 /* Load a Y-axis rotation matrix into the primary VU0 matrix registers. */
 void SetRotateMatrixZ(f32 aAngle);
-
 extern void SetRotateMatrixY(f32 aAngle);
-
 extern void SetRotateMatrixX_B(f32 aAngle);
-
 extern void SetRotateMatrixZ_B(f32 aAngle);
 
 static inline void ShiftThunderHandles(effPCPZiodin01_tag *work, s32 count) {
@@ -2748,45 +2562,25 @@ typedef struct {
 } effPCPBlockSetInputs_t;
 
 extern u16 effPCPMudoSampleStep[8];
-
 extern f32 effPCPMudoSampleScale[8];
-
 extern const f32 effPCPRadiateTBParam[4] __attribute__((aligned(16)));
-
 void ReverseMatrix(void);
-
 void effScreenOffset(void);
-
 effHandle_t *dds3EffectLoad(effPCPAgiraoFirePartList_t *pD3P);
-
 void effPCPThunderSpherePolySetColor(effPCPThunderSpherePoly_t *hData, u32 abgr);
-
 void effPCPThunderSpherePolySetPosition(void *hData, const void *pPos);
-
 void effPCPThunderSpherePolySetScale(effPCPThunderSpherePoly_t *hData, f32 scale);
-
 void effPCPThunderSpherePolyDraw(effPCPThunderSpherePoly_t *hData);
-
 void dds3EffectDistortionBlurDraw(effBlurScatterWork_t *work);
-
 void dds3EffectRippleBlurReset(effBlurScaleWork_t *hRippleBlur);
-
 void dds3EffectRippleBlurDraw(effBlurScaleWork_t *work);
-
 void mdlSetScale(dds3ModelHandle_t *aHandle);
-
 void dds3BillboardSetAnimKey(billHandle_t *hBillboard, u32 frame);
-
 void effPCP_ThunderPolySetColor(effPCP_ThunderPoly_t *hData, u32 abgr);
-
 void dds3EffectPartialMultiFilterDraw(dds3Effect_PartialMultiFilter_t *hPartialMultiFilter);
-
 void SetRotateMatrixY_B(f32 aAngle);
-
 void effEveBEDCutSetScale(effEveBEDCutHandle_t *hEveBEDCut, f32 scale);
-
 void effEveBEDCutSetParams(effEveBEDCutHandle_t *hEveBEDCut, const void *pParams);
-
 void effEveBEDCutDraw(effEveBEDCutHandle_t *hEveBEDCut);
 
 #define VEC3_SPLAT(v, x) ((v)[0] = (x), (v)[1] = (x), (v)[2] = (x))
@@ -2800,816 +2594,183 @@ static inline s32 InterpolateCompactExtent(s32 from, s32 to,
 }
 
 effPCPSparkleSphere_tag *effPCPSparkleSphereCreate(effPCPSparkleSphereParam_t *params);
-
-void effPCPSparkleSphereDelete(effPCPSparkleSphere_tag *hData);
-
 void effPCPSparkleSphereDraw(effPCPSparkleSphere_tag *hData);
-
-void effPCPSparkleSphereSetPosition(effPCPSparkleSphere_tag *hData, const void *pPos);
-
-void effPCPSparkleSphereSetColor(effPCPSparkleSphere_tag *hData, u32 abgr);
-
-void effPCPSparkleSphereSetArea(effPCPSparkleSphere_tag *hData, f32 area);
-
 void effPCPHama01PartInit(effPCPHama01_tag *pPCPHama01, s32 number);
-
 effPCPHama01_tag *effPCPHama01Create(void *src);
-
 void effPCPHama01Delete(effPCPHama01_tag *hData);
-
 effPCPHama01_tag *effPCPHama01Copy(effPCPHama01_tag *src);
-
 void effPCPHama01Draw(effPCPHama01_tag *hData);
-
-void effPCPHama01SetPosition(effPCPHama01_tag *hData, const void *pPos);
-
-void effPCPHama01SetScale(effPCPHama01_tag *hData, f32 scale);
-
-void effPCPHama01SetColor(effPCPHama01_tag *hData, u32 abgr);
-
 void effPCPHama02PartInit(effPCPHama02_tag *pPCPHama02, s32 number);
-
 effPCPHama02_tag *effPCPHama02Create(void *args);
-
 void effPCPHama02Delete(effPCPHama02_tag *hData);
-
 effPCPHama02_tag *effPCPHama02Copy(effPCPHama02_tag *source);
-
 void effPCPHama02Draw(effPCPHama02_tag *hData);
-
-void effPCPHama02SetPosition(effPCPHama02_tag *hData, const void *pPos);
-
-void effPCPHama02SetScale(effPCPHama02_tag *hData, f32 scale);
-
-void effPCPHama02SetColor(effPCPHama02_tag *hData, u32 abgr);
-
 void effPCPHamaonPartInit(effPCPHamaon_tag *pPCPHamaon, u32 kind, u32 attach);
-
 effPCPHamaon_tag *effPCPHamaonCreate(void *src);
-
 void effPCPHamaonDelete(effPCPHamaon_tag *hData);
-
 effPCPHamaon_tag *effPCPHamaonCopy(effPCPHamaon_tag *src);
-
 void effPCPHamaonDraw(effPCPHamaon_tag *hData);
-
-void effPCPHamaonSetPosition(effPCPHamaon_tag *hData, const void *pPos);
-
-void effPCPHamaonSetScale(effPCPHamaon_tag *hData, f32 scale);
-
-void effPCPHamaonSetColor(effPCPHamaon_tag *hData, u32 abgr);
-
 void effPCPMHanma01PartInit(effPCPMHanma01_tag *pPCPMHanma01, s32 number);
-
 effPCPMHanma01_tag *effPCPMHanma01Create(void *source);
-
 void effPCPMHanma01Delete(effPCPMHanma01_tag *hData);
-
 effPCPMHanma01_tag *effPCPMHanma01Copy(effPCPMHanma01_tag *source);
-
 void effPCPMHanma01Draw(effPCPMHanma01_tag *hData);
-
-void effPCPMHanma01SetPosition(effPCPMHanma01_tag *hData, const void *pPos);
-
-void effPCPMHanma01SetScale(effPCPMHanma01_tag *hData, f32 scale);
-
-void effPCPMHanma01SetColor(effPCPMHanma01_tag *hData, u32 abgr);
-
 void effPCPMudoPartInit(effPCPMudo_tag *pPCPMudo);
-
 effPCPMudo_tag *effPCPMudoCreate(void *source);
-
 void effPCPMudoDelete(effPCPMudo_tag *hData);
-
 effPCPMudo_tag *effPCPMudoCopy(effPCPMudo_tag *source);
-
 void effPCPMudoDraw(effPCPMudo_tag *hData);
-
-void effPCPMudoSetPosition(effPCPMudo_tag *hData, const void *pPos);
-
-void effPCPMudoSetScale(effPCPMudo_tag *hData, f32 scale);
-
-void effPCPMudoSetColor(effPCPMudo_tag *hData, u32 abgr);
-
 effPCPHwave01_tag *effPCPHwave01Create(void *src);
-
 void effPCPHwave01Delete(effPCPHwave01_tag *hData);
-
 effPCPHwave01_tag *effPCPHwave01Copy(effPCPHwave01_tag *src);
-
 void effPCPHwave01Draw(effPCPHwave01_tag *hData);
-
-void effPCPHwave01SetPosition(effPCPHwave01_tag *hData, const void *pPos);
-
-void effPCPHwave01SetColor(effPCPHwave01_tag *hData, u32 abgr);
-
 void effPCPZiodin01Init(effPCPZiodin01_tag *pPCPZiodin01);
-
 void *effPCPZiodin01Create(void);
-
-void effPCPZiodin01Delete(effPCPZiodin01_tag *hData);
-
 void *effPCPZiodin01Copy(void);
-
-void effPCPZiodin01Draw(effPCPZiodin01_tag *hData);
-
-void effPCPZiodin01SetPosition(effPCPZiodin01_tag *hData, const void *pPos);
-
-void effPCPZiodin01SetScale(effPCPZiodin01_tag *hData, f32 scale);
-
-void effPCPZiodin01SetColor(effPCPZiodin01_tag *hData, u32 abgr);
-
 void effPCPZiodin02Init(effPCPZiodin01_tag *pPCPZiodin02);
-
 void *effPCPZiodin02Create(void);
-
-void effPCPZiodin02Delete(effPCPZiodin01_tag *hData);
-
 void *effPCPZiodin02Copy(void);
-
-void effPCPZiodin02Draw(effPCPZiodin01_tag *hData);
-
-void effPCPZiodin02SetPosition(effPCPZiodin01_tag *hData, const void *pPos);
-
-void effPCPZiodin02SetScale(effPCPZiodin01_tag *hData, f32 scale);
-
-void effPCPZiodin02SetColor(effPCPZiodin01_tag *hData, u32 abgr);
-
 void effPCPZiodin03Init(effPCPZiodin01_tag *pPCPZiodin03);
-
 void *effPCPZiodin03Create(void);
-
-void effPCPZiodin03Delete(effPCPZiodin01_tag *hData);
-
 void *effPCPZiodin03Copy(void);
-
-void effPCPZiodin03Draw(effPCPZiodin01_tag *hData);
-
-void effPCPZiodin03SetPosition(effPCPZiodin01_tag *hData, const void *pPos);
-
-void effPCPZiodin03SetScale(effPCPZiodin01_tag *hData, f32 scale);
-
-void effPCPZiodin03SetColor(effPCPZiodin01_tag *hData, u32 abgr);
-
 void effPCPZiodin04Init(effPCPZiodin01_tag *pPCPZiodin04);
-
 void *effPCPZiodin04Create(void);
-
-void effPCPZiodin04Delete(effPCPZiodin01_tag *hData);
-
 void *effPCPZiodin04Copy(void);
-
-void effPCPZiodin04Draw(effPCPZiodin01_tag *hData);
-
-void effPCPZiodin04SetPosition(effPCPZiodin01_tag *hData, const void *pPos);
-
-void effPCPZiodin04SetScale(effPCPZiodin01_tag *hData, f32 scale);
-
-void effPCPZiodin04SetColor(effPCPZiodin01_tag *hData, u32 abgr);
-
 void effPCPMZiodin01Init(effPCPZiodin01_tag *pPCPMZiodin01);
-
 void *effPCPMZiodin01Create(void);
-
-void effPCPMZiodin01Delete(effPCPZiodin01_tag *hData);
-
 void *effPCPMZiodin01Copy(void);
-
-void effPCPMZiodin01Draw(effPCPZiodin01_tag *hData);
-
-void effPCPMZiodin01SetPosition(effPCPZiodin01_tag *hData, const void *pPos);
-
-void effPCPMZiodin01SetScale(effPCPZiodin01_tag *hData, f32 scale);
-
-void effPCPMZiodin01SetColor(effPCPZiodin01_tag *hData, u32 abgr);
-
 void effPCPMZiodin02Init(effPCPZiodin01_tag *pPCPMZiodin02);
-
 void *effPCPMZiodin02Create(void);
-
 void effPCPMZiodin02Delete(effPCPZiodin01_tag *hData);
-
 void *effPCPMZiodin02Copy(void);
-
 void effPCPMZiodin02Draw(effPCPZiodin01_tag *hData);
-
-void effPCPMZiodin02SetPosition(effPCPZiodin01_tag *hData, const void *pPos);
-
-void effPCPMZiodin02SetScale(effPCPZiodin01_tag *hData, f32 scale);
-
-void effPCPMZiodin02SetColor(effPCPZiodin01_tag *hData, u32 abgr);
-
 void effPCPShockWave01Init(effPCPShockWave01_tag *pPCPShockWave01);
-
 void *effPCPShockWave01Create(void);
-
-void effPCPShockWave01Delete(effPCPShockWave01_tag *hData);
-
 void *effPCPShockWave01Copy(void);
-
 void effPCPShockWave01Draw(effPCPShockWave01_tag *hData);
-
-void effPCPShockWave01SetPosition(effPCPShockWave01_tag *hData, const void *pPos);
-
-void effPCPShockWave01SetScale(effPCPShockWave01_tag *hData, f32 scale);
-
-void effPCPShockWave01SetColor(effPCPShockWave01_tag *hData, u32 abgr);
-
 void effPCPShockWave02Init(effPCPZiodin01_tag *pPCPShockWave02);
-
 void *effPCPShockWave02Create(void);
-
-void effPCPShockWave02Delete(effPCPZiodin01_tag *hData);
-
 void *effPCPShockWave02Copy(void);
-
-void effPCPShockWave02Draw(effPCPZiodin01_tag *hData);
-
-void effPCPShockWave02SetPosition(effPCPZiodin01_tag *hData, const void *pPos);
-
-void effPCPShockWave02SetScale(effPCPZiodin01_tag *hData, f32 scale);
-
-void effPCPShockWave02SetColor(effPCPZiodin01_tag *hData, u32 abgr);
-
 void effPCPHouden01Init(effPCPShockWave01_tag *pPCPHouden01);
-
 void *effPCPHouden01Create(void);
-
-void effPCPHouden01Delete(effPCPShockWave01_tag *hData);
-
 void *effPCPHouden01Copy(void);
-
 void effPCPHouden01Draw(effPCPShockWave01_tag *hData);
-
-void effPCPHouden01SetPosition(effPCPShockWave01_tag *hData, const void *pPos);
-
-void effPCPHouden01SetScale(effPCPShockWave01_tag *hData, f32 scale);
-
-void effPCPHouden01SetColor(effPCPShockWave01_tag *hData, u32 abgr);
-
 effPCPBlinkMultiBlur_tag *effPCPBlinkMultiBlurCreate(effPCPBlinkMultiBlurParam_t *params);
-
 void effPCPBlinkMultiBlurDelete(effPCPBlinkMultiBlur_tag *hData);
-
-void effPCPBlinkMultiBlurDraw();
-
-void effPCPBlinkMultiBlurSetPosition(effPCPBlinkMultiBlur_tag *hData, const void *pPos);
-
-void effPCPBlinkMultiBlurSetColor(effPCPBlinkMultiBlur_tag *hData, u32 abgr);
-
-void effPCPBlinkMultiBlurSetArea(effPCPBlinkMultiBlur_tag *hData, f32 area);
-
 effPCPMultiBlurExp_tag *effPCPMultiBlurExpCreate(effPCPBlinkMultiBlurParam_t *params);
-
-void effPCPMultiBlurExpDelete(effPCPMultiBlurExp_tag *hData);
-
 void effPCPMultiBlurExpDraw(effPCPMultiBlurExp_tag *hData);
-
-void effPCPMultiBlurExpSetPosition(effPCPMultiBlurExp_tag *hData, const void *pPos);
-
-void effPCPMultiBlurExpSetColor(effPCPMultiBlurExp_tag *hData, u32 abgr);
-
-void effPCPMultiBlurExpSetArea(effPCPMultiBlurExp_tag *hData, f32 area);
-
 effPCPMultiBlurExp2_tag *effPCPMultiFilterExpCreate(effPCPMultiFilterExpParam_t *params);
-
 effPCPMultiBlurExp2_tag *effPCPMultiFilterExpCreatePCF(void *data);
-
 effPCPMultiBlurExp2_tag *effPCPMultiFilterExpCopy(effPCPMultiBlurExp2_tag *work);
-
-void effPCPMultiFilterExpDelete(effPCPMultiBlurExp2_tag *hData);
-
 void effPCPMultiFilterExpDraw(effPCPMultiBlurExp2_tag *hData);
-
-void effPCPMultiFilterExpSetPosition(effPCPMultiBlurExp2_tag *hData, const void *pPos);
-
-void effPCPMultiFilterExpSetColor(effPCPMultiBlurExp2_tag *hData, u32 abgr);
-
-void effPCPMultiFilterExpSetArea(effPCPMultiBlurExp2_tag *hData, f32 area);
-
 effPCPMultiBlurExp2_tag *effPCPMultiBlurExp2Create(effPCPMultiBlurExp2Param_t *pParam);
-
 effPCPMultiBlurExp2_tag *effPCPMultiBlurExp2CreatePCF(void *data);
-
 effPCPMultiBlurExp2_tag *effPCPMultiBlurExp2Copy(effPCPMultiBlurExp2_tag *work);
-
 void effPCPMultiBlurExp2Delete(effPCPMultiBlurExp2_tag *hData);
-
 void effPCPMultiBlurExp2Draw(effPCPMultiBlurExp2_tag *hData);
-
-void effPCPMultiBlurExp2SetPosition(effPCPMultiBlurExp2_tag *hData, const void *pPos);
-
-void effPCPMultiBlurExp2SetColor(effPCPMultiBlurExp2_tag *hData, u32 abgr);
-
-void effPCPMultiBlurExp2SetArea(effPCPMultiBlurExp2_tag *hData, f32 area);
-
 effPCPFilterExp_tag *effPCPFilterExpCreate(effPCPFilterExpParam_t *pParam);
-
 effPCPFilterExp_tag *effPCPFilterExpCreatePCF(void *data);
-
 effPCPFilterExp_tag *effPCPFilterExpCopy(effPCPFilterExp_tag *work);
-
 void effPCPFilterExpDelete(effPCPFilterExp_tag *hData);
-
 void effPCPFilterExpDraw(effPCPFilterExp_tag *hData);
-
-void effPCPFilterExpSetColor(effPCPFilterExp_tag *hData, u32 abgr);
-
 effPCPBlurExp_tag *effPCPBlurExpCreate(effPCPBlurExpParam_t *pParam);
-
 effPCPBlurExp_tag *effPCPBlurExpCreatePCF(void *data);
-
 effPCPBlurExp_tag *effPCPBlurExpCopy(effPCPBlurExp_tag *work);
-
 void effPCPBlurExpDelete(effPCPBlurExp_tag *hData);
-
 void effPCPBlurExpDraw(effPCPBlurExp_tag *hData);
-
-void effPCPBlurExpSetColor(effPCPBlurExp_tag *hData, u32 abgr);
-
 effPCPDistortionBlurExp_tag *effPCPDistortionBlurExpCreate(effPCPDistortionBlurExpParam_t *pParam);
-
 effPCPDistortionBlurExp_tag *effPCPDistortionBlurExpCreatePCF(void *data);
-
-effPCPDistortionBlurExp_tag *effPCPDistortionBlurExpCopy(effPCPDistortionBlurExp_tag *work);
-
 void effPCPDistortionBlurExpDelete(effPCPDistortionBlurExp_tag *hData);
-
 void effPCPDistortionBlurExpDraw(effPCPDistortionBlurExp_tag *hData);
-
-void effPCPDistortionBlurExpSetPosition(effPCPDistortionBlurExp_tag *hData, const void *pPos);
-
-void effPCPDistortionBlurExpSetColor(effPCPDistortionBlurExp_tag *hData, u32 abgr);
-
-effPCPDistortionBlurExp_tag *effPCPRippleBlurExpCreate(effPCPRippleBlurExpParam_t *pParam);
-
 effPCPDistortionBlurExp_tag *effPCPRippleBlurExpCreatePCF(void *data);
-
-effPCPDistortionBlurExp_tag *effPCPRippleBlurExpCopy(effPCPDistortionBlurExp_tag *work);
-
 void effPCPRippleBlurExpDelete(effPCPDistortionBlurExp_tag *hData);
-
 void effPCPRippleBlurExpDraw(effPCPDistortionBlurExp_tag *hData);
-
-void effPCPRippleBlurExpSetPosition(effPCPDistortionBlurExp_tag *hData, const void *pPos);
-
-void effPCPRippleBlurExpSetColor(effPCPDistortionBlurExp_tag *hData, u32 abgr);
-
 void effPCPMegidora01Init(effPCPShockWave01_tag *pPCPMegidora01);
-
 void *effPCPMegidora01Create(void);
-
 void effPCPMegidora01Delete(effPCPShockWave01_tag *hData);
-
 void *effPCPMegidora01Copy(void);
-
 void effPCPMegidora01Draw(effPCPShockWave01_tag *hData);
-
-void effPCPMegidora01SetPosition(effPCPShockWave01_tag *hData, const void *pPos);
-
-void effPCPMegidora01SetScale(effPCPShockWave01_tag *hData, f32 scale);
-
-void effPCPMegidora01SetColor(effPCPShockWave01_tag *hData, u32 abgr);
-
 void effPCPMegidoraon01Init(effPCPShockWave01_tag *pPCPMegidoraon01);
-
 void *effPCPMegidoraon01Create(void);
-
 void effPCPMegidoraon01Delete(effPCPShockWave01_tag *hData);
-
 void *effPCPMegidoraon01Copy(void);
-
 void effPCPMegidoraon01Draw(effPCPShockWave01_tag *hData);
-
-void effPCPMegidoraon01SetPosition(effPCPShockWave01_tag *hData, const void *pPos);
-
-void effPCPMegidoraon01SetScale(effPCPShockWave01_tag *hData, f32 scale);
-
-void effPCPMegidoraon01SetColor(effPCPShockWave01_tag *hData, u32 abgr);
-
-effPCPBreath_tag *effPCPBreathCreate(void *params, effPCPAgiraoFirePartList_t *handleParams);
-
-effPCPBreath_tag *effPCPBreathCreatePCF(void *data);
-
 effPCPBreath_tag *effPCPBreathCopy(effPCPBreath_tag *work);
-
 void effPCPBreathDelete(effPCPBreath_tag *hData);
-
-extern void *effBTLSkillGetInvokeFormation(void);
-
-extern u32 effBTLSkillGetTargetParty(void);
-
-extern void effBTLModelGroupGetCenter(u32 group);
-
-extern f32 sdfAtan2(f32 x, f32 y);
-
-extern void dds3EffectSetRotateMatrix(effHandle_t *pData, const void *pMatrix);
-
-/* Center the orbit on the first battle frame, then position and fade its node. */
-void effPCPBreathDraw(effPCPBreath_tag *work);
-
-void effPCPBreathSetPosition(effPCPBreath_tag *hData, const void *pPos);
-
-void effPCPBreathSetColor(effPCPBreath_tag *hData, u32 abgr);
-
-/* vu0 routine: turn the source matrix by half a turn around Y */
 void effPCPBreathSetRotateMatrix(effPCPBreath_tag *hData, const void *pMatrix);
-
 effPCPAgiraoFire_tag *effPCPAgiraoFireCreate(effPCPAgiraoFireParam_t *pParam, effPCPAgiraoFirePartList_t **pPartList);
-
 effPCPAgiraoFire_tag *effPCPAgiraoFireCreatePCF(void *data);
-
 effPCPAgiraoFire_tag *effPCPAgiraoFireCopy(effPCPAgiraoFire_tag *src);
-
 void effPCPAgiraoFireDelete(effPCPAgiraoFire_tag *hData);
-
-/* vu0 routine: place three staggered groups in the camera-relative basis. */
 void effPCPAgiraoFireDraw(effPCPAgiraoFire_tag *hData);
-
-void effPCPAgiraoFireSetPosition(effPCPAgiraoFire_tag *hData, const void *pPos);
-
-void effPCPAgiraoFireSetColor(effPCPAgiraoFire_tag *hData, u32 abgr);
-
-effPCPAgiFireball_tag *effPCPAgiFireballCreate(
-    const effPCPAgiFireballParam_t *pParam, const effPCPAgiFireballPartList_t *pPart);
-
 effPCPAgiFireball_tag *effPCPAgiFireballCreatePCF(void *parameterTable);
-
 void effPCPAgiFireballCopySub(effPCPAgiFireball_tag *pPCPAgiFireball, effPCPAgiFireball_tag *pPCPAgiFireballSrc);
-
 effPCPAgiFireball_tag *effPCPAgiFireballCopy(effPCPAgiFireball_tag *src);
-
 void effPCPAgiFireballDelete(effPCPAgiFireball_tag *hData);
-
-/* Native look-at up vector: (0, 1, 0, 0). */
-extern f32 effPCPAgiFireballParam[4];
 
 /* Update the head, attached nodes and randomized three-channel trail. */
 void effPCPAgiFireballDraw(effPCPAgiFireball_tag *work);
-
-void effPCPAgiFireballSetPosition(effPCPAgiFireball_tag *hData, const void *pPos);
-
-void effPCPAgiFireballSetColor(effPCPAgiFireball_tag *hData, u32 abgr);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCPAgiFireballSetRotateMatrix(effPCPAgiFireball_tag *hData, const void *pMatrix);
-
 effPCPAgiFireball_tag *effPCPAgiFireballSpCreatePCF(void *parameterTable);
-
 effPCPAgiFireball_tag *effPCPAgiFireballSpCopy(effPCPAgiFireball_tag *src);
-
 effPCPAgiFireball_tag *effPCPAgiFireballSp2CreatePCF(void *parameterTable);
-
 effPCPAgiFireball_tag *effPCPAgiFireballSp2Copy(effPCPAgiFireball_tag *src);
-
 effPCPAgiFireball2_tag *effPCPAgiFireball2Create(effPCPAgiFireball2Param_t *pAFB2Param, effPCPBlockSetInputs_t *pAFB2Part);
-
 effPCPAgiFireball2_tag *effPCPAgiFireball2CreatePCF(void *args);
-
 effPCPAgiFireball2_tag *effPCPAgiFireball2Copy(effPCPAgiFireball2_tag *src);
-
 void effPCPAgiFireball2Delete(effPCPAgiFireball2_tag *hData);
-
 void effPCPAgiFireball2Draw(effPCPAgiFireball2_tag *hData);
-
-void effPCPAgiFireball2SetPosition(effPCPAgiFireball2_tag *hData, const void *pPos);
-
-void effPCPAgiFireball2SetColor(effPCPAgiFireball2_tag *hData, u32 abgr);
-
-void effPCPAgiFireball2SetRotateMatrix(effPCPAgiFireball2_tag *hData, const void *pMatrix);
-
 effPCPBufuIce_tag *effPCPBufuIceCreate(void *src);
-
 effPCPBufuIce_tag *effPCPBufuIceCopy(effPCPBufuIce_tag *src);
-
 void effPCPBufuIceDelete(effPCPBufuIce_tag *hData);
-
 void effPCPBufuIceDraw(effPCPBufuIce_tag *hData);
-
-void effPCPBufuIceSetPosition(effPCPBufuIce_tag *hData, const void *pPos);
-
-void effPCPBufuIceSetColor(effPCPBufuIce_tag *hData, u32 abgr);
-
-void effPCPBufuIceSetScale(effPCPBufuIce_tag *hData, f32 scale);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCPBufuIceSetRotateMatrix(effPCPBufuIce_tag *hData, const void *pMatrix);
-
-effPCPBufuIce_tag *effPCPBufuraIceCreate(void *src);
-
-effPCPBufuIce_tag *effPCPBufuraIceCopy(effPCPBufuIce_tag *src);
-
-void effPCPBufuraIceDelete(effPCPBufuIce_tag *hData);
-
-void effPCPBufuraIceDraw(effPCPBufuIce_tag *hData);
-
-void effPCPBufuraIceSetPosition(effPCPBufuIce_tag *hData, const void *pPos);
-
-void effPCPBufuraIceSetColor(effPCPBufuIce_tag *hData, u32 abgr);
-
-void effPCPBufuraIceSetScale(effPCPBufuIce_tag *hData, f32 scale);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCPBufuraIceSetRotateMatrix(effPCPBufuIce_tag *hData, const void *pMatrix);
-
-effPCPBufuIce_tag *effPCPBufudnIceCreate(void *src);
-
-effPCPBufuIce_tag *effPCPBufudnIceCopy(effPCPBufuIce_tag *src);
-
-void effPCPBufudnIceDelete(effPCPBufuIce_tag *hData);
-
-void effPCPBufudnIceDraw(effPCPBufuIce_tag *hData);
-
-void effPCPBufudnIceSetPosition(effPCPBufuIce_tag *hData, const void *pPos);
-
-void effPCPBufudnIceSetColor(effPCPBufuIce_tag *hData, u32 abgr);
-
-void effPCPBufudnIceSetScale(effPCPBufuIce_tag *hData, f32 scale);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCPBufudnIceSetRotateMatrix(effPCPBufuIce_tag *hData, const void *pMatrix);
-
-void *effPCPBufuLightCreate(void *params);
-
-void *effPCPBufuLightCopy(void *work);
-
-void effPCPBufuLightDelete(void);
-
-void effPCPBufuLightDraw(void *hData);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate00_0(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy00_0(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate00_1(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy00_1(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate01_0(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy01_0(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate01_1(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy01_1(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate02_0(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy02_0(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate02_1(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy02_1(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate03_0(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy03_0(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate03_1(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy03_1(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate04_0(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy04_0(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate04_1(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy04_1(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate05_0(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy05_0(void);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCreate05_1(u32 unused);
-
-effPCPEyeThunder_tag *effPCPEyeThunderCopy05_1(void);
-
 void effPCPEyeThunderDelete(effPCPEyeThunder_tag *hData);
-
-void effPCPEyeThunderDraw(effPCPEyeThunder_tag *hData);
-
-void effPCPEyeThunderSetPosition(effPCPEyeThunder_tag *hData, const void *pPos);
-
-void effPCPEyeThunderSetColor(effPCPEyeThunder_tag *hData, u32 abgr);
-
 effPCPThunderSphereExp_tag *effPCPThunderSphereExpCreate(effPCPThunderSphereExpParam_t *pParam);
-
 effPCPThunderSphereExp_tag *effPCPThunderSphereExpCreatePCF(void *data);
-
 effPCPThunderSphereExp_tag *effPCPThunderSphereExpCopy(effPCPThunderSphereExp_tag *work);
-
 void effPCPThunderSphereExpDelete(effPCPThunderSphereExp_tag *hData);
-
 void effPCPThunderSphereExpDraw(effPCPThunderSphereExp_tag *hData);
-
-void effPCPThunderSphereExpSetPosition(effPCPThunderSphereExp_tag *hData, const void *pPos);
-
-void effPCPThunderSphereExpSetColor(effPCPThunderSphereExp_tag *hData, u32 abgr);
-
-void effPCPThunderSphereExpSetScale(effPCPThunderSphereExp_tag *hData, f32 scale);
-
-/* vu0 routine: initialize both transforms with the libvu0 identity primitive. */
 dds3RingPolyExpList_tag *dds3RingPolyExpListCreate(u32 face);
-
-void dds3RingPolyExpListDelete(dds3RingPolyExpList_tag *hData);
-
-/* vu0 routine: compose the beam transform and submit batches of its vertices. */
 void dds3RingPolyExpListDraw(dds3RingPolyExpList_tag *hData);
-
 void effPCPRingPolyExpSetVertex(f32 pPCPRingPolyExp, effPCPRingPolyExp_tag *radius);
-
 void effPCPRingPolyExpInit(effPCPRingPolyExp_tag *pPCPRingPolyExp);
-
-effPCPRingPolyExp_tag *effPCPRingPolyExpCreate(effPCPRingPolyExpParam_t *pParam);
-
 effPCPRingPolyExp_tag *effPCPRingPolyExpCreatePCF(void *data);
-
 effPCPRingPolyExp_tag *effPCPRingPolyExpCopy(effPCPRingPolyExp_tag *work);
-
 void effPCPRingPolyExpDelete(effPCPRingPolyExp_tag *hData);
-
 void effPCPRingPolyExpDraw(effPCPRingPolyExp_tag *hData);
-
-void effPCPRingPolyExpSetPosition(effPCPRingPolyExp_tag *hData, const void *pPos);
-
-void effPCPRingPolyExpSetScale(effPCPRingPolyExp_tag *hData, f32 scale);
-
-void effPCPRingPolyExpSetColor(effPCPRingPolyExp_tag *hData, u32 abgr);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCPRingPolyExpSetRotateMatrix(effPCPRingPolyExp_tag *hData, const void *pMatrix);
-
 void effPCPRingPolyExpSetDirection(effPCPRingPolyExp_tag *hData, void *pMatrix);
-
-void effPCPRingPolyExp2SetVertex(effPCPRingPolyExp2_tag *pPCPRingPolyExp2, f32 radius);
-
 void effPCPRingPolyExp2Init(effPCPRingPolyExp2_tag *pPCPRingPolyExp2);
-
-effPCPRingPolyExp2_tag *effPCPRingPolyExp2Create(effPCPRingPolyExp2Param_t *hData);
-
 effPCPRingPolyExp2_tag *effPCPRingPolyExp2CreatePCF(void *data);
-
 effPCPRingPolyExp2_tag *effPCPRingPolyExp2Copy(effPCPRingPolyExp2_tag *work);
-
 void effPCPRingPolyExp2Delete(effPCPRingPolyExp2_tag *hData);
-
 void effPCPRingPolyExp2Draw(effPCPRingPolyExp2_tag *hData);
-
-void effPCPRingPolyExp2SetPosition(effPCPRingPolyExp2_tag *hData, const void *pPos);
-
-void effPCPRingPolyExp2SetScale(effPCPRingPolyExp2_tag *hData, f32 scale);
-
-void effPCPRingPolyExp2SetColor(effPCPRingPolyExp2_tag *hData, u32 abgr);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCPRingPolyExp2SetRotateMatrix(effPCPRingPolyExp2_tag *hData, const void *pMatrix);
-
-effPCPRadiateThunder_tag *effPCPRadiateThunderCreate(const effPCPRadiateThunderParam_t *pParam, void *pData);
-
 effPCPRadiateThunder_tag *effPCPRadiateThunderCreatePCF(void *args);
-
 effPCPRadiateThunder_tag *effPCPRadiateThunderCopy(effPCPRadiateThunder_tag *work);
-
 void effPCPRadiateThunderDelete(effPCPRadiateThunder_tag *hData);
-
 void effPCPRadiateThunderPartInit(effPCPRadiateThunder_tag *pRadiateThunder, s32 index);
-
 void effPCPRadiateThunderDraw(effPCPRadiateThunder_tag *hData);
-
 void effPCPRadiateThunderDraw(effPCPRadiateThunder_tag *work);
-
-void effPCPRadiateThunderSetPosition(effPCPRadiateThunder_tag *hData, const void *pPos);
-
-void effPCPRadiateThunderSetScale(effPCPRadiateThunder_tag *hData, f32 scale);
-
-void effPCPRadiateThunderSetColor(effPCPRadiateThunder_tag *hData, u32 abgr);
-
 effPCPMakka_tag *effPCPMakkaCreat(void *src);
-
 effPCPMakka_tag *effPCPMakkaCopy(effPCPMakka_tag *src);
-
 void effPCPMakkaDelete(effPCPMakka_tag *hData);
-
 void effPCPMakkaUpdateNode(sdfModelNode_t *node);
-
-void effPCPMakkaDraw(effPCPMakka_tag *hData);
-
-void effPCPMakkaSetPosition(effPCPMakka_tag *hData, const void *pPos);
-
-void effPCPMakkaSetColor(effPCPMakka_tag *hData, u32 abgr);
-
-void effPCPMakkaSetScale(effPCPMakka_tag *hData, f32 scale);
-
-effPCPRadiateBED_tag *effPCPRadiateBEDCreate(effPCPRadiateBEDParam_t *pParam, void *pBEDData);
-
-effPCPRadiateBED_tag *effPCPRadiateBEDCreatePCF(void *data);
-
 effPCPRadiateBED_tag *effPCPRadiateBEDCopy(effPCPRadiateBED_tag *src);
-
 void effPCPRadiateBEDDelete(effPCPRadiateBED_tag *hData);
-
 void effPCPRadiateBEDPartInit(effPCPRadiateBED_tag *pRadiateBED, s32 index);
-
 void effPCPRadiateBEDDraw(effPCPRadiateBED_tag *hData);
-
-void effPCPRadiateBEDSetPosition(effPCPRadiateBED_tag *hData, const void *pPos);
-
-void effPCPRadiateBEDSetScale(effPCPRadiateBED_tag *hData, f32 scale);
-
-void effPCPRadiateBEDSetColor(effPCPRadiateBED_tag *hData, u32 abgr);
-
 effPCPRadiateTB_tag *effPCPRadiateTBCreate(effPCPRadiateTBParam_t *pParam, void *pBEDData0, void *pBEDData1);
-
-effPCPRadiateTB_tag *effPCPRadiateTBCreatePCF(void *data);
-
 effPCPRadiateTB_tag *effPCPRadiateTBCopy(effPCPRadiateTB_tag *src);
-
 void effPCPRadiateTBDelete(effPCPRadiateTB_tag *hData);
-
 void effPCPRadiateTBPartInit(effPCPRadiateTB_tag *pRadiateTB, s32 index);
-
 void effPCPRadiateTBDraw(effPCPRadiateTB_tag *hData);
-
-void effPCPRadiateTBSetPosition(effPCPRadiateTB_tag *hData, const void *pPos);
-
-void effPCPRadiateTBSetColor(effPCPRadiateTB_tag *hData, u32 abgr);
-
-effPCPSpiralBED_tag *effPCPSpiralBEDCreate(effPCPSpiralBEDParam_t *pParam, void *pBEDData);
-
-effPCPSpiralBED_tag *effPCPSpiralBEDCreatePCF(void *data);
-
 effPCPSpiralBED_tag *effPCPSpiralBEDCopy(effPCPSpiralBED_tag *src);
-
 void effPCPSpiralBEDDelete(effPCPSpiralBED_tag *hData);
-
 void effPCPSpiralBEDPartInit(effPCPSpiralBED_tag *pSpiralBED, s32 index);
-
 void effPCPSpiralBEDDraw(effPCPSpiralBED_tag *hData);
-
-void effPCPSpiralBEDSetPosition(effPCPSpiralBED_tag *hData, const void *pPos);
-
-void effPCPSpiralBEDSetScale(effPCPSpiralBED_tag *hData, f32 scale);
-
-void effPCPSpiralBEDSetColor(effPCPSpiralBED_tag *hData, u32 abgr);
-
 void effPCPHelperInit(effPCPHelperBED_tag *pHelperBED);
-
 effPCPHelperBED_tag *effPCPHelperBEDCreate(effPCPHelperBEDParam_t *pParam, void *pPBData, void *pBEDData);
-
-effPCPHelperBED_tag *effPCPHelperBEDCreatePCF(void *data);
-
 effPCPHelperBED_tag *effPCPHelperBEDCopy(effPCPHelperBED_tag *src);
-
 void effPCPHelperBEDDelete(effPCPHelperBED_tag *hData);
-
 void effPCPHelperBEDDraw(effPCPHelperBED_tag *hData);
-
-void effPCPHelperBEDSetPosition(effPCPHelperBED_tag *hData, const void *pPos);
-
-void effPCPHelperBEDSetScale(effPCPHelperBED_tag *hData, f32 scale);
-
-void effPCPHelperBEDSetColor(effPCPHelperBED_tag *hData, u32 abgr);
-
-void *effPCPHelperBEDGetModel(effPCPHelperBED_tag *pHelperBED);
-
-void effPCPAnalyzeInit(effPCPAnalyzeBED_tag *pAnalyzeBED);
-
-effPCPAnalyzeBED_tag *effPCPAnalyzeBEDCreate(void *pBEDData);
-
-effPCPAnalyzeBED_tag *effPCPAnalyzeBEDCreatePCF(void *data);
-
-effPCPAnalyzeBED_tag *effPCPAnalyzeBEDCopy(effPCPAnalyzeBED_tag *src);
-
-void effPCPAnalyzeBEDDelete(effPCPAnalyzeBED_tag *hData);
-
-extern const f32 effPCPMakkaUnitY[4];
-
-void effPCPAnalyzeBEDDraw(effPCPAnalyzeBED_tag *hData);
-
-void effPCPAnalyzeBEDSetScale(effPCPAnalyzeBED_tag *hData, f32 scale);
-
-void effPCPAnalyzeBEDSetColor(effPCPAnalyzeBED_tag *hData, u32 abgr);
-
-effPCPFLEACHBlur_tag *effPCPFLEACHBlurCreate(effPCPFLEACHBlurParam_t *pFLEACHBlurParam);
-
-effPCPFLEACHBlur_tag *effPCPFLEACHBlurCreatePCF(void *data);
-
-effPCPFLEACHBlur_tag *effPCPFLEACHBlurCopy(effPCPFLEACHBlur_tag *work);
-
-void effPCPFLEACHBlurDelete(effPCPFLEACHBlur_tag *hData);
-
-extern void dds3EffectPartialMultiBlurSetParam(dds3Effect_PartialMultiBlur_t *work,
-    const dds3Effect_PartialMultiBlurParam_t *param);
-
-void effPCPFLEACHBlurDraw(effPCPFLEACHBlur_tag *work);
-
-void effPCPFLEACHBlurSetColor(effPCPFLEACHBlur_tag *hData, u32 abgr);
-
-extern s32 BlinkMultiBlurCount;
-
-extern s8 effPCPBufuLight_Start;
-/* End of declarations from src/smt3/effect/effPCPMisc.c */
 
 effPCPSparkleSphere_tag *effPCPSparkleSphereCreate(effPCPSparkleSphereParam_t *params) {
     effPCPSparkleSphere_tag *billboard = (effPCPSparkleSphere_tag *)sdfChipAllocDirect(sizeof(effPCPSparkleSphere_tag));
@@ -5075,8 +4236,6 @@ void effPCPBlurExpDraw(effPCPBlurExp_tag *hData) {
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf119);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effPCPDistortionBlurExpCreate);
-
-effPCPDistortionBlurExp_tag *effPCPDistortionBlurExpCreate(effPCPDistortionBlurExpParam_t *pParam);
 
 effPCPDistortionBlurExp_tag *effPCPDistortionBlurExpCreatePCF(void *data) {
     return effPCPDistortionBlurExpCreate(dds3EffectPCPDataGetData(data, 0));

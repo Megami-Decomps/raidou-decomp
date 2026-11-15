@@ -1,65 +1,11 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/facility/fclMisc.c */
-#include "common.h"
-
 #include "scr.h"
-
 #include "facility.h"
-
 #include "fpu.h"
-
 #include "libsdf.h"
-
 #include "newdata.h"
-
 #include "ps2asm.h"
-
 #include "event.h"
-
-void fclFreeStage(void);
-
-extern s32 dds3GetProcessStat(void *id);
-
-extern u32 dds3GetRandA(void *name);
-
-extern s32 fclSetWorkValue(s8 index, s32 value);
-
-s32 fclGetFlag(s8 index);
-
-void fclClearFlag(s8 index);
-
-extern s8 gSelMsgPos;
-
-extern s8 gMsgInvFlag;
-
-extern s8 fclFlags[8];
-
-extern s32 gMsgID;
-
-extern s32 gSelMsgNo;
-
-extern s8 fclEndMessageEx(s8 Mode);
-
-extern void evtFreeStage(void);
-
-extern s32 sdfDelayedResrcCheck(void);
-
-extern void fclFilterOFF(void);
-
-extern void sdfFileCmdReadFile(const char *aFileName, s32 aBuffer, s32 aLength, void *aCallback, void *aUserData);
-
-extern void itfMesMngSetVarImmediate(s32 id, u32 index, s32 pstr);
-
-extern s16 itfMesMngGetSelectNo(s32 msgid);
-
-extern s16 itfMesMngGetSelPhase(s32 msgid);
-
-extern s32 fclWorkValue[16];
-
-extern s32 scrGetIntPara(s32 n);
-
-extern void scrSetIntReturnValue(s32 i);
 
 typedef struct
 {
@@ -67,78 +13,13 @@ typedef struct
     u8 item[0xA0];
 } fclGlobalWorkItemInventory_t;
 
-
-extern s32 datAddItem(s32 id, s32 num);
-
-extern s32 dds3KillProcess(s32 id, s32 shutdowntimer);
-
-extern s32 fclChkMessage(void);
-
-extern void fclScriptForcedEnd(u8 *PID);
-
 extern u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
-
-extern s8 gMsgFlag;
-
-extern void itfMesMngRelease(s32 id);
-
-extern void *dds3GetControlScene(void);
-
-extern void *dds3SceneBasicSearchNameAndType(void *scene, s32 type, char *name);
-
-void fclInitPanelPos(s32 X, s32 Y, s32 Z, s16 W, s16 H, s32 Work, fclPanel_t *pPanelPos);
-
-extern void shuffleIndices(s8 *order, s32 count, s32 rounds);
-
-extern s32 cmpItemOrder(u8 *a, u8 *b);
-
-extern s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
-
-extern s32 datGetItemSlotIndex(s32 id);
-
-extern void datAddHearts(s32 id);
-
-s32 fclAddItem(u16 ItemID, s32 Nums);
 
 typedef struct
 {
     /* 0x00 */ u8 unk_00[0x18];
     /* 0x18 */ u8 *unk_18;
 } fclSceneObj_t;
-
-s32 fclSetModelLight(char *name, fclSceneObj_t *dst);
-
-extern s32 dds3GetMapNo(void *scene);
-
-extern void evtLoadArea(s32 fld, s32 area);
-
-void fclLoadStage(s32 MajorNo, s32 MinorNo);
-
-extern void dds3SetBlur(s32 frame, s32 alpha, s32 scale);
-
-extern void dds3MultiBlurOff(s32 frame);
-
-extern void dds3DistBlurOff(s32 frame);
-
-extern void Eve_BlurOFF(void);
-
-extern void Eve_PartialMultiBlurOFF(void);
-
-extern void Eve_PartialMultiFilterOFF(void);
-
-extern void Eve_DistortionBlurOFF(void);
-
-extern void Eve_FilterOFF(void);
-
-void fclFilterOFF(void);
-
-void fclFreeStage(void);
-
-void fclInitPanelPos(s32 X, s32 Y, s32 Z, s16 W, s16 H, s32 Work, fclPanel_t *pPanelPos);
-
-void fclScriptForcedEnd(u8 *PID);
-
-s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
 
 typedef struct
 {
@@ -147,138 +28,8 @@ typedef struct
     /* 0x02 */ u16 item[0xA0];
 } fclItemList_t;
 
-void func_00213BB8(fclItemList_t *list);
-
-extern s32 cmpItemHasFlag(u16 item, s8 which);
-
-void fclCreateItemListEx(fclItemList_t *list, s8 which);
-
-s32 cmpItemOrder(u8 *a, u8 *b);
-
-s32 func_00213CD8(u8 *list, s32 count, u8 value);
-
-void shuffleIndices(s8 *order, s32 count, s32 rounds);
-
-extern char *text2[];
-
-char *func_00213DC0(datUnitWork_t *unit);
-
-u32 func_00213DF0(u32 color, u32 scaleFactor);
-
 u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
 
-extern s32 itfMesMngInitialize(void *data);
-
-extern void itfMesMngChangeWindowType(s32 id, s32 type, s32 alpha);
-
-s8 fclInitMessage(void *pData);
-
-extern void itfMesMngMarkBitStat(s32 id, s32 flag);
-
-extern void itfMesMngRequestMessage(s32 msg, s32 id, s32 flag);
-
-extern void itfMesMngSetSelPhase(s32 msgid, s32 phase);
-
-s32 fclStartMessage(s32 MsgNo);
-
-s32 fclStartSelMessage(s32 SelMsgNo);
-
-void fclSetSelMessagePos(s8 SelPos);
-
-s8 fclGetCurrentSelMessagePos(void);
-
-s8 fclGetSelMessagePos(void);
-
-extern void itfMesMngSetPhase(s32 msgid, s32 phase);
-
-extern void itfMesMngMsgWndCls(s32 msgid);
-
-extern void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker);
-
-extern void fclSetMessageInvalid(s8 Mode);
-
-s8 fclEndMessageEx(s8 Mode);
-
-s8 fclEndMessage(void);
-
-s32 fclDestroyMessage(void);
-
-s32 fclChkMessage(void);
-
-s32 fclChkSelMessage(void);
-
-extern s8 itfMesMngGetPhase(s32 msgid);
-
-extern s32 itfMesMngSetSelectDefKey(s32 id, s32 key, s32 index);
-
-extern void itfMesMngSetSelect(s32 id, s32 selno);
-
-extern void itfMesMngRequestSelect(s32 id, s32 select);
-
-void fclUpdateMessage(void);
-
-void fclSetMessageVar_20743088(s8 Index, saddr_t pStr);
-
-s8 fcl_214270(void);
-
-extern void itfMesMngClearBitStat(s32 id, s32 flag);
-
-void fclSetMessageInvalid(s8 Mode);
-
-extern void itfMesMngSetMesPosition(s32 id, s32 x, s32 y);
-
-extern void itfMesMngSetOffsetY1(s32 msgid, s32 y1);
-
-void fclSetMessagePos(s32 x, s32 y);
-
-s32 fclChkMessageDraw(void *PID);
-
-void fclClearFlag(s8 index);
-
-s32 fclGetFlag(s8 index);
-
-s32 fclSetWorkValue(s8 index, s32 value);
-
-s8 fclGetWorkValue(s8 index);
-
-s32 fcl_214428(void);
-
-s32 fclCallGetIntPara2(void);
-
-s32 fclLoadFileDone(s32 unused, s32 cmd, s32 value, s32 unused2, s32 *out);
-
-void fclLoadFileAsync(const char *name, void *buf);
-
-extern s32 gMsgID;
-
-extern s8 gMsgFlag;
-
-extern s8 gMsgInvFlag;
-
-extern s32 gSelMsgNo;
-
-extern s8 gSelMsgPos;
-
-extern char fclStrFee[4];
-
-extern u32 D_0054FC68[2];
-
-extern char fclStrOwn[4];
-
-extern u32 D_0054FC78[2];
-
-extern u32 D_0054FC80[2];
-
-extern char fclStrTotal[6];
-
-extern char fclStrMoney[6];
-
-extern char fclStrNo[3];
-
-extern char fclStrYes[4];
-/* End of declarations from src/smt3/facility/fclMisc.c */
-
-/* Declarations from dds-decomp src/dds1/game/code_002C1588.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
@@ -290,146 +41,57 @@ extern char fclStrYes[4];
 #define SMT3_DEFINES_fclSceneObj_t 1
 
 #include "sdk_libc.h"
-
 #include "sdk_libgcc.h"
-
 #include "dds/btl.h"
-
 #include "dds/sdf_chip.h"
-
 #include "dds/sdk_libc.h"
 
 extern void *memcpy(void *, const void *, unsigned int);
-
 void *memset(void *dst, s32 value, u32 size);
-
 void *sdfChipAllocDirect(s32 size);
-
 void sdfChipFreeDirect(void *memory);
-
-char *strcpy(char *dst, const char *src);
-
 u32 strlen(const char *text);
 
 #include "dds/sdk_ps2.h"
-
 #include "dds/sdf_gs_register_submit_api.h"
-
 #include "dds/sdf_gs_alpha_register_api.h"
-
 #include "dds/sdf_gs_header.h"
-
 #include "dds/common.h"
-
 #include "dds/ui_color.h"
-
-#include "dds/sdf_chip.h"
-
 #include "dds/sdf_packet_list.h"
-
 #include "dds/fpu.h"
-
 #include "dds/eff.h"
-
 #include "dds/eff_resource_slots.h"
-
 #include "dds/eff_resource_records.h"
-
 #include "dds/itf_grid_text.h"
-
 #include "dds/itf_grid_text_color_api.h"
-
 #include "dds/sdf_grid_seek_api.h"
-
 #include "dds/itf_draw_grid.h"
-
 #include "dds/sdf.h"
-
 #include "dds/sdf_draw.h"
-
 #include "dds/sdf_projection.h"
-
 #include "dds/pcp_vu0.h"
 
 extern GridTextListItem *itfFindGridNodeByKey(u32, GridTextWidget *);
-
 extern GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *);
-
 void uiDrawUniformColorRect(u32 x, u32 y, u32 z, u32 width, u32 height, u32 color, u32 surfaceIndex);
-
 void uiDrawSurfaceAtNearDepth(u32 surface);
-
-/* Scale packed RGB by a Q8 factor, preserving the low alpha byte. */
-u32 uiScaleColorRgb(u32 color, u32 scaleFactor);
-
 void itfInitializeAdminInterfaceNoop(void);
-
-void itfShutdownAdminInterfaceNoop(void);
-
-/* Separate native copy of itfReturnZero; no more specific caller role is established. */
 u32 itfReturnZeroDuplicate(void);
-
-s32 itfActivateGridTextWidget(GridTextWidget *widget);
-
-/* Apply parent flags and enable bit 1 on the linked child widget, if present. */
-s32 itfSetWidgetFlagsAndActivateChild(GridTextWidget *widget, u32 flags);
-
-/* Own a NUL-terminated text copy; store X scaled by 16 and Y scaled by 8. */
-GridTextWidget *itfCreateGridTextWidget(const char *text, s32 x, s32 y, s32 columns, s32 rows,
-                               u32 reference);
-
-/* A zero column or row count leaves that dimension unchanged. */
-void itfSetGridDimensions(GridTextWidget *widget, s32 columns, s32 rows);
-
 u32 itfDestroyGridTextWidget(GridTextWidget *widget);
-
-/* Destroy linked child widgets recursively before releasing the parent widget. */
 u32 itfDestroyGridTextWidgetTree(GridTextWidget *widget);
 
 /* Grow only; numbered prefixes reserve four columns, plus two for hexadecimal. */
 void itfExpandWidgetColumnWidth(s32 columns, GridTextWidget *widget);
-
-/* Bit 0: the visible node has a predecessor. Bit 1: at least rows successors remain. */
 u32 itfGetGridListLinkFlags(GridTextWidget *owner);
-
 GridTextListItem *itfAppendGridTextItem(GridTextWidget *owner, const char *text, u32 value);
-
 GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *widget);
-
-/* Replace the owned text and grow the optional parent column to fit its byte length. */
 void itfReplaceGridTextAndExpandColumn(GridTextWidget *widget, GridTextListItem *item, const char *text);
-
-s32 itfSetGridNumericItemDescriptor(GridTextWidget *widget, GridTextListItem *item,
-                  GridNumericDescriptor *descriptor);
-
-/* Advance by at least one configured step; crossing the maximum wraps to minimum. */
 void itfAdvanceGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps);
-
 void itfAdvanceSelectedGridScroll(GridTextWidget *widget, u32 steps);
-
-/* Reverse by at least one configured step; crossing the minimum wraps to maximum. */
 void itfReverseGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps);
-
 void itfReverseSelectedGridScroll(GridTextWidget *widget, u32 steps);
-
-ItfGridTextColorTableIndex itfGetGridTextColorTableIndex(const GridTextWidget *widget,
-                                                          const GridTextListItem *target);
-
-/* Format a native value row, then optionally prefix its decimal/hex row number. */
-void itfFormatGridValueEntryText(GridTextWidget *widget, GridTextListItem *entry, char *out);
-
-/* Draw visible local-map rows and invoke the selected row callback once. */
-void itfDrawGridTextRows(s32 offsetX, s32 offsetY, s32 z, GridTextWidget *widget,
-                   s32 surfaceIndex);
-
 GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget);
-
-SdfGridSeekResult sdfGridSeekSelectedNodeByIndex(s32 itemsToAdvance, GridTextWidget *widget);
-
-SdfGridSeekResult sdfGridSeekFirstNode(GridTextWidget *widget);
-
-SdfGridSeekResult sdfGridSeekLastNode(GridTextWidget *widget);
-/* End of declarations from src/dds1/game/code_002C1588.c */
 
 void uiDrawSurfaceAtNearDepth(u32 surface) {
     sdfSubmitGsTestOneRegisterPacket(0x30000, surface);

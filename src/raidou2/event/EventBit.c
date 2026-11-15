@@ -1,28 +1,15 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/event/EventBit.c */
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "model.h"
-
 #include "kernel.h"
-
 #include "newdata.h"
-
 #include "ps2asm.h"
-
 #include "motion.h"
 
 extern void evtSetAgeOfMoon(u8);
-
 extern void evtDisableMoonDraw(void);
-
 extern void evtDisableMoonCalc(void);
-
 void evtBitAllOff(void);
-
 void evtBitOff(s32 no);
 
 /* dds3ModelEffectCtrlr_t.type: which effect a controller drives. */
@@ -45,19 +32,10 @@ typedef enum PIB_CHUNK_TYPE {
 
 void evtInitGlobalWork(void);
 
-void evtBitAllOff(void);
-
-void evtBitAllOff_FieldDebug(void);
-
 #define BIT_SHIFT(no) (no)
 
-/* Signed flag indices need a bias before arithmetic right shift divides by 32. */
 void evtBitOn(s32 no);
-
-void evtBitOff(s32 no);
-
 s32 evtBitCheck(s32 no);
-/* End of declarations from src/smt3/event/EventBit.c */
 
 void evtInitGlobalWork(void) {
     evtBitAllOff();

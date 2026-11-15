@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfBillBoard.c */
-#include "common.h"
-
 #include "ps2asm.h"
-
 #include "billboard.h"
-
 #include "sdf_lighting.h"
 
 /* Declared here because no header carries these. */
@@ -25,11 +19,8 @@ extern void *memset(void *a, s32 b, size_t c);
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 s32 sdfGrAllocPacketBuff(s32 aSize);
-
 s32 sdfBillBoardGetPacketSize(s32 aNum);
-
 extern void *memcpy(void *, const void *, size_t);
-
 void sdfBillBoardMakeTMPacket(u8 *aPacket, const f32 *aTM);
 
 void sdfBillBoardMake1(u8 *aPacket, const f32 *aCenter, u32 aColor, const void *aUVList,
@@ -41,7 +32,6 @@ void sdfMultiBillBoardMake1(u8 *aPacket, const f32 *aCenter, u32 aColor0, u32 aC
                    const void *aUVList0, const void *aUVList1, const f32 *aXYOffsetList);
 
 u32 sdfMultiBillBoardGetPacketSize(s32 aNum);
-
 extern u32 *sdfMultiBillBoardMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
 
 extern addr_t sdfBillBoardVcMakeN(const u128 *aCenter, const void *aColor,
@@ -52,24 +42,8 @@ void sdfMultiBillBoardVcMake1(u8 *aPacket, const f32 *aCenter, const void *aColo
                    const void *aUVList1, const void *aXYOffsetList);
 
 u32 sdfMultiBillBoardVcGetPacketSize(s32 aNum);
-
 extern addr_t sdfMultiBillBoardVcMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
-
-void sdfBillBoardMakeTMPacket(u8 *aPacket, const f32 *aTM);
-
-void sdfBillBoardMake1(u8 *aPacket, const f32 *aCenter, u32 aColor, const void *aUVList,
-                                   const f32 *aXYOffsetList);
-
-s32 sdfBillBoardGetPacketSize(s32 aNum);
-
-/* vu0 routine: pack aligned positions into the VIF three-word stream. */
 u32 *sdfBillBoardMakeN(const u128 *aCenter, const void *aColor, const void *aUVList, const void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
-
-void sdfMultiBillBoardMake1(u8 *aPacket, const f32 *aCenter, u32 aColor0, u32 aColor1,
-                   const void *aUVList0, const void *aUVList1, const f32 *aXYOffsetList);
-
-u32 sdfMultiBillBoardGetPacketSize(s32 aNum);
-
 u32 *sdfMultiBillBoardMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
 
 void sdfBillBoardVcMake1(u8 *aPacket, const f32 *aCenter, const u32 *aColor, const void *aUVList,
@@ -81,14 +55,7 @@ addr_t sdfBillBoardVcMakeN(const u128 *aCenter, const void *aColor,
                   const void *aUVList, const void *aXYOffsetList,
                   s32 aNum, void *(*aAllocator)(s32));
 
-void sdfMultiBillBoardVcMake1(u8 *aPacket, const f32 *aCenter, const void *aColor, const void *aUVList0,
-                   const void *aUVList1, const void *aXYOffsetList);
-
-u32 sdfMultiBillBoardVcGetPacketSize(s32 aNum);
-
-/* vu0 routine: pack aligned positions into the VIF three-word stream. */
 addr_t sdfMultiBillBoardVcMakeN(u128 *aCenter, void *aColor, void *aUVList, void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
-/* End of declarations from src/smt3/sdf/sdfBillBoard.c */
 
 void sdfBillBoardMakeTMPacket(u8 *aPacket, const f32 *aTM) {
     sdfBillBoardTMPacket_t *p = (sdfBillBoardTMPacket_t *)aPacket;

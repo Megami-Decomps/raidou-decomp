@@ -1,8 +1,4 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdk/libmrpc.c */
-#include "common.h"
-
 #include "sdk_libmrpc.h"
 
 extern void *memcpy(void *, const void *, size_t);
@@ -41,29 +37,16 @@ typedef struct rpcQueue {
 } rpcQueue;
 
 extern s32 sceSifMRpcInitialized __attribute__((section(".data")));
-
 extern rpcQueue sceSifMRpcQueue __attribute__((section(".data")));
-
 extern s32 DIntr(void);
-
 extern s32 EIntr(void);
-
 extern rpcPacket sceSifMRpcPackets[32];
-
 extern void _request_end(void *packet, void *queue);
-
 extern void sceSifAddCmdHandler(s32 command, void (*handler)(void *, void *), void *argument);
-
 extern u32 sceSifGetSreg(s32 index);
-
 extern s32 sceSifSendCmd(s32 command, void *packet, s32 size, void *source, void *destination, s32 length);
-
 void sceSifMInitRpc(s32 mode);
-
-void sceSifMExitRpc(void);
-
 rpcPacket *_sceRpcGetPacket(rpcQueue *queue);
-
 void _sceRpcFreePacket(rpcPacket *p);
 
 /* The M-RPC client extends the shared client prefix. Packet addresses are
@@ -101,7 +84,6 @@ typedef struct rpcResponse {
 } rpcResponse;
 
 extern s32 iSignalSema(s32 sema);
-
 void _request_end(void *packet, void *queue);
 
 typedef struct sdfSemaParam_t {
@@ -114,22 +96,12 @@ typedef struct sdfSemaParam_t {
 } sdfSemaParam_t;
 
 extern s32 CreateSema(sdfSemaParam_t *param);
-
 extern s32 WaitSema(s32 sema);
-
 extern s32 DeleteSema(s32 sema);
-
 extern s32 scePrintf(const char *format, ...);
-
-extern s32 sceSifSendCmd(s32 command, void *packet, s32 size, void *source, void *destination, s32 length);
-
 extern const char sceSifMModeErrorString[];
-
 s32 sceSifMBindRpcParam(rpcClient *client, u32 serverId, s32 mode, u32 arg0, u32 arg1, u32 arg2);
-
 s32 sceSifMBindRpc(rpcClient *client, u32 serverId, s32 mode);
-
-s32 sceSifMBindRpcParam(rpcClient *client, u32 serverId, s32 mode, u32 arg0, u32 arg1, u32 arg2);
 
 /* The EE command transfers the four-byte server-pointer representation. */
 typedef char rpcUnbindServerPointerSize[(sizeof(((rpcClient *)0)->server) == 4) ? 1 : -1];
@@ -137,15 +109,12 @@ typedef char rpcUnbindServerPointerSize[(sizeof(((rpcClient *)0)->server) == 4) 
 typedef char rpcUnbindRequestPointerSize[(sizeof(((rpcUnbindPacket *)0)->server) == 4) ? 1 : -1];
 
 s32 sceSifMUnBindRpc(rpcClient *client, s32 mode);
-
 extern void sceSifWriteBackDCache(void *address, s32 size);
-
 extern const char sceSifMModeErrorString[40];
 
 s32 sceSifMCallRpc(rpcClient *client, u32 function, u32 mode,
                    void *send, s32 sendSize, void *receive, s32 receiveSize,
                    void (*endFunction)(void *), void *endParam);
-/* End of declarations from src/smt3/sdk/libmrpc.c */
 
 void sceSifMInitRpc(s32 mode)
 {
@@ -439,4 +408,3 @@ s32 sceSifMCallRpc(rpcClient *client, u32 function, u32 mode,
     DeleteSema(sema);
     return 0;
 }
-

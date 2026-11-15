@@ -1,22 +1,11 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/effect/effModelTrackPoly.c */
-#include "common.h"
-
 #include "sdk_libgcc.h"
-
 #include "model.h"
-
 #include "motion.h"
-
 #include "ps2asm.h"
-
 #include "draw3d.h"
-
 #include "draw.h"
-
 #include "effect.h"
-
 #include "sdfFrame.h"
 
 typedef struct
@@ -84,41 +73,12 @@ typedef struct
     dds3HermitianTrackPoly_tag *hPoly;
 } Eff_ModelTrackPoly_tag;
 
-extern s32 mdlGetMotionNum(mdlObj_t *model, s32 group);
-
-extern s32 mdlGetMinorNum(mdlObj_t *model);
-
-extern s32 mdlGetMajorNum(mdlObj_t *model);
-
 extern void *memset(void *destination, int value, size_t size);
-
-void pMeshDelete(dds3HermitianTrackPoly_tag *hPoly);
-
 void dds3HermitianTrackPolySetVC(dds3HermitianTrackPoly_tag *hPoly, u32 *colors);
-
-void dds3HermitianTrackPolySetBlend(dds3HermitianTrackPoly_tag *hPoly, u32 blend);
-
 extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
-
 extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-
-extern void sdfChipFreeDirect(void *aPtr);
-
-extern void *sdfChipAllocDirect(u32 aSize);
-
-extern sdfGrOt_t sdfGrOtTable[];
-
 extern sdfGrOt_t effPolyOt;
-
-extern u32 dds3GetFrameID(void);
-
-extern void sdfGrSetFrameMaskRGB(const u8 *aEnv, void *aHdr, s32 aContext);
-
-extern void sdfGrSetFrameMaskReset(const u8 *aEnv, void *aHdr, s32 aContext);
-
-extern void sdfDrawTagLinkRefGif(sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* dds3DrawBank_t stride; only the held frame texture block at 0x1300 is used here. */
 typedef struct
@@ -127,133 +87,39 @@ typedef struct
     u8 frameTex[0x8E0];
 } effDrawBank_t;
 
-extern effDrawBank_t dds3DrawEnv[];
-
 extern sdfMat_t *sdfMatNew(void);
-
-extern void sdfMatFreeDelayed(sdfMat_t *aMat);
-
 extern void sdfMatSetConstant(sdfMat_t *aMat, f32 aRatio);
-
 extern s32 sdfGrAllocPacketBuff(s32 aSize);
-
 extern void sdfDrawTagInit(sdfDrawTag_t *a);
-
 extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
 extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag, s32 aAllocator);
-
 extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat, s32 aAllocator);
-
 extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
-
 extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
-
 extern sdf3DPrimPolyParm_t effModelTrackPolyPrimParm;
-
 extern u32 effModelTrackPolyFaceIndex[];
-
 extern sdfGrOt_t *effModelTrackPolyBlendOt[];
-
 void dds3HermitianTrackPolySetVertex(dds3HermitianTrackPoly_tag *hPoly, const u128 *pVertex);
-
-void dds3HermitianTrackPolyReset(dds3HermitianTrackPoly_tag *hPoly);
-
 void dds3HermitianTrackPolyDraw(dds3HermitianTrackPoly_tag *hPoly);
-
 void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly);
-
-void effSwordTrackDraw(Eff_ModelTrackPoly_tag *hSwordTrack);
-
-void effSwordTrackRecord(Eff_ModelTrackPoly_tag *hSwordTrack);
-
-void effSwordTrackPolygonDraw(Eff_ModelTrackPoly_tag *hSwordTrack);
-
-void effSwordTrackPolygon2DDraw(Eff_ModelTrackPoly_tag *hSwordTrack);
-
 extern s32 sdfModelGetMarkPos(void *aRoot, s32 aId);
-
-s32 Eff_ModelTrackPoly_DANTE_Check(mdlObj_t *hModel);
-
-Eff_ModelTrackPoly_tag *effSwordTrackCreate(effSwordTrackParams_t *pParams);
-
-void effSwordTrackDelete(Eff_ModelTrackPoly_tag *hSwordTrack);
-
-void effSwordTrackReset(Eff_ModelTrackPoly_tag *hSwordTrack);
 
 /* Called above its definition, where ee-gcc assumed int. */
 dds3HermitianTrackPoly_tag *dds3HermitianTrackPolyCreate(s32 face, s32 split);
-
 effModelTrackPoly_t *Eff_ModelTrackPolyCreate(Eff_ModelTrackPolyParam_t *pParam);
-
 void Eff_ModelTrackPolyDelete(effModelTrackPoly_t *work);
-
 void Eff_ModelTrackPolyReset(effModelTrackPoly_t *hMTPoly);
-
-void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly);
-
-void Eff_ModelTrackPolyVertexSet(effModelTrackPoly_t *hMTPoly, const u128 *pVertex);
-
-void Eff_ModelTrackPolyColorSet(effModelTrackPoly_t *hMTPoly, u32 abgr);
-
 void Eff_ModelTrackPolyDrawOnly(effModelTrackPoly_t *hMTPoly);
-
-void Eff_ModelTrackPolyDraw(effModelTrackPoly_t *hMTPoly);
-
 effMTPolyListHandle_t *Eff_ModelTrackPolyListCreate(Eff_ModelTrackPolyParam_t *pParam, u32 number);
-
 void Eff_ModelTrackPolyListDelete(effMTPolyListHandle_t *list);
-
-void Eff_ModelTrackPolyListVertexSet(effMTPolyListHandle_t *hMTPolyList, s32 index, const u128 *pVertex);
-
 void Eff_ModelTrackPolyListReset(effMTPolyListHandle_t *hMTPolyList, s32 index);
-
-void Eff_ModelTrackPolyListColorSet(effMTPolyListHandle_t *hMTPolyList, s32 index, u32 abgr);
-
 void Eff_ModelTrackPolyListDrawOnly(effMTPolyListHandle_t *hMTPolyList);
-
-/* vu0 routine: Catmull-Rom point between p[1] and p[2], left in vf10. */
 void Eff_HermitianSpline(sdfVector4_t *p, f32 t);
-
-dds3HermitianTrackPoly_tag *dds3HermitianTrackPolyCreate(s32 face, s32 split);
-
-void pMeshDelete(dds3HermitianTrackPoly_tag *hPoly);
-
-void dds3HermitianTrackPolyReset(dds3HermitianTrackPoly_tag *hPoly);
-
-void dds3HermitianTrackPolySetBlend(dds3HermitianTrackPoly_tag *hPoly, u32 blend);
-
 void dds3HermitianTrackPolySetVC(dds3HermitianTrackPoly_tag *hPoly, u32 *pABGR);
-
 void dds3HermitianTrackPolyGetVertex(dds3HermitianTrackPoly_tag *hPoly, void *pVertex0, void *pVertex1, s32 frame);
-
 void dds3HermitianTrackPolySetCurrent(dds3HermitianTrackPoly_tag *hPoly, s32 frame);
-
 void dds3HermitianTrackPolySetVertexSub(dds3HermitianTrackPoly_tag *hPoly, const u128 *pVertex);
 
-/* Resample the newest history span: cubic interpolation for established
- * tracks, linear extension while the history is still short. */
-void dds3HermitianTrackPolySetVertex(dds3HermitianTrackPoly_tag *hPoly, const u128 *pVertex);
-
-/* Submit up to two wrapped ring runs in 18-point strips, overlapping by two. */
-void dds3HermitianTrackPolyDraw(dds3HermitianTrackPoly_tag *hPoly);
-
-s32 Eff_ModelTrackPoly_DANTE_Check(mdlObj_t *hModel);
-
-Eff_ModelTrackPoly_tag *effSwordTrackCreate(effSwordTrackParams_t *pParams);
-
-void effSwordTrackDelete(Eff_ModelTrackPoly_tag *hSwordTrack);
-
-void effSwordTrackRecord(Eff_ModelTrackPoly_tag *hSwordTrack);
-
-void effSwordTrackPolygonDraw(Eff_ModelTrackPoly_tag *hSwordTrack);
-
-void effSwordTrackDraw(Eff_ModelTrackPoly_tag *hSwordTrack);
-
-void effSwordTrackReset(Eff_ModelTrackPoly_tag *hSwordTrack);
-/* End of declarations from src/smt3/effect/effModelTrackPoly.c */
-
-/* Declarations from dds-decomp src/dds1/effect/effModelTrackPoly.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
@@ -273,65 +139,29 @@ void effSwordTrackReset(Eff_ModelTrackPoly_tag *hSwordTrack);
 #define SMT3_DEFINES_effSwordTrackParams_t 1
 
 #include "dds/sdk_ps2.h"
-
 #include "dds/common.h"
-
 #include "dds/sdf_map_position_api.h"
-
 #include "dds/sdf_vu0.h"
-
 #include "dds/sdf_asset_state.h"
-
 #include "dds/sdf_asset_create.h"
-
 #include "dds/sdf_chip.h"
-
 #include "dds/sdf_packet_list.h"
-
 #include "dds/sdf_packet_append.h"
-
 #include "dds/sdf_heap_api.h"
-
 #include "dds/eff.h"
-
 #include "dds/eff_math.h"
-
 #include "dds/eff_track_poly_list.h"
-
 #include "dds/mdl.h"
-
 #include "dds/sdf.h"
-
 #include "dds/sdf_chunk.h"
-
 #include "dds/pcp_vu0.h"
-
 #include "dds/eff_track_poly_data.h"
-
 #include "dds/eff_packet_params.h"
 
-/* Release both owned resources before freeing this track. */
-void effTrackPolyRelease(EffTrackPolyWork *work);
-
 void effTrackPolyReset(EffTrackPolyWork *work);
-
-void effTrackPolySetColor(EffTrackPolyWork *work, u32 color);
-
-/* Sample endpoints between startFrame and endFrame (inclusive), fade after
- * endFrame, and reset history before startFrame. */
 void effTrackPolyUpdate(EffTrackPolyWork *work);
 
-extern sdf3DPrimPolyParm_t effTrackPolyDrawParams;
-
-extern const u32 effTrackPolyTriangleIndices[];
-
-/* Select the draw target on the data created by the track constructor. */
-void dds3HermitianTrackPolySetDrawTarget(dds3HermitianTrackPoly_tag *data, u32 drawTarget);
-
-extern sdfGrOt_t *effTrackPolyDrawSurfaces[];
-
 #include "dds/sdf_packet_alloc.h"
-/* End of declarations from src/dds1/effect/effModelTrackPoly.c */
 
 void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly)
 {

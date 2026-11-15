@@ -1,16 +1,9 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/event/evtEventPack.c */
-#include "common.h"
-
 #include "event.h"
-
 #include "kernel.h"
 
 dds3ProcessID_t *dds3SearchProcessName(const char *namestr);
-
 dds3ProcessID_t *evtSearchEventPack(u32 eventno);
-
 void evtMakeEventPackName(s32 taskId, char *buffer);
 
 typedef u8 sdfTextureClampMode_t;
@@ -56,30 +49,20 @@ typedef struct evtPackProcessData_t {
 } evtPackProcessData_t;
 
 s32 evtGetEventPackStat(u32 eventno);
-
 evtPackProcessData_t *evtGetPackProcessData(u32 eventno);
-
 void *evtGetResorceData(u32 eventno, s32 rid);
-
 void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
-
-struct sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
-
-extern void Eve_DistortionBlurSetTex(sdfTexHandle_t *);
-
 extern s32 evtMotionSeWork;
 
 #include "sdk_libc.h"
 
 extern void mdlPackDecode(s32, s32, s32, void *, s32);
-
 extern s32 evtSetRegistUnit(s32 major, s32 minor);
 
 extern s32 evtLoadArea_FromMemory(s32 fld, s32 area, saddr_t pF1, saddr_t pF2,
                                             const sdfTextureOffsetListHeader_t *pTB, s32 pBF);
 
 extern void fldFileAddrResetMode(u32 mode);
-
 extern u32 dds3DrawFlag;
 
 enum {
@@ -114,23 +97,16 @@ typedef struct beMotionSeTable_s {
 } beMotionSeTable_s;
 
 dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type);
-
 struct dds3Basic_t *dds3GetActiveScene(void);
-
 extern sdfMotionCtrlr_t *mdlGetMotionCtrlr(mdlObj_t *aHandle, s32 aGroup);
-
 extern s32 evtPlaySe(s32 eventno, s32 seno);
-
 void sdfChipFreeDirect(void *aPtr);
-
 u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 
 struct FileRequest;
 
 struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *fileHandle);
-
 s32 fileHandleFree(struct FileRequest *fileHandle);
-
 s32 pacFileCheckEnd(const struct FileRequest *pacFileHandle);
 
 enum {
@@ -139,23 +115,14 @@ enum {
 };
 
 extern char evtLoadDoneMessage[];
-
 s32 evtCheckScriptDone(dds3ProcessID_t *task);
-
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
-
 void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *aHandle);
-
 void evtWaitEventPackLoad(dds3ProcessID_t *task);
-
 extern void fileSyncAll(void);
-
 extern void Eve_DistortionBlurSetDefTex(void);
-
 extern void Eve_PartialMultiBlurSetDefTex(void);
-
 extern void Eve_RippleBlurSetDefTex(void);
-
 extern void Eve_PartialMultiFilterSetDefTex(void);
 
 dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
@@ -163,37 +130,14 @@ dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
                          dds3ProcessFunc_t deleteExit, void *p);
 
 dds3ProcessID_t *evtLoadEventPack(s32 eventno);
-
 void *sdfChipAllocDirect(s32 aSize);
-
 extern void *memset(void *a, s32 b, size_t c);
-
 void evtKillEventPack(s32 eventno);
-
 s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
-
-dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
-
 dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId);
-
 struct FileRequest *fileLoad(const char *filename);
-
 extern char evtLoadStartMessage[];
-
 extern char evtEventPackScriptPath[];
-
-dds3ProcessID_t *evtSearchEventPack(u32 eventno);
-
-/* Return this event task's loaded state, or -1 when it does not exist. */
-s32 evtGetEventPackStat(u32 eventno);
-
-evtPackProcessData_t *evtGetPackProcessData(u32 eventno);
-
-void *evtGetResorceData(u32 eventno, s32 rid);
-
-void evtRefreshTaskEffectTexture(s32 taskId, s32 key);
-
-extern f32 D_003494C0[];
 
 /* Rows of 0x310 bytes; only the size field the bed scale reads is named. */
 typedef struct evtBedModelParam_t {
@@ -202,55 +146,14 @@ typedef struct evtBedModelParam_t {
     u8 pad14[0x310 - 0x14];
 } evtBedModelParam_t;
 
-extern evtBedModelParam_t datModelParamTable[];
-
-extern void *dds3AddBEDEffectObjectBasic2(void *data, void *pos, void *rot);
-
-extern void dds3EffectObjectBasicStatOn(void *basic, s32 s);
-
-extern void effEveBEDCutSetScale(void *hEveBEDCut, f32 scale);
-
-void *evtSpawnResourceObject(s32 taskId, s32 key, s32 modelId);
-
-/* Decode one retained unit payload and return its new viewer-object key. */
 s32 evtInitMotionSeProcess(s32 eventId, s32 resourceId);
-
-/* Start a field BE from the task's resource table when all four payloads exist. */
 s32 evtRegistBEField(s32 eventno, s32 rid);
-
 s32 evtMotionSeProcess1(dds3ProcessID_t *id);
-
-/* Free the three-word parameter block owned by the motion-SE task. */
 void evtFreeScriptProcessData(dds3ProcessID_t *task);
-
 extern const char evtMotionSeNameFormat[0x10] __attribute__((aligned(8)));
-
-/* Allocate a three-word task parameter block and format its "mse_..." name. */
-dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId);
-
 extern const char evtEventScriptPathFormat[0x28] __attribute__((aligned(8)));
-
-/* Resolve the event's script path ("/event/eNNN/eNNN/scr/eNNN.be", grouped by tens) and start loading it. */
 void evtLoadEventScript(evtPackProcessData_t *state);
-
-/* Retain a ready pack and select its first entry-point record.
- * Clearing the request handle and marking completion occur on separate calls;
- * no entry-point record leaves the existing entryPoint value untouched. */
 void evtCheckEventScriptLoaded(evtPackProcessData_t *state);
-
-s32 evtCheckScriptDone(dds3ProcessID_t *task);
-
-/* Release the event task's owned handles, then free its state.
- * File I/O is waited on even when the user-value handle is zero. */
-void evtWaitEventPackLoad(dds3ProcessID_t *task);
-
-/* Schedule the event-pack process only if it does not already exist. */
-dds3ProcessID_t *evtLoadEventPack(s32 eventno);
-
-void evtKillEventPack(s32 eventno);
-
-/* Drain every event-pack process at the priority used during creation. */
-void evtKillAllEventPack(void);
 
 typedef struct evtCmbMenuCursor_t {
     u8 pad00[0x21];
@@ -263,56 +166,8 @@ typedef struct evtCmbWork_t {
     evtCmbMenuCursor_t menuCursor;
 } evtCmbWork_t;
 
-extern evtCmbWork_t *CMB_GBWK;
-
-extern u8 cmbMenuEntryTable[8];
-
-extern s32 evtBitCheck(s32 no);
-
-extern void cmpSetCursorFlag(void *cur, saddr_t flag);
-
-void cmbEnableMenuEntry2(void);
-
-void cmbEnableMenuEntry6(void);
-
-extern const char D_0053C6A0[32];
-
-extern const char D_0053C6C0[40];
-
-extern const char D_0053C6E8[40];
-
-extern const char D_0053C710[40];
-
-extern const char D_0053C738[40];
-
-extern const char D_0053C760[40];
-
-extern const char D_0053C788[40];
-
-extern const char D_0053C7B0[24];
-
-extern const char D_0053C7C8[16];
-
-extern const char D_0053C7D8[16];
-
-extern const char D_0053C7E8[24];
-
-extern const char D_0053C800[24];
-
-extern const char D_0053C818[16];
-
-extern const char D_0053C828[24];
-
-extern const char D_0053C840[16];
-
-extern s32 evtMotionSeWork;
-
 extern char evtLoadStartMessage[8];
-
 extern char evtLoadDoneMessage[8];
-
-extern evtCmbWork_t *CMB_GBWK;
-/* End of declarations from src/smt3/event/evtEventPack.c */
 
 dds3ProcessID_t *evtSearchEventPack(u32 eventno) {
     char taskName[32];
@@ -673,4 +528,3 @@ s32 evtMotionSeWork = 0x3E8;
 char evtLoadStartMessage[8] = "LOAD..\n";
 
 char evtLoadDoneMessage[8] = "OK!!\n";
-

@@ -1,34 +1,21 @@
 #include "common.h"
 
-/* Declarations from dds-decomp src/dds1/game/code_002BC8F0.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
 
 #include "kernel_draw.h"
-
 #include "sdf_resource.h"
-
 #include "sdk_libc.h"
-
 #include "dds/btl.h"
-
 #include "dds/file_request_api.h"
-
 #include "dds/sdf_chip.h"
-
 #include "dds/sdf_heap_api.h"
-
 #include "dds/sdf_packet_alloc.h"
-
 #include "dds/sdf_packet_header.h"
-
 #include "dds/sdf_packet_list.h"
-
 #include "dds/sdf_texture_draw_packet.h"
-
 #include "dds/sdf_texture_file.h"
-
 #include "dds/sdf_trig.h"
 
 /* Return the payload allocation descriptor. For normal file loads, freeing the
@@ -48,35 +35,13 @@ struct FileRequest *fileLoadEx(const char *requestName, u32 allocationMode,
                                               u32 callbackAddress, u32 userData);
 
 extern void *memcpy(void *, const void *, unsigned int);
-
-SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
-
-SdfDrawPacket *sdf2DMakePrimPacketHeader(SdfDrawPacket *packet, s32 primitiveFlags,
-                                       s32 registerCount, s64 registerList,
-                                       s32 loopCount);
-
 void *sdfChipAllocDirect(s32 size);
-
 void sdfChipFreeDirect(void *memory);
-
 f32 sdfCos(f32 angle);
-
-void sdfDrawTagInit(struct sdfDrawTag_t *list);
-
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
-
-/* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
- * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 size);
-
 struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-
 void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-
 void *sdfMemLock(struct sdfMemHandle_t *allocation);
-
 void sdfMemUnlock(struct sdfMemHandle_t *allocation);
-
 f32 sdfSin(f32 angle);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
@@ -87,134 +52,28 @@ f32 sdfSin(f32 angle);
 struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
 
 #include "dds/sdf_gs_alpha_register_api.h"
-
 #include "dds/common.h"
-
-#include "dds/sdf_packet_header.h"
-
 #include "dds/eff_object_node.h"
-
-#include "dds/sdf_trig.h"
-
-#include "dds/sdf_chip.h"
-
-#include "dds/sdf_packet_list.h"
-
-#include "dds/sdf_texture_draw_packet.h"
-
 #include "dds/itf_draw_grid.h"
-
 #include "dds/eff_ref_obj.h"
-
-#include "dds/sdf_heap_api.h"
-
 #include "dds/ee_mmi.h"
-
 #include "dds/pcp_vu0.h"
-
 #include "dds/eff.h"
-
 #include "dds/eff_resource_slots.h"
-
 #include "dds/eff_resource_records.h"
-
 #include "dds/eff_record_bucket.h"
-
 #include "dds/eff_owner_records.h"
-
 #include "dds/sdf.h"
-
-#include "dds/sdf_texture_file.h"
-
-#include "dds/btl.h"
-
-#include "dds/file_request_api.h"
 
 /* Declared before first use (were implicit int). */
 extern void * memset(void *, s32, u32);
-
-extern u32 effColorEditRgbMenuOpen;
-
-extern u32 effColorEditSelectedKey;
-
-extern u32 effColorEditPage;
-
-extern u32 effEditScalarTrackData;
-
-extern u32 effEditScalarTrackData2;
-
-extern u32 effEditScalarTrackData3;
-
-extern u32 effColorEditSelectedAlphaKey;
-
-extern s32 effEditorCurrentMenu;
-
-extern u32 effScalyTextureHandle;
-
-extern s32 effSharedStripReferenceCount;
-
-extern u32 effSharedScalyStripResource;
-
-extern u32 effWindTextureHandle;
-
-extern struct sdfMemHandle_t *D_003BC984;
-
-extern struct sdfMemHandle_t *effLoadScalyTextureData;
-
-extern s32 effSharedRibbonReferenceCount;
-
-extern u32 effSharedAssetReferenceReleaseData;
-
-extern struct SdfTextureFileHeader *effFlashTextureHandles;
-
-extern struct SdfTextureFileHeader *effCreateTrackSetWithSharedReferencesData;
-
-extern u32 sdfGetOrCreateTextureForReferenceData;
-
-extern u32 sdfGetOrCreateTextureForReferenceData2;
 
 typedef struct EffectObjectFlag {
     u8 pad00[0xC];
     u32 flags;
 } EffectObjectFlag;
 
-extern EffectObjectNode *effFloorModelListHead;
-
-extern u32 effPartsListScroll;
-
-extern s32 effCreateTrackSetWithSharedReferencesData2[2];
-
-extern RefObj *effData34[2];
-
 extern EffRecordBucket effData21[];
-
-extern u32 effSharedTextureReferenceCount;
-
-extern u32 effResetSlotsData[2];
-
-extern u32 effResetSlotsData2[2];
-
-extern u8 effPadVibePower[2];
-
-extern u8 effData37[2];
-
-extern u8 effData41[];
-
-extern u8 effData42[];
-
-extern u8 *effData39;
-
-extern u8 effLabelBlur[];
-
-extern u8 effCreateFilterTaskData2[];
-
-extern u8 effCreateTwoDimensionalTaskData2[];
-
-extern u8 D_003BD108;
-
-extern u8 D_003BD109;
-
-extern u8 D_003BD10A;
 
 /* Relative offsets in an effect resource's table and its eight-byte entries. */
 typedef struct EffectResourceTable {
@@ -229,24 +88,6 @@ typedef struct EffectResourceEntry {
     u32 unknown;
     u32 resourceOffset;
 } EffectResourceEntry;
-
-extern u16 D_003BC944;
-
-extern u8 *sdfGetOrCreateTextureForReferenceData3;
-
-extern struct sdfMemHandle_t *effLoadFlashTexturesData[2];
-
-extern s8 effData36;
-
-extern f32 D_003BC9A8;
-
-extern char effData40[];
-
-extern u8 effPollPrimaryFileData[];
-
-extern u8 effInitializeResourceQueueData[];
-
-extern u32 effData38;
 
 extern char D_003BD198[];
 
@@ -280,57 +121,29 @@ extern char D_003BD198[];
 
 #define EFF_RESOURCE_TABLE_ENTRY_BYTES 8
 
-/* Load and instantiate a resource; only a zero keepAllocation releases the source allocation. */
 EffectSlotSet *effLoadIndexedResource(const char *base, const char *name, u32 keepAllocation);
-
-/* Publish the instance, release its source allocation, then clean up the completed file job. */
 void effCompleteTransientResourceJob(struct FileRequest *job, u32 *outInstance);
-
-/* Publish the instance without releasing its source allocation, then clean up the file job. */
 void effCompleteRetainedResourceJob(struct FileRequest *job, u32 *outInstance);
-
-/* Clear the output first; only mode one selects the retained-allocation completion path. */
 void effRequestResourceByMode(const char *base, const char *name, u32 mode, u32 *outInstance);
-
-/* Build mapped records from the retained source address, then release the original file allocation. */
 EffMappedResource *effLoadMappedResource(const char *base, const char *name);
 
-/* Publish mapped records before releasing their source allocation and completing the file job. */
 void effCompleteMappedResourceJob(struct FileRequest *job,
                                   EffMappedResource **outMappedResource);
 
-/* Initialize the output to zero and schedule mapped-record completion. */
 void effRequestMappedResource(const char *base, const char *name,
                               EffMappedResource **outMappedResource);
 
-/* Create an owner list with sixteen initially empty record buckets. */
 EffectOwnerRecord *effCreateOwnerRecordList(EffectSlotSet *owner);
-
-/* Clamp only the upper bucket bound and prepend; the former head's prev link is not rewritten. */
 void effInsertSlotRecord(void *owner, EffectOwnerRecord *list, EffectSlotOwner *work, s32 slotIndex);
-
-/* Remove the first matching slot from the raw bucket index; unlike insertion, this does not clamp it. */
 s32 effRemoveSlotRecord(EffectOwnerRecord *list, EffectSlotOwner *work, s32 slotIndex);
 
 /* Release all sixteen buckets; retain the original traversal that reads next after releasing a record. */
 void effReleaseRecordBuckets();
-
 extern void itfGridLookupValueOrDefault(void *object, s32 key);
-
-/* Dispatch every bucket record and optionally refresh its owner/slot lookup. */
 u32 effDispatchRecordBuckets(u32 refresh, EffectOwnerRecord *list, s32 drawOption);
-
-/* Release bucket records before the owner list. */
 u32 effDestroyOwnerRecordList(u32 list);
-
-/* Convert a 4-byte effect parameter between its int and float kinds. Kind 0
- * converts (float to int, or int to float when toFloat is set); kind 2 copies
- * a float through. Returns the converted size, or 0 for other kinds. */
 u32 effConvertParamValue(u32 *kind, void *out, void *in, void *toFloat);
-
 extern u32 effConvertParamValue(u32 *, void *, void *, void *);
-
-/* Sum the status-storage byte requirements for the selected record category. */
 u32 effSumRecordStatuses(const EffMappedRecord *record);
 
 /* Serialized file header; this is distinct from the live batch header below. */
@@ -340,65 +153,29 @@ typedef struct EffMappedHeader {
     u8 pad_18[8];
 } EffMappedHeader;    // 0x20
 
-/* Copy packed headers and status data into live records, zero-filling extra status capacity.
- * The required-size calculation uses the first record, not the current row.
- * Returns the record-allocation handle, not its retained address.
- */
 struct sdfMemHandle_t *effLoadMappedStatusRecords(const u8 *source, EffMappedHeader *headerOut);
 
 /* Build the live batch header from the serialized count and owned record array. */
 EffMappedResource *effCreateMappedResource(const u8 *source);
-
-/* Build one zeroed status record and allocate the category's required status storage. */
 EffMappedResource *effCreateStatusBatch(u32 category);
-
-/* Release each record's status storage, then the record allocation and batch header. */
 EffMappedResourceDestroyResult effDestroyPackedBatch(EffMappedResource *batch);
-
 u32 effReleaseSlotWorkAllocation(EffectSlotSet *owner);
-
-/* Return the normal slot work unless the slot carries an alternate payload. */
 void *effGetSlotWorkOrOverride(EffectSlotSet *work, s32 slotIndex);
-
-/* Start at zero when moving forward, otherwise at the full 16.16 endpoint. */
 void effInitializeSlotPhase(EffTimedState *effect);
-
-extern s8 D_0038FB70[];
-
 extern EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entryData);
 
 /* Rebuild a slot's live work from its source description, then prime the timed states. */
 void effInitializeSlotWorkFromDescription(EffectSlotSet *owner, s32 slotIndex, void *payload);
-
-/* Initialize the normal slot entry at the unchanged 0xA0-byte stride. */
 void effInitializeSlotWork(EffectSlotSet *owner, s32 slotIndex);
-
-/* Reset every normal work slot in source order. */
 void effInitializeAllSlotWork(EffectSlotSet *work);
-
-/* Store the owner and slot index before invoking the work initializer. */
 void effAttachSlotWorkOwner(EffectSlotSet *owner, s32 slotIndex, void *payload);
-
-/* Clear the complete normal slot, then restore owner/index and initialize it. */
 void effResetSlotWork(EffectSlotSet *work, u32 slotIndex);
-
-/* Acquire missing selected handles or clear slots; clearAllSlots does not release textures.
- * Return the address following the processed resource-table entries.
- */
 u8 *effResolveResourceSlots(EffectSlotSet *set, u8 *resourceBytes, s32 clearAllSlots, s32 selectedSlot);
-
 void effResolveAndReleaseResource(EffectSlotSet *owner);
-
 void effResolveAndReleaseSelectedResource(EffectSlotSet *owner, s32 slot);
-
 void effReleaseTextureHandlesAndResetSlots(EffectSlotSet *set);
-
 u8 effHasFirstTextureHandle(const EffectSlotSet *set);
-
-/* Allocate and clear count 0x6C-byte records; retain the existing allocation/count/address header order. */
 EffPayload *effCreatePayload(u32 recordCount);
-
-/* Release the record allocation before freeing its small header. */
 u32 effDestroyPayload(EffPayload *payload);
 
 #define EFF_SLOT_TEXTURE_REFERENCES_OWNED 0
@@ -406,32 +183,20 @@ u32 effDestroyPayload(EffPayload *payload);
 #define EFF_SLOT_TEXTURE_REFERENCES_BORROWED 1
 
 EffectSlotSet *effCreateResourceSlotSetFromAllocation(struct sdfMemHandle_t *resourceAllocation, u32 keepAllocation);
-
 EffectSlotSet *effCreateResourceSlotSet(EffectSlotSet *borrowedSource, u32 slot, u32 count);
-
 u32 effDestroyResourceSlotSet(EffectSlotSet *set);
-
 u32 effSetSlotResourceAndFlags(EffTimedState *record, EffMappedRecord *entry, u32 flags);
 
 u32 effSetSlotIndexedResource(EffTimedState *target, EffMappedResource *resources, s32 item,
                               u32 flags);
 
 u32 effSlotTransitionClearTarget(EffTimedState *record, u32 unused);
-
 u32 effClampSlotPhaseAtEnd(EffectSlotSet *owner, s32 index, EffTimedState *effect);
-
 u32 effClampSlotPhaseAtStart(EffectSlotSet *owner, s32 index, EffTimedState *effect);
-
 extern u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
-
 EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entryData);
-
 u32 effSetSlotOverrideWork(EffectSlotSet *owner, s32 index, void *payload);
-
 u32 effSetMaterialSlots(EffectSlotSet *owner, s32 index, u32 materialFlags, void *payload);
-
-u32 effClearSlotOverrideWork(s32 work, s32 index);
-
 u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags);
 
 u32 effConfigureIndexedSlotResource(EffectSlotSet *work, s32 index,
@@ -446,7 +211,6 @@ u32 effConfigureWithDefaultSetting(EffectSlotSet *effect, u32 slot,
                                    u32 materialFlags, u32 stateFlags);
 
 u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
-
 void effSelectPresetByKind(u32 mode, u32 value);
 
 typedef struct SdfDrawPacket SdfDrawPacket;
@@ -468,33 +232,12 @@ typedef union EffSpriteColor {
     } channels;
 } EffSpriteColor;
 
-#include "dds/sdf_packet_alloc.h"
-
-extern void sdfTexSetFilter(sdfTexHandle_t *, s32, s32);
-
-extern s32 sdf2DGetPrimPacketSize(s32, s32);
-
-extern u8 *sdf2DGetPrimPtr(SdfDrawPacket *packet);
-
 extern void effSelectPresetByKind(u32, u32);
-
-void itfDrawTexturedSpriteRect(s32 x, s32 y, u32 depth, s32 width, s32 height,
-                   const EffSpriteUV *uvRect, const EffSpriteColor *color, u32 flipFlags,
-                   u32 blendKind, s32 mode, sdfTexHandle_t *texture, s32 surfaceId);
-
-/* Rotate an offset in degrees, apply screen aspect correction, and add the supplied center. */
 void itfRotateScreenOffset(s32 *outX, s32 *outY, s32 x, s32 y, s32 centerX, s32 centerY, f32 angle);
-
-void sdfDrawTexturedQuad(s32 x, s32 y, u32 depth, s32 width, s32 height,
-                   const EffSpriteUV *uvRect, const EffSpriteColor *cornerColors,
-                   u32 flipFlags, f32 angle, u32 blendKind, s32 mode,
-                   sdfTexHandle_t *texture, s32 surfaceId);
-
 extern void uiDrawGradientColorRect(u32, u32, u32, u32, u32, const u32 *, u32);
 
 void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width,
                                     u32 height, u32 vertexColors, u32 presetMode, u32 presetValue);
-/* End of declarations from src/dds1/game/code_002BC8F0.c */
 
 /* Load and instantiate a resource; only a zero keepAllocation releases the source allocation. */
 EffectSlotSet *effLoadIndexedResource(const char *base, const char *name, u32 keepAllocation) {

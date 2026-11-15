@@ -1,8 +1,5 @@
 #include "common.h"
 
-/* Declarations from smt3-decomp src/smt3/sdk/libm.c */
-#include "common.h"
-
 #define GET_FLOAT_WORD(i, d)                    \
     do {                                        \
         union { f32 f; u32 u; } gf_u;             \
@@ -17,109 +14,8 @@
         (d) = sf_u.f;                           \
     } while (0)
 
-extern f32 __kernel_cosf(f32 x, f32 tail);
-
-extern f32 __kernel_sinf(f32 x, f32 tail, s32 reduced);
-
-extern f32 __kernel_tanf(f32 x, f32 tail, s32 reciprocal);
-
-extern s32 __ieee754_rem_pio2f(f32 x, f32 *remainder);
-
-f32 cosf(f32 x);
-
-f32 sinf(f32 x);
-
-f32 tanf(f32 x);
-
-extern f32 __ieee754_acosf(f32 x);
-
-extern f32 __ieee754_atan2f(f32 y, f32 x);
-
-f32 acosf(f32 x);
-
-f32 atan2f(f32 y, f32 x);
-
-extern f32 __ieee754_sqrtf(f32 x);
-
-f32 __ieee754_acosf(f32 x);
-
-extern f32 fabsf(f32 x);
-
-extern f32 atanf(f32 x);
-
-f32 __ieee754_atan2f(f32 y, f32 x);
-
-extern const s32 two_over_pi[];
-
-extern const s32 npio2_hw[];
-
-extern s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,
-                              const s32 *twoOverPi);
-
-s32 __ieee754_rem_pio2f(f32 x, f32 *y);
-
-f32 __kernel_cosf(f32 x, f32 tail);
-
 extern f32 floorf(f32 x);
-
-extern f32 scalbnf(f32 x, s32 n);
-
-extern const s32 __kernel_rem_pio2fTable[];
-
-/* Readonly fragment also contains neighboring math constants. */
-extern const f32 __kernel_rem_pio2fTable2[];
-
-s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,
-                       const s32 *ipio2);
-
-f32 __kernel_sinf(f32 x, f32 y, s32 useTail);
-
-extern const f32 __kernel_tanfTable[];
-
-f32 __kernel_tanf(f32 x, f32 y, s32 selector);
-
-extern const f32 atanfTable[];
-
-extern const f32 atanfConst;
-
-extern const f32 atanfTable2[];
-
-extern const f32 atanfConst2;
-
-extern const f32 atanfTable3[];
-
-f32 atanf(f32 x);
-
-f32 fabsf(f32 x);
-
 f32 floorf(f32 x);
-
-extern f32 copysignf(f32 magnitude, f32 sign);
-
-f32 scalbnf(f32 x, s32 n);
-
-f32 copysignf(f32 magnitude, f32 sign);
-
-extern const s32 two_over_pi[198];
-
-extern const s32 npio2_hw[52];
-
-extern const s32 __kernel_rem_pio2fTable[4];
-
-extern const f32 __kernel_rem_pio2fTable2[26];
-
-extern const f32 __kernel_tanfTable[14];
-
-extern const f32 atanfTable[3];
-
-extern const f32 atanfConst __attribute__((section(".rodata")));
-
-extern const f32 atanfTable2[3];
-
-extern const f32 atanfConst2 __attribute__((section(".rodata")));
-
-extern const f32 atanfTable3[18];
-/* End of declarations from src/smt3/sdk/libm.c */
 
 f32 floorf(f32 x)
 {

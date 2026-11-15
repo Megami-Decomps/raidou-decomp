@@ -1,23 +1,7 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfRand.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
-
-extern s32 sdfCdTrayMode;
-
-extern s32 sdfFileSemaId;
-
-extern u8 sdfFileDefaultSrcType;
-
-extern u8 sdfFileCmdDefaultDevice;
-
-extern u8 sdfFileCmdThreadPrioCheckCounter;
 
 typedef struct sdfHostPrefix_t {
     s8 b[7];
@@ -126,69 +110,14 @@ enum sdf_stream_playback {
 typedef union { f32 quaternion[4]; u16 monthDays[20]; } sdfMathConstants_t;
 
 extern sdfMathConstants_t sdfMathConstants;
-
-extern s8 sdfPrintIopFlag;
-
-extern char sdfPrintStrFmt[];
-
-extern char sdfFileCdromPrefix[];
-
-extern sdfHostPrefix_t sdfFileHostPrefix[];
-
-extern u8 sdfFileHddPrefix[];
-
-extern char sdfFileCdromName[];
-
-extern sdfFileCmdHandle_t *sdfFileCmdActiveHead;
-
-extern sdfFileCmdHandle_t *sdfFileCmdFreeList;
-
-extern s16 sdfFileCmdFreeCount;
-
-extern s16 sdfFileCmdCount;
-
-extern sdfFileCmdHandle_t *sdfFileCmdCacheHead;
-
-extern sdfFileCmdHandle_t *sdfFileCmdCacheTail;
-
-extern char sdfFileCmdCdromPrefix[];
-
-extern char sdfFileCmdHostPrefix[];
-
-extern char sdfFileCmdPfsPrefix[];
-
-extern u16 sdfFileCmdDefaultCreateMode;
-
-extern s32 sdfFileCmdThreadPrio;
-
-extern u8 sdfDev9Ready;
-
 extern sdfRandCB_t sdfDefaultRandCB;
-
 extern s32 sceCdReadClock(sdfCdClock_t *);
-
 extern u8 sdfCdClock;
-
 extern sdfClock_t sdfCdClockCache;
-
-extern s32 (*p2sdSmgBuf)(void);
-
 s32 sdfGetCdClock(sdfClock_t *now);
-
 s32 sdfBcdToDecimal(s32 aBcd);
-
-/* Seed the generator state (the shared effect state when `state` is NULL); each word is the previous one rotated right 8 bits and xored with a constant. */
 void sdfRandomize(sdfRandCB_t *aCB, u32 aSeed);
-
-/* Seeds the generator at `state` from the current clock (time of day in seconds since an epoch). */
 void sdfRandomizeByTime(sdfRandCB_t *aCB);
-
-s32 sdfGetCdClock(sdfClock_t *now);
-
-extern u8 sdfCdClock;
-
-extern sdfClock_t sdfCdClockCache;
-/* End of declarations from src/smt3/sdf/sdfRand.c */
 
 /* Seed the generator state (the shared effect state when `state` is NULL); each word is the previous one rotated right 8 bits and xored with a constant. */
 void sdfRandomize(sdfRandCB_t *aCB, u32 aSeed) {

@@ -1,16 +1,8 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfDraw.c */
-#include "common.h"
-
 #include "eeregs.h"
-
 #include "libdma.h"
-
 #include "sdfGsMemIO.h"
-
 #include "sdf_types.h"
-
 #include "sdf_resource.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
@@ -75,19 +67,12 @@ extern u8 sdfFrameId;
 #define SDF_GRAPH_DEPTH_BUFFER_INDEX 2
 
 extern u8 sdfGrBufferSlot;
-
 extern u16 sdfReqDrawDelaySleepCount;
-
 extern u32 sdfDrawFrameCount;
-
 extern u8 sdfDrawImageTrans;
-
 extern volatile u8 sdfDrawSyncFlag;
-
 extern u32 sdfGetRunTimeCountBase(void);
-
 extern u32 sdfGetRunTimeCount(u32 aBaseTime);
-
 extern void sdfWaitVblank(s32 count);
 
 struct sdfPrimTransElem_t;
@@ -273,9 +258,6 @@ typedef struct SdfDmaTag {
     u64 vifCommands;
 } QWORD_ALIGNED SdfDmaTag;
 
-void sdfDrawTagLink2(struct sdfDrawTag_t *aTag, addr_t aHeadPacket,
-                          addr_t aTailPacket);
-
 void sdfDrawTagLinkRef(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* One 0x10-byte entry in the three-slot frame packet submission ring. */
@@ -330,17 +312,11 @@ typedef struct sdfGrStdDrawEnv_t {
 } sdfGrStdDrawEnv_t;
 
 void sdfGrStdDrawEnvPredraw(sdfGrStdDrawEnv_t *aPre, s32 aEvenOdd);
-
 void sdfGrSetRefGifPacket(sdfGrRefGifPacketHeader_t *aPacket, addr_t aRegs, s32 aNumRegs);
-
 void sdfGrSetDrawDefParmPacket(sdfGrRefGifPacketHeader_t *aDef);
-
 extern s32 EIntr(void);
-
 extern s32 DIntr(void);
-
 extern s32 sdfDrawReqQueueIndex;
-
 extern sdfDrawReqRec_t sdfGrDrawState[];
 
 typedef struct effDebugPolyParams_t {
@@ -360,37 +336,21 @@ typedef struct effDebugPolyParams_t {
 } effDebugPolyParams_t;
 
 s32 sdfGrAllocPacketBuff(s32 aSize);
-
 void sdfDrawTagInit(sdfDrawTag_t *a);
-
 void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
 void sdfDrawTagLinkRefGif(sdfDrawTag_t *aTag, addr_t aPacket);
-
 void sdfDrawTagLinkCall(sdfDrawTag_t *aTag, addr_t aPacket);
-
 void sdfGrOtFuncLinkToHead(sdfGrOt_t *aOt, sdfDrawTag_t *aTag);
-
 void sdfGrOtNormalReg(sdfGrOt_t *aOt, sdfDrawTag_t *aTag);
-
 s32 sdfGrOtNormalCallback(sdfGrOt_t *aOt, s32 aFunc, sdfDrawTag_t *aData);
-
 void sdfGrOtInit(sdfGrOt_t *aOt, s32 aNumOt);
-
 sdfGrRefPacketHeader_t *sdfGrNewExPacket(SdfDmaTag *ex);
-
 SdfDmaTag *sdfGrAddExPacket(SdfDmaTag *p, SdfDmaTag *ex);
-
 void sdfGrJoinDrawTag(sdfDrawTag_t *aFore, sdfDrawTag_t *aBack);
-
 void sdfGrInitExPacket(sdfDrawTag_t *p);
-
 sdfDrawTag_t *sdfGrOtClose(sdfGrOt_t *aOt);
-
 void sdfPreDrawTagLink(sdfPreDrawTag_t *aTag, sdfPreDrawHook_t *aHook);
-
 void sdfPreDrawChainLink(sdfPreDrawChain_t *aChain, sdfPreDrawTag_t *aTag);
-
 void sdfGrSetRegsPacketHeader(sdfGrPacketHeader_t *header, s32 payloadQwords);
 
 void sdfGrSetDrawFramePacket(sdfGrDrawFramePacket_t *aFrame, s32 aFrameAddr, s32 aW, s32 aH,
@@ -403,169 +363,22 @@ void sdfGrSetDrawFrame(sdfGrDrawFrame_t *aFrame, s32 aFrameAddr, s32 aW, s32 aH,
                            s32 aPixelFormat, s32 aZBuffAddr, s32 aZBuffFormat, s32 aContext);
 
 void sdfGrLinkStdDrawEnv(sdfDrawTag_t *aTag, sdfPreDrawTag_t *aPreDrawTag, sdfPreDrawHook_t *aEnv);
-
 void sdfGrLinkDispFrameTex(sdfDrawTag_t *aTag, addr_t aEnv, sdfGrRefPacketHeader_t *aPkt);
-
 void sdfGrLinkDrawFrameTex(sdfDrawTag_t *aTag, u32 aEnv, sdfGrRefPacketHeader_t *aPkt);
-
 void sdfGrFramePacketPredraw(sdfGrFramePacket_t *aPre, s32 aEvenOdd);
-
 void sdfGrSetFramePacket(sdfGrFramePacket_t *aFrame, sdfGrFrameSet_t *aFrameSet, u32 aFrameMask, s32 aZBuffMask, s32 aContext);
-
 void sdfGrReqDrawDelay(s32 count);
-
 void sdfGrInitDraw(void);
-
-void sdfDrawTagInit(sdfDrawTag_t *a);
-
-void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
-void sdfDrawTagLink2(sdfDrawTag_t *aTag, addr_t aHeadPacket, addr_t aTailPacket);
-
 void sdfDrawTagLinkRef(sdfDrawTag_t *aTag, addr_t aPacket);
-
-void sdfDrawTagLinkRefGif(sdfDrawTag_t *aTag, addr_t aPacket);
-
-void sdfDrawTagLinkCall(sdfDrawTag_t *aTag, addr_t aPacket);
-
-void sdfGrOtFuncLinkToHead(sdfGrOt_t *aOt, sdfDrawTag_t *aTag);
-
-void sdfGrOtNormalReg(sdfGrOt_t *aOt, sdfDrawTag_t *aTag);
-
-s32 sdfGrOtNormalCallback(sdfGrOt_t *aOt, s32 aFunc, sdfDrawTag_t *aData);
-
-void sdfGrOtInit(sdfGrOt_t *aOt, s32 aNumOt);
-
-sdfGrRefPacketHeader_t *sdfGrNewExPacket(SdfDmaTag *ex);
-
-SdfDmaTag *sdfGrAddExPacket(SdfDmaTag *p, SdfDmaTag *ex);
-
-void sdfGrJoinDrawTag(sdfDrawTag_t *aFore, sdfDrawTag_t *aBack);
-
-void sdfGrInitExPacket(sdfDrawTag_t *p);
-
-sdfDrawTag_t *sdfGrOtClose(sdfGrOt_t *aOt);
-
 void sdfPreDrawTagInit(sdfPreDrawTag_t *aTag);
-
-void sdfPreDrawTagLink(sdfPreDrawTag_t *aTag, sdfPreDrawHook_t *aHook);
-
 void sdfPreDrawChainInit(sdfPreDrawChain_t *aChain);
-
-void sdfPreDrawChainLink(sdfPreDrawChain_t *aChain, sdfPreDrawTag_t *aTag);
-
-void sdfGrSetRegsPacketHeader(sdfGrPacketHeader_t *header, s32 payloadQwords);
-
-void sdfGrSetRefGifPacket(sdfGrRefGifPacketHeader_t *aPacket, addr_t aRegs, s32 aNumRegs);
-
-void sdfGrSetDrawFramePacket(sdfGrDrawFramePacket_t *aFrame, s32 aFrameAddr, s32 aW, s32 aH,
-                  s32 aPixelFormat, s32 aZBuffAddr, s32 aZBuffFormat,
-                  s32 aHalfOffset, s32 aContext);
-
-void sdfGrSetClearPacket(sdfGrClearPacket_t *aClear, s32 aW, s32 aH, s32 aPixelFormat, s32 aZBuffFormat);
-
-void sdfGrSetDrawDefParmPacket(sdfGrRefGifPacketHeader_t *aDef);
-
-void sdfGrSetDrawFrame(sdfGrDrawFrame_t *aFrame, s32 aFrameAddr, s32 aW, s32 aH,
-                           s32 aPixelFormat, s32 aZBuffAddr, s32 aZBuffFormat, s32 aContext);
-
 void sdfGrSetDrawEnv(sdfGrDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet, s32 aEvenOdd);
-
-extern void sdfTexSetPacket(sdfTexPacket_t *packet, s32 width, s32 height, s32 gsAddr,
-                            s32 pixelFormat, s32 clutAddr, s32 clutFormat, s32 colorComp,
-                            s32 mipmapCount, s32 mipmapParm, s32 wrapMode, s32 context);
-
 void sdfGrSetStdDrawEnv(sdfGrStdDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet);
-
-void sdfGrLinkStdDrawEnv(sdfDrawTag_t *aTag, sdfPreDrawTag_t *aPreDrawTag, sdfPreDrawHook_t *aEnv);
-
 void sdfGrSetFrameMaskRGB(const u8 *aEnv, sdfGrRefGifPacketHeader_t *aHdr, s32 aContext);
-
 void sdfGrSetFrameMaskReset(const u8 *aEnv, sdfGrRefGifPacketHeader_t *aHdr, s32 aContext);
-
-void sdfGrLinkDispFrameTex(sdfDrawTag_t *aTag, addr_t aEnv, sdfGrRefPacketHeader_t *aPkt);
-
-void sdfGrLinkDrawFrameTex(sdfDrawTag_t *aTag, u32 aEnv, sdfGrRefPacketHeader_t *aPkt);
-
-void sdfGrFramePacketPredraw(sdfGrFramePacket_t *aPre, s32 aEvenOdd);
-
-void sdfGrSetFramePacket(sdfGrFramePacket_t *aFrame, sdfGrFrameSet_t *aFrameSet, u32 aFrameMask, s32 aZBuffMask, s32 aContext);
-
 void sdfGrReqDraw(sdfDrawTag_t *aTag, sdfPreDrawChain_t *aPreDraw);
-
-void sdfGrReqDrawDelay(s32 count);
-
-void sdfGrInitDraw(void);
-
-/* The draw worker publishes this to the kernel process, which clears it. */
-extern volatile u8 sdfDrawPublishFlag;
-
-extern volatile u8 sdfDrawFrameFlag;
-
-extern volatile u8 sdfDispThreadFlag;
-
-extern u8 sdfFrameEvenOdd;
-
-extern u8 sdfGrDrawFrameId;
-
-extern u8 sdfGrDrawFirstFlag;
-
 extern u32 sdfGrDrawFrameTagHead;
-
-extern s32 dds3GsThreadId;
-
-extern s32 SignalSema(s32 sema);
-
-extern s32 SleepThread(void);
-
-extern void FlushCache(s32 mode);
-
-extern sceDmaChan *sceDmaGetChan(u32 channel);
-
-extern void sceDmaSend(sceDmaChan *channel, void *tag);
-
-extern void sceDmaRecvN(sceDmaChan *channel, void *data, u32 qwc);
-
-extern u64 sceGsGetIMR(void);
-
-extern u64 sceGsPutIMR(u64 mask);
-
-extern void sdfDeliverDrawStart(s32 frameId, s32 bufferId);
-
-extern void sdfDeliverDrawEnd(s32 mode, s32 frameId, s32 halfOffset);
-
-extern void sdfImageSetTrans(void);
-
-extern void sdfDevConsDrawAll(void);
-
-extern void sdfDelayedResrcProc(void);
-
-void sdfGrDrawFrame(void);
-
 void sdfDrawSync(void);
-
-extern volatile u8 sdfDrawFrameFlag;
-
-extern volatile u8 sdfDrawSyncFlag;
-
-extern u16 sdfDrawFrameCounter;
-
-extern volatile u8 sdfDrawPublishFlag;
-
-extern u8 sdfGrDrawFrameId;
-
-extern u8 sdfGrBufferSlot;
-
-extern volatile s8 sdfReqDrawDelayCount;
-
-extern u16 sdfReqDrawDelaySleepCount;
-
-extern s32 sdfDrawReqQueueIndex;
-
-extern u32 sdfGrDrawFrameTagHead;
-
-extern u32 sdfDrawFrameCount;
-/* End of declarations from src/smt3/sdf/sdfDraw.c */
 
 void sdfDrawTagInit(sdfDrawTag_t *a) {
     a->z = 0xFFFF;

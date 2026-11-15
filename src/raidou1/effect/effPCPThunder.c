@@ -1,18 +1,9 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/effect/effPCPThunder.c */
-#include "common.h"
-
 #include "effPCPData.h"
-
 #include "effThunder.h"
-
 #include "ps2asm.h"
-
 #include "sdf_resource.h"
-
 #include "sdf_types.h"
-
 #include "sdfFrame.h"
 
 struct effRandState_t;
@@ -440,34 +431,21 @@ u32 dds3GetRandA(effRandState_t *name);
 
 /* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
 f32 dds3GetRandFloatA(effRandState_t *name);
-
 extern s32 effMagaCylinderCalcColor(s32 color, s32 param);
-
 extern void effPCP_ThunderRadiatePolyPartRefresh(effPCP_ThunderRadiatePoly_t *pThunderRadiatePoly, s32 number);
-
 extern void effPCP_ThunderPolyLowPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number);
-
 extern void effPCP_ThunderPolyPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number);
-
 extern void effPCP_ThunderPolyListPartRefresh(effPCP_ThunderPoly_t *work, s32 index, const u128 *seed);
-
 void effPCP_ThunderPolyDelete(effPCP_ThunderPoly_t *hData);
-
 void dds3TrackPolyListInit(struct parSystem_t *hTrackPoly, s32 number);
-
 void dds3TrackPolyDraw(struct parSystem_t *system);
-
 void dds3TrackPolyDelete(struct parSystem_t *hTrackPoly);
 
 /* Load axis-angle rotation into VU0 vf28-vf31. */
 void SetRotateMatrixAxis(f32 aAngle, const sdfVector3_t *aAxis);
-
 void sdfChipFreeDirect(void *aPtr);
-
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
-
 extern f32 aViewTarget[4], aViewEye[4];
-
 extern void SetRotateMatrixXYZ(const struct sdfVector3_t *);
 
 #define EFF_THUNDER_PARAMETER_BLOCK 0
@@ -486,167 +464,52 @@ enum trackPolyTopology {
 };
 
 extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
-
 extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-
 extern void *sdfChipAllocDirect(u32 aSize);
-
 extern void *memset(void *a, s32 b, size_t c);
-
 extern parSystem_t *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, u32 type);
-
 extern void dds3TrackPolySetMode(parSystem_t *hTrackPoly, u16 mode);
-
 extern void dds3TrackPolyVCSet(parSystem_t *hTrackPoly, s32 type, u32 abgr_in, u32 abgr_out);
-
 extern void dds3TrackPolyVC3Set_Acute(parSystem_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2);
-
-extern void dds3TrackPolyVC5Set_Acute(parSystem_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2);
-
-extern void dds3TrackPolyVC5Set_AcuteR(parSystem_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2);
-
 extern void dds3TrackPolyVC5Set_AcuteW(parSystem_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2);
-
-extern void dds3TrackPolyVC5Set_Normal(parSystem_t *hTrackPoly, s32 abgr_0, s32 abgr_1, s32 abgr_2);
-
 extern f32 sdfSin(f32 aRadius);
-
 extern f32 sdfCos(f32 aRadius);
-
 extern u32 dds3GetKernelCount(void);
-
 void func_00177AC8(effPCP_ThunderColumnPolyLow_t *work, s32 index);
-
 void effPCP_ThunderPolyDrawOff(effPCP_ThunderPoly_t *work, s32 index);
-
 void effPCP_ThunderPolyLowDrawOff(effPCP_ThunderPoly_t *work, s32 index);
-
 void effPCP_ThunderRadiatePolyDrawOff(effPCP_ThunderRadiatePoly_t *work, s32 index);
-
 effPCPThunderSpherePoly_t *effPCPThunderSpherePolyCreate(effPCPThunderSpherePolyParam_t *source);
-
 void *effPCPThunderSpherePolyCreatePCF(void *parameterTable);
-
 void *effPCPThunderSpherePolyCopy(void *source);
-
-void effPCPThunderSpherePolyDelete(effPCPThunderSpherePoly_t *hData);
-
-void effPCPThunderSpherePolySetPosition(void *hData, void *pPos);
-
-void effPCPThunderSpherePolySetColor(effPCPThunderSpherePoly_t *hData, u32 abgr);
-
-void effPCPThunderSpherePolySetScale(effPCPThunderSpherePoly_t *hData, f32 scale);
-
-effPCPThunderSpherePolyParam_t *effPCPThunderSpherePolyGetParam(effPCPThunderSpherePoly_t *pThunderPoly);
-
-void effPCPThunderSphereInit(effPCPThunderSpherePoly_t *work, s32 index);
-
 void effPCPThunderSphereRotate(effPCPThunderSpherePoly_t *work, s32 index);
-
 void effPCPThunderSphereRotateAxis(effPCPThunderSpherePoly_t *work, s32 index);
-
-void effPCPThunderSpherePolyDraw(effPCPThunderSpherePoly_t *hData);
-
 effPCPThunderSpherePoly_t *effBTLBindCreateTrack(effPCPThunderSpherePolyParam_t *parameters);
-
-void effPCPThunderSpherePolyLowDelete(effPCPThunderSpherePoly_t *hData);
-
-effPCPThunderSpherePoly_t *effPCPThunderSpherePolyLowCreate(void *pParam);
-
-effPCPThunderSpherePoly_t *effPCPThunderSpherePolyLowCopy(void *parameters);
-
-void effPCPThunderSpherePolyLowSetPosition(void *hData, void *pPos);
-
-void effPCPThunderSpherePolyLowSetColor(effPCPThunderSpherePoly_t *hData, u32 abgr);
-
-void effPCPThunderSpherePolyLowSetScale(effPCPThunderSpherePoly_t *work, f32 scale);
-
 u32 effPCPThunderSpherePolyLowGetParam(u32 pThunderPoly);
-
-void effPCPThunderSphereLowInit(effPCPThunderSpherePoly_t *work, s32 index);
-
 void effPCPThunderSphereLowRotate(effPCPThunderSpherePoly_t *work, s32 index);
-
 void effPCPThunderSphereLowRotateAxis(effPCPThunderSpherePoly_t *work, s32 index);
-
-void effPCPThunderSpherePolyLowDraw(effPCPThunderSpherePoly_t *hData);
-
 effPCP_ThunderColumnPolyLow_t *effThunderSparkCreate(effPCP_ThunderColumnPolyLowParam_t *parameters);
-
 void effThunderReleaseSparkWork(effPCP_ThunderColumnPolyLow_t *work);
-
-void func_00177AB0(void *destination, void *source);
-
-void func_00177AC0(effPCP_ThunderColumnPolyLow_t *work, u32 tintColor);
-
-void func_00177AC8(effPCP_ThunderColumnPolyLow_t *work, s32 index);
-
 void func_00177BC0(effPCP_ThunderColumnPolyLow_t *work, s32 index);
-
 void effThunderUpdateOrbitingSparks(effPCP_ThunderColumnPolyLow_t *work);
-
 effPCP_ThunderPoly_t *effPCP_ThunderPolyCreate(effPCP_ThunderPolyParam_t *parameters);
-
-void effPCP_ThunderPolyDelete(effPCP_ThunderPoly_t *hData);
-
-void effPCP_ThunderPolySetPosition(u8 *hData, void *pPos);
-
-void effPCP_ThunderPolySetColor(effPCP_ThunderPoly_t *hData, u32 abgr);
-
-effPCP_ThunderPolyParam_t *effPCP_ThunderPolyGetParam(effPCP_ThunderPoly_t *pThunderPoly);
-
 void effPCP_ThunderPolySetVCAcute(effPCP_ThunderPoly_t *pThunderPoly);
-
 void effPCP_ThunderPolySetVCAcute2(effPCP_ThunderPoly_t *pThunderPoly);
-
 void effPCP_ThunderPolySetVCNormal(effPCP_ThunderPoly_t *pThunderPoly);
-
-void effPCP_ThunderPolyDrawOff(effPCP_ThunderPoly_t *work, s32 index);
-
 void effPCP_ThunderPolyPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number);
-
 void effPCP_ThunderPolyDraw(effPCP_ThunderPoly_t *hData);
-
 effPCP_ThunderPoly_t *effPCP_ThunderPolyLowCreate(effPCP_ThunderPolyParam_t *parameters);
-
 void effPCP_ThunderPolyLowDelete(effPCP_ThunderPoly_t *hData);
-
-void effPCP_ThunderPolyLowSetPosition(u8 *hData, void *pPos);
-
-void effPCP_ThunderPolyLowSetColor(effPCP_ThunderPoly_t *hData, u32 abgr);
-
-void effPCP_ThunderPolyLowDrawOff(effPCP_ThunderPoly_t *work, s32 index);
-
 void effPCP_ThunderPolyLowPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number);
-
 void effPCP_ThunderPolyLowDraw(effPCP_ThunderPoly_t *hData);
-
 effPCP_ThunderRadiatePoly_t *effPCP_ThunderRadiatePolyCreate(effPCP_ThunderRadiatePolyParam_t *parameters);
-
 void effPCP_ThunderRadiatePolyDelete(effPCP_ThunderRadiatePoly_t *hData);
-
-void effPCP_ThunderRadiatePolySetPosition(void *hData, void *pPos);
-
-void effPCP_ThunderRadiatePolySetColor(effPCP_ThunderRadiatePoly_t *hData, u32 abgr);
-
-void effPCP_ThunderRadiatePolyDrawOff(effPCP_ThunderRadiatePoly_t *work, s32 index);
-
 void effPCP_ThunderRadiatePolyPartRefresh(effPCP_ThunderRadiatePoly_t *pThunderRadiatePoly, s32 number);
-
 void effPCP_ThunderRadiatePolyDraw(effPCP_ThunderRadiatePoly_t *hData);
-
 effPCP_ThunderPolyList_t *effPCP_ThunderPolyListCreate(effPCP_ThunderPolyListParam_t *src);
-
 void effPCP_ThunderPolyListDelete(effPCP_ThunderPolyList_t *hData);
-
-effPCP_ThunderPolyListParam_t *effPCP_ThunderPolyListGetParam(effPCP_ThunderPolyList_t *pTPolyList);
-
-void effPCP_ThunderPolyListSetColor(effPCP_ThunderPolyList_t *hData, u32 abgr);
-
 void effPCP_ThunderPolyListPartRefresh(effPCP_ThunderPoly_t *work, s32 index, const u128 *seed);
-
 void effPCP_ThunderPolyListDraw(effPCP_ThunderPolyList_t *hData);
-/* End of declarations from src/smt3/effect/effPCPThunder.c */
 
 effPCPThunderSpherePoly_t *effPCPThunderSpherePolyCreate(effPCPThunderSpherePolyParam_t *source) {
     struct sdfMemHandle_t *allocation = sdfMemAllocDirect(source->cellCount * sizeof(effPCPThunderSpherePolyPart_t) + sizeof(effPCPThunderSpherePoly_t));

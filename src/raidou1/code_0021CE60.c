@@ -1,564 +1,53 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/kernel/dds3SequenceList.c */
-#include "common.h"
-
 #include "kernel.h"
-
 #include "scr.h"
-
 #include "event.h"
-
 #include "field.h"
-
-extern u32 abcd;
-
-extern u32 dds3KernelDebugSign;
-
-extern s32 ChkPipe(void);
-
-extern void EndPipe(void);
-
-extern void FinishMovieViewer(void);
-
-extern void InitMovieViewer(void);
-
-extern s32 campCheckExitState(void);
-
-extern void campDebugRegistAll(void);
-
-extern void campKillProcesses(void);
-
-extern s32 checkConfigState(void);
-
-extern s32 checkResultStat(void);
-
-extern void cmpProcessStart(void);
-
-extern void dds3ConfigProcessEnd(void);
-
-extern void dds3ConfigProcessStart(s32 Mode);
-
-extern void evtChkEndProcess(void);
-
-extern void evtExitSky(void);
-
-extern void evtFreeStage(void);
-
-extern void evtInitEventTest(void);
-
-extern void evtInitEventViewer(void);
-
-extern void fclCombineProcessEnd(void);
-
-extern void fclCombineProcessStart(void);
-
-extern void fclRagProcessEnd(void);
-
-extern void fclRecoverProcessEnd(void);
-
-extern void fclRecoverProcessStart(s32 Place);
-
-extern void fclShopProcessEnd(void);
 
 extern void fclShopProcessStart(void *pPlace);
 
-extern void fclTerminalProcessEnd(void);
-
-extern void fldProc_CallSisetuReturn(void);
-
-extern void fmProcTrigSequence(s32 mode);
-
-extern s32 fmProcessChk(void);
-
-extern void frTestFontInit(void);
-
-extern void func_0022C658(void);
-
-extern void itfDebugMesMngInitialize(void);
-
-extern s32 mselExit(u32 mode);
-
-extern void mselInit(void);
-
-extern void nbExitBattleTest(void);
-
-extern s32 nmeCheckProcessStat(void);
-
-extern void nmeNameProcessEnd(void);
-
-extern s32 ragCheckProcessStat(void);
-
-extern s32 rcvCheckProcessStat(void);
-
-extern void rstResult2ProcessEnd(void);
-
-extern void rstResult2ProcessStart(void);
-
-extern void rstSetTestParam(void);
-
-extern s32 shpCheckProcessStat(void);
-
-extern void stfExit(void);
-
-extern void stfInit(void);
-
-extern void titleExit(void);
-
-extern void titleStart(u32 mode);
-
-extern s32 trmCheckProcessStat(void);
-
 #include "sdk_libc.h"
-
-extern const char dds3CallEventReturnMsg[];
-
-extern void fldProcTrigSequence(void *srcParam, u32 mode);
-
-extern void nmeStartProcesses(s32 arg0, s32 arg1, s32 arg2);
-
-extern void fclRagProcessStart(s32 Place);
-
-extern void pbStartMapEditor(s32 mode, s32 stage);
-
-extern void evtKillEventViewer(void);
-
-extern s32 cmbCheckProcessStat(void);
-
-extern void InitPipe(s32 data, s32 prevData);
-
-extern void dds3AdminiExitSequence(void);
-
-extern void nbInitBattleTest(void);
-
-extern void nbCallNewBattle(s32 encpack, s32 data);
-
-extern s32 evtLoadArea(s32 fld, s32 area);
-
-extern s32 evtLoadUnit(s32 major, s32 minor);
-
-extern evtUnit_t *evtGetUnitHandle(s32 serial);
-
-extern void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode);
-
-extern void mdlSmoothLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber, f32 aBeforeLeng,
-                                f32 aSmoothLeng);
-
-extern s32 evtNextEventNo;
-
-extern void *sdfChipAllocDirect(u32 aSize);
-
-extern s32 itfMesMngInitialize(void *sub);
-
-extern scrProcessWork_s *scrHandleFirst;
-
-extern scrProcessWork_s *scrHandleLast;
-
-extern s32 scrHandleCount;
-
-extern dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
-                                         s32 v3, dds3ProcessFunc_t drawExit,
-                                         dds3ProcessFunc_t deleteExit, void *p);
-
-extern s32 dds3KillProcessName(char *name, s32 shutdowntimer);
-
-extern dds3ProcessID_t *dds3SearchProcessName(char *namestr);
-
-extern dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
-
-extern s32 dds3StartMenuProcess(dds3ProcessID_t *id);
-
-extern void fmShutDownFade(void);
-
-extern void fmShutDown(void);
-
-extern s32 fmShutDown2(void);
-
-extern void fldMainLoadStart(void);
-
-extern void fldAllShutDown(void);
-
-extern s32 fldProcShutDown2(void);
-
-extern void fldProcNextJump(void);
-
-extern dds3ProcessID_t *evtInitSky(void);
-
-extern void fclTerminalProcessStart(s32 TerminalType, s32 TerminalNo);
-
-extern scrProcessWork_s *scrPrintProcedureStart(scrHeader_t *header, scrTypeTable_t *typetable,
-                                                scrProcTable_t *proctable,
-                                                scrLabelTable_t *labeltable, scrCode_u *code,
-                                                u8 *mesdata, char *strdata, s32 procno);
-
-dds3ProcessID_t *CallDebug(void);
-
-s32 ExitDebug(void);
-
-s32 CheckDebug(void);
-
-void CallBootMc(void);
-
-s32 ExitBootMc(void);
-
-s32 CheckBootMc(void);
-
-void CallTitle(u32 flg, u32 *data);
-
-s32 ExitTitle(void);
-
-s32 CheckTitle(void);
-
-void CallLoad(void);
-
-s32 ExitLoad(void);
-
-s32 CheckLoad_dds3SequenceList(void);
-
-void CallLoad2(void);
-
-s32 ExitLoad2(void);
-
-s32 CheckLoad2(void);
-
-void CallStaff(void);
-
-s32 ExitStaff(void);
-
-s32 CheckStaff(void);
-
-void CallEndSave(void);
-
-s32 ExitEndSave(void);
-
-s32 CheckEndSave(void);
-
-void CallField(u32 flg, void *data);
-
-s32 ExitField(void);
-
-s32 CheckField(void);
-
-void CallNewBattle(void);
-
-s32 ExitNewBattle(void);
-
-s32 CheckNewBattle(void);
-
-void CallEvent(u32 flg, s32 *data);
-
-extern const char dds3CallEventReturnMsg[16];
-
-s32 ExitEvent(void);
-
-s32 CheckEvent(void);
-
-void CallCamp(void);
-
-s32 ExitCamp(void);
-
-s32 CheckCamp(void);
-
-void CallCombine(void);
-
-s32 ExitCombine(void);
-
-s32 CheckCombine(void);
-
-void CallShop(void);
-
-s32 ExitShop(void);
-
-s32 CheckShop(void);
-
-void CallRag(void);
-
-s32 ExitRag(void);
-
-s32 CheckRag(void);
-
-void CallRecover(void);
-
-s32 ExitRecover(void);
-
-s32 CheckRecover(void);
-
-void CallTerminal(void);
-
-s32 ExitTerminal(void);
-
-s32 CheckTerminal(void);
-
-void CallResult2(void);
-
-s32 ExitResult2(void);
-
-s32 CheckResult2(void);
-
-void CallConfig(void);
-
-s32 ExitConfig(void);
-
-s32 CheckConfig(void);
-
-void CallNewBattleTest(u32 flg, s32 *data);
-
-s32 ExitNewBattleTest(void);
-
-s32 CheckNewBattleTest(void);
-
-void CallBattleFieldTest(void);
-
-s32 ExitBattleFieldTest(void);
-
-s32 CheckBattleFieldTest(void);
-
-void CallKernelTest(void);
-
-s32 ExitKernelTest(void);
-
-s32 CheckKernelTest(void);
-
-void CallEventTest(void);
-
-s32 ExitEventTest(void);
-
-s32 CheckEventTest(void);
-
-void CallEventViewer(void);
-
-s32 ExitEventViewer(void);
-
-s32 CheckEventViewer(void);
-
-void CallInterfaceTest(void);
-
-s32 ExitInterfaceTest(void);
-
-s32 CheckInterfaceTest(void);
-
-void CallMessageScriptTest(void);
-
-s32 ExitMessageScriptTest(void);
-
-s32 CheckMessageScriptTest(void);
-
-void CallCampTest(void);
-
-s32 ExitCampTest(void);
-
-s32 CheckCampTest(void);
-
-void CallCombineTest(void);
-
-s32 ExitCombineTest(void);
-
-s32 CheckCombineTest(void);
 
 void CallShopTest(s32 flg, void *data);
 
-s32 ExitShopTest(void);
-
-s32 CheckShopTest(void);
-
-void CallRagTest(void);
-
-s32 ExitRagTest(void);
-
-s32 CheckRagTest(void);
-
-void CallRecoverTest(void);
-
-s32 ExitRecoverTest(void);
-
-s32 CheckRecoverTest(void);
-
-void CallTerminalTest(dds3ProcessID_t *flg, s32 *data);
-
-s32 ExitTerminalTest(void);
-
-s32 CheckTerminalTest(void);
-
-void CallResult2Test(void);
-
-s32 ExitResult2Test(void);
-
-s32 CheckResult2Test(void);
-
-void CallNameTest(void);
-
-s32 ExitNameTest(void);
-
-s32 CheckNameTest(void);
-
-void CallModelViewerTest(void);
-
-s32 ExitModelViewerTest(void);
-
-s32 CheckModelViewerTest(void);
-
-void CallSoundTest(void);
-
-s32 ExitSoundTest(void);
-
-s32 CheckSoundTest(void);
-
-void CallBillboardTest(void);
-
-s32 ExitBillboardTest(void);
-
-s32 CheckBillboardTest(void);
-
-void CallFontTest(void);
-
-s32 ExitFontTest(void);
-
-s32 CheckFontTest(void);
-
-void CallMapEditor(void);
-
-s32 ExitMapEditor(void);
-
-s32 CheckMapEditor(void);
-
-void CallPuzzleBoy(u32 flg, s32 *data);
-
-s32 ExitPuzzleBoy(void);
-
-s32 CheckPuzzleBoy(void);
-
-void CallMovieViewerTest(void);
-
-s32 ExitMovieViewerTest(void);
-
-s32 CheckMovieViewerTest(void);
-
-void CallPipe(u32 flg, s32 *data);
-
-s32 ExitPipe(void);
-
-s32 CheckPipe(void);
-
-void CallModeSelect(u32 flg, u32 *data);
-
-s32 ExitModeSelect(void);
-
-s32 CheckModeSelect(void);
-
-void CallTgs(void);
-
-s32 ExitTgs(void);
-
-s32 CheckTgs(void);
-
-s32 dat_1097D8(void);
-
-void func_001097E0(void);
-
-void datDebugPrintf(const char *format, ...);
-
-s32 scr_109830(void);
-
-void func_00109838(void);
-
-void func_00109840(void);
-
-void scrLinkHandle(scrProcessWork_s *work);
-
-void scrUnlinkHandle(scrProcessWork_s *work);
-
-scrProcessWork_s *scrPrintProcedureStart(scrHeader_t *header, scrTypeTable_t *typetable,
-                                         scrProcTable_t *proctable, scrLabelTable_t *labeltable,
-                                         scrCode_u *code, u8 *mesdata, char *strdata, s32 procno);
-
-scrProcessWork_s *fldFlowParse(scrHeader_t *header, s32 procno);
-
-extern u32 abcd;
-
-extern s32 scrHandleCount;
-
-extern scrProcessWork_s *scrHandleFirst;
-
-extern scrProcessWork_s *scrHandleLast;
-
-extern u32 D_0054E9A0[2];
-/* End of declarations from src/smt3/kernel/dds3SequenceList.c */
-
-/* Declarations from dds-decomp src/dds2/game/code_002C96D0.c */
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1
 #endif
 
-#include "common.h"
-
 #include "fileManager.h"
-
 #include "newdata.h"
-
 #include "sdk_libkernl.h"
-
 #include "dds/bill_object_api.h"
-
 #include "dds/btl.h"
-
 #include "dds/btl_stage_task_cleanup.h"
-
 #include "dds/dds3_fade.h"
-
 #include "dds/dds3_task_lifecycle.h"
-
 #include "dds/dds3_world_primary.h"
-
 #include "dds/eff_random.h"
-
 #include "dds/evt_world.h"
-
 #include "dds/file_request_api.h"
-
 #include "dds/file_request_entry.h"
-
 #include "dds/file_slot_flags.h"
-
 #include "dds/fr_font.h"
-
 #include "dds/fr_font_context.h"
-
 #include "dds/mc_path_api.h"
-
 #include "dds/mc_poll.h"
-
 #include "dds/mc_read_api.h"
-
 #include "dds/mc_write_api.h"
-
 #include "dds/mdl_flag_api.h"
-
 #include "dds/sdf.h"
-
 #include "dds/sdf_chip.h"
-
 #include "dds/sdf_dev_state.h"
-
 #include "dds/sdf_heap_api.h"
-
 #include "dds/sdf_quaternion.h"
-
 #include "dds/sdf_texture_file.h"
-
 #include "dds/sdf_trig.h"
-
 #include "dds/sdf_vu_matrix.h"
-
 #include "dds/sdf_vu_matrix_multiply_api.h"
-
 #include "dds/sdf_vu_transform_api.h"
-
 #include "dds/sdk_libc.h"
-
 #include "dds/sdk_libkernl.h"
-
 #include "dds/sdk_libm.h"
-
 #include "dds/snd_sequence_volume_pan.h"
 
 /* Convert three Euler angle components to the VU0 quaternion output.
@@ -568,413 +57,90 @@ void FromEuler(f32 x, f32 y, f32 z);
 /* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
 void Mult(void);
 
-/* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
-void MultMatrixRev(const struct Matrix4 *matrix);
-
-/* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
-void MultMatrixRevNoArg(void);
-
-/* Rigid-invert the VU matrix in vf28-vf31 in place; translation becomes
- * -(R^T * t). The rotation input is assumed to contain no scale. */
-void ReverseMatrix(void);
-
-/* Load axis-angle rotation into VU0 vf28-vf31. The angle-first interface
- * follows the native Flash caller at DDS2 00171FF8..00172000; EE's separate
- * f12/a0 argument registers alone do not distinguish the two source orders. */
-void SetRotateMatrixAxis(f32 angle, const RwV3d *axis);
-
 /* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
  * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
 void ToMatrix(void);
-
 f32 acosf(f32 x);
-
 f32 atan2f(f32 y, f32 x);
-
-struct billHandle_t *dds3BillboardCopy(const struct billHandle_t *source);
 
 /* The selected kind interprets the opaque payload word. */
 struct billHandle_t *dds3BillboardCreate(s32 kind, u32 data);
-
 void dds3BillboardDelete(struct billHandle_t *obj);
-
 struct billHandle_t *dds3BillboardGeneral(s32 index);
-
 void dds3BillboardSetAnimColorAdvMode(struct billHandle_t *billboard);
-
-void dds3BillboardSetAnimKey(struct billHandle_t *billboard, u32 frame);
-
 void dds3BillboardSetMode(struct billHandle_t *billboard, s32 mode);
-
-void dds3BillboardSetRGBA(struct billHandle_t *billboard, u32 parameter);
-
-/* Radian rotation of the billboard quad in its plane. */
-void dds3BillboardSetRotate(struct billHandle_t *billboard, f32 angle);
-
-void dds3BillboardSetScale(struct billHandle_t *billboard, f32 x, f32 y);
-
-/* Return nonzero while either foreground fade direction is enabled. */
-s32 dds3FadeCheck(void);
-
-/* Return the borrowed primary world node, or NULL when no world is active. */
-struct dds3Basic_t *dds3GetActiveScene(void);
-
-/* Advance caller-owned state, returning its next 32-bit value. NULL selects
- * the shared effect RNG state. */
-u32 dds3GetRandA(EffRandState *state);
-
-/* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
-f32 dds3GetRandFloatA(EffRandState *state);
-
-dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
-
-/* Preserve the signed-byte drawing gate; only a missing payload is ignored. */
-void dds3VisibleSceneBasic(dds3Basic_t *object, s8 enabled);
-
-/* Return whether the selected flag bit is set, as EvtBitTestResult. */
-EvtBitTestResult evtBitCheck(s32 flag);
-
-void evtBitOff(s32 flag);
-
-/* Set and clear one flag using the providers' signed-index adjustment. */
-void evtBitOn(s32 flag);
-
-/* Return the address of the loaded resource payload as a byte pointer. */
-u8 *fileGetLoadPtr(const struct FileRequest *request);
-
-/* Return the signed byte count recorded by the file transfer request. */
-s32 fileGetLoadSize(const struct FileRequest *request);
-
-/* Return the payload allocation descriptor. For normal file loads, freeing the
- * request wrapper does not free this allocation; its resource owner must keep
- * or release it separately. */
-struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
-
-/* Free a completed request wrapper; return one while it remains pending. */
-FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
-
-void fileSync(struct FileRequest *request);
-
-/* Link a glyph chain into the current draw-buffer slot. */
-s32 frDestroyFontRequestAfter(struct _FRQ *glyph);
-
-void frSetDrawPosition(struct _FRQ *glyph, s32 x, s32 y);
-
-/* Replace each child render word along the borrowed glyph chain. */
-void frSetFontColor(struct _FRQ *parentNode, u32 colorWord);
-
-/* Update the first-option byte of every child on this glyph chain. */
-void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
-
-void frSetFontSpace(struct _FRQ *glyph, s32 spacing);
-
 extern void *memcpy(void *, const void *, unsigned int);
 
 /* Apply volume and pan to a sequence track through the command queue. */
 void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
-
-s32 pacFileCheckEnd(const struct FileRequest *request);
-
-/* These title-specific wrappers forward an opaque stage-task owner and its
- * handled/not-handled result. */
-s32 pacFileHandleFree_(void *request);
-
-struct FileRequest *pacLoad(const char *requestName);
-
-void pacSync(struct FileRequest *request);
-
 s32 sceClose(s32 fd);
-
 s32 sceSync(const char *device, s32 flag);
-
-/* Allocate from the chip heap through 0x400 bytes; larger requests use the
- * general heap and return its locked payload address. */
-void *sdfAllocAuto(s32 size);
-
 void *sdfChipAllocZeroDirect(s32 size);
-
 void sdfChipFreeDirect(void *memory);
-
-f32 sdfCos(f32 angle);
-
 void sdfFileClose(sdfFileCmdHandle_t *state);
-
 u32 sdfFileLength(sdfFileCmdHandle_t *state);
 
 /* Stable state APIs. Callback factories keep caller-specific callback types. */
 sdfFileCmdHandle_t *sdfFileOpen(const char *path);
-
 void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
-
-/* Release the sdfAllocAuto base in its source heap; interior pointers are
- * invalid. */
-s32 sdfFreeAuto(void *data);
-
-void sdfMcClearCardStat(s32 request);
-
-void sdfMcClearSlotFlags(s32 request, s32 slot);
-
-void sdfMcFuncChdir(McPort port, const char *path);
-
-McPollResult sdfMcFuncChdir1(void);
-
-McPollResult sdfMcFuncClose1(void);
-
-void sdfMcFuncDelete(McPort port, const char *path);
-
-McPollResult sdfMcFuncDelete1(void);
-
-void sdfMcFuncFormat(u32 port);
-
-McPollResult sdfMcFuncFormat1(void);
-
-void sdfMcFuncGetDir(McPort port, const char *path, sceMcTblGetDir *directoryEntries, s32 entryLimit);
-
-McPollResult sdfMcFuncGetDir1(McDirectoryEntryCount *entryCountOut);
-
-FileReqPollResult sdfMcFuncGetInfo1(void);
-
-void sdfMcFuncMkdir(McPort port, const char *path);
-
-McPollResult sdfMcFuncMkdir1(void);
-
-void sdfMcFuncOpen(McPort port, const char *path, McOpenMode openMode);
-
-McPollResult sdfMcFuncOpen1(McFileDescriptor *fileDescriptorOut);
-
-/* Queue a memory-card read into a caller-owned buffer. The SDK keeps using
- * that buffer asynchronously, so keep it allocated and do not access it until
- * sdfMcFuncRead1 returns a result other than MC_POLL_PENDING. */
-void sdfMcFuncRead(McFileDescriptor fileDescriptor, void *buffer, s32 size);
-
-McPollResult sdfMcFuncRead1(void);
-
-/* Queue a memory-card write of a signed byte count, matching sceMcWrite.
- * The SDK reads this caller-owned buffer asynchronously; keep it allocated
- * and unchanged until sdfMcFuncWrite1 returns a result other than
- * MC_POLL_PENDING. */
-void sdfMcFuncWrite(McFileDescriptor fileDescriptor, const void *data, s32 byteCount);
-
-McPollResult sdfMcFuncWrite1(void);
-
-FileReqStatus sdfMcGetFileInfoReady(s32 request);
-
-s32 sdfMcGetFreeBytes(s32 request);
-
-u32 sdfMcGetSlotFlags(s32 request, s32 slot);
-
-s8 sdfMcGetSlotIndex(s32 request);
-
-u8 sdfMcGetStatus(s32 request);
-
-void sdfMcRegetInfo(s32 request);
-
-void sdfMcSetCardStat(s32 request);
-
-void sdfMcSetSlotFlags(s32 request, s32 slot, s32 mask);
-
-void sdfMcSetSlotIndex(s32 request, s32 selectedSlot);
-
 struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-
-/* Queue the two heap owners separately: the general heap stores descriptors,
- * while the chip heap stores the address of the cell to release. */
-void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *allocation);
-
 void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-
-void sdfMemFreeHandleDirect(struct sdfMemHandle_t **slot);
-
-/* Return the descriptor's payload base as a byte address, not the descriptor. */
-u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
-
 void *sdfMemLock(struct sdfMemHandle_t *allocation);
-
-f32 sdfSin(f32 angle);
-
-void sdfTexFreeDelayed(sdfTexHandle_t *texture);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
-/* For a new texture, copy payload bytes into queue-owned storage before return. */
-struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
 
 char *strcpy(char *dst, const char *src);
-
-u32 strlen(const char *text);
 
 #define SDK_SKIP_memset
 
 #include "dds/sdk_ps2.h"
-
 #include "dds/file_menu_start_mode.h"
-
 #include "dds/eff_surface_node.h"
-
 #include "dds/common.h"
-
 #include "dds/pty_active_roster_index_api.h"
-
 #include "dds/file_menu_state_result.h"
-
 #include "dds/file_config_list_node.h"
-
 #include "dds/file_config_option_api.h"
-
 #include "dds/sdf_vu0.h"
-
 #include "dds/file_job_type.h"
-
 #include "dds/file_config_task.h"
-
 #include "dds/eff_emitter_type.h"
-
 #include "dds/file_load_menu_state.h"
-
 #include "dds/eff.h"
-
 #include "dds/cam_aim_record.h"
-
 #include "dds/eff_generated_texture_descriptor.h"
-
 #include "dds/dds3_world_selection.h"
-
-#include "dds/snd_sequence_volume_pan.h"
-
-#include "dds/sdf_trig.h"
-
 #include "dds/eff_scale_params.h"
-
 #include "dds/ee_mmi.h"
-
-#include "dds/eff_random.h"
-
-#include "dds/sdf_quaternion.h"
-
-#include "dds/btl_stage_task_cleanup.h"
-
 #include "dds/sdf_textured_rect.h"
-
 #include "dds/itf_mes_window.h"
-
-#include "dds/evt_world.h"
-
-#include "dds/fr_font.h"
-
-#include "dds/fr_font_context.h"
-
-#include "dds/mc_poll.h"
-
-#include "dds/mc_read_api.h"
-
-#include "dds/mc_write_api.h"
-
-#include "dds/mc_path_api.h"
-
-#include "dds/bill_object_api.h"
-
 #include "dds/eff_resource_slots.h"
-
 #include "dds/eff_resource_source_lifetime.h"
-
 #include "dds/eff_update_flags.h"
-
-#include "dds/sdf_heap_api.h"
-
-#include "dds/sdf_chip.h"
-
 #include "dds/eff_curve.h"
-
 #include "dds/file.h"
-
 #include "dds/file_selection_api.h"
-
 #include "dds/file_prompt_reveal_result.h"
-
-#include "dds/file_request_entry.h"
-
-#include "dds/file_slot_flags.h"
-
 #include "dds/file_slot_flags_change_api.h"
-
 #include "dds/file_scroll_arrow_state.h"
-
-#include "dds/sdf_dev_state.h"
-
 #include "dds/file_slot.h"
-
 #include "dds/file_save_record.h"
-
 #include "dds/dat_state.h"
-
 #include "dds/dat_new_cycle_state.h"
-
 #include "dds/mnu_list.h"
-
 #include "dds/pcp_vu0.h"
-
-#include "dds/sdf_vu_transform_api.h"
-
-#include "dds/sdf_vu_matrix.h"
-
-#include "dds/sdf_vu_matrix_multiply_api.h"
-
-#include "dds/dds3_task_lifecycle.h"
-
 #include "dds/eff_expanded_list.h"
-
-#include "dds/file_request_api.h"
-
-#include "dds/sdf_texture_file.h"
-
-#include "dds/sdf.h"
-
-#include "dds/mdl_flag_api.h"
-
-#include "dds/btl.h"
-
 #include "dds/fr_font_draw_glyph.h"
-
 #include "dds/itf.h"
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
-/* Declared before first use (were implicit int). */
-extern void effLoadFlashTextures(void);
-
-extern void effLoadScalyTexture(void);
-
-extern void effLoadWindTexture(void);
-
-extern s32 slSaveWriteFile(const char *fileName, const u32 *dataAddressSlot, const u32 *dataSizeSlot, FileMenuContinuationCallback continuation, struct FileRequest * const *pendingRequestStatus);
-
-extern void dds3SoftResetOn(void);
-
-extern s32 slSaveData_chdir(void);
-
-extern void frEnableMode(s32 mask);
-
-extern u8 frDisableMode(u8 mask);
-
-extern void frSetFontDrawOT(u32 renderFlags);
-
-extern void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg);
-
 struct EffectSlotSet;
 
-extern void effDrawTextureSlotWithBlendedCornerColors(s32, s32, s32, u32, u32, struct EffectSlotSet *, s32, s32);
-
 enum { FILE_CONFIG_SET, FILE_CONFIG_FRAME, FILE_CONFIG_X, FILE_CONFIG_Y };
-
-extern s16 fileConfigSpritePlacements[27][4];
-
-extern s32 D_00437D4C;
-
-extern FilePromptRevealResult fileDrawFileMenuPromptAndCheckDelay(void);
-
-extern void evtSubmitDefaultDepthGradientRect(s32, s32, s32, s32, s32, s32, s32, s32);
 
 typedef struct MenuWork {
     FileSavePreviewRecord header;
@@ -987,40 +153,6 @@ typedef struct MenuWork {
     u16 unk3A;
     struct sdfMemHandle_t *unk3C;
 } MenuWork;
-
-extern FileScrollArrowState fileScrollArrowState;
-
-extern f32 D_00437D24;
-
-extern u8 fileNewCycleLabel[];
-
-extern u8 D_003A41A8[][32];
-
-extern u8 D_003A47E8[][32];
-
-extern char D_00437D98[];
-
-extern char D_00437DA0[];
-
-extern char D_00437DA8[];
-
-extern u32 fileClampPackedColorByte(u32, s32, s8);
-
-extern void fileDrawSlotIcon(s32, s32, s32, s32);
-
-extern void fileCursorStepUp(void);
-
-extern void fileFadeStepDown(void);
-
-extern void fileLoadCtxSlideUpdate(void);
-
-extern u8 fileOriginalTitleClearedGameLabel[];
-
-extern u8 fileOriginalTitleNewCycleClearedGameLabel[];
-
-extern u8 fileOriginalTitleUnusableSaveText[];
-
-extern void *fileSaveReadBuffer;
 
 typedef struct MdlFlagPair {
     s32 flag;
@@ -1035,178 +167,19 @@ typedef struct FileStatBonus {
     u8 pad07;
 } FileStatBonus;
 
-extern MdlFlagPair fileRareItemNoticeFlagRows[];
-
-extern FileStatBonus ptyUnlockedUnitStatBonusRows[24];
-
-extern s32 mnuAdvanceTitleStateUnderSemaphore(void);
-
 #include "dds/dds3_process.h"
-
 #include "dds/dds3_task_create.h"
-
-#include "dds/dds3_fade.h"
-
 #include "dds/fpu.h"
 
 struct MenuListNode;
 
-extern void mnuClearListFlagsOneAndTwo(u32 *flags);
-
-extern void dds3FadeOut(s32 red, s32 green, s32 blue, s32 duration);
-
 struct sdfMemHandle_t;
 
-extern MenuWork *fileLoadSelectionWork;
-
-extern void fileApplyMenuFlagsToModel(MenuWork *);
-
-extern void fldPrepareDeferredSceneTransition(void);
-
-extern void fileCopySaveHeaderNumbers(FileSavePreviewRecord *);
-
-extern void filePrintAccessoryLoadNotice(void);
-
-extern void fileSaveAndDisplayCurrentMoney(void);
-
-extern s32 ptyApplyUnlockedUnitStatBonusesOnce(DatUnitId unitId);
-
-extern u32 datComputeSkillBoostedMaxHp(dds_datUnitWork_t *);
-
-extern u32 datComputeSkillBoostedMaxMp(dds_datUnitWork_t *);
-
-extern void mtrMantraEventBitReset(void);
-
-extern void ptyResetPartyRecordsAndProfiles(void);
-
-extern u32 dds3DrawFlag;
-
-extern u32 fileWaitTicksRemaining;
-
-extern u32 D_00437CEC;
-
-extern s32 fileSlotSelectionPollCount;
-
-extern u32 D_00437CFC;
-
-extern u32 D_00437D08;
-
-extern u32 D_00437D14;
-
 extern u32 D_00437D18;
-
 extern u32 D_00437D1C;
-
 extern u32 D_00437D20;
-
-extern u32 D_00437D40;
-
-extern u32 D_00437D44;
-
-extern u32 D_00437D3C;
-
-extern u32 itfCreateFont2TextGlyph(s32, s32, s32, u32, char *, s32);
-
-extern struct _FRQ *fileMenuConvertedTextGlyph;
-
-extern struct _FRQ *fileMenuConfiguredTextGlyph;
-
-extern struct _FRQ *fileMenuStringGlyph;
-
-extern dds3ProcessID_t *D_00437CD8;
-
-extern s32 D_00437CE4;
-
-extern s32 fileSavePreviewPortraitTextures[];
-
-extern s32 D_00437D74;
-
-extern s32 D_00437D6C;
-
-extern s32 D_00437D68;
-
-extern s32 D_00437D64;
-
-extern s32 D_00437D60;
-
-extern s32 D_00437D5C;
-
-extern s32 D_00437D38;
-
-extern s32 D_00437D48;
-
-extern u32 fileMemoryCardRequestIndex;
-
-extern u32 D_00437CF4;
-
-extern u32 D_00437CF8;
-
-extern FileSelectionFlowState fileSelectionPending;
-
-extern u32 D_00437D04;
-
-extern u32 fileSavedSlotFlags;
-
-extern u32 effModelUpdateControlFlags;
-
 extern struct EffExpandedList *effCacheTexCreate(u32);
-
-extern s8 slLoadKillFlag;
-
-extern s32 mcdOriginalTitleFileMode;
-
-extern s32 D_00437D88;
-
-extern s32 fileSlotSelectPoll(void);
-
-extern s32 fileBeginSlotMetadataRefresh(void);
-
-extern s32 slFormatStart(void);
-
-extern s32 mcResetSlotMetadata(void);
-
-extern s32 filePollSlotDetectionAndBranch(void);
-
-extern s32 slSizeChk(void);
-
-extern FileMenuContinuationCallback fileMenuContinuation;
-
-extern s32 mcdFinishFileDetection(void);
-
-extern s32 fileBeginDetectionRequest(FileMenuContinuationCallback callback);
-
-extern s32 filePollSlotRequestAndResumeFlow(void);
-
-extern s32 fileSlotScanIndex;
-
-extern void mcdFormatSaveSlotName(char *buffer, s32 slot);
-
-extern s32 slChooseData_getCardInfo2(void);
-
-extern s32 slChooseData_getCardInfo2_B(void);
-
-extern s32 filePrepareMainBlobWrite(void);
-
-extern s32 fileOnAllWritten(void);
-
-extern void dds3SoftResetOff(void);
-
 extern s8 dds3PadButtonState[];
-
-extern void p2sdStopBGM(u32 command);
-
-extern s32 slExitWait(FileMenuContinuationCallback callback);
-
-extern s32 mcHandleDetectionResult(void);
-
-/* Loader context at D_0037D4A0. */
-extern FileLoadMenuState fileLoadMenuState;
-
-/* Far scalar: incomplete array forces non-small-data addressing. */
-extern s32 D_003E8008[];
-
-extern sdfGrOt_t *effPacketSubmissionSurfaces[6];
-
 extern void sdfVuMatrixToQuaternion(const f32 matrix[4][4]);
 
 /* Effect parameter-set dispatch tables. Every effect kind owns one 0x28-byte
@@ -1232,596 +205,38 @@ typedef struct EffDispatchColor {
     u8 pad04[0x24];
 } EffDispatchColor;
 
-extern s8 dds3ConfigState;
-
-extern s32 mcdFinishFileDetectionWithAudio(void);
-
-extern s32 fileResetSlotSelection(void);
-
-extern s32 D_00437D50;
-
-extern s8 fileSavePreviewVersionByteView[];
-
-extern FileMenuStateHandler fileMenuStateHandler;
-
-extern void eglSetOt(u32);
-
-extern void evtSubmitPrimaryAlphaBlendMode(s32);
-
-extern void evtSubmitPrimaryGsTest(s32, s32, s32, s32, s32, s32, s32, s32);
-
-extern s32 D_00437D70;
-
-extern void fileCursorPulseUpdate(void);
-
-extern void fileDrawCursorPulse(s32, s32, s32);
-
-extern s32 D_00437D78;
-
-extern s32 fileReadSlotPreviewBegin(void);
-
-extern s32 slLoadProc_readFile(void);
-
-extern McFileDescriptor fileSaveFileDescriptor;
-
-extern struct sdfMemHandle_t *fileSaveReadBufferResource;
-
-extern s32 slHeadLoadProc_readFile(void);
-
-extern s32 fileBeginReadRemainingSlotIcons(void);
-
-extern s32 slHeadLoad(void);
-
-extern s32 fileSlotSelectPollClear(void);
-
-extern s32 slBootRetry(void);
-
-extern s32 fileSlotStatusPoll(void);
-
-extern s32 fileResetSelection(void);
-
-extern FileMenuContinuationCallback fileWaitContinuation;
-
-extern s32 slExitWaitProc(void);
-
-extern s32 slChooseData_getCardInfo3(void);
-
-extern s32 slBootError(void);
-
-extern s32 fileScanSlotStatesAdvance(void);
-
-extern s32 slChooseData_getCardInfo3_B(void);
-
-extern s32 slSaveData(void);
-
-extern s32 slSaveProc_Write_mkdir(void);
-
-extern s32 fileScanSlotStates(void);
-
-extern s32 slLoadProc_openFile(void);
-
-extern s32 fileDrawMenuFrame(s32);
-
-extern u32 fileSaveIconData;
-
-extern u32 fileSaveIconDataSize;
-
-extern char fileConfigInputTaskName[];
-
-extern char fileConfigLoadTaskName[];
-
-extern char fileConfigOwnerTaskName[];
-
 typedef struct LoadMirror {
     u32 current;
     u32 previous;
 } LoadMirror;
 
-extern LoadMirror fileSlotFlagMirror;
-
-extern void fileCacheSlotFlagsFromState(void);
-
 extern void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource);
-
 extern void BillboardSet(EffectSurfaceNode *node, u32 resourceId);
-
 extern void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId);
-
 extern void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId);
-
 extern void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job);
-
 extern void PartsListSet(EffectSurfaceNode *node, FileQueue *queue);
-
 extern void fileReplaceReferenceHolder(EffectSurfaceNode *node, u32 resource);
-
 extern void fileJobFreePrimaryBuffer(FileJobPayload *job);
-
 extern void fileJobFreeSecondaryBuffer(FileJobPayload *job);
-
 extern void fileQueueAppend(FileQueue *queue, FileJob *job);
-
-extern void fileQueueInitTransform(void *queue);
-
 extern FileJob *fileJobCreate(void);
-
-extern s32 slEndingExit(void);
-
-extern s32 slEndingTop(void);
-
-extern FileMenuStartMode D_00437D30;
-
-extern s32 slEndingUpd2(void);
-
-extern char D_0042B698[];
-
-extern s32 slErrorWait(void);
-
-extern char D_0042B6B8[];
-
-extern sceMcTblGetDir fileDirectoryEntryScratch[];
-
-extern s32 mcClearSlotMetadata(void);
-
-extern s32 slSaveData_deleteIconSys(void);
-
-extern s32 fileSelectedSlotIndex;
-
-extern s32 fileBuildMainBlobAfterDelete(void);
-
-extern s32 fileBuildMainBlobAndWrite(void);
-
-extern s32 slFormatCancel(void);
-
-extern u32 D_00437D0C;
-
-extern u8 sdfViewMatrix[];
-
-extern u8 sdfProjectionMatrix[];
-
-extern u8 D_0037F660[];
-
 extern FileJob *fileQueueFindById(FileQueue *queue, u32 id);
-
 extern s32 fileFindQueuedJobIndex(FileQueue *queue, FileJob *target);
-
-extern f32 fileSaveHighlightPhase;
-
 extern u8 sdfHddValid;
-
 extern char fileWriteToPfsData[];
-
 extern char fileWriteToPfsData2[];
-
 extern char fileWriteToPfsData3[];
-
 extern char *sdfFileGetHostRoot(void);
-
-void slKillLoadProcess(void);
-
-s8 fileMenuTaskIsAlive(void);
-
-void mnuFormatSaveSlotHeaderName(void);
-
-void mcdFormatSaveSlotName(char *buffer, s32 slot);
-
-void fileReqGetSlotCode(void);
 
 #define FILE_MAIN_BLOB_SIZE 0x1E840
 
-u32 fileMainBlobSize(void);
-
-void fileReloadSaveBuffer(void);
-
 u8 fileIsLoadedAndConditionTrue(s32 condition);
-
-u8 fileIsLoadedWithActiveFlow(s32 condition);
-
-void mnuDrawAndStoreTextGlyphHandle(s32 x, s32 y, u32 colors, const u8 *text);
-
-void mcdCreateConfiguredDrawHandle(s32 x, s32 y, u32 colors, const u8 *text);
-
-void mcdCreateFontDrawHandle(s32 x, s32 y, u32 colors, const char *text);
-
-void fileDrawMenuImageAtPoint(s32 x, s32 y, u32 colors, char *text);
-
-/* Animate the save-window highlight's alpha with a sinusoidal phase. */
-void fileDrawPulsingSaveHighlight(void);
-
-void fileDrawSaveWindow(void);
-
 s32 slChkWindowOpenDone(void);
-
-/* Draw the expanding prompt panel and report when its input delay has elapsed. */
-FilePromptRevealResult fileDrawFileMenuPromptAndCheckDelay(void);
-
-extern s32 D_00437D28;
-
-extern void fileResetLoadContextSlide(void);
-
-extern char fileNoCardStatus1MessageLine1[];
-
-extern char fileNoCardStatus1MessageLine2[];
-
-extern char fileNoCardStatus1MessageLine3[];
-
-extern char fileNoCardStatus1MessageLine4[];
-
-extern char fileNoCardStatus1MessageLine5[];
-
-extern char fileNoCardStatus2MessageLine1[];
-
-extern char fileNoCardStatus2MessageLine2[];
-
-extern char fileNoCardStatus2MessageLine3[];
-
-extern char fileNoCardStatus2MessageLine4[];
-
-extern char fileNoCardStatus2MessageLine5[];
-
-extern char fileLoadFailedText[];
-
-extern char fileSaveFailedText[];
-
-extern char fileFormatFailedText[];
-
-extern char fileInsufficientSpaceMessageLine1[];
-
-extern char fileInsufficientSpaceMessageLine2[];
-
-extern char fileInsufficientSpaceMessageLine3[];
-
-extern char fileInsufficientSpaceMessageLine4[];
-
-extern char fileInsufficientSpaceMessageLine5[];
-
-extern char fileNoSaveDataMessageLine1[];
-
-extern char fileNoSaveDataMessageLine2[];
-
-extern char fileNoSaveDataMessageLine3[];
-
-extern char D_003E8990[];
-
-extern char D_003E89B8[];
-
-extern char fileOriginalTitleSaveMissingText[];
-
-extern char fileNotClearedGameSaveText[];
-
-extern char fileSelectClearedGameSaveMessageLine1[];
-
-extern char fileSelectClearedGameSaveMessageLine2[];
-
-extern char fileCorruptSaveDataMessageLine1[];
-
-extern char fileCorruptSaveDataMessageLine2[];
-
-extern char fileCorruptSaveDataMessageLine3[];
-
-void fileDrawMemoryCardFlowPrompt(void);
-
-void slSetInfo(u32 value);
-
-extern char fileCheckingCardMessageLine1[];
-
-extern char fileCheckingCardMessageLine2[];
-
-extern char fileCheckingCardMessageLine3[];
-
-extern char fileLoadingText[];
-
-extern char fileSavingText[];
-
-extern char fileFormattingText[];
-
-extern char fileCardBusyCardWarningText[];
-
-extern char fileCardBusyConsoleWarningText[];
-
-extern char fileLoadSuccessfulText[];
-
-extern char fileSaveSuccessfulText[];
-
-extern char fileFormatSuccessfulText[];
-
-extern char fileOriginalTitleSaveBenefitsMessageLine1[];
-
-extern char fileOriginalTitleSaveBenefitsMessageLine2[];
-
-extern char fileOriginalTitleSaveBenefitsMessageLine3[];
-
-extern char fileOriginalTitleSaveBenefitsMessageLine4[];
-
-extern char fileRareItemAvailabilityMessageLine1[];
-
-extern char fileRareItemAvailabilityMessageLine2[];
-
-extern char fileCharacterStatBonusMessageLine1[];
-
-extern char fileCharacterStatBonusMessageLine2[];
-
-extern char fileDifficultySelectionAvailableText[];
-
-extern char fileDataTransferCompleteText[];
-
-void fileDrawModeSpecificMemoryCardPrompt(void);
-
-void fileClearAllSlotFlags(void);
-
-s32 slHeadLoad(void);
-
-s32 fileReadSlotPreviewBegin(void);
-
-extern void sdfMcFuncClose(McFileDescriptor fileDescriptor);
-
-extern s32 fileStoreSlotHeader(void);
-
-s32 slHeadLoadProc_readFile(void);
-
-/* Ten contiguous 0x30-byte save-preview records (0x1E0 bytes total). */
-extern FileSavePreviewRecord fileSavePreviewRecords[10];
-
-s32 fileStoreSlotHeader(void);
-
-s32 slExitWait(FileMenuContinuationCallback callback);
-
-s32 slEndingTop(void);
-
-s32 slEndingUpd2(void);
-
-extern s32 fileRequestDefaultMode(void);
-
-s32 slEndingExit(void);
-
-s32 slBootTop(void);
-
-s32 slBootRetry(void);
-
-s32 slBootError(void);
-
-extern s32 fileRequestDefaultMode(void);
-
-s32 slBootError2(void);
-
-s32 fileBeginSlotMetadataRefresh(void);
-
-s32 fileResetSelection(void);
-
-extern void dds3AdminiCallSequence(s32, const void *, u32, s32);
-
-extern s32 fileMenuWorkStart(void);
-
-s32 slExit(void);
-
-s32 mcdEnterDefaultFileFlow(void);
-
-s32 fileRequestDefaultMode(void);
-
-s32 mcdEnterSelectedFileFlow(void);
-
-s32 fileRestartSlotScan(void);
-
-extern s32 fileSlotBrowserUpdate(void);
-
-s32 fileScanSlotStates(void);
-
-s32 slCancel(void);
-
-extern struct sdfMemHandle_t *fileSaveIconResourceHandle;
-
-extern struct FileRequest *fileSaveIconRequest;
-
-extern char D_0042B6A8[];
-
-s32 fileLoadIconFileAndResetSelection(void);
-
-s32 fileResetSlotSelection(void);
-
-s32 fileLoadIconFileAndBeginSlotReset(void);
-
-s32 slBootProc1st(void);
-
-s32 fileSlotStatusPoll(void);
-
-s32 fileCountSelectableFiles(void);
-
-s32 slSizeChk(void);
-
-extern s32 slBootError(void);
-
-extern s32 fileRequestDefaultMode(void);
-
-extern s32 slSizeChk(void);
-
-extern s32 slBootRetry(void);
-
-s32 fileSlotSelectPoll(void);
-
-extern s32 slBootError(void);
-
-extern s32 fileRequestDefaultMode(void);
-
-extern s32 slSizeChk(void);
-
-s32 fileSlotSelectPollClear(void);
-
-s32 filePollSlotDetectionAndBranch(void);
-
-s32 slErrorWaitToFileMc(void);
-
-s32 slErrorWait(void);
-
-s32 slExitWaitProc(void);
-
-s32 fileSetMenuCallbackAndClearResult(FileMenuContinuationCallback menuCallback);
-
-s32 mcdFinishFileDetection(void);
-
-s32 fileBeginDetectionRequest(FileMenuContinuationCallback callback);
-
-s32 filePollSlotRequestAndResumeFlow(void);
-
-s32 fileBeginReadSlotIcon(void);
-
-s32 slChooseData_getCardInfo2(void);
-
-s32 slChooseData_getCardInfo3(void);
-
-s32 fileBeginReadRemainingSlotIcons(void);
-
-s32 mcResetSlotMetadata(void);
-
-s32 fileBeginSaveSlotIconScan(void);
-
-s32 slChooseData_getCardInfo2_B(void);
-
-s32 slChooseData_getCardInfo3_B(void);
-
-s32 fileScanSlotStatesAdvance(void);
-
-s32 mcClearSlotMetadata(void);
-
-s32 slSaveData(void);
-
-s32 slSaveData_chdir(void);
-
-s32 slSaveProc_Write_mkdir(void);
-
-s32 filePrepareMainBlobWrite(void);
-
-s32 fileBuildMainBlobAfterDelete(void);
-
-s32 fileOnAllWritten(void);
-
-s32 fileWriteIconSysComplete(void);
-
-extern u8 fileSaveIconSysData[];
-
-extern u32 D_00437D90;
-
-extern u32 D_00437D94;
-
-s32 fileBeginLabeledSlotWrite(void);
-
-extern s32 slSaveWriteFile(const char *fileName, const u32 *dataAddressSlot, const u32 *dataSizeSlot, FileMenuContinuationCallback continuation, struct FileRequest * const *pendingRequestStatus);
-
-extern s32 fileBeginLabeledSlotWrite(void);
-
-s32 slSaveWriteEnd_saveData(void);
-
-extern dds_dds3GlobalWork_t *fileMainSaveBlobAddress;
-
-extern u32 fileMainSaveBlobSize;
-
-s32 fileBuildMainBlobAndWrite(void);
-
-s32 slSaveData_deleteIconSys(void);
-
-extern const u32 *fileWriteDataAddressSlot;
-
-extern const u32 *fileWriteDataSizeSlot;
-
-extern FileMenuContinuationCallback fileWriteContinuation;
-
-extern struct FileRequest * const *fileWritePendingRequestSlot;
-
-extern s32 slSaveProc_openFile(void);
-
-/* Later save callbacks read these borrowed slots without changing them; callers
- * keep the slots alive until the asynchronous save completes. */
-s32 slSaveWriteFile(const char *fileName, const u32 *dataAddressSlot, const u32 *dataSizeSlot, FileMenuContinuationCallback continuation, struct FileRequest * const *pendingRequestStatus);
-
-extern s32 slSaveProc_writeFile(void);
-
-extern s32 slSaveProc_waitDataReady(void);
-
-s32 slSaveProc_openFile(void);
-
-extern s32 slSaveProc_closeFile(void);
-
-s32 slSaveProc_writeFile(void);
-
-extern FileMenuContinuationCallback fileWriteContinuation;
-
-s32 slSaveProc_closeFile(void);
-
-s32 slSaveProc_waitDataReady(void);
-
-s32 mcHandleDetectionResult(void);
-
-s32 slFormatStart(void);
-
-s32 slFormatCancel(void);
-
-s32 slLoadData(void);
-
-s32 slLoadProc_openFile(void);
-
-extern s32 mcdHandleSaveSetupDone(void);
-
-s32 slLoadProc_readFile(void);
-
-extern s8 D_00437CD5;
-
-void fileRestoreSlotFlagsToState(void);
-
-s32 mcdHandleSaveSetupDone(void);
-
-extern s32 mcdContinueLoadSelection();
-
-s32 mcdAdvanceToLoadSelection(void);
-
-extern s32 D_00437D00;
-
-extern void fileLoadSetMode(FileLoadMenuSlideMode mode);
-
-extern void fileSetMenuValueAndInitializeFlags(u32);
-
-extern void fileCopyRecordHeader(FileSavePreviewRecord *, const void *);
-
-s32 fileSlotBrowserUpdate(void);
-
-/* Draw save slots and the selected preview; native scrolling snaps to its target. */
-s32 fileDrawSlotListAndPreview(s32 work);
-
-s32 slCalc(dds3ProcessID_t *task);
-
-s32 fileDrawMenuFrame(s32 task);
-
-void fileResetMenuFlowState(void);
 
 #include "dds/file_pac.h"
 
-extern void *memset(void *dst, s32 value, s32 size);
-
 struct sdfMemHandle_t;
-
-extern void dds3SoftResetOff(void);
-
-extern s32 D_00437D80;
-
-extern void fileDestroyMemoryCardMenuTask(dds3ProcessID_t *task);
-
-extern void dds3FadeIn(s32 red, s32 green, s32 blue, s32 duration);
-
-void fileInitCursorPulse(void);
-
-void fileStartMemoryCardMenuForMode(FileMenuStartMode mode);
-
-void fileReleaseMenuResources(void);
-
-void fileDestroyMemoryCardMenuTask(dds3ProcessID_t *task);
-
-void fileMenuReleaseNoOp(void);
-
-void fileReleaseMenuResources(void);
-
-u32 fileMenuOperationSucceeded(void);
-
-s32 fileMenuTaskExists(void);
-
-FileSelectionFlowState fileGetSelectionPendingFlag(void);
 
 extern FileSelectionCallback D_00439024, D_00439028;
 
@@ -1856,30 +271,7 @@ static inline void filePollPromptChoice(void) {
     }
 }
 
-s32 fileUpdatePromptDialog(void);
-
-extern s32 fileUpdatePromptDialog(void);
-
-s32 slQueryYesNo(FileSelectionCallback start, FileSelectionCallback finish, s32 mode);
-
-FileMenuOperationResult fileGetSaveLoadResult(void);
-
-void slSetTmnlID(s32 x, s32 y);
-
-void fileSetMenuValueAndInitializeFlags(u32 value);
-
 /* Lower the selected low/alpha byte, retaining the native signed, unmasked bound. */
-/* Keep the input word separate from the per-mode result; see docs/idioms.md,
- * "Trace-justified result selection: packed byte clamp". */
-u32 fileClampPackedColorByte(u32 color, s32 limit, s8 alpha);
-
-void fileCursorStepUp(void);
-
-void fileFadeStepDown(void);
-
-void fileDrawSlotIcon(s32 index, s32 x, s32 y, s32 alpha);
-
-void fileCursorOffsetLookup(s32 dir, s32 step, s32 *outX, s32 *outY);
 
 /* Init record at fileCursorPulseState. */
 typedef struct Init374E0 {
@@ -1891,93 +283,12 @@ typedef struct Init374E0 {
     s32 alpha[3];    /* 0x34 */
 } Init374E0;
 
-extern Init374E0 fileCursorPulseState;
-
-extern s32 D_003E7FE4[];
-
-void fileInitCursorPulse(void);
-
-void fileCursorPulseUpdate(void);
-
-extern const s32 D_0042B8F8[3][2];
-
-void fileDrawCursorPulse(s32 x, s32 y, s32 surface);
-
-void fileLoadSetMode(FileLoadMenuSlideMode mode);
-
-void fileResetLoadContextSlide(void);
-
-void fileLoadCtxSlideUpdate(void);
-
-s32 mcdFinishFileDetectionWithAudio(void);
-
-s32 fileCreateDetectionAudioCallback(FileMenuContinuationCallback callback);
-
-extern FileSelectionCallback fileFourWayDialogCancelCallback;
-
-s32 fileFourWayDialogPoll(void);
-
-extern s32 fileFourWayDialogPoll(void);
-
-s32 fileBeginFourWayDialog(FileSelectionCallback ready, FileSelectionCallback completed,
-                           FileSelectionCallback cancelled, u32 state);
-
-s32 fileWaitAfterLoadResult(void);
-
 #include "dds/sdf_debug_api.h"
-
-s32 fileApplySelectedLoadResult(void);
-
-s32 fileBeginFadeAndConfirmSound(void);
-
-s32 fileSelectLoadWithoutHardInit(void);
-
-s32 fileSelectLoadWithHardInit(void);
-
-s32 fileBeginLoadBranchDialog(void);
-
-s32 fileStartLoadDetectionAfterBranchDialog(void);
-
-s32 fileRestartSelectionFlow(void);
-
-s32 fileBeginLoadConfirmationDialog(void);
-
-extern s32 fileNextMenuFlowState(void);
-
-s32 fileWaitForLoadStepBeforeDetection(void);
 
 typedef struct FileFlowEntry {
     u16 state;
     u16 mask;
 } FileFlowEntry;
-
-extern FileFlowEntry fileMenuFlowStateEntries[];
-
-s32 fileNextMenuFlowState(void);
-
-s32 fileResetPendingRequest(void);
-
-s32 fileFadeBeforeResettingRequest(void);
-
-s32 fileBeginLoadOrAbortDialog(void);
-
-extern void dds3FadeIn2(s32);
-
-extern s32 fileBeginLoadOrAbortDialog(void);
-
-s32 fileMenuWorkStart(void);
-
-void fileMenuWorkCreate(u32 startBranchFlag);
-
-void fileReleaseMenuFlowResource(void);
-
-extern char D_0042B920[];
-
-void filePrintAccessoryLoadNotice(void);
-
-extern char D_0042B938[];
-
-void fileSaveAndDisplayCurrentMoney(void);
 
 typedef struct FileMultiFlagBonus {
     s32 flags[4];
@@ -1985,125 +296,14 @@ typedef struct FileMultiFlagBonus {
     u8 pad11[3];
 } FileMultiFlagBonus;
 
-extern FileMultiFlagBonus ptyUnit7StatBonusFlagGroups[6];
-
-extern char D_0042B950[];
-
-/* Apply each unlocked story bonus once to the active party record. */
-s32 ptyApplyUnlockedUnitStatBonusesOnce(DatUnitId unitId);
-
-void fileCopySaveHeaderNumbers(FileSavePreviewRecord *source);
-
-void fileCopyRecordHeader(FileSavePreviewRecord *destination, const void *source);
-
-void fileApplyMenuFlagsToModel(MenuWork *work);
-
-FileSlotFlagsChangeResult fileLoadStateChanged(void);
-
-void fileCacheSlotFlagsFromState(void);
-
-void fileRestoreSlotFlagsToState(void);
-
-extern void dds3PadVibrationSet(s32, u8, s32);
-
-extern s32 fileTestSlotFlagsBit(FileConfigOption option, u32 *flags);
-
-u8 fileToggleSlotFlagsBit(FileConfigOption option, u32 *flags);
-
-s32 fileTestSlotFlagsBit(FileConfigOption option, u32 *flags);
-
-s32 fileTestSavedSlotFlags(FileConfigOption option);
-
-extern FileConfigTask *GBWK;
-
-extern struct MenuList *mnuCreateListState(s32, s32, s32);
-
-extern void fileDrawConfigurationMenuEntry(s32 x, s32 y, s32 depth, struct MenuList *list, FileConfigListNode *node, s32 drawArg);
-
-extern void sndBgmFree(void);
-
-extern void mnuResetTitleStreamAfterFileIdle(void);
-
-extern void mnuQueueTitleSoundStreamEntry(s32);
-
-extern void effRequestResourceByMode(const char *, const char *, s32, u32 *);
-
-extern char D_00437DF0[];
-
-extern char *fileConfigSpriteResourceNames[];
-
-/* Allocate the save/config task, its five-row list and its effect resource slots. */
-FileConfigTask *fileCreateConfigTask(s32 mode);
-
-void fileConfigTaskDestroy(dds3ProcessID_t *task);
-
-extern FileConfigTask *fileCreateConfigTask(s32 mode);
-
-extern s32 fileStartQueuedLoad(dds3ProcessID_t *task);
-
-extern void fileConfigTaskDestroy(dds3ProcessID_t *task);
-
-extern s32 fileUpdateConfigurationMenu(dds3ProcessID_t *task);
-
-extern s32 fileUpdateConfigOwnerTask(dds3ProcessID_t *task);
-
-extern s8 dds3ConfigState;
-
-u32 fileGetConfigTaskSlot(s32 slot);
-
-s32 fileUpdateConfigurationMenu(dds3ProcessID_t *task);
-
-extern void fileDrawConfigurationMenuBackground(void *);
-
-s32 fileStartQueuedLoad(dds3ProcessID_t *task);
-
-s32 fileUpdateConfigOwnerTask(dds3ProcessID_t *task);
-
-void fileDrawConfigurationMenuEntry(s32 x, s32 y, s32 depth, struct MenuList *list,
-                   FileConfigListNode *node, s32 drawArg);
-
-void fileDrawConfigurationMenuBackground(void *unusedTask);
-
-void fileResetRenderFlags(void);
-
-void effLoadCommonTexturesAndResetRenderFlags(void);
-
-void fileSetRenderFlag(u32 mask);
-
-u32 fileClearRenderFlag(u32 mask);
-
-void fileResetRenderFlags(void);
-
-sdfGrOt_t *effGetPacketSubmissionSurface(s32 index);
-
-void mnuProjectViewPoint(void);
-
 extern u8 aViewEye[];
-
-/* vu0 routine: tests whether vf10 projects within the camera's forward cone. */
-s32 sdfProjectPointInForwardConeVU(void);
-
-extern u8 aViewDown[];
-
-/* vu0 routine: distance between the projected view point and a second point offset perpendicular to
-   the camera axis by rate; 0 when either projection (sdfProjectPointInForwardConeVU) fails. Point comes in vf10. */
-f32 mnuMeasureProjectedPerpendicularDistance(f32 rate);
 
 /* vu0 routine: point at t between p[1] and p[2] of a Catmull-Rom (Hermite, 0.5 tangents) spline, left in vf10 */
 void vuCatmullRomPoint(f32 (*p)[4], f32 t);
-
-extern u8 aViewEye[];
-
 extern u8 aViewTarget[];
-
-extern u8 aViewDown[];
-
-/* vu0 routine: camera basis rows vf28-vf31 from eye aViewEye, target aViewTarget and up aViewDown */
-void vuBuildLookAtBasis(void);
 
 /* The quaternion result is returned in vf10 for the VU transform routines. */
 void sdfVuMatrixToQuaternion(const f32 matrix[4][4]);
-
 FileJobPayload *fileCreateJob(FileJobType type);
 
 #define FILE_JOB_LOCATION_AS_JOB_RELATIVE_OFFSET(payload) ((payload).offset)
@@ -2113,125 +313,53 @@ FileJobPayload *fileCreateJob(FileJobType type);
 #define FILE_JOB_LOCATION_CLEAR(payload) ((payload).offset = 0)
 
 void *fileResolvePrimaryBuffer(FileJobPayload *job);
-
 void *fileResolveSecondaryBuffer(FileJobPayload *job);
-
 FileJobPayload *Create_effParts(FileJobPayload *request);
-
 void fileJobDestroy(FileJobPayload *job);
-
 void fileJobFreePrimaryBuffer(FileJobPayload *job);
-
 void fileJobFreeSecondaryBuffer(FileJobPayload *job);
-
 FileJobPayload *Copy_effParts(FileJobPayload *request);
-
 void fileJobNotifyPair(FileJobPayload *left, FileJobPayload *right);
-
 void ScaleSet_effParts(FileJobPayload *job);
-
 void fileJobInvokeTypeCallback(FileJobPayload *job);
-
 void PositionSet(FileJobPayload *job, const f32 position[4]);
-
 void fileJobInvokeRotationCallback(FileJobPayload *job, const f32 rotation[4]);
-
 void fileJobInvokeScaleCallback(FileJobPayload *job, f32 scale);
-
 void fileDispatchJobTypeCallback(FileJobPayload *job, u32 color);
-
 void fileJobSetPrimaryData(FileJobPayload *job, const void *src, s32 size, u16 option);
-
 void fileJobCopyCommandIntoPrimaryData(FileJobPayload *job, const char *commandPath, u16 option);
-
 void fileJobSetSecondaryData(FileJobPayload *job, const void *src, s32 size, u16 selector);
-
 void fileJobCopyCommandIntoSecondaryData(FileJobPayload *job, const char *commandPath, u16 selector);
-
 void fileWriteToPfs(FileJobPayload *job, const char *filePath);
-
 FileJobPayload *fileDuplicateJob(FileJobPayload *request);
-
-/* NULL when the command file does not open: retail's v0 is sdfFileOpen's
- * null result there. */
 FileJobPayload *fileJobCreateFromCommandState(const char *entry);
-
 u32 fileJobSerializedSize(FileJobPayload *job);
-
-/* Initialize the shared transform prefix, leaving queue/job links untouched. */
-void fileQueueInitTransform(void *queue);
-
 void fileJobResetAndInitTransform(FileJob *job);
-
 void fileQueueAppend(FileQueue *queue, FileJob *job);
-
 void fileQueueInsertAfter(FileQueue *queue, FileJob *after, FileJob *job);
-
 void fileQueueRemove(FileQueue *queue, FileJob *job);
-
 FileQueue *fileQueueCreate(void);
-
 FileJob *fileJobCreate(void);
-
 void fileDestroyJob(FileJob *job);
-
 FileQueue *Create_effPartsList(FileQueue *source);
-
 void camFollowOffsetVec(FileJob *job, void *dst);
 
 struct CamAim;
 
 extern void PoseRotBillboard(struct CamAim *obj, void *dst);
-
-/* Per-frame update: refreshes the queue rotation when an aim flag (0x60) is set, then repositions and re-notifies every job whose start frame (job+0x80) has been reached; the frame counter only advances when the effect-frame pause flag is clear. */
-void effPartsDraw(FileQueue *queue);
-
-/* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
- * an ID for other job kinds. Destroy children before their parent jobs. */
 void effPartsDelete(FileQueue *queue);
-
 FileQueue *effPartsCreateFinish(const FileQueue *source);
-
-void fileQueueNotifyAllJobsComplete(FileQueue *queue);
-
 void effPartsPositionSet(FileQueue *queue, const f32 vec[4]);
-
 void effPartsRotateSet(FileQueue *queue, const f32 rot[4]);
-
 void effPartsScaleSet(FileQueue *queue, f32 scale);
-
-/* Store the queue's modulation colour, then send every job its own colour
- * modulated by it ((job / 128) * (queue / 128) * 128 per channel). The tint
- * store is the unclobbered SDK spelling: as a bare volatile asm it flushes the
- * CSE table, so the loop's 1/128 is rematerialized rather than copied from the
- * first unpack's FPR. Reading the payload before the packed store keeps the
- * store from feeding the argument load. */
 void ColorSet(FileQueue *queue, u32 color);
-
-void fileQueueReadPosition(const FileQueue *queue, f32 position[4]);
-
-void fileReadStoredQuaternion(const FileQueue *queue, f32 quaternion[4]);
-
-f32 fileGetQueueScale(FileQueue *queue);
-
-u32 fileGetQueueColor(FileQueue *queue);
-
 void effPartsRotateMatrixSet(FileQueue *queue, f32 matrix[4][4]);
-
-extern void fileQueueAppend(FileQueue *queue, FileJob *job);
-
 FileJob *fileAppendJob(FileQueue *queue, u32 id);
-
 FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source);
-
 extern u8 fileAppendJobFromCommandPathData[];
-
 FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath);
-
 FileJob *fileJobDuplicateAfter(FileQueue *queue, FileJob *src);
-
 extern FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
-
 extern FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id);
 
 /* Makes the first job chained to owner's sector the leader and rechains the rest to it. */
@@ -2249,19 +377,10 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
 }
 
 void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref);
-
 void fileQueueDetachSectorFollower(FileQueue *queue, FileJob *job);
-
-void fileQueueRemoveAndDestroyJob(FileQueue *queue, FileJob *job);
-
 void fileJobCopyHeader(FileJob *dst, const FileJob *src);
-
 extern char fileQueueImagePaddingBytes[];
-
 extern s32 fileQueueCountLinkedJobs(FileQueue *queue);
-
-/* Export a queue: the queue header, one relocated record per job, then each
- * owning job's 16-byte-aligned payload. Child jobs store their parent's index. */
 void fileQueueSaveImage(FileQueue *queue, const char *filePath);
 
 /* Sixteen-byte preamble of a saved file queue. */
@@ -2273,113 +392,48 @@ typedef struct FileQueueImageHeader {
 } FileQueueImageHeader;
 
 extern char fileQueueVersionedImagePaddingBytes[];
-
-/* Save a queue image: the queue header, one relocated record per job, then each
- * owning job's 16-byte-aligned payload. Child jobs store their parent's index. */
 void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath);
-
 FileQueue *fileQueueCreateFromCommandState(const char *entry);
-
 FileJob *fileQueueFindById(FileQueue *queue, u32 id);
-
 FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id);
-
 FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
-
 FileJob *fileQueueGetAt(FileQueue *queue, s32 index);
-
 s32 fileFindQueuedJobIndex(FileQueue *queue, FileJob *target);
-
 s32 fileQueueCountLinkedJobs(FileQueue *queue);
-
-/* vu0 routine: dst = |pos| * unit(aViewEye - aViewTarget); flag 0x10 flattens y, then puts pos.y back */
 void camFollowOffsetVec(FileJob *obj, void *dst);
-
-/* dst = rotation facing unit(aViewEye - aViewTarget) (pitch and yaw); flag 0x40 composes it onto obj->quat, no flag 0x60 copies obj->quat */
 void PoseRotBillboard(CamAim *obj, void *dst);
-
 EffectSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity);
-
 EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
-
-EffectSurfaceNode *PartsCreate_effParticle(FileJobPayload *job);
-
 void Delete_effParticle(EffectSurfaceNode *node);
-
 void ResourceCopy(EffectSurfaceNode *dst, EffectSurfaceNode *src);
-
 EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner);
-
-void ResourceCopy(EffectSurfaceNode *dst, EffectSurfaceNode *src);
-
 void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource);
-
 void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId);
-
 void BillboardSet(EffectSurfaceNode *node, u32 resourceId);
-
 void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId);
-
 void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job);
-
 void PartsListSet(EffectSurfaceNode *node, FileQueue *queue);
-
 void fileReplaceReferenceHolder(EffectSurfaceNode *obj, u32 resource);
-
 void fileClearLoadObjectReferences(EffectSurfaceNode *obj);
-
 extern void mnuRecordSetVector(void *record, const void *src);
-
 extern void fileSetRecordSecondVector(void *record, const void *src);
-
-/* Original-style implicit int; callers ignore its result. */
-fileAcquireLoadObjectRecord(EffectSurfaceNode *obj);
 
 #include "dds/eff_anim.h"
 
-extern void dds3BillboardDraw(struct billHandle_t *);
-
-extern void fileReadRecordSecondVector(u8 *, void *);
-
-extern void fileReadVectorPtr20(u8 *, void *);
-
-extern void effSubmitGeneratedTexturePacket(sdfGrOt_t *, EffGeneratedTextureDescriptor *);
-
-void fileDrawLoadObjectSlots(s32 object);
-
-void fileUpdateLoadObjectSlots(u32 objectAddr);
-
 void fileSendLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value);
-
 void fileCopyLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value);
-
 void fileSetRecordWordFour(s32 record, u32 value);
-
 void fileSetLoadObjectScale(EffectSurfaceNode *obj, f32 scale);
-
 void fileResetSlotStates(FileSlotTable *table);
 
-/* vu0 routine: preserve the packed RGB snapshot while applying the alpha track. */
 u32 effColorAnimation(const SdfColorTrack *colorTrack,
                               const SdfAlphaTrack *alphaTrack,
                               s32 frame, s32 duration);
 
 f32 effSampleScalarCurve(const EffScalarCurve *curve, s32 frame, s32 duration);
-
-/* vu0 routine: samples the colour, scale and heading tracks at frame; in mode 2 the heading is the screen-space direction from out->pos to target (0 when they coincide) */
-void fileSampleKeyTracks(FileSlot *out, const FileKeyBlock *block, s32 frame, const f32 *target);
-
 void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot);
-
 void fileCopyAndInvalidateSlotGroup(FileSlotTable *table, FileSlot *source);
-
-/* vu0 routine: shifts one slot's history and interpolates its trailing samples. */
 void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot);
-
-extern struct EffRandState effSharedRandomState;
-
-extern f32 fabsf(f32);
-
 extern void effUpdateGridRecordSlotHistory(FileSlotTable *, FileSlot *);
 
 typedef struct FileWaveMotion {
@@ -2396,12 +450,6 @@ typedef struct FileWaveMotion {
     f32 angleMultiplier;
 } FileWaveMotion;            /* 0x44, ordinary word alignment */
 
-extern f32 effWaveEmitterNegativeYAxis[4];
-
-/* vu0 routine: advances axial motion with a quaternion-oriented sine sway. */
-void effUpdateWaveEmitterSlots(FileSlotTable *record);
-
-/* Scale selected wave-emitter parameters from source to destination. */
 void effScaleWaveEmitterParameters(ScaleOwner *owner, f32 scale);
 
 typedef struct FileSlotMotion {
@@ -2411,12 +459,6 @@ typedef struct FileSlotMotion {
     f32 angle;            /* 0x18 */
     f32 angleMultiplier;  /* 0x1C */
 } FileSlotMotion;
-
-/* vu0 routine: emits and advances randomized radial slots, then samples their key tracks. */
-void effUpdateRadialEmitterSlots(FileSlotTable *record);
-
-/* Scale selected radial-emitter parameters from source to destination. */
-void effScaleRadialEmitterParameters(ScaleOwner *owner, f32 scale);
 
 typedef struct FileCircularMotion {
     f32 origin[4];          /* 0x00: xyz only */
@@ -2432,12 +474,6 @@ typedef struct FileCircularMotion {
     f32 angleMultiplier;
 } FileCircularMotion;       /* 0x44, ordinary word alignment */
 
-/* vu0 routine: advances changing-radius circular motion in the saved emitter frame. */
-void effUpdateCircularEmitterSlots(FileSlotTable *record);
-
-/* Scale selected circular-emitter parameters from source to destination. */
-void effScaleCircularEmitterParameters(ScaleOwner *owner, f32 scale);
-
 typedef struct FileOrientedRingMotion {
     f32 origin[4];          /* 0x00: xyz only */
     f32 orientationAngle;   /* 0x10 */
@@ -2451,38 +487,6 @@ typedef struct FileOrientedRingMotion {
     f32 angle;
     f32 angleMultiplier;
 } FileOrientedRingMotion;   /* 0x38, ordinary word alignment */
-
-extern void SetRotateMatrixX(f32 angle);
-
-extern void SetRotateMatrixY_B(f32 angle);
-
-/* vu0 routine: advances a ring in its sampled orientation with vertical acceleration. */
-void effUpdateOrientedRingEmitterSlots(FileSlotTable *record);
-
-/* Scale selected oriented-ring parameters; keep the destination-first declarations. */
-void effScaleOrientedRingEmitterParameters(ScaleOwner *owner, f32 scale);
-
-/* vu0 routine: advances directed slots through the emitter quaternion frame. */
-void effUpdateDirectedEmitterSlots(FileSlotTable *record);
-
-/* Scale selected directed-emitter parameters; this is the DDS1 callback's twin. */
-void effScaleDirectedEmitterParameters(ScaleOwner *owner, f32 factor);
-
-/* vu0 routine: advances slots within a bounded azimuth of the emitter frame. */
-void effUpdateSectorEmitterSlots(FileSlotTable *record);
-
-/* Scale selected parameters for the bounded-azimuth sector emitter. */
-void effScaleSectorEmitterParameters(ScaleOwner *owner, f32 factor);
-
-/* Replace type-seven curve-emitter start xyz; other record types are untouched. */
-void effSetCurveEmitterStartPosition(FileSlotTable *record, const f32 *value);
-
-/* Replace type-seven curve-emitter end xyz; other record types are untouched. */
-void effSetCurveEmitterEndPosition(FileSlotTable *record, const f32 *value);
-
-/* cubic Bezier point at t through four control points; result is left in vf10 */
-void vu0CubicBezierPoint(f32 *controlPoint0, f32 *controlPoint1,
-                         f32 *controlPoint2, f32 *controlPoint3, f32 t);
 
 typedef struct FileCurveMotion {
     f32 firstControl[3];
@@ -2498,30 +502,11 @@ typedef struct FileCurveMotion {
     f32 angleMultiplier;
 } FileCurveMotion; /* 0x4C, naturally four-byte aligned */
 
-extern f32 effWorldUpVector[4];
-
-/* vu0 routine: advances randomized cubic-curve slots and their axial rotation. */
-void effUpdateCurveEmitterSlots(FileSlotTable *record);
-
-/* Curve-emitter scaling changes only the common scale-track values. */
-void effScaleCurveEmitterParameters(ScaleOwner *owner, f32 scale);
-
 FileSlotTable *fileAllocateGridRecordSlots(u16 type, u32 count, const void *data);
-
 void effPCPHelperBEDGetModel(FileSlotTable *record);
-
 void fileClearRecordReferences(FileSlotTable *record);
-
-void fileAcquireRecord(FileSlotTable *record);
-
-void fileReadVectorPtr20(u8 *recordBytes, void *dst);
-
 void mnuRecordSetVector(void *recordBytes, const void *src);
-
-void fileReadRecordSecondVector(u8 *recordBytes, void *dst);
-
 void fileSetRecordSecondVector(void *recordBytes, const void *src);
-/* End of declarations from src/dds2/game/code_002C96D0.c */
 
 void fileJobFreeSecondaryBuffer(FileJobPayload *job) {
     struct sdfMemHandle_t *allocation = job->secondary.allocation;

@@ -1,14 +1,7 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdf3DPrim.c */
-#include "common.h"
-
 #include "ps2asm.h"
-
 #include "sdf_lighting.h"
-
 #include "sdf_resource.h"
-
 #include "eeregs.h"
 
 /* Declared here because no header carries these. */
@@ -91,13 +84,9 @@ typedef struct sdf3DTmPacketData_t {
 #define SDF_VIF_MSCAL_COMMAND 0x14000000
 
 extern u8 sdf3DPrimIdentityTm[];
-
 extern vu8 sdfFrameId;
-
 extern f32 sdfFaceDivSoften;
-
 extern f32 sdfFaceDivBias;
-
 extern u32 sdf3DPrimDefaultFaceIndex[];
 
 /* Native 0xA0-byte draw-entry block allocated by SDF_ASSET_DRAW_ENTRY_BYTES. */
@@ -129,7 +118,6 @@ typedef struct sdfMatPacket_t {
 } sdfMatPacket_t;
 
 void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
-
 void sdfDrawTagLinkRef(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Per-texture reference count and non-owning clone source (0x8). */
@@ -171,7 +159,6 @@ typedef struct sdf3DPrimPolyParm_t {
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 void *sdfGrAllocPacketBuff(s32 aSize);
-
 extern void *memcpy(void *, const void *, size_t);
 
 extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag,
@@ -190,17 +177,11 @@ u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
 void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag,
                              s32 (*aAllocator)(s32));
 
-/* vu0 routine: store the resident matrix and inverse-column-length scaled rows, then VIF ITOP/MSCAL. */
-void sdf3DPrimSetTmPacket(sdf3DTmPacketData_t *aPacket);
-
 void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
                            s32 (*aAllocator)(s32));
 
 void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
                               s32 (*aAllocator)(s32));
-
-u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
-/* End of declarations from src/smt3/sdf/sdf3DPrim.c */
 
 void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag,
                              s32 (*aAllocator)(s32)) {

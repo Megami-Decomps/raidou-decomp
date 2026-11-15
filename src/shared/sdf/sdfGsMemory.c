@@ -1,10 +1,5 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfGsMemory.c */
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
@@ -28,21 +23,13 @@ enum sdf_psm
 };
 
 extern s32 DIntr(void);
-
 extern void EIntr(void);
-
 extern void *sdfChipAllocDirect(u32 aSize);
-
 extern void sdfChipFreeDirect(void *aPtr);
-
 extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
-
 extern sdfGsMemSlice_t *gsMemHandleLinkHead;
-
 extern sdfGsMemSlice_t *gsMemHandleLinkTail;
-
 extern sdfDelayedResrcCB_t gsMemDelayedResrcCB;
-
 extern void (*sdfGsErrorHandler)(s32 size, s32 type);
 
 /* sdfImageSetPacket_tag.freeMode: which heap owns the uploaded pixels. */
@@ -54,45 +41,17 @@ enum SdfImageSetMem
 };
 
 s32 sdfGsMemGetBitCount(u32 aFormat);
-
 sdfGsMemSlice_t *sdfGsMemAllocFromHead(s32 aSize, s32 aType);
-
 sdfGsMemSlice_t *sdfGsMemAllocFromTail(s32 aSize, s32 aType);
-
 s32 sdfGsMemCheckMerge(sdfGsMemSlice_t *aHandle);
-
 void sdfGsMemFree(sdfGsMemSlice_t *aHandle);
-
-s32 sdfGsMemGetBitCount(u32 aFormat);
-
 s32 sdfGetTexelBitCount(u32 aFormat);
-
 s32 sdfGsMemCheckHandle(sdfGsMemSlice_t *aHandle);
-
-sdfGsMemSlice_t *sdfGsMemAllocFromHead(s32 aSize, s32 aType);
-
-sdfGsMemSlice_t *sdfGsMemAllocFromTail(s32 aSize, s32 aType);
-
 sdfGsMemSlice_t *sdfGsMemAllocRect(s32 aWidth, s32 aHeight, s32 aFormat, s32 aType, s32 aFromHead);
-
-s32 sdfGsMemCheckMerge(sdfGsMemSlice_t *aHandle);
-
 void sdfGsMemCheckLinkConsistence(void);
-
-void sdfGsMemFree(sdfGsMemSlice_t *aHandle);
-
 void sdfGsMemFreeDelayed(sdfGsMemSlice_t *aHandle);
-
 void sdfGsMemInit(void);
-
 sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 aW, s32 aH, s32 aPixelFormat);
-
-sdfGsMemSlice_t *sdfGsMemGetLinkHead(void);
-
-sdfGsMemSlice_t *sdfGsMemGetLinkTail(void);
-
-extern void (*sdfGsErrorHandler)(s32 size, s32 type);
-/* End of declarations from src/smt3/sdf/sdfGsMemory.c */
 
 s32 sdfGsMemGetBitCount(u32 aFormat)
 {
@@ -368,4 +327,3 @@ sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 aW, s32 aH, s32 aPixelFormat)
 void (*sdfGsErrorHandler)(s32 size, s32 type) = NULL;
 
 sdfTexHandle_t *sdfTexHandleLink = NULL;
-

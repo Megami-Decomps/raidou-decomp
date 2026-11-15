@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/file/fileManager.c */
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "kernel.h"
-
 #include "fileManager.h"
 
 /* All three views share the 0x30-byte request header. Their differently
@@ -63,37 +57,21 @@ typedef struct fileQueue {
 } fileMngCb_tag;
 
 extern fileMngCb_tag fileQueueHead;
-
 extern u32 fileCallbackStatus;
-
 extern s32 (*p2sdSmgBuf)(void);
-
 extern char fileManagerProcName[];
-
 void fileLinkQueue(fileRequest_t *req, s32 kind, const char *name, void *callback, void *arg);
-
 void fileLinkCloseWait(fileMngCb_tag *cb, fileRequest_t *fileHandle);
-
 void fileUnlinkCloseWait(fileMngCb_tag *cb, fileRequest_t *fileHandle);
-
 fileRequest_t *pacLoadEx(const char *filename, u32 headOrTail, u32 callback, u32 pendCallback, u32 callbackParm);
-
 s32 pacFileCheckEnd(const fileRequest_t *pacFileHandle);
-
 void pacRead(fileRequest_t *pacHandle);
-
 s32 pacLoadCallback(void *fileHandle, s32 cause, s32 buffer, s32 length, fileCb_t *data);
-
 s32 fileLoadCallback(void *fileHandle, s32 cause, s32 buffer, s32 length, fileCb_t *data);
-
 s32 fileSaveCallback(void *fileHandle, s32 cause, s32 buffer, s32 length, fileCb_t *data);
-
 void fileRead(fileCb_t *fileHandle);
-
 void fileExecQueue(void);
-
 s32 fileManager(void);
-
 s32 fileManagerProc(dds3ProcessID_t *procId);
 
 extern dds3ProcessID_t *dds3StartProcess(char *v1, s32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
@@ -101,151 +79,52 @@ extern dds3ProcessID_t *dds3StartProcess(char *v1, s32 dDS3_PRIORITY_DRAW_PB, s3
                                 void (*deleteExit)(dds3ProcessID_t *), void *p);
 
 s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-
 s32 WaitSema(s32 sema);
-
 s32 SignalSema(s32 sema);
-
 void *sdfChipAllocZeroDirect(u32 aSize);
-
 char *sdfStrdupChip(const char *str);
-
 void *sdfMemAllocDirect(u32 aSize);
-
 void *sdfMemAlloc2Direct(u32 aSize);
-
 u32 sdfMemLock(void *aHandle);
-
 void sdfPacInit(void *cb, void *callback);
-
 void sdfPacSetFromTail(void *cb);
-
 void *sdfFileCmdReadOpen(const char *aFileName, void *aCallback, void *aUserData);
-
 void *sdfFileCmdWriteOpen(const char *aFileName, void *aCallback, void *aUserData, u32 aMode);
-
 s32 sdfFileCmdFileSize(void *aHandle);
-
 s32 sdfFileCmdRead(void *aHandle, void *aBuffer, s32 aLength);
-
 s32 sdfFileCmdWrite(void *aHandle, void *aBuffer, s32 aLength);
-
 s32 sdfFileCmdClose(void *aHandle);
-
 s32 sdfFileCmdFree(void *aHandle);
-
 void sdfFileCmdThreadSetHiPrio(void);
-
 s32 sdfPrintf(const char *str, ...);
-
 void *memset(void *a, s32 b, size_t c);
-
 void sdfChipFreeDirect(void *aPtr);
-
 void sdfPacFree(sdfPacDecodeCb_t *cb);
-
 s32 sdfPacDecode(sdfPacDecodeCb_t *cb, const u8 *data, s32 length);
-
 void *sdfMemAllocFromTailDirect(u32 aSize);
-
 void fileWrite(fileCb_t *fileHandle);
-
 void fileExecCallback(void);
-
 s32 pacFileHandleFree(fileRequest_t *pacHandle);
-
 s32 pacFileHandleFree_(void *pacHandle);
-
 s32 fileHandleFree(fileRequest_t *fileHandle);
-
-void fileLinkQueue(fileRequest_t *req, s32 kind, const char *name, void *callback, void *arg);
-
 void fileUnlinkQueue(fileRequest_t *fileHandle);
-
-void fileLinkCloseWait(fileMngCb_tag *cb, fileRequest_t *fileHandle);
-
-void fileUnlinkCloseWait(fileMngCb_tag *cb, fileRequest_t *fileHandle);
-
-fileRequest_t *pacLoadEx(const char *filename, u32 headOrTail, u32 callback, u32 pendCallback, u32 callbackParm);
-
 fileRequest_t *pacLoad(const char *filename);
-
 fileRequest_t *pacLoadUseTail(const char *filename);
-
 fileRequest_t *fileLoadEx(const char *filename, u32 headOrTail, addr_t endCallback, addr_t callbackParm);
-
 fileRequest_t *fileLoad(const char *filename);
-
 fileRequest_t *fileLoadUseTail(const char *filename);
-
 sdfMemHandle_t *fileGetMemHandle(const fileRequest_t *fileHandle);
-
 u8 *fileGetLoadPtr(const fileRequest_t *fileHandle);
-
 u32 fileGetLoadSize(const fileRequest_t *fileHandle);
-
 u32 fileGetLoadRemain(fileRequest_t *fileHandle);
-
-s32 pacFileCheckEnd(const fileRequest_t *pacFileHandle);
-
 s32 pacCheckEnd(const fileRequest_t *pacHandle);
-
 void fileSync(fileRequest_t *fileHandle);
-
 void pacSync(fileRequest_t *pacFileHandle);
-
 void fileSyncAll(void);
-
 fileRequest_t *fileSaveEx(const char *filename, const void *buff, s32 size, s32 endCallback, s32 callbackParm);
-
 fileRequest_t *fileSave(const char *filename, const void *buff, s32 size);
-
-void pacRead(fileRequest_t *pacHandle);
-
-s32 pacLoadCallback(void *fileHandle, s32 cause, s32 buffer, s32 length, fileCb_t *data);
-
-void fileRead(fileCb_t *fileHandle);
-
-s32 fileLoadCallback(void *fileHandle, s32 cause, s32 buffer, s32 length, fileCb_t *data);
-
-void fileWrite(fileCb_t *fileHandle);
-
-s32 fileSaveCallback(void *fileHandle, s32 cause, s32 buffer, s32 length, fileCb_t *data);
-
-void fileExecQueue(void);
-
-void fileExecCallback(void);
-
-s32 fileManager(void);
-
-s32 fileManagerProc(dds3ProcessID_t *procId);
-
 void fileSysInit(void);
-
-extern const char nmeKyaraTmxPath01[24];
-
-extern const char nmeKyaraTmxPath04[24];
-
-extern const char nmeKyaraTmxPath03[24];
-
-extern const char nmeKyaraTmxPath02[24];
-
-extern const char nmeKyaraTmxPath05[24];
-
-extern const u8 D_00546978[7048];
-
-extern const u8 D_00548500[200];
-
-extern const u8 D_005485C8[200];
-
-extern const u8 D_00548690[200];
-
-extern const char D_00548758[16];
-
-extern u32 fileCallbackStatus;
-
 extern char fileManagerProcName[8];
-/* End of declarations from src/smt3/file/fileManager.c */
 
 s32 pacFileHandleFree(fileRequest_t *pacHandle)
 {
@@ -876,4 +755,3 @@ u32 fileCallbackStatus = 0;
 char fileManagerProcName[8] = "fileMan";
 
 u32 mccb = 0;
-

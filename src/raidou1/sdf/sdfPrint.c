@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfPrint.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 s32 strlen(const char *aStr);
@@ -75,20 +69,11 @@ extern void *memcpy(void *, const void *, size_t);
 #include "sdk_libmrpc.h"
 
 extern sifRpcClientContextView_t sdfPrintRpcClient;
-
 extern s8 sdfPrintIopFlag;
-
 extern char sdfPrintStrFmt[];
-
 extern s32 scePrintf(const char *, ...);
-
 extern s32 vsprintf(char *destination, const char *format, void *args);
-
-extern s32 (*p2sdSmgBuf)(void);
-
-/* Copy a positive source/end span into the RPC reply buffer; otherwise return NULL. */
 void *sdfPrintRpcFunc(s32 unused, sifCommand_t *packet);
-
 void sdfPrintRpcThread();
 
 typedef struct sifPrintRpcServerData_t sifPrintRpcServerData_t;
@@ -120,42 +105,19 @@ SIZE_CHECK(sifRpcDataQueue_size_must_be_0x20, sifRpcDataQueue_t, 0x20);
 SIZE_CHECK(sifPrintRpcServerData_size_must_be_0x44, sifPrintRpcServerData_t, 0x44);
 
 extern void *sdfPrintRpcFunc(s32 unused, sifCommand_t *packet);
-
 extern s32 GetThreadId(void);
-
 extern void sceSifSetRpcQueue(sifRpcDataQueue_t *queue, s32 threadId);
 
 #include "sdk_libkernl.h"
 
 extern void sceSifRpcLoop(sifRpcDataQueue_t *queue);
-
 extern u8 sdfPrintRpcBuff[];
-
-extern const char sdfPrintIopBindErrMsg[];
 
 #include "sdk_libc.h"
 
-extern s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priority);
-
-extern s32 sdfGetRunTimeCountBase(void);
-
-extern s32 sdfGetRunTimeCount(s32 aBaseTime);
-
-extern s32 sceSifMBindRpc(sifRpcClientDataPrefix_t *client, s32 number, s32 mode);
-
-void sdfPrintIopInit(void);
-
-/* Print text through the bound IOP dev client, or locally when it is unbound. */
 void sdfPuts(const char *str);
-
 s32 sdfPrintf(const char *str, ...);
-
-extern const char sdfPrintIopBindErrMsg[16];
-
-extern s8 sdfPrintIopFlag;
-
 extern char sdfPrintStrFmt[4];
-/* End of declarations from src/smt3/sdf/sdfPrint.c */
 
 /* Copy a positive source/end span into the RPC reply buffer; otherwise return NULL. */
 void *sdfPrintRpcFunc(s32 unused, sifCommand_t *packet) {
@@ -208,4 +170,3 @@ s32 sdfPrintf(const char *str, ...) {
 s8 sdfPrintIopFlag = 0;
 
 char sdfPrintStrFmt[4] = "%s";
-

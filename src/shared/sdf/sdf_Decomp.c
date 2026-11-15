@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdf_Decomp.c */
-#include "common.h"
-
 #include "ps2asm.h"
-
 #include "sdf_types.h"
-
 #include "eeregs.h"
 
 /* Declared here because no header carries these. */
@@ -50,13 +44,11 @@ struct sdfDecompCb_t;
 
 /* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
 void MultMatrixRev(const void *aMatrix);
-
 extern const u8 *sdfDecompHistory[16];
 
 /* sdf3DScreenParam + 0x70: the scale and trans rows. */
 /* Shared byte-storage view: the local screen structs are not compatible C types. */
 extern u8 sdf3DScreenParam[];
-
 extern u8 sdf3DScreenTm[];
 
 /* Incremental decoder access view shared by both providers. The backing
@@ -75,33 +67,14 @@ typedef struct sdfDecompCb_t {
 
 /* Read the active packet cursor or restore it at a quadword boundary. */
 s32 sdfGrOpenPacketBuff(void);
-
 void sdfGrClosePacketBuff(saddr_t aBuffPtr);
-
 extern s32 sdfDecompHistoryIndex;
-
 extern void *memcpy(void *, const void *, size_t);
-
 s32 sdfDecomp(sdfDecompCb_t *cb, const u8 *src, s32 length);
-
 void sdfDecompInit(sdfDecompCb_t *cb, u8 *dst);
-
 sdfGrPacketHeader_t *sdfDrawModelWithMatrix(const f32 vertices[][4], const u32 *colors, s32 vertexCount, u32 primitiveFlags);
-
 sdfGrPacketHeader_t *effDebugDrawWireModel(const sdfVector4_t *vertices, const u32 *colors, s32 vertexCount, u32 primitiveFlags);
-
 sdfGrPacketHeader_t *sdfDrawRotatedModel(const f32 vertices[][4], const u32 *colors, s32 vertexCount, u32 primitiveFlags);
-
-s32 sdfDecomp(sdfDecompCb_t *cb, const u8 *src, s32 length);
-
-void sdfDecompInit(sdfDecompCb_t *cb, u8 *dst);
-
-sdfGrPacketHeader_t *sdfDrawModelWithMatrix(const f32 vertices[][4], const u32 *colors, s32 vertexCount, u32 primitiveFlags);
-
-sdfGrPacketHeader_t *effDebugDrawWireModel(const sdfVector4_t *vertices, const u32 *colors, s32 vertexCount, u32 primitiveFlags);
-
-sdfGrPacketHeader_t *sdfDrawRotatedModel(const f32 vertices[][4], const u32 *colors, s32 vertexCount, u32 primitiveFlags);
-/* End of declarations from src/smt3/sdf/sdf_Decomp.c */
 
 s32 sdfDecomp(sdfDecompCb_t *cb, const u8 *src, s32 length) {
     s32 count;

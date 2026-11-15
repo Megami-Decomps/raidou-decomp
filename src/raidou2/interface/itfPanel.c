@@ -1,6 +1,4 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/interface/itfPanel.c */
 #include "interface.h"
 
 /* A color row is also a four-component vector for the template scaler. */
@@ -63,26 +61,12 @@ typedef struct itfPanelTextureData_t {
 } itfPanelTextureData_t;
 
 void itfPnlRelease(itfpanel_t *handle);
-
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-
 void itfPnlSetPosition(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
-
 void itfPnlSetPositionOffset(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
-
 void itfPnlSetColor(itfpanel_t *handle, s32 r, s32 g, s32 b, s32 a);
 
-void itfPnlDraw(itfpanel_t *handle, sdfGrOt_t *pot);
-
-extern s32 sdfGrAllocPacketBuff(s32 aSize);
-
 #define ITF_PANEL_PACKET_LIST_BYTES 0x20
-
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-
-void DrawTestAlphaPrim(sdfDrawTag_t *pdrawtag);
-
-void itfPnlDrawTag(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
 void CreateVertexNormal(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
 
@@ -91,49 +75,36 @@ void CreateVertexNormal(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
 #define ITF_PANEL_COLUMN_INSET 0x200
 
 void CreateVertexMesWin(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
-
 extern s32 itfPanelMesWinRowOffset[4];
-
 void CreateVertexSelWin(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
 
 #define ITF_PANEL_ROW_COUNT 2
 
 void CreateVertexPlain(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
-
 void CreateVertexLeftFade(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
 
 #define ITF_PANEL_CORNER_COLUMN_COUNT 3
 
 #define ITF_PANEL_CORNER_STRIP_WIDTH 0x5A0
 
-void CreateVertexFacility(itfPanelFacilityData_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
-
 extern void itfMiscSetRatioRGB(s32 *output, s32 scaleX, s32 scaleY, s32 scaleZ, s32 w, const s32 *input, s32 count);
-
 extern s32 itfPanelMesWinColorRatio[];
-
 extern s32 itfPanelSelWinColorRatio[];
-
 extern s32 itfPanelPlainColorRatio[];
 
 #define ITF_PANEL_FULL_COLOR_SCALE 0x80
 
 extern s32 itfPanelPlainFullColorRatio[];
-
-void CreateColorFacility(itfPanelFacilityData_t *base);
-
 void DrawNormal(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
 #define ITF_PANEL_WIDE_PASS_COUNT 3
 
 extern void itfMiscDrawRectanglePrim(void *vertices, void *colors, u8 *vertexIndex, u8 *colorIndex, u32 tail, sdfDrawTag_t *command);
-
 extern u8 itfPanelNormalVertexIndex[];
 
 #define ITF_PANEL_QUAD_INDEX_COUNT 4
 
 extern u8 itfPanelNormalColorIndex[];
-
 void DrawMesWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
 #define ITF_PANEL_SEVEN_COLOR_COUNT 7
@@ -145,9 +116,7 @@ extern void itfMiscDrawTriangleStripPrim(void *vertices, void *colors, u8 *verte
 #define ITF_PANEL_SEVEN_SIDE_PASS_COUNT 6
 
 extern void itfMiscDrawLineStripPrim(void *, void *, u8 *, u8 *, s32, u32, sdfDrawTag_t *);
-
 extern u8 itfPanelMesWinStripVertexIndex[], itfPanelMesWinStripColorIndex[], itfPanelMesWinLineColorIndex[];
-
 void DrawSelWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
 #define ITF_PANEL_FIVE_COLOR_COUNT 5
@@ -155,68 +124,24 @@ void DrawSelWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 #define ITF_PANEL_FIVE_SIDE_PASS_COUNT 2
 
 extern u8 itfPanelMesWinLineVertexIndex[8], itfPanelSelWinLineVertexIndex[8];
-
 extern u8 itfPanelSelWinStripVertexIndex[], itfPanelSelWinStripColorIndex[], itfPanelSelWinLineColorIndex[];
-
 void DrawPlain(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
 extern u8 itfPanelPlainRectVertexIndex[8];
-
 extern u8 itfPanelPlainRectColorIndex[8];
-
 extern u8 itfPanelPlainLineVertexIndex[];
-
 extern u8 itfPanelPlainLineColorIndex[];
-
 void DrawPera1(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
 extern u8 itfPanelPera1RectVertexIndex[8];
-
 extern u8 itfPanelPera1RectColorIndex[8];
-
 void DrawLeftFade(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
 extern void itfMiscDrawAlphaPrim(sdfDrawTag_t *pdrawtag, s32 tp, s32 context);
-
 extern u8 itfPanelLeftFadeStripVertexIndex[8];
-
 extern u8 itfPanelLeftFadeStripColorIndex[8];
-
-void DrawSpkWin2(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-extern void itfMiscDrawSpritePrim(void *, void *, void *, s32, sdfTexHandle_t *, s32, sdfDrawTag_t *);
-
-/*END itfDrawFramedPanelWithTextureStrips*/
-extern itfDrawColor_t itfPanelSpkCapColor;
-
-extern void itfMiscDrawSpritePrim2(itfDrawVertex_t *, itfDrawColor_t *, itfDrawColor_t *, u32, s32, sdfDrawTag_t *);
-
-extern itfDrawColor_t itfPanelSpkCenterColor;
-
-void DrawFacility(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-extern u8 itfPanelFacilityVertexIndex[];
-
-extern u8 itfPanelFacilityColorIndex[];
-
-extern itfDrawColor_t itfPanelBandTopColor;
-
-extern itfDrawColor_t itfPanelBandStretchColor;
-
-extern itfDrawColor_t itfPanelBandBottomColor;
-
-extern itfDrawColor_t itfPanelBandShortColor;
 
 #define ITF_PANEL_STATE_PACKET_BYTES 0x40
 
-extern u32 sdf2DMakeStdPacket(u32, s32);
-
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
 extern void (*CreateVertexTable[])();
-
 extern void (*CreateColorTable[])();
-
 extern void (*DrawTable[])(itfpanel_t *, sdfDrawTag_t *);
 
 static inline void SetVec4(u32 *vec, u32 red, u32 green, u32 blue, u32 alpha) {
@@ -227,129 +152,18 @@ static inline void SetVec4(u32 *vec, u32 red, u32 green, u32 blue, u32 alpha) {
 }
 
 extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-
 extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-
 extern s32 itfPanelPayloadSize[];
-
-/* Allocate the common record and the kind's payload; kinds 6 to 8 take the
- * caller's value as the first payload word. */
 itfpanel_t *itfPnlRegist2(s32 type, saddr_t texhandle);
-
-/* A sprite with a retained payload owns a secondary allocation. Release that
- * before its primary allocation; NULL is a no-op. */
-void itfPnlRelease(itfpanel_t *handle);
-
-/* Store rectangle corners and the caller's render value before notifying the
- * kind-specific handler with context only. No kind-range or context checks. */
-void itfPnlSetPosition(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
-
-/* Add independent corner/render-value deltas, then notify with the updated
- * corners as well as context. */
-void itfPnlSetPositionOffset(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
-
-/* Store the RGBA words in packet order, then notify with context.
- * The panel renderers consume these channels directly. */
-void itfPnlSetColor(itfpanel_t *handle, s32 r, s32 g, s32 b, s32 a);
-
-/* Build the panel list and append it to the SDK draw-surface pool. */
-void itfPnlDraw(itfpanel_t *handle, sdfGrOt_t *pot);
-
-/* Invoke the indexed panel handler; panel and kind are trusted. */
-void itfPnlDrawTag(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-/* Emit top/bottom vertices for four columns; collapse overlapping inner columns to the midpoint.
-   Coordinates and inset remain in the renderer's native integer units. */
-void CreateVertexNormal(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Emit the frame grid and three table-offset rows above and below it. */
-void CreateVertexMesWin(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
-
-void CreateVertexSelWin(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Write the rectangle corners in top-left, top-right, bottom-right, bottom-left order. */
-void CreateVertexPlain(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Write two rows of three columns; the middle column is the right edge minus a fixed strip width. */
-void CreateVertexLeftFade(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Write four fixed horizontal columns with inset top/bottom coordinates.
-   x0 and x1 are intentionally unused; do not replace the fixed horizontal positions. */
-void CreateVertexFacility(itfPanelFacilityData_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Populate RGBA rows at bytes 0x40/0x50; the first row is transparent. */
 void CreateColorNormal(itfPanelNormalData_t *pwork, u32 red, u32 green, u32 blue, u32 alpha);
-
-/* Write the two color rows, then scale six template rows; the first fourth component is one. */
 void CreateColorMesWin(itfPanelMesWinData_t *pwork, u32 red, u32 green, u32 blue, u32 alpha);
-
-/* Write the two color rows, then scale four template rows; the first fourth component is one. */
 void CreateColorSelWin(itfPanelSelWinData_t *pwork, u32 red, u32 green, u32 blue, u32 alpha);
-
-/* Set the base color, one alpha-scaled gradient row, and two rows at full color scale. */
 void CreateColorPlain(itfPanelPlainData_t *pwork, u32 red, u32 green, u32 blue, u32 alpha);
-
-/* Set the four color words at byte 0x20, consumed as a color record by the quad path. */
 void CreateColorPera1(itfPanelPlainData_t *pwork, s32 red, s32 green, s32 blue, s32 alpha);
-
-/* Populate RGBA rows at bytes 0x30/0x40; the first row is transparent. */
 void CreateColorLeftFade(itfPanelLeftFadeData_t *pwork, u32 red, u32 green, u32 blue, u32 alpha);
-
-/* Set both panel colors to the same blue tint with zero alpha. */
-void CreateColorFacility(itfPanelFacilityData_t *base);
-
-/* Draw the panel's three flat quads from one vertex/color buffer; each quad uses its own 4-byte index rows. */
-void DrawNormal(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-/* Update seven alpha words, then emit three wide and six side strips.
-   The first color row is deliberately excluded from the alpha update. */
-void DrawMesWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-/* Update five alpha words, then emit three wide and two side strips.
-   The first color row is deliberately excluded from the alpha update. */
-void DrawSelWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-void DrawPlain(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-/* Update the first color row's alpha and emit one indexed quad. */
-void DrawPera1(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-/* Bracket the six-index panel draw with table-state two and its native reset to zero. */
-void DrawLeftFade(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-/* Split a tall texture into top, stretch and bottom bands; the short path
- * submits the live rectangle in the panel. */
-void DrawMesWin2(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-/* Bind the texture for the left cap, then draw the center and reversed right
- * cap. Insets are captured before the first submission; Y bounds are live. */
-void DrawSpkWin2(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-/* Draw the three inset flat quads, then split a tall texture into top, stretch
- * and bottom bands. The short path uses the live rectangle in the panel. */
-void DrawFacility(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
-
-/* Append two GS A+D state writes: TEST_1 (0x47), then ALPHA_1 (0x42). */
-void DrawTestAlphaPrim(sdfDrawTag_t *pdrawtag);
-
 extern u8 itfPanelMesWinLineVertexIndex[8];
-
 extern u8 itfPanelSelWinLineVertexIndex[8];
 
-extern u8 itfPanelPlainRectVertexIndex[8];
-
-extern u8 itfPanelPlainRectColorIndex[8];
-
-extern u8 itfPanelPera1RectVertexIndex[8];
-
-extern u8 itfPanelPera1RectColorIndex[8];
-
-extern u8 itfPanelLeftFadeStripVertexIndex[8];
-
-extern u8 itfPanelLeftFadeStripColorIndex[8];
-/* End of declarations from src/smt3/interface/itfPanel.c */
-
-/* Declarations from dds-decomp src/dds1/game/code_00199AD8.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
@@ -373,63 +187,20 @@ extern u8 itfPanelLeftFadeStripColorIndex[8];
 #define SMT3_DEFINES_itfPanelTextureData_t 1
 
 #include "dds/itf_mes_panel_mode.h"
-
 #include "dds/scr_command_timer_api.h"
-
 #include "dds/scr_integer_parameter_api.h"
-
 #include "dds/scr_integer_return_value_api.h"
-
-void itfMesMngChangeWindowType(ItfMesWindowIndex window, ItfMesPanelMode panelMode,
-    ItfMesPanelFadeLimit fadeLimit);
-
-/* During a command callback, return the number of earlier trace passes that
- * yielded while it was pending. The first invocation sees zero; each yielded
- * pass adds one, and a continuing or finishing handler resets the count. This
- * is callback wait state, not wall-clock time, and is valid only in the callback. */
-ScrCommandYieldCount scrGetCommandTimer(void);
-
-/* Read a command parameter as a signed VM integer, converting floats and
- * dereferencing global integer or float references. */
-ScrVmInteger scrGetIntPara(ScrCommandParameterIndex parameterIndex);
-
-/* Declared void for the callers that ignore its result: ee-gcc 2.96
- * allocates registers around the call as retail did only then. The
- * definition (scrTraceCode.c) returns the context it set the value in, for
- * the script commands that pass it on as their result; their units declare
- * it so. */
-void scrSetIntReturnValue(ScrVmInteger retVal);
-
 #include "dds/mnu.h"
-
-#include "dds/scr_integer_parameter_api.h"
-
 #include "dds/scr_command_parameter_index.h"
-
-#include "dds/scr_integer_return_value_api.h"
-
-#include "dds/scr_command_timer_api.h"
-
 #include "dds/sdf_packet_list.h"
-
 #include "dds/itf.h"
-
 #include "dds/itf_mes_window.h"
-
-#include "dds/itf_mes_panel_mode.h"
-
 #include "dds/itf_mes_entry_start_api.h"
-
 #include "dds/sdf.h"
-
 #include "dds/itf_panel_draw.h"
-
 #include "dds/itf_text_vector.h"
-
 #include "dds/itf_panel_api.h"
-
 #include "dds/itf_panel_layouts.h"
-
 #include "dds/itf_held_panel_message_step.h"
 
 #define ITF_PANEL_MESSAGE_FADE_TICKS 30
@@ -442,143 +213,32 @@ void scrSetIntReturnValue(ScrVmInteger retVal);
 
 #define ITF_PANEL_TINT_BORDER_WIDTH 0x240
 
-extern PanelEntry pinst[];
-
-extern ItfMesWindowIndex scrGetMessageHandle(void);
-
-extern void itfMesBuildOptionList(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
-
-extern void itfMesMngRequestSelectRelease(s32 window);
-
-extern void itfMesMngRequestMessageRelease(s32 window, s32 releasePrimaryBlock);
-
-extern TextVector itfPanelColorTemplates[];
-
-extern TextVector D_00357B50[];
-
-extern u8 D_003BB1C8[8];
-
-extern u8 D_003BB1D0[8];
-
 #include "dds/sdf_packet_alloc.h"
 
 extern void itfDrawThreePanelBorderBands(PanelRect *rect, u32 *colors, u32 tail, s32 width, sdfDrawTag_t *command);
-
 extern u32 itfDrawTintedPanelRectData[];
-
-extern u8 D_003BB1D8[8];
-
-extern u8 D_003BB1E0[8];
-
-extern TextVector itfPanelGradientColorTemplate[];
-
-extern TextVector itfPanelGradientColorPair[];
-
 extern u8 D_00357BF0[], D_00357C08[], D_00357C20[];
-
 extern u8 D_00357C38[], D_00357C50[], D_00357C68[];
-
 extern u8 D_003BB1A8[8], D_003BB1B0[8];
-
-extern u8 D_00357C78[];
-
-extern u8 D_00357C88[];
-
-extern u8 D_003BB1B8[8];
-
-extern u8 D_003BB1C0[8];
-
-extern PanelHold itfHeldPanelCursor;
-
-extern s32 D_00357AE0[4];
-
-extern u8 D_00357BD0[];
-
-extern u8 D_00357BE0[];
-
-/*BEGIN itfDrawFramedPanelWithTextureStrips*/
-extern u32 D_00357C98[];
-
-extern DrawColorRec D_00357D08;
-
-extern DrawColorRec D_00357D18;
-
-/* Draw the framed panel: two bordered bands, then six texture-bound strips whose
- * rectangles are rebuilt from the live panel bounds. */
-void itfDrawFramedPanelWithTextureStrips(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-extern DrawColorRec D_00357D28;
-
-extern DrawColorRec D_00357D38;
-
-extern u8 D_00357D48[];
-
-extern u8 D_00357D58[];
-
-extern DrawColorRec D_00357A78;
-
-extern DrawColorRec D_00357A88;
-
-extern DrawColorRec D_00357A98;
-
-extern DrawColorRec D_00357AA8;
-
-/* Copy bounds and draw the tinted border; alpha uses the native signed 103/128 scale. */
 void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command);
 
 /* Poll/start an entry: one ends the command, zero keeps waiting.
    A negative signed status is consumed by clearing it; positive status keeps waiting. */
 s32 itfMesMngMessage(void);
 
-/* Forward this record's layout sprite address and the supplied value; index is unchecked. */
-void itfMesMngSetOffsetY1(s32 windowIndex, s32 topDelta);
-
-/* Return the signed byte entry status; this is separate from the option-block s16 status. */
-s8 itfMesMngGetPhase(s32 windowIndex);
-
-/* Store the signed byte entry status; index and payload pointer are trusted. */
-void itfMesMngSetPhase(s32 windowIndex, s8 status);
-
 /* Capture the script window, reset its held queue, and switch to page three.
    Invalid windows still return the native command-complete value of one. */
 s32 itfPanelAcquireHold(void);
 
-/* Clean up the active held window and reset its queue; an inactive hold is a no-op. */
-s32 itfPanelReleaseHold(void);
-
 /* Queue script words in native second/first/third field order; first and third narrow to s16.
    Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
 s32 itfCommandQueueHeldPanelEntry(void);
-
 ItfHeldPanelMessageStepResult itfStepHeldPanelMessages(void);
-
 s32 itfMesMngSelect(void);
-
-extern void dds3SetFilter2Para(u32);
-
-extern void dds3SetFilter2RGBA(u32);
-
-extern void dds3Filter2On(s32);
-
-extern void dds3Filter2Off(s32);
-
-extern s32 D_003BD820;
 
 /* Configure the fade on timer zero, wait thirty ticks, then consume a negative option status.
    Keep both timer reads: setup tests a second read, while later comparisons use the cached one. */
 s32 MesMngSelect(void);
-
-/* Return the option-block signed status word, not the separate entry status byte;
- * its callers read the sign-extended halfword as a word. */
-s32 itfMesMngGetSelPhase(s32 windowIndex);
-
-/* Store the option-block signed status word without validating the slot. */
-void itfMesMngSetSelPhase(s32 windowIndex, s16 status);
-
-/* Return the same signed word forwarded as the script result when an option completes;
- * its callers read the sign-extended halfword as a word. */
-s32 itfMesMngGetSelectNo(s32 windowIndex);
-/* End of declarations from src/dds1/game/code_00199AD8.c */
 
 /* Allocate the common record and the kind's payload; kinds 6 to 8 take the
  * caller's value as the first payload word. */

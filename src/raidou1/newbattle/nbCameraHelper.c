@@ -1,9 +1,5 @@
 #include "common.h"
 #include "raidou_alloc.h"
-
-/* Declarations from smt3-decomp src/smt3/newbattle/nbCameraHelper.c */
-#include "common.h"
-
 #include "libsdf.h"
 
 /* Owned file list: names stay inline in each 0x3C-byte node. */
@@ -44,52 +40,18 @@ typedef struct
     nbCameraHelper_effFileListHandle_t *resourceList;
 } nbCameraHelper_effFLWinHandle_t;
 
-extern s8 dds3PadBitTable[];
-
 extern char dds3EffectResourcePathFormat[];
-
-extern sdfGrOt_t sdfGrOtTable[];
-
-extern void *sdfChipAllocDirect(u32 aSize);
-
 extern void sdfChipFreeDirect(void *aPtr);
 
 #include "sdk_libc.h"
 
 extern void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
-
 extern sdfTexHandle_t *sdfTexSet(void *aTex);
-
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-
-extern void *sdfGrAllocPacketBuff(u32 aSize);
-
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
-extern void *dds3PrimFrameRect(s32 aX, s32 aY, s32 aZ, s32 aW, s32 aH, u32 aBgCol, u32 aFrameCol);
-
-extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr, const char *aStr, ...);
-
-extern void dds3AdminiCallSequence(s32 sequence, saddr_t data, s32 datasize, s32 restore);
-
 extern u8 sdfHddValid;
-
 extern u32 strlen(const char *s);
-
 extern char *strcpy(char *dst, const char *src);
-
 extern s32 dds3EffectDirOpen(void *name);
-
-extern void dds3EffectDirClose(s32 directory);
-
-extern void *sdf2DAllocSprite(s32 aNumOfSpr);
-
-extern void *sdf2DGetPrimPtr(void *aPacketPtr);
-
-/* The provider returns the linked packet address, even when ignored here. */
-extern s32 sdf2DLinkTexPacket(sdfDrawTag_t *aTag, sdfTexHandle_t *aTexHndl, s32 aCtx);
 
 /* One textureless sprite as sdf2D lays it out: the colour, then two corners
  * of 0x20 bytes each. */
@@ -116,8 +78,6 @@ typedef struct
 
 void dds3EffectListSetTexture(nbCameraHelper_effFLWinHandle_t *work, char *resource);
 
-void dds3EffectFileListWindowDrawSprite(nbCameraHelper_effFLWinHandle_t *work);
-
 /* SDK directory entry filled by the directory-read provider. */
 typedef struct
 {
@@ -142,66 +102,18 @@ extern s32 dds3EffectDirRead(s32 directory, dds3EffectDirEnt_t *entry);
 #define EFF_DIRECTORY_PATH_BYTES 0x70
 
 extern char *dds3EffectFileNameTable[];
-
 extern char dds3EffectDirPathFormat[];
-
 extern u32 dds3EffectBuiltinNameIndex;
-
 extern s32 sceDopen(void *path);
-
-extern s32 sceDclose(s32 directory);
-
 extern s32 sceDread(s32 directory, dds3EffectDirEnt_t *entry);
-
-/* Debug filesystem mode opens the formatted pfs0 directory; otherwise reset built-in iteration.
-   Return the native directory-open result, or zero for built-in mode. */
 s32 dds3EffectDirOpen(void *name);
-
-/* Run the native directory callback only in debug filesystem mode; its result is ignored. */
-void dds3EffectDirClose(s32 directory);
-
-/* Debug mode delegates to the native iterator. Built-in mode copies the next name,
-   clears flag mask 0x1000, and returns name length; zero also marks table exhaustion. */
 s32 dds3EffectDirRead(s32 directory, dds3EffectDirEnt_t *entry);
-
-/* One node per file whose extension matches a requested type bit. The 0x10
- * types use a two-character extension, so the dot sits one byte later. */
-nbCameraHelper_effFileListHandle_t *dds3EffectFileListCreate(char *path, s32 typeMask);
-
 void dds3EffectFileListDelete(nbCameraHelper_effFileListHandle_t *a);
-
-nbCameraHelper_effFLWinHandle_t *dds3EffectFileListWindowCreate(nbCameraHelper_effFileListHandle_t *a);
-
-s32 dds3EffectFileListWindowDraw(nbCameraHelper_effFLWinHandle_t *a);
-
 void dds3EffectFileListWindowDelete(nbCameraHelper_effFLWinHandle_t *a);
-
-void dds3EffectFileListWindowSetPos(nbCameraHelper_effFLWinHandle_t *a, s32 b, s32 c);
-
-u32 dds3_1AB818(nbCameraHelper_effFLWinHandle_t *work);
-
-u32 dds3EffectFileListWindowGetState(nbCameraHelper_effFLWinHandle_t *a);
-
 u32 dds3EffectFileListWindowGetFilename(nbCameraHelper_effFLWinHandle_t *a, char *b);
-
-void dds3EffectFileListWindowSetOt(nbCameraHelper_effFLWinHandle_t *hEffFLWin, u32 ot);
-
-void dds3EffectFileListWindowSetPadWait(nbCameraHelper_effFLWinHandle_t *hEffFLWin, u32 wait);
-
-void dds3EffectFileListWindowSetWindowColor(nbCameraHelper_effFLWinHandle_t *hEffFLWin, u32 frame_c, u32 bg_c);
-
 void dds3EffectListSetTexture(nbCameraHelper_effFLWinHandle_t *work, char *textureResource);
-
-void dds3EffectFileListWindowDrawSprite(nbCameraHelper_effFLWinHandle_t *work);
-
-void InitParticleEditorProcess(void);
-
-void InitSpriteViewerProcess(void);
-
 extern char dds3EffectDirPathFormat[8];
-
 extern char dds3EffectResourcePathFormat[5];
-/* End of declarations from src/smt3/newbattle/nbCameraHelper.c */
 
 /* Debug filesystem mode opens the formatted pfs0 directory; otherwise reset built-in iteration.
    Return the native directory-open result, or zero for built-in mode. */
@@ -301,4 +213,3 @@ INCLUDE_ASM(const s32, "newbattle/nbCameraHelper", dds3EffectFileListWindowDrawS
 char dds3EffectDirPathFormat[8] = "pfs0:%s";
 
 char dds3EffectResourcePathFormat[5] = "%s%s";
-

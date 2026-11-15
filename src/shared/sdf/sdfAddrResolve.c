@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfAddrResolve.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 void sdfAddressResolver(void *aDataBody, void *aOffset, void *aAddrInfoPtr, s32 aAddrInfoLeng);
@@ -57,15 +51,6 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_FIRST_COMPLETION = 1,
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
-
-extern s32 (*p2sdSmgBuf)(void);
-
-/* Byte-coded commands advance by word deltas, or relocate a run of following words.
- * Low tag bits select one-, two-, or three-byte deltas; tag 7 encodes a run.
- * tableBytes bounds the encoded byte stream, not the number of relocated words.
- */
-void sdfAddressResolver(void *aDataBody, void *aOffset, void *aAddrInfoPtr, s32 aAddrInfoLeng);
-/* End of declarations from src/smt3/sdf/sdfAddrResolve.c */
 
 /* Byte-coded commands advance by word deltas, or relocate a run of following words.
  * Low tag bits select one-, two-, or three-byte deltas; tag 7 encodes a run.

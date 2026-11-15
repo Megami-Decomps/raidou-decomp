@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfCd.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 typedef struct
@@ -16,30 +10,15 @@ typedef struct
     s32 size_;
 } sdfCdImageDirEntry_t;
 
-s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-
-s32 sceCdInit(s32 aMode);
-
-s32 sceCdMmode(s32 aMode);
-
 s32 sceCdStStop(void);
-
 extern sdfCdImageDirEntry_t *sdfCdImageCurrFile;
-
 extern s32 sdfCdImageFd;
-
 extern s32 sdfCdTrayMode;
-
 sdfCdImageDirEntry_t *sdfCdImageSearchFile(const char *fname, s32 *lsn, u8 *modePtr);
-
 extern s32 WaitSema(s32 aSemaId);
-
 extern s32 SignalSema(s32 aSemaId);
-
 extern void *sdfCdImageDirData;
-
 void FatalError(const char *aMessage, ...) __attribute__((noreturn));
-
 s32 sceClose(s32 a);
 
 enum SdfFileIOCmdStat {
@@ -90,120 +69,46 @@ enum sdf_stream_playback {
 };
 
 extern void *memcpy(void *, const void *, size_t);
-
 extern void sdfDelayThread(s32 delay);
-
 void sdfCdWaitTrayClose(void);
-
 extern u8 sdfCdImageMode;
-
 extern s32 sdfCdCurrLsn;
-
 extern s32 sceCdStStart(s32 arg, u8 *options);
-
 extern s32 sceCdStatus(void);
-
 extern s32 sdfCdImageCurrRemain;
-
 extern s32 sdfCdImageCurrActive;
-
 extern u8 *sdfCdImageOffset;
-
 extern u8 sdfCdSectorBuf[0x800];
 
 #include "sdk_libkernl.h"
 
 extern s32 sceLseek(s32 fileHandle, s32 offset, s32 origin);
-
 extern void *malloc(size_t size);
-
 extern s32 sceRead(s32 fileHandle, saddr_t buffer, s32 byteCount);
-
 extern const char *dds3ImgPath;
 
 #include "sdk_libcdvd.h"
 
 extern u32 sdfCdImageFileName;
-
 extern u32 dds3ImgLsn;
-
 extern s32 sceSifAllocIopHeap(s32);
-
 extern void sceCdStInit(s32, s32, s32);
-
 void sdfCdImageClose(void);
-
-extern s32 (*p2sdSmgBuf)(void);
-
-void *sdfCdImageGetDirData(void);
 
 #include "sdk_libc.h"
 
-extern s32 sceCdDiskReady(s32 mode);
-
-extern s32 sceCdGetDiskType(void);
-
-extern const char sdfCdMsgWaitTrayClose[];
-
-extern const char sdfCdMsgTrayClose[];
-
-extern const char sdfCdMsgReadRestart[];
-
-void sdfCdWaitTrayClose(void);
-
 void sdfCdStStart(s32 lsn);
-
-extern const char sdfCdMsgWaitTrayClose[18];
-
-extern const char sdfCdMsgTrayClose[16];
-
-extern const char sdfCdMsgReadRestart[18];
-
 void sdfCdStRead(s32 sectors, void *buffer);
-
-extern char *strcpy(char *destination, const char *source);
-
-extern char *strchr(const char *text, s32 character);
-
-extern sdfCdImageDirEntry_t sdfCdImageSearchFileDirect_ent;
-
-sdfCdImageDirEntry_t *sdfCdImageSearchFileDirect(const char *filename, s32 *lsn, u8 *mode);
-
 extern char sdfCdDirectPrefix[];
-
-extern s32 memcmp(const void *left, const void *right, size_t size);
-
-extern s32 strcmp(const char *left, const char *right);
-
 sdfCdImageDirEntry_t *sdfCdImageSearchFile(const char *path, s32 *lsn, u8 *mode);
-
-s32 sdfCdImageLoadStart(const char *filename);
-
-/* Consume up to size disc-file bytes, retaining a partial sector; return the byte count. */
 s32 sdfCdImageRead(void *buff, s32 length);
-
-void sdfCdImageClose(void);
-
 s32 sdfCdImageCheckExist(const char *fname);
-
 s32 sdfCdImageGetFileSize(const char *fname);
-
 s32 sdfCdImageGetCurrFileSize(void);
-
-/* Read a whole named file into the loader's allocated EE buffer, then close it. */
 void sdfCdImageLoadDir(const char *dirFile);
-
-/* Record the disc search path, preload a separate file, and initialize an aligned IOP buffer. */
 void sdfCdImageInit(const char *imageFile, const char *dirFile);
-
-s32 sdfCdInit(void);
-
 extern char sdfCdDirectPrefix[8];
 
-extern s32 sdfCdTrayMode;
-/* End of declarations from src/smt3/sdf/sdfCd.c */
-
-/* Declarations from dds-decomp src/dds1/sdf/sdfCd.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
@@ -284,34 +189,18 @@ extern s32 sdfCdTrayMode;
 
 #define SMT3_DEFINES_sdf_tex_resource 1
 
-#include "sdk_libcdvd.h"
-
 #include "dds/sdk_libkernl.h"
-
-void FlushCache(s32 mode);
-
 #include "dds/fpu.h"
-
 #include "dds/common.h"
-
 #include "dds/libsdf.h"
-
 #include "dds/ps2asm.h"
-
-#include "dds/sdk_libkernl.h"
-
 #include "dds/sdk_libcdvd.h"
-
 #include "dds/sdk_libc.h"
 
 extern s32 sdfDiscRequestPending;
-
 extern s32 sdfDiscRequestSemaphore;
-
 void sdfDevSignalPendingSemaphore(void);
-
 void sdfDevSeekDiscWithRequestGate(s32 lsn);
-/* End of declarations from src/dds1/sdf/sdfCd.c */
 
 INCLUDE_ASM(const s32, "sdf/sdfCd", sdfDevWaitForDisc);
 

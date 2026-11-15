@@ -1,20 +1,10 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/effect/effSpline.c */
-#include "common.h"
-
 #include "sdfFrame.h"
-
 #include "newbattle.h"
-
 #include "kernel.h"
-
 #include "ps2asm.h"
-
 #include "nb.h"
-
 #include "model.h"
-
 #include "motion.h"
 
 /* Cubic spline fitted over a point list; dds3AllocSplineHandle takes 0x2C. */
@@ -44,128 +34,21 @@ typedef struct dds3SplineWalk_t {
 } dds3SplineWalk_t;
 
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-
 extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-
 extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-
 void dds3AllocSplinePoints(dds3Spline_t *spline, s32 flattenEqualComponents);
-
 void dds3BuildSplinePoints(f32 *tangents, f32 *points, u32 count);
-
 void dds3BuildSplineCoefs(dds3Spline_t *spline, f32 *tangents);
-
 void SolveTridiagonal(f32 *solution, f32 *rhs, s32 count);
-
 void dds3BuildSplineCoefsSkipDup(dds3Spline_t *spline, f32 *tangents);
-
-void effSampleChannelBezier(sdfVector4_t *vertex, dds3SplineWalk_t *channel, s32 index, f32 t);
-
 void effSplCalc(sdfVector4_t *vertex, dds3Spline_t *primitive, s32 recordIndex, f32 t);
-
 dds3Spline_t *dds3AllocSplineHandle(f32 *points, u32 count, s32 flattenEqualComponents);
-
 void dds3FreeSplineHandle(dds3Spline_t *pSpline);
-
 s32 effSplRun(sdfVector4_t *pVertex, dds3Spline_t *pSpline);
-
-void effSplCalc(sdfVector4_t *vertex, dds3Spline_t *primitive, s32 recordIndex, f32 t);
-
-/* vu0 routine: sample the curve into vf10. */
 void effSplCalcRegist(dds3Spline_t *primitive, s32 recordIndex, f32 t);
-
-void effSplRewind(dds3Spline_t *pSpline);
-
-void effSplSetStep(dds3Spline_t *pSpline, f32 value);
-
 void dds3AllocSplinePoints(dds3Spline_t *primitive, s32 flattenEqualComponents);
-
-void dds3BuildSplinePoints(f32 *tangents, f32 *points, u32 count);
-
-void SolveTridiagonal(f32 *solution, f32 *rhs, s32 count);
-
 void dds3BuildSplineCoefs(dds3Spline_t *primitive, f32 *tangents);
-
 void dds3BuildSplineCoefsSkipDup(dds3Spline_t *primitive, f32 *tangents);
-
-void *effCreateChannel(void *rows, u32 count);
-
-s32 effReleaseInterpolationChannel(dds3SplineWalk_t *pWalk);
-
-s32 effAdvanceChanCursor(void *vertex, dds3SplineWalk_t *channel);
-
-void effSampleChannelBezier(sdfVector4_t *vertex, dds3SplineWalk_t *channel, s32 recordIndex, f32 t);
-
-void effClearChanCursor(dds3SplineWalk_t *pWalk);
-
-void effSetChanStep(dds3SplineWalk_t *pWalk, f32 step);
-
-extern u8 nbCameraStartReadWaitActive;
-
-extern u32 nbCameraStartReadWaitFrames;
-
-extern u8 nbCameraStartAnimWaitActive;
-
-extern u32 nbCameraStartAnimWaitFrames;
-
-extern s32 nbCameraStartBAFrame;
-
-extern f32 nbCameraEditDist;
-
-extern f32 nbCameraEditUp;
-
-extern s8 nbCameraCRSetPlayerFormRequestFlag;
-
-extern s32 nbCameraState_CommandRoot_OrderIndex;
-
-extern s8 nbCameraPressRunFlag;
-
-extern u32 nbCameraPressThrough;
-
-extern s32 nbCameraBossCutFlag;
-
-extern f32 nbCameraBossVecTable[1];
-
-extern s32 nbCameraBoss_BSARI_MASEHA_Frame;
-
-extern s32 nbCameraBoss_BSARI_MASEHA_Type;
-
-extern s32 nbCameraBoss_BSARI_SIMANO_Type;
-
-extern f32 nbCameraBoss_BSARI_SIMANO_Rate;
-
-extern u32 nbCameraBoss_Kagu_MJINKO_Type;
-
-extern u8 nbCameraBoss_Pish_MUHENK_Type;
-
-extern s32 nbCameraBoss_Pish_MUHENK_Frame;
-
-extern u32 nbCameraBoss_BSBERU_E915_Frame;
-
-extern f32 nbCameraBoss_BSBERU_E915_Rate;
-
-extern f32 nbCameraBoss_Beru_HAENO1_DirY[1];
-
-extern s32 nbCameraBoss_BSLUSI_Type;
-
-extern f32 D_0054F3D0;
-
-extern f32 D_0054F3D4;
-
-extern char *nbCameraHelperViewerMode;
-
-extern void *nbCameraHelperViewerCurrent;
-
-extern sdfMemHandle_t *nbCameraHelperViewerStateHandle;
-
-extern sdfMemHandle_t *nbCameraHelperViewerTargetHandle;
-
-extern u8 nbCameraHelperViewerShowFrame;
-
-extern u8 nbCameraHelperViewerShowLines;
-
-extern char D_0054F3F0[8];
-/* End of declarations from src/smt3/effect/effSpline.c */
 
 dds3Spline_t *dds3AllocSplineHandle(f32 *points, u32 count, s32 flattenEqualComponents) {
     sdfMemHandle_t *primaryResource = sdfMemAllocDirect(0x2C);

@@ -1,14 +1,8 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/interface/itfMesManager.c */
 #include "interface.h"
-
 #include "newdata.h"
-
 #include "itfMesManager.h"
-
 #include "kernel.h"
-
 #include "sdfFrame.h"
 
 typedef struct itfMesBinTypeHeader_t itfMesBinTypeHeader_t;
@@ -113,35 +107,20 @@ struct itfPadState_t {
 };
 
 typedef void (*itfProcessShutdown_t)(dds3ProcessID_t *task);
-
 s32 itfMesMngMessage(void);
-
 extern u32 scrGetMessageHandle(void);
-
 extern itfMesInstance_t pinst[];
-
 extern s32 scrGetIntPara(s32);
-
 extern s32 itfMesMngRequestMessage(s32 window, s32 entryIndex, s32 itemIndex);
-
 void itfMesMngSetPhase(s32 msgid, s8 phase);
-
 s32 itfMesMngSelect(void);
-
 extern void itfMesMngRequestSelect(s32 id, s32 select);
-
 extern void scrSetIntReturnValue(s32 i);
-
 void itfMesMngRequestSelectRelease(s32 id);
-
 s16 itfMesMngGetSelPhase(s32 msgid);
-
 s16 itfMesMngGetSelectNo(s32 msgid);
-
 s32 itfMesMngMaskSelect(void);
-
 void itfMesMngSetMaskSelect(s32 id, u32 maskpattern);
-
 s32 itfMesMngCloseWindow(void);
 
 #define ITF_MES_LOWER_STATUS_PAIR_MASK 0x300
@@ -150,10 +129,6 @@ s32 itfMesMngCloseWindow(void);
 
 #define ITF_MES_LOWER_STATUS_SECOND_BIT 0x200
 
-void itfMesMngMsgWndCls(s32 msgid);
-
-extern void fldPanelSet(s32 mode);
-
 #define ITF_MES_UPPER_STATUS_PAIR_MASK 0x3000
 
 void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker);
@@ -161,45 +136,20 @@ void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker);
 #define ITF_MES_CLEAR_SCRIPT_PANEL_BIT 0xFFDFFFFF
 
 u32 itfMesMngOpenSelectWindow(void);
-
 u32 itfMesMngCloseSelectWindow(void);
-
 s32 itfMesMngSetMesPosDefault(void);
-
 void itfMesMngSetMesPosition(s32 id, s32 x, s32 y);
 
 #define ITF_MES_DEFAULT_TEXT_X 0x4B0
 
 #define ITF_MES_DEFAULT_TEXT_Y 0xA88
 
-s32 itfMesMngInitialize(itfMesResource_t *sub);
-
-extern itfMesLink_t *itfMiscLinkTake(itfMesLinkControl_t *pstack);
-
 extern itfMesManager_t itfMesMngManager;
-
-sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-
-extern u32 sdfMemLock(sdfMemHandle_t *aHandle);
-
 itfMesResource_t *itfMesMngSetResourcePtr(s32 id, itfMesResource_t *presource);
-
 void InitializeSpeaker(Speaker_tag *pspeaker, s32 defaultpos);
-
-void InitializeMessage(message_tag *pmessage, s32 defaultpos);
-
-extern void InitializeSelect(struct select_tag *pselect);
-
-void InitializeWindow(window_tag *pwindow);
-
 void InitializeVariable(variable_tag *pvariable);
-
-void InitializeCurCtr(curctr_tag *pcurctr, s32 isdisp);
-
 void itfMesMngRelease(s32 id);
-
 void DestructFlow(s32 id);
-
 s32 frDestroyFontRequestAfter(frFontHandle_t *pFRQ);
 
 #define ITF_MES_ENTRY_STATE_MASK 7
@@ -211,150 +161,61 @@ s32 frDestroyFontRequestAfter(frFontHandle_t *pFRQ);
 #define ITF_MES_OPTION_STATE_HIGH_CLEAR_MASK 0xFFFBFFFF
 
 void itfMesMngSetSpeakerPosition(s32 id, s32 x, s32 y);
-
 void ChangeFontPosition(frFontHandle_t *pfont, s32 dist_x, s32 dist_y);
-
 void itfMesMngSetSpeakerPositionOffset(s32 id, s32 x, s32 y);
-
 void itfMesMngSetMesPositionOffset(s32 id, s32 x, s32 y);
-
-void itfMesMngSetSelPosition(s32 id, s32 x, s32 y);
-
-void itfMesMngSetSelPositionOffset(s32 id, s32 x, s32 y);
-
 void itfMesMngSetPriority(s32 id, s32 z_buf);
-
 void ChangeZBuffer(frFontHandle_t *pfont, s32 z);
-
 void itfMesMngSetStat(s32 id, u32 flag);
 
 #define ITF_MES_HIGH_FLAGS_MASK 0xffff0000
 
 s16 itfMesMngGetSelect(s32 id);
-
-s16 itfMesMngGetMesPage(s32 id);
-
-s16 itfMesMngGetMesCurrentPage(s32 id);
-
 u8 *itfMesMngGetVar(s32 id, s32 index);
-
 void itfMesMngSetVarImmediate(s32 id, u32 index, const char *pstr);
-
 void SetVar(instanceMes_tag *pinst, s32 index, const char *pstr, s32 length);
-
 void itfMesMngSetVarImmediate2(s32 id, s32 index, const char *pstr, s32 length);
-
 void ResolveResourceAddress(itfMesResource_t *pdata);
-
 itfMesBinTypeHeader_t *GetTypeHeader2(itfMesResource_t *pfileheader);
 
 #define ITF_MES_MAGIC_MSG1 0x3147534d
 
 u8 *itfMesMngGetDataPtrImmediate(s32 id, s32 message, s32 page);
-
 u8 *GetMessagePagePtr(itfMesBinMesHeader_t *table, s32 index);
-
 itfMesBinTypeHeader_t *GetTypeHeader(instanceMes_tag *pinst, s32 index);
-
 void itfMesMngChangeWindowType(s32 id, s32 type, s32 alpha);
 
 #define ITF_MES_CONTENT_STATUS_MASK 0x3300
 
-extern void ResetWindowPara(window_tag *pwin, s32 type, s32 alpha);
-
-void itfPnlRelease(itfpanel_t *handle);
-
 s32 itfMesMngSetSelectDefKey(s32 id, s32 key, s32 index);
-
 s32 itfMesMngGetWidth(s32 id, s32 message, s32 page);
-
 void CommitVarTable(s32 *pvar);
-
 void frSetExtDic(u8 *pExtFontData);
-
 frFontHandle_t *MessageRequest(s32 X, s32 Y, u8 *pMsg, frFontHandle_t *pFRQ);
-
 s32 GetMessageWidth(frFontHandle_t *pfont);
-
 void itfMesMngSetDefaultSpeed(s32 id, u8 speed);
-
 extern void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
-
-void itfMesMngInitializeManager(void);
-
-extern sdfTexHandle_t *itfMiscLoadTexture(const char *filename);
-
-extern void itfMiscLinkInitialize(itfMesLinkControl_t *pool, itfMesLink_t *nodes, s32 count, s32 stride);
 
 #define ITF_MES_WINDOW_CAPACITY 0x80
 
 #define ITF_MES_POOL_NODE_BYTES 0x14
 
-extern dds3ProcessID_t *dds3StartProcess(const char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
-                         s32 v3, dds3ProcessFunc_t drawExit,
-                         itfProcessShutdown_t deleteExit, u32 p);
-
 s32 CalcMsgMng_Process(void);
-
 void DrawMsgMng_Shutdown(void);
-
-s32 DrawMsgMng_Process(dds3ProcessID_t *id);
-
 void itfMesMngSetBitStatManager(u32 flags);
-
 void itfMesMngClearBitStatManager(u32 flags);
-
 u16 itfMesMngGetStatManager(void);
-
-s32 itfMesMngDebugProc(void);
-
-extern debug_tag itfMesDebug;
-
 itfMesLink_t *DebugChangeInstance(itfMesLink_t *pflow);
-
 extern itfPadState_t dds3PadButtonState;
-
-void DebugMoveWinVert(window_tag *pwin, s32 flag);
-
-void DebugMoveWinAlpha(window_tag *pwin);
-
-sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
-
-extern void dds3ConsPanelTagLink(sdfDrawTag_t *tag, s32 x, s32 y,
-                        s32 sx, s32 sy);
-
 extern char itfMesDebugItemFormat[];
-
-extern char *itfMesSelectionMarkers[2];
-
 extern char itfMesMarkerNone[];
-
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
-extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr,
-                                  const char *aStr, ...);
-
-extern char *itfMesDebugMenuLabels[];
-
 extern char itfMesDebugFadeFormat[];
-
-extern sdfGrOt_t sdfGrOtTable[];
-
-void itfMesMngDebugShutdown(void);
-
 extern void ReleaseAllWindow(struct instanceMes_tag *pinst);
-
 void ReleaseAllVariable(variable_tag *pvariable);
-
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-
 extern void itfMiscLinkGive(itfMesLink_t *pelem, itfMesLinkControl_t *pstack);
 
-u32 CheckMessageBinary(itfMesResource_t *pdata);
-
 #define ITF_MES_MAGIC_MSG0 0x3047534d
-
-extern u32 strlen(const char *text);
 
 #define ITF_MES_STRING_COPY_ROUND_BIAS 4
 
@@ -364,480 +225,67 @@ extern void *memcpy(void *a, const void *b, size_t c);
 
 #define ITF_MES_BINARY_COPY_ROUND_BIAS 5
 
-extern void *memset(void *a, s32 b, size_t c);
-
 frFontHandle_t *UnchainFontHandleUnit(frFontHandle_t *pfont, s32 index, s32 lines);
-
 void ChangeFontAlpha(frFontHandle_t *pfont, u32 alpha);
 
 #define ITF_MES_COLOR_BYTE_CLEAR_MASK 0xffffff00
 
-void OpenCheckSpeakerWindow(instanceMes_tag *pinst);
-
-void OpenMessageWindow(instanceMes_tag *pinst);
-
-void ReadytoMessage(instanceMes_tag *panel);
-
-extern itfpanel_t *itfPnlRegist2(s32 type, addr_t texhandle);
-
-void itfPnlSetPosition(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
-
-void itfPnlSetColor(itfpanel_t *handle, s32 r, s32 g, s32 b, s32 a);
-
 void CalcMesFlow(instanceMes_tag *pinst);
-
-extern void CalcWindow(instanceMes_tag *pinst);
-
-extern void CalcMessage(instanceMes_tag *pinst);
-
-extern void CalcSelect(instanceMes_tag *);
-
-void CalcCurCtr(instanceMes_tag *pinst);
-
-s32 SelectItem(instanceMes_tag *pinst);
-
-void SelectItemMove(select_tag *psel, s32 direct);
-
-extern void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
-
 s32 SelectItemDefKey(select_tag *psel);
-
 void ChangeFontColor(frFontHandle_t *pfont, s32 index, s32 lines, s32 color);
-
-extern u32 dds3NullDrawProc(void);
-
-void DrawMesFlow(instanceMes_tag *pinst);
-
-void DrawWindow(instanceMes_tag *pinst);
-
-void DrawRetPageCursor(instanceMes_tag *pinst);
-
-void DrawSelectCursor(instanceMes_tag *pinst);
-
 extern void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
-
-void DebugDrawWindowLine(itfpanel_t *meswin);
-
-extern s32 sdfGrAllocPacketBuff(s32 aSize);
-
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-
-extern void itfMiscDrawLineStripPrim(void *, void *, u8 *, u8 *, s32, u32, sdfDrawTag_t *);
-
-extern s32 itfMesSelectRectVerts[8];
-
-extern itfColor_t itfMesSelectRectColors[2];
-
-extern u8 itfMesSelectRectIndex[];
-
-extern u8 itfMesSelectRectColorIndex[];
-
-extern void itfMiscDrawSpritePlanePrim(sdfIVector2_t *pos, itfColor_t *color, u32 z, s32 context, sdfDrawTag_t *pdrawtag);
-
-extern void itfMiscDrawRectanglePrim(sdfIVector2_t *vertices, itfColor_t *colors, u8 *vertexIndex, u8 *colorIndex, u32 tail, sdfDrawTag_t *command);
-
-extern void itfMiscDrawSpritePrim2(sdfIVector2_t *pos, itfColor_t *uv, itfColor_t *color, u32 z, s32 context, sdfDrawTag_t *pdrawtag);
-
-extern s32 itfMesRetPageUv[4];
-
-extern s32 itfMesRetPageColor[4];
-
 extern void itfMiscDrawSpritePrim(void *pos, void *uv, void *color, s32 z, sdfTexHandle_t *texhandle, s32 context, sdfDrawTag_t *pdrawtag);
-
-extern void itfMiscDrawAlphaPrim(sdfDrawTag_t *pdrawtag, s32 tp, s32 context);
-
-extern s32 D_00326798[];
-
 extern u8 itfMesDebugLineVertIndex[5];
-
 extern u8 itfMesDebugLineColorIndex[5];
-
-void itfPnlSetPositionOffset(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
-
 void sdfAddressResolver(s32 *aDataBody, saddr_t aOffset, u8 *aAddrInfoPtr, s32 aAddrInfoLeng);
-
 void frSetVariableRequest(s32 VarNo, s32 pStr);
-
 void itfMesMngSetSelect(s32 id, s32 selno);
-
 void itfMesMngMarkBitStat(s32 id, u32 flag);
-
 void itfMesMngClearBitStat(s32 id, u32 flag);
-
 void itfMesMngSetVar(s32 id, s32 index, s32 num, s32 type);
-
-/* Poll/start an entry: one ends the command, zero keeps waiting.
-   A negative signed status is consumed by clearing it; positive status keeps waiting. */
-s32 itfMesMngMessage(void);
-
-void itfMesMngSetOffsetY1(s32 msgid, s32 y1);
-
 s8 itfMesMngGetPhase(s32 msgid);
-
-/* Store the signed byte entry status; index and payload pointer are trusted. */
-void itfMesMngSetPhase(s32 msgid, s8 phase);
-
-s32 itfMesMngSelect(void);
-
-/* Return the option-block signed status word, not the separate entry status byte. */
-s16 itfMesMngGetSelPhase(s32 msgid);
-
 void itfMesMngSetSelPhase(s32 msgid, s16 phase);
-
-/* Return the same signed word forwarded as the script result when an option completes. */
-s16 itfMesMngGetSelectNo(s32 msgid);
-
-/* Store the script's panel mask; a negative script window is a no-op. Return 1. */
-s32 itfMesMngMaskSelect(void);
-
 s32 itfMesMng_SEL_SELNO(void);
-
 s32 itfMesMngOpenWindow(void);
-
-/* Finish single-bit states of the lower status pair; return whether its original
- * value was zero. Finishing a nonzero state therefore still returns 0. */
-s32 itfMesMngCloseWindow(void);
-
-/* Mark each originally nonzero status pair with both bits, then clean/reset
- * content and clear the script panel bit. The status pairs are set, not cleared. */
-void itfMesMngMsgWndCls(s32 msgid);
-
-u32 itfMesMngOpenSelectWindow(void);
-
-u32 itfMesMngCloseSelectWindow(void);
-
 s32 itfMesMngSetVarScr(void);
-
 s32 itfMesMngIgnoreConfig(void);
-
 s32 itfMesMngSetMesPositionScript(void);
-
-/* Move selected-entry text to the fixed default position; return 1. */
-s32 itfMesMngSetMesPosDefault(void);
-
 s32 itfMesMngValidateNext(void);
-
 s32 itfMesMngWindowType(void);
-
 s32 itfMesMngWindowTypeAlpha(void);
-
 s32 itfMesMngSelectDefKey(void);
-
-s32 itfMesMngInitialize(itfMesResource_t *sub);
-
-/* Destroy an installed nonnegative window slot; no upper-bound validation. */
-void itfMesMngRelease(s32 id);
-
-/* Called above its definition, where ee-gcc assumed int. */
 u8 *GetSpeakerName(instanceMes_tag *pinst);
-
 s32 itfMesMngRequestMessage(s32 window, s32 entryIndex, s32 itemIndex);
-
-/* Release/reset selected-entry glyphs and their status; optionally do the same
- * for primary text. Negative window is a no-op; no other slot validation. */
-void itfMesMngRequestMessageRelease(s32 id, s32 cls_speaker);
-
-/* Called above its definition, where ee-gcc assumed int. */
-frFontHandle_t *GetFontHandleUnit(u32 *list, s32 count, u32 mask, s32 x, s32 y, s32 depth);
-
 void itfMesMngRequestSelect(s32 id, s32 select);
-
-/* Release option glyphs, clear option selection/state and invalidate its rank.
- * Other content and the window allocation remain installed. */
-void itfMesMngRequestSelectRelease(s32 id);
-
-void itfMesMngSetMaskSelect(s32 id, u32 maskpattern);
-
-void itfMesMngSetSelect(s32 id, s32 selno);
-
-/* Move primary text to an absolute position; an unchanged position is a no-op. */
-void itfMesMngSetSpeakerPosition(s32 id, s32 x, s32 y);
-
-/* Translate primary text and update its cached position, including zero deltas. */
-void itfMesMngSetSpeakerPositionOffset(s32 id, s32 x, s32 y);
-
-/* Move selected-entry text absolutely; an unchanged position is a no-op. */
-void itfMesMngSetMesPosition(s32 id, s32 x, s32 y);
-
-/* Translate selected-entry text and update its cached position. */
-void itfMesMngSetMesPositionOffset(s32 id, s32 x, s32 y);
-
-/* Move option text absolutely; an unchanged position is a no-op. */
-void itfMesMngSetSelPosition(s32 id, s32 x, s32 y);
-
-/* Translate option text and update its cached position. */
-void itfMesMngSetSelPositionOffset(s32 id, s32 x, s32 y);
-
-/* Propagate a changed render value to all three glyph chains before caching it. */
-void itfMesMngSetPriority(s32 id, s32 z_buf);
-
 u32 itfMesMngGetStat(s32 id);
-
-/* Replace only the high half, preserving the existing low-half cast. */
-void itfMesMngSetStat(s32 id, u32 flag);
-
-void itfMesMngMarkBitStat(s32 id, u32 flag);
-
-void itfMesMngClearBitStat(s32 id, u32 flag);
-
-/* Return the cached clear-bit rank; reset state uses -1. */
-s16 itfMesMngGetSelect(s32 id);
-
-/* Return the selected table's cached item count, without another table lookup. */
-s16 itfMesMngGetMesPage(s32 id);
-
-/* Return the stored signed-halfword item index, without another table lookup. */
-s16 itfMesMngGetMesCurrentPage(s32 id);
-
-/* Return the replacement text stored in a window slot. */
-u8 *itfMesMngGetVar(s32 id, s32 index);
-
-/* Localised name text, 0x40 bytes after the manager. */
-extern char itfMesMngVarText[];
-
-extern char itfMesFmtInt[];
-
-extern char *text1[];
-
-extern char *text2[];
-
 extern char *pStr[];
-
 extern char *pstr[];
-
-extern char *datExplainTable[];
-
-extern char D_00311450[];
-
-extern char D_00311850[];
-
-void itfMesMngGetVarLocalize(s32 id);
-
-/* Called above its definition, where ee-gcc assumed int. */
-char *ConvertZenkakuNumber(s32 buf, char *num);
-
-void itfMesMngSetVar(s32 id, s32 index, s32 num, s32 type);
-
-/* Replace a text slot with a copied NUL-terminated encoded string. */
-void itfMesMngSetVarImmediate(s32 id, u32 index, const char *pstr);
-
-/* Copy text into one of the window's message text slots. */
-void itfMesMngSetVarImmediate2(s32 id, s32 index, const char *pstr, s32 length);
-
-/* Install/relocate a message resource and cache MSG1's trailing-entry word as
- * the temporary font entry. Return the previous resource without releasing it. */
-itfMesResource_t *itfMesMngSetResourcePtr(s32 id, itfMesResource_t *presource);
-
-/* Look up an entry-table item; only the item index has a bounds check. */
-u8 *itfMesMngGetDataPtrImmediate(s32 id, s32 message, s32 page);
-
-/* Refresh changed panel values only when both content-status pairs are clear.
- * Release the old primitive after applying the panel mode and fade limit. */
-void itfMesMngChangeWindowType(s32 id, s32 type, s32 alpha);
-
-/* Set or append the option with `id` in the window's option list; ids 1, 6, 7 and >= 16 are rejected. */
-s32 itfMesMngSetSelectDefKey(s32 id, s32 key, s32 index);
-
-/* Build and release a temporary glyph chain to measure the widest grouped row.
- * Empty tables and zero/missing encoded items return zero. */
-s32 itfMesMngGetWidth(s32 id, s32 message, s32 page);
-
-/* Set the fourth color channel used when this window's entry glyphs are built. */
-void itfMesMngSetDefaultSpeed(s32 id, u8 speed);
 
 /* Store the optional callback address invoked without arguments during glyph building. */
 void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
-
-/* Initialize the fixed window pool, load its texture and register the named
- * calculation/drawing tasks. Keep the existing task flags and callback casts. */
-void itfMesMngInitializeManager(void);
-
-/* Set manager flags; the stored result is narrowed to its existing u16 field. */
-void itfMesMngSetBitStatManager(u32 flags);
-
-/* Clear manager flags; the stored result is narrowed to its existing u16 field. */
-void itfMesMngClearBitStatManager(u32 flags);
-
-/* Read the manager's 16-bit flags, distinct from itfMessageFlags. */
-u16 itfMesMngGetStatManager(void);
-
 extern const char itfMesDebugLabelChange[16];
-
 extern const char itfMesDebugLabelPosition[16];
-
 extern const char itfMesDebugLabelRightBottom[16];
-
 extern const char itfMesDebugLabelLeftTop[16];
-
-s32 itfMesMngDebugProc(void);
-
-/* Reset the three otherwise unnamed message-state words. */
-void itfMesMngDebugShutdown(void);
-
-/* Tear down installed content/resources, return the pool record and decrement
- * the pool-array-relative counter. An empty record is a no-op. */
-void DestructFlow(s32 id);
-
-void ResolveResourceAddress(itfMesResource_t *pdata);
-
-/* Recognize MSG0/MSG1 magic only; this is not complete format validation. */
-u32 CheckMessageBinary(itfMesResource_t *pdata);
-
-itfMesBinTypeHeader_t *GetTypeHeader(instanceMes_tag *pinst, s32 index);
-
-itfMesBinTypeHeader_t *GetTypeHeader2(itfMesResource_t *pfileheader);
-
-u8 *GetMessagePagePtr(itfMesBinMesHeader_t *table, s32 index);
-
-/* Called above its definition, where ee-gcc assumed int. */
 frFontHandle_t *GetLastLinkFontHandle(frFontHandle_t *pfont);
-
-void GetLastMessagePara(frFontHandle_t *pfont, message_tag *pmessage);
-
-void RaiseMessageSpeedMax(frFontHandle_t *pfont);
-
-void ReadytoMessage(instanceMes_tag *panel);
 
 /* Replace a retained text-slot allocation. Nonpositive byteCount copies the
  * padded string span; positive counts copy that many bytes into a zeroed block.
  * DDS1 string mode intentionally has no memset. Keep the K&R declaration form. */
 void SetVar();
-
-void CommitVarTable(s32 *pvar);
-
-u8 *GetSpeakerName(instanceMes_tag *pinst);
-
 s32 GetNumSelectItem(s32 allitem, u32 mask);
-
-frFontHandle_t *GetFontHandleUnit(u32 *list, s32 count, u32 mask, s32 x, s32 y, s32 depth);
-
-/* Discard (to - from - 1) preceding rows when positive, retain the next
- * complete y-group and queue everything after it. Requires non-NULL input;
- * return NULL if discarding preceding rows exhausts the chain. */
-frFontHandle_t *UnchainFontHandleUnit(frFontHandle_t *pfont, s32 index, s32 lines);
-
-frFontHandle_t *GetLastLinkFontHandle(frFontHandle_t *pfont);
-
-void GetLastMessagePara(frFontHandle_t *pfont, message_tag *pmessage);
-
 s32 CountLineMessage(frFontHandle_t *pfont_top, frFontHandle_t *pfont);
-
-/* Translate every linked node in text units; a NULL chain is a no-op. */
-void ChangeFontPosition(frFontHandle_t *pfont, s32 dist_x, s32 dist_y);
-
-void ChangeZBuffer(frFontHandle_t *pfont, s32 z);
-
-void ChangeFontColor(frFontHandle_t *pfont, s32 index, s32 lines, s32 color);
-
 void ChangeFontColorAll(frFontHandle_t *pfont, u8 color);
-
-/* Clear each child's low color byte, then OR the unmasked input word.
- * High input bits can therefore also change the upper bytes. */
-void ChangeFontAlpha(frFontHandle_t *pfont, u32 alpha);
-
-s32 GetMessageWidth(frFontHandle_t *pfont);
-
 s32 GetMaskedIndex(s32 index, u32 mask);
-
-void RaiseMessageSpeedMax(frFontHandle_t *pfont);
-
-void RaiseMessageSpeedMaxAll(frFontHandle_t *pfont);
-
-void OpenMessageWindow(instanceMes_tag *pinst);
-
-void OpenCheckSpeakerWindow(instanceMes_tag *pinst);
-
-void InitializeSpeaker(Speaker_tag *pspeaker, s32 defaultpos);
-
-void InitializeMessage(message_tag *pmessage, s32 defaultpos);
-
-void InitializeSelect(select_tag *pselect);
-
-void InitializeWindow(window_tag *pwindow);
-
-void InitializeVariable(variable_tag *pvariable);
-
-void InitializeCurCtr(curctr_tag *pcurctr, s32 isdisp);
-
-void ForceSetCurCtr(curctr_tag *pcurctr, s16 phase, s16 ctr0, s16 ctr1);
-
 void ReleaseAllWindow(instanceMes_tag *pinst);
-
-void ReleaseAllVariable(variable_tag *pvariable);
-
-char *ConvertZenkakuNumber(s32 buf, char *num);
-
-void ResetWindowPara(window_tag *pwin, s32 type, s32 alpha);
-
-void CalcMesFlow(instanceMes_tag *pinst);
-
-void CalcWindow(instanceMes_tag *pinst);
-
-void CalcMessage(instanceMes_tag *pinst);
-
-void func_001D0518(instanceMes_tag *pinst, s32 y);
-
-/* DDS itfUpdateSoundSelectionTransition (redthing1), adapted to SMT3's
- * 20-pixel rows and absence of the donor's sprite-transition overrides. */
-void CalcSelect(instanceMes_tag *panel);
-
-void func_001D0518(instanceMes_tag *pinst, s32 y);
-
-s32 SelectItem(instanceMes_tag *pinst);
-
-void SelectItemMove(select_tag *psel, s32 direct);
-
-s32 SelectItemDefKey(select_tag *psel);
-
-void CalcCurCtr(instanceMes_tag *pinst);
-
-void DrawMesFlow(instanceMes_tag *pinst);
-
-void DrawWindow(instanceMes_tag *pinst);
-
-void DrawRetPageCursor(instanceMes_tag *pinst);
-
-s32 CalcMsgMng_Process(void);
-
-s32 DrawMsgMng_Process(dds3ProcessID_t *id);
-
-void DrawMsgMng_Shutdown(void);
-
-void DebugDrawWindowLine(itfpanel_t *meswin);
-
-void DebugMoveWinVert(window_tag *pwin, s32 flag);
-
-/* Step the stepper's index by pad input: one per press, ten with the fast modifier held; mirror it into the target. */
-void DebugMoveWinAlpha(window_tag *pwin);
-
-itfMesLink_t *DebugChangeInstance(itfMesLink_t *pflow);
-
-extern char itfMesFmtInt[8];
-
-extern char itfMesDebugLabelAlpha[8];
-
 extern char itfMesMarkerEdit[];
-
 extern char itfMesMarkerSelect[];
-
-extern char *itfMesSelectionMarkers[2];
-
 extern char itfMesMarkerEdit[8];
-
 extern char itfMesMarkerSelect[8];
-
 extern char itfMesDebugItemFormat[8];
-
 extern char itfMesMarkerNone[8];
-
 extern char itfMesDebugFadeFormat[8];
 
-extern u8 itfMesDebugLineVertIndex[5];
-
-extern u8 itfMesDebugLineColorIndex[5];
-/* End of declarations from src/smt3/interface/itfMesManager.c */
-
-/* Declarations from dds-decomp src/dds2/game/code_001A1B08.c */
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1
 #endif
@@ -869,35 +317,19 @@ extern u8 itfMesDebugLineColorIndex[5];
 ScrCommandYieldCount scrGetCommandTimer(void);
 
 #include "dds/mnu.h"
-
 #include "dds/scr_integer_parameter_api.h"
-
 #include "dds/scr_command_parameter_index.h"
-
 #include "dds/scr_integer_return_value_api.h"
-
-#include "dds/scr_command_timer_api.h"
-
 #include "dds/sdf_packet_list.h"
-
 #include "dds/itf.h"
-
 #include "dds/itf_mes_window.h"
-
 #include "dds/itf_mes_panel_mode.h"
-
 #include "dds/itf_mes_entry_start_api.h"
-
 #include "dds/sdf.h"
-
 #include "dds/itf_panel_draw.h"
-
 #include "dds/itf_text_vector.h"
-
 #include "dds/itf_panel_api.h"
-
 #include "dds/itf_panel_layouts.h"
-
 #include "dds/itf_held_panel_message_step.h"
 
 #define ITF_PANEL_COLUMN_COUNT 4
@@ -939,321 +371,65 @@ ScrCommandYieldCount scrGetCommandTimer(void);
 #define ITF_PANEL_TINT_BORDER_WIDTH 0x240
 
 extern void (*DrawTable[])(dds_itfpanel_t *, sdfDrawTag_t *);
-
 extern PanelHold itfHeldPanelCursor;
-
-extern void itfMesBuildOptionList(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex);
-
-extern void itfMiscSetRatioRGB(DrawColorRec *output, s32 scaleX, s32 scaleY, s32 scaleZ, s32 w, const TextVector *input, s32 count);
-
-extern TextVector itfPanelColorTemplates[];
-
-extern TextVector D_003B4548[];
-
-extern TextVector itfPanelGradientColorTemplate[];
-
-extern TextVector itfPanelGradientColorPair[];
-
-extern u8 D_004365C8[8];
-
-extern u8 D_004365D0[8];
-
-extern void itfMiscDrawTriangleStripPrim(void *vertices, void *colors, u8 *vertexIndex, u8 *colorIndex, s32 count, u32 tail, sdfDrawTag_t *command);
-
-extern u8 D_004365D8[8];
-
-extern u8 D_004365E0[8];
-
-extern void itfDrawThreePanelBorderBands(PanelRect *bounds, u32 *color, u32 tail, s32 borderWidth, sdfDrawTag_t *command);
-
-extern u32 D_003B4760[];
 
 #include "dds/sdf_packet_alloc.h"
 
-extern void *sdf2DMakeStdPacket(void *packet, s32 packetBytes);
-
 extern u8 D_003B45E8[], D_003B4600[], D_003B4618[];
-
 extern u8 D_003B4630[], D_003B4648[], D_003B4660[];
-
 extern u8 D_004365A8[8], D_004365B0[8];
-
-extern u8 D_003B4670[];
-
-extern u8 D_003B4680[];
-
-extern u8 D_004365B8[8];
-
-extern u8 D_004365C0[8];
-
-/* Invoke the indexed panel handler; panel and kind are trusted. */
-void itfPnlDrawTag(dds_itfpanel_t *panel, sdfDrawTag_t *list);
-
-/* Emit top/bottom vertices for four columns; collapse overlapping inner columns to the midpoint.
-   Coordinates and inset remain in the renderer's native integer units. */
-void CreateVertexNormal(DrawVertex *vertices, s32 x0, s32 y0, s32 x1, s32 y1);
-
-extern s32 D_003B44D8[4];
-
-/* Emit the outer frame grid, then the table-spaced top/bottom edge rows. */
-void CreateVertexMesWin(DrawVertex *vertices, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Emit the outer frame grid, then the close top/bottom edge rows. */
-void CreateVertexSelWin(DrawVertex *vertices, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Write the rectangle corners in top-left, top-right, bottom-right, bottom-left order. */
-void CreateVertexPlain(DrawVertex *v, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Write two rows of three columns; the middle column is the right edge minus a fixed strip width. */
-void CreateVertexLeftFade(DrawVertex *v, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Write four fixed horizontal columns with inset top/bottom coordinates.
-   x0 and x1 are intentionally unused; do not replace the fixed horizontal positions. */
-void CreateVertexFacility(UiSpriteBandPayload *base, s32 x0, s32 y0, s32 x1, s32 y1);
-
-/* Populate DrawColorRec RGBA rows at bytes 0x40/0x50; the first row is transparent. */
-void CreateColorNormal(DrawVertex *panelData, s32 red, s32 green, s32 blue, s32 alpha);
-
-/* Write the two color rows, then scale six template rows; the first fourth component is one. */
-void CreateColorMesWin(u8 *base, u32 red, u32 green, u32 blue, u32 alpha);
-
-/* Write the two color rows, then scale four template rows; the first fourth component is one. */
-void CreateColorSelWin(u8 *base, u32 red, u32 green, u32 blue, u32 alpha);
-
-/* Set the base color, one alpha-scaled gradient row, and two rows at full color scale. */
-void CreateColorPlain(u8 *base, u32 red, u32 green, u32 blue, u32 alpha);
-
-/* Set the four components of the DrawColorRec at byte 0x20. */
-void CreateColorPera1(DrawVertex *panelData, s32 red, s32 green, s32 blue, s32 alpha);
-
-/* Populate DrawColorRec RGBA rows at bytes 0x30/0x40; the first row is transparent. */
-void CreateColorLeftFade(DrawVertex *panelData, s32 red, s32 green, s32 blue, s32 alpha);
-
-/* Set both panel colors to the same blue tint with zero alpha. */
-void CreateColorFacility(UiSpriteBandPayload *panel);
-
-extern u8 D_003B45C8[];
-
-extern u8 D_003B45D8[];
-
-/* Draw the panel's three flat quads from one vertex/color buffer; each quad uses its own 4-byte index rows. */
-void DrawNormal(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-/* Update seven alpha words, then emit three wide and six side strips.
-   The first color row is deliberately excluded from the alpha update. */
-void DrawMesWin(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-/* Update five alpha words, then emit three wide and two side strips.
-   The first color row is deliberately excluded from the alpha update. */
-void DrawSelWin(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-void DrawPlain(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-/* Update the first color row's alpha and emit one indexed quad. */
-void DrawPera1(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-/* Bracket the six-index panel draw with table-state two and its native reset to zero. */
-void DrawLeftFade(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-/*BEGIN itfDrawFramedPanelWithTextureStrips*/
-extern u32 D_003B4690[];
-
-extern DrawColorRec D_003B4700;
-
-extern DrawColorRec D_003B4710;
-
-/* Draw the framed panel: two bordered bands, then six texture-bound strips whose
- * rectangles are rebuilt from the live panel bounds. */
-void itfDrawFramedPanelWithTextureStrips(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-extern DrawColorRec D_003B4720;
-
-extern DrawColorRec D_003B4730;
-
-/* Bind the texture for the left cap, then draw the center and reversed right
- * cap. Insets are captured before the first submission; Y bounds are live. */
-void DrawSpkWin2(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-extern u8 D_003B4740[];
-
-extern u8 D_003B4750[];
-
-extern DrawColorRec D_003B4470;
-
-extern DrawColorRec D_003B4480;
-
-extern DrawColorRec D_003B4490;
-
-extern DrawColorRec D_003B44A0;
-
-/* Draw the three inset flat quads, then split a tall texture into top, stretch
- * and bottom bands. The short path uses the live rectangle in the panel. */
-void DrawFacility(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-/* Copy bounds and draw the tinted border; alpha uses the native signed 103/128 scale. */
-void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command);
-
-/* Append two GS A+D state writes: TEST_1 (0x47), then ALPHA_1 (0x42). */
-void DrawTestAlphaPrim(sdfDrawTag_t *list);
-
-/* Capture the script window, reset its held queue, and switch to page three.
-   Invalid windows still return the native command-complete value of one. */
 s32 itfPanelAcquireHold(void);
-
-/* Clean up the active held window and reset its queue; an inactive hold is a no-op. */
 s32 itfPanelReleaseHold(void);
-
-/* Queue script words in native second/first/third field order; first and third narrow to s16.
-   Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
 s32 itfCommandQueueHeldPanelEntry(void);
-
-extern void dds3SetFilter2Para(u32);
-
-extern void dds3SetFilter2RGBA(u32);
-
-extern void dds3Filter2On(s32);
-
-extern void dds3Filter2Off(s32);
-
-extern s32 D_00438F28;
 
 /* Configure the fade on timer zero, wait thirty ticks, then consume a negative option status.
    Keep both timer reads: setup tests a second read, while later comparisons use the cached one. */
 s32 MesMngSelect(void);
-/* End of declarations from src/dds2/game/code_001A1B08.c */
 
-/* Declarations from dds-decomp src/dds2/interface/itfMesManager.c */
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1
 #endif
 
 #include "sdk_libc.h"
-
 #include "dds/fr_font.h"
-
 #include "dds/fr_font_context.h"
-
-#include "dds/itf.h"
-
 #include "dds/itf_text_slots_api.h"
-
-_FRQ *MessageRequestEx(s32 x, s32 y, s32 channel0, s32 channel1,
-    s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *sub);
-
-/* Test the active text-interface flags and return the requested bits. */
-u32 frGetMessageResult(u32 mask);
-
-void frSetDrawPosition(struct _FRQ *glyph, s32 x, s32 y);
-
-/* Replace each child render word along the borrowed glyph chain. */
-void frSetFontColor(struct _FRQ *parentNode, u32 colorWord);
-
-/* Update the first-option byte of every child on this glyph chain. */
-void frSetFontColorNo(struct _FRQ *glyph, u8 firstOption);
-
 #include "dds/sdk_ps2.h"
-
 #include "dds/btl_enc_bg_entry.h"
-
 #include "dds/common.h"
-
-#include "dds/scr_integer_parameter_api.h"
-
-#include "dds/itf_mes_entry_start_api.h"
-
 #include "dds/itf_mes_voice_cue_result.h"
-
 #include "dds/itf_mes_selection_commit_result.h"
-
 #include "dds/itf_mes_select_def_key_result.h"
-
-#include "dds/scr_integer_return_value_api.h"
-
-#include "dds/itf.h"
-
 #include "dds/itf_message_manager_task.h"
-
 #include "dds/itf_option_bit_index_api.h"
-
 #include "dds/snd_pad.h"
-
-#include "dds/sdf_packet_list.h"
-
 #include "dds/sdf_heap_api.h"
-
 #include "dds/sdf_pac_reloc.h"
-
 #include "dds/fr_font_temporary_entry_api.h"
-
 #include "dds/itf_mes_state_api.h"
-
-#include "dds/itf_text_slots_api.h"
-
-#include "dds/itf_mes_window.h"
-
-#include "dds/itf_mes_panel_mode.h"
-
-#include "dds/itf_panel_api.h"
-
 #include "dds/fld_area_work.h"
-
 #include "dds/fr_font_measure.h"
-
 #include "dds/eff_resource_slots.h"
-
 #include "dds/sdf_chip.h"
-
 #include "dds/dds3_process.h"
-
 #include "dds/dds3_task_create.h"
-
 #include "dds/pcp_vu0.h"
-
 #include "dds/btl_scene_fade.h"
-
 #include "dds/btl_resource.h"
-
 #include "dds/eff.h"
-
-#include "dds/itf_panel_draw.h"
-
 #include "dds/btl_state.h"
-
 #include "dds/btl_ui.h"
-
-#include "dds/sdf.h"
-
 #include "dds/sdf_projection.h"
-
 #include "dds/btl_action.h"
-
 #include "dds/scr.h"
-
 #include "dds/dat_state.h"
-
 #include "dds/mnu_result.h"
-
 #include "dds/dat_command.h"
-
 #include "dds/sdf_sif_command.h"
-
 #include "dds/mdl_resource_table.h"
-
 #include "dds/dds3_task_lifecycle.h"
 
-extern u32 itfMessageFlags;
-
 typedef mesflow_tag ItfMesWindowRec;
-
-extern ItfMesDebugState D_003B4770;
-
-void fldNoopWithMode(s32 mode);
-
-void itfMesSetTextSlotFromValue(ItfMesWindowIndex window, s32 slotIndex, s32 value, s32 selector);
-
-extern void frFontCenterGlyphChainAt(s32 x, s32 y, _FRQ *glyphChain);
-
-void itfMesInitializePanelPlacementSprite(dds_instanceMes_tag *panel);
 
 #define ITF_MES_SCRIPT_PANEL_BIT 0x200000
 
@@ -1275,99 +451,11 @@ void itfMesInitializePanelPlacementSprite(dds_instanceMes_tag *panel);
 
 #define ITF_MES_MASK_BIT_COUNT ITF_MES_OPTION_BIT_INDEX_NOT_FOUND
 
-/* Return the loaded message-window texture resource, not a window index. */
 sdfTexHandle_t *itfMesGetWindowTexture(void);
-
-/* Set requested bits in the separate message-global word. */
-void itfMesSetFlags(u32 mask);
-
-/* Clear requested bits in the separate message-global word. */
-void itfMesClearFlags(u32 mask);
-
-void itfMesBuildEntryGlyph(dds_instanceMes_tag *mes);
 
 /* Install an entry's table into the window, rebuild its text glyphs and the
  * selected-item caption, then mark the entry block active. */
 ItfMesEntryStartResult itfMesStartEntry(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
-
-extern s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub);
-
-/* Cache the selected table/item; report whether its text contains the F413 cue. */
-ItfMesVoiceCueResult itfMesSelectTableItemText(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
-
-/* Build the option panel around the widest measured row, using this game's
- * fixed row spacing. Preserve the existing panel creation/layout order. */
-void itfMesBuildOptionFrame(dds_instanceMes_tag *mes);
-
-extern const char *datUnitNames;
-
-extern const char *D_00435E4C;
-
-extern const char *D_00435E5C;
-
-extern const char *D_00435E60;
-
-extern const char *datSkillNames;
-
-extern char D_003A41A8[][0x20];
-
-extern char D_003A47E8[][0x20];
-
-extern char *D_00386048[];
-
-extern char D_004365F0[];
-
-extern void itfConvertText(char *dst, const char *src);
-
-extern u16 *txtFormatNumberU16(s32 value, u16 *dst);
-
-/* Copy one of the built-in interface strings into a window replacement slot. */
-void itfMesSetTextSlotFromValue(ItfMesWindowIndex window, s32 slotIndex, s32 value, s32 selector);
-
-extern void itfMesConfigurePanelBoundsAndFadeLimit(ItfMesBlkA4 *blk, ItfMesPanelMode panelMode,
-    ItfMesPanelFadeLimit fadeLimit);
-
-extern char *D_003B4990[];
-
-extern char *D_00436600[2];
-
-extern char D_00436608[];
-
-extern char D_00436610[];
-
-extern char D_00436618[];
-
-extern char D_00436620[];
-
-extern char D_00436628[];
-
-extern sdfGrOt_t sdfDebugGrOt;
-
-extern ItfMesWindowRec D_00452960[];
-
-extern s32 frFontCountGlyphBands(_FRQ *glyph);
-
-extern u32 itfGetTextLipsUnitId(void);
-
-extern u32 itfGetTextLipsMotionId(void);
-
-/* Rebuild colored entry glyphs, synchronize interface flags/hooks and cache
- * the span count. Existing span helpers require a valid created chain. */
-void itfMesBuildEntryGlyph(dds_instanceMes_tag *mes);
-
-/* Append text for each clear mask bit. Masked items are still consumed, while
- * y advances only for built text. Return NULL if nothing was built. */
-_FRQ *itfMesBuildNodeRows(const u32 *items, s32 itemCount, u32 mask, s32 x, s32 y, s32 renderValue);
-
-/* Resolve the zero-based visible-option ordinal to its clear bit, or 32 if
- * absent. Keep the predecrement; the ordinal itself is not validated. */
-ItfMesOptionBitIndex itfMesFindOptionBitIndex(ItfMesVisibleOptionOrdinal optionOrdinal, u32 optionMask);
-
-/* Enable parent contexts whose first child's tested flag is zero.
- * NULL chain is allowed, but every visited node must have a first child. */
-void itfMesEnableUnflaggedNodeContexts(_FRQ *glyph);
-
-extern char *D_00436600[2] __attribute__((section(".sdata")));
 
 /* Named and indexed views of the same four signed 32-bit color channels. */
 typedef union UiQuadColor {
@@ -1384,121 +472,11 @@ typedef char UiQuadColorSizeCheck[sizeof(UiQuadColor) == 0x10 ? 1 : -1];
 
 extern const UiQuadColor itfQueueOffsetTexturedRectTable;
 
-#include "dds/sdf_packet_alloc.h"
-
-extern void itfPnlDraw(dds_itfpanel_t *sprite, sdfGrOt_t *surface);
-
-/* Enable context rendering for every font object in the linked chain. */
-void frFontEnableNodeContextModes(_FRQ *fontObject);
-
-void itfMesInitializePanelPlacementSprite(dds_instanceMes_tag *panel);
-
-void itfInitializeCursorResetState(ItfMesBlk40 *cursor);
-
-extern void itfMesConfigurePanelBoundsAndFadeLimit(ItfMesBlkA4 *block, ItfMesPanelMode panelMode,
-    ItfMesPanelFadeLimit fadeLimit);
-
-void itfResetWindowResourceBlock(ItfMesBlkA4 *block);
-
-void btlReleaseEffectResourceHandles(dds_instanceMes_tag *effect);
-
-u16 *txtFormatNumberU16(s32 number, u16 *out);
-
-/* Select the message panel's bounds by layout mode (2 is the wide panel) and
- * reset its fade channels; nonpositive limits default to 0x80. */
-void itfMesConfigurePanelBoundsAndFadeLimit(ItfMesBlkA4 *block, ItfMesPanelMode panelMode,
-    ItfMesPanelFadeLimit fadeLimit);
-
-void itfMesUpdatePanelFades(dds_instanceMes_tag *panel);
-
-void itfUpdateSoundSelectionTransition(dds_instanceMes_tag *panel);
-
-void itfMesAdvanceEntryText(dds_instanceMes_tag *mes);
-
-void itfUpdateBattleDisplayAndFadeIndicator(dds_instanceMes_tag *panel);
-
-void itfMesUpdatePanelFades(dds_instanceMes_tag *panel);
-
-void itfMesAdvanceEntryText(dds_instanceMes_tag *mes);
-
-extern ItfMesOptionBitIndex itfMesFindOptionBitIndex(ItfMesVisibleOptionOrdinal optionOrdinal, u32 optionMask);
-
-extern void itfMesShiftPanelVertically(dds_instanceMes_tag *panel, s32 dy);
-
-void itfUpdateSoundSelectionTransition(dds_instanceMes_tag *panel);
-
-void itfMesShiftPanelVertically(dds_instanceMes_tag *panel, s32 dy);
-
-extern void itfMesRenderActivePanelSprites(dds_instanceMes_tag *);
-
-extern void itfDrawSoundSelectorFadeLayers(dds_instanceMes_tag *);
-
-extern void itfDrawSoundSelectorOptionPanel(dds_instanceMes_tag *);
-
-extern void itfDrawSelectedSoundRow(dds_instanceMes_tag *);
-
-void itfUpdateSoundSelectorPanel(dds_instanceMes_tag *panel);
-
-void itfMesRenderActivePanelSprites(dds_instanceMes_tag *panel);
-
-extern DrawColorRec D_003B49B8[];
-
-/* Draw the selected sound row and its expanding fade outline. */
-void itfDrawSelectedSoundRow(dds_instanceMes_tag *panel);
-
-extern u8 D_003B49F8[];
-
-extern u8 D_003B49E8[];
-
-extern s32 D_003B4A08[];
-
-/* Draw the sound selector frame, its fade layer and the expanding timer outline. */
-void itfDrawSoundSelectorFadeLayers(dds_instanceMes_tag *panel);
-
-extern sdfGrOt_t D_00380708;
-
-extern s32 D_003B4A18[];
-
-extern u8 D_00436630[5];
-
-extern u8 D_00436638[5];
-
 void itfQueueOffsetTexturedRect(s32 *bounds, s32 *region, s32 x, s32 y,
                    s32 alpha, sdfTexHandle_t *texture, sdfDrawTag_t *command);
 
-extern const s32 D_00414D60[12][4];
-
-extern s16 D_00438F34;
-
-extern s32 D_00438F30;
-
-extern s16 D_00438F38;
-
-extern sdfGrOt_t D_003805A8;
-
-extern const s32 D_00414E20[7][4];
-
-extern void sdfSubmitGsTestOneRegisterPacket(u64 data, u32 kind);
-
-extern void sdfSubmitGsAlphaOneRegisterPacket(u32 data, u32 kind);
-
-void itfMesDrawWindowBackground(s32 mode);
-
-extern const s32 D_00414E20[7][4] __attribute__((aligned(8)));
-
-extern s32 D_00438F2C;
-
-extern u8 D_00438F36;
-
-extern s16 D_00452E60[8];
-
-void itfUpdateSoundSelectorOptions(void);
-
-extern s8 D_0037F531[];
-
 /* Start the window entry, then poll completion and restore its normal flags. */
 s32 itfMesScriptStartEntryAndWait(void);
-/* End of declarations from src/dds2/interface/itfMesManager.c */
 
 /* Poll/start an entry: one ends the command, zero keeps waiting.
    A negative signed status is consumed by clearing it; positive status keeps waiting. */
@@ -1768,7 +746,6 @@ s32 itfMesMngSetMesPosDefault(void) {
     itfMesMngSetMesPosition(window, 0x440, 0xA78);
     return 1;
 }
-
 
 s32 itfMesMngValidateNext(void)
 {

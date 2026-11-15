@@ -1,18 +1,9 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/newbattle/nbSound.c */
-#include "common.h"
-
 #include "newbattle.h"
-
 #include "libsdf.h"
-
 #include "basic.h"
-
 #include "scr.h"
-
 #include "ps2asm.h"
-
 #include "newdata.h"
 
 typedef struct evtUnitHandle_t
@@ -205,230 +196,25 @@ typedef struct nbNegoProcessData_t
 
 #include "sdk_libc.h"
 
-extern nbMainProcessData_t *nbGetMainProcessData(void);
-
-extern void *memset(void *a, s32 b, size_t c);
-
-extern char nbTestHeartsMessage[];
-
 extern void nbPlaySe(s32 no);
-
-extern char nbTestProcessName[];
-
 extern void p2sdPlaySE(s32 seno, s32 vol, s32 pan);
-
-extern s32 nbLoadMotionByIndex(s32 unitid, s32 index);
-
-extern s32 nbResultCount;
-
-extern s32 bgmno;
-
-extern void p2sdPlayBGM(s32 MidiNo);
-
-extern s32 nbBgmSaved;
-
-extern void p2sdSetBgmTrack(s32 track);
-
-extern s32 nbBgmFadeState;
-
-extern void p2sdStopBGM(s32 no);
-
-extern void sdfSndSendChannelGroupCommand150(s32 no);
-
-extern const char nbBgmStopFormat[];
-
-extern u8 datModelParamTable[];
-
-extern u8 nbDefaultUnitVisual[];
-
-extern void nbFreeFormResources(nbMainProcessData_t *data, s32 index);
-
-extern void *sdfMemAllocDirect(u32 aSize);
-
-extern void *sdfMemLock(void *aHandle);
-
-extern s32 p2sdLoadCheckMidi(s32 MidiNo);
-
-extern void p2sdLoadSMGFile(s32 MidiNo);
-
-extern void nbSetMaeFlag(s32 flag);
-
-extern s32 (*D_00527518[])(nbEventProcessData_t *e);
-
-extern s32 nbFindFormIndex(s32 id);
-
-extern s32 nbMaeCheckDone(void);
-
-extern void nbMaeWaitStep(void);
-
-extern void sdfMemFreeDirect(void *aHandle);
-
-extern void p2sdSetPcmBuffer(void *buf, u32 size);
-
-extern void datDebugPrintf(const char *format, ...);
-
-extern const char nbNegoSeOkMsg[];
-
-extern const char nbMidiDebugFmt[];
-
-extern const char nbMotSeOkMsg[];
-
-extern s32 (*D_00527420[])(nbEventProcessData_t *e);
-
-extern s32 nbMaeMidiNo;
-
-extern s32 nbMaeSubMidiNo;
-
-extern s32 nbMaeFlag;
-
-extern s32 nbMaeLoadDone;
-
-extern void nbBgmStop(void);
-
-extern s32 nbFindFreeFormSlot(void);
-
-extern s32 (*D_004F0788[])(nbActionProcessData_t *a, s32 joken);
-
-extern s32 (*D_00527688[])(nbEventProcessData_t *e);
-
-extern s32 (*D_00527698[])(nbEventProcessData_t *e);
-
-extern s32 pacFileCheckEnd(const fileRequest_t *pacFileHandle);
-
-extern sdfMemHandle_t *fileGetMemHandle(const fileRequest_t *fileHandle);
-
-extern s32 fileHandleFree(fileRequest_t *fileHandle);
-
-extern s32 (*nbE902Table[])(nbEventProcessData_t *e);
-
-extern s32 nbLoadMidiFile(s32 no);
-
-extern u32 sdfMemGetSize(void *aHandle);
-
 extern s32 (*D_004EF4B0[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF550[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF698[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF6F8[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF780[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF7C8[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF7D8[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF810[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF868[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF8D8[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF928[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF950[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EF960[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EFA28[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EFA60[])(nbNegoProcessData_t *n);
-
 extern s32 (*D_004EFAC0[])(nbNegoProcessData_t *n);
-
-s32 nbGetUnitWorkFromAction(nbFormation_t *form);
-
 void nbPlaySe(s32 no);
-
-s32 nbGetMotionTable(s32 unitid, s32 index);
-
-extern u16 nbUnitMotionIdTable[];
-
-extern s32 evtBitCheck(s32 no);
-
-s32 nbLoadMotionByIndex(s32 unitid, s32 index);
-
-s32 nbGetUnitFromAction(nbFormation_t *form, s32 index);
-
-s32 nbMakeSeId(s32 seno);
-
-s32 nbPlayMotionSe(nbFormation_t *form);
-
-s32 nbMemoryLoadNegoSe(nbFormation_t *form);
-
-s32 nbMemoryLoadMotionSe(nbFormation_t *form, s32 mot);
-
-void nbGetFormEntry(s32 id);
-
-nbStatWork_t *nbSetFormEntry(s32 id);
-
-extern char nbMidiPath[];
-
-extern fileRequest_t *fileLoad(const char *path);
-
-extern const char nbNegoSeOkMsg[16];
-
-extern const char nbMidiDebugFmt[16];
-
-extern const char nbMotSeOkMsg[16];
-
-s32 nbLoadMidiFile(s32 no);
-
-void nbCheckPackLoad(nbMainProcessData_t *data);
-
-s32 nbFindFreeFormSlot(void);
-
-s32 nbFindFormIndex(s32 id);
-
-void nbFreeFormResources(nbMainProcessData_t *data, s32 index);
-
-void nbFreeAllFormResources(nbMainProcessData_t *data);
-
-void nbAllocMainProcessData(nbMainProcessData_t *data);
-
-s32 nbMaeCheckDone();
-
-extern const u16 nbMaeMidiTable1[16];
-
-extern const u16 D_00545C58[16];
-
-extern const u16 nbMaeMidiTable2[20];
-
-void nbIncResultCounter(void);
-
-void nbMaeWaitStep(void);
-
-void nbRestoreBgm(void);
-
-void nbBgmFadeOut(void);
-
-void nbBgmStop(void);
-
-void nb_28DE10(void);
-
-void nb_28DE28(void);
-
-extern const char nbBgmStopFormat[24];
-
-extern const char nbUnitLoadTimeFormat[72];
-
-extern s32 bgmno;
-
-extern s32 nbBgmSaved;
-
-extern s32 nbBgmFadeState;
-
-extern s32 nbResultCount;
-
-extern s32 nbMaeMidiNo;
-
-extern s32 nbMaeSubMidiNo;
-
-extern s32 nbMaeFlag;
-
-extern s32 nbMaeLoadDone;
-/* End of declarations from src/smt3/newbattle/nbSound.c */
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", InitEx);
 

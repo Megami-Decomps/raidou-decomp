@@ -1,10 +1,6 @@
 #include "common.h"
 
-/* Declarations from smt3-decomp src/smt3/sdk/libgcc_fixunsdfdi.c */
-#include "common.h"
-
 u64 __fixunsdfdi(f64 value);
-/* End of declarations from src/smt3/sdk/libgcc_fixunsdfdi.c */
 
 u64 __fixunsdfdi(f64 value)
 {

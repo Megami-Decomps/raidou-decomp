@@ -1,210 +1,73 @@
 #include "common.h"
 
-/* Declarations from dds-decomp src/dds1/model/mdlEffect.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
 
 #include "fileManager.h"
-
 #include "model.h"
-
 #include "sdfDevCons.h"
-
 #include "sdk_libc.h"
-
 #include "dds/bill_object_api.h"
-
 #include "dds/dds3_admin_control_api.h"
-
 #include "dds/dds3_task_add_child.h"
-
 #include "dds/dds3_task_create.h"
-
 #include "dds/dds3_task_lifecycle.h"
-
 #include "dds/eff_node.h"
-
 #include "dds/eff_node_descriptor.h"
-
 #include "dds/file_request_api.h"
-
 #include "dds/fld_integer_editor_api.h"
-
 #include "dds/dds3_process.h"
-
 #include "dds/mdl.h"
-
 #include "dds/mdl_blur_api.h"
-
 #include "dds/mdl_motion_api.h"
-
 #include "dds/sdf_bordered_rectangle_packet.h"
-
 #include "dds/sdf_chip.h"
-
 #include "dds/sdf_chunk.h"
-
 #include "dds/sdf_draw.h"
-
 #include "dds/sdf_file_existence_api.h"
-
 #include "dds/sdf_gs_header.h"
-
 #include "dds/sdf_heap_api.h"
-
 #include "dds/sdf_line_pair_packet_api.h"
-
 #include "dds/sdf_motion.h"
-
 #include "dds/sdf_motion_loop.h"
-
 #include "dds/sdf_packet_builders.h"
-
 #include "dds/sdf_packet_list.h"
-
 #include "dds/sdf_projection.h"
-
 #include "dds/sdf_request.h"
-
 #include "dds/sdf_sif_command.h"
-
 #include "dds/sdf_texture_draw_packet.h"
-
 #include "dds/sdf_texture_registry.h"
-
 #include "dds/sdf_vu_matrix.h"
-
 #include "dds/sdk_libc.h"
-
-/* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
-void Mult(void);
-
-/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
- * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
-void ToMatrix(void);
 
 /* Set bit 1 in the active administration task's flags; that task must exist. */
 void dds3AdminiExitSequence(void);
-
-struct billHandle_t *dds3BillboardCopy(const struct billHandle_t *source);
-
-/* The selected kind interprets the opaque payload word. */
-struct billHandle_t *dds3BillboardCreate(s32 kind, u32 data);
-
-void dds3BillboardDelete(struct billHandle_t *obj);
-
-void dds3BillboardSetRGBA(struct billHandle_t *billboard, u32 parameter);
-
-void dds3BillboardSetScale(struct billHandle_t *billboard, f32 x, f32 y);
-
-void dds3DebugIntEdit(void *valueAddress, FldIntegerStorageType storageType, s64 min, s64 max,
-                      s64 step, s64 bigStep);
-
-/* The pad-state bytes are borrowed read-only input; valueAddress is updated. */
-void dds3DebugIntEditEx(void *valueAddress, FldIntegerStorageType storageType, s64 min, s64 max,
-                     s64 step, s64 bigStep, const s8 *padState);
-
-EffNode *dds3EffectCopy(const EffNode *source);
-
-void dds3EffectDelete(EffNode *node);
-
-struct EffNode *dds3EffectLoad(EffNodeDescriptor *descriptor);
-
-void dds3EffectSetScale(EffNode *node, f32 factor);
-
 struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
-
-u32 dds3GetProcessData(const dds3ProcessID_t *task);
-
 dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
-
-dds3TaskKillRequestResult_t dds3KillProcessName(const char *name, s32 delayTicks);
-
-/*
- * Append child to parent's child list, detaching it from any previous parent.
- * This hierarchy controls teardown: parent finalization calls
- * dds3KillProcess(child, 0) for linked children before its destroy callback.
- * It does not change scheduler queue membership.
- */
-void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *child);
-
 u64 *dds3PrimFrameRect(s32 x, s32 y, s32 depth, s32 width, s32 height, u32 colorA, u32 colorB);
-
-extern SdfProjectionRecord dds3ScreenParam;
 
 /* Return a borrowed scheduler-owned handle from the starting, active, or
  * destroy-pending queue. The handle remains valid through its destroy callback
  * and is freed when finalization completes; return NULL when no name matches. */
 dds3ProcessID_t *dds3SearchProcessName(const char *name);
 
-/*
- * Allocate a task and place it in scheduler queues. Returns NULL on allocation
- * failure. On success, the scheduler owns the task handle and frees it after
- * its destroy callback; callers may borrow the handle only until finalization.
- */
-dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
-                         s32 destroyDelay, dds3ProcessFunc_t update,
-                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
-
-/* Return the address of the loaded resource payload as a byte pointer. */
-u8 *fileGetLoadPtr(const struct FileRequest *request);
-
-/* Return the signed byte count recorded by the file transfer request. */
-s32 fileGetLoadSize(const struct FileRequest *request);
-
-/* Return the payload allocation descriptor. For normal file loads, freeing the
- * request wrapper does not free this allocation; its resource owner must keep
- * or release it separately. */
-struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
-
-/* Free a completed request wrapper; return one while it remains pending. */
-FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
-
-/* fileSave also copies requestName into request-owned storage. It separately
- * borrows sourceData for the asynchronous write, which must stay readable and
- * unchanged until CLOSED. */
-struct FileRequest *fileSave(const char *requestName, const void *sourceData, s32 sourceByteCount);
-
-void fileSync(struct FileRequest *request);
-
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
 /* Destroy one context. If it leaves its resource-owning group empty, group
  * teardown also releases that group's registered assets. */
 void mdlFree(dds3ModelHandle_t *ctx);
-
-u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
-
-u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
 
 /* Context-level motion APIs; per-sdfMotionCtrlr_t lifecycle methods are in sdf_motion.h. */
 MdlMotionIndexResult mdlGetMotionNum(const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
 
 /* The referenced halfword is promoted to a word-sized SDK result. */
 s32 mdlGetNumOfCut(const dds3ModelHandle_t *ctx, s32 searchId);
-
-/* VU helpers transfer vectors through vf10 and basis rows through vf28-vf30. */
-void mdlGetPosition(dds3ModelHandle_t *ctx);
-
-void mdlGetRotate(dds3ModelHandle_t *ctx);
-
 MdlMotionPresence mdlHasMotionEx(const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
-
-void mdlLink(dds3ModelHandle_t *ctx, struct sdfGrOt_t **surfaces);
 
 /* Allocate a distinct caller-owned context linked to the registered group.
  * Contexts share the group node and assets; release each context with mdlFree. */
 dds3ModelHandle_t *mdlLoad(u32 group, u32 id);
-
 void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
-
-void mdlSetBlur(dds3ModelHandle_t *ctx, MdlBlurSpawnInterval spawnInterval,
-                MdlBlurSnapshotCapacity snapshotCapacity,
-                u32 endColor, u32 startColor);
-
-void mdlSetPosition(dds3ModelHandle_t *ctx);
-
-void mdlSetRotate(dds3ModelHandle_t *ctx);
 
 void mdlSmoothLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
                           f32 blendDurationFrames);
@@ -212,196 +75,60 @@ void mdlSmoothLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, 
 void mdlSmoothSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
                        f32 blendDurationFrames);
 
-s32 memcmp(const void *a, const void *b, u32 size);
-
-void *memset(void *dst, s32 value, u32 size);
-
 SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
-
-void *sdfChipAllocZeroDirect(s32 size);
-
-void sdfChipFreeDirect(void *memory);
-
 void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
-
 void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
 
 struct SdfPacket *sdfDrawRotatedModel(const f32 vertices[][4], const u32 *colors,
                                                    s32 vertexCount, u32 primitiveFlags);
 
 void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
-
-SdfFileExistenceResult sdfFileCheckExist(const char *path);
-
-/* DMA/VIF transfer header and packed A+D GIF tag, excluding register payload. */
-void sdfGrSetRegsPacketHeader(SdfGsPacketHeader *header, s32 payloadQwords);
-
-/* Operations on the complete buffered-request owner, distinct from draw packets. */
-void sdfItemArrayFree(DevRequest *request);
-
-DevRequest *sdfItemArrayNew(s32 count, s32 stride, s32 growStep);
-
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-
 SdfChunkHeader *sdfModelGetExtraChunk(const struct dds_sdfModelRootNode_t *model, s32 tag);
-
 u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
-
 void sdfModelMakeMarkPosMatrix(struct dds_sdfModelRootNode_t *model, SdfMapPositionRecord *record);
-
-SdfMapPositionRecord *sdfModelSearchMarkPosData(struct dds_sdfModelRootNode_t *model, s32 recordId);
-
-sdfModelNode_t *sdfModelSearchNode(dds_sdfModelRootNode_t *model, s32 nodeIdOrIndex);
-
-void sdfMotionChange(struct sdfMotionCtrlr_t *motion, s32 motionIndex, SdfMotionLoopMode loopMode);
-
-void sdfMotionSeek(struct sdfMotionCtrlr_t *motion, f32 frame);
-
-void sdfPktSetCmd(SifCommand *packet, s32 index);
 
 void sdfPrimLinkF3(
     sdfDrawTag_t *list, s32 color, s32 primitive, s32 x0, s32 y0, s32 x1,
     s32 y1, s32 x2, s32 y2, s32 depth, s32 (*allocatePacket)(s32));
-
-void sdfPrimLinkLine(
-    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
-    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
 
 void sdfPrimLinkSprite(
     sdfDrawTag_t *list, s32 color, s32 primitive, s32 x0, s32 y0, s32 u0,
     s32 v0, s32 x1, s32 y1, s32 u1, s32 v1, s32 depth,
     s32 (*allocatePacket)(s32));
 
-struct sdfTexHandle_t *sdfTexSearch(s32 resourceKey);
-
-u32 strlen(const char *text);
-
 #include "dds/sdk_ps2.h"
-
-#include "dds/sdf_line_pair_packet_api.h"
-
 #include "dds/dds3_path.h"
-
-#include "dds/dds3_admin_control_api.h"
-
-#include "dds/sdf_request.h"
-
-#include "dds/dds3_process.h"
-
-#include "dds/dds3_task_create.h"
-
-#include "dds/sdf_packet_list.h"
-
-#include "dds/sdf_packet_builders.h"
-
-#include "dds/sdf_bordered_rectangle_packet.h"
-
 #include "dds/common.h"
-
-#include "dds/sdf_file_existence_api.h"
-
 #include "dds/dds3_object_flags.h"
-
 #include "dds/sdf_vu0.h"
-
 #include "dds/mdl_option_label.h"
-
 #include "dds/eff_inner_float_api.h"
-
 #include "dds/mdl_light_editor_state.h"
-
-#include "dds/dds3_task_add_child.h"
-
-#include "dds/mdl_motion_api.h"
-
-#include "dds/sdf_motion_loop.h"
-
-#include "dds/sdf_texture_draw_packet.h"
-
-#include "dds/file_request_api.h"
-
-#include "dds/bill_object_api.h"
-
-#include "dds/sdf_chip.h"
-
-#include "dds/sdf_heap_api.h"
-
 #include "dds/sdf.h"
-
-#include "dds/sdf_texture_registry.h"
-
-#include "dds/sdf_projection.h"
-
-#include "dds/mdl.h"
-
-#include "dds/mdl_blur_api.h"
-
 #include "dds/mdl_part_info_api.h"
-
 #include "dds/mdl_p2a_resource_api.h"
-
 #include "dds/mdl_part_entry.h"
-
 #include "dds/mdl_resource_entries.h"
-
 #include "dds/mdl_track_poly_record.h"
-
 #include "dds/mdl_mark_params.h"
-
-#include "dds/fld_integer_editor_api.h"
-
 #include "dds/mdl_resource_table.h"
-
 #include "dds/mdl_grouped_parts_api.h"
-
 #include "dds/mdl_flag_api.h"
-
 #include "dds/mdl_world_object_source_vector_api.h"
-
 #include "dds/dds3_world_counter.h"
-
 #include "dds/evt_unit_object_key.h"
-
-#include "dds/sdf_vu_matrix.h"
-
 #include "dds/pcp_vu0.h"
-
 #include "dds/ee_mmi.h"
-
 #include "dds/dat_state.h"
-
-#include "dds/sdf_draw.h"
-
-#include "dds/sdf_chunk.h"
-
 #include "dds/sdf_pac_state.h"
-
 #include "dds/eff.h"
-
-#include "dds/eff_node_descriptor.h"
-
-#include "dds/eff_node.h"
-
-#include "dds/sdf_sif_command.h"
-
 #include "dds/eff_transform.h"
-
 #include "dds/evt_world_source_transform.h"
-
 #include "dds/evt_script_event_id.h"
-
 #include "dds/file.h"
-
-#include "dds/dds3_task_lifecycle.h"
-
 #include "dds/mdl_object_stream.h"
-
 #include "dds/dds3obj.h"
-
-#include "dds/sdf_gs_header.h"
-
 #include "dds/mdl_option_state.h"
-
 #include "dds/dds3_world_secondary.h"
 
 #define MDL_VIEWER_RESOURCE_SLOTS 12
@@ -520,8 +247,6 @@ static inline s8 mdlGetViewerDisplayMode(MdlViewState *state) {
     return state->assetDisplayMode;
 }
 
-extern MdlCtrlState mdlDebugScaleWork;
-
 extern s8 mdlRunViewerSelectionLabelTaskWork[];
 
 typedef struct MdlViewerTaskDef {
@@ -530,66 +255,21 @@ typedef struct MdlViewerTaskDef {
     s32 data;
 } MdlViewerTaskDef;
 
-extern MdlViewerTaskDef D_00367A40[];
-
 typedef struct MdlSystemTask {
     const char *name;
     s32 arg;
 } MdlSystemTask;
 
-extern MdlSystemTask D_00367AE0[3];
-
-extern char D_003ABF78[];
-
-extern char D_003ABF88[];
-
-extern char D_003BBC80[];
-
 extern char mdlStrModel03[];
-
 extern char D_003ABCB0[];
-
 extern char D_003ABCC8[];
-
 extern char D_003ABCD8[];
-
 extern char D_003BBC28[];
-
-extern s32 mdlViewer(dds3ProcessID_t *);
-
-extern s32 mdlViewerEnd(dds3ProcessID_t *);
-
-void dds3PrimDebugTextBoxRGB(void *, s32, s32, s32, u32, s32);
-
 s32 mdlUpdateViewerCursor(s16 *, s32);
-
 void mdlUpdateViewerSelectedModelFromPad(void);
-
 void mdlDrawViewerSelectionLabel(void);
-
-void sdfIpuSetOutputTex(sdfIpuDecodeCb_t *, const SdfStreamParams *, u8 *, s32, sdfTexHandle_t *);
-
-void sdfIpuFree(sdfIpuDecodeCb_t *);
-
 void mdlCleanupViewerTasksAndResources(void);
-
-extern u32 D_003BA8EC;
-
-extern void dds3DebugGraphSetEnabled(s8 mode);
-
-extern s32 dds3DebugColorEditEx(u32 *color, s32 channel, s8 *pad);
-
-extern s8 dds3PadButtonState[64];
-
-extern u8 sdfHddValid;
-
 s32 mdlPibGetChunkItemCount(MdlRecord *listHeader);
-
-/* Read the model record's payload word without advancing its relative link. */
-u32 mdlPibGetVersion(MdlRecord *record);
-
-/* The part-list count is the low half of the packed parameter word. */
-u16 mdlPibGetChunkCount(MdlRecord *record);
 
 /* Follow the relative links in a resource's part-info table to find a list key. */
 MdlRecord *mdlPibGetChunk(dds3ModelHandle_t *resource, MdlPartInfoListKey partInfoListKey);
@@ -599,38 +279,13 @@ MdlRecord *mdlPibGetFirstChunkItem(MdlRecord *listHeader);
 
 /* A terminal kind returns NULL; the link is a byte offset, not a pointer. */
 MdlRecord *mdlPibGetNextChunkItem(MdlRecord *currentRecord);
-
-/* Count relative-offset records until the 0xffff sentinel. */
-s32 mdlPibGetChunkItemCount(MdlRecord *listHeader);
-
 s32 mdlPibCheckItemType(MdlRecord *record, s32 kind);
-
-u16 mdlPibGetEffectCount(const MdlRecord *record);
-
-/* Read the counted group record's number of following entity-slot packets. */
-u16 mdlPibGetMotionCount(const MdlRecord *record);
-
 extern char D_003ABA80[], D_003ABA90[], D_003ABAA0[], D_003ABAB0[], D_003ABAC0[], D_003ABAD0[];
-
 extern char D_003BBB80[], D_003BBB88[];
-
 void mdlPibDrawEffectInfo(sdfDrawTag_t *packetList, s32 x, s32 y, s32 depth, s32 textStyle, MdlRecord *record);
-
-extern char *D_003679B8[];
-
-extern u8 D_003679B0[];
-
-extern u16 D_00367980[];
-
-extern char D_003BBBB0[];
-
-extern char D_003BBBB8[];
 
 /* Draw the scalar marker fields, then four colors with four byte channels each; negative selection hides the cursor. */
 void mdlPibDrawTrackInfo(sdfDrawTag_t *packetList, s32 x, s32 y, s32 depth, EffMarkParams *params, s32 selectedField);
-
-/* Edit the marker parameters with the pad: rows 0-6 are the scalar fields, 7-22 the color bytes. */
-void mdlPibEditTrackInfo(EffMarkParams *params, s16 *fieldCursor);
 
 #define MDL_PART_BILLBOARD 0
 
@@ -638,82 +293,11 @@ void mdlPibEditTrackInfo(EffMarkParams *params, s16 *fieldCursor);
 
 #define MDL_PART_OBJECT 3
 
-void mdlDeleteEffectResrc_IPU(MdlObj *obj);
-
-void mdlStartEffectResrc_IPU(MdlObj *obj, sdfTexHandle_t *resource, const SdfStreamParams *params);
-
-/* Prepend a cleared, typed resource item to the owner's list. */
-dds3ModelEffectCtrlr_t *mdlCreateEffectCtrlr(
-    dds3ModelHandle_t *owner, MdlResourceKind resourceKind, MdlMotionSlotIndex motionSlotIndex);
-
-void *mdlEffectDup_P2A(MdlPartEntry *entry);
-
-void *mdlEffectDup_D3P(MdlPartEntry *entry);
-
-/* Resolve a native fixed-size slot when its table exists and index is below the upper bound; no lower-bound check. */
-MdlPartEntry *mdlGetEffectResrc(dds3ModelHandle_t *resource, s32 slotIndex);
-
-/* Bind each consecutive record ID to a newly created part when the chunk contains it. */
-void mdlCreateEffect_P2A_D3P(
-    dds3ModelHandle_t *owner, const MdlRecord *partRecord, MdlMotionSlotIndex motionSlotIndex,
-    MdlResourceKind resourceKind, void *(*createPart)(MdlPartEntry *));
-
-/* Convert the effect record to native track parameters and retain its work pointer. */
-void mdlCreateEffect_TRACK(dds3ModelHandle_t *owner,
-                           const MdlTrackPolyRecordView *record,
-                           MdlMotionSlotIndex motionSlotIndex);
-
-void mdlCreateEffect_BLUR(dds3ModelHandle_t *owner, const MdlRecord *record);
-
-/* Claim an unused object only after its data resource resolves, retaining record flags and deferred-init parameters. */
-void mdlCreateEffect_IPU(dds3ModelHandle_t *owner, const MdlRecord *entryRecord,
-                         MdlMotionSlotIndex motionSlotIndex);
-
-/* Initialize once the owner's motion reaches the stored threshold; retain native float-to-signed-to-unsigned conversion. */
-void mdlDrawEffect_IPU(dds3ModelEffectCtrlr_t *item);
-
-/* Dispatch the five record kinds, retaining the game's native return behavior. */
-void mdlCreateEffect(dds3ModelHandle_t *owner, const MdlRecord *record,
-                      MdlMotionSlotIndex motionSlotIndex);
-
-/* Copy values from the group-owned record list; context resources retain no record pointers. */
-void mdlGenEffect(dds3ModelHandle_t *owner, MdlPartInfoListKey partInfoListKey,
-                  MdlMotionSlotIndex motionSlotIndex);
-
-/* Release billboard, effect, or tracked-poly handles when applicable, then always free the list item. */
-void mdlFreeEffect(dds3ModelEffectCtrlr_t *item);
-
-/* Release all items for this slot without losing the link across consecutive matches. */
-void mdlStopEffect(dds3ModelHandle_t *owner, MdlMotionSlotIndex motionSlotIndex);
-
-extern u8 aViewEye[];
-
-/* vu0 routine: positionOut = p + normalize(p - aViewEye) * scale, p = transformed node position. */
-void mdlEffect_P2A_D3P_GetPos(dds_sdfModelRootNode_t *model, dds3ModelEffectCtrlr_t *anchorRecord, f32 *positionOut);
-
-extern void dds3BillboardDraw(billHandle_t *billboard);
-
-/* Update anchored billboard/effect positions, tracked polygons, or deferred object initialization by type. */
-void mdlLinkEffect(dds3ModelHandle_t *owner, dds3ModelEffectCtrlr_t *anchorRecord);
-
-/* Set a billboard/effect frame; other resource-item kinds have no frame dispatch. */
-void mdlSetEffectColorSub(dds3ModelHandle_t *owner, dds3ModelEffectCtrlr_t *item, s32 frame);
-
-/* Apply amount to billboard/effect scale; other resource-item kinds are ignored. */
-void mdlSetEffectScaleSub(dds3ModelHandle_t *owner, dds3ModelEffectCtrlr_t *item, float amount);
-
 u64 *mdlBuildViewerRectanglePacket(s32 x, s32 y, s32 depth, s32 width, s32 height);
-
 void mdlAppendViewerRectToDrawList(s32 x, s32 y, s32 depth, s32 width, s32 height, s32 unused);
-
 extern s8 dds3PadBitTable[];
-
-/* Return 1 after a cursor update: fresh presses wrap, while repeated presses stop at the ends. */
 s32 mdlUpdateViewerCursor(s16 *cursor, s32 entryCount);
-
-/* Apply single-entry or optional page steps using the native wrap/clamp and input-precedence rules. */
 s32 mdlUpdateViewerCursorWithPageStep(s16 *cursor, s32 entryCount, s32 pageStep);
-
 void mdlLoadViewerResourceAndResetCursors(void);
 
 typedef struct {
@@ -721,102 +305,35 @@ typedef struct {
 } __attribute__((aligned(16))) MdlEyeVec;
 
 extern MdlEyeVec mapCallFromRotationBWork;
-
 extern MdlEyeVec mapCallFromRotationBWork2;
-
 extern u128 mapCallFromRotationBWork3;
-
 extern MdlEyeVec mdlData10;
-
 extern MdlEyeVec mdlData11;
-
 extern u128 mdlResetViewerBasisVectorsData;
-
 extern s16 mdlResetViewerBasisVectorsWork[];
-
 void mdlResetViewerBasisVectors(void);
-
-/* Rotate the viewer resource list in place without moving its allocation. */
 void mdlRotateViewResourcesRight(void);
-
-/* Move the first resource to the end of the active list without changing its allocation. */
 void mdlRotateViewList(void);
-
 extern const char *mdlData9[];
-
 extern char D_003BBC20[];
-
-/* Draw the MODE header and current or saved viewer mode label. */
 void mdlDrawViewerModeLabel(void);
-
-/* Draw the phase-zero option list in two columns, with cursor/blink styling. */
 void mdlDrawViewerOptionLabels(void);
-
 void mdlDrawViewerModelAndMotionSummary(void);
-
 void mdlAddViewEntryFlagged(void);
-
 void mdlAddPlainViewerEntryForSelectedNode(void);
-
-extern u32 mdlGetNumOfMajor(void);
-
-extern u32 mdlGetNumOfMinor(s32 tableIndex);
-
-extern void mdlMakeHddFileList(void);
-
 extern void mdlFreeViewResources(void);
-
 void mdlHandleViewerAssetSelection(void);
-
-extern char D_003BBC30[];
-
-extern char D_003BBC38[];
-
-extern char D_003BBC40[];
-
-extern char D_003BBC48[];
-
-extern char D_003BBC50[];
-
-extern char D_003BBC58[];
-
-extern char D_003BBC60[];
-
-extern char D_003BBC68[];
-
-extern void mdlGetFilebase(s32 selectionListIndex, s32 selectionIndex, char *destination, s32 capacity);
 
 /* Draw the pending resource details and the current selection in each model node. */
 void mdlDrawViewerAssetSelection(void);
-
 u32 mdlRunViewerAssetSelectionTask(void);
-
-extern void FromRotation_B(f32 angle);
-
-extern f32 sdfViewMatrix[];
 
 /* vu0 routine: move the viewer camera or orbit it about the look-at point. */
 void mdlUpdateViewerCameraFromPad(void);
-
 extern const char *mdlDrawViewerIndexedLabelOverlayData[];
-
 void mdlDrawViewerIndexedLabelOverlay(void);
-
 u32 mdlRunViewerIndexedLabelTask(void);
-
-extern f32 sdfUnitXVector[4];
-
-extern f32 sdf3DUpVector[4];
-
-extern f32 D_003983A0[4];
-
-/* vu0 routine: edit the viewer transform with translation or quaternion steps. */
-void mdlUpdateViewerSelectedModelFromPad(void);
-
 extern const char *mdlDrawViewerSelectionLabelData[];
-
-void mdlDrawViewerSelectionLabel(void);
-
 s32 mdlRunViewerSelectionLabelTask(void);
 
 /* Change the viewer scale in hundredths, with larger steps at larger values. */
@@ -824,36 +341,19 @@ void mdlAdjustViewerScale(void);
 
 /* Draw the motion progress bar: timeline frame, playhead marker and "[time/length]" label, then the zoom value. */
 void mdlDrawViewerMotionTimeline(void);
-
 u32 mdlUpdateViewerScaleTask(void);
-
 extern s8 mdlData14[];
-
 extern u8 mdlUpdateViewerWorkspaceSetupWork;
-
 extern s8 sdf3DScreenAdjust;
-
 extern f32 sdf3DScreenAdjustScaleX;
-
 extern f32 sdf3DScreenAdjustScaleY;
-
 extern f32 sdf3DScreenAdjustOffsetX;
-
 extern f32 sdf3DScreenAdjustOffsetY;
-
-/* Final workspace publication: see docs/idioms.md, "Publishing viewer workspace". */
 void mdlUpdateViewerWorkspaceSetup(void);
-
-/* Run workspace setup and its separate hook; keep the task result zero. */
 u32 mdlUpdateViewerWorkspaceSetupTask(void);
-
 void mdlApplyViewerResourceMenuAction(void);
-
 extern const char *mdlDrawViewerResourceMenuData[];
-
-/* Draw resource actions with independent eligibility and selection styles. */
 void mdlDrawViewerResourceMenu(void);
-
 u32 mdlRunViewerResourceMenuTask(void);
 
 /* Loaded-resource count chain, identical to the DDS2 model viewer. */
@@ -865,179 +365,39 @@ typedef struct MdlCountNode {
 } MdlCountNode;
 
 void mdlHandleViewerNodeCursorInput(void);
-
 extern char D_003ABDA8[];
-
 extern char D_003BBC88[];
-
 void mdlDrawViewerTexturePreview(void);
-
 u32 mdlUpdateViewerNodeCursorTask(void);
-
 s32 mdlIsDebugTimeGraph(void);
-
-extern void mdlSaveViewerPresentationConfig(void);
 
 /* Debug menu: page 0 selects an action, pages 1-4 edit the color channels and value steps. */
 void mdlUpdateViewerSettingsInput(void);
-
-extern const s32 D_00367B38[];
-
-extern const char *D_00367B60[];
-
-extern const char *D_00367B70[];
-
-extern char D_003BBC90[];
-
-extern char D_003BBC98[];
-
-extern char D_003BBCA0[];
-
-extern char D_003BBCA8[];
-
 void mdlDrawViewerSettings(void);
-
 u32 mdlRunViewerSettingsTask(void);
-
-/* Sum context-wide and selected-entry list counts, retaining both lookups. */
 s32 mdlCountActiveRecords(void);
-
-/* Count the context-wide list before the selected-entry list for cursor lookup. */
 MdlRecord *mdlGetSelectedRecord(void);
-
 extern MdlRecord *mdlGetSelectedRecord(void);
-
 void mdlUpdateViewerMarkEditorInput(void);
-
 extern const char D_003ABEB0[];
-
 extern const char D_003BBCB0[];
-
 void mdlDrawViewerEffectRecordList(void);
-
 u32 mdlRunViewerEffectEditorTask(void);
-
 s32 mdlRequestViewerExitOnce(void);
-
 extern sdfGrOt_t mdlData5;
-
 extern f32 mdlSubmitViewerIntermediateDrawPacketData[][4];
-
 extern u32 mdlSubmitViewerIntermediateDrawPacketData2[];
-
-/* Submit the intermediate packet with an identity basis in phases 2 and 3. */
 void mdlSubmitViewerIntermediateDrawPacket(void);
-
 extern f32 mdlSubmitViewerResourceDrawPacketData[][4];
-
 extern u32 mdlSubmitViewerResourceDrawPacketData2[];
-
 extern s32 D_003BBCB8;
-
 extern void sdfDumpHexLine(s32 packet, s32 arg);
-
-/* Submit the selected resource in phase 3; keep the native bitwise input/once-flag test. */
 void mdlSubmitViewerResourceDrawPacket(void);
-
 void mdlViewerTaskDestroy(void);
-
-void mdlRestartViewerPhaseTask(void);
-
-extern s8 D_00398636[];
-
-extern s8 D_00324532[];
-
-extern u8 aViewTarget[];
-
-extern u8 aViewDown[];
-
-extern u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *);
-
-extern s32 sdfGrAllocPacketBuff(s32 size);
-
-s32 mdlViewer(dds3ProcessID_t *task);
-
 extern f32 mdlDrawMapPositionRecordsData[][4];
-
 extern u32 mdlDrawMapPositionRecordsData2[];
-
-/* Walk native 64-byte map-position records and submit their visualization in one packet list. */
 void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource);
-
-extern sdfGrOt_t D_003255A8;
-
-extern sdfGrOt_t *D_dds1_00325788[13][4];
-
-s32 mdlViewerEnd(dds3ProcessID_t *task);
-
-extern char D_00367AF8[];
-
-extern char D_003BBCC0[];
-
-extern char D_003BBCC8[];
-
-extern char D_003BBCD0[];
-
-extern char D_003BBCD8[];
-
-extern sdf3DFogParam_t D_dds1_00324790;
-
-void mdlLoadViewerPresentationConfig(void);
-
-extern const char D_003ABF18[0x60] __attribute__((aligned(8)));
-
-void mdlSaveViewerPresentationConfig(void);
-
-extern s32 fclEncycFreeEntries(const char *);
-
-extern MdlEyeVec D_00367CD0;
-
-extern MdlEyeVec D_003246C0;
-
-/* Load viewer config/resources, initialize view state and recreate the viewer tasks. */
-void mdlInitializeViewerTasksAndResources(void);
-
-/* Clear each occupied resource slot before destroying its context; retain the native scan form. */
 void mdlFreeViewResources(void);
-
-extern void fclEncycAllocEntry(const char *name, s32, s32, s32);
-
-void mdlCleanupViewerTasksAndResources(void);
-
-extern MdlLightEditorState D_00367D30;
-
-extern MdlOptionLabel D_00367CE0[4];
-
-extern u16 D_00367D10[16];
-
-extern s8 D_00324520[16];
-
-extern sdf3DLight_t *D_00324770[3];
-
-extern f32 D_dds1_00324780[4];
-
-extern char D_003BBCF8[];
-
-extern char D_003BBD00[];
-
-extern sdfGrOt_t D_00325708;
-
-extern void dds3DebugFloatEditEx(f32 *value, u8 *padState, f32 min, f32 max, f32 step, f32 bigStep);
-
-extern void dds3PrimDebugTextBox(void *packetList, s32 x, s32 y, s32 selected, f32 *values);
-
-/* Direction-preview packet builder consumes the vector loaded in vf10. */
-extern void *dds3PrimLine3D(s32, s32, s32, s32);
-
-extern void FromRotation(f32 angle);
-
-/* vu0 routine: rotate the light editor vector by two degrees about pad-selected camera axes. */
-void mdlSetDebugMatrix(MdlLightEditorState *context, f32 *position);
-
-/* Update/draw the task-selected light and ambient editor; return zero. */
-s32 mdlDebugPrintEffectScale(dds3ProcessID_t *task);
-
-void mdlDebugTextBox(s32 first, s32 second, s32 color, s32 variant);
 
 typedef struct MdlValueEdit {
     s32 y;
@@ -1047,48 +407,6 @@ typedef struct MdlValueEdit {
     const char *label;  /* 0x10 */
     const char *format; /* 0x14 */
 } MdlValueEdit;
-
-extern MdlValueEdit D_00367D58[];
-
-/* Step the number being edited in table slot `index`: coarse steps (A) and fine steps (B),
-   held-button repeat, wrapping from one end of [min, max] to the other on a fresh press. */
-void mdlGetDebugEntry(s32 valueEditIndex);
-
-extern MdlOptionLabel D_00367D48;
-
-extern char D_003BBD38[];
-
-extern s8 D_00398638[16];
-
-/* Edit the draw-vector target: four numeric rows and three packed-colour channels. */
-s32 mdlDebugPrintEffectScale2(dds3ProcessID_t *task);
-
-extern MdlOptionState D_003D7B60;
-
-extern MdlOptionLabel D_00367DB8[4];
-
-extern u16 D_00367DE8[4] __attribute__((section(".data")));
-
-extern f32 sdfFaceDivSoften;
-
-extern f32 sdfFaceDivBias;
-
-/* The selector occupies byte zero of its aligned small-data allocation. */
-extern u8 corePktSoftenBias __attribute__((section(".sdata")));
-
-extern const char D_003BBD58[];
-
-extern const char D_003BBD60[];
-
-extern const char D_003BBD68[];
-
-extern const char D_003BBD70[];
-
-extern const char D_003BBD78[];
-
-/* Update/draw the FACE-DIV soften, bias and divide controls; return zero. */
-s32 soften_bias_Process(dds3ProcessID_t *task);
-/* End of declarations from src/dds1/model/mdlEffect.c */
 
 u64 *mdlBuildViewerRectanglePacket(s32 x, s32 y, s32 depth, s32 width, s32 height) {
     return dds3PrimFrameRect(x, y, depth, width, height, 0x30000000, 0x60404040);

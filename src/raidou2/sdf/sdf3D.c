@@ -1,20 +1,9 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdf3D.c */
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "fpu.h"
-
 #include "ps2asm.h"
-
 #include "sdf_lighting.h"
-
-#include "libsdf.h"
-
 #include "sdf_resource.h"
-
 #include "eeregs.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
@@ -124,11 +113,8 @@ void sdfMatInitSystem(void);
 
 /* Initialize the buffered object-list release queue with its object destructor. */
 void sdfModelInitSystem(void);
-
 extern addr_t sdf3DLightDefault;
-
 extern addr_t sdf3DFogDefault;
-
 extern f32 sdf3DEyeOffset[4];
 
 /* Shared byte-storage view: the local screen structs are not compatible C types. */
@@ -147,11 +133,8 @@ extern u8 sdf3DScreenParam[];
 #define SDF_VIF_MSCAL_COMMAND 0x14000000
 
 extern u8 vu1MicroPacket[];
-
 extern u8 vu1MicroPacketEnd[];
-
 extern u8 sdf3DScreenTm[];
-
 extern u8 sdfCameraTm[];
 
 /* DMA/VIF prefix, left/right projection terms, then a one-register GIF write
@@ -174,9 +157,7 @@ typedef struct sdf3DFogPacket_t {
 } sdf3DFogPacket_t;
 
 extern u64 sdf3DRefMapParam;
-
 extern u8 sdf3DSlot2TmxData[];
-
 extern u8 sdf3DSlot1TmxData[];
 
 /* The camera, as sdf3DMakeScreenParam derives it: twelve inputs, then the
@@ -206,14 +187,11 @@ void sdfDrawTagLinkRef(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
 u64 sdfTexGetTex0Reg(sdfTexHandle_t *aHandle);
-
 u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
-
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
 
 /* Acquire a texture from a serialized texture-file header. */
 struct sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
-
 struct sdfTexHandle_t *sdfTexSetDirect(const TMX_HEADER_t *aTex);
 
 /* Generated 128x64 grayscale power lookup texture: a serialized texture
@@ -227,91 +205,29 @@ typedef struct sdf3DSpecularTexImage_t {
 } sdf3DSpecularTexImage_t;
 
 extern sdfTexHandle_t *sdf3DSlot2Tex;
-
 extern sdfTexHandle_t *sdf3DSpecularTex;
-
 extern sdfTexHandle_t *sdf3DSlot1Tex;
-
 extern void sdfTmxSetHeader(TMX_HEADER_t *, s32, s32, s32, s32, s32);
-
 extern s32 vu1Tex0Slot0[];
-
 extern s32 vu1Tex0Slot2[];
-
 extern s32 vu1Tex0Slot1[];
-
 extern void *memcpy(void *, const void *, size_t);
-
 void ReverseMatrix(void);
-
 void MultMatrixRev(const void *aMatrix);
-
 void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera);
-
 void sdf3DSetCamera(sdf3DScreenParam_t *aParam, void *aCamera);
-
 void sdf3DMakeFogPacket(sdf3DFogPacket_t *aPacket, sdf3DFogParam_t *aParam);
-
 void sdf3DMakeDirectRefPacket(DmaPacketHeader *aPacket, addr_t aData, s32 aLeng);
-
 void sdf3DLinkInitPacket(sdfDrawTag_t *aTag, DmaPacketHeader *aPacket);
-
 void sdf3DInitSpecularTex2(void);
-
 void sdf3DInit(void);
-
-void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera);
-
-void sdf3DSetCamera(sdf3DScreenParam_t *aParam, void *aCamera);
-
 void sdf3DSetDefaultLight(u8 *aLight);
-
 void sdf3DSetDefaultFog(u8 *aFog);
-
-extern f32 tanf(f32 angle);
-
-extern void MultMatrix(const void *matrix);
-
-/* vu0 routine: compose the perspective matrix and clip-to-screen mapping. */
-void sdf3DMakeScreenParam(sdf3DScreenParam_t *camera);
-
 extern f32 sdf3DUpVector[];
-
 extern void DiagMatrix(void);
-
 extern sdfMemHandle_t *sdfMemAllocDirect(s32 size);
-
 extern void *memset(void *dst, s32 value, size_t size);
-
-/* vu0 routine: parallel-light packet and lighting basis construction */
 void sdf3DMakeLightParallelPacket(sdf3DLightParallelPacket_t *aPacket, sdf3DLight_t **aLights, sdfVector4_t *aAmbient);
-
-void sdf3DMakeFogPacket(sdf3DFogPacket_t *aPacket, sdf3DFogParam_t *aParam);
-
-void sdf3DMakeDirectRefPacket(DmaPacketHeader *aPacket, addr_t aData, s32 aLeng);
-
-void sdf3DLinkInitPacket(sdfDrawTag_t *aTag, DmaPacketHeader *aPacket);
-
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 size);
-
-extern void *memset(void *dst, s32 value, size_t size);
-
-void sdf3DInitSpecularTex2(void);
-
-void sdf3DInit(void);
-
-extern addr_t sdf3DLightDefault;
-
-extern addr_t sdf3DFogDefault;
-
-extern sdfTexHandle_t *sdf3DSlot2Tex;
-
-extern sdfTexHandle_t *sdf3DSpecularTex;
-
-extern u64 sdf3DRefMapParam;
-
-extern sdfTexHandle_t *sdf3DSlot1Tex;
-/* End of declarations from src/smt3/sdf/sdf3D.c */
 
 void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera) {
     aPacket->quadwords = 0xC;

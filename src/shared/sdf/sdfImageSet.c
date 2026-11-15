@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfImageSet.c */
-#include "common.h"
-
 #include "eeregs.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 /* GS pixel storage modes, the values of sdfGsMemSlice_t.pixelFormat. */
@@ -28,12 +22,8 @@ enum sdf_psm
 };
 
 extern void *sdfChipAllocDirect(u32 aSize);
-
 extern void sdfChipFreeDirect(void *aPtr);
-
 extern s32 iWakeupThread(s32 threadId);
-
-extern void (*sdfGsErrorHandler)(s32 size, s32 type);
 
 /* sdfImageSetPacket_tag.freeMode: which heap owns the uploaded pixels. */
 enum SdfImageSetMem
@@ -83,59 +73,31 @@ typedef struct sdfImageSetReqParam
 } sdfImageSetReqParam_t;
 
 extern s32 WaitSema(s32 semaId);
-
 extern s32 SignalSema(s32 semaId);
-
 extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-
 extern void *sdfChipAllocZeroDirect(u32 aSize);
-
 extern s32 sdfChipCheck(void *aPtr);
-
 extern sdfMemHandle_t *sdfMemGetHandleByPtr(void *aPtr);
-
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-
 extern s32 GetThreadId(void);
 
 #include "sdk_libkernl.h"
 
 extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
-
 extern void *sceDmaGetChan(s32 channel);
-
 extern s32 sceDmaSend(void *chan, void *packet);
-
 extern void FlushCache(s32 mode);
-
 extern void SleepThread(void);
-
 extern sdfImageSetCb_t sdfImageSetCb;
-
 extern u64 sdfImageSetTexFlushPacket[];
-
 s32 sdfImageDataSize(u32 format, s32 width, s32 height);
-
 s32 sdfImageSetDmacHandler(s32 channel, s32 threadId);
-
 void sdfImageSetClearCb(sdfImageSetCb_t *cb);
-
-s32 sdfImageDataSize(u32 format, s32 width, s32 height);
-
 void sdfImageSetReq(sdfImageSetReqParam_t *parm);
-
 void sdfImageSetChainTag(u32 head, sdfImageSetTag_t *tail);
-
 void sdfImageSetChainReleaseMem(saddr_t p);
-
-void sdfImageSetClearCb(sdfImageSetCb_t *cb);
-
-s32 sdfImageSetDmacHandler(s32 channel, s32 threadId);
-
 void sdfImageSetTrans(void);
-
 void sdfImageSetInit(void);
-/* End of declarations from src/smt3/sdf/sdfImageSet.c */
 
 s32 sdfImageDataSize(u32 format, s32 width, s32 height)
 {

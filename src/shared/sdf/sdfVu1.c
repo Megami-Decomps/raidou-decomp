@@ -1,14 +1,7 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfVu1.c */
-#include "common.h"
-
 #include "eeregs.h"
-
 #include "ps2asm.h"
-
 #include "sdf_lighting.h"
-
 #include "sdf_resource.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
@@ -87,22 +80,15 @@ typedef struct sdfCorePacketFaceDivParm_t {
 #define SDF_VU_TEXTURED_FLAG 0x10
 
 extern addr_t corePktCurrLight;
-
 extern u128 *corePktFaceList[][3];
-
 extern u16 corePktPrimBase;
-
 extern u8 corePktSoftenBias;
-
 extern u16 corePktBackFaceList[];
-
 extern f32 corePktZBias;
-
 extern f32 sdf3DEyeOffset[4];
 
 /* Shared byte-storage view: the local screen structs are not compatible C types. */
 extern u8 sdf3DScreenParam[];
-
 extern u8 corePktWorldLightMtxCache[];
 
 /* Native 0xA0-byte draw-entry block allocated by SDF_ASSET_DRAW_ENTRY_BYTES. */
@@ -136,13 +122,9 @@ typedef struct sdfMatPacket_t {
 #include "sdfCorePacketCb_t.h"
 
 void corePktEmitTexTris(sdfCorePacketCb_t *work);
-
 void corePktEmitTris(sdfCorePacketCb_t *work);
-
 extern void corePktXfmUV(void *vertices, s32 count, void *uv, void *transform);
-
 extern void corePktApplyFaceDivColor(sdfCorePacketCb_t *cb, void *parameters);
-
 extern void sdfGrClosePacketBuff(addr_t aBuffPtr);
 
 void corePktEmitTexTrisCtx2(sdfCorePacketCb_t *cb, u64 samplingState, u64 textureState,
@@ -164,11 +146,6 @@ typedef struct sdfTexPacket_t {
     u64 clampRegister; /* GS CLAMP_1/CLAMP_2 register selector. */
 } sdfTexPacket_t;
 
-/* Acquire a texture from a serialized texture-file header. */
-struct sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
-
-struct sdfTexHandle_t *sdfTexSetDirect(const TMX_HEADER_t *aTex);
-
 /* Read the active packet cursor or restore it at a quadword boundary. */
 s32 sdfGrOpenPacketBuff(void);
 
@@ -187,13 +164,9 @@ static inline sdfCorePacketPointBuff_tag *AllocNode(sdfCorePacketCb_t *work) {
 }
 
 extern saddr_t corePktPointBuff;
-
 extern void corePktRelightBackFaces(u32 cb, s32 count);
-
 void corePktSetupPointBuff(sdfCorePacketCb_t *cb, s32 vertCount);
-
 void corePktInitCb(sdfCorePacketCb_t *cb, u16 *packetHdr, u32 attrMask);
-
 void corePktLoadWorldLightMtx(void *vectors);
 
 void corePktMakeFaceDivParm(sdfCorePacketFaceDivParm_t *result, u32 reference, u32 packedColor,
@@ -201,76 +174,20 @@ void corePktMakeFaceDivParm(sdfCorePacketFaceDivParm_t *result, u32 reference, u
                    f32 blend, f32 scale, f32 y);
 
 void corePktSetFaceDivParm(sdfCorePacketFaceDivParm_t *out, sdfMatPacket_t *work, u32 packedColor, f32 deltaX, f32 deltaY);
-
 void corePktLerpUVColorChain(sdfCorePacketPointBuff_tag *node);
-
 void corePktSetConstColor(sdfCorePacketCb_t *cb, u32 color);
-
 void corePktMakeEdgePoint(sdfCorePacketPointBuff_tag *out, sdfCorePacketPointBuff_tag *first, sdfCorePacketPointBuff_tag *second);
-
 void corePktClipFace(sdfCorePacketCb_t *cb);
-
 void corePktBuildFaceList(sdfCorePacketCb_t *cb);
-
 void corePktBuildBackFaceList(sdfCorePacketCb_t *cb);
-
 void corePktEmitBase(sdfCorePacketCb_t *cb);
-
 void corePktEmitAllPasses(sdfCorePacketCb_t *cb);
-
 void corePktOpenAndEmit(sdfCorePacketCb_t *cb);
-
-void sdfVu1Init(void);
-
-void corePktSetupPointBuff(sdfCorePacketCb_t *cb, s32 vertCount);
-
-void corePktInitCb(sdfCorePacketCb_t *cb, u16 *packetHdr, u32 attrMask);
-
-/* vu0 routine: rotate the basis at vectors+0x40 into vf24-vf26 and cache the original vectors. */
-void corePktLoadWorldLightMtx(void *vectors);
-
-/* vu0 routine: modulate and clamp packed colors against the reference rows. */
-void corePktMakeFaceDivParm(sdfCorePacketFaceDivParm_t *result, u32 reference, u32 packedColor,
-                   u32 firstColor, u32 secondColor,
-                   f32 blend, f32 scale, f32 y);
-
-void corePktSetFaceDivParm(sdfCorePacketFaceDivParm_t *out, sdfMatPacket_t *work, u32 packedColor, f32 deltaX, f32 deltaY);
-
-/* vu0 routine: lerp of the XY pair at +0x30 by the weight at node + 0x40 */
 void corePktLerpUVChain(sdfCorePacketPointBuff_tag *node);
-
-/* vu0 routine: lerp of two source rows (+0x20, +0x30) by the weight at node + 0x40 */
-void corePktLerpUVColorChain(sdfCorePacketPointBuff_tag *node);
-
-void corePktSetConstColor(sdfCorePacketCb_t *cb, u32 color);
-
-/* vu0 routine: interpolate a clip vertex between two source rows, COP2 macro math only */
-void corePktMakeEdgePoint(sdfCorePacketPointBuff_tag *out, sdfCorePacketPointBuff_tag *first, sdfCorePacketPointBuff_tag *second);
-
-/* vu0 routine: native clip facing and ordinary triangle fans. */
-void corePktClipFace(sdfCorePacketCb_t *cb);
-
-/* vu0 routine: native clip-plane setup and ordinary triangle fans. */
-void corePktBuildFaceList(sdfCorePacketCb_t *cb);
-
-void corePktBuildBackFaceList(sdfCorePacketCb_t *cb);
-
 void corePktEmitTexTris();
-
-void corePktEmitTexTrisCtx2(sdfCorePacketCb_t *cb, u64 samplingState, u64 textureState, u64 clampState, u64 alphaState, s32 clearPrimitiveFlags);
-
 void corePktEmitTris();
-
-void corePktEmitBase(sdfCorePacketCb_t *cb);
-
 void corePktEmitMultiTexPass(sdfCorePacketCb_t *cb);
-
-void corePktEmitAllPasses(sdfCorePacketCb_t *cb);
-
-void corePktOpenAndEmit(sdfCorePacketCb_t *cb);
-
 u64 *corePktClosePacket(sdfCorePacketCb_t *cb);
-/* End of declarations from src/smt3/sdf/sdfVu1.c */
 
 void corePktSetupPointBuff(sdfCorePacketCb_t *cb, s32 vertCount) {
     void *ringEnd = (u8 *)cb + 0x78;

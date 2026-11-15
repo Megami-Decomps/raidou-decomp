@@ -1,185 +1,56 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/basic/dds3UnitObjectBasic.c */
-#include "common.h"
-
 #include "basic.h"
-
 #include "dds3obj.h"
-
 #include "event.h"
-
 #include "model.h"
-
 #include "ps2asm.h"
-
-/* Declared here because no header carries these. */
-extern void *memset(void *a, s32 b, size_t c);
 
 typedef struct {
     u8 unk00[0x64];
     u32 flag;
 } dds3LinkedLightWork_t;
 
-extern dds3Basic_t *dds3AddSceneBasicData(s32 type);
-
 extern void dds3DeleteSceneBasicData(dds3Basic_t *basic);
-
-extern void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
-
-extern void dds3SetRadiusPoseSet(dds3PoseSet_t *pose);
-
-extern dds3Basic_t *dds3AreaBasicGetFastArea(void);
-
-extern void dds3ObjectBaseSetControlBasicType(dds3Basic_t *pObjectBasic, dds3Basic_t *pItemBasic, s32 itemType);
-
-extern s32 dds3ObjectBaseRegistArea(dds3Basic_t *pObjectBasic);
-
 extern void dds3FreePoseSet(dds3Basic_t *basic);
-
 extern void evtDeleteUnitHandle(struct evtUnit_t *h);
-
 extern void dds3ObjectBaseFreeModelHandle(dds3Basic_t *pObjectBasic);
-
 extern void sdfChipFreeDirect(void *aPtr);
-
 extern void dds3UnlinkLightObjectFromUnitObject(dds3Basic_t *unitbasic, s32 frame);
-
 extern void dds3LinkLightObjectToUnitObject(dds3Basic_t *lightbasic, dds3Basic_t *unitbasic, s32 frame);
-
 extern dds3Basic_t *dds3GetControlScene(void);
-
 extern dds3BasicArrayHandle_t *dds3SceneBasicGetList(dds3Basic_t *pBasic, s32 type);
-
 extern u16 dds3GetBasicArrayCount(dds3BasicArrayHandle_t *hndl);
-
 extern void dds3FreeBasicArrayHandle(dds3BasicArrayHandle_t *hndl);
-
 extern s32 dds3SetFirstBasicArray(dds3BasicArrayHandle_t *hndl);
-
 extern dds3Basic_t *dds3GetBasicArray(dds3BasicArrayHandle_t *hndl);
-
 extern s32 dds3SetNextBasicArray(dds3BasicArrayHandle_t *hndl);
-
 extern s32 dds3ComparePosPoseSet2(dds3PoseSet_t *first, dds3PoseSet_t *second);
-
 void dds3UnitObjectBasicEL_LinkFree(dds3Basic_t *unitBasic);
-
-dds3ObjectBaseControlWorkData_t *dds3UnitObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
-
-dds3Basic_t *dds3AddUnitObjectBasic(s32 serialID, void *aPos, void *aRot);
-
 void dds3DeleteUnitObjectBasic(dds3Basic_t *aPtr);
-
 s32 dds3GetStatusUnitObjectBasic(dds3Basic_t *aPtr);
-
 struct evtUnit_t *dds3GetUnitHandleObjectBasic(dds3Basic_t *b);
-
 void dds3UnitObjectBasicSetOt(dds3Basic_t *aPtr, s32 idx);
-
-extern void dds3InitPoseSet(dds3Basic_t *basic);
-
-extern void *sdfChipAllocDirect(u32 size);
-
-extern void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 mask);
-
-s32 dds3UnitObjectBasicConstructor(dds3Basic_t *basic);
-
 void dds3UnitObjectBasicDestructor(dds3Basic_t *aPtr);
-
-extern s32 evtUnitManagerPrimaryFunc(dds3PoseSet_t *pose, dds3Basic_t *basic);
-
-extern void dds3BackupPoseSet(dds3PoseSet_t *pose);
-
-extern void dds3GetSclPoseSetMCR(dds3Basic_t *basic, const sdfVector4_t *scale);
-
-extern void dds3AddRotPoseSet(dds3Basic_t *basic, const sdfVector4_t *rotation);
-
-extern void dds3GetPosPoseSetMCR(dds3Basic_t *basic, const sdfVector4_t *position);
-
-extern s32 dds3CheckPoseSetFlag(dds3PoseSet_t *pose, u32 flag);
-
-extern void dds3OffPoseSetFlag(dds3PoseSet_t *pose, u32 flag);
-
-extern s32 mdlGetMajorNum(mdlObj_t *model);
-
-extern s32 mdlGetMinorNum(mdlObj_t *model);
-
-extern void mdlSetScale(mdlObj_t *model);
-
-extern void mdlSetRotate(mdlObj_t *model);
-
-extern void mdlSetPosition(mdlObj_t *model);
-
-extern f32 sdfSin(f32 angle);
-
-extern void FromRotation(f32 angle);
-
-extern void Mult(void);
-
-extern void Normalize(void);
-
-extern u8 dds3ObjectBaseCheckFlag(dds3Basic_t *basic, u32 flag);
-
 extern void dds3UnitObjectBasicEL_Link(dds3Basic_t *basic);
-
 extern const f32 dds3UnitAdditionalRotation[4];
-
 extern const f32 dds3UnitWobbleAxis[4];
-
-s32 dds3UnitObjectBasicMainProcedure(dds3Basic_t *basic);
-
-extern sdfModelOt_t sdfModelOtTable[];
-
-extern u8 dds3ObjectBaseCheckFlag(dds3Basic_t *basic, u32 flag);
-
-extern void dds3ObjectBaseModelLinkOt(sdfModelOt_t *ot, dds3Basic_t *basic);
-
-extern void fldSdwDraw(dds3Basic_t *basic);
-
-extern void dds3DrawUnitObjectShadow(s32 alpha, f32 x, f32 y, f32 z, f32 radius);
-
-extern s32 sdfModelGetMarkPos(sdfModelRootNode_t *root, s32 mark);
-
-extern s32 dds3CheckPoseSetFlag(dds3PoseSet_t *pose, u32 flag);
-
-s32 dds3UnitObjectBasicDrawProcedure(dds3Basic_t *basic);
-
-void dds3UnitObjectBasicEL_LinkFree(dds3Basic_t *unitBasic);
-
-/* Detach a light when leaving its radius, then select the first eligible light. */
 void dds3UnitObjectBasicEL_Link(dds3Basic_t *unitBasic);
-
 extern const f32 dds3UnitAdditionalRotation[4] __attribute__((aligned(16)));
 
-extern const f32 dds3UnitWobbleAxis[4];
-/* End of declarations from src/smt3/basic/dds3UnitObjectBasic.c */
-
-/* Declarations from dds-decomp src/dds1/game/code_001130E0.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
 
 #define SMT3_DEFINES_dds3LinkedLightWork_t 1
 
-#include "basic.h"
-
 #include "dds/bill_object_api.h"
-
 #include "dds/dds3_object_flags.h"
-
 #include "dds/dds3obj.h"
-
 #include "dds/eff_event.h"
-
 #include "dds/eff_event_sound.h"
-
 #include "dds/eff_node.h"
-
 #include "dds/eff_transform.h"
-
 #include "dds/sdf_model.h"
-
 #include "dds/sdf_trig.h"
 
 /* Sparse world-node identities recovered from the paired operation tables and
@@ -210,85 +81,25 @@ enum {
     OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
 };
 
-void dds3BillboardDelete(struct billHandle_t *obj);
-
-void dds3EffectDelete(EffNode *node);
-
-void dds3GetPosPoseSet(dds3Basic_t *object);
-
-void dds3GetRotPoseSet(dds3Basic_t *object);
-
-void *dds3ObjectBaseGetModelHandle(dds3Basic_t *object);
-
-void dds3ObjectBaseOffFlag(struct dds3Basic_t *object, u32 mask);
-
-dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *world, u32 key, s32 kind);
-
-void effEveBEDCutDelete(effEveBEDCutHandle_t *work);
-
-void effEveBEDDelete(struct SoundMixer *mixer);
-
-/* Angles are in radians; cosine applies a pi/2 shift to the sine input. */
-f32 sdfAtan2(f32 y, f32 x);
-
-/* Refresh the current per-node transforms from the model's selected frame. */
-void sdfModelEvalTm(dds_sdfModelRootNode_t *model);
-
 #include "dds/sdk_ps2.h"
-
 #include "dds/mdl.h"
-
 #include "dds/common.h"
-
 #include "dds/sdf_map_position_api.h"
-
 #include "dds/sdf_vu0.h"
-
 #include "dds/sdf_vu_matrix.h"
-
-#include "dds/sdf_trig.h"
-
-#include "dds/sdf_model.h"
-
 #include "dds/sdf_chunk.h"
-
 #include "dds/sdf_chip.h"
-
-#include "dds/dds3obj.h"
-
 #include "dds/dds3_basic_array_cursor.h"
-
-#include "dds/dds3_object_flags.h"
-
 #include "dds/eff_dependency.h"
-
 #include "dds/pcp_vu0.h"
-
 #include "dds/eff_object.h"
-
 #include "dds/evt_world_source_transform.h"
-
 #include "dds/evt_unit.h"
-
 #include "dds/evt_unit_motion_step_result.h"
-
 #include "dds/eff.h"
-
-#include "dds/eff_node.h"
-
-#include "dds/eff_event.h"
-
-#include "dds/eff_event_sound.h"
-
 #include "dds/btl_sound.h"
-
-#include "dds/bill_object_api.h"
-
 #include "dds/effect_value_object.h"
-
 #include "dds/fld_actor_motion_step_result_api.h"
-
-extern u32 effObjOpacityPassEnabled;
 
 /* Mode 0 is the initialized neutral tint; other values describe the native
  * alpha updates performed by the paired transform renderer. */
@@ -312,99 +123,19 @@ enum {
 
 #include "dds/dds3_world_secondary.h"
 
-/* Return the signed shortest turn from one degree angle to another.
- * The cast before modulo intentionally discards fractional degrees. */
 f32 dds3ShortestAngleDelta(f32 fromDegrees, f32 toDegrees);
-
-extern f32 EulerAngleAxisY(void);
 
 #define EFFECT_HEADING_DEGREES_PER_RADIAN_APPROX 57.32484055f
 
 #define EFFECT_HEADING_RADIANS_TO_DEGREES 57.29577637f
 
-void effObjStepFollowAngleTowardPosition(dds3Basic_t *obj, const f32 *targetPosition);
-
-void effObjStepFollowAngleTowardZero(dds3Basic_t *object);
-
-void evtArmEffectObjectPendingValue(dds3Basic_t *obj, s32 value);
-
-void evtResetObjectPendingValue(dds3Basic_t *obj);
-
-s32 effObjInitializeFollowModelData(dds3Basic_t *object);
-
 typedef struct EffVec4 {
     f32 v[4];
 } EffVec4;
 
-extern EffVec4 D_0039F720;
-
-extern EffVec4 D_0039F730;
-
-extern EvtUnitMotionStepResult evtUpdateUnitMotion(dds3PoseSet_t *, dds3Basic_t *);
-
-extern void effObjStepFollowAngleTowardZero(dds3Basic_t *object);
-
-extern void effObjStepFollowAngleTowardPosition(dds3Basic_t *obj, const f32 *targetPosition);
-
-extern void *dds3GetWorldNodeData(dds3Basic_t *node);
-
-/* Per-frame refresh of a model effect object: rebuild the child transform from the follow record (a tilt that wobbles with its angle), then run the timed callbacks. */
-s32 effUpdateFollowModelTransform(dds3Basic_t *obj);
-
-extern void effObjApplyTransformParameters(sdfGrOt_t **, dds3Basic_t *);
-
-extern void fldDrawEffectObjectShadow(dds3Basic_t *);
-
-extern sdfGrOt_t *D_dds1_00325788[13][4];
-
 struct WorldIndexNode;
 
-dds3Basic_t *dds3AddMatterObjectBasic(s32 key, f32 *offset, f32 *rotation);
-
-void dds3DeleteMatterObjectBasic(dds3Basic_t *node);
-
-void dds3MatterObjectBasicSetOt(dds3Basic_t *object, s32 activeId);
-
-void dds3MatterObjectBasicSetHojiID(dds3Basic_t *obj, u32 roomNumber);
-
-u32 dds3MatterObjectBasicGetHojiID(u32 id);
-
 #include "dds/dds3_object_payload.h"
-
-/* Payload word 8 is interpreted by object kind, not always as a pointer. */
-void dds3MatterObjectBasicSetAlpMode(dds3Basic_t *object, u32 value);
-
-u32 dds3MatterObjectBasicGetAlpMode(const dds3Basic_t *object);
-
-void effObjSetOpacityPassEnabled(u32 value);
-
-s32 dds3MatterObjectBasicConstructor(dds3Basic_t *object);
-
-void dds3MatterObjectBasicDestructor(dds3Basic_t *object);
-
-extern void dds3GetTMPoseSet(dds3Basic_t *object);
-
-s32 effUpdateTransformOpacityMode(dds3Basic_t *object);
-
-extern void rsetOtOfs(s32 index);
-
-extern void rsetTest(s32, s32, s32, s32, s32, s32, s32, s32);
-
-extern dds3Basic_t *fldPlayerObject;
-
-/* Submit the normal pass and the opacity-mode pass, temporarily neutralizing
- * the tint while the player is hidden. */
-s32 effObjSubmitTransformOpacityPasses(dds3Basic_t *object);
-
-/* Refresh the object's stored xyz from the source vector. */
-void dds3RefreshStoredVec3(dds3Basic_t *object);
-
-/* Release each dependency according to the active state, clearing ownership
- * before releasing the next dependency. State 4 only borrows its handle. */
-void FreeEffectData(EffectDependencyState *state);
-
-s32 dds3EffectObjectBasicConstructor(dds3Basic_t *obj);
-/* End of declarations from src/dds1/game/code_001130E0.c */
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3AddUnitObjectBasic);
 

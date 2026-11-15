@@ -1,8 +1,5 @@
 #include "common.h"
 
-/* Declarations from smt3-decomp src/smt3/sdk/libipu.c */
-#include "common.h"
-
 #define IPU_CMD  (*(volatile u32 *)0x10002000)
 
 #define IPU_CTRL (*(volatile u32 *)0x10002010)
@@ -27,18 +24,6 @@
 
 #define D_ENABLEW (*(volatile u32 *)0x1000F590)
 
-extern s32 DIntr(void);
-
-extern s32 EIntr(void);
-
-/* The sibling that drives channel 3; the IDB still carries the object's
- * gcc2_compiled label as its name. */
-extern void ipuWriteFromIpuChcr(u32 chcr);
-
-void ipuWriteFromIpuChcr(u32 chcr);
-
-void setD4_CHCR(u32 chcr);
-
 typedef struct sdfIpuDmaRegs_t {
     u32 inputAddress;
     u32 inputTagAddress;
@@ -51,24 +36,13 @@ typedef struct sdfIpuDmaRegs_t {
     u32 ipuControl;
 } sdfIpuDmaRegs_t;
 
-void sceIpuStopDMA(sdfIpuDmaRegs_t *state);
-
-/* The saved input count occupies $a0 only while forming the pre-call DMA
- * snapshot. See docs/matching/sdk/libipu.md for the allocation ablation. */
-void sceIpuRestartDMA(sdfIpuDmaRegs_t *state);
-
-u32 sceIpuSync(s32 mode);
-
 void gcc2_compiled__8(u32 chcr);
-
 extern u128 ipuDefaultQuantizerMatrices[5] __attribute__((aligned(16)));
-
 extern u128 ipuDefaultVqClut[2] __attribute__((aligned(16)));
 
 #define IPU_FIFO (*(volatile u128 *)0x10007010)
 
 void sceIpuInit(void);
-/* End of declarations from src/smt3/sdk/libipu.c */
 
 void sceIpuInit(void)
 {

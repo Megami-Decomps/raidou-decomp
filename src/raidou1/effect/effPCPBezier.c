@@ -1,14 +1,7 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/effect/effPCPBezier.c */
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
-
 #include "effect.h"
-
 #include "sdfFrame.h"
 
 typedef struct effBezierBED_t effBezierBED_t;
@@ -92,124 +85,32 @@ typedef struct effBezierDrawParam_t {
 } effBezierDrawParam_t;
 
 extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
-
 extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-
 extern sdfMat_t *sdfMatNew(void);
-
 extern void sdfMatSetConstant(sdfMat_t *aMat, f32 aRatio);
-
-extern void sdfMatFreeDelayed(sdfMat_t *aMat);
-
 extern void *memcpy(void *a, const void *b, size_t c);
-
 extern void *memset(void *a, s32 b, size_t c);
-
 extern effBezierBED_t *effEveBEDCreate(effBezierBED_t *pData);
-
 extern void effEveBEDDelete(effBezierBED_t *hEveBED);
-
 extern effBezierCut_t *effEveBEDCutCreate(effBezierBED_t *hEveBED, s32 CutNum, effBezierPlacement_t *pParams);
-
 extern void effEveBEDCutDelete(effBezierCut_t *hEveBEDCut);
-
 extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
-
-extern s32 sdfGrAllocPacketBuff(s32 aSize);
-
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-
-extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag, void *aAllocator);
-
-extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat, void *aAllocator);
-
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
-extern void *effPkt3DPrimMakePoly(effBezierDrawParam_t *aParm);
-
 extern effBezierDrawParam_t dds3BezierVertexCount, dds3BezierTrackPolyVertex;
-
 extern const f32 dds3BezierTrackPolyInitVertex[8][4];
-
 extern const u32 dds3BezierVertexCountIndices[28], dds3BezierTrackPolyVertexIndices[8];
-
-extern sdfGrOt_t *dds3BezierTrackPolyParam[];
-
 dds3BezierTrackPoly_tag *dds3BezierTrackPolySetVertex(s32 hPoly, s32 pVertex);
-
 void dds3BezierTrackPolyCreate(dds3BezierTrackPoly_tag *face, u32 *split);
-
 void dds3BezierTrackPolyDelete(dds3BezierTrackPoly_tag *hPoly);
-
 effPCPBezierBill_tag *effPCPBezierBillCreate(const effPCPBezierBillParam_t *pParam, effBezierBED_t *pBEDData);
-
-effPCPBezierBill_tag *effPCPBezierBillCreatePCF(void *paramTable);
-
 effPCPBezierBill_tag *effPCPBezierBillCopy(effPCPBezierBill_tag *src);
-
 void effPCPBezierBillDelete(effPCPBezierBill_tag *hData);
-
-extern effRandState_t dds3EffectBase[];
-
 extern sdfVector4_t aViewEye, aViewTarget;
-
-extern u32 effBTLSkillCheckRun(void);
-
-extern s32 effBTLSkillGetTargetFormation(s32 number);
-
-extern s32 effBTLSkillGetInvokeFormation(void);
-
-extern void effBTLModelGetSphereCenter(s32 pFormation);
-
-extern f32 dds3GetRandFloatA(effRandState_t *name);
-
-extern u32 dds3GetRandA(effRandState_t *name);
-
-extern void SetRotateMatrixAxis(f32 aAngle, const f32 *aAxis);
-
-extern s32 effPCPBezierEval(effBezierCurve_t *curve, f32 *out);
-
-extern u32 effMagaCylinderCalcColor(u32 color, u32 scale);
-
-extern f32 sdfAtan2(f32 aY, f32 aX);
-
-extern void FromEuler(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
-
-extern void effEveBEDCutSetParams(effBezierCut_t *hEveBEDCut, const effBezierPlacement_t *pParams);
-
-extern void effEveBEDCutDraw(effBezierCut_t *hEveBEDCut);
-
-void dds3BezierTrackPolyReset(dds3BezierTrackPoly_tag *hPoly);
-
-void dds3BezierTrackPolySetVC(dds3BezierTrackPoly_tag *hPoly, u128 *pABGR);
-
-void dds3BezierTrackPolyDraw(dds3BezierTrackPoly_tag *hPoly);
 
 /* The ribbon and end-cap vectors are full 16-byte-aligned VU objects.
  * This donor-backed SDK store/readback pipeline is audited specifically here;
  * see docs/bezier-matching.md before changing its memory-access boundaries. */
 typedef f32 effBezierVector_t[4] __attribute__((aligned(16)));
-
-void effPCPBezierBillDraw(effPCPBezierBill_tag *group);
-
-void effPCPBezierBillSetPosition(void *dst, void *src);
-
-void effPCPBezierBillSetColor(effPCPBezierBill_tag *work, u32 color);
-
-dds3BezierTrackPoly_tag *dds3BezierTrackPolySetVertex(s32 hPoly, s32 pVertex);
-
-void dds3BezierTrackPolyDelete(dds3BezierTrackPoly_tag *hPoly);
-
-void dds3BezierTrackPolyReset(dds3BezierTrackPoly_tag *hPoly);
-
-void dds3BezierTrackPolyCreate(dds3BezierTrackPoly_tag *face, u32 *split);
-
-void dds3BezierTrackPolySetVC(dds3BezierTrackPoly_tag *hPoly, u128 *pABGR);
-
-void dds3BezierTrackPolyDraw(dds3BezierTrackPoly_tag *hPoly);
-/* End of declarations from src/smt3/effect/effPCPBezier.c */
 
 effPCPBezierBill_tag *effPCPBezierBillCreate(const effPCPBezierBillParam_t *pParam, effBezierBED_t *pBEDData)
 {

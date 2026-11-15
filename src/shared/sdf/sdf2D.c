@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdf2D.c */
-#include "common.h"
-
 #include "ps2asm.h"
-
 #include "sdf_lighting.h"
-
 #include "sdf_resource.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
@@ -95,53 +89,23 @@ typedef struct sdfTexPacket_t {
 
 /* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
 u64 sdfTexGetTex0Reg(sdfTexHandle_t *aHandle);
-
 u64 sdfTexGetTex1Reg(sdfTexHandle_t *aHandle);
-
 u64 sdfTexGetClampReg(sdfTexHandle_t *aHandle);
 
 /* DMA/VIF transfer header and packed A+D GIF tag, excluding register payload. */
 void sdfGrSetRegsPacketHeader(sdfGrPacketHeader_t *header, s32 payloadQwords);
-
 u32 sdf2DGetTexPacketSize(sdfTexHandle_t *aTexHndl);
-
-/* Acquire a texture from a serialized texture-file header. */
-struct sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
-
-struct sdfTexHandle_t *sdfTexSetDirect(const TMX_HEADER_t *aTex);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 s32 sdfGrAllocPacketBuff(s32 aSize);
-
 sdf2DTexPacket_t *sdf2DMakeTexPacket(sdf2DTexPacket_t *aPacket, sdfTexHandle_t *aTexHndl, s32 aCtx);
-
 s32 sdf2DLinkTexPacket(sdfDrawTag_t *aTag, sdfTexHandle_t *aTexHndl, s32 aCtx);
-
 u32 sdf2DMakeStdPacket(u32 aPacket, s32 aLeng);
-
 s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
-
 sdfGrPacketHeader_t *sdf2DMakePrimPacketHeader(sdfGrPacketHeader_t *aPacketPtr, s32 aPrimReg, s32 aNumOfRegs, s64 aGifRegs, s32 aNumOfPrim);
-
 sdfGrPacketHeader_t *sdf2DAllocSprite(s32 aNumOfSpr);
-
-u32 sdf2DGetTexPacketSize(sdfTexHandle_t *aTexHndl);
-
-sdf2DTexPacket_t *sdf2DMakeTexPacket(sdf2DTexPacket_t *aPacket, sdfTexHandle_t *aTexHndl, s32 aCtx);
-
-s32 sdf2DLinkTexPacket(sdfDrawTag_t *aTag, sdfTexHandle_t *aTexHndl, s32 aCtx);
-
-u32 sdf2DMakeStdPacket(u32 aPacket, s32 aLeng);
-
-s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
-
 void *sdf2DGetPrimPtr(sdfGrPacketHeader_t *aPacketPtr);
-
-sdfGrPacketHeader_t *sdf2DMakePrimPacketHeader(sdfGrPacketHeader_t *aPacketPtr, s32 aPrimReg, s32 aNumOfRegs, s64 aGifRegs, s32 aNumOfPrim);
-
-sdfGrPacketHeader_t *sdf2DAllocSprite(s32 aNumOfSpr);
-/* End of declarations from src/smt3/sdf/sdf2D.c */
 
 sdf2DTexPacket_t *sdf2DMakeTexPacket(sdf2DTexPacket_t *aPacket, sdfTexHandle_t *aTexHndl, s32 aCtx) {
     aPacket->header.dmatag.qwc = 4;

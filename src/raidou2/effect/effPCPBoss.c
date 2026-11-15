@@ -1,27 +1,14 @@
 #include "common.h"
 #include "raidou_alloc.h"
-
-/* Declarations from smt3-decomp src/smt3/effect/effPCPBoss.c */
-#include "common.h"
-
 #include "kernel.h"
-
 #include "ps2asm.h"
-
 #include "fpu.h"
-
 #include "model.h"
-
 #include "motion.h"
-
 #include "draw3d.h"
-
 #include "effect.h"
-
 #include "event.h"
-
 #include "nb.h"
-
 #include "sdfFrame.h"
 
 typedef struct
@@ -487,649 +474,74 @@ typedef struct effPCP_HBED2_tag
 } effPCP_HBED2_tag;
 
 extern u8 dds3EffectBase[];
-
 extern void *memcpy(void *a, const void *b, size_t c);
-
 extern void *sdfChipAllocDirect(u32 aSize);
-
-extern void *sdfChipAllocZeroDirect(u32 aSize);
-
-extern void *memset(void *a, s32 b, size_t c);
-
-extern void *sdfMatNew(void);
-
-extern void sdfMatSetConstant(void *aMat, f32 aRatio);
-
-extern void *dds3BillboardCreate(s32 count, void *params);
-
-extern void *dds3BillboardCopy(void *hBillboard);
-
-extern effPCPBossWork_t effPCPBossWork;
-
-extern u8 D_0031FF20[];
-
-extern void *sdfTexSet(const void *aTex);
-
-extern void effEveBEDCutDelete(void *hEveBEDCut);
-
-extern void effEveBEDDelete(effPCPBossBED_t *hEveBED);
-
-extern effPCPBossBED_t *effEveBEDCreate(const void *pData);
-
-extern void *effEveBEDCutCreate(effPCPBossBED_t *hEveBED, s32 CutNum, const effPCPBossPlace_t *pParams);
-
-extern void *effPCPHelperBEDCreate(void *pParam, void *pPBData, void *pBEDData);
-
-extern void effEveBEDCutSetParams(void *hEveBEDCut, const effPCPBossPlace_t *pParams);
-
-extern void effEveBEDCutDraw(void *hEveBEDCut);
-
 extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
-
-extern void *dds3GetProcessData(dds3ProcessID_t *process);
-
-extern u32 effBTLSkillCheckRun(void);
-
-extern u32 effBTLSkillGetTargetBit(void);
-
-extern u32 dds3GetRandIntA(void *aLimit, u32 name);
-
-extern void *effBTLSkillGetInvokeFormation(void);
-
-extern void effBTLModelGetMarkMatrix2(void *pFormation, s32 mark);
-
-extern void effBTLModelGetMarkPosition2(void *pFormation, s32 mark);
-
-extern void effDebugPointDraw(const void *pPos);
-
-extern void effDebugLineDraw(const void *pPos0, const void *pPos1);
-
 extern s32 sdfModelGetMarkPosMatrix(void *aRoot, s32 aId);
-
 extern void effPCPCrackInit(effPCPCrack_t *pPCPCrack);
-
-extern void dds3PadVibrationSet(s32 port, u8 power, s32 frames);
-
-extern s32 effBTLModelGetID(nbFormation_t *pFormation);
-
-extern u128 *effPCP_ThunderPolyListGetParam(void *pTPolyList);
-
-extern void effPCP_ThunderPolyListDraw(void *hData);
-
-extern void effPCP_ThunderPolyListSetColor(void *hData, u32 abgr);
-
-extern void nbPanelFlashInit(void *pFlash, u32 color0, u32 color1, s32 x, f32 scaleX, f32 scaleY, s32 y);
-
-extern void nbPanelFlashDraw(void *pFlash, u32 abgrBase);
-
-extern void effBTLModelGetSphereCenter(void *pFormation);
-
-extern void *effBTLSkillGetTargetFormation(s32 number);
-
-extern void LookAtMatrix(const void *aTarget, const void *aEye, const void *aDown);
-
-extern void ReverseMatrix(void);
-
-extern void sdf3DPrimLinkTm(void *aTag, s32 aAllocator);
-
-extern void *effPkt3DPrimMakePoly(effPCPBossWork_t *aParm);
-
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
 extern u8 dds3RenderTargetVector[], dds3RenderEyeVector[];
-
-extern u8 effPCPBossTexRect[];
-
-extern u8 effPCPBossLookDown[];
-
-extern void dds3EffectPartSetRotateMatrix(effPartHandle_t *hEffPart, const void *pMatrix);
-
-extern void dds3EffectPartSetPosition(effPartHandle_t *hEffPart, const void *pPos);
-
-extern void dds3EffectPartSetColor(effPartHandle_t *hEffPart, u32 abgr);
-
-extern void dds3EffectPartDraw(effPartHandle_t *hEffPart);
-
-s32 effPCPDANTE_Thunder_ProcessDraw(dds3ProcessID_t *process);
-
-void effPCPDANTE_Thunder_SetPosition(effPCPDANTE_Thunder_tag *hData, const void *pPos);
-
-void effPCPDANTE_Thunder_SetRotateMatrix(effPCPDANTE_Thunder_tag *hData, const void *pRot);
-
-extern void *effPCPHelperBEDCopy(void *helper);
-
 extern void sdfChipFreeDirect(void *aPtr);
-
 extern void *sdfMemAllocDirect(u32 aSize);
-
 extern void *sdfMemLock(void *aHandle);
-
 extern void sdfMemFreeDirect(void *aHandle);
-
 extern u32 dds3GetRandA(u8 *name);
-
 extern f32 dds3GetRandFloatA(u8 *name);
-
 extern effPartHandle_t *dds3EffectPartCreate(u16 type, void *pData);
-
 extern effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc);
-
 extern void dds3EffectPartDelete(effPartHandle_t *hEffPart);
-
 extern void *dds3EffectPartGetHandle(effPartHandle_t *hEffPart);
-
 extern void mdlSingleMotion(effCrackModel_t *aHandle, s32 aGroup, s32 aNumber);
-
 extern s32 sdfModelGetMarkPosCount(void *aRoot);
-
 extern void *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, s32 type);
-
 extern void dds3TrackPolySetMode(void *hTrackPoly, s32 mode);
-
 extern void dds3TrackPolyDelete(void *hTrackPoly);
-
 extern void *dds3FlashPolyListCreate(s32 face);
-
 extern void dds3FlashPolyListDelete(void *hPoly);
-
 extern f32 *dds3FlashPolyListGetVertex(void *pool, s32 index);
-
 extern effCrackColorSlot_t *dds3FlashPolyListGetVC(void *pool, s32 index);
-
 extern void dds3FlashPolyListSetBlend(void *hPoly, s32 blend);
-
 extern effPCPCrack_t *effPCPCrackCreate(effPCPCrackParam_t *pParam, void *pPB);
-
 extern effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src);
-
-extern void *effPCPBossTexHandle;
-
-extern s32 effPCPBossONGYTexRefCount;
-
-extern s32 effPCPBossONGY_RFrame;
-
-extern s32 dds3RenderDrawEnv;
-
-extern void dds3AllocRenderTexture(s32 sx, s32 sy, f32 aspect);
-
-extern void dds3RenderTextureON(void);
-
-extern void dds3RenderTextureOFF(void);
-
-extern void dds3FreeRenderTexture(void);
-
-extern void *mdlLoad(u32 aMajor, u32 aMinor);
-
-extern void mdlFree(void *aHandle);
-
-extern void mdlSmoothLoopMotion(void *aHandle, s32 aGroup, s32 aNumber, f32 aBeforeLeng,
-                                f32 aSmoothLeng);
-
-extern s32 dds3GetKernelCount(void);
 
 #include "sdk_libc.h"
 
-extern void sdfMatFreeDelayed(void *aMat);
-
 extern void effPCP_ThunderPolyListDelete(void *hData);
-
 extern void *effPCP_ThunderPolyListCreate(const effPCPBossThunderParam_t *param);
-
-extern effPCPBossThunderbolt_t *effPCPBossThunderboltCreate(effPCPBossThunderbolt_t *pParam);
-
-extern f32 effPCPBossKAGUDrawParam[4];
-
-extern f32 effPCPBossKAGU2DrawParam[4];
-
-extern void dds3BillboardDelete(void *hData);
-
-extern void dds3BillboardSetRGBA(void *hBillboard, u32 abgr);
-
-extern effPCPBossKAGUInvoke_t *effPCPBossKAGUInvokeCreate(effPCPBossKAGUInvoke_t *pParam);
-
 extern effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
-
-extern void effPCPBossKAGUThunderboltDrawSub(effPCPBossKAGUThunderbolt_t *pPCPBossKAGUThunderbolt, const f32 *pConvPos);
-
 extern void effPCPCrackDraw(effPCPCrack_t *hData);
-
-extern void dds3KillProcess(s32 id, s32 shutdowntimer);
-
-extern void effPCP_ThunderPolyDelete(void *hData);
-
-extern void sdfTexFreeDelayed(void *aHandle);
-
-extern void mdlSetRotate(mdlObj_t *aHandle);
-
-extern void FromEuler(f32 x, f32 y, f32 z);
-
-extern f32 atan2f(f32 y, f32 x);
-
-extern f32 tanf(f32 x);
-
-extern f32 acosf(f32 x);
-
 extern void mdlSetPosition(mdlObj_t *aHandle);
-
 extern void mdlLink(mdlObj_t *aHandle, void *aModelOt);
-
-extern void sdfDrawTagInit(sdfDrawTag_t *aTag);
-
-extern s32 sdfGrAllocPacketBuff(s32 aSize);
-
 extern sdfModelOt_t sdfModelOtTable[];
-
 extern f32 aViewEye[4], aViewTarget[4];
-
-extern sdf3DScreenParam_t dds3ScreenParam;
-
-extern void effPCP_BED_MatrixToQuaternion(f32 matrix[4][4]);
-
-extern void *effPCPHelperBEDGetModel(void *pHelperBED);
-
-extern void effPCPHelperBEDDelete(void *hData);
-
-extern void effPCPHelperBEDDraw(void *hData);
-
-extern void effPCPHelperBEDSetPosition(void *hData, const void *pPos);
-
-extern void effPCPHelperBEDSetColor(void *hData, u32 abgr);
-
-extern void effPCPHelperBEDSetScale(void *hData, f32 scale);
-
-extern effPCPDANTE_Thunder_tag *effPCPDANTE_Thunder_Create(const effPCPDANTE_Thunder_Param_t *pParam);
-
-extern effPCPDANTE_Damage_tag *effPCPDANTE_Damage_Create(void *pParam, void *pBED);
-
-extern const f32 D_00533E10[];
-
-extern const f32 D_00533DD0[];
-
-extern const f32 D_00533DE0[];
-
-extern void Mult(void);
-
-extern void ToMatrix(void);
-
-extern void MultMatrixNoArg(void);
-
-extern s32 dds3BillboardGetAnimFrame(void *hBillboard);
-
-extern void dds3BillboardSetAnimKey2(void *hBillboard, s32 frame);
-
-extern f32 dds3BillboardGetDirectionRotate(void *pPos, const void *pVec);
-
-extern f32 dds3BillboardGetDirectionScale(void *pPos, const void *pVec);
-
-extern void dds3BillboardSetScale(void *hBillboard, f32 x, f32 y);
-
-extern void dds3BillboardSetRotate(void *hBillboard, f32 rot);
-
-extern void dds3BillboardSetPosition(void *hBillboard, const void *pPos);
-
-extern void dds3BillboardDraw(void *hData);
-
 extern s32 sdfModelGetMarkPos(void *aRoot, s32 aId);
-
-extern void SetRotateMatrixY_B(f32 aAngle);
-
 extern void SetRotateMatrixAxis(f32 aAngle, const void *aAxis);
-
-extern void SetRotateMatrixZ(f32 aAngle);
-
-extern void *effPCP_ThunderPolyCreate(const void *params);
-
-extern s32 dds3StartProcess(const char *v1, s32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
-                            void *drawExit, void *deleteExit, void *p);
-
-extern void dds3SetProcessData(s32 id, void *data);
-
-extern const char effPCPDANTE_ThunderProcessName[];
-
-extern u128 *effPCP_ThunderPolyGetParam(void *pThunderPoly);
-
-extern void effPCP_ThunderPolySetColor(void *hData, u32 abgr);
-
-extern void effPCP_ThunderPolyDraw(void *hData);
-
-extern void nbPnlSprite(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, u32 uw, u32 vh, u32 rgba,
-                        void *th);
-
 extern s32 effPadVibeFrames[2], effPadVibeRemain[2];
-
 extern u8 effPadVibePower[2], effPadVibeFadeIn[2];
-
 extern effPCPBossBael_t *effPCPBossBaelCreate(void *pParam, void *pPB, void *pPCF);
-
-extern effPCPBossDengeki_t *effPCPBossDengekiCreate(effPCPBossDengeki_t *pParam, void *pBEDData);
-
-extern effPCPBossKAGUAttack_t *effPCPBossKAGUAttackCreate(effPCPBossKAGUAttack_t *pParam,
-                                                          void *pBEDData);
-
-extern effPCPBossKAGUThunderbolt_t *effPCPBossKAGUThunderboltCreate(
-    effPCPBossKAGUThunderbolt_t *pParam, void *pBP, void *pBED);
-
-extern effPCPBossKAGU2Attack_t *effPCPBossKAGU2AttackCreate(effPCPBossKAGU2Attack_t *pParam,
-                                                            void *pBEDData);
-
 extern effPCPCrack_t *effPCPCrack2Create(effPCPCrackParam_t *pParam, void *pPB);
-
-extern effPCPScreenCrackModel_t *effPCPScreenCrackModelCreate(effPCPScreenCrackModel_t *pParam, void *pPB);
-
-extern effPCPMuzzleFlash_tag *effPCPMuzzleFlashCreate(effPCPMuzzleFlashParam_t *pParam,
-                                                    void *pP2A);
-
-extern effPCP_PBCamera_tag *effPCP_PBCamera_Create(effPCP_PBCamera_Param_t *pParam, void *pPB);
-
-extern effPCPDANTE_ShowTime_tag *effPCPDANTE_ShowTime_Create(effPCPDANTE_ShowTime_Param_t *pParam,
-                                                           void *pTMX0, void *pTMX1);
-
-extern effPCP_BED_tag *effPCP_BED_Create(effPCP_BED_Param_t *pParam, void *pBED);
-
-extern effPCP_HBED2_tag *effPCP_HBED2_Create(effPCP_HBED2_Param_t *pParam, void *pPBData, void *pBEDData);
-
 void effPCPCrackSizeInit(effPCPCrack_t *pPCPCrack, effPCPCrackPartFlash_t *pSize);
-
-void effPCPBossONGYTexRenderStart(void);
-
-void effPCPBossONGYTexRenderEnd(void);
-
-s32 effPCPBossONGYModelTexRenderCheck(void);
-
-effPCPBossONGY_t *effPCPBossONGYCreate(effPCPBossONGYParam_t *param);
-
-void effPCPBossONGYDelete(effPCPBossONGY_t *pPCPBossONGY);
-
-s32 effPCPBossONGYGetLength(void);
-
-effPCPBossONGY_t *effPCPBossONGY2Create(effPCPBossONGYParam_t *param);
-
-void effPCPBossONGY2Delete(effPCPBossONGY_t *pPCPBossONGY2);
-
-s32 effPCPBossONGY2GetLength(void);
-
-effPCPBossBUNSIN_t *effPCPBossBUNSINCreate(effPCPBossBUNSINParam_t *pParam);
-
-void effPCPBossBUNSINDelete(effPCPBossBUNSIN_t *pPCPBossBUNSIN);
-
-void effPCPBossBUNSINDraw(effPCPBossBUNSIN_t *work);
-
-s32 effPCPBossBUNSINGetLength(void);
-
-effPCPBossBUNSIN2_t *effPCPBossBUNSIN2Create(effPCPBossBUNSIN2Param_t *param);
-
-void effPCPBossBUNSIN2Delete(effPCPBossBUNSIN2_t *pPCPBossBUNSIN2);
-
-void effPCPBossBUNSIN2Draw(effPCPBossBUNSIN2_t *pPCPBossBUNSIN2);
-
-s32 effPCPBossBUNSIN2GetLength(void);
-
-void effPCPCrackSizeInit(effPCPCrack_t *pPCPCrack, effPCPCrackPartFlash_t *pSize);
-
 void effPCPCrackInit(effPCPCrack_t *pPCPCrack);
-
 effPCPCrack_t *effPCPCrackCreate(effPCPCrackParam_t *pParam, void *pPB);
-
-effPCPCrack_t *effPCPCrackCreatePCF(void *parameterTable);
-
 effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src);
-
 void effPCPCrackDelete(effPCPCrack_t *hData);
-
 extern f32 effPCPCrackDrawData[4];
-
 extern void mdlSetScale(mdlObj_t *model);
-
 extern void dds3TrackPolyDraw(parSystem_t *system);
-
 extern void dds3FlashPolyListDraw(void *pool);
-
 extern void dds3FlashPolyListSetABGR(void *pool, u32 color);
-
 extern u32 effMagaCylinderCalcColor(u32 color, u32 scale);
-
-/* Same native algorithm as dds-decomp/redthing1's effPCPCrackDraw: transform
- * each trail sample, then emit and fade its delayed flash cells. */
 void effPCPCrackDraw(effPCPCrack_t *work);
-
-void effPCPCrackSetPosition(effPCPCrack_t *hData, const void *pPos);
-
-void effPCPCrackSetColor(effPCPCrack_t *hData, u32 abgr);
-
 effPCPBossBael_t *effPCPBossBaelCreate(void *pParam, void *pPB, void *pPCF);
-
-effPCPBossBael_t *effPCPBossBaelCreatePCF(void *parameterTable);
-
 effPCPBossBael_t *effPCPBossBaelCopy(effPCPBossBael_t *hData, s32 bPos, s32 tbldata);
-
 void effPCPBossBaelDelete(effPCPBossBael_t *hData);
-
-void effPCPBossBaelDraw(effPCPBossBael_t *hData);
-
-void effPCPBossBaelSetPosition(effPCPBossBael_t *hData, const void *pPos);
-
-void effPCPBossBaelSetColor(effPCPBossBael_t *hData, u32 abgr);
-
-effPCPBossDengeki_t *effPCPBossDengekiCreate(effPCPBossDengeki_t *pParam, void *pBEDData);
-
-effPCPBossDengeki_t *effPCPBossDengekiCreatePCF(void *parameterTable);
-
-effPCPBossDengeki_t *effPCPBossDengekiCopy(effPCPBossDengeki_t *hData, s32 bPos, s32 tbldata);
-
-void effPCPBossDengekiDelete(effPCPBossDengeki_t *hData);
-
-void effPCPBossDengekiDraw(effPCPBossDengeki_t *hData);
-
-void effPCPBossDengekiSetColor(effPCPBossDengeki_t *hData, u32 abgr);
-
-effPCPBossThunderbolt_t *effPCPBossThunderboltCreate(effPCPBossThunderbolt_t *pParam);
-
-effPCPBossThunderbolt_t *effPCPBossThunderboltCreatePCF(void *hData, s32 bPos, s32 tbldata);
-
-effPCPBossThunderbolt_t *effPCPBossThunderboltCopy(void *hData, s32 bPos, s32 tbldata);
-
-void effPCPBossThunderboltDelete(effPCPBossThunderbolt_t *hData);
-
-void effPCPBossThunderboltDraw(effPCPBossThunderbolt_t *hData);
-
-void effPCPBossThunderboltSetPosition(effPCPBossThunderbolt_t *hData, const void *pPos);
-
-void effPCPBossThunderboltSetColor(effPCPBossThunderbolt_t *hData, u32 abgr);
-
-effPCPBossKAGUInvoke_t *effPCPBossKAGUInvokeCreate(effPCPBossKAGUInvoke_t *pParam);
-
-effPCPBossKAGUInvoke_t *effPCPBossKAGUInvokeCreatePCF(void *hData, s32 bPos, s32 tbldata);
-
-effPCPBossKAGUInvoke_t *effPCPBossKAGUInvokeCopy(void *hData, s32 bPos, s32 tbldata);
-
-void effPCPBossKAGUInvokeDelete(effPCPBossKAGUInvoke_t *hData);
-
-void effPCPBossKAGUInvokeSetColor(effPCPBossKAGUInvoke_t *hData, u32 abgr);
-
-effPCPBossKAGUAttack_t *effPCPBossKAGUAttackCreate(effPCPBossKAGUAttack_t *pParam, void *pBEDData);
-
-effPCPBossKAGUAttack_t *effPCPBossKAGUAttackCreatePCF(void *parameterTable);
-
-effPCPBossKAGUAttack_t *effPCPBossKAGUAttackCopy(effPCPBossKAGUAttack_t *hData, s32 bPos, s32 tbldata);
-
-void effPCPBossKAGUAttackDelete(effPCPBossKAGUAttack_t *hData);
-
-/* vu0 routine: the five split points of the KAGU arc. */
-void effPCPBossKAGUAttackGetSplitPoint(u128 *pPosBuff, const u128 *pPoint1, const u128 *pPoint2,
-                                       const u128 *pCenter);
-
-void effPCPBossKAGUAttackDraw(effPCPBossKAGUAttack_t *work);
-
-void effPCPBossKAGUAttackSetColor(effPCPBossKAGUAttack_t *hData, u32 abgr);
-
-effPCPBossKAGUThunderbolt_t *effPCPBossKAGUThunderboltCreate(effPCPBossKAGUThunderbolt_t *pParam,
-                                                              void *pBP, void *pBED);
-
-effPCPBossKAGUThunderbolt_t *effPCPBossKAGUThunderboltCreatePCF(void *parameterTable);
-
-effPCPBossKAGUThunderbolt_t *effPCPBossKAGUThunderboltCopy(effPCPBossKAGUThunderbolt_t *hData,
-                                                           s32 bPos, s32 tbldata);
-
-void effPCPBossKAGUThunderboltDelete(effPCPBossKAGUThunderbolt_t *hData);
-
-void effPCPBossKAGUThunderboltDrawSub(effPCPBossKAGUThunderbolt_t *pPCPBossKAGUThunderbolt, const f32 *pConvPos);
-
-void effPCPBossKAGUThunderboltDraw(effPCPBossKAGUThunderbolt_t *hData);
-
-void effPCPBossKAGUThunderboltSetPosition(effPCPBossKAGUThunderbolt_t *hData, const void *pPos);
-
-void effPCPBossKAGUThunderboltSetColor(effPCPBossKAGUThunderbolt_t *hData, u32 abgr);
-
-effPCPBossKAGU2Attack_t *effPCPBossKAGU2AttackCreate(effPCPBossKAGU2Attack_t *pParam, void *pBEDData);
-
-effPCPBossKAGU2Attack_t *effPCPBossKAGU2AttackCreatePCF(void *parameterTable);
-
-effPCPBossKAGU2Attack_t *effPCPBossKAGU2AttackCopy(effPCPBossKAGU2Attack_t *hData, s32 bPos,
-                                                   s32 tbldata);
-
-void effPCPBossKAGU2AttackDelete(effPCPBossKAGU2Attack_t *hData);
-
-/* vu0 routine: the five split points of the KAGU2 arc. */
-void effPCPBossKAGU2AttackGetSplitPoint(u128 *pPosBuff, const u128 *pPoint1, const effPCPBossVector_t *pPoint2,
-                                        const u128 *pCenter, f32 rand, f32 rotate);
-
-void effPCPBossKAGU2AttackDraw(effPCPBossKAGU2Attack_t *work);
-
-void effPCPBossKAGU2AttackSetColor(effPCPBossKAGU2Attack_t *hData, u32 abgr);
-
-void effPCPBossKAGU2ThunderboltDraw(effPCPBossKAGUThunderbolt_t *hData);
-
-effPCPBossKAGU2MUHENK_t *effPCPBossKAGU2MUHENKCreate(void *pParam);
-
-effPCPBossKAGU2MUHENK_t *effPCPBossKAGU2MUHENKCreatePCF(void *hData, s32 bPos, s32 tbldata);
-
-effPCPBossKAGU2MUHENK_t *effPCPBossKAGU2MUHENKCopy(void *hData, s32 bPos, s32 tbldata);
-
-void effPCPBossKAGU2MUHENKDelete(effPCPBossKAGU2MUHENK_t *pPCPBossKAGU2MUHENK);
-
-/* vu0 routine: the seven MUHENK mark gizmos. */
-void effPCPBossKAGU2MUHENKDraw(effPCPBossKAGU2MUHENK_t *pPCPBossKAGU2MUHENK);
-
-void effPCPBossKAGU2MUHENKSetColor(effPCPBossKAGU2MUHENK_t *hData, u32 abgr);
-
 effPCPCrack_t *effPCPCrack2Create(effPCPCrackParam_t *pParam, void *pPB);
-
-effPCPCrack_t *effPCPCrack2CreatePCF(void *data);
-
 effPCPCrack_t *effPCPCrack2Copy(effPCPCrack_t *src);
-
 void effPCPCrack2Delete(effPCPCrack_t *hData);
-
 void effPCPCrack2Draw(effPCPCrack_t *hData);
-
-void effPCPCrack2SetPosition(effPCPCrack_t *hData, const void *pPos);
-
-void effPCPCrack2SetColor(effPCPCrack_t *hData, u32 abgr);
-
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
-
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreatePCF(void *hData, s32 bPos, s32 tbldata);
-
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCopy(void *hData, s32 bPos, s32 tbldata);
-
 void effPCPBossMETATOBeamDelete(effPCPBossMETATOBeam_t *hData);
-
-void effPCPBossMETATOBeamSetPosition(effPCPBossMETATOBeam_t *hData, const void *pPos);
-
-void effPCPBossMETATOBeamSetColor(effPCPBossMETATOBeam_t *hData, u32 abgr);
-
-void effPCPScreenCrackModelInit(effPCPScreenCrackModel_t *pPCPScrCrackModel);
-
-effPCPScreenCrackModel_t *effPCPScreenCrackModelCreate(effPCPScreenCrackModel_t *pParam, void *pPB);
-
-effPCPScreenCrackModel_t *effPCPScreenCrackModelCreatePCF(void *parameterTable);
-
-void effPCPScreenCrackModelDelete(effPCPScreenCrackModel_t *hData);
-
-void effPCPScreenCrackModelDraw(effPCPScreenCrackModel_t *hData);
-
-void effPCPScreenCrackModelSetColor(effPCPScreenCrackModel_t *hData, u32 abgr);
-
-effPCPMuzzleFlash_tag *effPCPMuzzleFlashCreate(effPCPMuzzleFlashParam_t *pParam, void *pP2A);
-
-effPCPMuzzleFlash_tag *effPCPMuzzleFlashCreatePCF(void *parameterTable);
-
-effPCPMuzzleFlash_tag *effPCPMuzzleFlashCopy(effPCPMuzzleFlash_tag *hData, s32 bPos, s32 tbldata);
-
-void effPCPMuzzleFlashDelete(effPCPMuzzleFlash_tag *hData);
-
-void effPCPMuzzleFlashDraw(effPCPMuzzleFlash_tag *hData);
-
-void effPCPMuzzleFlashSetColor(effPCPMuzzleFlash_tag *hData, u32 abgr);
-
-void effPCPMuzzleFlashSetPosition(effPCPMuzzleFlash_tag *hData, const void *pPos);
-
-void effPCPMuzzleFlashSetScale(effPCPMuzzleFlash_tag *hData, f32 scale);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCPMuzzleFlashSetRotateMatrix(effPCPMuzzleFlash_tag *hData, const void *pRot);
-
-/* vu0 routine: the DANTE lightning bolt's work and its draw process. */
-effPCPDANTE_Thunder_tag *effPCPDANTE_Thunder_Create(const effPCPDANTE_Thunder_Param_t *pParam);
-
-extern void effPCPDANTE_Thunder_Draw(effPCPDANTE_Thunder_tag *hData);
-
-s32 effPCPDANTE_Thunder_ProcessDraw(dds3ProcessID_t *process);
-
-effPCPDANTE_Thunder_tag *effPCPDANTE_Thunder_CreatePCF(void *hData, s32 bPos, s32 tbldata);
-
-void effPCPDANTE_Thunder_Delete(effPCPDANTE_Thunder_tag *hData);
-
-effPCPDANTE_Thunder_tag *effPCPDANTE_Thunder_Copy(effPCPDANTE_Thunder_tag *hData, s32 bPos, s32 tbldata);
-
-void effPCPDANTE_Thunder_DrawSub(effPCPDANTE_Thunder_tag *hData);
-
-void effPCPDANTE_Thunder_Draw(effPCPDANTE_Thunder_tag *hData);
-
-void effPCPDANTE_Thunder_SetColor(effPCPDANTE_Thunder_tag *hData, u32 abgr);
-
-void effPCPDANTE_Thunder_SetPosition(effPCPDANTE_Thunder_tag *hData, const void *pPos);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCPDANTE_Thunder_SetRotateMatrix(effPCPDANTE_Thunder_tag *hData, const void *pRot);
-
-/* The local held-byte register declaration reconstructs native allocation;
- * a target-specific compiler aid, not evidence of original source spelling. */
-effPCPDANTE_Damage_tag *effPCPDANTE_Damage_Create(void *pParam, void *pBED);
-
-effPCPDANTE_Damage_tag *effPCPDANTE_Damage_CreatePCF(void *parameterTable);
-
-effPCPDANTE_Damage_tag *effPCPDANTE_Damage_Copy(effPCPDANTE_Damage_tag *hData, s32 bPos, s32 tbldata);
-
-void effPCPDANTE_Damage_Delete(effPCPDANTE_Damage_tag *hData);
-
-extern void nbSetUnitMotion(nbFormation_t *form, s32 motion, s32 mode, f32 rate);
-
-extern f32 effBTLPartGetScalePtr(nbFormation_t *form);
-
-void effPCPDANTE_Damage_Run(effPCPDANTE_Damage_tag *work);
-
-void effPCPDANTE_Damage_SetColor(effPCPDANTE_Damage_tag *hData, u32 abgr);
-
-effPCP_PBCamera_tag *effPCP_PBCamera_Create(effPCP_PBCamera_Param_t *pParam, void *pPB);
-
-effPCP_PBCamera_tag *effPCP_PBCamera_CreatePCF(void *parameterTable);
-
-effPCP_PBCamera_tag *effPCP_PBCamera_Copy(effPCP_PBCamera_tag *hData, s32 bPos, s32 tbldata);
-
-void effPCP_PBCamera_Delete(effPCP_PBCamera_tag *hData);
-
-extern s32 effBTLSkillGetID(void);
-
-extern void mdlGetPosition(mdlObj_t *model);
-
-extern void effPCP_PBCamera_SetPosition(effPCP_PBCamera_tag *work, const void *position);
-
-extern s32 nbCameraDANTE_KAGIRI_Set(s32 frame);
-
-extern void nbCameraSetState(u16 state);
-
-extern void nbCameraHelperModelSetSub(mdlObj_t *model, u32 from, u32 to);
 
 /* nbCameraProcess camera prefix; D_00320E64 is its fovy at +0x24. */
 typedef struct effPCPBossCamera_t {
@@ -1141,115 +553,8 @@ typedef struct effPCPBossCamera_t {
     u32 state;
 } effPCPBossCamera_t;
 
-extern effPCPBossCamera_t pNbCamera;
-
-void effPCP_PBCamera_Run(effPCP_PBCamera_tag *work);
-
-void effPCP_PBCamera_SetPosition(effPCP_PBCamera_tag *hData, const void *pPos);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCP_PBCamera_SetRotateMatrix(effPCP_PBCamera_tag *hData, const void *pMatrix);
-
-effPCPDANTE_ShowTime_tag *effPCPDANTE_ShowTime_Create(effPCPDANTE_ShowTime_Param_t *pParam,
-                                                    void *pTMX0, void *pTMX1);
-
-effPCPDANTE_ShowTime_tag *effPCPDANTE_ShowTime_CreatePCF(void *parameterTable);
-
-effPCPDANTE_ShowTime_tag *effPCPDANTE_ShowTime_Copy(effPCPDANTE_ShowTime_tag *hData, s32 bPos, s32 tbldata);
-
-void effPCPDANTE_ShowTime_Delete(effPCPDANTE_ShowTime_tag *hData);
-
-void effPCPDANTE_Sprite_Draw(s32 x, s32 y, f32 scale, u32 color, effPCPDANTE_UV_tag *uv, void *tex);
-
-extern effPCPDANTE_UV_tag effPCPDANTE_Bingo_UV;
-
-extern void nbPnl_rsetAlpha(s32 mode);
-
-extern effPCPDANTE_UV_tag effPCPDANTE_AreYouReady_UV;
-
-void effPCPDANTE_ShowTime_AreYouReady_Draw(effPCPDANTE_ShowTime_tag *hData);
-
-extern effPCPDANTE_UV_tag effPCPDANTE_ShowTime_UV;
-
-void effPCPDANTE_ShowTime_ShowTime_Draw(effPCPDANTE_ShowTime_tag *work);
-
-void effPCPDANTE_ShowTime_Bingo_Draw(effPCPDANTE_ShowTime_tag *work);
-
-void effPCPDANTE_ShowTime_Draw(effPCPDANTE_ShowTime_tag *hData);
-
-void effPCPDANTE_ShowTime_SetPosition(effPCPDANTE_ShowTime_tag *hData, const void *pPos);
-
-effPCP_BED_tag *effPCP_BED_CreatePCF(void *parameterTable);
-
-effPCP_BED_tag *effPCP_BED_Copy(effPCP_BED_tag *hData, s32 bPos, s32 tbldata);
-
-void effPCP_BED_Delete(effPCP_BED_tag *hData);
-
-void effPCP_BED_MatrixToQuaternion(f32 matrix[4][4]);
-
-void effPCP_BED_Draw(effPCP_BED_tag *hData);
-
-void effPCP_BED_SetPosition(effPCP_BED_tag *hData, const void *pPos);
-
-/* vu0 routine: copy the rotation matrix through vf28-vf31 */
-void effPCP_BED_SetRotateMatrix(effPCP_BED_tag *hData, const void *pMatrix);
-
-void effPCP_BED_SetColor(effPCP_BED_tag *hData, u32 abgr);
-
-effPCP_HBED2_tag *effPCP_HBED2_Create(effPCP_HBED2_Param_t *pParam, void *pPBData, void *pBEDData);
-
-effPCP_HBED2_tag *effPCP_HBED2_CreatePCF(void *parameterTable);
-
-effPCP_HBED2_tag *effPCP_HBED2_Copy(effPCP_HBED2_tag *hData, s32 bPos, s32 tbldata);
-
-void effPCP_HBED2_Delete(effPCP_HBED2_tag *hData);
-
-void effPCP_HBED2_Draw(effPCP_HBED2_tag *hData);
-
-void effPCP_HBED2_SetPosition(effPCP_HBED2_tag *hData, const void *pPos);
-
-void effPCP_HBED2_SetRotateMatrix(effPCP_HBED2_tag *hData, const void *pMatrix);
-
-void effPCP_HBED2_SetColor(effPCP_HBED2_tag *hData, u32 abgr);
-
-void effPCP_HBED2_SetScale(effPCP_HBED2_tag *hData, f32 scale);
-
-void effPadVibeFadeUpdate(void);
-
-void effPadVibeFadeOUT(u32 mode, u8 power, s32 frame);
-
-void effPadVibeFadeIN(u32 mode, u8 power, s32 frame);
-
-extern f32 sdfCos(f32 angle);
-
-extern const effPCPBossVector_t D_00533DA0;
-
-extern const f32 D_00533DB0[4];
-
-extern const effPCPBossVector_t D_00533DC0;
-
-extern const f32 D_00533DD0[4];
-
-extern const f32 D_00533DE0[4];
-
-extern const char effPCPDANTE_ThunderProcessName[32];
-
-extern const f32 D_00533E10[8];
-
-extern void *effPCPBossTexHandle;
-
-extern s32 effPCPBossONGYTexRefCount;
-
-extern s32 effPCPBossONGY_RFrame;
-
 extern s32 effPadVibeFrames[2];
-
-extern s32 effPadVibeRemain[2];
-
 extern u8 effPadVibePower[2];
-
-extern u8 effPadVibeFadeIn[2];
-/* End of declarations from src/smt3/effect/effPCPBoss.c */
 
 void effPCPCrackSizeInit(effPCPCrack_t *pPCPCrack, effPCPCrackPartFlash_t *pSize)
 {
@@ -1960,14 +1265,10 @@ effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam)
     return work;
 }
 
-effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
-
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreatePCF(void *hData, s32 bPos, s32 tbldata)
 {
     return effPCPBossMETATOBeamCreate(dds3EffectPCPDataGetData(hData, 0));
 }
-
-effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
 
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCopy(void *hData, s32 bPos, s32 tbldata)
 {

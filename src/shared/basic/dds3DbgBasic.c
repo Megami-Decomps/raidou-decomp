@@ -1,60 +1,21 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/basic/dds3DbgBasic.c */
-#include "common.h"
-
 #include "sdk_libgcc.h"
-
 #include "basic.h"
-
 #include "kernel.h"
-
 #include "newdata.h"
-
 #include "ps2asm.h"
 
-extern sdfGrOt_t sdfGrOtTable[];
-
-extern s8 dds3PadButtonState[];
-
 extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr, const char *aStr, ...);
-
 extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
-extern void *sdfGrAllocPacketBuff(u32 aSize);
-
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-
-extern dds3Basic_t *dds3GetActiveScene(void);
-
-extern void *dds3GetProcessData(dds3ProcessID_t *id);
-
-extern s32 dds3SceneBasicExistBasic(dds3Basic_t *scene, dds3Basic_t *target);
-
-extern void dds3ConsPanelTagLink(sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy);
-
-extern saddr_t evtSceneDispProcess(void *id);
-
 extern s32 DispBaseData(dds3Basic_t *basic, s32 x, s32 y, sdfDrawTag_t *tag);
-
 extern char dds3BasicPosLabel[];
-
 extern char dds3BasicRotLabel[];
-
 extern char dds3BasicSclLabel[];
-
 s32 DispBaseData(dds3Basic_t *node, s32 x, s32 y, sdfDrawTag_t *list);
-
 u32 DispObjectBaseData(dds3Basic_t *basic, s32 x, s32 y, sdfDrawTag_t *tag);
-
-saddr_t dds3DebugBasic(dds3ProcessID_t *id);
-
 extern char dds3BasicPosLabel[8];
-
 extern char dds3BasicRotLabel[8];
-
 extern char dds3BasicSclLabel[8];
-/* End of declarations from src/smt3/basic/dds3DbgBasic.c */
 
 s32 DispBaseData(dds3Basic_t *node, s32 x, s32 y, sdfDrawTag_t *list) {
     dds3PoseSet_t *transform;
@@ -122,4 +83,3 @@ char dds3BasicPosLabel[8] = "POS  :";
 char dds3BasicRotLabel[8] = "ROT  :";
 
 char dds3BasicSclLabel[8] = "SCL  :";
-

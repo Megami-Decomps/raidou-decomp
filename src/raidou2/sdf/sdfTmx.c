@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfTmx.c */
-#include "common.h"
-
 #include "ps2asm.h"
-
 #include "sdf_resource.h"
-
 #include "sif_rpc.h"
 
 enum {
@@ -29,12 +23,6 @@ struct sdfFileCmdHandle_t;
 struct sdfFileRpcReadReq_t;
 
 struct sdfFileRpcCb_t;
-
-/* Read the raw free-running count from EE timer 0. */
-extern u32 sdfGetRunTimeCountBase(void);
-
-/* Return the modulo-16-bit elapsed count from the EE timer 0 value. */
-extern u32 sdfGetRunTimeCount(u32 aBaseTime);
 
 /* Serialized byte consumed by the GS texture-state packet builder. */
 typedef u8 SdfTextureClampMode;
@@ -59,17 +47,11 @@ enum SdfFileIOCmdClbk {
 };
 
 extern u8 sdfFileRpcReadBuf[];
-
 extern void SleepThread(void);
-
 extern char *mcModuleNames[];
-
 extern s32 sceSifLoadModule(const char *, s32, const char *);
-
 extern char *strcpy(char *, const char *);
-
 extern char *strcat(char *, const char *);
-
 extern void sceMcInit(void);
 
 /* Allocate a workspace sized by stackBytes, pass the thread entry to
@@ -100,11 +82,8 @@ typedef struct sdfFileCmdHandle_t {
 } sdfFileCmdHandle_t;
 
 s32 sdfFileCmdRead(sdfFileCmdHandle_t *aHandle, void *aBuffer, s32 aLength);
-
 s32 sdfFileCmdFree(sdfFileCmdHandle_t *aHandle);
-
 s32 sdfFileCmdClearError(sdfFileCmdHandle_t *aHandle);
-
 s32 sdfFileCmdClose(sdfFileCmdHandle_t *aHandle);
 
 typedef struct sdfFileRpcReadReq_t {
@@ -123,7 +102,6 @@ typedef struct sdfFileRpcCb_t {
 } sdfFileRpcCb_t;
 
 extern sdfFileRpcCb_t sdfFileRpcState;
-
 extern s32 sdfFileRpcBuf[];
 
 extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path,
@@ -131,47 +109,24 @@ extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path,
                                           s32 callbackContext);
 
 extern s32 sdfFileCmdFileSize();
-
 extern s32 WaitSema(s32);
-
-extern void FlushCache(s32);
-
-extern s32 SignalSema(s32);
 
 #include "sdk_libkernl.h"
 
 /* Declared here because no header carries these. */
 extern void *memset(void *a, s32 b, size_t c);
-
-extern s32 sceSifDmaStat(s32);
-
 extern s32 GetThreadId(void);
-
 extern s32 sdfFileRpcThreadId;
-
 void SdfFileRpcServerThreadProc(void);
-
 void sdfTmxSetHeader(TMX_HEADER_t *aHeader, s32 aWidth, s32 aHeight, s32 aPixelFormat, s32 aNumOfCLUT, s32 aCLUTFormat);
-
 void sdfFileRpcContinueRead(void);
 
 s32 sdfFileRpcReadCallback(sdfFileCmdHandle_t *deviceState, s32 command, s32 sourceAddress,
                   s32 byteCount, s32 callbackArg);
 
 void *sdfFileRpcHandler(s32 function, void *request, s32 requestSize);
-
 void sdfStartFileRpcServer(void);
-
 void LoadMcModules(const char *prefix, s32 moduleGroup);
-
-void sdfTmxSetHeader(TMX_HEADER_t *aHeader, s32 aWidth, s32 aHeight, s32 aPixelFormat, s32 aNumOfCLUT, s32 aCLUTFormat);
-
-void sdfFileRpcContinueRead(void);
-
-s32 sdfFileRpcReadCallback(sdfFileCmdHandle_t *deviceState, s32 command, s32 sourceAddress,
-                  s32 byteCount, s32 callbackArg);
-
-void *sdfFileRpcHandler(s32 function, void *request, s32 requestSize);
 
 typedef struct _reent _reent;
 
@@ -278,137 +233,7 @@ struct _reent {
     FILE __sf[3];
 };
 
-extern _reent *_impure_ptr __attribute__((section(".data")));
-
-extern s32 _puts_r(_reent *r, const char *s);
-
-extern s32 _raise_r(_reent *r, s32 sig);
-
-extern void *_signal_r(_reent *r, s32 sig, void *handler);
-
-extern s32 _setlocale_r(_reent *r, s32 category, const char *locale);
-
-extern void *_localeconv_r(_reent *r);
-
-extern void _cleanup_r(_reent *r);
-
-extern s32 fflush(void *fp);
-
-extern s32 _fwalk(_reent *r, s32 (*func)(void *));
-
-extern s32 libc_2DC670(void);
-
-extern long _strtol_r(_reent *r, const char *s, char **end, s32 base);
-
-extern long strtol(const char *s, char **end, s32 base);
-
-extern s32 raise(s32 sig);
-
-extern void _exit(s32 code) __attribute__((noreturn));
-
-extern u8 localeconvData[] __attribute__((section(".data")));
-
-extern s32 libcErrno __attribute__((section(".data")));
-
-extern s32 mallocLockCount __attribute__((section(".data")));
-
-extern s32 mallocLockOwner __attribute__((section(".data")));
-
-extern s32 mallocSema __attribute__((section(".data")));
-
-extern s32 _init_signal_r(_reent *r);
-
-extern void std(FILE *fp, s32 flags, s32 file, _reent *data);
-
-extern _glue *__sfmoreglue(_reent *r, s32 n);
-
-extern s32 __sigtramp_r(_reent *r, s32 sig);
-
-extern void *__deregister_frame_info(void *fn);
-
-extern void free(void *ptr);
-
-extern void *malloc(size_t size);
-
-extern void __malloc_lock(_reent *r);
-
-extern void __malloc_unlock(_reent *r);
-
-extern void *_malloc_r(_reent *r, u32 size);
-
-extern void _free_r(_reent *r, void *ptr);
-
-extern s32 SignalSema(s32 sema);
-
-extern void *sbrk(s32 incr);
-
-extern s32 close(s32 fd);
-
-extern _Bigint *_Balloc(_reent *r, s32 k);
-
-extern void __register_frame_info(void *fn, void *entry);
-
-extern s32 __register_frame_info_table(void *fn, void *entry);
-
-extern s32 write(s32 fd, const void *buf, s32 count);
-
-extern s32 read(s32 fd, void *buf, s32 count);
-
-extern long lseek(s32 fd, s32 offset, s32 whence);
-
-extern s32 fstat(s32 fd, void *buf);
-
-extern s32 kill(s32 pid, s32 sig);
-
-extern long _read_r(_reent *r, s32 fd, char *buf, s32 n);
-
-extern long _write_r(_reent *r, s32 fd, const char *buf, s32 n);
-
-extern long _lseek_r(_reent *r, s32 fd, s32 offset, s32 whence);
-
-extern s32 __sfvwrite(FILE *fp, __suio *uio);
-
-extern s32 __sread(void *cookie, char *buf, s32 n);
-
-extern s32 __swrite(void *cookie, const char *buf, s32 n);
-
-extern long __sseek(void *cookie, s32 offset, s32 whence);
-
-extern s32 __sclose(void *cookie);
-
-extern s32 GetThreadId(void);
-
 extern s32 WaitSema(s32 sema);
-
-extern s32 vfprintf(FILE *fp, const char *fmt, va_list ap);
-
-extern void *memset(void *a, s32 b, size_t c);
-
-extern void *_calloc_r(_reent *r, u32 n, u32 size);
-
-extern const double pow10Table[];
-
-extern void abort(void);
-
-extern void __do_global_ctors(void);
-
-extern s32 atexit(void (*fn)(void));
-
-extern void (**dtorListCursor)(void) __attribute__((section(".data")));
-
-extern s32 dtorFrameDeregistered __attribute__((section(".data")));
-
-extern s32 frameObjectSema __attribute__((section(".data")));
-
-extern u8 __EH_FRAME_BEGIN__[] __attribute__((section(".data")));
-
-extern void (*__CTOR_LIST__[])(void) __attribute__((section(".data")));
-
-extern s32 mainCtorsDone __attribute__((section(".data")));
-
-extern object *frameObjectList __attribute__((section(".data")));
-
-extern object ctorFrameObject;
 
 typedef struct fp_number_type {
     s32 class;
@@ -417,17 +242,9 @@ typedef struct fp_number_type {
     u32 fraction;
 } fp_number_type;
 
-extern void sdfUnpackFloat(const void *x, fp_number_type *u);
-
-extern f32 sdfPackFloat(const fp_number_type *u);
-
-extern f64 __make_dp(s32 kind, s32 sign, s32 exp, s64 mant);
-
 #define va_start(ap, last) __builtin_stdarg_start((ap), last)
 
 #define va_end(ap) ((void)0)
-
-extern s32 _vfprintf_r(_reent *r, FILE *fp, const char *fmt, va_list ap);
 
 typedef union f32_bits {
     f32 f;
@@ -441,14 +258,6 @@ typedef struct fp_number_type_df {
     s32 normal_exp;
     long fraction;
 } fp_number_type_df;
-
-extern f64 __pack_df(const fp_number_type_df *u);
-
-extern void sdfUnpackDouble(const double *x, fp_number_type_df *u);
-
-extern fp_number_type_df *libc_2D1590(const fp_number_type_df *a, const fp_number_type_df *b, fp_number_type_df *r);
-
-extern long __fpcmp_parts_df(const fp_number_type_df *a, const fp_number_type_df *b);
 
 extern const u8 _ctype_[];
 
@@ -468,39 +277,19 @@ typedef struct {
 SIZE_CHECK(sdfSceIoStat_size_must_be_0x40, sdfSceIoStat_t, 0x40);
 
 extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-
 extern s32 sceGetstat(const char *path, sdfSceIoStat_t *stat);
-
 extern s32 SdfIopFileRpc(const char *name, s32 dataSize, const void *data, s32 *outSize);
-
 extern s32 WakeupThread(s32 threadId);
-
 extern u8 sdfHddValid;
-
 extern const char sdfIopModulePathCdrom[];
-
 extern const char sdfIopModulePathHost[];
-
 extern u8 sdfFileRpcRecvBuf[];
-
-void SdfFileRpcServerThreadProc(void);
-
-void sdfStartFileRpcServer(void);
-
-void LoadMcModules(const char *prefix, s32 moduleGroup);
-
 extern const char sdfIopModulePathCdrom[32];
-
 extern const char sdfIopModulePathHost[27];
-
 extern const char mcModuleNameCdMcserv[14];
-
 extern const char mcModuleNameCdMcman[13];
-
 extern const char mcModuleNameMcserv[12];
-
 extern const char mcModuleNameMcman[11];
-/* End of declarations from src/smt3/sdf/sdfTmx.c */
 
 void sdfTmxSetHeader(TMX_HEADER_t *aHeader, s32 aWidth, s32 aHeight, s32 aPixelFormat, s32 aNumOfCLUT, s32 aCLUTFormat) {
     memset(aHeader, 0, sizeof(TMX_HEADER_t));

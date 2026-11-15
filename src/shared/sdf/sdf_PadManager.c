@@ -1,14 +1,7 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdf_PadManager.c */
-#include "common.h"
-
 #include "ps2asm.h"
-
 #include "sdfFrame.h"
-
 #include "sdf_lighting.h"
-
 #include "sdf_resource.h"
 
 /* Declared here because no header carries these. */
@@ -68,28 +61,13 @@ typedef struct sdfPadCb_t {
 
 #define SDF_PAD_PRESSURE_STATE_BYTES 0x18
 
-extern u64 sdf3DRefMapParam;
-
 extern u8 sdfPadCb_0[];
-
 extern u8 sdfPadAnalogSticks[8];
-
 extern s8 dds3PadBitTable[0x20];
-
 extern u8 sdfPadPressure[0x18];
-
-extern u16 sdfPadButtons[4];
-
-extern u16 sdfPadBitMask[0x10];
-
-extern s32 sdfVblankFlag;
-
 extern u8 sdfPadPortSlotPairs[4];
-
 extern u8 sdfPadPortBuffers[];
-
 extern u8 sdfPadManagerMode;
-
 extern sdfPadCb_t sdfPadCb[];
 
 /* Per-texture reference count and non-owning clone source (0x8). */
@@ -106,74 +84,23 @@ typedef struct sdfTexPacket_t {
     u64 clampRegister; /* GS CLAMP_1/CLAMP_2 register selector. */
 } sdfTexPacket_t;
 
-extern sdfTexHandle_t *sdf3DSlot2Tex;
-
-extern sdfTexHandle_t *sdf3DSpecularTex;
-
-extern sdfTexHandle_t *sdf3DSlot1Tex;
-
 extern s32 scePadGetState(s32 port, s32 slot);
-
 extern s32 scePadRead(s32 port, s32 slot, void *data);
-
 extern s32 scePadGetReqState(s32 port, s32 slot);
-
 extern s32 scePadInfoAct(s32 port, s32 slot, s32 actNo, s32 term);
-
 extern s32 scePadSetActDirect(s32 port, s32 slot, void *actData);
-
 extern s32 scePadSetMainMode(s32 port, s32 slot, s32 offs, s32 lock);
-
 extern s32 scePadSetActAlign(s32 port, s32 slot, void *data);
-
 extern s32 scePadInit(s32);
-
 extern s32 scePadPortOpen(s32 port, s32 slot, void *buffer);
-
 extern void *memcpy(void *, const void *, size_t);
-
 void sdfPadControl(sdfPadCb_t *entry);
-
 void sdfPadManager(void);
-
 void sdfPadSetAct0(s32 pad, u16 value);
-
 void sdfPadSetAct1(s32 pad, u8 value);
-
 void sdfPadInitManager(void);
-
-void sdfPadControl(sdfPadCb_t *entry);
-
-void sdfPadManager(void);
-
-void sdfPadWork(void);
-
 void sdfPadChangeMode(s32 aPadNum, u8 mode);
-
-void sdfPadSetAct0(s32 pad, u16 value);
-
-void sdfPadSetAct1(s32 pad, u8 value);
-
 void sdfPadSetAct(s32 pad, s32 value0, s32 value1);
-
-void sdfPadInitManager(void);
-
-extern u8 sdfPadPortSlotPairs[4];
-
-extern u8 sdfPadManagerMode;
-
-extern u16 sdfPadButtons[4];
-
-extern u8 sdfPadAnalogSticks[8];
-
-extern u32 D_005518E8;
-
-extern u32 D_005518EC;
-
-extern u32 D_005518F0;
-
-extern u32 D_005518F4;
-/* End of declarations from src/smt3/sdf/sdf_PadManager.c */
 
 void sdfPadControl(sdfPadCb_t *entry) {
     u8 reply[SDF_PAD_REPLY_BUFFER_BYTES];

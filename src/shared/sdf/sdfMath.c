@@ -1,12 +1,6 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfMath.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 #define SDF_PI_2 1.5707963f
@@ -61,37 +55,13 @@ enum sdf_stream_playback {
 };
 
 extern f32 sdfAsinTable[];
-
-extern s32 (*p2sdSmgBuf)(void);
-
-/* Mirror the phase into a quarter turn, then evaluate an odd ninth-degree polynomial. */
-f32 sdfSin(f32 aRadius);
-
 f32 sdfCos(f32 aRadius);
-
-/* Binary-search samples, using zero as the implicit lower endpoint.
- * The step is integer 1/sampleCount converted to f32, not a float reciprocal.
- * The caller must provide valid table bounds for the final sample index.
- */
 f32 sdfTableInterpolation(f32 aValue, const f32 *aTable, s32 aTableSize);
-
 f32 sdfAtan(f32 aX);
-
 f32 sdfAtan2(f32 aY, f32 aX);
-
-/* Restore the input sign after sampling; magnitudes at or above one use half pi. */
 f32 sdfAsin(f32 aX);
-
-/* Return the input-signed complement of the sampled angle, not standard acos(x).
- * Magnitudes at or above one leave the angle magnitude at zero.
- */
 f32 sdfAcos(f32 aX);
-
-/* Keep the cast-plus/minus-one turn adjustment; this is not general modulo.
- * Inputs already within the pi thresholds are returned unchanged.
- */
 f32 sdfClipAngleValuePI(f32 aValue);
-/* End of declarations from src/smt3/sdf/sdfMath.c */
 
 /* Mirror the phase into a quarter turn, then evaluate an odd ninth-degree polynomial. */
 f32 sdfSin(f32 aRadius) {

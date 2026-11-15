@@ -1,16 +1,9 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfQuat.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
 
 f32 sdfSin(f32 aRadius);
-
 f32 sdfClipAngleValuePI(f32 aValue);
 
 enum SdfFileIOCmdStat {
@@ -63,65 +56,27 @@ enum sdf_stream_playback {
 typedef union { f32 quaternion[4]; u16 monthDays[20]; } sdfMathConstants_t;
 
 extern sdfMathConstants_t sdfMathConstants;
-
 extern f32 sdfQuatPoleDown[4];
-
 extern f32 sdfQuatPoleUp[4];
-
 extern f32 sdfUnitXVector[4];
-
-extern s32 (*p2sdSmgBuf)(void);
 
 /* Return the input-signed complement of the sampled angle, not standard acos(x). * Magnitudes at or above one leave the angle magnitude at zero. */ f32 sdfAcos(f32 x);
 
 f32 sdfAtan2(f32 aY, f32 aX);
-
 f32 sdfCos(f32 aRadius);
-
-/* vu0 routine: shared quaternion registers are the input/output interface. */
 void Mult(void);
-
-/* vu0 routine: the conjugate over the squared norm. */
 void Inverse(void);
-
-/* vu0 routine: normalize all four components of vf10. The IDB called this
- * SDF_QUAT_INNERPRODUCT, which belongs to the dot product below. */
 void Normalize(void);
-
-/* Squared length, but retail's vmulay multiplies x*x by y*y instead of adding them. */
-f32 LengthSq(void);
-
-/* vu0 routine: return the four-lane dot product of vf10 and vf11. */
 f32 SDF_QUAT_INNERPRODUCT(void);
-
-/* vf10 initially holds the axis; write the sine-scaled axis and cosine W. */
 void FromRotation(f32 aAngle);
-
-/* As above, but write the second VU quaternion register (vf11). */
 void FromRotation_B(f32 aAngle);
-
-/* vu0 routine: shared quaternion registers are the input/output interface. */
 void ToMatrix(void);
-
-/* vu0 routine: the composed quaternion is left in the shared register. */
 void FromEulerXYZ(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
-
-/* vu0 routine: the composed quaternion is left in the shared register. */
 void FromEuler(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
-
-/* vu0 routine: compose pitch and offset-adjusted planar direction quaternions. */
 void LookAt(f32 aFrontX, f32 aFrontZ);
-
-/* vu0 routine: blend vf10/vf11 along the shorter quaternion arc into vf10.
- * blendAmount is used without clamping; the final step normalizes either blend. */
 void Slerp(f32 aRatio);
-
-/* vu0 routine: shared quaternion registers are the input/output interface. */
 void Lerp(f32 aRatio);
-
-/* vu0 routine: shared quaternion registers are the input/output interface. */
 f32 EulerAngleAxisY(void);
-/* End of declarations from src/smt3/sdf/sdfQuat.c */
 
 /* vu0 routine: shared quaternion registers are the input/output interface. */
 void Mult(void)

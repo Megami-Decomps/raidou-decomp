@@ -1,8 +1,4 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdk/libdma.c */
-#include "common.h"
-
 #include "libdma.h"
 
 #define VD_CTRL ((volatile u32 *)0x1000E000)
@@ -43,55 +39,26 @@ typedef struct {
 } sceDmaEnv;
 
 extern sceDmaChan *sceDmaChanRegs[10];
-
 extern sceDmaEnv sceDmaSavedEnv;
-
 extern const int sceDmaChanResetFlag[10];
-
 extern const u8 sceDmaStsBits[16];
-
 extern const u8 sceDmaStdBits[16];
-
 extern const u8 sceDmaMfdBits[16];
-
 extern int scePrintf(const char *fmt, ...);
-
 extern int DIntr(void);
-
 extern int EIntr(void);
-
 void WaitDma(sceDmaChan *chan);
-
 void WatchDma(sceDmaChan *chan, u32 addr, int timeout);
-
 u32 CheckAddress(addr_t addr);
-
 void memclr(void *p, int n);
-
 int sceDmaPause(sceDmaChan *chan);
-
 int sceDmaPutEnv(sceDmaEnv *env);
-
-void WaitDma(sceDmaChan *chan);
-
-void WatchDma(sceDmaChan *chan, u32 addr, int timeout);
-
-u32 CheckAddress(addr_t addr);
-
-void memclr(void *p, int n);
-
 sceDmaChan *sceDmaGetChan(u32 channel);
-
 int sceDmaReset(int enable);
-
 sceDmaEnv *sceDmaGetEnv(sceDmaEnv *env);
-
 u32 sceDmaPutStallAddr(u32 addr);
-
 void sceDmaSend(sceDmaChan *chan, void *tag);
-
 void sceDmaSendN(sceDmaChan *chan, void *data, u32 qwc);
-
 void sceDmaSendI(sceDmaChan *chan, void *data, u32 qwc);
 
 /* The receive starters share this tail; 2.9 inlines it, which is what retail
@@ -102,27 +69,11 @@ static __inline__ void recv_setup(sceDmaChan *chan, int mod)
 }
 
 void sceDmaRecv(sceDmaChan *chan);
-
 void sceDmaRecvN(sceDmaChan *chan, void *data, u32 qwc);
-
 void sceDmaRecvI(sceDmaChan *chan, void *data, u32 qwc);
-
 int sceDmaSync(sceDmaChan *chan, int mode, int unused);
-
 int sceDmaWatch(sceDmaChan *chan, u32 addr, int mode, int timeout);
-
-int sceDmaPause(sceDmaChan *chan);
-
 int sceDmaRestart(sceDmaChan *chan, u32 chcr);
-
-extern const int sceDmaChanResetFlag[10];
-
-extern const u8 sceDmaStsBits[16];
-
-extern const u8 sceDmaStdBits[16];
-
-extern const u8 sceDmaMfdBits[16];
-/* End of declarations from src/smt3/sdk/libdma.c */
 
 void WaitDma(sceDmaChan *chan)
 {

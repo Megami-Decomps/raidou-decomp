@@ -1,136 +1,43 @@
 #include "common.h"
 
-/* Declarations from dds-decomp src/dds1/game/code_00269C10.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
 
 #include "fileManager.h"
-
 #include "libsdf.h"
-
 #include "sdf_resource.h"
-
 #include "sdk_libc.h"
-
 #include "dds/btl.h"
-
 #include "dds/dds3_world_counter.h"
-
 #include "dds/dds3_world_secondary.h"
-
 #include "dds/dds3_world_value.h"
-
 #include "dds/file_request_api.h"
-
 #include "dds/sdf_heap_api.h"
-
 #include "dds/sdf_semaphore_api.h"
-
 #include "dds/sdf_thread_sleep.h"
-
 #include "dds/sdk_libc.h"
-
 #include "dds/sdk_libkernl.h"
 
 s32 SignalSema(s32 semaphoreId);
-
 s32 WaitSema(s32 semaphoreId);
-
-/* Advance the wrapping 16-bit world object sequence carried in a u32. */
-u32 dds3AllocObjectId(void);
-
-/* Return the borrowed secondary world node, or NULL when no world is active. */
-struct dds3Basic_t *dds3GetControlScene(void);
-
-/* Store objectName directly as the node's lookup key; no copy is made.
- * A NULL node is ignored and a NULL name clears the key. Keep non-NULL names
- * alive while the node can be searched. */
-void dds3SetUnitObjectId(struct dds3Basic_t *node, const char *objectName);
-
-/* Return the address of the loaded resource payload as a byte pointer. */
-u8 *fileGetLoadPtr(const struct FileRequest *request);
-
-/* Return the signed byte count recorded by the file transfer request. */
-s32 fileGetLoadSize(const struct FileRequest *request);
-
-/* Return the payload allocation descriptor. For normal file loads, freeing the
- * request wrapper does not free this allocation; its resource owner must keep
- * or release it separately. */
-struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
-
-/* Free a completed request wrapper; return one while it remains pending. */
-FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
-
 extern void *memcpy(void *, const void *, unsigned int);
 
-void *memset(void *dst, s32 value, u32 size);
-
-s32 pacFileCheckEnd(const struct FileRequest *request);
-
-s32 sdfCreateSema(u32 initialCount, u32 option, u32 maximumCount);
-
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-
-struct sdfMemHandle_t *sdfMemAllocFromTailDirect(s32 requestedBytes);
-
-/* Queue the two heap owners separately: the general heap stores descriptors,
- * while the chip heap stores the address of the cell to release. */
-void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *allocation);
-
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-
-/* Return the descriptor's payload base as a byte address, not the descriptor. */
-u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
-
-s32 sdfMemGetSize(const struct sdfMemHandle_t *block);
-
-/* Record the current thread, lower its priority for sleep, and return the
- * result from the SDK SleepThread call. */
-s32 sdfSetMainThreadPriority(void);
-
 #include "dds/sdk_ps2.h"
-
-#include "dds/dds3_world_counter.h"
-
 #include "dds/common.h"
-
-#include "dds/sdf_semaphore_api.h"
-
 #include "dds/mnu_result.h"
-
 #include "dds/sdf_chip.h"
-
 #include "dds/dds3obj.h"
-
 #include "dds/dds3_world_selection.h"
-
-#include "dds/dds3_world_value.h"
-
-#include "dds/sdf_heap_api.h"
-
 #include "dds/dds3_process.h"
-
 #include "dds/mnu_title_effect.h"
-
 #include "dds/file.h"
-
-#include "dds/file_request_api.h"
-
 #include "dds/file_request_end_check_api.h"
-
 #include "dds/sdf_thread.h"
-
-#include "dds/sdf_thread_sleep.h"
-
 #include "dds/mnu_title_stream.h"
-
 #include "dds/mnu_title_stream_status_snapshot.h"
-
 #include "dds/mnu_title_stream_entry.h"
-
 #include "dds/mnu_title_sound.h"
-
 #include "dds/mnu_title_sound_buffer_status.h"
 
 #define SND_MIX_SAMPLE_COUNT 0x800
@@ -151,194 +58,23 @@ s32 sdfSetMainThreadPriority(void);
 
 #define MNU_SOUND_BUFFER_BYTES_SMALL 0xE100
 
-extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 counter, u128 *position, u128 *rotation);
-
-extern void dds3GetRadiusPoseSet(dds3Basic_t *object, f32 value);
-
-extern u8 mnuTitleCameraPosition[];
-
-extern u8 mnuTitleCameraRotation[];
-
-extern dds3Basic_t *mnuTitleCameraObject;
-
-extern char D_003AFD48[];
-
 extern TitleAudioStreamState mnuTitleSoundBufferState;
-
 extern u32 mnuTitleAudioSilenceBuffer[];
-
 extern TitleAudioStreamState mnuTitleStreamStatus;
-
 extern u32 mnuTitleStreamSemaphore;
-
-extern struct FileRequest *mnuTitleStreamFileRequest;
-
-extern s32 D_003BC5C8;
-
-extern u8 D_003D9178[];
 
 #include "dds/sdf_debug_api.h"
 
-extern u32 sndData[2];
-
-extern u32 sndInitializeStreamTransferBuffersData;
-
-extern void mnuInitializeTitleAudioStreams(void);
-
-s32 sndCopyWordsToIopSynchronously(const void *source, u32 iopAddress, u32 wordCount);
-
-void mnuInitTitleSoundRemoteRequest(u32 wordCount);
-
-s32 mnuCopySoundStreamOnStatusChange(const void *source, u32 words);
-
-/* The argument is a word count, not a source address; both use the EE buffer. */
-void sndUploadStreamToBothIopBuffers(u32 wordCount);
-
-/* Copy the second source, add the first, and clamp to [-32767, 32767].
- * The native lower limit intentionally excludes the s16 value -32768. */
 void sndMixSampleBuffers(s16 *destinationSamples, TitleAudioStreamState *firstSource, TitleAudioStreamState *secondSource);
-
-extern s32 D_003BC5C0;
-
-extern s32 D_003BC5C4;
-
-extern s32 D_003BC5C8;
-
-extern s32 D_003BC5CC;
-
 extern u32 mnuTitleStreamDecoderState[];
-
-extern u32 mnuTitleSoundBufferDecoderState[];
-
-extern u32 mnuTitleAudioSilenceBuffer[];
-
-extern u8 mnuTitleAudioMixBuffer[];
-
-extern TitleAudioStreamState mnuTitleStreamStatus;
-
-extern TitleAudioStreamState mnuTitleSoundBufferState;
-
 void mnuResetTitleStream(void);
-
 void mnuReleaseSoundBuffer(void);
-
-extern void mnuConfigureTitleAudioStream(s32 transferSize);
-
-void mnuUpdateTitleAudioStreams(void);
-
-extern void sdfWaitVblank(s32 requestedSleepCount);
-
-void mnuRunTitleStreamThread(void);
-
-extern u32 mnuTitleStreamSemaphore;
-
-extern sdfThCB_t mnuTitleStreamThread __attribute__((section(".sbss")));
-
-extern u8 mnuTitleStreamThreadStack[];
-
-void mnuCreateTitleStreamThread(void);
-
-extern u32 mnuTitleStreamDecoderState[];
-
-extern u32 mnuTitleSoundBufferDecoderState[];
-
-extern u8 mnuTitleStreamDecodedSamples[];
-
-extern u8 mnuTitleSoundBufferDecodedSamples[];
-
-void mnuInitializeTitleAudioStreams(void);
-
-/* Read state words 0, 1 and 3; the frame-byte word 2 is not in this snapshot. */
 void mnuReadTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusSnapshot);
-
-extern u32 mnuTitleStreamSemaphore;
-
-/* Restore the same condensed three-word status mapping under the lock. */
 void mnuWriteTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusValues);
-
-void mnuLoadTitleStreamFrameData(char *filePath, TitleAudioStreamState *streamState);
-
 void File_BgmLoadStart(char *audioPath);
-
-extern u32 mnuTitleStreamDecoderState[];
-
-extern void at3decReset(u32 *);
-
-/* Allocate in global status, but use the supplied state's copy destination
- * and frame counts. Keep those distinct accesses and the cleanup-before-copy
- * ordering; return 1 after a ready file is copied, otherwise its ready result. */
-s32 mnuCompleteTitleStreamFileLoad(TitleAudioStreamState *destinationState);
-
-/* Install the fixed title track and queue its compressed frames under the lock. */
 void sndBgmLoadFile(void);
-
-extern MnuTitleStreamEntry D_00377650[];
-
-extern MnuTitleStreamEntry mnuTitleStreamEntries[];
-
-extern char D_003AFCF0[];
-
-/* Load the named sound stream for the requested entry format under the lock. */
-void mnuQueueTitleSoundStreamEntry(s32 soundEntryIndex);
-
-/* Poll a pending file without acquiring the semaphore in this entry point. */
-MnuTitleStreamLoadState mnuUpdateTitleTransition(void);
-
-/* Poll under the semaphore, but retain the native load-state read after unlock. */
-MnuTitleStreamLoadState mnuPollTitleStreamStateLocked(void);
-
-extern void fileSyncAll(void);
-
-void mnuTitleStreamUpdateAndLogBgm(void);
-
-void mnuMarkTitleStreamResetPending(void);
-
-/* Commit the ready load only for control 1, and select the native value 6. */
-void mnuAdvanceTitleStateUnderSemaphore(void);
-
-/* Save the pre-transition load-state read before marking the commit complete. */
-void mnuCommitTitleStreamReadyState(void);
-
-/* Reset load/data slots only when an allocation is present; otherwise do nothing. */
-void mnuResetTitleStream(void);
-
 void sndBgmFree(void);
-
-extern u32 mnuTitleSoundBufferDecoderState[];
-
-/* Install the default medium-frame buffer and stream under the shared lock. */
-void mnuInitializeTitleSoundBuffer(void);
-
-extern char D_003AFCF0[];
-
-/* Each format reserves 600 compressed frames before loading its named stream. */
-void mnuLoadTitleSoundBufferEntry(s32 soundEntryIndex);
-
-/* Install an in-memory ATRAC stream and configure the decoder for its frame
- * format while holding the shared sound-buffer semaphore. The native code
- * has no default-format guard or buffer-capacity check. */
-void mnuInstallTitleSoundBufferFromData(const void *compressedData, s32 dataBytes, MnuTitleSoundFormat format);
-
-/* This status reports allocation and stream control, not load progress. */
-MnuTitleSoundBufferStatus mnuGetSoundBufferStateLocked(void);
-
-void mnuPrintTitleDebugBanner(void);
-
 void sndDeadSePlay_VolAngle(void);
-
-/* Release the allocation handle, not the data address, then clear its slot. */
-void mnuReleaseSoundBuffer(void);
-
-void mnuResetSoundBufferLocked(void);
-
-void mnuReleaseSoundBufferLocked(void);
-
-extern void mnuLoadMovieMenuResourceSlots(void);
-
-void mnuLoadTitleMenuAssets(void);
-
-void mnuCreateTitleCameraWorldEntry(void);
-/* End of declarations from src/dds1/game/code_00269C10.c */
 
 INCLUDE_ASM(const s32, "sndAt3", sndUploadStreamToBothIopBuffers);
 

@@ -1,8 +1,4 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdk/libgcc_dpdiv.c */
-#include "common.h"
-
 #include "sdk_libgcc.h"
 
 typedef struct fp_number_type_df {
@@ -13,9 +9,7 @@ typedef struct fp_number_type_df {
 } fp_number_type_df;
 
 extern void sdfUnpackDouble(const double *value, fp_number_type_df *parts);
-
 extern f64 __pack_df(const fp_number_type_df *parts);
-
 extern const fp_number_type_df libgccDfInvalidResult;
 
 static inline s32 dfIsNaN(const fp_number_type_df *number)
@@ -83,7 +77,6 @@ static inline const fp_number_type_df *dfDivideParts(fp_number_type_df *numerato
 }
 
 f64 dpdiv(f64 a, f64 b);
-/* End of declarations from src/smt3/sdk/libgcc_dpdiv.c */
 
 f64 dpdiv(f64 a, f64 b)
 {

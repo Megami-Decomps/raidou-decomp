@@ -1,28 +1,12 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/model/mdlEffect.c */
-#include "common.h"
-
 #include "kernel_draw.h"
-
 #include "libsdf.h"
-
 #include "model.h"
-
 #include "kernel.h"
-
 #include "newdata.h"
-
 #include "ps2asm.h"
-
 #include "motion.h"
-
 #include "sdfFrame.h"
-
-/* Declared here because no header carries these. */
-extern void *dds3GetProcessData(dds3ProcessID_t *id);
-
-extern u32 dds3GetKernelCount(void);
 
 typedef struct mdlBillboard_t mdlBillboard_t;
 
@@ -210,120 +194,46 @@ typedef struct
 } mdlTrackCreateParams_t;
 
 typedef void (*mdlOtRegFunc_t)(sdfGrOt_t *, sdfDrawTag_t *);
-
-extern sdfGrOt_t sdfGrOtTable[];
-
 extern s8 dds3PadButtonState[];
-
-extern s8 dds3PadBitTable[];
-
-extern f32 sdfViewMatrix[16];
-
 extern u8 aViewEye[];
-
-extern dds3LightState_t dds3LightParam;
-
-extern mdlDebugLight_t mdlDebugLightWork;
-
-extern mdlDebugScale_t mdlDebugScaleWork;
-
-extern mdlDebugEntry_t mdlDebugEntryTable[];
-
-extern mdlDebugOption_t softenBiasWork;
-
 extern mdlDebugLabel_t mdlDebugLightLabels[4], mdlDebugScaleFogLabel, softenBiasLabels[4];
-
 extern u16 mdlDebugLightCursorY[], softenBiasCursorY[4] __attribute__((section(".data")));
-
-extern u8 corePktSoftenBias __attribute__((section(".sdata")));
-
 extern f32 sdfFaceDivSoften, sdfFaceDivBias;
-
 extern char *mdlColorChannelLabels[];
-
 extern u8 mdlColorChannelStyle[];
-
 extern u16 mdlPibTrackRowOffset[];
-
 extern void *sdfChipAllocZeroDirect(u32 aSize);
-
 extern void sdfChipFreeDirect(void *aPtr);
-
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-
 extern void *dds3BillboardCreate(s32, addr_t);
-
 extern void dds3BillboardDelete(mdlBillboard_t *);
-
 extern mdlBillboard_t *dds3BillboardCopy(mdlBillboard_t *);
-
 extern void *dds3EffectLoad(void *pD3P);
-
 extern void dds3EffectDelete(mdlEffect_t *);
-
 extern mdlEffect_t *dds3EffectCopy(mdlEffect_t *);
-
 extern void sdfIpuFree(void *cb);
-
 extern void sdfIpuSetOutputTex(void *, mdlIpuParams_t *, u8 *, s32, sdfTexHandle_t *);
-
 extern sdfItemArray_t *sdfItemArrayNew(u32, s32, s32);
-
 extern void sdfItemArrayFree(sdfItemArray_t *);
-
 extern mdlMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *, s32);
-
 extern mdlTrackWork_t *Eff_ModelTrackPolyCreate(mdlTrackCreateParams_t *);
-
 extern void Eff_ModelTrackPolyDelete(mdlTrackWork_t *);
-
 extern void Eff_ModelTrackPolyDraw(mdlTrackWork_t *);
-
 extern void mdlSetBlur(mdlObj_t *, s32, s32, u32, u32);
-
 extern sdfTexHandle_t *sdfTexSearch(s32 id);
-
 extern sdfModelNode_t *sdfModelSearchNode(sdfModelRootNode_t *, u32);
-
 extern void dds3BillboardSetPosition(void *, const void *);
-
 extern void dds3BillboardDraw(mdlBillboard_t *);
-
 extern void dds3EffectSetPosition(mdlEffect_t *, const void *);
-
 extern void dds3EffectDraw(mdlEffect_t *);
-
 extern void dds3BillboardSetRGBA(mdlBillboard_t *, s32);
-
 extern void dds3EffectSetRGBA(mdlEffect_t *, s32);
-
 extern void dds3BillboardSetScale(mdlBillboard_t *, f32, f32);
-
 extern void dds3EffectSetScale(mdlEffect_t *, f32);
-
 extern void *sdfDevPrintf(s32, s32, s32, s32, const char *, ...);
-
 extern void sdfDrawTagLink(sdfDrawTag_t *, addr_t);
-
 extern void *dds3PrimFrameRect(s32, s32, s32, s32, s32, u32, u32);
-
 extern void dds3DebugIntEditEx(void *, s32, s64, s64, s64, s64, s8 *);
-
-extern void *dds3FontReqAllocDrawTag(void);
-
-extern void FromRotation(f32);
-
-extern void ToMatrix(void);
-
-extern s32 dds3DebugFloatEditEx(f32 *, u8 *, f32, f32, f32, f32);
-
-extern s32 dds3DebugColorEditEx(u32 *, s32, s8 *);
-
-extern void dds3PrimDebugTextBox(sdfDrawTag_t *, s32, s32, s32, f32 *);
-
-extern void dds3PrimDebugTextBoxRGB(void *, s32, s32, s32, u32, s32);
-
-extern void *dds3PrimLine3D(s32, s32, s32, s32);
 
 /* dds3ModelEffectCtrlr_t.type: which effect a controller drives. */
 typedef enum dds3ModelEffectType {
@@ -344,28 +254,9 @@ typedef enum PIB_CHUNK_TYPE {
 } PIB_CHUNK_TYPE;
 
 extern char mdlPibLabelP2A[];
-
 extern char mdlPibLabelD3P[];
-
 extern char mdlColorByteFormat[];
-
 extern char mdlPibCursorMark[];
-
-extern char mdlDebugLightCursor[];
-
-extern char mdlDebugLightFormat[];
-
-extern char mdlDebugScaleCursor[];
-
-extern char softenBiasCursor[];
-
-extern char softenBiasValueFormat[];
-
-extern char softenBiasAdjustFormat[];
-
-extern char softenBiasLabelOn[];
-
-extern char softenBiasLabelOff[];
 
 #define MDL_RECORD_LIST_HEADER_BYTES 8
 
@@ -395,196 +286,50 @@ extern char softenBiasLabelOff[];
 
 #define MDL_PART_OBJECT 3
 
-/* Read the PIB file version without following its relative link. */
-u32 mdlPibGetVersion(pibHeaderChunk_t *record);
-
 /* The PIB chunk count is the low half of the packed parameter word. */
 u16 mdlPibGetChunkCount(pibHeaderChunk_t *record);
-
-/* Follow the relative links in a resource's record table to find an ID. */
 pibHeaderChunk_t *mdlPibGetChunk(mdlObj_t *handle, s32 group);
-
-/* The first eight bytes belong to the enclosing list, not its first record. */
 pibHeaderChunk_t *mdlPibGetFirstChunkItem(pibHeaderChunk_t *data);
-
-/* A terminal kind returns NULL; the link is a byte offset, not a pointer. */
 pibHeaderChunk_t *mdlPibGetNextChunkItem(pibHeaderChunk_t *data);
-
-/* Count relative-offset records until the 0xffff sentinel. */
 s32 mdlPibGetChunkItemCount(pibHeaderChunk_t *data);
-
 s32 mdlPibCheckItemType(pibHeaderChunk_t *data, s32 type);
-
 u16 mdlPibGetEffectCount(pibHeaderChunk_t *record);
-
-/* Read the PIB motion count from its packed halfword. */
 u16 mdlPibGetMotionCount(const pibHeaderChunk_t *record);
-
 void mdlPibDrawEffectInfo(sdfDrawTag_t *tag, s32 x, s32 y, s32 z, s32 attr, pibHeaderChunk_t *data);
-
-/* Draw the scalar marker fields, then four colors with four byte channels each; negative selection hides the cursor. */
 void mdlPibDrawTrackInfo(sdfDrawTag_t *tag, s32 x, s32 y, s32 z, mdlTrackParams_t *data, s32 cursor);
-
-/* Edit the marker parameters with the pad: rows 0-6 are the scalar fields, 7-22 the color bytes. */
 void mdlPibEditTrackInfo(mdlTrackParams_t *data, s16 *cursor_p);
-
-/* Append a newly created billboard to the next part-list slot. */
 void mdlCreateEffectResrc_P2A(sdfItemArray_t *partList, void *descriptor);
-
-/* Append a newly created effect to the next part-list slot. */
 void mdlCreateEffectResrc_D3P(sdfItemArray_t *partList, void *descriptor);
-
 void mdlCreateEffectResrc_IPU(sdfItemArray_t *list, u8 *sourceAddress, sdfMemHandle_t *backingAllocation, s32 sourceSize);
-
 void mdlDeleteEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu);
-
 void mdlStartEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu, sdfTexHandle_t *tex, mdlIpuParams_t *parm);
-
 sdfItemArray_t *mdlEffectResrcListNew(u32 initCapa);
-
-/* Destroy each part according to its stored kind, then release the owning request. */
 void mdlEffectResrcListFree(sdfItemArray_t *efcResList);
-
-/* Prepend a cleared, typed resource item to the owner's list. */
 dds3ModelEffectCtrlr_t *mdlCreateEffectCtrlr(mdlObj_t *aHandle, s32 aType, s32 aPlayGroup);
-
 void *mdlEffectDup_P2A(mdlEffectResrcItem_t *efcResPtr);
-
 void *mdlEffectDup_D3P(mdlEffectResrcItem_t *efcResPtr);
-
-/* Resolve a 16-byte part slot; retail checks only the upper index bound. */
 mdlEffectResrcItem_t *mdlGetEffectResrc(mdlObj_t *handle, s32 effectIndex);
-
-/* Bind each consecutive record ID to a newly created part when the chunk contains it. */
 void mdlCreateEffect_P2A_D3P(mdlObj_t *owner, pibChunkItem_P2A_D3P_t *partRecord, s32 motionSlotIndex, s32 resourceType, void *(*createPart)(mdlEffectResrcItem_t *));
-
-/* Convert the effect record to native track parameters and retain its work pointer. */
 void mdlCreateEffect_TRACK(mdlObj_t *owner, pibChunkItem_TRACK_t *record, s32 motionSlotIndex);
-
 void mdlCreateEffect_BLUR(mdlObj_t *owner, pibHeaderChunk_t *record);
-
-/* Claim an unused object only after its data resource resolves, retaining record flags and deferred-init parameters. */
 void mdlCreateEffect_IPU(mdlObj_t *aHandle, mdlPibIpu_t *aData, s32 aPlayGroup);
-
-/* Start the IPU once its owner reaches the stored motion-frame threshold. */
 void mdlDrawEffect_IPU(dds3ModelEffectCtrlr_t *effect);
-
-/* Dispatch the five record kinds, retaining the game's native return behavior. */
 void mdlCreateEffect(mdlObj_t *owner, pibHeaderChunk_t *record, s32 motionSlotIndex);
-
-/* Find the requested record list and associate each entry with this motion slot. */
 void mdlGenEffect(mdlObj_t *aHandle, s32 aGroup, s32 aPlayGroup);
-
-/* Release billboard, effect, or tracked-poly handles when applicable, then always free the list item. */
 void mdlFreeEffect(dds3ModelEffectCtrlr_t *aCtrlr);
-
-/* Release all items for this slot without losing the link across consecutive matches. */
 void mdlStopEffect(mdlObj_t *aHandle, s32 aPlayGroup);
-
-/* vu0 routine: transform an anchor, then offset it away from the eye. */
 void mdlEffect_P2A_D3P_GetPos(sdfModelRootNode_t *model, dds3ModelEffectCtrlr_t *effect, f32 *vect);
-
-/* Update anchored billboard/effect positions, tracked polygons, or deferred object initialization by type. */
 void mdlLinkEffect(mdlObj_t *owner, dds3ModelEffectCtrlr_t *anchorRecord);
-
-/* Set billboard/effect color; other controller kinds have no RGBA dispatch. */
 void mdlSetEffectColorSub(mdlObj_t *aHandle, dds3ModelEffectCtrlr_t *aEffect, u32 aColor);
-
-/* Set billboard/effect scale; other controller kinds have no scale dispatch. */
 void mdlSetEffectScaleSub(mdlObj_t *aHandle, dds3ModelEffectCtrlr_t *aEffect, float aScale);
-
-/* vu0 routine: rotate the edited light direction about the view's X/Y axes. */
-void mdlSetDebugMatrix(mdlDebugLight_t *context, f32 *position);
-
-/* Update/draw the task-selected light and ambient editor; return zero. */
-s32 mdlDebugPrintEffectScale(dds3ProcessID_t *task);
-
-void mdlDebugTextBox(s32 first, s32 second, s32 color, s32 variant);
-
-/* Step the number being edited in table slot `index`: coarse steps (A) and fine steps (B),
-   held-button repeat, wrapping from one end of [min, max] to the other on a fresh press. */
-void mdlGetDebugEntry(s32 valueEditIndex);
-
-/* Edit the draw-vector target: four numeric rows and three packed-colour channels. */
-s32 mdlDebugPrintEffectScale2(dds3ProcessID_t *task);
-
-/* Update/draw the FACE-DIV soften, bias and divide controls; return zero. */
-s32 soften_bias_Process(dds3ProcessID_t *task);
-
-extern const char mdlDebugLabelAmbient[16];
-
-extern const char softenBiasTitle[16];
-
 extern char mdlPibLabelP2A[8];
-
 extern char mdlPibLabelD3P[8];
-
 extern char mdlColorLabelA[8];
-
 extern char mdlColorLabelB[8];
-
 extern char mdlColorLabelG[8];
-
 extern char mdlColorLabelR[8];
-
 extern char mdlColorByteFormat[8];
-
 extern char mdlPibCursorMark[8];
-
-extern char mdlDebugLabelLight2[8];
-
-extern char mdlDebugLabelLight1[8];
-
-extern char mdlDebugLabelLight0[8];
-
-extern char mdlDebugLightCursor[8];
-
-extern char mdlDebugLightFormat[8];
-
-extern char mdlDebugLabelFog[8];
-
-extern char mdlDebugLabelFar[8];
-
-extern char mdlDebugLabelMin[8];
-
-extern char mdlDebugLabelNear[8];
-
-extern char mdlDebugIntFormat[8];
-
-extern char mdlDebugLabelMax[8];
-
-extern char mdlDebugScaleCursor[8];
-
-extern char softenBiasLabelDivide[8];
-
-extern char softenBiasLabelBias[8];
-
-extern char softenBiasLabelSoften[8];
-
-extern char softenBiasCursor[8];
-
-extern char softenBiasValueFormat[8];
-
-extern char softenBiasAdjustFormat[8];
-
-extern char softenBiasLabelOn[8];
-
-extern char softenBiasLabelOff[8];
-
-extern s32 dds3BitEditorRowBase;
-
-extern s32 dds3BitEditorTable;
-
-extern s32 dds3BitEditorTable2;
-
-extern char dds3BitEditorGlyphTemplate[8];
-
-extern char dds3BitEditorColumnFormat[8];
-
-extern char dds3BitEditorRowFormat[8];
-
-extern s32 evtNextEventNo;
-/* End of declarations from src/smt3/model/mdlEffect.c */
 
 /* Follow the relative links in a resource's record table to find an ID. */
 pibHeaderChunk_t *mdlPibGetChunk(mdlObj_t *handle, s32 group) {

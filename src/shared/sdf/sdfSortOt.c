@@ -1,8 +1,4 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfSortOt.c */
-#include "common.h"
-
 #include "ps2asm.h"
 
 enum {
@@ -27,16 +23,6 @@ struct sdfGrOt_t;
 #define SDF_POOL_FREE_KIND 0xFFFF
 
 #include "sdk_libkernl.h"
-
-extern void SleepThread(void);
-
-extern s32 sceSifLoadModule(const char *, s32, const char *);
-
-extern char *strcpy(char *, const char *);
-
-extern char *strcat(char *, const char *);
-
-extern void sceMcInit(void);
 
 extern void sdfGrJoinDrawTag(void *aFore, void *aBack);
 
@@ -72,36 +58,18 @@ typedef struct sdfGrOt_t {
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 s32 sdfGrAllocPacketBuff(s32 aSize);
-
-extern s32 WaitSema(s32);
-
-extern void FlushCache(s32);
-
-extern s32 SignalSema(s32);
-
-extern s32 sceSifDmaStat(s32);
-
-extern s32 GetThreadId(void);
-
 extern void *memcpy(void *, const void *, size_t);
-
 sdfSortOtNode_tag *sdfSortOtAvlRotateLR(sdfSortOtNode_tag *node, sdfSortOtNode_tag *parent);
-
 sdfSortOtNode_tag *sdfSortOtAvlRotateRL(sdfSortOtNode_tag *node, sdfSortOtNode_tag *parent);
 
 void sdfSortOtAvlCheckBalance(sdfSortOtNode_tag **stack, s32 stack_depth, sdfSortOtNode_tag *node,
                    sdfSortOtNode_tag **root_p);
 
 void sdfSortOtAvlRegist(sdfSortOtNode_tag **root_p, sdfDrawTag_t *tag);
-
 void sdfGrSortOtReg(sdfGrOt_t *aOt, sdfDrawTag_t *aTag);
-
 void sdfGrSortOtFixup(void *tag, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p);
-
 void sdfGrSortOtTraverse(sdfSortOtNode_tag *node, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p);
-
 void sdfGrSortOtSetup(sdfGrOt_t *aOt);
-
 void sdfGrSortOtCallback(sdfGrOt_t *aOt, s32 aFunc, sdfDrawTag_t *aData);
 
 typedef struct _reent _reent;
@@ -209,136 +177,6 @@ struct _reent {
     FILE __sf[3];
 };
 
-extern _reent *_impure_ptr __attribute__((section(".data")));
-
-extern s32 _puts_r(_reent *r, const char *s);
-
-extern s32 _raise_r(_reent *r, s32 sig);
-
-extern void *_signal_r(_reent *r, s32 sig, void *handler);
-
-extern s32 _setlocale_r(_reent *r, s32 category, const char *locale);
-
-extern void *_localeconv_r(_reent *r);
-
-extern void _cleanup_r(_reent *r);
-
-extern s32 fflush(void *fp);
-
-extern s32 _fwalk(_reent *r, s32 (*func)(void *));
-
-extern s32 libc_2DC670(void);
-
-extern long _strtol_r(_reent *r, const char *s, char **end, s32 base);
-
-extern long strtol(const char *s, char **end, s32 base);
-
-extern s32 raise(s32 sig);
-
-extern void _exit(s32 code) __attribute__((noreturn));
-
-extern u8 localeconvData[] __attribute__((section(".data")));
-
-extern s32 libcErrno __attribute__((section(".data")));
-
-extern s32 mallocLockCount __attribute__((section(".data")));
-
-extern s32 mallocLockOwner __attribute__((section(".data")));
-
-extern s32 mallocSema __attribute__((section(".data")));
-
-extern s32 _init_signal_r(_reent *r);
-
-extern void std(FILE *fp, s32 flags, s32 file, _reent *data);
-
-extern _glue *__sfmoreglue(_reent *r, s32 n);
-
-extern s32 __sigtramp_r(_reent *r, s32 sig);
-
-extern void *__deregister_frame_info(void *fn);
-
-extern void free(void *ptr);
-
-extern void *malloc(size_t size);
-
-extern void __malloc_lock(_reent *r);
-
-extern void __malloc_unlock(_reent *r);
-
-extern void *_malloc_r(_reent *r, u32 size);
-
-extern void _free_r(_reent *r, void *ptr);
-
-extern s32 SignalSema(s32 sema);
-
-extern void *sbrk(s32 incr);
-
-extern s32 close(s32 fd);
-
-extern _Bigint *_Balloc(_reent *r, s32 k);
-
-extern void __register_frame_info(void *fn, void *entry);
-
-extern s32 __register_frame_info_table(void *fn, void *entry);
-
-extern s32 write(s32 fd, const void *buf, s32 count);
-
-extern s32 read(s32 fd, void *buf, s32 count);
-
-extern long lseek(s32 fd, s32 offset, s32 whence);
-
-extern s32 fstat(s32 fd, void *buf);
-
-extern s32 kill(s32 pid, s32 sig);
-
-extern long _read_r(_reent *r, s32 fd, char *buf, s32 n);
-
-extern long _write_r(_reent *r, s32 fd, const char *buf, s32 n);
-
-extern long _lseek_r(_reent *r, s32 fd, s32 offset, s32 whence);
-
-extern s32 __sfvwrite(FILE *fp, __suio *uio);
-
-extern s32 __sread(void *cookie, char *buf, s32 n);
-
-extern s32 __swrite(void *cookie, const char *buf, s32 n);
-
-extern long __sseek(void *cookie, s32 offset, s32 whence);
-
-extern s32 __sclose(void *cookie);
-
-extern s32 GetThreadId(void);
-
-extern s32 WaitSema(s32 sema);
-
-extern s32 vfprintf(FILE *fp, const char *fmt, va_list ap);
-
-extern void *memset(void *a, s32 b, size_t c);
-
-extern void *_calloc_r(_reent *r, u32 n, u32 size);
-
-extern const double pow10Table[];
-
-extern void abort(void);
-
-extern void __do_global_ctors(void);
-
-extern s32 atexit(void (*fn)(void));
-
-extern void (**dtorListCursor)(void) __attribute__((section(".data")));
-
-extern s32 dtorFrameDeregistered __attribute__((section(".data")));
-
-extern s32 frameObjectSema __attribute__((section(".data")));
-
-extern u8 __EH_FRAME_BEGIN__[] __attribute__((section(".data")));
-
-extern void (*__CTOR_LIST__[])(void) __attribute__((section(".data")));
-
-extern s32 mainCtorsDone __attribute__((section(".data")));
-
-extern object *frameObjectList __attribute__((section(".data")));
-
 typedef struct fp_number_type {
     s32 class;
     s32 sign;
@@ -346,15 +184,7 @@ typedef struct fp_number_type {
     u32 fraction;
 } fp_number_type;
 
-extern void sdfUnpackFloat(const void *x, fp_number_type *u);
-
-extern f32 sdfPackFloat(const fp_number_type *u);
-
-extern f64 __make_dp(s32 kind, s32 sign, s32 exp, s64 mant);
-
 #define va_start(ap, last) __builtin_stdarg_start((ap), last)
-
-extern s32 _vfprintf_r(_reent *r, FILE *fp, const char *fmt, va_list ap);
 
 typedef union f32_bits {
     f32 f;
@@ -369,35 +199,7 @@ typedef struct fp_number_type_df {
     long fraction;
 } fp_number_type_df;
 
-extern f64 __pack_df(const fp_number_type_df *u);
-
-extern void sdfUnpackDouble(const double *x, fp_number_type_df *u);
-
-extern fp_number_type_df *libc_2D1590(const fp_number_type_df *a, const fp_number_type_df *b, fp_number_type_df *r);
-
-extern long __fpcmp_parts_df(const fp_number_type_df *a, const fp_number_type_df *b);
-
-sdfSortOtNode_tag *sdfSortOtAvlRotateLR(sdfSortOtNode_tag *node, sdfSortOtNode_tag *parent);
-
-sdfSortOtNode_tag *sdfSortOtAvlRotateRL(sdfSortOtNode_tag *node, sdfSortOtNode_tag *parent);
-
-void sdfSortOtAvlCheckBalance(sdfSortOtNode_tag **stack, s32 stack_depth, sdfSortOtNode_tag *node,
-                   sdfSortOtNode_tag **root_p);
-
-void sdfSortOtAvlRegist(sdfSortOtNode_tag **root_p, sdfDrawTag_t *tag);
-
-void sdfGrSortOtReg(sdfGrOt_t *aOt, sdfDrawTag_t *aTag);
-
-void sdfGrSortOtFixup(void *tag, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p);
-
-void sdfGrSortOtTraverse(sdfSortOtNode_tag *node, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p);
-
-void sdfGrSortOtSetup(sdfGrOt_t *aOt);
-
-void sdfGrSortOtCallback(sdfGrOt_t *aOt, s32 aFunc, sdfDrawTag_t *aData);
-
 void sdfModelSetOtCallbacks(sdfGrOt_t *aOt);
-/* End of declarations from src/smt3/sdf/sdfSortOt.c */
 
 sdfSortOtNode_tag *sdfSortOtAvlRotateLR(sdfSortOtNode_tag *node, sdfSortOtNode_tag *parent) {
     sdfSortOtNode_tag *childRoot = node;

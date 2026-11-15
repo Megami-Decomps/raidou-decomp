@@ -1,15 +1,7 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/sdf/sdfDevFile.c */
 #include "fpu.h"
-
-#include "common.h"
-
 #include "libsdf.h"
-
 #include "ps2asm.h"
-
-void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 
 void *sdfDevLoadFile(const char *aFileName, u32 *aOutData, u32 *aOutSize, s32 aAlign);
 
@@ -20,8 +12,6 @@ typedef struct
     s32 resolveCount;
     u8 unk18[8];
 } sdfBinaryHeader_t;
-
-void sdfAddressResolver(void *aDataBody, void *aOffset, void *aAddrInfoPtr, s32 aAddrInfoLeng);
 
 typedef u8 sdfDevOperationCode_t;
 
@@ -111,50 +101,20 @@ u32 sdfMemLock(sdfMemHandle_t *aHandle);
 
 #include "sdk_libc.h"
 
-extern const char sdfDevLoadMsgFmt[];
-
 void sdfMemUnlock(sdfMemHandle_t *aHandle);
-
 void sdfTexListAdd(sdfItemArray_t *aList, sdfTexHandle_t *aTexHandle);
-
 sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-
 extern sdfItemArray_t *sdfTexListNew(u32 aInitCapa);
-
 sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
-
-extern s32 (*p2sdSmgBuf)(void);
-
 void sdfFileClose(void *aHandle);
-
 u32 sdfFileLength(void *aHandle);
 
 /* Open a path using the shared reply callback and wait for its initial completion. */ sdfFileCmdHandle_t *sdfFileOpen(const char *path);
 
 s32 sdfFileRead(void *aHandle, void *aPtr, s32 aLeng);
-
-/* Read a named file through the dev RPC into a freshly allocated block; returns the block's handle.
- * outData receives the block address, outSize the file size; without outData the block is released. */
 void *sdfDevLoadFile(const char *name, u32 *outData, u32 *outSize, s32 extra);
-
 void *sdfDevLoadFileEx(const char *aFileName, u32 *aOutData, u32 *aOutSize);
-
-sdfTexHandle_t *sdfDevLoadTex(const char *aFilename);
-
 sdfItemArray_t *sdfTexSetTB(const sdfTextureOffsetListHeader_t *aData);
-
-sdfItemArray_t *sdfDevLoadTexList(const char *aFilename);
-
-void *sdfFixupModelBinary(sdfBinaryHeader_t *aData);
-
-void *sdfDevLoadModel(const char *aFilename, void **aOutBody);
-
-void *sdfFixupMotionBinary(sdfBinaryHeader_t *aData);
-
-void *sdfDevLoadMotion(const char *aFilename, void **aOutBody);
-
-extern const char sdfDevLoadMsgFmt[15];
-/* End of declarations from src/smt3/sdf/sdfDevFile.c */
 
 /* Read a named file through the dev RPC into a freshly allocated block; returns the block's handle.
  * outData receives the block address, outSize the file size; without outData the block is released. */

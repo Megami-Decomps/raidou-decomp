@@ -1,73 +1,23 @@
 #include "common.h"
-
-/* Declarations from smt3-decomp src/smt3/effect/effPacket.c */
-#include "common.h"
-
 #include "draw3d.h"
-
 #include "ps2asm.h"
-
 #include "sdfFrame.h"
 
 /* The native end message is padded to a 0x20-byte rodata block. */
 extern s8 dds3CrossfadeRunFlag;
-
 extern u32 dds3CrossfadeFrame;
-
 extern u32 dds3CrossfadeFrameMax;
-
-extern sdfGrOt_t sdfGrOtTable[];
-
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-
 extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-
-extern void sdfGrLinkDispFrameTex(sdfDrawTag_t *aTag, addr_t aEnv, void *aPkt);
-
-extern void sdf2DLinkTexPacket(sdfDrawTag_t *aTag, sdfTexHandle_t *aTexHndl, s32 aCtx);
-
-extern void *sdf2DAllocSprite(s32 aNumOfSpr);
-
-extern void *sdf2DGetPrimPtr(void *aPacketPtr);
-
-extern u32 dds3GetFrameID(void);
-
-extern sdfTexHandle_t *dds3GetRenderTexture(void);
-
-extern u32 dds3RenderDrawEnv;
-
-extern f32 dds3RenderTargetVector[];
-
-extern f32 dds3RenderEyeVector[];
-
-extern void dds3CrossfadeEnd(void);
-
-extern s32 dds3AllocRenderTexture(u16 sx, u16 sy, f32 aspect);
-
-extern s32 dds3RenderTextureON(void);
-
 extern u32 effPktDefaultFaceIndex[];
-
 extern s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
-
 extern void *sdfGrAllocPacketBuff(s32 aSize);
-
 extern sdfGrPacketHeader_t *sdf2DMakePrimPacketHeader(sdfGrPacketHeader_t *aPacketPtr, s32 aPrimReg, s32 aNumOfRegs, s64 aGifRegs, s32 aNumOfPrim);
-
-extern void dds3RenderTextureOFF(void);
-
-extern void dds3FreeRenderTexture(void);
-
 extern void *memcpy(void *a, const void *b, size_t c);
 
 #include "sdk_libc.h"
 
-void *effPkt2DGetPrimPtr(void *pPkt);
-
 sdfGrPacketHeader_t *effPkt2DAllocTriStrip(s32 num, s32 prim);
-
 u64 *effPkt2DAllocF4(u32 prim);
-
 void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
 
 /* The render draw env's clear sprite, 0x1800 into each 0x1BE0 draw bank: both
@@ -105,22 +55,6 @@ typedef struct
     effPacketSpriteCorner_t corner[2];
 } effPacketSpriteVertex_t;
 
-extern effPacketDrawBank_t dds3DrawEnv[];
-
-void dds3CrossfadeStart(s32 frame);
-
-void dds3CrossfadeRun(void);
-
-void dds3CrossfadeEnd(void);
-
-extern s8 dds3CrossfadeRunFlag;
-
-extern u32 dds3CrossfadeFrame;
-
-extern u32 dds3CrossfadeFrameMax;
-/* End of declarations from src/smt3/effect/effPacket.c */
-
-/* Declarations from dds-decomp src/dds1/effect/effPacket.c */
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
@@ -132,17 +66,9 @@ extern u32 dds3CrossfadeFrameMax;
 #define SMT3_DEFINES_effPacketSpriteVertex_t 1
 
 #include "dds/common.h"
-
 #include "dds/draw3d.h"
-
 #include "dds/ps2asm.h"
-
 #include "dds/sdfFrame.h"
-
-/* DDS keeps the end message as data: its rodata block has 8 more bytes than
- * the literal emits. */
-extern const char dds3CrossfadeEndMessage[];
-
 #include "dds/sdk_libc.h"
 
 void effWriteGouraudTexturedQuadPacket(u64 *packet, s32 primitive,
@@ -166,7 +92,6 @@ void effAppendTexturedTrianglePacket(sdfDrawTag_t *chain, s32 color, s32 primiti
                  s32 x0, s32 y0, f32 u0, f32 v0,
                  s32 x1, s32 y1, f32 u1, f32 v1,
                  s32 x2, s32 y2, f32 u2, f32 v2, s32 depth);
-/* End of declarations from src/dds1/effect/effPacket.c */
 
 sdfGrPacketHeader_t *effPkt2DAllocTriStrip(s32 num, s32 prim) {
     sdfGrPacketHeader_t *packet = (sdfGrPacketHeader_t *)sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(9, num));
