@@ -594,3 +594,5 @@ u32 sceSifQueryBlockSize(u32 block)
     }
     return iopHeapResult;
 }
+
+s32 iopHeapStatus = -1;

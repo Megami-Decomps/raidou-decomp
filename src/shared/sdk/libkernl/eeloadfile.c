@@ -443,7 +443,7 @@ extern s32 _lf_version(void);
 extern s32 lfBindStatus;
 extern u8 lfDetectedVersion[0x18];
 extern u8 kernelBuiltinVersion[4];
-extern void *lfFallbackVersion;
+extern const void *lfFallbackVersion;
 s32 _lf_bind(void);
 s32 _lf_version(void);
 s32 sceSifLoadFileReset(void);
@@ -833,3 +833,8 @@ s32 sceSifSetIopAddr(void *address, const void *input, u32 kind)
         return result;
     }
 }
+
+extern const char lfStr2[];
+
+s32 lfBindStatus = -1;
+const void *lfFallbackVersion = lfStr2;

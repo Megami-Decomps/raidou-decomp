@@ -1527,6 +1527,19 @@ s32 sceReadlink(const char *path, char *buffer, u32 count)
     return result;
 }
 
+
+extern const char lfStr[];
+
+s32 fsRequestSemas[32] = {
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+};
+s32 fsInitialized = 0;
+s32 fsCommandSema = -1;
+s32 fsIobSema = -1;
+s32 fsIoctlSema = -1;
+const void *fsFallbackVersion = lfStr;
+
 INCLUDE_RODATA(const s32, "sdk/libkernl/filestub", lfStr);
 
 INCLUDE_RODATA(const s32, "sdk/libkernl/filestub", lfStr2);

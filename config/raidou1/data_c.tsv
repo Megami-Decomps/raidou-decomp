@@ -6,3 +6,6 @@ newbattle/nbAiScript	0x0043BBF0	0x0043BDB0
 code_r1_001C4B78	0x003EF9A8	0x003EFA08
 kernel/dds3AdminiProcess	0x003B3138	0x003B3348
 code_r1_00195498	0x003E9250	0x003E9258
+sdk/libkernl/filestub	0x00442CE8	0x00442D7C
+sdk/libkernl/iopheap	0x00442D7C	0x00442D80
+sdk/libkernl/eeloadfile	0x00442D80	0x00442D88
