@@ -115,13 +115,20 @@ def _trim(lines):
     return lines[:i], lines[i:j], lines[j:]
 
 
+LITERAL = re.compile(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|/\*.*?\*/|//.*$')
+
+
 def _depth(lines):
-    """Conditionals lines leave open, or None when they close, continue or #else an outer
-    one: a guard around them would split a #if from its #else or #endif."""
-    depth = 0
+    """Conditionals and braces lines leave open, or None when they close or continue an
+    outer one: a guard around them would split a #if from its #endif or a C body."""
+    depth = braces = 0
     for line in lines:
         m = DIRECTIVE.match(line)
         if not m:
+            for ch in LITERAL.sub("", line):
+                braces += {"{": 1, "}": -1}.get(ch, 0)
+                if braces < 0:
+                    return None
             continue
         if m.group(1) in ("if", "ifdef", "ifndef"):
             depth += 1
@@ -129,7 +136,7 @@ def _depth(lines):
             return None
         elif m.group(1) == "endif":
             depth -= 1
-    return depth
+    return (depth, braces)
 
 
 def _hunks(a, b):
@@ -140,7 +147,7 @@ def _hunks(a, b):
     while i < len(ops):
         op, i1, i2, j1, j2 = ops[i]
         depths = (_depth(a[i1:i2]), _depth(b[j1:j2]))
-        if op == "equal" or depths == (0, 0):
+        if op == "equal" or depths == ((0, 0), (0, 0)):
             i += 1
             continue
         # Widen backwards when a side closes or continues an outer conditional.

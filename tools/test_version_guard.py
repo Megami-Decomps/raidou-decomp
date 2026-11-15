@@ -98,6 +98,13 @@ class Merge(unittest.TestCase):
         m = g.merge({R1: a, R2: b})
         self.assertEqual((g.view(m, R1), g.view(m, R2)), (a, b))
 
+    def test_keeps_function_bodies_whole(self):
+        a = "x;\n\nvoid f(void) {\n    a();\n\n    b();\n}\n\ny;\n"
+        b = 'x;\n\nINCLUDE_ASM(const s32, "u", f);\n\ny;\n'
+        self.assertEqual(g.merge({R1: a, R2: b}),
+                         "x;\n\n#ifdef VERSION_RAIDOU1\nvoid f(void) {\n    a();\n\n    b();\n}\n"
+                         '#else\nINCLUDE_ASM(const s32, "u", f);\n#endif\n\ny;\n')
+
     def test_identical(self):
         self.assertEqual(g.merge({R1: "x;\n", R2: "x;\n"}), "x;\n")
 
