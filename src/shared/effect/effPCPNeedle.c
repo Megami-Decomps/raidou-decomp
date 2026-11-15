@@ -11,6 +11,7 @@
 #include "effPacket.h"
 #include "sdfMemory.h"
 #include "sdfPacketBuff.h"
+#include "polyManager.h"
 
 /* One needle instance: position plus the colour the draw loop stamps. */
 typedef struct dds3NeedleModelPart_tag
@@ -81,7 +82,6 @@ typedef struct effPCPNeedleSpiralPart_tag {
 } effPCPNeedleSpiralPart_tag; /* 0x2C */
 
 
-typedef struct trackPolySystem_t trackPolySystem_t;
 
 
 typedef struct effAxis_t { f32 x, y, z; } effAxis_t;
@@ -93,7 +93,7 @@ typedef struct effPCPNeedleSpiral_tag {
     effPCPNeedleSpiralPart_tag *pPart;
     u32 abgr;
     u32 number;
-    trackPolySystem_t *hTrackPoly;
+    dds3TrackPoly_t *hTrackPoly;
     dds3NeedleModel_tag *hNModel;
     sdfMemHandle_t *hMem;
 } effPCPNeedleSpiral_tag; /* 0x74, followed by number pPart */
@@ -106,10 +106,7 @@ extern effRandState_t dds3EffectBase[];
 extern f32 aViewTarget[4], aViewEye[4], dds3NeedleModelUpVector[4];
 extern u32 dds3GetRandA(effRandState_t *name);
 extern f32 dds3GetRandFloatA(effRandState_t *name);
-extern trackPolySystem_t *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, u32 type);
-extern void dds3TrackPolyDelete(trackPolySystem_t *hTrackPoly);
-extern void dds3TrackPolySetMode(trackPolySystem_t *hTrackPoly, u16 mode);
-extern void dds3TrackPolyVCSet(addr_t hTrackPoly, s32 type, s32 abgr_in, s32 abgr_out);
+extern void dds3TrackPolySetMode(dds3TrackPoly_t *hTrackPoly, u16 mode);
 effPCPNeedleSpiral_tag *effPCPNeedleSpiralCreate(effPCPNeedleSpiralParam_t *pParam);
 dds3NeedleModel_tag *dds3NeedleModelCreate(u32 number);
 void dds3NeedleModelDelete(dds3NeedleModel_tag *hNModel);
@@ -143,7 +140,7 @@ effPCPNeedleSpiral_tag *effPCPNeedleSpiralCreate(effPCPNeedleSpiralParam_t *pPar
     dds3NeedleModelVNCListCreate(resource, pParam->n_split, pParam->centerColor,
                             pParam->outerColor, pParam->radiusScale, pParam->viewOffset);
     work->hTrackPoly = dds3TrackPolyCreate(work->number, work->param.t_length, 0, PAR_CELL_TOPOLOGY_PAIR);
-    dds3TrackPolyVCSet(EE_ADDR(work->hTrackPoly), 1, work->param.t_abgr, work->param.t_abgr);
+    dds3TrackPolyVCSet(work->hTrackPoly, 1, work->param.t_abgr, work->param.t_abgr);
     dds3TrackPolySetMode(work->hTrackPoly, (u16)work->param.mode);
     count = work->number;
     delayRange = SDF_FRAMES(pParam->timing);

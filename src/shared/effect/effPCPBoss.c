@@ -16,6 +16,7 @@
 #include "effMath.h"
 #include "mdlManager.h"
 #include "sdfVu0.h"
+#include "polyManager.h"
 
 typedef struct
 {
@@ -128,7 +129,7 @@ typedef struct effPCPCrack_t
     u8 unk9A[2];
     s32 frame;
     u32 abgr;
-    parSystem_t *system;
+    dds3TrackPoly_t *system;
     effPartHandle_t *part;
 } effPCPCrack_t;
 
@@ -474,9 +475,7 @@ extern effPartHandle_t *dds3EffectPartCreate(u16 type, void *pData);
 extern effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc);
 extern void dds3EffectPartDelete(effPartHandle_t *hEffPart);
 extern void *dds3EffectPartGetHandle(effPartHandle_t *hEffPart);
-extern void *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, s32 type);
 extern void dds3TrackPolySetMode(void *hTrackPoly, s32 mode);
-extern void dds3TrackPolyDelete(void *hTrackPoly);
 extern void *dds3FlashPolyListCreate(s32 face);
 extern void dds3FlashPolyListDelete(void *hPoly);
 extern f32 *dds3FlashPolyListGetVertex(void *pool, s32 index);
@@ -507,7 +506,6 @@ effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src);
 void effPCPCrackDelete(effPCPCrack_t *hData);
 extern f32 effPCPCrackDrawData[4];
 extern void mdlSetScale(mdlObj_t *model);
-extern void dds3TrackPolyDraw(parSystem_t *system);
 extern void dds3FlashPolyListDraw(void *pool);
 extern void dds3FlashPolyListSetABGR(void *pool, u32 color);
 extern u32 effMagaCylinderCalcColor(u32 color, u32 scale);
@@ -686,7 +684,7 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
     u8 cellCountFromFrame;
     effPCPCrackPart_t *group;
     effPCPCrackPartFlash_t *cell;
-    parCell_t *historyCell;
+    dds3TrackPolyList_t *historyCell;
     u128 *positions; /* Position workspace reused for trail history and cell vertices. */
     u32 *colorWords;
     s32 frame;
@@ -730,7 +728,7 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
         }
         groupCount = work->MarkCount;
         for (i = 0; i < groupCount; i++) {
-            colorWords = work->system->cells[i].colors;
+            colorWords = work->system->trackList[i].pVC;
             colorCellCount = work->cellCount;
             if (colorCellCount != 0) {
                 j = colorCellCount;
@@ -756,8 +754,8 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
     if (groupCount > 0) {
         taperRange = -1.0f;
         do {
-            historyCell = &work->system->cells[i];
-            positions = historyCell->history;
+            historyCell = &work->system->trackList[i];
+            positions = historyCell->pVertex;
             historyCell->color = tint;
             if (mode == 2) {
                 direction.x = 0.0f;
@@ -773,11 +771,11 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
             }
             sdfModelGetMarkPos(map, i);
             if (frame < work->cellCount) {
-                historyCount = historyCell->vertexCount;
+                historyCount = historyCell->count;
                 SDF_FRAME_WHEN(work->frame, SDF_VU0_STOREVECTOR_NOMEM(positions + historyCount));
                 SDF_FRAME_WHEN(work->frame, SDF_VU0_STOREVECTOR_NOMEM(positions + historyCount + 1));
                 SDF_FRAME_WHEN(work->frame, SDF_VU0_STOREVECTOR_NOMEM(positions + historyCount + 2));
-                historyCell->vertexCount += 3 * SDF_FRAME_DUE(work->frame);
+                historyCell->count += 3 * SDF_FRAME_DUE(work->frame);
                 taperStep = taperRange / frame;
                 blend = 1.0f;
                 SDF_VU0_LOADVECTOR_C(effPCPCrackDrawData);
@@ -833,8 +831,8 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
             if (count > work->cellCount) count = work->cellCount;
             group = work->pPart;
             for (i = 0; i < groupCount; i++, group++) {
-                historyCell = &work->system->cells[i];
-                historyStart = historyCell->history;
+                historyCell = &work->system->trackList[i];
+                historyStart = historyCell->pVertex;
                 cell = group->pSize;
                 dds3FlashPolyListSetABGR(group->hFlash, tint);
                 for (j = 0; j < count - 1; j++, cell++, historyStart += 3) {

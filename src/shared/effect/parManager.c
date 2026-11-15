@@ -10,6 +10,7 @@
 #include "sdfVu0.h"
 #include "billManager.h"
 #include "sdfMath.h"
+#include "polyManager.h"
 
 typedef struct dds3Particle_BlurBuffList_t dds3Particle_BlurBuffList_t;
 
@@ -109,16 +110,16 @@ typedef struct {
 
 typedef struct {
     f32 scale;                      /* +8: shared by kinds 2..4 */
-    void *dispatchParameter;        /* +0xC: kinds 2 and 3 */
-    struct parSystem_t *drawSystem;   /* +0x10: kind 2 */
+    u32 color;                      /* +0xC: vertex colour */
+    struct dds3TrackPoly_t *drawSystem;   /* +0x10: kind 2 */
     u8 opaque14[4];                 /* Kind 2's final word is unobserved. */
 } parKindCrossStripPayload_t;
 
 typedef struct {
     f32 scale;                      /* +8: shared by kinds 2..4 */
-    void *dispatchParameter;        /* +0xC: kinds 2 and 3 */
-    u8 opaque10[4];                 /* Kind 3's first system word is unobserved. */
-    struct parSystem_t *drawSystem;   /* +0x14: kind 3 */
+    u32 colorIn;                    /* +0xC */
+    u32 colorOut;                   /* +0x10 */
+    struct dds3TrackPoly_t *drawSystem;   /* +0x14: kind 3 */
 } parKindCrossTrianglePayload_t;
 
 typedef struct {
@@ -703,8 +704,8 @@ void dds3Particle_BlurSetExp(dds3Particle_BlurBuff_t *hBlur, s32 index, const f3
                    dds3ParOffsetBuff_t *pOffBuff, f32 scale);
 
 void dds3Particle_BlurDraw(dds3Particle_BlurBuff_t *hBlur);
-void dds3Particle_TrackSetExp(parSystem_t *hTrackPoly, s32 index, const f32 *pPos, u32 abgr, dds3ParOffsetBuff_t *pOffBuff);
-void dds3Particle_Track2SetExp(parSystem_t *hTrackPoly, s32 index, const f32 *pPos, u32 abgr, dds3ParOffsetBuff_t *pOffBuff);
+void dds3Particle_TrackSetExp(dds3TrackPoly_t *hTrackPoly, s32 index, const f32 *pPos, u32 abgr, dds3ParOffsetBuff_t *pOffBuff);
+void dds3Particle_Track2SetExp(dds3TrackPoly_t *hTrackPoly, s32 index, const f32 *pPos, u32 abgr, dds3ParOffsetBuff_t *pOffBuff);
 u32 dds3ParticleColorBlend(u32 color0, u32 color1);
 dds3Particle_Basic_t *dds3ParticleCreate(s32 dispatchIndex, void *creationData);
 void dds3ParticleDraw(dds3Particle_Basic_t *hData);
@@ -727,28 +728,19 @@ u8 dds3ParticleExpGetLoop(dds3Particle_Basic_t *hData);
 void dds3Particle_EffectInit(dds3Particle_Effect_t *obj);
 void dds3Particle_EffectSet(dds3Particle_Effect_t *pEffect, s32 index, u32 abgr, f32 scale);
 void dds3Particle_EffectReset(dds3Particle_Effect_t *pEffect, s32 number);
-void dds3Particle_TrackSet(parSystem_t *hTrackPoly, s32 i, u32 abgr);
-void dds3Particle_Track2Set(parSystem_t *hTrackPoly, s32 i, u32 abgr);
+void dds3Particle_TrackSet(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr);
+void dds3Particle_Track2Set(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr);
 void dds3Particle_Track3Set(effTrackPolyList_t *hTrackPoly, s32 i, u32 abgr);
 u32 dds3Particle_TrackPolyGetRecTiming();
 billHandle_t *dds3BillboardGeneral(s32 number);
 void dds3BillboardSetScale(billHandle_t *hBillboard, float x, float y);
-parSystem_t *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, u32 type);
-void dds3TrackPolyVCSet(void *hTrackPoly, s32 type, void *abgr_in, void *abgr_out);
-void dds3TrackPolySetMode(parSystem_t *hTrackPoly, u16 mode);
+void dds3TrackPolySetMode(dds3TrackPoly_t *hTrackPoly, u16 mode);
 effTrackPolyList_t *Eff_ModelTrackPolyListCreate(effTrackPolyParams_t *pParam, u32 number);
-void dds3TrackPolyDelete(parSystem_t *hTrackPoly);
 void Eff_ModelTrackPolyListDelete(effTrackPolyList_t *list);
 f32 dds3GetRandFloatA(effRandState_t *name);
 u32 dds3ParticleColorAnim(dds3ParticleColorAnim_t *pColAnim, u32 color_now, s32 frame);
 u32 dds3GetRandA(effRandState_t *name);
-void dds3TrackPolyVCRefresh_ParType1(parSystem_t *hTrackPoly, s32 index);
-extern void dds3TrackPolyColorSet(parSystem_t *hTrackPoly, s32 number, u32 color);
-void dds3TrackPolyVCRefresh_ParType2(parSystem_t *hTrackPoly, s32 index);
-void dds3TrackPolyDraw(parSystem_t *node);
 void Eff_ModelTrackPolyListDrawOnly(effTrackPolyList_t *hMTPolyList);
-void dds3TrackPolySet(parSystem_t *hTrackPoly, s32 number, const u128 *pV);
-void dds3TrackPolySet2(parSystem_t *hTrackPoly, s32 number, const u128 *pV);
 void Eff_ModelTrackPolyListVertexSet(effTrackPolyList_t *hMTPolyList, s32 index, const u128 *pVertex);
 void Eff_ModelTrackPolyListColorSet(effTrackPolyList_t *hMTPolyList, s32 index, u32 abgr);
 void effInitParticleRecord(effParticleOverlay_t *effect);
@@ -835,7 +827,7 @@ void dds3Particle_BasicCreate(void *effect) {
             owner->particleCount, owner->sub.templateEntryCount,
             dds3Particle_TrackPolyGetRecTiming(owner->sub.templateEntryCount), 0);
         dds3TrackPolyVCSet(owner->sub.payload.crossStrip.drawSystem, 1,
-                       owner->sub.payload.crossStrip.dispatchParameter, owner->sub.payload.crossStrip.dispatchParameter);
+                       owner->sub.payload.crossStrip.color, owner->sub.payload.crossStrip.color);
         dds3TrackPolySetMode(owner->sub.payload.crossStrip.drawSystem, (u16)owner->drawKind);
         break;
     case PAR_KIND_STATE_BILLBOARD_CROSS_TRIANGLE:
@@ -843,7 +835,7 @@ void dds3Particle_BasicCreate(void *effect) {
             owner->particleCount, owner->sub.templateEntryCount,
             dds3Particle_TrackPolyGetRecTiming(owner->sub.templateEntryCount), 1);
         dds3TrackPolyVCSet(owner->sub.payload.crossTriangle.drawSystem, 1,
-                       owner->sub.payload.crossTriangle.dispatchParameter, owner->sub.payload.crossStrip.drawSystem);
+                       owner->sub.payload.crossTriangle.colorIn, owner->sub.payload.crossTriangle.colorOut);
         dds3TrackPolySetMode(owner->sub.payload.crossTriangle.drawSystem, (u16)owner->drawKind);
         break;
     case PAR_KIND_STATE_TRACK_POLYGON_CROSS_AXES:
@@ -2755,10 +2747,10 @@ INCLUDE_ASM(const s32, "effect/parManager", parLeaf2);
 /* Rebuild one slot's two-vertex strip cells from its point history: each cell is
    the offset point +/- the cross product of the segment direction with the view axis,
    scaled by the strip width. */
-void dds3Particle_TrackSetExp(parSystem_t *hTrackPoly, s32 index, const f32 *pPos, u32 abgr, dds3ParOffsetBuff_t *pOffBuff) {
+void dds3Particle_TrackSetExp(dds3TrackPoly_t *hTrackPoly, s32 index, const f32 *pPos, u32 abgr, dds3ParOffsetBuff_t *pOffBuff) {
     dds3ParOffsetBuffParts_t *history = &pOffBuff->pParts[index];
-    parCell_t *cell = &hTrackPoly->cells[index];
-    u128 *vertex = cell->history;
+    dds3TrackPolyList_t *cell = &hTrackPoly->trackList[index];
+    u128 *vertex = cell->pVertex;
     u32 count = history->count;
     sdfVector4_t point;
     sdfVector4_t localOrigin;
@@ -2771,7 +2763,7 @@ void dds3Particle_TrackSetExp(parSystem_t *hTrackPoly, s32 index, const f32 *pPo
 
         SDF_VU0_COPYVECTOR(&localOrigin, pPos);
         segments = count - 1;
-        cell->vertexCount = segments * 2;
+        cell->count = segments * 2;
         ring = history->point;
         lastIndex = pOffBuff->length - 1;
         ring = ring == 0 ? lastIndex : ring - 1;
@@ -2808,10 +2800,10 @@ void dds3Particle_TrackSetExp(parSystem_t *hTrackPoly, s32 index, const f32 *pPo
 }
 
 /* Triangle-cell variant of dds3Particle_TrackSetExp: three vertices per history segment. */
-void dds3Particle_Track2SetExp(parSystem_t *hTrackPoly, s32 index, const f32 *pPos, u32 abgr, dds3ParOffsetBuff_t *pOffBuff) {
+void dds3Particle_Track2SetExp(dds3TrackPoly_t *hTrackPoly, s32 index, const f32 *pPos, u32 abgr, dds3ParOffsetBuff_t *pOffBuff) {
     dds3ParOffsetBuffParts_t *history = &pOffBuff->pParts[index];
-    parCell_t *cell = &hTrackPoly->cells[index];
-    u128 *vertex = cell->history;
+    dds3TrackPolyList_t *cell = &hTrackPoly->trackList[index];
+    u128 *vertex = cell->pVertex;
     u32 count = history->count;
     sdfVector4_t point;
     sdfVector4_t localOrigin;
@@ -2824,7 +2816,7 @@ void dds3Particle_Track2SetExp(parSystem_t *hTrackPoly, s32 index, const f32 *pP
 
         SDF_VU0_COPYVECTOR(&localOrigin, pPos);
         segments = count - 1;
-        cell->vertexCount = segments * 3;
+        cell->count = segments * 3;
         ring = history->point;
         lastIndex = pOffBuff->length - 1;
         ring = ring == 0 ? lastIndex : ring - 1;
@@ -3183,7 +3175,7 @@ INCLUDE_ASM(const s32, "effect/parManager", parDispatchKindInit);
 
 INCLUDE_ASM(const s32, "effect/parManager", parDispatchKindUpdate);
 
-void dds3Particle_TrackSet(parSystem_t *hTrackPoly, s32 i, u32 abgr) {
+void dds3Particle_TrackSet(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr) {
     u128 axis[2];
     SDF_VU0_COPYVECTOR_C_TO_B();
     SDF_VU0_SUBVECTOR();
@@ -3204,7 +3196,7 @@ void dds3Particle_TrackSet(parSystem_t *hTrackPoly, s32 i, u32 abgr) {
     dds3TrackPolyColorSet(hTrackPoly, i, (abgr & 0xFF000000) | 0x808080);
 }
 
-void dds3Particle_Track2Set(parSystem_t *hTrackPoly, s32 i, u32 abgr) {
+void dds3Particle_Track2Set(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr) {
     u128 axis[3];
     SDF_VU0_COPYVECTOR_C_TO_B();
     SDF_VU0_SUBVECTOR();

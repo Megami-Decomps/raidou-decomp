@@ -4,6 +4,13 @@
 #include "kernel_draw.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdf_Decomp.h"
+#include "sdf2D.h"
+#include "sdfPacketBuff.h"
+#include "sdfDraw.h"
+#include "sdf3DPrim.h"
+#include "sdfMat.h"
+#include "sdk_libc.h"
 
 /* One A+D register command with its standard DMA/GIF header. */
 typedef struct
@@ -160,19 +167,6 @@ extern u32 ambientbase, ambienttarget;
 extern u16 fogrgbnow, fogrgbmax;
 extern u32 fogrgbbase, fogrgbtarget;
 extern dds3MultiBlurParam_t key2;
-void *memset(void *a, s32 b, size_t c);
-void *sdfGrAllocPacketBuff(u32 aSize);
-void sdfDrawTagInit(sdfDrawTag_t *a);
-void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
-s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
-sdfGrPacketHeader_t *sdf2DMakePrimPacketHeader(sdfGrPacketHeader_t *aPacketPtr, s32 aPrimReg, s32 aNumOfRegs, s64 aGifRegs, s32 aNumOfPrim);
-void *sdf2DGetPrimPtr(void *aPacketPtr);
-void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag, s32 aAllocator);
-void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat, s32 aAllocator);
-void *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
-void sdfMatSetTex(sdfMat_t *aMat, sdfTexHandle_t *aTex);
-void sdfMatFreeDelayed(sdfMat_t *aMat);
-void *effDebugDrawWireModel(const sdfVector4_t *vertices, u32 *colors, s32 count, s32 alpha);
 
 /* SDK float-input color conversion, shared by the six light/ambient/fog inputs. */
 static inline void dds3UnpackLightColor(u32 color, f32 unit) {
@@ -317,7 +311,7 @@ void eglLinkTri(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, s32 rgba0, s32 r
             ((u64)(coords[i][1] + 0x7900) << 32);
         registers++;
     }
-    sdfDrawTagLink(command, packet);
+    sdfDrawTagLink(command, EE_ADDR(packet));
     descriptor = &sdfGrOtTable[egl_OT_Offset];
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
@@ -370,7 +364,7 @@ void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2
     colors[2] = color3;
     colors[3] = color1;
     strip[0] = eglPolyStripWord[0];
-    sdfDrawTagLink(list, sdf3DPrimMakePoly(&desc));
+    sdfDrawTagLink(list, EE_ADDR(sdf3DPrimMakePoly(&desc)));
     surface = &sdfGrOtTable[egl_OT_Offset];
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);
 }
@@ -428,7 +422,7 @@ void eglLinkTexPoly4(s32 color0, f32 x0, f32 y0, f32 z0, s32 color1, f32 x1, f32
     uvs[2].y = v1;
     uvs[3].x = u1;
     uvs[3].y = v0;
-    sdfDrawTagLink(list, sdf3DPrimMakePoly(&desc));
+    sdfDrawTagLink(list, EE_ADDR(sdf3DPrimMakePoly(&desc)));
     surface = &sdfGrOtTable[egl_OT_Offset];
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);
     sdfMatFreeDelayed(asset);
@@ -459,7 +453,7 @@ void eglLinkLine(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, u32 color0, u32
     eglLineColors[0] = color0;
     list = (void *)sdfGrAllocPacketBuff(0x20);
     sdfDrawTagInit(list);
-    sdfDrawTagLink(list, effDebugDrawWireModel(eglLineVerts, eglLineColors, 2, 0x80));
+    sdfDrawTagLink(list, EE_ADDR(effDebugDrawWireModel(eglLineVerts, eglLineColors, 2, 0x80)));
     {
         sdfGrOt_t *surface = &sdfGrOtTable[egl_OT_Offset];
         ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))surface->regFunc)(surface, list);

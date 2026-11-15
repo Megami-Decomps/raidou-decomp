@@ -30,6 +30,7 @@
 #include "sdfModel.h"
 #include "sdfTex.h"
 #include "sdfVu0.h"
+#include "polyManager.h"
 
 typedef struct
 {
@@ -142,7 +143,7 @@ typedef struct effPCPCrack_t
     u8 unk9A[2];
     s32 frame;
     u32 abgr;
-    parSystem_t *system;
+    dds3TrackPoly_t *system;
     effPartHandle_t *part;
 } effPCPCrack_t;
 

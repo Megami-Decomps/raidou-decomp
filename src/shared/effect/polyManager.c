@@ -12,32 +12,8 @@
 #include "effPacket.h"
 #include "sdf3DPrim.h"
 #include "polyManager.h"
+#include "effect.h"
 #include "sdfMemory.h"
-
-typedef struct
-{
-    u128 *pVertex;
-    u32 *pVC;
-    s32 count;
-    s32 rec;
-    u32 color;
-} dds3TrackPolyList_t;
-
-typedef struct dds3TrackPoly_t
-{
-    u16 type;
-    u16 mode;
-    s32 number;
-    s32 point;
-    s32 rec;
-    sdfMemHandle_t *hMem;
-    dds3TrackPolyList_t *trackList;
-    u128 *pVertex;
-    u32 *pVC;
-    sdfMat_t *pMat;
-    struct dds3TrackPoly_t *next;
-    s32 d_next;
-} dds3TrackPoly_t;
 
 /* Polygon owners follow the variable-sized attribute arrays in one allocation. */
 typedef struct dds3Polygon_t
@@ -90,7 +66,7 @@ extern f32 dds3TrackPolyVCType2Param[4];
 extern f32 dds3TrackPolyVCSetAcuteParam[4];
 extern f32 dds3TrackPolyVCSetAcuteWParam[4];
 extern f32 dds3TrackPolyVCAcuteParam[4];
-extern void (*VCSetFunc[])(void *, void *, void *);
+extern void (*VCSetFunc[])(dds3TrackPoly_t *, u32, u32);
 extern u32 dds3TrackPolyPairFaceIndex[];
 extern u32 dds3TrackPolyTriangleFaceIndex[];
 extern u32 dds3TrackPolyFiveVectorFaceIndex[];
@@ -179,9 +155,9 @@ typedef struct dds3SpPoly_Ring_t3 {
     f32 targetRadiusJitter;
     f32 liftStep;
     u8 padE0[4];
-    void *dispatchArgB;             /* +0xE4 */
+    u32 dispatchArgB;             /* +0xE4 */
     u8 padE8[4];
-    void *dispatchArgA;             /* +0xEC */
+    u32 dispatchArgA;             /* +0xEC */
     struct dds3TrackPoly_t *hTrackPoly;         /* +0xF0 */
     dds3SpPoly_RingPhysics_t *pPhysics;         /* +0xF4 */
     struct sdfMemHandle_t *hMem;  /* +0xF8 */
@@ -192,8 +168,8 @@ typedef struct dds3SpPolyOldCellParam_t {
     u8 pad00[8];
     u16 verticesPerCell; /* 0x08 */
     u8 pad0A[0xA];
-    void *dispatchArgA;
-    void *dispatchArgB;          /* 0x14: forwarded as two opaque callback arguments */
+    u32 dispatchArgA;
+    u32 dispatchArgB;          /* 0x14: vertex colours for dds3TrackPolyVCSet */
     struct dds3TrackPoly_t *cellSystem; /* 0x1C: allocated cell system */
     u32 *cellWords;       /* 0x20: inline per-cell word array */
     u8 pad24[0xC];
@@ -222,9 +198,9 @@ typedef struct {
     f32 radialWidth;
     f32 radius;
     f32 radius_r;
-    void *dispatchArgB;            /* 0xD4 */
+    u32 dispatchArgB;            /* 0xD4 */
     u8 padD8[4];
-    void *dispatchArgA;            /* 0xDC */
+    u32 dispatchArgA;            /* 0xDC */
     dds3TrackPoly_t *hTrackPoly;              /* 0xE0 */
     dds3SpPoly_SphereRingPhysics_t *pPhysics;        /* 0xE4 */
     struct sdfMemHandle_t *hMem; /* 0xE8 */
@@ -243,9 +219,9 @@ typedef struct {
     u32 simu_num;
     f32 incline;
     f32 roll_s;
-    void *color_edge_in;            /* 0xE8 */
+    u32 color_edge_in;              /* 0xE8 */
     u8 color[4];
-    void *color_edge_out;            /* 0xF0 */
+    u32 color_edge_out;              /* 0xF0 */
     dds3TrackPoly_t *hTrackPoly;              /* 0xF4 */
     dds3SpPoly_RollRingPhysics_t *pPhysics; /* 0xF8 */
     struct sdfMemHandle_t *allocation; /* 0xFC */
@@ -374,7 +350,6 @@ void dds3TrackPolyVC5Set_Acute(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abgr
 void dds3TrackPolyVC5Set_AcuteR(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2);
 void dds3TrackPolyVC5Set_AcuteW(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2);
 void dds3TrackPolySetMode(dds3TrackPoly_t *hTrackPoly, u16 mode);
-void dds3TrackPolyVCSet(dds3TrackPoly_t *hTrackPoly, s32 type, void *abgr_in, void *abgr_out);
 void dds3TrackPolyLinkOt(void);
 dds3TrianglePoly_t *dds3TrianglePolyCreate(s32 number);
 void dds3TrianglePolyDelete(dds3TrianglePoly_t *hTriPoly);
@@ -382,7 +357,7 @@ void dds3TrianglePolyLinkOt(sdfGrOt_t *pOt, dds3TrianglePoly_t *hTriPoly);
 void dds3SpPoly_RingBuffInit(dds3SpPoly_Ring_t3 *ring, s32 number);
 void polyBandLayoutRing(dds3SpPoly_Ring_t3 *ring, s32 number, f32 radius);
 void dds3SpPoly_RollRingDraw(dds3SpPoly_RollRing_t3 *hData);
-typedef void (*dds3TrackPolyVCSetFunc_t)(void *, void *, void *);
+typedef void (*dds3TrackPolyVCSetFunc_t)(dds3TrackPoly_t *, u32, u32);
 
 typedef void *(*dds3SpPolyCreateFunc_t)(void *);
 
@@ -396,7 +371,7 @@ extern u32 dds3TrackPolyFiveVectorFaceIndex[24];
 
 /* Indexed by track type * 3 + colour mode. Types 0, 1 and 3 are populated;
  * the IDB's dds3TrackPolyVCSet4Table is entry 9. */
-extern void (*VCSetFunc[16])(void *, void *, void *);
+extern void (*VCSetFunc[16])(dds3TrackPoly_t *, u32, u32);
 extern sdfGrOt_t *dds3TrackPolyOtTable[4];
 extern dds3SpPolyEntry_t dds3SpPolyTable[4];
 extern void (*dds3SpPolyResetTable[4])(void *work);
@@ -1387,7 +1362,7 @@ void dds3TrackPolyVC5Set_AcuteW(dds3TrackPoly_t *hTrackPoly, u32 abgr_0, u32 abg
 
 INCLUDE_ASM(const s32, "effect/polyManager", polySpPolyRingCreateSub);
 
-void dds3TrackPolyVCSet(dds3TrackPoly_t *hTrackPoly, s32 type, void *abgr_in, void *abgr_out) {
+void dds3TrackPolyVCSet(dds3TrackPoly_t *hTrackPoly, s32 type, u32 abgr_in, u32 abgr_out) {
     u16 id = hTrackPoly->type;
 
     VCSetFunc[id * 3 + type](hTrackPoly, abgr_in, abgr_out);

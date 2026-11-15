@@ -50,30 +50,30 @@ typedef struct effArrHdr_t {
 } effArrHdr_t;
 
 
-/* Per-cell vector history and packed color stream (0x14 bytes). */
-typedef struct parCell_t {
-    u128 *history;
-    u32 *colors;
-    s32 vertexCount;
-    s32 historyAdvanceCountdown;
+typedef struct
+{
+    u128 *pVertex;
+    u32 *pVC;
+    s32 count;
+    s32 rec;
     u32 color;
-} parCell_t;
+} dds3TrackPolyList_t;
 
-/* The complete 0x2C-byte cell-system owner shared by PCP effects. */
-typedef struct parSystem_t {
-    u16 kind;
-    u16 bucket;
-    s32 cellCount;
-    s32 vertexWordCount;
-    s32 groupDivisor;
-    sdfMemHandle_t *allocation;
-    parCell_t *cells;
-    u128 *vertices;
-    u32 *colors;
-    sdfMat_t *asset;
-    struct parSystem_t *next;
-    s32 unk28;
-} parSystem_t;
+typedef struct dds3TrackPoly_t
+{
+    u16 type;
+    u16 mode;
+    s32 number;
+    s32 point;
+    s32 rec;
+    sdfMemHandle_t *hMem;
+    dds3TrackPolyList_t *trackList;
+    u128 *pVertex;
+    u32 *pVC;
+    sdfMat_t *pMat;
+    struct dds3TrackPoly_t *next;
+    s32 d_next;
+} dds3TrackPoly_t;
 
 /* Four XYZ controls, evaluation position and frame step (0x38 bytes). */
 typedef struct effCubicBezierSlot_t {
