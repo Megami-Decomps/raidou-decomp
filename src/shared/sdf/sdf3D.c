@@ -201,8 +201,6 @@ void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t 
 void sdf3DSetCamera(sdf3DScreenParam_t *aParam, void *aCamera);
 void sdf3DMakeFogPacket(sdf3DFogPacket_t *aPacket, sdf3DFogParam_t *aParam);
 void sdf3DInitSpecularTex2(void);
-void sdf3DSetDefaultLight(u8 *aLight);
-void sdf3DSetDefaultFog(u8 *aFog);
 extern f32 sdf3DUpVector[];
 
 void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera) {
@@ -239,11 +237,11 @@ void sdf3DSetCamera(sdf3DScreenParam_t *aParam, void *aCamera) {
     memcpy(sdf3DScreenParam, aParam, sizeof(*aParam));
 }
 
-void sdf3DSetDefaultLight(u8 *aLight) {
+void sdf3DSetDefaultLight(sdf3DLightParallelPacket_t *aLight) {
     sdf3DLightDefault = EE_ADDR(aLight);
 }
 
-void sdf3DSetDefaultFog(u8 *aFog) {
+void sdf3DSetDefaultFog(sdf3DFogPacket_t *aFog) {
     sdf3DFogDefault = EE_ADDR(aFog);
 }
 

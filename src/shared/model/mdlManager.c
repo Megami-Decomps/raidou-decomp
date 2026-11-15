@@ -253,7 +253,6 @@ void mdlGetPosition(mdlObj_t *aHandle);
 void mdlSetPosition(mdlObj_t *aHandle);
 void mdlGetRotate(mdlObj_t *aHandle);
 void mdlSetRotate(mdlObj_t *aHandle);
-void mdlGetScale(mdlObj_t *aHandle);
 void mdlSetScale(mdlObj_t *aHandle);
 u32 mdlGetColor(mdlObj_t *aHandle);
 void mdlSetColor(mdlObj_t *aHandle, u32 aColor);

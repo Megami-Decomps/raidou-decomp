@@ -27,14 +27,14 @@ typedef struct
     u8 unk180[0xA0];
 } dds3StdDrawEnv_t;
 
-/* One frame buffer's draw bank, stride 0x1BE0. Three draw tags: the VU1 init
+/* One frame buffer's draw bank, stride 0x22A0. Three draw tags: the VU1 init
  * chain at 0x0, the scene chain at 0x12D0, and the second-screen chain at
  * 0x1A10. */
 typedef struct
 {
     sdfDrawTag_t initTag;
     sdf3DInitPacket_t initPacket;
-    sdfModelDrawEnv_t modelEnv[11];
+    sdfModelDrawEnv_t modelEnv[15];
     sdfDrawTag_t drawTag;
     sdfPreDrawTag_t preDrawTag;
     dds3StdDrawEnv_t stdEnv;
@@ -49,7 +49,7 @@ typedef struct
     sdf3DLightParallelPacket_t subLight;
 } dds3DrawBank_t;
 
-/* Native frame renderer ordering table: map size 0xAA0, stride 0x20. */
-extern sdfGrOt_t sdfGrOtTable[85];
+/* Native frame renderer ordering table: map size 0xE40, stride 0x20. */
+extern sdfGrOt_t sdfGrOtTable[114];
 
 #endif

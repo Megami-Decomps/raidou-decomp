@@ -53,7 +53,7 @@ dds3ProcessID_t *dds3StartProcess(const char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32
                                   dds3ProcessFunc_t drawExit, dds3ProcessFunc_t deleteExit,
                                   void *p);
 
-s32 dds3KillProcessName(char *name, s32 shutdowntimer);
+s32 dds3KillProcessName(const char *name, s32 shutdowntimer);
 void dds3EndProcess(dds3ProcessID_t *id);
 void dds3SetShutdownTimer(dds3ProcessID_t *id, s32 newtimer);
 u32 dds3GetProcessStat(dds3ProcessID_t *id);
@@ -601,7 +601,7 @@ dds3ProcessID_t *dds3StartProcess(const char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32
     return setp;
 }
 
-s32 dds3KillProcessName(char *name, s32 shutdowntimer)
+s32 dds3KillProcessName(const char *name, s32 shutdowntimer)
 {
     dds3ProcessID_t *id = dds3SearchProcessName(name);
 

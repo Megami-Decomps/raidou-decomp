@@ -5,7 +5,10 @@
 #include "basic.h"
 #include "event.h"
 
+struct mdlObj_t;
+
 s32 evtCheckUnitWait(evtUnit_t *h);
+evtUnit_t *evtCreateUnitHandle(dds3Basic_t *basic, struct mdlObj_t *model);
 s32 evtDeleteUnitHandle(evtUnit_t *h);
 evtUnit_t *evtGetUnitHandle(s32 serial);
 void evtLinkLightObjectBasic(void *h, dds3Basic_t *light, s32 frame);

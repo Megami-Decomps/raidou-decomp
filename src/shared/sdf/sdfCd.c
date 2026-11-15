@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfCd.h"
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
@@ -255,7 +256,76 @@ sdfCdImageDirEntry_t *sdfCdImageSearchFileDirect(const char *filename, s32 *lsn,
     return &sdfCdImageSearchFileDirect_ent;
 }
 
+/* NON_MATCHING: 108 of 109 words match. Branch after memcmp is bnel with the load in its slot; retail is bne. */
+#ifdef NON_MATCHING
+sdfCdImageDirEntry_t *sdfCdImageSearchFileDirect(const char *filename, s32 *lsn, u8 *mode);
+
+sdfCdImageDirEntry_t *sdfCdImageSearchFile(const char *path, s32 *lsn, u8 *mode)
+{
+    char name[32];
+    const char *segment;
+    const char *cursor;
+    sdfCdImageDirEntry_t *entries;
+    sdfCdImageDirEntry_t *node;
+    u8 *base;
+    s32 character;
+    u32 length;
+    s32 low;
+    s32 high;
+    s32 mid;
+    s32 order;
+
+    if (memcmp(path, sdfCdDirectPrefix, 5) == 0) {
+        return sdfCdImageSearchFileDirect(path, lsn, mode);
+    }
+    base = sdfCdImageDirData;
+    node = (sdfCdImageDirEntry_t *)base;
+    segment = path;
+    do {
+        character = *segment;
+        if (character == '/') {
+            segment++;
+        }
+        cursor = segment;
+        while (*cursor != '/' && *cursor != 0) {
+            cursor++;
+        }
+        length = cursor - segment;
+        if (length >= 32) {
+            FatalError("filename too long : %s", path);
+        }
+        memcpy(name, segment, length);
+        name[length] = 0;
+        entries = (sdfCdImageDirEntry_t *)(base + node->offset_);
+        low = 0;
+        high = -node->size_;
+        for (;;) {
+            if (low >= high) {
+                return NULL;
+            }
+            mid = (low + high) >> 1;
+            node = &entries[mid];
+            order = strcmp(name, (char *)(base + node->nameOffset_));
+            if (order == 0) {
+                break;
+            }
+            if (order < 0) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        segment = cursor;
+    } while (*cursor != 0);
+    *lsn = dds3ImgLsn + node->offset_;
+    if (mode != NULL) {
+        *mode = 0;
+    }
+    return node;
+}
+#else
 INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageSearchFile);
+#endif
 
 s32 sdfDevOpenDiscFileAndGetSize(const char *filename)
 {

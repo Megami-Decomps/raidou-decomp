@@ -5227,7 +5227,7 @@
 0x0035CB98	rstCallGetProcessData2	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
 0x0035CBC0	rstCallGetProcessData3	func	tier=D	derived-callee	na	unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
 0x0035D048	fldCallGetProcessData	func	tier=D	derived-callee	na	unit TitleMain, neighbour fldNakamaCashLoad_Decode; calls dds3GetProcessData
-0x0035D160	fldTitle2	func	tier=D	derived-string	na	unit TitleMain, neighbour fldNakamaCashLoad_Decode; string '/title/'
+0x0035D160	TitleInit	func	tier=D	derived-string	na	unit TitleMain, neighbour fldNakamaCashLoad_Decode; string '/title/'
 0x0035D268	TitleDestroy	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleDestroy, score 9.45 band B
 0x0035D308	TitleProcessStart	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleProcessStart, score 12.15 band A
 0x0035D380	TitleProcessEnd	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD TitleMain.TitleProcessEnd, score 11.0 band A
@@ -18366,7 +18366,6 @@
 0x004DE22A	dds3LastDrawFrameCount	data	tier=D	smt3-offset	na	smt3-offset: between dds3DebugSign and dds3VblanksPerFrame, same span 0x8, same size
 0x004DE22E	dds3CallEventSubData	data	tier=D	derived-sole	na	used by dds3CallEventSub
 0x004DE22F	dds3FileCmdLoPrio	data	tier=D	smt3-offset	na	smt3-offset: between dds3VblanksPerFrame and dds3FirstProcessName, same span 0xC, same size
-0x004DE2A9	dds3RunProcessListData	data	tier=D	derived-sole	na	used by dds3RunProcessList
 0x004DE2B7	dds3Data26	data	tier=D	derived-shared	na	used by 2 functions: RunProcess, dds3PadInitialize
 0x004DE2B9	RunProcessData	data	tier=D	derived-sole	na	used by RunProcess
 0x004DE2BA	GetAnlogKeyData	data	tier=D	derived-dominant	na	used by GetAnlogKey (2 of 5 refs, 4 functions)

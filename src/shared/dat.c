@@ -13,6 +13,11 @@
 #include "code_r1_0021CE60.h"
 #include "dat.h"
 
+extern u32 datCallCheckStrongSwordAttackData;
+extern u32 cmpLoadModelTablesData;
+extern u32 datData6;
+extern u32 datCallGetStockDevilIDData;
+
 /* The 0x4C-byte enemy table supplies initial party vitals/stats, skills and
  * rewards. */
 typedef struct DatEnemyRecord {
@@ -343,17 +348,27 @@ INCLUDE_ASM(const s32, "dat", datDelDevil);
 INCLUDE_ASM(const s32, "dat", datLoadLvUpTables);
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "dat", cmpLoadModelTables);
-#else
-void datLoadGohmadenTable(void) {
+void cmpLoadModelTables(void)
+{
+    sdfDevLoadFileEx("/gohmaden/gohDevilParam.dat", &datCallCheckStrongSwordAttackData, &cmpLoadModelTablesData);
+    sdfDevLoadFileEx("/gohmaden/gohSameDevils.dat", &datData6, &datCallGetStockDevilIDData);
 }
-#endif
 
 INCLUDE_ASM(const s32, "dat", datGetPlayerExp);
 
 INCLUDE_ASM(const s32, "dat", datGetPlayerLevelUpNums);
 
 INCLUDE_ASM(const s32, "dat", datGetPlayerMaxHP);
+#else
+void datLoadGohmadenTable(void) {
+}
+
+INCLUDE_ASM(const s32, "dat", datGetPlayerExp);
+
+INCLUDE_ASM(const s32, "dat", datGetPlayerLevelUpNums);
+
+INCLUDE_ASM(const s32, "dat", datGetPlayerMaxHP);
+#endif
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "dat", datGetPlayerLevelUpParamSub);

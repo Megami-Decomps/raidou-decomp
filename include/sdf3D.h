@@ -17,8 +17,13 @@ typedef struct DmaPacketHeader {
     u32 unknown1C; /* 0x1C */
 } QWORD_ALIGNED DmaPacketHeader;
 
+struct sdf3DLightParallelPacket_t;
+struct sdf3DFogPacket_t;
+
 void sdf3DInit(s32 aNestLevelLimit);
 void sdf3DLinkInitPacket(sdfDrawTag_t *aTag, DmaPacketHeader *aPacket);
 void sdf3DMakeDirectRefPacket(DmaPacketHeader *aPacket, addr_t aData, s32 aLeng);
+void sdf3DSetDefaultLight(struct sdf3DLightParallelPacket_t *aLight);
+void sdf3DSetDefaultFog(struct sdf3DFogPacket_t *aFog);
 
 #endif

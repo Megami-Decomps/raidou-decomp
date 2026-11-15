@@ -588,20 +588,20 @@ typedef struct EffectFileHeader {
 } EffectFileHeader;
 
 s32 effAppendListEntry(EffectList *list, const char *value, const char *length,
-                          u32 kind, u32 reference);
+                          u32 kind, void **reference);
 
 s32 effRemoveListEntry(EffectList *list);
 s32 effPollResourceList(EffectList *list);
 
 s32 effAppendListEntry(EffectList *list, const char *value, const char *length,
-                          u32 kind, u32 reference) {
+                          u32 kind, void **reference) {
     EffectListNode *node = sdfChipAllocDirect(sizeof(EffectListNode));
     memset(node, 0, sizeof(EffectListNode));
     node->next = NULL;
     node->kind = kind;
     node->value = value;
     node->length = length;
-    node->reference = (void **)reference;
+    node->reference = reference;
     if (list->last == NULL) {
         list->first = node;
         list->last = node;

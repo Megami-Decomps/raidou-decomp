@@ -14558,7 +14558,6 @@
 0x0046B12A	dds3LastDrawFrameCount	data	tier=D	smt3-offset	na	smt3-offset: between dds3DebugSign and dds3VblanksPerFrame, same span 0x8, same size
 0x0046B130	dds3KernelDebugSign	data	tier=D	smt3-offset	na	smt3-offset: between dds3VblanksPerFrame and dds3FirstProcessName, same span 0xC, same size
 0x0046B134	dds3FileCmdLoPrio	data	tier=D	smt3-offset	na	smt3-offset: between dds3VblanksPerFrame and dds3FirstProcessName, same span 0xC, same size
-0x0046B1B1	dds3RunProcessListData	data	tier=D	derived-sole	na	used by dds3RunProcessList
 0x0046B1BF	dds3Data26	data	tier=D	derived-shared	na	used by 2 functions: RunProcess, dds3PadInitialize
 0x0046B1C1	RunProcessData	data	tier=D	derived-sole	na	used by RunProcess
 0x0046B1C2	GetAnlogKeyData	data	tier=D	derived-dominant	na	used by GetAnlogKey (2 of 5 refs, 4 functions)

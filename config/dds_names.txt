@@ -101,6 +101,7 @@ fileQueueSetRotation	effPartsRotateSet
 fileQueueSetScale	effPartsScaleSet
 fileReplaceEffectSurfaceQueues	PartsListSet
 fldResetPlayerSceneObjectState	fldReleaseUnitPad
+fldTitle2	TitleInit
 fld_1374F0	fldCallMemset4
 gMsgFlag_fclMisc	gMsgFlag
 gcc2_compiled__1	quorem

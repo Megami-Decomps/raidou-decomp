@@ -10,7 +10,7 @@ void *dds3GetProcessData(dds3ProcessID_t *id);
 u32 dds3GetProcessRunTime(dds3ProcessID_t *id);
 u32 dds3GetProcessStat(dds3ProcessID_t *id);
 s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
-s32 dds3KillProcessName(char *name, s32 shutdowntimer);
+s32 dds3KillProcessName(const char *name, s32 shutdowntimer);
 void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *target);
 dds3ProcessID_t *dds3SearchProcessName(const char *namestr);
 dds3ProcessID_t *dds3SearchProcessNumber(u32 type, s32 n);

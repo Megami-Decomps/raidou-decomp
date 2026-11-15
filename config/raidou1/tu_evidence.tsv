@@ -323,7 +323,13 @@ start	last_func	unit	kind	evidence	smt3_unit
 002F1B70	002F1B70	result/rstcalc	c	smt3:map:1 of 1	result/rstcalc
 002F1B90	002F53A0	lmap	asm	none	
 002F5430	002F5430	code_r1_002F5430	c	dds:1 of 1	
-002F5470	002F8A50	TitleMain	asm	none	
+002F5470	002F5758	TitleMain	asm	none	
+002F59D0	002F59D0	code_r1_002F59D0	c	none	
+002F5BD0	002F6930	code_002F5BD0	asm	none	
+002F6AE8	002F6AE8	code_r1_002F6AE8	c	none	
+002F6C00	002F7460	code_002F6C00	asm	none	
+002F7568	002F77B8	code_r1_002F7568	c	none	
+002F77E0	002F8A50	code_002F77E0	asm	none	
 002F8AF8	002F8AF8	kernel/dds3TitleMain	c	smt3:map:1 of 1	kernel/dds3TitleMain
 002F8B88	002F96B0	code_002F8B88	asm	none	
 002F96C8	002F96C8	code_r1_002F96C8	c	none	

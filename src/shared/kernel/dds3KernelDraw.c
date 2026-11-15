@@ -15,6 +15,8 @@
 #include "effEvent.h"
 #include "evtPolygonMovie.h"
 #include "sdf2D.h"
+#include "dds3Randomize.h"
+
 
 /* One A+D register command with its standard DMA/GIF header. */
 typedef struct
@@ -561,7 +563,89 @@ void *dds3GetRenderTexture(void)
     return dds3RenderTexture;
 }
 
+typedef struct {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+} dds3BistaColor_t;
+
+extern dds3BistaColor_t dds3Data30;
+extern s8 dds3DrawBistaData;
+extern s16 dds3ChangeBistaModeData;
+extern s16 dds3Data32;
+extern s16 dds3DrawBistaData2;
+extern s16 dds3Data33;
+extern u16 dds3BistaUpdateWork;
+extern u16 dds3Work;
+#ifdef VERSION_RAIDOU2
+extern s32 dds3DrawBistaData3;
+#endif
+
+extern void uiDrawSurfaceAtNearDepth(u32 surface);
+extern void eglLinkTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst);
+extern void fclDrawPanelSprite(s32 a, s32 b);
+extern void cmpDrawBoxF(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u32 g);
+extern void evtSubmitDefaultDepthGradientRect(s32 x, s32 y, s32 width, s32 height, s32 topLeftColor, s32 topRightColor, s32 bottomRightColor, s32 bottomLeftColor);
+extern dds3FadePacket_t dds3FadePacket[2];
+extern u8 dds3Data29;
+extern sdfGrOt_t dds3CallGetFrameIDData;
+extern sdfDrawTag_t *dds3CallGrAllocPacketBuff9(void);
+
+/* NON_MATCHING: 49 of 125 words match. Loop register use and float scheduling differ; body from SMT3, no frame gating. */
+#ifdef NON_MATCHING
+extern dds3QuakeGain_t dds3RunQuakeData[];
+extern f32 gMapScrollReset[4];
+
+void dds3RunQuake(void)
+{
+    f32 range[2];
+    dds3QuakeGain_t gain = dds3RunQuakeData[0];
+    f32 amplitude;
+    f32 kick;
+    s32 i;
+
+    if (dds3QuakeFlag == 0) {
+        SDF_VU0_LOADIDENTITYVECTOR();
+        SDF_VU0_VECTOR_W_SET_ZERO();
+        return;
+    }
+    if (dds3QuakeFrame == 0) {
+        dds3QuakeFlag = 0;
+        return;
+    }
+    range[0] = dds3QuakeXRange * 0.01f;
+    range[1] = dds3QuakeYRange * 0.01f;
+    for (i = 0; i < 2; i++) {
+        if (range[i] != 0.0f) {
+            amplitude = (dds3GetRandFloatA(0) * range[i]) * 0.5f + range[i] * 0.5f;
+            if (range[i] * gain.axis[i] > fabsf(gMapScrollReset[i])) {
+                kick = amplitude * (dds3GetRandFloatA(0) - 0.5f);
+                gMapScrollReset[i] = gMapScrollReset[i] + (kick + kick);
+            } else if (gMapScrollReset[i] > 0.0f) {
+                gMapScrollReset[i] = gMapScrollReset[i] - amplitude;
+            } else {
+                gMapScrollReset[i] = gMapScrollReset[i] + amplitude;
+            }
+            if (gMapScrollReset[i] < -range[i]) {
+                gMapScrollReset[i] = -range[i];
+            }
+            if (range[i] < gMapScrollReset[i]) {
+                gMapScrollReset[i] = range[i];
+            }
+        }
+    }
+    if (dds3QuakeFrame > 0) {
+        s32 divisor = dds3QuakeFrame + 5;
+
+        dds3QuakeXRange -= dds3QuakeXRange / divisor;
+        dds3QuakeYRange -= dds3QuakeYRange / divisor;
+        dds3QuakeFrame--;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RunQuake);
+#endif
 
 /* Zero amplitude stops the quake; zero duration leaves it running indefinitely. */
 void dds3SetQuake(s32 frame, s32 range)
@@ -776,13 +860,127 @@ void dds3FadeUpdate(void)
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DrawDistRipOverError);
 
+/* NON_MATCHING: 37 of 188 words match. Stack spills and register allocation differ; fade packet draw from SMT3 dds3DrawFade with bista offsets. */
+#ifdef NON_MATCHING
+void dds3CallGetFrameID(void)
+{
+    sdfDrawTag_t *list;
+    u32 frameId;
+    s32 alpha;
+    u32 top;
+    u32 bottom;
+    u64 color;
+
+    frameId = dds3GetFrameID();
+    alpha = 0x80 - fadergba[3];
+    if (alpha < 0x80) {
+        dds3FadePacket[frameId].dma.qwc = 0xA;
+        dds3FadePacket[frameId].dma.pad = 0;
+        dds3FadePacket[frameId].dma.id = 0x70;
+        dds3FadePacket[frameId].dma.addr = NULL;
+        dds3FadePacket[frameId].dma.dat0 = 0;
+        dds3FadePacket[frameId].dma.dat1 = 0x5000000A;
+        dds3FadePacket[frameId].stateGif.parm = 0x1000000000000004;
+        dds3FadePacket[frameId].stateGif.regs = 0xE;
+        dds3FadePacket[frameId].state[0].reg = 0x42;
+        dds3FadePacket[frameId].state[0].data = 1;
+        dds3FadePacket[frameId].state[1].reg = 0x49;
+        dds3FadePacket[frameId].state[1].data = 0;
+        dds3FadePacket[frameId].state[2].reg = 0x4A;
+        dds3FadePacket[frameId].state[2].data = 0;
+        dds3FadePacket[frameId].state[3].reg = 0x47;
+        dds3FadePacket[frameId].state[3].data = 0x31003;
+        dds3FadePacket[frameId].spriteGif.parm = 0x1023400000008004;
+        dds3FadePacket[frameId].spriteGif.regs = 0xE;
+        top = 0x7900;
+        bottom = 0x8700;
+        if (dds3Data29 == 0 && dds3BistaCheck()) {
+            top = 0x7900 + (dds3DrawBistaData2 - dds3ChangeBistaModeData) * 8;
+            bottom = 0x8700 + (dds3Data32 - dds3Data33) * 8;
+        }
+        color = 0x3F80000000000000 | (u64)(s32)((u32)alpha << 24) | ((u64)fadergba[2] << 16) | ((u64)fadergba[1] << 8) | fadergba[0];
+        dds3FadePacket[frameId].sprite[0].reg = 1;
+        dds3FadePacket[frameId].sprite[0].data = color;
+        dds3FadePacket[frameId].sprite[1].reg = 5;
+        dds3FadePacket[frameId].sprite[1].data = 0xFEFFFF00007000 | ((u64)top << 16);
+        dds3FadePacket[frameId].sprite[2].reg = 1;
+        dds3FadePacket[frameId].sprite[2].data = color;
+        dds3FadePacket[frameId].sprite[3].reg = 5;
+        dds3FadePacket[frameId].sprite[3].data = 0xFEFFFF00009000 | ((u64)bottom << 16);
+        list = dds3CallGrAllocPacketBuff9();
+        sdfDrawTagLink(list, &dds3FadePacket[frameId]);
+        dds3CallGetFrameIDData.regFunc(&dds3CallGetFrameIDData, list);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3CallGetFrameID);
+#endif
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaClear);
+void dds3BistaClear(void)
+{
+    dds3Data30.r = 0;
+    dds3Data30.g = 0;
+    dds3Data30.b = 0;
+    dds3Data30.a = 0;
+    dds3DrawFlag &= ~0x0C000000;
+    dds3ChangeBistaModeData = dds3DrawBistaData2;
+    dds3Data32 = dds3Data33;
+    dds3DrawBistaData = 0;
+#ifdef VERSION_RAIDOU2
+    dds3DrawBistaData3 = 0;
+#endif
+}
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaIn);
+void dds3BistaIn(u32 frame)
+{
+    if (dds3Data30.a != 0) {
+        dds3Data30.r = 0;
+        dds3Data30.g = 0;
+        dds3Data30.b = 0;
+        dds3Data30.a = 0x80;
+        if (frame == 0) {
+            dds3Data30.a = 0;
+            dds3ChangeBistaModeData = dds3DrawBistaData2;
+            dds3Data32 = dds3Data33;
+            dds3BistaUpdateWork = 0;
+            dds3Work = 0;
+            dds3BistaClear();
+        } else {
+            dds3Work = frame;
+            dds3BistaUpdateWork = frame;
+            dds3DrawFlag = (dds3DrawFlag | 0x4000000) & ~0x8000000;
+        }
+        dds3ScreenParam.oy = 2048.0f;
+    }
+}
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaOutEx);
+void dds3BistaOutEx(u32 frame, u32 height)
+{
+    if (dds3DrawBistaData != 3) {
+        dds3Data30.r = 0;
+        dds3Data30.g = 0;
+        dds3Data30.b = 0;
+        dds3Data30.a = 0;
+    }
+    if (height > 0x80) {
+        height = 0x80;
+    }
+    dds3Data33 = height;
+    dds3DrawBistaData2 = 0x80 - height;
+    if (frame == 0) {
+        dds3BistaUpdateWork = 0;
+        dds3Work = 0;
+        dds3ChangeBistaModeData = 0;
+        dds3Data30.a = 0x80;
+        dds3DrawFlag &= ~0x0C000000;
+        dds3Data32 = 0;
+    } else {
+        dds3DrawFlag = (dds3DrawFlag & ~0x04000000) | 0x08000000;
+        dds3Work = frame;
+        dds3BistaUpdateWork = 0;
+    }
+    dds3ScreenParam.oy = 2048.0f;
+}
 
 void dds3BistaOut(u32 frame)
 {
@@ -795,11 +993,115 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3IsBistaZBufferClear);
 #endif
 
+/* NON_MATCHING: 8 of 21 words match. Retail sign-extends the char argument into a second register; the header prototype takes BISTA_MODE. */
+#ifdef NON_MATCHING
+void dds3ChangeBistaMode(BISTA_MODE mode)
+{
+    dds3DrawBistaData = mode;
+    if (mode < 3) {
+        if (mode > 0) {
+            dds3Data30.a = 0x80;
+        } else if (mode == 0) {
+            dds3ChangeBistaModeData = 0;
+            dds3Data32 = 0;
+        }
+    } else if (mode == 3) {
+        dds3ChangeBistaModeData = 0;
+        dds3Data32 = 0;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3ChangeBistaMode);
+#endif
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaUpdate);
+void dds3BistaUpdate(void)
+{
+    f32 rate;
 
+    if (dds3DrawFlag & 0x0C000000) {
+        if (dds3DrawFlag & 0x04000000) {
+            dds3BistaUpdateWork--;
+        } else {
+            dds3BistaUpdateWork++;
+        }
+        dds3Data30.a = (dds3BistaUpdateWork << 7) / dds3Work;
+        rate = (f32)dds3BistaUpdateWork / (f32)dds3Work;
+        dds3ChangeBistaModeData = (s32)((f32)dds3DrawBistaData2 - (f32)dds3DrawBistaData2 * rate);
+        dds3Data32 = (s32)((f32)dds3Data33 - (f32)dds3Data33 * rate);
+        if (((dds3DrawFlag & 0x04000000) && dds3BistaUpdateWork == 0) || ((dds3DrawFlag & 0x08000000) && dds3BistaUpdateWork == dds3Work)) {
+            dds3BistaUpdateWork = 0;
+            dds3Work = 0;
+            dds3DrawFlag &= ~0x0C000000;
+        }
+    }
+}
+
+/* NON_MATCHING: 20 of 171 words match. Register allocation and an unsigned mode read differ. */
+#ifdef VERSION_RAIDOU1
+#ifdef NON_MATCHING
+void dds3DrawBista(void)
+{
+    s32 fade;
+    s32 top;
+    s32 bottom;
+    s32 draw;
+    s32 color;
+    s32 shade;
+
+    fade = 0;
+    top = 0;
+    bottom = 0;
+    if (dds3DrawBistaData >= 3) {
+        draw = 1;
+        if (dds3DrawBistaData == 3) {
+            fade = 0x80 - dds3Data30.a;
+            draw = fade < 0x80;
+        }
+    } else if (dds3DrawBistaData > 0) {
+        top = dds3ChangeBistaModeData;
+        bottom = dds3Data32;
+        if (dds3ChangeBistaModeData == dds3DrawBistaData2) {
+            return;
+        }
+        draw = fade < 0x80;
+    } else {
+        draw = 1;
+        if (dds3DrawBistaData == 0) {
+            fade = 0x80 - dds3Data30.a;
+            draw = fade < 0x80;
+        }
+    }
+    if (draw) {
+        color = (0x80 - fade) << 24;
+        if (dds3DrawBistaData < 3 && dds3DrawBistaData >= 0) {
+            uiDrawSurfaceAtNearDepth(0x5A);
+            eglSetOt(97);
+            eglLinkAlpha(0);
+            eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 1);
+            evtSubmitDefaultDepthGradientRect(0, -2 - top, 512, dds3DrawBistaData2 + 2, color, color, color, color);
+            evtSubmitDefaultDepthGradientRect(0, bottom - dds3Data33 + 448, 512, dds3Data33 + 2, color, color, color, color);
+        }
+        if (dds3DrawBistaData == 2) {
+            shade = (55 * (dds3DrawBistaData2 - top) / dds3DrawBistaData2) << 24;
+            eglSetOt(85);
+            eglLinkTest(1, 0, 0x80, 3, 0, 0, 0, 1);
+            evtSubmitDefaultDepthGradientRect(0, 0, 512, 448, shade, shade, shade, shade);
+        } else if (dds3DrawBistaData == 3) {
+            fclDrawPanelSprite(0x30000, 84);
+            cmpDrawBoxF(0, 0, 0, 0x2000, 3584, 0, 0x54);
+            eglSetOt(85);
+            eglLinkAlpha(0);
+            eglLinkTest(1, 0, 0x80, 3, 0, 0, 1, 1);
+            evtSubmitDefaultDepthGradientRect(0, 0, 512, 448, color, color, color, color);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DrawBista);
+#endif
+#else
+INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3DrawBista);
+#endif
 
 void dds3SetScreenFovy(f32 fovy)
 {

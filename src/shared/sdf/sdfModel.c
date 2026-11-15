@@ -122,7 +122,6 @@ void sdfModelCopyStat(sdfModelRootNode_t *aDstRoot, sdfModelRootNode_t *aSrcRoot
 void sdfModelSetDrawEnv(sdfModelDrawEnv_t *aEnv);
 void sdfModelDrawEnvLinkOt(sdfGrOt_t **aOt, sdfModelDrawEnv_t *aEnv);
 void *sdfChunkFindById(void *data, u32 chunkId);
-s32 sdfModelGetNodeIndexByName(sdfModelRootNode_t *aRoot, const char *aName);
 const char *sdfModelGetNodeName(sdfModelRootNode_t *aRoot, s32 aIndex);
 u32 sdfModelGetMarkPosCount(sdfModelRootNode_t *aRoot);
 void sdfModelSetFaceDivParm(sdfModelRootNode_t *aRoot, f32 aSoften, f32 aBias);

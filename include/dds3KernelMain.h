@@ -9,5 +9,12 @@ void dds3SoftResetOn(void);
 void dds3NewGameStart(void);
 
 s32 dds3BgSetScrollSub(void);
+u32 dds3GetFrameID(void);
+
+extern s32 dds3KernelDebugSign;
+
+#ifdef VERSION_RAIDOU2
+void dds3CallEventSub(u8 enable);
+#endif
 
 #endif

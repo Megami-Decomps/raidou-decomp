@@ -306,7 +306,13 @@ start	last_func	unit	kind	evidence	smt3_unit
 00354490	00354490	result/rstcalc	c	smt3:map:1 of 1	result/rstcalc
 003544B0	00359350	lmap	asm	none	
 003593E0	003593E0	code_r1_002F5430	c	dds:1 of 1	
-00359420	0035E468	TitleMain	asm	none	
+00359420	0035ABD0	TitleMain	asm	none	
+0035AE48	0035AE48	code_r1_002F59D0	c	none	
+0035B048	0035BE00	code_0035B048	asm	none	
+0035BF98	0035BF98	code_r1_002F6AE8	c	none	
+0035C0B0	0035D048	code_0035C0B0	asm	none	
+0035D160	0035D3B0	code_r1_002F7568	c	none	
+0035D3D8	0035E468	code_0035D3D8	asm	none	
 0035E548	0035E548	code_r1_002FA480	c	none	
 0035E5B8	00364730	code_0035E5B8	asm	none	
 003647D0	003647D0	code_r1_00300488	c	dds:1 of 1	

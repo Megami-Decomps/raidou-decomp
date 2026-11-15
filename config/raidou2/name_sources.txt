@@ -9729,7 +9729,7 @@
 0x0035CB98	rstCallGetProcessData2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
 0x0035CBC0	rstCallGetProcessData3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour rstLvUpWaitCalcProcess; calls dds3GetProcessData
 0x0035D048	fldCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour fldNakamaCashLoad_Decode; calls dds3GetProcessData
-0x0035D160	fldTitle2	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour fldNakamaCashLoad_Decode; string '/title/'
+0x0035D160	TitleInit	inferred	R1 TitleInit twin (R2 calls dds3CallEventSub instead of clearing dds3KernelDebugSign); replaces fldTitle2: method=derived-string; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour fldNakamaCashLoad_Decode; string '/title/'
 0x0035D268	TitleDestroy	hd-inferred	hd: Raidou HD TitleMain.TitleDestroy, score 9.45 band B
 0x0035D308	TitleProcessStart	hd-inferred	hd: Raidou HD TitleMain.TitleProcessStart, score 12.15 band A
 0x0035D380	TitleProcessEnd	hd-inferred	hd: Raidou HD TitleMain.TitleProcessEnd, score 11.0 band A
@@ -25606,7 +25606,6 @@
 0x004DE2A4	fclEncycFree	inferred	method=smt3-ref; p=0.88 (n=D_r1_0046B1AC); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=fclEncycFindFreeSlot
 0x004DE2A7	dds3PadInitDone	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B1AF); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=RunProcess
 0x004DE2A8	dds3PadStickPrev	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B1B0); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
-0x004DE2A9	dds3RunProcessListData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3RunProcessList
 0x004DE2B7	dds3Data26	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: RunProcess, dds3PadInitialize
 0x004DE2B8	dds3PadStickState	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B1C0); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x004DE2B9	RunProcessData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunProcess

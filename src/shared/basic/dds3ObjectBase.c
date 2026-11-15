@@ -12,6 +12,11 @@
 #include "dds3CameraObjectBasic.h"
 #include "dds3ObjectBase.h"
 #include "dds3MoverBasic.h"
+#include "mdlManager.h"
+#include "sdfModel.h"
+#include "sdfQuat.h"
+#include "evtUnitManager.h"
+#include "dds3Basic.h"
 
 extern dds3ObjectBaseControlWorkData_t *dds3EventObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
 
@@ -122,7 +127,42 @@ void *dds3ObjectBaseGetModelHandle(dds3Basic_t *pObjectBasic)
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreeModelHandle);
 
+/* NON_MATCHING: 59 of 65 words match. The address register for the two lqc2 loads is v1, retail uses v0. */
+#ifdef NON_MATCHING
+void dds3ObjectBaseMakeUnit(dds3Basic_t *pObjectBasic, MODELTYPE major, s32 minor)
+{
+    sdfVector4_t scale;
+    dds3ObjectBaseControlWorkData_t *control;
+    dds3UnitObjectBasicWorkData_t *work;
+    mdlObj_t *obj;
+
+    control = dds3GetBaseControlWorkData(pObjectBasic);
+    if (control->pModel != NULL) {
+        mdlFree(control->pModel);
+    }
+    obj = mdlLoad(major, minor);
+    control->kubinodeidx = sdfModelGetNodeIndexByName(obj->inner, "Bip01 Head");
+    mdlGetScale(obj);
+    SDF_VU0_STOREVECTOR(&scale);
+    dds3SetSclPoseSet(pObjectBasic, &scale);
+    SDF_VU0_LOADVECTOR(&pObjectBasic->poseset->rot);
+    Normalize();
+    mdlSetRotate(obj);
+    SDF_VU0_LOADVECTOR(&pObjectBasic->poseset->pos);
+    SDF_VU0_VECTOR_W_SET_ONE();
+    mdlSetPosition(obj);
+    pObjectBasic->poseset->r = obj->objectRadius;
+    control->pModel = obj;
+    work = pObjectBasic->workdata;
+    control->modelType = 0;
+    control->cam_len = 0.0f;
+    if (work->hUnit == NULL) {
+        work->hUnit = evtCreateUnitHandle(pObjectBasic, obj);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakeUnit);
+#endif
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakeMatter);
 

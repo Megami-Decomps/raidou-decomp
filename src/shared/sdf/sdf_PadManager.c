@@ -7,6 +7,10 @@
 #include "sdf_PadManager.h"
 #include "sdk_libpad.h"
 
+extern s32 sdfVblankFlag;
+extern u16 sdfPadBitMask[16];
+extern u16 sdfPadButtons[2];
+
 /* Declared here because no header carries these. */
 
 struct sdfPadCb_t;
@@ -248,7 +252,53 @@ void sdfPadManager(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdf_PadManager", sdfPadWork);
+void sdfPadWork(void)
+{
+    s32 padIndex;
+    s32 bitIndex;
+    s32 vblank = sdfVblankFlag;
+
+    for (padIndex = 0; padIndex != SDF_PAD_ENTRY_COUNT; padIndex++) {
+        sdfPadCb_t *entry = &sdfPadCb[padIndex];
+        u16 current = entry->padData;
+        u16 previous = entry->lastPadData;
+        u16 changed = current ^ previous;
+        u16 pressed;
+        u16 repeat;
+
+        sdfPadButtons[padIndex] = current;
+        pressed = changed & current;
+        entry->lastPadData = current;
+        if (current != previous) {
+            entry->repeatDeadline = vblank + 15;
+            repeat = pressed;
+        } else {
+            repeat = 0;
+            if (current != 0) {
+                s32 elapsed = vblank - entry->repeatDeadline;
+
+                if (elapsed >= 0) {
+                    repeat = current;
+                    entry->repeatDeadline = vblank + elapsed + 4;
+                }
+            }
+        }
+        for (bitIndex = 0; bitIndex != 0x10; bitIndex++) {
+            u16 mask = sdfPadBitMask[bitIndex];
+            s32 state = (current & mask) != 0;
+
+            if (repeat & mask) {
+                state |= 2;
+            }
+            if (pressed & mask) {
+                state |= 0x80;
+            }
+            dds3PadBitTable[padIndex * 0x10 + bitIndex] = state;
+        }
+        memcpy(&sdfPadAnalogSticks[padIndex * 4], entry->stick, 4);
+        memcpy(&sdfPadPressure[padIndex * SDF_PAD_PRESSURE_COUNT], entry->pressure, SDF_PAD_PRESSURE_COUNT);
+    }
+}
 
 void sdfPadChangeMode(s32 aPadNum, u8 mode) {
     sdfPadCb[aPadNum].reqMode = mode;

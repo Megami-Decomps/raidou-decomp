@@ -8,6 +8,10 @@
 #include "fld.h"
 #include "dds3SequenceList.h"
 
+extern dds3ProcessID_t *dds3SearchProcessPriority(u32 priority);
+extern s32 ProcessCheck_rstInit(void);
+extern void fldExitEventSub(void);
+
 extern void fmProcTrigSequence(s32 mode);
 extern s32 fmProcessChk(void);
 extern void titleExit(void);
@@ -230,7 +234,12 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallNewBattleTest);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitNewBattleTest);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckNewBattleTest);
-
-INCLUDE_SDATA(const s32, "kernel/dds3SequenceList", CheckNewBattleTestData);
+s32 CheckNewBattleTest(void)
+{
+    if (dds3SearchProcessName("sbattle") == NULL && dds3SearchProcessPriority(0x3F8) == NULL && ProcessCheck_rstInit() == 0) {
+        fldExitEventSub();
+        return 1;
+    }
+    return 0;
+}
 

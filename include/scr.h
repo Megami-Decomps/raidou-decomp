@@ -119,7 +119,7 @@ struct scrCommandTable_t
  * scrSetIntReturnValue writes StackData[27] and tags StackType[27]. */
 struct scrProcessWork_s
 {
-    u8 Name[24];
+    char Name[24];
     s32 CP;
     s32 SP;
     u8 StackType[28]; /* enum scr_stack_type per slot */
@@ -130,7 +130,7 @@ struct scrProcessWork_s
     scrLabelTable_t *LabelTable;
     scrCode_u *Code;
     u8 *MessageData;
-    u8 *StringData;
+    char *StringData;
     s32 StartProc;
     s32 MesHandle;
     s32 ScriptTimer;

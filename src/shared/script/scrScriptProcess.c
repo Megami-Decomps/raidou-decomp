@@ -163,7 +163,7 @@ s32 scrStartProcessProcedure(scrProcessWork_s *pw, s32 procNo)
     if (procNo < 0 || procNo >= pw->TypeTable->ItemCount) {
         return 0;
     }
-    for (cursor = 0; (((char *)pw->Name)[cursor] = pw->ProcTable[procNo].Name[cursor]) != 0; cursor++) {
+    for (cursor = 0; (pw->Name[cursor] = pw->ProcTable[procNo].Name[cursor]) != 0; cursor++) {
     }
     pw->CP = pw->ProcTable[procNo].CodeAddress;
     pw->SP = 0;
@@ -187,7 +187,7 @@ scrProcessWork_s *scrSearchScriptName(char *scriptname)
     scrProcessWork_s *pw;
 
     for (pw = scrHandleFirst; pw != NULL; pw = pw->next) {
-        if (strcmp(scriptname, (char *)pw->Name) == 0) {
+        if (strcmp(scriptname, pw->Name) == 0) {
             return pw;
         }
     }

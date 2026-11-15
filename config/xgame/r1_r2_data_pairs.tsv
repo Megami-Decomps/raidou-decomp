@@ -7588,7 +7588,6 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046B1AC	0x004DE2A4	fclEncycFree	.sdata	0x3	yes	code-ref
 0x0046B1AF	0x004DE2A7	dds3PadInitDone	.sdata	0x1	yes	code-ref
 0x0046B1B0	0x004DE2A8	dds3PadStickPrev	.sdata	0x1	yes	code-ref
-0x0046B1B1	0x004DE2A9	dds3RunProcessListData	.sdata	0xE	yes	code-ref
 0x0046B1BF	0x004DE2B7	dds3Data26	.sdata	0x1	yes	code-ref
 0x0046B1C0	0x004DE2B8	dds3PadStickState	.sdata	0x1	yes	code-ref
 0x0046B1C1	0x004DE2B9	RunProcessData	.sdata	0x1	yes	code-ref

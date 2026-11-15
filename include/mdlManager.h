@@ -13,6 +13,7 @@ sdfMotionCtrlr_t *mdlGetMotionCtrlr(mdlObj_t *aHandle, s32 aGroup);
 s32 mdlGetMotionNum(mdlObj_t *aHandle, s32 aGroup);
 s32 mdlGetNumOfCut(mdlObj_t *aHandle, s32 aGroup);
 void mdlGetPosition(mdlObj_t *aHandle);
+void mdlGetScale(mdlObj_t *aHandle);
 s32 mdlHasMotionEx(mdlObj_t *aHandle, s32 aGroup);
 void mdlLink(mdlObj_t *aHandle, void *aModelOt);
 mdlObj_t *mdlLoad(u32 aMajor, u32 aMinor);
