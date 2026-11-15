@@ -32,9 +32,7 @@ extern u8 dds3ScreenBlurFlag, dds3DrawProcessFlag;
 extern s16 dds3ScreenBlurAlpha, dds3ScreenBlurScale;
 extern sdfDrawTag_t *dds3ClosedDrawTag;
 s32 dds3BasicMainProcess(dds3ProcessID_t *id);
-#ifdef VERSION_RAIDOU1
 s32 dds3BasicDrawProcess(dds3ProcessID_t *id);
-#endif
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelProcess", dds3FirstProcess);
 

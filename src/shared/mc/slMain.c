@@ -11,9 +11,7 @@
 #include "sdfMemory.h"
 #include "fileManager.h"
 #include "sdfSound.h"
-#ifdef VERSION_RAIDOU1
 #include "dds3AdminiProcess.h"
-#endif
 #include "slMain.h"
 #include "dds3KernelMain.h"
 
@@ -255,9 +253,7 @@ static inline void fileDrawDialogLine(s32 line, const char *glyphSource) {
 
 void fileClearAllSlotFlags(void);
 s32 fileResetSelection(void);
-#ifdef VERSION_RAIDOU1
 s32 mcdEnterDefaultFileFlow(void);
-#endif
 s32 fileRestartSlotScan(void);
 extern s32 D_003BC830;
 extern s32 D_003BC838;

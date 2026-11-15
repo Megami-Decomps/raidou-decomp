@@ -30,9 +30,7 @@ typedef enum PIB_CHUNK_TYPE {
 } PIB_CHUNK_TYPE;
 
 void evtInitGlobalWork(void);
-#ifdef VERSION_RAIDOU1
 void evtBitAllOff_FieldDebug(void);
-#endif
 
 #define BIT_SHIFT(no) (no)
 
@@ -50,11 +48,7 @@ void evtInitGlobalWork(void) {
 void evtBitAllOff(void) {
     s32 i = 0x7f;
     u32 *word = DDS3_GBWK->EventBit;
-#else
-INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff);
-#endif
 
-#ifdef VERSION_RAIDOU1
     do {
         i -= 1;
         *word = 0;
@@ -73,6 +67,8 @@ void evtBitAllOff_FieldDebug(void) {
     } while (i < 0x1000);
 }
 #else
+INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff);
+
 INCLUDE_ASM(const s32, "event/EventBit", evtBitAllOff_FieldDebug);
 #endif
 

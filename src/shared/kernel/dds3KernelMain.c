@@ -1,10 +1,7 @@
 #include "common.h"
-#ifdef VERSION_RAIDOU2
 #include "kernel.h"
 #include "sdfFrame.h"
-#endif
 #include "dds3KernelMain.h"
-#ifdef VERSION_RAIDOU2
 
 extern u32 dds3RunCount;
 extern u8 dds3SoftResetDisableFlag;
@@ -22,7 +19,6 @@ extern char dds3FirstProcessName[];
 extern char dds3DrawFirstProcessName[];
 
 #include "sdk_libc.h"
-#endif
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", KernelDebug);
 
@@ -95,15 +91,13 @@ void dds3Stop(u32 frame)
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SlowOff);
+
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3ScreenCaptureOn);
 #else
 void dds3SlowOn(u32 aSlowTime, u32 slowcnt)
 {
     u32 runCount = dds3RunCount;
-#endif
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3ScreenCaptureOn);
-#else
     dds3SlowSign = 1;
     dds3SlowTime = aSlowTime;
     dds3SlowRunCount = runCount;

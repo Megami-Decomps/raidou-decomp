@@ -10,9 +10,7 @@ extern char evtPackNameFormat[];
 s32 evtGetSoundIndex(s32 eventId, s32 variation);
 s32 evtLoadEventBgm(s32 eventId);
 s32 evtCheckEventBgmLoaded(s32 eventId);
-#ifdef VERSION_RAIDOU1
 s32 evtPlayEventBgm(s32 eventId, s32 variation);
-#endif
 void evtTransEventBgm(s32 eventId, s32 variation);
 s32 evtFadeInEventBgm(s32 eventId, s32 variation);
 s32 evtStopEventBgm(s32 eventId, s32 variation);

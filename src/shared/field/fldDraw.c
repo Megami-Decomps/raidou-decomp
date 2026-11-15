@@ -800,9 +800,7 @@ INCLUDE_ASM(const s32, "field/fldDraw", fldCallSetOt);
 
 #endif
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawMaruKage);
-#ifdef VERSION_RAIDOU2
 
-#endif
 INCLUDE_ASM(const s32, "field/fldDraw", nbProcSequenceSub);
 
 INCLUDE_ASM(const s32, "field/fldDraw", nbSetEncountMode);

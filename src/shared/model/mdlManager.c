@@ -10,13 +10,9 @@
 #include "sdfVu0.h"
 #include "mdlManager.h"
 #include "sdfQuat.h"
-#ifdef VERSION_RAIDOU2
 #include "sdfMotion.h"
-#endif
 #include "sdk_libkernl.h"
-#ifdef VERSION_RAIDOU1
 #include "sdfMotion.h"
-#endif
 #include "sdfSystem.h"
 #include "sdfModel.h"
 #include "mdlEffect.h"
@@ -93,13 +89,9 @@ typedef struct fileRequest_t fileRequest_t;
 extern void *fileGetLoadPtr(fileRequest_t *fileHandle);
 extern sdfMemHandle_t *fileGetMemHandle(fileRequest_t *fileHandle);
 extern void fileHandleFree(fileRequest_t *fileHandle);
-#ifdef VERSION_RAIDOU1
 extern sdfModelTexList_t *sdfTexSetTB(void *aData);
-#endif
 extern sdfModelDef_t *sdfFixupModelBinary(void *aData);
-#ifdef VERSION_RAIDOU1
 extern sdfMotionPlayBook_t *sdfFixupMotionBinary(void *aData);
-#endif
 void TbMbAbLoadEnd(mdlManager_mdlTbMbAbLoadCb_t *tmaCb);
 void mdlFreeBlur(mdlObj_t *aHandle);
 extern dds3ModelResrc_t *mdlLoadPrepare(u32 group, u32 id);
@@ -157,15 +149,11 @@ typedef struct
     s32 count;
 } mdlFileKindSlot_t;
 
-#ifdef VERSION_RAIDOU1
 extern mdlFileSlot_t modelFileTable[];
-#endif
 extern mdlFileKindSlot_t modelFileKindTable[];
-#ifdef VERSION_RAIDOU1
 extern dds3ModelFileIndex_t *mdlHddFileIndex;
 extern dds3ModelFileTable_t *mdlHddFileList;
 void mdlReleaseHddFileList(void);
-#endif
 extern sdfMemHandle_t *mdlHddFileIndexHandle;
 extern sdfMemHandle_t *mdlHddFileListHandle;
 
@@ -232,15 +220,11 @@ struct mdlEffectDescriptor_t;
 extern char mdlModelPathPrefix[];
 extern char mdlPackedBundleExt[];
 extern mdlWorkPrefix_t mdlWorkPathPrefix[];
-#ifdef VERSION_RAIDOU1
 extern mdlHddFileEntry_t *mdlHddFileCount;
 extern u8 sdfHddValid;
-#endif
 extern const char _ctype_[];
-#ifdef VERSION_RAIDOU1
 extern void sdfDummyFunc(void);
 extern fileRequest_t *fileLoadEx(const char *filename, s32 headOrTail, addr_t endCallback, addr_t callbackParm);
-#endif
 extern u16 mdlPibGetEffectCount(mdlPibRecord_t *record);
 extern u16 mdlPibGetMotionCount(mdlPibRecord_t *record);
 extern s32 mdlPibGetVersion(mdlPibRecord_t *record);
@@ -282,13 +266,9 @@ sdfMotionCtrlr_t *mdlCreateMotion(mdlObj_t *aHandle, s32 aGroup);
 void mdlUnRegistMotion(s32 aMajor, s32 aMinor, s32 aGroup);
 void mdlRegistModelSet(s32 aMajor, s32 aMinor, s32 aFlag, mdlSetDef_t *aSet);
 dds3ModelResrc_t *mdlWaitLoadEnd(s32 aMajor, s32 aMinor);
-#ifdef VERSION_RAIDOU1
 void TbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *parm);
-#endif
 void MbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *parm);
-#ifdef VERSION_RAIDOU1
 void AbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *parm);
-#endif
 char *mdlSetFileName(char *buff, const char *fname);
 dds3ModelResrc_t *mdlLoadPrepare(u32 group, u32 id);
 void mdlUnlinkResrc(mdlObj_t *aHandle);
@@ -333,9 +313,7 @@ s32 mdlGetMajorNum(mdlObj_t *aHandle);
 s32 mdlGetMinorNum(mdlObj_t *aHandle);
 s32 mdlGetNumOfMinor(s32 aMajor);
 s32 mdlGetNumOfCut(mdlObj_t *aHandle, s32 aGroup);
-#ifdef VERSION_RAIDOU1
 void mdlGetFilebase(s32 aMajor, s32 aMinor, char *aName, s32 aNameLeng);
-#endif
 s32 mdlPackCheck(sdfPacDecodeResrc_t *resrc);
 sdfPacDecodeResrc_t *mdlPackSetOld(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor, s32 regFlags);
 void mdlFileLoadCallback(filePacRequest_t *pacHandle, mdlManager_mdlFileLoadCb_t *data);
@@ -345,10 +323,8 @@ s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (
 
 void mdlPackDecode(s32 major, s32 minor, s32 regFlags, const u8 *buff, s32 leng);
 void mdlFreeFileItem(void *aItem);
-#ifdef VERSION_RAIDOU1
 void mdlMakeHddFileListDummy(void);
 void mdlMakeHddFileList(void);
-#endif
 extern char mdlModelPathPrefix[8];
 extern char mdlPackedBundleExt[4];
 extern mdlWorkPrefix_t mdlWorkPathPrefix[1];
@@ -1739,11 +1715,7 @@ void mdlReleaseHddFileList(void)
     dds3ModelFileTable_t *entries;
     s32 count;
     s32 i;
-#else
-INCLUDE_ASM(const s32, "model/mdlManager", mdlReleaseHddFileList);
-#endif
 
-#ifdef VERSION_RAIDOU1
     count = modelFileTable[5].count;
     if (count > 0)
     {
@@ -1765,6 +1737,8 @@ INCLUDE_ASM(const s32, "model/mdlManager", mdlReleaseHddFileList);
     sdfMemFreeHandleDirect(&mdlHddFileListHandle);
 }
 #else
+INCLUDE_ASM(const s32, "model/mdlManager", mdlReleaseHddFileList);
+
 INCLUDE_ASM(const s32, "model/mdlManager", mdlMakeHddFileListDummy);
 #endif
 

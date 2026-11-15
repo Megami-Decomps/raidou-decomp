@@ -16,16 +16,12 @@
 #include "newdata.h"
 #include "event.h"
 #include "effect.h"
-#ifdef VERSION_RAIDOU2
 #include "evtMoon.h"
-#endif
 #include "sdk_libm.h"
 
 extern f32 R360_LR(f32 a, f32 b);
 f32 R360_LR(f32 a, f32 b);
-#ifdef VERSION_RAIDOU2
 f32 fldPlayerCalc360_8(f32 aKakudo);
-#endif
 f32 fldPlayerCalc360_4(f32 aKakudo);
 
 /* Native surface-category branch is retained by the localized operand below. */
@@ -83,17 +79,15 @@ INCLUDE_ASM(const s32, "field/fldPlayer", R360_LR);
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "field/fldPlayer", fldSnapAngleToCompassPoint);
+
+INCLUDE_ASM(const s32, "field/fldPlayer", fldPlayerCalc360_8);
 #else
 f32 fldSnapAngleToCompassPoint(f32 angle) {
     f32 compass[16] = {0.0f, 22.5f, 45.0f, 67.5f, 90.0f, 112.5f, 135.0f, 157.5f, 180.0f, 202.5f, 225.0f, 247.5f, 270.0f, 292.5f, 315.0f, 337.5f};
     f32 best;
     s32 index;
     f32 diff;
-#endif
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "field/fldPlayer", fldPlayerCalc360_8);
-#else
     while (angle >= 360.0f) {
         angle -= 360.0f;
     }

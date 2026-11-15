@@ -13,9 +13,7 @@ extern u32 sdfFileSeekWork;
 extern s32 sdfFileSemaId;
 extern u8 sdfFileDefaultSrcType;
 extern char sdfFileHostRootPath[];
-#ifdef VERSION_RAIDOU1
 s32 sceClose(s32 a);
-#endif
 char *strcat(char *aDest, const char *aSrc);
 
 typedef struct sdfHostPrefix_t {
@@ -128,9 +126,7 @@ extern s16 sdfFileCmdFreeCount;
 extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext);
 
-#ifdef VERSION_RAIDOU1
 s32 sdfCdImageCheckExist(const char *fname);
-#endif
 void sdfFileSetCdFilename(char *aDst, char *aSrc);
 char *sdfFileSetHostFilename(char *aDst, char *aSrc);
 void sdfFileSetHddFilename(char *aDst, char *aSrc);
@@ -140,9 +136,7 @@ s32 sdfFileChkHddFile(char *aFilename);
 char *sdfFileMakeFilename(char *aFilename);
 s32 sdfFileCallback(void *aCmd, s32 aOp, s32 aArg, s32 aResult);
 sdfFileCmdHandle_t *sdfFileOpen(const char *aFileName);
-#ifdef VERSION_RAIDOU1
 s32 sdfFileCheckExist(char *aFilename);
-#endif
 void sdfFileClose(void *aHandle);
 s32 sdfFileRead(void *aHandle, void *aPtr, s32 aLeng);
 u32 sdfFileLength(void *aHandle);

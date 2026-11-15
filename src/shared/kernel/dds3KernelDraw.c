@@ -237,12 +237,10 @@ void dds3SetQuake(s32 frame, s32 range);
 void dds3StopQuake(void);
 sdfDrawTag_t *dds3LinkZClearDrawTag(s32 sw);
 void dds3FadeSet(s32 r, s32 g, s32 b, s32 a);
-#ifdef VERSION_RAIDOU1
 void dds3FadeIn(s32 r, s32 g, s32 b, s32 frame);
 void dds3FadeIn2(s32 frame);
 void dds3FadeOut(s32 r, s32 g, s32 b, s32 frame);
 void dds3FadeOut2(s32 frame);
-#endif
 void dds3FadeUpdate(void);
 void dds3SetScreenFovy(f32 fovy);
 void dds3SetAmbient(sdfVector4_t *ambient);
