@@ -12,10 +12,13 @@
 #include "sdfPacketBuff.h"
 #include "effMath.h"
 #include "effManager.h"
-
-struct dds3ModelResrc_t;
-
-struct dds3ModelResrcPlayBook_t;
+#include "libsdf.h"
+#include "sdfMemory.h"
+#include "sdfMat.h"
+#include "sdfDraw.h"
+#include "sdfModel.h"
+#include "mdlManager.h"
+#include "effEvent.h"
 
 struct P2A_ANIMATION_tag;
 
@@ -38,23 +41,6 @@ union effBTLPartValue_t;
 struct effPCPSparkleSphereParam_t;
 
 struct effPCPSparkleSphere_tag;
-
-struct dds3Effect_Blur_t;
-
-struct dds3Effect_RippleBlurParam_t;
-
-struct effBlurScaleSlot_t;
-
-struct effBlurScaleWork_t;
-
-struct dds3Effect_DistortionBlurParam_t;
-
-struct effBlurScatterSlot_t;
-
-struct effBlurScatterWork_t;
-
-struct dds3Effect_PartialMultiBlurParam_t;
-
 
 struct effPCPRingPolyExp2Param_t;
 
@@ -99,8 +85,6 @@ struct effPCPRadiateBEDPart_tag;
 struct effPCPRadiateBED_tag;
 
 struct effPCPHelperBEDParam_t;
-
-struct effEveBEDParams_t;
 
 struct effPCPAnalyzeBED_tag;
 
@@ -174,12 +158,6 @@ struct effPCPHama01_tag;
 
 struct effDebugPolyParams_t;
 
-struct effRandState_t;
-
-struct effResourceRectBounds_t;
-
-struct effResourceRectDrawParams_t;
-
 struct effPCPThunderSpherePolyParam_t;
 
 struct effPCP_ThunderPolyParam_t;
@@ -192,17 +170,7 @@ struct effTrackPolyParams_t;
 
 struct sdfIpuDmaRegs_t;
 
-struct dds3ModelBlurCb_t;
-
-struct dds3ModelBlurInstance_t;
-
-struct mdlIpuAttachment_t;
-
 struct pibChunkItem_t;
-
-struct dds3ModelEffectCtrlr_t;
-
-struct sdfMotionCutDef_t;
 
 struct sdfMovieStrmLinear_t;
 
@@ -216,13 +184,7 @@ struct sdfMatPacket_t;
 
 struct sdfModelPacketHeader_tag;
 
-struct sdfModelNode_t;
-
-struct sdfModelNodeDef_t;
-
 struct sdfModelNodeDefList_t;
-
-struct sdfMotionNodeDef_t;
 
 struct sdfIpuDecodeCb_t;
 
@@ -235,8 +197,6 @@ struct effBTLBank_t;
 typedef struct billUvQuad_t billUvQuad_t;
 
 typedef struct sdfBillBoardBatch_t sdfBillBoardBatch_t;
-
-typedef struct sdfTexPacket_t sdfTexPacket_t;
 
 typedef struct dds3BillResource_tag dds3BillResource_tag;
 
@@ -256,18 +216,9 @@ typedef struct effPCPSparkleSphereParam_t effPCPSparkleSphereParam_t;
 
 typedef struct effPCPSparkleSphere_tag effPCPSparkleSphere_tag;
 
-typedef struct dds3Effect_Blur_t dds3Effect_Blur_t;
-
-typedef struct dds3Effect_PartialMultiBlurParam_t dds3Effect_PartialMultiBlurParam_t;
-
 typedef struct dds3Effect_PartialMultiBlur_t dds3Effect_PartialMultiBlur_t;
 
-
 typedef struct effPCPRingPolyExp2Param_t effPCPRingPolyExp2Param_t;
-
-typedef struct sdfMatPacket_t sdfMatPacket_t;
-
-typedef union sdfMatUvwParm_t sdfMatUvwParm_t;
 
 typedef struct dds3RingPolyExpList_tag dds3RingPolyExpList_tag;
 
@@ -289,31 +240,15 @@ typedef struct effPCPEyeThunder_tag effPCPEyeThunder_tag;
 
 typedef struct effPCPMudo_tag effPCPMudo_tag;
 
-typedef struct effResourceRectBounds_t effResourceRectBounds_t;
-
-typedef struct effResourceRectDrawParams_t effResourceRectDrawParams_t;
-
 typedef struct effPCPMultiBlurExp2_tag effPCPMultiBlurExp2_tag;
 
 typedef struct effPCPMultiFilterExpParam_t effPCPMultiFilterExpParam_t;
 
-typedef struct dds3Effect_RippleBlurParam_t dds3Effect_RippleBlurParam_t;
-
 typedef struct effPCPRippleBlurExpParam_t effPCPRippleBlurExpParam_t;
-
-typedef struct dds3Effect_DistortionBlurParam_t dds3Effect_DistortionBlurParam_t;
 
 typedef struct effPCPDistortionBlurExpParam_t effPCPDistortionBlurExpParam_t;
 
 typedef struct effPCPMultiBlurExp2Param_t effPCPMultiBlurExp2Param_t;
-
-typedef struct effBlurScaleSlot_t effBlurScaleSlot_t;
-
-typedef struct effBlurScaleWork_t effBlurScaleWork_t;
-
-typedef struct effBlurScatterSlot_t effBlurScatterSlot_t;
-
-typedef struct effBlurScatterWork_t effBlurScatterWork_t;
 
 typedef struct effPCPDistortionBlurExp_tag effPCPDistortionBlurExp_tag;
 
@@ -338,8 +273,6 @@ typedef struct effBTL_t effBTL_t;
 typedef struct effPCPRadiateBED_tag effPCPRadiateBED_tag;
 
 typedef struct effPCPHelperBEDParam_t effPCPHelperBEDParam_t;
-
-typedef struct effEveBEDParams_t effEveBEDParams_t;
 
 typedef struct effPCPThunderSpherePolyParam_t effPCPThunderSpherePolyParam_t;
 
@@ -425,39 +358,9 @@ typedef struct effPCPAgiraoFire_tag effPCPAgiraoFire_tag;
 
 typedef struct effPCPHama01_tag effPCPHama01_tag;
 
-typedef struct effRandState_t effRandState_t;
-
-typedef struct sdfMotionCutDef_t sdfMotionCutDef_t;
-
-typedef struct sdfMotionNodeDef_t sdfMotionNodeDef_t;
-
-typedef struct sdfMotionPlayBook_t sdfMotionPlayBook_t;
-
-typedef struct dds3ModelResrcPlayBook_t dds3ModelResrcPlayBook_t;
-
-typedef struct sdfItemArray_t sdfItemArray_t;
-
 typedef struct pibChunkItem_t pibChunkItem_t;
 
 typedef struct sdfModelExtraChunk_t sdfModelExtraChunk_t;
-
-typedef struct sdfModelNodeDef_t sdfModelNodeDef_t;
-
-typedef struct sdfModelDef_t sdfModelDef_t;
-
-typedef struct dds3ModelResrc_t dds3ModelResrc_t;
-
-typedef struct sdfMotionCtrlr_t sdfMotionCtrlr_t;
-
-typedef struct sdfModelPacketHeader_tag sdfModelPacketHeader_tag;
-
-typedef struct sdfModelNode_t sdfModelNode_t;
-
-typedef struct sdfModelRootNode_t sdfModelRootNode_t;
-
-typedef struct dds3ModelBlurInstance_t dds3ModelBlurInstance_t;
-
-typedef struct dds3ModelBlurCb_t dds3ModelBlurCb_t;
 
 typedef struct dds3HermitianTrackPoly_tag dds3HermitianTrackPoly_tag;
 
@@ -483,13 +386,9 @@ typedef struct sdfIpuDmaTag_t sdfIpuDmaTag_t;
 
 typedef struct mdlEffectResrc_IPU_t mdlEffectResrc_IPU_t;
 
-typedef struct mdlIpuAttachment_t mdlIpuAttachment_t;
-
 typedef struct mdlEffectResrcItem_t mdlEffectResrcItem_t;
 
 typedef struct mdlMarkPos_t mdlMarkPos_t;
-
-typedef struct dds3ModelEffectCtrlr_t dds3ModelEffectCtrlr_t;
 
 typedef struct effDebugPolyParams_t effDebugPolyParams_t;
 
@@ -522,20 +421,6 @@ struct sdfMemHandle_t;
 struct sdfMemHandle_t;
 
 struct sdfTexHandle_t;
-
-struct sdfTexPacket_t;
-
-struct sdfTexPacket_t {
-    s32 gifTagWord; /* Low GIFtag word; NLOOP occupies bits 0-14. */
-    u32 gifTagControl; /* High GIFtag control word; one packed register. */
-    u64 gifTagRegisters; /* Packed register list: A+D. */
-    u64 samplingState; /* GS TEX1 data, including minification/magnification filters. */
-    u64 samplingRegister; /* GS TEX1_1/TEX1_2 register selector. */
-    u64 textureState; /* GS TEX0 data. */
-    u64 textureRegister; /* GS TEX0_1/TEX0_2 register selector. */
-    u64 clampState; /* GS CLAMP data. */
-    u64 clampRegister; /* GS CLAMP_1/CLAMP_2 register selector. */
-};
 
 /* Serialized byte consumed by the GS texture-state packet builder. */
 typedef u8 SdfTextureClampMode;
@@ -677,25 +562,6 @@ struct effPCPSparkleSphere_tag {
 
 struct dds3Effect_PartialMultiBlur_t;
 
-/* Shared rectangle and sampling payload; color is packed or read by channel. */
-struct dds3Effect_Blur_t {
-    u32 abgr; /* Byte consumers read the packed word through u8 object access. */
-    s32 blend;
-    f32 rotate;
-    f32 scale;
-    /* Native movie blends index the renderer center as a two-element vector. */
-    s32 center[2];
-    /* Native movie blends interpolate these four xy with a 2x2 loop. */
-    s32 xy[2][2];
-};
-
-/* The textured blur allocation stores this copied body followed by a
- * separately acquired source texture. */
-struct dds3Effect_PartialMultiBlurParam_t {
-    s32 area;
-    dds3Effect_Blur_t Blur;
-};
-
 struct dds3Effect_PartialMultiBlur_t {
     dds3Effect_PartialMultiBlurParam_t param;
     struct sdfTexHandle_t *texture;
@@ -727,70 +593,6 @@ struct effPCPRingPolyExp2Param_t {
 };
 
 struct sdfMat_t;
-
-/* A texture coordinate transform in a material packet. sdfMatSetUvwParm fills
- * it either as six floats or, for the identity case, as three quadword halves. */
-typedef union {
-    f32 m[6];
-    u64 q[3];
-} sdfMatTexTm_t;
-
-/* Native 0xA0-byte draw-entry block allocated by SDF_ASSET_DRAW_ENTRY_BYTES. */
-/* Names from the IDB, which include/libsdf.h also carries. The three
- * composites keep this unit's coarser reading: they cover pad+vifcode2, the
- * two three-register texture blocks and the two 24-byte transforms. */
-struct sdfMatPacket_t {
-    u32 vifcode0;          /* 0x00 */
-    u32 ambient;           /* 0x04 */
-    u32 diffuse;           /* 0x08 */
-    u32 mtexDiffuse;       /* 0x0C: packed color applied by the secondary draw state */
-    u32 specularColor;     /* 0x10: copied from the owning asset, or forced to zero. */
-    u32 refmapColor;       /* 0x14 */
-    u32 vifcode1;          /* 0x18 */
-    f32 constant;          /* 0x1C */
-    u32 mtexAlpha;         /* 0x20: packed GS ALPHA_2 state emitted by the VU transfer builder */
-    u32 mtexAlgo;          /* 0x24: secondary packet mode copied from SdfAsset */
-    f32 fdBias;            /* 0x28 */
-    f32 fdSoften;          /* 0x2C */
-    u8 pad30[8];           /* 0x30: pad and vifcode2 */
-    u64 tex1Data;          /* 0x38 */
-    u64 tex0Data;
-    u64 clampData;
-    u64 mtexTex1Data;      /* 0x50 */
-    u64 mtexTex0Data;
-    u64 mtexClampData;
-    /* sdfMatSetUvwParm writes one transform per texture: a 2x2 then an offset. */
-    sdfMatTexTm_t texTm;   /* 0x68 */
-    sdfMatTexTm_t mtexTexTm;
-    u32 cmd_call_spec;          /* 0x98: VIF ITOP with immediate 0xC */
-    u32 cmd_call_kind;          /* 0x9C: VIF MSCAL with microprogram index zero */
-};
-
-union sdfMatUvwParm_t;
-
-/* Optional packed or five-float state block owned by an SdfAsset. */
-union sdfMatUvwParm_t {
-    struct {
-        u64 unk0;
-        u64 unk8;
-        u32 unk10;
-        u32 unk14;
-    } packed;
-    struct {
-        f32 values[5];
-        u32 unk14;
-    } scalar;
-    /* Named view of scalar.values; the last word remains opaque. */
-    struct {
-        f32 centerOffsetX;
-        f32 centerOffsetY;
-        f32 basisScaleX;
-        f32 basisScaleY;
-        f32 rotationInput;
-        u32 unk14;
-    } transformInputs;
-};
-
 /* One beam draw node owns its asset and vertex allocation separately. */
 struct dds3RingPolyExpList_tag {
     f32 matrix[4][4];
@@ -934,33 +736,9 @@ struct effPCPMudo_tag {
     struct sdfMemHandle_t *allocationHandle;
 };
 
-struct effResourceRectBounds_t {
-    s32 left;
-    s32 top;
-    s32 right;
-    s32 bottom;
-};
+ /* 0x24 */
 
-/* Passed directly to the quad renderer, independently of the extent/center. */
-struct effResourceRectDrawParams_t {
-    /* The movie blender stores packed RGBA; the renderer samples channels. */
-    union { u8 color[4]; u32 rgba; };
-    s32 blendControl;
-    effResourceRectBounds_t bounds;
-};
-
-/* Nine copied words; the selected source texture belongs to the owner. */
-typedef struct {
-    s32 area;
-    /* The native movie blender interpolates both center coordinates in one loop. */
-    s32 center[2];
-    effResourceRectDrawParams_t Filter;
-} dds3Effect_PartialMultiFilterParam_t; /* 0x24 */
-
-typedef struct {
-    dds3Effect_PartialMultiFilterParam_t param;
-    sdfTexHandle_t *hAlphaTex;
-} dds3Effect_PartialMultiFilter_t; /* 0x28 */
+ /* 0x28 */
 
 /* Both compact-fade lifecycles use the same 0x3C chip allocation. The
  * resource union is selected by the short rectangle or long textured-blur
@@ -1026,21 +804,6 @@ struct effPCPMultiFilterExpParam_t {
     dds3Effect_PartialMultiFilterParam_t res;
 };
 
-/* Phase-driven blur parameters and the scale-slot allocation they own. */
-struct dds3Effect_RippleBlurParam_t {
-    s32 number;
-    f32 speed;
-    f32 interval;
-    u32 abgr;
-    s32 blend; /* Copied to the slot quad blend control. */
-    f32 rotate; /* Copied to the slot quad angle. */
-    f32 power; /* Displacement amplitude used by the native update. */
-    f32 frequency;
-    /* Native movie blends index the renderer center as a two-element vector. */
-    s32 center[2];
-    s32 area;
-};
-
 struct effPCPRippleBlurExpParam_t {
     u8 type;
     u8 pad01[3];
@@ -1050,21 +813,6 @@ struct effPCPRippleBlurExpParam_t {
     s32 area_s;
     s32 area_e;
     dds3Effect_RippleBlurParam_t res;
-};
-
-/* Random-position blur parameters and their allocated slot owner. */
-struct dds3Effect_DistortionBlurParam_t {
-    s32 number;
-    s32 interval;
-    f32 speed;
-    u32 abgr;
-    s32 blend;
-    f32 rotate;
-    f32 distortion;
-    /* Native movie blends index the renderer center as a two-element vector. */
-    s32 center[2];
-    s32 area;
-    s32 width;
 };
 
 struct effPCPDistortionBlurExpParam_t {
@@ -1080,7 +828,7 @@ struct effPCPDistortionBlurExpParam_t {
 
 struct effPCPAnalyzeBED_tag {
     struct effBTL_t *hBED;
-    struct effEveBEDCutHandle_t *hBEDCut;
+    struct effEveBEDCut_t *hBEDCut;
     f32 scale;
     u32 abgr;
 };
@@ -1110,32 +858,6 @@ struct effPCPMultiBlurExp2Param_t {
     s32 area_s;
     s32 area_e;
     dds3Effect_PartialMultiBlurParam_t MultiBlur;
-};
-
-struct effBlurScaleSlot_t {
-    f32 phase;
-    f32 angle;
-    dds3Effect_Blur_t quad;
-};
-
-struct effBlurScaleWork_t {
-    dds3Effect_RippleBlurParam_t params;
-    struct sdfTexHandle_t *texture;
-    struct sdfMemHandle_t *allocation;
-    effBlurScaleSlot_t *slots;
-};
-
-struct effBlurScatterSlot_t {
-    s32 delay;
-    f32 angle;
-    dds3Effect_Blur_t quad;
-};
-
-struct effBlurScatterWork_t {
-    dds3Effect_DistortionBlurParam_t params;
-    struct sdfTexHandle_t *texture;
-    struct sdfMemHandle_t *allocation;
-    effBlurScatterSlot_t *slots;
 };
 
 struct effPCPDistortionBlurExp_tag {
@@ -1177,14 +899,10 @@ struct effPCPMHanma01_tag {
     u32 remainingDelay[6];
 };
 
-struct effEveBEDCutHandle_t;
-
-typedef struct effEveBEDCutHandle_t effEveBEDCutHandle_t;
-
 /* Both PCP drift owners allocate count * 0x18 bytes after their 0x11C-byte
  * work header, initialize these rows, and release each retained event. */
 struct effPCPRadiateBEDPart_tag {
-    struct effEveBEDCutHandle_t *hBEDCut;
+    struct effEveBEDCut_t *hBEDCut;
     s32 frame;
     f32 radius;
     f32 radius_s;
@@ -1309,17 +1027,6 @@ struct effPCPHelperBEDParam_t {
     s32 fade_in;
     s32 fade_out;
     f32 speed;
-};
-
-/* Misc clients use payload[0..6] as position and [7..10] as scale values;
- * Thunder callers retain the same layout with event-specific slots unknown. */
-struct effEveBEDParams_t {
-    f32 center[4];
-    f32 rot[4];
-    f32 r;
-    f32 h;
-    f32 scale;
-    u32 abgr;
 };
 
 /* Alpha-system parameters supply three packed words to the particle system. */
@@ -1494,7 +1201,7 @@ struct effPCPHelperBEDPart_tag {
     u8 pad11[3];
     s32 frame;
     s32 life;
-    struct effEveBEDCutHandle_t *hBEDCut;
+    struct effEveBEDCut_t *hBEDCut;
 };
 
 /* The factory allocates this owner as one 0x40-byte size-class block; the
@@ -1516,8 +1223,8 @@ struct effPCPHelperBED_tag {
  * byte work header and initialize/release two event nodes per row. */
 struct effPCPRadiateTBPart_tag {
     struct effPCP_ThunderPoly_t *pThunderPoly;
-    struct effEveBEDCutHandle_t *eventA;
-    struct effEveBEDCutHandle_t *eventB;
+    struct effEveBEDCut_t *eventA;
+    struct effEveBEDCut_t *eventB;
     f32 radian;
     f32 radius;
     f32 rotate;
@@ -1618,7 +1325,7 @@ struct effPCPHwave01_tag {
 
 /* Spawn-range owners allocate count * 0x20 bytes after their 0xAC-byte header. */
 struct effPCPSpiralBEDPart_tag {
-    struct effEveBEDCutHandle_t *hBEDCut;
+    struct effEveBEDCut_t *hBEDCut;
     s32 frame;
     f32 up;
     f32 up_s;
@@ -1754,69 +1461,6 @@ struct effPCPHama01_tag {
     u32 counter[8];
 };
 
-/* Four ordered 32-bit words in the shared effect random-number state. */
-struct effRandState_t {
-    u32 words[4];
-};
-
-struct dds3ModelHandle_t;
-
-typedef struct dds3ModelHandle_t dds3ModelHandle_t;
-
-struct sdfMotionPlayBook_t;
-
-/* Serialized clip duration/reserved remain halfwords (tools/fld.py).
- * The viewer MAXFRAME diagnostic reads their packed little-endian word. */
-struct sdfMotionCutDef_t {
-    union {
-        struct {
-            u16 frameLength;
-            u16 pad;
-        };
-        u32 packedHeader;
-    };
-    u32 chunk[1];
-};
-
-struct sdfMotionNodeDef_t {
-    union {
-        u32 typeId;
-        struct {
-            /* Runtime dispatch shifts the command word right by 16. */
-            u16 selector;
-            u16 family;
-        } binding;
-    };
-    u32 nodeId;
-};
-
-/* Resource header followed by the binding commands used to construct a motion. */
-struct sdfMotionPlayBook_t {
-    u16 numOfCut; /* Motion-index upper bound returned by mdlGetNumOfCut. */
-    u16 numOfNode;
-    sdfMotionCutDef_t **cutList;
-    sdfMotionNodeDef_t nodeDefList[1];
-};
-
-struct dds3ModelResrcPlayBook_t {
-    s32 flags;
-    s16 motionSlotIndex;
-    s16 motionIndex;
-    sdfMotionPlayBook_t *motionTable;
-    struct sdfMemHandle_t *resourceHandle;
-};
-
-struct sdfItemArray_t;
-
-struct sdfItemArray_t {
-    struct sdfMemHandle_t *memHandle;
-    s16 count;
-    s16 capacity;
-    s16 elemSize;
-    s16 growStep;
-    void *items;
-};
-
 /* Relative-linked viewer records share packed payload and parameter words.
  * Kinds 1/2 use the count and part-index halfwords at 0x0C/0x0E; kind 3
  * reads the whole parameter word. Kind 4 reads both selector halfwords at 0x08/0x0A. */
@@ -1846,8 +1490,6 @@ struct pibChunkItem_t {
     } tail;
 };
 
-struct sdfModelDef_t;
-
 struct sdfModelExtraChunk_t;
 
 /* One serialized model extra chunk: the id and size, then the payload words
@@ -1865,28 +1507,6 @@ typedef struct sdfModelExtraChunk_t {
  * definitions following its header. */
 typedef struct sdfModelNodeDefList_t sdfModelNodeDefList_t;
 
-/* Per-node definition after packed-resource or scene relocation, applied by
- * sdfModelNodeBaseSet. The shape pointers are relocated in place. */
-struct sdfModelNodeDef_t {
-    u16 format;       /* 0x00: selects the shape-pointer form */
-    u16 pad0;         /* 0x02 */
-    u32 pad1;         /* 0x04 */
-    s32 id;           /* 0x08 */
-    s32 parentIndex;  /* 0x0C: negative means this node has no parent */
-    sdfVector4_t rotate; /* 0x10: Euler angles supplied to the quaternion builder */
-    u128 pos;         /* 0x20 */
-    u128 scale;       /* 0x30 */
-    const f32 *bounds; /* 0x40: optional two xyz corners used by clipping */
-    union {
-        struct sdfShapeHeader_t *shape[3]; /* format 0: one header per ot slot */
-        struct {
-            struct sdfShapeHeader_t **table; /* format 1: null-terminated table */
-            u32 unk48;
-            u32 unk4C;
-        } indirect;
-    } shapes;         /* 0x44: other formats leave the tail unused */
-};
-
 /* Variable-length serialized list: a 0x10-byte header, followed by count
  * complete 0x50-byte node definitions. */
 struct sdfModelNodeDefList_t {
@@ -1894,143 +1514,8 @@ struct sdfModelNodeDefList_t {
     u8 pad[0x0C];
 };
 
-struct sdfModelDef_t {
-    sdfModelNodeDefList_t *modelDef; /* 0x00 */
-    u32 *matDef_New; /* 0x04: count followed by flag-driven asset records */
-    s32 morphCount; /* 0x08: passed to sdfModelMakeMorphList */
-    struct sdfModelExtraChunk_t *extraData; /* 0x0C: borrowed by SdfModel */
-};
-
-/* Group owners allocate 0xB4 bytes and retain eight resource records. */
-struct dds3ModelResrc_t {
-    struct dds3ModelResrc_t *next;
-    struct dds3ModelResrc_t *prev;
-    u16 group;
-    u16 type;
-    u8 ownsResources;
-    u8 pad0D[3];
-    dds3ModelHandle_t *modelContext;
-    sdfItemArray_t *resourceList;
-    struct sdfModelDef_t *itemList;
-    struct sdfMemHandle_t *requestAllocation;
-    dds3ModelResrcPlayBook_t slots[8];
-    struct sdfMemHandle_t *resourceHandle;
-    struct pibChunkItem_t *partInfo; /* Borrowed relative-linked record-list view. */
-    sdfItemArray_t *partList;
-    f32 unk_AC;
-    f32 objectRadius; /* Copied into the model context and object radius. */
-};
-
-struct sdfModelRootNode_t;
-
 /* Copy runtime model and draw-node state into an existing model overlay.
  * Both models and their resource and draw-node lists must be initialized. */
-struct sdfModelRootNode_t;
-
-struct sdfMotionCtrlr_t;
-
-/* SDK motions are allocated as 0x34-byte records; model slots retain these nodes. */
-struct sdfMotionCtrlr_t {
-    struct sdfMotionCtrlr_t *next;
-    sdfModelRootNode_t *owner;
-    sdfMotionPlayBook_t *motionTable;
-    s32 playbookMemHandle;
-    sdfItemArray_t *request;
-    f32 blendDurationFrames;
-    f32 blendStartFrame;
-    f32 currentFrame;
-    f32 frameStep;
-    s32 userData;
-    s16 searchId;
-    s16 slotIndex;
-    u16 motionIndex;
-    u16 frameCount;
-    u8 state;
-    u8 previousState;
-    u8 loopEnabled;
-    u8 pad33;
-};
-
-/* Command-list node: allocation owns the node and trailing command data.
- * A null descriptor identifies a separately chip-allocated node. */
-struct sdfModelPacketHeader_tag {
-    struct sdfModelPacketHeader_tag *next;
-    u8 kind;
-    s8 packetSelector;
-    s16 quadwordCount;
-    void *payload; /* Packet bytes for kind 1; serialized commands for kinds 2/3. */
-    struct sdfMemHandle_t *allocation;
-};
-
-/* Allocated as 0x100-byte nodes; each owns a circular list of child draw nodes. */
-struct sdfModelNode_t {
-    struct sdfModelNode_t *prev; /* 0x00 */
-    struct sdfModelNode_t *next;     /* 0x04 */
-    struct sdfModelNode_t *parent;   /* 0x08 */
-    struct sdfModelNode_t *children; /* 0x0C */
-    struct sdfModelRootNode_t *root;        /* 0x10: backlink installed by sdfModelNodeAdd */
-    u16 flags;                   /* 0x14 */
-    s16 drawAttr;                   /* 0x16: constructor sentinel is -1 */
-    s32 id;                   /* 0x18: lookup key when model flags bit 0 is set */
-    u32 color;                   /* 0x1C */
-    u8 drawPacketMemHandle[8];
-    sdfModelPacketHeader_tag *drawPacket[2];     /* 0x28: command drawPacket for both buffered frames */
-    u8 *tmPacket; /* Two 0x80-byte frame packets, allocated on first use. */                  /* 0x30 */
-    const f32 *bounds;     /* 0x34: optional two xyz corners used by clipping */
-    void *shape;             /* 0x38: item this node was built from */
-    u32 pad0;
-    void *userData;
-    u32 pad1[3];
-    f32 rotate[4];           /* 0x50 */
-    f32 pos[4];          /* 0x60 */
-    f32 scale[4];                /* 0x70 */
-    f32 localNoScaledTm[4][4];       /* 0x80: all four local basis/pos rows */
-    f32 tm[4][4];       /* 0xC0: local transform composed with its parent */
-};
-
-/* The buffered-transform constructor allocates and clears all 0x9C bytes. */
-struct sdfModelRootNode_t {
-    sdfItemArray_t *list;
-    sdfModelNode_t *rootNode;
-    void *assetData;
-    sdfItemArray_t *resources;
-    sdfItemArray_t *slotPairs;
-    struct sdfMotionCtrlr_t *motionList;
-    u8 complexNodeId;
-    u8 flags;
-    u16 drawFlags;
-    u32 color;
-    f32 matrix[4][4];
-    f32 rotationQuaternion[4];
-    f32 scaleVector[4];
-    sdfDmaTag_t *lighting; /* Borrowed first DMA reference prefix. */
-    sdfDmaTag_t *secondaryLighting; /* Borrowed second DMA reference prefix. */
-    f32 scalarOverrideFirst;
-    f32 scalarOverrideSecond;
-    struct sdfModelExtraChunk_t *chunkTable; /* Borrowed from the model resource data. */
-
-    f32 modelScale;
-    u8 lodIndex; /* Native model-viewer and MODEL_LOD_CHG setters use byte 0x98. */
-    u8 pad99[3];
-};
-
-struct dds3ModelBlurInstance_t {
-    struct dds3ModelBlurInstance_t *next;
-    sdfModelRootNode_t *modelobj;
-    s32 keepCount;
-};
-
-/* This owner has inline color interpolation data, not a request buffer at +0xC. */
-struct dds3ModelBlurCb_t {
-    dds3ModelBlurInstance_t *instants;
-    s16 spawnCount;
-    u16 count;
-    s16 interval;
-    s16 intervalCount;
-    s32 keepCount;
-    f32 colorBase[4];
-    f32 colorDelta[4];
-};
 
 struct mdlTrackWork_t;
 
@@ -2052,7 +1537,7 @@ struct dds3HermitianTrackPoly_tag {
 
 /* Thirteen copied words, followed by an update counter and owned history. */
 struct effTrackPolyParams_t {
-    struct dds3ModelHandle_t *model;
+    struct mdlObj_t *model;
     s32 idA;
     s32 idB;
     f32 startFrame;
@@ -2251,14 +1736,6 @@ struct mdlEffectResrc_IPU_t {
     sdfIpuDecodeCb_t soundNode; /* 0x20: complete 0x8C embedded node */
 };
 
-struct mdlIpuAttachment_t {
-    dds3ModelHandle_t *owner;
-    struct mdlEffectResrc_IPU_t *object; /* Borrowed from the owner's heterogeneous part list. */
-    struct sdfTexHandle_t *texture; /* Borrowed texture-list node used for stream creation. */
-    s32 minimumTime;
-    u8 attributes[8];
-};
-
 struct mdlEffectResrcItem_t;
 
 /* One model-viewer part-list slot; the request buffer uses a 0x10-byte stride. */
@@ -2278,49 +1755,6 @@ struct mdlMarkPos_t {
     u128 position;   /* 0x10 */
     u128 up;         /* 0x20 */
     u128 direction;  /* 0x30 */
-};
-
-/* The paired viewer allocators clear 0x20 bytes and prepend this tagged item
- * to dds3ModelHandle_t's list at +0x14. The part and object payloads share that allocation. */
-struct dds3ModelEffectCtrlr_t {
-    struct dds3ModelEffectCtrlr_t *next;
-    u16 type; /* dds3ModelEffectType value, with native halfword storage. */
-    s16 motionSlotIndex; /* Owning Motion.slotIndex; -1 tags context-wide entries. */
-    union {
-        struct {
-            /* Type 2 stores a track; other part kinds store their created instance. */
-            union {
-                void *instance;
-                struct mdlTrackWork_t *track;
-            };
-            struct mdlEffectResrcItem_t *slot;
-            struct mdlMarkPos_t *mapPositionRecord;
-            f32 anchorScale;
-            u8 pad18[8];
-        } part;
-        mdlIpuAttachment_t object;
-    } payload;
-};
-
-/* Context constructors allocate 0x38 bytes; their SDK model slot lives at +0x18. */
-struct dds3ModelHandle_t {
-    u32 flags;
-    dds3ModelHandle_t *next;
-    dds3ModelHandle_t *previous;
-    dds3ModelResrc_t *sub;
-    union {
-        u32 word;
-        struct {
-            s16 id;
-            s16 motionIndex; /* Entry index passed to sdfMotionChangeBlend. */
-        } h;
-    } current;
-    dds3ModelEffectCtrlr_t *resourceItems;
-    sdfModelRootNode_t *modelRoot;
-    sdfMotionCtrlr_t *first;
-    sdfMotionCtrlr_t *slots[4];
-    dds3ModelBlurCb_t *devList;
-    f32 objectRadius; /* Propagated to the rebuilt object's modelRoot radius. */
 };
 
 extern void dds3BillboardDraw(billHandle_t *hData);
@@ -2369,8 +1803,6 @@ struct effBTL_t *effEveBEDCreate(struct effBTL_t *pData);
 
 /* The event constructor copies a serialized, caller-specific 0x30-byte
  * parameter record. Its retained work owner is opaque to external users. */
-effEveBEDCutHandle_t *effEveBEDCutCreate(struct effBTL_t *hEveBED, u16 CutNum, const void *pParams);
-void effEveBEDCutDelete(effEveBEDCutHandle_t *hEveBEDCut);
 void effEveBEDDelete(struct effBTL_t *hEveBED);
 extern u8 effPCP_ShockWave01_ThunderSpherePoly_Param[];
 extern effPCP_ThunderPolyParam_t effPCPMZiodin01ThunderParam[];
@@ -2435,16 +1867,10 @@ typedef struct {
 } effPCPAgiFireball2PartList_t;
 
 /* Motion-record selection and lookup. */
-void mdlSingleMotion(dds3ModelHandle_t *aHandle, s32 aGroup, s32 aNumber);
-void mdlSetColor(dds3ModelHandle_t *aHandle, u32 aColor);
-void mdlLink(dds3ModelHandle_t *aHandle, struct sdfGrOt_t **aModelOt);
-void mdlSetPosition(dds3ModelHandle_t *aHandle);
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 void *sdfChipAllocDirect(s32 aSize);
-void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Load axis-angle rotation into VU0 vf28-vf31. */
 
@@ -2457,17 +1883,11 @@ extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
 extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
                            s32 (*aAllocator)(s32));
 
-u32 sdfModelGetMarkPosCount(const struct sdfModelRootNode_t *aRoot);
-struct sdfMat_t *sdfMatNew(void);
 void sdfMatFreeDelayed(sdfMat_t *aMat);
-void sdfDrawTagInit(struct sdfDrawTag_t *a);
 extern s32 sdfModelGetMarkPos(sdfModelRootNode_t *aRoot, s32 aId);
 
 /* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
 void sdfChipFreeDirect(void *aPtr);
-void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
-u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
-void sdfMatSetConstant(struct sdfMat_t *aMat, f32 aRatio);
 extern u8 aViewTarget[];
 extern u8 aViewEye[];
 extern u8 aViewDown[];
@@ -2516,13 +1936,9 @@ void effPCPThunderSpherePolyDraw(effPCPThunderSpherePoly_t *hData);
 void dds3EffectDistortionBlurDraw(effBlurScatterWork_t *work);
 void dds3EffectRippleBlurReset(effBlurScaleWork_t *hRippleBlur);
 void dds3EffectRippleBlurDraw(effBlurScaleWork_t *work);
-void mdlSetScale(dds3ModelHandle_t *aHandle);
 void dds3BillboardSetAnimKey(billHandle_t *hBillboard, u32 frame);
 void effPCP_ThunderPolySetColor(effPCP_ThunderPoly_t *hData, u32 abgr);
 void dds3EffectPartialMultiFilterDraw(dds3Effect_PartialMultiFilter_t *hPartialMultiFilter);
-void effEveBEDCutSetScale(effEveBEDCutHandle_t *hEveBEDCut, f32 scale);
-void effEveBEDCutSetParams(effEveBEDCutHandle_t *hEveBEDCut, const void *pParams);
-void effEveBEDCutDraw(effEveBEDCutHandle_t *hEveBEDCut);
 
 #define VEC3_SPLAT(v, x) ((v)[0] = (x), (v)[1] = (x), (v)[2] = (x))
 
@@ -2853,7 +2269,7 @@ effPCPHama01_tag *effPCPHama01Copy(effPCPHama01_tag *src) {
 }
 
 void effPCPHama01Draw(effPCPHama01_tag *hData) {
-    dds3ModelHandle_t *obj[2];
+    mdlObj_t *obj[2];
     u128 pos;
     u128 *posp;
     s32 slotIndex;
@@ -2871,7 +2287,7 @@ void effPCPHama01Draw(effPCPHama01_tag *hData) {
         dds3EffectPartSetScale(hData->pair[slotIndex][1], 1.75f);
         mdlSetColor(obj[1], hData->abgr);
         mdlLink(obj[0], sdfModelOtTable);
-        sdfModelGetMarkPos(obj[0]->modelRoot, 1);
+        sdfModelGetMarkPos(obj[0]->inner, 1);
         posp = &pos;
         SDF_VU0_STOREVECTOR_NOMEM(posp);
         mdlSetPosition(obj[1]);
@@ -2960,7 +2376,7 @@ effPCPHama02_tag *effPCPHama02Copy(effPCPHama02_tag *source) {
 }
 
 void effPCPHama02Draw(effPCPHama02_tag *hData) {
-    dds3ModelHandle_t *obj[2];
+    mdlObj_t *obj[2];
     sdfVector4_t pos;
     s32 i;
 
@@ -2979,7 +2395,7 @@ void effPCPHama02Draw(effPCPHama02_tag *hData) {
             dds3EffectPartSetScale(hData->handle[i * 2 + 1], 1.5f);
             mdlSetColor(obj[1], hData->color);
             mdlLink(obj[0], sdfModelOtTable);
-            sdfModelGetMarkPos(obj[0]->modelRoot, 1);
+            sdfModelGetMarkPos(obj[0]->inner, 1);
             mdlSetPosition(obj[1]);
             mdlLink(obj[1], sdfModelOtTable);
         }
@@ -3076,8 +2492,8 @@ effPCPHamaon_tag *effPCPHamaonCopy(effPCPHamaon_tag *src) {
 }
 
 void effPCPHamaonDraw(effPCPHamaon_tag *hData) {
-    dds3ModelHandle_t *anchor;
-    dds3ModelHandle_t *obj;
+    mdlObj_t *anchor;
+    mdlObj_t *obj;
     s32 i;
     s32 j;
 
@@ -3094,7 +2510,7 @@ void effPCPHamaonDraw(effPCPHamaon_tag *hData) {
             }
             obj = dds3EffectPartGetHandle(hData->handle[i][j]);
             mdlSetColor(obj, hData->color);
-            sdfModelGetMarkPos(anchor->modelRoot, i * 4 + j + 1);
+            sdfModelGetMarkPos(anchor->inner, i * 4 + j + 1);
             mdlSetPosition(obj);
             mdlLink(obj, sdfModelOtTable);
         }
@@ -3172,7 +2588,7 @@ effPCPMHanma01_tag *effPCPMHanma01Copy(effPCPMHanma01_tag *source) {
 }
 
 void effPCPMHanma01Draw(effPCPMHanma01_tag *hData) {
-    dds3ModelHandle_t *obj[2];
+    mdlObj_t *obj[2];
     u128 vec;
     s32 i;
 
@@ -3186,7 +2602,7 @@ void effPCPMHanma01Draw(effPCPMHanma01_tag *hData) {
             mdlSetPosition(obj[0]);
             mdlSetColor(obj[1], hData->abgr);
             mdlLink(obj[0], sdfModelOtTable);
-            sdfModelGetMarkPos(obj[0]->modelRoot, 1);
+            sdfModelGetMarkPos(obj[0]->inner, 1);
             SDF_VU0_STOREVECTOR_NOMEM(&vec);
             mdlSetPosition(obj[1]);
             mdlLink(obj[1], sdfModelOtTable);
@@ -3248,7 +2664,7 @@ void effPCPMudoDraw(effPCPMudo_tag *hData) {
     u32 i;
     u32 color;
     billHandle_t *bill;
-    dds3ModelHandle_t *model;
+    mdlObj_t *model;
     f32 scale;
     u32 count;
     u32 captureRow;
@@ -3271,7 +2687,7 @@ void effPCPMudoDraw(effPCPMudo_tag *hData) {
     if (captureRow < 25 && SDF_FRAME_DUE(hData->updateCount - 1)) {
         for (point = 0; point < 7; point++) {
             if (captureRow % effPCPMudoSampleStep[point] == 0) {
-                sdfModelGetMarkPos(model->modelRoot, point + 1);
+                sdfModelGetMarkPos(model->inner, point + 1);
                 SDF_VU0_STOREVECTOR(position);
                 SDF_VU0_COPYVECTOR(hData->samplePositions[captureRow][point], position);
                 hData->animationFrames[captureRow][point] = dds3GetRandA((effRandState_t *)dds3EffectBase);
@@ -3348,7 +2764,7 @@ effPCPHwave01_tag *effPCPHwave01Copy(effPCPHwave01_tag *src) {
 }
 
 void effPCPHwave01Draw(effPCPHwave01_tag *hData) {
-    dds3ModelHandle_t *obj;
+    mdlObj_t *obj;
     u128 vec;
 
     obj = dds3EffectPartGetHandle(hData->hPB);
@@ -3356,7 +2772,7 @@ void effPCPHwave01Draw(effPCPHwave01_tag *hData) {
     mdlSetPosition(obj);
     dds3EffectPartSetColor(hData->hD3P, hData->abgr);
     mdlLink(obj, sdfModelOtTable);
-    sdfModelGetMarkPos(obj->modelRoot, 1);
+    sdfModelGetMarkPos(obj->inner, 1);
     SDF_VU0_STOREVECTOR_MEMOPS(vec);
     dds3EffectPartSetPosition(hData->hD3P, &vec);
     dds3EffectPartDraw(hData->hD3P);
@@ -4619,7 +4035,7 @@ effPCPAgiFireball_tag *effPCPAgiFireballCreate(
     const effPCPAgiFireballParam_t *pParam, const effPCPAgiFireballPartList_t *pPart)
 {
     effPCPAgiFireball_tag *work;
-    dds3ModelHandle_t *model;
+    mdlObj_t *model;
     u32 i;
     u32 j;
     u32 n;
@@ -4638,7 +4054,7 @@ effPCPAgiFireball_tag *effPCPAgiFireballCreate(
     work->handleA[3] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_EFFECT_NODE, pPart->pAttach[3]);
     work->handleA[4] = dds3EffectPartCreate(EFF_PARAM_WORK_KIND_VIEWER_CONTEXT, pPart->pAttach[4]);
     model = dds3EffectPartGetHandle(work->headHandle);
-    work->count = model->first->frameCount;
+    work->count = model->first->frameLength;
     for (i = 0; i < 3; i++) {
         if (work->param.TrackCount[i] > 0) {
             n = work->count * work->param.TrackCount[i];
@@ -4684,7 +4100,7 @@ effPCPAgiFireball_tag *effPCPAgiFireballCreatePCF(void *parameterTable) {
 }
 
 void effPCPAgiFireballCopySub(effPCPAgiFireball_tag *pPCPAgiFireball, effPCPAgiFireball_tag *pPCPAgiFireballSrc) {
-    dds3ModelHandle_t *headModel;
+    mdlObj_t *headModel;
     u32 handleIndex;
     u32 groupIndex;
     u32 groupHandleCount;
@@ -4694,7 +4110,7 @@ void effPCPAgiFireballCopySub(effPCPAgiFireball_tag *pPCPAgiFireball, effPCPAgiF
         pPCPAgiFireball->handleA[handleIndex] = dds3EffectPartCopy(pPCPAgiFireballSrc->handleA[handleIndex]);
     }
     headModel = dds3EffectPartGetHandle(pPCPAgiFireball->headHandle);
-    pPCPAgiFireball->count = headModel->first->frameCount;
+    pPCPAgiFireball->count = headModel->first->frameLength;
     for (groupIndex = 0; groupIndex < ARRAY_COUNT(pPCPAgiFireball->list); groupIndex++) {
         if (pPCPAgiFireball->param.TrackCount[groupIndex] > 0) {
             groupHandleCount = pPCPAgiFireball->count * pPCPAgiFireball->param.TrackCount[groupIndex];
@@ -5902,7 +5318,7 @@ void effPCPMakkaDelete(effPCPMakka_tag *hData) {
 void effPCPMakkaUpdateNode(sdfModelNode_t *node) {
     sdfModelNode_t *child;
 
-    SDF_VU0_STOREVECTOR(node->scale);
+    SDF_VU0_STOREVECTOR(&node->scale);
     child = node->children;
     if (child != NULL) {
         do {
@@ -6552,14 +5968,14 @@ void effPCPHelperInit(effPCPHelperBED_tag *pHelperBED) {
     effEveBEDParams_t place;
     u32 i = 0;
     u32 count;
-    dds3ModelHandle_t *model;
+    mdlObj_t *model;
     effPCPHelperBEDPart_tag *entry;
 
     model = dds3EffectPartGetHandle(pHelperBED->hHelper);
-    model->first->frameStep = pHelperBED->param.speed;
+    model->first->speed = pHelperBED->param.speed;
     mdlSingleMotion(model, 0, 0);
-    pHelperBED->frameLimit = model->first->frameCount;
-    count = sdfModelGetMarkPosCount(model->modelRoot);
+    pHelperBED->frameLimit = model->first->frameLength;
+    count = sdfModelGetMarkPosCount(model->inner);
     pHelperBED->count = count;
     pHelperBED->hPartMem = sdfMemAllocDirect(count << 5);
     entry = EE_ADDR_AS(void *, sdfMemLock(pHelperBED->hPartMem));
@@ -6653,7 +6069,7 @@ void effPCPHelperBEDDraw(effPCPHelperBED_tag *hData) {
     u32 color;
     u32 count;
     u32 i;
-    dds3ModelHandle_t *model;
+    mdlObj_t *model;
     effPCPHelperBEDPart_tag *entry;
     f32 distance;
     f32 t;
@@ -6670,7 +6086,7 @@ void effPCPHelperBEDDraw(effPCPHelperBED_tag *hData) {
     place.scale = 1.0f;
     if (frameLimit >= frame) {
         model = dds3EffectPartGetHandle(hData->hHelper);
-        mapModel = model->modelRoot;
+        mapModel = model->inner;
         SDF_VU0_LOADVECTOR(hData->param.pos);
         mdlSetPosition(model);
         SDF_VU0_LOADVECTOR(scale);
