@@ -702,7 +702,8 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
                 target = Path("build") / version / "target" / full.with_suffix(".o")
                 if (ROOT / full).exists():
                     n.build(str(target), "as", str(full), implicit=["include/macro.inc"])
-                units[version].append({"name": f"src/{version}/{unit}", "target": str(target), "base": str(base)})
+                units[version].append({"name": f"src/{version}/{unit}", "target": str(target), "base": str(base),
+                                       "shared": src.parts[1] == "shared"})
         elf = Path("build") / version / f"{serial}.elf"
         image = Path("build") / version / serial
         n.build(
@@ -753,6 +754,13 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
     return units
 
 
+def source_scope(row: dict, category: str) -> list[str]:
+    """"shared" for a unit built from src/shared, "own" for other game or SDK code."""
+    if row.get("shared"):
+        return ["shared"]
+    return ["own"] if category in ("game", "sdk") else []
+
+
 def write_objdiff(units: dict[str, list[dict]]) -> None:
     categories = [
         {"id": "game", "name": "Atlus game/engine"},
@@ -760,6 +768,8 @@ def write_objdiff(units: dict[str, list[dict]]) -> None:
         {"id": "vu1", "name": "VU0/VU1 microcode"},
         {"id": "handwritten", "name": "Handwritten assembly (not C)"},
         {"id": "data", "name": "Split data segments (not compared)"},
+        {"id": "shared", "name": "Shared by both games (src/shared)"},
+        {"id": "own", "name": "This game only"},
     ]
     config = {
         "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
@@ -775,7 +785,7 @@ def write_objdiff(units: dict[str, list[dict]]) -> None:
             unit = {
                 "name": "/".join(Path(row["name"]).parts[1:]),  # drop asm/ or src/: "<version>/<unit>"
                 "target_path": row["target"],
-                "metadata": {"progress_categories": [version, category]},
+                "metadata": {"progress_categories": [version, category] + source_scope(row, category)},
             }
             if row["base"]:
                 unit["base_path"] = row["base"]
