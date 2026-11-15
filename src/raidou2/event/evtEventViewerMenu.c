@@ -3,6 +3,7 @@
 #include "mdlManager.h"
 #include "sdfQuat.h"
 #include "dds3DebugStuff.h"
+#include "dds3KernelCore.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -31,7 +32,6 @@ enum {
 /* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
  * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
 struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
-u32 dds3GetProcessData(const dds3ProcessID_t *task);
 EffEventSetupReadiness evtViewerCheckDirty(void);
 
 /* Borrow a controller owned by ctx. The pointer is read-only and expires when

@@ -7,6 +7,7 @@
 #include "scrCommonCommand.h"
 #include "scrTraceCode.h"
 #include "EventBit.h"
+#include "dds3KernelCore.h"
 
 static inline f32 scrFabsf(f32 x)
 {
@@ -41,9 +42,6 @@ extern void scrSetCodePointer(s32 cp);
 extern s32 dds3GetRandIntA(s32 aLimit, s32 name);
 extern void dds3PadVibrationSet(s32 port, s32 motor, s32 level);
 extern void dds3SetScreenFovy(f32 fovy);
-extern s32 dds3ExistProcess(dds3ProcessID_t *id);
-extern s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
-extern u32 dds3GetProcessRunTime(dds3ProcessID_t *id);
 extern void dds3SetQuake(s32 frame, s32 range);
 extern void dds3StopQuake(void);
 extern void dds3SetLightColor(s32 frame, s32 no, void *col);

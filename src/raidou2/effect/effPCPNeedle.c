@@ -6,6 +6,7 @@
 #include "sdfVu0.h"
 #include "sdfDraw.h"
 #include "sdfMat.h"
+#include "sdf3DPrim.h"
 
 /* One needle instance: position plus the colour the draw loop stamps. */
 typedef struct dds3NeedleModelPart_tag
@@ -58,8 +59,6 @@ extern f32 dds3NeedleModelDefaultPoints[][4];
 extern u32 dds3NeedleModelDefaultColors[];
 extern effDrawSurface_t *dds3NeedleModelDrawSurfaces[];
 extern void *sdfGrAllocPacketBuff(s32 aSize);
-extern void sdf3DPrimLinkMat(void *aTag, void *aMat, s32 aAllocator);
-extern void sdf3DPrimLinkTm(void *aTag, s32 aAllocator);
 extern void *effPkt3DPrimMakePoly(effPrimParam_t *aParm);
 extern void sdfMemFreeDirect(void *aHandle);
 extern void dds3NeedleModelVNCListDelete(dds3NeedleModel_tag *hNModel);

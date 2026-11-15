@@ -9,6 +9,7 @@
 #include "sdfTex.h"
 #include "sdfPacketBuff.h"
 #include "sdfGsMemory.h"
+#include "sdfSystem.h"
 
 typedef struct
 {
@@ -60,8 +61,6 @@ extern s32 sceGsSetDefStoreImage(sceGsStoreImage *, s16, s16, s16, s16, s16, s16
 extern s32 sceGsExecStoreImage(sceGsStoreImage *, void *);
 extern s32 sceGsSyncPath(s32 mode, s32 timeout);
 extern void sceGsResetPath(void);
-extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-extern s32 CreateThreadSimple(void *entry, void *stack, s32 stackSize, s32 priority);
 
 #include "sdk_libkernl.h"
 

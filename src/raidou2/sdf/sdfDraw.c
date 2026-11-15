@@ -6,6 +6,7 @@
 #include "sdf_resource.h"
 #include "sdfPacketBuff.h"
 #include "sdk_libkernl.h"
+#include "sdfSystem.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
 
@@ -75,9 +76,6 @@ extern u16 sdfReqDrawDelaySleepCount;
 extern u32 sdfDrawFrameCount;
 extern u8 sdfDrawImageTrans;
 extern volatile u8 sdfDrawSyncFlag;
-extern u32 sdfGetRunTimeCountBase(void);
-extern u32 sdfGetRunTimeCount(u32 aBaseTime);
-extern void sdfWaitVblank(s32 count);
 
 struct sdfPrimTransElem_t;
 

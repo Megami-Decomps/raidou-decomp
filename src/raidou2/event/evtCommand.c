@@ -16,19 +16,17 @@
 #include "dds3AdminiProcess.h"
 #include "sdfPrint.h"
 #include "evtPicture.h"
+#include "dds3KernelCore.h"
+#include "dds3WorldBasic.h"
+#include "itfMesManager.h"
+#include "evtEventPack.h"
 
 struct effPCPAgiraoFirePartList_t;
 
-void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *target);
-dds3ProcessID_t *evtSearchEventPack(u32 eventno);
-dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId);
 scrProcessWork_s *scrGetScriptHandle(void);
 extern void datDebugPrintf(const char *fmt, ...);
-extern s32 evtInitMotionSeProcess(s32 eventId, s32 resourceId);
 dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type);
-struct dds3Basic_t *dds3GetActiveScene(void);
 extern addr_t evtKutiUnit;
-extern void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
 
 /* Canonical provider signatures; callers retain their s32 parameter values. */
 extern s32 evtStartBgmBySoundIdAndFade(s32 eventId, s32 variation);
@@ -36,7 +34,6 @@ extern void evtRefreshTaskEffectTexture(s32 taskId, s32 key);
 extern s32 scrGetMessageHandle(void);
 void dds3DeleteSceneBasicData(dds3Basic_t *basic);
 extern const char evtMsgLightDirZero[];
-void *evtGetResorceData(u32 eventno, s32 rid);
 
 #include "sdk_libc.h"
 
@@ -92,8 +89,6 @@ void evtDisableMoonCalc(void);
 s32 evtGetAgeOfMoon(void);
 s32 evtGetAgeOfMoon16(void);
 void evtSetAgeOfMoon(s32 age);
-dds3ProcessID_t *evtLoadEventPack(s32 eventno);
-s32 evtGetEventPackStat(u32 eventno);
 extern const char evtMsgBeOk[];
 extern const char evtMsgLoadBeStart[];
 extern const char evtMsgReadBeStart[];
@@ -109,19 +104,16 @@ typedef u8 sdfTextureClampMode_t;
 
 
 
-extern void *dds3GetControlScene(void);
 extern s32 dds3GetMapNo(void *scene);
 extern void dds3SetActiveCameraSceneBasic(void *pSceneBasic, dds3Basic_t *pCameraBasic);
 extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 serialID, f32 *pos, f32 *rot);
 extern s32 dds3AllocObjectId(void);
 extern void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r);
 extern u32 dds3DrawFlag;
-extern s32 evtRegistBEField(s32 eventno, s32 rid);
 extern void dds3SetSclPoseSet(void *pBasic, u128 *scl);
 extern void evtUnlinkLightObjectBasic(evtUnit_t *h, s32 frame);
 extern s32 scrGetCommandTimer(void);
 extern void evtSetSkyAlpha(s32 frame, s32 a);
-extern s32 dds3ExistProcess(void *id);
 
 /* Rows of 0x310 bytes; only the three size fields the bed scale reads are
  * named here. */
@@ -156,7 +148,6 @@ typedef struct
     f32 w;
 } evtVec_t;
 
-extern void evtKillEventPack(s32 eventno);
 extern const char evtMsgObjPathPara0[];
 extern const char evtMsgObjPathPara1[];
 extern const char evtMsgDelBeStart[];

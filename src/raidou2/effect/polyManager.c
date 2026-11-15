@@ -10,6 +10,8 @@
 #include "sdfMath.h"
 #include "sdfPacketBuff.h"
 #include "effPacket.h"
+#include "sdf3DPrim.h"
+#include "polyManager.h"
 
 typedef struct
 {
@@ -84,8 +86,6 @@ typedef struct trackTriangleColors_t {
 extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
 extern s32 sdfMemLock(sdfMemHandle_t *aHandle);
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag, s32 aAllocator);
-extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat, s32 aAllocator);
 extern f32 dds3TrackPolyVCType1Param[4];
 extern f32 dds3TrackPolyVCType2Param[4];
 extern f32 dds3TrackPolyVCSetAcuteParam[4];

@@ -11,6 +11,7 @@
 #include "model.h"
 #include "motion.h"
 #include "sdfFrame.h"
+#include "dds3KernelCore.h"
 
 typedef struct {
     u16 sizeX;
@@ -113,9 +114,6 @@ typedef struct
 
 extern const char fldTestDrawName[];
 
-extern dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
-                                         s32 v3, dds3ProcessFunc_t drawExit,
-                                         dds3ProcessFunc_t deleteExit, void *p);
 
 extern s32 ooyTestDrawProc(dds3ProcessID_t *aProcId);
 s32 ooyTestDrawProc(dds3ProcessID_t *aProcId);

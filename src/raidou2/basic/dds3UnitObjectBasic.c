@@ -9,19 +9,14 @@
 #include "dds3Basic.h"
 #include "evtUnitManager.h"
 #include "dds3LightObjectBasic.h"
+#include "dds3WorldBasic.h"
+#include "dds3ObjectBase.h"
 
 typedef struct {
     u8 unk00[0x64];
     u32 flag;
 } dds3LinkedLightWork_t;
 
-extern void dds3ObjectBaseFreeModelHandle(dds3Basic_t *pObjectBasic);
-extern dds3Basic_t *dds3GetControlScene(void);
-extern u16 dds3GetBasicArrayCount(dds3BasicArrayHandle_t *hndl);
-extern void dds3FreeBasicArrayHandle(dds3BasicArrayHandle_t *hndl);
-extern s32 dds3SetFirstBasicArray(dds3BasicArrayHandle_t *hndl);
-extern dds3Basic_t *dds3GetBasicArray(dds3BasicArrayHandle_t *hndl);
-extern s32 dds3SetNextBasicArray(dds3BasicArrayHandle_t *hndl);
 void dds3UnitObjectBasicEL_LinkFree(dds3Basic_t *unitBasic);
 void dds3DeleteUnitObjectBasic(dds3Basic_t *aPtr);
 s32 dds3GetStatusUnitObjectBasic(dds3Basic_t *aPtr);

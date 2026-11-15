@@ -22,6 +22,7 @@
 #include "effBlur_Filter.h"
 #include "dds3PathBasic.h"
 #include "effPacket.h"
+#include "sdf3DPrim.h"
 
 typedef struct
 {
@@ -486,7 +487,6 @@ typedef struct effPCP_HBED2_tag
 } effPCP_HBED2_tag;
 
 extern void *sdfTexSet(const void *aTex);
-extern void sdf3DPrimLinkTm(void *aTag, s32 aAllocator);
 extern u8 dds3RenderTargetVector[], dds3RenderEyeVector[];
 extern u32 dds3GetRandA(u8 *name);
 extern f32 dds3GetRandFloatA(u8 *name);
@@ -549,8 +549,6 @@ void dds3EffectRippleBlurDelete(EffBlurScaleWork *work);
 u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
 u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
 
-void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
-                              s32 (*allocatePacket)(s32));
 
 /* Store the primary or secondary texture owner and mark its draw state dirty. */
 

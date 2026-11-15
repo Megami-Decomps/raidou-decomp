@@ -8,12 +8,12 @@
 #include "dds3SceneBasic.h"
 #include "dds3Basic.h"
 #include "dds3CameraObjectBasic.h"
+#include "dds3ObjectBase.h"
 
 
 
 extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialUp;
 extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialEye;
-extern void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
 void MakeCamera(dds3Basic_t *pBasic);
 dds3ObjectBaseControlWorkData_t *dds3GetCameraObjectBaseControlWorkData(dds3Basic_t *basic);
 dds3Basic_t *dds3AllocCameraObjectBasic(u32 serialID);

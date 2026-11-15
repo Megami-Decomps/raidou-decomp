@@ -9,11 +9,11 @@
 #include "sdfDraw.h"
 #include "dds3GlobalWork.h"
 #include "dds3DebugStuff.h"
+#include "sdfDevCons.h"
 
 extern u8 dds3PrimDebugTextBoxAttrs[];
 extern char *dds3PrimDebugTextBoxLabels[];
 extern char dds3DebugLabelB[], dds3DebugLabelG[], dds3DebugLabelR[], dds3DebugFmtInt3[], dds3DebugFmtFloat3[];
-extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr, const char *aStr, ...);
 extern void dds3MenuStepValue(char *text, f32 value);
 extern u8 dds3PadButtonState[];
 extern void dds3DebugFloatEditEx(f32 *value, u8 *pad, f32 step, f32 min, f32 max, f32 scale);

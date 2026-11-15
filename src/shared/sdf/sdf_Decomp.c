@@ -4,6 +4,7 @@
 #include "eeregs.h"
 #include "sdk_libc.h"
 #include "sdfVu0.h"
+#include "sdf_Decomp.h"
 
 /* Declared here because no header carries these. */
 

@@ -1,5 +1,7 @@
 #include "common.h"
 #include "sdfMemory.h"
+#include "sdfSystem.h"
+#include "sdfFile.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -37,17 +39,12 @@ enum {
 
 /* Allocate from the chip heap through 0x400 bytes; larger requests use the
  * general heap and return its locked payload address. */
-void *sdfAllocAuto(s32 size);
-void sdfFileClose(sdfFileCmdHandle_t *state);
-u32 sdfFileLength(sdfFileCmdHandle_t *state);
 
 /* Stable state APIs. Callback factories keep caller-specific callback types. */
 sdfFileCmdHandle_t *sdfFileOpen(const char *path);
-void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
 
 /* Release the sdfAllocAuto base in its source heap; interior pointers are
  * invalid. */
-s32 sdfFreeAuto(void *data);
 
 #include "dds/sdf_vu0.h"
 #include "dds/sdf_channel.h"

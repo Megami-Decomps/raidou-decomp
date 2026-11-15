@@ -239,9 +239,6 @@ SIZE_CHECK(rpcBindRequest_size, rpcBindRequest, 0x24);
 
 s32 sceSifBindRpc(rpcClient *client, u32 serverId, s32 mode);
 
-s32 sceSifCallRpc(void *clientAddress, s32 function, s32 mode, void *send,
-                   s32 sendBytes, void *receive, s32 receiveBytes,
-                   void *endFunction, void *endParameter);
 
 typedef struct rpcClientPrefix {
     void *packet;
@@ -303,9 +300,6 @@ typedef struct { u8 bytes[4]; } fsVersionTag_t;
 
 typedef struct { void *receiveBuffer; } fsRegistrationPacket_t;
 
-extern s32 sceSifCallRpc(void *client, s32 function, s32 mode, void *send,
-                         s32 sendBytes, void *receive, s32 receiveBytes,
-                         void *endFunction, void *endParameter);
 
 extern u8 kernelBuiltinVersion[4] __attribute__((section(".data")));
 

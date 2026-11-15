@@ -56,9 +56,6 @@ typedef struct sdfGrOt_t {
     sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
 } sdfGrOt_t;
 
-extern s32 WaitSema(s32);
-extern s32 SignalSema(s32);
-extern s32 GetThreadId(void);
 
 typedef struct _reent _reent;
 
@@ -170,8 +167,6 @@ extern s32 mallocLockOwner __attribute__((section(".data")));
 extern s32 mallocSema __attribute__((section(".data")));
 extern void __malloc_lock(_reent *r);
 extern void __malloc_unlock(_reent *r);
-extern s32 SignalSema(s32 sema);
-extern s32 WaitSema(s32 sema);
 
 typedef struct fp_number_type {
     s32 class;
@@ -274,7 +269,6 @@ static inline void qsortSwapRange(char *first, char *second, s32 bytes, s32 swap
 
 #define STRTOL_MIN 0x8000000000000000UL
 
-s32 exponent(char *output, s32 value, s32 marker);
 
 /* Little-endian IEEE binary64 word view used by the numeric helpers. */
 typedef union libcDoubleBits_t {

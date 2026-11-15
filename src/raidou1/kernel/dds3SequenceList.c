@@ -3,6 +3,7 @@
 #include "scr.h"
 #include "event.h"
 #include "field.h"
+#include "dds3KernelCore.h"
 
 extern void fmProcTrigSequence(s32 mode);
 extern s32 fmProcessChk(void);
@@ -11,11 +12,7 @@ extern void titleStart(u32 mode);
 
 #include "sdk_libc.h"
 
-extern dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
-                                         s32 v3, dds3ProcessFunc_t drawExit,
-                                         dds3ProcessFunc_t deleteExit, void *p);
 
-extern s32 dds3KillProcessName(char *name, s32 shutdowntimer);
 extern s32 dds3StartMenuProcess(dds3ProcessID_t *id);
 extern void fmShutDownFade(void);
 extern void fmShutDown(void);

@@ -6,6 +6,8 @@
 #include "sdfDraw.h"
 #include "billManager.h"
 #include "sdfPacketBuff.h"
+#include "polyManager.h"
+#include "effManager.h"
 
 /* An effect handle: the type's entry in EffMajorTable plus the instance that
  * entry's create returned. version is stamped from the data revision. */
@@ -58,8 +60,6 @@ typedef struct effLegacyInstance_t
 
 #include "sdk_libc.h"
 
-extern void dds3PolygonLinkOt(void);
-extern void dds3TrackPolyLinkOt(void);
 extern void dds3MultiBillboardLinkOt(void);
 extern void dds3CrossfadeRun(void);
 extern void Eve_EffectDraw(void);

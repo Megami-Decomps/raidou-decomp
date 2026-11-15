@@ -265,7 +265,6 @@ static inline void qsortSwapRange(char *first, char *second, s32 bytes, s32 swap
 #define STRTOL_MIN 0x8000000000000000UL
 
 s32 vfprintf(FILE *fp, const char *fmt, va_list ap);
-s32 exponent(char *output, s32 value, s32 marker);
 s32 vsprintf(char *str, const char *fmt, va_list ap);
 s32 vsprintf_r(_reent *r, char *str, const char *fmt, va_list ap);
 

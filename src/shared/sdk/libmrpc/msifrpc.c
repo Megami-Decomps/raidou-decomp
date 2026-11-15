@@ -43,9 +43,6 @@ extern s32 sceSifMRpcInitialized __attribute__((section(".data")));
 extern rpcQueue sceSifMRpcQueue __attribute__((section(".data")));
 extern rpcPacket sceSifMRpcPackets[32];
 extern void _request_end(void *packet, void *queue);
-extern void sceSifAddCmdHandler(s32 command, void (*handler)(void *, void *), void *argument);
-extern u32 sceSifGetSreg(s32 index);
-extern s32 sceSifSendCmd(s32 command, void *packet, s32 size, void *source, void *destination, s32 length);
 void sceSifMInitRpc(s32 mode);
 rpcPacket *_sceRpcGetPacket(rpcQueue *queue);
 void _sceRpcFreePacket(rpcPacket *p);
@@ -84,7 +81,6 @@ typedef struct rpcResponse {
     void *cbuffer;
 } rpcResponse;
 
-extern s32 iSignalSema(s32 sema);
 void _request_end(void *packet, void *queue);
 
 typedef struct sdfSemaParam_t {
@@ -97,8 +93,6 @@ typedef struct sdfSemaParam_t {
 } sdfSemaParam_t;
 
 extern s32 CreateSema(sdfSemaParam_t *param);
-extern s32 WaitSema(s32 sema);
-extern s32 DeleteSema(s32 sema);
 extern const char sceSifMModeErrorString[];
 s32 sceSifMBindRpcParam(rpcClient *client, u32 serverId, s32 mode, u32 arg0, u32 arg1, u32 arg2);
 s32 sceSifMBindRpc(rpcClient *client, u32 serverId, s32 mode);
@@ -109,7 +103,6 @@ typedef char rpcUnbindServerPointerSize[(sizeof(((rpcClient *)0)->server) == 4) 
 typedef char rpcUnbindRequestPointerSize[(sizeof(((rpcUnbindPacket *)0)->server) == 4) ? 1 : -1];
 
 s32 sceSifMUnBindRpc(rpcClient *client, s32 mode);
-extern void sceSifWriteBackDCache(void *address, s32 size);
 extern const char sceSifMModeErrorString[40];
 
 

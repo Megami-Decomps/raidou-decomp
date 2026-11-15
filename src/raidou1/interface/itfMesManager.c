@@ -8,6 +8,8 @@
 #include "dds3KernelDraw.h"
 #include "sdfTex.h"
 #include "scrTraceCode.h"
+#include "frFont.h"
+#include "itfMisc.h"
 
 typedef struct itfMesBinTypeHeader_t itfMesBinTypeHeader_t;
 
@@ -153,7 +155,6 @@ void InitializeMessage(message_tag *pmessage, s32 defaultpos);
 void InitializeVariable(variable_tag *pvariable);
 void itfMesMngRelease(s32 id);
 void DestructFlow(s32 id);
-s32 frDestroyFontRequestAfter(frFontHandle_t *pFRQ);
 
 #define ITF_MES_ENTRY_STATE_MASK 7
 
@@ -195,8 +196,6 @@ void itfMesMngChangeWindowType(s32 id, s32 type, s32 alpha);
 s32 itfMesMngSetSelectDefKey(s32 id, s32 key, s32 index);
 s32 itfMesMngGetWidth(s32 id, s32 message, s32 page);
 void CommitVarTable(s32 *pvar);
-void frSetExtDic(u8 *pExtFontData);
-frFontHandle_t *MessageRequest(s32 X, s32 Y, u8 *pMsg, frFontHandle_t *pFRQ);
 s32 GetMessageWidth(frFontHandle_t *pfont);
 void itfMesMngSetDefaultSpeed(s32 id, u8 speed);
 extern void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
@@ -236,11 +235,9 @@ void ChangeFontAlpha(frFontHandle_t *pfont, u32 alpha);
 void CalcMesFlow(instanceMes_tag *pinst);
 s32 SelectItemDefKey(select_tag *psel);
 void ChangeFontColor(frFontHandle_t *pfont, s32 index, s32 lines, s32 color);
-extern void itfMiscDrawSpritePrim(void *pos, void *uv, void *color, s32 z, sdfTexHandle_t *texhandle, s32 context, sdfDrawTag_t *pdrawtag);
 extern u8 itfMesDebugLineVertIndex[5];
 extern u8 itfMesDebugLineColorIndex[5];
 void sdfAddressResolver(s32 *aDataBody, saddr_t aOffset, u8 *aAddrInfoPtr, s32 aAddrInfoLeng);
-void frSetVariableRequest(s32 VarNo, s32 pStr);
 void itfMesMngSetSelect(s32 id, s32 selno);
 void itfMesMngMarkBitStat(s32 id, u32 flag);
 void itfMesMngClearBitStat(s32 id, u32 flag);

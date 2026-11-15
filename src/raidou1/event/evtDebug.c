@@ -5,6 +5,7 @@
 #include "kernel.h"
 #include "libsdf.h"
 #include "evtStage.h"
+#include "dds3KernelCore.h"
 
 typedef void (*evtOtRegFunc_t)(sdfGrOt_t *, sdfDrawTag_t *);
 extern s32 evtSceneDispWork;
@@ -13,10 +14,7 @@ extern u32 dds3BackColor;
 #include "sdk_libc.h"
 
 
-extern dds3ProcessID_t *dds3StartProcess(char *name, u32 priority, s32 start, s32 shutdown,
-                                         dds3ProcessFunc_t process, dds3ProcessFunc_t finish, void *data);
 
-extern s32 dds3KillProcessName(char *name, s32 shutdown);
 saddr_t EventDebugProcess1(dds3ProcessID_t *id);
 
 /* Test-task teardown destroys the named script processes. */

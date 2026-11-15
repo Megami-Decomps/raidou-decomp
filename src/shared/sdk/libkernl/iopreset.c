@@ -116,7 +116,6 @@ SIZE_CHECK(sifDmaTransfer_size_must_be_16, sifDmaTransfer_t, 16);
 
 #include "sdk_libkernl.h"
 
-extern void sceSifWriteBackDCache(void *address, s32 size);
 
 typedef struct sifCommandHeader_t {
     u32 packetSize : 8;
@@ -146,8 +145,6 @@ typedef struct rpcQueue {
     sifRpcDataQueue_t *queues;
 } rpcQueue;
 
-extern u32 sceSifGetReg(u32 registerId);
-extern s32 sceSifSetReg(u32 registerId, u32 value);
 
 /* Shared transaction fields used by RPC completion. */
 typedef struct rpcTransactionPrefix {
@@ -425,7 +422,6 @@ typedef struct sifResetPacket_t {
 SIZE_CHECK(sifResetPacket_size_must_be_0x68, sifResetPacket_t, 0x68);
 
 extern sifResetPacket_t sifResetPacket;
-extern void sceSifStopDma(void);
 s32 sceSifResetIop(const char *arguments, s32 mode);
 extern void sceResetttyinit(void);
 s32 sceSifIsAliveIop(void);

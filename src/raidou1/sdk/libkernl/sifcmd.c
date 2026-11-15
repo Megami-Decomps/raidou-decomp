@@ -109,7 +109,6 @@ typedef struct {
 u32 sceSifGetSreg(s32 index);
 u32 sceSifSetSreg(s32 index, u32 value);
 sifCommandContext_t *sceSifGetDataTable(void);
-extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
 extern s32 sifDmacHandlerId;
 extern s32 sceData15;
 void sceSifExitCmd(void);

@@ -5,6 +5,8 @@
 #include "evtCommand.h"
 #include "scrCommonCommand.h"
 #include "scrTraceCode.h"
+#include "itfMesManager.h"
+#include "itfMisc.h"
 
 enum code_operation
 {
@@ -33,28 +35,17 @@ void PushInt(scrProcessWork_s *pwork, s32 data);
 void PushFloat(scrProcessWork_s *pw, f32 value);
 void PushStr(scrProcessWork_s *pwork, u8 *data);
 void PushRet(scrProcessWork_s *pwork, s32 cp);
-extern s32 itfMesMngMessage();
-extern s32 itfMesMngOpenWindow();
-extern s32 itfMesMngCloseWindow();
-extern s32 itfMesMngSelect();
-extern s32 itfMesMngOpenSelectWindow();
-extern s32 itfMesMngCloseSelectWindow();
-extern s32 itfMesMngMaskSelect();
 extern s32 scrCommand_PUT();
-extern s32 itfMesMng_SEL_SELNO();
 extern s32 scrCommand_BLUR_ALLOFF();
 extern s32 evtCommand_MODEL_POS();
 extern s32 evtCommand_MODEL_WAIT_MOT();
-extern s32 itfCamp();
 extern s32 evtCommand_CALL_SAVE();
 extern s32 evtCommand_CALL_FIELD();
 extern s32 fldCommand_PAD_ENABLE();
 extern s32 fldCommand_ENCOUNT_ON();
 extern s32 fldCommand_ENCOUNT_OFF();
-extern s32 itfMesMngSetVarScr();
 extern s32 scrCommand_PUTS();
 extern s32 evtCommand_BGM_VOL_DOWN();
-extern s32 itfMesMngIgnoreConfig();
 extern s32 fldCommand_CAM_SEL_PHOKAN();
 extern s32 fldCommand_FLD_CHK_BTL();
 extern s32 fldCommand_FLD_CHK_ANA();
@@ -75,13 +66,7 @@ extern s32 fldCommand_FLD_MAP_OFF();
 extern s32 fldCommand_SET_CAMTBL();
 extern s32 fldCommand_FLD_SET_TAKARA_OPEN();
 extern s32 fldCommand_FLD_CHK_TAKARA_OPEN();
-extern s32 itfMesMngSetMesPositionScript();
-extern s32 itfMesMngSetMesPosDefault();
-extern s32 itfMesMngValidateNext();
 extern s32 evtCommand_MODEL_SHADOW_ON();
-extern s32 itfMesMngWindowType();
-extern s32 itfMesMngSelectDefKey();
-extern s32 itfMesMngWindowTypeAlpha();
 extern s32 evtCommandSetDrawFlagWhileWaiting();
 extern s32 fldCommand_FLD_GET_KIRETA();
 extern s32 fldCommand_FLD_MSE_PLAY2();

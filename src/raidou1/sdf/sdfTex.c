@@ -6,12 +6,12 @@
 #include "sdfChip.h"
 #include "sdfTex.h"
 #include "sdfGsMemory.h"
+#include "sdfSystem.h"
+#include "sdfDelayedResrc.h"
+#include "sdfImageSet.h"
 
 extern sdfTexHandle_t *sdfTexHandleLink;
 extern sdfDelayedResrcCB_t sdfTexDelayedResrcCB;
-extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
-extern void *sdfAllocAuto(s32 size);
-extern void sdfFreeAuto(void *ptr);
 extern sdfTexHandle_t *sdfTexSetEx(TMX_HEADER_t *aTex, s32 aMemMode);
 
 extern void *sdfTexTransData(s32 aGsAddr, s32 aWidth, s32 aHeight, s32 aPixelFormat, void *aSrcData,
@@ -43,7 +43,6 @@ typedef struct
     s16 height;
 } sdfImageUploadRequest_t;
 
-extern s32 sdfImageDataSize(s32 format, s32 width, s32 height);
 extern void sdfImageSetReq(sdfImageUploadRequest_t *parm);
 s32 sdfTexGetPacketLength(sdfTexHandle_t *aHandle);
 sdfTexPacket_t *sdfTexGetPacketCtx2(sdfTexHandle_t *aHandle);

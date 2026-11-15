@@ -11,6 +11,9 @@
 #include "sdfDraw.h"
 #include "sdfPacketBuff.h"
 #include "sdfQuat.h"
+#include "sdfPrim.h"
+#include "sdfModel.h"
+#include "sdfDelayedResrc.h"
 
 /* The serialized node-def block has a 16-byte count/padding prefix. */
 typedef struct
@@ -28,7 +31,6 @@ extern void sdfItemArrayFree(void *aArray);
 extern void sdfItemArrayGrow(void *aArray);
 extern void sdfDevResizeBufferedRequest(void *aArray, s32 aCount);
 extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
-extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
 extern sdfDelayedResrcCB_t sdfModelDelayedResrcCB;
 extern sdfMatList_t *sdfMatListMake(void *aTexList, u32 *aData);
 extern void sdfMatListFreeResrc(void *aList, s32 aDelayed);
@@ -49,10 +51,6 @@ extern sdfModelNode_t *sdfModelNodeNew(void);
 extern void sdfModelMakeLocalTm(sdfModelNode_t *aNode);
 extern sdfModelRootNode_t *sdfModelRootNew(void);
 extern void sdfModelAllocNodeList(sdfModelRootNode_t *aRoot, s32 aLeng);
-extern void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *aPkt);
-extern void sdfPrimSetSemiTransPacket(sdfPrimTransPacket_t *aPkt);
-extern void sdfPrimSetAddTransPacket(sdfPrimTransPacket_t *aPkt);
-extern void sdfPrimSetSubTransPacket(sdfPrimTransPacket_t *aPkt);
 
 /* The shaped packet's header quadwords: the cnt tag, the two blend weights
  * VU1 reads and the UNPACK that follows them. */
@@ -139,7 +137,6 @@ extern void *sdf3DLightDefault;
 extern void *sdf3DFogDefault;
 extern u8 corePktSoftenBias;
 extern u8 sdf3DScreenTm[];
-extern sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*aAllocator)(s32));
 extern void sdfCoreDrawSetZBias(f32 z);
 
 /* The 0xC0-byte packet a temp-linked node builds: the tm CNT tag, the 128 bytes

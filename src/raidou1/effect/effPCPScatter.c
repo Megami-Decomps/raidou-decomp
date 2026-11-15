@@ -8,6 +8,7 @@
 #include "sdfTex.h"
 #include "sdfMath.h"
 #include "sdfPacketBuff.h"
+#include "effMath.h"
 
 struct effDebugPolyParams_t;
 
@@ -764,7 +765,6 @@ extern void dds3EffectPartDraw(effPartHandle_t *hEffPart);
 extern void dds3EffectPartSetPosition(effPartHandle_t *hEffPart, f32 *pPos);
 extern void dds3EffectPartSetColor(effPartHandle_t *hEffPart, u32 abgr);
 extern u32 dds3GetRandA(effRandState_t *name);
-extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern s32 effMagaCylinderCalcColor(s32 color, s32 tint);
 extern void SetRotateMatrixAxis(f32 aAngle, const void *aAxis);
 dds3WhirlwindPolyList_tag *dds3WhirlwindPolyListCreate(u32 number, u32 face);

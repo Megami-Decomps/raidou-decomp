@@ -1,6 +1,7 @@
 #include "common.h"
 #include "sdk_libcdvd.h"
 #include "ps2asm.h"
+#include "sif_rpc.h"
 
 typedef void (*cdvdCallback_t)(s32 reason);
 extern s32 cdvdDebugLevel __attribute__((section(".data")));
@@ -51,10 +52,7 @@ typedef void (*cdvdPowerCallback_t)(void *argument);
 
 #define UNCACHED(a) ((s32 *)(EE_ADDR(a) | 0x20000000))
 
-extern s32 SignalSema(s32 sema);
 
-extern s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize,
-                         void *recv, s32 rsize, void *endfunc, void *endpara);
 
 
 typedef struct sdfCdClock_t {

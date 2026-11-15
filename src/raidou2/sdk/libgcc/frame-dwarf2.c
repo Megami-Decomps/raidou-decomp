@@ -54,8 +54,6 @@ typedef struct sdfGrOt_t {
     sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
 } sdfGrOt_t;
 
-extern s32 WaitSema(s32);
-extern s32 SignalSema(s32);
 
 typedef struct _reent _reent;
 
@@ -163,10 +161,8 @@ struct _reent {
 };
 
 extern void *__deregister_frame_info(void *fn);
-extern s32 SignalSema(s32 sema);
 extern void __register_frame_info(void *fn, void *entry);
 extern s32 __register_frame_info_table(void *fn, void *entry);
-extern s32 WaitSema(s32 sema);
 extern void abort(void);
 extern s32 frameObjectSema __attribute__((section(".data")));
 extern object *frameObjectList __attribute__((section(".data")));

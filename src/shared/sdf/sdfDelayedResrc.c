@@ -1,12 +1,11 @@
 #include "common.h"
 #include "sdf_types.h"
 #include "sdk_libkernl.h"
+#include "sdfSystem.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
 
 /* Declared here because no header carries these. */
-extern s32 SignalSema(s32 aSemaId);
-extern s32 WaitSema(s32 sema);
 
 #define SDF_PENDING_LAST_SLOT 1
 
@@ -43,7 +42,6 @@ extern sdfDelayedResrcChunk_t *sdfDelayedResrcLink;
 void *sdfChipAllocDirect(s32 aSize);
 extern saddr_t sdfPendingQueueSlots[2];
 extern s32 sdfDelayedResrcSemaId;
-extern s32 sdfCreateSema(u32, u32, u32);
 
 typedef struct effDebugPolyParams_t {
     s16 parameterCount;

@@ -12,6 +12,8 @@
 #include "sdfTex.h"
 #include "sdfMath.h"
 #include "sdfPacketBuff.h"
+#include "effMath.h"
+#include "sdfBillBoard.h"
 
 extern sdfGrOt_t *effMagaGrOtBuckets[4];
 
@@ -399,7 +401,6 @@ static inline void UnpackRGBAWordFloat(u32 color, f32 unit) {
 effArrHdr_t *dds3Bezier4PCreate(s32 number);
 
 /* vu0 routine: blend two RGBA8888 colours by t (lerp in float, packed back to RGBA8888) */
-u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern u8 dds3EffectBase[];
 effCubicBezierSlot_t *dds3Bezier4PGetPart(struct effArrHdr_t *pEffBezier4P, s32 index);
 void dds3Bezier4PDelete(struct effArrHdr_t *pEffBezier4P);
@@ -431,11 +432,9 @@ struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 /* Build XYZ and attribute VIF streams; return the packet address.
  * vertexCount must be positive; n retains its native count/byte-size reuse. */
 /* vu0 routine: pack aligned positions into the VIF three-word stream. */
-extern u32 *sdfBillBoardMakeN(const u128 *aCenter, const void *aColor, const void *aUVList, const void *aXYOffsetList, s32 aNum, void *(*aAllocator)(s32));
 
 /* Round payloadBytes up to quadwords and pair FLUSHA with VIF DIRECT. */
 void sdf3DMakeDirectRefPacket(dmaPacketHeader_t *aPacket, addr_t aData, s32 aLeng);
-void sdfBillBoardMakeTMPacket(u8 *aPacket, const f32 *aTM);
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
 u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 

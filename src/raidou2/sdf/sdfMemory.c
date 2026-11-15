@@ -3,6 +3,7 @@
 #include "sdfMemory.h"
 #include "sdk_libc.h"
 #include "sdfChip.h"
+#include "sdfDelayedResrc.h"
 
 /* The SDK multi-RPC client; only its byte span matters here. */
 typedef struct
@@ -19,7 +20,6 @@ typedef struct
 extern s32 DIntr(void);
 extern void EIntr(void);
 extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
-extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
 
 #include "sdk_libmrpc.h"
 

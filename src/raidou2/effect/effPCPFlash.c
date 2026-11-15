@@ -8,6 +8,7 @@
 #include "sdfVu0.h"
 #include "sdfMath.h"
 #include "sdfPacketBuff.h"
+#include "effMath.h"
 
 struct effDebugPolyParams_t;
 
@@ -968,7 +969,6 @@ typedef struct effRingBlock_t {
 
 #define EFFECT_RING_FULL_TURN (6.2831853f)
 
-extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern f32 aViewEye[], aViewTarget[];
 extern f32 effPCPFlashPolySphere2Vertex[], effPCPFlashPolySphereVertex[];

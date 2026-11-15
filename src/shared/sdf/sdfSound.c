@@ -4,6 +4,7 @@
 #include "ps2asm.h"
 #include "sif_rpc.h"
 #include "sdfSound.h"
+#include "sdfSystem.h"
 
 struct sdfGsMemSlice_t;
 
@@ -19,7 +20,6 @@ typedef struct {
 } sdfSceIoStat_t;
 
 s32 sdfSndCmdTrans(void);
-s32 SleepThread(void);
 extern s8 sdfSndBurstReqMode;
 
 typedef struct
@@ -31,7 +31,6 @@ typedef struct
 } p2sdLoadEntry_t;
 
 s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
-extern s32 SignalSema(s32 aSemaId);
 
 /* The PCM fill hook, held as an address and called through a cast. */
 typedef u8 *(*p2sdPcmFunc_t)(s32);
@@ -184,8 +183,6 @@ extern u32 sdfSndSendCmd_cmd_id;
 extern vu16 sdfSndCmdIndex;
 extern vu16 sdfSndCmdTailIndex;
 extern s32 sdfSndCmdBuf;
-extern s32 WakeupThread(s32 thread);
-extern void FlushCache(s32);
 extern sndListenerState_t sdfSndListenerPrevState;
 extern s32 p2sdLoadCheckMidi(s32 MidiNo);
 extern s32 p2sdSmgHandle;
@@ -232,7 +229,6 @@ extern struct
 
 #include "sdk_libkernl.h"
 
-extern s32 sceSifDmaStat(s32 aId);
 void sdfSndTransToIOP(s32 aIOPAddr, void *aEEAddr, s32 aSize);
 void p2sdPlayBGM(s32 MidiNo);
 s32 p2sdSendStopCmd(s32 aId);
@@ -268,8 +264,6 @@ u32 p2sdSetPcmCallback(addr_t aCallback);
 s32 p2sdPlayPcm(u8 channel);
 s32 p2sdSyncMovie(void);
 s32 sdfFileRpcCallback(s32 unused, u32 event);
-extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-extern s32 GetThreadId(void);
 void SifRpcServerThreadProc(void);
 extern char sdfDmaTagEndName[8];
 extern char sdfDmaTagRetName[8];

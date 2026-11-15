@@ -1,7 +1,6 @@
 #include "common.h"
 #include "ps2asm.h"
 
-extern u64 GsPutIMR(u64 imr);
 
 typedef union {
     u128 qword;
@@ -90,7 +89,6 @@ extern GParam sceGsGParam;
 
 #include "sdk_libkernl.h"
 
-extern s32 RemoveIntcHandler(s32 cause, s32 handlerId);
 
 /* Syscall 2 has the SetGsCrt void interface. */
 extern void SetGsCrt(s16 interlace, s16 mode, s16 fieldMode);

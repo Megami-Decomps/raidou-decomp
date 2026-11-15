@@ -14,6 +14,7 @@
 #include "sdfDraw.h"
 #include "sdfPacketBuff.h"
 #include "sdf2D.h"
+#include "sdf3DPrim.h"
 
 typedef struct frFontHandle_t frFontHandle_t;
 
@@ -583,16 +584,11 @@ extern datSkill_t attr[];
 #endif
 
 
-void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
-                              s32 (*allocatePacket)(s32));
 
 /* Append standard packets to a DMA packet list. A null allocator selects the
    default packet allocator. Asset packets reference the selected draw entry. */
-void sdf3DPrimLinkResetTm(sdfDrawTag_t *packetList,
-                              s32 (*allocatePacket)(s32));
 
 /* Build the serialized VIF attribute stream and return its word cursor. */
-u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *request);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */

@@ -16,8 +16,6 @@ extern sdfCdImageDirEntry_t *sdfCdImageCurrFile;
 extern s32 sdfCdImageFd;
 extern s32 sdfCdTrayMode;
 sdfCdImageDirEntry_t *sdfCdImageSearchFile(const char *fname, s32 *lsn, u8 *modePtr);
-extern s32 WaitSema(s32 aSemaId);
-extern s32 SignalSema(s32 aSemaId);
 extern void *sdfCdImageDirData;
 void FatalError(const char *aMessage, ...) __attribute__((noreturn));
 

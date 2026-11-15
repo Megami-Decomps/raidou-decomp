@@ -11,6 +11,7 @@
 #include "sdf_movie_types.h"
 #include "sdk_libc.h"
 #include "dds3GlobalWork.h"
+#include "sdfDevCons.h"
 
 extern void *dds3SearchProcessName(const char *namestr);
 
@@ -61,7 +62,6 @@ typedef struct
 } movieViewerProcWork_t;
 
 extern movieViewerProcWork_t movieViewerWork;
-extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr, const char *aStr, ...);
 extern void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
 void MovieViewerDrawFrameInfo(void);
 extern const char movieViewerProcName[];

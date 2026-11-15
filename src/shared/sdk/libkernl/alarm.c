@@ -70,7 +70,6 @@ typedef struct ttyPacket_t {
     u8 payload[308];
 } ttyPacket_t;
 
-extern void FlushCache(s32 mode);
 
 /* In ee-gcc 2.9, next_arg names the first incoming stack argument. These
  * one-fixed-argument wrappers save the seven remaining argument GPRs in

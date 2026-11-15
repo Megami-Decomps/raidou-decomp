@@ -2,6 +2,7 @@
 #include "kernel.h"
 #include "sdfFrame.h"
 #include "sdfChip.h"
+#include "dds3KernelCore.h"
 
 /* Two ports, two sticks per port, and two axes per stick. */
 extern s8 dds3PadButtonPrev[2][2][16];

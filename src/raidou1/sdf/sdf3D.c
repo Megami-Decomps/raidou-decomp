@@ -11,6 +11,7 @@
 #include "sdfDraw.h"
 #include "sdfMat.h"
 #include "sdfTex.h"
+#include "sdfModel.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -117,7 +118,6 @@ typedef struct DmaPacketHeader {
 /* Bind resource and asset release queues to their matching destruction callbacks. */
 
 /* Initialize the buffered object-list release queue with its object destructor. */
-void sdfModelInitSystem(void);
 extern addr_t sdf3DLightDefault;
 extern addr_t sdf3DFogDefault;
 extern f32 sdf3DEyeOffset[4];

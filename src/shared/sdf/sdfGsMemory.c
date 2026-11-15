@@ -3,8 +3,8 @@
 #include "ps2asm.h"
 #include "sdfChip.h"
 #include "sdfGsMemory.h"
+#include "sdfDelayedResrc.h"
 
-extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
 
 /* GS pixel storage modes, the values of sdfGsMemSlice_t.pixelFormat. */
 enum sdf_psm

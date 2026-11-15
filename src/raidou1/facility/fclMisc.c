@@ -10,6 +10,8 @@
 #include "evtCommand.h"
 #include "scrTraceCode.h"
 #include "evtStage.h"
+#include "dds3WorldBasic.h"
+#include "itfMesManager.h"
 
 extern s32 dds3GetProcessStat(void *id);
 extern u32 dds3GetRandA(void *name);
@@ -18,7 +20,6 @@ extern s8 gSelMsgPos;
 extern s8 gMsgInvFlag;
 extern s32 gMsgID;
 extern s32 gSelMsgNo;
-extern void itfMesMngSetVarImmediate(s32 id, u32 index, s32 pstr);
 extern s32 fclWorkValue[16];
 
 typedef struct
@@ -32,8 +33,6 @@ extern s32 dds3KillProcess(s32 id, s32 shutdowntimer);
 extern s32 fclChkMessage(void);
 extern void fclScriptForcedEnd(u8 *PID);
 extern s8 gMsgFlag;
-extern void itfMesMngRelease(s32 id);
-extern void *dds3GetControlScene(void);
 extern void *dds3SceneBasicSearchNameAndType(void *scene, s32 type, char *name);
 extern void shuffleIndices(s8 *order, s32 count, s32 rounds);
 extern s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
@@ -57,17 +56,13 @@ typedef struct
 } fclItemList_t;
 
 void shuffleIndices(s8 *order, s32 count, s32 rounds);
-extern s32 itfMesMngInitialize(void *data);
 extern void itfMesMngChangeWindowType(s32 id, s32 type, s32 alpha);
 s8 fclInitMessage(void *pData);
-extern void itfMesMngMarkBitStat(s32 id, s32 flag);
 extern void itfMesMngRequestMessage(s32 msg, s32 id, s32 flag);
-extern void itfMesMngSetSelPhase(s32 msgid, s32 phase);
 s32 fclStartMessage(s32 MsgNo);
 s32 fclDestroyMessage(void);
 s32 fclChkMessage(void);
 void fclUpdateMessage(void);
-extern void itfMesMngSetMesPosition(s32 id, s32 x, s32 y);
 extern void itfMesMngSetOffsetY1(s32 msgid, s32 y1);
 void fclSetMessagePos(s32 x, s32 y);
 

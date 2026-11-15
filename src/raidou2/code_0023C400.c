@@ -5,6 +5,7 @@
 #include "sdfDraw.h"
 #include "sdfTex.h"
 #include "sdfPacketBuff.h"
+#include "sdfImageSet.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -138,7 +139,6 @@ void effSetModelRotationQuaternion(EffResourceOwner *work, const f32 *rotationQu
 void effPropagateResourceModelMask(EffResourceOwner *work, u32 color);
 void effScaleModelVec(EffResourceOwner *work, float scale);
 void effObjectListCountersReset(void);
-extern s32 sdfImageDataSize(u32 format, s32 width, s32 height);
 sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, RefObj *source);
 
 /* Serialized expanded list: 0x10-byte header, the entry table, then each entry's payload. */

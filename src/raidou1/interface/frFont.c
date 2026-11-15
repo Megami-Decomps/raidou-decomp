@@ -6,6 +6,9 @@
 #include "sdfDraw.h"
 #include "sdfPacketBuff.h"
 #include "sdfGsMemory.h"
+#include "sdk_libkernl.h"
+#include "frFont.h"
+#include "itfMisc.h"
 
 typedef struct frFontHeader_t frFontHeader_t;
 
@@ -200,12 +203,9 @@ void frCreateUserFontPacket(s32 X, s32 Y, s32 Z, frTextHandle_t *pText,
 
 void frCopyFontClutToVram(s32 GS_LocalAddr, saddr_t pClut);
 extern void sceGsSetDefLoadImage(void *, s16, s16, s32, s32, s32, s16, s16);
-extern s32 WaitSema(s32);
 extern volatile s32 dds3GsSema;
-extern void FlushCache(s32);
 extern void sceGsExecLoadImage(void *, saddr_t);
 extern s32 sceGsSyncPath(s32, s32);
-extern s32 SignalSema(s32);
 void frLoadStyleAll(void);
 void frSetFontClut(void);
 
@@ -495,7 +495,6 @@ struct sdfTexHandle_t;
 
 union EffSpriteColor;
 
-u32 itfCamp(void);
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1

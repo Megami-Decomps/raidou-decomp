@@ -8,6 +8,8 @@
 #include "dds3Basic.h"
 #include "dds3PathBasic.h"
 #include "dds3LightObjectBasic.h"
+#include "dds3ObjectBase.h"
+#include "dds3MoverBasic.h"
 
 /* The matter object caches its path position at +0x20, independently of pose. */
 typedef struct
@@ -28,7 +30,6 @@ typedef struct dds3MoverBasicWorkData_t
 extern s32 dds3MoverCount;
 extern char dds3MoverNameTable[10][16];
 extern u32 dds3AllocObjectId(void);
-extern dds3Basic_t *dds3ObjectBaseSetControlBasicType(dds3Basic_t *pObjectBasic, dds3Basic_t *pItemBasic, s32 itemType);
 void dds3MoverBasicFreePath(dds3Basic_t *pMoverBasic);
 s32 MoverBasicMainprocuder(dds3Basic_t *pBasic);
 s32 MoverBasicConstructor(dds3Basic_t *pBasic);

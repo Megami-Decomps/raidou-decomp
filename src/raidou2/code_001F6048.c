@@ -4,6 +4,7 @@
 #include "sdfTex.h"
 #include "sdfMath.h"
 #include "sdfPacketBuff.h"
+#include "sdfBillBoard.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -76,8 +77,6 @@ void effDrawGeneratedTextureQuad(sdfDrawTag_t *packet, EffGeneratedTextureDescri
 void effDrawCompositeTextureQuad(sdfDrawTag_t *packet, EffCompositeGsDescriptor *source);
 extern f32 aViewTarget[4], aViewEye[4];
 extern u32 D_0034E090[],D_0034E0A0[];
-extern void sdfBillBoardMakeTMPacket(u8 *, const f32 *);
-extern void sdfBillBoardMake1(u8 *, const f32 *, u32, const BillTextureQuad *, const f32 *);
 void effDrawGeneratedTextureQuad(sdfDrawTag_t *list, EffGeneratedTextureDescriptor *source);
 void effSubmitGeneratedTexturePacket(sdfGrOt_t *surface, EffGeneratedTextureDescriptor *source);
 void effDrawCompositeTextureQuad(sdfDrawTag_t *list, EffCompositeGsDescriptor *source);

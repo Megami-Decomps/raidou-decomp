@@ -15,6 +15,7 @@
 #include "billManager.h"
 #include "sdfMath.h"
 #include "effPacket.h"
+#include "sdf3DPrim.h"
 
 typedef struct dds3P2APolygon_tag {
     f32 dir[4][4];
@@ -190,8 +191,6 @@ void dds3P2APolygonGetResource(dds3P2APolygon_tag *hP2APoly, dds3P2APolygonResou
 extern u32 dds3P2APolygonFaceIndex[];
 extern u32 dds3P2APolygonVertexColor[];
 extern sdfGrOt_t *dds3P2APolygonSurfaceTable[];
-extern void sdf3DPrimLinkTm(sdfDrawTag_t *, s32 (*)(s32));
-extern void sdf3DPrimLinkMat(sdfDrawTag_t *, sdfMat_t *, s32 (*)(s32));
 void dds3P2APolygonDraw(dds3P2APolygon_tag *instance);
 
 #ifndef VERSION_DDS1

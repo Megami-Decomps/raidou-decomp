@@ -4,6 +4,8 @@
 #include "kernel.h"
 #include "font.h"
 #include "sdfMemory.h"
+#include "frFont.h"
+#include "itfMisc.h"
 
 typedef struct frRelativeImage_t
 {
@@ -37,14 +39,7 @@ typedef struct
 extern u32 frFontRowBuf;
 extern char frWrapEmptyString[];
 extern void frSetWhiteSpaceW(s32 StyleNo, s32 Width);
-extern u8 frEnableMode(s32 Flag);
-extern u8 frDisableMode(u8 Flag);
 extern frFontHandle_t *frLinkFontString(const char *, s8, s8, s8, frFontHandle_t *);
-extern void frSetFontSpace(frFontHandle_t *, s32);
-extern void frSetDrawPosition(frFontHandle_t *, u32, u32);
-extern void frSetPriority(frFontHandle_t *, s32);
-extern void frSetFontColor(frFontHandle_t *, u32);
-extern void frSetFontColorNo(frFontHandle_t *, u8);
 extern void frLoadFontData(s32 StyleNo, const char *pFileName);
 extern void frDelFontStyle(s32 StyleNo);
 
@@ -185,7 +180,6 @@ struct sdfTexHandle_t;
 
 union EffSpriteColor;
 
-u32 itfCamp(void);
 
 /* Staff callers supply a trailing request; this wrapper creates a fresh chain. */
 frFontHandle_t *frwGetStaffFontFRQ(u32 x, u32 y, s32 depth, s32 alt, s32 measureFlag, s32 entryFlag, u32 colors, void *source, void *unusedRequest) {

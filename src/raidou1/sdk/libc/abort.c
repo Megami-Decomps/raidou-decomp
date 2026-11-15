@@ -269,7 +269,6 @@ s32 raise(s32 sig);
 
 #define STRTOL_MIN 0x8000000000000000UL
 
-s32 exponent(char *output, s32 value, s32 marker);
 
 /* Little-endian IEEE binary64 word view used by the numeric helpers. */
 typedef union libcDoubleBits_t {

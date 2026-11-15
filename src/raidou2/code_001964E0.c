@@ -1,4 +1,5 @@
 #include "common.h"
+#include "itfMisc.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -113,7 +114,6 @@ struct sdfTexHandle_t;
 
 union EffSpriteColor;
 
-u32 itfCamp(void);
 
 INCLUDE_ASM(const s32, "code_001964E0", frLeaf3);
 

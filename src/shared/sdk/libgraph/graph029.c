@@ -2,7 +2,6 @@
 #include "ps2asm.h"
 
 /* The GS interrupt mask register, through the kernel's syscall stubs. */
-extern u64 GsGetIMR(void);
 
 typedef union {
     u128 qword;

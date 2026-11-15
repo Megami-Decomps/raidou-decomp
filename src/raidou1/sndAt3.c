@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libkernl.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -10,8 +11,6 @@
 #include "sdk_libc.h"
 #include "dds/btl.h"
 
-s32 SignalSema(s32 semaphoreId);
-s32 WaitSema(s32 semaphoreId);
 
 #include "dds/mnu_result.h"
 #include "dds/mnu_title_stream.h"

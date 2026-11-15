@@ -15,6 +15,9 @@
 #include "sdfMisc.h"
 #include "dds3GlobalWork.h"
 #include "dds3DebugStuff.h"
+#include "sdfModel.h"
+#include "mdlEffect.h"
+#include "sdfDevCons.h"
 
 typedef struct mdlBillboard_t mdlBillboard_t;
 
@@ -222,7 +225,6 @@ extern mdlMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *, s32);
 extern mdlTrackWork_t *Eff_ModelTrackPolyCreate(mdlTrackCreateParams_t *);
 extern void Eff_ModelTrackPolyDelete(mdlTrackWork_t *);
 extern void Eff_ModelTrackPolyDraw(mdlTrackWork_t *);
-extern sdfModelNode_t *sdfModelSearchNode(sdfModelRootNode_t *, u32);
 extern void dds3BillboardSetPosition(void *, const void *);
 extern void dds3BillboardDraw(mdlBillboard_t *);
 extern void dds3EffectSetPosition(mdlEffect_t *, const void *);
@@ -231,7 +233,6 @@ extern void dds3BillboardSetRGBA(mdlBillboard_t *, s32);
 extern void dds3EffectSetRGBA(mdlEffect_t *, s32);
 extern void dds3BillboardSetScale(mdlBillboard_t *, f32, f32);
 extern void dds3EffectSetScale(mdlEffect_t *, f32);
-extern void *sdfDevPrintf(s32, s32, s32, s32, const char *, ...);
 
 /* dds3ModelEffectCtrlr_t.type: which effect a controller drives. */
 typedef enum dds3ModelEffectType {

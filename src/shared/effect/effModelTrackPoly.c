@@ -13,6 +13,8 @@
 #include "sdk_libc.h"
 #include "sdfPacketBuff.h"
 #include "effPacket.h"
+#include "sdf3DPrim.h"
+#include "effMath.h"
 
 typedef struct
 {
@@ -89,9 +91,6 @@ typedef struct
     u8 frameTex[0x8E0];
 } effDrawBank_t;
 
-extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag, s32 aAllocator);
-extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat, s32 aAllocator);
-extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern sdf3DPrimPolyParm_t effModelTrackPolyPrimParm;
 extern u32 effModelTrackPolyFaceIndex[];
 extern sdfGrOt_t *effModelTrackPolyBlendOt[];

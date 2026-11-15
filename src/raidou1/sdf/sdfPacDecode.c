@@ -4,6 +4,7 @@
 #include "sdk_libc.h"
 #include "sdfChip.h"
 #include "sdfMat.h"
+#include "sdfPacDecode.h"
 
 /* Declared here because no header carries these. */
 extern sdfTexHandle_t *sdfTexSet(void *aTex);

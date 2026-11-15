@@ -19,7 +19,6 @@ typedef struct threadMgrQueue_t {
     u8 commands[512][2];
 } threadMgrQueue_t;
 
-extern s32 WaitSema(s32 sema);
 
 typedef struct rpcSemaParam {
     s32 count;
@@ -42,7 +41,6 @@ typedef struct kernelThreadParam_t {
     u8 opaque[0x18];
 } kernelThreadParam_t;
 
-extern s32 DeleteSema(s32 sema);
 
 typedef struct ttyQueue_t {
     u32 capacity;
@@ -115,7 +113,6 @@ typedef struct {
  * gives the native eight-byte entry offset. Once tested, command is reused
  * for the selected table's actual address; its old value is no longer live.
  */
-void sceSifAddCmdHandler(s32 command, void (*handler)(void *, void *), void *argument);
 
 /* DMA bus addresses and transfer controls occupy four 32-bit words. */
 typedef struct sifDmaTransfer_t {
@@ -129,7 +126,6 @@ SIZE_CHECK(sifDmaTransfer_size_must_be_16, sifDmaTransfer_t, 16);
 
 #include "sdk_libkernl.h"
 
-extern void sceSifWriteBackDCache(void *address, s32 size);
 
 typedef struct sifCommandHeader_t {
     u32 packetSize : 8;
@@ -159,7 +155,6 @@ typedef struct rpcQueue {
     sifRpcDataQueue_t *queues;
 } rpcQueue;
 
-extern void sceSifAddCmdHandler(s32 command, void (*handler)(void *, void *), void *argument);
 
 /* Shared transaction fields used by RPC completion. */
 typedef struct rpcTransactionPrefix {
@@ -217,7 +212,6 @@ typedef struct {
 extern fsRequestEntry_t fsIobTable[32];
 extern s32 fsIobSema;
 extern void gcc2_compiled__13(void);
-extern s32 SignalSema(s32 sema);
 fsRequestEntry_t *new_iob(void);
 fsRequestEntry_t *get_iob(u32 index);
 
@@ -285,12 +279,8 @@ extern u8 fsCmdHandlerContext[];
 extern rpcClient fsRpcClient;
 extern u8 fsVersionRpcBuffer[];
 extern fsRegistrationPacket_t fsRegistration;
-extern void sceSifInitRpc(s32 mode);
 extern void _sceFs_Rcv_Intr(void *packet, void *argument);
 
-extern s32 sceSifCallRpc(void *client, s32 function, s32 mode, void *send,
-                         s32 sendBytes, void *receive, s32 receiveBytes,
-                         void *endFunction, void *endParameter);
 
 extern u8 fsDetectedVersion[0x18];
 extern s32 fsInitialized __attribute__((section(".data")));

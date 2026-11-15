@@ -7,6 +7,7 @@
 #include "sdfChip.h"
 #include "sdfQuat.h"
 #include "sdfMotion.h"
+#include "sdfModel.h"
 
 typedef struct
 {
@@ -20,7 +21,6 @@ void sdfMotionSeek(sdfMotionCtrlr_t *aCtrlr, f32 aFrame);
 
 typedef sdfMotionNode_t *(*sdfMotGenNodeFunc)(sdfMotionCtrlr_t *aCtrlr, u32 aTypeId, u32 aNodeId);
 
-extern sdfModelNode_t *sdfModelSearchNode(sdfModelRootNode_t *aRoot, u32 aId);
 
 extern void sdfMotionChangeBlend(sdfMotionCtrlr_t *aCtrlr, s32 aCutNum, s32 aType, f32 aPreFrame,
                                  f32 aBlendLeng);

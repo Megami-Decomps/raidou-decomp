@@ -1,6 +1,7 @@
 #include "common.h"
 #include "interface.h"
 #include "sdfMemory.h"
+#include "itfMesManager.h"
 
 /* A color row is also a four-component vector for the template scaler. */
 typedef union
@@ -189,20 +190,15 @@ void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command);
 
 /* Poll/start an entry: one ends the command, zero keeps waiting.
    A negative signed status is consumed by clearing it; positive status keeps waiting. */
-s32 itfMesMngMessage(void);
 
 /* Capture the script window, reset its held queue, and switch to page three.
    Invalid windows still return the native command-complete value of one. */
-s32 itfPanelAcquireHold(void);
 
 /* Queue script words in native second/first/third field order; first and third narrow to s16.
    Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
-s32 itfCommandQueueHeldPanelEntry(void);
-s32 itfMesMngSelect(void);
 
 /* Configure the fade on timer zero, wait thirty ticks, then consume a negative option status.
    Keep both timer reads: setup tests a second read, while later comparisons use the cached one. */
-s32 MesMngSelect(void);
 
 /* Allocate the common record and the kind's payload; kinds 6 to 8 take the
  * caller's value as the first payload word. */

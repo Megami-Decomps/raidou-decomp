@@ -12,6 +12,9 @@
 #include "dds3SceneBasic.h"
 #include "dds3Basic.h"
 #include "evtStage.h"
+#include "dds3KernelCore.h"
+#include "dds3WorldBasic.h"
+#include "dds3ObjectBase.h"
 
 /* The viewer's current menu, which EnterMain switches on to decide what Enter does
  * from each one. Names from the IDB. */
@@ -33,17 +36,14 @@ typedef enum EVT_VIEWER_MENU {
 } EVT_VIEWER_MENU;
 
 extern evtFrameInfo_t *evtAddFrameInfo(evtViewerObject_s *track, s32 frame);
-extern s32 dds3KillProcessName(const char *name, s32 shutdowntimer);
 
 typedef struct polyMovieObject_t polyMovieObject_t;
 
-extern void **dds3GetProcessData(void *id);
 extern u16 evt_file_minor;
 extern u16 evtFileMajor;
 
 #include "sdk_libc.h"
 
-extern dds3Basic_t *dds3GetActiveScene(void);
 evtFrameInfo_t *AddFrameInfo2(evtViewerObject_s *group, s32 frame, evtViewerInfo_t *viewer);
 extern s32 (*evtViewerMenuHandlers[])(s32 action, s32 previousMenu);
 extern char evtViewerProcNameSfog[5];
@@ -92,8 +92,6 @@ enum {
 };
 
 
-struct dds3Basic_t *dds3ObjectBaseGetControlBasic(
-    struct dds3Basic_t *object, Dds3ObjectControlSlotIndex slotIndex);
 
 /* Copy the source object's transform to the target object, with its rotation offset. */
 

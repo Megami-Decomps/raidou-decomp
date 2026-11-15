@@ -5,6 +5,7 @@
 #include "sdk_libkernl.h"
 #include "sdk_libc.h"
 #include "sdfDev9.h"
+#include "sdfDelayedResrc.h"
 extern s32 DIntr(void);
 extern void EIntr(void);
 
@@ -22,7 +23,6 @@ typedef struct sdfChip_t
 #define SDF_CHIP_PAGE_BYTES (1 << SDF_CHIP_PAGE_SHIFT)
 
 extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
-extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
 extern sdfDelayedResrcCB_t dds3CleanupList;
 extern sdfChipCB_tag sdfChipCB[SDF_CHIP_CLASS_COUNT];
 extern sdfChipPageInfo_tag *sdfChipPageInfo;

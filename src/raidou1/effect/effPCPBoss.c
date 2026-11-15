@@ -12,6 +12,8 @@
 #include "sdfFrame.h"
 #include "sdfMemory.h"
 #include "sdfChip.h"
+#include "sdfModel.h"
+#include "effMath.h"
 
 typedef struct
 {
@@ -476,7 +478,6 @@ typedef struct effPCP_HBED2_tag
 } effPCP_HBED2_tag;
 
 extern u8 dds3EffectBase[];
-extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern s32 sdfModelGetMarkPosMatrix(void *aRoot, s32 aId);
 extern void effPCPCrackInit(effPCPCrack_t *pPCPCrack);
 extern u8 dds3RenderTargetVector[], dds3RenderEyeVector[];
@@ -487,7 +488,6 @@ extern effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc);
 extern void dds3EffectPartDelete(effPartHandle_t *hEffPart);
 extern void *dds3EffectPartGetHandle(effPartHandle_t *hEffPart);
 extern void mdlSingleMotion(effCrackModel_t *aHandle, s32 aGroup, s32 aNumber);
-extern s32 sdfModelGetMarkPosCount(void *aRoot);
 extern void *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, s32 type);
 extern void dds3TrackPolySetMode(void *hTrackPoly, s32 mode);
 extern void dds3TrackPolyDelete(void *hTrackPoly);

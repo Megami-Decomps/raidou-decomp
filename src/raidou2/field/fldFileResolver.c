@@ -1,4 +1,5 @@
 #include "common.h"
+#include "dds3ObjectBase.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -75,10 +76,8 @@ enum SdfMotionStateValue {
     SDF_MOTION_STATE_SUSPENDED = 6,
 };
 
-void dds3ObjectBaseOffFlag(struct dds3Basic_t *object, u32 mask);
 
 /* Set or clear requested bits in the object's flag word. */
-void dds3ObjectBaseOnFlag(struct dds3Basic_t *object, u32 mask);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new

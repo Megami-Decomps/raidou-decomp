@@ -5,10 +5,8 @@
 #include "kernel.h"
 #include "sdfMemory.h"
 #include "dds3SceneBasic.h"
+#include "dds3WorldBasic.h"
 
-extern dds3BasicArrayHandle_t *dds3GetBasicArrayHandle(s32 bufcnt);
-extern s32 dds3AddBasicArray(dds3BasicArrayHandle_t *hndl, s32 bufcnt);
-extern s32 dds3SetBasicArray(dds3BasicArrayHandle_t *hndl, dds3Basic_t *data);
 
 extern u32 fldLoadFile_FromMemory(u32 field, u32 area, void *pF1,
                                   void *pF2, void *pTB, u32 pBF);

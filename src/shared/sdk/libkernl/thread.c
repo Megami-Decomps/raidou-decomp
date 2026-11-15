@@ -18,10 +18,6 @@ typedef struct threadMgrQueue_t {
 } threadMgrQueue_t;
 
 extern s32 threadMgrSema;
-extern s32 WaitSema(s32 sema);
-extern s32 WakeupThread(s32 threadId);
-extern s32 RotateThreadReadyQueue(s32 priority);
-extern s32 SuspendThread(s32 threadId);
 extern const char kernlInternalErrorMsg[];
 void topThread(void *argument);
 
@@ -52,11 +48,7 @@ extern u8 _gp[];
 extern threadMgrQueue_t threadCommandQueue;
 extern void topThread(void *queue);
 extern s32 CreateThread(kernelThreadParam_t *param);
-extern s32 DeleteSema(s32 sema);
-extern s32 GetThreadId(void);
-extern s32 ChangeThreadPriority(s32 threadId, s32 priority);
 s32 InitThread(void);
-extern s32 iSignalSema(s32 sema);
 s32 iRotateThreadReadyQueue(s32 priority);
 
 typedef struct ttyQueue_t {

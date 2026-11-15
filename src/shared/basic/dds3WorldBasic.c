@@ -4,6 +4,7 @@
 #include "sdfMemory.h"
 #include "sdfChip.h"
 #include "dds3Basic.h"
+#include "dds3WorldBasic.h"
 
 extern dds3Basic_t *dds3TheWorld;
 void dds3DeleteScene(dds3Basic_t *scene);

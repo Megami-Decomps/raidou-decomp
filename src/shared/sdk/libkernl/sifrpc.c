@@ -19,7 +19,6 @@ typedef struct threadMgrQueue_t {
     u8 commands[512][2];
 } threadMgrQueue_t;
 
-extern s32 WaitSema(s32 sema);
 
 typedef struct rpcSemaParam {
     s32 count;
@@ -42,8 +41,6 @@ typedef struct kernelThreadParam_t {
     u8 opaque[0x18];
 } kernelThreadParam_t;
 
-extern s32 DeleteSema(s32 sema);
-extern s32 iSignalSema(s32 sema);
 
 typedef struct ttyQueue_t {
     u32 capacity;
@@ -112,7 +109,6 @@ typedef struct {
     void *address;
 } sifAddressPacket_t;
 
-void sceSifExitCmd(void);
 
 /* DMA bus addresses and transfer controls occupy four 32-bit words. */
 typedef struct sifDmaTransfer_t {
@@ -126,7 +122,6 @@ SIZE_CHECK(sifDmaTransfer_size_must_be_16, sifDmaTransfer_t, 16);
 
 #include "sdk_libkernl.h"
 
-extern void sceSifWriteBackDCache(void *address, s32 size);
 
 typedef struct sifCommandHeader_t {
     u32 packetSize : 8;
@@ -138,11 +133,7 @@ typedef struct sifCommandHeader_t {
 
 SIZE_CHECK(sifCommandHeader_size_must_be_16, sifCommandHeader_t, 16);
 
-s32 sceSifSendCmd(s32 command, void *packet, s32 packetBytes,
-                  void *source, void *destination, s32 dataBytes);
 
-s32 isceSifSendCmd(s32 command, void *packet, s32 packetBytes,
-                   void *source, void *destination, s32 dataBytes);
 
 typedef struct rpcPacket {
     u32 w[16];
@@ -227,7 +218,6 @@ sifRpcDataQueue_t *sceSifRemoveRpcQueue(sifRpcDataQueue_t *queue);
 sifRpcServerData_t *sceSifGetNextRequest(sifRpcDataQueue_t *queue);
 void sceSifExecRequest(sifRpcServerData_t *server);
 extern void sceSifExecRequest(sifRpcServerData_t *request);
-extern s32 SleepThread(void);
 
 typedef struct {
     u32 word0;

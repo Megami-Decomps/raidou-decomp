@@ -46,4 +46,8 @@ extern void sceSifSetRpcQueue(sifRpcDataQueue_t *queue, s32 threadId);
 
 extern void sceSifRpcLoop(sifRpcDataQueue_t *queue);
 
+s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize, void *recv, s32 rsize, void *endfunc, void *endpara);
+s32 sceSifCheckStatRpc(void *cd);
+void sceSifInitRpc(s32 mode);
+
 #endif

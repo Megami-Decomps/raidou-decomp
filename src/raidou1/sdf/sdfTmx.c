@@ -5,6 +5,7 @@
 #include "sdfMemory.h"
 #include "sdk_libc.h"
 #include "sdk_libmc.h"
+#include "sdfSystem.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -50,13 +51,11 @@ enum SdfFileIOCmdClbk {
 };
 
 extern u8 sdfFileRpcReadBuf[];
-extern void SleepThread(void);
 extern char *mcModuleNames[];
 extern s32 sceSifLoadModule(const char *, s32, const char *);
 
 /* Allocate a workspace sized by stackBytes, pass the thread entry to
  * CreateThreadSimple, and return that function's result unchanged. */
-extern s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priority);
 
 /* Complete 0x40-byte owner allocated by sdfFileCmdNewHandle. */
 typedef struct sdfFileCmdHandle_t {
@@ -109,12 +108,10 @@ extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path,
                                           s32 callbackContext);
 
 extern s32 sdfFileCmdFileSize();
-extern s32 WaitSema(s32);
 
 #include "sdk_libkernl.h"
 
 /* Declared here because no header carries these. */
-extern s32 GetThreadId(void);
 extern s32 sdfFileRpcThreadId;
 void SdfFileRpcServerThreadProc(void);
 void sdfTmxSetHeader(TMX_HEADER_t *aHeader, s32 aWidth, s32 aHeight, s32 aPixelFormat, s32 aNumOfCLUT, s32 aCLUTFormat);
@@ -232,7 +229,6 @@ struct _reent {
     FILE __sf[3];
 };
 
-extern s32 WaitSema(s32 sema);
 
 typedef struct fp_number_type {
     s32 class;
@@ -275,8 +271,6 @@ typedef struct {
 
 SIZE_CHECK(sdfSceIoStat_size_must_be_0x40, sdfSceIoStat_t, 0x40);
 
-extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-extern s32 WakeupThread(s32 threadId);
 extern u8 sdfHddValid;
 extern const char sdfIopModulePathCdrom[];
 extern const char sdfIopModulePathHost[];

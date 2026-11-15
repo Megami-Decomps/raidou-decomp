@@ -4,15 +4,16 @@
 #include "ps2asm.h"
 #include "sdk_libc.h"
 #include "sdfChip.h"
+#include "sdfFileIO.h"
+#include "sdfSystem.h"
+#include "sdfFile.h"
 extern s32 DIntr(void);
 extern void EIntr(void);
 
-s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
 s32 sdfFileCmdClose(void *aHandle);
 s32 sdfFileCmdFree(sdfFileCmd_t *aHandle);
 s32 sdfFileCmdFileSize(void *aHandle);
 s32 sdfFileCmdSeek(void *aHandle, s32 aOffset, s32 aWhence);
-extern s32 SignalSema(s32 aSemaId);
 extern u8 sdfFileCmdThreadPrioCheckCounter;
 void sdfFileCmdThreadSetPrio(s32 prio);
 s32 sdfFileCmdRead(void *aHandle, void *aBuffer, s32 aLength);
@@ -120,8 +121,6 @@ extern u8 sdfFileCmdDefaultDevice;
 extern s32 sdfFileCmdAnalyzeFileName(const char *aFileName, char **aRealNamePtr);
 extern u16 sdfFileCmdDefaultCreateMode;
 extern s32 sdfFileCmdThreadPrio;
-extern s32 ChangeThreadPriority(s32 tid, s32 prio);
-extern s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priority);
 
 extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext);
@@ -131,7 +130,6 @@ void sdfFileCmdStartThread(s32 deviceType);
 
 /* Queue a request on the global list and on its worker's list; wake the worker when its list was empty. */ void sdfFileCmdAllocHandle(sdfFileCmdHandle_t *state);
 
-char *sdfFileGetHostRoot(void);
 void sdfFileCmdReleaseHandle(sdfFileCmd_t *aHandle);
 void sdfFileCmdFinish(sdfFileCmdHandle_t *state, s32 result);
 void sdfFileCmdThread(sdfFileDeviceCB_t *aCB);

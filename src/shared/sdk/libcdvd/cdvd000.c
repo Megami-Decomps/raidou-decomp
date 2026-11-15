@@ -1,6 +1,7 @@
 #include "common.h"
 #include "sdk_libcdvd.h"
 #include "ps2asm.h"
+#include "sif_rpc.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
 
@@ -28,9 +29,6 @@ typedef struct sdfSemaParam_t {
 } sdfSemaParam_t;
 
 extern s32 CreateSema(sdfSemaParam_t *param);
-extern s32 WaitSema(s32 sema);
-extern s32 DeleteSema(s32 sema);
-extern s32 SetAlarm(u16 ticks, void (*callback)(s32, s32, s32), void *argument);
 extern void gcc2_compiled__6(s32 cause, s32 address, s32 argument);
 extern s32 cdvdNcmdSema __attribute__((section(".data")));
 
@@ -48,7 +46,6 @@ typedef struct {
 extern s32 cdvdCallbackThreadId __attribute__((section(".data")));
 extern s32 cdvdOwnerThreadId __attribute__((section(".data")));
 extern u8 cdvdThreadStatus[0x30] __attribute__((section(".data")));
-extern s32 ReferThreadStatus(s32 threadId, void *status);
 
 #include "sdk_libkernl.h"
 
@@ -70,19 +67,14 @@ extern cdvdPowerCallback_t cdvdPowerCallback __attribute__((section(".data")));
 extern void *cdvdPowerArgument __attribute__((section(".data")));
 extern s32 cdvdPowerOffActive __attribute__((section(".data")));
 extern s32 cdvdScmdState[6] __attribute__((section(".data")));
-extern void sceSifAddCmdHandler(s32 id, void (*handler)(void *, void *), void *argument);
 void _sceCd_Poff_Intr(void *packet, void *argument);
 s32 PowerOffCB(void);
 
 #define UNCACHED(a) ((s32 *)(EE_ADDR(a) | 0x20000000))
 
-extern s32 SignalSema(s32 sema);
 
-extern s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize,
-                         void *recv, s32 rsize, void *endfunc, void *endpara);
 
 extern s32 _sceCd_scmd_prechk(s32 cmd);
-extern s32 sceSifCheckStatRpc(void *cd);
 extern void sceCdDelayThread(u16 ticks);
 extern s32 sceCdSync(s32 mode);
 extern s32 sceCdLayerSearchFile(addr_t file, const char *name, s32 layer);
@@ -91,13 +83,10 @@ void sceCdDelayThread(u16 ticks);
 cdvdCallback_t sceCdCallback(cdvdCallback_t func);
 void _sceCd_cd_read_intr(void *argument);
 extern s32 cdvdScmdSema __attribute__((section(".data")));
-extern void sceSifRemoveCmdHandler(s32 command);
 void cmd_sem_init(void);
 void cdvd_exit(void);
 cdvdPowerCallback_t sceCdPOffCallback(cdvdPowerCallback_t callback, void *argument);
 extern void cmd_sem_init(void);
-extern s32 PollSema(s32 sema);
-extern void sceSifInitRpc(s32 mode);
 extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
 extern s32 cdvdNcmdLastCommand __attribute__((section(".data")));
 extern s32 cdvdNcmdInit;

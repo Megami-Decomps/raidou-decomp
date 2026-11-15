@@ -6,6 +6,7 @@
 #include "sdfDraw.h"
 #include "sdfTex.h"
 #include "sdfPacketBuff.h"
+#include "itfMisc.h"
 
 /* Font chains and their children have different pool strides. Only the
  * coordinates, color word and links used by this unit are exposed. */

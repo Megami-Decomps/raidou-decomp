@@ -67,8 +67,6 @@ typedef struct ttyState_t {
 } ttyState_t;
 
 extern ttyState_t ttyState;
-extern s32 sceDeci2ExRecv(s32 handle, void *buffer, u16 length);
-extern s32 sceDeci2ExSend(s32 handle, void *buffer, u16 length);
 extern const char ttyMsgPacketTooLarge[];
 extern const char ttyMsgReceiveError[];
 extern const char ttyMsgSendError[];
@@ -92,11 +90,8 @@ typedef struct ttyPacket_t {
 
 extern ttyPacket_t ttySendPacket;
 extern ttyPacket_t ttyReceivePacket;
-extern s32 sceDeci2ReqSend(s32 handle, s8 destination);
-extern s32 sceDeci2Poll(s32 handle);
 s32 sceTtyWrite(const char *buffer, s32 length);
 s32 sceTtyRead(char *buffer, s32 length);
-extern void FlushCache(s32 mode);
 
 extern s32 sceDeci2Open(u16 protocol, void *argument,
                        void (*handler)(s32, s32, void *));
@@ -472,8 +467,6 @@ typedef struct deci2Registration_t {
 } deci2Registration_t;
 
 s32 sceDeci2Open(u16 protocol, void *argument, deci2Handler_t handler);
-s32 sceDeci2ReqSend(s32 handle, s8 destination);
-s32 sceDeci2Poll(s32 handle);
 
 typedef struct deci2Transfer_t {
     s32 handle;
@@ -481,8 +474,6 @@ typedef struct deci2Transfer_t {
     u32 length;
 } deci2Transfer_t;
 
-s32 sceDeci2ExRecv(s32 handle, void *buffer, u16 length);
-s32 sceDeci2ExSend(s32 handle, void *buffer, u16 length);
 
 void QueuePeekWriteDone(ttyQueue_t *queue)
 {

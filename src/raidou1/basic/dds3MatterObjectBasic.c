@@ -9,10 +9,9 @@
 #include "sdk_libc.h"
 #include "dds3SceneBasic.h"
 #include "dds3Basic.h"
+#include "dds3WorldBasic.h"
+#include "dds3ObjectBase.h"
 
-extern void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
-extern void dds3ObjectBaseOnFlag(dds3Basic_t *basic, u32 flag);
-extern dds3Basic_t *dds3GetControlScene(void);
 dds3Basic_t *dds3AddMatterObjectBasic(s32 serialID, f32 *pos, f32 *rot);
 void dds3DeleteMatterObjectBasic(dds3Basic_t *aPtr);
 void dds3MatterObjectBasicSetOt(dds3Basic_t *aPtr, s32 idx);

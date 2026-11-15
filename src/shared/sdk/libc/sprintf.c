@@ -266,7 +266,6 @@ s32 _sprintf_r(_reent *r, char *str, const char *fmt, ...);
 #define STRTOL_MIN 0x8000000000000000UL
 
 s32 vfprintf(FILE *fp, const char *fmt, va_list ap);
-s32 exponent(char *output, s32 value, s32 marker);
 
 /* Little-endian IEEE binary64 word view used by the numeric helpers. */
 typedef union libcDoubleBits_t {

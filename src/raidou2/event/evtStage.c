@@ -9,15 +9,16 @@
 #include "dds3Basic.h"
 #include "dds3PathBasic.h"
 #include "evtStage.h"
+#include "dds3WorldBasic.h"
+#include "dds3ObjectBase.h"
+#include "dds3MoverBasic.h"
 
 u32 dds3AllocObjectId(void);
 extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 serialID, f32 *pos, f32 *rot);
-struct dds3Basic_t *dds3GetControlScene(void);
 
 #include "basic.h"
 #include "dds3obj.h"
 
-void dds3DeleteScene(struct dds3Basic_t *scene);
 
 enum {
     EVT_WORLD_SLOT_MOVIE = 3,
@@ -40,11 +41,7 @@ enum evtProcessState {
 
 extern const char evtKillFieldScriptFormat[];
 void dds3PathBasicPauseOn(dds3PathBasicControl_t *value);
-dds3PathBasicControl_t *dds3ObjectBaseGetPathControl(void *pObjectBasic);
 void dds3PathBasicPauseOff(dds3PathBasicControl_t *pControl);
-void dds3MoverBasicSetPath(dds3Basic_t *pMoverBasic, dds3Basic_t *pPathBasic);
-extern void dds3MoverBasicMakePath(dds3Basic_t *pMoverBasic);
-void *dds3ObjectBaseGetControlBasic(dds3Basic_t *pObjectBasic, s32 itemType);
 dds3PathBasicControl_t *dds3MoverBasicGetPathControl(struct dds3Basic_t *pMoverBasic);
 extern void dds3PathBasicLoopOn(struct dds3PathBasicControl_t *pControl);
 extern void dds3PathBasicLoopOff(struct dds3PathBasicControl_t *pControl);
@@ -59,8 +56,6 @@ typedef struct evtNodeInner_t {
     void *node;
 } evtNodeInner_t;
 
-void dds3ObjectBaseMatterAnimeSpeed(struct dds3Basic_t *pObjectBasic, u32 mode);
-struct dds3Basic_t *dds3GetActiveScene(void);
 void evtFreeStage(void);
 void evtFreeAllUnit(void);
 void evtKillFieldScript(void);

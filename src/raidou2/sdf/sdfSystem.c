@@ -10,6 +10,9 @@
 #include "sdfTex.h"
 #include "sdfGsMemory.h"
 #include "sdf_PadManager.h"
+#include "sdfFileIO.h"
+#include "sdfSystem.h"
+#include "sdfImageSet.h"
 
 /* Native 0x30-byte EE thread descriptor passed to CreateThread. */
 typedef struct {
@@ -41,20 +44,8 @@ extern s32 AddIntcHandler2(s32 channel, s32 handler, s32 argument, s32 next);
 
 #include "sdk_libkernl.h"
 
-extern s32 AddSbusIntcHandler(s32 channel, s32 handler);
-extern void RemoveIntcHandler(s32 channel, s32 handlerId);
-extern void RemoveDmacHandler(s32 channel, s32 handlerId);
-extern void RemoveSbusIntcHandler(s32 channel);
-extern s32 SetAlarm(u16 delay, void (*callback)(s32, s32, s32), void *argument);
-extern s32 WaitSema(s32 semaphore);
-extern s32 SignalSema(s32 semaphore);
-extern void ExitDeleteThread(void);
-extern void TerminateThread(s32 threadId);
 extern void DeleteThread(s32 threadId);
-extern void WakeupThread(s32 threadId);
-extern void sdfFileCmdThreadCheckPrio(void);
 extern void sdfChipInit(u32 aSize);
-extern void sdfImageSetInit(void);
 extern void sdfGrInit(u32 aPacketBuffSize);
 extern void sdf3DInit(s32 aNestLevelLimit);
 extern void sdfCoreDrawInit(s32 buffSize);
@@ -117,13 +108,9 @@ extern u8 sdfCdClock;
 extern s32 sdfVblankSema;
 extern s32 CreateSema(sdfSemaParam_t *param);
 extern sdfThCB_t *sdfFindThreadNode(s32 threadId);
-extern s32 GetThreadId(void);
-extern void ChangeThreadPriority(s32 thid, s32 prio);
-extern s32 SleepThread(void);
 extern void sdfIpuRemoveHandler(sdfHandlerNode_t *handler);
 extern void sdfDeleteTrackedThread(sdfThCB_t *node);
 extern void *sdfChipAllocDirect(s32 aSize);
-extern s32 CancelWakeupThread(s32 thid);
 s32 sdfCreateSema(s32 initCount, s32 maxCount, u32 option);
 s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priority);
 void *sdfAllocAuto(s32 size);

@@ -242,9 +242,6 @@ typedef struct { u8 bytes[4]; } fsVersionTag_t;
 
 typedef struct { void *receiveBuffer; } fsRegistrationPacket_t;
 
-extern s32 sceSifCallRpc(void *client, s32 function, s32 mode, void *send,
-                         s32 sendBytes, void *receive, s32 receiveBytes,
-                         void *endFunction, void *endParameter);
 
 typedef struct fsCloseRequest_t {
     s32 sema;

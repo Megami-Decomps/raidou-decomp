@@ -9,6 +9,7 @@
 #include "dds3Basic.h"
 #include "evtUnitManager.h"
 #include "dds3LightObjectBasic.h"
+#include "dds3ObjectBase.h"
 
 typedef struct
 {
@@ -63,8 +64,6 @@ typedef struct fldResourceLight_t
     f32 AmbientB;
 } fldResourceLight_t;
 
-extern void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 flag);
-extern void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
 s32 lightconstructor(dds3Basic_t *basic);
 void lightdestructor(dds3Basic_t *basic);
 s32 lightmainprocedure(dds3Basic_t *basic);

@@ -3,6 +3,8 @@
 #include "libsdf.h"
 #include "ps2asm.h"
 #include "sdfMemory.h"
+#include "sdfSystem.h"
+#include "sdfImageSet.h"
 
 /* GS pixel storage modes, the values of sdfGsMemSlice_t.pixelFormat. */
 enum sdf_psm
@@ -72,20 +74,13 @@ typedef struct sdfImageSetReqParam
     u16 h;
 } sdfImageSetReqParam_t;
 
-extern s32 WaitSema(s32 semaId);
-extern s32 SignalSema(s32 semaId);
-extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
 extern void *sdfChipAllocZeroDirect(u32 aSize);
 extern s32 sdfChipCheck(void *aPtr);
-extern s32 GetThreadId(void);
 
 #include "sdk_libkernl.h"
 
-extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
 extern void *sceDmaGetChan(s32 channel);
 extern s32 sceDmaSend(void *chan, void *packet);
-extern void FlushCache(s32 mode);
-extern void SleepThread(void);
 extern sdfImageSetCb_t sdfImageSetCb;
 extern u64 sdfImageSetTexFlushPacket[];
 s32 sdfImageDataSize(u32 format, s32 width, s32 height);

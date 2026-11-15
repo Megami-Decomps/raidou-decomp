@@ -2,6 +2,7 @@
 #include "sdfMemory.h"
 #include "sdfSound.h"
 #include "scrTraceCode.h"
+#include "dds3KernelCore.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -43,9 +44,6 @@ s32 fldCmdSetStateFlag(void);
 #include "sdk_libkernl.h"
 
 void Exit(s32 status);
-void FlushCache(s32 mode);
-u32 dds3GetProcessData(const dds3ProcessID_t *task);
-s32 sceSifDmaStat(s32 transferId);
 
 /* Return the descriptor's payload base as a byte address, not the descriptor. */
 

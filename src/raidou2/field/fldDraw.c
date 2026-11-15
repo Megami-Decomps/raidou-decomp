@@ -20,6 +20,10 @@
 #include "sdfDraw.h"
 #include "sdfTex.h"
 #include "sdfPacketBuff.h"
+#include "sdf3DPrim.h"
+#include "sdfSystem.h"
+#include "sdfPrim.h"
+#include "sdf_Decomp.h"
 
 typedef struct fldSpriteCorner_t fldSpriteCorner_t;
 
@@ -72,11 +76,6 @@ s32 sdf2DLinkTexPacket(sdfDrawTag_t *aTag, sdfTexHandle_t *aTexHndl, s32 aCtx);
 sdfGrPacketHeader_t *sdf2DAllocSprite(s32 aNumOfSpr);
 extern saddr_t sdf2DGetPrimPtr(saddr_t);
 
-extern void sdfPrimLinkGt4(
-    sdfDrawTag_t *aTag, s32 aPrim, s32 aX0, s32 aY0, s32 aU0, s32 aV0,
-    s32 aColor0, s32 aX1, s32 aY1, s32 aU1, s32 aV1, s32 aColor1, s32 aX2, s32 aY2,
-    s32 aU2, s32 aV2, s32 aColor2, s32 aX3, s32 aY3, s32 aU3, s32 aV3, s32 aColor3,
-    s32 aZ, s32 (*aAllocator)(s32));
 
 sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 extern u8 sdfViewMatrix[];
@@ -93,25 +92,14 @@ extern void sdf3DMakeDirectRefPacket(dmaPacketHeader_t *, addr_t, s32);
 extern void sdfBillBoardMakeTMPacket(u8 *, const f32 *);
 extern void sdfBillBoardMake1(u8 *, const sdfVector4_t *, u32, const UV_t *, const VTX_t *);
 
-sdfGrPacketHeader_t *effDebugDrawWireModel(const sdfVector4_t *vertices, const u32 *colors,
-                                                 s32 vertexCount, u32 primitiveFlags);
 
 extern sdfVector4_t fldTestLineVertex[];
 extern u32 fldTestLineColor[];
 
-extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag,
-                              s32 (*aAllocator)(s32));
 
-extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
-                              s32 (*aAllocator)(s32));
 
-u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
-void sdfFreeAutoDelayed(void *data);
-void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *aPkt);
 extern u8 fldDbgFmtDec[];
 extern void *fldDrwZBuf;
-extern void *sdfAllocAuto(u32 size);
-extern void sdfFreeAutoDelayed(void *p);
 extern sdfGrOt_t sdfGrOtTable[85];
 extern s32 rsetFrameMaskOtOffset;
 

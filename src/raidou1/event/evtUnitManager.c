@@ -11,6 +11,7 @@
 #include "dds3SceneBasic.h"
 #include "evtUnitManager.h"
 #include "dds3PathBasic.h"
+#include "dds3WorldBasic.h"
 
 f32 GetSplineLength(dds3PathBasicControl_t *path);
 
@@ -56,7 +57,6 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-struct dds3Basic_t *dds3GetActiveScene(void);
 evtUnit_t *evtGetUnitHandle2(dds3Basic_t *unit);
 s32 evtDeleteUnitHandle(evtUnit_t *h);
 
@@ -72,7 +72,6 @@ typedef enum {
 #include "basic.h"
 #include "dds3obj.h"
 
-struct dds3Basic_t *dds3GetControlScene(void);
 extern void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast);
 s32 evtUnitRotationTarget(evtUnit_t *h, f32 *pos, f32 radio);
 void dds3GetPosPoseSetMCR(dds3Basic_t *object, u128 *vector);

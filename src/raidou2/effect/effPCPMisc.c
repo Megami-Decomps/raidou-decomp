@@ -10,6 +10,8 @@
 #include "sdfVu0.h"
 #include "sdfMath.h"
 #include "sdfPacketBuff.h"
+#include "effMath.h"
+#include "effManager.h"
 
 struct dds3ModelResrc_t;
 
@@ -2391,12 +2393,10 @@ dds3Effect_PartialMultiBlur_t *dds3EffectPartialMultiBlurCreate(const dds3Effect
 dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *pParam);
 void dds3EffectFilter(effResourceRectDrawParams_t *params);
 void dds3EffectBlur(dds3Effect_Blur_t *quad);
-u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 effHandle_t *dds3EffectCopy(const effHandle_t *source);
 
 /* Copy one 128-bit vector from the read-only source to destination storage. */
 void dds3BillboardSetPosition(void *hBillboard, const void *pPos);
-void dds3EffectSetPosition(struct effHandle_t *pData, const void *pPos);
 struct billHandle_t *dds3BillboardGeneral(s32 number);
 effPCPThunderSpherePoly_t *effPCPThunderSpherePolyCreate(effPCPThunderSpherePolyParam_t *parameters);
 effPCPThunderSpherePolyParam_t *effPCPThunderSpherePolyGetParam(effPCPThunderSpherePoly_t *pThunderPoly);
@@ -2418,7 +2418,6 @@ void effEveBEDDelete(struct effBTL_t *hEveBED);
 extern u8 effPCP_ShockWave01_ThunderSpherePoly_Param[];
 extern effPCP_ThunderPolyParam_t effPCPMZiodin01ThunderParam[];
 extern u8 effPCP_Houden01_ThunderSpherePoly_Param[];
-extern s32 effPCPBlurScreenOffset(f32 value);
 
 /* Advance caller-owned state, returning its next 32-bit value. NULL selects
  * the shared effect RNG state. */
@@ -2554,7 +2553,6 @@ typedef struct {
 extern u16 effPCPMudoSampleStep[8];
 extern f32 effPCPMudoSampleScale[8];
 extern const f32 effPCPRadiateTBParam[4] __attribute__((aligned(16)));
-void effScreenOffset(void);
 effHandle_t *dds3EffectLoad(effPCPAgiraoFirePartList_t *pD3P);
 void effPCPThunderSpherePolySetColor(effPCPThunderSpherePoly_t *hData, u32 abgr);
 void effPCPThunderSpherePolySetPosition(void *hData, const void *pPos);

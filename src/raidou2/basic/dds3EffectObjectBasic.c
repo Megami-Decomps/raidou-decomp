@@ -15,6 +15,7 @@
 #include "dds3SceneBasic.h"
 #include "dds3Basic.h"
 #include "dds3EffectObjectBasic.h"
+#include "dds3ObjectBase.h"
 
 typedef struct
 {
@@ -194,12 +195,9 @@ typedef struct effOwnerBillParam_t {
 void dds3EffectDelete(effHandle_t *pData);
 void effEveBEDCutDelete(effEveBEDCutHandle_t *hEveBEDCut);
 void effEveBEDDelete( effBTL_t *hEveBED);
-extern void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 mask);
 void dds3EffectObjectBasicCalcFldEx(dds3Basic_t *basic);
-u8 dds3ObjectBaseCheckFlag(struct dds3Basic_t *pObjectBasic, u32 flag);
 void dds3EffectDraw(effHandle_t *pData);
 void effEveBEDCutDraw(effEveBEDCutHandle_t *hEveBEDCut);
-void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
 dds3Basic_t *AddP2AEffect(void *p2a, void *pos, s32 rot);
 extern billHandle_t *dds3BillboardFileLoad(s32 kind, const char *path);
 dds3Basic_t *AddTMXEffect(void *tmx, void *pos, s32 rot);

@@ -70,7 +70,6 @@ typedef struct ttyPacket_t {
     u8 payload[308];
 } ttyPacket_t;
 
-extern void FlushCache(s32 mode);
 
 /* In ee-gcc 2.9, next_arg names the first incoming stack argument. These
  * one-fixed-argument wrappers save the seven remaining argument GPRs in
@@ -459,8 +458,6 @@ extern void *tlbHandler;
 extern void *debugHandlers[16];
 extern void _kTLBException();
 extern void _kDebugException();
-extern void *SetVTLBRefillHandler(s32 index, void *handler);
-extern void *SetVCommonHandler(s32 index, void *handler);
 void *SetTLBHandler(void *handler);
 void *SetDebugHandler(s32 index, void *handler);
 s32 kCopy_3(u32 *dst, const u32 *src, u32 count);

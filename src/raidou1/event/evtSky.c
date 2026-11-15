@@ -1,6 +1,7 @@
 #include "common.h"
 #include "sdfFrame.h"
 #include "kernel.h"
+#include "dds3KernelCore.h"
 
 extern char evtSkyProcName[];
 extern u16 skyanime;
@@ -10,8 +11,6 @@ extern s16 skyatarget;
 extern s16 skyabase_par;
 extern s16 fldSkyGetAlphaOfs(void);
 extern void fldSkySetAlphaOfs(s32 alp);
-extern dds3ProcessID_t *dds3SearchProcessName(char *namestr);
-extern s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 void evtUpdateSkyAlpha(void);
 void evtSetSkyAlpha(s32 frame, s32 a);
 u16 evtCheckSkyAlphaAnime(void);

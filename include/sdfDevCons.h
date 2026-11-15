@@ -5,4 +5,6 @@
 
 void *sdfDevPrintf(u32 x, u32 y, u32 z, s32 attr, const char *format, ...);
 
+void sdfDevConsDrawAll(void);
+
 #endif

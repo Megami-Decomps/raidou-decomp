@@ -1,4 +1,6 @@
 #include "common.h"
+#include "dds3KernelCore.h"
+#include "itfMisc.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -47,7 +49,6 @@ enum {
 };
 
 /* Return the scheduler state, mapping unregistered or invalid states to DETACHED. */
-dds3TaskState_t dds3GetProcessStat(const struct dds3ProcessID_t *task);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -120,7 +121,6 @@ union EffSpriteColor;
 void itfDrawBackgroundSprite(void);
 extern s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task);
 s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task);
-u32 itfCamp(void);
 
 /* Drop the held texture reference without clearing the global. */
 void itfReleaseBackgroundSpriteTexture(void) {

@@ -8,6 +8,9 @@
 #include "dds3SceneBasic.h"
 #include "evtStage.h"
 #include "evtSound.h"
+#include "dds3WorldBasic.h"
+#include "evtEventPack.h"
+#include "effEvent.h"
 
 dds3ProcessID_t *dds3SearchProcessName(const char *namestr);
 dds3ProcessID_t *evtSearchEventPack(u32 eventno);
@@ -98,7 +101,6 @@ typedef struct beMotionSeTable_s {
     u8 unk08[8];
 } beMotionSeTable_s;
 
-struct dds3Basic_t *dds3GetActiveScene(void);
 
 struct FileRequest;
 
@@ -117,8 +119,6 @@ void evtWaitEventPackLoad(dds3ProcessID_t *task);
 extern void fileSyncAll(void);
 extern void Eve_DistortionBlurSetDefTex(void);
 extern void Eve_PartialMultiBlurSetDefTex(void);
-extern void Eve_RippleBlurSetDefTex(void);
-extern void Eve_PartialMultiFilterSetDefTex(void);
 
 dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
                          s32 v3, dds3ProcessFunc_t drawExit,

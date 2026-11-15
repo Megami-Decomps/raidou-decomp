@@ -11,6 +11,8 @@
 #include "dds3Basic.h"
 #include "evtUnitManager.h"
 #include "dds3LightObjectBasic.h"
+#include "dds3WorldBasic.h"
+#include "dds3ObjectBase.h"
 
 /* Declared here because no header carries these. */
 
@@ -19,19 +21,11 @@ typedef struct {
     u32 flag;
 } dds3LinkedLightWork_t;
 
-extern void dds3ObjectBaseFreeModelHandle(dds3Basic_t *pObjectBasic);
-extern dds3Basic_t *dds3GetControlScene(void);
-extern u16 dds3GetBasicArrayCount(dds3BasicArrayHandle_t *hndl);
-extern void dds3FreeBasicArrayHandle(dds3BasicArrayHandle_t *hndl);
-extern s32 dds3SetFirstBasicArray(dds3BasicArrayHandle_t *hndl);
-extern dds3Basic_t *dds3GetBasicArray(dds3BasicArrayHandle_t *hndl);
-extern s32 dds3SetNextBasicArray(dds3BasicArrayHandle_t *hndl);
 void dds3UnitObjectBasicEL_LinkFree(dds3Basic_t *unitBasic);
 void dds3DeleteUnitObjectBasic(dds3Basic_t *aPtr);
 s32 dds3GetStatusUnitObjectBasic(dds3Basic_t *aPtr);
 struct evtUnit_t *dds3GetUnitHandleObjectBasic(dds3Basic_t *b);
 void dds3UnitObjectBasicSetOt(dds3Basic_t *aPtr, s32 idx);
-extern void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 mask);
 void dds3UnitObjectBasicDestructor(dds3Basic_t *aPtr);
 extern void dds3UnitObjectBasicEL_Link(dds3Basic_t *basic);
 extern const f32 dds3UnitAdditionalRotation[4];

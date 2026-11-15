@@ -439,7 +439,6 @@ typedef struct execArgumentBlock_t {
     char strings[1];
 } execArgumentBlock_t;
 
-extern s32 Deci2Call(s32 command, void *packet);
 extern u8 deci2PacketStorage[];
 typedef void (*deci2Handler_t)(s32 event, s32 parameter, void *argument);
 

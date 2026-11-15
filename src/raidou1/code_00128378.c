@@ -1,5 +1,6 @@
 #include "common.h"
 #include "evtMoon.h"
+#include "dds3ObjectBase.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -27,8 +28,6 @@ u32 dds3MatterObjectBasicGetAlpMode(const struct dds3Basic_t *object);
 void dds3MatterObjectBasicSetAlpMode(struct dds3Basic_t *object, u32 value);
 
 /* Set the callback on an object's slot-1 handler; returns whether it exists. */
-u8 dds3ObjectBaseSetPrimaryControl(struct dds3Basic_t *object,
-                               Dds3MoverUpdate update);
 
 WorldIndexNode *dds3SceneBasicGetList(dds3Basic_t *object, s32 kind);
 

@@ -6,6 +6,9 @@
 #include "sdf_resource.h"
 #include "sdfPacketBuff.h"
 #include "sdk_libkernl.h"
+#include "sdfSystem.h"
+#include "sdfDevCons.h"
+#include "sdfImageSet.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
 extern sceDmaChan *sceDmaGetChan(u32 channel);
@@ -76,9 +79,6 @@ extern u16 sdfReqDrawDelaySleepCount;
 extern u32 sdfDrawFrameCount;
 extern u8 sdfDrawImageTrans;
 extern volatile u8 sdfDrawSyncFlag;
-extern u32 sdfGetRunTimeCountBase(void);
-extern u32 sdfGetRunTimeCount(u32 aBaseTime);
-extern void sdfWaitVblank(s32 count);
 
 struct sdfPrimTransElem_t;
 
@@ -389,15 +389,10 @@ extern u8 sdfGrDrawFrameId;
 extern u8 sdfGrDrawFirstFlag;
 extern u32 sdfGrDrawFrameTagHead;
 extern s32 dds3GsThreadId;
-extern s32 SignalSema(s32 sema);
-extern s32 SleepThread(void);
-extern void FlushCache(s32 mode);
 extern u64 sceGsGetIMR(void);
 extern u64 sceGsPutIMR(u64 mask);
 extern void sdfDeliverDrawStart(s32 frameId, s32 bufferId);
 extern void sdfDeliverDrawEnd(s32 mode, s32 frameId, s32 halfOffset);
-extern void sdfImageSetTrans(void);
-extern void sdfDevConsDrawAll(void);
 extern void sdfDelayedResrcProc(void);
 void sdfGrDrawFrame(void);
 void sdfDrawSync(void);

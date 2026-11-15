@@ -23,4 +23,6 @@ s32 strcmp(const char *left, const char *right);
 
 char *strcat(char *dst, const char *src);
 
+s32 exponent(char *output, s32 value, s32 marker);
+
 #endif

@@ -2,12 +2,10 @@
 #include "kernel.h"
 #include "basic.h"
 #include "event.h"
+#include "dds3KernelCore.h"
 
 extern const char evtFrameVarName[];
 
-extern dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
-                                         s32 v3, dds3ProcessFunc_t drawExit,
-                                         dds3ProcessFunc_t deleteExit, void *p);
 
 s32 FrameVarProcess(dds3ProcessID_t *id);
 dds3ProcessID_t *evtInitFrameVar(void);

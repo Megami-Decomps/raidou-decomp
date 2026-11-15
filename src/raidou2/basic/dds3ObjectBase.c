@@ -10,6 +10,8 @@
 #include "dds3EffectObjectBasic.h"
 #include "dds3LightObjectBasic.h"
 #include "dds3CameraObjectBasic.h"
+#include "dds3ObjectBase.h"
+#include "dds3MoverBasic.h"
 
 extern dds3ObjectBaseControlWorkData_t *dds3EventObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
 
@@ -29,11 +31,6 @@ typedef struct
 
 s32 dds3ObjectBaseSetPrimaryControl(dds3Basic_t *basic, dds3BasicControlProc_t func);
 u32 BasicTypeToItemType(u32 type);
-dds3Basic_t *dds3AddMoverBasic(dds3Basic_t *pObjectBasic);
-void dds3MoverBasicSetCallBackPrimaryControl(dds3Basic_t *mover, dds3BasicControlProc_t func);
-void dds3MoverBasicSetPath(dds3Basic_t *pMoverBasic, dds3Basic_t *pPathBasic);
-void dds3MoverBasicMakePath(dds3Basic_t *pMoverBasic);
-void dds3MoverBasicFreePath(dds3Basic_t *pMoverBasic);
 dds3PathBasicControl_t *dds3MoverBasicGetPathControl(dds3Basic_t *pMoverBasic);
 dds3Basic_t *dds3ObjectBaseGetControlBasic(dds3Basic_t *pObjectBasic, s32 itemType);
 dds3Basic_t *dds3ObjectBaseSetControlBasic(dds3Basic_t *pObjectBasic, dds3Basic_t *pItemBasic);

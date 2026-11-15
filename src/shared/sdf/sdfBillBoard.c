@@ -4,6 +4,7 @@
 #include "sdf_lighting.h"
 #include "sdk_libc.h"
 #include "sdfPacketBuff.h"
+#include "sdfBillBoard.h"
 
 /* Declared here because no header carries these. */
 

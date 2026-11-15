@@ -5,8 +5,8 @@
 #include "newdata.h"
 #include "ps2asm.h"
 #include "sdfDraw.h"
+#include "sdfDevCons.h"
 
-extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr, const char *aStr, ...);
 extern s32 DispBaseData(dds3Basic_t *basic, s32 x, s32 y, sdfDrawTag_t *tag);
 extern char dds3BasicPosLabel[];
 extern char dds3BasicRotLabel[];

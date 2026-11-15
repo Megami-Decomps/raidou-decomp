@@ -266,7 +266,6 @@ s32 strcasecmp(const char *left, const char *right);
 
 /* NON_MATCHING: formatter control flow, frame and allocation remain different. */
 extern const u8 _ctype_[264];
-s32 exponent(char *output, s32 value, s32 marker);
 
 /* Little-endian IEEE binary64 word view used by the numeric helpers. */
 typedef union libcDoubleBits_t {

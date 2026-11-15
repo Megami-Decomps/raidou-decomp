@@ -133,4 +133,31 @@ SIZE_CHECK(instanceMesSizeCheck, instanceMes_tag, 0x22C);
 /* pinst[window].mes: NULL while the window is free. */
 typedef struct { instanceMes_tag *mes; u8 unk04[0x10]; } itfMesInstance_t;
 
+s32 MesMngSelect(void);
+s32 itfCommandQueueHeldPanelEntry(void);
+u32 itfMesMngCloseSelectWindow(void);
+s32 itfMesMngCloseWindow(void);
+s32 itfMesMngIgnoreConfig(void);
+s32 itfMesMngInitialize(void *data);
+void itfMesMngMarkBitStat(s32 id, u32 flag);
+s32 itfMesMngMaskSelect(void);
+s32 itfMesMngMessage(void);
+u32 itfMesMngOpenSelectWindow(void);
+s32 itfMesMngOpenWindow(void);
+void itfMesMngRelease(s32 id);
+s32 itfMesMngSelect(void);
+s32 itfMesMngSelectDefKey(void);
+void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
+s32 itfMesMngSetMesPosDefault(void);
+void itfMesMngSetMesPosition(s32 id, s32 x, s32 y);
+s32 itfMesMngSetMesPositionScript(void);
+void itfMesMngSetSelPhase(s32 msgid, s16 phase);
+void itfMesMngSetVarImmediate(s32 id, u32 index, const char *pstr);
+s32 itfMesMngSetVarScr(void);
+s32 itfMesMngValidateNext(void);
+s32 itfMesMngWindowType(void);
+s32 itfMesMngWindowTypeAlpha(void);
+s32 itfMesMng_SEL_SELNO(void);
+s32 itfPanelAcquireHold(void);
+
 #endif

@@ -4,6 +4,8 @@
 #include "sdfDraw.h"
 #include "sdfPacketBuff.h"
 #include "sdfQuat.h"
+#include "sdfFile.h"
+#include "sdf_Decomp.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -22,12 +24,9 @@
 
 /* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
  * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
-void sdfFileClose(sdfFileCmdHandle_t *state);
-u32 sdfFileLength(sdfFileCmdHandle_t *state);
 
 /* Stable state APIs. Callback factories keep caller-specific callback types. */
 sdfFileCmdHandle_t *sdfFileOpen(const char *path);
-void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
@@ -881,8 +880,6 @@ u16 Start_sbtl(s32 flags);
 
 #include "newdata.h"
 
-struct SdfPacket *effDebugDrawWireModel(const f32 vertices[][4], const u32 *colors,
-                                                 s32 vertexCount, u32 primitiveFlags);
 
 /* Return the descriptor's payload base as a byte address, not the descriptor. */
 

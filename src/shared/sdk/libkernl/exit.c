@@ -436,7 +436,6 @@ char *SetArg(const char *path, s32 count, const char *const *arguments);
 extern void InitTLB(void);
 void TerminateLibrary(void);
 extern const char execDefaultPath[];
-extern s32 _ExecPS2(void *entry, void *gp, s32 count, char **arguments);
 s32 ExecPS2(void *entry, void *gp, s32 count, const char *const *arguments);
 extern void libc_2DBAE0(const char *path, s32 count, char **arguments);
 void LoadExecPS2(const char *path, s32 count, char **arguments);

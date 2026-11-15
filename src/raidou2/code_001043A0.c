@@ -2,6 +2,8 @@
 #include "sdfDraw.h"
 #include "sdfPacketBuff.h"
 #include "dds3GlobalWork.h"
+#include "dds3KernelCore.h"
+#include "sdfPrim.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -14,16 +16,12 @@
 #include "dds/dds3_task_lifecycle.h"
 #include "dds/evt_frame_state_packet.h"
 
-dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
 
 /*
  * Allocate a task and place it in scheduler queues. Returns NULL on allocation
  * failure. On success, the scheduler owns the task handle and frees it after
  * its destroy callback; callers may borrow the handle only until finalization.
  */
-dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay,
-                         s32 destroyDelay, dds3ProcessFunc_t update,
-                         dds3ProcessShutdownFunc_t destroy, u32 userValue);
 
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
@@ -32,15 +30,8 @@ dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay
 /* Return borrowed endpoints; callers may inspect list nodes but do not own them. */
 sdfGsMemSlice_t *sdfGsMemGetLinkHead(void);
 
-void sdfPrimLinkLine(
-    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
-    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
 
-void sdfPrimLinkRect(
-    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
-    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
 
-void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *packet);
 
 /* The active resource registry contains sdfTexHandle_t nodes; lookup compares the
  * texture's resource key and follows its previous-node link. A match is borrowed:

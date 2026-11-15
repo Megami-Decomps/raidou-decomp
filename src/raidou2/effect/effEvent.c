@@ -14,6 +14,8 @@
 #include "sdfMath.h"
 #include "sdfQuat.h"
 #include "effBlur_Filter.h"
+#include "effMath.h"
+#include "effEvent.h"
 
 typedef struct effEveBEDParams_t {
     f32 center[4];
@@ -265,7 +267,6 @@ extern f32 aViewTarget[4];
 void dds3BillboardSetMode(struct dds3Billboard_t *hBillboard, s32 mode);
 
 /* Blend packed RGBA8888 colors; t >= 1 returns colorB unchanged. */
-u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 
 /* Copy one 128-bit vector from the read-only source to destination storage. */
 void dds3BillboardSetPosition(void *hBillboard, const void *pPos);

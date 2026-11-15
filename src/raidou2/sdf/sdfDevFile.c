@@ -4,6 +4,7 @@
 #include "ps2asm.h"
 #include "sdfMat.h"
 #include "sdfTex.h"
+#include "sdfFile.h"
 
 void *sdfDevLoadFile(const char *aFileName, u32 *aOutData, u32 *aOutSize, s32 aAlign);
 
@@ -105,12 +106,9 @@ u32 sdfMemLock(sdfMemHandle_t *aHandle);
 
 void sdfMemUnlock(sdfMemHandle_t *aHandle);
 sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-void sdfFileClose(void *aHandle);
-u32 sdfFileLength(void *aHandle);
 
 /* Open a path using the shared reply callback and wait for its initial completion. */ sdfFileCmdHandle_t *sdfFileOpen(const char *path);
 
-s32 sdfFileRead(void *aHandle, void *aPtr, s32 aLeng);
 void *sdfDevLoadFile(const char *name, u32 *outData, u32 *outSize, s32 extra);
 sdfItemArray_t *sdfTexSetTB(const sdfTextureOffsetListHeader_t *aData);
 

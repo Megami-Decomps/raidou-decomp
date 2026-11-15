@@ -1,5 +1,6 @@
 #include "common.h"
 #include "sdfSound.h"
+#include "effPCPMisc_00224D10.h"
 
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1

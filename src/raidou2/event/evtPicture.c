@@ -3,6 +3,7 @@
 #include "libsdf.h"
 #include "sdfFrame.h"
 #include "evtPicture.h"
+#include "dds3KernelCore.h"
 
 /* 0x68-byte picture work block. InitPictureProcessData sets the defaults and
  * evtPictureProcess1 steps the three interpolators. */
@@ -62,14 +63,9 @@ typedef struct
     u32 components[4];
 } evtPictureColor_t;
 
-extern dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
-                                         dds3ProcessFunc_t drawExit, dds3ProcessFunc_t deleteExit,
-                                         void *p);
 
-extern void *dds3GetProcessData(dds3ProcessID_t *id);
 extern evtPictureProcessData_t *InitPictureProcessData(void);
 extern s32 evtPictureProcess1(dds3ProcessID_t *id);
-extern s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 void evtPictureDrawOn(dds3ProcessID_t *id);
 void evtPictureDrawOff(dds3ProcessID_t *id);
 void evtKillPictureProcess(dds3ProcessID_t *id);

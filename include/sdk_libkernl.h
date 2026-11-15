@@ -44,4 +44,52 @@ void EnableIntc(s32 channel);
 s32 sceSifAllocIopHeap(s32 size);
 s32 sceSifInitIopHeap(void);
 
+s32 AddSbusIntcHandler(s32 channel, s32 handler);
+s32 CancelWakeupThread(s32 thid);
+void ChangeThreadPriority(s32 thid, s32 prio);
+s32 Deci2Call(s32 command, void *packet);
+s32 DeleteSema(s32 sema);
+void ExitDeleteThread(void);
+void FlushCache(s32 mode);
+void GetOsdConfigParam(u32 *param);
+s32 GetThreadId(void);
+u64 GsGetIMR(void);
+u64 GsPutIMR(u64 imr);
+s32 PollSema(s32 sema);
+s32 ReferThreadStatus(s32 threadId, void *status);
+s32 RemoveDmacHandler(s32 channel, s32 handlerId);
+void RemoveIntcHandler(s32 channel, s32 handlerId);
+void RemoveSbusIntcHandler(s32 channel);
+s32 RotateThreadReadyQueue(s32 priority);
+s32 SetAlarm(u16 delay, void (*callback)(s32, s32, s32), void *argument);
+void SetOsdConfigParam(const u32 *param);
+void *SetVCommonHandler(s32 index, void *handler);
+void SetVSyncFlag(volatile u32 *flag, volatile u64 *result);
+void *SetVTLBRefillHandler(s32 index, void *handler);
+s32 SignalSema(s32 sema);
+s32 SleepThread(void);
+s32 SuspendThread(s32 threadId);
+void TerminateThread(s32 threadId);
+s32 WaitSema(s32 sema);
+s32 WakeupThread(s32 threadId);
+s32 _ExecPS2(void *entry, void *gp, s32 count, char **arguments);
+s32 iSignalSema(s32 sema);
+s32 sceSifDmaStat(s32 transferId);
+u32 sceSifGetReg(u32 registerId);
+s32 sceSifSetReg(u32 registerId, u32 value);
+void sceSifStopDma(void);
+
+s32 isceSifSendCmd(s32 command, void *packet, s32 packetBytes, void *source, void *destination, s32 dataBytes);
+void sceSifAddCmdHandler(s32 command, void (*handler)(void *, void *), void *argument);
+void sceSifExitCmd(void);
+u32 sceSifGetSreg(s32 index);
+void sceSifRemoveCmdHandler(s32 command);
+s32 sceSifSendCmd(s32 command, void *packet, s32 packetBytes, void *source, void *destination, s32 dataBytes);
+void sceSifWriteBackDCache(void *address, s32 size);
+
+s32 sceDeci2ExRecv(s32 handle, void *buffer, u16 length);
+s32 sceDeci2ExSend(s32 handle, void *buffer, u16 length);
+s32 sceDeci2Poll(s32 handle);
+s32 sceDeci2ReqSend(s32 handle, s8 destination);
+
 #endif /* SDK_LIBKERNL_H */

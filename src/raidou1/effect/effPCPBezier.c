@@ -6,6 +6,7 @@
 #include "sdfMemory.h"
 #include "sdk_libc.h"
 #include "sdfMat.h"
+#include "effMath.h"
 
 typedef struct effBezierBED_t effBezierBED_t;
 
@@ -91,7 +92,6 @@ extern effBezierBED_t *effEveBEDCreate(effBezierBED_t *pData);
 extern void effEveBEDDelete(effBezierBED_t *hEveBED);
 extern effBezierCut_t *effEveBEDCutCreate(effBezierBED_t *hEveBED, s32 CutNum, effBezierPlacement_t *pParams);
 extern void effEveBEDCutDelete(effBezierCut_t *hEveBEDCut);
-extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern effBezierDrawParam_t dds3BezierVertexCount, dds3BezierTrackPolyVertex;
 extern const f32 dds3BezierTrackPolyInitVertex[8][4];
 extern const u32 dds3BezierVertexCountIndices[28], dds3BezierTrackPolyVertexIndices[8];

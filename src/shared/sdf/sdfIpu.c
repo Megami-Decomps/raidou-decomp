@@ -7,6 +7,8 @@
 #include "sdfTex.h"
 #include "sdfGsMemory.h"
 #include "sdfIpu.h"
+#include "sdfSystem.h"
+#include "sdfImageSet.h"
 extern s32 DIntr();
 extern void EIntr(void);
 
@@ -129,14 +131,10 @@ enum sdf_stream_playback {
 
 #include "sdk_libkernl.h"
 
-extern void FlushCache(s32);
 extern sdfIpuDecodeCb_t *sdfIpuQueueHead;
 extern sdfIpuDecodeCb_t *sdfIpuQueueTail;
-void *sdfAllocAuto(s32 size);
-void sdfFreeAuto(void *data);
 extern s32 sceIpuSync(s32, s32);
 extern sdfIpuDecodeCb_t *sdfCurrIpuDecodeCb;
-extern void sdfImageSetChainReleaseMem(saddr_t);
 extern sdfIpuDecodeCb_t *sdfIpuPendingCb;
 extern s32 sdfIpuDecode(sdfIpuDecodeCb_t *);
 extern s32 sdfIpuDecodeThId;
@@ -145,7 +143,6 @@ extern s32 sdfFromIpuDmacHandlerHandle;
 extern s32 sdfToIpuDmacHandlerHandle;
 extern void sceIpuInit(void);
 extern s32 DmacAddHandler(s32, s32, void *, s32, s32);
-extern s32 CreateThreadSimple(void *entryAddress, void *workspace, s32 stackBytes, s32 priority);
 extern u8 sdfIpuDecodeThStack[];
 extern void sdfIpuRemoveHandler(void *);
 void sdfIpuExecQueue(s32 critical);

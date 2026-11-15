@@ -12,6 +12,10 @@
 #include "sdfQuat.h"
 #include "sdk_libkernl.h"
 #include "sdfMotion.h"
+#include "sdfSystem.h"
+#include "sdfModel.h"
+#include "mdlEffect.h"
+#include "sdfPacDecode.h"
 
 #define MDL_GROUP_COUNT 8
 
@@ -56,18 +60,11 @@ typedef struct
 extern s32 mdlManagerWork;
 extern dds3ModelResrc_t *mdlResrcMajorList[MDL_GROUP_COUNT];
 extern mdlLoadingTag_t *mdlLoadingMajorList[MDL_GROUP_COUNT];
-extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-extern s32 WaitSema(s32 sema);
-extern s32 SignalSema(s32 sema);
 extern void sdfTexListFree(sdfModelTexList_t *aList, s32 aReleaseItems);
 extern sdfModelTexList_t *sdfTexListDup(sdfModelTexList_t *aList);
-extern sdfModelRootNode_t *sdfModelMake(sdfModelTexList_t *aTexList, sdfModelDef_t *aModelData);
-extern void sdfModelRootFree(sdfModelRootNode_t *aRoot, s32 aReleaseNodes, s32 aReleaseMatList);
 
 
 extern void fileManager(void);
-extern void mdlSetEffectColorSub(mdlObj_t *aHandle, dds3ModelEffectCtrlr_t *aEffect, u32 aColor);
-extern void mdlSetEffectScaleSub(mdlObj_t *aHandle, dds3ModelEffectCtrlr_t *aEffect, f32 aScale);
 void mdlUnRegist(s32 aMajor, s32 aMinor);
 void mdlUnRegistResrc(dds3ModelResrc_t *resrc_p);
 void mdlFree(mdlObj_t *aHandle);
@@ -96,8 +93,6 @@ extern sdfMotionPlayBook_t *sdfFixupMotionBinary(void *aData);
 void TbMbAbLoadEnd(mdlManager_mdlTbMbAbLoadCb_t *tmaCb);
 void mdlFreeBlur(mdlObj_t *aHandle);
 extern dds3ModelResrc_t *mdlLoadPrepare(u32 group, u32 id);
-extern void mdlGenEffect(mdlObj_t *aHandle, s32 aGroup, s32 aPlayGroup);
-extern void mdlFreeEffect(dds3ModelEffectCtrlr_t *aCtrlr);
 
 typedef struct
 {
@@ -118,17 +113,11 @@ typedef struct
 extern void pacFileHandleFree_(void *pacHandle);
 saddr_t mdlPrepare(s32 aMajor, s32 aMinor, s32 aBlockMode);
 void mdlFreeMotionCtrlr(mdlObj_t *aHandle, sdfMotionCtrlr_t *aCtrlr);
-extern void sdfPacInit(sdfPacDecodeCb_t *cb, sdfPacCallbackFunc callback);
-extern void sdfPacSetStay(sdfPacDecodeCb_t *cb);
-extern s32 sdfPacDecode(sdfPacDecodeCb_t *cb, const u8 *data, s32 length);
-extern void sdfPacFree(sdfPacDecodeCb_t *cb);
 sdfPacDecodeResrc_t *mdlPackSet(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor, s32 regFlags);
 extern filePacRequest_t *pacLoadEx(const char *filename, s32 headOrTail, s32 callback, void *pendCallback, void *callbackParm);
 extern void pacSync(filePacRequest_t *pacFileHandle);
 void mdlFileCbFree(mdlManager_mdlFileLoadCb_t *cb);
-extern void sdfModelEvalTm(sdfModelRootNode_t *aRoot);
 extern void sdfModelLinkOt(void *aOt, sdfModelRootNode_t *aRoot);
-extern void mdlLinkEffect(mdlObj_t *ctx, dds3ModelEffectCtrlr_t *item);
 extern void mdlLinkBlur(mdlObj_t *ctx, sdfGrOt_t **surfaces);
 void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber);
 
@@ -237,12 +226,9 @@ extern char *strrchr(const char *text, s32 character);
 extern s32 strcasecmp(const char *first, const char *second);
 extern void sdfDummyFunc(void);
 extern fileRequest_t *fileLoadEx(const char *filename, s32 headOrTail, addr_t endCallback, addr_t callbackParm);
-extern void sdfModelCopyStat(sdfModelRootNode_t *aDstRoot, sdfModelRootNode_t *aSrcRoot);
-extern void mdlStopEffect(mdlObj_t *aHandle, s32 aPlayGroup);
 extern u16 mdlPibGetEffectCount(mdlPibRecord_t *record);
 extern u16 mdlPibGetMotionCount(mdlPibRecord_t *record);
 extern s32 mdlPibGetVersion(mdlPibRecord_t *record);
-extern sdfPacDecodeResrc_t *sdfPacFreeResrc(sdfPacDecodeResrc_t *resrc);
 extern sdfMatrix4_t sdfViewMatrix;
 extern sdf3DScreenParam_t dds3ScreenParam;
 extern s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (*callback)(u32), u32 parm);

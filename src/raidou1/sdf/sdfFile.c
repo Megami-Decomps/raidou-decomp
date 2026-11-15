@@ -4,20 +4,15 @@
 #include "ps2asm.h"
 #include "sdk_libc.h"
 #include "sdfChip.h"
+#include "sdfFileIO.h"
+#include "sdfSystem.h"
+#include "sdfFile.h"
 
 s32 strlen(const char *aStr);
-s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-s32 sdfFileCmdClose(void *aHandle);
-s32 sdfFileCmdFree(sdfFileCmd_t *aHandle);
 extern u32 sdfFileLengthWork;
 extern u32 sdfFileSeekWork;
-s32 sdfFileCmdFileSize(void *aHandle);
-s32 sdfFileCmdSeek(void *aHandle, s32 aOffset, s32 aWhence);
-extern s32 WaitSema(s32 aSemaId);
-extern s32 SignalSema(s32 aSemaId);
 extern s32 sdfFileSemaId;
 extern u8 sdfFileDefaultSrcType;
-s32 sdfFileCmdRead(void *aHandle, void *aBuffer, s32 aLength);
 extern char sdfFileHostRootPath[];
 s32 sceClose(s32 a);
 char *strcat(char *aDest, const char *aSrc);
@@ -134,8 +129,6 @@ extern s16 sdfFileCmdFreeCount;
 extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(const char *path, void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
                         s32 callbackContext);
 
-s32 sdfFileCmdClearError(sdfFileCmd_t *aHandle);
-void sdfFileCmdStartThread(s32 deviceType);
 s32 sdfCdImageCheckExist(const char *fname);
 void sdfFileSetCdFilename(char *aDst, char *aSrc);
 char *sdfFileSetHostFilename(char *aDst, char *aSrc);

@@ -4,6 +4,8 @@
 #include "sdk_libkernl.h"
 #include "evtStage.h"
 #include "dds3GlobalWork.h"
+#include "sdfPrim.h"
+#include "frFont.h"
 s32 DIntr();
 s32 EIntr(void);
 
@@ -49,15 +51,8 @@ const struct sdfMemHandle_t *sdfMemGetTop(void);
 /* Return free/used/end-sentinel state, not a resource kind. */
 SdfMemBlockState sdfMemGetType(const struct sdfMemHandle_t *block);
 
-void sdfPrimLinkLine(
-    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
-    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
 
-void sdfPrimLinkRect(
-    sdfDrawTag_t *list, s32 color, s32 primitive, s32 left, s32 top, s32 right,
-    s32 bottom, s32 depth, s32 (*allocatePacket)(s32));
 
-void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *packet);
 
 #include "dds/dds3_background_fade_api.h"
 #include "dds/sdf_heap_overlay_block.h"
@@ -149,8 +144,6 @@ extern char D_00435D58[];
 extern void sdfDrawHeapMapOverlay(sdfDrawTag_t *packetList, s32 x, s32 y);
 void evtDrawHeapUsageOverlay(sdfGrOt_t *surface);
 s32 evtDrawConditionalHeapUsageOverlay(void);
-extern s32 frGetFontHandleNum(void);
-extern s32 frGetTextHandleNum(void);
 extern s32 effGetFontListCount(void);
 extern const char D_004113A0[];
 s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task);

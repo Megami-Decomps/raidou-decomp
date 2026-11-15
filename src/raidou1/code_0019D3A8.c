@@ -3,6 +3,8 @@
 #include "sdf2D.h"
 #include "dds3GlobalWork.h"
 #include "dds3AdminiProcess.h"
+#include "dds3KernelCore.h"
+#include "sdfPrim.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -20,12 +22,10 @@
 
 /* Set bit 1 in the active administration task's flags; that task must exist. */
 struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
-dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
 
 /* Return a borrowed scheduler-owned handle from the starting, active, or
  * destroy-pending queue. The handle remains valid through its destroy callback
  * and is freed when finalization completes; return NULL when no name matches. */
-dds3ProcessID_t *dds3SearchProcessName(const char *name);
 
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
 /* Destroy one context. If it leaves its resource-owning group empty, group
@@ -60,14 +60,7 @@ SdfChunkHeader *sdfModelGetExtraChunk(const struct dds_sdfModelRootNode_t *model
 u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
 void sdfModelMakeMarkPosMatrix(struct dds_sdfModelRootNode_t *model, SdfMapPositionRecord *record);
 
-void sdfPrimLinkF3(
-    sdfDrawTag_t *list, s32 color, s32 primitive, s32 x0, s32 y0, s32 x1,
-    s32 y1, s32 x2, s32 y2, s32 depth, s32 (*allocatePacket)(s32));
 
-void sdfPrimLinkSprite(
-    sdfDrawTag_t *list, s32 color, s32 primitive, s32 x0, s32 y0, s32 u0,
-    s32 v0, s32 x1, s32 y1, s32 u1, s32 v1, s32 depth,
-    s32 (*allocatePacket)(s32));
 
 #include "dds/mdl_part_entry.h"
 #include "dds/mdl_resource_entries.h"

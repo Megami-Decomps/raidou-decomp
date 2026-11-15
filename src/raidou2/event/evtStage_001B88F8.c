@@ -7,15 +7,13 @@
 #include "ps2asm.h"
 #include "dds3SceneBasic.h"
 #include "dds3Basic.h"
+#include "dds3WorldBasic.h"
+#include "dds3ObjectBase.h"
 
 u32 dds3AllocObjectId(void);
-void dds3ObjectBaseCreateMover(void *pObjectBasic);
 
-extern void dds3ObjectBaseSetPadControl(dds3Basic_t *object,
-                                     s32 (*update)(struct dds3PoseSet_t *, struct dds3Basic_t *));
 
 extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 serialID, f32 *pos, f32 *rot);
-struct dds3Basic_t *dds3GetControlScene(void);
 
 #include "basic.h"
 #include "dds3obj.h"

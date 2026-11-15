@@ -8,6 +8,8 @@
 #include "billManager.h"
 #include "sdfQuat.h"
 #include "sdfSound.h"
+#include "sdfFile.h"
+#include "effPCPMisc_00224D10.h"
 
 extern void fclShopProcessStart(void *pPlace);
 
@@ -39,12 +41,9 @@ f32 atan2f(f32 y, f32 x);
 struct billHandle_t *dds3BillboardGeneral(s32 index);
 
 /* Apply volume and pan to a sequence track through the command queue. */
-void sdfFileClose(sdfFileCmdHandle_t *state);
-u32 sdfFileLength(sdfFileCmdHandle_t *state);
 
 /* Stable state APIs. Callback factories keep caller-specific callback types. */
 sdfFileCmdHandle_t *sdfFileOpen(const char *path);
-void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -155,7 +154,6 @@ extern u8 sdfHddValid;
 extern char fileWriteToPfsData[];
 extern char fileWriteToPfsData2[];
 extern char fileWriteToPfsData3[];
-extern char *sdfFileGetHostRoot(void);
 
 #define FILE_MAIN_BLOB_SIZE 0x1E840
 
@@ -302,8 +300,6 @@ void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job);
 void PartsListSet(EffectSurfaceNode *node, FileQueue *queue);
 void fileReplaceReferenceHolder(EffectSurfaceNode *obj, u32 resource);
 void fileClearLoadObjectReferences(EffectSurfaceNode *obj);
-extern void mnuRecordSetVector(void *record, const void *src);
-extern void fileSetRecordSecondVector(void *record, const void *src);
 
 void fileSendLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value);
 void fileCopyLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value);
@@ -384,8 +380,6 @@ typedef struct FileCurveMotion {
 } FileCurveMotion; /* 0x4C, naturally four-byte aligned */
 
 void effPCPHelperBEDGetModel(FileSlotTable *record);
-void mnuRecordSetVector(void *recordBytes, const void *src);
-void fileSetRecordSecondVector(void *recordBytes, const void *src);
 
 void fileJobFreeSecondaryBuffer(FileJobPayload *job) {
     struct sdfMemHandle_t *allocation = job->secondary.allocation;

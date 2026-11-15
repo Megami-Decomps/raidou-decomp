@@ -11,6 +11,8 @@
 #include "sdfChip.h"
 #include "dds3GlobalWork.h"
 #include "sdfIpu.h"
+#include "sdfPrim.h"
+#include "sdfDevCons.h"
 
 extern void *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
                               void *drawExit, void *deleteExit, void *p);
@@ -84,11 +86,8 @@ typedef struct
 extern char movieExtIpu[];
 extern char movieExtIps[];
 void *movieViewerStep(void);
-extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr, const char *aStr, ...);
 extern void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
 
-extern void sdfPrimLinkF3(sdfDrawTag_t *aTag, s32 aColor, s32 aPrim, s32 aX0, s32 aY0, s32 aX1,
-                          s32 aY1, s32 aX2, s32 aY2, s32 aZ, s32 (*aAllocator)(s32));
 
 /* "%c%s", in .sdata where a literal cannot go. */
 extern char movieDebugRowFmt[];

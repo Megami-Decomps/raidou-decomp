@@ -10,7 +10,6 @@ extern s32 EIntr(void);
 extern s32 ttyInitDone __attribute__((section(".data")));
 void sceResetttyinit(void);
 void VSync(void);
-extern void SetVSyncFlag(volatile u32 *flag, volatile u64 *result);
 u64 VSync2(void);
 s32 write(s32 descriptor, const void *buffer, s32 length);
 s32 read(s32 descriptor, void *buffer, s32 length);

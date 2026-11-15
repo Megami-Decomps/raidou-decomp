@@ -5,6 +5,7 @@
 #include "fpu.h"
 #include "sdfMemory.h"
 #include "sdfVu0.h"
+#include "effMath.h"
 
 /* The owner is stored after its contiguous cubic segments. */
 typedef struct

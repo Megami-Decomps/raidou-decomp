@@ -70,7 +70,6 @@ typedef struct ttyPacket_t {
     u8 payload[308];
 } ttyPacket_t;
 
-extern void FlushCache(s32 mode);
 
 /* In ee-gcc 2.9, next_arg names the first incoming stack argument. These
  * one-fixed-argument wrappers save the seven remaining argument GPRs in
@@ -426,8 +425,6 @@ typedef struct {
 } kernelEntryPair_t;
 
 extern void InitExecPS2(void);
-extern void SetOsdConfigParam(const u32 *param);
-extern void GetOsdConfigParam(u32 *param);
 s32 PatchIsNeeded_0(void);
 extern kernelEntryPair_t execEntryPairs[3];
 extern const u8 execPs2Payload[0x7A8];

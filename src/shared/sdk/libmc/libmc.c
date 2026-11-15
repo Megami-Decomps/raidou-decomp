@@ -3,6 +3,7 @@
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
 #include "sdk_libmc.h"
+#include "sif_rpc.h"
 
 /* The sif client data of the mcserv module; +0x24 is non-zero once bind
  * succeeded, which every call tests before using the RPC. */
@@ -84,12 +85,7 @@ typedef struct mcReply {
 extern mcReply mcReplyBuf __attribute__((section(".data")));
 extern s32 mcLastCmd __attribute__((section(".data")));
 extern s32 mcSema __attribute__((section(".data")));
-extern s32 PollSema(s32 sema);
-extern s32 SignalSema(s32 sema);
-extern s32 DeleteSema(s32 sema);
 
-extern s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize,
-                         void *recv, s32 rsize, void *endfunc, void *endpara);
 
 extern s32 sceMcOpen(s32 a, s32 b, char *c, s32 d);
 extern void mcDelayThread(u16 ticks);
@@ -98,8 +94,6 @@ extern char *strncpy(char *dst, const char *src, size_t n);
 /* The chunk this string opens also carries the float constants the next
  * unit needs, so it stays one INCLUDE_RODATA rather than an inline literal. */
 extern const char sceStrSceMcUdCheckNewCardRpc[];
-extern void sceSifWriteBackDCache(void *addr, s32 size);
-extern void FlushCache(s32 mode);
 extern void mceIntrReadFixAlign(void *argument);
 extern void mceGetInfoApdx(void *reply);
 extern void mceStorePwd(char *dest);
@@ -114,9 +108,7 @@ typedef struct mcSemaParam_t {
 } mcSemaParam_t;
 
 extern s32 CreateSema(mcSemaParam_t *param);
-extern s32 WaitSema(s32 sema);
 extern s32 sceMcSync(s32 mode, s32 *command, s32 *result);
-extern void sceSifInitRpc(s32 mode);
 extern s32 sceSifBindRpc(mcRpcCd *client, u32 service, s32 mode);
 s32 sceMcInit(void);
 s32 sceMcEnd(void);
@@ -130,9 +122,6 @@ s32 sceMcSeek(s32 fd, s32 offset, s32 origin);
 void mceIntrReadFixAlign(void *argument);
 s32 sceMcRead(s32 a, void *b, s32 c);
 s32 sceMcWrite(s32 a, const void *b, s32 c);
-extern s32 GetThreadId(void);
-extern s32 SetAlarm(u16 ticks, void (*callback)(s32, s32, s32), void *argument);
-extern s32 SleepThread(void);
 void mcHearAlarm(s32 cause, s32 address, s32 thread);
 void mcDelayThread(u16 ticks);
 void mceGetInfoApdx(void *response);

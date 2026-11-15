@@ -4,11 +4,11 @@
 #include "ps2asm.h"
 #include "sdfFrame.h"
 #include "sdf_PadManager.h"
+#include "dds3KernelCore.h"
 
 extern u8 dds3PadVibrationState[2];
 extern u8 dds3PadVibrationMode[2];
 extern s32 dds3PadVibrationTable[2];
-extern u32 dds3GetProcessRunTime(dds3ProcessID_t *id);
 extern s32 dds3GetRandIntA(s32 aLimit, s32 name);
 extern void dds3GetVibrationLevel(void);
 extern u8 dds3PadButtonState[64];
