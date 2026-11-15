@@ -6,6 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import version_guard as g  # noqa: E402
+import units  # noqa: E402
 
 R1, R2 = g.VERSIONS
 
@@ -93,6 +94,53 @@ class Merge(unittest.TestCase):
 
     def test_identical(self):
         self.assertEqual(g.merge({R1: "x;\n", R2: "x;\n"}), "x;\n")
+
+
+class WriteUnitTest(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.root = Path(tmp.name)
+        saved = units.is_shared
+        self.addCleanup(setattr, units, "is_shared", saved)
+        units.is_shared = lambda p: Path(p).parent.name == "shared"
+
+    def unit(self, folder, text):
+        path = self.root / folder / "u.c"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text)
+        return path
+
+    def test_shared_guards_one_game(self):
+        path = self.unit("shared", "x;\ny;\n")
+        units.write_unit(R2, path, "x;\nz;\n")
+        self.assertEqual(path.read_text(), "x;\n#ifdef VERSION_RAIDOU1\ny;\n#else\nz;\n#endif\n")
+        self.assertEqual(units.read_unit(R1, path), "x;\ny;\n")
+        # The other game making the same edit removes the guard.
+        units.write_unit(R1, path, "x;\nz;\n")
+        self.assertEqual(path.read_text(), "x;\nz;\n")
+
+    def test_unchanged_view_is_not_written(self):
+        path = self.unit("shared", GUARDED)
+        units.write_unit(R1, path, g.view(GUARDED, R1))
+        self.assertEqual(path.read_text(), GUARDED)
+
+    def test_per_game(self):
+        path = self.unit(R1, "x;\n")
+        units.write_unit(R1, path, "y;\n")
+        self.assertEqual(path.read_text(), "y;\n")
+
+
+class IncludeDirectivesTest(unittest.TestCase):
+    def test_version_view(self):
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+        from configure import include_directives
+        names = lambda v: {n for _, _, n in include_directives(GUARDED, context="u.c", version=v)}
+        self.assertIn("b", names(R1))
+        self.assertNotIn("b", names(R2))
+        self.assertIn("D_004E0000", names(R2))
+        self.assertNotIn("D_004E0000", names(R1))
 
 
 if __name__ == "__main__":

@@ -22,7 +22,7 @@ import re
 import sys
 from pathlib import Path
 
-from units import carried_data, unit_sources, write_unit
+from units import carried_data, read_unit, unit_sources, write_unit
 
 ROOT = Path(__file__).resolve().parent.parent
 LINE = re.compile(r'^INCLUDE_SDATA\([^,]+,\s*"[^"]+",\s*(\w+)\);\n\n?', re.M)
@@ -72,7 +72,7 @@ def place(version):
     added = 0
     for unit, c in unit_sources(version).items():
         data = ROOT / "asm" / version / "data" / f"{unit}.sdata.s"
-        text = LINE.sub("", c.read_text())
+        text = LINE.sub("", read_unit(version, c))
         if not data.exists():
             write_unit(version, c, text)
             continue

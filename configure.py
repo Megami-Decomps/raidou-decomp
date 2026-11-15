@@ -22,6 +22,7 @@ from pathlib import Path
 from tools.ee_gcc_aslr import marker_is_valid
 from tools.symbol_aliases import load_symbol_aliases, linker_aliases
 from tools.units import unit_name, unit_sources
+from tools.version_guard import view as version_view
 
 ROOT = Path(__file__).resolve().parent
 
@@ -236,7 +237,7 @@ def source_matching_ownership(version: str) -> list[tuple[str, list[tuple[str, s
         (str(path.relative_to(ROOT)), [
             (folder, name)
             for kind, folder, name in include_directives(
-                path.read_text(errors="replace"), context=str(path.relative_to(ROOT))
+                path.read_text(errors="replace"), context=str(path.relative_to(ROOT)), version=version
             )
             if kind == "ASM"
         ])
@@ -439,8 +440,10 @@ def mask_c_non_code(text: str) -> str:
 
 
 def include_directives(
-    text: str, *, context: str | None = None
+    text: str, *, context: str | None = None, version: str | None = None
 ) -> list[tuple[str, str, str]]:
+    if version is not None:
+        text = version_view(text, version, blank=True)
     spliced, source_offsets = splice_c_lines(text)
     code = mask_c_non_code(spliced)
     matches = [
@@ -662,7 +665,7 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
                 nonmatchings = Path("asm") / version / "nonmatchings"
                 asm_files = list(dict.fromkeys(
                     str(nonmatchings / folder / f"{name}.s")
-                    for _, folder, name in include_directives(text, context=str(src))
+                    for _, folder, name in include_directives(text, context=str(src), version=version)
                 ))
                 eeasm = [f"build/eeasm/{asm}" for asm in asm_files]
                 if asm_files:

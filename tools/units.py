@@ -7,6 +7,11 @@ per-game file wins when both exist.
 import json
 from pathlib import Path
 
+try:
+    from version_guard import merge, view
+except ImportError:
+    from tools.version_guard import merge, view
+
 ROOT = Path(__file__).resolve().parent.parent
 VERSIONS = json.loads((ROOT / "config" / "versions.json").read_text())
 SRC = ROOT / "src"
@@ -44,21 +49,23 @@ def is_shared(path):
     return rel.parts[0] == "shared"
 
 
+def read_unit(version, path):
+    """The text a version compiles from a unit's source, without its VERSION_ guards."""
+    return view(Path(path).read_text(), version)
+
+
 def write_unit(version, path, text):
-    """Write a version's text for a unit. A shared TU that the second version would
-    change no longer builds the same in both games: each game gets its own file."""
+    """Write a version's view of a unit. A shared TU keeps the other version's view and
+    puts the lines that differ under VERSION_ guards."""
     path = Path(path)
-    if text == path.read_text():
+    current = path.read_text()
+    if text == view(current, version):
         return
-    if not is_shared(path) or version == next(iter(VERSIONS)):
+    if not is_shared(path):
         path.write_text(text)
         return
-    unit = unit_name(path)
-    for v in VERSIONS:
-        own = SRC / v / f"{unit}.c"
-        own.parent.mkdir(parents=True, exist_ok=True)
-        own.write_text(text if v == version else path.read_text())
-    path.unlink()
+    views = {v: text if v == version else view(current, v) for v in VERSIONS}
+    path.write_text(merge(views))
 
 
 def carried_data(version):

@@ -11,6 +11,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from units import SHARED, SRC, VERSIONS  # noqa: E402
+from version_guard import check as check_guards  # noqa: E402
 from xgame.common_names import check as check_common_names  # noqa: E402
 from revisit_names import VERSIONS as REVISIT_VERSIONS, build as build_revisit  # noqa: E402
 
@@ -51,6 +52,12 @@ for version, spec in VERSIONS.items():
     own = {p.relative_to(SRC / version).with_suffix("").as_posix() for p in (SRC / version).rglob("*.c")}
     shared = {p.relative_to(SHARED).with_suffix("").as_posix() for p in SHARED.rglob("*.c")}
     errors += [f"{version}: {u} is both shared and per-game" for u in sorted(own & shared)]
+
+for path in sorted(SRC.rglob("*.c")):
+    try:
+        check_guards(path.read_text(errors="replace"))
+    except ValueError as e:
+        errors.append(f"{path.relative_to(ROOT)}: {e}")
 
 errors += check_common_names()
 for version in REVISIT_VERSIONS:

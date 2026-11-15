@@ -24,6 +24,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from retail_elf import RETAIL, ROOT, VERSIONS, load_segments, off_to_va, va_to_off  # noqa: E402
 from symbol_aliases import load_symbol_aliases  # noqa: E402
+from version_guard import view  # noqa: E402
 from resolved_code import (  # noqa: E402
     hi_lo_addend,
     instruction_shape_matches,
@@ -849,13 +850,15 @@ def main():
     args = ap.parse_args()
     unit = args.unit.resolve()
     source = args.source.resolve() if args.source else unit
-    source_text = drop_nonmatching(source.read_text())
     version = unit.relative_to(ROOT / "src").parts[0]
     if version == "shared":
         version = args.version
         unit_name = unit.relative_to(ROOT / "src" / "shared").with_suffix("").as_posix()
     else:
         unit_name = unit.relative_to(ROOT / "src" / version).with_suffix("").as_posix()
+    source_view = view(source.read_text(), version)
+    unit_view = view(unit.read_text(), version)
+    source_text = drop_nonmatching(source_view)
     syms = symbols(version)
     aliases = load_symbol_aliases(ROOT, version)
     syms.update({alias.name: alias.address for alias in aliases})
@@ -1560,7 +1563,7 @@ def main():
         print(f"DATA {name}: 0x{size:X} bytes emitted by the unit; {why}")
     # Localized constraints are reviewable aids, not automatic source
     # approval. Inspect --source when supplied, just as the compiler does.
-    for fatal, message in source_review_diagnostics(source.read_text(), asm_source):
+    for fatal, message in source_review_diagnostics(source_view, asm_source):
         bad += fatal
         print(message)
     # A C function whose code is mostly inline asm may be handwritten code in
@@ -1573,7 +1576,7 @@ def main():
         if (args.func and name != args.func) or asm < 8 or asm * 2 <= total:
             continue
         if re.search(rf"(?:libvu0|vu0 routine):[^\n]*\n(?:[^\n]*\n){{0,2}}[^\n]*\b{re.escape(name)}\s*\(",
-                     unit.read_text()):
+                     unit_view):
             continue
         print(f"ASMBODY {name}: {asm} of {total} instructions are inline asm; mark it as an SDK copy "
               "or VU0 routine, or keep it as INCLUDE_ASM (docs/CONTRIBUTING.md)")
@@ -1582,7 +1585,7 @@ def main():
     # owner, so their actual object offsets provide the ordering check instead.
     # (an implicit-int K&R definition starts with the function name itself)
     order = re.findall(r'^INCLUDE_ASM\([^\n]*\b(\w+)\);|^(?:[A-Za-z_][^;\n=]*?\b)?([A-Za-z_]\w*)\s*\([^;\n]*\)\s*\{?\s*$',
-                       drop_nonmatching(unit.read_text()), re.M)
+                       drop_nonmatching(unit_view), re.M)
     placed = [(0, address(a or b, syms), a or b) for a, b in order if address(a or b, syms) is not None]
     for (_, a, n), (_, b, m) in zip(placed, placed[1:]):
         if b < a:
@@ -1597,7 +1600,7 @@ def main():
     # Every retail function of the unit must still be there, as C or INCLUDE_ASM.
     full = ROOT / "asm" / version / f"{unit_name}.s"
     if full.exists() and not args.func:
-        source = unit.read_text()
+        source = unit_view
         for name in re.findall(r"^glabel (\w+)", full.read_text(), re.M):
             # A C definition may carry the retail name through an asm("") alias, which
             # is how a function called main avoids cc1's __main call.
@@ -1609,7 +1612,7 @@ def main():
     renamed = {f"func_{int(a, 16):08X}": n for n, a in re.findall(
         r"^\s*(\w+)\s*=\s*0x([0-9A-Fa-f]+)\s*;[^\n]*type:func", (ROOT / "config" / version / "symbol_addrs.txt").read_text(), re.M)
         if n != f"func_{int(a, 16):08X}"}
-    for old in sorted(set(re.findall(r"\bfunc_[0-9A-F]{8}\b", unit.read_text())) & renamed.keys()):
+    for old in sorted(set(re.findall(r"\bfunc_[0-9A-F]{8}\b", unit_view)) & renamed.keys()):
         bad += 1
         print(f"STALE {old}: symbol_addrs names it {renamed[old]}; use that name")
     # A symbol the C references but nothing defines (symbol_addrs, the

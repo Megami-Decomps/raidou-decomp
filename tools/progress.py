@@ -17,6 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from units import VERSIONS, unit_sources  # noqa: E402
+from version_guard import view  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 INCLUDE = re.compile(r"^INCLUDE_ASM\([^\n]*\b(\w+)\);", re.M)
@@ -40,7 +41,7 @@ def version_stats(version):
             continue
         unit = rel[:-2]
         src = sources.get(unit)
-        assembled = set(INCLUDE.findall(src.read_text(errors="replace"))) if src else None
+        assembled = set(INCLUDE.findall(view(src.read_text(errors="replace"), version))) if src else None
         row = stats[row_for(unit)]
         for name, body in GLABEL.findall(asm.read_text()):
             size = 4 * len(INSN.findall(body))

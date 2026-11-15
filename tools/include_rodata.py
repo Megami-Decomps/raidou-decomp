@@ -32,7 +32,7 @@ import re
 import sys
 from pathlib import Path
 
-from units import carried_data, unit_sources, write_unit
+from units import carried_data, read_unit, unit_sources, write_unit
 
 from include_sdata import DATA_DEF
 
@@ -60,7 +60,7 @@ def place(version):
         matchings = ROOT / "asm" / version / "matchings" / unit
         if not nonmatchings.is_dir() and not matchings.is_dir():
             # Nothing of the unit was split (its lines are left over from a split).
-            text = c.read_text()
+            text = read_unit(version, c)
             stripped = re.sub(r'^INCLUDE_RODATA\([^,]+,\s*"[^"]+",\s*(\w+)\);\n\n?', "", text, flags=re.M)
             if stripped != text:
                 write_unit(version, c, stripped)
@@ -76,7 +76,7 @@ def place(version):
         for f in nonmatchings.glob("*.s"):
             if "glabel " in f.read_text():
                 owned -= {n for n, _ in LABEL.findall(rodata_part(f))}
-        text = c.read_text()
+        text = read_unit(version, c)
         # Placed from scratch every time: once a function compiles its own
         # literal, the lines around it must move with it.
         text = re.sub(r'^INCLUDE_RODATA\([^,]+,\s*"[^"]+",\s*(\w+)\);\n\n?', "", text, flags=re.M)
