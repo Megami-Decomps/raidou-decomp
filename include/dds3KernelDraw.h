@@ -71,7 +71,7 @@ void dds3FilterSetAlpha(s32 alp);
 void dds3FilterSetAlphaOfs(s32 alp);
 void dds3InitDrawEnv(void);
 void dds3RunQuake(void);
-void eglLinkAlpha(struct SDF_GS_TEST *test);
+void eglLinkAlpha(s32 mode);
 s32 sbtlResetJump(void);
 
 #endif

@@ -26,6 +26,6 @@ void sbtlParaAdd_8(s8 *para, s8 add, s8 max, s8 reset);
 void sbtlParaDec(s32 *para, s32 dec, s32 max);
 void sbtlParaDec_16(s16 *para, s16 dec, s16 max);
 void sbtlParaDec_8(s8 *para, s8 dec, s8 max);
-s32 sdatDevilName(s32 id);
+const char *sdatDevilName(s32 id);
 
 #endif

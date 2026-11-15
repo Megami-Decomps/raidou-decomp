@@ -112,6 +112,7 @@ struct mapNpcPathControl_t *mapNpcPathMakeControl(s16 uniq);
 void mapNpcPathMake_KeyFrame(s32 num, f32 spd, struct mapNpcPathData_t *pathdata);
 void mapNpcPathMake_Rot(s32 num, struct mapNpcPathData_t *pathdataT, struct mapNpcPathData_t *pathdataR);
 void mapNpcPathTask(void);
+void mapNpcPathTaskSub(struct mapNpcPathControl_t *pControl);
 s32 mapNpcTblRefresh_Wait(void);
 void mapObjAllDel(void);
 void mapObjColor(s16 uniq, u32 rgba);
@@ -143,6 +144,7 @@ void mapObjRotQ(s16 uniq, const sdfVector4_t *rot);
 void mapObjScale(s16 uniq, f32, f32 sz, f32 sh);
 void mapObjTask(void);
 void mapObjVisible(u16 uniq, s32 visible);
+s32 mapRefDDS3GBWK4(s32 scene, s32 id, s32 flag);
 void mapRetuenFromLoad(void);
 void mapRetuenFromSave(void);
 s32 mapRndEncReturn_BgmLoadEndCheck(void);
@@ -172,5 +174,8 @@ void mefMistTexDestroy(void);
 effHandle_t *sbtlCallLoad(char *fname);
 sdfVector4_t sbtlCallMemset25(struct camCustom_t *camParam);
 void sndSeStatus_sndAt3(void);
+
+extern sdfVector4_t mapCutSetCamData;
+extern sdfVector4_t mapObjTaskData;
 
 #endif

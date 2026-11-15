@@ -140,7 +140,10 @@ libc_2D2B60	frameCallStrcmp
 libc_2D2C70	frameCallAbort2
 libc_2D2D90	frameCallMalloc2
 libc_2D31E0	frameCallMemset
+mapCutSetCamWork	mapCutSetCamData2
+mapCutSetCamWork2	mapCutSetCamData3
 mapGetLight	R360_LR
+mapWork33	mapData33
 mnuAppendWindowListNode	jmsAddCmdMenuItem
 mnuApplyPanelTransitionAction	CalcSeqHandle
 mnuBindPresentMenuEntry	jmsSeqReturn

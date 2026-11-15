@@ -29939,10 +29939,10 @@
 0x0050CD70	mapWork30	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapHamidasiNpcSub, mapFileLoadSub2, mapCHitAdd
 0x0050DD70	mapWork31	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: mapHamidasiWHitSub, mapHitAidaCalc, mapFileLoadSub2
 0x0050ED70	mapWork32	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 7 functions: mapFileLoadSub2, mapNpcTblAdd, mapSpotPointGet2D
-0x0050EF70	mapWork33	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapFileLoad, mapCallFilterSet, mapSKYBGEDIT
+0x0050EF70	mapData33	inferred	same variable as raidou1 mapData33 (mapCallFilterSet); replaces mapWork33: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapFileLoad, mapCallFilterSet, mapSKYBGEDIT
 0x0050EF88	mapObjTaskWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjTask
-0x0050F770	mapCutSetCamWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCutSetCam (4 of 6 refs, 2 functions)
-0x0050F780	mapCutSetCamWork2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCutSetCam (4 of 6 refs, 2 functions)
+0x0050F770	mapCutSetCamData2	inferred	same variable as raidou1 mapCutSetCamData2 (mapCutSetCam); replaces mapCutSetCamWork: method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCutSetCam (4 of 6 refs, 2 functions)
+0x0050F780	mapCutSetCamData3	inferred	same variable as raidou1 mapCutSetCamData3 (mapCutSetCam); replaces mapCutSetCamWork2: method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCutSetCam (4 of 6 refs, 2 functions)
 0x0050F790	mapObjTaskWork3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapObjTask (8 of 10 refs, 2 functions)
 0x0050F7A0	mapObjTaskWork4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjTask
 0x0050F7B0	mapObjTaskWork5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapObjTask

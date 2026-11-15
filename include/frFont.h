@@ -192,6 +192,6 @@ struct dds3Billboard_Basic_t;
 
 char *frDrawMesFlowSub2(s32 id, s32 tagID);
 void frDumpFontTexture(struct dds3Billboard_Basic_t *hBillboard, struct dds3BillResource_t *hResource, struct dds3BillResource_t *hResourceB);
-s32 frPreCalcStrWidth(s32 *fieldID, s32 *floorID, s32 mini);
+s32 frPreCalcStrWidth(const char *str, u8 font, u8 unk2);
 
 #endif

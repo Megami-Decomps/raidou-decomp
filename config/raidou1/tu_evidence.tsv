@@ -98,19 +98,50 @@ start	last_func	unit	kind	evidence	smt3_unit
 001326C0	00132848	code_001326C0	asm	none	
 00132850	001354C0	field/fldDraw	c	smt3:names:24+smt3:map:7 of 43; nbSetEncountMode run included: its .sdata sits inside fldDraw's	field/fldDraw
 00135520	00139308	field/fldFileResolver	c	dds:6 of 53	field/fldFileResolver
-00139330	00140798	code_00139330	asm	none	
+00139330	0013A9B0	code_00139330	asm	none	
+0013A9E0	0013A9E0	code_r1_0013A9E0	c	none	
+0013AAC8	0013B0F0	code_0013AAC8	asm	none	
+0013B0F8	0013B0F8	code_r1_0013B0F8	c	none	
+0013CDE0	00140258	code_0013CDE0	asm	none	
+001403E0	00140798	code_r1_001403E0	c	none	
 00140910	00140910	field/fldSky	c	smt3:map:1 of 1	field/fldSky
 00140960	001566D0	code_00140960	asm	none	
 00156730	00156730	field/fldTitle	c	smt3:map:1 of 1	field/fldTitle
-00156778	0015D3D0	code_00156778	asm	none	
+00156778	00156AD0	code_00156778	asm	none	
+00156B68	00156B68	code_r1_00156B68	c	none	
+00156EA8	001570C0	code_00156EA8	asm	none	
+001578A8	001578A8	code_r1_001578A8	c	none	
+00157CD0	0015CCD8	code_00157CD0	asm	none	
+0015CD00	0015CF48	code_r1_0015CD00	c	none	
+0015CFF8	0015D3D0	code_0015CFF8	asm	none	
 0015D470	0015D470	code_r1_0015D470	c	dds:1 of 1	
-0015D490	001677D0	code_0015D490	asm	none	
+0015D490	00167630	code_0015D490	asm	none	
+001676C8	001676C8	code_r1_001676C8	c	none	
+001677D0	001677D0	code_001677D0	asm	none	
 001677D8	001677D8	field/fldSnow	c	smt3:names:1 of 1	field/fldSnow
-001677F0	0016D368	code_001677F0	asm	none	
+001677F0	001698D0	code_001677F0	asm	none	
+0016A298	0016A298	code_r1_0016A298	c	none	
+0016A558	0016A610	code_0016A558	asm	none	
+0016A638	0016A668	code_r1_0016A638	c	none	
+0016A738	0016A738	code_r1_0016A738	c	none	
+0016A7D8	0016AC18	code_0016A7D8	asm	none	
+0016AC20	0016AC20	code_r1_0016AC20	c	none	
+0016AD90	0016B180	code_0016AD90	asm	none	
+0016B3A0	0016B3A0	code_r1_0016B3A0	c	none	
+0016B498	0016B650	code_r1_0016B498	c	none	
+0016C2F8	0016C3B0	code_0016C2F8	asm	none	
+0016C450	0016C450	code_r1_0016C450	c	none	
+0016CA30	0016D368	code_0016CA30	asm	none	
 0016D3B0	00173CD8	facility/fclCombineInit	c	smt3:map:1 of 43	facility/fclCombineInit
 00173D20	00174668	code_00173D20	asm	none	
 00174698	00174758	field/fldEnc	c	smt3:map:2 of 2	field/fldEnc
-00174790	00179748	code_00174790	asm	none	
+00174790	00174F70	code_00174790	asm	none	
+00175038	001750B0	code_r1_00175038	c	none	
+001750E8	00175128	code_001750E8	asm	none	
+00175180	00175180	code_r1_00175180	c	none	
+00175348	00175820	code_00175348	asm	none	
+00175858	00175858	code_r1_00175858	c	none	
+00175908	00179748	code_00175908	asm	none	
 00179788	00179788	field/fldCommand	c	smt3:names:1 of 1	field/fldCommand
 00179808	0017AA80	code_00179808	asm	none	
 0017AB10	0017ADA8	interface/itfTestMesManager_0017AB10	c	smt3:names:2+smt3:map:1 of 3 part	interface/itfTestMesManager
@@ -272,7 +303,11 @@ start	last_func	unit	kind	evidence	smt3_unit
 002F5430	002F5430	code_r1_002F5430	c	dds:1 of 1	
 002F5470	002F8A50	TitleMain	asm	none	
 002F8AF8	002F8AF8	kernel/dds3TitleMain	c	smt3:map:1 of 1	kernel/dds3TitleMain
-002F8B88	003003E8	code_002F8B88	asm	none	
+002F8B88	002F96B0	code_002F8B88	asm	none	
+002F96C8	002F96C8	code_r1_002F96C8	c	none	
+002F97C0	002FA3A0	code_002F97C0	asm	none	
+002FA480	002FA480	code_r1_002FA480	c	none	
+002FA4F0	003003E8	code_002FA4F0	asm	none	
 00300488	00300488	code_r1_00300488	c	dds:1 of 1	
 003004B0	003004E0	code_003004B0	asm	none	
 00300530	00300530	code_r1_00300530	c	dds:1 of 1	

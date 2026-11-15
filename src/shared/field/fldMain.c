@@ -1,7 +1,31 @@
 #include "common.h"
 #include "fldMain.h"
+#include "basic.h"
+#include "dds3Basic.h"
+#include "dds3CameraObjectBasic.h"
+#include "dds3SceneBasic.h"
+#include "dds3WorldBasic.h"
+#include "sdk_libc.h"
 
-INCLUDE_ASM(const s32, "field/fldMain", fldSetUnitFollowCamera);
+extern const sdfVector4_t fldSetUnitFollowCameraTable;
+extern const sdfVector4_t fldSetUnitFollowCameraTable2;
+extern char fldCameraUnitName[];
+extern dds3Basic_t *cameraBasic;
+
+void fldSetUnitFollowCamera(void) {
+    sdfVector4_t up = fldSetUnitFollowCameraTable;
+    sdfVector4_t eye;
+    sdfVector4_t target;
+
+    memset(&eye, 0, sizeof(eye));
+    eye.w = 1.0f;
+    target = fldSetUnitFollowCameraTable2;
+    cameraBasic = dds3AddCameraObjectBasicTypeLookAt(dds3SerializeID(), &eye, &target, &up);
+    dds3SetUnitObjectId(cameraBasic, fldCameraUnitName);
+    dds3CameraObjectBasicGetCameraTM(cameraBasic, &target);
+    dds3GetRadiusPoseSet(cameraBasic, 2.0f);
+    dds3SetActiveCameraSceneBasic(dds3GetControlScene(), cameraBasic);
+}
 
 INCLUDE_RODATA(const s32, "field/fldMain", fldSetUnitFollowCameraTable);
 

@@ -21948,10 +21948,10 @@
 0x0050CD70	mapWork30	data	tier=D	derived-shared	na	used by 4 functions: mapHamidasiNpcSub, mapFileLoadSub2, mapCHitAdd
 0x0050DD70	mapWork31	data	tier=D	derived-shared	na	used by 5 functions: mapHamidasiWHitSub, mapHitAidaCalc, mapFileLoadSub2
 0x0050ED70	mapWork32	data	tier=D	derived-shared	na	used by 7 functions: mapFileLoadSub2, mapNpcTblAdd, mapSpotPointGet2D
-0x0050EF70	mapWork33	data	tier=D	derived-shared	na	used by 3 functions: mapFileLoad, mapCallFilterSet, mapSKYBGEDIT
+0x0050EF70	mapData33	data	tier=D	derived-shared	na	used by 3 functions: mapFileLoad, mapCallFilterSet, mapSKYBGEDIT
 0x0050EF88	mapObjTaskWork2	data	tier=D	derived-sole	na	used by mapObjTask
-0x0050F770	mapCutSetCamWork	data	tier=D	derived-dominant	na	used by mapCutSetCam (4 of 6 refs, 2 functions)
-0x0050F780	mapCutSetCamWork2	data	tier=D	derived-dominant	na	used by mapCutSetCam (4 of 6 refs, 2 functions)
+0x0050F770	mapCutSetCamData2	data	tier=D	derived-dominant	na	used by mapCutSetCam (4 of 6 refs, 2 functions)
+0x0050F780	mapCutSetCamData3	data	tier=D	derived-dominant	na	used by mapCutSetCam (4 of 6 refs, 2 functions)
 0x0050F790	mapObjTaskWork3	data	tier=D	derived-dominant	na	used by mapObjTask (8 of 10 refs, 2 functions)
 0x0050F7A0	mapObjTaskWork4	data	tier=D	derived-sole	na	used by mapObjTask
 0x0050F7B0	mapObjTaskWork5	data	tier=D	derived-sole	na	used by mapObjTask
