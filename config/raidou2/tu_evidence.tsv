@@ -147,9 +147,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001B7238	001B7E80	model/mdlEffect_001A1780	c	smt3:names:6 of 6 part	model/mdlEffect
 001B82A0	001B8418	event/EventBit	c	smt3:names:5+smt3:map:1 of 7	event/EventBit
 001B8448	001B8448	event/evtBitEditor	c	smt3:map:1 of 1	event/evtBitEditor
-001B88F8	001B8AF0	event/evtStage_001B88F8	c	smt3:map:2+smt3:names:1 of 4 part	event/evtStage
-001B8C88	001B9390	code_001B8C88	asm	none	
-001B9450	001B9C30	event/evtStage	c	smt3:names:14+smt3:map:2 of 17	event/evtStage
+001B88F8	001B9C30	event/evtStage	c	smt3:names:15+smt3:map:4 of 28	event/evtStage
 001B9CA8	001BDC38	event/evtUnitManager	c	smt3:names:25+smt3:map:8+dds:6 of 64	event/evtUnitManager
 001BDCC8	001C3268	event/evtCommand	c	smt3:names:84+smt3:map:49+dds:9 literal-cores:3 of 163	event/evtCommand
 001C32D8	001C38A8	code_001C32D8	asm	none	

@@ -69,6 +69,41 @@ void evtPathLoop(dds3Basic_t *basic, s32 sw);
 dds3Basic_t *evtAddCamera(const sdfVector4_t *eye, const sdfVector4_t *rot);
 void evtEffectLoopControl(dds3Basic_t *eff, s32 sw);
 s32 evtStageAnimeControl(s32 type, s32 mode);
+void evtSetTestCamera(void);
+
+void evtSetTestCamera(void) {
+    sdfVector4_t position = { 0.0f, -100.0f, -600.0f, 0.0f };
+    sdfVector4_t rotation;
+    dds3Basic_t *object;
+
+    memset(&rotation, 0, 0x10);
+    rotation.w = 1.0f;
+    object = dds3AddCameraObjectBasicTypeFree(dds3AllocObjectId(), &position, &rotation);
+    dds3GetRadiusPoseSet((dds3Basic_t *)object, 10.0f);
+    dds3ObjectBaseCreateMover(object);
+    dds3SetActiveCameraSceneBasic(dds3GetControlScene(), (dds3Basic_t *)object);
+    dds3ObjectBaseSetPadControl(object, 0);
+}
+
+INCLUDE_ASM(const s32, "event/evtStage", itfCriLipSyncManagerOff);
+
+INCLUDE_ASM(const s32, "event/evtStage", evtCallMemset);
+
+INCLUDE_ASM(const s32, "event/evtStage", evtLoadUnit);
+
+INCLUDE_ASM(const s32, "event/evtStage", evtLoadBustupData);
+
+INCLUDE_ASM(const s32, "event/evtStage", evtLeaf3);
+
+INCLUDE_ASM(const s32, "event/evtStage", evtGetDefaultPosBustUp);
+
+INCLUDE_ASM(const s32, "event/evtStage", evtLoadUnitBustUp);
+
+INCLUDE_ASM(const s32, "event/evtStage", evtSetLightBustup);
+
+INCLUDE_ASM(const s32, "event/evtStage", evtGetDrawBustupNums);
+
+INCLUDE_ASM(const s32, "event/evtStage", evtCallGetActiveScene);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtSetUnitPos);
 
