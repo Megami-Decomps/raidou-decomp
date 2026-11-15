@@ -16398,7 +16398,7 @@
 0x0049E0D8	nwdData4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: nwdCheckLoadModel, nwdSetModelObj
 0x0049E0DC	shpSetMenuMilkHall_shpMainData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by shpSetMenuMilkHall_shpMain
 0x0049E3F8	ModelTable	inferred	method=hd; p=0.37 (n=D_r1_0043BB40); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
-0x0049E4C8	gohSeqUnit	hd	hd: Raidou HD gohMain.gohSeqUnit, 6 of 7 functions agree, high confidence
+0x0049E4A8	gohSeqUnit	hd	hd: Raidou HD gohMain.gohSeqUnit; base is entry 0 (GOH_SEQ_ROOT_WAIT), code refers to entries by address
 0x0049E4E8	gohData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: gohCallGetProcessData7, gohSearchiErrorCalcProcess, gohCallGetProcessData3
 0x0049E508	gohData13	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: gohCallGetProcessData6, gohCallGetProcessData9, gohBakNmlCalcProcess_gohMain
 0x0049E528	gohCallGetProcessData9Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by gohCallGetProcessData9 (4 of 10 refs, 4 functions)

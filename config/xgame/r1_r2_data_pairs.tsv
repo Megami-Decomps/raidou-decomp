@@ -1880,7 +1880,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0043B488	0x0049E068	nwdData3	.data	0x2	yes	code-ref
 0x0043B48A	0x0049E06A	shpData5	.data	0x26	no	code-ref
 0x0043BB40	0x0049E3F8	ModelTable	.data	0xCC	no	code-ref
-0x0043BC0C	0x0049E4C8	gohSeqUnit	.data	0x1C	no	code-ref
+0x0043BBF0	0x0049E4A8	gohSeqUnit	.data	0x1C0	no	code-ref
 0x0043BC28	0x0049E4E8	gohData	.data	0x1C	no	code-ref
 0x0043BC60	0x0049E528	gohCallGetProcessData9Data	.data	0x1C	no	code-ref
 0x0043BC7C	0x0049E568	gohData3	.data	0x1C	no	code-ref

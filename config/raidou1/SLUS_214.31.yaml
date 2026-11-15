@@ -695,6 +695,8 @@ segments:
       - [0x2AE200, data, data]
       - [0x2AE530, .data, kernel/dds3KernelDraw]
       - [0x2AE624, data, data_003AD624]
+      - [0x33CBF0, .data, newbattle/nbAiScript]
+      - [0x33CDB0, data, data_0043BDB0]
       - [0x343D90, .data, sdk/libkernl/initsys]
       - [0x343DA0, data, data_00442DA0]
       - [0x344550, .data, sdk/libkernl/libosd]

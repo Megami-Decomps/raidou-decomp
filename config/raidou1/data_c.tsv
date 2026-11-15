@@ -2,3 +2,4 @@ kernel/dds3KernelDraw	0x003AD530	0x003AD624
 sdk/libkernl/initsys	0x00442D90	0x00442DA0
 sdk/libkernl/libosd	0x00443550	0x00443570
 sdk/libkernl/alarm	0x00443CD8	0x00443D18
+newbattle/nbAiScript	0x0043BBF0	0x0043BDB0

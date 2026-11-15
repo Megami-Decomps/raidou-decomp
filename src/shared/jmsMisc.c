@@ -48,9 +48,6 @@ typedef struct MenuPanelHandles {
 
 typedef char MenuPanelHandles_size_must_be_0x38[(sizeof(MenuPanelHandles) == 0x38) ? 1 : -1];
 
-/* The transition context is accepted when the popup callback returns nonzero. */
-typedef u32 (*MenuPopupCanEnterCallback)(void *context);
-
 struct _FRQ;
 
 #define MNU_PANEL_ITEM_COUNT 5
@@ -152,18 +149,18 @@ struct MenuPanelItem {
     s32 selectionRamp; /* 0x8C */
 };
 
-void CalcSeqHandle(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument);
+void CalcSeqHandle(s32 action, jmsSeqUnit_t *entry, jmsSeqHandle_t *state, dds3ProcessID_t *ID);
 
 struct SoundHandleNode;
 
 /* Clear the complete native popup-transition state, including saved entry addresses. */
-void mnuClearPanelTransitionState(MenuPopupState *state) {
+void mnuClearPanelTransitionState(jmsSeqHandle_t *state) {
     memset(state, 0, MNU_POPUP_STATE_BYTES);
 }
 
-void CalcSeqHandle(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument) {
-    MenuPopupCallback callback;
-    MenuPopupEntry *saved;
+void CalcSeqHandle(s32 action, jmsSeqUnit_t *entry, jmsSeqHandle_t *state, dds3ProcessID_t *ID) {
+    jmsInt32Delegate callback;
+    jmsSeqUnit_t *saved;
     s32 i;
 
     if (state == NULL) {
@@ -171,30 +168,30 @@ void CalcSeqHandle(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32
     }
     switch (action) {
         case 0:
-            callback = entry->enter;
+            callback = entry->pInit;
             if (callback != NULL) {
-                if (entry->leave != NULL) {
+                if (entry->pDestroy != NULL) {
                     for (i = 0; i < state->count; i++) {
-                        if (entry->enter == state->entries[i]->enter) {
+                        if (entry->pInit == state->entries[i]->pInit) {
                             return;
                         }
                     }
                     state->entries[state->count++] = entry;
-                    if ((entry->flags & MNU_POPUP_INSERT_BEFORE_TOP) && state->count >= 2) {
+                    if ((entry->Stat & MNU_POPUP_INSERT_BEFORE_TOP) && state->count >= 2) {
                         saved = state->entries[state->count - 1];
                         state->entries[state->count - 1] = state->entries[state->count - 2];
                         state->entries[state->count - 2] = saved;
                     }
                 }
-                callback(argument);
+                callback(ID);
             }
             break;
         case 1:
         case 2:
             if (state->count != 0) {
                 saved = state->entries[state->count - 1];
-                if (saved->leave != NULL && action == 1) {
-                    saved->leave(argument);
+                if (saved->pDestroy != NULL && action == 1) {
+                    saved->pDestroy(ID);
                 }
                 state->count--;
             }
@@ -203,28 +200,27 @@ void CalcSeqHandle(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32
 }
 
 /* Pop saved entries with their leave callbacks until the state count reaches zero. */
-void jmsSeqDestroyAll(MenuPopupState *state, struct dds3ProcessID_t *task) {
+void jmsSeqDestroyAll(jmsSeqHandle_t *state, struct dds3ProcessID_t *task) {
     s32 entryCount;
 
     entryCount = state->count;
     while (entryCount != 0) {
-        CalcSeqHandle(1, 0, state, (u32)task);
+        CalcSeqHandle(1, 0, state, task);
         entryCount = state->count;
     }
 }
 
 INCLUDE_ASM(const s32, "jmsMisc", jmsChkSeqChange);
 
-s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
-                               void *callback) {
-    MenuPopupState *state = work;
-    MenuPopupEntry **slot = (MenuPopupEntry **)entrySlot;
-    MenuPopupEntry *entry;
+s32 jmsSeqChange(jmsSeqHandle_t *work, s32 *entrySlot, s32 mode, dds3ProcessID_t *ID) {
+    jmsSeqHandle_t *state = work;
+    jmsSeqUnit_t **slot = (jmsSeqUnit_t **)entrySlot;
+    jmsSeqUnit_t *entry;
     s32 accepted = 1;
     s32 result = 0;
     u32 flags;
 
-    if (callback == NULL) {
+    if (ID == NULL) {
         return 0;
     }
     if (slot == NULL) {
@@ -234,42 +230,42 @@ s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
     if (entry == NULL) {
         return 0;
     }
-    flags = entry->flags;
+    flags = entry->Stat;
     if (flags & 0x400000) {
         return 0;
     }
     switch (mode) {
     case 0:
-        entry->flags = flags | 0x100000;
-        if (entry->canEnter != NULL) {
-            accepted = ((MenuPopupCanEnterCallback)entry->canEnter)(callback) != 0;
+        entry->Stat = flags | 0x100000;
+        if (entry->pCheck != NULL) {
+            accepted = entry->pCheck(ID) != 0;
         }
-        if (accepted || ((*slot)->flags & 1)) {
-            if (!((*slot)->flags & 0x10000)) {
-                CalcSeqHandle(0, *slot, state, (u32)callback);
-                (*slot)->flags |= 0x10000;
+        if (accepted || ((*slot)->Stat & 1)) {
+            if (!((*slot)->Stat & 0x10000)) {
+                CalcSeqHandle(0, *slot, state, ID);
+                (*slot)->Stat |= 0x10000;
             }
         }
         if (accepted) {
-            result = (s32)(*slot)->start;
-            (*slot)->flags |= 0x200000;
+            result = (s32)(*slot)->pCalc;
+            (*slot)->Stat |= 0x200000;
         } else {
-            flags = (*slot)->flags;
+            flags = (*slot)->Stat;
             if (flags & 1) {
-                (*slot)->flags = flags | 0x400000;
-                (*slot)->start(callback);
-                (*slot)->flags &= ~0x400000;
+                (*slot)->Stat = flags | 0x400000;
+                (*slot)->pCalc(ID);
+                (*slot)->Stat &= ~0x400000;
             }
         }
         break;
     case 1:
         if (flags & 0x100000) {
             if (flags & 0x200000) {
-                result = (s32)entry->update;
+                result = (s32)entry->pDraw;
             } else if (flags & 1) {
-                entry->flags = flags | 0x400000;
-                entry->update(callback);
-                (*slot)->flags &= ~0x400000;
+                entry->Stat = flags | 0x400000;
+                entry->pDraw(ID);
+                (*slot)->Stat &= ~0x400000;
             }
         }
         break;
@@ -278,21 +274,21 @@ s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
             if (flags & 0x200000) {
                 if (flags & 0x20000) {
                     if (flags & 0x40000) {
-                        CalcSeqHandle(2, NULL, state, (u32)callback);
+                        CalcSeqHandle(2, NULL, state, ID);
                     } else {
-                        CalcSeqHandle(1, NULL, state, (u32)callback);
+                        CalcSeqHandle(1, NULL, state, ID);
                     }
                 }
                 /* Keep only the low 16 flag bits, read as a halfword. */
-                (*slot)->flags = *(u16 *)*slot;
+                (*slot)->Stat = *(u16 *)*slot;
                 state->entryAddress = state->lastEntryAddress;
                 state->lastEntryAddress = *slot;
-                result = (s32)(*slot)->finish;
+                result = (s32)(*slot)->pUpdate;
                 *slot = NULL;
             } else if (flags & 1) {
-                entry->flags = flags | 0x400000;
-                entry->finish(callback);
-                (*slot)->flags &= ~0x400000;
+                entry->Stat = flags | 0x400000;
+                entry->pUpdate(ID);
+                (*slot)->Stat &= ~0x400000;
             }
         }
         break;
@@ -303,27 +299,27 @@ s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
 INCLUDE_ASM(const s32, "jmsMisc", jmsSeqChkLast);
 
 /* Bind the entry address and retain only the entry's low sixteen flag bits. */
-void jmsSeqJump(s32 *entrySlot, MenuPopupEntry *entry) {
+void jmsSeqJump(s32 *entrySlot, jmsSeqUnit_t *entry) {
     u16 retainedFlags;
 
-    retainedFlags = entry->flags;
+    retainedFlags = entry->Stat;
     *entrySlot = (s32)entry;
-    entry->flags = retainedFlags;
+    entry->Stat = retainedFlags;
 }
 
 /* Bind the entry with the native insert-before-top bit after preserving low flags. */
-void jmsSeqJumpAndFree(s32 *entrySlot, MenuPopupEntry *entry) {
+void jmsSeqJumpAndFree(s32 *entrySlot, jmsSeqUnit_t *entry) {
     u16 retainedFlags;
 
-    retainedFlags = entry->flags;
+    retainedFlags = entry->Stat;
     *entrySlot = (s32)entry;
-    entry->flags = retainedFlags | MNU_POPUP_INSERT_BEFORE_TOP;
+    entry->Stat = retainedFlags | MNU_POPUP_INSERT_BEFORE_TOP;
 }
 
 INCLUDE_ASM(const s32, "jmsMisc", jmsSeqJumpAndPop);
 
 /* Bind the current popup entry only when its saved address is nonzero. */
-void jmsSeqReturn(MenuPopupState *state, s32 *entrySlot) {
+void jmsSeqReturn(jmsSeqHandle_t *state, s32 *entrySlot) {
     if (state->entryAddress != NULL) {
         jmsSeqJumpAndFree(entrySlot, state->entryAddress);
         return;

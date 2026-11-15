@@ -24,7 +24,7 @@ typedef struct titleData_t {
     struct sdfMemHandle_t *hMem;
     u32 flag;
     s32 mode;
-    MenuPopupState panel;
+    jmsSeqHandle_t panel;
     s32 seqUnit;
     struct EffectList *spriteList;
     void *sprite[4];

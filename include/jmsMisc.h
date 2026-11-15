@@ -9,9 +9,9 @@ struct jmsSeqUnit_t;
 
 u32 jmsChkCommonInput(u32 ControlBit);
 s32 jmsChkSeqChange(struct jmsSeqUnit_t *pSeqUnit);
-s32 jmsSeqChange(MenuPopupState *pSeqHandle, s32 *pSeqUnit, s32 Mode, void *ID);
+s32 jmsSeqChange(jmsSeqHandle_t *pSeqHandle, s32 *pSeqUnit, s32 Mode, dds3ProcessID_t *ID);
 s32 jmsSeqChkLast(struct jmsSeqHandle_t *pSeqHandle, struct jmsSeqUnit_t *pSeqUnit);
-void mnuClearPanelTransitionState(MenuPopupState *state);
+void mnuClearPanelTransitionState(jmsSeqHandle_t *state);
 void jmsSeqJumpAndPop(struct jmsSeqUnit_t **pCurrentSeqUnit, struct jmsSeqUnit_t *pSeqUnit);
 
 #endif

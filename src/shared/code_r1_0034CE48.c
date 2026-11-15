@@ -170,7 +170,7 @@ typedef struct MenuPanelDrawLayout {
 /* Menu runtime fields shared by the party, panel and resource handlers. */
 typedef struct MenuContext {
     u8 pad00[8];
-    MenuPopupState transitionWork; /* +0x08: native saved-entry transition state */
+    jmsSeqHandle_t transitionWork; /* +0x08: native saved-entry transition state */
     s32 popupState[3];     /* 0x54: passed to the popup state handlers */
     struct EffectSlotSet *displayHandle;     /* 0x60 */
     struct EffectSlotSet *resourceHandle; /* 0x64: second base resource owner. */

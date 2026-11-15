@@ -14272,7 +14272,7 @@
 0x0043B514	shpCallSetParam2Data4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by shpCallSetParam2
 0x0043B51C	nwdCallBitCheckData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by nwdCallBitCheck
 0x0043BB40	ModelTable	inferred	method=hd; p=0.37 (n=D_r1_0043BB40); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=2, using=2
-0x0043BC0C	gohSeqUnit	hd	hd: Raidou HD gohMain.gohSeqUnit, 6 of 7 functions agree, high confidence
+0x0043BBF0	gohSeqUnit	hd	hd: Raidou HD gohMain.gohSeqUnit; base is entry 0 (GOH_SEQ_ROOT_WAIT), code refers to entries by address
 0x0043BC28	gohData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: gohCallGetProcessData7, gohSearchiErrorCalcProcess, gohCallGetProcessData3
 0x0043BC44	gohData2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: gohCallGetProcessData5, gohCallGetProcessData9, gohCallGetProcessData2
 0x0043BC60	gohCallGetProcessData9Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by gohCallGetProcessData9 (4 of 10 refs, 4 functions)

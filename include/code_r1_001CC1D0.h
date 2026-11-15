@@ -2,6 +2,7 @@
 #define CODE_R1_001_CC1_D0_H
 
 #include "common.h"
+#include "kernel.h"
 #include "sdf_resource.h"
 #include "code_0027A1D0.h"
 
@@ -32,37 +33,44 @@ typedef struct EffectSlotDescription {
 
 typedef char EffectSlotDescriptionSizeCheck[sizeof(EffectSlotDescription) == 0x80 ? 1 : -1];
 
-typedef u32 (*MenuPopupCallback)();
+typedef s32 (*jmsInt32Delegate)(dds3ProcessID_t *ID);
 
-typedef struct MenuPopupEntry {
-    u32 flags;
-    MenuPopupCallback enter;
-    MenuPopupCallback leave;
-    MenuPopupCallback start;
-    MenuPopupCallback update;
-    MenuPopupCallback finish;
-    MenuPopupCallback canEnter;
-} MenuPopupEntry;
+/* One step of a sequence: Init/Destroy run on push and pop, jmsSeqChange returns
+ * Calc, Draw or Update by mode, and Check accepts the change. */
+typedef struct jmsSeqUnit_t {
+    u32 Stat;
+    jmsInt32Delegate pInit;
+    jmsInt32Delegate pDestroy;
+    dds3ProcessFunc_t pCalc;
+    dds3ProcessFunc_t pDraw;
+    dds3ProcessFunc_t pUpdate;
+    jmsInt32Delegate pCheck;
+#ifdef VERSION_RAIDOU2
+    char *Name;
+#endif
+} jmsSeqUnit_t;
 
-typedef char MenuPopupEntry_size_must_be_0x1C[
-    (sizeof(MenuPopupEntry) == 0x1C) ? 1 : -1];
+#ifdef VERSION_RAIDOU2
+typedef char jmsSeqUnit_t_size_must_be_0x20[(sizeof(jmsSeqUnit_t) == 0x20) ? 1 : -1];
+#else
+typedef char jmsSeqUnit_t_size_must_be_0x1C[(sizeof(jmsSeqUnit_t) == 0x1C) ? 1 : -1];
+#endif
 
 /* Both games keep sixteen saved entries and the current/previous entry pointers. */
-typedef struct MenuPopupState {
+typedef struct jmsSeqHandle_t {
     s32 count;
-    MenuPopupEntry *entries[16];
-    MenuPopupEntry *entryAddress;
-    MenuPopupEntry *lastEntryAddress;
-} MenuPopupState;
+    jmsSeqUnit_t *entries[16];
+    jmsSeqUnit_t *entryAddress;
+    jmsSeqUnit_t *lastEntryAddress;
+} jmsSeqHandle_t;
 
-typedef char MenuPopupState_size_must_be_0x4C[
-    (sizeof(MenuPopupState) == 0x4C) ? 1 : -1];
+typedef char jmsSeqHandle_t_size_must_be_0x4C[
+    (sizeof(jmsSeqHandle_t) == 0x4C) ? 1 : -1];
 
 /* Advance one popup transition state using its current scheduler word. */
-s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
-                               void *callback);
+s32 jmsSeqChange(jmsSeqHandle_t *work, s32 *entrySlot, s32 mode, dds3ProcessID_t *ID);
 
-void jmsSeqJump(s32 *entrySlot, MenuPopupEntry *entry);
+void jmsSeqJump(s32 *entrySlot, jmsSeqUnit_t *entry);
 
 typedef struct CampEffectRows {
     u32 values[2][4];
@@ -306,7 +314,7 @@ typedef char EffMappedRecord_size_must_be_0x24[(sizeof(EffMappedRecord) == 0x24)
 
 typedef char EffMappedResource_size_must_be_0x0C[(sizeof(EffMappedResource) == 0x0C) ? 1 : -1];
 
-void jmsSeqJumpAndFree(s32 *entrySlot, MenuPopupEntry *entry);
+void jmsSeqJumpAndFree(s32 *entrySlot, jmsSeqUnit_t *entry);
 
 /* An indexed render slot owned by an effect resource set. */
 typedef struct MenuGridSlot {
@@ -445,9 +453,9 @@ typedef struct MenuTerminalContext {
     struct sdfMemHandle_t *resourceHandle;
     u8 pad04[4];
     s32 type;
-    MenuPopupState transitionWork;
+    jmsSeqHandle_t transitionWork;
     s32 popupState;
-    MenuPopupEntry *popupTable;
+    jmsSeqUnit_t *popupTable;
     EvtResourcePair messageResources;
     struct EffectSlotSet *effectSlots[4];
     s32 state;

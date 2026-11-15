@@ -11,7 +11,7 @@
 #include "code_r1_001CC1D0.h"
 
 static inline s32 menuRunPanel(void *context, s32 mode, void *callback) {
-    return jmsSeqChange((MenuPopupState *)((u8 *)context + 8),
+    return jmsSeqChange((jmsSeqHandle_t *)((u8 *)context + 8),
                                       (s32 *)((u8 *)context + 0x54), mode,
                                       callback);
 }
@@ -19,7 +19,7 @@ static inline s32 menuRunPanel(void *context, s32 mode, void *callback) {
 typedef struct _FRQ _FRQ;
 
 extern s32 checkConfigState(void);
-extern MenuPopupEntry mnuCampCommandReturnPopupEntry[];
+extern jmsSeqUnit_t mnuCampCommandReturnPopupEntry[];
 s32 mnuDispatchStaffMenuWithIdlePopup(dds3ProcessID_t *callback);
 
 /* Dispatch a callback; on idle, install the default entry unless busy. */
