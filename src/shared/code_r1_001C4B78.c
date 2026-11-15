@@ -105,7 +105,41 @@ typedef char EvtViewKey_size_must_be_0x38[(sizeof(EvtRuntimeChild) == 0x38) ? 1 
 typedef char EvtCameraColorPayload_size_must_be_0x40[
     (sizeof(EvtCameraColorPayload) == 0x40) ? 1 : -1];
 
-extern s32 (*evtDispatchActionByIndexData[])(s32, s32, evtViewerInfo_t *);
+s32 evtBasicListMenu(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtCallGetPIDfromUID6(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtCallMenuDisp(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtCallMenuDisp2(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtCallMenuDisp3(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtCallMenuDisp4(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtCallMenuDisp6(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtCallMenuDisp7(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtFileName2Menu(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtFileNameMenu(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtFloatChangeMenu(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtFrameChangeMenu(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtFunc4(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtFunc5(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtIntChangeMenu(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtMainMenu(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtOjbectListMenu(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtSelectMenu(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtUpdateEffectViewerGroup(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtUpdateGroupListDialog(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtUpdateGroupPropertyDialog(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 evtViewerDrawGroupWindow(s32 x, s32 y, evtViewerInfo_t *ctx);
+s32 mnuDrawInfoWindowB(s32 x, s32 y, evtViewerInfo_t *ctx);
+
+s32 (*evtDispatchActionByIndexData[24])(s32 x, s32 y, evtViewerInfo_t *ctx) = {
+    NULL,
+    evtMainMenu, evtSelectMenu, evtFileNameMenu,
+    evtOjbectListMenu, evtCallMenuDisp, evtFrameChangeMenu,
+    evtIntChangeMenu, evtFloatChangeMenu, evtFileName2Menu,
+    evtBasicListMenu, evtUpdateEffectViewerGroup, mnuDrawInfoWindowB,
+    evtCallMenuDisp2, evtCallMenuDisp3, evtUpdateGroupPropertyDialog,
+    evtCallMenuDisp4, evtUpdateGroupListDialog, evtFunc5,
+    evtCallMenuDisp6, evtCallMenuDisp7, evtViewerDrawGroupWindow,
+    evtCallGetPIDfromUID6, evtFunc4,
+};
 s32 evtDispatchActionByIndex(s32 actionIndex, s32 x, s32 y, evtViewerInfo_t *runtime);
 void evtWriteSerializedBytes(s32 output, void *data, s32 size);
 s32 evtAssignRuntimeChildSequenceAndCount(evtViewerInfo_t *runtime);

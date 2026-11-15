@@ -433,7 +433,6 @@ effPolyOt = 0x003AE218;
 sdfDebugGrOt = 0x003AE7D8;
 sdfModelOtTable = 0x003AE8D8;
 sdfViewMatrix = 0x003B2E60;
-dds3AdminiList = 0x003B3138;
 codefunc = 0x003B3380;
 dds3MoverNameTable = 0x003B34B8;
 dds3PrimLineOutline = 0x003B3AF0;

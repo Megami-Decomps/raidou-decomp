@@ -2,3 +2,5 @@ kernel/dds3KernelDraw	0x004279B0	0x00427AA4
 sdk/libkernl/initsys	0x004A44C0	0x004A44D0
 sdk/libkernl/libosd	0x004A4C80	0x004A4CA0
 sdk/libkernl/alarm	0x004A5408	0x004A5448
+code_r1_001C4B78	0x00449B28	0x00449B88
+kernel/dds3AdminiProcess	0x0042D9D8	0x0042DBD0
