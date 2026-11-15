@@ -15,8 +15,6 @@ extern scrProcessWork_s *scrPrintProcedureStart(scrHeader_t *header, scrTypeTabl
                                                 scrLabelTable_t *labeltable, scrCode_u *code,
                                                 u8 *mesdata, char *strdata, s32 procno);
 
-void scrLinkHandle(scrProcessWork_s *work);
-void scrUnlinkHandle(scrProcessWork_s *work);
 
 scrProcessWork_s *scrPrintProcedureStart(scrHeader_t *header, scrTypeTable_t *typetable,
                                          scrProcTable_t *proctable, scrLabelTable_t *labeltable,

@@ -136,7 +136,6 @@ s32 sdfFileChkHddFile(char *aFilename);
 char *sdfFileMakeFilename(char *aFilename);
 s32 sdfFileCallback(void *aCmd, s32 aOp, s32 aArg, s32 aResult);
 sdfFileCmdHandle_t *sdfFileOpen(const char *aFileName);
-s32 sdfFileCheckExist(char *aFilename);
 void sdfFileClose(void *aHandle);
 s32 sdfFileRead(void *aHandle, void *aPtr, s32 aLeng);
 u32 sdfFileLength(void *aHandle);

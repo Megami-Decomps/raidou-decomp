@@ -91,4 +91,8 @@ void evtValidateUnitMotionFrameForWait(s32 nowframe, evtViewerInfo_t *pInfo);
 void evtViewerStopFrame(s32 sw, u32 nowframe, evtViewerInfo_t *pInfo);
 char *sndVoiceStatus(char *lbl);
 
+dds3TaskUpdateResult_t evtCallGetProcessData11(dds3ProcessID_t *task);
+void evtEventViewerDestroyActiveAlternate(dds3ProcessID_t *task);
+void evtEventViewerInitCampFontResource(evtViewerInfo_t *viewer);
+
 #endif

@@ -14,4 +14,9 @@ s32 mnuIncrementTitleEffectFrameCounter(dds3ProcessID_t *id);
 void sndInit(void);
 char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename);
 
+/* The PCM voice owner stores idle as 0 and active playback as 1. */
+typedef s32 MnuTitleSoundBusyState;
+
+MnuTitleSoundBusyState scrCheckEnableMovieCancel(void);
+
 #endif

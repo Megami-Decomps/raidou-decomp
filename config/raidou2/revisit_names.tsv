@@ -1510,11 +1510,11 @@
 0x001C3780	sndCallGetRandIntA	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls dds3GetRandIntA
 0x001C37B0	sndCallGetRandIntA2	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls dds3GetRandIntA
 0x001C37E0	sndCallGetRandIntA3	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls dds3GetRandIntA
-0x001C3810	prmRefDDS3GBWK4	func	tier=D	derived-data	na	unit code_001C32D8, neighbour prm_DH_PLUS; references DDS3_GBWK
+0x001C3810	sndRefDDS3GBWK	func	tier=D	derived-data	na	unit code_001C32D8, neighbour prm_DH_PLUS; references DDS3_GBWK
 0x001C3820	prmRefDDS3GBWK5	func	tier=D	derived-data	na	unit code_001C32D8, neighbour prm_DH_PLUS; references DDS3_GBWK
 0x001C3848	prmCallGetRandIntA	func	tier=D	derived-callee	na	unit code_001C32D8, neighbour prm_DH_PLUS; calls dds3GetRandIntA
 0x001C3878	prmCallGetRandIntA2	func	tier=D	derived-callee	na	unit code_001C32D8, neighbour prm_DH_PLUS; calls dds3GetRandIntA
-0x001C38A8	sndRefDDS3GBWK	func	tier=D	derived-data	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; references DDS3_GBWK
+0x001C38A8	prmRefDDS3GBWK4	func	tier=D	derived-data	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; references DDS3_GBWK
 0x001C3908	evtExitSBtlSub	func	tier=D	derived-caller	na	unit event/evtMoon; called by Exit_sbtl
 0x001C3930	evtBtlBarCtrlSub	func	tier=D	derived-caller	na	unit event/evtMoon; called by sbtlBarCtrl
 0x001C4BC0	evtMoonInitProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtMoon.evtMoonInitProcess, score 12.5 band A

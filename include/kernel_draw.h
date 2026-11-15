@@ -12,6 +12,12 @@ typedef struct
     sdf3DFogParam_t fog;
 } dds3LightState_t;
 
+extern dds3LightState_t dds3LightParam;
+
+void dds3SetAmbient(sdfVector4_t *ambient);
+void dds3SetFog(sdf3DFogParam_t *fog);
+void dds3SetLight(sdf3DLight_t *light, s32 no);
+
 /* sdfGrSetStdDrawEnv and sdfGrLinkStdDrawEnv are handed the DMA tag that
  * prefixes the draw env, so the env's own packet header sits 0x10 in. */
 typedef struct

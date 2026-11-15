@@ -5,6 +5,13 @@
 #include "scrTraceCode.h"
 #include "dds3KernelCore.h"
 #include "scrScriptProcess.h"
+#include "code_r1_0010DF68.h"
+#include "sdfChip.h"
+#include "sdfMemory.h"
+#include "itfMesManager.h"
+#include "dds3SequenceList_00111FF8.h"
+
+extern const char scrStrEnd[];
 
 extern scrProcessWork_s *scrHandleFirst;
 
@@ -98,7 +105,29 @@ dds3ProcessID_t *scrRunScriptEx(s32 priority, scrHeader_t *header, scrTypeTable_
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", scrLeaf2);
 
-INCLUDE_ASM(const s32, "script/scrScriptProcess", scrReleaseScript);
+/* SMT3 names this address scrPrintProcedureEnd (without the printf). */
+void scrReleaseScript(scrProcessWork_s *pw) {
+    datDebugPrintf(scrStrEnd, pw->ProcTable[pw->StartProc].Name);
+
+    if (pw->LocalInt != NULL) {
+#ifdef VERSION_RAIDOU1
+        sdfChipFreeDirect(pw->LocalInt);
+#else
+        sdfMemFreePtrDirect(pw->LocalInt);
+#endif
+    }
+    if (pw->LocalFloat != NULL) {
+        sdfChipFreeDirect(pw->LocalFloat);
+    }
+    if (pw->MesHandle >= 0) {
+        itfMesMngRelease(pw->MesHandle);
+    }
+    if (pw->MemHandle != NULL) {
+        sdfMemFreeDirect(pw->MemHandle);
+    }
+    scrUnlinkHandle(pw);
+    sdfChipFreeDirect(pw);
+}
 
 /* Skips the running script's own process and does not print. */
 void scrAllReleaseScript(void)
@@ -238,8 +267,10 @@ s32 scrScriptProcess(dds3ProcessID_t *id)
         return 0;
     }
 }
-#ifdef VERSION_RAIDOU1
 
+INCLUDE_RODATA(const s32, "script/scrScriptProcess", scrStrEnd);
+
+#ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "script/scrScriptProcess", scrCommandTable);
 
 #endif

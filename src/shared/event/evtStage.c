@@ -6,6 +6,7 @@
 #include "libsdf.h"
 #include "ps2asm.h"
 #include "dds3SceneBasic.h"
+#include "dds3AreaBasic.h"
 #include "dds3Basic.h"
 #include "dds3PathBasic.h"
 #include "evtStage.h"
@@ -15,6 +16,17 @@
 #include "dds3CameraObjectBasic.h"
 #include "effManager.h"
 #include "dds3KernelCore.h"
+#include "sdfQuat.h"
+#include "dds3KernelDraw.h"
+#include "kernel_draw.h"
+#include "sdfDelayedResrc.h"
+
+/* declarations needed in evtStage.c (Raidou 1 retail signatures) */
+extern char evtAreaPathFormat[];
+extern sdf3DLight_t evtStageLights[3];
+extern sdf3DFogParam_t evtStageFog;
+extern sdfVector4_t evtStageAmbient;
+/* Build the field world object and load its stage resource. */
 
 u32 dds3AllocObjectId(void);
 
@@ -123,7 +135,29 @@ INCLUDE_ASM(const s32, "event/evtStage", evtGetDrawBustupNums);
 INCLUDE_ASM(const s32, "event/evtStage", evtCallGetActiveScene);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtStage", evtSetUnitPos);
+void evtSetUnitPos(u32 unitID, u32 posID) {
+    sdfVector4_t quaternion = { 0.0f, 1.0f, 0.0f, 1.0f };
+    dds3Basic_t *target;
+    dds3Basic_t *source;
+    evtWorldSourceTransformPrefix_t *sourceTransform;
+
+    target = dds3SearchSceneBasic(dds3GetControlScene(), unitID, 5);
+    if (target != NULL) {
+        source = dds3SearchSceneBasic(dds3GetControlScene(), posID, 0x10);
+        if (source != NULL) {
+            sourceTransform = source->workdata;
+            dds3SetPosPoseSet_dds3Basic(target, &sourceTransform->position);
+            SDF_VU0_LOADVECTOR(&quaternion);
+            FromRotation(3.14159265f);
+            SDF_VU0_LOADVECTOR_B(sourceTransform->rotation);
+            Mult();
+            SDF_VU0_STOREVECTOR(&quaternion);
+            dds3SetRotPoseSet(target, &quaternion);
+            dds3GetPosPoseSet(target);
+            SDF_VU0_STOREVECTOR(&target->poseset->pos2);
+        }
+    }
+}
 
 void evtFreeStage(void)
 {
@@ -148,11 +182,51 @@ void evtFreeAllUnit(void) {
     }
 }
 
-INCLUDE_RODATA(const s32, "event/evtStage", evtSetUnitPosTable);
+s32 evtLoadArea(s32 fld, s32 area) {
+    dds3Basic_t *worldObject;
 
-INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea);
+    evtFreeStage();
+    worldObject = dds3AddScene();
+    dds3SetControlScene(worldObject);
+    dds3SetActiveScene(worldObject);
+    dds3SetMapNo(worldObject, (fld << 16) + area);
+    dds3SetActiveScene(NULL);
+    dds3AddAreaBasic(dds3SerializeID(), evtAreaPathFormat);
+    dds3SetActiveScene(dds3GetControlScene());
+    dds3SceneBasicMakeScene(worldObject);
+    evtSetTestCamera();
+    dds3SetScreenFovy(0.75398216f);
+    dds3SetLight(&evtStageLights[0], 0);
+    dds3SetLight(&evtStageLights[1], 1);
+    dds3SetLight(&evtStageLights[2], 2);
+    dds3SetFog(&evtStageFog);
+    dds3SetAmbient(&evtStageAmbient);
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "event/evtStage", evtLoadArea_FromMemory);
+s32 evtLoadArea_FromMemory(s32 fld, s32 area, saddr_t pF1, saddr_t pF2,
+                           const sdfTextureOffsetListHeader_t *pTB, s32 pBF) {
+    dds3Basic_t *worldObject;
+
+    evtFreeStage();
+    worldObject = dds3AddScene();
+    dds3SetControlScene(worldObject);
+    dds3SetActiveScene(worldObject);
+    dds3SetMapNo(worldObject, (fld << 16) + area);
+    dds3SceneBasicMakeScene_FromMemory(worldObject, fld, area, pF1, pF2, pTB, pBF);
+    evtSetTestCamera();
+    dds3SetScreenFovy(0.75398216f);
+    dds3SetLight(&evtStageLights[0], 0);
+    dds3SetLight(&evtStageLights[1], 1);
+    dds3SetLight(&evtStageLights[2], 2);
+    dds3SetFog(&evtStageFog);
+    dds3SetAmbient(&evtStageAmbient);
+    while (sdfDelayedResrcCheck() != 0) {
+    }
+    return 1;
+}
+
+INCLUDE_RODATA(const s32, "event/evtStage", evtAreaPathFormat);
 
 #ifdef VERSION_RAIDOU1
 void evtStartEvent(s32 no) {

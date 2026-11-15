@@ -16,6 +16,17 @@
 #include "dds3WorldBasic.h"
 #include "dds3ObjectBase.h"
 
+void evtSetGameData2and3(evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s32 mode);
+extern s16 winoff_x;
+extern s8 dds3PadButtonState[];
+extern const char evtStrE303[];
+void evtProcess3Sub(evtViewerInfo_t *viewer);
+void evtProcess3Sub2(evtViewerInfo_t *viewer);
+void dds3FontReqListAdd(evtViewerInfo_t *viewer);
+void evtCallEveRippleBlurSetDefTex(evtViewerInfo_t *viewer);
+void evtCallGetFrameID(evtViewerInfo_t *viewer);
+void PushMenu(s32 a0, s32 a1, s32 a2, evtViewerInfo_t *viewer);
+
 /* The viewer's current menu, which EnterMain switches on to decide what Enter does
  * from each one. Names from the IDB. */
 typedef enum EVT_VIEWER_MENU {
@@ -66,6 +77,13 @@ extern char evtViewerProcNameMfilter[8];
 #include "dds3UnitObjectBasic.h"
 #include "code_r1_001C4B78.h"
 #include "evtEventViewer.h"
+#include "code_r1_0010DF68.h"
+#include "code_r1_001CA8F8.h"
+#include "code_r1_001CF808.h"
+#include "dds3KernelMain.h"
+#include "evtTmxPreLoad.h"
+#include "itfMesManager.h"
+#include "dds3KernelDraw.h"
 #include "effPCPMisc_00224D10.h"
 
 enum {
@@ -184,9 +202,7 @@ dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task);
 extern dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task);
 void evtViewerRelease();
 void evtEventViewerDestroyActive(dds3ProcessID_t *task);
-void evtEventViewerDestroyActiveAlternate(dds3ProcessID_t *task);
 extern void mnuCampInitFontResource(evtViewerInfo_t *viewer);
-void evtEventViewerInitCampFontResource(evtViewerInfo_t *viewer);
 void evtEventViewerDestroyTask(void);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", LinkFrameInfo);
@@ -527,12 +543,12 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateMovie);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateRenderTex);
 
-void evtProcess3Sub(void) {
+void evtProcess3Sub(evtViewerInfo_t *viewer) {
 }
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallDrawFont);
 
-void evtProcess3Sub2(void) {
+void evtProcess3Sub2(evtViewerInfo_t *viewer) {
 }
 
 /* Returns the latest eligible kind-5 motion key at/before frame for channel,
@@ -778,7 +794,93 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", UnitMotionChangeForWait);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtValidateUnitMotionFrameForWait);
 
+#ifdef NON_MATCHING
+/* 47 of 190 words differ: same length; two branch delay slots (after the flags & 8 test in
+ * the tail) stay unfilled where retail fills them. */
+dds3ProcessFunc_t Process3(dds3ProcessID_t *task) {
+    evtViewerInfo_t *viewer = (evtViewerInfo_t *)dds3GetProcessData(task);
+    s32 frame;
+    s32 flags;
+    s32 flagsNow;
+    s32 playIndex;
+
+    winoff_x = 0;
+    if (!dds3BgSetScrollSub() && viewer->framedisp == 1) {
+        evtProcess3Sub(viewer);
+    }
+    DrawEffect(viewer);
+    flags = viewer->flags;
+    if (!(flags & 8)) {
+        if (dds3PadButtonState[0x22] < 0) {
+            viewer->flags = flags | 1;
+            evtViewerDispatchFlagMode(viewer);
+            viewer->nowmenu = 0;
+            viewer->sp = 0;
+            viewer->menusw = 0;
+            PushMenu(1, 0x24, 0x18, viewer);
+            return (dds3ProcessFunc_t)evtViewerPickNextHandler;
+        }
+        evtProcess3Sub2(viewer);
+    } else if (viewer->nowframe == viewer->firstframe) {
+        viewer->flags = flags & ~1;
+        evtViewerDispatchFlagMode(viewer);
+    } else if (dds3PadButtonState[0x2C] < 0) {
+        EventSkipStart(viewer);
+    }
+    if (viewer->voiceState == 1) {
+        if (!evtViewerHasUpdateFlag(viewer) && !scrCheckEnableMovieCancel()) {
+            itfMesMngRequestMessage_itf(viewer->workdata->unk018, viewer->voiceMessageNo, 0);
+            viewer->voiceState = 0;
+            datDebugPrintf("[conflict voice play      ] mesno= %d\n", viewer->voiceMessageNo);
+        }
+    }
+    frame = viewer->nowframe;
+    if (frame != viewer->oldframe) {
+        evtRunFrame(frame, viewer);
+    } else if (!(viewer->flags & 1)) {
+        evtValidateUnitMotionFrameForWait(frame, viewer);
+    }
+    if (ValidateAt3Bgm(viewer) && viewer->nowframe < 2) {
+        return NULL;
+    }
+    viewer->oldframe = viewer->nowframe;
+    if (viewer->flags & 8) {
+        SetActiveCamera(viewer);
+    }
+    MessageManager(viewer);
+    evtCallGetFrameID(viewer);
+    evtCallAllocRenderTexture(viewer);
+    flagsNow = viewer->flags;
+    if (flagsNow & 8) {
+        if (flagsNow & 0x20) {
+            return evtChkLoad(1) ? NULL : (dds3ProcessFunc_t)-1;
+        }
+        if (viewer->nowframe >= viewer->lastframe.word) {
+            viewer->flags |= 0x80;
+        }
+        if (flagsNow & 0x40) {
+            if (viewer->fontRequestMode == 1) {
+                dds3FontReqListAdd(viewer);
+                viewer->fontRequestReset = -1;
+            }
+            playIndex = viewer->playIndex;
+            viewer->workdata->seqIndex = playIndex;
+            viewer->flags &= ~0xC0;
+            evtCallEveRippleBlurSetDefTex(viewer);
+            evtGetWorkData2and3(viewer->workdata, viewer->workdata->pm2Cuts[playIndex], viewer->workdata->pm3Cuts[playIndex]);
+            evtSetGameData2and3(viewer->workdata, viewer, 1);
+            return NULL;
+        }
+        if (evtViewerHasUpdateFlag(viewer) == 1 && viewer->fadeCount >= 25) {
+            return (dds3ProcessFunc_t)-1;
+        }
+    }
+    viewer->nowframe += DrawMessage(viewer);
+    return NULL;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", Process3);
+#endif
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", Process2_evtViewer);
 
@@ -786,7 +888,27 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData10);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtProcess2_RealPlay);
 
+#ifdef NON_MATCHING
+/* 7 words off, register allocation: the work pointer lands in a different register. */
+dds3TaskUpdateResult_t evtCallGetProcessData11(dds3ProcessID_t *task) {
+    evtViewerInfo_t *viewer = (evtViewerInfo_t *)dds3GetProcessData(task);
+    evtPolygonMovieWork_t *work = viewer->workdata;
+    u16 minor = work->cutNoLow;
+    u16 major = work->eventNoLow;
+
+    evt_file_minor = minor;
+    evtFileMajor = major;
+    sprintf(viewer->filename, evtStrE303, major, minor);
+    viewer->flags |= 1;
+    evtViewerDispatchFlagMode(viewer);
+    viewer->framedisp = 0;
+    viewer->flags |= 8;
+    dds3DrawFlag |= 0x2000000;
+    return EE_ADDR(evtProcess2_RealPlay);
+}
+#else
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData11);
+#endif
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtEndEvtViewerSub);
 

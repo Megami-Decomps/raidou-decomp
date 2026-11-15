@@ -78,7 +78,6 @@ typedef struct
     f32 fogFar;
 } dds3FogRange_t;
 
-extern dds3LightState_t dds3LightParam;
 extern sdf3DFogParam_t dds3FogState;
 extern dds3Effect_Filter_t dds3Filter2Buf;
 extern dds3Effect_Filter_t filter2target;
@@ -236,9 +235,6 @@ void dds3FadeOut(s32 r, s32 g, s32 b, s32 frame);
 void dds3FadeOut2(s32 frame);
 void dds3FadeUpdate(void);
 void dds3SetScreenFovy(f32 fovy);
-void dds3SetAmbient(sdfVector4_t *ambient);
-void dds3SetFog(s32 *fog);
-void dds3SetLight(void *light, s32 no);
 void dds3SetFilter2Para(s32 blend);
 void dds3SetFilter2RGBA(u32 rgba);
 void dds3Filter2Swap(s32 frame);
@@ -815,12 +811,12 @@ void dds3SetAmbient(sdfVector4_t *ambient)
     SDF_VU0_COPYVECTOR(&dds3LightParam.ambient, ambient);
 }
 
-void dds3SetFog(s32 *fog)
+void dds3SetFog(sdf3DFogParam_t *fog)
 {
     memcpy(&dds3LightParam.fog, fog, 0x14);
 }
 
-void dds3SetLight(void *light, s32 no)
+void dds3SetLight(sdf3DLight_t *light, s32 no)
 {
     dds3LightParam.parallel[no] = light;
 }

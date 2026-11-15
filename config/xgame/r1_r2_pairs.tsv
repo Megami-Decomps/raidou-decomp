@@ -2918,7 +2918,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001AD930	0x001C3780	sndCallGetRandIntA	no	no	asm/raidou1/code_001AD4E8.s	asm/raidou2/code_001C32D8.s	masked-hash-in-gap
 0x001AD960	0x001C37B0	sndCallGetRandIntA2	no	no	asm/raidou1/code_001AD4E8.s	asm/raidou2/code_001C32D8.s	masked-hash-in-gap
 0x001AD990	0x001C37E0	sndCallGetRandIntA3	no	no	asm/raidou1/code_001AD4E8.s	asm/raidou2/code_001C32D8.s	masked-hash-in-gap
-0x001AD9C0	0x001C38A8	sndRefDDS3GBWK	no	no	asm/raidou1/code_001AD4E8.s	asm/raidou2/code_001C32D8.s	masked-hash-in-gap
+0x001AD9C0	0x001C3810	sndRefDDS3GBWK	no	no	asm/raidou1/code_001AD4E8.s	asm/raidou2/code_001C32D8.s	masked-hash-in-gap
 0x001AD9D0	0x001C38B8	evtGetAgeOfMoon	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash
 0x001AD9F8	0x001C38E0	evtGetAgeOfMoon16	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	masked-hash-in-gap
 0x001ADA08	0x001C38F0	evtSetAgeOfMoon	no	no	asm/raidou1/event/evtMoon.s	asm/raidou2/event/evtMoon.s	unique-masked-hash

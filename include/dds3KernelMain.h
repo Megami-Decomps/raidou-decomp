@@ -8,4 +8,6 @@ void dds3SoftResetOn(void);
 
 void dds3NewGameStart(void);
 
+s32 dds3BgSetScrollSub(void);
+
 #endif

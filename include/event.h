@@ -124,9 +124,11 @@ typedef struct pmdSceneFogTable_t {
     s32 reserve[3];
 } pmdSceneFogTable_t;
 
-/* Scene-light records are the three vectors consumed by SLightFrameFunc. */
+/* Scene-light record: three lights' colours and directions, then the ambient. */
 typedef struct {
-    f32 color[4], direction[4], ambient[4];
+    f32 color[3][4];
+    f32 direction[3][4];
+    f32 ambient[4];
 } pmdSceneLightTable_t;
 
 /* Event-unit allocation: evtCreateUnitHandle allocates/clears 0x148 bytes.
@@ -197,7 +199,22 @@ typedef struct evtUnit_t {
     /* Raidou: retail places color60 at 0x100, fields from 0x9C on at +0xA4,
      * motionSetup at +0xA6 and the transition timers at +0xB8. Only the observed offsets are known. */
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    u8 padRaidou60[0xA0];
+    f32 vec60[4];
+    f32 vec70[4];
+    f32 vec80[4];
+    f32 vec90[4];
+    u32 colorA0;
+    u32 colorA4;
+    u32 colorA8;
+    u32 colorAC;
+    f32 vecB0[4];
+    f32 vecC0[4];
+    f32 vecD0[4];
+    f32 vecE0[4];
+    u32 colorF0;
+    u32 colorF4;
+    u32 colorF8;
+    u32 colorFC;
 #endif
     u32 color60;
     union {
@@ -242,7 +259,13 @@ typedef struct evtUnit_t {
     s16 idleTicks;
     s8 firstSlot;
     s8 secondSlot;
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u8 padRaidou172[0xE];
+#endif
     u8 slotFlags[12];              /* 0xCC */
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    u8 padRaidou18C[4];
+#endif
     s16 tableValues[12];           /* 0xD8 */
     s16 slotA[12];
     s16 slotB[12];
@@ -255,9 +278,6 @@ typedef struct evtUnit_t {
         s16 directionDuration;
         u16 directionFramesRemaining;
     };
-#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    u8 padRaidou154[0x12];
-#endif
     union {
         u8 pad154[8];
         struct {
@@ -272,6 +292,9 @@ typedef struct evtUnit_t {
         s16 transitionDuration;
         u16 transitionFrameCount;
     };
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    f32 moveY; /* 0x200: vertical offset applied by the submode 1 move */
+#endif
 } evtUnit_t;
 
 

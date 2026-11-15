@@ -260,6 +260,8 @@ segments:
       - [0xE47C0, asm, code_001E37C0]
       - [0xE5D70, c, code_r1_001CEBF8]
       - [0xE5DC8, asm, evtTmxPreLoad]
+      - [0xE6070, c, code_r1_001CEEF8]
+      - [0xE6500, asm, code_001E5500]
       - [0xE6950, c, sound/sndManager]
       - [0xE6980, c, code_r1_001CF808]
       - [0xE7518, c, sndAt3]

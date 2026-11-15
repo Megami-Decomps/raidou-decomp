@@ -9,17 +9,23 @@
    PM2 and PM3 cut record. */
 typedef struct evtPolygonMovieWork_t {
     sdfMemHandle_t *mem;          /* 0x000 */
-    u32 unk004;                   /* 0x004 */
-    s32 eventNo;                  /* 0x008 */
-    s32 cutNo;                    /* 0x00C */
+    u32 loadFlags;                /* 0x004: 2 PM1, 4 PM2, 0x10 PM3 requested */
+    union {
+        s32 eventNo;              /* 0x008 */
+        u16 eventNoLow;           /* the viewer reads the low halfword */
+    };
+    union {
+        s32 cutNo;                /* 0x00C */
+        u16 cutNoLow;
+    };
     u32 unk010;                   /* 0x010 */
     void *chipBlock;              /* 0x014: 0x1FC bytes from sdfChipAllocDirect */
     s32 unk018;                   /* 0x018 */
-    u32 unk01C;                   /* 0x01C */
+    struct dds3ProcessID_t *task; /* 0x01C: viewer task */
     s32 pm2CutCount;              /* 0x020 */
     s32 pm3CutCount;              /* 0x024 */
-    s32 cutIndex;                 /* 0x028: cutNo - 1 */
-    u32 unk02C;                   /* 0x02C */
+    s32 seqIndex;                 /* 0x028: seqno - 1 */
+    struct fileRequest *pm1Request; /* 0x02C */
     void *header1;                /* 0x030: PM1 file */
     pmdEntry_t *entryTable1;      /* 0x034 */
     void *pm1Type1Data;           /* 0x038 */
@@ -29,13 +35,16 @@ typedef struct evtPolygonMovieWork_t {
     u32 unk048[3];                /* 0x048 */
     void *pm1Type3Data;           /* 0x054 */
     s32 pm1Type3Value;            /* 0x058 */
-    u32 unk05C[9];                /* 0x05C */
+    u32 unk05C[8];                /* 0x05C */
+    struct fileRequest *pm2Request; /* 0x07C */
     void *header2;                /* 0x080: PM2 cut */
     pmdEntry_t *entryTable2;      /* 0x084 */
     void *pm2Type1Data;           /* 0x088 */
     s32 pm2Type1Value;            /* 0x08C */
     void *pm2Type0Data;           /* 0x090 */
-    u32 unk094[32];               /* 0x094 */
+    u32 unk094[27];               /* 0x094 */
+    struct fileRequest *pm3Request; /* 0x100 */
+    u32 unk104[4];                /* 0x104 */
     void *pm1File;                /* 0x114 */
     u32 unk118;                   /* 0x118 */
     void *pm2Cuts[256];           /* 0x11C */
@@ -126,7 +135,11 @@ void evtCheckLoad(struct pmdProcessWork_t *wdata);
 s32 evtCheckSeqEnd(dds3ProcessID_t *id);
 void evtFreeWorkData1(struct pmdProcessWork_t *wdata);
 void evtFreeWorkData2and3(struct pmdProcessWork_t *wdata);
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+evtPolygonMovieWork_t *evtGetWorkData2and3(evtPolygonMovieWork_t *wdata, void *pm2dataParam, void *pm3dataParam);
+#else
 struct pmdProcessWork_t *evtGetWorkData2and3(struct pmdProcessWork_t *wdata, struct pmdSeqData_t *pm2dataParam, struct pmdSeqData_t *pm3dataParam);
+#endif
 void evtMoverFrameSet(dds3Basic_t *mover, s32 sw, s32 baseframe, s32 nowframe, s32 offset);
 void evtResetFlag(dds3ProcessID_t *id, PMD_FLAG flag);
 void evtRunUnitMode(dds3Basic_t *unit, PMD_UNIT mode, u32 addflag, u32 downflag);

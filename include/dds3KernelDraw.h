@@ -74,4 +74,7 @@ void dds3RunQuake(void);
 void eglLinkAlpha(s32 mode);
 s32 sbtlResetJump(void);
 
+extern u32 dds3BackColor;
+extern u32 dds3DrawFlag;
+
 #endif

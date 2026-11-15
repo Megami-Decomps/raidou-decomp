@@ -8,6 +8,24 @@
 #include "ps2asm.h"
 #include "sdfFrame.h"
 #include "sdk_libc.h"
+#include "sdfMemory.h"
+#include "fileManager.h"
+#include "fld.h"
+#include "sdfDelayedResrc.h"
+#include "dds3KernelCore.h"
+#include "code_r1_001C4B78.h"
+#include "evtEventViewer.h"
+#include "sdfFile.h"
+#include "dds3KernelDraw.h"
+
+extern const char SetPMFileNameStrEvent03030303E0303Pm1[];
+extern const char SetPMFileNameStrEvent03030303E0303Pm2[];
+extern const char SetPMFileNameStrEvent03030303E0303Pm3[];
+extern const char evtStrZikkiPlayModeEventViewer[];
+
+extern f32 evtSceneLightDefaultColor[4];
+extern f32 evtSceneLightDefaultDir[4];
+extern f32 evtSceneLightDefaultAmbient[4];
 
 typedef struct fileRequest fileRequest_t;
 
@@ -152,7 +170,65 @@ u32 evtHokanColor(s32 hokan, f32 ratio, u32 c1, u32 c2)
     return c1;
 }
 
+#ifdef NON_MATCHING
+/* 38 of 101 words differ: same length and structure, but the loop counts up and the
+ * registers are numbered differently (retail counts down from 2). */
+/* vu0 routine: blend two scene-light records (colour and direction of three lights, ambient) by t */
+void evtHokanSceneLight(s32 hokan, f32 ratio, pmdSceneLightTable_t *key1, pmdSceneLightTable_t *key2, pmdSceneLightTable_t *d) {
+    s32 i;
+
+    if (hokan == 0) {
+        ratio = 0.0f;
+    }
+    for (i = 0; i < 3; i++) {
+        if (key1 != NULL) {
+            SDF_VU0_LOADVECTOR(key1->color[i]);
+        } else {
+            SDF_VU0_LOADVECTOR(evtSceneLightDefaultColor);
+        }
+        SDF_VU0_SCALEVECTOR_V0(1.0f - ratio);
+        if (key2 != NULL) {
+            SDF_VU0_LOADVECTOR_B(key2->color[i]);
+        } else {
+            SDF_VU0_LOADVECTOR_B(evtSceneLightDefaultColor);
+        }
+        SDF_VU0_SCALEVECTOR_B_V0(ratio);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(d->color[i]);
+        if (key1 != NULL) {
+            SDF_VU0_LOADVECTOR(key1->direction[i]);
+        } else {
+            SDF_VU0_LOADVECTOR(evtSceneLightDefaultDir);
+        }
+        SDF_VU0_SCALEVECTOR_V0(1.0f - ratio);
+        if (key2 != NULL) {
+            SDF_VU0_LOADVECTOR_B(key2->direction[i]);
+        } else {
+            SDF_VU0_LOADVECTOR_B(evtSceneLightDefaultDir);
+        }
+        SDF_VU0_SCALEVECTOR_B_V0(ratio);
+        SDF_VU0_ADDVECTOR();
+        SDF_VU0_STOREVECTOR(d->direction[i]);
+    }
+    if (key1 != NULL) {
+        SDF_VU0_LOADVECTOR(key1->ambient);
+    } else {
+        SDF_VU0_LOADVECTOR(evtSceneLightDefaultAmbient);
+    }
+    SDF_VU0_SCALEVECTOR_V0(1.0f - ratio);
+    if (key2 != NULL) {
+        SDF_VU0_LOADVECTOR_B(key2->ambient);
+    } else {
+        SDF_VU0_LOADVECTOR_B(evtSceneLightDefaultAmbient);
+    }
+    SDF_VU0_SCALEVECTOR_B_V0(ratio);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_VECTOR_W_SET_ONE();
+    SDF_VU0_STOREVECTOR(d->ambient);
+}
+#else
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtHokanSceneLight);
+#endif
 
 /* vu0 routine: blend a vector and an RGBA8888 colour by t (missing input =
  * default vector/colour) */
@@ -436,15 +512,66 @@ INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtAllocMovieWork);
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtCallMemset8);
 
-INCLUDE_RODATA(const s32, "event/evtPolygonMovie", evtAllocMovieWorkTable);
-
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", SetPMFileName);
+void SetPMFileName(s32 eventno, s32 cutno, char *pm1, char *pm2, char *pm3) {
+    sprintf(pm1, SetPMFileNameStrEvent03030303E0303Pm1, eventno / 10 * 10, eventno, eventno, cutno, eventno, cutno);
+    sprintf(pm2, SetPMFileNameStrEvent03030303E0303Pm2, eventno / 10 * 10, eventno, eventno, cutno, eventno, cutno);
+    sprintf(pm3, SetPMFileNameStrEvent03030303E0303Pm3, eventno / 10 * 10, eventno, eventno, cutno, eventno, cutno);
+}
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtSetDofTblFileName);
 
+INCLUDE_RODATA(const s32, "event/evtPolygonMovie", evtAllocMovieWorkTable);
+
+INCLUDE_RODATA(const s32, "event/evtPolygonMovie", SetPMFileNameStrEvent03030303E0303Pm1);
+
+INCLUDE_RODATA(const s32, "event/evtPolygonMovie", SetPMFileNameStrEvent03030303E0303Pm2);
+
+INCLUDE_RODATA(const s32, "event/evtPolygonMovie", SetPMFileNameStrEvent03030303E0303Pm3);
+
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtGetPolygonMovieWorkData2);
 
-INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtStart2);
+dds3ProcessID_t *evtStart2(DDS3_PRIORITY priority, s32 eventno, s32 cutno, s32 seqno) {
+    char pm1Name[0x40];
+    char pm2Name[0x40];
+    char pm3Name[0x40];
+    sdfMemHandle_t *viewerMemory;
+    void *viewerBytes;
+    evtViewerInfo_t *viewer;
+    evtPolygonMovieWork_t *work;
+    dds3ProcessID_t *task;
+
+    fldBgTexClear();
+    while (sdfDelayedResrcCheck() != 0) {
+    }
+    dds3BackColor = 0x80000000;
+    viewerMemory = sdfMemAllocDirect(0x2568);
+    viewerBytes = sdfMemLock(viewerMemory);
+    memset(viewerBytes, 0, 0x2568);
+    viewer = viewerBytes;
+    viewer->block = viewerMemory;
+    SetPMFileName(eventno, cutno, pm1Name, pm2Name, pm3Name);
+    work = (evtPolygonMovieWork_t *)InitPolygonMovieWorkData();
+    work->eventNo = eventno;
+    work->cutNo = cutno;
+    work->seqIndex = seqno - 1;
+    work->pm1Request = fileLoad(pm1Name);
+    work->loadFlags |= 2;
+    work->pm2Request = fileLoad(pm2Name);
+    work->loadFlags |= 4;
+    if (sdfFileCheckExist(pm3Name) != 0) {
+        work->pm3Request = fileLoad(pm3Name);
+        work->loadFlags |= 0x10;
+    } else {
+        work->pm3Request = NULL;
+    }
+    task = dds3StartProcess(evtStrZikkiPlayModeEventViewer, priority, 1, 1, evtCallGetProcessData11, (dds3ProcessFunc_t)evtEventViewerDestroyActiveAlternate, viewer);
+    viewer->workdata = work;
+    work->task = task;
+    evtEventViewerInitCampFontResource(viewer);
+    return task;
+}
+
+INCLUDE_RODATA(const s32, "event/evtPolygonMovie", evtStrZikkiPlayModeEventViewer);
 
 INCLUDE_SDATA(const s32, "event/evtPolygonMovie", evtCallMemset8Data);
 

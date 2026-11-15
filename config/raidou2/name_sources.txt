@@ -3509,11 +3509,11 @@
 0x001C3780	sndCallGetRandIntA	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls dds3GetRandIntA
 0x001C37B0	sndCallGetRandIntA2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls dds3GetRandIntA
 0x001C37E0	sndCallGetRandIntA3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls dds3GetRandIntA
-0x001C3810	prmRefDDS3GBWK4	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_001C32D8, neighbour prm_DH_PLUS; references DDS3_GBWK
+0x001C3810	sndRefDDS3GBWK	inferred	same function as raidou1 sndRefDDS3GBWK (sets GBWK+0x1F89, R1 +0x1C89); evtMoonInitProcess calls it; replaces prmRefDDS3GBWK4: method=derived-data; p=na; tier=D; source=derived; evidence=unit code_001C32D8, neighbour prm_DH_PLUS; references DDS3_GBWK
 0x001C3820	prmRefDDS3GBWK5	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_001C32D8, neighbour prm_DH_PLUS; references DDS3_GBWK
 0x001C3848	prmCallGetRandIntA	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001C32D8, neighbour prm_DH_PLUS; calls dds3GetRandIntA
 0x001C3878	prmCallGetRandIntA2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001C32D8, neighbour prm_DH_PLUS; calls dds3GetRandIntA
-0x001C38A8	sndRefDDS3GBWK	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour sndWaitForEarringPlayback; references DDS3_GBWK
+0x001C38A8	prmRefDDS3GBWK4	inferred	swapped with sndRefDDS3GBWK; replaces prmRefDDS3GBWK4_tmp: swap; replaces sndRefDDS3GBWK: method=derived-data; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour sndWaitForEarringPlayback; references DDS3_GBWK
 0x001C38B8	evtGetAgeOfMoon	inferred	SMT3HD name via SLUS_209.11 0x001E9998, unique-masked-hash; map-agrees
 0x001C38E0	evtGetAgeOfMoon16	inferred	SMT3HD name via SLUS_209.11 0x001E99C0, shared-hash-in-run; map-agrees
 0x001C38F0	evtSetAgeOfMoon	inferred	SMT3HD name via SLUS_209.11 0x001E99D0, unique-masked-hash; map-agrees

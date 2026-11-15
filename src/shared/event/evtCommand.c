@@ -25,6 +25,12 @@
 #include "dds3CameraObjectBasic.h"
 #include "dds3Basic.h"
 #include "effEvent.h"
+#include "fileManager.h"
+#include "sdfMemory.h"
+#include "evtPolygonMovie.h"
+
+extern fileRequest_t *evtCallMemsetData;
+extern const char evtStrEffeplLoad[];
 
 struct effResourceHeader_t;
 
@@ -1522,7 +1528,38 @@ u32 evtCommand_EFFBED_START_EVO(void) {
 }
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallMemset);
+u32 evtCallMemset(void) {
+    sdfVector4_t position;
+    sdfVector4_t rotation;
+    sdfMemHandle_t *memory;
+    void *effectData;
+    dds3Basic_t *basic;
+
+    memset(&position, 0, sizeof(position));
+    memset(&rotation, 0, sizeof(rotation));
+    rotation.w = 1.0f;
+    if (evtCallMemsetData == NULL) {
+        evtCallMemsetData = fileLoadEx(scrGetStrPara(0), 0, 0, 0);
+    }
+    if (pacFileCheckEnd(evtCallMemsetData) == 0) {
+        return 0;
+    }
+    memory = fileGetMemHandle(evtCallMemsetData);
+    effectData = sdfMemLock(memory);
+    fileHandleFree(evtCallMemsetData);
+    basic = dds3EffectObjectBasicAddEPL(effectData, &position, &rotation);
+    sdfMemFreeDirect(memory);
+    if (basic == NULL) {
+        printf(evtStrEffeplLoad);
+        printf(evtMsgNameNotFound, scrGetStrPara(0));
+        scrSetIntReturnValue(0);
+    } else {
+        dds3EffectObjectBasicStatOn(basic, 1);
+        scrSetIntReturnValue(basic->serialID);
+    }
+    evtCallMemsetData = NULL;
+    return 1;
+}
 #else
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallMemset2);
 #endif
@@ -2411,7 +2448,32 @@ s32 evtCommandClearPolygonMovieFlag(void)
     return 1;
 }
 
+#ifdef VERSION_RAIDOU1
+s32 evtCommand_PMV_RUN(void) {
+    scrProcessWork_s *commandWork = scrGetScriptHandle();
+    s32 eventId;
+    s32 cutId;
+    s32 sequenceId;
+    dds3ProcessID_t *movieTask;
+
+    if (commandWork == NULL) {
+        return 1;
+    }
+    if (commandWork->ProcessID == 0) {
+        printf(evtMsgPmvRunNoProc);
+        return 1;
+    }
+    eventId = scrGetIntPara(0);
+    cutId = scrGetIntPara(1);
+    sequenceId = scrGetIntPara(2);
+    movieTask = evtStart2(commandWork->ProcessID->priority, eventId, cutId, sequenceId);
+    dds3LinkProcess(commandWork->ProcessID, movieTask);
+    scrSetIntReturnValue(scrProcessHandleToVmInteger(movieTask));
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PMV_RUN);
+#endif
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara11);
 

@@ -1,6 +1,16 @@
 #include "common.h"
 #include "newdata.h"
 #include "evtMoon.h"
+#include "dds3KernelCore.h"
+#include "sBtlContinue.h"
+
+extern dds3ProcessID_t *addressprocess_id;
+extern const char evtMoonProcessName[];
+extern s32 Process1_evtMoon(dds3ProcessID_t *id);
+extern s32 Shutdown_evtMoon(dds3ProcessID_t *id);
+void sndCallGetRandIntA(void);
+void sndCallGetRandIntA2(void);
+void sndCallGetRandIntA3(void);
 
 extern s32 gMoonFadeFrameMax;
 extern s32 Process2_evtMoonData3;
@@ -121,7 +131,18 @@ INCLUDE_ASM(const s32, "event/evtMoon", Process1_evtMoon);
 
 INCLUDE_ASM(const s32, "event/evtMoon", Shutdown_evtMoon);
 
-INCLUDE_ASM(const s32, "event/evtMoon", evtMoonInitProcess);
+void evtMoonInitProcess(void) {
+    if (addressprocess_id == NULL) {
+        addressprocess_id = dds3StartProcess(evtMoonProcessName, 0x2B09, 1, 1, Process1_evtMoon, Shutdown_evtMoon, NULL);
+        evtEnableMoonCalc();
+        evtDisableMoonDraw();
+        evtSetAgeOfMoon(0);
+        sndCallGetRandIntA();
+        sndCallGetRandIntA2();
+        sndCallGetRandIntA3();
+        sndRefDDS3GBWK();
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtMoon", fldFreeAddressProcess);
 INCLUDE_SDATA(const s32, "event/evtMoon", Process2_evtMoonData);

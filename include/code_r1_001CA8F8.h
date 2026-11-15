@@ -15,4 +15,6 @@ void evtRenderTexStart(evtViewerInfo_t *pInfo);
 s32 mnuCampFindMatchingEntryIndex(struct pmdProcessWork_t *wdata, evtViewerInfo_t *pInfo, s32 pm2nametable_idx);
 void mnuCampLinkFontGlyph(dds3ProcessID_t *proc);
 
+void evtCallAllocRenderTexture(evtViewerInfo_t *viewer);
+
 #endif

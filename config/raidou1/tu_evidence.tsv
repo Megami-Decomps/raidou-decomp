@@ -222,7 +222,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 001CD6A0	001CD6A0	code_r1_001CD6A0	c	dds:1 of 1	
 001CD6D8	001CEBC8	code_001CD6D8	asm	none	
 001CEBF8	001CEBF8	code_r1_001CEBF8	c	dds:1 of 1	
-001CEC50	001CF748	evtTmxPreLoad	asm	none	
+001CEC50	001CED78	evtTmxPreLoad	asm	none	
+001CEEF8	001CF0B0	code_r1_001CEEF8	c	none	
+001CF388	001CF748	code_001CF388	asm	none	
 001CF7D8	001CF7D8	sound/sndManager	c	smt3:map:1 of 1	sound/sndManager
 001CF808	001D0268	code_r1_001CF808	c	dds:17 of 40	
 001D02F8	001D2698	sndAt3	c	dds:20 literal-cores:1 of 34+gap sndAt3_001D2178 (sndCallWaitSema3, sndBgmLoadId_XF and 13 more)	

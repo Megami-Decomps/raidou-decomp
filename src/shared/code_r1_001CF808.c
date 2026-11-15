@@ -14,9 +14,6 @@
 #include "newdata.h"
 #include "code_r1_001CF808.h"
 
-/* The PCM voice owner stores idle as 0 and active playback as 1. */
-typedef s32 MnuTitleSoundBusyState;
-
 /* The voice-file RPC sets this busy state on open and clears it on close.
  * It is separate from the PCM callback-command busy latch. */
 

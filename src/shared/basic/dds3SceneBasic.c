@@ -10,8 +10,8 @@
 #include "dds3KernelCore.h"
 
 
-extern u32 fldLoadFile_FromMemory(u32 field, u32 area, void *pF1,
-                                  void *pF2, void *pTB, u32 pBF);
+extern u32 fldLoadFile_FromMemory(u32 field, u32 area, saddr_t pF1, saddr_t pF2,
+                                  const struct sdfTextureOffsetListHeader_t *pTB, s32 pBF);
 
 extern void fldFreeFile(void);
 dds3Basic_t *dds3GetActiveCameraSceneBasic(dds3Basic_t *pBasic);
@@ -28,13 +28,8 @@ dds3Basic_t *dds3SetActiveUnitSceneBasic(dds3Basic_t *pSceneBasic, dds3Basic_t *
 dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type);
 dds3BasicArrayHandle_t *dds3SceneBasicGetList(dds3Basic_t *pBasic, s32 type);
 
-void dds3SceneBasicMakeScene_FromMemory(dds3Basic_t *pBasic, u32 field, u32 area,
-                                       void *pF1, void *pF2,
-                                       void *pTB, u32 pBF);
-
 void dds3SceneBasicEndScript(dds3Basic_t *scene, const char *procname);
 s32 dds3SceneBasicExistBasicFromType(dds3Basic_t *scene, s32 type, dds3Basic_t *target);
-void dds3SetMapNo(dds3Basic_t *scene, u32 mapno);
 s32 dds3GetMapNo(dds3Basic_t *scene);
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", sceneconstructor);
@@ -157,9 +152,8 @@ dds3BasicArrayHandle_t *dds3SceneBasicGetList(dds3Basic_t *pBasic, s32 type)
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3SceneBasicMakeScene);
 
-void dds3SceneBasicMakeScene_FromMemory(dds3Basic_t *pBasic, u32 field, u32 area,
-                                       void *pF1, void *pF2,
-                                       void *pTB, u32 pBF)
+void dds3SceneBasicMakeScene_FromMemory(dds3Basic_t *pBasic, u32 field, u32 area, saddr_t pF1, saddr_t pF2,
+                                        const struct sdfTextureOffsetListHeader_t *pTB, s32 pBF)
 {
     dds3SceneBasic_t *work;
     u32 handle;

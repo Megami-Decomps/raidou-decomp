@@ -190,7 +190,8 @@ s32 frDecodeFontRow(u8 *decodedBytes, s32 entryIndex, void *resourceBase, frFont
 struct dds3BillResource_t;
 struct dds3Billboard_Basic_t;
 
-char *frDrawMesFlowSub2(s32 id, s32 tagID);
+s32 frDrawFont(frFontHandle_t *pfont);
+s32 frDrawMesFlowSub2(frFontHandle_t *pfont, s32 tagID);
 void frDumpFontTexture(struct dds3Billboard_Basic_t *hBillboard, struct dds3BillResource_t *hResource, struct dds3BillResource_t *hResourceB);
 s32 frPreCalcStrWidth(const char *str, u8 font, u8 unk2);
 

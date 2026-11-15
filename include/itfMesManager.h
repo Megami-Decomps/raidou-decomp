@@ -96,7 +96,13 @@ struct curctr_tag {
     s16 phase;
     s16 ctr0;
     s16 ctr1;
-    u32 ctr_key; /* 0x08: entry advances count ctr_key before triangle skip. */
+    union {
+        u32 ctr_key;
+        struct {
+            u16 ctr_keyLow;
+            u16 ctr_keyHigh;
+        };
+    }; /* 0x08: entry advances count ctr_key before triangle skip. */
 };
 
 struct instanceMes_tag {
@@ -120,7 +126,12 @@ struct instanceMes_tag {
     variable_tag variable;
     curctr_tag curctr;
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    u8 unkPostCurctr[0x3C];
+    u16 lfWaitLow;
+    u16 lfWaitHigh;
+    u32 cutWait;
+    u8 unk1E8[0x10];
+    u8 windowDrawFlags; /* bit 1: DrawMesFlow queues the window packets. */
+    u8 unk1F9[0x23];
 #endif
     addr_t func_kuti;
 };
@@ -178,7 +189,7 @@ void ConvertZenkakuNumber(char **buf, s32 num);
 void DebugDrawWindowLine(itfpanel_t *meswin);
 void DebugMoveWinAlpha(window_tag *pwin);
 void DebugMoveWinVert(window_tag *pwin, s32 flag);
-void DrawMesFlow(instanceMes_tag *pinst);
+s32 DrawMesFlow(instanceMes_tag *pinst);
 void DrawWindow(instanceMes_tag *pinst);
 void FadeOutWindow(void);
 void GetLastMessagePara(frFontHandle_t *pfont, message_tag *pmessage);
@@ -200,5 +211,7 @@ void itfMesMngInitializeManager(void);
 void itfMesMngMsgWndCls(s32 msgid);
 void itfMesMngRequestSelect_itf(s32 id, s32 select);
 void itfMesMngSetVar_itf(s32 id, s32 index, s32 num, s32 type);
+
+s32 itfMesMngRequestMessage_itf(s32 window, s32 entryIndex, s32 itemIndex);
 
 #endif

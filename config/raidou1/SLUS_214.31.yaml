@@ -279,6 +279,8 @@ segments:
       - [0xCE6D8, asm, code_001CD6D8]
       - [0xCFBF8, c, code_r1_001CEBF8]
       - [0xCFC50, asm, evtTmxPreLoad]
+      - [0xCFEF8, c, code_r1_001CEEF8]
+      - [0xD0388, asm, code_001CF388]
       - [0xD07D8, c, sound/sndManager]
       - [0xD0808, c, code_r1_001CF808]
       - [0xD12F8, c, sndAt3]

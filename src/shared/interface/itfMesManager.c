@@ -12,6 +12,20 @@
 #include "frFont.h"
 #include "itfMisc.h"
 
+typedef struct itfMesShake_t {
+    s32 distX;
+    s32 distY;
+    s32 active;
+    u8 pad0C[0xC];
+    s32 timer;
+    u8 pad1C[4];
+} itfMesShake_t;
+extern itfMesShake_t itfData;
+void itfCallGetRandFloatA(void);
+s32 itfLeaf14(instanceMes_tag *pinst);
+s32 itfCallGrAllocPacketBuff(instanceMes_tag *pinst);
+void itfCallGrAllocPacketBuff2(instanceMes_tag *pinst);
+
 typedef struct itfMesBinTypeHeader_t itfMesBinTypeHeader_t;
 
 typedef struct itfMesLink_t itfMesLink_t;
@@ -1985,11 +1999,87 @@ INCLUDE_ASM(const s32, "interface/itfMesManager", itfFunc2);
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfLeaf13);
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", FadeOutWindow);
+void FadeOutWindow(void) {
+    itfData.active = 0;
+    itfData.timer = 0;
+}
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfCallGetRandFloatA);
 
+#ifdef VERSION_RAIDOU1
+s32 DrawMesFlow(instanceMes_tag *pinst) {
+    u32 stat = pinst->stat;
+    frFontHandle_t *messageFont;
+    frFontHandle_t *selectFont;
+
+    itfCallGetRandFloatA();
+    if (pinst->select.pfont != NULL) {
+        itfData.distX = 0;
+        itfData.distY = 0;
+    }
+    if (pinst->message.pfont != NULL) {
+        ChangeFontPosition(pinst->message.pfont, itfData.distX, itfData.distY);
+    }
+    if (pinst->speaker.pfont != NULL) {
+        ChangeFontPosition(pinst->speaker.pfont, itfData.distX, itfData.distY);
+    }
+    itfMesMngManager.flags &= ~2;
+    DrawWindow(pinst);
+    {
+        frFontHandle_t *speakerFont = pinst->speaker.pfont;
+
+        if ((stat & 0x10000) == 0 && speakerFont != NULL) {
+            frDrawFont(speakerFont);
+        }
+    }
+    if (pinst->message.pfont != NULL) {
+        ChangeFontPosition(pinst->message.pfont, -itfData.distX, -itfData.distY);
+    }
+    if (pinst->speaker.pfont != NULL) {
+        ChangeFontPosition(pinst->speaker.pfont, -itfData.distX, -itfData.distY);
+    }
+    messageFont = pinst->message.pfont;
+    if ((stat & 0x20000) == 0 && (stat & 7) >= 3 && frDrawFont(messageFont) > 0) {
+        u32 cur = pinst->stat;
+
+        if ((cur & 7) != 4) {
+            pinst->cutWait = 0;
+            pinst->curctr.ctr_keyHigh = 0;
+            pinst->lfWaitLow = 0;
+            pinst->stat = (cur & ~7) | 4;
+            pinst->lfWaitHigh = 0;
+        }
+    }
+    selectFont = pinst->select.pfont;
+    if ((stat & 0x40000) == 0) {
+        u32 selStat = stat & 0x38;
+
+        if (selStat >= 0x18 && frDrawMesFlowSub2(selectFont, 1) > 0 && selStat == 0x18) {
+            select_tag *select = &pinst->select;
+
+            if (select->select == -1) {
+                select->select = 0;
+                select->select_imm = 0;
+            }
+            ChangeFontColor(select->pfont, select->select, select->lines, 1);
+            pinst->stat = (pinst->stat & ~0x38) | 0x20;
+            pinst->windowDrawFlags = 2;
+        }
+    }
+    if (pinst->curctr.isdraw & 1) {
+        itfCallGrAllocPacketBuff2(pinst);
+    }
+    if (pinst->windowDrawFlags & 2) {
+        if (pinst->type == 3) {
+            return itfLeaf14(pinst);
+        }
+        return itfCallGrAllocPacketBuff(pinst);
+    }
+    return 3;
+}
+#else
 INCLUDE_ASM(const s32, "interface/itfMesManager", DrawMesFlow);
+#endif
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", DrawWindow);
 

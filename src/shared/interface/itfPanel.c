@@ -5,6 +5,20 @@
 #include "itfMisc.h"
 #include "itfPanel.h"
 
+typedef struct itfPanelFrameData_t {
+    sdfTexHandle_t *texture;
+} itfPanelFrameData_t;
+
+typedef struct itfPanelFrameInset_t {
+    s32 left;
+    s32 top;
+    s32 right;
+    s32 bottom;
+} itfPanelFrameInset_t;
+/* 0x3E8A40: nine uv rectangles; 0x3E8AD0: the four edge sizes. */
+extern s32 itfCallMiscDrawRectanglePrimData[9][4];
+extern itfPanelFrameInset_t itfCallMiscDrawRectanglePrimData2;
+
 typedef sdfIVector2_t itfDrawVertex_t;
 
 typedef struct
@@ -590,7 +604,98 @@ void DrawLeftFade(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     itfMiscDrawAlphaPrim(pdrawtag, 0, 0);
 }
 
+#ifdef NON_MATCHING
+/* Draft, 320 words against retail's 366: the colour table is a local initializer here, retail copies
+ * it from itfCallMiscDrawRectanglePrimTable (rodata) with a block-move loop, and the register use differs. */
+/* Draw a nine-patch frame: a filled background rectangle, then four corners, four edges and the centre. */
+void itfCallMiscDrawRectanglePrim(itfpanel_t *panel, sdfDrawTag_t *tag) {
+    itfColor_t colors[5] = {
+        {{0x80, 0x80, 0x80, 0x80}},
+        {{0x0A, 0x0A, 0x0A, 0x5A}},
+        {{0x14, 0x14, 0x14, 0x3C}},
+        {{0x1E, 0x1E, 0x23, 0x50}},
+        {{0x00, 0x00, 0x00, 0x78}},
+    };
+    u8 vertexIndex[4] = {0, 1, 2, 3};
+    u8 colorIndex[4] = {1, 2, 3, 4};
+    sdfIVector2_t vertices[4];
+    s32 rect[4];
+    itfPanelFrameData_t *data = (itfPanelFrameData_t *)panel->pwork;
+    s32 left, top, right, bottom;
+    s32 width, height;
+    s32 i;
+
+    for (i = 1; i < 5; i++) {
+        colors[i].components[3] = colors[i].components[3] * panel->alpha / 128;
+    }
+    left = panel->left;
+    top = panel->top;
+    right = panel->right;
+    bottom = panel->bottom;
+    vertices[0].x = left + 128;
+    vertices[0].y = top + 56;
+    vertices[1].x = left + 7008;
+    vertices[1].y = top + 56;
+    vertices[2].x = left + 7008;
+    vertices[2].y = bottom - 80;
+    vertices[3].x = left + 128;
+    vertices[3].y = bottom - 80;
+    itfMiscDrawRectanglePrim(vertices, colors, vertexIndex, colorIndex, panel->z, tag);
+
+    width = right - left - itfCallMiscDrawRectanglePrimData2.left - itfCallMiscDrawRectanglePrimData2.right;
+    height = bottom - top - itfCallMiscDrawRectanglePrimData2.top - itfCallMiscDrawRectanglePrimData2.bottom;
+    rect[0] = left;
+    rect[1] = top;
+    rect[2] = left + itfCallMiscDrawRectanglePrimData2.left;
+    rect[3] = top + itfCallMiscDrawRectanglePrimData2.top;
+    colors[0].components[3] = panel->alpha;
+    itfMiscDrawSpritePrim(rect, itfCallMiscDrawRectanglePrimData[0], colors, panel->z, data->texture, 0, tag);
+    rect[0] = right - itfCallMiscDrawRectanglePrimData2.right;
+    rect[2] = right;
+    colors[0].components[3] = panel->alpha;
+    itfMiscDrawSpritePrim(rect, itfCallMiscDrawRectanglePrimData[1], colors, panel->z, data->texture, 0, tag);
+    rect[0] = left;
+    rect[1] = bottom - itfCallMiscDrawRectanglePrimData2.bottom;
+    rect[2] = left + itfCallMiscDrawRectanglePrimData2.left;
+    rect[3] = bottom;
+    colors[0].components[3] = panel->alpha;
+    itfMiscDrawSpritePrim(rect, itfCallMiscDrawRectanglePrimData[2], colors, panel->z, data->texture, 0, tag);
+    rect[0] = right - itfCallMiscDrawRectanglePrimData2.right;
+    rect[2] = right;
+    colors[0].components[3] = panel->alpha;
+    itfMiscDrawSpritePrim(rect, itfCallMiscDrawRectanglePrimData[3], colors, panel->z, data->texture, 0, tag);
+    rect[0] = left + itfCallMiscDrawRectanglePrimData2.left;
+    rect[1] = top;
+    rect[2] = rect[0] + width;
+    rect[3] = top + itfCallMiscDrawRectanglePrimData2.top;
+    colors[0].components[3] = panel->alpha;
+    itfMiscDrawSpritePrim(rect, itfCallMiscDrawRectanglePrimData[4], colors, panel->z, data->texture, 0, tag);
+    rect[0] = left;
+    rect[1] = top + itfCallMiscDrawRectanglePrimData2.top;
+    rect[2] = left + itfCallMiscDrawRectanglePrimData2.left;
+    rect[3] = rect[1] + height;
+    colors[0].components[3] = panel->alpha;
+    itfMiscDrawSpritePrim(rect, itfCallMiscDrawRectanglePrimData[5], colors, panel->z, data->texture, 0, tag);
+    rect[0] = right - itfCallMiscDrawRectanglePrimData2.right;
+    rect[2] = right;
+    colors[0].components[3] = panel->alpha;
+    itfMiscDrawSpritePrim(rect, itfCallMiscDrawRectanglePrimData[6], colors, panel->z, data->texture, 0, tag);
+    rect[0] = left + itfCallMiscDrawRectanglePrimData2.left;
+    rect[1] = bottom - itfCallMiscDrawRectanglePrimData2.bottom;
+    rect[2] = rect[0] + width;
+    rect[3] = bottom;
+    colors[0].components[3] = panel->alpha;
+    itfMiscDrawSpritePrim(rect, itfCallMiscDrawRectanglePrimData[7], colors, panel->z, data->texture, 0, tag);
+    rect[0] = left + itfCallMiscDrawRectanglePrimData2.left;
+    rect[1] = top + itfCallMiscDrawRectanglePrimData2.top;
+    rect[2] = rect[0] + width;
+    rect[3] = rect[1] + height;
+    colors[0].components[3] = panel->alpha;
+    itfMiscDrawSpritePrim(rect, itfCallMiscDrawRectanglePrimData[8], colors, panel->z, data->texture, 0, tag);
+}
+#else
 INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrim);
+#endif
 
 INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawSpritePrim);
 

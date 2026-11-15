@@ -223,7 +223,11 @@ typedef char EvtRuntimeGroup_size[(sizeof(EvtRuntimeGroup) == 0x84) ? 1 : -1];
 struct evtViewerInfo_t {
     sdfMemHandle_t *block;
     u32 flags;
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+    struct evtPolygonMovieWork_t *workdata;
+#else
     PolyMovieWork *workdata;
+#endif
     s32 totalframe;
     s32 firstframe;
     EvtFrameRange lastframe;
@@ -328,7 +332,11 @@ struct evtViewerInfo_t {
     s32 menuState;
     s32 shopFlag;
     u32 auxResource;
-    u8 padRaidou[0x80];
+    u8 pad243C[4];
+    s32 fadeCount;
+    u8 pad2444[0x50];
+    s32 fontRequestMode;
+    u8 pad2498[0x24];
     union { s32 headerMetadata; u32 optionFlags; };
     s32 titleStreamWaitFrames;
     s32 registeredCount;
@@ -337,11 +345,15 @@ struct evtViewerInfo_t {
     s32 voiceMessage;
     s32 backgroundFadeStartAlpha; /* Initial background alpha, interpolated to 128 over 25 updates. */
     u8 pad24A4[4];
-    s32 voiceFrame;
-    u8 pad24AC[4];
+    s32 voiceState;
+    s32 voiceMessageNo;
     s32 commandStart;
     s32 optionFrameBase;
     s32 curveComponent;
+    u8 pad253C[0x10];
+    s32 playIndex;
+    u8 pad2550[0x10];
+    s32 fontRequestReset;
 };
 
 struct pmdProcessWork_t;

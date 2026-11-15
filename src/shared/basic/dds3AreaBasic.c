@@ -24,7 +24,6 @@ s32 AreaBasicConstructor(dds3Basic_t *pBasic);
 void AreaBasicDestructor(dds3Basic_t *pBasic);
 s32 AreaBasicMainprocuder(dds3Basic_t *basic);
 s32 AreaBasicDrawprocuder(dds3Basic_t *pBasic);
-dds3Basic_t *dds3AddAreaBasic(u32 serialID, char *pName);
 void dds3AreaBasicRegistItem(dds3Basic_t *pAreaBasic, dds3Basic_t *pItemBasic);
 void dds3AreaBasicGetItemArray(dds3Basic_t *pAreaBasic, dds3Basic_t *itemType);
 dds3BasicArrayHandle_t *dds3AreaBasicArrangeGetItemArray(dds3Basic_t *area, u32 itemType, dds3BasicProc_t check);
