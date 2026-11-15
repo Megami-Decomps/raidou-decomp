@@ -184,7 +184,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001E8A48	001E9010	movie/mviManager	c	smt3:map:7+smt3:names:6 of 16	movie/mviManager
 001E91F0	001E9718	movie/MovieViewer	c	smt3:names:7+smt3:map:1 literal-cores:1 of 8	movie/MovieViewer
 001E9B00	001EAD48	file/fileManager	c	smt3:names:28 of 35	file/fileManager
-001EADE0	001EADE0	code_001EADE0	asm	none	
+001EADE0	001EADE0	code_r1_001D49D0	c	none	
 001EAE30	001EB4D0	mc/mcManager	c	smt3:names:15+smt3:map:2 of 30	mc/mcManager
 001EB528	001EB568	code_001EB528	asm	none	
 001EB5E0	001EB680	code_r1_001D5158	c	dds:4 of 5 part	
@@ -345,19 +345,17 @@ start	last_func	unit	kind	evidence	smt3_unit
 003E19C8	003E19C8	code_003E19C8	asm	none	
 003E19D0	003E24D0	sdf/sdfCd	c	smt3:names:9+smt3:map:5 literal-cores:1 of 16	sdf/sdfCd
 003E2520	003E2AC0	sdf/sdfFile	c	smt3:names:13+smt3:map:1 literal-cores:1 of 19	sdf/sdfFile
-003E2BB0	003E3E40	sdf/sdfFileIO	c	smt3:names:23+smt3:map:1 literal-cores:1 of 24	sdf/sdfFileIO
-003E3EF0	003E3EF0	code_003E3EF0	asm	none	
+003E2BB0	003E3EF0	sdf/sdfFileIO	c	smt3:names:23+smt3:map:1 literal-cores:1 of 24+gap code_003E3EF0 (sdfFirstInitSub)	sdf/sdfFileIO
 003E3F00	003E3F88	sdf/sdfHdd	c	smt3:map:2 of 2	sdf/sdfHdd
 003E40D0	003E42C8	sdf/sdfDev9	c	smt3:names:4+smt3:map:1 of 5	sdf/sdfDev9
 003E4300	003E4300	code_003E4300	asm	none	
-003E4350	003E4410	sdf/sdfMisc	c	smt3:names:3 of 3	sdf/sdfMisc
-003E4490	003E4490	code_003E4490	asm	none	
+003E4350	003E4490	sdf/sdfMisc	c	smt3:names:3 of 3+gap code_003E4490 (sdfDevResizeBufferedRequest)	sdf/sdfMisc
 003E4558	003E4908	sdf/sdfMath	c	smt3:names:8 of 8	sdf/sdfMath
 003E4980	003E5058	sdf/sdfQuat	c	smt3:names:13 of 14	sdf/sdfQuat
 003E50A0	003E5158	dds3Randomize_0036F310	asm	none	
 003E5190	003E52A8	sdf/sdfRand	c	smt3:names:3 of 3	sdf/sdfRand
 003E5388	003E6A60	sdf/sdfSound	c	smt3:names:32+smt3:map:14 of 60+gap code_003E5388 (sdfSndIopAlloc)	sdf/sdfSound
-003E6AF8	003E7808	code_003E6AF8	asm	none	
+003E6AF8	003E7808	code_r1_00370D68	c	none	
 003E7830	003E8408	sdf/sdfSound_00371BF0	c	smt3:names:7 literal-cores:2 of 7 part	sdf/sdfSound
 003E84C0	003E8780	sdf/sdfDevFile	c	smt3:map:6+smt3:names:3 of 9	sdf/sdfDevFile
 003E87C8	003E87C8	sdf/sdfAddrResolve	c	smt3:names:1 of 1	sdf/sdfAddrResolve

@@ -1,6 +1,7 @@
 # dds-decomp name -> Raidou name, applied to DDS text tools/raidou_c.py carries
 # (tools/xgame/rename_names.py writes it)
 DrawFlag	dds3DrawFlag
+DrawPrimitive2Core	sdfMovieQueueFrameSprite
 DrawProcedure	dds3MatterObjectBasicDrawProcedure
 KWLN_H	DDS3_PROCESS_H
 KwlnDrawVectorParams	sdf3DFogParam_t
@@ -161,6 +162,8 @@ mnuStartFixedSoundStream	sndBgmLoadFile
 mnuStopTitleVoicePlayback	scrGetAfterSkipBgmFlag
 mnuStoreTaskResult	File_BgmLoadStart
 p2sdLoadCheckMidi_sdfSound	p2sdLoadCheckMidi
+sdfAssetCopyTextureState	sdfMatUpdatePacketBasic
+sdfCallMemAllocDirect3	sdfDevResizeBufferedRequest
 sdfCdrom	sdfFileCmdAnalyzeFileName
 sdfDevReadDiscUntilComplete	sdfCdStRead
 sdfGetUniqueChunkValue	sdfModelGetUniqueID

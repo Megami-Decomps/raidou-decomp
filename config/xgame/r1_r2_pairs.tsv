@@ -9239,7 +9239,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00361998	0x003D7720	sdfMatFree	no	yes	src/raidou1/sdf/sdfMat.c	src/raidou2/sdf/sdfMat.c	unique-reloc-hash
 0x00361A00	0x003D7788	sdfMatFreeDelayed	no	yes	src/raidou1/sdf/sdfMat.c	src/raidou2/sdf/sdfMat.c	masked-hash-in-gap
 0x00361A38	0x003D77C0	sdfMatMakePacket	yes	yes	src/raidou1/sdf/sdfMat.c	src/raidou2/sdf/sdfMat.c	unique-reloc-hash
-0x00361A78	0x003D7800	sdfAssetCopyTextureState	no	yes	src/raidou1/sdf/sdfMat.c	src/raidou2/sdf/sdfMat.c	unique-reloc-hash
+0x00361A78	0x003D7800	sdfMatUpdatePacketBasic	no	yes	src/raidou1/sdf/sdfMat.c	src/raidou2/sdf/sdfMat.c	unique-reloc-hash
 0x00361B18	0x003D78A0	sdfMatSetUvwParm	no	yes	src/raidou1/sdf/sdfMat.c	src/raidou2/sdf/sdfMat.c	unique-reloc-hash
 0x00361C00	0x003D7988	sdfMatUpdatePacketUvwParm	no	yes	src/raidou1/sdf/sdfMat.c	src/raidou2/sdf/sdfMat.c	unique-reloc-hash
 0x00361C20	0x003D79A8	sdfMatUpdatePacketMultiTex	no	yes	src/raidou1/sdf/sdfMat.c	src/raidou2/sdf/sdfMat.c	unique-reloc-hash
@@ -9574,7 +9574,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0036E5C0	0x003E4350	sdfItemArrayNew	no	yes	src/shared/sdf/sdfMisc.c	src/shared/sdf/sdfMisc.c	unique-reloc-hash
 0x0036E650	0x003E43E0	sdfItemArrayFree	no	yes	src/shared/sdf/sdfMisc.c	src/shared/sdf/sdfMisc.c	masked-hash-in-gap
 0x0036E680	0x003E4410	sdfItemArrayGrow	no	yes	src/shared/sdf/sdfMisc.c	src/shared/sdf/sdfMisc.c	unique-reloc-hash
-0x0036E700	0x003E4490	sdfCallMemAllocDirect3	no	yes	asm/raidou1/code_0036E700.s	asm/raidou2/code_003E4490.s	unique-reloc-hash
+0x0036E700	0x003E4490	sdfDevResizeBufferedRequest	no	yes	asm/raidou1/code_0036E700.s	asm/raidou2/code_003E4490.s	unique-reloc-hash
 0x0036E7C8	0x003E4558	sdfSin	no	yes	asm/raidou1/sdf/sdfMath.s	asm/raidou2/sdf/sdfMath.s	unique-reloc-hash
 0x0036E8C8	0x003E4658	sdfCos	no	yes	asm/raidou1/sdf/sdfMath.s	asm/raidou2/sdf/sdfMath.s	unique-reloc-hash
 0x0036E8E8	0x003E4678	sdfTableInterpolation	yes	yes	asm/raidou1/sdf/sdfMath.s	asm/raidou2/sdf/sdfMath.s	unique-reloc-hash
@@ -9721,7 +9721,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x00374278	0x003E9EB8	movieWaitSema	no	yes	asm/raidou1/sdf/sdfMovie.s	asm/raidou2/sdf/sdfMovie.s	unique-reloc-hash
 0x00374350	0x003E9F90	sdfSetStreamFrameDrawMode	no	yes	asm/raidou1/sdf/sdfMovie.s	asm/raidou2/sdf/sdfMovie.s	masked-hash-in-gap
 0x00374358	0x003E9F98	sdfSetGridScaledDrawBounds	no	yes	asm/raidou1/sdf/sdfMovie.s	asm/raidou2/sdf/sdfMovie.s	unique-reloc-hash
-0x00374390	0x003E9FD0	DrawPrimitive2Core	no	yes	asm/raidou1/sdf/sdfMovie.s	asm/raidou2/sdf/sdfMovie.s	unique-reloc-hash
+0x00374390	0x003E9FD0	sdfMovieQueueFrameSprite	no	yes	asm/raidou1/sdf/sdfMovie.s	asm/raidou2/sdf/sdfMovie.s	unique-reloc-hash
 0x00374608	0x003EA248	release_movieobj2	no	yes	asm/raidou1/sdf/sdfMovie.s	asm/raidou2/sdf/sdfMovie.s	unique-reloc-hash
 0x00374880	0x003EA4C0	movieReadNextChunk	no	yes	asm/raidou1/sdf/sdfMovie.s	asm/raidou2/sdf/sdfMovie.s	unique-reloc-hash
 0x00374918	0x003EA558	movieGetStreamSize	no	yes	asm/raidou1/sdf/sdfMovie.s	asm/raidou2/sdf/sdfMovie.s	unique-reloc-hash

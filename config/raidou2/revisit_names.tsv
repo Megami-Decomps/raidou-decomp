@@ -6774,7 +6774,7 @@
 0x003E3F70	sdfHddInitLabel	data	tier=D	derived-dominant	na	used by sdfHddInit (2 of 3 refs, 2 functions)
 0x003E4150	sdfLeaf28	func	tier=D	derived-unit	na	unit sdf/sdfDev9; no named callee, caller or string
 0x003E4300	sdfLeaf29	func	tier=D	derived-unit	na	unit code_0036E570, nearest named function sdfBcdToDecimal; no named callee, caller or string
-0x003E4490	sdfCallMemAllocDirect3	func	tier=D	derived-callee	na	unit code_0036E700, nearest named function sdfItemArrayGrow; calls sdfMemAllocDirect
+0x003E4490	sdfDevResizeBufferedRequest	func	tier=D	derived-callee	na	unit code_0036E700, nearest named function sdfItemArrayGrow; calls sdfMemAllocDirect
 0x003E4A08	sdfLeaf30	func	tier=D	derived-unit	na	unit sdf/sdfQuat; no named callee, caller or string
 0x003E5388	sdfSndIopAlloc	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002E8628, masked-words-identical (callee map pair); dds-decomp: SMT3HD name
 0x003E5B88	sdfCommandPADDISABLESub	func	tier=D	derived-caller	na	unit sdf/sdfSound; called by fldCommand_PAD_DISABLE
@@ -24524,7 +24524,7 @@
 0x003CB2C8	MenuCursorCtrl	func	tier=C	hd-c	0.69 (n=45)	Raidou HD DitectiveBook.MenuCursorCtrl score 5.2 flag -: calls2 callers-of-match-uniq votes2 st2:call r2-only
 0x003CB820	cmpLoadLocalizeText	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD cmpMain.cmpLoadLocalizeText score 3.3 flag I: calls1 calls-of-match st2:call r2-only
 0x003D6790	sdfModelMake_2	func	tier=C	hd-both	0.71 (n=206)	Raidou HD sdfModel.sdfModelMake_2 score 4.4 flag R: next gap1/9 st1:gap r1+r2
-0x003D7800	sdfAssetCopyTextureState	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2daae0 sim 1.000 margin 0.37 pair
+0x003D7800	sdfMatUpdatePacketBasic	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2daae0 sim 1.000 margin 0.37 pair
 0x003E19D0	sdfDevWaitForDisc	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e4cb0 sim 1.000 margin 0.51 pair
 0x003E1C00	sdfCdStRead	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e4ee0 sim 1.000 margin 0.58 pair
 0x003E2030	sdfDevOpenDiscFileAndGetSize	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e5310 sim 1.000 margin 0.64 pair
@@ -24545,7 +24545,7 @@
 0x003E9B30	sdfAdvanceStreamPlayback	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2ec5e0 sim 1.000 margin 0.71 pair
 0x003E9C98	sdfSoundInitFormattedAndAppendNode	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2ec818 sim 1.000 margin 0.00 pair
 0x003E9D68	sdfSoundInitAndAppendNode	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2ec818 sim 1.000 margin 0.00 pair
-0x003E9FD0	DrawPrimitive2Core	func	tier=C	hd-d	0.53 (n=98)	Raidou HD evt.DrawPrimitive2Core score 2.8 flag -: calls2 callers-of-match st2:call r2-only
+0x003E9FD0	sdfMovieQueueFrameSprite	func	tier=C	hd-d	0.53 (n=98)	Raidou HD evt.DrawPrimitive2Core score 2.8 flag -: calls2 callers-of-match st2:call r2-only
 0x003F2E30	sceSdTransToIOP	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f58f8 sim 1.000 margin 0.55 pair
 0x003F4D38	at3decMixJointStereo	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f7810 sim 1.000 margin 0.71 pair
 0x003F4F20	at3decInverseTransformBand	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f79f8 sim 1.000 margin 0.75 pair
@@ -25466,7 +25466,7 @@
 0x004E4880	slQueryNoFunc	data	tier=B	smt3-ref	0.80 (n=D_r1_0046F864)	smt3-ref/close: nfun=2, other=0, sim=0.8636, games=2, size=True, sec=True, fn=slCallMcRegetInfo
 0x004E48B4	dds3MultiBillboardPairList	data	tier=B	smt3-ref	0.80 (n=D_r1_0046F898)	smt3-ref/close: nfun=4, other=0, sim=0.98655, games=2, size=True, sec=True, fn=dds3MultiBillboardTagLink
 0x004E4978	hWorkArea	data	tier=B	smt3-ref	0.88 (n=D_004E4978)	smt3-ref/loose: nfun=3, other=4, sim=0.9524, games=1, size=True, sec=False, fn=dds3Func6
-0x004E4D10	dds3KernelThread	data	tier=B	smt3-ref	0.88 (n=D_r1_0046FC90)	smt3-ref/loose: nfun=2, other=0, sim=0.93335, games=2, size=False, sec=False, fn=main
+0x004E4D10	dds3KernelStack	data	tier=B	smt3-ref	0.88 (n=D_r1_0046FC90)	smt3-ref/loose: nfun=2, other=0, sim=0.93335, games=2, size=False, sec=False, fn=main
 0x005446D0	encBlurParam	data	tier=B	smt3-ref	0.80 (n=D_r1_004B4B60)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x00545AF0	pbDebugPanel2Pos	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EE0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel2
 0x00545B00	pbDebugPanel3X	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EF0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel3

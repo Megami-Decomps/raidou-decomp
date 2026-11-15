@@ -93,3 +93,28 @@ void sdfItemArrayGrow(sdfItemArray_t *aArray)
     sdfMemReallocRecord(aArray->memHandle, aArray->capacity * aArray->elemSize);
     aArray->items = EE_ADDR_AS(void *, sdfMemLock(aArray->memHandle));
 }
+
+void sdfDevResizeBufferedRequest(sdfItemArray_t *aArray, s32 aCapacity)
+{
+    if (aArray->memHandle == NULL) {
+        if (aCapacity > 0) {
+            aArray->capacity = aCapacity;
+            aArray->memHandle = sdfMemAllocDirect(aArray->elemSize * aCapacity);
+            aArray->items = EE_ADDR_AS(void *, sdfMemLock(aArray->memHandle));
+        }
+    } else if (aCapacity <= 0) {
+        sdfMemFreeDirect(aArray->memHandle);
+        aArray->memHandle = NULL;
+        aArray->count = 0;
+        aArray->capacity = 0;
+        aArray->items = NULL;
+    } else {
+        sdfMemUnlock(aArray->memHandle);
+        aArray->capacity = aCapacity;
+        sdfMemReallocRecord(aArray->memHandle, aArray->elemSize * aCapacity);
+        aArray->items = EE_ADDR_AS(void *, sdfMemLock(aArray->memHandle));
+        if (aCapacity < aArray->count) {
+            aArray->count = aCapacity;
+        }
+    }
+}

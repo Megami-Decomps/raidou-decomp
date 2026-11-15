@@ -7,6 +7,7 @@
 #include "eeregs.h"
 #include "sdfMemory.h"
 #include "sdk_libc.h"
+#include "sdk_libm.h"
 #include "sdfVu0.h"
 #include "sdfDraw.h"
 #include "sdfMat.h"
@@ -246,7 +247,67 @@ void sdf3DSetDefaultFog(u8 *aFog) {
     sdf3DFogDefault = EE_ADDR(aFog);
 }
 
+extern s8 sdf3DScreenAdjust;
+extern f32 sdf3DScreenAdjustScaleX;
+extern f32 sdf3DScreenAdjustScaleY;
+extern f32 sdf3DScreenAdjustOffsetX;
+extern f32 sdf3DScreenAdjustOffsetY;
+
+#ifdef NON_MATCHING
+/* 26 of 136 words differ: scheduling of the final scale and translation loads.
+ * SMT3's body plus the screen-adjust tail. Behavior is the same. */
+void sdf3MakeScreenParam(sdf3DScreenParam_t *camera)
+{
+    f32 projectionMatrix[16] __attribute__((aligned(16)));
+    f32 farZ = camera->farClip;
+    f32 nearZ = camera->nearClip;
+    f32 depthRange = farZ - nearZ;
+    f32 halfWidth = camera->width * 0.5f;
+    f32 halfHeight = camera->height * 0.5f;
+    f32 projectionScale;
+    f32 centerY;
+
+    SDF_MMI_STORE_UNIT_MATRIX(projectionMatrix);
+    projectionMatrix[0] = 1.0f / (halfWidth * camera->aspect);
+    projectionMatrix[5] = 1.0f / halfHeight;
+    projectionMatrix[10] = farZ * nearZ * 2.0f / depthRange;
+    projectionMatrix[14] = -(nearZ + farZ) / depthRange;
+    SDF_VU0_LOADMATRIX(projectionMatrix);
+    SDF_MMI_STORE_UNIT_MATRIX(projectionMatrix);
+    if (camera->flags & 2) {
+        projectionScale = camera->height / (tanf(camera->fovy * 0.5f) * 2.0f);
+    } else {
+        projectionScale = camera->projDist;
+    }
+    projectionMatrix[5] = projectionMatrix[0] = projectionScale;
+    projectionMatrix[10] = 0;
+    projectionMatrix[15] = 0;
+    projectionMatrix[14] = projectionMatrix[11] = 1.0f;
+    MultMatrix(projectionMatrix);
+    SDF_VU0_STOREMATRIX(camera->TM);
+    camera->scale[0] = halfWidth;
+    centerY = (camera->zMax - camera->zMin) * 0.5f;
+    if (camera->flags & 1) {
+        camera->scale[1] = halfHeight * 0.5f;
+    } else {
+        camera->scale[1] = halfHeight;
+    }
+    camera->scale[2] = centerY;
+    camera->scale[3] = 1.0f;
+    camera->trans[0] = camera->ox;
+    camera->trans[1] = camera->oy;
+    camera->trans[2] = centerY + camera->zMin;
+    camera->trans[3] = 0;
+    if (sdf3DScreenAdjust != 0) {
+        camera->scale[0] *= sdf3DScreenAdjustScaleX;
+        camera->scale[1] *= sdf3DScreenAdjustScaleY;
+        camera->trans[0] += sdf3DScreenAdjustOffsetX;
+        camera->trans[1] += sdf3DScreenAdjustOffsetY;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3MakeScreenParam);
+#endif
 
 /* vu0 routine: parallel-light packet and lighting basis construction */
 void sdf3DMakeLightParallelPacket(sdf3DLightParallelPacket_t *aPacket, sdf3DLight_t **aLights, sdfVector4_t *aAmbient) {

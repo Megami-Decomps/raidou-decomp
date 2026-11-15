@@ -81,7 +81,10 @@ void sdfPacFree(sdfPacDecodeCb_t *cb)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfLeaf41);
+void sdfLeaf41(sdfPacDecodeCb_t *cb)
+{
+    cb->stat = -1;
+}
 
 void sdfPacUseSrc(sdfPacDecodeCb_t *cb, s32 size)
 {
@@ -484,7 +487,13 @@ void sdfPacTexListDecoderTmxHeaderEndFunc(sdfPacDecodeCb_t *cb)
     cb->onEnd = sdfPacTexListDecoderTmxBodyEndFunc;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfLeaf42);
+void sdfLeaf42(sdfPacDecodeCb_t *cb)
+{
+cb->dst = (u8 *)&cb->slot.list->currHeader;
+cb->rest = sizeof(sdfPacStdBlockHeader_t);
+cb->decoder = sdfPacMemDecoderFunc;
+cb->onEnd = sdfPacTexListDecoderTmxHeaderEndFunc;
+}
 
 void sdfPacTexListDecoderTmxBodyEndFunc(sdfPacDecodeCb_t *cb)
 {

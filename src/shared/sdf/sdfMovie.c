@@ -126,7 +126,93 @@ void sdfSetGridScaledDrawBounds(s32 column, s32 row, s32 width, s32 height, u32 
     sdfMovieDrawColor = mode;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMovie", DrawPrimitive2Core);
+/* Draws the frame as a sprite over the sdfMovieDraw* rectangle, with its colour and alpha. */
+typedef struct sdfMovieSpritePacket_t {
+    u64 dmaTag;
+    u64 vifCommands;
+    sdfGifTag_t gifTag;
+    sdfGrTagStdReg_t sampling;
+    sdfGrTagStdReg_t texture;
+    sdfGrTagStdReg_t clamp;
+    sdfGrTagStdReg_t textureAlpha;
+    sdfGrTagStdReg_t alpha;
+    sdfGrTagStdReg_t color;
+    sdfGrTagStdReg_t sourceOrigin;
+    sdfGrTagStdReg_t vertexOrigin;
+    sdfGrTagStdReg_t sourceExtent;
+    sdfGrTagStdReg_t vertexExtent;
+} sdfMovieSpritePacket_t;
+
+#ifdef NON_MATCHING
+/* 15 of 157 words differ: register allocation around the colour word. Behavior is the same. */
+void sdfMovieQueueFrameSprite(sdfMovieCb_t *obj, sdfGrOt_t *ot)
+{
+    sdfMovieSpritePacket_t *packet;
+    sdfDrawTag_t *tag;
+    u16 width;
+    u16 height;
+    s32 widthLog2;
+    s32 heightLog2;
+    u32 bufferWidth;
+    u32 basePointer;
+
+    if (obj->decodeCb.playbackPhase < 2) {
+        return;
+    }
+    if (obj->sndActive != 0 && obj->sndPlaying == 0 && obj->readCb.pac->ringLength >= 0x1000) {
+        obj->sndPlaying = 1;
+        movieSemaId = obj;
+        p2sdSetPcmCallback(EE_ADDR(movieWaitSema));
+        p2sdPlayPcm(obj->sndVolume);
+    }
+
+    packet = EE_ADDR_AS(sdfMovieSpritePacket_t *, sdfGrAllocPacketBuff(sizeof(sdfMovieSpritePacket_t)));
+    packet->dmaTag = 0x100000B;
+    height = obj->decodeCb.height;
+    width = obj->decodeCb.width;
+    packet->vifCommands = 0x5000000B00000000ULL;
+    packet->gifTag.parm = 0x10AB40000000800AULL;
+    packet->gifTag.regs = 0x0E;
+    packet->sampling.data = 0x21;
+    packet->sampling.reg = 0x14;
+    heightLog2 = height - 1;
+    widthLog2 = width - 1;
+    bufferWidth = width >> 6;
+    heightLog2 = PS2_WORD_BIT_LENGTH(heightLog2);
+    widthLog2 = PS2_WORD_BIT_LENGTH(widthLog2);
+    basePointer = (u32)obj->decodeCb.resourceWord >> 6;
+    if (bufferWidth == 0) {
+        bufferWidth = 1;
+    }
+    packet->texture.data = ((u64)1 << 34) | ((u64)heightLog2 << 30) |
+        (widthLog2 << 26) | (obj->decodeCb.rgbMode != 0 ? 0x200000 : 0) |
+        ((u64)bufferWidth << 14) | (u64)basePointer;
+    packet->texture.reg = 0x06;
+    packet->clamp.data = 5;
+    packet->clamp.reg = 0x08;
+    packet->textureAlpha.data = 0x4000000080ULL;
+    packet->textureAlpha.reg = 0x3B;
+    packet->alpha.data = ((u64)(sdfMovieDrawColor >> 24) << 32) | 0x64;
+    packet->alpha.reg = 0x42;
+    packet->color.data = (s32)((sdfMovieDrawColor & 0xFF0000) | (u8)sdfMovieDrawColor | (sdfMovieDrawColor & 0xFF00) | 0x80000000);
+    packet->color.reg = 0x01;
+    packet->sourceOrigin.data = 0;
+    packet->sourceOrigin.reg = 0x03;
+    packet->vertexOrigin.data = ((u64)obj->z << 32) |
+        ((u32)sdfMovieDrawTop << 16) | (u32)sdfMovieDrawLeft;
+    packet->vertexOrigin.reg = 0x05;
+    packet->sourceExtent.data = (s32)(((u32)height << 20) | ((u32)width << 4));
+    packet->sourceExtent.reg = 0x03;
+    packet->vertexExtent.data = ((u64)obj->z << 32) |
+        ((u32)sdfMovieDrawBottom << 16) | (u32)sdfMovieDrawRight;
+    packet->vertexExtent.reg = 0x05;
+    tag = sdfPrimAllocDrawTag(NULL);
+    sdfDrawTagLink(tag, EE_ADDR(packet));
+    ot->regFunc(ot, tag);
+}
+#else
+INCLUDE_ASM(const s32, "sdf/sdfMovie", sdfMovieQueueFrameSprite);
+#endif
 
 void release_movieobj2(sdfMovieCb_t *obj, sdfGrOt_t *ot)
 {

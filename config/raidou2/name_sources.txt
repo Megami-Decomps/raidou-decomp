@@ -12272,7 +12272,7 @@
 0x003D7720	sdfMatFree	inferred	SMT3HD name via SLUS_209.11 0x002B34B8, reloc-identical; map-agrees
 0x003D7788	sdfMatFreeDelayed	inferred	SMT3HD name via SLUS_209.11 0x002B3520, shared-hash-in-run; map-agrees
 0x003D77C0	sdfMatMakePacket	inferred	SMT3HD name via SLUS_209.11 0x002B3558, byte-identical; map-agrees
-0x003D7800	sdfAssetCopyTextureState	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2daae0 sim 1.000 margin 0.37 pair
+0x003D7800	sdfMatUpdatePacketBasic	inferred	SMT3HD name via SLUS_209.11 0x002B3598, matched C carried from SMT3; replaces sdfAssetCopyTextureState: method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2daae0 sim 1.000 margin 0.37 pair
 0x003D78A0	sdfMatSetUvwParm	inferred	SMT3HD name via SLUS_209.11 0x002B3620, reloc-identical; map-agrees
 0x003D7988	sdfMatUpdatePacketUvwParm	inferred	SMT3HD name via SLUS_209.11 0x002B3708, reloc-identical; map-agrees
 0x003D79A8	sdfMatUpdatePacketMultiTex	inferred	SMT3HD name via SLUS_209.11 0x002B3728, reloc-identical; map-agrees
@@ -12609,7 +12609,7 @@
 0x003E4350	sdfItemArrayNew	inferred	SMT3HD name via SLUS_209.11 0x002BFE58, reloc-identical; map-agrees
 0x003E43E0	sdfItemArrayFree	inferred	SMT3HD name via SLUS_209.11 0x002BFEE8, shared-hash-in-run; map-agrees
 0x003E4410	sdfItemArrayGrow	inferred	SMT3HD name via SLUS_209.11 0x002BFF18, reloc-identical; map-agrees
-0x003E4490	sdfCallMemAllocDirect3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0036E700, nearest named function sdfItemArrayGrow; calls sdfMemAllocDirect
+0x003E4490	sdfDevResizeBufferedRequest	inferred	SMT3HD name via SLUS_209.11 0x002BFF98, matched C carried from SMT3; replaces sdfCallMemAllocDirect3: method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0036E700, nearest named function sdfItemArrayGrow; calls sdfMemAllocDirect
 0x003E4558	sdfSin	inferred	SMT3HD name via SLUS_209.11 0x002C0060, reloc-identical; map-agrees
 0x003E4658	sdfCos	inferred	SMT3HD name via SLUS_209.11 0x002C0160, reloc-identical; map-agrees
 0x003E4678	sdfTableInterpolation	inferred	SMT3HD name via SLUS_209.11 0x002C0180, byte-identical; map-agrees
@@ -12757,7 +12757,7 @@
 0x003E9EB8	movieWaitSema	inferred	SMT3HD name via SLUS_209.11 0x002C5098, reloc-identical; map-agrees
 0x003E9F90	sdfSetStreamFrameDrawMode	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002ECA40, masked-words-identical (order map pair); dds-decomp: descriptive
 0x003E9F98	sdfSetGridScaledDrawBounds	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002ECA48, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x003E9FD0	DrawPrimitive2Core	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD evt.DrawPrimitive2Core score 2.8 flag -: calls2 callers-of-match st2:call r2-only
+0x003E9FD0	sdfMovieQueueFrameSprite	inferred	SMT3 name used by carried sdfMovie C (smt3_symbols alias); replaces DrawPrimitive2Core: method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD evt.DrawPrimitive2Core score 2.8 flag -: calls2 callers-of-match st2:call r2-only
 0x003EA248	release_movieobj2	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002ECCF8, masked-words-identical (strict map pair); dds-decomp: SMT3HD name
 0x003EA4C0	movieReadNextChunk	inferred	SMT3HD name via SLUS_209.11 0x002C53C8, reloc-identical; map-agrees
 0x003EA558	movieGetStreamSize	inferred	SMT3HD name via SLUS_209.11 0x002C5460, reloc-identical; map-agrees
@@ -29456,6 +29456,7 @@
 0x004E45E3	DrawPrimitive2CoreData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by DrawPrimitive2Core
 0x004E45E8	sdfMovieIpsExt	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F5D0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=movieOpenStream
 0x004E4600	dds3FrameID	inferred	method=smt3-ref; p=0.88 (n=D_r1_0046F600); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=_start
+0x004E4608	dds3KernelThread	inferred	SMT3 main's thread id (SLUS_209.11 0x00551B88), from matched main (gp_rel operand of sdfStartThreadAndWait)
 0x004E4610	dds3PadVibrationState	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046F610); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x004E4611	Act2SubWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by Act2Sub
 0x004E4618	dds3PadVibrationMode	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046F618); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
@@ -29801,7 +29802,7 @@
 0x004E4B68	libcErrno	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046FAF8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=14, other=0, sim=1.0, games=2, size=True, sec=True, fn=_sbrk_r
 0x004E4B80	_startWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by _start
 0x004E4CC8	dds3ProcessTreeDepth	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046FC48); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
-0x004E4D10	dds3KernelThread	inferred	method=smt3-ref; p=0.88 (n=D_r1_0046FC90); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=0.93335, games=2, size=False, sec=False, fn=main
+0x004E4D10	dds3KernelStack	inferred	SMT3 main's stack (SLUS_209.11 0x00552310), from matched main; replaces dds3KernelThread: method=smt3-ref; p=0.88 (n=D_r1_0046FC90); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=2, other=0, sim=0.93335, games=2, size=False, sec=False, fn=main
 0x004E4F20	bssWork115	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x27
 0x004E4F47	bssWork116	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x2
 0x004E4F49	ButtonLineHelpTextSetDataEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by ButtonLineHelpTextSetData

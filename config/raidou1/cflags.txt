@@ -13,3 +13,5 @@ sdk/libm/sf_fabs  -G 0 -fno-builtin
 sdk/libm/sf_floor  -G 0 -fno-builtin
 sdk/libm/sf_sin  -G 0 -fno-builtin
 sdk/libm/sf_tan  -G 0 -fno-builtin
+code_r1_001D49D0  -fno-optimize-sibling-calls  # sdfMcFuncGetInfo, the only function, calls sceMcGetInfo with jal where -O2 emits a tail j
+code_r1_0029BF50  -fno-optimize-sibling-calls  # sdfRemoveTaskItem, the only function, calls sbtlCallBtlGetSkilltbl22 with jal where -O2 emits a tail j

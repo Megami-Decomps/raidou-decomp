@@ -391,7 +391,19 @@ void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket) {
     aTag->tail = aPacket;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfDrawTagLink2);
+void sdfDrawTagLink2(sdfDrawTag_t *aTag, addr_t aHeadPacket, addr_t aTailPacket) {
+    s32 previousTailAddress;
+
+    previousTailAddress = aTag->tail;
+    if (previousTailAddress == 0) {
+        aTag->head = aHeadPacket;
+    }
+    else {
+        (EE_ADDR_AS(SdfDmaTag *, previousTailAddress))->kind = SDF_DMA_TAG_NEXT_BYTE;
+        (EE_ADDR_AS(SdfDmaTag *, previousTailAddress))->address = EE_PHYSICAL(aHeadPacket);
+    }
+    aTag->tail = aTailPacket;
+}
 
 void sdfDrawTagLinkRef(sdfDrawTag_t *aTag, addr_t aPacket) {
     s32 previousTailAddress;

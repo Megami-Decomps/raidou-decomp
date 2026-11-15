@@ -4,6 +4,9 @@
 #include "sdfMath.h"
 #include "fileManager.h"
 #include "sdfTex.h"
+#include "sdf2D.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
 
 #include "kernel_draw.h"
 #include "sdf_resource.h"
@@ -992,7 +995,142 @@ void itfRotateScreenOffset(s32 *outX, s32 *outY, s32 x, s32 y, s32 centerX, s32 
     *outY = (s32)(*outY / aspect + centerY);
 }
 
+
+#ifdef NON_MATCHING
+/* 44 of 288 words differ: store scheduling in the final primitive writes. Behavior is the same. */
+void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSpriteUV *uv,
+                         const EffSpriteColor *colors, u32 flip, f32 angle, u32 alphaMode,
+                         s32 filter, sdfTexHandle_t *tex, s32 ot)
+{
+    sdfGrOt_t *otp;
+    void *packet;
+    u64 *prim;
+    void *tag;
+    u32 uvs[4];
+    u64 vHi0;
+    u64 vHi1;
+    u32 zq;
+    u64 p0, p1, p2, p3, q1, q2, q3;
+    s32 pt[8];
+    s32 x0;
+    s32 y0;
+    s32 x1;
+    s32 y1;
+    s32 hw;
+    s32 hh;
+    s32 cx;
+    s32 cy;
+    s32 t;
+
+    if (filter == 0) {
+        sdfTexSetFilter(tex, 0, 1);
+    } else {
+        sdfTexSetFilter(tex, 1, 1);
+    }
+    packet = EE_ADDR_PTR(sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(3, 4)));
+    sdf2DMakePrimPacketHeader(packet, 0x15C, 3, 0x531, 4);
+    prim = (u64 *)sdf2DGetPrimPtr(packet);
+    x0 = x + 0x7000;
+    y0 = y + 0x7900;
+    x1 = x0 + width - 8;
+    y1 = y0 + height - 4;
+    hw = (x1 - x0) / 2;
+    hh = (y1 - y0) / 2;
+    cx = x0 + hw;
+    cy = y0 + hh;
+    pt[0] = x0;
+    pt[1] = y0;
+    pt[6] = x1;
+    pt[7] = y1;
+    if (angle == 0.0f) {
+        pt[2] = x1;
+        pt[3] = y0;
+        pt[4] = x0;
+        pt[5] = y1;
+    } else {
+        itfRotateScreenOffset(&pt[0], &pt[1], -hw, -hh, cx, cy, angle);
+        itfRotateScreenOffset(&pt[2], &pt[3], hw, -hh, cx, cy, angle);
+        itfRotateScreenOffset(&pt[4], &pt[5], -hw, hh, cx, cy, angle);
+        itfRotateScreenOffset(&pt[6], &pt[7], hw, hh, cx, cy, angle);
+    }
+    uvs[0] = uv->u0 << 4;
+    uvs[1] = uv->v0 << 4;
+    uvs[2] = uv->u1 << 4;
+    uvs[3] = uv->v1 << 4;
+    if ((flip & 1) != 0) {
+        t = pt[0];
+        pt[0] = pt[2];
+        pt[2] = t;
+        t = pt[4];
+        pt[4] = pt[6];
+        pt[6] = t;
+    }
+    if ((flip & 2) != 0) {
+        t = pt[1];
+        pt[1] = pt[5];
+        pt[5] = t;
+        t = pt[3];
+        pt[3] = pt[7];
+        pt[7] = t;
+    }
+    if (colors == NULL) {
+        prim[0] = 0x8000000080LL;
+        prim[1] = 0x8000000080LL;
+        prim[6] = 0x8000000080LL;
+        prim[7] = 0x8000000080LL;
+        prim[12] = 0x8000000080LL;
+        prim[13] = 0x8000000080LL;
+        prim[18] = 0x8000000080LL;
+        prim[19] = 0x8000000080LL;
+    } else {
+        u32 w0 = colors[0].rgba;
+        u32 w1 = colors[1].rgba;
+        u32 w2 = colors[2].rgba;
+        u32 w3 = colors[3].rgba;
+
+        prim[0] = colors[0].channels.red | ((u64)colors[0].channels.green << 32);
+        prim[1] = ((w0 >> 8) & 0xFF) | ((u64)(w0 & 0xFF) << 32);
+        prim[6] = colors[1].channels.red | ((u64)colors[1].channels.green << 32);
+        prim[7] = ((w1 >> 8) & 0xFF) | ((u64)(w1 & 0xFF) << 32);
+        prim[12] = colors[2].channels.red | ((u64)colors[2].channels.green << 32);
+        prim[13] = ((w2 >> 8) & 0xFF) | ((u64)(w2 & 0xFF) << 32);
+        prim[18] = colors[3].channels.red | ((u64)colors[3].channels.green << 32);
+        prim[19] = ((w3 >> 8) & 0xFF) | ((u64)(w3 & 0xFF) << 32);
+    }
+    vHi0 = (u64)uvs[1] << 32;
+    zq = z >> 4;
+    prim[2] = uvs[0] | vHi0;
+    vHi1 = (u64)uvs[3] << 32;
+    p0 = (u32)pt[0] | ((u64)(u32)pt[1] << 32);
+    prim[8] = uvs[2] | vHi0;
+    prim[5] = zq;
+    prim[4] = p0;
+    p1 = (u32)pt[2];
+    q1 = (u64)(u32)pt[3] << 32;
+    prim[14] = uvs[0] | vHi1;
+    prim[11] = zq;
+    prim[10] = p1 | q1;
+    p2 = (u32)pt[4];
+    q2 = (u64)(u32)pt[5] << 32;
+    prim[20] = uvs[2] | vHi1;
+    prim[17] = zq;
+    prim[16] = p2 | q2;
+    p3 = (u32)pt[6];
+    q3 = (u64)(u32)pt[7] << 32;
+    prim[23] = zq;
+    prim[22] = p3 | q3;
+    effSelectPresetByKind(alphaMode, ot);
+    tag = EE_ADDR_AS(void *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(tag);
+    sdf2DLinkTexPacket(tag, tex, 0);
+    sdfDrawTagLink(tag, EE_ADDR(packet));
+    otp = &sdfGrOtTable[ot];
+    otp->regFunc(otp, tag);
+    sdfSubmitGsAlphaOneRegisterPacket(0x44, ot);
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_002C8188", sdfDrawTexturedQuad);
+#endif
 
 void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width,
                                     u32 height, u32 vertexColors, u32 presetMode, u32 presetValue) {

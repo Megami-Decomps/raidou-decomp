@@ -17,5 +17,6 @@ s32 p2sdStopBGM(s32 aId);
 s32 p2sdSyncMovie(void);
 s32 p2sdSyncSound(void);
 void sdfDumpHexLine(const void *aData, s32 size);
+s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
 
 #endif

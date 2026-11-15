@@ -21,5 +21,6 @@ void SetRotateMatrixY(f32 aAngle);
 void SetRotateMatrixY_B(f32 aAngle);
 void SetRotateMatrixZ(f32 aAngle);
 void SetRotateMatrixZ_B(f32 aAngle);
+void MultMatrix(void *aMatrix);
 
 #endif

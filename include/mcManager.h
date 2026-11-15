@@ -12,6 +12,25 @@ typedef enum McPollResult {
     MC_POLL_SPECIAL_ERROR = -2
 } McPollResult;
 
+#define MC_CARD_SLOT 0
+
+/* One control block per port. */
+typedef struct
+{
+    s32 syncResult;
+    s32 type;
+    s32 free;
+    s32 format;
+    u8 retry;
+    u8 fileInfoReady;
+    u8 cardStat;
+    s8 slotIndex;
+    u32 slotFlags[20]; /* Raidou: 0x64 stride, SMT3 has 5 */
+} sdfMcCb_tag;
+
+extern sdfMcCb_tag sdfMcCb[];
+
+void sdfMcFuncGetInfo(s32 port);
 void sdfMcRegetInfo(s32 port);
 McPollResult sdfMcFuncGetInfo1(void);
 s32 sdfMcGetFileInfoReady(s32 port);

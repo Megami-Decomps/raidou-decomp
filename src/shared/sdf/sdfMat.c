@@ -459,7 +459,28 @@ sdfDmaTag_t *sdfMatMakePacket(sdfMat_t *aMat, sdfDmaTag_t *aBuffer, s32 aId)
     return (sdfDmaTag_t *)((u8 *)aBuffer + 0x10);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfMat", sdfAssetCopyTextureState);
+extern s32 sdfForcedAssetTextureMode;
+
+void sdfMatUpdatePacketBasic(sdfMat_t *aMat, sdfMatPacket_t *aPacket)
+{
+    sdfTexHandle_t *handle;
+
+    aPacket->ambient = aMat->ambient;
+    aPacket->constant = aMat->constant;
+    aPacket->diffuse = aMat->diffuse;
+    if (sdfForcedAssetTextureMode == 1) {
+        aPacket->specularColor = 0;
+    } else {
+        aPacket->specularColor = aMat->specular;
+    }
+    aPacket->refmapColor = aMat->refmap;
+    handle = aMat->texHandle;
+    if (handle != NULL) {
+        aPacket->tex1Data = sdfTexGetTex1Reg(handle);
+        aPacket->tex0Data = sdfTexGetTex0Reg(handle);
+        aPacket->clampData = sdfTexGetClampReg(handle);
+    }
+}
 
 void sdfMatSetUvwParm(sdfMatTexTm_t *aUvwPacket, const sdfMatUvwParm_t *aParm)
 {

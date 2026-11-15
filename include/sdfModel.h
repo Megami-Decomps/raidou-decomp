@@ -34,4 +34,9 @@ sdfModelRootNode_t *sdfModelMake(void *aTexList, sdfModelDef_t *aModelData);
 void sdfModelRootFree(sdfModelRootNode_t *aRoot, s32 aReleaseNodes, s32 aReleaseMatList);
 sdfModelNode_t *sdfModelSearchNode(sdfModelRootNode_t *aRoot, s32 aId);
 
+void sdfModelLinkShapedDrawPacket(sdfModelNode_t *aNode, sdfShapeShapedPacket_t *aDataPtr,
+                                  sdfDrawTag_t *aDrawTag, s32 aId);
+/* Defined in sdfSortOt. */
+void sdfModelSetOtCallbacks(sdfGrOt_t *aOt);
+
 #endif

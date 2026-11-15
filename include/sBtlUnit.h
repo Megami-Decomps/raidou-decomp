@@ -50,4 +50,12 @@ s32 sbtlSetLight_SetPos(struct SBTLUNIT_WORK *wk, s8 lightno);
 s32 sbtlSetUnitLight(struct SBTLUNIT_WORK *wk, s32, u32 diffuse, u32 ambient, s32 flg, s32 flg2);
 s32 sbtlSetUnitLight_Dir(struct SBTLUNIT_WORK *wk, const sdfVector4_t *dir, s32 flg);
 
+/* Partial layout: only the fields read so far are named, the rest is padding. */
+struct SBTLUNIT_WORK {
+    u8 pad000[0x418];
+    SBTLUNIT_FLG flg;
+    u8 pad41C[0x34];
+    SKLID skillid;
+};
+
 #endif

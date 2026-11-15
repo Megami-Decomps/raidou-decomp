@@ -689,7 +689,61 @@ s32 sdfIpuSetChainTag(sdfIpuDecodeCb_t *cb)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfAdvanceStreamPlayback);
+extern s32 sdfAdvanceStreamPlaybackData;
+void sdfAdvanceStreamPlayback(s32 frames)
+{
+    sdfIpuDecodeCb_t *node;
+    s32 cadence;
+    s32 interruptsEnabled;
+
+    node = sdfCurrIpuDecodeCb;
+    if (node != NULL && node->inputDmaStartPending != 0) {
+        sdfIpuSetToIpuDma(node);
+    }
+    for (node = sdfIpuTaskLink; node != NULL; node = node->next) {
+        if (node->imageTrans != 0) {
+            node->imageTrans--;
+        }
+        cadence = node->playbackCadenceRemainder;
+        switch (node->playbackPhase) {
+        case SDF_STREAM_PLAYBACK_FIRST_COMPLETION:
+            sdfIpuSetChainTag(node);
+            node->playbackPhase = SDF_STREAM_PLAYBACK_CADENCED;
+            node->playbackCadenceRemainder = node->fps;
+            break;
+        case SDF_STREAM_PLAYBACK_CADENCED:
+            if (sdfAdvanceStreamPlaybackData == 1) {
+                break;
+            }
+            cadence += node->fps;
+            if (cadence < frames) {
+                node->playbackCadenceRemainder = cadence;
+            } else {
+                if (sdfIpuSetChainTag(node) != 0) {
+                    cadence -= frames;
+                }
+                node->playbackCadenceRemainder = cadence;
+            }
+            break;
+        }
+        if (node->active != 1) {
+            continue;
+        }
+        sdfIpuAllocGsRect(node);
+        if (sdfAdvanceStreamPlaybackData == 1) {
+            continue;
+        }
+        if (node->filledSlots < 8) {
+            interruptsEnabled = DIntr();
+            sdfIpuHandleDmaEnd(node);
+            if (interruptsEnabled != 0) {
+                EIntr();
+            }
+        }
+        node->read(node, node->strmCallbackParm, SDF_STREAM_READ_RESUME, NULL, 0);
+    }
+    sdfIpuExecQueue(0);
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfSoundInitFormattedAndAppendNode);
 
@@ -706,7 +760,12 @@ void sdfIpuSetOutputTex(sdfIpuDecodeCb_t *node, struct sdfIpuInitParm_t *params,
     sdfIpuStartDecodeTask(node, &streamParams, (SdfStreamRead)sourceData, EE_ADDR_AS(struct sdfMovieCb_t *, sourceSize), sdfTexGetPixelAddr(source));
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfSoundInitAndAppendNode);
+void sdfSoundInitAndAppendNode(sdfIpuDecodeCb_t *aNode, struct sdfIpuInitParm_t *aFormat, SdfStreamRead aRead, struct sdfMovieCb_t *aContext, s32 aResourceWord)
+{
+    sdfIpuStrmDecodeInit(aNode, aFormat, aRead, aContext);
+    aNode->resourceWord = aResourceWord;
+    sdfIpuAttachTask(aNode);
+}
 
 void sdfIpuInit(void) {
     s32 thread;

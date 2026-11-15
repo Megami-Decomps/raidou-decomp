@@ -630,6 +630,10 @@ char sdfFileCmdHostPrefix[8] = "host0:";
 
 char sdfFileCmdPfsPrefix[8] = "pfs0:";
 
+void sdfFirstInitSub(void) {
+    sdfData4 = 1;
+}
+
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", sdfFileCmdMoviePath);
 
 INCLUDE_SDATA(const s32, "sdf/sdfFileIO", sdfFileCmdCdimgPrefix);

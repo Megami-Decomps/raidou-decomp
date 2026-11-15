@@ -2,8 +2,6 @@
 #include "sdk_libmc.h"
 #include "mcManager.h"
 
-#define MC_CARD_SLOT 0
-
 #define MC_SYNC_POLL_MODE 1
 
 #define MC_SYNC_COMPLETE 1
@@ -18,23 +16,7 @@ extern s32 sceMcClose(s32 a);
 extern s32 sceMcRead(s32 a, void *b, s32 c);
 extern s32 sceMcWrite(s32 a, const void *b, s32 c);
 
-/* One control block per port. */
-typedef struct
-{
-    s32 syncResult;
-    s32 type;
-    s32 free;
-    s32 format;
-    u8 retry;
-    u8 fileInfoReady;
-    u8 cardStat;
-    s8 slotIndex;
-    u32 slotFlags[20]; /* Raidou: 0x64 stride, SMT3 has 5 */
-} sdfMcCb_tag;
-
-extern sdfMcCb_tag sdfMcCb[];
 extern s32 sdfMcInfo;
-void sdfMcFuncGetInfo(s32 port);
 
 void sdfMcRegetInfo(s32 port)
 {

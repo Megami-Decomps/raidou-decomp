@@ -57,7 +57,10 @@ void sdfCoreDrawSetZBias(f32 z) {
     corePktZBias = z;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", sdfLeaf25);
+void sdfLeaf25(void) {
+    corePktCurrLight = 0;
+    corePktCurrFog = 0;
+}
 
 void sdfCoreDrawInit(s32 buffSize) {
     sceDmaChan *dmaChannel = sceDmaGetChan(0);

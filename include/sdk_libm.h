@@ -19,4 +19,6 @@ f32 __kernel_tanf(f32 x, f32 y, s32 selector);
 
 s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision, const s32 *ipio2);
 
+f32 tanf(f32 x);
+
 #endif

@@ -76,6 +76,7 @@ sdfModelRootNode_t *sdfModelMakeRoot(void *aTexList, sdfModelDef_t *aModelData);
 void sdfModelNodeSet(sdfModelNode_t *aNode, sdfModelNodeDef_t *aDef);
 void sdfModelMorphListCopyStat(sdfModelMorphList_t *aDst, sdfModelMorphList_t *aSrc);
 void sdfModelMakeMarkPos(sdfModelRootNode_t *aRoot, sdfModelMarkPos_t *aMark);
+sdfModelMarkPos_t *sdfCallModelMake2(sdfModelRootNode_t *aRoot, s32 aId);
 void sdfModelInitSystem(void);
 sdfModelNode_t *sdfModelNodeNew(void);
 sdfModelRootNode_t *sdfModelRootNew(void);
@@ -717,7 +718,15 @@ void sdfModelEvalTm(sdfModelRootNode_t *aRoot)
     sdfModelEvalTm2(aRoot, (s8)sdfFrameId);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelOtInit);
+void sdfModelOtInit(sdfModelOt_t *aModelOt, sdfGrOt_t *aOt0, sdfGrOt_t *aOt1,
+                    sdfGrOt_t *aOt2, sdfGrOt_t *aOt3)
+{
+    aModelOt->ot[3] = aOt3;
+    aModelOt->ot[0] = aOt0;
+    aModelOt->ot[2] = aOt2;
+    aModelOt->ot[1] = aOt1;
+    sdfModelSetOtCallbacks(aOt1);
+}
 
 /* vu0 routine: native SDK vector/matrix operations around model state. */
 s32 sdfModelCheckBounds(const f32 *aMinMax) {
@@ -920,7 +929,186 @@ void sdfModelTempPacketLinkOt(sdfGrOt_t **ot, sdfModelRootNode_t *root)
     }
 }
 
+#define SDF_MODEL_FLAG_FORCE_TEXTURE_A 0x20
+#define SDF_MODEL_FLAG_FORCE_TEXTURE_B 0x40
+void sdfSetForcedAssetTextureMode(s32 aMode);
+void sdfModelLinkOtSdfModelSub(sdfItemArray_t *aMatList, s32 aId);
+void sdfCallMatUpdatePacket(sdfItemArray_t *aMatList, s32 aId);
+
+#ifdef NON_MATCHING
+/* 305 of 312 words differ: the frame is 192 bytes, not 176, because fog spills to the stack.
+ * Retail's first parameter is sdfModelOt_t *. Behavior is the same. */
+void sdfModelLinkOt_sdfModel(sdfGrOt_t **aOt, sdfModelRootNode_t *aRoot)
+{
+    sdfDrawTag_t *tags[4];
+    s32 frame;
+    s32 i;
+    s32 color;
+    u32 drawAttr;
+    u32 attr;
+    void *light;
+    void *fog;
+    s32 drew;
+    u32 softenParm;
+    u64 parmTag;
+    s32 semiTrans;
+    f32 soften;
+    f32 bias;
+    s32 reverse;
+    s32 nodeColor;
+    sdfModelNode_t *node;
+    sdfModelPacketHeader_tag *header;
+    s32 j;
+    sdfDrawTag_t *tag;
+    f32 zValue;
+    s32 forcedMode;
+
+    aRoot->flags &= ~SDF_MODEL_FLAG_DREW;
+    if (aRoot->flags & SDF_MODEL_FLAG_EARLY_SETUP) {
+        sdfModelTempPacketLinkOt(aOt, aRoot);
+    }
+    frame = (s8)sdfFrameId;
+    forcedMode = 1;
+    if ((aRoot->flags & SDF_MODEL_FLAG_FORCE_TEXTURE_A) == 0) {
+        forcedMode = 2;
+        if ((aRoot->flags & SDF_MODEL_FLAG_FORCE_TEXTURE_B) == 0) {
+            forcedMode = 0;
+        }
+    }
+    if (forcedMode != 0) {
+        sdfSetForcedAssetTextureMode(forcedMode);
+        sdfModelLinkOtSdfModelSub((sdfItemArray_t *)aRoot->matList, frame);
+        sdfSetForcedAssetTextureMode(0);
+    } else {
+        sdfCallMatUpdatePacket((sdfItemArray_t *)aRoot->matList, (s8)sdfFrameId);
+    }
+    light = aRoot->light;
+    fog = aRoot->fog;
+    if (light == NULL) {
+        light = sdf3DLightDefault;
+    }
+    if (fog == NULL) {
+        fog = sdf3DFogDefault;
+    }
+    color = aRoot->color;
+    drawAttr = aRoot->drawAttr;
+    if (aRoot->flags & SDF_MODEL_FLAG_SELF_FACEDIV_PARM) {
+        soften = aRoot->faceDivSoften;
+        bias = aRoot->faceDivBias;
+    } else {
+        soften = sdfFaceDivSoften;
+        bias = sdfFaceDivBias;
+    }
+    i = 0;
+    reverse = (aRoot->flags & SDF_MODEL_FLAG_REVERSE_FACE) != 0;
+    drew = 0;
+    if (aRoot->nodeList->count > 0) {
+        softenParm = corePktSoftenBias << 16;
+        do {
+            node = aRoot->nodeList->items[i];
+            header = node->drawPacket[frame];
+            if (header != NULL && (node->flags & (SDF_MODEL_NODE_FLAG_HIDE | SDF_MODEL_NODE_FLAG_MOTION_HIDE)) == 0) {
+                SDF_VU0_LOADMATRIX((f32 *)&node->tm);
+                MultMatrixRev(sdf3DScreenTm);
+                if (node->bounds == NULL || sdfModelCheckBounds((const f32 *)node->bounds) == 0) {
+                    SDF_VU0_GET_ROW3();
+                    SDF_VU0_GETVECTOR_W(zValue);
+                    nodeColor = color;
+                    if (node->flags & SDF_MODEL_NODE_FLAG_LOCALCOLOR) {
+                        nodeColor = node->color;
+                    }
+                    attr = drawAttr & node->drawAttr;
+                    for (j = 0; j != 4; j++) {
+                        tags[j] = NULL;
+                    }
+                    semiTrans = nodeColor < 0;
+                    sdfCoreDrawSetZBias(aRoot->zBias);
+                    parmTag = (((u64)attr | softenParm) << 32) | 0x6102C000;
+                    do {
+                        if ((header->otIndex >> 4) == aRoot->lod) {
+                            j = header->otIndex & 0xF;
+                            if (j == 0) {
+                                j = semiTrans == 0;
+                            }
+                            tag = tags[j];
+                            if (tag == NULL) {
+                                sdfModelNodeDrawPacket_t *buf;
+
+                                tag = sdfPrimAllocDrawTag(NULL);
+                                *(f32 *)&tag->z = zValue;
+                                tag->lightPacket = EE_ADDR(light);
+                                tags[j] = tag;
+                                tag->fogPacket = EE_ADDR(fog);
+                                buf = EE_ADDR_AS(sdfModelNodeDrawPacket_t *, sdfGrAllocPacketBuff(sizeof(*buf)));
+                                sdfModelSetTmRefPacket(node, &buf->tmRef, frame);
+                                *(u64 *)&buf->parm.next = 0x20000002;
+                                *(u64 *)&buf->parm.next.dat0 = parmTag;
+                                buf->parm.unpackColor = 0x6E01C002;
+                                buf->parm.color = nodeColor;
+                                buf->parm.unpackParm = 0x6003C003;
+                                *(u32 *)&buf->parm.zBias = *(u32 *)&aRoot->zBias;
+                                buf->parm.faceDivSoften = soften;
+                                buf->parm.faceDivBias = bias;
+                                buf->parm.itop = 0x04000004;
+                                buf->parm.mscal = 0x14000000;
+                                sdfDrawTagLinkRef(tag, EE_ADDR(buf));
+                            }
+                            switch (header->type) {
+                            case MODEL_PACKET_HEADER_TYPE_NORMAL:
+                                if (reverse == 0) {
+                                    sdfDmaTag_t *ref = EE_ADDR_AS(sdfDmaTag_t *, sdfGrAllocPacketBuff(0x20));
+
+                                    QUAD_ZERO(*(u128 *)&ref[1]);
+                                    ref->qwc = 0;
+                                    ref->addr = (void *)EE_PHYSICAL(EE_ADDR(header + 1));
+                                    *(u64 *)&ref->dat0 = 0;
+                                    sdfDrawTagLinkCall(tag, EE_ADDR(ref));
+                                }
+                                break;
+                            case MODEL_PACKET_HEADER_TYPE_SHAPE:
+                                if (reverse == 0) {
+                                    sdfModelLinkShapedDrawPacket(node, header->dataPtr, tag, frame);
+                                }
+                                break;
+                            case MODEL_PACKET_HEADER_TYPE_COREDRAW: {
+                                void *gen;
+
+                                sdfCoreDrawSetLight(light);
+                                sdfCoreDrawSetFog(fog);
+                                gen = sdfCorePacketGen(node, header->dataPtr, attr, nodeColor, soften, bias, frame, reverse);
+                                if (gen != NULL) {
+                                    sdfDrawTagLink(tag, EE_ADDR(gen));
+                                }
+                                break;
+                            }
+                            }
+                        }
+                        header = header->next;
+                    } while (header != NULL);
+                    j = 0;
+                    do {
+                        tag = tags[j];
+                        if (tag != NULL) {
+                            sdfGrOt_t *slot = aOt[j];
+
+                            drew = 1;
+                            slot->regFunc(slot, tag);
+                        }
+                        tags[j] = NULL;
+                        j++;
+                    } while (j != 4);
+                }
+            }
+            i++;
+        } while (i < aRoot->nodeList->count);
+    }
+    if (drew != 0) {
+        aRoot->flags |= SDF_MODEL_FLAG_DREW;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelLinkOt_sdfModel);
+#endif
 
 void sdfModelMorphListCopyStat(sdfModelMorphList_t *aDst, sdfModelMorphList_t *aSrc)
 {
@@ -1143,13 +1331,46 @@ sdfModelMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *aRoot, s32 aId)
     return NULL;
 }
 
+#ifdef NON_MATCHING
+/* 12 of 39 words differ. Behavior is the same. */
+sdfModelMarkPos_t *sdfCallModelMake2(sdfModelRootNode_t *aRoot, s32 aId)
+{
+    sdfModelChunkHeader_t *chunk = sdfModelGetExtraChunk(aRoot, 0x534F504D);
+    sdfModelMarkPos_t *data;
+    u8 *end;
+    s32 found = 0;
+
+    if (chunk == NULL) {
+        return NULL;
+    }
+    data = (sdfModelMarkPos_t *)((u8 *)chunk + 0x10);
+    end = (u8 *)chunk + chunk->size;
+    while ((u8 *)data < end) {
+        if (data->id == aId && ++found == 2) {
+            return data;
+        }
+        data++;
+    }
+    return NULL;
+}
+#else
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfCallModelMake2);
+#endif
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPosMatrix_sdfModel);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPos_sdfModel);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfCallModelMakeMarkPos);
+s32 sdfCallModelMakeMarkPos(sdfModelRootNode_t *aRoot, s32 aId)
+{
+    sdfModelMarkPos_t *mark = sdfCallModelMake2(aRoot, aId);
+
+    if (mark == NULL) {
+        return 0;
+    }
+    sdfModelMakeMarkPos(aRoot, mark);
+    return 1;
+}
 
 u32 sdfModelGetUniqueID(sdfModelRootNode_t *aRoot)
 {

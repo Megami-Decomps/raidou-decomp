@@ -9989,7 +9989,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046F5C8	0x004E45E0	sdfMovieDrawColor	.sdata	0x3	yes	code-ref
 0x0046F5CB	0x004E45E3	DrawPrimitive2CoreData	.sdata	0x5	yes	code-ref
 0x0046F5D0	0x004E45E8	sdfMovieIpsExt	.sdata	0x0	yes	code-ref
-0x0046F600	0x004E4600	dds3FrameID	.sbss	0x10	no	code-ref
+0x0046F600	0x004E4600	dds3FrameID	.sbss	0x8	no	code-ref
+0x0046F608	0x004E4608	dds3KernelThread	.sbss	0x8	no	code-ref
 0x0046F610	0x004E4610	dds3PadVibrationState	.sbss	0x1	no	code-ref
 0x0046F611	0x004E4611	Act2SubWork	.sbss	0x7	no	code-ref
 0x0046F618	0x004E4618	dds3PadVibrationMode	.sbss	0x1	no	code-ref
@@ -10281,7 +10282,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046FAF8	0x004E4B68	libcErrno	.sbss	0x0	no	code-ref
 0x0046FB00	0x004E4B80	_startWork	.bss	0x148	no	code-ref
 0x0046FC48	0x004E4CC8	dds3ProcessTreeDepth	.bss	0x33	no	code-ref
-0x0046FC90	0x004E4D10	dds3KernelThread	.bss	0x320	no	code-ref
+0x0046FC90	0x004E4D10	dds3KernelStack	.bss	0x320	no	code-ref
 0x00473C90	0x004E8D10	fclEncycTable	.bss	0x4	no	code-ref
 0x00473C94	0x004E8D14	fclEncycFreeEntryWork	.bss	0x4B9	no	code-ref
 0x00474510	0x004E9590	key2	.bss	0x30	no	code-ref

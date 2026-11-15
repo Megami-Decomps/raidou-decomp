@@ -27,4 +27,6 @@ void sdfTexSetWrapMode(sdfTexHandle_t *aHandle, s32 aMode);
  * than the single reference represented by the supplied pointer. */
 void sdfTexReleaseReference(sdfTexHandle_t *texture);
 
+void sdfTexSetFilter(sdfTexHandle_t *aHandle, s32 aMagMode, s32 aMinMode);
+
 #endif

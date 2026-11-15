@@ -14,5 +14,6 @@ void sdfGrInitDraw(void);
 void sdfGrJoinDrawTag(sdfDrawTag_t *aFore, sdfDrawTag_t *aBack);
 void sdfGrSetRegsPacketHeader(sdfGrPacketHeader_t *header, s32 payloadQwords);
 void sdfPreDrawTagLink(sdfPreDrawTag_t *aTag, sdfPreDrawHook_t *aHook);
+void sdfDrawTagLinkCall(sdfDrawTag_t *aTag, addr_t aPacket);
 
 #endif
