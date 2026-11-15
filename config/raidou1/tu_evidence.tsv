@@ -275,8 +275,8 @@ start	last_func	unit	kind	evidence	smt3_unit
 00300488	00300488	code_r1_00300488	c	dds:1 of 1	
 003004B0	003004E0	code_003004B0	asm	none	
 00300530	00300530	code_r1_00300530	c	dds:1 of 1	
-00300578	0032F238	code_00300578	asm	none	
-0032F278	0032F278	basic/dds3ModelRangeBasic	c	smt3:map:1 of 1	basic/dds3ModelRangeBasic
+00300578	0032F150	code_00300578	asm	none	
+0032F160	0032F278	basic/dds3ModelRangeBasic	c	smt3:map:1 of 4	basic/dds3ModelRangeBasic
 0032F2B8	00339648	code_0032F2B8	asm	none	
 00339658	00339658	newbattle/nbAiScript	c	smt3:map:1 of 1	newbattle/nbAiScript
 00339690	00344ED8	gohMain	asm	none	

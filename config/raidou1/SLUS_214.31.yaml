@@ -332,7 +332,7 @@ segments:
       - [0x2014B0, asm, code_003004B0]
       - [0x201530, c, code_r1_00300530]
       - [0x201578, asm, code_00300578]
-      - [0x230278, c, basic/dds3ModelRangeBasic]
+      - [0x230160, c, basic/dds3ModelRangeBasic]
       - [0x2302B8, asm, code_0032F2B8]
       - [0x23A658, c, newbattle/nbAiScript]
       - [0x23A690, asm, gohMain]

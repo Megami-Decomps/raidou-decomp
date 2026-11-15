@@ -233,3 +233,16 @@ u8 fileIsLoadedAndConditionTrue(s32 condition) {
 u8 fileIsLoadedWithActiveFlow(s32 loaded) {
     return loaded != 0 && fmShutDownData2 == 1;
 }
+
+INCLUDE_RODATA(const s32, "code_001EB5E0", mcStrBaslus05Smn);
+
+INCLUDE_RODATA(const s32, "code_001EB5E0", slStrFldProcSequence);
+
+INCLUDE_RODATA(const s32, "code_001EB5E0", slIconPath);
+
+INCLUDE_RODATA(const s32, "code_001EB5E0", slStrWaitMcSaiSetuzokuSareta);
+
+INCLUDE_RODATA(const s32, "code_001EB5E0", slIconSysName);
+
+INCLUDE_RODATA(const s32, "code_001EB5E0", slBaseIconName);
+
