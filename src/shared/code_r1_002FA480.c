@@ -2,6 +2,8 @@
 #include "sdk_libc.h"
 
 extern const char fldStrFontNameEntFnt[];
+extern const char fldFontNameEntDataStr[];
+extern const char fldFontNameEntDataEntry[];
 extern const char *fldFontNameEntData[2];
 extern void frCallDevLoadFileEx(s32 slot, const char *path);
 extern void frCallMemFreeDirect(s32 slot);
@@ -16,7 +18,7 @@ void fldFontNameEnt(void) {
     }
     frCallMemFreeDirect(4);
 }
-INCLUDE_SDATA(const s32, "code_r1_002FA480", fldFontNameEntData);
+const char *fldFontNameEntData[2] = {fldFontNameEntDataStr, fldFontNameEntDataEntry};
 
 INCLUDE_SDATA(const s32, "code_r1_002FA480", fldFontNameEntDataEntry);
 

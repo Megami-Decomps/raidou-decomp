@@ -43,3 +43,6 @@ s32 MoneyDrawProcess(dds3ProcessID_t *id)
     itfDrawFont(ITF_DM_STYLE_SNUM, offX + 375, 286, 0, 0, 0, 0xA09DC380, scale, 106, buf);
     return 0;
 }
+
+/* Retail has this in .data, not .sdata. MoneyDrawProcess must see it unsized, as in itf.h, or its codegen changes. */
+char *MoneyDrawProcessData[2] __attribute__((section(".data"))) = { MoneyDrawProcessDataEntry, NULL };
