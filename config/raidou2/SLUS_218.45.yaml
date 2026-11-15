@@ -499,6 +499,8 @@ segments:
       - [0x300CD8, asm, code_003FFCD8]
       - [0x301210, c, sdk/libgcc/tinfo2]
       - [0x3013D8, asm, code_004003D8]
+      - [0x301948, c, sdk/libc/abort]
+      - [0x301960, asm, code_00400960]
       - [0x301998, c, sdk/libc/atexit]
       - [0x301A38, c, sdk/libc/atoi]
       - [0x301A60, asm, code_00400A60]

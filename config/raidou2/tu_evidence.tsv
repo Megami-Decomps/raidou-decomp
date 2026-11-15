@@ -442,7 +442,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 003FFBB8	003FFBB8	sdk/libgcc/_fpcmp_parts_df	c	sdk:bytes:1 of 1	sdk/libgcc
 003FFCD8	003FFD00	code_003FFCD8	asm	none	
 00400210	00400350	sdk/libgcc/tinfo2	c	sdk:bytes:3 of 9	
-004003D8	00400960	code_004003D8	asm	none	
+004003D8	004003D8	code_004003D8	asm	none	
+00400948	00400948	sdk/libc/abort	c	sdk:name:1 of 1	sdk/libc
+00400960	00400960	code_00400960	asm	none	
 00400998	00400998	sdk/libc/atexit	c	sdk:bytes:1 of 1	sdk/libc
 00400A38	00400A38	sdk/libc/atoi	c	sdk:bytes:1 of 1	sdk/libc
 00400A60	00400A60	code_00400A60	asm	none	
