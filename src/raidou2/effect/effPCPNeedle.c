@@ -7,6 +7,7 @@
 #include "sdfDraw.h"
 #include "sdfMat.h"
 #include "sdf3DPrim.h"
+#include "effect.h"
 
 /* One needle instance: position plus the colour the draw loop stamps. */
 typedef struct dds3NeedleModelPart_tag
@@ -99,7 +100,6 @@ typedef struct effAllocation_t effAllocation_t;
 
 typedef struct trackPolySystem_t trackPolySystem_t;
 
-typedef struct effRandState_t { u32 words[4]; } effRandState_t;
 
 typedef struct effAxis_t { f32 x, y, z; } effAxis_t;
 

@@ -1,7 +1,6 @@
 #include "common.h"
 #include "font.h"
 #include "sdfMemory.h"
-#include "fmGslCont.h"
 
 typedef struct FontGsControl_t FontGsControl_t;
 
