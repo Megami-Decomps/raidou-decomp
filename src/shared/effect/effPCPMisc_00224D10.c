@@ -2,17 +2,28 @@
 #include "sdfSound.h"
 #include "effPCPMisc_00224D10.h"
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "fileManager.h"
 #include "newdata.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
-#include "dds/btl.h"
-
+#include "include_asm.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "ps2asm.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "fpu.h"
+#include "sdf_lighting.h"
+#include "model.h"
+#include "motion.h"
+#include "code_r1_001CC1D0.h"
+#include "code_r1_0021CE60.h"
+#include "slMain.h"
 
 /* Apply volume and pan to a sequence track through the command queue. */
 
@@ -23,12 +34,17 @@
 
 #define SDK_SKIP_memset
 
-#include "dds/eff_surface_node.h"
-#include "dds/eff_emitter_type.h"
-#include "dds/ee_mmi.h"
-#include "dds/file_selection_api.h"
-#include "dds/file_save_record.h"
-#include "dds/mnu_list.h"
+/* An emitter type (0x10), effEmitterTypeDescriptors[type]: its per-frame slot
+ * update, its parameter scaling, and the sizes of its slots and data. An
+ * emitter record starts with its u16 type. */
+typedef struct EffEmitterType {
+    void (*updateSlots)(void *record);
+    void (*scaleParameters)(void *record, f32 scale);
+    s32 slotBytes;
+    s32 dataBytes;
+} EffEmitterType;
+
+extern EffEmitterType effEmitterTypeDescriptors[];
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -60,8 +76,6 @@ typedef struct FileStatBonus {
     u8 bonusIndex;
     u8 pad07;
 } FileStatBonus;
-
-#include "dds/fpu.h"
 
 struct MenuListNode;
 
@@ -187,7 +201,6 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
     }
 }
 
-
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {
     s32 version;
@@ -272,16 +285,7 @@ void mnuRecordSetVector(void *recordBytes, const void *src);
 void fileReadRecordSecondVector(void *recordBytes, void *dst);
 void fileSetRecordSecondVector(void *recordBytes, const void *src);
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
-
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
-#include "dds/btl_grouped_entity_api.h"
+#define MDL_SKIP_TRANSFORMS 1
 
 enum {
     SDF_PSMCT32 = 0x00,
@@ -310,8 +314,6 @@ void mdlSetScale(dds3ModelHandle_t *ctx);
 
 /* sdfMotionCtrlr_t-record selection and lookup. */
 void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
-
-#include "dds/mdl_broadcast_callback.h"
 
 void Init_effModel(dds3ModelHandle_t *model);
 void effDestroyModelContext(dds3ModelHandle_t *owner);

@@ -5,10 +5,6 @@
 #endif
 
 #ifdef VERSION_RAIDOU1
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "newdata.h"
 #include "scr.h"
 #include "sdf_resource.h"
@@ -35,13 +31,14 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/scr.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "draw3d.h"
 
 struct sdfTexHandle_t;
 
@@ -108,7 +105,6 @@ typedef struct {
 u32 mnuClearTerminalPanelSelection(dds3ProcessID_t *task);
 
 struct MenuTerminalWork;
-
 
 typedef struct QuadRecord {
     s32 unk00;

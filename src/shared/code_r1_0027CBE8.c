@@ -1,11 +1,8 @@
 #include "common.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "sdk_libc.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "newdata.h"
 
 extern u32 btlRandomState;
 extern s32 (*btlPackedEffectHandlers[])(s32, u32);

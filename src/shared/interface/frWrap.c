@@ -67,10 +67,6 @@ s32 frFreeFontNode(void *payload, frFontNode_t *queue);
 u32 frFreeFontTable(frFontNode_t *ringBase);
 extern s32 frTestFontX, frTestFontY;
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "scr.h"
 #include "sdk_libc.h"
 
@@ -114,10 +110,34 @@ enum {
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/itf.h"
-#include "dds/fr_font_glyph_chain_count.h"
-#include "dds/fr_font_measure.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "newdata.h"
+
+/* Serialized font-bank entries use byte offsets relative to their bank. */
+typedef struct FrFontTextIndex {
+    u32 unk00;
+    u32 offset;
+} FrFontTextIndex;
+
+typedef struct FrFontTextBank {
+    u8 pad00[0x18];
+    s32 count;
+    u8 pad1C[4];
+    FrFontTextIndex entries[1];
+} FrFontTextBank;
+
+_FRQ *itfDrawColor(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1,
+    s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *unusedSub);
+
+s32 frFontCountGlyphChainNodes(const struct _FRQ *glyph);
+
+s32 frFontMeasureGlyphStripWidth(s32 line, const struct _FRQ *glyph);
 
 #define ITF_BYTE_MASK 0xFF
 
@@ -167,7 +187,6 @@ enum {
 
 #define ITF_LINES_PRIMITIVE_BITS 0x49
 
-
 /* Decode a two-byte glyph through the DDS1 lookup table; 0xFFFF is missing. */
 u32 itfDecodeGlyph(u32 glyphCode);
 void itfConvertText(u8 *output, const char *input);
@@ -179,7 +198,6 @@ struct EffSpriteUV;
 struct sdfTexHandle_t;
 
 union EffSpriteColor;
-
 
 /* Staff callers supply a trailing request; this wrapper creates a fresh chain. */
 frFontHandle_t *frwGetStaffFontFRQ(u32 x, u32 y, s32 depth, s32 alt, s32 measureFlag, s32 entryFlag, u32 colors, void *source, void *unusedRequest) {

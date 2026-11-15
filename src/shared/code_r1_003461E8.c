@@ -1,16 +1,20 @@
 #include "common.h"
 #include "dds3KernelCore.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "newdata.h"
 #include "sdk_libc.h"
-#include "dds/dds3_process.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "code_r1_001CC1D0.h"
 
-
-#include "dds/mnu.h"
+static inline s32 menuRunPanel(void *context, s32 mode, void *callback) {
+    return jmsSeqChange((MenuPopupState *)((u8 *)context + 8),
+                                      (s32 *)((u8 *)context + 0x54), mode,
+                                      callback);
+}
 
 typedef struct _FRQ _FRQ;
 

@@ -4,14 +4,17 @@
 #include "scrTraceCode.h"
 #include "dds3KernelCore.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "field.h"
-#include "dds/dds3_task_create.h"
-#include "dds/mnu_title_sound.h"
-#include "dds/scr_integer_parameter_api.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "newdata.h"
+#include "code_r1_001CF808.h"
+
+/* The PCM voice owner stores idle as 0 and active playback as 1. */
+typedef s32 MnuTitleSoundBusyState;
 
 /* The voice-file RPC sets this busy state on open and clears it on close.
  * It is separate from the PCM callback-command busy latch. */
@@ -35,10 +38,6 @@ u32 fldCommandIsSoundBusy(void);
 s32 fldCmdMarkBitmapRegion(void);
 s32 fldCmdSetStateFlag(void);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "kernel_draw.h"
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
@@ -47,9 +46,26 @@ void Exit(s32 status);
 
 /* Return the descriptor's payload base as a byte address, not the descriptor. */
 
-#include "dds/sdk_ps2.h"
-#include "dds/brs_result_counter.h"
-#include "dds/snd_work.h"
+s32 sceSdRemoteInit(void);
+
+/* Shared per-row lifecycle for EXP and profile-point result animations. */
+typedef s8 BrsProgressAnimationPhase;
+
+/* Cross-title completion view, 0x14 bytes before the corresponding
+ * BrsProgressAnimation row (see mnu_result.h). Only byte 0 of the two
+ * icon-state regions is polled; other bytes stay opaque. */
+typedef struct BrsResultCounterView {
+    u8 pad00[0x14];
+    BrsProgressAnimationPhase phase;
+    u8 pad15[0x1F];
+    s32 remaining;
+    u8 pad38[0x14];
+    s8 progressIconState[1];
+    u8 pad4D[0x13];
+    s8 completionIconState[8];
+} BrsResultCounterView;
+
+typedef char BrsResultCounterView_size_must_be_0x68[(sizeof(BrsResultCounterView) == 0x68) ? 1 : -1];
 
 extern void mnuTitleStreamUpdateAndLogBgm(void);
 
@@ -62,8 +78,14 @@ typedef struct BrsLevelCornerColors {
     u32 values[4];
 } BrsLevelCornerColors;
 
-#include "dds/mnu_title_effect.h"
-#include "dds/mnu_title_stream.h"
+typedef struct TitleEffectState {
+    s32 soundNameIndex;
+    s32 frameCounter;
+} TitleEffectState;
+
+#define MNU_STREAM_LOAD_IDLE 0
+
+MnuTitleStreamLoadState mnuPollTitleStreamStateLocked(void);
 
 #define BRS_RESULT_COUNTER_PAIR_COUNT 5
 

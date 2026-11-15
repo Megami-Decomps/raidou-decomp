@@ -1,10 +1,6 @@
 #include "common.h"
 #include "dds3ObjectBase.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "basic.h"
 #include "dds3obj.h"
 #include "field.h"
@@ -13,9 +9,21 @@
 #include "sdf_packet_list.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
-#include "dds/mdl.h"
-#include "dds/sdf.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "sdf_lighting.h"
+#include "libsdf.h"
+#include "model.h"
+#include "motion.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
+#include "ps2asm.h"
+#include "fpu.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "scr.h"
+#include "fldFileResolver_00132080.h"
+#include "effPCPMisc_00224D10.h"
 
 /* The field-area loader interprets these serialized packet-header values. */
 typedef enum FldPackedResourceKind {
@@ -76,18 +84,12 @@ enum SdfMotionStateValue {
     SDF_MOTION_STATE_SUSPENDED = 6,
 };
 
-
 /* Set or clear requested bits in the object's flag word. */
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
-
-#include "dds/sdf_vu0.h"
-#include "dds/fld.h"
-#include "dds/fpu.h"
-#include "dds/scr.h"
 
 typedef struct SdfGsTextureAlphaFlushPacket {
     SdfGsPacketHeader header;
@@ -222,10 +224,6 @@ enum {
 extern s32 D_003BADB8, D_003BADBC;
 extern f32 D_003BADC0, D_003BADC4;
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "datCalc.h"
 #include "newdata.h"
 
@@ -250,8 +248,6 @@ enum {
     EFF_WORLD_KIND_TRANSFORM_SOURCE = 17,
     EFF_WORLD_KIND_COUNT = 18
 };
-
-#include "dds/evt_run_context_api.h"
 
 extern void scrDestroyWorkTask(void);
 extern scrHeader_t *cameraBasic;

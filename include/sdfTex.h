@@ -21,4 +21,10 @@ void sdfTexSetClutColor(sdfTexHandle_t *texture, s32 tint, f32 amount);
 sdfTexHandle_t *sdfTexSetDirect(TMX_HEADER_t *aTex);
 void sdfTexSetWrapMode(sdfTexHandle_t *aHandle, s32 aMode);
 
+/* Release one caller-owned texture reference. The direct form releases the
+ * texture immediately when this is the last reference; the handler form queues
+ * that final release for deferred processing. Neither function consumes more
+ * than the single reference represented by the supplied pointer. */
+void sdfTexReleaseReference(sdfTexHandle_t *texture);
+
 #endif

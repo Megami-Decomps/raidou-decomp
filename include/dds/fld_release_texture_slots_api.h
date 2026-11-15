@@ -1,6 +1,0 @@
-#ifndef DDS_FLD_RELEASE_TEXTURE_SLOTS_API_H
-
-#define DDS_FLD_RELEASE_TEXTURE_SLOTS_API_H
-void fldReleaseTextureSlots(void);
-
-#endif /* DDS_FLD_RELEASE_TEXTURE_SLOTS_API_H */

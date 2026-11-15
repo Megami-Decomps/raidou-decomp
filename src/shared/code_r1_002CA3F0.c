@@ -1,13 +1,17 @@
 #include "common.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 /* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
 
-#include "dds/eff.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "code_r1_001CC1D0.h"
 
 extern void *effGetSlotWorkOrOverride(EffectSlotSet *, s32);
 void sdfCopyCornerWordsWithEdgeByte(u32 *source, u32 *destination, u8 *edgeValues, u32 edge);

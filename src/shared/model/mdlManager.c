@@ -65,7 +65,6 @@ extern mdlLoadingTag_t *mdlLoadingMajorList[MDL_GROUP_COUNT];
 extern void sdfTexListFree(sdfModelTexList_t *aList, s32 aReleaseItems);
 extern sdfModelTexList_t *sdfTexListDup(sdfModelTexList_t *aList);
 
-
 extern void fileManager(void);
 void mdlUnRegist(s32 aMajor, s32 aMinor);
 void mdlUnRegistResrc(dds3ModelResrc_t *resrc_p);
@@ -329,11 +328,11 @@ extern char mdlModelPathPrefix[8];
 extern char mdlPackedBundleExt[4];
 extern mdlWorkPrefix_t mdlWorkPathPrefix[1];
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/model.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "libsdf.h"
 
 struct mdlEffectDescriptor_t;
 

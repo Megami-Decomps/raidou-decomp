@@ -224,7 +224,6 @@ extern void itfMiscLinkGive(itfMesLink_t *pelem, itfMesLinkControl_t *pstack);
 
 #define ITF_MES_COPY_ALIGN_MASK 3
 
-
 #define ITF_MES_BINARY_COPY_ROUND_BIAS 5
 
 frFontHandle_t *UnchainFontHandleUnit(frFontHandle_t *pfont, s32 index, s32 lines);
@@ -285,11 +284,24 @@ extern char itfMesDebugItemFormat[8];
 extern char itfMesMarkerNone[8];
 extern char itfMesDebugFadeFormat[8];
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
+#include "include_asm.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "font.h"
+#include "code_r1_001C4B78.h"
+#include "code_r1_001CC1D0.h"
+#include "itfPanel.h"
 
-#include "dds/scr_command_timer_api.h"
+/* Prior interpreter trace passes that yielded while a script command remained
+ * pending; callbacks observe the count before the current pass is recorded. */
+typedef u32 ScrCommandYieldCount;
 
 /* During a command callback, return the number of earlier trace passes that
  * yielded while it was pending. The first invocation sees zero; each yielded
@@ -297,11 +309,142 @@ extern char itfMesDebugFadeFormat[8];
  * is callback wait state, not wall-clock time, and is valid only in the callback. */
 ScrCommandYieldCount scrGetCommandTimer(void);
 
-#include "dds/mnu.h"
-#include "dds/itf_mes_panel_mode.h"
-#include "dds/itf_mes_entry_start_api.h"
-#include "dds/itf_panel_draw.h"
-#include "dds/itf_panel_layouts.h"
+/* Signed index selecting an entry record in an installed message resource. */
+typedef s32 ItfMesEntryIndex;
+
+/* Outcome reported by starting an entry in a message window. */
+typedef s32 ItfMesEntryStartResult;
+
+ItfMesEntryStartResult itfMesStartEntry(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
+
+typedef s16 BtlFadePhase;
+
+/* Native 0xC-byte fade record shared by message windows and sound UI state. */
+typedef struct BtlFade {
+    u8 kind;
+    u8 pad1;
+    BtlFadePhase phase;
+    s16 alpha;
+    s16 timer;
+    u32 textAdvanceFrameCount; /* 0x08: entry advances count frames before triangle skip. */
+} BtlFade;
+
+typedef char BtlFade_size_must_be_0x0C[(sizeof(BtlFade) == 0x0C) ? 1 : -1];
+
+typedef struct ItfMesBlk14 {
+    u32 x;
+    u32 y;
+    _FRQ *glyphChain;
+    u16 selectedIndex;
+    u8 pad0E[2];
+} ItfMesBlk14;
+
+typedef struct ItfMesEntryBlock {
+    u32 x;
+    s32 y;
+    ItfMesTable *table;
+    _FRQ *glyphChain;
+    s8 textState;
+    u8 textInterfaceMask; /* 0x11: result of frGetMessageResult(3). */
+    u8 color[4];
+    s16 lineCount;
+    s16 itemIndex;
+    s16 tableCount;
+} ItfMesEntryBlock;
+
+typedef char ItfMesEntryBlock_size_must_be_0x1C[
+    (sizeof(ItfMesEntryBlock) == 0x1C) ? 1 : -1];
+
+typedef struct ItfMesOption {
+    s16 id;
+    s16 value;
+} ItfMesOption;
+
+/* Sound-option chooser lifecycle; completion preserves the signed -1 sentinel. */
+typedef s16 ItfSoundSelectionState;
+
+typedef struct ItfMesBlk40 {
+    u32 x;
+    u32 y;
+    _FRQ *glyphChain;
+    u32 panelValue;
+    ItfSoundSelectionState selectionState;
+    s16 selectedIndex;
+    s16 savedIndex;
+    s16 rowCount;
+    s32 widestRowX;     /* the widest row's x, which the option panel's highlight spans from */
+    s32 widestRowWidth; /* the widest row's width */
+    s16 glyphColorIntensity;
+    s16 optionCount;
+    ItfMesOption options[15];
+} ItfMesBlk40;
+
+/* The three sprite records occupy +0xA4/+0xA8/+0xAC in the window state. */
+typedef struct ItfMesBlkA4 {
+    dds_itfpanel_t *frame;
+    dds_itfpanel_t *sprite;
+    dds_itfpanel_t *overlay;
+    s32 bounds[4];
+    s32 red;
+    s32 green;
+    s32 blue;
+    s32 fadeLimit;
+} ItfMesBlkA4;
+
+typedef struct ItfMesTextSlots {
+    u8 *addresses[0x20];
+    sdfMemHandle_t *handles[0x20];
+} ItfMesTextSlots;
+
+typedef struct dds_instanceMes_tag {
+    u32 flags;
+    ItfMesSub *sub;
+    u8 *temporaryFontEntry; /* 0x08: relocated font resource bytes from the MSG1 trailing entry. */
+    s32 renderValue;
+    s16 drawSurfaceIndex;
+    s16 panelMode;
+    ItfMesBlk14 blk14;
+    ItfMesEntryBlock entryBlock;
+    ItfMesBlk40 blk40;
+    u8 unkA0[4];
+    ItfMesBlkA4 blkA4;
+    ItfMesTextSlots textSlots;
+    BtlFade fade;
+    void (*entryGlyphCallback)(void);
+} dds_instanceMes_tag;
+
+/* The message manager owns a fixed pool of 64 windows in this 0x520-byte bank. */
+typedef struct mesflow_tag {
+    struct mesflow_tag *previous;
+    struct mesflow_tag *next;
+    ItfMesWindowIndex index;
+    dds_instanceMes_tag *state;
+    sdfMemHandle_t *resourceHandle;
+} mesflow_tag;
+
+typedef char ItfMesPoolNode_size_must_be_0x14[(sizeof(mesflow_tag) == 0x14) ? 1 : -1];
+
+#define ITF_PANEL_HOLD_CAPACITY 0x40
+
+typedef struct PanelHoldItem {
+    s32 first;
+    s16 second;
+    s16 third;
+} PanelHoldItem;
+
+/* Bounded held-panel queue. Unknown scalar slots stay unnamed. */
+typedef struct PanelHold {
+    s32 window;
+    s16 unk4;
+    s16 queuedCount;
+    s32 entryEndFrame; /* Script timer deadline of the active entry. */
+    PanelHoldItem items[ITF_PANEL_HOLD_CAPACITY];
+} PanelHold;
+
+typedef char PanelHoldItem_size_must_be_8[sizeof(PanelHoldItem) == 8 ? 1 : -1];
+
+typedef char PanelHold_size_must_be_0x20C[
+    sizeof(PanelHold) == 0x20C ? 1 : -1];
 
 #define ITF_PANEL_COLUMN_COUNT 4
 
@@ -357,13 +500,10 @@ s32 itfCommandQueueHeldPanelEntry(void);
 s32 MesMngSelect(void);
 
 #endif
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "sdk_libc.h"
-#include "dds/itf_mes_voice_cue_result.h"
-#include "dds/btl_state.h"
+
+/* The selected text scan reports whether it contains the F413 voice cue. */
+typedef s32 ItfMesVoiceCueResult;
 
 typedef mesflow_tag ItfMesWindowRec;
 

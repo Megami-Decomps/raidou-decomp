@@ -2,10 +2,6 @@
 #include "sdfVu0.h"
 #include "sdfSound.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "fileManager.h"
 #include "newdata.h"
 #include "sdk_libc.h"
@@ -22,10 +18,16 @@
 
 #define SDK_SKIP_memset
 
-#include "dds/file.h"
-#include "dds/file_selection_api.h"
-#include "dds/file_slot.h"
-#include "dds/pcp_vu0.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "ps2asm.h"
+#include "code_r1_0021CE60.h"
+#include "slMain.h"
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -153,7 +155,6 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
         next = fileQueueFindBySector(queue, owner->id);
     }
 }
-
 
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {

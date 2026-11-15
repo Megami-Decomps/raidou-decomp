@@ -59,7 +59,6 @@ typedef struct evtScaledValue_t {
     u8 pad18[4];
 } evtScaledValue_t;
 
-
 static inline void UnpackRGBAWordFloat(u32 color, f32 unit) {
     u32 rgba[4];
     rgba[0] = color;
@@ -81,13 +80,9 @@ static inline void SetBlendVecW(f32 w)
 s32 evtHokanInt(s32 hokan, f32 ratio, s32 i1, s32 i2);
 u32 evtHokanUInt(s32 hokan, f32 ratio, u32 i1, u32 i2);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/ee_mmi.h"
-#include "dds/pcp_vu0.h"
-#include "dds/fld.h"
+#include "include_asm.h"
+#include "field.h"
+#include "evtEventViewerMenu.h"
 
 INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtCheckLoad);
 

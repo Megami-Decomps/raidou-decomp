@@ -1,6 +1,0 @@
-#ifndef DDS_EVT_UNIT_COLOR_TRANSITION_H
-
-#define DDS_EVT_UNIT_COLOR_TRANSITION_H
-#include "evt_unit.h"
-
-#endif /* DDS_EVT_UNIT_COLOR_TRANSITION_H */

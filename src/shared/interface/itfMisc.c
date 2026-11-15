@@ -133,12 +133,14 @@ void itfMiscDrawGauge(s32 portion, s32 entire, s32 shadow,
 s32 dds3DebugDevDumpProcess(dds3ProcessID_t *proc_id);
 u32 itfCamp(void);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "scr.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -174,9 +176,6 @@ enum {
     SDF_GS_TRXREG = 0x52,
     SDF_GS_TRXDIR = 0x53
 };
-
-
-#include "dds/itf_panel_draw.h"
 
 #define ITF_NODE_HEADER_BYTES 8
 

@@ -57,7 +57,6 @@ typedef struct effLegacyInstance_t
     sdfMatrix4_t matrixB0;
 } effLegacyInstance_t;
 
-
 #include "sdk_libc.h"
 
 extern void dds3MultiBillboardLinkOt(void);
@@ -76,13 +75,16 @@ effNode_t *dds3EffectCopy(effNode_t *node);
 extern effMajorEntry_t EffMajorTable[5];
 extern char dds3EffectProcessName[7];
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/ee_mmi.h"
-#include "dds/eff.h"
-#include "dds/dds3_task_runner.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "draw3d.h"
+#include "evtEventViewer.h"
+#include "evtEventViewerMenu.h"
 
 extern void effObjectListCountersReset(void);
 

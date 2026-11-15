@@ -1,20 +1,43 @@
 #include "common.h"
 #include "sdk_libkernl.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "fileManager.h"
 #include "libsdf.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "code_r1_001CF808.h"
 
+/* The two title-audio states own the complete ten-word frame/decoder record. */
+typedef struct TitleAudioStreamState {
+    s32 frameCount;
+    s32 frameIndex;
+    s32 frameBytes;
+    s32 repeatFrame;
+    s32 control;
+    u8 *compressedData;
+    s16 *samples;
+    u32 *decoder;
+    struct sdfMemHandle_t *allocation;
+    MnuTitleStreamLoadState loadState;
+} TitleAudioStreamState;
 
-#include "dds/mnu_result.h"
-#include "dds/mnu_title_stream.h"
-#include "dds/mnu_title_stream_status_snapshot.h"
+typedef char TitleAudioStreamState_size[(sizeof(TitleAudioStreamState) == 0x28) ? 1 : -1];
+
+/* Shared title-audio stream operations, implemented by each title. */
+void mnuQueueTitleSoundStreamEntry(s32 soundEntryIndex);
+
+typedef struct TitleAudioStreamStatusSnapshot {
+    u32 frameCount;
+    u32 frameIndex;
+    u32 repeatFrame;
+} TitleAudioStreamStatusSnapshot;
+
+typedef char TitleAudioStreamStatusSnapshot_size[
+    (sizeof(TitleAudioStreamStatusSnapshot) == 0x0C) ? 1 : -1];
 
 #define SND_MIX_SAMPLE_COUNT 0x800
 

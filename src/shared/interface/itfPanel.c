@@ -97,7 +97,6 @@ void DrawMesWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
 #define ITF_PANEL_SEVEN_COLOR_COUNT 7
 
-
 #define ITF_PANEL_WIDE_INDEX_COUNT 8
 
 #define ITF_PANEL_SEVEN_SIDE_PASS_COUNT 6
@@ -148,13 +147,29 @@ void CreateColorLeftFade(itfPanelLeftFadeData_t *pwork, u32 red, u32 green, u32 
 extern u8 itfPanelMesWinLineVertexIndex[8];
 extern u8 itfPanelSelWinLineVertexIndex[8];
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
+#include "include_asm.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "newdata.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "font.h"
+#include "itfPanel.h"
 
-#include "dds/mnu.h"
-#include "dds/itf_panel_layouts.h"
-#include "dds/itf_held_panel_message_step.h"
+/* Integer corners passed to the panel-border drawer. */
+typedef struct PanelRect {
+    s32 x0;
+    s32 y0;
+    s32 x1;
+    s32 y1;
+} PanelRect;
+
+typedef char PanelRect_size_must_be_0x10[sizeof(PanelRect) == 0x10 ? 1 : -1];
 
 #define ITF_PANEL_MESSAGE_FADE_TICKS 30
 

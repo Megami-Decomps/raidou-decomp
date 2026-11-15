@@ -34,9 +34,6 @@ void dds3UnitObjectBasicEL_Link(dds3Basic_t *unitBasic);
 extern const f32 dds3UnitAdditionalRotation[4] __attribute__((aligned(16)));
 #ifdef VERSION_RAIDOU1
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
 #endif
 
 /* Sparse world-node identities recovered from the paired operation tables and
@@ -67,7 +64,10 @@ enum {
     OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
 };
 
-#include "dds/eff_object.h"
+#include "include_asm.h"
+#include "dds3UnitObjectBasic.h"
+
+dds_dds3ObjectBaseControlWorkData_t *dds3CreateSlotResourceState(dds3Basic_t *owner);
 
 /* Mode 0 is the initialized neutral tint; other values describe the native
  * alpha updates performed by the paired transform renderer. */

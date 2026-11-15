@@ -3,19 +3,51 @@
 #include "sdfChip.h"
 #include "fileManager.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "dds3obj.h"
 #include "kernel_draw.h"
 #include "libsdf.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
-#include "dds/eff.h"
-#include "dds/file_pac_completion_api.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "sdf_lighting.h"
+#include "model.h"
+#include "motion.h"
+#include "field.h"
+#include "ps2asm.h"
+#include "fpu.h"
+#include "code_r1_0021CE60.h"
+#include "effBattleMisc.h"
+#include "fldFileResolver_00132080.h"
+#include "effPCPMisc_00224D10.h"
+#include "code_r1_002C8188.h"
 
+/* Resource jobs retain a destination slot until their request completes. */
+typedef struct EffectListNode {
+    u32 state;
+    struct EffectListNode *next;
+    u32 value;
+    u32 length;
+    u32 kind;
+    void **reference;
+} EffectListNode;
+
+typedef struct EffectList {
+    u32 mode;
+    s32 count;
+    EffectListNode *first;
+    EffectListNode *last;
+    struct fileRequest *request;
+} EffectList;
+
+typedef char EffectListNode_size_must_be_0x18[(sizeof(EffectListNode) == 0x18) ? 1 : -1];
+
+typedef char EffectList_size_must_be_0x14[(sizeof(EffectList) == 0x14) ? 1 : -1];
 
 /* These title-specific wrappers forward an opaque stage-task owner and its
  * handled/not-handled result. */
@@ -26,14 +58,10 @@ s32 pacFileHandleFree_(void *request);
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/eff_model_resource.h"
-#include "dds/eff_camera_create_request.h"
-#include "dds/fld.h"
-#include "dds/eff_bill.h"
-#include "dds/file_pac.h"
-#include "dds/eff_resource_source_lifetime.h"
-#include "dds/ee_mmi.h"
-#include "dds/fpu.h"
+enum {
+    EFF_RESOURCE_SOURCE_TRANSIENT = 0,
+    EFF_RESOURCE_SOURCE_RETAINED = 1
+};
 
 static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list) {
     surface->regFunc(surface, list);

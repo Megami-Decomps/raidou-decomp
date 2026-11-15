@@ -224,7 +224,6 @@ void frAddFontStyle(
     u8 StyleNo, u8 *pFontData, sdfMemHandle_t *DataMh
 );
 
-
 #define FR_FONT_TABLE_ENTRY_SHIFT 6
 
 #define FR_FONT_WORD_BYTES 4
@@ -380,10 +379,6 @@ frFontHandle_t *frSetFontString(u8 *text, s8 style, s8 firstOption, s8 secondOpt
 frFontHandle_t *frCombineFontRequestEx(frFontHandle_t *pFRQ1, frFontHandle_t *pFRQ2, s32 Mode);
 
 #ifdef VERSION_RAIDOU1
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "scr.h"
 #include "sdk_libc.h"
 
@@ -427,8 +422,15 @@ enum {
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/itf.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "newdata.h"
 
 #define ITF_BYTE_MASK 0xFF
 
@@ -482,10 +484,6 @@ enum {
 
 #define ITF_LINES_PRIMITIVE_BITS 0x49
 #else
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "scr.h"
 #include "sdk_libc.h"
 
@@ -529,8 +527,15 @@ enum {
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/itf.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "newdata.h"
 
 #define ITF_BYTE_MASK 0xFF
 
@@ -610,13 +615,16 @@ struct sdfTexHandle_t;
 
 union EffSpriteColor;
 
-
 #ifdef VERSION_RAIDOU1
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
 
-#include "dds/fr_font_position.h"
+/* Output point written by glyph-chain position lookup. */
+typedef struct FrFontPosition {
+    s32 x;
+    s32 y;
+} FrFontPosition;
+
+typedef char FrFontPosition_size_must_be_0x08[
+    (sizeof(FrFontPosition) == 0x08) ? 1 : -1];
 
 void frFontCreateContext();
 
@@ -636,11 +644,15 @@ void frFontCreateContext();
 
 #define FR_FONT_POSITION_SHIFT 4
 #else
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
 
-#include "dds/fr_font_position.h"
+/* Output point written by glyph-chain position lookup. */
+typedef struct FrFontPosition {
+    s32 x;
+    s32 y;
+} FrFontPosition;
+
+typedef char FrFontPosition_size_must_be_0x08[
+    (sizeof(FrFontPosition) == 0x08) ? 1 : -1];
 
 void frFontCreateContext();
 

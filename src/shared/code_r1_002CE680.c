@@ -3,14 +3,12 @@
 #include "sdfPacketBuff.h"
 #include "dds3GlobalWork.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "kernel_draw.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/sdf_sif_command.h"
+#include "include_asm.h"
+#include "code_r1_0019D3A8.h"
+#include "code_r1_002CD5A8.h"
 
 void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
 void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
@@ -18,8 +16,14 @@ void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 
-#include "dds/itf_grid_text_color_api.h"
-#include "dds/sdf_grid_seek_api.h"
+/* Index consumed by sdfDevSetPrintCB and resolved through sdfDevConsColorTable. */
+typedef s32 ItfGridTextColorTableIndex;
+
+typedef s32 SdfGridSeekResult;
+
+SdfGridSeekResult sdfGridSeekFirstNode(GridTextWidget *widget);
+
+SdfGridSeekResult sdfGridSeekLastNode(GridTextWidget *widget);
 
 typedef GridTextListItem LmapNode;
 
@@ -36,7 +40,6 @@ LmapNode *fldLmapRewindThroughWindow(LmapList *list);
 
 extern void fldLmapSubmitScaledSpritePacket(s32 x, s32 y, s32 z, s32 width, s32 height,
                                             s32 fillColor, s32 borderColor, s32 surfaceIndex);
-
 
 void fldLmapSubmitScaledSpritePacket(s32 x, s32 y, s32 z, s32 width, s32 height, s32 fillColor, s32 borderColor, s32 surfaceIndex);
 

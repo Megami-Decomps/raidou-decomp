@@ -37,11 +37,14 @@ void dds3EffectRippleBlurReset(effBlurScaleWork_t *hRippleBlur);
 effBlurScaleWork_t *dds3EffectRippleBlurCreate(dds3Effect_RippleBlurParam_t *pParam);
 dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *pParam);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
 
-#include "dds/eff_blur.h"
+void effDrawBlurSource(const dds3Effect_Blur_t *source, struct sdfTexHandle_t *resource, u8 fixedPointCoordinates);
 
 typedef struct {
     u8 pad00[0x124];

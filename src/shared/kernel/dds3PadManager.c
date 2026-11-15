@@ -30,15 +30,10 @@ extern void dds3UpdateVibrationSlots(void);
 void dds3GetVibrationLevel(void);
 void dds3UpdateVibrationSlots(void);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "sdfDevCons.h"
-#include "dds/btl.h"
-
-
-#include "dds/dds3_named_slot.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "draw3d.h"
 
 extern u8 Act2SubWork2;
 extern fclNamedSlot_t D_003C1C90[];

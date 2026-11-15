@@ -7,19 +7,48 @@
 #include "sdk_libkernl.h"
 #include "sdfTex.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "kernel_draw.h"
 #include "scr.h"
 #include "sdfDevCons.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/sdf_column_packet_api.h"
-#include "dds/sdf_texture_file.h"
-#include "dds/sdk_libkernl.h"
+#include "include_asm.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "newdata.h"
+#include "ps2asm.h"
+#include "fpu.h"
+#include "code_0027A1D0.h"
+#include "code_r1_0019D3A8.h"
+#include "code_r1_0021CE60.h"
+#include "code_r1_0017BBD8.h"
 
+/* Project spellings for the SCE iox layout, with retail's ordinary word alignment. */
+typedef struct SceIoStat {
+    u32 mode;
+    u32 attributes;
+    u32 size;
+    u8 creationTime[8];
+    u8 accessTime[8];
+    u8 modificationTime[8];
+    u32 highSize;
+    u32 privateData[6];
+} SceIoStat;
+
+typedef struct SceDirent {
+    SceIoStat stat;
+    char name[0x100];
+    void *privateData;
+} SceDirent;
+
+typedef char SceIoStat_size_must_be_0x40[
+    (sizeof(SceIoStat) == 0x40) ? 1 : -1];
+
+typedef char SceDirent_size_must_be_0x144[
+    (sizeof(SceDirent) == 0x144) ? 1 : -1];
 
 /* Allocate a variable-length sprite column packet with this draw header. */
 
@@ -33,12 +62,24 @@ void sdfTexFreeDelayed(sdfTexHandle_t *texture);
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 /* For a new texture, copy payload bytes into queue-owned storage before return. */
 
-#include "dds/btl_command.h"
-#include "dds/dds3_effect_sprite.h"
-#include "dds/btl_resource_browser.h"
-#include "dds/ee_mmi.h"
-#include "dds/btl_resource_name.h"
-#include "dds/fpu.h"
+/* Sprite vertex record of a column packet: colour, then two corners of the quad. */
+typedef struct dds3EffectSpriteCorner_t {
+    s32 u, v;
+    u8 pad08[8];
+    s32 x, y;
+    s32 mask;
+    s16 flag;
+    u8 pad1E[2];
+} dds3EffectSpriteCorner_t;
+
+typedef struct dds3EffectSpriteVertex_t {
+    s32 r, g, b, a;
+    dds3EffectSpriteCorner_t corner[2];
+} dds3EffectSpriteVertex_t;
+
+typedef char dds3EffectSpriteCorner_size[(sizeof(dds3EffectSpriteCorner_t) == 0x20) ? 1 : -1];
+
+typedef char dds3EffectSpriteVertex_size[(sizeof(dds3EffectSpriteVertex_t) == 0x50) ? 1 : -1];
 
 enum {
     BTL_RESOURCE_DESCRIPTOR_BYTES = 0x48,
@@ -347,7 +388,6 @@ void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, TMX_HEADER_t *t
 #define EDITOR_CONFIRM_CELL (EDITOR_KEY_CELLS + 1)
 
 #define EDITOR_DELETE_CODE (EDITOR_KEY_CELLS + 3)
-
 
 void btlBossDebugPrintfN(s32 x, s32 y, s32 color, s32 format, ...) {
 }

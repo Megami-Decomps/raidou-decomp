@@ -50,14 +50,31 @@ extern char evtViewerProcNameSfog[5];
 extern char evtViewerProcNameFilter[7];
 extern char evtViewerProcNameMfilter[8];
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "dds3obj.h"
 #include "newdata.h"
-#include "dds/btl.h"
-#include "dds/dds3_object_control_slot.h"
+#include "include_asm.h"
+#include "evt_world.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "field.h"
+#include "draw3d.h"
+#include "sdf_lighting.h"
+#include "dds3UnitObjectBasic.h"
+#include "code_r1_001C4B78.h"
+#include "evtEventViewer.h"
+#include "effPCPMisc_00224D10.h"
+
+enum {
+    DDS3_OBJECT_OWNER_SLOT = 0,
+    DDS3_OBJECT_DATA_SLOT = 1,
+    DDS3_OBJECT_SCRIPT_MODEL_SLOT = 3,
+    DDS3_OBJECT_ACTION_B_SLOT = 4,
+    DDS3_OBJECT_HANDLER_SLOT = 5
+};
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -91,16 +108,14 @@ enum {
     EVT_WORLD_SLOT_UNIT = 5   /* unit/group/lip-sync lists: byte offset 0x40 */
 };
 
-
-
 /* Copy the source object's transform to the target object, with its rotation offset. */
 
-#include "dds/evt_viewer_track_file_format.h"
-#include "dds/evt_viewer.h"
-#include "dds/evt_viewer_indexed_condition.h"
-#include "dds/eff_object.h"
-#include "dds/mdl.h"
-#include "dds/mdl_motion_controller_lookup_api.h"
+EvtRuntimeChild *evtEventViewerGetPendingNode(dds_evtViewerInfo_t *viewer);
+
+/* Key selecting one of a model group's motion registrations and its matching
+ * per-context controller. The public API keeps the native signed word width;
+ * each controller stores the key in its existing signed halfword field. */
+typedef s32 MdlMotionSearchId;
 
 void evtEventViewerReleasePendingNode(dds_evtViewerInfo_t *viewer);
 void evtEventViewerProcessPending(dds_evtViewerInfo_t *viewer);
@@ -158,7 +173,6 @@ enum {
 
 /* Apply the viewer playback mode to unit, motion and movie-object tracks. */
 void evtEventViewerApplyPlaybackMode(s32 playbackMode, u32 frame, dds_evtViewerInfo_t *viewer);
-
 
 u32 evtViewerReturnZero(void);
 u32 evtViewerPushMode5CommandHistory(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer);

@@ -172,21 +172,20 @@ s32 slCalc(dds3ProcessID_t *id);
 s32 slDraw(s32 id);
 saddr_t slQueryYesNo(s32 (*yesFunc)(void), s32 (*noFunc)(void), s32 yesNoDefault);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "sdk_libkernl.h"
 
 #define SDK_SKIP_memset
 
-#include "dds/ee_mmi.h"
-#include "dds/file.h"
-#include "dds/file_selection_api.h"
-#include "dds/file_slot.h"
-#include "dds/fpu.h"
-#include "dds/mnu_list.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "fpu.h"
+#include "evt_world.h"
+#include "code_r1_0021CE60.h"
+#include "code_r1_001CC1D0.h"
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -313,7 +312,6 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
         next = fileQueueFindBySector(queue, owner->id);
     }
 }
-
 
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {

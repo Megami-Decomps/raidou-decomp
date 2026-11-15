@@ -5,16 +5,20 @@
 #include "fileManager.h"
 #include "sdfTex.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "kernel_draw.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
-#include "dds/file_request_api.h"
-#include "dds/sdf_texture_file.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "ps2asm.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "code_r1_002C8188.h"
+#include "code_r1_002CAFD8.h"
 
 /* Return the payload allocation descriptor. For normal file loads, freeing the
  * request wrapper does not free this allocation; its resource owner must keep
@@ -28,20 +32,85 @@
  * callback delivery does not free the request wrapper, which callers release
  * with fileHandleFree. */
 
-
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 /* For a new texture, copy payload bytes into queue-owned storage before return. */
 
-#include "dds/sdf_gs_alpha_register_api.h"
-#include "dds/itf_draw_grid.h"
-#include "dds/ee_mmi.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_records.h"
-#include "dds/eff_record_bucket.h"
-#include "dds/eff_owner_records.h"
+/* effDestroyPackedBatch has one normal outcome after freeing all owned storage. */
+typedef s32 EffMappedResourceDestroyResult;
+
+enum {
+    EFF_MAPPED_RESOURCE_DESTROYED = 1
+};
+
+/* EffTimedState.flags bits used by phase initialization and endpoint handling. */
+enum EffTimedStateFlag {
+    /* Selects incrementing from zero instead of decrementing from the endpoint. */
+    EFF_TIMED_STATE_DIRECTION_FORWARD = 0x1,
+    /* Initialize the phase when a resource is bound to the state. */
+    EFF_TIMED_STATE_INITIALIZE_PHASE_ON_BIND = 0x2,
+    /* At either endpoint, restart the work or reverse direction when ping-pong is set. */
+    EFF_TIMED_STATE_RESTART_AT_ENDPOINT = 0x4,
+    /* With restart-at-endpoint set, switch between forward and reverse. */
+    EFF_TIMED_STATE_PING_PONG = 0x8,
+};
+
+void effResetSlotWork(struct EffectSlotSet *owner, u32 slotIndex);
+
+/* Serialized source bytes are borrowed; async mapped-resource outputs hold typed pointers. */
+struct EffMappedResource *effCreateMappedResource(const u8 *source);
+
+/* Header for count 0x6C-byte records; allocation is retained as a resource handle. */
+typedef struct EffPayload {
+    struct sdfMemHandle_t *allocation;
+    u32 count;
+    u8 *records;
+} EffPayload;
+
+/* Indexed timed-effect table entry; the first word's meaning is unknown. */
+typedef struct EffRecordBucket {
+    u32 unk_00;
+    /* Negative results hold phase; nonnegative results are per-update deltas. */
+    s32 (*step)(BdWork *, BdWork *, EffTimedState *);
+    u32 count;
+    u8 *records;
+} EffRecordBucket;
+
+typedef char EffRecordBucketSizeCheck[sizeof(EffRecordBucket) == 0x10 ? 1 : -1];
+
+typedef struct EffectRecord {
+    void *owner;
+    s32 slot;
+    struct EffectRecord *prev;
+    struct EffectRecord *next;
+} EffectRecord;
+
+typedef struct EffectOwnerRecord {
+    struct EffectSlotSet *owner;
+    EffectRecord *entries[16];
+} EffectOwnerRecord;
+
+/* Per-slot effect data; only its sixteen-bucket index is recovered. */
+typedef struct EffectSlot {
+    u8 opaque00[0x28];
+    s32 bucketIndex; /* 0x28: indexes EffectOwnerRecord.entries. */
+    u8 opaque2C[0x54];
+} EffectSlot;
+
+typedef struct EffectSlotOwner {
+    u8 opaque00[0x10];
+    EffectSlot *slots; /* 0x10 */
+} EffectSlotOwner;
+
+typedef char EffectRecordSizeCheck[sizeof(EffectRecord) == 0x10 ? 1 : -1];
+
+typedef char EffectOwnerRecordSizeCheck[sizeof(EffectOwnerRecord) == 0x44 ? 1 : -1];
+
+typedef char EffectSlotSizeCheck[sizeof(EffectSlot) == 0x80 ? 1 : -1];
+
+typedef char EffectSlotOwnerSizeCheck[sizeof(EffectSlotOwner) == 0x14 ? 1 : -1];
 
 /* Declared before first use (were implicit int). */
 
@@ -105,7 +174,6 @@ void effRequestResourceByMode(const char *base, const char *name, u32 mode, u32 
 void effCompleteMappedResourceJob(fileRequest_t *job,
                                   EffMappedResource **outMappedResource);
 
-
 EffectOwnerRecord *effCreateOwnerRecordList(EffectSlotSet *owner);
 void effInsertSlotRecord(void *owner, EffectOwnerRecord *list, EffectSlotOwner *work, s32 slotIndex);
 s32 effRemoveSlotRecord(EffectOwnerRecord *list, EffectSlotOwner *work, s32 slotIndex);
@@ -142,17 +210,12 @@ u32 effDestroyPayload(EffPayload *payload);
 
 #define EFF_SLOT_TEXTURE_REFERENCES_BORROWED 1
 
-
-
 u32 effSlotTransitionClearTarget(EffTimedState *record, u32 unused);
 u32 effClampSlotPhaseAtEnd(EffectSlotSet *owner, s32 index, EffTimedState *effect);
 u32 effClampSlotPhaseAtStart(EffectSlotSet *owner, s32 index, EffTimedState *effect);
 extern u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
 EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entryData);
 u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags);
-
-
-
 
 u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
 void effSelectPresetByKind(u32 mode, u32 value);

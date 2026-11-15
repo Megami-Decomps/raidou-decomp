@@ -1,15 +1,14 @@
 #include "common.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "datCalc.h"
 #include "kernel_draw.h"
 #include "newdata.h"
 #include "sdfDevCons.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "code_r1_001CC1D0.h"
 
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
@@ -31,11 +30,25 @@ enum SdfMotionStateValue {
 
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
 
+#define MNU_POPUP_INSERT_BEFORE_TOP 0x20000
 
-#include "dds/mnu.h"
-#include "dds/mnu_popup_eligibility.h"
-#include "dds/mnu_panel_state_prefix.h"
-#include "dds/mnu_shop.h"
+/* DDS1's generic window panel is embedded at +0x4C and copied as 0x38 bytes. */
+typedef struct MenuPanelHandles {
+    u32 panelKind;
+    u8 pad04[4];
+    s32 count;
+    struct EffectSlotSet *handles[6];
+    u32 left;
+    u32 top;
+    u32 right;
+    u32 bottom;
+    s32 transition;
+} MenuPanelHandles;
+
+typedef char MenuPanelHandles_size_must_be_0x38[(sizeof(MenuPanelHandles) == 0x38) ? 1 : -1];
+
+/* The transition context is accepted when the popup callback returns nonzero. */
+typedef u32 (*MenuPopupCanEnterCallback)(void *context);
 
 struct _FRQ;
 
@@ -139,8 +152,6 @@ struct MenuPanelItem {
 };
 
 void CalcSeqHandle(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument);
-
-
 
 struct SoundHandleNode;
 

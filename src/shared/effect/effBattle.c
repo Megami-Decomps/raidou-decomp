@@ -115,11 +115,8 @@ void effBTLPartDelete(effBTL_t *pSkill);
 s32 effBTLSkillGetState(void);
 s32 effBTLSkillGetID(void);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "newdata.h"
 
 extern u32 effFieldColorFinalSelector;
 u32 effBTLFieldColorGetOverrideSelector(void);

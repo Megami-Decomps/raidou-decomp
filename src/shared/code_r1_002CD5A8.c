@@ -31,18 +31,14 @@ typedef struct
 
 u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "sdk_libc.h"
 #include "sdk_libgcc.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "code_r1_002C8188.h"
+#include "code_r1_002CD5A8.h"
 
-
-#include "dds/sdf_gs_register_submit_api.h"
-#include "dds/sdf_gs_alpha_register_api.h"
-#include "dds/itf_grid_text.h"
+/* Append a TEST-register write to the active GS packet stream. */
+void sdfSubmitGsTestOneRegisterPacket(u64 data, u32 kind);
 
 extern GridTextListItem *itfFindGridNodeByKey(u32, GridTextWidget *);
 extern GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *);

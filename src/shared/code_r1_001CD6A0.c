@@ -1,16 +1,10 @@
 #include "common.h"
 #include "sdfGsMemIO.h"
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "kernel_draw.h"
 #include "libsdf.h"
 #include "sdk_libc.h"
 #include "sdk_libgcc.h"
-
-
 
 /* Four words filled together; their corner/channel interpretation is unknown. */
 typedef struct UiQuadWords {

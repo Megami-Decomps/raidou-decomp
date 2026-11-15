@@ -115,12 +115,38 @@ void dds3HermitianTrackPolyGetVertex(dds3HermitianTrackPoly_tag *hPoly, void *pV
 void dds3HermitianTrackPolySetCurrent(dds3HermitianTrackPoly_tag *hPoly, s32 frame);
 void dds3HermitianTrackPolySetVertexSub(dds3HermitianTrackPoly_tag *hPoly, const u128 *pVertex);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "sdf_lighting.h"
+#include "effPCPMisc_00224D10.h"
 
-#include "dds/eff.h"
-#include "dds/mdl.h"
+/* Thirteen copied words, followed by an update counter and owned history. */
+typedef struct {
+    struct dds3ModelHandle_t *model;
+    s32 idA;
+    s32 idB;
+    f32 startFrame;
+    f32 endFrame;
+    u32 sampleInterval;
+    s32 historyLength;
+    u32 unk1C;
+    u32 drawKind;
+    u32 gradientColors[4];
+} EffTrackPolyParams;
+
+typedef struct EffTrackPolyWork {
+    EffTrackPolyParams params;
+    u32 updateCount;
+    struct dds3HermitianTrackPoly_tag *data;
+} EffTrackPolyWork;
+
+typedef char EffTrackPolyParams_size_must_be_0x34[(sizeof(EffTrackPolyParams) == 0x34) ? 1 : -1];
+
+typedef char EffTrackPolyWork_size_must_be_0x3C[(sizeof(EffTrackPolyWork) == 0x3C) ? 1 : -1];
 
 void effTrackPolyReset(EffTrackPolyWork *work);
 

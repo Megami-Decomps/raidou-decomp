@@ -4,7 +4,6 @@
 #include "ps2asm.h"
 #include "EventBit.h"
 
-
 typedef struct datTakaraSagasiItem_t {
     u16 item;
     u16 par;
@@ -55,12 +54,13 @@ typedef struct {
 
 /* NON_MATCHING: 7 of 75 words differ (first at +0xE4). */
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "basic.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "code_0027A1D0.h"
+#include "dat.h"
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -84,9 +84,6 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-
-#include "dds/evt_run_context_api.h"
-
 #define SDF_PACKED_STATUS_BIT 0x8000
 
 #define SDF_PACKED_CHANNEL_MASK 0x7fff
@@ -100,14 +97,29 @@ enum {
 /* These unused-result legacy mutator calls had no prototype in scope. */
 void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
+typedef s32 EvtMirroredSolarPhase;
 
-#include "dds/evt_solar.h"
-#include "dds/dat_battle_adjustment_condition.h"
-#include "dds/dat_calculated_stat_value_api.h"
-#include "dds/btl_conditional_encounter_roll_api.h"
+EvtMirroredSolarPhase evtGetMirroredSolarPhase(void);
+
+/* Packed encounter condition: the high half selects how to interpret the
+ * low-half solar-phase mask or model-flag index. */
+typedef u32 DatBattleAdjustmentCondition;
+
+enum DatBattleAdjustmentConditionType {
+    DAT_BATTLE_ADJUSTMENT_CONDITION_NONE = 0,
+    DAT_BATTLE_ADJUSTMENT_CONDITION_SOLAR_PHASE_MASK = 1,
+    DAT_BATTLE_ADJUSTMENT_CONDITION_MODEL_FLAG = 2
+};
+
+typedef s32 DatCalculatedStatValue;
+
+/* Profile results are 1..99; DDS2's slot-adjusted result can also be zero. */
+DatCalculatedStatValue datGetClampedProfileAdjustedStat(
+    const struct dds_datUnitWork_t *unit, DatBaseStatIndex statIndex);
+
+typedef s32 BtlConditionalEncounterGaugeThreshold;
+
+#define BTL_CONDITIONAL_ENCOUNTER_GAUGE_THRESHOLD_UNAVAILABLE 0
 
 #define DAT_EXTERNAL_SKILL_TABLE 0x20
 
@@ -168,7 +180,6 @@ typedef struct UiObject {
 
 /* Add the signed per-unit stat byte to its profile adjustment and clamp
  * the existing signed result to 1..99. Stat index is not checked here. */
-
 
 enum {
     PTY_ACTIVE_ROSTER_COUNT = 5,

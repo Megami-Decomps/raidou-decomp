@@ -1,15 +1,19 @@
 #include "common.h"
 #include "itfMisc.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "kernel.h"
 #include "scr.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/itf.h"
+#include "include_asm.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "font.h"
+#include "frFont.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -45,7 +49,6 @@ enum {
     SDF_GS_TRXREG = 0x52,
     SDF_GS_TRXDIR = 0x53
 };
-
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -113,7 +116,6 @@ struct EffSpriteUV;
 struct sdfTexHandle_t;
 
 union EffSpriteColor;
-
 
 INCLUDE_ASM(const s32, "code_r1_001814F0", frLeaf3);
 

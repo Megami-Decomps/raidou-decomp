@@ -5,17 +5,15 @@
 #include "dds3KernelCore.h"
 #include "sdfPrim.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "libsdf.h"
 #include "sdfDevCons.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/evt_frame_state_packet.h"
-
+#include "include_asm.h"
+#include "newdata.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "draw.h"
+#include "dds3PadManager.h"
 
 /*
  * Allocate a task and place it in scheduler queues. Returns NULL on allocation
@@ -23,22 +21,16 @@
  * its destroy callback; callers may borrow the handle only until finalization.
  */
 
-
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 
 /* Return borrowed endpoints; callers may inspect list nodes but do not own them. */
 sdfGsMemSlice_t *sdfGsMemGetLinkHead(void);
 
-
-
-
 /* The active resource registry contains sdfTexHandle_t nodes; lookup compares the
  * texture's resource key and follows its previous-node link. A match is borrowed:
  * lookup does not retain it, and callers must not release it as an acquired ref. */
 extern struct sdfTexHandle_t *sdfTexHandleLink;
-
-#include "dds/dds3_named_slot.h"
 
 extern u32 dds3TextureViewerPageIndex;
 extern u8 D_003BA890;

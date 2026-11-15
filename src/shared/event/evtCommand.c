@@ -67,7 +67,6 @@ typedef struct evtModelHeader_t {
     f32 positionZ;
 } evtModelHeader_t;
 
-
 enum {
     EVT_SCALAR_REQUEST_SIZE = 4,
     EVT_PAIRED_REQUEST_SIZE = 8,
@@ -104,14 +103,9 @@ extern const char evtMsgTexBeNoProc[];
 
 typedef u8 sdfTextureClampMode_t;
 
-
 #include "basic.h"
 #include "dds3obj.h"
 #include "ps2asm.h"
-
-
-
-
 
 extern s32 dds3GetMapNo(void *scene);
 extern void dds3SetActiveCameraSceneBasic(void *pSceneBasic, dds3Basic_t *pCameraBasic);
@@ -347,10 +341,6 @@ extern const char evtMsgTexLoadNoProc[72];
 extern const char evtMsgSetSkyAlphaLow[40];
 
 #ifdef VERSION_RAIDOU1
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
  * directory extent rather than an enum-completeness claim. */
@@ -373,12 +363,23 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-#include "dds/evt_polygon_movie_flags_api.h"
+#include "include_asm.h"
+#include "draw3d.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "sdf_lighting.h"
+#include "libsdf.h"
+#include "model.h"
+#include "motion.h"
+#include "fpu.h"
+#include "dds3UnitObjectBasic.h"
+#include "code_r1_001C4B78.h"
+#include "effPCPMisc_00224D10.h"
+
+void evtPolygonMovieClearFlagBits(struct dds3ProcessID_t *task,
+                                  EvtPolygonMovieWorkFlags flags);
+
 #else
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
  * directory extent rather than an enum-completeness claim. */
@@ -401,12 +402,40 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-#include "dds/evt_polygon_movie_flags_api.h"
+#include "include_asm.h"
+#include "draw3d.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "sdf_lighting.h"
+#include "libsdf.h"
+#include "model.h"
+#include "motion.h"
+#include "fpu.h"
+#include "dds3UnitObjectBasic.h"
+#include "code_r1_001C4B78.h"
+#include "effPCPMisc_00224D10.h"
+
+void evtPolygonMovieClearFlagBits(struct dds3ProcessID_t *task,
+                                  EvtPolygonMovieWorkFlags flags);
+
 #endif
-#include "dds/eff_object.h"
-#include "dds/evt_task.h"
-#include "dds/scr.h"
-#include "dds/scr_process_handle_api.h"
+
+/* Signed 32-bit scalar values carried in script VM integer slots and APIs. */
+typedef s32 ScrVmInteger;
+
+/* Script command operands and return values encode scheduler task pointers in
+ * signed 32-bit VM integer slots. Preserve all pointer bits at that boundary. */
+typedef dds3ProcessID_t *ScrProcessHandle;
+
+static inline ScrProcessHandle scrVmIntegerToProcessHandle(ScrVmInteger value)
+{
+    return (ScrProcessHandle)(u32)value;
+}
+
+static inline ScrVmInteger scrProcessHandleToVmInteger(ScrProcessHandle handle)
+{
+    return (s32)(u32)handle;
+}
 
 /* Selects both the world-node tag and its per-kind scene slot. */
 typedef s32 EffWorldKind;
@@ -432,19 +461,8 @@ ScrCommandResult evtCommandReattachObjectPath(void);
 ScrCommandResult evtCommandStartPolygonMovie(void);
 
 #ifdef VERSION_RAIDOU1
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/btl.h"
 #else
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
 #endif
-
-#include "dds/btl.h"
-#endif
-#include "dds/mdl.h"
 
 enum EvtTargetInfoFlags {
     EVT_TARGET_INFO_FLAG_UNIT_OWNS_VECTOR = 0x8
@@ -468,12 +486,9 @@ enum SdfMotionStateValue {
     SDF_MOTION_STATE_SUSPENDED = 6,
 };
 
-
 struct sdfGrOt_t;
 
 struct EffNodeDescriptor;
-
-#include "dds/ee_mmi.h"
 
 #ifdef VERSION_RAIDOU2
 typedef struct PcpScatterWork4 PcpScatterWork4;
@@ -497,8 +512,6 @@ extern f32 sdfFaceDivSoften, sdfFaceDivBias;
 #define EVT_UNIT_FLAG_MOTION_WOBBLE 0x40
 
 #define EVT_UNIT_FLAG_USE_PATH_ROTATION 0x10
-
-#include "dds/fpu.h"
 
 #ifdef VERSION_RAIDOU1
 /* Declared before first use (were implicit int). */
@@ -530,15 +543,15 @@ ScrCommandResult evtOpRestoreUnitReferenceAngle(void);
 #ifdef VERSION_RAIDOU1
 struct EffNodeDescriptor;
 #else
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
 #endif
 
 #ifdef VERSION_RAIDOU1
 struct dds3Basic_t;
 #else
-#include "dds/evt_sound_variation.h"
+
+/* Signed selector added to an event sound's packed track ID.
+ * evtTransEventBgm preserves the existing negative value as a no-track ID. */
+typedef s32 EvtSoundVariation;
 
 u32 evtOpcodeSetBgmVolumePan(void);
 u32 evtOpcodeInitializeEffectSoundChannel(void);

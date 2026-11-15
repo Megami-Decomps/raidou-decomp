@@ -1,22 +1,54 @@
 #include "common.h"
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "newdata.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "fpu.h"
+#include "code_r1_0034D128.h"
+#include "code_r1_0034C048.h"
+#include "code_r1_0034CE48.h"
 
+/* Native profile-progress panel, including its cached sprite-slot pairs. */
+typedef struct MenuProfilePanel {
+    u8 pad00[0x10];
+    s32 capValue;
+    s32 option;
+    struct EffectSlotSet *sets[2]; /* 0x18: panel and particle resources. */
+    u32 unk20;
+    s32 trailIndex;
+    s32 particleIndex;
+    s32 randomOpacity[5];
+    s32 phase;
+    s32 opacity;
+} MenuProfilePanel;
 
-#include "dds/mnu_list.h"
-#include "dds/eff.h"
+typedef char MenuProfilePanel_dds2_size_check[(sizeof(MenuProfilePanel) == 0x48) ? 1 : -1];
+
+typedef struct MenuFadeFields {
+    MenuWindowContainer previousWindow;
+    s32 previousVisibleCount;
+    MenuIconSprites savedResource;
+    u32 hasResourceCopy;
+    s32 previousProgress;
+    MenuWindowContainer *currentWindow;
+    s32 currentProgress;
+} MenuFadeFields;
+
+/* Raidou's MenuWindowContainer is 8 bytes longer; the fade functions read currentProgress at 0xC8. */
+typedef char MenuFadeFields_size_must_be_0xCC[(sizeof(MenuFadeFields) == 0xCC) ? 1 : -1];
 
 struct MenuListNode;
 
 struct StaffMenuRuntime;
-
-#include "dds/fpu.h"
 
 #define MNU_ENTRY_SPRITE_COUNT 4
 
@@ -276,7 +308,6 @@ typedef struct MenuSpriteRef {
     s32 sprite;
     s32 effect;
 } MenuSpriteRef;
-
 
 /* Destroy nonzero resource slots, retaining the native per-iteration count read, then free. */
 typedef struct MenuPos {

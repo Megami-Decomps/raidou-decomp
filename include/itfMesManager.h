@@ -160,4 +160,11 @@ s32 itfMesMngWindowTypeAlpha(void);
 s32 itfMesMng_SEL_SELNO(void);
 s32 itfPanelAcquireHold(void);
 
+enum {
+    ITF_MES_PANEL_MODE_STANDARD = 0,
+    ITF_MES_PANEL_MODE_STANDARD_VARIANT = 1,
+    ITF_MES_PANEL_MODE_WIDE = 2,
+    ITF_MES_PANEL_MODE_NO_SPRITE_TRANSITION = 3
+};
+
 #endif

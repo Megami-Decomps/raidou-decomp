@@ -1,13 +1,13 @@
 #include "common.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "libdma.h"
 #include "sdfDevCons.h"
 #include "sdf_packet_alloc.h"
-#include "dds/libsdf.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "libsdf.h"
 
 typedef struct sdfDevConsCB_tag
 {

@@ -10,8 +10,6 @@
 #include "dds3CameraObjectBasic.h"
 #include "dds3ObjectBase.h"
 
-
-
 extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialUp;
 extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialEye;
 void MakeCamera(dds3Basic_t *pBasic);
@@ -34,18 +32,32 @@ void dds3CameraObjectBasicSetFovy(dds3Basic_t *pBasic, f32 fovy);
 f32 dds3CameraObjectBasicGetFovy(dds3Basic_t *pBasic);
 void dds3CameraObjectBasicGetTgtCam(dds3Basic_t *pBasic, sdfVector4_t *tgtpos, sdfVector4_t *campos);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 enum {
     OBJECT_TRANSFORM_FLAG_UPDATE_PENDING = 1,
     OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID = 2,
     OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
 };
 
-#include "dds/dds3obj.h"
-#include "dds/pcp_vu0.h"
+#include "include_asm.h"
+#include "dds3UnitObjectBasic.h"
+
+/* Camera eye-position selectors are stored and passed as signed words. */
+typedef s32 CameraEyePositionMode;
+
+/* Kind-4 world-node data: cached look-at matrix and eye/up vectors (0x90). */
+typedef struct CameraData {
+    u32 matrix[4][4]; /* Raw VU matrix words; the SDK also exposes word [0][3]. */
+    u128 localEyeOffset;
+    u128 localUp;
+    u128 worldEye;
+    u128 worldUp;
+    dds_dds3ObjectBaseControlWorkData_t *handle;
+    CameraEyePositionMode eyeIsRelative;
+    u32 fovUpdatePending; /* Bit 0 requests a field-of-view update. */
+    f32 fieldOfView;      /* Radians. */
+} CameraData;
+
+typedef char CameraData_size_must_be_0x90[(sizeof(CameraData) == 0x90) ? 1 : -1];
 
 typedef struct {
     f32 components[4];

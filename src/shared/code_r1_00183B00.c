@@ -2,16 +2,27 @@
 #include "dds3KernelCore.h"
 #include "itfMisc.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "kernel.h"
 #include "scr.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/dds3_task_state_query.h"
-#include "dds/itf.h"
+#include "include_asm.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "font.h"
+#include "sdfTex.h"
+
+typedef enum dds3TaskState_t {
+    DDS3_TASK_DETACHED = 0,
+    DDS3_TASK_DELAYED_START = 1,
+    DDS3_TASK_ACTIVE = 2,
+    DDS3_TASK_DESTROY_PENDING = 3,
+    DDS3_TASK_STATE_LIMIT = 4 /* Exclusive bound for registered states. */
+} dds3TaskState_t;
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {

@@ -13,19 +13,39 @@
 s32 DIntr();
 s32 EIntr(void);
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "event.h"
 #include "kernel_draw.h"
 #include "scr.h"
 #include "sdfDevCons.h"
 #include "sdf_packet_alloc.h"
 #include "sdk_libc.h"
-#include "dds/sdf_dev_cons.h"
-#include "dds/sdf_general_heap_api.h"
-#include "dds/sdf_heap_api.h"
+#include "include_asm.h"
+#include "ps2asm.h"
+
+typedef struct sdfDevConsCB_tag {
+    struct sdfDevConsCB_tag *next; /* 0x00: forward console-list link. */
+    struct sdfDevConsCB_tag *previousNode; /* 0x04: linked-list predecessor; the global head is the tail. */
+    u16 screenOriginX; /* 0x08: GS 12.4 X coordinate used for the console sprite/grid. */
+    u16 screenOriginY; /* 0x0A: GS 12.4 Y coordinate used for the console sprite/grid. */
+    s16 columns; /* 0x0C */
+    s16 rows; /* 0x0E */
+    s16 cursorColumn; /* 0x10 */
+    s16 cursorRow; /* 0x12 */
+    u8 controlByte; /* 0x14 */
+    u8 pad15;
+    u8 textAttribute; /* 0x16 */
+    u8 tabWidth; /* 0x17: used to advance tabs to the next column stop */
+    struct sdfMemHandle_t *bufferAllocation; /* 0x18: owns the cell buffer. */
+    u8 *cells; /* 0x1C: two bytes per character cell */
+} sdfDevConsCB_tag;
+
+typedef char DevConsState_size_must_be_0x20[(sizeof(sdfDevConsCB_tag) == 0x20) ? 1 : -1];
+
+#define SDF_MEM_BLOCK_STATE_FREE 0
+
+#define SDF_MEM_BLOCK_STATE_USED 1
+
+#define SDF_MEM_BLOCK_STATE_END_SENTINEL 2
 
 void sdfDevConsAttribute(sdfDevConsCB_tag *console, u8 attribute);
 void sdfDevConsClose(sdfDevConsCB_tag *node);
@@ -48,12 +68,17 @@ s32 sdfGrOpenPacketBuff(void);
 
 /* Return free/used/end-sentinel state, not a resource kind. */
 
+/* Start the background fade-out countdown; zero clears the transition. */
+void dds3FadeBackgroundStartOut(s32 duration);
 
+typedef struct SdfHeapOverlayBlock {
+    u32 address;   /* 0x00 */
+    u8 blockState; /* 0x04: compact snapshot of SdfMemBlockState */
+    u8 opaque05[3];
+    s32 size;     /* 0x08 */
+} SdfHeapOverlayBlock;
 
-
-#include "dds/dds3_background_fade_api.h"
-#include "dds/sdf_heap_overlay_block.h"
-#include "dds/ee_mmi.h"
+typedef char SdfHeapOverlayBlock_size[(sizeof(SdfHeapOverlayBlock) == 0x0C) ? 1 : -1];
 
 #ifdef VERSION_RAIDOU1
 extern void evtViewerCreateTaskWithSky(void);

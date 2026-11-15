@@ -6,11 +6,19 @@
 #include "sdfPacketBuff.h"
 #include "sdfBillBoard.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "ps2asm.h"
+#include "fpu.h"
+#include "fldFileResolver_00132080.h"
+#include "code_r1_001DED50.h"
 
 /* Serialized entry offsets are relative to BillData.base. */
 /* BillAnimationEntry.flags bits; distinct from entryModeFlags and billHandle_t.modeFlags. */
@@ -58,16 +66,56 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 
 /* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
 
-#include "dds/eff_composite_gs_descriptor.h"
-#include "dds/eff_generated_texture_descriptor.h"
-#include "dds/ee_mmi.h"
-#include "dds/fpu.h"
+typedef struct SdfGsTexturePacket {
+    SdfGsPacketHeader header;
+    SdfGsRegisterWrite sampling;
+    SdfGsRegisterWrite texture;
+    SdfGsRegisterWrite clamp;
+} SdfGsTexturePacket;
+
+typedef char SdfGsTexturePacket_size_must_be_0x50[
+    (sizeof(SdfGsTexturePacket) == 0x50) ? 1 : -1];
+
+/* Caller-built composite draw description; 0x68 bytes. */
+typedef struct EffCompositeGsDescriptor {
+    f32 position[4];
+    f32 scaleX;
+    f32 scaleY;
+    u8 unk18[8];
+    f32 angle;
+    u32 color;
+    u32 blendMode;
+    BillTextureQuad primaryUv;
+    BillTextureQuad secondaryUv;
+    sdfTexHandle_t *primaryTexture;
+    u64 primaryClamp;
+    sdfTexHandle_t *secondaryTexture;
+    u8 unk5C[4];
+    u64 secondaryClamp;
+} EffCompositeGsDescriptor;
+
+typedef char EffCompositeGsDescriptor_size_must_be_0x68[
+    (sizeof(EffCompositeGsDescriptor) == 0x68) ? 1 : -1];
+
+/* Producer-built input shared with the generated-texture packet providers.
+ * Bytes 0x18..0x1F remain opaque; the provider does not read them. */
+typedef struct EffGeneratedTextureDescriptor {
+    f32 position[4];
+    f32 scaleX;
+    f32 scaleY;
+    u8 opaque18[8];
+    f32 angle;
+    u32 color;
+    struct sdfTexHandle_t *texture;
+} EffGeneratedTextureDescriptor;
+
+typedef char EffGeneratedTextureDescriptorSizeAssert[
+    (sizeof(EffGeneratedTextureDescriptor) == 0x2C) ? 1 : -1];
 
 #define BILL_VARIANT_MASK 0xFFFF
 

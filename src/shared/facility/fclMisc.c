@@ -36,7 +36,6 @@ extern s8 gMsgFlag;
 extern void shuffleIndices(s8 *order, s32 count, s32 rounds);
 extern s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
 
-
 void fclLoadStage(s32 MajorNo, s32 MinorNo);
 void fclScriptForcedEnd(dds3ProcessID_t *PID);
 s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
@@ -58,10 +57,6 @@ s32 fclChkMessage(void);
 void fclUpdateMessage(void);
 extern void itfMesMngSetOffsetY1(s32 msgid, s32 y1);
 void fclSetMessagePos(s32 x, s32 y);
-
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -85,16 +80,25 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/scr.h"
-#include "dds/evt_message_window_api.h"
-#include "dds/itf_mes_panel_mode.h"
-#include "dds/mnu.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "code_r1_001CC1D0.h"
+
+s8 fclEndMessage(void);
+
+typedef s32 EvtMessageWindowPageValueResult;
+
+#define EVT_MESSAGE_WINDOW_PAGE_VALUE_NO_WINDOW 0
+
+#define EVT_MESSAGE_WINDOW_PAGE_VALUE_UPDATED 1
 
 struct sdfTexHandle_t;
 
@@ -163,7 +167,6 @@ typedef struct {
 extern void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 
 struct MenuTerminalWork;
-
 
 typedef struct QuadRecord {
     s32 unk00;

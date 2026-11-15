@@ -1,15 +1,17 @@
 #include "common.h"
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "datCalc.h"
 #include "kernel_draw.h"
 #include "newdata.h"
 #include "sdfDevCons.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "fpu.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "code_r1_0034D128.h"
+#include "code_r1_0034C048.h"
+#include "code_r1_0034CE48.h"
 
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
@@ -31,11 +33,14 @@ enum SdfMotionStateValue {
 
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
 
+typedef u32 MnuInputActionFlags;
 
-#include "dds/mnu_input.h"
-#include "dds/fpu.h"
-#include "dds/mnu_list.h"
-#include "dds/mnu_panel_state_prefix.h"
+#define MNU_INPUT_ACTION_PREVIOUS_PAGE 0x00000400u
+
+#define MNU_INPUT_ACTION_LAST_PAGE 0x00000800u
+
+/* Clear only the window's panel-transition bit. */
+void mnuClearWindowPanelTransitionFlag(struct MenuWindowContainer *window);
 
 #define MNU_PANEL_ITEM_COUNT 5
 
@@ -150,9 +155,6 @@ typedef struct MenuPanelState {
 } MenuPanelState;
 
 typedef char MenuPanelStateSizeCheck[(sizeof(MenuPanelState) == MNU_PANEL_STATE_BYTES) ? 1 : -1];
-
-
-
 
 typedef struct MenuWorkCamera {
     s32 x;

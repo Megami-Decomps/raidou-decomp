@@ -2,24 +2,57 @@
 #include "sdfMemory.h"
 #include "sdfChip.h"
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "newdata.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
+#include "include_asm.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "fpu.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "code_r1_002CAFD8.h"
+#include "code_r1_0034D128.h"
+#include "code_r1_0034CE48.h"
+#include "code_r1_002C8188.h"
 
 /* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
 void qsort(void *base, u32 count, u32 size, s32 (*compare)(const void *, const void *));
 
-#include "dds/itf_draw_grid.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/mnu_list.h"
-#include "dds/fpu.h"
-#include "dds/eff.h"
-#include "dds/menu_fade_entry.h"
+s32 effConfigureIndexedSlotMaterial(struct EffectSlotSet *owner, u32 slot,
+                                    struct EffMappedResource *resources, u32 item,
+                                    u32 materialFlags, u32 materialValue,
+                                    u32 stateFlags);
+
+void mnuClearEntryFlags(struct MenuIconState *group);
+
+MenuIconSprites *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
+                    struct EffectSlotSet *resourceHandle, s32 *indices, u32 unused);
+
+/* Draw a window container owned by the menu window subsystem. */
+void mnuDrawWindowContainer(s32 x, s32 y, s32 depth, MenuWindowContainer *menu, s32 drawArg);
+
+void mnuSetWindowPanelBounds(MenuWindowContainer *panel,
+                             const struct MenuIconState *layout,
+                             u32 left, u32 top, u32 right, u32 bottom);
+
+/* Shared fade-list entry. The unobserved word at 0x04 remains opaque. */
+typedef struct MenuFadeEntry {
+    u32 active; /* 0x00 */
+    u32 unknown_04;
+    s32 x; /* 0x08: stored draw position. */
+    s32 y; /* 0x0C: stored draw position. */
+    struct MenuWindowContainer *window; /* 0x10 */
+    s32 fade; /* 0x14 */
+} MenuFadeEntry;
+
+typedef char MenuFadeEntry_extent_must_be_0x18[
+    (sizeof(MenuFadeEntry) == 0x18) ? 1 : -1];
 
 struct StaffMenuRuntime;
 
@@ -259,9 +292,6 @@ void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg);
 /* Destroy the owned list and optional sprite resources before freeing the window. */
 void jmsDestroyCmdMenu(MenuWindowContainer *menu);
 
-
-
-
 void mnuRemoveWindowListCursorNode(MenuWindowContainer *menu);
 MenuListNode *mnuAdvanceListSelection(MenuWindowContainer *menu, s32 step);
 MenuListNode *mnuReverseListSelection(MenuWindowContainer *menu, s32 step);
@@ -269,9 +299,6 @@ void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu);
 
 void mnuInitIconSprites(MenuIconSprites *obj, s32 w, s32 h, u32 value,
                         EffectSlotSet *resource, s32 *idx, s32 unused);
-
-
-
 
 void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, u32 option);
 void mnuDrawWindowIconRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, s32 count, s32 option);

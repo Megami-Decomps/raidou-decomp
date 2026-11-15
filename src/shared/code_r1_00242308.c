@@ -7,18 +7,29 @@
 #include "sdfFile.h"
 #include "sdf_Decomp.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "dds3obj.h"
 #include "kernel_draw.h"
 #include "libsdf.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
 
-#include "dds/btl.h"
-#include "dds/sdf_dev_state.h"
+#include "include_asm.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "sdf_lighting.h"
+#include "model.h"
+#include "motion.h"
+#include "field.h"
+#include "ps2asm.h"
+#include "fpu.h"
+#include "code_r1_0017BBD8.h"
+#include "code_r1_0021C768.h"
+#include "effBattleMisc.h"
+#include "fldFileResolver_00132080.h"
+#include "effPCPMisc_00224D10.h"
 
 /* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
 
@@ -36,22 +47,91 @@ sdfFileCmdHandle_t *sdfFileOpen(const char *path);
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
+/* A 128-byte block the effect code copies whole (the effect file queue's saved state). */
+typedef struct EffectBlock128 {
+    u32 word[32];
+} EffectBlock128;
 
-#include "dds/eff_block128.h"
-#include "dds/eff_editor_menu.h"
-#include "dds/eff_surface_node.h"
-#include "dds/eff_model_resource.h"
-#include "dds/eff_camera_create_request.h"
-#include "dds/fld.h"
-#include "dds/btl_resource_browser.h"
-#include "dds/eff_bill.h"
-#include "dds/eff_resource_bank_slot.h"
-#include "dds/eff_active_resource.h"
-#include "dds/ee_mmi.h"
-#include "dds/pcp_vu0.h"
-#include "dds/eff_queue.h"
-#include "dds/btl_resource_name.h"
-#include "dds/fpu.h"
+/* Filters consumed by the directory scan; these are independent of entry categories. */
+enum BtlResourceScanFlags {
+    BTL_RESOURCE_SCAN_TMX = 0x01,
+    BTL_RESOURCE_SCAN_P2A = 0x02,
+    BTL_RESOURCE_SCAN_PB = 0x04,
+    BTL_RESOURCE_SCAN_GENERAL = 0x08,
+    BTL_RESOURCE_SCAN_EPL = 0x10,
+    BTL_RESOURCE_SCAN_EP = 0x20,
+    BTL_RESOURCE_SCAN_TLP = 0x40,
+    BTL_RESOURCE_SCAN_F2 = 0x80,
+};
+
+typedef struct EffResourceBankSlot {
+    char fullName[0xC8]; /* Formatted path or selected built-in name. */
+    char name[0x34];     /* Selected resource name without its extension. */
+    s32 type;            /* Resource category returned by the formatter. */
+    s32 selectionStatus; /* Browser selection status. */
+    s32 pathVariant;     /* Selected path variant returned by the browser. */
+    u8 opaque108[8];     /* In caller-sized buffers; not written by this provider. */
+} EffResourceBankSlot;
+
+typedef char EffResourceBankSlot_size_must_be_0x110[
+    sizeof(EffResourceBankSlot) == 0x110 ? 1 : -1];
+
+typedef char EffResourceBankSlot_fullName_must_be_0xC8[
+    sizeof(((EffResourceBankSlot *)0)->fullName) == 0xC8 ? 1 : -1];
+
+/* Per-instance header shared by every resource-kind callback. payload points
+ * to kind-specific bytes immediately after this 0x40-byte allocation prefix;
+ * resource is the separately owned kind-specific object. */
+typedef struct EffActiveResource {
+    f32 position[4];
+    f32 orientation[4];
+    f32 scale;
+    u32 color;
+    u32 frame;
+    union {
+        u32 index;
+        s32 signedIndex;
+        u16 shortIndex;
+    } kind;
+    void *resource;
+    u8 pad_34[4];
+    u8 *payload;
+    u8 pad_3C[4];
+} EffActiveResource;
+
+typedef char EffActiveResource_size_must_be_0x40[
+    (sizeof(EffActiveResource) == 0x40) ? 1 : -1];
+
+/* Native 0x70-byte output of the effect resource-name chooser in DDS1/2.
+ * The producer fills both 50-byte strings: nameWithExtension is the selected
+ * name followed by its extension, and name is retained without the extension.
+ * Callers prepend the directory path when forming the full file path.
+ * DDS1 reads completion unsigned and DDS2 also compares its signed view. */
+typedef struct EffQueueRecord {
+    char nameWithExtension[0x32];
+    char name[0x32];
+    union {
+        s32 signedState; /* +0x64 */
+        u32 state;
+    } completion;
+    u8 pad68[8];
+} EffQueueRecord;
+
+extern void effQueueResource(const char *extension, const char *resourceName);
+
+extern void effUpdateResourceQueue(const char *directoryPath, const char *extension, EffQueueRecord *);
+
+typedef u32 BtlResourceWritePermissionResult;
+
+enum {
+    BTL_RESOURCE_WRITE_PERMISSION_NOT_GRANTED = 0,
+    BTL_RESOURCE_WRITE_PERMISSION_GRANTED = 1,
+};
+
+/* Reports immediate permission; an active prompt or cancellation is not
+ * granted. */
+BtlResourceWritePermissionResult btlPollResourceNameOverwrite(
+    struct BtlResourceNameRecord *record, const char *directoryPath);
 
 static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list) {
     surface->regFunc(surface, list);
@@ -269,7 +349,6 @@ typedef struct EffFadeHeaderWork {
 } EffFadeHeaderWork;
 
 typedef char EffFadeHeaderWorkSizeCheck[(sizeof(EffFadeHeaderWork) == 0x0C) ? 1 : -1];
-
 
 typedef struct EffSelectionHeaderWork {
     s32 frame;
@@ -583,7 +662,12 @@ u32 effPollNamedFile(void);
 void effQueueAttachedResourceRequest(void);
 u32 effPollAttachedFile(void);
 
-#include "dds/effect_asset_link.h"
+/* Sentinel-terminated map from asset identifiers to their runtime objects. */
+typedef struct EffectAssetLink {
+    u8 *asset;
+    void *object;
+    u8 pad_08[0x14];
+} EffectAssetLink;
 
 u8 *effFindAssetData(FileJob *entry);
 EffQueuedFileObject *effFindAssetObject(FileJob *entry);
@@ -874,16 +958,9 @@ u32 effLoadMaterialFile(void);
 void effResetFileResourceManager(void);
 u16 Start_sbtl(s32 flags);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "newdata.h"
 
-
 /* Return the descriptor's payload base as a byte address, not the descriptor. */
-
-#include "dds/prf_profile_parameters.h"
 
 #define SCR_FLAG_ID_MASK 0xFFFF
 

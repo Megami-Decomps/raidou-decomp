@@ -9,19 +9,47 @@
 #include "sdfModel.h"
 #include "mdlManager.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "fileManager.h"
 #include "model.h"
 #include "sdfDevCons.h"
 #include "sdk_libc.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/mdl_motion_api.h"
-#include "dds/sdf_chunk.h"
-#include "dds/sdf_sif_command.h"
-#include "dds/sdf_texture_draw_packet.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "sdf_lighting.h"
+#include "motion.h"
+#include "ps2asm.h"
+#include "code_r1_0019D3A8.h"
+
+enum {
+    MDL_MOTION_ABSENT = 0,
+    MDL_MOTION_PRESENT = 1
+};
+
+/* Variable-size serialized chunk streams share only this eight-byte header.
+ * The word at +8 belongs to each chunk's payload. */
+typedef struct SdfChunkHeader {
+    u32 id;   /* 0x00: zero terminates the chunk stream */
+    u32 size; /* 0x04: byte extent to the next chunk */
+} SdfChunkHeader;
+
+typedef char SdfChunkHeader_size_must_be_8[(sizeof(SdfChunkHeader) == 8) ? 1 : -1];
+
+/* MPOS has an eight-byte opaque prefix after the common header, then 0x40-byte
+ * rows. Its enclosing chunk extent remains variable and is stored in size. */
+typedef struct SdfMapPositionChunkPrefix {
+    SdfChunkHeader header;
+    u8 payload08[8];
+} SdfMapPositionChunkPrefix;
+
+typedef char SdfMapPositionChunkPrefix_size_must_be_0x10[
+    (sizeof(SdfMapPositionChunkPrefix) == 0x10) ? 1 : -1];
 
 /* Set bit 1 in the active administration task's flags; that task must exist. */
 struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
@@ -53,15 +81,67 @@ void mdlSmoothSingleMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex, f32 ble
 void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
 void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
 
+/* Relative-linked viewer records share packed payload and parameter words.
+ * Kinds 1/2 use the count and part-index halfwords at 0x0C/0x0E; kind 3
+ * reads the whole parameter word. Kind 4 reads both selector halfwords at 0x08/0x0A. */
+typedef struct MdlRecord {
+    s32 kind;       /* 0x00: 0xFFFF terminates the record chain */
+    s32 nextOffset; /* 0x04: relative byte offset to next record */
+    union {
+        u32 word;               /* 0x08 */
+        s32 id;                 /* Kind 1/2/5 resource-record ID. */
+        struct {
+            u16 selectorA;
+            u16 selectorB;
+        } stream;
+    } payload;
+    union {
+        u32 word;               /* 0x0C */
+        s32 minimumTime;        /* Kind 5 deferred initialization threshold. */
+        struct {
+            u16 count;
+            u16 partIndex;
+        } part;
+    } parameter;
+    union {
+        u32 word10; /* 0x10: kind-four stream parameter */
+        f32 anchorScale; /* Optional kind 1/2 extension when nextOffset >= 0x11. */
+        struct {
+            u8 playbackCadenceStep;
+            u8 loopMode;
+            u16 partIndex;
+        } object;
+        struct {
+            u16 slotCount; /* Kind 1/2 group records: following entity-slot packets. */
+            u16 unk12;
+        } half;
+    } tail;
+} MdlRecord;
 
+typedef char MdlRecord_size_must_be_0x14[(sizeof(MdlRecord) == 0x14) ? 1 : -1];
 
+/* Key for a part-info record list; -1 selects the context-wide list. */
+typedef s32 MdlPartInfoListKey;
 
+enum {
+    MDL_PART_INFO_LIST_CONTEXT_WIDE = -1
+};
 
-#include "dds/mdl_part_entry.h"
-#include "dds/mdl_resource_entries.h"
-#include "dds/mdl_mark_params.h"
-#include "dds/pcp_vu0.h"
-#include "dds/ee_mmi.h"
+/* Marker-record fields edited by the model viewer; the leading word stays opaque. */
+typedef struct EffMarkParams {
+    u8 opaque00[8];
+    s32 mark0;
+    s32 mark1;
+    u16 start;
+    u16 end;
+    u16 interval;
+    u8 face;
+    u8 blend;
+    u32 colors[4];
+} EffMarkParams;
+
+typedef char EffMarkParams_size_must_be_0x28[
+    (sizeof(EffMarkParams) == 0x28) ? 1 : -1];
 
 #define MDL_VIEWER_RESOURCE_SLOTS 12
 

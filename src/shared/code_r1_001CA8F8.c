@@ -1,17 +1,25 @@
 #include "common.h"
 #include "sdfMemory.h"
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "event.h"
 #include "kernel_draw.h"
 #include "newdata.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/evt_task.h"
-#include "dds/sdf_heap_api.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "field.h"
+#include "code_r1_001C4B78.h"
+#include "evtEventViewer.h"
+#include "code_r1_001CC1D0.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -48,12 +56,28 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
+typedef struct CampDisplayDefaults {
+    s32 x;          /* 0x00 */
+    s32 y;          /* 0x04 */
+    u8 color[4];    /* 0x08 */
+    f32 scaleY;     /* 0x0C */
+    f32 scaleX;     /* 0x10 */
+    s32 enabled;    /* 0x14 */
+    s32 variant;    /* 0x18 */
+    s32 preserveAlpha; /* 0x1C: DDS2 RGB-only alpha-fail drawing */
+} CampDisplayDefaults;
 
-#include "dds/mnu_camp_display.h"
-#include "dds/mnu_camp_option_index_api.h"
-#include "dds/evt_viewer.h"
-#include "dds/evt_viewer_indexed_condition.h"
-#include "dds/mnu.h"
+typedef char CampDisplayDefaults_size_is_20[
+    (sizeof(CampDisplayDefaults) == 0x20) ? 1 : -1];
+
+/* Zero-based selections stored in the camp viewer's primary and secondary
+ * option fields. The current menus expose two primary rows and three
+ * secondary rows; setters preserve the packed two-bit representation. */
+typedef u32 MnuCampPrimaryOptionIndex;
+
+typedef u32 MnuCampSecondaryOptionIndex;
+
+void evtEventViewerReleaseQueuedNode(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *entry, EvtRuntimeChild *node);
 
 #define CAMP_TASK_NAME_BYTES 0x20
 

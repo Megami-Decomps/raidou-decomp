@@ -3,17 +3,26 @@
 #include "mdlManager.h"
 #include "dds3DebugStuff.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "newdata.h"
 #include "sdfDevCons.h"
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
-#include "dds/btl.h"
-#include "dds/evt_viewer.h"
-#include "dds/mdl_motion_controller_lookup_api.h"
+#include "include_asm.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "field.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "ps2asm.h"
+#include "code_r1_001C4B78.h"
+#include "evtEventViewerMenu.h"
+#include "evtEventViewer.h"
 
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
@@ -28,16 +37,23 @@ enum {
 /* Borrow a controller owned by ctx. The pointer is read-only and expires when
  * that controller is removed or the model context is freed. */
 
-
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/evt_viewer_track_file_format.h"
-#include "dds/evt_serialized_child.h"
-#include "dds/ee_mmi.h"
-#include "dds/evt_task.h"
+/* One child row emitted by the event-viewer track serializer. */
+typedef struct EvtSerializedChild {
+    u16 groupType;
+    u16 start;
+    u16 span;
+    u16 value;
+    u8 opaque08[4];
+    s32 body[8];
+} EvtSerializedChild;
+
+typedef char EvtSerializedChild_size_check[
+    (sizeof(EvtSerializedChild) == 0x2C) ? 1 : -1];
 
 extern void evtWriteSerializedBytes(s32 output, void *data, s32 size);
 
@@ -62,7 +78,6 @@ typedef union EvtMotionValue {
     s32 word;
     EvtMotionBits bits;
 } EvtMotionValue;
-
 
 /* Select and draw one light-color bank at the current panel offset. */
 static inline void evtDrawLightRgbComponents(sdfDrawTag_t *list, dds_evtViewerInfo_t *runtime,

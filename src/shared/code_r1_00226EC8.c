@@ -523,16 +523,55 @@ typedef struct effPCPBossCamera_t {
 extern s32 effPadVibeFrames[2];
 extern u8 effPadVibePower[2];
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "dds3obj.h"
 #include "kernel_draw.h"
-#include "dds/eff.h"
-#include "dds/eff_blur.h"
-#include "dds/mdl.h"
-#include "dds/sdk_libm.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "sdf_lighting.h"
+#include "basic.h"
+#include "field.h"
+#include "newdata.h"
+#include "code_r1_0021C768.h"
+#include "effBattleMisc.h"
+#include "fldFileResolver_00132080.h"
+
+/* Copy one four-float vector from read-only source storage to destination. */
+void effCopyVector(f32 destination[4], const f32 source[4]);
+
+typedef struct {
+    dds3Effect_PartialMultiFilterParam_t params;
+    sdfTexHandle_t *texture;
+} EffResourceRectWork; /* 0x28 */
+
+typedef char EffResourceRectWork_size_must_be_0x28[(sizeof(EffResourceRectWork) == 0x28) ? 1 : -1];
+
+#define EFFECT_RING_FULL_TURN (6.2831853f)
+
+typedef struct EffBlurScaleSlot {
+    f32 phase;
+    f32 angle;
+    dds3Effect_Blur_t quad;
+} EffBlurScaleSlot;
+
+typedef struct EffBlurScaleWork {
+    dds3Effect_RippleBlurParam_t params;
+    struct sdfTexHandle_t *texture;
+    struct sdfMemHandle_t *allocation;
+    EffBlurScaleSlot *slots;
+} EffBlurScaleWork;
+
+typedef char EffBlurScaleSlotSizeCheck[sizeof(EffBlurScaleSlot) == 0x30 ? 1 : -1];
+
+typedef char EffBlurScaleWorkSizeCheck[sizeof(EffBlurScaleWork) == 0x38 ? 1 : -1];
+
+void effDrawBlurRectangle(const dds3Effect_Blur_t *source);
+
+f32 asinf(f32 x);
 
 /* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
 void MultMatrixRevNoArg(void);
@@ -547,37 +586,861 @@ void dds3EffectPartialMultiBlurDelete(EffBlurTemplate *owner);
 void dds3EffectPartialMultiFilterDelete(EffResourceRectWork *work);
 void dds3EffectRippleBlurDelete(EffBlurScaleWork *work);
 
-
 /* Store the primary or secondary texture owner and mark its draw state dirty. */
 
-#include "dds/eff_surface_grid_node.h"
-#include "dds/eff_surface_node.h"
-#include "dds/eff_animation_state.h"
-#include "dds/eff_model_resource.h"
-#include "dds/eff_gs_packet.h"
-#include "dds/eff_copied_payload.h"
-#include "dds/eff_class_ops.h"
-#include "dds/eff_particle_shared_resource.h"
-#include "dds/eff_camera_create_request.h"
-#include "dds/eff_emitter_row.h"
-#include "dds/fld.h"
-#include "dds/btl_command.h"
-#include "dds/sdf_quaternion.h"
-#include "dds/eff_bill.h"
-#include "dds/eff_bill_column_particle.h"
-#include "dds/eff_ribbon_work.h"
-#include "dds/eff_scaled_class_frame_rows.h"
-#include "dds/eff_point_set.h"
-#include "dds/eff_point_set_table.h"
-#include "dds/eff_span_work.h"
-#include "dds/eff_emitter_type.h"
-#include "dds/eff_matrix4.h"
-#include "dds/eff_frame_asset.h"
-#include "dds/eff_random_mod.h"
-#include "dds/ee_mmi.h"
-#include "dds/pcp_vu0.h"
-#include "dds/eff_billboard_work.h"
-#include "dds/sdf_texture_file.h"
+typedef struct EffSurfaceGridNode {
+    u8 pad_00[0x10];
+    s32 rows;       // 0x10
+    s32 field_14;   // 0x14
+    s32 field_18;   // 0x18
+    s32 columns;    // 0x1C
+    u32 type;       // 0x20
+    u128 *buffer;     // 0x24
+    u32 *tail;       // 0x28
+    sdfMat_t *material; // 0x2C: owned material descriptor
+    u128 *queueA;     // 0x30
+    u32 *queueB;     // 0x34
+    struct sdfMemHandle_t *allocation; // 0x38
+} EffSurfaceGridNode;
+
+typedef char EffSurfaceGridNodeSizeCheck[(sizeof(EffSurfaceGridNode) == 0x3C) ? 1 : -1];
+
+void fileAcquireRecord(FileSlotTable *record);
+
+typedef struct EffectSurfaceNode {
+    u32 handleCount;
+    u32 color;
+    f32 opacity;
+    u32 kind;
+    EffSurfaceParams params; /* 0x10: copied source header */
+    u32 index;
+    struct sdfMemHandle_t *handleBuffer; // 0x30
+    billHandle_t *resource;
+    FileJobPayload **jobs;          // 0x38
+    struct sdfMemHandle_t *jobAllocation;      // 0x3C
+    struct EffExpandedList *resourceHolder; // 0x40, released separately from the grid record
+    FileSlotTable *record; // 0x44: retained grid record table
+    u16 count;          // 0x48: initialized to 1; remaining role unknown
+} EffectSurfaceNode;
+
+/* Per-animation allocation: positions follow this four-word owner header. */
+typedef struct EffAnimationState {
+    f32 *positions;        // 0x00
+    u32 textureHandle;     // 0x04
+    FileSlotTable *record; // 0x08
+    struct sdfMemHandle_t *allocation; // 0x0C
+} EffAnimationState;
+
+/* An effect's GS register packet: DMA, VIF and GIF tags, then one register write. */
+typedef struct EffGsPacket {
+    u64 dmaTag;
+    u64 vifTag;
+    u64 gifTag;
+    u64 registerList;
+    u64 registerValue;
+    u64 registerAddress;
+} EffGsPacket;
+
+/* Payload owner shared by the paired effect units. +0x3C remains opaque. */
+typedef struct EffCopiedPayload {
+    u8 *body;                       /* 0x00 */
+    s32 size;                       /* 0x04 */
+    u32 slotCount;                  /* 0x08: populated effect/target pairs */
+    u32 selectedTargetIndex;        /* 0x0C: chosen target path slot */
+    dds3Basic_t *effects[5];      /* 0x10 */
+    dds3PathBasicControl_t *targets[5]; /* 0x24 */
+    struct sdfMemHandle_t *allocation; /* 0x38 */
+    u8 opaque3C[4];
+} EffCopiedPayload;
+
+typedef char EffCopiedPayload_size_check[
+    (sizeof(EffCopiedPayload) == 0x40) ? 1 : -1];
+
+/* DDS1 0029C530 / DDS2 002DE248 use this callback table for native classes.
+ * The two units dispatch each slot directly and read payloadSize for sizing. */
+typedef struct EffClassOps {
+    void (*initialize)(struct EffClassWork *work);
+    void *(*createResource)(void *source);
+    void (*destroyResource)(void *resource);
+    void (*update)(struct EffClassWork *work);
+    void (*draw)(struct EffClassWork *work);
+    u32 payloadSize;
+} EffClassOps;
+
+typedef char EffClassOpsSizeCheck[(sizeof(EffClassOps) == 0x18) ? 1 : -1];
+
+#define EFF_PARTICLE_SHARED_PAYLOAD_BYTES 0x98
+
+/* DDS1 0029C530 / DDS2 002DE248 allocate this 0xAC-byte shared resource.
+ * The trailing pointers are owned billboard/reference handles managed by the
+ * resource lifecycle. */
+typedef struct EffParticleSharedResource {
+    u32 color;
+    u32 option;
+    s32 state;                      /* 0x08: next frame index; reset to zero, incremented after draw */
+    SdfColorTrack colorTrack;       /* 0x0C */
+    SdfAlphaTrack alphaTrack;       /* 0x30: surfaceIndex selects the blend (0..6) */
+    EffScalarTrack scaleTrack;      /* 0x40 */
+    EffScalarTrack rotationTrack;   /* 0x6C */
+    s32 limit;                      /* 0x98: exclusive frame limit; 0 = unlimited */
+    s32 x;                          /* 0x9C */
+    s32 y;                          /* 0xA0 */
+    struct billHandle_t *billHandle;     /* 0xA4 */
+    struct EffExpandedList *reference; /* 0xA8 */
+} EffParticleSharedResource;
+
+typedef char EffParticleSharedResourceSizeCheck[
+    (sizeof(EffParticleSharedResource) == 0xAC) ? 1 : -1];
+
+typedef struct EffEmitterRow {
+    s32 age;    /* 0x00 */
+    f32 speed;  /* 0x04 */
+    f32 angle;  /* 0x08 */
+    f32 radius; /* 0x0C */
+    f32 offset; /* 0x10 */
+    f32 width;  /* 0x14 */
+} EffEmitterRow;
+
+typedef char EffEmitterRowSizeCheck[(sizeof(EffEmitterRow) == 0x18) ? 1 : -1];
+
+/* Lens-flare constructors copy 0x40 bytes into a 0x58-byte owner at +0x18
+ * (DDS1 0029C620 / DDS2 002DE338). Draw callbacks read strength with LWC1,
+ * compare frame/limit signed, and select the flare set with LBU at +0x54. */
+typedef struct EffLensFlareParams {
+    SdfColorTrack colorCurve;
+    SdfAlphaTrack alphaCurve;
+    f32 strength;
+    s32 limit;
+    u8 flareSet;
+    u8 pad3D[3];
+} EffLensFlareParams;
+
+typedef struct EffFadeVectorWork {
+    f32 vector[4];
+    s32 frame;
+    u32 color;
+    EffLensFlareParams source;
+} EffFadeVectorWork;
+
+typedef char EffLensFlareParamsSizeCheck[(sizeof(EffLensFlareParams) == 0x40) ? 1 : -1];
+
+typedef char EffFadeVectorWorkSizeCheck[(sizeof(EffFadeVectorWork) == 0x58) ? 1 : -1];
+
+/* The 0x20-byte strip file header copied into EffectStripNode at +0x0C. */
+typedef struct EffStripParams {
+    u8 flag;
+    u8 pad01[3];
+    u32 innerColor;
+    u32 outerColor;
+    f32 crossSize;
+    f32 longSize;
+    f32 sideSize;
+    f32 billSize;
+    u32 tint;
+} EffStripParams;
+
+typedef char EffStripParamsSizeCheck[(sizeof(EffStripParams) == 0x20) ? 1 : -1];
+
+/* DDS1 002A7B68 / DDS2 002EA120 allocate 0xD4 bytes and copy this
+ * 0x98-byte parameter record at +0x30. Draws 002A8020 / 002EA5D8
+ * scale the +0x64 track's result and use the +0x90 track as the angle. */
+typedef struct EffQuadParams {
+    SdfColorTrack colorTrack;
+    SdfAlphaTrack alphaTrack;
+    EffScalarTrack sizeTrack;
+    EffScalarTrack angleTrack;
+    s32 duration;
+    f32 sizeScale;
+    u8 noSetup;
+    u8 pad95[3];
+} EffQuadParams;
+
+typedef struct EffQuadWork {
+    f32 position[4];
+    f32 orientation[4];
+    f32 scale;
+    u32 color;
+    u32 sourceKind;
+    s32 frame;
+    EffQuadParams source;
+    struct billHandle_t *billHandle;
+    struct EffExpandedList *reference; /* Kind-7 retained resource wrapper. */
+    sdfMat_t *assetHandle;
+} EffQuadWork;
+
+typedef char EffQuadParamsSizeCheck[(sizeof(EffQuadParams) == 0x98) ? 1 : -1];
+
+typedef char EffQuadWorkSizeCheck[(sizeof(EffQuadWork) == 0xD4) ? 1 : -1];
+
+typedef struct EffBillOutputHeader {
+    EffBillTimedHeader timed;
+    u8 outputMode;
+    u8 pad3D[3];
+} EffBillOutputHeader;
+
+typedef struct EffBillFrameHeader {
+    EffBillOutputHeader output;
+    u8 unk40[4];
+    f32 fadeInFraction;
+    f32 fadeOutFraction;
+    s32 lifetime;
+    s32 spawnCount;
+    u8 respawn;
+    u8 spawnAllOnStart;
+    u8 mode;
+    u8 pad57;
+} EffBillFrameHeader;
+
+/* DDS2 003E9950 / DDS1 0037E8A0 resource kinds 1..8 copy the following
+ * record lengths. Unrecovered bytes remain serialized data. */
+/* DDS2 billAdvanceFrameInstances (002E0900) consumes the kind-1 geometry tail. */
+typedef struct EffBillFrameConfig {
+    EffBillFrameHeader frame;
+    u32 innerColor;
+    u32 outerColor;
+    f32 innerWidth;
+    f32 outerWidth;
+    f32 widthJitter;
+    f32 radius;
+    f32 radiusJitter;
+    f32 spin;
+    f32 spinJitter;
+    f32 spinAccel;
+} EffBillFrameConfig; /* kind 1, 0x80 */
+
+typedef struct EffBillCellConfig {
+    EffBillFrameHeader frame;
+    u32 colorA;
+    u32 colorB;
+    f32 extent;
+    u8 unk64[4];
+    f32 extentJitter;
+    f32 radius;
+    f32 radiusJitter;
+    f32 centerOffset;
+    f32 centerOffsetJitter;
+    f32 velocity;
+    f32 velocityJitter;
+    f32 acceleration;
+    u8 reverse;
+    u8 pad89[3];
+} EffBillCellConfig; /* kind 2, 0x8C */
+
+/* DDS1 002AAF70 / DDS2 002EE348 allocate this 0x3C-byte strip owner.
+ * File constructors copy a 0x20-byte source header into its +0x0C member. */
+typedef struct EffectStripNode {
+    u32 percent;
+    u32 color;
+    f32 opacity;
+    EffStripParams copiedHeader;
+    struct EffTrackSet *trackSet;
+    struct billHandle_t *resource;
+    struct FileSlotTable *active;
+    u16 count;
+} EffectStripNode;
+
+typedef char EffectStripNodeSizeCheck[(sizeof(EffectStripNode) == 0x3C) ? 1 : -1];
+
+/* Resource kinds 1..8 allocate sixteen bytes before their entry array. */
+typedef struct EffBillFrameState {
+    u8 *entries;
+    EffTrackSet *asset;
+    struct sdfMemHandle_t *allocation;
+    u32 unk0C;
+} EffBillFrameState;
+
+typedef struct EffBillCellEntry {
+    s32 age;
+    f32 velocity;
+    f32 angle;
+    f32 radiusA;
+    f32 radiusB;
+    f32 centerOffset;
+    f32 extent;
+} EffBillCellEntry;
+
+/* Kind-3 particle entry (0x2C bytes), the array behind EffBillFrameState.entries. */
+typedef struct EffBillParticleEntry {
+    s32 age;        /* -1 waiting to spawn, -2 retired, otherwise frames alive */
+    f32 rise;
+    f32 spinRate;
+    f32 angle;
+    f32 radiusA;
+    f32 radiusB;
+    f32 offset;
+    f32 offsetStep;
+    f32 extent;
+    u8 pad24[8];
+} EffBillParticleEntry;
+
+typedef struct EffBillParticleConfig {
+    EffBillFrameHeader frame;
+    u32 colorA;             /* 0x58 */
+    u32 colorB;             /* 0x5C */
+    f32 extent;             /* 0x60 */
+    u8 pad64[4];
+    f32 extentJitter;       /* 0x68 */
+    f32 radius;             /* 0x6C */
+    f32 radiusJitter;       /* 0x70 */
+    f32 offset;             /* 0x74 */
+    f32 offsetJitter;       /* 0x78 */
+    f32 endOffset;          /* 0x7C */
+    f32 endOffsetJitter;    /* 0x80 */
+    f32 spinRate;           /* 0x84 */
+    f32 spinRateJitter;     /* 0x88 */
+    f32 acceleration;       /* 0x8C */
+    f32 rise;               /* 0x90 */
+    f32 riseJitter;         /* 0x94 */
+    f32 gravity;            /* 0x98 */
+} EffBillParticleConfig; /* kind 3, 0x9C */
+
+typedef struct EffBillAnimatedFrameConfig {
+    EffBillFrameHeader frame;
+    u32 colorA;
+    u32 colorB;
+    f32 width;
+    f32 widthJitter;
+    f32 radius;
+    f32 radiusJitter;
+    u32 drawProgress; /* 0x70: frames over which the radius grows; at least 1 */
+    f32 spin;
+    f32 spinJitter;
+    f32 spinAccel;
+} EffBillAnimatedFrameConfig; /* kind 4, 0x80 */
+
+typedef struct EffBillEmitterFrameConfig {
+    EffBillFrameHeader frame;
+    u32 firstColor;     /* 0x58 */
+    u32 secondColor;    /* 0x5C */
+    f32 width;          /* 0x60 */
+    f32 widthJitter;    /* 0x64 */
+    f32 radius;         /* 0x68 */
+    f32 radiusJitter;   /* 0x6C */
+    f32 offset;         /* 0x70 */
+    f32 offsetJitter;   /* 0x74 */
+    f32 speed;          /* 0x78 */
+    f32 speedJitter;    /* 0x7C */
+    f32 acceleration;  /* 0x80 */
+    u8 reverse;         /* 0x84 */
+    u8 padding85[3];
+} EffBillEmitterFrameConfig; /* kind 5, 0x88 */
+
+/* Kind-6 radial strip simulation: copied 0xA4-byte configuration. */
+typedef struct EffBillStripFrameConfig {
+    EffBillFrameHeader frame;
+    u32 colorA;
+    u32 colorB;
+    f32 width;
+    f32 widthJitter;
+    f32 lengthStart;
+    f32 lengthStartJitter;
+    f32 lengthEnd;
+    f32 lengthEndJitter;
+    f32 radiusStart;
+    f32 radiusStartJitter;
+    f32 radiusEnd;
+    f32 radiusEndJitter;
+    f32 tiltStart;
+    f32 tiltStartJitter;
+    f32 tiltEnd;
+    f32 tiltEndJitter;
+    f32 spin;
+    f32 spinJitter;
+    f32 spinAccel;
+} EffBillStripFrameConfig; /* kind 6, 0xA4 */
+
+typedef struct EffBillStripEntry {
+    s32 age;
+    f32 angle;
+    f32 spin;
+    f32 length;
+    f32 lengthStep;
+    f32 radius;
+    f32 radiusStep;
+    f32 tilt;
+    f32 tiltStep;
+    f32 width;
+} EffBillStripEntry;
+
+typedef char EffBillStripEntrySizeCheck[(sizeof(EffBillStripEntry) == 0x28) ? 1 : -1];
+
+/* Kind-7 trails share each randomized width factor across their two ends. */
+typedef struct EffBillTrailFrameConfig {
+    EffBillFrameHeader frame;
+    u32 colorA;
+    u32 colorB;
+    f32 widthA;
+    f32 widthB;
+    f32 widthJitter;
+    f32 lengthStart;
+    f32 lengthStartJitter;
+    f32 lengthEnd;
+    f32 lengthEndJitter;
+    f32 radiusStart;
+    f32 radiusStartJitter;
+    f32 radiusEnd;
+    f32 radiusEndJitter;
+    f32 tiltStart;
+    f32 tiltStartJitter;
+    f32 tiltEnd;
+    f32 tiltEndJitter;
+    f32 spin;
+    f32 spinJitter;
+    f32 spinAccel;
+} EffBillTrailFrameConfig; /* kind 7, 0xA8 */
+
+/* Kind-8 quad updates (DDS1 002A2E18 / DDS2 002E4E80) read these
+ * parameters from the copied 0x98-byte record and advance 0x20-byte entries. */
+typedef struct EffBillQuadFrameConfig {
+    EffBillFrameHeader frame;
+    u32 colorA;
+    u32 colorB;
+    f32 width;
+    f32 widthJitter;
+    f32 radius;
+    f32 radiusJitter;
+    f32 heightStart;
+    f32 heightStartJitter;
+    f32 heightEnd;
+    f32 heightEndJitter;
+    f32 tilt;
+    f32 tiltJitter;
+    f32 velocity;
+    f32 velocityJitter;
+    f32 acceleration;
+    u8 reverse;
+    u8 pad95[3];
+} EffBillQuadFrameConfig; /* kind 8, 0x98 */
+
+typedef struct EffBillQuadEntry {
+    s32 timer;
+    f32 velocity;
+    f32 angle;
+    f32 radius;
+    f32 height;
+    f32 heightStep;
+    f32 tilt;
+    f32 width;
+} EffBillQuadEntry;
+
+typedef struct EffBillRangeConfig {
+    EffBillPointConfig point;
+    u8 tilted;
+    u8 pad89[3];
+    f32 startBase;
+    f32 startRand;
+    f32 endBase;
+    f32 endRand;
+    f32 heightScale;
+    f32 angularBase;
+    f32 angularRand;
+    f32 angularAcceleration;
+} EffBillRangeConfig;
+
+/* DDS2 resource-op rows at 003E9DF4/003E9E10/003E9E2C copy
+ * 0xF8/0xF4/0xD8 bytes for vortex/column/spiral. The row at 003E9E7C
+ * copies 0x10C bytes for the animated flame. Kind is local to its operation
+ * table; EffClassWork.kind together with that table selects the record. */
+typedef struct EffBillEmitterHeader {
+    EffBillTimedHeader timed;
+    SdfColorTrack emitterColorTrack;
+    SdfAlphaTrack emitterAlphaTrack;
+    u8 pad70[8];
+    f32 fadeIn;
+    f32 fadeOut;
+    u32 life;
+    u32 spawnRate;
+    u8 respawn;
+    u8 pad89[3];
+    u32 segments;
+} EffBillEmitterHeader;
+
+typedef struct EffBillEmitterCommon {
+    EffBillEmitterHeader header;
+    f32 rowRadius;
+    u8 pad94[4];
+    f32 height;
+    f32 heightJitter;
+    u8 padA0[4];
+    f32 rise;
+    /* Angular sweep for vortex/spiral; longitudinal extent for column. */
+    f32 extent;
+    f32 extentJitter;
+    f32 width;
+    f32 widthJitter;
+    u8 burst;
+    u8 drawMode;
+    u8 padBA[2];
+    f32 radiusStart;
+    f32 radiusStartJitter;
+    f32 radiusEnd;
+    f32 radiusEndJitter;
+} EffBillEmitterCommon;
+
+typedef struct EffBillVortexConfig {
+    EffBillEmitterCommon common;
+    f32 climbStart;
+    f32 climbStartJitter;
+    f32 climbEnd;
+    f32 climbEndJitter;
+    u8 padDC[4];
+    f32 flareJitter;
+    f32 flareCenter;
+    f32 flare;
+    f32 spin;
+    f32 spinJitter;
+    f32 spinAccel;
+} EffBillVortexConfig;
+
+typedef struct EffBillColumnConfig {
+    EffBillEmitterCommon common;
+    f32 velocity;
+    f32 spin;
+    f32 spinJitter;
+    f32 spinAccel;
+    f32 drag;
+    f32 dragJitter;
+    f32 gravity;
+    f32 flareJitter;
+    f32 flareCenter;
+    f32 flare;
+} EffBillColumnConfig;
+
+typedef struct EffBillSpiralConfig {
+    EffBillEmitterCommon common;
+    f32 spin;
+    f32 spinJitter;
+    f32 spinAccel;
+} EffBillSpiralConfig;
+
+typedef struct EffBillFlameConfig {
+    EffBillEmitterHeader header;
+    EffScalarCurve scaleCurve;
+    u8 padB4[5];
+    u8 drawMode;
+    u8 padBA[2];
+    f32 spreadA;
+    f32 spreadB;
+    f32 driftA;
+    f32 driftB;
+    f32 length;
+    f32 lengthJitter;
+    f32 width;
+    f32 widthJitter;
+    u8 burst;
+    u8 meshMode;
+    u8 padDE[2];
+    f32 radiusStart;
+    f32 radiusStartJitter;
+    f32 radiusEnd;
+    f32 radiusEndJitter;
+    f32 velocity;
+    f32 spin;
+    f32 spinJitter;
+    f32 spinAccel;
+    f32 drag;
+    f32 dragJitter;
+    f32 gravity;
+} EffBillFlameConfig;
+
+/* Shared strip resource owner used by the flame updater and the existing
+ * quantized-row producers in both games. */
+typedef struct EffStripWork {
+    u32 count;          // 0x00
+    u32 type;           // 0x04
+    u32 color;          // 0x08
+    s32 rowStride;      // 0x0C
+    s32 repeat;         // 0x10
+    u8 flag;            // 0x14
+    u8 pad_15[3];
+    u32 *colors;        // 0x18
+    u8 *positions;      // 0x1C
+    u8 *uvsA;           // 0x20
+    u8 *uvsB;           // 0x24
+    u8 *extra;          // 0x28
+    sdfMat_t *handle;   // 0x2C
+    struct sdfMemHandle_t *allocation; // 0x30
+} EffStripWork;
+
+/* The class operation table selects the interpretation of each 0x30-byte
+ * entry. Vortex (002ABDE0/002EF1C0), column (002ACA40/002EFE20) and flame
+ * (002AEC60/002F2050) share the timer/radius/spin prefix, but use the
+ * +0x10/+0x14 and +0x24..+0x2C words differently. Their allocators and
+ * reset callbacks use the same record stride and timer sentinel. */
+typedef struct EffBillEmitterEntry {
+    s32 timer;
+    u8 unk04[4];
+    f32 radius;
+    f32 radiusStep;
+    union {
+        struct {
+            f32 climb;
+            f32 climbStep;
+        } vortex;
+        struct {
+            f32 drag;
+            f32 positionY;
+        } column;
+        struct {
+            f32 drag;
+            f32 velocity;
+        } flame;
+    } vertical;
+    f32 spin;
+    f32 angle;
+    f32 width;
+    union {
+        struct {
+            f32 sweep;
+            f32 flare;
+            f32 height;
+        } vortex;
+        struct {
+            f32 length;
+            f32 flare;
+            f32 height;
+        } column;
+        struct {
+            f32 length;
+            f32 baseA;
+            f32 baseB;
+        } flame;
+    } geometry;
+} EffBillEmitterEntry;
+
+typedef struct EffBillRadialConfig {
+    EffBillPointConfig point;
+    f32 radius;
+} EffBillRadialConfig;
+
+/* Animation resource kind 4 (DDS2 003E9ED0) copies this 0x98 record.
+ * Samples are consumed as an unsigned allocation count and a signed row bound. */
+typedef struct EffBillQuantizedConfig {
+    SdfColorTrack colorTrack;
+    SdfAlphaTrack alphaTrack;
+    EffScalarCurve scaleCurve;
+    u8 pad58[0x10];
+    f32 alphaFadeInFraction;
+    f32 alphaFadeOutFraction;
+    u32 drawProgress;
+    union {
+        u32 quantizedSamples;
+        s32 signedRows;
+    } samples;
+    f32 fadeInEnd;
+    f32 fadeOutStart;
+    f32 uvARowScale;
+    f32 uvBVertexScale;
+    f32 rowOffset;
+    f32 radius;
+    f32 angularSpanDegrees;
+    u8 meshMode;
+    u8 pad95[3];
+} EffBillQuantizedConfig;
+
+typedef char EffBillOutputHeaderSizeCheck[(sizeof(EffBillOutputHeader) == 0x40) ? 1 : -1];
+
+typedef char EffBillFrameHeaderSizeCheck[(sizeof(EffBillFrameHeader) == 0x58) ? 1 : -1];
+
+typedef char EffBillFrameConfigSizeCheck[(sizeof(EffBillFrameConfig) == 0x80) ? 1 : -1];
+
+typedef char EffBillCellConfigSizeCheck[(sizeof(EffBillCellConfig) == 0x8C) ? 1 : -1];
+
+typedef char EffBillParticleConfigSizeCheck[(sizeof(EffBillParticleConfig) == 0x9C) ? 1 : -1];
+
+typedef char EffBillParticleEntrySizeCheck[(sizeof(EffBillParticleEntry) == 0x2C) ? 1 : -1];
+
+typedef char EffBillAnimatedFrameConfigSizeCheck[(sizeof(EffBillAnimatedFrameConfig) == 0x80) ? 1 : -1];
+
+typedef char EffBillEmitterFrameConfigSizeCheck[(sizeof(EffBillEmitterFrameConfig) == 0x88) ? 1 : -1];
+
+typedef char EffBillStripFrameConfigSizeCheck[(sizeof(EffBillStripFrameConfig) == 0xA4) ? 1 : -1];
+
+typedef char EffBillTrailFrameConfigSizeCheck[(sizeof(EffBillTrailFrameConfig) == 0xA8) ? 1 : -1];
+
+typedef char EffBillQuadFrameConfigSizeCheck[(sizeof(EffBillQuadFrameConfig) == 0x98) ? 1 : -1];
+
+typedef char EffBillQuantizedConfigSizeCheck[(sizeof(EffBillQuantizedConfig) == 0x98) ? 1 : -1];
+
+typedef char EffBillRangeConfigSizeCheck[(sizeof(EffBillRangeConfig) == 0xAC) ? 1 : -1];
+
+typedef char EffBillEmitterHeaderSizeCheck[(sizeof(EffBillEmitterHeader) == 0x90) ? 1 : -1];
+
+typedef char EffBillEmitterCommonSizeCheck[(sizeof(EffBillEmitterCommon) == 0xCC) ? 1 : -1];
+
+typedef char EffBillVortexConfigSizeCheck[(sizeof(EffBillVortexConfig) == 0xF8) ? 1 : -1];
+
+typedef char EffBillColumnConfigSizeCheck[(sizeof(EffBillColumnConfig) == 0xF4) ? 1 : -1];
+
+typedef char EffBillSpiralConfigSizeCheck[(sizeof(EffBillSpiralConfig) == 0xD8) ? 1 : -1];
+
+typedef char EffBillFlameConfigSizeCheck[(sizeof(EffBillFlameConfig) == 0x10C) ? 1 : -1];
+
+typedef char EffBillRadialConfigSizeCheck[(sizeof(EffBillRadialConfig) == 0x8C) ? 1 : -1];
+
+typedef char EffBillQuadEntrySizeCheck[(sizeof(EffBillQuadEntry) == 0x20) ? 1 : -1];
+
+typedef char EffBillEmitterEntrySizeCheck[(sizeof(EffBillEmitterEntry) == 0x30) ? 1 : -1];
+
+typedef char EffStripWorkSizeCheck[(sizeof(EffStripWork) == 0x34) ? 1 : -1];
+
+/* One 0x30-byte particle state row used by the billboard column updater. */
+typedef struct EffBillColumnParticle {
+    s32 age;             /* 0x00: spawn sentinel or elapsed particle frames */
+    u32 opaque04;        /* 0x04: preserved state not read by the updater */
+    f32 radius;          /* 0x08: current radial distance */
+    f32 radiusStep;      /* 0x0C: radial change per frame */
+    f32 drag;            /* 0x10: vertical drag applied per frame */
+    f32 verticalOffset;  /* 0x14: current vertical position */
+    f32 spin;            /* 0x18: angular speed */
+    f32 spinPhase;       /* 0x1C: initial angular phase */
+    f32 width;           /* 0x20: ribbon width */
+    f32 extent;          /* 0x24: ribbon length along its direction */
+    f32 flare;           /* 0x28: radial flare amount */
+    f32 height;          /* 0x2C: vertical start height, advanced by rise */
+} EffBillColumnParticle;
+
+typedef char EffBillColumnParticleSizeCheck[
+    (sizeof(EffBillColumnParticle) == 0x30) ? 1 : -1];
+
+/* Shared 0x34-byte backing record used by the alternate ribbon renderer.
+ * surfaceIndex comes from the alpha track; drawMode is the caller's byte
+ * mode, which the renderer tests only for zero/nonzero. */
+typedef struct EffRibbonWork {
+    u32 count;                 /* 0x00 */
+    u32 surfaceIndex;          /* 0x04 */
+    u32 color;                 /* 0x08 */
+    s32 rowStride;             /* 0x0C */
+    s32 repeat;                /* 0x10 */
+    u8 drawMode;               /* 0x14 */
+    u8 pad_15[3];
+    RefObj *resource;          /* 0x18: null selects the shared wind texture */
+    u32 *colors;               /* 0x1C */
+    u8 *positions;             /* 0x20 */
+    u8 *uvs;                    /* 0x24 */
+    u8 *extra;                  /* 0x28 */
+    sdfMat_t *handle;           /* 0x2C */
+    struct sdfMemHandle_t *allocation; /* 0x30 */
+} EffRibbonWork;
+
+EffRibbonWork *effCreateRibbonWithSharedResource(
+    u32 count, u32 repeat, struct SdfTextureFileHeader *resource);
+
+EffRibbonWork *effCloneRibbonWithSharedResource(EffRibbonWork *source);
+
+void effSharedAssetReferenceRelease(EffRibbonWork *work);
+
+typedef char EffRibbonWorkSizeCheck[(sizeof(EffRibbonWork) == 0x34) ? 1 : -1];
+
+/* Shared frame and output views consumed by effUpdateScaledClassFrameRows. */
+typedef struct EffClassFrameResource {
+    u8 pad_00[8];
+    u32 frameCount;
+    u8 pad_0C[4];
+    u8 *rows;
+} EffClassFrameResource;
+
+typedef struct EffClassRowOutput {
+    u8 pad_00[0x1C];
+    u8 *rows;
+} EffClassRowOutput;
+
+typedef char EffClassFrameResource_size_check[
+    (sizeof(EffClassFrameResource) == 0x14) ? 1 : -1];
+
+typedef char EffClassRowOutput_size_check[
+    (sizeof(EffClassRowOutput) == 0x20) ? 1 : -1];
+
+typedef struct EffRingResource {
+    EffPointSet *pointSet;
+} EffRingResource;
+
+typedef char EffRingResourceSizeCheck[
+    (sizeof(EffRingResource) == 0x04) ? 1 : -1];
+
+EffPointSet *effCreatePointSet5(s32 count);
+
+EffPointSet *effCreatePointSet4(u32 count);
+
+void effReleasePointSetAsset(EffPointSet *set);
+
+typedef struct EffPointSetRow {
+    struct EffPointSet *set; /* 0x00 */
+    s32 key;                 /* 0x04 */
+    u32 color;               /* 0x08 */
+    f32 angle;               /* 0x0C */
+} EffPointSetRow;
+
+typedef struct EffPointSetTable {
+    EffPointSetRow *rows;
+} EffPointSetTable;
+
+typedef char EffPointSetRowSizeCheck[(sizeof(EffPointSetRow) == 0x10) ? 1 : -1];
+
+typedef char EffPointSetTableSizeCheck[(sizeof(EffPointSetTable) == 0x04) ? 1 : -1];
+
+/* Effect transform consumed as four float columns or four VU0/DMA rows. */
+typedef struct Matrix4 {
+    union {
+        float m[4][4];
+        s128 rows[4];
+    } u;
+} Matrix4;
+
+typedef char Matrix4_size_must_be_0x40[
+    sizeof(Matrix4) == 0x40 ? 1 : -1];
+
+/* Shared billboard/frame resource view. The generic EffFrameState owner can
+ * point at several resource kinds; only cast its asset slot to this record in
+ * frame callbacks. The +0x18 pointer is preserved as an opaque pointer because
+ * the paired units disagree on its signed element type and do not consume it. */
+typedef struct EffFrameAsset {
+    u8 pad00[8];
+    u32 frameCount;          /* 0x08 */
+    u8 pad0C[0x0C];
+    void *animationFrames;   /* 0x18 */
+    u32 *frameStorage;       /* 0x1C: per-entry frame counters for bill effects. */
+    f32 *transformRows;      /* 0x20 */
+    u32 pad24;
+    u32 *colorRows;          /* 0x28 */
+} EffFrameAsset;
+
+typedef char EffFrameAssetSizeCheck[
+    (sizeof(EffFrameAsset) == 0x2C) ? 1 : -1];
+
+/* Four ordered 32-bit words in the shared effect random-number state. */
+typedef struct EffRandState {
+    u32 words[4];
+} EffRandState;
+
+typedef char EffRandState_size_must_be_0x10[
+    (sizeof(EffRandState) == 0x10) ? 1 : -1];
+
+/* Float-input SDK form: retain the broad memory effect and let GCC transfer
+ * the binary32 scale to the unpack's GPR operand. The exact surface-grid
+ * gradient uses four such 16-byte carriers (DDS1 002A7288, DDS2 002E9840).
+ * This is distinct from the integer-bit, read-only form above. */
+static inline void eeUnpackRGBAWordFloat(u32 color, f32 unit) {
+    u32 rgba[4];
+    rgba[0] = color;
+    EE_MMI_RGBA_UNPACK(rgba, unit);
+}
+
+/* Shared DDS1/DDS2 animated billboard effect state. */
+typedef struct EffBillboardWork {
+    f32 position[4];
+    f32 rotation[4];
+    f32 scale;
+    u32 color;
+    s32 frame;
+    f32 heightScale;
+    f32 widthScale;
+    u8 opaque34[0x30];
+    struct billHandle_t *billboard;
+} EffBillboardWork;
+
+typedef char EffBillboardWork_size_must_be_0x68[
+    (sizeof(EffBillboardWork) == 0x68) ? 1 : -1];
 
 extern void evtDestroySelectionState(void);
 extern s32 evtSelStateCreate(s32 countLimit, s16 frames, s32 firstValue, s32 secondValue);
@@ -868,7 +1731,15 @@ void ResourceCopy_effMuzzleFlash(s32 dst, s32 src);
 u8 *Copy_effMuzzleFlash(const u8 *source);
 void effBillboardEntryFrameReset(EffBillboardWork *work);
 
-#include "dds/eff_frame_state.h"
+/* Shared 0xC per-instance prefix: entries, asset view and allocation handle. */
+typedef struct EffFrameState {
+    u8 *entries;
+    u8 *asset;
+    struct sdfMemHandle_t *allocation;
+} EffFrameState;
+
+typedef char EffFrameState_size_check[
+    (sizeof(EffFrameState) == 0xC) ? 1 : -1];
 
 void effClearBillFrames(u8 *work);
 u8 *effCreateBillFrameNode(EffBillFrameConfig *config, u32 resource);
@@ -890,7 +1761,18 @@ extern u8 effOnesVector[];
 void billAdvanceFrameInstances(EffClassWork *work);
 extern void effDrawTrackSet(EffTrackSet *, const Matrix4 *);
 
-#include "dds/eff_bill_cell_draw_work.h"
+typedef struct BillCellDrawWork {
+    u8 opaque00[0x10];
+    u8 transform[0x10];
+    f32 scale;
+    s32 baseColor;
+    u32 frameLimit;
+    u8 opaque2C[4];
+    u32 *instances;
+    u8 *config;
+} BillCellDrawWork;
+
+typedef char BillCellDrawWorkSizeCheck[(sizeof(BillCellDrawWork) == 0x38) ? 1 : -1];
 
 void billUpdateFrameDrawColorAndTransform(BillCellDrawWork *work);
 void billResetCellIndices(u8 *work);

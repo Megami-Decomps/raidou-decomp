@@ -1,16 +1,24 @@
 #include "common.h"
 #include "sdfSound.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "fileManager.h"
 #include "newdata.h"
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
-#include "dds/btl.h"
-
+#include "include_asm.h"
+#include "ps2asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "fpu.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "code_r1_0021CE60.h"
+#include "slMain.h"
+#include "code_r1_001CC1D0.h"
 
 /* Apply volume and pan to a sequence track through the command queue. */
 
@@ -21,13 +29,30 @@
 
 #define SDK_SKIP_memset
 
-#include "dds/file_load_menu_state.h"
-#include "dds/ee_mmi.h"
-#include "dds/file.h"
-#include "dds/file_selection_api.h"
-#include "dds/file_slot.h"
-#include "dds/fpu.h"
-#include "dds/mnu_list.h"
+/* Save-slot selection motion: a one-tick-at-a-time scroll advances or retreats
+ * the selected slot while the visible rows slide in the opposite direction. */
+typedef s8 FileLoadMenuSlideMode;
+
+enum {
+    FILE_LOAD_MENU_SLIDE_IDLE = 0,
+    FILE_LOAD_MENU_SLIDE_SELECTION_DOWN = 1,
+    FILE_LOAD_MENU_SLIDE_SELECTION_UP = 2
+};
+
+typedef struct FileLoadMenuState {
+    u8 unk00[4];              /* 0x00: opaque */
+    s32 transitionTickCount;  /* 0x04 */
+    s32 inputRepeatTimer;     /* 0x08 */
+    s32 standardRowAlpha;     /* 0x0C: clamped to 0..0x80 for ordinary rows */
+    FileLoadMenuSlideMode slideMode; /* 0x10: idle or selection-scroll direction */
+    u8 pad11[3];              /* 0x11 */
+    s32 rowVerticalOffset;    /* 0x14 */
+    s32 leadingRowAlpha;      /* 0x18 */
+    s32 trailingRowAlpha;     /* 0x1C */
+} FileLoadMenuState;
+
+typedef char FileLoadMenuState_size_must_be_0x20[
+    (sizeof(FileLoadMenuState) == 0x20) ? 1 : -1];
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -171,7 +196,6 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
         next = fileQueueFindBySector(queue, owner->id);
     }
 }
-
 
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {

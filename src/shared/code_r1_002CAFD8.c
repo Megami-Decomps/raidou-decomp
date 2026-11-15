@@ -20,7 +20,6 @@ typedef struct frFontHandle_t frFontHandle_t;
 
 typedef struct frFontRequest_t frFontRequest_t;
 
-
 typedef struct
 {
     /* 0x0000 */ u8 unk_00;
@@ -272,7 +271,6 @@ typedef struct
     /* 0x1A71C */ s32 unk_1A71C;
     /* 0x1A720 */ fclRibbon_t *ribbon;
 } cmbGbWork_t;
-
 
 typedef struct
 {
@@ -579,12 +577,6 @@ extern void *hCAMPBadEffect;
 
 extern datSkill_t attr[];
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-
-
 /* Append standard packets to a DMA packet list. A null allocator selects the
    default packet allocator. Asset packets reference the selected draw entry. */
 
@@ -593,12 +585,49 @@ extern datSkill_t attr[];
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 
-#include "dds/sdf_packet_header.h"
-#include "dds/eff.h"
-#include "dds/eff_slot_phase.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_records.h"
-#include "dds/itf_grid_status_records.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "code_r1_002C8188.h"
+#include "code_r1_002CAFD8.h"
+
+/* Per-update signed 16.16 phase delta; negative callback results hold the phase. */
+typedef s32 EffSlotPhaseStep;
+
+enum {
+    EFF_SLOT_PHASE_ONE = 0x10000, /* 1.0 in signed 16.16 */
+};
+
+/* Consumed prefixes of effect status payloads; any resource tail remains opaque. */
+typedef struct GridAngleTable {
+    s32 divisor;
+    s32 mirrored;
+    s32 cycleDivisor;
+} GridAngleTable;
+
+typedef struct GridFlushTable {
+    s32 inDuration;
+    s32 waitDuration;
+    s32 outDuration;
+} GridFlushTable;
+
+typedef struct GridColorTargetTable {
+    s32 divisor;
+    s32 alpha;
+    s32 blue;
+    s32 green;
+    s32 red;
+} GridColorTargetTable;
+
+typedef char GridAngleTable_size_must_be_0x0C[(sizeof(GridAngleTable) == 0x0C) ? 1 : -1];
+
+typedef char GridFlushTable_size_must_be_0x0C[(sizeof(GridFlushTable) == 0x0C) ? 1 : -1];
+
+typedef char GridColorTargetTable_size_must_be_0x14[(sizeof(GridColorTargetTable) == 0x14) ? 1 : -1];
 
 extern void *effGetSlotWorkOrOverride(EffectSlotSet *, s32);
 extern EffectSlotSet *effUpdateTimedStates(EffectSlotSet *, u32, void *);

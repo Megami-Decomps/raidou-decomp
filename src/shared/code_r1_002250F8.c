@@ -10,14 +10,21 @@
 #include "sdfModel.h"
 #include "mdlManager.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "sdk_libc.h"
-#include "dds/btl.h"
-#include "dds/mdl.h"
-#include "dds/sdf_tex_create.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "sdf_lighting.h"
+#include "libsdf.h"
+#include "model.h"
+#include "motion.h"
+#include "ps2asm.h"
+#include "sdf_resource.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "code_r1_0021C768.h"
 
 enum {
     SDF_PSMCT32 = 0x00,
@@ -30,7 +37,6 @@ enum {
 };
 
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
-
 
 /* Allocate a distinct caller-owned context linked to the registered group.
  * Contexts share the group node and assets; release each context with mdlFree. */
@@ -47,23 +53,72 @@ void mdlSingleMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex);
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 
-
-
 /* Allocate and register a texture. The shared registration helper initializes
  * its ordinary reference count to one; the caller releases that reference with
  * sdfTexReleaseReference or its deferred form. */
 
 /* Store the context-one resource packet on the texture's primary buffer. */
 
-#include "dds/eff_object_node.h"
-#include "dds/eff_model_owner.h"
-#include "dds/eff_ref_obj.h"
-#include "dds/eff_anim.h"
-#include "dds/ee_mmi.h"
-#include "dds/pcp_vu0.h"
-#include "dds/sdf_texture_file.h"
-#include "dds/eff_expanded_source.h"
-#include "dds/eff_update_flags.h"
+/* Intrusive model-object list node; the object payload stays opaque here. */
+typedef struct EffectObjectNode {
+    void *object;
+    struct EffectObjectNode *prev;
+    struct EffectObjectNode *next;
+} EffectObjectNode;
+
+typedef char EffectObjectNode_size_must_be_0xC[
+    (sizeof(EffectObjectNode) == 0xC) ? 1 : -1];
+
+/* Heap-owned model wrapper allocated as a 0x10-byte chip block. */
+typedef struct EffModelOwner {
+    f32 scale;
+    struct mdlObj_t *model;
+    struct sdf3DLightParallelPacket_t *ownedBuffer;
+    u32 flags;
+} EffModelOwner;
+
+/* Floor-list lifecycle and deferred-refresh state shared by both providers. */
+enum {
+    EFF_MODEL_OWNER_FLAG_UPDATE_PENDING = 0x01,
+    EFF_MODEL_OWNER_FLAG_DESTROY_REQUESTED = 0x02,
+    EFF_MODEL_OWNER_FLAG_FLOOR_LISTED = 0x04,
+    EFF_MODEL_OWNER_FLAG_DESTROY_READY = 0x08,
+    EFF_MODEL_OWNER_FLAG_LISTED_OBJECT = 0x10,
+    EFF_MODEL_OWNER_FLAG_UPDATE_DEFERRED = 0x20
+};
+
+typedef char EffModelOwner_size_check[
+    (sizeof(EffModelOwner) == 0x10) ? 1 : -1];
+
+/* Kind-7 reference animation modes; other flag bits are uninterpreted. */
+enum EffReferenceFlag {
+    EFF_ANIM_SET_LOOP = 0x1,
+    EFF_ANIM_SET_DOUBLE_Y_SCALE = 0x4,
+};
+
+typedef struct EffAnimSample {
+    f32 scaleX;     // 0x00
+    f32 scaleY;     // 0x04
+    f32 angle;      // 0x08
+    s32 segment;    // 0x0C
+} EffAnimSample;
+
+#define SDF_TEXTURE_PAYLOAD_EXTRA_OFFSET_MASK 0xF0
+
+/* Serialized texture-animation list header, count entry records, then payloads.
+ * flags is copied to EffExpandedList and tested by animation sampling. */
+typedef struct EffExpandedSource {
+    u8 pad00[4];
+    u32 count;
+    u32 flags;
+    u8 pad0C[4];
+    EffExpandedEntry entries[1];
+} EffExpandedSource;
+
+typedef char EffExpandedSource_size_check[
+    sizeof(EffExpandedSource) == 0x20 ? 1 : -1];
+
+#define EFF_MODEL_UPDATE_DEFER_FLOOR_REFRESH 0x1
 
 extern struct EffExpandedList *effCacheTexCreate(u32);
 
@@ -112,7 +167,19 @@ void effFloorModelListRemove(EffectObjectNode *node);
 void effSweepFloorModelList(void);
 void mdlMarkAndProcessObjectNodes(void);
 
-#include "dds/eff_resource_owner.h"
+typedef struct EffResourceOwner {
+    u32 count;
+    u32 currentFrame;
+    SdfColorTrack colorTrack; /* 0x08 */
+    SdfAlphaTrack alphaTrack; /* 0x2C */
+    u32 plainEntry; // 0x3C: add the model entry plain instead of flagged
+    f32 frameStep; /* 0x40 */
+    struct FileQueue **entries; /* 0x44: retained queue-pointer array */
+    struct sdfMemHandle_t *queueAllocation; /* 0x48: queue-pointer array descriptor */
+    mdlObj_t *model;
+} EffResourceOwner;
+
+typedef char EffResourceOwner_size_check[(sizeof(EffResourceOwner) == 0x50) ? 1 : -1];
 
 typedef struct EffResourceModelConfig {
     SdfColorTrack colorTrack;
@@ -139,7 +206,6 @@ sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, RefObj *so
 
 /* Serialized expanded list: 0x10-byte header, the entry table, then each entry's payload. */
 struct EffExpandedList *effCacheTexCreate(u32 sourceAddress);
-
 
 void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source) {
     EffModelOwner *owner = work;

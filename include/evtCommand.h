@@ -121,4 +121,8 @@ s32 evtCommand_UNIT_CLS_STOP(void);
 u32 evtOpcodeRefreshTaskData(void);
 s32 fldCommand_PAD_DISABLE(void);
 
+/* A command remains at its current instruction while pending. Any nonzero
+ * callback result completes it and lets the interpreter consume its operands. */
+typedef u32 ScrCommandResult;
+
 #endif

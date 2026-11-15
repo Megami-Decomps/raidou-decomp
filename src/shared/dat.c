@@ -3,16 +3,52 @@
 #include "sdfSystem.h"
 #include "sdfFile.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "basic.h"
 #include "datCalc.h"
 #include "newdata.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
-#include "dds/sdf_dev_state.h"
+#include "include_asm.h"
+#include "ps2asm.h"
+#include "code_0027A1D0.h"
+#include "code_r1_0021CE60.h"
+#include "dat.h"
+
+/* The 0x4C-byte enemy table supplies initial party vitals/stats, skills and
+ * rewards (DDS1 001A1990, DDS2 001AA898 copy the leading values). */
+typedef struct DatEnemyRecord {
+    u32 flags;            /* 0x00 */
+    u8 pad04;
+    u8 level;             /* 0x05 */
+    u16 hp;               /* 0x06 */
+    u16 maxHp;            /* 0x08 */
+    u16 mp;               /* 0x0A */
+    u16 maxMp;            /* 0x0C */
+    s16 affinityTableIndex; /* 0x0E: signed affinity-bank row in DDS1. */
+    u8 baseStats[DAT_BASE_STAT_COUNT]; /* 0x10 */
+    u8 summonCategory;  /* 0x15: ENEMY_TABLE category used as a secondary actor's action number. */
+    u8 usePanelIcons; /* 0x16: nonzero selects panel icon groups instead of numeric level/vitals. */
+    u8 pad17;
+    u16 skills[8];        /* 0x18 */
+    s32 money;            /* 0x28 */
+    u16 battleExperienceReward; /* 0x2C: base EXP awarded on enemy defeat. */
+    u16 experience;       /* 0x2E */
+    u16 huntExperience;   /* 0x30 */
+    u8 pad32[4];
+    u16 huntPenaltyFlags; /* 0x36: hunt's adverse-outcome mask. */
+    u16 huntPenaltyChance; /* 0x38: base percentage before status modifiers. */
+    u8 pad3A[4];
+    u8 additionalDropItemIds[2]; /* 0x3E: optional item IDs selected with actionChances. */
+    u8 actionChances[2];  /* 0x40: bucket thresholds for the additional drop item IDs. */
+    u16 overrideFlag;     /* 0x42: model flag gating the override action. */
+    u8 overrideAction;    /* 0x44: action selected before the ordinary slots. */
+    u8 overrideChance;    /* 0x45: bucket threshold for the override action. */
+    s8 indexedValueOverride; /* 0x46: signed value used for enemy selector index zero. */
+    u8 tickCount;         /* 0x47: enemy action tick count; zero is read as one. */
+    u8 attackSpacing;    /* Repeat-hit interval, scaled by the command's effect data. */
+    u8 pad49[3];
+} DatEnemyRecord;
+
+typedef char DatEnemyRecordSizeCheck[sizeof(DatEnemyRecord) == 0x4C ? 1 : -1];
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -36,8 +72,8 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-#ifdef VERSION_RAIDOU1
 
+#ifdef VERSION_RAIDOU1
 /* Allocate from the chip heap through 0x400 bytes; larger requests use the
  * general heap and return its locked payload address. */
 
@@ -46,10 +82,23 @@ sdfFileCmdHandle_t *sdfFileOpen(const char *path);
 
 /* Release the sdfAllocAuto base in its source heap; interior pointers are
  * invalid. */
-#endif
 
-#include "dds/sdf_vu0.h"
-#include "dds/sdf_channel.h"
+#endif
+/* Each configured segment supplies a destination slot and an opaque word. */
+typedef struct SdfChannelEntry {
+    void **slot;
+    u32 unused;
+} SdfChannelEntry;
+
+/* The channel loader scans these entries through the first null slot. */
+typedef struct SdfChannel {
+    const char *path;
+    SdfChannelEntry entries[20];
+} SdfChannel;
+
+typedef char SdfChannelEntry_size_must_be_8[(sizeof(SdfChannelEntry) == 8) ? 1 : -1];
+
+typedef char SdfChannel_size_must_be_0xA4[(sizeof(SdfChannel) == 0xA4) ? 1 : -1];
 
 #define SDF_PACKED_STATUS_BIT 0x8000
 

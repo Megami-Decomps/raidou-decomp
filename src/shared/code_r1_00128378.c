@@ -4,19 +4,36 @@
 #include "dds3MatterObjectBasic.h"
 #include "fldProcess.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "dds3obj.h"
 #include "field.h"
 #include "kernel.h"
 #include "newdata.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/btl.h"
-#include "dds/dds3_basic_array_cursor.h"
-#include "dds/dds3_slot1_handler_api.h"
+#include "include_asm.h"
+#include "basic.h"
+#include "ps2asm.h"
+#include "fpu.h"
+#include "dds3UnitObjectBasic.h"
+
+/* Kind-1 value cursors use these halfwords at 00110490. The same prefix is
+ * used by separate 0x10-byte world index nodes (0010FEC8). */
+typedef struct dds_dds3BasicArrayHandle_t {
+    s16 headIndex;
+    s16 tailIndex;
+    s16 cursorIndex;
+    u16 entryCount;
+} dds_dds3BasicArrayHandle_t;
+
+typedef char WorldValueIndices_size_must_be_0x08[(sizeof(dds_dds3BasicArrayHandle_t) == 0x08) ? 1 : -1];
+
+/* Cursor advancement returns whether cursorIndex refers to a linked entry. */
+typedef u32 Dds3BasicArrayCursorResult;
+
+enum {
+    DDS3_BASIC_ARRAY_CURSOR_EXHAUSTED = 0,
+    DDS3_BASIC_ARRAY_CURSOR_HAS_ENTRY = 1
+};
 
 void dds3FreeBasicArrayHandle(WorldIndexNode *node);
 dds3Basic_t *dds3GetBasicArray(const dds_dds3BasicArrayHandle_t *object);
@@ -35,15 +52,11 @@ WorldIndexNode *dds3SceneBasicGetList(dds3Basic_t *object, s32 kind);
 Dds3BasicArrayCursorResult dds3SetFirstBasicArray(dds_dds3BasicArrayHandle_t *object);
 Dds3BasicArrayCursorResult dds3SetNextBasicArray(dds_dds3BasicArrayHandle_t *object);
 
-#include "dds/ee_mmi.h"
-#include "dds/fpu.h"
-
 extern char D_0039FCA0[];
 extern dds3Basic_t *fldPlayerObject;
 extern u32 fldReleaseUnitPadData[];
 
 struct dds3Basic_t;
-
 
 f32 fldPointDistance(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz);
 void fldToggleWorldNodeState(s64 clearMode);

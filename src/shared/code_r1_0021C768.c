@@ -1,16 +1,24 @@
 #include "common.h"
 #include "sdfSound.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "fileManager.h"
 #include "newdata.h"
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
-#include "dds/btl.h"
-
+#include "include_asm.h"
+#include "ps2asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "fpu.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "slMain.h"
+#include "code_r1_001CC1D0.h"
+#include "code_r1_0021C768.h"
 
 /* Apply volume and pan to a sequence track through the command queue. */
 
@@ -20,15 +28,6 @@
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
 #define SDK_SKIP_memset
-
-#include "dds/file_job_type.h"
-#include "dds/ee_mmi.h"
-#include "dds/file.h"
-#include "dds/file_selection_api.h"
-#include "dds/file_slot.h"
-#include "dds/pcp_vu0.h"
-#include "dds/fpu.h"
-#include "dds/mnu_list.h"
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -162,7 +161,6 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
         next = fileQueueFindBySector(queue, owner->id);
     }
 }
-
 
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {

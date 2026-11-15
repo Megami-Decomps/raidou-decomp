@@ -1,10 +1,6 @@
 #include "common.h"
 #include "sdfVu0.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "kernel_draw.h"
 #include "scr.h"
 #include "sdfDevCons.h"
@@ -21,12 +17,27 @@
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/btl_command.h"
-#include "dds/btl_projected_screen_point.h"
-#include "dds/btl_resource_browser.h"
-#include "dds/ee_mmi.h"
-#include "dds/pcp_vu0.h"
-#include "dds/fpu.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "ps2asm.h"
+#include "fpu.h"
+#include "code_0027A1D0.h"
+#include "code_r1_0017BBD8.h"
+
+typedef struct BtlProjectedScreenPoint {
+    s32 x;
+    s32 y;
+} BtlProjectedScreenPoint;
+
+typedef char BtlProjectedScreenPoint_size_must_be_0x08[
+    (sizeof(BtlProjectedScreenPoint) == 0x08) ? 1 : -1];
+
+typedef s32 BtlProjectedScreenPointResult;
+
+enum {
+    BTL_PROJECTED_SCREEN_POINT_REJECTED = 0,
+    BTL_PROJECTED_SCREEN_POINT_WRITTEN = 1,
+};
 
 enum {
     BTL_RESOURCE_DESCRIPTOR_BYTES = 0x48,

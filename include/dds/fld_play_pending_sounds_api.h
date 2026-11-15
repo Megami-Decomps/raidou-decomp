@@ -1,6 +1,0 @@
-#ifndef DDS_FLD_PLAY_PENDING_SOUNDS_API_H
-
-#define DDS_FLD_PLAY_PENDING_SOUNDS_API_H
-void fldPlayPendingSounds(void);
-
-#endif /* DDS_FLD_PLAY_PENDING_SOUNDS_API_H */

@@ -27,15 +27,8 @@ f32 fldPlayerCalc360_4(f32 aKakudo);
 /* Native surface-category branch is retained by the localized operand below. */
 
 #ifdef VERSION_RAIDOU2
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "sdk_libc.h"
-#include "dds/btl.h"
-
-
-#include "dds/ee_mmi.h"
+#include "include_asm.h"
 
 extern char D_0039FCA0[];
 

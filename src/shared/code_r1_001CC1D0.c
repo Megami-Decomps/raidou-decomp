@@ -1,15 +1,16 @@
 #include "common.h"
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "event.h"
 #include "kernel_draw.h"
 #include "newdata.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/evt_task.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "code_r1_001CC1D0.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -45,8 +46,6 @@ enum {
     SDF_GS_TRXREG = 0x52,
     SDF_GS_TRXDIR = 0x53
 };
-
-#include "dds/mnu.h"
 
 #define CAMP_TASK_NAME_BYTES 0x20
 

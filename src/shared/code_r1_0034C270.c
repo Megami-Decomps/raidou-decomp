@@ -1,15 +1,20 @@
 #include "common.h"
 #include "sdfChip.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "newdata.h"
 
+#include "include_asm.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "code_r1_001CC1D0.h"
 
-#include "dds/mnu_list.h"
-#include "dds/mnu_shop.h"
+/* Select the indexed node and report whether the index exists. */
+s32 mnuSeekListNode(s32 index, struct MenuList *list);
+
+#define MNU_LIST_INSERT_AFTER_ANCHOR 0x2
+
+/* Walk the indexed entry and return its node, or NULL when it is absent. */
+struct MenuListNode *mnuWalkNodeList(s32 index, struct MenuList *list);
 
 struct MenuListNode;
 
@@ -63,7 +68,6 @@ void mnuUpdateListScrollFlags(MenuList *list);
 s32 mnuListContainsFinalNode(MenuList *list);
 MenuListNode *mnuListAdvanceCursor(MenuList *, s32, s32);
 MenuListNode *mnuListRetreatCursor(MenuList *, s32, s32);
-
 
 void mnuSelectFirstListNode(MenuList *list);
 void mnuSelectLastListNode(MenuList *list);

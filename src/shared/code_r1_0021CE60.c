@@ -17,15 +17,24 @@ extern void fclShopProcessStart(void *pPlace);
 
 void CallShopTest(s32 flg, void *data);
 
-#ifndef VERSION_DDS2
-#define VERSION_DDS2 1
-#endif
-
 #include "fileManager.h"
 #include "newdata.h"
 #include "sdk_libkernl.h"
-#include "dds/btl.h"
-#include "dds/sdf_dev_state.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "ps2asm.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "fpu.h"
+#include "code_r1_001CC1D0.h"
+#include "slMain.h"
+#include "code_r1_0021C768.h"
 
 /* Convert three Euler angle components to the VU0 quaternion output.
  * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
@@ -50,20 +59,102 @@ sdfFileCmdHandle_t *sdfFileOpen(const char *path);
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-
 #define SDK_SKIP_memset
 
-#include "dds/eff_surface_node.h"
-#include "dds/file_job_type.h"
-#include "dds/eff_emitter_type.h"
-#include "dds/cam_aim_record.h"
-#include "dds/eff_scale_params.h"
-#include "dds/ee_mmi.h"
-#include "dds/file_selection_api.h"
-#include "dds/file_save_record.h"
-#include "dds/mnu_list.h"
-#include "dds/pcp_vu0.h"
-#include "dds/eff_expanded_list.h"
+enum SdfColorTrackMode {
+    SDF_COLOR_TRACK_MODE_ENDPOINTS = 0,
+    SDF_COLOR_TRACK_MODE_ONE_INTERMEDIATE_KEY = 1,
+    SDF_COLOR_TRACK_MODE_TWO_INTERMEDIATE_KEYS = 2
+};
+
+FileJobPayload *fileDuplicateJob(FileJobPayload *request);
+
+void fileJobWriteSerializedPayload(s32 fd, FileJobPayload *job);
+
+void effPartsPositionSet(struct FileQueue *queue, const f32 position[4]);
+
+void effPartsRotateSet(struct FileQueue *queue, const f32 rotation[4]);
+
+void effPartsScaleSet(struct FileQueue *queue, f32 scale);
+
+void effPartsDraw(struct FileQueue *queue);
+
+void fileQueueNotifyAllJobsComplete(struct FileQueue *queue);
+
+#define FILE_JOB_FLAG_SHARED_PAYLOAD 0x1
+
+#define FILE_JOB_UPDATE_FLAG_APPLY_QUEUE_SCALE 0x1
+
+void ColorSet(FileQueue *queue, u32 color);
+
+enum EffScalarCurveMode {
+    EFF_SCALAR_CURVE_MODE_ENDPOINTS = 0,
+    EFF_SCALAR_CURVE_MODE_ONE_INTERMEDIATE_KEY = 1,
+    EFF_SCALAR_CURVE_MODE_TWO_INTERMEDIATE_KEYS = 2
+};
+
+#define FILE_SLOT_FRAME_NONE (-1)
+
+/* A surface node that also owns one cloned file queue per active record. */
+typedef struct EffectQueuedSurfaceNode {
+    u32 handleCount;
+    u32 color;
+    f32 opacity;
+    u32 kind;
+    EffSurfaceParams params; /* 0x10: copied source header */
+    u32 index;
+    struct sdfMemHandle_t *handleBuffer; // 0x30
+    billHandle_t *resource;
+    FileJobPayload **jobs;          // 0x38
+    struct sdfMemHandle_t *jobAllocation;      // 0x3C
+    struct FileQueue **queues;      // 0x40: cloned queues, one per active record
+    struct sdfMemHandle_t *queueAllocation;    // 0x44: backing allocation descriptor
+    struct EffExpandedList *resourceHolder; // 0x48
+    FileSlotTable *record; // 0x4C: retained grid record table
+    u16 active;         // 0x50: initialized to 1
+} EffectQueuedSurfaceNode;
+
+typedef struct CamAim {
+    u8 opaque00[0x50];
+    f32 quat[4];
+    u8 opaque60[8];
+    u32 flags;
+} CamAim;
+
+typedef char CamAimSizeCheck[(sizeof(CamAim) == 0x6C) ? 1 : -1];
+
+typedef struct ScaleEntry {
+    f32 unk0;
+    f32 value;
+} ScaleEntry;
+
+/* Access view through +0xF4; intervening storage and any allocation tail stay opaque. */
+typedef struct ScaleSet {
+    u8 pad0[0x64];
+    f32 unk64;
+    f32 unk68;
+    u8 pad6C[4];
+    ScaleEntry entries[3];
+    u8 pad88[0x40];
+    f32 unkC8;
+    f32 unkCC;
+    f32 unkD0;
+    f32 unkD4;
+    f32 unkD8;
+    f32 unkDC;
+    f32 unkE0;
+    f32 unkE4;
+    u8 padE8[8];
+    f32 unkF0;
+} ScaleSet;
+
+typedef struct ScaleOwner {
+    u8 pad0[0x20];
+    ScaleSet *dst;
+    ScaleSet *src;
+} ScaleOwner;
+
+typedef char ScaleEntry_size_must_be_0x08[(sizeof(ScaleEntry) == 0x08) ? 1 : -1];
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -95,8 +186,6 @@ typedef struct FileStatBonus {
     u8 bonusIndex;
     u8 pad07;
 } FileStatBonus;
-
-#include "dds/fpu.h"
 
 struct MenuListNode;
 
@@ -306,7 +395,6 @@ void fileCopyLoadObjectRecordVector(EffectQueuedSurfaceNode *obj, const u128 *va
 void fileSetRecordWordFour(s32 record, u32 value);
 void fileSetLoadObjectScale(EffectQueuedSurfaceNode *obj, f32 scale);
 void fileResetSlotStates(FileSlotTable *table);
-
 
 void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot);
 void fileCopyAndInvalidateSlotGroup(FileSlotTable *table, FileSlot *source);

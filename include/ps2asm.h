@@ -1776,4 +1776,178 @@ __asm__ volatile ( \
 #define EE_GET_VPU_STAT(aOut) __asm__ volatile ( \
     ".set noreorder\n\tcfc2.ni %0, $vi29\n\t.set reorder" : "=r" (aOut))
 
+#include "include_asm.h"
+
+#define VU0_LOAD_MATRIX(src) __asm__ volatile ( \
+    ".set noreorder\n\t" \
+    "lqc2 vf28, 0(%0)\n\t" \
+    "lqc2 vf29, 16(%0)\n\t" \
+    "lqc2 vf30, 32(%0)\n\t" \
+    "lqc2 vf31, 48(%0)\n\t" \
+    ".set reorder" \
+    : : "r" (src))
+
+#define EE_MMI_UNIT_MATRIX(dst) __asm__ volatile ( \
+    ".set noreorder\n\t" \
+    "qmfc2.ni $5, $vf0\n\t" \
+    "pextuw $4, $0, $5\n\t" \
+    "pextuw $2, $0, $4\n\t" \
+    "pextuw $3, $4, $0\n\t" \
+    "sq $2, 0(%0)\n\t" \
+    "sq $3, 0x10(%0)\n\t" \
+    "sq $4, 0x20(%0)\n\t" \
+    "sq $5, 0x30(%0)\n\t" \
+    ".set reorder" \
+    : : "r" (dst) : "$2", "$3", "$4", "$5", "memory")
+
+#define EE_MMI_RGBA_PACK_UNIT(out, unit) __asm__ volatile ( \
+    ".set noreorder\n" \
+    "qmtc2.ni %1, vf2\n" \
+    "vmulx.xyzw vf10, vf10, vf2x\n" \
+    "vftoi0.xyzw vf10, vf10\n" \
+    "qmfc2.ni %0, vf10\n" \
+    "ppach %0, $0, %0\n" \
+    "ppacb %0, $0, %0\n" \
+    ".set reorder" \
+    : "=&r"(out) : "r"(unit))
+
+#define VU0_STORE_MATRIX(dst) __asm__ volatile ( \
+    ".set noreorder\n\t" \
+    "sqc2 vf28, 0(%0)\n\t" \
+    "sqc2 vf29, 16(%0)\n\t" \
+    "sqc2 vf30, 32(%0)\n\t" \
+    "sqc2 vf31, 48(%0)\n\t" \
+    ".set reorder" \
+    : : "r" (dst) : "memory")
+
+#define VU0_STORE_VF(vf, dst) __asm__ volatile ( \
+    ".set noreorder\n\tsqc2 " #vf ", 0(%0)\n\t.set reorder" \
+    : : "r" (dst) : "memory")
+
+#define VU0_SCALAR_OP(f, insn) __asm__ volatile ( \
+    ".set noreorder\n\tmfc1 $2, %0\n\tqmtc2.ni $2, vf2\n\t" insn "\n\t.set reorder" \
+    : : "f" (f))
+
+#define VU0_SCALE_VF(vf, f) __asm__ volatile ( \
+    ".set noreorder\n\tqmtc2.ni %0, vf2\n\tvmulx.xyzw " #vf ", " #vf ", vf2x\n\t.set reorder" \
+    : : "r" (f))
+
+#define VU0_LERP_VF10(t) __asm__ volatile ( \
+    ".set noreorder\n\tqmtc2.ni %0, vf2\n\tvsubx.w vf3, vf0, vf2x\n\t" \
+    "vmulax.xyzw ACC, vf11, vf2x\n\tvmaddw.xyzw vf10, vf10, vf3w\n\t.set reorder" \
+    : : "r" (t))
+
+#define VU0_ROTATE_VEC(dst, src) __asm__ volatile ( \
+    ".set noreorder\n\tvmulax.xyzw ACC, vf28, " #src "x\n\tvmadday.xyzw ACC, vf29, " #src "y\n\t" \
+    "vmaddz.xyzw " #dst ", vf30, " #src "z\n\t.set reorder")
+
+#define VU0_ADD_EXTENDED(dst, a, b) __asm__ volatile ( \
+    ".set noreorder\n\tvadd.xyzw " #dst ", " #a ", " #b "\n\t.set reorder" : :)
+
+#define EE_MMI_BIT_LENGTH(value) __asm__ ( \
+    ".set noreorder\n\tplzcw $2, %0\n\tandi $2, $2, 0xff\n\t" \
+    "addi %0, $0, 31\n\tsubu %0, %0, $2\n\t.set reorder" \
+    : "+r"(value) : : "$2")
+
+#define VU0_SCALE_VF_MFC1(vf, f) __asm__ volatile ( \
+    ".set noreorder\n\tmfc1 $2, %0\n\tqmtc2.ni $2, vf2\n\tvmulx.xyzw " #vf ", " #vf ", vf2x\n\t" \
+    ".set reorder" \
+    : : "f" (f) : "$2", "memory")
+
+#define VU0_SCALAR_OP_TMP(tmp, f, insn) __asm__ volatile ( \
+    ".set noreorder\n\tmfc1 %0, %1\n\tqmtc2.ni %0, vf2\n\t" insn "\n\t.set reorder" \
+    : "=&r" (tmp) : "f" (f))
+
+#define EE_MMI_RGBA_PACK(out) __asm__ volatile ( \
+    ".set noreorder\n" \
+    "mfc1 $3, %1\n" \
+    "qmtc2.ni $3, vf2\n" \
+    "vmulx.xyzw vf10, vf10, vf2x\n" \
+    "vftoi0.xyzw vf10, vf10\n" \
+    "qmfc2.ni %0, vf10\n" \
+    "ppach %0, $0, %0\n" \
+    "ppacb %0, $0, %0\n" \
+    ".set reorder" \
+    : "=r"(out) : "f"(128.0f) : "$3")
+
+#define EE_MMI_RGBA_PACK_UNCLOBBERED(out) __asm__ volatile ( \
+    ".set noreorder\n" \
+    "mfc1 $3, %1\n" \
+    "qmtc2.ni $3, vf2\n" \
+    "vmulx.xyzw vf10, vf10, vf2x\n" \
+    "vftoi0.xyzw vf10, vf10\n" \
+    "qmfc2.ni %0, vf10\n" \
+    "ppach %0, $0, %0\n" \
+    "ppacb %0, $0, %0\n" \
+    ".set reorder" \
+    : "=r"(out) : "f"(128.0f))
+
+#define EE_MMI_RGBA_PACK_F128(out) __asm__ volatile ( \
+    ".set noreorder\n" \
+    "mfc1 $2, %1\n" \
+    "qmtc2.ni $2, vf2\n" \
+    "vmulx.xyzw vf10, vf10, vf2x\n" \
+    "vftoi0.xyzw vf10, vf10\n" \
+    "qmfc2.ni %0, vf10\n" \
+    "ppach %0, $0, %0\n" \
+    "ppacb %0, $0, %0\n" \
+    ".set reorder" \
+    : "=r"(out) : "f"(128.0f))
+
+#define VU0_LOAD_VF(vf, src) __asm__ volatile ( \
+    ".set noreorder\n\tlqc2 " #vf ", 0(%0)\n\t.set reorder" \
+    : : "r" (src))
+
+#define VU0_STORE_VF_UNCLOBBERED(vf, dst) __asm__ volatile ( \
+    ".set noreorder\n\tsqc2 " #vf ", 0(%0)\n\t.set reorder" \
+    : : "r" (dst))
+
+#define VU0_SCALAR_OP_CLOBBER(f, insn) __asm__ volatile ( \
+    ".set noreorder\n\tmfc1 $2, %0\n\tqmtc2.ni $2, vf2\n\t" insn "\n\t.set reorder" \
+    : : "f" (f) : "$2")
+
+#define VU0_MOVE_VF(dst, src) __asm__ volatile ( \
+    ".set noreorder\n\tvmove.xyzw " #dst ", " #src "\n\t.set reorder")
+
+#define VU0_SUB(dst, a, b) __asm__ volatile ( \
+    ".set noreorder\n\tvsub.xyzw " #dst ", " #a ", " #b "\n\t.set reorder")
+
+#define VU0_NEGATE_XYZ(vf) __asm__ volatile ( \
+    ".set noreorder\n\tvsub.xyz " #vf ", vf0, " #vf "\n\t.set reorder")
+
+#define VU0_STORE_MATRIX_M(a, b, c, d) __asm__ volatile ( \
+    ".set noreorder\n\tsqc2 vf28, %0\n\tsqc2 vf29, %1\n\tsqc2 vf30, %2\n\tsqc2 vf31, %3\n\t" \
+    ".set reorder" \
+    : : "m" (a), "m" (b), "m" (c), "m" (d) : "memory")
+
+#define VU0_MOVE_VF_EXTENDED(dst, src) __asm__ volatile ( \
+    ".set noreorder\n\tvmove.xyzw " #dst ", " #src "\n\t.set reorder" : :)
+
+#define VU0_NORMALIZE_VF10_EXTENDED() __asm__ volatile ( \
+    ".set noreorder\n\tvmul.xyz vf2, vf10, vf10\n\tvmulax.w ACC, vf0, vf2x\n\t" \
+    "vmadday.w ACC, vf0, vf2y\n\tvmaddz.w vf2, vf0, vf2z\n\tvrsqrt Q, vf0w, vf2w\n\t" \
+    "vwaitq\n\tvmulq.xyz vf10, vf10, Q\n\t.set reorder" : :)
+
+#define VU0_CROSS_XYZ_EXTENDED(dst, a, b) __asm__ volatile ( \
+    ".set noreorder\n\tvopmula.xyz ACC, " #a ", " #b "\n\tvopmsub.xyz " #dst ", " #b ", " #a "\n\t.set reorder" : :)
+
+/* The record prevents EE GCC 2.96 from decaying an array asm input. */
+typedef struct {
+    float components[4];
+} PcpVectorCopyF32;
+
+#define PCP_COPY_VECTOR_F32(dst, src) __asm__ volatile ( \
+    ".set noreorder\n\tlq $2, 0(%2)\n\tsq $2, 0(%1)\n\t.set reorder" \
+    : "=m" (*(PcpVectorCopyF32 *)(dst)) \
+    : "r" (dst), "r" (src), "m" (*(const PcpVectorCopyF32 *)(src)) \
+    : "$2")
+
+#define VU0_STORE_MATRIX_UNCLOBBERED(dst) __asm__ volatile ( \
+    ".set noreorder\n\tsqc2 vf28, 0(%0)\n\tsqc2 vf29, 16(%0)\n\tsqc2 vf30, 32(%0)\n\t" \
+    "sqc2 vf31, 48(%0)\n\t.set reorder" \
+    : : "r" (dst))
+
+#define VU0_ADD(dst, a, b) __asm__ volatile ( \
+    ".set noreorder\n\tvadd.xyzw " #dst ", " #a ", " #b "\n\t.set reorder")
+
 #endif /* PS2ASM_H */

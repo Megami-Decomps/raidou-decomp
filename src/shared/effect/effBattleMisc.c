@@ -17,12 +17,17 @@ extern f32 effBTL_Ptr_D[];
 void effBTLPartGetPositionPtr(nbFormation_t *pFormation, effBTLAimParams_t *pPosPtr, sdfVector4_t *pPos);
 void effBTLPartGetRotateMatrixPtr(effBTLAimParams_t *pPosPtr, sdfMatrix4_t *pMatrix);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/btl.h"
-#include "dds/eff.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "code_0027A1D0.h"
+#include "effBattleMisc.h"
 
 extern u32 effBTLFieldColorGetVariantSelector(void);
 

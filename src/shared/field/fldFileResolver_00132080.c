@@ -172,129 +172,41 @@ extern u32 fldNextF1Data;
 extern u32 fldNextTbSize;
 extern u32 fldNextF1Size;
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_ACTOR_WAYPOINT_TABLE 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_INFO_TABLE 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_NPC_PALETTE 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_RETAINED_COPY 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_SCENE_RECORD_CHUNK 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_SKY_BUFFER 1
-
-#define SMT3_DEFINES_FLD_SPAWN_BATCH_KIND_BILLBOARD_EFFECT 1
-
-#define SMT3_DEFINES_FLD_SPAWN_BATCH_KIND_CAMERA 1
-
-#define SMT3_DEFINES_FLD_SPAWN_BATCH_KIND_COLLISION 1
-
-#define SMT3_DEFINES_FLD_SPAWN_BATCH_KIND_EVENT 1
-
-#define SMT3_DEFINES_FLD_SPAWN_BATCH_KIND_LIGHT 1
-
-#define SMT3_DEFINES_FLD_SPAWN_BATCH_KIND_PATH 1
-
-#define SMT3_DEFINES_FLD_SPAWN_BATCH_KIND_POINT 1
-
-#define SMT3_DEFINES_FLD_SPAWN_BATCH_KIND_SCRIPT_RESOURCE 1
-
-#define SMT3_DEFINES_FLD_SPAWN_BATCH_KIND_UNSUPPORTED 1
-
-#define SMT3_DEFINES_dds3MoverUpdate_t 1
-
-#define SMT3_DEFINES_fldBillConfigView_t 1
-
-#define SMT3_DEFINES_fldCollisionDescriptor_t 1
-
-#define SMT3_DEFINES_fldConstruntAreaFL2_t 1
-
-#define SMT3_DEFINES_fldEventDataHeader_t 1
-
-#define SMT3_DEFINES_fldFileAreaDataFL1_t 1
-
-#define SMT3_DEFINES_fldFileAreaDataFL2_t 1
-
-#define SMT3_DEFINES_fldFileInfoHeaderFL1_t 1
-
-#define SMT3_DEFINES_fldFileInfoHeaderFL2_t 1
-
-#define SMT3_DEFINES_fldLightDataView_t 1
-
-#define SMT3_DEFINES_fldModelData_t 1
-
-#define SMT3_DEFINES_fldMoverWork_t 1
-
-#define SMT3_DEFINES_fldNpcPalette_t 1
-
-#define SMT3_DEFINES_fldPackedResourceKind 1
-
-#define SMT3_DEFINES_fldResourceAreaRef_t 1
-
-#define SMT3_DEFINES_fldResourceEffect_t 1
-
-#define SMT3_DEFINES_fldResourceLight_t 1
-
-#define SMT3_DEFINES_fldSkyBuffer_t 1
-
-#define SMT3_DEFINES_fldSpawnBatch_t 1
-
-#define SMT3_DEFINES_fldSpawnCollisionView_t 1
-
-#define SMT3_DEFINES_fldSpawnEventDataFL2_t 1
-
-#define SMT3_DEFINES_fldSpawnSoundDataFL2_t 1
-
-#define SMT3_DEFINES_fldTransferChunk_t 1
-
-#define SMT3_DEFINES_motion_t 1
-
-#define SMT3_DEFINES_objectTransform_t 1
-
-#define SMT3_DEFINES_worldIndexNode_t 1
-
 #include "kernel_draw.h"
 #include "sdf_packet_list.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_object_flags.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_world_primary.h"
-#include "dds/dds3obj.h"
-#include "dds/eff_transform.h"
-#include "dds/evt_unit.h"
-#include "dds/evt_unit_color_transition.h"
-#include "dds/evt_world.h"
-#include "dds/fld_scene_ready_api.h"
-#include "dds/fr_font.h"
-#include "dds/mdl.h"
-#include "dds/mdl_motion_api.h"
-#include "dds/sdf.h"
-#include "dds/sdf_column_packet_api.h"
-#include "dds/sdf_dev_state.h"
-#include "dds/sdf_gs_blend.h"
-#include "dds/sdf_gs_packet.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_line_pair_packet_api.h"
-#include "dds/sdf_map_position_api.h"
-#include "dds/sdf_motion.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_append.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_packet_header.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_primitive_packet_api.h"
-#include "dds/sdf_sif_command.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf_texture_file.h"
-#include "dds/sdf_texture_primary_buffer_api.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdf_vu_matrix.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "evt_world.h"
+#include "font.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "sdf_lighting.h"
+#include "libsdf.h"
+#include "model.h"
+#include "motion.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "ps2asm.h"
+#include "fldWap.h"
+#include "fpu.h"
+#include "scr.h"
+#include "newdata.h"
+#include "fldFileResolver_00132080.h"
+
+/* Variable-sized packet header initialized by sdf2DMakePrimPacketHeader. */
+typedef struct SdfDrawPacket {
+    u16 quadwords;
+    u8 pad02[6];
+    u32 pad08;
+    u32 command;
+    u64 gifTag;
+    u64 payloadHeader;
+} SdfDrawPacket;
+
+typedef char SdfDrawPacket_size_must_be_0x20[
+    (sizeof(SdfDrawPacket) == 0x20) ? 1 : -1];
 
 enum {
     OBJECT_TRANSFORM_FLAG_UPDATE_PENDING = 1,
@@ -350,105 +262,45 @@ enum SdfMotionStateValue {
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/sdk_ps2.h"
-#include "dds/fld_item_box_object_api.h"
-#include "dds/sdf_gs_header.h"
-#include "dds/sdf_pac_reloc.h"
-#include "dds/fld_script_resource.h"
-#include "dds/eff.h"
-#include "dds/fld_player_scene_state.h"
-#include "dds/fld_marker_packet.h"
-#include "dds/common.h"
-#include "dds/pty_status_query_api.h"
-#include "dds/file_config_option_api.h"
-#include "dds/fld_camera_model_motion_request.h"
-#include "dds/fld_elv_camera_scene_api.h"
-#include "dds/fld_placement_batch_mode.h"
-#include "dds/sdf_vu0.h"
-#include "dds/fld_stop_entry.h"
-#include "dds/sdf_resource_list_release_api.h"
-#include "dds/dds3_background_fade_api.h"
-#include "dds/fld_movement_hold_state_api.h"
-#include "dds/fld_movement_gate_result.h"
-#include "dds/fld_area_resource_ready_api.h"
-#include "dds/fld_area_resource_name_change_api.h"
-#include "dds/fld_area_resource_request_reuse_api.h"
-#include "dds/fld_file_io_priority_state.h"
-#include "dds/fld_location_coordinate_flags.h"
-#include "dds/fld_scene_record_api.h"
-#include "dds/fld_scene_object_key_result.h"
-#include "dds/fld_light_set.h"
-#include "dds/fld_sky_buffer.h"
-#include "dds/fld_sky_gradient_record.h"
-#include "dds/fld_quad_state.h"
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/mnu_title_stream.h"
-#include "dds/fld_bill_config.h"
-#include "dds/fld_area_path.h"
-#include "dds/fld_npc_motion.h"
-#include "dds/fld_npc_palette.h"
-#include "dds/btl_stage_task_cleanup.h"
-#include "dds/fld_resource_resolver.h"
-#include "dds/fld_clear_menu_entries_api.h"
-#include "dds/fld_play_pending_sounds_api.h"
-#include "dds/fld_release_texture_slots_api.h"
-#include "dds/fld_transfer_chunk.h"
-#include "dds/fld_camera_follow_row.h"
-#include "dds/fld_named_camera_table.h"
-#include "dds/fld.h"
-#include "dds/field.h"
-#include "dds/fld_encounter_runtime_api.h"
-#include "dds/fld_collision_geometry.h"
-#include "dds/fld_collision_query_api.h"
-#include "dds/fld_scene_request.h"
-#include "dds/fld_room_resource_api.h"
-#include "dds/fld_area_room_resource_load_api.h"
-#include "dds/fld_file_addr_reset_mode.h"
-#include "dds/fld_spawn_event.h"
-#include "dds/dds3_object_control_slot.h"
-#include "dds/evt_world_object_api.h"
-#include "dds/dds3_world_value.h"
-#include "dds/evt_action_object.h"
-#include "dds/sdf_texture_offset_list.h"
-#include "dds/evt_script_model.h"
-#include "dds/sdf_model.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/dds3_world_counter.h"
-#include "dds/dds3_world_secondary.h"
-#include "dds/eff_light.h"
-#include "dds/fld_area_work.h"
-#include "dds/fld_spawn_collision.h"
-#include "dds/evt_world_source_transform.h"
-#include "dds/sdf_chip.h"
-#include "dds/fld_waypoint.h"
-#include "dds/fld_inf.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/file_request_api.h"
-#include "dds/file_pac.h"
-#include "dds/fld_packed_resource_kind.h"
-#include "dds/fld_title_banner_menu.h"
-#include "dds/field_stage.h"
-#include "dds/sdf_pac_work.h"
-#include "dds/fpu.h"
-#include "dds/pcp_vu0.h"
-#include "dds/scr.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_runner.h"
-#include "dds/dat_state.h"
-#include "dds/fld_object_slot_api.h"
-#include "dds/fld_placement_data.h"
-#include "dds/fld_resource_name.h"
-#include "dds/fld_file_resource_link_view.h"
-#include "dds/eff_object.h"
-#include "dds/dds3_path.h"
-#include "dds/fld_label_cache_api.h"
-#include "dds/fld_sprite_vertex.h"
-#include "dds/fld_room_state.h"
-#include "dds/fld_trigger_shape.h"
-#include "dds/fld_action_row.h"
-#include "dds/btl.h"
-#include "dds/itf.h"
-#include "dds/fld_index_pair.h"
+typedef s32 FldPlacementBatchMode;
+
+enum {
+    FLD_PLACEMENT_BATCH_MODE_INITIAL = 0,
+    FLD_PLACEMENT_BATCH_MODE_APPEND = 1
+};
+
+/* Scene-placement chunks use the same wire size but store a fallback script
+ * name at +0x04 rather than a file-resolver index. */
+typedef struct FldSceneResourceRecord {
+    u32 unk00;
+    const char *fallbackResourceName;
+    const char *resourceA;
+    const char *resourceB;
+    const char *resourceC;
+    const char *resourceD;
+} FldSceneResourceRecord;
+
+/* Object-spawn records carry a name pointer and signed world-node key. */
+typedef struct FldActionSpawn {
+    u32 unk00;
+    const char *objectName;
+    s32 key;
+} FldActionSpawn;
+
+typedef char FldSceneResourceRecord_size_check[
+    (sizeof(FldSceneResourceRecord) == 0x18) ? 1 : -1];
+
+typedef char FldActionSpawn_size_check[
+    (sizeof(FldActionSpawn) == 0x0C) ? 1 : -1];
+
+/* Counted placement-batch input consumed by both field request paths. */
+typedef struct FldSceneRequest {
+    u32 spawnBatchCount;
+    FldSpawnBatch *spawnBatches;
+    const FldSceneResourceRecord *record;
+    u32 spawnCount;
+    struct FldActionSpawn *spawnList;
+} FldSceneRequest;
 
 typedef struct SdfGsTextureAlphaFlushPacket {
     SdfGsPacketHeader header;
@@ -512,8 +364,6 @@ static inline f32 fldNormalizeProbeVector(void) {
 
 extern void fldSpawnPlacementObjectsFromBatches(FldSpawnBatch *spawnBatches, u32 batchCount,
                                                 FldPlacementBatchMode mode);
-
-#include "dds/fld_event_display_resource_api.h"
 
 /* Serialized transforms leave the position W component zero. */
 static inline void fldCopySpawnTransform(f32 *position, f32 *rotation, const f32 *source) {

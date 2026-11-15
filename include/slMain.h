@@ -6,4 +6,6 @@
 void fmShutDown(void);
 void fmShutDownFade(void);
 
+typedef s32 (*FileSelectionCallback)(void);
+
 #endif

@@ -193,12 +193,59 @@ extern u32 dds3P2APolygonVertexColor[];
 extern sdfGrOt_t *dds3P2APolygonSurfaceTable[];
 void dds3P2APolygonDraw(dds3P2APolygon_tag *instance);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "sdf_types.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "code_r1_001DED50.h"
 
-#include "dds/eff.h"
-#include "dds/ee_mmi.h"
+/* Current billboard draw record copied independently of its shared child. */
+typedef struct BillSnapshot {
+    f32 x;
+    f32 y;
+    f32 halfWidth;
+    f32 halfHeight;
+    sdfTexHandle_t *texture;
+    BillTextureQuad uv;
+} BillSnapshot;
+
+typedef char BillSnapshot_size_must_be_0x24[
+    (sizeof(BillSnapshot) == 0x24) ? 1 : -1];
+
+/* Fifteen billboard quads precede the child manager in its 0x450 allocation. */
+typedef struct BillPacketWork {
+    f32 positions[15][4]; /* 0x000 */
+    u32 colors[15];       /* 0x0F0 */
+    BillTextureQuad uv[15]; /* 0x12C */
+    f32 offsets[15][8];   /* 0x21C: four X/Y corner offsets per quad */
+    s32 count;           /* 0x3FC */
+} BillPacketWork;
+
+typedef char BillPacketWork_size_must_be_0x400[
+    (sizeof(BillPacketWork) == 0x400) ? 1 : -1];
+
+/* Child manager at retained allocation +0x400; shared by resource and draw owners. */
+typedef struct BillChildPayload {
+    sdfTexHandle_t *texture; /* 0x00: acquired texture reference. */
+    u16 variant; /* Child variant bits; signed inputs narrow on assignment. */
+    u8 pad06[2];
+    s32 refCount;      /* 0x08 */
+    BillTextureQuad uv; /* 0x0C */
+    f32 x;             /* 0x1C */
+    f32 y;             /* 0x20 */
+    f32 halfWidth;  /* 0x24 */
+    f32 halfHeight; /* 0x28 */
+    sdfDrawTag_t *pendingLists[5]; /* 0x2C */
+    u16 packetListIndex; /* 0x40 */
+    u8 pad42[2];
+    struct sdfMemHandle_t *allocation; /* 0x44: allocation descriptor released with this child. */
+    BillPacketWork *work; /* 0x48: retained packet-buffer address */
+    struct BillChildPayload *next; /* 0x4C */
+} BillChildPayload;
+
+typedef char BillChildPayload_size_must_be_0x50[
+    (sizeof(BillChildPayload) == 0x50) ? 1 : -1];
 
 typedef struct DmaPacketHeader DmaPacketHeader;
 

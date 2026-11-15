@@ -6,19 +6,36 @@
 #include "dds3KernelCore.h"
 #include "dds3KernelMisc.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "newdata.h"
 #include "sdfDevCons.h"
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
-#include "dds/btl.h"
-#include "dds/eff_event_setup_readiness.h"
-#include "dds/evt_picture.h"
-#include "dds/evt_viewer.h"
-#include "dds/mdl_motion_controller_lookup_api.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "draw3d.h"
+#include "basic.h"
+#include "evt_world.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "libsdf.h"
+#include "sdf_movie_types.h"
+#include "field.h"
+#include "ps2asm.h"
+#include "code_r1_001C4B78.h"
+#include "evtEventViewerMenu.h"
+#include "evtEventViewer.h"
+
+/* Setup remains ready after processing until its control byte resets it. */
+typedef s8 EffEventSetupReadiness;
+
+enum {
+    EFF_EVENT_SETUP_NOT_READY = 0,
+    EFF_EVENT_SETUP_READY = 1
+};
+
+#define DDS3_TASK_UPDATE_FINISH_CALLBACK (-1)
 
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
@@ -38,16 +55,43 @@ EffEventSetupReadiness evtViewerCheckDirty(void);
 /* Borrow a controller owned by ctx. The pointer is read-only and expires when
  * that controller is removed or the model context is freed. */
 
-
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/evt_menu_table_entry_availability.h"
-#include "dds/evt_pad.h"
-#include "dds/ee_mmi.h"
-#include "dds/evt_task.h"
+typedef s32 EvtMenuTableEntryAvailability;
+
+enum {
+    EVT_MENU_TABLE_ENTRY_DISABLED = 0,
+    EVT_MENU_TABLE_ENTRY_ENABLED = 1
+};
+
+/* Shared 0x40-byte event-viewer control state. Unobserved input slots remain
+ * opaque; the named bytes are consumed by both titles' editor handlers. */
+typedef struct EvtPad {
+    u8 pad00[6];
+    s8 frameEnd; /* +0x06: jump from group properties to the last key. */
+    s8 frameStart; /* +0x07: jump from group properties to the first key. */
+    u8 pad08[0x18];
+    s8 syncKey; /* 0x20 */
+    s8 confirm; /* 0x21 */
+    u8 pad22;
+    s8 cancel; /* 0x23 */
+    s8 decOne; /* 0x24 */
+    s8 incOne; /* 0x25 */
+    s8 decTen; /* 0x26 */
+    s8 incTen; /* 0x27 */
+    u8 decHun; /* 0x28 */
+    s8 coarseDecrease; /* 0x29: coarse decrease in the property editor. */
+    u8 incHun; /* 0x2A */
+    s8 coarseIncrease; /* 0x2B: coarse increase in the property editor. */
+    s8 apply; /* 0x2C */
+    s8 select; /* 0x2D: port 0 Select in input bank 1. */
+    u8 pad2E[0x12]; /* Remaining two-bank, two-port input backing. */
+} EvtPad;
+
+typedef char EvtPad_size_must_be_0x40[(sizeof(EvtPad) == 0x40) ? 1 : -1];
 
 struct SoundMixer;
 
@@ -68,7 +112,6 @@ void evtDrawMenuFrame(sdfDrawTag_t *list, s32 x, s32 y, s32 width, s32 rows, s32
 extern sdfGrOt_t sdfDebugGrOt;
 extern EvtPad dds3PadButtonState;
 extern char evtFmtStr[];
-
 
 void evtViewerDrawPendingNodeRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 extern void evtViewerDrawPendingNodeRow();

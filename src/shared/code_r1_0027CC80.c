@@ -1,14 +1,10 @@
 #include "common.h"
 #include "sdk_libc.h"
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/btl.h"
-
-
-#include "dds/ee_mmi.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "ps2asm.h"
+#include "code_0027A1D0.h"
 
 #define BTL_AI_WEIGHT_MASK 0xFFFF
 

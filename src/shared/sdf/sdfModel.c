@@ -25,8 +25,6 @@ typedef struct
     u32 pad[3];
 } sdfModelNodeDefList_t;
 
-
-
 extern sdfItemArray_t *sdfItemArrayNew(s32 aInitCapa, s32 aElemSize, s32 aGrowStep);
 extern void sdfItemArrayFree(void *aArray);
 extern void sdfItemArrayGrow(void *aArray);
@@ -141,14 +139,11 @@ const char *sdfModelGetNodeName(sdfModelRootNode_t *aRoot, s32 aIndex);
 u32 sdfModelGetMarkPosCount(sdfModelRootNode_t *aRoot);
 void sdfModelSetFaceDivParm(sdfModelRootNode_t *aRoot, f32 aSoften, f32 aBias);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#include "dds/btl.h"
-
-
-#include "dds/model.h"
+#include "include_asm.h"
+#include "newdata.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
 
 u32 sdfModelGetUniqueID(sdfModelRootNode_t *aRoot);
 u32 sdfGetLodChunkValue(sdfModelRootNode_t *aRoot);

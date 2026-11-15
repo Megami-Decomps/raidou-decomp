@@ -70,7 +70,6 @@ typedef struct
 extern sdfFrameU16_t fadenow;
 extern sdfFrameU16_t fademax;
 
-
 typedef struct
 {
     f32 fogMax;
@@ -90,8 +89,6 @@ extern u16 filter2atarget;
 extern u16 filter2swapnow;
 extern u16 filter2swapmax;
 
-
-
 extern dds3Effect_PartialMultiFilterParam_t dds3MFilterBuf;
 extern dds3Effect_PartialMultiFilterParam_t mfiltertarget;
 extern u16 mfilternow;
@@ -100,7 +97,6 @@ extern u16 mfilterabase;
 extern u16 mfilteratarget;
 extern u16 mfilterswapnow;
 extern u16 mfilterswapmax;
-
 
 /* The ripple copies move as doublewords. */
 typedef dds3Effect_RippleBlurParam_t dds3RipBlurBody_t __attribute__((aligned(8)));
@@ -111,8 +107,6 @@ typedef struct dds3RipBlurParam {
 } dds3RipBlurParam_t;
 
 extern dds3RipBlurParam_t ripblurtarget;
-
-
 
 extern dds3Effect_PartialMultiBlurParam_t dds3MultiBlurBuf;
 extern dds3Effect_PartialMultiBlurParam_t mulblurtarget;
@@ -225,7 +219,6 @@ u32 dds3GetFrameID(void);
 void dds3FreeRenderTexture(void);
 sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 
-
 void dds3RotationArc(void);
 void dds3InitRenderDrawEnv(void);
 s32 dds3AllocRenderTexture(u16 sx, u16 sy, f32 aspect);
@@ -304,14 +297,21 @@ void dds3SetSoftenBias(s32 frame, f32 soften, f32 bias);
 void eglSetOt(u32 ot);
 extern s32 dds3ScreenBlurOfsX[2];
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "sdk_libc.h"
-#include "dds/dds3_named_slot.h"
-#include "dds/btl.h"
-#include "dds/dds3_fade_color.h"
+#include "include_asm.h"
+#include "kernel.h"
+#include "newdata.h"
+#include "dds3PadManager.h"
+
+/* The screen fade's colour. Its setters store each component; the fade
+ * overlay (func_dds1_00105DD8) reads each one unsigned
+ * (lbu), and its alpha as 0x80 minus the component. */
+typedef struct {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+} dds3FadeColor_t;
 
 extern fclNamedSlot_t D_003C1C90[];
 
@@ -439,14 +439,9 @@ static inline void dds3SetNamedSlotState(s32 index, s32 kind, dds3ProcessFunc_t 
 
 void dds3FadeColorGet(dds3FadeColor_t **outColor);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
 #include "event.h"
 #include "scr.h"
 #include "sdf_packet_alloc.h"
-#include "dds/ee_mmi.h"
 
 enum {
     EVT_PACKET_LIST_BYTES = 0x20,

@@ -358,12 +358,6 @@ extern char effLabelBlend[8];
 extern char effLabelDistor[8];
 extern char effLabelDistS[7];
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#define SMT3_DEFINES_effSimpleBED_t 1
-
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
     SDF_GS_PRIM = 0x00,
@@ -399,10 +393,162 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-#include "dds/ee_mmi.h"
-#include "dds/btl_sound.h"
-#include "dds/eff_event_draw.h"
-#include "dds/eff_event.h"
+#include "include_asm.h"
+#include "sdf_resource.h"
+#include "billboard.h"
+#include "sdf_types.h"
+#include "draw.h"
+#include "sdf_movie_types.h"
+#include "effect.h"
+#include "basic.h"
+#include "effBattleMisc.h"
+
+typedef struct EffBattleUnitRgbCommand {
+    u32 color;
+    u32 startFrame;
+    s32 startDurationIndex;
+    u32 endFrame;
+    s32 endDurationIndex;
+} EffBattleUnitRgbCommand;
+
+typedef struct EffBattleUnitColorCommand {
+    EffectVectorRequest request;
+    u32 firstColor;
+    u32 secondColor;
+    u32 startFrame;
+    s32 startDurationIndex;
+    u32 endFrame;
+    s32 endDurationIndex;
+} EffBattleUnitColorCommand;
+
+typedef char EffBattleUnitRgbCommandSizeCheck[(sizeof(EffBattleUnitRgbCommand) == 0x14) ? 1 : -1];
+
+typedef char EffBattleUnitColorCommandSizeCheck[(sizeof(EffBattleUnitColorCommand) == 0x20) ? 1 : -1];
+
+/* Each effect bank addresses this many parameter rows when flattening a
+ * bank/entry pair into the copy-source index stored in an entry. */
+enum { EFF_BATTLE_PARAMETER_ENTRY_CAPACITY = 0x3C };
+
+/* Serialized parameter selector: an effect-work kind or one of the row states
+ * below. Keep the wire/storage width at 16 bits. */
+typedef u16 EffBattleParameterKind;
+
+typedef union EffBattleParameterValue {
+    u32 mixerOffset; /* Effect-work payload offset from the source mixer. */
+    u32 copySourceIndex; /* Bank * EFF_BATTLE_PARAMETER_ENTRY_CAPACITY + entry. */
+    struct effPartHandle_t *work;
+} EffBattleParameterValue;
+
+typedef struct effBTLCutHandle_t effBTLCutHandle_t;
+
+typedef void (*BattleEffectCallback)(effBTLCutHandle_t *effect);
+
+/* Per-entry actor eligibility selector; preserve the stored byte width. */
+typedef u8 EffBattleEntryActorFilterMode;
+
+enum EffBattleEntryActorFilterMode {
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_BYPASS = 0,
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_LINK_FLAG_4_WITHOUT_FLAG_1 = 1,
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_LINK_FLAGS_4_AND_1 = 2,
+    EFF_BATTLE_ENTRY_ACTOR_FILTER_LINK_FLAG_2 = 3,
+};
+
+typedef struct EffBattleEntry {
+    EffBattleParameterKind parameterKind; /* 0x00: work kind or row-state sentinel. */
+    u8 pad02[2];
+    EffBattleParameterValue value; /* 0x04 */
+    EffectVectorRequest aimParams;        /* 0x08 */
+    u32 zeroKindCount;             /* 0x10 */
+    EffBattleEntryActorFilterMode kind; /* 0x14: actor eligibility filter mode. */
+    u8 pad15[3];
+} EffBattleEntry; /* 0x18 */
+
+typedef struct EffBattleEntryList {
+    s32 triggerFrame;              /* 0x00 */
+    u8 pad04[2];
+    u16 shake;                     /* 0x06: screen-shake amount; 31 or more logs and caps at 300 frames */
+    u16 shakeFrame;                /* 0x08: frame at which the shake starts */
+    u16 shakeFade;                 /* 0x0A: fade applied with the shake */
+    EffBattleUnitColorCommand colorCommand; /* 0x0C: single command read by the voice updater */
+    u8 opaque2C[4];                /* 0x2C: retained bytes not read by the update routine */
+    EffBattleUnitRgbCommand rgbCommand;     /* 0x30: single command read by the voice updater */
+    u8 opaque44[4];                /* 0x44: retained bytes not read by the update routine */
+    s32 callbackFrame;             /* 0x48 */
+    u8 pad4C[0x20];
+    u16 count;                     /* 0x6C */
+    u8 pad6E[2];
+    s32 colorRampEndFrame;         /* 0x70 */
+    u8 actorScaleEnabled;          /* 0x74 */
+    u8 pad75[3];
+    EffBattleEntry entries[1];     /* 0x78 */
+} EffBattleEntryList;
+
+typedef struct SoundBank {
+    u8 pad00[8];
+    EffBattleEntryList list;       /* 0x08 */
+    u8 pad98[0x580];
+} SoundBank;
+
+typedef char EffBattleEntry_size_must_be_0x18[
+    (sizeof(EffBattleEntry) == 0x18) ? 1 : -1];
+
+typedef char EffBattleEntryList_size_must_be_0x90[
+    (sizeof(EffBattleEntryList) == 0x90) ? 1 : -1];
+
+typedef char SoundBank_size_must_be_0x618[
+    (sizeof(SoundBank) == 0x618) ? 1 : -1];
+
+typedef struct SoundMixer {
+    SoundBank banks[2];
+    u8 pad0C30[8];
+    struct sdfMemHandle_t *resource; /* 0xC38: owns the mixer allocation. */
+    u32 activeVoiceCount; /* Effect voices currently linked to this mixer. */
+    effBTLCutHandle_t *voiceList;
+} SoundMixer;
+
+/* DDS1 00160958 / DDS2 00168548 allocate and clear exactly 0x128 bytes. */
+struct effBTLCutHandle_t {
+    struct BtlUnit *owner; /* 0x00: borrowed voice owner used for actor scaling. */
+    SoundMixer *state; /* 0x04 */
+    u32 color; /* 0x08 */
+    u16 flags; /* 0x0C */
+    u8 pad0E[2];
+    u32 currentFrame; /* 0x10 */
+    u32 triggerFrame; /* 0x14 */
+    u32 colorRampEndFrame; /* 0x18 */
+    u16 kind; /* 0x1C */
+    u8 pad1E[2];
+    s32 unk20;
+    struct EffBattleEntryList *list; /* 0x24 */
+    struct effPartHandle_t *parameterWorks[EFF_BATTLE_PARAMETER_ENTRY_CAPACITY]; /* 0x28 */
+    BattleEffectCallback sourceFrameCallback; /* 0x118 */
+    BattleEffectCallback triggerFrameCallback; /* 0x11C */
+    u32 unk120;
+    effBTLCutHandle_t *next; /* 0x124 */
+};
+
+/* The stored screen record keeps eight bytes beyond the copied blur quad. */
+typedef struct EffScreenDrawParams {
+    dds3Effect_Blur_t source;
+    u8 pad28[8];
+} EffScreenDrawParams;
+
+typedef char EffScreenDrawParams_size_must_be_0x30[(sizeof(EffScreenDrawParams) == 0x30) ? 1 : -1];
+
+/* Event-light init block copied into the retained event owner (0x30 bytes). */
+typedef struct EffEventInit {
+    f32 position[4];
+    f32 orientation[4];
+    f32 range;
+    f32 height;
+    f32 param;
+    u32 color;
+} EffEventInit;
+
+typedef char EffEventInit_size_must_be_0x30[(sizeof(EffEventInit) == 0x30) ? 1 : -1];
+
+typedef char EffEventLight_size_must_be_0x3C[
+    (sizeof(effSimpleBED_t) == 0x3C) ? 1 : -1];
 
 #define EFF_EVENT_EVENT_RECORD_BYTES 0x30
 
