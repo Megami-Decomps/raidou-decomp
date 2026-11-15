@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libipu.h"
 
 #define IPU_CMD  (*(volatile u32 *)0x10002000)
 
@@ -44,7 +45,6 @@ typedef struct sdfIpuDmaRegs_t {
 
 void sceIpuStopDMA(sdfIpuDmaRegs_t *state);
 void sceIpuRestartDMA(sdfIpuDmaRegs_t *state);
-u32 sceIpuSync(s32 mode);
 
 #define IPU_FIFO (*(volatile u128 *)0x10007010)
 
@@ -100,7 +100,7 @@ void sceIpuRestartDMA(sdfIpuDmaRegs_t *state)
     }
 }
 
-u32 sceIpuSync(s32 mode)
+u32 sceIpuSync(s32 mode, u16 timeout)
 {
     u32 ret = 0;
 

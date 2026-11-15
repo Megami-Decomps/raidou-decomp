@@ -97,6 +97,7 @@ void sceSifWriteBackDCache(void *address, s32 size);
 
 s32 sceDeci2ExRecv(s32 handle, void *buffer, u16 length);
 s32 sceDeci2ExSend(s32 handle, void *buffer, u16 length);
+s32 sceDeci2Open(u16 protocol, void *argument, void (*handler)(s32 event, s32 parameter, void *argument));
 s32 sceDeci2Poll(s32 handle);
 s32 sceDeci2ReqSend(s32 handle, s8 destination);
 

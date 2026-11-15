@@ -70,7 +70,6 @@ enum sdf_stream_playback {
 void sdfCdWaitTrayClose(void);
 extern u8 sdfCdImageMode;
 extern s32 sdfCdCurrLsn;
-extern s32 sceCdStStart(s32 arg, u8 *options);
 extern s32 sdfCdImageCurrRemain;
 extern s32 sdfCdImageCurrActive;
 extern u8 *sdfCdImageOffset;
@@ -84,7 +83,6 @@ extern const char *dds3ImgPath;
 
 extern u32 sdfCdImageFileName;
 extern u32 dds3ImgLsn;
-extern void sceCdStInit(s32, s32, s32);
 void sdfCdImageClose(void);
 
 #include "sdk_libc.h"

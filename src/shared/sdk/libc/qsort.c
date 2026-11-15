@@ -278,7 +278,6 @@ static inline void qsortSwapRange(char *first, char *second, s32 bytes, s32 swap
     } \
 }
 
-void qsort(void *array, u32 count, u32 size, qsortCompare_t compare);
 
 #define STRTOL_MAX 0x7fffffffffffffffUL
 

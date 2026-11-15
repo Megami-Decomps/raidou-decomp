@@ -49,7 +49,7 @@ typedef void (*cdvdPowerCallback_t)(void *argument);
 
 #define UNCACHED(a) ((s32 *)(EE_ADDR(a) | 0x20000000))
 
-extern s32 sceCdStream(u32 lsn, u32 sectors, void *buf, s32 cmd, void *arg);
+extern s32 sceCdStream(u32 lsn, u32 sectors, u32 iopBuf, s32 cmd, void *arg);
 
 typedef struct sdfCdClock_t {
     u8 status;
@@ -62,8 +62,6 @@ typedef struct sdfCdClock_t {
     u8 year;
 } sdfCdClock_t;
 
-s32 sceCdStInit(u32 bufmax, u32 bankmax, void *buf);
-s32 sceCdStStart(u32 lsn, void *mode);
 s32 sceCdStSeekF(u32 lsn);
 s32 sceCdStSeek(u32 lsn);
 s32 sceCdStStop(void);
@@ -80,12 +78,12 @@ typedef struct cdvdStreamRequest_t {
     u8 opaque13;
 } cdvdStreamRequest_t;
 
-s32 sceCdStream(u32 lsn, u32 sectors, void *buf, s32 cmd, void *arg);
+s32 sceCdStream(u32 lsn, u32 sectors, u32 iopBuf, s32 cmd, void *arg);
 
-s32 sceCdStInit(u32 bufmax, u32 bankmax, void *buf)
+s32 sceCdStInit(u32 bufmax, u32 bankmax, u32 iopBuf)
 {
     cdvdStreamActive = 0;
-    return sceCdStream(bufmax, bankmax, buf, 5, cdvdDefaultStreamMode);
+    return sceCdStream(bufmax, bankmax, iopBuf, 5, cdvdDefaultStreamMode);
 }
 
 s32 sceCdStStart(u32 lsn, void *mode)

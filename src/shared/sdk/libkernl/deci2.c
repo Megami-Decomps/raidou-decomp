@@ -76,9 +76,6 @@ typedef struct ttyPacket_t {
 extern s32 sceDeci2ReqSend(s32 handle, s8 destination);
 extern s32 sceDeci2Poll(s32 handle);
 
-extern s32 sceDeci2Open(u16 protocol, void *argument,
-                       void (*handler)(s32, s32, void *));
-
 extern s32 kputs(const char *text);
 
 /* In ee-gcc 2.9, next_arg names the first incoming stack argument. These
@@ -417,7 +414,6 @@ typedef struct deci2Registration_t {
     void *storage;
 } deci2Registration_t;
 
-s32 sceDeci2Open(u16 protocol, void *argument, deci2Handler_t handler);
 s32 sceDeci2Close(s32 handle);
 s32 sceDeci2ReqSend(s32 handle, s8 destination);
 s32 sceDeci2Poll(s32 handle);

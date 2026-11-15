@@ -22,7 +22,6 @@
 
 /* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
-void qsort(void *base, u32 count, u32 size, s32 (*compare)(const void *, const void *));
 
 s32 effConfigureIndexedSlotMaterial(struct EffectSlotSet *owner, u32 slot,
                                     struct EffMappedResource *resources, u32 item,

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libipu.h"
 
 #define IPU_CMD  (*(volatile u32 *)0x10002000)
 
@@ -42,7 +43,6 @@ extern u128 ipuDefaultVqClut[2] __attribute__((aligned(16)));
 
 #define IPU_FIFO (*(volatile u128 *)0x10007010)
 
-void sceIpuInit(void);
 
 void sceIpuInit(void)
 {

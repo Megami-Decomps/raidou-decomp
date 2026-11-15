@@ -130,10 +130,10 @@ enum sdf_stream_playback {
 
 
 #include "sdk_libkernl.h"
+#include "sdk_libipu.h"
 
 extern sdfIpuDecodeCb_t *sdfIpuQueueHead;
 extern sdfIpuDecodeCb_t *sdfIpuQueueTail;
-extern s32 sceIpuSync(s32, s32);
 extern sdfIpuDecodeCb_t *sdfCurrIpuDecodeCb;
 extern sdfIpuDecodeCb_t *sdfIpuPendingCb;
 extern s32 sdfIpuDecode(sdfIpuDecodeCb_t *);
@@ -141,7 +141,6 @@ extern s32 sdfIpuDecodeThId;
 extern s32 sdfIpuDoneFrame;
 extern s32 sdfFromIpuDmacHandlerHandle;
 extern s32 sdfToIpuDmacHandlerHandle;
-extern void sceIpuInit(void);
 extern s32 DmacAddHandler(s32, s32, void *, s32, s32);
 extern u8 sdfIpuDecodeThStack[];
 extern void sdfIpuRemoveHandler(void *);
@@ -167,7 +166,6 @@ void sdfIpuDecodeThread(void);
 s32 sdfIpuFromDmacHandler(void);
 s32 sdfIpuToDmacHandler(void);
 void sdfIpuFinishActiveFrame(sdfIpuDecodeCb_t *cb);
-extern void sdfImageSetChainTag(u32 aHead, void *aTail);
 s32 sdfIpuSetChainTag(sdfIpuDecodeCb_t *cb);
 void sdfIpuStartDecodeTask(sdfIpuDecodeCb_t *aNode, struct sdfIpuInitParm_t *aFormat, SdfStreamRead aRead, struct sdfMovieCb_t *aContext, s32 aResourceWord);
 void sdfIpuSetOutputTex(sdfIpuDecodeCb_t *node, struct sdfIpuInitParm_t *params, u8 *sourceData, s32 sourceSize, sdfTexHandle_t *source);
@@ -688,7 +686,7 @@ s32 sdfIpuSetChainTag(sdfIpuDecodeCb_t *cb)
     if (*packet == 0) {
         sdfIpuMakeBltPacket(cb);
     }
-    sdfImageSetChainTag(*packet, EE_ADDR_AS(void *, (*packet + cb->transferPacketBytes - 0x10)));
+    sdfImageSetChainTag(*packet, EE_ADDR_AS(sdfImageSetTag_t *, (*packet + cb->transferPacketBytes - 0x10)));
     sdfIpuFinishActiveFrame(cb);
     return 1;
 }

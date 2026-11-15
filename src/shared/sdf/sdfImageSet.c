@@ -44,14 +44,6 @@ typedef struct sdfImageSetRelease
     u8 freeMode;
 } sdfImageSetPacket_tag;
 
-/* Terminal DMA tag of a queued upload packet. Linking the next packet writes
- * its address into tag and clears the two VIF codes behind it. */
-typedef struct sdfImageSetTag
-{
-    u64 tag;
-    u64 vifCodes;
-} sdfImageSetTag_t;
-
 typedef struct sdfImageSetCB
 {
     s32 semaId;
@@ -84,7 +76,6 @@ s32 sdfImageDataSize(u32 format, s32 width, s32 height);
 s32 sdfImageSetDmacHandler(s32 channel, s32 threadId);
 void sdfImageSetClearCb(sdfImageSetCb_t *cb);
 void sdfImageSetReq(sdfImageSetReqParam_t *parm);
-void sdfImageSetChainTag(u32 head, sdfImageSetTag_t *tail);
 void sdfImageSetChainReleaseMem(saddr_t p);
 void sdfImageSetTrans(void);
 void sdfImageSetInit(void);
