@@ -75,7 +75,6 @@ struct dds3Basic_t *dds3GetActiveScene(void);
 void evtSetTestCamera(void);
 void evtFreeStage(void);
 void evtFreeAllUnit(void);
-void evtStartEvent(s32 no);
 void evtKillFieldScript(void);
 void evtPathStop(dds3Basic_t *basic);
 void evtPathStart(dds3Basic_t *basic);

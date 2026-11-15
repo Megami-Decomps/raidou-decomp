@@ -192,7 +192,6 @@ void evtReleaseResourcePairHandle(EvtResourcePair *record);
 
 struct ItfMesSub;
 
-EvtMessageWindowPageValueResult fclChangeMessageWindowAlpha(s32 pageValue);
 s8 evtGetCapturedWindowPanelValue(void);
 
 /* Advance the singleton window through its active, gated and cleanup phases. */

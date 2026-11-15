@@ -45,7 +45,6 @@ struct dds3FontReq_t
 };
 
 extern fldSequenceController_t fldAutoMapSeqFlags;
-extern u32 fldEncountFlags;
 extern s8 slNewGameBit2208, slNewGameBit2209, slNewGameBit2210, slNewGameBit2211;
 extern s8 slNewGameBit2212, slNewGameBit2213, slNewGameBit2323, slNewGameBit162;
 extern s32 gFldStart, fldSkyEnable, gfldPlayerHasiCnt;

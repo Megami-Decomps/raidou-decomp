@@ -38,9 +38,6 @@ LmapNode *fldLmapRewindThroughWindow(LmapList *list);
 extern void fldLmapSubmitScaledSpritePacket(s32 x, s32 y, s32 z, s32 width, s32 height,
                                             s32 fillColor, s32 borderColor, s32 surfaceIndex);
 
-void fldLmapSubmitPositionedCommandPacket(s32 x, s32 y, s32 z,
-                                          ItfGridTextColorTableIndex colorTableIndex,
-                                          const char *command, s32 surfaceIndex);
 
 void fldLmapSubmitScaledSpritePacket(s32 x, s32 y, s32 z, s32 width, s32 height, s32 fillColor, s32 borderColor, s32 surfaceIndex);
 

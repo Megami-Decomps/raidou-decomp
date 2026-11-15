@@ -28,10 +28,7 @@ extern s32 scrTraceCode(scrProcessWork_s *pwork);
 extern s32 scrScriptProcess(dds3ProcessID_t *id);
 void scrScriptShutdown(dds3ProcessID_t *id);
 scrProcessWork_s *scrLoadScriptFile(char *name, s32 messageHandle);
-dds3ProcessID_t *scrStartScriptProcess(s32 priority, scrProcessWork_s *pw);
 void dds3GlobalWorkClearFlags(void);
-void scrStartScriptByName(s32 priority, char *name, s32 messageHandle);
-dds3ProcessID_t *scrStartScript2(s32 priority, void *scrdata, s32 startproc);
 
 dds3ProcessID_t *scrRunScriptEx(s32 priority, scrHeader_t *header, scrTypeTable_t *typeTable,
                     scrProcTable_t *procTable, scrLabelTable_t *labelTable, scrCode_u *code,

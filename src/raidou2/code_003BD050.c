@@ -251,7 +251,6 @@ typedef struct MenuBadgeLayout {
 MenuList *mnuCreateListState(u32 owner, u32 visibleCount, s32 rowSpacing);
 MenuListNode *mnuListAdvanceCursor(MenuList *list, s32 noScroll, s32 keepFade);
 MenuListNode *mnuListRetreatCursor(MenuList *list, s32 noScroll, s32 keepFade);
-void mnuDecreaseListNodeFadeCounters(MenuList *list);
 void mnuDrawFourEntries(s32 x, s32 y, s32 depth, MenuList *list, MenuListNode *node, s32 drawArg);
 u32 mnuBlendListNodeColorByFlags(u32 previousColor, MenuListNode *entry);
 void mnuDispatchEntryWords(EffectSlotSet *menu, s32 entryIndex, MenuListNode *entry);
@@ -265,44 +264,25 @@ void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg);
 /* Destroy the owned list and optional sprite resources before freeing the window. */
 void jmsDestroyCmdMenu(MenuWindowContainer *menu);
 
-void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct EffectSlotSet *layout2C, u32 layout30, struct EffectSlotSet *layout34,
-                                    u32 layout48, u32 layout38, struct EffectSlotSet *layout3C, u32 layout40,
-                                    u32 layout4C);
 
-void mnuInitializeBasicWindowLayout(MenuWindowContainer *menu, struct EffectSlotSet *first, u32 second);
 
-void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
-                               u32 third, EffectSlotSet *spriteResource);
 
-MenuListNode *jmsAddCmdMenuItem(MenuWindowContainer *menu, const void *text);
-MenuListNode *mnuInsertWindowListNodeRelativeToAnchor(MenuWindowContainer *menu, MenuListNode *anchor, const void *text, s32 mode, u32 options);
 void mnuRemoveWindowListCursorNode(MenuWindowContainer *menu);
 MenuListNode *mnuAdvanceListSelection(MenuWindowContainer *menu, s32 step);
 MenuListNode *mnuReverseListSelection(MenuWindowContainer *menu, s32 step);
-MenuListNode *mnuAdvanceWindowListSelection(MenuWindowContainer *menu);
-MenuListNode *mnuRetreatWindowListSelection(MenuWindowContainer *menu);
 void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu);
 
 void mnuInitIconSprites(MenuIconSprites *obj, s32 w, s32 h, u32 value,
                         EffectSlotSet *resource, s32 *idx, s32 unused);
 
-MenuIconSprites *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
-                    EffectSlotSet *resourceHandle, s32 *indices, u32 unused);
 
-void mnuReleaseWindowTextures(MenuIconSprites *menu);
 
-void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
-                   MenuIconSprites *resource, s32 drawArg);
 
 void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, u32 option);
 void mnuDrawWindowIconRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, s32 count, s32 option);
 void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, MenuWindowContainer *window, u32 option);
 
 /* Draw the window, then advance its fade scale without a post-addition clamp. */
-void mnuDrawWindowContainer(s32 x, s32 y, s32 depth, MenuWindowContainer *menu, s32 drawArg);
-MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material);
-void mnuClearEntryFlags(MenuIconState *group);
-void mnuReleaseResourceList(MenuIconState *list);
 
 typedef struct MenuPos {
     s32 x;
@@ -340,7 +320,6 @@ void mnuDrawIconPanelFullFade(u32 x, u32 y, u32 depth, MenuIconState *panel, s32
 void mnuUpdateWindowPanelHandleStatesKindFourFive(MenuIconState *obj);
 void mnuRebuildListFirstFromCursor(MenuList *list);
 void mnuRebuildListLastFromCursor(MenuList *list);
-void mnuResetNodeLinks(MenuList *list, s32 restoreCursor);
 void mnuLinkItemList(MenuListNode **nodeArray, s32 count);
 
 /* Three-way comparison of unsigned primary keys, descending without subtraction. */

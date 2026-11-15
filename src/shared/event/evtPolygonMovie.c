@@ -99,7 +99,6 @@ static inline void evtSetBlendVecW(f32 w)
 }
 
 void evtHokanHeikouBlur(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Effect_Blur_t *b, dds3Effect_Blur_t *out);
-void evtBlendParamsH(s32 enable, f32 t, const EvtBlendKey *a, const EvtBlendKey *b, EvtBlendKey *out);
 
 f32 evtHokanFloat(s32 hokan, f32 ratio, f32 f1, f32 f2)
 {

@@ -243,7 +243,6 @@ void dds3InitZClearDrawTag(void);
 extern sdfVector4_t dds3AmbientColor;
 extern u32 dds3BackColor;
 void eglInit(void);
-extern sdfGrOt_t sdfGrOtTable[];
 extern sdf3DScreenParam_t dds3RenderScreenParam;
 extern dds3ZClearPacket_t dds3ZClearDrawTag[3][2];
 extern u16 dds3RenderTexWidth;

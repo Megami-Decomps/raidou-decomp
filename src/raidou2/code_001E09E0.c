@@ -131,7 +131,6 @@ void evtHokanTmx(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults
 void evtGetValueNewTMXFrame(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display);
 u32 evtFindInputBranchMessage(void);
 void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsOut);
-EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *name);
 void mnuCampCheckClockDivisor(void);
 
 typedef struct CampEntryEnableSet {

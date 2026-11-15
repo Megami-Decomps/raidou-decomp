@@ -329,35 +329,19 @@ u32 btlCmdReportUnsupportedTaikyo(void);
 u32 btlCmdReportUnsupportedAllTaikyo(void);
 u32 btlCmdClearSpecialEnemyFlags(void);
 void btlBossDebugPrintfN(s32 x, s32 y, s32 color, s32 format, ...);
-s32 btlOpenPfsDebugDirectory(const char *directoryName);
 void btlClosePfsDebugDirectory(s32 directoryHandle);
 
 /* Debug mode delegates to the native reader. Built-in mode returns each name's length,
    clears the directory-type bit, and returns zero when the eight-name table is exhausted. */
 s32 btlReadBattleResourceDirectoryEntry(s32 directoryHandle, SceDirent *reader);
 extern u32 dds3BillboardGeneralNumber(void);
-BtlResourceEntryList *btlScanDirectory(const char *path, s32 flags);
-void btlDestroyEntryList(BtlResourceEntryList *list);
-void btlAppendEntry(BtlResourceEntryList *list, const char *name, s32 category, s32 value, s32 id);
-s32 btlFormatSelectedResourceName(BtlResourceDescriptor *, char *);
 void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *, const char *);
 void btlReplaceResourceHandle(BtlResourceDescriptor *, void *);
-void btlDestroyResourceDescriptor(BtlResourceDescriptor *descriptor);
-void btlSetResourceBrowserPosition(BtlResourceDescriptor *descriptor, s32 x, s32 y);
 
-u32 btlGetResourceBrowserSelectedIndex(
-    const BtlResourceDescriptor *descriptor);
 
-u32 btlGetResourceBrowserSelectionStatus(const BtlResourceDescriptor *descriptor);
-s32 btlFormatSelectedResourceName(BtlResourceDescriptor *descriptor, char *output);
-s32 btlTrimResourceName(BtlResourceDescriptor *descriptor, char *output);
-u32 btlGetResourcePathVariant(const BtlResourceDescriptor *resource);
 void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *descriptor, const char *resourceName);
 void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, void *textureResource);
 extern u8 *sdf2DGetPrimPtr(SdfDrawPacket *packet);
-void btlDrawResourcePreview(BtlResourceDescriptor *descriptor);
-struct BtlResourceNameRecord *btlCreateResourceNameRecord(const char *extension);
-void btlDestroyResourceNameRecord(struct BtlResourceNameRecord *record);
 
 #define EDITOR_KEY_COLS 13
 
@@ -375,12 +359,6 @@ void btlDestroyResourceNameRecord(struct BtlResourceNameRecord *record);
 
 #define EDITOR_DELETE_CODE (EDITOR_KEY_CELLS + 3)
 
-void btlSetResourceNamePosition(struct BtlResourceNameRecord *record, s32 x, s32 y);
-u32 btlGetResourceNameSelectionStatus(const struct BtlResourceNameRecord *record);
-void btlResourceRecordSetName(struct BtlResourceNameRecord *record, const char *name);
-void btlFormatResourceNameWithExtension(const struct BtlResourceNameRecord *record, char *output);
-void btlFormatResourceNameWithoutExtension(const struct BtlResourceNameRecord *record, char *output);
-void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 maximumNameLength);
 
 void btlBossDebugPrintfN(s32 x, s32 y, s32 color, s32 format, ...) {
 }

@@ -34,8 +34,6 @@ void dds3PathBasicControlGetRot(dds3PathBasicControl_t *pControl);
 void dds3PathBasicControlNextStep(dds3PathBasicControl_t *work, fldResourceLightPath_t *output);
 f32 dds3PathBasicControlGetFovy(dds3PathBasicControl_t *pControl);
 s32 dds3PathBasicControlIsFinished(dds3PathBasicControl_t *work);
-void dds3PathBasicControlAlterMode(dds3PathBasicControl_t *pControl, s32 mode);
-s32 dds3PathBasicControlGetMode(dds3PathBasicControl_t *work);
 void dds3PathBasicControlSetRatio(dds3PathBasicControl_t *pControl, f32 ratio);
 f32 dds3PathBasicControlGetRatio(dds3PathBasicControl_t *pControl);
 

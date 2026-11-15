@@ -55,8 +55,6 @@ struct sdfDrawTag_t;
 struct sdfGrRefPacketHeader_t;
 
 /* Queue blend setup and both rectangle packets, then finish with the filter draw. */
-void effDrawBlurSource(const BlurSource *source, sdfTexHandle_t *resource, u8 fixedPointCoordinates);
-void effDrawBlurFixedPointRectangle(EffBlurTemplate *owner);
 
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", dds3EffectBlurDrawAlphaMulti);
 

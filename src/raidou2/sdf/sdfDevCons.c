@@ -132,7 +132,6 @@ void sdfDevConsDrawInit(sdfDevConsDrawCB_t *aCB, void *aPacketBuffer, s32 aBuffe
 void sdfDevConsDrawAll(void);
 void *sdfDevVprintf(u32 *aCB, const char *aStr, void *LegacyParamArray);
 void *sdfDevPrintfEx(u32 *aCB, const char *aStr, ...);
-void *sdfDevPrintf(u32 aX, u32 aY, u32 aZ, s32 aAttr, const char *aStr, ...);
 
 void sdfDevConsInit(void)
 {

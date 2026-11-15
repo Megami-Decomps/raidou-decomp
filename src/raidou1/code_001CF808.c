@@ -140,7 +140,6 @@ char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename);
 void mnuResetTitleEffectState(s32 command);
 void mnuSetTitleVoicePrefixIndex(s32 prefixIndex);
 void scrGetAfterSkipBgmFlag(void);
-MnuTitleSoundBusyState scrCheckEnableMovieCancel(void);
 void mnuNoOpTitleAudio(void);
 s32 mnuGetTitleEffectFrameCounter(void);
 u32 sndOpStartTrackFromScript(void);

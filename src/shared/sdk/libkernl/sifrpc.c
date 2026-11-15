@@ -219,12 +219,7 @@ typedef struct rpcClientPrefix {
     u32 sequence;
 } rpcClientPrefix;
 
-void sceSifSetRpcQueue(sifRpcDataQueue_t *queue, s32 threadId);
 
-void sceSifRegisterRpc(sifRpcServerData_t *server, u32 serviceId,
-                        sifRpcFunc_t handler, void *buffer,
-                        sifRpcFunc_t callback, void *callbackBuffer,
-                        sifRpcDataQueue_t *queue);
 
 sifRpcServerData_t *sceSifRemoveRpc(sifRpcServerData_t *server, sifRpcDataQueue_t *queue);
 sifRpcDataQueue_t *sceSifRemoveRpcQueue(sifRpcDataQueue_t *queue);
@@ -232,7 +227,6 @@ sifRpcServerData_t *sceSifGetNextRequest(sifRpcDataQueue_t *queue);
 void sceSifExecRequest(sifRpcServerData_t *server);
 extern void sceSifExecRequest(sifRpcServerData_t *request);
 extern s32 SleepThread(void);
-void sceSifRpcLoop(sifRpcDataQueue_t *queue);
 
 typedef struct {
     u32 word0;

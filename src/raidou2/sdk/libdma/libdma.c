@@ -71,7 +71,6 @@ static __inline__ void recv_setup(sceDmaChan *chan, int mod)
 void sceDmaRecv(sceDmaChan *chan);
 void sceDmaRecvN(sceDmaChan *chan, void *data, u32 qwc);
 void sceDmaRecvI(sceDmaChan *chan, void *data, u32 qwc);
-int sceDmaSync(sceDmaChan *chan, int mode, int unused);
 int sceDmaWatch(sceDmaChan *chan, u32 addr, int mode, int timeout);
 int sceDmaRestart(sceDmaChan *chan, u32 chcr);
 

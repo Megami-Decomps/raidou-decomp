@@ -152,14 +152,8 @@ typedef struct MenuPanelState {
 
 typedef char MenuPanelStateSizeCheck[(sizeof(MenuPanelState) == MNU_PANEL_STATE_BYTES) ? 1 : -1];
 
-s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
-                               void *callback);
 
-void mnuHandleListPageJumpInput(const void *resource, MenuWindowContainer *window,
-                                MnuInputActionFlags *actionFlags);
 
-void mnuHandlePanelListPageJumpInput(MenuWindowContainer *window,
-                                     MnuInputActionFlags *actionFlags);
 
 typedef struct MenuWorkCamera {
     s32 x;

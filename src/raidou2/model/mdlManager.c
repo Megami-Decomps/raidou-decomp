@@ -322,7 +322,6 @@ s32 mdlGetMajorNum(mdlObj_t *aHandle);
 s32 mdlGetMinorNum(mdlObj_t *aHandle);
 s32 mdlGetNumOfMinor(s32 aMajor);
 s32 mdlGetNumOfCut(mdlObj_t *aHandle, s32 aGroup);
-void mdlSetClutColor(mdlObj_t *ctx, s32 color, f32 ratio);
 s32 mdlPackCheck(sdfPacDecodeResrc_t *resrc);
 sdfPacDecodeResrc_t *mdlPackSetOld(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor, s32 regFlags);
 void mdlFileLoadCallback(filePacRequest_t *pacHandle, mdlManager_mdlFileLoadCb_t *data);

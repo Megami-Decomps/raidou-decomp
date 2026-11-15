@@ -350,7 +350,6 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
     }
 }
 
-void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref);
 
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {

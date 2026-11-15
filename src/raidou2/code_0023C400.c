@@ -148,21 +148,11 @@ void effPropagateResourceModelMask(EffResourceOwner *work, u32 color);
 void effScaleModelVec(EffResourceOwner *work, float scale);
 void effObjectListCountersReset(void);
 extern s32 sdfImageDataSize(u32 format, s32 width, s32 height);
-RefObj *effCreateSharedTextureReference(SdfTextureFileHeader *source);
-RefObj *effCloneSharedReferenceWithValue(SdfTextureFileHeader *source, u32 textureIndex);
-void effReleaseSharedReference(RefObj *obj);
-RefObj *effRetainSharedReference(RefObj *obj);
 sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, RefObj *source);
-s32 effCountExpandedEntries(const EffExpandedList *list);
 
 /* Serialized expanded list: 0x10-byte header, the entry table, then each entry's payload. */
 struct EffExpandedList *effCacheTexCreate(u32 sourceAddress);
-void effCacheTexDelete(EffExpandedList *holder);
-EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj);
-void effCacheTexAnimGet(const EffExpandedList *set, u32 frame, EffAnimSample *out);
 
-sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdfGrOt_t *target,
-                                                 const EffAnimSample *sample);
 
 void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source) {
     EffModelOwner *owner = work;

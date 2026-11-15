@@ -141,7 +141,6 @@ f32 mnuMeasureProjectedPerpendicularDistance(f32 rate);
 void vuCatmullRomPoint(f32 (*p)[4], f32 t);
 void vuBuildLookAtBasis(void);
 void sdfVuMatrixToQuaternion(const f32 matrix[4][4]);
-FileJobPayload *fileCreateJob(FileJobType type);
 
 #define FILE_JOB_LOCATION_AS_JOB_RELATIVE_OFFSET(payload) ((payload).offset)
 
@@ -149,9 +148,6 @@ FileJobPayload *fileCreateJob(FileJobType type);
 
 #define FILE_JOB_LOCATION_CLEAR(payload) ((payload).offset = 0)
 
-void *fileResolvePrimaryBuffer(FileJobPayload *job);
-void *fileResolveSecondaryBuffer(FileJobPayload *job);
-FileJobPayload *Create_effParts(FileJobPayload *request);
 extern FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
 
 /* Makes the first job chained to owner's sector the leader and rechains the rest to it. */
@@ -168,7 +164,6 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
     }
 }
 
-void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref);
 
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {

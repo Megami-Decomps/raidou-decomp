@@ -389,7 +389,6 @@ sdfTexHandle_t *itfMesGetWindowTexture(void);
 
 /* Install an entry's table into the window, rebuild its text glyphs and the
  * selected-item caption, then mark the entry block active. */
-ItfMesEntryStartResult itfMesStartEntry(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
 
 /* Named and indexed views of the same four signed 32-bit color channels. */
 typedef union UiQuadColor {

@@ -111,7 +111,6 @@ void fileUnlinkQueue(fileRequest_t *fileHandle);
 fileRequest_t *pacLoad(const char *filename);
 fileRequest_t *pacLoadUseTail(const char *filename);
 fileRequest_t *fileLoadEx(const char *filename, u32 headOrTail, addr_t endCallback, addr_t callbackParm);
-fileRequest_t *fileLoad(const char *filename);
 fileRequest_t *fileLoadUseTail(const char *filename);
 sdfMemHandle_t *fileGetMemHandle(const fileRequest_t *fileHandle);
 u8 *fileGetLoadPtr(const fileRequest_t *fileHandle);

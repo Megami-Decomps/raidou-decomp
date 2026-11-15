@@ -421,11 +421,7 @@ enum {
 extern EffScreenDrawParams effData4;
 extern dds3Effect_Filter_t D_00355F88;
 extern s8 EffectDrawData2;
-void effEnableFramebufferQuad(void);
-void effDisableFramebufferQuad(void);
 void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source);
-EffScreenDrawParams *effGetCh73Params(void);
-void effEventSetSolidRectangleParameters(dds3Effect_Filter_t *parameters);
 
 /* Compact event owner: the allocator reserves exactly 0x38 bytes. */
 struct effEveBEDCutHandle_t {

@@ -280,7 +280,6 @@ typedef struct EffFadeHeaderWork {
 
 typedef char EffFadeHeaderWorkSizeCheck[(sizeof(EffFadeHeaderWork) == 0x0C) ? 1 : -1];
 
-SdfFlagListWork *effCreateSelectionFlagListFromWork(const SdfFlagListParams *work);
 
 typedef struct EffSelectionHeaderWork {
     s32 frame;
@@ -732,8 +731,6 @@ extern const char D_003BCF30[];
 void effInitializeResourceQueue(void);
 u32 effPollResourceQueue(void);
 void effReleaseQueuedResourceName(void);
-void effQueueResource(const char *extension, const char *resourceName);
-void effUpdateResourceQueue(const char *directoryPath, const char *extension, EffQueueRecord *record);
 void effReleaseResourceBankDescriptors(void);
 
 typedef struct EffectPollRecord {
@@ -980,12 +977,7 @@ typedef struct PrfFallbackGroup {
     u32 flags[2];
 } PrfFallbackGroup;
 
-void sdfResetFlagListEntries(SdfFlagListWork *work);
-SdfFlagListWork *sdfCreateFlagListWork(const SdfFlagListParams *source);
-SdfFlagListWork *sdfInitializeFlagListFromResource(void *file);
-void sdfReleaseFlagListResource(SdfFlagListWork *work);
 extern sdfGrOt_t *sdfDrawFlagListVerticesData[];
-void sdfDrawFlagListVertices(SdfFlagListWork *work);
 void sdfSampleFlagListStartColor(SdfFlagListWork *work);
 
 void effLeaf384(void) {

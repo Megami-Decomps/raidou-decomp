@@ -149,7 +149,6 @@ s32 sdfGetRunTimeCountBase(void);
 s32 sdfGetRunTimeCount(s32 aBaseTime);
 void sdfSystemThreadProc(void);
 void dds3InitSubsystems(u32 heapSize, u32 initialHeapSize, u32 packetBufferBytes);
-void sdfStartThreadAndWait(sdfThCB_t *node, void (*entry)(void), void *stack, s64 stackSize, s32 priority, s32 threadArgument);
 void sdfDeleteTrackedThread(sdfThCB_t *node);
 sdfThCB_t *sdfFindThreadNode(s32 threadId);
 void VblankThreadProc(void);

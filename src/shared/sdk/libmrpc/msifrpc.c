@@ -112,9 +112,6 @@ s32 sceSifMUnBindRpc(rpcClient *client, s32 mode);
 extern void sceSifWriteBackDCache(void *address, s32 size);
 extern const char sceSifMModeErrorString[40];
 
-s32 sceSifMCallRpc(rpcClient *client, u32 function, u32 mode,
-                   void *send, s32 sendSize, void *receive, s32 receiveSize,
-                   void (*endFunction)(void *), void *endParam);
 
 void sceSifMInitRpc(s32 mode)
 {

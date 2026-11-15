@@ -821,14 +821,6 @@ EffFadeVectorWork *effCreateFadeVectorWork();
 EffFadeVectorWork *effCreateFadeVectorFromFile(void *work);
 void effFreeFadeVectorWork(EffFadeVectorWork *work);
 EffFadeVectorWork *effCloneFadeVectorWork(EffFadeVectorWork *work);
-void effResetSelectionEntryBuffers(SdfFlagListWork *work);
-SdfFlagListWork *effCreateSelectionFlagListFromWork(const SdfFlagListParams *work);
-SdfFlagListWork *effCreateSelectionFlagListFromFile(void *file);
-void effReleaseSelectionFlagList(SdfFlagListWork *work);
-SdfFlagListWork *effCreateEmbeddedSelectionFlagList(SdfFlagListWork *work);
-void effResetSelectionEntriesAndState(SdfFlagListWork *p);
-void effUpdateSelectionEntryState(SdfFlagListWork *work);
-void effDrawSelectionEntryVectors(SdfFlagListWork *work);
 
 typedef struct EffSelectionHeaderWork {
     s32 frame;
@@ -1134,7 +1126,6 @@ void effAdvanceClassFrame(EffClassWork *work);
 void effRunClassPostFrame(EffClassWork *work);
 void effUpdateClassFrame(EffClassWork *work);
 extern sdf3DPrimPolyParm_t effWork[];
-EffPointSet *effCreatePointSet4(u32 count);
 void effAssetQueueRelease(EffPointSet *set);
 
 /* vu0 routine: SDK loads the supplied transform or constructs identity. */
@@ -1252,8 +1243,6 @@ void effCopyClassResourceOrientation(void *work, void *src);
 void effSetClassResourceColor(EffClassWork *work, u32 color);
 void effSetClassResourceMatrixComponent(EffClassWork *work, float value);
 extern sdf3DPrimPolyParm_t effWork3[];
-EffPointSet *effCreatePointSet5(s32 count);
-void effReleasePointSetAsset(EffPointSet *set);
 EffectStripNode *effCreateStripNode(u32 percent);
 EffectStripNode *effCreateStripNodeFromGrid(FileKeyBlock *grid);
 extern void effReplaceFileResourceRef(EffectStripNode *, u32, const void *);
@@ -1316,11 +1305,7 @@ void effResetBlockResourceFrame(EffClassWork *work);
 void effAdvanceBlockResourceFrame(EffClassWork *work);
 void effDrawBlockResourceWork(EffClassWork *work);
 extern sdf3DPrimPolyParm_t effDrawRibbonWork;
-EffRibbonWork *effCreateRibbonWork(u32 count, u32 repeat);
-EffRibbonWork *effCreateRibbonWithSharedResource(u32 count, u32 repeat, struct SdfTextureFileHeader *resource);
-void effSharedAssetReferenceRelease(EffRibbonWork *work);
 extern sdfGrOt_t *effDrawRibbonData[];
-EffRibbonWork *effCloneRibbonWithSharedResource(EffRibbonWork *source);
 
 static inline void unpackNormalizedColor(u32 color) {
     u32 rgba[4];

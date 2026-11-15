@@ -240,7 +240,6 @@ extern u8 aViewTarget[];
 
 /* The quaternion result is returned in vf10 for the VU transform routines. */
 void sdfVuMatrixToQuaternion(const f32 matrix[4][4]);
-FileJobPayload *fileCreateJob(FileJobType type);
 
 #define FILE_JOB_LOCATION_AS_JOB_RELATIVE_OFFSET(payload) ((payload).offset)
 
@@ -248,53 +247,24 @@ FileJobPayload *fileCreateJob(FileJobType type);
 
 #define FILE_JOB_LOCATION_CLEAR(payload) ((payload).offset = 0)
 
-void *fileResolvePrimaryBuffer(FileJobPayload *job);
-void *fileResolveSecondaryBuffer(FileJobPayload *job);
-FileJobPayload *Create_effParts(FileJobPayload *request);
-void fileJobDestroy(FileJobPayload *job);
 void fileJobFreePrimaryBuffer(FileJobPayload *job);
 void fileJobFreeSecondaryBuffer(FileJobPayload *job);
-FileJobPayload *Copy_effParts(FileJobPayload *request);
 void fileJobNotifyPair(FileJobPayload *left, FileJobPayload *right);
-void ScaleSet_effParts(FileJobPayload *job);
-void fileJobInvokeTypeCallback(FileJobPayload *job);
-void PositionSet(FileJobPayload *job, const f32 position[4]);
-void fileJobInvokeRotationCallback(FileJobPayload *job, const f32 rotation[4]);
-void fileJobInvokeScaleCallback(FileJobPayload *job, f32 scale);
-void fileDispatchJobTypeCallback(FileJobPayload *job, u32 color);
-void fileJobSetPrimaryData(FileJobPayload *job, const void *src, s32 size, u16 option);
-void fileJobCopyCommandIntoPrimaryData(FileJobPayload *job, const char *commandPath, u16 option);
-void fileJobSetSecondaryData(FileJobPayload *job, const void *src, s32 size, u16 selector);
-void fileJobCopyCommandIntoSecondaryData(FileJobPayload *job, const char *commandPath, u16 selector);
-void fileWriteToPfs(FileJobPayload *job, const char *filePath);
-FileJobPayload *fileDuplicateJob(FileJobPayload *request);
-FileJobPayload *fileJobCreateFromCommandState(const char *entry);
 u32 fileJobSerializedSize(FileJobPayload *job);
 void fileJobResetAndInitTransform(FileJob *job);
 void fileQueueAppend(FileQueue *queue, FileJob *job);
 void fileQueueInsertAfter(FileQueue *queue, FileJob *after, FileJob *job);
 void fileQueueRemove(FileQueue *queue, FileJob *job);
-FileQueue *fileQueueCreate(void);
 FileJob *fileJobCreate(void);
 void fileDestroyJob(FileJob *job);
-FileQueue *Create_effPartsList(FileQueue *source);
 void camFollowOffsetVec(FileJob *job, void *dst);
 
 struct CamAim;
 
 extern void PoseRotBillboard(struct CamAim *obj, void *dst);
-void effPartsDelete(FileQueue *queue);
-FileQueue *effPartsCreateFinish(const FileQueue *source);
-void effPartsPositionSet(FileQueue *queue, const f32 vec[4]);
-void effPartsRotateSet(FileQueue *queue, const f32 rot[4]);
-void effPartsScaleSet(FileQueue *queue, f32 scale);
-void ColorSet(FileQueue *queue, u32 color);
-void effPartsRotateMatrixSet(FileQueue *queue, f32 matrix[4][4]);
 FileJob *fileAppendJob(FileQueue *queue, u32 id);
 FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source);
 extern u8 fileAppendJobFromCommandPathData[];
-FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath);
-FileJob *fileJobDuplicateAfter(FileQueue *queue, FileJob *src);
 extern FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
 extern FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id);
 
@@ -312,12 +282,8 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
     }
 }
 
-void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref);
-void fileQueueDetachSectorFollower(FileQueue *queue, FileJob *job);
-void fileJobCopyHeader(FileJob *dst, const FileJob *src);
 extern char fileQueueImagePaddingBytes[];
 extern s32 fileQueueCountLinkedJobs(FileQueue *queue);
-void fileQueueSaveImage(FileQueue *queue, const char *filePath);
 
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {
@@ -328,12 +294,9 @@ typedef struct FileQueueImageHeader {
 } FileQueueImageHeader;
 
 extern char fileQueueVersionedImagePaddingBytes[];
-void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath);
-FileQueue *fileQueueCreateFromCommandState(const char *entry);
 FileJob *fileQueueFindById(FileQueue *queue, u32 id);
 FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id);
 FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
-FileJob *fileQueueGetAt(FileQueue *queue, s32 index);
 s32 fileFindQueuedJobIndex(FileQueue *queue, FileJob *target);
 s32 fileQueueCountLinkedJobs(FileQueue *queue);
 void camFollowOffsetVec(FileJob *obj, void *dst);
@@ -360,11 +323,7 @@ void fileSetRecordWordFour(s32 record, u32 value);
 void fileSetLoadObjectScale(EffectSurfaceNode *obj, f32 scale);
 void fileResetSlotStates(FileSlotTable *table);
 
-u32 effColorAnimation(const SdfColorTrack *colorTrack,
-                              const SdfAlphaTrack *alphaTrack,
-                              s32 frame, s32 duration);
 
-f32 effSampleScalarCurve(const EffScalarCurve *curve, s32 frame, s32 duration);
 void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot);
 void fileCopyAndInvalidateSlotGroup(FileSlotTable *table, FileSlot *source);
 void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot);
@@ -436,9 +395,7 @@ typedef struct FileCurveMotion {
     f32 angleMultiplier;
 } FileCurveMotion; /* 0x4C, naturally four-byte aligned */
 
-FileSlotTable *fileAllocateGridRecordSlots(u16 type, u32 count, const void *data);
 void effPCPHelperBEDGetModel(FileSlotTable *record);
-void fileClearRecordReferences(FileSlotTable *record);
 void mnuRecordSetVector(void *recordBytes, const void *src);
 void fileSetRecordSecondVector(void *recordBytes, const void *src);
 

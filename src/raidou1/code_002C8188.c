@@ -108,17 +108,13 @@ extern char D_003BD198[];
 
 #define EFF_RESOURCE_TABLE_ENTRY_BYTES 8
 
-EffectSlotSet *effLoadIndexedResource(const char *base, const char *name, u32 keepAllocation);
 void effCompleteTransientResourceJob(struct FileRequest *job, u32 *outInstance);
 void effCompleteRetainedResourceJob(struct FileRequest *job, u32 *outInstance);
 void effRequestResourceByMode(const char *base, const char *name, u32 mode, u32 *outInstance);
-EffMappedResource *effLoadMappedResource(const char *base, const char *name);
 
 void effCompleteMappedResourceJob(struct FileRequest *job,
                                   EffMappedResource **outMappedResource);
 
-void effRequestMappedResource(const char *base, const char *name,
-                              EffMappedResource **outMappedResource);
 
 EffectOwnerRecord *effCreateOwnerRecordList(EffectSlotSet *owner);
 void effInsertSlotRecord(void *owner, EffectOwnerRecord *list, EffectSlotOwner *work, s32 slotIndex);
@@ -143,25 +139,12 @@ typedef struct EffMappedHeader {
 struct sdfMemHandle_t *effLoadMappedStatusRecords(const u8 *source, EffMappedHeader *headerOut);
 
 /* Build the live batch header from the serialized count and owned record array. */
-EffMappedResource *effCreateMappedResource(const u8 *source);
-EffMappedResource *effCreateStatusBatch(u32 category);
-EffMappedResourceDestroyResult effDestroyPackedBatch(EffMappedResource *batch);
-u32 effReleaseSlotWorkAllocation(EffectSlotSet *owner);
 void *effGetSlotWorkOrOverride(EffectSlotSet *work, s32 slotIndex);
 void effInitializeSlotPhase(EffTimedState *effect);
 extern EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entryData);
 
 /* Rebuild a slot's live work from its source description, then prime the timed states. */
-void effInitializeSlotWorkFromDescription(EffectSlotSet *owner, s32 slotIndex, void *payload);
-void effInitializeSlotWork(EffectSlotSet *owner, s32 slotIndex);
-void effInitializeAllSlotWork(EffectSlotSet *work);
-void effAttachSlotWorkOwner(EffectSlotSet *owner, s32 slotIndex, void *payload);
-void effResetSlotWork(EffectSlotSet *work, u32 slotIndex);
 u8 *effResolveResourceSlots(EffectSlotSet *set, u8 *resourceBytes, s32 clearAllSlots, s32 selectedSlot);
-void effResolveAndReleaseResource(EffectSlotSet *owner);
-void effResolveAndReleaseSelectedResource(EffectSlotSet *owner, s32 slot);
-void effReleaseTextureHandlesAndResetSlots(EffectSlotSet *set);
-u8 effHasFirstTextureHandle(const EffectSlotSet *set);
 EffPayload *effCreatePayload(u32 recordCount);
 u32 effDestroyPayload(EffPayload *payload);
 
@@ -169,33 +152,17 @@ u32 effDestroyPayload(EffPayload *payload);
 
 #define EFF_SLOT_TEXTURE_REFERENCES_BORROWED 1
 
-EffectSlotSet *effCreateResourceSlotSetFromAllocation(struct sdfMemHandle_t *resourceAllocation, u32 keepAllocation);
-EffectSlotSet *effCreateResourceSlotSet(EffectSlotSet *borrowedSource, u32 slot, u32 count);
-u32 effDestroyResourceSlotSet(EffectSlotSet *set);
-u32 effSetSlotResourceAndFlags(EffTimedState *record, EffMappedRecord *entry, u32 flags);
 
-u32 effSetSlotIndexedResource(EffTimedState *target, EffMappedResource *resources, s32 item,
-                              u32 flags);
 
 u32 effSlotTransitionClearTarget(EffTimedState *record, u32 unused);
 u32 effClampSlotPhaseAtEnd(EffectSlotSet *owner, s32 index, EffTimedState *effect);
 u32 effClampSlotPhaseAtStart(EffectSlotSet *owner, s32 index, EffTimedState *effect);
 extern u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
 EffectSlotSet *effUpdateTimedStates(EffectSlotSet *effect, u32 slot, void *entryData);
-u32 effSetSlotOverrideWork(EffectSlotSet *owner, s32 index, void *payload);
-u32 effSetMaterialSlots(EffectSlotSet *owner, s32 index, u32 materialFlags, void *payload);
 u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags);
 
-u32 effConfigureIndexedSlotResource(EffectSlotSet *work, s32 index,
-                                    EffMappedResource *data, s32 item, u32 flags);
 
-u32 effConfigureIndexedSlotMaterial(EffectSlotSet *work, s32 index,
-                  EffMappedResource *data, s32 item,
-                  u32 materialFlags, u32 materialValue, u32 stateFlags);
 
-u32 effConfigureWithDefaultSetting(EffectSlotSet *effect, u32 slot,
-                                   EffMappedResource *resources, u32 item,
-                                   u32 materialFlags, u32 stateFlags);
 
 u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
 void effSelectPresetByKind(u32 mode, u32 value);

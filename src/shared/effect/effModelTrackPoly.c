@@ -128,7 +128,6 @@ void dds3HermitianTrackPolySetVertexSub(dds3HermitianTrackPoly_tag *hPoly, const
 #include "dds/mdl.h"
 
 void effTrackPolyReset(EffTrackPolyWork *work);
-void effTrackPolyUpdate(EffTrackPolyWork *work);
 
 void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly)
 {

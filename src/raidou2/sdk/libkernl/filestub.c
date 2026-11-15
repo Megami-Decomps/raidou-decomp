@@ -478,8 +478,6 @@ s32 sceSync(const char *path, s32 mode);
 s32 sceMount(const char *device, const char *blockDevice, s32 mode, const void *args, s32 argSize);
 s32 sceUmount(const char *path);
 
-s32 sceDevctl(const char *device, s32 command, const void *args, u32 argSize,
-              void *output, u32 outputSize);
 
 s32 sceSymlink(const char *oldPath, const char *newPath);
 s32 sceReadlink(const char *path, char *buffer, u32 count);

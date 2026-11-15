@@ -227,7 +227,6 @@ extern f32 sdf3DUpVector[];
 extern void DiagMatrix(void);
 extern sdfMemHandle_t *sdfMemAllocDirect(s32 size);
 extern void *memset(void *dst, s32 value, size_t size);
-void sdf3DMakeLightParallelPacket(sdf3DLightParallelPacket_t *aPacket, sdf3DLight_t **aLights, sdfVector4_t *aAmbient);
 
 void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera) {
     aPacket->quadwords = 0xC;

@@ -113,7 +113,6 @@ u32 sdfFileLength(void *aHandle);
 
 s32 sdfFileRead(void *aHandle, void *aPtr, s32 aLeng);
 void *sdfDevLoadFile(const char *name, u32 *outData, u32 *outSize, s32 extra);
-void *sdfDevLoadFileEx(const char *aFileName, u32 *aOutData, u32 *aOutSize);
 sdfItemArray_t *sdfTexSetTB(const sdfTextureOffsetListHeader_t *aData);
 
 /* Read a named file through the dev RPC into a freshly allocated block; returns the block's handle.

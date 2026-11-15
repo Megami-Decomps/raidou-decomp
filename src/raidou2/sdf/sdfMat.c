@@ -65,7 +65,6 @@ void sdfTexListFree(sdfItemArray_t *aList, s32 aReleaseItems);
 void sdfTexListAdd(sdfItemArray_t *aList, sdfTexHandle_t *aTexHandle);
 void sdfTexListSetCapacity(sdfItemArray_t *aList, s32 aCapa, s32 aReleaseItems);
 sdfItemArray_t *sdfTexListDup(sdfItemArray_t *aList);
-void sdfTexListSetClutColor(sdfItemArray_t *aList, s32 aColor, f32 aRatio);
 void sdfMatInitSystem(void);
 void sdfMatListFreeResrc(void *aList, s32 aDelayed);
 void sdfMatSetTexUvwByPtr(sdfMat_t *aMat, const f32 *aParm);

@@ -140,16 +140,9 @@ struct MenuPanelItem {
     s32 selectionRamp; /* 0x8C */
 };
 
-void mnuClearPanelTransitionState(MenuPopupState *state);
 void CalcSeqHandle(s32 action, MenuPopupEntry *entry, MenuPopupState *state, u32 argument);
-void jmsSeqDestroyAll(MenuPopupState *state, struct dds3ProcessID_t *task);
 
-s32 jmsSeqChange(MenuPopupState *work, s32 *entrySlot, s32 mode,
-                               void *callback);
 
-void jmsSeqJump(s32 *entrySlot, MenuPopupEntry *entry);
-void jmsSeqJumpAndFree(s32 *entrySlot, MenuPopupEntry *entry);
-void jmsSeqReturn(MenuPopupState *state, s32 *entrySlot);
 
 struct SoundHandleNode;
 

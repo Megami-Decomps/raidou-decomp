@@ -100,14 +100,12 @@ extern f32 aViewEye[];
 extern f32 sdfViewMatrix[];
 extern f32 sdfProjectionMatrix[];
 extern f32 dds3BillboardGetDirectionRotateData2[];
-BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScreenPoint *outPoint);
 
 /* Select the smallest X for reference flag 0x200, otherwise the largest.
  * An empty indexed list returns NULL but still loads the native scratch vector. */
 
 void sbtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 f32 sbtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
-f32 sbtlGetVerticalLength_Point(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
 struct RefObj;
 

@@ -76,7 +76,6 @@ static inline const fp_number_type_df *dfDivideParts(fp_number_type_df *numerato
     return numerator;
 }
 
-f64 dpdiv(f64 a, f64 b);
 
 f64 dpdiv(f64 a, f64 b)
 {

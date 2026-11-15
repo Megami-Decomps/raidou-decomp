@@ -57,12 +57,7 @@ typedef struct BattleController {
     u32 (*enemyLimitOverride)(BtlUnit *, DatBattleSceneRecord *, u32); /* 0x688 */
 } BattleController;
 
-s32 btlSumOrAverageActorAttribute(
-    BtlPartyRecordFlagsMask partyRecordFlagsMask,
-    DatBaseStatIndex baseStatIndex, s8 allowDisabled);
 
-s32 btlAverageActorAttribute(
-    BtlPartyRecordFlagsMask partyRecordFlagsMask, DatBaseStatIndex baseStatIndex);
 
 s32 btlAverageActorAttribute(
     BtlPartyRecordFlagsMask partyRecordFlagsMask, DatBaseStatIndex baseStatIndex) {

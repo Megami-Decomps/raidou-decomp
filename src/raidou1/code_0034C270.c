@@ -60,25 +60,16 @@ typedef struct MenuContextSprites {
 } MenuContextSprites;
 
 MenuList *mnuCreateListState(s32 id, s32 visibleCount, s32 rowSpacing);
-u32 mnuDestroyListState(MenuList *list);
 void mnuUpdateListScrollFlags(MenuList *list);
-MenuListNode *mnuListAppendNode();
 s32 mnuListContainsFinalNode(MenuList *list);
 MenuListNode *mnuListAdvanceCursor(MenuList *, s32, s32);
 MenuListNode *mnuListRetreatCursor(MenuList *, s32, s32);
 
-MenuListNode *mnuInsertListNodeRelativeToAnchor(MenuList *list, MenuListNode *anchor,
-                         const void *text, s32 mode, u32 options);
 
-MenuListNode *mnuRemoveListCursorNode(MenuList *list);
 void mnuSelectFirstListNode(MenuList *list);
 void mnuSelectLastListNode(MenuList *list);
-MenuListNode *mnuAdvanceListWindowStart(MenuList *list);
-MenuListNode *mnuRetreatListWindowStart(MenuList *list);
 MenuListNode *mnuListAdvanceCursor(MenuList *list, s32 noScroll, s32 keepFade);
 MenuListNode *mnuListRetreatCursor(MenuList *list, s32 noScroll, s32 keepFade);
-MenuListNode *mnuAdvanceListCursorDefault(MenuList *list);
-MenuListNode *mnuRetreatListCursorDefault(MenuList *list);
 
 MenuList *mnuCreateListState(s32 id, s32 visibleCount, s32 rowSpacing) {
     MenuList *item = (MenuList *)sdfChipAllocZeroDirect(sizeof(MenuList));

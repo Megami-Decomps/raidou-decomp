@@ -200,7 +200,6 @@ s32 itfPanelAcquireHold(void);
 /* Queue script words in native second/first/third field order; first and third narrow to s16.
    Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
 s32 itfCommandQueueHeldPanelEntry(void);
-ItfHeldPanelMessageStepResult itfStepHeldPanelMessages(void);
 s32 itfMesMngSelect(void);
 
 /* Configure the fade on timer zero, wait thirty ticks, then consume a negative option status.

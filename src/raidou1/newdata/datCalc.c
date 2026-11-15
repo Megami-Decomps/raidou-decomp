@@ -169,11 +169,7 @@ typedef struct UiObject {
 
 /* Add the signed per-unit stat byte to its profile adjustment and clamp
  * the existing signed result to 1..99. Stat index is not checked here. */
-DatCalculatedStatValue datGetClampedProfileAdjustedStat(
-    const dds_datUnitWork_t *unit, DatBaseStatIndex statIndex);
 
-DatCalculatedStatValue datGetStatWithStatusOverride(
-    const dds_datUnitWork_t *unit, DatBaseStatIndex statIndex);
 
 enum {
     PTY_ACTIVE_ROSTER_COUNT = 5,
@@ -208,7 +204,6 @@ extern s32 btlConditionalEncounterCachedInterval;
 void evtRandomizeEntryValue(dds_datUnitWork_t *entry);
 
 /* Step the script with these context values; clear the written flag, not the stored result. */
-ScrVmInteger evtRunContext(ScrProcedureIndex procedureIndex, s32 firstArgument, s32 secondArgument, s32 commandIndex, u16 options);
 s32 evtPushFirstRosterLevel(void);
 s32 evtPushSecondRosterLevel(void);
 s32 evtPushFirstRosterCurrentHp(void);
@@ -297,7 +292,6 @@ enum {
     BTL_LEVEL_GATE_PARTY_FLAG_ELIGIBLE = 4
 };
 
-BtlConditionalEncounterGaugeThreshold btlGetConditionalEncounterInterval(s32 encounterIndex);
 s32 evtPushRequestedRosterPresence(void);
 
 INCLUDE_ASM(const s32, "newdata/datCalc", datAddMaka);

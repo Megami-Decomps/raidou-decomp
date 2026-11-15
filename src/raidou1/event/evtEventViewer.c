@@ -105,7 +105,6 @@ extern void *memcpy(void *, const void *, unsigned int);
 #include "dds/mdl.h"
 #include "dds/mdl_motion_controller_lookup_api.h"
 
-EvtRuntimeChild *evtEventViewerGetPendingNode(dds_evtViewerInfo_t *viewer);
 void evtEventViewerReleasePendingNode(dds_evtViewerInfo_t *viewer);
 void evtEventViewerProcessPending(dds_evtViewerInfo_t *viewer);
 s32 evtEventViewerCountEntries(dds_evtViewerInfo_t *viewer);
@@ -162,10 +161,7 @@ enum {
 
 /* Apply the viewer playback mode to unit, motion and movie-object tracks. */
 void evtEventViewerApplyPlaybackMode(s32 playbackMode, u32 frame, dds_evtViewerInfo_t *viewer);
-void evtViewerDispatchFlagMode(dds_evtViewerInfo_t *viewer);
 
-EvtViewerIndexedConditionResult evtViewerTestIndexedCondition(
-    EvtViewerIndexedCondition encodedCondition);
 
 u32 evtViewerReturnZero(void);
 u32 evtViewerPushMode5CommandHistory(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer);

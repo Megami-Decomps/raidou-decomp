@@ -529,7 +529,6 @@ void frFontCreateContext();
 
 #define FR_FONT_POSITION_BAND_HEIGHT 0x64
 
-void frFontGetGlyphPositionAtIndex(FrFontPosition *position, s32 requestedIndex, const _FRQ *glyph);
 
 /* Append the shared-text child context, apply its cached encoded byte and clear
  * the pending-create flag. Preserve the old-style implicit-argument interface. */

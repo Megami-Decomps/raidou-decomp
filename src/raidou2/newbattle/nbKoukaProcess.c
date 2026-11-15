@@ -107,7 +107,6 @@ typedef struct nbKoukaPacket_t
 
 extern void DelKoukaPacket(nbKoukaProcessData_t *k, nbKoukaPacket_t *p);
 extern void nbDelKoukaPacket(nbKoukaPacket_t *p);
-nbKoukaProcessData_t *nbGetKoukaProcessData(void);
 void DelKoukaPacket(nbKoukaProcessData_t *k, nbKoukaPacket_t *p);
 void nbDelKoukaPacket(nbKoukaPacket_t *p);
 

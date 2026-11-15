@@ -176,8 +176,6 @@ enum {
 
 #define ITF_LINES_PRIMITIVE_BITS 0x49
 
-_FRQ *itfDrawColor(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1,
-                   s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *unusedSub);
 
 /* Decode a two-byte glyph through the DDS1 lookup table; 0xFFFF is missing. */
 u32 itfDecodeGlyph(u32 glyphCode);

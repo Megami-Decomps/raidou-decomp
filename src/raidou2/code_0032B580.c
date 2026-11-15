@@ -270,7 +270,6 @@ typedef struct
     /* 0x1A720 */ fclRibbon_t *ribbon;
 } cmbGbWork_t;
 
-extern sdfGrOt_t sdfGrOtTable[85];
 
 typedef struct
 {

@@ -187,7 +187,6 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
     }
 }
 
-void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref);
 
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {
@@ -277,7 +276,6 @@ void fileSetRecordSecondVector(void *recordBytes, const void *src);
 #define VERSION_DDS2 1
 #endif
 
-void dds3DispatchIndexedCallback(u16 *record, f32 scale);
 
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1

@@ -96,7 +96,6 @@ extern void sceSifRemoveCmdHandler(s32 command);
 void cmd_sem_init(void);
 void cdvd_exit(void);
 cdvdPowerCallback_t sceCdPOffCallback(cdvdPowerCallback_t callback, void *argument);
-s32 sceCdSearchFile(sceCdlFILE *file, const char *name);
 extern void cmd_sem_init(void);
 extern s32 PollSema(s32 sema);
 extern void sceSifInitRpc(s32 mode);

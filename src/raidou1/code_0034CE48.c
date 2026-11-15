@@ -278,8 +278,6 @@ typedef struct MenuSpriteRef {
     s32 effect;
 } MenuSpriteRef;
 
-MenuListNode *mnuAdvanceListWindowStart(MenuList *list);
-MenuListNode *mnuScrollListToEnd(MenuList *list);
 
 /* Destroy nonzero resource slots, retaining the native per-iteration count read, then free. */
 typedef struct MenuPos {

@@ -49,7 +49,6 @@ void mnuReadTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusSnapsh
 void mnuWriteTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusValues);
 void File_BgmLoadStart(char *audioPath);
 void sndBgmLoadFile(void);
-void sndBgmFree(void);
 void sndDeadSePlay_VolAngle(void);
 
 INCLUDE_ASM(const s32, "sndAt3", sndUploadStreamToBothIopBuffers);

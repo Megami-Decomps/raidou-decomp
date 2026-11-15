@@ -77,7 +77,6 @@ void evtViewerDrawPendingNodeRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dd
 extern void evtViewerDrawPendingNodeRow();
 s32 mnuDrawInfoWindowB(s32 x, s32 y, dds_evtViewerInfo_t *work);
 s32 mnuDrawCutFlagLabel(sdfDrawTag_t *target, s32 x, s32 y);
-EvtMenuTableEntryAvailability evtIsMenuTableEntryEnabled(s32 *index);
 s32 mnuDrawMotionChangeLabel(sdfDrawTag_t *target, s32 x, s32 y);
 
 typedef struct EvtMotionBits {
