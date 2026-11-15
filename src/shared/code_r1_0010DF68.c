@@ -469,7 +469,19 @@ void evtDestroyFontResourceChain(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datDebugPrintf);
+extern char datDebugPrintfFmt[];
+
+void datDebugPrintf(const char *format, ...)
+{
+    char buf[512];
+    __builtin_va_list args;
+
+    if (evtConsoleFontResourceChain != 0) {
+        __builtin_stdarg_start(args, format);
+        vsprintf(buf, format, args);
+        sdfDevConsPrintf(evtConsoleFontResourceChain, datDebugPrintfFmt, buf);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datDEBUGCONSOLE);
 
@@ -705,7 +717,7 @@ INCLUDE_SDATA(const s32, "code_r1_0010DF68", evtCreateTestAndSkyTasksData);
 #endif
 INCLUDE_SDATA(const s32, "code_r1_0010DF68", evtConsoleFontResourceChain);
 
-INCLUDE_SDATA(const s32, "code_r1_0010DF68", datData);
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", datDebugPrintfFmt);
 
 INCLUDE_SDATA(const s32, "code_r1_0010DF68", datDEBUGCONSOLEData);
 

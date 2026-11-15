@@ -7664,7 +7664,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046B2F8	0x004DE400	CheckNewBattleTestData	.sdata	0x8	yes	code-ref
 0x0046B300	0x004DE408	evtCreateTestAndSkyTasksData	.sdata	0x8	yes	run-order-size
 0x0046B308	0x004DE410	evtConsoleFontResourceChain	.sdata	0x8	yes	code-ref
-0x0046B310	0x004DE418	datData	.sdata	0x8	yes	code-ref
+0x0046B310	0x004DE418	datDebugPrintfFmt	.sdata	0x8	yes	code-ref
 0x0046B318	0x004DE420	datDEBUGCONSOLEData	.sdata	0x8	yes	code-ref
 0x0046B320	0x004DE428	evtDrawGeneralHeapUsageGraphData	.sdata	0x8	yes	code-ref
 0x0046B328	0x004DE430	evtGeneralHeapPercentFormat	.sdata	0x4	yes	code-ref
@@ -7787,10 +7787,10 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046B6A8	0x004DE810	gMapRndEncLoad_Mode	.sdata	0x4	yes	code-ref
 0x0046B6AC	0x004DE814	ProcSequenceData5	.sdata	0x4	yes	code-ref
 0x0046B6CC	0x004DE83C	fldProcShutDownData	.sdata	0x4	yes	code-ref
-0x0046B6D0	0x004DE840	mapData52	.sdata	0x4	yes	code-ref
-0x0046B6D4	0x004DE844	mapData53	.sdata	0x4	yes	code-ref
-0x0046B6D8	0x004DE848	mapData54	.sdata	0x4	yes	code-ref
-0x0046B6DC	0x004DE84C	mapCallMapNextData	.sdata	0x4	yes	code-ref
+0x0046B6D0	0x004DE840	mapCallLastMap	.sdata	0x4	yes	code-ref
+0x0046B6D4	0x004DE844	mapCallLastFloor	.sdata	0x4	yes	code-ref
+0x0046B6D8	0x004DE848	mapCallLastPoint	.sdata	0x4	yes	code-ref
+0x0046B6DC	0x004DE84C	mapCallLastLabel	.sdata	0x4	yes	code-ref
 0x0046B6E0	0x004DE850	fldAutoMapSeqFlags	.sdata	0x4	yes	code-ref
 0x0046B6E4	0x004DE854	nbCallGetIntPara8Data	.sdata	0x4	yes	code-ref
 0x0046B6EC	0x004DE858	MakeResouceBasicFL2Data	.sdata	0x4	yes	code-ref

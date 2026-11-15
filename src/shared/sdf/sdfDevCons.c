@@ -82,7 +82,6 @@ void sdfDevConsClear(sdfDevConsCB_tag *aHndl);
 void sdfDevConsNewLine(sdfDevConsCB_tag *aHndl);
 void sdfDevConsPutInside(sdfDevConsCB_tag *aHndl, s32 aChar, s32 aAttr);
 void sdfDevConsPut(sdfDevConsCB_tag *aHndl, s32 aChar, s32 aAttr);
-s32 sdfDevConsPrintf(sdfDevConsCB_tag *aHndl, const char *aFmt, ...);
 s32 sdfDevConsGetMode(sdfDevConsCB_tag *aHndl);
 void sdfDevConsTagClose(sdfDevConsDrawCB_t *aCB);
 void sdfDevConsDrawFlush(sdfDevConsDrawCB_t *aCB);

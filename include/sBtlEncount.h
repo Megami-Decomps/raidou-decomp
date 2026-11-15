@@ -6,7 +6,7 @@
 
 struct SBTLUNIT_WORK;
 
-s32 sbtlGetAisyotbl(struct SBTLUNIT_WORK *wk);
+struct SBTL_AISYO_TBL *sbtlGetAisyotbl(s32 id);
 s32 sbtlGetPointData(s32 pointID, sdfVector4_t *pos, sdfVector4_t *rot);
 void sbtlSetactcounter(struct SBTLUNIT_WORK *wk);
 

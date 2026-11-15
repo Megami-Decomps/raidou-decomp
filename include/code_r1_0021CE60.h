@@ -161,6 +161,9 @@ typedef char FileSlotSizeCheck[(sizeof(FileSlot) == 0x20) ? 1 : -1];
 
 typedef char FileSlotTableSizeCheck[(sizeof(FileSlotTable) == 0x2C) ? 1 : -1];
 
+/* The slots start after the table, rounded up to 16 bytes for the VU0 quad loads. */
+#define FILE_SLOT_TABLE_HEADER_BYTES 0x30
+
 /* A file job type's operations (0x28), fileJobTypeOperations[type]. Each
  * receives the job's data; a NULL slot is skipped where the caller checks. */
 typedef struct FileTypeCallbacks {

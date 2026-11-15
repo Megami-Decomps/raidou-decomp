@@ -17,6 +17,7 @@ btlTriangleNormalVU	sbtlGetVerticalVector
 btlUpdateAndDrawResourceBrowser	Draw_effLensFlare
 camAimRotation	PoseRotBillboard
 datAddMoney	datAddMaka
+datData	datDebugPrintfFmt
 dds3Add	dds3AllocBasic
 dds3ObjectBaseFreeControlWorkData_dds3ObjectBase	dds3ObjectBaseFreeControlWorkData
 dds3ObjectBaseInitControlWorkData_dds3ObjectBase	dds3ObjectBaseInitControlWorkData
@@ -141,8 +142,15 @@ libc_2D2B60	frameCallStrcmp
 libc_2D2C70	frameCallAbort2
 libc_2D2D90	frameCallMalloc2
 libc_2D31E0	frameCallMemset
+mapCallMapData	mapCallScriptBuf
+mapCallMapNextData	mapCallLastLabel
 mapCutSetCamWork	mapCutSetCamData2
 mapCutSetCamWork2	mapCutSetCamData3
+mapData169	mapCallMapFmt
+mapData51	mapCallMapFmt
+mapData52	mapCallLastMap
+mapData53	mapCallLastFloor
+mapData54	mapCallLastPoint
 mapGetLight	R360_LR
 mapWork27	mapData26
 mapWork33	mapData33

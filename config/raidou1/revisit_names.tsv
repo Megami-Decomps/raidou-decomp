@@ -6197,7 +6197,7 @@
 0x003BF5D8	fldFirstInitData	data	tier=D	derived-sole	na	used by fldFirstInit
 0x003BF620	ProcRandomEncountCheck_fldData2	data	tier=D	derived-sole	na	used by ProcRandomEncountCheck_fld
 0x003BF630	ProcSequenceData	data	tier=D	derived-dominant	na	used by ProcSequence (4 of 8 refs, 3 functions)
-0x003BF668	mapCallMapData	data	tier=D	derived-sole	na	used by mapCallMap
+0x003BF668	mapCallScriptBuf	data	tier=D	derived-sole	na	used by mapCallMap
 0x003BF6D0	mapCutSetCamData	data	tier=D	derived-dominant	na	used by mapCutSetCam (4 of 16 refs, 7 functions)
 0x003BF6E0	mapObjTaskData	data	tier=D	derived-dominant	na	used by mapObjTask (12 of 30 refs, 8 functions)
 0x003BF700	mapSummonDvTaskData	data	tier=D	derived-dominant	na	used by mapSummonDvTask (4 of 6 refs, 2 functions)
@@ -14609,7 +14609,7 @@
 0x0046B2F0	dds3Data45	data	tier=D	derived-shared	na	used by 2 functions: dds3RefCameraTM, dds3RefCameraTM2
 0x0046B2F8	CheckNewBattleTestData	data	tier=D	derived-sole	na	used by CheckNewBattleTest
 0x0046B300	evtCreateTestAndSkyTasksData	data	tier=D	derived-sole	na	used by evtCreateTestAndSkyTasks
-0x0046B310	datData	data	tier=D	derived-shared	na	used by 2 functions: datDebugPrintf, datDEBUGCONSOLE
+0x0046B310	datDebugPrintfFmt	data	tier=D	derived-shared	na	used by 2 functions: datDebugPrintf, datDEBUGCONSOLE
 0x0046B318	datDEBUGCONSOLEData	data	tier=D	derived-sole	na	used by datDEBUGCONSOLE
 0x0046B320	evtDrawGeneralHeapUsageGraphData	data	tier=D	derived-sole	na	used by evtDrawGeneralHeapUsageGraph
 0x0046B32C	sdfData2	data	tier=D	derived-shared	na	used by 3 functions: sdfDrawHeapSpanOverlay, sdfDrawHeapMapOverlay, evtDrawHeapUsageOverlay
@@ -14708,12 +14708,12 @@
 0x0046B6BC	ProcSequenceData6	data	tier=D	derived-sole	na	used by ProcSequence
 0x0046B6C0	ProcSequenceData7	data	tier=D	derived-sole	na	used by ProcSequence
 0x0046B6C4	ProcSequenceData8	data	tier=D	derived-sole	na	used by ProcSequence
-0x0046B6C8	mapData51	data	tier=D	derived-shared	na	used by 2 functions: ProcSequence, mapCallMap
+0x0046B6C8	mapCallMapFmt	data	tier=D	derived-shared	na	used by 2 functions: ProcSequence, mapCallMap
 0x0046B6CC	fldProcShutDownData	data	tier=D	derived-dominant	na	used by fldProcShutDown (2 of 3 refs, 2 functions)
-0x0046B6D0	mapData52	data	tier=D	derived-shared	na	used by 2 functions: mapCallMapNext, mapCallMap
-0x0046B6D4	mapData53	data	tier=D	derived-shared	na	used by 2 functions: mapCallMapNext, mapCallMap
-0x0046B6D8	mapData54	data	tier=D	derived-shared	na	used by 2 functions: mapCallMapNext, mapCallMap
-0x0046B6DC	mapCallMapNextData	data	tier=D	derived-dominant	na	used by mapCallMapNext (2 of 3 refs, 2 functions)
+0x0046B6D0	mapCallLastMap	data	tier=D	derived-shared	na	used by 2 functions: mapCallMapNext, mapCallMap
+0x0046B6D4	mapCallLastFloor	data	tier=D	derived-shared	na	used by 2 functions: mapCallMapNext, mapCallMap
+0x0046B6D8	mapCallLastPoint	data	tier=D	derived-shared	na	used by 2 functions: mapCallMapNext, mapCallMap
+0x0046B6DC	mapCallLastLabel	data	tier=D	derived-dominant	na	used by mapCallMapNext (2 of 3 refs, 2 functions)
 0x0046B6E4	nbCallGetIntPara8Data	data	tier=D	derived-dominant	na	used by nbCallGetIntPara8 (2 of 6 refs, 5 functions)
 0x0046B6EC	MakeResouceBasicFL2Data	data	tier=D	derived-dominant	na	used by MakeResouceBasicFL2 (2 of 5 refs, 4 functions)
 0x0046B6F0	fldData15	data	tier=D	derived-shared	na	used by 3 functions: fldCallTexListFree, fldLoadFile_FromMemory, MakeObjectBasic2

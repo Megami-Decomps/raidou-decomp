@@ -6,6 +6,27 @@
 #include "sdf_types.h"
 
 struct SBTLUNIT_LISTWORK;
+
+typedef struct SBTLUNIT_MODEL {
+    u8 pad000[0x20];
+    sdfVector4_t vec20;
+    sdfVector4_t vec30;
+    u8 pad40[0xF8 - 0x40];
+    u32 flags;
+    s32 field0FC;
+    s32 field100;
+    u8 pad104[0x11C - 0x104];
+    f32 field11C;
+    f32 field120;
+    f32 field124;
+    f32 field128;
+    f32 field12C;
+    f32 field130;
+} SBTLUNIT_MODEL;
+
+typedef struct SBTL_AISYO_TBL {
+    s32 word[16];
+} SBTL_AISYO_TBL;
 struct SBTLUNIT_WORK;
 
 s32 CheckLiveTarget(struct SBTLUNIT_WORK *wk);
@@ -52,10 +73,72 @@ s32 sbtlSetUnitLight_Dir(struct SBTLUNIT_WORK *wk, const sdfVector4_t *dir, s32 
 
 /* Partial layout: only the fields read so far are named, the rest is padding. */
 struct SBTLUNIT_WORK {
-    u8 pad000[0x418];
+    f32 visual[4];
+    u8 pad010[0x8];
+    s32 zero18;
+    u8 pad01C[0xC];
+    f32 visualA;
+    u8 pad02C[0x14];
+    sdfVector4_t pos;
+    sdfVector4_t rot;
+    sdfVector4_t rotBase;
+    u8 pad070[0x30];
+    sdfVector4_t posSaved;
+    u8 pad0B0[0xF0];
+    s32 field1A0;
+    u8 pad1A4[0x8];
+    u8 devilParam0;
+    u8 pad1AD[0x1];
+    s16 devilID;
+    u8 devilParam1;
+    u8 devilParam2;
+    u8 pad1B2[0xE];
+    s32 stat1C0;
+    s32 stat1C4;
+    s32 stat1C8;
+    u8 pad1CC[0xC];
+    s32 stat1D8;
+    s32 stat1DC;
+    s32 stat1E0;
+    s32 stat1E4;
+    s16 resist[4];
+    u8 pad1F0[0x88];
+    struct SBTL_AISYO_TBL aisyo;
+    u8 pad2B8[0x8];
+    s32 param[9];
+    u8 pad2E4[0x8];
+    struct SBTL_AISYO_TBL aisyoBase;
+    u8 pad32C[0x88];
+    u8 visualKind;
+    u8 pad3B5[0x1];
+    s16 field3B6;
+    u8 pad3B8[0x48];
+    s32 field400;
+    s16 field404;
+    u8 pad406[0xE];
+    u8 field414;
+    u8 pad415[0x3];
     SBTLUNIT_FLG flg;
-    u8 pad41C[0x34];
+    u8 pad41C[0x4];
+    u32 flg2;
+    s32 field424;
+    f32 field428;
+    f32 angleY;
+    u8 pad430[0x20];
     SKLID skillid;
+    u8 pad454[0x30];
+    struct SBTLUNIT_MODEL *model;
+    u8 pad488[0x4];
+    s16 actCounter;
+    s16 actMax;
+    u8 pad490[0x40];
+    struct sdfMemHandle_t *msgHandle;
+    struct fileRequest *msgFile;
+    void *msgData;
+    s32 msgPos;
+    s32 msgSize;
+    s32 msgOffset;
+    s16 msgState;
 };
 
 #endif

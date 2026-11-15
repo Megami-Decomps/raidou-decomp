@@ -12272,7 +12272,7 @@
 0x003BF5E8	SequenceControl	hd	hd: Raidou HD fld.SequenceControl, 4 of 5 functions agree, high confidence
 0x003BF620	ProcRandomEncountCheck_fldData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by ProcRandomEncountCheck_fld
 0x003BF630	ProcSequenceData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by ProcSequence (4 of 8 refs, 3 functions)
-0x003BF668	mapCallMapData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallMap
+0x003BF668	mapCallScriptBuf	inferred	mapCallMemset and sprintf target; replaces mapCallMapData: method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapCallMap
 0x003BF6A0	fldTestLineVertex	inferred	method=smt3-ref; p=0.98 (n=D_r1_003BF6A0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=ooyTestLine3D
 0x003BF6C0	fldTestLineColor	inferred	method=smt3-ref; p=0.98 (n=D_r1_003BF6C0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=ooyTestLine3D
 0x003BF6D0	mapCutSetCamData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCutSetCam (4 of 16 refs, 7 functions)
@@ -21323,7 +21323,7 @@
 0x0046B2F8	CheckNewBattleTestData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by CheckNewBattleTest
 0x0046B300	evtCreateTestAndSkyTasksData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtCreateTestAndSkyTasks
 0x0046B308	evtConsoleFontResourceChain	inferred	method=dds-ref; p=0.59 (n=D_r1_0046B308); tier=C; source=dds; evidence=dds-ref/loose: nfun=4, other=2, sim=1.0, games=2, size=True, sec=True, fn=evtEnsureFontResourceChain
-0x0046B310	datData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: datDebugPrintf, datDEBUGCONSOLE
+0x0046B310	datDebugPrintfFmt	inferred	"%s" format of datDebugPrintf; replaces datData: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: datDebugPrintf, datDEBUGCONSOLE
 0x0046B318	datDEBUGCONSOLEData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by datDEBUGCONSOLE
 0x0046B320	evtDrawGeneralHeapUsageGraphData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtDrawGeneralHeapUsageGraph
 0x0046B328	evtGeneralHeapPercentFormat	inferred	method=dds-ref; p=0.59 (n=D_r1_0046B328); tier=C; source=dds; evidence=dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtDrawGeneralHeapUsageGraph
@@ -21466,12 +21466,12 @@
 0x0046B6BC	ProcSequenceData6	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by ProcSequence
 0x0046B6C0	ProcSequenceData7	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by ProcSequence
 0x0046B6C4	ProcSequenceData8	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by ProcSequence
-0x0046B6C8	mapData51	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: ProcSequence, mapCallMap
+0x0046B6C8	mapCallMapFmt	inferred	"%s" format of mapCallMap sprintf; replaces mapData51: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: ProcSequence, mapCallMap
 0x0046B6CC	fldProcShutDownData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldProcShutDown (2 of 3 refs, 2 functions)
-0x0046B6D0	mapData52	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
-0x0046B6D4	mapData53	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
-0x0046B6D8	mapData54	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
-0x0046B6DC	mapCallMapNextData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallMapNext (2 of 3 refs, 2 functions)
+0x0046B6D0	mapCallLastMap	inferred	mapCallMap(0) reloads it; replaces mapData52: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
+0x0046B6D4	mapCallLastFloor	inferred	mapCallMap(0) reloads it; replaces mapData53: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
+0x0046B6D8	mapCallLastPoint	inferred	mapCallMap(0) reloads it; replaces mapData54: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
+0x0046B6DC	mapCallLastLabel	inferred	mapCallMap(0) reloads it; replaces mapCallMapNextData: method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallMapNext (2 of 3 refs, 2 functions)
 0x0046B6E0	fldAutoMapSeqFlags	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B6E0); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x0046B6E4	nbCallGetIntPara8Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by nbCallGetIntPara8 (2 of 6 refs, 5 functions)
 0x0046B6E8	fldEncountFlags_fldProcess	inferred	method=smt3-alias; p=0.90 (n=None); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1; fldEncountFlags is another symbol

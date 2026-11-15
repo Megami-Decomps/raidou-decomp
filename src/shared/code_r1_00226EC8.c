@@ -745,7 +745,7 @@ typedef struct EffQuadParams {
     EffScalarTrack sizeTrack;
     EffScalarTrack angleTrack;
     s32 duration;
-    f32 sizeScale;
+    u32 sizeDuration;
     u8 noSetup;
     u8 pad95[3];
 } EffQuadParams;
@@ -4828,7 +4828,239 @@ void billReleaseTrailNode(s32 work) {
     sdfMemFreeDirect(((EffBillFrameState *)work)->allocation);
 }
 
+/* NON_MATCHING: 58 of 490 words match. VU0 macros keep vectors in registers where retail spills to stack; body from DDS C, checked against pseudocode. */
+#ifdef NON_MATCHING
+typedef struct EffBillTrailEntry {
+    s32 age;
+    f32 angle;
+    f32 spin;
+    f32 length;
+    f32 lengthStep;
+    f32 radius;
+    f32 radiusStep;
+    f32 tilt;
+    f32 tiltStep;
+    f32 widthA;
+    f32 widthB;
+} EffBillTrailEntry;
+
+typedef char EffBillTrailEntrySizeCheck[(sizeof(EffBillTrailEntry) == 0x2C) ? 1 : -1];
+
+void billAdvanceTrailInstances(EffClassWork *work) {
+    EffBillTrailFrameConfig *config = (EffBillTrailFrameConfig *)work->payload;
+    EffBillFrameState *resource;
+    EffBillTrailEntry *entry;
+    EffTrackSet *asset;
+    s32 lifetime;
+    u32 randomAge;
+    s32 itemCount;
+    s32 remainingSpawn;
+    s32 item;
+    s32 fadeStart;
+    s32 fadeEnd;
+    u32 respawn;
+    u32 *colors;
+    u128 *vertices;
+    f32 colorVectorA[4];
+    f32 colorVectorB[4];
+    f32 center[4];
+    f32 direction[4];
+    f32 lateralA[4];
+    f32 lateralB[4];
+    f32 acceleration;
+    f32 scale;
+
+    if (config->frame.output.timed.time.progress < work->frame &&
+        config->frame.output.timed.time.progress != 0) {
+        return;
+    }
+    lifetime = config->frame.lifetime;
+    resource = (EffBillFrameState *)work->resource;
+    entry = (EffBillTrailEntry *)resource->entries;
+    asset = resource->asset;
+    itemCount = (s32)config->frame.output.timed.count;
+    if (lifetime == 0) {
+        return;
+    }
+    if (config->frame.spawnAllOnStart != 0 && work->frame == 0) {
+        remainingSpawn = itemCount;
+        randomAge = 1;
+    } else {
+        remainingSpawn = config->frame.spawnCount;
+        randomAge = 0;
+    }
+
+    vertices = (u128 *)asset->buffer;
+    colors = (u32 *)asset->tail;
+    center[1] = 0.0f;
+    center[3] = 0.0f;
+    eeUnpackRGBAWordFloat(config->colorA & 0xFFFFFF, 1.0f / 128.0f);
+    SDF_VU0_STOREVECTOR_NOMEM(colorVectorA);
+    eeUnpackRGBAWordFloat(config->colorB & 0xFFFFFF, 1.0f / 128.0f);
+    SDF_VU0_STOREVECTOR_NOMEM(colorVectorB);
+    fadeStart = (s32)(config->frame.fadeInFraction * (f32)lifetime);
+    fadeEnd = (s32)(config->frame.fadeOutFraction * (f32)lifetime);
+    acceleration = config->spinAccel;
+    respawn = config->frame.respawn;
+
+    for (item = 0; item < itemCount; item++, entry++, vertices += 5, colors += 5) {
+        s32 age = entry->age;
+        f32 time;
+
+        if (age == -2) {
+            continue;
+        }
+        if (age == -1) {
+            if (remainingSpawn != 0) {
+                f32 random;
+                f32 start;
+                f32 end;
+
+                entry->angle = dds3GetRandFloatA(effSharedRandomState) * 6.2831853f;
+                random = dds3GetRandFloatA(effSharedRandomState);
+                start = config->lengthStart * (random * config->lengthStartJitter + (1.0f - config->lengthStartJitter));
+                random = dds3GetRandFloatA(effSharedRandomState);
+                end = config->lengthEnd * (random * config->lengthEndJitter + (1.0f - config->lengthEndJitter));
+                entry->length = start;
+                entry->lengthStep = (end - start) / (f32)lifetime;
+
+                random = dds3GetRandFloatA(effSharedRandomState);
+                start = config->radiusStart * (random * config->radiusStartJitter + (1.0f - config->radiusStartJitter));
+                random = dds3GetRandFloatA(effSharedRandomState);
+                end = config->radiusEnd * (random * config->radiusEndJitter + (1.0f - config->radiusEndJitter));
+                entry->radius = start;
+                entry->radiusStep = (end - start) / (f32)lifetime;
+
+                random = dds3GetRandFloatA(effSharedRandomState);
+                start = config->tiltStart * (random * config->tiltStartJitter + (1.0f - config->tiltStartJitter));
+                random = dds3GetRandFloatA(effSharedRandomState);
+                end = config->tiltEnd * (random * config->tiltEndJitter + (1.0f - config->tiltEndJitter));
+                entry->tilt = start;
+                entry->tiltStep = (end - start) / (f32)lifetime;
+
+                random = dds3GetRandFloatA(effSharedRandomState);
+                scale = random * config->widthJitter + (1.0f - config->widthJitter);
+                entry->widthA = config->widthA * scale;
+                entry->widthB = config->widthB * scale;
+                random = dds3GetRandFloatA(effSharedRandomState);
+                entry->spin = config->spin * (random * config->spinJitter + (1.0f - config->spinJitter));
+                if (randomAge != 0) {
+                    time = (f32)(dds3GetRandA(effSharedRandomState) % (u32)lifetime);
+                    entry->age = (s32)time;
+                    entry->length += entry->lengthStep * time;
+                    entry->radius += entry->radiusStep * time;
+                    entry->tilt += entry->tiltStep * time;
+                } else {
+                    entry->age = 0;
+                }
+                remainingSpawn--;
+            }
+        } else if (age >= lifetime) {
+            s32 vertex;
+
+            for (vertex = 0; vertex < 5; vertex++) {
+                SDF_VU0_STOREIDENTITYVECTOR(vertices + vertex);
+                colors[vertex] = 0;
+            }
+            entry->age = respawn != 0 ? -1 : -2;
+        } else {
+            f32 angle;
+            f32 radius;
+            f32 tilt;
+            f32 cosine;
+            f32 sine;
+            u32 packed;
+
+            time = (f32)age;
+            angle = (entry->spin + (acceleration * time) * 0.5f) * time + entry->angle;
+            radius = entry->radius;
+            tilt = entry->tilt;
+            cosine = sdfCos(angle);
+            sine = sdfSin(angle);
+
+            /* The spoke's root on the ring, and its unit direction out and down. */
+            center[0] = cosine * radius;
+            center[2] = sine * radius;
+            direction[0] = cosine * tilt;
+            direction[1] = tilt + -1.0f;
+            direction[2] = sine * tilt;
+            SDF_VU0_LOADVECTOR(direction);
+            SDF_VU0_NORMALIZE();
+            SDF_VU0_COPYVECTOR_A_TO_C();
+
+            /* The tangent, scaled to each end's half width. */
+            direction[0] = sine;
+            direction[1] = 0.0f;
+            cosine = -cosine;
+            direction[2] = cosine;
+            SDF_VU0_LOADVECTOR(direction);
+            SDF_VU0_COPYVECTOR_A_TO_B();
+            SDF_VU0_SCALEVECTOR_BITS(entry->widthA);
+            SDF_VU0_SCALEVECTOR_B_BITS(entry->widthB);
+            SDF_VU0_STOREVECTOR_NOMEM(lateralA);
+            SDF_VU0_STOREVECTOR_B_NOMEM(lateralB);
+
+            /* The root end: its center, then either side. */
+            SDF_VU0_LOADVECTOR(center);
+            SDF_VU0_STOREVECTOR(vertices + 3);
+            SDF_VU0_LOADVECTOR_B(lateralA);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(vertices + 2);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_STOREVECTOR(vertices + 4);
+
+            /* The far end, a length out along the direction, either side. */
+            SDF_VU0_COPYVECTOR_C_TO_B();
+            SDF_VU0_SCALEVECTOR_B_BITS(entry->length);
+            SDF_VU0_LOADVECTOR(center);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_LOADVECTOR_B(lateralB);
+            SDF_VU0_ADDVECTOR();
+            SDF_VU0_STOREVECTOR(vertices + 0);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_STOREVECTOR(vertices + 1);
+
+            entry->length += entry->lengthStep;
+            entry->tilt += entry->tiltStep;
+            entry->radius += entry->radiusStep;
+            if (age < fadeStart) {
+                scale = time / (f32)fadeStart;
+            } else if (fadeEnd < age) {
+                scale = (f32)(lifetime - age) / (f32)(lifetime - fadeEnd);
+            } else {
+                scale = 1.0f;
+            }
+            SDF_VU0_LOADVECTOR_B(effOnesVector);
+            SDF_VU0_SCALEVECTOR_B_BITS(scale);
+            SDF_VU0_LOADVECTOR(colorVectorB);
+            SDF_VU0_MULVECTOR();
+            packed = eePackRGBAWord(128.0f);
+            colors[0] = packed;
+            colors[1] = packed;
+            SDF_VU0_LOADVECTOR(colorVectorA);
+            SDF_VU0_MULVECTOR();
+            packed = eePackRGBAWord(128.0f);
+            /* The far end takes color B with a zero alpha byte; the root's
+             * center color A with alpha 0xFF on odd entries and 0x40 on even
+             * ones, and its sides only the fade alpha, of 128 or of 255. */
+            if (item & 1) {
+                colors[3] = packed | 0xFF000000;
+                packed = (u32)(scale * 128.0f) << 24;
+            } else {
+                colors[3] = packed | 0x40000000;
+                packed = (u32)(scale * 255.0f) << 24;
+            }
+            colors[2] = packed;
+            colors[4] = packed;
+            entry->age = age + 1;
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00226EC8", billAdvanceTrailInstances);
+#endif
 
 void billUpdateTrailDrawColorAndTransform(u8 *work) {
     u8 *config = ((BillCellDrawWork *)work)->config;
@@ -5456,7 +5688,147 @@ EffTrackSet *effDuplicateResourceRefs(const EffTrackSet *original) {
     return effect;
 }
 
+/* NON_MATCHING: 107 of 321 words match. Register allocation and block order differ from retail; same calls, tables and branches. */
+#ifdef NON_MATCHING
+extern sdfGrOt_t *effDrawTrackSetData5[];
+extern u32 effDrawTrackSetData[];
+extern u32 effDrawTrackSetData2[];
+extern u32 effDrawTrackSetData3[];
+extern u32 effDrawTrackSetData4[];
+
+void effDrawTrackSet(EffTrackSet *track, const Matrix4 *matrix)
+{
+    sdfGrOt_t *surface;
+    sdfDrawTag_t *list;
+    EffGsPacket *packet;
+    RefObj *shared;
+    sdfTexHandle_t *texture;
+    sdfMat_t *handle;
+    s32 rows;
+
+    if ((track->color & 0xFF000000) == 0) {
+        return;
+    }
+    surface = effDrawTrackSetData5[track->type];
+    list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    if (matrix == NULL) {
+        SDF_VU0_LOADIDENTITY();
+    } else {
+        VU0_LOAD_MATRIX(matrix);
+    }
+    sdf3DPrimLinkTm(list, 0);
+    if (track->columns != NULL) {
+        shared = track->shared;
+        texture = NULL;
+        if (shared == NULL) {
+            if (track->kind == 3) {
+                shared = effData34[0];
+            } else if (track->kind == 4) {
+                shared = effData34[1];
+            }
+        }
+        if (shared != NULL) {
+            texture = sdfGetOrCreateTextureForReference(surface, shared);
+        }
+        sdfMatSetTex(track->handle, texture);
+    }
+    sdf3DPrimLinkMat(list, track->handle, 0);
+    if (track->flag == 0) {
+        packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
+        packet->dmaTag = 2;
+        packet->vifTag = (((u64)0x50000002 << 16) | 0x1000) << 16;
+        packet->gifTag = ((u64)0x10000000 << 32) | 0x8001;
+        packet->registerList = 0xE;
+        packet->registerValue = 0x31801;
+        packet->registerAddress = 0x47;
+        sdfDrawTagLink(list, (u32)packet);
+    }
+    rows = track->rows;
+    effDrawTrackSetWork.vertexColor = (u32 *)track->tail;
+    effDrawTrackSetWork.vertex = (sdfVector4_t *)track->buffer;
+    effDrawTrackSetWork.uv = (sdfVector2_t *)track->columns;
+    effDrawTrackSetWork.color = track->color;
+    switch (track->kind) {
+    case 0:
+        effDrawTrackSetWork.faceCount = 15;
+        effDrawTrackSetWork.pointCount = 25;
+        effDrawTrackSetWork.faceIndex = effDrawTrackSetData;
+        while (rows >= 25) {
+            rows -= 25;
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            effDrawTrackSetWork.vertex += 25;
+            effDrawTrackSetWork.vertexColor += 25;
+        }
+        if (rows >= 5) {
+            effDrawTrackSetWork.pointCount = rows;
+            effDrawTrackSetWork.faceCount = 3 * (rows / 5);
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+        }
+        break;
+    case 1:
+        effDrawTrackSetWork.faceCount = 12;
+        effDrawTrackSetWork.pointCount = 13;
+        effDrawTrackSetWork.faceIndex = effDrawTrackSetData2;
+        while (rows >= 13) {
+            rows -= 13;
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            effDrawTrackSetWork.vertex += 13;
+            effDrawTrackSetWork.vertexColor += 13;
+        }
+        break;
+    case 2:
+        effDrawTrackSetWork.faceCount = 16;
+        effDrawTrackSetWork.pointCount = 32;
+        effDrawTrackSetWork.faceIndex = effDrawTrackSetData3;
+        while (rows >= 32) {
+            rows -= 32;
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            effDrawTrackSetWork.vertex += 32;
+            effDrawTrackSetWork.vertexColor += 32;
+        }
+        if (rows >= 4) {
+            effDrawTrackSetWork.pointCount = rows;
+            effDrawTrackSetWork.faceCount = 2 * (rows >> 2);
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+        }
+        break;
+    case 3:
+    case 4:
+        effDrawTrackSetWork.faceCount = 16;
+        effDrawTrackSetWork.pointCount = 32;
+        effDrawTrackSetWork.faceIndex = effDrawTrackSetData4;
+        while (rows >= 32) {
+            rows -= 32;
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+            effDrawTrackSetWork.vertex += 32;
+            effDrawTrackSetWork.vertexColor += 32;
+            effDrawTrackSetWork.uv += 32;
+        }
+        if (rows >= 4) {
+            effDrawTrackSetWork.pointCount = rows;
+            effDrawTrackSetWork.faceCount = 2 * (rows >> 2);
+            sdfDrawTagLink(list, effPkt3DPrimMakePoly(&effDrawTrackSetWork));
+        }
+        break;
+    default:
+        break;
+    }
+    if (track->flag == 0) {
+        packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
+        packet->dmaTag = 2;
+        packet->vifTag = (((u64)0x50000002 << 16) | 0x1000) << 16;
+        packet->gifTag = ((u64)0x10000000 << 32) | 0x8001;
+        packet->registerList = 0xE;
+        packet->registerValue = 0x51801;
+        packet->registerAddress = 0x47;
+        sdfDrawTagLink(list, (u32)packet);
+    }
+    surface->regFunc(surface, list);
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effDrawTrackSet);
+#endif
 
 void effLoadFlashTextures(void) {
     effLoadFlashTexturesData[0] = sdfDevLoadFileEx("/effect/flash00.tmx", (u32 *)&effFlashTextureHandles, 0);
@@ -6034,7 +6406,103 @@ void effAssetQueueRelease(EffPointSet *set) {
     sdfMemFreeDirect(set->allocation);
 }
 
+/* NON_MATCHING: 151 of 240 words match. List pointer lands in s8 not s7; tail packet and ot offset allocate differently. */
+#ifdef NON_MATCHING
+extern sdfGrOt_t *effDrawFourPointGroupsData[];
+
+#ifdef VERSION_RAIDOU1
+#define EFF_FOUR_POINT_OT_BASE 60
+#else
+#define EFF_FOUR_POINT_OT_BASE 61
+#endif
+
+void effDrawFourPointGroups(EffPointSet *set, const Matrix4 *matrix)
+{
+    sdfDrawTag_t *list;
+    sdfDrawTag_t *tail;
+    EffGsPacket *packet;
+    s32 remaining;
+    s32 ot;
+
+    if ((set->color & 0xFF000000) == 0) {
+        return;
+    }
+    list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+    sdfDrawTagInit(list);
+    if (matrix == NULL) {
+        SDF_VU0_LOADIDENTITY();
+    } else {
+        VU0_LOAD_MATRIX(matrix);
+    }
+    sdf3DPrimLinkTm(list, 0);
+    sdf3DPrimLinkMat(list, set->handle, 0);
+    if (set->flag == 0) {
+        packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
+        packet->dmaTag = 2;
+        packet->vifTag = (((u64)0x50000002 << 16) | 0x1000) << 16;
+        packet->gifTag = ((u64)0x10000000 << 32) | 0x8001;
+        packet->registerList = 0xE;
+        packet->registerValue = 0x31801;
+        packet->registerAddress = 0x47;
+        sdfDrawTagLink(list, (u32)packet);
+    }
+    remaining = set->rows;
+    effWork[0].vertexColor = (u32 *)set->tail;
+    effWork[0].vertex = (u128 *)set->buffer;
+    effWork[0].color = set->color;
+    effWork[0].pointCount = 12;
+    effWork[0].faceIndex = effData7;
+    effWork[0].faceCount = 12;
+    while (remaining >= 12) {
+        remaining -= 8;
+        sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork));
+        effWork[0].vertex += 8;
+        effWork[0].vertexColor += 8;
+    }
+    if (remaining >= 8) {
+        effWork[0].faceCount = 6;
+        effWork[0].pointCount = remaining;
+        sdfDrawTagLink(list, effPkt3DPrimMakePoly(effWork));
+    }
+    if (set->flag == 0) {
+        packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
+        packet->dmaTag = 2;
+        packet->vifTag = (((u64)0x50000002 << 16) | 0x1000) << 16;
+        packet->gifTag = ((u64)0x10000000 << 32) | 0x8001;
+        packet->registerList = 0xE;
+        packet->registerValue = 0x51801;
+        packet->registerAddress = 0x47;
+        sdfDrawTagLink(list, (u32)packet);
+    }
+    if (set->type < 5) {
+        effDrawFourPointGroupsData[set->type]->regFunc(effDrawFourPointGroupsData[set->type], list);
+    } else {
+        ot = (set->type == 5) ? EFF_FOUR_POINT_OT_BASE : EFF_FOUR_POINT_OT_BASE + 6;
+        tail = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
+        sdfDrawTagInit(tail);
+        packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
+        packet->dmaTag = 2;
+        packet->vifTag = (((u64)0x50000002 << 16) | 0x1000) << 16;
+        packet->gifTag = ((u64)0x10000000 << 32) | 0x8001;
+        packet->registerList = 0xE;
+        packet->registerValue = 6;
+        packet->registerAddress = 66;
+        sdfDrawTagLink(tail, (u32)packet);
+        sdfGrOtTable[ot].regFunc(&sdfGrOtTable[ot], tail);
+        packet = (EffGsPacket *)sdfGrAllocPacketBuff(0x30);
+        packet->dmaTag = 2;
+        packet->vifTag = (((u64)0x50000002 << 16) | 0x1000) << 16;
+        packet->gifTag = ((u64)0x10000000 << 32) | 0x8001;
+        packet->registerList = 0xE;
+        packet->registerValue = (ot == EFF_FOUR_POINT_OT_BASE) ? 68 : 66;
+        packet->registerAddress = 66;
+        sdfDrawTagLink(list, (u32)packet);
+        sdfGrOtTable[ot].regFunc(&sdfGrOtTable[ot], list);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effDrawFourPointGroups);
+#endif
 
 /* Create an empty surface node for handleCount grid cells; no handles are allocated yet. */
 EffectSurfaceNode *effCreateSurfaceNode(u32 handleCount) {
@@ -6337,7 +6805,56 @@ void effIndexedFloatCallbackDispatch(ValPtr44 *p, float v) {
     dds3DispatchIndexedCallback(p->p44, v);
 }
 
+/* NON_MATCHING: 51 of 84 words match. Size round-up to 16 schedules differently (sra before andi, register choice). */
+#ifdef NON_MATCHING
+extern u8 effCreateSurfaceGridNodeData[];
+
+EffSurfaceGridNode *effCreateSurfaceGridNode(u32 count, u32 columns)
+{
+    u32 rows;
+    s32 size;
+    sdfMemHandle_t *handle;
+    u128 *buffer;
+    EffSurfaceGridNode *node;
+    u128 *queue;
+
+    rows = 3 * count * columns + 6;
+    size = 20 * rows + 160;
+    if ((size & 0xF) != 0) {
+        size = ((size >> 4) + 1) * 16;
+    } else {
+        size = (size >> 4) * 16;
+    }
+    handle = sdfMemAllocDirect(size + 60);
+    buffer = sdfMemLock(handle);
+    node = (EffSurfaceGridNode *)((u8 *)buffer + size);
+    node->type = 2;
+    node->buffer = buffer;
+    queue = buffer + rows;
+    node->queueA = queue;
+    queue += 8;
+    node->queueB = (u32 *)queue;
+    node->field_18 = 3;
+    node->rows = rows;
+    node->columns = columns;
+    node->allocation = handle;
+    node->tail = (u32 *)(queue + 2);
+    node->field_14 = 0;
+    node->material = sdfMatNew();
+    sdfMatSetConstant(node->material, 1.0f);
+    memset(&effDrawSurfaceTrailHistoryWork, 0, 0x2C);
+    effDrawSurfaceTrailHistoryWork.attr = 0;
+    effDrawSurfaceTrailHistoryWork.faceIndex = (u32 *)effData8;
+    memset(&effWork2, 0, 0x2C);
+    effWork2.attr = 0;
+    effWork2.pointCount = 8;
+    effWork2.faceIndex = (u32 *)effCreateSurfaceGridNodeData;
+    effWork2.faceCount = 6;
+    return node;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effCreateSurfaceGridNode);
+#endif
 
 /* vu0 routine: fade-blended vertex colours written into the surface node's tail */
 void effFillSurfaceGridColorGradient(EffSurfaceGridNode *node, u32 *colors) {
@@ -6578,7 +7095,111 @@ void effSubmitIndexedRenderPacket(u32 index) {
     effCurrentRenderPacket = NULL;
 }
 
+/* NON_MATCHING: 182 of 359 words match. Retail inlines the 0x98 and 0xA0 byte param copies as alignment-tested ldl/ldr loops, memcpy here; end-frame math follows IDA. Needs EffQuadParams.sizeScale renamed to u32 sizeDuration. */
+#ifdef NON_MATCHING
+extern sdf3DPrimPolyParm_t PartsCreateWork;
+extern u32 PartsCreateData[];
+extern u32 PartsCreateData2[];
+
+/* Frames until the particle's colour, alpha and size tracks have all finished. */
+static u32 partsEndFrame(ptexHandle_t *ptex)
+{
+    u32 end = 0;
+    s32 key = 0;
+    f32 value;
+    u32 fadeEnd;
+
+    switch (ptex->param.colorTrack.segmentMode) {
+    case 1:
+    case 2:
+        key = (ptex->param.colorTrack.segmentMode == 2) ? 1 : 0;
+        end = (u32)((f32)(u32)ptex->param.duration * (1.0f - ptex->param.colorTrack.keys[key].fraction));
+        break;
+    default:
+        break;
+    }
+    value = (f32)(u32)ptex->param.duration * (1.0f - ptex->param.alphaTrack.fadeOutFraction);
+    fadeEnd = (u32)value;
+    if (end < fadeEnd) {
+        end = fadeEnd;
+    }
+    switch (ptex->param.sizeTrack.curve.mode) {
+    case 1:
+    case 2:
+        key = (ptex->param.sizeTrack.curve.mode == 2) ? 1 : 0;
+        value = (f32)ptex->param.sizeDuration * (1.0f - ptex->param.sizeTrack.curve.keys[key].fraction);
+        fadeEnd = (u32)value;
+        if (end < fadeEnd) {
+            end = fadeEnd;
+        }
+        break;
+    default:
+        break;
+    }
+    return end;
+}
+
+ptexHandle_t *PartsCreate(FileJobPayload *payload)
+{
+    ptexHandle_t *ptex;
+    void *buffer;
+
+    ptex = sdfChipAllocZeroDirect(sizeof(ptexHandle_t));
+    VU0_STORE_VF(vf0, ptex->pos);
+    VU0_STORE_VF(vf0, ptex->rot);
+    ptex->hBillboard = NULL;
+    ptex->abgr = 0x80808080;
+    ptex->scale = 1.0f;
+    ptex->hCTexList = NULL;
+    ptex->assetHandle = sdfMatNew();
+    sdfMatSetConstant(ptex->assetHandle, 1.0f);
+    memset(&PartsCreateWork, 0, 0x2C);
+    PartsCreateWork.pointCount = 4;
+    PartsCreateWork.attr = 0x4000;
+    PartsCreateWork.faceIndex = PartsCreateData;
+    PartsCreateWork.vertexColor = PartsCreateData2;
+    PartsCreateWork.faceCount = 2;
+    if (payload == NULL) {
+        return ptex;
+    }
+    ptex->type = payload->option;
+    buffer = fileResolvePrimaryBuffer(payload);
+    if (ptex->type == 1) {
+        memcpy(&ptex->param, buffer, sizeof(EffQuadParams));
+    } else if (ptex->type == 2) {
+        memcpy(&ptex->param, buffer, (u8 *)&ptex->hBillboard - (u8 *)&ptex->param);
+    }
+    buffer = fileResolveSecondaryBuffer(payload);
+    if (buffer != NULL) {
+        switch (payload->primary.selector) {
+        case 1:
+            ptex->hBillboard = dds3BillboardCreate(0, (u32)buffer);
+            break;
+        case 2:
+            ptex->hBillboard = dds3BillboardCreate(1, (u32)buffer);
+            break;
+        case 4:
+            ptex->hBillboard = dds3BillboardGeneral(*(s32 *)buffer);
+            break;
+        case 7:
+            ptex->hCTexList = effCacheTexCreate((u32)buffer);
+            break;
+        }
+        if (ptex->hBillboard != NULL) {
+            dds3BillboardSetAnimColorAdvMode(ptex->hBillboard);
+            if (ptex->type == 1 || ptex->type == 2) {
+                dds3BillboardSetMode(ptex->hBillboard, (u16)ptex->param.alphaTrack.surfaceIndex);
+            }
+        }
+    }
+    if (ptex->type == 2) {
+        ptex->unkE4 = partsEndFrame(ptex);
+    }
+    return ptex;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_00226EC8", PartsCreate);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", Delete_effPolygonTex);
 

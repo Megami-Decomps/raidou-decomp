@@ -23,6 +23,6 @@ void mapSummonDvFoceSet2(f32 x, f32 y, f32 z);
 void mapSummonDvGet(f32 *x, f32 *y, f32 *z);
 void mapSummonDvTask(void);
 void rstDrawEvoBgFade(s32 Motion, f32 spd);
-void sndSeStatus(void);
+s32 sndSeStatus(void);
 
 #endif

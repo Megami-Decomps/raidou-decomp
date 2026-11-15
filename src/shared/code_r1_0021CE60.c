@@ -36,6 +36,9 @@ void CallShopTest(s32 flg, void *data);
 #include "code_r1_001CC1D0.h"
 #include "slMain.h"
 #include "code_r1_0021C768.h"
+#include "sdfMath.h"
+#include "sdk_libm.h"
+#include "dds3Randomize.h"
 
 /* Convert three Euler angle components to the VU0 quaternion output. */
 
@@ -382,6 +385,7 @@ void fileResetSlotStates(FileSlotTable *table);
 void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot);
 void fileCopyAndInvalidateSlotGroup(FileSlotTable *table, FileSlot *source);
 void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot);
+void fileSampleKeyTracks(FileSlot *out, const FileKeyBlock *block, s32 frame, const f32 *target);
 extern void effUpdateGridRecordSlotHistory(FileSlotTable *, FileSlot *);
 
 typedef struct FileWaveMotion {
@@ -1952,7 +1956,224 @@ void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot) {
     }
 }
 
+/* NON_MATCHING: 542 of 546 words match. Arg register order of the fileSampleKeyTracks call; body from DDS C. */
+#ifdef NON_MATCHING
+extern u8 effSharedRandomState[];
+extern f32 effWaveEmitterNegativeYAxis[4];
+#define FILE_SLOT_FRAME_DISABLED (-2)
+
+void effUpdateWaveEmitterSlots(FileSlotTable *record) {
+    f32 direction[4];
+    f32 radiusVector[4];
+    f32 previousPosition[4];
+    FileKeyBlock *keys;
+    u32 i;
+    u32 count;
+    u32 flags;
+    FileSlot *slot;
+    FileWaveMotion *motion;
+    s32 duration;
+    s32 prewarm;
+    s32 mode;
+    f32 speedDecrease;
+    s32 toSpawn;
+    s32 prewarmLength;
+    s32 frame;
+    f32 distance;
+    f32 sine;
+    f32 sway;
+    s32 length;
+
+    keys = (FileKeyBlock *)record->data0;
+    count = record->instances;
+    length = keys->length;
+    flags = record->flags;
+    slot = record->slots;
+    motion = (FileWaveMotion *)record->instanceWork;
+    if (length != 0) {
+        duration = keys->emissionDuration;
+        prewarmLength = keys->length;
+        mode = keys->heading.track.curve.headingMode;
+        speedDecrease = keys->emitter.wave.axialDeceleration;
+        radiusVector[3] = 0.0f;
+        SDF_VU0_LOADVECTOR(keys->orientation);
+        ToMatrix();
+        if (duration != 0 && (s32)record->references >= duration) {
+            toSpawn = 0;
+            prewarm = 0;
+        } else {
+            if (record->references == 0 && keys->prewarm != 0) {
+                prewarm = 1;
+                if (!(keys->spawnVariance > 0.0f)) {
+                    toSpawn = record->instances;
+                } else {
+                    toSpawn = (s32)((f32)record->instances *
+                        (dds3GetRandFloatA(effSharedRandomState) * (1.0999999046325684f - keys->spawnVariance)));
+                }
+            } else {
+                prewarm = 0;
+                if (keys->spawnVariance > 0.0f) {
+                    record->spawnRemainder += (f32)keys->spawnRate *
+                        (dds3GetRandFloatA(effSharedRandomState) * (1.0999999046325684f - keys->spawnVariance));
+                } else {
+                    record->spawnRemainder += (f32)keys->spawnRate;
+                }
+                toSpawn = (s32)fabsf(record->spawnRemainder);
+                record->spawnRemainder -= (f32)toSpawn;
+            }
+        }
+        i = 0;
+        if (count != 0) {
+            do {
+                if (FILE_SLOT_FRAME(slot) >= length) {
+                    FILE_SLOT_FRAME(slot) = duration != 0 ? FILE_SLOT_FRAME_DISABLED : FILE_SLOT_FRAME_NONE;
+                    fileInvalidateSlotGroup((FileSlotTable *)record, slot);
+                }
+                frame = FILE_SLOT_FRAME(slot);
+                if (frame != -2) {
+                    if (frame == -1) {
+                        if (toSpawn != 0) {
+                            s32 localSpace = flags & 1;
+                            f32 initialAmplitude;
+                            f32 finalAmplitude;
+                            f32 radius;
+
+                            if (localSpace != 0) {
+                                motion->axis[0] = 0.0f;
+                                motion->axis[1] = -1.0f;
+                                motion->axis[2] = 0.0f;
+                            } else {
+                                SDF_VU0_LOADVECTOR(effWaveEmitterNegativeYAxis);
+                                SDF_VU0_APPLYMATRIX_XYZ();
+                                SDF_VU0_STOREVECTOR(direction);
+                                motion->axis[0] = direction[0];
+                                motion->axis[1] = direction[1];
+                                motion->axis[2] = direction[2];
+                            }
+                            direction[0] = (dds3GetRandFloatA(effSharedRandomState) - 0.5f) * 2.0f;
+                            direction[1] = 0.0f;
+                            direction[2] = (dds3GetRandFloatA(effSharedRandomState) - 0.5f) * 2.0f;
+                            direction[3] = 0.0f;
+                            SDF_VU0_LOADVECTOR(direction);
+                            SDF_VU0_NORMALIZE();
+                            if (localSpace == 0) {
+                                SDF_VU0_APPLYMATRIX_XYZ();
+                            }
+                            SDF_VU0_STOREVECTOR(direction);
+                            motion->swayDirection[0] = direction[0];
+                            motion->swayDirection[1] = direction[1];
+                            motion->swayDirection[2] = direction[2];
+                            motion->speed = keys->emitter.wave.axialSpeed *
+                                (dds3GetRandFloatA(effSharedRandomState) * keys->emitter.wave.axialSpeedRandomness +
+                                 (1.0f - keys->emitter.wave.axialSpeedRandomness));
+                            initialAmplitude = keys->emitter.wave.initialAmplitude *
+                                (dds3GetRandFloatA(effSharedRandomState) * keys->emitter.wave.initialAmplitudeRandomness +
+                                 (1.0f - keys->emitter.wave.initialAmplitudeRandomness));
+                            finalAmplitude = keys->emitter.wave.finalAmplitude *
+                                (dds3GetRandFloatA(effSharedRandomState) * keys->emitter.wave.finalAmplitudeRandomness +
+                                 (1.0f - keys->emitter.wave.finalAmplitudeRandomness));
+                            motion->amplitude = initialAmplitude;
+                            motion->amplitudeStep = (finalAmplitude - initialAmplitude) / (f32)length;
+                            motion->phaseStep = keys->emitter.wave.phaseStep *
+                                (dds3GetRandFloatA(effSharedRandomState) * keys->emitter.wave.phaseStepRandomness +
+                                 (1.0f - keys->emitter.wave.phaseStepRandomness));
+                            motion->phase = dds3GetRandFloatA(effSharedRandomState) * 6.2831850051879883f;
+                            motion->previousSine = sdfSin(motion->phase);
+                            radius = keys->emitter.wave.initialRadius *
+                                ((dds3GetRandFloatA(effSharedRandomState) - 0.5f) * 2.0f);
+                            VEC3_SPLAT(radiusVector, radius);
+                            if (localSpace != 0) {
+                                SDF_VU0_LOADVECTOR(direction);
+                                SDF_VU0_LOADVECTOR_B(radiusVector);
+                                SDF_VU0_MULVECTOR();
+                            } else {
+                                SDF_VU0_LOADVECTOR(direction);
+                                SDF_VU0_LOADVECTOR_B(radiusVector);
+                                SDF_VU0_MULVECTOR();
+                                SDF_VU0_LOADVECTOR_B(keys->pos);
+                                SDF_VU0_ADDVECTOR();
+                            }
+                            SDF_VU0_STOREVECTOR(slot->pos);
+                            motion->scaleMultiplier = dds3GetRandFloatA(effSharedRandomState) * keys->scale.emitter.randomness +
+                                (1.0f - keys->scale.emitter.randomness);
+                            if (mode != 2) {
+                                motion->angleMultiplier = dds3GetRandFloatA(effSharedRandomState) * keys->heading.emitter.randomness +
+                                    (1.0f - keys->heading.emitter.randomness);
+                                if (mode == 1) {
+                                    motion->angle = dds3GetRandFloatA(effSharedRandomState) * 6.2831850051879883f;
+                                    if (dds3GetRandA(effSharedRandomState) & 1) {
+                                        motion->angleMultiplier = -motion->angleMultiplier;
+                                    }
+                                } else {
+                                    motion->angle = 0.0f;
+                                }
+                            } else {
+                                motion->angleMultiplier = 1.0f;
+                                motion->angle = 0.0f;
+                            }
+                            FILE_SLOT_FRAME(slot) = 0;
+                            SDF_VU0_COPYVECTOR(previousPosition, slot->pos);
+                            if (prewarm != 0) {
+                                f32 age = (f32)(dds3GetRandA(effSharedRandomState) % prewarmLength);
+                                distance = motion->speed * age;
+                                distance -= speedDecrease * age * age * 0.5f;
+                                slot->pos[0] += motion->axis[0] * distance;
+                                slot->pos[1] += motion->axis[1] * distance;
+                                slot->pos[2] += motion->axis[2] * distance;
+                                motion->phase += motion->phaseStep * age;
+                                motion->amplitude += motion->amplitudeStep * age;
+                                sine = sdfSin(motion->phase);
+                                sway = motion->amplitude * sine;
+                                FILE_SLOT_FRAME(slot) = (s32)age;
+                                slot->pos[0] += motion->swayDirection[0] * sway;
+                                slot->pos[1] += motion->swayDirection[1] * sway;
+                                slot->pos[2] += motion->swayDirection[2] * sway;
+                                motion->previousSine = sine;
+                                motion->phase += motion->phaseStep;
+                                motion->amplitude += motion->amplitudeStep;
+                            }
+                            fileSampleKeyTracks(slot, keys, FILE_SLOT_FRAME(slot), previousPosition);
+                            slot->scale *= motion->scaleMultiplier;
+                            slot->angle *= motion->angleMultiplier;
+                            slot->angle += motion->angle;
+                            if (prewarm != 0) {
+                                fileCopyAndInvalidateSlotGroup((FileSlotTable *)record, slot);
+                                FILE_SLOT_FRAME(slot)++;
+                            }
+                            toSpawn--;
+                        }
+                    } else {
+                        SDF_VU0_COPYVECTOR(previousPosition, slot->pos);
+                        sine = sdfSin(motion->phase);
+                        sway = motion->amplitude * (sine - motion->previousSine);
+                        slot->pos[0] += motion->swayDirection[0] * sway;
+                        slot->pos[1] += motion->swayDirection[1] * sway;
+                        slot->pos[2] += motion->swayDirection[2] * sway;
+                        distance = motion->speed - speedDecrease * (f32)frame;
+                        slot->pos[0] += motion->axis[0] * distance;
+                        slot->pos[1] += motion->axis[1] * distance;
+                        slot->pos[2] += motion->axis[2] * distance;
+                        motion->previousSine = sine;
+                        motion->phase += motion->phaseStep;
+                        motion->amplitude += motion->amplitudeStep;
+                        fileSampleKeyTracks(slot, keys, frame, previousPosition);
+                        slot->scale *= motion->scaleMultiplier;
+                        slot->angle *= motion->angleMultiplier;
+                        slot->angle += motion->angle;
+                        effUpdateGridRecordSlotHistory(record, slot);
+                        FILE_SLOT_FRAME(slot) = frame + 1;
+                    }
+                }
+                motion++;
+                slot++;
+                i++;
+            } while (i < count);
+        }
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateWaveEmitterSlots);
+#endif
 
 /* Scale selected wave-emitter parameters from source to destination. */
 void effScaleWaveEmitterParameters(ScaleOwner *owner, f32 scale) {
@@ -1992,7 +2213,50 @@ INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateSectorEmitterSlots);
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", effLeaf349);
 
+/* NON_MATCHING: 3 of 86 words match. Register allocation and scheduling differ; retail keeps type masked in s7 and the key loads before the descriptor loads. */
+#ifdef NON_MATCHING
+FileSlotTable *fileAllocateGridRecordSlots(u16 type, u32 count, const void *configuration)
+{
+    const FileKeyBlock *key = configuration;
+    EffEmitterType *emitter;
+    u32 dataBytes;
+    u32 total;
+    struct sdfMemHandle_t *allocation;
+    FileSlotTable *table;
+    u8 *data;
+    u8 *work;
+
+    emitter = &effEmitterTypeDescriptors[type];
+    total = count * key->columns * key->rows + count;
+    dataBytes = emitter->dataBytes;
+    allocation = sdfMemAllocDirect(total * sizeof(FileSlot) + FILE_SLOT_TABLE_HEADER_BYTES + emitter->slotBytes * count + dataBytes * 2);
+    table = sdfMemLock(allocation);
+    table->type = type;
+    table->slots = (FileSlot *)((u8 *)table + FILE_SLOT_TABLE_HEADER_BYTES);
+    data = (u8 *)(table->slots + total);
+    table->data0 = data;
+    work = data + dataBytes;
+    table->data1 = work;
+    table->instanceWork = work + dataBytes;
+    table->instances = count;
+    table->count = total;
+    table->allocation = allocation;
+    table->flags = 0;
+    table->references = 0;
+    table->spawnRemainder = 0.0f;
+    memcpy(table->data0, configuration, dataBytes);
+    memcpy(table->data1, configuration, dataBytes);
+    VU0_STORE_VF(vf0, table->data0);
+    VU0_STORE_VF(vf0, table->data0 + 16);
+    if (((FileKeyBlock *)table->data0)->padBC != 0) {
+        table->flags |= 1;
+    }
+    fileResetSlotStates(table);
+    return table;
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_0021CE60", fileAllocateGridRecordSlots);
+#endif
 INCLUDE_SDATA(const s32, "code_r1_0021CE60", fileWriteToPfsData);
 
 INCLUDE_SDATA(const s32, "code_r1_0021CE60", fileWriteToPfsData2);

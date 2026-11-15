@@ -12,6 +12,7 @@
 #include "code_r1_001CF808.h"
 #include "sndAt3.h"
 #include "sdfSystem.h"
+#include "sdk_libat3dec.h"
 
 /* The three audio stream records (title stream, title sound buffer, and the
  * stream sndBgmLoadId resets); each is followed by its decoder state. */
@@ -103,6 +104,7 @@ extern s32 sndData5;
 extern s32 sndData6;
 extern s32 sndData7;
 
+void sndUploadStreamToBothIopBuffers(u32 wordCount);
 INCLUDE_ASM(const s32, "sndAt3", sndUploadStreamToBothIopBuffers);
 
 /* Copy the second source, add the first, and clamp to [-32767, 32767].
@@ -132,7 +134,222 @@ void sndMixSampleBuffers(s16 *destinationSamples, TitleAudioStreamState *firstSo
 
 INCLUDE_ASM(const s32, "sndAt3", sndLeaf2);
 
+/* NON_MATCHING: 181 of 611 words match. R1 only (R2 body is 0xa44 bytes, differs); retail expands memcpy inline, mine calls memcpy; third voice stream state at sndCallSeStopWork6. */
+#ifdef VERSION_RAIDOU1
+#ifdef NON_MATCHING
+extern s32 sndCallSeStopData2;
+extern s32 sndCallSeStopData3;
+extern s32 sndData3;
+extern s32 sndCallSeStopData4;
+extern s32 sndData4;
+extern s32 sndCallSeStopData5;
+extern s32 sndCallSeStopData6;
+extern s32 sndCallSeStopData7;
+extern s16 sndCallSeStopData[];
+extern u32 sndWork3[];
+extern TitleAudioStreamState sndCallSeStopWork6;
+extern u32 sndCallSeStopWork7[];
+extern void sndLeaf2(s16 *destinationSamples, TitleAudioStreamState *source);
+
+#define MNU_STREAM_COMMIT_READY 3
+#define MNU_STREAM_COMMIT_COMPLETE 4
+#define MNU_STREAM_STATE_5 5
+#define MNU_STREAM_STATE_6 6
+#define MNU_STREAM_STATE_7 7
+
+/* Per-frame update of the title audio: the stream, the sound buffer and a third voice stream. */
+void sndCallSeStop(void) {
+    TitleAudioStreamState *voice = &sndCallSeStopWork6;
+    u32 *voiceDecoder = sndCallSeStopWork7;
+    s16 *mix = sndCallSeStopData;
+
+    sndCallSeStopData7++;
+    if (mnuTitleStreamStatus.control == 1) {
+        if (mnuTitleStreamStatus.loadState == MNU_STREAM_STATE_5) {
+            if (mnuTitleStreamDecoderState[4] != 0) {
+                if (sndCallSeStopData6 + 1 >= sndData3) {
+                    sndCallSeStopData6 = 0;
+                    mnuTitleStreamDecoderState[4]--;
+                } else {
+                    sndCallSeStopData6++;
+                }
+            } else {
+                sndCallSeStopData6++;
+                mnuTitleStreamStatus.loadState = MNU_STREAM_COMMIT_READY;
+                mnuTitleStreamDecoderState[4] = 0;
+            }
+        } else {
+            sndCallSeStopData6++;
+        }
+        if (mnuTitleStreamStatus.control == 1) {
+            if (mnuTitleStreamStatus.loadState == MNU_STREAM_COMMIT_COMPLETE) {
+                if (mnuTitleStreamDecoderState[4] >= 0x1F) {
+                    sndCallSeStopData5++;
+                    mnuTitleStreamDecoderState[4] = 0;
+                    mnuTitleStreamStatus.control = 2;
+                    mnuTitleStreamStatus.frameIndex = 0;
+                    mnuResetTitleStream();
+                } else if (sndCallSeStopData5 + 1 >= sndCallSeStopData4) {
+                    sndCallSeStopData5 = 0;
+                    mnuTitleStreamDecoderState[4]++;
+                } else {
+                    sndCallSeStopData5++;
+                }
+            } else {
+                sndCallSeStopData5++;
+            }
+        } else {
+            sndCallSeStopData5++;
+        }
+    } else {
+        sndCallSeStopData5++;
+        sndCallSeStopData6++;
+    }
+
+    if (voice->control == 1 && voice->loadState == MNU_STREAM_STATE_6) {
+        if (voiceDecoder[4] >= 0x1F) {
+            voiceDecoder[4] = 0;
+            voice->control = 2;
+            voice->frameIndex = 0;
+        } else if (sndCallSeStopData5 >= sndCallSeStopData4) {
+            sndCallSeStopData5 = 0;
+            voiceDecoder[4]++;
+        }
+    }
+    if (mnuTitleSoundBufferState.control == 1 && mnuTitleSoundBufferState.loadState == MNU_STREAM_COMMIT_COMPLETE) {
+        if (sndWork3[4] >= 0x1F) {
+            sndWork3[4] = 0;
+            mnuTitleSoundBufferState.control = 2;
+            mnuTitleSoundBufferState.frameIndex = 0;
+            mnuReleaseSoundBuffer();
+        } else if (sndCallSeStopData7 >= sndData4) {
+            sndCallSeStopData7 = 0;
+            sndWork3[4]++;
+        }
+    }
+
+    if (mnuTitleStreamStatus.control == 0 || (sndCallSeStopData2 != 0 && mnuTitleStreamStatus.control == 1)) {
+        mnuTitleStreamDecoderState[0] =
+            (u32)(mnuTitleStreamStatus.compressedData + mnuTitleStreamStatus.frameBytes * mnuTitleStreamStatus.frameIndex);
+        at3DecDecode(mnuTitleStreamDecoderState);
+    }
+    if (mnuTitleStreamStatus.control == 1) {
+        mnuTitleStreamStatus.samples = (s16 *)mnuTitleStreamDecoderState[1];
+    } else {
+        mnuTitleStreamStatus.samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    }
+    if (mnuTitleSoundBufferState.control == 0 || (sndCallSeStopData2 != 0 && mnuTitleSoundBufferState.control == 1)) {
+        sndWork3[0] = (u32)(mnuTitleSoundBufferState.compressedData +
+                            mnuTitleSoundBufferState.frameBytes * mnuTitleSoundBufferState.frameIndex);
+        at3DecDecode(sndWork3);
+    }
+    if (mnuTitleSoundBufferState.control == 1) {
+        mnuTitleSoundBufferState.samples = (s16 *)sndWork3[1];
+    } else {
+        mnuTitleSoundBufferState.samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    }
+    if (voice->control == 0 || (sndCallSeStopData2 != 0 && voice->control == 1)) {
+        voiceDecoder[0] = (u32)(voice->compressedData + voice->frameBytes * voice->frameIndex);
+        at3DecDecode(voiceDecoder);
+    }
+    if (voice->control == 1) {
+        voice->samples = (s16 *)voiceDecoder[1];
+    } else {
+        voice->samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    }
+
+    if (mnuTitleStreamStatus.control == 2 && voice->control == 2 && mnuTitleSoundBufferState.control == 2) {
+        sndCallSeStopData2 = mnuCopySoundStreamOnStatusChange(mnuTitleAudioSilenceBuffer, 0x400);
+        memcpy(mnuTitleAudioSilenceBuffer, mnuTitleStreamStatus.samples, 0x1000);
+        if (sndCallSeStopData3 != 0) {
+            sndUploadStreamToBothIopBuffers(0x400);
+        }
+        sndCallSeStopData3 = 0;
+        return;
+    }
+
+    if (sndCallSeStopData3 == 0) {
+        evtFunc8(1024);
+    }
+    sndCallSeStopData3 = 1;
+    if (mnuTitleStreamStatus.control != 2 && (voice->control == 2 || voice->control == 0) &&
+        mnuTitleSoundBufferState.control == 2) {
+        sndCallSeStopData2 = mnuCopySoundStreamOnStatusChange(mnuTitleStreamStatus.samples, 0x400);
+        memcpy(mix, mnuTitleStreamStatus.samples, 0x1000);
+    } else if (mnuTitleStreamStatus.control == 0 && voice->control == 1) {
+        if (mnuTitleSoundBufferState.control != 2) {
+            sndMixSampleBuffers(mix, &mnuTitleSoundBufferState, voice);
+            sndCallSeStopData2 = mnuCopySoundStreamOnStatusChange(mix, 0x400);
+        } else {
+            sndCallSeStopData2 = mnuCopySoundStreamOnStatusChange(voice->samples, 0x400);
+            memcpy(mix, voice->samples, 0x1000);
+        }
+    } else if (mnuTitleStreamStatus.control == 2 && voice->control == 1) {
+        if (mnuTitleSoundBufferState.control != 2) {
+            sndMixSampleBuffers(mix, &mnuTitleSoundBufferState, voice);
+            sndCallSeStopData2 = mnuCopySoundStreamOnStatusChange(mix, 0x400);
+        } else {
+            sndCallSeStopData2 = mnuCopySoundStreamOnStatusChange(voice->samples, 0x400);
+            memcpy(mix, voice->samples, 0x1000);
+        }
+    } else if (mnuTitleStreamStatus.control != 2 && voice->control == 1) {
+        if (mnuTitleSoundBufferState.control != 2) {
+            sndLeaf2(mix, &mnuTitleSoundBufferState);
+        } else {
+            sndMixSampleBuffers(mix, voice, &mnuTitleStreamStatus);
+        }
+        sndCallSeStopData2 = mnuCopySoundStreamOnStatusChange(mix, 0x400);
+    } else {
+        sndMixSampleBuffers(mix, &mnuTitleSoundBufferState, &mnuTitleStreamStatus);
+        sndCallSeStopData2 = mnuCopySoundStreamOnStatusChange(mix, 0x400);
+    }
+
+    if (mnuTitleStreamStatus.control == 0) {
+        mnuTitleStreamStatus.control = 1;
+        sndCallSeStopData2 = 1;
+    }
+    if (sndCallSeStopData2 != 0 && mnuTitleStreamStatus.control == 1) {
+        if (mnuTitleStreamStatus.loadState == MNU_STREAM_STATE_7 ||
+            (++mnuTitleStreamStatus.frameIndex >= mnuTitleStreamStatus.frameCount &&
+             mnuTitleStreamStatus.repeatFrame == -1)) {
+            mnuTitleStreamStatus.frameIndex = 0;
+            mnuTitleStreamStatus.control = 2;
+            mnuResetTitleStream();
+        } else if (mnuTitleStreamStatus.frameIndex >= mnuTitleStreamStatus.frameCount) {
+            mnuTitleStreamStatus.frameIndex = mnuTitleStreamStatus.repeatFrame;
+        }
+    }
+
+    if (mnuTitleSoundBufferState.control == 0) {
+        mnuTitleSoundBufferState.control = 1;
+        sndCallSeStopData2 = 1;
+    }
+    if (sndCallSeStopData2 != 0) {
+        if (mnuTitleSoundBufferState.control == 1 &&
+            ++mnuTitleSoundBufferState.frameIndex >= mnuTitleSoundBufferState.frameCount) {
+            mnuTitleSoundBufferState.frameIndex = 0;
+            mnuTitleSoundBufferState.control = 2;
+            mnuReleaseSoundBuffer();
+        }
+    }
+
+    if (voice->control == 0) {
+        voice->control = 1;
+        sndCallSeStopData2 = 1;
+    }
+    if (sndCallSeStopData2 != 0 && voice->control == 1 && ++voice->frameIndex >= voice->frameCount) {
+        voice->control = 2;
+        voice->samples = (s16 *)mnuTitleAudioSilenceBuffer;
+        voice->loadState = 0;
+        voice->frameIndex = 0;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "sndAt3", sndCallSeStop);
+#endif
+#else
+INCLUDE_ASM(const s32, "sndAt3", sndCallSeStop);
+#endif
 
 /* The title stream thread: one frame of stream work per vblank, under the lock. */
 void sndCallWaitVblank(void) {

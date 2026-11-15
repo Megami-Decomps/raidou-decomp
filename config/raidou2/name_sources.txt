@@ -25686,7 +25686,7 @@
 0x004DE400	CheckNewBattleTestData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by CheckNewBattleTest
 0x004DE408	evtCreateTestAndSkyTasksData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtCreateTestAndSkyTasks
 0x004DE410	evtConsoleFontResourceChain	inferred	method=dds-ref; p=0.59 (n=D_r1_0046B308); tier=C; source=dds; evidence=dds-ref/loose: nfun=4, other=2, sim=1.0, games=2, size=True, sec=True, fn=evtEnsureFontResourceChain
-0x004DE418	datData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: datDebugPrintf, datDEBUGCONSOLE
+0x004DE418	datDebugPrintfFmt	inferred	"%s" format of datDebugPrintf; replaces datData: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: datDebugPrintf, datDEBUGCONSOLE
 0x004DE420	datDEBUGCONSOLEData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by datDEBUGCONSOLE
 0x004DE428	evtDrawGeneralHeapUsageGraphData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtDrawGeneralHeapUsageGraph
 0x004DE430	evtGeneralHeapPercentFormat	inferred	method=dds-ref; p=0.59 (n=D_r1_0046B328); tier=C; source=dds; evidence=dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtDrawGeneralHeapUsageGraph
@@ -25843,12 +25843,12 @@
 0x004DE828	ProcSequenceData12	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by ProcSequence
 0x004DE82C	ProcSequenceData13	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by ProcSequence
 0x004DE830	ProcSequenceData14	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by ProcSequence
-0x004DE838	mapData169	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: ProcSequence, mapCallMap
+0x004DE838	mapCallMapFmt	inferred	"%s" format of mapCallMap sprintf; replaces mapData169: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: ProcSequence, mapCallMap
 0x004DE83C	fldProcShutDownData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldProcShutDown (2 of 3 refs, 2 functions)
-0x004DE840	mapData52	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
-0x004DE844	mapData53	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
-0x004DE848	mapData54	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
-0x004DE84C	mapCallMapNextData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallMapNext (2 of 3 refs, 2 functions)
+0x004DE840	mapCallLastMap	inferred	mapCallMap(0) reloads it; replaces mapData52: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
+0x004DE844	mapCallLastFloor	inferred	mapCallMap(0) reloads it; replaces mapData53: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
+0x004DE848	mapCallLastPoint	inferred	mapCallMap(0) reloads it; replaces mapData54: method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapCallMapNext, mapCallMap
+0x004DE84C	mapCallLastLabel	inferred	mapCallMap(0) reloads it; replaces mapCallMapNextData: method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallMapNext (2 of 3 refs, 2 functions)
 0x004DE850	fldAutoMapSeqFlags	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046B6E0); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x004DE854	nbCallGetIntPara8Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by nbCallGetIntPara8 (2 of 6 refs, 5 functions)
 0x004DE858	MakeResouceBasicFL2Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by MakeResouceBasicFL2 (2 of 5 refs, 4 functions)

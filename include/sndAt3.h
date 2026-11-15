@@ -23,4 +23,6 @@ void sndProcSequenceSub(void);
 void sndSeFadeOut(void);
 void sndSeFree(void);
 
+void sndBgmPlay(void);
+
 #endif

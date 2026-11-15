@@ -9,6 +9,16 @@ struct SBTLEFF_LISTWORK;
 struct SBTLEFF_WORK;
 struct SBTLUNIT_WORK;
 
+typedef struct sbtlFileEntry_t {
+    char *path;
+    struct {
+        void *dst;
+        s32 arg;
+    } slot[18];
+} sbtlFileEntry_t;
+
+void sbtlCallFileOpen(sbtlFileEntry_t *entry);
+
 s32 EffFunc_DEADDAMAGE(struct SBTLEFF_WORK *wk);
 s32 EffFunc_Hanyou(struct SBTLEFF_WORK *wk);
 s32 EffFunc_Hanyou_BED(struct SBTLEFF_WORK *wk);

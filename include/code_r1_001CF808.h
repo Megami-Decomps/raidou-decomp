@@ -19,4 +19,7 @@ typedef s32 MnuTitleSoundBusyState;
 
 MnuTitleSoundBusyState scrCheckEnableMovieCancel(void);
 
+void evtFunc8(s32 transferSize);
+s32 mnuCopySoundStreamOnStatusChange(void *samples, u32 wordCount);
+
 #endif

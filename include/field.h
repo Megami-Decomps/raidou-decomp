@@ -170,7 +170,7 @@ typedef struct fldAreaWork_t
     s32 hitMatterIndex;         /* 0x048 */
     s32 word4C;                 /* 0x04C */
     char *retryScript;          /* 0x050 */
-    struct dds3Basic_t *fastArea;      /* 0x054: the first area object built from the FL2 block table */
+    s32 mapCallMode;            /* 0x054: set to 1 by mapCallMap, tested by mapReturnFromShop */
     u8 unk58[4];
     s32 word5C;                 /* 0x05C */
     s32 amSBlock;               /* 0x060 */
@@ -216,16 +216,16 @@ typedef struct fldAreaWork_t
     f32 x;                      /* 0x100 */
     f32 y;                      /* 0x104 */
     f32 z;                      /* 0x108 */
-    f32 prevX;                  /* 0x10C: the position before this step */
+    f32 prevX;                  /* 0x10C */
     f32 prevY;                  /* 0x110 */
-    f32 prevZ;                  /* 0x114 */
+    s32 bgZoomSet;              /* 0x114: set to 1 after fldBgZoomTest(3); never a float */
     f32 hitX;                   /* 0x118 */
     f32 hitY;
     f32 hitZ;
     f32 camAngle;               /* 0x124 */
     f32 camAngle2;              /* 0x128 */
     f32 float12C;               /* 0x12C */
-    f32 float130;               /* 0x130 */
+    s32 mskIndex;               /* 0x130: MSK index from mapNpcTableGetMSK */
     s32 hitValid;               /* 0x134 */
 #ifdef VERSION_RAIDOU1
     s32 word138;                /* 0x138 */
@@ -294,7 +294,7 @@ typedef struct fldAreaWork_t
     s32 word248;                /* 0x248 */
     s32 word24C;                /* 0x24C */
     s32 word250;                /* 0x250 */
-    u8 unk254[0x40];
+    char scriptName[0x40];      /* 0x254 */
     s32 word294;                /* 0x294 */
     s32 word298;                /* 0x298 */
     s32 word29C;                /* 0x29C */
@@ -308,8 +308,8 @@ typedef struct fldAreaWork_t
     s32 word2BC;                /* 0x2BC */
     s32 word2C0;                /* 0x2C0 */
     s32 word2C4;                /* 0x2C4 */
-    s32 word2C8;                /* 0x2C8 */
-    s32 word2CC;                /* 0x2CC */
+    char *initScript;           /* 0x2C8: script name pointers set by mapCallBitCheck */
+    char *startScript;          /* 0x2CC */
     s32 word2D0;                /* 0x2D0 */
     s32 word2D4;                /* 0x2D4 */
     s32 word2D8;                /* 0x2D8 */
@@ -329,8 +329,18 @@ typedef struct fldAreaWork_t
     s32 word310;                /* 0x310 */
     s32 word314;                /* 0x314 */
     s32 word318;                /* 0x318 */
-    u8 unk31C[0x10];
+    u8 unk31C[4];
+    s32 word320;                /* 0x320 */
+    u8 unk324[8];
     s32 word32C;                /* 0x32C */
+    u8 unk330[4];
+    s32 word334;                /* 0x334 */
+    u8 unk338[4];
+    s32 word33C;                /* 0x33C */
+    u8 unk340[4];
+    s32 word344;                /* 0x344 */
+    u8 unk348[0x14];
+    s32 word35C;                /* 0x35C */
 #else
     s32 word138;                /* 0x138 */
     s32 word13C;                /* 0x13C */
@@ -533,26 +543,16 @@ typedef struct {
     s32 word5C;
 } fldDanteGunState_t;
 
+/* gfldSceneParam: the pending scene request, 0x48 bytes. */
 typedef struct {
-    union { u8 safeUnitPoint[0x30]; fldResourcePoint_t safeUnit; };
-    u32 flag;
-    s32 mode;
-    u32 sequenceWord38;
-    u32 pointResrcID;
-    char pointResName[16];
+    char FoceScript[0x28];
     s32 loadField;
-    s32 loadArea;
-    s32 loadScript;
-    s32 callmode;
-    u16 bgm;
-    s16 bgmMode;
-    s32 camMode;
-    u8 unk68[8];
-    char camName[16];
-    char FoceScript[16];
-    u32 loadMode;
-    u8 unk94[12];
+    s32 loadFloor;
+    s32 loadPoint;
+    u8 unk34[0x14];
 } fldSceneParam_t;
+
+extern fldSceneParam_t gfldSceneParam;
 
 typedef struct slFileWork_t {
     s32 w[5];

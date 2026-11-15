@@ -34,6 +34,7 @@ sdfDevConsCB_tag *sdfDevConsOpen(s32 aX, s32 aY, s32 aW, s32 aH);
 void sdfDevConsClose(sdfDevConsCB_tag *aHndl);
 void sdfDevConsAttribute(sdfDevConsCB_tag *aHndl, s32 aAttr);
 void sdfDevConsSetMode(sdfDevConsCB_tag *aHndl, s32 aMode);
+s32 sdfDevConsPrintf(sdfDevConsCB_tag *aHndl, const char *aFmt, ...);
 void sdfDevSetPrintCB(sdfDevPrintCB_t *aCB, u32 aX, u32 aY, u32 aZ, s32 aAttr);
 void *sdfDevVprintf(sdfDevPrintCB_t *aCB, const char *aStr, void *LegacyParamArray);
 void *sdfDevPrintfEx(sdfDevPrintCB_t *aCB, const char *aStr, ...);

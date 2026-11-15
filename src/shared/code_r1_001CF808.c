@@ -39,6 +39,7 @@ s32 fldCmdSetStateFlag(void);
 #include "kernel_draw.h"
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
+#include "sndAt3.h"
 
 void Exit(s32 status);
 
@@ -172,7 +173,39 @@ char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename) {
     return strcat(pathBuffer, filename);
 }
 
+/* NON_MATCHING: 44 of 48 words match. The two constant loads (4 and -1) before the sdata stores are scheduled in the other order; store order tried in all permutations. */
+#ifdef NON_MATCHING
+extern char sndVcInfo[];
+extern char sndSqInfo[];
+extern s16 sndInitWork;
+extern s32 sndInitData[];
+extern s8 sndInitData2;
+extern s32 sndInitData3;
+extern s32 sndInitData4;
+
+void sndInit(void)
+{
+    if (sndInitData2 != 0) {
+        p2sdStopAllSe();
+        return;
+    }
+    sndInitData2 = 1;
+    sdfSndInit(sndVcInfo, 4, sndSqInfo, 4);
+    p2sdLoadSMGFile(sndInitData[0]);
+    while (p2sdLoadCheckMidi(sndInitData[0]) != 2) {
+    }
+    p2sdLoadSMGFile(0x10000);
+    while (p2sdLoadCheckMidi(0x10000) != 2) {
+    }
+    sndInitData3 = 4;
+    sndInitWork = -1;
+    sndInitData4 = 0;
+    sndCallMemset();
+    ProcessInit();
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_001CF808", sndInit);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", sndLeaf);
 

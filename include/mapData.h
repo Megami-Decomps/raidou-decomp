@@ -636,4 +636,6 @@ void nbMoveFormation(dds3Basic_t *basic);
 void fldTitleMini_Shutdown(void);
 void fldWallObjTaskSub(s32 floor, s32 ix, s32 iy, f32 *x, f32 *z);
 
+void mapCutSet_From_Pos(f32 x, f32 y, f32 z);
+
 #endif

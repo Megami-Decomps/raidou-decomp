@@ -5,6 +5,17 @@
 #include "libsdf.h"
 #include "facility.h"
 
+/* A unit's work: the player at GBWK+0x1CD4 and each party devil. */
+typedef struct sdatUnitWork_t
+{
+    /* 0x00 */ u32 flag;
+    /* 0x04 */ u8 pad04[2];
+    /* 0x06 */ s16 devilId;
+    /* 0x08 */ u8 pad08[0xB0];
+    /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
+    /* 0xBC */ u8 padBC[0x54];
+} datPartyDevil_t;
+
 typedef struct datDevilFormat_s
 {
     /* 0x00 */ u32 flag;
@@ -164,28 +175,8 @@ typedef struct
     /* 0x1CC4 */ u32 unk1CC4;
     /* 0x1CC8 */ s32 maka;
     /* 0x1CCC */ u8 unk1CCC[0x8];
-    /* 0x1CD4 */ u32 unk1CD4;
-    /* 0x1CD8 */ u8 unk1CD8[0x4];
-    /* 0x1CDC */ u8 unk1CDC;
-    /* 0x1CDD */ u8 unk1CDD[0xB];
-    /* 0x1CE8 */ u32 unk1CE8;
-    /* 0x1CEC */ u32 unk1CEC;
-    /* 0x1CF0 */ u32 unk1CF0;
-    /* 0x1CF4 */ u32 unk1CF4;
-    /* 0x1CF8 */ u32 unk1CF8;
-    /* 0x1CFC */ u16 unk1CFC;
-    /* 0x1CFE */ u16 unk1CFE;
-    /* 0x1D00 */ u16 unk1D00;
-    /* 0x1D02 */ u16 unk1D02;
-    /* 0x1D04 */ u8 unk1D04[0x10];
-    /* 0x1D14 */ u16 unk1D14;
-    /* 0x1D16 */ u16 unk1D16;
-    /* 0x1D18 */ u16 unk1D18;
-    /* 0x1D1A */ u8 unk1D1A[0x72];
-    /* 0x1D8C */ u32 unk1D8C;
-    /* 0x1D90 */ u8 unk1D90[0xC];
-    /* 0x1D9C */ u32 unk1D9C;
-    /* 0x1DA0 */ u8 unk1DA0[0x46];
+    /* 0x1CD4 */ datPartyDevil_t player;
+    /* 0x1DE4 */ u8 unk1DE4[0x2];
     /* 0x1DE6 */ u16 unk1DE6;
     /* 0x1DE8 */ u16 unk1DE8;
     /* 0x1DEA */ u8 unk1DEA[0x2];
@@ -195,23 +186,10 @@ typedef struct
     /* 0x1DF8 */ u8 unk1DF8[0x40];
     /* 0x1E38 */ u16 unk1E38;
     /* 0x1E3A */ u8 unk1E3A[0x13E];
-    /* 0x1F78 */ u32 unk1F78;
-    /* 0x1F7C */ u8 unk1F7C[0x2];
-    /* 0x1F7E */ u16 unk1F7E;
-    /* 0x1F80 */ u8 unk1F80[0x10];
-    /* 0x1F90 */ u32 unk1F90;
-    /* 0x1F94 */ u32 unk1F94;
-    /* 0x1F98 */ u32 unk1F98;
-    /* 0x1F9C */ u32 unk1F9C;
-    /* 0x1FA0 */ u8 unk1FA0[0x90];
-    /* 0x2030 */ u32 unk2030;
-    /* 0x2034 */ u8 unk2034[0xAF4];
-    /* 0x2B28 */ u32 unk2B28;
-    /* 0x2B2C */ u8 unk2B2C[0x2];
-    /* 0x2B2E */ u16 unk2B2E;
-    /* 0x2B30 */ u8 unk2B30[0x10A];
+    /* 0x1F78 */ datPartyDevil_t party[12];
+    /* 0x2C38 */ u8 pad2C38[0x2];
     /* 0x2C3A */ u16 unk2C3A;
-    /* 0x2C3C */ u8 unk2C3C;
+    /* 0x2C3C */ s8 partyNum;
     /* 0x2C3D */ u8 unk2C3D[0x3];
     /* 0x2C40 */ u32 unk2C40;
     /* 0x2C44 */ u32 unk2C44;
