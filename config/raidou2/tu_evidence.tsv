@@ -20,10 +20,10 @@ start	last_func	unit	kind	evidence	smt3_unit
 00103A88	00104278	kernel/dds3PadManager	c	smt3:map:4+smt3:names:2 of 7	kernel/dds3PadManager
 00104370	00104370	code_00104370	asm	none	
 00104378	00104378	kernel/dds3Randomize	c	smt3:names:1 of 1	kernel/dds3Randomize
-001043A0	00105268	code_001043A0	c	dds:16 of 19	
+001043A0	00105268	code_r1_00104370	c	dds:16 of 19	
 00105430	00109A80	kernel/dds3KernelDraw	c	smt3:names:52+smt3:map:6 of 100	kernel/dds3KernelDraw
 00109BE8	0010A558	code_00109BE8	asm	none	
-0010A8C8	0010C490	kernel/dds3KernelDraw_0010A8C8	c	smt3:names:6+smt3:map:1 of 19 part	kernel/dds3KernelDraw
+0010A8C8	0010C490	kernel/dds3KernelDraw_0010A750	c	smt3:names:6+smt3:map:1 of 19 part	kernel/dds3KernelDraw
 0010C4E0	0010D8C0	dds3KernelDraw_0010BEE0	asm	none	
 0010DC38	0010E198	code_r1_0010D1B8	c	dds:4 of 5 part	
 0010E1D8	0010E9A0	kernel/dds3SequenceList	c	smt3:names:10+smt3:map:5 literal-cores:1 of 54	kernel/dds3SequenceList
@@ -142,7 +142,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001AF040	001B16F0	model/mdlManager	c	smt3:names:59+smt3:map:7+dds:1 of 78	model/mdlManager
 001B1B18	001B1B20	code_001B1B18	asm	none	
 001B1B28	001B2E10	model/mdlEffect	c	smt3:names:30 of 34	model/mdlEffect
-001B2E60	001B7190	code_001B2E60	c	dds:53 literal-cores:3 of 56	
+001B2E60	001B7190	code_r1_0019D3A8	c	dds:53 literal-cores:3 of 56	
 001B7238	001B7E80	model/mdlEffect_001A1780	c	smt3:names:6 of 6 part	model/mdlEffect
 001B82A0	001B8418	event/EventBit	c	smt3:names:5+smt3:map:1 of 7	event/EventBit
 001B8448	001B8448	event/evtBitEditor	c	smt3:map:1 of 1	event/evtBitEditor
@@ -243,7 +243,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00234168	0023BEC0	code_r1_0021CE60	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
 0023C018	0023C3B0	effect/effPCPMisc_00224D10	c	smt3:map:2+smt3:names:1 of 15 reordered part	effect/effPCPMisc
 0023C400	0023E1A0	code_r1_002250F8	c	dds:39+smt3:map:2 of 59 clipped	effect/effPCPMisc
-0023E1D0	00259408	code_0023E1D0	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
+0023E1D0	00259408	code_r1_00226EC8	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 002595A8	002595E0	effect/effPCPBoss_00242290	c	smt3:map:2 of 2 part	effect/effPCPBoss
 00259620	00261D68	code_r1_00242308	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 00261DF0	0027A170	code_00261DF0	asm	none	
@@ -266,7 +266,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00309FE0	00328178	code_00309FE0	asm	none	
 00328180	00328290	code_r1_002C7ED0	c	dds:3 of 3 part	
 00328438	0032A600	code_00328438	c	dds:51 literal-cores:1 of 55	
-0032A6A0	0032B3C8	code_0032A6A0	c	dds:6 of 9	
+0032A6A0	0032B3C8	code_r1_002CA3F0	c	dds:6 of 9	
 0032B580	0032DAA8	code_r1_002CAFD8	c	dds:14 of 46	
 0032DB10	0032DB10	code_r1_002CD568	c	dds:1 of 1	
 0032DB50	0032EC00	code_r1_002CD5A8	c	dds:21+smt3:names:1 of 29	facility/fclMisc
@@ -304,7 +304,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 003BC198	003BCD50	code_r1_0034C270	c	dds:14 of 18	
 003BCD70	003BCE70	code_r1_0034CE48	c	dds:2 of 2	
 003BCFD8	003BD018	code_003BCFD8	asm	none	
-003BD050	003BEF18	code_003BD050	c	dds:47 of 64	
+003BD050	003BEF18	code_r1_0034D128	c	dds:47 of 64	
 003BEF90	003BF138	code_r1_0034F068	c	dds:2 of 4	
 003BF2E0	003CBBD8	code_003BF2E0	asm	none	
 003CBBE0	003CC4F0	sdf/sdfSystem	c	smt3:names:19+smt3:map:5 of 26	sdf/sdfSystem
@@ -356,7 +356,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 003E5388	003E5388	code_003E5388	asm	none	
 003E53A0	003E6A60	sdf/sdfSound	c	smt3:names:32+smt3:map:14 of 60	sdf/sdfSound
 003E6AF8	003E7808	code_003E6AF8	asm	none	
-003E7830	003E8408	sdf/sdfSound_003E7830	c	smt3:names:7 literal-cores:2 of 7 part	sdf/sdfSound
+003E7830	003E8408	sdf/sdfSound_00371BF0	c	smt3:names:7 literal-cores:2 of 7 part	sdf/sdfSound
 003E84C0	003E8780	sdf/sdfDevFile	c	smt3:map:6+smt3:names:3 of 9	sdf/sdfDevFile
 003E87C8	003E87C8	sdf/sdfAddrResolve	c	smt3:names:1 of 1	sdf/sdfAddrResolve
 003E88B0	003E9E50	sdf/sdfIpu	c	smt3:names:25+smt3:map:1 of 30	sdf/sdfIpu
