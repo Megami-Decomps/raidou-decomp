@@ -21941,7 +21941,7 @@
 0x00505845	bssWork140	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x62B
 0x00505E70	mapWork25	data	tier=D	derived-shared	na	used by 4 functions: mapFileLoadSub2, mapSetAreaRefreshSub2, mapMapSetAreaRefresh
 0x00506170	mapWork26	data	tier=D	derived-shared	na	used by 2 functions: mapFileLoadSub2, mapObjLightAdd
-0x00506570	mapWork27	data	tier=D	derived-shared	na	used by 6 functions: mapFileLoadSub2, mapObjPointAdd2, mapObjPointGet
+0x00506570	mapData26	data	tier=D	derived-shared	na	used by 6 functions: mapFileLoadSub2, mapObjPointAdd2, mapObjPointGet
 0x00508021	alarmPayloadEntry3	data	tier=D	derived-table	na	pointed to by alarmPayload
 0x0050B570	mapWork28	data	tier=D	derived-shared	na	used by 5 functions: mapFileLoadSub2, mapKaidanAdd, mapMapSetAreaRefresh
 0x0050C570	mapWork29	data	tier=D	derived-shared	na	used by 3 functions: mapFileLoadSub2, mapFileLoadSub5, mapGetFloorY

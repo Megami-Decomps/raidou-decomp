@@ -108,7 +108,16 @@ start	last_func	unit	kind	evidence	smt3_unit
 00148CA0	00149058	code_r1_001403E0	c	none	
 001491D0	001491D0	code_001491D0	asm	none	
 00149258	00149258	field/fldSky	c	smt3:map:1 of 1	field/fldSky
-001492A8	00162608	code_001492A8	asm	none	
+001492A8	0014AAF0	code_001492A8	asm	none	
+0014ADD8	0014B650	code_r1_00142038	c	none	
+0014B7B0	001558D0	code_0014B7B0	asm	none	
+00155B20	00155B20	code_r1_0014B328	c	none	
+00155C90	00155C90	code_00155C90	asm	none	
+00155CB0	00155CB0	code_r1_0014B4B8	c	none	
+00155D88	00155D88	code_r1_0014B610	c	none	
+00155DD8	0015D1D8	code_00155DD8	asm	none	
+0015D430	0015D430	code_r1_00151980	c	none	
+0015D870	00162608	code_0015D870	asm	none	
 00162668	00162668	field/fldTitle	c	smt3:map:1 of 1	field/fldTitle
 001626B0	00163040	code_001626B0	asm	none	
 00163828	00163828	code_r1_001578A8	c	none	

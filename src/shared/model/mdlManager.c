@@ -75,7 +75,6 @@ void mdlUnRegistResrcMotion(dds3ModelResrc_t *aResrc, s32 aGroup);
 void mdlRegistMotion(s32 aMajor, s32 aMinor, u32 aFlags, s32 aFirstMotion, s32 aGroup, s32 aPlayGroup,
                      sdfMotionPlayBook_t *aData, sdfMemHandle_t *aHandle);
 
-dds3ModelResrc_t *mdlSearchResrc(s32 aMajor, s32 aMinor);
 
 void mdlMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber, s32 aType, f32 aBeforeLeng,
                f32 aSmoothLeng);

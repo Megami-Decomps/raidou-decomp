@@ -1,0 +1,639 @@
+#ifndef MAPDATA_H
+#define MAPDATA_H
+
+#include "common.h"
+#include "field.h"
+#include "dds3Basic.h"
+#include "defines.h"
+#include "enums.h"
+#include "newdata.h"
+#include "mapFilter.h"
+
+typedef struct fldMapAreaHead_t
+{
+    s32 colmOfs;
+    s32 hit64Ofs;
+    s32 pointOfs;
+    s32 hit20Ofs;
+    s32 objOfs;
+    s32 eveHitOfs;
+    s32 kaidanOfs;
+    s32 extraOfs;
+    u8 unk20[8];
+    s16 originX;
+    s16 originZ;
+    s16 hit64Count;
+    s16 pointCount;
+    s16 hit20Count;
+    s16 objCount;
+    s16 kaidanCount;
+    u8 unk36[0x40 - 0x36];
+} fldMapAreaHead_t;
+
+/* The map file: a count, then one 64 byte area head per area. */
+typedef struct fldMapFileHead_t
+{
+    s32 count;
+    u8 unk04[12];
+    fldMapAreaHead_t area[64];
+} fldMapFileHead_t;
+
+/* Placed point: id, grid cell, corner offset and direction index. */
+typedef struct fldMapPointRec_t
+{
+    s16 id;
+    u16 ix;
+    u16 iy;
+    u8 ofs;
+    u8 dir;
+} fldMapPointRec_t;
+
+typedef struct fldMapHit20Rec_t
+{
+    u16 w00;
+    u16 w02;
+    u16 w04;
+    u16 w06;
+    u16 w08;
+    u16 w0A;
+    u8 b0C;
+    u8 b0D;
+    u16 w0E;
+    u16 w10;
+    u16 w12;
+} fldMapHit20Rec_t;
+
+typedef struct fldMapHit64Rec_t
+{
+    u16 w00;
+    u16 w02;
+    u16 w04;
+    u16 w06;
+    u16 w08;
+    u16 w0A;
+    u16 w0C;
+    u16 w0E;
+    u16 w10;
+    u8 b12;
+    u8 b13;
+    u16 w14[14];
+    s32 word30;
+    u8 unk34[12];
+} fldMapHit64Rec_t;
+
+typedef struct fldMapKaidanRec_t
+{
+    u16 type;
+    u16 xory;
+    u16 ix0;
+    u16 iy0;
+    u16 ix1;
+    u16 iy1;
+    s8 h0;
+    s8 h1;
+    u16 haba;
+} fldMapKaidanRec_t;
+
+/* Sub-area head: offsets of the points and 64 byte hit records, then their counts. */
+typedef struct fldMapSubHead_t
+{
+    s32 pointOfs;
+    s32 hit64Ofs;
+    u8 unk08[8];
+    s16 pointCount;
+    s16 hit64Count;
+    u8 unk14[12];
+} fldMapSubHead_t;
+
+typedef struct fldMapSub4Head_t
+{
+    s32 ofs0;
+    s32 ofs1;
+    s32 ofs2;
+    u8 unk0C[20];
+} fldMapSub4Head_t;
+
+typedef struct fldMapLightHead_t
+{
+    s32 ofs0;
+    s32 lightOfs;
+    s32 count;
+    s32 pad;
+} fldMapLightHead_t;
+
+/* Placed light: cell position, radius, colors; ofs 0x30 total. */
+typedef struct fldMapLightRec_t
+{
+    f32 x;
+    f32 z;
+    f32 inR;
+    f32 difR;
+    f32 difG;
+    f32 difB;
+    f32 outR;
+    f32 ambR;
+    f32 ambG;
+    f32 ambB;
+    u8 unk28[8];
+} fldMapLightRec_t;
+
+typedef struct fldMapSub2File_t
+{
+    s32 count;
+    u8 unk04[12];
+    fldMapLightHead_t entry[64];
+} fldMapSub2File_t;
+
+typedef struct fldMapSub3File_t
+{
+    s32 count;
+    u8 unk04[12];
+    fldMapSubHead_t entry[64];
+} fldMapSub3File_t;
+
+typedef struct fldMapSub4File_t
+{
+    s32 count;
+    u8 unk04[12];
+    fldMapSub4Head_t entry[64];
+} fldMapSub4File_t;
+
+/* Event hit grid head: one type per bit of a 32 or 64 bit mask per cell. */
+typedef struct fldMapEveHitHead_t
+{
+    s32 wide;
+    s16 w;
+    s16 h;
+    s32 maskOfs;
+    u8 unk0C[4];
+    u8 type[64];
+} fldMapEveHitHead_t;
+
+typedef struct fldMapFlagRec_t
+{
+    u8 field;
+    u8 floor;
+    u16 w02;
+    u16 w04;
+    u8 b06;
+    u8 b07;
+    s16 s08;
+    s16 s0A;
+    s16 s0C;
+    s16 s0E;
+} fldMapFlagRec_t;
+
+/* Placed flag record: field, floor, kind and parameters for mapCallBitCheck2. */
+typedef struct fldMapBitRec_t
+{
+    u8 field;
+    u8 floor;
+    u16 kind;
+    u16 w04;
+    u16 w06;
+    u8 b08;
+    u8 b09;
+    s16 s0A;
+    s16 s0C;
+    s16 s0E;
+} fldMapBitRec_t;
+
+/* One placed map object: id class in the high bits, grid cell, corner offset
+ * and direction index, then the model and motion to load. */
+typedef struct fldMapObjRec_t
+{
+    u16 id;
+    u16 ix;
+    u16 iy;
+    u8 ofs;
+    u8 dir;
+    u16 major;
+    u16 minor;
+    u16 motion;
+    u16 pad;
+} fldMapObjRec_t;
+
+typedef struct fldGenbaTbl_t
+{
+    u8 unk00[4];
+    s16 yofs;
+    u8 unk06[8];
+    u16 evtBit;
+    u8 unk10[0x20];
+} fldGenbaTbl_t;
+
+typedef struct MAP_OBJ_t
+{
+    dds3Basic_t *basic;
+    s16 use;
+    s16 uniq;
+    s16 visible;
+    s16 act;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 r;
+    f32 s;
+    u32 cut_bit;
+    char scr_name[32];
+    f32 hitsize;
+    s16 evehitdir;
+    s16 evehitsize;
+    s16 spcial;
+    s16 noclip;
+    s16 floor;
+    s16 npc_idx;
+    s16 npc_cng;
+    s16 model_id1;
+    s16 model_id2;
+    s16 user_param[4];
+    s32 npc_kuse_wait;
+    s32 npc_kuse_time;
+    s32 motion_pause_flag;
+    f32 motion_pause_spd;
+} MAP_OBJ_t;
+
+typedef struct MAP_GRIDEVEHIT_t
+{
+    s16 use;
+    s16 on;
+    s16 id;
+    s16 ix;
+    s16 iy;
+    s16 iw;
+    s16 ih;
+    s8 act;
+    s8 dir;
+    f32 x;
+    f32 y;
+    f32 z;
+    u16 flag0;
+    u16 flag1;
+    u8 flag0j;
+    u8 flag1j;
+    char scr_name[28];
+    u16 msk;
+} MAP_GRIDEVEHIT_t;
+
+typedef struct MAP_GRIDHIT_t
+{
+    s16 use;
+    s16 flag;
+    s32 floor;
+    s16 ix;
+    s16 iy;
+    s16 iw;
+    s16 ih;
+    s32 attr;
+    s16 mode;
+    u16 flag0;
+    u16 flag1;
+    u8 flag0j;
+    u8 flag1j;
+} MAP_GRIDHIT_t;
+
+typedef struct MAP_WALLOBJ_t
+{
+    s16 use;
+    s16 uniq;
+    s16 type;
+    s16 dir;
+    s16 flag;
+    s16 encountid;
+    s16 ix;
+    s16 iy;
+    s16 iw;
+    s16 ih;
+    s16 vix0;
+    s16 viy0;
+    s16 vix1;
+    s16 viy1;
+    s16 eveix0;
+    s16 eveiy0;
+    s16 eveix1;
+    s16 eveiy1;
+    s16 alpha;
+    s16 haba;
+    s16 view;
+    s16 link_idx;
+    s32 floor;
+} MAP_WALLOBJ_t;
+
+typedef struct MAP_STOPOBJ_t
+{
+    s32 use;
+    s16 uniq;
+    s16 dir;
+    s16 ix;
+    s16 iy;
+    s16 iw;
+    s16 ih;
+    u16 flag0;
+    u16 flag0j;
+    u16 flag1;
+    u16 flag1j;
+} MAP_STOPOBJ_t;
+
+typedef struct MAP_LIGHTOBJ_t
+{
+    s16 use;
+    s16 uniq;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 in_r;
+    f32 out_r;
+    s32 dif_rgba;
+    s32 amb_rgba;
+} MAP_LIGHTOBJ_t;
+
+typedef struct MAP_WORK_GENBA_t
+{
+    s16 use;
+    s16 uniq;
+    f32 x;
+    f32 y;
+    f32 z;
+} MAP_WORK_GENBA_t;
+
+typedef struct MAP_GRIDWARPHIT_t
+{
+    s16 use;
+    s16 id;
+    s16 ix;
+    s16 iy;
+    s16 iw;
+    s16 ih;
+    s16 act;
+    s16 dir;
+    s16 se;
+    s16 fieldID;
+    s32 areaID;
+    s32 posID;
+    s32 w_ix;
+    s32 w_iy;
+    f32 x;
+    f32 y;
+    f32 z;
+} MAP_GRIDWARPHIT_t;
+
+typedef struct MAP_KAIDAN_t
+{
+    s16 use;
+    s16 uniq;
+    s16 type;
+    s16 xory;
+    f32 x0;
+    f32 z0;
+    f32 x1;
+    f32 z1;
+    f32 h0;
+    f32 h1;
+    f32 haba;
+    f32 allhaba;
+    f32 alltaka;
+    f32 alldan;
+    f32 oneh;
+    f32 addh;
+    s32 basyo;
+    s32 resv;
+} MAP_KAIDAN_t;
+
+typedef struct MAP_CHIT_t
+{
+    s16 use;
+    s16 uniq;
+    f32 x;
+    f32 z;
+    f32 r;
+} MAP_CHIT_t;
+
+typedef struct MAP_WHIT_t
+{
+    s16 use;
+    s16 uniq;
+    f32 x0;
+    f32 z0;
+    f32 x1;
+    f32 z1;
+    f32 vx;
+    f32 vz;
+    s32 attr;
+} MAP_WHIT_t;
+
+typedef struct MAP_SAKA4_t
+{
+    s16 use;
+    s16 uniq;
+    s32 resv[3];
+    f32 x0;
+    f32 y0;
+    f32 z0;
+    f32 x1;
+    f32 y1;
+    f32 z1;
+    f32 x2;
+    f32 y2;
+    f32 z2;
+    f32 x3;
+    f32 y3;
+    f32 z3;
+} MAP_SAKA4_t;
+
+extern MAP_OBJ_t mapObjTaskData2[128];
+extern MAP_GRIDEVEHIT_t mapScriptGet_PosData2[128];
+extern MAP_GRIDHIT_t mapData23[128];
+extern MAP_GRIDWARPHIT_t mapData24[80];
+extern MAP_WALLOBJ_t mapWallObjTaskData[64];
+extern MAP_STOPOBJ_t mapData32[32];
+extern MAP_LIGHTOBJ_t mapData25[16];
+extern MAP_KAIDAN_t mapData27[64];
+extern MAP_CHIT_t mapData28[256];
+extern MAP_WHIT_t mapData29[128];
+extern MAP_SAKA4_t mapData30[32];
+extern MAP_WORK_GENBA_t mapData31[32];
+
+typedef struct MAP_POINT_t
+{
+    fldResourcePoint_t resource;
+    dds3Basic_t *basic;
+    u32 serialID;
+    s16 use;
+    s16 uniq;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 r;
+    s16 floor;
+    s16 pad;
+} MAP_POINT_t;
+
+extern MAP_POINT_t mapData26[MAP_POINT_MAX];
+extern const sdfVector4Unaligned_t mapObjPointAdd2Table;
+extern const sdfVector4Unaligned_t mapObjFloorAdd_CashTable;
+extern const sdfVector4Unaligned_t mapObjFloorAdd_CashTable2;
+
+typedef struct MAP_WORK_HIT_LIST_t
+{
+    f32 line_x0;
+    f32 line_z0;
+    f32 line_x1;
+    f32 line_z1;
+    f32 line_c_len;
+    f32 line_vx;
+    f32 line_vz;
+    s32 type;
+} MAP_WORK_HIT_LIST_t;
+
+extern MAP_WORK_HIT_LIST_t mapData34[];
+extern s32 map_work_hit_list_num;
+extern s32 mapHamidasiWHitSubSub(f32 *outx, f32 *outz, f32 newx, f32 newz, f32 r, f32 x0, f32 z0, f32 x1, f32 z1, f32 vx, f32 vz);
+extern s32 mapHamidasiMoveBoxHitSub(f32 *outx, f32 *outz, f32 newx, f32 newz, f32 r, f32 x0, f32 z0, f32 x1, f32 z1, f32 vx, f32 vz);
+
+/* The loaded map file and the pointers into it. The words between the named
+ * pointers are zeroed together when the map is freed. */
+extern sdfMemHandle_t *fldFreeMapDataData;
+extern fldMapFileHead_t *mapFileLoadData7;
+extern void *pFldMap;
+extern fldMapAreaHead_t *pMapAreaNow;
+extern fldMapAreaHead_t *pMapAreaDat;
+extern void *pMapColmNow;
+extern void *pMapColmDat;
+extern fldMapHit64Rec_t *mapMapSetAreaRefreshData;
+extern void *fldData25;
+extern fldMapPointRec_t *mapMapSetAreaRefreshData2;
+extern void *fldData26;
+extern fldMapHit20Rec_t *mapMapSetAreaRefreshData3;
+extern void *fldData27;
+extern fldMapObjRec_t *pMapObjNow;
+extern fldMapObjRec_t *pMapObjSub;
+extern fldMapKaidanRec_t *mapMapSetAreaRefreshData4;
+extern void *fldData28;
+extern fldMapEveHitHead_t *pMapEveHitNow;
+extern void *fldData29;
+extern s32 *mapCallSetOt2Data2[64];
+extern fldMapBitRec_t mapCallSetOt2Data[128];
+extern fldMapLightRec_t *mapFileLoadData5[64];
+extern void *mapFileLoadData6[64];
+extern void *mapData35[64];
+extern void *mapData36[64];
+extern u8 mapFileLoadData2[];
+extern u8 mapFileLoadData3[];
+extern u8 mapFileLoadData4[];
+extern u8 mapData6[][32];
+extern u32 mapFileLoadData;
+extern s32 mapData18;
+extern fldMapFlagRec_t mapData7[64];
+extern s32 mapBtlReLoadMapSBtlSceneSub2Data;
+extern s32 mapNpcTblRefresh_WaitData;
+extern s32 mapData114;
+extern s32 mapData115;
+
+extern sdfMemHandle_t *mapData99;
+extern fldMapSub3File_t *mapFileLoadData8;
+extern fldMapSub3File_t *mapData100;
+extern fldMapSubHead_t *mapMapSetAreaRefreshData5;
+extern fldMapSubHead_t *mapData101;
+extern fldMapPointRec_t *mapMapSetAreaRefreshData6;
+extern fldMapPointRec_t *mapMapSetAreaRefreshData7;
+extern fldMapHit64Rec_t *mapData102;
+extern void *mapMapSetAreaData17;
+
+extern sdfMemHandle_t *mapData105;
+extern fldMapSub2File_t *mapFileLoadData9;
+extern fldMapSub2File_t *mapFileLoadData10;
+extern fldMapLightHead_t *mapData106;
+extern void *mapData107;
+extern void *mapData108;
+extern void *mapData109;
+
+extern sdfMemHandle_t *mapData110;
+extern fldMapSub4File_t *mapFileLoadData11;
+extern fldMapSub4File_t *mapData111;
+extern void *mapMapSetAreaData18;
+extern void *mapMapSetAreaData19;
+extern void *mapMapSetAreaData20;
+extern void *mapMapSetAreaData21;
+extern s32 mapData112;
+extern s32 fldFreeMapDataData2;
+extern s32 pMpbPointNow;
+extern s32 fldFreeMapDataData3;
+extern s32 mapData113;
+extern s32 fldFreeMapDataData4;
+extern void *mapMapSetAreaData22;
+extern void *mapMapSetAreaData23;
+
+extern fldMapAreaHead_t *mapMapSetAreaData[64];
+extern void *mapMapSetAreaData2[64];
+extern void *mapMapSetAreaData3[64];
+extern void *mapMapSetAreaData4[64];
+extern void *mapMapSetAreaData5[64];
+extern void *mapMapSetAreaData6[64];
+extern void *mapMapSetAreaData7[64];
+extern void *mapMapSetAreaData8[64];
+extern void *mapMapSetAreaData9[64];
+extern void *mapMapSetAreaData10[64];
+extern void *mapMapSetAreaData11[64];
+extern void *mapMapSetAreaData12[64];
+extern void *mapMapSetAreaData13[64];
+extern void *mapMapSetAreaData14[64];
+extern void *mapMapSetAreaData15[64];
+extern void *mapMapSetAreaData16[64];
+extern f32 mapData103;
+extern f32 mapData104;
+
+extern fldGenbaTbl_t fldGenbaTbl[];
+extern f32 mapData20[16];
+extern s32 mapMapObjectRefresh_fldData[];
+extern s32 evtWorkScriptContextReturnValue;
+extern s32 evtWorkScriptContextReturnValue2;
+
+void mapMapObjectRefresh_fld(void);
+s32 mapObjFloorAdd_Cash(s32 floor, s16 uniq, MODELTYPE major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s);
+s32 mapAddHukidashi(s32 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s);
+s32 mapObjectRefreshSub(s32 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, f32 x, f32 y, f32 z, f32 r, f32 s);
+void mapObjLightAdd(s16 uniq, f32 x, f32 y, f32 z, f32 in_r, f32 out_r, f32 dif_r, f32 dif_g, f32 dif_b, f32 amb_r, f32 amb_g, f32 amb_b);
+void mapObjEveHitSet2(s16 uniq, s32 act, s32 dir, f32 size, char *scr_name);
+void mapNpcTblAdd(s32 uniq, f32 x, f32 y, f32 z);
+s32 mapLoadGenbaEpl(void);
+f32 mapGetY(f32 x, f32 z);
+void mapCHitAdd(s16 uniq, f32 x, f32 z, f32 r);
+void mapWHitAdd(s16 uniq, s32 attr, f32 x0, f32 z0, f32 x1, f32 z1, f32 vx, f32 vz);
+void mapSetAreaRefreshSub(s32 ix, s32 iy, s32 type, s32 bit);
+void mapSetAreaRefreshSub2(s32 floor, s32 uniq, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9);
+void mapCallBitCheck2(s32 floor, s32 uniq, s32 kind, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8);
+void mapCallPositioningGuardSystem2(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10, s32 a11, void *a12);
+void mapCallPositioningGuardSystem3(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10);
+void mapCallMemAllocDirect(s32 w, s32 h);
+void fldCallMemFreeDirect(void);
+void mapNpcTblRefresh(void);
+s32 mapFileLoad(s32 mapid);
+void mapFileLoadSub2(void);
+void mapFileLoadSub3(s16 uniq, s32 a1);
+s32 mapFileLoadSub4(s32 floor, s32 kind);
+void mapFileLoadSub5(s32 a0, f32 a1, f32 a2, f32 a3, f32 a4, f32 a5, f32 a6, f32 a7, f32 a8, f32 a9, f32 a10, f32 a11, f32 a12);
+void mapFileLoadSub6(f32 *outx, f32 *outz, f32 x, f32 z);
+s32 mapFileLoadSub7(void);
+void mapFileLoadSub8(s32 a0);
+void mapFileLoadSub9(s32 a0, f32 a1);
+void mapFileLoadSub10(s32 a0);
+s32 mdlCallMemGetSize(sdfMemHandle_t *handle, s32 major, s32 minor);
+s32 mdlCallMemGetSize2(void);
+struct sdfMat_t *dds3CallMatNew2(struct sdfTexHandle_t *tex);
+void pipeFileLoadSub(s32 a0);
+void pipeFileLoadSub2(s32 a0);
+void mapLoadMistTexture(void);
+void mapCallTexAllocFromHead(void);
+void mapEXFloor(s32 a0);
+void mapObjTaskSub(s32 a0, s32 a1);
+void mapNpcPathCalc_RotGoal(s32 a0, struct dds3Basic_t *basic);
+void fldSe_Init(void);
+s32 mapRefDDS3GBWK5(s32 id);
+s32 mapObjPointGet2(s16 uniq, f32 *x, f32 *y, f32 *z, f32 *r);
+void mapFreeMapDataSub(void);
+void workRelease(void);
+void nbMoveFormation(dds3Basic_t *basic);
+void fldTitleMini_Shutdown(void);
+void fldWallObjTaskSub(s32 floor, s32 ix, s32 iy, f32 *x, f32 *z);
+
+#endif

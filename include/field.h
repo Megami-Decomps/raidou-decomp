@@ -329,6 +329,8 @@ typedef struct fldAreaWork_t
     s32 word310;                /* 0x310 */
     s32 word314;                /* 0x314 */
     s32 word318;                /* 0x318 */
+    u8 unk31C[0x10];
+    s32 word32C;                /* 0x32C */
 #else
     s32 word138;                /* 0x138 */
     s32 word13C;                /* 0x13C */

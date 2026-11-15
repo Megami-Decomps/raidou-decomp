@@ -32,7 +32,6 @@ void dds3SceneBasicMakeScene_FromMemory(dds3Basic_t *pBasic, u32 field, u32 area
                                        void *pF1, void *pF2,
                                        void *pTB, u32 pBF);
 
-s32 dds3SceneBasicLoadScriptFile_FromMem(dds3Basic_t *scene, sdfMemHandle_t *mem);
 void dds3SceneBasicEndScript(dds3Basic_t *scene, const char *procname);
 s32 dds3SceneBasicExistBasicFromType(dds3Basic_t *scene, s32 type, dds3Basic_t *target);
 void dds3SetMapNo(dds3Basic_t *scene, u32 mapno);

@@ -4,6 +4,6 @@
 #include "common.h"
 #include "enums.h"
 
-char *mdlGetModelName(MODELTYPE aMajor, s32 aMinor);
+struct sdfMemHandle_t *mdlGetModelName(MODELTYPE aMajor, s32 aMinor);
 
 #endif

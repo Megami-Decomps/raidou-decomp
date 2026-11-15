@@ -12,5 +12,6 @@ sdfMotionCtrlr_t *sdfMotionCtrlrNew(sdfModelRootNode_t *aModel, sdfMotionPlayBoo
 s32 sdfMotionNext(sdfMotionCtrlr_t *aCtrlr);
 void sdfMotionPause(sdfMotionCtrlr_t *aCtrlr);
 void sdfMotionPauseOff(sdfMotionCtrlr_t *aCtrlr);
+void sdfMotionSeek(sdfMotionCtrlr_t *aCtrlr, f32 aFrame);
 
 #endif

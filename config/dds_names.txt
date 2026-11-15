@@ -143,6 +143,7 @@ libc_2D31E0	frameCallMemset
 mapCutSetCamWork	mapCutSetCamData2
 mapCutSetCamWork2	mapCutSetCamData3
 mapGetLight	R360_LR
+mapWork27	mapData26
 mapWork33	mapData33
 mnuAppendWindowListNode	jmsAddCmdMenuItem
 mnuApplyPanelTransitionAction	CalcSeqHandle

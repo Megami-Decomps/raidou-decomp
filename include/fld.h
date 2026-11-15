@@ -13,7 +13,7 @@ struct mapNpcPathData_t;
 s32 CheckMahjanError(s32 *type_mapskil);
 void CutSet(s32 id);
 void GetElement(u32 *segment, f32 *weight, struct mapNpcPathData_t *pData, f32 frame);
-void PositioningGuardSystem(s16 pointId, f32 *fx, f32 *fy, f32 *fz);
+void PositioningGuardSystem(s32 ix, s32 iy, f32 *x, f32 *z);
 void ProcMskSub_B(void);
 s32 ProcRandomEncountCheck(void);
 s32 datInitBossPress(void);
@@ -75,7 +75,7 @@ void mapEffMskMaruDraw(void);
 void mapEncPointGet(s16 point_id, f32 *x, f32 *y, f32 *z, f32 *r);
 s32 mapEveHitMsk_Set(void);
 void mapEveHitMsk_SetPosCam(void);
-void mapFileLoad(s32 mapid);
+s32 mapFileLoad(s32 mapid);
 void mapGenbaPosEffAdd(s32 uniq, f32 x, f32 y, f32 z, f32 yukay);
 void mapGenbaPosEffClipSet(void);
 void mapGenbaPosEffCreate(void);
@@ -177,5 +177,13 @@ void sndSeStatus_sndAt3(void);
 
 extern sdfVector4_t mapCutSetCamData;
 extern sdfVector4_t mapObjTaskData;
+
+s32 fldFreeMapData(void);
+s32 mapCallSetPlayerTargetData3(f32 x, f32 z);
+s32 mapGetAttr(f32 x, f32 z);
+s32 mapGetAttr_Btl(f32 x, f32 z);
+void mapHitWorkCalcSetupSub(f32 *outx, f32 *outz, f32 x, f32 z);
+void scrClearProcessGlobals(void);
+extern s32 gSubFloorID;
 
 #endif

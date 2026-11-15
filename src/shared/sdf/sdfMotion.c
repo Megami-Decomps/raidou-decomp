@@ -18,7 +18,6 @@ typedef struct
 } sdfMotNodeMorph_t;
 
 extern sdfMotionNodeVTBL_t sdfMotMorphTable;
-void sdfMotionSeek(sdfMotionCtrlr_t *aCtrlr, f32 aFrame);
 
 typedef sdfMotionNode_t *(*sdfMotGenNodeFunc)(sdfMotionCtrlr_t *aCtrlr, u32 aTypeId, u32 aNodeId);
 

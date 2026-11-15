@@ -19,6 +19,8 @@ typedef struct mapFilter_t {
     f32 skyOffset;  /* mapSKYBGEDIT: vertical offset in screen heights */
 } mapFilter_t;
 
-extern mapFilter_t mapData33[];
+typedef char mapFilter_t_size_must_be_0x20[(sizeof(mapFilter_t) == 0x20) ? 1 : -1];
+
+extern mapFilter_t mapData33[64];
 
 #endif /* MAPFILTER_H */

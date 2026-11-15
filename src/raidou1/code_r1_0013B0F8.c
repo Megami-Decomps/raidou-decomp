@@ -8,6 +8,7 @@
 #include "field.h"
 #include "mapFilter.h"
 #include "mapLbWork.h"
+#include "mapData.h"
 
 extern const char mapStrSkyBgEdit[];
 extern f32 mapData93;
@@ -32,7 +33,6 @@ extern void fldCallLinkAlpha(u32 color, f32 x, f32 y);
 extern void fldCallSetOt3(u32 color, f32 ox, f32 oy);
 extern void KernelDebug(s32 camId);
 extern s32 dds3LinkBoxZSub(void);
-extern s32 mapFileLoadSub7(void);
 extern void pipeFreeLink(void);
 extern void mapLeaf22(s32 camId);
 

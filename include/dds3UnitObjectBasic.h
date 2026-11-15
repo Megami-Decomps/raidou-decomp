@@ -29,6 +29,7 @@ typedef char EffectObjectData_size_must_be_0x40[(sizeof(EffectObjectData) == 0x4
 #include "sdf_types.h"
 
 dds3Basic_t *dds3AddUnitObjectBasic(u32 serialID, const sdfVector4_t *aPos, const sdfVector4_t *aRot);
+void dds3UnitObjectBasicSetOt(dds3Basic_t *aPtr, s32 idx);
 void dds3UnitObjectBasicSetKubiTerget(dds3Basic_t *pBasic, const sdfVector4_t *aTgt);
 
 #endif
