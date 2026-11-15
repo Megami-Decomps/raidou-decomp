@@ -150,8 +150,8 @@ void sdfModelSetFaceDivParm(sdfModelRootNode_t *aRoot, f32 aSoften, f32 aBias);
 
 #include "dds/model.h"
 
-u32 sdfModelGetUniqueID(dds_sdfModelRootNode_t *aRoot);
-u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *aRoot);
+u32 sdfModelGetUniqueID(sdfModelRootNode_t *aRoot);
+u32 sdfGetLodChunkValue(sdfModelRootNode_t *aRoot);
 
 void sdfModelInitSystem(void)
 {
@@ -1170,7 +1170,7 @@ INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPos_sdfModel);
 
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfCallModelMakeMarkPos);
 
-u32 sdfModelGetUniqueID(dds_sdfModelRootNode_t *aRoot)
+u32 sdfModelGetUniqueID(sdfModelRootNode_t *aRoot)
 {
     u32 *chunk = sdfModelGetExtraChunk(aRoot, 0x51494E55); /* "UNIQ" */
 
@@ -1180,7 +1180,7 @@ u32 sdfModelGetUniqueID(dds_sdfModelRootNode_t *aRoot)
     return 0;
 }
 
-u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *aRoot)
+u32 sdfGetLodChunkValue(sdfModelRootNode_t *aRoot)
 {
     u32 *chunk = sdfModelGetExtraChunk(aRoot, 0x43444F4C); /* "LODC" */
 

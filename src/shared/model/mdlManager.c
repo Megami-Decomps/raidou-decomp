@@ -1041,7 +1041,7 @@ INCLUDE_ASM(const s32, "model/mdlManager", LinkMotion);
  * (degrees) by abs(aPitch) / 25, at most one. aNode -1 skips the turn. */
 void mdlBlendEntryPitchYawAndUpdate(mdlObj_t *aHandle, void *aModelOt, s32 aNode, f32 aPitch, f32 aYaw)
 {
-    dds_sdfModelRootNode_t *inner;
+    sdfModelRootNode_t *inner;
     sdfModelNode_t *node = NULL;
     f32 target[4][4];
     f32 magnitude;

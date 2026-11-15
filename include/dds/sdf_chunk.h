@@ -3,7 +3,7 @@
 #define DDS_SDF_CHUNK_H
 #include "common.h"
 
-struct dds_sdfModelRootNode_t;
+struct sdfModelRootNode_t;
 
 /* Variable-size serialized chunk streams share only this eight-byte header.
  * The word at +8 belongs to each chunk's payload. */

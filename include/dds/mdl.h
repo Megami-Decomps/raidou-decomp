@@ -10,7 +10,7 @@
 typedef struct dds3ModelHandle_t dds3ModelHandle_t;
 #endif
 
-/* Model-context update gates; these do not share the inner dds_sdfModelRootNode_t flag byte. */
+/* Model-context update gates; these do not share the inner sdfModelRootNode_t flag byte. */
 
 #define MDL_SKIP_TRANSFORMS 1
 
@@ -122,7 +122,7 @@ typedef struct MdlLoadRequest {
 
 typedef struct MdlDevSlot {
     struct MdlDevSlot *next;
-    dds_sdfModelRootNode_t *model;
+    sdfModelRootNode_t *model;
     s32 remaining;
 } MdlDevSlot;
 
@@ -153,7 +153,7 @@ struct dds3ModelHandle_t {
         } h;
     } current;
     dds3ModelEffectCtrlr_t *resourceItems;
-    dds_sdfModelRootNode_t *inner;
+    sdfModelRootNode_t *inner;
     sdfMotionCtrlr_t *first;
     sdfMotionCtrlr_t *slots[4];
     MdlDevList *devList;

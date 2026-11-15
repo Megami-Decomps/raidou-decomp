@@ -12,9 +12,9 @@ enum {
     EFF_RESOURCE_SOURCE_RETAINED = 1
 };
 
+/* Nonzero keepAllocation transfers the source descriptor to the returned owner. */
 struct EffectSlotSet *effCreateResourceSlotSetFromAllocation(
-    struct sdfMemHandle_t *resourceAllocation,
-    EffResourceSourceLifetime sourceLifetime);
+    struct sdfMemHandle_t *resourceAllocation, u32 keepAllocation);
 
 #ifdef VERSION_DDS2
 

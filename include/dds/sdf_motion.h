@@ -7,6 +7,6 @@ struct sdfMotionCtrlr_t;
 
 struct MotionTable;
 
-struct dds_sdfModelRootNode_t;
+struct sdfModelRootNode_t;
 
 #endif /* DDS_SDF_MOTION_H */

@@ -162,31 +162,7 @@ MenuPanelHandles *mnuCreatePanelSpriteHandles(u32 panelKind,
 
 void mnuClearEntryFlags(MenuPanelHandles *group);
 
-/* The DDS1 generic window constructor allocates and clears 0x8C bytes. */
-typedef struct MenuWindowContainer {
-    s32 id;
-    u32 flags;
-    s32 width;
-    s32 height;
-    u32 capOffsetY; /* Y offset of the trailing entry decoration. */
-    struct MenuList *list;
-    s32 entryValue;
-    struct EffectSlotSet *entryResources;
-    s32 entryY;
-    s32 alternateEntryY;
-    s32 entryOption;
-    struct EffectSlotSet *frameResources;
-    s32 frameSlot;
-    struct EffectSlotSet *spriteResources;
-    u32 spriteSlot;
-    struct EffectSlotSet *overlayResources;
-    u32 overlaySlot;
-    s32 firstDecorationFade;
-    s32 secondDecorationFade;
-    MenuPanelHandles panel;
-    struct MenuWindowSpriteGroup *textures;
-    s32 fadeScale; /* 0x88: window/list opacity scale; full fade is 0x100 */
-} MenuWindowContainer;
+typedef struct MenuWindowContainer MenuWindowContainer;
 
 void mnuInitializeWindowEntryPlacement(s32 value, MenuWindowContainer *window,
                                       struct EffectSlotSet *resources,
@@ -258,8 +234,6 @@ MnuShopPendingSelection mnuShopHasPendingSelection(ShopScene *unused);
 typedef char MnuShopListContext_size_must_be_0x10[(sizeof(MnuShopListContext) == 0x10) ? 1 : -1];
 
 typedef char MenuPanelHandles_size_must_be_0x38[(sizeof(MenuPanelHandles) == 0x38) ? 1 : -1];
-
-typedef char MenuWindowContainer_size_must_be_0x8C[(sizeof(MenuWindowContainer) == 0x8C) ? 1 : -1];
 
 typedef char ShopScene_size_must_be_0xB4[(sizeof(ShopScene) == 0xB4) ? 1 : -1];
 

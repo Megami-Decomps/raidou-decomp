@@ -511,7 +511,7 @@ struct SoundMixer;
 
 extern void evtResetObjectPendingValue(dds3Basic_t *object);
 extern void evtArmEffectObjectPendingValue(dds3Basic_t *object, s32 value);
-extern u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *model);
+extern u32 sdfGetLodChunkValue(sdfModelRootNode_t *model);
 ScrCommandResult evtOpModelLodChg(void);
 ScrCommandResult evtOpDeprecatedModelMotion(void);
 ScrCommandResult evtOpSetUnitParams5(void);
@@ -663,7 +663,7 @@ ScrCommandResult evtOpModelLodChg(void) {
     EffectObjectData *data;
     dds_dds3ObjectBaseControlWorkData_t *modelHolder;
     dds3ModelHandle_t *context;
-    dds_sdfModelRootNode_t *model;
+    sdfModelRootNode_t *model;
     s32 max;
 
     lod = scrGetIntPara(1);
@@ -695,7 +695,7 @@ ScrCommandResult evtOpModelLodChg(void) {
         printf("warning!! MODEL_LOD_CHG(int,int) lodno over!! max=%d setval=%d\n", max, lod);
         return 1;
     }
-    model->lodIndex = lod;
+    model->lod = lod;
     printf("success: MODEL_LOD_CHG(int,int)\n");
     return 1;
 }

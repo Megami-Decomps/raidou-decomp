@@ -137,13 +137,13 @@ typedef struct LoadMirror {
     u32 previous;
 } LoadMirror;
 
-extern void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource);
-extern void BillboardSet(EffectSurfaceNode *node, u32 resourceId);
-extern void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId);
-extern void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId);
-extern void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job);
-extern void PartsListSet(EffectSurfaceNode *node, FileQueue *queue);
-extern void fileReplaceReferenceHolder(EffectSurfaceNode *node, u32 resource);
+extern void effCreate(EffectQueuedSurfaceNode *node, u32 entryId, void *resource);
+extern void BillboardSet(EffectQueuedSurfaceNode *node, u32 resourceId);
+extern void BillboardGeneralSet(EffectQueuedSurfaceNode *node, u32 resourceId);
+extern void fileLoadObjectOpenNamedDevice(EffectQueuedSurfaceNode *node, u32 resourceId);
+extern void fileReplaceEffectSurfaceJobs(EffectQueuedSurfaceNode *node, FileJobPayload *job);
+extern void PartsListSet(EffectQueuedSurfaceNode *node, FileQueue *queue);
+extern void fileReplaceReferenceHolder(EffectQueuedSurfaceNode *node, u32 resource);
 extern void fileJobFreePrimaryBuffer(FileJobPayload *job);
 extern void fileJobFreeSecondaryBuffer(FileJobPayload *job);
 extern void fileQueueAppend(FileQueue *queue, FileJob *job);
@@ -287,24 +287,24 @@ s32 fileFindQueuedJobIndex(FileQueue *queue, FileJob *target);
 s32 fileQueueCountLinkedJobs(FileQueue *queue);
 void camFollowOffsetVec(FileJob *obj, void *dst);
 void PoseRotBillboard(CamAim *obj, void *dst);
-EffectSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity);
-EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
-void Delete_effParticle(EffectSurfaceNode *node);
-void ResourceCopy(EffectSurfaceNode *dst, EffectSurfaceNode *src);
-EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner);
-void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource);
-void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId);
-void BillboardSet(EffectSurfaceNode *node, u32 resourceId);
-void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId);
-void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job);
-void PartsListSet(EffectSurfaceNode *node, FileQueue *queue);
-void fileReplaceReferenceHolder(EffectSurfaceNode *obj, u32 resource);
-void fileClearLoadObjectReferences(EffectSurfaceNode *obj);
+EffectQueuedSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity);
+EffectQueuedSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
+void Delete_effParticle(EffectQueuedSurfaceNode *node);
+void ResourceCopy(EffectQueuedSurfaceNode *dst, EffectQueuedSurfaceNode *src);
+EffectQueuedSurfaceNode *Copy_effParticle(EffectQueuedSurfaceNode *owner);
+void effCreate(EffectQueuedSurfaceNode *node, u32 entryId, void *resource);
+void fileLoadObjectOpenNamedDevice(EffectQueuedSurfaceNode *node, u32 resourceId);
+void BillboardSet(EffectQueuedSurfaceNode *node, u32 resourceId);
+void BillboardGeneralSet(EffectQueuedSurfaceNode *node, u32 resourceId);
+void fileReplaceEffectSurfaceJobs(EffectQueuedSurfaceNode *node, FileJobPayload *job);
+void PartsListSet(EffectQueuedSurfaceNode *node, FileQueue *queue);
+void fileReplaceReferenceHolder(EffectQueuedSurfaceNode *obj, u32 resource);
+void fileClearLoadObjectReferences(EffectQueuedSurfaceNode *obj);
 
-void fileSendLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value);
-void fileCopyLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value);
+void fileSendLoadObjectRecordVector(EffectQueuedSurfaceNode *obj, const u128 *value);
+void fileCopyLoadObjectRecordVector(EffectQueuedSurfaceNode *obj, const u128 *value);
 void fileSetRecordWordFour(s32 record, u32 value);
-void fileSetLoadObjectScale(EffectSurfaceNode *obj, f32 scale);
+void fileSetLoadObjectScale(EffectQueuedSurfaceNode *obj, f32 scale);
 void fileResetSlotStates(FileSlotTable *table);
 
 
@@ -1316,8 +1316,8 @@ void PoseRotBillboard(CamAim *obj, void *dst)
     SDF_VU0_STOREVECTOR(dst);
 }
 
-EffectSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity) {
-    EffectSurfaceNode *rec = (EffectSurfaceNode *)sdfChipAllocZeroDirect(sizeof(EffectSurfaceNode));
+EffectQueuedSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity) {
+    EffectQueuedSurfaceNode *rec = (EffectQueuedSurfaceNode *)sdfChipAllocZeroDirect(sizeof(EffectQueuedSurfaceNode));
     u32 color = 0x80808080;
 
     rec->handleCount = capacity;
@@ -1333,7 +1333,7 @@ EffectSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity) {
     return rec;
 }
 
-EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
+EffectQueuedSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
     u32 rows = hdr->emissionDuration;
     u32 count = (rows != 0 ? rows : hdr->spawnRate) * (rows != 0 ? hdr->spawnRate : hdr->length);
 
@@ -1342,7 +1342,7 @@ EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", PartsCreate_effParticle);
 
-void Delete_effParticle(EffectSurfaceNode *node) {
+void Delete_effParticle(EffectQueuedSurfaceNode *node) {
     u32 count;
     u32 i;
 
@@ -1372,9 +1372,9 @@ void Delete_effParticle(EffectSurfaceNode *node) {
     sdfChipFreeDirect(node);
 }
 
-EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner) {
+EffectQueuedSurfaceNode *Copy_effParticle(EffectQueuedSurfaceNode *owner) {
     FileKeyBlock *source = (FileKeyBlock *)owner->record->data1;
-    EffectSurfaceNode *result = fileCreateGridLoaderRecord(source);
+    EffectQueuedSurfaceNode *result = fileCreateGridLoaderRecord(source);
 
     effCreate(result, owner->record->type, source);
     ResourceCopy(result, owner);
@@ -1383,14 +1383,14 @@ EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner) {
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", ResourceCopy);
 
-void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource) {
+void effCreate(EffectQueuedSurfaceNode *node, u32 entryId, void *resource) {
     if (node->record != 0) {
         effPCPHelperBEDGetModel(node->record);
     }
     node->record = fileAllocateGridRecordSlots((u16)entryId, node->handleCount, resource);
 }
 
-void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId) {
+void fileLoadObjectOpenNamedDevice(EffectQueuedSurfaceNode *node, u32 resourceId) {
     struct billHandle_t *resource = node->resource;
     if (resource != 0) {
         dds3BillboardDelete(resource);
@@ -1402,7 +1402,7 @@ void fileLoadObjectOpenNamedDevice(EffectSurfaceNode *node, u32 resourceId) {
     }
 }
 
-void BillboardSet(EffectSurfaceNode *node, u32 resourceId) {
+void BillboardSet(EffectQueuedSurfaceNode *node, u32 resourceId) {
     struct billHandle_t *resource = node->resource;
     if (resource != 0) {
         dds3BillboardDelete(resource);
@@ -1414,7 +1414,7 @@ void BillboardSet(EffectSurfaceNode *node, u32 resourceId) {
     }
 }
 
-void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId) {
+void BillboardGeneralSet(EffectQueuedSurfaceNode *node, u32 resourceId) {
     struct billHandle_t *resource = node->resource;
     if (resource != 0) {
         dds3BillboardDelete(resource);
@@ -1427,7 +1427,7 @@ void BillboardGeneralSet(EffectSurfaceNode *node, u32 resourceId) {
     }
 }
 
-void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job) {
+void fileReplaceEffectSurfaceJobs(EffectQueuedSurfaceNode *node, FileJobPayload *job) {
     u32 count = node->record->count;
     u32 i;
     s32 size;
@@ -1451,7 +1451,7 @@ void fileReplaceEffectSurfaceJobs(EffectSurfaceNode *node, FileJobPayload *job) 
     }
 }
 
-void PartsListSet(EffectSurfaceNode *node, FileQueue *queue) {
+void PartsListSet(EffectQueuedSurfaceNode *node, FileQueue *queue) {
     u32 count = node->record->count;
     u32 i;
     s32 size;
@@ -1475,14 +1475,14 @@ void PartsListSet(EffectSurfaceNode *node, FileQueue *queue) {
     }
 }
 
-void fileReplaceReferenceHolder(EffectSurfaceNode *obj, u32 resource) {
+void fileReplaceReferenceHolder(EffectQueuedSurfaceNode *obj, u32 resource) {
     if (obj->resourceHolder != NULL) {
         effCacheTexDelete(obj->resourceHolder);
     }
     obj->resourceHolder = effCacheTexCreate(resource);
 }
 
-void fileClearLoadObjectReferences(EffectSurfaceNode *obj) {
+void fileClearLoadObjectReferences(EffectQueuedSurfaceNode *obj) {
     if (obj->record != 0) {
         fileClearRecordReferences(obj->record);
         return;
@@ -1495,11 +1495,11 @@ INCLUDE_ASM(const s32, "code_r1_0021CE60", fileDrawLoadObjectSlots);
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", effCallSRAnimation);
 
-void fileSendLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value) {
+void fileSendLoadObjectRecordVector(EffectQueuedSurfaceNode *obj, const u128 *value) {
     mnuRecordSetVector(obj->record, value);
 }
 
-void fileCopyLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value) {
+void fileCopyLoadObjectRecordVector(EffectQueuedSurfaceNode *obj, const u128 *value) {
     fileSetRecordSecondVector(obj->record, value);
 }
 
@@ -1507,7 +1507,7 @@ void fileSetRecordWordFour(s32 record, u32 value) {
     *(u32 *)(record + 4) = value;
 }
 
-void fileSetLoadObjectScale(EffectSurfaceNode *obj, f32 scale) {
+void fileSetLoadObjectScale(EffectQueuedSurfaceNode *obj, f32 scale) {
     obj->opacity = scale;
     dds3DispatchIndexedCallback(obj->record, scale);
 }

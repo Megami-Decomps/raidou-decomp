@@ -375,7 +375,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effHandleCreate);
 
 /* Clear the lighting attachment before destroying its model context. */
 void effDestroyModelContext(dds3ModelHandle_t *owner) {
-    owner->inner->lighting = NULL;
+    owner->inner->light = NULL;
     mdlFree(owner);
 }
 

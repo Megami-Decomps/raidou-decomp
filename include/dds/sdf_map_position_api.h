@@ -10,6 +10,6 @@ enum SdfMapPositionLookupResultValue {
     SDF_MAP_POSITION_LOOKUP_FOUND = 1
 };
 
-struct dds_sdfModelRootNode_t;
+struct sdfModelRootNode_t;
 
 #endif /* DDS_SDF_MAP_POSITION_API_H */

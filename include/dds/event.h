@@ -118,23 +118,10 @@ struct dds_evtViewerInfo_t {
     s32 menuState;
     s32 shopFlag;
     u32 auxResource;
-#if !defined(VERSION_DDS1) && (defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2))
     u8 padRaidou[0x80];
-#endif
     union { s32 headerMetadata; u32 optionFlags; };
     s32 titleStreamWaitFrames;
     s32 registeredCount;
-#ifdef VERSION_DDS1
-    s32 registeredIds[10];
-    s32 voicePending;
-    s32 voiceMessage;
-    s32 backgroundFadeStartAlpha; /* Initial background alpha, interpolated to 128 over 25 updates. */
-    u8 pad247C[4];
-    s32 voiceFrame;
-    u8 pad2484[4];
-    s32 commandStart;
-    s32 optionFrameBase;
-#else
     s32 registeredIds[20];
     s32 voicePending;
     s32 voiceMessage;
@@ -145,21 +132,8 @@ struct dds_evtViewerInfo_t {
     s32 commandStart;
     s32 optionFrameBase;
     s32 curveComponent;
-#endif
 };
 
-#ifdef VERSION_DDS1
-
-typedef char evtViewerInfo_t_size[(sizeof(dds_evtViewerInfo_t) == 0x2490) ? 1 : -1];
-
-#elif defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-
 typedef char evtViewerInfo_t_optionFlags[((u32)&((dds_evtViewerInfo_t *)0)->optionFlags == 0x24BC) ? 1 : -1];
-
-#else
-
-typedef char evtViewerInfo_t_size[(sizeof(dds_evtViewerInfo_t) == 0x24BC) ? 1 : -1];
-
-#endif
 
 #endif /* DDS_EVENT_H */

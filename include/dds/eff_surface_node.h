@@ -20,8 +20,6 @@ typedef struct EffSurfaceParams {
 /* An effect surface node: the surface kind, its copied parameters and the
  * resources and jobs the surface owns. */
 
-#ifdef VERSION_DDS1
-
 typedef struct EffectSurfaceNode {
     u32 handleCount;
     u32 color;
@@ -38,9 +36,8 @@ typedef struct EffectSurfaceNode {
     u16 count;          // 0x48: initialized to 1; remaining role unknown
 } EffectSurfaceNode;
 
-#else
-
-typedef struct EffectSurfaceNode {
+/* A surface node that also owns one cloned file queue per active record. */
+typedef struct EffectQueuedSurfaceNode {
     u32 handleCount;
     u32 color;
     f32 opacity;
@@ -56,8 +53,6 @@ typedef struct EffectSurfaceNode {
     struct EffExpandedList *resourceHolder; // 0x48
     FileSlotTable *record; // 0x4C: retained grid record table
     u16 active;         // 0x50: initialized to 1
-} EffectSurfaceNode;
-
-#endif
+} EffectQueuedSurfaceNode;
 
 #endif

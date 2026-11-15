@@ -50,7 +50,7 @@ typedef struct SdfObjectRefCommand {
     u16 objectIndices[1];
 } SdfObjectRefCommand;
 
-struct dds_sdfModelRootNode_t;
+struct sdfModelRootNode_t;
 
 struct sdfMotionCtrlr_t;
 
@@ -87,35 +87,6 @@ typedef char SdfSlotEntry_size_must_be_0x10[(sizeof(SdfSlotEntry) == 0x10) ? 1 :
 #define SDF_MODEL_FORCE_ASSET_TEXTURE_REFRESH_WITH_ZERO_STATE_WORD 0x20
 
 #define SDF_MODEL_FORCE_ASSET_TEXTURE_REFRESH 0x40
-
-/* The buffered-transform constructor allocates and clears all 0x9C bytes. */
-typedef struct dds_sdfModelRootNode_t {
-    DevRequest *list;
-    sdfModelNode_t *rootNode;
-    DevRequest *assetData;
-    DevRequest *resources;
-    DevRequest *slotPairs;
-    struct sdfMotionCtrlr_t *motionList;
-    u8 unk18;
-    u8 flags;
-    u16 drawFlags;
-    u32 color;
-    f32 matrix[4][4];
-    f32 rotationQuaternion[4];
-    f32 scaleVector[4];
-    struct sdf3DLightParallelPacket_t *lighting;
-    struct SdfDmaTagHeader *secondaryLighting; /* Borrowed second DMA reference prefix. */
-    f32 scalarOverrideFirst;
-    f32 scalarOverrideSecond;
-    struct SdfChunkHeader *chunkTable; /* Borrowed from the model resource data. */
-    /* Model scale read by sdfCoreDrawSetZBias and copied unchanged into the
-     * three-scalar VIF payload (DDS1 0x2D9530). */
-    f32 modelScale;
-    u8 lodIndex; /* Native model-viewer and MODEL_LOD_CHG setters use byte 0x98. */
-    u8 pad99[3];
-} dds_sdfModelRootNode_t;
-
-typedef char SdfModel_size_must_be_0x9C[(sizeof(dds_sdfModelRootNode_t) == 0x9C) ? 1 : -1];
 
 /* Serialized clip duration/reserved remain halfwords (tools/fld.py).
  * The viewer MAXFRAME diagnostic reads their packed little-endian word. */

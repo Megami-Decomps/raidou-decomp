@@ -143,7 +143,7 @@ void ValidatePathFrame(s32 endTime, dds_evtViewerInfo_t *viewer);
 extern EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
                                                              MdlMotionSearchId channel);
 
-extern u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *model);
+extern u32 sdfGetLodChunkValue(sdfModelRootNode_t *model);
 void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer);
 void ValidateUnitPosChange(s32 position, dds_evtViewerInfo_t *viewer);
 u8 evtViewerHasUpdateFlag(dds_evtViewerInfo_t *viewer);
@@ -404,7 +404,7 @@ void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer) {
     EvtRuntimeChild *glyph;
     EvtRuntimeChild *best;
     s32 bestFrame;
-    dds_sdfModelRootNode_t *lod;
+    sdfModelRootNode_t *lod;
     s8 level;
 
     while (node != NULL) {
@@ -423,11 +423,11 @@ void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer) {
             }
             lod = ((dds3ModelHandle_t *)((EffectObjectData *)node->info->workdata)->modelHolder->resourceHandle)->inner;
             if (best == NULL) {
-                lod->lodIndex = 0;
+                lod->lod = 0;
             } else {
                 level = best->p0C.sb[0];
                 if ((s32)sdfGetLodChunkValue(lod) >= level) {
-                    lod->lodIndex = best->p0C.sb[0];
+                    lod->lod = best->p0C.sb[0];
                 }
             }
         }

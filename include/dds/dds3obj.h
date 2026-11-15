@@ -20,7 +20,7 @@
 
 struct sdfMotionCtrlr_t;
 
-struct dds_sdfModelRootNode_t;
+struct sdfModelRootNode_t;
 
 typedef struct dds_dds3ObjectBaseControlWorkData_t {
     u32 flags;
@@ -30,7 +30,7 @@ typedef struct dds_dds3ObjectBaseControlWorkData_t {
                            * borrowed views expire on release or rebuild. */
     dds3Basic_t *slots[8];
     void *extData;
-    struct dds_sdfModelRootNode_t *devSlot;
+    struct sdfModelRootNode_t *devSlot;
     struct sdfMotionCtrlr_t *motion;
     s32 mode;
     f32 weight;
