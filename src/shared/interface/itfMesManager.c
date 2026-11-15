@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfAddrResolve.h"
 #include "interface.h"
 #include "newdata.h"
 #include "itfMesManager.h"
@@ -236,7 +237,6 @@ s32 SelectItemDefKey(select_tag *psel);
 void ChangeFontColor(frFontHandle_t *pfont, s32 index, s32 lines, s32 color);
 extern u8 itfMesDebugLineVertIndex[5];
 extern u8 itfMesDebugLineColorIndex[5];
-void sdfAddressResolver(s32 *aDataBody, saddr_t aOffset, u8 *aAddrInfoPtr, s32 aAddrInfoLeng);
 void itfMesMngSetSelect(s32 id, s32 selno);
 void itfMesMngMarkBitStat(s32 id, u32 flag);
 void itfMesMngClearBitStat(s32 id, u32 flag);

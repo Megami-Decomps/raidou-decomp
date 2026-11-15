@@ -12,7 +12,7 @@ typedef struct
 } sdfModelChunkHeader_t;
 
 /* One MPOS record: 64 bytes, keyed by id, naming the node it hangs off. */
-typedef struct QWORD_ALIGNED
+typedef struct QWORD_ALIGNED sdfModelMarkPos_t
 {
     s32 nodeId;
     s32 id;
@@ -29,6 +29,7 @@ void *sdfModelGetExtraChunk(sdfModelRootNode_t *aRoot, u32 aChunkId);
 u32 sdfModelGetMarkPosCount(sdfModelRootNode_t *aRoot);
 void sdfModelInitSystem(void);
 void sdfModelMakeMarkPosMatrix(sdfModelRootNode_t *aRoot, sdfModelMarkPos_t *aMark);
+sdfModelMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *aRoot, s32 aId);
 sdfModelRootNode_t *sdfModelMake(void *aTexList, sdfModelDef_t *aModelData);
 void sdfModelRootFree(sdfModelRootNode_t *aRoot, s32 aReleaseNodes, s32 aReleaseMatList);
 sdfModelNode_t *sdfModelSearchNode(sdfModelRootNode_t *aRoot, s32 aId);

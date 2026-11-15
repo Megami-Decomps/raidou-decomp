@@ -343,7 +343,7 @@ enum PACKET_TYPE_e
 typedef struct mdlObj_t mdlObj_t;
 typedef struct dds3ModelResrc_t dds3ModelResrc_t;
 struct mdlEffectResrcItem_t;
-struct mdlMarkPos_t;
+struct sdfModelMarkPos_t;
 struct mdlEffectResrc_IPU_t;
 struct mdlTrackWork_t;
 typedef struct
@@ -375,7 +375,7 @@ typedef struct dds3ModelEffectCtrlr_t {
                 struct mdlTrackWork_t *track;
             };
             struct mdlEffectResrcItem_t *slot;
-            struct mdlMarkPos_t *mapPositionRecord;
+            struct sdfModelMarkPos_t *mapPositionRecord;
             f32 anchorScale;
             u8 pad18[8];
         } part;

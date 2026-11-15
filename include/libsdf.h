@@ -393,7 +393,7 @@ struct sdfPacDecodeCb_t
     s32 rest;
     union
     {
-        struct sdfDecomp_t *decomp;
+        struct sdfDecompCb_t *decomp;
         u8 *decompBuffer;
     };
     sdfPacTmxDecodeCb_t *decodeCb;
@@ -407,13 +407,19 @@ struct sdfPacDecodeCb_t
 };
 
 /* The LZ decoder sdfDecompInit sets up in 32 chip bytes; sdfDecomp returns
- * nonzero when the stream ends and leaves the unconsumed byte count at 12. */
-struct sdfDecomp_t
+ * nonzero when the stream ends and leaves the unconsumed byte count in srcRemain. */
+typedef struct sdfDecompCb_t
 {
-    u32 pad[3];
-    s32 remain;
-    u32 pad2[4];
-};
+    u8 stat;
+    u8 direc;
+    u16 direcLeng;
+    u8 *dstPtr;
+    const u8 *srcPtr;
+    s32 srcRemain;
+    u8 sdOfs;
+    u8 pad11[3];
+    u8 unk14[0xC];
+} sdfDecompCb_t;
 
 /* File-command prefix shared by the queue and device helpers. */
 typedef struct sdfFileCmd_t

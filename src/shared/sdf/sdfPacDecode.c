@@ -1,4 +1,6 @@
 #include "common.h"
+#include "sdfAddrResolve.h"
+#include "sdf_Decomp.h"
 #include "libsdf.h"
 #include "sdfMemory.h"
 #include "sdk_libc.h"
@@ -8,9 +10,6 @@
 #include "sdfTex.h"
 
 /* Declared here because no header carries these. */
-extern void sdfDecompInit(struct sdfDecomp_t *cb, u8 *dst);
-extern s32 sdfDecomp(struct sdfDecomp_t *cb, const u8 *src, s32 length);
-extern void sdfAddressResolver(s32 *aDataBody, saddr_t aOffset, u8 *aAddrInfoPtr, s32 aAddrInfoLeng);
 s32 sdfPacStdCallback(sdfPacDecodeCb_t *cb, s32 cause, sdfPacStdBlockHeader_t *hdr);
 void sdfPacNewBlock(sdfPacDecodeCb_t *cb);
 void sdfPacEndBlock(sdfPacDecodeCb_t *cb);
@@ -264,7 +263,7 @@ void sdfPacMemDecompDecoderFunc(sdfPacDecodeCb_t *cb)
     s32 len = cb->srcLength;
     s32 done = sdfDecomp(cb->decomp, cb->srcData, len);
 
-    sdfPacUseSrc(cb, len - cb->decomp->remain);
+    sdfPacUseSrc(cb, len - cb->decomp->srcRemain);
     if (done != 0) {
         sdfChipFreeDirect(cb->decomp);
         cb->onEnd(cb);
@@ -315,7 +314,7 @@ void sdfPacMemDecoderFuncInit(sdfPacDecodeCb_t *cb, sdfPacStdBlockHeader_t *hdr)
         cb->decoder = sdfPacMemDecoderFunc;
         break;
     case 1: {
-        struct sdfDecomp_t *decomp = sdfChipAllocDirect(sizeof(*decomp));
+        sdfDecompCb_t *decomp = sdfChipAllocDirect(sizeof(*decomp));
 
         cb->decomp = decomp;
         sdfDecompInit(decomp, cb->dst);
@@ -340,7 +339,7 @@ void sdfPacModelDecoderEndFunc(sdfPacDecodeCb_t *cb)
 
     aWork->data = payload;
     if (bytes != 0) {
-        sdfAddressResolver((s32 *)payload, EE_ADDR_S(payload), payload + reloc->tableOffset, bytes);
+        sdfAddressResolver(payload, EE_ADDR_S(payload), payload + reloc->tableOffset, bytes);
         reloc->tableBytes = 0;
     }
     sdfPacEndBlock(cb);
@@ -361,7 +360,7 @@ void sdfPacMotionDecoderEndFunc(sdfPacDecodeCb_t *cb)
 
     aWork->data = payload;
     if (bytes != 0) {
-        sdfAddressResolver((s32 *)payload, EE_ADDR_S(payload), payload + reloc->tableOffset, bytes);
+        sdfAddressResolver(payload, EE_ADDR_S(payload), payload + reloc->tableOffset, bytes);
         reloc->tableBytes = 0;
     }
     sdfPacEndBlock(cb);
@@ -399,7 +398,7 @@ void sdfPacTmxDecompDecoderFunc(sdfPacDecodeCb_t *cb)
     s32 len = cb->rest;
     s32 done = sdfDecomp(cb->decomp, cb->srcData, len);
 
-    sdfPacUseSrc(cb, len - cb->decomp->remain);
+    sdfPacUseSrc(cb, len - cb->decomp->srcRemain);
     if (done != 0) {
         sdfPacTmxDecodeCb_t *buf = cb->decodeCb;
 
@@ -451,7 +450,7 @@ void sdfPacTmxDecoderInitFunc(sdfPacDecodeCb_t *cb, sdfPacStdBlockHeader_t *hdr,
         cb->decoder = sdfPacTmxDecoderFunc;
         break;
     case 1: {
-        struct sdfDecomp_t *decomp = sdfChipAllocDirect(sizeof(*decomp));
+        sdfDecompCb_t *decomp = sdfChipAllocDirect(sizeof(*decomp));
 
         cb->decompBuffer = (u8 *)decomp;
         sdfDecompInit(decomp, tmxCb->workPtr);

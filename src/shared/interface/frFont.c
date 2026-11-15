@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfImageSet.h"
 #include "font.h"
 #include "kernel.h"
 #include "sdfMemory.h"
@@ -158,20 +159,6 @@ struct frFontImage_t {
     void *packedBitstream; /* 0x08 */
 };
 
-/* Pixel upload inputs shared by texture and font-atlas producers. */
-typedef struct sdfImageRequest_t {
-    void *pixels;
-    sdfMemHandle_t *allocation;
-    u8 allocationMode;
-    u8 format;
-    u16 bufferWidth;
-    u32 destination;
-    u16 x;
-    u16 y;
-    u16 width;
-    u16 height;
-} sdfImageRequest_t;
-
 /* sdfImageSetPacket_tag.freeMode: which heap owns the uploaded pixels. */
 enum SdfImageSetMem
 {
@@ -266,7 +253,6 @@ FontMem_t *fmRentFontMem(void);
 
 #define FR_FONT_ATLAS_DEST_SHIFT 6
 
-extern void sdfImageSetReq(sdfImageRequest_t *parm);
 u8 *frDecodeFontImage(u8 Style, s32 FontNo);
 
 #define FR_FONT_RESOURCE_CLONE_BYTES 0x120
@@ -969,7 +955,7 @@ INCLUDE_ASM(const s32, "interface/frFont", frLinkUserImage);
 
 GsFont_t *frTranslateUserData(s32 Width, s32 Height, void *pData, s8 DataFreeMode) {
     s32 imagePosition[2];
-    sdfImageRequest_t uploadRequest;
+    sdfImageSetReqParam_t uploadRequest;
     FontMem_t *atlasNode;
     GsFont_t *cachedItem;
 
@@ -981,16 +967,16 @@ GsFont_t *frTranslateUserData(s32 Width, s32 Height, void *pData, s8 DataFreeMod
     cachedItem->used_count = 1;
     cachedItem->font_mem = atlasNode;
     if (DataFreeMode == 0) {
-        uploadRequest.allocationMode = SDF_IMAGESET_MEM_IGNORE;
+        uploadRequest.freeMode = SDF_IMAGESET_MEM_IGNORE;
     } else {
-        uploadRequest.allocationMode = SDF_IMAGESET_MEM_CHIP;
+        uploadRequest.freeMode = SDF_IMAGESET_MEM_CHIP;
     }
-    uploadRequest.pixels = pData;
-    uploadRequest.format = FR_FONT_PIXEL_FORMAT;
-    uploadRequest.width = Width;
-    uploadRequest.height = Height;
+    uploadRequest.data = pData;
+    uploadRequest.pixelFormat = FR_FONT_PIXEL_FORMAT;
+    uploadRequest.w = Width;
+    uploadRequest.h = Height;
     uploadRequest.bufferWidth = gFT.atlas.width;
-    uploadRequest.destination = gFT.atlas.bufferBase << FR_FONT_ATLAS_DEST_SHIFT;
+    uploadRequest.addr = gFT.atlas.bufferBase << FR_FONT_ATLAS_DEST_SHIFT;
     uploadRequest.x = imagePosition[0];
     uploadRequest.y = imagePosition[1];
     sdfImageSetReq(&uploadRequest);

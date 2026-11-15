@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfModel.h"
 #include "libsdf.h"
 #include "model.h"
 #include "mdlEffect.h"
@@ -20,7 +21,6 @@ typedef struct mdlEffectResrc_IPU_t mdlEffectResrc_IPU_t;
 
 typedef struct mdlEffectResrcItem_t mdlEffectResrcItem_t;
 
-typedef struct mdlMarkPos_t mdlMarkPos_t;
 
 typedef struct mdlEffectResrcItem_t {
     u32 type;       /* 0x00 */
@@ -58,15 +58,6 @@ typedef struct pibChunkItem_TRACK_t {
     u8 blendAlgo;           /* +0x17: selected by the track's draw data */
     u32 colors[4]; /* +0x18: copied to mdlTrackCreateParams_t */
 } pibChunkItem_TRACK_t;
-
-typedef struct mdlMarkPos_t {
-    u32 nodeId;      /* 0x00: draw-node lookup key */
-    s32 id;          /* 0x04: map-position record lookup key */
-    u8 reserved08[8];
-    u128 position;   /* 0x10 */
-    u128 up;         /* 0x20 */
-    u128 direction;  /* 0x30 */
-} mdlMarkPos_t;
 
 typedef struct mdlDebugLight_t {
     f32 (**lights)[4];

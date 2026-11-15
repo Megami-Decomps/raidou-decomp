@@ -75,7 +75,6 @@ void sdfModelMakeMorphList(sdfModelRootNode_t *root, s32 morphCount);
 sdfModelRootNode_t *sdfModelMakeRoot(void *aTexList, sdfModelDef_t *aModelData);
 void sdfModelNodeSet(sdfModelNode_t *aNode, sdfModelNodeDef_t *aDef);
 void sdfModelMorphListCopyStat(sdfModelMorphList_t *aDst, sdfModelMorphList_t *aSrc);
-sdfModelMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *aRoot, s32 aId);
 void sdfModelMakeMarkPos(sdfModelRootNode_t *aRoot, sdfModelMarkPos_t *aMark);
 void sdfModelInitSystem(void);
 sdfModelNode_t *sdfModelNodeNew(void);

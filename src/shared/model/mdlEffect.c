@@ -18,6 +18,7 @@
 #include "dds3DebugStuff.h"
 #include "sdfModel.h"
 #include "mdlEffect.h"
+#include "sdfIpu.h"
 #include "sdfDevCons.h"
 #include "effManager.h"
 #include "billManager.h"
@@ -30,7 +31,6 @@ typedef struct mdlEffectResrc_IPU_t mdlEffectResrc_IPU_t;
 
 typedef struct mdlEffectResrcItem_t mdlEffectResrcItem_t;
 
-typedef struct mdlMarkPos_t mdlMarkPos_t;
 
 typedef struct mdlEffectResrcItem_t {
     u32 type;       /* 0x00 */
@@ -52,8 +52,8 @@ typedef struct mdlPibIpu_t {
     u8 opaque00[8];
     s32 dataId;        /* 0x08: resource-key lookup */
     s32 minimumTime;   /* 0x0C: deferred initialization threshold */
-    u8 playbackCadenceStep; /* 0x10: mdlIpuParams_t byte 3 */
-    u8 loopMode;            /* 0x11: mdlIpuParams_t byte 2 */
+    u8 playbackCadenceStep; /* 0x10: sdfIpuInitParm_t byte 3 */
+    u8 loopMode;            /* 0x11: sdfIpuInitParm_t byte 2 */
     u16 index;         /* 0x12: part-slot index */
 } mdlPibIpu_t;
 
@@ -68,15 +68,6 @@ typedef struct pibChunkItem_TRACK_t {
     u8 blendAlgo;           /* +0x17: selected by the track's draw data */
     u32 colors[4]; /* +0x18: copied to mdlTrackCreateParams_t */
 } pibChunkItem_TRACK_t;
-
-typedef struct mdlMarkPos_t {
-    u32 nodeId;      /* 0x00: draw-node lookup key */
-    s32 id;          /* 0x04: map-position record lookup key */
-    u8 reserved08[8];
-    u128 position;   /* 0x10 */
-    u128 up;         /* 0x20 */
-    u128 direction;  /* 0x30 */
-} mdlMarkPos_t;
 
 typedef struct mdlDebugLight_t {
     f32 (**lights)[4];
@@ -142,7 +133,6 @@ typedef struct mdlDebugOption_t {
     u8 pad34[4];
 } mdlDebugOption_t;
 
-typedef struct { u8 hasAudio, stereo, loopMode, playbackCadenceStep; } mdlIpuParams_t;
 
 struct mdlEffectResrc_IPU_t
 {
@@ -152,7 +142,7 @@ struct mdlEffectResrc_IPU_t
     u8 unk0A[6];
     s32 dataSize;
     u8 unk14[0xC];
-    u8 ipuState[0x8C];
+    sdfIpuDecodeCb_t ipuState;
 };
 
 typedef struct
@@ -177,9 +167,6 @@ extern char *mdlColorChannelLabels[];
 extern u8 mdlColorChannelStyle[];
 extern u16 mdlPibTrackRowOffset[];
 extern void dds3BillboardDelete(billHandle_t *);
-extern void sdfIpuFree(void *cb);
-extern void sdfIpuSetOutputTex(void *, mdlIpuParams_t *, u8 *, s32, sdfTexHandle_t *);
-extern mdlMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *, s32);
 extern mdlTrackWork_t *Eff_ModelTrackPolyCreate(mdlTrackCreateParams_t *);
 extern void Eff_ModelTrackPolyDelete(mdlTrackWork_t *);
 extern void Eff_ModelTrackPolyDraw(mdlTrackWork_t *);
@@ -244,7 +231,7 @@ extern char mdlPibCursorMark[];
 
 /* The PIB chunk count is the low half of the packed parameter word. */
 void mdlDeleteEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu);
-void mdlStartEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu, sdfTexHandle_t *tex, mdlIpuParams_t *parm);
+void mdlStartEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu, sdfTexHandle_t *tex, sdfIpuInitParm_t *parm);
 dds3ModelEffectCtrlr_t *mdlCreateEffectCtrlr(mdlObj_t *aHandle, s32 aType, s32 aPlayGroup);
 void *mdlEffectDup_P2A(mdlEffectResrcItem_t *efcResPtr);
 void *mdlEffectDup_D3P(mdlEffectResrcItem_t *efcResPtr);
@@ -508,7 +495,7 @@ void mdlDeleteEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu) {
     sdfChipFreeDirect(ipu);
 }
 
-void mdlStartEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu, sdfTexHandle_t *tex, mdlIpuParams_t *parm) {
+void mdlStartEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu, sdfTexHandle_t *tex, sdfIpuInitParm_t *parm) {
     if (ipu->playing == 0) {
         ipu->playing = 1;
         sdfIpuSetOutputTex(&ipu->ipuState, parm, EE_ADDR_AS(u8 *, ipu->data), ipu->dataSize, tex);
@@ -595,7 +582,7 @@ void mdlCreateEffect_P2A_D3P(mdlObj_t *owner, pibChunkItem_P2A_D3P_t *partRecord
             optionalAnchorScale = partRecord->zOffset;
         }
         do {
-            mdlMarkPos_t *chunkRecord = sdfModelSearchMarkPosData(model, recordId++);
+            sdfModelMarkPos_t *chunkRecord = sdfModelSearchMarkPosData(model, recordId++);
 
             if (chunkRecord != NULL) {
                 dds3ModelEffectCtrlr_t *resourceItem = mdlCreateEffectCtrlr(owner, resourceType, motionSlotIndex);
@@ -674,7 +661,7 @@ void mdlDrawEffect_IPU(dds3ModelEffectCtrlr_t *effect) {
             return;
         }
         mdlStartEffectResrc_IPU(object, effect->payload.object.texture,
-                   (mdlIpuParams_t *)effect->payload.object.attributes);
+                   (sdfIpuInitParm_t *)effect->payload.object.attributes);
     }
 }
 
@@ -746,12 +733,12 @@ void mdlStopEffect(mdlObj_t *aHandle, s32 aPlayGroup) {
 
 /* vu0 routine: transform an anchor, then offset it away from the eye. */
 void mdlEffect_P2A_D3P_GetPos(sdfModelRootNode_t *model, dds3ModelEffectCtrlr_t *effect, f32 *vect) {
-    mdlMarkPos_t *mapPosition = effect->payload.part.mapPositionRecord;
+    sdfModelMarkPos_t *mapPosition = effect->payload.part.mapPositionRecord;
     sdfModelNode_t *drawNode = sdfModelSearchNode(model, mapPosition->nodeId);
     f32 scale = effect->payload.part.anchorScale;
 
     SDF_VU0_LOADMATRIX(&drawNode->tm);
-        SDF_VU0_LOADVECTOR( &mapPosition->position);
+        SDF_VU0_LOADVECTOR( &mapPosition->pos);
     SDF_VU0_APPLYMATRIX_XYZ1();
     SDF_VU0_COPYVECTOR_A_TO_B();
         SDF_VU0_LOADVECTOR_C( aViewEye);

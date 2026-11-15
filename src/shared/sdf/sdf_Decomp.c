@@ -2,6 +2,7 @@
 #include "sdfPacketBuff.h"
 #include "ps2asm.h"
 #include "sdf_types.h"
+#include "libsdf.h"
 #include "eeregs.h"
 #include "sdk_libc.h"
 #include "sdfVu0.h"
@@ -43,8 +44,6 @@ enum {
     SDF_DECOMP_LENGTH_MASK = 0x1F
 };
 
-struct sdfDecompCb_t;
-
 /* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
 extern const u8 *sdfDecompHistory[16];
 
@@ -53,24 +52,8 @@ extern const u8 *sdfDecompHistory[16];
 extern u8 sdf3DScreenParam[];
 extern u8 sdf3DScreenTm[];
 
-/* Incremental decoder access view shared by both providers. The backing
- * decoder block is allocated as 0x20 bytes; only this 0x14-byte prefix is
- * described here, and its trailing allocation bytes remain unknown. */
-typedef struct sdfDecompCb_t {
-    u8 stat;             /* 0x00 */
-    u8 direc;           /* 0x01 */
-    u16 direcLeng;     /* 0x02 */
-    u8 *dstPtr;           /* 0x04 */
-    const u8 *srcPtr;      /* 0x08 */
-    s32 srcRemain;       /* 0x0C */
-    u8 sdOfs;        /* 0x10 */
-    u8 pad11[3];          /* 0x11: opaque */
-} sdfDecompCb_t;
-
 /* Read the active packet cursor or restore it at a quadword boundary. */
 extern s32 sdfDecompHistoryIndex;
-s32 sdfDecomp(sdfDecompCb_t *cb, const u8 *src, s32 length);
-void sdfDecompInit(sdfDecompCb_t *cb, u8 *dst);
 sdfGrPacketHeader_t *sdfDrawModelWithMatrix(const f32 vertices[][4], const u32 *colors, s32 vertexCount, u32 primitiveFlags);
 sdfGrPacketHeader_t *effDebugDrawWireModel(const sdfVector4_t *vertices, const u32 *colors, s32 vertexCount, u32 primitiveFlags);
 sdfGrPacketHeader_t *sdfDrawRotatedModel(const f32 vertices[][4], const u32 *colors, s32 vertexCount, u32 primitiveFlags);

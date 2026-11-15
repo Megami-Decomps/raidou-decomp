@@ -53,21 +53,6 @@ typedef struct sdfImageSetCB
     sdfImageSetTag_t *tagTail;
 } sdfImageSetCb_t;
 
-typedef struct sdfImageSetReqParam
-{
-    void *data;
-    sdfMemHandle_t *memHandle;
-    u8 freeMode;
-    u8 pixelFormat;
-    u16 bufferWidth;
-    u32 addr;
-    u16 x;
-    u16 y;
-    u16 w;
-    u16 h;
-} sdfImageSetReqParam_t;
-
-
 #include "sdk_libkernl.h"
 
 extern sdfImageSetCb_t sdfImageSetCb;
@@ -75,7 +60,6 @@ extern u64 sdfImageSetTexFlushPacket[];
 s32 sdfImageDataSize(u32 format, s32 width, s32 height);
 s32 sdfImageSetDmacHandler(s32 channel, s32 threadId);
 void sdfImageSetClearCb(sdfImageSetCb_t *cb);
-void sdfImageSetReq(sdfImageSetReqParam_t *parm);
 void sdfImageSetChainReleaseMem(saddr_t p);
 void sdfImageSetTrans(void);
 void sdfImageSetInit(void);

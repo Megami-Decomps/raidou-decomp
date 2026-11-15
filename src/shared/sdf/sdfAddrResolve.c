@@ -2,8 +2,8 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfAddrResolve.h"
 
-void sdfAddressResolver(void *aDataBody, void *aOffset, void *aAddrInfoPtr, s32 aAddrInfoLeng);
 
 enum SdfFileIOCmdStat {
     SDF_FILE_CMD_STAT_INIT = 0,
@@ -56,9 +56,9 @@ enum sdf_stream_playback {
  * Low tag bits select one-, two-, or three-byte deltas; tag 7 encodes a run.
  * tableBytes bounds the encoded byte stream, not the number of relocated words.
  */
-void sdfAddressResolver(void *aDataBody, void *aOffset, void *aAddrInfoPtr, s32 aAddrInfoLeng) {
+void sdfAddressResolver(void *aDataBody, saddr_t aOffset, const u8 *aAddrInfoPtr, s32 aAddrInfoLeng) {
     s32 *words = aDataBody;
-    saddr_t relocationBase = EE_ADDR_S(aOffset);
+    saddr_t relocationBase = aOffset;
     const u8 *table = aAddrInfoPtr;
     const u8 *commandCursor = table;
     s32 value;

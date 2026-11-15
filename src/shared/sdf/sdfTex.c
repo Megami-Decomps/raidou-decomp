@@ -28,22 +28,6 @@ void sdfTexMakeGIFPacket(sdfTexHandle_t *aHandle);
 void sdfTexMakeGIFPacketCtx2(sdfTexHandle_t *aHandle);
 void sdfTexRebuildPacket(sdfTexHandle_t *aHandle);
 
-/* One image transfer request; dimensions and source rectangle are halfwords. */
-typedef struct
-{
-    void *pixels;
-    sdfMemHandle_t *allocation;
-    u8 allocationMode;
-    u8 format;
-    s16 bufferWidth;
-    u32 destination;
-    s16 x;
-    s16 y;
-    s16 width;
-    s16 height;
-} sdfImageUploadRequest_t;
-
-extern void sdfImageSetReq(sdfImageUploadRequest_t *parm);
 s32 sdfTexGetPacketLength(sdfTexHandle_t *aHandle);
 sdfTexPacket_t *sdfTexGetPacketCtx2(sdfTexHandle_t *aHandle);
 s32 sdfTexGetPacketCtx2Length(sdfTexHandle_t *aHandle);
@@ -220,28 +204,28 @@ void sdfTexSetWrapMode(sdfTexHandle_t *aHandle, s32 aMode)
 }
 
 void *sdfTexTransData(s32 aGsAddr, s32 aWidth, s32 aHeight, s32 aPixelFormat, void *aSrcData, s32 aMemMode) {
-    sdfImageUploadRequest_t request;
+    sdfImageSetReqParam_t request;
     s32 imageBytes = sdfImageDataSize(aPixelFormat, aWidth, aHeight) * 16;
 
     if (aMemMode == 0) {
         if (imageBytes > 0x400) {
-            request.allocation = sdfMemAllocDirect(imageBytes);
-            request.pixels = (void *)sdfMemLock(request.allocation);
-            request.allocationMode = 1;
+            request.memHandle = sdfMemAllocDirect(imageBytes);
+            request.data = (void *)sdfMemLock(request.memHandle);
+            request.freeMode = 1;
         } else {
-            request.pixels = sdfChipAllocDirect(imageBytes);
-            request.allocationMode = 2;
+            request.data = sdfChipAllocDirect(imageBytes);
+            request.freeMode = 2;
         }
-        memcpy(request.pixels, aSrcData, imageBytes);
+        memcpy(request.data, aSrcData, imageBytes);
     } else {
-        request.pixels = aSrcData;
-        request.allocationMode = 0;
+        request.data = aSrcData;
+        request.freeMode = 0;
     }
-    request.format = aPixelFormat;
-    request.destination = aGsAddr;
+    request.pixelFormat = aPixelFormat;
+    request.addr = aGsAddr;
     request.bufferWidth = aWidth;
-    request.width = aWidth;
-    request.height = aHeight;
+    request.w = aWidth;
+    request.h = aHeight;
     request.x = 0;
     request.y = 0;
     sdfImageSetReq(&request);
