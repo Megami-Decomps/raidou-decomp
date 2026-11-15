@@ -147,21 +147,6 @@ typedef struct effPCPCrackParam_t
     f32 angularSpeed;
 } effPCPCrackParam_t;
 
-typedef struct effCrackMotion_t
-{
-    u8 unk00[0x20];
-    f32 frameStep;
-    u8 unk24[0xA];
-    u16 frameCount;
-} effCrackMotion_t;
-
-typedef struct effCrackModel_t
-{
-    u8 unk00[0x18];
-    void *inner;
-    effCrackMotion_t *first;
-} effCrackModel_t;
-
 /* Five vertex colour words per cell. */
 typedef struct effCrackColorSlot_t
 {
@@ -570,7 +555,7 @@ void effPCPCrackSizeInit(effPCPCrack_t *pPCPCrack, effPCPCrackPartFlash_t *pSize
 
 void effPCPCrackInit(effPCPCrack_t *pPCPCrack)
 {
-    effCrackModel_t *model = dds3EffectPartGetHandle(pPCPCrack->part);
+    mdlObj_t *model = dds3EffectPartGetHandle(pPCPCrack->part);
     effPCPCrackPart_t *group;
     effPCPCrackPartFlash_t *nextCells;
     u32 groupIndex;
@@ -579,9 +564,9 @@ void effPCPCrackInit(effPCPCrack_t *pPCPCrack)
     if (pPCPCrack->delaySpread <= 0) {
         pPCPCrack->delaySpread = 1;
     }
-    model->first->frameStep = pPCPCrack->frameStep;
-    mdlSingleMotion((mdlObj_t *)model, 0, 0);
-    pPCPCrack->cellCount = model->first->frameCount;
+    model->first->speed = pPCPCrack->frameStep;
+    mdlSingleMotion(model, 0, 0);
+    pPCPCrack->cellCount = model->first->frameLength;
     pPCPCrack->MarkCount = sdfModelGetMarkPosCount(model->inner);
     pPCPCrack->system = dds3TrackPolyCreate(pPCPCrack->MarkCount, pPCPCrack->cellCount, 1, 1);
     dds3TrackPolySetMode(pPCPCrack->system, pPCPCrack->drawBucket);

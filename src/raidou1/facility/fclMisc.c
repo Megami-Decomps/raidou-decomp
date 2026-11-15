@@ -31,19 +31,14 @@ typedef struct
 
 extern fclGlobalWorkItemInventory_t *fclGlobalWorkItems FAKEMATCH_ASM_NAME("DDS3_GBWK");
 extern s32 fclChkMessage(void);
-extern void fclScriptForcedEnd(u8 *PID);
+extern void fclScriptForcedEnd(dds3ProcessID_t *PID);
 extern s8 gMsgFlag;
 extern void shuffleIndices(s8 *order, s32 count, s32 rounds);
 extern s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
 
-typedef struct
-{
-    /* 0x00 */ u8 unk_00[0x18];
-    /* 0x18 */ u8 *unk_18;
-} fclSceneObj_t;
 
 void fclLoadStage(s32 MajorNo, s32 MinorNo);
-void fclScriptForcedEnd(u8 *PID);
+void fclScriptForcedEnd(dds3ProcessID_t *PID);
 s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
 
 typedef struct
@@ -204,14 +199,14 @@ typedef struct EvtListPanelRecord {
     struct MenuList *list;
 } EvtListPanelRecord;
 
-s32 fclSetModelLight(char *name, fclSceneObj_t *dst)
+s32 fclSetModelLight(char *name, dds3Basic_t *dst)
 {
-    fclSceneObj_t *obj = dds3SceneBasicSearchNameAndType(dds3GetControlScene(), 9, name);
+    dds3Basic_t *obj = dds3SceneBasicSearchNameAndType(dds3GetControlScene(), 9, name);
 
     if (obj == NULL) {
         return 0;
     }
-    *(s32 *)(dst->unk_18 + 0x80) = *(s32 *)(obj->unk_18 + 0x78);
+    *(s32 *)(dst->workdata + 0x80) = *(s32 *)(obj->workdata + 0x78);
     return 1;
 }
 
@@ -231,10 +226,10 @@ INCLUDE_ASM(const s32, "facility/fclMisc", fclFreeStage);
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclInitPanelPos);
 
-void fclScriptForcedEnd(u8 *PID)
+void fclScriptForcedEnd(dds3ProcessID_t *PID)
 {
-    if (PID != NULL && dds3GetProcessStat((dds3ProcessID_t *)PID) != 0) {
-        dds3KillProcess((dds3ProcessID_t *)PID, 0);
+    if (PID != NULL && dds3GetProcessStat(PID) != 0) {
+        dds3KillProcess(PID, 0);
         PID = NULL;
     }
 }
@@ -245,7 +240,7 @@ s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID)
 
     if (pPID != NULL)
     {
-        fclScriptForcedEnd(*(u8 **)pPID);
+        fclScriptForcedEnd(*(dds3ProcessID_t **)pPID);
     }
     handle = EE_ADDR_S(scrStartScript2(0x7D0, EE_ADDR_AS(void *, pScriptData), StartNo));
     fclClearFlag(0);

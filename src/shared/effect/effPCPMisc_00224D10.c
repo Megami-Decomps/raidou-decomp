@@ -200,8 +200,8 @@ FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
 extern void mnuRecordSetVector(void *record, const void *src);
 extern void fileSetRecordSecondVector(void *record, const void *src);
 
-extern void fileReadRecordSecondVector(u8 *, void *);
-extern void fileReadVectorPtr20(u8 *, void *);
+extern void fileReadRecordSecondVector(void *, void *);
+extern void fileReadVectorPtr20(void *, void *);
 
 typedef struct FileWaveMotion {
     f32 axis[4];             /* 0x00: xyz only */
@@ -267,9 +267,9 @@ typedef struct FileCurveMotion {
     f32 angleMultiplier;
 } FileCurveMotion; /* 0x4C, naturally four-byte aligned */
 
-void fileReadVectorPtr20(u8 *recordBytes, void *dst);
+void fileReadVectorPtr20(void *recordBytes, void *dst);
 void mnuRecordSetVector(void *recordBytes, const void *src);
-void fileReadRecordSecondVector(u8 *recordBytes, void *dst);
+void fileReadRecordSecondVector(void *recordBytes, void *dst);
 void fileSetRecordSecondVector(void *recordBytes, const void *src);
 
 #ifndef VERSION_DDS2
@@ -330,7 +330,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effCalc);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effCalcSub);
 
-void fileReadVectorPtr20(u8 *recordBytes, void *dst) {
+void fileReadVectorPtr20(void *recordBytes, void *dst) {
     FileSlotTable *record = (FileSlotTable *)recordBytes;
     SDF_VU0_COPYVECTOR(dst, record->data0);
 }
@@ -340,7 +340,7 @@ void mnuRecordSetVector(void *recordBytes, const void *src) {
     SDF_VU0_COPYVECTOR(record->data0, src);
 }
 
-void fileReadRecordSecondVector(u8 *recordBytes, void *dst) {
+void fileReadRecordSecondVector(void *recordBytes, void *dst) {
     FileSlotTable *record = (FileSlotTable *)recordBytes;
     SDF_VU0_COPYVECTOR(dst, record->data0 + 0x10);
 }

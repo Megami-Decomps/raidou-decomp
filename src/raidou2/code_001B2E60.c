@@ -32,32 +32,30 @@ struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
 /* Destroy one context. If it leaves its resource-owning group empty, group
  * teardown also releases that group's registered assets. */
-void mdlFree(dds3ModelHandle_t *ctx);
+void mdlFree(mdlObj_t *ctx);
 
 /* Context-level motion APIs; per-sdfMotionCtrlr_t lifecycle methods are in sdf_motion.h. */
-MdlMotionIndexResult mdlGetMotionNum(const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
+MdlMotionIndexResult mdlGetMotionNum(const mdlObj_t *ctx, MdlMotionSearchId searchId);
 
 /* The referenced halfword is promoted to a word-sized SDK result. */
-s32 mdlGetNumOfCut(const dds3ModelHandle_t *ctx, s32 searchId);
-MdlMotionPresence mdlHasMotionEx(const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
+s32 mdlGetNumOfCut(const mdlObj_t *ctx, s32 searchId);
+MdlMotionPresence mdlHasMotionEx(const mdlObj_t *ctx, MdlMotionSearchId searchId);
 
 /* Allocate a distinct caller-owned context linked to the registered group.
  * Contexts share the group node and assets; release each context with mdlFree. */
-dds3ModelHandle_t *mdlLoad(u32 group, u32 id);
-void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+mdlObj_t *mdlLoad(u32 group, u32 id);
+void mdlLoopMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex);
 
-void mdlSmoothLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+void mdlSmoothLoopMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
                           f32 blendDurationFrames);
 
-void mdlSmoothSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
+void mdlSmoothSingleMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
                        f32 blendDurationFrames);
 
 void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
 void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
 
 
-SdfChunkHeader *sdfModelGetExtraChunk(const struct dds_sdfModelRootNode_t *model, s32 tag);
-void sdfModelMakeMarkPosMatrix(struct dds_sdfModelRootNode_t *model, SdfMapPositionRecord *record);
 
 
 
@@ -154,7 +152,7 @@ typedef struct MdlViewState {
     f32 viewerScale;      /* 0x54: viewer zoom, in hundredths */
     u8 pad58[8];
     u128 unk60[3]; /* 0x60: quadword slots; their alignment makes the state quadword aligned */
-    dds3ModelHandle_t *resources[MDL_VIEWER_RESOURCE_SLOTS]; /* 0x90 */
+    mdlObj_t *resources[MDL_VIEWER_RESOURCE_SLOTS]; /* 0x90 */
     sdfDrawTag_t *packetList; /* 0xC0: drawing packet destination */
 } MdlViewState;
 
@@ -208,7 +206,7 @@ void mdlCleanupViewerTasksAndResources(void);
 s32 mdlPibGetChunkItemCount(MdlRecord *listHeader);
 
 /* Follow the relative links in a resource's part-info table to find a list key. */
-MdlRecord *mdlPibGetChunk(dds3ModelHandle_t *resource, MdlPartInfoListKey partInfoListKey);
+MdlRecord *mdlPibGetChunk(mdlObj_t *resource, MdlPartInfoListKey partInfoListKey);
 
 /* The first eight bytes belong to the enclosing list, not its first record. */
 MdlRecord *mdlPibGetFirstChunkItem(MdlRecord *listHeader);
@@ -293,13 +291,6 @@ void mdlDrawViewerResourceMenu(void);
 u32 mdlRunViewerResourceMenuTask(void);
 
 /* Loaded-resource count chain, identical to the DDS2 model viewer. */
-typedef struct MdlCountNode {
-    u8 pad00[4];
-    s16 count;
-    u8 pad06[6];
-    sdfTexHandle_t **textures;
-} MdlCountNode;
-
 void mdlHandleViewerNodeCursorInput(void);
 extern char D_003ABDA8[];
 extern char D_003BBC88[];
@@ -332,7 +323,7 @@ void mdlSubmitViewerResourceDrawPacket(void);
 void mdlViewerTaskDestroy(void);
 extern f32 mdlDrawMapPositionRecordsData[][4];
 extern u32 mdlDrawMapPositionRecordsData2[];
-void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource);
+void mdlDrawMapPositionRecords(mdlObj_t *resource);
 void mdlFreeViewResources(void);
 
 typedef struct MdlValueEdit {
@@ -468,7 +459,7 @@ s32 mdlUpdateViewerCursorWithPageStep(s16 *cursor, s32 entryCount, s32 pageStep)
 }
 
 void mdlLoadViewerResourceAndResetCursors(void) {
-    dds3ModelHandle_t *resource = mdlLoad(mdlViewerState.resourceGroup, mdlViewerState.resourceId);
+    mdlObj_t *resource = mdlLoad(mdlViewerState.resourceGroup, mdlViewerState.resourceId);
 
     mdlViewerState.resources[0] = resource;
     mdlViewerState.activeEntryId = 0;
@@ -493,7 +484,7 @@ void mdlResetViewerBasisVectors(void) {
 /* Rotate the viewer resource list in place without moving its allocation. */
 void mdlRotateViewResourcesRight(void) {
     s32 resourceIndex = mdlViewerState.resourceCount - 1;
-    dds3ModelHandle_t *lastResource = mdlViewerState.resources[resourceIndex];
+    mdlObj_t *lastResource = mdlViewerState.resources[resourceIndex];
 
     if (resourceIndex > 0) {
         do {
@@ -508,7 +499,7 @@ void mdlRotateViewResourcesRight(void) {
 void mdlRotateViewList(void) {
     s32 resourceIndex;
     s32 resourceCount = mdlViewerState.resourceCount;
-    dds3ModelHandle_t *firstResource = mdlViewerState.resources[0];
+    mdlObj_t *firstResource = mdlViewerState.resources[0];
 
     for (resourceIndex = 0; resourceIndex < resourceCount - 1; resourceIndex++) {
         mdlViewerState.resources[resourceIndex] = mdlViewerState.resources[resourceIndex + 1];
@@ -775,7 +766,7 @@ u32 mdlRunViewerResourceMenuTask(void) {
 }
 
 void mdlHandleViewerNodeCursorInput(void) {
-    MdlCountNode *firstNode = mdlViewerState.resources[0]->inner->assetData;
+    sdfModelTexList_t *firstNode = mdlViewerState.resources[0]->inner->texList;
 
     if (firstNode != 0) {
         s16 nodeCount = firstNode->count;
@@ -790,13 +781,13 @@ void mdlDrawViewerTexturePreview(void) {
     s32 index = 0;
     s32 count = 0;
     s32 width, height;
-    MdlCountNode *node;
+    sdfModelTexList_t *node;
     sdfDrawTag_t *packetList;
     s32 displayWidth, displayHeight;
     s32 selectedNumber = 0;
 
     mdlAppendViewerRectToDrawList(0x7150, 0x7A08, 0xFF007F, 0x1060, 0x8F0, 0);
-    node = mdlViewerState.resources[0]->inner->assetData;
+    node = mdlViewerState.resources[0]->inner->texList;
     if (node != NULL) {
         count = node->count;
         index = mdlViewerState.nodeCursor;
@@ -806,11 +797,11 @@ void mdlDrawViewerTexturePreview(void) {
     sdfDrawTagLink(packetList, (u32)(sdfDevPrintf(0x7180, 0x7A20,
         0xFF0080, 0, D_003ABDA8, selectedNumber, count)));
     if (count > 0) {
-        width = node->textures[index]->width;
-        height = node->textures[index]->height;
+        width = node->items[index]->width;
+        height = node->items[index]->height;
         sdfDrawTagLink(packetList, (u32)(sdfDevPrintf(0x7780, 0x7A20,
             0xFF0080, 0, D_003BBC88, width, height)));
-        sdf2DLinkTexPacket(packetList, node->textures[index], SDF_GS_CONTEXT_1);
+        sdf2DLinkTexPacket(packetList, node->items[index], SDF_GS_CONTEXT_1);
         displayWidth = width << 4;
         displayHeight = height << 3;
         if (width < height) {
@@ -878,7 +869,7 @@ u32 mdlRunViewerSettingsTask(void) {
 
 /* Sum context-wide and selected-entry list counts, retaining both lookups. */
 s32 mdlCountActiveRecords(void) {
-    dds3ModelHandle_t *resource = mdlViewerState.resources[0];
+    mdlObj_t *resource = mdlViewerState.resources[0];
     s32 firstListCount =
         mdlPibGetChunkItemCount(mdlPibGetChunk(resource, MDL_PART_INFO_LIST_CONTEXT_WIDE));
     s32 activeListCount =
@@ -889,7 +880,7 @@ s32 mdlCountActiveRecords(void) {
 
 /* Count the context-wide list before the selected-entry list for cursor lookup. */
 MdlRecord *mdlGetSelectedRecord(void) {
-    dds3ModelHandle_t *resource = mdlViewerState.resources[0];
+    mdlObj_t *resource = mdlViewerState.resources[0];
     MdlRecord *firstList =
         mdlPibGetChunk(resource, MDL_PART_INFO_LIST_CONTEXT_WIDE);
     MdlRecord *secondList = mdlPibGetChunk(resource, mdlViewerState.activeEntryId);
@@ -924,7 +915,7 @@ INCLUDE_ASM(const s32, "code_001B2E60", mdlUpdateViewerMarkEditorInput);
 
 void mdlDrawViewerEffectRecordList(void) {
     MdlViewState *state = &mdlViewerState;
-    dds3ModelHandle_t *resource;
+    mdlObj_t *resource;
     MdlRecord *firstList;
     MdlRecord *secondList;
     MdlRecord *record;
@@ -1092,12 +1083,12 @@ void mdlSubmitViewerIntermediateDrawPacket(void) {
 void mdlSubmitViewerResourceDrawPacket(void) {
     sdfDrawTag_t *packetList;
     s32 drawPacket;
-    dds3ModelHandle_t *resource;
+    mdlObj_t *resource;
 
     if (mdlViewerState.taskPhase == 3) {
         packetList = dds3FontReqAllocDrawTag();
         resource = mdlViewerState.resources[0];
-    VU0_LOAD_MATRIX(resource->inner->matrix);
+    VU0_LOAD_MATRIX(resource->inner->tm.m);
         drawPacket = (s32)sdfDrawRotatedModel(mdlSubmitViewerResourceDrawPacketData, mdlSubmitViewerResourceDrawPacketData2, 4, 0x80);
         if ((dds3PadBitTable[13] < 0) & (D_003BBCB8 == 0)) {
             D_003BBCB8 = 1;
@@ -1120,15 +1111,15 @@ INCLUDE_ASM(const s32, "code_001B2E60", mdlRestartViewerPhaseTask);
 INCLUDE_ASM(const s32, "code_001B2E60", mdlViewer);
 
 /* Walk native 64-byte map-position records and submit their visualization in one packet list. */
-void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource) {
-    s32 recordCount = sdfModelGetMarkPosCount((sdfModelRootNode_t *)resource->inner);
+void mdlDrawMapPositionRecords(mdlObj_t *resource) {
+    s32 recordCount = sdfModelGetMarkPosCount(resource->inner);
     s32 recordIndex;
     sdfDrawTag_t *packetList;
-    SdfMapPositionRecord *recordCursor;
+    sdfModelMarkPos_t *recordCursor;
 
     if (recordCount > 0) {
         packetList = dds3FontReqAllocDrawTag();
-        recordCursor = (SdfMapPositionRecord *)(
+        recordCursor = (sdfModelMarkPos_t *)(
             (SdfMapPositionChunkPrefix *)sdfModelGetExtraChunk(resource->inner, MDL_MAP_POSITION_TAG) + 1);
         for (recordIndex = 0; recordIndex != recordCount; recordIndex++) {
             sdfModelMakeMarkPosMatrix(resource->inner, recordCursor);
@@ -1153,7 +1144,7 @@ INCLUDE_ASM(const s32, "code_001B2E60", mdlInitializeViewerTasksAndResources);
 void mdlFreeViewResources(void) {
     s32 resourceIndex;
     for (resourceIndex = 0; resourceIndex != MDL_VIEWER_RESOURCE_SLOTS; resourceIndex++) {
-        dds3ModelHandle_t *resource = mdlViewerState.resources[resourceIndex];
+        mdlObj_t *resource = mdlViewerState.resources[resourceIndex];
         if (resource != 0) {
             mdlViewerState.resources[resourceIndex] = 0;
             mdlFree(resource);

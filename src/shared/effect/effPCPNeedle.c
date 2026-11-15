@@ -26,29 +26,13 @@ typedef struct dds3NeedleModel_tag
     u32 blend;
     f32 scale[3];
     u32 point;
-    f32 (*positions)[4];
-    f32 (*normals)[4];
+    sdfVector4_t *positions;
+    sdfVector4_t *normals;
     u32 *pVC;
     void *hVNMem;
     void *pMat;
     void *hMem;
 } dds3NeedleModel_tag;
-
-/* Argument block effPkt3DPrimMakePoly reads. */
-typedef struct effPrimParam_t
-{
-    u16 primCount;
-    u16 vertexCount;
-    u16 primitive;
-    u16 mask;
-    u32 color;
-    void *parameters;
-    f32 (*positions)[4];
-    f32 (*normals)[4];
-    u8 unk18[8];
-    u32 *colors;
-    u8 unk24[8];
-} effPrimParam_t;
 
 typedef struct effDrawSurface_t
 {
@@ -56,8 +40,8 @@ typedef struct effDrawSurface_t
     void (*append)(struct effDrawSurface_t *surface, void *packet);
 } effDrawSurface_t;
 
-extern effPrimParam_t dds3NeedleModelPrimParam;
-extern f32 dds3NeedleModelDefaultPoints[][4];
+extern sdf3DPrimPolyParm_t dds3NeedleModelPrimParam;
+extern sdfVector4_t dds3NeedleModelDefaultPoints[];
 extern u32 dds3NeedleModelDefaultColors[];
 extern effDrawSurface_t *dds3NeedleModelDrawSurfaces[];
 extern void *sdfGrAllocPacketBuff(s32 aSize);
@@ -221,7 +205,7 @@ dds3NeedleModel_tag *dds3NeedleModelCreate(u32 number)
         entry->abgr = 0x80808080;
     }
     memset(&dds3NeedleModelPrimParam, 0, sizeof(dds3NeedleModelPrimParam));
-    dds3NeedleModelPrimParam.primitive = 0x4000;
+    dds3NeedleModelPrimParam.attr = 0x4000;
     return work;
 }
 
@@ -252,7 +236,7 @@ void dds3NeedleModelDraw(dds3NeedleModel_tag *hNModel)
     SDF_VU0_LOADMATRIX_B(hNModel->matrix);
     MultMatrixNoArg();
     SDF_VU0_STOREMATRIX(matrix);
-    dds3NeedleModelPrimParam.parameters = NULL;
+    dds3NeedleModelPrimParam.faceIndex = NULL;
     entry = hNModel->pPart;
     for (entryIndex = 0; entryIndex < hNModel->number; entryIndex++, entry++) {
         perPrim = 3;
@@ -263,34 +247,34 @@ void dds3NeedleModelDraw(dds3NeedleModel_tag *hNModel)
         sdf3DPrimLinkTm(packet, 0);
         if (hNModel->hVNMem == NULL) {
             remaining = 12;
-            dds3NeedleModelPrimParam.colors = dds3NeedleModelDefaultColors;
-            dds3NeedleModelPrimParam.positions = dds3NeedleModelDefaultPoints;
-            dds3NeedleModelPrimParam.normals = NULL;
+            dds3NeedleModelPrimParam.vertexColor = dds3NeedleModelDefaultColors;
+            dds3NeedleModelPrimParam.vertex = dds3NeedleModelDefaultPoints;
+            dds3NeedleModelPrimParam.normal = NULL;
         } else {
-            dds3NeedleModelPrimParam.positions = hNModel->positions;
-            dds3NeedleModelPrimParam.colors = hNModel->pVC;
-            dds3NeedleModelPrimParam.normals = hNModel->normals;
+            dds3NeedleModelPrimParam.vertex = hNModel->positions;
+            dds3NeedleModelPrimParam.vertexColor = hNModel->pVC;
+            dds3NeedleModelPrimParam.normal = hNModel->normals;
             remaining = hNModel->point;
         }
         dds3NeedleModelPrimParam.color = entry->abgr;
-        dds3NeedleModelPrimParam.primCount = 16;
-        dds3NeedleModelPrimParam.vertexCount = 48;
+        dds3NeedleModelPrimParam.faceCount = 16;
+        dds3NeedleModelPrimParam.pointCount = 48;
         while (remaining >= 48) {
-            sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly((sdf3DPrimPolyParm_t *)&dds3NeedleModelPrimParam)));
+            sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(&dds3NeedleModelPrimParam)));
             if (hNModel->hVNMem == NULL) {
-                dds3NeedleModelPrimParam.colors += 48;
-                dds3NeedleModelPrimParam.positions += 48;
+                dds3NeedleModelPrimParam.vertexColor += 48;
+                dds3NeedleModelPrimParam.vertex += 48;
             } else {
-                dds3NeedleModelPrimParam.colors += 48;
-                dds3NeedleModelPrimParam.positions += 48;
-                dds3NeedleModelPrimParam.normals += 48;
+                dds3NeedleModelPrimParam.vertexColor += 48;
+                dds3NeedleModelPrimParam.vertex += 48;
+                dds3NeedleModelPrimParam.normal += 48;
             }
             remaining -= 48;
         }
         if (remaining >= 3) {
-            dds3NeedleModelPrimParam.primCount = remaining / perPrim;
-            dds3NeedleModelPrimParam.vertexCount = remaining;
-            sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly((sdf3DPrimPolyParm_t *)&dds3NeedleModelPrimParam)));
+            dds3NeedleModelPrimParam.faceCount = remaining / perPrim;
+            dds3NeedleModelPrimParam.pointCount = remaining;
+            sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(&dds3NeedleModelPrimParam)));
         }
     }
     dds3NeedleModelDrawSurfaces[hNModel->blend]->append(dds3NeedleModelDrawSurfaces[hNModel->blend], packet);

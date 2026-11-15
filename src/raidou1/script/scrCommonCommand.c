@@ -25,14 +25,6 @@ typedef struct
     s32 w;
 } scrVecW_t;
 
-typedef struct
-{
-    f32 x;
-    f32 y;
-    f32 z;
-    f32 w;
-} scrVec4_t;
-
 extern s8 dds3PadBitTable[];
 
 #include "sdk_libc.h"
@@ -358,7 +350,7 @@ s32 scrCommand_QUAKE_OFF(void)
 
 s32 scrCommand_SCENE_LIGHT_RGB(void)
 {
-    scrVec4_t v;
+    f32 v[4];
     f32 x;
     f32 y;
     f32 z;
@@ -371,30 +363,30 @@ s32 scrCommand_SCENE_LIGHT_RGB(void)
     SDF_VU0_SETVECTOR_Z_BITS(z);
     SDF_VU0_VECTOR_W_SET_ZERO();
     SDF_VU0_STOREVECTOR_MEMOPS(v);
-    dds3SetLightColor(scrGetIntPara(0), 0, (f32 *)&v);
+    dds3SetLightColor(scrGetIntPara(0), 0, v);
     return 1;
 }
 
 s32 scrCommand_SCENE_LIGHT_DIR(void)
 {
-    scrVecW_t dir;
+    f32 dir[4];
 
-    dir.x = scrGetFloatPara(1);
-    dir.y = scrGetFloatPara(2);
-    dir.z = scrGetFloatPara(3);
-    dir.w = 0;
-    if (scrFabsf(dir.x) <= 0.01f && scrFabsf(dir.y) <= 0.01f && scrFabsf(dir.z) <= 0.01f)
+    dir[0] = scrGetFloatPara(1);
+    dir[1] = scrGetFloatPara(2);
+    dir[2] = scrGetFloatPara(3);
+    dir[3] = 0;
+    if (scrFabsf(dir[0]) <= 0.01f && scrFabsf(dir[1]) <= 0.01f && scrFabsf(dir[2]) <= 0.01f)
     {
         datDebugPrintf("WARNING: SCENE_LIGHT_DIR length zero\n");
         return 1;
     }
-    dds3SetLightDir(scrGetIntPara(0), 0, (f32 *)&dir);
+    dds3SetLightDir(scrGetIntPara(0), 0, dir);
     return 1;
 }
 
 s32 scrCommand_SCENE_AMBIENT(void)
 {
-    scrVec4_t v;
+    f32 v[4];
     f32 x;
     f32 y;
     f32 z;
@@ -407,7 +399,7 @@ s32 scrCommand_SCENE_AMBIENT(void)
     SDF_VU0_SETVECTOR_Z_BITS(z);
     SDF_VU0_VECTOR_W_SET_ONE();
     SDF_VU0_STOREVECTOR_MEMOPS(v);
-    dds3SetAmbientColor(scrGetIntPara(0), (f32 *)&v);
+    dds3SetAmbientColor(scrGetIntPara(0), v);
     return 1;
 }
 

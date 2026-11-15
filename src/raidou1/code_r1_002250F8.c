@@ -30,20 +30,20 @@ enum {
 
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
 
-u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
-u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
+u16 mdlGetMajorNum(const mdlObj_t *ctx);
+u16 mdlGetMinorNum(const mdlObj_t *ctx);
 
 /* Allocate a distinct caller-owned context linked to the registered group.
  * Contexts share the group node and assets; release each context with mdlFree. */
-dds3ModelHandle_t *mdlLoad(u32 group, u32 id);
-void mdlLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
-void mdlSetColor(dds3ModelHandle_t *ctx, u32 value);
-void mdlSetPosition(dds3ModelHandle_t *ctx);
-void mdlSetRotate(dds3ModelHandle_t *ctx);
-void mdlSetScale(dds3ModelHandle_t *ctx);
+mdlObj_t *mdlLoad(u32 group, u32 id);
+void mdlLoopMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex);
+void mdlSetColor(mdlObj_t *ctx, u32 value);
+void mdlSetPosition(mdlObj_t *ctx);
+void mdlSetRotate(mdlObj_t *ctx);
+void mdlSetScale(mdlObj_t *ctx);
 
 /* sdfMotionCtrlr_t-record selection and lookup. */
-void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+void mdlSingleMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
@@ -87,12 +87,12 @@ extern sdfTexHandle_t *D_003BC958;
 extern void effFloorModelListRemove(EffectObjectNode *);
 
 /* Initialize the VU transforms and the first node's float slot, if present. */
-void Init_effModel(dds3ModelHandle_t *model);
-extern void Init_effModel(dds3ModelHandle_t *);
-dds3ModelHandle_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
+void Init_effModel(mdlObj_t *model);
+extern void Init_effModel(mdlObj_t *);
+mdlObj_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
 
 /* Clear the lighting attachment before destroying its model context. */
-void effDestroyModelContext(dds3ModelHandle_t *model);
+void effDestroyModelContext(mdlObj_t *model);
 void effDestroyModelOwner(EffModelOwner *owner);
 extern void effRecreateModelFromSource(EffModelOwner *, EffModelOwner *);
 void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source);
@@ -145,7 +145,7 @@ struct EffExpandedList *effCacheTexCreate(u32 sourceAddress);
 void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source) {
     EffModelOwner *owner = work;
     EffModelOwner *original = source;
-    dds3ModelHandle_t *model;
+    mdlObj_t *model;
 
     if (owner->model != 0) {
         effDestroyModelContext(owner->model);
@@ -337,7 +337,7 @@ EffResourceOwner *Create_effHelper(FileJobPayload *source) {
                 mdlLoopMotion(owner->model, 0, 0);
             }
         }
-        owner->count = sdfModelGetMarkPosCount((sdfModelRootNode_t *)owner->model->inner);
+        owner->count = sdfModelGetMarkPosCount(owner->model->inner);
         if (owner->count == 0) {
             return owner;
         }
@@ -393,7 +393,7 @@ void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src) {
             mdlLoopMotion(dst->model, 0, 0);
         }
     }
-    dst->count = sdfModelGetMarkPosCount((sdfModelRootNode_t *)dst->model->inner);
+    dst->count = sdfModelGetMarkPosCount(dst->model->inner);
     if (src->queueAllocation != 0) {
         if (dst->queueAllocation != 0) {
             for (i = 0; i < dst->count; i++) {

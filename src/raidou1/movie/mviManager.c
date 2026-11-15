@@ -41,14 +41,14 @@ typedef struct
 
 extern void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor);
 extern u16 dds3VblanksPerFrame;
-extern saddr_t PlayingNo;
+extern dds3ProcessID_t *PlayingNo;
 extern void sdfIpuRunDecode(s32 frames);
 extern void (*DrawPhaseTable[])(fclEncyc_instance_tag *work);
-s32 movieDrawProc(void);
+s32 movieDrawProc(dds3ProcessID_t *id);
 extern const char movieDrawProcName[];
 void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor);
 void movieStop(void);
-s32 movieMan_Process(void);
+s32 movieMan_Process(dds3ProcessID_t *id);
 extern const char movieManProcName[];
 void *dds3StartMovieManager(void);
 
@@ -95,11 +95,10 @@ extern const char movieManProcName[16];
 
 void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor)
 {
-    if (PlayingNo == 0)
+    if (PlayingNo == NULL)
     {
         movieOpenStream(&movieCb, descriptor, path);
-        PlayingNo =
-            EE_ADDR_S(dds3StartProcess((char *)movieDrawProcName, 0x2AFB, 1, 1, (dds3ProcessFunc_t)movieDrawProc, NULL, NULL));
+        PlayingNo = dds3StartProcess(movieDrawProcName, 0x2AFB, 1, 1, movieDrawProc, NULL, NULL);
     }
 }
 
@@ -107,10 +106,10 @@ INCLUDE_ASM(const s32, "movie/mviManager", moviePlay);
 
 void movieStop(void)
 {
-    if (PlayingNo != 0) {
+    if (PlayingNo != NULL) {
         movieCloseStream(&movieCb);
-        dds3KillProcess((dds3ProcessID_t *)PlayingNo, 0);
-        PlayingNo = 0;
+        dds3KillProcess(PlayingNo, 0);
+        PlayingNo = NULL;
     }
 }
 
@@ -120,7 +119,7 @@ INCLUDE_ASM(const s32, "movie/mviManager", mviDrawMessageSub);
 
 INCLUDE_ASM(const s32, "movie/mviManager", mviLeaf);
 
-s32 movieMan_Process(void)
+s32 movieMan_Process(dds3ProcessID_t *id)
 {
     sdfIpuRunDecode(SDF_FRAMES(60) / dds3VblanksPerFrame);
     return 0;
@@ -129,7 +128,7 @@ s32 movieMan_Process(void)
 void *dds3StartMovieManager(void)
 {
     sdfIpuInit();
-    return dds3StartProcess((char *)movieManProcName, 0x385, 1, 0, (dds3ProcessFunc_t)movieMan_Process, NULL, NULL);
+    return dds3StartProcess(movieManProcName, 0x385, 1, 0, movieMan_Process, NULL, NULL);
 }
 
 INCLUDE_ASM(const s32, "movie/mviManager", fldCommand_FLD_BGM_CONTINUE);
@@ -192,7 +191,7 @@ void movieDebugDrawInfo(void)
         return;
     }
     tag = movieViewerWork.packets;
-    sdfDrawTagLink(tag, (addr_t)(dds3PrimFrameRect(0x7150, 0x7948, 0xFF0080, 0xF60, 0x3F0, 0x30000000,
+    sdfDrawTagLink(tag, EE_ADDR(dds3PrimFrameRect(0x7150, 0x7948, 0xFF0080, 0xF60, 0x3F0, 0x30000000,
                                           0x60404040)));
     selected = movieViewerWork.cursor;
     i = movieViewerWork.top;
@@ -202,7 +201,7 @@ void movieDebugDrawInfo(void)
         chip = chip->next;
     }
     for (i = 0; i < 8 && chip != NULL; i++, chip = chip->next) {
-        sdfDrawTagLink(tag, (addr_t)(sdfDevPrintf(0x7240, 0x79C0 + i * 0x60, 0xFF0080, 0, movieDebugRowFmt,
+        sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(0x7240, 0x79C0 + i * 0x60, 0xFF0080, 0, movieDebugRowFmt,
                                          (i == selected) ? '>' : ' ', chip->path)));
     }
     if (movieViewerWork.top != 0) {
@@ -214,7 +213,7 @@ void movieDebugDrawInfo(void)
                       0xFF0080, 0);
     }
 }
-saddr_t PlayingNo = 0;
+dds3ProcessID_t *PlayingNo = NULL;
 
 INCLUDE_SDATA(const s32, "movie/mviManager", mnuUpdateMovieDrawShutdownCountdownData);
 

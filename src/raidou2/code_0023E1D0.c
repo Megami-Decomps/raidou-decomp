@@ -688,7 +688,7 @@ struct EffSpanTable;
 /* This table has a single populated kind with span-resource callbacks. */
 typedef struct EffModelResourceOps {
     void (*initialize)(struct EffModelResource *); /* 0x00 */
-    struct EffSpanTable *(*createResource)(struct EffSpanConfig *, dds3ModelHandle_t *); /* 0x04 */
+    struct EffSpanTable *(*createResource)(struct EffSpanConfig *, mdlObj_t *); /* 0x04 */
     void (*destroyResource)(struct EffSpanTable *); /* 0x08 */
     void (*update)(struct EffModelResource *); /* 0x0C */
     void (*draw)(struct EffModelResource *); /* 0x10 */
@@ -770,10 +770,10 @@ extern EffKindDesc effData6[];
 
 /* VU0 model helpers consume vf10 directly, matching the original macro-mode setup. */
 extern void effDrawScalyTexturedStrip(EffStripWork *, void *);
-extern void Init_effModel(dds3ModelHandle_t *);
-extern s32 effComputeLightDirectionVU(dds3ModelHandle_t *, sdf3DLightParallelPacket_t *);
-void effDestroyModelContext(dds3ModelHandle_t *model);
-dds3ModelHandle_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
+extern void Init_effModel(mdlObj_t *);
+extern s32 effComputeLightDirectionVU(mdlObj_t *, sdf3DLightParallelPacket_t *);
+void effDestroyModelContext(mdlObj_t *model);
+mdlObj_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
 
 typedef struct EffFadeHeaderWork {
     s32 frame;
@@ -1343,7 +1343,7 @@ typedef char EffModelResource_size_must_be_0x40[
 
 void effSeedParticleSpanParameters(EffModelResource *work);
 extern EffPointSet *effCreatePointSet3(s32 count);
-EffSpanTable *effCreateParticleSpanTable(EffSpanConfig *config, dds3ModelHandle_t *model);
+EffSpanTable *effCreateParticleSpanTable(EffSpanConfig *config, mdlObj_t *model);
 extern void effReleaseModelPointSetAsset(EffPointSet *);
 void effReleaseParticleList(EffSpanTable *list);
 void effDrawParticleSpanPointsAndReferences(EffModelResource *work);
@@ -1354,7 +1354,7 @@ typedef struct EffModelCreateRequest {
     u8 pad0[0x2C];
     u16 kind;
     u8 pad2E[2];
-    dds3ModelHandle_t *assetId;
+    mdlObj_t *assetId;
     u32 attributes;
     u8 pad38[4];
     void *source;
@@ -1391,7 +1391,7 @@ extern s8 effData36;
 extern u128 effWork5[];
 extern u128 effComputeLightDirectionVUWork[];
 extern sdf3DLight_t *effComputeLightDirectionVUData[3];
-s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPacket_t *target);
+s32 effComputeLightDirectionVU(mdlObj_t *vector, sdf3DLightParallelPacket_t *target);
 
 /* Payload of resource kind 2: two colours plus the position request that feeds the shared light vector. */
 typedef struct EffFieldColorConfig {
@@ -2176,7 +2176,7 @@ EffKindWork *effCreateKindWorkFromFile(FileJobPayload *work) {
             effect->sourceKind = kind;
             switch (kind) {
             case 1:
-                effect->target = sdfTexSet((TMX_HEADER_t *)((SdfTextureFileHeader *)(secondary)));
+                effect->target = sdfTexSet((TMX_HEADER_t *)secondary);
                 break;
             case 4:
                 effect->target = dds3BillboardGetGeneralTex(secondary[0]);
@@ -2265,7 +2265,7 @@ EffKindWork *effCreateKindWorkFromFileB(FileJobPayload *work) {
             effect->sourceKind = kind;
             switch (kind) {
             case 1:
-                effect->target = sdfTexSet((TMX_HEADER_t *)((SdfTextureFileHeader *)(secondary)));
+                effect->target = sdfTexSet((TMX_HEADER_t *)secondary);
                 break;
             case 4:
                 effect->target = dds3BillboardGetGeneralTex(secondary[0]);
@@ -5974,7 +5974,7 @@ void effUpdateRadialWavePointRows(EffClassWork *work) {
                         delta = newHeight - waveHeight;
                         segmentLength = fsqrtf(delta * delta + stepSquared);
                         slope = asinf(delta / segmentLength) + (tilt + bend);
-                        SetRotateMatrixAxis(oldSlope, (const sdfVector3_t *)((const struct RwV3d *)axis));
+                        SetRotateMatrixAxis(oldSlope, (const sdfVector3_t *)axis);
                         slope += phase;
                         SDF_VU0_LOADVECTOR(direction);
                         SDF_VU0_APPLYMATRIX_XYZ();
@@ -6498,11 +6498,11 @@ void effUpdateOrbitalPointSpanWaves(EffClassWork *work) {
                     delta = newHeight - waveHeight;
                     segmentLength = fsqrtf(delta * delta + stepSquared);
                     slope = asinf(delta / segmentLength) + tilt;
-                    SetRotateMatrixAxis(oldSlope, (const sdfVector3_t *)((const struct RwV3d *)radial));
+                    SetRotateMatrixAxis(oldSlope, (const sdfVector3_t *)radial);
                     SDF_VU0_LOADVECTOR(direction);
                     SDF_VU0_APPLYMATRIX_XYZ();
                     SDF_VU0_STOREVECTOR(rotated);
-                    SetRotateMatrixAxis(curve, (const sdfVector3_t *)((const struct RwV3d *)tangent));
+                    SetRotateMatrixAxis(curve, (const sdfVector3_t *)tangent);
                     SDF_VU0_LOADVECTOR(direction);
                     SDF_VU0_APPLYMATRIX_XYZ();
                     SDF_VU0_STOREVECTOR(direction);
@@ -6878,8 +6878,8 @@ void effDrawEffectStrip(EffectStripNode *node) {
     if (!hasTransform) {
         EE_MMI_UNIT_MATRIX(&matrix);
     } else {
-        fileReadRecordSecondVector((u8 *)node->active, rotation);
-        fileReadVectorPtr20((u8 *)node->active, translation);
+        fileReadRecordSecondVector(node->active, rotation);
+        fileReadVectorPtr20(node->active, translation);
         SDF_VU0_LOADVECTOR(rotation);
         ToMatrix();
         SDF_VU0_LOADVECTOR(translation);
@@ -6949,7 +6949,7 @@ void effDrawEffectStrip(EffectStripNode *node) {
                 dds3BillboardDraw(billboard);
                 along = longSize * scale * 1.5f;
                 side = sideSize * scale * 1.5f;
-                SetRotateMatrixAxis(entry->angle, (const sdfVector3_t *)((const RwV3d *)view));
+                SetRotateMatrixAxis(entry->angle, (const sdfVector3_t *)view);
                 SDF_VU0_LOADVECTOR(right);
                 SDF_VU0_APPLYMATRIX_XYZ();
                 SDF_VU0_STOREVECTOR_NOMEM(rightAxis);
@@ -8782,9 +8782,9 @@ void effSeedParticleSpanParameters(EffModelResource *work) {
 }
 
 /* Build the point and reference sets for each model map-position record. */
-EffSpanTable *effCreateParticleSpanTable(EffSpanConfig *config, dds3ModelHandle_t *model) {
+EffSpanTable *effCreateParticleSpanTable(EffSpanConfig *config, mdlObj_t *model) {
     u32 total = model->first->frameLength;
-    u32 count = sdfModelGetMarkPosCount((sdfModelRootNode_t *)model->inner);
+    u32 count = sdfModelGetMarkPosCount(model->inner);
     u32 spans;
     u32 partialSpan;
     struct sdfMemHandle_t *allocation;
@@ -8800,7 +8800,7 @@ EffSpanTable *effCreateParticleSpanTable(EffSpanConfig *config, dds3ModelHandle_
     EffTrackSet *tracks;
 
     model->first->speed = 1.0f;
-    mdlSingleMotion((mdlObj_t *)model, 0, 0);
+    mdlSingleMotion(model, 0, 0);
     if (config->perSpan == 0) {
         config->perSpan = 1;
     }
@@ -8955,9 +8955,9 @@ void Delete_effPolygonCrack(EffModelResource *effect) {
 
 EffModelResource *Copy_effPolygonCrack(EffModelCreateRequest *work) {
     EffModelResource *effect = Create_effPolygonCrack(work->kind, work->source, 0, 0);
-    s32 x = mdlGetMajorNum((mdlObj_t *)work->assetId);
-    s32 y = mdlGetMinorNum((mdlObj_t *)work->assetId);
-    dds3ModelHandle_t *model = mdlLoad(x, y);
+    s32 x = mdlGetMajorNum(work->assetId);
+    s32 y = mdlGetMinorNum(work->assetId);
+    mdlObj_t *model = mdlLoad(x, y);
 
     effect->model = model;
     Init_effModel(model);
@@ -9120,7 +9120,7 @@ typedef struct EffectSlotNode80 {
     f32 angularAcceleration;
     u16 scaleByOpacity;
     u8 pad32[0x2E];
-    dds3ModelHandle_t *model;
+    mdlObj_t *model;
     void *deviceSlot;
     FileQueue **resourceEntries;
     struct sdfMemHandle_t *entryAllocation;
@@ -9267,7 +9267,7 @@ INCLUDE_ASM(const s32, "code_0023E1D0", sbtlCallSetUnitColorRGB);
 
 INCLUDE_ASM(const s32, "code_0023E1D0", sbtlCallSetUnitColorRGB2);
 
-s32 effComputeLightDirectionVU(dds3ModelHandle_t *vector, sdf3DLightParallelPacket_t *target) {
+s32 effComputeLightDirectionVU(mdlObj_t *vector, sdf3DLightParallelPacket_t *target) {
     s32 result = btlIsRuntimeAllocated();
 
     if (result != 0) {

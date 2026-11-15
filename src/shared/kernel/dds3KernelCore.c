@@ -33,7 +33,7 @@ void RunningProcess(void);
 void dds3EndingProcess(void);
 void ChangeProcessFlag(s32 change, dds3ProcessID_t *target, u32 flag, s32 type);
 s32 dds3ExistProcess(dds3ProcessID_t *id);
-dds3ProcessID_t *dds3SearchProcessName(char *namestr);
+dds3ProcessID_t *dds3SearchProcessName(const char *namestr);
 s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 void ChangeProcessFlagChild(s32 change, dds3ProcessID_t *parent, u32 flag);
 
@@ -49,7 +49,7 @@ void dds3PrintProcessList(void);
 void DebugProcessTree(dds3ProcessID_t *ps, s32 level);
 s32 dds3ProcessMain(void);
 
-dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
+dds3ProcessID_t *dds3StartProcess(const char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
                                   dds3ProcessFunc_t drawExit, dds3ProcessFunc_t deleteExit,
                                   void *p);
 
@@ -564,7 +564,7 @@ s32 dds3ProcessMain(void)
 
 /* namehash is the name's byte sum, which dds3SearchProcessName uses to reject
  * most candidates without a compare. */
-dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
+dds3ProcessID_t *dds3StartProcess(const char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
                                   dds3ProcessFunc_t drawExit, dds3ProcessFunc_t deleteExit,
                                   void *p)
 {
@@ -671,7 +671,7 @@ u32 dds3GetProcessStat(dds3ProcessID_t *id)
 }
 
 /* The name compare runs back to front, from the terminator down to byte 0. */
-dds3ProcessID_t *dds3SearchProcessName(char *namestr)
+dds3ProcessID_t *dds3SearchProcessName(const char *namestr)
 {
     s32 len;
     s32 hash;

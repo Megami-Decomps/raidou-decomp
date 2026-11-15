@@ -3,8 +3,8 @@
 
 #include "common.h"
 
-void fileReadRecordSecondVector(u8 *recordBytes, void *dst);
-void fileReadVectorPtr20(u8 *recordBytes, void *dst);
+void fileReadRecordSecondVector(void *recordBytes, void *dst);
+void fileReadVectorPtr20(void *recordBytes, void *dst);
 void fileSetRecordSecondVector(void *recordBytes, const void *src);
 void mnuRecordSetVector(void *recordBytes, const void *src);
 

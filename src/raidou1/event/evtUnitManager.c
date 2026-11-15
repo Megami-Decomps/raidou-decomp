@@ -455,7 +455,7 @@ s32 evtUnitMoveType0(evtUnit_t *h) {
     scale = h->motionParameter * 0.1f;
     SDF_VU0_SCALEVECTOR_V0(scale);
     SDF_VU0_STOREVECTOR(&v);
-    dds3GetPosPoseSetMCR(obj, (const sdfVector4_t *)((u128 *)&v));
+    dds3GetPosPoseSetMCR(obj, &v);
     return 1;
 }
 

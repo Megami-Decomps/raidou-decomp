@@ -102,7 +102,7 @@ extern dds3Effect_PartialMultiFilterParam_t dblurParam2;
 extern dds3Effect_RippleBlurParam_t rblurParam3;
 extern sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 number);
 
-typedef struct dds3Billboard_t dds3Billboard_t;
+typedef billHandle_t billHandle_t;
 
 /* Shared billboard-emitter parameters copied into each live set. Creation and
  * parameter copies clamp startDelaySpread, fadeIn, and fadeOut to at least
@@ -252,7 +252,7 @@ extern f32 effEveBEDDirAngle[];
 /* Apply the primary VU0 matrix bank vf28-vf31 to basis vectors vf24-vf27,
  * then replace vf28-vf31 with the four transformed vectors. */
 extern s32 EffEveCPSmokeCount;
-extern dds3Billboard_t *dds3BillboardFileLoad(s32 kind, const char *path);
+extern billHandle_t *dds3BillboardFileLoad(s32 kind, const char *path);
 extern addr_t hEffEveCPSmokeBill01Tex;
 extern addr_t hEffEveCPSmokeBill02Tex;
 extern effRandState_t dds3EffectBase[];
@@ -269,11 +269,11 @@ extern f32 aViewTarget[4];
 
 /* Copy one 128-bit vector from the read-only source to destination storage. */
 void dds3BillboardSetPosition(void *hBillboard, const void *pPos);
-void dds3BillboardSetScale(struct dds3Billboard_t *hBillboard, f32 x, f32 y);
-void dds3BillboardSetRGBA(struct dds3Billboard_t *hBillboard, u32 abgr);
+void dds3BillboardSetScale(billHandle_t *hBillboard, f32 x, f32 y);
+void dds3BillboardSetRGBA(billHandle_t *hBillboard, u32 abgr);
 
 /* Radian rotation of the billboard quad in its plane. */
-void dds3BillboardSetRotate(struct dds3Billboard_t *hBillboard, f32 rot);
+void dds3BillboardSetRotate(billHandle_t *hBillboard, f32 rot);
 extern effEVECombParSmokeParam_t effEVECombParSmokeCreate2Data;
 dds3EffectPart_t *dds3EffectPartCreate(u16 type, void *pData);
 dds3EffectPart_t *dds3EffectPartCopy(dds3EffectPart_t *hEffPartSrc);
@@ -797,8 +797,8 @@ effEVECombParSmoke_t *effEVECombParSmokeCreate(effEVECombParSmokeParam_t *pParam
 void effEVECombParSmokeDelete(effEVECombParSmoke_t *pCombParSmoke) {
     EffEveCPSmokeCount = EffEveCPSmokeCount - 1;
     if (EffEveCPSmokeCount == 0) {
-        dds3BillboardDelete((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex)));
-        dds3BillboardDelete((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex)));
+        dds3BillboardDelete(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill01Tex));
+        dds3BillboardDelete(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill02Tex));
     }
     sdfMemFreeDirect(pCombParSmoke->hMem);
 }
@@ -896,8 +896,8 @@ void effCallBillboardSetMode(effEVECombParSmoke_t *work) {
     swayAmplitudeStep = SDF_FRAME_STEP(work->head.swayAmplitudeStep);
     SDF_VU0_COPYVECTOR(&origin, work);
     i = 0;
-    dds3BillboardSetMode((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex)), work->head.drawMode);
-    dds3BillboardSetMode((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex)), 3);
+    dds3BillboardSetMode(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill01Tex), work->head.drawMode);
+    dds3BillboardSetMode(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill02Tex), 3);
     for (; i < count; i++, particle++) {
         age = particle->frame;
         if (age == 0) {
@@ -942,16 +942,16 @@ void effCallBillboardSetMode(effEVECombParSmoke_t *work) {
             SDF_VU0_LOADVECTOR_B(&origin);
             SDF_VU0_ADDVECTOR();
             SDF_VU0_STOREVECTOR_MEMOPS(offset.x);
-            dds3BillboardSetPosition(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), &offset);
-            dds3BillboardSetScale(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), scaleX, scaleY);
-            dds3BillboardSetRGBA(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), rgba);
-            dds3BillboardSetRotate(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), particle->roll);
-            dds3BillboardDraw((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex)));
-            dds3BillboardSetPosition(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), &offset);
-            dds3BillboardSetScale(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), scaleX, scaleY);
-            dds3BillboardSetRGBA(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), rgba);
-            dds3BillboardSetRotate(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), particle->roll);
-            dds3BillboardDraw((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex)));
+            dds3BillboardSetPosition(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill01Tex), &offset);
+            dds3BillboardSetScale(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill01Tex), scaleX, scaleY);
+            dds3BillboardSetRGBA(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill01Tex), rgba);
+            dds3BillboardSetRotate(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill01Tex), particle->roll);
+            dds3BillboardDraw(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill01Tex));
+            dds3BillboardSetPosition(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill02Tex), &offset);
+            dds3BillboardSetScale(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill02Tex), scaleX, scaleY);
+            dds3BillboardSetRGBA(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill02Tex), rgba);
+            dds3BillboardSetRotate(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill02Tex), particle->roll);
+            dds3BillboardDraw(EE_ADDR_AS(billHandle_t *, hEffEveCPSmokeBill02Tex));
             particle->s_w_r += SDF_FRAME_STEP(particle->scalePhaseStepX);
             particle->s_h_r += SDF_FRAME_STEP(particle->scalePhaseStepY);
             particle->roll += SDF_FRAME_STEP(particle->roll_s);

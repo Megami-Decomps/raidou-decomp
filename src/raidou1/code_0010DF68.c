@@ -339,7 +339,7 @@ INCLUDE_ASM(const s32, "code_0010DF68", datDebugPrintf);
 INCLUDE_ASM(const s32, "code_0010DF68", datDEBUGCONSOLE);
 
 s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
-    SdfGeneralHeapStats heapStats;
+    sdfMemInfo_t heapStats;
     sdfDrawTag_t *list;
     void *packet;
     s32 freePercent;
@@ -347,8 +347,8 @@ s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     s32 currentColumn;
     s32 peakColumn;
 
-    sdfMemGetInfo((sdfMemInfo_t *)&heapStats);
-    freePercent = heapStats.freeBytes * 100 / heapStats.totalBytes;
+    sdfMemGetInfo(&heapStats);
+    freePercent = heapStats.freeSize * 100 / heapStats.total;
     list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);
     sdfDrawTagInit(list);
     packet = (void *)sdfGrAllocPacketBuff(0x40);
@@ -450,7 +450,7 @@ void sdfDrawHeapSpanOverlay(sdfDrawTag_t *packetList, s32 x, s32 y,
 void sdfDrawHeapMapOverlay(sdfDrawTag_t *packetList, s32 x, s32 y) {
     SdfHeapOverlayBlock *snapshot;
     SdfHeapOverlayBlock *entry;
-    const sdfMemHandle_t *block;
+    sdfMemHandle_t *block;
     u32 count;
     u32 i;
     u32 heapBase;
@@ -463,16 +463,16 @@ void sdfDrawHeapMapOverlay(sdfDrawTag_t *packetList, s32 x, s32 y) {
     restoreInterrupts = DIntr();
     block = sdfMemGetTop();
     entry = snapshot;
-    heapBase = sdfMemGetPtr((sdfMemHandle_t *)block);
+    heapBase = EE_ADDR(sdfMemGetPtr(block));
     /* Count only the interrupt-protected snapshot traversal. */
     count = 0;
     do {
         count++;
-        entry->address = sdfMemGetPtr((sdfMemHandle_t *)block);
-        entry->blockState = (u8)sdfMemGetType((sdfMemHandle_t *)block);
+        entry->address = EE_ADDR(sdfMemGetPtr(block));
+        entry->blockState = (u8)sdfMemGetType(block);
         entry->size = sdfMemGetSize(block);
         entry++;
-        block = sdfMemGetNext((sdfMemHandle_t *)block);
+        block = sdfMemGetNext(block);
     } while (block != NULL);
     if (restoreInterrupts) {
         EIntr();
@@ -505,21 +505,21 @@ void sdfDrawHeapMapOverlay(sdfDrawTag_t *packetList, s32 x, s32 y) {
 /* Format general/chip free-memory statistics into the supplied draw surface.
    Keep the native heap-ratio coordinate calculation and title-specific initial packet. */
 void evtDrawHeapUsageOverlay(sdfGrOt_t *surface) {
-    SdfGeneralHeapStats generalHeapStats;
-    SdfChipHeapStats chipHeapStats;
+    sdfMemInfo_t generalHeapStats;
+    sdfChipInfo_t chipHeapStats;
     char statusText[100];
     sdfDrawTag_t *packetList;
 
-    sdfMemGetInfo((sdfMemInfo_t *)&generalHeapStats);
-    D_00435D4C = generalHeapStats.totalBytes;
-    sdfChipGetInfo((sdfChipInfo_t *)&chipHeapStats);
+    sdfMemGetInfo(&generalHeapStats);
+    D_00435D4C = generalHeapStats.total;
+    sdfChipGetInfo(&chipHeapStats);
     packetList = (sdfDrawTag_t *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);
     sdfDrawTagInit(packetList);
     sdfDrawHeapMapOverlay(packetList, 0x8AC0, 0x79C0);
-    sprintf(statusText, D_00435D50, generalHeapStats.freeBytes);
+    sprintf(statusText, D_00435D50, generalHeapStats.freeSize);
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(0x86C0,
         (D_00435D4C / (D_00435D4C >> 8)) * 8 + 0x7A00, 0x0FFFFF80, 0, statusText));
-    sprintf(statusText, D_00435D58, chipHeapStats.freeBytes);
+    sprintf(statusText, D_00435D58, chipHeapStats.freeSize);
     sdfDrawTagLink(packetList, (u32)sdfDevPrintf(0x86C0,
         (D_00435D4C / (D_00435D4C >> 8)) * 8 + 0x7A60, 0x0FFFFF80, 0, statusText));
     surface->regFunc(surface, packetList);
@@ -535,7 +535,7 @@ s32 evtDrawConditionalHeapUsageOverlay(void) {
 }
 
 s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task) {
-    SdfGeneralHeapStats heapStats;
+    sdfMemInfo_t heapStats;
     s32 heapRatio;
     sdfDrawTag_t *list;
     void *packet;
@@ -543,9 +543,9 @@ s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task) {
     s32 textCount;
     s32 gsCount;
 
-    sdfMemGetInfo((sdfMemInfo_t *)&heapStats);
+    sdfMemGetInfo(&heapStats);
     /* The unused heap ratio retains the native zero-divisor check. */
-    heapRatio = heapStats.freeBytes / heapStats.totalBytes;
+    heapRatio = heapStats.freeSize / heapStats.total;
     list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);
     sdfDrawTagInit(list);
     packet = (void *)sdfGrAllocPacketBuff(0x40);

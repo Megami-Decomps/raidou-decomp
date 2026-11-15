@@ -4,49 +4,36 @@
 #include "itfMesManager.h"
 #include "itfMisc.h"
 
-/* A color row is also a four-component vector for the template scaler. */
-typedef union
-{
-    u32 components[4];
-    struct
-    {
-        s32 red;
-        s32 green;
-        s32 blue;
-        s32 alpha;
-    } rgba;
-} itfDrawColor_t;
-
 typedef sdfIVector2_t itfDrawVertex_t;
 
 typedef struct
 {
     sdfIVector2_t vertices[8];
-    itfDrawColor_t colors[2];
+    itfColor_t colors[2];
 } itfPanelNormalData_t;
 
 typedef struct
 {
     sdfIVector2_t vertices[40];
-    itfDrawColor_t colors[8];
+    itfColor_t colors[8];
 } itfPanelMesWinData_t;
 
 typedef struct
 {
     sdfIVector2_t vertices[32];
-    itfDrawColor_t colors[6];
+    itfColor_t colors[6];
 } itfPanelSelWinData_t;
 
 typedef struct
 {
     sdfIVector2_t vertices[4];
-    itfDrawColor_t colors[4];
+    itfColor_t colors[4];
 } itfPanelPlainData_t;
 
 typedef struct
 {
     sdfIVector2_t vertices[6];
-    itfDrawColor_t colors[2];
+    itfColor_t colors[2];
 } itfPanelLeftFadeData_t;
 
 /* Kind 8 owns a distinct 0x64-byte buffer, independently selected by the
@@ -54,7 +41,7 @@ typedef struct
 typedef struct itfPanelFacilityData_t {
     sdfTexHandle_t *texture;
     itfDrawVertex_t vertices[8];
-    itfDrawColor_t colors[2];
+    itfColor_t colors[2];
 } itfPanelFacilityData_t;
 
 /* Kind 7's allocation is exactly this texture pointer; its factory transports
@@ -498,12 +485,12 @@ void CreateColorLeftFade(itfPanelLeftFadeData_t *pwork, u32 red, u32 green, u32 
 void DrawNormal(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     itfPanelNormalData_t *data = (itfPanelNormalData_t *)handle->pwork;
     sdfIVector2_t *drawBuffer = data->vertices;
-    itfDrawColor_t *colors = data->colors;
+    itfColor_t *colors = data->colors;
     s32 quadIndex;
 
-    colors[1].rgba.alpha = handle->alpha;
+    colors[1].components[3] = handle->alpha;
     for (quadIndex = 0; quadIndex < ITF_PANEL_WIDE_PASS_COUNT; quadIndex++) {
-        itfMiscDrawRectanglePrim(drawBuffer, (itfColor_t *)colors, &itfPanelNormalVertexIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], &itfPanelNormalColorIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], handle->z, pdrawtag);
+        itfMiscDrawRectanglePrim(drawBuffer, colors, &itfPanelNormalVertexIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], &itfPanelNormalColorIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], handle->z, pdrawtag);
     }
 }
 
@@ -512,19 +499,19 @@ void DrawNormal(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
 void DrawMesWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     itfPanelMesWinData_t *data = (itfPanelMesWinData_t *)handle->pwork;
     sdfIVector2_t *drawBuffer = data->vertices;
-    itfDrawColor_t *colors = data->colors + 1;
+    itfColor_t *colors = data->colors + 1;
     s32 alpha = handle->alpha;
     s32 rowIndex;
 
     for (rowIndex = 0; rowIndex < ITF_PANEL_SEVEN_COLOR_COUNT; rowIndex++, colors++) {
-        colors->rgba.alpha = alpha;
+        colors->components[3] = alpha;
     }
     colors = data->colors;
     for (rowIndex = 0; rowIndex < ITF_PANEL_WIDE_PASS_COUNT; rowIndex++) {
-        itfMiscDrawTriangleStripPrim(drawBuffer, (itfColor_t *)colors, &itfPanelMesWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelMesWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
+        itfMiscDrawTriangleStripPrim(drawBuffer, colors, &itfPanelMesWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelMesWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
     }
     for (rowIndex = 0; rowIndex < ITF_PANEL_SEVEN_SIDE_PASS_COUNT; rowIndex++) {
-        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, (itfColor_t *)colors, itfPanelMesWinLineVertexIndex, &itfPanelMesWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
+        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, colors, itfPanelMesWinLineVertexIndex, &itfPanelMesWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
     }
 }
 
@@ -533,19 +520,19 @@ void DrawMesWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
 void DrawSelWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     itfPanelSelWinData_t *data = (itfPanelSelWinData_t *)handle->pwork;
     sdfIVector2_t *drawBuffer = data->vertices;
-    itfDrawColor_t *colors = data->colors + 1;
+    itfColor_t *colors = data->colors + 1;
     s32 alpha = handle->alpha;
     s32 rowIndex;
 
     for (rowIndex = 0; rowIndex < ITF_PANEL_FIVE_COLOR_COUNT; rowIndex++, colors++) {
-        colors->rgba.alpha = alpha;
+        colors->components[3] = alpha;
     }
     colors = data->colors;
     for (rowIndex = 0; rowIndex < ITF_PANEL_WIDE_PASS_COUNT; rowIndex++) {
-        itfMiscDrawTriangleStripPrim(drawBuffer, (itfColor_t *)colors, &itfPanelSelWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelSelWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
+        itfMiscDrawTriangleStripPrim(drawBuffer, colors, &itfPanelSelWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelSelWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
     }
     for (rowIndex = 0; rowIndex < ITF_PANEL_FIVE_SIDE_PASS_COUNT; rowIndex++) {
-        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, (itfColor_t *)colors, itfPanelSelWinLineVertexIndex, &itfPanelSelWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
+        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, colors, itfPanelSelWinLineVertexIndex, &itfPanelSelWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
     }
 }
 
@@ -553,7 +540,7 @@ void DrawPlain(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     sdfIVector2_t vertices[12];
     itfPanelPlainData_t *data = (itfPanelPlainData_t *)handle->pwork;
     sdfIVector2_t *buf = data->vertices;
-    itfDrawColor_t *colors = data->colors;
+    itfColor_t *colors = data->colors;
     sdfIVector2_t *input = data->vertices;
     s32 i;
 
@@ -572,9 +559,9 @@ void DrawPlain(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
         out[3].y = input[3].y - yOffset;
     }
 
-    itfMiscDrawRectanglePrim(buf, (itfColor_t *)colors, itfPanelPlainRectVertexIndex, itfPanelPlainRectColorIndex, handle->z, pdrawtag);
+    itfMiscDrawRectanglePrim(buf, colors, itfPanelPlainRectVertexIndex, itfPanelPlainRectColorIndex, handle->z, pdrawtag);
     for (i = 0; i < 3; i++) {
-        itfMiscDrawLineStripPrim(vertices, (itfColor_t *)colors, &itfPanelPlainLineVertexIndex[i * 5], &itfPanelPlainLineColorIndex[i * 5], 5, handle->z, pdrawtag);
+        itfMiscDrawLineStripPrim(vertices, colors, &itfPanelPlainLineVertexIndex[i * 5], &itfPanelPlainLineColorIndex[i * 5], 5, handle->z, pdrawtag);
     }
 }
 
@@ -582,21 +569,21 @@ void DrawPlain(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
 void DrawPera1(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     itfPanelPlainData_t *data = (itfPanelPlainData_t *)handle->pwork;
     sdfIVector2_t *drawBuffer = data->vertices;
-    itfDrawColor_t *colors = data->colors;
+    itfColor_t *colors = data->colors;
 
-    colors[0].rgba.alpha = handle->alpha;
-    itfMiscDrawRectanglePrim(drawBuffer, (itfColor_t *)colors, itfPanelPera1RectVertexIndex, itfPanelPera1RectColorIndex, handle->z, pdrawtag);
+    colors[0].components[3] = handle->alpha;
+    itfMiscDrawRectanglePrim(drawBuffer, colors, itfPanelPera1RectVertexIndex, itfPanelPera1RectColorIndex, handle->z, pdrawtag);
 }
 
 /* Bracket the six-index panel draw with table-state two and its native reset to zero. */
 void DrawLeftFade(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     itfPanelLeftFadeData_t *data = (itfPanelLeftFadeData_t *)handle->pwork;
     sdfIVector2_t *drawBuffer = data->vertices;
-    itfDrawColor_t *colors = data->colors;
+    itfColor_t *colors = data->colors;
 
-    colors[1].rgba.alpha = handle->alpha;
+    colors[1].components[3] = handle->alpha;
     itfMiscDrawAlphaPrim(pdrawtag, 2, 0);
-    itfMiscDrawTriangleStripPrim(drawBuffer, (itfColor_t *)colors, itfPanelLeftFadeStripVertexIndex, itfPanelLeftFadeStripColorIndex, 6, handle->z, pdrawtag);
+    itfMiscDrawTriangleStripPrim(drawBuffer, colors, itfPanelLeftFadeStripVertexIndex, itfPanelLeftFadeStripColorIndex, 6, handle->z, pdrawtag);
     itfMiscDrawAlphaPrim(pdrawtag, 0, 0);
 }
 

@@ -120,9 +120,6 @@ extern void fileSyncAll(void);
 extern void Eve_DistortionBlurSetDefTex(void);
 extern void Eve_PartialMultiBlurSetDefTex(void);
 
-dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
-                         s32 v3, dds3ProcessFunc_t drawExit,
-                         dds3ProcessFunc_t deleteExit, void *p);
 
 dds3ProcessID_t *evtLoadEventPack(s32 eventno);
 void evtKillEventPack(s32 eventno);
@@ -166,7 +163,7 @@ dds3ProcessID_t *evtSearchEventPack(u32 eventno) {
     char taskName[32];
 
     evtMakeEventPackName(eventno, taskName);
-    return dds3SearchProcessName((char *)((const char *)taskName));
+    return dds3SearchProcessName(taskName);
 }
 
 /* Return this event task's loaded state, or -1 when it does not exist. */

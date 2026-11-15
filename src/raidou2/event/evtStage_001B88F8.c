@@ -47,13 +47,13 @@ typedef struct evtNodeInner_t {
 void evtSetTestCamera(void);
 
 void evtSetTestCamera(void) {
-    f32 position[4] = { 0.0f, -100.0f, -600.0f, 0.0f };
+    sdfVector4_t position = { 0.0f, -100.0f, -600.0f, 0.0f };
     sdfVector4_t rotation;
     dds3Basic_t *object;
 
     memset(&rotation, 0, 0x10);
     rotation.w = 1.0f;
-    object = dds3AddCameraObjectBasicTypeFree(dds3AllocObjectId(), (const sdfVector4_t *)position, (const sdfVector4_t *)&rotation.x);
+    object = dds3AddCameraObjectBasicTypeFree(dds3AllocObjectId(), &position, &rotation);
     dds3GetRadiusPoseSet((dds3Basic_t *)object, 10.0f);
     dds3ObjectBaseCreateMover(object);
     dds3SetActiveCameraSceneBasic(dds3GetControlScene(), (dds3Basic_t *)object);

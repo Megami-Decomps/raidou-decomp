@@ -572,7 +572,7 @@ void effPCPThunderSphereRotate(effPCPThunderSpherePoly_t *work, s32 index) {
     f32 origin[4] __attribute__((aligned(16)));
     f32 width[4] __attribute__((aligned(16)));
     f32 outerWidth[4] __attribute__((aligned(16)));
-    f32 rotation[4] __attribute__((aligned(16)));
+    sdfVector3_t rotation __attribute__((aligned(16)));
     parSystem_t *system = work->hPoly;
     parCell_t *cell = &system->cells[index];
     effPCPThunderSpherePolyPart_t *source;
@@ -611,10 +611,10 @@ void effPCPThunderSphereRotate(effPCPThunderSpherePoly_t *work, s32 index) {
         position[1] = origin[1] + placement[1] * radius;
         position[2] = origin[2] + placement[2] * radius;
         SDF_VU0_COPYVECTOR(axis, originalAxis);
-        rotation[0] = dds3GetRandFloatA(dds3EffectBase) * (75.0f * (EFF_THUNDER_HALF_TURN / 180.0f));
-        rotation[1] = dds3GetRandFloatA(dds3EffectBase) * (75.0f * (EFF_THUNDER_HALF_TURN / 180.0f));
-        rotation[2] = dds3GetRandFloatA(dds3EffectBase) * (75.0f * (EFF_THUNDER_HALF_TURN / 180.0f));
-        SetRotateMatrixXYZ((const sdfVector3_t *)((const struct sdfVector3_t *)rotation));
+        rotation.x = dds3GetRandFloatA(dds3EffectBase) * (75.0f * (EFF_THUNDER_HALF_TURN / 180.0f));
+        rotation.y = dds3GetRandFloatA(dds3EffectBase) * (75.0f * (EFF_THUNDER_HALF_TURN / 180.0f));
+        rotation.z = dds3GetRandFloatA(dds3EffectBase) * (75.0f * (EFF_THUNDER_HALF_TURN / 180.0f));
+        SetRotateMatrixXYZ(&rotation);
         SDF_VU0_LOADVECTOR(axis);
         SDF_VU0_APPLYMATRIX_XYZ();
         SDF_VU0_STOREVECTOR_NOMEM(axis);
@@ -773,7 +773,7 @@ void effPCPThunderSphereLowRotate(effPCPThunderSpherePoly_t *work, s32 index) {
     f32 cameraDirection[4] __attribute__((aligned(16)));
     f32 origin[4] __attribute__((aligned(16)));
     f32 width[4] __attribute__((aligned(16)));
-    f32 rotation[4] __attribute__((aligned(16)));
+    sdfVector3_t rotation __attribute__((aligned(16)));
     parSystem_t *system = work->hPoly;
     parCell_t *cell = &system->cells[index];
     effPCPThunderSpherePolyPart_t *source;
@@ -811,10 +811,10 @@ void effPCPThunderSphereLowRotate(effPCPThunderSpherePoly_t *work, s32 index) {
         position[1] = origin[1] + placement[1] * radius;
         position[2] = origin[2] + placement[2] * radius;
         SDF_VU0_COPYVECTOR(axis, originalAxis);
-        rotation[0] = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
-        rotation[1] = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
-        rotation[2] = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
-        SetRotateMatrixXYZ((const sdfVector3_t *)((const struct sdfVector3_t *)rotation));
+        rotation.x = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
+        rotation.y = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
+        rotation.z = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
+        SetRotateMatrixXYZ(&rotation);
         SDF_VU0_LOADVECTOR(axis);
         SDF_VU0_APPLYMATRIX_XYZ();
         SDF_VU0_STOREVECTOR_NOMEM(axis);

@@ -673,7 +673,7 @@ u32 evtCommand_MODEL_SCL_XYZ(void)
     scl.x = scrGetFloatPara(1);
     scl.y = scrGetFloatPara(2);
     scl.z = scrGetFloatPara(3);
-    dds3SetSclPoseSet(unit, (const sdfVector4_t *)((u128 *)&scl));
+    dds3SetSclPoseSet(unit, &scl);
     return 1;
 }
 
@@ -1765,7 +1765,7 @@ s32 evtCommand_CAM_CREATE(void)
     memset(&rot, 0, 0x10);
     rot.w = 1.0f;
     id = dds3AllocObjectId();
-    dds3GetRadiusPoseSet(dds3AddCameraObjectBasicTypeFree(id, (const sdfVector4_t *)&pos.x, (const sdfVector4_t *)&rot.x), 1.0f);
+    dds3GetRadiusPoseSet(dds3AddCameraObjectBasicTypeFree(id, &pos, &rot), 1.0f);
     scrSetIntReturnValue(id);
     return 1;
 }

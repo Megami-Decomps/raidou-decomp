@@ -4,11 +4,31 @@
 #include "common.h"
 #include "model.h"
 
+/* An extra-data chunk: its four-character tag and its total size in bytes. */
+typedef struct
+{
+    u32 tag;
+    u32 size;
+} sdfModelChunkHeader_t;
+
+/* One MPOS record: 64 bytes, keyed by id, naming the node it hangs off. */
+typedef struct QWORD_ALIGNED
+{
+    s32 nodeId;
+    s32 id;
+    u32 pad[2];
+    sdfVector4_t pos;
+    sdfVector4_t dir;
+    sdfVector4_t up;
+} sdfModelMarkPos_t;
+
 u8 *sdfModelAllocTmPacket(sdfModelNode_t *aNode);
 void sdfModelCopyStat(sdfModelRootNode_t *aDstRoot, sdfModelRootNode_t *aSrcRoot);
 void sdfModelEvalTm(sdfModelRootNode_t *aRoot);
+void *sdfModelGetExtraChunk(sdfModelRootNode_t *aRoot, u32 aChunkId);
 u32 sdfModelGetMarkPosCount(sdfModelRootNode_t *aRoot);
 void sdfModelInitSystem(void);
+void sdfModelMakeMarkPosMatrix(sdfModelRootNode_t *aRoot, sdfModelMarkPos_t *aMark);
 sdfModelRootNode_t *sdfModelMake(void *aTexList, sdfModelDef_t *aModelData);
 void sdfModelRootFree(sdfModelRootNode_t *aRoot, s32 aReleaseNodes, s32 aReleaseMatList);
 sdfModelNode_t *sdfModelSearchNode(sdfModelRootNode_t *aRoot, s32 aId);

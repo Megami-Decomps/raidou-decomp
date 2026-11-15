@@ -364,11 +364,11 @@ INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuCampLinkFontGlyph);
 
 /* Retail keeps only the divide-by-zero check (break 7) of a division whose result is never used. */
 void mnuCampCheckClockDivisor(void) {
-    SdfGeneralHeapStats heapStats;
+    sdfMemInfo_t heapStats;
     s32 quotient;
 
-    sdfMemGetInfo((sdfMemInfo_t *)&heapStats);
-    quotient = 1 / heapStats.totalBytes;
+    sdfMemGetInfo(&heapStats);
+    quotient = 1 / heapStats.total;
 }
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtRenderTexStart);

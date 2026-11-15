@@ -224,7 +224,7 @@ typedef struct {
 } dds3Effect_PartialMultiFilter_t;
 
 typedef struct dds3Effect_Filter_t {
-    u32 abgr;
+    union { u8 rgba[4]; u32 abgr; };
     s32 blend;
     s32 xy[2][2];
 } dds3Effect_Filter_t;

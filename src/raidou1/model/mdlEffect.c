@@ -2,6 +2,7 @@
 #include "kernel_draw.h"
 #include "libsdf.h"
 #include "model.h"
+#include "billboard.h"
 #include "kernel.h"
 #include "newdata.h"
 #include "ps2asm.h"
@@ -20,9 +21,7 @@
 #include "sdfDevCons.h"
 #include "effManager.h"
 
-typedef struct mdlBillboard_t mdlBillboard_t;
 
-typedef struct mdlEffect_t mdlEffect_t;
 
 typedef struct mdlTrackWork_t mdlTrackWork_t;
 
@@ -215,11 +214,11 @@ extern char *mdlColorChannelLabels[];
 extern u8 mdlColorChannelStyle[];
 extern u16 mdlPibTrackRowOffset[];
 extern void *dds3BillboardCreate(s32, addr_t);
-extern void dds3BillboardDelete(mdlBillboard_t *);
-extern mdlBillboard_t *dds3BillboardCopy(mdlBillboard_t *);
+extern void dds3BillboardDelete(billHandle_t *);
+extern billHandle_t *dds3BillboardCopy(billHandle_t *);
 extern void *dds3EffectLoad(void *pD3P);
-extern void dds3EffectDelete(mdlEffect_t *);
-extern mdlEffect_t *dds3EffectCopy(mdlEffect_t *);
+extern void dds3EffectDelete(struct effHandle_t *);
+extern struct effHandle_t *dds3EffectCopy(struct effHandle_t *);
 extern void sdfIpuFree(void *cb);
 extern void sdfIpuSetOutputTex(void *, mdlIpuParams_t *, u8 *, s32, sdfTexHandle_t *);
 extern mdlMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *, s32);
@@ -227,12 +226,12 @@ extern mdlTrackWork_t *Eff_ModelTrackPolyCreate(mdlTrackCreateParams_t *);
 extern void Eff_ModelTrackPolyDelete(mdlTrackWork_t *);
 extern void Eff_ModelTrackPolyDraw(mdlTrackWork_t *);
 extern void dds3BillboardSetPosition(void *, const void *);
-extern void dds3BillboardDraw(mdlBillboard_t *);
-extern void dds3EffectDraw(mdlEffect_t *);
-extern void dds3BillboardSetRGBA(mdlBillboard_t *, s32);
-extern void dds3EffectSetRGBA(mdlEffect_t *, s32);
-extern void dds3BillboardSetScale(mdlBillboard_t *, f32, f32);
-extern void dds3EffectSetScale(mdlEffect_t *, f32);
+extern void dds3BillboardDraw(billHandle_t *);
+extern void dds3EffectDraw(struct effHandle_t *);
+extern void dds3BillboardSetRGBA(billHandle_t *, s32);
+extern void dds3EffectSetRGBA(struct effHandle_t *, s32);
+extern void dds3BillboardSetScale(billHandle_t *, f32, f32);
+extern void dds3EffectSetScale(struct effHandle_t *, f32);
 
 /* dds3ModelEffectCtrlr_t.type: which effect a controller drives. */
 typedef enum dds3ModelEffectType {
@@ -609,13 +608,13 @@ dds3ModelEffectCtrlr_t *mdlCreateEffectCtrlr(mdlObj_t *aHandle, s32 aType, s32 a
 }
 
 void *mdlEffectDup_P2A(mdlEffectResrcItem_t *efcResPtr) {
-    struct mdlBillboard_t *clone = dds3BillboardCopy(efcResPtr->handle);
+    struct billHandle_t *clone = dds3BillboardCopy(efcResPtr->handle);
     efcResPtr->count = efcResPtr->count + 1;
     return clone;
 }
 
 void *mdlEffectDup_D3P(mdlEffectResrcItem_t *efcResPtr) {
-    mdlEffect_t *clone = dds3EffectCopy(efcResPtr->handle);
+    struct effHandle_t *clone = dds3EffectCopy(efcResPtr->handle);
     efcResPtr->count = efcResPtr->count + 1;
     return clone;
 }
@@ -769,10 +768,10 @@ void mdlGenEffect(mdlObj_t *aHandle, s32 aGroup, s32 aPlayGroup) {
 void mdlFreeEffect(dds3ModelEffectCtrlr_t *aCtrlr) {
     switch (aCtrlr->type) {
     case dds3ModelEffectType_P2A:
-        dds3BillboardDelete((mdlBillboard_t *)aCtrlr->payload.part.instance);
+        dds3BillboardDelete((billHandle_t *)aCtrlr->payload.part.instance);
         break;
     case dds3ModelEffectType_D3P:
-        dds3EffectDelete((mdlEffect_t *)aCtrlr->payload.part.instance);
+        dds3EffectDelete((struct effHandle_t *)aCtrlr->payload.part.instance);
         break;
     case dds3ModelEffectType_TRACK:
         Eff_ModelTrackPolyDelete(aCtrlr->payload.part.track);
@@ -827,13 +826,13 @@ void mdlLinkEffect(mdlObj_t *owner, dds3ModelEffectCtrlr_t *anchorRecord) {
         mdlEffect_P2A_D3P_GetPos(model, anchorRecord, &position.x);
         resourceInstance = anchorRecord->payload.part.instance;
         dds3BillboardSetPosition(resourceInstance, &position);
-        dds3BillboardDraw((mdlBillboard_t *)resourceInstance);
+        dds3BillboardDraw(resourceInstance);
         break;
     case dds3ModelEffectType_D3P:
         mdlEffect_P2A_D3P_GetPos(model, anchorRecord, &position.x);
         resourceInstance = anchorRecord->payload.part.instance;
-        dds3EffectSetPosition((struct effHandle_t *)((mdlEffect_t *)resourceInstance), &position);
-        dds3EffectDraw((mdlEffect_t *)resourceInstance);
+        dds3EffectSetPosition(resourceInstance, &position);
+        dds3EffectDraw(resourceInstance);
         break;
     case dds3ModelEffectType_TRACK:
         Eff_ModelTrackPolyDraw(anchorRecord->payload.part.track);
@@ -848,10 +847,10 @@ void mdlLinkEffect(mdlObj_t *owner, dds3ModelEffectCtrlr_t *anchorRecord) {
 void mdlSetEffectColorSub(mdlObj_t *aHandle, dds3ModelEffectCtrlr_t *aEffect, u32 aColor) {
     switch (aEffect->type) {
     case dds3ModelEffectType_P2A:
-        dds3BillboardSetRGBA((mdlBillboard_t *)aEffect->payload.part.instance, aColor);
+        dds3BillboardSetRGBA((billHandle_t *)aEffect->payload.part.instance, aColor);
         return;
     case dds3ModelEffectType_D3P:
-        dds3EffectSetRGBA((mdlEffect_t *)aEffect->payload.part.instance, aColor);
+        dds3EffectSetRGBA((struct effHandle_t *)aEffect->payload.part.instance, aColor);
         break;
     }
 }
@@ -860,10 +859,10 @@ void mdlSetEffectColorSub(mdlObj_t *aHandle, dds3ModelEffectCtrlr_t *aEffect, u3
 void mdlSetEffectScaleSub(mdlObj_t *aHandle, dds3ModelEffectCtrlr_t *aEffect, float aScale) {
     switch (aEffect->type) {
     case dds3ModelEffectType_P2A:
-        dds3BillboardSetScale((struct mdlBillboard_t *)aEffect->payload.part.instance, aScale, aScale);
+        dds3BillboardSetScale((struct billHandle_t *)aEffect->payload.part.instance, aScale, aScale);
         return;
     case dds3ModelEffectType_D3P:
-        dds3EffectSetScale((mdlEffect_t *)aEffect->payload.part.instance, aScale);
+        dds3EffectSetScale((struct effHandle_t *)aEffect->payload.part.instance, aScale);
         break;
     }
 }

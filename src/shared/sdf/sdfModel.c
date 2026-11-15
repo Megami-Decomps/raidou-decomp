@@ -8,6 +8,7 @@
 #include "sdk_libc.h"
 #include "sdfChip.h"
 #include "sdfVu0.h"
+#include "sdfModel.h"
 #include "sdfDraw.h"
 #include "sdfPacketBuff.h"
 #include "sdfQuat.h"
@@ -72,24 +73,6 @@ typedef struct
     s32 words[0x80 / 4];
 } sdfModelTmImage_t;
 
-/* An extra-data chunk: its four-character tag and its total size in bytes. */
-typedef struct
-{
-    u32 tag;
-    u32 size;
-} sdfModelChunkHeader_t;
-
-/* One MPOS record: 64 bytes, keyed by id, naming the node it hangs off. */
-typedef struct QWORD_ALIGNED
-{
-    s32 nodeId;
-    s32 id;
-    u32 pad[2];
-    sdfVector4_t pos;
-    sdfVector4_t dir;
-    sdfVector4_t up;
-} sdfModelMarkPos_t;
-
 void sdfModelRootFreeResrc(sdfModelRootNode_t *aRoot);
 void sdfModelPacketFree(sdfModelNode_t *aNode);
 void sdfModelNodeFree(sdfModelNode_t *aNode);
@@ -106,9 +89,7 @@ void sdfModelMakeMorphList(sdfModelRootNode_t *root, s32 morphCount);
 sdfModelRootNode_t *sdfModelMakeRoot(void *aTexList, sdfModelDef_t *aModelData);
 void sdfModelNodeSet(sdfModelNode_t *aNode, sdfModelNodeDef_t *aDef);
 void sdfModelMorphListCopyStat(sdfModelMorphList_t *aDst, sdfModelMorphList_t *aSrc);
-void *sdfModelGetExtraChunk(sdfModelRootNode_t *aRoot, u32 aChunkId);
 sdfModelMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *aRoot, s32 aId);
-void sdfModelMakeMarkPosMatrix(sdfModelRootNode_t *aRoot, sdfModelMarkPos_t *aMark);
 void sdfModelMakeMarkPos(sdfModelRootNode_t *aRoot, sdfModelMarkPos_t *aMark);
 void sdfModelInitSystem(void);
 sdfModelNode_t *sdfModelNodeNew(void);

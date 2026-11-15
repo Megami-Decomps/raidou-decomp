@@ -87,9 +87,9 @@ void MovieViewerDrawFrameInfo(void)
 
     if (dds3WaitMovieEnd() == 0) {
         tag = movieViewerWork.tag;
-        sdfDrawTagLink(tag, (addr_t)(dds3PrimFrameRect(0x8810, 0x85E8, 0xFF0080, 0x720, 0x90,
+        sdfDrawTagLink(tag, EE_ADDR(dds3PrimFrameRect(0x8810, 0x85E8, 0xFF0080, 0x720, 0x90,
                                               0x30000000, 0x60404040)));
-        sdfDrawTagLink(tag, (addr_t)(sdfDevPrintf(0x8840, 0x8600, 0xFF0080, 0, "%04d/%04d",
+        sdfDrawTagLink(tag, EE_ADDR(sdfDevPrintf(0x8840, 0x8600, 0xFF0080, 0, "%04d/%04d",
                                          movieCb.decodeCb.frame,
                                          movieCb.decodeCb.frameCount)));
     }
@@ -101,7 +101,7 @@ INCLUDE_ASM(const s32, "movie/MovieViewer", InitMovieViewer);
 
 void FinishMovieViewer(void)
 {
-    void *proc = dds3SearchProcessName((char *)movieViewerProcName);
+    void *proc = dds3SearchProcessName(movieViewerProcName);
 
     if (proc != NULL) {
         dds3KillProcess(proc, 0);

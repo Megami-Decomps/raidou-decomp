@@ -26,7 +26,7 @@ typedef struct EffResourceOwner {
     f32 frameStep; /* 0x40 */
     struct FileQueue **entries; /* 0x44: retained queue-pointer array */
     struct sdfMemHandle_t *queueAllocation; /* 0x48: queue-pointer array descriptor */
-    dds3ModelHandle_t *model;
+    mdlObj_t *model;
 } EffResourceOwner;
 
 typedef char EffResourceOwner_size_check[(sizeof(EffResourceOwner) == 0x50) ? 1 : -1];
@@ -61,7 +61,7 @@ typedef struct EffResourceOwner {
     EffResourceExtendedConfig extended;
     FileQueue **entries;
     sdfMemHandle_t *buffer;
-    dds3ModelHandle_t *model;
+    mdlObj_t *model;
 } EffResourceOwner;
 
 typedef char EffResourceConfig_size_check[sizeof(EffResourceConfig) == 0x3C ? 1 : -1];

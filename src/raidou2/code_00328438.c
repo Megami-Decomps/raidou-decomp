@@ -95,11 +95,11 @@ extern char D_003BD198[];
 
 #define EFF_RESOURCE_TABLE_ENTRY_BYTES 8
 
-void effCompleteTransientResourceJob(struct FileRequest *job, u32 *outInstance);
-void effCompleteRetainedResourceJob(struct FileRequest *job, u32 *outInstance);
+void effCompleteTransientResourceJob(fileRequest_t *job, u32 *outInstance);
+void effCompleteRetainedResourceJob(fileRequest_t *job, u32 *outInstance);
 void effRequestResourceByMode(const char *base, const char *name, u32 mode, u32 *outInstance);
 
-void effCompleteMappedResourceJob(struct FileRequest *job,
+void effCompleteMappedResourceJob(fileRequest_t *job,
                                   EffMappedResource **outMappedResource);
 
 
@@ -201,26 +201,26 @@ EffectSlotSet *effLoadIndexedResource(const char *base, const char *name, u32 ke
 }
 
 /* Publish the instance, release its source allocation, then clean up the completed file job. */
-void effCompleteTransientResourceJob(struct FileRequest *job, u32 *outInstance) {
+void effCompleteTransientResourceJob(fileRequest_t *job, u32 *outInstance) {
     struct sdfMemHandle_t *allocation;
     EffectSlotSet *instance;
 
-    allocation = fileGetMemHandle((const fileRequest_t *)job);
+    allocation = fileGetMemHandle(job);
     instance = effCreateResourceSlotSetFromAllocation(allocation, EFF_RESOURCE_TRANSIENT);
     *outInstance = (u32)instance;
     sdfMemFreeDirect(allocation);
-    fileHandleFree((fileRequest_t *)job);
+    fileHandleFree(job);
 }
 
 /* Publish the instance without releasing its source allocation, then clean up the file job. */
-void effCompleteRetainedResourceJob(struct FileRequest *job, u32 *outInstance) {
+void effCompleteRetainedResourceJob(fileRequest_t *job, u32 *outInstance) {
     struct sdfMemHandle_t *allocation;
     EffectSlotSet *instance;
 
-    allocation = fileGetMemHandle((const fileRequest_t *)job);
+    allocation = fileGetMemHandle(job);
     instance = effCreateResourceSlotSetFromAllocation(allocation, EFF_RESOURCE_KEEP_ALLOCATION);
     *outInstance = (u32)instance;
-    fileHandleFree((fileRequest_t *)job);
+    fileHandleFree(job);
 }
 
 /* Clear the output first; only mode one selects the retained-allocation completion path. */
@@ -251,18 +251,18 @@ EffMappedResource *effLoadMappedResource(const char *base, const char *name) {
 }
 
 /* Publish mapped records before releasing their source allocation and completing the file job. */
-void effCompleteMappedResourceJob(struct FileRequest *job,
+void effCompleteMappedResourceJob(fileRequest_t *job,
                                   EffMappedResource **outMappedResource) {
     struct sdfMemHandle_t *allocation;
     u32 sourceAddress;
     EffMappedResource *mappedResource;
 
-    allocation = fileGetMemHandle((const fileRequest_t *)job);
+    allocation = fileGetMemHandle(job);
     sourceAddress = sdfMemLock(allocation);
     mappedResource = effCreateMappedResource((const u8 *)sourceAddress);
     *outMappedResource = mappedResource;
     sdfMemFreeDirect(allocation);
-    fileHandleFree((fileRequest_t *)job);
+    fileHandleFree(job);
 }
 
 /* Initialize the output to zero and schedule mapped-record completion. */
