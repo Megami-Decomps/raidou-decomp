@@ -7,6 +7,8 @@
 #include "ps2asm.h"
 #include "sdfDraw.h"
 #include "sdfMath.h"
+#include "sdf2D.h"
+#include "sdfPacketBuff.h"
 
 typedef struct { u8 unk00[8]; f32 degrees; u8 unk0C[4]; } pbFovWork_t;
 
@@ -52,8 +54,6 @@ typedef struct
 } pbRegPacket_t;
 
 extern sdfGrOt_t sdfGrOtTable[];
-extern void *sdfGrAllocPacketBuff(u32 aSize);
-extern void *sdf2DMakeStdPacket(void *aPacket, u32 aLeng);
 extern sdfVector4_t aViewEye, aViewTarget;
 u64 *pbAllocPrimPacket(u32 x, u32 y, u32 depth, u32 width, u32 height, u32 color0, u32 color1);
 void *pbMakeSpritePacket(u64 data, s32 context);
@@ -91,7 +91,7 @@ void *pbMakeSpritePacket(u64 data, s32 context)
 {
     pbRegPacket_t *packet;
 
-    packet = sdf2DMakeStdPacket(sdfGrAllocPacketBuff(0x30), 0x30);
+    packet = EE_ADDR_AS(pbRegPacket_t *, sdf2DMakeStdPacket(sdfGrAllocPacketBuff(0x30), 0x30));
     packet->reg[1].data = data;
     packet->reg[1].reg = context ? 0x48 : 0x47;
     return packet;
@@ -101,7 +101,7 @@ void *pbMakePrimPacket(u64 data, s32 context)
 {
     pbRegPacket_t *packet;
 
-    packet = sdf2DMakeStdPacket(sdfGrAllocPacketBuff(0x30), 0x30);
+    packet = EE_ADDR_AS(pbRegPacket_t *, sdf2DMakeStdPacket(sdfGrAllocPacketBuff(0x30), 0x30));
     packet->reg[1].data = data;
     packet->reg[1].reg = context ? 0x43 : 0x42;
     return packet;

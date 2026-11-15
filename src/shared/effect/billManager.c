@@ -16,6 +16,7 @@
 #include "sdfMath.h"
 #include "effPacket.h"
 #include "sdf3DPrim.h"
+#include "sdfPacketBuff.h"
 
 typedef struct dds3P2APolygon_tag {
     f32 dir[4][4];
@@ -52,7 +53,6 @@ typedef struct effBlurDrawBank_t {
 } effBlurDrawBank_t;
 
 extern f64 fabs(f64 value);
-extern void *sdfGrAllocPacketBuff(s32 aSize);
 struct billHandle_t *dds3Billboard_NormalCreate(void *data);
 
 typedef struct billColorWork_t {
@@ -796,7 +796,7 @@ void dds3P2APolygonDraw(dds3P2APolygon_tag *instance) {
         return;
     }
     dds3P2APolygonGetResource(instance, &resources);
-    list = sdfGrAllocPacketBuff(0x20);
+    list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
     sdfDrawTagInit(list);
     SDF_VU0_LOADMATRIX(instance->rot);
     SDF_VU0_LOADMATRIX_B(instance->dir);

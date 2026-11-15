@@ -1,5 +1,6 @@
 #include "common.h"
 #include "evtCommand.h"
+#include "dds3KernelCore.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -31,7 +32,6 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-u32 dds3GetProcessData(const dds3ProcessID_t *task);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -136,7 +136,7 @@ typedef struct EvtListPanelRecord {
 u32 mnuClearTerminalPanelSelection(dds3ProcessID_t *task) {
     s32 workAddress;
 
-    workAddress = dds3GetProcessData(task);
+    workAddress = EE_ADDR_S(dds3GetProcessData(task));
     *(u32 *)(workAddress + 0x90) = 0;
     return 1;
 }

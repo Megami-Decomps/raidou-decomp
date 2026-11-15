@@ -5,13 +5,13 @@
 #include "sdfDraw.h"
 #include "sdf2D.h"
 #include "effPacket.h"
+#include "sdfPacketBuff.h"
 
 /* The native end message is padded to a 0x20-byte rodata block. */
 extern s8 dds3CrossfadeRunFlag;
 extern u32 dds3CrossfadeFrame;
 extern u32 dds3CrossfadeFrameMax;
 extern u32 effPktDefaultFaceIndex[];
-extern void *sdfGrAllocPacketBuff(s32 aSize);
 
 #include "sdk_libc.h"
 

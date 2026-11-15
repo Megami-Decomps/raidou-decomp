@@ -7,6 +7,7 @@
 #include "sdfPrim.h"
 #include "sdf_Decomp.h"
 #include "sdfModel.h"
+#include "mdlManager.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -35,11 +36,8 @@ struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 void mdlFree(mdlObj_t *ctx);
 
 /* Context-level motion APIs; per-sdfMotionCtrlr_t lifecycle methods are in sdf_motion.h. */
-MdlMotionIndexResult mdlGetMotionNum(const mdlObj_t *ctx, MdlMotionSearchId searchId);
 
 /* The referenced halfword is promoted to a word-sized SDK result. */
-s32 mdlGetNumOfCut(const mdlObj_t *ctx, s32 searchId);
-MdlMotionPresence mdlHasMotionEx(const mdlObj_t *ctx, MdlMotionSearchId searchId);
 
 /* Allocate a distinct caller-owned context linked to the registered group.
  * Contexts share the group node and assets; release each context with mdlFree. */

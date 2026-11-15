@@ -8,6 +8,7 @@
 #include "sdfImageSet.h"
 #include "sdfGsMemIO.h"
 #include "sdfModel.h"
+#include "mdlManager.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -30,8 +31,6 @@ enum {
 
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
 
-u16 mdlGetMajorNum(const mdlObj_t *ctx);
-u16 mdlGetMinorNum(const mdlObj_t *ctx);
 
 /* Allocate a distinct caller-owned context linked to the registered group.
  * Contexts share the group node and assets; release each context with mdlFree. */

@@ -12,6 +12,7 @@
 #include "effPacket.h"
 #include "sdf3DPrim.h"
 #include "polyManager.h"
+#include "sdfMemory.h"
 
 typedef struct
 {
@@ -83,8 +84,6 @@ typedef struct trackTriangleColors_t {
     s32 edge1;  /* 0x08 */
 } trackTriangleColors_t;
 
-extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
-extern s32 sdfMemLock(sdfMemHandle_t *aHandle);
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern f32 dds3TrackPolyVCType1Param[4];
 extern f32 dds3TrackPolyVCType2Param[4];
@@ -562,7 +561,7 @@ dds3TrackPoly_t *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, u32 type) {
     total = number * face;
     cellsSize = (total + number) * 0x14;
     allocation = sdfMemAllocDirect(cellsSize + 0x2C);
-    base = sdfMemLock(allocation);
+    base = EE_ADDR_S(sdfMemLock(allocation));
     system = EE_ADDR_AS(dds3TrackPoly_t *, (base + cellsSize));
     memset(system, 0, 0x2C);
     system->pVertex = EE_ADDR_AS(u128 *, base);
@@ -1553,7 +1552,7 @@ dds3TrianglePoly_t *dds3TrianglePolyCreate(s32 number) {
     s32 points = number * 3;
     s32 colorBytes = points * 4;
     sdfMemHandle_t *allocation = sdfMemAllocDirect((colorBytes + points) * 4 + 0x18);
-    s32 base = sdfMemLock(allocation);
+    s32 base = EE_ADDR_S(sdfMemLock(allocation));
     u8 *vertices = EE_ADDR_AS(u8 *, base) + points * 16;
     dds3TrianglePoly_t *block = (dds3TrianglePoly_t *)(vertices + colorBytes);
     block->abgr = 0x80808080;

@@ -7,9 +7,9 @@
 #include "event.h"
 #include "sdfFrame.h"
 #include "sdfMemory.h"
+#include "sdfTex.h"
 
-extern s32 sdfTexSet(void *aTex);
-s32 fclLoadTexture(char *pFileName);
+sdfTexHandle_t *fclLoadTexture(const char *pFileName);
 
 typedef struct
 {
@@ -32,12 +32,12 @@ typedef struct
     s32 flags;
 } fclPhasePanel_t;
 
-s32 fclLoadTexture(char *pFileName)
+sdfTexHandle_t *fclLoadTexture(const char *pFileName)
 {
     void *data;
     s32 size;
     void *file;
-    s32 handle;
+    sdfTexHandle_t *handle;
 
     file = sdfDevLoadFileEx(pFileName, (u32 *)&data, &size);
     handle = sdfTexSet(data);

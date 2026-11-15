@@ -9,6 +9,8 @@
 #include "sdf3DPrim.h"
 #include "effect.h"
 #include "effPacket.h"
+#include "sdfMemory.h"
+#include "sdfPacketBuff.h"
 
 /* One needle instance: position plus the colour the draw loop stamps. */
 typedef struct dds3NeedleModelPart_tag
@@ -44,8 +46,6 @@ extern sdf3DPrimPolyParm_t dds3NeedleModelPrimParam;
 extern sdfVector4_t dds3NeedleModelDefaultPoints[];
 extern u32 dds3NeedleModelDefaultColors[];
 extern effDrawSurface_t *dds3NeedleModelDrawSurfaces[];
-extern void *sdfGrAllocPacketBuff(s32 aSize);
-extern void sdfMemFreeDirect(void *aHandle);
 extern void dds3NeedleModelVNCListDelete(dds3NeedleModel_tag *hNModel);
 
 /* The copied 0x5C-byte needle parameters precede runtime ownership state. */
@@ -80,7 +80,6 @@ typedef struct effPCPNeedleSpiralPart_tag {
     f32 radian;
 } effPCPNeedleSpiralPart_tag; /* 0x2C */
 
-typedef struct effAllocation_t effAllocation_t;
 
 typedef struct trackPolySystem_t trackPolySystem_t;
 
@@ -96,7 +95,7 @@ typedef struct effPCPNeedleSpiral_tag {
     u32 number;
     trackPolySystem_t *hTrackPoly;
     dds3NeedleModel_tag *hNModel;
-    effAllocation_t *hMem;
+    sdfMemHandle_t *hMem;
 } effPCPNeedleSpiral_tag; /* 0x74, followed by number pPart */
 
 #define PAR_CELL_TOPOLOGY_PAIR 0
@@ -105,8 +104,6 @@ typedef struct effPCPNeedleSpiral_tag {
 
 extern effRandState_t dds3EffectBase[];
 extern f32 aViewTarget[4], aViewEye[4], dds3NeedleModelUpVector[4];
-extern void *sdfMemAllocDirect(u32 aSize);
-extern void *sdfMemLock(void *aHandle);
 extern u32 dds3GetRandA(effRandState_t *name);
 extern f32 dds3GetRandFloatA(effRandState_t *name);
 extern trackPolySystem_t *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, u32 type);
@@ -126,7 +123,7 @@ void effPCPNeedleSpiralDelete(effPCPNeedleSpiral_tag *hData);
 void dds3NeedleModelVNCListDelete(dds3NeedleModel_tag *hNModel);
 
 effPCPNeedleSpiral_tag *effPCPNeedleSpiralCreate(effPCPNeedleSpiralParam_t *pParam) {
-    effAllocation_t *allocation = sdfMemAllocDirect(pParam->number * sizeof(effPCPNeedleSpiralPart_tag) + sizeof(effPCPNeedleSpiral_tag));
+    sdfMemHandle_t *allocation = sdfMemAllocDirect(pParam->number * sizeof(effPCPNeedleSpiralPart_tag) + sizeof(effPCPNeedleSpiral_tag));
     effPCPNeedleSpiral_tag *work = (effPCPNeedleSpiral_tag *)sdfMemLock(allocation);
     u32 slotIndex;
     dds3NeedleModel_tag *resource;
@@ -184,7 +181,7 @@ INCLUDE_ASM(const s32, "effect/effPCPNeedle", effLeaf267);
 
 dds3NeedleModel_tag *dds3NeedleModelCreate(u32 number)
 {
-    struct effAllocation_t *allocation = sdfMemAllocDirect(number * sizeof(dds3NeedleModelPart_tag) + sizeof(dds3NeedleModel_tag));
+    sdfMemHandle_t *allocation = sdfMemAllocDirect(number * sizeof(dds3NeedleModelPart_tag) + sizeof(dds3NeedleModel_tag));
     dds3NeedleModel_tag *work = (void *)sdfMemLock(allocation);
     dds3NeedleModelPart_tag *entry;
     u32 entryIndex;
@@ -225,7 +222,7 @@ void dds3NeedleModelDraw(dds3NeedleModel_tag *hNModel)
     u32 remaining;
     u32 perPrim;
 
-    packet = sdfGrAllocPacketBuff(0x20);
+    packet = EE_ADDR_AS(void *, sdfGrAllocPacketBuff(0x20));
     sdfDrawTagInit(packet);
     sdf3DPrimLinkMat(packet, hNModel->pMat, 0);
     SDF_VU0_STOREIDENTITY(matrix);

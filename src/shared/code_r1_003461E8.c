@@ -1,4 +1,5 @@
 #include "common.h"
+#include "dds3KernelCore.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -8,7 +9,6 @@
 #include "sdk_libc.h"
 #include "dds/dds3_process.h"
 
-u32 dds3GetProcessData(const dds3ProcessID_t *task);
 
 #include "dds/mnu.h"
 
@@ -20,7 +20,7 @@ s32 mnuDispatchStaffMenuWithIdlePopup(dds3ProcessID_t *callback);
 
 /* Dispatch a callback; on idle, install the default entry unless busy. */
 s32 mnuDispatchStaffMenuWithIdlePopup(dds3ProcessID_t *callback) {
-    s32 context = dds3GetProcessData(callback);
+    s32 context = EE_ADDR_S(dds3GetProcessData(callback));
     s32 *dispatchEntry = (s32 *)(context + 0x54);
     s32 state = menuRunPanel((void *)context, 0, (void *)callback);
     if (state == 0) {

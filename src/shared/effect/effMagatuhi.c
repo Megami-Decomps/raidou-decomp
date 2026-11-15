@@ -14,6 +14,7 @@
 #include "sdfPacketBuff.h"
 #include "effMath.h"
 #include "sdfBillBoard.h"
+#include "sdfMemory.h"
 
 extern sdfGrOt_t *effMagaGrOtBuckets[4];
 
@@ -424,7 +425,6 @@ static inline u32 PackMagatuhiTrailColor(void) {
     return rgba[0];
 }
 
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
@@ -435,8 +435,6 @@ struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Round payloadBytes up to quadwords and pair FLUSHA with VIF DIRECT. */
 void sdf3DMakeDirectRefPacket(dmaPacketHeader_t *aPacket, addr_t aData, s32 aLeng);
-void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
-u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 
 /* Requires a non-NULL texture; returns its primary buffer as a borrowed view. */
 struct sdfTexPacket_t *sdfTexGetPacket(struct sdfTexHandle_t *aHandle);
@@ -570,7 +568,7 @@ dds3MagatuhiBill_tag *effMagaCylinderAllocTex(s32 count, s32 historyCount, f32 h
     countTerm = (countFrames << 2) + count;
     allocationSize = (((count << 3) + ((countTerm + frameTerm) << 1) + (count << 1)) << 1) + sizeof(dds3MagatuhiBill_tag);
     allocation = sdfMemAllocDirect(allocationSize);
-    positions = sdfMemLock(allocation);
+    positions = EE_ADDR_S(sdfMemLock(allocation));
     colorTable = positions + (countFrames << 4);
     historyScalars = colorTable + (historyCount << 2);
     values = historyScalars + (countFrames << 2);

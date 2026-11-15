@@ -5,6 +5,7 @@
 #include "sdfMat.h"
 #include "sdfTex.h"
 #include "sdfFile.h"
+#include "sdfMemory.h"
 
 void *sdfDevLoadFile(const char *aFileName, u32 *aOutData, u32 *aOutSize, s32 aAlign);
 
@@ -100,7 +101,6 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-u32 sdfMemLock(sdfMemHandle_t *aHandle);
 
 #include "sdk_libc.h"
 
@@ -118,7 +118,7 @@ void *sdfDevLoadFile(const char *name, u32 *outData, u32 *outSize, s32 extra) {
     sdfFileCmdHandle_t *state = sdfFileOpen(name);
     s32 size = sdfFileLength(state);
     sdfMemHandle_t *handle = sdfMemAllocDirect(size + extra);
-    u32 address = sdfMemLock(handle);
+    u32 address = EE_ADDR(sdfMemLock(handle));
     sdfFileRead(state, EE_ADDR_AS(void *, address), size);
     sdfFileClose(state);
     if (outData != NULL) {

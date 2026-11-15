@@ -11,6 +11,7 @@
 #include "sdfFileIO.h"
 #include "sdfSystem.h"
 #include "sdfPacDecode.h"
+#include "sdfMemory.h"
 
 /* All three views share the 0x30-byte request header. Their differently
  * typed links distinguish transfer work from the queue and PAC callbacks. */
@@ -84,13 +85,9 @@ s32 fileManager(void);
 s32 fileManagerProc(dds3ProcessID_t *procId);
 
 
-void *sdfMemAllocDirect(u32 aSize);
-void *sdfMemAlloc2Direct(u32 aSize);
-u32 sdfMemLock(void *aHandle);
 void *sdfFileCmdReadOpen(const char *aFileName, void *aCallback, void *aUserData);
 void *sdfFileCmdWriteOpen(const char *aFileName, void *aCallback, void *aUserData, u32 aMode);
 s32 sdfFileCmdWrite(void *aHandle, void *aBuffer, s32 aLength);
-void *sdfMemAllocFromTailDirect(u32 aSize);
 void fileWrite(fileCb_t *fileHandle);
 void fileExecCallback(void);
 s32 pacFileHandleFree(fileRequest_t *pacHandle);
@@ -460,7 +457,7 @@ s32 fileLoadCallback(void *fileHandle, s32 cause, s32 buffer, s32 length, fileCb
             data->handle = handle;
         }
         {
-            u32 address = sdfMemLock(handle);
+            u32 address = EE_ADDR(sdfMemLock(handle));
 
             data->ptr = address;
             data->top = address;
@@ -617,7 +614,7 @@ void fileExecQueue(void) {
                                             ((sdfFileCmd_t *)job->dev)->path);
                 job->retry--;
             } else {
-                u32 address = sdfMemLock(job->handle);
+                u32 address = EE_ADDR(sdfMemLock(job->handle));
 
                 job->ptr = address;
                 job->top = address;

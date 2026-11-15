@@ -2,6 +2,7 @@
 #include "sdf_types.h"
 #include "sdf_resource.h"
 #include "sdfPacketBuff.h"
+#include "sdfMemory.h"
 
 /* Declared here because no header carries these. */
 extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
@@ -14,9 +15,7 @@ struct sdfMemHandle_t;
 
 #define SDF_PACKET_BUFFER_COUNT 2
 
-void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
 extern struct sdfMemHandle_t *sdfGrPacketBuffHandle;
-u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 extern s32 sdfGrPacketBuffSize;
 extern s32 sdfGrPacketBuffBase[2];
 extern s32 sdfGrPacketBuffPtr;
@@ -52,7 +51,7 @@ void sdfGrMakePacketBuff(s32 aPacketBuffSize) {
     aPacketBuffSize = (aPacketBuffSize + SDF_PACKET_BUFFER_ALIGNMENT_MASK) & ~SDF_PACKET_BUFFER_ALIGNMENT_MASK;
     sdfGrPacketBuffSize = aPacketBuffSize;
     sdfGrPacketBuffHandle = sdfMemAllocDirect(aPacketBuffSize * SDF_PACKET_BUFFER_COUNT);
-    allocationAddress = sdfMemLock(sdfGrPacketBuffHandle);
+    allocationAddress = EE_ADDR_S(sdfMemLock(sdfGrPacketBuffHandle));
     sdfGrPacketBuffBase[0] = allocationAddress;
     sdfGrPacketBuffBase[1] = allocationAddress + aPacketBuffSize;
 }

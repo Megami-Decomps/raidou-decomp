@@ -1,4 +1,5 @@
 #include "common.h"
+#include "mcManager.h"
 #include "sdf_resource.h"
 #include "basic.h"
 #include "model.h"
@@ -15,16 +16,6 @@
 
 typedef struct fileRequest fileRequest_t;
 
-enum sl_mc_result
-{
-    SL_MC_RESULT_PENDING = 0,
-    SL_MC_RESULT_SUCCESS = 1,
-    SL_MC_RESULT_ERROR = -1,
-    SL_MC_RESULT_SPECIAL_ERROR = -2
-};
-
-typedef enum sl_mc_result slMcResult_t;
-
 enum sl_slot_flag
 {
     SL_SLOT_FLAG_CAN_READ_SAVE = 1,
@@ -36,20 +27,13 @@ extern s32 gSlWindowCnt;
 extern s32 gslInfoCode;
 extern s32 slChooseSaveIndex;
 extern u32 mccb;
-void sdfMcSetSlotIndex(s32 request, s32 selectedSlot);
-s32 sdfMcGetSlotIndex(s32 request);
-u32 sdfMcGetSlotFlags(s32 request, s32 slot);
 extern saddr_t slChooseData_getCardInfoNext(void);
 extern void mcMakeFileName(char *path, s32 num);
-void sdfMcFuncOpen(u32 context, const char *path, s32 openFlags);
 saddr_t slHeadLoadProc_openFile(void);
 extern s32 slMcFd;
-slMcResult_t sdfMcFuncOpen1(s32 *resultOut);
 extern sdfMemHandle_t *slLoadFileFd;
 saddr_t slHeadLoadProc_readFile(void);
 extern saddr_t slNoCard(void);
-slMcResult_t sdfMcFuncRead1(void);
-extern void sdfMcFuncClose(s32);
 extern s32 slHeadLoadProc_closeFile(void);
 extern void *slExitWaitNextFunc;
 s32 slExitWaitProc(void);
@@ -64,7 +48,6 @@ extern saddr_t slQueryYesNo(s32 (*yesFunc)(void), s32 (*noFunc)(void), s32 yesNo
 saddr_t slSaveData(void);
 extern saddr_t slFileSel(void);
 s32 slExitToTitle(void);
-void sdfMcRegetInfo(s32 request);
 extern s32 gslCheckCardWait;
 extern u32 gSlNowCardCheck;
 extern u32 gslDrawFlagBg;
@@ -77,47 +60,33 @@ extern s8 dds3PadButtonState[];
  * address and calls through a cast. */
 typedef s32 (*slProcFunc_t)(void);
 extern u32 slHitAnyKeyNextFunc;
-void sdfMcFuncChdir(u32 context, const char *path);
 saddr_t slChooseData_getCardInfo2(void);
-slMcResult_t sdfMcFuncChdir1(void);
-void sdfMcSetSlotFlags(s32 request, s32 slot, s32 mask);
 extern const char slIconSysName[];
 extern u8 slDirEntries[];
-void sdfMcFuncGetDir(u32 context, const char *path, void *directoryEntries, s32 entryLimit);
 s32 slChooseData_getCardInfo3(void);
-slMcResult_t sdfMcFuncGetDir1(s32 *resultOut);
 saddr_t slChooseData_getCardInfo2_B(void);
 s32 slChooseData_getCardInfo3_B(void);
 s32 slChooseData_getCardInfoNext_B(void);
-void sdfMcSetCardStat(s32 request);
 saddr_t slSaveData_chdir(void);
-void sdfMcFuncMkdir(u32 mccb, const char *cb);
 saddr_t slSaveProc_Write_mkdir(void);
 saddr_t slSaveProc_Write_chdir(void);
-slMcResult_t sdfMcFuncMkdir1(void);
 extern s32 slFileSelError;
 saddr_t slSaveData_deleteIconSys(void);
 extern s32 slSaveData_writeFile(void);
 extern const char slBaseIconName[];
 extern s32 slSaveWriteEnd_baseIcon(void);
-extern addr_t slBaseIconBuff;
+extern void *slBaseIconBuff;
 extern u32 slBaseIconBuffSize;
-saddr_t slSaveWriteFile(const char *filename, u32 *buff, u32 *size, void *endFunc, u32 *srcPtr);
-void sdfMcFuncDelete(u32 context, const char *path);
-extern u32 *slSaveWriteFile_buff;
+saddr_t slSaveWriteFile(const char *filename, void **buff, u32 *size, void *endFunc, u32 *srcPtr);
+extern void **slSaveWriteFile_buff;
 extern u32 *slSaveWriteFile_size;
 extern void *slSaveWriteFile_endFunc;
 extern u32 *slSaveWriteFile_dataWaitPtr;
 saddr_t slSaveProc_openFile(void);
 saddr_t slSaveProc_waitDataReady(void);
-extern void sdfMcFuncWrite(s32 request, u32 first, u32 second);
 saddr_t slSaveProc_writeFile(void);
-slMcResult_t sdfMcFuncWrite1(void);
 saddr_t slSaveProc_closeFile(void);
-slMcResult_t sdfMcFuncClose1(void);
-slMcResult_t sdfMcFuncFormat1(void);
 s32 slCardChk(void);
-void sdfMcFuncFormat(u32 port);
 saddr_t slLoadProc_readFile(void);
 saddr_t slLoadProc_closeFile(void);
 extern s32 gslAnimCnt;
@@ -128,7 +97,6 @@ extern s32 (*proc_func_ans)(dds3ProcessID_t *process);
 
 #include "sdk_libc.h"
 
-extern void sdfMcClearSlotFlags(s32 request, s32 slot);
 extern saddr_t slFormatStart(void);
 
 typedef struct slFileName_t {
@@ -485,11 +453,11 @@ saddr_t slHeadLoad(void) {
 INCLUDE_ASM(const s32, "mc/slMain", slHeadLoadProc_openFile);
 
 saddr_t slHeadLoadProc_readFile(void) {
-    slMcResult_t status = sdfMcFuncRead1();
-    if (status == SL_MC_RESULT_PENDING) {
+    McPollResult status = sdfMcFuncRead1();
+    if (status == MC_POLL_PENDING) {
         return 0;
     }
-    if (status == SL_MC_RESULT_SUCCESS) {
+    if (status == MC_POLL_SUCCESS) {
         sdfMcFuncClose(slMcFd);
         return EE_ADDR_S(slHeadLoadProc_closeFile);
     }
@@ -654,17 +622,17 @@ INCLUDE_ASM(const s32, "mc/slMain", slHitAnyKeyProc);
 INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfo_B);
 
 saddr_t slChooseData_getCardInfo2(void) {
-    slMcResult_t t = sdfMcFuncChdir1();
+    McPollResult t = sdfMcFuncChdir1();
 
-    if (t == SL_MC_RESULT_PENDING) {
+    if (t == MC_POLL_PENDING) {
         return 0;
     }
-    if (t == SL_MC_RESULT_SUCCESS) {
+    if (t == MC_POLL_SUCCESS) {
         sdfMcSetSlotFlags(mccb, slChooseSaveIndex, SL_SLOT_FLAG_DIRECTORY_READY);
         sdfMcFuncGetDir(mccb, slIconSysName, slDirEntries, 1);
         return EE_ADDR_S(slChooseData_getCardInfo3);
     }
-    if (t == SL_MC_RESULT_ERROR) {
+    if (t == MC_POLL_ERROR) {
         return slNoCard();
     }
     return slHeadLoad();
@@ -672,18 +640,18 @@ saddr_t slChooseData_getCardInfo2(void) {
 
 s32 slChooseData_getCardInfo3(void) {
     s32 value;
-    slMcResult_t status = sdfMcFuncGetDir1(&value);
-    if (status == SL_MC_RESULT_PENDING) {
+    McPollResult status = sdfMcFuncGetDir1(&value);
+    if (status == MC_POLL_PENDING) {
         return 0;
     }
-    if (status == SL_MC_RESULT_SUCCESS) {
+    if (status == MC_POLL_SUCCESS) {
         if (value == 1) {
             sdfMcSetSlotFlags(mccb, slChooseSaveIndex,
                                 SL_SLOT_FLAG_CAN_READ_SAVE | SL_SLOT_FLAG_DELETE_BEFORE_WRITE);
         }
         return slHeadLoad();
     }
-    if (status == SL_MC_RESULT_ERROR) {
+    if (status == MC_POLL_ERROR) {
         return slNoCard();
     }
     return slHeadLoad();
@@ -696,17 +664,17 @@ INCLUDE_ASM(const s32, "mc/slMain", slChooseData);
 INCLUDE_ASM(const s32, "mc/slMain", slChooseData_getCardInfo);
 
 saddr_t slChooseData_getCardInfo2_B(void) {
-    slMcResult_t t = sdfMcFuncChdir1();
+    McPollResult t = sdfMcFuncChdir1();
 
-    if (t == SL_MC_RESULT_PENDING) {
+    if (t == MC_POLL_PENDING) {
         return 0;
     }
-    if (t == SL_MC_RESULT_SUCCESS) {
+    if (t == MC_POLL_SUCCESS) {
         sdfMcSetSlotFlags(mccb, slChooseSaveIndex, SL_SLOT_FLAG_DIRECTORY_READY);
         sdfMcFuncGetDir(mccb, slIconSysName, slDirEntries, 1);
         return EE_ADDR_S(slChooseData_getCardInfo3_B);
     }
-    if (t == SL_MC_RESULT_ERROR) {
+    if (t == MC_POLL_ERROR) {
         slSetInfo(0);
         gslDrawFlagFile = 0;
         gslErrorCode = 0;
@@ -717,18 +685,18 @@ saddr_t slChooseData_getCardInfo2_B(void) {
 
 s32 slChooseData_getCardInfo3_B(void) {
     s32 value;
-    slMcResult_t status = sdfMcFuncGetDir1(&value);
-    if (status == SL_MC_RESULT_PENDING) {
+    McPollResult status = sdfMcFuncGetDir1(&value);
+    if (status == MC_POLL_PENDING) {
         return 0;
     }
-    if (status == SL_MC_RESULT_SUCCESS) {
+    if (status == MC_POLL_SUCCESS) {
         if (value == 1) {
             sdfMcSetSlotFlags(mccb, slChooseSaveIndex,
                                 SL_SLOT_FLAG_CAN_READ_SAVE | SL_SLOT_FLAG_DELETE_BEFORE_WRITE);
         }
         return slChooseData_getCardInfoNext_B();
     }
-    if (status == SL_MC_RESULT_ERROR) {
+    if (status == MC_POLL_ERROR) {
         slSetInfo(0);
         gslDrawFlagFile = 0;
         gslErrorCode = 0;
@@ -769,11 +737,11 @@ saddr_t slSaveData_chdir(void) {
 }
 
 saddr_t slSaveProc_Write_mkdir(void) {
-    slMcResult_t status = sdfMcFuncMkdir1();
-    if (status == SL_MC_RESULT_PENDING) {
+    McPollResult status = sdfMcFuncMkdir1();
+    if (status == MC_POLL_PENDING) {
         return 0;
     }
-    if (status == SL_MC_RESULT_SUCCESS) {
+    if (status == MC_POLL_SUCCESS) {
         sdfMcSetSlotFlags(mccb, slFileSelError, SL_SLOT_FLAG_DIRECTORY_READY);
         return slSaveData_chdir();
     }
@@ -810,7 +778,7 @@ saddr_t slSaveData_deleteIconSys(void) {
     return EE_ADDR_S(slSaveProc_Write_deleteIconSys);
 }
 
-saddr_t slSaveWriteFile(const char *filename, u32 *buff, u32 *size, void *endFunc, u32 *srcPtr) {
+saddr_t slSaveWriteFile(const char *filename, void **buff, u32 *size, void *endFunc, u32 *srcPtr) {
     slSaveWriteFile_buff = buff;
     slSaveWriteFile_size = size;
     slSaveWriteFile_endFunc = endFunc;
@@ -820,19 +788,19 @@ saddr_t slSaveWriteFile(const char *filename, u32 *buff, u32 *size, void *endFun
 }
 
 saddr_t slSaveProc_openFile(void) {
-    slMcResult_t status = sdfMcFuncOpen1(&slMcFd);
+    McPollResult status = sdfMcFuncOpen1(&slMcFd);
 
-    if (status == SL_MC_RESULT_PENDING) {
+    if (status == MC_POLL_PENDING) {
         return 0;
     }
-    if (status == SL_MC_RESULT_SUCCESS) {
+    if (status == MC_POLL_SUCCESS) {
         if (slSaveWriteFile_dataWaitPtr != NULL && *slSaveWriteFile_dataWaitPtr != 0) {
             return EE_ADDR_S(slSaveProc_waitDataReady);
         }
         sdfMcFuncWrite(slMcFd, *slSaveWriteFile_buff, *slSaveWriteFile_size);
         return EE_ADDR_S(slSaveProc_writeFile);
     }
-    if (status == SL_MC_RESULT_ERROR) {
+    if (status == MC_POLL_ERROR) {
         slSetInfo(0);
         gslErrorCode = 4;
         return EE_ADDR_S(slErrorWait);
@@ -841,15 +809,15 @@ saddr_t slSaveProc_openFile(void) {
 }
 
 saddr_t slSaveProc_writeFile(void) {
-    slMcResult_t status = sdfMcFuncWrite1();
-    if (status == SL_MC_RESULT_PENDING) {
+    McPollResult status = sdfMcFuncWrite1();
+    if (status == MC_POLL_PENDING) {
         return 0;
     }
-    if (status == SL_MC_RESULT_SUCCESS) {
+    if (status == MC_POLL_SUCCESS) {
         sdfMcFuncClose(slMcFd);
         return EE_ADDR_S(slSaveProc_closeFile);
     }
-    if (status == SL_MC_RESULT_ERROR) {
+    if (status == MC_POLL_ERROR) {
         slSetInfo(0);
         gslErrorCode = 4;
         return EE_ADDR_S(slErrorWait);
@@ -858,14 +826,14 @@ saddr_t slSaveProc_writeFile(void) {
 }
 
 saddr_t slSaveProc_closeFile(void) {
-    slMcResult_t status = sdfMcFuncClose1();
-    if (status == SL_MC_RESULT_PENDING) {
+    McPollResult status = sdfMcFuncClose1();
+    if (status == MC_POLL_PENDING) {
         return 0;
     }
-    if (status == SL_MC_RESULT_SUCCESS) {
+    if (status == MC_POLL_SUCCESS) {
         return ((s32 (*)())slSaveWriteFile_endFunc)();
     }
-    if (status == SL_MC_RESULT_ERROR) {
+    if (status == MC_POLL_ERROR) {
         slSetInfo(0);
         gslErrorCode = 4;
         return EE_ADDR_S(slErrorWait);
@@ -882,8 +850,8 @@ saddr_t slSaveProc_waitDataReady(void) {
 }
 
 saddr_t slProc_Format(void) {
-    slMcResult_t status = sdfMcFuncFormat1();
-    if (status == SL_MC_RESULT_PENDING) {
+    McPollResult status = sdfMcFuncFormat1();
+    if (status == MC_POLL_PENDING) {
         return 0;
     }
     dds3SoftResetOn();
@@ -910,11 +878,11 @@ INCLUDE_ASM(const s32, "mc/slMain", slLoadData);
 INCLUDE_ASM(const s32, "mc/slMain", slLoadProc_openFile);
 
 saddr_t slLoadProc_readFile(void) {
-    slMcResult_t status = sdfMcFuncRead1();
-    if (status == SL_MC_RESULT_PENDING) {
+    McPollResult status = sdfMcFuncRead1();
+    if (status == MC_POLL_PENDING) {
         return 0;
     }
-    if (status == SL_MC_RESULT_SUCCESS) {
+    if (status == MC_POLL_SUCCESS) {
         sdfMcFuncClose(slMcFd);
         return EE_ADDR_S(slLoadProc_closeFile);
     }
@@ -951,7 +919,7 @@ s32 slCalc(dds3ProcessID_t *id) {
     if (job != 0 && pacFileCheckEnd(EE_ADDR_AS(fileRequest_t *, job)) != 0) {
         baseIconFileHandle = 0;
         slBaseIconMemHandle = fileGetMemHandle((fileRequest_t *)EE_ADDR_PTR(job));
-        slBaseIconBuff = EE_ADDR(fileGetLoadPtr((fileRequest_t *)EE_ADDR_PTR(job)));
+        slBaseIconBuff = fileGetLoadPtr((fileRequest_t *)EE_ADDR_PTR(job));
         slBaseIconBuffSize = fileGetLoadSize((fileRequest_t *)EE_ADDR_PTR(job));
         fileHandleFree((fileRequest_t *)EE_ADDR_PTR(job));
     }
