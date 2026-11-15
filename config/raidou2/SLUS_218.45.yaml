@@ -236,7 +236,6 @@ segments:
       - [0xE6950, c, sound/sndManager]
       - [0xE6980, c, code_r1_001CF808]
       - [0xE7518, c, sndAt3]
-      - [0xE94D8, asm, sndAt3_001D2178]
       - [0xE9A48, c, movie/mviManager]
       - [0xEA1F0, c, movie/MovieViewer]
       - [0xEAB00, c, file/fileManager]

@@ -49,7 +49,12 @@ extern sceGsStoreImage sdfGrStoreImage;
 extern sdfThCB_t sdfDispThreadCB;
 extern u8 sdfDrawThreadStack[0x8000];
 extern u8 sdfDispThreadStack[0x1000];
+/* Raidou 2 fills call delay slots with this flag's stores: not volatile there. */
+#ifdef VERSION_RAIDOU2
+extern u8 sdfDispThreadFlag;
+#else
 extern volatile u8 sdfDispThreadFlag;
+#endif
 extern volatile u8 sdfFrameId;
 extern s8 reqGsReset;
 extern volatile s32 dds3GsSema;
@@ -272,7 +277,79 @@ void sdfDeliverDrawEnd(s32 mode, s32 frameId, s32 halfOffset) {
     SDF_FLAG_SET(&sdfGrDrawBusy, sdfGrDrawBusy, -1);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfGraph", sdfDrawThread);
+extern u8 sdfFrameEvenOdd;
+extern volatile u8 sdfReqDrawDelayCount;
+extern volatile u8 sdfDrawSyncFlag;
+extern volatile u8 sdfDrawFrameFlag;
+extern u16 sdfDrawFrameCounter;
+void sdfDevSignalPendingSemaphore(void);
+
+void sdfDrawThread(void) {
+    u32 startTicks;
+
+    sdfDispThreadFlag = 0;
+    DmacAddHandler(1, 1, sdfDrawThIntHandler, -1, 0);
+    EnableDmac(1);
+    for (;;) {
+        CancelWakeupThread(GetThreadId());
+        sdfDispThreadFlag = 1;
+        SleepThread();
+        startTicks = sdfGetRunTimeCountBase();
+        WaitSema(dds3GsSema);
+        if (*(s8 *)&reqMakeFrameBuff != 0) {
+            reqMakeFrameBuff = 0;
+            sdfGrMakeFrameSet(&sdfGrFrameSet);
+        }
+        if (reqGsReset != 0) {
+            reqGsReset = 0;
+            sdfGrGsReset();
+        }
+        SDF_FLAG_SET(&sdfDrawSyncFlag, sdfDrawSyncFlag, 1);
+        sdfGrDrawFrame();
+        SDF_FLAG_SET(&sdfDrawSyncFlag, sdfDrawSyncFlag, 0);
+        if (sdfDrawFrameFlag != 0) {
+            /* Preserve the controller enable state while stopping VIF1. */
+            u32 enabledChannels = HW_READ(D_ENABLER);
+            HW_WRITE(D_ENABLEW, 0x10000);
+            HW_WRITE(D1_CHCR, 0);
+            HW_WRITE(D_ENABLEW, enabledChannels);
+            sceGsResetPath();
+            HW_WRITE(GS_BUSDIR, 0);
+            sdfDrawFrameFlag = 1;
+        } else {
+            sdfGrCapture();
+        }
+        SignalSema(dds3GsSema);
+        sdfDrawFrameCounter = sdfGetRunTimeCount(startTicks);
+    }
+}
+
+void sdfDispThread(void) {
+    u32 field;
+    s32 bufferIndex;
+
+    for (;;) {
+        sdfWaitVblank(0);
+        if ((sdfFrameEvenOdd & 1) == 0) {
+            sdfDevSignalPendingSemaphore();
+        }
+        field = (~HW_READ(GS_CSR) >> 13) & 1;
+        sdfFrameEvenOdd = field ^ 1;
+        if (sdfDispThreadFlag == 1) {
+            sdfDispThreadFlag = 2;
+            WakeupThread(sdfDrawThreadId);
+            WaitSema(dds3GsThreadId);
+        }
+        bufferIndex = sdfDispFrameId[sdfFrameEvenOdd];
+        if (bufferIndex >= 0) {
+            sdfGrSetDisp(bufferIndex);
+        }
+        if (sdfReqDrawDelayCount != 0) {
+            SDF_FLAG_SET(&sdfReqDrawDelayCount, sdfReqDrawDelayCount,
+                         sdfReqDrawDelayCount - 1);
+        }
+    }
+}
 
 void sdfGrInit(s32 aPacketBuffSize) {
     s32 thread;
@@ -318,7 +395,11 @@ volatile s32 dds3GsSema = 0;
 
 s8 sdfGrCaptureBuff = 0;
 
+#ifdef VERSION_RAIDOU2
+u8 sdfDispThreadFlag = 0;
+#else
 volatile u8 sdfDispThreadFlag = 0;
+#endif
 
 s32 sdfGrCaptureReq = 0;
 

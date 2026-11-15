@@ -135,6 +135,9 @@ enum sdf_stream_playback {
 extern sdfIpuDecodeCb_t *sdfIpuQueueHead;
 extern sdfIpuDecodeCb_t *sdfIpuQueueTail;
 extern sdfIpuDecodeCb_t *sdfCurrIpuDecodeCb;
+extern void sceIpuStopDMA(sdfIpuDmaRegs_t *);
+extern void sceIpuRestartDMA(sdfIpuDmaRegs_t *);
+extern u8 sdfIpuRgbModeBits[][2];
 extern sdfIpuDecodeCb_t *sdfIpuPendingCb;
 extern s32 sdfIpuDecode(sdfIpuDecodeCb_t *);
 extern s32 sdfIpuDecodeThId;
@@ -597,7 +600,60 @@ s32 IpuWriteCommand(void) {
     return decodedBits;
 }
 
+/* Residual: 18 of 114 words, first differing at +0x10. ee-gcc schedules
+ * &cb->dma into the prologue exactly as retail does, then the delay-slot pass
+ * moves it into the bnez slot; retail's slot holds a `$4 = 0` that stands
+ * between that address and the test, which no argument of the calls inside the
+ * if-body reaches, and whose live range is what pushes retail's constants off
+ * $4. */
+#ifdef NON_MATCHING
+s32 sdfIpuDecode(sdfIpuDecodeCb_t *cb)
+{
+    sdfIpuDmaRegs_t *dma = &cb->dma;
+    s32 decodedBits;
+    s32 mode;
+
+    if (cb->ipuCycleInitialized == 0) {
+        u32 dmaEnable;
+
+        cb->ipuCycleInitialized = 1;
+        dmaEnable = HW_READ(D_ENABLER);
+        HW_WRITE(D_ENABLER, 0x10000);
+        HW_WRITE(D4_CHCR, 1);
+        HW_WRITE(D_ENABLER, dmaEnable);
+        HW_WRITE(IPU_CTRL, 0x40000000);
+        sceIpuSync(0, 0);
+        HW_WRITE(IPU_CMD, 0);
+        sceIpuSync(0, 0);
+        sdfIpuSetToIpuDma(cb);
+        HW_WRITE(IPU_CTRL, 0);
+        sceIpuStopDMA(dma);
+    }
+
+    sdfCurrIpuDecodeCb = cb;
+    sdfIpuPendingCb = cb;
+    cb->dma.outputAddress = EE_PHYSICAL(EE_ADDR(cb->frameBuffers[cb->bufferIndex]));
+    cb->dma.outputQwords = cb->buffSize / 16;
+    cb->dma.outputControl = 0x100;
+    cb->bufferIndex ^= 1;
+    cb->inputFeedEnabled = 1;
+    sceIpuRestartDMA(dma);
+    if (cb->strmToIpuDmaStep == 0) {
+        cb->strmToIpuDmaStep = 1;
+    } else {
+        HW_WRITE(IPU_CMD, 0x40000020);
+        sceIpuSync(0, 0);
+    }
+    decodedBits = IpuWriteCommand();
+    HW_WRITE(IPU_CTRL, (decodedBits >> 8) & 0x00FB0000);
+    mode = (decodedBits & 0x04000000) ? 0x01010000 : 0x00010000;
+    HW_WRITE(IPU_CMD, 0x10000000 | ((u32)sdfIpuRgbModeBits[cb->rgbMode][0] << 27) |
+                  ((u32)sdfIpuRgbModeBits[cb->rgbMode][1] << 26) | mode);
+    return mode;
+}
+#else
 INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuDecode);
+#endif
 
 /* Remove and advance the first list item matching the IPU cleanup test. */
 void sdfIpuExecQueue(s32 critical) {
@@ -624,7 +680,53 @@ void sdfIpuExecQueue(s32 critical) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfIpu", sdfIpuDecodeThread);
+/* Sleep for IPU completion, advance cycle state and requeue non-drained nodes;
+ * the DMA worker runs indefinitely and retains the native completion-byte gates. */
+void sdfIpuDecodeThread(void) {
+    sdfIpuDecodeCb_t *work;
+    s32 interruptsEnabled;
+    for (;;) {
+        SleepThread();
+        work = sdfCurrIpuDecodeCb;
+        if (work == NULL) {
+            continue;
+        }
+        sceIpuStopDMA(&work->dma);
+        if (work->dma.inputQwords == 0) {
+            work->inputFeedEnabled = 0;
+        }
+        if (work->playbackPhase == SDF_STREAM_PLAYBACK_INITIAL) {
+            work->playbackPhase = SDF_STREAM_PLAYBACK_FIRST_COMPLETION;
+        }
+        work->activeBuffCount++;
+        sdfCurrIpuDecodeCb = NULL;
+        work->tickCount++;
+        if (work->tickCount == work->frameCount) {
+            if (work->loopMode != 0) {
+                work->ipuCycleInitialized = 0;
+                work->tickCount = 0;
+                work->strmToIpuDmaStep = 0;
+            } else {
+                work->drained = 1;
+            }
+        }
+        if (work->drained == 0) {
+            interruptsEnabled = DIntr();
+            sdfIpuAttachQueue(work, 0);
+            if (interruptsEnabled != 0) {
+                EIntr();
+            }
+        }
+        sdfIpuExecQueue(0);
+    }
+
+}
+
+s32 sdfIpuFromDmacHandler(void) {
+    iWakeupThread(sdfIpuDecodeThId);
+    EE_SYNC_EI();
+    return 0;
+}
 
 s32 sdfIpuToDmacHandler(void) {
     sdfIpuDecodeCb_t *stream = sdfIpuPendingCb;

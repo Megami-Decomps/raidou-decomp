@@ -4,6 +4,9 @@
 #include "ps2asm.h"
 #include "sif_rpc.h"
 #include "sdfSound.h"
+#include "sdfMemory.h"
+#include "sdfFileIO.h"
+#include "code_r1_001CF808.h"
 #include "sdfSystem.h"
 
 struct sdfGsMemSlice_t;
@@ -204,6 +207,13 @@ typedef struct sdfFileCmdHandle_t sdfFileCmdHandle_t;
 
 /* This handler writes the first word of the RPC reply block. */
 extern u32 sdfFileRpcQueue[];
+extern sdfFileCmdHandle_t *sdfFileRpcArg;
+extern sdfSoundRpcRequest_t *sdfFileRpcResult;
+extern s32 sdfFileRpcCmdState;
+extern sdfFileCmdHandle_t *sdfFileCmdReadOpen(
+    const char *path,
+    void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32),
+    s32 callbackContext);
 void sdfSndCmdIFThread(void);
 
 typedef struct sdfSndInitThreadParam_t {
@@ -850,7 +860,112 @@ s32 sdfFileRpcCallback(s32 unused, u32 event) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfFileRpcHandleCmd);
+void *sdfFileRpcHandleCmd(s32 function, void *requestData, s32 requestSize)
+{
+    char path[0x100];
+    sdfSoundRpcRequest_t *request = requestData;
+    u32 command = (u32)function;
+
+    switch (command) {
+    case 0: {
+        sdfFileCmdHandle_t *state;
+
+        if (sdfSndPcmFileName[0] == 0) {
+            sdfFileRpcQueue[0] = 0;
+            break;
+        }
+        p2sdPcmState = 1;
+        mnuBuildVoiceResourcePath(path, sdfSndPcmFileName);
+        state = sdfFileCmdReadOpen(path,
+            (void (*)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32))sdfFileRpcCallback, 0);
+        sdfFileRpcArg = state;
+        if (state != NULL) {
+            WaitSema(sifRpcServerSema);
+            state = sdfFileRpcArg;
+            if (((sdfFileCmd_t *)state)->error != 0) {
+                sdfFileCmdClearError((sdfFileCmd_t *)state);
+                sdfFileCmdFree((sdfFileCmd_t *)sdfFileRpcArg);
+                sdfFileRpcArg = NULL;
+                state = NULL;
+            }
+        }
+        sdfFileRpcQueue[0] = EE_ADDR(state);
+        break;
+    }
+    case 1: {
+        sdfMemHandle_t *allocation;
+        void *buffer;
+
+        sdfFileRpcResult = request;
+        allocation = sdfMemAllocDirect(request->byteCount);
+        buffer = sdfMemLock(allocation);
+        if (buffer != NULL) {
+            sdfFileCmdRead(sdfFileRpcArg, buffer, sdfFileRpcResult->byteCount);
+            WaitSema(sifRpcServerSema);
+            sdfSndTransToIOP(sdfFileRpcResult->destination, buffer, sdfFileRpcResult->byteCount);
+            sdfMemFreeDirect(allocation);
+            sdfFileRpcQueue[0] = sdfFileRpcResult->byteCount;
+        } else {
+            sdfFileRpcQueue[0] = 0;
+        }
+        break;
+    }
+    case 2:
+        sdfFileCmdClose(sdfFileRpcArg);
+        WaitSema(sifRpcServerSema);
+        sdfFileCmdFree((sdfFileCmd_t *)sdfFileRpcArg);
+        sdfFileRpcArg = NULL;
+        p2sdPcmState = 0;
+        sdfFileRpcQueue[0] = 0;
+        break;
+    case 3:
+        sdfFileRpcCmdState = 0;
+        sdfFileRpcQueue[0] = 0;
+        break;
+    case 4: {
+        s32 bytes;
+
+        sdfFileRpcResult = request;
+        sdfSndTransToIOP(request->destination, (u8 *)sdfSndPcmRequest.data + sdfFileRpcCmdState,
+                         request->byteCount);
+        bytes = sdfFileRpcResult->byteCount;
+        sdfFileRpcQueue[0] = bytes;
+        sdfFileRpcCmdState += bytes;
+        break;
+    }
+    case 5:
+        sdfFileRpcQueue[0] = 0;
+        break;
+    case 6: {
+        u32 word = p2sdPcmCallback;
+
+        if (word != 0) {
+            p2sdPcmBusy = 1;
+        }
+        sdfFileRpcQueue[0] = word;
+        break;
+    }
+    case 7: {
+        void *buffer;
+
+        sdfFileRpcResult = request;
+        buffer = EE_ADDR_AS(p2sdPcmFunc_t, p2sdPcmCallback)(request->byteCount);
+        if (buffer != NULL) {
+            sdfSndTransToIOP(sdfFileRpcResult->destination, buffer,
+                             sdfFileRpcResult->byteCount);
+            sdfFileRpcQueue[0] = sdfFileRpcResult->byteCount;
+        } else {
+            sdfFileRpcQueue[0] = -1;
+        }
+        break;
+    }
+    case 8:
+        p2sdPcmBusy = 0;
+        sdfFileRpcQueue[0] = 0;
+        break;
+    }
+    return sdfFileRpcQueue;
+}
 
 void SifRpcServerThreadProc(void)
 {

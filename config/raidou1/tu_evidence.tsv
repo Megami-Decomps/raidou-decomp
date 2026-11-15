@@ -174,8 +174,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001CEC50	001CF748	evtTmxPreLoad	asm	none	
 001CF7D8	001CF7D8	sound/sndManager	c	smt3:map:1 of 1	sound/sndManager
 001CF808	001D0268	code_r1_001CF808	c	dds:17 of 40	
-001D02F8	001D2150	sndAt3	c	dds:20 literal-cores:1 of 34	
-001D2178	001D2698	sndAt3_001D2178	asm	none	
+001D02F8	001D2698	sndAt3	c	dds:20 literal-cores:1 of 34+gap sndAt3_001D2178 (sndCallWaitSema3, sndBgmLoadId_XF and 13 more)	
 001D26D0	001D2C98	movie/mviManager	c	smt3:map:7+smt3:names:6 of 16	movie/mviManager
 001D2E78	001D3308	movie/MovieViewer	c	smt3:names:7+smt3:map:1 literal-cores:1 of 8	movie/MovieViewer
 001D36F0	001D4938	file/fileManager	c	smt3:names:28 of 35	file/fileManager

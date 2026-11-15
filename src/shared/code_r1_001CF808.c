@@ -152,7 +152,6 @@ typedef struct BrsResultWork {
 
 typedef struct BrsProfilePalette { u32 values[4]; } BrsProfilePalette;
 
-char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename);
 void mnuResetTitleEffectState(s32 command);
 void mnuSetTitleVoicePrefixIndex(s32 prefixIndex);
 void scrGetAfterSkipBgmFlag(void);

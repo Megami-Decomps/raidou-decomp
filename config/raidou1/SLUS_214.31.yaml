@@ -231,7 +231,6 @@ segments:
       - [0xD07D8, c, sound/sndManager]
       - [0xD0808, c, code_r1_001CF808]
       - [0xD12F8, c, sndAt3]
-      - [0xD3178, asm, sndAt3_001D2178]
       - [0xD36D0, c, movie/mviManager]
       - [0xD3E78, c, movie/MovieViewer]
       - [0xD46F0, c, file/fileManager]

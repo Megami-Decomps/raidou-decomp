@@ -4028,7 +4028,7 @@
 0x001E6620	sndLeaf2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sndAt3; no named callee, caller or string
 0x001E66E0	sndCallSeStop	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sndAt3; calls sndSeStop
 0x001E7128	sndCallWaitVblank	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sndAt3; calls sdfWaitVblank
-0x001E7158	sndCallWaitVblankLabel2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sndCallWaitVblank
+0x001E7158	sndCallWaitVblankLabel	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sndCallWaitVblank
 0x001E71A8	sndCallMemset	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit sndAt3; calls memset
 0x001E7358	mnuReadTitleStreamStatusLocked	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A340, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001E73A8	mnuWriteTitleStreamStatusLocked	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0026A390, masked-words-identical (strict map pair); dds-decomp: descriptive

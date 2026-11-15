@@ -27,6 +27,7 @@ void sceSifRegisterRpc(struct sifRpcServerData_t *server, u32 serviceId,
                         sceSifRpcFunc handler, void *buffer, sceSifRpcFunc callback,
                         void *callbackBuffer, struct sifRpcDataQueue_t *queue);
 s32 sceWrite(s32 descriptor, const void *source, s32 size);
+s32 sceRead(s32 descriptor, void *buffer, s32 size);
 
 s32 sceOpen(const char *name, s32 flags, ...);
 

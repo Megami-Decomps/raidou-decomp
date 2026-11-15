@@ -3,7 +3,6 @@
 #include "sdk_libgraph.h"
 #include "sdk_libkernl.h"
 
-extern s32 sceRead(s32 fd, void *buf, s32 size);
 extern s32 sceClose(s32 a);
 extern s32 atoi(const char *s);
 

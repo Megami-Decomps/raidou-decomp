@@ -3,7 +3,6 @@
 #include "libsdf.h"
 #include "ps2asm.h"
 #include "sdfSystem.h"
-extern s32 sceRead(s32 fileHandle, saddr_t buffer, s32 byteCount);
 
 typedef struct
 {
@@ -392,7 +391,7 @@ void sdfCdImageLoadDir(const char *dirFile) {
     sceLseek(fileHandle, 0, 0);
     buffer = malloc(fileBytes);
     sdfCdImageDirData = buffer;
-    sceRead(fileHandle, EE_ADDR_S(buffer), fileBytes);
+    sceRead(fileHandle, buffer, fileBytes);
     sceClose(fileHandle);
 }
 

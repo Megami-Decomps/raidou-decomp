@@ -7,6 +7,8 @@
 #include "sdfFileIO.h"
 #include "sdfSystem.h"
 #include "sdfFile.h"
+#include "sdfCd.h"
+#include "sdfMemory.h"
 extern s32 DIntr(void);
 extern void EIntr(void);
 
@@ -274,7 +276,338 @@ void sdfFileCmdFinish(sdfFileCmdHandle_t *state, s32 result) {
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdThread);
+void sdfFileCmdThread(sdfFileDeviceCB_t *aCB) {
+    sdfFileCmdHandle_t *state;
+    void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32);
+    s32 fileHandle;
+    s32 result;
+    s32 position;
+    s32 transferResult;
+    s32 endOffset;
+    void *buffer;
+    u32 operationIndex;
+    for (;;) {
+        WaitSema(aCB->semaId);
+        state = aCB->first;
+        if (state == NULL) {
+            continue;
+        }
+        operationIndex = state->cmd - SDF_FILE_CMD_READOPEN;
+        state->cmd = SDF_FILE_CMD_NONE;
+        switch (operationIndex) {
+        case SDF_FILE_CMD_READOPEN - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_OPEN;
+            fileHandle = sceOpen(state->filename, 1, 0);
+            if (fileHandle < 0) {
+                sdfFileCmdFinish(state, fileHandle);
+                continue;
+            }
+            state->stat = SDF_FILE_CMD_STAT_SUSPEND;
+            state->fd = fileHandle;
+            state->currentOffset = 0;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 2, 0, 0, state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_WRITEOPEN - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_OPEN;
+            fileHandle = sceOpen(state->filename, 0x202, state->cmdParm);
+            if (fileHandle < 0) {
+                sdfFileCmdFinish(state, fileHandle);
+                continue;
+            }
+            state->stat = SDF_FILE_CMD_STAT_SUSPEND;
+            state->fd = fileHandle;
+            state->currentOffset = 0;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 2, 0, 0, state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_SEEK - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_SEEK;
+            endOffset = sceLseek(state->fd, state->offset, state->cmdParm);
+            if (endOffset < 0) {
+                sdfFileCmdFinish(state, endOffset);
+                continue;
+            }
+            state->stat = SDF_FILE_CMD_STAT_SUSPEND;
+            state->currentOffset = endOffset;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 3, 0, endOffset, state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_FILESIZE - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_SEEK;
+            position = sceLseek(state->fd, 0, 1);
+            if (position < 0) {
+                sdfFileCmdFinish(state, position);
+                continue;
+            }
+            endOffset = sceLseek(state->fd, 0, 2);
+            if (endOffset < 0) {
+                sdfFileCmdFinish(state, endOffset);
+                continue;
+            }
+            result = sceLseek(state->fd, position, 0);
+            if (result < 0) {
+                sdfFileCmdFinish(state, result);
+                continue;
+            }
+            state->stat = SDF_FILE_CMD_STAT_SUSPEND;
+            state->currentOffset = endOffset;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 4, 0, endOffset, state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_READ - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_READ;
+            result = sceRead(state->fd, state->buffer,
+                           state->length);
+            if (result < 0) {
+                sdfFileCmdFinish(state, result);
+                continue;
+            }
+            state->stat = SDF_FILE_CMD_STAT_SUSPEND;
+            state->currentOffset += result;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 5, EE_ADDR_S(state->buffer), result,
+                                state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_WRITE - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_WRITE;
+            result = sceWrite(state->fd, (const void *)state->buffer, state->length);
+            if (result < 0) {
+                sdfFileCmdFinish(state, result);
+                continue;
+            }
+            state->stat = SDF_FILE_CMD_STAT_SUSPEND;
+            state->currentOffset += result;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 6, EE_ADDR_S(state->buffer), result,
+                                state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_CLOSE - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_CLOSE;
+            result = sceClose(state->fd);
+            state->fd = -1;
+            if (result < 0) {
+                sdfFileCmdFinish(state, result);
+                continue;
+            }
+            sdfFileCmdDequeue(state);
+            state->stat = SDF_FILE_CMD_STAT_DONE;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 7, 0, 0, state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_READFILE - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_OPEN;
+            fileHandle = sceOpen(state->filename, 1, 0);
+            if (fileHandle < 0) {
+                sdfFileCmdFinish(state, fileHandle);
+                continue;
+            }
+            state->fd = fileHandle;
+            transferResult = state->length;
+            /* A negative count means the whole file; NULL storage is allocated below. */
+            if (transferResult < 0) {
+                state->stat = SDF_FILE_CMD_STAT_SEEK;
+                transferResult = sceLseek(fileHandle, 0, 2);
+                if (transferResult < 0) {
+                    sdfFileCmdFinish(state, transferResult);
+                    continue;
+                }
+                result = sceLseek(state->fd, 0, 0);
+                if (result < 0) {
+                    sdfFileCmdFinish(state, result);
+                    continue;
+                }
+            }
+            if (transferResult != 0) {
+                buffer = state->buffer;
+                if (buffer == NULL) {
+                    buffer = EE_ADDR_AS(void *, sdfMemLock(sdfMemAllocDirect(transferResult)));
+                }
+                state->buffer = buffer;
+                state->stat = SDF_FILE_CMD_STAT_READ;
+                transferResult = sceRead(state->fd, buffer, transferResult);
+                if (transferResult < 0) {
+                    sdfFileCmdFinish(state, transferResult);
+                    continue;
+                }
+            }
+            state->stat = SDF_FILE_CMD_STAT_CLOSE;
+            sceClose(state->fd);
+            state->fd = -1;
+            sdfFileCmdDequeue(state);
+            state->stat = SDF_FILE_CMD_STAT_DONE;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 8, EE_ADDR_S(state->buffer), transferResult,
+                         state->userData);
+            }
+            SignalSema(aCB->semaId);
+            continue;
+        case SDF_FILE_CMD_WRITEFILE - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_OPEN;
+            fileHandle = sceOpen(state->filename, 0x202, state->cmdParm);
+            if (fileHandle < 0) {
+                sdfFileCmdFinish(state, fileHandle);
+                continue;
+            }
+            state->fd = fileHandle;
+            transferResult = state->length;
+            if (transferResult != 0) {
+                state->stat = SDF_FILE_CMD_STAT_WRITE;
+                transferResult = sceWrite(fileHandle, (const void *)state->buffer, transferResult);
+                if (transferResult < 0) {
+                    sdfFileCmdFinish(state, transferResult);
+                    continue;
+                }
+            }
+            break;
+        default:
+            continue;
+        }
+        state->stat = SDF_FILE_CMD_STAT_CLOSE;
+        sceClose(state->fd);
+        state->fd = -1;
+        sdfFileCmdDequeue(state);
+        state->stat = SDF_FILE_CMD_STAT_DONE;
+        callback = state->callback;
+        if (callback != NULL) {
+            callback(state, 8, EE_ADDR_S(state->buffer), transferResult,
+                            state->userData);
+        }
+        SignalSema(aCB->semaId);
+    }
+}
+
+/* Worker slot 3 services disc-backed requests through serialized disc operations. */
+/* Residual: 2 of 155 words, +0x218: the fd = -1 after the read-file close
+ * takes $3 where retail takes $2. */
+#ifdef NON_MATCHING
+void sdfFileCdImageCmdThread(sdfFileDeviceCB_t *aCB) {
+    sdfFileCmdHandle_t *state;
+    void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32);
+    s32 result;
+    s32 transferResult;
+    void *readBuffer;
+    u32 operation;
+    for (;;) {
+        WaitSema(aCB->semaId);
+        state = aCB->first;
+        if (state == NULL) {
+            continue;
+        }
+        operation = state->cmd - SDF_FILE_CMD_READOPEN;
+        state->cmd = SDF_FILE_CMD_NONE;
+        switch (operation) {
+        case SDF_FILE_CMD_READOPEN - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_OPEN;
+            result = sdfDevOpenDiscFileAndGetSize(state->filename);
+            if (result < 0) {
+                sdfFileCmdFinish(state, 0);
+                continue;
+            }
+            state->stat = SDF_FILE_CMD_STAT_SUSPEND;
+            state->currentOffset = 0;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 2, 0, 0, state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_FILESIZE - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_SUSPEND;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 4, 0, sdfCdImageGetCurrFileSize(),
+                                state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_READ - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_READ;
+            result = sdfCdImageRead(state->buffer, state->length);
+            if (result < 0) {
+                sdfFileCmdFinish(state, result);
+                continue;
+            }
+            state->stat = SDF_FILE_CMD_STAT_SUSPEND;
+            state->currentOffset += result;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 5, EE_ADDR_S(state->buffer), result,
+                                state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_CLOSE - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_CLOSE;
+            sdfCdImageClose();
+            sdfFileCmdDequeue(state);
+            state->stat = SDF_FILE_CMD_STAT_DONE;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 7, 0, 0, state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_READFILE - SDF_FILE_CMD_READOPEN:
+            state->stat = SDF_FILE_CMD_STAT_OPEN;
+            result = sdfDevOpenDiscFileAndGetSize(state->filename);
+            if (result < 0) {
+                sdfFileCmdFinish(state, 0);
+                continue;
+            }
+            transferResult = state->length;
+            if (transferResult < 0) {
+                transferResult = sdfCdImageGetCurrFileSize();
+            }
+            if (transferResult != 0) {
+                readBuffer = state->buffer;
+                if (readBuffer == NULL) {
+                    readBuffer = EE_ADDR_AS(void *, sdfMemLock(sdfMemAllocDirect(transferResult)));
+                }
+                state->buffer = readBuffer;
+                state->stat = SDF_FILE_CMD_STAT_READ;
+                transferResult = sdfCdImageRead(readBuffer, transferResult);
+                if (transferResult < 0) {
+                    sdfFileCmdFinish(state, transferResult);
+                    continue;
+                }
+            }
+            state->stat = SDF_FILE_CMD_STAT_CLOSE;
+            sdfCdImageClose();
+            state->fd = -1;
+            sdfFileCmdDequeue(state);
+            state->stat = SDF_FILE_CMD_STAT_DONE;
+            callback = state->callback;
+            if (callback != NULL) {
+                callback(state, 8, EE_ADDR_S(state->buffer), transferResult,
+                                state->userData);
+            }
+            continue;
+        case SDF_FILE_CMD_WRITEOPEN - SDF_FILE_CMD_READOPEN:
+        case SDF_FILE_CMD_SEEK - SDF_FILE_CMD_READOPEN:
+        case SDF_FILE_CMD_WRITE - SDF_FILE_CMD_READOPEN:
+        case SDF_FILE_CMD_WRITEFILE - SDF_FILE_CMD_READOPEN:
+            sdfFileCmdFinish(state, 0);
+            continue;
+        default:
+            continue;
+        }
+    }
+}
+#else
+INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCdImageCmdThread);
+#endif
 
 /* Allocate a worker-specific device path; an unsupported worker returns NULL. */
 char *sdfFileCmdMakeRealFileName(const char *aSrcName, s32 aDeviceType) {

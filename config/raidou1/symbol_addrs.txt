@@ -23661,11 +23661,11 @@ rstCallStartLevelUp = 0x00354C78; // type:func
 rstCallStartLevelUp2 = 0x00354F28; // type:func
 evtCallCheckRankUp = 0x00355A50; // type:func
 // Data only the asm split had (named by the data baseline pass, provenance: name_sources.txt)
-sndCallWaitVblankLabel = 0x001D0E80; // type:label
-sdfDispThread = 0x00357F58; // type:label
-sdfFileCdImageCmdThread = 0x0036D4C8; // type:label
+sndCallWaitVblankLabel = 0x001D0E80; // type:func
+sdfDispThread = 0x00357F58; // type:func
+sdfFileCdImageCmdThread = 0x0036D4C8; // type:func
 sdfHddInitLabel = 0x0036E1E0; // type:label
-sdfIpuFromDmacHandler = 0x00373CD0; // type:label
+sdfIpuFromDmacHandler = 0x00373CD0; // type:func
 _kTLBExceptionLabel = 0x0039CD40; // type:label
 _kDebugException = 0x0039CE80; // type:label
 _kTLBExceptionLabel2 = 0x0039CF7C; // type:label

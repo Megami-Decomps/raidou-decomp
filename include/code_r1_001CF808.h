@@ -12,5 +12,6 @@ void ProcessInit(void);
 s32 mnuDestroyTitleEffectTask(dds3ProcessID_t *id);
 s32 mnuIncrementTitleEffectFrameCounter(dds3ProcessID_t *id);
 void sndInit(void);
+char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename);
 
 #endif

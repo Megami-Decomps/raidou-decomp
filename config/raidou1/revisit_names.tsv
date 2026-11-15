@@ -1565,7 +1565,7 @@
 0x001D0400	sndLeaf2	func	tier=D	derived-unit	na	unit sndAt3; no named callee, caller or string
 0x001D04C0	sndCallSeStop	func	tier=D	derived-callee	na	unit sndAt3; calls sndSeStop
 0x001D0E50	sndCallWaitVblank	func	tier=D	derived-callee	na	unit sndAt3; calls sdfWaitVblank
-0x001D0E80	sndCallWaitVblankLabel	data	tier=D	derived-sole	na	used by sndCallWaitVblank
+0x001D0E80	sndCallWaitVblankLabel	func	tier=D	derived-sole	na	used by sndCallWaitVblank
 0x001D0ED0	sndCallMemset	func	tier=D	derived-callee	na	unit sndAt3; calls memset
 0x001D1080	mnuReadTitleStreamStatusLocked	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0026A340, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001D10D0	mnuWriteTitleStreamStatusLocked	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0026A390, masked-words-identical (strict map pair); dds-decomp: descriptive

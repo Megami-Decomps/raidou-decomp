@@ -23,5 +23,6 @@ s32 sdfFreeAutoDelayed(void *allocation);
 s32 sdfGetRunTimeCount(s32 aBaseTime);
 s32 sdfGetRunTimeCountBase(void);
 void sdfWaitVblank(s32 count);
+void sdfSetMainThreadPriority(void);
 
 #endif

@@ -25366,12 +25366,12 @@ sysPtmdTypeInfo = 0x00418D38; // type:func
 sysFunc21 = 0x00418D88; // type:func
 sysArrayTypeInfo = 0x00418DF0; // type:func
 // Data only the asm split had (named by the data baseline pass, provenance: name_sources.txt)
-sndCallWaitVblankLabel2 = 0x001E7158; // type:label
+sndCallWaitVblankLabel = 0x001E7158; // type:func
 objLmpMainProcLabel = 0x0034CD68; // type:label
-sdfDispThread = 0x003CDCE0; // type:label
-sdfFileCdImageCmdThread = 0x003E3258; // type:label
+sdfDispThread = 0x003CDCE0; // type:func
+sdfFileCdImageCmdThread = 0x003E3258; // type:func
 sdfHddInitLabel = 0x003E3F70; // type:label
-sdfIpuFromDmacHandler = 0x003E9910; // type:label
+sdfIpuFromDmacHandler = 0x003E9910; // type:func
 effFunc3Label = 0x003FBA28; // type:label
 effFunc3Label2 = 0x003FBB88; // type:label
 effFunc7Label = 0x003FC430; // type:label
