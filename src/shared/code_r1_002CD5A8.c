@@ -71,7 +71,7 @@ void uiDrawSurfaceAtNearDepth(u32 surface) {
     uiDrawUniformColorRect(0, 0, 0, 0x2000, 0xe00, 0, surface);
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", uiScaleColorRgb);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", uiScaleColorRgb);
 
 u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight)
 {
@@ -107,13 +107,13 @@ u32 itfReturnZeroDuplicate(void) {
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", itfActivateGridTextWidget);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfActivateGridTextWidget);
 
-INCLUDE_ASM(const s32, "code_0032DB50", itfSetWidgetFlagsAndActivateChild);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfSetWidgetFlagsAndActivateChild);
 
-INCLUDE_ASM(const s32, "code_0032DB50", itfCreateGridTextWidget);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfCreateGridTextWidget);
 
-INCLUDE_ASM(const s32, "code_0032DB50", itfSetGridDimensions);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfSetGridDimensions);
 
 u32 itfDestroyGridTextWidget(GridTextWidget *widget) {
     GridTextListItem *next;
@@ -145,7 +145,7 @@ u32 itfDestroyGridTextWidgetTree(GridTextWidget *widget) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", itfExpandWidgetColumnWidth);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfExpandWidgetColumnWidth);
 
 /* Bit 0: the visible node has a predecessor. Bit 1: at least rows successors remain. */
 u32 itfGetGridListLinkFlags(GridTextWidget *owner) {
@@ -205,7 +205,7 @@ GridTextListItem *itfAppendGridTextItem(GridTextWidget *owner, const char *text,
     return item;
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", fclGohInitSkillChangeSub);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", fclGohInitSkillChangeSub);
 
 GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *widget) {
     GridTextListItem *node;
@@ -304,7 +304,7 @@ void itfReplaceGridTextAndExpandColumn(GridTextWidget *widget, GridTextListItem 
     }
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", itfSetGridNumericItemDescriptor);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfSetGridNumericItemDescriptor);
 
 /* Advance by at least one configured step; crossing the maximum wraps to minimum. */
 void itfAdvanceGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps) {
@@ -364,11 +364,11 @@ void itfReverseSelectedGridScroll(GridTextWidget *widget, u32 steps) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", itfGetGridTextColorTableIndex);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfGetGridTextColorTableIndex);
 
-INCLUDE_ASM(const s32, "code_0032DB50", itfFormatGridValueEntryText);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfFormatGridValueEntryText);
 
-INCLUDE_ASM(const s32, "code_0032DB50", fclCallDrawBoxF);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", fclCallDrawBoxF);
 
 GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
     GridTextListItem *item = widget->head;
@@ -379,14 +379,14 @@ GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
     return item;
 }
 
-INCLUDE_ASM(const s32, "code_0032DB50", sdfGridSeekSelectedNodeByIndex);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", sdfGridSeekSelectedNodeByIndex);
 
-INCLUDE_ASM(const s32, "code_0032DB50", fclLeaf13);
-INCLUDE_SDATA(const s32, "code_0032DB50", itfFormatGridValueEntryTextData);
+INCLUDE_ASM(const s32, "code_r1_002CD5A8", fclLeaf13);
+INCLUDE_SDATA(const s32, "code_r1_002CD5A8", itfFormatGridValueEntryTextData);
 
-INCLUDE_SDATA(const s32, "code_0032DB50", itfFormatGridValueEntryTextData2);
+INCLUDE_SDATA(const s32, "code_r1_002CD5A8", itfFormatGridValueEntryTextData2);
 
-INCLUDE_SDATA(const s32, "code_0032DB50", itfFormatGridValueEntryTextData3);
+INCLUDE_SDATA(const s32, "code_r1_002CD5A8", itfFormatGridValueEntryTextData3);
 
-INCLUDE_SDATA(const s32, "code_0032DB50", itfFormatGridValueEntryTextData4);
+INCLUDE_SDATA(const s32, "code_r1_002CD5A8", itfFormatGridValueEntryTextData4);
 

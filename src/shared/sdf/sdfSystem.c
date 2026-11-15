@@ -399,6 +399,9 @@ s32 VblankIntcHandler(s32 cause)
             sdfCdClock = clock - 1;
         }
     }
+#ifdef VERSION_RAIDOU1
+    EE_SYNC_EI();
+#endif
     return 0;
 }
 

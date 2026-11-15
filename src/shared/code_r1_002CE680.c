@@ -168,9 +168,9 @@ LmapNode *fldLmapRewindThroughWindow(LmapList *list) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_0032EC40", fldLocalMapDrawScrollIndicators);
+INCLUDE_ASM(const s32, "code_r1_002CE680", fldLocalMapDrawScrollIndicators);
 
-INCLUDE_ASM(const s32, "code_0032EC40", fldLmapDrawListTree);
+INCLUDE_ASM(const s32, "code_r1_002CE680", fldLmapDrawListTree);
 
 /* Build one positioned SIF command and submit it on the requested draw surface. */
 void fldLmapSubmitPositionedCommandPacket(s32 x, s32 y, s32 z,
@@ -198,5 +198,5 @@ void fldLmapSubmitScaledSpritePacket(s32 x, s32 y, s32 z, s32 width, s32 height,
     drawSurface->regFunc(drawSurface, packetList);
 }
 
-INCLUDE_SDATA(const s32, "code_0032EC40", fldLmapDrawListTreeData);
+INCLUDE_SDATA(const s32, "code_r1_002CE680", fldLmapDrawListTreeData);
 

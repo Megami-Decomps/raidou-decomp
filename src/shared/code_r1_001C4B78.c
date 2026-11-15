@@ -174,9 +174,9 @@ typedef struct { u8 bytes[0x40]; } EvtRowPayload40;
 
 EvtPackLoadState *evtGetPackProcessData(EvtPackEventId eventId);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtNpcSadaPB);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtNpcSadaPB);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtUpdateEffectViewerGroup);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtUpdateEffectViewerGroup);
 
 s32 evtDispatchActionByIndex(s32 actionIndex, s32 x, s32 y, dds_evtViewerInfo_t *runtime) {
     s32 mode = runtime->actionMode;
@@ -330,9 +330,9 @@ s32 evtIndexGroupTypeTwentyFiveChildren(dds_evtViewerInfo_t *runtime) {
     return index;
 }
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtViewerWriteTrackDirectory);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtViewerWriteTrackDirectory);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtWriteRuntimeHeaderValues);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtWriteRuntimeHeaderValues);
 
 /* Filter groups by file format and serialize each child body. Type-8 spans use the
  * next start or terminal range halfword, unless their body marker disables them. */
@@ -397,9 +397,9 @@ void evtWriteFixedSizeEntries(s32 output, dds_evtViewerInfo_t *table) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtWriteGroupHeader);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtWriteGroupHeader);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtFunc6);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtFunc6);
 
 void evtEmitGroupTypeElevenPayloads(s32 output, dds_evtViewerInfo_t *runtime) {
     EvtRuntimeGroup *group;
@@ -523,36 +523,36 @@ void evtEmitGroupTypeTwentyFivePayloads(s32 output, dds_evtViewerInfo_t *runtime
     }
 }
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtPfsEventPmvtool);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtPfsEventPmvtool);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData2and3Sub);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub2);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData2and3Sub2);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub3);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData2and3Sub3);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub4);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData2and3Sub4);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub5);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData2and3Sub5);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtNotFoundLinkslight);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtNotFoundLinkslight);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData1);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData1);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3Sub6);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData2and3Sub6);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtSetGameData2and3);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtSetGameData2and3);
 
-INCLUDE_ASM(const s32, "code_001DAC80", evtCallEventFadeOutAllBgm);
-INCLUDE_SDATA(const s32, "code_001DAC80", evtNpcSadaPBData);
+INCLUDE_ASM(const s32, "code_r1_001C4B78", evtCallEventFadeOutAllBgm);
+INCLUDE_SDATA(const s32, "code_r1_001C4B78", evtNpcSadaPBData);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", evtNpcSadaPBData2);
+INCLUDE_SDATA(const s32, "code_r1_001C4B78", evtNpcSadaPBData2);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", evtNpcSadaPBData3);
+INCLUDE_SDATA(const s32, "code_r1_001C4B78", evtNpcSadaPBData3);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", evtNpcSadaPBData4);
+INCLUDE_SDATA(const s32, "code_r1_001C4B78", evtNpcSadaPBData4);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", evtMsgSaveOpenError);
+INCLUDE_SDATA(const s32, "code_r1_001C4B78", evtMsgSaveOpenError);
 
-INCLUDE_SDATA(const s32, "code_001DAC80", evtPfsDevice);
+INCLUDE_SDATA(const s32, "code_r1_001C4B78", evtPfsDevice);
 

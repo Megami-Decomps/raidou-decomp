@@ -224,7 +224,7 @@ struct MenuList;
 
 struct dds3ProcessID_t;
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtCallMessageDelete);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallMessageDelete);
 
 /* Process keys at or beyond threshold, restarting at the head after each call. */
 void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold) {
@@ -247,11 +247,11 @@ void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", mnuAdjustTimelineDurations);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuAdjustTimelineDurations);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtInitCustomSceneLightSub);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtInitCustomSceneLightSub);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtGetValueNewSLightFrame);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtGetValueNewSLightFrame);
 
 void SetDefaultTmxData(CampDisplayDefaults *display) {
     display->x = 0x100;
@@ -295,7 +295,7 @@ void evtGetValueNewTMXFrame(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track,
     evtHokanTmx(lowerKey, upperKey, display, ratio);
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtHokanTmx);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtHokanTmx);
 
 void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey) {
     s32 frameOffset;
@@ -338,7 +338,7 @@ void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsO
     *highBitsOut = key->p08.h[0] >> CAMP_KEY_HIGH_BITS_SHIFT;
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", mnuCampFindMatchingEntryIndex);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuCampFindMatchingEntryIndex);
 
 /* Return the first track with this fixed-width name, or NULL when absent. */
 EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *name) {
@@ -352,15 +352,15 @@ EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", campResolvePendingValue);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", campResolvePendingValue);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtDrawTexture);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtDrawTexture);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", fldResetCampSceneEntries);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", fldResetCampSceneEntries);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtCallSetFontString);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallSetFontString);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", mnuCampLinkFontGlyph);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuCampLinkFontGlyph);
 
 /* Retail keeps only the divide-by-zero check (break 7) of a division whose result is never used. */
 void mnuCampCheckClockDivisor(void) {
@@ -371,17 +371,17 @@ void mnuCampCheckClockDivisor(void) {
     quotient = 1 / heapStats.totalBytes;
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtRenderTexStart);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtRenderTexStart);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtCallAllocRenderTexture);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallAllocRenderTexture);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtCallMemAllocFromTailDirect);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallMemAllocFromTailDirect);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtCallPrimAllocDrawTag);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallPrimAllocDrawTag);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtCallGrAllocPacketBuff);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallGrAllocPacketBuff);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf15);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf15);
 
 void evtLeaf16(void) {
 }
@@ -402,17 +402,17 @@ MnuCampSecondaryOptionIndex evtEventSkipStartSub(dds_evtViewerInfo_t *scene) {
     return (scene->optionFlags & CAMP_SECONDARY_OPTION_MASK) >> CAMP_SECONDARY_OPTION_SHIFT;
 }
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtRefDDS3GBWK);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtRefDDS3GBWK);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf19);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf19);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf20);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf20);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf21);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf21);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtLeaf22);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf22);
 
-INCLUDE_ASM(const s32, "code_001CA8F8", evtEventFadeOutAllBgm);
+INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtEventFadeOutAllBgm);
 
-INCLUDE_SDATA(const s32, "code_001CA8F8", evtData22);
+INCLUDE_SDATA(const s32, "code_r1_001CA8F8", evtData22);
 

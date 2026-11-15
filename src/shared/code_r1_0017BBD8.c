@@ -404,14 +404,14 @@ void btlDebugMenuBeforeRecordNoOp(void) {
 void btlDebugMenuAfterRecordNoOp(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", pbLeaf18);
+INCLUDE_ASM(const s32, "code_r1_0017BBD8", pbLeaf18);
 
 void btlDebugMenuRecordNoOp(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", btlFindEntryByCommand);
+INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlFindEntryByCommand);
 
-INCLUDE_ASM(const s32, "code_0017BBD8", btlCountNonPartOpcodes);
+INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlCountNonPartOpcodes);
 
 s32 btlOpenPfsDebugDirectory(const char *directoryName) {
     char pathBuffer[BTL_DIRECTORY_PATH_BYTES];
@@ -434,7 +434,7 @@ void btlClosePfsDebugDirectory(s32 directoryHandle) {
     sceDclose(directoryHandle);
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", btlReadBattleResourceDirectoryEntry);
+INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlReadBattleResourceDirectoryEntry);
 
 /* Build a scan-order list of built-in names and enabled resource-file categories. */
 BtlResourceEntryList *btlScanDirectory(const char *path, s32 flags) {
@@ -588,9 +588,9 @@ void btlAppendEntry(BtlResourceEntryList *list, const char *name, s32 category, 
     list->count++;
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", btlCreateResourceDescriptor);
+INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlCreateResourceDescriptor);
 
-INCLUDE_ASM(const s32, "code_0017BBD8", Draw_effLensFlare);
+INCLUDE_ASM(const s32, "code_r1_0017BBD8", Draw_effLensFlare);
 
 /* Release an owned texture handle and the descriptor, but not its entry list. */
 void btlDestroyResourceDescriptor(BtlResourceDescriptor *descriptor) {
@@ -730,7 +730,7 @@ void btlDestroyResourceNameRecord(struct BtlResourceNameRecord *record) {
     sdfChipFreeDirect(record);
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", btlUpdateResourceNameEditor);
+INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditor);
 
 void btlSetResourceNamePosition(struct BtlResourceNameRecord *record, s32 x, s32 y) {
     record->x = x;
@@ -759,18 +759,18 @@ void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 max
     record->maximumNameLength = maximumNameLength;
 }
 
-INCLUDE_ASM(const s32, "code_0017BBD8", fmOVERWRITEOK);
-INCLUDE_SDATA(const s32, "code_0017BBD8", btlFormatSelectedResourceNameData);
+INCLUDE_ASM(const s32, "code_r1_0017BBD8", fmOVERWRITEOK);
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", btlFormatSelectedResourceNameData2);
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData2);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", btlUpdateResourceNameEditorData2);
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditorData2);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", btlUpdateResourceNameEditorData3);
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlUpdateResourceNameEditorData3);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", fmData);
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmData);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", fmOVERWRITEOKData);
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData);
 
-INCLUDE_SDATA(const s32, "code_0017BBD8", fmOVERWRITEOKData2);
+INCLUDE_SDATA(const s32, "code_r1_0017BBD8", fmOVERWRITEOKData2);
 

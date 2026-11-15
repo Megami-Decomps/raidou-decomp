@@ -516,7 +516,7 @@ void fileJobCopyCommandIntoSecondaryData(FileJobPayload *job, const char *comman
     }
 }
 
-INCLUDE_ASM(const s32, "code_00234168", fileJobWriteSerializedPayload);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", fileJobWriteSerializedPayload);
 
 void fileWriteToPfs(FileJobPayload *job, const char *filePath) {
     char path[0xD0];
@@ -534,7 +534,7 @@ void fileWriteToPfs(FileJobPayload *job, const char *filePath) {
     sceSync(fileWriteToPfsData3, 0);
 }
 
-INCLUDE_ASM(const s32, "code_00234168", fileDuplicateJob);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", fileDuplicateJob);
 
 /* NULL when the command file does not open: retail's v0 is sdfFileOpen's
  * null result there. */
@@ -577,9 +577,9 @@ u32 fileJobSerializedSize(FileJobPayload *job) {
     return size;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", effLeaf346);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effLeaf346);
 
-INCLUDE_ASM(const s32, "code_00234168", effLeaf347);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effLeaf347);
 
 void fileQueueAppend(FileQueue *queue, FileJob *job) {
     job->next = NULL;
@@ -621,9 +621,9 @@ void fileQueueRemove(FileQueue *queue, FileJob *job) {
     queue->count--;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", effCallChipAllocZeroDirect);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effCallChipAllocZeroDirect);
 
-INCLUDE_ASM(const s32, "code_00234168", effCallChipAllocZeroDirect2);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effCallChipAllocZeroDirect2);
 
 void fileDestroyJob(FileJob *job) {
     sdfChipFreeDirect(job);
@@ -706,7 +706,7 @@ void CallShopTest(s32 flg, void *data)
     fclShopProcessStart(data);
 }
 
-INCLUDE_ASM(const s32, "code_00234168", effPartsDraw);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effPartsDraw);
 
 /* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
  * an ID for other job kinds. Destroy children before their parent jobs. */
@@ -746,7 +746,7 @@ FileQueue *effPartsCreateFinish(const FileQueue *source) {
     return queue;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", fileQueueNotifyAllJobsComplete);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", fileQueueNotifyAllJobsComplete);
 
 void effPartsPositionSet(FileQueue *queue, const f32 vec[4])
 {
@@ -957,9 +957,9 @@ void fileQueueDetachSectorFollower(FileQueue *queue, FileJob *job) {
     job->sector = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", fileQueueRemoveAndDestroyJob);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", fileQueueRemoveAndDestroyJob);
 
-INCLUDE_ASM(const s32, "code_00234168", fileJobCopyHeader);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", fileJobCopyHeader);
 
 /* Export a queue: the queue header, one relocated record per job, then each
  * owning job's 16-byte-aligned payload. Child jobs store their parent's index. */
@@ -1340,7 +1340,7 @@ EffectSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
     return fileCreateSurfaceLoaderState(count <= 0x12C ? count : 0x12C);
 }
 
-INCLUDE_ASM(const s32, "code_00234168", PartsCreate_effParticle);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", PartsCreate_effParticle);
 
 void Delete_effParticle(EffectSurfaceNode *node) {
     u32 count;
@@ -1381,7 +1381,7 @@ EffectSurfaceNode *Copy_effParticle(EffectSurfaceNode *owner) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", ResourceCopy);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", ResourceCopy);
 
 void effCreate(EffectSurfaceNode *node, u32 entryId, void *resource) {
     if (node->record != 0) {
@@ -1489,11 +1489,11 @@ void fileClearLoadObjectReferences(EffectSurfaceNode *obj) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00234168", effLeaf348);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effLeaf348);
 
-INCLUDE_ASM(const s32, "code_00234168", fileDrawLoadObjectSlots);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", fileDrawLoadObjectSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", effCallSRAnimation);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effCallSRAnimation);
 
 void fileSendLoadObjectRecordVector(EffectSurfaceNode *obj, const u128 *value) {
     mnuRecordSetVector(obj->record, value);
@@ -1682,9 +1682,9 @@ f32 effSampleScalarCurve(const EffScalarCurve *curve, s32 frame, s32 duration) {
     return from + (to - from) * factor;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", fileSampleKeyTracks);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", fileSampleKeyTracks);
 
-INCLUDE_ASM(const s32, "code_00234168", effCallColorAnimation);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effCallColorAnimation);
 
 void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot) {
     FileKeyBlock *grid = (FileKeyBlock *)table->data0;
@@ -1881,7 +1881,7 @@ void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00234168", effUpdateWaveEmitterSlots);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateWaveEmitterSlots);
 
 /* Scale selected wave-emitter parameters from source to destination. */
 void effScaleWaveEmitterParameters(ScaleOwner *owner, f32 scale) {
@@ -1901,32 +1901,32 @@ void effScaleWaveEmitterParameters(ScaleOwner *owner, f32 scale) {
     dst->unkE0 = src->unkE0 * scale;
 }
 
-INCLUDE_ASM(const s32, "code_00234168", effUpdateRadialEmitterSlots);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateRadialEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", effScaleRadialEmitterParameters);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effScaleRadialEmitterParameters);
 
-INCLUDE_ASM(const s32, "code_00234168", effUpdateCircularEmitterSlots);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateCircularEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", effScaleCircularEmitterParameters);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effScaleCircularEmitterParameters);
 
-INCLUDE_ASM(const s32, "code_00234168", effUpdateOrientedRingEmitterSlots);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateOrientedRingEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", effScaleOrientedRingEmitterParameters);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effScaleOrientedRingEmitterParameters);
 
-INCLUDE_ASM(const s32, "code_00234168", effUpdateDirectedEmitterSlots);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateDirectedEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", effScaleDirectedEmitterParameters);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effScaleDirectedEmitterParameters);
 
-INCLUDE_ASM(const s32, "code_00234168", effUpdateSectorEmitterSlots);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateSectorEmitterSlots);
 
-INCLUDE_ASM(const s32, "code_00234168", effLeaf349);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", effLeaf349);
 
-INCLUDE_ASM(const s32, "code_00234168", fileAllocateGridRecordSlots);
-INCLUDE_SDATA(const s32, "code_00234168", fileWriteToPfsData);
+INCLUDE_ASM(const s32, "code_r1_0021CE60", fileAllocateGridRecordSlots);
+INCLUDE_SDATA(const s32, "code_r1_0021CE60", fileWriteToPfsData);
 
-INCLUDE_SDATA(const s32, "code_00234168", fileWriteToPfsData2);
+INCLUDE_SDATA(const s32, "code_r1_0021CE60", fileWriteToPfsData2);
 
-INCLUDE_SDATA(const s32, "code_00234168", fileWriteToPfsData3);
+INCLUDE_SDATA(const s32, "code_r1_0021CE60", fileWriteToPfsData3);
 
-INCLUDE_SDATA(const s32, "code_00234168", fileAppendJobFromCommandPathData);
+INCLUDE_SDATA(const s32, "code_r1_0021CE60", fileAppendJobFromCommandPathData);
 

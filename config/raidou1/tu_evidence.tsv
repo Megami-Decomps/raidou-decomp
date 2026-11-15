@@ -118,7 +118,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0017AB10	0017ADA8	interface/itfTestMesManager_0017AB10	c	smt3:names:2+smt3:map:1 of 3 part	interface/itfTestMesManager
 0017B308	0017B970	interface/itfTestMesManager	c	smt3:names:4+smt3:map:1 of 5	interface/itfTestMesManager
 0017BAE8	0017BB90	code_0017BAE8	asm	none	
-0017BBD8	0017D288	code_0017BBD8	c	dds:21 literal-cores:1 of 49	
+0017BBD8	0017D288	code_r1_0017BBD8	c	dds:21 literal-cores:1 of 49	
 0017D440	0017D450	code_0017D440	asm	none	
 0017D460	0017D748	interface/fmGslCont	c	smt3:names:4 of 4	interface/fmGslCont
 0017D778	00181208	interface/frFont	c	smt3:names:29+smt3:map:23+dds:10 of 96	interface/frFont
@@ -164,11 +164,11 @@ start	last_func	unit	kind	evidence	smt3_unit
 001BBA50	001BBA50	field/fldGlobal	c	smt3:map:1 of 1	field/fldGlobal
 001BBA90	001BC380	code_001BBA90	asm	none	
 001BC3E0	001C4748	event/evtEventViewerMenu	c	smt3:map:28+smt3:names:1 literal-cores:1 of 65 joined by literal	event/evtEventViewerMenu
-001C4B78	001C9840	code_001C4B78	c	dds:65+smt3:map:1 of 75 clipped	event/evtEventViewerMenu
+001C4B78	001C9840	code_r1_001C4B78	c	dds:65+smt3:map:1 of 75 clipped	event/evtEventViewerMenu
 001C99F0	001C9CA8	event/evtSound	c	smt3:names:9+smt3:map:1 of 10	event/evtSound
 001C9CD0	001CA848	event/evtEventPack	c	smt3:names:15+smt3:map:3 of 18	event/evtEventPack
 001CA880	001CA880	code_001CA880	asm	none	
-001CA8F8	001CC160	code_001CA8F8	c	dds:24+smt3:map:1 of 36	newbattle/nbMainProcess
+001CA8F8	001CC160	code_r1_001CA8F8	c	dds:24+smt3:map:1 of 36	newbattle/nbMainProcess
 001CC1D0	001CC298	code_r1_001CC1D0	c	dds:2 of 2	
 001CC380	001CD660	code_001CC380	asm	none	
 001CD6A0	001CD6A0	code_r1_001CD6A0	c	dds:1 of 1	
@@ -237,12 +237,12 @@ start	last_func	unit	kind	evidence	smt3_unit
 0021C5F8	0021C5F8	newbattle/nbMisc	c	smt3:map:1 of 1	newbattle/nbMisc
 0021C768	0021CDB8	code_r1_0021C768	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
 0021CE20	0021CE20	pipe/pipeObject	c	smt3:map:1 of 1	pipe/pipeObject
-0021CE60	00224BB8	code_0021CE60	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
+0021CE60	00224BB8	code_r1_0021CE60	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
 00224D10	002250A8	effect/effPCPMisc_00224D10	c	smt3:map:2+smt3:names:1 of 15 reordered part	effect/effPCPMisc
 002250F8	00226E98	code_r1_002250F8	c	dds:39+smt3:map:2 of 59 clipped	effect/effPCPMisc
 00226EC8	002420F0	code_00226EC8	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 00242290	002422C8	effect/effPCPBoss_00242290	c	smt3:map:2 of 2 part	effect/effPCPBoss
-00242308	0024AA50	code_00242308	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
+00242308	0024AA50	code_r1_00242308	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 0024AAD8	002692C8	code_0024AAD8	asm	none	
 002692F0	002692F0	code_002692F0	c	dds:1 of 1	
 00269318	0026CA00	code_00269318	asm	none	
@@ -264,9 +264,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 002CA3F0	002CAE20	code_002CA3F0	c	dds:6 of 8	
 002CAFD8	002CD500	code_r1_002CAFD8	c	dds:14 of 46	
 002CD568	002CD568	code_r1_002CD568	c	dds:1 of 1	
-002CD5A8	002CE640	code_002CD5A8	c	dds:21+smt3:names:1 of 29	facility/fclMisc
+002CD5A8	002CE640	code_r1_002CD5A8	c	dds:21+smt3:names:1 of 29	facility/fclMisc
 002CE660	002CE660	code_002CE660	asm	none	
-002CE680	002CED20	code_002CE680	c	dds:10 of 10	
+002CE680	002CED20	code_r1_002CE680	c	dds:10 of 10	
 002CEE00	002D7918	kernel/ModeSelect	c	smt3:map:1+smt3:names:1 literal-cores:1 of 103	kernel/ModeSelect
 002D7950	002F1AA8	code_002D7950	asm	none	
 002F1B70	002F1B70	result/rstcalc	c	smt3:map:1 of 1	result/rstcalc
@@ -283,7 +283,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0032F2B8	00339648	code_0032F2B8	asm	none	
 00339658	00339658	newbattle/nbAiScript	c	smt3:map:1 of 1	newbattle/nbAiScript
 00339690	00344ED8	gohMain	asm	none	
-00344F28	00344F28	code_00344F28	c	dds:1 of 1	
+00344F28	00344F28	code_r1_00344F28	c	dds:1 of 1	
 00344F78	003461E0	code_00344F78	asm	none	
 003461E8	003461E8	code_r1_003461E8	c	dds:1 of 1	
 00346258	00349B18	code_00346258	asm	none	

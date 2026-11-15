@@ -473,7 +473,11 @@ void dds3PolygonLinkOt(void) {
     sdfGrOt_t *priorityPool;
 
     if (record != NULL) {
+#ifdef VERSION_RAIDOU1
+        priorityPool = &sdfGrOtTable[60];
+#else
         priorityPool = &sdfGrOtTable[61];
+#endif
         do {
             if (record->drawCount != 0 && record->flags != 1) {
                 packet = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
@@ -503,7 +507,11 @@ void dds3PolygonLinkOt(void) {
                 }
                 record->drawCount = 0;
                 if (flags & 0x10) parAppendDrawSurfacePool(priorityPool, packet);
+#ifdef VERSION_RAIDOU1
+                else if (flags & 0x20) parAppendDrawSurfacePool(&sdfGrOtTable[64], packet);
+#else
                 else if (flags & 0x20) parAppendDrawSurfacePool(&sdfGrOtTable[65], packet);
+#endif
                 else parAppendDrawSurfacePool(&sdfGrOtTable[44], packet);
             }
             record = record->next;

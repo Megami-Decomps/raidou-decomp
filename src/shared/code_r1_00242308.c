@@ -971,7 +971,7 @@ void effLeaf384(void) {
     effResetSlots();
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effCallPadVibeFadeIN);
+INCLUDE_ASM(const s32, "code_r1_00242308", effCallPadVibeFadeIN);
 
 void effLeaf385(void) {
 }
@@ -1057,7 +1057,7 @@ void effClearCallbackFrame(EffActiveResource *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effCallProcSBtl);
+INCLUDE_ASM(const s32, "code_r1_00242308", effCallProcSBtl);
 
 void effDispatchEnabledCallback(EffActiveResource *work) {
     if (btlIsRuntimeAllocated() != 0) {
@@ -1075,13 +1075,13 @@ void effFunc18(EffActiveResource *work) {
     effDispatchEnabledCallback(work);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf388);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf388);
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf389);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf389);
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf390);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf390);
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf391);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf391);
 
 /* Reset each entry's timer to free, then clear both colour words per entry. */
 void sdfResetFlagListEntries(SdfFlagListWork *work) {
@@ -1135,7 +1135,7 @@ void sdfReleaseFlagListResource(SdfFlagListWork *work) {
     sdfMemFreeDirect(work->allocation);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", sdfUpdateFlagListEntries);
+INCLUDE_ASM(const s32, "code_r1_00242308", sdfUpdateFlagListEntries);
 
 /* Copy vertex pairs, optionally add the view target, and submit the packet list.
  * count is reused first as an entry count and then as a vertex count. */
@@ -1172,22 +1172,22 @@ void sdfDrawFlagListVertices(SdfFlagListWork *work) {
     sdfMemFreeDirect(vertexAllocation);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf392);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf392);
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf393);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf393);
 
 /* Sample color/alpha at frame zero with duration zero; discard the return value. */
 void sdfSampleFlagListStartColor(SdfFlagListWork *work) {
     effColorAnimation(&work->params.color, &work->params.alpha, 0, 0);
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf394);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf394);
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf395);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf395);
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf396);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf396);
 
-INCLUDE_ASM(const s32, "code_00259620", effLeaf397);
+INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf397);
 
 extern s32 sdfUpdateFlagListEntriesData;
 
@@ -1199,7 +1199,7 @@ void effLeaf399(void) {
     sdfUpdateFlagListEntriesData = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effBtlDebugSetStatusflgSub);
+INCLUDE_ASM(const s32, "code_r1_00242308", effBtlDebugSetStatusflgSub);
 
 s32 effUpdatePartsListEditor(s32 mode);
 
@@ -1265,7 +1265,7 @@ void effMultiplyQuatWithFlag(u8 *effect) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effApplyBattleCameraToObject);
+INCLUDE_ASM(const s32, "code_r1_00242308", effApplyBattleCameraToObject);
 
 u32 effCreateBattleCameraJob(u8 *request) {
     u8 *outputBuffer = ((EffFileJobRequest *)request)->outputBuffer;
@@ -1451,13 +1451,13 @@ u32 effGetSelectedFileQueueIndex(void) {
     return effData12[0] + effPartsListScroll;
 }
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrToolEffect);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrToolEffect);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrPartsList20);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrPartsList20);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrPosition2);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrPosition2);
 
-INCLUDE_ASM(const s32, "code_00259620", effUpdatePartsListEditor);
+INCLUDE_ASM(const s32, "code_r1_00242308", effUpdatePartsListEditor);
 
 u32 effAppendPositionedCameraFileJob(const EffCameraCreateRequest *request) {
     FileJob *entry;
@@ -1720,7 +1720,7 @@ u32 effStoreBattleCameraSnapshot(u32 value) {
     return value;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effSelectCameraFileJobFromRows);
+INCLUDE_ASM(const s32, "code_r1_00242308", effSelectCameraFileJobFromRows);
 
 extern char sysStrParticle[];
 extern char sysPARTICLEData[];
@@ -1841,11 +1841,11 @@ u32 effPollNamedFileJob(void) {
     return result;
 }
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrUpDownHeight);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrUpDownHeight);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrLeftRightDir);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrLeftRightDir);
 
-INCLUDE_ASM(const s32, "code_00259620", effHandleDebugOrbitInput);
+INCLUDE_ASM(const s32, "code_r1_00242308", effHandleDebugOrbitInput);
 
 extern u32 effHandleDebugOrbitInputWork[];
 extern u8 effWork7[];
@@ -1945,9 +1945,9 @@ void sysLeaf45(void) {
     sysUPDOWNHEIGHTData3 = effWork7[0x8A];
 }
 
-INCLUDE_ASM(const s32, "code_00259620", sysUPDOWNHEIGHT);
+INCLUDE_ASM(const s32, "code_r1_00242308", sysUPDOWNHEIGHT);
 
-INCLUDE_ASM(const s32, "code_00259620", effResetCameraSnapshotSelection);
+INCLUDE_ASM(const s32, "code_r1_00242308", effResetCameraSnapshotSelection);
 
 u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *state, s8 useBattlePosition) {
     EffectCameraDebugScratch scratch;
@@ -2236,7 +2236,7 @@ void effResetMappingFlags(void) {
     effMappingState.flags |= 0x10;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effEditColorTrack);
+INCLUDE_ASM(const s32, "code_r1_00242308", effEditColorTrack);
 
 s32 effMapObjectWithTemporaryMappingTable(s32 request) {
     s32 result;
@@ -2453,7 +2453,7 @@ void effEditMColorTrack(BaObj *p) {
     effMappingState.count = 8;
 }
 #else
-INCLUDE_ASM(const s32, "code_00259620", effEditMColorTrack);
+INCLUDE_ASM(const s32, "code_r1_00242308", effEditMColorTrack);
 #endif
 
 extern EffQueuedFileObject effData18;
@@ -2472,7 +2472,7 @@ void btlResetEffectWork(void) {
     effEditScalarTrackData3 = 0;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effEditScalarTrack);
+INCLUDE_ASM(const s32, "code_r1_00242308", effEditScalarTrack);
 
 /* Edit the requested P-family SCALE track; return the native editor status. */
 s32 effEditPScaleTrack(BaObj *p) {
@@ -2575,7 +2575,7 @@ void effLeaf401(void) {
     effColorEditSelectedAlphaKey = 1;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effFunc20);
+INCLUDE_ASM(const s32, "code_r1_00242308", effFunc20);
 
 /* ALPHA callback for POLYGON children of the native S-family descriptors. */
 s32 effEditSPolygonAlphaTrack(s32 work) {
@@ -2771,7 +2771,7 @@ u32 fileLoadEffectSlotA(void) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "code_00259620", effPollAndQueueCopiedFileResource);
+INCLUDE_ASM(const s32, "code_r1_00242308", effPollAndQueueCopiedFileResource);
 
 u32 fileLoadEffectSlotHelp(void) {
     EffResourceBankSlot fileInfo;
@@ -2875,23 +2875,23 @@ u32 fileLoadEffectSlotB(void) {
     return result;
 }
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrFadeOut);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrFadeOut);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrFadeIn);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrFadeIn);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrBlend);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrBlend);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrAlpha);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrAlpha);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrTransparency);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrTransparency);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrFrame);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrFrame);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrPoint);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrPoint);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrToolEffectMat);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrToolEffectMat);
 
-INCLUDE_RODATA(const s32, "code_00259620", effStrToolEffectHlp);
+INCLUDE_RODATA(const s32, "code_r1_00242308", effStrToolEffectHlp);
 
 u32 effLoadFileSlotF2(void) {
     EffResourceBankSlot fileInfo;
@@ -2998,597 +2998,597 @@ u16 Start_sbtl(s32 flags) {
         default:  return 0;
     }
 }
-INCLUDE_SDATA(const s32, "code_00259620", sdfUpdateFlagListEntriesData);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sdfUpdateFlagListEntriesData);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry10);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry10);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry110);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry110);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry111);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry111);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry112);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry112);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackControlTaskDataEntry76);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackControlTaskDataEntry76);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackControlTaskDataEntry77);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackControlTaskDataEntry77);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackControlTaskDataEntry78);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackControlTaskDataEntry78);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry14);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry14);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry15);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry15);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry16);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry16);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry107);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry107);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry108);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry108);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry109);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry109);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry110);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry110);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry17);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry17);
 
-INCLUDE_SDATA(const s32, "code_00259620", effLabelBlur);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effLabelBlur);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYTEXDataEntry8);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYTEXDataEntry8);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData6Entry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData6Entry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYTEXDataEntry9);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYTEXDataEntry9);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData20Entry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData20Entry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry18);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry18);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry19);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry19);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry11);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry11);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry83);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry83);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry58);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry58);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry12);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry12);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry27);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry27);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry28);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry28);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry29);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry29);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry30);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry30);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackControlTaskDataEntry79);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackControlTaskDataEntry79);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry59);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry59);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry11);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry11);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry13);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry13);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry14);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry14);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry111);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry111);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry112);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry112);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry15);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry15);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPARTICLEDataEntry113);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPARTICLEDataEntry113);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackControlTaskDataEntry20);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackControlTaskDataEntry20);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry84);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry84);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry85);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry85);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry86);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry86);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry87);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry87);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry60);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry60);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry87);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry87);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry20);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry20);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackControlTaskDataEntry8);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackControlTaskDataEntry8);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackControlTaskDataEntry9);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackControlTaskDataEntry9);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackControlTaskDataEntry10);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackControlTaskDataEntry10);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackControlTaskDataEntry11);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackControlTaskDataEntry11);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry6);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry6);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry87);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry87);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry88);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry88);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry89);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry89);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTrackTaskDataEntry7);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTrackTaskDataEntry7);
 
-INCLUDE_SDATA(const s32, "code_00259620", fileLoadEffectSlotADataEntry);
+INCLUDE_SDATA(const s32, "code_r1_00242308", fileLoadEffectSlotADataEntry);
 
-INCLUDE_SDATA(const s32, "code_00259620", fileLoadEffectSlotADataEntry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", fileLoadEffectSlotADataEntry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effPollAndQueueCopiedFileResourceDataEntry);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effPollAndQueueCopiedFileResourceDataEntry);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData9Entry20);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData9Entry20);
 
-INCLUDE_SDATA(const s32, "code_00259620", effPollAndQueueCopiedFileResourceDataEntry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effPollAndQueueCopiedFileResourceDataEntry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData9Entry21);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData9Entry21);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateBlurTaskDataEntry18);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateBlurTaskDataEntry18);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateBlurTaskDataEntry49);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateBlurTaskDataEntry49);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYTEXDataEntry10);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYTEXDataEntry10);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateBlurTaskDataEntry19);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateBlurTaskDataEntry19);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateBlurTaskDataEntry7);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateBlurTaskDataEntry7);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry88);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry88);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateBlurTaskDataEntry20);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateBlurTaskDataEntry20);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateEnvironmentTaskDataEntry17);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateEnvironmentTaskDataEntry17);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateBlurTaskDataEntry21);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateBlurTaskDataEntry21);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateBlurTaskDataEntry22);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateBlurTaskDataEntry22);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateBlurTaskDataEntry8);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateBlurTaskDataEntry8);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateFilterTaskDataEntry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateFilterTaskDataEntry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateFilterTaskDataEntry4);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateFilterTaskDataEntry4);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyCrackTaskDataEntry14);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyCrackTaskDataEntry14);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData9Entry22);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData9Entry22);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYTEXDataEntry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYTEXDataEntry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYTEXDataEntry11);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYTEXDataEntry11);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateEnvironmentTaskDataEntry6);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateEnvironmentTaskDataEntry6);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateEnvironmentTaskDataEntry7);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateEnvironmentTaskDataEntry7);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateEnvironmentTaskDataEntry18);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateEnvironmentTaskDataEntry18);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry9);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry9);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry151);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry151);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry152);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry152);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry153);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry153);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyRingTaskDataEntry9);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyRingTaskDataEntry9);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData48);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData48);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData49);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData49);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData50);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData50);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry22);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry22);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry23);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry23);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry24);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry24);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry154);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry154);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry155);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry155);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry156);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry156);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry10);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry10);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdateCameraSnapshotGuidesDataEntry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdateCameraSnapshotGuidesDataEntry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData51);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData51);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry157);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry157);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry25);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry25);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry158);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry158);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry159);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry159);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry160);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry160);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry161);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry161);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry162);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry162);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry163);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry163);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry164);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry164);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry165);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry165);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry11);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry11);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry166);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry166);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyFlashTaskDataEntry167);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyFlashTaskDataEntry167);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateEnvironmentTaskDataEntry8);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateEnvironmentTaskDataEntry8);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateEnvironmentTaskDataEntry19);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateEnvironmentTaskDataEntry19);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry49);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry49);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry50);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry50);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry51);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry51);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry52);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry52);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyRingTaskDataEntry33);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyRingTaskDataEntry33);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry89);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry89);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyRingTaskDataEntry34);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyRingTaskDataEntry34);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyRingTaskDataEntry10);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyRingTaskDataEntry10);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyRingTaskDataEntry4);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyRingTaskDataEntry4);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry90);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry90);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry31);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry31);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyRingTaskDataEntry35);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyRingTaskDataEntry35);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry4);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry4);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry61);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry61);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry32);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry32);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry33);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry33);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry8);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry8);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyThunderTaskDataEntry34);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyThunderTaskDataEntry34);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry7);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry7);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry91);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry91);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry92);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry92);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry8);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry8);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry9);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry9);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry10);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry10);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyTwinkleTaskDataEntry11);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyTwinkleTaskDataEntry11);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry6);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry6);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry62);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry62);
 
-INCLUDE_SDATA(const s32, "code_00259620", sndInitDataEntry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sndInitDataEntry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry63);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry63);
 
-INCLUDE_SDATA(const s32, "code_00259620", sndInitDataEntry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sndInitDataEntry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry64);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry64);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry88);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry88);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry89);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry89);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry90);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry90);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry91);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry91);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry92);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry92);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry93);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry93);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry94);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry94);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry95);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry95);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry7);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry7);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry96);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry96);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysPOLYWINDDataEntry97);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysPOLYWINDDataEntry97);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry5);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry5);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry65);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry65);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry66);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry66);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry67);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry67);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry6);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry6);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry68);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry68);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry69);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry69);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry70);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry70);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry71);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry71);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyScalyTaskDataEntry72);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyScalyTaskDataEntry72);
 
-INCLUDE_SDATA(const s32, "code_00259620", fileLoadEffectSlotBDataEntry);
+INCLUDE_SDATA(const s32, "code_r1_00242308", fileLoadEffectSlotBDataEntry);
 
-INCLUDE_SDATA(const s32, "code_00259620", fileLoadEffectSlotBDataEntry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", fileLoadEffectSlotBDataEntry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyCrackTaskDataEntry15);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyCrackTaskDataEntry15);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyCrackTaskDataEntry16);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyCrackTaskDataEntry16);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyCrackTaskDataEntry17);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyCrackTaskDataEntry17);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyCrackTaskDataEntry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyCrackTaskDataEntry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyCrackTaskDataEntry4);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyCrackTaskDataEntry4);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry7);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry7);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry113);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry113);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry114);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry114);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry115);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry115);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry116);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry116);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry117);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry117);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry118);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry118);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry119);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry119);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry120);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry120);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry121);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry121);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry20);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry20);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry122);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry122);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry8);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry8);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry9);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry9);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry10);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry10);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreatePolyWindTaskDataEntry11);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreatePolyWindTaskDataEntry11);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry22);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry22);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry53);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry53);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry54);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry54);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry55);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry55);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry56);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry56);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry57);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry57);
 
-INCLUDE_SDATA(const s32, "code_00259620", effInitializeResourceQueueData);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effInitializeResourceQueueData);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry58);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry58);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry23);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry23);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry24);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry24);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData9Entry23);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData9Entry23);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData9Entry24);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData9Entry24);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData9Entry25);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData9Entry25);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry25);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry25);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry59);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry59);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry60);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry60);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry61);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry61);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry26);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry26);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry62);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry62);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry27);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry27);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry63);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry63);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry28);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry28);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry64);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry64);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry65);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry65);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry29);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry29);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry66);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry66);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry30);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry30);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry67);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry67);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry68);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry68);
 
-INCLUDE_SDATA(const s32, "code_00259620", effLoadMaterialFileDataEntry);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effLoadMaterialFileDataEntry);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData9Entry26);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData9Entry26);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData9Entry27);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData9Entry27);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateTwoDimensionalTaskData2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateTwoDimensionalTaskData2);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry69);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry69);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry70);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry70);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry71);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry71);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry72);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry72);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry73);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry73);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry74);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry74);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry75);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry75);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysBATTLEONLYDataEntry76);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysBATTLEONLYDataEntry76);
 
-INCLUDE_SDATA(const s32, "code_00259620", effResetFileQueueStateDataEntry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effResetFileQueueStateDataEntry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effResetFileQueueStateDataEntry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effResetFileQueueStateDataEntry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData10Entry);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData10Entry);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData3Entry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData3Entry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData4Entry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData4Entry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData4Entry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData4Entry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData3Entry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData3Entry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData5Entry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData5Entry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCreateFilterTaskData2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCreateFilterTaskData2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effPartsListScroll);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effPartsListScroll);
 
-INCLUDE_SDATA(const s32, "code_00259620", fldTitleMiniTex4);
+INCLUDE_SDATA(const s32, "code_r1_00242308", fldTitleMiniTex4);
 
-INCLUDE_SDATA(const s32, "code_00259620", effFileQueue);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effFileQueue);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData38);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData38);
 
-INCLUDE_SDATA(const s32, "code_00259620", effQueuedFileHandle);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effQueuedFileHandle);
 
-INCLUDE_SDATA(const s32, "code_00259620", fldTitleMiniWork3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", fldTitleMiniWork3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effCurrentFileQueueEntry);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effCurrentFileQueueEntry);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData39);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData39);
 
-INCLUDE_SDATA(const s32, "code_00259620", effPollPrimaryFileData);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effPollPrimaryFileData);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData40);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData40);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData41);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData41);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData42);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData42);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditorCurrentMenu);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditorCurrentMenu);
 
-INCLUDE_SDATA(const s32, "code_00259620", effQueuedFileObject);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effQueuedFileObject);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData14);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData14);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData15);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData15);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData16);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData16);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData17);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData17);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData18);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData18);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData19);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData19);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData20);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData20);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData21);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData21);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdatePartsListEditorData22);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdatePartsListEditorData22);
 
-INCLUDE_SDATA(const s32, "code_00259620", effSelectCameraFileJobFromRowsData2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effSelectCameraFileJobFromRowsData2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdateCameraDiagnosticsDataEntry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdateCameraDiagnosticsDataEntry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effUpdateCameraSnapshotGuidesDataEntry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effUpdateCameraSnapshotGuidesDataEntry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysUPDOWNHEIGHTData);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysUPDOWNHEIGHTData);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysUPDOWNHEIGHTData2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysUPDOWNHEIGHTData2);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysUPDOWNHEIGHTData3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysUPDOWNHEIGHTData3);
 
-INCLUDE_SDATA(const s32, "code_00259620", sysUPDOWNHEIGHTData4);
+INCLUDE_SDATA(const s32, "code_r1_00242308", sysUPDOWNHEIGHTData4);
 
-INCLUDE_SDATA(const s32, "code_00259620", fldTitleMiniWork);
+INCLUDE_SDATA(const s32, "code_r1_00242308", fldTitleMiniWork);
 
-INCLUDE_SDATA(const s32, "code_00259620", fldTitleMiniTex);
+INCLUDE_SDATA(const s32, "code_r1_00242308", fldTitleMiniTex);
 
-INCLUDE_SDATA(const s32, "code_00259620", effFileQueueNameRecord);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effFileQueueNameRecord);
 
-INCLUDE_SDATA(const s32, "code_00259620", effQueuedResourceNameRecord);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effQueuedResourceNameRecord);
 
-INCLUDE_SDATA(const s32, "code_00259620", effColorEditRgbMenuOpen);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effColorEditRgbMenuOpen);
 
-INCLUDE_SDATA(const s32, "code_00259620", effColorEditSelectedKey);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effColorEditSelectedKey);
 
-INCLUDE_SDATA(const s32, "code_00259620", effColorEditSelectedAlphaKey);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effColorEditSelectedAlphaKey);
 
-INCLUDE_SDATA(const s32, "code_00259620", effColorEditPage);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effColorEditPage);
 
-INCLUDE_SDATA(const s32, "code_00259620", effColorEditKeyColor);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effColorEditKeyColor);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditColorTrackDataEntry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditColorTrackDataEntry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditColorTrackDataEntry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditColorTrackDataEntry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditColorTrackDataEntry4);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditColorTrackDataEntry4);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData15Entry);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData15Entry);
 
-INCLUDE_SDATA(const s32, "code_00259620", effColorEditFrameCountFormat);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effColorEditFrameCountFormat);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditScalarTrackData);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditScalarTrackData);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditScalarTrackData2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditScalarTrackData2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditScalarTrackData3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditScalarTrackData3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditScalarTrackData4);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditScalarTrackData4);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditScalarTrackData5);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditScalarTrackData5);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditScalarTrackData6);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditScalarTrackData6);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData20Entry3);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData20Entry3);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData18Entry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData18Entry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData20Entry4);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData20Entry4);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData19Entry2);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData19Entry2);
 
-INCLUDE_SDATA(const s32, "code_00259620", effData20Entry5);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effData20Entry5);
 
-INCLUDE_SDATA(const s32, "code_00259620", effEditScalarTrackData7);
+INCLUDE_SDATA(const s32, "code_r1_00242308", effEditScalarTrackData7);
 
-INCLUDE_SDATA(const s32, "code_00259620", wk_sbtl);
+INCLUDE_SDATA(const s32, "code_r1_00242308", wk_sbtl);
 
