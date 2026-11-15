@@ -10,8 +10,7 @@
 # reordered = paired functions not in SMT3 order; joined by literal = runs of
 # one unit joined by a shared literal.
 start	last_func	unit	kind	evidence	smt3_unit
-001001D8	00100510	code_001001D8	asm	none	
-00100518	001005C8	kernel/dds3KernelMain	c	smt3:names:4+smt3:map:1 of 11	kernel/dds3KernelMain
+001001D8	001005C8	kernel/dds3KernelMain	c	smt3:names:4+smt3:map:1 of 11; SMT3 TU starts at KernelDebug	kernel/dds3KernelMain
 001006E0	00101BA8	kernel/dds3KernelCore	c	smt3:names:28+smt3:map:2+dds:1 of 36	kernel/dds3KernelCore
 00101BD8	00101BD8	sdf/sdfDefaultMain	c	smt3:map:1 of 1	sdf/sdfDefaultMain
 00101D60	00102978	kernel/dds3KernelProcess	c	smt3:map:4+smt3:names:1 of 5	kernel/dds3KernelProcess

@@ -66,8 +66,7 @@ segments:
       # .text units come from tools/raidou_tus.py --write (evidence per unit in
       # config/raidou1/tu_evidence.tsv): c units are TUs, asm code_<vram> units are gaps.
       - [0x1000, asm, hand/crt0]  # 8 pad bytes, _start (0x100008), 2 stubs; ends where the game code begins, as in SMT3
-      - [0x11D8, asm, code_001001D8]
-      - [0x1598, c, kernel/dds3KernelMain]
+      - [0x11D8, c, kernel/dds3KernelMain]
       - [0x16B0, c, kernel/dds3KernelCore]
       - [0x2BA8, c, sdf/sdfDefaultMain]
       - [0x2D30, c, kernel/dds3KernelProcess]
@@ -604,7 +603,7 @@ segments:
       # .vudata (0x300) plus the zeros up to .rodata's 16-byte boundary.
       - [0x34536C, databin, vudata]
       - [0x345680, rodata, rodata_00444680]
-      - [0x3456F0, .rodata, kernel/dds3KernelMain]
+      - [0x3456A0, .rodata, kernel/dds3KernelMain]
       - [0x345708, .rodata, kernel/dds3KernelCore]
       - [0x3457A8, .rodata, sdf/sdfDefaultMain]
       - [0x345898, .rodata, kernel/dds3AdminiProcess]
@@ -853,8 +852,7 @@ segments:
       - [0x36C0A0, .lit4, sdf/sdfQuat]
       - [0x36C0AC, .lit4, sdf/sdfSound]
       - [0x36C0CC, lit4, lit4_pad]
-      - [0x36C100, sdata, sdata_0046B100]
-      - [0x36C128, .sdata, kernel/dds3KernelMain]
+      - [0x36C100, .sdata, kernel/dds3KernelMain]
       - [0x36C150, .sdata, kernel/dds3KernelCore]
       - [0x36C18C, .sdata, sdf/sdfDefaultMain]
       - [0x36C194, .sdata, kernel/dds3KernelProcess]

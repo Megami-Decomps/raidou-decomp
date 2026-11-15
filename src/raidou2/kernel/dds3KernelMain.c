@@ -20,6 +20,24 @@ extern char dds3DrawFirstProcessName[];
 
 #include "sdk_libc.h"
 
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", KernelDebug);
+
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3BgSetScrollSub);
+
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3LinkBoxZSub);
+
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3Leaf20);
+
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3FirstInit);
+
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3NewGameStart);
+
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3Leaf21);
+
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3GetKernelCount);
+
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3GetFrameID);
+
 void dds3PauseOn(void);
 void dds3PauseOff(void);
 void dds3Stop(u32 frame);
@@ -94,6 +112,14 @@ void dds3SoftResetOff(void)
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3CallEventSub);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3KernelMain);
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FrameCount);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3RunCount);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SoftResetFlag);
+
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SoftResetDisableFlag);
+
 u32 dds3PauseSign = 0;
 
 u32 dds3PauseTime = 0;
