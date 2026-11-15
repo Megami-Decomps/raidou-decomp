@@ -756,8 +756,6 @@ def smt3_header_names():
         names = {}
         for h in sorted((ROOT / "include").rglob("*.h")):
             rel = h.relative_to(ROOT / "include").as_posix()
-            if rel.startswith("dds/"):
-                continue
             text = h.read_text(errors="replace")
             guard = header_guard(text)
             for b in blocks(text):
@@ -810,7 +808,7 @@ _SMT3_SRC_TYPES = []
 
 def smt3_source_types():
     """(kind, name) of the types and tags the SMT3 files carried into Raidou define; a
-    dds-decomp header's definition of one is skipped where SMT3_DEFINES_<name> is set."""
+    DDS declaration block does not redefine one."""
     if not _SMT3_SRC_TYPES:
         rels = {shared_rel(r["smt3_src"]) for r in read_pairs(OUT / "pairs.tsv") if r["smt3_src"]}
         names = set()
@@ -827,7 +825,7 @@ def smt3_includes(text, seen=None):
     """SMT3 headers (relative to include/) text includes, directly or through them."""
     seen = set() if seen is None else seen
     for h in re.findall(r'^\s*#\s*include\s+"([^"]+)"', text, re.M):
-        if h.startswith("dds/") or h in seen or not (ROOT / "include" / h).exists():
+        if h in seen or not (ROOT / "include" / h).exists():
             continue
         seen.add(h)
         smt3_includes((ROOT / "include" / h).read_text(errors="replace"), seen)
@@ -838,9 +836,9 @@ _DDS_DROPPED = {}
 
 
 def dds_dropped(game):
-    """name -> (header, declaration) for the prototypes, externs and enums dropped from
-    include/dds because SMT3 declares a name of theirs; DDS declaration blocks add them
-    back where no SMT3 declaration is in the TU."""
+    """name -> (dds-decomp header, declaration) for the prototypes, externs and enums of
+    dds-decomp's headers whose name SMT3 also declares; a DDS declaration block adds them
+    where no SMT3 declaration is in the TU."""
     if game not in _DDS_DROPPED:
         out = _DDS_DROPPED[game] = {}
         shared = smt3_source_names() | {n for k, n in smt3_header_names() if k == "ident"}
@@ -928,7 +926,7 @@ def raidou_layout(decl):
     return hit[0] if hit else decl
 
 
-def decl_block(smt3, rel, unsized=(), taken=(), text_macros=()):
+def decl_block(smt3, rel, unsized=(), taken=()):
     """Every declaration of one source file (types, prototypes, its data as extern);
     arrays named in unsized are declared without a size (Raidou's differs), and a type
     config/raidou_types.h defines takes that definition. A DDS file's
@@ -947,8 +945,6 @@ def decl_block(smt3, rel, unsized=(), taken=(), text_macros=()):
             d = re.sub(rf"\b{name}\s*\[[^\]]*\]", f"{name}[]", d, count=1)
         decls.append(raidou_layout(d))
     if is_dds(rel):
-        # dds-decomp's headers live in include/dds/; its headers include each other by bare name.
-        macro = f"VERSION_{rel.split('/', 1)[0].upper()}"
         decls, need = defer_to_smt3(decls, taken, header=False)
         used = set(re.findall(r"\w+", code_view(smt3_text(smt3, rel))))
         back, seen = [], {n for d in decls for n in declared_names(d)}
@@ -974,17 +970,21 @@ def decl_block(smt3, rel, unsized=(), taken=(), text_macros=()):
                     own_text.append(alias)
             else:
                 own.append((h, d))
-        # The file's own declarations use these, so they come first.
-        decls = [f'#include "dds/{h}"' for h in sorted({dds_rename(h) for h, _ in own})] + [d for _, d in own] + own_text + decls
+        # The file's own declarations use these, so they come first. Raidou has no copy of the
+        # dds-decomp headers: what a TU needs from one is reported, to go in a unit header in include/.
+        missing = {dds_rename(h) for h, _ in own}
+        for d in decls:
+            missing |= {h for _, h in DDS_INCLUDE.findall(d) if not (ROOT / "include" / h).exists()}
+        for h in sorted(missing):
+            print(f"{rel}: uses declarations of dds-decomp include/{h}; put them in a unit header in include/",
+                  file=sys.stderr)
+        decls = [d for _, d in own] + own_text + [
+            DDS_INCLUDE.sub(lambda m: m.group(0) if m.group(2) not in missing else "", d) for d in decls]
         # An SMT3 header that redeclares what the TU's SMT3 files define locally would clash.
         types = smt3_source_types()
         local = (set(taken) & types) | {("ident", n) for k, n in taken if k == "extern"}
         need = [h for h in need if h in included or not by_header[h] & local]
-        guards = sorted({n for k, n in taken if (k, n) in types})
-        decls = [f"#ifndef {macro}\n#define {macro} 1\n#endif"] \
-            + [f"#define SMT3_DEFINES_{n} 1" for n in guards if f"SMT3_DEFINES_{n}" not in text_macros] \
-            + [f'#include "{h}"' for h in need] \
-            + [DDS_INCLUDE.sub(r'\1"dds/\2"', d) for d in decls]
+        decls = [f'#include "{h}"' for h in need] + [d for d in decls if d.strip()]
     return decl_begin(rel) + "\n" + "\n\n".join(decls) + "\n" + decl_end(rel) + "\n"
 
 
@@ -1064,7 +1064,7 @@ def set_decl_blocks(smt3, text, rels, unsized=(), own=()):
         head = text[:at].rstrip("\n")
         made = []
         for rel in add:
-            made.append(decl_block(smt3, rel, unsized, taken, set(re.findall(r"SMT3_DEFINES_\w+", "".join(made)))))
+            made.append(decl_block(smt3, rel, unsized, taken))
             if is_dds(rel):
                 taken = taken | {n for b in blocks(made[-1]) for n in declared_names(b)}
         text = (head + "\n\n" if head else "") + "\n".join(made) + "\n" + text[at:].lstrip("\n")

@@ -182,21 +182,21 @@ pair, same masked words and slot kinds, Raidou name equal to the DDS C name);
 
 - A DDS source is `dds1/<path>` or `dds2/<path>` in `smt3_c.tsv` and the
   declaration block (`/* Declarations from dds-decomp src/dds1/<path>.c */`).
-  `#if VERSION_DDS1/2` in the source is decided for that game; the block
-  defines `VERSION_DDSn` for the headers.
-- dds-decomp's headers are in `include/dds/` (`raidou_dds.py headers` copies
-  those the blocks include). `config/dds_headers.sha1` records what it wrote;
-  a header edited since (or never written by it) is kept, not overwritten or
-  removed. Delete a header to have it regenerated. They define many SMT3 types differently, so a unit
-  with SMT3 bodies gets no DDS bodies, and a unit takes one DDS game (the one
-  most of its functions pair with).
+  `#if VERSION_DDS1/2` in the source is decided for that game.
+- Raidou has no copy of dds-decomp's headers, and `check_config.py` refuses
+  `VERSION_DDS` and `#include "dds/` in `src/` and `include/`. `port` prints
+  each dds-decomp header a block would need; move what the unit uses into
+  `include/<unit>.h`, as SMT3 does, and keep prototypes of functions the unit
+  defines later as forward declarations in the `.c` file or in that header.
+  dds-decomp defines many SMT3 types differently, so a unit with SMT3 bodies
+  gets no DDS bodies, and a unit takes one DDS game (the one most of its
+  functions pair with).
 - DDS data definitions are not carried yet.
 - Both tools read dds-decomp at the revision `config/dds_decomp.txt` pins and
   refuse a checkout at another one, or one with edits in `src/` or `include/`:
-  `include/dds/`, the declaration blocks and the carried bodies are that
-  revision's text. `--dds` defaults to
+  the declaration blocks and the carried bodies are that revision's text. `--dds` defaults to
   `~/.local/state/raidou-decomp-work/dds-<first 8 hex digits>` when it exists.
-  Moving the pin means regenerating all three and verifying the build.
+  Moving the pin means regenerating both and verifying the build.
 - A differing pair takes the unit's DDS game when both games have a partner.
 - smt3-decomp is read at its HEAD, not pinned: its renames and new names should
   reach Raidou on the next port. A type whose Raidou layout differs from the
@@ -213,7 +213,7 @@ pair, same masked words and slot kinds, Raidou name equal to the DDS C name);
 ```sh
 git -C <dds-decomp> worktree add --detach <dir> $(tail -1 config/dds_decomp.txt)   # copy orig/, configure.py
 python3 tools/raidou_c.py pairs && python3 tools/raidou_dds.py pairs --dds <dir>
-python3 tools/raidou_c.py port --dds <dir> && python3 tools/raidou_dds.py headers --dds <dir>
+python3 tools/raidou_c.py port --dds <dir>
 python3 configure.py && ninja -k 0 > log; python3 tools/raidou_c.py verify --dds <dir> --log log
 ```
 

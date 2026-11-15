@@ -158,7 +158,7 @@ def cmd_pairs(args):
     for version in VERSIONS:
         every = verified(version, sides)
         rows = [r for r in every if r[0] and r[5]]
-        # One DDS game per unit: two VERSION_DDS macros in one TU select conflicting headers.
+        # One DDS game per unit: the two games' declarations of a name can conflict.
         votes = defaultdict(Counter)
         for src, unit, fn, addr, words, good in rows:
             for game, ea, _ in good:
@@ -196,106 +196,6 @@ def cmd_pairs(args):
     rc.OUT.mkdir(parents=True, exist_ok=True)
     (rc.OUT / "pairs_dds.tsv").write_text("\n".join(lines) + "\n")
     (rc.OUT / "pairs_dds.rev").write_text(rc.dds_pin() + "\n")
-
-
-def smt3_guard(item):
-    """A type definition an SMT3 file also defines is skipped in TUs carrying that file."""
-    types = {n for k, n in rc.smt3_source_types()}
-    names = sorted({n for k, n in rc.declared_names(item) if k != "macro"} & types)
-    if not names or rc.is_object_decl(item):
-        return item
-    return "#if " + " && ".join(f"!defined(SMT3_DEFINES_{n})" for n in names) + "\n" + item + "\n#endif"
-
-
-def smt3_header(path):
-    """A dds-decomp header that gives way to SMT3's: what SMT3's headers define is dropped
-    and those headers included instead; the include guard gets a DDS_ prefix."""
-    text = rc.dds_rename(path.read_text(errors="replace"))
-    guard = rc.header_guard(text)
-    items, need = rc.defer_to_smt3(b for b in rc.blocks(text) if rc.declared_names(b) != {("macro", guard)})
-    items = [smt3_guard(i) for i in items]
-    text = "\n\n".join(items) + "\n"
-    if guard:
-        text = re.sub(rf"\b{guard}\b", f"DDS_{guard}", text)
-    head = "".join(f'#include "../{h}"\n' for h in need)
-    m = re.search(r"^\s*#\s*ifndef\s+\w+\s*\n", text, re.M) if guard else None
-    at = m.end() if m else 0
-    return text[:at] + (f"#define DDS_{guard}\n" if guard else "") + head + text[at:]
-
-
-HEADER_MANIFEST = ROOT / "config" / "dds_headers.sha1"
-
-
-def read_manifest():
-    out = {}
-    if HEADER_MANIFEST.exists():
-        for line in HEADER_MANIFEST.read_text().splitlines():
-            if line and not line.startswith("#"):
-                digest, name = line.split(None, 1)
-                out[name] = digest
-    return out
-
-
-def write_manifest(rows):
-    lines = ["# sha1 of each include/dds header as raidou_dds.py headers last wrote it; a header whose"
-             " text differs was edited by hand and is never overwritten or removed"]
-    lines += [f"{d}  {n}" for n, d in sorted(rows.items())]
-    HEADER_MANIFEST.write_text("\n".join(lines) + "\n")
-
-
-def cmd_headers(args):
-    """Copy the dds-decomp headers the TUs' DDS declaration blocks include (and theirs) into include/dds/.
-    Only headers this command wrote and nobody edited since are rewritten or removed (config/dds_headers.sha1)."""
-    import hashlib
-    sha1 = lambda s: hashlib.sha1(s.encode()).hexdigest()
-    rc.DDS = args.dds.expanduser().resolve()
-    want, todo = set(), []
-    # Header file names take config/dds_names.txt's renames too; `source` maps a renamed one back.
-    source = {rc.dds_rename(p.name): p.name for p in (rc.DDS / "include").glob("*.h")}
-    for src in rc.SRC.rglob("*.c"):
-        todo += [source.get(n, n) for n in re.findall(r'^\s*#\s*include\s+"dds/([^"]+)"', src.read_text(errors="replace"), re.M)]
-    while todo:
-        name = todo.pop()
-        if name in want or not (rc.DDS / "include" / name).exists():
-            continue
-        want.add(name)
-        todo += re.findall(r'^\s*#\s*include\s+"([^"]+)"', (rc.DDS / "include" / name).read_text(errors="replace"), re.M)
-    out = ROOT / "include" / "dds"
-    manifest = read_manifest()
-    have = {p.relative_to(out).as_posix() for p in out.rglob("*.h")} if out.exists() else set()
-
-    def owned(name):
-        return manifest.get(name) == sha1((out / name).read_text(errors="replace"))
-
-    want = {rc.dds_rename(n): n for n in want}
-    new = kept = changed = 0
-    for name, dds_name in sorted(want.items()):
-        dst = out / name
-        text = smt3_header(rc.DDS / "include" / dds_name)
-        if dst.exists():
-            if dst.read_text(errors="replace") == text:
-                manifest[name] = sha1(text)
-                continue
-            if not owned(name):
-                kept += 1
-                if args.verbose:
-                    print(f"kept {name}: edited by hand or not written by this command")
-                continue
-            changed += 1
-        else:
-            new += 1
-            dst.parent.mkdir(parents=True, exist_ok=True)
-        dst.write_text(text)
-        manifest[name] = sha1(text)
-    removed = 0
-    for name in sorted(have - set(want)):
-        if owned(name):
-            (out / name).unlink()
-            manifest.pop(name)
-            removed += 1
-    write_manifest({n: d for n, d in manifest.items() if (out / n).exists()})
-    print(f"{len(want)} dds-decomp headers wanted: {new} new, {changed} updated, {removed} removed, "
-          f"{kept} differ and kept (--verbose lists them)")
 
 
 def type_sizes(inc, includes, exprs, defines, raw=False):
@@ -411,13 +311,11 @@ def cmd_members(args):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name, func in (("names", cmd_names), ("rename", cmd_rename), ("pairs", cmd_pairs), ("headers", cmd_headers),
+    for name, func in (("names", cmd_names), ("rename", cmd_rename), ("pairs", cmd_pairs),
                        ("layouts", cmd_layouts), ("members", cmd_members)):
         p = sub.add_parser(name)
         p.add_argument("--dds", type=Path, default=rc.default_dds(),
                        help="dds-decomp checkout at config/dds_decomp.txt's revision, configured (split)")
-        if name == "headers":
-            p.add_argument("--verbose", action="store_true")
         p.set_defaults(func=func)
     args = ap.parse_args()
     args.dds = rc.DDS = rc.dds_checkout(args.dds)

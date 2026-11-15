@@ -59,6 +59,14 @@ for path in sorted(SRC.rglob("*.c")):
     except ValueError as e:
         errors.append(f"{path.relative_to(ROOT)}: {e}")
 
+# dds-decomp's headers are not carried: what a unit needs from them goes in its include/<unit>.h.
+DDS_LEFTOVER = re.compile(r'\bVERSION_DDS\w*|^\s*#\s*include\s+[<"]dds/', re.M)
+for path in sorted([*SRC.rglob("*.c"), *(ROOT / "include").rglob("*.h")]):
+    for m in DDS_LEFTOVER.finditer(path.read_text(errors="replace")):
+        errors.append(f"{path.relative_to(ROOT)}: {m.group(0).strip()} (no DDS headers or macros in src/ or include/)")
+if (ROOT / "include/dds").exists():
+    errors.append("include/dds exists; put the declarations in the units' headers")
+
 errors += check_common_names()
 for version in REVISIT_VERSIONS:
     path = ROOT / "config" / version / "revisit_names.tsv"
