@@ -154,6 +154,7 @@ enum scr_datatype
     SCR_DATATYPE_STRINGS = 4,
     SCR_DATATYPE_MAX = 5
 };
+typedef enum scr_datatype SCR_DATATYPE;
 
 enum scr_stack_type
 {
@@ -166,6 +167,7 @@ enum scr_stack_type
     SCR_STACK_TYPE_EMPTY = 6,
     SCR_STACK_TYPE_MAX = 7
 };
+typedef enum scr_stack_type SCR_STACK_TYPE;
 
 /* Bytecode opcodes, the index into scrTraceCode's codefunc table. */
 enum code_type
@@ -207,6 +209,7 @@ enum code_type
     CODE_TYPE_PUSHSTR = 34,
     CODE_TYPE_MAX = 35
 };
+typedef enum code_type CODE_TYPE;
 
 /* What a codefunc returns to scrTraceCode. */
 enum code_ret
@@ -215,6 +218,7 @@ enum code_ret
     CODE_RET_NEXT = 1,
     CODE_RET_SYNC = 2
 };
+typedef enum code_ret CODE_RET;
 
 enum scr_result
 {
@@ -222,5 +226,10 @@ enum scr_result
     SCR_RESULT_CONTINUE = 1,
     SCR_RESULT_END = 2
 };
+typedef enum scr_result SCR_RESULT;
+
+void cmbRefDDS3GBWK(void);
+void scrEventSkipEnd(s32 _restart, dds3ProcessID_t *pid);
+void *scrGetData(void);
 
 #endif /* SCR_H */

@@ -169,6 +169,7 @@ enum dds3kernelpriority
     DDS3_PRIORITY_BUTTON_GUIDE = 21012,
     DDS3_PRIORITY_DEBUGDEVDUMP = 21013
 };
+typedef enum dds3kernelpriority DDS3_PRIORITY;
 
 /* Ordering table slots. Values not yet checked against the binary. */
 enum dds3_ot
@@ -260,6 +261,7 @@ enum dds3_ot
     DDS3_OT_SCREENCAPTURE2 = 84,
     DDS3_OT_MAX = 85
 };
+typedef enum dds3_ot DDS3_OT;
 
 /* Per-model-class ordering tables. Values not yet checked against the binary. */
 enum dds3_model_ot
@@ -277,6 +279,7 @@ enum dds3_model_ot
     DDS3_MODEL_OT_RTEX = 10,
     DDS3_MODEL_OT_MAX = 11
 };
+typedef enum dds3_model_ot DDS3_MODEL_OT;
 
 /* Retail administrator table at 0x002FA320: 43 entries of three pointers.
  * SAVE / SAVE_TEST dispatch the terminal / terminal-test handlers.
@@ -328,11 +331,13 @@ enum dds3_admini_list
     DDS3_ADMINI_LIST_TGS = 42,
     DDS3_ADMINI_LIST_MAX = 43
 };
+typedef enum dds3_admini_list DDS3_ADMINI_LIST;
 
 enum dds3_admini_call
 {
     DDS3_ADMINI_CALL_NEW = 0,
     DDS3_ADMINI_CALL_RESTORE = 1
 };
+typedef enum dds3_admini_call DDS3_ADMINI_CALL;
 
 #endif /* KERNEL_H */

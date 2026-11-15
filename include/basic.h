@@ -291,6 +291,7 @@ enum basic_type
     BASIC_TYPE_POINT = 17,
     BASIC_TYPE_MAX = 18
 };
+typedef enum basic_type BASIC_TYPE;
 
 /* dds3PoseSet_t.flag. UPDATETM is set once workTM is composed. */
 enum poseset_flag
@@ -300,6 +301,7 @@ enum poseset_flag
     POSESET_FLAG_ONGROUND = 4,
     POSESET_FLAG_POS2 = 8
 };
+typedef enum poseset_flag POSESET_FLAG;
 
 enum dds3_pathbasic_flag
 {
@@ -310,6 +312,7 @@ enum dds3_pathbasic_flag
     DDS3_PATHBASIC_FLAG_LIGHT = 16,
     DDS3_PATHBASIC_FLAG_LOOP = 32
 };
+typedef enum dds3_pathbasic_flag DDS3_PATHBASIC_FLAG;
 
 enum dds3_pathbasic_control
 {
@@ -317,6 +320,7 @@ enum dds3_pathbasic_control
     DDS3_PATHBASIC_CONTROL_BACK = 1,
     DDS3_PATHBASIC_CONTROL_MAX = 2
 };
+typedef enum dds3_pathbasic_control DDS3_PATHBASIC_CONTROL;
 
 enum dds3_basicarray
 {
@@ -324,6 +328,7 @@ enum dds3_basicarray
     DDS3_BASICARRAY_SERACHDELETE_MODE_ALL = 1,
     DDS3_BASICARRAY_SERACHDELETE_MODE_MAX = 2
 };
+typedef enum dds3_basicarray DDS3_BASICARRAY_SERACHDELETE_MODE;
 
 
 #endif /* BASIC_H */
