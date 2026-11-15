@@ -8,7 +8,6 @@
 #include "sdfSystem.h"
 #include "sdfFile.h"
 
-s32 strlen(const char *aStr);
 extern u32 sdfFileLengthWork;
 extern u32 sdfFileSeekWork;
 extern s32 sdfFileSemaId;

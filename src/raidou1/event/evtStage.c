@@ -12,11 +12,11 @@
 #include "dds3WorldBasic.h"
 #include "dds3ObjectBase.h"
 #include "dds3MoverBasic.h"
+#include "dds3CameraObjectBasic.h"
 
 u32 dds3AllocObjectId(void);
 
 
-extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 serialID, f32 *pos, f32 *rot);
 
 #include "basic.h"
 #include "dds3obj.h"
@@ -84,7 +84,7 @@ void evtSetTestCamera(void) {
 
     memset(&rotation, 0, 0x10);
     rotation.w = 1.0f;
-    object = dds3AddCameraObjectBasicTypeFree(dds3AllocObjectId(), position, &rotation.x);
+    object = dds3AddCameraObjectBasicTypeFree(dds3AllocObjectId(), (const sdfVector4_t *)position, (const sdfVector4_t *)&rotation.x);
     dds3GetRadiusPoseSet((dds3Basic_t *)object, 10.0f);
     dds3ObjectBaseCreateMover(object);
     dds3SetActiveCameraSceneBasic(dds3GetControlScene(), (dds3Basic_t *)object);
@@ -271,7 +271,7 @@ void evtPathLoop(dds3Basic_t *basic, s32 sw) {
 }
 
 dds3Basic_t *evtAddCamera(f32 *eye, f32 *rot) {
-    dds3Basic_t *obj = dds3AddCameraObjectBasicTypeFree(dds3AllocObjectId(), eye, rot);
+    dds3Basic_t *obj = dds3AddCameraObjectBasicTypeFree(dds3AllocObjectId(), (const sdfVector4_t *)eye, (const sdfVector4_t *)rot);
 
     if (obj == 0) {
         return obj;

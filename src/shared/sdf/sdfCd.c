@@ -2,6 +2,7 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfSystem.h"
 extern s32 sceRead(s32 fileHandle, saddr_t buffer, s32 byteCount);
 
 typedef struct
@@ -66,7 +67,6 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-extern void sdfDelayThread(s32 delay);
 void sdfCdWaitTrayClose(void);
 extern u8 sdfCdImageMode;
 extern s32 sdfCdCurrLsn;

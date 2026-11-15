@@ -5,6 +5,7 @@
 #include "sdfPacketBuff.h"
 #include "sdf2D.h"
 #include "sdk_libkernl.h"
+#include "sdfTex.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -31,7 +32,6 @@ void sdfTexFreeDelayed(sdfTexHandle_t *texture);
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 /* For a new texture, copy payload bytes into queue-owned storage before return. */
-struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
 
 #include "dds/btl_command.h"
 #include "dds/dds3_effect_sprite.h"
@@ -669,7 +669,7 @@ void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, void *textureRe
         sdfTexFreeDelayed(texture);
         descriptor->texture = 0;
     }
-    descriptor->texture = sdfTexSet((SdfTextureFileHeader *)(textureResource));
+    descriptor->texture = sdfTexSet((TMX_HEADER_t *)((SdfTextureFileHeader *)(textureResource)));
 }
 
 /* Queue the descriptor's preview texture as a quad at its screen position. */

@@ -5,6 +5,8 @@
 #include "sdfMemory.h"
 #include "sdfSystem.h"
 #include "sdfImageSet.h"
+#include "libdma.h"
+#include "sdfChip.h"
 
 /* GS pixel storage modes, the values of sdfGsMemSlice_t.pixelFormat. */
 enum sdf_psm
@@ -24,7 +26,6 @@ enum sdf_psm
     SDF_PSMZ16S = 0x3A
 };
 
-extern void *sdfChipAllocDirect(u32 aSize);
 extern void sdfChipFreeDirect(void *aPtr);
 
 /* sdfImageSetPacket_tag.freeMode: which heap owns the uploaded pixels. */
@@ -74,13 +75,10 @@ typedef struct sdfImageSetReqParam
     u16 h;
 } sdfImageSetReqParam_t;
 
-extern void *sdfChipAllocZeroDirect(u32 aSize);
-extern s32 sdfChipCheck(void *aPtr);
 
 #include "sdk_libkernl.h"
 
 extern void *sceDmaGetChan(s32 channel);
-extern s32 sceDmaSend(void *chan, void *packet);
 extern sdfImageSetCb_t sdfImageSetCb;
 extern u64 sdfImageSetTexFlushPacket[];
 s32 sdfImageDataSize(u32 format, s32 width, s32 height);
@@ -249,7 +247,7 @@ void sdfImageSetChainReleaseMem(saddr_t p)
 
     if (p != 0) {
         release = sdfChipAllocZeroDirect(0xA0);
-        if (sdfChipCheck(EE_ADDR_AS(void *, p)) != 0) {
+        if (sdfChipCheck((s32)(EE_ADDR_AS(void *, p))) != 0) {
             release->chip = EE_ADDR_AS(void *, p);
             release->freeMode = SDF_IMAGESET_MEM_CHIP;
         } else {
@@ -307,7 +305,7 @@ void sdfImageSetTrans(void)
         chan = sceDmaGetChan(1);
         HW_WRITE(chan, HW_READ(chan) | 0x40);
         FlushCache(0);
-        sceDmaSend(chan, EE_ADDR_AS(void *, dmaAddr));
+        sceDmaSend((sceDmaChan *)chan, EE_ADDR_AS(void *, dmaAddr));
         SleepThread();
         RemoveDmacHandler(1, handlerId);
     }

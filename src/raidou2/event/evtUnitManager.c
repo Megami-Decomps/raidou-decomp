@@ -12,6 +12,7 @@
 #include "evtUnitManager.h"
 #include "dds3PathBasic.h"
 #include "dds3WorldBasic.h"
+#include "dds3Basic.h"
 
 f32 GetSplineLength(dds3PathBasicControl_t *path);
 
@@ -74,7 +75,6 @@ typedef enum {
 
 extern void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast);
 s32 evtUnitRotationTarget(evtUnit_t *h, f32 *pos, f32 radio);
-void dds3GetPosPoseSetMCR(dds3Basic_t *object, u128 *vector);
 extern void evtGetUnitDirVector(evtUnit_t *h);
 void evtVu0SubVectorXZAxis(f32 *a, f32 *b);
 void evtGetUnitDirVector(evtUnit_t *h);
@@ -455,7 +455,7 @@ s32 evtUnitMoveType0(evtUnit_t *h) {
     scale = h->motionParameter * 0.1f;
     SDF_VU0_SCALEVECTOR_V0(scale);
     SDF_VU0_STOREVECTOR(&v);
-    dds3GetPosPoseSetMCR(obj, (u128 *)&v);
+    dds3GetPosPoseSetMCR(obj, (const sdfVector4_t *)((u128 *)&v));
     return 1;
 }
 

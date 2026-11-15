@@ -2,6 +2,7 @@
 #include "sdfMemory.h"
 #include "sdfChip.h"
 #include "sdfMath.h"
+#include "fileManager.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -16,18 +17,14 @@
 /* Return the payload allocation descriptor. For normal file loads, freeing the
  * request wrapper does not free this allocation; its resource owner must keep
  * or release it separately. */
-struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *request);
 
 /* Free a completed request wrapper; return one while it remains pending. */
-FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
 
 /* fileLoadEx stores userData without copying it. When callbackAddress is
  * nonzero, the manager calls it once after the device request closes, passing
  * the completed request and userData. The context must remain valid until then;
  * callback delivery does not free the request wrapper, which callers release
  * with fileHandleFree. */
-struct FileRequest *fileLoadEx(const char *requestName, u32 allocationMode,
-                                              u32 callbackAddress, u32 userData);
 
 
 /* Both entry points return one caller-owned texture reference. A nonzero
@@ -208,11 +205,11 @@ void effCompleteTransientResourceJob(struct FileRequest *job, u32 *outInstance) 
     struct sdfMemHandle_t *allocation;
     EffectSlotSet *instance;
 
-    allocation = fileGetMemHandle(job);
+    allocation = fileGetMemHandle((const fileRequest_t *)job);
     instance = effCreateResourceSlotSetFromAllocation(allocation, EFF_RESOURCE_TRANSIENT);
     *outInstance = (u32)instance;
     sdfMemFreeDirect(allocation);
-    fileHandleFree(job);
+    fileHandleFree((fileRequest_t *)job);
 }
 
 /* Publish the instance without releasing its source allocation, then clean up the file job. */
@@ -220,10 +217,10 @@ void effCompleteRetainedResourceJob(struct FileRequest *job, u32 *outInstance) {
     struct sdfMemHandle_t *allocation;
     EffectSlotSet *instance;
 
-    allocation = fileGetMemHandle(job);
+    allocation = fileGetMemHandle((const fileRequest_t *)job);
     instance = effCreateResourceSlotSetFromAllocation(allocation, EFF_RESOURCE_KEEP_ALLOCATION);
     *outInstance = (u32)instance;
-    fileHandleFree(job);
+    fileHandleFree((fileRequest_t *)job);
 }
 
 /* Clear the output first; only mode one selects the retained-allocation completion path. */
@@ -260,12 +257,12 @@ void effCompleteMappedResourceJob(struct FileRequest *job,
     u32 sourceAddress;
     EffMappedResource *mappedResource;
 
-    allocation = fileGetMemHandle(job);
+    allocation = fileGetMemHandle((const fileRequest_t *)job);
     sourceAddress = sdfMemLock(allocation);
     mappedResource = effCreateMappedResource((const u8 *)sourceAddress);
     *outMappedResource = mappedResource;
     sdfMemFreeDirect(allocation);
-    fileHandleFree(job);
+    fileHandleFree((fileRequest_t *)job);
 }
 
 /* Initialize the output to zero and schedule mapped-record completion. */

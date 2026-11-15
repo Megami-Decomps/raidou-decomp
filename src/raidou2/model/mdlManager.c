@@ -16,6 +16,7 @@
 #include "sdfModel.h"
 #include "mdlEffect.h"
 #include "sdfPacDecode.h"
+#include "sdf_model_packet_callback.h"
 
 #define MDL_GROUP_COUNT 8
 
@@ -115,7 +116,6 @@ sdfPacDecodeResrc_t *mdlPackSet(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor
 extern filePacRequest_t *pacLoadEx(const char *filename, s32 headOrTail, s32 callback, void *pendCallback, void *callbackParm);
 extern void pacSync(filePacRequest_t *pacFileHandle);
 void mdlFileCbFree(mdlManager_mdlFileLoadCb_t *cb);
-extern void sdfModelLinkOt(void *aOt, sdfModelRootNode_t *aRoot);
 extern void mdlLinkBlur(mdlObj_t *ctx, sdfGrOt_t **surfaces);
 void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber);
 

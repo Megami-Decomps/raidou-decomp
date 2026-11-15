@@ -7,6 +7,7 @@
 #include "sdfFrame.h"
 #include "sdk_libc.h"
 #include "sdfMath.h"
+#include "sdfVu0.h"
 
 struct effRandState_t;
 
@@ -448,7 +449,6 @@ void SetRotateMatrixAxis(f32 aAngle, const sdfVector3_t *aAxis);
 void sdfChipFreeDirect(void *aPtr);
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
 extern f32 aViewTarget[4], aViewEye[4];
-extern void SetRotateMatrixXYZ(const struct sdfVector3_t *);
 
 #define EFF_THUNDER_PARAMETER_BLOCK 0
 
@@ -614,7 +614,7 @@ void effPCPThunderSphereRotate(effPCPThunderSpherePoly_t *work, s32 index) {
         rotation[0] = dds3GetRandFloatA(dds3EffectBase) * (75.0f * (EFF_THUNDER_HALF_TURN / 180.0f));
         rotation[1] = dds3GetRandFloatA(dds3EffectBase) * (75.0f * (EFF_THUNDER_HALF_TURN / 180.0f));
         rotation[2] = dds3GetRandFloatA(dds3EffectBase) * (75.0f * (EFF_THUNDER_HALF_TURN / 180.0f));
-        SetRotateMatrixXYZ((const struct sdfVector3_t *)rotation);
+        SetRotateMatrixXYZ((const sdfVector3_t *)((const struct sdfVector3_t *)rotation));
         SDF_VU0_LOADVECTOR(axis);
         SDF_VU0_APPLYMATRIX_XYZ();
         SDF_VU0_STOREVECTOR_NOMEM(axis);
@@ -814,7 +814,7 @@ void effPCPThunderSphereLowRotate(effPCPThunderSpherePoly_t *work, s32 index) {
         rotation[0] = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
         rotation[1] = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
         rotation[2] = dds3GetRandFloatA(dds3EffectBase) * (EFF_THUNDER_HALF_TURN * 0.5f);
-        SetRotateMatrixXYZ((const struct sdfVector3_t *)rotation);
+        SetRotateMatrixXYZ((const sdfVector3_t *)((const struct sdfVector3_t *)rotation));
         SDF_VU0_LOADVECTOR(axis);
         SDF_VU0_APPLYMATRIX_XYZ();
         SDF_VU0_STOREVECTOR_NOMEM(axis);

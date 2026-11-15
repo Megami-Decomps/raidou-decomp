@@ -24,6 +24,8 @@
 #include "sdfSystem.h"
 #include "sdfPrim.h"
 #include "sdf_Decomp.h"
+#include "sdf2D.h"
+#include "sdfBillBoard.h"
 
 typedef struct fldSpriteCorner_t fldSpriteCorner_t;
 
@@ -74,7 +76,6 @@ extern u32 fldDrawInitDone;
 extern addr_t fldDrawEnv;
 s32 sdf2DLinkTexPacket(sdfDrawTag_t *aTag, sdfTexHandle_t *aTexHndl, s32 aCtx);
 sdfGrPacketHeader_t *sdf2DAllocSprite(s32 aNumOfSpr);
-extern saddr_t sdf2DGetPrimPtr(saddr_t);
 
 
 sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
@@ -90,7 +91,6 @@ extern s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
 struct sdfTexBuf_t *sdfTexGetPacket(sdfTexHandle_t *aHandle);
 extern void sdf3DMakeDirectRefPacket(dmaPacketHeader_t *, addr_t, s32);
 extern void sdfBillBoardMakeTMPacket(u8 *, const f32 *);
-extern void sdfBillBoardMake1(u8 *, const sdfVector4_t *, u32, const UV_t *, const VTX_t *);
 
 
 extern sdfVector4_t fldTestLineVertex[];
@@ -152,7 +152,7 @@ sdfGrOt_t *fldDrawGetOt(void)
 
 void DrwSprite2D(s32 x, s32 y, s32 w, s32 h, s32 u, s32 v, s32 uw, s32 vh, s32 rgba, sdfTexHandle_t *th) {
     void *handle = sdf2DAllocSprite(1);
-    fldSpriteVertex_t *vtx = EE_ADDR_AS(fldSpriteVertex_t *, sdf2DGetPrimPtr(EE_ADDR_S(handle)));
+    fldSpriteVertex_t *vtx = EE_ADDR_AS(fldSpriteVertex_t *, sdf2DGetPrimPtr((sdfGrPacketHeader_t *)(EE_ADDR_S(handle))));
     s32 ubase = u * 16;
     s32 xl = x * 16 + 0x7000;
     s32 vbase = v * 16;
@@ -215,7 +215,7 @@ void DrwSprite2DC(s32 x, s32 y, s32 w, s32 h,
 
 void DrwSprite2DF(f32 x, f32 y, f32 w, f32 h, s32 u, s32 v, s32 uw, s32 vh, s32 rgba, sdfTexHandle_t *th) {
     void *handle = sdf2DAllocSprite(1);
-    fldSpriteVertex_t *vtx = EE_ADDR_AS(fldSpriteVertex_t *, sdf2DGetPrimPtr(EE_ADDR_S(handle)));
+    fldSpriteVertex_t *vtx = EE_ADDR_AS(fldSpriteVertex_t *, sdf2DGetPrimPtr((sdfGrPacketHeader_t *)(EE_ADDR_S(handle))));
     s32 r = rgba & 0xFF;
     s32 g = (rgba >> 8) & 0xFF;
     s32 b = (rgba >> 16) & 0xFF;
@@ -378,7 +378,7 @@ void aDrawLineStripPrim(s32 x0, s32 y0, s32 x1, s32 y1, u32 r, u32 g, u32 b) {
     sdfDrawTagInit(command);
     packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 2)));
     sdf2DMakePrimPacketHeader(packet, 0x49, 2, 0x41, 2);
-    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_S(packet)));
+    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr((sdfGrPacketHeader_t *)(EE_ADDR_S(packet))));
     lo = (u64)r | ((u64)g << 32);
     hi = (u64)b | (0x8000LL << 24);
     pos = coords;
@@ -415,7 +415,7 @@ void aDrawLineDirect(u32 x0, u32 y0, u32 x1, u32 y1, u32 r, u32 g, u32 b) {
     sdfDrawTagInit(command);
     packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 2)));
     sdf2DMakePrimPacketHeader(packet, 0x49, 2, 0x41, 2);
-    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_S(packet)));
+    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr((sdfGrPacketHeader_t *)(EE_ADDR_S(packet))));
     lo = (u64)r | ((u64)g << 32);
     hi = (u64)b | (0x8000LL << 24);
     pos = coords;
@@ -456,7 +456,7 @@ void aDrawBoxF(s32 x, s32 y, s32 w, s32 h, u32 r, u32 g, u32 b, u32 a) {
     sdfDrawTagInit(command);
     packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 4)));
     sdf2DMakePrimPacketHeader(packet, 0x4D, 2, 0x41, 4);
-    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_S(packet)));
+    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr((sdfGrPacketHeader_t *)(EE_ADDR_S(packet))));
     lo = (u64)r | ((u64)g << 32);
     hi = (u64)b | ((u64)a << 32);
     pos = coords;
@@ -498,7 +498,7 @@ void aDrawBoxFZ(s32 x, s32 y, s32 w, s32 h, u32 z, u32 r, u32 g, u32 b, u32 a) {
     sdfDrawTagInit(command);
     packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 4)));
     sdf2DMakePrimPacketHeader(packet, 0x4D, 2, 0x41, 4);
-    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_S(packet)));
+    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr((sdfGrPacketHeader_t *)(EE_ADDR_S(packet))));
     tag = z;
     lo = (u64)r | ((u64)g << 32);
     hi = (u64)b | ((u64)a << 32);
@@ -540,7 +540,7 @@ void aDrawBoxF_Direct(s32 x, s32 y, s32 w, s32 h, u32 r, u32 g, u32 b, u32 a) {
     sdfDrawTagInit(command);
     packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 4)));
     sdf2DMakePrimPacketHeader(packet, 0x4D, 2, 0x41, 4);
-    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_S(packet)));
+    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr((sdfGrPacketHeader_t *)(EE_ADDR_S(packet))));
     lo = (u64)r | ((u64)g << 32);
     hi = (u64)b | ((u64)a << 32);
     pos = coords;
@@ -576,7 +576,7 @@ void aDrawTriG(s32 x0, s32 y0, s32 x1, s32 y1, s32 x2, s32 y2, u32 r0, u32 g0, u
     sdfDrawTagInit(command);
     packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 3)));
     sdf2DMakePrimPacketHeader(packet, 0x4D, 2, 0x41, 3);
-    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_S(packet)));
+    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr((sdfGrPacketHeader_t *)(EE_ADDR_S(packet))));
     for (i = 0; i < 3; i++) {
         if (i == 0) {
             dst[0] = (u64)r0 | ((u64)g0 << 32);
@@ -622,7 +622,7 @@ void aDrawBoxGF(f32 x, f32 y, f32 w, f32 h, u32 r0, u32 g0, u32 b0, u32 a0, u32 
     sdfDrawTagInit(command);
     packet = EE_ADDR_AS(sdfGrPacketHeader_t *, sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(2, 4)));
     sdf2DMakePrimPacketHeader(packet, 0x4D, 2, 0x41, 4);
-    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr(EE_ADDR_S(packet)));
+    dst = EE_ADDR_AS(u64 *, sdf2DGetPrimPtr((sdfGrPacketHeader_t *)(EE_ADDR_S(packet))));
     for (i = 0, pos = coords; i < 4; i++) {
         if (i == 0) {
             dst[0] = (u64)r0 | ((u64)g0 << 32);
@@ -668,7 +668,7 @@ void drawSprite3D(sdfTexHandle_t *th, Sprite3D_t *spr3d) {
     sdfBillBoardMakeTMPacket(packet, mat);
     sdfDrawTagLink(command, EE_ADDR(packet));
     packet = EE_ADDR_AS(u8 *, sdfGrAllocPacketBuff(0x80));
-    sdfBillBoardMake1(packet, &spr3d->pos, spr3d->col, spr3d->uv, spr3d->vt);
+    sdfBillBoardMake1(packet, (const f32 *)&spr3d->pos, spr3d->col, spr3d->uv, (const f32 *)spr3d->vt);
     sdfDrawTagLink(command, EE_ADDR(packet));
     descriptor = &sdfGrOtTable[rsetFrameMaskOtOffset];
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);

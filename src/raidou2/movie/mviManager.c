@@ -15,9 +15,9 @@
 #include "sdfDevCons.h"
 #include "sdfMovie.h"
 #include "mviManager.h"
+#include "dds3KernelCore.h"
+#include "sdfDraw.h"
 
-extern void *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
-                              void *drawExit, void *deleteExit, void *p);
 
 typedef struct
 {
@@ -43,7 +43,6 @@ extern void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descrip
 extern u16 dds3VblanksPerFrame;
 extern saddr_t PlayingNo;
 extern void sdfIpuRunDecode(s32 frames);
-extern s32 dds3KillProcess(s32 id, s32 shutdowntimer);
 extern void (*DrawPhaseTable[])(fclEncyc_instance_tag *work);
 s32 movieDrawProc(void);
 extern const char movieDrawProcName[];
@@ -86,7 +85,6 @@ typedef struct
 extern char movieExtIpu[];
 extern char movieExtIps[];
 void *movieViewerStep(void);
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
 
 
 /* "%c%s", in .sdata where a literal cannot go. */
@@ -101,7 +99,7 @@ void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor)
     {
         movieOpenStream(&movieCb, descriptor, path);
         PlayingNo =
-            EE_ADDR_S(dds3StartProcess(movieDrawProcName, 0x2AFB, 1, 1, movieDrawProc, NULL, NULL));
+            EE_ADDR_S(dds3StartProcess((char *)movieDrawProcName, 0x2AFB, 1, 1, (dds3ProcessFunc_t)movieDrawProc, NULL, NULL));
     }
 }
 
@@ -111,7 +109,7 @@ void movieStop(void)
 {
     if (PlayingNo != 0) {
         movieCloseStream(&movieCb);
-        dds3KillProcess(PlayingNo, 0);
+        dds3KillProcess((dds3ProcessID_t *)PlayingNo, 0);
         PlayingNo = 0;
     }
 }
@@ -131,7 +129,7 @@ s32 movieMan_Process(void)
 void *dds3StartMovieManager(void)
 {
     sdfIpuInit();
-    return dds3StartProcess(movieManProcName, 0x385, 1, 0, movieMan_Process, NULL, NULL);
+    return dds3StartProcess((char *)movieManProcName, 0x385, 1, 0, (dds3ProcessFunc_t)movieMan_Process, NULL, NULL);
 }
 
 INCLUDE_ASM(const s32, "movie/mviManager", fldCommand_FLD_BGM_CONTINUE);
@@ -194,8 +192,8 @@ void movieDebugDrawInfo(void)
         return;
     }
     tag = movieViewerWork.packets;
-    sdfDrawTagLink(tag, dds3PrimFrameRect(0x7150, 0x7948, 0xFF0080, 0xF60, 0x3F0, 0x30000000,
-                                          0x60404040));
+    sdfDrawTagLink(tag, (addr_t)(dds3PrimFrameRect(0x7150, 0x7948, 0xFF0080, 0xF60, 0x3F0, 0x30000000,
+                                          0x60404040)));
     selected = movieViewerWork.cursor;
     i = movieViewerWork.top;
     chip = movieViewerWork.chip;
@@ -204,8 +202,8 @@ void movieDebugDrawInfo(void)
         chip = chip->next;
     }
     for (i = 0; i < 8 && chip != NULL; i++, chip = chip->next) {
-        sdfDrawTagLink(tag, sdfDevPrintf(0x7240, 0x79C0 + i * 0x60, 0xFF0080, 0, movieDebugRowFmt,
-                                         (i == selected) ? '>' : ' ', chip->path));
+        sdfDrawTagLink(tag, (addr_t)(sdfDevPrintf(0x7240, 0x79C0 + i * 0x60, 0xFF0080, 0, movieDebugRowFmt,
+                                         (i == selected) ? '>' : ' ', chip->path)));
     }
     if (movieViewerWork.top != 0) {
         sdfPrimLinkF3(tag, 0x8000A0C0, 0, 0x7900, 0x7978, 0x7840, 0x79A8, 0x79C0, 0x79A8,

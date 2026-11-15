@@ -12,8 +12,9 @@
 #include "sdk_libc.h"
 #include "dds3GlobalWork.h"
 #include "sdfDevCons.h"
+#include "dds3KernelCore.h"
+#include "sdfDraw.h"
 
-extern void *dds3SearchProcessName(const char *namestr);
 
 typedef struct
 {
@@ -61,7 +62,6 @@ typedef struct
 } movieViewerProcWork_t;
 
 extern movieViewerProcWork_t movieViewerWork;
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
 void MovieViewerDrawFrameInfo(void);
 extern const char movieViewerProcName[];
 void FinishMovieViewer(void);
@@ -87,11 +87,11 @@ void MovieViewerDrawFrameInfo(void)
 
     if (dds3WaitMovieEnd() == 0) {
         tag = movieViewerWork.tag;
-        sdfDrawTagLink(tag, dds3PrimFrameRect(0x8810, 0x85E8, 0xFF0080, 0x720, 0x90,
-                                              0x30000000, 0x60404040));
-        sdfDrawTagLink(tag, sdfDevPrintf(0x8840, 0x8600, 0xFF0080, 0, "%04d/%04d",
+        sdfDrawTagLink(tag, (addr_t)(dds3PrimFrameRect(0x8810, 0x85E8, 0xFF0080, 0x720, 0x90,
+                                              0x30000000, 0x60404040)));
+        sdfDrawTagLink(tag, (addr_t)(sdfDevPrintf(0x8840, 0x8600, 0xFF0080, 0, "%04d/%04d",
                                          movieCb.decodeCb.frame,
-                                         movieCb.decodeCb.frameCount));
+                                         movieCb.decodeCb.frameCount)));
     }
 }
 
@@ -101,7 +101,7 @@ INCLUDE_ASM(const s32, "movie/MovieViewer", InitMovieViewer);
 
 void FinishMovieViewer(void)
 {
-    void *proc = dds3SearchProcessName(movieViewerProcName);
+    void *proc = dds3SearchProcessName((char *)movieViewerProcName);
 
     if (proc != NULL) {
         dds3KillProcess(proc, 0);

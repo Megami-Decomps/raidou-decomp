@@ -12,8 +12,9 @@
 #include "evtStage.h"
 #include "dds3WorldBasic.h"
 #include "itfMesManager.h"
+#include "dds3KernelCore.h"
+#include "dds3SceneBasic.h"
 
-extern s32 dds3GetProcessStat(void *id);
 extern u32 dds3GetRandA(void *name);
 void fclClearFlag(s8 index);
 extern s8 gSelMsgPos;
@@ -29,11 +30,9 @@ typedef struct
 } fclGlobalWorkItemInventory_t;
 
 extern fclGlobalWorkItemInventory_t *fclGlobalWorkItems FAKEMATCH_ASM_NAME("DDS3_GBWK");
-extern s32 dds3KillProcess(s32 id, s32 shutdowntimer);
 extern s32 fclChkMessage(void);
 extern void fclScriptForcedEnd(u8 *PID);
 extern s8 gMsgFlag;
-extern void *dds3SceneBasicSearchNameAndType(void *scene, s32 type, char *name);
 extern void shuffleIndices(s8 *order, s32 count, s32 rounds);
 extern s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
 
@@ -43,7 +42,6 @@ typedef struct
     /* 0x18 */ u8 *unk_18;
 } fclSceneObj_t;
 
-extern s32 dds3GetMapNo(void *scene);
 void fclLoadStage(s32 MajorNo, s32 MinorNo);
 void fclScriptForcedEnd(u8 *PID);
 s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
@@ -235,8 +233,8 @@ INCLUDE_ASM(const s32, "facility/fclMisc", fclInitPanelPos);
 
 void fclScriptForcedEnd(u8 *PID)
 {
-    if (PID != NULL && dds3GetProcessStat(PID) != 0) {
-        dds3KillProcess(PID, 0);
+    if (PID != NULL && dds3GetProcessStat((dds3ProcessID_t *)PID) != 0) {
+        dds3KillProcess((dds3ProcessID_t *)PID, 0);
         PID = NULL;
     }
 }

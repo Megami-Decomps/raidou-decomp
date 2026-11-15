@@ -5,6 +5,8 @@
 #include "dds3GlobalWork.h"
 #include "sdfPrim.h"
 #include "frFont.h"
+#include "sdfChip.h"
+#include "sdfMemory.h"
 s32 DIntr();
 s32 EIntr(void);
 
@@ -22,7 +24,6 @@ s32 EIntr(void);
 #include "dds/sdf_general_heap_api.h"
 #include "dds/sdf_heap_api.h"
 
-void sdfChipGetInfo(SdfChipHeapStats *stats);
 void sdfDevConsAttribute(sdfDevConsCB_tag *console, u8 attribute);
 void sdfDevConsClose(sdfDevConsCB_tag *node);
 sdfDevConsCB_tag *sdfDevConsOpen(u32 screenOriginX, u32 screenOriginY, s32 columns, s32 rows);
@@ -35,20 +36,14 @@ void sdfDevConsSetMode(sdfDevConsCB_tag *console, u8 controlByte);
 
 /* Read the active packet cursor or restore it at a quadword boundary. */
 s32 sdfGrOpenPacketBuff(void);
-void sdfMemGetInfo(SdfGeneralHeapStats *stats);
 
 /* Return NULL when the following link is the end marker. */
-const struct sdfMemHandle_t *sdfMemGetNext(const struct sdfMemHandle_t *block);
 
 /* Return the descriptor's payload base as a byte address, not the descriptor. */
-u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
-s32 sdfMemGetSize(const struct sdfMemHandle_t *block);
 
 /* Borrowed read-only descriptors; exclude heap mutation while traversing. */
-const struct sdfMemHandle_t *sdfMemGetTop(void);
 
 /* Return free/used/end-sentinel state, not a resource kind. */
-SdfMemBlockState sdfMemGetType(const struct sdfMemHandle_t *block);
 
 
 
@@ -162,7 +157,7 @@ s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     s32 currentColumn;
     s32 peakColumn;
 
-    sdfMemGetInfo(&heapStats);
+    sdfMemGetInfo((sdfMemInfo_t *)&heapStats);
     freePercent = heapStats.freeBytes * 100 / heapStats.totalBytes;
     list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);
     sdfDrawTagInit(list);
@@ -278,16 +273,16 @@ void sdfDrawHeapMapOverlay(sdfDrawTag_t *packetList, s32 x, s32 y) {
     restoreInterrupts = DIntr();
     block = sdfMemGetTop();
     entry = snapshot;
-    heapBase = sdfMemGetPtr(block);
+    heapBase = sdfMemGetPtr((sdfMemHandle_t *)block);
     /* Count only the interrupt-protected snapshot traversal. */
     count = 0;
     do {
         count++;
-        entry->address = sdfMemGetPtr(block);
-        entry->blockState = (u8)sdfMemGetType(block);
+        entry->address = sdfMemGetPtr((sdfMemHandle_t *)block);
+        entry->blockState = (u8)sdfMemGetType((sdfMemHandle_t *)block);
         entry->size = sdfMemGetSize(block);
         entry++;
-        block = sdfMemGetNext(block);
+        block = sdfMemGetNext((sdfMemHandle_t *)block);
     } while (block != NULL);
     if (restoreInterrupts) {
         EIntr();
@@ -325,9 +320,9 @@ void evtDrawHeapUsageOverlay(sdfGrOt_t *surface) {
     char statusText[100];
     sdfDrawTag_t *packetList;
 
-    sdfMemGetInfo(&generalHeapStats);
+    sdfMemGetInfo((sdfMemInfo_t *)&generalHeapStats);
     D_00435D4C = generalHeapStats.totalBytes;
-    sdfChipGetInfo(&chipHeapStats);
+    sdfChipGetInfo((sdfChipInfo_t *)&chipHeapStats);
     packetList = (sdfDrawTag_t *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);
     sdfDrawTagInit(packetList);
     sdfDrawHeapMapOverlay(packetList, 0x8AC0, 0x79C0);
@@ -358,7 +353,7 @@ s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task) {
     s32 textCount;
     s32 gsCount;
 
-    sdfMemGetInfo(&heapStats);
+    sdfMemGetInfo((sdfMemInfo_t *)&heapStats);
     /* The unused heap ratio retains the native zero-divisor check. */
     heapRatio = heapStats.freeBytes / heapStats.totalBytes;
     list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);

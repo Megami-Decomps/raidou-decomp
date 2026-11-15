@@ -15,6 +15,7 @@
 #include "sdfImageSet.h"
 #include "sdfGraph.h"
 #include "sdfCoreDraw.h"
+#include "sdfChip.h"
 
 /* Native 0x30-byte EE thread descriptor passed to CreateThread. */
 typedef struct {
@@ -99,7 +100,6 @@ extern tagpipeBasic *PipeLine, *PipeCur, *PipeCur2, *PipeRBOX, *PipeEMS, *PipeEM
 extern tagpipeBasic *PipeMaka1, *PipeZMaka, *PipeDMaka, *PipeDRBOX;
 extern PIPE_EFF_t *pipe_CELL01_D3P, *pipe_BREAK01_D3P, *pipe_BREAK02_D3P;
 extern PIPE_EFF_t *pipe_DAMAGE01_D3P, *pipe_DAMAGE03_D3P, *pipe_ATTACK01_D3P;
-extern s32 sdfChipCheck(void *aPtr);
 extern void sdfChipFreeDirect(void *aPtr);
 extern void sdfChipFreeDelayedDirect(void *aPtr);
 extern sdfHandlerNode_t *sdfDmacHandlerTable;
@@ -178,7 +178,7 @@ void *sdfAllocAuto(s32 size)
 s32 sdfFreeAuto(void *allocation)
 {
     if (allocation != NULL) {
-        if (sdfChipCheck(allocation)) {
+        if (sdfChipCheck((s32)allocation)) {
             sdfChipFreeDirect(allocation);
         } else {
             sdfMemFreePtrDirect(allocation);
@@ -189,7 +189,7 @@ s32 sdfFreeAuto(void *allocation)
 s32 sdfFreeAutoDelayed(void *allocation)
 {
     if (allocation != NULL) {
-        if (sdfChipCheck(allocation)) {
+        if (sdfChipCheck((s32)allocation)) {
             sdfChipFreeDelayedDirect(allocation);
         } else {
             sdfMemFreeDelayedDirect(sdfMemGetHandleByPtr(allocation));
@@ -203,7 +203,7 @@ s32 sdfFreeMemorySlotFromEitherHeap(void **slot)
 
     if (allocation != NULL) {
         *slot = NULL;
-        if (sdfChipCheck(allocation)) {
+        if (sdfChipCheck((s32)allocation)) {
             sdfChipFreeDirect(allocation);
         } else {
             sdfMemFreePtrDirect(allocation);

@@ -22,6 +22,8 @@
 #include "sdfDelayedResrc.h"
 #include "evtEventPack.h"
 #include "evtSky.h"
+#include "dds3CameraObjectBasic.h"
+#include "dds3Basic.h"
 
 struct effPCPAgiraoFirePartList_t;
 
@@ -110,7 +112,6 @@ typedef u8 sdfTextureClampMode_t;
 
 extern s32 dds3GetMapNo(void *scene);
 extern void dds3SetActiveCameraSceneBasic(void *pSceneBasic, dds3Basic_t *pCameraBasic);
-extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 serialID, f32 *pos, f32 *rot);
 extern s32 dds3AllocObjectId(void);
 extern void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r);
 extern u32 dds3DrawFlag;
@@ -118,7 +119,6 @@ extern void fldSetNextField(s32 command, s32 para);
 extern const char evtMsgNameNotFound[];
 extern const char evtMsgEffmg1LoadHint[];
 extern const char evtMsgEffmg2LoadHint[];
-extern void dds3SetSclPoseSet(void *pBasic, u128 *scl);
 extern const char evtMsgModelMotionDeprecated[];
 extern const char evtMsgModelMoveMotDeprecated[];
 extern void evtUnlinkLightObjectBasic(evtUnit_t *h, s32 frame);
@@ -673,7 +673,7 @@ u32 evtCommand_MODEL_SCL_XYZ(void)
     scl.x = scrGetFloatPara(1);
     scl.y = scrGetFloatPara(2);
     scl.z = scrGetFloatPara(3);
-    dds3SetSclPoseSet(unit, (u128 *)&scl);
+    dds3SetSclPoseSet(unit, (const sdfVector4_t *)((u128 *)&scl));
     return 1;
 }
 
@@ -1765,7 +1765,7 @@ s32 evtCommand_CAM_CREATE(void)
     memset(&rot, 0, 0x10);
     rot.w = 1.0f;
     id = dds3AllocObjectId();
-    dds3GetRadiusPoseSet(dds3AddCameraObjectBasicTypeFree(id, &pos.x, &rot.x), 1.0f);
+    dds3GetRadiusPoseSet(dds3AddCameraObjectBasicTypeFree(id, (const sdfVector4_t *)&pos.x, (const sdfVector4_t *)&rot.x), 1.0f);
     scrSetIntReturnValue(id);
     return 1;
 }

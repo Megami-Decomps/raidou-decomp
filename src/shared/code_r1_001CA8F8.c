@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfMemory.h"
 
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1
@@ -47,7 +48,6 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-void sdfMemGetInfo(SdfGeneralHeapStats *stats);
 
 #include "dds/mnu_camp_display.h"
 #include "dds/mnu_camp_option_index_api.h"
@@ -367,7 +367,7 @@ void mnuCampCheckClockDivisor(void) {
     SdfGeneralHeapStats heapStats;
     s32 quotient;
 
-    sdfMemGetInfo(&heapStats);
+    sdfMemGetInfo((sdfMemInfo_t *)&heapStats);
     quotient = 1 / heapStats.totalBytes;
 }
 

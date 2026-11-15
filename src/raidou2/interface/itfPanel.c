@@ -2,6 +2,7 @@
 #include "interface.h"
 #include "sdfMemory.h"
 #include "itfMesManager.h"
+#include "itfMisc.h"
 
 /* A color row is also a four-component vector for the template scaler. */
 typedef union
@@ -100,7 +101,6 @@ void DrawNormal(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
 #define ITF_PANEL_WIDE_PASS_COUNT 3
 
-extern void itfMiscDrawRectanglePrim(void *vertices, void *colors, u8 *vertexIndex, u8 *colorIndex, u32 tail, sdfDrawTag_t *command);
 extern u8 itfPanelNormalVertexIndex[];
 
 #define ITF_PANEL_QUAD_INDEX_COUNT 4
@@ -110,13 +110,11 @@ void DrawMesWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
 #define ITF_PANEL_SEVEN_COLOR_COUNT 7
 
-extern void itfMiscDrawTriangleStripPrim(void *vertices, void *colors, u8 *vertexIndex, u8 *colorIndex, s32 count, u32 tail, sdfDrawTag_t *command);
 
 #define ITF_PANEL_WIDE_INDEX_COUNT 8
 
 #define ITF_PANEL_SEVEN_SIDE_PASS_COUNT 6
 
-extern void itfMiscDrawLineStripPrim(void *, void *, u8 *, u8 *, s32, u32, sdfDrawTag_t *);
 extern u8 itfPanelMesWinStripVertexIndex[], itfPanelMesWinStripColorIndex[], itfPanelMesWinLineColorIndex[];
 void DrawSelWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
@@ -505,7 +503,7 @@ void DrawNormal(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
 
     colors[1].rgba.alpha = handle->alpha;
     for (quadIndex = 0; quadIndex < ITF_PANEL_WIDE_PASS_COUNT; quadIndex++) {
-        itfMiscDrawRectanglePrim(drawBuffer, colors, &itfPanelNormalVertexIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], &itfPanelNormalColorIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], handle->z, pdrawtag);
+        itfMiscDrawRectanglePrim(drawBuffer, (itfColor_t *)colors, &itfPanelNormalVertexIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], &itfPanelNormalColorIndex[quadIndex * ITF_PANEL_QUAD_INDEX_COUNT], handle->z, pdrawtag);
     }
 }
 
@@ -523,10 +521,10 @@ void DrawMesWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     }
     colors = data->colors;
     for (rowIndex = 0; rowIndex < ITF_PANEL_WIDE_PASS_COUNT; rowIndex++) {
-        itfMiscDrawTriangleStripPrim(drawBuffer, colors, &itfPanelMesWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelMesWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
+        itfMiscDrawTriangleStripPrim(drawBuffer, (itfColor_t *)colors, &itfPanelMesWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelMesWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
     }
     for (rowIndex = 0; rowIndex < ITF_PANEL_SEVEN_SIDE_PASS_COUNT; rowIndex++) {
-        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, colors, itfPanelMesWinLineVertexIndex, &itfPanelMesWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
+        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, (itfColor_t *)colors, itfPanelMesWinLineVertexIndex, &itfPanelMesWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
     }
 }
 
@@ -544,10 +542,10 @@ void DrawSelWin(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     }
     colors = data->colors;
     for (rowIndex = 0; rowIndex < ITF_PANEL_WIDE_PASS_COUNT; rowIndex++) {
-        itfMiscDrawTriangleStripPrim(drawBuffer, colors, &itfPanelSelWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelSelWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
+        itfMiscDrawTriangleStripPrim(drawBuffer, (itfColor_t *)colors, &itfPanelSelWinStripVertexIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], &itfPanelSelWinStripColorIndex[rowIndex * ITF_PANEL_WIDE_INDEX_COUNT], ITF_PANEL_WIDE_INDEX_COUNT, handle->z, pdrawtag);
     }
     for (rowIndex = 0; rowIndex < ITF_PANEL_FIVE_SIDE_PASS_COUNT; rowIndex++) {
-        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, colors, itfPanelSelWinLineVertexIndex, &itfPanelSelWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
+        itfMiscDrawLineStripPrim(drawBuffer + 16 + rowIndex * 4, (itfColor_t *)colors, itfPanelSelWinLineVertexIndex, &itfPanelSelWinLineColorIndex[rowIndex * ITF_PANEL_QUAD_INDEX_COUNT], ITF_PANEL_QUAD_INDEX_COUNT, handle->z, pdrawtag);
     }
 }
 
@@ -574,9 +572,9 @@ void DrawPlain(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
         out[3].y = input[3].y - yOffset;
     }
 
-    itfMiscDrawRectanglePrim(buf, colors, itfPanelPlainRectVertexIndex, itfPanelPlainRectColorIndex, handle->z, pdrawtag);
+    itfMiscDrawRectanglePrim(buf, (itfColor_t *)colors, itfPanelPlainRectVertexIndex, itfPanelPlainRectColorIndex, handle->z, pdrawtag);
     for (i = 0; i < 3; i++) {
-        itfMiscDrawLineStripPrim(vertices, colors, &itfPanelPlainLineVertexIndex[i * 5], &itfPanelPlainLineColorIndex[i * 5], 5, handle->z, pdrawtag);
+        itfMiscDrawLineStripPrim(vertices, (itfColor_t *)colors, &itfPanelPlainLineVertexIndex[i * 5], &itfPanelPlainLineColorIndex[i * 5], 5, handle->z, pdrawtag);
     }
 }
 
@@ -587,7 +585,7 @@ void DrawPera1(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
     itfDrawColor_t *colors = data->colors;
 
     colors[0].rgba.alpha = handle->alpha;
-    itfMiscDrawRectanglePrim(drawBuffer, colors, itfPanelPera1RectVertexIndex, itfPanelPera1RectColorIndex, handle->z, pdrawtag);
+    itfMiscDrawRectanglePrim(drawBuffer, (itfColor_t *)colors, itfPanelPera1RectVertexIndex, itfPanelPera1RectColorIndex, handle->z, pdrawtag);
 }
 
 /* Bracket the six-index panel draw with table-state two and its native reset to zero. */
@@ -598,7 +596,7 @@ void DrawLeftFade(itfpanel_t *handle, sdfDrawTag_t *pdrawtag) {
 
     colors[1].rgba.alpha = handle->alpha;
     itfMiscDrawAlphaPrim(pdrawtag, 2, 0);
-    itfMiscDrawTriangleStripPrim(drawBuffer, colors, itfPanelLeftFadeStripVertexIndex, itfPanelLeftFadeStripColorIndex, 6, handle->z, pdrawtag);
+    itfMiscDrawTriangleStripPrim(drawBuffer, (itfColor_t *)colors, itfPanelLeftFadeStripVertexIndex, itfPanelLeftFadeStripColorIndex, 6, handle->z, pdrawtag);
     itfMiscDrawAlphaPrim(pdrawtag, 0, 0);
 }
 

@@ -8,6 +8,7 @@
 #include "sdfMat.h"
 #include "sdf3DPrim.h"
 #include "effect.h"
+#include "effPacket.h"
 
 /* One needle instance: position plus the colour the draw loop stamps. */
 typedef struct dds3NeedleModelPart_tag
@@ -60,7 +61,6 @@ extern f32 dds3NeedleModelDefaultPoints[][4];
 extern u32 dds3NeedleModelDefaultColors[];
 extern effDrawSurface_t *dds3NeedleModelDrawSurfaces[];
 extern void *sdfGrAllocPacketBuff(s32 aSize);
-extern void *effPkt3DPrimMakePoly(effPrimParam_t *aParm);
 extern void sdfMemFreeDirect(void *aHandle);
 extern void dds3NeedleModelVNCListDelete(dds3NeedleModel_tag *hNModel);
 
@@ -276,7 +276,7 @@ void dds3NeedleModelDraw(dds3NeedleModel_tag *hNModel)
         dds3NeedleModelPrimParam.primCount = 16;
         dds3NeedleModelPrimParam.vertexCount = 48;
         while (remaining >= 48) {
-            sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(&dds3NeedleModelPrimParam)));
+            sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly((sdf3DPrimPolyParm_t *)&dds3NeedleModelPrimParam)));
             if (hNModel->hVNMem == NULL) {
                 dds3NeedleModelPrimParam.colors += 48;
                 dds3NeedleModelPrimParam.positions += 48;
@@ -290,7 +290,7 @@ void dds3NeedleModelDraw(dds3NeedleModel_tag *hNModel)
         if (remaining >= 3) {
             dds3NeedleModelPrimParam.primCount = remaining / perPrim;
             dds3NeedleModelPrimParam.vertexCount = remaining;
-            sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(&dds3NeedleModelPrimParam)));
+            sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly((sdf3DPrimPolyParm_t *)&dds3NeedleModelPrimParam)));
         }
     }
     dds3NeedleModelDrawSurfaces[hNModel->blend]->append(dds3NeedleModelDrawSurfaces[hNModel->blend], packet);

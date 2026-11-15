@@ -11,8 +11,8 @@
 #include "dds3WorldBasic.h"
 #include "evtEventPack.h"
 #include "effEvent.h"
+#include "dds3KernelCore.h"
 
-dds3ProcessID_t *dds3SearchProcessName(const char *namestr);
 dds3ProcessID_t *evtSearchEventPack(u32 eventno);
 
 typedef u8 sdfTextureClampMode_t;
@@ -166,7 +166,7 @@ dds3ProcessID_t *evtSearchEventPack(u32 eventno) {
     char taskName[32];
 
     evtMakeEventPackName(eventno, taskName);
-    return dds3SearchProcessName((const char *)taskName);
+    return dds3SearchProcessName((char *)((const char *)taskName));
 }
 
 /* Return this event task's loaded state, or -1 when it does not exist. */

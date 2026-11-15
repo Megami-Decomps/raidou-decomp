@@ -18,6 +18,7 @@
 #include "sdfModel.h"
 #include "mdlEffect.h"
 #include "sdfDevCons.h"
+#include "effManager.h"
 
 typedef struct mdlBillboard_t mdlBillboard_t;
 
@@ -227,7 +228,6 @@ extern void Eff_ModelTrackPolyDelete(mdlTrackWork_t *);
 extern void Eff_ModelTrackPolyDraw(mdlTrackWork_t *);
 extern void dds3BillboardSetPosition(void *, const void *);
 extern void dds3BillboardDraw(mdlBillboard_t *);
-extern void dds3EffectSetPosition(mdlEffect_t *, const void *);
 extern void dds3EffectDraw(mdlEffect_t *);
 extern void dds3BillboardSetRGBA(mdlBillboard_t *, s32);
 extern void dds3EffectSetRGBA(mdlEffect_t *, s32);
@@ -832,7 +832,7 @@ void mdlLinkEffect(mdlObj_t *owner, dds3ModelEffectCtrlr_t *anchorRecord) {
     case dds3ModelEffectType_D3P:
         mdlEffect_P2A_D3P_GetPos(model, anchorRecord, &position.x);
         resourceInstance = anchorRecord->payload.part.instance;
-        dds3EffectSetPosition((mdlEffect_t *)resourceInstance, &position);
+        dds3EffectSetPosition((struct effHandle_t *)((mdlEffect_t *)resourceInstance), &position);
         dds3EffectDraw((mdlEffect_t *)resourceInstance);
         break;
     case dds3ModelEffectType_TRACK:

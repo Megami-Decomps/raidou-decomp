@@ -12,6 +12,9 @@
 #include "sdfQuat.h"
 #include "sdfGsMemory.h"
 #include "sdk_libm.h"
+#include "effEvent.h"
+#include "evtPolygonMovie.h"
+#include "sdf2D.h"
 
 /* One A+D register command with its standard DMA/GIF header. */
 typedef struct
@@ -206,7 +209,6 @@ extern s16 blurscalebase;
 extern s16 bluralphatarget;
 extern s16 blurscaletarget;
 s32 *Eve_PartialMultiFilterGetParams(void);
-void Eve_PartialMultiFilterSetParam(void *pParam);
 void Eve_PartialMultiFilterON(void);
 void Eve_PartialMultiFilterOFF(void);
 s32 *Eve_BlurGetParam(void);
@@ -275,16 +277,9 @@ extern dds3MFilterParam_t dds3MFilterCurrent;
 u32 dds3GetFrameID(void);
 void dds3FreeRenderTexture(void);
 sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
-void *sdf2DMakeStdPacket(void *aPacket, s32 aLeng);
 
 
 void dds3RotationArc(void);
-void evtHokanBlur2(s32 hokan, f32 ratio, dds3Blur2Param_t *key1, dds3Blur2Param_t *key2, dds3Blur2Param_t *d);
-void evtHokanMultBlur(s32 hokan, f32 ratio, dds3MultiBlurParam_t *key1, dds3MultiBlurParam_t *key2, dds3MultiBlurParam_t *d);
-void evtHokanDistBlur(s32 hokan, f32 ratio, dds3DistBlurParam_t *key1, dds3DistBlurParam_t *key2, dds3DistBlurParam_t *d);
-void evtHokanRipBlur(s32 hokan, f32 ratio, dds3RipBlurBody_t *key1, dds3RipBlurBody_t *key2, dds3RipBlurBody_t *d);
-void evtHokanFilter(s32 hokan, f32 ratio, dds3Filter2Param_t *key1, dds3Filter2Param_t *key2, dds3Filter2Param_t *d);
-void evtHokanMultFilter(s32 hokan, f32 ratio, dds3MFilterParam_t *key1, dds3MFilterParam_t *key2, dds3MFilterParam_t *d);
 void dds3InitRenderDrawEnv(void);
 s32 dds3AllocRenderTexture(u16 sx, u16 sy, f32 aspect);
 s32 dds3RenderTextureON(void);
@@ -947,7 +942,7 @@ void dds3MFilterSwap(s32 frame)
     mfilterswapmax = SDF_FRAMES(frame);
     if (frame == 0) {
         dds3DrawFlag &= ~0x400000;
-        Eve_PartialMultiFilterSetParam(&mfiltertarget);
+        Eve_PartialMultiFilterSetParam((dds3Effect_PartialMultiFilterParam_t *)&mfiltertarget);
     } else {
         dds3DrawFlag |= 0x400000;
     }
@@ -961,7 +956,7 @@ void dds3MFilterOn(s32 frame)
     mfiltermax = SDF_FRAMES(frame);
     if (frame == 0) {
         dds3DrawFlag &= ~0x200000;
-        Eve_PartialMultiFilterSetParam(&mfiltertarget);
+        Eve_PartialMultiFilterSetParam((dds3Effect_PartialMultiFilterParam_t *)&mfiltertarget);
         Eve_PartialMultiFilterON();
     } else {
         dds3DrawFlag |= 0x200000;
@@ -1299,8 +1294,8 @@ void dds3BlurUpdate(void)
         if (blur2swapnow < blur2swapmax) {
             blur2swapnow++;
         }
-        evtHokanBlur2(1, (f32)blur2swapnow / (f32)blur2swapmax, &ripblurtarget.blur2buf,
-                        &blur2target, &dds3Blur2State);
+        evtHokanBlur2(1, (f32)blur2swapnow / (f32)blur2swapmax, (dds3Effect_Blur_t *)&ripblurtarget.blur2buf,
+                        (dds3Effect_Blur_t *)&blur2target, (dds3Effect_Blur_t *)&dds3Blur2State);
         setdraw_xy(dds3Blur2State.rect);
         Eve_BlurSetParam(&dds3Blur2State);
         if (dds3Blur2State.rgba[3] != 0) {
@@ -1338,8 +1333,8 @@ void dds3BlurUpdate(void)
         if (mulblurswapnow < mulblurswapmax) {
             mulblurswapnow++;
         }
-        evtHokanMultBlur(1, (f32)mulblurswapnow / (f32)mulblurswapmax, &dds3MultiBlurBuf,
-                        &mulblurtarget, &key2);
+        evtHokanMultBlur(1, (f32)mulblurswapnow / (f32)mulblurswapmax, (dds3Effect_PartialMultiBlurParam_t *)&dds3MultiBlurBuf,
+                        (dds3Effect_PartialMultiBlurParam_t *)&mulblurtarget, (dds3Effect_PartialMultiBlurParam_t *)&key2);
         Eve_PartialMultiBlurSetParam(&key2);
         if (key2.rgba[3] != 0) {
             Eve_PartialMultiBlurON();
@@ -1375,8 +1370,8 @@ void dds3BlurUpdate(void)
         if (distblurswapnow < distblurswapmax) {
             distblurswapnow++;
         }
-        evtHokanDistBlur(1, (f32)distblurswapnow / (f32)distblurswapmax, &dds3DistBlurBuf,
-                        &distblurtarget, &dds3DistBlurCurrent);
+        evtHokanDistBlur(1, (f32)distblurswapnow / (f32)distblurswapmax, (dds3Effect_DistortionBlurParam_t *)&dds3DistBlurBuf,
+                        (dds3Effect_DistortionBlurParam_t *)&distblurtarget, (dds3Effect_DistortionBlurParam_t *)&dds3DistBlurCurrent);
         Eve_DistortionBlurSetParam(&dds3DistBlurCurrent);
         if (dds3DistBlurCurrent.rgba[3] != 0) {
             Eve_DistortionBlurON();
@@ -1412,8 +1407,8 @@ void dds3BlurUpdate(void)
         if (ripblurswapnow < ripblurswapmax) {
             ripblurswapnow++;
         }
-        evtHokanRipBlur(1, (f32)ripblurswapnow / (f32)ripblurswapmax, &dds3RipBlurBuf,
-                        &ripblurtarget.ripple, &dds3BlurState.ripple);
+        evtHokanRipBlur(1, (f32)ripblurswapnow / (f32)ripblurswapmax, (dds3Effect_RippleBlurParam_t *)&dds3RipBlurBuf,
+                        (dds3Effect_RippleBlurParam_t *)&ripblurtarget.ripple, (dds3Effect_RippleBlurParam_t *)&dds3BlurState.ripple);
         Eve_RippleBlurSetParam(&dds3BlurState.ripple);
         if (dds3BlurState.ripple.rgba[3] != 0) {
             Eve_RippleBlurON();
@@ -1449,8 +1444,8 @@ void dds3BlurUpdate(void)
         if (filter2swapnow < filter2swapmax) {
             filter2swapnow++;
         }
-        evtHokanFilter(1, (f32)filter2swapnow / (f32)filter2swapmax, &dds3Filter2Buf,
-                                        &filter2target, &dds3BlurParam);
+        evtHokanFilter(1, (f32)filter2swapnow / (f32)filter2swapmax, (dds3Effect_Filter_t *)&dds3Filter2Buf,
+                                        (dds3Effect_Filter_t *)&filter2target, (dds3Effect_Filter_t *)&dds3BlurParam);
         setdraw_xy(dds3BlurParam.rect);
         Eve_FilterSetParam(&dds3BlurParam);
         if (dds3BlurParam.rgba[3] != 0) {
@@ -1488,9 +1483,9 @@ void dds3BlurUpdate(void)
         if (mfilterswapnow < mfilterswapmax) {
             mfilterswapnow++;
         }
-        evtHokanMultFilter(1, (f32)mfilterswapnow / (f32)mfilterswapmax, &dds3MFilterBuf,
-                        &mfiltertarget, &dds3MFilterCurrent);
-        Eve_PartialMultiFilterSetParam(&dds3MFilterCurrent);
+        evtHokanMultFilter(1, (f32)mfilterswapnow / (f32)mfilterswapmax, (dds3Effect_PartialMultiFilterParam_t *)&dds3MFilterBuf,
+                        (dds3Effect_PartialMultiFilterParam_t *)&mfiltertarget, (dds3Effect_PartialMultiFilterParam_t *)&dds3MFilterCurrent);
+        Eve_PartialMultiFilterSetParam((dds3Effect_PartialMultiFilterParam_t *)&dds3MFilterCurrent);
         if (dds3MFilterCurrent.rgba[3] != 0) {
             Eve_PartialMultiFilterON();
         }
@@ -1510,7 +1505,7 @@ void dds3BlurUpdate(void)
                 (mfilteratarget - mfilterabase) /
                 mfiltermax;
         dds3MFilterCurrent.color = (dds3MFilterCurrent.color & 0xFFFFFF) | (alpha << 24);
-        Eve_PartialMultiFilterSetParam(&dds3MFilterCurrent);
+        Eve_PartialMultiFilterSetParam((dds3Effect_PartialMultiFilterParam_t *)&dds3MFilterCurrent);
         if (alpha == 0) {
             Eve_PartialMultiFilterOFF();
         }
@@ -1868,7 +1863,7 @@ void evtSubmitFixedAlphaBlend(s32 fixedAlpha) {
     EvtGsCommand *command;
     sdfDrawTagInit(list);
     packet = (void *)sdfGrAllocPacketBuff(EVT_GS_COMMAND_BYTES);
-    command = (EvtGsCommand *)sdf2DMakeStdPacket(packet, EVT_GS_COMMAND_BYTES);
+    command = (EvtGsCommand *)sdf2DMakeStdPacket((u32)packet, EVT_GS_COMMAND_BYTES);
     command->data = ((u64)fixedAlpha << 32) | EVT_FIXED_ALPHA_INTERPOLATION;
     command->registerId = EVT_GS_ALPHA_PRIMARY;
     sdfDrawTagLink(list, (u32)(packet));

@@ -3,6 +3,7 @@
 #include "ps2asm.h"
 #include "sdf_lighting.h"
 #include "sdf_resource.h"
+#include "sdf_packet_alloc.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -125,7 +126,6 @@ void corePktEmitTexTris(sdfCorePacketCb_t *work);
 void corePktEmitTris(sdfCorePacketCb_t *work);
 extern void corePktXfmUV(void *vertices, s32 count, void *uv, void *transform);
 extern void corePktApplyFaceDivColor(sdfCorePacketCb_t *cb, void *parameters);
-extern void sdfGrClosePacketBuff(addr_t aBuffPtr);
 
 void corePktEmitTexTrisCtx2(sdfCorePacketCb_t *cb, u64 samplingState, u64 textureState,
                           u64 clampState, u64 alphaState, s32 clearPrimitiveFlags);

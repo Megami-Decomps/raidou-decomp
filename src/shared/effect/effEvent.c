@@ -16,6 +16,7 @@
 #include "effBlur_Filter.h"
 #include "effMath.h"
 #include "effEvent.h"
+#include "billManager.h"
 
 typedef struct effEveBEDParams_t {
     f32 center[4];
@@ -254,7 +255,6 @@ extern s32 EffEveCPSmokeCount;
 extern dds3Billboard_t *dds3BillboardFileLoad(s32 kind, const char *path);
 extern addr_t hEffEveCPSmokeBill01Tex;
 extern addr_t hEffEveCPSmokeBill02Tex;
-void dds3BillboardDelete(struct dds3Billboard_t *hData);
 extern effRandState_t dds3EffectBase[];
 
 /* Advance caller-owned state, returning its next 32-bit value. NULL selects
@@ -264,7 +264,6 @@ u32 dds3GetRandA(effRandState_t *name);
 /* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
 f32 dds3GetRandFloatA(effRandState_t *name);
 extern f32 aViewTarget[4];
-void dds3BillboardSetMode(struct dds3Billboard_t *hBillboard, s32 mode);
 
 /* Blend packed RGBA8888 colors; t >= 1 returns colorB unchanged. */
 
@@ -275,7 +274,6 @@ void dds3BillboardSetRGBA(struct dds3Billboard_t *hBillboard, u32 abgr);
 
 /* Radian rotation of the billboard quad in its plane. */
 void dds3BillboardSetRotate(struct dds3Billboard_t *hBillboard, f32 rot);
-extern void dds3BillboardDraw(dds3Billboard_t *hData);
 extern effEVECombParSmokeParam_t effEVECombParSmokeCreate2Data;
 dds3EffectPart_t *dds3EffectPartCreate(u16 type, void *pData);
 dds3EffectPart_t *dds3EffectPartCopy(dds3EffectPart_t *hEffPartSrc);
@@ -799,8 +797,8 @@ effEVECombParSmoke_t *effEVECombParSmokeCreate(effEVECombParSmokeParam_t *pParam
 void effEVECombParSmokeDelete(effEVECombParSmoke_t *pCombParSmoke) {
     EffEveCPSmokeCount = EffEveCPSmokeCount - 1;
     if (EffEveCPSmokeCount == 0) {
-        dds3BillboardDelete(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex));
-        dds3BillboardDelete(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex));
+        dds3BillboardDelete((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex)));
+        dds3BillboardDelete((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex)));
     }
     sdfMemFreeDirect(pCombParSmoke->hMem);
 }
@@ -898,8 +896,8 @@ void effCallBillboardSetMode(effEVECombParSmoke_t *work) {
     swayAmplitudeStep = SDF_FRAME_STEP(work->head.swayAmplitudeStep);
     SDF_VU0_COPYVECTOR(&origin, work);
     i = 0;
-    dds3BillboardSetMode(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), work->head.drawMode);
-    dds3BillboardSetMode(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), 3);
+    dds3BillboardSetMode((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex)), work->head.drawMode);
+    dds3BillboardSetMode((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex)), 3);
     for (; i < count; i++, particle++) {
         age = particle->frame;
         if (age == 0) {
@@ -948,12 +946,12 @@ void effCallBillboardSetMode(effEVECombParSmoke_t *work) {
             dds3BillboardSetScale(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), scaleX, scaleY);
             dds3BillboardSetRGBA(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), rgba);
             dds3BillboardSetRotate(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex), particle->roll);
-            dds3BillboardDraw(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex));
+            dds3BillboardDraw((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill01Tex)));
             dds3BillboardSetPosition(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), &offset);
             dds3BillboardSetScale(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), scaleX, scaleY);
             dds3BillboardSetRGBA(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), rgba);
             dds3BillboardSetRotate(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex), particle->roll);
-            dds3BillboardDraw(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex));
+            dds3BillboardDraw((billHandle_t *)(EE_ADDR_AS(dds3Billboard_t *, hEffEveCPSmokeBill02Tex)));
             particle->s_w_r += SDF_FRAME_STEP(particle->scalePhaseStepX);
             particle->s_h_r += SDF_FRAME_STEP(particle->scalePhaseStepY);
             particle->roll += SDF_FRAME_STEP(particle->roll_s);

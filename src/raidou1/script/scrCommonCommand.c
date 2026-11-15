@@ -8,6 +8,7 @@
 #include "scrTraceCode.h"
 #include "EventBit.h"
 #include "dds3KernelCore.h"
+#include "dds3KernelDraw.h"
 
 static inline f32 scrFabsf(f32 x)
 {
@@ -44,15 +45,10 @@ extern void dds3PadVibrationSet(s32 port, s32 motor, s32 level);
 extern void dds3SetScreenFovy(f32 fovy);
 extern void dds3SetQuake(s32 frame, s32 range);
 extern void dds3StopQuake(void);
-extern void dds3SetLightColor(s32 frame, s32 no, void *col);
-extern void dds3SetLightDir(s32 frame, s32 no, void *dir);
-extern void dds3SetAmbientColor(s32 frame, void *col);
 extern void dds3SetFogColor(s32 frame, f32 *col);
 extern void dds3SetFogPara(s32 frame, f32 max, f32 min, f32 near, f32 far);
 extern void dds3SetSoftenBias(s32 frame, f32 soften, f32 bias);
 extern void dds3SetBlur(s32 frame, s32 alpha, s32 scale);
-extern void dds3SetMultiBlurPara(f32 rotate, f32 scale, u32 blend);
-extern void dds3SetMultiBlurRGBA(s32 rgba);
 extern void dds3SetMultiBlurArea(s32 area, s32 posx, s32 posy);
 extern void dds3MultiBlurSwap(s32 frame);
 extern void dds3MultiBlurOn(s32 frame);
@@ -61,7 +57,6 @@ extern void dds3MultiBlurOff(s32 frame);
 extern void dds3SetDistBlurPara(s32 number, s32 width, s32 intval, f32 speed, f32 rotate, f32 distor,
                                 s32 blend);
 
-extern void dds3SetDistBlurRGBA(s32 rgba);
 extern void dds3SetDistBlurArea(s32 area, s32 posx, s32 posy);
 extern void dds3DistBlurSwap(s32 frame);
 extern void dds3DistBlurOn(s32 frame);
@@ -70,24 +65,19 @@ extern void dds3DistBlurOff(s32 frame);
 extern void dds3SetRipBlurPara(s32 number, f32 speed, f32 intval, f32 rotate, f32 distor, f32 distor_s,
                                s32 blend);
 
-extern void dds3SetRipBlurRGBA(s32 rgba);
 extern void dds3SetRipBlurArea(s32 area, s32 posx, s32 posy);
 extern void dds3RipBlurSwap(s32 frame);
 extern void dds3RipBlurOn(s32 frame);
 extern void dds3RipBlurOff(s32 frame);
-extern void dds3SetBlur2Para(f32 rotate, f32 scale, u32 blend);
-extern void dds3SetBlur2RGBA(s32 rgba);
 extern void dds3SetBlur2Area(s32 posx, s32 posy);
 extern void dds3Blur2Swap(s32 frame);
 extern void dds3Blur2On(s32 frame);
 extern void dds3Blur2Off(s32 frame);
 extern void dds3SetFilter2Para(s32 blend);
-extern void dds3SetFilter2RGBA(s32 rgba);
 extern void dds3Filter2Swap(s32 frame);
 extern void dds3Filter2On(s32 frame);
 extern void dds3Filter2Off(s32 frame);
 extern void dds3SetMFilterPara(s32 blend);
-extern void dds3SetMFilterRGBA(s32 rgba);
 extern void dds3SetMFilterArea(s32 area, s32 posx, s32 posy);
 extern void dds3MFilterSwap(s32 frame);
 extern void dds3MFilterOn(s32 frame);
@@ -381,7 +371,7 @@ s32 scrCommand_SCENE_LIGHT_RGB(void)
     SDF_VU0_SETVECTOR_Z_BITS(z);
     SDF_VU0_VECTOR_W_SET_ZERO();
     SDF_VU0_STOREVECTOR_MEMOPS(v);
-    dds3SetLightColor(scrGetIntPara(0), 0, &v);
+    dds3SetLightColor(scrGetIntPara(0), 0, (f32 *)&v);
     return 1;
 }
 
@@ -398,7 +388,7 @@ s32 scrCommand_SCENE_LIGHT_DIR(void)
         datDebugPrintf("WARNING: SCENE_LIGHT_DIR length zero\n");
         return 1;
     }
-    dds3SetLightDir(scrGetIntPara(0), 0, &dir);
+    dds3SetLightDir(scrGetIntPara(0), 0, (f32 *)&dir);
     return 1;
 }
 
@@ -417,7 +407,7 @@ s32 scrCommand_SCENE_AMBIENT(void)
     SDF_VU0_SETVECTOR_Z_BITS(z);
     SDF_VU0_VECTOR_W_SET_ONE();
     SDF_VU0_STOREVECTOR_MEMOPS(v);
-    dds3SetAmbientColor(scrGetIntPara(0), &v);
+    dds3SetAmbientColor(scrGetIntPara(0), (f32 *)&v);
     return 1;
 }
 

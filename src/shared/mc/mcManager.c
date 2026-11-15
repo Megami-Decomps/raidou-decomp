@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libmc.h"
 
 #define MC_CARD_SLOT 0
 
@@ -21,13 +22,6 @@ typedef enum McPollResult {
     MC_POLL_SPECIAL_ERROR = -2
 } McPollResult;
 
-extern s32 sceMcSync(s32 a, void *b, s32 *c);
-extern s32 sceMcChdir(s32 a, s32 b, const char *c, char *d);
-extern s32 sceMcGetDir(s32 a, s32 b, const char *c, u32 d, s32 e, void *f);
-extern s32 sceMcOpen(s32 a, s32 b, const char *c, s32 d);
-extern s32 sceMcFormat(u32 port, s32 slot);
-extern s32 sceMcMkdir(u32 a, s32 b, const char *c);
-extern s32 sceMcDelete(u32 port, s32 slot, const char *path);
 extern s32 sceMcClose(s32 a);
 extern s32 sceMcRead(s32 a, void *b, s32 c);
 extern s32 sceMcWrite(s32 a, const void *b, s32 c);
@@ -211,7 +205,7 @@ McPollResult sdfMcFuncFormat1(void)
 
 void sdfMcFuncChdir(u32 port, const char *path)
 {
-    sceMcChdir(port, MC_CARD_SLOT, path, 0);
+    sceMcChdir(port, MC_CARD_SLOT, (char *)path, 0);
 }
 
 McPollResult sdfMcFuncChdir1(void)
@@ -230,7 +224,7 @@ McPollResult sdfMcFuncChdir1(void)
 
 void sdfMcFuncMkdir(u32 mccb, const char *cb)
 {
-    sceMcMkdir(mccb, MC_CARD_SLOT, cb);
+    sceMcMkdir(mccb, MC_CARD_SLOT, (char *)cb);
 }
 
 McPollResult sdfMcFuncMkdir1(void)
@@ -253,7 +247,7 @@ McPollResult sdfMcFuncMkdir1(void)
 
 void sdfMcFuncGetDir(u32 port, const char *path, void *directoryEntries, s32 entryLimit)
 {
-    sceMcGetDir(port, MC_CARD_SLOT, path, 0, entryLimit, directoryEntries);
+    sceMcGetDir(port, MC_CARD_SLOT, (char *)path, 0, entryLimit, directoryEntries);
 }
 
 McPollResult sdfMcFuncGetDir1(s32 *commandResultOut)
@@ -277,7 +271,7 @@ McPollResult sdfMcFuncGetDir1(s32 *commandResultOut)
 
 void sdfMcFuncDelete(u32 port, const char *path)
 {
-    sceMcDelete(port, MC_CARD_SLOT, path);
+    sceMcDelete(port, MC_CARD_SLOT, (char *)path);
 }
 
 McPollResult sdfMcFuncDelete1(void)
@@ -296,7 +290,7 @@ McPollResult sdfMcFuncDelete1(void)
 
 void sdfMcFuncOpen(u32 port, const char *path, s32 openFlags)
 {
-    sceMcOpen(port, MC_CARD_SLOT, path, openFlags);
+    sceMcOpen(port, MC_CARD_SLOT, (char *)path, openFlags);
 }
 
 McPollResult sdfMcFuncOpen1(s32 *commandResultOut)

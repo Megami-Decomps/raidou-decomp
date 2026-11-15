@@ -7,6 +7,7 @@
 #include "sdfPacketBuff.h"
 #include "sdfImageSet.h"
 #include "sdfGsMemIO.h"
+#include "sdfModel.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -48,7 +49,6 @@ void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 
 
-u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
 
 /* Allocate and register a texture. The shared registration helper initializes
  * its ordinary reference count to one; the caller releases that reference with
@@ -337,7 +337,7 @@ EffResourceOwner *Create_effHelper(FileJobPayload *source) {
                 mdlLoopMotion(owner->model, 0, 0);
             }
         }
-        owner->count = sdfModelGetMarkPosCount(owner->model->inner);
+        owner->count = sdfModelGetMarkPosCount((sdfModelRootNode_t *)owner->model->inner);
         if (owner->count == 0) {
             return owner;
         }
@@ -393,7 +393,7 @@ void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src) {
             mdlLoopMotion(dst->model, 0, 0);
         }
     }
-    dst->count = sdfModelGetMarkPosCount(dst->model->inner);
+    dst->count = sdfModelGetMarkPosCount((sdfModelRootNode_t *)dst->model->inner);
     if (src->queueAllocation != 0) {
         if (dst->queueAllocation != 0) {
             for (i = 0; i < dst->count; i++) {

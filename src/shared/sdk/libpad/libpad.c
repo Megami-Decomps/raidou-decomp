@@ -1,6 +1,7 @@
 #include "common.h"
 #include "sdk_libc.h"
 #include "sdk_libpad.h"
+#include "sdk_libkernl.h"
 
 /* One half of a port's double-buffered pad data DMA buffer. */
 typedef struct padDma {
@@ -97,9 +98,6 @@ typedef struct sceSifDmaData {
 } sceSifDmaData;
 
 extern s32 padDebugPrint __attribute__((section(".data")));
-extern int scePrintf(const char *fmt, ...);
-extern s32 sceSifDmaStat(u32 id);
-extern u32 sceSifSetDma(sceSifDmaData *data, s32 count);
 extern const char padDmaFailMsg[];
 int _send_to_iop(int port, int slot);
 extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
@@ -167,7 +165,7 @@ int _send_to_iop(int port, int slot)
     dma[0].src = c;
     dma[0].size = 0x20;
     dma[0].attr = 0;
-    id = sceSifSetDma(dma, 1);
+    id = sceSifSetDma((struct sifDmaTransfer_t *)dma, 1);
     if (id == 0) {
         if (padDebugPrint != 0) {
             scePrintf(padDmaFailMsg);

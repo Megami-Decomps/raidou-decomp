@@ -3,13 +3,10 @@
 #include "newdata.h"
 #include "scr.h"
 #include "scrTraceCode.h"
+#include "dds3KernelCore.h"
 
 extern scrProcessWork_s *scrHandleFirst;
 
-extern dds3ProcessID_t *dds3StartProcess(char *v1, s32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
-                                         s32 (*drawExit)(dds3ProcessID_t *id),
-                                         void (*deleteExit)(dds3ProcessID_t *id),
-                                         void *p);
 
 extern void *dds3GetProcessData(dds3ProcessID_t *id);
 extern void dds3SetProcessData(dds3ProcessID_t *id, void *data);
@@ -64,7 +61,7 @@ scrProcessWork_s *scrLoadScriptFile(char *name, s32 messageHandle)
 dds3ProcessID_t *scrStartScriptProcess(s32 priority, scrProcessWork_s *pw)
 {
     return pw->ProcessID = dds3StartProcess((char *)pw->ProcTable[pw->StartProc].Name, priority, 1, 1,
-                                            scrScriptProcess, scrScriptShutdown, pw);
+                                            scrScriptProcess, (dds3ProcessFunc_t)scrScriptShutdown, pw);
 }
 
 void dds3GlobalWorkClearFlags(void)

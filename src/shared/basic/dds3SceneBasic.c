@@ -6,14 +6,13 @@
 #include "sdfMemory.h"
 #include "dds3SceneBasic.h"
 #include "dds3WorldBasic.h"
+#include "dds3KernelCore.h"
 
 
 extern u32 fldLoadFile_FromMemory(u32 field, u32 area, void *pF1,
                                   void *pF2, void *pTB, u32 pBF);
 
 extern void fldFreeFile(void);
-extern dds3ProcessID_t *dds3SearchProcessName(const char *namestr);
-extern void dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 dds3Basic_t *dds3GetActiveCameraSceneBasic(dds3Basic_t *pBasic);
 dds3Basic_t *dds3GetActiveUnitSceneBasic(dds3Basic_t *pSceneBasic);
 void dds3SceneBasicReleaseScriptFile(dds3Basic_t *scene);
@@ -192,7 +191,7 @@ void dds3SceneBasicEndScript(dds3Basic_t *scene, const char *procname)
     dds3ProcessID_t *process;
 
     if (procname != NULL) {
-        process = dds3SearchProcessName(procname);
+        process = dds3SearchProcessName((char *)procname);
         if (process == NULL) {
             return;
         }

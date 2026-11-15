@@ -14,6 +14,8 @@
 #include "sdfChip.h"
 #include "sdfModel.h"
 #include "effMath.h"
+#include "mdlManager.h"
+#include "sdfVu0.h"
 
 typedef struct
 {
@@ -487,7 +489,6 @@ extern effPartHandle_t *dds3EffectPartCreate(u16 type, void *pData);
 extern effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc);
 extern void dds3EffectPartDelete(effPartHandle_t *hEffPart);
 extern void *dds3EffectPartGetHandle(effPartHandle_t *hEffPart);
-extern void mdlSingleMotion(effCrackModel_t *aHandle, s32 aGroup, s32 aNumber);
 extern void *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, s32 type);
 extern void dds3TrackPolySetMode(void *hTrackPoly, s32 mode);
 extern void dds3TrackPolyDelete(void *hTrackPoly);
@@ -510,7 +511,6 @@ extern void mdlLink(mdlObj_t *aHandle, void *aModelOt);
 extern sdfModelOt_t sdfModelOtTable[];
 extern f32 aViewEye[4], aViewTarget[4];
 extern s32 sdfModelGetMarkPos(void *aRoot, s32 aId);
-extern void SetRotateMatrixAxis(f32 aAngle, const void *aAxis);
 extern s32 effPadVibeFrames[2], effPadVibeRemain[2];
 extern u8 effPadVibePower[2], effPadVibeFadeIn[2];
 extern effPCPBossBael_t *effPCPBossBaelCreate(void *pParam, void *pPB, void *pPCF);
@@ -580,7 +580,7 @@ void effPCPCrackInit(effPCPCrack_t *pPCPCrack)
         pPCPCrack->delaySpread = 1;
     }
     model->first->frameStep = pPCPCrack->frameStep;
-    mdlSingleMotion(model, 0, 0);
+    mdlSingleMotion((mdlObj_t *)model, 0, 0);
     pPCPCrack->cellCount = model->first->frameCount;
     pPCPCrack->MarkCount = sdfModelGetMarkPosCount(model->inner);
     pPCPCrack->system = dds3TrackPolyCreate(pPCPCrack->MarkCount, pPCPCrack->cellCount, 1, 1);
@@ -886,7 +886,7 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
                             SDF_VU0_SUBVECTOR();
                             SDF_VU0_NORMALIZE();
                             SDF_VU0_STOREVECTOR_NOMEM(&axis);
-                            SetRotateMatrixAxis(group->rotate, &axis);
+                            SetRotateMatrixAxis(group->rotate, (const sdfVector3_t *)&axis);
                             SDF_VU0_LOADVECTOR(&displacement);
                             SDF_VU0_APPLYMATRIX_XYZ();
                             SDF_VU0_STOREVECTOR(&displacement);

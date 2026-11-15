@@ -25,6 +25,11 @@
 #include "sdf3DPrim.h"
 #include "sdk_libm.h"
 #include "dds3PadManager.h"
+#include "effPCPMisc_00224D10.h"
+#include "mdlManager.h"
+#include "sdfModel.h"
+#include "sdfTex.h"
+#include "sdfVu0.h"
 
 typedef struct
 {
@@ -488,24 +493,18 @@ typedef struct effPCP_HBED2_tag
     void *pHelperBED;
 } effPCP_HBED2_tag;
 
-extern void *sdfTexSet(const void *aTex);
 extern u8 dds3RenderTargetVector[], dds3RenderEyeVector[];
 extern u32 dds3GetRandA(u8 *name);
 extern f32 dds3GetRandFloatA(u8 *name);
-extern void mdlSingleMotion(effCrackModel_t *aHandle, s32 aGroup, s32 aNumber);
-extern s32 sdfModelGetMarkPosCount(void *aRoot);
-extern void *mdlLoad(u32 aMajor, u32 aMinor);
 
 #include "sdk_libc.h"
 
 extern void dds3BillboardSetRGBA(void *hBillboard, u32 abgr);
-extern void sdfTexFreeDelayed(void *aHandle);
 extern f32 aViewEye[4], aViewTarget[4];
 extern void *effPCPHelperBEDGetModel(void *pHelperBED);
 extern void dds3BillboardSetScale(void *hBillboard, f32 x, f32 y);
 extern void dds3BillboardSetRotate(void *hBillboard, f32 rot);
 extern void SetRotateMatrixY_B(f32 aAngle);
-extern void SetRotateMatrixAxis(f32 aAngle, const void *aAxis);
 extern s32 effPadVibeFrames[2], effPadVibeRemain[2];
 extern u8 effPadVibePower[2], effPadVibeFadeIn[2];
 void effPCPBossBaelSetPosition(effPCPBossBael_t *hData, const void *pPos);
@@ -547,8 +546,6 @@ void dds3EffectDistortionBlurDelete(EffBlurScatterWork *work);
 void dds3EffectPartialMultiBlurDelete(EffBlurTemplate *owner);
 void dds3EffectPartialMultiFilterDelete(EffResourceRectWork *work);
 void dds3EffectRippleBlurDelete(EffBlurScaleWork *work);
-u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
-u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
 
 
 /* Store the primary or secondary texture owner and mark its draw state dirty. */
@@ -584,10 +581,6 @@ u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
 
 extern void evtDestroySelectionState(void);
 extern s32 evtSelStateCreate(s32 countLimit, s16 frames, s32 firstValue, s32 secondValue);
-extern void fileReadRecordSecondVector(FileSlotTable *record, u128 *out);
-extern void fileReadVectorPtr20(FileSlotTable *record, u128 *out);
-extern void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
-extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 
 static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list) {
     surface->regFunc(surface, list);
@@ -2183,7 +2176,7 @@ EffKindWork *effCreateKindWorkFromFile(FileJobPayload *work) {
             effect->sourceKind = kind;
             switch (kind) {
             case 1:
-                effect->target = sdfTexSet((SdfTextureFileHeader *)(secondary));
+                effect->target = sdfTexSet((TMX_HEADER_t *)((SdfTextureFileHeader *)(secondary)));
                 break;
             case 4:
                 effect->target = dds3BillboardGetGeneralTex(secondary[0]);
@@ -2272,7 +2265,7 @@ EffKindWork *effCreateKindWorkFromFileB(FileJobPayload *work) {
             effect->sourceKind = kind;
             switch (kind) {
             case 1:
-                effect->target = sdfTexSet((SdfTextureFileHeader *)(secondary));
+                effect->target = sdfTexSet((TMX_HEADER_t *)((SdfTextureFileHeader *)(secondary)));
                 break;
             case 4:
                 effect->target = dds3BillboardGetGeneralTex(secondary[0]);
@@ -5981,7 +5974,7 @@ void effUpdateRadialWavePointRows(EffClassWork *work) {
                         delta = newHeight - waveHeight;
                         segmentLength = fsqrtf(delta * delta + stepSquared);
                         slope = asinf(delta / segmentLength) + (tilt + bend);
-                        SetRotateMatrixAxis(oldSlope, (const struct RwV3d *)axis);
+                        SetRotateMatrixAxis(oldSlope, (const sdfVector3_t *)((const struct RwV3d *)axis));
                         slope += phase;
                         SDF_VU0_LOADVECTOR(direction);
                         SDF_VU0_APPLYMATRIX_XYZ();
@@ -6505,11 +6498,11 @@ void effUpdateOrbitalPointSpanWaves(EffClassWork *work) {
                     delta = newHeight - waveHeight;
                     segmentLength = fsqrtf(delta * delta + stepSquared);
                     slope = asinf(delta / segmentLength) + tilt;
-                    SetRotateMatrixAxis(oldSlope, (const struct RwV3d *)radial);
+                    SetRotateMatrixAxis(oldSlope, (const sdfVector3_t *)((const struct RwV3d *)radial));
                     SDF_VU0_LOADVECTOR(direction);
                     SDF_VU0_APPLYMATRIX_XYZ();
                     SDF_VU0_STOREVECTOR(rotated);
-                    SetRotateMatrixAxis(curve, (const struct RwV3d *)tangent);
+                    SetRotateMatrixAxis(curve, (const sdfVector3_t *)((const struct RwV3d *)tangent));
                     SDF_VU0_LOADVECTOR(direction);
                     SDF_VU0_APPLYMATRIX_XYZ();
                     SDF_VU0_STOREVECTOR(direction);
@@ -6885,8 +6878,8 @@ void effDrawEffectStrip(EffectStripNode *node) {
     if (!hasTransform) {
         EE_MMI_UNIT_MATRIX(&matrix);
     } else {
-        fileReadRecordSecondVector(node->active, rotation);
-        fileReadVectorPtr20(node->active, translation);
+        fileReadRecordSecondVector((u8 *)node->active, rotation);
+        fileReadVectorPtr20((u8 *)node->active, translation);
         SDF_VU0_LOADVECTOR(rotation);
         ToMatrix();
         SDF_VU0_LOADVECTOR(translation);
@@ -6956,7 +6949,7 @@ void effDrawEffectStrip(EffectStripNode *node) {
                 dds3BillboardDraw(billboard);
                 along = longSize * scale * 1.5f;
                 side = sideSize * scale * 1.5f;
-                SetRotateMatrixAxis(entry->angle, (const RwV3d *)view);
+                SetRotateMatrixAxis(entry->angle, (const sdfVector3_t *)((const RwV3d *)view));
                 SDF_VU0_LOADVECTOR(right);
                 SDF_VU0_APPLYMATRIX_XYZ();
                 SDF_VU0_STOREVECTOR_NOMEM(rightAxis);
@@ -8791,7 +8784,7 @@ void effSeedParticleSpanParameters(EffModelResource *work) {
 /* Build the point and reference sets for each model map-position record. */
 EffSpanTable *effCreateParticleSpanTable(EffSpanConfig *config, dds3ModelHandle_t *model) {
     u32 total = model->first->frameLength;
-    u32 count = sdfModelGetMarkPosCount(model->inner);
+    u32 count = sdfModelGetMarkPosCount((sdfModelRootNode_t *)model->inner);
     u32 spans;
     u32 partialSpan;
     struct sdfMemHandle_t *allocation;
@@ -8807,7 +8800,7 @@ EffSpanTable *effCreateParticleSpanTable(EffSpanConfig *config, dds3ModelHandle_
     EffTrackSet *tracks;
 
     model->first->speed = 1.0f;
-    mdlSingleMotion(model, 0, 0);
+    mdlSingleMotion((mdlObj_t *)model, 0, 0);
     if (config->perSpan == 0) {
         config->perSpan = 1;
     }
@@ -8962,8 +8955,8 @@ void Delete_effPolygonCrack(EffModelResource *effect) {
 
 EffModelResource *Copy_effPolygonCrack(EffModelCreateRequest *work) {
     EffModelResource *effect = Create_effPolygonCrack(work->kind, work->source, 0, 0);
-    s32 x = mdlGetMajorNum(work->assetId);
-    s32 y = mdlGetMinorNum(work->assetId);
+    s32 x = mdlGetMajorNum((mdlObj_t *)work->assetId);
+    s32 y = mdlGetMinorNum((mdlObj_t *)work->assetId);
     dds3ModelHandle_t *model = mdlLoad(x, y);
 
     effect->model = model;

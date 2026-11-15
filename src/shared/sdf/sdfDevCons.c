@@ -7,6 +7,7 @@
 #include "sdfMemory.h"
 #include "sdfChip.h"
 #include "sdk_libc.h"
+#include "sdfTex.h"
 
 typedef struct sdfDevConsCB_tag
 {
@@ -96,7 +97,6 @@ extern void sdfDevConsDrawInit(sdfDevConsDrawCB_t *aCB, void *aPacketBuffer, s32
 extern void sdfDevConsDraw(sdfDevConsCB_tag *aHndl, sdfDevConsDrawCB_t *aBuf);
 extern void sdfDevConsDrawFlush(sdfDevConsDrawCB_t *aCB);
 extern s32 vsprintf(char *buf, const char *fmt, void *args);
-extern sdfTexHandle_t *sdfTexSet(void *aTex);
 extern sdfTexHandle_t *sdfDebugFontHandle;
 extern s32 alreadyInitDevCons;
 extern u8 sdfDebugFontTex[];
@@ -133,7 +133,7 @@ void sdfDevConsInit(void)
 {
     if (!alreadyInitDevCons) {
         alreadyInitDevCons = 1;
-        sdfDebugFontHandle = sdfTexSet(sdfDebugFontTex);
+        sdfDebugFontHandle = sdfTexSet((TMX_HEADER_t *)sdfDebugFontTex);
     }
 }
 

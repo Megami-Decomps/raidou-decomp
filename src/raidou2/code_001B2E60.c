@@ -5,6 +5,8 @@
 #include "dds3AdminiProcess.h"
 #include "dds3KernelCore.h"
 #include "sdfPrim.h"
+#include "sdf_Decomp.h"
+#include "sdfModel.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -53,11 +55,8 @@ void mdlSmoothSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex
 void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
 void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
 
-struct SdfPacket *sdfDrawRotatedModel(const f32 vertices[][4], const u32 *colors,
-                                                   s32 vertexCount, u32 primitiveFlags);
 
 SdfChunkHeader *sdfModelGetExtraChunk(const struct dds_sdfModelRootNode_t *model, s32 tag);
-u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
 void sdfModelMakeMarkPosMatrix(struct dds_sdfModelRootNode_t *model, SdfMapPositionRecord *record);
 
 
@@ -1122,7 +1121,7 @@ INCLUDE_ASM(const s32, "code_001B2E60", mdlViewer);
 
 /* Walk native 64-byte map-position records and submit their visualization in one packet list. */
 void mdlDrawMapPositionRecords(dds3ModelHandle_t *resource) {
-    s32 recordCount = sdfModelGetMarkPosCount(resource->inner);
+    s32 recordCount = sdfModelGetMarkPosCount((sdfModelRootNode_t *)resource->inner);
     s32 recordIndex;
     sdfDrawTag_t *packetList;
     SdfMapPositionRecord *recordCursor;

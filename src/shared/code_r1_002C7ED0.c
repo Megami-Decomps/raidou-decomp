@@ -1,6 +1,7 @@
 #include "common.h"
 #include "sdfMemory.h"
 #include "sdfChip.h"
+#include "fileManager.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -15,13 +16,10 @@
 #include "dds/eff.h"
 #include "dds/file_pac_completion_api.h"
 
-FilePacRequestCompletionResult pacCheckEnd(const struct FileRequest *request);
 
 /* These title-specific wrappers forward an opaque stage-task owner and its
  * handled/not-handled result. */
 s32 pacFileHandleFree_(void *request);
-struct FileRequest *pacLoad(const char *requestName);
-void pacSync(struct FileRequest *request);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -623,10 +621,10 @@ s32 effPollResourceList(EffectList *list) {
                 }
                 list->request = (FilePacRequest *)pacLoad((const char *)node->length);
                 if (list->mode == 2) {
-                    pacSync((struct FileRequest *)list->request);
+                    pacSync((fileRequest_t *)((struct FileRequest *)list->request));
                 }
                 node->state = 1;
-            } else if (pacCheckEnd((struct FileRequest *)list->request) != 0) {
+            } else if (pacCheckEnd((const fileRequest_t *)((struct FileRequest *)list->request)) != 0) {
                 for (item = list->request->packet.queueHead; item != NULL; item = item->next) {
                     if (((SdfPacStreamPacketHeader *)item->packet)->command == 1) {
                         node = list->first;

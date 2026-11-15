@@ -4,6 +4,7 @@
 #include "motion.h"
 #include "dds3SceneBasic.h"
 #include "sdfMotion.h"
+#include "sdfModel.h"
 
 typedef struct {
     /* 0x00 */ dds3Basic_t *pTextureBasic;
@@ -13,7 +14,6 @@ typedef struct {
     /* 0x10 */ u8 unk10[8];
 } dds3ModelBasicWorkData_t;
 
-extern sdfModelRootNode_t *sdfModelMake(void *aTexList, sdfItemArray_t *aModelData);
 dds3Basic_t *dds3AddModelBasic(s32 serialID, sdfItemArray_t *pModelDef, sdfMotionPlayBook_t *pMotDef, dds3Basic_t *pTextureBasic, char *pName);
 dds3Basic_t *dds3AddModelBasic2(s32 serialID, sdfItemArray_t *pModelDef, sdfMotionPlayBook_t *pMotDef, void *pTexList, char *pName);
 sdfModelRootNode_t *dds3ModelBasicMakeModel(dds3Basic_t *basic);
@@ -49,9 +49,9 @@ sdfModelRootNode_t *dds3ModelBasicMakeModel(dds3Basic_t *basic) {
     sdfModelRootNode_t *model;
 
     if (work->pTexList != NULL) {
-        model = sdfModelMake(work->pTexList, work->pModelDef);
+        model = sdfModelMake(work->pTexList, (sdfModelDef_t *)work->pModelDef);
     } else {
-        model = sdfModelMake(work->pTextureBasic->workdata, work->pModelDef);
+        model = sdfModelMake(work->pTextureBasic->workdata, (sdfModelDef_t *)work->pModelDef);
     }
     return model;
 }

@@ -5,10 +5,9 @@
 #include "sdfChip.h"
 #include "sdfMat.h"
 #include "sdfPacDecode.h"
+#include "sdfTex.h"
 
 /* Declared here because no header carries these. */
-extern sdfTexHandle_t *sdfTexSet(void *aTex);
-extern sdfTexHandle_t *sdfTexSetDirect(void *aTex);
 extern void sdfDecompInit(struct sdfDecomp_t *cb, u8 *dst);
 extern s32 sdfDecomp(struct sdfDecomp_t *cb, const u8 *src, s32 length);
 extern void sdfAddressResolver(s32 *aDataBody, saddr_t aOffset, u8 *aAddrInfoPtr, s32 aAddrInfoLeng);
@@ -423,7 +422,7 @@ void sdfPacTmxStayDecoderFunc(sdfPacDecodeCb_t *cb)
         sdfPacUseSrc(cb, len);
         buf->rest -= len;
         if (buf->rest == 0) {
-            buf->texHandle = sdfTexSetDirect(buf->workPtr);
+            buf->texHandle = sdfTexSetDirect((TMX_HEADER_t *)buf->workPtr);
             cb->onEnd(cb);
         }
     }
