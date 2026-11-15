@@ -19,7 +19,6 @@ typedef struct
 
 extern s32 DIntr(void);
 extern void EIntr(void);
-extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 
 #include "sdk_libmrpc.h"
 

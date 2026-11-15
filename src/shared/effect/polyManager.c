@@ -14,6 +14,7 @@
 #include "polyManager.h"
 #include "effect.h"
 #include "sdfMemory.h"
+#include "sdfRand.h"
 
 /* Polygon owners follow the variable-sized attribute arrays in one allocation. */
 typedef struct dds3Polygon_t
@@ -308,9 +309,9 @@ u8 dds3SpPolyGetLoop(dds3SpPolyLoopWork_t *hData);
 void dds3PolygonTriangleSet(dds3Polygon_t *hPolygon, const f32 *center);
 void dds3TrackPolyColorSet(dds3TrackPoly_t *hTrackPoly, s32 number, u32 color);
 extern dds3Polygon_t *hDrawListTop;
-extern u8 dds3PolygonRandState[];
+/* Unsized so ee-gcc addresses it absolutely, not through $gp. */
+extern sdfRandCB_t dds3PolygonRandState[];
 extern sdf3DPrimPolyParm_t dds3PolygonPrimParm;
-extern void sdfRandomizeByTime(void *aCB);
 void dds3TrackPolyInit(void);
 void dds3PolygonManagerInit(void);
 void dds3PolygonManagerExit(void);

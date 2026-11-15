@@ -72,10 +72,10 @@ enum sdf_dma_tag_id
  * plus the head of the list of blocks waiting for it. */
 typedef void (*sdfDelayedResrcFreeFunc)(void *);
 
-typedef struct
+typedef struct sdfDelayedResrcCB_t
 {
     sdfDelayedResrcFreeFunc freeFuncPtr;
-    void *chunk;
+    struct sdfDelayedResrcChunk_t *chunk;
 } sdfDelayedResrcCB_t;
 
 /* sdfChip: fixed-size chips carved out of 4KB pages. One control block per

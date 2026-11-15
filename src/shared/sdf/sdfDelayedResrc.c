@@ -2,6 +2,8 @@
 #include "sdf_types.h"
 #include "sdk_libkernl.h"
 #include "sdfSystem.h"
+#include "libsdf.h"
+#include "sdfDelayedResrc.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
 
@@ -9,15 +11,10 @@ extern s32 EIntr(void);
 
 #define SDF_PENDING_LAST_SLOT 1
 
-struct sdfDelayedResrcCB_t;
-
 struct sdfDelayedResrcItems_t;
 
 typedef struct sdfDelayedResrcChunk_t sdfDelayedResrcChunk_t;
 
-/* Deferred handlers share one address-word argument at the native dispatch
- * boundary, while their C consumers interpret that word as different owners. */
-typedef void (*SdfPendingCallback)(void *);
 void sdfChipFreeDirect(void *aPtr);
 
 #define SDF_PENDING_BUFFER_CAPACITY 0x3F
@@ -25,12 +22,6 @@ void sdfChipFreeDirect(void *aPtr);
 #define SDF_PENDING_SLOT_COUNT 2
 
 extern s8 sdfDelayedResrcFlag;
-
-/* Interrupt-synchronized deferred callback owner (0x08). */
-typedef struct sdfDelayedResrcCB_t {
-    SdfPendingCallback freeFuncPtr;
-    sdfDelayedResrcChunk_t *chunk;
-} sdfDelayedResrcCB_t;
 
 /* A queued batch links its next chunk before 63 deferred owner addresses. */
 typedef struct sdfDelayedResrcItems_t {
@@ -66,7 +57,7 @@ struct sdfDelayedResrcChunk_t {
     s32 itemsFreeCount;
 };
 
-void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, SdfPendingCallback aFreeFunc);
+void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
 sdfDelayedResrcChunk_t *sdfDelayedResrcClose(void);
 void sdfDelayedResrcRelease(sdfDelayedResrcChunk_t *aChunk);
@@ -74,7 +65,7 @@ u64 sdfDelayedResrcCheckFunc(void);
 u64 sdfDelayedResrcCheck(void);
 void sdfDelayedResrcProc(void);
 
-void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, SdfPendingCallback aFreeFunc) {
+void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc) {
     if (sdfDelayedResrcSemaId < 0) {
         sdfDelayedResrcSemaId = sdfCreateSema(1, 0x7f, 0);
     }
@@ -129,7 +120,7 @@ void sdfDelayedResrcRelease(sdfDelayedResrcChunk_t *aChunk) {
     sdfDelayedResrcChunk_t *nextPendingNode;
     sdfDelayedResrcItems_t *entryBuffer;
     sdfDelayedResrcItems_t *nextEntryBuffer;
-    SdfPendingCallback entryHandler;
+    sdfDelayedResrcFreeFunc entryHandler;
     s32 entryCount;
     s32 entryIndex;
 

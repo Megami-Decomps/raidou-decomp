@@ -26,7 +26,6 @@ enum sdf_psm
 
 extern s32 DIntr(void);
 extern void EIntr(void);
-extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 extern sdfGsMemSlice_t *gsMemHandleLinkHead;
 extern sdfGsMemSlice_t *gsMemHandleLinkTail;
 extern sdfDelayedResrcCB_t gsMemDelayedResrcCB;

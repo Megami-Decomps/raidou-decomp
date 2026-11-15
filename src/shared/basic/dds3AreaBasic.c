@@ -2,6 +2,7 @@
 #include "basic.h"
 #include "sdfChip.h"
 #include "dds3SceneBasic.h"
+#include "dds3WorldBasic.h"
 
 typedef s32 (*dds3BasicProc_t)(dds3Basic_t *basic);
 
@@ -14,15 +15,6 @@ typedef struct dds3AreaBasicWorkData_t
 
 extern dds3BasicArrayHandle_t *dds3GetBasicArrayHandle(s32 bufcnt);
 extern void dds3FreeBasicArrayHandle(dds3BasicArrayHandle_t *hndl);
-extern u16 dds3GetBasicArrayCount(dds3BasicArrayHandle_t *hndl);
-extern void dds3ForEachBasicArray(dds3BasicArrayHandle_t *handle, dds3BasicProc_t func);
-extern s32 dds3SetFirstBasicArray(dds3BasicArrayHandle_t *hndl);
-extern s32 dds3SetNextBasicArray(dds3BasicArrayHandle_t *hndl);
-extern dds3Basic_t *dds3GetBasicArray(dds3BasicArrayHandle_t *hndl);
-extern s32 dds3AddBasicArray(dds3BasicArrayHandle_t *hndl, s32 bufcnt);
-extern s32 dds3SetBasicArray(dds3BasicArrayHandle_t *hndl, dds3Basic_t *data);
-extern s32 dds3SetSearchNextBasicArray(dds3BasicArrayHandle_t *hArray, dds3Basic_t *pBasic);
-extern s32 dds3SearchDeleteBasicArray(dds3BasicArrayHandle_t *hArray, dds3Basic_t *pBasic, u32 mode);
 s32 CB_ReleaseObjectBasic(dds3Basic_t *pBasic);
 s32 CB_BasicDrawProcuder(dds3Basic_t *pBasic);
 u32 dds3AreaBasicTypeHasItems(u32 type);

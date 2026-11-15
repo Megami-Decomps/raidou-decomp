@@ -1,9 +1,10 @@
 #include "common.h"
 #include "kernel.h"
 #include "libsdf.h"
+#include "sdfRand.h"
 
-extern u8 dds3RandCB[];
-extern void sdfRandomize(void *aCB, u32 aSeed);
+/* Unsized so ee-gcc addresses it absolutely, not through $gp. */
+extern sdfRandCB_t dds3RandCB[];
 void dds3InitRandCB(void);
 
 void dds3InitRandCB(void) {

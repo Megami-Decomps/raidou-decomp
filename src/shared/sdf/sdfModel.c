@@ -29,7 +29,6 @@ extern sdfItemArray_t *sdfItemArrayNew(s32 aInitCapa, s32 aElemSize, s32 aGrowSt
 extern void sdfItemArrayFree(void *aArray);
 extern void sdfItemArrayGrow(void *aArray);
 extern void sdfDevResizeBufferedRequest(void *aArray, s32 aCount);
-extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 extern sdfDelayedResrcCB_t sdfModelDelayedResrcCB;
 extern sdfMatList_t *sdfMatListMake(void *aTexList, u32 *aData);
 extern void sdfMatListFreeResrc(void *aList, s32 aDelayed);

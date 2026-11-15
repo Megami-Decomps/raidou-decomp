@@ -9,7 +9,6 @@
 #include "sdfDelayedResrc.h"
 
 extern void sdfDevResizeBufferedRequest(sdfItemArray_t *aArray, s32 aCapacity);
-extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 extern sdfDelayedResrcCB_t sdfMatDelayedResrcCB;
 extern sdfDelayedResrcCB_t sdfMatDelayedResrcCB2;
 extern s32 sdfMatAllocCount;

@@ -16,6 +16,7 @@
 #include "sdfGraph.h"
 #include "sdfCoreDraw.h"
 #include "sdfChip.h"
+#include "sdfRand.h"
 
 /* Native 0x30-byte EE thread descriptor passed to CreateThread. */
 typedef struct {
@@ -50,7 +51,6 @@ extern s32 AddIntcHandler2(s32 channel, s32 handler, s32 argument, s32 next);
 extern void DeleteThread(s32 threadId);
 extern void sdfChipInit(u32 aSize);
 extern void sdf3DInit(s32 aNestLevelLimit);
-extern void sdfRandomizeByTime(void *aCB);
 void FatalError(const char *format, ...) __attribute__((noreturn));
 s32 CreateThreadSimple(void *entryAddress, void *workspace, s32 stackBytes, s32 priority);
 void *sdfAllocAuto(s32 bytes);

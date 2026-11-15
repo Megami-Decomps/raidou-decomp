@@ -3,6 +3,7 @@
 #include "libsdf.h"
 #include "ps2asm.h"
 #include "sdfDev9.h"
+#include "sdfRand.h"
 
 typedef struct sdfHostPrefix_t {
     s8 b[7];
@@ -62,10 +63,6 @@ enum SdfFileIOCmd {
     SDF_FILE_CMD_READFILE = 8,
     SDF_FILE_CMD_WRITEFILE = 9
 };
-
-typedef struct sdfRandCB_t {
-    u32 v[4];
-} sdfRandCB_t;
 
 typedef struct sdfClock_t {
     u8 pad00;
