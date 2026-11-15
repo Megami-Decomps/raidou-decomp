@@ -181,7 +181,7 @@ void DebugMoveWinVert(window_tag *pwin, s32 flag);
 void DrawMesFlow(instanceMes_tag *pinst);
 void DrawWindow(instanceMes_tag *pinst);
 void FadeOutWindow(void);
-void GetLastMessagePara(struct FontReq_t *pfont, message_tag *pmessage);
+void GetLastMessagePara(frFontHandle_t *pfont, message_tag *pmessage);
 void InputPasswdDraw(void);
 void OpenCheckSpeakerWindow(instanceMes_tag *pinst);
 void OpenMessageWindow(instanceMes_tag *pinst);

@@ -1728,7 +1728,19 @@ frFontHandle_t *GetLastLinkFontHandle(frFontHandle_t *pfont)
     return pfont;
 }
 
-INCLUDE_ASM(const s32, "interface/itfMesManager", GetLastMessagePara);
+void GetLastMessagePara(frFontHandle_t *pfont, message_tag *pmessage)
+{
+    frTextHandle_t *shade = pfont->lastChild;
+
+    if (shade != NULL) {
+        u8 ctx = pfont->glyphCodeOrContext.byteRoles.encodedContextByte;
+
+        pmessage->color[3] = ctx >> 1;
+        pmessage->color[0] = shade->renderValueOrSetupOrShade.setupBytes.fontIndex;
+        pmessage->color[1] = shade->renderValueOrSetupOrShade.setupBytes.firstOption;
+        pmessage->color[2] = shade->renderValueOrSetupOrShade.setupBytes.secondOption;
+    }
+}
 
 s32 CountLineMessage(frFontHandle_t *pfont_top, frFontHandle_t *pfont)
 {

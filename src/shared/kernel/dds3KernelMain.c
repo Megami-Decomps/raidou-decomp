@@ -28,7 +28,132 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3LinkBoxZSub);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3Leaf20);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3FirstInit);
+extern s32 dds3BasicMainProcess(dds3ProcessID_t *id);
+extern s32 dds3BasicDrawProcess(dds3ProcessID_t *id);
+extern s32 frFlipPacketBuf(dds3ProcessID_t *id);
+extern void frDestroyFontTable(dds3ProcessID_t *id);
+extern s32 dds3DebugDevDumpProcess(dds3ProcessID_t *id);
+extern char dds3DrawProcessName[];
+extern char dds3BasicMainProcessName[];
+extern char dds3BasicDrawProcessName[];
+extern char dds3FontSysProcessName[];
+extern char dds3DebugDevDumpProcessName[];
+extern u8 dds3SoftResetFlag;
+extern s32 dds3FrameCount;
+
+extern s32 dds3FirstProcess(dds3ProcessID_t *id);
+extern s32 dds3DrawFirstProcess(dds3ProcessID_t *id);
+extern s32 dds3DrawProcess(dds3ProcessID_t *id);
+extern void dds3InitDrawEnv(void);
+extern void frInitFontTable(s32 fontCount, s32 glyphCount);
+extern void sdfFirstInitSub(void);
+extern void itfMesMngInitializeManager(void);
+extern void sndInit(void);
+extern void dds3EffectManagerInit(void);
+extern void dds3InitDebugSystem(void);
+#ifdef VERSION_RAIDOU1
+extern void sbtlCallBtlMapInit(void);
+#else
+extern void LoadOnMemoryData_sbtl(void);
+extern void cmpFirstInitSub(void);
+extern void cmpLoadSpriteToMem(void);
+extern void fldGetSceneIndexedValue(void);
+extern void jmsFirstInitSub(void);
+extern void dds3FirstInitSub(void);
+extern void sbtlBattleTmx(void);
+extern void slFirstInitSub(void);
+#endif
+extern void fldSkyDefaultLoad(void);
+extern void datGlobalWorkInit(void);
+extern void itfCallLoadIconSprite2(void);
+extern void evtMoonInitProcess(void);
+extern void itfMoneyProcessStart(void);
+extern void encInitProcess(void);
+extern void mapFadeProc(void);
+extern void fclMapAllShadow(void);
+extern void fldBgTaskInit(void);
+extern void cmbRefDDS3GBWK(void);
+extern void fclFirstInitSub(void);
+extern void effFirstInitSub(void);
+extern void nbRefDDS3GBWK14(void);
+extern void Init_effStat(void);
+extern void cmpLoadScript(void);
+extern void itfHanyoMenu(void);
+
+void dds3FirstInit(void)
+{
+    dds3InitDrawEnv();
+    dds3PadInitialize();
+    dds3StartProcess(dds3FirstProcessName, 0, 0, 0, dds3FirstProcess, NULL, NULL);
+    dds3StartProcess(dds3DrawFirstProcessName, 0x2710, 0, 0, dds3DrawFirstProcess, NULL, NULL);
+    dds3StartProcess(dds3DrawProcessName, 0x4E20, 0, 0, dds3DrawProcess, NULL, NULL);
+    dds3StartProcess(dds3BasicMainProcessName, 0x3FA, 1, 1, dds3BasicMainProcess, NULL, NULL);
+    dds3StartProcess(dds3BasicDrawProcessName, 0x2B07, 1, 1, dds3BasicDrawProcess, NULL, NULL);
+    frInitFontTable(0x100, 0x200);
+    dds3StartProcess(dds3FontSysProcessName, 0x4E1F, 0, 0, frFlipPacketBuf, frDestroyFontTable, NULL);
+    fileSysInit();
+    sdfFirstInitSub();
+    itfMesMngInitializeManager();
+    sndInit();
+    sdfDevConsInit();
+    mdlInitManager();
+    dds3EffectManagerInit();
+    dds3StartMovieManager();
+    dds3SoftResetFlag = 0;
+    dds3FrameCount = 0;
+    dds3AddWorld(0x2710);
+    dds3InitRandCB();
+    dds3InitAdmini();
+    dds3AdminiCallSequence(0, NULL, 0, 0);
+    dds3InitDebugSystem();
+    dds3StartProcess(dds3DebugDevDumpProcessName, 0x5213, 0, 0, dds3DebugDevDumpProcess, NULL, NULL);
+    fldSkyDefaultLoad();
+    dds3FadeClear();
+#ifdef VERSION_RAIDOU1
+    sbtlCallBtlMapInit();
+#else
+    LoadOnMemoryData_sbtl();
+#endif
+    datGlobalWorkInit();
+#ifdef VERSION_RAIDOU2
+    itfCallLoadIconSprite2();
+#endif
+    evtMoonInitProcess();
+    itfMoneyProcessStart();
+    encInitProcess();
+    mapFadeProc();
+#ifdef VERSION_RAIDOU1
+    fldFirstInit();
+#else
+    fclMapAllShadow();
+#endif
+    fldBgTaskInit();
+#ifdef VERSION_RAIDOU1
+    mphCallMemAllocDirect();
+#endif
+    cmbRefDDS3GBWK();
+    fclFirstInitSub();
+    effFirstInitSub();
+    nbRefDDS3GBWK14();
+    Init_effStat();
+#ifdef VERSION_RAIDOU1
+    itfCallLoadIconSprite2();
+    pipeCampCAMPPACKLB();
+#else
+    cmpFirstInitSub();
+    cmpLoadSpriteToMem();
+#endif
+    cmpLoadScript();
+    itfHanyoMenu();
+#ifdef VERSION_RAIDOU2
+    fldGetSceneIndexedValue();
+    jmsFirstInitSub();
+    dds3FirstInitSub();
+    sbtlBattleTmx();
+    slFirstInitSub();
+#endif
+    dds3AdminiCallSequence(1, NULL, 0, 0);
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3NewGameStart);
 
@@ -144,6 +269,16 @@ void dds3SoftResetOff(void)
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3CallEventSub);
 #endif
+
+INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3DrawProcessName);
+
+INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3BasicMainProcessName);
+
+INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3BasicDrawProcessName);
+
+INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3FontSysProcessName);
+
+INCLUDE_RODATA(const s32, "kernel/dds3KernelMain", dds3DebugDevDumpProcessName);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3KernelMain);
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FrameCount);

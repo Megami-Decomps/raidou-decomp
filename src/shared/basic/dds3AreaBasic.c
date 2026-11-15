@@ -69,7 +69,11 @@ s32 AreaBasicDrawprocuder(dds3Basic_t *pBasic)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", CB_ReleaseObjectBasic);
+s32 CB_ReleaseObjectBasic(dds3Basic_t *pBasic)
+{
+    dds3ObjectBaseSetControlBasicType(pBasic, NULL, 4);
+    return 1;
+}
 
 s32 CB_BasicDrawProcuder(dds3Basic_t *pBasic)
 {

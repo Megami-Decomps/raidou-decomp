@@ -140,23 +140,24 @@ struct sdfModelRootNode_t;
 struct sdfMotionCtrlr_t;
 
 /* dds3ObjectBaseInitControlWorkData allocates 0xB0 bytes (0xAC in SMT3). The
- * eight control slots start with the owning basic. */
+ * seven control slots start with the owning basic. */
 typedef struct
 {
     u32 flag;
     dds3BasicArrayHandle_t *hEventBasicArray;
     u32 modelType;
     void *pModel;
-    dds3Basic_t *pBasic[8];
+    dds3Basic_t *pBasic[7];
     void *pUserValue;
     struct sdfModelRootNode_t *pModelRangeRootNode;
     struct sdfMotionCtrlr_t *pMot;
     s32 MotMode;
     f32 MotSpeed;
-    u32 svs;
+    f32 cam_len;
     s32 sdwchrid;
     s32 modelParts[24];
-    s32 unkAC; /* set to -1 by dds3ObjectBaseInitControlWorkData */
+    u32 sdwid;
+    s32 kubinodeidx; /* set to -1 by dds3ObjectBaseInitControlWorkData */
 } dds3ObjectBaseControlWorkData_t;
 
 /* dds3UnitObjectBasicConstructor clears the entire 0x20-byte payload.
@@ -282,14 +283,13 @@ enum basic_type
     BASIC_TYPE_EVENTOBJECT = 8,
     BASIC_TYPE_LIGHTOBJECT = 9,
     BASIC_TYPE_STATICMODEL = 10,
-    BASIC_TYPE_MODELRANGE = 11,
-    BASIC_TYPE_EFFECT = 12,
-    BASIC_TYPE_EVENT = 13,
-    BASIC_TYPE_FOG = 14,
-    BASIC_TYPE_LIGHT = 15,
-    BASIC_TYPE_PATH = 16,
-    BASIC_TYPE_POINT = 17,
-    BASIC_TYPE_MAX = 18
+    BASIC_TYPE_EFFECT = 11,
+    BASIC_TYPE_EVENT = 12,
+    BASIC_TYPE_FOG = 13,
+    BASIC_TYPE_LIGHT = 14,
+    BASIC_TYPE_PATH = 15,
+    BASIC_TYPE_POINT = 16,
+    BASIC_TYPE_MAX = 17
 };
 typedef enum basic_type BASIC_TYPE;
 

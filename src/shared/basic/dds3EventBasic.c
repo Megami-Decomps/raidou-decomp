@@ -1,4 +1,13 @@
 #include "common.h"
 #include "dds3EventBasic.h"
+#include "dds3SceneBasic.h"
 
-INCLUDE_ASM(const s32, "basic/dds3EventBasic", dds3AddEventBasic);
+dds3Basic_t *dds3AddEventBasic(u32 serialID, void *pData, char *pName)
+{
+    dds3Basic_t *basic = dds3AddSceneBasicData(BASIC_TYPE_EVENT);
+
+    basic->workdata = pData;
+    basic->serialID = serialID;
+    basic->name = pName;
+    return basic;
+}

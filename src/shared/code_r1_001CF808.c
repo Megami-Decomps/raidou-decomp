@@ -1,5 +1,6 @@
 #include "common.h"
 #include "sdfMemory.h"
+#include "sdfChip.h"
 #include "sdfSound.h"
 #include "scrTraceCode.h"
 #include "dds3KernelCore.h"
@@ -135,6 +136,7 @@ typedef struct { u64 v; } __attribute__((packed)) u64p;
 
 extern u8 D_003BC598[];
 extern dds3ProcessID_t *mnuTitleSoundTask;
+extern char evtPicturePriProcName[];
 
 extern u32 D_003BC5B0[2];
 extern u32 D_003BC5B8;
@@ -182,7 +184,17 @@ INCLUDE_ASM(const s32, "code_r1_001CF808", mnuIncrementTitleEffectFrameCounter);
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", mnuDestroyTitleEffectTask);
 
-INCLUDE_ASM(const s32, "code_r1_001CF808", ProcessInit);
+void ProcessInit(void)
+{
+    TitleEffectState *state = sdfChipAllocDirect(sizeof(TitleEffectState));
+
+    mnuTitleSoundTask = dds3StartProcess(evtPicturePriProcName, 0x5212, 1, 1,
+                                         mnuIncrementTitleEffectFrameCounter,
+                                         mnuDestroyTitleEffectTask, NULL);
+    dds3SetProcessData(mnuTitleSoundTask, state);
+    state->soundNameIndex = 0;
+    state->frameCounter = 0;
+}
 
 void mnuResetTitleEffectState(s32 command) {
     TitleEffectState *effectState = (TitleEffectState *)dds3GetProcessData(mnuTitleSoundTask);

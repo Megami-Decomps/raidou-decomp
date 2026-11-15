@@ -5,6 +5,7 @@
 #include "kernel.h"
 #include "sdfMemory.h"
 #include "dds3SceneBasic.h"
+#include "dds3Basic.h"
 #include "dds3WorldBasic.h"
 #include "dds3KernelCore.h"
 
@@ -52,7 +53,36 @@ void dds3VisibleSceneBasic(dds3Basic_t *basic, s8 visible)
     }
 }
 
-INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3AddSceneBasicData);
+dds3Basic_t *dds3AddSceneBasicData(s32 type)
+{
+    dds3Basic_t *scene;
+    dds3Basic_t *basic;
+    dds3SceneBasicTable_t *list;
+
+    if ((u32)(type - 2) >= 15) {
+        return NULL;
+    }
+    scene = dds3GetControlScene();
+    if (scene == NULL) {
+        return NULL;
+    }
+    list = &((dds3SceneBasic_t *)scene->workdata)->basictable[type];
+    basic = dds3AllocBasic(type);
+    if (basic == NULL) {
+        return NULL;
+    }
+    basic->workpointer = scene;
+    if (list->lastbasic == NULL) {
+        list->firstbasic = basic;
+        list->lastbasic = basic;
+    } else {
+        list->lastbasic->next = basic;
+        basic->prev = list->lastbasic;
+        list->lastbasic = basic;
+    }
+    list->linkcount++;
+    return basic;
+}
 
 INCLUDE_ASM(const s32, "basic/dds3SceneBasic", dds3DeleteSceneBasicData);
 

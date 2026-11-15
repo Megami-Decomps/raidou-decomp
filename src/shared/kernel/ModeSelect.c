@@ -7,6 +7,7 @@
 #include "newdata.h"
 #include "sdfSound.h"
 #include "ModeSelect.h"
+#include "dds3KernelCore.h"
 
 typedef struct evtUnitHandle_t
 {
@@ -199,6 +200,7 @@ typedef struct nbNegoProcessData_t
 #include "sdk_libc.h"
 
 extern void nbPlaySe(s32 no);
+extern char InitExStrMahjonMainProcess[];
 extern s32 (*D_004EF4B0[])(nbNegoProcessData_t *n);
 extern s32 (*D_004EF550[])(nbNegoProcessData_t *n);
 extern s32 (*D_004EF698[])(nbNegoProcessData_t *n);
@@ -453,7 +455,12 @@ void nbPlaySe(s32 no)
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", Start_mjn);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", ShutDown);
+s32 ShutDown(void)
+{
+    dds3KillProcessName("mahjon menu process", 1);
+    dds3KillProcessName(InitExStrMahjonMainProcess, 1);
+    return 0;
+}
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", gMjnRun);
 
 INCLUDE_SDATA(const s32, "kernel/ModeSelect", ManageEndHanchanPhaseData);

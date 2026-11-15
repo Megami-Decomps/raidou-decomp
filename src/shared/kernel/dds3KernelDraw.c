@@ -788,7 +788,10 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaIn);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaOutEx);
 
-INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaOut);
+void dds3BistaOut(u32 frame)
+{
+    dds3BistaOutEx(frame, 0x4F);
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
 #ifdef VERSION_RAIDOU2

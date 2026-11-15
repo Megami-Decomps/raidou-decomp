@@ -8,6 +8,7 @@
 #include "sdfPacketBuff.h"
 #include "polyManager.h"
 #include "effManager.h"
+#include "sdfRand.h"
 
 /* One row per effect type, 0x30 bytes, indexed by effHandle_t::type. */
 typedef struct effMajorEntry_t
@@ -63,7 +64,29 @@ extern char dds3EffectProcessName[7];
 
 extern void effObjectListCountersReset(void);
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectManagerInit);
+extern sdfRandCB_t dds3EffectBase;
+extern void fclEffectManagerInitSub(void);
+extern void dds3PolygonManagerInit(void);
+extern void dds3EffectManagerInitSub(void);
+extern void effEctManagerInitSub(void);
+extern void Eve_EffectInit(void);
+extern void effBTLFieldColorResetFlags(void);
+dds3TaskUpdateResult_t ManagerRunF(dds3ProcessID_t *task);
+s32 ManagerExit(dds3ProcessID_t *task);
+
+void dds3EffectManagerInit(void)
+{
+    sdfRandomizeByTime(&dds3EffectBase);
+    fclEffectManagerInitSub();
+    dds3BillboardManagerInit();
+    dds3PolygonManagerInit();
+    dds3EffectManagerInitSub();
+    dds3StartProcess("effect_f", 0x2B02, 0, 0, ManagerRunF, NULL, NULL);
+    dds3StartProcess(dds3EffectProcessName, 0x2B16, 0, 0, dds3EffectManagerRun, ManagerExit, NULL);
+    effEctManagerInitSub();
+    Eve_EffectInit();
+    effBTLFieldColorResetFlags();
+}
 
 INCLUDE_ASM(const s32, "effect/effManager", ManagerExit);
 

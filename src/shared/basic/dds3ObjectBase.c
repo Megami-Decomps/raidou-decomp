@@ -74,7 +74,16 @@ u8 dds3ObjectBaseCheckFlag(dds3Basic_t *pObjectBasic, u32 flag)
     return (control->flag & flag) != 0;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseSetUserValue);
+void *dds3ObjectBaseSetUserValue(dds3Basic_t *pObjectBasic, void *pUserValue)
+{
+    dds3ObjectBaseControlWorkData_t *control;
+    void *previous;
+
+    control = dds3GetBaseControlWorkData(pObjectBasic);
+    previous = dds3ObjectBaseGetUserValue(pObjectBasic);
+    control->pUserValue = pUserValue;
+    return previous;
+}
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseGetUserValue);
 

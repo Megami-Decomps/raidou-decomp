@@ -150,8 +150,6 @@ enum {
 
 #define EFF_OBJ_OWNER_KIND_END 10
 
-#define EFF_OBJ_OWNER_KIND_EXTRA 0x11
-
 #define EFF_OBJ_FLAG_OWNER_LINK 4
 
 #define EFF_OBJ_FLAG_OWNER_BILL_ENTRY 8
@@ -291,7 +289,135 @@ void dds3EffectObjectBasicDestructor(dds3Basic_t *aPtr) {
     aPtr->workdata = NULL;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicMainProcedure);
+s32 dds3EffectObjectBasicMainProcedure(dds3Basic_t *aPtr)
+{
+    sdfMatrix4_t matrix;
+    sdfVector4_t position;
+    sdfVector4_t rotation = {0, 0, 0, 1.0f};
+    dds3EffectObjectBasicWorkData_t *work;
+    s32 moved = 0;
+    effHandle_t *effect;
+    billHandle_t *bill;
+    s32 result;
+
+    work = aPtr->workdata;
+    if (work->stat & EFF_OBJ_FLAG_OWNER_LINK) {
+        if (dds3SceneBasicExistBasicFromType(dds3GetActiveScene(), work->linkbasictype,
+                                            work->linkbasic) != 0) {
+            if (work->stat & EFF_OBJ_FLAG_OWNER_BILL_ENTRY) {
+                dds3EffectObjectBasicGetObjectIndex(aPtr);
+            } else {
+                switch (work->linkbasictype) {
+                case BASIC_TYPE_CAMERAOBJECT: case BASIC_TYPE_UNITOBJECT: case BASIC_TYPE_MATTEROBJECT:
+                case BASIC_TYPE_EFFECTOBJECT: case BASIC_TYPE_EVENTOBJECT: case BASIC_TYPE_LIGHTOBJECT:
+                    SDF_VU0_LOADVECTOR(&work->linkbasic->poseset->rot);
+                    SDF_VU0_STOREVECTOR(&rotation);
+                    ToMatrix();
+                    break;
+                case BASIC_TYPE_POINT:
+                    SDF_VU0_LOADVECTOR(&((dds3EffectOwnerPose_t *)work->linkbasic->workdata)->rotation);
+                    SDF_VU0_STOREVECTOR(&rotation);
+                    ToMatrix();
+                    break;
+                default:
+                    SDF_VU0_LOADIDENTITY();
+                    break;
+                }
+            }
+            SDF_VU0_COPYMATRIX_A_TO_B();
+            SDF_VU0_LOADIDENTITY();
+            SDF_VU0_LOADVECTOR(work->linkpos);
+            SDF_VU0_VECTOR_W_SET_ONE();
+            SDF_VU0_TRANSLATE();
+            MultMatrixRevNoArg();
+            SDF_VU0_LOADIDENTITYVECTOR();
+            SDF_VU0_APPLYMATRIX();
+            if ((work->stat & EFF_OBJ_FLAG_OWNER_BILL_ENTRY) == 0) {
+                switch (work->linkbasictype) {
+                case BASIC_TYPE_CAMERAOBJECT: case BASIC_TYPE_UNITOBJECT: case BASIC_TYPE_MATTEROBJECT:
+                case BASIC_TYPE_EFFECTOBJECT: case BASIC_TYPE_EVENTOBJECT: case BASIC_TYPE_LIGHTOBJECT:
+                    SDF_VU0_LOADVECTOR_B(&work->linkbasic->poseset->pos);
+                    SDF_VU0_ADDVECTOR();
+                    break;
+                case BASIC_TYPE_POINT:
+                    SDF_VU0_LOADVECTOR_B(&((dds3EffectOwnerPose_t *)work->linkbasic->workdata)->position);
+                    SDF_VU0_ADDVECTOR();
+                    break;
+                }
+            }
+            SDF_VU0_STOREVECTOR(&position);
+            dds3SetRadiusPoseSet(aPtr->poseset);
+            SDF_VU0_STOREVECTOR(&aPtr->poseset->pos);
+            moved = 1;
+            dds3OffPoseSetFlag(aPtr->poseset, POSESET_FLAG_UPDATEPOSE);
+        } else {
+            dds3EffectObjectBasicUnlinkObject(aPtr);
+        }
+    } else {
+        dds3OffPoseSetFlag(aPtr->poseset, POSESET_FLAG_UPDATEPOSE);
+        SDF_VU0_LOADVECTOR(&aPtr->poseset->pos);
+        SDF_VU0_VECTOR_W_SET_ONE();
+        SDF_VU0_STOREVECTOR(&position);
+        dds3SetRadiusPoseSet(aPtr->poseset);
+        SDF_VU0_LOADVECTOR(&aPtr->poseset->rot);
+        Normalize();
+        SDF_VU0_STOREVECTOR(&rotation);
+        moved = 1;
+    }
+    switch (work->type) {
+    case EFF_OBJ_STATE_BOUND_BILL:
+        effect = work->handle;
+        if (effect != NULL && moved) {
+            dds3EffectSetPosition(effect, &position);
+            SDF_VU0_LOADVECTOR(&rotation);
+            ToMatrix();
+            SDF_VU0_STOREMATRIX(&matrix);
+            dds3EffectSetRotateMatrix(effect, &matrix);
+        }
+        result = dds3EffectGetState(effect);
+    expired:
+        if (result == 0) {
+            u32 flags = work->stat;
+
+            work->stat = flags & ~1;
+            if (flags & 2) {
+                dds3DeleteSceneBasicData(aPtr);
+            }
+        }
+        return 1;
+    case 2:
+        bill = work->handle;
+        if (bill != NULL && moved) {
+            dds3BillboardSetPosition(bill, &position);
+        }
+        result = dds3BillboardGetAnimState(bill);
+        goto expired;
+    case 3:
+        if (work->handle != NULL && moved) {
+            dds3BillboardSetPosition(work->handle, &position);
+        }
+        return 1;
+    case 4:
+        return 1;
+    case EFF_OBJ_STATE_EVENT_NODE: {
+        void *cut = work->cuth;
+
+        if (cut != NULL) {
+            if (moved) {
+                dds3EffectEventParameters_t *parameters = work->para;
+
+                if (parameters != NULL) {
+                    SDF_VU0_COPYVECTOR(&parameters->position, &position);
+                    SDF_VU0_COPYVECTOR(&parameters->rotation, &rotation);
+                    effEveBEDCutSetParams(cut, parameters);
+                }
+            }
+        }
+        return 1;
+    }
+    }
+    return 1;
+}
 
 s32 dds3EffectObjectBasicDrawProcedure(dds3Basic_t *aPtr) {
     dds3EffectObjectBasicWorkData_t *data;

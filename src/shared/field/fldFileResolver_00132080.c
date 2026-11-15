@@ -194,6 +194,8 @@ extern u32 fldNextF1Size;
 #include "scr.h"
 #include "newdata.h"
 #include "fldFileResolver_00132080.h"
+#include "dds3WorldBasic.h"
+#include "dds3MatterObjectBasic.h"
 
 /* Variable-sized packet header initialized by sdf2DMakePrimPacketHeader. */
 typedef struct SdfDrawPacket {
@@ -429,7 +431,90 @@ extern f32 D_003BADC0, D_003BADC4;
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldMakeBlockBasicFL2);
 
-INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", MakeObjectBasic2);
+typedef struct fldObjectPlacement_t {
+    s32 serialID;
+    u8 unk04[4];
+    char *name; /* 0x08 */
+    u8 unk0C[4];
+    f32 *transform; /* 0x10: position at 0, rotation at 0x10 */
+    fldResourceAreaRef_t *area; /* 0x14 */
+    u8 unk18[8];
+    fldModelData_t *model; /* 0x20 */
+} fldObjectPlacement_t;
+
+typedef struct fldResourceNameEntry_t {
+    u32 word00;
+    const char *name; /* 0x04 */
+    u32 word08;
+} fldResourceNameEntry_t;
+
+typedef struct fldResourceNameTable_t {
+    u32 count;
+    fldResourceNameEntry_t entries[1];
+} fldResourceNameTable_t;
+
+typedef struct fldResourceSet_t {
+    u8 unk00[0x18];
+    fldResourceNameTable_t *names; /* 0x18 */
+    u8 unk1C[8];
+} fldResourceSet_t;
+
+extern fldObjectPlacement_t *SetBattleLightWork;
+extern u32 SetBattleLightWork2;
+extern fldResourceSet_t *MakeResouceBasicFL2Work;
+extern u32 MakeResouceBasicFL2Work2;
+extern void *fldData15;
+extern void dds3SetUnitObjectId(dds3Basic_t *basic, char *name);
+extern void dds3ObjectBaseMakeMatter(dds3Basic_t *basic);
+extern void dds3ObjectBaseRegistArea(dds3Basic_t *basic);
+
+void MakeObjectBasic2(void)
+{
+    fldObjectPlacement_t *item = SetBattleLightWork;
+    u32 count = SetBattleLightWork2;
+    dds3Basic_t *scene;
+    dds3Basic_t *matter;
+    f32 position[4];
+    f32 rotation[4];
+    fldResourceSet_t *set;
+    fldResourceAreaRef_t *areaRef;
+    u32 i;
+    u32 j;
+    u32 k;
+
+    if (item == NULL) {
+        return;
+    }
+    scene = dds3GetControlScene();
+    for (i = 0; i < count; i++, item++) {
+        dds3AddModelBasic2(item->serialID, (sdfModelDef_t *)item->model->modelDef, item->model->playBook,
+                           fldData15, item->name);
+        fldCopySpawnTransform(position, rotation, item->transform);
+        matter = dds3AddMatterObjectBasic(item->serialID, position, rotation);
+        dds3SetUnitObjectId(matter, item->name);
+        dds3MatterObjectBasicSetOt(matter, 9);
+        dds3MatterObjectBasicSetHojiID(matter, fldCommand_GetHojiID(item->name));
+        dds3ObjectBaseSetControlBasic(matter, dds3SearchSceneBasic(scene, item->serialID, 10));
+        dds3ObjectBaseMakeMatter(matter);
+        for (j = 0, set = MakeResouceBasicFL2Work; j < MakeResouceBasicFL2Work2; j++, set++) {
+            if (set->names != NULL) {
+                fldResourceNameEntry_t *entry = set->names->entries;
+
+                for (k = 0; k < set->names->count; k++, entry++) {
+                    if (strcmp(item->name, entry->name) == 0) {
+                        break;
+                    }
+                }
+            }
+        }
+        areaRef = item->area;
+        if (matter != NULL) {
+            dds3ObjectBaseSetControlBasic(matter,
+                dds3SceneBasicSearchNameAndType(scene, 2, (char *)areaRef->name));
+            dds3ObjectBaseRegistArea(matter);
+        }
+    }
+}
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldFileResolverFL1);
 

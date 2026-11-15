@@ -5,6 +5,7 @@
 #include "field.h"
 #include "dds3KernelCore.h"
 #include "slMain.h"
+#include "fld.h"
 #include "dds3SequenceList.h"
 
 extern void fmProcTrigSequence(s32 mode);
@@ -97,7 +98,16 @@ INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckTitle);
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CallLoad);
 
-INCLUDE_ASM(const s32, "kernel/dds3SequenceList", ExitLoad);
+s32 ExitLoad(void)
+{
+    fmShutDownFade();
+    fmShutDown();
+    if (fmShutDown2() != 0) {
+        mapRetuenFromLoad();
+        return 0;
+    }
+    return -1;
+}
 
 INCLUDE_ASM(const s32, "kernel/dds3SequenceList", CheckLoad);
 

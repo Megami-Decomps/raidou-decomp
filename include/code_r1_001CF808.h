@@ -9,8 +9,8 @@ typedef s32 MnuTitleStreamLoadState;
 #include "kernel.h"
 
 void ProcessInit(void);
-void mnuDestroyTitleEffectTask(dds3ProcessID_t *id);
-dds3ProcessFunc_t mnuIncrementTitleEffectFrameCounter(dds3ProcessID_t *id);
+s32 mnuDestroyTitleEffectTask(dds3ProcessID_t *id);
+s32 mnuIncrementTitleEffectFrameCounter(dds3ProcessID_t *id);
 void sndInit(void);
 
 #endif

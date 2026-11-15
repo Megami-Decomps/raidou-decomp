@@ -6,6 +6,7 @@
 #include "sdk_libc.h"
 #include "sdfQuat.h"
 #include "dds3PathBasic.h"
+#include "dds3SceneBasic.h"
 #include "effSpline.h"
 
 #define DDS3_PATH_CURVE_POSITION 0
@@ -53,7 +54,15 @@ void dds3PathEvalSpline(u32 *segment, f32 *weight, fldResourcePathData_t *keys, 
     *weight = 1.0f;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3PathBasic", dds3AddPathBasic);
+dds3Basic_t *dds3AddPathBasic(u32 serialID, void *pData, char *pName)
+{
+    dds3Basic_t *object = dds3AddSceneBasicData(BASIC_TYPE_PATH);
+
+    object->serialID = serialID;
+    object->name = pName;
+    object->workdata = pData;
+    return object;
+}
 
 dds3PathBasicControl_t *dds3AllocPathBasicWorkData(dds3Basic_t *basic)
 {

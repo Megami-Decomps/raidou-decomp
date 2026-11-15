@@ -737,7 +737,7 @@ typedef struct EffStripParams {
 
 typedef char EffStripParamsSizeCheck[(sizeof(EffStripParams) == 0x20) ? 1 : -1];
 
-/* The constructor allocates 0xD4 bytes and copies this 0x98-byte
+/* PartsCreate allocates 0xE8 bytes and copies this 0x98-byte
  * parameter record at +0x30. Draws scale the +0x64 track's result and use the +0x90 track as the angle. */
 typedef struct EffQuadParams {
     SdfColorTrack colorTrack;
@@ -750,22 +750,28 @@ typedef struct EffQuadParams {
     u8 pad95[3];
 } EffQuadParams;
 
-typedef struct EffQuadWork {
-    f32 position[4];
-    f32 orientation[4];
+typedef struct ptexHandle_t {
+    f32 pos[4];
+    f32 rot[4];
     f32 scale;
-    u32 color;
-    u32 sourceKind;
+    u32 abgr;
+    u32 type;
     s32 frame;
-    EffQuadParams source;
-    struct billHandle_t *billHandle;
-    struct EffExpandedList *reference; /* Kind-7 retained resource wrapper. */
+    EffQuadParams param;
+    u8 unkC8[4];
+    s8 unkCC; /* Render reads it signed */
+    u8 padCD[3];
+    struct billHandle_t *hBillboard;
+    struct EffExpandedList *hCTexList;
     sdfMat_t *assetHandle;
-} EffQuadWork;
+    s32 unkDC;
+    s32 unkE0;
+    s32 unkE4;
+} ptexHandle_t;
 
 typedef char EffQuadParamsSizeCheck[(sizeof(EffQuadParams) == 0x98) ? 1 : -1];
 
-typedef char EffQuadWorkSizeCheck[(sizeof(EffQuadWork) == 0xD4) ? 1 : -1];
+typedef char ptexHandleSizeCheck[(sizeof(ptexHandle_t) == 0xE8) ? 1 : -1];
 
 typedef struct EffBillOutputHeader {
     EffBillTimedHeader timed;
@@ -6578,9 +6584,31 @@ INCLUDE_ASM(const s32, "code_r1_00226EC8", Delete_effPolygonTex);
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", Copy_effPolygonTex);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", ResourceCopy_effPolygonTex);
+void ResourceCopy_effPolygonTex(ptexHandle_t *dst, ptexHandle_t *src)
+{
+    if (src->hBillboard != NULL) {
+        if (dst->hBillboard != NULL) {
+            dds3BillboardDelete(dst->hBillboard);
+        }
+        dst->hBillboard = dds3BillboardCopy(src->hBillboard);
+        dds3BillboardSetAnimColorAdvMode(dst->hBillboard);
+        switch (dst->type) {
+        case EFFPOLYGON_TEX_TYPE_BOARD:
+            dds3BillboardSetMode(dst->hBillboard, (s16)dst->param.alphaTrack.surfaceIndex);
+            break;
+        case EFFPOLYGON_TEX_TYPE_BOARD_LOOP:
+            dds3BillboardSetMode(dst->hBillboard, (s16)dst->param.alphaTrack.surfaceIndex);
+            break;
+        }
+    } else {
+        if (dst->hCTexList != NULL) {
+            effCacheTexDelete(dst->hCTexList);
+        }
+        dst->hCTexList = Copy_effCacheTexList(src->hCTexList);
+    }
+}
 
-void effResetRenderResourceFrame(EffQuadWork *work) {
+void effResetRenderResourceFrame(ptexHandle_t *work) {
     work->frame = 0;
 }
 
@@ -6590,11 +6618,11 @@ INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf366);
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effLeaf367);
 
-void effSetRenderResourceColor(EffQuadWork *work, u32 color) {
-    work->color = color;
+void effSetRenderResourceColor(ptexHandle_t *work, u32 color) {
+    work->abgr = color;
 }
 
-void effSetRenderResourceScale(EffQuadWork *work, f32 scale) {
+void effSetRenderResourceScale(ptexHandle_t *work, f32 scale) {
     work->scale = scale;
 }
 
