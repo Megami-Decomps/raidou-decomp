@@ -532,7 +532,7 @@ typedef struct BtlDamageShakeArgs {
 
 typedef struct GunLoadArgs {
     BtlUnit *unit;
-    struct FileRequest *request;
+    struct fileRequest *request;
 } GunLoadArgs;
 
 typedef struct BtlActorTransparencyArgs {

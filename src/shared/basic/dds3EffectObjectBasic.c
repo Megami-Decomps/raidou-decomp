@@ -17,6 +17,7 @@
 #include "dds3EffectObjectBasic.h"
 #include "dds3ObjectBase.h"
 #include "effManager.h"
+#include "effMagatuhi.h"
 
 typedef struct
 {
@@ -28,23 +29,9 @@ typedef struct
     u32 color;
 } dds3EffectEventParameters_t;
 
-typedef struct
-{
-    sdfVector4_t position[2];
-    f32 radius[2];
-} effMagaSCArea_t;
-
-typedef struct
-{
-    sdfVector4Unaligned_t position[4];
-    f32 radius[4];
-} effMagaP4Point_t;
-
 extern const dds3EffectEventParameters_t dds3EffectEventDefaultParameters;
 extern const effMagaSCArea_t dds3EffectMagaSCAreaDefault;
 extern const effMagaP4Point_t dds3EffectMagaP4PointDefault;
-extern void effMagaSCSetArea(void *hEffect, const void *pMagaSCArea);
-extern void effMagaP4SetPoint(void *hEffect, const void *pP4Point);
 
 typedef struct
 {
@@ -86,7 +73,6 @@ typedef struct
     sdfVector4_t FldExBasePos;
 } dds3EffectObjectBasicWorkData_t;
 
-void effMagaP4Randomize(void *hEffect);
 
 struct dds3BillResource_tag;
 
@@ -198,7 +184,6 @@ dds3Basic_t *AddBEDEffect();
 effEveBEDCutHandle_t *effEveBEDCutCreate( effBTL_t *hEveBED, u16 CutNum, const void *pParams);
 dds3ObjectBaseControlWorkData_t *dds3EffectObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
 dds3Basic_t *AddMG12Effect();
-extern void effMagaRandomize(void *hEffect);
 extern s32 sdfModelGetMarkPosMatrix(sdfModelRootNode_t *aRoot, s32 aId);
 void FreeEffectData(dds3EffectObjectBasicWorkData_t *work);
 s32 dds3EffectObjectBasicConstructor(dds3Basic_t *aPtr);
@@ -574,20 +559,20 @@ s32 dds3EffectObjectSetMG12Pos(dds3Basic_t *eff, dds3Basic_t *p1,
     case EFF_OBJ_STATE_MAGATUHI_FOUR_ROWS:
         points = work->para;
         if (GetESPPos(p1)) {
-            SDF_VU0_STOREVECTOR(&points->position[0]);
-            points->radius[0] = GetESPR(p1);
+            SDF_VU0_STOREVECTOR(points->controlPoints[0]);
+            points->jitterScales[0] = GetESPR(p1);
         }
         if (GetESPPos(p2)) {
-            SDF_VU0_STOREVECTOR(&points->position[1]);
-            points->radius[1] = GetESPR(p2);
+            SDF_VU0_STOREVECTOR(points->controlPoints[1]);
+            points->jitterScales[1] = GetESPR(p2);
         }
         if (GetESPPos(p3)) {
-            SDF_VU0_STOREVECTOR(&points->position[2]);
-            points->radius[2] = GetESPR(p3);
+            SDF_VU0_STOREVECTOR(points->controlPoints[2]);
+            points->jitterScales[2] = GetESPR(p3);
         }
         if (GetESPPos(p4)) {
-            SDF_VU0_STOREVECTOR(&points->position[3]);
-            points->radius[3] = GetESPR(p4);
+            SDF_VU0_STOREVECTOR(points->controlPoints[3]);
+            points->jitterScales[3] = GetESPR(p4);
         }
         effMagaP4SetPoint(work->handle, points);
         return 1;

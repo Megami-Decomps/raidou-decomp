@@ -15,6 +15,7 @@
 #include "effMath.h"
 #include "sdfBillBoard.h"
 #include "sdfMemory.h"
+#include "effMagatuhi.h"
 
 extern sdfGrOt_t *effMagaGrOtBuckets[4];
 
@@ -109,19 +110,6 @@ typedef struct effDirEnt_t {
     void *privateData;
 } effDirEnt_t;
 
-/* The creation callback's returned payload is retained in this 8-byte dispatch owner. */
-typedef struct dds3MagatuhiPar_tag {
-    u32 type;
-    void *pHandle;
-} dds3MagatuhiPar_tag;
-
-/* Callback input prefix; type 3 contains an effect-dispatch object at +8. */
-typedef struct {
-    s32 type;
-    u8 pad04[4];
-    dds3MagatuhiPar_tag *effect;
-} effMagatuhiCallback_t;
-
 /* Drift parameters are not ring parameters despite their equal size (0xDC). */
 typedef struct {
     f32 origin[EFF_MAGATUHI_VECTOR_WORD_COUNT];
@@ -203,15 +191,6 @@ typedef struct {
     effMagatuhiOwner_t *pMagatuhi;
     sdfMemHandle_t *hMem;
 } effMagaSmoke_tag;
-
-/* Float source block read by effMagatuhiCopyFloatBlock. */
-typedef struct {
-    f32 originX, originY, originZ;
-    u8 pad0C[4];
-    f32 targetX, targetY, targetZ;
-    u8 pad1C[4];
-    f32 initialRadius, captureDistance;
-} effMagatuhiFloatParams_t; /* 0x28 */
 
 /* Parameter head of the first family: particles of 0x30 bytes precede the work. */
 typedef struct {
@@ -339,12 +318,6 @@ typedef struct {
     sdfMemHandle_t *hMem;
 } effMagaCylinder_tag;
 
-/* Four control points and their jitter scales; copy xyz but preserve each w. */
-typedef struct {
-    f32 controlPoints[EFF_MAGATUHI_CONTROL_POINT_COUNT][EFF_MAGATUHI_VECTOR_WORD_COUNT];
-    f32 jitterScales[EFF_MAGATUHI_CONTROL_POINT_COUNT];
-} effMagatuhiRowsSrc_t;
-
 typedef struct {
     effMagaSmokeConvParam_t head;
     effMagaSmokePart_tag *pPart; /* 0x17C */
@@ -400,7 +373,6 @@ f32 dds3GetRandFloatA(u8 *name);
 
 /* vu0 routine: multiply RGBA channels normalized by 128, then pack at the same scale.
    Native integer conversion/byte packing remains unclamped; quadword storage is unchanged. */
-u32 effMagaCylinderCalcColor(u32 colorA, u32 colorB);
 
 /* Fixed-scale form of the SDK's four-word RGBA packing scratch buffer. */
 static inline u32 PackMagatuhiTrailColor(void) {
@@ -445,13 +417,10 @@ effMagaSmokeConv_tag *effMagaSmokeConvCreate(effMagaSmokeConvParam_t *src);
 void effMagaSmokeConvDelete(effMagaSmokeConv_tag *pData);
 void effMagaSmokeConvPartInit(effMagaSmokeConv_tag *pMagaSmokeConv, s32 index);
 void effMagaSmokeConvDraw(effMagaSmokeConv_tag *pData);
-void effMagaSCSetArea(effMagatuhiCallback_t *hEffect, effMagatuhiFloatParams_t *pMagaSCArea);
 effMagaPoint4_tag *effMagaPoint4Create(effMagaPoint4Param_t *src);
 void effMagaPoint4Delete(effMagaPoint4_tag *pData);
 void effMagaPoint4PartInit(effMagaPoint4_tag *pMagaPoint4, s32 index);
 void effMagaPoint4Draw(effMagaPoint4_tag *pData);
-void effMagaP4SetPoint(effMagatuhiCallback_t *hEffect, effMagatuhiRowsSrc_t *pP4Point);
-void effMagaP4Randomize(effMagatuhiCallback_t *hEffect);
 effMagaCylinder_tag *effMagaCylinderCreate(effMagaCylinderParam_t *src);
 void effMagaCylinderDelete(effMagaCylinder_tag *pData);
 void effMagaCylinderPartInit(effMagaCylinder_tag *pMagaCylinder, s32 index);
@@ -479,7 +448,6 @@ void effMagaSmokePartInit(effMagaSmoke_tag *pMagaSmoke, s32 index);
 void effMagaSmokeDraw(effMagaSmoke_tag *pData);
 void effMagaSmokeSetRGBA(effMagaSmoke_tag *pData, u32 abgr);
 void effMagaSmokeRandomize(effMagatuhiCallback_t *hEffect);
-s32 effMagaRandomize(effMagatuhiCallback_t *hEffect);
 dds3MagatuhiPar_tag *dds3MagatuhiParCreate(s32 type, void *params);
 void dds3MagatuhiParDraw(dds3MagatuhiPar_tag *hData);
 void dds3MagatuhiParDelete(dds3MagatuhiPar_tag *hData);
@@ -1025,17 +993,17 @@ void effMagaSmokeConvDraw(effMagaSmokeConv_tag *pData) {
 }
 
 /* Update the first family's scattered float parameters without touching gaps. */
-void effMagaSCSetArea(effMagatuhiCallback_t *hEffect, effMagatuhiFloatParams_t *pMagaSCArea) {
+void effMagaSCSetArea(effMagatuhiCallback_t *hEffect, effMagaSCArea_t *pMagaSCArea) {
     effMagaSmokeConv_tag *dst = dds3MagatuhiGetHandle(hEffect->effect);
 
-    dst->head.originX = pMagaSCArea->originX;
-    dst->head.originY = pMagaSCArea->originY;
-    dst->head.originZ = pMagaSCArea->originZ;
-    dst->head.initialRadius = pMagaSCArea->initialRadius;
-    dst->head.targetX = pMagaSCArea->targetX;
-    dst->head.targetY = pMagaSCArea->targetY;
-    dst->head.targetZ = pMagaSCArea->targetZ;
-    dst->head.captureDistance = pMagaSCArea->captureDistance;
+    dst->head.originX = pMagaSCArea->position[0].x;
+    dst->head.originY = pMagaSCArea->position[0].y;
+    dst->head.originZ = pMagaSCArea->position[0].z;
+    dst->head.initialRadius = pMagaSCArea->radius[0];
+    dst->head.targetX = pMagaSCArea->position[1].x;
+    dst->head.targetY = pMagaSCArea->position[1].y;
+    dst->head.targetZ = pMagaSCArea->position[1].z;
+    dst->head.captureDistance = pMagaSCArea->radius[1];
 }
 
 /* Clone history parameters; signed delays follow the returned work block. */
@@ -1211,7 +1179,7 @@ void effMagaPoint4Draw(effMagaPoint4_tag *pData) {
 }
 
 /* Replace control-point xyz and jitter amplitudes without changing point w. */
-void effMagaP4SetPoint(effMagatuhiCallback_t *hEffect, effMagatuhiRowsSrc_t *pP4Point) {
+void effMagaP4SetPoint(effMagatuhiCallback_t *hEffect, effMagaP4Point_t *pP4Point) {
     effMagaPoint4_tag *dst = dds3MagatuhiGetHandle(hEffect->effect);
     u32 controlPointIndex;
 

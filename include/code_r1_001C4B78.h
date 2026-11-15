@@ -35,7 +35,7 @@ typedef struct PmdHeader {
 } PmdHeader;
 
 typedef struct PolyMovieResourceSlot {
-    struct FileRequest *request;
+    struct fileRequest *request;
     sdfMemHandle_t *handle;
     PmdHeader *address;
 } PolyMovieResourceSlot;

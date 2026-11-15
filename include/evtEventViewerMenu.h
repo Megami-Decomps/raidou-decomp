@@ -85,7 +85,7 @@ typedef enum EvtPackLoadPhase {
 typedef struct EvtPackLoadState {
     EvtPackEventId eventId;       /* 0x00: event-pack key, not a scheduler handle */
     EvtPackLoadPhase loadPhase;    /* 0x04 */
-    struct FileRequest *pendingRequest; /* 0x08: queued event-script request, then cleanup */
+    struct fileRequest *pendingRequest; /* 0x08: queued event-script request, then cleanup */
     struct sdfMemHandle_t *resourceAllocation; /* 0x0C: retained descriptor */
     u8 *data;                     /* 0x10 */
     const EvtPackHeader *header;  /* 0x14: borrowed read-only pack header. */

@@ -12,6 +12,7 @@
 #include "evtEventPack.h"
 #include "effEvent.h"
 #include "dds3KernelCore.h"
+#include "fileManager.h"
 
 dds3ProcessID_t *evtSearchEventPack(u32 eventno);
 
@@ -101,13 +102,6 @@ typedef struct beMotionSeTable_s {
     u8 unk08[8];
 } beMotionSeTable_s;
 
-
-struct FileRequest;
-
-struct sdfMemHandle_t *fileGetMemHandle(const struct FileRequest *fileHandle);
-s32 fileHandleFree(struct FileRequest *fileHandle);
-s32 pacFileCheckEnd(const struct FileRequest *pacFileHandle);
-
 enum {
     EVT_PACK_ENTRY_POINT_KIND = 0,
     EVT_PACK_LOAD_COMPLETE = 2
@@ -125,7 +119,6 @@ dds3ProcessID_t *evtLoadEventPack(s32 eventno);
 void evtKillEventPack(s32 eventno);
 s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId);
-struct FileRequest *fileLoad(const char *filename);
 extern char evtLoadStartMessage[];
 extern char evtEventPackScriptPath[];
 
@@ -385,7 +378,7 @@ dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId) {
 void evtLoadEventScript(evtPackProcessData_t *state) {
     s32 eventId;
     s32 eventDirectoryId;
-    struct FileRequest *request;
+    struct fileRequest *request;
 
     printf(evtLoadStartMessage);
     eventId = state->eventno;
@@ -405,7 +398,7 @@ void evtCheckEventScriptLoaded(evtPackProcessData_t *state) {
 
     if (state->pendingRequest != NULL) {
         if (pacFileCheckEnd(state->pendingRequest) != 0) {
-            state->resourceAllocation = fileGetMemHandle((struct FileRequest *)state->pendingRequest);
+            state->resourceAllocation = fileGetMemHandle(state->pendingRequest);
             fileHandleFree(state->pendingRequest);
             state->pendingRequest = NULL;
             header = EE_ADDR_AS(evtPackHeader_t *, sdfMemLock(state->resourceAllocation));

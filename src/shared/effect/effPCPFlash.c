@@ -1,4 +1,5 @@
 #include "common.h"
+#include "effMagatuhi.h"
 #include "effPCPData.h"
 #include "ps2asm.h"
 #include "sdf_resource.h"
@@ -683,7 +684,6 @@ u32 dds3GetRandA(effRandState_t *name);
 
 /* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
 f32 dds3GetRandFloatA(effRandState_t *name);
-extern u32 effMagaCylinderCalcColor(u32 color, u32 colorB);
 extern sdfGrOt_t *effPCPFlashQuadSurfaces[];
 extern u32 effPCPFlashQuadIndices[];
 
