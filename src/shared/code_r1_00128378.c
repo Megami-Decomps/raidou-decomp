@@ -15,6 +15,7 @@
 #include "ps2asm.h"
 #include "fpu.h"
 #include "dds3UnitObjectBasic.h"
+#include "dds3WorldBasic.h"
 
 /* Cursor advancement returns whether cursorIndex refers to a linked entry. */
 typedef u32 Dds3BasicArrayCursorResult;
@@ -29,7 +30,6 @@ dds3Basic_t *dds3GetBasicArray(const dds3BasicArrayHandle_t *object);
 u16 dds3GetBasicArrayCount(const dds3BasicArrayHandle_t *object);
 
 /* Return the borrowed secondary world node, or NULL when no world is active. */
-struct dds3Basic_t *dds3GetControlScene(void);
 
 /* Object data word 8 stores a kind-dependent 32-bit payload. */
 
@@ -38,8 +38,6 @@ struct dds3Basic_t *dds3GetControlScene(void);
 dds3BasicArrayHandle_t *dds3SceneBasicGetList(dds3Basic_t *object, s32 kind);
 
 /* Compatible redeclarations keep the broad object header unchanged. */
-Dds3BasicArrayCursorResult dds3SetFirstBasicArray(dds3BasicArrayHandle_t *object);
-Dds3BasicArrayCursorResult dds3SetNextBasicArray(dds3BasicArrayHandle_t *object);
 
 extern char D_0039FCA0[];
 extern dds3Basic_t *fldPlayerObject;

@@ -8,8 +8,11 @@
 #include "sdk_libc.h"
 #include "sdfMath.h"
 #include "sdfVu0.h"
+#include "effect.h"
+#include "libsdf.h"
+#include "sdfChip.h"
+#include "sdfMemory.h"
 
-struct effRandState_t;
 
 struct effPCPThunderSpherePolyParam_t;
 
@@ -37,29 +40,18 @@ struct effPCPThunderSpherePolyPart_t;
 
 struct effPCPThunderSpherePoly_t;
 
-struct parCell_t;
 
 struct sdfVector3_t;
 
-struct sdfMatPacket_t;
 
 struct sdfGsMemSlice_t;
 
-typedef struct effRandState_t effRandState_t;
 
 typedef struct effPCP_ThunderRadiatePolyPart_t effPCP_ThunderRadiatePolyPart_t;
 
 typedef struct effPCP_ThunderRadiatePolyParam_t effPCP_ThunderRadiatePolyParam_t;
 
-typedef struct parCell_t parCell_t;
 
-typedef struct sdfMatPacket_t sdfMatPacket_t;
-
-typedef union sdfMatUvwParm_t sdfMatUvwParm_t;
-
-typedef struct sdfTexPacket_t sdfTexPacket_t;
-
-typedef struct parSystem_t parSystem_t;
 
 typedef struct effPCP_ThunderRadiatePoly_t effPCP_ThunderRadiatePoly_t;
 
@@ -107,12 +99,6 @@ typedef struct effPCPThunderSpherePoly_t effPCPThunderSpherePoly_t;
 
 #define EFF_THUNDER_MIN_ACTIVE_FRAMES 1
 
-/* Mid-grey fragment colour (0x80 in each channel). */
-/* Four ordered 32-bit words in the shared effect random-number state. */
-struct effRandState_t {
-    u32 words[4];
-};
-
 /* Per-particle countdown state in the paired thunder-cell implementations. */
 struct effPCP_ThunderRadiatePolyPart_t {
     f32 directionX; /* 0x00 */
@@ -142,93 +128,12 @@ struct effPCP_ThunderRadiatePolyParam_t {
     u32 color_edge;
 };
 
-struct parSystem_t;
-
-struct parCell_t {
-    u128 *history;   /* 0x00 */
-    u32 *colors;     /* 0x04: packed per-history-vector colors */
-    s32 vertexCount; /* 0x08: active vectors in the topology-specific history */
-    s32 historyAdvanceCountdown; /* 0x0C: updates until the next history shift */
-    u32 color;       /* 0x10 initialized to EFF_THUNDER_NEUTRAL_COLOR */
-};
 
 struct sdfMat_t;
 
-/* A texture coordinate transform in a material packet. sdfMatSetUvwParm fills
- * it either as six floats or, for the identity case, as three quadword halves. */
-typedef union {
-    f32 m[6];
-    u64 q[3];
-} sdfMatTexTm_t;
-
-/* Native 0xA0-byte draw-entry block allocated by SDF_ASSET_DRAW_ENTRY_BYTES. */
-struct sdfMatPacket_t {
-    u32 pad00;             /* 0x00 */
-    u32 ambient;             /* 0x04 */
-    u32 diffuse;             /* 0x08 */
-    u32 multiTexDiffuse;    /* 0x0C: packed color applied by the secondary draw state */
-    u32 specular; /* 0x10: copied from the owning asset, or forced to zero. */
-    u32 refmapColor;             /* 0x14 */
-    u32 pad18;             /* 0x18 */
-    f32 constant;             /* 0x1C */
-    u32 alphaState;        /* 0x20: packed GS ALPHA_2 state emitted by the VU transfer builder */
-    u32 multiTexMethod;     /* 0x24: secondary packet mode copied from SdfAsset */
-    f32 y;                 /* 0x28 */
-    f32 x;                 /* 0x2C */
-    u8 pad30[8];           /* 0x30 */
-    u64 tex1Data;          /* 0x38 */
-    u64 tex0Data;
-    u64 clampData;
-    u64 mtexTex1Data;      /* 0x50 */
-    u64 mtexTex0Data;
-    u64 mtexClampData;
-    /* sdfMatSetUvwParm writes one transform per texture: a 2x2 then an offset. */
-    sdfMatTexTm_t texTm;   /* 0x68 */
-    sdfMatTexTm_t mtexTexTm;
-    u32 vifItopCommand;    /* 0x98: VIF ITOP with immediate 0xC */
-    u32 vifMscalCommand;   /* 0x9C: VIF MSCAL with microprogram index zero */
-};
-
-union sdfMatUvwParm_t;
-
-/* Optional packed or five-float state block owned by an SdfAsset. */
-union sdfMatUvwParm_t {
-    struct {
-        u64 unk0;
-        u64 unk8;
-        u32 unk10;
-        u32 unk14;
-    } packed;
-    struct {
-        f32 values[5];
-        u32 unk14;
-    } scalar;
-    /* Named view of scalar.values; the last word remains opaque. */
-    struct {
-        f32 centerOffsetX;
-        f32 centerOffsetY;
-        f32 basisScaleX;
-        f32 basisScaleY;
-        f32 rotationInput;
-        u32 unk14;
-    } transformInputs;
-};
 
 struct sdfTexHandle_t;
 
-struct sdfTexPacket_t;
-
-struct sdfTexPacket_t {
-    s32 gifTagWord; /* Low GIFtag word; NLOOP occupies bits 0-14. */
-    u32 gifTagControl; /* High GIFtag control word; one packed register. */
-    u64 gifTagRegisters; /* Packed register list: A+D. */
-    u64 samplingState; /* GS TEX1 data, including minification/magnification filters. */
-    u64 samplingRegister; /* GS TEX1_1/TEX1_2 register selector. */
-    u64 textureState; /* GS TEX0 data. */
-    u64 textureRegister; /* GS TEX0_1/TEX0_2 register selector. */
-    u64 clampState; /* GS CLAMP data. */
-    u64 clampRegister; /* GS CLAMP_1/CLAMP_2 register selector. */
-};
 
 /* Serialized byte consumed by the GS texture-state packet builder. */
 typedef u8 SdfTextureClampMode;
@@ -238,22 +143,6 @@ struct sdfMemHandle_t;
 /* Embedded command work at actor +0x20. Neither record is the whole owning
  * actor. */
 struct sdfMemHandle_t;
-
-/* The cell-system allocation ends with this complete 0x2C-byte owner. */
-struct parSystem_t {
-    u16 kind;            /* 0x00: ParCellTopology code; native integer storage */
-    u16 bucket;          /* 0x02: packet submission bucket */
-    s32 cellCount;       /* 0x04 */
-    s32 vertexWordCount; /* 0x08 */
-    s32 groupDivisor;   /* 0x0C: cell-system allocator input */
-    struct sdfMemHandle_t *allocation; /* 0x10: geometry allocation descriptor */
-    parCell_t *cells;      /* 0x14 */
-    u128 *vertices;      /* 0x18: backing vector history for all cells */
-    u32 *colors;         /* 0x1C: backing color stream for all cells */
-    struct sdfMat_t *asset; /* 0x20: submitted draw asset */
-    struct parSystem_t *next; /* 0x24: pending cell-system list */
-    s32 unk28;           /* 0x28 */
-};
 
 /* Header followed by a variable-length effPCP_ThunderRadiatePolyPart_t array in one allocation. */
 struct effPCP_ThunderRadiatePoly_t {
@@ -447,7 +336,6 @@ void dds3TrackPolyDelete(struct parSystem_t *hTrackPoly);
 /* Load axis-angle rotation into VU0 vf28-vf31. */
 void SetRotateMatrixAxis(f32 aAngle, const sdfVector3_t *aAxis);
 void sdfChipFreeDirect(void *aPtr);
-void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
 extern f32 aViewTarget[4], aViewEye[4];
 
 #define EFF_THUNDER_PARAMETER_BLOCK 0
@@ -465,9 +353,7 @@ enum trackPolyTopology {
     PAR_CELL_TOPOLOGY_FIVE_VECTOR = 4
 };
 
-extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
 extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-extern void *sdfChipAllocDirect(u32 aSize);
 extern parSystem_t *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, u32 type);
 extern void dds3TrackPolySetMode(parSystem_t *hTrackPoly, u16 mode);
 extern void dds3TrackPolyVCSet(parSystem_t *hTrackPoly, s32 type, u32 abgr_in, u32 abgr_out);

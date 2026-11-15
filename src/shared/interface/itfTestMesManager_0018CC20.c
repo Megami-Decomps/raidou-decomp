@@ -5,6 +5,8 @@
 #include "model.h"
 #include "draw3d.h"
 #include "ps2asm.h"
+#include "itfMisc.h"
+#include "sdfTex.h"
 
 typedef struct { u8 unk00[8]; f32 degrees; u8 unk0C[4]; } pbFovWork_t;
 
@@ -47,8 +49,6 @@ extern u8 dds3PadButtonState[];
 extern s32 testMsgTexIndex;
 extern void *testMsgTexture;
 extern void itfDebugPrintMark(void);
-extern void sdfTexFreeDelayed(void *aHandle);
-extern void *itfMiscLoadTexture(char *filename);
 extern sdfVector4_t aViewEye, aViewTarget;
 void TestMsgReloadTexture(void);
 s32 TestMsgMngC_Process(dds3ProcessID_t *id);

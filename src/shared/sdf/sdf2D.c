@@ -5,6 +5,9 @@
 #include "sdfTex.h"
 #include "sdfPacketBuff.h"
 #include "sdf2D.h"
+#include "libsdf.h"
+#include "sdfDraw.h"
+#include "draw.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -65,30 +68,6 @@ typedef u8 SdfTextureClampMode;
 #define SDF_GIF_PRE_EOP_FLAGS 0x400000008000LL
 
 #define SDF_VIF_DIRECT_COMMAND 0x50000000
-
-/* Fixed-size texture packet; constructor allocation and writes cover 0x50. */
-typedef struct sdf2DTexPacket_t {
-    sdfGrPacketHeader_t header;
-    sdfGrTagStdReg_t tex1;
-    sdfGrTagStdReg_t tex0;
-    sdfGrTagStdReg_t clamp;
-} sdf2DTexPacket_t;
-
-void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
-
-/* Per-texture reference count and non-owning clone source (0x8). */
-/* Texture buffer GPU command words (0x40). */
-typedef struct sdfTexPacket_t {
-    s32 gifTagWord; /* Low GIFtag word; NLOOP occupies bits 0-14. */
-    u32 gifTagControl; /* High GIFtag control word; one packed register. */
-    u64 gifTagRegisters; /* Packed register list: A+D. */
-    u64 samplingState; /* GS TEX1 data, including minification/magnification filters. */
-    u64 samplingRegister; /* GS TEX1_1/TEX1_2 register selector. */
-    u64 textureState; /* GS TEX0 data. */
-    u64 textureRegister; /* GS TEX0_1/TEX0_2 register selector. */
-    u64 clampState; /* GS CLAMP data. */
-    u64 clampRegister; /* GS CLAMP_1/CLAMP_2 register selector. */
-} sdfTexPacket_t;
 
 /* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
 

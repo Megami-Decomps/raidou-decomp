@@ -9,10 +9,14 @@
 #include "sdfMath.h"
 #include "sdfPacketBuff.h"
 #include "effMath.h"
+#include "effect.h"
+#include "libsdf.h"
+#include "sdfDraw.h"
+#include "sdfMat.h"
+#include "sdfMemory.h"
 
 struct effDebugPolyParams_t;
 
-struct effRandState_t;
 
 struct dds3WhirlwindPolyList_tag;
 
@@ -56,17 +60,12 @@ struct effPCPHamaCardSpherePart_tag;
 
 struct effPCPHamaCardSphere_tag;
 
-struct sdfMatPacket_t;
 
 struct sdfGsMemSlice_t;
 
 typedef struct effDebugPolyParams_t effDebugPolyParams_t;
 
-typedef struct sdfTexPacket_t sdfTexPacket_t;
 
-typedef struct sdfMatPacket_t sdfMatPacket_t;
-
-typedef union sdfMatUvwParm_t sdfMatUvwParm_t;
 
 typedef struct dds3WhirlwindPolyList_tag dds3WhirlwindPolyList_tag;
 
@@ -110,9 +109,6 @@ typedef struct effPCPHamaCardSpherePart_tag effPCPHamaCardSpherePart_tag;
 
 typedef struct effPCPHamaCardSphere_tag effPCPHamaCardSphere_tag;
 
-typedef struct sdfGrOt_t sdfGrOt_t;
-
-typedef struct effRandState_t effRandState_t;
 
 #define EFF_SCATTER_NEUTRAL_COLOR 0x80808080
 
@@ -168,19 +164,6 @@ struct dds3ScatterPolyListTexResource_tag;
 
 struct sdfTexHandle_t;
 
-struct sdfTexPacket_t;
-
-struct sdfTexPacket_t {
-    s32 gifTagWord; /* Low GIFtag word; NLOOP occupies bits 0-14. */
-    u32 gifTagControl; /* High GIFtag control word; one packed register. */
-    u64 gifTagRegisters; /* Packed register list: A+D. */
-    u64 samplingState; /* GS TEX1 data, including minification/magnification filters. */
-    u64 samplingRegister; /* GS TEX1_1/TEX1_2 register selector. */
-    u64 textureState; /* GS TEX0 data. */
-    u64 textureRegister; /* GS TEX0_1/TEX0_2 register selector. */
-    u64 clampState; /* GS CLAMP data. */
-    u64 clampRegister; /* GS CLAMP_1/CLAMP_2 register selector. */
-};
 
 /* Serialized byte consumed by the GS texture-state packet builder. */
 typedef u8 SdfTextureClampMode;
@@ -193,65 +176,6 @@ typedef struct dds3ScatterPolyListTexResource_tag {
 
 struct sdfMat_t;
 
-/* A texture coordinate transform in a material packet. sdfMatSetUvwParm fills
- * it either as six floats or, for the identity case, as three quadword halves. */
-typedef union {
-    f32 m[6];
-    u64 q[3];
-} sdfMatTexTm_t;
-
-/* Native 0xA0-byte draw-entry block allocated by SDF_ASSET_DRAW_ENTRY_BYTES. */
-struct sdfMatPacket_t {
-    u32 pad00;             /* 0x00 */
-    u32 ambient;             /* 0x04 */
-    u32 diffuse;             /* 0x08 */
-    u32 multiTexDiffuse;    /* 0x0C: packed color applied by the secondary draw state */
-    u32 specular; /* 0x10: copied from the owning asset, or forced to zero. */
-    u32 refmapColor;             /* 0x14 */
-    u32 pad18;             /* 0x18 */
-    f32 constant;             /* 0x1C */
-    u32 alphaState;        /* 0x20: packed GS ALPHA_2 state emitted by the VU transfer builder */
-    u32 multiTexMethod;     /* 0x24: secondary packet mode copied from SdfAsset */
-    f32 y;                 /* 0x28 */
-    f32 x;                 /* 0x2C */
-    u8 pad30[8];           /* 0x30 */
-    u64 tex1Data;          /* 0x38 */
-    u64 tex0Data;
-    u64 clampData;
-    u64 mtexTex1Data;      /* 0x50 */
-    u64 mtexTex0Data;
-    u64 mtexClampData;
-    /* sdfMatSetUvwParm writes one transform per texture: a 2x2 then an offset. */
-    sdfMatTexTm_t texTm;   /* 0x68 */
-    sdfMatTexTm_t mtexTexTm;
-    u32 vifItopCommand;    /* 0x98: VIF ITOP with immediate 0xC */
-    u32 vifMscalCommand;   /* 0x9C: VIF MSCAL with microprogram index zero */
-};
-
-union sdfMatUvwParm_t;
-
-/* Optional packed or five-float state block owned by an SdfAsset. */
-union sdfMatUvwParm_t {
-    struct {
-        u64 unk0;
-        u64 unk8;
-        u32 unk10;
-        u32 unk14;
-    } packed;
-    struct {
-        f32 values[5];
-        u32 unk14;
-    } scalar;
-    /* Named view of scalar.values; the last word remains opaque. */
-    struct {
-        f32 centerOffsetX;
-        f32 centerOffsetY;
-        f32 basisScaleX;
-        f32 basisScaleY;
-        f32 rotationInput;
-        u32 unk14;
-    } transformInputs;
-};
 
 struct sdfMemHandle_t;
 
@@ -668,28 +592,10 @@ struct effPCPHamaCardSphere_tag {
 
 struct sdfDrawTag_t;
 
-struct sdfGrOt_t;
-
-/* Draw-surface pool entry (0x20); the SDK initializes and flushes this owner. */
-struct sdfGrOt_t {
-    struct sdfGrOt_t *next; /* 0x00 */
-    sdfDrawTag_t *tagHead;     /* 0x04 */
-    sdfDrawTag_t *tagTail;     /* 0x08 */
-    u32 noSortTag;
-    void (*regFunc)(struct sdfGrOt_t *, sdfDrawTag_t *);          /* 0x10 */
-    s32 (*callbackFunc)(struct sdfGrOt_t *, s32, sdfDrawTag_t *); /* 0x14 */
-    u32 data;
-    u32 pad;
-};
 
 struct TMX_HEADER_t;
 
 extern void *effPkt3DPrimMakePoly(effDebugPolyParams_t *aParm);
-
-/* Four ordered 32-bit words in the shared effect random-number state. */
-struct effRandState_t {
-    u32 words[4];
-};
 
 extern effRandState_t dds3EffectBase[];
 void dds3EffectPartDelete(effPartHandle_t *hEffPart);
@@ -720,12 +626,10 @@ extern sdfGrOt_t *effPCPScatterSurfaceByPool[];
 extern u32 effPCPScatterTexcoords[];
 extern u32 effPCPScatterParams[];
 extern u8 effScatterTriangleIndices[];
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 void *sdfChipAllocDirect(s32 aSize);
-void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Apply the primary VU0 matrix bank vf28-vf31 to basis vectors vf24-vf27,
  * then replace vf28-vf31 with the four transformed vectors. */
@@ -737,21 +641,14 @@ extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
 extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
                            s32 (*aAllocator)(s32));
 
-struct sdfMat_t *sdfMatNew(void);
-void sdfDrawTagInit(struct sdfDrawTag_t *a);
 
 /* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
 void MultMatrixRevNoArg(void);
 
 /* Queue an asset owner for the deferred SdfAsset release callback. */
-void sdfMatFreeDelayed(struct sdfMat_t *aMat);
 void sdfChipFreeDirect(void *aPtr);
-void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
-u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 
 /* Store the primary or secondary texture owner and mark its draw state dirty. */
-void sdfMatSetTex(struct sdfMat_t *aMat, struct sdfTexHandle_t *aTex);
-void sdfMatSetConstant(struct sdfMat_t *aMat, f32 aRatio);
 
 /* Acquire a texture from a serialized texture-file header. */
 

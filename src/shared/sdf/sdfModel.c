@@ -51,16 +51,6 @@ extern void sdfModelMakeLocalTm(sdfModelNode_t *aNode);
 extern sdfModelRootNode_t *sdfModelRootNew(void);
 extern void sdfModelAllocNodeList(sdfModelRootNode_t *aRoot, s32 aLeng);
 
-/* The shaped packet's header quadwords: the cnt tag, the two blend weights
- * VU1 reads and the UNPACK that follows them. */
-typedef struct QWORD_ALIGNED
-{
-    sdfDmaTag_t dmatag;
-    f32 weight[2];
-    u32 code0;
-    u32 code1;
-} sdfModelShapedHeader_t;
-
 /* One frame's 128-byte VU1 transform packet. The 4-aligned element type is
  * what gives retail's runtime 8-byte-alignment dispatch over the copy. */
 /* sdfModelCopyStat below keeps its stride as (frame << 7) rather than a
