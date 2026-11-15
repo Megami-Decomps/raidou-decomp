@@ -124,7 +124,7 @@ u32 evtCheckSelectionState(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_0010DC38", evtUpdateSelectionStateInterpolation);
+INCLUDE_ASM(const s32, "code_r1_0010D1B8", evtUpdateSelectionStateInterpolation);
 
 void evtDestroySelectionState(void) {
     evtSelStateDestroy();
@@ -139,15 +139,15 @@ void evtSelStateDestroy(void) {
         SDF_VU0_STOREVECTOR(sdfViewShakeVector);
     }
 }
-INCLUDE_SDATA(const s32, "code_0010DC38", dds3Data40);
+INCLUDE_SDATA(const s32, "code_r1_0010D1B8", dds3Data40);
 
-INCLUDE_SDATA(const s32, "code_0010DC38", dds3Data41);
+INCLUDE_SDATA(const s32, "code_r1_0010D1B8", dds3Data41);
 
-INCLUDE_SDATA(const s32, "code_0010DC38", dds3Data42);
+INCLUDE_SDATA(const s32, "code_r1_0010D1B8", dds3Data42);
 
-INCLUDE_SDATA(const s32, "code_0010DC38", dds3Data43);
+INCLUDE_SDATA(const s32, "code_r1_0010D1B8", dds3Data43);
 
-INCLUDE_SDATA(const s32, "code_0010DC38", dds3Data44);
+INCLUDE_SDATA(const s32, "code_r1_0010D1B8", dds3Data44);
 
-INCLUDE_SDATA(const s32, "code_0010DC38", dds3Data45);
+INCLUDE_SDATA(const s32, "code_r1_0010D1B8", dds3Data45);
 

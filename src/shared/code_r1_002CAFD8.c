@@ -694,13 +694,13 @@ void itfSetGridEntryQuantizedAndRefresh(EffectSlotSet *resource, s32 resourceInd
     effInitializeSlotWorkFromDescription(resource, resourceIndex, record);
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", itfGridSetQuantizedBounds);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfGridSetQuantizedBounds);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", itfGridSetBounds);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfGridSetBounds);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", itfGridCopyEntryQuad);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfGridCopyEntryQuad);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpLeaf34);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf34);
 
 EffSlotPhaseStep itfGridApplySqrtBoundsAndColorScale(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
     GridAngleTable *table;
@@ -908,7 +908,7 @@ EffSlotPhaseStep itfGridApplyThresholdBoundsAndAlpha(BdWork *rectangle, BdWork *
     return EFF_SLOT_PHASE_ONE / table->divisor;
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", itfUpdateAngleAndGetCycleStep);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfUpdateAngleAndGetCycleStep);
 
 /* Blend each saved corner color toward the table's target color. */
 EffSlotPhaseStep itfGridInterpolateCornerColorsToTarget(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
@@ -1032,21 +1032,21 @@ EffSlotPhaseStep itfGridApplyLinearBoundsAndColorScale(BdWork *rectangle, BdWork
     return EFF_SLOT_PHASE_ONE / table->divisor;
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpCallMemset);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpCallMemset);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpLeaf35);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf35);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpLeaf36);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf36);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpLeaf37);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf37);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpLeaf38);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf38);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpLeaf39);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf39);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpDrawTriGSub);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawTriGSub);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpDrawSetup3DView);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawSetup3DView);
 
 void cmpDrawSpriteFlag(u8 id, s32 flag, s32 ot)
 {
@@ -1071,7 +1071,7 @@ void cmpDrawSpriteFlag(u8 id, s32 flag, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpLeaf40);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf40);
 
 void cmpDrawSprite(s32 id, s32 flag, s32 ot)
 {
@@ -1096,7 +1096,7 @@ void cmpDrawSprite(s32 id, s32 flag, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", fclDrawPanelSprite);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", fclDrawPanelSprite);
 
 void cmpDrawSprite2(s32 id, s32 flag, s32 ot)
 {
@@ -1121,7 +1121,7 @@ void cmpDrawSprite2(s32 id, s32 flag, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", fclDrawPanelSprite2);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", fclDrawPanelSprite2);
 
 void cmpDrawSpriteIndexed(s32 id, s32 ot)
 {
@@ -1161,7 +1161,7 @@ void cmpDrawSpriteIndexed2(s32 id, s32 ot)
     otp->regFunc(otp, tag);
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpLeaf41);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf41);
 
 void uiDrawUniformRgbRange(const u32 *xs, const u32 *ys, u32 z, u32 color, u32 ot)
 {
@@ -1210,13 +1210,13 @@ void cmpDrawBoxSolid(s32 a, s32 b, s32 c, s32 d, s32 e, s32 color, s32 g, s32 h)
     cmpDrawBoxG(a, b, c, d, e, colors, g, h);
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpDrawBoxF);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawBoxF);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpDrawBoxG);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawBoxG);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpDrawBoxGDefault);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpDrawBoxGDefault);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpCallDrawPanelEffCell);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpCallDrawPanelEffCell);
 
 void cmpDrawPanelEffCell(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h)
 {
@@ -1296,9 +1296,9 @@ void cmpDraw3DPoly(const f32 *first, const f32 *second, const f32 *third,
     surface->regFunc(surface, list);
 }
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpCallGrAllocPacketBuff);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpCallGrAllocPacketBuff);
 
-INCLUDE_ASM(const s32, "code_002CAFD8", cmpCallGrAllocPacketBuff2);
+INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpCallGrAllocPacketBuff2);
 
 void uiDrawTexturedSurfaceAtFarDepth(s32 surface) {
     sdfSubmitGsTestOneRegisterPacket(0x30000, surface);

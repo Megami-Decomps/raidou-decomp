@@ -346,4 +346,4 @@ MenuListNode *mnuScrollListToEnd(MenuList *list) {
     return list->cursor;
 }
 
-INCLUDE_ASM(const s32, "code_0034CE48", mnuScrollListToPreviousPage);
+INCLUDE_ASM(const s32, "code_r1_0034CE48", mnuScrollListToPreviousPage);

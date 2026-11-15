@@ -158,9 +158,9 @@ void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source) {
     owner->model = model;
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", effCallMotionSeek);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effCallMotionSeek);
 
-INCLUDE_ASM(const s32, "code_0023C400", effCallSRAnimation2);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effCallSRAnimation2);
 
 /* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
 void effApplyModelPrimaryVector(EffModelOwner *owner, const f32 *position) {
@@ -190,7 +190,7 @@ void effApplyScaledModelTertiaryVector(EffModelOwner *owner, float scale) {
 void effLeaf350(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", effFunc13);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effFunc13);
 
 void effMarkFloorModelForDestruction(EffModelOwner *work) {
     u32 flags = work->flags | EFF_MODEL_OWNER_FLAG_DESTROY_REQUESTED;
@@ -200,9 +200,9 @@ void effMarkFloorModelForDestruction(EffModelOwner *work) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", effFunc14);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effFunc14);
 
-INCLUDE_ASM(const s32, "code_0023C400", effRenderModelOwnerWithGsTests);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effRenderModelOwnerWithGsTests);
 
 void effMarkFloorModelForUpdate(EffModelOwner *work) {
     u32 previous = work->flags;
@@ -272,11 +272,11 @@ void effSweepFloorModelList(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", mdlPropagateObjectFlag);
+INCLUDE_ASM(const s32, "code_r1_002250F8", mdlPropagateObjectFlag);
 
-INCLUDE_ASM(const s32, "code_0023C400", mdlClearListedObjectFlag);
+INCLUDE_ASM(const s32, "code_r1_002250F8", mdlClearListedObjectFlag);
 
-INCLUDE_ASM(const s32, "code_0023C400", mdlSetListedObjectFlag);
+INCLUDE_ASM(const s32, "code_r1_002250F8", mdlSetListedObjectFlag);
 
 void mdlMarkAndProcessObjectNodes(void) {
     EffectObjectNode *node = effFloorModelListHead;
@@ -298,25 +298,25 @@ void mdlMarkAndProcessObjectNodes(void) {
     } while (node != NULL);
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", Create_effModel);
+INCLUDE_ASM(const s32, "code_r1_002250F8", Create_effModel);
 
-INCLUDE_ASM(const s32, "code_0023C400", Delete_effModel);
+INCLUDE_ASM(const s32, "code_r1_002250F8", Delete_effModel);
 
-INCLUDE_ASM(const s32, "code_0023C400", Copy_effModel);
+INCLUDE_ASM(const s32, "code_r1_002250F8", Copy_effModel);
 
-INCLUDE_ASM(const s32, "code_0023C400", ResourceCopy_effModel);
+INCLUDE_ASM(const s32, "code_r1_002250F8", ResourceCopy_effModel);
 
-INCLUDE_ASM(const s32, "code_0023C400", effCallMotionSeek2);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effCallMotionSeek2);
 
-INCLUDE_ASM(const s32, "code_0023C400", effCallSRAnimation3);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effCallSRAnimation3);
 
-INCLUDE_ASM(const s32, "code_0023C400", effLeaf351);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effLeaf351);
 
-INCLUDE_ASM(const s32, "code_0023C400", effLeaf352);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effLeaf352);
 
-INCLUDE_ASM(const s32, "code_0023C400", effLeaf353);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effLeaf353);
 
-INCLUDE_ASM(const s32, "code_0023C400", effCallSetScale);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effCallSetScale);
 
 /* Create an empty owner, or load its model and per-record queues from a file job. */
 EffResourceOwner *Create_effHelper(FileJobPayload *source) {
@@ -409,9 +409,9 @@ void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0023C400", effReleaseReferenceHolder);
+INCLUDE_ASM(const s32, "code_r1_002250F8", effReleaseReferenceHolder);
 
-INCLUDE_ASM(const s32, "code_0023C400", Draw_effHelper);
+INCLUDE_ASM(const s32, "code_r1_002250F8", Draw_effHelper);
 
 /* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
 void effLoadModelPrimaryVector(EffResourceOwner *work, const f32 *position) {
@@ -692,17 +692,17 @@ sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdf
     return sdfGetOrCreateTextureForReference(target, set->handles[sample->segment]);
 }
 
-INCLUDE_RODATA(const s32, "code_0023C400", effStrEffFloorModelDelete);
+INCLUDE_RODATA(const s32, "code_r1_002250F8", effStrEffFloorModelDelete);
 
-INCLUDE_RODATA(const s32, "code_0023C400", Draw_effHelperTable);
+INCLUDE_RODATA(const s32, "code_r1_002250F8", Draw_effHelperTable);
 
-INCLUDE_SDATA(const s32, "code_0023C400", effFloorModelListHead);
+INCLUDE_SDATA(const s32, "code_r1_002250F8", effFloorModelListHead);
 
-INCLUDE_SDATA(const s32, "code_0023C400", effSharedTextureReferenceCount);
+INCLUDE_SDATA(const s32, "code_r1_002250F8", effSharedTextureReferenceCount);
 
-INCLUDE_SDATA(const s32, "code_0023C400", sdfGetOrCreateTextureForReferenceData);
+INCLUDE_SDATA(const s32, "code_r1_002250F8", sdfGetOrCreateTextureForReferenceData);
 
-INCLUDE_SDATA(const s32, "code_0023C400", sdfGetOrCreateTextureForReferenceData2);
+INCLUDE_SDATA(const s32, "code_r1_002250F8", sdfGetOrCreateTextureForReferenceData2);
 
-INCLUDE_SDATA(const s32, "code_0023C400", sdfGetOrCreateTextureForReferenceData3);
+INCLUDE_SDATA(const s32, "code_r1_002250F8", sdfGetOrCreateTextureForReferenceData3);
 

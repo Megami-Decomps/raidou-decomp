@@ -1,5 +1,4 @@
 #include "common.h"
-#include "dds3KernelCore.h"
 #include "itfMisc.h"
 
 #ifndef VERSION_DDS1
@@ -10,7 +9,6 @@
 #include "scr.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/dds3_task_state_query.h"
 #include "dds/itf.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
@@ -48,7 +46,6 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-/* Return the scheduler state, mapping unregistered or invalid states to DETACHED. */
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -107,9 +104,9 @@ enum {
 
 #define ITF_LINES_PRIMITIVE_BITS 0x49
 
-extern dds3ProcessID_t *itfFontTestScriptTask;
-extern sdfTexHandle_t *itfBackgroundSpriteTexture;
-void itfReleaseBackgroundSpriteTexture(void);
+extern s32 itfScanEncodedTextControls(FrFontCtx *args);
+s32 itfScanEncodedTextControls(FrFontCtx *stream);
+s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub);
 
 struct EffSpriteUV;
 
@@ -117,38 +114,25 @@ struct sdfTexHandle_t;
 
 union EffSpriteColor;
 
-/* Draw only when a texture is present; native X/Y extent scaling differs. */
-void itfDrawBackgroundSprite(void);
-extern s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task);
-s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task);
 
-/* Drop the held texture reference without clearing the global. */
-void itfReleaseBackgroundSpriteTexture(void) {
-    sdfTexReleaseReference(itfBackgroundSpriteTexture);
+INCLUDE_ASM(const s32, "code_r1_001814F0", frLeaf3);
+
+INCLUDE_ASM(const s32, "code_r1_001814F0", itfScanEncodedTextControls);
+
+s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub) {
+    FrFontCtx args;
+
+    args.x = 0;
+    args.y = 0;
+    args.z = 0;
+    args.fontIndex = 0;
+    args.firstOption = 0;
+    args.secondOption = 0;
+    args.contextEncodedByte = 0;
+    args.encodedText = encodedText;
+    args.glyphChain = sub;
+    args.encodedTextOffset = 0;
+    args.pendingCreate = 1;
+    args.pendingPosition = 1;
+    return itfScanEncodedTextControls(&args);
 }
-
-INCLUDE_ASM(const s32, "code_00183B00", mjnFunc);
-
-INCLUDE_ASM(const s32, "code_00183B00", M_InitScene);
-
-INCLUDE_ASM(const s32, "code_00183B00", mjnDeleteScene);
-
-INCLUDE_ASM(const s32, "code_00183B00", mjnCallGetProcessStat);
-
-/* Draw first, then report all bits set only for a task awaiting destruction. */
-s32 itfDrawBackgroundAndGetTaskReadyMask(dds3ProcessID_t *task) {
-    dds3TaskState_t taskState;
-    u32 readyMask;
-
-    itfDrawBackgroundSprite();
-    taskState = dds3GetProcessStat(itfFontTestScriptTask);
-    readyMask = 0xffffffff;
-    if (taskState != DDS3_TASK_DESTROY_PENDING) {
-        readyMask = 0;
-    }
-    return readyMask;
-}
-INCLUDE_SDATA(const s32, "code_00183B00", sdfFileSeekWork2);
-
-INCLUDE_SDATA(const s32, "code_00183B00", itfFontTestScriptTask);
-

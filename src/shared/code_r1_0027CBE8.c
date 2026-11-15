@@ -50,5 +50,5 @@ s32 GetIntervalRand(s32 lower, s32 upper) {
     return (s32)GetRand(0xFFFF) % lo + hi;
 }
 
-INCLUDE_SDATA(const s32, "code_0027CBE8", GetRandData);
+INCLUDE_SDATA(const s32, "code_r1_0027CBE8", GetRandData);
 

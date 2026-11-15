@@ -116,7 +116,7 @@ void mnuUpdateListScrollFlags(MenuList *list) {
     list->flags |= 2;
 }
 
-INCLUDE_ASM(const s32, "code_003BC198", mnuListAppendNode);
+INCLUDE_ASM(const s32, "code_r1_0034C270", mnuListAppendNode);
 
 s32 mnuListContainsFinalNode(MenuList *list) {
     MenuListNode *node = list->head;
@@ -310,15 +310,15 @@ MenuListNode *mnuRemoveListCursorNode(MenuList *list) {
     return list->cursor;
 }
 
-INCLUDE_ASM(const s32, "code_003BC198", mnuSetGridSpriteSlot);
+INCLUDE_ASM(const s32, "code_r1_0034C270", mnuSetGridSpriteSlot);
 
-INCLUDE_ASM(const s32, "code_003BC198", mnuWalkNodeList);
+INCLUDE_ASM(const s32, "code_r1_0034C270", mnuWalkNodeList);
 
-INCLUDE_ASM(const s32, "code_003BC198", mnuSeekListNode);
+INCLUDE_ASM(const s32, "code_r1_0034C270", mnuSeekListNode);
 
-INCLUDE_ASM(const s32, "code_003BC198", jmsLeaf17);
+INCLUDE_ASM(const s32, "code_r1_0034C270", jmsLeaf17);
 
-INCLUDE_ASM(const s32, "code_003BC198", jmsLeaf18);
+INCLUDE_ASM(const s32, "code_r1_0034C270", jmsLeaf18);
 
 /* Advance the visible head when a prior window offset can be reduced. */
 MenuListNode *mnuAdvanceListWindowStart(MenuList *list) {
