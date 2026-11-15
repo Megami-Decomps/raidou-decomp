@@ -9507,7 +9507,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0036BCE0	0x003E1A68	sdfCdStStart	no	yes	asm/raidou1/sdf/sdfCd.s	asm/raidou2/sdf/sdfCd.s	unique-reloc-hash
 0x0036BD90	0x003E1B18	sdfDevSignalPendingSemaphore	no	yes	asm/raidou1/sdf/sdfCd.s	asm/raidou2/sdf/sdfCd.s	unique-reloc-hash
 0x0036BDB8	0x003E1B40	sdfDevSeekDiscWithRequestGate	no	yes	asm/raidou1/sdf/sdfCd.s	asm/raidou2/sdf/sdfCd.s	unique-reloc-hash
-0x0036BE78	0x003E1C00	sdfDevReadDiscUntilComplete	no	yes	asm/raidou1/sdf/sdfCd.s	asm/raidou2/sdf/sdfCd.s	unique-reloc-hash
+0x0036BE78	0x003E1C00	sdfCdStRead	no	yes	asm/raidou1/sdf/sdfCd.s	asm/raidou2/sdf/sdfCd.s	unique-reloc-hash
 0x0036BF48	0x003E1CD0	sdfCdImageSearchFileDirect	no	yes	asm/raidou1/sdf/sdfCd.s	asm/raidou2/sdf/sdfCd.s	unique-reloc-hash
 0x0036C0F0	0x003E1E78	sdfCdImageSearchFile	no	yes	asm/raidou1/sdf/sdfCd.s	asm/raidou2/sdf/sdfCd.s	unique-reloc-hash
 0x0036C2A8	0x003E2030	sdfDevOpenDiscFileAndGetSize	no	yes	asm/raidou1/sdf/sdfCd.s	asm/raidou2/sdf/sdfCd.s	unique-reloc-hash
@@ -9536,7 +9536,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0036CC68	0x003E29F8	sdfFileSetHostRoot	no	yes	asm/raidou1/sdf/sdfFile.s	asm/raidou2/sdf/sdfFile.s	unique-reloc-hash
 0x0036CD00	0x003E2A90	sdfFileGetHostRoot	no	yes	asm/raidou1/sdf/sdfFile.s	asm/raidou2/sdf/sdfFile.s	masked-hash-in-gap
 0x0036CD10	0x003E2AA0	sdfFileSetDefaultSrc	no	yes	asm/raidou1/sdf/sdfFile.s	asm/raidou2/sdf/sdfFile.s	unique-reloc-hash
-0x0036CD28	0x003E2AB8	sdfLeaf27	no	yes	asm/raidou1/sdf/sdfFile.s	asm/raidou2/sdf/sdfFile.s	run-order-size
+0x0036CD28	0x003E2AB8	sdfFileCmdSetDefaultDevice	no	yes	asm/raidou1/sdf/sdfFile.s	asm/raidou2/sdf/sdfFile.s	run-order-size
 0x0036CD30	0x003E2AC0	sdfFileCmdAllocHandle	no	yes	asm/raidou1/sdf/sdfFile.s	asm/raidou2/sdf/sdfFile.s	unique-reloc-hash
 0x0036CE20	0x003E2BB0	sdfFileCmdUnlink	no	yes	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-reloc-hash
 0x0036CE98	0x003E2C28	sdfFileCmdDequeue	no	yes	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-reloc-hash
@@ -9544,7 +9544,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0036CFF0	0x003E2D80	sdfFileCmdFinish	no	yes	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-reloc-hash
 0x0036D040	0x003E2DD0	sdfFileCmdThread	no	yes	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-reloc-hash
 0x0036D738	0x003E34C8	sdfFileCmdMakeRealFileName	no	yes	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-reloc-hash
-0x0036D980	0x003E3710	sdfCdrom	no	no	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-masked-hash
+0x0036D980	0x003E3710	sdfFileCmdAnalyzeFileName	no	no	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-masked-hash
 0x0036DAE8	0x003E3878	sdfFileCmdNewHandle	no	yes	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-reloc-hash
 0x0036DB68	0x003E38F8	sdfFileCmdReadOpen	no	yes	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-reloc-hash
 0x0036DBD0	0x003E3960	sdfFileCmdWriteOpen	no	yes	asm/raidou1/sdf/sdfFileIO.s	asm/raidou2/sdf/sdfFileIO.s	unique-reloc-hash
@@ -9604,7 +9604,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x0036F470	0x003E5200	sdfRandomizeByTime	no	yes	asm/raidou1/sdf/sdfRand.s	asm/raidou2/sdf/sdfRand.s	unique-reloc-hash
 0x0036F518	0x003E52A8	sdfGetCdClock	no	yes	asm/raidou1/sdf/sdfRand.s	asm/raidou2/sdf/sdfRand.s	unique-reloc-hash
 0x0036F5F8	0x003E5388	sdfSndIopAlloc	no	yes	asm/raidou1/code_0036F5F8.s	asm/raidou2/code_003E5388.s	masked-hash-in-gap
-0x0036F610	0x003E53A0	sndTryDispatchQueuedCommand	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
+0x0036F610	0x003E53A0	sdfSndCmdTrans	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
 0x0036F698	0x003E5428	sdfSndCmdIFThread	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
 0x0036F6D0	0x003E5460	sdfSndInitCmdIF	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash
 0x0036F778	0x003E5508	sdfSndSendCmd	no	yes	asm/raidou1/sdf/sdfSound.s	asm/raidou2/sdf/sdfSound.s	unique-reloc-hash

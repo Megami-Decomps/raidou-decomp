@@ -331,7 +331,60 @@ char *sdfFileCmdMakeRealFileName(const char *aSrcName, s32 aDeviceType) {
     return result;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfCdrom);
+extern s32 sdfData4;
+
+/* NON_MATCHING: two instructions of the /smovie/ and movie path memcmp calls are scheduled differently (4 words) */
+#ifdef NON_MATCHING
+s32 sdfFileCmdAnalyzeFileName(const char *aFileName, char **aRealNamePtr)
+{
+    s32 device;
+    s32 prefixLength;
+    const char *suffix;
+    const char *name;
+
+    if (strchr(aFileName, ':') != NULL) {
+        if (memcmp(aFileName, sdfFileCmdCdromPrefix, 7) == 0) {
+            suffix = aFileName + 7;
+            if (sdfData4 != 0) {
+                if (memcmp(suffix, "/smovie/", 7) == 0 || memcmp(suffix, "/smovie2/", 7) == 0) {
+                    device = 3;
+                    prefixLength = 0;
+                } else {
+                    device = 0;
+                    prefixLength = 7;
+                }
+            } else {
+                if (memcmp(suffix, sdfFileCmdMoviePath, 7) == 0 || memcmp(suffix, "/movie2/", 7) == 0) {
+                    device = 3;
+                    prefixLength = 0;
+                } else {
+                    device = 0;
+                    prefixLength = 7;
+                }
+            }
+        } else if (memcmp(aFileName, sdfFileCmdHostPrefix, 6) == 0) {
+            device = 1;
+            prefixLength = 6;
+        } else if (memcmp(aFileName, sdfFileCmdPfsPrefix, 5) == 0) {
+            device = 2;
+            prefixLength = 5;
+        } else if (memcmp(aFileName, sdfFileCmdCdimgPrefix, 6) == 0) {
+            device = 3;
+            prefixLength = 6;
+        } else {
+            return -1;
+        }
+        name = aFileName + prefixLength;
+    } else {
+        device = sdfFileCmdDefaultDevice;
+        name = aFileName;
+    }
+    *aRealNamePtr = sdfFileCmdMakeRealFileName(name, device);
+    return device;
+}
+#else
+INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCmdAnalyzeFileName);
+#endif
 
 /* Allocate a request state and retain the callback's opaque context word. */
 sdfFileCmdHandle_t *sdfFileCmdNewHandle(void *resource, s32 workerIndex, s32 operation,

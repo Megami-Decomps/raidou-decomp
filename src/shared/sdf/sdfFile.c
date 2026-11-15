@@ -333,7 +333,12 @@ void sdfFileSetDefaultSrc(s32 aType)
     sdfFileCmdSetDefaultDevice(aType);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfFile", sdfLeaf27);
+extern u8 sdfFileCmdDefaultDevice;
+
+void sdfFileCmdSetDefaultDevice(s32 aDevice)
+{
+    sdfFileCmdDefaultDevice = aDevice;
+}
 
 /* Queue a request on the global list and on its worker's list; wake the worker when its list was empty. */
 void sdfFileCmdAllocHandle(sdfFileCmdHandle_t *state) {

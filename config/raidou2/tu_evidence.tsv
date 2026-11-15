@@ -356,8 +356,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 003E4980	003E5058	sdf/sdfQuat	c	smt3:names:13 of 14	sdf/sdfQuat
 003E50A0	003E5158	dds3Randomize_0036F310	asm	none	
 003E5190	003E52A8	sdf/sdfRand	c	smt3:names:3 of 3	sdf/sdfRand
-003E5388	003E5388	code_003E5388	asm	none	
-003E53A0	003E6A60	sdf/sdfSound	c	smt3:names:32+smt3:map:14 of 60	sdf/sdfSound
+003E5388	003E6A60	sdf/sdfSound	c	smt3:names:32+smt3:map:14 of 60+gap code_003E5388 (sdfSndIopAlloc)	sdf/sdfSound
 003E6AF8	003E7808	code_003E6AF8	asm	none	
 003E7830	003E8408	sdf/sdfSound_00371BF0	c	smt3:names:7 literal-cores:2 of 7 part	sdf/sdfSound
 003E84C0	003E8780	sdf/sdfDevFile	c	smt3:map:6+smt3:names:3 of 9	sdf/sdfDevFile

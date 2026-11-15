@@ -112,27 +112,25 @@ typedef struct sndIopBuffer_t {
     u32 iopAddress;
 } sndIopBuffer_t;
 
-typedef struct {
-    u8 values[24];
-    u8 pad18[8];
-} sndMidiStateGroup_t;
+#ifdef VERSION_RAIDOU1
+#define SND_SLOT_COUNT 30
+#else
+#define SND_SLOT_COUNT 27
+#endif
 
 typedef struct sndMergedWork_t {
     s32 header;
     s32 bufferCount;
     u32 iopBufferAddress;
     u32 iopBufferBytes;
-    sndChannel_t channels[16];
-    sndIopBuffer_t buffers[16];
-    p2sdLoadEntry_t slots[7];
-    void *eeWorkAddress;
+    sndChannel_t channels[32];
+    sndIopBuffer_t buffers[32];
+    p2sdLoadEntry_t slots[SND_SLOT_COUNT];
+    u32 eeWorkAddress;
     u32 eeWorkByteCount;
-    u32 opaque1D0;
-    u32 opaque1D4;
-    u32 opaque1D8;
-    u32 opaque1DC;
-    u8 controlData[7][0x80];
-    sndMidiStateGroup_t stateGroups[2];
+    u32 opaque408;
+    u32 opaque40C;
+    u8 opaque410[0x3A8];
 } sndMergedWork_t;
 
 extern sndMergedWork_t sdfSndWork FAKEMATCH_ASM_NAME("sdfSndMap");

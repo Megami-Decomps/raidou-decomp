@@ -10983,7 +10983,7 @@
 0x0036BCE0	sdfCdStStart	inferred	SMT3HD name via SLUS_209.11 0x002BD6A0, reloc-identical; map-agrees
 0x0036BD90	sdfDevSignalPendingSemaphore	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002E4DF8, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0036BDB8	sdfDevSeekDiscWithRequestGate	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002E4E20, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0036BE78	sdfDevReadDiscUntilComplete	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2e4ee0 sim 1.000 margin 0.58 pair
+0x0036BE78	sdfCdStRead	inferred	SMT3HD name via SLUS_209.11 0x002BD750, matched C carried from SMT3; replaces sdfDevReadDiscUntilComplete: method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2e4ee0 sim 1.000 margin 0.58 pair
 0x0036BF48	sdfCdImageSearchFileDirect	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x2bd838 sim 0.912 margin 0.46 pair
 0x0036C0F0	sdfCdImageSearchFile	inferred	SMT3HD name via SLUS_209.11 0x002BD9C8, reloc-identical; map-agrees
 0x0036C2A8	sdfDevOpenDiscFileAndGetSize	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2e5310 sim 1.000 margin 0.64 pair
@@ -11012,7 +11012,7 @@
 0x0036CC68	sdfFileSetHostRoot	inferred	SMT3HD name via SLUS_209.11 0x002BE4F0, reloc-identical; map-agrees
 0x0036CD00	sdfFileGetHostRoot	inferred	SMT3HD name via SLUS_209.11 0x002BE588, shared-hash-in-run; map-agrees
 0x0036CD10	sdfFileSetDefaultSrc	inferred	SMT3HD name via SLUS_209.11 0x002BE598, reloc-identical; map-agrees
-0x0036CD28	sdfLeaf27	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfFile; no named callee, caller or string
+0x0036CD28	sdfFileCmdSetDefaultDevice	inferred	SMT3HD name via SLUS_209.11 0x002BE5B0, matched C carried from SMT3; replaces sdfLeaf27: method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfFile; no named callee, caller or string
 0x0036CD30	sdfFileCmdAllocHandle	inferred	SMT3HD name via SLUS_209.11 0x002BE5B8, reloc-identical; map-agrees
 0x0036CE20	sdfFileCmdUnlink	inferred	SMT3HD name via SLUS_209.11 0x002BE6A8, reloc-identical; map-agrees
 0x0036CE98	sdfFileCmdDequeue	inferred	SMT3HD name via SLUS_209.11 0x002BE720, reloc-identical; map-agrees
@@ -11021,7 +11021,7 @@
 0x0036D040	sdfFileCmdThread	inferred	SMT3HD name via SLUS_209.11 0x002BE8C8, reloc-identical; map-agrees
 0x0036D4C8	sdfFileCdImageCmdThread	inferred	method=smt3-alias; p=0.90 (n=D_003E3258); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x0036D738	sdfFileCmdMakeRealFileName	inferred	SMT3HD name via SLUS_209.11 0x002BEFC0, reloc-identical; map-agrees
-0x0036D980	sdfCdrom	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit sdf/sdfFileIO; string 'cdrom0:'
+0x0036D980	sdfFileCmdAnalyzeFileName	inferred	SMT3HD name via SLUS_209.11 0x002BF208, C carried from SMT3; replaces sdfCdrom: method=derived-string; p=na; tier=D; source=derived; evidence=unit sdf/sdfFileIO; string 'cdrom0:'
 0x0036DAE8	sdfFileCmdNewHandle	inferred	SMT3HD name via SLUS_209.11 0x002BF328, reloc-identical; map-agrees
 0x0036DB68	sdfFileCmdReadOpen	inferred	SMT3HD name via SLUS_209.11 0x002BF3A8, reloc-identical; map-agrees
 0x0036DBD0	sdfFileCmdWriteOpen	inferred	SMT3HD name via SLUS_209.11 0x002BF410, reloc-identical; map-agrees
@@ -11082,7 +11082,7 @@
 0x0036F470	sdfRandomizeByTime	inferred	SMT3HD name via SLUS_209.11 0x002C0D08, reloc-identical; map-agrees
 0x0036F518	sdfGetCdClock	inferred	SMT3HD name via SLUS_209.11 0x002C0DB0, reloc-identical; map-agrees
 0x0036F5F8	sdfSndIopAlloc	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002E8628, masked-words-identical (callee map pair); dds-decomp: SMT3HD name
-0x0036F610	sndTryDispatchQueuedCommand	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2e8640 sim 1.000 margin 0.68 pair
+0x0036F610	sdfSndCmdTrans	inferred	SMT3HD name via SLUS_209.11 0x002C0F28, matched C carried from SMT3; replaces sndTryDispatchQueuedCommand: method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2e8640 sim 1.000 margin 0.68 pair
 0x0036F698	sdfSndCmdIFThread	inferred	SMT3HD name via SLUS_209.11 0x002C0FC0, reloc-identical; map-agrees
 0x0036F6D0	sdfSndInitCmdIF	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x2c0ff8 sim 0.822 margin 0.23 pair
 0x0036F778	sdfSndSendCmd	inferred	SMT3HD name via SLUS_209.11 0x002C10E8, reloc-identical; map-agrees

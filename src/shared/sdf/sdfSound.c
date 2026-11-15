@@ -124,22 +124,25 @@ typedef struct {
     u8 pad18[8];
 } sndMidiStateGroup_t;
 
+#ifdef VERSION_RAIDOU1
+#define SND_SLOT_COUNT 30
+#else
+#define SND_SLOT_COUNT 27
+#endif
+
 typedef struct sndMergedWork_t {
     s32 header;
     s32 bufferCount;
     u32 iopBufferAddress;
     u32 iopBufferBytes;
-    sndChannel_t channels[16];
-    sndIopBuffer_t buffers[16];
-    p2sdLoadEntry_t slots[7];
-    void *eeWorkAddress;
+    sndChannel_t channels[32];
+    sndIopBuffer_t buffers[32];
+    p2sdLoadEntry_t slots[SND_SLOT_COUNT];
+    u32 eeWorkAddress;
     u32 eeWorkByteCount;
-    u32 opaque1D0;
-    u32 opaque1D4;
-    u32 opaque1D8;
-    u32 opaque1DC;
-    u8 controlData[7][0x80];
-    sndMidiStateGroup_t stateGroups[2];
+    u32 opaque408;
+    u32 opaque40C;
+    u8 opaque410[0x3A8];
 } sndMergedWork_t;
 
 extern sndMergedWork_t sdfSndWork FAKEMATCH_ASM_NAME("sdfSndMap");
@@ -266,7 +269,30 @@ extern char sdfDmaTagNextName[8];
 extern char sdfDmaTagCntName[8];
 extern char sdfDmaTagRefeName[8];
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sndTryDispatchQueuedCommand);
+s32 sdfSndIopAlloc(s32 size)
+{
+    return sceSifAllocIopHeap(size);
+}
+
+s32 sdfSndCmdTrans(void)
+{
+    s32 current = (s16)sdfSndCmdIndex;
+    s32 tail = (s16)sdfSndCmdTailIndex;
+    sndRingPacket_t *packet;
+    s32 result;
+
+    if (current == tail) {
+        return 1;
+    }
+    packet = &sdfSndCmdPacketRing[current];
+    result = sceSifSendCmd(0, packet, ((u8 *)packet)[0xF] & 0xF0, NULL, NULL, 0);
+    current = (current + 1) & 0x1F;
+    if (result == 0) {
+        return 1;
+    }
+    sdfSndCmdIndex = current;
+    return 0;
+}
 
 void sdfSndCmdIFThread(void)
 {
@@ -280,7 +306,32 @@ void sdfSndCmdIFThread(void)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndInitCmdIF);
+extern sdfSndInitThreadParam_t sndCommandThreadParameters;
+extern u8 sndCommandThreadStack[];
+extern u8 sndRpcServerThreadStack[];
+extern s32 _gp;
+extern s32 CreateThread(sdfSndInitThreadParam_t *parameter);
+
+void sdfSndInitCmdIF(void)
+{
+    s32 threadId;
+
+    while (sceSifGetSreg(0x1F) == 0) {
+    }
+    sndCommandThreadParameters.entry = sdfSndCmdIFThread;
+    sndCommandThreadParameters.stack = sndCommandThreadStack;
+    sndCommandThreadParameters.stackSize = 0x1000;
+    sndCommandThreadParameters.priority = 0x42;
+    sndCommandThreadParameters.gp = &_gp;
+    sdfSndCmdIndex = 0;
+    sdfSndCmdTailIndex = 0;
+    threadId = CreateThread(&sndCommandThreadParameters);
+    sdfSndCmdBuf = threadId;
+    _StartThread(threadId, 0);
+    threadId = CreateThreadSimple(SifRpcServerThreadProc, sndRpcServerThreadStack, 0x1000, 0x43);
+    sdfSifRpcThreadId = threadId;
+    _StartThread(threadId, 0);
+}
 
 s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize) {
     s32 nextWriteIndex;
@@ -353,13 +404,115 @@ void sdfSndTransToIOP(s32 aIOPAddr, void *aEEAddr, s32 aSize)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndLoadIRXModules);
+extern u8 sdfHddValid;
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndVoiceMapInit);
+void sdfSndLoadIRXModules(void)
+{
+    sdfSceIoStat_t info;
+    char *module;
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndSeqMapInit);
+    sceSifLoadModule("cdrom0:\\SOUNDIRX\\LIBSD.IRX;1", 0, NULL);
+    sceSifLoadModule("cdrom0:\\SOUNDIRX\\SDRDRV.IRX;1", 0, NULL);
+    sceSifLoadModule("cdrom0:\\SOUNDIRX\\MODHSYN.IRX;1", 0, NULL);
+    sceSifLoadModule("cdrom0:\\SOUNDIRX\\MODMIDI.IRX;1", 0, NULL);
+    sceSifLoadModule("cdrom0:\\SOUNDIRX\\MODMSIN.IRX;1", 0, NULL);
+    module = "cdrom0:\\USERIRX\\SDFSDMAN.IRX;1";
+    if (sdfHddValid != 0 &&
+        sceGetstat("pfs:/userirx/SDFSDMAN.IRX", &info) == 0 &&
+        (info.mode & 0xF000) == 0x2000) {
+        module = "pfs:/userirx/SDFSDMAN.IRX";
+    }
+    SdfIopFileRpc(module, 0, NULL, NULL);
+}
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSndInit);
+
+void sdfSndVoiceMapInit(char *aVoiceInfo, s32 aVoiceCount)
+{
+    p2sdLoadEntry_t *slot;
+    s32 address;
+    s32 emptyId;
+    s32 i;
+
+    sdfSndWork.header = aVoiceCount;
+    for (i = 0; i < 32; i++) {
+        sdfSndWork.channels[i].index = i;
+        sdfSndWork.channels[i].unk1 = 0x20;
+        sdfSndWork.channels[i].unk2 = 0;
+        sdfSndWork.channels[i].iopWorkAddress = 0;
+        sdfSndWork.channels[i].unk4 = 0;
+        sdfSndWork.channels[i].unkC = 0;
+    }
+    address = sdfSndIopAlloc(0x23600);
+    sdfSndWork.opaque408 = 0;
+    emptyId = -1;
+    sdfSndWork.opaque40C = 0;
+    sdfSndWork.channels[0].iopWorkAddress = address;
+    slot = sdfSndWork.slots;
+    for (i = SND_SLOT_COUNT - 1; i >= 0; i--) {
+        slot->unk0 = emptyId;
+        slot->unk4 = 0;
+        slot->unk5 = 0;
+        slot++;
+    }
+}
+
+void sdfSndSeqMapInit(u32 *aSequenceInfo, s32 aSequenceCount)
+{
+    sndIopBuffer_t *buffer;
+    s32 total = 0;
+    s32 iopAddress;
+    s32 i;
+
+    sdfSndWork.bufferCount = aSequenceCount;
+    buffer = sdfSndWork.buffers;
+    i = 0;
+    do {
+        s32 size = (*aSequenceInfo++ + 0xF) & ~0xF;
+
+        i++;
+        buffer->size = size;
+        buffer++;
+        total += size;
+    } while (i != aSequenceCount);
+    while (i < 0x20) {
+        sdfSndWork.buffers[i].size = 0;
+        sdfSndWork.buffers[i].iopAddress = 0;
+        i++;
+    }
+    iopAddress = sdfSndIopAlloc(total);
+    i = 0;
+    do {
+        s32 size;
+
+        sdfSndWork.buffers[i].iopAddress = iopAddress;
+        size = sdfSndWork.buffers[i].size;
+        i++;
+        iopAddress += size;
+    } while (i != aSequenceCount);
+}
+
+extern s32 sdfSndIopWorkAddr;
+
+void sdfSndInit(char *aVoiceInfo, s32 aVoiceCount, char *aSequenceInfo, s32 aSequenceCount)
+{
+    s32 iopAddress;
+
+    sdfSndBurstReqMode = 1;
+    sdfSndLoadIRXModules();
+    sceSifInitIopHeap();
+    sdfSndInitCmdIF();
+    sdfSndWork.iopBufferAddress = sdfSndIopAlloc(0x4000);
+    sdfSndWork.iopBufferBytes = 0x4000;
+    sdfSndVoiceMapInit(aVoiceInfo, aVoiceCount);
+    sdfSndSeqMapInit((u32 *)aSequenceInfo, aSequenceCount);
+    iopAddress = sdfSndIopAlloc(sizeof(sndMergedWork_t));
+    sdfSndWork.eeWorkAddress = EE_ADDR(&sdfSndWork);
+    sdfSndWork.eeWorkByteCount = sizeof(sndMergedWork_t);
+    sdfSndIopWorkAddr = iopAddress;
+    sdfSndTransToIOP(iopAddress, &sdfSndWork, sizeof(sndMergedWork_t));
+    sdfSndSendSyncCmd(0, 0, &sdfSndIopWorkAddr, 4);
+    sdfSndBurstReqMode = 0;
+}
 
 /* Starts a track with the default 0x7f setting after preparing its identifier. */
 void p2sdPlayBGM(s32 MidiNo) {
@@ -427,7 +580,43 @@ u32 sdfSndLoadSQFile(s32 aSqChNum, char *aFilename) {
     return sdfSndSendSyncCmd(aSqChNum | 0x80, 0, aFilename, length);
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfSkil);
+typedef struct sndSkilEntry_t {
+    u16 id;
+    u16 unk2;
+    u32 unk4;
+} sndSkilEntry_t;
+
+sndSkilEntry_t *sdfLeaf35(void);
+
+void sdfSkil(s32 MidiNo)
+{
+    char text[0x40];
+    sndSkilEntry_t *entry;
+    s32 i;
+    s32 hi;
+
+    switch (p2sdLoadCheckMidi(MidiNo)) {
+    case 0:
+    case 2:
+        entry = sdfLeaf35();
+        for (i = 0; i < 29; i++) {
+            if (i == 11) {
+                printf("[skil]-------------\n");
+            }
+            printf("%02d : %04x0000\n", i, entry->id);
+            entry++;
+        }
+        hi = MidiNo >> 16;
+        if (MidiNo > 0x6FFFFFF) {
+            sprintf(text, "MIDI%04X.SMG %08x SKIL%02X", hi, MidiNo, (MidiNo - 0x7000000) >> 16);
+        } else {
+            sprintf(text, "MIDI%04X.SMG %08x", hi, MidiNo);
+        }
+        break;
+    case 1:
+        break;
+    }
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdPlaySE);
 

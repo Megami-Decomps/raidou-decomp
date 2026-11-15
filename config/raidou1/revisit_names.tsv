@@ -5788,8 +5788,8 @@
 0x0036B998	sdfDevSetPrintCB	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002E4A00, masked-words-identical (strict map pair); dds-decomp: SMT3HD name
 0x0036BD90	sdfDevSignalPendingSemaphore	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002E4DF8, masked-words-identical (strict map pair); dds-decomp: no provenance row
 0x0036BDB8	sdfDevSeekDiscWithRequestGate	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002E4E20, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0036CD28	sdfLeaf27	func	tier=D	derived-unit	na	unit sdf/sdfFile; no named callee, caller or string
-0x0036D980	sdfCdrom	func	tier=D	derived-string	na	unit sdf/sdfFileIO; string 'cdrom0:'
+0x0036CD28	sdfFileCmdSetDefaultDevice	func	tier=D	derived-unit	na	unit sdf/sdfFile; no named callee, caller or string
+0x0036D980	sdfFileCmdAnalyzeFileName	func	tier=D	derived-string	na	unit sdf/sdfFileIO; string 'cdrom0:'
 0x0036E160	sdfFirstInitSub	func	tier=D	derived-caller	na	unit code_0036E160, nearest named function sdfFileCmdStartThread; called by dds3FirstInit
 0x0036E1E0	sdfHddInitLabel	data	tier=D	derived-dominant	na	used by sdfHddInit (2 of 3 refs, 2 functions)
 0x0036E3C0	sdfLeaf28	func	tier=D	derived-unit	na	unit sdf/sdfDev9; no named callee, caller or string
@@ -19352,11 +19352,11 @@
 0x00360A08	sdfModelMake_2	func	tier=C	hd-both	0.71 (n=206)	Raidou HD sdfModel.sdfModelMake_2 score 4.4 flag R: next gap1/9 st1:gap r1+r2
 0x00361A78	sdfAssetCopyTextureState	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2daae0 sim 1.000 margin 0.37 pair
 0x0036BC48	sdfDevWaitForDisc	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e4cb0 sim 1.000 margin 0.51 pair
-0x0036BE78	sdfDevReadDiscUntilComplete	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e4ee0 sim 1.000 margin 0.58 pair
+0x0036BE78	sdfCdStRead	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e4ee0 sim 1.000 margin 0.58 pair
 0x0036C2A8	sdfDevOpenDiscFileAndGetSize	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e5310 sim 1.000 margin 0.64 pair
 0x0036C748	sdfInitDeviceSemaphores	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e57b8 sim 1.000 margin 0.41 pair
 0x0036E1F8	sdfHddInit	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x2bfa38 sim 0.632 margin 0.31 pair
-0x0036F610	sndTryDispatchQueuedCommand	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e8640 sim 1.000 margin 0.68 pair
+0x0036F610	sdfSndCmdTrans	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e8640 sim 1.000 margin 0.68 pair
 0x00370598	sndSendChannelControlCommand	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2e94b0 sim 1.000 margin 0.22 pair
 0x003705C8	sndSendChannelGroupCommand150	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2e9510 sim 1.000 margin 0.00 pair
 0x003705F8	sndSendChannelGroupCommand140	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2e9510 sim 1.000 margin 0.00 pair
