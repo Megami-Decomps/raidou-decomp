@@ -92,6 +92,12 @@ class Merge(unittest.TestCase):
         self.assertEqual(g.merge({R1: "x;\ny;\n", R2: "x;\nz;\ny;\n"}),
                          "x;\n#ifdef VERSION_RAIDOU2\nz;\n#endif\ny;\n")
 
+    def test_keeps_other_conditionals_whole(self):
+        a = "#ifdef NON_MATCHING\nx;\n#else\ny;\n#endif\nz;\n"
+        b = "#ifndef DDS\n#define DDS\n#endif\nz;\n"
+        m = g.merge({R1: a, R2: b})
+        self.assertEqual((g.view(m, R1), g.view(m, R2)), (a, b))
+
     def test_identical(self):
         self.assertEqual(g.merge({R1: "x;\n", R2: "x;\n"}), "x;\n")
 

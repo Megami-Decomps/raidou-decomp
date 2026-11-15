@@ -115,6 +115,45 @@ def _trim(lines):
     return lines[:i], lines[i:j], lines[j:]
 
 
+def _depth(lines):
+    """Conditionals lines leave open, or None when they close, continue or #else an outer
+    one: a guard around them would split a #if from its #else or #endif."""
+    depth = 0
+    for line in lines:
+        m = DIRECTIVE.match(line)
+        if not m:
+            continue
+        if m.group(1) in ("if", "ifdef", "ifndef"):
+            depth += 1
+        elif depth == 0:
+            return None
+        elif m.group(1) == "endif":
+            depth -= 1
+    return depth
+
+
+def _hunks(a, b):
+    """difflib opcodes, with differing runs widened over equal lines until each side of
+    every run is balanced."""
+    ops = [list(op) for op in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes()]
+    i = 0
+    while i < len(ops):
+        op, i1, i2, j1, j2 = ops[i]
+        depths = (_depth(a[i1:i2]), _depth(b[j1:j2]))
+        if op == "equal" or depths == (0, 0):
+            i += 1
+            continue
+        # Widen backwards when a side closes or continues an outer conditional.
+        back = None in depths
+        lo, hi = (max(i - 1, 0), i + 1) if back else (i, min(i + 2, len(ops)))
+        if (lo, hi) == (i, i + 1):
+            raise ValueError("cannot balance a differing run")
+        part = ops[lo:hi]
+        ops[lo:hi] = [["replace", part[0][1], part[-1][2], part[0][3], part[-1][4]]]
+        i = lo
+    return ops
+
+
 def merge(views):
     """One text whose view for each version is views[version]. Two versions."""
     if len(views) != 2 or set(views) != set(VERSIONS):
@@ -125,7 +164,7 @@ def merge(views):
         if ls and not ls[-1].endswith("\n"):
             ls[-1] += "\n"
     out = []
-    for op, i1, i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
+    for op, i1, i2, j1, j2 in _hunks(a, b):
         if op == "equal":
             out += a[i1:i2]
             continue
