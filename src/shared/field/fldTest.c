@@ -21,6 +21,7 @@ typedef struct {
 } fldRunMapGrid_t;
 
 #include "sdk_libc.h"
+#include "effPart.h"
 
 /* One loadable field effect: the resource handle trio the loader fills, then
  * the live effect or part handle and the placement the task applies. */
@@ -57,12 +58,6 @@ typedef struct {
 typedef struct {
     s16 v[10];
 } fldTamaSeVol_t;
-
-typedef struct
-{
-    u16 type;
-    void *pHandle;
-} effPartHandle_t;
 
 typedef struct {
     char name[8];

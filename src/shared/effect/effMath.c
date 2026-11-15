@@ -5,22 +5,8 @@
 #include "fpu.h"
 #include "sdfMemory.h"
 #include "sdfVu0.h"
+#include "effect.h"
 #include "effMath.h"
-
-/* The owner is stored after its contiguous cubic segments. */
-typedef struct
-{
-    f32 controlPoints[4][3];
-    f32 t;
-    f32 step;
-} dds3Bezier4PPart_t;
-
-typedef struct
-{
-    void *pPart;
-    u32 number;
-    void *allocation;
-} effBezier4P_t;
 
 
 #define EFF_RGBA_UNIT 0x3C000000
@@ -51,10 +37,6 @@ void effScreenOffset(void);
 s32 effPCPBlurScreenOffset(f32 scale);
 u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 f32 effLinePointLength(sdfVector4_t *pDir, sdfVector4_t *pLinePos, sdfVector4_t *pPos);
-effBezier4P_t *dds3Bezier4PCreate(s32 number);
-s32 dds3Bezier4PPartRun(effBezier4P_t *table, s32 slotIndex, f32 *out);
-s32 nbCameraLerpVec(dds3Bezier4PPart_t *slot, f32 *out);
-dds3Bezier4PPart_t *dds3Bezier4PGetPart(effBezier4P_t *pEffBezier4P, s32 index);
 
 /* vu0 routine: project the world point in vf10 to screen space */
 void effScreenOffset(void)
@@ -158,31 +140,31 @@ f32 effLinePointLength(sdfVector4_t *pDir, sdfVector4_t *pLinePos, sdfVector4_t 
     return length;
 }
 
-effBezier4P_t *dds3Bezier4PCreate(s32 number) {
-    void *allocation = sdfMemAllocDirect(number * sizeof(dds3Bezier4PPart_t) + sizeof(effBezier4P_t));
+effArrHdr_t *dds3Bezier4PCreate(s32 number) {
+    void *allocation = sdfMemAllocDirect(number * sizeof(effCubicBezierSlot_t) + sizeof(effArrHdr_t));
     void *retainedAddress = (void *)sdfMemLock(allocation);
     u32 slotIndex = 0;
-    dds3Bezier4PPart_t *slot = retainedAddress;
-    u8 *headerAddress = (u8 *)slot + number * sizeof(dds3Bezier4PPart_t);
+    effCubicBezierSlot_t *slot = retainedAddress;
+    u8 *headerAddress = (u8 *)slot + number * sizeof(effCubicBezierSlot_t);
 
-    ((effBezier4P_t *)headerAddress)->allocation = allocation;
-    ((effBezier4P_t *)headerAddress)->pPart = retainedAddress;
-    ((effBezier4P_t *)headerAddress)->number = number;
+    ((effArrHdr_t *)headerAddress)->allocation = allocation;
+    ((effArrHdr_t *)headerAddress)->slots = retainedAddress;
+    ((effArrHdr_t *)headerAddress)->count = number;
     if (number != 0) {
         do {
             slotIndex++;
             slot->t = 0;
             slot->step = 0.05f;
-            slot = (dds3Bezier4PPart_t *)((u8 *)slot + sizeof(dds3Bezier4PPart_t));
+            slot = (effCubicBezierSlot_t *)((u8 *)slot + sizeof(effCubicBezierSlot_t));
         } while (slotIndex < number);
     }
-    return (effBezier4P_t *)headerAddress;
+    return (effArrHdr_t *)headerAddress;
 }
 
 INCLUDE_ASM(const s32, "effect/effMath", effAPPoint4DeleteSub);
 
-s32 dds3Bezier4PPartRun(effBezier4P_t *table, s32 slotIndex, f32 *out) {
-    dds3Bezier4PPart_t *slot = &((dds3Bezier4PPart_t *)table->pPart)[slotIndex];
+s32 dds3Bezier4PPartRun(effArrHdr_t *table, s32 slotIndex, f32 *out) {
+    effCubicBezierSlot_t *slot = &((effCubicBezierSlot_t *)table->slots)[slotIndex];
     sdfVector4_t w;
     f32 t = slot->t;
     f32 u = 1.0f - t;
@@ -203,7 +185,7 @@ s32 dds3Bezier4PPartRun(effBezier4P_t *table, s32 slotIndex, f32 *out) {
     return 1;
 }
 
-s32 nbCameraLerpVec(dds3Bezier4PPart_t *slot, f32 *out) {
+s32 nbCameraLerpVec(effCubicBezierSlot_t *slot, f32 *out) {
     sdfVector4_t w;
     f32 t = slot->t;
     f32 u = 1.0f - t;
@@ -227,6 +209,6 @@ s32 nbCameraLerpVec(dds3Bezier4PPart_t *slot, f32 *out) {
 
 INCLUDE_ASM(const s32, "effect/effMath", effLeaf23);
 
-dds3Bezier4PPart_t *dds3Bezier4PGetPart(effBezier4P_t *pEffBezier4P, s32 index) {
-    return &((dds3Bezier4PPart_t *)pEffBezier4P->pPart)[index];
+effCubicBezierSlot_t *dds3Bezier4PGetPart(effArrHdr_t *pEffBezier4P, s32 index) {
+    return &((effCubicBezierSlot_t *)pEffBezier4P->slots)[index];
 }

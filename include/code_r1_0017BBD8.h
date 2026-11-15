@@ -120,4 +120,10 @@ void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 max
 
 void btlDestroyResourceNameRecord(struct BtlResourceNameRecord *record);
 
+void btlDebugDrawOrientedExtentGuide(f32 *center, f32 extent, f32 height, u32 color, f32 (*rotation)[4]);
+void btlDebugDrawPoint(f32 *position);
+void btlDebugDrawRadiusGuide(f32 *center, f32 radius, u32 color, s32 flags);
+void btlDebugDrawSegment(f32 *from, f32 *to, u32 color);
+void btlDebugMenuRecordNoOp(void *context);
+
 #endif

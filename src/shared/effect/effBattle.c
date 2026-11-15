@@ -14,9 +14,6 @@ enum {
     EFF_PARAM_WORK_KIND_EFFECT_NODE = 0
 };
 
-extern void dds3EffectPartDelete(dds3EffectPart_t *hEffPart);
-extern dds3EffectPart_t *dds3EffectPartCopy(dds3EffectPart_t *hEffPartSrc);
-extern dds3EffectPart_t *dds3EffectPartCreate(u16 type, void *pData);
 
 #include "sdk_libc.h"
 
@@ -221,7 +218,7 @@ void effBTLPartCreate(effBTL_t *pSkill, effBTL_t *pData) {
                         u32 sourceBank = index / 0x3C;
                         u32 sourceEntryIndex = index % 0x3C;
                         effBTL_SkillPartsList_t *sourceEntry = &pSkill->banks[sourceBank].list.entries[sourceEntryIndex];
-                        dds3EffectPart_t *duplicatedWork = dds3EffectPartCopy(sourceEntry->value.work);
+                        effPartHandle_t *duplicatedWork = dds3EffectPartCopy(sourceEntry->value.work);
                         u16 sourceKind = sourceEntry->type;
 
                         entry->value.work = duplicatedWork;

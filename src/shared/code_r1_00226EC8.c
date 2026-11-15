@@ -31,12 +31,7 @@
 #include "sdfTex.h"
 #include "sdfVu0.h"
 #include "polyManager.h"
-
-typedef struct
-{
-    u16 type;
-    void *pHandle;
-} effPartHandle_t;
+#include "effPart.h"
 
 typedef struct effPCPBossBED_t
 {

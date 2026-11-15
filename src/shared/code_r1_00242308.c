@@ -673,7 +673,6 @@ u32 effGetSelectedFileQueueIndex(void);
 extern EffectBlock128 effEditedQueueHeader;
 extern u32 btlDebugMenuSetupNoOp(void *context);
 extern void btlDebugMenuBeforeRecordNoOp(void);
-extern void btlDebugMenuRecordNoOp(void *context);
 extern void btlDebugMenuAfterRecordNoOp(void);
 
 typedef struct EffCameraCreateRow {
@@ -754,11 +753,7 @@ typedef char EffectStateSnapshotSizeCheck[(sizeof(EffectStateSnapshot) == 0x80) 
 extern s32 effUpdateCameraDiagnostics(EffectStateSnapshot *, s8);
 extern u8 effUpdateCameraDiagnosticsData[];
 extern s8 effData22[];
-extern void btlDebugDrawPoint(f32 *position);
-extern void btlDebugDrawRadiusGuide(f32 *center, f32 radius, u32 color, s32 flags);
-extern void btlDebugDrawSegment(f32 *from, f32 *to, u32 color);
 extern u32 btlDebugMenuSetupNoOp(void *camera);
-extern void btlDebugMenuRecordNoOp(void *camera);
 extern void camFollowOffsetVec(u8 *camera, void *destination);
 extern void effComputeBattleCameraPositionVU(u8 *snapshot);
 s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode);
@@ -781,8 +776,6 @@ typedef struct EffectCameraDebugState {
 } EffectCameraDebugState;
 
 extern EffectCameraDebugState effUpdateCameraSnapshotGuidesData;
-extern void btlDebugDrawOrientedExtentGuide(f32 *, f32, f32, u32, f32 (*)[4]);
-extern void btlDebugDrawPoint(f32 *);
 
 typedef struct EffectCameraDebugScratch {
     s128 basePosition;

@@ -168,32 +168,6 @@ typedef struct mdlHddFileEntry_t
     s8 extension[3][2];
 } mdlHddFileEntry_t;
 
-typedef struct mdlPibRecord_t {
-    s32 kind;       /* 0x00: 0xFFFF terminates the record chain */
-    s32 nextOffset; /* 0x04: relative byte offset to next record */
-    union {
-        u32 word;               /* 0x08 */
-        struct {
-            u16 selectorA;
-            u16 selectorB;
-        } stream;
-    } payload;
-    union {
-        u32 word;               /* 0x0C */
-        struct {
-            u16 count;
-            u16 partIndex;
-        } part;
-    } parameter;
-    union {
-        u32 word10; /* 0x10: kind-four stream parameter */
-        struct {
-            u16 slotCount; /* Kind 1/2 group records: following entity-slot packets. */
-            u16 unk12;
-        } half;
-    } tail;
-} mdlPibRecord_t;
-
 typedef struct mdlPartTagRecord_t {
     u32 tag;         /* 0x00 */
     u8 state;        /* 0x04 */
@@ -209,9 +183,7 @@ extern mdlHddFileEntry_t *mdlHddFileCount;
 extern u8 sdfHddValid;
 extern const char _ctype_[];
 extern void sdfDummyFunc(void);
-extern u16 mdlPibGetEffectCount(mdlPibRecord_t *record);
-extern u16 mdlPibGetMotionCount(mdlPibRecord_t *record);
-extern s32 mdlPibGetVersion(mdlPibRecord_t *record);
+extern s32 mdlPibGetVersion(pibHeaderChunk_t *record);
 extern sdfMatrix4_t sdfViewMatrix;
 extern sdf3DScreenParam_t dds3ScreenParam;
 extern s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (*callback)(u32), u32 parm);
@@ -1506,7 +1478,7 @@ sdfPacDecodeResrc_t *mdlPackSetOld(sdfPacDecodeResrc_t *resrc, s32 major, s32 mi
             case PIB_TAG_PIB0:
                 setup.effectData = resrc->data;
                 setup.effectMemHandle = (sdfMemHandle_t *)resrc->resrc;
-                count = mdlPibGetEffectCount((mdlPibRecord_t *)resrc->data);
+                count = mdlPibGetEffectCount((pibHeaderChunk_t *)resrc->data);
                 if (count > 0) {
                     parts = mdlEffectResrcListNew(count);
                     setup.effectResrcList = parts;
@@ -1548,8 +1520,8 @@ sdfPacDecodeResrc_t *mdlPackSet(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor
     mdlSetDef_t groupSetup;
     mdlPartTagRecord_t partTagRecord;
     sdfPacStdBlockHeader_t *packetHeader;
-    mdlPibRecord_t *record;
-    mdlPibRecord_t *slotRecord;
+    pibHeaderChunk_t *record;
+    pibHeaderChunk_t *slotRecord;
     s32 partCount;
     sdfItemArray_t *partList;
     s32 slotCount;
@@ -1560,7 +1532,7 @@ sdfPacDecodeResrc_t *mdlPackSet(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor
     if (mdlPackCheck(resrc) == 0) {
         return mdlPackSetOld(resrc, major, minor, regFlags);
     }
-    record = (mdlPibRecord_t *)resrc->data;
+    record = (pibHeaderChunk_t *)resrc->data;
     payloadValue = mdlPibGetVersion(record);
     if (payloadValue <= 0) {
         return mdlPackSetOld(resrc, major, minor, regFlags);
@@ -1620,7 +1592,7 @@ sdfPacDecodeResrc_t *mdlPackSet(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor
 
     slotCount = mdlPibGetMotionCount(record);
     while (slotCount > 0) {
-        slotRecord = (mdlPibRecord_t *)(resrc->data - (u32)&((mdlPibRecord_t *)0)->tail);
+        slotRecord = (pibHeaderChunk_t *)(resrc->data - (u32)&((pibHeaderChunk_t *)0)->tail);
         mdlRegistMotion(major, minor, regFlags, (s16)slotRecord->parameter.word,
                                       slotRecord->payload.stream.selectorA,
                                       slotRecord->payload.stream.selectorB,

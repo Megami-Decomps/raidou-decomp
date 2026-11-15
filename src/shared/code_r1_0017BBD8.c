@@ -413,16 +413,16 @@ void pbLeaf15(void) {
 void btlDebugDrawPoint2DNoOp(void) {
 }
 
-void btlDebugDrawPoint(void) {
+void btlDebugDrawPoint(f32 *position) {
 }
 
 void pbLeaf16(void) {
 }
 
-void btlDebugDrawRadiusGuide(void) {
+void btlDebugDrawRadiusGuide(f32 *center, f32 radius, u32 color, s32 flags) {
 }
 
-void btlDebugDrawOrientedExtentGuide(void) {
+void btlDebugDrawOrientedExtentGuide(f32 *center, f32 extent, f32 height, u32 color, f32 (*rotation)[4]) {
 }
 
 void btlDebugDrawScaledPositionGuide(void) {
@@ -431,7 +431,7 @@ void btlDebugDrawScaledPositionGuide(void) {
 void pbLeaf17(void) {
 }
 
-void btlDebugDrawSegment(void) {
+void btlDebugDrawSegment(f32 *from, f32 *to, u32 color) {
 }
 
 void btlDebugMenuBeforeRecordNoOp(void) {
@@ -442,7 +442,7 @@ void btlDebugMenuAfterRecordNoOp(void) {
 
 INCLUDE_ASM(const s32, "code_r1_0017BBD8", pbLeaf18);
 
-void btlDebugMenuRecordNoOp(void) {
+void btlDebugMenuRecordNoOp(void *context) {
 }
 
 INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlFindEntryByCommand);

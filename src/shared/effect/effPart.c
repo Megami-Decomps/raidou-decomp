@@ -8,16 +8,11 @@
 #include "sdfChip.h"
 #include "mdlManager.h"
 #include "billManager.h"
+#include "effPart.h"
 
 extern sdfVector4_t effPartModelPosInit;
 extern sdfVector4_t effPartModelRotInit;
 extern sdfVector4_t effPartModelScaleInit;
-
-typedef struct
-{
-    u16 type;
-    void *pHandle;
-} effPartHandle_t;
 
 typedef struct
 {
@@ -55,10 +50,6 @@ extern dds3EffectFunc_t EffectPCPFuncTable[];
 extern void **effPartPCPDataTable[];
 void dds3BillboardSetScale(void *hBillboard, f32 x, f32 y);
 void dds3EffectPartModelInit(mdlObj_t *hModel);
-effPartHandle_t *dds3EffectPartCreate(u16 type, void *pData);
-void dds3EffectPartDelete(effPartHandle_t *hEffPart);
-effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc);
-void dds3EffectPartDraw(effPartHandle_t *hEffPart);
 void *dds3EffectPartTMXBillboardCreate(u32 data);
 void *dds3EffectPartP2ABillboardCreate(u32 data);
 void dds3EffectPartBillboardScale(void *hBillboard, f32 scale);

@@ -122,7 +122,6 @@ typedef struct sdfModelNode_t sdfModelNode_t;
 
 struct effPartHandle_t;
 
-typedef struct effPartHandle_t effPartHandle_t;
 
 typedef struct effEveBEDCutHandle_t effEveBEDCutHandle_t;
 

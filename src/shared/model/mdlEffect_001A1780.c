@@ -1,6 +1,7 @@
 #include "common.h"
 #include "libsdf.h"
 #include "model.h"
+#include "mdlEffect.h"
 #include "kernel.h"
 #include "newdata.h"
 #include "ps2asm.h"
@@ -20,32 +21,6 @@ typedef struct mdlEffectResrc_IPU_t mdlEffectResrc_IPU_t;
 typedef struct mdlEffectResrcItem_t mdlEffectResrcItem_t;
 
 typedef struct mdlMarkPos_t mdlMarkPos_t;
-
-typedef struct pibHeaderChunk_t {
-    s32 group;       /* 0x00: 0xFFFF terminates the record chain */
-    s32 nextOffset; /* 0x04: relative byte offset to next record */
-    union {
-        u32 word;               /* 0x08 */
-        struct {
-            u16 selectorA;
-            u16 selectorB;
-        } stream;
-    } payload;
-    union {
-        u32 word;               /* 0x0C */
-        struct {
-            u16 count;
-            u16 partIndex;
-        } part;
-    } parameter;
-    union {
-        u32 word10; /* 0x10: group-four stream parameter */
-        struct {
-            u16 slotCount; /* Kind 1/2 group records: following entity-slot packets. */
-            u16 unk12;
-        } half;
-    } tail;
-} pibHeaderChunk_t;
 
 typedef struct mdlEffectResrcItem_t {
     u32 type;       /* 0x00 */
@@ -83,18 +58,6 @@ typedef struct pibChunkItem_TRACK_t {
     u8 blendAlgo;           /* +0x17: selected by the track's draw data */
     u32 colors[4]; /* +0x18: copied to mdlTrackCreateParams_t */
 } pibChunkItem_TRACK_t;
-
-typedef struct mdlTrackParams_t {
-    u8 opaque00[8];
-    s32 mark0;
-    s32 mark1;
-    u16 start;
-    u16 end;
-    u16 interval;
-    u8 face;
-    u8 blend;
-    u32 colors[4];
-} mdlTrackParams_t;
 
 typedef struct mdlMarkPos_t {
     u32 nodeId;      /* 0x00: draw-node lookup key */

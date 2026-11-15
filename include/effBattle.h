@@ -4,9 +4,9 @@
 #include "common.h"
 #include "libsdf.h"
 #include "effect.h"
+#include "effPart.h"
 
 typedef struct effBTLCut_t effBTLCut_t;
-typedef struct dds3EffectPart_t dds3EffectPart_t;
 typedef void (*effBTLCallback_t)(effBTLCut_t *cut);
 
 /* Native eight-byte position/rotation selector shared by BED entries. */
@@ -20,7 +20,7 @@ typedef struct effBTLAimParams_t {
 
 typedef union effBTLPartValue_t {
     u32 sourceOffset;
-    dds3EffectPart_t *work;
+    effPartHandle_t *work;
 } effBTLPartValue_t;
 
 typedef struct effBTL_SkillPartsList_t {
@@ -82,7 +82,7 @@ struct effBTLCut_t {
     u8 unk1E[2];
     s32 stat; /* 0x20 */
     effBTL_SkillCutTable_t *list; /* 0x24 */
-    dds3EffectPart_t *parameterWorks[60]; /* 0x28 */
+    effPartHandle_t *parameterWorks[60]; /* 0x28 */
     effBTLCallback_t sourceFrameCallback; /* 0x118 */
     effBTLCallback_t triggerFrameCallback; /* 0x11C */
     void *userData; /* 0x120 */

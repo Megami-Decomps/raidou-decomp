@@ -188,7 +188,7 @@ typedef struct effAPPoint4Param_t {
 
 typedef struct effAPPoint4Part_tag {
     s32 frame;
-    struct dds3EffectPart_t *hPart; /* Retained compact effect owner, cloned per record. */
+    effPartHandle_t *hPart; /* Retained compact effect owner, cloned per record. */
 } effAPPoint4Part_tag;
 
 /* Allocated channel owner shared by the event factory and channel consumers. */
@@ -226,7 +226,7 @@ typedef struct effEmit_t {
 /* Parameter template owner; the four-byte prefix is not read by channel work. */
 typedef struct effChanSourceOwner_t {
     u8 opaque00[4];
-    dds3EffectPart_t *param;
+    effPartHandle_t *param;
 } effChanSourceOwner_t;
 
 /* Source header followed by the owner used to duplicate each record parameter. */
@@ -275,22 +275,15 @@ void dds3BillboardSetRGBA(billHandle_t *hBillboard, u32 abgr);
 /* Radian rotation of the billboard quad in its plane. */
 void dds3BillboardSetRotate(billHandle_t *hBillboard, f32 rot);
 extern effEVECombParSmokeParam_t effEVECombParSmokeCreate2Data;
-dds3EffectPart_t *dds3EffectPartCreate(u16 type, void *pData);
-dds3EffectPart_t *dds3EffectPartCopy(dds3EffectPart_t *hEffPartSrc);
 
 /* Return a borrowed block at the selected record's signed relative offset. */
 void dds3Bezier4PDelete(struct effArrHdr_t *pEffBezier4P);
-void dds3EffectPartDelete(dds3EffectPart_t *hEffPart);
-effCubicBezierSlot_t *dds3Bezier4PGetPart(struct effArrHdr_t *pEffBezier4P, s32 index);
-void dds3EffectPartSetColor(dds3EffectPart_t *hEffPart, u32 abgr);
-s32 dds3Bezier4PPartRun(struct effArrHdr_t *table, s32 slotIndex, f32 *out);
+void dds3EffectPartSetColor(effPartHandle_t *hEffPart, u32 abgr);
 
 EXTERN_LATE_CONST sdfVector4_t effUnitY;
 
 void effEveBEDPartGetPositionPtr(effEveBEDParams_t *pParams, effBTLAimParams_t *pPosPtr);
-void dds3EffectPartSetPosition(dds3EffectPart_t *hEffPart, void *pPos);
-void dds3EffectPartDraw(dds3EffectPart_t *hEffPart);
-extern effArrHdr_t *dds3Bezier4PCreate(s32 number);
+void dds3EffectPartSetPosition(effPartHandle_t *hEffPart, void *pPos);
 void Eve_PartialMultiBlurSetTex(sdfTexHandle_t *hTex);
 
 /* Return the current staggered-blur work without retaining it. */
@@ -1146,7 +1139,7 @@ effAPPoint4_tag *effAPPoint4Create(const effAPPoint4Param_t *pParams, u16 type, 
     sdfMemHandle_t *allocation = sdfMemAllocDirect(recordCount * sizeof(effAPPoint4Part_tag) + sizeof(effAPPoint4_tag));
     effAPPoint4_tag *work = EE_ADDR_AS(effAPPoint4_tag *, sdfMemLock(allocation));
     effAPPoint4Part_tag *record = (effAPPoint4Part_tag *)(work + 1);
-    dds3EffectPart_t *parameterTemplate;
+    effPartHandle_t *parameterTemplate;
     s32 delayModulus;
     u32 recordIndex;
 
@@ -1187,7 +1180,7 @@ effAPPoint4_tag *effAPPoint4Copy(effChanSource_t *source) {
     sdfMemHandle_t *allocationHandle = sdfMemAllocDirect(recordCount * sizeof(effAPPoint4Part_tag) + sizeof(effAPPoint4_tag));
     effAPPoint4_tag *work = EE_ADDR_AS(effAPPoint4_tag *, sdfMemLock(allocationHandle));
     effAPPoint4Part_tag *recordCursor = (effAPPoint4Part_tag *)(work + 1);
-    dds3EffectPart_t *parameterTemplate;
+    effPartHandle_t *parameterTemplate;
     s32 delayModulus;
     u32 recordIndex;
 

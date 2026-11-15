@@ -17,12 +17,7 @@
 #include "mdlManager.h"
 #include "sdfVu0.h"
 #include "polyManager.h"
-
-typedef struct
-{
-    u16 type;
-    void *pHandle;
-} effPartHandle_t;
+#include "effPart.h"
 
 typedef struct effPCPBossBED_t
 {
@@ -471,9 +466,6 @@ extern void effPCPCrackInit(effPCPCrack_t *pPCPCrack);
 extern u8 dds3RenderTargetVector[], dds3RenderEyeVector[];
 extern u32 dds3GetRandA(u8 *name);
 extern f32 dds3GetRandFloatA(u8 *name);
-extern effPartHandle_t *dds3EffectPartCreate(u16 type, void *pData);
-extern effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc);
-extern void dds3EffectPartDelete(effPartHandle_t *hEffPart);
 extern void *dds3EffectPartGetHandle(effPartHandle_t *hEffPart);
 extern void dds3TrackPolySetMode(void *hTrackPoly, s32 mode);
 extern void *dds3FlashPolyListCreate(s32 face);

@@ -11,6 +11,7 @@
 
 #include "fileManager.h"
 #include "model.h"
+#include "mdlEffect.h"
 #include "sdfDevCons.h"
 #include "sdk_libc.h"
 #include "include_asm.h"
@@ -81,67 +82,12 @@ void mdlSmoothSingleMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex, f32 ble
 void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
 void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
 
-/* Relative-linked viewer records share packed payload and parameter words.
- * Kinds 1/2 use the count and part-index halfwords at 0x0C/0x0E; kind 3
- * reads the whole parameter word. Kind 4 reads both selector halfwords at 0x08/0x0A. */
-typedef struct MdlRecord {
-    s32 kind;       /* 0x00: 0xFFFF terminates the record chain */
-    s32 nextOffset; /* 0x04: relative byte offset to next record */
-    union {
-        u32 word;               /* 0x08 */
-        s32 id;                 /* Kind 1/2/5 resource-record ID. */
-        struct {
-            u16 selectorA;
-            u16 selectorB;
-        } stream;
-    } payload;
-    union {
-        u32 word;               /* 0x0C */
-        s32 minimumTime;        /* Kind 5 deferred initialization threshold. */
-        struct {
-            u16 count;
-            u16 partIndex;
-        } part;
-    } parameter;
-    union {
-        u32 word10; /* 0x10: kind-four stream parameter */
-        f32 anchorScale; /* Optional kind 1/2 extension when nextOffset >= 0x11. */
-        struct {
-            u8 playbackCadenceStep;
-            u8 loopMode;
-            u16 partIndex;
-        } object;
-        struct {
-            u16 slotCount; /* Kind 1/2 group records: following entity-slot packets. */
-            u16 unk12;
-        } half;
-    } tail;
-} MdlRecord;
-
-typedef char MdlRecord_size_must_be_0x14[(sizeof(MdlRecord) == 0x14) ? 1 : -1];
-
 /* Key for a part-info record list; -1 selects the context-wide list. */
 typedef s32 MdlPartInfoListKey;
 
 enum {
     MDL_PART_INFO_LIST_CONTEXT_WIDE = -1
 };
-
-/* Marker-record fields edited by the model viewer; the leading word stays opaque. */
-typedef struct EffMarkParams {
-    u8 opaque00[8];
-    s32 mark0;
-    s32 mark1;
-    u16 start;
-    u16 end;
-    u16 interval;
-    u8 face;
-    u8 blend;
-    u32 colors[4];
-} EffMarkParams;
-
-typedef char EffMarkParams_size_must_be_0x28[
-    (sizeof(EffMarkParams) == 0x28) ? 1 : -1];
 
 #define MDL_VIEWER_RESOURCE_SLOTS 12
 
@@ -279,23 +225,16 @@ s32 mdlUpdateViewerCursor(s16 *, s32);
 void mdlUpdateViewerSelectedModelFromPad(void);
 void mdlDrawViewerSelectionLabel(void);
 void mdlCleanupViewerTasksAndResources(void);
-s32 mdlPibGetChunkItemCount(MdlRecord *listHeader);
 
 /* Follow the relative links in a resource's part-info table to find a list key. */
-MdlRecord *mdlPibGetChunk(mdlObj_t *resource, MdlPartInfoListKey partInfoListKey);
 
 /* The first eight bytes belong to the enclosing list, not its first record. */
-MdlRecord *mdlPibGetFirstChunkItem(MdlRecord *listHeader);
 
 /* A terminal kind returns NULL; the link is a byte offset, not a pointer. */
-MdlRecord *mdlPibGetNextChunkItem(MdlRecord *currentRecord);
-s32 mdlPibCheckItemType(MdlRecord *record, s32 kind);
 extern char D_003ABA80[], D_003ABA90[], D_003ABAA0[], D_003ABAB0[], D_003ABAC0[], D_003ABAD0[];
 extern char D_003BBB80[], D_003BBB88[];
-void mdlPibDrawEffectInfo(sdfDrawTag_t *packetList, s32 x, s32 y, s32 depth, s32 textStyle, MdlRecord *record);
 
 /* Draw the scalar marker fields, then four colors with four byte channels each; negative selection hides the cursor. */
-void mdlPibDrawTrackInfo(sdfDrawTag_t *packetList, s32 x, s32 y, s32 depth, EffMarkParams *params, s32 selectedField);
 
 #define MDL_PART_BILLBOARD 0
 
@@ -379,8 +318,8 @@ void mdlUpdateViewerSettingsInput(void);
 void mdlDrawViewerSettings(void);
 u32 mdlRunViewerSettingsTask(void);
 s32 mdlCountActiveRecords(void);
-MdlRecord *mdlGetSelectedRecord(void);
-extern MdlRecord *mdlGetSelectedRecord(void);
+pibHeaderChunk_t *mdlGetSelectedRecord(void);
+extern pibHeaderChunk_t *mdlGetSelectedRecord(void);
 void mdlUpdateViewerMarkEditorInput(void);
 extern const char D_003ABEB0[];
 extern const char D_003BBCB0[];
@@ -955,13 +894,13 @@ s32 mdlCountActiveRecords(void) {
 }
 
 /* Count the context-wide list before the selected-entry list for cursor lookup. */
-MdlRecord *mdlGetSelectedRecord(void) {
+pibHeaderChunk_t *mdlGetSelectedRecord(void) {
     mdlObj_t *resource = mdlViewerState.resources[0];
-    MdlRecord *firstList =
+    pibHeaderChunk_t *firstList =
         mdlPibGetChunk(resource, MDL_PART_INFO_LIST_CONTEXT_WIDE);
-    MdlRecord *secondList = mdlPibGetChunk(resource, mdlViewerState.activeEntryId);
+    pibHeaderChunk_t *secondList = mdlPibGetChunk(resource, mdlViewerState.activeEntryId);
     s32 index = mdlViewerState.selectedRecordIndex;
-    MdlRecord *record;
+    pibHeaderChunk_t *record;
 
     if (firstList != NULL) {
         record = mdlPibGetFirstChunkItem(firstList);
@@ -992,9 +931,9 @@ INCLUDE_ASM(const s32, "code_r1_0019D3A8", mdlUpdateViewerMarkEditorInput);
 void mdlDrawViewerEffectRecordList(void) {
     MdlViewState *state = &mdlViewerState;
     mdlObj_t *resource;
-    MdlRecord *firstList;
-    MdlRecord *secondList;
-    MdlRecord *record;
+    pibHeaderChunk_t *firstList;
+    pibHeaderChunk_t *secondList;
+    pibHeaderChunk_t *record;
     s32 firstCount;
     s32 secondCount;
     s32 totalCount;
@@ -1115,12 +1054,12 @@ void mdlDrawViewerEffectRecordList(void) {
     }
 
     if (mdlViewerState.editorMode == 1) {
-        MdlRecord *markRecord = mdlGetSelectedRecord();
+        pibHeaderChunk_t *markRecord = mdlGetSelectedRecord();
 
         if (markRecord != NULL && mdlPibCheckItemType(markRecord, MDL_VIEWER_RECORD_KIND_TRACK_POLY)) {
             mdlAppendViewerRectToDrawList(0x8590, 0x7A08, 0xFF007F, 0x960, 0xA50, 0);
             mdlPibDrawTrackInfo(packetList, 0x85C0, 0x7A20, 0xFF0080,
-                                   (EffMarkParams *)markRecord,
+                                   (mdlTrackParams_t *)markRecord,
                                    mdlViewerState.markFieldCursor);
         }
     }

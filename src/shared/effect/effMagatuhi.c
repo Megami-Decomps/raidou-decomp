@@ -386,13 +386,10 @@ static inline void UnpackRGBAWordFloat(u32 color, f32 unit) {
 
 /* Allocate/retain slot storage and return its header after the slots, not the slot base.
    Only the two native slot defaults are initialized; count/allocation validity is unchecked. */
-effArrHdr_t *dds3Bezier4PCreate(s32 number);
 
 /* vu0 routine: blend two RGBA8888 colours by t (lerp in float, packed back to RGBA8888) */
 extern u8 dds3EffectBase[];
-effCubicBezierSlot_t *dds3Bezier4PGetPart(struct effArrHdr_t *pEffBezier4P, s32 index);
 void dds3Bezier4PDelete(struct effArrHdr_t *pEffBezier4P);
-s32 dds3Bezier4PPartRun(struct effArrHdr_t *table, s32 slotIndex, f32 *out);
 
 /* Advance caller-owned state, returning its next 32-bit value. NULL selects
  * the shared effect RNG state. */

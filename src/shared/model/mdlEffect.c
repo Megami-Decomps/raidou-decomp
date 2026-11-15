@@ -32,32 +32,6 @@ typedef struct mdlEffectResrcItem_t mdlEffectResrcItem_t;
 
 typedef struct mdlMarkPos_t mdlMarkPos_t;
 
-typedef struct pibHeaderChunk_t {
-    s32 group;       /* 0x00: 0xFFFF terminates the record chain */
-    s32 nextOffset; /* 0x04: relative byte offset to next record */
-    union {
-        u32 word;               /* 0x08 */
-        struct {
-            u16 selectorA;
-            u16 selectorB;
-        } stream;
-    } payload;
-    union {
-        u32 word;               /* 0x0C */
-        struct {
-            u16 count;
-            u16 partIndex;
-        } part;
-    } parameter;
-    union {
-        u32 word10; /* 0x10: group-four stream parameter */
-        struct {
-            u16 slotCount; /* Kind 1/2 group records: following entity-slot packets. */
-            u16 unk12;
-        } half;
-    } tail;
-} pibHeaderChunk_t;
-
 typedef struct mdlEffectResrcItem_t {
     u32 type;       /* 0x00 */
     s32 count;      /* 0x04 */
@@ -94,18 +68,6 @@ typedef struct pibChunkItem_TRACK_t {
     u8 blendAlgo;           /* +0x17: selected by the track's draw data */
     u32 colors[4]; /* +0x18: copied to mdlTrackCreateParams_t */
 } pibChunkItem_TRACK_t;
-
-typedef struct mdlTrackParams_t {
-    u8 opaque00[8];
-    s32 mark0;
-    s32 mark1;
-    u16 start;
-    u16 end;
-    u16 interval;
-    u8 face;
-    u8 blend;
-    u32 colors[4];
-} mdlTrackParams_t;
 
 typedef struct mdlMarkPos_t {
     u32 nodeId;      /* 0x00: draw-node lookup key */
@@ -281,17 +243,6 @@ extern char mdlPibCursorMark[];
 #define MDL_PART_OBJECT 3
 
 /* The PIB chunk count is the low half of the packed parameter word. */
-u16 mdlPibGetChunkCount(pibHeaderChunk_t *record);
-pibHeaderChunk_t *mdlPibGetChunk(mdlObj_t *handle, s32 group);
-pibHeaderChunk_t *mdlPibGetFirstChunkItem(pibHeaderChunk_t *data);
-pibHeaderChunk_t *mdlPibGetNextChunkItem(pibHeaderChunk_t *data);
-s32 mdlPibGetChunkItemCount(pibHeaderChunk_t *data);
-s32 mdlPibCheckItemType(pibHeaderChunk_t *data, s32 type);
-u16 mdlPibGetEffectCount(pibHeaderChunk_t *record);
-u16 mdlPibGetMotionCount(const pibHeaderChunk_t *record);
-void mdlPibDrawEffectInfo(sdfDrawTag_t *tag, s32 x, s32 y, s32 z, s32 attr, pibHeaderChunk_t *data);
-void mdlPibDrawTrackInfo(sdfDrawTag_t *tag, s32 x, s32 y, s32 z, mdlTrackParams_t *data, s32 cursor);
-void mdlPibEditTrackInfo(mdlTrackParams_t *data, s16 *cursor_p);
 void mdlDeleteEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu);
 void mdlStartEffectResrc_IPU(mdlEffectResrc_IPU_t *ipu, sdfTexHandle_t *tex, mdlIpuParams_t *parm);
 dds3ModelEffectCtrlr_t *mdlCreateEffectCtrlr(mdlObj_t *aHandle, s32 aType, s32 aPlayGroup);
