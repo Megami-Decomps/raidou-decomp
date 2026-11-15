@@ -27,10 +27,16 @@ typedef struct PmdEntry {
 } PmdEntry;
 
 typedef struct PmdHeader {
-    u8 pad[0x10];
+    s8 FileType;
+    s8 FileFormat;
+    s16 UserID;
+    s32 FileSize;
+    char MagicCode[4];
+    s32 ExpandSize;
     s32 count;    /* 0x10 */
     s32 kind;     /* 0x14 */
-    u8 pad2[8];
+    s32 Reserve2;
+    s32 Reserve3;
     const PmdEntry entries[1]; /* 0x20: serialized records are read-only. */
 } PmdHeader;
 

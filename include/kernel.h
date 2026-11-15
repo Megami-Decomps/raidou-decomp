@@ -40,7 +40,7 @@ typedef struct dds3AdminiData_t
     s8 NowSequence;
     s8 NextSequence;
     u8 HistoryPointer;
-    u8 unk0B;
+    u8 Reserve1;
     s8 SequenceHistory[8];
     u8 FlagHistory[8];
     void *CallData;

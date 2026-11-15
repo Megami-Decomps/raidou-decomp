@@ -84,10 +84,16 @@ typedef struct pmdEffectTable_t {
 } pmdEffectTable_t;
 
 typedef struct pmdHeader_t {
-    u8 pad[0x10];
+    s8 FileType;
+    s8 FileFormat;
+    s16 UserID;
+    s32 FileSize;
+    char MagicCode[4];
+    s32 ExpandSize;
     s32 count;
     s32 kind;
-    u8 pad2[8];
+    s32 Reserve2;
+    s32 Reserve3;
     pmdEntry_t entries[1];
 } pmdHeader_t;
 
