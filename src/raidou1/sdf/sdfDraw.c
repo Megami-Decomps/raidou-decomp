@@ -1050,6 +1050,20 @@ void sdfDrawSync(void) {
         sdfWaitVblank(0);
     }
 }
+volatile u8 sdfDrawFrameFlag = 0;
+
+volatile u8 sdfDrawSyncFlag = 0;
+
+u16 sdfDrawFrameCounter = 0;
+
+volatile u8 sdfDrawPublishFlag = 0;
+
+u8 sdfGrDrawFrameId = 0;
+
+u8 sdfGrBufferSlot = 0;
+
+volatile s8 sdfReqDrawDelayCount = 0;
+
 u16 sdfReqDrawDelaySleepCount = 0;
 
 s32 sdfDrawReqQueueIndex = 0;
@@ -1057,26 +1071,4 @@ s32 sdfDrawReqQueueIndex = 0;
 u32 sdfGrDrawFrameTagHead = 0;
 
 u32 sdfDrawFrameCount = 0;
-
-u8 corePktSoftenBias = 0;
-
-s32 sdfMatAllocCount = 0;
-
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", sdfForcedAssetTextureMode);
-
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", sdfCoreDrawBuffHandle);
-
-f32 sdfFaceDivSoften = 7.0f;
-
-f32 sdfFaceDivBias = 0.0f;
-
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", GlobalParamFlag);
-
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", mapBgSetScrollData21);
-
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", mapBgSetScrollData22);
-
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", GlobalParamTransX);
-
-INCLUDE_SDATA(const s32, "sdf/sdfDraw", mapBgSetScrollData23);
 

@@ -803,6 +803,28 @@ void evtEventViewerDestroyTask(void) {
     dds3KillProcessName(evtViewerTaskName, 1);
 }
 
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtEnd);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtChgSeq);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtIgnoreFade);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtNoSkipMes);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetProcessData12);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCheckProcess);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtCheckLastSkipStat);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtSkipStart);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtSetFrame);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtIgnoreAtracPlay);
+
+INCLUDE_ASM(const s32, "event/evtEventViewer", oldEventSceneUnload);
+
 INCLUDE_RODATA(const s32, "event/evtEventViewer", evtViewerTaskName);
 
 INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFileMajor);

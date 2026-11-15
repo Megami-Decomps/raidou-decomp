@@ -89,6 +89,14 @@ u32 evtHokanUInt(s32 hokan, f32 ratio, u32 i1, u32 i2);
 #include "dds/pcp_vu0.h"
 #include "dds/fld.h"
 
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtCheckLoad);
+
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtCallGetProcessData13);
+
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtCheckRun);
+
+INCLUDE_ASM(const s32, "event/evtPolygonMovie", evtCheckSeqEnd);
+
 extern dds3Effect_Blur_t evtBlur2DefaultParam2;
 
 /* One asm location for every arm's w set, so jump2 can cross-jump them. */

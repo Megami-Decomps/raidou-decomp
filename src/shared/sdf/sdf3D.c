@@ -439,6 +439,10 @@ void sdf3DInit(void) {
     sdfModelInitSystem();
     sdfMatInitSystem();
 }
+INCLUDE_SDATA(const s32, "sdf/sdf3D", sdf3DLightDefault);
+
+INCLUDE_SDATA(const s32, "sdf/sdf3D", sdf3DFogDefault);
+
 INCLUDE_SDATA(const s32, "sdf/sdf3D", sdf3DSlot2Tex);
 
 INCLUDE_SDATA(const s32, "sdf/sdf3D", sdf3DSpecularTex);
@@ -446,14 +450,4 @@ INCLUDE_SDATA(const s32, "sdf/sdf3D", sdf3DSpecularTex);
 INCLUDE_SDATA(const s32, "sdf/sdf3D", sdf3DRefMapParam);
 
 INCLUDE_SDATA(const s32, "sdf/sdf3D", sdf3DSlot1Tex);
-
-u8 sdfPadManagerMode = 0;
-
-INCLUDE_SDATA(const s32, "sdf/sdf3D", sdfPadButtons);
-
-INCLUDE_SDATA(const s32, "sdf/sdf3D", sdfPadAnalogSticks);
-
-INCLUDE_SDATA(const s32, "sdf/sdf3D", dds3RunProcessListData2);
-
-INCLUDE_SDATA(const s32, "sdf/sdf3D", sbtlData128);
 

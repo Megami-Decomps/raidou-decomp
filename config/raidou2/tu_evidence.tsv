@@ -101,8 +101,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00138DE8	00138DE8	code_00138DE8	asm	none	
 001391D8	00139730	field/fldFileResolver_00132080	c	smt3:map:3+smt3:names:1+dds:1 of 19 part	field/fldFileResolver
 00139818	001399A0	code_00139818	asm	none	
-001399A8	0013C810	field/fldDraw	c	smt3:names:24+smt3:map:9 of 47	field/fldDraw
-0013CA48	0013CD00	code_0013CA48	asm	none	
+001399A8	0013CD00	field/fldDraw	c	smt3:names:24+smt3:map:9 of 47; nbSetEncountMode run included: its .sdata sits inside fldDraw's	field/fldDraw
 0013CD60	00141698	field/fldFileResolver	c	dds:6 of 56	field/fldFileResolver
 001416C0	001491D0	code_001416C0	asm	none	
 00149258	00149258	field/fldSky	c	smt3:map:1 of 1	field/fldSky
@@ -157,9 +156,8 @@ start	last_func	unit	kind	evidence	smt3_unit
 001C4C80	001C4C80	code_001C4C80	asm	none	
 001C4C88	001C4D28	event/evtDebug	c	smt3:map:2+smt3:names:2 literal-cores:1 of 4	event/evtDebug
 001C53D8	001C53D8	code_001C53D8	asm	none	
-001C53E0	001CE358	event/evtEventViewer	c	dds:60+smt3:map:20+smt3:names:5 literal-cores:2 of 115	event/evtEventViewer
-001CE378	001CE8A0	code_001CE378	asm	none	
-001CE908	001D0BB8	event/evtPolygonMovie	c	smt3:names:11+smt3:map:6+dds:6 of 30	event/evtPolygonMovie
+001C53E0	001CE5B0	event/evtEventViewer	c	dds:60+smt3:map:20+smt3:names:5 literal-cores:2 of 115	event/evtEventViewer
+001CE660	001D0BB8	event/evtPolygonMovie	c	smt3:names:11+smt3:map:6+dds:6 of 30; starts at evtCheckLoad (HD module evtPMV)	event/evtPolygonMovie
 001D0D40	001D1700	event/evtPicture	c	smt3:names:5+smt3:map:3 literal-cores:1 of 22 reordered	event/evtPicture
 001D17F0	001D17F0	code_001D17F0	asm	none	
 001D17F8	001D19A8	event/evtSky	c	smt3:names:4+smt3:map:1 literal-cores:1 of 7	event/evtSky
@@ -321,8 +319,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 003CEB20	003D01D8	sdf/sdfTex	c	smt3:names:23+smt3:map:9+dds:2 of 44	sdf/sdfTex
 003D01F8	003D0768	sdf/sdfGsMemIO	c	smt3:names:6 of 6	sdf/sdfGsMemIO
 003D0820	003D0B28	sdf/sdfDelayedResrc	c	smt3:names:7 of 7	sdf/sdfDelayedResrc
-003D0B70	003D0C10	sdf/sdfPacketBuff	c	smt3:names:3 of 4	sdf/sdfPacketBuff
-003D0C30	003D0C38	code_003D0C30	asm	none	
+003D0B70	003D0C38	sdf/sdfPacketBuff	c	smt3:names:3 of 4; ends with sdfGrOpenPacketBuff and sdfGrClosePacketBuff, as in SMT3	sdf/sdfPacketBuff
 003D0C50	003D20D8	sdf/sdfDraw	c	smt3:names:29+smt3:map:5 of 40	sdf/sdfDraw
 003D2150	003D4360	sdf/sdfPrim	c	smt3:names:48 of 49	sdf/sdfPrim
 003D4450	003D6C58	sdf/sdfModel	c	smt3:names:46+smt3:map:5 of 57	sdf/sdfModel

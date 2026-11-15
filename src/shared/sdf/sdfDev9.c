@@ -142,3 +142,6 @@ s32 sdfBcdToDecimal(s32 aBcd)
 }
 
 const char sdfDev9ResidentFailMsg[40] = "cdrom0:\\IRX\\DEV9.IRX;1 resident fail.\n";
+
+INCLUDE_SDATA(const s32, "sdf/sdfDev9", sdfDev9Ready);
+

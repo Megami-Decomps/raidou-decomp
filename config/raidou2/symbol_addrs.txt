@@ -20166,6 +20166,7 @@ sdf3DSlot2Tex = 0x004E4324;
 sdf3DSpecularTex = 0x004E4328;
 sdf3DRefMapParam = 0x004E4330;
 sdf3DSlot1Tex = 0x004E4338;
+sdfPadPortSlotPairs = 0x004E4340; // size:0x4
 sdfPadManagerMode = 0x004E4344;
 sdfPadButtons = 0x004E4348;
 sdfPadAnalogSticks = 0x004E4350;

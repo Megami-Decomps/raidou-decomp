@@ -825,8 +825,6 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtIgnoreAtracPlay);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", oldEventSceneUnload);
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtCheckLoad);
-
 INCLUDE_RODATA(const s32, "event/evtEventViewer", evtViewerTaskName);
 
 INCLUDE_SDATA(const s32, "event/evtEventViewer", evtFileMajor);

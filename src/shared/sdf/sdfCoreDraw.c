@@ -70,3 +70,9 @@ void sdfCoreDrawInit(s32 buffSize) {
     sdfCoreDrawBuffHandle = sdfMemAllocDirect(buffSize);
     corePktPointBuff = EE_ADDR(sdfMemLock(sdfCoreDrawBuffHandle));
 }
+
+INCLUDE_SDATA(const s32, "sdf/sdfCoreDraw", sdfCoreDrawBuffHandle);
+
+f32 sdfFaceDivSoften = 7.0f;
+
+f32 sdfFaceDivBias = 0.0f;

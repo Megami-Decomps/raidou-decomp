@@ -669,3 +669,5 @@ INCLUDE_SDATA(const s32, "field/fldFileResolver_00132080", fldCallTexListFreeDat
 
 INCLUDE_SDATA(const s32, "field/fldFileResolver_00132080", fldCallTexListFreeData10);
 
+INCLUDE_SDATA(const s32, "field/fldFileResolver_00132080", rsetFrameMaskOtOffset);
+

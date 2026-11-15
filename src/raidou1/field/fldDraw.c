@@ -788,11 +788,25 @@ void initDrawTag(dbgConsCtl_tag *cons) {
 INCLUDE_ASM(const s32, "field/fldDraw", fldDbgPrint3D);
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawMaruKage);
-INCLUDE_SDATA(const s32, "field/fldDraw", rsetFrameMaskOtOffset);
+INCLUDE_ASM(const s32, "field/fldDraw", nbProcSequenceSub);
+
+INCLUDE_ASM(const s32, "field/fldDraw", nbSetEncountMode);
+
+INCLUDE_ASM(const s32, "field/fldDraw", nbCallSetOt4);
+
+INCLUDE_ASM(const s32, "field/fldDraw", nbCallGetY);
 
 INCLUDE_SDATA(const s32, "field/fldDraw", fldDrawInitDone);
 
 void *fldDrwZBuf = 0;
 
+SDATA_PAD(4);
+
 INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtDec);
+
+INCLUDE_SDATA(const s32, "field/fldDraw", nbData4);
+
+INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtHex);
+
+INCLUDE_SDATA(const s32, "field/fldDraw", fldDrawEnv);
 

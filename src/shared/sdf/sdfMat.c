@@ -609,3 +609,8 @@ void sdfMatListCopyStat(sdfItemArray_t *aDst, sdfItemArray_t *aSrc)
         sdfMatCopyStat(EE_ADDR_AS(sdfMat_t *, dst[i]), EE_ADDR_AS(sdfMat_t *, src[i]));
     }
 }
+
+s32 sdfMatAllocCount = 0;
+
+INCLUDE_SDATA(const s32, "sdf/sdfMat", sdfForcedAssetTextureMode);
+

@@ -72,6 +72,14 @@ s32 sdfGrAllocPacketBuff(s32 aSize) {
     sdfGrPacketBuffPtr = sdfGrPacketBuffPtr + ((aSize + 0xfU) & 0xfffffff0);
     return packet;
 }
+
+s32 sdfGrOpenPacketBuff(void) {
+    return sdfGrPacketBuffPtr;
+}
+
+void sdfGrClosePacketBuff(saddr_t aBuffPtr) {
+    sdfGrPacketBuffPtr = (aBuffPtr + SDF_QWORD_ALIGNMENT_MASK) & ~SDF_QWORD_ALIGNMENT_MASK;
+}
 struct sdfMemHandle_t *sdfGrPacketBuffHandle = NULL;
 
 s32 sdfGrPacketBuffSize = 0;
@@ -82,16 +90,3 @@ s32 sdfGrPacketBuffPtr = 0;
 
 INCLUDE_SDATA(const s32, "sdf/sdfPacketBuff", sdfGrPacketBuffLimit);
 
-volatile u8 sdfDrawFrameFlag = 0;
-
-volatile u8 sdfDrawSyncFlag = 0;
-
-u16 sdfDrawFrameCounter = 0;
-
-volatile u8 sdfDrawPublishFlag = 0;
-
-u8 sdfGrDrawFrameId = 0;
-
-u8 sdfGrBufferSlot = 0;
-
-volatile s8 sdfReqDrawDelayCount = 0;
