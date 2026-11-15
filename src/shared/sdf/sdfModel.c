@@ -851,7 +851,7 @@ void sdfModelTempPacketLinkOt(sdfGrOt_t **ot, sdfModelRootNode_t *root)
                 sdfModelTempDrawPacket_t *buf;
 
                 tag = sdfPrimAllocDrawTag(NULL);
-                *(f32 *)&tag->z = zValue;
+                tag->sortZ = zValue;
                 tag->lightPacket = EE_ADDR(light);
                 tag->fogPacket = EE_ADDR(fog);
                 tags[slotIndex] = tag;
@@ -1008,10 +1008,9 @@ void sdfModelDrawEnvLinkOt(sdfGrOt_t **aOt, sdfModelDrawEnv_t *aEnv)
     s32 i;
 
     for (i = 0; i != 4; i++) {
-        ((void (*)(sdfGrOt_t *, s32, sdfDrawTag_t *))aOt[i]->callbackFunc)(aOt[i], 1,
-                                                                          &aEnv->set[i].drawTag);
+        aOt[i]->callbackFunc(aOt[i], 1, &aEnv->set[i].drawTag);
     }
-    ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))aOt[3]->regFunc)(aOt[3], &aEnv->term.drawTag);
+    aOt[3]->regFunc(aOt[3], &aEnv->term.drawTag);
 }
 
 void *sdfChunkFindById(void *data, u32 chunkId) {

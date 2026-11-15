@@ -2,62 +2,9 @@
 #include "ps2asm.h"
 #include "sdk_libc.h"
 #include "sdk_libgcc.h"
-
-enum {
-    SDF_TMX_MAGIC = 0x30584D54,
-    SDF_STREAM_CHUNK_BYTES = 0x4000,
-    SDF_STREAM_COMMAND_CREATE_STATE = 32,
-    SDF_STREAM_COMMAND_CONTROL = 33,
-    SDF_STREAM_COMMAND_READ = 34,
-    SDF_STREAM_COMMAND_RELEASE_STATE = 35,
-    SDF_IOP_MODULES_PER_GROUP = 2,
-    SDF_KEY_TREE_PATH_LIMIT = 32,
-    SDF_POOL_REBUILD_CHAIN = 0,
-    SDF_POOL_PUSH_FREE = 1
-};
-
-struct sdfDrawTag_t;
-
-struct sdfSortOtNode_tag;
-
-struct sdfGrOt_t;
-
-#define SDF_POOL_FREE_KIND 0xFFFF
-
 #include "sdk_libkernl.h"
 
-/* Pool release logic tests the packet head address and kind at 0xC;
- * bytes at 0x8 remain opaque. The float-key tree insertion helper reads the
- * same +0xC word through sdfDrawTag_t. */
-typedef struct sdfDrawTag_t {
-    struct sdfDrawTag_t *next; /* 0x00 */
-    s32 head;       /* 0x04: first DMA packet address. */
-    u8 tail[4];                  /* 0x08 */
-    f32 z;                    /* 0x0C */
-} sdfDrawTag_t;
-
-typedef struct sdfSortOtNode_tag {
-    struct sdfSortOtNode_tag *right; /* 0x00 */
-    struct sdfSortOtNode_tag *left;  /* 0x04 */
-    struct sdfDrawTag_t *tag;  /* 0x08 */
-    s32 balance;                  /* 0x0C */
-} sdfSortOtNode_tag;
-
-/* A key-sorted draw-surface pool: a draw tag whose append and prepend
- * callbacks release a node into the pool and update its free list. */
-typedef struct sdfGrOt_t {
-    void *next;                                                /* 0x00: the pool entry's link */
-    sdfDrawTag_t *tagHead;                                     /* 0x04: first node in the emitted chain */
-    sdfDrawTag_t *tagTail;                                     /* 0x08: last node in the emitted chain */
-    sdfDrawTag_t *noSortTag;                                   /* 0x0C: the free list */
-    void (*regFunc)(struct sdfGrOt_t *, sdfDrawTag_t *);       /* 0x10 */
-    void (*callbackFunc)(struct sdfGrOt_t *, s32, sdfDrawTag_t *); /* 0x14 */
-    sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
-} sdfGrOt_t;
-
-
 typedef struct _reent _reent;
-
 
 typedef struct __sbuf {
     u8 *_base;

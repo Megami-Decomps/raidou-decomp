@@ -2,6 +2,8 @@
 #include "ps2asm.h"
 #include "sdk_libc.h"
 #include "sdfPacketBuff.h"
+#include "libsdf.h"
+#include "sdfDraw.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -16,27 +18,11 @@ enum {
     SDF_POOL_PUSH_FREE = 1
 };
 
-struct sdfDrawTag_t;
-
 struct sdfSortOtNode_tag;
-
-struct sdfGrOt_t;
 
 #define SDF_POOL_FREE_KIND 0xFFFF
 
 #include "sdk_libkernl.h"
-
-extern void sdfGrJoinDrawTag(void *aFore, void *aBack);
-
-/* Pool release logic tests the packet head address and kind at 0xC;
- * bytes at 0x8 remain opaque. The float-key tree insertion helper reads the
- * same +0xC word through sdfDrawTag_t. */
-typedef struct sdfDrawTag_t {
-    struct sdfDrawTag_t *next; /* 0x00: also the replaced item in the key tree */
-    s32 head;                  /* 0x04: first DMA packet address. */
-    u8 tail[4];                /* 0x08 */
-    f32 z;                     /* 0x0C: the sort key; the pool reads its bits */
-} sdfDrawTag_t;
 
 typedef struct sdfSortOtNode_tag {
     struct sdfSortOtNode_tag *right; /* 0x00 */
@@ -45,17 +31,7 @@ typedef struct sdfSortOtNode_tag {
     s32 balance;                  /* 0x0C */
 } sdfSortOtNode_tag;
 
-/* A key-sorted draw-surface pool: a draw tag whose append and prepend
- * callbacks release a node into the pool and update its free list. */
-typedef struct sdfGrOt_t {
-    void *next;                                                /* 0x00: the pool entry's link */
-    sdfDrawTag_t *tagHead;                                     /* 0x04: first node in the emitted chain */
-    sdfDrawTag_t *tagTail;                                     /* 0x08: last node in the emitted chain */
-    sdfDrawTag_t *noSortTag;                                   /* 0x0C: the free list */
-    void (*regFunc)(struct sdfGrOt_t *, sdfDrawTag_t *);       /* 0x10 */
-    void (*callbackFunc)(struct sdfGrOt_t *, s32, sdfDrawTag_t *); /* 0x14 */
-    sdfSortOtNode_tag *data[1];                                /* 0x18: first key-tree root; the allocation continues */
-} sdfGrOt_t;
+/* A sort OT is an sdfGrOt_t whose callbacks file tags into key trees rooted at data[]. */
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
@@ -67,7 +43,7 @@ void sdfSortOtAvlCheckBalance(sdfSortOtNode_tag **stack, s32 stack_depth, sdfSor
 
 void sdfSortOtAvlRegist(sdfSortOtNode_tag **root_p, sdfDrawTag_t *tag);
 void sdfGrSortOtReg(sdfGrOt_t *aOt, sdfDrawTag_t *aTag);
-void sdfGrSortOtFixup(void *tag, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p);
+void sdfGrSortOtFixup(sdfDrawTag_t *tag, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p);
 void sdfGrSortOtTraverse(sdfSortOtNode_tag *node, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p);
 void sdfGrSortOtSetup(sdfGrOt_t *aOt);
 void sdfGrSortOtCallback(sdfGrOt_t *aOt, s32 aFunc, sdfDrawTag_t *aData);
@@ -302,17 +278,19 @@ void sdfSortOtAvlRegist(sdfSortOtNode_tag **root_p, sdfDrawTag_t *tag) {
     sdfSortOtNode_tag **link = root_p;
     sdfSortOtNode_tag *cur = *root_p;
     sdfSortOtNode_tag *node;
-    f32 key = tag->z;
+    f32 key = tag->sortZ;
+    f32 curKey;
 
     while (cur != NULL) {
-        if (key == cur->tag->z) {
+        curKey = cur->tag->sortZ;
+        if (key == curKey) {
             tag->next = cur->tag;
             cur->tag = tag;
             return;
         }
         path[depth] = cur;
         depth++;
-        if (cur->tag->z < key) {
+        if (curKey < key) {
             link = &cur->right;
         } else {
             link = &cur->left;
@@ -333,7 +311,7 @@ void sdfSortOtAvlRegist(sdfSortOtNode_tag **root_p, sdfDrawTag_t *tag) {
 
 void sdfGrSortOtReg(sdfGrOt_t *aOt, sdfDrawTag_t *aTag) {
     if (aTag->head != 0) {
-        if (*(s32 *)&aTag->z == SDF_POOL_FREE_KIND) {
+        if (aTag->z == SDF_POOL_FREE_KIND) {
             aTag->next = aOt->noSortTag;
             aOt->noSortTag = aTag;
         } else {
@@ -343,7 +321,7 @@ void sdfGrSortOtReg(sdfGrOt_t *aOt, sdfDrawTag_t *aTag) {
     }
 }
 
-void sdfGrSortOtFixup(void *tag, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p) {
+void sdfGrSortOtFixup(sdfDrawTag_t *tag, sdfDrawTag_t **head_p, sdfDrawTag_t **tail_p) {
     sdfDrawTag_t *current;
     sdfDrawTag_t *next;
 
@@ -403,5 +381,5 @@ void sdfGrSortOtCallback(sdfGrOt_t *aOt, s32 aFunc, sdfDrawTag_t *aData) {
 
 void sdfModelSetOtCallbacks(sdfGrOt_t *aOt) {
     aOt->regFunc = sdfGrSortOtReg;
-    aOt->callbackFunc = sdfGrSortOtCallback;
+    aOt->sortCallbackFunc = sdfGrSortOtCallback;
 }

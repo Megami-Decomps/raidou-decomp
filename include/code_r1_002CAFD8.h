@@ -8,6 +8,8 @@ void itfDrawGridWithResolvedSlot(s32 offsetX, s32 offsetY, s32 z,
                                  s32 drawFlags, struct EffectSlotSet *object,
                                  s32 index, s32 surfaceIndex);
 
+s32 itfGridLookupValueOrDefault(struct EffectSlotSet *resource, s32 resourceIndex);
+
 /* Known continuation bit; other EffectSlotDescription.flags meanings remain unspecified. */
 enum EffectSlotDescriptionFlag {
     EFF_SLOT_DESCRIPTION_SEQUENCE_CONTINUATION = 0x20,

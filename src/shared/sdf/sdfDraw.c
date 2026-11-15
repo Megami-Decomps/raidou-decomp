@@ -229,18 +229,6 @@ typedef struct sdfGrFrameSet_t {
     sdfGsMemSlice_t *buffers[3];
 } sdfGrFrameSet_t;
 
-/* Draw-surface pool entry (0x20); the SDK initializes and flushes this owner. */
-typedef struct sdfGrOt_t {
-    struct sdfGrOt_t *next; /* 0x00 */
-    sdfDrawTag_t *tagHead;     /* 0x04 */
-    sdfDrawTag_t *tagTail;     /* 0x08 */
-    u32 noSortTag;
-    void (*regFunc)(struct sdfGrOt_t *, sdfDrawTag_t *);          /* 0x10 */
-    s32 (*callbackFunc)(struct sdfGrOt_t *, s32, sdfDrawTag_t *); /* 0x14 */
-    u32 data;
-    u32 pad;
-} sdfGrOt_t;
-
 /* Frame/depth builder state: one DMA/GIF header and two A+D register writes. */
 typedef struct sdfGrFramePacket_t {
     u8 pad00[4];
@@ -497,7 +485,7 @@ void sdfGrOtInit(sdfGrOt_t *aOt, s32 aNumOt) {
     node->tagHead = 0;
     node->tagTail = 0;
     node->noSortTag = 0;
-    node->data = 0;
+    node->data[0] = NULL;
     if (remaining == 0) {
         node->next = NULL;
         return;
@@ -512,7 +500,7 @@ link:
     next->tagHead = 0;
     next->tagTail = 0;
     next->noSortTag = 0;
-    next->data = 0;
+    next->data[0] = NULL;
     if (remaining != 0) {
         goto link;
     }

@@ -7,33 +7,12 @@
 #include "frFont.h"
 #include "itfMisc.h"
 
-typedef struct frRelativeImage_t
-{
-    s32 firstOffset;
-    s32 secondDelta;
-    u8 unk08[0x10];
-    s32 thirdDelta;
-} frRelativeImage_t;
-
-typedef struct frImagePtrs_t
-{
-    void *treeNodes;
-    void *entryBitOffsets;
-    void *packedBitstream;
-} frImagePtrs_t;
-
 typedef struct { u32 start, end; } frBitRange_t;
-
-typedef struct frFontNode_t
-{
-    u32 slotIndex;
-    struct frFontNode_t *next;
-} frFontNode_t;
 
 typedef struct
 {
     sdfMemHandle_t *allocation;
-    frFontNode_t first;
+    frFontNodeHeader_t first;
 } frFontRing_t;
 
 extern u32 frFontRowBuf;
@@ -59,12 +38,9 @@ extern frTextBank_t itfMesEmbedded_3E8CA8, itfMesEmbedded_3F39E0, itfMesEmbedded
 extern u8 *MessageNumSearch(s32 index, frTextBank_t *bank, s32 size);
 extern s32 frHelpLastIndex, D_0054F458, frHelpPosX, frHelpPosY;
 u32 frGetFontHeader(addr_t resourceBase);
-void frGetFontImagePtrs(frRelativeImage_t *block, frImagePtrs_t *out);
-s32 frDecodeFontRow(u8 *decodedBytes, s32 entryIndex, void *resourceBase, frImagePtrs_t *segments);
-frFontNode_t *frAllocFontTable(s32 payloadBytes, s32 count);
-void *frAllocFontNode(frFontNode_t *queue);
-s32 frFreeFontNode(void *payload, frFontNode_t *queue);
-u32 frFreeFontTable(frFontNode_t *ringBase);
+frFontNodeHeader_t *frAllocFontTable(s32 payloadBytes, s32 count);
+void *frAllocFontNode(frFontNodeHeader_t *queue);
+s32 frFreeFontNode(void *payload, frFontNodeHeader_t *queue);
 extern s32 frTestFontX, frTestFontY;
 
 #include "scr.h"
@@ -346,7 +322,7 @@ u32 frGetFontHeader(addr_t resourceBase) {
 }
 
 /* Resolve three signed, cumulative relative offsets without validating bounds. */
-void frGetFontImagePtrs(frRelativeImage_t *block, frImagePtrs_t *out) {
+void frGetFontImagePtrs(frFontResource_t *block, frFontImage_t *out) {
     s32 firstOffset = block->firstOffset;
     s32 secondOffset = firstOffset + block->secondDelta;
     s32 thirdOffset = secondOffset + block->thirdDelta;
@@ -361,7 +337,7 @@ INCLUDE_ASM(const s32, "interface/frWrap", frCallGetFontHeader);
 /* Decode entryIndex's bit span through the resource's six-byte prefix-tree records.
  * Write terminal bytes to decodedBytes and return/cache the count. The font atlas
  * uses these bytes as pixels; neither entry nor output bounds are checked. */
-s32 frDecodeFontRow(u8 *decodedBytes, s32 entryIndex, void *resourceBase, frImagePtrs_t *segments) {
+s32 frDecodeFontRow(u8 *decodedBytes, s32 entryIndex, void *resourceBase, frFontImage_t *segments) {
     frBitRange_t range;
     s32 produced;
     u8 *table = segments->treeNodes;
@@ -405,11 +381,11 @@ s32 frDecodeFontRow(u8 *decodedBytes, s32 entryIndex, void *resourceBase, frImag
 
 /* Build count usable nodes plus index-zero sentinel, retaining each payload gap.
  * The allocation handle is stored four bytes before the returned ring base. */
-frFontNode_t *frAllocFontTable(s32 payloadBytes, s32 count) {
+frFontNodeHeader_t *frAllocFontTable(s32 payloadBytes, s32 count) {
     sdfMemHandle_t *buffer;
     u8 *list;
-    frFontNode_t *cursor;
-    frFontNode_t *next;
+    frFontNodeHeader_t *cursor;
+    frFontNodeHeader_t *next;
     s32 i;
 
     buffer = sdfMemAllocDirect((payloadBytes + ITF_NODE_HEADER_BYTES) * (count + 1) + ITF_ALLOCATION_HANDLE_BYTES);
@@ -417,21 +393,21 @@ frFontNode_t *frAllocFontTable(s32 payloadBytes, s32 count) {
     i = 0;
     memcpy(list, &buffer, ITF_ALLOCATION_HANDLE_BYTES);
     list += ITF_ALLOCATION_HANDLE_BYTES;
-    cursor = (frFontNode_t *)list;
+    cursor = (frFontNodeHeader_t *)list;
     for (; i < count; i++) {
-        next = (frFontNode_t *)((u8 *)cursor + payloadBytes + ITF_NODE_HEADER_BYTES);
+        next = (frFontNodeHeader_t *)((u8 *)cursor + payloadBytes + ITF_NODE_HEADER_BYTES);
         cursor->slotIndex = i;
         cursor->next = next;
         cursor = next;
     }
     cursor->slotIndex = count;
-    cursor->next = (frFontNode_t *)list;
-    return (frFontNode_t *)list;
+    cursor->next = (frFontNodeHeader_t *)list;
+    return (frFontNodeHeader_t *)list;
 }
 
 /* Remove the next free node, or return NULL at the index-zero sentinel. */
-void *frAllocFontNode(frFontNode_t *queue) {
-    frFontNode_t *head = queue->next;
+void *frAllocFontNode(frFontNodeHeader_t *queue) {
+    frFontNodeHeader_t *head = queue->next;
 
     if (head->slotIndex == 0) {
         return NULL;
@@ -443,8 +419,8 @@ void *frAllocFontNode(frFontNode_t *queue) {
 
 /* Prepend a detached payload's header; NULL or an already linked node fails.
  * Header pointer formation before the NULL test is retained unchanged. */
-s32 frFreeFontNode(void *payload, frFontNode_t *queue) {
-    frFontNode_t *node = (frFontNode_t *)payload - 1;
+s32 frFreeFontNode(void *payload, frFontNodeHeader_t *queue) {
+    frFontNodeHeader_t *node = (frFontNodeHeader_t *)payload - 1;
     if (payload == NULL) {
         return 0;
     }
@@ -457,7 +433,7 @@ s32 frFreeFontNode(void *payload, frFontNode_t *queue) {
 }
 
 /* Release the handle preceding the original ring base, not an acquired payload. */
-u32 frFreeFontTable(frFontNode_t *ringBase) {
+u32 frFreeFontTable(frFontNodeHeader_t *ringBase) {
     sdfMemFreeDirect(((frFontRing_t *)((u8 *)ringBase - ITF_ALLOCATION_HANDLE_BYTES))->allocation);
     return 1;
 }

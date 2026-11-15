@@ -150,20 +150,46 @@ typedef struct TMX_HEADER_t
 /* One draw list: the CPU link plus the DMA addresses of its packet chain.
  *
  * head, tail and the three reference slots are addresses rather than typed
- * pointers, and z is an integer, because that is what the nine packet-building
- * units are compiled from: sdfDrawTagInit writes `z = 0xFFFF` as an integer,
- * which an f32 member would not reproduce. The IDB types them as pointers and
- * an f32; nothing in the tree exercises that reading, so the proven one is
- * kept here. */
+ * pointers. z is both an integer and a float: sdfDrawTagInit writes `z = 0xFFFF`
+ * as an integer (the sort OT's free mark), while sdfModel stores and sdfSortOt
+ * compares the depth key as an f32. */
 typedef struct sdfDrawTag_t
 {
     struct sdfDrawTag_t *next;
     addr_t head;
     addr_t tail;
-    u32 z;
+    union {
+        u32 z;
+        f32 sortZ;
+    };
     addr_t lightPacket; /* Optional first DMA reference prefix. */
     addr_t fogPacket;   /* Optional second DMA reference prefix. */
     addr_t texPacket[2];
 } sdfDrawTag_t;
+
+struct sdfSortOtNode_tag;
+
+typedef struct sdfGrOt_t sdfGrOt_t;
+
+/* One ordering table: the draw tags filed into it this frame, plus the two
+ * callbacks that file and flush them. sdfGrOtTable is 85 of these back to back,
+ * which is what fixes the 32-byte stride. */
+struct sdfGrOt_t
+{
+    sdfGrOt_t *next;
+    sdfDrawTag_t *tagHead;
+    sdfDrawTag_t *tagTail;
+    sdfDrawTag_t *noSortTag; /* name unconfirmed; sdfGrOtInit zeroes it */
+    void (*regFunc)(sdfGrOt_t *ot, sdfDrawTag_t *tag);
+    /* Retail's sdfGrOtNormalCallback falls off its end as an int function and
+     * sdfGrSortOtCallback is void; each matches only with its own return type. */
+    union {
+        s32 (*callbackFunc)(sdfGrOt_t *ot, s32 func, sdfDrawTag_t *tag);
+        void (*sortCallbackFunc)(sdfGrOt_t *ot, s32 func, sdfDrawTag_t *tag);
+    };
+    /* A sort OT's key tree roots; the allocation continues past the entry. */
+    struct sdfSortOtNode_tag *data[1];
+    u32 pad;
+};
 
 #endif /* SDF_RESOURCE_H */

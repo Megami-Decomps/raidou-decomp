@@ -162,4 +162,29 @@ typedef struct FrFontCtx {
 typedef char FrFontGlyph_size_must_be_0x5C[sizeof(_FRQ) == 0x5C ? 1 : -1];
 #endif
 
+/* Relative offsets select three packed-font resource regions. */
+typedef struct frFontResource_t {
+    s32 firstOffset; /* 0x00 */
+    s32 secondDelta; /* 0x04 */
+    u8 opaque08[0x10];
+    s32 thirdDelta; /* 0x18 */
+} frFontResource_t;
+
+/* Free-list header stored immediately before each interface-pool payload. */
+typedef struct frFontNodeHeader_t {
+    u32 slotIndex; /* Zero identifies the ring sentinel. */
+    struct frFontNodeHeader_t *next;
+} frFontNodeHeader_t;
+
+/* Output pointers address the tree, entry bit ranges, and packed bit words. */
+typedef struct frFontImage_t {
+    void *treeNodes;       /* 0x00 */
+    void *entryBitOffsets; /* 0x04 */
+    void *packedBitstream; /* 0x08 */
+} frFontImage_t;
+
+u32 frFreeFontTable(frFontNodeHeader_t *ringBase);
+void frGetFontImagePtrs(frFontResource_t *block, frFontImage_t *out);
+s32 frDecodeFontRow(u8 *decodedBytes, s32 entryIndex, void *resourceBase, frFontImage_t *segments);
+
 #endif

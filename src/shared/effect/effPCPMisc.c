@@ -252,8 +252,6 @@ typedef struct billRenderPair_t billRenderPair_t;
 
 typedef struct billHandle_t billHandle_t;
 
-typedef struct sdfGrOt_t sdfGrOt_t;
-
 typedef struct effPCPSparkleSphereParam_t effPCPSparkleSphereParam_t;
 
 typedef struct effPCPSparkleSphere_tag effPCPSparkleSphere_tag;
@@ -644,20 +642,6 @@ struct billHandle_t {
     u32 animationEntryIndex; /* 0x58: selected nonempty animation descriptor */
     s32 entryCount;
     struct dds3BillAnim_tag *resolvedEntries; /* 0x60: runtime animation state array */
-};
-
-struct sdfGrOt_t;
-
-/* Draw-surface pool entry (0x20); the SDK initializes and flushes this owner. */
-struct sdfGrOt_t {
-    struct sdfGrOt_t *next; /* 0x00 */
-    sdfDrawTag_t *tagHead;     /* 0x04 */
-    sdfDrawTag_t *tagTail;     /* 0x08 */
-    u32 noSortTag;
-    void (*regFunc)(struct sdfGrOt_t *, sdfDrawTag_t *);          /* 0x10 */
-    s32 (*callbackFunc)(struct sdfGrOt_t *, s32, sdfDrawTag_t *); /* 0x14 */
-    u32 data;
-    u32 pad;
 };
 
 extern struct sdfGrOt_t *sdfModelOtTable[4];

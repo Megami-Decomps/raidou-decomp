@@ -21,8 +21,6 @@ scrProcessWork_s *scrPrintProcedureStart(scrHeader_t *header, scrTypeTable_t *ty
                                          scrProcTable_t *proctable, scrLabelTable_t *labeltable,
                                          scrCode_u *code, u8 *mesdata, char *strdata, s32 procno);
 
-scrProcessWork_s *fldFlowParse(scrHeader_t *header, s32 procno);
-
 void scrLinkHandle(scrProcessWork_s *work)
 {
     scrProcessWork_s *last = scrHandleLast;

@@ -31,8 +31,8 @@
 typedef struct EffectListNode {
     u32 state;
     struct EffectListNode *next;
-    u32 value;
-    u32 length;
+    const char *value;
+    const char *length; /* the resource name, or the package path in modes 1 and 2 */
     u32 kind;
     void **reference;
 } EffectListNode;
@@ -67,7 +67,6 @@ static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list
     surface->regFunc(surface, list);
 }
 
-extern s32 effRequestResourceByMode(u32, u32, u32, void **);
 
 typedef struct EffectObjectFlag {
     u32 state;
@@ -588,13 +587,13 @@ typedef struct EffectFileHeader {
     u32 length;
 } EffectFileHeader;
 
-s32 effAppendListEntry(EffectList *list, u32 value, u32 length,
+s32 effAppendListEntry(EffectList *list, const char *value, const char *length,
                           u32 kind, u32 reference);
 
 s32 effRemoveListEntry(EffectList *list);
 s32 effPollResourceList(EffectList *list);
 
-s32 effAppendListEntry(EffectList *list, u32 value, u32 length,
+s32 effAppendListEntry(EffectList *list, const char *value, const char *length,
                           u32 kind, u32 reference) {
     EffectListNode *node = sdfChipAllocDirect(sizeof(EffectListNode));
     memset(node, 0, sizeof(EffectListNode));
@@ -647,7 +646,7 @@ s32 effPollResourceList(EffectList *list) {
                 if (list->request != NULL) {
                     pacFileHandleFree_(list->request);
                 }
-                list->request = pacLoad((const char *)node->length);
+                list->request = pacLoad(node->length);
                 if (list->mode == 2) {
                     pacSync(list->request);
                 }

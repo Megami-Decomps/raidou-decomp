@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "code_r1_001CC1D0.h"
+#include "fileManager.h"
 
 /* Submit a single GS ALPHA-register value through the active packet stream. */
 void sdfSubmitGsAlphaOneRegisterPacket(u32 data, u32 kind);
@@ -21,5 +22,14 @@ struct EffectSlotSet *effCreateResourceSlotSet(struct EffectSlotSet *borrowedSou
 void effInitializeSlotWork(struct EffectSlotSet *owner, s32 slotIndex);
 
 u32 effDestroyResourceSlotSet(struct EffectSlotSet *owner);
+
+struct EffMappedResource;
+
+u32 effConfigureIndexedSlotMaterial(struct EffectSlotSet *work, s32 index,
+                                    struct EffMappedResource *data, s32 item,
+                                    u32 materialFlags, u32 materialValue, u32 stateFlags);
+
+/* Loads base/name; the finished job stores the resource in *outInstance. */
+fileRequest_t *effRequestResourceByMode(const char *base, const char *name, u32 mode, void **outInstance);
 
 #endif

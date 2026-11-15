@@ -19,14 +19,10 @@
 #include "code_r1_0034D128.h"
 #include "code_r1_0034CE48.h"
 #include "code_r1_002C8188.h"
+#include "code_r1_0034C270.h"
 
 /* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
-
-s32 effConfigureIndexedSlotMaterial(struct EffectSlotSet *owner, u32 slot,
-                                    struct EffMappedResource *resources, u32 item,
-                                    u32 materialFlags, u32 materialValue,
-                                    u32 stateFlags);
 
 void mnuClearEntryFlags(struct MenuIconState *group);
 
@@ -172,7 +168,6 @@ typedef struct MenuList MenuList;
 typedef struct MenuIconState MenuIconState;
 
 extern void itfSetGridEntryQuantizedAndRefresh(EffectSlotSet *, s32, s32, s32, s32, s32);
-extern s32 itfGridLookupValueOrDefault(EffectSlotSet *object, s32 key);
 extern void mnuClearListFlagsOneAndTwo(u32 *flags);
 extern void mnuDrawIconPanel(s32, s32, s32, s32, MenuIconState *, s32, s32);
 extern void mnuUpdateWindowPanelHandleStatesKindFourFive(MenuIconState *);
@@ -275,7 +270,6 @@ typedef struct MenuBadgeLayout {
     } \
 }
 
-MenuList *mnuCreateListState(u32 owner, u32 visibleCount, s32 rowSpacing);
 MenuListNode *mnuListAdvanceCursor(MenuList *list, s32 noScroll, s32 keepFade);
 MenuListNode *mnuListRetreatCursor(MenuList *list, s32 noScroll, s32 keepFade);
 void mnuDrawFourEntries(s32 x, s32 y, s32 depth, MenuList *list, MenuListNode *node, s32 drawArg);

@@ -155,4 +155,7 @@ struct frFontHandle_t {
     u8 pad_end[8];
 };
 
+/* No return value; frFont.c's retail call site was compiled against an int return. */
+s32 fmRetFontMem(FontMem_t *pFontArea);
+
 #endif /* FONT_H */

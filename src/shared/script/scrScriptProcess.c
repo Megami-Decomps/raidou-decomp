@@ -10,7 +10,6 @@ extern scrProcessWork_s *scrHandleFirst;
 
 extern void *dds3GetProcessData(dds3ProcessID_t *id);
 extern void dds3SetProcessData(dds3ProcessID_t *id, void *data);
-extern scrProcessWork_s *fldFlowParse(void *data, s32 messageHandle);
 
 extern scrProcessWork_s *scrPrintProcedureStart(scrHeader_t *header, scrTypeTable_t *typeTable,
                                                 scrProcTable_t *procTable,

@@ -7,6 +7,7 @@
 #include "basic.h"
 #include "evt_world.h"
 #include "code_r1_001CC1D0.h"
+#include "code_r1_0034C270.h"
 
 /* Select the indexed node and report whether the index exists. */
 s32 mnuSeekListNode(s32 index, struct MenuList *list);
@@ -63,7 +64,6 @@ typedef struct MenuContextSprites {
     u32 spriteE4;
 } MenuContextSprites;
 
-MenuList *mnuCreateListState(s32 id, s32 visibleCount, s32 rowSpacing);
 void mnuUpdateListScrollFlags(MenuList *list);
 s32 mnuListContainsFinalNode(MenuList *list);
 MenuListNode *mnuListAdvanceCursor(MenuList *, s32, s32);

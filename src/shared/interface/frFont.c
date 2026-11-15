@@ -14,11 +14,9 @@
 
 typedef struct frFontHeader_t frFontHeader_t;
 
-typedef struct frFontResource_t frFontResource_t;
 
 typedef struct frFontData_t frFontData_t;
 
-typedef struct frFontNodeHeader_t frFontNodeHeader_t;
 
 typedef struct frFontAtlas_t frFontAtlas_t;
 
@@ -36,7 +34,6 @@ typedef struct frTextBank_t frTextBank_t;
 
 typedef struct frMsgInfo_t frMsgInfo_t;
 
-typedef struct frFontImage_t frFontImage_t;
 
 /* Serialized resource header. */
 struct frFontHeader_t {
@@ -53,14 +50,6 @@ struct frFontHeader_t {
     u32 lookupOffset;
 };
 
-/* Relative offsets select three packed-font resource regions. */
-struct frFontResource_t {
-    s32 firstOffset; /* 0x00 */
-    s32 secondDelta; /* 0x04 */
-    u8 opaque08[0x10];
-    s32 thirdDelta; /* 0x18 */
-};
-
 /* SMT3's has a ninth word (data); Raidou's frFontSystem_t entries are 0x20 apart. */
 struct frFontData_t {
     sdfMemHandle_t *allocation;
@@ -71,12 +60,6 @@ struct frFontData_t {
     void *ysht;
     GsFont_t **trans;
     struct frFontResource_t *resource;
-};
-
-/* Free-list header stored immediately before each interface-pool payload. */
-struct frFontNodeHeader_t {
-    u32 slotIndex; /* Zero identifies the ring sentinel. */
-    struct frFontNodeHeader_t *next;
 };
 
 /* frFontWork + 0x160; the small texture label aliases this owned subobject. */
@@ -152,13 +135,6 @@ struct frMsgInfo_t {
     u8 pad1E[2];
 };
 
-/* Output pointers address the tree, entry bit ranges, and packed bit words. */
-struct frFontImage_t {
-    void *treeNodes; /* 0x00 */
-    void *entryBitOffsets; /* 0x04 */
-    void *packedBitstream; /* 0x08 */
-};
-
 /* sdfImageSetPacket_tag.freeMode: which heap owns the uploaded pixels. */
 enum SdfImageSetMem
 {
@@ -202,7 +178,6 @@ void frClearTexBuf(void);
 void frDestroyFontTable(dds3ProcessID_t *id);
 void frDelStyleAll(void);
 extern frFontHandle_t *frDestroyFontRequestNow(frFontHandle_t *pFRQ);
-extern u32 frFreeFontTable(frFontNodeHeader_t *pool);
 s32 fmDestroyFontMemControl(void);
 
 void frAddFontStyle(
@@ -232,7 +207,6 @@ extern u8 frFontClutTable[];
 #define FR_FONT_IMAGE_BUFFER_COUNT 6
 
 void frFlushGsFontTable(frTextHandle_t *pText);
-s32 fmRetFontMem(FontMem_t *pFontArea);
 frFontHandle_t *frDestroyFontRequest(frFontHandle_t *pFRQ);
 s32 frEraseEffect(frFontHandle_t *pFRQ);
 s32 frDestroyFontRequestAfter(frFontHandle_t *pFRQ);
@@ -257,12 +231,6 @@ u8 *frDecodeFontImage(u8 Style, s32 FontNo);
 
 #define FR_FONT_RESOURCE_CLONE_BYTES 0x120
 
-extern void frGetFontImagePtrs(frFontResource_t *resource,
-                              frFontImage_t *segments);
-
-extern s32 frDecodeFontRow(u8 *decodedBytes, s32 entryIndex,
-                                void *resourceBase,
-                                frFontImage_t *segments);
 
 GsFont_t *frTranslateFont2GS(frTextHandle_t *pText, s32 FontNo);
 u16 frGetFontWidth(s32 slotIndex);

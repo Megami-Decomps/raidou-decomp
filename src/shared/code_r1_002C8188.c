@@ -169,7 +169,6 @@ extern char D_003BD198[];
 
 void effCompleteTransientResourceJob(fileRequest_t *job, u32 *outInstance);
 void effCompleteRetainedResourceJob(fileRequest_t *job, u32 *outInstance);
-void effRequestResourceByMode(const char *base, const char *name, u32 mode, u32 *outInstance);
 
 void effCompleteMappedResourceJob(fileRequest_t *job,
                                   EffMappedResource **outMappedResource);
@@ -180,7 +179,6 @@ s32 effRemoveSlotRecord(EffectOwnerRecord *list, EffectSlotOwner *work, s32 slot
 
 /* Release all sixteen buckets; retain the original traversal that reads next after releasing a record. */
 void effReleaseRecordBuckets();
-extern void itfGridLookupValueOrDefault(void *object, s32 key);
 u32 effDispatchRecordBuckets(u32 refresh, EffectOwnerRecord *list, s32 drawOption);
 u32 effDestroyOwnerRecordList(u32 list);
 u32 effConvertParamValue(u32 *kind, void *out, void *in, void *toFloat);
@@ -286,15 +284,15 @@ void effCompleteRetainedResourceJob(fileRequest_t *job, u32 *outInstance) {
 }
 
 /* Clear the output first; only mode one selects the retained-allocation completion path. */
-void effRequestResourceByMode(const char *base, const char *name, u32 mode, u32 *outInstance) {
+fileRequest_t *effRequestResourceByMode(const char *base, const char *name, u32 mode, void **outInstance) {
     char path[EFF_RESOURCE_PATH_BYTES];
 
     sprintf(path, D_003BD198, base, name);
-    *outInstance = 0;
+    *outInstance = NULL;
     if (mode == EFF_RESOURCE_KEEP_ALLOCATION) {
-        fileLoadEx(path, 0, (u32)effCompleteRetainedResourceJob, (u32)outInstance);
+        return fileLoadEx(path, 0, (u32)effCompleteRetainedResourceJob, (u32)outInstance);
     } else {
-        fileLoadEx(path, 0, (u32)effCompleteTransientResourceJob, (u32)outInstance);
+        return fileLoadEx(path, 0, (u32)effCompleteTransientResourceJob, (u32)outInstance);
     }
 }
 

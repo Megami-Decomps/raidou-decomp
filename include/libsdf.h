@@ -29,7 +29,6 @@ typedef struct sdfPreDrawHook_t sdfPreDrawHook_t;
 typedef struct sdfModelPacketHeader_tag sdfModelPacketHeader_tag;
 typedef struct sdfItemArray_t sdfItemArray_t;
 void sdfTexListSetClutColor(sdfItemArray_t *list, s32 color, f32 ratio);
-typedef struct sdfGrOt_t sdfGrOt_t;
 typedef struct sdfPacDecodeCb_t sdfPacDecodeCb_t;
 
 /* Bodies in sdf_lighting.h and draw3d.h; draw tags only need pointers here. */
@@ -262,21 +261,6 @@ struct sdfItemArray_t
     s16 elemSize;
     s16 growStep;
     void *items;
-};
-
-/* One ordering table: the draw tags filed into it this frame, plus the two
- * callbacks that file and flush them. sdfGrOtTable is 85 of these back to back,
- * which is what fixes the 32-byte stride. */
-struct sdfGrOt_t
-{
-    sdfGrOt_t *next;
-    sdfDrawTag_t *tagHead;
-    sdfDrawTag_t *tagTail;
-    sdfDrawTag_t *noSortTag; /* name unconfirmed; sdfGrOtInit zeroes it */
-    void (*regFunc)(sdfGrOt_t *ot, sdfDrawTag_t *tag);
-    void *callbackFunc;
-    void *data; /* name unconfirmed; sdfGrOtInit zeroes it */
-    u32 pad;
 };
 
 /* Four quadwords: colour, direction, position and the falloff parameters. */
