@@ -874,23 +874,8 @@
 0x0017D7C8	mapProcSequenceSub3	func	tier=D	derived-caller	na	unit code_00176B00, neighbour mapIfToRaidouSelIni; called by ProcSequence
 0x0017D820	mapCallNakamaWakeUp7	func	tier=D	derived-callee	na	unit code_001677F0, neighbour mapNakamaSearchTask; calls mapNakamaWakeUp
 0x0017D868	mapCallNakamaWakeUp2	func	tier=D	derived-callee	na	unit code_00176B00, neighbour mapNakamaSearchTask; calls mapNakamaWakeUp
-0x0017D8B0	fclModelDevilLb	func	tier=D	derived-string	na	unit facility/fclCombineInit; string '/model/devil_lb/DEVIL%03X.LB'
-0x0017E468	fclCallSummonDvTask	func	tier=D	derived-callee	na	unit facility/fclCombineInit; calls mapSummonDvTask
-0x0017E840	fclBunriStartLabel	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'bunri_start_label'
-0x0017EBC8	fclHoukokuStartLabel	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'houkoku_start_label'
-0x0017EDE0	fclMskLabel	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'msk03_label'
-0x0017F350	fclMskLabel2	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'msk0h_label'
-0x0017FB40	fclInnenLabel	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'innen_label'
-0x001801D8	fclTakaneLabel	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'takane_label'
-0x00180870	fclMskLabel3	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'msk00_label'
-0x00180D50	fclMskLabel4	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'msk01_label'
-0x00181720	fclMskLabel5	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'msk05_label'
-0x00181C18	fclMskLabel6	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'msk10_label'
-0x001820F8	fclCallSummonDvTask2	func	tier=D	derived-callee	na	unit facility/fclCombineInit; calls mapSummonDvTask
-0x001823A8	fclCallSummonDvTask3	func	tier=D	derived-callee	na	unit facility/fclCombineInit; calls mapSummonDvTask
 0x001824F8	fclGitaiStartLabel	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'gitai_%02d_start_label'
 0x00182DC0	fclGitaiEndLabel	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'gitai_end_label'
-0x00183C20	fclTakumiLabel	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'takumi_label'
 0x00184220	fclTakumiMotGdc	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'takumi mot1 gdc\n'
 0x00184258	fclTakumiMotMagic	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'takumi  mot2 magic\n'
 0x00184290	fclTakumiMotBstwait	func	tier=D	derived-string	na	unit facility/fclCombineInit; string 'takumi mot3 bstwait\n'
@@ -900,7 +885,6 @@
 0x001846A0	fclCallBitOff	func	tier=D	derived-callee	na	unit facility/fclCombineInit; calls evtBitOff
 0x00184878	fclCallNakamaStockOnCheck	func	tier=D	derived-callee	na	unit facility/fclCombineInit; calls mapNakamaStockOnCheck
 0x00184BA8	fclFunc	func	tier=D	derived-unit	na	unit facility/fclCombineInit; no named callee, caller or string
-0x00184D10	fclCallNakamaSkilIsSetBit	func	tier=D	derived-callee	na	unit facility/fclCombineInit; calls mapNakamaSkilIs_SetBit
 0x00184F68	mapCallEffectGetState2	func	tier=D	derived-callee	na	unit code_001730A8, neighbour mapEffDvReturnStart; calls dds3EffectGetState
 0x00185168	mapCallEffectGetState3	func	tier=D	derived-callee	na	unit code_001730A8, neighbour mapEffDvSummonStart; calls dds3EffectGetState
 0x00185270	mapLeaf26	func	tier=D	derived-unit	na	unit code_001730A8, neighbour mapEffDvSummonEnd; no named callee, caller or string
@@ -24912,6 +24896,8 @@
 0x00174548	fldSe_Init	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x144798 sim 0.793 margin 0.17 pair
 0x00175858	datInitBossPress	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x245c40 sim 0.786 margin 0.11 pair
 0x00178370	mapIfDrawAction	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD fld.mapIfDrawAction score 5.3 flag -: calls3 callee-index st2:cidx r1-disagree:0x1690b0
+0x001820F8	mapNakamaHikouTask	func	tier=B	twin	0.85 (n=425)	twin of raidou1 0x00171AE0 by fclCombineInit order and opcode similarity 0.87
+0x001823A8	mapNakamaSinnTask	func	tier=B	twin	0.85 (n=425)	twin of raidou1 0x00171D78 by fclCombineInit order and opcode similarity 0.85
 0x001843A8	mapNakamaSkilIs_SetBit	func	tier=B	hd-c-single-raidou2	0.85 (n=399)	Raidou HD fld.mapNakamaSkilIs_SetBit score 6.8 flag -: calls4 callee-index st2:cidx r1-disagree:0x173148
 0x00186748	fldFreeRunMapData	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x11bc10 sim 0.929 margin 0.93 pair
 0x001883B0	mapRiberaMaClearMsg	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapRiberaMaClearMsg score 6.5 flag -: calls1 prev gap8/10 st1:gap r1+r2

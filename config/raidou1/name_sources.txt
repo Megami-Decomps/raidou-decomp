@@ -1898,7 +1898,7 @@
 0x0016FC00	mapNakamaKoukTask	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD fld.mapNakamaKoukTask score 10.0 flag -: calls5 str1 callers-of-match votes4 st1:call r2-disagree:0x1801d8
 0x00170290	mapNakamaHakaTask	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD fld.mapNakamaHakaTask score 8.2 flag -: calls3 str1 callers-of-match votes3 st1:call r2-disagree:0x180870
 0x00170768	mapNakamaReiTask	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD fld.mapNakamaReiTask score 8.2 flag -: calls3 str1 callers-of-match votes2 st1:call r2-disagree:0x180d50
-0x00170C40	mapMskLabel	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_001677F0, neighbour mapNakamaReiTask; string 'msk04_label'
+0x00170C40	mapNakamaChikaraTask	inferred	method=twin; p=0.94 (n=1384); tier=A; source=hd; evidence=twin of raidou2 0x00181230 by fclCombineInit order and opcode similarity 0.96
 0x00171118	mapNakamaDokusinTask	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD fld.mapNakamaDokusinTask score 9.7 flag -: calls4 str1 callers-of-match votes3 st1:call r2-disagree:0x181720
 0x00171608	mapNakamaIroTask	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD fld.mapNakamaIroTask score 8.2 flag -: calls3 str1 callers-of-match votes3 st1:call r2-disagree:0x181c18
 0x00171AE0	mapNakamaHikouTask	hd	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD fld.mapNakamaHikouTask score 6.0 flag -: calls7 gap5/2 votes7 st1:gap r2-disagree:0x1820f8
@@ -1914,7 +1914,7 @@
 0x001730A8	mapLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001730A8, neighbour mapNakamaTakumi_FLUSH; no named callee, caller or string
 0x001730C0	mapNakamaTakumi_FLUSH	hd	hd: Raidou HD fld.mapNakamaTakumi_FLUSH, score 8.5 band B
 0x00173138	mapNakamaTakumi_CheckEffStart	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD fld.mapNakamaTakumi_CheckEffStart score 2.7 flag -: prev gap9/22 st1:gap r1-only
-0x00173148	mapCallBitOff	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001730A8, neighbour mapNakamaTakumi_CheckEffStart; calls evtBitOff
+0x00173148	mapNakamaSkilIs_SetBit	inferred	method=twin; p=0.85 (n=399); tier=B; source=hd; evidence=twin of raidou2 0x001843A8 by fclCombineInit order and opcode similarity 0.62
 0x001732E8	mapNakamaStockOnCheck	hd	hd: Raidou HD fld.mapNakamaStockOnCheck, score 8.8 band B
 0x00173328	mapNakamaSkil_SetBit	hd	method=hd-c-single-raidou1; p=0.85 (n=425); tier=B; source=hd; evidence=Raidou HD fld.mapNakamaSkil_SetBit score 5.7 flag -: calls3 callers-of-match-uniq votes2 st1:call r2-disagree:0x184878
 0x001734C8	mapIgnite3	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_001730A8, neighbour mapNakamaSkil_SetBit; string 'Ignite'

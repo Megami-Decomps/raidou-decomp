@@ -711,14 +711,12 @@
 0x0016D248	fldCallNakamaWakeUp2	func	tier=D	derived-callee	na	unit code_001677F0, neighbour fldFastTravelStart; calls mapNakamaWakeUp
 0x0016D2D8	fldCallNakamaWakeUp3	func	tier=D	derived-callee	na	unit code_001677F0, neighbour fldFastTravelStart; calls mapNakamaWakeUp
 0x0016D320	mapCallNakamaWakeUp7	func	tier=D	derived-callee	na	unit code_001677F0, neighbour mapNakamaSearchTask; calls mapNakamaWakeUp
-0x00170C40	mapMskLabel	func	tier=D	derived-string	na	unit code_001677F0, neighbour mapNakamaReiTask; string 'msk04_label'
 0x00173008	mapRefDDS3GBWK7	func	tier=D	derived-data	na	unit code_001677F0, neighbour mapNakamaTakumiTask; references DDS3_GBWK
 0x00173030	mapRefDDS3GBWK8	func	tier=D	derived-data	na	unit code_001677F0, neighbour mapNakamaTakumiTask; references DDS3_GBWK
 0x00173058	mapRefDDS3GBWK9	func	tier=D	derived-data	na	unit code_001677F0, neighbour mapNakamaTakumiTask; references DDS3_GBWK
 0x00173080	mapLeaf3	func	tier=D	derived-unit	na	unit code_001677F0, neighbour mapNakamaTakumiTask; no named callee, caller or string
 0x00173088	fclCombineInitWork	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001730A8	mapLeaf25	func	tier=D	derived-unit	na	unit code_001730A8, neighbour mapNakamaTakumi_FLUSH; no named callee, caller or string
-0x00173148	mapCallBitOff	func	tier=D	derived-callee	na	unit code_001730A8, neighbour mapNakamaTakumi_CheckEffStart; calls evtBitOff
 0x001734C8	mapIgnite3	func	tier=D	derived-string	na	unit code_001730A8, neighbour mapNakamaSkil_SetBit; string 'Ignite'
 0x001739A0	mapCallEffectGetState2	func	tier=D	derived-callee	na	unit code_001730A8, neighbour mapEffDvReturnStart; calls dds3EffectGetState
 0x00173BB8	mapCallEffectGetState3	func	tier=D	derived-callee	na	unit code_001730A8, neighbour mapEffDvSummonStart; calls dds3EffectGetState
@@ -19701,6 +19699,7 @@
 0x00168658	mapIfDrawActionNum	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD fld.mapIfDrawActionNum score 5.9 flag -: calls3 next~ calls-of-match st1:call r2-disagree:0x177898
 0x00171AE0	mapNakamaHikouTask	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD fld.mapNakamaHikouTask score 6.0 flag -: calls7 gap5/2 votes7 st1:gap r2-disagree:0x1820f8
 0x00171D78	mapNakamaSinnTask	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD fld.mapNakamaSinnTask score 6.1 flag -: calls7 callers-of-match votes7 st1:call r2-disagree:0x1823a8
+0x00173148	mapNakamaSkilIs_SetBit	func	tier=B	twin	0.85 (n=399)	twin of raidou2 0x001843A8 by fclCombineInit order and opcode similarity 0.62
 0x00173328	mapNakamaSkil_SetBit	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD fld.mapNakamaSkil_SetBit score 5.7 flag -: calls3 callers-of-match-uniq votes2 st1:call r2-disagree:0x184878
 0x00173DE8	fldFreeRunMapData	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x11bc10 sim 0.929 margin 0.93 pair
 0x00175A50	mapRiberaMaClearMsg	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapRiberaMaClearMsg score 6.5 flag -: calls1 prev gap8/10 st1:gap r1+r2
