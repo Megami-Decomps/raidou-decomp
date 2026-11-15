@@ -19,16 +19,13 @@
 #include "sdfModel.h"
 #include "mdlManager.h"
 #include "effEvent.h"
+#include "billManager.h"
+#include "effBlur_Filter.h"
+#include "effPacket.h"
 
 struct P2A_ANIMATION_tag;
 
-struct sdfBillBoardBatch_t;
-
 struct P2A_TEXANIM_tag;
-
-struct billRenderPair_t;
-
-struct billUvQuad_t;
 
 struct effBTL_SkillPositionPtr_t;
 
@@ -156,7 +153,6 @@ struct effPCPAgiraoFire_tag;
 
 struct effPCPHama01_tag;
 
-struct effDebugPolyParams_t;
 
 struct effPCPThunderSpherePolyParam_t;
 
@@ -194,12 +190,6 @@ struct sdfGsMemSlice_t;
 
 struct effBTLBank_t;
 
-typedef struct billUvQuad_t billUvQuad_t;
-
-typedef struct sdfBillBoardBatch_t sdfBillBoardBatch_t;
-
-typedef struct dds3BillResource_tag dds3BillResource_tag;
-
 typedef struct P2A_ANIMATION_tag P2A_ANIMATION_tag;
 
 typedef struct dds3BillAnimResource_tag dds3BillAnimResource_tag;
@@ -208,15 +198,10 @@ typedef struct P2A_TEXANIM_tag P2A_TEXANIM_tag;
 
 typedef struct dds3BillAnim_tag dds3BillAnim_tag;
 
-typedef struct billRenderPair_t billRenderPair_t;
-
-typedef struct billHandle_t billHandle_t;
-
 typedef struct effPCPSparkleSphereParam_t effPCPSparkleSphereParam_t;
 
 typedef struct effPCPSparkleSphere_tag effPCPSparkleSphere_tag;
 
-typedef struct dds3Effect_PartialMultiBlur_t dds3Effect_PartialMultiBlur_t;
 
 typedef struct effPCPRingPolyExp2Param_t effPCPRingPolyExp2Param_t;
 
@@ -390,27 +375,8 @@ typedef struct mdlEffectResrcItem_t mdlEffectResrcItem_t;
 
 typedef struct mdlMarkPos_t mdlMarkPos_t;
 
-typedef struct effDebugPolyParams_t effDebugPolyParams_t;
 
 #define EFF_DEG2RAD 0.017453292f
-
-struct billHandle_t;
-
-struct dds3BillResource_tag;
-
-/* Native billboard UVs are four ordered U/V corners, not a float vector. */
-struct billUvQuad_t {
-    u16 components[8];
-};
-
-/* Fifteen billboard quads precede the child manager in its 0x450 allocation. */
-struct sdfBillBoardBatch_t {
-    f32 centre[15][4]; /* 0x000 */
-    u32 color[15];       /* 0x0F0 */
-    billUvQuad_t uv[15]; /* 0x12C */
-    f32 offset[15][8];   /* 0x21C: four X/Y corner offset per quad */
-    s32 count;           /* 0x3FC */
-};
 
 struct sdfDrawTag_t;
 
@@ -424,25 +390,6 @@ struct sdfTexHandle_t;
 
 /* Serialized byte consumed by the GS texture-state packet builder. */
 typedef u8 SdfTextureClampMode;
-
-/* Child manager at retained allocation +0x400; shared by resource and draw owners. */
-struct dds3BillResource_tag {
-    sdfTexHandle_t *hTex; /* 0x00: acquired texture reference. */
-    u16 type; /* Child type bits; signed inputs narrow on assignment. */
-    u8 pad06[2];
-    s32 count;      /* 0x08 */
-    billUvQuad_t uv; /* 0x0C */
-    f32 cx;             /* 0x1C */
-    f32 cy;             /* 0x20 */
-    f32 width;  /* 0x24 */
-    f32 height; /* 0x28 */
-    sdfDrawTag_t *pBillTag[5]; /* 0x2C */
-    u16 current_mode; /* 0x40 */
-    u8 pad42[2];
-    struct sdfMemHandle_t *hMem; /* 0x44: hMem descriptor released with this child. */
-    sdfBillBoardBatch_t *batch; /* 0x48: retained packet-buffer address */
-    struct dds3BillResource_tag *next; /* 0x4C */
-};
 
 struct dds3BillAnimResource_tag;
 
@@ -493,42 +440,6 @@ struct dds3BillAnim_tag {
     P2A_TEXANIM_tag *pTexAnim;
 };
 
-/* Two-child draw descriptor at +0x34 in animation-list objects; child allocations end before it. */
-struct billRenderPair_t {
-    struct dds3BillResource_tag *children[2];
-    u16 cameraFacingMode; /* 0x08: value 1 builds a view-facing matrix; other values use identity. */
-    u16 kind;
-    u32 colors[2];
-    sdfDrawTag_t *packetList; /* 0x14 */
-    struct billRenderPair_t *next; /* 0x18 */
-};
-
-struct billHandle_t {
-    f32 pos[4]; /* 0x00: copied as a four-component pos by both render paths. */
-    f32 childScaleX;  /* 0x10: set by dds3BillboardSetScale */
-    f32 childScaleY;  /* 0x14 */
-    f32 unk18;
-    f32 unk1C;
-    f32 rot;  /* 0x20: radian angle used to rotate the quad corners. */
-    u32 abgr;   /* 0x24: set by dds3BillboardSetRGBA */
-    void (*callback)(struct billHandle_t *); /* 0x28: called by dds3BillboardDraw; set from the
-                          per-index table by dds3BillboardCreate */
-    u16 type;         /* 0x2C: type 0/3 child, type 1 animation list */
-    u16 mode; /* 0x2E: selected child packet-list pool */
-    union {
-        void *payload; /* 0x30: type-discriminated payload when its type is unknown */
-        struct dds3BillResource_tag *child; /* child kinds */
-        struct dds3BillAnimResource_tag *animationData; /* type 1 */
-    };
-    billRenderPair_t pair; /* 0x34: used by the mode-0x80 entry renderer */
-    u16 animationActive; /* 0x50: cleared by empty or completed nonlooping animation */
-    u8 pad52[2];
-    u32 modeFlags; /* 0x54: bits 0x40/0x80 select billboard entry modes */
-    u32 animationEntryIndex; /* 0x58: selected nonempty animation descriptor */
-    s32 entryCount;
-    struct dds3BillAnim_tag *resolvedEntries; /* 0x60: runtime animation state array */
-};
-
 extern struct sdfGrOt_t *sdfModelOtTable[4];
 extern u8 effPCPZiodin01Vec[];
 extern s32 BlinkMultiBlurCount;
@@ -558,13 +469,6 @@ struct effPCPSparkleSphere_tag {
     u32 abgr;
     f32 area;
     struct billHandle_t *hBill;
-};
-
-struct dds3Effect_PartialMultiBlur_t;
-
-struct dds3Effect_PartialMultiBlur_t {
-    dds3Effect_PartialMultiBlurParam_t param;
-    struct sdfTexHandle_t *texture;
 };
 
 /* The copied 0x5C input head for the linked/ring beam variant. */
@@ -602,7 +506,7 @@ struct dds3RingPolyExpList_tag {
     u32 blend; /* Indexes the node draw-dispatch table. */
     u32 color;
     u32 vertexCount;
-    f32 *pVertex;
+    sdfVector4_t *pVertex;
     u32 *pVC;
     struct sdfMat_t *pMat;
     struct sdfMemHandle_t *hMem;
@@ -788,7 +692,7 @@ struct effPCPMultiBlurExp2_tag {
     f32 area;
     union {
         dds3Effect_PartialMultiFilter_t *rectangle;
-        dds3Effect_PartialMultiBlur_t *blur;
+        effBlurTemplate_t *blur;
     } resource;
 };
 
@@ -844,7 +748,7 @@ struct effPCPFLEACHBlurParam_t {
 
 struct effPCPFLEACHBlur_tag {
     effPCPFLEACHBlurParam_t param;
-    dds3Effect_PartialMultiBlur_t *hMultiBlur;
+    effBlurTemplate_t *hMultiBlur;
     s32 frame;
     u32 abgr;
 };
@@ -1287,7 +1191,7 @@ struct effPCPBlinkMultiBlurBase_tag {
     u32 blink_abgr[2];
     f32 ratio;
     s32 area_min;
-    struct dds3Effect_PartialMultiBlur_t *hBlur;
+    effBlurTemplate_t *hBlur;
 };
 
 struct effPCPBlinkMultiBlur_tag {
@@ -1431,7 +1335,7 @@ struct effPCPMultiBlurExp_tag {
     u32 blink_abgr[2];
     f32 ratio; /* multiplies the computed trail size */
     s32 area_min;
-    dds3Effect_PartialMultiBlur_t *hBlur;
+    effBlurTemplate_t *hBlur;
 };
 
 struct effPCPAgiraoFireParam_t {
@@ -1758,32 +1662,13 @@ struct mdlMarkPos_t {
 };
 
 extern void dds3BillboardDraw(billHandle_t *hData);
-void dds3BillboardSetMode(struct billHandle_t *hBillboard, s32 mode);
 void dds3BillboardSetRGBA(struct billHandle_t *hBillboard, u32 abgr);
 void dds3BillboardSetScale(struct billHandle_t *hBillboard, f32 x, f32 y);
 
-struct effDebugPolyParams_t {
-    s16 parameterCount;
-    s16 vertexCount;
-    u16 primitive;
-    u16 mask;
-    u32 color;
-    const u32 *parameters;
-    u128 *positions;
-    u128 *normals;
-    f32 *texcoords;
-    u32 *extraTexcoords;
-    u32 *colors;
-    void *(*allocate)(s32);
-    f32 depth;
-};
-
-extern effDebugPolyParams_t dds3RingPolyExpListPolyParam;
+extern sdf3DPrimPolyParm_t dds3RingPolyExpListPolyParam;
 extern sdfGrOt_t *dds3RingPolyExpListBlendOt[];
 extern u8 dds3RingPolyExpListParameters[];
-dds3Effect_PartialMultiBlur_t *dds3EffectPartialMultiBlurCreate(const dds3Effect_PartialMultiBlurParam_t *pParam);
 dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *pParam);
-void dds3EffectFilter(effResourceRectDrawParams_t *params);
 void dds3EffectBlur(dds3Effect_Blur_t *quad);
 
 /* Copy one 128-bit vector from the read-only source to destination storage. */
@@ -1791,12 +1676,10 @@ void dds3BillboardSetPosition(void *hBillboard, const void *pPos);
 struct billHandle_t *dds3BillboardGeneral(s32 number);
 effPCPThunderSpherePoly_t *effPCPThunderSpherePolyCreate(effPCPThunderSpherePolyParam_t *parameters);
 effPCPThunderSpherePolyParam_t *effPCPThunderSpherePolyGetParam(effPCPThunderSpherePoly_t *pThunderPoly);
-void dds3BillboardDelete(struct billHandle_t *hData);
-extern void *effPkt3DPrimMakePoly(effDebugPolyParams_t *aParm);
 extern effRandState_t dds3EffectBase[];
 void dds3EffectDelete(effHandle_t *pData);
 void dds3EffectPartDelete(effPartHandle_t *hEffPart);
-void dds3EffectPartialMultiBlurDraw(dds3Effect_PartialMultiBlur_t *owner);
+void dds3EffectPartialMultiBlurDraw(effBlurTemplate_t *owner);
 
 /* Clone a mixer owner or release all of its active voices. */
 struct effBTL_t *effEveBEDCreate(struct effBTL_t *pData);
@@ -1846,7 +1729,7 @@ effPCPAgiFireball_tag *effPCPAgiFireballCreate(
 effPCPRadiateThunder_tag *effPCPRadiateThunderCreate(const effPCPRadiateThunderParam_t *pParam, void *pData);
 extern effPCPBlinkMultiBlurBase_tag *pBlinkMultiBlurBase;
 effPCPBreath_tag *effPCPBreathCreate(void *params, effResourceHeader_t *handleParams);
-void dds3EffectPartialMultiBlurDelete(dds3Effect_PartialMultiBlur_t *hPartialMultiBlur);
+void dds3EffectPartialMultiBlurDelete(effBlurTemplate_t *hPartialMultiBlur);
 extern u8 effPCP_Megidoraon01_ThunderSpherePoly_Param[];
 void dds3EffectSetRGBA(effHandle_t *pData, u32 abgr);
 extern effPCP_ThunderPolyParam_t effPCPZiodin01ThunderParam[];
@@ -3288,17 +3171,17 @@ void effBTLSys_Encount_Delete2(effPCPMultiBlurExp_tag *hData) {
 }
 
 void effPCPMultiBlurExpDraw(effPCPMultiBlurExp_tag *hData) {
-    dds3Effect_PartialMultiBlur_t *obj;
+    effBlurTemplate_t *obj;
     sdfVector4_t pos;
 
     obj = hData->hBlur;
     SDF_VU0_LOADVECTOR(hData->pos);
-    obj->param.area = (s32)((f32)effPCPBlurScreenOffset(hData->area) * hData->ratio);
+    obj->body.area = (s32)((f32)effPCPBlurScreenOffset(hData->area) * hData->ratio);
     SDF_VU0_STOREVECTOR(&pos);
-    obj->param.Blur.center[0] = (s32)pos.x - 0x800;
-    obj->param.Blur.center[1] = ((s32)pos.y - 0x800) << 1;
-    if (obj->param.area < hData->area_min) {
-        obj->param.area = hData->area_min;
+    obj->body.Blur.center[0] = (s32)pos.x - 0x800;
+    obj->body.Blur.center[1] = ((s32)pos.y - 0x800) << 1;
+    if (obj->body.area < hData->area_min) {
+        obj->body.area = hData->area_min;
     }
     if (hData->frame < SDF_FRAMES(hData->blink)) {
         hData->abgr_base = hData->blink_abgr[SDF_FRAME_TICK(hData->frame) & 1];
@@ -3306,7 +3189,7 @@ void effPCPMultiBlurExpDraw(effPCPMultiBlurExp_tag *hData) {
         hData->abgr_base = hData->blink_abgr[0];
     }
     hData->frame++;
-    obj->param.Blur.abgr = effMagaCylinderCalcColor(hData->abgr, hData->abgr_base);
+    obj->body.Blur.abgr = effMagaCylinderCalcColor(hData->abgr, hData->abgr_base);
     dds3EffectPartialMultiBlurDraw(obj);
 }
 
@@ -3431,7 +3314,7 @@ effPCPMultiBlurExp2_tag *effPCPMultiBlurExp2Copy(effPCPMultiBlurExp2_tag *work) 
     params.fade_out = work->fadeOut;
     params.area_s = work->startExtent;
     params.area_e = work->endExtent;
-    params.MultiBlur = work->resource.blur->param;
+    params.MultiBlur = work->resource.blur->body;
     return effPCPMultiBlurExp2Create(&params);
 }
 
@@ -3444,7 +3327,7 @@ void effPCPMultiBlurExp2Draw(effPCPMultiBlurExp2_tag *hData) {
     sdfVector4_t projected;
     s32 frame = hData->frame;
     s32 duration = SDF_FRAMES(hData->duration);
-    dds3Effect_PartialMultiBlur_t *rect = hData->resource.blur;
+    effBlurTemplate_t *rect = hData->resource.blur;
     s32 fadeIn;
     s32 fadeOut;
     f32 opacity;
@@ -3457,13 +3340,13 @@ void effPCPMultiBlurExp2Draw(effPCPMultiBlurExp2_tag *hData) {
             SDF_VU0_LOADVECTOR(hData->position);
             effScreenOffset();
             SDF_VU0_STOREVECTOR(&projected);
-            rect->param.Blur.center[0] = (s32)projected.x - 2048;
-            rect->param.Blur.center[1] = ((s32)projected.y - 2048) << 1;
+            rect->body.Blur.center[0] = (s32)projected.x - 2048;
+            rect->body.Blur.center[1] = ((s32)projected.y - 2048) << 1;
         } else {
-            rect->param.Blur.center[0] = 0;
-            rect->param.Blur.center[1] = 0;
+            rect->body.Blur.center[0] = 0;
+            rect->body.Blur.center[1] = 0;
         }
-        rect->param.area = InterpolateCompactExtent(
+        rect->body.area = InterpolateCompactExtent(
             hData->startExtent, hData->endExtent, frame, duration);
         if (frame < fadeIn && fadeIn != 0) {
             opacity = (f32)frame / (f32)fadeIn;
@@ -3473,7 +3356,7 @@ void effPCPMultiBlurExp2Draw(effPCPMultiBlurExp2_tag *hData) {
             opacity = 1.0f;
         }
         color = hData->color;
-        rect->param.Blur.abgr = effMagaCylinderCalcColor(
+        rect->body.Blur.abgr = effMagaCylinderCalcColor(
             effColorBlend(color & 0xFFFFFF, color, opacity), hData->baseColor);
         dds3EffectPartialMultiBlurDraw(rect);
         hData->frame++;
@@ -4585,12 +4468,12 @@ dds3RingPolyExpList_tag *dds3RingPolyExpListCreate(u32 face) {
     u32 count = face * 4 + 4;
     dds3RingPolyExpList_tag *node = sdfChipAllocDirect(sizeof(dds3RingPolyExpList_tag));
     sdfMemHandle_t *allocation = sdfMemAllocDirect(count * 20);
-    f32 *points = EE_ADDR_AS(void *, sdfMemLock(allocation));
+    sdfVector4_t *points = EE_ADDR_AS(void *, sdfMemLock(allocation));
 
     memset(points, 0, count * 20);
     node->pVertex = points;
     node->blend = 2;
-    node->pVC = (u32 *)(points + count * 4);
+    node->pVC = (u32 *)(points + count);
     node->vertexCount = count;
     node->color = 0x80808080;
     node->hMem = allocation;
@@ -4600,7 +4483,7 @@ dds3RingPolyExpList_tag *dds3RingPolyExpListCreate(u32 face) {
     SDF_VU0_STOREIDENTITY(node->rot);
     SDF_VU0_STOREIDENTITY(node->matrix);
     memset(&dds3RingPolyExpListPolyParam, 0, sizeof(dds3RingPolyExpListPolyParam));
-    dds3RingPolyExpListPolyParam.primitive = 0x4000;
+    dds3RingPolyExpListPolyParam.attr = 0x4000;
     return node;
 }
 
@@ -4634,20 +4517,20 @@ void dds3RingPolyExpListDraw(dds3RingPolyExpList_tag *hData) {
     sdf3DPrimLinkTm(list, 0);
     sdf3DPrimLinkMat(list, hData->pMat, 0);
     count = hData->vertexCount;
-    dds3RingPolyExpListPolyParam.colors = hData->pVC;
-    dds3RingPolyExpListPolyParam.positions = (u128 *)hData->pVertex;
+    dds3RingPolyExpListPolyParam.vertexColor = hData->pVC;
+    dds3RingPolyExpListPolyParam.vertex = hData->pVertex;
     dds3RingPolyExpListPolyParam.color = hData->color;
-    dds3RingPolyExpListPolyParam.vertexCount = dds3RingPolyExpListPolyParam.parameterCount = 12;
-    dds3RingPolyExpListPolyParam.parameters = (u32 *)dds3RingPolyExpListParameters;
+    dds3RingPolyExpListPolyParam.pointCount = dds3RingPolyExpListPolyParam.faceCount = 12;
+    dds3RingPolyExpListPolyParam.faceIndex = (u32 *)dds3RingPolyExpListParameters;
     while (count >= 12) {
         count -= 8;
         sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3RingPolyExpListPolyParam)));
-        dds3RingPolyExpListPolyParam.positions += 8;
-        dds3RingPolyExpListPolyParam.colors += 8;
+        dds3RingPolyExpListPolyParam.vertex += 8;
+        dds3RingPolyExpListPolyParam.vertexColor += 8;
     }
     if (count >= 8) {
-        dds3RingPolyExpListPolyParam.parameterCount = 6;
-        dds3RingPolyExpListPolyParam.vertexCount = 8;
+        dds3RingPolyExpListPolyParam.faceCount = 6;
+        dds3RingPolyExpListPolyParam.pointCount = 8;
         sdfDrawTagLink(list, EE_ADDR(effPkt3DPrimMakePoly(&dds3RingPolyExpListPolyParam)));
     }
     entry = dds3RingPolyExpListBlendOt[hData->blend];
@@ -4662,7 +4545,7 @@ void effPCPRingPolyExpSetVertex(f32 pPCPRingPolyExp, effPCPRingPolyExp_tag *radi
     sdfVector4_t outer;
     f32 angle = 0.0f;
     f32 step;
-    f32 *out;
+    sdfVector4_t *out;
     u32 count;
     u32 i;
 
@@ -4674,7 +4557,7 @@ void effPCPRingPolyExpSetVertex(f32 pPCPRingPolyExp, effPCPRingPolyExp_tag *radi
     out = radius->hPoly->pVertex;
     step = 3.14159265f * 2.0f / (f32)radius->param.split;
     direction.y = 0.0f;
-    for (i = 0; i < count; i++, out += 16) {
+    for (i = 0; i < count; i++, out += 4) {
         direction.x = sdfCos(angle);
         direction.z = sdfSin(angle);
         SDF_VU0_LOADVECTOR_B(&direction);
@@ -4683,13 +4566,13 @@ void effPCPRingPolyExpSetVertex(f32 pPCPRingPolyExp, effPCPRingPolyExp_tag *radi
         SDF_VU0_STOREVECTOR(out);
         SDF_VU0_LOADVECTOR(&first);
         SDF_VU0_MULVECTOR();
-        SDF_VU0_STOREVECTOR(out + 4);
+        SDF_VU0_STOREVECTOR(out + 1);
         SDF_VU0_LOADVECTOR(&middle);
         SDF_VU0_MULVECTOR();
-        SDF_VU0_STOREVECTOR(out + 8);
+        SDF_VU0_STOREVECTOR(out + 2);
         SDF_VU0_LOADVECTOR(&outer);
         SDF_VU0_MULVECTOR();
-        SDF_VU0_STOREVECTOR(out + 12);
+        SDF_VU0_STOREVECTOR(out + 3);
         angle += step;
     }
 }
@@ -4817,7 +4700,7 @@ void effPCPRingPolyExp2SetVertex(effPCPRingPolyExp2_tag *pPCPRingPolyExp2, f32 r
     sdfVector4_t rowB;
     sdfVector4_t rowC;
     sdfVector4_t rowD;
-    f32 *points;
+    sdfVector4_t *points;
     f32 angle = 0.0f;
     f32 step;
     f32 r1;
@@ -4865,15 +4748,15 @@ void effPCPRingPolyExp2SetVertex(effPCPRingPolyExp2_tag *pPCPRingPolyExp2, f32 r
         SDF_VU0_STOREVECTOR(points);
         SDF_VU0_LOADVECTOR(&rowB);
         SDF_VU0_MULVECTOR();
-        SDF_VU0_STOREVECTOR(points + 4);
+        SDF_VU0_STOREVECTOR(points + 1);
         SDF_VU0_LOADVECTOR(&rowC);
         SDF_VU0_MULVECTOR();
-        SDF_VU0_STOREVECTOR(points + 8);
+        SDF_VU0_STOREVECTOR(points + 2);
         SDF_VU0_LOADVECTOR(&rowD);
         SDF_VU0_MULVECTOR();
-        SDF_VU0_STOREVECTOR(points + 12);
+        SDF_VU0_STOREVECTOR(points + 3);
         angle += step;
-        points += 16;
+        points += 4;
     }
 }
 
