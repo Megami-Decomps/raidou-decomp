@@ -12,6 +12,7 @@
 #include "motion.h"
 #include "sdfFrame.h"
 #include "dds3KernelCore.h"
+#include "effManager.h"
 
 typedef struct {
     u16 sizeX;
@@ -56,10 +57,6 @@ typedef struct {
 typedef struct {
     s16 v[10];
 } fldTamaSeVol_t;
-
-typedef struct effNode_t effNode_t;
-
-typedef struct effResourceHeader_t effResourceHeader_t;
 
 typedef struct
 {

@@ -25,7 +25,7 @@
 #include "dds3CameraObjectBasic.h"
 #include "dds3Basic.h"
 
-struct effPCPAgiraoFirePartList_t;
+struct effResourceHeader_t;
 
 scrProcessWork_s *scrGetScriptHandle(void);
 extern void datDebugPrintf(const char *fmt, ...);
@@ -43,7 +43,7 @@ extern const char evtMsgLightDirZero[];
 
 extern void Eve_DistortionBlurSetDefTex(void);
 extern void evtSetBokasi(s32 sw);
-extern dds3Basic_t *dds3AddD3PEffectObjectBasic2(struct effPCPAgiraoFirePartList_t *effdata, void *pos, void *rot);
+extern dds3Basic_t *dds3AddD3PEffectObjectBasic2(struct effResourceHeader_t *effdata, void *pos, void *rot);
 extern const char evtMsgEffectBeFailed[];
 extern const char evtMsgEffectBeNotFound[];
 
@@ -1356,7 +1356,7 @@ u32 evtCommand_EFFECT_BE(void) {
     u8 secondVector[16] QWORD_ALIGNED;
     s32 taskId;
     s32 key;
-    struct effPCPAgiraoFirePartList_t *descriptor;
+    struct effResourceHeader_t *descriptor;
     dds3Basic_t *object;
 
     memset(firstVector, 0, sizeof(firstVector));
@@ -1571,7 +1571,7 @@ u32 evtCommand_EFFMG1_BE(void) {
         scrSetIntReturnValue(0);
         return 1;
     }
-    object = dds3AddMG12EffectObjectBasic2(1, (struct effPCPAgiraoFirePartList_t *)resource);
+    object = dds3AddMG12EffectObjectBasic2(1, (struct effResourceHeader_t *)resource);
     if (object == NULL) {
         scrSetIntReturnValue(0);
     } else {
@@ -1618,7 +1618,7 @@ u32 evtCommand_EFFMG2_BE(void) {
         scrSetIntReturnValue(0);
         return 1;
     }
-    object = dds3AddMG12EffectObjectBasic2(2, (struct effPCPAgiraoFirePartList_t *)resource);
+    object = dds3AddMG12EffectObjectBasic2(2, (struct effResourceHeader_t *)resource);
     if (object == NULL) {
         scrSetIntReturnValue(0);
     } else {

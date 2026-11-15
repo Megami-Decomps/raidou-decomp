@@ -55,7 +55,6 @@ struct effBlurScatterWork_t;
 
 struct dds3Effect_PartialMultiBlurParam_t;
 
-struct effPCPAgiraoFirePartList_t;
 
 struct effPCPRingPolyExp2Param_t;
 
@@ -265,9 +264,6 @@ typedef struct dds3Effect_PartialMultiBlurParam_t dds3Effect_PartialMultiBlurPar
 
 typedef struct dds3Effect_PartialMultiBlur_t dds3Effect_PartialMultiBlur_t;
 
-typedef struct effHandle_t effHandle_t;
-
-typedef struct effPCPAgiraoFirePartList_t effPCPAgiraoFirePartList_t;
 
 typedef struct effPCPRingPolyExp2Param_t effPCPRingPolyExp2Param_t;
 
@@ -719,28 +715,6 @@ struct dds3Effect_PartialMultiBlurParam_t {
 struct dds3Effect_PartialMultiBlur_t {
     dds3Effect_PartialMultiBlurParam_t param;
     struct sdfTexHandle_t *texture;
-};
-
-struct effHandle_t;
-
-/* Live effect node allocated in a 0x10-byte size-class block. */
-struct effHandle_t {
-    u32 type;       /* 0x00: type-operation row */
-    s32 arg;        /* 0x04 */
-    s32 instance;   /* 0x08: type-specific instance word */
-    f32 unkC;       /* 0x0C */
-};
-
-/* Complete serialized effect-resource header. The payload's size and format
- * depend on type; this is not the separately allocated live effHandle_t.
- * Compatibility conversion examines the complete type and argument words,
- * while node creation consumes their low halfwords. */
-struct effPCPAgiraoFirePartList_t {
-    u32 type;       /* 0x00 */
-    u32 arg;        /* 0x04 */
-    u32 pad08;      /* 0x08 */
-    f32 version;   /* 0x0C */
-    u8 payload[0]; /* 0x10: variable-length tagged payload */
 };
 
 /* The copied 0x5C input head for the linked/ring beam variant. */
@@ -2393,7 +2367,6 @@ dds3Effect_PartialMultiBlur_t *dds3EffectPartialMultiBlurCreate(const dds3Effect
 dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *pParam);
 void dds3EffectFilter(effResourceRectDrawParams_t *params);
 void dds3EffectBlur(dds3Effect_Blur_t *quad);
-effHandle_t *dds3EffectCopy(const effHandle_t *source);
 
 /* Copy one 128-bit vector from the read-only source to destination storage. */
 void dds3BillboardSetPosition(void *hBillboard, const void *pPos);
@@ -2456,7 +2429,7 @@ effPCPAgiFireball_tag *effPCPAgiFireballCreate(
 
 effPCPRadiateThunder_tag *effPCPRadiateThunderCreate(const effPCPRadiateThunderParam_t *pParam, void *pData);
 extern effPCPBlinkMultiBlurBase_tag *pBlinkMultiBlurBase;
-effPCPBreath_tag *effPCPBreathCreate(void *params, effPCPAgiraoFirePartList_t *handleParams);
+effPCPBreath_tag *effPCPBreathCreate(void *params, effResourceHeader_t *handleParams);
 void dds3EffectPartialMultiBlurDelete(dds3Effect_PartialMultiBlur_t *hPartialMultiBlur);
 extern u8 effPCP_Megidoraon01_ThunderSpherePoly_Param[];
 void dds3EffectSetRGBA(effHandle_t *pData, u32 abgr);
@@ -2552,7 +2525,6 @@ typedef struct {
 extern u16 effPCPMudoSampleStep[8];
 extern f32 effPCPMudoSampleScale[8];
 extern const f32 effPCPRadiateTBParam[4] __attribute__((aligned(16)));
-effHandle_t *dds3EffectLoad(effPCPAgiraoFirePartList_t *pD3P);
 void effPCPThunderSpherePolySetColor(effPCPThunderSpherePoly_t *hData, u32 abgr);
 void effPCPThunderSpherePolySetPosition(void *hData, const void *pPos);
 void effPCPThunderSpherePolySetScale(effPCPThunderSpherePoly_t *hData, f32 scale);
@@ -2683,7 +2655,7 @@ void effPCPMegidoraon01Draw(effPCPShockWave01_tag *hData);
 effPCPBreath_tag *effPCPBreathCopy(effPCPBreath_tag *work);
 void effPCPBreathDelete(effPCPBreath_tag *hData);
 void effPCPBreathSetRotateMatrix(effPCPBreath_tag *hData, const void *pMatrix);
-effPCPAgiraoFire_tag *effPCPAgiraoFireCreate(effPCPAgiraoFireParam_t *pParam, effPCPAgiraoFirePartList_t **pPartList);
+effPCPAgiraoFire_tag *effPCPAgiraoFireCreate(effPCPAgiraoFireParam_t *pParam, effResourceHeader_t **pPartList);
 effPCPAgiraoFire_tag *effPCPAgiraoFireCreatePCF(void *data);
 effPCPAgiraoFire_tag *effPCPAgiraoFireCopy(effPCPAgiraoFire_tag *src);
 void effPCPAgiraoFireDelete(effPCPAgiraoFire_tag *hData);
@@ -4493,7 +4465,7 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf128);
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc", effLeaf129);
 
-effPCPBreath_tag *effPCPBreathCreate(void *params, effPCPAgiraoFirePartList_t *handleParams) {
+effPCPBreath_tag *effPCPBreathCreate(void *params, effResourceHeader_t *handleParams) {
     effPCPBreathParam_t *src = params;
     effPCPBreath_tag *work;
     f32 size;
@@ -4547,7 +4519,7 @@ void effPCPBreathSetRotateMatrix(effPCPBreath_tag *hData, const void *pMatrix) {
     SDF_VU0_STOREMATRIX(hData->matrix);
 }
 
-effPCPAgiraoFire_tag *effPCPAgiraoFireCreate(effPCPAgiraoFireParam_t *pParam, effPCPAgiraoFirePartList_t **pPartList) {
+effPCPAgiraoFire_tag *effPCPAgiraoFireCreate(effPCPAgiraoFireParam_t *pParam, effResourceHeader_t **pPartList) {
     effPCPAgiraoFire_tag *work;
     struct effHandle_t **handle;
     u32 i;
@@ -4568,8 +4540,8 @@ effPCPAgiraoFire_tag *effPCPAgiraoFireCreate(effPCPAgiraoFireParam_t *pParam, ef
 
 effPCPAgiraoFire_tag *effPCPAgiraoFireCreatePCF(void *data) {
     effPCPAgiraoFireParam_t *params;
-    effPCPAgiraoFirePartList_t *descriptors[7];
-    effPCPAgiraoFirePartList_t **dst;
+    effResourceHeader_t *descriptors[7];
+    effResourceHeader_t **dst;
     u32 i;
 
     params = dds3EffectPCPDataGetData(data, 0);

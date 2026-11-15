@@ -9,17 +9,7 @@
 #include "polyManager.h"
 #include "effManager.h"
 
-/* An effect handle: the type's entry in EffMajorTable plus the instance that
- * entry's create returned. version is stamped from the data revision. */
-typedef struct effNode_t
-{
-    u32 type;
-    u32 arg;
-    s32 instance;
-    f32 version;
-} effNode_t;
-
-/* One row per effect type, 0x30 bytes, indexed by effNode_t::type. */
+/* One row per effect type, 0x30 bytes, indexed by effHandle_t::type. */
 typedef struct effMajorEntry_t
 {
     s32 (*create)(u16 arg, s32 param);
@@ -38,16 +28,6 @@ typedef struct effMajorEntry_t
 
 extern effMajorEntry_t EffMajorTable[];
 
-/* Effect resource header: the file data dds3EffectLoad is handed. */
-typedef struct effResourceHeader_t
-{
-    u32 type;
-    u32 arg;
-    u32 unk08;
-    f32 version;
-    u8 payload[16];
-} effResourceHeader_t;
-
 /* The two instance layouts that carry a matrix a pre-1.03 file leaves unset. */
 typedef struct effLegacyInstance_t
 {
@@ -62,16 +42,11 @@ typedef struct effLegacyInstance_t
 extern void dds3MultiBillboardLinkOt(void);
 extern void dds3CrossfadeRun(void);
 extern void Eve_EffectDraw(void);
-effNode_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param);
-void dds3EffectDataRevision(effResourceHeader_t *header);
 extern char dds3EffectProcessName[];
 extern sdfGrOt_t sdfGrOtTable[];
 s32 dds3EffectManagerRun(dds3ProcessID_t *ProcessID);
 void dds3EffectPCFSetLoop(void);
 void dds3EffectPCFReset(void);
-void dds3EffectDelete(effNode_t *pData);
-effNode_t *dds3EffectLoad(effResourceHeader_t *pD3P);
-effNode_t *dds3EffectCopy(effNode_t *node);
 extern effMajorEntry_t EffMajorTable[5];
 extern char dds3EffectProcessName[7];
 
@@ -158,9 +133,9 @@ void dds3EffectPCFReset(void) {
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectPCFGetState);
 
-effNode_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param)
+effHandle_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param)
 {
-    effNode_t *node = sdfChipAllocDirect(sizeof(effNode_t));
+    effHandle_t *node = sdfChipAllocDirect(sizeof(effHandle_t));
 
     node->type = type;
     node->version = 1.03f;
@@ -169,7 +144,7 @@ effNode_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param)
     return node;
 }
 
-void dds3EffectDelete(effNode_t *pData)
+void dds3EffectDelete(effHandle_t *pData)
 {
     EffMajorTable[pData->type].del(pData->instance);
     sdfChipFreeDirect(pData);
@@ -193,9 +168,9 @@ INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetLoop_dds3Effect);
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectGetLoop);
 
-effNode_t *dds3EffectLoad(effResourceHeader_t *pD3P)
+effHandle_t *dds3EffectLoad(effResourceHeader_t *pD3P)
 {
-    effNode_t *node;
+    effHandle_t *node;
     effLegacyInstance_t *instance;
 
     if (pD3P->version < 1.03f) {
@@ -224,9 +199,9 @@ INCLUDE_ASM(const s32, "effect/effManager", dds3EffectLoadEPL);
 
 INCLUDE_ASM(const s32, "effect/effManager", sdfDevLoadTexList);
 
-effNode_t *dds3EffectCopy(effNode_t *node)
+effHandle_t *dds3EffectCopy(effHandle_t *node)
 {
-    effNode_t *copy = sdfChipAllocDirect(sizeof(effNode_t));
+    effHandle_t *copy = sdfChipAllocDirect(sizeof(effHandle_t));
     s32 instance = node->instance;
 
     copy->type = node->type;

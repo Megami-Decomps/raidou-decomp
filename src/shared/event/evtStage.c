@@ -13,6 +13,7 @@
 #include "dds3ObjectBase.h"
 #include "dds3MoverBasic.h"
 #include "dds3CameraObjectBasic.h"
+#include "effManager.h"
 
 u32 dds3AllocObjectId(void);
 
@@ -56,9 +57,7 @@ dds3PathBasicControl_t *dds3MoverBasicGetPathControl(struct dds3Basic_t *pMoverB
 extern void dds3PathBasicLoopOn(struct dds3PathBasicControl_t *pControl);
 extern void dds3PathBasicLoopOff(struct dds3PathBasicControl_t *pControl);
 
-typedef struct effNode_t effNode_t;
-
-void dds3EffectSetLoop(effNode_t *hEffect, u8 loop);
+void dds3EffectSetLoop(effHandle_t *hEffect, u8 loop);
 
 typedef struct evtNodeInner_t {
     u8 pad00[0x08];

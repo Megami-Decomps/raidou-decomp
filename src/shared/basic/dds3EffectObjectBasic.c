@@ -16,6 +16,7 @@
 #include "dds3Basic.h"
 #include "dds3EffectObjectBasic.h"
 #include "dds3ObjectBase.h"
+#include "effManager.h"
 
 typedef struct
 {
@@ -128,13 +129,6 @@ typedef struct effEveBEDCutHandle_t effEveBEDCutHandle_t;
 typedef struct BattleEffect BattleEffect;
 
 typedef void (*FileRequestCallback)(void *request, u32 arg);
-
-typedef struct effHandle_t {
-    u32 type;
-    s32 arg;
-    s32 instance;
-    f32 unkC;
-} effHandle_t;
 
 enum {
     EFF_WORLD_KIND_WORLD_INFO = 0,
