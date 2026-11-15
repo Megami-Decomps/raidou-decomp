@@ -34,22 +34,6 @@ void *sdfChipAllocDirect(s32 aSize);
 extern saddr_t sdfPendingQueueSlots[2];
 extern s32 sdfDelayedResrcSemaId;
 
-typedef struct effDebugPolyParams_t {
-    s16 parameterCount;
-    s16 vertexCount;
-    u16 primitive;
-    u16 mask;
-    u32 color;
-    const u32 *parameters;
-    u128 *positions;
-    u128 *normals;
-    f32 *texcoords;
-    u32 *extraTexcoords;
-    u32 *colors;
-    void *(*allocate)(s32);
-    f32 depth;
-} effDebugPolyParams_t;
-
 struct sdfDelayedResrcChunk_t {
     sdfDelayedResrcChunk_t *next;
     sdfDelayedResrcCB_t *owner;

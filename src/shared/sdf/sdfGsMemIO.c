@@ -93,22 +93,6 @@ typedef struct sdfStoreFrameImagePacket_t {
 
 extern sdfGrFrameSet_t sdfGrFrameSet;
 
-typedef struct effDebugPolyParams_t {
-    s16 parameterCount;
-    s16 vertexCount;
-    u16 primitive;
-    u16 mask;
-    u32 color;
-    const u32 *parameters;
-    u128 *positions;
-    u128 *normals;
-    f32 *texcoords;
-    u32 *extraTexcoords;
-    u32 *colors;
-    void *(*allocate)(s32);
-    f32 depth;
-} effDebugPolyParams_t;
-
 void sdfSetStoreImage(sdfStoreImagePacket_t *aPacket, sdfGsMemSlice_t *aGsHandle,
     s32 aSrcX, s32 aSrcY, s32 aWidth, s32 aHeight, u32 aBuffer, u32 aCallback, u32 aCallbackParam);
 

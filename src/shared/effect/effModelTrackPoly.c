@@ -15,6 +15,7 @@
 #include "effPacket.h"
 #include "sdf3DPrim.h"
 #include "effMath.h"
+#include "effModelTrackPoly.h"
 
 typedef struct
 {
@@ -32,31 +33,17 @@ typedef struct
 
 typedef struct
 {
-    mdlObj_t *hModel;
-    s32 mark0;
-    s32 mark1;
-    f32 frame_s;
-    f32 frame_e;
-    u32 record;
-    s32 face;
-    u32 split;
-    u32 blend;
-    u32 gradientColors[4];
-} Eff_ModelTrackPolyParam_t;
-
-typedef struct
-{
     Eff_ModelTrackPolyParam_t params;
     u32 updateCount;
     dds3HermitianTrackPoly_tag *trackPoly;
 } effModelTrackPoly_t;
 
-typedef struct
+struct effMTPolyListHandle_t
 {
     effModelTrackPoly_t **hPolyList;
     u32 number;
     sdfMemHandle_t *hMem;
-} effMTPolyListHandle_t;
+};
 
 typedef struct
 {
@@ -105,10 +92,6 @@ effModelTrackPoly_t *Eff_ModelTrackPolyCreate(Eff_ModelTrackPolyParam_t *pParam)
 void Eff_ModelTrackPolyDelete(effModelTrackPoly_t *work);
 void Eff_ModelTrackPolyReset(effModelTrackPoly_t *hMTPoly);
 void Eff_ModelTrackPolyDrawOnly(effModelTrackPoly_t *hMTPoly);
-effMTPolyListHandle_t *Eff_ModelTrackPolyListCreate(Eff_ModelTrackPolyParam_t *pParam, u32 number);
-void Eff_ModelTrackPolyListDelete(effMTPolyListHandle_t *list);
-void Eff_ModelTrackPolyListReset(effMTPolyListHandle_t *hMTPolyList, s32 index);
-void Eff_ModelTrackPolyListDrawOnly(effMTPolyListHandle_t *hMTPolyList);
 void Eff_HermitianSpline(sdfVector4_t *p, f32 t);
 void dds3HermitianTrackPolySetVC(dds3HermitianTrackPoly_tag *hPoly, u32 *pABGR);
 void dds3HermitianTrackPolyGetVertex(dds3HermitianTrackPoly_tag *hPoly, void *pVertex0, void *pVertex1, s32 frame);

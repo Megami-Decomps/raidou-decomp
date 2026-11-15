@@ -1,4 +1,5 @@
 #include "common.h"
+#include "effPCPFlash.h"
 #include "effMagatuhi.h"
 #include "effPCPData.h"
 #include "ps2asm.h"
@@ -16,8 +17,6 @@
 #include "sdfDraw.h"
 #include "sdfMat.h"
 #include "sdfMemory.h"
-
-struct effDebugPolyParams_t;
 
 
 struct dds3FlashPolyList_t;
@@ -96,8 +95,6 @@ typedef struct effPCPFlashPolySphere2_tag effPCPFlashPolySphere2_tag;
 
 typedef struct effBezierDrawParam_t effBezierDrawParam_t;
 
-typedef struct effDebugPolyParams_t effDebugPolyParams_t;
-
 #define EFF_POOL_HEADER_BYTES 0x70
 
 #define EFF_PACKET_PARAMS_BYTES 0x2C
@@ -140,8 +137,6 @@ typedef struct effDebugPolyParams_t effDebugPolyParams_t;
 
 #define EFF_DIRECT_SURFACE_COUNT 4
 
-typedef struct dds3FlashPolyList_t dds3FlashPolyList_t;
-
 struct sdfMat_t;
 
 
@@ -158,7 +153,7 @@ struct sdfMemHandle_t;
 struct sdfMemHandle_t;
 
 /* Position/color arrays precede this render pool; constructors clear the full allocation. */
-typedef struct dds3FlashPolyList_t {
+struct dds3FlashPolyList_t {
     f32 matrix[16];
     f32 pos[3];
     u8 pad4C[4];
@@ -170,7 +165,7 @@ typedef struct dds3FlashPolyList_t {
     u8 *pVC;
     sdfMat_t *pMat;
     sdfMemHandle_t *hMem;
-} dds3FlashPolyList_t; /* 0x70 */
+}; /* 0x70 */
 
 struct effPCPFlashPolyRingExpHPart_tag {
     u32 abgr;
@@ -687,23 +682,7 @@ f32 dds3GetRandFloatA(effRandState_t *name);
 extern sdfGrOt_t *effPCPFlashQuadSurfaces[];
 extern u32 effPCPFlashQuadIndices[];
 
-struct effDebugPolyParams_t {
-    s16 parameterCount;
-    s16 vertexCount;
-    u16 primitive;
-    u16 mask;
-    u32 color;
-    const u32 *parameters;
-    u128 *positions;
-    u128 *normals;
-    f32 *texcoords;
-    u32 *extraTexcoords;
-    u32 *colors;
-    void *(*allocate)(s32);
-    f32 depth;
-};
-
-extern effDebugPolyParams_t effPCPFlashPolyParams[];
+extern sdf3DPrimPolyParm_t effPCPFlashPolyParams[];
 extern sdfGrOt_t *effPCPFlashTriangleSurfaces[];
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
@@ -880,10 +859,6 @@ typedef struct effFlashOrbitArcBlock_t {
     effPCPFlashPolyRingExpPart_tag parts[1];
 } effFlashOrbitArcBlock_t;
 
-dds3FlashPolyList_t *dds3FlashPolyListCreate(u32 face);
-void dds3FlashPolyListDraw(dds3FlashPolyList_t *work);
-void *dds3FlashPolyListGetVertex(dds3FlashPolyList_t *group, s32 groupIndex);
-void *dds3FlashPolyListGetVC(dds3FlashPolyList_t *group, s32 groupIndex);
 dds3FlashPolyList_t *dds3FlashPolyList2Create(s32 face);
 void dds3FlashPolyList2Draw(dds3FlashPolyList_t *pool);
 void *dds3FlashPolyList2GetVertex(dds3FlashPolyList_t *group, s32 groupIndex);
@@ -893,7 +868,6 @@ void dds3FlashPolyList3Draw(dds3FlashPolyList_t *pool);
 void *dds3FlashPolyList3GetVertex(dds3FlashPolyList_t *group, s32 groupIndex);
 void *dds3FlashPolyList3GetVC(dds3FlashPolyList_t *group, s32 groupIndex);
 dds3FlashPolyList_t *dds3FlashPolyListHCreate(u32 face);
-void dds3FlashPolyListDelete(dds3FlashPolyList_t *hPoly);
 void dds3FlashPolyList2Delete(dds3FlashPolyList_t *hPoly);
 void dds3FlashPolyList3Delete(dds3FlashPolyList_t *hPoly);
 void dds3FlashPolyListHDelete(dds3FlashPolyList_t *hPoly);
@@ -2997,7 +2971,7 @@ dds3FlashPolyList_t *dds3FlashPolyListCreate(u32 face) {
     pool->pMat = sdfMatNew();
     sdfMatSetConstant(pool->pMat, 1.0f);
     memset(effPCPFlashPolyParams, 0, EFF_PACKET_PARAMS_BYTES);
-    effPCPFlashPolyParams->primitive = 0x4000;
+    effPCPFlashPolyParams->attr = 0x4000;
     return pool;
 }
 
@@ -3042,7 +3016,7 @@ dds3FlashPolyList_t *dds3FlashPolyList2Create(s32 face) {
     pool->pMat = sdfMatNew();
     sdfMatSetConstant(pool->pMat, 1.0f);
     memset(effPCPFlashPolyParams, 0, EFF_PACKET_PARAMS_BYTES);
-    effPCPFlashPolyParams->primitive = 0x4000;
+    effPCPFlashPolyParams->attr = 0x4000;
     return pool;
 }
 
@@ -3067,21 +3041,21 @@ void dds3FlashPolyList2Draw(dds3FlashPolyList_t *pool)
     sdf3DPrimLinkTm(packet, 0);
     sdf3DPrimLinkMat(packet, pool->pMat, 0);
     remainingVertices = pool->point;
-    effPCPFlashPolyParams->colors = (u32 *)pool->pVC;
-    effPCPFlashPolyParams->positions = (u128 *)pool->pVertex;
+    effPCPFlashPolyParams->vertexColor = (u32 *)pool->pVC;
+    effPCPFlashPolyParams->vertex = (sdfVector4_t *)pool->pVertex;
     effPCPFlashPolyParams->color = pool->abgr;
-    effPCPFlashPolyParams->parameterCount = 0x10;
-    effPCPFlashPolyParams->vertexCount = EFF_TRIANGLE_BATCH_VERTICES;
-    effPCPFlashPolyParams->parameters = NULL;
+    effPCPFlashPolyParams->faceCount = 0x10;
+    effPCPFlashPolyParams->pointCount = EFF_TRIANGLE_BATCH_VERTICES;
+    effPCPFlashPolyParams->faceIndex = NULL;
     while (remainingVertices >= EFF_TRIANGLE_BATCH_VERTICES) {
         remainingVertices -= EFF_TRIANGLE_BATCH_VERTICES;
         sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(effPCPFlashPolyParams)));
-        effPCPFlashPolyParams->positions += EFF_TRIANGLE_BATCH_VERTICES;
-        effPCPFlashPolyParams->colors += EFF_TRIANGLE_BATCH_VERTICES;
+        effPCPFlashPolyParams->vertex += EFF_TRIANGLE_BATCH_VERTICES;
+        effPCPFlashPolyParams->vertexColor += EFF_TRIANGLE_BATCH_VERTICES;
     }
     if (remainingVertices >= EFF_TRIANGLE_VERTEX_COUNT) {
-        effPCPFlashPolyParams->parameterCount = remainingVertices / EFF_TRIANGLE_VERTEX_COUNT;
-        effPCPFlashPolyParams->vertexCount = remainingVertices;
+        effPCPFlashPolyParams->faceCount = remainingVertices / EFF_TRIANGLE_VERTEX_COUNT;
+        effPCPFlashPolyParams->pointCount = remainingVertices;
         sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(effPCPFlashPolyParams)));
     }
     surface = effPCPFlashTriangleSurfaces[pool->blend];
@@ -3121,7 +3095,7 @@ dds3FlashPolyList_t *dds3FlashPolyList3Create(s32 face) {
     pool->pMat = sdfMatNew();
     sdfMatSetConstant(pool->pMat, 1.0f);
     memset(effPCPFlashPolyParams, 0, EFF_PACKET_PARAMS_BYTES);
-    effPCPFlashPolyParams->primitive = 0x4000;
+    effPCPFlashPolyParams->attr = 0x4000;
     return pool;
 }
 
@@ -3146,21 +3120,21 @@ void dds3FlashPolyList3Draw(dds3FlashPolyList_t *pool)
     sdf3DPrimLinkTm(packet, 0);
     sdf3DPrimLinkMat(packet, pool->pMat, 0);
     remainingVertices = pool->point;
-    effPCPFlashPolyParams->colors = (u32 *)pool->pVC;
-    effPCPFlashPolyParams->positions = (u128 *)pool->pVertex;
+    effPCPFlashPolyParams->vertexColor = (u32 *)pool->pVC;
+    effPCPFlashPolyParams->vertex = (sdfVector4_t *)pool->pVertex;
     effPCPFlashPolyParams->color = pool->abgr;
-    effPCPFlashPolyParams->parameterCount = 0x10;
-    effPCPFlashPolyParams->vertexCount = EFF_QUAD_BATCH_VERTICES;
-    effPCPFlashPolyParams->parameters = effPCPFlashQuadIndices;
+    effPCPFlashPolyParams->faceCount = 0x10;
+    effPCPFlashPolyParams->pointCount = EFF_QUAD_BATCH_VERTICES;
+    effPCPFlashPolyParams->faceIndex = effPCPFlashQuadIndices;
     while (remainingVertices >= EFF_QUAD_BATCH_VERTICES) {
         remainingVertices -= EFF_QUAD_BATCH_VERTICES;
         sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(effPCPFlashPolyParams)));
-        effPCPFlashPolyParams->positions += EFF_QUAD_BATCH_VERTICES;
-        effPCPFlashPolyParams->colors += EFF_QUAD_BATCH_VERTICES;
+        effPCPFlashPolyParams->vertex += EFF_QUAD_BATCH_VERTICES;
+        effPCPFlashPolyParams->vertexColor += EFF_QUAD_BATCH_VERTICES;
     }
     if (remainingVertices >= EFF_QUAD_VERTEX_COUNT) {
-        effPCPFlashPolyParams->parameterCount = remainingVertices / EFF_QUAD_VERTEX_COUNT * 2;
-        effPCPFlashPolyParams->vertexCount = remainingVertices;
+        effPCPFlashPolyParams->faceCount = remainingVertices / EFF_QUAD_VERTEX_COUNT * 2;
+        effPCPFlashPolyParams->pointCount = remainingVertices;
         sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(effPCPFlashPolyParams)));
     }
     surface = effPCPFlashQuadSurfaces[pool->blend];

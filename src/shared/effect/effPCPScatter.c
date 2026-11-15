@@ -11,11 +11,12 @@
 #include "effMath.h"
 #include "effect.h"
 #include "libsdf.h"
+#include "effPacket.h"
 #include "sdfDraw.h"
 #include "sdfMat.h"
 #include "sdfMemory.h"
-
-struct effDebugPolyParams_t;
+#include "effMagatuhi.h"
+#include "sdfVu0.h"
 
 
 struct dds3WhirlwindPolyList_tag;
@@ -62,8 +63,6 @@ struct effPCPHamaCardSphere_tag;
 
 
 struct sdfGsMemSlice_t;
-
-typedef struct effDebugPolyParams_t effDebugPolyParams_t;
 
 
 
@@ -144,22 +143,6 @@ typedef struct effPCPHamaCardSphere_tag effPCPHamaCardSphere_tag;
 
 #define EFF_SCATTER_DRAW_TEMPLATE_BYTES 0x2C
 
-struct effDebugPolyParams_t {
-    s16 parameterCount;
-    s16 vertexCount;
-    u16 primitive;
-    u16 mask;
-    u32 color;
-    const u32 *parameters;
-    u128 *positions;
-    u128 *normals;
-    f32 *texcoords;
-    u32 *extraTexcoords;
-    u32 *colors;
-    void *(*allocate)(s32);
-    f32 depth;
-};
-
 struct dds3ScatterPolyListTexResource_tag;
 
 struct sdfTexHandle_t;
@@ -194,7 +177,7 @@ struct dds3WhirlwindPolyList_tag {
     s32 vectorsPerParticle;   // 0x5C: two coordinate vectors per vertex pair
     f32 scale;                // 0x60
     f32 *points;              // 0x64
-    f32 *uv;                  // 0x68
+    sdfVector2_t *uv;                  // 0x68
     u32 *vertexColors;        // 0x6C
     u32 *colors;              // 0x70
     struct sdfMat_t *asset;    // 0x74
@@ -388,7 +371,7 @@ struct effPCPWwSpherePolyParam_t {
 /* The flat particle has three rotation angles before its signed age; it is
  * distinct from the other variants' particle even though both records are 0x28. */
 struct effPCPWwSpherePolyPart_tag {
-    f32 rot[3];
+    sdfVector3_t rot;
     s32 frame;
     f32 radian;
     f32 radian_s;
@@ -595,7 +578,6 @@ struct sdfDrawTag_t;
 
 struct TMX_HEADER_t;
 
-extern void *effPkt3DPrimMakePoly(effDebugPolyParams_t *aParm);
 
 extern effRandState_t dds3EffectBase[];
 void dds3EffectPartDelete(effPartHandle_t *hEffPart);
@@ -619,11 +601,11 @@ effPCPWhirlwind2Poly_tag *effPCPWhirlwind2PolyCreate(
 effPCPWhirlwind3Poly_tag *effPCPWhirlwind3PolyCreate(
     effPCPWhirlwind3PolyParam_t *pParam, addr_t pTex);
 
-extern effDebugPolyParams_t effDebugPoly;
+extern sdf3DPrimPolyParm_t effDebugPoly;
 extern sdfGrOt_t *effPCPScatterSurfaceByQueue[];
-extern effDebugPolyParams_t effPCPScatterDrawParams[];
+extern sdf3DPrimPolyParm_t effPCPScatterDrawParams[];
 extern sdfGrOt_t *effPCPScatterSurfaceByPool[];
-extern u32 effPCPScatterTexcoords[];
+extern sdfVector2_t effPCPScatterTexcoords[];
 extern u32 effPCPScatterParams[];
 extern u8 effScatterTriangleIndices[];
 
@@ -657,13 +639,10 @@ void SetRotateMatrixX(f32 aAngle);
 
 /* Load the secondary Y-axis rotation matrix into the primary VU0 matrix registers. */
 void SetRotateMatrixY_B(f32 aAngle);
-extern void SetRotateMatrixXYZ(f32 *aAngles);
 extern void dds3EffectPartDraw(effPartHandle_t *hEffPart);
 extern void dds3EffectPartSetPosition(effPartHandle_t *hEffPart, f32 *pPos);
 extern void dds3EffectPartSetColor(effPartHandle_t *hEffPart, u32 abgr);
 extern u32 dds3GetRandA(effRandState_t *name);
-extern s32 effMagaCylinderCalcColor(s32 color, s32 tint);
-extern void SetRotateMatrixAxis(f32 aAngle, const void *aAxis);
 dds3WhirlwindPolyList_tag *dds3WhirlwindPolyListCreate(u32 number, u32 face);
 void dds3WhirlwindPolyListSetRotateMatrix(dds3WhirlwindPolyList_tag *hPoly, const void *pMatrix);
 dds3ScatterPolyList_tag *dds3ScatterPolyListCreate(s32 face);
@@ -680,7 +659,7 @@ void dds3WhirlwindPolyListDraw(dds3WhirlwindPolyList_tag *object);
 void dds3WhirlwindPolyListSetTex(dds3WhirlwindPolyList_tag *hPoly, u32 pTex);
 void dds3WhirlwindPolyListCopyTex(dds3WhirlwindPolyList_tag *hPoly, dds3WhirlwindPolyList_tag *hPolySrc);
 f32 *dds3WhirlwindPolyListGetVertex(dds3WhirlwindPolyList_tag *hPoly, s32 index);
-f32 *dds3WhirlwindPolyListGetUV(dds3WhirlwindPolyList_tag *hPoly, s32 index);
+sdfVector2_t *dds3WhirlwindPolyListGetUV(dds3WhirlwindPolyList_tag *hPoly, s32 index);
 
 #define EFF_SCATTER_PARAM_BLOCK 0
 
@@ -1419,7 +1398,7 @@ dds3ScatterPolyList_tag *dds3ScatterPolyListCreate(s32 face) {
     pool->drawAsset = sdfMatNew();
     sdfMatSetConstant(pool->drawAsset, 1.0f);
     memset(effPCPScatterDrawParams, 0, EFF_SCATTER_DRAW_TEMPLATE_BYTES);
-    effPCPScatterDrawParams->primitive = 0x4000;
+    effPCPScatterDrawParams->attr = 0x4000;
     return pool;
 }
 
@@ -1447,27 +1426,27 @@ void dds3ScatterPolyListDraw(dds3ScatterPolyList_tag *hPoly) {
     sdf3DPrimLinkTm(packet, 0);
     if (hPoly->sharedResource != NULL) {
         sdfMatSetTex(hPoly->drawAsset, hPoly->sharedResource->textureHandle);
-        effPCPScatterDrawParams->texcoords = (f32 *)effPCPScatterTexcoords;
+        effPCPScatterDrawParams->uv = effPCPScatterTexcoords;
     } else {
-        effPCPScatterDrawParams->texcoords = NULL;
+        effPCPScatterDrawParams->uv = NULL;
     }
     sdf3DPrimLinkMat(packet, hPoly->drawAsset, 0);
     remainingVertices = hPoly->secondWordCount;
-    effPCPScatterDrawParams->colors = (u32 *)hPoly->auxRecordBase;
-    effPCPScatterDrawParams->positions = (u128 *)hPoly->recordBase;
+    effPCPScatterDrawParams->vertexColor = (u32 *)hPoly->auxRecordBase;
+    effPCPScatterDrawParams->vertex = (sdfVector4_t *)hPoly->recordBase;
     effPCPScatterDrawParams->color = hPoly->color;
-    effPCPScatterDrawParams->parameterCount = 0x10;
-    effPCPScatterDrawParams->vertexCount = 24;
-    effPCPScatterDrawParams->parameters = effPCPScatterParams;
+    effPCPScatterDrawParams->faceCount = 0x10;
+    effPCPScatterDrawParams->pointCount = 24;
+    effPCPScatterDrawParams->faceIndex = effPCPScatterParams;
     while (remainingVertices >= 24) {
         remainingVertices -= 24;
         sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(effPCPScatterDrawParams)));
-        effPCPScatterDrawParams->positions += 24;
-        effPCPScatterDrawParams->colors += 24;
+        effPCPScatterDrawParams->vertex += 24;
+        effPCPScatterDrawParams->vertexColor += 24;
     }
     if (remainingVertices >= 6) {
-        effPCPScatterDrawParams->parameterCount = remainingVertices / 6 * 4;
-        effPCPScatterDrawParams->vertexCount = remainingVertices;
+        effPCPScatterDrawParams->faceCount = remainingVertices / 6 * 4;
+        effPCPScatterDrawParams->pointCount = remainingVertices;
         sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(effPCPScatterDrawParams)));
     }
     surface = effPCPScatterSurfaceByPool[hPoly->poolMode];
@@ -1545,7 +1524,7 @@ void effPCPWhirlwindPolyDelete(effPCPWhirlwindPoly_tag *hData)
 void effPCPWhirlwindPolyPartInit(effPCPWhirlwindPoly_tag *pWhirlwindPoly, s32 index)
 {
     f32 *vertex = dds3WhirlwindPolyListGetVertex(pWhirlwindPoly->hPoly, index);
-    f32 *uv = dds3WhirlwindPolyListGetUV(pWhirlwindPoly->hPoly, index);
+    sdfVector2_t *uv = dds3WhirlwindPolyListGetUV(pWhirlwindPoly->hPoly, index);
     effPCPWhirlwindPolyPart_tag *ring;
     f32 angle;
     f32 angleStep;
@@ -1601,11 +1580,11 @@ void effPCPWhirlwindPolyPartInit(effPCPWhirlwindPoly_tag *pWhirlwindPoly, s32 in
         SDF_VU0_LOADVECTOR(vertex + 4);
         SDF_VU0_APPLYMATRIX();
         SDF_VU0_STOREVECTOR(vertex + 4);
-        uv[0] = u;
-        uv[2] = u;
-        uv[1] = 0;
-        uv[3] = v;
-        uv += 4;
+        uv[0].x = u;
+        uv[1].x = u;
+        uv[0].y = 0;
+        uv[1].y = v;
+        uv += 2;
         rise += riseStep;
         u += du;
         angle += angleStep;
@@ -1737,7 +1716,7 @@ void effPCPWhirlwind2PolyDelete(effPCPWhirlwind2Poly_tag *hData)
 void effPCPWhirlwind2PolyPartInit(effPCPWhirlwind2Poly_tag *pWhirlwind2Poly, s32 index)
 {
     f32 *vertex = dds3WhirlwindPolyListGetVertex(pWhirlwind2Poly->hPoly, index);
-    f32 *uv = dds3WhirlwindPolyListGetUV(pWhirlwind2Poly->hPoly, index);
+    sdfVector2_t *uv = dds3WhirlwindPolyListGetUV(pWhirlwind2Poly->hPoly, index);
     effPCPWhirlwindPolyPart_tag *ring;
     f32 angle;
     f32 angleStep;
@@ -1793,11 +1772,11 @@ void effPCPWhirlwind2PolyPartInit(effPCPWhirlwind2Poly_tag *pWhirlwind2Poly, s32
         SDF_VU0_LOADVECTOR(vertex + 4);
         SDF_VU0_APPLYMATRIX();
         SDF_VU0_STOREVECTOR(vertex + 4);
-        uv[0] = u;
-        uv[2] = u;
-        uv[1] = 0;
-        uv[3] = v;
-        uv += 4;
+        uv[0].x = u;
+        uv[1].x = u;
+        uv[0].y = 0;
+        uv[1].y = v;
+        uv += 2;
         rise += riseStep;
         u += du;
         angle += angleStep;
@@ -1948,7 +1927,7 @@ void effPCPWhirlwind3PolyDelete(effPCPWhirlwind3Poly_tag *hData)
 void effPCPWhirlwind3PolyPartInit(effPCPWhirlwind3Poly_tag *pWhirlwind3Poly, s32 index)
 {
     f32 *vertex = dds3WhirlwindPolyListGetVertex(pWhirlwind3Poly->hPoly, index);
-    f32 *uv = dds3WhirlwindPolyListGetUV(pWhirlwind3Poly->hPoly, index);
+    sdfVector2_t *uv = dds3WhirlwindPolyListGetUV(pWhirlwind3Poly->hPoly, index);
     effPCPWhirlwindPolyPart_tag *ring;
     f32 angle;
     f32 angleStep;
@@ -2003,11 +1982,11 @@ void effPCPWhirlwind3PolyPartInit(effPCPWhirlwind3Poly_tag *pWhirlwind3Poly, s32
         SDF_VU0_LOADVECTOR(vertex + 4);
         SDF_VU0_APPLYMATRIX();
         SDF_VU0_STOREVECTOR(vertex + 4);
-        uv[0] = u;
-        uv[2] = u;
-        uv[1] = 0;
-        uv[3] = v;
-        uv += 4;
+        uv[0].x = u;
+        uv[1].x = u;
+        uv[0].y = 0;
+        uv[1].y = v;
+        uv += 2;
         angle += angleStep;
         u += du;
         vertex += 8;
@@ -2164,7 +2143,7 @@ void effPCPWwSpherePolyDelete(effPCPWwSpherePoly_tag *hData)
 }
 
 void effPCPWwSpherePolyPartInit(effPCPWwSpherePoly_tag *pWwSpherePoly, s32 index) {
-    f32 *uv = dds3WhirlwindPolyListGetUV(pWwSpherePoly->hPoly, index);
+    sdfVector2_t *uv = dds3WhirlwindPolyListGetUV(pWwSpherePoly->hPoly, index);
     effPCPWwSpherePolyPart_tag *ring;
     f32 angle;
     f32 angleStep;
@@ -2187,9 +2166,9 @@ void effPCPWwSpherePolyPartInit(effPCPWwSpherePoly_tag *pWwSpherePoly, s32 index
     jitter = pWwSpherePoly->param.width_r;
     height = pWwSpherePoly->param.width * (dds3GetRandFloatA(dds3EffectBase) * jitter + (1.0f - jitter));
     /* Euler samples use the retail constant's lower-rounded full turn. */
-    ring->rot[0] = dds3GetRandFloatA(dds3EffectBase) * EFF_SCATTER_FULL_TURN;
-    ring->rot[1] = dds3GetRandFloatA(dds3EffectBase) * EFF_SCATTER_FULL_TURN;
-    ring->rot[2] = dds3GetRandFloatA(dds3EffectBase) * EFF_SCATTER_FULL_TURN;
+    ring->rot.x = dds3GetRandFloatA(dds3EffectBase) * EFF_SCATTER_FULL_TURN;
+    ring->rot.y = dds3GetRandFloatA(dds3EffectBase) * EFF_SCATTER_FULL_TURN;
+    ring->rot.z = dds3GetRandFloatA(dds3EffectBase) * EFF_SCATTER_FULL_TURN;
     ring->radian = angle;
     ring->radius = radius;
     ring->width = height;
@@ -2200,11 +2179,11 @@ void effPCPWwSpherePolyPartInit(effPCPWwSpherePoly_tag *pWwSpherePoly, s32 index
     u = 0.0f;
     du = (f32)pWwSpherePoly->param.repeat_u / (f32)count;
     for (i = 0; i < count; i++) {
-        uv[0] = u;
-        uv[2] = u;
-        uv[1] = 0;
-        uv[3] = v;
-        uv += 4;
+        uv[0].x = u;
+        uv[1].x = u;
+        uv[0].y = 0;
+        uv[1].y = v;
+        uv += 2;
         u += du;
     }
 }
@@ -2231,7 +2210,7 @@ void effPCPWwSpherePolyPartMove(effPCPWwSpherePoly_tag *pWwSpherePoly, s32 index
     if (ring->frame >= SDF_FRAMES(pWwSpherePoly->param.radius_aw)) {
         ring->radius_s *= SDF_FRAME_DECAY(pWwSpherePoly->param.radius_a);
     }
-    SetRotateMatrixXYZ(ring->rot);
+    SetRotateMatrixXYZ(&ring->rot);
     ring->radius = radius;
     ring->radian = angle;
     ring->radian_s *= SDF_FRAME_DECAY(pWwSpherePoly->param.roll_a);
@@ -2332,7 +2311,7 @@ dds3WhirlwindPolyList_tag *dds3WhirlwindPolyListCreate(u32 number, u32 face) {
     memset(cursor, 0, bytes);
     object->points = (f32 *)cursor;
     cursor += totalVectors * 16;
-    object->uv = (f32 *)cursor;
+    object->uv = (sdfVector2_t *)cursor;
     cursor += totalVectors * 8;
     object->vertexColors = (u32 *)cursor;
     cursor += vectors * 4;
@@ -2364,8 +2343,8 @@ dds3WhirlwindPolyList_tag *dds3WhirlwindPolyListCreate(u32 number, u32 face) {
             right -= 2;
         }
     }
-    memset(&effDebugPoly, 0, sizeof(effDebugPolyParams_t));
-    effDebugPoly.primitive = 0x4000;
+    memset(&effDebugPoly, 0, sizeof(sdf3DPrimPolyParm_t));
+    effDebugPoly.attr = 0x4000;
     return object;
 }
 
@@ -2384,7 +2363,7 @@ void dds3WhirlwindPolyListDelete(dds3WhirlwindPolyList_tag *hPoly) {
 void dds3WhirlwindPolyListDraw(dds3WhirlwindPolyList_tag *object) {
     f32 matrix[16] __attribute__((aligned(16)));
     sdfDrawTag_t *packet;
-    effDebugPolyParams_t *draw;
+    sdf3DPrimPolyParm_t *draw;
     s32 count;
     s32 remaining;
     s32 particleIndex;
@@ -2407,27 +2386,27 @@ void dds3WhirlwindPolyListDraw(dds3WhirlwindPolyList_tag *object) {
     }
     sdf3DPrimLinkMat(packet, (sdfMat_t *)object->asset, 0);
     count = (s32)object->particleCount;
-    effDebugPoly.parameters = (const u32 *)effScatterTriangleIndices;
+    effDebugPoly.faceIndex = (u32 *)effScatterTriangleIndices;
     for (particleIndex = 0; particleIndex < count; particleIndex++) {
         draw = &effDebugPoly;
         remaining = object->vectorsPerParticle;
-        draw->positions = (u128 *)dds3WhirlwindPolyListGetVertex(object, particleIndex);
-        draw->texcoords = dds3WhirlwindPolyListGetUV(object, particleIndex);
-        draw->colors = object->vertexColors;
+        draw->vertex = (sdfVector4_t *)dds3WhirlwindPolyListGetVertex(object, particleIndex);
+        draw->uv = dds3WhirlwindPolyListGetUV(object, particleIndex);
+        draw->vertexColor = object->vertexColors;
         draw->color = dds3WhirlwindPolyListGetABGR(object, particleIndex);
-        draw->parameterCount = 16;
-        draw->vertexCount = 18;
+        draw->faceCount = 16;
+        draw->pointCount = 18;
         if ((draw->color & 0xFF000000) != 0) {
             while (remaining >= 18) {
                 remaining -= 16;
                 sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(&effDebugPoly)));
-                effDebugPoly.positions += 16;
-                effDebugPoly.colors += 16;
-                effDebugPoly.texcoords += 32;
+                effDebugPoly.vertex += 16;
+                effDebugPoly.vertexColor += 16;
+                effDebugPoly.uv += 16;
             }
             if (remaining >= 4) {
-                draw->parameterCount = remaining - 2;
-                draw->vertexCount = remaining;
+                draw->faceCount = remaining - 2;
+                draw->pointCount = remaining;
                 sdfDrawTagLink(packet, EE_ADDR(effPkt3DPrimMakePoly(draw)));
             }
         }
@@ -2454,8 +2433,8 @@ f32 *dds3WhirlwindPolyListGetVertex(dds3WhirlwindPolyList_tag *hPoly, s32 index)
     return hPoly->points + index * hPoly->vectorsPerParticle * 4;
 }
 
-f32 *dds3WhirlwindPolyListGetUV(dds3WhirlwindPolyList_tag *hPoly, s32 index) {
-    return hPoly->uv + index * hPoly->vectorsPerParticle * 2;
+sdfVector2_t *dds3WhirlwindPolyListGetUV(dds3WhirlwindPolyList_tag *hPoly, s32 index) {
+    return hPoly->uv + index * hPoly->vectorsPerParticle;
 }
 
 u32 dds3WhirlwindPolyListGetABGR(dds3WhirlwindPolyList_tag *hPoly, s32 index) {

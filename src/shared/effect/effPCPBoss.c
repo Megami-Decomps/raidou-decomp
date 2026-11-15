@@ -18,6 +18,8 @@
 #include "sdfVu0.h"
 #include "polyManager.h"
 #include "effPart.h"
+#include "effPCPThunder.h"
+#include "effPCPFlash.h"
 
 typedef struct effPCPBossBED_t
 {
@@ -41,22 +43,6 @@ typedef struct effPCPBossPlace_t
 
 /* One crack segment: the extents effPCPCrackSizeInit randomizes plus the
  * negative age that delays its start. */
-/* The fragment parameter head effPCP_ThunderPolyListCreate copies out of a
- * work; only the fragment count is set by hand here. */
-typedef struct effPCPBossThunderHead_t
-{
-    u8 unk00[0x24];
-    s32 fragmentCount;
-    u8 unk28[0x2C];
-} effPCPBossThunderHead_t;
-
-typedef struct effPCPBossThunderParam_t
-{
-    f32 points[10][4];
-    s32 count;
-    effPCPBossThunderHead_t head;
-} effPCPBossThunderParam_t;
-
 typedef struct effPCPCrackPartFlash_t
 {
     f32 length;
@@ -69,7 +55,7 @@ typedef struct effPCPCrackPartFlash_t
 
 typedef struct effPCPCrackPart_t
 {
-    void *hFlash;
+    dds3FlashPolyList_t *hFlash;
     f32 dir[3];
     u8 unk10[4];
     f32 rotate;
@@ -241,7 +227,7 @@ typedef struct effPCPBossKAGUInvoke_t
         struct
         {
             f32 directions[6][9][4];
-            effPCPBossThunderHead_t head;
+            effPCP_ThunderPolyParam_t head;
             s32 limit;
             s32 fadeIn;
             s32 fadeOut;
@@ -315,7 +301,7 @@ typedef struct effPCPBossMETATOBeam_t
     s32 limit;
     s32 fadeIn;
     s32 fadeOut;
-    void *polyLists[2];
+    effPCP_ThunderPolyList_t *polyLists[2];
     s32 frame;
     u32 abgr;
 } effPCPBossMETATOBeam_t;
@@ -468,18 +454,11 @@ extern u32 dds3GetRandA(u8 *name);
 extern f32 dds3GetRandFloatA(u8 *name);
 extern void *dds3EffectPartGetHandle(effPartHandle_t *hEffPart);
 extern void dds3TrackPolySetMode(void *hTrackPoly, s32 mode);
-extern void *dds3FlashPolyListCreate(s32 face);
-extern void dds3FlashPolyListDelete(void *hPoly);
-extern f32 *dds3FlashPolyListGetVertex(void *pool, s32 index);
-extern effCrackColorSlot_t *dds3FlashPolyListGetVC(void *pool, s32 index);
-extern void dds3FlashPolyListSetBlend(void *hPoly, s32 blend);
 extern effPCPCrack_t *effPCPCrackCreate(effPCPCrackParam_t *pParam, void *pPB);
 extern effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src);
 
 #include "sdk_libc.h"
 
-extern void effPCP_ThunderPolyListDelete(void *hData);
-extern void *effPCP_ThunderPolyListCreate(const effPCPBossThunderParam_t *param);
 extern effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
 extern void effPCPCrackDraw(effPCPCrack_t *hData);
 extern void mdlSetPosition(mdlObj_t *aHandle);
@@ -498,8 +477,6 @@ effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src);
 void effPCPCrackDelete(effPCPCrack_t *hData);
 extern f32 effPCPCrackDrawData[4];
 extern void mdlSetScale(mdlObj_t *model);
-extern void dds3FlashPolyListDraw(void *pool);
-extern void dds3FlashPolyListSetABGR(void *pool, u32 color);
 extern u32 effMagaCylinderCalcColor(u32 color, u32 scale);
 void effPCPCrackDraw(effPCPCrack_t *work);
 effPCPBossBael_t *effPCPBossBaelCreate(void *pParam, void *pPB, void *pPCF);
@@ -829,7 +806,7 @@ void effPCPCrackDraw(effPCPCrack_t *work) {
                 dds3FlashPolyListSetABGR(group->hFlash, tint);
                 for (j = 0; j < count - 1; j++, cell++, historyStart += 3) {
                     positions = (u128 *)dds3FlashPolyListGetVertex(group->hFlash, j);
-                    colorWords = dds3FlashPolyListGetVC(group->hFlash, j)->color;
+                    colorWords = dds3FlashPolyListGetVC(group->hFlash, j);
                     age = cell->frame;
                     if (age > colorStart) {
                         if (work->cellColorTransitionFrames > 0 && age < colorStart + colorFrames) {
@@ -1222,13 +1199,13 @@ INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrack2SetColor);
 
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam)
 {
-    effPCPBossThunderParam_t thunder;
+    effPCP_ThunderPolyListParam_t thunder;
     effPCPBossMETATOBeam_t *work = sdfChipAllocDirect(sizeof(effPCPBossMETATOBeam_t));
 
     memcpy(work, pParam, 0x70);
     work->abgr = 0x80808080;
     work->frame = 0;
-    memcpy(&thunder.head, work->unk10, 0x54);
+    memcpy(&thunder.TPParam, work->unk10, 0x54);
     thunder.count = 4;
     work->polyLists[0] = effPCP_ThunderPolyListCreate(&thunder);
     work->polyLists[1] = effPCP_ThunderPolyListCreate(&thunder);

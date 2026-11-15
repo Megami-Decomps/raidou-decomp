@@ -11,6 +11,7 @@
 #include "billManager.h"
 #include "sdfMath.h"
 #include "polyManager.h"
+#include "effModelTrackPoly.h"
 
 typedef struct dds3Particle_BlurBuffList_t dds3Particle_BlurBuffList_t;
 
@@ -72,21 +73,6 @@ typedef struct billData_t billData_t;
 
 typedef struct billOut_t billOut_t;
 
-typedef struct effTrackPolyList_t effTrackPolyList_t;
-
-typedef struct {
-    struct mdlObj_t *model;
-    s32 idA;
-    s32 idB;
-    f32 startFrame;
-    f32 endFrame;
-    u32 sampleInterval;
-    s32 historyLength;
-    u32 unk1C;
-    u32 kind;
-    u32 gradientColors[4];
-} effTrackPolyParams_t;
-
 typedef struct dds3Particle_BlurBuffList_t {
     u128 *pPos;
     u16 count;
@@ -126,7 +112,7 @@ typedef struct {
     f32 scale;                          /* +8: shared by kinds 2..4 */
     u32 firstGradientColor;             /* +0xC: kind 4 */
     u32 secondGradientColor;            /* +0x10: kind 4 */
-    struct effTrackPolyList_t *modelList; /* +0x14: kind 4 */
+    effMTPolyListHandle_t *modelList; /* +0x14: kind 4 */
 } parKindTrackPolygonPayload_t;
 
 typedef union {
@@ -730,19 +716,16 @@ void dds3Particle_EffectSet(dds3Particle_Effect_t *pEffect, s32 index, u32 abgr,
 void dds3Particle_EffectReset(dds3Particle_Effect_t *pEffect, s32 number);
 void dds3Particle_TrackSet(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr);
 void dds3Particle_Track2Set(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr);
-void dds3Particle_Track3Set(effTrackPolyList_t *hTrackPoly, s32 i, u32 abgr);
+void dds3Particle_Track3Set(effMTPolyListHandle_t *hTrackPoly, s32 i, u32 abgr);
 u32 dds3Particle_TrackPolyGetRecTiming();
 billHandle_t *dds3BillboardGeneral(s32 number);
 void dds3BillboardSetScale(billHandle_t *hBillboard, float x, float y);
 void dds3TrackPolySetMode(dds3TrackPoly_t *hTrackPoly, u16 mode);
-effTrackPolyList_t *Eff_ModelTrackPolyListCreate(effTrackPolyParams_t *pParam, u32 number);
-void Eff_ModelTrackPolyListDelete(effTrackPolyList_t *list);
 f32 dds3GetRandFloatA(effRandState_t *name);
 u32 dds3ParticleColorAnim(dds3ParticleColorAnim_t *pColAnim, u32 color_now, s32 frame);
 u32 dds3GetRandA(effRandState_t *name);
-void Eff_ModelTrackPolyListDrawOnly(effTrackPolyList_t *hMTPolyList);
-void Eff_ModelTrackPolyListVertexSet(effTrackPolyList_t *hMTPolyList, s32 index, const u128 *pVertex);
-void Eff_ModelTrackPolyListColorSet(effTrackPolyList_t *hMTPolyList, s32 index, u32 abgr);
+void Eff_ModelTrackPolyListVertexSet(effMTPolyListHandle_t *hMTPolyList, s32 index, const u128 *pVertex);
+void Eff_ModelTrackPolyListColorSet(effMTPolyListHandle_t *hMTPolyList, s32 index, u32 abgr);
 void effInitParticleRecord(effParticleOverlay_t *effect);
 
 /* Both draw paths submit the resource owned by the selected particle kind. */
@@ -806,7 +789,7 @@ INCLUDE_ASM(const s32, "effect/parManager", parLeaf);
 /* The subrecord bitfield keeps native int-alias dependencies. */
 void dds3Particle_BasicCreate(void *effect) {
     effEmitterHead_t *owner = effect;
-    effTrackPolyParams_t params;
+    Eff_ModelTrackPolyParam_t params;
 
     owner->templateSize = 0x150;
     owner->buffer = dds3Particle_PhysicsCreate(owner->particleCount);
@@ -840,10 +823,10 @@ void dds3Particle_BasicCreate(void *effect) {
         break;
     case PAR_KIND_STATE_TRACK_POLYGON_CROSS_AXES:
         /* These tracks receive endpoints directly; model sampling is unused. */
-        params.sampleInterval = 1;
-        params.historyLength = owner->sub.templateEntryCount;
-        params.unk1C = 10;
-        params.kind = (u16)owner->drawKind;
+        params.record = 1;
+        params.face = owner->sub.templateEntryCount;
+        params.split = 10;
+        params.blend = (u16)owner->drawKind;
         params.gradientColors[0] = owner->sub.payload.trackPolygon.firstGradientColor;
         params.gradientColors[1] = owner->sub.payload.trackPolygon.firstGradientColor;
         params.gradientColors[2] = owner->sub.payload.trackPolygon.secondGradientColor;
@@ -3218,7 +3201,7 @@ void dds3Particle_Track2Set(dds3TrackPoly_t *hTrackPoly, s32 i, u32 abgr) {
     dds3TrackPolyColorSet(hTrackPoly, i, (abgr & 0xFF000000) | 0x808080);
 }
 
-void dds3Particle_Track3Set(effTrackPolyList_t *hTrackPoly, s32 i, u32 abgr) {
+void dds3Particle_Track3Set(effMTPolyListHandle_t *hTrackPoly, s32 i, u32 abgr) {
     u128 axis[2];
     SDF_VU0_COPYVECTOR_C_TO_B();
     SDF_VU0_SUBVECTOR();

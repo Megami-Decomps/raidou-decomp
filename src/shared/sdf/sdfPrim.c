@@ -411,22 +411,6 @@ typedef struct sdfPreDrawTag_t {
 
 extern sdfGrFrameSet_t sdfGrFrameSet;
 
-typedef struct effDebugPolyParams_t {
-    s16 parameterCount;
-    s16 vertexCount;
-    u16 primitive;
-    u16 mask;
-    u32 color;
-    const u32 *parameters;
-    u128 *positions;
-    u128 *normals;
-    f32 *texcoords;
-    u32 *extraTexcoords;
-    u32 *colors;
-    void *(*allocate)(s32);
-    f32 depth;
-} effDebugPolyParams_t;
-
 void sdfDrawTagInit(sdfDrawTag_t *a);
 void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 void sdfPreDrawTagLink(sdfPreDrawTag_t *aTag, sdfPreDrawHook_t *aHook);

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "effPCPThunder.h"
 #include "effPCPData.h"
 #include "effThunder.h"
 #include "ps2asm.h"
@@ -13,6 +14,7 @@
 #include "sdfChip.h"
 #include "sdfMemory.h"
 #include "polyManager.h"
+#include "effMagatuhi.h"
 
 
 struct effPCPThunderSpherePolyParam_t;
@@ -25,11 +27,7 @@ struct effPCP_ThunderRadiatePoly_t;
 
 struct effPCP_ThunderPolyPart_t;
 
-struct effPCP_ThunderPolyParam_t;
-
 struct effPCP_ThunderPolyList_t;
-
-struct effPCP_ThunderPolyListParam_t;
 
 struct effPCP_ThunderColumnPolyLowPart_t;
 
@@ -57,10 +55,6 @@ typedef struct effPCP_ThunderRadiatePolyParam_t effPCP_ThunderRadiatePolyParam_t
 typedef struct effPCP_ThunderRadiatePoly_t effPCP_ThunderRadiatePoly_t;
 
 typedef struct effPCP_ThunderPolyPart_t effPCP_ThunderPolyPart_t;
-
-typedef struct effPCP_ThunderPolyParam_t effPCP_ThunderPolyParam_t;
-
-typedef struct effPCP_ThunderPolyListParam_t effPCP_ThunderPolyListParam_t;
 
 typedef struct effPCP_ThunderColumnPolyLowPart_t effPCP_ThunderColumnPolyLowPart_t;
 
@@ -165,27 +159,6 @@ struct effPCP_ThunderPoly_t;
 
 typedef struct effPCP_ThunderPoly_t effPCP_ThunderPoly_t;
 
-/* Parameter head (0x54 bytes) of the fragment effect, copied verbatim into the work. */
-struct effPCP_ThunderPolyParam_t {
-    f32 start[4];
-    f32 end[4];
-    u16 blend;         /* 0x20 */
-    u8 pad22[2];
-    u32 number;       /* 0x24 */
-    u32 restartFrameLimit;  /* 0x28: zero permits unlimited restarts */
-    f32 waveAmplitude;      /* 0x2C: sinusoidal displacement */
-    u32 startDelayRange;     /* 0x30 modulus of delayFrames */
-    u32 activeFrameRange;    /* 0x34 modulus of activeFrames before adding one */
-    u16 split;            /* 0x38 */
-    u8 pad3A[2];
-    f32 coreWidth;          /* 0x3C: half-width of the primary strip */
-    u32 color_center;     /* 0x40: packed center color used by symmetric cell ramps */
-    f32 width_border;          /* 0x44: width of the continued strip */
-    u32 color_border;    /* 0x48: packed middle color used by symmetric cell ramps */
-    f32 width_edge;          /* 0x4C: added outer margin */
-    u32 color_edge;      /* 0x50: packed edge color used by symmetric cell ramps */
-};
-
 struct effPCP_ThunderPoly_t {
     effPCP_ThunderPolyParam_t head;
     effPCP_ThunderPolyPart_t *pPart; /* 0x54 */
@@ -197,15 +170,6 @@ struct effPCP_ThunderPoly_t {
     dds3TrackPoly_t *hPoly;            /* 0x60 */
     sdfMemHandle_t *allocationHandle; /* 0x64 */
 }; /* 0x68 */
-
-typedef struct effPCP_ThunderPolyList_t effPCP_ThunderPolyList_t;
-
-/* Shared paired-chain parameter and resource owners. Points are filled before rendering. */
-struct effPCP_ThunderPolyListParam_t {
-    f32 points[10][4];
-    s32 count;
-    effPCP_ThunderPolyParam_t TPParam;
-};
 
 struct effPCP_ThunderPolyList_t {
     effPCP_ThunderPolyListParam_t head;
@@ -324,7 +288,6 @@ u32 dds3GetRandA(effRandState_t *name);
 
 /* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
 f32 dds3GetRandFloatA(effRandState_t *name);
-extern s32 effMagaCylinderCalcColor(s32 color, s32 param);
 extern void effPCP_ThunderRadiatePolyPartRefresh(effPCP_ThunderRadiatePoly_t *pThunderRadiatePoly, s32 number);
 extern void effPCP_ThunderPolyLowPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number);
 extern void effPCP_ThunderPolyPartRefresh(effPCP_ThunderPoly_t *pThunderPoly, s32 number);
@@ -385,10 +348,7 @@ effPCP_ThunderRadiatePoly_t *effPCP_ThunderRadiatePolyCreate(effPCP_ThunderRadia
 void effPCP_ThunderRadiatePolyDelete(effPCP_ThunderRadiatePoly_t *hData);
 void effPCP_ThunderRadiatePolyPartRefresh(effPCP_ThunderRadiatePoly_t *pThunderRadiatePoly, s32 number);
 void effPCP_ThunderRadiatePolyDraw(effPCP_ThunderRadiatePoly_t *hData);
-effPCP_ThunderPolyList_t *effPCP_ThunderPolyListCreate(effPCP_ThunderPolyListParam_t *src);
-void effPCP_ThunderPolyListDelete(effPCP_ThunderPolyList_t *hData);
 void effPCP_ThunderPolyListPartRefresh(effPCP_ThunderPoly_t *work, s32 index, const u128 *seed);
-void effPCP_ThunderPolyListDraw(effPCP_ThunderPolyList_t *hData);
 
 effPCPThunderSpherePoly_t *effPCPThunderSpherePolyCreate(effPCPThunderSpherePolyParam_t *source) {
     struct sdfMemHandle_t *allocation = sdfMemAllocDirect(source->cellCount * sizeof(effPCPThunderSpherePolyPart_t) + sizeof(effPCPThunderSpherePoly_t));

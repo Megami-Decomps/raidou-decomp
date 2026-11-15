@@ -21,22 +21,6 @@ extern s32 sdfGrPacketBuffBase[2];
 extern s32 sdfGrPacketBuffPtr;
 extern s32 sdfGrPacketBuffLimit;
 
-typedef struct effDebugPolyParams_t {
-    s16 parameterCount;
-    s16 vertexCount;
-    u16 primitive;
-    u16 mask;
-    u32 color;
-    const u32 *parameters;
-    u128 *positions;
-    u128 *normals;
-    f32 *texcoords;
-    u32 *extraTexcoords;
-    u32 *colors;
-    void *(*allocate)(s32);
-    f32 depth;
-} effDebugPolyParams_t;
-
 void sdfGrMakePacketBuff(s32 aPacketBuffSize);
 void sdfGrSetupPacketBuff(s32 aFrameId);
 s32 sdfGrAllocPacketBuff(s32 aSize);
