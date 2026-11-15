@@ -394,14 +394,16 @@ typedef struct {
 
 extern void InitExecPS2(void);
 s32 PatchIsNeeded_0(void);
-extern kernelEntryPair_t execEntryPairs[3];
 extern const u8 execPs2Payload[0x7A8];
 extern s32 PatchIsNeeded_0(void);
 extern void gcc2_compiled__15(u32 index, void *entry);
 extern s32 Copy_0(void *destination, const void *source, u32 size);
 extern void *GetEntryAddress(u32 index);
 void InitExecPS2(void);
+s32 kCopy_0(u32 *dst, const u32 *src, u32 count);
 s32 kCopy_1(u8 *dst, const u8 *src, u32 count);
+kernelEntryPair_t execEntryPairs[3] = {{0x5A, kCopy_0}, {0x5B, EE_ADDR_PTR(0x80074000)}, {0xFFFFC402, NULL}};
+kernelEntryPair_t setArgEntryPairs[1] = {{0x5A, kCopy_1}};
 
 typedef struct execArgumentBlock_t {
     char *arguments[16];

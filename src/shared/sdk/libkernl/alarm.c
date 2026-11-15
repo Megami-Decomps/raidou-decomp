@@ -399,7 +399,8 @@ typedef struct execArgumentBlock_t {
     char strings[1];
 } execArgumentBlock_t;
 
-extern kernelEntryPair_t alarmEntryPairs[8];
+s32 kCopy_2(u32 *dst, const u32 *src, u32 count);
+kernelEntryPair_t alarmEntryPairs[8] = {{0x5A, kCopy_2}, {0x5B, EE_ADDR_PTR(0x80076000)}, {0xFC, NULL}, {0xFE, NULL}, {0xFD, NULL}, {0xFF, NULL}, {0x12C, NULL}, {0x8, NULL}};
 extern const u8 alarmPayload[0x740];
 extern const u8 alarmSmallPayload[0x28];
 extern void gcc2_compiled__17(u32 index, void *entry);

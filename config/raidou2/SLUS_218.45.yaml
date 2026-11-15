@@ -664,6 +664,12 @@ segments:
       - [0x328680, data, data]
       - [0x3289B0, .data, kernel/dds3KernelDraw]
       - [0x328AA4, data, data_00427AA4]
+      - [0x3A54C0, .data, sdk/libkernl/initsys]
+      - [0x3A54D0, data, data_004A44D0]
+      - [0x3A5C80, .data, sdk/libkernl/libosd]
+      - [0x3A5CA0, data, data_004A4CA0]
+      - [0x3A6408, .data, sdk/libkernl/alarm]
+      - [0x3A6448, data, data_004A5448]
       # Raidou 2 has C++ with exception tables: .eh_frame is 0x904 bytes here.
       - [0x3A7130, databin, eh_frame]
       # .vudata (0x300) plus the zeros up to .rodata's 16-byte boundary.

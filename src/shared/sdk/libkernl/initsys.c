@@ -403,7 +403,7 @@ typedef struct {
     void *entry;
 } kernelEntryPair_t;
 
-extern kernelEntryPair_t systemCallEntryPairs[2];
+kernelEntryPair_t systemCallEntryPairs[2] = {{0x83, kFindAddress}, {0x5A, kCopy}};
 extern void setup(u32 index, void *entry);
 extern u32 *FindAddress(u32 *start, const u32 *end, u32 instruction);
 void GetSystemCallTableEntry(void);

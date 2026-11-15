@@ -695,6 +695,12 @@ segments:
       - [0x2AE200, data, data]
       - [0x2AE530, .data, kernel/dds3KernelDraw]
       - [0x2AE624, data, data_003AD624]
+      - [0x343D90, .data, sdk/libkernl/initsys]
+      - [0x343DA0, data, data_00442DA0]
+      - [0x344550, .data, sdk/libkernl/libosd]
+      - [0x344570, data, data_00443570]
+      - [0x344CD8, .data, sdk/libkernl/alarm]
+      - [0x344D18, data, data_00443D18]
       - [0x345368, databin, eh_frame]
       # .vudata (0x300) plus the zeros up to .rodata's 16-byte boundary.
       - [0x34536C, databin, vudata]
