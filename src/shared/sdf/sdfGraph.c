@@ -45,9 +45,6 @@ extern s8 sdfGrCaptureBuff;
 void sdfGrSetFrameSetMode(sdfGrFrameSet_t *aFrame, s32 aMode, s32 aReqHandleClear);
 void sdfGrFreeFrameSet(sdfGrFrameSet_t *aFrame);
 
-/* GS store-image packet and tracked-thread node are only passed to the SDK. */
-typedef struct sceGsStoreImage sceGsStoreImage;
-
 extern sceGsStoreImage sdfGrStoreImage;
 extern sdfThCB_t sdfDispThreadCB;
 extern u8 sdfDrawThreadStack[0x8000];
@@ -58,10 +55,6 @@ extern s8 reqGsReset;
 extern volatile s32 dds3GsSema;
 extern s32 dds3GsThreadId;
 extern s32 sdfDrawThreadId;
-extern s32 sceGsSetDefStoreImage(sceGsStoreImage *, s16, s16, s16, s16, s16, s16, s16);
-extern s32 sceGsExecStoreImage(sceGsStoreImage *, void *);
-extern s32 sceGsSyncPath(s32 mode, s32 timeout);
-extern void sceGsResetPath(void);
 
 #include "sdk_libkernl.h"
 

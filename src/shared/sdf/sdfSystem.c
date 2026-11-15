@@ -29,13 +29,6 @@ typedef struct {
     u8 unk18[0x18];
 } sdfKernelThreadParam_t;
 
-typedef struct sdfHandlerNode_t {
-    struct sdfHandlerNode_t *next;
-    s32 handlerKind;
-    s32 channel;
-    s32 handlerId;
-} sdfHandlerNode_t;
-
 struct pipeTextureFile_t;
 
 extern s32 _gp, sdfThreadSema, sdfVblankFlag, sdfCoreDrawBuffSize;
@@ -44,7 +37,6 @@ extern void (*sdfTickCallback)(void);
 extern sdfThCB_t *sdfVblankThreadId;
 extern sdfThCB_t sdfSystemThreadCB;
 extern s32 CreateThread(sdfKernelThreadParam_t *parameter);
-extern s32 AddIntcHandler2(s32 channel, s32 handler, s32 argument, s32 next);
 
 #include "sdk_libkernl.h"
 #include "sdf3D.h"
@@ -107,7 +99,6 @@ extern u8 sdfCdClock;
 extern s32 sdfVblankSema;
 extern s32 CreateSema(sdfSemaParam_t *param);
 extern sdfThCB_t *sdfFindThreadNode(s32 threadId);
-extern void sdfIpuRemoveHandler(sdfHandlerNode_t *handler);
 extern void sdfDeleteTrackedThread(sdfThCB_t *node);
 extern void *sdfChipAllocDirect(s32 aSize);
 s32 sdfCreateSema(s32 initCount, s32 maxCount, u32 option);
@@ -115,8 +106,6 @@ s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priorit
 void *sdfAllocAuto(s32 size);
 s32 sdfFreeAutoDelayed(void *allocation);
 s32 sdfFreeMemorySlotFromEitherHeap(void **slot);
-sdfHandlerNode_t *DmacAddHandler(s32 kind, s32 channel, saddr_t handler, s32 arg, s32 next);
-void sdfIpuRemoveHandler(sdfHandlerNode_t *target);
 void sdfAlarmWakeup(s32 arg0, s32 arg1, s32 thid);
 void sdfDelayThread(u32 delay);
 s32 sdfGetRunTimeCountBase(void);
@@ -214,16 +203,16 @@ void FatalError(const char *format, ...) {
     }
 }
 
-sdfHandlerNode_t *DmacAddHandler(s32 kind, s32 channel, saddr_t handler, s32 arg, s32 next) {
+sdfHandlerNode_t *DmacAddHandler(s32 kind, s32 channel, void *handler, s32 next, void *arg) {
     sdfHandlerNode_t *node;
     s32 id;
 
     switch (kind) {
     case 0:
-        id = AddIntcHandler2(channel, handler, arg, next);
+        id = AddIntcHandler2(channel, handler, next, arg);
         break;
     case 1:
-        id = AddDmacHandler2(channel, (s32 (*)(s32, void *, void *))handler, arg, EE_ADDR_AS(void *, next));
+        id = AddDmacHandler2(channel, handler, next, arg);
         break;
     case 2:
         id = AddSbusIntcHandler(channel, handler);
@@ -406,7 +395,7 @@ s32 VblankIntcHandler(s32 cause)
 void VblankThreadProc(void) {
     sdfThCB_t *threadEntry;
 
-    DmacAddHandler(0, 2, EE_ADDR_S(VblankIntcHandler), -1, 0);
+    DmacAddHandler(0, 2, VblankIntcHandler, -1, NULL);
     EnableIntc(2);
     for (;;) {
         SleepThread();

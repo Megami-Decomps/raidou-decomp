@@ -10,6 +10,7 @@
 #include "sdfDevCons.h"
 #include "sdfImageSet.h"
 #include "sdfGraph.h"
+#include "sdk_libgraph.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
 
@@ -389,8 +390,6 @@ extern u8 sdfGrDrawFrameId;
 extern u8 sdfGrDrawFirstFlag;
 extern u32 sdfGrDrawFrameTagHead;
 extern s32 dds3GsThreadId;
-extern u64 sceGsGetIMR(void);
-extern u64 sceGsPutIMR(u64 mask);
 extern void sdfDelayedResrcProc(void);
 void sdfGrDrawFrame(void);
 void sdfDrawSync(void);

@@ -6,6 +6,7 @@
 #include "sdfDraw.h"
 #include "sdfPacketBuff.h"
 #include "sdfGsMemory.h"
+#include "sdk_libgraph.h"
 #include "sdk_libkernl.h"
 #include "frFont.h"
 #include "itfMisc.h"
@@ -201,11 +202,8 @@ void frCreateUserFontPacket(s32 X, s32 Y, s32 Z, frTextHandle_t *pText,
 
 #define FR_FONT_GLYPH_HEIGHT_SHIFT 1
 
-void frCopyFontClutToVram(s32 GS_LocalAddr, saddr_t pClut);
-extern void sceGsSetDefLoadImage(void *, s16, s16, s32, s32, s32, s16, s16);
+void frCopyFontClutToVram(s32 GS_LocalAddr, u32 *pClut);
 extern volatile s32 dds3GsSema;
-extern void sceGsExecLoadImage(void *, saddr_t);
-extern s32 sceGsSyncPath(s32, s32);
 void frLoadStyleAll(void);
 void frSetFontClut(void);
 
@@ -805,19 +803,19 @@ void frCreateUserFontPacket(s32 X, s32 Y, s32 Z, frTextHandle_t *pText,
 }
 
 /* Upload an image to GS memory at the given buffer, serialized by the GS semaphore. */
-void frCopyFontClutToVram(s32 GS_LocalAddr, saddr_t pClut) {
-    u8 loadImage[0x60];
+void frCopyFontClutToVram(s32 GS_LocalAddr, u32 *pClut) {
+    sceGsLoadImage loadImage;
 
-    sceGsSetDefLoadImage(loadImage, (s16)GS_LocalAddr, 1, 0, 0, 0, 8, 2);
+    sceGsSetDefLoadImage(&loadImage, (s16)GS_LocalAddr, 1, 0, 0, 0, 8, 2);
     WaitSema(dds3GsSema);
     FlushCache(0);
-    sceGsExecLoadImage(loadImage, pClut);
+    sceGsExecLoadImage(&loadImage, pClut);
     sceGsSyncPath(0, 0);
     SignalSema(dds3GsSema);
 }
 
 void frClearTexBuf(void) {
-    u8 loadImage[0x60];
+    sceGsLoadImage loadImage;
     sdfMemHandle_t *allocation;
     u8 *pixels;
     s32 byteCount = gFT.atlas.height * gFT.atlas.width;
@@ -826,11 +824,11 @@ void frClearTexBuf(void) {
     allocation = sdfMemAllocDirect(byteCount);
     pixels = EE_ADDR_AS(u8 *, sdfMemLock(allocation));
     memset(pixels, 0x11, byteCount);
-    sceGsSetDefLoadImage(loadImage, gFT.atlas.bufferBase, gFT.atlas.bufferWidth,
+    sceGsSetDefLoadImage(&loadImage, gFT.atlas.bufferBase, gFT.atlas.bufferWidth,
                          FR_FONT_PIXEL_FORMAT, 0, 0, gFT.atlas.width, gFT.atlas.height);
     WaitSema(dds3GsSema);
     FlushCache(0);
-    sceGsExecLoadImage(loadImage, EE_ADDR_S(pixels));
+    sceGsExecLoadImage(&loadImage, pixels);
     sceGsSyncPath(0, 0);
     SignalSema(dds3GsSema);
     sdfMemFreeDirect(allocation);
@@ -894,7 +892,7 @@ void frSetFontClut(void) {
             wordCountdown--;
         } while (wordCountdown >= 0);
 
-        frCopyFontClutToVram(*imageBuffer++, EE_ADDR_S(imageWords));
+        frCopyFontClutToVram(*imageBuffer++, imageWords);
         bufferIndex++;
         sourceWordOffset += FR_FONT_IMAGE_WORD_COUNT;
     } while (bufferIndex < FR_FONT_IMAGE_BUFFER_COUNT);

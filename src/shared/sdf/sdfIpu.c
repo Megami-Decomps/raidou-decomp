@@ -139,11 +139,9 @@ extern sdfIpuDecodeCb_t *sdfIpuPendingCb;
 extern s32 sdfIpuDecode(sdfIpuDecodeCb_t *);
 extern s32 sdfIpuDecodeThId;
 extern s32 sdfIpuDoneFrame;
-extern s32 sdfFromIpuDmacHandlerHandle;
-extern s32 sdfToIpuDmacHandlerHandle;
-extern s32 DmacAddHandler(s32, s32, void *, s32, s32);
+extern sdfHandlerNode_t *sdfFromIpuDmacHandlerHandle;
+extern sdfHandlerNode_t *sdfToIpuDmacHandlerHandle;
 extern u8 sdfIpuDecodeThStack[];
-extern void sdfIpuRemoveHandler(void *);
 void sdfIpuExecQueue(s32 critical);
 void sdfIpuMakeBltPacket(sdfIpuDecodeCb_t *cb);
 void sdfIpuDetachQueue(sdfIpuDecodeCb_t *cb, s32 critical);
@@ -716,9 +714,9 @@ void sdfIpuInit(void) {
     HW_WRITE(IPU_CMD, 0x90000000);
     sdfIpuTaskLink = 0;
     sdfCurrIpuDecodeCb = NULL;
-    sdfFromIpuDmacHandlerHandle = DmacAddHandler(1, 3, sdfIpuFromDmacHandler, -1, 0);
+    sdfFromIpuDmacHandlerHandle = DmacAddHandler(1, 3, sdfIpuFromDmacHandler, -1, NULL);
     EnableDmac(3);
-    sdfToIpuDmacHandlerHandle = DmacAddHandler(1, 4, sdfIpuToDmacHandler, -1, 0);
+    sdfToIpuDmacHandlerHandle = DmacAddHandler(1, 4, sdfIpuToDmacHandler, -1, NULL);
     EnableDmac(4);
     thread = CreateThreadSimple((void *)sdfIpuDecodeThread, sdfIpuDecodeThStack, 0x800, 0x46);
     sdfIpuDecodeThId = thread;
@@ -726,14 +724,14 @@ void sdfIpuInit(void) {
 }
 
 s32 sdfIpuClose(void) {
-    if (sdfFromIpuDmacHandlerHandle != 0) {
-        sdfIpuRemoveHandler(EE_ADDR_AS(void *, sdfFromIpuDmacHandlerHandle));
-        sdfFromIpuDmacHandlerHandle = 0;
+    if (sdfFromIpuDmacHandlerHandle != NULL) {
+        sdfIpuRemoveHandler(sdfFromIpuDmacHandlerHandle);
+        sdfFromIpuDmacHandlerHandle = NULL;
     }
     DisableDmac(3);
-    if (sdfToIpuDmacHandlerHandle != 0) {
-        sdfIpuRemoveHandler(EE_ADDR_AS(void *, sdfToIpuDmacHandlerHandle));
-        sdfToIpuDmacHandlerHandle = 0;
+    if (sdfToIpuDmacHandlerHandle != NULL) {
+        sdfIpuRemoveHandler(sdfToIpuDmacHandlerHandle);
+        sdfToIpuDmacHandlerHandle = NULL;
     }
     return DisableDmac(4);
 }

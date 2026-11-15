@@ -18,6 +18,8 @@ struct sifRpcDataQueue_t;
 typedef void *(*sceSifRpcFunc)(s32 function, void *request, s32 size);
 s32 AddDmacHandler2(s32 channel, s32 (*handler)(s32, void *, void *),
                     s32 next, void *argument);
+s32 AddIntcHandler2(s32 channel, s32 (*handler)(s32, void *, void *),
+                    s32 next, void *argument);
 s32 _StartThread(s32 threadId, void *argument);
 s32 sceDevctl(const char *device, s32 command, const void *arguments,
               u32 argumentSize, void *result, u32 resultSize);
@@ -52,7 +54,7 @@ void EnableIntc(s32 channel);
 s32 sceSifAllocIopHeap(s32 size);
 s32 sceSifInitIopHeap(void);
 
-s32 AddSbusIntcHandler(s32 channel, s32 handler);
+s32 AddSbusIntcHandler(s32 channel, void (*handler)(s32 channel));
 s32 CancelWakeupThread(s32 thid);
 void ChangeThreadPriority(s32 thid, s32 prio);
 s32 Deci2Call(s32 command, void *packet);

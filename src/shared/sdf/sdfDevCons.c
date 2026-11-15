@@ -8,6 +8,7 @@
 #include "sdfChip.h"
 #include "sdk_libc.h"
 #include "sdfTex.h"
+#include "sdk_libgraph.h"
 
 typedef struct sdfDevConsCB_tag
 {
@@ -86,7 +87,6 @@ typedef struct
     u64 secondPosition;
 } sdfDevConsGlyph_t;
 
-extern s32 sceGsSyncPath(s32 mode, s32 timeout);
 extern u64 sdfTexGetTex0Reg(sdfTexHandle_t *aHandle);
 extern void *sdfGrOpenPacketBuff(void);
 extern void sdfGrClosePacketBuff(saddr_t aBuffPtr);
