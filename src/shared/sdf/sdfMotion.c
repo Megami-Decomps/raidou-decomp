@@ -8,6 +8,7 @@
 #include "sdfQuat.h"
 #include "sdfMotion.h"
 #include "sdfModel.h"
+#include "sdfMat.h"
 
 typedef struct
 {
@@ -35,8 +36,6 @@ extern void sdfMatSetSpecular(sdfMat_t *aMat, u32 aColor);
 extern void sdfMatSetRefMap(sdfMat_t *aMat, u32 aColor);
 extern void sdfMatSetMultiDiffuse(sdfMat_t *aMat, u32 aColor);
 extern void sdfMatSetConstant(sdfMat_t *aMat, f32 aRatio);
-extern void sdfMatSetTexUvwByPtr(sdfMat_t *aMat, void *aParm);
-extern void sdfMatSetMultiTexUvwByPtr(sdfMat_t *aMat, void *aParm);
 extern void sdfMotGetKey(sdfMotionNode_t *aThis, f32 aFrame, sdfMotGetKeyIf_t *aItf);
 
 extern /* vu0 routine: blend the two colour keys */
@@ -972,7 +971,7 @@ void sdfMotCLBK_matUvwSeek(sdfMotNodeMatBase_t *aThis, f32 aFrame)
 
     sdfMotGetKey(&aThis->nodeBase, aFrame, &itf);
     sdfMotInterpolateKeyUvw(&itf, &uvw);
-    sdfMatSetTexUvwByPtr(aThis->mat, &uvw);
+    sdfMatSetTexUvwByPtr(aThis->mat, uvw.offset);
 }
 
 void sdfMotCLBK_matUvwBlendSeek(sdfMotNodeMatUvw_t *aThis, f32 aFrame, f32 aBlendRate)
@@ -984,7 +983,7 @@ void sdfMotCLBK_matUvwBlendSeek(sdfMotNodeMatUvw_t *aThis, f32 aFrame, f32 aBlen
     sdfMotGetKey(&aThis->base.nodeBase, aFrame, &itf);
     sdfMotInterpolateKeyUvw(&itf, &key);
     sdfMotInterpolateKeyUvwSub(dst.parm, aThis->blendFrom.parm, key.parm, aBlendRate);
-    sdfMatSetTexUvwByPtr(aThis->base.mat, &dst);
+    sdfMatSetTexUvwByPtr(aThis->base.mat, dst.parm);
 }
 
 void sdfMotCLBK_matUvwInitBlend(sdfMotNodeMatUvw_t *aThis)
@@ -1008,7 +1007,7 @@ void sdfMotCLBK_matMultiUvwSeek(sdfMotNodeMatBase_t *aThis, f32 aFrame)
 
     sdfMotGetKey(&aThis->nodeBase, aFrame, &itf);
     sdfMotInterpolateKeyUvw(&itf, &uvw);
-    sdfMatSetMultiTexUvwByPtr(aThis->mat, &uvw);
+    sdfMatSetMultiTexUvwByPtr(aThis->mat, uvw.offset);
 }
 
 void sdfMotCLBK_matMultiUvwBlendSeek(sdfMotNodeMatUvw_t *aThis, f32 aFrame, f32 aBlendRate)
@@ -1020,7 +1019,7 @@ void sdfMotCLBK_matMultiUvwBlendSeek(sdfMotNodeMatUvw_t *aThis, f32 aFrame, f32 
     sdfMotGetKey(&aThis->base.nodeBase, aFrame, &itf);
     sdfMotInterpolateKeyUvw(&itf, &key);
     sdfMotInterpolateKeyUvwSub(dst.parm, aThis->blendFrom.parm, key.parm, aBlendRate);
-    sdfMatSetMultiTexUvwByPtr(aThis->base.mat, &dst);
+    sdfMatSetMultiTexUvwByPtr(aThis->base.mat, dst.parm);
 }
 
 void sdfMotCLBK_matMultiUvwInitBlend(sdfMotNodeMatUvw_t *aThis)

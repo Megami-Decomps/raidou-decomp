@@ -24,6 +24,7 @@
 #include "evtSky.h"
 #include "dds3CameraObjectBasic.h"
 #include "dds3Basic.h"
+#include "effEvent.h"
 
 struct effResourceHeader_t;
 
@@ -47,9 +48,6 @@ extern dds3Basic_t *dds3AddD3PEffectObjectBasic2(struct effResourceHeader_t *eff
 extern const char evtMsgEffectBeFailed[];
 extern const char evtMsgEffectBeNotFound[];
 
-typedef struct effEventWork_t effEventWork_t;
-
-void effEveBEDCutSetScale(effEventWork_t *hEveBEDCut, f32 scale);
 extern f32 evtCalcEffBedScale(s32);
 
 enum {
@@ -1514,7 +1512,7 @@ u32 evtCommand_EFFBED_START_EVO(void) {
         modelRecordIndex = scrGetIntPara(2);
         if (modelRecordIndex >= 0) {
             f32 value = evtCalcEffBedScale(modelRecordIndex);
-            void *target = *(void **)(*(u8 **)((u8 *)unit + 0x18) + 0x2C);
+            effEveBEDCut_t *target = *(effEveBEDCut_t **)(*(u8 **)((u8 *)unit + 0x18) + 0x2C);
             if (target != NULL) {
                 effEveBEDCutSetScale(target, value);
             }

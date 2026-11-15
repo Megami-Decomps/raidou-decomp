@@ -632,12 +632,9 @@ s32 btlUpdateEffectWork(void);
 void effResetFileResources(void);
 extern void effResetFileResourceManager(void);
 void effSetBattleOffset(void *src);
-extern void camFollowOffsetVec(u8 *, void *);
-void effComputeBattleCameraPositionVU(u8 *effect);
-extern void PoseRotBillboard(void *, void *);
-void effMultiplyQuatWithFlag(u8 *effect);
+void effComputeBattleCameraPositionVU(effPartsListPose_t *effect);
+void effMultiplyQuatWithFlag(effPartsListPose_t *effect);
 extern u8 effSelectedJobHeader[];
-extern void effComputeBattleCameraPositionVU(u8 *);
 void effApplyBattleCameraToObject();
 u32 effCreateBattleCameraJob(u8 *request);
 FileJobPayload *effLoadFileJobPayload(EffFileJobRequest *request, u32 existingJob);
@@ -740,13 +737,9 @@ extern f32 D_003DFA20[4];
 s32 effResetStaticState(void);
 
 typedef struct EffectStateSnapshot {
-    s128 vectors[4];
-    f32 position[4]; /* 0x40: copied to the debug camera position and follow offset. */
-    s128 unused50;
-    u8 pad60[8];
-    u32 flags; /* 0x68: transform flags tested by the camera diagnostic. */
-    u8 pad6C[0x14];
-} EffectStateSnapshot;
+    effPartsListPose_t pose; /* pos is copied to the debug camera position and follow offset */
+    u8 pad70[0x10];
+} __attribute__((aligned(16))) EffectStateSnapshot;
 
 typedef char EffectStateSnapshotSizeCheck[(sizeof(EffectStateSnapshot) == 0x80) ? 1 : -1];
 
@@ -754,18 +747,14 @@ extern s32 effUpdateCameraDiagnostics(EffectStateSnapshot *, s8);
 extern u8 effUpdateCameraDiagnosticsData[];
 extern s8 effData22[];
 extern u32 btlDebugMenuSetupNoOp(void *camera);
-extern void camFollowOffsetVec(u8 *camera, void *destination);
-extern void effComputeBattleCameraPositionVU(u8 *snapshot);
 s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode);
 
 /* The camera snapshot payload is the 0x90-byte record consumed by this updater. */
 typedef union EffectCameraSnapshotView {
     u32 word[36];
     struct {
-        u8 pad00[0x40];
-        f32 offset[4];
-        f32 quat[4];
-        u8 pad60[0x30];
+        effPartsListPose_t pose;
+        u8 pad70[0x20];
     } camera;
 } EffectCameraSnapshotView;
 
@@ -1296,16 +1285,16 @@ void effSetBattleOffset(void *src) {
     SDF_VU0_COPYVECTOR(effBattleOffset, src);
 }
 
-void effComputeBattleCameraPositionVU(u8 *effect) {
+void effComputeBattleCameraPositionVU(effPartsListPose_t *effect) {
     u128 direction;
-    u32 flags = ((FileJob *)effect)->xformFlags;
+    u32 flags = effect->flag;
 
     if ((flags & 0x18) != 0) {
         camFollowOffsetVec(effect, &direction);
         VU0_LOAD_VF($vf10, &direction);
-        flags = ((FileJob *)effect)->xformFlags;
+        flags = effect->flag;
     } else {
-        VU0_LOAD_VF($vf10, ((FileJob *)effect)->offset);
+        VU0_LOAD_VF($vf10, effect->pos);
     }
     if ((flags & 0x80) != 0) {
         VU0_SCALAR_OP_CLOBBER(effFileQueue->scaleMultiplier, "vmulx.xyzw vf10, vf10, vf2x");
@@ -1319,16 +1308,16 @@ void effComputeBattleCameraPositionVU(u8 *effect) {
     }
 }
 
-void effMultiplyQuatWithFlag(u8 *effect) {
-    if ((((FileJob *)effect)->xformFlags & 0x60) != 0) {
+void effMultiplyQuatWithFlag(effPartsListPose_t *effect) {
+    if ((effect->flag & 0x60) != 0) {
         u128 quaternion;
         PoseRotBillboard(effect, &quaternion);
-        VU0_LOAD_VF($vf10, effFileQueue->quat);
+        VU0_LOAD_VF($vf10, effFileQueue->pose.rot);
         VU0_LOAD_VF($vf11, &quaternion);
         Mult();
     } else {
-        VU0_LOAD_VF($vf10, effFileQueue->quat);
-        VU0_LOAD_VF($vf11, ((FileJob *)effect)->quat);
+        VU0_LOAD_VF($vf10, effFileQueue->pose.rot);
+        VU0_LOAD_VF($vf11, effect->rot);
         Mult();
     }
 }
@@ -1944,27 +1933,27 @@ s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode) {
         }
     }
 
-    SDF_VU0_COPYVECTOR(D_003DFA20, snapshot->position);
+    SDF_VU0_COPYVECTOR(D_003DFA20, snapshot->pose.pos);
     btlDebugMenuSetupNoOp(camera);
     btlDebugMenuBeforeRecordNoOp();
     btlDebugMenuRecordNoOp(camera);
     btlDebugMenuAfterRecordNoOp();
-    SDF_VU0_COPYVECTOR(snapshot->position, D_003DFA20);
+    SDF_VU0_COPYVECTOR(snapshot->pose.pos, D_003DFA20);
 
     if ((*(u32 *)(camera + 0x10) & 8) != 0) {
         result |= 2;
     }
-    if ((result & 2) != 0 && (snapshot->flags & 0x18) != 0) {
-        camFollowOffsetVec((u8 *)snapshot, vectors[0]);
-        SDF_VU0_COPYVECTOR(snapshot->position, vectors[0]);
+    if ((result & 2) != 0 && (snapshot->pose.flag & 0x18) != 0) {
+        camFollowOffsetVec(&snapshot->pose, vectors[0]);
+        SDF_VU0_COPYVECTOR(snapshot->pose.pos, vectors[0]);
     }
 
     if (mode != 0) {
-        effComputeBattleCameraPositionVU((u8 *)snapshot);
+        effComputeBattleCameraPositionVU(&snapshot->pose);
         SDF_VU0_LOADVECTOR_B(&effEditedQueueHeader);
         SDF_VU0_SUBVECTOR();
     } else {
-        SDF_VU0_LOADVECTOR(snapshot->position);
+        SDF_VU0_LOADVECTOR(snapshot->pose.pos);
     }
     SDF_VU0_STOREVECTOR(vectors[1]);
     VU0_SET_VF10_COMPONENT(y, 0.0f);
@@ -2027,11 +2016,11 @@ u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *state, s8 useBattleP
         }
     }
 
-    SDF_VU0_COPYVECTOR(effWork9, state->camera.quat);
+    SDF_VU0_COPYVECTOR(effWork9, state->camera.pose.rot);
     if (useBattlePosition != 0) {
-        effComputeBattleCameraPositionVU((u8 *)state);
+        effComputeBattleCameraPositionVU(&state->camera.pose);
     } else {
-        SDF_VU0_LOADVECTOR(state->camera.offset);
+        SDF_VU0_LOADVECTOR(state->camera.pose.pos);
     }
     SDF_VU0_STOREVECTOR_NOMEM(&scratch.basePosition);
     SDF_VU0_STOREVECTOR(D_003DFA20);
@@ -2040,7 +2029,7 @@ u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *state, s8 useBattleP
     btlDebugMenuBeforeRecordNoOp();
     btlDebugMenuRecordNoOp(&effUpdateCameraSnapshotGuidesData);
     btlDebugMenuAfterRecordNoOp();
-    SDF_VU0_COPYVECTOR(state->camera.quat, effWork9);
+    SDF_VU0_COPYVECTOR(state->camera.pose.rot, effWork9);
     if (effUpdateCameraSnapshotGuidesData.flags & 8) {
         result |= 2;
     }
@@ -2049,7 +2038,7 @@ u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *state, s8 useBattleP
     SDF_VU0_ADDVECTOR();
     SDF_VU0_STOREVECTOR_NOMEM(&scratch.segmentStart);
 
-    SDF_VU0_LOADVECTOR(state->camera.quat);
+    SDF_VU0_LOADVECTOR(state->camera.pose.rot);
     ToMatrix();
     VU0_STORE_MATRIX_UNCLOBBERED(scratch.rotationMatrix);
 
@@ -2112,7 +2101,7 @@ u32 effLoadFileSlotAndPoll(void) {
 
 s32 effRunWithStateBackup(void) {
     EffectStateSnapshot snapshot = *(EffectStateSnapshot *)&effEditedQueueHeader;
-    f32 *backup = snapshot.position;
+    f32 *backup = snapshot.pose.pos;
     s32 result;
 
     SDF_VU0_COPYVECTOR(backup, &effEditedQueueHeader);

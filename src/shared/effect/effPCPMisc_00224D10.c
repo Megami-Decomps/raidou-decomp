@@ -184,8 +184,6 @@ typedef struct FileMultiFlagBonus {
 
 #define FILE_JOB_LOCATION_CLEAR(payload) ((payload).offset = 0)
 
-struct CamAim;
-
 extern FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
 
 /* Makes the first job chained to owner's sector the leader and rechains the rest to it. */

@@ -95,17 +95,26 @@ typedef char FileJobPayloadBufferSlot_size_must_be_0x10[
 typedef char FileJob_size_must_be_0xC0[
     (sizeof(FileJob) == 0xC0) ? 1 : -1];
 
+/* Placement of an effect parts list: queues, camera snapshots, and jobs from 0x40 on. */
+typedef struct effPartsListPose_t {
+    f32 posBase[4];
+    f32 origin[4];
+    u8 unk20[0x20];
+    f32 pos[4];       /* 0x40 */
+    f32 rot[4];       /* 0x50 */
+    f32 scl;          /* 0x60 */
+    u32 abgr;         /* 0x64: modulation colour */
+    u32 flag;         /* 0x68: 0x18 billboard position, 0x60 billboard rotation */
+    u32 unk6C;
+} effPartsListPose_t;
+
+typedef char effPartsListPose_size_must_be_0x70[
+    (sizeof(effPartsListPose_t) == 0x70) ? 1 : -1];
+
 /* Runtime queue owner; serialized images retain the same 0x90-byte header. */
 typedef struct FileQueue {
-    f32 offset[4];
-    f32 axis[4];
-    u8 unk20[0x20];
-    f32 position[4];  /* 0x40 */
-    f32 quat[4];      /* 0x50 */
-    f32 scale;        /* 0x60 */
-    u32 color;        /* 0x64: modulation colour */
-    u32 transformFlags; /* 0x68: bits 0x60 select the rotation branch */
-    u8 pad6C[8];
+    effPartsListPose_t pose;
+    u8 pad70[4];
     f32 scaleMultiplier; /* 0x74: multiplies queue scale during updates */
     u8 pad78[8];
     s32 count;        /* 0x80 */
@@ -120,6 +129,8 @@ typedef struct FileQueue {
 typedef char FileQueue_size_must_be_0x90[
     (sizeof(FileQueue) == 0x90) ? 1 : -1];
 
+void camFollowOffsetVec(effPartsListPose_t *obj, void *dst);
+void PoseRotBillboard(effPartsListPose_t *obj, void *dst);
 void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *leader);
 
 typedef struct FileSlot {

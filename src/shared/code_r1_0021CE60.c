@@ -112,15 +112,6 @@ typedef struct EffectQueuedSurfaceNode {
     u16 active;         // 0x50: initialized to 1
 } EffectQueuedSurfaceNode;
 
-typedef struct CamAim {
-    u8 opaque00[0x50];
-    f32 quat[4];
-    u8 opaque60[8];
-    u32 flags;
-} CamAim;
-
-typedef char CamAimSizeCheck[(sizeof(CamAim) == 0x6C) ? 1 : -1];
-
 typedef struct ScaleEntry {
     f32 unk0;
     f32 value;
@@ -330,11 +321,6 @@ void fileQueueInsertAfter(FileQueue *queue, FileJob *after, FileJob *job);
 void fileQueueRemove(FileQueue *queue, FileJob *job);
 FileJob *fileJobCreate(void);
 void fileDestroyJob(FileJob *job);
-void camFollowOffsetVec(FileJob *job, void *dst);
-
-struct CamAim;
-
-extern void PoseRotBillboard(struct CamAim *obj, void *dst);
 FileJob *fileAppendJob(FileQueue *queue, u32 id);
 FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source);
 extern u8 fileAppendJobFromCommandPathData[];
@@ -372,8 +358,6 @@ FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id);
 FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
 s32 fileFindQueuedJobIndex(FileQueue *queue, FileJob *target);
 s32 fileQueueCountLinkedJobs(FileQueue *queue);
-void camFollowOffsetVec(FileJob *obj, void *dst);
-void PoseRotBillboard(CamAim *obj, void *dst);
 EffectQueuedSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity);
 EffectQueuedSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
 void Delete_effParticle(EffectQueuedSurfaceNode *node);
@@ -721,10 +705,10 @@ FileQueue *Create_effPartsList(FileQueue *source) {
     FileJob *job;
     f32 vec[4] __attribute__((aligned(16)));
 
-    SDF_VU0_COPYVECTOR(queue->offset, source->offset);
-    SDF_VU0_COPYVECTOR(queue->axis, source->offset);
+    SDF_VU0_COPYVECTOR(queue->pose.posBase, source->pose.posBase);
+    SDF_VU0_COPYVECTOR(queue->pose.origin, source->pose.posBase);
     queue->scaleMultiplier = source->scaleMultiplier;
-    queue->transformFlags = source->transformFlags;
+    queue->pose.flag = source->pose.flag;
     if (source->first != NULL) {
         for (entry = source->first; entry != NULL; entry = entry->next) {
             job = fileJobCreate();
@@ -815,9 +799,9 @@ FileQueue *effPartsCreateFinish(const FileQueue *source) {
     f32 vec[4] __attribute__((aligned(16)));
 
     SDF_VU0_COPYVECTOR(queue, source);
-    SDF_VU0_COPYVECTOR(queue->axis, source->axis);
+    SDF_VU0_COPYVECTOR(queue->pose.origin, source->pose.origin);
     queue->scaleMultiplier = source->scaleMultiplier;
-    queue->transformFlags = source->transformFlags;
+    queue->pose.flag = source->pose.flag;
     for (src = source->first; src != NULL; src = src->next) {
         FileJob *job = fileJobCreate();
         job->id = (u32)Copy_effParts((FileJobPayload *)src->id);
@@ -843,14 +827,14 @@ void effPartsPositionSet(FileQueue *queue, const f32 vec[4])
     f32 scale;
 
     SDF_VU0_LOADVECTOR(vec);
-    SDF_VU0_STOREVECTOR(queue->position);
-    SDF_VU0_LOADVECTOR_B(queue->offset);
+    SDF_VU0_STOREVECTOR(queue->pose.pos);
+    SDF_VU0_LOADVECTOR_B(queue->pose.posBase);
     SDF_VU0_ADDVECTOR();
     SDF_VU0_STOREVECTOR(base);
-    SDF_VU0_LOADVECTOR(queue->quat);
+    SDF_VU0_LOADVECTOR(queue->pose.rot);
     ToMatrix();
     VU0_STORE_MATRIX(rot);
-    scale = queue->scale * queue->scaleMultiplier;
+    scale = queue->pose.scl * queue->scaleMultiplier;
     for (job = queue->first; job != NULL; job = job->next) {
         SDF_VU0_LOADVECTOR(base);
         if (job->xformFlags & 4) {
@@ -875,12 +859,12 @@ void effPartsRotateSet(FileQueue *queue, const f32 rot[4])
     FileJob *job;
 
     SDF_VU0_LOADVECTOR(rot);
-    SDF_VU0_STOREVECTOR(queue->quat);
+    SDF_VU0_STOREVECTOR(queue->pose.rot);
     SDF_VU0_STOREVECTOR(quat);
     ToMatrix();
-    SDF_VU0_LOADVECTOR(queue->axis);
+    SDF_VU0_LOADVECTOR(queue->pose.origin);
     SDF_VU0_APPLYMATRIX_XYZ();
-    SDF_VU0_STOREVECTOR(queue->offset);
+    SDF_VU0_STOREVECTOR(queue->pose.posBase);
     for (job = queue->first; job != NULL; job = job->next) {
         SDF_VU0_LOADVECTOR(job->quat);
         SDF_VU0_LOADVECTOR_B(quat);
@@ -888,7 +872,7 @@ void effPartsRotateSet(FileQueue *queue, const f32 rot[4])
         SDF_VU0_STOREVECTOR_NOMEM(pos);
         fileJobInvokeRotationCallback((FileJobPayload *)job->id, pos);
     }
-    effPartsPositionSet(queue, queue->position);
+    effPartsPositionSet(queue, queue->pose.pos);
 }
 
 void effPartsScaleSet(FileQueue *queue, f32 scale)
@@ -898,7 +882,7 @@ void effPartsScaleSet(FileQueue *queue, f32 scale)
     f32 total;
     f32 jobScale;
 
-    queue->scale = scale;
+    queue->pose.scl = scale;
     total = scale * queue->scaleMultiplier;
     for (job = queue->first; job != NULL; job = job->next) {
         jobScale = job->scale;
@@ -907,8 +891,8 @@ void effPartsScaleSet(FileQueue *queue, f32 scale)
         }
         fileJobInvokeScaleCallback((FileJobPayload *)job->id, jobScale);
         if (job->xformFlags & 0x80) {
-            SDF_VU0_LOADVECTOR(queue->position);
-            SDF_VU0_LOADVECTOR_B(queue->offset);
+            SDF_VU0_LOADVECTOR(queue->pose.pos);
+            SDF_VU0_LOADVECTOR_B(queue->pose.posBase);
             SDF_VU0_ADDVECTOR();
             if (job->xformFlags & 4) {
                 VU0_SCALAR_OP(-5.0f, "vaddx.y vf10, vf0, vf2x");
@@ -935,7 +919,7 @@ void ColorSet(FileQueue *queue, u32 color) {
     u32 packed[4] __attribute__((aligned(16)));
     FileJob *job;
 
-    queue->color = color;
+    queue->pose.abgr = color;
     queueColor[0] = color;
     EE_MMI_RGBA_UNPACK(queueColor, 1.0f / 128.0f);
     SDF_VU0_STOREVECTOR_NOMEM(tint);
@@ -1250,10 +1234,10 @@ FileQueue *fileQueueCreateFromCommandState(const char *entry) {
     sdfFileRead(command, image, size);
     sdfFileClose(command);
     queue = fileQueueCreate();
-    SDF_VU0_COPYVECTOR(queue->offset, image->offset);
-    SDF_VU0_COPYVECTOR(queue->axis, image->offset);
+    SDF_VU0_COPYVECTOR(queue->pose.posBase, image->pose.posBase);
+    SDF_VU0_COPYVECTOR(queue->pose.origin, image->pose.posBase);
     queue->scaleMultiplier = image->scaleMultiplier;
-    queue->transformFlags = image->transformFlags;
+    queue->pose.flag = image->pose.flag;
     for (i = 0, src = (FileJob *)((u8 *)image + image->entryOffset);
          i < image->count; i++, src++) {
         if ((src->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) == 0) {
@@ -1342,18 +1326,18 @@ s32 fileQueueCountLinkedJobs(FileQueue *queue) {
 }
 
 /* vu0 routine: dst = |pos| * unit(aViewEye - aViewTarget); flag 0x10 flattens y, then puts pos.y back */
-void camFollowOffsetVec(FileJob *obj, void *dst)
+void camFollowOffsetVec(effPartsListPose_t *obj, void *dst)
 {
     f32 len[4];
     f32 length;
-    u32 flags = obj->xformFlags;
+    u32 flags = obj->flag;
 
     if ((flags & 0x18) == 0) {
-        SDF_VU0_COPYVECTOR(dst, obj->offset);
+        SDF_VU0_COPYVECTOR(dst, obj->pos);
         return;
     }
-    SDF_VU0_LOADVECTOR(obj->offset);
-    if (obj->xformFlags & 0x10) {
+    SDF_VU0_LOADVECTOR(obj->pos);
+    if (obj->flag & 0x10) {
         VU0_SCALAR_OP(0.0f, "vaddx.y vf10, vf0, vf2x");
     }
     SDF_VU0_GETLENGTH(length);
@@ -1361,27 +1345,27 @@ void camFollowOffsetVec(FileJob *obj, void *dst)
     SDF_VU0_LOADVECTOR(aViewEye);
     SDF_VU0_LOADVECTOR_B(aViewTarget);
     SDF_VU0_SUBVECTOR();
-    if (obj->xformFlags & 0x10) {
+    if (obj->flag & 0x10) {
         VU0_SCALAR_OP(0.0f, "vaddx.y vf10, vf0, vf2x");
     }
     SDF_VU0_NORMALIZE();
     SDF_VU0_LOADVECTOR_B(len);
     SDF_VU0_MULVECTOR();
-    if (obj->xformFlags & 0x10) {
-        VU0_SCALAR_OP(obj->offset[1], "vaddx.y vf10, vf0, vf2x");
+    if (obj->flag & 0x10) {
+        VU0_SCALAR_OP(obj->pos[1], "vaddx.y vf10, vf0, vf2x");
     }
     SDF_VU0_STOREVECTOR(dst);
 }
 
-/* dst = rotation facing unit(aViewEye - aViewTarget) (pitch and yaw); flag 0x40 composes it onto obj->quat, no flag 0x60 copies obj->quat */
-void PoseRotBillboard(CamAim *obj, void *dst)
+/* dst = rotation facing unit(aViewEye - aViewTarget) (pitch and yaw); flag 0x40 composes it onto obj->rot, no flag 0x60 copies obj->rot */
+void PoseRotBillboard(effPartsListPose_t *obj, void *dst)
 {
     f32 v[4];
     f32 pitch;
-    u32 flags = obj->flags;
+    u32 flags = obj->flag;
 
     if ((flags & 0x60) == 0) {
-        SDF_VU0_COPYVECTOR(dst, obj->quat);
+        SDF_VU0_COPYVECTOR(dst, obj->rot);
         return;
     }
     SDF_VU0_LOADVECTOR(aViewEye);
@@ -1394,9 +1378,9 @@ void PoseRotBillboard(CamAim *obj, void *dst)
         pitch = -acosf(-v[1]);
     }
     FromEuler(pitch, atan2f(v[0], v[2]), 0.0f);
-    if (obj->flags & 0x40) {
+    if (obj->flag & 0x40) {
         SDF_VU0_COPYVECTOR_A_TO_B();
-        SDF_VU0_LOADVECTOR(obj->quat);
+        SDF_VU0_LOADVECTOR(obj->rot);
         Mult();
     }
     SDF_VU0_STOREVECTOR(dst);
