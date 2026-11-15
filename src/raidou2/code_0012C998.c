@@ -1,6 +1,8 @@
 #include "common.h"
 #include "evtMoon.h"
 #include "dds3ObjectBase.h"
+#include "dds3MatterObjectBasic.h"
+#include "fldProcess.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -22,10 +24,8 @@ u16 dds3GetBasicArrayCount(const dds_dds3BasicArrayHandle_t *object);
 
 /* Return the borrowed secondary world node, or NULL when no world is active. */
 struct dds3Basic_t *dds3GetControlScene(void);
-u32 dds3MatterObjectBasicGetAlpMode(const struct dds3Basic_t *object);
 
 /* Object data word 8 stores a kind-dependent 32-bit payload. */
-void dds3MatterObjectBasicSetAlpMode(struct dds3Basic_t *object, u32 value);
 
 /* Set the callback on an object's slot-1 handler; returns whether it exists. */
 
@@ -44,7 +44,6 @@ extern u32 fldReleaseUnitPadData[];
 
 struct dds3Basic_t;
 
-void fldEncountClearFlag(u32 mask);
 
 f32 fldPointDistance(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz);
 void fldToggleWorldNodeState(s64 clearMode);

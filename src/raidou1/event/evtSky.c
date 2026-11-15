@@ -2,6 +2,7 @@
 #include "sdfFrame.h"
 #include "kernel.h"
 #include "dds3KernelCore.h"
+#include "evtSky.h"
 
 extern char evtSkyProcName[];
 extern u16 skyanime;

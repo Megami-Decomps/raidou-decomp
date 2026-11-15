@@ -89,7 +89,6 @@ extern s32 mcSema __attribute__((section(".data")));
 
 extern s32 sceMcOpen(s32 a, s32 b, char *c, s32 d);
 extern void mcDelayThread(u16 ticks);
-extern char *strncpy(char *dst, const char *src, size_t n);
 
 /* The chunk this string opens also carries the float constants the next
  * unit needs, so it stays one INCLUDE_RODATA rather than an inline literal. */

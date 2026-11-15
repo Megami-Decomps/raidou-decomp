@@ -95,7 +95,6 @@ void sdfDevConsDrawBG(sdfDevConsCB_tag *aHndl, sdfDevConsDrawCB_t *aCB);
 extern void sdfDevConsDrawInit(sdfDevConsDrawCB_t *aCB, void *aPacketBuffer, s32 aBufferSize);
 extern void sdfDevConsDraw(sdfDevConsCB_tag *aHndl, sdfDevConsDrawCB_t *aBuf);
 extern void sdfDevConsDrawFlush(sdfDevConsDrawCB_t *aCB);
-extern void *memmove(void *a, const void *b, size_t c);
 extern s32 vsprintf(char *buf, const char *fmt, void *args);
 extern sdfTexHandle_t *sdfTexSet(void *aTex);
 extern sdfTexHandle_t *sdfDebugFontHandle;

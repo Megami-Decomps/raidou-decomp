@@ -13,12 +13,11 @@
 #include "sdfFileIO.h"
 #include "sdfSystem.h"
 #include "sdfPrim.h"
+#include "sdfMovie.h"
 s32 DIntr(void);
 s32 EIntr(void);
 
 void sdfDummyFunc(void);
-char *strrchr(const char *aStr, s32 aChar);
-s32 strcasecmp(const char *aLeft, const char *aRight);
 void *sdfFileCmdReadOpen(const char *aFileName, SdfStreamRead aCallback, sdfMovieCb_t *aUserData);
 void movieAttachDecodeTask(sdfIpuDecodeCb_t *aNode, sdfIpuInitParm_t *aFormat, SdfStreamRead aRead, sdfMovieCb_t *aContext, s32 aResourceWord);
 s32 movieReadChunk(void *aHandle, s32 aOp, void *aBuf, s32 aSize, sdfMovieCb_t *stream);

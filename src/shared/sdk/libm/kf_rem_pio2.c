@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libm.h"
 
 #define GET_FLOAT_WORD(i, d)                    \
     do {                                        \
@@ -17,7 +18,6 @@
 extern s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,
                               const s32 *twoOverPi);
 
-extern f32 floorf(f32 x);
 extern f32 scalbnf(f32 x, s32 n);
 extern const s32 __kernel_rem_pio2fTable[];
 
@@ -27,7 +27,6 @@ extern const f32 __kernel_rem_pio2fTable2[];
 s32 __kernel_rem_pio2f(f32 *x, f32 *y, s32 e0, s32 nx, s32 precision,
                        const s32 *ipio2);
 
-f32 floorf(f32 x);
 f32 scalbnf(f32 x, s32 n);
 extern const s32 __kernel_rem_pio2fTable[4];
 extern const f32 __kernel_rem_pio2fTable2[26];

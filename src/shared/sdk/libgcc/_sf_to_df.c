@@ -1,6 +1,7 @@
 #include "common.h"
 #include "ps2asm.h"
 #include "sdk_libc.h"
+#include "sdk_libgcc.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -169,7 +170,6 @@ typedef struct fp_number_type {
 } fp_number_type;
 
 extern void sdfUnpackFloat(const void *x, fp_number_type *u);
-extern f64 __make_dp(s32 kind, s32 sign, s32 exp, s64 mant);
 
 #define va_start(ap, last) __builtin_stdarg_start((ap), last)
 
@@ -314,7 +314,6 @@ static inline const fp_number_type_df *dfMultiplyParts(fp_number_type_df *left,
     return result;
 }
 
-f64 __make_dp(s32 kind, s32 sign, s32 exp, s64 mant);
 
 static inline s32 fde_compare(u32 *left, u32 *right)
 {

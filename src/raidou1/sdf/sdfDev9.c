@@ -4,6 +4,7 @@
 #include "ps2asm.h"
 #include "sdfChip.h"
 #include "sdfDev9.h"
+#include "sdk_libkernl.h"
 
 
 enum SdfFileIOCmdStat {
@@ -56,7 +57,6 @@ enum sdf_stream_playback {
 extern const char sdfDev9ResidentFailMsg[];
 extern u8 sdfDev9LoadFlag;
 extern u8 sdfDev9Ready;
-extern s32 sceSifLoadStartModule(const char *modulePath, s32 flags, void *moduleArguments, s32 *resident);
 
 #include "sdk_libc.h"
 

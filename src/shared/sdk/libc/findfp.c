@@ -164,7 +164,6 @@ struct _reent {
 
 extern _reent *_impure_ptr __attribute__((section(".data")));
 extern void _cleanup_r(_reent *r);
-extern s32 fflush(void *fp);
 extern s32 _fwalk(_reent *r, s32 (*func)(void *));
 extern void std(FILE *fp, s32 flags, s32 file, _reent *data);
 extern _glue *__sfmoreglue(_reent *r, s32 n);
@@ -280,7 +279,6 @@ typedef union libcDoubleBits_t {
 
 extern const char dtoaInfinityText[], dtoaNanText[];
 extern const char dtoaInfinityText[16];
-s32 fflush(void *stream);
 void std(FILE *fp, s32 flags, s32 file, _reent *data);
 _glue *__sfmoreglue(_reent *r, s32 n);
 FILE *__sfp(_reent *r);

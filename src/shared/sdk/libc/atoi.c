@@ -162,7 +162,6 @@ struct _reent {
     FILE __sf[3];
 };
 
-extern long strtol(const char *s, char **end, s32 base);
 
 typedef struct fp_number_type {
     s32 class;
@@ -265,7 +264,6 @@ static inline void qsortSwapRange(char *first, char *second, s32 bytes, s32 swap
 
 #define STRTOL_MIN 0x8000000000000000UL
 
-long strtol(const char *s, char **end, s32 base);
 
 /* Little-endian IEEE binary64 word view used by the numeric helpers. */
 typedef union libcDoubleBits_t {

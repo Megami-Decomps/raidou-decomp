@@ -5,6 +5,7 @@
 #include "sdfFrame.h"
 #include "sdf_PadManager.h"
 #include "dds3KernelCore.h"
+#include "dds3PadManager.h"
 
 extern u8 dds3PadVibrationState[2];
 extern u8 dds3PadVibrationMode[2];

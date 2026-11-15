@@ -10,4 +10,8 @@ typedef struct sdfStoreTransfer_t {
     u32 callbackParameter;
 } sdfStoreTransfer_t;
 
+#include "sdf_resource.h"
+
+void sdfLinkLoadImage(sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle, s32 aDstX, s32 aDstY, s32 aWidth, s32 aHeight, saddr_t aBuffer, s32 (*aAllocator)(s32));
+
 #endif

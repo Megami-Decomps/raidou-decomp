@@ -1,6 +1,7 @@
 #include "common.h"
 #include "ps2asm.h"
 #include "sdk_libc.h"
+#include "sdk_libgcc.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -163,7 +164,6 @@ struct _reent {
 extern void *__deregister_frame_info(void *fn);
 extern void __register_frame_info(void *fn, void *entry);
 extern s32 __register_frame_info_table(void *fn, void *entry);
-extern void abort(void);
 extern s32 frameObjectSema __attribute__((section(".data")));
 extern object *frameObjectList __attribute__((section(".data")));
 

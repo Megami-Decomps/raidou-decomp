@@ -4,6 +4,7 @@
 #include "event.h"
 #include "field.h"
 #include "dds3KernelCore.h"
+#include "slMain.h"
 
 extern void fmProcTrigSequence(s32 mode);
 extern s32 fmProcessChk(void);
@@ -14,8 +15,6 @@ extern void titleStart(u32 mode);
 
 
 extern s32 dds3StartMenuProcess(dds3ProcessID_t *id);
-extern void fmShutDownFade(void);
-extern void fmShutDown(void);
 extern s32 fmShutDown2(void);
 dds3ProcessID_t *CallDebug(void);
 s32 ExitDebug(void);

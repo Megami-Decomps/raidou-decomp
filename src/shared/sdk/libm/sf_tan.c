@@ -15,9 +15,7 @@
         (d) = sf_u.f;                           \
     } while (0)
 
-extern f32 __kernel_tanf(f32 x, f32 tail, s32 reciprocal);
 f32 tanf(f32 x);
-f32 __kernel_tanf(f32 x, f32 y, s32 selector);
 
 f32 tanf(f32 x)
 {

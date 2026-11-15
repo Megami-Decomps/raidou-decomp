@@ -6,6 +6,7 @@
 #include "libsdf.h"
 #include "evtStage.h"
 #include "dds3KernelCore.h"
+#include "evtDebug.h"
 
 typedef void (*evtOtRegFunc_t)(sdfGrOt_t *, sdfDrawTag_t *);
 extern s32 evtSceneDispWork;

@@ -165,7 +165,6 @@ struct _reent {
 extern void _cleanup_r(_reent *r);
 extern void __smakebuf(FILE *fp);
 extern void *_malloc_r(_reent *r, u32 size);
-extern long __sseek(void *cookie, s32 offset, s32 whence);
 
 typedef struct fp_number_type {
     s32 class;
@@ -280,7 +279,6 @@ void _cleanup_r(_reent *r);
 extern s32 _fstat_r(_reent *r, s32 fd, struct stat *buf);
 extern s32 isatty(s32 fd);
 void __smakebuf(FILE *fp);
-long __sseek(void *cookie, s32 offset, s32 whence);
 s32 _fstat_r(_reent *r, s32 fd, struct stat *buf);
 
 void __smakebuf(FILE *fp)

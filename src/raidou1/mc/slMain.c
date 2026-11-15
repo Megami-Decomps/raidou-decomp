@@ -11,6 +11,8 @@
 #include "fileManager.h"
 #include "sdfSound.h"
 #include "dds3AdminiProcess.h"
+#include "slMain.h"
+#include "dds3KernelMain.h"
 
 typedef struct fileRequest fileRequest_t;
 
@@ -115,9 +117,7 @@ slMcResult_t sdfMcFuncWrite1(void);
 saddr_t slSaveProc_closeFile(void);
 slMcResult_t sdfMcFuncClose1(void);
 slMcResult_t sdfMcFuncFormat1(void);
-extern void dds3SoftResetOn(void);
 s32 slCardChk(void);
-extern void dds3SoftResetOff(void);
 void sdfMcFuncFormat(u32 port);
 saddr_t slLoadProc_readFile(void);
 saddr_t slLoadProc_closeFile(void);

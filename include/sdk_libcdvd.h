@@ -12,4 +12,6 @@ s32 sceCdStStop(void);
 
 s32 _sceCd_scmd_prechk(s32 command);
 
+s32 sceCdStatus(void);
+
 #endif

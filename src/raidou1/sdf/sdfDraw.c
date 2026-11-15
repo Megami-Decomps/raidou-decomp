@@ -9,6 +9,7 @@
 #include "sdfSystem.h"
 #include "sdfDevCons.h"
 #include "sdfImageSet.h"
+#include "sdfGraph.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
 extern sceDmaChan *sceDmaGetChan(u32 channel);
@@ -391,8 +392,6 @@ extern u32 sdfGrDrawFrameTagHead;
 extern s32 dds3GsThreadId;
 extern u64 sceGsGetIMR(void);
 extern u64 sceGsPutIMR(u64 mask);
-extern void sdfDeliverDrawStart(s32 frameId, s32 bufferId);
-extern void sdfDeliverDrawEnd(s32 mode, s32 frameId, s32 halfOffset);
 extern void sdfDelayedResrcProc(void);
 void sdfGrDrawFrame(void);
 void sdfDrawSync(void);

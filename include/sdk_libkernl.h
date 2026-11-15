@@ -92,4 +92,21 @@ s32 sceDeci2ExSend(s32 handle, void *buffer, u16 length);
 s32 sceDeci2Poll(s32 handle);
 s32 sceDeci2ReqSend(s32 handle, s8 destination);
 
+s32 sceSifLoadModule(const char *path, s32 argumentSize, const void *arguments);
+s32 sceSifLoadStartModule(const char *path, s32 argumentSize, const void *arguments, s32 *moduleResult);
+
+void InitTLB(void);
+void InitTLBFunctions(void);
+
+void InitExecPS2(void);
+void PatchIsNeeded(u32 index, void *entry);
+
+void _kTLBException();
+
+void sceResetttyinit(void);
+
+void SyncDCache(void *start, void *end);
+
+void InitAlarm(void);
+
 #endif /* SDK_LIBKERNL_H */

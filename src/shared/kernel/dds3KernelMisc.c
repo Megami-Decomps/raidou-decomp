@@ -3,6 +3,7 @@
 #include "libsdf.h"
 #include "sdfDraw.h"
 #include "dds3GlobalWork.h"
+#include "dds3KernelMisc.h"
 
 extern s8 dds3PadButtonState[64];
 void SelectSub(s32 *pbase, s32 *pm, s32 list, s32 win, s32 pad, s32 pluskey, s32 minuskey);

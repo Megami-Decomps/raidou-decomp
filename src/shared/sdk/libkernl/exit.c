@@ -430,10 +430,8 @@ typedef struct execArgumentBlock_t {
 
 extern void *execArgumentBlock;
 extern kernelEntryPair_t setArgEntryPairs[1];
-extern void PatchIsNeeded(u32 index, void *entry);
 extern s32 gcc2_compiled__16(void *destination, const void *source, u32 size);
 char *SetArg(const char *path, s32 count, const char *const *arguments);
-extern void InitTLB(void);
 void TerminateLibrary(void);
 extern const char execDefaultPath[];
 s32 ExecPS2(void *entry, void *gp, s32 count, const char *const *arguments);

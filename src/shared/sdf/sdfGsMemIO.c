@@ -4,6 +4,7 @@
 #include "eeregs.h"
 #include "sdfPacketBuff.h"
 #include "sdfGsMemory.h"
+#include "sdfGsMemIO.h"
 
 struct sdfPreDrawHook_t;
 

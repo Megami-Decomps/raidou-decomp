@@ -21,6 +21,7 @@
 #include "itfMesManager.h"
 #include "sdfDelayedResrc.h"
 #include "evtEventPack.h"
+#include "evtSky.h"
 
 struct effPCPAgiraoFirePartList_t;
 
@@ -122,7 +123,6 @@ extern const char evtMsgModelMotionDeprecated[];
 extern const char evtMsgModelMoveMotDeprecated[];
 extern void evtUnlinkLightObjectBasic(evtUnit_t *h, s32 frame);
 extern s32 scrGetCommandTimer(void);
-extern void evtSetSkyAlpha(s32 frame, s32 a);
 
 /* Rows of 0x310 bytes; only the three size fields the bed scale reads are
  * named here. */

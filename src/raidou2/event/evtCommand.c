@@ -20,6 +20,7 @@
 #include "dds3WorldBasic.h"
 #include "itfMesManager.h"
 #include "evtEventPack.h"
+#include "evtSky.h"
 
 struct effPCPAgiraoFirePartList_t;
 
@@ -113,7 +114,6 @@ extern u32 dds3DrawFlag;
 extern void dds3SetSclPoseSet(void *pBasic, u128 *scl);
 extern void evtUnlinkLightObjectBasic(evtUnit_t *h, s32 frame);
 extern s32 scrGetCommandTimer(void);
-extern void evtSetSkyAlpha(s32 frame, s32 a);
 
 /* Rows of 0x310 bytes; only the three size fields the bed scale reads are
  * named here. */

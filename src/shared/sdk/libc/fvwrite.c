@@ -162,7 +162,6 @@ struct _reent {
     FILE __sf[3];
 };
 
-extern s32 fflush(void *fp);
 extern s32 __sfvwrite(FILE *fp, __suio *uio);
 
 typedef struct fp_number_type {
@@ -275,8 +274,6 @@ typedef union libcDoubleBits_t {
 
 extern const char dtoaInfinityText[], dtoaNanText[];
 extern const char dtoaInfinityText[16];
-s32 fflush(void *stream);
-extern void *memmove(void *destination, const void *source, size_t size);
 extern void *memchr(const void *source, s32 character, u32 size);
 s32 __sfvwrite(FILE *fp, __suio *uio);
 

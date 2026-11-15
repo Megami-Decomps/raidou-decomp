@@ -472,7 +472,6 @@ extern lfRequest_t lfRequest;
 extern rpcClient lfRpcClient;
 extern s32 _lf_bind(void);
 extern s32 _lf_version(void);
-extern char *strncpy(char *destination, const char *source, size_t count);
 extern s32 lfBindStatus;
 extern u8 lfDetectedVersion[0x18];
 extern u8 kernelBuiltinVersion[4];

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "ps2asm.h"
 #include "sdk_libc.h"
+#include "sdk_libgcc.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,

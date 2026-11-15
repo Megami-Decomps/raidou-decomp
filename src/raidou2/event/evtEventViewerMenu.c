@@ -4,6 +4,7 @@
 #include "sdfQuat.h"
 #include "dds3DebugStuff.h"
 #include "dds3KernelCore.h"
+#include "dds3KernelMisc.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -68,9 +69,6 @@ extern sdfGrOt_t sdfDebugGrOt;
 extern EvtPad dds3PadButtonState;
 extern char evtFmtStr[];
 
-extern s32 dds3SelectMenu(s32 padSet, s32 secondaryCount, s32 primaryCount, s32 secondaryVisible,
-                                 s32 primaryVisible, s32 *secondaryScroll, s32 *primaryScroll,
-                                 s32 *secondaryCursor, s32 *primaryCursor);
 
 void evtViewerDrawPendingNodeRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 extern void evtViewerDrawPendingNodeRow();

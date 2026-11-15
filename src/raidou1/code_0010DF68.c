@@ -6,6 +6,8 @@
 #include "dds3GlobalWork.h"
 #include "sdfPrim.h"
 #include "frFont.h"
+#include "evtSky.h"
+#include "evtDebug.h"
 s32 DIntr();
 s32 EIntr(void);
 
@@ -58,7 +60,6 @@ SdfMemBlockState sdfMemGetType(const struct sdfMemHandle_t *block);
 #include "dds/sdf_heap_overlay_block.h"
 #include "dds/ee_mmi.h"
 
-extern void evtInitEventTest(void);
 extern void evtViewerCreateTaskWithSky(void);
 
 enum {
@@ -110,9 +111,6 @@ typedef struct EvtGsCommand {
     u64 registerId;
 } EvtGsCommand;
 
-extern dds3ProcessID_t *evtInitSky(void);
-extern void evtChkEndProcess(void);
-extern void evtExitSky(void);
 extern s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *);
 
 /* SDK float-input unpack: the RGBA word and its 16-byte workspace stay in memory. */

@@ -456,7 +456,6 @@ typedef struct deci2Transfer_t {
  * does not establish a specific handler function signature. */
 extern void *tlbHandler;
 extern void *debugHandlers[16];
-extern void _kTLBException();
 extern void _kDebugException();
 void *SetTLBHandler(void *handler);
 void *SetDebugHandler(s32 index, void *handler);

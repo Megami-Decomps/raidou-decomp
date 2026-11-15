@@ -7,6 +7,7 @@
 #include "field.h"
 #include "effect.h"
 #include "sdfFrame.h"
+#include "fldProcess.h"
 
 extern char dds3DebugLabelB[], dds3DebugLabelG[], dds3DebugLabelR[], dds3DebugFmtInt3[], dds3DebugFmtFloat3[];
 

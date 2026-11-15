@@ -222,8 +222,6 @@ extern mdlWorkPrefix_t mdlWorkPathPrefix[];
 extern mdlHddFileEntry_t *mdlHddFileCount;
 extern u8 sdfHddValid;
 extern const char _ctype_[];
-extern char *strrchr(const char *text, s32 character);
-extern s32 strcasecmp(const char *first, const char *second);
 extern void sdfDummyFunc(void);
 extern fileRequest_t *fileLoadEx(const char *filename, s32 headOrTail, addr_t endCallback, addr_t callbackParm);
 extern u16 mdlPibGetEffectCount(mdlPibRecord_t *record);

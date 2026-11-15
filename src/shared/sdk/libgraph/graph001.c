@@ -1,5 +1,6 @@
 #include "common.h"
 #include "ps2asm.h"
+#include "sdk_libgraph.h"
 
 
 typedef union {

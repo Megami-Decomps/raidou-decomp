@@ -1,4 +1,5 @@
 #include "common.h"
+#include "evtDebug.h"
 
 INCLUDE_ASM(const s32, "event/evtDebug", evtDebugCameraStep);
 

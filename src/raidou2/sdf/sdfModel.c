@@ -14,6 +14,7 @@
 #include "sdfPrim.h"
 #include "sdfModel.h"
 #include "sdfDelayedResrc.h"
+#include "sdfCoreDraw.h"
 
 /* The serialized node-def block has a 16-byte count/padding prefix. */
 typedef struct
@@ -137,7 +138,6 @@ extern void *sdf3DLightDefault;
 extern void *sdf3DFogDefault;
 extern u8 corePktSoftenBias;
 extern u8 sdf3DScreenTm[];
-extern void sdfCoreDrawSetZBias(f32 z);
 
 /* The 0xC0-byte packet a temp-linked node builds: the tm CNT tag, the 128 bytes
  * VU1 reads through it, and the draw parameters that close it. */

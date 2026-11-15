@@ -441,18 +441,13 @@ extern u32 *FindAddress(u32 *start, const u32 *end, u32 instruction);
 void GetSystemCallTableEntry(void);
 extern void supplement_crt0(void);
 extern void GetSystemCallTableEntry(void);
-extern void InitAlarm(void);
-extern void InitExecPS2(void);
-extern void InitTLBFunctions(void);
 void _InitSys(void);
-void InitExecPS2(void);
 
 typedef struct execArgumentBlock_t {
     char *arguments[16];
     char strings[1];
 } execArgumentBlock_t;
 
-void InitAlarm(void);
 typedef void (*deci2Handler_t)(s32 event, s32 parameter, void *argument);
 
 typedef struct deci2Registration_t {
@@ -468,7 +463,6 @@ typedef struct deci2Transfer_t {
     u32 length;
 } deci2Transfer_t;
 
-void InitTLBFunctions(void);
 
 void supplement_crt0(void)
 {

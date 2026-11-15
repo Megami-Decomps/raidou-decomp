@@ -5,7 +5,6 @@
 #include "sif_rpc.h"
 #include "sdk_libc.h"
 
-void sceResetttyinit(void);
 s32 write(s32 descriptor, const void *buffer, s32 length);
 s32 read(s32 descriptor, void *buffer, s32 length);
 s32 open(const char *path, s32 flags, s32 mode);
@@ -423,7 +422,6 @@ SIZE_CHECK(sifResetPacket_size_must_be_0x68, sifResetPacket_t, 0x68);
 
 extern sifResetPacket_t sifResetPacket;
 s32 sceSifResetIop(const char *arguments, s32 mode);
-extern void sceResetttyinit(void);
 s32 sceSifIsAliveIop(void);
 s32 sceSifSyncIop(void);
 

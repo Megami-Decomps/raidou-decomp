@@ -13,6 +13,8 @@
 #include "sdfIpu.h"
 #include "sdfPrim.h"
 #include "sdfDevCons.h"
+#include "sdfMovie.h"
+#include "mviManager.h"
 
 extern void *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
                               void *drawExit, void *deleteExit, void *p);
@@ -41,11 +43,9 @@ extern void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descrip
 extern u16 dds3VblanksPerFrame;
 extern saddr_t PlayingNo;
 extern void sdfIpuRunDecode(s32 frames);
-extern void movieCloseStream(sdfMovieCb_t *stream);
 extern s32 dds3KillProcess(s32 id, s32 shutdowntimer);
 extern void (*DrawPhaseTable[])(fclEncyc_instance_tag *work);
 s32 movieDrawProc(void);
-extern void movieOpenStream(sdfMovieCb_t *stream, sdfMovieInitParm_t *descriptor, const char *path);
 extern const char movieDrawProcName[];
 void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor);
 void movieStop(void);

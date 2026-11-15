@@ -12,6 +12,7 @@
 #include "sdfMat.h"
 #include "sdfTex.h"
 #include "sdfModel.h"
+#include "sdfTmx.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -206,7 +207,6 @@ typedef struct sdf3DSpecularTexImage_t {
 extern sdfTexHandle_t *sdf3DSlot2Tex;
 extern sdfTexHandle_t *sdf3DSpecularTex;
 extern sdfTexHandle_t *sdf3DSlot1Tex;
-extern void sdfTmxSetHeader(TMX_HEADER_t *, s32, s32, s32, s32, s32);
 extern s32 vu1Tex0Slot0[];
 extern s32 vu1Tex0Slot2[];
 extern s32 vu1Tex0Slot1[];

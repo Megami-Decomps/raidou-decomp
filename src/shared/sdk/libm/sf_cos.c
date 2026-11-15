@@ -15,11 +15,7 @@
         (d) = sf_u.f;                           \
     } while (0)
 
-extern f32 __kernel_cosf(f32 x, f32 tail);
-extern f32 __kernel_sinf(f32 x, f32 tail, s32 reduced);
 f32 cosf(f32 x);
-f32 __kernel_cosf(f32 x, f32 tail);
-f32 __kernel_sinf(f32 x, f32 y, s32 useTail);
 
 f32 cosf(f32 x)
 {

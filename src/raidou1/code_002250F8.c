@@ -6,6 +6,7 @@
 #include "sdfTex.h"
 #include "sdfPacketBuff.h"
 #include "sdfImageSet.h"
+#include "sdfGsMemIO.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -46,10 +47,6 @@ void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 
-void sdfLinkLoadImage(
-    sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,
-    s32 destinationY, s32 width, s32 height, s32 sourceAddress,
-    s32 (*allocatePacket)(s32));
 
 u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
 

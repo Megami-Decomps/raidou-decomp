@@ -27,7 +27,6 @@ typedef struct
 } rcvWork_t;
 
 extern sdfMovieCb_t movieCb;
-extern void movieStop(void);
 
 /* The viewer's memory window: one word and one 0x40-byte block, each copied
  * from its source address when its pending flag is set. */
@@ -65,7 +64,6 @@ extern movieViewerProcWork_t movieViewerWork;
 extern void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
 void MovieViewerDrawFrameInfo(void);
 extern const char movieViewerProcName[];
-extern void movieViewerFree(void);
 void FinishMovieViewer(void);
 void movieViewerSetFlags(void);
 void movieViewerInitRegs(void);

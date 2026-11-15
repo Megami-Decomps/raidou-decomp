@@ -23,6 +23,8 @@
 #include "dds3PathBasic.h"
 #include "effPacket.h"
 #include "sdf3DPrim.h"
+#include "sdk_libm.h"
+#include "dds3PadManager.h"
 
 typedef struct
 {
@@ -538,7 +540,6 @@ void MultMatrixRevNoArg(void);
 
 /* Load the X-axis rotation matrix into the primary VU0 matrix registers. */
 void SetRotateMatrixX(f32 angle);
-f32 atanf(f32 x);
 struct billHandle_t *dds3BillboardGeneral(s32 index);
 
 /* Factories accept the serialized parameter prefix used by effect callbacks. */
@@ -586,7 +587,6 @@ extern s32 evtSelStateCreate(s32 countLimit, s16 frames, s32 firstValue, s32 sec
 extern void fileReadRecordSecondVector(FileSlotTable *record, u128 *out);
 extern void fileReadVectorPtr20(FileSlotTable *record, u128 *out);
 extern void fileSetRecordSecondVector(FileSlotTable *record, const void *src);
-extern void dds3PadIsTypeCD(void);
 extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 
 static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list) {

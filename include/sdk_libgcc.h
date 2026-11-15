@@ -14,4 +14,9 @@ s32 dptoli(f64 value);
 f64 litodp(s32 value);
 f32 dptofp(f64 value);
 
+void *__deregister_frame_info(void *fn);
+void __register_frame_info(void *fn, void *entry);
+
+f64 __make_dp(s32 kind, s32 sign, s32 exp, s64 mant);
+
 #endif

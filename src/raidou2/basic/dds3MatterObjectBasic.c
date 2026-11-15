@@ -11,6 +11,7 @@
 #include "dds3Basic.h"
 #include "dds3WorldBasic.h"
 #include "dds3ObjectBase.h"
+#include "dds3MatterObjectBasic.h"
 
 dds3Basic_t *dds3AddMatterObjectBasic(s32 serialID, f32 *pos, f32 *rot);
 void dds3DeleteMatterObjectBasic(dds3Basic_t *aPtr);

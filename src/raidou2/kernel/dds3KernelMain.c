@@ -1,6 +1,7 @@
 #include "common.h"
 #include "kernel.h"
 #include "sdfFrame.h"
+#include "dds3KernelMain.h"
 
 extern u32 dds3RunCount;
 extern u8 dds3SoftResetDisableFlag;

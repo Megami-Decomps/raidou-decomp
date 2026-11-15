@@ -162,7 +162,6 @@ struct _reent {
     FILE __sf[3];
 };
 
-extern s32 raise(s32 sig);
 extern void _exit(s32 code) __attribute__((noreturn));
 extern void abort(void);
 
@@ -263,7 +262,6 @@ static inline void qsortSwapRange(char *first, char *second, s32 bytes, s32 swap
     } \
 }
 
-s32 raise(s32 sig);
 
 #define STRTOL_MAX 0x7fffffffffffffffUL
 

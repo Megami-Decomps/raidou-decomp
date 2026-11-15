@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfGsMemIO.h"
 
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1
@@ -10,10 +11,6 @@
 #include "sdk_libgcc.h"
 
 
-void sdfLinkLoadImage(
-    sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,
-    s32 destinationY, s32 width, s32 height, s32 sourceAddress,
-    s32 (*allocatePacket)(s32));
 
 /* Four words filled together; their corner/channel interpretation is unknown. */
 typedef struct UiQuadWords {

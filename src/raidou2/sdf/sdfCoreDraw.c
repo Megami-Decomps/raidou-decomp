@@ -6,6 +6,7 @@
 #include "draw3d.h"
 #include "sdfMemory.h"
 #include "sdfModel.h"
+#include "sdfCoreDraw.h"
 
 #define SDF_DMA_QWORD_SHIFT 4
 

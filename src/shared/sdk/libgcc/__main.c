@@ -1,6 +1,7 @@
 #include "common.h"
 #include "ps2asm.h"
 #include "sdk_libc.h"
+#include "sdk_libgcc.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -160,8 +161,6 @@ struct _reent {
     FILE __sf[3];
 };
 
-extern void *__deregister_frame_info(void *fn);
-extern void __register_frame_info(void *fn, void *entry);
 extern void __do_global_ctors(void);
 extern object ctorFrameObject;
 extern s32 atexit(void (*fn)(void));
@@ -328,8 +327,6 @@ static inline s32 fde_compare(u32 *left, u32 *right)
     return (s32)(left[2] - right[2]);
 }
 
-void __register_frame_info(void *fn, void *entry);
-void *__deregister_frame_info(void *fn);
 
 typedef struct {
     fde_vector linear;

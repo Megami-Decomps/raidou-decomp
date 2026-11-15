@@ -6,6 +6,7 @@
 #include "sdk_libc.h"
 #include "sdk_libmc.h"
 #include "sdfSystem.h"
+#include "sdfTmx.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -52,7 +53,6 @@ enum SdfFileIOCmdClbk {
 
 extern u8 sdfFileRpcReadBuf[];
 extern char *mcModuleNames[];
-extern s32 sceSifLoadModule(const char *, s32, const char *);
 
 /* Allocate a workspace sized by stackBytes, pass the thread entry to
  * CreateThreadSimple, and return that function's result unchanged. */
