@@ -35,24 +35,24 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
 
     memset(&identity, 0, sizeof(identity));
     identity.w = 1.0f;
-    if (devilId == 125 && DDS3_GBWK->partyNum > 0) {
-        if (DDS3_GBWK->party[0].devilId == 45) {
+    if (devilId == 125 && DDS3_GBWK->playerData.partyNum > 0) {
+        if (DDS3_GBWK->playerData.stock[0].devilId == 45) {
             devilId = 126;
         } else {
-            for (i = 1; i < DDS3_GBWK->partyNum; i++) {
-                if (DDS3_GBWK->party[i].devilId == 45) {
+            for (i = 1; i < DDS3_GBWK->playerData.partyNum; i++) {
+                if (DDS3_GBWK->playerData.stock[i].devilId == 45) {
                     devilId = 126;
                     break;
                 }
             }
         }
     }
-    if (devilId == 127 && DDS3_GBWK->partyNum > 0) {
-        if (DDS3_GBWK->party[0].devilId == 47) {
+    if (devilId == 127 && DDS3_GBWK->playerData.partyNum > 0) {
+        if (DDS3_GBWK->playerData.stock[0].devilId == 47) {
             devilId = 128;
         } else {
-            for (i = 1; i < DDS3_GBWK->partyNum; i++) {
-                if (DDS3_GBWK->party[i].devilId == 47) {
+            for (i = 1; i < DDS3_GBWK->playerData.partyNum; i++) {
+                if (DDS3_GBWK->playerData.stock[i].devilId == 47) {
                     devilId = 128;
                     break;
                 }
@@ -63,30 +63,30 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
     visual = sbtlGetMotionVisualData(2, devil->motionId);
     sub = sbtlSetUnitSub(2, devil->motionId, 0);
     unit = sbtlSetSummon(1, devilId, arg);
-    unit->devilID = devilId;
-    unit->devilParam1 = devil->field04;
-    unit->devilParam0 = devil->field0E;
+    unit->unit.devilId = devilId;
+    unit->unit.level = devil->field04;
+    unit->unit.raceId = devil->field0E;
     unit->field404 = devil->aisyoId;
     unit->field400 = devil->field0A;
-    unit->aisyo = *sbtlGetAisyotbl(devil->aisyoId);
-    unit->aisyoBase = unit->aisyo;
+    unit->unit.aisyo = *sbtlGetAisyotbl(devil->aisyoId);
+    unit->aisyoBase = unit->unit.aisyo;
     unit->flg |= devil->flag;
-    unit->resist[0] = devil->resist[0];
-    unit->stat1C0 = devil->stat18;
-    unit->resist[1] = devil->resist[1];
-    unit->stat1D8 = devil->stat18;
-    unit->resist[2] = devil->resist[2];
-    unit->stat1DC = devil->stat1C;
-    unit->resist[3] = devil->resist[3];
-    unit->stat1C8 = devil->stat20;
-    unit->stat1E0 = devil->stat20;
-    unit->stat1E4 = devil->stat24;
+    unit->unit.backup.str = devil->resist[0];
+    unit->unit.now.hp = devil->stat18;
+    unit->unit.backup.vit = devil->resist[1];
+    unit->unit.backup.hp = devil->stat18;
+    unit->unit.backup.tec = devil->resist[2];
+    unit->unit.backup.maxhp = devil->stat1C;
+    unit->unit.backup.luck = devil->resist[3];
+    unit->unit.now.mp = devil->stat20;
+    unit->unit.backup.mp = devil->stat20;
+    unit->unit.backup.maxmp = devil->stat24;
     for (i = 0; i < 9; i++) {
         unit->param[i] = devil->param[i];
     }
     sbtlCheckAutoSkill_Enemy(unit);
     sbtlCheckBattlePara(unit);
-    unit->devilParam2 = devil->field0F;
+    unit->unit.seikaku = devil->field0F;
     if (point == 100) {
         unit->pos.x = 0.0f;
         unit->pos.y = 0.0f;
@@ -115,7 +115,7 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
     }
     model = unit->model;
     model->flags |= 0x1000;
-    if (sbtlCheckScriptData(unit->devilID)) {
+    if (sbtlCheckScriptData(unit->unit.devilId)) {
         unit->model->flags &= ~0x1000;
     }
     if (unit->flg & 0x8000000) {
@@ -137,9 +137,9 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
     model = unit->model;
     model->field12C = devil->field64;
     model->field130 = devil->field60;
-    if (unit->stat1C0 == 0) {
-        unit->stat1C0 = 50;
-        unit->stat1C4 = 50;
+    if (unit->unit.now.hp == 0) {
+        unit->unit.now.hp = 50;
+        unit->unit.now.maxhp = 50;
     }
     unit->visual[0] = visual->scale;
     unit->visual[1] = visual->scale;
@@ -160,11 +160,11 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
     sbtlRefSbtl18(unit, mode);
     if (mode != 2) {
         if (mode == 1) {
-            sbtlCallMemset17(wk_sbtl->unitEffect, unit, 14, 0, &unit->pos.x, 0x80808080, 0);
+            sbtlCallMemset17(wk_sbtl->effList, unit, 14, 0, &unit->pos.x, 0x80808080, 0);
         } else if (unit->flg & 0x100000) {
-            sbtlCallMemset17(wk_sbtl->unitEffect, unit, 5, 0, &unit->pos.x, 0x80808080, 0);
+            sbtlCallMemset17(wk_sbtl->effList, unit, 5, 0, &unit->pos.x, 0x80808080, 0);
         } else {
-            sbtlCallMemset17(wk_sbtl->unitEffect, unit, 51, 0, &unit->pos.x, 0x80808080, 0);
+            sbtlCallMemset17(wk_sbtl->effList, unit, 51, 0, &unit->pos.x, 0x80808080, 0);
         }
     }
     return unit;

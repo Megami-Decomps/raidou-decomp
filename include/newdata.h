@@ -4,17 +4,8 @@
 #include "common.h"
 #include "libsdf.h"
 #include "facility.h"
+#include "sdatUnit.h"
 
-/* A unit's work: the player at GBWK+0x1CD4 and each party devil. */
-typedef struct sdatUnitWork_t
-{
-    /* 0x00 */ u32 flag;
-    /* 0x04 */ u8 pad04[2];
-    /* 0x06 */ s16 devilId;
-    /* 0x08 */ u8 pad08[0xB0];
-    /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
-    /* 0xBC */ u8 padBC[0x54];
-} datPartyDevil_t;
 
 typedef struct datDevilFormat_s
 {
@@ -170,27 +161,7 @@ typedef struct
     /* 0x1C94 */ u32 unk1C94;
     /* 0x1C98 */ u32 unk1C98;
     /* 0x1C9C */ u32 unk1C9C;
-    /* 0x1CA0 */ u8 unk1CA0[0x20];
-    /* 0x1CC0 */ u32 unk1CC0;
-    /* 0x1CC4 */ u32 unk1CC4;
-    /* 0x1CC8 */ s32 maka;
-    /* 0x1CCC */ u8 unk1CCC[0x8];
-    /* 0x1CD4 */ datPartyDevil_t player;
-    /* 0x1DE4 */ u8 unk1DE4[0x2];
-    /* 0x1DE6 */ u16 unk1DE6;
-    /* 0x1DE8 */ u16 unk1DE8;
-    /* 0x1DEA */ u8 unk1DEA[0x2];
-    /* 0x1DEC */ u32 unk1DEC;
-    /* 0x1DF0 */ u32 unk1DF0;
-    /* 0x1DF4 */ u32 unk1DF4;
-    /* 0x1DF8 */ u8 unk1DF8[0x40];
-    /* 0x1E38 */ u16 unk1E38;
-    /* 0x1E3A */ u8 unk1E3A[0x13E];
-    /* 0x1F78 */ datPartyDevil_t party[12];
-    /* 0x2C38 */ u8 pad2C38[0x2];
-    /* 0x2C3A */ u16 unk2C3A;
-    /* 0x2C3C */ s8 partyNum;
-    /* 0x2C3D */ u8 unk2C3D[0x3];
+    /* 0x1CA0 */ SBTL_PLAYER_DATA playerData;
     /* 0x2C40 */ u32 unk2C40;
     /* 0x2C44 */ u32 unk2C44;
     /* 0x2C48 */ u8 unk2C48[0x28];

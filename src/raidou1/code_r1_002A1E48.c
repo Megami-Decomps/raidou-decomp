@@ -16,7 +16,7 @@ s32 sbtlCallBtlGetDevilDataSBtlSub4(struct SBTLUNIT_WORK *wk)
     if (wk->flg & 0x800) {
         return 1;
     }
-    huuma = sbtlGetDevilData_sbtlSub(wk->devilID)->huumaMesNo;
+    huuma = sbtlGetDevilData_sbtlSub(wk->unit.devilId)->huumaMesNo;
     if (wk->flg2 & 1) {
         return 1;
     }

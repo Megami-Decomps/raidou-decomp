@@ -17,20 +17,20 @@
 #ifdef NON_MATCHING
 s32 sbtlInitPlayerData(void)
 {
-    static const SBTL_PLAYER_BLOCK blockInit = { { 0x33, 0x33, 0, 0 }, { 6, 3, 6, 5 } };
-    static const SBTL_PLAYER_GAUGE gaugeInit = { { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0 } };
+    static const sdatParaWork_t paraInit = { 0x33, 0x33, 0, 0, 6, 3, 6, 5 };
+    static const SBTL_AISYO_TBL aisyoInit = { { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0 } };
     sdfVector4_t vec0;
     sdfVector4_t vec1;
-    SBTL_PLAYER_BLOCK block;
-    SBTL_PLAYER_GAUGE gauge;
+    sdatParaWork_t para;
+    SBTL_AISYO_TBL aisyo;
     SBTL_PLAYER_DATA *player;
 
     memset(&vec0, 0, sizeof(vec0));
     vec0.w = 1.0f;
     memset(&vec1, 0, sizeof(vec1));
-    block = blockInit;
+    para = paraInit;
     vec1.w = 1.0f;
-    gauge = gaugeInit;
+    aisyo = aisyoInit;
     player = sbtlGetPlayerData();
     SDF_VU0_LOADVECTOR(&vec0);
     SDF_VU0_STOREVECTOR(&player->vec[0]);
@@ -38,15 +38,15 @@ s32 sbtlInitPlayerData(void)
     SDF_VU0_STOREVECTOR(&player->vec[1]);
     player->val20 = 100;
     player->val24 = 1000;
-    player->val28 = 200;
+    player->maka = 200;
     player->val2C = 9999;
-    player->valF9C = 6;
-    player->val3C = 1;
-    player->val34 = 3;
-    player->val48 = 0;
-    player->block[0] = block;
-    player->block[1] = block;
-    player->gauge = gauge;
+    player->partyNum = 6;
+    player->unit.level = 1;
+    player->unit.flag = 3;
+    player->unit.exp = 0;
+    player->unit.now = para;
+    player->unit.backup = para;
+    player->unit.aisyo = aisyo;
     player->val238 = 24;
     player->val154 = 80;
     player->val146 = 0;

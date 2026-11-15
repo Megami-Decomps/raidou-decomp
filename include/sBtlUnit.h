@@ -4,6 +4,7 @@
 #include "common.h"
 #include "enums.h"
 #include "sdf_types.h"
+#include "sdatUnit.h"
 
 struct SBTLUNIT_LISTWORK;
 
@@ -24,9 +25,6 @@ typedef struct SBTLUNIT_MODEL {
     f32 field130;
 } SBTLUNIT_MODEL;
 
-typedef struct SBTL_AISYO_TBL {
-    s32 word[16];
-} SBTL_AISYO_TBL;
 struct SBTLUNIT_WORK;
 
 s32 CheckLiveTarget(struct SBTLUNIT_WORK *wk);
@@ -86,45 +84,38 @@ struct SBTLUNIT_WORK {
     sdfVector4_t posSaved;
     u8 pad0B0[0xF0];
     s32 field1A0;
-    u8 pad1A4[0x8];
-    u8 devilParam0;
-    u8 pad1AD[0x1];
-    s16 devilID;
-    u8 devilParam1;
-    u8 devilParam2;
-    u8 pad1B2[0xE];
-    s32 stat1C0;
-    s32 stat1C4;
-    s32 stat1C8;
-    u8 pad1CC[0xC];
-    s32 stat1D8;
-    s32 stat1DC;
-    s32 stat1E0;
-    s32 stat1E4;
-    s16 resist[4];
-    u8 pad1F0[0x88];
-    struct SBTL_AISYO_TBL aisyo;
+    u16 mode;
+    u8 pad1A6[0x2];
+    sdatUnitWork_t unit;
     u8 pad2B8[0x8];
     s32 param[9];
     u8 pad2E4[0x8];
     struct SBTL_AISYO_TBL aisyoBase;
-    u8 pad32C[0x88];
+    u8 pad32C[0x74];
+    s32 field3A0;
+    u8 pad3A4[0x10];
     u8 visualKind;
     u8 pad3B5[0x1];
     s16 field3B6;
-    u8 pad3B8[0x48];
+    u8 pad3B8[0xC];
+    s32 field3C4;
+    u8 pad3C8[0x16];
+    s16 field3DE;
+    u8 pad3E0[0x20];
     s32 field400;
     s16 field404;
     u8 pad406[0xE];
     u8 field414;
     u8 pad415[0x3];
     SBTLUNIT_FLG flg;
-    u8 pad41C[0x4];
+    u32 field41C;
     u32 flg2;
     s32 field424;
     f32 field428;
     f32 angleY;
-    u8 pad430[0x20];
+    u8 pad430[0x8];
+    s32 field438;
+    u8 pad43C[0x14];
     SKLID skillid;
     u8 pad454[0x30];
     struct SBTLUNIT_MODEL *model;
@@ -140,5 +131,19 @@ struct SBTLUNIT_WORK {
     s32 msgOffset;
     s16 msgState;
 };
+
+/* One slot of a unit list. */
+typedef struct SBTLUNIT_LISTWK {
+    s32 ID;
+    struct SBTLUNIT_WORK *pUnit;
+} SBTLUNIT_LISTWK;
+
+/* Unit list made by sbtlCreateUnitList. */
+typedef struct SBTLUNIT_LISTWORK {
+    s32 number;
+    s32 count;
+    struct sdfMemHandle_t *handle;
+    SBTLUNIT_LISTWK *pUnitL;
+} SBTLUNIT_LISTWORK;
 
 #endif

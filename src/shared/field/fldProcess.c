@@ -784,14 +784,14 @@ s32 ProcSequence(dds3ProcessID_t *id)
             fldAutoMapSeqFlags.stage = 24;
             break;
         }
-        badStatus = sdatCalc_GetBadStatus(&DDS3_GBWK->player);
+        badStatus = sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.unit);
         if (badStatus == 6) {
             mapBadEffLoad(0, 6);
         } else if (badStatus == 11) {
             mapBadEffLoad(0, 11);
         }
         if (datCallGetStockDevilID(DDS3_GBWK->unk1C9C) != -1) {
-            badStatus = sdatCalc_GetBadStatus(&DDS3_GBWK->party[0]);
+            badStatus = sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[0]);
             if (badStatus == 6) {
                 mapBadEffLoad(1, 6);
             } else if (badStatus == 11) {

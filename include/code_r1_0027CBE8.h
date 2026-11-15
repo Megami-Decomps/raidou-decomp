@@ -4,5 +4,6 @@
 #include "common.h"
 
 s32 GetIntervalRand(s32 lower, s32 upper);
+u32 GetRand(u32 limit);
 
 #endif
