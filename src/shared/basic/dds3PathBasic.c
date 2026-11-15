@@ -6,6 +6,7 @@
 #include "sdk_libc.h"
 #include "sdfQuat.h"
 #include "dds3PathBasic.h"
+#include "effSpline.h"
 
 #define DDS3_PATH_CURVE_POSITION 0
 
@@ -23,9 +24,7 @@
 
 #define DDS3_PATH_WORLD_TRANSFORM_CHANNEL 0x10
 
-extern s32 dds3AllocSplineHandle(f32 (*points)[3], u32 count, s32 mode);
 extern void dds3PathEvalSpline(u32 *segment, f32 *weight, fldResourcePathData_t *keys, f32 time);
-extern void dds3FreeSplineHandle(s32 spline);
 void dds3PathEvalSpline(u32 *segment, f32 *weight, fldResourcePathData_t *keys, f32 frame);
 dds3PathBasicControl_t *dds3AllocPathBasicWorkData(dds3Basic_t *basic);
 void dds3DeletePathControl(dds3PathBasicControl_t *work);
@@ -87,7 +86,7 @@ dds3PathBasicControl_t *dds3AllocPathBasicWorkData(dds3Basic_t *basic)
         case DDS3_PATH_CURVE_POSITION:
             {
                 f32 (*points)[3] = keys->data.position;
-                s32 spline;
+                dds3Spline_t *spline;
                 work->pTransrate = keys;
                 work->flag |= DDS3_PATH_POSITION_CHANNEL;
                 spline = dds3AllocSplineHandle(points, keys->count, 1);

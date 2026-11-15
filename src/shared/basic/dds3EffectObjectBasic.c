@@ -18,6 +18,7 @@
 #include "dds3ObjectBase.h"
 #include "effManager.h"
 #include "effMagatuhi.h"
+#include "effEvent.h"
 
 typedef struct
 {
@@ -65,7 +66,7 @@ typedef struct
     u16 linkindex;
     u16 linkbasictype;
     void *para;
-    void *cuth;
+    effEveBEDCut_t *cuth;
     s32 reserve1;
     s32 reserve2;
     s32 reserve3;
@@ -107,9 +108,6 @@ struct sdfModelNode_t;
 typedef struct sdfModelNode_t sdfModelNode_t;
 
 struct effPartHandle_t;
-
-
-typedef struct effEveBEDCutHandle_t effEveBEDCutHandle_t;
 
 typedef struct BattleEffect BattleEffect;
 
@@ -172,16 +170,12 @@ typedef struct effOwnerBillParam_t {
 } effOwnerBillParam_t;
 
 void dds3EffectDelete(effHandle_t *pData);
-void effEveBEDCutDelete(effEveBEDCutHandle_t *hEveBEDCut);
-void effEveBEDDelete( effBTL_t *hEveBED);
 void dds3EffectObjectBasicCalcFldEx(dds3Basic_t *basic);
 void dds3EffectDraw(effHandle_t *pData);
-void effEveBEDCutDraw(effEveBEDCutHandle_t *hEveBEDCut);
 dds3Basic_t *AddP2AEffect(void *p2a, void *pos, s32 rot);
 extern billHandle_t *dds3BillboardFileLoad(s32 kind, const char *path);
 dds3Basic_t *AddTMXEffect(void *tmx, void *pos, s32 rot);
 dds3Basic_t *AddBEDEffect();
-effEveBEDCutHandle_t *effEveBEDCutCreate( effBTL_t *hEveBED, u16 CutNum, const void *pParams);
 dds3ObjectBaseControlWorkData_t *dds3EffectObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
 dds3Basic_t *AddMG12Effect();
 extern s32 sdfModelGetMarkPosMatrix(sdfModelRootNode_t *aRoot, s32 aId);

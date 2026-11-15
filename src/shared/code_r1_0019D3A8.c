@@ -13,6 +13,7 @@
 #include "model.h"
 #include "mdlEffect.h"
 #include "sdfDevCons.h"
+#include "sdfSound.h"
 #include "sdk_libc.h"
 #include "include_asm.h"
 #include "kernel.h"
@@ -79,8 +80,6 @@ void mdlSmoothLoopMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex, f32 blend
 void mdlSmoothSingleMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
                        f32 blendDurationFrames);
 
-void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
-void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
 
 /* Key for a part-info record list; -1 selects the context-wide list. */
 typedef s32 MdlPartInfoListKey;
@@ -333,7 +332,6 @@ void mdlSubmitViewerIntermediateDrawPacket(void);
 extern f32 mdlSubmitViewerResourceDrawPacketData[][4];
 extern u32 mdlSubmitViewerResourceDrawPacketData2[];
 extern s32 D_003BBCB8;
-extern void sdfDumpHexLine(s32 packet, s32 arg);
 void mdlSubmitViewerResourceDrawPacket(void);
 void mdlViewerTaskDestroy(void);
 extern f32 mdlDrawMapPositionRecordsData[][4];
@@ -524,7 +522,7 @@ void mdlRotateViewList(void) {
 
 /* Draw the MODE header and current or saved viewer mode label. */
 void mdlDrawViewerModeLabel(void) {
-    SifCommand packet;
+    sdfDevPrintCB_t packet;
     s32 phase;
 
     mdlAppendViewerRectToDrawList(0x7150, 0x7948, 0xFF0080, 0xBA0, 0x90, 0);
@@ -574,7 +572,7 @@ void mdlDrawViewerOptionLabels(void) {
 }
 
 void mdlDrawViewerModelAndMotionSummary(void) {
-    SifCommand packet;
+    sdfDevPrintCB_t packet;
     const char *format;
     s32 displayMode;
     s32 nodeCount;
@@ -740,7 +738,7 @@ INCLUDE_ASM(const s32, "code_r1_0019D3A8", mdlApplyViewerResourceMenuAction);
 
 /* Draw resource actions with independent eligibility and selection styles. */
 void mdlDrawViewerResourceMenu(void) {
-    SifCommand packet;
+    sdfDevPrintCB_t packet;
     s32 row;
     s32 enabled;
     s32 style;
@@ -1097,19 +1095,19 @@ void mdlSubmitViewerIntermediateDrawPacket(void) {
 /* Submit the selected resource in phase 3; keep the native bitwise input/once-flag test. */
 void mdlSubmitViewerResourceDrawPacket(void) {
     sdfDrawTag_t *packetList;
-    s32 drawPacket;
+    sdfGrPacketHeader_t *drawPacket;
     mdlObj_t *resource;
 
     if (mdlViewerState.taskPhase == 3) {
         packetList = dds3FontReqAllocDrawTag();
         resource = mdlViewerState.resources[0];
     VU0_LOAD_MATRIX(resource->inner->tm.m);
-        drawPacket = (s32)sdfDrawRotatedModel(mdlSubmitViewerResourceDrawPacketData, mdlSubmitViewerResourceDrawPacketData2, 4, 0x80);
+        drawPacket = sdfDrawRotatedModel(mdlSubmitViewerResourceDrawPacketData, mdlSubmitViewerResourceDrawPacketData2, 4, 0x80);
         if ((dds3PadBitTable[13] < 0) & (D_003BBCB8 == 0)) {
             D_003BBCB8 = 1;
             sdfDumpHexLine(drawPacket, 0x100);
         }
-        sdfDrawTagLink(packetList, (u32)(drawPacket));
+        sdfDrawTagLink(packetList, EE_ADDR(drawPacket));
         mdlData5.regFunc(&mdlData5, packetList);
     }
 }

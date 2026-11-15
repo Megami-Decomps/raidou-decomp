@@ -43,7 +43,7 @@ extern char dds3DebugBlockEnd[];
 extern char dds3DebugTreeLineFmt[];
 extern char dds3ProcessTreeDepth[];
 void DebugProcess(dds3ProcessID_t *pro, const char *mes);
-u32 dds3GetProcessCount(u32 type);
+s32 dds3GetProcessCount(u32 type);
 dds3ProcessID_t *dds3SearchProcessNumber(u32 type, s32 n);
 void dds3PrintProcessList(void);
 void DebugProcessTree(dds3ProcessID_t *ps, s32 level);
@@ -469,7 +469,7 @@ void ChangeProcessFlag(s32 change, dds3ProcessID_t *target, u32 flag, s32 type)
     }
 }
 
-u32 dds3GetProcessCount(u32 type)
+s32 dds3GetProcessCount(u32 type)
 {
     switch (type & 0xF) {
     case 1:

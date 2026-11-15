@@ -22,43 +22,19 @@ s32 EIntr(void);
 #include "include_asm.h"
 #include "ps2asm.h"
 
-typedef struct sdfDevConsCB_tag {
-    struct sdfDevConsCB_tag *next; /* 0x00: forward console-list link. */
-    struct sdfDevConsCB_tag *previousNode; /* 0x04: linked-list predecessor; the global head is the tail. */
-    u16 screenOriginX; /* 0x08: GS 12.4 X coordinate used for the console sprite/grid. */
-    u16 screenOriginY; /* 0x0A: GS 12.4 Y coordinate used for the console sprite/grid. */
-    s16 columns; /* 0x0C */
-    s16 rows; /* 0x0E */
-    s16 cursorColumn; /* 0x10 */
-    s16 cursorRow; /* 0x12 */
-    u8 controlByte; /* 0x14 */
-    u8 pad15;
-    u8 textAttribute; /* 0x16 */
-    u8 tabWidth; /* 0x17: used to advance tabs to the next column stop */
-    struct sdfMemHandle_t *bufferAllocation; /* 0x18: owns the cell buffer. */
-    u8 *cells; /* 0x1C: two bytes per character cell */
-} sdfDevConsCB_tag;
-
-typedef char DevConsState_size_must_be_0x20[(sizeof(sdfDevConsCB_tag) == 0x20) ? 1 : -1];
-
 #define SDF_MEM_BLOCK_STATE_FREE 0
 
 #define SDF_MEM_BLOCK_STATE_USED 1
 
 #define SDF_MEM_BLOCK_STATE_END_SENTINEL 2
 
-void sdfDevConsAttribute(sdfDevConsCB_tag *console, u8 attribute);
-void sdfDevConsClose(sdfDevConsCB_tag *node);
-sdfDevConsCB_tag *sdfDevConsOpen(u32 screenOriginX, u32 screenOriginY, s32 columns, s32 rows);
 
 /* Update the console state stored at the corresponding field offsets. */
-void sdfDevConsSetMode(sdfDevConsCB_tag *console, u8 controlByte);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 
 /* Read the active packet cursor or restore it at a quadword boundary. */
-s32 sdfGrOpenPacketBuff(void);
 
 /* Return NULL when the following link is the end marker. */
 

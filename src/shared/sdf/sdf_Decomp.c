@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfPacketBuff.h"
 #include "ps2asm.h"
 #include "sdf_types.h"
 #include "eeregs.h"
@@ -67,8 +68,6 @@ typedef struct sdfDecompCb_t {
 } sdfDecompCb_t;
 
 /* Read the active packet cursor or restore it at a quadword boundary. */
-s32 sdfGrOpenPacketBuff(void);
-void sdfGrClosePacketBuff(saddr_t aBuffPtr);
 extern s32 sdfDecompHistoryIndex;
 s32 sdfDecomp(sdfDecompCb_t *cb, const u8 *src, s32 length);
 void sdfDecompInit(sdfDecompCb_t *cb, u8 *dst);

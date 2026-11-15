@@ -5,7 +5,7 @@
 #include "kernel.h"
 
 s32 dds3ExistProcess(dds3ProcessID_t *id);
-u32 dds3GetProcessCount(u32 type);
+s32 dds3GetProcessCount(u32 type);
 void *dds3GetProcessData(dds3ProcessID_t *id);
 u32 dds3GetProcessRunTime(dds3ProcessID_t *id);
 u32 dds3GetProcessStat(dds3ProcessID_t *id);

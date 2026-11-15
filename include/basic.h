@@ -18,7 +18,7 @@ typedef struct dds3PathBasicControl_t dds3PathBasicControl_t;
 typedef s32 (*dds3BasicControlProc_t)(dds3PoseSet_t *pose, dds3Basic_t *basic);
 
 /* Bodies not recovered yet: reached only through pointers. */
-struct effSpline_t;
+struct dds3Spline_t;
 
 /* One vtable per basic type, indexed by dds3BasicFuncTablePtr[type].
  * constructor takes (basic, color) and returns 1 on success; the rest take the
@@ -252,7 +252,7 @@ struct dds3PathBasicControl_t
     u32 flag;
     f32 frameMax;
     f32 frame;
-    s32 pSplineHandle;
+    struct dds3Spline_t *pSplineHandle;
     fldResourcePathData_t *pTransrate;
     fldResourcePathData_t *pRotation;
     fldResourcePathData_t *pFovy;

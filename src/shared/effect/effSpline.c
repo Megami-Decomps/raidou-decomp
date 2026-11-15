@@ -7,9 +7,10 @@
 #include "model.h"
 #include "motion.h"
 #include "sdfMemory.h"
+#include "effSpline.h"
 
 /* Cubic spline fitted over a point list; dds3AllocSplineHandle takes 0x2C. */
-typedef struct dds3Spline_t {
+struct dds3Spline_t {
     void *handle;
     void *coefHandle;
     s32 count;
@@ -22,7 +23,7 @@ typedef struct dds3Spline_t {
     s32 unk20;
     f32 unk24;
     f32 unk28;
-} dds3Spline_t;
+};
 
 /* Walks a point list at a fixed step; effCreateChannel takes 0x18. */
 typedef struct dds3SplineWalk_t {
@@ -40,15 +41,13 @@ void dds3BuildSplineCoefs(dds3Spline_t *spline, f32 *tangents);
 void SolveTridiagonal(f32 *solution, f32 *rhs, s32 count);
 void dds3BuildSplineCoefsSkipDup(dds3Spline_t *spline, f32 *tangents);
 void effSplCalc(sdfVector4_t *vertex, dds3Spline_t *primitive, s32 recordIndex, f32 t);
-dds3Spline_t *dds3AllocSplineHandle(f32 *points, u32 count, s32 flattenEqualComponents);
-void dds3FreeSplineHandle(dds3Spline_t *pSpline);
 s32 effSplRun(sdfVector4_t *pVertex, dds3Spline_t *pSpline);
 void effSplCalcRegist(dds3Spline_t *primitive, s32 recordIndex, f32 t);
 void dds3AllocSplinePoints(dds3Spline_t *primitive, s32 flattenEqualComponents);
 void dds3BuildSplineCoefs(dds3Spline_t *primitive, f32 *tangents);
 void dds3BuildSplineCoefsSkipDup(dds3Spline_t *primitive, f32 *tangents);
 
-dds3Spline_t *dds3AllocSplineHandle(f32 *points, u32 count, s32 flattenEqualComponents) {
+dds3Spline_t *dds3AllocSplineHandle(f32 (*points)[3], u32 count, s32 flattenEqualComponents) {
     sdfMemHandle_t *primaryResource = sdfMemAllocDirect(0x2C);
     f32 step = 0.05f;
     dds3Spline_t *primitive = (dds3Spline_t *)sdfMemLock(primaryResource);

@@ -16,5 +16,6 @@ u32 p2sdSetPcmCallback(addr_t aCallback);
 s32 p2sdStopBGM(s32 aId);
 s32 p2sdSyncMovie(void);
 s32 p2sdSyncSound(void);
+void sdfDumpHexLine(const void *aData, s32 size);
 
 #endif

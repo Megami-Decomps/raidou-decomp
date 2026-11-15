@@ -14,6 +14,7 @@
 #include "dds3MoverBasic.h"
 #include "dds3CameraObjectBasic.h"
 #include "effManager.h"
+#include "dds3KernelCore.h"
 
 u32 dds3AllocObjectId(void);
 
@@ -38,7 +39,6 @@ extern void evtSetTestCamera(void);
 
 extern char evtStageScriptPath[];
 s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
-s32 dds3GetProcessCount(u32 type);
 dds3ProcessID_t *dds3SearchProcessNumber(u32 type, s32 n);
 
 enum evtProcessState {

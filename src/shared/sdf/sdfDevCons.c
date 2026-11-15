@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfPacketBuff.h"
 #include "libdma.h"
 #include "eeregs.h"
 #include "sdfDevCons.h"
@@ -9,24 +10,6 @@
 #include "sdk_libc.h"
 #include "sdfTex.h"
 #include "sdk_libgraph.h"
-
-typedef struct sdfDevConsCB_tag
-{
-    struct sdfDevConsCB_tag *prev;
-    struct sdfDevConsCB_tag *next;
-    u16 x;
-    u16 y;
-    s16 w;
-    s16 h;
-    s16 locX;
-    s16 locY;
-    u8 mode;
-    u8 pad;
-    u8 attr;
-    u8 tabwidth;
-    sdfMemHandle_t *bufferHandle;
-    u8 *bufferPtr;
-} sdfDevConsCB_tag;
 
 typedef struct sdfDevConsDrawCB_t
 {
@@ -48,15 +31,6 @@ typedef struct
     u8 data[0x1000];
     u8 opaqueSuffix[0x10];
 } sdfDevConsStackPackets_t;
-
-/* The four print-control words are signed XYZ and packed RGBA when drawing. */
-typedef struct
-{
-    s32 x;
-    s32 y;
-    s32 z;
-    u32 attr;
-} sdfDevPrintCB_t;
 
 typedef struct
 {
@@ -88,8 +62,6 @@ typedef struct
 } sdfDevConsGlyph_t;
 
 extern u64 sdfTexGetTex0Reg(sdfTexHandle_t *aHandle);
-extern void *sdfGrOpenPacketBuff(void);
-extern void sdfGrClosePacketBuff(saddr_t aBuffPtr);
 void sdfDevConsDrawBG(sdfDevConsCB_tag *aHndl, sdfDevConsDrawCB_t *aCB);
 extern void sdfDevConsDrawInit(sdfDevConsDrawCB_t *aCB, void *aPacketBuffer, s32 aBufferSize);
 extern void sdfDevConsDraw(sdfDevConsCB_tag *aHndl, sdfDevConsDrawCB_t *aBuf);
@@ -100,31 +72,23 @@ extern u8 sdfDebugFontTex[];
 extern u32 sdfDevConsFontUvTable[];
 extern sdfDevConsCB_tag *devConsTop;
 extern u32 sdfDevConsColorTable[];
-extern void *sdfDevVprintf(u32 *aCB, const char *aStr, void *LegacyParamArray);
-void sdfDevSetPrintCB(u32 *aCB, u32 aX, u32 aY, u32 aZ, s32 aAttr);
 void sdfDevConsInit(void);
 sdfTexHandle_t *sdfDevConsGetFontHandle(void);
 s16 *sdfDevConsGetFontUvTable(void);
 void sdfDevConsLinkToTop(sdfDevConsCB_tag *aHndl);
 void sdfDevConsUnlink(sdfDevConsCB_tag *aHndl);
-void sdfDevConsClose(sdfDevConsCB_tag *aHndl);
 void sdfDevConsClearInside(sdfDevConsCB_tag *aHndl);
 void sdfDevConsClear(sdfDevConsCB_tag *aHndl);
-sdfDevConsCB_tag *sdfDevConsOpen(s32 aX, s32 aY, s32 aW, s32 aH);
 void sdfDevConsNewLine(sdfDevConsCB_tag *aHndl);
 void sdfDevConsPutInside(sdfDevConsCB_tag *aHndl, s32 aChar, s32 aAttr);
 void sdfDevConsPut(sdfDevConsCB_tag *aHndl, s32 aChar, s32 aAttr);
 s32 sdfDevConsPrintf(sdfDevConsCB_tag *aHndl, const char *aFmt, ...);
-void sdfDevConsAttribute(sdfDevConsCB_tag *aHndl, s32 aAttr);
 s32 sdfDevConsGetMode(sdfDevConsCB_tag *aHndl);
-void sdfDevConsSetMode(sdfDevConsCB_tag *aHndl, s32 aMode);
 void sdfDevConsTagClose(sdfDevConsDrawCB_t *aCB);
 void sdfDevConsDrawFlush(sdfDevConsDrawCB_t *aCB);
 void sdfDevConsDraw(sdfDevConsCB_tag *console, sdfDevConsDrawCB_t *buffers);
 void sdfDevConsDrawInit(sdfDevConsDrawCB_t *aCB, void *aPacketBuffer, s32 aBufferSize);
 void sdfDevConsDrawAll(void);
-void *sdfDevVprintf(u32 *aCB, const char *aStr, void *LegacyParamArray);
-void *sdfDevPrintfEx(u32 *aCB, const char *aStr, ...);
 
 void sdfDevConsInit(void)
 {
@@ -495,8 +459,8 @@ void sdfDevConsDrawAll(void) {
     }
 }
 
-void *sdfDevVprintf(u32 *aCB, const char *aStr, void *LegacyParamArray) {
-    sdfDevPrintCB_t *input = (sdfDevPrintCB_t *)aCB;
+void *sdfDevVprintf(sdfDevPrintCB_t *aCB, const char *aStr, void *LegacyParamArray) {
+    sdfDevPrintCB_t *input = aCB;
     char text[0x200];
     s32 formattedCount;
     u8 *start;
@@ -564,7 +528,7 @@ void *sdfDevVprintf(u32 *aCB, const char *aStr, void *LegacyParamArray) {
     return start;
 }
 
-void *sdfDevPrintfEx(u32 *aCB, const char *aStr, ...)
+void *sdfDevPrintfEx(sdfDevPrintCB_t *aCB, const char *aStr, ...)
 {
     __builtin_va_list args;
 
@@ -574,12 +538,12 @@ void *sdfDevPrintfEx(u32 *aCB, const char *aStr, ...)
 
 void *sdfDevPrintf(u32 aX, u32 aY, u32 aZ, s32 aAttr, const char *aStr, ...)
 {
-    u32 cb[4];
+    sdfDevPrintCB_t cb;
     __builtin_va_list args;
 
-    sdfDevSetPrintCB(cb, aX, aY, aZ, aAttr);
+    sdfDevSetPrintCB(&cb, aX, aY, aZ, aAttr);
     __builtin_stdarg_start(args, aStr);
-    return sdfDevVprintf(cb, aStr, args);
+    return sdfDevVprintf(&cb, aStr, args);
 }
 sdfDevConsCB_tag *devConsTop = NULL;
 

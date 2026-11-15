@@ -6,6 +6,7 @@
 #include "sdfMemory.h"
 #include "sdfChip.h"
 #include "sdfPrint.h"
+#include "sdfSound.h"
 
 struct sdfGsMemSlice_t;
 
@@ -208,7 +209,6 @@ typedef struct sdfSndInitThreadParam_t {
 
 #include "sdk_libkernl.h"
 
-void sdfDumpHexLine(const u8 *data, s32 size);
 extern const char sdfDmaDumpStartFmt[29];
 extern const char sdfDmaNotQwordFmt[21];
 extern const char sdfDmaTagLineFmt[33];
@@ -265,7 +265,8 @@ extern char sdfGsMemFreeName[8];
 extern char sdfGsMemTypeFmt[8];
 
 /* Print size bytes in address-aligned, sixteen-column hexadecimal rows. */
-void sdfDumpHexLine(const u8 *data, s32 size) {
+void sdfDumpHexLine(const void *aData, s32 size) {
+    const u8 *data = aData;
     s32 column = 0;
     s32 i;
     while (size > 0) {

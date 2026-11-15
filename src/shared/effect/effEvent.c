@@ -18,21 +18,12 @@
 #include "effEvent.h"
 #include "billManager.h"
 
-typedef struct effEveBEDParams_t {
-    f32 center[4];
-    f32 rot[4];
-    f32 r;
-    f32 h;
-    f32 scale;
-    u32 abgr;
-} effEveBEDParams_t;
-
 /* The constructor reserves 0x38 bytes; only its init prefix is serialized. */
-typedef struct effEveBEDCut_t {
+struct effEveBEDCut_t {
     effEveBEDParams_t init;
     evtUnit_t *actor;
     effBTLCut_t *effect;
-} effEveBEDCut_t;
+};
 
 typedef struct effSimpleBED_t {
     effBTL_t *hBED;
@@ -46,8 +37,6 @@ typedef struct effSimpleBED_t {
 typedef struct {
     u8 bytes[0x30];
 } __attribute__((packed)) effEveBEDRecord_t;
-
-extern void effEveBEDCutDraw(effEveBEDCut_t *hEveBEDCut);
 
 #define EFF_EVENT_NEUTRAL_COLOR 0x80808080
 
@@ -304,14 +293,8 @@ void mfilterSetParam(dds3Effect_PartialMultiFilterParam_t *parameters);
 
 /* Expose the scale-blur setup parameters by address. */
 dds3Effect_RippleBlurParam_t *rblurGetParam(void);
-effBTL_t *effEveBEDCreate(effBTL_t *pData);
-effEveBEDCut_t *effEveBEDCutCreate(effBTL_t *hEveBED, u16 CutNum, const void *pParams);
-void effEveBEDCutSetParams(effEveBEDCut_t *hEveBEDCut, const void *pParams);
 void effEveBEDCutGetParams(const effEveBEDRecord_t *hEveBEDCut, effEveBEDRecord_t *pParams);
 
-/* The real mark-kind comparison value has a local register binding to keep
- * the native constant/byte-load order; see docs/matching/effect/effEvent.md. */
-void effEveBEDCutDraw(effEveBEDCut_t *hEveBEDCut);
 effSimpleBED_t *effSimpleBEDCreate(effBTL_t *pData, f32 scale);
 effSimpleBED_t *effSimpleBEDCopy(effSimpleBED_t *hSimpleBEDSrc);
 
@@ -528,18 +511,6 @@ typedef struct EffScreenDrawParams {
 
 typedef char EffScreenDrawParams_size_must_be_0x30[(sizeof(EffScreenDrawParams) == 0x30) ? 1 : -1];
 
-/* Event-light init block copied into the retained event owner (0x30 bytes). */
-typedef struct EffEventInit {
-    f32 position[4];
-    f32 orientation[4];
-    f32 range;
-    f32 height;
-    f32 param;
-    u32 color;
-} EffEventInit;
-
-typedef char EffEventInit_size_must_be_0x30[(sizeof(EffEventInit) == 0x30) ? 1 : -1];
-
 typedef char EffEventLight_size_must_be_0x3C[
     (sizeof(effSimpleBED_t) == 0x3C) ? 1 : -1];
 
@@ -550,12 +521,6 @@ extern dds3Effect_Filter_t D_00355F88;
 extern s8 EffectDrawData2;
 void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source);
 
-/* Compact event owner: the allocator reserves exactly 0x38 bytes. */
-struct effEveBEDCutHandle_t {
-    EffEventInit init;
-    struct evtUnitHandle_t *actor; /* Linked event unit supplies its model owner. */
-    effBTLCutHandle_t *effect;
-};
 
 struct BtlUnit;
 

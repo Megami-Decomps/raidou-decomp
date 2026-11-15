@@ -1,12 +1,12 @@
 #include "common.h"
 #include "sdf_types.h"
+#include "libsdf.h"
 #include "sdf_resource.h"
 #include "eeregs.h"
 #include "sdfPacketBuff.h"
 #include "sdfGsMemory.h"
 #include "sdfGsMemIO.h"
-
-struct sdfPreDrawHook_t;
+#include "sdfDraw.h"
 
 struct sdfPrimBitBltElem_t;
 
@@ -16,13 +16,9 @@ struct sdfGsMemSlice_t;
 
 struct sdfGrFrameSet_t;
 
-struct sdfDrawTag_t;
-
 struct sdfStoreImagePacket_t;
 
 struct sdfStoreFrameImagePacket_t;
-
-struct sdfPreDrawTag_t;
 
 /* The frame worker passes the node and queued buffer index. The registered
  * handlers project the node into their distinct complete packet owners. */
@@ -40,12 +36,6 @@ typedef void (*SdfPacketPatchCallback)(void *, s32);
 
 /* Pre-draw hook: the engine's record continues with two option words, which
  * each owner reads under its own name. */
-typedef struct sdfPreDrawHook_t {
-    struct sdfPreDrawHook_t *next;
-    SdfPacketPatchCallback predrawFunc;
-    u32 option0;
-    u32 option1;
-} sdfPreDrawHook_t;
 
 /* The four A+D writes controlling a GS image transfer. */
 typedef struct sdfPrimBitBltElem_t {
@@ -81,8 +71,6 @@ typedef struct sdfGrFrameSet_t {
     sdfGsMemSlice_t *buffers[3];
 } sdfGrFrameSet_t;
 
-void sdfDrawTagLink2(struct sdfDrawTag_t *aTag, addr_t aHeadPacket,
-                          addr_t aTailPacket);
 
 /* Resource upload payload and its terminal primitive-reset tag (0xF0). */
 typedef struct sdfStoreImagePacket_t {
@@ -102,12 +90,6 @@ typedef struct sdfStoreFrameImagePacket_t {
 } sdfStoreFrameImagePacket_t;
 
 /* Complete linked-packet list, distinct from the 0x20-byte DMA list head. */
-typedef struct sdfPreDrawTag_t {
-    u32 next;
-    sdfPreDrawHook_t *head;
-    sdfPreDrawHook_t *tail;
-    u32 pad;
-} sdfPreDrawTag_t;
 
 extern sdfGrFrameSet_t sdfGrFrameSet;
 

@@ -7,10 +7,7 @@
 #include "sdk_libc.h"
 #include "sdfMat.h"
 #include "effMath.h"
-
-typedef struct effBezierBED_t effBezierBED_t;
-
-typedef struct effBezierCut_t effBezierCut_t;
+#include "effEvent.h"
 
 typedef struct effBezierPlacement_t {
     f32 payload[11];
@@ -58,7 +55,7 @@ typedef struct effPCPBezierBillPart_tag {
     f32 alpha;                          /* 0x14 */
     dds3BezierTrackPoly_tag *hBztp;/* 0x18 */
     effBezierCurve_t Bezier7P;           /* 0x1C */
-    struct effBezierCut_t *hBEDCut;          /* 0x7C */
+    effEveBEDCut_t *hBEDCut;          /* 0x7C */
 } effPCPBezierBillPart_tag;
 
 /* Allocation header followed by groupCount inline 0x80-byte slots. */
@@ -66,7 +63,7 @@ typedef struct effPCPBezierBill_tag {
     effPCPBezierBillParam_t param;         /* 0x00 */
     effPCPBezierBillPart_tag *pPart;           /* 0x50 */
     u32 abgr;                           /* 0x54 */
-    struct effBezierBED_t *hBED;           /* 0x58 */
+    struct effBTL_t *hBED;           /* 0x58 */
     u8 original;                      /* 0x5C */
     u8 pad5D[3];                             /* 0x5D */
     sdfMemHandle_t *hMem;                 /* 0x60 */
@@ -88,17 +85,13 @@ typedef struct effBezierDrawParam_t {
     u8 opaque_24[0xC];
 } effBezierDrawParam_t;
 
-extern effBezierBED_t *effEveBEDCreate(effBezierBED_t *pData);
-extern void effEveBEDDelete(effBezierBED_t *hEveBED);
-extern effBezierCut_t *effEveBEDCutCreate(effBezierBED_t *hEveBED, s32 CutNum, effBezierPlacement_t *pParams);
-extern void effEveBEDCutDelete(effBezierCut_t *hEveBEDCut);
 extern effBezierDrawParam_t dds3BezierVertexCount, dds3BezierTrackPolyVertex;
 extern const f32 dds3BezierTrackPolyInitVertex[8][4];
 extern const u32 dds3BezierVertexCountIndices[28], dds3BezierTrackPolyVertexIndices[8];
 dds3BezierTrackPoly_tag *dds3BezierTrackPolySetVertex(s32 hPoly, s32 pVertex);
 void dds3BezierTrackPolyCreate(dds3BezierTrackPoly_tag *face, u32 *split);
 void dds3BezierTrackPolyDelete(dds3BezierTrackPoly_tag *hPoly);
-effPCPBezierBill_tag *effPCPBezierBillCreate(const effPCPBezierBillParam_t *pParam, effBezierBED_t *pBEDData);
+effPCPBezierBill_tag *effPCPBezierBillCreate(const effPCPBezierBillParam_t *pParam, struct effBTL_t *pBEDData);
 effPCPBezierBill_tag *effPCPBezierBillCopy(effPCPBezierBill_tag *src);
 void effPCPBezierBillDelete(effPCPBezierBill_tag *hData);
 extern sdfVector4_t aViewEye, aViewTarget;
@@ -108,7 +101,7 @@ extern sdfVector4_t aViewEye, aViewTarget;
  * see docs/bezier-matching.md before changing its memory-access boundaries. */
 typedef f32 effBezierVector_t[4] __attribute__((aligned(16)));
 
-effPCPBezierBill_tag *effPCPBezierBillCreate(const effPCPBezierBillParam_t *pParam, effBezierBED_t *pBEDData)
+effPCPBezierBill_tag *effPCPBezierBillCreate(const effPCPBezierBillParam_t *pParam, struct effBTL_t *pBEDData)
 {
     u32 count = pParam->number;
     sdfMemHandle_t *allocation = sdfMemAllocDirect(count * sizeof(effPCPBezierBillPart_tag) + sizeof(effPCPBezierBill_tag));

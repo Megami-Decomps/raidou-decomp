@@ -8,10 +8,9 @@
 #include "sdk_libc.h"
 #include "include_asm.h"
 #include "code_r1_0019D3A8.h"
+#include "sdfDevCons.h"
 #include "code_r1_002CD5A8.h"
 
-void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
-void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
@@ -181,7 +180,7 @@ void fldLmapSubmitPositionedCommandPacket(s32 x, s32 y, s32 z,
                                           const char *command, s32 surfaceIndex) {
     sdfDrawTag_t *packetList = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
     sdfGrOt_t *drawSurface;
-    SifCommand packetHeader;
+    sdfDevPrintCB_t packetHeader;
 
     sdfDrawTagInit(packetList);
     sdfDevSetPrintCB(&packetHeader, x + 0x7000, y + 0x7900, z, colorTableIndex);

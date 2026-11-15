@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfPacketBuff.h"
 #include "eeregs.h"
 #include "ps2asm.h"
 #include "sdf_lighting.h"
@@ -147,7 +148,6 @@ typedef struct sdfTexPacket_t {
 } sdfTexPacket_t;
 
 /* Read the active packet cursor or restore it at a quadword boundary. */
-s32 sdfGrOpenPacketBuff(void);
 
 static inline sdfCorePacketPointBuff_tag *AllocNode(sdfCorePacketCb_t *work) {
     sdfCorePacketPointBuff_tag *node = work->freePointBuff;

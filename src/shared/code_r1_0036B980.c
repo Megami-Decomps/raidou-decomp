@@ -9,24 +9,6 @@
 #include "sdf_types.h"
 #include "libsdf.h"
 
-typedef struct sdfDevConsCB_tag
-{
-    struct sdfDevConsCB_tag *prev;
-    struct sdfDevConsCB_tag *next;
-    u16 x;
-    u16 y;
-    s16 w;
-    s16 h;
-    s16 locX;
-    s16 locY;
-    u8 mode;
-    u8 pad;
-    u8 attr;
-    u8 tabwidth;
-    sdfMemHandle_t *bufferHandle;
-    u8 *bufferPtr;
-} sdfDevConsCB_tag;
-
 typedef struct sdfDevConsDrawCB_t
 {
     u8 *cur;
@@ -47,15 +29,6 @@ typedef struct
     u8 data[0x1000];
     u8 opaqueSuffix[0x10];
 } sdfDevConsStackPackets_t;
-
-/* The four print-control words are signed XYZ and packed RGBA when drawing. */
-typedef struct
-{
-    s32 x;
-    s32 y;
-    s32 z;
-    u32 attr;
-} sdfDevPrintCB_t;
 
 typedef struct
 {
@@ -90,18 +63,17 @@ extern u32 sdfDevConsColorTable[];
 
 /* Mutable colors used by the device console and packet command setter. */
 extern u32 sdfDevConsColorTable[16];
-void sdfDevSetPrintCB(u32 *aCB, u32 aX, u32 aY, u32 aZ, s32 aAttr);
-void sdfPktSetCmd(u32 *aCB, s32 aMode);
+void sdfPktSetCmd(sdfDevPrintCB_t *aCB, s32 aMode);
 
-void sdfPktSetCmd(u32 *aCB, s32 aMode)
+void sdfPktSetCmd(sdfDevPrintCB_t *aCB, s32 aMode)
 {
-    aCB[3] = sdfDevConsColorTable[aMode];
+    aCB->attr = sdfDevConsColorTable[aMode];
 }
 
-void sdfDevSetPrintCB(u32 *aCB, u32 aX, u32 aY, u32 aZ, s32 aAttr)
+void sdfDevSetPrintCB(sdfDevPrintCB_t *aCB, u32 aX, u32 aY, u32 aZ, s32 aAttr)
 {
-    aCB[0] = aX;
-    aCB[1] = aY;
-    aCB[2] = aZ;
+    aCB->x = aX;
+    aCB->y = aY;
+    aCB->z = aZ;
     sdfPktSetCmd(aCB, aAttr);
 }
