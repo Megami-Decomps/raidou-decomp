@@ -126,7 +126,6 @@ void LoadMcModules(const char *prefix, s32 moduleGroup);
 
 typedef struct _reent _reent;
 
-typedef __builtin_va_list va_list;
 
 typedef struct __sbuf {
     u8 *_base;

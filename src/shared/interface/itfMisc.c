@@ -45,13 +45,11 @@ typedef struct
     itfLink_t *puse_top, *puse_tail, *pdisuse_top, *pdisuse_tail;
 } itfmisclinkstack_t;
 
-typedef struct { s32 x, y, z, w; } itfColorVector_t;
-
 typedef struct { u8 unk00[0x20]; u64 value, registerCode; } itfGsState_t;
 
 extern u64 itfAlphaValueTable[];
 extern u8 itfGaugeQuadVertexIndex[8], itfGaugeQuadColorIndex[8], itfGaugeHighlightVertexIndex[], itfGaugeHighlightColorIndex[];
-extern itfColorVector_t itfGaugeHighlightVectors[];
+extern itfColor_t itfGaugeHighlightVectors[];
 extern s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
 extern u32 sdf2DMakeStdPacket(u32 aPacket, s32 aLeng);
 extern s32 sdf2DLinkTexPacket(sdfDrawTag_t *, sdfTexHandle_t *, s32);
@@ -106,8 +104,6 @@ void itfMiscLinkInitialize(itfmisclinkstack_t *pool, itfLink_t *nodes, s32 count
 itfLink_t *itfMiscLinkTake(itfmisclinkstack_t *pstack);
 void itfMiscLinkGive(itfLink_t *pelem, itfmisclinkstack_t *pstack);
 
-void itfMiscSetRatioRGB(itfColorVector_t *output, s32 scaleX, s32 scaleY, s32 scaleZ,
-                   s32 w, const itfColorVector_t *input, s32 count);
 
 void itfMiscChangeFontVertexColor(frFontRequest_t *pfont, u32 color);
 void itfMiscChangeFontAlpha(frFontRequest_t *pfont, u32 alpha);
@@ -194,7 +190,6 @@ struct sdfTexHandle_t;
 
 union EffSpriteColor;
 
-void itfDrawThreePanelBorderBands(DrawVertex *bounds, DrawColorRec *color, u32 tail, s32 borderWidth, sdfDrawTag_t *command);
 
 /* Initialize a FIFO free list and empty active list.
  * Native do/while writes at least two nodes; the s8 index can wrap. */
@@ -281,20 +276,20 @@ void itfMiscLinkGive(itfLink_t *pelem, itfmisclinkstack_t *pstack) {
 
 /* Multiply XYZ, cap only the positive product at 255 << 16, then shift by 16.
  * Negative products are not clamped; W comes from the argument. */
-void itfMiscSetRatioRGB(itfColorVector_t *output, s32 scaleX, s32 scaleY, s32 scaleZ,
-                   s32 w, const itfColorVector_t *input, s32 count) {
+void itfMiscSetRatioRGB(itfColor_t *output, s32 scaleX, s32 scaleY, s32 scaleZ,
+                   s32 w, const itfColor_t *input, s32 count) {
     while (count > 0) {
-        s32 x = scaleX * input->x;
-        s32 y = scaleY * input->y;
-        s32 z = scaleZ * input->z;
+        s32 x = scaleX * input->components[0];
+        s32 y = scaleY * input->components[1];
+        s32 z = scaleZ * input->components[2];
 
-        output->w = w;
+        output->components[3] = w;
         if (x > ITF_FIXED_COMPONENT_MAX) x = ITF_FIXED_COMPONENT_MAX;
         if (y > ITF_FIXED_COMPONENT_MAX) y = ITF_FIXED_COMPONENT_MAX;
         if (z > ITF_FIXED_COMPONENT_MAX) z = ITF_FIXED_COMPONENT_MAX;
-        output->x = x >> ITF_FIXED_FRACTION_BITS;
-        output->y = y >> ITF_FIXED_FRACTION_BITS;
-        output->z = z >> ITF_FIXED_FRACTION_BITS;
+        output->components[0] = x >> ITF_FIXED_FRACTION_BITS;
+        output->components[1] = y >> ITF_FIXED_FRACTION_BITS;
+        output->components[2] = z >> ITF_FIXED_FRACTION_BITS;
         output++;
         input++;
         count--;
@@ -389,9 +384,9 @@ void itfMiscDrawRectanglePrim(sdfIVector2_t *vertices, itfColor_t *colors, u8 *v
 
 /* Draw three adjacent quads using zero-alpha/source-alpha edge color records.
  * Border widths and resulting signed middle width are not clamped. */
-void itfDrawThreePanelBorderBands(DrawVertex *bounds, DrawColorRec *color, u32 tail, s32 borderWidth, sdfDrawTag_t *command) {
-    DrawVertex vertices[ITF_QUAD_VERTEX_COUNT];
-    DrawColorRec colors[2];
+void itfDrawThreePanelBorderBands(sdfIVector2_t *bounds, itfColor_t *color, u32 tail, s32 borderWidth, sdfDrawTag_t *command) {
+    sdfIVector2_t vertices[ITF_QUAD_VERTEX_COUNT];
+    itfColor_t colors[2];
     s32 middleWidth;
 
     colors[0].components[0] = color->components[0];
@@ -635,7 +630,7 @@ void itfMiscDrawGauge(s32 portion, s32 entire, s32 shadow,
                    sdfIVector2_t *pos, u32 z, itfColor_t *pcolor_portion,
                    itfColor_t *pcolor_entire, sdfDrawTag_t *pdrawtag) {
     sdfIVector2_t vertices[6];
-    itfColorVector_t highlightColors[4];
+    itfColor_t highlightColors[4];
     s32 left = pos[0].x;
     s32 right = pos[1].x;
     s32 width = (right - left) >> 4;
@@ -664,9 +659,9 @@ void itfMiscDrawGauge(s32 portion, s32 entire, s32 shadow,
         itfMiscSetRatioRGB(highlightColors, pcolor_portion->components[0],
                         pcolor_portion->components[1], pcolor_portion->components[2],
                         pcolor_portion->components[3], itfGaugeHighlightVectors, 4);
-        itfMiscDrawLineStripPrim(vertices, (itfColor_t *)highlightColors,
+        itfMiscDrawLineStripPrim(vertices, highlightColors,
                         itfGaugeHighlightVertexIndex, itfGaugeHighlightColorIndex, 3, z, pdrawtag);
-        itfMiscDrawLineStripPrim(vertices, (itfColor_t *)highlightColors,
+        itfMiscDrawLineStripPrim(vertices, highlightColors,
                         itfGaugeHighlightVertexIndex + 3, itfGaugeHighlightColorIndex + 3, 3, z, pdrawtag);
     }
 }

@@ -2057,7 +2057,7 @@ void itfQueueOffsetTexturedRect(s32 *bounds, s32 *region, s32 x, s32 y,
     uv[2] = (region[0] + region[2]) << 4;
     uv[3] = (region[1] + region[3]) << 4;
     color.alpha = alpha;
-    itfMiscDrawSpritePrim((DrawVertex *)positions, (DrawColorRec *)uv, (DrawColorRec *)&color, 0, texture, 0, command);
+    itfMiscDrawSpritePrim(positions, uv, &color, 0, texture, 0, command);
 }
 
 INCLUDE_ASM(const s32, "interface/itfMesManager", itfCallGrAllocPacketBuff3);

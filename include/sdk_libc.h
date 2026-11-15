@@ -3,6 +3,12 @@
 
 #include "common.h"
 
+/* ee-gcc 2.9-991111, which builds the SDK units, has no __builtin_va_list. */
+#if !(__GNUC__ == 2 && __GNUC_MINOR__ == 9)
+typedef __builtin_va_list va_list;
+s32 vsprintf(char *str, const char *fmt, va_list ap);
+#endif
+
 s32 printf(const char *format, ...);
 s32 sprintf(char *destination, const char *format, ...);
 

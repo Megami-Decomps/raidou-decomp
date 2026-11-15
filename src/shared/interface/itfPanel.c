@@ -76,14 +76,13 @@ void CreateVertexLeftFade(sdfIVector2_t *pwork, s32 x0, s32 y0, s32 x1, s32 y1);
 
 #define ITF_PANEL_CORNER_STRIP_WIDTH 0x5A0
 
-extern void itfMiscSetRatioRGB(s32 *output, s32 scaleX, s32 scaleY, s32 scaleZ, s32 w, const s32 *input, s32 count);
-extern s32 itfPanelMesWinColorRatio[];
-extern s32 itfPanelSelWinColorRatio[];
-extern s32 itfPanelPlainColorRatio[];
+extern itfColor_t itfPanelMesWinColorRatio[];
+extern itfColor_t itfPanelSelWinColorRatio[];
+extern itfColor_t itfPanelPlainColorRatio[];
 
 #define ITF_PANEL_FULL_COLOR_SCALE 0x80
 
-extern s32 itfPanelPlainFullColorRatio[];
+extern itfColor_t itfPanelPlainFullColorRatio[];
 void DrawNormal(itfpanel_t *handle, sdfDrawTag_t *pdrawtag);
 
 #define ITF_PANEL_WIDE_PASS_COUNT 3
@@ -160,16 +159,6 @@ extern u8 itfPanelSelWinLineVertexIndex[8];
 #include "effect.h"
 #include "font.h"
 
-/* Integer corners passed to the panel-border drawer. */
-typedef struct PanelRect {
-    s32 x0;
-    s32 y0;
-    s32 x1;
-    s32 y1;
-} PanelRect;
-
-typedef char PanelRect_size_must_be_0x10[sizeof(PanelRect) == 0x10 ? 1 : -1];
-
 #define ITF_PANEL_MESSAGE_FADE_TICKS 30
 
 #define ITF_PANEL_MESSAGE_EXIT_TICKS 10
@@ -180,8 +169,7 @@ typedef char PanelRect_size_must_be_0x10[sizeof(PanelRect) == 0x10 ? 1 : -1];
 
 #define ITF_PANEL_TINT_BORDER_WIDTH 0x240
 
-extern void itfDrawThreePanelBorderBands(PanelRect *rect, u32 *colors, u32 tail, s32 width, sdfDrawTag_t *command);
-extern u32 itfDrawTintedPanelRectData[];
+extern itfColor_t itfDrawTintedPanelRectData[];
 extern u8 D_00357BF0[], D_00357C08[], D_00357C20[];
 extern u8 D_00357C38[], D_00357C50[], D_00357C68[];
 extern u8 D_003BB1A8[8], D_003BB1B0[8];
@@ -454,7 +442,7 @@ void CreateColorMesWin(itfPanelMesWinData_t *pwork, u32 red, u32 green, u32 blue
     SetVec4(colorRow, red, green, blue, 1);
     colorRow = pwork->colors[1].components;
     SetVec4(colorRow, red, green, blue, alpha);
-    itfMiscSetRatioRGB((s32 *)pwork->colors[2].components, red, green, blue, alpha, itfPanelMesWinColorRatio, 6);
+    itfMiscSetRatioRGB(&pwork->colors[2], red, green, blue, alpha, itfPanelMesWinColorRatio, 6);
 }
 
 /* Write the two color rows, then scale four template rows; the first fourth component is one. */
@@ -464,7 +452,7 @@ void CreateColorSelWin(itfPanelSelWinData_t *pwork, u32 red, u32 green, u32 blue
     SetVec4(colorRow, red, green, blue, 1);
     colorRow = pwork->colors[1].components;
     SetVec4(colorRow, red, green, blue, alpha);
-    itfMiscSetRatioRGB((s32 *)pwork->colors[2].components, red, green, blue, alpha, itfPanelSelWinColorRatio, 4);
+    itfMiscSetRatioRGB(&pwork->colors[2], red, green, blue, alpha, itfPanelSelWinColorRatio, 4);
 }
 
 /* Set the base color, one alpha-scaled gradient row, and two rows at full color scale. */
@@ -472,8 +460,8 @@ void CreateColorPlain(itfPanelPlainData_t *pwork, u32 red, u32 green, u32 blue, 
     u32 *colorRow = pwork->colors[0].components;
 
     SetVec4(colorRow, red, green, blue, alpha);
-    itfMiscSetRatioRGB((s32 *)pwork->colors[1].components, red, green, blue, alpha, itfPanelPlainColorRatio, 1);
-    itfMiscSetRatioRGB((s32 *)pwork->colors[2].components, red, green, blue, ITF_PANEL_FULL_COLOR_SCALE, itfPanelPlainFullColorRatio, 2);
+    itfMiscSetRatioRGB(&pwork->colors[1], red, green, blue, alpha, itfPanelPlainColorRatio, 1);
+    itfMiscSetRatioRGB(&pwork->colors[2], red, green, blue, ITF_PANEL_FULL_COLOR_SCALE, itfPanelPlainFullColorRatio, 2);
 }
 
 /* Set the four color words at byte 0x20, consumed as a color record by the quad path. */
@@ -607,14 +595,14 @@ INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawSpritePrim);
 
 /* Copy bounds and draw the tinted border; alpha uses the native signed 103/128 scale. */
 void itfDrawTintedPanelRect(itfpanel_t *panel, sdfDrawTag_t *command) {
-    PanelRect rect;
+    sdfIVector2_t rect[2];
 
-    itfDrawTintedPanelRectData[3] = panel->alpha * ITF_PANEL_TINT_ALPHA_NUMERATOR / ITF_PANEL_TINT_ALPHA_DENOMINATOR;
-    rect.x0 = panel->left;
-    rect.y0 = panel->top;
-    rect.x1 = panel->right;
-    rect.y1 = panel->bottom;
-    itfDrawThreePanelBorderBands(&rect, itfDrawTintedPanelRectData, panel->z, ITF_PANEL_TINT_BORDER_WIDTH, command);
+    itfDrawTintedPanelRectData[0].components[3] = panel->alpha * ITF_PANEL_TINT_ALPHA_NUMERATOR / ITF_PANEL_TINT_ALPHA_DENOMINATOR;
+    rect[0].x = panel->left;
+    rect[0].y = panel->top;
+    rect[1].x = panel->right;
+    rect[1].y = panel->bottom;
+    itfDrawThreePanelBorderBands(rect, itfDrawTintedPanelRectData, panel->z, ITF_PANEL_TINT_BORDER_WIDTH, command);
 }
 
 INCLUDE_ASM(const s32, "interface/itfPanel", DrawTestAlphaPrim);

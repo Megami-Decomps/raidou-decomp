@@ -13,16 +13,7 @@ void itfMiscDrawRectanglePrim(sdfIVector2_t *vertices, itfColor_t *colors, u8 *v
 void itfMiscDrawSpritePrim(void *vertexData, void *uvData, void *colorData, s32 tail, sdfTexHandle_t *texture, s32 flag, sdfDrawTag_t *command);
 void itfMiscDrawTriangleStripPrim(sdfIVector2_t *vertices, itfColor_t *colors, u8 *vertexIndex, u8 *colorIndex, s32 count, u32 tail, sdfDrawTag_t *command);
 sdfTexHandle_t *itfMiscLoadTexture(const char *filename);
-
-/* Native two-word integer draw point. */
-typedef struct DrawVertex {
-    s32 x;
-    s32 y;
-} DrawVertex;
-
-/* Four representation words: RGBA, or two UV pairs for sprite packets. */
-typedef struct DrawColorRec {
-    u32 components[4];
-} DrawColorRec;
+void itfMiscSetRatioRGB(itfColor_t *output, s32 scaleX, s32 scaleY, s32 scaleZ, s32 w, const itfColor_t *input, s32 count);
+void itfDrawThreePanelBorderBands(sdfIVector2_t *bounds, itfColor_t *color, u32 tail, s32 borderWidth, sdfDrawTag_t *command);
 
 #endif

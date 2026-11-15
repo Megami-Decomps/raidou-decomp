@@ -70,7 +70,6 @@ enum sdf_stream_playback {
 extern sifRpcClientContextView_t sdfPrintRpcClient;
 extern s8 sdfPrintIopFlag;
 extern char sdfPrintStrFmt[];
-extern s32 vsprintf(char *destination, const char *format, void *args);
 void *sdfPrintRpcFunc(s32 unused, sifCommand_t *packet);
 void sdfPrintRpcThread();
 

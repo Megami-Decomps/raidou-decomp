@@ -59,7 +59,6 @@ typedef struct sdfGrOt_t {
 
 typedef struct _reent _reent;
 
-typedef __builtin_va_list va_list;
 
 typedef struct __sbuf {
     u8 *_base;
@@ -265,7 +264,6 @@ static inline void qsortSwapRange(char *first, char *second, s32 bytes, s32 swap
 #define STRTOL_MIN 0x8000000000000000UL
 
 s32 vfprintf(FILE *fp, const char *fmt, va_list ap);
-s32 vsprintf(char *str, const char *fmt, va_list ap);
 s32 vsprintf_r(_reent *r, char *str, const char *fmt, va_list ap);
 
 /* Little-endian IEEE binary64 word view used by the numeric helpers. */

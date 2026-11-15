@@ -74,7 +74,6 @@ void sdfGrSortOtCallback(sdfGrOt_t *aOt, s32 aFunc, sdfDrawTag_t *aData);
 
 typedef struct _reent _reent;
 
-typedef __builtin_va_list va_list;
 
 typedef struct __sbuf {
     u8 *_base;
