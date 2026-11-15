@@ -17,6 +17,13 @@
 #include "sdf2D.h"
 #include "dds3Randomize.h"
 
+sdf3DLight_t mdlData3 = {{1.0f, 1.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.5f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}};
+sdf3DLight_t mdlData4 = {{0.0f, 0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}};
+sdf3DLight_t dds3RefCameraTMData = {{0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f, 0.0f}};
+dds3LightState_t dds3LightParam = {{&mdlData3, &mdlData4, &dds3RefCameraTMData, NULL},
+                                   {0.2f, 0.2f, 0.2f, 1.0f},
+                                   {255.0f, 255.0f, 3000.0f, 20000.0f, 0x00605040}};
+
 
 /* One A+D register command with its standard DMA/GIF header. */
 typedef struct

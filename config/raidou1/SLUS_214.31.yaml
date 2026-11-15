@@ -693,6 +693,8 @@ segments:
       # .ctors + .dtors (both ffffffff 00000000) + .reginfo, then zeros to .data.
       - [0x2AE1B0, databin, ctors_dtors_reginfo]
       - [0x2AE200, data, data]
+      - [0x2AE530, .data, kernel/dds3KernelDraw]
+      - [0x2AE624, data, data_003AD624]
       - [0x345368, databin, eh_frame]
       # .vudata (0x300) plus the zeros up to .rodata's 16-byte boundary.
       - [0x34536C, databin, vudata]

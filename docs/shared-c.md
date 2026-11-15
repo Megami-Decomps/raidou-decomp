@@ -137,6 +137,15 @@ Raidou's label is carried with Raidou's size (last column of the tsv; the TU's
 own `extern` for it loses its size), unless that size is 8 bytes or less, which
 `-G 8` would put in `.sdata`. 228 definitions in raidou1, 208 in raidou2.
 
+## .data as C
+
+`.data` is one asm chunk except for the ranges in `config/<v>/data_c.tsv` (unit,
+start, end vram). `tools/split_data.py <v> --write` turns each range into a
+`[rom, .data, <unit>]` subsegment, so the unit's C defines every object in it,
+and keeps the rest as `data_<vram>` asm chunks. A shared unit needs the same range
+in both games (`config/xgame/r1_r2_data_pairs.tsv` gives the addresses). A name the
+C defines leaves `smt3_symbols.txt`, which would otherwise override it at link time.
+
 ## Why a function stays asm
 
 Data a body emits (.rodata strings, jump tables, .lit4 floats) is checked

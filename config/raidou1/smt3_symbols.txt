@@ -423,7 +423,6 @@ D_00324660 = 0x003AD4E0;
 aViewTarget = 0x003AD500;
 aViewEye = 0x003AD510;
 aViewDown = 0x003AD520;
-dds3LightParam = 0x003AD5F0;
 dds3AmbientColor = 0x003AD600;
 dds3LightObjectAmbient = 0x003AD600;
 dds3FogState = 0x003AD610;

@@ -662,6 +662,8 @@ segments:
       # .ctors + .dtors (both ffffffff 00000000) + .reginfo, then zeros to .data.
       - [0x328600, databin, ctors_dtors_reginfo]
       - [0x328680, data, data]
+      - [0x3289B0, .data, kernel/dds3KernelDraw]
+      - [0x328AA4, data, data_00427AA4]
       # Raidou 2 has C++ with exception tables: .eh_frame is 0x904 bytes here.
       - [0x3A7130, databin, eh_frame]
       # .vudata (0x300) plus the zeros up to .rodata's 16-byte boundary.
