@@ -675,7 +675,7 @@ ScrCommandResult evtOpModelLodChg(void) {
     dds3Basic_t *unit;
     EffectObjectData *data;
     dds3ObjectBaseControlWorkData_t *modelHolder;
-    dds3ModelHandle_t *context;
+    mdlObj_t *context;
     sdfModelRootNode_t *model;
     s32 max;
 
@@ -697,7 +697,7 @@ ScrCommandResult evtOpModelLodChg(void) {
         printf("warning!! MODEL_LOD_CHG(int,int) mh pointer null\n");
         return 1;
     }
-    context = (dds3ModelHandle_t *)modelHolder->pModel;
+    context = (mdlObj_t *)modelHolder->pModel;
     model = context->inner;
     if (model == NULL) {
         printf("warning!! MODEL_LOD_CHG(int,int) root pointer null\n");

@@ -75,7 +75,7 @@ typedef struct billOut_t billOut_t;
 typedef struct effTrackPolyList_t effTrackPolyList_t;
 
 typedef struct {
-    struct dds3ModelHandle_t *model;
+    struct mdlObj_t *model;
     s32 idA;
     s32 idB;
     f32 startFrame;

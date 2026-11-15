@@ -227,7 +227,6 @@ typedef struct { u8 bytes[0x30]; } EvtRowPayload30;
 
 typedef struct { u8 bytes[0x40]; } EvtRowPayload40;
 
-EvtPackLoadState *evtGetPackProcessData(EvtPackEventId eventId);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtMenuDisp);
 

@@ -20,6 +20,7 @@
 #include "mdlEffect.h"
 #include "sdfDevCons.h"
 #include "effManager.h"
+#include "billManager.h"
 
 
 
@@ -213,9 +214,7 @@ extern f32 sdfFaceDivSoften, sdfFaceDivBias;
 extern char *mdlColorChannelLabels[];
 extern u8 mdlColorChannelStyle[];
 extern u16 mdlPibTrackRowOffset[];
-extern void *dds3BillboardCreate(s32, addr_t);
 extern void dds3BillboardDelete(billHandle_t *);
-extern billHandle_t *dds3BillboardCopy(billHandle_t *);
 extern void *dds3EffectLoad(void *pD3P);
 extern void dds3EffectDelete(struct effHandle_t *);
 extern struct effHandle_t *dds3EffectCopy(struct effHandle_t *);

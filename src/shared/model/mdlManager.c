@@ -18,6 +18,7 @@
 #include "mdlEffect.h"
 #include "sdfPacDecode.h"
 #include "sdf_model_packet_callback.h"
+#include "fileManager.h"
 
 #define MDL_GROUP_COUNT 8
 
@@ -65,7 +66,6 @@ extern mdlLoadingTag_t *mdlLoadingMajorList[MDL_GROUP_COUNT];
 extern void sdfTexListFree(sdfModelTexList_t *aList, s32 aReleaseItems);
 extern sdfModelTexList_t *sdfTexListDup(sdfModelTexList_t *aList);
 
-extern void fileManager(void);
 void mdlUnRegist(s32 aMajor, s32 aMinor);
 void mdlUnRegistResrc(dds3ModelResrc_t *resrc_p);
 void mdlFree(mdlObj_t *aHandle);
@@ -83,11 +83,6 @@ void mdlMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber, s32 aType, f32 aBefor
 sdfMotionCtrlr_t *mdlGetMotionCtrlr(mdlObj_t *aHandle, s32 aGroup);
 void mdlSetEffectColor(mdlObj_t *aHandle, u32 aColor);
 
-typedef struct fileRequest_t fileRequest_t;
-
-extern void *fileGetLoadPtr(fileRequest_t *fileHandle);
-extern sdfMemHandle_t *fileGetMemHandle(fileRequest_t *fileHandle);
-extern void fileHandleFree(fileRequest_t *fileHandle);
 extern sdfModelTexList_t *sdfTexSetTB(void *aData);
 extern sdfModelDef_t *sdfFixupModelBinary(void *aData);
 extern sdfMotionPlayBook_t *sdfFixupMotionBinary(void *aData);
@@ -105,18 +100,9 @@ typedef struct
     u32 doneArg;
 } mdlManager_mdlFileLoadCb_t;
 
-typedef struct
-{
-    u8 pad0[0x60];
-    struct sdfPacDecodeResrc_t *queueHead;
-} filePacRequest_t;
-
-extern void pacFileHandleFree_(void *pacHandle);
 saddr_t mdlPrepare(s32 aMajor, s32 aMinor, s32 aBlockMode);
 void mdlFreeMotionCtrlr(mdlObj_t *aHandle, sdfMotionCtrlr_t *aCtrlr);
 sdfPacDecodeResrc_t *mdlPackSet(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor, s32 regFlags);
-extern filePacRequest_t *pacLoadEx(const char *filename, s32 headOrTail, s32 callback, void *pendCallback, void *callbackParm);
-extern void pacSync(filePacRequest_t *pacFileHandle);
 void mdlFileCbFree(mdlManager_mdlFileLoadCb_t *cb);
 extern void mdlLinkBlur(mdlObj_t *ctx, sdfGrOt_t **surfaces);
 void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber);
@@ -223,7 +209,6 @@ extern mdlHddFileEntry_t *mdlHddFileCount;
 extern u8 sdfHddValid;
 extern const char _ctype_[];
 extern void sdfDummyFunc(void);
-extern fileRequest_t *fileLoadEx(const char *filename, s32 headOrTail, addr_t endCallback, addr_t callbackParm);
 extern u16 mdlPibGetEffectCount(mdlPibRecord_t *record);
 extern u16 mdlPibGetMotionCount(mdlPibRecord_t *record);
 extern s32 mdlPibGetVersion(mdlPibRecord_t *record);
@@ -315,7 +300,7 @@ s32 mdlGetNumOfCut(mdlObj_t *aHandle, s32 aGroup);
 void mdlGetFilebase(s32 aMajor, s32 aMinor, char *aName, s32 aNameLeng);
 s32 mdlPackCheck(sdfPacDecodeResrc_t *resrc);
 sdfPacDecodeResrc_t *mdlPackSetOld(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor, s32 regFlags);
-void mdlFileLoadCallback(filePacRequest_t *pacHandle, mdlManager_mdlFileLoadCb_t *data);
+void mdlFileLoadCallback(fileRequest_t *pacHandle, mdlManager_mdlFileLoadCb_t *data);
 
 s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (*callback)(u32),
                 u32 parm);
@@ -1653,10 +1638,10 @@ void mdlFileCbFree(mdlManager_mdlFileLoadCb_t *cb)
     sdfChipFreeDirect(cb);
 }
 
-void mdlFileLoadCallback(filePacRequest_t *pacHandle, mdlManager_mdlFileLoadCb_t *data)
+void mdlFileLoadCallback(fileRequest_t *pacHandle, mdlManager_mdlFileLoadCb_t *data)
 {
     data->owner = pacHandle;
-    mdlPackSet(pacHandle->queueHead, data->group, data->id, data->arg);
+    mdlPackSet(pacHandle->pac.resrcHead, data->group, data->id, data->arg);
     WaitSema(mdlManagerWork);
     mdlUnRegLoading(data->group, data->id);
     SignalSema(mdlManagerWork);
@@ -1671,7 +1656,7 @@ s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (
                 u32 parm)
 {
     mdlManager_mdlFileLoadCb_t *job;
-    filePacRequest_t *request;
+    fileRequest_t *request;
 
     job = sdfChipAllocZeroDirect(sizeof(mdlManager_mdlFileLoadCb_t));
     job->group = major;
@@ -1679,7 +1664,7 @@ s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (
     job->arg = regFlags;
     job->doneArg = parm;
     job->done = callback;
-    request = pacLoadEx(filename, 0, 0, mdlFileLoadCallback, job);
+    request = pacLoadEx(filename, 0, 0, EE_ADDR(mdlFileLoadCallback), EE_ADDR(job));
     job->owner = request;
     if (callback == NULL)
     {

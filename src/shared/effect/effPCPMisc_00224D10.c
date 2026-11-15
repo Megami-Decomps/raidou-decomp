@@ -24,6 +24,7 @@
 #include "code_r1_001CC1D0.h"
 #include "code_r1_0021CE60.h"
 #include "slMain.h"
+#include "mdlManager.h"
 
 /* Apply volume and pan to a sequence track through the command queue. */
 
@@ -300,24 +301,22 @@ enum {
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
 /* Destroy one context. If it leaves its resource-owning group empty, group
  * teardown also releases that group's registered assets. */
-void mdlFree(dds3ModelHandle_t *ctx);
-u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
-u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
+void mdlFree(mdlObj_t *ctx);
 
 /* Allocate a distinct caller-owned context linked to the registered group.
  * Contexts share the group node and assets; release each context with mdlFree. */
-dds3ModelHandle_t *mdlLoad(u32 group, u32 id);
-void mdlSetColor(dds3ModelHandle_t *ctx, u32 value);
-void mdlSetPosition(dds3ModelHandle_t *ctx);
-void mdlSetRotate(dds3ModelHandle_t *ctx);
-void mdlSetScale(dds3ModelHandle_t *ctx);
+mdlObj_t *mdlLoad(u32 group, u32 id);
+void mdlSetColor(mdlObj_t *ctx, u32 value);
+void mdlSetPosition(mdlObj_t *ctx);
+void mdlSetRotate(mdlObj_t *ctx);
+void mdlSetScale(mdlObj_t *ctx);
 
 /* sdfMotionCtrlr_t-record selection and lookup. */
-void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
+void mdlSingleMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex);
 
-void Init_effModel(dds3ModelHandle_t *model);
-void effDestroyModelContext(dds3ModelHandle_t *owner);
-dds3ModelHandle_t *effHandleCopy(dds3ModelHandle_t *sourceModel);
+void Init_effModel(mdlObj_t *model);
+void effDestroyModelContext(mdlObj_t *owner);
+mdlObj_t *effHandleCopy(mdlObj_t *sourceModel);
 
 /* Battle state: resource headers for texture slots 1 and 2. */
 typedef struct EffBattleTexHeaders {
@@ -358,7 +357,7 @@ void dds3DispatchIndexedCallback(u16 *record, f32 scale) {
 }
 
 /* Initialize the VU transforms and the first node's float slot, if present. */
-void Init_effModel(dds3ModelHandle_t *model) {
+void Init_effModel(mdlObj_t *model) {
     SDF_VU0_LOADIDENTITYVECTOR();
     mdlSetPosition(model);
     SDF_VU0_LOADIDENTITYVECTOR();
@@ -376,15 +375,15 @@ void Init_effModel(dds3ModelHandle_t *model) {
 INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effHandleCreate);
 
 /* Clear the lighting attachment before destroying its model context. */
-void effDestroyModelContext(dds3ModelHandle_t *owner) {
+void effDestroyModelContext(mdlObj_t *owner) {
     owner->inner->light = NULL;
     mdlFree(owner);
 }
 
-dds3ModelHandle_t *effHandleCopy(dds3ModelHandle_t *sourceModel) {
+mdlObj_t *effHandleCopy(mdlObj_t *sourceModel) {
     s32 group;
     s32 id;
-    dds3ModelHandle_t *model;
+    mdlObj_t *model;
 
     group = mdlGetMajorNum(sourceModel);
     id = mdlGetMinorNum(sourceModel);

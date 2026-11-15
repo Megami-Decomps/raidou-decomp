@@ -126,7 +126,7 @@ void dds3HermitianTrackPolySetVertexSub(dds3HermitianTrackPoly_tag *hPoly, const
 
 /* Thirteen copied words, followed by an update counter and owned history. */
 typedef struct {
-    struct dds3ModelHandle_t *model;
+    struct mdlObj_t *model;
     s32 idA;
     s32 idB;
     f32 startFrame;
@@ -171,7 +171,7 @@ INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effModelTrackPolyListDrawOnlS
 /* Sample endpoints between startFrame and endFrame (inclusive), fade after
  * endFrame, and reset history before startFrame. */
 void effTrackPolyUpdate(EffTrackPolyWork *work) {
-    dds3ModelHandle_t *model = work->params.model;
+    mdlObj_t *model = work->params.model;
     f32 currentFrame = model->first->frame;
 
     if (work->params.startFrame <= currentFrame) {

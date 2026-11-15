@@ -137,7 +137,7 @@ struct EffSpanTable;
 /* This table has a single populated kind with span-resource callbacks. */
 typedef struct EffModelResourceOps {
     void (*initialize)(struct EffModelResource *); /* 0x00 */
-    struct EffSpanTable *(*createResource)(struct EffSpanConfig *, dds3ModelHandle_t *); /* 0x04 */
+    struct EffSpanTable *(*createResource)(struct EffSpanConfig *, mdlObj_t *); /* 0x04 */
     void (*destroyResource)(struct EffSpanTable *); /* 0x08 */
     void (*update)(struct EffModelResource *); /* 0x0C */
     void (*draw)(struct EffModelResource *); /* 0x10 */
@@ -413,7 +413,7 @@ typedef struct EffModelCreateRequest {
     u8 pad0[0x2C];
     u16 kind;
     u8 pad2E[2];
-    dds3ModelHandle_t *assetId;
+    mdlObj_t *assetId;
     u32 attributes;
     u8 pad38[4];
     void *source;

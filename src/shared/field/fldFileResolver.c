@@ -154,7 +154,7 @@ static inline f32 fldNormalizeProbeVector(void) {
 extern void fldRestoreCameraModelColor(void);
 extern void fldSetCameraObjectTransitionFlag(void);
 extern void fldClearCameraObjectTransitionFlags(void);
-extern dds3ModelHandle_t *fldPlayerModelContext;
+extern mdlObj_t *fldPlayerModelContext;
 extern dds3Basic_t *fldPlayerObject;
 
 /* Serialized transforms leave the position W component zero. */
