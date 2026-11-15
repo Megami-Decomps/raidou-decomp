@@ -27,8 +27,8 @@ start	last_func	unit	kind	evidence	smt3_unit
 0010C4E0	0010D8C0	dds3KernelDraw_0010BEE0	asm	none	
 0010DC38	0010E198	code_r1_0010D1B8	c	dds:4 of 5 part	
 0010E1D8	0010E9A0	kernel/dds3SequenceList	c	smt3:names:10+smt3:map:5 literal-cores:1 of 54	kernel/dds3SequenceList
-0010EA00	0010F110	code_0010EA00	asm	none	
-0010F130	0010FC18	code_0010F130	c	dds:9 literal-cores:1 of 12	
+0010EA00	0010EA10	code_0010EA00	asm	none	
+0010EA18	0010FC18	code_r1_0010DF68	c	dds:9 literal-cores:1 of 77	
 0010FD30	00114420	code_0010FD30	asm	none	
 00114448	00114740	kernel/dds3SequenceList_00111FF8	c	smt3:names:3+smt3:map:1 of 4 part	kernel/dds3SequenceList
 00114850	00114DF0	script/scrScriptProcess	c	smt3:names:12+smt3:map:4+dds:2 of 19	script/scrScriptProcess

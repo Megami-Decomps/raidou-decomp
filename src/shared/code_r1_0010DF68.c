@@ -2,9 +2,12 @@
 #include "sdfDraw.h"
 #include "sdfPacketBuff.h"
 #include "sdk_libkernl.h"
+#include "evtStage.h"
 #include "dds3GlobalWork.h"
 #include "sdfPrim.h"
 #include "frFont.h"
+#include "evtSky.h"
+#include "evtDebug.h"
 #include "sdfChip.h"
 #include "sdfMemory.h"
 s32 DIntr();
@@ -48,8 +51,143 @@ s32 sdfGrOpenPacketBuff(void);
 
 
 
+#include "dds/dds3_background_fade_api.h"
 #include "dds/sdf_heap_overlay_block.h"
 #include "dds/ee_mmi.h"
+
+#ifdef VERSION_RAIDOU1
+extern void evtViewerCreateTaskWithSky(void);
+#else
+INCLUDE_ASM(const s32, "code_r1_0010DF68", evtCreateTestAndSkyTasks);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", evtInitializeSelectionScene);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", evtKeepTestSkyModePending);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", evtClearSecondaryWorldAndViewer);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", evtInitializeSelectionScreen);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf26);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf27);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf28);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf29);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf30);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc22);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc23);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf31);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc24);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc25);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallInitSky);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallExitSky);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf32);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf33);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallProcessEndRstInit);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallProcessCheckRstInit);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf34);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf35);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf36);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf37);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf38);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf39);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf40);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc26);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc27);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf41);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallFinishMovieViewer);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf42);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf43);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc28);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf44);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", TestProcess3);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", evtCallTestProcess3);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", evtCallTestProcess32);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckLmap);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf32);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown2);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf33);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf34);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallInit);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf35);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf36);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc18);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc19);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf37);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc20);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc21);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf38);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitHanafudaTest);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckHanafudaTest);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallGomaden);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitGomaden);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf39);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datRefDDS3GBWK);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessEnd);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessCheck);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf40);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc22);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc23);
+#endif
 
 enum {
     EVT_PACKET_LIST_BYTES = 0x20,
@@ -72,7 +210,10 @@ enum {
     BF_FLW0_MAGIC = 0x30574C46
 };
 
+extern u32 D_00435D28;
+extern u32 dds3KernelDebugSign;
 extern sdfDevConsCB_tag *evtConsoleFontResourceChain;
+extern void evtEventViewerDestroyTask(void);
 extern sdfGrOt_t sdfDebugGrOt;
 extern s8 jmsChkCommonInputData4[];
 extern void evtDrawHeapUsageOverlay(sdfGrOt_t *);
@@ -106,6 +247,11 @@ static inline void eeUnpackRGBAWordFloatReadOnly(u32 color, f32 unit) {
     EE_MMI_RGBA_UNPACK_READONLY(rgba, unit);
 }
 
+dds3ProcessID_t *evtCreateTestAndSkyTasks(void);
+u32 evtInitializeSelectionScene(void);
+u32 evtKeepTestSkyModePending(void);
+void evtClearSecondaryWorldAndViewer(void);
+u32 evtInitializeSelectionScreen(void);
 u32 evtEnsureFontResourceChain(void);
 void evtDestroyFontResourceChain(void);
 extern u16 D_00435D40;
@@ -127,6 +273,184 @@ extern s32 effGetFontListCount(void);
 extern const char D_004113A0[];
 s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task);
 extern s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task);
+#ifdef VERSION_RAIDOU1
+
+dds3ProcessID_t *evtCreateTestAndSkyTasks(void) {
+    dds3KernelDebugSign = 0;
+    D_00435D28 = 0;
+    evtInitEventTest();
+    return evtInitSky();
+}
+
+u32 evtInitializeSelectionScene(void) {
+    dds3KernelDebugSign = 1;
+    dds3FadeBackgroundStartOut(0);
+    evtChkEndProcess();
+    evtExitSky();
+    return 1;
+}
+
+/* Admin mode 16 cleanup: zero leaves the mode pending. */
+u32 evtKeepTestSkyModePending(void) {
+    return 0;
+}
+
+void evtClearSecondaryWorldAndViewer(void) {
+    dds3KernelDebugSign = 0;
+    evtFreeStage();
+    evtViewerCreateTaskWithSky();
+}
+
+u32 evtInitializeSelectionScreen(void) {
+    evtEventViewerDestroyTask();
+    dds3KernelDebugSign = 1;
+    dds3FadeBackgroundStartOut(0);
+    return 0;
+}
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf26);
+
+void sysLeaf27(void) {
+}
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf28);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf29);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf30);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc22);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc23);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf31);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc24);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc25);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallInitSky);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallExitSky);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf32);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf33);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallProcessEndRstInit);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallProcessCheckRstInit);
+
+void sysLeaf34(void) {
+}
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf35);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf36);
+
+void sysLeaf37(void) {
+}
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf38);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf39);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf40);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc26);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc27);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf41);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysCallFinishMovieViewer);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf42);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf43);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysFunc28);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf44);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", sysLeaf);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitLmap);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf2);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckLmap);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf32);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown2);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf33);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf34);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallInit);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf35);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf36);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc18);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc19);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf37);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc20);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc21);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf3);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf4);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf38);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitHanafudaTest);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckHanafudaTest);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf5);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc2);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc3);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", CallGomaden);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitGomaden);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf39);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datRefDDS3GBWK);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessEnd);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallDebugProcessCheck);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf40);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc22);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc23);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf6);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallInit2);
+
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf7);
+#endif
 
 u32 evtEnsureFontResourceChain(void) {
     if (evtConsoleFontResourceChain == 0) {
@@ -144,9 +468,9 @@ void evtDestroyFontResourceChain(void) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_0010F130", datDebugPrintf);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datDebugPrintf);
 
-INCLUDE_ASM(const s32, "code_0010F130", datDEBUGCONSOLE);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", datDEBUGCONSOLE);
 
 s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
     sdfMemInfo_t heapStats;
@@ -184,7 +508,7 @@ s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task) {
 void datLeaf41(void) {
 }
 
-INCLUDE_ASM(const s32, "code_0010F130", evtToggleDebugTimeGraphTask);
+INCLUDE_ASM(const s32, "code_r1_0010DF68", evtToggleDebugTimeGraphTask);
 
 /* Render an allocation span as partial rows and complete heap-map rows. */
 void sdfDrawHeapSpanOverlay(sdfDrawTag_t *packetList, s32 x, s32 y,
@@ -372,21 +696,25 @@ s32 evtDrawResourceCountDebugTask(dds3ProcessID_t *task) {
     return 0;
 }
 
-INCLUDE_RODATA(const s32, "code_0010F130", evtStrFh03Th03Gs03);
+INCLUDE_RODATA(const s32, "code_r1_0010DF68", evtStrFh03Th03Gs03);
 
-INCLUDE_SDATA(const s32, "code_0010F130", evtConsoleFontResourceChain);
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", evtCreateTestAndSkyTasksData);
 
-INCLUDE_SDATA(const s32, "code_0010F130", datData);
+#endif
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", evtConsoleFontResourceChain);
 
-INCLUDE_SDATA(const s32, "code_0010F130", datDEBUGCONSOLEData);
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", datData);
 
-INCLUDE_SDATA(const s32, "code_0010F130", evtDrawGeneralHeapUsageGraphData);
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", datDEBUGCONSOLEData);
 
-INCLUDE_SDATA(const s32, "code_0010F130", evtGeneralHeapPercentFormat);
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", evtDrawGeneralHeapUsageGraphData);
 
-INCLUDE_SDATA(const s32, "code_0010F130", sdfData2);
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", evtGeneralHeapPercentFormat);
 
-INCLUDE_SDATA(const s32, "code_0010F130", evtDrawHeapUsageOverlayData);
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", sdfData2);
 
-INCLUDE_SDATA(const s32, "code_0010F130", evtDrawHeapUsageOverlayData2);
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", evtDrawHeapUsageOverlayData);
+
+INCLUDE_SDATA(const s32, "code_r1_0010DF68", evtDrawHeapUsageOverlayData2);
 
