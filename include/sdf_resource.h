@@ -44,7 +44,7 @@ typedef struct sdfGsMemSlice_t
 } sdfGsMemSlice_t;
 
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-/* Shared by a texture and its duplicates; DDS's SdfTexRef (0x8). */
+/* Shared by a texture and its duplicates (0x8). */
 typedef struct SdfTexRef
 {
     struct sdfTexHandle_t *origin; /* the duplicated texture; NULL when this one owns the pixels */

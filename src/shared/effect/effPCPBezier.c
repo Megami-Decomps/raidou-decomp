@@ -104,7 +104,7 @@ void effPCPBezierBillDelete(effPCPBezierBill_tag *hData);
 extern sdfVector4_t aViewEye, aViewTarget;
 
 /* The ribbon and end-cap vectors are full 16-byte-aligned VU objects.
- * This donor-backed SDK store/readback pipeline is audited specifically here;
+ * This SDK store/readback pipeline is audited specifically here;
  * see docs/bezier-matching.md before changing its memory-access boundaries. */
 typedef f32 effBezierVector_t[4] __attribute__((aligned(16)));
 

@@ -33,7 +33,7 @@ typedef struct {
 } itfColor_t;
 
 /* Common draw record allocated by the interface object constructors: 0x34 in
- * SMT3, 0x40 in Raidou (itfPnlRegist2), which has dds_itfpanel_t's layout.
+ * SMT3, 0x40 in Raidou (itfPnlRegist2).
  * Allocation fields own general-heap descriptors, not retained payload addresses. */
 typedef struct itfpanel_t {
     sdfMemHandle_t *allocation;

@@ -40,15 +40,14 @@ enum {
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
  * object +0x18 -> table +0x08 -> 0x0C-byte slot entries, each with head +0x04.
- * DDS1 and DDS2 use the same observed layout. Node payloads depend on the slot. */
+ * Node payloads depend on the slot. */
 enum {
     EVT_WORLD_SLOT_MOVIE = 3, /* viewer movie-time lists: byte offset 0x28 */
     EVT_WORLD_SLOT_CAMERA = 4, /* linked cameras; active nodes supply the view transform */
     EVT_WORLD_SLOT_UNIT = 5   /* unit/group/lip-sync lists: byte offset 0x40 */
 };
 
-/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
- * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31. */
 struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 EffEventSetupReadiness evtViewerCheckDirty(void);
 
@@ -113,9 +112,9 @@ extern sdfGrOt_t sdfDebugGrOt;
 extern EvtPad dds3PadButtonState;
 extern char evtFmtStr[];
 
-void evtViewerDrawPendingNodeRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
+void evtViewerDrawPendingNodeRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
 extern void evtViewerDrawPendingNodeRow();
-s32 mnuDrawInfoWindowB(s32 x, s32 y, dds_evtViewerInfo_t *work);
+s32 mnuDrawInfoWindowB(s32 x, s32 y, evtViewerInfo_t *work);
 s32 mnuDrawCutFlagLabel(sdfDrawTag_t *target, s32 x, s32 y);
 s32 mnuDrawMotionChangeLabel(sdfDrawTag_t *target, s32 x, s32 y);
 
@@ -134,13 +133,13 @@ typedef union EvtMotionValue {
 extern char evtDrawGroupListRowData2[];
 extern char evtDrawGroupListRowData[];
 extern char evtStrUnitAll[];
-void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
-s32 evtUpdateGroupListDialog(s32 x, s32 y, dds_evtViewerInfo_t *ctx);
+void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
+s32 evtUpdateGroupListDialog(s32 x, s32 y, evtViewerInfo_t *ctx);
 extern f32 sdfViewMatrix[];
 void evtRotateViewerPositionFromPad(f32 *position);
 
 /* Select and draw one light-color bank at the current panel offset. */
-static inline void evtDrawLightRgbComponents(sdfDrawTag_t *list, dds_evtViewerInfo_t *runtime,
+static inline void evtDrawLightRgbComponents(sdfDrawTag_t *list, evtViewerInfo_t *runtime,
                                              s32 selected, s32 y, s32 firstComponent) {
     if ((u32)selected >= 3U || runtime->lightEditorEditMode != 1) {
         selected = -1;
@@ -156,8 +155,8 @@ static inline s32 evtLightCaptionX(s32 panelOffset) {
 }
 
 extern char evtViewerDrawGroupRowData[];
-void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
-s32 evtViewerDrawGroupWindow(s32 x, s32 y, dds_evtViewerInfo_t *ctx);
+void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
+s32 evtViewerDrawGroupWindow(s32 x, s32 y, evtViewerInfo_t *ctx);
 
 typedef struct EvtSelectionCache {
     u8 pad00[0x24];
@@ -171,7 +170,7 @@ typedef char EvtViewKey_size_must_be_0x38[(sizeof(EvtRuntimeChild) == 0x38) ? 1 
 typedef char EvtCameraColorPayload_size_must_be_0x40[
     (sizeof(EvtCameraColorPayload) == 0x40) ? 1 : -1];
 
-extern s32 (*evtDispatchActionByIndexData[])(s32, s32, dds_evtViewerInfo_t *);
+extern s32 (*evtDispatchActionByIndexData[])(s32, s32, evtViewerInfo_t *);
 
 /* Fixed prefix shared by PMD directory streams. */
 typedef struct EvtPmdFilePrefix {
@@ -345,10 +344,10 @@ INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtBasicListMenu);
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtEventPosItem);
 
 /* Draw the pending-node selector for group types 20/21; other types return -1. */
-s32 mnuDrawInfoWindowB(s32 x, s32 y, dds_evtViewerInfo_t *work) {
+s32 mnuDrawInfoWindowB(s32 x, s32 y, evtViewerInfo_t *work) {
     sdfDrawTag_t *packets = dds3FontReqAllocDrawTag();
     s32 rows;
-    switch (work->frameGroup->type) {
+    switch (work->framelist_target->type) {
     case 20:
         rows = 2;
         break;
@@ -360,10 +359,10 @@ s32 mnuDrawInfoWindowB(s32 x, s32 y, dds_evtViewerInfo_t *work) {
     }
     evtDrawMenuFrame(packets, x, y, 0x1C, rows, 0, rows, work, 0, evtViewerDrawPendingNodeRow);
     sdfDebugGrOt.regFunc(&sdfDebugGrOt, packets);
-    if (work->actionMode != 0xC) {
+    if (work->nowmenu != 0xC) {
         return 0;
     }
-    return dds3SelectMenu(0, 1, rows, 1, rows, 0, 0, 0, &work->inputB);
+    return dds3SelectMenu(0, 1, rows, 1, rows, 0, 0, 0, &work->eventpos_y);
 }
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtMESSAGEMENUMESMAX);
@@ -436,13 +435,13 @@ INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtGROUPMAX);
 
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallMenuDisp4);
 
-void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx) {
+void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx) {
     EvtRuntimeGroup *group;
     s32 color;
     s32 n;
 
     color = 4;
-    if (ctx->groupFirst + ctx->groupCursor != index) {
+    if (ctx->work_base + ctx->work_y != index) {
         color = 0;
     }
     if (index == 0) {
@@ -455,7 +454,7 @@ void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtVie
         return;
     }
     n = 3;
-    for (group = ctx->groups; group != NULL; group = group->next) {
+    for (group = ctx->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 1) {
             if (n == index) {
                 sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, evtFmtStr, ((char *)group->info->name)));
@@ -466,28 +465,28 @@ void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtVie
     }
 }
 
-s32 evtUpdateGroupListDialog(s32 x, s32 y, dds_evtViewerInfo_t *ctx) {
+s32 evtUpdateGroupListDialog(s32 x, s32 y, evtViewerInfo_t *ctx) {
     EvtRuntimeGroup *group;
     s32 count = 0;
     sdfDrawTag_t *packets;
     s32 shown = 15;
 
-    for (group = ctx->groups; group != NULL; group = group->next) {
+    for (group = ctx->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 1) {
             count++;
         }
     }
     count += 3;
     packets = dds3FontReqAllocDrawTag();
-    evtDrawMenuFrame(packets, x, y, 20, 15, ctx->groupFirst, count, ctx, NULL, evtDrawGroupListRow);
+    evtDrawMenuFrame(packets, x, y, 20, 15, ctx->work_base, count, ctx, NULL, evtDrawGroupListRow);
     sdfDebugGrOt.regFunc(&sdfDebugGrOt, packets);
-    if (ctx->actionMode != 17) {
+    if (ctx->nowmenu != 17) {
         return 0;
     }
     if (count < shown) {
         shown = count;
     }
-    return dds3SelectMenu(0, 1, count, 1, shown, 0, &ctx->groupFirst, 0, &ctx->groupCursor);
+    return dds3SelectMenu(0, 1, count, 1, shown, 0, &ctx->work_base, 0, &ctx->work_y);
 }
 
 void evtLeaf11(void) {
@@ -553,13 +552,13 @@ INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5Table);
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtStrFaceDiv);
 
-void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx) {
+void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx) {
     EvtRuntimeGroup *group;
     s32 color;
     s32 n;
 
     color = 4;
-    if (ctx->groupFirst + ctx->groupCursor != index) {
+    if (ctx->work_base + ctx->work_y != index) {
         color = 0;
     }
     if (index == 0) {
@@ -571,10 +570,10 @@ void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtV
         return;
     }
     n = 2;
-    for (group = ctx->groups; group != NULL; group = group->next) {
+    for (group = ctx->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x18) {
             if (n == index) {
-                sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, evtFmtStr, ctx->entryName[group->entryHeader]));
+                sdfDrawTagLink(list, (u32)sdfDevPrintf(x, y, 0xFEFFFF, color, evtFmtStr, ctx->nametable[group->entryHeader]));
                 return;
             }
             n++;
@@ -582,28 +581,28 @@ void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtV
     }
 }
 
-s32 evtViewerDrawGroupWindow(s32 x, s32 y, dds_evtViewerInfo_t *ctx) {
+s32 evtViewerDrawGroupWindow(s32 x, s32 y, evtViewerInfo_t *ctx) {
     EvtRuntimeGroup *group;
     s32 count = 0;
     sdfDrawTag_t *packets;
     s32 shown = 15;
 
-    for (group = ctx->groups; group != NULL; group = group->next) {
+    for (group = ctx->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x18) {
             count++;
         }
     }
     count += 2;
     packets = dds3FontReqAllocDrawTag();
-    evtDrawMenuFrame(packets, x, y, 20, 15, ctx->groupFirst, count, ctx, NULL, evtViewerDrawGroupRow);
+    evtDrawMenuFrame(packets, x, y, 20, 15, ctx->work_base, count, ctx, NULL, evtViewerDrawGroupRow);
     sdfDebugGrOt.regFunc(&sdfDebugGrOt, packets);
-    if (ctx->actionMode != 21) {
+    if (ctx->nowmenu != 21) {
         return 0;
     }
     if (count < shown) {
         shown = count;
     }
-    return dds3SelectMenu(0, 1, count, 1, shown, 0, &ctx->groupFirst, 0, &ctx->groupCursor);
+    return dds3SelectMenu(0, 1, count, 1, shown, 0, &ctx->work_base, 0, &ctx->work_y);
 }
 
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtStrAlphaYzahyo);
@@ -616,11 +615,11 @@ INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallGetProcessData19);
 
 /* Poll solid-rectangle setup until it clears runtime control and finishes. */
 dds3TaskUpdateResult_t evtPollRuntimeControlReady(dds3ProcessID_t *task) {
-    dds_evtViewerInfo_t *runtime;
+    evtViewerInfo_t *runtime;
 
-    runtime = (dds_evtViewerInfo_t *)dds3GetProcessData(task);
+    runtime = (evtViewerInfo_t *)dds3GetProcessData(task);
     if (evtViewerCheckDirty() == EFF_EVENT_SETUP_NOT_READY) {
-        runtime->controlState = 0;
+        runtime->menuProcess = 0;
         return DDS3_TASK_UPDATE_FINISH_CALLBACK;
     }
     return DDS3_TASK_UPDATE_RETAIN_CALLBACK;

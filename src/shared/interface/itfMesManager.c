@@ -269,7 +269,7 @@ frFontHandle_t *GetLastLinkFontHandle(frFontHandle_t *pfont);
 
 /* Replace a retained text-slot allocation. Nonpositive byteCount copies the
  * padded string span; positive counts copy that many bytes into a zeroed block.
- * DDS1 string mode intentionally has no memset. Keep the K&R declaration form. */
+ * String mode has no memset. Keep the K&R declaration form. */
 void SetVar();
 s32 GetNumSelectItem(s32 allitem, u32 mask);
 s32 CountLineMessage(frFontHandle_t *pfont_top, frFontHandle_t *pfont);
@@ -297,7 +297,6 @@ extern char itfMesDebugFadeFormat[8];
 #include "font.h"
 #include "code_r1_001C4B78.h"
 #include "code_r1_001CC1D0.h"
-#include "itfPanel.h"
 
 /* Prior interpreter trace passes that yielded while a script command remained
  * pending; callbacks observe the count before the current pass is recorded. */
@@ -317,108 +316,12 @@ typedef s32 ItfMesEntryStartResult;
 
 ItfMesEntryStartResult itfMesStartEntry(ItfMesWindowIndex window, ItfMesEntryIndex entryIndex, s32 itemIndex);
 
-typedef s16 BtlFadePhase;
-
-/* Native 0xC-byte fade record shared by message windows and sound UI state. */
-typedef struct BtlFade {
-    u8 kind;
-    u8 pad1;
-    BtlFadePhase phase;
-    s16 alpha;
-    s16 timer;
-    u32 textAdvanceFrameCount; /* 0x08: entry advances count frames before triangle skip. */
-} BtlFade;
-
-typedef char BtlFade_size_must_be_0x0C[(sizeof(BtlFade) == 0x0C) ? 1 : -1];
-
-typedef struct ItfMesBlk14 {
-    u32 x;
-    u32 y;
-    _FRQ *glyphChain;
-    u16 selectedIndex;
-    u8 pad0E[2];
-} ItfMesBlk14;
-
-typedef struct ItfMesEntryBlock {
-    u32 x;
-    s32 y;
-    ItfMesTable *table;
-    _FRQ *glyphChain;
-    s8 textState;
-    u8 textInterfaceMask; /* 0x11: result of frGetMessageResult(3). */
-    u8 color[4];
-    s16 lineCount;
-    s16 itemIndex;
-    s16 tableCount;
-} ItfMesEntryBlock;
-
-typedef char ItfMesEntryBlock_size_must_be_0x1C[
-    (sizeof(ItfMesEntryBlock) == 0x1C) ? 1 : -1];
-
-typedef struct ItfMesOption {
-    s16 id;
-    s16 value;
-} ItfMesOption;
-
-/* Sound-option chooser lifecycle; completion preserves the signed -1 sentinel. */
-typedef s16 ItfSoundSelectionState;
-
-typedef struct ItfMesBlk40 {
-    u32 x;
-    u32 y;
-    _FRQ *glyphChain;
-    u32 panelValue;
-    ItfSoundSelectionState selectionState;
-    s16 selectedIndex;
-    s16 savedIndex;
-    s16 rowCount;
-    s32 widestRowX;     /* the widest row's x, which the option panel's highlight spans from */
-    s32 widestRowWidth; /* the widest row's width */
-    s16 glyphColorIntensity;
-    s16 optionCount;
-    ItfMesOption options[15];
-} ItfMesBlk40;
-
-/* The three sprite records occupy +0xA4/+0xA8/+0xAC in the window state. */
-typedef struct ItfMesBlkA4 {
-    dds_itfpanel_t *frame;
-    dds_itfpanel_t *sprite;
-    dds_itfpanel_t *overlay;
-    s32 bounds[4];
-    s32 red;
-    s32 green;
-    s32 blue;
-    s32 fadeLimit;
-} ItfMesBlkA4;
-
-typedef struct ItfMesTextSlots {
-    u8 *addresses[0x20];
-    sdfMemHandle_t *handles[0x20];
-} ItfMesTextSlots;
-
-typedef struct dds_instanceMes_tag {
-    u32 flags;
-    ItfMesSub *sub;
-    u8 *temporaryFontEntry; /* 0x08: relocated font resource bytes from the MSG1 trailing entry. */
-    s32 renderValue;
-    s16 drawSurfaceIndex;
-    s16 panelMode;
-    ItfMesBlk14 blk14;
-    ItfMesEntryBlock entryBlock;
-    ItfMesBlk40 blk40;
-    u8 unkA0[4];
-    ItfMesBlkA4 blkA4;
-    ItfMesTextSlots textSlots;
-    BtlFade fade;
-    void (*entryGlyphCallback)(void);
-} dds_instanceMes_tag;
-
 /* The message manager owns a fixed pool of 64 windows in this 0x520-byte bank. */
 typedef struct mesflow_tag {
     struct mesflow_tag *previous;
     struct mesflow_tag *next;
     ItfMesWindowIndex index;
-    dds_instanceMes_tag *state;
+    instanceMes_tag *state;
     sdfMemHandle_t *resourceHandle;
 } mesflow_tag;
 
@@ -484,7 +387,7 @@ typedef char PanelHold_size_must_be_0x20C[
 
 #define ITF_PANEL_TINT_BORDER_WIDTH 0x240
 
-extern void (*DrawTable[])(dds_itfpanel_t *, sdfDrawTag_t *);
+extern void (*DrawTable[])(itfpanel_t *, sdfDrawTag_t *);
 extern PanelHold itfHeldPanelCursor;
 
 extern u8 D_003B45E8[], D_003B4600[], D_003B4618[];

@@ -57,13 +57,13 @@ typedef s32 EvtPackEventId;
 /* BE resource files have a 0x20-byte header and fixed 0x20-byte records. */
 typedef struct EvtPackEntry {
     EvtPackKind kind;             /* 0x00 */
-    s32 dataSize;                 /* 0x04: package byte count loaded at DDS1 241E7C. */
-    s32 cueCount;                 /* 0x08: type-6 count at DDS2 0025D5EC/0025D634. */
+    s32 dataSize;                 /* 0x04: package byte count */
+    s32 cueCount;                 /* 0x08: type-6 count */
     u32 dataOffset;               /* 0x0C: relative to the retained file base */
     EvtPackSecondaryResourceId secondaryResourceId; /* 0x10 */
     EvtPackResourceId resourceId; /* 0x14: field or motion key by kind */
     u8 pad18[4];
-    s32 motionId;                 /* 0x1C: type-6 motion index at DDS2 0025D5D4. */
+    s32 motionId;                 /* 0x1C: type-6 motion index */
 } EvtPackEntry;
 
 typedef struct EvtPackHeader {

@@ -36,7 +36,7 @@ typedef struct frMsgInfo_t frMsgInfo_t;
 
 typedef struct frFontImage_t frFontImage_t;
 
-/* Serialized resource header; DDS2 moved the lookup offset by eight bytes. */
+/* Serialized resource header. */
 struct frFontHeader_t {
     u32 tableOffset;
     u8 pad04[6];
@@ -1488,8 +1488,7 @@ INCLUDE_ASM(const s32, "interface/frFont", frFontGetGlyphPositionAtIndex);
 #endif
 #else
 /* Write each visited position and stop at requestedIndex. Missing indices leave
- * the last visited position; empty input leaves output unchanged. DDS2 advances
- * to the first node outside its y-band, unlike DDS1's single-node advance. */
+ * the last visited position; empty input leaves output unchanged. */
 void frFontGetGlyphPositionAtIndex(FrFontPosition *position, s32 requestedIndex, const _FRQ *glyph) {
     s32 positionIndex = 0;
     const _FRQ *currentNode;

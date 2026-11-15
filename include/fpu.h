@@ -111,10 +111,10 @@ static inline uint32_t EeFpuEncodeExtended(double value)
 }
 #endif /* NATIVE_FPU */
 
-/* DDS's scalar FPU convention: ee-gcc 2.96 normally calls the errno-checking
+/* Scalar FPU convention: ee-gcc 2.96 normally calls the errno-checking
  * sqrtf library entry. Even with -fno-math-errno its sqrt.s has hazard nops
  * absent from retail. Keep the bare instruction shared, rather than adding
- * per-unit wrappers. See DDS docs/idioms.md, "Square roots: sqrt.s".
+ * per-unit wrappers.
  * SMT3 users include effPCPBlurScreenOffset and the quaternion routines. */
 #ifndef NATIVE_FPU
 static inline float fsqrtf(float x)
@@ -148,7 +148,7 @@ static inline float fsqrtf(float x)
 #endif
 
 /* EE numerator / sqrt(x): gcc does not combine a square root and division
- * into rsqrt.s. SMT3 LookAt uses this operation, as do the DDS quaternion
+ * into rsqrt.s. SMT3 LookAt uses this operation, as do the quaternion
  * normalizers. */
 #ifndef NATIVE_FPU
 static inline float frsqrtf(float numerator, float x)

@@ -100,7 +100,7 @@ INCLUDE_ASM(const s32, "script/scrScriptProcess", scrLeaf2);
 
 INCLUDE_ASM(const s32, "script/scrScriptProcess", scrReleaseScript);
 
-/* DDS skips the running script's own process and does not print. */
+/* Skips the running script's own process and does not print. */
 void scrAllReleaseScript(void)
 {
     scrProcessWork_s *pw;

@@ -616,7 +616,7 @@ typedef struct {
     ".set noreorder\n\tvsub.xyzw vf10, vf10, vf11\n\t.set reorder" : :)
 
 /* Extended register-only forms used by the audited Bezier ribbon pipeline.
- * As in the matched DDS engine, empty operands retain ASM_OPERANDS boundaries
+ * Empty operands retain ASM_OPERANDS boundaries
  * without adding instructions, artificial C dependencies or memory clobbers.
  * The existing basic forms and their consumers are unchanged. */
 #define SDF_VU0_APPLYMATRIX_XYZ_EXTENDED() __asm__ volatile ( \
@@ -1295,7 +1295,7 @@ __asm__ volatile ( \
     "vmove.xyzw vf11, vf10\n\t.set reorder" \
     : : "f" (t))
 /* Retail repeats the first pointer and transfers the raw z word to vf3;
- * preserve these two SDK sequence defects (SMT3 0x002B4258, DDS1 twin). */
+ * preserve these two SDK sequence defects (as SMT3 0x002B4258). */
 #define VU0_LERP_VEC3_KEYS(first, second, t) __asm__ volatile ( \
     ".set noreorder\n\t" \
     "qmtc2.ni %2, vf4\n\t" \
@@ -1392,7 +1392,7 @@ __asm__ volatile ( \
     ".set noreorder\n\tmfc1 $2, %0\n\tqmtc2.ni $2, vf2\n\t" \
     "vaddx.y vf10, vf0, vf2x\n\t.set reorder" \
     : : "f" (f))
-/* Packed-palette tinting used by sdfTexSetClutColor and the DDS counterpart.
+/* Packed-palette tinting used by sdfTexSetClutColor.
  * vf2x holds the blend amount, vf3.xyz the tint normalized by 255; the loop
  * primitives preserve source alpha in vf6w. Scalar C cannot emit the packed
  * byte expansion, VU accumulator blend, or PPAC5. Loops and palette addressing

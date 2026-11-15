@@ -29,7 +29,7 @@ struct sdfGrOt_t;
 
 /* Pool release logic tests the packet head address and kind at 0xC;
  * bytes at 0x8 remain opaque. The float-key tree insertion helper reads the
- * same +0xC word through sdfDrawTag_t. DDS1/2 game/code_002EEA18/003478C0.c. */
+ * same +0xC word through sdfDrawTag_t. */
 typedef struct sdfDrawTag_t {
     struct sdfDrawTag_t *next; /* 0x00 */
     s32 head;       /* 0x04: first DMA packet address. */

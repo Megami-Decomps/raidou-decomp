@@ -111,7 +111,6 @@ dds3TaskUpdateResult_t ManagerRunF(dds3ProcessID_t *task) {
     state->elem.alpha.data = 0x44;
     state->elem.alpha.reg = 0x42;
     sdfDrawTagLink(list, (u32)state);
-    /* DDS's surface 51; Raidou's draw list has more surfaces before it. */
 #ifdef VERSION_RAIDOU1
     surface = &sdfGrOtTable[60];
 #else

@@ -62,7 +62,6 @@ enum {
 
 extern char D_0039FCA0[], D_0039FCB0[];
 
-struct dds_dds3ObjectBaseControlWorkData_t;
 
 extern char D_0039FD30[], D_0039FD40[];
 extern char D_0039FD30[], D_0039FD40[];

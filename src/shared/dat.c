@@ -14,7 +14,7 @@
 #include "dat.h"
 
 /* The 0x4C-byte enemy table supplies initial party vitals/stats, skills and
- * rewards (DDS1 001A1990, DDS2 001AA898 copy the leading values). */
+ * rewards. */
 typedef struct DatEnemyRecord {
     u32 flags;            /* 0x00 */
     u8 pad04;
@@ -23,7 +23,7 @@ typedef struct DatEnemyRecord {
     u16 maxHp;            /* 0x08 */
     u16 mp;               /* 0x0A */
     u16 maxMp;            /* 0x0C */
-    s16 affinityTableIndex; /* 0x0E: signed affinity-bank row in DDS1. */
+    s16 affinityTableIndex; /* 0x0E: signed affinity-bank row */
     u8 baseStats[DAT_BASE_STAT_COUNT]; /* 0x10 */
     u8 summonCategory;  /* 0x15: ENEMY_TABLE category used as a secondary actor's action number. */
     u8 usePanelIcons; /* 0x16: nonzero selects panel icon groups instead of numeric level/vitals. */

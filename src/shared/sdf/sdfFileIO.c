@@ -138,8 +138,7 @@ void sdfFileCmdThread(sdfFileDeviceCB_t *aCB);
 void sdfFileCdImageCmdThread(sdfFileDeviceCB_t *aCB);
 char *sdfFileCmdMakeRealFileName(const char *aSrcName, s32 aDeviceType);
 
-/* DDS engine donor: dds-decomp (redthing1), sdfFileCmdAnalyzeFileName.
- * SMT3 has the /movie/ exception, but not DDS's extra /movie2/ prefix. */
+/* SMT3 has the /movie/ exception, but not the extra /movie2/ prefix. */
 s32 sdfFileCmdAnalyzeFileName(const char *aFileName, char **aRealNamePtr);
 
 sdfFileCmdHandle_t *sdfFileCmdNewHandle(void *resource, s32 workerIndex, s32 operation,

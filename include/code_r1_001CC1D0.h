@@ -87,8 +87,8 @@ typedef struct CampWindowParams {
 
 typedef char CampWindowParams_size_must_be_0x10[(sizeof(CampWindowParams) == 0x10) ? 1 : -1];
 
-/* DDS1 248D40 writes the two terminal payload words; 24BDB8 consumes them
- * as a party index and its signed recovery cost. The surrounding node storage
+/* The two terminal payload words are a party index and its signed recovery
+ * cost. The surrounding node storage
  * is also the camp/sort payload, not a second progress-node struct view. */
 typedef struct MenuThresholdEntry {
     s32 entryId;
@@ -257,13 +257,13 @@ struct MenuListNode {
         MenuThresholdEntry terminal;
     };
     /* +0x70: terminal recovery panel at 267050; title at 2674C8.
-     * Mantra lists retain a dds_datUnitWork_t address in the same word. */
+     * Mantra lists retain a datActorWork_t address in the same word. */
     union {
         u32 userValue;
         void *childPanel;
         char *title;
-        struct dds_datUnitWork_t *partyRecord;
-        /* Separate 0x10-byte payload: DDS1 2C43F8 / DDS2 30C480. */
+        struct datActorWork_t *partyRecord;
+        /* Separate 0x10-byte payload. */
         struct SdfCounterDisplay *counterDisplay;
     };
 };
@@ -288,7 +288,7 @@ typedef struct MenuEffectResources {
     CampEffectRows rows;
 } MenuEffectResources;
 
-/* DDS2 result/camp backdrop: resources, sixteen sparks and the badge fade. */
+/* Result/camp backdrop: resources, sixteen sparks and the badge fade. */
 typedef struct MenuCampEffect {
     MenuEffectResources resources;
     s32 direction[16];
@@ -329,8 +329,8 @@ struct MenuList {
     s32 windowOffset;
     s32 rowStep;        /* 0x28: constructor argument scaled by eight */
     void (*drawCallback)(); /* 0x2C: native callers supply list-specific arguments. */
-    /* 0x30 is generic list user data: DDS1 25F408 interprets a countdown
-     * pointer, 2443F8 stores a buffer, and 272D50 stores staff draw context. */
+    /* 0x30 is generic list user data: a countdown pointer, a buffer or
+     * staff draw context. */
     void *context;
     s32 categoryIndex; /* 0x34: selects one of the skill-window category layouts. */
     u32 categoryMarkerEnabled; /* 0x38: draw the active category marker. */
@@ -490,7 +490,7 @@ typedef struct MenuTerminalContext {
     s32 prepared;
     s32 delayFrames;
     DspScrollingStripState panelWork[2];
-    MenuCampEffect campEffect; /* 0x210: resources, sixteen sparks and badge fade; DDS2 0025FE58. */
+    MenuCampEffect campEffect; /* 0x210: resources, sixteen sparks and badge fade */
     struct MenuIconSprites *windowResource;
     MenuGradientFade gradientFade;
     s8 rewardGranted;

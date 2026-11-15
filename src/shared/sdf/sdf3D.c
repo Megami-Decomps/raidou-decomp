@@ -268,7 +268,7 @@ INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3MakeScreenParam);
 /* vu0 routine: parallel-light packet and lighting basis construction */
 void sdf3DMakeLightParallelPacket(sdf3DLightParallelPacket_t *aPacket, sdf3DLight_t **aLights, sdfVector4_t *aAmbient) {
     f32 direction[4] __attribute__((aligned(16)));
-    /* VU0 lqc2 reads this scratch through its address, like the DDS rotation
+    /* VU0 lqc2 reads this scratch through its address, like the rotation
      * loaders and Euler-to-quaternion routines; volatile preserves its stores. */
     volatile f32 axis[4] __attribute__((aligned(16)));
     sdf3DLight_t *first;

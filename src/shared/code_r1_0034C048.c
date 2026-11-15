@@ -16,7 +16,7 @@
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
  * object +0x18 -> table +0x08 -> 0x0C-byte slot entries, each with head +0x04.
- * DDS1 and DDS2 use the same observed layout. Node payloads depend on the slot. */
+ * Node payloads depend on the slot. */
 enum {
     EVT_WORLD_SLOT_MOVIE = 3, /* viewer movie-time lists: byte offset 0x28 */
     EVT_WORLD_SLOT_CAMERA = 4, /* linked cameras; active nodes supply the view transform */

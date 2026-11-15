@@ -3,8 +3,7 @@
 
 #include "common.h"
 
-/* Retained command operands: 0x28 bytes in DDS1, 0x2C in DDS2.
- * The task constructors copy the complete operand after the actor pointer. */
+/* Retained command operands. The task constructors copy the complete operand after the actor pointer. */
 typedef struct BtlOperandEntry {
     s32 hpDelta;
     s32 mpDelta;
@@ -20,8 +19,7 @@ typedef struct BtlOperandEntry {
     u16 flags;
 } BtlOperandEntry;
 
-/* The command work owns thirteen groups. Their payload counts and strides
- * differ: 64 operands/0xA1C bytes in DDS1, 32 operands/0x59C in DDS2. */
+/* The command work owns thirteen groups. */
 typedef struct BtlOperandGroup {
     u8 count;
     u8 pad01[3];
@@ -56,8 +54,9 @@ typedef enum DatBaseStatIndex {
     DAT_BASE_STAT_COUNT = 5
 } DatBaseStatIndex;
 
-/* The active roster and saved template bank share this complete record type. */
-typedef struct dds_datUnitWork_t {
+/* Actor record (0x1A4), not the 0xEC datUnitWork_t of the stock. The active
+ * roster and saved template bank share it. */
+typedef struct datActorWork_t {
     u16 flags;
     u16 affinityTableIndex;
     u16 unitId; /* 0x04: DatUnitId key stored at its native 16-bit width. */
@@ -88,14 +87,14 @@ typedef struct dds_datUnitWork_t {
     };
     u16 savedCommandPhase; /* +0x18C: saved action phase restored with actionSlot. */
     u16 savedCommandSelectionEntry; /* +0x18E: selected list entry restored with savedCommandPhase. */
-    u16 actionSlot; /* 0x190: saved command-table slot; matches DDS2's actionSlot. */
+    u16 actionSlot; /* 0x190: saved command-table slot */
     u8 pad192[2];
     s32 randomizedValue;
     s32 huntExp; /* 0x198: hunt EP accumulated this battle (shared by ability 0x24C) */
     u8 pad19C[8];
-} dds_datUnitWork_t;
+} datActorWork_t;
 
-typedef char DatPartyRecordSizeCheck[sizeof(dds_datUnitWork_t) == 0x1A4 ? 1 : -1];
+typedef char DatPartyRecordSizeCheck[sizeof(datActorWork_t) == 0x1A4 ? 1 : -1];
 
 /* The actor owns both status words as one complete, naturally aligned record.
  * Scalar accesses retain their ordinary word alias behavior. Packed observations
@@ -112,7 +111,7 @@ typedef struct BtlUnitEntrySlot {
     s16 countdown;
 } BtlUnitEntrySlot;
 
-/* DDS1 001F1194 / DDS2 00201D1C load this pair with LD; SH flags and SW reference counts also access its halves. */
+/* Loaded as a pair with LD; SH flags and SW reference counts also access its halves. */
 typedef union BtlEffectLinkState {
     u64 packed;
     struct {
@@ -168,9 +167,9 @@ typedef struct BattleIndexWork {
     s32 summonId; /* +0x18: also reused as a scene-command party-record index. */
     s32 stageValue;
     s32 precedence; /* Command precedence value: 8 for the default, otherwise helper result minus 8 (logged as btl:precede). */
-    s32 slot; /* DDS1 001D2A10 stores the complete action-classification result. */
-    s32 adjustedValue; /* DDS1 001D2AA0 / 001D2AC8. */
-    s8 resultKind; /* DDS1 001D2AB0 / 001D2AC4. */
+    s32 slot; /* complete action-classification result */
+    s32 adjustedValue;
+    s8 resultKind;
     u8 costValidationFailed; /* +0x2D: cost check failed; suppress normal command follow-up. */
     u8 allTargetSideActorsSkipped; /* +0x2E: target resolution reports every active actor on selected sides skipped. */
     u8 pad2F;
@@ -192,7 +191,7 @@ typedef struct BattleIndexWork {
     struct sdfMemHandle_t *allocationHandle;
 } BattleIndexWork;
 
-/* DDS1 btlCreateActionSeq owns one 0x170-byte command actor. */
+/* btlCreateActionSeq owns one command actor. */
 typedef struct BtlTask {
     s32 state;
     u16 actionNumber;
@@ -218,7 +217,7 @@ typedef struct BtlTask {
 
 typedef char BtlTask_size_must_be_0x170[(sizeof(BtlTask) == 0x170) ? 1 : -1];
 
-/* Battle unit, DDS1 (0x348). Retail accessors distinguish world rotation at
+/* Battle unit. Retail accessors distinguish world rotation at
  * +0x40 from the orientation quaternion at +0x70; body/muzzle offsets are
  * +0x90/+0xA0 respectively. Effect origin/scene extension are +0x31C/+0x320.
  * The actor chain ends at +0x344. Command state/action words are a different
@@ -248,7 +247,7 @@ typedef struct BtlUnit {
     union {
         /* Accessor names describe caller intent: GetMuzzlePosVU reads this
          * body-reach offset; GetBodyPosVU reads muzzleOffset at +0xA0. */
-        f32 bodyOffset[4]; /* 0x90: same field naming as DDS2 */
+        f32 bodyOffset[4]; /* 0x90 */
         struct {
             /* Some setup paths write zero as integer bits, not float stores. */
             s32 bodyOffsetXBits;
@@ -287,7 +286,7 @@ typedef struct BtlUnit {
     u32 gunResourceFlags; /* 0x118 */
     u8 lookupId; /* 0x11C: party slots 0-2 or enemy slots 0-8; 0xFF when unset. */
     u8 pad11D[3];
-    dds_datUnitWork_t partyRecord; /* 0x120: complete copied actor record (0x1A4). */
+    datActorWork_t partyRecord; /* 0x120: complete copied actor record (0x1A4). */
     u8 partyIndex; /* 0x2C4: saved party-entry index, read with lbu. */
     u8 pad2C5;
     BtlUnitEntrySlot entrySlots[7]; /* 0x2C6 */

@@ -304,7 +304,7 @@ extern s32 dds3ScreenBlurOfsX[2];
 #include "dds3PadManager.h"
 
 /* The screen fade's colour. Its setters store each component; the fade
- * overlay (func_dds1_00105DD8) reads each one unsigned
+ * overlay reads each one unsigned
  * (lbu), and its alpha as 0x80 minus the component. */
 typedef struct {
     u8 r;
@@ -591,8 +591,7 @@ void dds3StopQuake(void)
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", sbtlResetJump);
 
-/* The two live XYZ2 payload locals follow the matched DDS engine source.
- * Creating each before its RGBAQ pair preserves the native hoisted constants. */
+/* Creating each of the two live XYZ2 payload locals before its RGBAQ pair preserves the native hoisted constants. */
 void dds3InitZClearDrawTag(void)
 {
     s32 state;

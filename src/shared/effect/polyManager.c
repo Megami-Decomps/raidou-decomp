@@ -431,8 +431,7 @@ dds3Polygon_t *dds3PolygonCreate(s32 face, s16 type, s16 attr) {
     record = (dds3Polygon_t *)(buffer + bytes);
     memset(record, 0, sizeof(*record));
     record->pVertex = (u128 *)buffer;
-    /* Allocation and layout reuse one byte extent; DDS1 cc1probe:
-     * sandbox_ClusterX/ctor_reentry_F4_probe/decisions.log:16561-16660.
+    /* Allocation and layout reuse one byte extent.
      * The saved span ties allocation at 1250, below vertex count at 3500;
      * a separate span instead has priority 3846 and takes the count's home. */
     bytes = vertexCount * sizeof(u128);
@@ -1783,7 +1782,7 @@ void dds3SpPoly_Ring_Old_Move(dds3SpPoly_Ring_Old_t3 *pRing, s32 number) {
 u32 dds3SpPoly_Color(u32 frame, u32 frame_end, u32 abgr) {
     f32 ratio = 1.0f;
     s32 tint[4];
-    u8 unused[16]; /* SMT3 and DDS1 twin both reserve 0x20 bytes,
+    u8 unused[16]; /* SMT3 also reserves 0x20 bytes,
                       * but neither touches the spare 0x10-byte local. */
     u32 packed;
 

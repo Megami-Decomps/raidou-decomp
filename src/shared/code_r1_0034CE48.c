@@ -31,7 +31,7 @@ typedef struct MenuProfilePanel {
     s32 opacity;
 } MenuProfilePanel;
 
-typedef char MenuProfilePanel_dds2_size_check[(sizeof(MenuProfilePanel) == 0x48) ? 1 : -1];
+typedef char MenuProfilePanel_size_check[(sizeof(MenuProfilePanel) == 0x48) ? 1 : -1];
 
 typedef struct MenuFadeFields {
     MenuWindowContainer previousWindow;

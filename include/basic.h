@@ -139,8 +139,8 @@ typedef struct
 struct sdfModelRootNode_t;
 struct sdfMotionCtrlr_t;
 
-/* dds3ObjectBaseInitControlWorkData allocates 0xAC bytes. The eight control
- * slots start with the owning basic; the 24 model-part indices end at +0xA8. */
+/* dds3ObjectBaseInitControlWorkData allocates 0xB0 bytes (0xAC in SMT3). The
+ * eight control slots start with the owning basic. */
 typedef struct
 {
     u32 flag;
@@ -156,6 +156,7 @@ typedef struct
     u32 svs;
     s32 sdwchrid;
     s32 modelParts[24];
+    s32 unkAC; /* set to -1 by dds3ObjectBaseInitControlWorkData */
 } dds3ObjectBaseControlWorkData_t;
 
 /* dds3UnitObjectBasicConstructor clears the entire 0x20-byte payload.

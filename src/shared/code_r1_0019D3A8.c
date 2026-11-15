@@ -177,9 +177,8 @@ typedef enum MdlViewerRecordKind {
     MDL_VIEWER_RECORD_KIND_OBJECT_PART = 5
 } MdlViewerRecordKind;
 
-/* Viewer-wide state for the model viewer task (DDS1 game/code_00218B48 and
- * DDS2 game/code_00233660 share this layout field for field). Fields that are
- * only written by a defaults initialiser and never read in either game are
+/* Viewer-wide state for the model viewer task. Fields that are
+ * only written by a defaults initialiser and never read are
  * left as unkNN on purpose: there is no read to earn a role from. */
 typedef struct MdlViewState {
     dds3ProcessID_t *unk00;
@@ -202,8 +201,7 @@ typedef struct MdlViewState {
     s16 selectedResourceId; /* 0x1E: resource ID under the selection cursor. */
     s16 selectionCursor; /* 0x20: selects one of five controls in the asset panel. */
     s16 activeEntryId;    /* 0x22: assigned from selectedEntryId when adding */
-    s16 selectedEntryId;  /* 0x24: key passed to the mdlAddEntry* family;
-                           signed in DDS1, unsigned in DDS2. */
+    s16 selectedEntryId;  /* 0x24: key passed to the mdlAddEntry* family */
     s16 selectedNodeId;   /* 0x26: checked by mdlHasMotionEx before adding */
     s16 unk28;
     s16 unk2A;
@@ -368,7 +366,7 @@ extern const char *mdlDrawViewerResourceMenuData[];
 void mdlDrawViewerResourceMenu(void);
 u32 mdlRunViewerResourceMenuTask(void);
 
-/* Loaded-resource count chain, identical to the DDS2 model viewer. */
+/* Loaded-resource count chain. */
 void mdlHandleViewerNodeCursorInput(void);
 extern char D_003ABDA8[];
 extern char D_003BBC88[];

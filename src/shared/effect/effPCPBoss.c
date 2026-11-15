@@ -660,8 +660,7 @@ void effPCPCrackDelete(effPCPCrack_t *hData)
     sdfChipFreeDirect(hData);
 }
 
-/* Same native algorithm as dds-decomp/redthing1's effPCPCrackDraw: transform
- * each trail sample, then emit and fade its delayed flash cells. */
+/* Transform each trail sample, then emit and fade its delayed flash cells. */
 void effPCPCrackDraw(effPCPCrack_t *work) {
     sdfVector4_t perpendicular;
     sdfVector4_t direction;

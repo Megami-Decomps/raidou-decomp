@@ -187,7 +187,7 @@ s32 frFontMeasureGlyphStripWidth(s32 line, const struct _FRQ *glyph);
 
 #define ITF_LINES_PRIMITIVE_BITS 0x49
 
-/* Decode a two-byte glyph through the DDS1 lookup table; 0xFFFF is missing. */
+/* Decode a two-byte glyph through the lookup table; 0xFFFF is missing. */
 u32 itfDecodeGlyph(u32 glyphCode);
 void itfConvertText(u8 *output, const char *input);
 extern void frFontMoveChainTo(s32 x, s32 y, _FRQ *text);

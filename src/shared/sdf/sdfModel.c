@@ -128,7 +128,6 @@ typedef struct QWORD_ALIGNED
 
 void sdfModelTempPacketLinkOt(sdfGrOt_t **ot, sdfModelRootNode_t *root);
 
-/* DDS engine donor: dds-decomp (redthing1), sdfModelBuildNodeResourcePackets. */
 
 void sdfModelCopyStat(sdfModelRootNode_t *aDstRoot, sdfModelRootNode_t *aSrcRoot);
 void sdfModelSetDrawEnv(sdfModelDrawEnv_t *aEnv);

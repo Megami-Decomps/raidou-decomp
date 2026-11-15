@@ -506,7 +506,7 @@ typedef struct SoundMixer {
     effBTLCutHandle_t *voiceList;
 } SoundMixer;
 
-/* DDS1 00160958 / DDS2 00168548 allocate and clear exactly 0x128 bytes. */
+/* The constructor allocates and clears 0x128 bytes. */
 struct effBTLCutHandle_t {
     struct BtlUnit *owner; /* 0x00: borrowed voice owner used for actor scaling. */
     SoundMixer *state; /* 0x04 */

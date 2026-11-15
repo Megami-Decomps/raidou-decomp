@@ -139,8 +139,7 @@ typedef union {
 typedef struct dds3Particle_Effect_t {
     u16 type; /* +0: ParKindStateKind tag */
     u8 pad02[2];
-    /* The halfword bitfield preserves native int-alias dependencies; see
-     * dds-decomp/docs/idioms.md, "Trace-justified alias sets: emitter subrecord count". */
+    /* The halfword bitfield preserves native int-alias dependencies. */
     u32 templateEntryCount : 16; /* 0x04: subrecords per particle in template clones */
     u32 : 16;
     parKindPayload_t payload; /* +8: tag-specific pointer/scalar view */
@@ -812,8 +811,7 @@ dds3Particle_Physics_t *dds3Particle_PhysicsCreate(s32 number) {
 INCLUDE_ASM(const s32, "effect/parManager", parLeaf);
 
 /* Allocate drawing resources and reset the emitter's common runtime state. */
-/* The subrecord bitfield keeps native int-alias dependencies; see
- * dds-decomp/docs/idioms.md, "Trace-justified alias sets: emitter subrecord count". */
+/* The subrecord bitfield keeps native int-alias dependencies. */
 void dds3Particle_BasicCreate(void *effect) {
     effEmitterHead_t *owner = effect;
     effTrackPolyParams_t params;

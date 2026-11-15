@@ -293,7 +293,7 @@ typedef union FileKeyScalarTrack {
     } emitter;
 } FileKeyScalarTrack;
 
-/* FileSlotTable.type selects the serialized emitter tail. DDS2 003E95C0's
+/* FileSlotTable.type selects the serialized emitter tail. Its
  * descriptors copy E0..124 bytes; FileKeyBlock is their existing primary
  * parameter owner. Its +54 surface index is also consumed as signed low 16
  * bits by billboard openers. Grid-group dimensions occupy C0/C4. */
@@ -564,7 +564,7 @@ typedef char EffTrackSet_size_must_be_0x30[(sizeof(EffTrackSet) == 0x30) ? 1 : -
 
 typedef struct EffBillPointConfig {
     EffBillTimedHeader timed;
-    /* Bolt/range updaters (DDS2 002EB058/002EC370) interpret the
+    /* Bolt/range updaters interpret the
      * layer word as an unsigned division count for floating-point math. */
     s32 layers;
     s32 respawnDelay;
@@ -623,7 +623,7 @@ typedef char EffScaleRangeEntrySizeCheck[(sizeof(EffScaleRangeEntry) == 0x30) ? 
 
 typedef char EffPointSetSizeCheck[sizeof(EffPointSet) == 0x20 ? 1 : -1];
 
-/* Span table layout shared by the DDS1/DDS2 model-effect implementations. */
+/* Span table layout of the model-effect implementations. */
 typedef struct EffSpanEntry {
     f32 first;
     f32 second;

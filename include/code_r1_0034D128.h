@@ -24,7 +24,6 @@ typedef struct PartyPanel {
     PartyPanelEntry slots[5];
 } PartyPanel;
 
-/* DDS1 allocates 0x50 bytes; DDS2's expanded sprite banks and byte flags use 0x78. */
 typedef struct MenuSprites {
     u32 flags;
     u8 pad04[8];

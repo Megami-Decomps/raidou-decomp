@@ -67,7 +67,7 @@ enum {
 #include "include_asm.h"
 #include "dds3UnitObjectBasic.h"
 
-dds_dds3ObjectBaseControlWorkData_t *dds3CreateSlotResourceState(dds3Basic_t *owner);
+dds3ObjectBaseControlWorkData_t *dds3CreateSlotResourceState(dds3Basic_t *owner);
 
 /* Mode 0 is the initialized neutral tint; other values describe the native
  * alpha updates performed by the paired transform renderer. */
@@ -101,7 +101,6 @@ typedef struct EffVec4 {
     f32 v[4];
 } EffVec4;
 
-struct WorldIndexNode;
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3AddUnitObjectBasic);
 

@@ -432,7 +432,7 @@ void mnuDrawFourEntries(s32 x, s32 y, s32 depth, MenuList *list, MenuListNode *n
 }
 
 /* Blend the flag-selected packed color with the caller's previous color.
- * Flag one takes precedence over DDS2's additional flag-four color choice. */
+ * Flag one takes precedence. */
 u32 mnuBlendListNodeColorByFlags(u32 previousColor, MenuListNode *entry) {
     u32 flags = entry->flags48;
     u32 color = MNU_ENTRY_MARKED_COLOR;
@@ -766,7 +766,7 @@ void mnuDrawIconPair(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surfa
     effDrawTextureSlotWithBlendedCornerColors(x + offset.x1, y + offset.y1, z, w, 1, state->sprite[1], 0, surface);
 }
 
-/* Dispatch six DDS2 panel kinds; only kind four forces full fade. */
+/* Dispatch six panel kinds; only kind four forces full fade. */
 void mnuDrawIconPanel(s32 x, s32 y, s32 depth, s32 fade, MenuIconState *panel, s32 selectionMode, s32 drawArg) {
     switch (panel->kind) {
     case 0:

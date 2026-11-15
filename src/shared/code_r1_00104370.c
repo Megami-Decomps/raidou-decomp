@@ -155,7 +155,7 @@ void dds3DrawTextureResourceDetails(sdfDrawTag_t *packetList, sdfTexHandle_t *te
 s32 dds3TextureCountIncompleteResources(void);
 u32 dds3TextureGetPageIndex(void);
 
-/* Clamp a negative request and return the reached index. DDS1 index zero
+/* Clamp a negative request and return the reached index. Index zero
  * selects the head without scanning clone-source links; tail exits retain prior writes. */
 s32 dds3SelectIncompleteResourceAtPageIndex(s32 requestedIndex);
 

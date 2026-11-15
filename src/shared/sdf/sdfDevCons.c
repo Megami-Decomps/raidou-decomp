@@ -39,7 +39,7 @@ typedef struct sdfDevConsDrawCB_t
     u16 stepY;
 } sdfDevConsDrawCB_t;
 
-/* SMT3 DrawAll and the DDS1 twin reserve this same 0x1040-byte stack
+/* SMT3 DrawAll reserves this same 0x1040-byte stack
  * allocation: only the central 0x1000 bytes are passed as DMA storage. */
 typedef struct
 {

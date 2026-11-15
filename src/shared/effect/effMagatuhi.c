@@ -26,7 +26,7 @@ typedef struct effCreateHandler_t {
 
 extern effCreateHandler_t dds3MagatuhiCreateTable[];
 
-/* Effect callback dispatch entry (0x18); DDS1/2 game/code_0018CAC8/00194700.c. */
+/* Effect callback dispatch entry (0x18). */
 typedef struct effHandler_t {
     void (*handler)(void *);
     u8 unk4[0x14];
@@ -375,7 +375,7 @@ typedef struct {
     sdfMemHandle_t *hMem; /* 0x18C backing allocation, not the work address */
 } effMagaPoint4_tag;
 
-/* Effect subrecord with byte fields at +0x20/+0x40/+0x50 (0x51); DDS1/2 game/code_0018CAC8/00194700.c. */
+/* Effect subrecord with byte fields at +0x20/+0x40/+0x50 (0x51). */
 typedef struct effSub_t {
     u8 unk0[0x20];
     u8 type0SubSlot;
@@ -389,7 +389,7 @@ typedef struct effSub_t {
 
 /* Float-input SDK form: retain the broad memory effect and let GCC transfer
  * the binary32 scale to the unpack's GPR operand. The exact surface-grid
- * gradient uses four such 16-byte carriers (DDS1 002A7288, DDS2 002E9840).
+ * gradient uses four such 16-byte carriers.
  * This is distinct from the integer-bit, read-only form above. */
 static inline void UnpackRGBAWordFloat(u32 color, f32 unit) {
     u32 rgba[4];

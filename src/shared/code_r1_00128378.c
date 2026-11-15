@@ -16,17 +16,6 @@
 #include "fpu.h"
 #include "dds3UnitObjectBasic.h"
 
-/* Kind-1 value cursors use these halfwords at 00110490. The same prefix is
- * used by separate 0x10-byte world index nodes (0010FEC8). */
-typedef struct dds_dds3BasicArrayHandle_t {
-    s16 headIndex;
-    s16 tailIndex;
-    s16 cursorIndex;
-    u16 entryCount;
-} dds_dds3BasicArrayHandle_t;
-
-typedef char WorldValueIndices_size_must_be_0x08[(sizeof(dds_dds3BasicArrayHandle_t) == 0x08) ? 1 : -1];
-
 /* Cursor advancement returns whether cursorIndex refers to a linked entry. */
 typedef u32 Dds3BasicArrayCursorResult;
 
@@ -35,9 +24,9 @@ enum {
     DDS3_BASIC_ARRAY_CURSOR_HAS_ENTRY = 1
 };
 
-void dds3FreeBasicArrayHandle(WorldIndexNode *node);
-dds3Basic_t *dds3GetBasicArray(const dds_dds3BasicArrayHandle_t *object);
-u16 dds3GetBasicArrayCount(const dds_dds3BasicArrayHandle_t *object);
+void dds3FreeBasicArrayHandle(dds3BasicArrayHandle_t *node);
+dds3Basic_t *dds3GetBasicArray(const dds3BasicArrayHandle_t *object);
+u16 dds3GetBasicArrayCount(const dds3BasicArrayHandle_t *object);
 
 /* Return the borrowed secondary world node, or NULL when no world is active. */
 struct dds3Basic_t *dds3GetControlScene(void);
@@ -46,11 +35,11 @@ struct dds3Basic_t *dds3GetControlScene(void);
 
 /* Set the callback on an object's slot-1 handler; returns whether it exists. */
 
-WorldIndexNode *dds3SceneBasicGetList(dds3Basic_t *object, s32 kind);
+dds3BasicArrayHandle_t *dds3SceneBasicGetList(dds3Basic_t *object, s32 kind);
 
 /* Compatible redeclarations keep the broad object header unchanged. */
-Dds3BasicArrayCursorResult dds3SetFirstBasicArray(dds_dds3BasicArrayHandle_t *object);
-Dds3BasicArrayCursorResult dds3SetNextBasicArray(dds_dds3BasicArrayHandle_t *object);
+Dds3BasicArrayCursorResult dds3SetFirstBasicArray(dds3BasicArrayHandle_t *object);
+Dds3BasicArrayCursorResult dds3SetNextBasicArray(dds3BasicArrayHandle_t *object);
 
 extern char D_0039FCA0[];
 extern dds3Basic_t *fldPlayerObject;
@@ -87,7 +76,6 @@ enum {
 
 extern char D_0039FCA0[], D_0039FCB0[];
 
-struct dds_dds3ObjectBaseControlWorkData_t;
 
 extern char D_0039FD30[], D_0039FD40[];
 extern char D_0039FD30[], D_0039FD40[];
@@ -112,18 +100,18 @@ INCLUDE_ASM(const s32, "code_r1_00128378", mapGetTaniVector);
 /* For kind-6 objects in mode 4, set mode 3 or clear it to 0.
  * status covers the count, payload mode word and cursor result. */
 void fldToggleWorldNodeState(s64 clearMode) {
-    WorldIndexNode *valueChain;
+    dds3BasicArrayHandle_t *valueChain;
     s32 status;
     dds3Basic_t *worldObject;
 
     valueChain = dds3SceneBasicGetList(dds3GetControlScene(), 6);
-    status = dds3GetBasicArrayCount((dds_dds3BasicArrayHandle_t *)valueChain);
+    status = dds3GetBasicArrayCount(valueChain);
     if (status == 0) {
         return;
     }
-    dds3SetFirstBasicArray((dds_dds3BasicArrayHandle_t *)valueChain);
+    dds3SetFirstBasicArray(valueChain);
     do {
-        worldObject = dds3GetBasicArray((dds_dds3BasicArrayHandle_t *)valueChain);
+        worldObject = dds3GetBasicArray(valueChain);
         status = dds3MatterObjectBasicGetAlpMode(worldObject);
         if (status == 4) {
             if (clearMode == 0) {
@@ -133,7 +121,7 @@ void fldToggleWorldNodeState(s64 clearMode) {
                 dds3MatterObjectBasicSetAlpMode(worldObject, 0);
             }
         }
-        status = dds3SetNextBasicArray((dds_dds3BasicArrayHandle_t *)valueChain);
+        status = dds3SetNextBasicArray(valueChain);
     } while (status != DDS3_BASIC_ARRAY_CURSOR_EXHAUSTED);
     dds3FreeBasicArrayHandle(valueChain);
 }

@@ -2543,7 +2543,6 @@ static inline void ShiftThunderHandles(effPCPZiodin01_tag *work, s32 count) {
     }
 }
 
-/* Dependencies for the restored DDS effect implementations. */
 /* Three selectable heads precede the shared block-set inputs. */
 typedef struct {
     void *head[3];

@@ -12,7 +12,7 @@ void dds3PadIsTypeCD(void);
  * frees it after the callback returns. */
 typedef void (*dds3ProcessShutdownFunc_t)(dds3ProcessID_t *task);
 
-/* Linked named-task slots shared by the DDS1 and DDS2 kernel windows. */
+/* Linked named-task slots of the kernel windows. */
 typedef struct fclNamedSlot_t {
     s32 kind;               /* 0x00 */
     char name[32];          /* 0x04 */

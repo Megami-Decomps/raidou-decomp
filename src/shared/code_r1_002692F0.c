@@ -39,7 +39,7 @@ INCLUDE_ASM(const s32, "code_r1_002692F0", btlRunCameraMotionResetTask);
  * Setup opcodes pass this same object to evtSetUnitMotion and
  * evtConfigureUnitMotionSlot; the direction updater passes it to planar aim.
  * targetVector is four floats even when copied as a quadword by VU0/MMI macros.
- * The manager copies the entire object by value: 0x170 (DDS1), 0x1D0 (DDS2).
+ * The manager copies the entire object by value.
  * No stronger alignment than the manager's original float layout is implied. */
 typedef struct evtUnitHandle_t {
     u32 color;                     /* 0x00 */
@@ -235,7 +235,7 @@ typedef struct BtlEffectHeader {
         u32 owner;
         struct BtlUnit *actor;
         u8 statIndex;
-        u16 formCount; /* DDS1 HARI1 reads and advances only this halfword. */
+        u16 formCount; /* HARI1 reads and advances only this halfword. */
     };
 } BtlEffectHeader;
 
@@ -276,7 +276,7 @@ typedef BtlBattleRecordEligibilityOverrideResult (*BtlBattleRecordEligibilityOve
     struct BtlUnit *actor, struct BtlUnit *target, s32 speciesIndex);
 
 /* Battle model-debug editor: phase, list cursors, selected unit and name tables.
- * DDS1 embeds it at 0x6A4 and DDS2 at 0x728; indexed accesses address these
+ * Indexed accesses address these
  * string-address tables relative to this nested record. */
 typedef struct BtlDebugMenuWork {
     s32 phase; /* Model-debug editor initialization, selection, submenus and exit wait. */
@@ -294,7 +294,7 @@ typedef struct BtlDebugMenuWork {
 
 /* Observed fields of the singleton battle work returned by btlGetRuntime.
  * This is one object, not separate script/event/actor-update contexts. Holes
- * remain opaque. DDS2 has a different layout, not a uniform offset shift. */
+ * remain opaque. */
 typedef struct BtlState {
     f32 position[4]; /* 0x00: battle origin added to the camera offset at 001DC11C. */
     f32 baselineLightDirection[4];
@@ -347,7 +347,7 @@ typedef struct BtlState {
         u32 cameraActorConfiguration; /* 0x244 */
     };
     u16 preemptiveOutcome; /* 0x248: 0 awaits selection; 1 is preemptive; 2 is not preemptive. */
-    u8 encounterKind; /* 0 normal, 2 surprise; DDS2 also uses 3 for Majin. */
+    u8 encounterKind; /* 0 normal, 2 surprise */
     u8 pad24B[1];
     u16 mode; /* 0x24C */
     u8 pad24E[2];
@@ -403,7 +403,7 @@ typedef struct BtlState {
     struct EffectSlotSet *resC; /* 0x4AC: btlReleaseResourceBlock clears this at retail 0x001AC7B4. */
     u8 pad4B0[4];
     struct RefObj *buttonTextureHandle; /* 0x4B4: retained button-icon texture reference. */
-    struct SoundResourceNode *resources[0x31]; /* 0x4B8: SYSEFF resource slots, indexed like DDS2's */
+    struct SoundResourceNode *resources[0x31]; /* 0x4B8: SYSEFF resource slots */
     void *frontFloorResource; /* 0x57C: locked payload address; delayed free resolves its allocation. */
     void *sideFloorResource; /* 0x580: locked payload address; delayed free resolves its allocation. */
     u8 pad584[8];
@@ -419,7 +419,7 @@ typedef struct BtlState {
     u8 pad5B0[4];
     s32 (*battleOutcomeOverride)(void); /* 0x5B4: -1 falls through to the unit scan; other results become terminalOutcome (func_001A8188). */
     void (*postPlacementCallback)(void); /* 0x5B8: runs after actor positions and rotations. */
-    s32 (*effectParameterCallback)(BtlUnit *, s32); /* 0x5BC: actor record-index override, DDS1 001D645C. */
+    s32 (*effectParameterCallback)(BtlUnit *, s32); /* 0x5BC: actor record-index override */
     u8 pad5C0[4];
     BtlUnit *(*findReusableUnit)(u32, u32); /* 0x5C4 */
     u64 (*callback5C8)(u64); /* 0x5C8 */
@@ -457,7 +457,7 @@ typedef struct BtlState {
     s32 (*cameraModeInitializePredicate)(BtlLinkedCommand *); /* 0x664: permits the mode initializer in 001DB048. */
     s32 (*cameraUpdatePredicate)(BtlLinkedCommand *); /* 0x668: gates the active camera handler. */
     s32 (*allowPositionEffect)(BtlUnit *); /* 0x66C */
-    s32 (*unitValueOverrideHook)(dds_datUnitWork_t *, s32); /* 0x670: custom affinity result, or -1 for the normal resolver. */
+    s32 (*unitValueOverrideHook)(datActorWork_t *, s32); /* 0x670: custom affinity result, or -1 for the normal resolver. */
     s32 (*summonEffectId)(s32); /* 0x674: -1 retains the default summon effect. */
     s32 (*summonEffectDelay)(u32); /* 0x678: delay for the selected summon species. */
     s32 (*actionPointsOverride)(u32, u32, s32); /* 0x67C */
@@ -465,8 +465,8 @@ typedef struct BtlState {
     BtlBattleRecordEligibilityOverrideCallback battleRecordEligibilityOverride;
     void (*actionResourceNameHook)(BtlTask *, s32, char *); /* 0x684: formats the action event resource name. */
     u8 pad688[4];
-    s32 (*commandAvailabilityOverride)(BtlUnit *, s32); /* 0x68C: DDS1 001A6EDC..001A6EF4 gates command availability. */
-    s32 (*commandRangeOverride)(BtlUnit *, s32); /* 0x690: DDS1 001A6968 supplies the actor and command. */
+    s32 (*commandAvailabilityOverride)(BtlUnit *, s32); /* 0x68C: gates command availability */
+    s32 (*commandRangeOverride)(BtlUnit *, s32); /* 0x690: takes the actor and command */
     BtlEffectHeader *effect; /* 0x694: mode-owned allocation begins with its generic header. */
     u8 pad698[0xC];
     BtlDebugMenuWork debug; /* 0x6A4 */

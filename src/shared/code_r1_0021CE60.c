@@ -36,13 +36,11 @@ void CallShopTest(s32 flg, void *data);
 #include "slMain.h"
 #include "code_r1_0021C768.h"
 
-/* Convert three Euler angle components to the VU0 quaternion output.
- * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+/* Convert three Euler angle components to the VU0 quaternion output. */
 
 /* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
 
-/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
- * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31. */
 f32 acosf(f32 x);
 f32 atan2f(f32 y, f32 x);
 

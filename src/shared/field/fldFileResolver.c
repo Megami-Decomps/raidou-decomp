@@ -117,7 +117,7 @@ typedef struct DmaPacketHeader DmaPacketHeader;
 
 /* Per-actor slot in the field's actor table; reset by fldResetActorSlots and
    scanned by fldReleaseActorTasksById. 0x5C is the stride retail uses. Three transition keys, signed frame
-   counters and two float triples with per-frame increments (same layout as DDS2). */
+   counters and two float triples with per-frame increments. */
 typedef struct {
     s32 kind;
     u32 actorId;

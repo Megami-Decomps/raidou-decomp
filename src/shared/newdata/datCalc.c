@@ -95,7 +95,7 @@ enum {
 #define SDF_FLOAT_COUNTER_WRAP_FLAG 0x00000020
 
 /* These unused-result legacy mutator calls had no prototype in scope. */
-void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
+void sdfRaisePackedChannelValue(datActorWork_t *item, u32 minimumValue);
 
 typedef s32 EvtMirroredSolarPhase;
 
@@ -113,9 +113,9 @@ enum DatBattleAdjustmentConditionType {
 
 typedef s32 DatCalculatedStatValue;
 
-/* Profile results are 1..99; DDS2's slot-adjusted result can also be zero. */
+/* Profile results are 1..99. */
 DatCalculatedStatValue datGetClampedProfileAdjustedStat(
-    const struct dds_datUnitWork_t *unit, DatBaseStatIndex statIndex);
+    const struct datActorWork_t *unit, DatBaseStatIndex statIndex);
 
 typedef s32 BtlConditionalEncounterGaugeThreshold;
 
@@ -211,7 +211,7 @@ enum {
 };
 
 extern s32 btlConditionalEncounterCachedInterval;
-void evtRandomizeEntryValue(dds_datUnitWork_t *entry);
+void evtRandomizeEntryValue(datActorWork_t *entry);
 
 /* Step the script with these context values; clear the written flag, not the stored result. */
 s32 evtPushFirstRosterLevel(void);
@@ -395,7 +395,7 @@ INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf51);
 INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf52);
 
 /* Raise the packed value to `minimumValue` (never lower it); reaching 0x40, 0x80 or 0x400 re-randomizes the entry. */
-void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue) {
+void sdfRaisePackedChannelValue(datActorWork_t *item, u32 minimumValue) {
     s32 channel;
 
     if ((item->status & SDF_PACKED_CHANNEL_MASK) < minimumValue) {
@@ -424,7 +424,7 @@ INCLUDE_ASM(const s32, "newdata/datCalc", datLeaf57);
 /* Only an exact masked status of 0x1000 forces one; combinations of low
  * status bits do not take this path. Otherwise use the profile-adjusted stat. */
 DatCalculatedStatValue datGetStatWithStatusOverride(
-    const dds_datUnitWork_t *unit, DatBaseStatIndex statIndex) {
+    const datActorWork_t *unit, DatBaseStatIndex statIndex) {
     if ((unit->status & DAT_STATUS_VALUE_MASK) == DAT_STATUS_STAT_OVERRIDE) {
         return 1;
     }

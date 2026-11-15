@@ -133,7 +133,7 @@ void corePktEmitTexTrisCtx2(sdfCorePacketCb_t *cb, u64 samplingState, u64 textur
 /* Finish the selected node's transformed rows and emit its textured geometry. */ void corePktEmitMultiTexPass(sdfCorePacketCb_t *work);
 
 /* Per-texture reference count and non-owning clone source (0x8). */
-/* Texture buffer GPU command words (0x40); DDS1/2 game/code_002D10B0/00329F60.c. */
+/* Texture buffer GPU command words (0x40). */
 typedef struct sdfTexPacket_t {
     s32 gifTagWord; /* Low GIFtag word; NLOOP occupies bits 0-14. */
     u32 gifTagControl; /* High GIFtag control word; one packed register. */
@@ -657,7 +657,6 @@ void corePktBuildFaceList(sdfCorePacketCb_t *cb) {
 }
 
 void corePktBuildBackFaceList(sdfCorePacketCb_t *cb) {
-    /* DDS1 node region uses the tail byte at +0x50. */
     f32 scale = corePktZBias;
     s32 remaining;
     u16 *triangles;

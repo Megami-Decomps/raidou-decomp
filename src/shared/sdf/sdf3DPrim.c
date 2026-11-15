@@ -123,7 +123,7 @@ void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
 void sdfDrawTagLinkRef(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Per-texture reference count and non-owning clone source (0x8). */
-/* Texture buffer GPU command words (0x40); DDS1/2 game/code_002D10B0/00329F60.c. */
+/* Texture buffer GPU command words (0x40). */
 typedef struct sdfTexPacket_t {
     s32 gifTagWord; /* Low GIFtag word; NLOOP occupies bits 0-14. */
     u32 gifTagControl; /* High GIFtag control word; one packed register. */

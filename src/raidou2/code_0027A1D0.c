@@ -52,7 +52,7 @@ typedef char DatBattleSceneRecordSizeCheck[sizeof(DatBattleSceneRecord) == 0x28 
 #endif
 
 #ifdef VERSION_RAIDOU2
-/* Selects actors by matching bits in their copied dds_datUnitWork_t flags word. */
+/* Selects actors by matching bits in their copied datActorWork_t flags word. */
 typedef u32 BtlPartyRecordFlagsMask;
 #endif
 

@@ -51,7 +51,7 @@ typedef struct CameraData {
     u128 localUp;
     u128 worldEye;
     u128 worldUp;
-    dds_dds3ObjectBaseControlWorkData_t *handle;
+    dds3ObjectBaseControlWorkData_t *handle;
     CameraEyePositionMode eyeIsRelative;
     u32 fovUpdatePending; /* Bit 0 requests a field-of-view update. */
     f32 fieldOfView;      /* Radians. */

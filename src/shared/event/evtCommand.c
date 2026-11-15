@@ -471,7 +471,7 @@ enum EvtTargetInfoFlags {
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
  * object +0x18 -> table +0x08 -> 0x0C-byte slot entries, each with head +0x04.
- * DDS1 and DDS2 use the same observed layout. Node payloads depend on the slot. */
+ * Node payloads depend on the slot. */
 enum {
     EVT_WORLD_SLOT_MOVIE = 3, /* viewer movie-time lists: byte offset 0x28 */
     EVT_WORLD_SLOT_CAMERA = 4, /* linked cameras; active nodes supply the view transform */
@@ -674,7 +674,7 @@ ScrCommandResult evtOpModelLodChg(void) {
     dds3Basic_t *world;
     dds3Basic_t *unit;
     EffectObjectData *data;
-    dds_dds3ObjectBaseControlWorkData_t *modelHolder;
+    dds3ObjectBaseControlWorkData_t *modelHolder;
     dds3ModelHandle_t *context;
     sdfModelRootNode_t *model;
     s32 max;
@@ -693,11 +693,11 @@ ScrCommandResult evtOpModelLodChg(void) {
         return 1;
     }
     modelHolder = data->modelHolder;
-    if (modelHolder->resourceHandle == 0) {
+    if (modelHolder->pModel == NULL) {
         printf("warning!! MODEL_LOD_CHG(int,int) mh pointer null\n");
         return 1;
     }
-    context = (dds3ModelHandle_t *)modelHolder->resourceHandle;
+    context = (dds3ModelHandle_t *)modelHolder->pModel;
     model = context->inner;
     if (model == NULL) {
         printf("warning!! MODEL_LOD_CHG(int,int) root pointer null\n");

@@ -5,6 +5,7 @@
 #include "sdf_resource.h"
 #include "basic.h"
 #include "kernel.h"
+#include "event.h"
 
 /* Index into EvtRuntime.entryName, with the lookup API's missing-name value. */
 typedef s32 EvtViewerNameIndex;
@@ -211,65 +212,62 @@ typedef struct EvtRuntimeGroup {
 
 typedef char EvtRuntimeGroup_size[(sizeof(EvtRuntimeGroup) == 0x84) ? 1 : -1];
 
-typedef struct dds_evtViewerInfo_t dds_evtViewerInfo_t;
-
 /* One allocation retained by the EventViewer task. Camp-named timeline
  * helpers receive this same pointer; their old types omitted the voice tail. */
-struct dds_evtViewerInfo_t {
-    sdfMemHandle_t *resourceHandle;
+struct evtViewerInfo_t {
+    sdfMemHandle_t *block;
     u32 flags;
-    PolyMovieWork *windowContext;
-    s32 headerThird;
-    s32 headerFirst;
-    EvtFrameRange frameRange;
+    PolyMovieWork *workdata;
+    s32 totalframe;
+    s32 firstframe;
+    EvtFrameRange lastframe;
     s32 nowframe;
-    s32 previousGlyphPosition;
-    s32 entryTotal;
-    char entryName[256][32];
-    dds3Basic_t *activeEntryIndex;
-    u8 pad2028[4];
-    dds3Basic_t *fallbackEntry;
-    s32 entryCount;
-    EvtRuntimeGroup *groups;
-    EvtRuntimeGroup *lastGroup;
-    dds3Basic_t *objects[127];
-    s32 unk2238;
-    struct { u16 id, a, b, pad6; } history[8];
-    s32 historyCount;
-    s32 actionMode;
-    s32 commandResetId;
-    s32 cachedType12FadeAreaId; /* Last type-12 fade area applied by the viewer. */
-    struct dds3ProcessID_t *controlState;
-    s32 blurRectangleEnabled;
-    s32 texturedBlurEnabled;
-    s32 filterBlurEnabled;
-    s32 colorRectangleEnabled;
-    s32 texturedSquareEnabled;
-    s32 staggeredBlurEnabled;
-    s32 inputA;
-    s32 groupFirst;
-    u8 pad22B0[4];
-    s32 groupCursor;
-    s32 inputB;
-    s32 cursor;
-    s32 itemCount;
-    char *title;
+    s32 oldframe;
+    s32 nametablecnt;
+    char nametable[256][32];
+    dds3Basic_t *activecamera;
+    u8 freecamera[4];
+    dds3Basic_t *gamecamera;
+    s32 objcnt;
+    EvtRuntimeGroup *firstobjinfo;
+    EvtRuntimeGroup *lastTrack;
+    dds3Basic_t *effectBasic[127];
+    s32 framedisp;
+    evtViewerMenuEntry_t menuStack[8];
+    s32 sp;
+    s32 nowmenu;
+    s32 menusw;
+    s32 fldfilter; /* Last type-12 fade area applied by the viewer. */
+    struct dds3ProcessID_t *menuProcess;
+    s32 drawblur2;
+    s32 drawmblur;
+    s32 drawdblur;
+    s32 filter;
+    s32 drawmfilter;
+    s32 drawrblur;
+    s32 fileMode;
+    s32 work_base;
+    u8 work_x[4];
+    s32 work_y;
+    s32 eventpos_y;
+    s32 select_y;
+    s32 menuItemCount;
+    char *select_header;
     char **itemNames;
-    s32 charCol;
-    s32 charRow;
-    union {
-        struct { char nameStorage[0x20]; s32 entryCursor; s32 entryFirst; };
-        struct { u8 pad22D4[0x14]; char eventName[0x14]; };
-    };
-    s32 frameColumn;
+    s32 filename_x;
+    s32 filename_y;
+    char nameStorage[0xD];
+    u8 unk22E1[7];
+    union { char filename[0x14]; struct { char filenameText[0xC]; s32 objlist_y; s32 objlist_base; }; };
+    s32 framelist_x;
     s32 frameFirst;
     s32 frameCursor;
-    EvtRuntimeGroup *frameGroup;
-    s32 commandCategory;
+    EvtRuntimeGroup *framelist_target;
+    s32 framelist_type;
     s32 value;
-    s32 valueMin;
-    s32 valueMax;
-    f32 floatValue;
+    s32 min;
+    s32 max;
+    f32 fvalue;
     f32 floatMin;
     f32 floatMax;
     s32 lightEditorSelectionIndex;

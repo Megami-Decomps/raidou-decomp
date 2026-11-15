@@ -1612,8 +1612,8 @@ sdfPacDecodeResrc_t *mdlPackSet(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor
                                     (sdfMemHandle_t *)resrc->resrc, objectSize);
                 break;
             default:
-                /* Retained metadata stores: SMT3 1DE078/1DE07C and
-                 * DDS1 2188E0/2188E4 (same otherwise-unused local record). */
+                /* Retained metadata stores, as SMT3 1DE078/1DE07C
+                 * (an otherwise unused local record). */
                 packetHeader = (sdfPacStdBlockHeader_t *)resrc->header;
                 partTagRecord.tag = packetHeader->magicCode;
                 partTagRecord.state = 0;

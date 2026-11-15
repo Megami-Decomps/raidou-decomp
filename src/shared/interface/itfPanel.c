@@ -159,7 +159,6 @@ extern u8 itfPanelSelWinLineVertexIndex[8];
 #include "sdf_movie_types.h"
 #include "effect.h"
 #include "font.h"
-#include "itfPanel.h"
 
 /* Integer corners passed to the panel-border drawer. */
 typedef struct PanelRect {
@@ -186,7 +185,7 @@ extern u32 itfDrawTintedPanelRectData[];
 extern u8 D_00357BF0[], D_00357C08[], D_00357C20[];
 extern u8 D_00357C38[], D_00357C50[], D_00357C68[];
 extern u8 D_003BB1A8[8], D_003BB1B0[8];
-void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command);
+void itfDrawTintedPanelRect(itfpanel_t *panel, sdfDrawTag_t *command);
 
 /* Poll/start an entry: one ends the command, zero keeps waiting.
    A negative signed status is consumed by clearing it; positive status keeps waiting. */
@@ -607,7 +606,7 @@ INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrim);
 INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawSpritePrim);
 
 /* Copy bounds and draw the tinted border; alpha uses the native signed 103/128 scale. */
-void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command) {
+void itfDrawTintedPanelRect(itfpanel_t *panel, sdfDrawTag_t *command) {
     PanelRect rect;
 
     itfDrawTintedPanelRectData[3] = panel->alpha * ITF_PANEL_TINT_ALPHA_NUMERATOR / ITF_PANEL_TINT_ALPHA_DENOMINATOR;
@@ -615,7 +614,7 @@ void itfDrawTintedPanelRect(dds_itfpanel_t *panel, sdfDrawTag_t *command) {
     rect.y0 = panel->top;
     rect.x1 = panel->right;
     rect.y1 = panel->bottom;
-    itfDrawThreePanelBorderBands(&rect, itfDrawTintedPanelRectData, panel->renderValue, ITF_PANEL_TINT_BORDER_WIDTH, command);
+    itfDrawThreePanelBorderBands(&rect, itfDrawTintedPanelRectData, panel->z, ITF_PANEL_TINT_BORDER_WIDTH, command);
 }
 
 INCLUDE_ASM(const s32, "interface/itfPanel", DrawTestAlphaPrim);

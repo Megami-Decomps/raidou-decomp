@@ -27,9 +27,7 @@ typedef char DatSaveWordsSizeCheck[
 
 /* The memory-card browser copies the first 0x30 bytes of a save into a
  * compact row. Its final three words retain the shared save-word group. The
- * first two remain opaque. The last is a saved flag word. DDS1 stores MDL flags
- * 0x843..0x851 in its low bits, while DDS2 uses bit 31 for the hard-init
- * selection. */
+ * first two remain opaque. The last is a saved flag word. */
 typedef struct FileSavePreviewRecord {
     char signature[3];
     s8 version;

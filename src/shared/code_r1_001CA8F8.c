@@ -64,7 +64,7 @@ typedef struct CampDisplayDefaults {
     f32 scaleX;     /* 0x10 */
     s32 enabled;    /* 0x14 */
     s32 variant;    /* 0x18 */
-    s32 preserveAlpha; /* 0x1C: DDS2 RGB-only alpha-fail drawing */
+    s32 preserveAlpha; /* 0x1C: RGB-only alpha-fail drawing */
 } CampDisplayDefaults;
 
 typedef char CampDisplayDefaults_size_is_20[
@@ -77,7 +77,7 @@ typedef u32 MnuCampPrimaryOptionIndex;
 
 typedef u32 MnuCampSecondaryOptionIndex;
 
-void evtEventViewerReleaseQueuedNode(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *entry, EvtRuntimeChild *node);
+void evtEventViewerReleaseQueuedNode(evtViewerInfo_t *viewer, EvtRuntimeGroup *entry, EvtRuntimeChild *node);
 
 #define CAMP_TASK_NAME_BYTES 0x20
 
@@ -146,12 +146,12 @@ typedef struct CampFlagRow {
     u8 pad1D[3];
 } CampFlagRow;
 
-void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold);
+void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold);
 void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **selected, EvtRuntimeChild **future);
 void SetDefaultTmxData(CampDisplayDefaults *display);
 void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey);
 void evtHokanTmx(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
-void evtGetValueNewTMXFrame(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display);
+void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display);
 u32 evtFindInputBranchMessage(void);
 void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsOut);
 void mnuCampCheckClockDivisor(void);
@@ -251,14 +251,14 @@ struct dds3ProcessID_t;
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallMessageDelete);
 
 /* Process keys at or beyond threshold, restarting at the head after each call. */
-void mnuFxWorldDropOutOfRange(dds_evtViewerInfo_t *scene, s32 threshold) {
+void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold) {
     EvtRuntimeGroup *track;
     EvtRuntimeChild *key;
 
-    if (scene->entryCount <= 0) {
+    if (scene->objcnt <= 0) {
         return;
     }
-    for (track = scene->groups; track != NULL; track = track->next) {
+    for (track = scene->firstobjinfo; track != NULL; track = track->next) {
         key = track->children;
         while (key != NULL) {
             if (key->frame + track->metadata.value < threshold) {
@@ -292,7 +292,7 @@ void SetDefaultTmxData(CampDisplayDefaults *display) {
 }
 
 /* Use defaults before the first key; otherwise blend the bounding keys. */
-void evtGetValueNewTMXFrame(dds_evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display) {
+void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display) {
     EvtRuntimeChild *lowerKey;
     EvtRuntimeChild *upperKey;
     s32 startFrame;
@@ -365,10 +365,10 @@ void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsO
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuCampFindMatchingEntryIndex);
 
 /* Return the first track with this fixed-width name, or NULL when absent. */
-EvtRuntimeGroup *mnuCampFindEntryByName(dds_evtViewerInfo_t *scene, const char *name) {
-    EvtRuntimeGroup *track = scene->groups;
+EvtRuntimeGroup *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *name) {
+    EvtRuntimeGroup *track = scene->firstobjinfo;
     while (track != NULL) {
-        if (strcmp(scene->entryName[track->entryHeader], name) == 0) {
+        if (strcmp(scene->nametable[track->entryHeader], name) == 0) {
             return track;
         }
         track = track->next;
@@ -410,19 +410,19 @@ INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf15);
 void evtLeaf16(void) {
 }
 
-void evtLeaf17(dds_evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex) {
+void evtLeaf17(evtViewerInfo_t *scene, MnuCampPrimaryOptionIndex optionIndex) {
     scene->optionFlags = (scene->optionFlags & CAMP_PRIMARY_OPTION_CLEAR_MASK) | (optionIndex & CAMP_OPTION_VALUE_MASK);
 }
 
-MnuCampPrimaryOptionIndex evtMainMenuItemSub(dds_evtViewerInfo_t *scene) {
+MnuCampPrimaryOptionIndex evtMainMenuItemSub(evtViewerInfo_t *scene) {
     return scene->optionFlags & CAMP_OPTION_VALUE_MASK;
 }
 
-void evtLeaf18(dds_evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex) {
+void evtLeaf18(evtViewerInfo_t *scene, MnuCampSecondaryOptionIndex optionIndex) {
     scene->optionFlags = (scene->optionFlags & CAMP_SECONDARY_OPTION_CLEAR_MASK) | ((optionIndex & CAMP_OPTION_VALUE_MASK) << CAMP_SECONDARY_OPTION_SHIFT);
 }
 
-MnuCampSecondaryOptionIndex evtEventSkipStartSub(dds_evtViewerInfo_t *scene) {
+MnuCampSecondaryOptionIndex evtEventSkipStartSub(evtViewerInfo_t *scene) {
     return (scene->optionFlags & CAMP_SECONDARY_OPTION_MASK) >> CAMP_SECONDARY_OPTION_SHIFT;
 }
 

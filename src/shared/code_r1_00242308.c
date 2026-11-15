@@ -33,8 +33,7 @@
 
 /* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
 
-/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
- * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
+/* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31. */
 
 /* Stable state APIs. Callback factories keep caller-specific callback types. */
 sdfFileCmdHandle_t *sdfFileOpen(const char *path);
@@ -102,11 +101,10 @@ typedef struct EffActiveResource {
 typedef char EffActiveResource_size_must_be_0x40[
     (sizeof(EffActiveResource) == 0x40) ? 1 : -1];
 
-/* Native 0x70-byte output of the effect resource-name chooser in DDS1/2.
+/* Native 0x70-byte output of the effect resource-name chooser.
  * The producer fills both 50-byte strings: nameWithExtension is the selected
  * name followed by its extension, and name is retained without the extension.
- * Callers prepend the directory path when forming the full file path.
- * DDS1 reads completion unsigned and DDS2 also compares its signed view. */
+ * Callers prepend the directory path when forming the full file path. */
 typedef struct EffQueueRecord {
     char nameWithExtension[0x32];
     char name[0x32];
@@ -2411,7 +2409,7 @@ s32 effEditRTrackColorTrack(s32 request) {
     return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
 }
 
-/* D-family COLOR callback; its DDS2 twin also serves O-family descriptors. */
+/* D-family COLOR callback. */
 s32 effEditDoColorTrack(s32 request) {
     s32 object;
 
@@ -2659,7 +2657,7 @@ s32 effEditSPolygonAlphaTrack(s32 work) {
     return func_002BB188((SdfAlphaTrack *)(((BaObj *)work)->x0C + 0x3c), ((EffMappingObject *)((BaObj *)work)->x0C)->value4C);
 }
 
-/* D-family POLYGON FADE callback, shared with O in DDS2; retain bound plus one. */
+/* D-family POLYGON FADE callback; retain bound plus one. */
 s32 effEditDoPolygonFadeTrack(s32 work) {
     return func_002BB188((SdfAlphaTrack *)(((BaObj *)work)->x0C + 0x60), ((EffMappingObject *)((BaObj *)work)->x0C)->value3C + 1);
 }

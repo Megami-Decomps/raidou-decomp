@@ -101,7 +101,7 @@ enum {
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
  * object +0x18 -> table +0x08 -> 0x0C-byte slot entries, each with head +0x04.
- * DDS1 and DDS2 use the same observed layout. Node payloads depend on the slot. */
+ * Node payloads depend on the slot. */
 enum {
     EVT_WORLD_SLOT_MOVIE = 3, /* viewer movie-time lists: byte offset 0x28 */
     EVT_WORLD_SLOT_CAMERA = 4, /* linked cameras; active nodes supply the view transform */
@@ -110,31 +110,30 @@ enum {
 
 /* Copy the source object's transform to the target object, with its rotation offset. */
 
-EvtRuntimeChild *evtEventViewerGetPendingNode(dds_evtViewerInfo_t *viewer);
+EvtRuntimeChild *evtEventViewerGetPendingNode(evtViewerInfo_t *viewer);
 
 /* Key selecting one of a model group's motion registrations and its matching
  * per-context controller. The public API keeps the native signed word width;
  * each controller stores the key in its existing signed halfword field. */
 typedef s32 MdlMotionSearchId;
 
-void evtEventViewerReleasePendingNode(dds_evtViewerInfo_t *viewer);
-void evtEventViewerProcessPending(dds_evtViewerInfo_t *viewer);
-s32 evtEventViewerCountEntries(dds_evtViewerInfo_t *viewer);
-s32 evtEventViewerSumNodeCounts(EvtViewerTrackFileFormat format, dds_evtViewerInfo_t *viewer);
+void evtEventViewerReleasePendingNode(evtViewerInfo_t *viewer);
+void evtEventViewerProcessPending(evtViewerInfo_t *viewer);
+s32 evtEventViewerCountEntries(evtViewerInfo_t *viewer);
+s32 evtEventViewerSumNodeCounts(EvtViewerTrackFileFormat format, evtViewerInfo_t *viewer);
 
 struct SoundMixer;
 
 struct EffNodeDescriptor;
 
-extern u8 evtViewerHasUpdateFlag(dds_evtViewerInfo_t *);
+extern u8 evtViewerHasUpdateFlag(evtViewerInfo_t *);
 
 typedef struct CampDisplayDefaults CampDisplayDefaults;
 
-void evtApplyViewerTimelineFrame(s32 time, dds_evtViewerInfo_t *viewer);
-void evtViewerPushCommandHistory(s32 actionMode, s32 first, s32 second, dds_evtViewerInfo_t *viewer);
+void evtApplyViewerTimelineFrame(s32 time, evtViewerInfo_t *viewer);
+void evtViewerPushCommandHistory(s32 actionMode, s32 first, s32 second, evtViewerInfo_t *viewer);
 dds3TaskUpdateResult_t evtViewerUpdateFrame(dds3ProcessID_t *task);
 
-struct dds_evtViewerInfo_t;
 
 struct EffNode;
 
@@ -143,25 +142,25 @@ typedef struct EvtViewerObjectData {
     struct EffNode *parameterNode;
 } EvtViewerObjectData;
 
-u16 evtViewerPopHistory(dds_evtViewerInfo_t *viewer);
+u16 evtViewerPopHistory(evtViewerInfo_t *viewer);
 extern char evtViewerTaskName[];
 
 typedef struct CampDisplayDefaults CampDisplayDefaults;
 
-extern void ValidatePathFrame(s32 endTime, dds_evtViewerInfo_t *viewer);
-extern void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer);
-extern void ValidateUnitPosChange(s32 position, dds_evtViewerInfo_t *viewer);
-EvtRuntimeChild *evtViewFindGlyphAtOrBefore(dds_evtViewerInfo_t *viewer);
+extern void ValidatePathFrame(s32 endTime, evtViewerInfo_t *viewer);
+extern void evtViewerApplyGlyphLodChannel(s32 position, evtViewerInfo_t *viewer);
+extern void ValidateUnitPosChange(s32 position, evtViewerInfo_t *viewer);
+EvtRuntimeChild *evtViewFindGlyphAtOrBefore(evtViewerInfo_t *viewer);
 extern void evtSetMovieClipPositionClampedToDuration(dds3Basic_t *movie, s32 unused, s32 start, s32 end, s32 offset);
-void ValidatePathFrame(s32 endTime, dds_evtViewerInfo_t *viewer);
+void ValidatePathFrame(s32 endTime, evtViewerInfo_t *viewer);
 
 extern EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
                                                              MdlMotionSearchId channel);
 
 extern u32 sdfGetLodChunkValue(sdfModelRootNode_t *model);
-void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer);
-void ValidateUnitPosChange(s32 position, dds_evtViewerInfo_t *viewer);
-u8 evtViewerHasUpdateFlag(dds_evtViewerInfo_t *viewer);
+void evtViewerApplyGlyphLodChannel(s32 position, evtViewerInfo_t *viewer);
+void ValidateUnitPosChange(s32 position, evtViewerInfo_t *viewer);
+u8 evtViewerHasUpdateFlag(evtViewerInfo_t *viewer);
 
 EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
                                                       MdlMotionSearchId channel);
@@ -172,22 +171,22 @@ enum {
 };
 
 /* Apply the viewer playback mode to unit, motion and movie-object tracks. */
-void evtEventViewerApplyPlaybackMode(s32 playbackMode, u32 frame, dds_evtViewerInfo_t *viewer);
+void evtEventViewerApplyPlaybackMode(s32 playbackMode, u32 frame, evtViewerInfo_t *viewer);
 
 u32 evtViewerReturnZero(void);
-u32 evtViewerPushMode5CommandHistory(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer);
-s32 evtViewCmdSetValue(s32 unused0, s32 unused1, dds_evtViewerInfo_t *viewer);
-u32 evtViewerStoreCommandInSelectedField(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer);
+u32 evtViewerPushMode5CommandHistory(u32 unused0, u32 unused1, evtViewerInfo_t *viewer);
+s32 evtViewCmdSetValue(s32 unused0, s32 unused1, evtViewerInfo_t *viewer);
+u32 evtViewerStoreCommandInSelectedField(u32 unused0, u32 unused1, evtViewerInfo_t *viewer);
 u32 evtViewCmdNoOp(void);
-u32 evtViewCmdCancelSelection(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer);
-u32 evtViewerClearPendingNodeAndPushHistory(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer);
+u32 evtViewCmdCancelSelection(u32 unused0, u32 unused1, evtViewerInfo_t *viewer);
+u32 evtViewerClearPendingNodeAndPushHistory(u32 unused0, u32 unused1, evtViewerInfo_t *viewer);
 dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task);
 extern dds3TaskUpdateResult_t evtViewerPickNextHandler(dds3ProcessID_t *task);
 void evtViewerRelease();
 void evtEventViewerDestroyActive(dds3ProcessID_t *task);
 void evtEventViewerDestroyActiveAlternate(dds3ProcessID_t *task);
-extern void mnuCampInitFontResource(dds_evtViewerInfo_t *viewer);
-void evtEventViewerInitCampFontResource(dds_evtViewerInfo_t *viewer);
+extern void mnuCampInitFontResource(evtViewerInfo_t *viewer);
+void evtEventViewerInitCampFontResource(evtViewerInfo_t *viewer);
 void evtEventViewerDestroyTask(void);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", LinkFrameInfo);
@@ -212,7 +211,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtDelProcess);
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallDelEffectTableEvtEventViewer);
 
 /* Consume queued viewer events until the pending check reports none. */
-void evtEventViewerProcessPending(dds_evtViewerInfo_t *viewer) {
+void evtEventViewerProcessPending(evtViewerInfo_t *viewer) {
     while (evtEventViewerGetPendingNode(viewer) != 0) {
         evtEventViewerReleasePendingNode(viewer);
     }
@@ -226,24 +225,24 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtAddViewerObject);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetViewerObjectTypeCount);
 
-s32 evtEventViewerCountEntries(dds_evtViewerInfo_t *viewer) {
+s32 evtEventViewerCountEntries(evtViewerInfo_t *viewer) {
     EvtRuntimeGroup *entry;
     s32 entryCount;
 
     entryCount = 0;
-    for (entry = viewer->groups; entry != NULL; entry = entry->next) {
+    for (entry = viewer->firstobjinfo; entry != NULL; entry = entry->next) {
         entryCount++;
     }
     return entryCount;
 }
 
 /* PM2 skips group ids 5/0x13; PM3 serializes only those groups. */
-s32 evtEventViewerSumNodeCounts(EvtViewerTrackFileFormat format, dds_evtViewerInfo_t *viewer) {
+s32 evtEventViewerSumNodeCounts(EvtViewerTrackFileFormat format, evtViewerInfo_t *viewer) {
     EvtRuntimeGroup *entry;
     s32 total;
 
     total = 0;
-    for (entry = viewer->groups; entry != NULL; entry = entry->next) {
+    for (entry = viewer->firstobjinfo; entry != NULL; entry = entry->next) {
         if (format == EVT_VIEWER_TRACK_FILE_FORMAT_PM2) {
             if (entry->type == 5 || entry->type == 0x13) {
                 continue;
@@ -328,10 +327,10 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtRunFrame);
 
 /* Returns the nearest kind-2 key at/before the current frame, or NULL.
  * Equal-distance ties retain the first key visited. */
-EvtRuntimeChild *evtViewFindGlyphAtOrBefore(dds_evtViewerInfo_t *viewer) {
+EvtRuntimeChild *evtViewFindGlyphAtOrBefore(evtViewerInfo_t *viewer) {
     EvtRuntimeChild *result = NULL;
     s32 best = 99999;
-    EvtRuntimeGroup *node = viewer->groups;
+    EvtRuntimeGroup *node = viewer->firstobjinfo;
 
     while (node != NULL) {
         if (node->type == 2) {
@@ -360,7 +359,7 @@ EvtRuntimeChild *evtViewFindGlyphAtOrBefore(dds_evtViewerInfo_t *viewer) {
 
 /* Clamps each movie object's playback interval using its linked track's first
  * key frame (or track offset), endTime, and the current key's extra parameter. */
-void ValidatePathFrame(s32 endTime, dds_evtViewerInfo_t *viewer) {
+void ValidatePathFrame(s32 endTime, evtViewerInfo_t *viewer) {
     evtWorldTable_t *worldTable;
     evtWorldSlot_t *worldSlots;
     dds3Basic_t *movieObject;
@@ -377,7 +376,7 @@ void ValidatePathFrame(s32 endTime, dds_evtViewerInfo_t *viewer) {
                 movieObject = worldSlots[EVT_WORLD_SLOT_MOVIE].head;
                 if (movieObject != 0) {
                     do {
-                        trackEntry = viewer->groups;
+                        trackEntry = viewer->firstobjinfo;
                         while (trackEntry != NULL) {
                             if (trackEntry->info != NULL && movieObject == dds3ObjectBaseGetControlBasic(trackEntry->info, DDS3_OBJECT_DATA_SLOT)) {
                                 if (trackEntry->type == 2) {
@@ -413,8 +412,8 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateUnitMotionFrame);
 
 /* Applies the latest kind-6 key at/before position to a kind-1 track's LOD
  * byte, provided the requested signed-byte level is supported by its chunk. */
-void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer) {
-    EvtRuntimeGroup *node = viewer->groups;
+void evtViewerApplyGlyphLodChannel(s32 position, evtViewerInfo_t *viewer) {
+    EvtRuntimeGroup *node = viewer->firstobjinfo;
     EvtRuntimeChild *glyph;
     EvtRuntimeChild *best;
     s32 bestFrame;
@@ -435,7 +434,7 @@ void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer) {
                     glyph = glyph->next;
                 } while (glyph != NULL);
             }
-            lod = ((dds3ModelHandle_t *)((EffectObjectData *)node->info->workdata)->modelHolder->resourceHandle)->inner;
+            lod = ((dds3ModelHandle_t *)((EffectObjectData *)node->info->workdata)->modelHolder->pModel)->inner;
             if (best == NULL) {
                 lod->lod = 0;
             } else {
@@ -451,8 +450,8 @@ void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer) {
 
 /* At an exact kind-7 key frame, attaches the indexed world object. Index -1
  * restores the saved vectors; losing the active key restores them once too. */
-void ValidateUnitPosChange(s32 position, dds_evtViewerInfo_t *viewer) {
-    EvtRuntimeGroup *node = viewer->groups;
+void ValidateUnitPosChange(s32 position, evtViewerInfo_t *viewer) {
+    EvtRuntimeGroup *node = viewer->firstobjinfo;
 
     while (node != NULL) {
         if (node->type == 1) {
@@ -493,7 +492,7 @@ void ValidateUnitPosChange(s32 position, dds_evtViewerInfo_t *viewer) {
                     node->attachmentState = EVT_OBJECT_ATTACHMENT_DETACHED;
                 } else {
                     dds3Basic_t *object = dds3SceneBasicSearchName(
-                        dds3GetActiveScene(), viewer->entryName[channel]);
+                        dds3GetActiveScene(), viewer->nametable[channel]);
 
                     evtSetUnitPos(
                         node->info->serialID, object->serialID);
@@ -513,7 +512,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", CalcNextMesSet);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", EventSkipStart);
 
-u8 evtViewerHasUpdateFlag(dds_evtViewerInfo_t *viewer) {
+u8 evtViewerHasUpdateFlag(evtViewerInfo_t *viewer) {
     s32 flags = viewer->flags;
     return (flags & 0x10) > 0;
 }
@@ -562,7 +561,7 @@ EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewerStopFrame);
 
 /* Dispatch one of two viewer modes based on its lowest flag bit. */
-void evtViewerDispatchFlagMode(dds_evtViewerInfo_t *viewer) {
+void evtViewerDispatchFlagMode(evtViewerInfo_t *viewer) {
     if ((viewer->flags & 1) != 0) {
         evtEventViewerApplyPlaybackMode(EVT_VIEWER_PLAYBACK_PAUSED, viewer->nowframe, viewer);
         return;
@@ -576,18 +575,18 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtLeaf7);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", PushMenu);
 
-u16 evtViewerPopHistory(dds_evtViewerInfo_t *viewer) {
+u16 evtViewerPopHistory(evtViewerInfo_t *viewer) {
     u16 historyId;
     s32 historyIndex;
 
-    historyIndex = viewer->historyCount - 1;
-    if (viewer->historyCount == 0) {
-        viewer->actionMode = 0;
+    historyIndex = viewer->sp - 1;
+    if (viewer->sp == 0) {
+        viewer->nowmenu = 0;
         return 0;
     }
-    viewer->historyCount = historyIndex;
-    historyId = viewer->history[historyIndex].id;
-    viewer->actionMode = (u32)historyId;
+    viewer->sp = historyIndex;
+    historyId = viewer->menuStack[historyIndex].mode;
+    viewer->nowmenu = (u32)historyId;
     return historyId;
 }
 
@@ -613,7 +612,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtFRAMESETOK);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallSetFirstFrame);
 
-u32 evtViewerPushMode5CommandHistory(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer) {
+u32 evtViewerPushMode5CommandHistory(u32 unused0, u32 unused1, evtViewerInfo_t *viewer) {
     evtViewerPushCommandHistory(5, 0x90, 0x48, viewer);
     return 0;
 }
@@ -669,7 +668,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", EnterFrameChange);
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID);
 
 /* Store the command value as a halfword and clear its extra halfword when tagged. */
-s32 evtViewCmdSetValue(s32 unused0, s32 unused1, dds_evtViewerInfo_t *viewer) {
+s32 evtViewCmdSetValue(s32 unused0, s32 unused1, evtViewerInfo_t *viewer) {
     s32 commandValue = viewer->value;
     EvtRuntimeChild *entry = evtEventViewerGetPendingNode(viewer);
 
@@ -686,14 +685,14 @@ s32 evtViewCmdSetValue(s32 unused0, s32 unused1, dds_evtViewerInfo_t *viewer) {
 }
 
 /* Store the command value in the selected halfword of a viewer entry. */
-u32 evtViewerStoreCommandInSelectedField(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer) {
+u32 evtViewerStoreCommandInSelectedField(u32 unused0, u32 unused1, evtViewerInfo_t *viewer) {
     EvtRuntimeChild *entry;
     u32 commandValue;
     s32 slot;
     commandValue = viewer->value;
     entry = evtEventViewerGetPendingNode(viewer);
     if (entry != 0) {
-        slot = viewer->frameGroup->type - 1;
+        slot = viewer->framelist_target->type - 1;
         if ((u32)slot < 0x13u) {
             switch (slot) {
             case 0:
@@ -738,7 +737,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID3);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallGetPIDfromUID4);
 
-u32 evtViewCmdCancelSelection(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer) {
+u32 evtViewCmdCancelSelection(u32 unused0, u32 unused1, evtViewerInfo_t *viewer) {
     evtViewerPopHistory(viewer);
     return 0;
 }
@@ -751,10 +750,10 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtCallSprintf);
 
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtViewCmdSetObjectTarget);
 
-u32 evtViewerClearPendingNodeAndPushHistory(u32 unused0, u32 unused1, dds_evtViewerInfo_t *viewer) {
+u32 evtViewerClearPendingNodeAndPushHistory(u32 unused0, u32 unused1, evtViewerInfo_t *viewer) {
     if (evtEventViewerGetPendingNode(viewer) != 0) {
-        viewer->groupFirst = 0;
-        viewer->groupCursor = 0;
+        viewer->work_base = 0;
+        viewer->work_y = 0;
         evtViewerPushCommandHistory(0xa, 0x9c, 0x54, viewer);
         return 0;
     }
@@ -794,20 +793,20 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtEndEvtViewerSub);
 INCLUDE_ASM(const s32, "event/evtEventViewer", End_evtViewer);
 
 void evtEventViewerDestroyActive(dds3ProcessID_t *task) {
-    dds_evtViewerInfo_t *viewer;
+    evtViewerInfo_t *viewer;
 
-    viewer = (dds_evtViewerInfo_t *)dds3GetProcessData(task);
+    viewer = (evtViewerInfo_t *)dds3GetProcessData(task);
     evtViewerRelease(viewer);
 }
 
 void evtEventViewerDestroyActiveAlternate(dds3ProcessID_t *task) {
-    dds_evtViewerInfo_t *viewer;
+    evtViewerInfo_t *viewer;
 
-    viewer = (dds_evtViewerInfo_t *)dds3GetProcessData(task);
+    viewer = (evtViewerInfo_t *)dds3GetProcessData(task);
     evtViewerRelease(viewer);
 }
 
-void evtEventViewerInitCampFontResource(dds_evtViewerInfo_t *viewer) {
+void evtEventViewerInitCampFontResource(evtViewerInfo_t *viewer) {
     mnuCampInitFontResource(viewer);
 }
 

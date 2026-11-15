@@ -61,7 +61,7 @@ struct select_tag {
     s16 select_imm;
     s16 lines;
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    s32 widestRowX; /* names from dds-decomp's ItfMesBlk40 */
+    s32 widestRowX;
     s32 widestRowWidth;
 #endif
     s16 glyphColorIntensity;

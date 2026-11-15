@@ -656,8 +656,7 @@ typedef struct EffCopiedPayload {
 typedef char EffCopiedPayload_size_check[
     (sizeof(EffCopiedPayload) == 0x40) ? 1 : -1];
 
-/* DDS1 0029C530 / DDS2 002DE248 use this callback table for native classes.
- * The two units dispatch each slot directly and read payloadSize for sizing. */
+/* Callback table for native classes. The units dispatch each slot directly and read payloadSize for sizing. */
 typedef struct EffClassOps {
     void (*initialize)(struct EffClassWork *work);
     void *(*createResource)(void *source);
@@ -671,7 +670,7 @@ typedef char EffClassOpsSizeCheck[(sizeof(EffClassOps) == 0x18) ? 1 : -1];
 
 #define EFF_PARTICLE_SHARED_PAYLOAD_BYTES 0x98
 
-/* DDS1 0029C530 / DDS2 002DE248 allocate this 0xAC-byte shared resource.
+/* The constructor allocates this 0xAC-byte shared resource.
  * The trailing pointers are owned billboard/reference handles managed by the
  * resource lifecycle. */
 typedef struct EffParticleSharedResource {
@@ -703,8 +702,8 @@ typedef struct EffEmitterRow {
 
 typedef char EffEmitterRowSizeCheck[(sizeof(EffEmitterRow) == 0x18) ? 1 : -1];
 
-/* Lens-flare constructors copy 0x40 bytes into a 0x58-byte owner at +0x18
- * (DDS1 0029C620 / DDS2 002DE338). Draw callbacks read strength with LWC1,
+/* Lens-flare constructors copy 0x40 bytes into a 0x58-byte owner at +0x18.
+ * Draw callbacks read strength with LWC1,
  * compare frame/limit signed, and select the flare set with LBU at +0x54. */
 typedef struct EffLensFlareParams {
     SdfColorTrack colorCurve;
@@ -741,9 +740,8 @@ typedef struct EffStripParams {
 
 typedef char EffStripParamsSizeCheck[(sizeof(EffStripParams) == 0x20) ? 1 : -1];
 
-/* DDS1 002A7B68 / DDS2 002EA120 allocate 0xD4 bytes and copy this
- * 0x98-byte parameter record at +0x30. Draws 002A8020 / 002EA5D8
- * scale the +0x64 track's result and use the +0x90 track as the angle. */
+/* The constructor allocates 0xD4 bytes and copies this 0x98-byte
+ * parameter record at +0x30. Draws scale the +0x64 track's result and use the +0x90 track as the angle. */
 typedef struct EffQuadParams {
     SdfColorTrack colorTrack;
     SdfAlphaTrack alphaTrack;
@@ -791,9 +789,9 @@ typedef struct EffBillFrameHeader {
     u8 pad57;
 } EffBillFrameHeader;
 
-/* DDS2 003E9950 / DDS1 0037E8A0 resource kinds 1..8 copy the following
+/* Resource kinds 1..8 copy the following
  * record lengths. Unrecovered bytes remain serialized data. */
-/* DDS2 billAdvanceFrameInstances (002E0900) consumes the kind-1 geometry tail. */
+/* billAdvanceFrameInstances consumes the kind-1 geometry tail. */
 typedef struct EffBillFrameConfig {
     EffBillFrameHeader frame;
     u32 innerColor;
@@ -826,7 +824,7 @@ typedef struct EffBillCellConfig {
     u8 pad89[3];
 } EffBillCellConfig; /* kind 2, 0x8C */
 
-/* DDS1 002AAF70 / DDS2 002EE348 allocate this 0x3C-byte strip owner.
+/* The constructor allocates this 0x3C-byte strip owner.
  * File constructors copy a 0x20-byte source header into its +0x0C member. */
 typedef struct EffectStripNode {
     u32 percent;
@@ -989,7 +987,7 @@ typedef struct EffBillTrailFrameConfig {
     f32 spinAccel;
 } EffBillTrailFrameConfig; /* kind 7, 0xA8 */
 
-/* Kind-8 quad updates (DDS1 002A2E18 / DDS2 002E4E80) read these
+/* Kind-8 quad updates read these
  * parameters from the copied 0x98-byte record and advance 0x20-byte entries. */
 typedef struct EffBillQuadFrameConfig {
     EffBillFrameHeader frame;
@@ -1037,9 +1035,8 @@ typedef struct EffBillRangeConfig {
     f32 angularAcceleration;
 } EffBillRangeConfig;
 
-/* DDS2 resource-op rows at 003E9DF4/003E9E10/003E9E2C copy
- * 0xF8/0xF4/0xD8 bytes for vortex/column/spiral. The row at 003E9E7C
- * copies 0x10C bytes for the animated flame. Kind is local to its operation
+/* The resource-op rows copy 0xF8/0xF4/0xD8 bytes for vortex/column/spiral.
+ * The animated flame row copies 0x10C bytes for the animated flame. Kind is local to its operation
  * table; EffClassWork.kind together with that table selects the record. */
 typedef struct EffBillEmitterHeader {
     EffBillTimedHeader timed;
@@ -1213,7 +1210,7 @@ typedef struct EffBillRadialConfig {
     f32 radius;
 } EffBillRadialConfig;
 
-/* Animation resource kind 4 (DDS2 003E9ED0) copies this 0x98 record.
+/* Animation resource kind 4 copies this 0x98 record.
  * Samples are consumed as an unsigned allocation count and a signed row bound. */
 typedef struct EffBillQuantizedConfig {
     SdfColorTrack colorTrack;
@@ -1418,7 +1415,7 @@ typedef char EffRandState_size_must_be_0x10[
 
 /* Float-input SDK form: retain the broad memory effect and let GCC transfer
  * the binary32 scale to the unpack's GPR operand. The exact surface-grid
- * gradient uses four such 16-byte carriers (DDS1 002A7288, DDS2 002E9840).
+ * gradient uses four such 16-byte carriers.
  * This is distinct from the integer-bit, read-only form above. */
 static inline void eeUnpackRGBAWordFloat(u32 color, f32 unit) {
     u32 rgba[4];
@@ -1426,7 +1423,7 @@ static inline void eeUnpackRGBAWordFloat(u32 color, f32 unit) {
     EE_MMI_RGBA_UNPACK(rgba, unit);
 }
 
-/* Shared DDS1/DDS2 animated billboard effect state. */
+/* Animated billboard effect state. */
 typedef struct EffBillboardWork {
     f32 position[4];
     f32 rotation[4];
@@ -9388,7 +9385,7 @@ void effBuildQuantizedTexturedStrip(u32 *buffer, EffBillQuantizedConfig *config)
         }
         segmentAngle += angleStep;
         rowAngle = 0.0f;
-        /* Retail keeps this unused sample (DDS1 002B0008 / DDS2 002F33F8). */
+        /* Retail keeps this unused sample. */
         sdfSin(segmentAngle);
         for (row = 0; row < rowCount; row++) {
             f32 *position;
