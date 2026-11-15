@@ -38,7 +38,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001164D0	00117D90	script/scrCommonCommand	c	smt3:names:58+smt3:map:8+dds:3 of 73	script/scrCommonCommand
 00117DE0	00117E78	code_00117DE0	asm	none	
 00117EC0	00118038	script/scrParameterCommand	c	smt3:map:5 of 7 reordered	script/scrParameterCommand
-00118080	00118F58	code_00118080	asm	none	
+00118038	00118F58	code_00118038	asm	none	
 00119000	00119388	basic/dds3DbgBasic	c	smt3:names:3 of 3	basic/dds3DbgBasic
 001194B0	00119AD8	basic/dds3Basic	c	smt3:names:18+smt3:map:2 of 26	basic/dds3Basic
 00119B18	00119B58	code_00119B18	asm	none	

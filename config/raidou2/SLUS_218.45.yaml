@@ -94,7 +94,7 @@ segments:
       - [0x174D0, c, script/scrCommonCommand]
       - [0x18DE0, asm, code_00117DE0]
       - [0x18EC0, c, script/scrParameterCommand]
-      - [0x19080, asm, code_00118080]
+      - [0x19038, asm, code_00118038]
       - [0x1A000, c, basic/dds3DbgBasic]
       - [0x1A4B0, c, basic/dds3Basic]
       - [0x1AB18, asm, code_00119B18]
