@@ -46,6 +46,7 @@ u8 MoneyCheckProcEnd(struct tagITF_MONEY_WORK *wk);
 void itfDrawFont(ITF_DM_STYLE a_style, s32 a_x, s32 a_y, s32 a_z, s32 a_w, s32 a_space, u32 a_color, f32 a_alphaRate, DDS3_OT a_ot, char *a_str);
 void MoneyDrawPanel(s32 a_offX, s32 a_offY, u8 a_alpha);
 s32 MoneyDrawProcess(dds3ProcessID_t *PID);
+extern void *MoneyDrawProcessData[];
 dds3ProcessFunc_t MoneyProcess(dds3ProcessID_t *PID);
 void MoneyShutdown(dds3ProcessID_t *PID);
 s32 _DvlMsgDeleteData(struct tagITFDVLMSG_WORK *wk, struct tagITFDVLMSG_CB *cb);

@@ -9,6 +9,7 @@ struct sdfTextureOffsetListHeader_t;
 dds3Basic_t *dds3AddSceneBasicData(s32 type);
 void dds3DeleteSceneBasicData(dds3Basic_t *basic);
 dds3Basic_t *dds3GetActiveUnitSceneBasic(dds3Basic_t *pSceneBasic);
+dds3Basic_t *dds3GetActiveCameraSceneBasic(dds3Basic_t *pBasic);
 s32 dds3GetMapNo(dds3Basic_t *scene);
 dds3BasicArrayHandle_t *dds3SceneBasicGetList(dds3Basic_t *pBasic, s32 type);
 dds3Basic_t *dds3SceneBasicSearchName(dds3Basic_t *scene, const char *name);

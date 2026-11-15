@@ -141,4 +141,107 @@ typedef struct SBTL_STAGE_DATA {
 
 extern SBTL_STAGE_DATA *sbtlData100;
 
+/* Floating marker node, linked through next. The position is read as a VU0 quad. */
+typedef struct SBTL_STP_NODE {
+    sdfVector4_t pos;
+    s32 state;
+    u8 pad14[8];
+    s16 slotIndex;
+    u8 pad1E[10];
+    u32 alpha;
+    u8 pad2C[4];
+    f32 yOffset;
+    u8 pad34[0x10];
+    struct SBTL_STP_NODE *next;
+} SBTL_STP_NODE;
+
+typedef struct SBTL_STP {
+    s32 enabled;
+    SBTL_STP_NODE *head;
+} SBTL_STP;
+
+typedef struct SBTL_MOTION_VISUAL {
+    u8 kind;
+    u8 pad01[3];
+    f32 field04;
+    f32 field08;
+    u8 padC[4];
+    f32 field10;
+    f32 scale;
+    u8 pad18[0x30 - 0x18];
+    s16 field30;
+    s16 field32;
+} SBTL_MOTION_VISUAL;
+
+typedef struct SBTL_UNIT_SUB {
+    u8 pad00[4];
+    f32 field04;
+} SBTL_UNIT_SUB;
+
+struct SBTLUNIT_WORK;
+
+extern SBTL_START_DATA main_data;
+extern char sbtlData85[];
+extern s32 sbtlSbattleData;
+extern s32 sbtlSceneLoadData;
+extern s32 sbtlSceneLoadData2;
+extern s32 sbtlSceneLoadData3;
+extern s32 sbtlData86;
+extern s32 sbtlData90;
+extern s32 sbtlData91;
+extern f32 sbtlData92;
+extern sdfVector4_t sbtlCallMemset4Data2;
+extern sdfVector4_t sbtlCallMemset4Data3;
+extern s32 sbtlCallMemset4Data4;
+extern f32 sbtlCallMemset4Data5;
+extern f32 sbtlCallMemset4Data6;
+extern f32 sbtlCallMemset4Data7;
+extern char *sbtlSobedSABData[];
+extern SBTL_PLAYER_DATA sbtlCallBtlCheckTutorialBattleData;
+extern sdfMemHandle_t *sbtlLoadOnMemMsgWork[20];
+extern u32 sbtlWork5[20];
+extern u32 sbtlWork6[20];
+extern char *sbtlData17[20];
+#ifdef VERSION_RAIDOU1
+#define SBTL_PACK_SLOT_COUNT 44
+#else
+#define SBTL_PACK_SLOT_COUNT 46
+#endif
+extern SBTL_PACK_SLOT btlLoadSbPackData[SBTL_PACK_SLOT_COUNT];
+extern s32 btlLoadSbPackData2;
+extern s8 OnDataLoadProcData[];
+
+s32 DataLoadProc(dds3ProcessID_t *id);
+s32 DrawProc(dds3ProcessID_t *id);
+void RestartBattle(void);
+void pbSetGameCamera0(void);
+void sbtlCallBtlDeleteOnData(void);
+s32 sbtlCallBtlGetPlayerData(void);
+s32 sbtlCallBtlSearchEffectData2(s32 id, s32 a2, s32 a3);
+void sbtlCallMemset17(s32 *effect, struct SBTLUNIT_WORK *wk, s32 type, s32 a, f32 *pos, u32 color, s32 b);
+void sbtlCallMemset3(s16 a0, s32 a1);
+s32 sbtlBtlLoadHuumaMesDataSub(s32 huumaMesNo);
+void sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk);
+s32 sbtlCheckScriptData(s32 devilId);
+s32 sbtlCheckTutorialBattle(void);
+void sbtlGetDevilData(struct SBTLUNIT_WORK *wk, s32 a, s32 b);
+SBTL_DEVIL_DATA *sbtlGetDevilData_sbtlSub(s32 id);
+s32 sbtlGetExeSkill(void);
+SBTL_MOTION_VISUAL *sbtlGetMotionVisualData(s32 a, s32 id);
+s32 sbtlGetScrollID(void);
+void sbtlInitDropWork(void);
+s32 sbtlLeaf(dds3ProcessID_t *id);
+s32 sbtlLeaf54(dds3ProcessID_t *id);
+void sbtlRefSbtl18(struct SBTLUNIT_WORK *wk, s32 mode);
+void sbtlRefSbtl31(void);
+void sbtlResetRndEncCount(void);
+void sbtlRndEncTopPriorityMap(s32 *mapOut, s32 *floorOut);
+s32 sbtlSbattle5(dds3ProcessID_t *id);
+s32 sbtlSbattle6(dds3ProcessID_t *id);
+void sbtlSbtlCameraproc(void);
+void sbtlSetScrollID(s32 id);
+struct SBTLUNIT_WORK *sbtlSetSummon(s32 side, s32 devilId, s32 arg);
+SBTL_UNIT_SUB *sbtlSetUnitSub(s32 a, s32 id, s32 b);
+void sbtlStopVibe(void);
+
 #endif

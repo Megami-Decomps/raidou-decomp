@@ -10,6 +10,7 @@ void dds3NewGameStart(void);
 
 s32 dds3BgSetScrollSub(void);
 u32 dds3GetFrameID(void);
+u32 dds3GetKernelCount(void);
 
 extern s32 dds3KernelDebugSign;
 

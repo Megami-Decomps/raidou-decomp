@@ -185,7 +185,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 00190248	00190248	newbattle/nbCommSelProcess	c	smt3:map:1 of 1	newbattle/nbCommSelProcess
 00190268	00190560	code_00190268	asm	none	
 00190648	00190648	newbattle/nbTarSelProcess	c	smt3:map:1 of 1	newbattle/nbTarSelProcess
-00190668	00199368	code_00190668	asm	none	
+00190668	00195248	code_00190668	asm	none	
+00195498	00195498	code_r1_00195498	c	none	
+00195698	00199368	code_00195698	asm	none	
 001993A8	0019BBC0	model/mdlManager	c	smt3:names:68+dds:1+smt3:map:1 of 80	model/mdlManager
 0019C060	0019C068	code_0019C060	asm	none	
 0019C070	0019D358	model/mdlEffect	c	smt3:names:30 of 34	model/mdlEffect
@@ -292,7 +294,16 @@ start	last_func	unit	kind	evidence	smt3_unit
 00226EC8	002420F0	code_r1_00226EC8	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 00242290	002422C8	effect/effPCPBoss_00242290	c	smt3:map:2 of 2 part	effect/effPCPBoss
 00242308	0024AA50	code_r1_00242308	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
-0024AAD8	002692C8	code_0024AAD8	asm	none	
+0024AAD8	0024AAD8	code_r1_0024AAD8	c	none	
+0024AC78	0024B4E8	code_0024AC78	asm	none	
+0024B510	0024B510	code_r1_0024B510	c	none	
+0024B788	0024DE38	code_0024B788	asm	none	
+0024DE98	0024DE98	code_r1_0024DE98	c	none	
+0024DF70	0024E6B8	code_0024DF70	asm	none	
+0024E730	0024E730	code_r1_0024E730	c	none	
+0024E848	0024E848	code_0024E848	asm	none	
+0024EE78	0024EE78	code_r1_0024EE78	c	none	
+0024F220	002692C8	code_0024F220	asm	none	
 002692F0	002692F0	code_r1_002692F0	c	dds:1 of 1	
 00269318	0026CA00	code_00269318	asm	none	
 0026CA20	0026CA20	code_0026CA20	c	dds:1 of 1	
@@ -301,13 +312,32 @@ start	last_func	unit	kind	evidence	smt3_unit
 0027CC80	0027CC80	code_r1_0027CC80	c	dds:1 of 1	
 0027CD48	0027EC00	sbtlSub	asm	none	
 0027ED08	0027FD18	sbtlSub_0027ED08	c	dds:5 of 36 part	
-0027FD88	00289CA0	sbtlDMG	asm	none	
+0027FD88	00289B50	sbtlDMG	asm	none	
+00289CA0	00289CA0	code_r1_00289CA0	c	none	
 00289E08	00289E08	field/fldPanel	c	smt3:map:1 of 1	field/fldPanel
-00289E50	00299E40	sbtlEff_00289E50	asm	none	
+00289E50	0028A1E8	sbtlEff_00289E50	asm	none	
+0028A298	0028A298	code_r1_0028A298	c	none	
+0028A320	0028EAC0	code_0028A320	asm	none	
+0028EAE8	0028EAE8	code_r1_0028EAE8	c	none	
+0028EB80	00291810	code_0028EB80	asm	none	
+00291A80	00291A80	code_r1_00291A80	c	none	
+00291C78	002928B0	code_00291C78	asm	none	
+00292930	00292930	code_r1_00292930	c	none	
+002929C8	00294F38	code_002929C8	asm	none	
+00295298	00295298	code_r1_00295298	c	none	
+00295390	00297C30	code_00295390	asm	none	
+00297EF0	00297EF0	code_r1_00297EF0	c	none	
+00298540	00299950	code_00298540	asm	none	
+00299970	00299970	code_r1_00299970	c	none	
+002999C0	00299E40	code_002999C0	asm	none	
 00299E80	00299E80	newbattle/nbActionProcess	c	smt3:map:1 of 1	newbattle/nbActionProcess
 00299EC8	0029BE98	sbtl	asm	none	
 0029BF50	0029BF50	code_r1_0029BF50	c	none	
-0029BFB8	002C7C90	sbtl_0029BFB8	asm	none	
+0029BFB8	002A1D50	sbtl_0029BFB8	asm	none	
+002A1E48	002A1E48	code_r1_002A1E48	c	none	
+002A20E0	002A3800	code_002A20E0	asm	none	
+002A3820	002A3820	code_r1_002A3820	c	none	
+002A38D8	002C7C90	code_002A38D8	asm	none	
 002C7E58	002C7E58	newbattle/nbDebugProcess	c	smt3:map:1 of 1	newbattle/nbDebugProcess
 002C7EB0	002C7EC8	code_002C7EB0	asm	none	
 002C7ED0	002C7FE0	code_r1_002C7ED0	c	dds:3 of 3 part	
@@ -331,7 +361,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 002F7568	002F77B8	code_r1_002F7568	c	none	
 002F77E0	002F8A50	code_002F77E0	asm	none	
 002F8AF8	002F8AF8	kernel/dds3TitleMain	c	smt3:map:1 of 1	kernel/dds3TitleMain
-002F8B88	002F96B0	code_002F8B88	asm	none	
+002F8B88	002F92B8	code_002F8B88	asm	none	
+002F93D8	002F9548	code_r1_002F93D8	c	none	
+002F95F0	002F96B0	code_002F95F0	asm	none	
 002F96C8	002F96C8	code_r1_002F96C8	c	none	
 002F97C0	002FA3A0	code_002F97C0	asm	none	
 002FA480	002FA480	code_r1_002FA480	c	none	
@@ -339,7 +371,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 00300488	00300488	code_r1_00300488	c	dds:1 of 1	
 003004B0	003004E0	code_003004B0	asm	none	
 00300530	00300530	code_r1_00300530	c	dds:1 of 1	
-00300578	0032F150	code_00300578	asm	none	
+00300578	00322F18	code_00300578	asm	none	
+00323138	00323138	code_r1_00323138	c	none	
+00323280	0032F150	code_00323280	asm	none	
 0032F160	0032F278	basic/dds3ModelRangeBasic	c	smt3:map:1 of 4	basic/dds3ModelRangeBasic
 0032F2B8	00336E08	code_0032F2B8	asm	none	
 00336E58	00336E58	code_r1_00336E58	c	dds:1 of 1	

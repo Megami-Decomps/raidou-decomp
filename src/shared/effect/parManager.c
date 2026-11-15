@@ -13,6 +13,7 @@
 #include "polyManager.h"
 #include "effModelTrackPoly.h"
 #include "parManager.h"
+#include "dds3KernelMain.h"
 
 typedef struct dds3Particle_BlurBuffList_t dds3Particle_BlurBuffList_t;
 
@@ -685,7 +686,6 @@ void dds3ParticleSetColorTable(dds3ParticleColorAnim_t *pColAnim, s32 frame);
 dds3Particle_BlurBuff_t *dds3Particle_BlurCreate(u32 number, u16 length, billHandle_t **pBill_Handle);
 void dds3Particle_BlurDelete(dds3Particle_BlurBuff_t *hBlur);
 void dds3Particle_BlurSet(dds3Particle_BlurBuff_t *table, s32 slotIndex, u32 color, f32 billboardScale);
-extern u32 dds3GetKernelCount(void);
 
 void dds3Particle_BlurSetExp(dds3Particle_BlurBuff_t *hBlur, s32 index, const f32 *pPosBase, u32 abgr,
                    dds3ParOffsetBuff_t *pOffBuff, f32 scale);

@@ -22524,6 +22524,7 @@
 0x004D0BE8	mselStrNmeCamera	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by mselNmeCamera; string "nme_camera"
 0x004D0BF8	mselNameNEFLASHTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mselNameNEFLASH
 0x004D0C08	mselNameNEFLASHTable2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mselNameNEFLASH
+0x004D0C20	fldFontNameEntDataStr	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by fldFontNameEntData
 0x004D0C30	fldStrNmeProcess	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by fldNmeProcess; string "nmeProcess"
 0x004D0C40	fldStrNmeDrawProcess	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by fldNmeProcess; string "nmeDrawProcess"
 0x004D0C50	fldStrFontNameEntFnt	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by 2 functions: fldNmeProcess, fldFontNameEnt; string "/font/name_ent.fnt"

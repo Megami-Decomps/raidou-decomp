@@ -525,6 +525,7 @@ extern u32 mapFileLoadData;
 extern s32 mapData18;
 extern fldMapFlagRec_t mapData7[64];
 extern s32 mapBtlReLoadMapSBtlSceneSub2Data;
+void mapBtlReLoadMapSBtlSceneSub2(void);
 extern s32 mapNpcTblRefresh_WaitData;
 extern s32 mapData114;
 extern s32 mapData115;
@@ -634,6 +635,8 @@ void mapFreeMapDataSub(void);
 void workRelease(void);
 void nbMoveFormation(dds3Basic_t *basic);
 void fldTitleMini_Shutdown(void);
+extern struct sdfMemHandle_t *fldTitleMiniWork4;
+extern struct effHandle_t *fldTitleMiniTex3;
 void fldWallObjTaskSub(s32 floor, s32 ix, s32 iy, f32 *x, f32 *z);
 
 void mapCutSet_From_Pos(f32 x, f32 y, f32 z);

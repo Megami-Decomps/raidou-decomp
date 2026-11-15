@@ -3,6 +3,7 @@
 #include "sdk_libc.h"
 #include "include_asm.h"
 #include "newdata.h"
+#include "code_r1_0027CBE8.h"
 
 extern u32 btlRandomState;
 extern s32 (*btlPackedEffectHandlers[])(s32, u32);
@@ -27,7 +28,6 @@ typedef struct BtlJyokyoState {
 
 u32 GetRand(u32 limit);
 extern u32 GetRand(u32 limit);
-s32 GetIntervalRand(s32 lower, s32 upper);
 
 u32 GetRand(u32 limit) {
     btlRandomState = btlRandomState * 0x41c64e6d + 0x3039;

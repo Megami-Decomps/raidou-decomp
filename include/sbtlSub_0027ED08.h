@@ -7,6 +7,23 @@
 struct SBTLUNIT_WORK;
 struct sprHandle_t;
 
+typedef struct BtlProjectedScreenPoint {
+    s32 x;
+    s32 y;
+} BtlProjectedScreenPoint;
+
+typedef char BtlProjectedScreenPoint_size_must_be_0x08[
+    (sizeof(BtlProjectedScreenPoint) == 0x08) ? 1 : -1];
+
+typedef s32 BtlProjectedScreenPointResult;
+
+enum {
+    BTL_PROJECTED_SCREEN_POINT_REJECTED = 0,
+    BTL_PROJECTED_SCREEN_POINT_WRITTEN = 1,
+};
+
+BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScreenPoint *outPoint);
+
 void sbtlCallDestroyFontRequestAfter(struct SBTLUNIT_WORK *wk, s32 x, s32 y, s32 z, u32 rgba, s32 id);
 void sbtlCallDevilName(s32 X, s32 Y, s32 AlphaRate, void *pData, struct sprHandle_t *pSpr);
 void sbtlCallGetSmallFontFRQ23(s32 x, s32 y, s32 z, u32 rgba, s32 id);

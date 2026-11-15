@@ -8,5 +8,6 @@ s32 Init_sbtlScene(void);
 s32 SetTestCamera(void);
 s32 sbtlDefaultCutScroll(void);
 s32 sbtlReLoadMap(void);
+s32 sbtlSceneLoad(void);
 
 #endif

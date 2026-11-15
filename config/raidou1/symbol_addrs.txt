@@ -16264,6 +16264,7 @@ mselNmeCameraTable2 = 0x004615C8;
 mselStrNmeCamera = 0x004615D8;
 mselNameNEFLASHTable = 0x004615E8;
 mselNameNEFLASHTable2 = 0x004615F8;
+fldFontNameEntDataStr = 0x00461610;
 fldStrNmeProcess = 0x00461620;
 fldStrNmeDrawProcess = 0x00461630;
 fldStrFontNameEntFnt = 0x00461640;

@@ -12287,6 +12287,7 @@
 0x004615D8	mselStrNmeCamera	data	tier=D	derived-string	na	used by mselNmeCamera; string "nme_camera"
 0x004615E8	mselNameNEFLASHTable	data	tier=D	derived-sole	na	used by mselNameNEFLASH
 0x004615F8	mselNameNEFLASHTable2	data	tier=D	derived-sole	na	used by mselNameNEFLASH
+0x00461610	fldFontNameEntDataStr	data	tier=D	derived-table	na	pointed to by fldFontNameEntData
 0x00461620	fldStrNmeProcess	data	tier=D	derived-string	na	used by fldNmeProcess; string "nmeProcess"
 0x00461630	fldStrNmeDrawProcess	data	tier=D	derived-string	na	used by fldNmeProcess; string "nmeDrawProcess"
 0x00461640	fldStrFontNameEntFnt	data	tier=D	derived-string	na	used by 2 functions: fldNmeProcess, fldFontNameEnt; string "/font/name_ent.fnt"

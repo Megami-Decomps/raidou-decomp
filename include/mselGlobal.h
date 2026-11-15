@@ -35,4 +35,6 @@ typedef struct
     /* 0xB0 */ u32 cur_alphacnt;
 } mselGlobalWork_t;
 
+extern u32 mselNameNEFLASHData;
+
 #endif

@@ -176,7 +176,6 @@ extern void dds3EffectDraw(struct effHandle_t *);
 extern void dds3BillboardSetRGBA(billHandle_t *, s32);
 extern void dds3EffectSetRGBA(struct effHandle_t *, s32);
 extern void dds3BillboardSetScale(billHandle_t *, f32, f32);
-extern void dds3EffectSetScale(struct effHandle_t *, f32);
 
 /* dds3ModelEffectCtrlr_t.type: which effect a controller drives. */
 typedef enum dds3ModelEffectType {

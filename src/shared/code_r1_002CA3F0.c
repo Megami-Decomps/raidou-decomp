@@ -12,6 +12,7 @@ u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
 #include "sdf_movie_types.h"
 #include "effect.h"
 #include "code_r1_001CC1D0.h"
+#include "code_r1_002CA3F0.h"
 
 extern void *effGetSlotWorkOrOverride(EffectSlotSet *, s32);
 void sdfCopyCornerWordsWithEdgeByte(u32 *source, u32 *destination, u8 *edgeValues, u32 edge);
@@ -20,7 +21,6 @@ void effDrawTextureSlot(s32 x, s32 y, s32 z, s32 color, u32 flags,
                   EffectSlotSet *set, s32 slotIndex, BdWork *draw, s32 buffer);
 
 void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, EffectSlotSet *set, s32 slot, BdWork *entry, s32 layer);
-void effDrawSpriteWithCornerColors(s32 x, s32 y, s32 z, u32 *palette, s32 flags, EffectSlotSet *set, s32 slot, s32 layer);
 
 void effDrawSpriteWithCornerFade(s32 x, s32 y, s32 depth, u32 blend, s32 flags,
                    EffectSlotSet *set, s32 slotIndex, s32 layer);

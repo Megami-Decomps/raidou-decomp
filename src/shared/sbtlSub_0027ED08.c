@@ -25,21 +25,6 @@
 #include "code_0027A1D0.h"
 #include "code_r1_0017BBD8.h"
 
-typedef struct BtlProjectedScreenPoint {
-    s32 x;
-    s32 y;
-} BtlProjectedScreenPoint;
-
-typedef char BtlProjectedScreenPoint_size_must_be_0x08[
-    (sizeof(BtlProjectedScreenPoint) == 0x08) ? 1 : -1];
-
-typedef s32 BtlProjectedScreenPointResult;
-
-enum {
-    BTL_PROJECTED_SCREEN_POINT_REJECTED = 0,
-    BTL_PROJECTED_SCREEN_POINT_WRITTEN = 1,
-};
-
 enum {
     BTL_RESOURCE_DESCRIPTOR_BYTES = 0x48,
     BTL_RESOURCE_NAME_RECORD_BYTES = 0x38,

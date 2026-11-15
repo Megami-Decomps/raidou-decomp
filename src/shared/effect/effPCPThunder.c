@@ -15,6 +15,7 @@
 #include "sdfMemory.h"
 #include "polyManager.h"
 #include "effMagatuhi.h"
+#include "dds3KernelMain.h"
 
 
 struct effPCPThunderSpherePolyParam_t;
@@ -316,7 +317,6 @@ enum trackPolyTopology {
 
 extern void *sdfMemLock(sdfMemHandle_t *aHandle);
 extern void dds3TrackPolySetMode(dds3TrackPoly_t *hTrackPoly, u16 mode);
-extern u32 dds3GetKernelCount(void);
 void func_00177AC8(effPCP_ThunderColumnPolyLow_t *work, s32 index);
 void effPCP_ThunderPolyDrawOff(effPCP_ThunderPoly_t *work, s32 index);
 void effPCP_ThunderPolyLowDrawOff(effPCP_ThunderPoly_t *work, s32 index);

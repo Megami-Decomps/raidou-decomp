@@ -20,5 +20,6 @@ s32 p2sdSyncSound(void);
 void sdfSndInit(char *aVoiceInfo, s32 aVoiceCount, char *aSequenceInfo, s32 aSequenceCount);
 void sdfDumpHexLine(const void *aData, s32 size);
 s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
+s32 sdfBtlReLoadMapSBtlSceneSub(void);
 
 #endif

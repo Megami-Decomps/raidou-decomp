@@ -27,8 +27,10 @@ effHandle_t *dds3EffectCopy(effHandle_t *node);
 effHandle_t *dds3EffectCreate(u16 major, u16 minor, saddr_t pData);
 void dds3EffectDataRevision(effResourceHeader_t *header);
 void dds3EffectDelete(effHandle_t *pData);
+void dds3EffectReset(effHandle_t *effect);
 effHandle_t *dds3EffectLoad(effResourceHeader_t *pD3P);
 void dds3EffectSetPosition(effHandle_t *pData, const void *pPos);
+void dds3EffectSetScale(effHandle_t *effect, f32 scale);
 
 void dds3EffectDraw_dds3Effect(effHandle_t *hEffect);
 effHandle_t *dds3EffectLoadEPL(void *pEPL);

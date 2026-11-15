@@ -17,6 +17,8 @@ typedef struct sbtlFileEntry_t {
     } slot[18];
 } sbtlFileEntry_t;
 
+extern sbtlFileEntry_t sbtlFunc2Data[10];
+
 void sbtlCallFileOpen(sbtlFileEntry_t *entry);
 
 s32 EffFunc_DEADDAMAGE(struct SBTLEFF_WORK *wk);

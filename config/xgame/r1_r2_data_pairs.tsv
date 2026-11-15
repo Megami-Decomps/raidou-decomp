@@ -5904,7 +5904,8 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x004615C8	0x004D0BD8	mselNmeCameraTable2	.rodata	0x10	yes	code-ref
 0x004615D8	0x004D0BE8	mselStrNmeCamera	.rodata	0x10	yes	code-ref
 0x004615E8	0x004D0BF8	mselNameNEFLASHTable	.rodata	0x10	yes	code-ref
-0x004615F8	0x004D0C08	mselNameNEFLASHTable2	.rodata	0x28	yes	code-ref
+0x004615F8	0x004D0C08	mselNameNEFLASHTable2	.rodata	0x18	yes	code-ref
+0x00461610	0x004D0C20	fldFontNameEntDataStr	.rodata	0x10	yes	data-word
 0x00461620	0x004D0C30	fldStrNmeProcess	.rodata	0x10	yes	run-order-size
 0x00461630	0x004D0C40	fldStrNmeDrawProcess	.rodata	0x10	yes	run-order-size
 0x00461640	0x004D0C50	fldStrFontNameEntFnt	.rodata	0x20	yes	code-ref
