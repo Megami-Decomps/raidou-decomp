@@ -1,6 +1,0 @@
-#ifndef DDS_SCR_INTEGER_RETURN_VALUE_API_H
-
-#define DDS_SCR_INTEGER_RETURN_VALUE_API_H
-#include "scr_vm_integer.h"
-
-#endif /* DDS_SCR_INTEGER_RETURN_VALUE_API_H */

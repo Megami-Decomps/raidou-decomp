@@ -1,6 +1,0 @@
-#ifndef DDS_MNU_SOUND_RESOURCE_PATH_API_H
-
-#define DDS_MNU_SOUND_RESOURCE_PATH_API_H
-#include "common.h"
-
-#endif /* DDS_MNU_SOUND_RESOURCE_PATH_API_H */

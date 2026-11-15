@@ -1,4 +1,0 @@
-#ifndef DDS_DSP_MESSAGE_WINDOW_API_H
-
-#define DDS_DSP_MESSAGE_WINDOW_API_H
-#endif
