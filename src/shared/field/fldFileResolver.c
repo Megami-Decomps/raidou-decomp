@@ -24,6 +24,7 @@
 #include "scr.h"
 #include "fldFileResolver_00132080.h"
 #include "effPCPMisc_00224D10.h"
+#include "fldFileResolver.h"
 
 /* The field-area loader interprets these serialized packet-header values. */
 typedef enum FldPackedResourceKind {

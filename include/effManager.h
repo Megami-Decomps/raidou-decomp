@@ -24,10 +24,15 @@ typedef struct effResourceHeader_t
 } effResourceHeader_t;
 
 effHandle_t *dds3EffectCopy(effHandle_t *node);
-effHandle_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param);
+effHandle_t *dds3EffectCreate(u16 major, u16 minor, saddr_t pData);
 void dds3EffectDataRevision(effResourceHeader_t *header);
 void dds3EffectDelete(effHandle_t *pData);
 effHandle_t *dds3EffectLoad(effResourceHeader_t *pD3P);
 void dds3EffectSetPosition(effHandle_t *pData, const void *pPos);
+
+void dds3EffectDraw_dds3Effect(effHandle_t *hEffect);
+effHandle_t *dds3EffectLoadEPL(void *pEPL);
+void dds3EffectManagerInit(void);
+void dds3EffectSetLoop_dds3Effect(effHandle_t *hEffect, u8 loop);
 
 #endif

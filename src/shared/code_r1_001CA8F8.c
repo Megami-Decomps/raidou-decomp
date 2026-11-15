@@ -20,6 +20,7 @@
 #include "code_r1_001C4B78.h"
 #include "evtEventViewer.h"
 #include "code_r1_001CC1D0.h"
+#include "code_r1_001CA8F8.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {

@@ -338,4 +338,8 @@ struct evtViewerInfo_t {
     s32 curveComponent;
 };
 
+struct pmdProcessWork_t;
+
+s32 evtSetGameData1(struct pmdProcessWork_t *wdata, evtViewerInfo_t *pInfo);
+
 #endif

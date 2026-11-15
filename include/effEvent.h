@@ -29,4 +29,13 @@ void Eve_PartialMultiFilterSetDefTex(void);
 void Eve_PartialMultiFilterSetParam(dds3Effect_PartialMultiFilterParam_t *pParam);
 void Eve_RippleBlurSetDefTex(void);
 
+#include "effManager.h"
+
+struct DepthOfFieldSetting;
+
+void BlurSetParam2(dds3Effect_Blur_t *pParam);
+void EffectDraw(void);
+void dblurSetParam2(struct DepthOfFieldSetting *_hokanData);
+void effBTLSys_Nego_Stone_Delete2(effHandle_t *hEffect);
+
 #endif

@@ -1,0 +1,84 @@
+#ifndef LMAP_H
+#define LMAP_H
+
+#include "common.h"
+#include "kernel.h"
+#include "sdf_types.h"
+
+struct sprHandle_t;
+struct tagLMAP_CHR_WORK;
+struct tagLMAP_EFFGRID_CB;
+struct tagLMAP_FLDWND_WORK;
+struct tagLMAP_LIST_WORK;
+struct tagLMAP_LOCK_WORK;
+struct tagLMP_MODEL_WK;
+
+dds3ProcessFunc_t ActWnd_Draw(dds3ProcessID_t *proc);
+dds3ProcessFunc_t ActWnd_DrawProcess(dds3ProcessID_t *proc);
+void ActWnd_Init(dds3ProcessID_t *proc);
+void ActWnd_Initialize(dds3ProcessID_t *proc);
+dds3ProcessFunc_t ActWnd_Main(dds3ProcessID_t *proc);
+void ActWnd_Reset(dds3ProcessID_t *proc);
+dds3ProcessID_t *ActWnd_Start(void);
+f32 ChrRouteCalcPadParam(s32 pt0, s32 pt1);
+s16 Chr_GetNearPortTableNo(struct tagLMAP_CHR_WORK *chrwk);
+s32 Chr_SetPlayer(struct tagLMAP_CHR_WORK *wk, s16 pointNo);
+s8 Chr_UpdateMove(struct tagLMAP_CHR_WORK *chrwk, struct tagLMAP_LOCK_WORK *lockwk);
+void Chr_UpdatePadRandom(struct tagLMAP_CHR_WORK *wk);
+s8 Chr_UpdatePadRoute(struct tagLMAP_CHR_WORK *chrwk);
+s8 Chr_UpdatePadTrain(struct tagLMAP_CHR_WORK *chrwk);
+s8 CtrlActionWindow(void);
+s32 EffGrid_CheckWait(dds3ProcessID_t *proc);
+dds3ProcessFunc_t EffGrid_Draw(dds3ProcessID_t *proc);
+void EffGrid_DrawCB(struct tagLMAP_EFFGRID_CB *p_cb);
+void EffGrid_DrawCBAll(dds3ProcessID_t *proc);
+dds3ProcessFunc_t EffGrid_DrawProcess(dds3ProcessID_t *proc);
+void EffGrid_Init(dds3ProcessID_t *proc);
+void EffGrid_InitCB(struct tagLMAP_EFFGRID_CB *p_cb);
+void EffGrid_InitCBAll(dds3ProcessID_t *proc);
+void EffGrid_Initialize(dds3ProcessID_t *proc);
+dds3ProcessFunc_t EffGrid_Process(dds3ProcessID_t *proc);
+void EffGrid_SetCB(struct tagLMAP_EFFGRID_CB *p_cb, s32 no, s8 type);
+void EffGrid_SetCBAll(dds3ProcessID_t *proc);
+void EffGrid_Shutdown(dds3ProcessID_t *proc);
+dds3ProcessID_t *EffGrid_Start(void);
+void EffGrid_UpdateCB(struct tagLMAP_EFFGRID_CB *p_cb, s32 no, s8 type);
+void EffGrid_UpdateCBAll(dds3ProcessID_t *proc);
+void EffGrid_UpdateCBHold(struct tagLMAP_EFFGRID_CB *p_cb, s32 no);
+void EffGrid_UpdateCBMove(struct tagLMAP_EFFGRID_CB *p_cb);
+dds3ProcessID_t *EffWave_Start(void);
+void FldWnd_CallStart(struct tagLMAP_FLDWND_WORK *wk);
+dds3ProcessFunc_t FldWnd_DrawProcess(dds3ProcessID_t *PID);
+void FldWnd_DrawThumbnail(struct tagLMAP_FLDWND_WORK *wk);
+void FldWnd_LinkSprite(struct sprHandle_t *a_hSpr);
+dds3ProcessFunc_t FldWnd_Process(dds3ProcessID_t *PID);
+void FldWnd_ProcessStart(void);
+void FldWnd_Start(sdfVector4_t *pos1, const sdfVector4_t *pos0);
+void ListCallProcEnd(struct tagLMAP_LIST_WORK *wk);
+s8 ListCheckProcEnd(struct tagLMAP_LIST_WORK *wk);
+s32 ListLinkSprite(struct sprHandle_t *a_hSpr);
+s32 ListMakeListStation(struct tagLMAP_LIST_WORK *wk);
+void LoadFile(void);
+s32 Lock_SetPointChr(struct tagLMAP_LOCK_WORK *lockwk, struct tagLMAP_CHR_WORK *chrwk, s32 lockFlg);
+void M_InitCamera(void);
+void M_InitScene_lmap(void);
+s32 M_SetLockPointNpcCB(s8 charaNo, s32 lockFlg);
+void M_UpdateKaya(struct tagLMAP_CHR_WORK *kaya);
+s16 MapDat_GetRouteDat(s32 list_no, s32 type);
+void MdlUpdate(struct tagLMP_MODEL_WK *wk);
+s32 NpcDelete(void);
+dds3ProcessFunc_t Process_nwdNews(dds3ProcessID_t *PID);
+void Release_lmap(void);
+void Start_lmap(s32 aFieldNo);
+void Util_CalcLength(s16 *a_pDat, s16 a_no, s16 a_type);
+s32 Util_GetPadAnalog(sdfVector4_t *p_pad, f32 *p_length, f32 min);
+s8 _Chr_UpdatePadRoute(struct tagLMAP_CHR_WORK *chrwk);
+void _FldWnd_CallEnd(struct tagLMAP_FLDWND_WORK *wk);
+void cmpSetStockVisible(s32 a_bDraw);
+s8 dmCallBitCheck(s16 a_no);
+s16 dmCallLMAPPOINTNO(s32 no);
+dds3ProcessFunc_t lmapCallEffGridSetCBAll(dds3ProcessID_t *proc);
+void lmapCallTexFreeDelayed2(void);
+void mselNmeCamera(void);
+
+#endif

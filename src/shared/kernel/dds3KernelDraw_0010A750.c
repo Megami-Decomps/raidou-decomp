@@ -11,6 +11,7 @@
 #include "sdf3DPrim.h"
 #include "sdfMat.h"
 #include "sdk_libc.h"
+#include "dds3KernelDraw_0010A750.h"
 
 /* One A+D register command with its standard DMA/GIF header. */
 typedef struct

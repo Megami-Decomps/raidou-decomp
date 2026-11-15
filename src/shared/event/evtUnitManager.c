@@ -73,7 +73,7 @@ typedef enum {
 #include "basic.h"
 #include "dds3obj.h"
 
-extern void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast);
+extern void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 motion, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 data);
 s32 evtUnitRotationTarget(evtUnit_t *h, f32 *pos, f32 radio);
 extern void evtGetUnitDirVector(evtUnit_t *h);
 void evtVu0SubVectorXZAxis(f32 *a, f32 *b);
@@ -102,8 +102,8 @@ s32 evtUnitMoveType0(evtUnit_t *h);
 s32 evtUnitMoveTypePathTrace(evtUnit_t *h);
 void evtSetUnitRot1(evtUnit_t *h, s128 *rot, s32 para1);
 void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1);
-void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast);
-void evtSetUnitMove2(evtUnit_t *work, s32 motionSubmode, s32 worldObjectKey, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast);
+void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 motion, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 data);
+void evtSetUnitMove2(evtUnit_t *work, s32 motionSubmode, s32 worldObjectKey, s32 motion, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 data);
 
 #include "sdk_libc.h"
 

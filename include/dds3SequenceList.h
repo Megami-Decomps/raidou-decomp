@@ -1,0 +1,34 @@
+#ifndef DDS3SEQUENCELIST_H
+#define DDS3SEQUENCELIST_H
+
+#include "common.h"
+#include "kernel.h"
+
+struct SequenceParameter;
+
+void CallField(DDS3_ADMINI_CALL flg, struct SequenceParameter *);
+void CallJimusyo(DDS3_ADMINI_CALL flg, struct SequenceParameter *);
+void CallModeSelect(DDS3_ADMINI_CALL flg, struct SequenceParameter *);
+s32 CallNewBattle(void);
+void CallNewBattleTest(DDS3_ADMINI_CALL flg, struct SequenceParameter *);
+s32 CheckCamp(void);
+s32 CheckEpSave(void);
+s32 CheckEvent(void);
+s32 CheckField(void);
+s32 CheckJimusyo(void);
+s32 CheckLoad(void);
+s32 CheckNewBattleTest(void);
+s32 CheckSave(void);
+s32 CheckTitle(void);
+s32 ExitCamp(void);
+s32 ExitEpSave(void);
+s32 ExitJimusyo(void);
+s32 ExitLoad(void);
+s32 ExitNewBattle(void);
+s32 ExitNewBattleTest(void);
+s32 ExitSave(void);
+s32 ExitStaff(void);
+s32 dds3CallShowSceneModels(void);
+s32 dds3Func14(void);
+
+#endif

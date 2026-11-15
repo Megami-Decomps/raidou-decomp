@@ -14,6 +14,7 @@
 #include "draw3d.h"
 #include "draw.h"
 #include "dds3PadManager.h"
+#include "code_r1_00104370.h"
 
 /*
  * Allocate a task and place it in scheduler queues. Returns NULL on allocation

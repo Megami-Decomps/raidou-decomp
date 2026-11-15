@@ -26,4 +26,9 @@ typedef struct EffectObjectData {
 
 typedef char EffectObjectData_size_must_be_0x40[(sizeof(EffectObjectData) == 0x40) ? 1 : -1];
 
+#include "sdf_types.h"
+
+dds3Basic_t *dds3AddUnitObjectBasic(u32 serialID, const sdfVector4_t *aPos, const sdfVector4_t *aRot);
+void dds3UnitObjectBasicSetKubiTerget(dds3Basic_t *pBasic, const sdfVector4_t *aTgt);
+
 #endif

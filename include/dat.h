@@ -35,4 +35,16 @@ typedef char BattleAdjustmentRecordSizeCheck[sizeof(BattleAdjustmentRecord) == 0
 
 extern BattleAdjustmentRecord *datBattleAdjustmentRecords;
 
+#include "enums.h"
+
+struct sdatUnitWork_t;
+
+void CallProcEnd_cmpStatus(void);
+void UserInit(void);
+s32 datAddDevil(void);
+char *datGetPlayerExp(CMP_TITLE_ID index);
+void datGlobalWorkDestroy(void);
+void datGlobalWorkInit(void);
+s32 sdatCalc_GetBadStatus(struct sdatUnitWork_t *unit);
+
 #endif

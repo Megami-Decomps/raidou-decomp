@@ -53,4 +53,12 @@ typedef struct FileSavePreviewRecord {
 typedef char FileSavePreviewRecordSizeCheck[
     sizeof(FileSavePreviewRecord) == 0x30 ? 1 : -1];
 
+struct Standard;
+struct effPartsHandle_t;
+struct emdlHandle_t;
+
+void Delete(struct effPartsHandle_t *handle);
+struct emdlHandle_t *effCallChipAllocZeroDirect3(struct Standard *pParts);
+struct emdlHandle_t *effPCPAnalyzeBEDCopy(struct effPartsHandle_t *handle);
+
 #endif

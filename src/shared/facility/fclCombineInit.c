@@ -1,4 +1,5 @@
 #include "common.h"
+#include "fclCombineInit.h"
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", fclModelDevilLbTable);

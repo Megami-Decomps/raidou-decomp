@@ -5,6 +5,7 @@
 #include "sdfChip.h"
 #include "dds3SceneBasic.h"
 #include "dds3Basic.h"
+#include "dds3EventObjectBasic.h"
 
 /* The event constructor allocates a complete 16-byte payload. */
 typedef struct

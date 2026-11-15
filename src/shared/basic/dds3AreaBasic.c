@@ -3,6 +3,7 @@
 #include "sdfChip.h"
 #include "dds3SceneBasic.h"
 #include "dds3WorldBasic.h"
+#include "dds3AreaBasic.h"
 
 typedef s32 (*dds3BasicProc_t)(dds3Basic_t *basic);
 

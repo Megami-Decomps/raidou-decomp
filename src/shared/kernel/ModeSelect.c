@@ -6,6 +6,7 @@
 #include "ps2asm.h"
 #include "newdata.h"
 #include "sdfSound.h"
+#include "ModeSelect.h"
 
 typedef struct evtUnitHandle_t
 {

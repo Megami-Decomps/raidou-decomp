@@ -25,6 +25,7 @@
 #include "sdf_movie_types.h"
 #include "effect.h"
 #include "code_r1_0021C768.h"
+#include "code_r1_002250F8.h"
 
 enum {
     SDF_PSMCT32 = 0x00,

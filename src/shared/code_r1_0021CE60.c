@@ -10,6 +10,7 @@
 #include "sdfSound.h"
 #include "sdfFile.h"
 #include "effPCPMisc_00224D10.h"
+#include "code_r1_0021CE60.h"
 
 extern void fclShopProcessStart(void *pPlace);
 

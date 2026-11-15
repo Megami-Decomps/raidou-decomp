@@ -6,4 +6,6 @@
 void dds3SoftResetOff(void);
 void dds3SoftResetOn(void);
 
+void dds3NewGameStart(void);
+
 #endif

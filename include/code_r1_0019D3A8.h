@@ -5,4 +5,6 @@
 
 #define SDF_GS_CONTEXT_1 0
 
+void mapTitleEnd(void);
+
 #endif

@@ -21,4 +21,11 @@ s32 datBossRashChk(s32 eid);
 
 extern datBossPress_t datBossPress[40];
 
+struct sdatUnitWork_t;
+
+s32 datAddMag(s32 id);
+void datAddMaka(s32 add);
+s32 datCheckMoney(s32 money);
+void datResetBadStat(struct sdatUnitWork_t *pWork, u32 badstat);
+
 #endif /* DATCALC_H */

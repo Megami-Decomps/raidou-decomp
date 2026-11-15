@@ -12,6 +12,7 @@
 #include "sdfMath.h"
 #include "polyManager.h"
 #include "effModelTrackPoly.h"
+#include "parManager.h"
 
 typedef struct dds3Particle_BlurBuffList_t dds3Particle_BlurBuffList_t;
 

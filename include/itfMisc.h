@@ -16,4 +16,6 @@ sdfTexHandle_t *itfMiscLoadTexture(const char *filename);
 void itfMiscSetRatioRGB(itfColor_t *output, s32 scaleX, s32 scaleY, s32 scaleZ, s32 w, const itfColor_t *input, s32 count);
 void itfDrawThreePanelBorderBands(sdfIVector2_t *bounds, itfColor_t *color, u32 tail, s32 borderWidth, sdfDrawTag_t *command);
 
+s32 itfQuickSaveExeCheck(void);
+
 #endif

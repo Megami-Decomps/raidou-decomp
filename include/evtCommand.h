@@ -125,4 +125,11 @@ s32 fldCommand_PAD_DISABLE(void);
  * callback result completes it and lets the interpreter consume its operands. */
 typedef u32 ScrCommandResult;
 
+void CallBattleSub_evtCommand(s32 encno, s32 eventno);
+void KutiFunction(void);
+void evtCallGetActiveScene5(void);
+s32 evtFldProcSequence(void);
+void evtLipsExecFunction(s32 unit_uniqid, s32 motion_no);
+void titleCallNameEntry(void);
+
 #endif

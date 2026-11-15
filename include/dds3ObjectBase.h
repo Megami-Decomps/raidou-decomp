@@ -18,4 +18,16 @@ dds3Basic_t *dds3ObjectBaseSetControlBasicType(dds3Basic_t *pObjectBasic, dds3Ba
 void dds3ObjectBaseSetPadControl(dds3Basic_t *pObjectBasic, dds3BasicControlProc_t pFuncPadControl);
 s32 dds3ObjectBaseSetPrimaryControl(dds3Basic_t *basic, dds3BasicControlProc_t func);
 
+#include "enums.h"
+#include "model.h"
+
+f32 dds3CallMemset(dds3Basic_t *pObjectBasic, sdfModelRootNode_t *model_root);
+void *dds3ObjectBaseGetUserValue(dds3Basic_t *pObjectBasic);
+void dds3ObjectBaseMakeMatter(dds3Basic_t *pObjectBasic);
+void dds3ObjectBaseMakeUnit(dds3Basic_t *pObjectBasic, MODELTYPE major, s32 minor);
+void dds3ObjectBaseModelLinkOt(sdfModelOt_t *pModelOt, dds3Basic_t *pObjectBasic);
+s32 dds3ObjectBaseRegistArea(dds3Basic_t *pObjectBasic);
+void dds3ObjectBaseSetControlBasicCamLen(dds3Basic_t *pObjectBasic);
+void *dds3ObjectBaseSetUserValue(dds3Basic_t *pObjectBasic, void *pUserValue);
+
 #endif

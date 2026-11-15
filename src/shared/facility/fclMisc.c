@@ -14,6 +14,7 @@
 #include "itfMesManager.h"
 #include "dds3KernelCore.h"
 #include "dds3SceneBasic.h"
+#include "fclMisc.h"
 
 extern u32 dds3GetRandA(void *name);
 void fclClearFlag(s8 index);

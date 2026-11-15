@@ -49,4 +49,29 @@ void dds3SetScreenFovy(f32 fovy);
 void dds3SetSoftenBias(s32 frame, f32 soften, f32 bias);
 void dds3StopQuake(void);
 
+#include "enums.h"
+
+struct SDF_GS_TEST;
+
+s32 dds3BistaCheck(void);
+void dds3BistaClear(void);
+void dds3BistaIn(u32 frame);
+void dds3BistaOut(u32 frame);
+void dds3BistaOutEx(u32 frame, u32 btm_h);
+void dds3BistaUpdate(void);
+void dds3ChangeBistaMode(BISTA_MODE bistamode);
+void dds3DrawBista(void);
+void dds3FilterCalc(void);
+void dds3FilterClear(void);
+void dds3FilterDraw(void);
+s32 dds3FilterGetAlpha(void);
+s32 dds3FilterGetAlphaOfs(void);
+void dds3FilterSet(s32 idx, s32 mode, s32 hokan);
+void dds3FilterSetAlpha(s32 alp);
+void dds3FilterSetAlphaOfs(s32 alp);
+void dds3InitDrawEnv(void);
+void dds3RunQuake(void);
+void eglLinkAlpha(struct SDF_GS_TEST *test);
+s32 sbtlResetJump(void);
+
 #endif

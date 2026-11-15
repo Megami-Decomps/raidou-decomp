@@ -63,4 +63,10 @@ typedef char FldFileNameEntrySizeCheck[(sizeof(FldFileNameEntry) == 0x0C) ? 1 : 
 
 typedef char FldFileResourceSizeCheck[(sizeof(FldFileResource) == 0x24) ? 1 : -1];
 
+struct fldConstructAreaFL2_t;
+
+void MakeObjectBasic2(void);
+void fldLoadFile(void);
+void fldMakeBlockBasicFL2(struct fldConstructAreaFL2_t *pBlockTable, u32 nBlock);
+
 #endif

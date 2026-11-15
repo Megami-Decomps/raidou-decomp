@@ -113,4 +113,25 @@ void evtHokanMultBlur(s32 hokan, f32 ratio, dds3Effect_PartialMultiBlurParam_t *
 void evtHokanMultFilter(s32 hokan, f32 ratio, dds3Effect_PartialMultiFilterParam_t *key1, dds3Effect_PartialMultiFilterParam_t *key2, dds3Effect_PartialMultiFilterParam_t *d);
 void evtHokanRipBlur(s32 hokan, f32 ratio, dds3Effect_RippleBlurParam_t *key1, dds3Effect_RippleBlurParam_t *key2, dds3Effect_RippleBlurParam_t *d);
 
+#include "basic.h"
+#include "enums.h"
+#include "kernel.h"
+
+struct pmdProcessWork_t;
+struct pmdSeqData_t;
+
+struct pmdProcessWork_t *GetWorkData1(struct pmdProcessWork_t *wdata, void *pm1data);
+struct pmdProcessWork_t *InitPolygonMovieWorkData(void);
+void evtCheckLoad(struct pmdProcessWork_t *wdata);
+s32 evtCheckSeqEnd(dds3ProcessID_t *id);
+void evtFreeWorkData1(struct pmdProcessWork_t *wdata);
+void evtFreeWorkData2and3(struct pmdProcessWork_t *wdata);
+struct pmdProcessWork_t *evtGetWorkData2and3(struct pmdProcessWork_t *wdata, struct pmdSeqData_t *pm2dataParam, struct pmdSeqData_t *pm3dataParam);
+void evtMoverFrameSet(dds3Basic_t *mover, s32 sw, s32 baseframe, s32 nowframe, s32 offset);
+void evtResetFlag(dds3ProcessID_t *id, PMD_FLAG flag);
+void evtRunUnitMode(dds3Basic_t *unit, PMD_UNIT mode, u32 addflag, u32 downflag);
+void evtSetFlag(dds3ProcessID_t *id, PMD_FLAG flag);
+dds3ProcessID_t *evtStart2(DDS3_PRIORITY priority, s32 eventno, s32 cutno, s32 seqno);
+void evtStopMover(dds3Basic_t *mover, s32 sw, s32 baseframe, s32 nowframe);
+
 #endif

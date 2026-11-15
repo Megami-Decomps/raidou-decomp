@@ -3,6 +3,7 @@
 #include "sdfMemory.h"
 #include "itfMesManager.h"
 #include "itfMisc.h"
+#include "itfPanel.h"
 
 typedef sdfIVector2_t itfDrawVertex_t;
 

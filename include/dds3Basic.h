@@ -23,4 +23,10 @@ void dds3OffPoseSetFlag(dds3PoseSet_t *pPoseSet, u32 flag);
 void dds3SetRadiusPoseSet(dds3PoseSet_t *pose);
 void dds3SetSclPoseSet(dds3Basic_t *pBasic, const sdfVector4_t *scl);
 
+void dds3GetSclPoseSet(dds3Basic_t *pBasic);
+void dds3MakeMatrix(const sdfVector4_t *scale, const sdfVector4_t *quaternion, const sdfVector4_t *transrate);
+u32 dds3SerializeID(void);
+void dds3SetPosPoseSet_dds3Basic(dds3Basic_t *pBasic, const sdfVector4_t *pos);
+void dds3SetUnitObjectId(dds3Basic_t *basic, char *name);
+
 #endif

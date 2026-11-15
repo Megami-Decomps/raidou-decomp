@@ -27,4 +27,12 @@ void mdlSingleMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber);
 void mdlSmoothLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber, f32 aBeforeLeng, f32 aSmoothLeng);
 void mdlSmoothSingleMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber, f32 aBeforeLeng, f32 aSmoothLeng);
 
+#include "sdf_resource.h"
+
+struct dds3ModelHandle_t;
+
+void LinkMotion(struct dds3ModelHandle_t *aHandle);
+void mdlRegist(s32 aMajor, s32 aMinor, s32 aFlag, sdfModelTexList_t *aTexList, sdfModelDef_t *aData, sdfMemHandle_t *aHandle);
+void mdlRegistMotion(s32 aMajor, s32 aMinor, u32 aFlags, s32 aFirstMotion, s32 aGroup, s32 aPlayGroup, sdfMotionPlayBook_t *aData, sdfMemHandle_t *aHandle);
+
 #endif

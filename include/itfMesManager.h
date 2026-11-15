@@ -167,4 +167,38 @@ enum {
     ITF_MES_PANEL_MODE_NO_SPRITE_TRANSITION = 3
 };
 
+struct FontReq_t;
+
+void CalcMesFlow_itf(instanceMes_tag *pinst);
+void CalcMessage(instanceMes_tag *pinst);
+void CalcSelect(instanceMes_tag *pinst);
+void CalcWindow(instanceMes_tag *pinst);
+void CallEventVoice(instanceMes_tag *pinst);
+void ConvertZenkakuNumber(char **buf, s32 num);
+void DebugDrawWindowLine(itfpanel_t *meswin);
+void DebugMoveWinAlpha(window_tag *pwin);
+void DebugMoveWinVert(window_tag *pwin, s32 flag);
+void DrawMesFlow(instanceMes_tag *pinst);
+void DrawWindow(instanceMes_tag *pinst);
+void FadeOutWindow(void);
+void GetLastMessagePara(struct FontReq_t *pfont, message_tag *pmessage);
+void InputPasswdDraw(void);
+void OpenCheckSpeakerWindow(instanceMes_tag *pinst);
+void OpenMessageWindow(instanceMes_tag *pinst);
+void RaiseMessageSpeedMax(struct FontReq_t *pfont);
+void RaiseMessageSpeedMaxAll(struct FontReq_t *pfont);
+void ReleaseAllWindow_itf(instanceMes_tag *pinst);
+void ResetWindowPara(window_tag *pwin, s32 type, s32 alpha);
+s32 SelectItem(instanceMes_tag *pinst);
+void SelectItemMove(select_tag *psel, s32 direct);
+s32 itfInputPasswd(void);
+void itfMesMngChangeWindowType_itf(s32 id, s32 type, s32 alpha);
+void itfMesMngClearCursor(s32 id);
+s32 itfMesMngGetMesCurrentPage(s32 id);
+s32 itfMesMngGetMesPage(s32 id);
+void itfMesMngInitializeManager(void);
+void itfMesMngMsgWndCls(s32 msgid);
+void itfMesMngRequestSelect_itf(s32 id, s32 select);
+void itfMesMngSetVar_itf(s32 id, s32 index, s32 num, s32 type);
+
 #endif

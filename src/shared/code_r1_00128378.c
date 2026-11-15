@@ -16,6 +16,7 @@
 #include "fpu.h"
 #include "dds3UnitObjectBasic.h"
 #include "dds3WorldBasic.h"
+#include "code_r1_00128378.h"
 
 /* Cursor advancement returns whether cursorIndex refers to a linked entry. */
 typedef u32 Dds3BasicArrayCursorResult;

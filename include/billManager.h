@@ -20,4 +20,11 @@ void dds3BillboardSetMode(billHandle_t *hBillboard, s32 mode);
 void dds3BillboardSetPosition(void *hBillboard, const void *pPos);
 void dds3BillboardSetXYOffset(billHandle_t *hBillboard, float x, float y);
 
+#include "sdf_types.h"
+
+struct dds3Billboard_Basic_t;
+
+struct dds3Billboard_Basic_t *dds3BillboardGeneral_dds3Billboard(s32 number);
+f32 dds3BillboardGetDirectionRotate(const sdfVector4_t *pPos, const sdfVector4_t *pVec);
+
 #endif

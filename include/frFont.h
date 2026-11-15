@@ -187,4 +187,11 @@ u32 frFreeFontTable(frFontNodeHeader_t *ringBase);
 void frGetFontImagePtrs(frFontResource_t *block, frFontImage_t *out);
 s32 frDecodeFontRow(u8 *decodedBytes, s32 entryIndex, void *resourceBase, frFontImage_t *segments);
 
+struct dds3BillResource_t;
+struct dds3Billboard_Basic_t;
+
+char *frDrawMesFlowSub2(s32 id, s32 tagID);
+void frDumpFontTexture(struct dds3Billboard_Basic_t *hBillboard, struct dds3BillResource_t *hResource, struct dds3BillResource_t *hResourceB);
+s32 frPreCalcStrWidth(s32 *fieldID, s32 *floorID, s32 mini);
+
 #endif

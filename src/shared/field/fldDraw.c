@@ -27,6 +27,7 @@
 #include "sdf2D.h"
 #include "sdfBillBoard.h"
 #include "sdf3D.h"
+#include "fldDraw.h"
 
 typedef struct fldSpriteCorner_t fldSpriteCorner_t;
 

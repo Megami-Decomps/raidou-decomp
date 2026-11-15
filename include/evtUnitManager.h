@@ -22,4 +22,8 @@ u8 evtUnitLightAnimeStat(evtUnit_t *h);
 void evtUnitLightOff(evtUnit_t *h, s32 frame);
 void evtUnitLightOn(evtUnit_t *h);
 
+void evtInitCustomSceneLight(void);
+void evtSetCustomSceneLightData_SoftenAndBias(s32 index, f32 soften, f32 bias);
+s32 evtUnitManagerPrimaryFunc(dds3PoseSet_t *pose, dds3Basic_t *basic);
+
 #endif

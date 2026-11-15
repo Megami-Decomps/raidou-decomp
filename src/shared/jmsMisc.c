@@ -9,6 +9,7 @@
 #include "basic.h"
 #include "evt_world.h"
 #include "code_r1_001CC1D0.h"
+#include "jmsMisc.h"
 
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:

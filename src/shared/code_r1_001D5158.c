@@ -19,6 +19,7 @@
 #include "code_r1_0021CE60.h"
 #include "slMain.h"
 #include "code_r1_001CC1D0.h"
+#include "code_r1_001D5158.h"
 
 /* Apply volume and pan to a sequence track through the command queue. */
 

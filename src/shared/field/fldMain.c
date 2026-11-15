@@ -1,4 +1,5 @@
 #include "common.h"
+#include "fldMain.h"
 
 INCLUDE_ASM(const s32, "field/fldMain", fldSetUnitFollowCamera);
 

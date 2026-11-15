@@ -15,4 +15,13 @@ void evtPathLoop(dds3Basic_t *basic, s32 sw);
 void evtSetUnitPos(u32 targetKey, u32 sourceKey);
 s32 evtStageAnimeControl(s32 type, s32 mode);
 
+#include "enums.h"
+#include "sdf_types.h"
+
+struct BUSTUP_POS_TBL_t;
+
+s32 evtGetDefaultPosBustUp(MODELTYPE major, struct BUSTUP_POS_TBL_t *tbl, s32 type, sdfVector4_t *pos, sdfVector4_t *rot, sdfVector4_t *defpos);
+s32 evtGetDrawBustupNums(void);
+s32 evtLoadUnitBustUp(MODELTYPE major, s32 minor, s32 type);
+
 #endif

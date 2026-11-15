@@ -11,4 +11,6 @@ s32 evtPlaySe(s32 eventno, s32 seno);
 s32 evtStopEventBgm(s32 eventId, s32 variation);
 void evtTransEventBgm(s32 eventId, s32 variation);
 
+s32 evtStopSe(s32 eventno, s32 seno);
+
 #endif

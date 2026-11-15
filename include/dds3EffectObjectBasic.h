@@ -17,4 +17,12 @@ s32 dds3EffectObjectPresetMG12(dds3Basic_t *eff);
 s32 dds3EffectObjectSetMG12Pos(dds3Basic_t *eff, dds3Basic_t *p1, dds3Basic_t *p2, dds3Basic_t *p3, dds3Basic_t *p4);
 void dds3StartBEDEffectObjectBasic(dds3Basic_t *basic, u32 cutno);
 
+#include "effManager.h"
+#include "sdf_types.h"
+
+dds3Basic_t *AddEPLEffect(effHandle_t *eff, const sdfVector4_t *pos, const sdfVector4_t *rot);
+dds3Basic_t *dds3EffectObjectBasicAddD3P2(void *effdata, const sdfVector4_t *pos, const sdfVector4_t *rot);
+dds3Basic_t *dds3EffectObjectBasicAddEPL(void *effdata, const sdfVector4_t *pos, const sdfVector4_t *rot);
+s32 dds3EffectObjectBasicMainProcedure(dds3Basic_t *aPtr);
+
 #endif

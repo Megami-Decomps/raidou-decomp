@@ -5,6 +5,7 @@
 #include "field.h"
 #include "dds3KernelCore.h"
 #include "slMain.h"
+#include "dds3SequenceList.h"
 
 extern void fmProcTrigSequence(s32 mode);
 extern s32 fmProcessChk(void);

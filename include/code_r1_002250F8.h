@@ -86,4 +86,11 @@ void effReleaseSharedReference(RefObj *obj);
 /* Retain returns the same object after incrementing its object and shared-texture counts. */
 RefObj *effRetainSharedReference(RefObj *obj);
 
+struct effPartsHandle_t;
+struct opcHandle_t;
+
+struct opcHandle_t *Copy_effModel(struct effPartsHandle_t *handle);
+void Draw_effHelper(struct effPartsHandle_t *handle);
+void ResourceCopy_effModel(struct effPartsHandle_t *dstHandle, struct effPartsHandle_t *srcHandle);
+
 #endif

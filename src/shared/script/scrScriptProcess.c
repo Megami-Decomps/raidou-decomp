@@ -4,6 +4,7 @@
 #include "scr.h"
 #include "scrTraceCode.h"
 #include "dds3KernelCore.h"
+#include "scrScriptProcess.h"
 
 extern scrProcessWork_s *scrHandleFirst;
 

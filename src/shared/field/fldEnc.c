@@ -1,4 +1,5 @@
 #include "common.h"
+#include "fldEnc.h"
 
 INCLUDE_ASM(const s32, "field/fldEnc", encStart);
 

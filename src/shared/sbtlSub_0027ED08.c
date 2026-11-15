@@ -6,6 +6,7 @@
 #include "sdfDevCons.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
+#include "sbtlSub_0027ED08.h"
 
 /* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
 

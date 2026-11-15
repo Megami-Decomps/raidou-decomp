@@ -808,4 +808,9 @@ typedef char EffEditorRowSizeCheck[(sizeof(EffEditorRow) == 0x18) ? 1 : -1];
 
 typedef char EffQueuedFileObjectSizeCheck[(sizeof(EffQueuedFileObject) == 0x38) ? 1 : -1];
 
+struct Standard;
+struct ptcHandle_t;
+
+struct ptcHandle_t *PartsCreate_effParticle(struct Standard *pParts);
+
 #endif

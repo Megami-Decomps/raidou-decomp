@@ -4,6 +4,7 @@
 #include "event.h"
 #include "field.h"
 #include "sdk_libc.h"
+#include "dds3SequenceList_00111FF8.h"
 
 extern scrProcessWork_s *scrHandleFirst;
 extern scrProcessWork_s *scrHandleLast;

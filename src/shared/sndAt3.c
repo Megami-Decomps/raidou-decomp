@@ -10,6 +10,7 @@
 #include "basic.h"
 #include "evt_world.h"
 #include "code_r1_001CF808.h"
+#include "sndAt3.h"
 
 /* The two title-audio states own the complete ten-word frame/decoder record. */
 typedef struct TitleAudioStreamState {

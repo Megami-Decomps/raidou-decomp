@@ -32,4 +32,6 @@ u32 effConfigureIndexedSlotMaterial(struct EffectSlotSet *work, s32 index,
 /* Loads base/name; the finished job stores the resource in *outInstance. */
 fileRequest_t *effRequestResourceByMode(const char *base, const char *name, u32 mode, void **outInstance);
 
+void effRequestMappedResource(const char *pFileName, const char *pBundle, EffMappedResource **outMappedResource);
+
 #endif

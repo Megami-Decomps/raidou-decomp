@@ -28,4 +28,7 @@ typedef struct fclNamedSlot_t {
 
 typedef char fclNamedSlot_size_must_be_44[(sizeof(fclNamedSlot_t) == 0x44) ? 1 : -1];
 
+void dds3PadAct(u32 mode, u8 pow, u32 frame);
+void dds3RunProcessList(void);
+
 #endif

@@ -14,4 +14,7 @@ s32 dds3PathBasicControlIsFinished(dds3PathBasicControl_t *work);
 void dds3PathBasicControlNextStep(dds3PathBasicControl_t *work, fldResourceLightPath_t *output);
 void dds3PathBasicControlSetRatio(dds3PathBasicControl_t *pControl, f32 ratio);
 
+dds3Basic_t *dds3AddPathBasic(u32 serialID, void *pData, char *pName);
+void dds3PathBasicFreeControl(dds3PathBasicControl_t *pControl);
+
 #endif

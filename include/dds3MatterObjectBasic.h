@@ -7,4 +7,7 @@
 u32 dds3MatterObjectBasicGetAlpMode(const dds3Basic_t *aPtr);
 void dds3MatterObjectBasicSetAlpMode(dds3Basic_t *aPtr, u32 alpmode);
 
+s32 MainProcedure(dds3Basic_t *aPtr);
+s32 dds3MatterObjectBasicDrawProcedure(dds3Basic_t *aPtr);
+
 #endif

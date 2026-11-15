@@ -32,6 +32,7 @@
 #include "sdfVu0.h"
 #include "polyManager.h"
 #include "effPart.h"
+#include "code_r1_00226EC8.h"
 
 typedef struct effPCPBossBED_t
 {
