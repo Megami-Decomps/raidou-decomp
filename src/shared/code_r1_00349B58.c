@@ -1,7 +1,10 @@
 #include "common.h"
+#ifdef VERSION_RAIDOU1
 #include "evtCommand.h"
 #include "dds3KernelCore.h"
+#endif
 
+#ifdef VERSION_RAIDOU1
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
@@ -140,3 +143,6 @@ u32 mnuClearTerminalPanelSelection(dds3ProcessID_t *task) {
     *(u32 *)(workAddress + 0x90) = 0;
     return 1;
 }
+#else
+INCLUDE_ASM(const s32, "code_r1_00349B58", mnuClearTerminalPanelSelection);
+#endif

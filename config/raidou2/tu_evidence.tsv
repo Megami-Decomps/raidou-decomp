@@ -178,7 +178,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001E4D70	001E4D70	code_r1_001CEBF8	c	dds:1 of 1	
 001E4DC8	001E58C0	evtTmxPreLoad	asm	none	
 001E5950	001E5950	sound/sndManager	c	smt3:map:1 of 1	sound/sndManager
-001E5980	001E6488	code_001E5980	c	dds:17 of 41	
+001E5980	001E6488	code_r1_001CF808	c	dds:17 of 41	
 001E6518	001E84B0	sndAt3	c	dds:18 literal-cores:1 of 34	
 001E84D8	001E8A10	sndAt3_001D2178	asm	none	
 001E8A48	001E9010	movie/mviManager	c	smt3:map:7+smt3:names:6 of 16	movie/mviManager
@@ -285,7 +285,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 003648C0	003936F8	code_003648C0	asm	none	
 00393708	00393708	basic/dds3ModelRangeBasic	c	smt3:map:1 of 1	basic/dds3ModelRangeBasic
 00393758	0039B858	code_00393758	asm	none	
-0039B8A8	0039B8A8	code_0039B8A8	c	dds:1 of 1	
+0039B8A8	0039B8A8	code_r1_00336E58	c	dds:1 of 1	
 0039B8E8	0039EB30	code_0039B8E8	asm	none	
 0039EB40	0039EB40	newbattle/nbAiScript	c	smt3:map:1 of 1	newbattle/nbAiScript
 0039EB78	003A9110	gohMain	asm	none	
@@ -298,7 +298,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 003B3890	003B3890	code_003B3890	c	dds:1 of 1	
 003B38B0	003B77E8	code_003B38B0	asm	none	
 003B7818	003B7818	code_003B7818	c	dds:1 of 1	
-003B7840	003BB778	code_003B7840	asm	none	
+003B7840	003B8318	code_003B7840	asm	none	
+003B8358	003B8358	code_r1_00349B58	c	dds:1 of 1	
+003B8380	003BB778	code_003B8380	asm	none	
 003BB7C0	003BBC90	jmsMisc	c	dds:7 of 11	
 003BBF70	003BC070	code_r1_0034C048	c	dds:2 of 2	
 003BC098	003BC098	code_003BC098	asm	none	

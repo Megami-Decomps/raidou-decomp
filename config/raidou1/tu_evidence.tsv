@@ -106,9 +106,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 0015D470	0015D470	code_r1_0015D470	c	dds:1 of 1	
 0015D490	001677D0	code_0015D490	asm	none	
 001677D8	001677D8	field/fldSnow	c	smt3:names:1 of 1	field/fldSnow
-001677F0	00173080	code_001677F0	asm	none	
-00173088	00173088	facility/fclCombineInit	c	smt3:map:1 of 1	facility/fclCombineInit
-001730A8	00174668	code_001730A8	asm	none	
+001677F0	0016D368	code_001677F0	asm	none	
+0016D3B0	00173CD8	facility/fclCombineInit	c	smt3:map:1 of 43	facility/fclCombineInit
+00173D20	00174668	code_00173D20	asm	none	
 00174698	00174758	field/fldEnc	c	smt3:map:2 of 2	field/fldEnc
 00174790	00179748	code_00174790	asm	none	
 00179788	00179788	field/fldCommand	c	smt3:names:1 of 1	field/fldCommand
@@ -173,7 +173,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001CEBF8	001CEBF8	code_r1_001CEBF8	c	dds:1 of 1	
 001CEC50	001CF748	evtTmxPreLoad	asm	none	
 001CF7D8	001CF7D8	sound/sndManager	c	smt3:map:1 of 1	sound/sndManager
-001CF808	001D0268	code_001CF808	c	dds:17 of 40	
+001CF808	001D0268	code_r1_001CF808	c	dds:17 of 40	
 001D02F8	001D2150	sndAt3	c	dds:20 literal-cores:1 of 34	
 001D2178	001D2698	sndAt3_001D2178	asm	none	
 001D26D0	001D2C98	movie/mviManager	c	smt3:map:7+smt3:names:6 of 16	movie/mviManager
@@ -277,14 +277,16 @@ start	last_func	unit	kind	evidence	smt3_unit
 00300530	00300530	code_r1_00300530	c	dds:1 of 1	
 00300578	0032F150	code_00300578	asm	none	
 0032F160	0032F278	basic/dds3ModelRangeBasic	c	smt3:map:1 of 4	basic/dds3ModelRangeBasic
-0032F2B8	00339648	code_0032F2B8	asm	none	
+0032F2B8	00336E08	code_0032F2B8	asm	none	
+00336E58	00336E58	code_r1_00336E58	c	dds:1 of 1	
+00336E90	00339648	code_00336E90	asm	none	
 00339658	00339658	newbattle/nbAiScript	c	smt3:map:1 of 1	newbattle/nbAiScript
 00339690	00344ED8	gohMain	asm	none	
 00344F28	00344F28	code_r1_00344F28	c	dds:1 of 1	
 00344F78	003461E0	code_00344F78	asm	none	
 003461E8	003461E8	code_r1_003461E8	c	dds:1 of 1	
 00346258	00349B18	code_00346258	asm	none	
-00349B58	00349B58	code_00349B58	c	dds:1 of 1	
+00349B58	00349B58	code_r1_00349B58	c	dds:1 of 1	
 00349B80	0034B7C0	code_00349B80	asm	none	
 0034B898	0034BD68	jmsMisc	c	dds:7 of 11	
 0034C048	0034C148	code_r1_0034C048	c	dds:2 of 2	
