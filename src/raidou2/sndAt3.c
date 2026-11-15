@@ -9,36 +9,14 @@
 #include "sdf_resource.h"
 #include "sdk_libc.h"
 #include "dds/btl.h"
-#include "dds/dds3_world_counter.h"
-#include "dds/dds3_world_secondary.h"
-#include "dds/dds3_world_value.h"
-#include "dds/file_request_api.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_semaphore_api.h"
-#include "dds/sdf_thread_sleep.h"
-#include "dds/sdk_libc.h"
-#include "dds/sdk_libkernl.h"
 
 s32 SignalSema(s32 semaphoreId);
 s32 WaitSema(s32 semaphoreId);
 extern void *memcpy(void *, const void *, unsigned int);
 
-#include "dds/sdk_ps2.h"
-#include "dds/common.h"
 #include "dds/mnu_result.h"
-#include "dds/sdf_chip.h"
-#include "dds/dds3obj.h"
-#include "dds/dds3_world_selection.h"
-#include "dds/dds3_process.h"
-#include "dds/mnu_title_effect.h"
-#include "dds/file.h"
-#include "dds/file_request_end_check_api.h"
-#include "dds/sdf_thread.h"
 #include "dds/mnu_title_stream.h"
 #include "dds/mnu_title_stream_status_snapshot.h"
-#include "dds/mnu_title_stream_entry.h"
-#include "dds/mnu_title_sound.h"
-#include "dds/mnu_title_sound_buffer_status.h"
 
 #define SND_MIX_SAMPLE_COUNT 0x800
 
@@ -62,8 +40,6 @@ extern TitleAudioStreamState mnuTitleSoundBufferState;
 extern u32 mnuTitleAudioSilenceBuffer[];
 extern TitleAudioStreamState mnuTitleStreamStatus;
 extern u32 mnuTitleStreamSemaphore;
-
-#include "dds/sdf_debug_api.h"
 
 void sndMixSampleBuffers(s16 *destinationSamples, TitleAudioStreamState *firstSource, TitleAudioStreamState *secondSource);
 extern u32 mnuTitleStreamDecoderState[];

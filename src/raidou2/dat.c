@@ -9,16 +9,6 @@
 #include "newdata.h"
 #include "sdk_libc.h"
 #include "dds/btl.h"
-#include "dds/dds3_path.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3obj.h"
-#include "dds/eff_random_mod.h"
-#include "dds/eff_transform.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/sdf_dev_state.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdk_libc.h"
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -44,28 +34,7 @@ enum {
 
 extern void *memcpy(void *, const void *, unsigned int);
 
-#include "dds/sdk_ps2.h"
-#include "dds/evt_run_context_api.h"
-#include "dds/common.h"
-#include "dds/scr.h"
 #include "dds/sdf_vu0.h"
-#include "dds/sdf_channel.h"
-#include "dds/scr_work_task_api.h"
-#include "dds/dat_save_words.h"
-#include "dds/sdf_float_counter.h"
-#include "dds/mnu_flag_snapshot.h"
-#include "dds/evt_world_source_transform.h"
-#include "dds/pcp_vu0.h"
-#include "dds/btl_action.h"
-#include "dds/dat_state.h"
-#include "dds/dat_affinity_selector.h"
-#include "dds/dat_effective_affinity_api.h"
-#include "dds/dat_world_field_flags.h"
-#include "dds/dat_unit_has_skill_api.h"
-#include "dds/evt_randomize_entry_api.h"
-#include "dds/dat_command.h"
-#include "dds/sdf.h"
-#include "dds/fld_runtime_reset_api.h"
 
 #define SDF_PACKED_STATUS_BIT 0x8000
 
@@ -83,8 +52,6 @@ extern char sdfRuntimeTaskName[];
 void *dds3GetWorldNodeData(dds3Basic_t *node);
 void evtLoadValueVectorIntoVu(dds3Basic_t *node);
 void evtLoadValueSecondaryVectorIntoVu(dds3Basic_t *node);
-
-#include "dds/sdf_debug_api.h"
 
 /* Load the world node's borrowed data vector into VF10. */
 void evtLoadValueVectorIntoVu(dds3Basic_t *node) {

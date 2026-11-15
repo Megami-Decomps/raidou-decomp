@@ -7,12 +7,7 @@
 #include "libdma.h"
 #include "sdfDevCons.h"
 #include "sdf_packet_alloc.h"
-#include "dds/common.h"
-#include "dds/libdma.h"
-#include "dds/eeregs.h"
-#include "dds/sdfDevCons.h"
 #include "dds/libsdf.h"
-#include "dds/ps2asm.h"
 
 typedef struct sdfDevConsCB_tag
 {

@@ -583,95 +583,6 @@ extern datSkill_t attr[];
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_campCrossPanel_t 1
-
-#define SMT3_DEFINES_campDhEntryWork_t 1
-
-#define SMT3_DEFINES_campDhEntry_t 1
-
-#define SMT3_DEFINES_campDhIconGauge_t 1
-
-#define SMT3_DEFINES_campDhSavedUnit_t 1
-
-#define SMT3_DEFINES_campDhTimerWork_t 1
-
-#define SMT3_DEFINES_campDhWork_t 1
-
-#define SMT3_DEFINES_campInfoWork_t 1
-
-#define SMT3_DEFINES_campStatusPanel_t 1
-
-#define SMT3_DEFINES_campWork_t 1
-
-#define SMT3_DEFINES_cmbGbWork_t 1
-
-#define SMT3_DEFINES_cmbWork_t 1
-
-#define SMT3_DEFINES_cmpBadEffectParams_t 1
-
-#define SMT3_DEFINES_cmpCursorExtended_t 1
-
-#define SMT3_DEFINES_cmpDHWindow_t 1
-
-#define SMT3_DEFINES_cmpDhWork_t 1
-
-#define SMT3_DEFINES_cmpDrawBank_t 1
-
-#define SMT3_DEFINES_cmpHeartsIconTableEntry_t 1
-
-#define SMT3_DEFINES_cmpInfoWindow_t 1
-
-#define SMT3_DEFINES_cmpListPage_t 1
-
-#define SMT3_DEFINES_cmpLocalStock_t 1
-
-#define SMT3_DEFINES_cmpModelLink_t 1
-
-#define SMT3_DEFINES_cmpModelParam_t 1
-
-#define SMT3_DEFINES_cmpMsgEntry_t 1
-
-#define SMT3_DEFINES_cmpPanelEffAnim_t 1
-
-#define SMT3_DEFINES_cmpPanelEffState_t 1
-
-#define SMT3_DEFINES_cmpPanelEffView_t 1
-
-#define SMT3_DEFINES_cmpPanelEff_t 1
-
-#define SMT3_DEFINES_cmpPrintControl_t 1
-
-#define SMT3_DEFINES_cmpSavedNameView_t 1
-
-#define SMT3_DEFINES_cmpSeqFunc_t 1
-
-#define SMT3_DEFINES_cmpSeqInfo_t 1
-
-#define SMT3_DEFINES_cmpStockSeqInfo_t 1
-
-#define SMT3_DEFINES_cmpStockWork_t 1
-
-#define SMT3_DEFINES_cmpVec4_t 1
-
-#define SMT3_DEFINES_datItemEntry_t 1
-
-#define SMT3_DEFINES_datSkillBadEntry_t 1
-
-#define SMT3_DEFINES_datSkillBadWindow_t 1
-
-#define SMT3_DEFINES_frFontHandle_t 1
-
-#define SMT3_DEFINES_frFontRequest_t 1
-
-#define SMT3_DEFINES_rcvWork_t 1
-
-#define SMT3_DEFINES_stfUiWork_t 1
-
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_append.h"
-#include "dds/sdf_primitive_packet_api.h"
-#include "dds/sdk_libc.h"
-
 void *memset(void *dst, s32 value, u32 size);
 
 void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
@@ -689,30 +600,11 @@ u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *request);
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 s32 sdfGrAllocPacketBuff(s32 size);
 
-#include "dds/sdk_ps2.h"
-#include "dds/sdf_gs_header.h"
-#include "dds/sdf_gs_alpha_register_api.h"
-#include "dds/sdf_gs_register_submit_api.h"
-#include "dds/common.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/sdf_cons_matrix_packet.h"
-#include "dds/sdf_dma_packet_header.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_packet_list.h"
 #include "dds/sdf_packet_header.h"
-#include "dds/fpu.h"
 #include "dds/eff.h"
 #include "dds/eff_slot_phase.h"
 #include "dds/eff_resource_slots.h"
 #include "dds/eff_resource_records.h"
-#include "dds/itf_grid_text.h"
-#include "dds/itf_draw_grid.h"
-#include "dds/sdf.h"
-#include "dds/sdf_draw.h"
-#include "dds/sdf_projection.h"
-#include "dds/pcp_vu0.h"
-#include "dds/grid_packed_vertex.h"
 #include "dds/itf_grid_status_records.h"
 
 extern void *effGetSlotWorkOrOverride(EffectSlotSet *, s32);

@@ -124,44 +124,11 @@ void dds3HermitianTrackPolySetVertexSub(dds3HermitianTrackPoly_tag *hPoly, const
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_Eff_ModelTrackPolyParam_t 1
-
-#define SMT3_DEFINES_Eff_ModelTrackPoly_tag 1
-
-#define SMT3_DEFINES_dds3HermitianTrackPoly_tag 1
-
-#define SMT3_DEFINES_effDrawBank_t 1
-
-#define SMT3_DEFINES_effMTPolyListHandle_t 1
-
-#define SMT3_DEFINES_effModelTrackPoly_t 1
-
-#define SMT3_DEFINES_effSwordTrackParams_t 1
-
-#include "dds/sdk_ps2.h"
-#include "dds/common.h"
-#include "dds/sdf_map_position_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/sdf_asset_state.h"
-#include "dds/sdf_asset_create.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_packet_append.h"
-#include "dds/sdf_heap_api.h"
 #include "dds/eff.h"
-#include "dds/eff_math.h"
-#include "dds/eff_track_poly_list.h"
 #include "dds/mdl.h"
-#include "dds/sdf.h"
-#include "dds/sdf_chunk.h"
-#include "dds/pcp_vu0.h"
-#include "dds/eff_track_poly_data.h"
-#include "dds/eff_packet_params.h"
 
 void effTrackPolyReset(EffTrackPolyWork *work);
 void effTrackPolyUpdate(EffTrackPolyWork *work);
-
-#include "dds/sdf_packet_alloc.h"
 
 void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly)
 {

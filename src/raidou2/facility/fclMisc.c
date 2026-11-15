@@ -74,19 +74,6 @@ void fclSetMessagePos(s32 x, s32 y);
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_fclGlobalWorkItemInventory_t 1
-
-#define SMT3_DEFINES_fclItemList_t 1
-
-#define SMT3_DEFINES_fclSceneObj_t 1
-
-#include "dds/dds3_fade.h"
-#include "dds/eff_transform.h"
-#include "dds/dds3_process.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_texture_file.h"
-
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
  * directory extent rather than an enum-completeness claim. */
@@ -116,33 +103,10 @@ void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/dsp_entry_api.h"
-#include "dds/scr_integer_parameter_api.h"
 #include "dds/scr.h"
-#include "dds/dsp_message_window_api.h"
-#include "dds/dsp_channel.h"
-#include "dds/scr_integer_return_value_api.h"
-#include "dds/dsp_active_api.h"
 #include "dds/evt_message_window_api.h"
-#include "dds/evt_world_object_api.h"
-#include "dds/evt_active_entry_flag_api.h"
-#include "dds/dds3_task_state.h"
-#include "dds/dds3_task_state_query.h"
-#include "dds/itf_mes_window.h"
 #include "dds/itf_mes_panel_mode.h"
-#include "dds/itf_mes_entry_start_api.h"
-#include "dds/itf_mes_select_def_key_result.h"
 #include "dds/mnu.h"
-#include "dds/mnu_list.h"
-#include "dds/mnu_terminal_work.h"
-#include "dds/dat_state.h"
-#include "dds/evt_world.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3obj.h"
-#include "dds/eff_random.h"
-#include "dds/eff_light.h"
-#include "dds/mnu_event_flag_entries.h"
-#include "dds/eff_event_draw.h"
 
 struct sdfTexHandle_t;
 
@@ -207,8 +171,6 @@ typedef struct {
     u8 pad;
     u16 entryIndices[0];
 } ActiveList;
-
-#include "dds/dds3_world_secondary.h"
 
 extern void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 

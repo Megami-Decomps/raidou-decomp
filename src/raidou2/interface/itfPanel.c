@@ -168,38 +168,7 @@ extern u8 itfPanelSelWinLineVertexIndex[8];
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_itfDrawColor_t 1
-
-#define SMT3_DEFINES_itfDrawVertex_t 1
-
-#define SMT3_DEFINES_itfPanelFacilityData_t 1
-
-#define SMT3_DEFINES_itfPanelLeftFadeData_t 1
-
-#define SMT3_DEFINES_itfPanelMesWinData_t 1
-
-#define SMT3_DEFINES_itfPanelNormalData_t 1
-
-#define SMT3_DEFINES_itfPanelPlainData_t 1
-
-#define SMT3_DEFINES_itfPanelSelWinData_t 1
-
-#define SMT3_DEFINES_itfPanelTextureData_t 1
-
-#include "dds/itf_mes_panel_mode.h"
-#include "dds/scr_command_timer_api.h"
-#include "dds/scr_integer_parameter_api.h"
-#include "dds/scr_integer_return_value_api.h"
 #include "dds/mnu.h"
-#include "dds/scr_command_parameter_index.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/itf.h"
-#include "dds/itf_mes_window.h"
-#include "dds/itf_mes_entry_start_api.h"
-#include "dds/sdf.h"
-#include "dds/itf_panel_draw.h"
-#include "dds/itf_text_vector.h"
-#include "dds/itf_panel_api.h"
 #include "dds/itf_panel_layouts.h"
 #include "dds/itf_held_panel_message_step.h"
 
@@ -212,8 +181,6 @@ extern u8 itfPanelSelWinLineVertexIndex[8];
 #define ITF_PANEL_TINT_ALPHA_DENOMINATOR 128
 
 #define ITF_PANEL_TINT_BORDER_WIDTH 0x240
-
-#include "dds/sdf_packet_alloc.h"
 
 extern void itfDrawThreePanelBorderBands(PanelRect *rect, u32 *colors, u32 tail, s32 width, sdfDrawTag_t *command);
 extern u32 itfDrawTintedPanelRectData[];

@@ -9,47 +9,10 @@
 #include "libsdf.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/bill_object_api.h"
 
 extern void *memcpy(void *, const void *, size_t);
 #include "dds/btl.h"
-#include "dds/btl_effect_position.h"
-#include "dds/btl_stage_task_cleanup.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_fade_timing.h"
-#include "dds/dds3_path.h"
-#include "dds/dds3_world_primary.h"
-#include "dds/dds3obj.h"
-#include "dds/eff.h"
-#include "dds/eff_blur.h"
-#include "dds/eff_random.h"
-#include "dds/eff_random_mod.h"
-#include "dds/evt_unit.h"
-#include "dds/evt_unit_color_transition.h"
-#include "dds/file_pac_completion_api.h"
-#include "dds/file_request_api.h"
-#include "dds/file_slot.h"
-#include "dds/fld_transfer_chunk.h"
-#include "dds/mdl.h"
-#include "dds/sdf.h"
-#include "dds/sdf_asset_packets.h"
-#include "dds/sdf_asset_state.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_chunk.h"
 #include "dds/sdf_dev_state.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_append.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_quaternion.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf_texture_file.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdf_vu_matrix_multiply_api.h"
-#include "dds/sdf_vu_rotation_axes.h"
-#include "dds/sdk_libc.h"
-#include "dds/sdk_libm.h"
 
 /* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
 void Mult(void);
@@ -84,62 +47,21 @@ void *sdfMemLock(struct sdfMemHandle_t *allocation);
 
 char *strcpy(char *dst, const char *src);
 
-#include "dds/sdk_ps2.h"
 #include "dds/eff_block128.h"
 #include "dds/eff_editor_menu.h"
-#include "dds/eff_surface_grid_node.h"
 #include "dds/eff_surface_node.h"
-#include "dds/eff_animation_state.h"
 #include "dds/eff_model_resource.h"
-#include "dds/eff_gs_packet.h"
-#include "dds/eff_packet_params.h"
-#include "dds/eff_copied_payload.h"
-#include "dds/eff_class_ops.h"
-#include "dds/eff_particle_shared_resource.h"
 #include "dds/eff_camera_create_request.h"
-#include "dds/eff_file_job_request.h"
-#include "dds/eff_emitter_row.h"
 #include "dds/fld.h"
-#include "dds/btl_command.h"
-#include "dds/btl_motion_transform.h"
 #include "dds/btl_resource_browser.h"
 #include "dds/eff_bill.h"
-#include "dds/eff_anim.h"
-#include "dds/eff_bill_column_particle.h"
-#include "dds/eff_ribbon_work.h"
-#include "dds/eff_class_work_api.h"
-#include "dds/eff_scaled_class_frame_rows.h"
-#include "dds/eff_point_set.h"
-#include "dds/eff_point_set_table.h"
-#include "dds/eff_span_work.h"
-#include "dds/common.h"
-#include "dds/dds3_camera_update_flags.h"
-#include "dds/sdf_vu0.h"
-#include "dds/eff_emitter_type.h"
-#include "dds/file_pac.h"
 #include "dds/eff_resource_bank_slot.h"
-#include "dds/eff_matrix4.h"
 #include "dds/eff_active_resource.h"
-#include "dds/eff_frame_asset.h"
-#include "dds/eff_actor_transition_config.h"
-#include "dds/eff_object_node.h"
-#include "dds/dds3_fade.h"
-#include "dds/eff_ref_obj.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_source_lifetime.h"
-#include "dds/eff_transform.h"
-#include "dds/btl_state.h"
-#include "dds/eff_event_draw.h"
-#include "dds/eff_curve.h"
-#include "dds/file.h"
 #include "dds/ee_mmi.h"
 #include "dds/pcp_vu0.h"
 #include "dds/eff_queue.h"
 #include "dds/btl_resource_name.h"
-#include "dds/sdf_draw.h"
 #include "dds/fpu.h"
-#include "dds/eff_billboard_work.h"
-#include "dds/eff_resource_list.h"
 
 static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list) {
     surface->regFunc(surface, list);
@@ -396,8 +318,6 @@ typedef struct EffRateConfig {
     dds3Effect_Blur_t out;       /* 0xC0 */
 } EffRateConfig;
 
-#include "dds/eff_frame_state.h"
-
 typedef struct EffBillFrameEntry {
     s32 age;
     f32 spin;
@@ -408,8 +328,6 @@ typedef struct EffBillFrameEntry {
 } EffBillFrameEntry;
 
 typedef char EffBillFrameEntrySizeCheck[(sizeof(EffBillFrameEntry) == 0x18) ? 1 : -1];
-
-#include "dds/eff_bill_cell_draw_work.h"
 
 /* Kind-4 animated frame entry: the radius grows by radiusStep each frame
  * for the config's drawProgress frames. */
@@ -568,9 +486,6 @@ static inline u32 packNormalizedColor(void) {
     return rgba[0];
 }
 
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/sdf_gs_header.h"
-
 typedef char EffModelResource_size_must_be_0x40[
     (sizeof(EffModelResource) == 0x40) ? 1 : -1];
 
@@ -611,8 +526,6 @@ typedef struct EffCopiedSpawnList {
     u32 count;
     FldSpawnBatch *groups;
 } EffCopiedSpawnList;
-
-#include "dds/eff_camera_path_parameters.h"
 
 extern u128 D_0037EE90, D_0037EEA0, D_0037EEB0, D_0037EEC0, D_0037EED0;
 
@@ -979,10 +892,6 @@ u16 Start_sbtl(s32 flags);
 #endif
 
 #include "newdata.h"
-#include "dds/fr_font.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/sdf_line_pair_packet_api.h"
-#include "dds/sdf_projection.h"
 
 struct SdfPacket *effDebugDrawWireModel(const f32 vertices[][4], const u32 *colors,
                                                  s32 vertexCount, u32 primitiveFlags);
@@ -990,22 +899,7 @@ struct SdfPacket *effDebugDrawWireModel(const f32 vertices[][4], const u32 *colo
 /* Return the descriptor's payload base as a byte address, not the descriptor. */
 u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
 
-#include "dds/dsp_name.h"
-#include "dds/sdf_kernel_thread_param.h"
-#include "dds/sdf_thread_workspace_api.h"
-#include "dds/sdf_semaphore_api.h"
-#include "dds/itf.h"
-#include "dds/dat_state.h"
-#include "dds/pty_profile_record_value.h"
-#include "dds/pty_skill_nibble_state.h"
-#include "dds/prf_profile_cap.h"
-#include "dds/prf_requirement.h"
-#include "dds/prf_requirement_fallback.h"
-#include "dds/prf_fallback_item_requirement.h"
-#include "dds/script_flag_slot.h"
-#include "dds/pty_preset_record.h"
 #include "dds/prf_profile_parameters.h"
-#include "dds/prf_current_record_view.h"
 
 #define SCR_FLAG_ID_MASK 0xFFFF
 

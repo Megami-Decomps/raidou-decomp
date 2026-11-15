@@ -6,13 +6,8 @@
 
 #include "field.h"
 #include "dds/dds3_task_create.h"
-#include "dds/eff_manager_task.h"
-#include "dds/eff_random.h"
-#include "dds/eff_random_mod.h"
 #include "dds/mnu_title_sound.h"
 #include "dds/scr_integer_parameter_api.h"
-#include "dds/scr_integer_return_value_api.h"
-#include "dds/scr_string_parameter_api.h"
 
 /* The voice-file RPC sets this busy state on open and clears it on close.
  * It is separate from the PCM callback-command busy latch. */
@@ -20,11 +15,6 @@ MnuTitleSoundBusyState p2sdGetPcmState(void);
 
 /* Returns a borrowed read-only string for a STRING-tagged parameter, or NULL. */
 const char *scrGetStrPara(ScrCommandParameterIndex parameterIndex);
-
-#include "dds/fld_area_work.h"
-#include "dds/common.h"
-#include "dds/evt_solar.h"
-#include "dds/fld_scene_selection_resource.h"
 
 u32 fldCmdGetCurrentSceneSelectionResource(void);
 
@@ -52,18 +42,6 @@ s32 fldCmdSetStateFlag(void);
 #include "kernel_draw.h"
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
-#include "dds/fr_font.h"
-#include "dds/fr_font_measure.h"
-#include "dds/dds3_process.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdk_libc.h"
-#include "dds/sdk_libkernl.h"
-#include "dds/snd_command_packet.h"
-#include "dds/snd_sequence_volume_pan.h"
-#include "dds/snd_track_playback_api.h"
-#include "dds/ui_color.h"
 
 void Exit(s32 status);
 void FlushCache(s32 mode);
@@ -78,39 +56,21 @@ u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
 char *strcat(char *dst, const char *src);
 
 #include "dds/sdk_ps2.h"
-#include "dds/pty_experience_threshold_type.h"
-#include "dds/dds3_world_selection.h"
-#include "dds/dds3_world_value.h"
-#include "dds/mnu_sound_resource_path_api.h"
-#include "dds/mnu_voice_resource_path_api.h"
-#include "dds/mnu_result.h"
-#include "dds/brs_progress_animation_kind.h"
 #include "dds/brs_result_counter.h"
-#include "dds/brs_result_counter_completion_api.h"
-#include "dds/dds3_world_counter.h"
 #include "dds/snd_work.h"
-#include "dds/prf_current_record_view.h"
 
 extern void mnuTitleStreamUpdateAndLogBgm(void);
-
-#include "dds/sdf.h"
 
 /* The four sprite corner colours start from the shared grey table. */
 typedef struct BrsCornerColors {
     u32 rgba[4];
 } BrsCornerColors;
 
-#include "dds/eff.h"
-#include "dds/fr_font_draw_glyph.h"
-
 typedef struct BrsLevelCornerColors {
     u32 values[4];
 } BrsLevelCornerColors;
 
 #include "dds/mnu_title_effect.h"
-#include "dds/file.h"
-#include "dds/file_request_api.h"
-#include "dds/sdf_thread.h"
 #include "dds/mnu_title_stream.h"
 
 #define BRS_RESULT_COUNTER_PAIR_COUNT 5
@@ -162,8 +122,6 @@ typedef struct { u64 v; } __attribute__((packed)) u64p;
 extern u8 D_003BC598[];
 extern dds3ProcessID_t *mnuTitleSoundTask;
 
-#include "dds/sdf_debug_api.h"
-
 extern u32 D_003BC5B0[2];
 extern u32 D_003BC5B8;
 extern s32 sndStreamTransferIopHeapAddress;
@@ -175,8 +133,6 @@ typedef struct BrsResultWork {
     BrsResultCounterView levelCounters[8];
     BrsResultCounterView profileCounters[8];
 } BrsResultWork;
-
-#include "dds/prf_profile_cap.h"
 
 typedef struct BrsProfilePalette { u32 values[4]; } BrsProfilePalette;
 

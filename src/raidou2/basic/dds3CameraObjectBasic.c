@@ -39,28 +39,18 @@ void dds3CameraObjectBasicGetTgtCam(dds3Basic_t *pBasic, sdfVector4_t *tgtpos, s
 #define VERSION_DDS1 1
 #endif
 
-#include "dds/eff_transform.h"
-
 enum {
     OBJECT_TRANSFORM_FLAG_UPDATE_PENDING = 1,
     OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID = 2,
     OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
 };
 
-#include "dds/sdf_projection.h"
-#include "dds/common.h"
-#include "dds/dds3_camera_update_flags.h"
-#include "dds/sdf_vu0.h"
-#include "dds/sdf_chip.h"
 #include "dds/dds3obj.h"
-#include "dds/sdf_vu_matrix.h"
 #include "dds/pcp_vu0.h"
 
 typedef struct {
     f32 components[4];
 } CameraVector;
-
-#include "dds/dds3_world_secondary.h"
 
 void dds3LoadObjectMatrixPointerIntoVu(dds3Basic_t *camera);
 

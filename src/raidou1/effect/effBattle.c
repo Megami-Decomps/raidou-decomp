@@ -119,40 +119,7 @@ s32 effBTLSkillGetID(void);
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_EFF_BATTLE_COPY_TRIGGER_FRAME 1
-
-#define SMT3_DEFINES_EFF_BATTLE_MINIMUM_RAMP_END_FRAME 1
-
-#define SMT3_DEFINES_EFF_BATTLE_PARAMETER_WORK_CAPACITY 1
-
-#define SMT3_DEFINES_EFF_PARAM_WORK_KIND_EFFECT_NODE 1
-
-#define SMT3_DEFINES_effBTLColorRow_t 1
-
-#define SMT3_DEFINES_effBTLColorWork_t 1
-
-#define SMT3_DEFINES_effBTLColor_t 1
-
-#define SMT3_DEFINES_effBTLFieldFilter_t 1
-
-#define SMT3_DEFINES_effBTLImage_t 1
-
-#define SMT3_DEFINES_effBTLLightParams_t 1
-
-#define SMT3_DEFINES_effBTLLightWork_t 1
-
-#define SMT3_DEFINES_effBTLSkillInfo_t 1
-
-#define SMT3_DEFINES_effBTLVector4_t 1
-
-#define SMT3_DEFINES_fldResourceLight_t 1
-
-#include "dds/common.h"
-#include "dds/sdf_vu0.h"
 #include "dds/btl.h"
-#include "dds/eff_field_color.h"
-#include "dds/pcp_vu0.h"
-#include "dds/sdf_debug_api.h"
 
 extern u32 effFieldColorFinalSelector;
 u32 effBTLFieldColorGetOverrideSelector(void);

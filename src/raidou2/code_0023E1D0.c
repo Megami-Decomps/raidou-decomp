@@ -536,123 +536,11 @@ extern u8 effPadVibePower[2];
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_effBaelHead_t 1
-
-#define SMT3_DEFINES_effCrackColorSlot_t 1
-
-#define SMT3_DEFINES_effCrackHead_t 1
-
-#define SMT3_DEFINES_effCrackModel_t 1
-
-#define SMT3_DEFINES_effCrackMotion_t 1
-
-#define SMT3_DEFINES_effPCPBossBED_t 1
-
-#define SMT3_DEFINES_effPCPBossBUNSIN2_t 1
-
-#define SMT3_DEFINES_effPCPBossBUNSIN_t 1
-
-#define SMT3_DEFINES_effPCPBossBael_t 1
-
-#define SMT3_DEFINES_effPCPBossCamera_t 1
-
-#define SMT3_DEFINES_effPCPBossDengeki_t 1
-
-#define SMT3_DEFINES_effPCPBossKAGU2Attack_t 1
-
-#define SMT3_DEFINES_effPCPBossKAGU2MUHENK_t 1
-
-#define SMT3_DEFINES_effPCPBossKAGUAttack_t 1
-
-#define SMT3_DEFINES_effPCPBossKAGUInvoke_t 1
-
-#define SMT3_DEFINES_effPCPBossKAGUThunderbolt_t 1
-
-#define SMT3_DEFINES_effPCPBossMETATOBeam_t 1
-
-#define SMT3_DEFINES_effPCPBossONGY_t 1
-
-#define SMT3_DEFINES_effPCPBossPlace_t 1
-
-#define SMT3_DEFINES_effPCPBossThunderHead_t 1
-
-#define SMT3_DEFINES_effPCPBossThunderParam_t 1
-
-#define SMT3_DEFINES_effPCPBossThunderbolt_t 1
-
-#define SMT3_DEFINES_effPCPBossVector_t 1
-
-#define SMT3_DEFINES_effPCPBossWork_t 1
-
-#define SMT3_DEFINES_effPCPCrackParam_t 1
-
-#define SMT3_DEFINES_effPCPCrackPartFlash_t 1
-
-#define SMT3_DEFINES_effPCPCrackPart_t 1
-
-#define SMT3_DEFINES_effPCPCrack_t 1
-
-#define SMT3_DEFINES_effPCPDANTE_Damage_Param_t 1
-
-#define SMT3_DEFINES_effPCPDANTE_Damage_tag 1
-
-#define SMT3_DEFINES_effPCPDANTE_ShowTime_Param_t 1
-
-#define SMT3_DEFINES_effPCPDANTE_ShowTime_tag 1
-
-#define SMT3_DEFINES_effPCPDANTE_Thunder_Param_t 1
-
-#define SMT3_DEFINES_effPCPDANTE_Thunder_tag 1
-
-#define SMT3_DEFINES_effPCPDANTE_UV_tag 1
-
-#define SMT3_DEFINES_effPCPMuzzleFlashParam_t 1
-
-#define SMT3_DEFINES_effPCPMuzzleFlash_tag 1
-
-#define SMT3_DEFINES_effPCPScreenCrackModel_t 1
-
-#define SMT3_DEFINES_effPCP_BED_Param_t 1
-
-#define SMT3_DEFINES_effPCP_BED_tag 1
-
-#define SMT3_DEFINES_effPCP_HBED2_Param_t 1
-
-#define SMT3_DEFINES_effPCP_HBED2_tag 1
-
-#define SMT3_DEFINES_effPCP_PBCamera_Param_t 1
-
-#define SMT3_DEFINES_effPCP_PBCamera_tag 1
-
-#define SMT3_DEFINES_effPartHandle_t 1
-
 #include "dds3obj.h"
 #include "kernel_draw.h"
-#include "dds/bill_object_api.h"
-#include "dds/btl_stage_task_cleanup.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_fade_timing.h"
-#include "dds/dds3_path.h"
-#include "dds/dds3_world_primary.h"
-#include "dds/dds3obj.h"
 #include "dds/eff.h"
 #include "dds/eff_blur.h"
-#include "dds/evt_unit.h"
-#include "dds/evt_unit_color_transition.h"
-#include "dds/file_pac_completion_api.h"
-#include "dds/file_request_api.h"
-#include "dds/fld_transfer_chunk.h"
 #include "dds/mdl.h"
-#include "dds/sdf_asset_packets.h"
-#include "dds/sdf_asset_state.h"
-#include "dds/sdf_dev_state.h"
-#include "dds/sdf_packet_append.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdf_vu_matrix_multiply_api.h"
-#include "dds/sdf_vu_rotation_axes.h"
-#include "dds/sdk_libc.h"
 #include "dds/sdk_libm.h"
 
 /* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
@@ -687,72 +575,34 @@ void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
 void sdfMatSetTex(struct sdfMat_t *asset, struct sdfTexHandle_t *texture);
 f32 sdfSin(f32 angle);
 
-#include "dds/sdk_ps2.h"
-#include "dds/eff_block128.h"
-#include "dds/eff_editor_menu.h"
 #include "dds/eff_surface_grid_node.h"
 #include "dds/eff_surface_node.h"
 #include "dds/eff_animation_state.h"
 #include "dds/eff_model_resource.h"
 #include "dds/eff_gs_packet.h"
-#include "dds/eff_packet_params.h"
 #include "dds/eff_copied_payload.h"
 #include "dds/eff_class_ops.h"
 #include "dds/eff_particle_shared_resource.h"
 #include "dds/eff_camera_create_request.h"
-#include "dds/eff_file_job_request.h"
 #include "dds/eff_emitter_row.h"
 #include "dds/fld.h"
 #include "dds/btl_command.h"
 #include "dds/sdf_quaternion.h"
-#include "dds/btl_motion_transform.h"
-#include "dds/btl_resource_browser.h"
 #include "dds/eff_bill.h"
-#include "dds/eff_anim.h"
 #include "dds/eff_bill_column_particle.h"
 #include "dds/eff_ribbon_work.h"
-#include "dds/eff_class_work_api.h"
 #include "dds/eff_scaled_class_frame_rows.h"
 #include "dds/eff_point_set.h"
 #include "dds/eff_point_set_table.h"
 #include "dds/eff_span_work.h"
-#include "dds/common.h"
-#include "dds/dds3_camera_update_flags.h"
-#include "dds/sdf_vu0.h"
 #include "dds/eff_emitter_type.h"
-#include "dds/file_pac.h"
-#include "dds/eff_resource_bank_slot.h"
 #include "dds/eff_matrix4.h"
-#include "dds/eff_active_resource.h"
 #include "dds/eff_frame_asset.h"
-#include "dds/eff_actor_transition_config.h"
-#include "dds/eff_object_node.h"
 #include "dds/eff_random_mod.h"
-#include "dds/eff_random.h"
-#include "dds/dds3_fade.h"
-#include "dds/sdf_chip.h"
-#include "dds/eff_ref_obj.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_source_lifetime.h"
-#include "dds/eff_transform.h"
-#include "dds/btl_state.h"
-#include "dds/eff_event_draw.h"
-#include "dds/eff_curve.h"
-#include "dds/file.h"
-#include "dds/file_slot.h"
 #include "dds/ee_mmi.h"
 #include "dds/pcp_vu0.h"
-#include "dds/eff_queue.h"
-#include "dds/btl_resource_name.h"
-#include "dds/sdf.h"
-#include "dds/sdf_draw.h"
-#include "dds/fpu.h"
 #include "dds/eff_billboard_work.h"
-#include "dds/eff_resource_list.h"
 #include "dds/sdf_texture_file.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdf_chunk.h"
 
 extern void evtDestroySelectionState(void);
 extern s32 evtSelStateCreate(s32 countLimit, s16 frames, s32 firstValue, s32 secondValue);
@@ -765,8 +615,6 @@ extern void mnuRecordSetVector(FileSlotTable *record, const void *src);
 static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list) {
     surface->regFunc(surface, list);
 }
-
-#include "dds/sdf_packet_alloc.h"
 
 extern u32 effDrawFivePointGroupsData[];
 extern sdfGrOt_t *effDrawFivePointGroupsData2[];
@@ -1533,9 +1381,6 @@ u8 *effAllocateTexturedStripWork();
 u32 effCreateTexturedStripWithSharedTexture(u32 count, u32 repeat);
 u32 effAllocateStripFromWorkAndRetainTexture(u8 *work);
 
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/sdf_gs_header.h"
-
 void effDrawScalyTexturedStrip(EffStripWork *work, void *matrix);
 void effLoadScalyTexture(void);
 u32 effGetScalyTextureHandle(void);
@@ -1588,8 +1433,6 @@ void effDrawThreePointGroups(EffPointSet *set, Matrix4 *matrix);
 
 #define EFF_COLLECT_ACTORS_FINAL_SELECTOR 7
 
-#include "dds/btl_effect_position.h"
-
 extern u128 sbtlLeaf50Work2[];
 extern s8 effData36;
 extern u128 effWork5[];
@@ -1610,8 +1453,6 @@ typedef struct EffCopiedSpawnList {
 } EffCopiedSpawnList;
 
 void effDestroyCopiedEffectPayload(EffCopiedPayload *payload);
-
-#include "dds/eff_camera_path_parameters.h"
 
 extern u128 D_0037EE90, D_0037EEA0, D_0037EEB0, D_0037EEC0, D_0037EED0;
 
@@ -1653,8 +1494,6 @@ typedef struct EffAssetIdentifier {
     u8 pad_06[2];
     u16 id;         // 0x08
 } EffAssetIdentifier;
-
-#include "dds/effect_asset_link.h"
 
 typedef struct EffCameraCreateRow {
     EffCameraCreateRequest request;

@@ -387,57 +387,8 @@ frFontHandle_t *frCombineFontRequestEx(frFontHandle_t *pFRQ1, frFontHandle_t *pF
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_SDF_IMAGESET_MEM_CHIP 1
-
-#define SMT3_DEFINES_SDF_IMAGESET_MEM_HANDLE 1
-
-#define SMT3_DEFINES_SDF_IMAGESET_MEM_IGNORE 1
-
-#define SMT3_DEFINES_SdfImageSetMem 1
-
-#define SMT3_DEFINES_frFontAtlas_t 1
-
-#define SMT3_DEFINES_frFontData_t 1
-
-#define SMT3_DEFINES_frFontDmaTag_t 1
-
-#define SMT3_DEFINES_frFontGsPacket_t 1
-
-#define SMT3_DEFINES_frFontGsWrite_t 1
-
-#define SMT3_DEFINES_frFontHeader_t 1
-
-#define SMT3_DEFINES_frFontImage_t 1
-
-#define SMT3_DEFINES_frFontNodeHeader_t 1
-
-#define SMT3_DEFINES_frFontResource_t 1
-
-#define SMT3_DEFINES_frFontSpriteCorner_t 1
-
-#define SMT3_DEFINES_frFontSpritePacketView_t 1
-
-#define SMT3_DEFINES_frFontSpritePacket_t 1
-
-#define SMT3_DEFINES_frFontSystem_t 1
-
-#define SMT3_DEFINES_frMsgInfo_t 1
-
-#define SMT3_DEFINES_frTextBank_t 1
-
-#define SMT3_DEFINES_frTextIndex_t 1
-
-#define SMT3_DEFINES_sdfImageRequest_t 1
-
 #include "scr.h"
 #include "sdk_libc.h"
-#include "dds/dds3_admin_control_api.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_state_query.h"
-#include "dds/sdf_gs_packet.h"
-#include "dds/sdf_packet_header.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf_texture_file.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -479,27 +430,7 @@ enum {
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/sdk_ps2.h"
-#include "dds/scr.h"
-#include "dds/common.h"
-#include "dds/itf_bit_range.h"
-#include "dds/itf_text_vector.h"
-#include "dds/itf_text_slots_api.h"
-#include "dds/fr_font_text_slots.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/itf_gs_state_packet.h"
-#include "dds/fr_font.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_state.h"
-#include "dds/sdf_heap_api.h"
 #include "dds/itf.h"
-#include "dds/itf_panel_api.h"
-#include "dds/fr_font_glyph_chain_count.h"
-#include "dds/fr_font_measure.h"
-#include "dds/itf_mem_node.h"
-#include "dds/itf_resource_segments.h"
-#include "dds/sdf.h"
-#include "dds/itf_panel_draw.h"
 #include "dds/btl.h"
 
 #define ITF_BYTE_MASK 0xFF
@@ -554,8 +485,6 @@ enum {
 
 #define ITF_LINES_PRIMITIVE_BITS 0x49
 
-#include "dds/sdf_debug_api.h"
-
 extern void frFontCheckPendingGlyphState(FrFontCtx *);
 extern u32 itfTextLipsMotionId;
 extern u32 itfTextLipsUnitId;
@@ -571,87 +500,13 @@ struct sdfTexHandle_t;
 
 union EffSpriteColor;
 
-#include "dds/sdf_packet_alloc.h"
-
 u32 itfCamp(void);
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_SDF_GIF_REGISTER_AD 1
-
-#define SMT3_DEFINES_SDF_GS_ALPHA_1 1
-
-#define SMT3_DEFINES_SDF_GS_ALPHA_2 1
-
-#define SMT3_DEFINES_SDF_GS_BITBLTBUF 1
-
-#define SMT3_DEFINES_SDF_GS_CLAMP_1 1
-
-#define SMT3_DEFINES_SDF_GS_CLAMP_2 1
-
-#define SMT3_DEFINES_SDF_GS_COLCLAMP 1
-
-#define SMT3_DEFINES_SDF_GS_DTHE 1
-
-#define SMT3_DEFINES_SDF_GS_FRAME_1 1
-
-#define SMT3_DEFINES_SDF_GS_FRAME_2 1
-
-#define SMT3_DEFINES_SDF_GS_PRIM 1
-
-#define SMT3_DEFINES_SDF_GS_PRMODECONT 1
-
-#define SMT3_DEFINES_SDF_GS_RGBAQ 1
-
-#define SMT3_DEFINES_SDF_GS_SCISSOR_1 1
-
-#define SMT3_DEFINES_SDF_GS_SCISSOR_2 1
-
-#define SMT3_DEFINES_SDF_GS_TEST_1 1
-
-#define SMT3_DEFINES_SDF_GS_TEST_2 1
-
-#define SMT3_DEFINES_SDF_GS_TEX0_1 1
-
-#define SMT3_DEFINES_SDF_GS_TEX0_2 1
-
-#define SMT3_DEFINES_SDF_GS_TEX1_1 1
-
-#define SMT3_DEFINES_SDF_GS_TEX1_2 1
-
-#define SMT3_DEFINES_SDF_GS_TEXA 1
-
-#define SMT3_DEFINES_SDF_GS_TEXFLUSH 1
-
-#define SMT3_DEFINES_SDF_GS_TRXDIR 1
-
-#define SMT3_DEFINES_SDF_GS_TRXPOS 1
-
-#define SMT3_DEFINES_SDF_GS_TRXREG 1
-
-#define SMT3_DEFINES_SDF_GS_XYOFFSET_1 1
-
-#define SMT3_DEFINES_SDF_GS_XYOFFSET_2 1
-
-#define SMT3_DEFINES_SDF_GS_XYZ2 1
-
-#define SMT3_DEFINES_SDF_GS_ZBUF_1 1
-
-#define SMT3_DEFINES_SDF_GS_ZBUF_2 1
-
-#include "dds/fr_font_draw_glyph.h"
 #include "dds/fr_font_position.h"
-#include "dds/sdf_image_upload.h"
-#include "dds/sdf_chip.h"
-#include "dds/fr_font_glyph_measure.h"
-#include "dds/fr_font_text_measure_mode.h"
-#include "dds/fr_font_clone_entry_resource.h"
-#include "dds/fr_font_temporary_entry_api.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_task_runner.h"
-#include "dds/mnu_title_sound.h"
 
 void frFontCreateContext();
 

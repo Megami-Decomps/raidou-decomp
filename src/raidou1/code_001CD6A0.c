@@ -8,18 +8,6 @@
 #include "libsdf.h"
 #include "sdk_libc.h"
 #include "sdk_libgcc.h"
-#include "dds/btl.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_append.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_packet_header.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_primitive_packet_api.h"
-#include "dds/sdf_projection.h"
-#include "dds/sdk_libc.h"
 
 extern void *memcpy(void *, const void *, unsigned int);
 
@@ -27,30 +15,6 @@ void sdfLinkLoadImage(
     sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,
     s32 destinationY, s32 width, s32 height, s32 sourceAddress,
     s32 (*allocatePacket)(s32));
-
-#include "dds/sdk_ps2.h"
-#include "dds/sdf_gs_header.h"
-#include "dds/sdf_gs_alpha_register_api.h"
-#include "dds/sdf_gs_register_submit_api.h"
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/ui_color.h"
-#include "dds/sdf_cons_matrix_packet.h"
-#include "dds/sdf_dma_packet_header.h"
-#include "dds/eff_resource_records.h"
-#include "dds/eff_slot_phase.h"
-#include "dds/itf.h"
-#include "dds/fpu.h"
-#include "dds/itf_grid_text.h"
-#include "dds/itf_grid_text_color_api.h"
-#include "dds/sdf_grid_seek_api.h"
-#include "dds/sdf.h"
-#include "dds/mnu.h"
-#include "dds/itf_draw_grid.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/sdf_draw.h"
-#include "dds/pcp_vu0.h"
-#include "dds/grid_packed_vertex.h"
-#include "dds/itf_grid_status_records.h"
 
 /* Four words filled together; their corner/channel interpretation is unknown. */
 typedef struct UiQuadWords {

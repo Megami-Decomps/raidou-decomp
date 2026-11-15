@@ -8,23 +8,7 @@
 #include "sdk_libc.h"
 #include "dds/btl.h"
 #include "dds/mdl.h"
-#include "dds/sdf.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_chunk.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_map_position_api.h"
-#include "dds/sdf_motion.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_projection.h"
 #include "dds/sdf_tex_create.h"
-#include "dds/sdf_tex_packet.h"
-#include "dds/sdf_texture_format.h"
-#include "dds/sdf_texture_submit.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdf_vu_transform_api.h"
-#include "dds/sdk_libc.h"
 
 enum {
     SDF_PSMCT32 = 0x00,
@@ -83,21 +67,15 @@ struct sdfTexHandle_t *sdfTexAlloc(s32 width, s32 height,
 /* Store the context-one resource packet on the texture's primary buffer. */
 void sdfTexMakeGIFPacket(struct sdfTexHandle_t *texture);
 
-#include "dds/sdk_ps2.h"
-#include "dds/common.h"
-#include "dds/eff_texture_table.h"
-#include "dds/sdf_vu0.h"
 #include "dds/eff_object_node.h"
 #include "dds/eff_model_owner.h"
 #include "dds/eff_ref_obj.h"
 #include "dds/eff_anim.h"
-#include "dds/file.h"
 #include "dds/ee_mmi.h"
 #include "dds/pcp_vu0.h"
 #include "dds/sdf_texture_file.h"
 #include "dds/eff_expanded_source.h"
 #include "dds/eff_update_flags.h"
-#include "dds/btl_runtime.h"
 
 extern struct EffExpandedList *effCacheTexCreate(u32);
 
@@ -141,8 +119,6 @@ void effRenderModelOwnerWithGsTests(EffModelOwner *owner);
 extern u32 effModelUpdateControlFlags;
 void effMarkFloorModelForUpdate(EffModelOwner *work);
 extern char D_003B2AA0[];
-
-#include "dds/sdf_debug_api.h"
 
 void effFloorModelListRemove(EffectObjectNode *node);
 void effSweepFloorModelList(void);

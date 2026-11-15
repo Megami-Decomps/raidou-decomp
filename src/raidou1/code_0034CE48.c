@@ -7,59 +7,17 @@
 #include "newdata.h"
 #include "sdk_libc.h"
 #include "dds/btl.h"
-#include "dds/dsp_entry_api.h"
-#include "dds/dsp_message_window_api.h"
-#include "dds/eff_random.h"
-#include "dds/evt_message_window_api.h"
-#include "dds/fr_font.h"
-#include "dds/fr_font_context.h"
-#include "dds/dds3_process.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdk_libc.h"
-#include "dds/snd_sequence_volume_pan.h"
-#include "dds/ui_color.h"
 
 extern void *memcpy(void *, const void *, unsigned int);
 
-#include "dds/sdk_ps2.h"
-#include "dds/sdf_gs_register_submit_api.h"
-#include "dds/evt_stage_test_api.h"
-#include "dds/evt_stage_test_resource_work_result.h"
-#include "dds/itf_draw_grid.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_source_lifetime.h"
-#include "dds/mnu_input.h"
-#include "dds/pty_skill_menu_api.h"
-#include "dds/mnu.h"
-#include "dds/mnu_item_requirement_api.h"
-#include "dds/mnu_party_panel_api.h"
-#include "dds/mnu_party_menu_data.h"
-#include "dds/brs_level_progress_api.h"
-#include "dds/mnu_panel_state.h"
-#include "dds/mnu_staff.h"
-#include "dds/mnu_ability_target_category.h"
 #include "dds/mnu_list.h"
-#include "dds/mnu_entry_use_status_api.h"
 #include "dds/eff.h"
-#include "dds/mnu_shop.h"
-#include "dds/mnu_scroll_panel.h"
-#include "dds/dat_state.h"
-#include "dds/dat_assigned_item_id.h"
-#include "dds/mnu_standard_partner_requirements_api.h"
-#include "dds/pty_skill_nibble_state.h"
-#include "dds/pty_roster_api.h"
-#include "dds/prf_skill_list_buffer.h"
-#include "dds/pty_adjust_item_quantity_api.h"
 
 struct MenuListNode;
 
 struct StaffMenuRuntime;
 
 #include "dds/fpu.h"
-#include "dds/sdf.h"
-#include "dds/itf.h"
-#include "dds/menu_fade_entry.h"
 
 #define MNU_ENTRY_SPRITE_COUNT 4
 

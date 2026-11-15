@@ -86,50 +86,11 @@ u32 evtHokanUInt(s32 hokan, f32 ratio, u32 i1, u32 i2);
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_evtFrameFunc_t 1
-
-#define SMT3_DEFINES_evtScaledValue_t 1
-
-#define SMT3_DEFINES_fileRequest_t 1
-
-#define SMT3_DEFINES_pmdCameraTable_t 1
-
-#define SMT3_DEFINES_polyMovieClip_t 1
-
-#define SMT3_DEFINES_polyMovieObject_t 1
-
-#define SMT3_DEFINES_polyMovieState_t 1
-
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/itf.h"
-#include "dds/sdf_file_existence_api.h"
-#include "dds/sdk_ps2.h"
-#include "dds/common.h"
-#include "dds/dds3_object_flags.h"
-#include "dds/sdf_vu0.h"
-#include "dds/eff.h"
-#include "dds/eff_event_draw.h"
-#include "dds/sdf_chip.h"
-#include "dds/file_request_api.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_create.h"
-#include "dds/sdf_heap_api.h"
 #include "dds/ee_mmi.h"
 #include "dds/pcp_vu0.h"
 #include "dds/fld.h"
-#include "dds/evt_polygon_movie.h"
-#include "dds/evt_polygon_movie_load_api.h"
-#include "dds/evt_unit.h"
-#include "dds/mdl.h"
-#include "dds/dds3obj.h"
-#include "dds/itf_mes_resource.h"
-#include "dds/sdf_float_counter.h"
-#include "dds/evt_blend_vec_color.h"
-#include "dds/mnu_title_sound.h"
 
 extern dds3Effect_Blur_t evtBlur2DefaultParam2;
-
-#include "dds/sdf_debug_api.h"
 
 /* One asm location for every arm's w set, so jump2 can cross-jump them. */
 static inline void evtSetBlendVecW(f32 w)
@@ -139,13 +100,6 @@ static inline void evtSetBlendVecW(f32 w)
 
 void evtHokanHeikouBlur(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds3Effect_Blur_t *b, dds3Effect_Blur_t *out);
 void evtBlendParamsH(s32 enable, f32 t, const EvtBlendKey *a, const EvtBlendKey *b, EvtBlendKey *out);
-
-#include "dds/evt_viewer.h"
-#include "dds/event.h"
-#include "dds/sdf.h"
-#include "dds/evt_world.h"
-#include "dds/evt_picture.h"
-#include "dds/file.h"
 
 f32 evtHokanFloat(s32 hokan, f32 ratio, f32 f1, f32 f2)
 {

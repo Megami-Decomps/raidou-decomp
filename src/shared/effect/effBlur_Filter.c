@@ -41,26 +41,7 @@ dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_P
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_effBlurDrawBank_t 1
-
-#include "dds/btl_effect_position.h"
-#include "dds/eff.h"
-#include "dds/eff_math.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdk_ps2.h"
-#include "dds/sdf_gs_header.h"
-#include "dds/bill_object_api.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/common.h"
-#include "dds/dds3_background_fade_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf.h"
-#include "dds/sdf_chip.h"
 #include "dds/eff_blur.h"
-#include "dds/pcp_vu0.h"
 
 typedef struct {
     u8 pad00[0x124];
@@ -72,8 +53,6 @@ typedef dds3Effect_Blur_t BlurSource;
 struct sdfDrawTag_t;
 
 struct sdfGrRefPacketHeader_t;
-
-#include "dds/sdf_packet_alloc.h"
 
 /* Queue blend setup and both rectangle packets, then finish with the filter draw. */
 void effDrawBlurSource(const BlurSource *source, sdfTexHandle_t *resource, u8 fixedPointCoordinates);

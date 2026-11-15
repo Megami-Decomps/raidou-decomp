@@ -13,63 +13,8 @@
 #include "sdf_resource.h"
 #include "sdk_libc.h"
 #include "dds/btl.h"
-#include "dds/btl_stage_task_cleanup.h"
-#include "dds/dds3_area_room_key.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_object_flags.h"
-#include "dds/dds3_path.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3_world_counter.h"
-#include "dds/dds3_world_primary.h"
-#include "dds/dds3_world_secondary.h"
-#include "dds/dds3_world_value.h"
-#include "dds/dds3obj.h"
-#include "dds/eff_transform.h"
-#include "dds/evt_action_object.h"
-#include "dds/evt_script_model.h"
-#include "dds/evt_unit.h"
-#include "dds/evt_unit_color_transition.h"
-#include "dds/evt_world.h"
-#include "dds/evt_world_object_api.h"
-#include "dds/evt_world_source_transform.h"
-#include "dds/file_pac_completion_api.h"
-#include "dds/file_request_api.h"
-#include "dds/fld_event_display_resource_api.h"
-#include "dds/fld_packed_resource_kind.h"
-#include "dds/fld_scene_object_key_result.h"
-#include "dds/fld_scene_ready_api.h"
-#include "dds/fr_font.h"
 #include "dds/mdl.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/mdl_motion_api.h"
 #include "dds/sdf.h"
-#include "dds/sdf_column_packet_api.h"
-#include "dds/sdf_dev_state.h"
-#include "dds/sdf_gs_blend.h"
-#include "dds/sdf_gs_packet.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_line_pair_packet_api.h"
-#include "dds/sdf_map_position_api.h"
-#include "dds/sdf_motion.h"
-#include "dds/sdf_pac_reloc.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_append.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_packet_header.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_primitive_packet_api.h"
-#include "dds/sdf_resource_list_release_api.h"
-#include "dds/sdf_sif_command.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf_texture_file.h"
-#include "dds/sdf_texture_offset_list.h"
-#include "dds/sdf_texture_primary_buffer_api.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdk_libc.h"
 
 /* The field-area loader interprets these serialized packet-header values. */
 typedef enum FldPackedResourceKind {
@@ -141,86 +86,10 @@ extern void *memcpy(void *, const void *, unsigned int);
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/sdk_ps2.h"
-#include "dds/fld_item_box_object_api.h"
-#include "dds/sdf_gs_header.h"
-#include "dds/fld_script_resource.h"
-#include "dds/eff.h"
-#include "dds/fld_player_scene_state.h"
-#include "dds/fld_marker_packet.h"
-#include "dds/common.h"
-#include "dds/pty_status_query_api.h"
-#include "dds/file_config_option_api.h"
-#include "dds/fld_camera_model_motion_request.h"
-#include "dds/fld_elv_camera_scene_api.h"
-#include "dds/fld_placement_batch_mode.h"
 #include "dds/sdf_vu0.h"
-#include "dds/fld_stop_entry.h"
-#include "dds/dds3_background_fade_api.h"
-#include "dds/fld_movement_hold_state_api.h"
-#include "dds/fld_movement_gate_result.h"
-#include "dds/fld_area_resource_ready_api.h"
-#include "dds/fld_area_resource_name_change_api.h"
-#include "dds/fld_area_resource_request_reuse_api.h"
-#include "dds/fld_file_io_priority_state.h"
-#include "dds/fld_location_coordinate_flags.h"
-#include "dds/fld_scene_record_api.h"
-#include "dds/fld_light_set.h"
-#include "dds/fld_sky_buffer.h"
-#include "dds/fld_sky_gradient_record.h"
-#include "dds/fld_quad_state.h"
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/mnu_title_stream.h"
-#include "dds/fld_bill_config.h"
-#include "dds/fld_area_path.h"
-#include "dds/fld_npc_motion.h"
-#include "dds/fld_npc_palette.h"
-#include "dds/fld_resource_resolver.h"
-#include "dds/fld_clear_menu_entries_api.h"
-#include "dds/fld_play_pending_sounds_api.h"
-#include "dds/fld_release_texture_slots_api.h"
-#include "dds/fld_transfer_chunk.h"
-#include "dds/fld_camera_follow_row.h"
-#include "dds/fld_named_camera_table.h"
 #include "dds/fld.h"
-#include "dds/field.h"
-#include "dds/fld_encounter_runtime_api.h"
-#include "dds/fld_collision_geometry.h"
-#include "dds/fld_collision_query_api.h"
-#include "dds/fld_scene_request.h"
-#include "dds/fld_room_resource_api.h"
-#include "dds/fld_area_room_resource_load_api.h"
-#include "dds/fld_file_addr_reset_mode.h"
-#include "dds/fld_spawn_event.h"
-#include "dds/dds3_object_control_slot.h"
-#include "dds/sdf_model.h"
-#include "dds/eff_light.h"
-#include "dds/fld_area_work.h"
-#include "dds/fld_spawn_collision.h"
-#include "dds/sdf_chip.h"
-#include "dds/fld_waypoint.h"
-#include "dds/fld_inf.h"
-#include "dds/file_pac.h"
-#include "dds/fld_title_banner_menu.h"
-#include "dds/field_stage.h"
-#include "dds/sdf_pac_work.h"
 #include "dds/fpu.h"
-#include "dds/pcp_vu0.h"
 #include "dds/scr.h"
-#include "dds/dds3_task_runner.h"
-#include "dds/dat_state.h"
-#include "dds/fld_object_slot_api.h"
-#include "dds/fld_placement_data.h"
-#include "dds/fld_resource_name.h"
-#include "dds/fld_file_resource_link_view.h"
-#include "dds/eff_object.h"
-#include "dds/fld_label_cache_api.h"
-#include "dds/fld_sprite_vertex.h"
-#include "dds/fld_room_state.h"
-#include "dds/fld_trigger_shape.h"
-#include "dds/fld_action_row.h"
-#include "dds/itf.h"
-#include "dds/fld_index_pair.h"
 
 typedef struct SdfGsTextureAlphaFlushPacket {
     SdfGsPacketHeader header;
@@ -359,101 +228,8 @@ extern f32 D_003BADC0, D_003BADC4;
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_DmaPacketHeader 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_ACTOR_WAYPOINT_TABLE 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_INFO_TABLE 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_NPC_PALETTE 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_RETAINED_COPY 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_SCENE_RECORD_CHUNK 1
-
-#define SMT3_DEFINES_FLD_PACKED_RESOURCE_SKY_BUFFER 1
-
-#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID 1
-
-#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_UPDATE_PENDING 1
-
-#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION 1
-
-#define SMT3_DEFINES_SDF_GIF_REGISTER_AD 1
-
-#define SMT3_DEFINES_SDF_GS_ALPHA_1 1
-
-#define SMT3_DEFINES_SDF_GS_ALPHA_2 1
-
-#define SMT3_DEFINES_SDF_GS_BITBLTBUF 1
-
-#define SMT3_DEFINES_SDF_GS_CLAMP_1 1
-
-#define SMT3_DEFINES_SDF_GS_CLAMP_2 1
-
-#define SMT3_DEFINES_SDF_GS_COLCLAMP 1
-
-#define SMT3_DEFINES_SDF_GS_DTHE 1
-
-#define SMT3_DEFINES_SDF_GS_FRAME_1 1
-
-#define SMT3_DEFINES_SDF_GS_FRAME_2 1
-
-#define SMT3_DEFINES_SDF_GS_PRIM 1
-
-#define SMT3_DEFINES_SDF_GS_PRMODECONT 1
-
-#define SMT3_DEFINES_SDF_GS_RGBAQ 1
-
-#define SMT3_DEFINES_SDF_GS_SCISSOR_1 1
-
-#define SMT3_DEFINES_SDF_GS_SCISSOR_2 1
-
-#define SMT3_DEFINES_SDF_GS_TEST_1 1
-
-#define SMT3_DEFINES_SDF_GS_TEST_2 1
-
-#define SMT3_DEFINES_SDF_GS_TEX0_1 1
-
-#define SMT3_DEFINES_SDF_GS_TEX0_2 1
-
-#define SMT3_DEFINES_SDF_GS_TEX1_1 1
-
-#define SMT3_DEFINES_SDF_GS_TEX1_2 1
-
-#define SMT3_DEFINES_SDF_GS_TEXA 1
-
-#define SMT3_DEFINES_SDF_GS_TEXFLUSH 1
-
-#define SMT3_DEFINES_SDF_GS_TRXDIR 1
-
-#define SMT3_DEFINES_SDF_GS_TRXPOS 1
-
-#define SMT3_DEFINES_SDF_GS_TRXREG 1
-
-#define SMT3_DEFINES_SDF_GS_XYOFFSET_1 1
-
-#define SMT3_DEFINES_SDF_GS_XYOFFSET_2 1
-
-#define SMT3_DEFINES_SDF_GS_XYZ2 1
-
-#define SMT3_DEFINES_SDF_GS_ZBUF_1 1
-
-#define SMT3_DEFINES_SDF_GS_ZBUF_2 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_INITIALIZED 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_SAMPLING 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_SUSPENDED 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_TERMINAL 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_UNINITIALIZED 1
-
 #include "datCalc.h"
 #include "newdata.h"
-#include "dds/eff_random_mod.h"
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -478,19 +254,6 @@ enum {
 };
 
 #include "dds/evt_run_context_api.h"
-#include "dds/sdf_channel.h"
-#include "dds/scr_work_task_api.h"
-#include "dds/dat_save_words.h"
-#include "dds/sdf_float_counter.h"
-#include "dds/mnu_flag_snapshot.h"
-#include "dds/btl_action.h"
-#include "dds/dat_affinity_selector.h"
-#include "dds/dat_effective_affinity_api.h"
-#include "dds/dat_world_field_flags.h"
-#include "dds/dat_unit_has_skill_api.h"
-#include "dds/evt_randomize_entry_api.h"
-#include "dds/dat_command.h"
-#include "dds/fld_runtime_reset_api.h"
 
 extern void scrDestroyWorkTask(void);
 extern scrHeader_t *cameraBasic;
@@ -506,8 +269,6 @@ extern scrHeader_t *cameraBasic;
 #define SDF_FLOAT_COUNTER_WRAP_FLAG 0x00000020
 
 void sdfFirePendingCallback(void);
-
-#include "dds/sdf_debug_api.h"
 
 INCLUDE_ASM(const s32, "field/fldFileResolver", fldDrawExpandedSpriteStrip);
 

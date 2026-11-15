@@ -208,72 +208,10 @@ void dds3P2APolygonDraw(dds3P2APolygon_tag *instance);
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_BILL_ANIMATION_FLAG_FRAME_COLORS 1
-
-#define SMT3_DEFINES_BILL_ANIMATION_FLAG_PACKET_LIST_2 1
-
-#define SMT3_DEFINES_BILL_ANIMATION_FLAG_PACKET_LIST_3 1
-
-#define SMT3_DEFINES_BILL_ANIMATION_FLAG_PACKET_LIST_MASK 1
-
-#define SMT3_DEFINES_BILL_ANIMATION_FLAG_PLURAL_ENTRIES 1
-
-#define SMT3_DEFINES_BILL_ANIMATION_FLAG_STOP_AT_END 1
-
-#define SMT3_DEFINES_P2A_ANIMATION_tag 1
-
-#define SMT3_DEFINES_P2A_HEAD_t 1
-
-#define SMT3_DEFINES_P2A_TEXANIM_tag 1
-
-#define SMT3_DEFINES_billColorWork_t 1
-
-#define SMT3_DEFINES_billData_t 1
-
-#define SMT3_DEFINES_billGeneralEntry_t 1
-
-#define SMT3_DEFINES_billGeneralRow_t 1
-
-#define SMT3_DEFINES_billOut_t 1
-
-#define SMT3_DEFINES_billPluralEntry_t 1
-
-#define SMT3_DEFINES_dds3BillAnimResource_tag 1
-
-#define SMT3_DEFINES_dds3BillAnim_tag 1
-
-#define SMT3_DEFINES_dds3EffectFunc3_t 1
-
-#define SMT3_DEFINES_dds3P2APolygonResource_t 1
-
-#define SMT3_DEFINES_dds3P2APolygon_tag 1
-
-#define SMT3_DEFINES_effBlurDrawBank_t 1
-
-#include "dds/sdk_ps2.h"
-#include "dds/sdf_gs_header.h"
-#include "dds/common.h"
-#include "dds/sdf_vu0.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/bill_state_packet.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_compact_vertex_vif_packet.h"
-#include "dds/bill_object_api.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_texture_file.h"
 #include "dds/eff.h"
 #include "dds/ee_mmi.h"
-#include "dds/pcp_vu0.h"
-#include "dds/sdf.h"
-#include "dds/sdf_texture_primary_buffer_api.h"
-#include "dds/sdf_packet_alloc.h"
 
 typedef struct DmaPacketHeader DmaPacketHeader;
-
-#include "dds/sdf_debug_api.h"
 
 enum {
     BILL_ANIMATION_ENTRY_MODE_MTEX = 0x00000040,

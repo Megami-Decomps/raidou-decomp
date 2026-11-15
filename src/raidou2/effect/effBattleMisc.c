@@ -25,24 +25,10 @@ void effBTLPartGetRotateMatrixPtr(effBTLAimParams_t *pPosPtr, sdfMatrix4_t *pMat
 #define VERSION_DDS1 1
 #endif
 
-#include "dds/sdf_projection.h"
-#include "dds/common.h"
-#include "dds/sdf_vu0.h"
-#include "dds/sdf_vu_rotation_axes.h"
-#include "dds/dds3obj.h"
-#include "dds/btl_effect_position.h"
-#include "dds/pcp_vu0.h"
-#include "dds/sdf_vu_transform_api.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdf_vu_matrix_multiply_api.h"
 #include "dds/btl.h"
 #include "dds/eff.h"
-#include "dds/eff_field_color.h"
-#include "dds/eff_battle_transition_duration.h"
 
 extern u32 effBTLFieldColorGetVariantSelector(void);
-
-#include "dds/dds3_world_primary.h"
 
 struct dds3Basic_t;
 

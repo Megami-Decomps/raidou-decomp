@@ -173,33 +173,13 @@ void sdfModelSetFaceDivParm(sdfModelRootNode_t *aRoot, f32 aSoften, f32 aBias);
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_QWORD_ALIGNED 1
-
-#define SMT3_DEFINES_sdfModelChunkHeader_t 1
-
-#define SMT3_DEFINES_sdfModelMarkPos_t 1
-
-#define SMT3_DEFINES_sdfModelNodeDefList_t 1
-
-#define SMT3_DEFINES_sdfModelShapedHeader_t 1
-
-#define SMT3_DEFINES_sdfModelTempDrawPacket_t 1
-
-#define SMT3_DEFINES_sdfModelTmImage_t 1
-
 #include "dds/btl.h"
-#include "dds/sdk_libc.h"
 
 s32 memcmp(const void *a, const void *b, u32 size);
 extern void *memcpy(void *, const void *, unsigned int);
 u32 strlen(const char *text);
 
-#include "dds/common.h"
-#include "dds/libsdf.h"
 #include "dds/model.h"
-#include "dds/draw.h"
-#include "dds/ps2asm.h"
-#include "dds/eeregs.h"
 
 u32 sdfModelGetUniqueID(dds_sdfModelRootNode_t *aRoot);
 u32 sdfGetLodChunkValue(dds_sdfModelRootNode_t *aRoot);

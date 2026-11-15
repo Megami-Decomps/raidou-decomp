@@ -136,28 +136,8 @@ u32 itfCamp(void);
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_frFontChild_t 1
-
-#define SMT3_DEFINES_frFontRequest_t 1
-
-#define SMT3_DEFINES_itfColorVector_t 1
-
-#define SMT3_DEFINES_itfGsState_t 1
-
-#define SMT3_DEFINES_itfLink_t 1
-
-#define SMT3_DEFINES_itfmisclinkstack_t 1
-
 #include "scr.h"
 #include "dds/btl.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_state_query.h"
-#include "dds/fr_font.h"
-#include "dds/fr_font_context.h"
-#include "dds/itf.h"
-#include "dds/sdf_gs_packet.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdk_libc.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -196,27 +176,7 @@ enum {
 
 extern void *memcpy(void *, const void *, unsigned int);
 
-#include "dds/sdk_ps2.h"
-#include "dds/scr.h"
-#include "dds/common.h"
-#include "dds/itf_bit_range.h"
-#include "dds/dds3_admin_control_api.h"
-#include "dds/itf_text_vector.h"
-#include "dds/itf_text_slots_api.h"
-#include "dds/fr_font_text_slots.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_packet_header.h"
-#include "dds/itf_gs_state_packet.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_state.h"
-#include "dds/itf_panel_api.h"
-#include "dds/fr_font_glyph_chain_count.h"
-#include "dds/fr_font_measure.h"
-#include "dds/itf_mem_node.h"
-#include "dds/itf_resource_segments.h"
-#include "dds/sdf.h"
 #include "dds/itf_panel_draw.h"
-#include "dds/sdf_texture_file.h"
 
 #define ITF_NODE_HEADER_BYTES 8
 
@@ -226,8 +186,6 @@ extern void *memcpy(void *, const void *, unsigned int);
 
 #define ITF_NEUTRAL_COLOR 0x80808080
 
-#include "dds/sdf_debug_api.h"
-
 extern u8 itfDrawThreePanelBorderBandsData[];
 extern u8 itfDrawThreePanelBorderBandsData2[];
 
@@ -236,8 +194,6 @@ struct EffSpriteUV;
 struct sdfTexHandle_t;
 
 union EffSpriteColor;
-
-#include "dds/sdf_packet_alloc.h"
 
 void itfDrawThreePanelBorderBands(DrawVertex *bounds, DrawColorRec *color, u32 tail, s32 borderWidth, sdfDrawTag_t *command);
 

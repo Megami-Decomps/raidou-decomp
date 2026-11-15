@@ -340,44 +340,7 @@ extern mdlWorkPrefix_t mdlWorkPathPrefix[1];
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_dds3ModelFileIndex_t 1
-
-#define SMT3_DEFINES_dds3ModelFileTable_t 1
-
-#define SMT3_DEFINES_filePacRequest_t 1
-
-#define SMT3_DEFINES_fileRequest_t 1
-
-#define SMT3_DEFINES_mdlDirectoryEntry_t 1
-
-#define SMT3_DEFINES_mdlFileKindSlot_t 1
-
-#define SMT3_DEFINES_mdlFileSlot_t 1
-
-#define SMT3_DEFINES_mdlHddFileEntry_t 1
-
-#define SMT3_DEFINES_mdlLoadingTag_t 1
-
-#define SMT3_DEFINES_mdlManager_mdlFileLoadCb_t 1
-
-#define SMT3_DEFINES_mdlManager_mdlTbMbAbLoadCb_t 1
-
-#define SMT3_DEFINES_mdlPartTagRecord_t 1
-
-#define SMT3_DEFINES_mdlPathPrefix_t 1
-
-#define SMT3_DEFINES_mdlPibRecord_t 1
-
-#define SMT3_DEFINES_mdlSetDef_t 1
-
-#define SMT3_DEFINES_mdlWorkPrefix_t 1
-
-#include "dds/common.h"
 #include "dds/model.h"
-#include "dds/motion.h"
-#include "dds/draw3d.h"
-#include "dds/ps2asm.h"
-#include "dds/sdfFrame.h"
 
 struct mdlEffectDescriptor_t;
 

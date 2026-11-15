@@ -4,20 +4,7 @@
 #define VERSION_DDS1 1
 #endif
 
-#include "dds/bill_object_api.h"
 #include "dds/btl.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/eff.h"
-#include "dds/sdf.h"
-#include "dds/sdf_asset_create.h"
-#include "dds/sdf_asset_state.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_gs_packet.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdk_libc.h"
 
 /* Serialized entry offsets are relative to BillData.base. */
 /* BillAnimationEntry.flags bits; distinct from entryModeFlags and billHandle_t.modeFlags. */
@@ -80,34 +67,10 @@ u64 sdfTexGetClampReg(sdfTexHandle_t *texture);
 u64 sdfTexGetTex0Reg(sdfTexHandle_t *texture);
 u64 sdfTexGetTex1Reg(sdfTexHandle_t *texture);
 
-#include "dds/sdk_ps2.h"
 #include "dds/eff_composite_gs_descriptor.h"
-#include "dds/eff_unit_object.h"
-#include "dds/sdf_projection.h"
-#include "dds/sdf_gs_header.h"
-#include "dds/sdf_quaternion.h"
-#include "dds/common.h"
-#include "dds/sdf_vu0.h"
 #include "dds/eff_generated_texture_descriptor.h"
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/eff_random.h"
-#include "dds/bill_linked_value.h"
-#include "dds/par_cell_api.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/pcp_vu0.h"
-#include "dds/sdf_vu_transform_api.h"
 #include "dds/ee_mmi.h"
-#include "dds/eff_particle_emitter_variants.h"
-#include "dds/eff_template_scale_record.h"
-#include "dds/eff_particle_view.h"
-#include "dds/eff_look_at_ring.h"
-#include "dds/eff_track_poly_list.h"
-#include "dds/par_table.h"
-#include "dds/par_color_ramp.h"
-#include "dds/par_kind_api.h"
-#include "dds/eff_particle_record.h"
 #include "dds/fpu.h"
-#include "dds/eff_packet_params.h"
 
 #define BILL_VARIANT_MASK 0xFFFF
 

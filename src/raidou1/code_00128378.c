@@ -12,41 +12,7 @@
 #include "sdk_libc.h"
 #include "dds/btl.h"
 #include "dds/dds3_basic_array_cursor.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_object_flags.h"
-#include "dds/dds3_object_payload.h"
 #include "dds/dds3_slot1_handler_api.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3_task_priority_query.h"
-#include "dds/dds3_world_counter.h"
-#include "dds/dds3_world_primary.h"
-#include "dds/dds3_world_secondary.h"
-#include "dds/dds3_world_selection.h"
-#include "dds/dds3_world_value.h"
-#include "dds/dds3obj.h"
-#include "dds/eff_blur.h"
-#include "dds/eff_inner_float_api.h"
-#include "dds/eff_random.h"
-#include "dds/evt_solar.h"
-#include "dds/evt_world.h"
-#include "dds/evt_world_object_api.h"
-#include "dds/evt_world_source_transform.h"
-#include "dds/fld_scene_ready_api.h"
-#include "dds/dds3_process.h"
-#include "dds/mdl.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/mdl_motion_api.h"
-#include "dds/mnu_camp_state_ack_api.h"
-#include "dds/scr.h"
-#include "dds/sdf_delayed_resource_check_api.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_message.h"
-#include "dds/sdf_model_scalars.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdk_libc.h"
-#include "dds/snd_sequence_volume_pan.h"
 
 void dds3FreeBasicArrayHandle(WorldIndexNode *node);
 dds3Basic_t *dds3GetBasicArray(const dds_dds3BasicArrayHandle_t *object);
@@ -70,46 +36,8 @@ Dds3BasicArrayCursorResult dds3SetFirstBasicArray(dds_dds3BasicArrayHandle_t *ob
 Dds3BasicArrayCursorResult dds3SetNextBasicArray(dds_dds3BasicArrayHandle_t *object);
 extern void *memcpy(void *, const void *, unsigned int);
 
-#include "dds/sdk_ps2.h"
-#include "dds/fld_area_work.h"
-#include "dds/fld_archive_load_state.h"
-#include "dds/fld_runtime_reset_api.h"
-#include "dds/fld_area_encounter_table.h"
-#include "dds/sdf_packet_list.h"
 #include "dds/ee_mmi.h"
-#include "dds/dds3_task_runner.h"
-#include "dds/dds3_admin_control_api.h"
-#include "dds/pcp_vu0.h"
-#include "dds/common.h"
-#include "dds/fld_camera_link_mode.h"
-#include "dds/pty_status_query_api.h"
-#include "dds/pty_field_hp_attrition_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/fld_scene_status_api.h"
-#include "dds/fld_area_resource_ready_api.h"
-#include "dds/fld_location_coordinate_flags.h"
-#include "dds/fld_movement_hold_state_api.h"
-#include "dds/fld_scene_command_state_api.h"
-#include "dds/fld_camp_check_state_api.h"
-#include "dds/fld_scene_transition_gate_api.h"
-#include "dds/fld_next_scene_request_api.h"
-#include "dds/mnu_title_stream.h"
-#include "dds/dds3_path.h"
-#include "dds/sdf_dev_state.h"
-#include "dds/field_stage.h"
 #include "dds/fpu.h"
-#include "dds/fld.h"
-#include "dds/fld_scene_sequence_api.h"
-#include "dds/evt_random_status_clear_api.h"
-#include "dds/dat_state.h"
-#include "dds/dat_new_cycle_state.h"
-#include "dds/dat_world_field_flags.h"
-#include "dds/fld_resource_wait_api.h"
-#include "dds/fld_sequence_controller.h"
-#include "dds/file_selection_api.h"
-#include "dds/file_slot_flags_change_api.h"
-#include "dds/fld_player_scene_state.h"
-#include "dds/fld_spark_controller_state.h"
 
 extern char D_0039FCA0[];
 extern dds3Basic_t *fldPlayerObject;
@@ -119,14 +47,10 @@ struct dds3Basic_t;
 
 void fldEncountClearFlag(u32 mask);
 
-#include "dds/fld_encounter_request.h"
-
 f32 fldPointDistance(f32 ax, f32 ay, f32 az, f32 bx, f32 by, f32 bz);
 void fldToggleWorldNodeState(s64 clearMode);
 extern u64 D_003BAB70[], D_003BAB78[], D_003BAB80[], D_003BAB88[], D_003BAB90[];
 extern u64 D_003BAB98[], D_003BABA0[], D_003BABA8[], D_003BABB0[];
-
-#include "dds/sdf_debug_api.h"
 
 typedef struct FieldVec4 {
     f32 x;
@@ -144,22 +68,16 @@ enum {
     FIELD_PRIMARY_SCENE_CONSUMED_FLAG = 8
 };
 
-#include "dds/fld_encounter_roll_entry.h"
-
 enum {
     FIELD_ENCOUNTER_ROLL_ENTRY_COUNT = 16
 };
 
 #define FIELD_ENCOUNTER_PERCENT_RANGE 100U
 
-#include "dds/btl_conditional_encounter_roll_api.h"
-
 extern char D_0039FCA0[], D_0039FCB0[];
 extern void evtDisableMoonDraw(void);
 
 struct dds_dds3ObjectBaseControlWorkData_t;
-
-#include "dds/fld_encounter_runtime_api.h"
 
 extern char D_0039FD30[], D_0039FD40[];
 extern char D_0039FD30[], D_0039FD40[];

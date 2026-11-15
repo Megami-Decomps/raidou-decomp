@@ -9,35 +9,10 @@
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
 #include "dds/btl.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3_task_update_count.h"
-#include "dds/dds3_world_primary.h"
-#include "dds/dds3_world_secondary.h"
-#include "dds/dds3obj.h"
-#include "dds/eff_event.h"
 #include "dds/eff_event_setup_readiness.h"
 #include "dds/evt_picture.h"
-#include "dds/evt_polygon_movie_load_api.h"
-#include "dds/evt_unit.h"
 #include "dds/evt_viewer.h"
-#include "dds/evt_world.h"
-#include "dds/itf_mes_panel_mode.h"
-#include "dds/itf_mes_window.h"
-#include "dds/mdl.h"
 #include "dds/mdl_motion_controller_lookup_api.h"
-#include "dds/sdf.h"
-#include "dds/sdf_delayed_resource_check_api.h"
-#include "dds/sdf_file_existence_api.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_texture_file.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdk_libc.h"
-#include "dds/sdk_libkernl.h"
-#include "dds/snd_sequence_volume_pan.h"
-#include "dds/snd_track_playback_api.h"
 
 /* The primary object returned by dds3GetActiveScene is distinct from the active
  * world's WorldInfo payload. Event lookup, lip-sync and viewer code share this chain:
@@ -69,39 +44,12 @@ void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/sdk_ps2.h"
-#include "dds/snd_packed_track_load_status.h"
-#include "dds/common.h"
-#include "dds/evt_viewer_track_file_format.h"
-#include "dds/sdf_vu0.h"
-#include "dds/dds3_background_fade_api.h"
-#include "dds/event.h"
 #include "dds/evt_menu_table_entry_availability.h"
-#include "dds/mnu_camp_option_index_api.h"
-#include "dds/evt_reload_viewer_api.h"
-#include "dds/evt_viewer_rows.h"
-#include "dds/evt_float_panel_row.h"
 #include "dds/evt_pad.h"
-#include "dds/evt_serialized_child.h"
-#include "dds/evt_event_bgm_readiness.h"
-#include "dds/evt_sound_variation.h"
-#include "dds/evt_sky_alpha_animation_status.h"
-#include "dds/eff_object.h"
-#include "dds/pcp_vu0.h"
 #include "dds/ee_mmi.h"
-#include "dds/sdf_sif_command.h"
-#include "dds/dds3_task_runner.h"
 #include "dds/evt_task.h"
-#include "dds/evt_unit_object_key.h"
-#include "dds/evt_unit_vector_slot.h"
-#include "dds/evt_event_pack.h"
-#include "dds/evt_polygon_movie.h"
-#include "dds/evt_effect_scale_object.h"
-#include "dds/fld.h"
 
 struct SoundMixer;
-
-#include "dds/sdf_debug_api.h"
 
 typedef struct {
     s16 enabled;
@@ -124,8 +72,6 @@ extern char evtFmtStr[];
 extern s32 dds3SelectMenu(s32 padSet, s32 secondaryCount, s32 primaryCount, s32 secondaryVisible,
                                  s32 primaryVisible, s32 *secondaryScroll, s32 *primaryScroll,
                                  s32 *secondaryCursor, s32 *primaryCursor);
-
-#include "dds/dds3_world_selection.h"
 
 void evtViewerDrawPendingNodeRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 extern void evtViewerDrawPendingNodeRow();
@@ -205,9 +151,6 @@ typedef struct EvtPmdFilePrefix {
 } EvtPmdFilePrefix;
 
 typedef char EvtPmdFilePrefix_size_check[sizeof(EvtPmdFilePrefix) == 0x20 ? 1 : -1];
-
-#include "dds/dat_state.h"
-#include "dds/sdf_texture_offset_list.h"
 
 /* PM1 section 2 and section 3 use the same 0x20-byte package record. */
 typedef struct EvtViewerPackageRecord {

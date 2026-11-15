@@ -5,39 +5,10 @@
 #endif
 
 #include "dds/btl.h"
-#include "dds/sdf_chip.h"
 
 extern void *memcpy(void *, const void *, unsigned int);
 
-#include "dds/sdk_ps2.h"
-#include "dds/common.h"
-#include "dds/btl_target_list_builder.h"
-#include "dds/btl_element_block_query_result.h"
-#include "dds/btl_command_use_error.h"
-#include "dds/btl_command_hit_result.h"
-#include "dds/btl_resolve_unit_value_api.h"
-#include "dds/btl_actor_entry_code_api.h"
-#include "dds/btl_actor_selection_clear_api.h"
-#include "dds/btl_enemy_spawn_capacity_api.h"
-#include "dds/btl_skill_max_api.h"
-#include "dds/btl_ai_slot.h"
-#include "dds/btl_task_condition.h"
-#include "dds/eff_transform.h"
-#include "dds/btl_state.h"
-#include "dds/btl_command.h"
-#include "dds/btl_model_record.h"
-#include "dds/sdf_draw.h"
-#include "dds/evt_unit.h"
-#include "dds/mdl.h"
 #include "dds/ee_mmi.h"
-#include "dds/pcp_vu0.h"
-#include "dds/btl_action.h"
-#include "dds/btl_ai_table.h"
-#include "dds/btl_ai_scratch.h"
-#include "dds/btl_ai_route_predicate_selection.h"
-#include "dds/btl_unit_tasks.h"
-#include "dds/dat_state.h"
-#include "dds/dat_command.h"
 
 #define BTL_AI_WEIGHT_MASK 0xFFFF
 
@@ -88,8 +59,6 @@ typedef struct BtlActionLookup {
     u16 slot;
     s32 result;
 } BtlActionLookup;
-
-#include "dds/btl_preemptive_outcome_result.h"
 
 /* Rolls a bucket; if it lands within 3 of the previous one, rolls again. */
 s32 GetPercentage(void) {

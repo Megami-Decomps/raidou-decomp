@@ -7,24 +7,7 @@
 #include "kernel_draw.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3_world_secondary.h"
-#include "dds/dds3_world_selection.h"
-#include "dds/dsp_channel.h"
-#include "dds/dsp_entry_api.h"
-#include "dds/dsp_message_window_api.h"
-#include "dds/evt_message_window_api.h"
-#include "dds/evt_world_object_api.h"
-#include "dds/dds3_process.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/sdf_bordered_rectangle_packet.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_list.h"
 #include "dds/sdf_sif_command.h"
-#include "dds/snd_track_playback_api.h"
 
 u64 *dds3PrimFrameRect(s32 x, s32 y, s32 depth, s32 width, s32 height, u32 colorA, u32 colorB);
 void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
@@ -36,17 +19,8 @@ void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
 s32 sdfGrAllocPacketBuff(s32 size);
 
-#include "dds/sdk_ps2.h"
-#include "dds/snd_packed_track_load_status.h"
-#include "dds/common.h"
-#include "dds/dds3_task_runner.h"
-#include "dds/sdf.h"
-#include "dds/itf_grid_text.h"
 #include "dds/itf_grid_text_color_api.h"
 #include "dds/sdf_grid_seek_api.h"
-#include "dds/sdf_counter_display.h"
-#include "dds/fld_lmap_task.h"
-#include "dds/fld_lmap_task_presence.h"
 
 typedef GridTextListItem LmapNode;
 

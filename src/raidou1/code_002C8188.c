@@ -9,14 +9,7 @@
 #include "sdk_libc.h"
 #include "dds/btl.h"
 #include "dds/file_request_api.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_header.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_texture_draw_packet.h"
 #include "dds/sdf_texture_file.h"
-#include "dds/sdf_trig.h"
 
 /* Return the payload allocation descriptor. For normal file loads, freeing the
  * request wrapper does not free this allocation; its resource owner must keep
@@ -52,18 +45,12 @@ f32 sdfSin(f32 angle);
 struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
 
 #include "dds/sdf_gs_alpha_register_api.h"
-#include "dds/common.h"
-#include "dds/eff_object_node.h"
 #include "dds/itf_draw_grid.h"
-#include "dds/eff_ref_obj.h"
 #include "dds/ee_mmi.h"
-#include "dds/pcp_vu0.h"
-#include "dds/eff.h"
 #include "dds/eff_resource_slots.h"
 #include "dds/eff_resource_records.h"
 #include "dds/eff_record_bucket.h"
 #include "dds/eff_owner_records.h"
-#include "dds/sdf.h"
 
 /* Declared before first use (were implicit int). */
 extern void * memset(void *, s32, u32);

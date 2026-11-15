@@ -7,12 +7,6 @@
 #include "newdata.h"
 #include "sdk_libc.h"
 #include "dds/btl.h"
-#include "dds/fr_font.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdk_libc.h"
-#include "dds/ui_color.h"
 
 /* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
@@ -25,29 +19,12 @@ struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
 void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
 void *sdfMemLock(struct sdfMemHandle_t *allocation);
 
-#include "dds/sdk_ps2.h"
-#include "dds/evt_stage_test_api.h"
-#include "dds/evt_stage_test_resource_work_result.h"
-#include "dds/dsp_entry_api.h"
-#include "dds/snd_sequence_volume_pan.h"
-#include "dds/fr_font_context.h"
 #include "dds/itf_draw_grid.h"
 #include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_records.h"
-#include "dds/mnu_input.h"
-#include "dds/dds3_process.h"
-#include "dds/pty_skill_menu_api.h"
 #include "dds/mnu_list.h"
-#include "dds/mnu_staff.h"
 #include "dds/fpu.h"
-#include "dds/dat_state.h"
 #include "dds/eff.h"
-#include "dds/mnu_shop.h"
-#include "dds/mnu_scroll_panel.h"
 #include "dds/menu_fade_entry.h"
-#include "dds/eff_random.h"
-#include "dds/mnu_party_menu_data.h"
-#include "dds/mnu_standard_partner_requirements_api.h"
 
 struct StaffMenuRuntime;
 
@@ -228,8 +205,6 @@ typedef struct MenuVoiceState {
     s32 idleFrames;
     s32 motionSelection; /* -1 enables periodic motion */
 } MenuVoiceState;
-
-#include "dds/fr_font_draw_glyph.h"
 
 typedef struct MenuListDefaults {
     s32 indices[3];

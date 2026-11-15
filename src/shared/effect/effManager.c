@@ -82,33 +82,11 @@ extern char dds3EffectProcessName[7];
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_effLegacyInstance_t 1
-
-#define SMT3_DEFINES_effMajorEntry_t 1
-
-#define SMT3_DEFINES_effNode_t 1
-
-#define SMT3_DEFINES_effResourceHeader_t 1
-
-#include "dds/common.h"
-#include "dds/sdf_chip.h"
-#include "dds/par_cell_api.h"
-#include "dds/sdf_heap_api.h"
 #include "dds/ee_mmi.h"
 #include "dds/eff.h"
-#include "dds/eff_node.h"
-#include "dds/eff_create_node_from_parameter.h"
-#include "dds/eff_node_descriptor.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_gs_packet.h"
-#include "dds/eff_manager_task.h"
 #include "dds/dds3_task_runner.h"
-#include "dds/eff_legacy_node_instance.h"
-#include "dds/sdf_packet_alloc.h"
 
 extern void effObjectListCountersReset(void);
-
-#include "dds/sdf_debug_api.h"
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectManagerInit);
 

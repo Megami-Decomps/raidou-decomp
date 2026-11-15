@@ -165,22 +165,7 @@ s32 scrCommand_MFILTER_OFF(void);
 s32 scrCommand_BLUR_ALLOFF(void);
 s32 scrCommand_FILTER_ALLOFF(void);
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#define SMT3_DEFINES_scrVec4_t 1
-
-#define SMT3_DEFINES_scrVecW_t 1
-
 #include "newdata.h"
-#include "dds/common.h"
-#include "dds/sdk_libgcc.h"
-#include "dds/kernel.h"
-#include "dds/scr.h"
-#include "dds/ps2asm.h"
-#include "dds/sdfFrame.h"
-#include "dds/sdk_libc.h"
 
 #define SCR_PROCESS_CONTROL_FLAG 210
 

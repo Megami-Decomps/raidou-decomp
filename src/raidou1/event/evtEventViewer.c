@@ -52,54 +52,10 @@ extern char evtViewerProcNameMfilter[8];
 #define VERSION_DDS2 1
 #endif
 
-#define SMT3_DEFINES_EVT_VIEWER_MENU 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_BASICLIST 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_DATA 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_EVENTPOS 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_FILENAME 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_FILENAME2 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_FLOATCHANGE 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_FRAMECHANGE 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_FRAMELIST 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_INTCHANGE 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_MAIN 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_MAX 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_NON 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_OBJLIST 1
-
-#define SMT3_DEFINES_EVT_VIEWER_MENU_SELECT 1
-
-#define SMT3_DEFINES_polyMovieObject_t 1
-
 #include "dds3obj.h"
 #include "newdata.h"
 #include "dds/btl.h"
 #include "dds/dds3_object_control_slot.h"
-#include "dds/dds3obj.h"
-#include "dds/eff_event_draw.h"
-#include "dds/eff_transform.h"
-#include "dds/evt_sky_alpha_animation_status.h"
-#include "dds/evt_world.h"
-#include "dds/file_request_api.h"
-#include "dds/itf_mes_window.h"
-#include "dds/mdl_motion_api.h"
-#include "dds/mdl_world_object_source_vector_api.h"
-#include "dds/sdf_float_counter.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_motion_loop.h"
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -142,56 +98,12 @@ struct dds3Basic_t *dds3ObjectBaseGetControlBasic(
 void evtSetUnitPos(u32 targetKey, u32 sourceKey);
 extern void *memcpy(void *, const void *, unsigned int);
 
-#include "dds/sdk_ps2.h"
-#include "dds/common.h"
 #include "dds/evt_viewer_track_file_format.h"
-#include "dds/scr_command_result.h"
-#include "dds/sdf_delayed_resource_check_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/sdf_dma_tag.h"
-#include "dds/evt_window_shade_packet.h"
-#include "dds/evt_camera_color_track_api.h"
-#include "dds/dds3_background_fade_api.h"
-#include "dds/dds3_path.h"
-#include "dds/dds3_task_add_child.h"
-#include "dds/mnu_title_stream.h"
-#include "dds/mnu_title_sound.h"
-#include "dds/mnu_movie_playback_api.h"
-#include "dds/mnu_camp_font_api.h"
-#include "dds/mnu_camp_option_index_api.h"
-#include "dds/sdf_chip.h"
 #include "dds/evt_viewer.h"
-#include "dds/event.h"
 #include "dds/evt_viewer_indexed_condition.h"
-#include "dds/evt_viewer_object_slot_api.h"
-#include "dds/evt_sound_variation.h"
-#include "dds/evt_reload_viewer_api.h"
-#include "dds/evt_reset_unit_vector_slots_api.h"
-#include "dds/itf_mes_entry_start_api.h"
-#include "dds/itf_mes_voice_cue_result.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_fade_timing.h"
-#include "dds/sdf.h"
-#include "dds/sdf_draw.h"
-#include "dds/pcp_vu0.h"
-#include "dds/evt_unit.h"
-#include "dds/evt_unit_vector_slot.h"
-#include "dds/eff_blur.h"
-#include "dds/dat_state.h"
-#include "dds/eff.h"
-#include "dds/eff_node.h"
 #include "dds/eff_object.h"
-#include "dds/eff_object_dispatch_api.h"
 #include "dds/mdl.h"
 #include "dds/mdl_motion_controller_lookup_api.h"
-#include "dds/evt_polygon_movie.h"
-#include "dds/evt_viewer_group_record.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3_task_create.h"
-#include "dds/itf.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/dds3_world_primary.h"
 
 EvtRuntimeChild *evtEventViewerGetPendingNode(dds_evtViewerInfo_t *viewer);
 void evtEventViewerReleasePendingNode(dds_evtViewerInfo_t *viewer);
@@ -224,9 +136,6 @@ u16 evtViewerPopHistory(dds_evtViewerInfo_t *viewer);
 extern char evtViewerTaskName[];
 
 typedef struct CampDisplayDefaults CampDisplayDefaults;
-
-#include "dds/sdf_debug_api.h"
-#include "dds/evt_blend_vec_color.h"
 
 extern void ValidatePathFrame(s32 endTime, dds_evtViewerInfo_t *viewer);
 extern void evtViewerApplyGlyphLodChannel(s32 position, dds_evtViewerInfo_t *viewer);

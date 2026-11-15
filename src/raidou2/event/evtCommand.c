@@ -357,40 +357,6 @@ extern const char evtMsgSetSkyAlphaLow[40];
 #define VERSION_DDS2 1
 #endif
 
-#define SMT3_DEFINES_EVT_CAMP_TASK_READY_VALUE 1
-
-#define SMT3_DEFINES_EVT_PAIRED_REQUEST_SIZE 1
-
-#define SMT3_DEFINES_EVT_SCALAR_REQUEST_SIZE 1
-
-#define SMT3_DEFINES_EVT_WORLD_OBJECT_KIND_FIRST 1
-
-#define SMT3_DEFINES_EVT_WORLD_OBJECT_KIND_LIMIT 1
-
-#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID 1
-
-#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_UPDATE_PENDING 1
-
-#define SMT3_DEFINES_OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION 1
-
-#define SMT3_DEFINES_datModelParam_t 1
-
-#define SMT3_DEFINES_dds3MoverUpdate_t 1
-
-#define SMT3_DEFINES_dds3SlotResource_t 1
-
-#define SMT3_DEFINES_effEventWork_t 1
-
-#define SMT3_DEFINES_evtColorWork_t 1
-
-#define SMT3_DEFINES_evtModelHeader_t 1
-
-#define SMT3_DEFINES_evtVec_t 1
-
-#define SMT3_DEFINES_sdfTextureClampMode_t 1
-
-#include "dds/eff_transform.h"
-
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
  * directory extent rather than an enum-completeness claim. */
@@ -413,50 +379,13 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-#include "dds/sdk_ps2.h"
-#include "dds/fld_area_work.h"
-#include "dds/evt_encounter_request_api.h"
-#include "dds/fld.h"
-#include "dds/scr_integer_return_value_api.h"
-#include "dds/common.h"
-#include "dds/scr_integer_parameter_api.h"
-#include "dds/dds3_camera_update_flags.h"
-#include "dds/sdf_delayed_resource_check_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/dds3_admin_control_api.h"
-#include "dds/evt_stage_anime_control_api.h"
-#include "dds/dds3_task_add_child.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/evt_world_object_api.h"
 #include "dds/evt_polygon_movie_flags_api.h"
-#include "dds/fld_resource_resolver.h"
-#include "dds/dds3_path.h"
-#include "dds/dds3obj.h"
-#include "dds/dds3_object_control_slot.h"
-#include "dds/dds3_world_selection.h"
-#include "dds/eff_dependency.h"
-#include "dds/eff_object.h"
-#include "dds/fld_player_scene_state.h"
-#include "dds/eff_inner_float_api.h"
-#include "dds/pcp_vu0.h"
-#include "dds/dds3_process.h"
 #include "dds/evt_task.h"
-#include "dds/evt_world.h"
-#include "dds/evt_path_direction.h"
-#include "dds/evt_event_pack.h"
 #include "dds/scr.h"
-#include "dds/scr_command_result.h"
-#include "dds/scr_command_timer_api.h"
 #include "dds/scr_process_handle_api.h"
-#include "dds/scr_string_parameter_api.h"
-#include "dds/scr_arg_read.h"
-#include "dds/evt_solar.h"
-#include "dds/dds3_world_counter.h"
 
 /* Selects both the world-node tag and its per-kind scene slot. */
 typedef s32 EffWorldKind;
-
-#include "dds/sdf_debug_api.h"
 
 ScrCommandResult evtCommandSignalAdminAtTimerZero(void);
 ScrCommandResult evtCommandSubmitEvent(void);
@@ -472,53 +401,7 @@ ScrCommandResult evtCommandStartPolygonMovie(void);
 #define VERSION_DDS2 1
 #endif
 
-#define SMT3_DEFINES_EFF_WORLD_KIND_ACTION_10 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_ACTION_B 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_ACTION_D 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_CAMERA 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_COUNT 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_EFFECT_OBJECT 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_EFFECT_TRANSFORM 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_EVENT_TABLE 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_FOLLOW_MODEL 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_LIGHT 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_RESOURCE_OWNER 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_SCRIPT_OBJECT 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_SLOT_RING 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_TRANSFORM_SOURCE 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_WORLD_INDEX_OWNER 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_WORLD_INFO 1
-
 #include "dds/btl.h"
-#include "dds/dds3_scene_membership.h"
-#include "dds/eff_quaternion_nlerp.h"
-#include "dds/evt_unit.h"
-#include "dds/evt_unit_move_end_api.h"
-#include "dds/evt_unit_path_advance_api.h"
-#include "dds/mdl.h"
-#include "dds/mdl_motion_api.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_float_counter.h"
-#include "dds/sdf_map_position_api.h"
-#include "dds/sdf_model_scalars.h"
-#include "dds/sdf_motion.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdk_libm.h"
 
 enum EvtTargetInfoFlags {
     EVT_TARGET_INFO_FLAG_UNIT_OWNS_VECTOR = 0x8
@@ -548,24 +431,6 @@ struct sdfGrOt_t;
 
 struct EffNodeDescriptor;
 
-#include "dds/dds3_object_flags.h"
-#include "dds/btl_model_record.h"
-#include "dds/evt_unit_object_key.h"
-#include "dds/evt_unit_path_mode.h"
-#include "dds/evt_unit_motion_api.h"
-#include "dds/evt_unit_motion_callback_result.h"
-#include "dds/evt_unit_motion_step_result.h"
-#include "dds/evt_unit_wait_api.h"
-#include "dds/evt_unit_facing_result_api.h"
-#include "dds/evt_unit_light_animation_status.h"
-#include "dds/evt_unit_vector_slot.h"
-#include "dds/evt_unit_motion_slot_flags.h"
-#include "dds/evt_unit_transition_flags.h"
-#include "dds/evt_unit_motion_setup.h"
-#include "dds/evt_unit_motion_slot.h"
-#include "dds/evt_unit_color_transition.h"
-#include "dds/evt_unit_vertical_move.h"
-#include "dds/sdf_draw.h"
 #include "dds/ee_mmi.h"
 
 typedef struct PcpScatterWork4 PcpScatterWork4;
@@ -583,27 +448,13 @@ struct PcpScatterWork4 {
 
 extern f32 sdfFaceDivSoften, sdfFaceDivBias;
 
-#include "dds/dds3_world_primary.h"
-
 #define EVT_UNIT_FLAG_MOTION_START_PENDING 0x80
 
 #define EVT_UNIT_FLAG_MOTION_WOBBLE 0x40
 
 #define EVT_UNIT_FLAG_USE_PATH_ROTATION 0x10
 
-#include "dds/sdf_unique_chunk_value_api.h"
 #include "dds/fpu.h"
-#include "dds/mdl_motion_end_status.h"
-#include "dds/mdl_world_object_source_vector_api.h"
-#include "dds/itf_mes_window.h"
-#include "dds/evt_world_source_transform.h"
-#include "dds/evt_model_header.h"
-#include "dds/evt_lips_link.h"
-#include "dds/evt_reset_unit_vector_slots_api.h"
-#include "dds/eff_object_dispatch_api.h"
-#include "dds/eff_event.h"
-#include "dds/eff_node_descriptor.h"
-#include "dds/dds3_world_secondary.h"
 
 extern void evtArmEffectObjectPendingValue(dds3Basic_t *object, s32 value);
 extern void evtResetObjectPendingValue(dds3Basic_t *object);
@@ -625,34 +476,7 @@ ScrCommandResult evtOpRestoreUnitReferenceAngle(void);
 #define VERSION_DDS2 1
 #endif
 
-#define SMT3_DEFINES_EVT_TARGET_INFO_FLAG_UNIT_OWNS_VECTOR 1
-
-#define SMT3_DEFINES_EVT_WORLD_SLOT_MOVIE 1
-
-#define SMT3_DEFINES_EVT_WORLD_SLOT_UNIT 1
-
-#define SMT3_DEFINES_EvtTargetInfoFlags 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_INITIALIZED 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_SAMPLING 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_SUSPENDED 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_TERMINAL 1
-
-#define SMT3_DEFINES_SDF_MOTION_STATE_UNINITIALIZED 1
-
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/dat_state.h"
-#include "dds/dat_world_field_flags.h"
-#include "dds/dds3_process_registration.h"
-#include "dds/evt_picture.h"
-#include "dds/evt_event_bgm_readiness.h"
 #include "dds/evt_sound_variation.h"
-#include "dds/dds3_task_runner.h"
 
 u32 evtOpcodeSetBgmVolumePan(void);
 u32 evtOpcodeInitializeEffectSoundChannel(void);

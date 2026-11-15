@@ -5,29 +5,12 @@
 #endif
 
 #include "newdata.h"
-#include "dds/dds3_process.h"
-#include "dds/fr_font.h"
-#include "dds/sdf_chip.h"
 
 void *sdfChipAllocZeroDirect(s32 size);
 void sdfChipFreeDirect(void *memory);
 
-#include "dds/camp_menu_context.h"
-#include "dds/itf_draw_grid.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_source_lifetime.h"
-#include "dds/mnu_input.h"
-#include "dds/mnu.h"
 #include "dds/mnu_list.h"
 #include "dds/mnu_shop.h"
-#include "dds/mnu_scroll_panel.h"
-#include "dds/dat_state.h"
-#include "dds/pty_roster_api.h"
-#include "dds/mnu_standard_partner_requirements_api.h"
-#include "dds/eff.h"
-#include "dds/eff_resource_records.h"
-#include "dds/itf.h"
-#include "dds/mnu_staff.h"
 
 struct MenuListNode;
 

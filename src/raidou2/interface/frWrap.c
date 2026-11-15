@@ -80,31 +80,8 @@ extern s32 frTestFontX, frTestFontY;
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_frBitRange_t 1
-
-#define SMT3_DEFINES_frFontNode_t 1
-
-#define SMT3_DEFINES_frFontRing_t 1
-
-#define SMT3_DEFINES_frImagePtrs_t 1
-
-#define SMT3_DEFINES_frPackedHeader_t 1
-
-#define SMT3_DEFINES_frRelativeImage_t 1
-
-#define SMT3_DEFINES_frTextBank_t 1
-
 #include "scr.h"
 #include "sdk_libc.h"
-#include "dds/dds3_admin_control_api.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_state_query.h"
-#include "dds/sdf_gs_packet.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_header.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf_texture_file.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -146,26 +123,9 @@ enum {
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-#include "dds/sdk_ps2.h"
-#include "dds/scr.h"
-#include "dds/common.h"
-#include "dds/itf_bit_range.h"
-#include "dds/itf_text_vector.h"
-#include "dds/itf_text_slots_api.h"
-#include "dds/fr_font_text_slots.h"
-#include "dds/itf_gs_state_packet.h"
-#include "dds/fr_font.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_state.h"
-#include "dds/sdf_heap_api.h"
 #include "dds/itf.h"
-#include "dds/itf_panel_api.h"
 #include "dds/fr_font_glyph_chain_count.h"
 #include "dds/fr_font_measure.h"
-#include "dds/itf_mem_node.h"
-#include "dds/itf_resource_segments.h"
-#include "dds/sdf.h"
-#include "dds/itf_panel_draw.h"
 #include "dds/btl.h"
 
 #define ITF_BYTE_MASK 0xFF
@@ -215,8 +175,6 @@ enum {
 #define ITF_LINE_STRIP_PRIMITIVE_BITS 0x14A
 
 #define ITF_LINES_PRIMITIVE_BITS 0x49
-
-#include "dds/sdf_debug_api.h"
 
 _FRQ *itfDrawColor(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1,
                    s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *unusedSub);

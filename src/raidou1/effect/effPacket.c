@@ -55,22 +55,6 @@ typedef struct
     effPacketSpriteCorner_t corner[2];
 } effPacketSpriteVertex_t;
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#define SMT3_DEFINES_effPacketDrawBank_t 1
-
-#define SMT3_DEFINES_effPacketSpriteCorner_t 1
-
-#define SMT3_DEFINES_effPacketSpriteVertex_t 1
-
-#include "dds/common.h"
-#include "dds/draw3d.h"
-#include "dds/ps2asm.h"
-#include "dds/sdfFrame.h"
-#include "dds/sdk_libc.h"
-
 void effWriteGouraudTexturedQuadPacket(u64 *packet, s32 primitive,
                   s32 x0, s32 y0, f32 s0, f32 t0, s32 color0,
                   s32 x1, s32 y1, f32 s1, f32 t1, s32 color1,

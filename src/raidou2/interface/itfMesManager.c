@@ -290,24 +290,6 @@ extern char itfMesDebugFadeFormat[8];
 #define VERSION_DDS2 1
 #endif
 
-#define SMT3_DEFINES_debug_tag 1
-
-#define SMT3_DEFINES_itfMesBinMesHeader_t 1
-
-#define SMT3_DEFINES_itfMesBinTypeHeader_t 1
-
-#define SMT3_DEFINES_itfMesLinkControl_t 1
-
-#define SMT3_DEFINES_itfMesLink_t 1
-
-#define SMT3_DEFINES_itfMesManager_t 1
-
-#define SMT3_DEFINES_itfMesResource_t 1
-
-#define SMT3_DEFINES_itfPadState_t 1
-
-#define SMT3_DEFINES_itfProcessShutdown_t 1
-
 #include "dds/scr_command_timer_api.h"
 
 /* During a command callback, return the number of earlier trace passes that
@@ -317,20 +299,10 @@ extern char itfMesDebugFadeFormat[8];
 ScrCommandYieldCount scrGetCommandTimer(void);
 
 #include "dds/mnu.h"
-#include "dds/scr_integer_parameter_api.h"
-#include "dds/scr_command_parameter_index.h"
-#include "dds/scr_integer_return_value_api.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/itf.h"
-#include "dds/itf_mes_window.h"
 #include "dds/itf_mes_panel_mode.h"
 #include "dds/itf_mes_entry_start_api.h"
-#include "dds/sdf.h"
 #include "dds/itf_panel_draw.h"
-#include "dds/itf_text_vector.h"
-#include "dds/itf_panel_api.h"
 #include "dds/itf_panel_layouts.h"
-#include "dds/itf_held_panel_message_step.h"
 
 #define ITF_PANEL_COLUMN_COUNT 4
 
@@ -373,8 +345,6 @@ ScrCommandYieldCount scrGetCommandTimer(void);
 extern void (*DrawTable[])(dds_itfpanel_t *, sdfDrawTag_t *);
 extern PanelHold itfHeldPanelCursor;
 
-#include "dds/sdf_packet_alloc.h"
-
 extern u8 D_003B45E8[], D_003B4600[], D_003B4618[];
 extern u8 D_003B4630[], D_003B4648[], D_003B4660[];
 extern u8 D_004365A8[8], D_004365B0[8];
@@ -391,43 +361,7 @@ s32 MesMngSelect(void);
 #endif
 
 #include "sdk_libc.h"
-#include "dds/fr_font.h"
-#include "dds/fr_font_context.h"
-#include "dds/itf_text_slots_api.h"
-#include "dds/sdk_ps2.h"
-#include "dds/btl_enc_bg_entry.h"
-#include "dds/common.h"
-#include "dds/itf_mes_voice_cue_result.h"
-#include "dds/itf_mes_selection_commit_result.h"
-#include "dds/itf_mes_select_def_key_result.h"
-#include "dds/itf_message_manager_task.h"
-#include "dds/itf_option_bit_index_api.h"
-#include "dds/snd_pad.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_pac_reloc.h"
-#include "dds/fr_font_temporary_entry_api.h"
-#include "dds/itf_mes_state_api.h"
-#include "dds/fld_area_work.h"
-#include "dds/fr_font_measure.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/sdf_chip.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_create.h"
-#include "dds/pcp_vu0.h"
-#include "dds/btl_scene_fade.h"
-#include "dds/btl_resource.h"
-#include "dds/eff.h"
 #include "dds/btl_state.h"
-#include "dds/btl_ui.h"
-#include "dds/sdf_projection.h"
-#include "dds/btl_action.h"
-#include "dds/scr.h"
-#include "dds/dat_state.h"
-#include "dds/mnu_result.h"
-#include "dds/dat_command.h"
-#include "dds/sdf_sif_command.h"
-#include "dds/mdl_resource_table.h"
-#include "dds/dds3_task_lifecycle.h"
 
 typedef mesflow_tag ItfMesWindowRec;
 

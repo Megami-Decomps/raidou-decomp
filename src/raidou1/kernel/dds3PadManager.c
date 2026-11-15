@@ -36,53 +36,10 @@ void dds3UpdateVibrationSlots(void);
 
 #include "sdfDevCons.h"
 #include "dds/btl.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_fade_color.h"
-#include "dds/dds3_process_registration.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/eff_random.h"
-#include "dds/evt_frame_state_packet.h"
-#include "dds/dds3_process.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_gs_blend.h"
-#include "dds/sdf_gs_scene_state.h"
-#include "dds/sdf_linked_packet.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_projection.h"
-#include "dds/sdf_scene_packet.h"
-#include "dds/sdf_tex_packet.h"
-#include "dds/sdf_texture_clamp.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf_texture_lists.h"
-#include "dds/sdf_texture_registry.h"
 
 extern void *memcpy(void *, const void *, unsigned int);
 
-#include "dds/sdk_ps2.h"
-#include "dds/common.h"
-#include "dds/file_config_option_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/dds3_background_fade_api.h"
-#include "dds/sdf_pad_motor_api.h"
-#include "dds/dds3Admin.h"
-#include "dds/kernel.h"
-#include "dds/eff_random_mod.h"
-#include "dds/sdf_cons_matrix_packet.h"
-#include "dds/sdf_dma_packet_header.h"
-#include "dds/dds3_task_update_count.h"
 #include "dds/dds3_named_slot.h"
-#include "dds/dds3_task_runner.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_fade_timing.h"
-#include "dds/sdf.h"
-#include "dds/sdf_draw.h"
-#include "dds/sdf_sif_command.h"
-#include "dds/pcp_vu0.h"
-#include "dds/sdf_dma_tag.h"
-#include "dds/sdf_gs_packet.h"
 
 extern u8 Act2SubWork2;
 extern fclNamedSlot_t D_003C1C90[];
@@ -174,10 +131,6 @@ void Act2Sub(void);
 #define DDS3_MAP_CYAN 0x80808000
 
 #define DDS3_HELD_TEXTURE_CLAMP_MODE 5
-
-#include "dds/dds3_frame_draw_bank.h"
-#include "dds/dds3_texture_bank.h"
-#include "dds/dds3_texture_reference_flag_api.h"
 
 #define DDS3_FADE_TICKS_PER_FRAME 10
 

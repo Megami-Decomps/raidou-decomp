@@ -34,17 +34,9 @@ u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_fclGlobalWorkItemInventory_t 1
-
-#define SMT3_DEFINES_fclItemList_t 1
-
-#define SMT3_DEFINES_fclSceneObj_t 1
-
 #include "sdk_libc.h"
 #include "sdk_libgcc.h"
 #include "dds/btl.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdk_libc.h"
 
 extern void *memcpy(void *, const void *, unsigned int);
 void *memset(void *dst, s32 value, u32 size);
@@ -52,25 +44,9 @@ void *sdfChipAllocDirect(s32 size);
 void sdfChipFreeDirect(void *memory);
 u32 strlen(const char *text);
 
-#include "dds/sdk_ps2.h"
 #include "dds/sdf_gs_register_submit_api.h"
 #include "dds/sdf_gs_alpha_register_api.h"
-#include "dds/sdf_gs_header.h"
-#include "dds/common.h"
-#include "dds/ui_color.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/fpu.h"
-#include "dds/eff.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_records.h"
 #include "dds/itf_grid_text.h"
-#include "dds/itf_grid_text_color_api.h"
-#include "dds/sdf_grid_seek_api.h"
-#include "dds/itf_draw_grid.h"
-#include "dds/sdf.h"
-#include "dds/sdf_draw.h"
-#include "dds/sdf_projection.h"
-#include "dds/pcp_vu0.h"
 
 extern GridTextListItem *itfFindGridNodeByKey(u32, GridTextWidget *);
 extern GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *);

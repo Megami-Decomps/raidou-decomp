@@ -374,94 +374,10 @@ extern s32 dds3ScreenBlurOfsX[2];
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_dds3Blur2Param 1
-
-#define SMT3_DEFINES_dds3Blur2Param_t 1
-
-#define SMT3_DEFINES_dds3DistBlurParam 1
-
-#define SMT3_DEFINES_dds3DistBlurParam_t 1
-
-#define SMT3_DEFINES_dds3FadePacket_t 1
-
-#define SMT3_DEFINES_dds3Filter2Param 1
-
-#define SMT3_DEFINES_dds3Filter2Param_t 1
-
-#define SMT3_DEFINES_dds3FogRange_t 1
-
-#define SMT3_DEFINES_dds3GouraudRegister_t 1
-
-#define SMT3_DEFINES_dds3GsCommand_t 1
-
-#define SMT3_DEFINES_dds3MFilterParam 1
-
-#define SMT3_DEFINES_dds3MFilterParam_t 1
-
-#define SMT3_DEFINES_dds3MultiBlurParam 1
-
-#define SMT3_DEFINES_dds3MultiBlurParam_t 1
-
-#define SMT3_DEFINES_dds3PrintControl_t 1
-
-#define SMT3_DEFINES_dds3QuakeGain_t 1
-
-#define SMT3_DEFINES_dds3RipBlurBody 1
-
-#define SMT3_DEFINES_dds3RipBlurBody_t 1
-
-#define SMT3_DEFINES_dds3RipBlurParam 1
-
-#define SMT3_DEFINES_dds3RipBlurParam_t 1
-
-#define SMT3_DEFINES_dds3ZClearPacket_t 1
-
 #include "sdk_libc.h"
-#include "dds/dds3_process_registration.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3_task_update_count.h"
-#include "dds/eff_random_mod.h"
-#include "dds/dds3_process.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_gs_scene_state.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_pad_motor_api.h"
-#include "dds/sdf_texture_lists.h"
-#include "dds/sdf_texture_registry.h"
-#include "dds/sdk_libm.h"
-#include "dds/sdk_ps2.h"
-#include "dds/sdf_scene_packet.h"
-#include "dds/common.h"
-#include "dds/file_config_option_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/dds3_background_fade_api.h"
-#include "dds/dds3Admin.h"
-#include "dds/kernel.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/eff_random.h"
-#include "dds/sdf_cons_matrix_packet.h"
-#include "dds/sdf_dma_packet_header.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf_tex_packet.h"
 #include "dds/dds3_named_slot.h"
-#include "dds/dds3_task_runner.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_fade_timing.h"
-#include "dds/sdf.h"
-#include "dds/sdf_projection.h"
-#include "dds/sdf_linked_packet.h"
-#include "dds/sdf_draw.h"
-#include "dds/sdf_gs_blend.h"
-#include "dds/sdf_sif_command.h"
-#include "dds/pcp_vu0.h"
-#include "dds/sdf_dma_tag.h"
-#include "dds/sdf_gs_packet.h"
 #include "dds/btl.h"
 #include "dds/dds3_fade_color.h"
-#include "dds/evt_frame_state_packet.h"
-#include "dds/sdf_packet_alloc.h"
 
 extern fclNamedSlot_t D_003C1C90[];
 
@@ -551,10 +467,6 @@ static inline void dds3SetNamedSlotState(s32 index, s32 kind, dds3ProcessFunc_t 
 
 #define DDS3_HELD_TEXTURE_CLAMP_MODE 5
 
-#include "dds/dds3_frame_draw_bank.h"
-#include "dds/dds3_texture_bank.h"
-#include "dds/dds3_texture_reference_flag_api.h"
-
 #define DDS3_FADE_TICKS_PER_FRAME 10
 
 #define DDS3_FADE_MARK_NUMERATOR 4
@@ -600,41 +512,7 @@ void dds3FadeColorGet(dds3FadeColor_t **outColor);
 #include "event.h"
 #include "scr.h"
 #include "sdf_packet_alloc.h"
-#include "dds/dds3_admin_control_api.h"
-#include "dds/dds3_task_priority_query.h"
-#include "dds/fld_scene_sequence_api.h"
-#include "dds/mnu_camp_state_ack_api.h"
-#include "dds/scr.h"
-#include "dds/sdf_dev_cons.h"
-#include "dds/sdf_dev_console_node.h"
-#include "dds/sdf_general_heap_api.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdk_libc.h"
-#include "dds/sdk_libkernl.h"
-#include "dds/evt_sel_state.h"
-#include "dds/evt_start_event_api.h"
-#include "dds/evt_script_event_id.h"
-#include "dds/sdf_line_pair_packet_api.h"
-#include "dds/sdf_gs_header.h"
 #include "dds/ee_mmi.h"
-#include "dds/eff_quaternion_nlerp.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/file_menu_start_mode.h"
-#include "dds/fld_lmap_task_presence.h"
-#include "dds/fld_terminal_scene_state.h"
-#include "dds/sdf_heap_overlay_block.h"
-#include "dds/dds3_frame_draw_buffer.h"
-#include "dds/evt_gradient_rect.h"
-#include "dds/sdf_textured_rect.h"
-#include "dds/sdf_packet_header.h"
-#include "dds/sdf_packet_append.h"
-#include "dds/fr_font.h"
-#include "dds/sdf_primitive_packet_api.h"
-#include "dds/sdf_asset_state.h"
-#include "dds/scr_instruction_stream_api.h"
-#include "dds/brs_task.h"
-#include "dds/fld_resource_wait_api.h"
-#include "dds/itf.h"
 
 enum {
     EVT_PACKET_LIST_BYTES = 0x20,
@@ -656,8 +534,6 @@ enum {
     EVT_DEV_CONSOLE_BUFFER_BYTES = 0x200,
     BF_FLW0_MAGIC = 0x30574C46
 };
-
-#include "dds/sdf_asset_create.h"
 
 typedef struct {
     f32 x;

@@ -6,55 +6,11 @@
 
 #include "newdata.h"
 #include "sdk_libc.h"
-#include "dds/eff_random_mod.h"
-#include "dds/common.h"
-#include "dds/btl_unit_defeat_by_delta_result.h"
-#include "dds/btl_selected_entry_api.h"
-#include "dds/btl_quarter_health_result.h"
-#include "dds/btl_actor_command_selector_value_api.h"
-#include "dds/evt_run_context_api.h"
-#include "dds/btl_scene_counter_mode.h"
-#include "dds/btl_action_press_result.h"
-#include "dds/btl_flag_to_element_index_api.h"
-#include "dds/btl_command_result_kind_api.h"
-#include "dds/btl_command_status_api.h"
-#include "dds/btl_command_use_error.h"
-#include "dds/btl_command_cost_api.h"
-#include "dds/btl_option_skill_api.h"
-#include "dds/btl_special_ability.h"
 #include "dds/btl_item_drop.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/fr_font_measure.h"
-#include "dds/fr_font.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/btl_scene_fade.h"
-#include "dds/btl_resource.h"
-#include "dds/pcp_vu0.h"
-#include "dds/btl_ui.h"
-#include "dds/sdf.h"
-#include "dds/btl.h"
-#include "dds/btl_resolve_unit_value_api.h"
-#include "dds/btl_actor_selection_clear_api.h"
 #include "dds/btl_state.h"
-#include "dds/btl_terminal_outcome.h"
-#include "dds/btl_enemy_spawn_capacity_api.h"
-#include "dds/btl_hunt_mp_recovery_api.h"
-#include "dds/btl_reward_level_scale_kind.h"
-#include "dds/btl_boss_debug_api.h"
 #include "dds/eff.h"
-#include "dds/btl_action.h"
-#include "dds/btl_ai_table.h"
 #include "dds/dds3_process.h"
-#include "dds/dat_state.h"
-#include "dds/dat_calculated_stat_value_api.h"
 #include "dds/btl_actor_attribute_api.h"
-#include "dds/pty_roster_api.h"
-#include "dds/dat_command.h"
-#include "dds/dds3_task_lifecycle.h"
 
 typedef struct BattleController {
     u8 pad_000[0x1F4];
@@ -101,17 +57,12 @@ typedef struct BattleController {
     u32 (*enemyLimitOverride)(BtlUnit *, DatBattleSceneRecord *, u32); /* 0x688 */
 } BattleController;
 
-#include "dds/sdf_debug_api.h"
-#include "dds/btl_command_affinity_api.h"
-
 s32 btlSumOrAverageActorAttribute(
     BtlPartyRecordFlagsMask partyRecordFlagsMask,
     DatBaseStatIndex baseStatIndex, s8 allowDisabled);
 
 s32 btlAverageActorAttribute(
     BtlPartyRecordFlagsMask partyRecordFlagsMask, DatBaseStatIndex baseStatIndex);
-
-#include "dds/btl_preemptive_outcome_result.h"
 
 s32 btlAverageActorAttribute(
     BtlPartyRecordFlagsMask partyRecordFlagsMask, DatBaseStatIndex baseStatIndex) {

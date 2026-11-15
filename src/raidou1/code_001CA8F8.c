@@ -9,31 +9,8 @@
 #include "newdata.h"
 #include "sdf_resource.h"
 #include "sdk_libc.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_add_child.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3_task_priority_query.h"
-#include "dds/dsp_channel.h"
-#include "dds/dsp_entry_api.h"
-#include "dds/eff_random.h"
-#include "dds/evt_message_window_api.h"
-#include "dds/evt_solar.h"
 #include "dds/evt_task.h"
-#include "dds/fr_font.h"
-#include "dds/fr_font_context.h"
-#include "dds/itf_panel_draw.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_gs_packet.h"
 #include "dds/sdf_heap_api.h"
-#include "dds/sdf_linked_packet.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdk_libc.h"
-#include "dds/snd_sequence_volume_pan.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -73,36 +50,11 @@ enum {
 void sdfMemGetInfo(SdfGeneralHeapStats *stats);
 s32 strcmp(const char *a, const char *b);
 
-#include "dds/sdk_ps2.h"
-#include "dds/dsp_active_api.h"
-#include "dds/common.h"
 #include "dds/mnu_camp_display.h"
 #include "dds/mnu_camp_option_index_api.h"
-#include "dds/mnu_camp_font_api.h"
-#include "dds/dat_command.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_mapped_resource_destroy_result.h"
-#include "dds/eff_resource_source_lifetime.h"
 #include "dds/evt_viewer.h"
-#include "dds/event.h"
 #include "dds/evt_viewer_indexed_condition.h"
-#include "dds/evt_camera_color_track_api.h"
 #include "dds/mnu.h"
-#include "dds/mnu_staff.h"
-#include "dds/mnu_shop.h"
-#include "dds/sdf.h"
-#include "dds/evt_world.h"
-#include "dds/evt_unit.h"
-#include "dds/evt_event_pack_task.h"
-#include "dds/evt_event_pack.h"
-#include "dds/evt_start_event_api.h"
-#include "dds/evt_sound_variation.h"
-#include "dds/dat_state.h"
-#include "dds/mnu_list.h"
-#include "dds/eff.h"
-#include "dds/eff_resource_records.h"
-#include "dds/fld.h"
-#include "dds/pty_adjust_item_quantity_api.h"
 
 #define CAMP_TASK_NAME_BYTES 0x20
 
@@ -163,8 +115,6 @@ s32 strcmp(const char *a, const char *b);
 #define CAMP_PARTY_SCAN_LAST 4
 
 #define CAMP_PARTY_ACTIVE_FLAG 1
-
-#include "dds/pty_bullet_item_count_api.h"
 
 typedef struct CampFlagRow {
     u32 messageSet;  /* 0x00: shop message resource number */
@@ -242,8 +192,6 @@ typedef struct CampRateRow {
     u16 percent;
     u8 pad02[10];
 } CampRateRow;
-
-#include "dds/mnu_input.h"
 
 #define EVT_DISPATCH_OPERATION_POLL 0
 

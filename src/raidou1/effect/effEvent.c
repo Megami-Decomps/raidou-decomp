@@ -374,42 +374,7 @@ extern char effLabelDistS[7];
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_dds3Billboard_t 1
-
-#define SMT3_DEFINES_effAPPoint4Param_t 1
-
-#define SMT3_DEFINES_effAPPoint4Part_tag 1
-
-#define SMT3_DEFINES_effAPPoint4_tag 1
-
-#define SMT3_DEFINES_effChanSourceOwner_t 1
-
-#define SMT3_DEFINES_effChanSource_t 1
-
-#define SMT3_DEFINES_effChan_t 1
-
-#define SMT3_DEFINES_effEVECombParSmokeParam_t 1
-
-#define SMT3_DEFINES_effEVECombParSmokePart_t 1
-
-#define SMT3_DEFINES_effEVECombParSmoke_t 1
-
-#define SMT3_DEFINES_effEmit_t 1
-
-#define SMT3_DEFINES_effEveBEDCut_t 1
-
-#define SMT3_DEFINES_effEveBEDParams_t 1
-
-#define SMT3_DEFINES_effEveBEDRecord_t 1
-
-#define SMT3_DEFINES_effEveBillBatch_t 1
-
-#define SMT3_DEFINES_effFloatRows_t 1
-
 #define SMT3_DEFINES_effSimpleBED_t 1
-
-#include "dds/mdl.h"
-#include "dds/sdf_gs_packet.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -446,51 +411,10 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-#include "dds/sdk_ps2.h"
-#include "dds/sdf_line_pair_packet_api.h"
-#include "dds/sdf_projection.h"
-#include "dds/sdf_compact_vertex_vif_packet.h"
-#include "dds/bill_object_api.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/common.h"
-#include "dds/sdf_map_position_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/sdf_vu_rotation_axes.h"
-#include "dds/sdf_sif_command.h"
-#include "dds/sdf_trig.h"
-#include "dds/eff_random.h"
-#include "dds/sdf_chip.h"
-#include "dds/eff_param.h"
-#include "dds/sdf_heap_api.h"
 #include "dds/ee_mmi.h"
 #include "dds/btl_sound.h"
-#include "dds/eff_blur.h"
-#include "dds/eff_rectangle_blur_api.h"
 #include "dds/eff_event_draw.h"
-#include "dds/eff.h"
-#include "dds/eff_resource_rect_api.h"
-#include "dds/eff_math.h"
-#include "dds/eff_channel.h"
 #include "dds/eff_event.h"
-#include "dds/eff_event_work_api.h"
-#include "dds/eff_event_sound.h"
-#include "dds/eff_event_setup.h"
-#include "dds/eff_event_setup_readiness.h"
-#include "dds/eff_event_bill.h"
-#include "dds/eff_event_bill_batch.h"
-#include "dds/pcp_vu0.h"
-#include "dds/sdf_vu_transform_api.h"
-#include "dds/sdf_texture_primary_buffer_api.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdf_gs_blend.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/eff_packet_params.h"
-#include "dds/sdf_asset_create.h"
-#include "dds/sdf_asset_state.h"
-#include "dds/evt_unit.h"
-#include "dds/eff_channel_layout.h"
-#include "dds/fr_font.h"
-#include "dds/font_mem_control_api.h"
 
 #define EFF_EVENT_EVENT_RECORD_BYTES 0x30
 

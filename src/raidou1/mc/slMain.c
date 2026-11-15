@@ -214,112 +214,17 @@ saddr_t slQueryYesNo(s32 (*yesFunc)(void), s32 (*noFunc)(void), s32 yesNoDefault
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_SL_MC_RESULT_ERROR 1
-
-#define SMT3_DEFINES_SL_MC_RESULT_PENDING 1
-
-#define SMT3_DEFINES_SL_MC_RESULT_SPECIAL_ERROR 1
-
-#define SMT3_DEFINES_SL_MC_RESULT_SUCCESS 1
-
-#define SMT3_DEFINES_SL_SLOT_FLAG_CAN_READ_SAVE 1
-
-#define SMT3_DEFINES_SL_SLOT_FLAG_DELETE_BEFORE_WRITE 1
-
-#define SMT3_DEFINES_SL_SLOT_FLAG_DIRECTORY_READY 1
-
-#define SMT3_DEFINES_fileRequest_t 1
-
-#define SMT3_DEFINES_slConvertWork_t 1
-
-#define SMT3_DEFINES_slFileName_t 1
-
-#define SMT3_DEFINES_slFileRec_t 1
-
-#define SMT3_DEFINES_slMcResult_t 1
-
-#define SMT3_DEFINES_slProcFunc_t 1
-
-#define SMT3_DEFINES_sl_mc_result 1
-
-#define SMT3_DEFINES_sl_slot_flag 1
-
 #include "sdk_libkernl.h"
-#include "dds/bill_object_api.h"
-#include "dds/btl_stage_task_cleanup.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/eff_random.h"
-#include "dds/file_request_api.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_dev_state.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdf_vu_matrix_multiply_api.h"
-#include "dds/sdf_vu_rotation_axes.h"
-#include "dds/sdf_vu_transform_api.h"
-#include "dds/sdk_libc.h"
-#include "dds/sdk_libkernl.h"
-#include "dds/sdk_libm.h"
 
 #define SDK_SKIP_memset
 
-#include "dds/sdk_ps2.h"
-#include "dds/common.h"
-#include "dds/file_menu_start_mode.h"
-#include "dds/file_menu_state_result.h"
-#include "dds/file_config_list_node.h"
-#include "dds/file_config_option_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/file_job_type.h"
-#include "dds/file_config_task.h"
-#include "dds/file_load_menu_state.h"
-#include "dds/eff.h"
-#include "dds/cam_aim_record.h"
-#include "dds/eff_generated_texture_descriptor.h"
-#include "dds/dds3_world_selection.h"
-#include "dds/mnu_title_stream.h"
-#include "dds/snd_sequence_volume_pan.h"
-#include "dds/eff_scale_params.h"
 #include "dds/ee_mmi.h"
-#include "dds/sdf_textured_rect.h"
-#include "dds/itf_mes_window.h"
-#include "dds/evt_world.h"
-#include "dds/fr_font.h"
-#include "dds/fr_font_context.h"
-#include "dds/mc_poll.h"
-#include "dds/mc_read_api.h"
-#include "dds/mc_write_api.h"
-#include "dds/mc_path_api.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_source_lifetime.h"
-#include "dds/eff_curve.h"
 #include "dds/file.h"
 #include "dds/file_selection_api.h"
-#include "dds/file_prompt_reveal_result.h"
-#include "dds/file_request_entry.h"
-#include "dds/file_slot_flags.h"
-#include "dds/file_slot_flags_change_api.h"
-#include "dds/file_scroll_arrow_state.h"
 #include "dds/file_slot.h"
-#include "dds/file_save_record.h"
-#include "dds/dat_state.h"
-#include "dds/dat_new_cycle_state.h"
-#include "dds/pcp_vu0.h"
-#include "dds/dds3_process.h"
-#include "dds/dds3_task_create.h"
 #include "dds/fpu.h"
 #include "dds/mnu_list.h"
-#include "dds/eff_expanded_list.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/sdf.h"
-#include "dds/dds3_fade.h"
-#include "dds/file_pac.h"
-#include "dds/sdf_pac_work.h"
-#include "dds/sdf_texture_file.h"
 #include "dds/btl.h"
-#include "dds/fr_font_draw_glyph.h"
-#include "dds/itf.h"
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -336,16 +241,12 @@ enum {
     FILE_CONFIG_Y
 };
 
-#include "dds/eff_emitter_type.h"
-
 struct sdfMemHandle_t;
 
 typedef struct LoadMirror {
     u32 current;
     u32 previous;
 } LoadMirror;
-
-#include "dds/sdf_debug_api.h"
 
 extern u32 gslErrorCode_slMain;
 extern u32 gslDrawFlagFile_slMain;
@@ -471,8 +372,6 @@ typedef struct FileCellGrid {
     u8 pad28[0x90];
     u32 layers;
 } FileCellGrid;
-
-#include "dds/eff_anim.h"
 
 typedef struct FileWaveMotion {
     f32 axis[4];             /* 0x00: xyz only */

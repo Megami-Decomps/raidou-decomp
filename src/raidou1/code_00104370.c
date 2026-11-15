@@ -8,33 +8,8 @@
 #include "sdfDevCons.h"
 #include "sdk_libc.h"
 #include "dds/btl.h"
-#include "dds/dds3_draw_buffer.h"
-#include "dds/dds3_fade_color.h"
-#include "dds/dds3_process_registration.h"
-#include "dds/dds3_task_create.h"
 #include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3_task_update_count.h"
-#include "dds/eff_random.h"
-#include "dds/eff_random_mod.h"
 #include "dds/evt_frame_state_packet.h"
-#include "dds/dds3_process.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_gs_blend.h"
-#include "dds/sdf_gs_scene_state.h"
-#include "dds/sdf_linked_packet.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_pad_motor_api.h"
-#include "dds/sdf_projection.h"
-#include "dds/sdf_scene_packet.h"
-#include "dds/sdf_tex_packet.h"
-#include "dds/sdf_texture_clamp.h"
-#include "dds/sdf_texture_draw_packet.h"
-#include "dds/sdf_texture_lists.h"
-#include "dds/sdf_texture_registry.h"
-#include "dds/sdk_libc.h"
-#include "dds/sdk_libm.h"
 
 dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
 
@@ -73,25 +48,7 @@ void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *packet);
  * lookup does not retain it, and callers must not release it as an acquired ref. */
 extern struct sdfTexHandle_t *sdfTexHandleLink;
 
-#include "dds/sdk_ps2.h"
-#include "dds/common.h"
-#include "dds/file_config_option_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/dds3_background_fade_api.h"
-#include "dds/dds3Admin.h"
-#include "dds/kernel.h"
-#include "dds/sdf_cons_matrix_packet.h"
-#include "dds/sdf_dma_packet_header.h"
 #include "dds/dds3_named_slot.h"
-#include "dds/dds3_task_runner.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_fade_timing.h"
-#include "dds/sdf.h"
-#include "dds/sdf_draw.h"
-#include "dds/sdf_sif_command.h"
-#include "dds/pcp_vu0.h"
-#include "dds/sdf_dma_tag.h"
-#include "dds/sdf_gs_packet.h"
 
 extern u32 dds3TextureViewerPageIndex;
 extern u8 D_003BA890;
@@ -232,10 +189,6 @@ s32 dds3LoadDefaultResource(void);
 void dds3DrawTextureListDiagnostic(sdfDrawTag_t *packetList, s32 x, s32 y);
 void dds3TextureAttachTask(sdfGrOt_t *surface);
 s32 dds3EnsureDefaultResource(void);
-
-#include "dds/dds3_frame_draw_bank.h"
-#include "dds/dds3_texture_bank.h"
-#include "dds/dds3_texture_reference_flag_api.h"
 
 #define DDS3_FADE_TICKS_PER_FRAME 10
 

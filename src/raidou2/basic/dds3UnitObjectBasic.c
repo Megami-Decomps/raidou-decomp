@@ -37,22 +37,6 @@ extern const f32 dds3UnitWobbleAxis[4];
 void dds3UnitObjectBasicEL_Link(dds3Basic_t *unitBasic);
 extern const f32 dds3UnitAdditionalRotation[4] __attribute__((aligned(16)));
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#define SMT3_DEFINES_dds3LinkedLightWork_t 1
-
-#include "dds/bill_object_api.h"
-#include "dds/dds3_object_flags.h"
-#include "dds/dds3obj.h"
-#include "dds/eff_event.h"
-#include "dds/eff_event_sound.h"
-#include "dds/eff_node.h"
-#include "dds/eff_transform.h"
-#include "dds/sdf_model.h"
-#include "dds/sdf_trig.h"
-
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
  * directory extent rather than an enum-completeness claim. */
@@ -81,26 +65,6 @@ enum {
     OBJECT_TRANSFORM_FLAG_USE_SMOOTHED_POSITION = 8
 };
 
-#include "dds/sdk_ps2.h"
-#include "dds/mdl.h"
-#include "dds/common.h"
-#include "dds/sdf_map_position_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdf_chunk.h"
-#include "dds/sdf_chip.h"
-#include "dds/dds3_basic_array_cursor.h"
-#include "dds/eff_dependency.h"
-#include "dds/pcp_vu0.h"
-#include "dds/eff_object.h"
-#include "dds/evt_world_source_transform.h"
-#include "dds/evt_unit.h"
-#include "dds/evt_unit_motion_step_result.h"
-#include "dds/eff.h"
-#include "dds/btl_sound.h"
-#include "dds/effect_value_object.h"
-#include "dds/fld_actor_motion_step_result_api.h"
-
 /* Mode 0 is the initialized neutral tint; other values describe the native
  * alpha updates performed by the paired transform renderer. */
 enum {
@@ -121,8 +85,6 @@ enum {
     EFFECT_OPACITY_COLOR_TRANSPARENT = 0x00808080
 };
 
-#include "dds/dds3_world_secondary.h"
-
 f32 dds3ShortestAngleDelta(f32 fromDegrees, f32 toDegrees);
 
 #define EFFECT_HEADING_DEGREES_PER_RADIAN_APPROX 57.32484055f
@@ -134,8 +96,6 @@ typedef struct EffVec4 {
 } EffVec4;
 
 struct WorldIndexNode;
-
-#include "dds/dds3_object_payload.h"
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3AddUnitObjectBasic);
 

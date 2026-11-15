@@ -59,25 +59,8 @@ typedef struct {
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_datItem_t 1
-
-#define SMT3_DEFINES_datPartyWork_t 1
-
-#define SMT3_DEFINES_datTakaraSagasiItem_t 1
-
-#define SMT3_DEFINES_datTakaraSagasiTable_t 1
-
-#define SMT3_DEFINES_datTakaraSagasi_t 1
-
 #include "basic.h"
 #include "dds/btl.h"
-#include "dds/dds3_path.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3obj.h"
-#include "dds/eff_transform.h"
-#include "dds/sdf_dev_state.h"
-#include "dds/sdf_heap_api.h"
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -103,30 +86,7 @@ enum {
 
 extern void *memcpy(void *, const void *, unsigned int);
 
-#include "dds/sdk_ps2.h"
 #include "dds/evt_run_context_api.h"
-#include "dds/common.h"
-#include "dds/scr.h"
-#include "dds/sdf_vu0.h"
-#include "dds/sdf_channel.h"
-#include "dds/scr_work_task_api.h"
-#include "dds/dat_save_words.h"
-#include "dds/sdf_float_counter.h"
-#include "dds/eff_random_mod.h"
-#include "dds/mnu_flag_snapshot.h"
-#include "dds/evt_world_source_transform.h"
-#include "dds/pcp_vu0.h"
-#include "dds/btl_action.h"
-#include "dds/dat_state.h"
-#include "dds/dat_affinity_selector.h"
-#include "dds/dat_effective_affinity_api.h"
-#include "dds/dat_world_field_flags.h"
-#include "dds/dat_unit_has_skill_api.h"
-#include "dds/evt_randomize_entry_api.h"
-#include "dds/dat_command.h"
-#include "dds/sdf.h"
-#include "dds/fld_runtime_reset_api.h"
-#include "dds/mdl_flag_api.h"
 
 #define SDF_PACKED_STATUS_BIT 0x8000
 
@@ -138,8 +98,6 @@ extern void *memcpy(void *, const void *, unsigned int);
 
 #define SDF_FLOAT_COUNTER_WRAP_FLAG 0x00000020
 
-#include "dds/sdf_debug_api.h"
-
 /* These unused-result legacy mutator calls had no prototype in scope. */
 void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 
@@ -147,69 +105,10 @@ void sdfRaisePackedChannelValue(dds_datUnitWork_t *item, u32 minimumValue);
 #define VERSION_DDS1 1
 #endif
 
-#define SMT3_DEFINES_EFF_WORLD_KIND_ACTION_10 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_ACTION_B 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_ACTION_D 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_CAMERA 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_COUNT 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_EFFECT_OBJECT 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_EFFECT_TRANSFORM 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_EVENT_TABLE 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_FOLLOW_MODEL 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_LIGHT 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_RESOURCE_OWNER 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_SCRIPT_OBJECT 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_SLOT_RING 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_TRANSFORM_SOURCE 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_WORLD_INDEX_OWNER 1
-
-#define SMT3_DEFINES_EFF_WORLD_KIND_WORLD_INFO 1
-
-#include "dds/scr_integer_parameter_api.h"
-#include "dds/scr_procedure_start_api.h"
-#include "dds/pty_experience_threshold_type.h"
-#include "dds/evt_script_context.h"
 #include "dds/evt_solar.h"
-#include "dds/evt_item_value_threshold_api.h"
-#include "dds/evt_random_status_clear_api.h"
-#include "dds/pty_roster_value_record.h"
-#include "dds/pty_adjust_item_quantity_api.h"
 #include "dds/dat_battle_adjustment_condition.h"
-#include "dds/dat_currency_requirement_api.h"
 #include "dds/dat_calculated_stat_value_api.h"
-#include "dds/dat_calculate_command_base_value_api.h"
-#include "dds/dat_unit_dying_api.h"
-#include "dds/btl_scene_party_level_threshold_api.h"
-#include "dds/btl_actor_attribute_api.h"
-#include "dds/dat_affinity_value_api.h"
 #include "dds/btl_conditional_encounter_roll_api.h"
-#include "dds/btl_affinity_row.h"
-#include "dds/btl_resolve_unit_value_api.h"
-#include "dds/pty_active_roster_index_api.h"
-#include "dds/pty_roster_api.h"
-#include "dds/pty_party_unit_presence_api.h"
-#include "dds/pty_frontline_promotion_api.h"
-#include "dds/pty_status_query_api.h"
-#include "dds/pty_event_penalty_api.h"
-#include "dds/pty_field_hp_attrition_api.h"
-#include "dds/pty_read_roster_stat_api.h"
-#include "dds/pty_skill_recovery_api.h"
-#include "dds/pty_item_quantity_update_view.h"
-#include "dds/pty_accumulate_stat_gains_api.h"
 
 #define DAT_EXTERNAL_SKILL_TABLE 0x20
 
@@ -275,8 +174,6 @@ DatCalculatedStatValue datGetClampedProfileAdjustedStat(
 
 DatCalculatedStatValue datGetStatWithStatusOverride(
     const dds_datUnitWork_t *unit, DatBaseStatIndex statIndex);
-
-#include "dds/dat_command_record_index.h"
 
 enum {
     PTY_ACTIVE_ROSTER_COUNT = 5,

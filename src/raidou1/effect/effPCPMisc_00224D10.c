@@ -9,40 +9,7 @@
 #include "sdf_resource.h"
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
-#include "dds/bill_object_api.h"
 #include "dds/btl.h"
-#include "dds/btl_stage_task_cleanup.h"
-#include "dds/dds3_fade.h"
-#include "dds/dds3_task_create.h"
-#include "dds/dds3_task_lifecycle.h"
-#include "dds/dds3_world_primary.h"
-#include "dds/eff_random.h"
-#include "dds/evt_world.h"
-#include "dds/file_request_api.h"
-#include "dds/file_request_entry.h"
-#include "dds/file_slot_flags.h"
-#include "dds/fr_font.h"
-#include "dds/fr_font_context.h"
-#include "dds/dds3_process.h"
-#include "dds/mc_path_api.h"
-#include "dds/mc_poll.h"
-#include "dds/mc_read_api.h"
-#include "dds/mc_write_api.h"
-#include "dds/mdl_flag_api.h"
-#include "dds/sdf.h"
-#include "dds/sdf_chip.h"
-#include "dds/sdf_dev_state.h"
-#include "dds/sdf_heap_api.h"
-#include "dds/sdf_quaternion.h"
-#include "dds/sdf_texture_file.h"
-#include "dds/sdf_trig.h"
-#include "dds/sdf_vu_matrix.h"
-#include "dds/sdf_vu_matrix_multiply_api.h"
-#include "dds/sdf_vu_transform_api.h"
-#include "dds/sdk_libc.h"
-#include "dds/sdk_libkernl.h"
-#include "dds/sdk_libm.h"
-#include "dds/snd_sequence_volume_pan.h"
 
 extern void *memcpy(void *, const void *, unsigned int);
 
@@ -56,45 +23,12 @@ void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
 
 #define SDK_SKIP_memset
 
-#include "dds/sdk_ps2.h"
-#include "dds/file_menu_start_mode.h"
 #include "dds/eff_surface_node.h"
-#include "dds/common.h"
-#include "dds/pty_active_roster_index_api.h"
-#include "dds/file_menu_state_result.h"
-#include "dds/file_config_list_node.h"
-#include "dds/file_config_option_api.h"
-#include "dds/sdf_vu0.h"
-#include "dds/file_job_type.h"
-#include "dds/file_config_task.h"
 #include "dds/eff_emitter_type.h"
-#include "dds/file_load_menu_state.h"
-#include "dds/eff.h"
-#include "dds/cam_aim_record.h"
-#include "dds/eff_generated_texture_descriptor.h"
-#include "dds/dds3_world_selection.h"
-#include "dds/eff_scale_params.h"
 #include "dds/ee_mmi.h"
-#include "dds/sdf_textured_rect.h"
-#include "dds/itf_mes_window.h"
-#include "dds/eff_resource_slots.h"
-#include "dds/eff_resource_source_lifetime.h"
-#include "dds/eff_update_flags.h"
-#include "dds/eff_curve.h"
-#include "dds/file.h"
 #include "dds/file_selection_api.h"
-#include "dds/file_prompt_reveal_result.h"
-#include "dds/file_slot_flags_change_api.h"
-#include "dds/file_scroll_arrow_state.h"
-#include "dds/file_slot.h"
 #include "dds/file_save_record.h"
-#include "dds/dat_state.h"
-#include "dds/dat_new_cycle_state.h"
 #include "dds/mnu_list.h"
-#include "dds/pcp_vu0.h"
-#include "dds/eff_expanded_list.h"
-#include "dds/fr_font_draw_glyph.h"
-#include "dds/itf.h"
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -171,8 +105,6 @@ typedef struct LoadMirror {
 u8 fileIsLoadedAndConditionTrue(s32 condition);
 s32 slChkWindowOpenDone(void);
 
-#include "dds/file_pac.h"
-
 struct sdfMemHandle_t;
 
 extern FileSelectionCallback D_00439024, D_00439028;
@@ -219,8 +151,6 @@ typedef struct Init374E0 {
     u8 pad28[0xC];   /* 0x28 */
     s32 alpha[3];    /* 0x34 */
 } Init374E0;
-
-#include "dds/sdf_debug_api.h"
 
 typedef struct FileFlowEntry {
     u16 state;
@@ -270,8 +200,6 @@ typedef struct FileQueueImageHeader {
 FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
 extern void mnuRecordSetVector(void *record, const void *src);
 extern void fileSetRecordSecondVector(void *record, const void *src);
-
-#include "dds/eff_anim.h"
 
 extern void fileReadRecordSecondVector(u8 *, void *);
 extern void fileReadVectorPtr20(u8 *, void *);
@@ -356,18 +284,6 @@ void dds3DispatchIndexedCallback(u16 *record, f32 scale);
 #endif
 
 #include "dds/btl_grouped_entity_api.h"
-#include "dds/mdl.h"
-#include "dds/sdf_chunk.h"
-#include "dds/sdf_map_position_api.h"
-#include "dds/sdf_motion.h"
-#include "dds/sdf_packet_alloc.h"
-#include "dds/sdf_packet_builders.h"
-#include "dds/sdf_packet_list.h"
-#include "dds/sdf_projection.h"
-#include "dds/sdf_tex_create.h"
-#include "dds/sdf_tex_packet.h"
-#include "dds/sdf_texture_format.h"
-#include "dds/sdf_texture_submit.h"
 
 enum {
     SDF_PSMCT32 = 0x00,
@@ -397,13 +313,7 @@ void mdlSetScale(dds3ModelHandle_t *ctx);
 /* sdfMotionCtrlr_t-record selection and lookup. */
 void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
 
-#include "dds/eff_texture_table.h"
-#include "dds/eff_object_node.h"
-#include "dds/eff_model_owner.h"
-#include "dds/eff_ref_obj.h"
 #include "dds/mdl_broadcast_callback.h"
-#include "dds/eff_expanded_source.h"
-#include "dds/btl_runtime.h"
 
 void Init_effModel(dds3ModelHandle_t *model);
 void effDestroyModelContext(dds3ModelHandle_t *owner);
@@ -415,9 +325,6 @@ typedef struct EffBattleTexHeaders {
     u8 *slot1; // 0x5B0
     u8 *slot2; // 0x5B4
 } EffBattleTexHeaders;
-
-#include "dds/eff_resource_owner.h"
-#include "dds/sdf_vu_rotation_axes.h"
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effPCPHelperBEDGetModel);
 

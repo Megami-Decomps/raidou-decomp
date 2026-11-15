@@ -69,17 +69,6 @@ void movieCloseStream(sdfMovieCb_t *aMov);
 s32 sdfMovieIsFinished(sdfMovieCb_t *aMov);
 extern char sdfMovieIpsExt[4];
 
-#ifndef VERSION_DDS1
-#define VERSION_DDS1 1
-#endif
-
-#define SMT3_DEFINES_sdfMovieDrawPacket_t 1
-
-#include "dds/common.h"
-#include "dds/libsdf.h"
-#include "dds/ps2asm.h"
-#include "dds/sdf_movie_types.h"
-
 extern u32 movieDrawMode;
 extern s32 sdfMovieDrawLeft;
 extern s32 sdfMovieDrawTop;
