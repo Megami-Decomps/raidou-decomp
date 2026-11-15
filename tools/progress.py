@@ -5,8 +5,9 @@
 
 Every retail function of a unit is either C in src/ or an INCLUDE_ASM line.
 Sizes come from the split assembly in asm/<version>/ (run configure.py first).
-Hand-written assembly (hand/) and the VU microcode are not counted. This is a
-source inventory; the retail checksum build and check_unit.py verify matching.
+Hand-written assembly (hand/) is not counted. VU microcode is a row of its own
+(bytes assembled from source, needs the retail image) and stays out of the
+totals. This is a source inventory; the retail checksum build and check_unit.py verify matching.
 
 Shared units (src/shared) are counted once: a function counts as C when every
 game that has it compiles it from C, and its size is the first game's. Each
@@ -21,7 +22,8 @@ from collections import defaultdict
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from units import VERSIONS, is_shared, unit_sources  # noqa: E402
+from units import VERSIONS, is_shared, unit_sources, vu_source  # noqa: E402
+import vu_include  # noqa: E402
 from version_guard import view  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -74,8 +76,26 @@ def rows(label, stats):
     return out
 
 
+def vu_stats(version):
+    """[None, microcode bytes, None, bytes from source] of a version's .vutext, or None."""
+    try:
+        vu = vu_include.coverage(version, vu_include.retail_elf(version))
+    except FileNotFoundError:
+        return None
+    return [None, vu["microcode_bytes"], None, vu["source_bytes"]]
+
+
+def vu_shared(version):
+    paths = [vu_source(version, name) for name in vu_include.SOURCES.values()]
+    return all(paths) and all(is_shared(p) for p in paths)
+
+
+def count(n):
+    return "-" if n is None else f"{n:,}"
+
+
 def pct(a, b):
-    return f"{100 * a / b:.1f}%" if b else "n/a"
+    return f"{100 * a / b:.1f}%" if a is not None and b else "n/a"
 
 
 def main():
@@ -94,19 +114,26 @@ def main():
                 old = shared.get(key)
                 shared[key] = (old[0], old[1] and c) if old else (size, c)
     table = rows("shared", tally((u, s, c) for (u, _), (s, c) in shared.items()))
+    vu_done = False
+    for version in funcs:
+        if vu_shared(version) and not vu_done and (vu := vu_stats(version)):
+            table.append(("shared", "vu", vu))
+            vu_done = True
     for version, fs in funcs.items():
         for scope, label in (("own", "only"), ("gap", "asm gaps")):
             table += rows(f"{version} {label}", tally((u, s, c) for (u, _), (sc, s, c) in fs.items() if sc == scope))
         total = tally((u, s, c) for (u, _), (_, s, c) in fs.items())
+        if not vu_shared(version) and (vu := vu_stats(version)):
+            table.append((f"{version} only", "vu", vu))
         table.append((f"{version} total", "all", [sum(total[k][i] for k in total) for i in range(4)]))
     if md:
         print("| Units | Kind | Functions in C | Code bytes in C |\n|---|---|---|---|")
         for label, kind, s in table:
-            print(f"| {label} | {kind} | {s[2]:,} / {s[0]:,} ({pct(s[2], s[0])}) | {s[3]:,} / {s[1]:,} "
+            print(f"| {label} | {kind} | {count(s[2])} / {count(s[0])} ({pct(s[2], s[0])}) | {s[3]:,} / {s[1]:,} "
                   f"({pct(s[3], s[1])}) |")
     else:
         for label, kind, s in table:
-            print(f"{label} {kind}: {s[2]}/{s[0]} functions in C ({pct(s[2], s[0])}), "
+            print(f"{label} {kind}: {count(s[2])}/{count(s[0])} functions in C ({pct(s[2], s[0])}), "
                   f"{s[3]}/{s[1]} bytes ({pct(s[3], s[1])})")
 
 

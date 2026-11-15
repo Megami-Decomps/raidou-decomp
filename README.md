@@ -37,13 +37,15 @@ Units in `src/shared` build both games and are counted once; "only" rows are a
 game's own units in `src/<version>`, and "asm gaps" are code no unit claims yet.
 A game's total is the shared units as that game builds them plus its own units
 and gaps. "Game" units are Atlus code, "sdk" units are the Sony libraries and C
-runtime. VU microcode and hand-written assembly are not counted.
+runtime. Hand-written assembly is not counted; the "vu" row is VU microcode
+bytes assembled from `src/shared/sdf/vu`, outside the totals.
 
 | Units | Kind | Functions in C | Code bytes in C |
 |---|---|---|---|
 | shared | game | 3,435 / 5,151 (66.7%) | 554,060 / 971,528 (57.0%) |
 | shared | sdk | 367 / 605 (60.7%) | 70,032 / 124,372 (56.3%) |
 | shared | all | 3,802 / 5,756 (66.1%) | 624,092 / 1,095,900 (56.9%) |
+| shared | vu | - / - (n/a) | 16,488 / 16,488 (100.0%) |
 | raidou1 only | game | 365 / 1,106 (33.0%) | 34,528 / 210,360 (16.4%) |
 | raidou1 asm gaps | game | 0 / 5,172 (0.0%) | 0 / 1,425,844 (0.0%) |
 | raidou1 total | all | 4,186 / 12,003 (34.9%) | 663,040 / 2,724,384 (24.3%) |

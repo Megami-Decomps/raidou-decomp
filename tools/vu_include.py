@@ -5,7 +5,7 @@
 
 Runs after splat, like the other asm fixups. The VIF headers, the debug font texture
 and the data the packet unpacks stay bytes from the asset; every instruction comes
-from src/<version>/sdf/vu, assembled by tools/vuas.py.
+from src/<version>/sdf/vu or src/shared/sdf/vu, assembled by tools/vuas.py.
 """
 
 import argparse
@@ -15,6 +15,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools"))
+from units import vu_source  # noqa: E402
 
 spec = importlib.util.spec_from_file_location("vutext", ROOT / "tools" / "vutext.py")
 vutext = importlib.util.module_from_spec(spec)
@@ -54,8 +56,7 @@ def coverage(version, elf_path):
     the report would score 59,312 bytes of microcode, VIF headers and texture as
     one unmatched function.
     """
-    written = {"vu%d" % vu: (ROOT / "src" / version / "sdf" / "vu" / f"{name}.vsm").exists()
-               for vu, name in SOURCES.items()}
+    written = {"vu%d" % vu: vu_source(version, name) is not None for vu, name in SOURCES.items()}
     section = micro = source = 0
     for what, _, length in pieces(elf_path):
         section += length
@@ -68,10 +69,16 @@ def coverage(version, elf_path):
             "source_bytes": source, "instructions": source // 8}
 
 
+def vu_folder(version):
+    """The folder the build assembles a version's VU listings from."""
+    paths = {vu_source(version, name).parent.as_posix() for name in SOURCES.values() if vu_source(version, name)}
+    return " and ".join(sorted(paths)) or "src/%s/sdf/vu" % version
+
+
 def render(version, pieces_, asset, builds):
     lines = ['.include "macro.inc"', "", '.section .text, "ax"', "",
              "/* Written by tools/vu_include.py: the microcode is assembled from",
-             " * src/%s/sdf/vu, and the VIF headers and packet data around it are" % version,
+             " * %s, and the VIF headers and packet data around it are" % vu_folder(version),
              " * bytes from the retail image. */", "",
              "glabel sdfDebugFontTex"]
     for what, start, length in pieces_:

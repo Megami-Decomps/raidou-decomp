@@ -177,7 +177,7 @@ def render(version: str, report: dict, audit: dict, history: list[dict],
             f'<p class="big">{percent(vu["source_bytes"], vu["microcode_bytes"]):.2f}%</p>'
             f'{bar(vu["source_bytes"], vu["microcode_bytes"])}'
             f'<p class="muted">{number(vu["instructions"])} instructions assembled from '
-            f'<code>src/{html.escape(version)}/sdf/vu</code>, outside the code denominator</p></div>')
+            f'<code>{html.escape(vu_include.vu_folder(version))}</code>, outside the code denominator</p></div>')
 
     categories = []
     for category in audit["categories"]:

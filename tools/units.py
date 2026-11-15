@@ -34,6 +34,15 @@ def unit_sources(version):
     return dict(sorted(out.items()))
 
 
+def vu_source(version, name):
+    """Path, relative to the repository, of the VU listing a version assembles, or None."""
+    for folder in (version, "shared"):
+        path = Path("src") / folder / "sdf" / "vu" / f"{name}.vsm"
+        if (ROOT / path).exists():
+            return path
+    return None
+
+
 def unit_name(path):
     """Unit name of a source path (absolute, or relative to the repository)."""
     path = Path(path)

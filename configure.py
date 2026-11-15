@@ -21,7 +21,7 @@ from pathlib import Path
 
 from tools.ee_gcc_aslr import marker_is_valid
 from tools.symbol_aliases import load_symbol_aliases, linker_aliases
-from tools.units import unit_name, unit_sources
+from tools.units import is_shared, unit_name, unit_sources, vu_source
 from tools.version_guard import view as version_view
 
 ROOT = Path(__file__).resolve().parent
@@ -473,11 +473,12 @@ VU_UNIT = {version: Path("asm") / version / "data" / "vutext.s" for version in V
 
 
 def vu_binaries(n, version: str) -> list[str]:
-    """Assemble each VU listing in src/<version>/sdf/vu, and name what it wrote."""
+    """Assemble each VU listing (src/<version>/sdf/vu, else src/shared/sdf/vu), and name
+    what it wrote."""
     out = []
     for name in VU_SOURCES:
-        src = Path("src") / version / "sdf" / "vu" / f"{name}.vsm"
-        if not (ROOT / src).exists():
+        src = vu_source(version, name)
+        if src is None:
             continue
         binary = Path("build") / version / "vu" / f"{name}.bin"
         n.build(str(binary), "vuas", str(src), implicit=["tools/vuas.py", "tools/vu2c.py"])
@@ -657,7 +658,10 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
                 # The .vutext unit assembles the VU listings and incbins what they produce.
                 extra = vu_binaries(n, version) if src == VU_UNIT.get(version) else []
                 n.build(str(obj), "as", str(src), implicit=["include/macro.inc"] + extra)
-                units[version].append({"name": str(src.with_suffix("")), "target": str(obj), "base": None})
+                shared = bool(extra) and all(is_shared(vu_source(version, name)) for name in VU_SOURCES
+                                             if vu_source(version, name))
+                units[version].append({"name": str(src.with_suffix("")), "target": str(obj), "base": None,
+                                       "shared": shared})
             elif kind == "bin":
                 n.build(str(obj), "bin", str(src))
             else:
