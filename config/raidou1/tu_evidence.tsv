@@ -241,7 +241,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00242290	002422C8	effect/effPCPBoss_00242290	c	smt3:map:2 of 2 part	effect/effPCPBoss
 00242308	0024AA50	code_r1_00242308	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 0024AAD8	002692C8	code_0024AAD8	asm	none	
-002692F0	002692F0	code_002692F0	c	dds:1 of 1	
+002692F0	002692F0	code_r1_002692F0	c	dds:1 of 1	
 00269318	0026CA00	code_00269318	asm	none	
 0026CA20	0026CA20	code_0026CA20	c	dds:1 of 1	
 0026FBC8	0027CA90	sbtlActAI	asm	none	
@@ -257,7 +257,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 002C7E58	002C7E58	newbattle/nbDebugProcess	c	smt3:map:1 of 1	newbattle/nbDebugProcess
 002C7EB0	002C7EC8	code_002C7EB0	asm	none	
 002C7ED0	002C7FE0	code_r1_002C7ED0	c	dds:3 of 3 part	
-002C8188	002CA350	code_002C8188	c	dds:51 literal-cores:1 of 55	
+002C8188	002CA350	code_r1_002C8188	c	dds:51 literal-cores:1 of 55	
 002CA3F0	002CAE20	code_r1_002CA3F0	c	dds:6 of 8	
 002CAFD8	002CD500	code_r1_002CAFD8	c	dds:14 of 46	
 002CD568	002CD568	code_r1_002CD568	c	dds:1 of 1	

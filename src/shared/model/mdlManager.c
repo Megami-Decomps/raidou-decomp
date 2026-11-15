@@ -10,8 +10,13 @@
 #include "sdfVu0.h"
 #include "mdlManager.h"
 #include "sdfQuat.h"
+#ifdef VERSION_RAIDOU2
 #include "sdfMotion.h"
+#endif
 #include "sdk_libkernl.h"
+#ifdef VERSION_RAIDOU1
+#include "sdfMotion.h"
+#endif
 #include "sdfSystem.h"
 #include "sdfModel.h"
 #include "mdlEffect.h"
@@ -88,7 +93,13 @@ typedef struct fileRequest_t fileRequest_t;
 extern void *fileGetLoadPtr(fileRequest_t *fileHandle);
 extern sdfMemHandle_t *fileGetMemHandle(fileRequest_t *fileHandle);
 extern void fileHandleFree(fileRequest_t *fileHandle);
+#ifdef VERSION_RAIDOU1
+extern sdfModelTexList_t *sdfTexSetTB(void *aData);
+#endif
 extern sdfModelDef_t *sdfFixupModelBinary(void *aData);
+#ifdef VERSION_RAIDOU1
+extern sdfMotionPlayBook_t *sdfFixupMotionBinary(void *aData);
+#endif
 void TbMbAbLoadEnd(mdlManager_mdlTbMbAbLoadCb_t *tmaCb);
 void mdlFreeBlur(mdlObj_t *aHandle);
 extern dds3ModelResrc_t *mdlLoadPrepare(u32 group, u32 id);
@@ -146,7 +157,15 @@ typedef struct
     s32 count;
 } mdlFileKindSlot_t;
 
+#ifdef VERSION_RAIDOU1
+extern mdlFileSlot_t modelFileTable[];
+#endif
 extern mdlFileKindSlot_t modelFileKindTable[];
+#ifdef VERSION_RAIDOU1
+extern dds3ModelFileIndex_t *mdlHddFileIndex;
+extern dds3ModelFileTable_t *mdlHddFileList;
+void mdlReleaseHddFileList(void);
+#endif
 extern sdfMemHandle_t *mdlHddFileIndexHandle;
 extern sdfMemHandle_t *mdlHddFileListHandle;
 
@@ -213,7 +232,15 @@ struct mdlEffectDescriptor_t;
 extern char mdlModelPathPrefix[];
 extern char mdlPackedBundleExt[];
 extern mdlWorkPrefix_t mdlWorkPathPrefix[];
+#ifdef VERSION_RAIDOU1
+extern mdlHddFileEntry_t *mdlHddFileCount;
+extern u8 sdfHddValid;
+#endif
 extern const char _ctype_[];
+#ifdef VERSION_RAIDOU1
+extern void sdfDummyFunc(void);
+extern fileRequest_t *fileLoadEx(const char *filename, s32 headOrTail, addr_t endCallback, addr_t callbackParm);
+#endif
 extern u16 mdlPibGetEffectCount(mdlPibRecord_t *record);
 extern u16 mdlPibGetMotionCount(mdlPibRecord_t *record);
 extern s32 mdlPibGetVersion(mdlPibRecord_t *record);
@@ -255,7 +282,13 @@ sdfMotionCtrlr_t *mdlCreateMotion(mdlObj_t *aHandle, s32 aGroup);
 void mdlUnRegistMotion(s32 aMajor, s32 aMinor, s32 aGroup);
 void mdlRegistModelSet(s32 aMajor, s32 aMinor, s32 aFlag, mdlSetDef_t *aSet);
 dds3ModelResrc_t *mdlWaitLoadEnd(s32 aMajor, s32 aMinor);
+#ifdef VERSION_RAIDOU1
+void TbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *parm);
+#endif
 void MbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *parm);
+#ifdef VERSION_RAIDOU1
+void AbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *parm);
+#endif
 char *mdlSetFileName(char *buff, const char *fname);
 dds3ModelResrc_t *mdlLoadPrepare(u32 group, u32 id);
 void mdlUnlinkResrc(mdlObj_t *aHandle);
@@ -300,6 +333,9 @@ s32 mdlGetMajorNum(mdlObj_t *aHandle);
 s32 mdlGetMinorNum(mdlObj_t *aHandle);
 s32 mdlGetNumOfMinor(s32 aMajor);
 s32 mdlGetNumOfCut(mdlObj_t *aHandle, s32 aGroup);
+#ifdef VERSION_RAIDOU1
+void mdlGetFilebase(s32 aMajor, s32 aMinor, char *aName, s32 aNameLeng);
+#endif
 s32 mdlPackCheck(sdfPacDecodeResrc_t *resrc);
 sdfPacDecodeResrc_t *mdlPackSetOld(sdfPacDecodeResrc_t *resrc, s32 major, s32 minor, s32 regFlags);
 void mdlFileLoadCallback(filePacRequest_t *pacHandle, mdlManager_mdlFileLoadCb_t *data);
@@ -309,6 +345,10 @@ s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (
 
 void mdlPackDecode(s32 major, s32 minor, s32 regFlags, const u8 *buff, s32 leng);
 void mdlFreeFileItem(void *aItem);
+#ifdef VERSION_RAIDOU1
+void mdlMakeHddFileListDummy(void);
+void mdlMakeHddFileList(void);
+#endif
 extern char mdlModelPathPrefix[8];
 extern char mdlPackedBundleExt[4];
 extern mdlWorkPrefix_t mdlWorkPathPrefix[1];
@@ -657,6 +697,15 @@ void TbMbAbLoadEnd(mdlManager_mdlTbMbAbLoadCb_t *tmaCb)
     sdfChipFreeDirect(tmaCb);
 }
 
+#ifdef VERSION_RAIDOU1
+void TbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *parm)
+{
+    parm->payload.texList = sdfTexSetTB(fileGetLoadPtr(fileHandle));
+    sdfMemFreeDirect(fileGetMemHandle(fileHandle));
+    fileHandleFree(fileHandle);
+}
+
+#endif
 void MbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *parm)
 {
     parm->payload.modelDefHandle = fileGetMemHandle(fileHandle);
@@ -668,12 +717,87 @@ void MbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *par
     }
 }
 
+#ifdef VERSION_RAIDOU1
+void AbLoadCallback(fileRequest_t *fileHandle, mdlManager_mdlTbMbAbLoadCb_t *parm)
+{
+    parm->payload.playbookHandle = fileGetMemHandle(fileHandle);
+    parm->payload.playbookPtr = sdfFixupMotionBinary(fileGetLoadPtr(fileHandle));
+    fileHandleFree(fileHandle);
+    TbMbAbLoadEnd(parm);
+}
+
+#endif
 char *mdlSetFileName(char *buff, const char *fname) {
     *(mdlPathPrefix_t *)buff = *(mdlPathPrefix_t *)mdlModelPathPrefix;
     return strcat(buff, fname);
 }
 
+#ifdef VERSION_RAIDOU1
+saddr_t mdlPrepare(s32 aMajor, s32 aMinor, s32 aBlockMode) {
+    char requestPath[0x80];
+    dds3ModelResrc_t *entity;
+    dds3ModelFileIndex_t *selection;
+    dds3ModelFileTable_t *paths;
+    mdlManager_mdlTbMbAbLoadCb_t *request;
+    char *extension;
+    s32 packedBundle;
+
+    WaitSema(mdlManagerWork);
+    entity = mdlSearchResrc(aMajor, aMinor);
+    if (entity != NULL) {
+        SignalSema(mdlManagerWork);
+        return EE_ADDR_S(entity);
+    }
+    if (mdlCheckLoading(aMajor, aMinor)) {
+        SignalSema(mdlManagerWork);
+        if (aBlockMode != 0) {
+            return EE_ADDR_S(mdlWaitLoadEnd(aMajor, aMinor));
+        }
+        return -1;
+    }
+    selection = (dds3ModelFileIndex_t *)modelFileKindTable[aMajor].entries;
+    selection += aMinor;
+    paths = &((dds3ModelFileTable_t *)modelFileTable[selection->major].entries)[selection->minor];
+    packedBundle = 0;
+    extension = strrchr(paths->modelFile, '.');
+    if (extension != NULL) {
+        packedBundle = strcasecmp(extension, mdlPackedBundleExt) == 0;
+    }
+    mdlRegLoading(aMajor, aMinor);
+    SignalSema(mdlManagerWork);
+    if (packedBundle != 0) {
+        mdlSetFileName(requestPath, paths->modelFile);
+        mdlFileLoad(aMajor, aMinor, 0x101, requestPath,
+                                  (void (*)(u32))sdfDummyFunc, 0);
+    } else {
+        request = sdfChipAllocZeroDirect(sizeof(*request));
+        request->options = 0x101;
+        request->group = aMajor;
+        request->id = aMinor;
+        if (paths->motionFile != NULL) {
+            request->deferred = 1;
+        }
+        if (paths->texFile != NULL) {
+            request->resourceListRequested = 1;
+            mdlSetFileName(requestPath, paths->texFile);
+            fileLoadEx(requestPath, 0, EE_ADDR(TbLoadCallback), EE_ADDR(request));
+        }
+        request->itemsRequested = 1;
+        mdlSetFileName(requestPath, paths->modelFile);
+        fileLoadEx(requestPath, 0, EE_ADDR(MbLoadCallback), EE_ADDR(request));
+        if (paths->motionFile != NULL) {
+            mdlSetFileName(requestPath, paths->motionFile);
+            fileLoadEx(requestPath, 0, EE_ADDR(AbLoadCallback), EE_ADDR(request));
+        }
+    }
+    if (aBlockMode != 0) {
+        return EE_ADDR_S(mdlWaitLoadEnd(aMajor, aMinor));
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "model/mdlManager", mdlCallWaitSema);
+#endif
 
 dds3ModelResrc_t *mdlLoadPrepare(u32 group, u32 id)
 {
@@ -1034,7 +1158,34 @@ void mdlHideAllNode(mdlObj_t *aHandle)
     }
 }
 
+#ifdef VERSION_RAIDOU1
+void mdlMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber, s32 aType,
+                                     f32 aBeforeLeng, f32 aSmoothLeng) {
+    sdfMotionCtrlr_t *node;
+    s16 slotIndex;
+
+    for (node = aHandle->inner->motion; node != NULL; node = node->next) {
+        if (node->userId == aGroup) {
+            break;
+        }
+    }
+    if (node == NULL) {
+        node = mdlCreateMotion(aHandle, aGroup);
+    }
+    slotIndex = node->userId2;
+    aHandle->slots[slotIndex] = node;
+    if (slotIndex == 0) {
+        aHandle->first = node;
+    }
+    sdfMotionChangeBlend(node, aNumber, aType, aBeforeLeng, aSmoothLeng);
+    aHandle->current.h.id = aGroup;
+    aHandle->current.h.motionIndex = aNumber;
+    mdlStopEffect(aHandle, slotIndex);
+    mdlGenEffect(aHandle, aNumber, slotIndex);
+}
+#else
 INCLUDE_ASM(const s32, "model/mdlManager", mdlMotion);
+#endif
 
 void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber)
 {
@@ -1316,7 +1467,58 @@ void mdlSetClutColor(mdlObj_t *ctx, s32 color, f32 ratio)
     sdfTexListSetClutColor((sdfItemArray_t *)ctx->inner->texList, color, ratio);
 }
 
+#ifdef VERSION_RAIDOU1
+void mdlGetFilebase(s32 aMajor, s32 aMinor, char *aName, s32 aNameLeng) {
+    dds3ModelFileIndex_t *selection;
+    dds3ModelFileTable_t *pathEntry;
+    const char *path;
+    const char *basename;
+    s32 pathLength;
+    s32 startIndex;
+    s32 endIndex;
+    s32 copyLength;
+
+    selection = (dds3ModelFileIndex_t *)modelFileKindTable[aMajor].entries;
+    selection += aMinor;
+    pathEntry = (dds3ModelFileTable_t *)modelFileTable[selection->major].entries;
+    pathEntry += selection->minor;
+    path = pathEntry->modelFile;
+    startIndex = strlen(path);
+    pathLength = startIndex;
+    startIndex--;
+
+    while (1) {
+        basename = &path[startIndex];
+        if (*basename == '/') {
+            startIndex++;
+            basename = &path[startIndex];
+            break;
+        }
+        if (startIndex == 0) {
+            break;
+        }
+        startIndex--;
+    }
+
+    endIndex = startIndex;
+    do {
+        endIndex++;
+        if (endIndex >= pathLength) {
+            break;
+        }
+    } while (path[endIndex] != '.');
+
+    copyLength = endIndex - startIndex;
+    aNameLeng--;
+    if (aNameLeng < copyLength) {
+        copyLength = aNameLeng;
+    }
+    memcpy(aName, basename, copyLength);
+    aName[copyLength] = '\0';
+}
+#else
 INCLUDE_ASM(const s32, "model/mdlManager", mdlGetFilebase);
+#endif
 
 s32 mdlPackCheck(sdfPacDecodeResrc_t *resrc)
 {
@@ -1531,18 +1733,249 @@ void mdlFreeFileItem(void *aItem)
     sdfChipFreeDirect(aItem);
 }
 
+#ifdef VERSION_RAIDOU1
+void mdlReleaseHddFileList(void)
+{
+    dds3ModelFileTable_t *entries;
+    s32 count;
+    s32 i;
+#else
 INCLUDE_ASM(const s32, "model/mdlManager", mdlReleaseHddFileList);
+#endif
 
+#ifdef VERSION_RAIDOU1
+    count = modelFileTable[5].count;
+    if (count > 0)
+    {
+        entries = modelFileTable[5].entries;
+        i = 0;
+        do
+        {
+            sdfChipFreeDirect(entries[i].modelFile);
+            sdfChipFreeDirect(entries[i].texFile);
+            sdfChipFreeDirect(entries[i].motionFile);
+            i++;
+        } while (i < count);
+    }
+    modelFileKindTable[5].entries = NULL;
+    modelFileKindTable[5].count = 0;
+    modelFileTable[5].entries = NULL;
+    modelFileTable[5].count = 0;
+    sdfMemFreeHandleDirect(&mdlHddFileIndexHandle);
+    sdfMemFreeHandleDirect(&mdlHddFileListHandle);
+}
+#else
 INCLUDE_ASM(const s32, "model/mdlManager", mdlMakeHddFileListDummy);
+#endif
 
+#ifdef VERSION_RAIDOU1
+void mdlMakeHddFileListDummy(void)
+{
+    char *name;
+    char *src;
+    s32 i;
+
+    mdlReleaseHddFileList();
+    mdlHddFileIndexHandle = sdfMemAllocDirect(sizeof(dds3ModelFileIndex_t));
+    mdlHddFileIndex = sdfMemLock(mdlHddFileIndexHandle);
+    mdlHddFileIndex->major = 5;
+    mdlHddFileIndex->minor = 0;
+    mdlHddFileIndex->scale = 0x1000;
+    mdlHddFileIndex->radius = 1000;
+    mdlHddFileListHandle = sdfMemAllocDirect(sizeof(dds3ModelFileTable_t));
+    mdlHddFileList = sdfMemLock(mdlHddFileListHandle);
+    for (i = 0; i != 3; i++)
+    {
+        switch (i)
+        {
+        case 0:
+            src = modelFileTable[0].entries->modelFile;
+            break;
+        case 1:
+            src = modelFileTable[0].entries->texFile;
+            break;
+        default:
+            src = modelFileTable[0].entries->motionFile;
+            break;
+        }
+        if (src == NULL)
+        {
+            continue;
+        }
+        name = sdfChipAllocDirect(strlen(src) + 1);
+        strcpy(name, src);
+        switch (i)
+        {
+        case 0:
+            mdlHddFileList->modelFile = name;
+            break;
+        case 1:
+            mdlHddFileList->texFile = name;
+            break;
+        case 2:
+            mdlHddFileList->motionFile = name;
+            break;
+        }
+    }
+    modelFileKindTable[5].entries = mdlHddFileIndex;
+    modelFileKindTable[5].count = 1;
+    modelFileTable[5].entries = mdlHddFileList;
+    modelFileTable[5].count = 1;
+}
+
+void mdlMakeHddFileList(void) {
+    mdlDirectoryEntry_t directory;
+    s32 index;
+    s32 count;
+    s32 handle;
+    s32 length;
+    s32 end;
+    mdlHddFileEntry_t *next;
+    mdlHddFileEntry_t *file;
+    mdlHddFileEntry_t **link;
+
+    if (sdfHddValid && (handle = sceDopen("pfs0:/model/work")) >= 0) {
+        mdlReleaseHddFileList();
+        while ((length = sceDread(handle, &directory)) > 0) {
+            if ((directory.mode & 0xF000) != 0x1000 && length >= 4 && length < 49) {
+                s32 kind = -1;
+
+                if (directory.name[length - 3] == '.' &&
+                    (s8)FileUpper(directory.name[length - 1]) == 'B') {
+                    s32 ext = directory.name[length - 2];
+
+                    if (MDL_CHAR_IS_LOWER(ext)) {
+                        ext -= 'a' - 'A';
+                    }
+                    switch (ext) {
+                    case 'A':
+                        kind = 2;
+                        break;
+                    case 'T':
+                        kind = 1;
+                        break;
+                    case 'M':
+                    case 'P':
+                        kind = 0;
+                        break;
+                    }
+                    if (kind >= 0) {
+                        file = mdlHddFileCount;
+                        while (file != NULL && memcmp(file->name, directory.name, length - 2) != 0) {
+                            file = file->next;
+                        }
+                        if (file == NULL) {
+                            file = sdfChipAllocDirect(sizeof(*file));
+                            memset(file, 0, sizeof(*file));
+                            memcpy(file->name, directory.name, length - 2);
+                            file->name[length - 2] = 0;
+                            file->next = mdlHddFileCount;
+                            mdlHddFileCount = file;
+                        }
+                        file->available[kind] = 1;
+                        file->extension[kind][0] = directory.name[length - 2];
+                        file->extension[kind][1] = directory.name[length - 1];
+                    }
+                }
+            }
+        }
+        count = 0;
+        sceDclose(handle);
+        link = &mdlHddFileCount;
+        next = mdlHddFileCount;
+        while (next != NULL) {
+            file = next;
+            next = file->next;
+            if (!file->available[0]) {
+                *link = next;
+                mdlFreeFileItem(file);
+            } else {
+                if (FileUpper(file->extension[0][0]) == 'P') {
+                    file->available[1] = 0;
+                    file->available[2] = 0;
+                }
+                link = &file->next;
+                count++;
+            }
+        }
+        if (count != 0) {
+            index = 0;
+            mdlHddFileIndexHandle = sdfMemAllocDirect(count * sizeof(dds3ModelFileIndex_t));
+            mdlHddFileIndex = sdfMemLock(mdlHddFileIndexHandle);
+            mdlHddFileListHandle = sdfMemAllocDirect(count * sizeof(dds3ModelFileTable_t));
+            mdlHddFileList = sdfMemLock(mdlHddFileListHandle);
+            memset(mdlHddFileList, 0, count * sizeof(dds3ModelFileTable_t));
+            file = mdlHddFileCount;
+            while (file != NULL) {
+                const char *name = file->name;
+                s32 kind;
+
+                mdlHddFileIndex[index].major = 5;
+                mdlHddFileIndex[index].minor = index;
+                mdlHddFileIndex[index].scale = 0x1000;
+                mdlHddFileIndex[index].radius = 1000;
+                length = strlen(name);
+                end = length + 5;
+                for (kind = 0; kind != 3; kind++) {
+                    if (file->available[kind]) {
+                        char *path = sdfChipAllocDirect(length + 8);
+
+                        *(mdlWorkPrefix_t *)path = mdlWorkPathPrefix[0];
+                        memcpy(path + 5, name, length);
+                        path[end] = file->extension[kind][0];
+                        path[end + 1] = file->extension[kind][1];
+                        path[end + 2] = 0;
+                        switch (kind) {
+                        case 0:
+                            mdlHddFileList[index].modelFile = path;
+                            break;
+                        case 1:
+                            mdlHddFileList[index].texFile = path;
+                            break;
+                        case 2:
+                            mdlHddFileList[index].motionFile = path;
+                            break;
+                        }
+                    }
+                }
+                file = file->next;
+                index++;
+            }
+            modelFileKindTable[5].entries = mdlHddFileIndex;
+            modelFileKindTable[5].count = count;
+            modelFileTable[5].entries = mdlHddFileList;
+            modelFileTable[5].count = count;
+            return;
+        }
+    }
+    mdlMakeHddFileListDummy();
+}
+#else
 INCLUDE_ASM(const s32, "model/mdlManager", mdlMakeHddFileList);
+#endif
 char mdlModelPathPrefix[8] = "/model/";
 
+#ifdef VERSION_RAIDOU1
+char mdlPackedBundleExt[4] = ".PB";
+#else
 INCLUDE_SDATA(const s32, "model/mdlManager", mdlPackedBundleExt);
+#endif
 
+#ifdef VERSION_RAIDOU1
+sdfMemHandle_t *mdlHddFileIndexHandle = NULL;
+#else
 INCLUDE_SDATA(const s32, "model/mdlManager", mdlHddFileIndexHandle);
+#endif
 
+#ifdef VERSION_RAIDOU1
+sdfMemHandle_t *mdlHddFileListHandle = NULL;
+#else
 INCLUDE_SDATA(const s32, "model/mdlManager", mdlHddFileListHandle);
+#endif
 
+#ifdef VERSION_RAIDOU1
+mdlWorkPrefix_t mdlWorkPathPrefix[1] = { { "work/" } };
+#else
 INCLUDE_SDATA(const s32, "model/mdlManager", mdlWorkPathPrefix);
 
+#endif

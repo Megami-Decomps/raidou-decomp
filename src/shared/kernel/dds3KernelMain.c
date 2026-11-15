@@ -1,7 +1,10 @@
 #include "common.h"
+#ifdef VERSION_RAIDOU2
 #include "kernel.h"
 #include "sdfFrame.h"
+#endif
 #include "dds3KernelMain.h"
+#ifdef VERSION_RAIDOU2
 
 extern u32 dds3RunCount;
 extern u8 dds3SoftResetDisableFlag;
@@ -19,6 +22,7 @@ extern char dds3FirstProcessName[];
 extern char dds3DrawFirstProcessName[];
 
 #include "sdk_libc.h"
+#endif
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", KernelDebug);
 
@@ -38,6 +42,9 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3GetKernelCount);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3GetFrameID);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3PauseOn);
+#else
 void dds3PauseOn(void);
 void dds3PauseOff(void);
 void dds3Stop(u32 frame);
@@ -51,32 +58,52 @@ extern u32 dds3DebugSign;
 extern char dds3FirstProcessName[8];
 extern char dds3DrawFirstProcessName[8];
 extern u8 dds3DrawProcessFlag;
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3PauseOff);
+#else
 void dds3PauseOn(void)
 {
     dds3PauseTime = 0;
     dds3PauseSign = 1;
     dds3SlowSign = 0;
 }
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3Stop);
+#else
 void dds3PauseOff(void)
 {
     dds3PauseSign = 0;
     dds3PauseTime = 0;
     dds3SlowSign = 0;
 }
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SlowOn);
+#else
 void dds3Stop(u32 frame)
 {
     dds3PauseTime = SDF_FRAMES(frame);
     dds3PauseSign = 1;
     dds3SlowSign = 0;
 }
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SlowOff);
+#else
 void dds3SlowOn(u32 aSlowTime, u32 slowcnt)
 {
     u32 runCount = dds3RunCount;
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3ScreenCaptureOn);
+#else
     dds3SlowSign = 1;
     dds3SlowTime = aSlowTime;
     dds3SlowRunCount = runCount;
@@ -84,7 +111,11 @@ void dds3SlowOn(u32 aSlowTime, u32 slowcnt)
     dds3PauseSign = 0;
     dds3PauseTime = 0;
 }
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3ScreenCaptureOff);
+#else
 void dds3SlowOff(void)
 {
     dds3PauseSign = 0;
@@ -92,10 +123,18 @@ void dds3SlowOff(void)
     dds3PauseTime = 0;
     dds3SlowSign = 0;
 }
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SoftResetOn);
+#else
 void dds3ScreenCaptureOn(void) {
 }
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3SoftResetOff);
+#else
 void dds3ScreenCaptureOff(void) {
 }
 
@@ -110,6 +149,7 @@ void dds3SoftResetOff(void)
 }
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3CallEventSub);
+#endif
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelMain", dds3KernelMain);
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FrameCount);
@@ -120,17 +160,41 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SoftResetFlag);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SoftResetDisableFlag);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3KernelMainData);
+#else
 u32 dds3PauseSign = 0;
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3KernelMainData2);
+#else
 u32 dds3PauseTime = 0;
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", PauseSign);
+#else
 u32 dds3SlowSign = 0;
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3Data25);
+#else
 u32 dds3SlowTime = 4;
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowOnData);
+#else
 u32 dds3SlowRunCount = 0;
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3SlowOnData2);
+#else
 u32 dds3SlowEndCount = 0;
+#endif
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3DebugSign);
 
@@ -140,7 +204,11 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3LastDrawFrameCount);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3VblanksPerFrame);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3KernelDebugSign);
+#else
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3CallEventSubData);
+#endif
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelMain", dds3FileCmdLoPrio);
 

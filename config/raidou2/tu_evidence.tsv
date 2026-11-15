@@ -251,7 +251,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0027A1E8	002881A0	code_0027A1E8	asm	none	
 00288200	00288200	code_00288200	c	dds:1 of 1	
 00288220	0028AD38	code_00288220	asm	none	
-0028AD40	0028AD40	code_0028AD40	c	dds:1 of 1	
+0028AD40	0028AD40	code_r1_002692F0	c	dds:1 of 1	
 0028AD68	002A93C8	sbtlActAI	asm	none	
 002A9518	002A9548	code_r1_0027CBE8	c	dds:2 of 2	
 002A95B0	002A95B0	code_r1_0027CC80	c	dds:1 of 1	
@@ -265,7 +265,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00309F88	00309F88	code_00309F88	c	dds:1 of 1	
 00309FE0	00328178	code_00309FE0	asm	none	
 00328180	00328290	code_r1_002C7ED0	c	dds:3 of 3 part	
-00328438	0032A600	code_00328438	c	dds:51 literal-cores:1 of 55	
+00328438	0032A600	code_r1_002C8188	c	dds:51 literal-cores:1 of 55	
 0032A6A0	0032B3C8	code_r1_002CA3F0	c	dds:6 of 9	
 0032B580	0032DAA8	code_r1_002CAFD8	c	dds:14 of 46	
 0032DB10	0032DB10	code_r1_002CD568	c	dds:1 of 1	

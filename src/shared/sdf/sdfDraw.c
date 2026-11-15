@@ -7,12 +7,16 @@
 #include "sdfPacketBuff.h"
 #include "sdk_libkernl.h"
 #include "sdfSystem.h"
+#ifdef VERSION_RAIDOU1
 #include "sdfDevCons.h"
 #include "sdfImageSet.h"
 #include "sdfGraph.h"
+#endif
 extern s32 DIntr(void);
 extern s32 EIntr(void);
+#ifdef VERSION_RAIDOU1
 extern sceDmaChan *sceDmaGetChan(u32 channel);
+#endif
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -380,6 +384,7 @@ void sdfGrSetStdDrawEnv(sdfGrStdDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet);
 void sdfGrSetFrameMaskRGB(const u8 *aEnv, sdfGrRefGifPacketHeader_t *aHdr, s32 aContext);
 void sdfGrSetFrameMaskReset(const u8 *aEnv, sdfGrRefGifPacketHeader_t *aHdr, s32 aContext);
 void sdfGrReqDraw(sdfDrawTag_t *aTag, sdfPreDrawChain_t *aPreDraw);
+#ifdef VERSION_RAIDOU1
 
 /* The draw worker publishes this to the kernel process, which clears it. */
 extern volatile u8 sdfDrawPublishFlag;
@@ -388,12 +393,15 @@ extern volatile u8 sdfDispThreadFlag;
 extern u8 sdfFrameEvenOdd;
 extern u8 sdfGrDrawFrameId;
 extern u8 sdfGrDrawFirstFlag;
+#endif
 extern u32 sdfGrDrawFrameTagHead;
+#ifdef VERSION_RAIDOU1
 extern s32 dds3GsThreadId;
 extern u64 sceGsGetIMR(void);
 extern u64 sceGsPutIMR(u64 mask);
 extern void sdfDelayedResrcProc(void);
 void sdfGrDrawFrame(void);
+#endif
 void sdfDrawSync(void);
 
 void sdfDrawTagInit(sdfDrawTag_t *a) {
@@ -916,6 +924,7 @@ void sdfGrInitDraw(void) {
     sdfDrawReqQueueIndex = 0;
 }
 
+#ifdef VERSION_RAIDOU1
 void sdfGrDrawFrame(void)
 {
     sdfDrawReqRec_t *request;
@@ -1035,6 +1044,9 @@ void sdfGrDrawFrame(void)
     if (firstFlag != 0) sdfDevConsDrawAll();
     sdfDelayedResrcProc();
 }
+#else
+INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrDrawFrame);
+#endif
 
 void sdfDrawSync(void) {
     sdfDrawReqRec_t *table = sdfGrDrawState;
@@ -1068,7 +1080,11 @@ u16 sdfReqDrawDelaySleepCount = 0;
 
 s32 sdfDrawReqQueueIndex = 0;
 
+#ifdef VERSION_RAIDOU1
 u32 sdfGrDrawFrameTagHead = 0;
+#else
+INCLUDE_SDATA(const s32, "sdf/sdfDraw", sdfGrDrawFrameTagHead);
+#endif
 
 u32 sdfDrawFrameCount = 0;
 

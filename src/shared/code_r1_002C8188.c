@@ -324,7 +324,7 @@ s32 effRemoveSlotRecord(EffectOwnerRecord *list, EffectSlotOwner *work, s32 slot
     return 0;
 }
 
-INCLUDE_ASM(const s32, "code_002C8188", effReleaseRecordBuckets);
+INCLUDE_ASM(const s32, "code_r1_002C8188", effReleaseRecordBuckets);
 
 /* Dispatch every bucket record and optionally refresh its owner/slot lookup. */
 u32 effDispatchRecordBuckets(u32 refresh, EffectOwnerRecord *list, s32 drawOption) {
@@ -451,7 +451,7 @@ struct sdfMemHandle_t *effLoadMappedStatusRecords(const u8 *source, EffMappedHea
     return allocation;
 }
 
-INCLUDE_ASM(const s32, "code_002C8188", effCreateMappedResource);
+INCLUDE_ASM(const s32, "code_r1_002C8188", effCreateMappedResource);
 
 /* Build one zeroed status record and allocate the category's required status storage. */
 EffMappedResource *effCreateStatusBatch(u32 category) {
@@ -517,7 +517,7 @@ void effInitializeSlotPhase(EffTimedState *effect) {
     }
 }
 
-INCLUDE_ASM(const s32, "code_002C8188", effInitializeSlotWorkFromDescription);
+INCLUDE_ASM(const s32, "code_r1_002C8188", effInitializeSlotWorkFromDescription);
 
 /* Initialize the normal slot entry at the unchanged 0xA0-byte stride. */
 void effInitializeSlotWork(EffectSlotSet *owner, s32 slotIndex) {
@@ -553,6 +553,7 @@ void effResetSlotWork(EffectSlotSet *work, u32 slotIndex) {
 /* Acquire missing selected handles or clear slots; clearAllSlots does not release textures.
  * Return the address following the processed resource-table entries.
  */
+#ifdef VERSION_RAIDOU1
 u8 *effResolveResourceSlots(EffectSlotSet *set, u8 *resourceBytes, s32 clearAllSlots, s32 selectedSlot) {
     u32 slotIndex = 0;
     u8 *entryBytes = resourceBytes;
@@ -580,6 +581,9 @@ u8 *effResolveResourceSlots(EffectSlotSet *set, u8 *resourceBytes, s32 clearAllS
     }
     return entryBytes;
 }
+#else
+INCLUDE_ASM(const s32, "code_r1_002C8188", effResolveResourceSlots);
+#endif
 
 void effResolveAndReleaseResource(EffectSlotSet *owner) {
     if (owner->sourceAllocation != 0) {
@@ -838,7 +842,7 @@ u32 effSetMaterialSlots(EffectSlotSet *owner, s32 index, u32 materialFlags, void
     return 1;
 }
 
-INCLUDE_ASM(const s32, "code_002C8188", sysLeaf46);
+INCLUDE_ASM(const s32, "code_r1_002C8188", sysLeaf46);
 
 u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags) {
     BdWork *effect = &((EffectSlotSet *)work)->workEntries[index];
@@ -927,7 +931,7 @@ void itfRotateScreenOffset(s32 *outX, s32 *outY, s32 x, s32 y, s32 centerX, s32 
     *outY = (s32)(*outY / aspect + centerY);
 }
 
-INCLUDE_ASM(const s32, "code_002C8188", sdfDrawTexturedQuad);
+INCLUDE_ASM(const s32, "code_r1_002C8188", sdfDrawTexturedQuad);
 
 void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width,
                                     u32 height, u32 vertexColors, u32 presetMode, u32 presetValue) {
@@ -935,43 +939,43 @@ void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width,
     uiDrawGradientColorRect(x, y, z, width, height, (const u32 *)vertexColors, presetValue);
     sdfSubmitGsAlphaOneRegisterPacket(0x44, presetValue);
 }
-INCLUDE_SDATA(const s32, "code_002C8188", effData43);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData43);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry15);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry15);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry16);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry16);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry17);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry17);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry18);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry18);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry19);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry19);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry20);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry20);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry21);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry21);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry22);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry22);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry23);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry23);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry24);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry24);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry25);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry25);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry26);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry26);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry27);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry27);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry28);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry28);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry29);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry29);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry30);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry30);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry31);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry31);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry32);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry32);
 
-INCLUDE_SDATA(const s32, "code_002C8188", effData21Entry33);
+INCLUDE_SDATA(const s32, "code_r1_002C8188", effData21Entry33);
 

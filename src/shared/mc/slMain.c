@@ -11,6 +11,9 @@
 #include "sdfMemory.h"
 #include "fileManager.h"
 #include "sdfSound.h"
+#ifdef VERSION_RAIDOU1
+#include "dds3AdminiProcess.h"
+#endif
 #include "slMain.h"
 #include "dds3KernelMain.h"
 
@@ -252,6 +255,9 @@ static inline void fileDrawDialogLine(s32 line, const char *glyphSource) {
 
 void fileClearAllSlotFlags(void);
 s32 fileResetSelection(void);
+#ifdef VERSION_RAIDOU1
+s32 mcdEnterDefaultFileFlow(void);
+#endif
 s32 fileRestartSlotScan(void);
 extern s32 D_003BC830;
 extern s32 D_003BC838;
@@ -386,8 +392,10 @@ INCLUDE_ASM(const s32, "mc/slMain", slKanjiDraw3);
 
 INCLUDE_ASM(const s32, "mc/slMain", slKanjiDrawH);
 
+#ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "mc/slMain", slCallEnableMode);
 
+#endif
 INCLUDE_ASM(const s32, "mc/slMain", slCallEnableMode2);
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallSin2);
@@ -400,7 +408,11 @@ INCLUDE_ASM(const s32, "mc/slMain", slQueryYesNoProcSub2);
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallSetOt5);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "mc/slMain", slInsertedInMEMORY);
+#else
 INCLUDE_ASM(const s32, "mc/slMain", slDrawError);
+#endif
 
 void slSetInfo(u32 id) {
     s32 previous;
@@ -518,7 +530,17 @@ s32 slExit(void) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slCallSetInfo2);
 
+#ifdef VERSION_RAIDOU1
+s32 mcdEnterDefaultFileFlow(void) {
+    u32 mode[4];
+
+    mode[0] = 0;
+    dds3AdminiCallSequence(2, mode, 4, 0);
+    return 0;
+}
+#else
 INCLUDE_ASM(const s32, "mc/slMain", slExitToTitle2);
+#endif
 
 INCLUDE_ASM(const s32, "mc/slMain", slLeaf4);
 
@@ -928,6 +950,10 @@ s32 slCalc(dds3ProcessID_t *id) {
 
 INCLUDE_ASM(const s32, "mc/slMain", slDraw_slMain);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_RODATA(const s32, "mc/slMain", fmStrSaveloadSpr);
+
+#endif
 INCLUDE_ASM(const s32, "mc/slMain", fmProcTrigSequence_slMain);
 
 INCLUDE_ASM(const s32, "mc/slMain", slShutDownProcess);
@@ -1011,9 +1037,17 @@ s32 gSlWindowCnt = 0;
 
 INCLUDE_RODATA(const s32, "mc/slMain", fmStrFileMentCalc);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_RODATA(const s32, "mc/slMain", jtbl_00455280);
+#else
 INCLUDE_RODATA(const s32, "mc/slMain", jtbl_004BC050);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_RODATA(const s32, "mc/slMain", slQueryYesNoDrawTable);
+#else
 INCLUDE_RODATA(const s32, "mc/slMain", slQueryYesNoDrawTable2);
+#endif
 
 INCLUDE_SDATA(const s32, "mc/slMain", setCallMcGetSlotIndexData);
 
@@ -1037,22 +1071,47 @@ INCLUDE_SDATA(const s32, "mc/slMain", slCallSin2Data);
 
 INCLUDE_SDATA(const s32, "mc/slMain", slCallPlaySE2Data);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "mc/slMain", slErrorWaitMcData);
+
+#endif
 INCLUDE_SDATA(const s32, "mc/slMain", slSaveWriteEnd_baseIcon_slMainData2);
 
 INCLUDE_SDATA(const s32, "mc/slMain", slSaveWriteEnd_baseIcon_slMainData3);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData20);
+#else
 INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData100);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData21);
+#else
 INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData101);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData22);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData23);
+#else
 INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData102);
+#endif
 
 INCLUDE_SDATA(const s32, "mc/slMain", fmProcTrigSequence_slMainData3);
 
 INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData39);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData40);
+#else
 INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData59);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "mc/slMain", slDrawInfoData17);
+#else
 INCLUDE_SDATA(const s32, "mc/slMain", slDrawErrorData54);
 
 INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData60);
@@ -1064,10 +1123,45 @@ INCLUDE_SDATA(const s32, "mc/slMain", slDrawInfoData18);
 INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData62);
 
 INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData63);
+#endif
 
 INCLUDE_SDATA(const s32, "mc/slMain", slQueryYesNoDrawData41);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData24);
+#else
 INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData103);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData25);
+#else
 INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData104);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData26);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData27);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData28);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData29);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData30);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData31);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData32);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData33);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData34);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData35);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData36);
+
+INCLUDE_SDATA(const s32, "mc/slMain", slNewCycleData37);
+
+#endif

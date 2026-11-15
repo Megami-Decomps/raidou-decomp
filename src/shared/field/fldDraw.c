@@ -737,6 +737,12 @@ void fldDrawPoly3(s32 x0, s32 y0, s32 z0,
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawFrameSprite);
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_ASM(const s32, "field/fldDraw", fldDrawBokasi);
+
+INCLUDE_ASM(const s32, "field/fldDraw", fldDrawFrameSpriteAlpha);
+
+#endif
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawPos);
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldCallOtOfs);
@@ -787,7 +793,16 @@ void initDrawTag(dbgConsCtl_tag *cons) {
 
 INCLUDE_ASM(const s32, "field/fldDraw", fldDbgPrint3D);
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_ASM(const s32, "field/fldDraw", fldObjTaskSub);
+
+INCLUDE_ASM(const s32, "field/fldDraw", fldCallSetOt);
+
+#endif
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawMaruKage);
+#ifdef VERSION_RAIDOU2
+
+#endif
 INCLUDE_ASM(const s32, "field/fldDraw", nbProcSequenceSub);
 
 INCLUDE_ASM(const s32, "field/fldDraw", nbSetEncountMode);
@@ -804,6 +819,10 @@ SDATA_PAD(4);
 
 INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtDec);
 
+#ifdef VERSION_RAIDOU2
+INCLUDE_SDATA(const s32, "field/fldDraw", fldObjTaskSubData);
+
+#endif
 INCLUDE_SDATA(const s32, "field/fldDraw", nbData4);
 
 INCLUDE_SDATA(const s32, "field/fldDraw", fldDbgFmtHex);

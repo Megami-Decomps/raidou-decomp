@@ -237,6 +237,12 @@ void dds3SetQuake(s32 frame, s32 range);
 void dds3StopQuake(void);
 sdfDrawTag_t *dds3LinkZClearDrawTag(s32 sw);
 void dds3FadeSet(s32 r, s32 g, s32 b, s32 a);
+#ifdef VERSION_RAIDOU1
+void dds3FadeIn(s32 r, s32 g, s32 b, s32 frame);
+void dds3FadeIn2(s32 frame);
+void dds3FadeOut(s32 r, s32 g, s32 b, s32 frame);
+void dds3FadeOut2(s32 frame);
+#endif
 void dds3FadeUpdate(void);
 void dds3SetScreenFovy(f32 fovy);
 void dds3SetAmbient(sdfVector4_t *ambient);
@@ -670,12 +676,85 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeSet_2);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeModeSet);
 
+#ifdef VERSION_RAIDOU1
+void dds3FadeIn(s32 r, s32 g, s32 b, s32 frame)
+{
+    fadergba[0] = r;
+    fadergba[1] = g;
+    fadergba[2] = b;
+    fadergba[3] = -128;
+    if (frame == 0) {
+        fadergba[3] = 0;
+        fadenow = 0;
+        fademax = 0;
+        dds3FadeClear();
+        return;
+    }
+    fademax = SDF_FRAMES(frame);
+    fadenow = SDF_FRAMES(frame);
+    dds3DrawFlag = (dds3DrawFlag | 1) & ~2;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeTypeGet);
+#endif
 
+#ifdef VERSION_RAIDOU1
+void dds3FadeIn2(s32 frame)
+{
+    fadergba[3] = -128;
+    if (frame == 0) {
+        fadergba[3] = 0;
+        dds3DrawFlag &= ~3;
+        fadenow = 0;
+        fademax = 0;
+    } else {
+        fademax = SDF_FRAMES(frame);
+        fadenow = SDF_FRAMES(frame);
+        dds3DrawFlag = (dds3DrawFlag | 1) & ~2;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", FadeTypeSet);
+#endif
 
+#ifdef VERSION_RAIDOU1
+void dds3FadeOut(s32 r, s32 g, s32 b, s32 frame)
+{
+    fadergba[0] = r;
+    fadergba[1] = g;
+    fadergba[2] = b;
+    fadergba[3] = 0;
+    if (frame == 0) {
+        fadenow = 0;
+        fademax = 0;
+        fadergba[3] = -128;
+        dds3DrawFlag &= ~3;
+        return;
+    }
+    fademax = SDF_FRAMES(frame);
+    fadenow = 0;
+    dds3DrawFlag = (dds3DrawFlag & ~1) | 2;
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeIn);
+#endif
 
+#ifdef VERSION_RAIDOU1
+void dds3FadeOut2(s32 frame)
+{
+    fadergba[3] = 0;
+    if (frame == 0) {
+        fadenow = 0;
+        fadergba[3] = -128;
+        dds3DrawFlag &= ~3;
+        fademax = 0;
+    } else {
+        fademax = SDF_FRAMES(frame);
+        fadenow = 0;
+        dds3DrawFlag = (dds3DrawFlag & ~1) | 2;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeIn2);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefDrawFlag);
@@ -683,6 +762,7 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefDrawFlag);
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3FadeOut);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3RefDrawFlag2);
+#endif
 
 s32 dds3FadeCheck(void)
 {
@@ -719,8 +799,10 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaOutEx);
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaOut);
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3BistaCheck);
+#ifdef VERSION_RAIDOU2
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3IsBistaZBufferClear);
+#endif
 
 INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", dds3ChangeBistaMode);
 
@@ -1793,7 +1875,11 @@ u8 dds3ScreenBlurFlag = 0;
 
 s16 dds3ScreenBlurAlpha = 0x60;
 
+#ifdef VERSION_RAIDOU1
+s16 dds3ScreenBlurScale = 0x10;
+#else
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3ScreenBlurScale);
+#endif
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3ScreenBlurOfsX);
 
@@ -1815,8 +1901,10 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data28);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data29);
 
+#ifdef VERSION_RAIDOU2
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data49);
 
+#endif
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data30);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data31);
@@ -1831,8 +1919,10 @@ INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3DrawBistaData2);
 
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3Data33);
 
+#ifdef VERSION_RAIDOU2
 INCLUDE_SDATA(const s32, "kernel/dds3KernelDraw", dds3DrawBistaData3);
 
+#endif
 u32 distblurovercnt = 0;
 
 u32 ripblurovercnt = 0;
