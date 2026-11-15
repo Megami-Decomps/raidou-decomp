@@ -2,6 +2,7 @@
 #include "sdk_libc.h"
 #include "sdk_libpad.h"
 #include "sdk_libkernl.h"
+#include "sif_rpc.h"
 
 /* One half of a port's double-buffered pad data DMA buffer. */
 typedef struct padDma {
@@ -71,20 +72,13 @@ typedef struct vrefParam {
  * stringify functions fall back to. */
 extern padState padPortState[2][4] __attribute__((section(".data")));
 
-typedef struct padRpcClient_t {
-    u32 reserved[9];
-    void *server;
-} padRpcClient_t;
 
-extern padRpcClient_t padRpcClient[2] __attribute__((section(".data")));
+extern rpcClient padRpcClient[2] __attribute__((section(".data")));
 extern padRpc padRpcPacket __attribute__((section(".data")));
 extern s32 padInitialized __attribute__((section(".data")));
 extern const char *padStateNames[8] __attribute__((section(".data")));
 extern const char *padRequestNames[4] __attribute__((section(".data")));
 extern void SyncDCache(void *start, void *end);
-
-extern s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize,
-                         void *recv, s32 rsize, void *endfunc, void *endpara);
 
 extern int _send_to_iop(int port, int slot);
 
@@ -94,7 +88,6 @@ extern int _send_to_iop(int port, int slot);
 extern s32 padDebugPrint __attribute__((section(".data")));
 extern const char padDmaFailMsg[];
 int _send_to_iop(int port, int slot);
-extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
 extern int scePadGetModVersion(void);
 extern int scePadInit2(int mode);
 extern const char padDmaFailMsg[72];

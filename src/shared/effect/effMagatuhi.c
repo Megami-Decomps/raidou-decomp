@@ -51,19 +51,6 @@ extern effColorHandler_t dds3MagatuhiSetRGBATable2[];
 extern effVectorHandler_t dds3MagatuhiSetRGBATable3[];
 extern s16 effMagaBillboardTexCoords[15][8];
 
-/* Shared 0x20-byte DMA/VIF reference header. Unrecovered bytes stay opaque. */
-typedef struct dmaPacketHeader_t {
-    u16 quadwords; /* 0x00 */
-    u8 pad02[2]; /* 0x02 */
-    u32 address; /* 0x04 */
-    u32 tag; /* 0x08 */
-    u32 command; /* 0x0C */
-    u16 unknown10; /* 0x10 */
-    u8 opaque12[6]; /* 0x12 */
-    u32 unknown18; /* 0x18 */
-    u32 unknown1C; /* 0x1C */
-} QWORD_ALIGNED dmaPacketHeader_t;
-
 #define EFF_BUILTIN_NAME_COUNT 0x2F
 
 #define EFF_DIRECTORY_FLAG_CLEAR 0x1000
@@ -434,7 +421,6 @@ static inline u32 PackMagatuhiTrailColor(void) {
 /* vu0 routine: pack aligned positions into the VIF three-word stream. */
 
 /* Round payloadBytes up to quadwords and pair FLUSHA with VIF DIRECT. */
-void sdf3DMakeDirectRefPacket(dmaPacketHeader_t *aPacket, addr_t aData, s32 aLeng);
 
 /* Requires a non-NULL texture; returns its primary buffer as a borrowed view. */
 struct sdfTexPacket_t *sdfTexGetPacket(struct sdfTexHandle_t *aHandle);
@@ -445,6 +431,7 @@ extern f32 aViewTarget[EFF_MAGATUHI_VECTOR_WORD_COUNT];
 extern f32 aViewEye[EFF_MAGATUHI_VECTOR_WORD_COUNT];
 
 #include "sdk_libc.h"
+#include "sdf3D.h"
 
 effMagatuhiOwner_t *effMagaCylinderAllocPart(const u32 *source);
 void effMagaCylinderFree(effMagatuhiOwner_t *resource);
@@ -651,7 +638,7 @@ void effSwordTrackDrawTex(dds3MagatuhiBill_tag *work) {
     list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
     sdfDrawTagInit(list);
     packet = sdfGrAllocPacketBuff(0x20);
-    sdf3DMakeDirectRefPacket(EE_ADDR_AS(dmaPacketHeader_t *, packet),
+    sdf3DMakeDirectRefPacket(EE_ADDR_AS(DmaPacketHeader *, packet),
         EE_ADDR(sdfTexGetPacket(work->texture)),
         sdfTexGetPacketLength((sdfTexHandle_t *)work->texture));
     sdfDrawTagLinkRef(list, packet);

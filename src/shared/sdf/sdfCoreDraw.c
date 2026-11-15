@@ -20,8 +20,6 @@ extern u8 vu0MicroPacket[];
 extern u8 vu1MicroPacket[];
 extern saddr_t corePktPointBuff;
 extern sdfMemHandle_t *sdfCoreDrawBuffHandle;
-extern void *sceDmaGetChan(s32);
-extern void sceDmaSendN(void *, void *, s32);
 void sdfCoreDrawScanOneSkinNodes(sdfModelRootNode_t *root, sdfCorePacket_t *p);
 void sdfCoreDrawSetLight(u8 *light);
 void sdfCoreDrawSetFog(u8 *fog);
@@ -62,10 +60,10 @@ void sdfCoreDrawSetZBias(f32 z) {
 INCLUDE_ASM(const s32, "sdf/sdfCoreDraw", sdfLeaf25);
 
 void sdfCoreDrawInit(s32 buffSize) {
-    u32 *dmaChannel = sceDmaGetChan(0);
-    HW_WRITE(dmaChannel, HW_READ(dmaChannel) & ~SDF_DMA_CHCR_TTE);
+    sceDmaChan *dmaChannel = sceDmaGetChan(0);
+    HW_WRITE(&dmaChannel->chcr, HW_READ(&dmaChannel->chcr) & ~SDF_DMA_CHCR_TTE);
     sceDmaSendN(dmaChannel, vu0MicroPacket, (vu1MicroPacket - vu0MicroPacket) >> SDF_DMA_QWORD_SHIFT);
-    sceDmaSync((sceDmaChan *)dmaChannel, 0, 0);
+    sceDmaSync(dmaChannel, 0, 0);
     sdfMemFreeHandleDirect(&sdfCoreDrawBuffHandle);
     sdfCoreDrawBuffHandle = sdfMemAllocDirect(buffSize);
     corePktPointBuff = EE_ADDR(sdfMemLock(sdfCoreDrawBuffHandle));

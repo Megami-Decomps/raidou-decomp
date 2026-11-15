@@ -153,28 +153,6 @@ void _sceRpcFreePacket_0(rpcPacket *packet);
 rpcPacket *_sceRpcGetFPacket(rpcQueue *queue);
 rpcPacket *_sceRpcGetFPacket2(rpcQueue *queue, s32 index);
 
-/* Shared transaction fields used by RPC completion. */
-typedef struct rpcTransactionPrefix {
-    void *packet;
-    u32 sequence;
-    s32 sema;
-} rpcTransactionPrefix;
-
-SIZE_CHECK(rpcTransactionPrefix_size_must_be_12, rpcTransactionPrefix, 12);
-
-typedef struct rpcClient {
-    rpcTransactionPrefix transaction;
-    u32 unk_C;
-    u32 serverId;
-    void *buffer;
-    void *cbuffer;
-    void (*endFunction)(void *);
-    void *endParam;
-    void *server;
-} rpcClient;
-
-SIZE_CHECK(rpcClient_size_must_be_40, rpcClient, 40);
-
 /* Observed completion-response prefix, not the complete packet allocation. */
 typedef struct rpcResponse {
     u32 commandHeader[4];
@@ -194,7 +172,6 @@ void _request_end_0(void *packet, void *queue);
 void _request_rdata(rpcPacket *request, rpcQueue *queue);
 s32 sceSifGetOtherData(rpcTransactionPrefix *client, void *source, void *destination, s32 size, s32 mode);
 sifRpcServerData_t *_search_svdata(s32 serviceId, rpcQueue *queue);
-s32 sceSifBindRpc(rpcClient *client, u32 serverId, s32 mode);
 
 typedef struct rpcClientPrefix {
     void *packet;

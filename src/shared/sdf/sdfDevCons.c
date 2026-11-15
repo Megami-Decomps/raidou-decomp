@@ -32,7 +32,7 @@ typedef struct sdfDevConsDrawCB_t
     u8 *cur;
     u8 *start;
     u8 *tag;
-    u32 *dmaCh;
+    sceDmaChan *dmaCh;
     u8 *buf[2];
     s32 buffSize;
     u16 dblBuffId;
@@ -86,9 +86,7 @@ typedef struct
     u64 secondPosition;
 } sdfDevConsGlyph_t;
 
-extern void sceDmaSendN(void *channel, void *address, s32 quadwords);
 extern s32 sceGsSyncPath(s32 mode, s32 timeout);
-extern void *sceDmaGetChan(s32 channel);
 extern u64 sdfTexGetTex0Reg(sdfTexHandle_t *aHandle);
 extern void *sdfGrOpenPacketBuff(void);
 extern void sdfGrClosePacketBuff(saddr_t aBuffPtr);
@@ -342,15 +340,15 @@ void sdfDevConsTagClose(sdfDevConsDrawCB_t *aCB)
 
 void sdfDevConsDrawFlush(sdfDevConsDrawCB_t *aCB) {
     s32 packetBytes;
-    u32 *channelRegisters;
+    sceDmaChan *channelRegisters;
     u32 nextBufferIndex;
 
     sdfDevConsTagClose(aCB);
     packetBytes = aCB->tag - aCB->start;
     if ((packetBytes >> 3) != 0) {
         channelRegisters = aCB->dmaCh;
-        sceDmaSync((sceDmaChan *)channelRegisters, 0, 0);
-        *(volatile u32 *)channelRegisters = *(volatile u32 *)channelRegisters | 0x40; /* CHCR bit 6: tag-transfer enable */
+        sceDmaSync(channelRegisters, 0, 0);
+        *(volatile u32 *)&channelRegisters->chcr = *(volatile u32 *)&channelRegisters->chcr | 0x40; /* CHCR bit 6: tag-transfer enable */
         EE_SYNC_BARRIER();
         sceDmaSendN(channelRegisters, (void *)EE_PHYSICAL(EE_ADDR(aCB->start)), packetBytes >> 4);
         nextBufferIndex = aCB->dblBuffId ^ 1;

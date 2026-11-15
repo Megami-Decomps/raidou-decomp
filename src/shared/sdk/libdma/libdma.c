@@ -53,12 +53,10 @@ u32 CheckAddress(addr_t addr);
 void memclr(void *p, int n);
 int sceDmaPause(sceDmaChan *chan);
 int sceDmaPutEnv(sceDmaEnv *env);
-sceDmaChan *sceDmaGetChan(u32 channel);
 int sceDmaReset(int enable);
 sceDmaEnv *sceDmaGetEnv(sceDmaEnv *env);
 u32 sceDmaPutStallAddr(u32 addr);
 void sceDmaSend(sceDmaChan *chan, void *tag);
-void sceDmaSendN(sceDmaChan *chan, void *data, u32 qwc);
 void sceDmaSendI(sceDmaChan *chan, void *data, u32 qwc);
 
 /* The receive starters share this tail; 2.9 inlines it, which is what retail

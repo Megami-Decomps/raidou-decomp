@@ -78,7 +78,6 @@ typedef struct sdfImageSetReqParam
 
 #include "sdk_libkernl.h"
 
-extern void *sceDmaGetChan(s32 channel);
 extern sdfImageSetCb_t sdfImageSetCb;
 extern u64 sdfImageSetTexFlushPacket[];
 s32 sdfImageDataSize(u32 format, s32 width, s32 height);

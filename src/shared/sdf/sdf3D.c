@@ -13,6 +13,7 @@
 #include "sdfTex.h"
 #include "sdfModel.h"
 #include "sdfTmx.h"
+#include "sdf3D.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -54,8 +55,6 @@ struct sdfDrawTag_t;
 struct sdf3DFogParam_t;
 
 struct sdf3DViewportPacket_t;
-
-struct DmaPacketHeader;
 
 struct sdf3DFogPacket_t;
 
@@ -102,19 +101,6 @@ typedef struct sdf3DViewportPacket_t {
     u32 unknownC8;        /* 0xC8 */
     u32 unknownCC;        /* 0xCC */
 } QWORD_ALIGNED sdf3DViewportPacket_t;
-
-/* Shared 0x20-byte DMA/VIF reference header. Unrecovered bytes stay opaque. */
-typedef struct DmaPacketHeader {
-    u16 quadwords; /* 0x00 */
-    u8 pad02[2]; /* 0x02 */
-    u32 address; /* 0x04 */
-    u32 tag; /* 0x08 */
-    u32 command; /* 0x0C */
-    u16 unknown10; /* 0x10 */
-    u8 opaque12[6]; /* 0x12 */
-    u32 unknown18; /* 0x18 */
-    u32 unknown1C; /* 0x1C */
-} QWORD_ALIGNED DmaPacketHeader;
 
 /* Bind resource and asset release queues to their matching destruction callbacks. */
 
@@ -213,10 +199,7 @@ extern s32 vu1Tex0Slot1[];
 void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera);
 void sdf3DSetCamera(sdf3DScreenParam_t *aParam, void *aCamera);
 void sdf3DMakeFogPacket(sdf3DFogPacket_t *aPacket, sdf3DFogParam_t *aParam);
-void sdf3DMakeDirectRefPacket(DmaPacketHeader *aPacket, addr_t aData, s32 aLeng);
-void sdf3DLinkInitPacket(sdfDrawTag_t *aTag, DmaPacketHeader *aPacket);
 void sdf3DInitSpecularTex2(void);
-void sdf3DInit(void);
 void sdf3DSetDefaultLight(u8 *aLight);
 void sdf3DSetDefaultFog(u8 *aFog);
 extern f32 sdf3DUpVector[];
@@ -421,7 +404,7 @@ void sdf3DInitSpecularTex2(void) {
     sdfMemFreeDirect(allocation);
 }
 
-void sdf3DInit(void) {
+void sdf3DInit(s32 aNestLevelLimit) {
     s64 textureWord;
     sdf3DInitSpecularTex2();
     textureWord = sdfTexGetTex0Reg(sdf3DSpecularTex);

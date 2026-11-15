@@ -47,10 +47,10 @@ extern s32 CreateThread(sdfKernelThreadParam_t *parameter);
 extern s32 AddIntcHandler2(s32 channel, s32 handler, s32 argument, s32 next);
 
 #include "sdk_libkernl.h"
+#include "sdf3D.h"
 
 extern void DeleteThread(s32 threadId);
 extern void sdfChipInit(u32 aSize);
-extern void sdf3DInit(s32 aNestLevelLimit);
 void FatalError(const char *format, ...) __attribute__((noreturn));
 s32 CreateThreadSimple(void *entryAddress, void *workspace, s32 stackBytes, s32 priority);
 void *sdfAllocAuto(s32 bytes);

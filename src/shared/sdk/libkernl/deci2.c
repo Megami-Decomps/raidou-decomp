@@ -144,28 +144,6 @@ typedef struct rpcQueue {
     sifRpcDataQueue_t *queues;
 } rpcQueue;
 
-/* Shared transaction fields used by RPC completion. */
-typedef struct rpcTransactionPrefix {
-    void *packet;
-    u32 sequence;
-    s32 sema;
-} rpcTransactionPrefix;
-
-SIZE_CHECK(rpcTransactionPrefix_size_must_be_12, rpcTransactionPrefix, 12);
-
-typedef struct rpcClient {
-    rpcTransactionPrefix transaction;
-    u32 unk_C;
-    u32 serverId;
-    void *buffer;
-    void *cbuffer;
-    void (*endFunction)(void *);
-    void *endParam;
-    void *server;
-} rpcClient;
-
-SIZE_CHECK(rpcClient_size_must_be_40, rpcClient, 40);
-
 /* Observed completion-response prefix, not the complete packet allocation. */
 typedef struct rpcResponse {
     u32 commandHeader[4];

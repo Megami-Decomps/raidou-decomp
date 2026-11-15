@@ -12,7 +12,6 @@
 #include "sdfGraph.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
-extern sceDmaChan *sceDmaGetChan(u32 channel);
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {

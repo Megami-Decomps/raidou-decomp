@@ -26,6 +26,7 @@
 #include "sdf_Decomp.h"
 #include "sdf2D.h"
 #include "sdfBillBoard.h"
+#include "sdf3D.h"
 
 typedef struct fldSpriteCorner_t fldSpriteCorner_t;
 
@@ -54,7 +55,6 @@ struct fldSpriteVertex_t {
 
 typedef struct sdfTexBuf_t sdfTexBuf_t;
 
-typedef struct dmaPacketHeader_t dmaPacketHeader_t;
 
 typedef struct frFontGlyph_t frFontGlyph_t;
 
@@ -89,7 +89,6 @@ sdfGrPacketHeader_t *sdf2DMakePrimPacketHeader(sdfGrPacketHeader_t *aPacketPtr, 
 
 extern s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
 struct sdfTexBuf_t *sdfTexGetPacket(sdfTexHandle_t *aHandle);
-extern void sdf3DMakeDirectRefPacket(dmaPacketHeader_t *, addr_t, s32);
 extern void sdfBillBoardMakeTMPacket(u8 *, const f32 *);
 
 
@@ -653,13 +652,13 @@ INCLUDE_ASM(const s32, "field/fldDraw", fldCallGrAllocPacketBuff);
 
 void drawSprite3D(sdfTexHandle_t *th, Sprite3D_t *spr3d) {
     sdfDrawTag_t *command = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
-    dmaPacketHeader_t *header;
+    DmaPacketHeader *header;
     u8 *packet;
     f32 mat[16];
     sdfGrOt_t *descriptor;
 
     sdfDrawTagInit(command);
-    header = EE_ADDR_AS(dmaPacketHeader_t *, sdfGrAllocPacketBuff(0x20));
+    header = EE_ADDR_AS(DmaPacketHeader *, sdfGrAllocPacketBuff(0x20));
     sdf3DMakeDirectRefPacket(header, EE_ADDR(sdfTexGetPacket(th)), sdfTexGetPacketLength(th));
     sdfDrawTagLinkRef(command, EE_ADDR(header));
     SetRotateMatrixZ(spr3d->rot);

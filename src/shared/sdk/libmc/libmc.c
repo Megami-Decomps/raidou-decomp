@@ -5,14 +5,7 @@
 #include "sdk_libmc.h"
 #include "sif_rpc.h"
 
-/* The sif client data of the mcserv module; +0x24 is non-zero once bind
- * succeeded, which every call tests before using the RPC. */
-typedef struct mcRpcCd {
-    u32 pad00[9];
-    s32 bound;
-} mcRpcCd;
-
-extern mcRpcCd mcRpcClient __attribute__((section(".data")));
+extern rpcClient mcRpcClient __attribute__((section(".data")));
 
 /* The 0x30-byte request shared by short commands. Their argument words vary;
  * the write view names the consumed fields and inline transfer prefix. */
@@ -106,9 +99,8 @@ typedef struct mcSemaParam_t {
 } mcSemaParam_t;
 
 extern s32 CreateSema(mcSemaParam_t *param);
-extern s32 sceSifBindRpc(mcRpcCd *client, u32 service, s32 mode);
 s32 sceMcEnd(void);
-mcRpcCd *_lmcGetClientPtr(void **reply, void **command);
+rpcClient *_lmcGetClientPtr(void **reply, void **command);
 s32 sceMcChangeThreadPriority(s32 prio);
 s32 sceMcGetSlotMax(s32 port);
 s32 sceMcSeek(s32 fd, s32 offset, s32 origin);
@@ -146,7 +138,7 @@ s32 sceMcInit(void)
             for (;;) {
             }
         }
-        if (mcRpcClient.bound != 0) {
+        if (mcRpcClient.server != 0) {
             break;
         }
         for (delay = 0x100000; --delay != 0;) {
@@ -156,17 +148,17 @@ s32 sceMcInit(void)
                         &mcReplyBuf, 0xC, NULL, NULL);
     SignalSema(mcSema);
     if (ret < 0) {
-        mcRpcClient.bound = 0;
+        mcRpcClient.server = 0;
         return ret - 100;
     }
     if (mcReplyBuf.serverVersion < 0x20A) {
         scePrintf("libmc: too old release of mcserv.irx\n");
-        mcRpcClient.bound = 0;
+        mcRpcClient.server = 0;
         return -120;
     }
     if (mcReplyBuf.managerVersion < 0x20E) {
         scePrintf("libmc: too old release of mcman.irx\n");
-        mcRpcClient.bound = 0;
+        mcRpcClient.server = 0;
         return -121;
     }
     return mcReplyBuf.result;
@@ -182,7 +174,7 @@ s32 sceMcEnd(void)
 }
 
 /* Both outputs are generic pointer slots and may alias. */
-mcRpcCd *_lmcGetClientPtr(void **reply, void **command)
+rpcClient *_lmcGetClientPtr(void **reply, void **command)
 {
     mcReply *buffer = &mcReplyBuf;
 
@@ -199,7 +191,7 @@ s32 sceMcChangeThreadPriority(s32 prio)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -220,7 +212,7 @@ s32 sceMcGetSlotMax(s32 port)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -241,7 +233,7 @@ s32 sceMcOpen(s32 a, s32 b, const char *c, s32 d)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -280,7 +272,7 @@ s32 sceMcClose(s32 a)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -301,7 +293,7 @@ s32 sceMcSeek(s32 fd, s32 offset, s32 origin)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -344,7 +336,7 @@ s32 sceMcRead(s32 a, void *b, s32 c)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -372,7 +364,7 @@ s32 sceMcWrite(s32 a, const void *b, s32 c)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -442,7 +434,7 @@ s32 sceMcGetInfo(s32 a, s32 b, s32 *c, s32 *d, s32 *e)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -494,7 +486,7 @@ s32 sceMcGetDir(s32 a, s32 b, const char *c, s32 d, s32 e, void *f)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -545,7 +537,7 @@ s32 sceMcChdir(s32 a, s32 b, const char *c, char *d)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -576,7 +568,7 @@ s32 sceMcFormat(s32 port, s32 slot)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -598,7 +590,7 @@ s32 sceMcDelete(s32 port, s32 slot, const char *name)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -627,7 +619,7 @@ s32 sceMcFlush(s32 port)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -652,7 +644,7 @@ s32 sceMcSetFileInfo(s32 port, s32 slot, const char *name, mcEntInfo *info, s32 
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -684,7 +676,7 @@ s32 sceMcRename(s32 port, s32 slot, const char *name, const char *newname)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -717,7 +709,7 @@ s32 sceMcUnformat(s32 port, s32 slot)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }
@@ -739,7 +731,7 @@ s32 sceMcGetEntSpace(s32 port, s32 slot, const char *name)
     if (PollSema(mcSema) < 0) {
         return -200;
     }
-    if (mcRpcClient.bound == 0) {
+    if (mcRpcClient.server == 0) {
         SignalSema(mcSema);
         return -100;
     }

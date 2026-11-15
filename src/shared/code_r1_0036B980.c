@@ -32,7 +32,7 @@ typedef struct sdfDevConsDrawCB_t
     u8 *cur;
     u8 *start;
     u8 *tag;
-    u32 *dmaCh;
+    sceDmaChan *dmaCh;
     u8 *buf[2];
     s32 buffSize;
     u16 dblBuffId;

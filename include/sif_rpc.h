@@ -46,6 +46,29 @@ extern void sceSifSetRpcQueue(sifRpcDataQueue_t *queue, s32 threadId);
 
 extern void sceSifRpcLoop(sifRpcDataQueue_t *queue);
 
+/* Shared transaction fields used by RPC completion. */
+typedef struct rpcTransactionPrefix {
+    void *packet;
+    u32 sequence;
+    s32 sema;
+} rpcTransactionPrefix;
+
+SIZE_CHECK(rpcTransactionPrefix_size_must_be_12, rpcTransactionPrefix, 12);
+
+typedef struct rpcClient {
+    rpcTransactionPrefix transaction;
+    u32 unk_C;
+    u32 serverId;
+    void *buffer;
+    void *cbuffer;
+    void (*endFunction)(void *);
+    void *endParam;
+    void *server;
+} rpcClient;
+
+SIZE_CHECK(rpcClient_size_must_be_40, rpcClient, 40);
+
+s32 sceSifBindRpc(rpcClient *client, u32 serverId, s32 mode);
 s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize, void *recv, s32 rsize, void *endfunc, void *endpara);
 s32 sceSifCheckStatRpc(void *cd);
 void sceSifInitRpc(s32 mode);

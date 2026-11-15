@@ -9,15 +9,10 @@ typedef void (*cdvdCallback_t)(s32 reason);
 extern cdvdCallback_t cdvdCallback __attribute__((section(".data")));
 extern s32 cdvdDebugLevel __attribute__((section(".data")));
 
-typedef struct cdvdRpcClient_t {
-    u8 transactionAndCallbacks[0x24];
-    void *server;
-} cdvdRpcClient_t;
-
-extern cdvdRpcClient_t cdvdScmdClient __attribute__((section(".data")));
+extern rpcClient cdvdScmdClient __attribute__((section(".data")));
 extern s32 cdvdNcmdState __attribute__((section(".data")));
 extern s32 cdvdScmdLockSema __attribute__((section(".data")));
-extern cdvdRpcClient_t cdvdNcmdClient __attribute__((section(".data")));
+extern rpcClient cdvdNcmdClient __attribute__((section(".data")));
 
 typedef struct sdfSemaParam_t {
     s32 count;
@@ -87,7 +82,6 @@ void cmd_sem_init(void);
 void cdvd_exit(void);
 cdvdPowerCallback_t sceCdPOffCallback(cdvdPowerCallback_t callback, void *argument);
 extern void cmd_sem_init(void);
-extern s32 sceSifBindRpc(void *client, u32 service, s32 mode);
 extern s32 cdvdNcmdLastCommand __attribute__((section(".data")));
 extern s32 cdvdNcmdInit;
 s32 _sceCd_ncmd_prechk(s32 command);
@@ -309,7 +303,7 @@ s32 _sceCd_ncmd_prechk(s32 command)
     }
     if (cdvdNcmdInit < 0) {
         for (;;) {
-            cdvdRpcClient_t *client = &cdvdNcmdClient;
+            rpcClient *client = &cdvdNcmdClient;
 
             if (sceSifBindRpc(client, 0x80000595, 0) < 0) {
                 if (cdvdDebugLevel > 0) {
@@ -412,7 +406,7 @@ s32 _sceCd_scmd_prechk(s32 command)
     }
     if (cdvdScmdInit < 0) {
         for (;;) {
-            cdvdRpcClient_t *client = &cdvdScmdClient;
+            rpcClient *client = &cdvdScmdClient;
 
             if (sceSifBindRpc(client, 0x80000593, 0) < 0) {
                 if (cdvdDebugLevel > 0) {
