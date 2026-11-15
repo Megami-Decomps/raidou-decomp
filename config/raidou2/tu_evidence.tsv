@@ -73,7 +73,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00124B28	00126858	newdata/datCalc	c	dds:6+smt3:names:2+smt3:map:1 of 94	newdata/datCalc
 00126AD0	00126B00	code_00126AD0	asm	none	
 00126B08	00126B08	code_r1_00122888	c	dds:1 of 1	
-00126B30	00127048	code_00126B30	c	dds:2 of 14	
+00126B30	00127048	code_r1_001228B0	c	dds:2 of 14	
 00127070	00127370	kernel/dds3GlobalWork	c	smt3:names:3+smt3:map:1 of 4	kernel/dds3GlobalWork
 00127658	00127D40	kernel/dds3DebugStuff	c	smt3:names:6+smt3:map:3 of 9	kernel/dds3DebugStuff
 00127F38	00127F40	code_00127F38	asm	none	
@@ -88,7 +88,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0012C370	0012C370	code_0012C370	asm	none	
 0012C440	0012C498	field/fldCamera	c	smt3:names:1+smt3:map:1 of 2	field/fldCamera
 0012C640	0012C738	code_0012C640	asm	none	
-0012C998	0012EC80	code_0012C998	c	dds:4 of 84	
+0012C998	0012EC80	code_r1_00128378	c	dds:4 of 84	
 0012ECC0	0012FDD0	code_0012ECC0	asm	none	
 0012FFB8	0012FFB8	field/fldMain	c	smt3:map:1 of 1	field/fldMain
 001300B0	001300C0	code_001300B0	asm	none	
@@ -187,10 +187,10 @@ start	last_func	unit	kind	evidence	smt3_unit
 001EADE0	001EADE0	code_001EADE0	asm	none	
 001EAE30	001EB4D0	mc/mcManager	c	smt3:names:15+smt3:map:2 of 30	mc/mcManager
 001EB528	001EB568	code_001EB528	asm	none	
-001EB5E0	001EB680	code_001EB5E0	c	dds:4 of 5 part	
+001EB5E0	001EB680	code_r1_001D5158	c	dds:4 of 5 part	
 001EB6A0	001F21F8	mc/slMain	c	smt3:map:35+smt3:names:28 literal-cores:3 of 116	mc/slMain
 001F2B80	001F2B88	code_001F2B80	asm	none	
-001F2B98	001F3190	code_001F2B98	c	dds:9 of 15 part	
+001F2B98	001F3190	code_r1_001DB8A0	c	dds:9 of 15 part	
 001F31B0	001F3230	code_001F31B0	asm	none	
 001F3318	001F5AC8	effect/billManager	c	smt3:names:30+smt3:map:19+dds:1 of 64	effect/billManager
 001F6048	001F6810	code_r1_001DED50	c	dds:4 of 4	
