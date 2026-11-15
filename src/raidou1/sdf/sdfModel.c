@@ -4,6 +4,13 @@
 #include "draw.h"
 #include "ps2asm.h"
 #include "eeregs.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+#include "sdfVu0.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "sdfQuat.h"
 
 /* The serialized node-def block has a 16-byte count/padding prefix. */
 typedef struct
@@ -12,18 +19,10 @@ typedef struct
     u32 pad[3];
 } sdfModelNodeDefList_t;
 
-extern void FromEuler(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
-extern void ToMatrix(void);
-extern void MultMatrixRevNoArg(void);
-extern void MultMatrixRev(const void *aMatrix);
 
 struct sdf3DTmPacketData_t;
 
 extern void sdf3DPrimSetTmPacket(struct sdf3DTmPacketData_t *aPacket);
-extern void *sdfChipAllocDirect(s32 aSize);
-extern void *sdfChipAllocZeroDirect(s32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern sdfItemArray_t *sdfItemArrayNew(s32 aInitCapa, s32 aElemSize, s32 aGrowStep);
 extern void sdfItemArrayFree(void *aArray);
 extern void sdfItemArrayGrow(void *aArray);
@@ -39,8 +38,6 @@ extern volatile u8 sdfFrameId;
 extern f32 sdfFaceDivSoften;
 extern f32 sdfFaceDivBias;
 extern const char sdfModelDefaultName[];
-extern s32 sdfGrAllocPacketBuff(s32 aSize);
-extern void sdfDrawTagLink2(sdfDrawTag_t *aTag, addr_t aHeadPacket, addr_t aTailPacket);
 extern void *sdfChunkFindById(void *aData, u32 aTag);
 extern void sdfModelEvalTm2(sdfModelRootNode_t *aRoot, s32 aFrameId);
 
@@ -52,8 +49,6 @@ extern sdfModelNode_t *sdfModelNodeNew(void);
 extern void sdfModelMakeLocalTm(sdfModelNode_t *aNode);
 extern sdfModelRootNode_t *sdfModelRootNew(void);
 extern void sdfModelAllocNodeList(sdfModelRootNode_t *aRoot, s32 aLeng);
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 extern void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *aPkt);
 extern void sdfPrimSetSemiTransPacket(sdfPrimTransPacket_t *aPkt);
 extern void sdfPrimSetAddTransPacket(sdfPrimTransPacket_t *aPkt);
@@ -175,9 +170,6 @@ void sdfModelSetFaceDivParm(sdfModelRootNode_t *aRoot, f32 aSoften, f32 aBias);
 
 #include "dds/btl.h"
 
-s32 memcmp(const void *a, const void *b, u32 size);
-extern void *memcpy(void *, const void *, unsigned int);
-u32 strlen(const char *text);
 
 #include "dds/model.h"
 

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfSound.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -10,10 +11,8 @@
 #include "sdk_libkernl.h"
 #include "dds/btl.h"
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 /* Apply volume and pan to a sequence track through the command queue. */
-void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new

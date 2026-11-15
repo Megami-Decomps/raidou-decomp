@@ -3,6 +3,7 @@
 #include "sdk_libgcc.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
+#include "sdk_libc.h"
 
 s32 write(s32 descriptor, const void *buffer, s32 length);
 s32 read(s32 descriptor, void *buffer, s32 length);
@@ -21,7 +22,6 @@ extern s32 WaitSema(s32 sema);
 extern s32 WakeupThread(s32 threadId);
 extern s32 RotateThreadReadyQueue(s32 priority);
 extern s32 SuspendThread(s32 threadId);
-extern void kprintf(const char *format, ...);
 extern const char kernlInternalErrorMsg[];
 void topThread(void *argument);
 
@@ -99,7 +99,6 @@ typedef struct ttyPacket_t {
  * that register-save area and then continues into the stack arguments. */
 typedef char *kernelVaList_t;
 
-void kprintf(const char *format, ...);
 
 typedef struct {
     void (*handler)(void *packet, void *argument);
@@ -254,7 +253,6 @@ typedef struct fsOutputCompletion_t {
     u32 size;
 } fsOutputCompletion_t;
 
-extern void *memcpy(void *destination, const void *source, size_t size);
 typedef void (*fsPowerOffCallback_t)(void *argument);
 
 typedef struct fsPowerOffState_t {

@@ -1,5 +1,7 @@
 #include "common.h"
 #include "basic.h"
+#include "sdfChip.h"
+#include "dds3SceneBasic.h"
 
 typedef s32 (*dds3BasicProc_t)(dds3Basic_t *basic);
 
@@ -10,9 +12,6 @@ typedef struct dds3AreaBasicWorkData_t
 
 #include "sdk_libc.h"
 
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern dds3Basic_t *dds3AddSceneBasicData(s32 type);
 extern dds3BasicArrayHandle_t *dds3GetBasicArrayHandle(s32 bufcnt);
 extern void dds3FreeBasicArrayHandle(dds3BasicArrayHandle_t *hndl);
 extern u16 dds3GetBasicArrayCount(dds3BasicArrayHandle_t *hndl);

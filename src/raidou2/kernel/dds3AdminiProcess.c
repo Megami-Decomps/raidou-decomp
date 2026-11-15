@@ -1,5 +1,7 @@
 #include "common.h"
 #include "kernel.h"
+#include "sdfChip.h"
+#include "dds3AdminiProcess.h"
 
 /* Named scheduler slots: retail strides entries by 0x44 bytes. */
 typedef struct
@@ -34,9 +36,6 @@ extern dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s3
                                          s32 v3, dds3ProcessFunc_t drawExit,
                                          dds3ProcessFunc_t deleteExit, void *p);
 
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern void *memcpy(void *a, const void *b, size_t c);
 dds3AdminiData_t *GetAdminiProcessData(void);
 void dds3AdminiCallSequence(s32 sequence, void *data, u32 datasize, s32 restore);
 saddr_t dds3AdminiStartSequence(dds3ProcessID_t *id);

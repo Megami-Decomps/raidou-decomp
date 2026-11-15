@@ -5,8 +5,11 @@
 #include "draw3d.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
+#include "dds3PathBasic.h"
+#include "evtStage.h"
 
-void dds3GetRadiusPoseSet(dds3Basic_t *node, f32 value);
 u32 dds3AllocObjectId(void);
 extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 serialID, f32 *pos, f32 *rot);
 struct dds3Basic_t *dds3GetControlScene(void);
@@ -15,7 +18,6 @@ struct dds3Basic_t *dds3GetControlScene(void);
 #include "dds3obj.h"
 
 void dds3DeleteScene(struct dds3Basic_t *scene);
-void dds3DeleteSceneBasicData(dds3Basic_t *basic);
 
 enum {
     EVT_WORLD_SLOT_MOVIE = 3,
@@ -40,10 +42,8 @@ extern const char evtKillFieldScriptFormat[];
 void dds3PathBasicPauseOn(dds3PathBasicControl_t *value);
 dds3PathBasicControl_t *dds3ObjectBaseGetPathControl(void *pObjectBasic);
 void dds3PathBasicPauseOff(dds3PathBasicControl_t *pControl);
-void dds3PathBasicControlSetRatio(dds3PathBasicControl_t *pControl, f32 ratio);
 void dds3MoverBasicSetPath(dds3Basic_t *pMoverBasic, dds3Basic_t *pPathBasic);
 extern void dds3MoverBasicMakePath(dds3Basic_t *pMoverBasic);
-f32 dds3PathBasicControlGetRatio(const dds3PathBasicControl_t *pControl);
 void *dds3ObjectBaseGetControlBasic(dds3Basic_t *pObjectBasic, s32 itemType);
 dds3PathBasicControl_t *dds3MoverBasicGetPathControl(struct dds3Basic_t *pMoverBasic);
 extern void dds3PathBasicLoopOn(struct dds3PathBasicControl_t *pControl);

@@ -10,7 +10,6 @@
 #include "sdk_libc.h"
 #include "dds/btl.h"
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/btl_camera_cursor.h"
 #include "dds/btl_effect_table.h"

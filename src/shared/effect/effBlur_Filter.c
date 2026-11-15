@@ -3,10 +3,14 @@
 #include "libsdf.h"
 #include "effect.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+#include "billManager.h"
+#include "effBlur_Filter.h"
 
 extern u8 dds3EffectBase[];
 void dds3EffectBlur(const dds3Effect_Blur_t *source);
-sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 number);
 
 /* Advance caller-owned state, returning its next 32-bit value. NULL selects
  * the shared effect RNG state. */
@@ -14,10 +18,6 @@ u32 dds3GetRandA(u8 *name);
 
 /* Returns 24 random bits scaled to [0, 1); NULL selects the shared state. */
 f32 dds3GetRandFloatA(u8 *name);
-extern void *memcpy(void *a, const void *b, size_t c);
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-void *sdfChipAllocDirect(s32 aSize);
-u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 extern u32 dds3NullDrawProc(void);
 
 /* The frame buffers the blur samples from; only the mask source is named. */

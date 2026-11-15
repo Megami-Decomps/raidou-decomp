@@ -1,5 +1,6 @@
 #include "common.h"
 #include "ps2asm.h"
+#include "sdk_libc.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -55,7 +56,6 @@ typedef struct sdfGrOt_t {
 
 extern s32 WaitSema(s32);
 extern s32 SignalSema(s32);
-extern void *memcpy(void *, const void *, size_t);
 
 typedef struct _reent _reent;
 
@@ -163,13 +163,10 @@ struct _reent {
 };
 
 extern void *__deregister_frame_info(void *fn);
-extern void free(void *ptr);
-extern void *malloc(size_t size);
 extern s32 SignalSema(s32 sema);
 extern void __register_frame_info(void *fn, void *entry);
 extern s32 __register_frame_info_table(void *fn, void *entry);
 extern s32 WaitSema(s32 sema);
-extern void *memset(void *a, s32 b, size_t c);
 extern void abort(void);
 extern s32 frameObjectSema __attribute__((section(".data")));
 extern object *frameObjectList __attribute__((section(".data")));
@@ -376,8 +373,6 @@ typedef struct __attribute__((packed)) {
 
 extern const char libgccCieAugEmpty[];
 extern const char libgccCieAugEh[];
-extern s32 strcmp(const char *left, const char *right);
-extern u32 strlen(const char *text);
 u8 *frameCallStrcmp(u32 *frame, cieInfo_t *info);
 
 typedef struct {

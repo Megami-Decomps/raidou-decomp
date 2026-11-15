@@ -9,6 +9,9 @@
 #include "kernel.h"
 #include "model.h"
 #include "motion.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
+#include "evtStage.h"
 
 /* The viewer's current menu, which EnterMain switches on to decide what Enter does
  * from each one. Names from the IDB. */
@@ -31,7 +34,6 @@ typedef enum EVT_VIEWER_MENU {
 
 extern evtFrameInfo_t *evtAddFrameInfo(evtViewerObject_s *track, s32 frame);
 extern s32 dds3KillProcessName(const char *name, s32 shutdowntimer);
-extern dds3Basic_t *dds3SceneBasicSearchName(dds3Basic_t *scene, const char *name);
 
 typedef struct polyMovieObject_t polyMovieObject_t;
 
@@ -89,14 +91,11 @@ enum {
     EVT_WORLD_SLOT_UNIT = 5   /* unit/group/lip-sync lists: byte offset 0x40 */
 };
 
-void dds3GetPosPoseSet(dds3Basic_t *object);
 
 struct dds3Basic_t *dds3ObjectBaseGetControlBasic(
     struct dds3Basic_t *object, Dds3ObjectControlSlotIndex slotIndex);
 
 /* Copy the source object's transform to the target object, with its rotation offset. */
-void evtSetUnitPos(u32 targetKey, u32 sourceKey);
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/evt_viewer_track_file_format.h"
 #include "dds/evt_viewer.h"

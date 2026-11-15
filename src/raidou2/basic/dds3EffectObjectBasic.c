@@ -9,6 +9,12 @@
 #include "effBattle.h"
 #include "model.h"
 #include "billboard.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "billManager.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
+#include "dds3EffectObjectBasic.h"
 
 typedef struct
 {
@@ -35,8 +41,6 @@ typedef struct
 extern const dds3EffectEventParameters_t dds3EffectEventDefaultParameters;
 extern const effMagaSCArea_t dds3EffectMagaSCAreaDefault;
 extern const effMagaP4Point_t dds3EffectMagaP4PointDefault;
-extern void *memcpy(void *a, const void *b, size_t c);
-extern void dds3BillboardSetAnimNumber(void *hBillboard, u32 number);
 extern void effMagaSCSetArea(void *hEffect, const void *pMagaSCArea);
 extern void effMagaP4SetPoint(void *hEffect, const void *pP4Point);
 
@@ -80,10 +84,7 @@ typedef struct
     sdfVector4_t FldExBasePos;
 } dds3EffectObjectBasicWorkData_t;
 
-struct billHandle_t *dds3BillboardCopy(struct billHandle_t *hBillboard);
-struct billHandle_t *dds3BillboardCreate(s32 kind, addr_t id);
 void effMagaP4Randomize(void *hEffect);
-void *memset(void *a, s32 b, size_t c);
 
 struct dds3BillResource_tag;
 
@@ -191,35 +192,23 @@ typedef struct effOwnerBillParam_t {
 } effOwnerBillParam_t;
 
 void dds3EffectDelete(effHandle_t *pData);
-void dds3BillboardDelete(struct billHandle_t *hData);
 void effEveBEDCutDelete(effEveBEDCutHandle_t *hEveBEDCut);
 void effEveBEDDelete( effBTL_t *hEveBED);
-void sdfChipFreeDirect(void *aPtr);
-s32 dds3InitPoseSet(dds3Basic_t *basic);
-void *sdfChipAllocDirect(u32 aSize);
 extern void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 mask);
-void dds3FreePoseSet(dds3Basic_t *basic);
 void dds3EffectObjectBasicCalcFldEx(dds3Basic_t *basic);
 u8 dds3ObjectBaseCheckFlag(struct dds3Basic_t *pObjectBasic, u32 flag);
 void dds3EffectDraw(effHandle_t *pData);
-extern void dds3BillboardDraw(struct billHandle_t *hData);
 void effEveBEDCutDraw(effEveBEDCutHandle_t *hEveBEDCut);
-dds3Basic_t *dds3AddSceneBasicData(s32 type);
 void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
-extern void dds3SetRadiusPoseSet(dds3PoseSet_t *node);
 dds3Basic_t *AddP2AEffect(void *p2a, void *pos, s32 rot);
 extern billHandle_t *dds3BillboardFileLoad(s32 kind, const char *path);
 dds3Basic_t *AddTMXEffect(void *tmx, void *pos, s32 rot);
 dds3Basic_t *AddBEDEffect();
-void sdfMemFreeDirect( sdfMemHandle_t *aHandle);
 effEveBEDCutHandle_t *effEveBEDCutCreate( effBTL_t *hEveBED, u16 CutNum, const void *pParams);
 dds3ObjectBaseControlWorkData_t *dds3EffectObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
 dds3Basic_t *AddMG12Effect();
 extern void effMagaRandomize(void *hEffect);
 extern s32 sdfModelGetMarkPosMatrix(sdfModelRootNode_t *aRoot, s32 aId);
-void dds3BillboardSetXYOffset(struct billHandle_t *hBillboard, f32 x, f32 y);
-void dds3BillboardSetDrawType(struct billHandle_t *hBillboard, s32 type);
-void dds3BillboardSetMode(struct billHandle_t *hBillboard, s32 mode);
 void FreeEffectData(dds3EffectObjectBasicWorkData_t *work);
 s32 dds3EffectObjectBasicConstructor(dds3Basic_t *aPtr);
 void dds3EffectObjectBasicDestructor(dds3Basic_t *aPtr);

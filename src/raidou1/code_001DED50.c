@@ -1,4 +1,9 @@
 #include "common.h"
+#include "sdk_libc.h"
+#include "sdfDraw.h"
+#include "sdfTex.h"
+#include "sdfMath.h"
+#include "sdfPacketBuff.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -52,20 +57,11 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-extern void *memcpy(void *, const void *, unsigned int);
-f32 sdfCos(f32 angle);
-void sdfDrawTagInit(struct sdfDrawTag_t *list);
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 size);
-f32 sdfSin(f32 angle);
-u64 sdfTexGetClampReg(sdfTexHandle_t *texture);
 
 /* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
-u64 sdfTexGetTex0Reg(sdfTexHandle_t *texture);
-u64 sdfTexGetTex1Reg(sdfTexHandle_t *texture);
 
 #include "dds/eff_composite_gs_descriptor.h"
 #include "dds/eff_generated_texture_descriptor.h"

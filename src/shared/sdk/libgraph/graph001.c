@@ -87,11 +87,9 @@ typedef struct {
 #define D2_QWC (*(volatile u32 *)0x1000A020)
 
 extern GParam sceGsGParam;
-extern void scePrintf(const char *fmt, ...);
 
 #include "sdk_libkernl.h"
 
-extern s32 DisableIntc(s32 cause);
 extern s32 RemoveIntcHandler(s32 cause, s32 handlerId);
 
 /* Syscall 2 has the SetGsCrt void interface. */

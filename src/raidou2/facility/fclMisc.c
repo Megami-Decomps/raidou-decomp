@@ -6,6 +6,10 @@
 #include "newdata.h"
 #include "ps2asm.h"
 #include "event.h"
+#include "sdfMemory.h"
+#include "evtCommand.h"
+#include "scrTraceCode.h"
+#include "evtStage.h"
 
 extern s32 dds3GetProcessStat(void *id);
 extern u32 dds3GetRandA(void *name);
@@ -16,8 +20,6 @@ extern s32 gMsgID;
 extern s32 gSelMsgNo;
 extern void itfMesMngSetVarImmediate(s32 id, u32 index, s32 pstr);
 extern s32 fclWorkValue[16];
-extern s32 scrGetIntPara(s32 n);
-extern void scrSetIntReturnValue(s32 i);
 
 typedef struct
 {
@@ -43,7 +45,6 @@ typedef struct
 } fclSceneObj_t;
 
 extern s32 dds3GetMapNo(void *scene);
-extern void evtLoadArea(s32 fld, s32 area);
 void fclLoadStage(s32 MajorNo, s32 MinorNo);
 void fclScriptForcedEnd(u8 *PID);
 s32 fclScriptStart(s32 pScriptData, s32 StartNo, void *pPID);
@@ -96,7 +97,6 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -176,7 +176,6 @@ extern void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 
 struct MenuTerminalWork;
 
-extern s32 evtCommand_FIELD_CLS(void);
 
 typedef struct QuadRecord {
     s32 unk00;

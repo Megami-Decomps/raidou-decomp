@@ -1,20 +1,14 @@
 #include "common.h"
 #include "basic.h"
 #include "libsdf.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "dds3Basic.h"
 
 extern dds3Basic_t *dds3TheWorld;
-void *sdfChipAllocDirect(u32 aSize);
-void *sdfMemAllocDirect(u32 aSize);
-void *sdfMemLock(sdfMemHandle_t *aHandle);
-void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-s32 dds3CallBasicMainProc(dds3Basic_t *pBasic);
-s32 dds3CallBasicDrawProc(dds3Basic_t *basic);
 void dds3DeleteScene(dds3Basic_t *scene);
 void dds3FreeBasicArrayHandle(dds3BasicArrayHandle_t *hndl);
 u32 dds3SetBasicArray(dds3BasicArrayHandle_t *hndl, dds3Basic_t *data);
-void sdfChipFreeDirect(void *aPtr);
-dds3Basic_t *dds3AllocBasic(u32 type);
-void dds3DeleteBasic(dds3Basic_t *basic);
 u32 dds3AddBasicArray(dds3BasicArrayHandle_t *hndl, s32 bufcnt);
 u16 dds3GetBasicArrayCount(const dds3BasicArrayHandle_t *hndl);
 dds3Basic_t *dds3GetBasicArray(const dds3BasicArrayHandle_t *hndl);

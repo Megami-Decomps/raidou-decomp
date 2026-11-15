@@ -1,6 +1,7 @@
 #include "common.h"
 #include "ps2asm.h"
 #include "sdf_lighting.h"
+#include "sdfVu0.h"
 
 extern f32 cosf(f32 angle);
 extern f32 sinf(f32 angle);

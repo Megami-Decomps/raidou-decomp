@@ -1,5 +1,7 @@
 #include "common.h"
 #include "font.h"
+#include "sdfMemory.h"
+#include "fmGslCont.h"
 
 typedef struct FontGsControl_t FontGsControl_t;
 
@@ -16,9 +18,6 @@ struct FontGsControl_t {
 
 extern FontGsControl_t gFGC;
 extern s8 fmFontMemInitialized;
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 s32 fmDestroyFontMemControl(void);
 
 s32 fmInitFontMemControl(s32 unused, s32 columns, s32 rows, s32 cellWidth, s32 cellHeight,

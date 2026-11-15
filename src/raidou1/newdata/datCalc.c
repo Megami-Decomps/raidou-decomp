@@ -2,8 +2,8 @@
 #include "sdk_libgcc.h"
 #include "datCalc.h"
 #include "ps2asm.h"
+#include "EventBit.h"
 
-extern s32 evtBitCheck(s32 no);
 
 typedef struct datTakaraSagasiItem_t {
     u16 item;
@@ -84,7 +84,6 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/evt_run_context_api.h"
 

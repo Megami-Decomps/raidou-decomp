@@ -2,6 +2,12 @@
 #include "basic.h"
 #include "dds3obj.h"
 #include "ps2asm.h"
+#include "sdfChip.h"
+#include "sdk_libc.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
+#include "dds3PathBasic.h"
+#include "dds3LightObjectBasic.h"
 
 /* The matter object caches its path position at +0x20, independently of pose. */
 typedef struct
@@ -10,16 +16,6 @@ typedef struct
     sdfVector4_t position;
 } dds3MatterPathPosition_t;
 
-extern void dds3PathBasicControlGetPos(dds3PathBasicControl_t *pControl);
-extern void dds3PathBasicControlGetRot(dds3PathBasicControl_t *pControl);
-extern f32 dds3PathBasicControlGetFovy(dds3PathBasicControl_t *pControl);
-extern void dds3PathBasicControlNextStep(dds3PathBasicControl_t *work, fldResourceLightPath_t *output);
-extern s32 dds3PathBasicControlIsFinished(dds3PathBasicControl_t *work);
-extern void dds3SetLightObjectPathResoruce(dds3Basic_t *basic, fldResourceLightPath_t *resource);
-extern void dds3BackupPoseSet(dds3PoseSet_t *pPoseSet);
-extern void dds3GetSclPoseSetMCR(dds3Basic_t *basic, const sdfVector4_t *scale);
-extern void dds3AddRotPoseSet(dds3Basic_t *pBasic, const sdfVector4_t *rot);
-extern void dds3GetPosPoseSetMCR(dds3Basic_t *basic, const sdfVector4_t *offset);
 
 typedef struct dds3MoverBasicWorkData_t
 {
@@ -31,14 +27,8 @@ typedef struct dds3MoverBasicWorkData_t
 
 extern s32 dds3MoverCount;
 extern char dds3MoverNameTable[10][16];
-extern void *memset(void *a, s32 b, size_t c);
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern dds3Basic_t *dds3AddSceneBasicData(s32 type);
 extern u32 dds3AllocObjectId(void);
 extern dds3Basic_t *dds3ObjectBaseSetControlBasicType(dds3Basic_t *pObjectBasic, dds3Basic_t *pItemBasic, s32 itemType);
-extern dds3PathBasicControl_t *dds3AllocPathBasicWorkData(dds3Basic_t *pathBasic);
-extern void dds3DeletePathControl(dds3PathBasicControl_t *control);
 void dds3MoverBasicFreePath(dds3Basic_t *pMoverBasic);
 s32 MoverBasicMainprocuder(dds3Basic_t *pBasic);
 s32 MoverBasicConstructor(dds3Basic_t *pBasic);

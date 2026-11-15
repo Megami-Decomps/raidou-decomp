@@ -8,7 +8,6 @@
 #include "sdk_libc.h"
 #include "dds/btl.h"
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/mnu_list.h"
 #include "dds/eff.h"

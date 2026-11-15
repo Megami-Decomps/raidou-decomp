@@ -79,7 +79,6 @@ void dds3ObjectBaseOffFlag(struct dds3Basic_t *object, u32 mask);
 
 /* Set or clear requested bits in the object's flag word. */
 void dds3ObjectBaseOnFlag(struct dds3Basic_t *object, u32 mask);
-extern void *memcpy(void *, const void *, unsigned int);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new

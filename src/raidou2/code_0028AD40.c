@@ -49,7 +49,6 @@ enum SdfMotionStateValue {
     SDF_MOTION_STATE_SUSPENDED = 6,
 };
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #ifndef DDS_ENUM_EvtUnitMotionState
 #define DDS_ENUM_EvtUnitMotionState

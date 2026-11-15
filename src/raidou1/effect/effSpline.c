@@ -6,6 +6,7 @@
 #include "nb.h"
 #include "model.h"
 #include "motion.h"
+#include "sdfMemory.h"
 
 /* Cubic spline fitted over a point list; dds3AllocSplineHandle takes 0x2C. */
 typedef struct dds3Spline_t {
@@ -33,9 +34,6 @@ typedef struct dds3SplineWalk_t {
     f32 step;
 } dds3SplineWalk_t;
 
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
 void dds3AllocSplinePoints(dds3Spline_t *spline, s32 flattenEqualComponents);
 void dds3BuildSplinePoints(f32 *tangents, f32 *points, u32 count);
 void dds3BuildSplineCoefs(dds3Spline_t *spline, f32 *tangents);

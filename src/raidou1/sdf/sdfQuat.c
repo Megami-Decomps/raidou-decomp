@@ -2,9 +2,9 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfMath.h"
+#include "sdfQuat.h"
 
-f32 sdfSin(f32 aRadius);
-f32 sdfClipAngleValuePI(f32 aValue);
 
 enum SdfFileIOCmdStat {
     SDF_FILE_CMD_STAT_INIT = 0,
@@ -62,8 +62,6 @@ extern f32 sdfUnitXVector[4];
 
 /* Return the input-signed complement of the sampled angle, not standard acos(x). * Magnitudes at or above one leave the angle magnitude at zero. */ f32 sdfAcos(f32 x);
 
-f32 sdfAtan2(f32 aY, f32 aX);
-f32 sdfCos(f32 aRadius);
 void Mult(void);
 void Inverse(void);
 void Normalize(void);

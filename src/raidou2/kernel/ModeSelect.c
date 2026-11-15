@@ -5,6 +5,7 @@
 #include "scr.h"
 #include "ps2asm.h"
 #include "newdata.h"
+#include "sdfSound.h"
 
 typedef struct evtUnitHandle_t
 {
@@ -197,7 +198,6 @@ typedef struct nbNegoProcessData_t
 #include "sdk_libc.h"
 
 extern void nbPlaySe(s32 no);
-extern void p2sdPlaySE(s32 seno, s32 vol, s32 pan);
 extern s32 (*D_004EF4B0[])(nbNegoProcessData_t *n);
 extern s32 (*D_004EF550[])(nbNegoProcessData_t *n);
 extern s32 (*D_004EF698[])(nbNegoProcessData_t *n);

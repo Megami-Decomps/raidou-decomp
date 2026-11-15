@@ -2,6 +2,14 @@
 #include "draw3d.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+#include "sdfVu0.h"
+#include "sdfDraw.h"
+#include "sdfMat.h"
+#include "sdfMath.h"
+#include "sdfPacketBuff.h"
+#include "effPacket.h"
 
 typedef struct
 {
@@ -76,16 +84,8 @@ typedef struct trackTriangleColors_t {
 extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
 extern s32 sdfMemLock(sdfMemHandle_t *aHandle);
 extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-extern sdfMat_t *sdfMatNew(void);
-extern void sdfMatFreeDelayed(sdfMat_t *aMat);
-extern void sdfMatSetConstant(sdfMat_t *aMat, f32 aRatio);
-extern void sdfMatSetTex(sdfMat_t *aMat, sdfTexHandle_t *aTex);
-extern s32 sdfGrAllocPacketBuff(s32 aSize);
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag, s32 aAllocator);
 extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat, s32 aAllocator);
-extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
 extern f32 dds3TrackPolyVCType1Param[4];
 extern f32 dds3TrackPolyVCType2Param[4];
 extern f32 dds3TrackPolyVCSetAcuteParam[4];
@@ -278,8 +278,6 @@ typedef struct
     u8 oldLoop;
 } dds3SpPolyLoopWork_t;
 
-extern void *memcpy(void *a, const void *b, size_t c);
-extern void *memset(void *a, s32 b, size_t c);
 extern dds3SpPolyEntry_t dds3SpPolyTable[];
 extern void (*dds3SpPolyResetTable[])(void *work);
 extern void (*dds3SpPolySetScaleTable[])(void *work, f32 scale);
@@ -288,14 +286,6 @@ extern f32 dds3SpPolyColorFrom[4];
 extern f32 dds3PolygonTriangleParam[4];
 extern u8 dds3EffectBase[];
 extern f32 dds3GetRandFloatA(void *name);
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern f32 sdfCos(f32 aRadius);
-extern f32 sdfSin(f32 aRadius);
-extern void SetRotateMatrixX(f32 aAngle);
-extern void SetRotateMatrixY_B(f32 aAngle);
-extern void MultMatrixRevNoArg(void);
-extern void MultMatrixNoArg(void);
 extern void dds3SpPoly_RingBuffInit(dds3SpPoly_Ring_t3 *pRing, s32 number);
 
 /* Separate geometry builder reached by the initializer's native tail call. */

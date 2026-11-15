@@ -1,6 +1,8 @@
 #include "common.h"
 #include "sdk_libcdvd.h"
 #include "ps2asm.h"
+extern s32 DIntr(void);
+extern s32 EIntr(void);
 
 typedef void (*cdvdCallback_t)(s32 reason);
 extern cdvdCallback_t cdvdCallback __attribute__((section(".data")));
@@ -74,17 +76,14 @@ s32 PowerOffCB(void);
 
 #define UNCACHED(a) ((s32 *)(EE_ADDR(a) | 0x20000000))
 
-extern s32 DIntr(void);
 extern s32 SignalSema(s32 sema);
 
 extern s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize,
                          void *recv, s32 rsize, void *endfunc, void *endpara);
 
 extern s32 _sceCd_scmd_prechk(s32 cmd);
-extern int scePrintf(const char *fmt, ...);
 extern s32 sceSifCheckStatRpc(void *cd);
 extern void sceCdDelayThread(u16 ticks);
-extern s32 EIntr(void);
 extern s32 sceCdSync(s32 mode);
 extern s32 sceCdLayerSearchFile(addr_t file, const char *name, s32 layer);
 void gcc2_compiled__6(s32 cause, s32 address, s32 argument);

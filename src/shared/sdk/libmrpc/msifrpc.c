@@ -1,7 +1,10 @@
 #include "common.h"
 #include "sdk_libmrpc.h"
+#include "sdk_libc.h"
+#include "sdk_libkernl.h"
+extern s32 DIntr(void);
+extern s32 EIntr(void);
 
-extern void *memcpy(void *, const void *, size_t);
 
 typedef struct sceSifMClientData rpcClient;
 
@@ -38,8 +41,6 @@ typedef struct rpcQueue {
 
 extern s32 sceSifMRpcInitialized __attribute__((section(".data")));
 extern rpcQueue sceSifMRpcQueue __attribute__((section(".data")));
-extern s32 DIntr(void);
-extern s32 EIntr(void);
 extern rpcPacket sceSifMRpcPackets[32];
 extern void _request_end(void *packet, void *queue);
 extern void sceSifAddCmdHandler(s32 command, void (*handler)(void *, void *), void *argument);
@@ -98,7 +99,6 @@ typedef struct sdfSemaParam_t {
 extern s32 CreateSema(sdfSemaParam_t *param);
 extern s32 WaitSema(s32 sema);
 extern s32 DeleteSema(s32 sema);
-extern s32 scePrintf(const char *format, ...);
 extern const char sceSifMModeErrorString[];
 s32 sceSifMBindRpcParam(rpcClient *client, u32 serverId, s32 mode, u32 arg0, u32 arg1, u32 arg2);
 s32 sceSifMBindRpc(rpcClient *client, u32 serverId, s32 mode);

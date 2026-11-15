@@ -1,5 +1,10 @@
 #include "common.h"
 #include "raidou_alloc.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfDraw.h"
+#include "sdfTex.h"
+#include "sdfPacketBuff.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -36,36 +41,22 @@ void mdlSetScale(dds3ModelHandle_t *ctx);
 
 /* sdfMotionCtrlr_t-record selection and lookup. */
 void mdlSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex);
-extern void *memcpy(void *, const void *, unsigned int);
-void *memset(void *dst, s32 value, u32 size);
-void *sdfChipAllocDirect(s32 size);
-void *sdfChipAllocZeroDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
-void sdfDrawTagInit(struct sdfDrawTag_t *list);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 size);
 
 void sdfLinkLoadImage(
     sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,
     s32 destinationY, s32 width, s32 height, s32 sourceAddress,
     s32 (*allocatePacket)(s32));
 
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-void *sdfMemLock(struct sdfMemHandle_t *allocation);
 u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
 
 /* Allocate and register a texture. The shared registration helper initializes
  * its ordinary reference count to one; the caller releases that reference with
  * sdfTexReleaseReference or its deferred form. */
-struct sdfTexHandle_t *sdfTexAlloc(s32 width, s32 height,
-    SdfGsPixelStorageFormat pixelFormat, u32 maxMipLevel,
-    SdfGsPixelStorageFormat clutFormat, u32 paletteCount);
 
 /* Store the context-one resource packet on the texture's primary buffer. */
-void sdfTexMakeGIFPacket(struct sdfTexHandle_t *texture);
 
 #include "dds/eff_object_node.h"
 #include "dds/eff_model_owner.h"

@@ -1,6 +1,10 @@
 #include "common.h"
 #include "raidou_alloc.h"
 #include "libsdf.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfTex.h"
+#include "sdk_libkernl.h"
 
 /* Owned file list: names stay inline in each 0x3C-byte node. */
 typedef struct dds3EffectFileNode_t
@@ -41,16 +45,10 @@ typedef struct
 } nbCameraHelper_effFLWinHandle_t;
 
 extern char dds3EffectResourcePathFormat[];
-extern void sdfChipFreeDirect(void *aPtr);
 
 #include "sdk_libc.h"
 
-extern void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
-extern sdfTexHandle_t *sdfTexSet(void *aTex);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern u8 sdfHddValid;
-extern u32 strlen(const char *s);
-extern char *strcpy(char *dst, const char *src);
 extern s32 dds3EffectDirOpen(void *name);
 
 /* One textureless sprite as sdf2D lays it out: the colour, then two corners
@@ -104,8 +102,6 @@ extern s32 dds3EffectDirRead(s32 directory, dds3EffectDirEnt_t *entry);
 extern char *dds3EffectFileNameTable[];
 extern char dds3EffectDirPathFormat[];
 extern u32 dds3EffectBuiltinNameIndex;
-extern s32 sceDopen(void *path);
-extern s32 sceDread(s32 directory, dds3EffectDirEnt_t *entry);
 s32 dds3EffectDirOpen(void *name);
 s32 dds3EffectDirRead(s32 directory, dds3EffectDirEnt_t *entry);
 void dds3EffectFileListDelete(nbCameraHelper_effFileListHandle_t *a);

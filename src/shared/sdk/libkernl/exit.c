@@ -3,6 +3,7 @@
 #include "sdk_libgcc.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
+#include "sdk_libc.h"
 
 s32 write(s32 descriptor, const void *buffer, s32 length);
 s32 read(s32 descriptor, void *buffer, s32 length);
@@ -228,7 +229,6 @@ typedef struct fsOutputCompletion_t {
     u32 size;
 } fsOutputCompletion_t;
 
-extern void *memcpy(void *destination, const void *source, size_t size);
 typedef void (*fsPowerOffCallback_t)(void *argument);
 
 typedef struct fsPowerOffState_t {
@@ -432,7 +432,6 @@ extern void *execArgumentBlock;
 extern kernelEntryPair_t setArgEntryPairs[1];
 extern void PatchIsNeeded(u32 index, void *entry);
 extern s32 gcc2_compiled__16(void *destination, const void *source, u32 size);
-extern u32 strlen(const char *text);
 char *SetArg(const char *path, s32 count, const char *const *arguments);
 extern void InitTLB(void);
 void TerminateLibrary(void);

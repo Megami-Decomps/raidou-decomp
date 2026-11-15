@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfChip.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -6,8 +7,6 @@
 
 #include "newdata.h"
 
-void *sdfChipAllocZeroDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
 
 #include "dds/mnu_list.h"
 #include "dds/mnu_shop.h"

@@ -1,13 +1,12 @@
 #include "common.h"
 #include "libsdf.h"
 #include "eeregs.h"
+#include "sdfChip.h"
+#include "sdfMat.h"
+#include "sdfTex.h"
+#include "sdfMath.h"
+#include "sdfMisc.h"
 
-extern void *sdfChipAllocDirect(s32 aSize);
-extern void *sdfChipAllocZeroDirect(s32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern sdfItemArray_t *sdfItemArrayNew(s32 aInitCapa, s32 aElemSize, s32 aGrowStep);
-extern void sdfItemArrayFree(sdfItemArray_t *aArray);
-extern void sdfItemArrayGrow(sdfItemArray_t *aArray);
 extern void sdfDevResizeBufferedRequest(sdfItemArray_t *aArray, s32 aCapacity);
 extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
@@ -17,14 +16,6 @@ extern s32 sdfMatAllocCount;
 
 /* The GS ALPHA_2 value per multi-texture method, indexed by sdfMat_t.multiTexMethod. */
 extern u16 sdfMatMultiTexAlphaTable[];
-extern void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
-extern sdfTexHandle_t *sdfTexDup(sdfTexHandle_t *aHandle);
-extern void sdfTexSetClutColor(sdfTexHandle_t *aHandle, s32 aColor, f32 aRatio);
-extern u64 sdfTexGetTex0Reg(sdfTexHandle_t *aHandle);
-extern u64 sdfTexGetTex1Reg(sdfTexHandle_t *aHandle);
-extern u64 sdfTexGetClampReg(sdfTexHandle_t *aHandle);
-extern f32 sdfSin(f32 aRadius);
-extern f32 sdfCos(f32 aRadius);
 sdfItemArray_t *sdfTexListNew(s32 aInitCapa);
 sdfItemArray_t *sdfMatListNew(s32 aInitCapa);
 void sdfMatListGrow(sdfItemArray_t *aList);

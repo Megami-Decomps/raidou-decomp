@@ -6,6 +6,12 @@
 #include "effect.h"
 #include "effDebug.h"
 #include "sdfFrame.h"
+#include "sdfChip.h"
+#include "sdfDraw.h"
+#include "billManager.h"
+#include "sdfTex.h"
+#include "sdfMath.h"
+#include "sdfPacketBuff.h"
 
 extern sdfGrOt_t *effMagaGrOtBuckets[4];
 
@@ -395,7 +401,6 @@ effArrHdr_t *dds3Bezier4PCreate(s32 number);
 /* vu0 routine: blend two RGBA8888 colours by t (lerp in float, packed back to RGBA8888) */
 u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern u8 dds3EffectBase[];
-sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 number);
 effCubicBezierSlot_t *dds3Bezier4PGetPart(struct effArrHdr_t *pEffBezier4P, s32 index);
 void dds3Bezier4PDelete(struct effArrHdr_t *pEffBezier4P);
 s32 dds3Bezier4PPartRun(struct effArrHdr_t *table, s32 slotIndex, f32 *out);
@@ -410,7 +415,6 @@ f32 dds3GetRandFloatA(u8 *name);
 /* vu0 routine: multiply RGBA channels normalized by 128, then pack at the same scale.
    Native integer conversion/byte packing remains unclamped; quadword storage is unchanged. */
 u32 effMagaCylinderCalcColor(u32 colorA, u32 colorB);
-extern void *memcpy(void *a, const void *b, size_t c);
 
 /* Fixed-scale form of the SDK's four-word RGBA packing scratch buffer. */
 static inline u32 PackMagatuhiTrailColor(void) {
@@ -423,10 +427,6 @@ struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 aSize);
-void *sdfChipAllocDirect(s32 aSize);
-void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
-void sdfDrawTagLinkRef(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Build XYZ and attribute VIF streams; return the packet address.
  * vertexCount must be positive; n retains its native count/byte-size reuse. */
@@ -435,20 +435,15 @@ extern u32 *sdfBillBoardMakeN(const u128 *aCenter, const void *aColor, const voi
 
 /* Round payloadBytes up to quadwords and pair FLUSHA with VIF DIRECT. */
 void sdf3DMakeDirectRefPacket(dmaPacketHeader_t *aPacket, addr_t aData, s32 aLeng);
-f32 sdfCos(f32 aRadius);
 void sdfBillBoardMakeTMPacket(u8 *aPacket, const f32 *aTM);
-void sdfDrawTagInit(struct sdfDrawTag_t *a);
-void sdfChipFreeDirect(void *aPtr);
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
 u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
-f32 sdfSin(f32 aRadius);
 
 /* Requires a non-NULL texture; returns its primary buffer as a borrowed view. */
 struct sdfTexPacket_t *sdfTexGetPacket(struct sdfTexHandle_t *aHandle);
 
 /* Requires a non-NULL texture; returns 0 for no primary buffer, otherwise
  * ((gifTagWord & 0x7fff) + 1) * 16 bytes. */
-s32 sdfTexGetPacketLength(const struct sdfTexHandle_t *aHandle);
 extern f32 aViewTarget[EFF_MAGATUHI_VECTOR_WORD_COUNT];
 extern f32 aViewEye[EFF_MAGATUHI_VECTOR_WORD_COUNT];
 

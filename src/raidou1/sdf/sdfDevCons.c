@@ -4,6 +4,9 @@
 #include "sdfDevCons.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdk_libc.h"
 
 typedef struct sdfDevConsCB_tag
 {
@@ -92,14 +95,8 @@ void sdfDevConsDrawBG(sdfDevConsCB_tag *aHndl, sdfDevConsDrawCB_t *aCB);
 extern void sdfDevConsDrawInit(sdfDevConsDrawCB_t *aCB, void *aPacketBuffer, s32 aBufferSize);
 extern void sdfDevConsDraw(sdfDevConsCB_tag *aHndl, sdfDevConsDrawCB_t *aBuf);
 extern void sdfDevConsDrawFlush(sdfDevConsDrawCB_t *aCB);
-extern void *memset(void *a, s32 b, size_t c);
 extern void *memmove(void *a, const void *b, size_t c);
 extern s32 vsprintf(char *buf, const char *fmt, void *args);
-extern void *sdfChipAllocDirect(s32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
 extern sdfTexHandle_t *sdfTexSet(void *aTex);
 extern sdfTexHandle_t *sdfDebugFontHandle;
 extern s32 alreadyInitDevCons;

@@ -5,10 +5,13 @@
 #include "kernel.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdfChip.h"
+#include "mdlManager.h"
+#include "sdfQuat.h"
+#include "dds3SceneBasic.h"
+#include "evtUnitManager.h"
+#include "dds3PathBasic.h"
 
-f32 dds3PathBasicControlGetRatio(const dds3PathBasicControl_t *pControl);
-void dds3PathBasicControlSetRatio(dds3PathBasicControl_t *pControl, f32 ratio);
-void dds3PathBasicControlGetPos(dds3PathBasicControl_t *pControl);
 f32 GetSplineLength(dds3PathBasicControl_t *path);
 
 typedef struct evtTargetInfo_t {
@@ -31,8 +34,6 @@ void MakeLightPacket(evtUnit_t *h);
 void evtSetUnitLightAndAmbient(evtUnit_t *h, s32 frame, u32 lrgb, u32 argb);
 void evtSetUnitLightDir(evtUnit_t *h, s32 frame);
 void evtSetUnitColorRGB(evtUnit_t *h, s32 frame, u32 rgb);
-u32 mdlGetColor(mdlObj_t *aHandle);
-void mdlSetColor(mdlObj_t *aHandle, u32 aColor);
 void evtSetUnitColorA(evtUnit_t *h, s32 frame, u32 a);
 void evtUnitLightOn(evtUnit_t *h);
 
@@ -55,11 +56,8 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type);
 struct dds3Basic_t *dds3GetActiveScene(void);
 evtUnit_t *evtGetUnitHandle2(dds3Basic_t *unit);
-void sdfChipFreeDirect(void *aPtr);
-void dds3DeletePathControl(dds3PathBasicControl_t *path);
 s32 evtDeleteUnitHandle(evtUnit_t *h);
 
 typedef enum {
@@ -70,17 +68,12 @@ typedef enum {
     SDF_MOTION_STATE_SUSPENDED = 6,
 } sdfMotionState_t;
 
-void dds3PathBasicControlGetRot(dds3PathBasicControl_t *pControl);
-s32 dds3PathBasicControlIsFinished(dds3PathBasicControl_t *path);
 
 #include "basic.h"
 #include "dds3obj.h"
 
-void FromEuler(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
-void Mult(void);
 struct dds3Basic_t *dds3GetControlScene(void);
 extern void evtSetUnitMove1(evtUnit_t *work, s32 motionSubmode, s128 *vector, s32 unused, s32 frames, s32 directionOffset, s32 (*callback)(evtUnit_t *, s32), s32 unusedLast);
-void ToMatrix(void);
 s32 evtUnitRotationTarget(evtUnit_t *h, f32 *pos, f32 radio);
 void dds3GetPosPoseSetMCR(dds3Basic_t *object, u128 *vector);
 extern void evtGetUnitDirVector(evtUnit_t *h);

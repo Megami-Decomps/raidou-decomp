@@ -5,10 +5,9 @@
 #include "model.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "dds3Basic.h"
 
 extern dds3Basic_t *dds3TheWorld;
-extern void dds3CallBasicMainProc(dds3Basic_t *pBasic);
-extern void dds3CallBasicDrawProc(dds3Basic_t *basic);
 
 typedef struct sdfPreDrawChain_t sdfPreDrawChain_t;
 

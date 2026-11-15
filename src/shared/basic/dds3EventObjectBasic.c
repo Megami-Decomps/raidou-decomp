@@ -2,6 +2,9 @@
 #include "raidou_alloc.h"
 #include "basic.h"
 #include "dds3obj.h"
+#include "sdfChip.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
 
 /* The event constructor allocates a complete 16-byte payload. */
 typedef struct
@@ -10,14 +13,6 @@ typedef struct
     u8 unk04[12];
 } dds3EventObjectBasicWorkData_t;
 
-extern s32 dds3InitPoseSet(dds3Basic_t *basic);
-extern void dds3FreePoseSet(dds3Basic_t *basic);
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern s32 dds3CheckPoseSetFlag(dds3PoseSet_t *pPoseSet, u32 flag);
-extern void dds3OffPoseSetFlag(dds3PoseSet_t *pPoseSet, u32 flag);
-extern void dds3SetRadiusPoseSet(dds3PoseSet_t *pose);
-extern dds3Basic_t *dds3AddSceneBasicData(s32 type);
 u32 EventObjectBasicConstructor(dds3Basic_t *pBasic);
 void EventObjectBasicDestructor(dds3Basic_t *pBasic);
 s32 EventObjectBasicMainProcuder(dds3Basic_t *pBasic);

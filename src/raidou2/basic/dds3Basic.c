@@ -2,14 +2,12 @@
 #include "raidou_alloc.h"
 #include "basic.h"
 #include "ps2asm.h"
+#include "sdfChip.h"
+#include "sdfQuat.h"
+#include "dds3Basic.h"
+#include "sdk_libm.h"
 
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void Normalize(void);
-extern void Mult(void);
-extern void ToMatrix(void);
-extern f32 fabsf(f32 value);
 void dds3BackupPoseSet(dds3PoseSet_t *pPoseSet);
-void sdfChipFreeDirect(void *aPtr);
 extern void dds3DeleteBasic(dds3Basic_t *basic);
 void dds3DeleteBasic(dds3Basic_t *basic);
 s32 dds3InitPoseSet(dds3Basic_t *basic);

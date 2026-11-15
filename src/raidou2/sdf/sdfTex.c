@@ -1,19 +1,17 @@
 #include "common.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+#include "sdfTex.h"
+#include "sdfGsMemory.h"
 
 extern sdfTexHandle_t *sdfTexHandleLink;
 extern sdfDelayedResrcCB_t sdfTexDelayedResrcCB;
 extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
-extern void *sdfChipAllocDirect(s32 aSize);
-extern void *sdfChipAllocZeroDirect(s32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
 extern void *sdfAllocAuto(s32 size);
 extern void sdfFreeAuto(void *ptr);
-extern void sdfGsMemFree(sdfGsMemSlice_t *aHandle);
-extern sdfGsMemSlice_t *sdfGsMemAllocFromTail(s32 aSize, s32 aType);
-extern sdfGsMemSlice_t *sdfGsMemAllocFromHead(s32 aSize, s32 aType);
-extern void *memcpy(void *a, const void *b, size_t c);
 extern sdfTexHandle_t *sdfTexSetEx(TMX_HEADER_t *aTex, s32 aMemMode);
 
 extern void *sdfTexTransData(s32 aGsAddr, s32 aWidth, s32 aHeight, s32 aPixelFormat, void *aSrcData,
@@ -47,8 +45,6 @@ typedef struct
 
 extern s32 sdfImageDataSize(s32 format, s32 width, s32 height);
 extern void sdfImageSetReq(sdfImageUploadRequest_t *parm);
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
 s32 sdfTexGetPacketLength(sdfTexHandle_t *aHandle);
 sdfTexPacket_t *sdfTexGetPacketCtx2(sdfTexHandle_t *aHandle);
 s32 sdfTexGetPacketCtx2Length(sdfTexHandle_t *aHandle);

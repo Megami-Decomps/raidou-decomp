@@ -7,6 +7,12 @@
 #include "draw.h"
 #include "effect.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "sdfDraw.h"
+#include "sdfMat.h"
+#include "sdk_libc.h"
+#include "sdfPacketBuff.h"
+#include "effPacket.h"
 
 typedef struct
 {
@@ -73,11 +79,7 @@ typedef struct
     dds3HermitianTrackPoly_tag *hPoly;
 } Eff_ModelTrackPoly_tag;
 
-extern void *memset(void *destination, int value, size_t size);
 void dds3HermitianTrackPolySetVC(dds3HermitianTrackPoly_tag *hPoly, u32 *colors);
-extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern sdfGrOt_t effPolyOt;
 
 /* dds3DrawBank_t stride; only the held frame texture block at 0x1300 is used here. */
@@ -87,14 +89,8 @@ typedef struct
     u8 frameTex[0x8E0];
 } effDrawBank_t;
 
-extern sdfMat_t *sdfMatNew(void);
-extern void sdfMatSetConstant(sdfMat_t *aMat, f32 aRatio);
-extern s32 sdfGrAllocPacketBuff(s32 aSize);
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag, s32 aAllocator);
 extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat, s32 aAllocator);
-extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
 extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern sdf3DPrimPolyParm_t effModelTrackPolyPrimParm;
 extern u32 effModelTrackPolyFaceIndex[];

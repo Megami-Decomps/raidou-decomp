@@ -56,7 +56,6 @@ typedef struct sdfGrOt_t {
     sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
 } sdfGrOt_t;
 
-extern void *memcpy(void *, const void *, size_t);
 
 typedef struct _reent _reent;
 
@@ -278,7 +277,6 @@ extern const char dtoaInfinityText[], dtoaNanText[];
 extern const char dtoaInfinityText[16];
 extern const char localeEmptyStr[];
 extern const char localeCName[];
-extern s32 strcmp(const char *left, const char *right);
 char *_setlocale_r(_reent *r, s32 category, const char *locale);
 char *setlocale(s32 category, const char *locale);
 extern const char localeEmptyStr[8] __attribute__((section(".rodata")));

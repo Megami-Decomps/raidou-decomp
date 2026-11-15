@@ -3,6 +3,12 @@
 #include "libsdf.h"
 #include "draw.h"
 #include "ps2asm.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfDraw.h"
+#include "sdfTex.h"
+#include "sdfPacketBuff.h"
+#include "sdfGsMemory.h"
 
 typedef struct
 {
@@ -20,8 +26,6 @@ extern void sceGsSetDefDispEnv(sceGsDispEnv *aEnv, s32 aPsm, s32 aWidth, s32 aHe
                                s32 aDy);
 
 extern void sceGsPutDispEnv(sceGsDispEnv *aEnv);
-extern void sdfGsMemFree(sdfGsMemSlice_t *aHandle);
-extern sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 aW, s32 aH, s32 aPixelFormat);
 extern sdfGrScreenDef_t sdfGrFrameModes[4];
 extern sdfGrFrameSet_t sdfGrFrameSet;
 extern sceGsDispEnv sdfGrDispEnv;
@@ -52,25 +56,16 @@ extern s8 reqGsReset;
 extern volatile s32 dds3GsSema;
 extern s32 dds3GsThreadId;
 extern s32 sdfDrawThreadId;
-extern s32 iWakeupThread(s32 thread);
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern s32 sceGsSetDefStoreImage(sceGsStoreImage *, s16, s16, s16, s16, s16, s16, s16);
 extern s32 sceGsExecStoreImage(sceGsStoreImage *, void *);
 extern s32 sceGsSyncPath(s32 mode, s32 timeout);
 extern void sceGsResetPath(void);
-extern void *memcpy(void *a, const void *b, size_t c);
-extern void sdfGrMakePacketBuff(s32 aPacketBuffSize);
-extern void sdfGrInitDraw(void);
-extern void sdfTexInit(void);
 extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
 extern s32 CreateThreadSimple(void *entry, void *stack, s32 stackSize, s32 priority);
 
 #include "sdk_libkernl.h"
 
 extern void sdfDispThread(void);
-extern void sdfGrSetupPacketBuff(s32 aFrameId);
 extern void sdfCoreDrawReset(void);
 void sdfGrSetScreen(s32 aMode);
 void sdfGrMakeFrameSet(sdfGrFrameSet_t *aFrame);

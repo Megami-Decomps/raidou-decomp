@@ -1,4 +1,6 @@
 #include "common.h"
+#include "sdfVu0.h"
+#include "sdfSound.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -10,11 +12,8 @@
 #include "sdk_libkernl.h"
 
 /* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
-void MultMatrixRev(const struct Matrix4 *matrix);
-extern void *memcpy(void *, const void *, unsigned int);
 
 /* Apply volume and pan to a sequence track through the command queue. */
-void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new

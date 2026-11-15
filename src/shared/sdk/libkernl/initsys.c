@@ -3,6 +3,7 @@
 #include "sdk_libgcc.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
+#include "sdk_libc.h"
 
 s32 write(s32 descriptor, const void *buffer, s32 length);
 s32 read(s32 descriptor, void *buffer, s32 length);
@@ -37,7 +38,6 @@ typedef struct kernelThreadParam_t {
     u8 opaque[0x18];
 } kernelThreadParam_t;
 
-s32 InitThread(void);
 
 typedef struct ttyQueue_t {
     u32 capacity;
@@ -232,7 +232,6 @@ typedef struct fsOutputCompletion_t {
     u32 size;
 } fsOutputCompletion_t;
 
-extern void *memcpy(void *destination, const void *source, size_t size);
 typedef void (*fsPowerOffCallback_t)(void *argument);
 
 typedef struct fsPowerOffState_t {
@@ -443,7 +442,6 @@ void GetSystemCallTableEntry(void);
 extern void supplement_crt0(void);
 extern void GetSystemCallTableEntry(void);
 extern void InitAlarm(void);
-extern s32 InitThread(void);
 extern void InitExecPS2(void);
 extern void InitTLBFunctions(void);
 void _InitSys(void);

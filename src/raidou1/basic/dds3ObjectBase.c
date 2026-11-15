@@ -7,11 +7,11 @@
 #include "event.h"
 #include "field.h"
 #include "ps2asm.h"
+#include "dds3EffectObjectBasic.h"
+#include "dds3LightObjectBasic.h"
+#include "dds3CameraObjectBasic.h"
 
-extern dds3ObjectBaseControlWorkData_t *dds3GetCameraObjectBaseControlWorkData(dds3Basic_t *basic);
-extern dds3ObjectBaseControlWorkData_t *dds3EffectObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
 extern dds3ObjectBaseControlWorkData_t *dds3EventObjectBasicGetControlWorkData(dds3Basic_t *pBasic);
-extern dds3ObjectBaseControlWorkData_t *dds3LightObjectBasicGetControlWorkData(dds3Basic_t *basic);
 
 typedef struct
 {

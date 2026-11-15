@@ -56,7 +56,6 @@ typedef struct sdfGrOt_t {
     sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
 } sdfGrOt_t;
 
-extern void *memcpy(void *, const void *, size_t);
 
 typedef struct _reent _reent;
 
@@ -219,7 +218,6 @@ typedef struct mallocFenceposts_t {
     u32 secondSize;
 } mallocFenceposts_t;
 
-extern u32 strlen(const char *s);
 
 /* The newline owns a padded 16-byte read-only block in retail. */
 extern const char putsNewline[];

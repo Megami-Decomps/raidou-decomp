@@ -31,7 +31,6 @@ enum SdfMotionStateValue {
 
 /* Model-context lifetime, per-frame update, and broadcast accessors. */
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/mnu_input.h"
 #include "dds/fpu.h"

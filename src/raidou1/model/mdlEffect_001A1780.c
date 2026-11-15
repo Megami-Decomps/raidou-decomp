@@ -6,6 +6,8 @@
 #include "ps2asm.h"
 #include "motion.h"
 #include "sdfFrame.h"
+#include "sdfQuat.h"
+#include "dds3DebugStuff.h"
 
 typedef struct mdlBillboard_t mdlBillboard_t;
 
@@ -207,9 +209,6 @@ extern mdlDebugEntry_t mdlDebugEntryTable[];
 extern mdlDebugLabel_t mdlDebugLightLabels[4], mdlDebugScaleFogLabel, softenBiasLabels[4];
 extern u16 mdlDebugLightCursorY[], softenBiasCursorY[4] __attribute__((section(".data")));
 extern f32 sdfFaceDivSoften, sdfFaceDivBias;
-extern void FromRotation(f32);
-extern void ToMatrix(void);
-extern void dds3PrimDebugTextBoxRGB(void *, s32, s32, s32, u32, s32);
 
 /* dds3ModelEffectCtrlr_t.type: which effect a controller drives. */
 typedef enum dds3ModelEffectType {

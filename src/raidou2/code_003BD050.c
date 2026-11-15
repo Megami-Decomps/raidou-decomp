@@ -1,4 +1,6 @@
 #include "common.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
 
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1
@@ -10,14 +12,7 @@
 
 /* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
-extern void *memcpy(void *, const void *, unsigned int);
-void *memset(void *dst, s32 value, u32 size);
 void qsort(void *base, u32 count, u32 size, s32 (*compare)(const void *, const void *));
-void *sdfChipAllocZeroDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-void *sdfMemLock(struct sdfMemHandle_t *allocation);
 
 #include "dds/itf_draw_grid.h"
 #include "dds/eff_resource_slots.h"

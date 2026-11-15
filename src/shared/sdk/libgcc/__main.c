@@ -1,5 +1,6 @@
 #include "common.h"
 #include "ps2asm.h"
+#include "sdk_libc.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -53,7 +54,6 @@ typedef struct sdfGrOt_t {
     sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
 } sdfGrOt_t;
 
-extern void *memcpy(void *, const void *, size_t);
 
 typedef struct _reent _reent;
 
@@ -161,7 +161,6 @@ struct _reent {
 };
 
 extern void *__deregister_frame_info(void *fn);
-extern void *malloc(size_t size);
 extern void __register_frame_info(void *fn, void *entry);
 extern void __do_global_ctors(void);
 extern object ctorFrameObject;

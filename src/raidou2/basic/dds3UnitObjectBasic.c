@@ -4,27 +4,24 @@
 #include "event.h"
 #include "model.h"
 #include "ps2asm.h"
+#include "sdfChip.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
+#include "evtUnitManager.h"
+#include "dds3LightObjectBasic.h"
 
 typedef struct {
     u8 unk00[0x64];
     u32 flag;
 } dds3LinkedLightWork_t;
 
-extern void dds3DeleteSceneBasicData(dds3Basic_t *basic);
-extern void dds3FreePoseSet(dds3Basic_t *basic);
-extern void evtDeleteUnitHandle(struct evtUnit_t *h);
 extern void dds3ObjectBaseFreeModelHandle(dds3Basic_t *pObjectBasic);
-extern void sdfChipFreeDirect(void *aPtr);
-extern void dds3UnlinkLightObjectFromUnitObject(dds3Basic_t *unitbasic, s32 frame);
-extern void dds3LinkLightObjectToUnitObject(dds3Basic_t *lightbasic, dds3Basic_t *unitbasic, s32 frame);
 extern dds3Basic_t *dds3GetControlScene(void);
-extern dds3BasicArrayHandle_t *dds3SceneBasicGetList(dds3Basic_t *pBasic, s32 type);
 extern u16 dds3GetBasicArrayCount(dds3BasicArrayHandle_t *hndl);
 extern void dds3FreeBasicArrayHandle(dds3BasicArrayHandle_t *hndl);
 extern s32 dds3SetFirstBasicArray(dds3BasicArrayHandle_t *hndl);
 extern dds3Basic_t *dds3GetBasicArray(dds3BasicArrayHandle_t *hndl);
 extern s32 dds3SetNextBasicArray(dds3BasicArrayHandle_t *hndl);
-extern s32 dds3ComparePosPoseSet2(dds3PoseSet_t *first, dds3PoseSet_t *second);
 void dds3UnitObjectBasicEL_LinkFree(dds3Basic_t *unitBasic);
 void dds3DeleteUnitObjectBasic(dds3Basic_t *aPtr);
 s32 dds3GetStatusUnitObjectBasic(dds3Basic_t *aPtr);

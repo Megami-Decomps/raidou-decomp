@@ -3,6 +3,9 @@
 #include "ps2asm.h"
 #include "effect.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfMat.h"
 
 typedef struct effBezierBED_t effBezierBED_t;
 
@@ -84,13 +87,6 @@ typedef struct effBezierDrawParam_t {
     u8 opaque_24[0xC];
 } effBezierDrawParam_t;
 
-extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-extern sdfMat_t *sdfMatNew(void);
-extern void sdfMatSetConstant(sdfMat_t *aMat, f32 aRatio);
-extern void *memcpy(void *a, const void *b, size_t c);
-extern void *memset(void *a, s32 b, size_t c);
 extern effBezierBED_t *effEveBEDCreate(effBezierBED_t *pData);
 extern void effEveBEDDelete(effBezierBED_t *hEveBED);
 extern effBezierCut_t *effEveBEDCutCreate(effBezierBED_t *hEveBED, s32 CutNum, effBezierPlacement_t *pParams);

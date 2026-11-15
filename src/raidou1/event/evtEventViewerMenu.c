@@ -1,4 +1,8 @@
 #include "common.h"
+#include "sdfDraw.h"
+#include "mdlManager.h"
+#include "sdfQuat.h"
+#include "dds3DebugStuff.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -26,18 +30,13 @@ enum {
 
 /* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
  * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
-void ToMatrix(void);
 struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 u32 dds3GetProcessData(const dds3ProcessID_t *task);
 EffEventSetupReadiness evtViewerCheckDirty(void);
 
 /* Borrow a controller owned by ctx. The pointer is read-only and expires when
  * that controller is removed or the model context is freed. */
-const struct sdfMotionCtrlr_t *mdlGetMotionCtrlr(
-    const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
 
-extern void *memcpy(void *, const void *, unsigned int);
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -97,9 +96,7 @@ extern char evtStrUnitAll[];
 void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, dds_evtViewerInfo_t *ctx);
 s32 evtUpdateGroupListDialog(s32 x, s32 y, dds_evtViewerInfo_t *ctx);
 extern f32 sdfViewMatrix[];
-extern void FromRotation(f32 angle);
 void evtRotateViewerPositionFromPad(f32 *position);
-extern void dds3PrimDebugTextBox(void *, s32, s32, s32, f32 *);
 
 /* Select and draw one light-color bank at the current panel offset. */
 static inline void evtDrawLightRgbComponents(sdfDrawTag_t *list, dds_evtViewerInfo_t *runtime,

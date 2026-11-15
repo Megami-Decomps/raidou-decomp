@@ -2,6 +2,8 @@
 #include "basic.h"
 #include "model.h"
 #include "motion.h"
+#include "dds3SceneBasic.h"
+#include "sdfMotion.h"
 
 typedef struct {
     /* 0x00 */ dds3Basic_t *pTextureBasic;
@@ -11,10 +13,7 @@ typedef struct {
     /* 0x10 */ u8 unk10[8];
 } dds3ModelBasicWorkData_t;
 
-extern dds3Basic_t *dds3AddSceneBasicData(s32 type);
 extern sdfModelRootNode_t *sdfModelMake(void *aTexList, sdfItemArray_t *aModelData);
-extern sdfMotionCtrlr_t *sdfMotionCtrlrNew(sdfModelRootNode_t *aModel, sdfMotionPlayBook_t *aBook);
-extern void sdfMotionChange(sdfMotionCtrlr_t *aCtrlr, s32 aCutNum, s32 aType);
 dds3Basic_t *dds3AddModelBasic(s32 serialID, sdfItemArray_t *pModelDef, sdfMotionPlayBook_t *pMotDef, dds3Basic_t *pTextureBasic, char *pName);
 dds3Basic_t *dds3AddModelBasic2(s32 serialID, sdfItemArray_t *pModelDef, sdfMotionPlayBook_t *pMotDef, void *pTexList, char *pName);
 sdfModelRootNode_t *dds3ModelBasicMakeModel(dds3Basic_t *basic);

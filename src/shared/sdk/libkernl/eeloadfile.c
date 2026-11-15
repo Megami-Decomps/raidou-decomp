@@ -3,6 +3,7 @@
 #include "sdk_libgcc.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
+#include "sdk_libc.h"
 
 s32 write(s32 descriptor, const void *buffer, s32 length);
 s32 read(s32 descriptor, void *buffer, s32 length);
@@ -291,7 +292,6 @@ typedef struct fsOutputCompletion_t {
     u32 size;
 } fsOutputCompletion_t;
 
-extern void *memcpy(void *destination, const void *source, size_t size);
 typedef void (*fsPowerOffCallback_t)(void *argument);
 
 typedef struct fsPowerOffState_t {
@@ -308,8 +308,6 @@ extern s32 sceSifCallRpc(void *client, s32 function, s32 mode, void *send,
                          void *endFunction, void *endParameter);
 
 extern u8 kernelBuiltinVersion[4] __attribute__((section(".data")));
-extern s32 memcmp(const void *left, const void *right, size_t count);
-extern void *memset(void *destination, s32 value, size_t count);
 
 typedef struct fsCloseRequest_t {
     s32 sema;
@@ -485,10 +483,8 @@ extern s32 lfBindStatus;
 extern u8 lfDetectedVersion[0x18];
 extern u8 kernelBuiltinVersion[4];
 extern void *lfFallbackVersion;
-extern s32 memcmp(const void *a, const void *b, size_t size);
 s32 _lf_bind(void);
 s32 _lf_version(void);
-extern void *memset(void *destination, s32 value, size_t size);
 s32 sceSifLoadFileReset(void);
 s32 _sceSifLoadModuleBuffer(void *buffer, s32 argumentSize, const void *arguments, s32 *moduleResult);
 s32 sceSifStopModule(s32 moduleId, s32 argumentSize, const void *arguments, s32 *moduleResult);

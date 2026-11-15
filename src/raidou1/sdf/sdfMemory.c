@@ -1,5 +1,8 @@
 #include "common.h"
 #include "libsdf.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
 
 /* The SDK multi-RPC client; only its byte span matters here. */
 typedef struct
@@ -13,13 +16,8 @@ typedef struct
 
 #define SDF_IOP_FILE_RPC_REPLY_ALIGN_MASK 0x3F
 
-extern void *malloc(size_t size);
 extern s32 DIntr(void);
 extern void EIntr(void);
-extern void *memcpy(void *a, const void *b, size_t c);
-extern u32 strlen(const char *s);
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
 extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
 

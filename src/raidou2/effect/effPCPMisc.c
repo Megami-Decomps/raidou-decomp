@@ -6,6 +6,10 @@
 #include "sdf_resource.h"
 #include "sdf_types.h"
 #include "sdfFrame.h"
+#include "sdk_libc.h"
+#include "sdfVu0.h"
+#include "sdfMath.h"
+#include "sdfPacketBuff.h"
 
 struct dds3ModelResrc_t;
 
@@ -2479,22 +2483,17 @@ void mdlSingleMotion(dds3ModelHandle_t *aHandle, s32 aGroup, s32 aNumber);
 void mdlSetColor(dds3ModelHandle_t *aHandle, u32 aColor);
 void mdlLink(dds3ModelHandle_t *aHandle, struct sdfGrOt_t **aModelOt);
 void mdlSetPosition(dds3ModelHandle_t *aHandle);
-extern void *memcpy(void *, const void *, size_t);
-extern void *memset(void *a, int b, size_t c);
 struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 aSize);
 void *sdfChipAllocDirect(s32 aSize);
 void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Load axis-angle rotation into VU0 vf28-vf31. */
-void SetRotateMatrixAxis(f32 aAngle, const sdfVector3_t *aAxis);
 
 /* Apply the primary VU0 matrix bank vf28-vf31 to basis vectors vf24-vf27,
  * then replace vf28-vf31 with the four transformed vectors. */
-void MultMatrixNoArg(void);
 
 extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
                               s32 (*aAllocator)(s32));
@@ -2505,32 +2504,23 @@ extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
 u32 sdfModelGetMarkPosCount(const struct sdfModelRootNode_t *aRoot);
 struct sdfMat_t *sdfMatNew(void);
 void sdfMatFreeDelayed(sdfMat_t *aMat);
-f32 sdfCos(f32 aRadius);
 void sdfDrawTagInit(struct sdfDrawTag_t *a);
 extern s32 sdfModelGetMarkPos(sdfModelRootNode_t *aRoot, s32 aId);
 
 /* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
-void MultMatrixRevNoArg(void);
 void sdfChipFreeDirect(void *aPtr);
 void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
 u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 void sdfMatSetConstant(struct sdfMat_t *aMat, f32 aRatio);
-f32 sdfSin(f32 aRadius);
 extern u8 aViewTarget[];
 extern u8 aViewEye[];
 extern u8 aViewDown[];
 
 /* Read vector inputs; VU0 forms first minus second and stores second in vf31. */
-void LookAtMatrix(const void *aTarget, const void *aEye, const void *aDown);
 
 /* Load the X-axis rotation matrix into the primary VU0 matrix registers. */
-void SetRotateMatrixX(f32 aAngle);
 
 /* Load a Y-axis rotation matrix into the primary VU0 matrix registers. */
-void SetRotateMatrixZ(f32 aAngle);
-extern void SetRotateMatrixY(f32 aAngle);
-extern void SetRotateMatrixX_B(f32 aAngle);
-extern void SetRotateMatrixZ_B(f32 aAngle);
 
 static inline void ShiftThunderHandles(effPCPZiodin01_tag *work, s32 count) {
     u128 saved[2];
@@ -2564,7 +2554,6 @@ typedef struct {
 extern u16 effPCPMudoSampleStep[8];
 extern f32 effPCPMudoSampleScale[8];
 extern const f32 effPCPRadiateTBParam[4] __attribute__((aligned(16)));
-void ReverseMatrix(void);
 void effScreenOffset(void);
 effHandle_t *dds3EffectLoad(effPCPAgiraoFirePartList_t *pD3P);
 void effPCPThunderSpherePolySetColor(effPCPThunderSpherePoly_t *hData, u32 abgr);
@@ -2578,7 +2567,6 @@ void mdlSetScale(dds3ModelHandle_t *aHandle);
 void dds3BillboardSetAnimKey(billHandle_t *hBillboard, u32 frame);
 void effPCP_ThunderPolySetColor(effPCP_ThunderPoly_t *hData, u32 abgr);
 void dds3EffectPartialMultiFilterDraw(dds3Effect_PartialMultiFilter_t *hPartialMultiFilter);
-void SetRotateMatrixY_B(f32 aAngle);
 void effEveBEDCutSetScale(effEveBEDCutHandle_t *hEveBEDCut, f32 scale);
 void effEveBEDCutSetParams(effEveBEDCutHandle_t *hEveBEDCut, const void *pParams);
 void effEveBEDCutDraw(effEveBEDCutHandle_t *hEveBEDCut);

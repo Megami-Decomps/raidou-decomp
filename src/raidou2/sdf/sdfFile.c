@@ -2,6 +2,8 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
 
 s32 strlen(const char *aStr);
 s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
@@ -112,7 +114,6 @@ enum sdf_stream_playback {
 };
 
 extern s32 DIntr();
-extern void *memcpy(void *, const void *, size_t);
 
 #include "sdk_libkernl.h"
 
@@ -120,7 +121,6 @@ extern char sdfFileCdromPrefix[];
 extern char * strcpy(char *, const char *);
 extern char sdfFileHostPrefix[];
 extern u8 sdfFileHddPrefix[];
-void *sdfChipAllocDirect(s32 aSize);
 extern char * strchr(const char *, s32);
 extern char sdfFileCdromName[];
 extern s32 strncmp(const char *, const char *, size_t);

@@ -2,6 +2,10 @@
 #include "interface.h"
 #include "libsdf.h"
 #include "kernel.h"
+#include "sdfMemory.h"
+#include "sdfDraw.h"
+#include "sdfTex.h"
+#include "sdfPacketBuff.h"
 
 /* Font chains and their children have different pool strides. Only the
  * coordinates, color word and links used by this unit are exposed. */
@@ -46,15 +50,11 @@ typedef struct { u8 unk00[0x20]; u64 value, registerCode; } itfGsState_t;
 extern u64 itfAlphaValueTable[];
 extern u8 itfGaugeQuadVertexIndex[8], itfGaugeQuadColorIndex[8], itfGaugeHighlightVertexIndex[], itfGaugeHighlightColorIndex[];
 extern itfColorVector_t itfGaugeHighlightVectors[];
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-extern sdfTexHandle_t *sdfTexSet(void *aTex);
 extern s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
-extern s32 sdfGrAllocPacketBuff(u32 aSize);
 extern void sdf2DMakePrimPacketHeader(void *aPacketPtr, s32 aPrimReg, s32 aNumOfRegs, u64 aGifRegs, s32 aNumOfPrim);
 extern saddr_t sdf2DGetPrimPtr(saddr_t aPacketPtr);
 extern u32 sdf2DMakeStdPacket(u32 aPacket, s32 aLeng);
 extern s32 sdf2DLinkTexPacket(sdfDrawTag_t *, sdfTexHandle_t *, s32);
-extern void sdfDrawTagLink(sdfDrawTag_t *, addr_t aPacket);
 
 #include "sdk_libc.h"
 
@@ -175,7 +175,6 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/itf_panel_draw.h"
 

@@ -1,19 +1,13 @@
 #include "common.h"
 #include "libsdf.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+#include "sdfMat.h"
 
 /* Declared here because no header carries these. */
-extern void *memcpy(void *a, const void *b, size_t c);
-extern void *memset(void *a, s32 b, size_t c);
-extern void *sdfChipAllocDirect(s32 aSize);
-extern void *sdfChipAllocZeroDirect(s32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-extern sdfMemHandle_t *sdfMemAllocFromTailDirect(s32 aSize);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-extern void sdfMemFreeHandleDirect(sdfMemHandle_t **aHandlePtr);
 extern sdfTexHandle_t *sdfTexSet(void *aTex);
 extern sdfTexHandle_t *sdfTexSetDirect(void *aTex);
-extern sdfItemArray_t *sdfTexListNew(s32 aInitCapa);
 extern void sdfDecompInit(struct sdfDecomp_t *cb, u8 *dst);
 extern s32 sdfDecomp(struct sdfDecomp_t *cb, const u8 *src, s32 length);
 extern void sdfAddressResolver(s32 *aDataBody, saddr_t aOffset, u8 *aAddrInfoPtr, s32 aAddrInfoLeng);
@@ -46,7 +40,6 @@ void sdfPacTexListDecoderInit(sdfPacDecodeCb_t *cb, sdfPacStdBlockHeader_t *hdr)
 void sdfPacMarkPhaseFinished(sdfPacDecodeCb_t *aState);
 void sdfPacResetOutputToAllocationEntry(sdfPacDecodeCb_t *aState);
 void sdfPacTexListDecoderTmxHeaderEndFunc(sdfPacDecodeCb_t *cb);
-extern void sdfTexListAdd(sdfItemArray_t *aList, sdfTexHandle_t *aTexHandle);
 void sdfPacInit(sdfPacDecodeCb_t *cb, sdfPacCallbackFunc callback);
 void sdfPacSetStay(sdfPacDecodeCb_t *cb);
 void sdfPacSetFromTail(sdfPacDecodeCb_t *cb);

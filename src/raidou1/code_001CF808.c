@@ -1,4 +1,7 @@
 #include "common.h"
+#include "sdfMemory.h"
+#include "sdfSound.h"
+#include "scrTraceCode.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -11,10 +14,8 @@
 
 /* The voice-file RPC sets this busy state on open and clears it on close.
  * It is separate from the PCM callback-command busy latch. */
-MnuTitleSoundBusyState p2sdGetPcmState(void);
 
 /* Returns a borrowed read-only string for a STRING-tagged parameter, or NULL. */
-const char *scrGetStrPara(ScrCommandParameterIndex parameterIndex);
 
 u32 fldCmdGetCurrentSceneSelectionResource(void);
 
@@ -23,8 +24,6 @@ s32 fldCommand_FLD_GET_KIRETA(void);
 
 /* Roll against the threshold associated with the mirrored solar phase. */
 s32 fldCmdRollMirroredSolarThreshold(void);
-extern s32 p2sdLoadPcmFile(const char *name, u8 channel);
-extern void p2sdSyncSound(void);
 s32 fldCommandSendNamedSound(void);
 u32 fldCommandSendSoundControl(void);
 
@@ -46,14 +45,9 @@ s32 fldCmdSetStateFlag(void);
 void Exit(s32 status);
 void FlushCache(s32 mode);
 u32 dds3GetProcessData(const dds3ProcessID_t *task);
-s32 sceSifAllocIopHeap(s32 size);
 s32 sceSifDmaStat(s32 transferId);
-s32 sceSifInitIopHeap(void);
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
 
 /* Return the descriptor's payload base as a byte address, not the descriptor. */
-u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
-char *strcat(char *dst, const char *src);
 
 #include "dds/sdk_ps2.h"
 #include "dds/brs_result_counter.h"

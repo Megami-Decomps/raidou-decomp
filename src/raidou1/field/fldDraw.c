@@ -15,6 +15,11 @@
 #include "event.h"
 #include "effect.h"
 #include "font.h"
+#include "sdk_libc.h"
+#include "sdfVu0.h"
+#include "sdfDraw.h"
+#include "sdfTex.h"
+#include "sdfPacketBuff.h"
 
 typedef struct fldSpriteCorner_t fldSpriteCorner_t;
 
@@ -65,9 +70,6 @@ extern u32 fldDrawInitDone;
 extern addr_t fldDrawEnv;
 s32 sdf2DLinkTexPacket(sdfDrawTag_t *aTag, sdfTexHandle_t *aTexHndl, s32 aCtx);
 sdfGrPacketHeader_t *sdf2DAllocSprite(s32 aNumOfSpr);
-void sdfDrawTagInit(sdfDrawTag_t *a);
-void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
-s32 sdfGrAllocPacketBuff(s32 aSize);
 extern saddr_t sdf2DGetPrimPtr(saddr_t);
 
 extern void sdfPrimLinkGt4(
@@ -77,7 +79,6 @@ extern void sdfPrimLinkGt4(
     s32 aZ, s32 (*aAllocator)(s32));
 
 sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
-void MultMatrixRev(const void *aMatrix);
 extern u8 sdfViewMatrix[];
 extern sdf3DScreenParam_t dds3ScreenParam;
 extern u32 sdf2DMakeStdPacket(u32, s32);
@@ -88,9 +89,6 @@ sdfGrPacketHeader_t *sdf2DMakePrimPacketHeader(sdfGrPacketHeader_t *aPacketPtr, 
 
 extern s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
 struct sdfTexBuf_t *sdfTexGetPacket(sdfTexHandle_t *aHandle);
-s32 sdfTexGetPacketLength(const sdfTexHandle_t *aHandle);
-void SetRotateMatrixZ(f32 aAngle);
-void sdfDrawTagLinkRef(sdfDrawTag_t *aTag, addr_t aPacket);
 extern void sdf3DMakeDirectRefPacket(dmaPacketHeader_t *, addr_t, s32);
 extern void sdfBillBoardMakeTMPacket(u8 *, const f32 *);
 extern void sdfBillBoardMake1(u8 *, const sdfVector4_t *, u32, const UV_t *, const VTX_t *);
@@ -108,11 +106,9 @@ extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
                               s32 (*aAllocator)(s32));
 
 u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
-extern void *memset(void *, int, size_t);
 void sdfFreeAutoDelayed(void *data);
 void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *aPkt);
 extern u8 fldDbgFmtDec[];
-extern void *memcpy(void *, const void *, size_t);
 extern void *fldDrwZBuf;
 extern void *sdfAllocAuto(u32 size);
 extern void sdfFreeAutoDelayed(void *p);

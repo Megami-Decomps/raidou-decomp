@@ -55,8 +55,6 @@ extern s32 SignalSema(s32 sema);
 extern s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize,
                          void *recv, s32 rsize, void *endfunc, void *endpara);
 
-extern s32 _sceCd_scmd_prechk(s32 cmd);
-s32 _sceCd_scmd_prechk(s32 command);
 s32 sceCdPowerOff(s32 *result);
 
 typedef struct sdfCdClock_t {

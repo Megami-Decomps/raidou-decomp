@@ -3,6 +3,9 @@
 #include "libsdf.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfPrint.h"
 
 struct sdfGsMemSlice_t;
 
@@ -166,7 +169,6 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-extern void *memcpy(void *, const void *, size_t);
 
 #include "sdk_libc.h"
 
@@ -189,13 +191,10 @@ extern char sdfGsMemTypeFmt[];
 extern char *sdfGsMemTypeNames[];
 sdfGsMemSlice_t *sdfGsMemGetLinkTail(void);
 extern char *sdfGsMemTypeNamesTail[];
-void sdfMemGetInfo(sdfMemInfo_t *aInfo);
-void sdfChipGetInfo(sdfChipInfo_t *aInfo);
 
 typedef struct sdfFileCmdHandle_t sdfFileCmdHandle_t;
 
 void sdfGrFlushOtChain(u32 *source);
-s32 sdfPrintf(const char *str, ...);
 
 typedef struct sdfSndInitThreadParam_t {
     s32 status;

@@ -6,6 +6,7 @@
 #include "draw3d.h"
 #include "datCalc.h"
 #include "ps2asm.h"
+#include "sdfVu0.h"
 
 extern void (*GetPositionPtrTable[])(void *owner, effBTLAimParams_t *request);
 extern nbFormation_t *effBTLSkillGetInvokeFormation(void);
@@ -13,11 +14,6 @@ extern f32 aViewTarget[4];
 extern f32 aViewEye[4];
 extern f32 aViewDown[4];
 extern f32 effBTL_Ptr_D[];
-extern void LookAtMatrix(const void *aTarget, const void *aEye, const void *aDown);
-extern void ReverseMatrix(void);
-extern void SetRotateMatrixX(f32 aAngle);
-extern void SetRotateMatrixY_B(f32 aAngle);
-extern void MultMatrixRevNoArg(void);
 void effBTLPartGetPositionPtr(nbFormation_t *pFormation, effBTLAimParams_t *pPosPtr, sdfVector4_t *pPos);
 void effBTLPartGetRotateMatrixPtr(effBTLAimParams_t *pPosPtr, sdfMatrix4_t *pMatrix);
 

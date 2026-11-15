@@ -1,6 +1,8 @@
 #include "common.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfChip.h"
+#include "sdfGsMemory.h"
 
 extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
 
@@ -24,8 +26,6 @@ enum sdf_psm
 
 extern s32 DIntr(void);
 extern void EIntr(void);
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
 extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 extern sdfGsMemSlice_t *gsMemHandleLinkHead;
 extern sdfGsMemSlice_t *gsMemHandleLinkTail;

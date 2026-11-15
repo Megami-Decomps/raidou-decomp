@@ -2,6 +2,8 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfMat.h"
+#include "sdfTex.h"
 
 void *sdfDevLoadFile(const char *aFileName, u32 *aOutData, u32 *aOutSize, s32 aAlign);
 
@@ -102,10 +104,7 @@ u32 sdfMemLock(sdfMemHandle_t *aHandle);
 #include "sdk_libc.h"
 
 void sdfMemUnlock(sdfMemHandle_t *aHandle);
-void sdfTexListAdd(sdfItemArray_t *aList, sdfTexHandle_t *aTexHandle);
 sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-extern sdfItemArray_t *sdfTexListNew(u32 aInitCapa);
-sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
 void sdfFileClose(void *aHandle);
 u32 sdfFileLength(void *aHandle);
 

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "kernel.h"
 #include "sdfFrame.h"
+#include "sdfChip.h"
 
 /* Two ports, two sticks per port, and two axes per stick. */
 extern s8 dds3PadButtonPrev[2][2][16];
@@ -34,7 +35,6 @@ s32 dds3ExistProcess(dds3ProcessID_t *id);
 dds3ProcessID_t *dds3SearchProcessName(char *namestr);
 s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 void ChangeProcessFlagChild(s32 change, dds3ProcessID_t *parent, u32 flag);
-void *sdfChipAllocDirect(u32 aSize);
 
 #include "sdk_libc.h"
 

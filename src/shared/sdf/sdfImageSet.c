@@ -2,6 +2,7 @@
 #include "eeregs.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfMemory.h"
 
 /* GS pixel storage modes, the values of sdfGsMemSlice_t.pixelFormat. */
 enum sdf_psm
@@ -23,7 +24,6 @@ enum sdf_psm
 
 extern void *sdfChipAllocDirect(u32 aSize);
 extern void sdfChipFreeDirect(void *aPtr);
-extern s32 iWakeupThread(s32 threadId);
 
 /* sdfImageSetPacket_tag.freeMode: which heap owns the uploaded pixels. */
 enum SdfImageSetMem
@@ -77,8 +77,6 @@ extern s32 SignalSema(s32 semaId);
 extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
 extern void *sdfChipAllocZeroDirect(u32 aSize);
 extern s32 sdfChipCheck(void *aPtr);
-extern sdfMemHandle_t *sdfMemGetHandleByPtr(void *aPtr);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern s32 GetThreadId(void);
 
 #include "sdk_libkernl.h"

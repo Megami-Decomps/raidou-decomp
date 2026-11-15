@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libc.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -6,7 +7,6 @@
 
 #include "dds/btl.h"
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/ee_mmi.h"
 

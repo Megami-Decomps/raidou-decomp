@@ -2,8 +2,11 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+extern s32 DIntr(void);
+extern void EIntr(void);
 
-s32 strlen(const char *aStr);
 s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
 s32 sdfFileCmdClose(void *aHandle);
 s32 sdfFileCmdFree(sdfFileCmd_t *aHandle);
@@ -15,7 +18,6 @@ void sdfFileCmdThreadSetPrio(s32 prio);
 s32 sdfFileCmdRead(void *aHandle, void *aBuffer, s32 aLength);
 void sdfFileCmdUnlink(void *aHandle);
 void sdfFileCmdDequeue(void *aCmd);
-s32 sceClose(s32 a);
 
 typedef u8 sdfDevOperationCode_t;
 
@@ -102,13 +104,7 @@ enum sdf_stream_playback {
 
 #include "sdk_libkernl.h"
 
-extern void *memcpy(void *, const void *, size_t);
-extern char * strcpy(char *, const char *);
-void *sdfChipAllocDirect(s32 aSize);
 extern sdfFileDeviceCB_t sdfFileDeviceCB[];
-extern s32 DIntr(void);
-extern void EIntr(void);
-extern void sdfChipFreeDirect(void *aPtr);
 extern sdfFileCmdHandle_t *sdfFileCmdActiveHead;
 extern sdfFileCmdHandle_t *sdfFileCmdFreeList;
 extern s16 sdfFileCmdCount;
@@ -121,7 +117,6 @@ extern char sdfFileCmdPfsPrefix[];
 extern char sdfFileCmdMoviePath[];
 extern char sdfFileCmdCdimgPrefix[];
 extern u8 sdfFileCmdDefaultDevice;
-void *sdfChipAllocZeroDirect(s32 aSize);
 extern s32 sdfFileCmdAnalyzeFileName(const char *aFileName, char **aRealNamePtr);
 extern u16 sdfFileCmdDefaultCreateMode;
 extern s32 sdfFileCmdThreadPrio;

@@ -3,9 +3,10 @@
 #include "sdk_libgcc.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
-
+#include "sdk_libc.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
+
 extern s32 sceTtyInit(void);
 extern s32 sceTtyRead(char *buffer, s32 length);
 extern s32 sceTtyWrite(const char *buffer, s32 length);
@@ -21,7 +22,6 @@ typedef struct threadMgrQueue_t {
     u8 commands[512][2];
 } threadMgrQueue_t;
 
-extern void kprintf(const char *format, ...);
 
 typedef struct rpcSemaParam {
     s32 count;
@@ -109,7 +109,6 @@ s32 sceTtyInit(void);
  * that register-save area and then continues into the stack arguments. */
 typedef char *kernelVaList_t;
 
-void kprintf(const char *format, ...);
 
 typedef struct {
     void (*handler)(void *packet, void *argument);
@@ -264,7 +263,6 @@ typedef struct fsOutputCompletion_t {
     u32 size;
 } fsOutputCompletion_t;
 
-extern void *memcpy(void *destination, const void *source, size_t size);
 typedef void (*fsPowerOffCallback_t)(void *argument);
 
 typedef struct fsPowerOffState_t {

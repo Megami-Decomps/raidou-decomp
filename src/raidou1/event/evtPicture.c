@@ -2,6 +2,7 @@
 #include "kernel.h"
 #include "libsdf.h"
 #include "sdfFrame.h"
+#include "evtPicture.h"
 
 /* 0x68-byte picture work block. InitPictureProcessData sets the defaults and
  * evtPictureProcess1 steps the three interpolators. */

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "newdata.h"
+#include "evtMoon.h"
 
 extern s32 gMoonFadeFrameMax;
 extern s32 Process2_evtMoonData3;

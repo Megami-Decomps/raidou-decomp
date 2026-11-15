@@ -1,4 +1,7 @@
 #include "common.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfMath.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -26,15 +29,6 @@ FileRequestCleanupResult fileHandleFree(struct FileRequest *request);
 struct FileRequest *fileLoadEx(const char *requestName, u32 allocationMode,
                                               u32 callbackAddress, u32 userData);
 
-extern void *memcpy(void *, const void *, unsigned int);
-void *sdfChipAllocDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
-f32 sdfCos(f32 angle);
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-void *sdfMemLock(struct sdfMemHandle_t *allocation);
-void sdfMemUnlock(struct sdfMemHandle_t *allocation);
-f32 sdfSin(f32 angle);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -50,7 +44,6 @@ f32 sdfSin(f32 angle);
 #include "dds/eff_owner_records.h"
 
 /* Declared before first use (were implicit int). */
-extern void * memset(void *, s32, u32);
 
 typedef struct EffectObjectFlag {
     u8 pad00[0xC];

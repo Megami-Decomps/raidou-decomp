@@ -7,6 +7,13 @@
 #include "ps2asm.h"
 #include "effDebug.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+#include "sdfVu0.h"
+#include "sdfMath.h"
+#include "sdfQuat.h"
+#include "effBlur_Filter.h"
 
 typedef struct effEveBEDParams_t {
     f32 center[4];
@@ -37,7 +44,6 @@ typedef struct {
     u8 bytes[0x30];
 } __attribute__((packed)) effEveBEDRecord_t;
 
-extern void *sdfChipAllocDirect(u32 aSize);
 extern void effEveBEDCutDraw(effEveBEDCut_t *hEveBEDCut);
 
 #define EFF_EVENT_NEUTRAL_COLOR 0x80808080
@@ -78,17 +84,12 @@ extern effBlurTemplate_t *hEve_PartialMultiBlur;
 extern effBlurScatterWork_t *hEve_DistortionBlur;
 extern effBlurScaleWork_t *hEve_RippleBlur;
 extern dds3Effect_PartialMultiFilter_t *hEve_PartialMultiFilter;
-effBlurTemplate_t *dds3EffectPartialMultiBlurCreate(const dds3Effect_PartialMultiBlurParam_t *pParam);
 extern u8 mblurDefaultParam[];
 extern u8 dblurDefaultParam[];
 
 /* Factories accept the serialized parameter prefix used by effect callbacks. */
-effBlurScatterWork_t *dds3EffectDistortionBlurCreate(dds3Effect_DistortionBlurParam_t *pParam);
 extern u8 mfilterDefaultParam[];
-dds3Effect_PartialMultiFilter_t *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *pParam);
 extern u8 rblurDefaultParam[];
-effBlurScaleWork_t *dds3EffectRippleBlurCreate(dds3Effect_RippleBlurParam_t *pParam);
-extern void *memcpy(void *, const void *, size_t);
 extern effScreenDrawParams_t BlurEditorGetParamsData;
 extern dds3Effect_PartialMultiBlurParam_t rblurParam;
 extern dds3Effect_DistortionBlurParam_t rblurParam2;
@@ -236,29 +237,22 @@ extern f32 aViewEye[4];
 extern u8 aViewDown[];
 
 /* Read vector inputs; VU0 forms first minus second and stores second in vf31. */
-void LookAtMatrix(const void *aTarget, const void *aEye, const void *aDown);
 
 /* Rigid-invert the VU matrix in vf28-vf31 in place; translation becomes
  * -(R^T * t). The rotation input is assumed to contain no scale. */
-void ReverseMatrix(void);
 
 /* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31. */
-void ToMatrix(void);
 extern f32 effEveBEDDirAngle[];
 
 /* Load the secondary Y-axis rotation matrix into the primary VU0 matrix registers. */
-void SetRotateMatrixY_B(f32 aAngle);
 
 /* Apply the primary VU0 matrix bank vf28-vf31 to basis vectors vf24-vf27,
  * then replace vf28-vf31 with the four transformed vectors. */
-void MultMatrixNoArg(void);
-u32 sdfMemLock(sdfMemHandle_t *aHandle);
 extern s32 EffEveCPSmokeCount;
 extern dds3Billboard_t *dds3BillboardFileLoad(s32 kind, const char *path);
 extern addr_t hEffEveCPSmokeBill01Tex;
 extern addr_t hEffEveCPSmokeBill02Tex;
 void dds3BillboardDelete(struct dds3Billboard_t *hData);
-void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern effRandState_t dds3EffectBase[];
 
 /* Advance caller-owned state, returning its next 32-bit value. NULL selects
@@ -269,11 +263,9 @@ u32 dds3GetRandA(effRandState_t *name);
 f32 dds3GetRandFloatA(effRandState_t *name);
 extern f32 aViewTarget[4];
 void dds3BillboardSetMode(struct dds3Billboard_t *hBillboard, s32 mode);
-f32 sdfSin(f32 aRadius);
 
 /* Blend packed RGBA8888 colors; t >= 1 returns colorB unchanged. */
 u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
-f32 sdfCos(f32 aRadius);
 
 /* Copy one 128-bit vector from the read-only source to destination storage. */
 void dds3BillboardSetPosition(void *hBillboard, const void *pPos);
@@ -293,15 +285,12 @@ void dds3EffectPartDelete(dds3EffectPart_t *hEffPart);
 effCubicBezierSlot_t *dds3Bezier4PGetPart(struct effArrHdr_t *pEffBezier4P, s32 index);
 void dds3EffectPartSetColor(dds3EffectPart_t *hEffPart, u32 abgr);
 s32 dds3Bezier4PPartRun(struct effArrHdr_t *table, s32 slotIndex, f32 *out);
-extern void ToMatrix(void);
-extern void MultMatrixNoArg(void);
 
 EXTERN_LATE_CONST sdfVector4_t effUnitY;
 
 void effEveBEDPartGetPositionPtr(effEveBEDParams_t *pParams, effBTLAimParams_t *pPosPtr);
 void dds3EffectPartSetPosition(dds3EffectPart_t *hEffPart, void *pPos);
 void dds3EffectPartDraw(dds3EffectPart_t *hEffPart);
-extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
 extern effArrHdr_t *dds3Bezier4PCreate(s32 number);
 void Eve_PartialMultiBlurSetTex(sdfTexHandle_t *hTex);
 

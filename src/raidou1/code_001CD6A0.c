@@ -9,7 +9,6 @@
 #include "sdk_libc.h"
 #include "sdk_libgcc.h"
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 void sdfLinkLoadImage(
     sdfDrawTag_t *list, sdfGsMemSlice_t *source, s32 destinationX,

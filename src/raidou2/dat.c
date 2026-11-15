@@ -32,7 +32,6 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/sdf_vu0.h"
 

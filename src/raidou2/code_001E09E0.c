@@ -48,7 +48,6 @@ enum {
 };
 
 void sdfMemGetInfo(SdfGeneralHeapStats *stats);
-s32 strcmp(const char *a, const char *b);
 
 #include "dds/mnu_camp_display.h"
 #include "dds/mnu_camp_option_index_api.h"

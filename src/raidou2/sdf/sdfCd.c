@@ -2,6 +2,7 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+extern s32 sceRead(s32 fileHandle, saddr_t buffer, s32 byteCount);
 
 typedef struct
 {
@@ -19,7 +20,6 @@ extern s32 WaitSema(s32 aSemaId);
 extern s32 SignalSema(s32 aSemaId);
 extern void *sdfCdImageDirData;
 void FatalError(const char *aMessage, ...) __attribute__((noreturn));
-s32 sceClose(s32 a);
 
 enum SdfFileIOCmdStat {
     SDF_FILE_CMD_STAT_INIT = 0,
@@ -68,7 +68,6 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-extern void *memcpy(void *, const void *, size_t);
 extern void sdfDelayThread(s32 delay);
 void sdfCdWaitTrayClose(void);
 extern u8 sdfCdImageMode;
@@ -82,16 +81,12 @@ extern u8 sdfCdSectorBuf[0x800];
 
 #include "sdk_libkernl.h"
 
-extern s32 sceLseek(s32 fileHandle, s32 offset, s32 origin);
-extern void *malloc(size_t size);
-extern s32 sceRead(s32 fileHandle, saddr_t buffer, s32 byteCount);
 extern const char *dds3ImgPath;
 
 #include "sdk_libcdvd.h"
 
 extern u32 sdfCdImageFileName;
 extern u32 dds3ImgLsn;
-extern s32 sceSifAllocIopHeap(s32);
 extern void sceCdStInit(s32, s32, s32);
 void sdfCdImageClose(void);
 

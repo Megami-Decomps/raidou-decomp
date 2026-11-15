@@ -16,9 +16,10 @@
 #include "newdata.h"
 #include "event.h"
 #include "effect.h"
+#include "evtMoon.h"
+#include "sdk_libm.h"
 
 extern f32 R360_LR(f32 a, f32 b);
-extern f32 fabsf(f32);
 f32 R360_LR(f32 a, f32 b);
 f32 fldPlayerCalc360_8(f32 aKakudo);
 f32 fldPlayerCalc360_4(f32 aKakudo);
@@ -32,7 +33,6 @@ f32 fldPlayerCalc360_4(f32 aKakudo);
 #include "sdk_libc.h"
 #include "dds/btl.h"
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/ee_mmi.h"
 
@@ -67,7 +67,6 @@ enum {
 #define FIELD_ENCOUNTER_PERCENT_RANGE 100U
 
 extern char D_0039FCA0[], D_0039FCB0[];
-extern void evtDisableMoonDraw(void);
 
 struct dds_dds3ObjectBaseControlWorkData_t;
 

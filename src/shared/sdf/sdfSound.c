@@ -3,6 +3,7 @@
 #include "libsdf.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
+#include "sdfSound.h"
 
 struct sdfGsMemSlice_t;
 
@@ -17,7 +18,6 @@ typedef struct {
     u32 privateData[6];
 } sdfSceIoStat_t;
 
-s32 strlen(const char *aStr);
 s32 sdfSndCmdTrans(void);
 s32 SleepThread(void);
 extern s8 sdfSndBurstReqMode;
@@ -179,8 +179,6 @@ enum sdf_stream_playback {
 };
 
 extern void sdfSndTransToIOP(s32 aIOPAddr, void *aEEAddr, s32 aSize);
-extern void *memcpy(void *, const void *, size_t);
-extern char * strcpy(char *, const char *);
 extern sndRingPacket_t sdfSndCmdPacketRing[32];
 extern u32 sdfSndSendCmd_cmd_id;
 extern vu16 sdfSndCmdIndex;

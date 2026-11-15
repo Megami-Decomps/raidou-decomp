@@ -2,9 +2,9 @@
 #include "sdf_resource.h"
 #include "newdata.h"
 #include "scr.h"
+#include "scrTraceCode.h"
 
 extern scrProcessWork_s *scrHandleFirst;
-extern s32 strcmp(const char *s1, const char *s2);
 
 extern dds3ProcessID_t *dds3StartProcess(char *v1, s32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
                                          s32 (*drawExit)(dds3ProcessID_t *id),
@@ -24,7 +24,6 @@ extern s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 
 #include "sdk_libc.h"
 
-extern s32 scrTraceCode(scrProcessWork_s *pwork);
 extern s32 scrScriptProcess(dds3ProcessID_t *id);
 void scrScriptShutdown(dds3ProcessID_t *id);
 scrProcessWork_s *scrLoadScriptFile(char *name, s32 messageHandle);

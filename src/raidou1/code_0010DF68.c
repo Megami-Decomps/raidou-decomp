@@ -1,4 +1,11 @@
 #include "common.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "sdk_libkernl.h"
+#include "evtStage.h"
+#include "dds3GlobalWork.h"
+s32 DIntr();
+s32 EIntr(void);
 
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1
@@ -14,8 +21,6 @@
 #include "dds/sdf_general_heap_api.h"
 #include "dds/sdf_heap_api.h"
 
-s32 DIntr();
-s32 EIntr(void);
 void sdfChipGetInfo(SdfChipHeapStats *stats);
 void sdfDevConsAttribute(sdfDevConsCB_tag *console, u8 attribute);
 void sdfDevConsClose(sdfDevConsCB_tag *node);
@@ -23,12 +28,9 @@ sdfDevConsCB_tag *sdfDevConsOpen(u32 screenOriginX, u32 screenOriginY, s32 colum
 
 /* Update the console state stored at the corresponding field offsets. */
 void sdfDevConsSetMode(sdfDevConsCB_tag *console, u8 controlByte);
-void sdfDrawTagInit(struct sdfDrawTag_t *list);
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 size);
 
 /* Read the active packet cursor or restore it at a quadword boundary. */
 s32 sdfGrOpenPacketBuff(void);
@@ -61,7 +63,6 @@ void sdfPrimSetOpaquePacket(sdfPrimTransPacket_t *packet);
 #include "dds/sdf_heap_overlay_block.h"
 #include "dds/ee_mmi.h"
 
-extern void evtFreeStage(void);
 extern void evtInitEventTest(void);
 extern void evtViewerCreateTaskWithSky(void);
 
@@ -136,7 +137,6 @@ void evtDestroyFontResourceChain(void);
 extern u16 D_00435D40;
 extern u16 D_00435D42;
 extern char evtGeneralHeapPercentFormat[];
-extern u64 *dds3PrimFrameRect(s32, s32, s32, s32, s32, u32, u32);
 s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *task);
 extern u32 D_00435D4C;
 

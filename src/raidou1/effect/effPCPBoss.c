@@ -10,6 +10,8 @@
 #include "event.h"
 #include "nb.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
 
 typedef struct
 {
@@ -474,16 +476,10 @@ typedef struct effPCP_HBED2_tag
 } effPCP_HBED2_tag;
 
 extern u8 dds3EffectBase[];
-extern void *memcpy(void *a, const void *b, size_t c);
-extern void *sdfChipAllocDirect(u32 aSize);
 extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern s32 sdfModelGetMarkPosMatrix(void *aRoot, s32 aId);
 extern void effPCPCrackInit(effPCPCrack_t *pPCPCrack);
 extern u8 dds3RenderTargetVector[], dds3RenderEyeVector[];
-extern void sdfChipFreeDirect(void *aPtr);
-extern void *sdfMemAllocDirect(u32 aSize);
-extern void *sdfMemLock(void *aHandle);
-extern void sdfMemFreeDirect(void *aHandle);
 extern u32 dds3GetRandA(u8 *name);
 extern f32 dds3GetRandFloatA(u8 *name);
 extern effPartHandle_t *dds3EffectPartCreate(u16 type, void *pData);

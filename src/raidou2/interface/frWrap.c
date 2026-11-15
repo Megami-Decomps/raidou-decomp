@@ -3,6 +3,7 @@
 #include "libsdf.h"
 #include "kernel.h"
 #include "font.h"
+#include "sdfMemory.h"
 
 typedef struct frRelativeImage_t
 {
@@ -35,11 +36,6 @@ typedef struct
 
 extern u32 frFontRowBuf;
 extern char frWrapEmptyString[];
-extern u32 strlen(const char *text);
-extern void *memcpy(void *a, const void *b, size_t c);
-extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern void frSetWhiteSpaceW(s32 StyleNo, s32 Width);
 extern u8 frEnableMode(s32 Flag);
 extern u8 frDisableMode(u8 Flag);

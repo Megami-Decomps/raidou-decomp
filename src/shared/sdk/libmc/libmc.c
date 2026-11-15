@@ -1,5 +1,8 @@
 #include "common.h"
 #include "ps2asm.h"
+#include "sdk_libc.h"
+#include "sdk_libkernl.h"
+#include "sdk_libmc.h"
 
 /* The sif client data of the mcserv module; +0x24 is non-zero once bind
  * succeeded, which every call tests before using the RPC. */
@@ -91,7 +94,6 @@ extern s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize,
 extern s32 sceMcOpen(s32 a, s32 b, char *c, s32 d);
 extern void mcDelayThread(u16 ticks);
 extern char *strncpy(char *dst, const char *src, size_t n);
-extern int scePrintf(const char *fmt, ...);
 
 /* The chunk this string opens also carries the float constants the next
  * unit needs, so it stays one INCLUDE_RODATA rather than an inline literal. */
@@ -128,7 +130,6 @@ s32 sceMcSeek(s32 fd, s32 offset, s32 origin);
 void mceIntrReadFixAlign(void *argument);
 s32 sceMcRead(s32 a, void *b, s32 c);
 s32 sceMcWrite(s32 a, const void *b, s32 c);
-extern s32 iWakeupThread(s32 thread);
 extern s32 GetThreadId(void);
 extern s32 SetAlarm(u16 ticks, void (*callback)(s32, s32, s32), void *argument);
 extern s32 SleepThread(void);
@@ -138,8 +139,6 @@ void mceGetInfoApdx(void *response);
 s32 sceMcGetInfo(s32 a, s32 b, s32 *c, s32 *d, s32 *e);
 s32 sceMcUdCheckNewCard(void);
 s32 sceMcGetDir(s32 a, s32 b, char *c, s32 d, s32 e, void *f);
-extern u32 strlen(const char *str);
-extern void *memcpy(void *dest, const void *src, size_t size);
 void mceStorePwd(char *dest);
 s32 sceMcChdir(s32 a, s32 b, char *c, char *d);
 s32 sceMcFormat(s32 port, s32 slot);

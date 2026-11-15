@@ -2,6 +2,10 @@
 #include "libsdf.h"
 #include "kernel.h"
 #include "fileManager.h"
+#include "sdfChip.h"
+#include "sdk_libc.h"
+#include "sdfPrint.h"
+#include "sdfDev9.h"
 
 /* All three views share the 0x30-byte request header. Their differently
  * typed links distinguish transfer work from the queue and PAC callbacks. */
@@ -81,8 +85,6 @@ extern dds3ProcessID_t *dds3StartProcess(char *v1, s32 dDS3_PRIORITY_DRAW_PB, s3
 s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
 s32 WaitSema(s32 sema);
 s32 SignalSema(s32 sema);
-void *sdfChipAllocZeroDirect(u32 aSize);
-char *sdfStrdupChip(const char *str);
 void *sdfMemAllocDirect(u32 aSize);
 void *sdfMemAlloc2Direct(u32 aSize);
 u32 sdfMemLock(void *aHandle);
@@ -96,9 +98,6 @@ s32 sdfFileCmdWrite(void *aHandle, void *aBuffer, s32 aLength);
 s32 sdfFileCmdClose(void *aHandle);
 s32 sdfFileCmdFree(void *aHandle);
 void sdfFileCmdThreadSetHiPrio(void);
-s32 sdfPrintf(const char *str, ...);
-void *memset(void *a, s32 b, size_t c);
-void sdfChipFreeDirect(void *aPtr);
 void sdfPacFree(sdfPacDecodeCb_t *cb);
 s32 sdfPacDecode(sdfPacDecodeCb_t *cb, const u8 *data, s32 length);
 void *sdfMemAllocFromTailDirect(u32 aSize);

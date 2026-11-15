@@ -2,17 +2,16 @@
 #include "draw3d.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdfDraw.h"
+#include "sdf2D.h"
+#include "effPacket.h"
 
 /* The native end message is padded to a 0x20-byte rodata block. */
 extern s8 dds3CrossfadeRunFlag;
 extern u32 dds3CrossfadeFrame;
 extern u32 dds3CrossfadeFrameMax;
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 extern u32 effPktDefaultFaceIndex[];
-extern s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
 extern void *sdfGrAllocPacketBuff(s32 aSize);
-extern sdfGrPacketHeader_t *sdf2DMakePrimPacketHeader(sdfGrPacketHeader_t *aPacketPtr, s32 aPrimReg, s32 aNumOfRegs, s64 aGifRegs, s32 aNumOfPrim);
-extern void *memcpy(void *a, const void *b, size_t c);
 
 #include "sdk_libc.h"
 

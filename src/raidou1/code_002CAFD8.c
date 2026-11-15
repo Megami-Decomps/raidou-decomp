@@ -11,12 +11,14 @@
 #include "draw3d.h"
 #include "kernel_draw.h"
 #include "sdfFrame.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "sdf2D.h"
 
 typedef struct frFontHandle_t frFontHandle_t;
 
 typedef struct frFontRequest_t frFontRequest_t;
 
-extern sdfGrPacketHeader_t *sdf2DMakePrimPacketHeader(sdfGrPacketHeader_t *packet, s32 prim, s32 count, s64 registers, s32 loops);
 
 typedef struct
 {
@@ -473,8 +475,6 @@ typedef struct
 } cmpModelLink_t;
 
 void cmpExpandColor(u64 *dst, u32 color);
-extern void sdfDrawTagInit(sdfDrawTag_t *);
-extern void sdfDrawTagLink(sdfDrawTag_t *, addr_t);
 void cmpDrawSpriteFlag(u8 id, s32 flag, s32 ot);
 void cmpDrawSprite(s32 id, s32 flag, s32 ot);
 void cmpDrawSprite2(s32 id, s32 flag, s32 ot);
@@ -582,7 +582,6 @@ extern datSkill_t attr[];
 #define VERSION_DDS1 1
 #endif
 
-void *memset(void *dst, s32 value, u32 size);
 
 void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
                               s32 (*allocatePacket)(s32));
@@ -597,7 +596,6 @@ u32 *sdf3DPrimMakePoly(sdf3DPrimPolyParm_t *request);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 size);
 
 #include "dds/sdf_packet_header.h"
 #include "dds/eff.h"
@@ -614,8 +612,6 @@ typedef struct UiQuadWords {
     u32 unk00[4];
 } UiQuadWords; // 0x10
 
-extern s32 sdf2DGetPrimPacketSize(s32 registerCount, s32 loopCount);
-extern u8 *sdf2DGetPrimPtr(SdfDrawPacket *packet);
 extern void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, EffectSlotSet *set, s32 slot, BdWork *entry, s32 layer);
 void itfDrawGridWithResolvedSlot(s32 offsetX, s32 offsetY, s32 z, s32 drawFlags, EffectSlotSet *resource, s32 resourceIndex, s32 surfaceIndex);
 void itfUpdateGridSlotDescription(EffectSlotSet *resource, s32 resourceIndex);

@@ -1,17 +1,12 @@
 #include "common.h"
 #include "kernel.h"
+#include "sdfSound.h"
+#include "evtSound.h"
 
 extern char evtPackNameFormat[];
 
 #include "sdk_libc.h"
 
-extern s32 p2sdLoadSMGFile(s32 MidiNo);
-extern s32 p2sdLoadCheckMidi(s32 MidiNo);
-extern void p2sdPlayBGM(s32 MidiNo);
-extern void p2sdSetBgmTrack(s32 index);
-extern void p2sdPlayBGMFade(s32 index);
-extern void p2sdStopBGM(s32 index);
-extern void p2sdPlaySE(s32 index, s32 volume, s32 pan);
 s32 evtGetSoundIndex(s32 eventId, s32 variation);
 s32 evtLoadEventBgm(s32 eventId);
 s32 evtCheckEventBgmLoaded(s32 eventId);

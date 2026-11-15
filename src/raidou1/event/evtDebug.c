@@ -4,6 +4,7 @@
 #include "newdata.h"
 #include "kernel.h"
 #include "libsdf.h"
+#include "evtStage.h"
 
 typedef void (*evtOtRegFunc_t)(sdfGrOt_t *, sdfDrawTag_t *);
 extern s32 evtSceneDispWork;
@@ -11,7 +12,6 @@ extern u32 dds3BackColor;
 
 #include "sdk_libc.h"
 
-extern void evtFreeStage(void);
 
 extern dds3ProcessID_t *dds3StartProcess(char *name, u32 priority, s32 start, s32 shutdown,
                                          dds3ProcessFunc_t process, dds3ProcessFunc_t finish, void *data);

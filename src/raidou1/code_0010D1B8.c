@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfChip.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -11,8 +12,6 @@
 #include "sdf_packet_alloc.h"
 #include "sdk_libc.h"
 
-void *sdfChipAllocZeroDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
 
 #include "dds/evt_sel_state.h"
 #include "dds/ee_mmi.h"

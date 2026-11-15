@@ -27,4 +27,18 @@ typedef struct fileRequest {
 
 fileRequest_t *fileLoad(const char *filename);
 
+u8 *fileGetLoadPtr(const fileRequest_t *fileHandle);
+u32 fileGetLoadSize(const fileRequest_t *fileHandle);
+sdfMemHandle_t *fileGetMemHandle(const fileRequest_t *fileHandle);
+s32 fileHandleFree(fileRequest_t *fileHandle);
+fileRequest_t *fileLoadEx(const char *filename, u32 headOrTail, addr_t endCallback, addr_t callbackParm);
+s32 fileManager(void);
+void fileSyncAll(void);
+s32 pacCheckEnd(const fileRequest_t *pacHandle);
+s32 pacFileCheckEnd(const fileRequest_t *pacFileHandle);
+s32 pacFileHandleFree_(void *pacHandle);
+fileRequest_t *pacLoad(const char *filename);
+fileRequest_t *pacLoadEx(const char *filename, u32 headOrTail, u32 callback, u32 pendCallback, u32 callbackParm);
+void pacSync(fileRequest_t *pacFileHandle);
+
 #endif

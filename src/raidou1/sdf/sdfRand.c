@@ -2,6 +2,7 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfDev9.h"
 
 typedef struct sdfHostPrefix_t {
     s8 b[7];
@@ -115,7 +116,6 @@ extern s32 sceCdReadClock(sdfCdClock_t *);
 extern u8 sdfCdClock;
 extern sdfClock_t sdfCdClockCache;
 s32 sdfGetCdClock(sdfClock_t *now);
-s32 sdfBcdToDecimal(s32 aBcd);
 void sdfRandomize(sdfRandCB_t *aCB, u32 aSeed);
 void sdfRandomizeByTime(sdfRandCB_t *aCB);
 

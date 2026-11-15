@@ -2,9 +2,10 @@
 #include "ps2asm.h"
 #include "billboard.h"
 #include "sdf_lighting.h"
+#include "sdk_libc.h"
+#include "sdfPacketBuff.h"
 
 /* Declared here because no header carries these. */
-extern void *memset(void *a, s32 b, size_t c);
 
 #define SDF_DMA_QWORD_SHIFT 4
 
@@ -18,9 +19,7 @@ extern void *memset(void *a, s32 b, size_t c);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 aSize);
 s32 sdfBillBoardGetPacketSize(s32 aNum);
-extern void *memcpy(void *, const void *, size_t);
 void sdfBillBoardMakeTMPacket(u8 *aPacket, const f32 *aTM);
 
 void sdfBillBoardMake1(u8 *aPacket, const f32 *aCenter, u32 aColor, const void *aUVList,

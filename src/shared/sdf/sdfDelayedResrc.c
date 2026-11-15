@@ -1,5 +1,8 @@
 #include "common.h"
 #include "sdf_types.h"
+#include "sdk_libkernl.h"
+extern s32 DIntr(void);
+extern s32 EIntr(void);
 
 /* Declared here because no header carries these. */
 extern s32 SignalSema(s32 aSemaId);
@@ -38,9 +41,7 @@ typedef struct sdfDelayedResrcItems_t {
 
 extern sdfDelayedResrcChunk_t *sdfDelayedResrcLink;
 void *sdfChipAllocDirect(s32 aSize);
-extern s32 EIntr(void);
 extern saddr_t sdfPendingQueueSlots[2];
-extern s32 DIntr(void);
 extern s32 sdfDelayedResrcSemaId;
 extern s32 sdfCreateSema(u32, u32, u32);
 

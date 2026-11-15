@@ -1,4 +1,5 @@
 #include "common.h"
+#include "evtCommand.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -105,7 +106,6 @@ u32 mnuClearTerminalPanelSelection(dds3ProcessID_t *task);
 
 struct MenuTerminalWork;
 
-extern s32 evtCommand_FIELD_CLS(void);
 
 typedef struct QuadRecord {
     s32 unk00;

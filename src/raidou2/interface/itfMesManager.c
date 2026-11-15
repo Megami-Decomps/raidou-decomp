@@ -4,6 +4,9 @@
 #include "itfMesManager.h"
 #include "kernel.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "sdfTex.h"
+#include "scrTraceCode.h"
 
 typedef struct itfMesBinTypeHeader_t itfMesBinTypeHeader_t;
 
@@ -110,12 +113,10 @@ typedef void (*itfProcessShutdown_t)(dds3ProcessID_t *task);
 s32 itfMesMngMessage(void);
 extern u32 scrGetMessageHandle(void);
 extern itfMesInstance_t pinst[];
-extern s32 scrGetIntPara(s32);
 extern s32 itfMesMngRequestMessage(s32 window, s32 entryIndex, s32 itemIndex);
 void itfMesMngSetPhase(s32 msgid, s8 phase);
 s32 itfMesMngSelect(void);
 extern void itfMesMngRequestSelect(s32 id, s32 select);
-extern void scrSetIntReturnValue(s32 i);
 void itfMesMngRequestSelectRelease(s32 id);
 s16 itfMesMngGetSelPhase(s32 msgid);
 s16 itfMesMngGetSelectNo(s32 msgid);
@@ -212,7 +213,6 @@ extern char itfMesMarkerNone[];
 extern char itfMesDebugFadeFormat[];
 extern void ReleaseAllWindow(struct instanceMes_tag *pinst);
 void ReleaseAllVariable(variable_tag *pvariable);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern void itfMiscLinkGive(itfMesLink_t *pelem, itfMesLinkControl_t *pstack);
 
 #define ITF_MES_MAGIC_MSG0 0x3047534d
@@ -221,7 +221,6 @@ extern void itfMiscLinkGive(itfMesLink_t *pelem, itfMesLinkControl_t *pstack);
 
 #define ITF_MES_COPY_ALIGN_MASK 3
 
-extern void *memcpy(void *a, const void *b, size_t c);
 
 #define ITF_MES_BINARY_COPY_ROUND_BIAS 5
 
@@ -233,7 +232,6 @@ void ChangeFontAlpha(frFontHandle_t *pfont, u32 alpha);
 void CalcMesFlow(instanceMes_tag *pinst);
 s32 SelectItemDefKey(select_tag *psel);
 void ChangeFontColor(frFontHandle_t *pfont, s32 index, s32 lines, s32 color);
-extern void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
 extern void itfMiscDrawSpritePrim(void *pos, void *uv, void *color, s32 z, sdfTexHandle_t *texhandle, s32 context, sdfDrawTag_t *pdrawtag);
 extern u8 itfMesDebugLineVertIndex[5];
 extern u8 itfMesDebugLineColorIndex[5];

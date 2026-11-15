@@ -5,6 +5,8 @@
 #include "model.h"
 #include "draw3d.h"
 #include "ps2asm.h"
+#include "sdfDraw.h"
+#include "sdfMath.h"
 
 typedef struct { u8 unk00[8]; f32 degrees; u8 unk0C[4]; } pbFovWork_t;
 
@@ -33,11 +35,9 @@ extern pbColor_t itfTestOverlayColor;
 extern s16 dds3ScreenBlurAlpha, dds3ScreenBlurScale;
 extern s32 D_00551EA8, pbDebugPanel3State;
 extern void *dds3FontReqAllocDrawTag(void);
-extern void sdfDrawTagLink(sdfDrawTag_t *, addr_t);
 
 #include "sdk_libc.h"
 
-extern f32 sdfSin(f32 aRadius);
 void pbDrawRotatedPrim(s32 otIndex);
 extern char pbDebugPanel3Title[];
 extern char pbDebugPanel3CursorMark[];

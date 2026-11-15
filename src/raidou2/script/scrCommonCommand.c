@@ -4,6 +4,9 @@
 #include "scr.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "scrCommonCommand.h"
+#include "scrTraceCode.h"
+#include "EventBit.h"
 
 static inline f32 scrFabsf(f32 x)
 {
@@ -33,13 +36,8 @@ extern s8 dds3PadBitTable[];
 #include "sdk_libc.h"
 
 extern void datDebugPrintf(const char *fmt, ...);
-extern s32 scrGetIntPara(s32 n);
-extern f32 scrGetFloatPara(s32 n);
-extern void scrSetIntReturnValue(s32 i);
 extern s32 scrGetCommandTimer(void);
-extern s32 scrGetLabelCodeAddress(s32 labelindex);
 extern void scrSetCodePointer(s32 cp);
-extern s32 evtBitCheck(s32 no);
 extern s32 dds3GetRandIntA(s32 aLimit, s32 name);
 extern void dds3PadVibrationSet(s32 port, s32 motor, s32 level);
 extern void dds3SetScreenFovy(f32 fovy);

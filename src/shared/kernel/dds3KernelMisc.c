@@ -1,10 +1,10 @@
 #include "common.h"
 #include "kernel.h"
 #include "libsdf.h"
+#include "sdfDraw.h"
+#include "dds3GlobalWork.h"
 
 extern s8 dds3PadButtonState[64];
-extern u64 *dds3PrimFrameRect(s32 aX, s32 aY, s32 aZ, s32 aW, s32 aH, u32 aBgCol, u32 aFrameCol);
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 void SelectSub(s32 *pbase, s32 *pm, s32 list, s32 win, s32 pad, s32 pluskey, s32 minuskey);
 void dds3ConsPanelTagLink(sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy);
 void dds3ConsPanelTagLinkZ(sdfDrawTag_t *tag, s32 x, s32 y, s32 sx, s32 sy, s32 z);

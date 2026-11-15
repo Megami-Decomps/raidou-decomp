@@ -3,9 +3,10 @@
 #include "sdk_libgcc.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
-
+#include "sdk_libc.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
+
 s32 write(s32 descriptor, const void *buffer, s32 length);
 s32 read(s32 descriptor, void *buffer, s32 length);
 s32 open(const char *path, s32 flags, s32 mode);
@@ -272,7 +273,6 @@ typedef struct fsOutputCompletion_t {
     u32 size;
 } fsOutputCompletion_t;
 
-extern void *memcpy(void *destination, const void *source, size_t size);
 typedef void (*fsPowerOffCallback_t)(void *argument);
 
 typedef struct fsPowerOffState_t {

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libm.h"
 
 #define GET_FLOAT_WORD(i, d)                    \
     do {                                        \
@@ -14,7 +15,6 @@
         (d) = sf_u.f;                           \
     } while (0)
 
-extern f32 fabsf(f32 x);
 extern f32 atanf(f32 x);
 extern const f32 atanfTable[];
 extern const f32 atanfConst;
@@ -22,7 +22,6 @@ extern const f32 atanfTable2[];
 extern const f32 atanfConst2;
 extern const f32 atanfTable3[];
 f32 atanf(f32 x);
-f32 fabsf(f32 x);
 extern const f32 atanfTable[3];
 extern const f32 atanfConst __attribute__((section(".rodata")));
 extern const f32 atanfTable2[3];

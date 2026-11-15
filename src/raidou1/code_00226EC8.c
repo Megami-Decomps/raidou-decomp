@@ -10,6 +10,18 @@
 #include "event.h"
 #include "nb.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfDraw.h"
+#include "sdfMat.h"
+#include "billManager.h"
+#include "sdfMath.h"
+#include "sdfPacketBuff.h"
+#include "sdfQuat.h"
+#include "dds3SceneBasic.h"
+#include "effBlur_Filter.h"
+#include "dds3PathBasic.h"
+#include "effPacket.h"
 
 typedef struct
 {
@@ -473,23 +485,9 @@ typedef struct effPCP_HBED2_tag
     void *pHelperBED;
 } effPCP_HBED2_tag;
 
-extern void *memcpy(void *a, const void *b, size_t c);
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void *sdfChipAllocZeroDirect(u32 aSize);
-extern void *memset(void *a, s32 b, size_t c);
-extern void *sdfMatNew(void);
-extern void sdfMatSetConstant(void *aMat, f32 aRatio);
-extern void *dds3BillboardCreate(s32 count, void *params);
-extern void *dds3BillboardCopy(void *hBillboard);
 extern void *sdfTexSet(const void *aTex);
 extern void sdf3DPrimLinkTm(void *aTag, s32 aAllocator);
-extern void *effPkt3DPrimMakePoly(effPCPBossWork_t *aParm);
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 extern u8 dds3RenderTargetVector[], dds3RenderEyeVector[];
-extern void sdfChipFreeDirect(void *aPtr);
-extern void *sdfMemAllocDirect(u32 aSize);
-extern void *sdfMemLock(void *aHandle);
-extern void sdfMemFreeDirect(void *aHandle);
 extern u32 dds3GetRandA(u8 *name);
 extern f32 dds3GetRandFloatA(u8 *name);
 extern void mdlSingleMotion(effCrackModel_t *aHandle, s32 aGroup, s32 aNumber);
@@ -498,19 +496,12 @@ extern void *mdlLoad(u32 aMajor, u32 aMinor);
 
 #include "sdk_libc.h"
 
-extern void sdfMatFreeDelayed(void *aMat);
-extern void dds3BillboardDelete(void *hData);
 extern void dds3BillboardSetRGBA(void *hBillboard, u32 abgr);
 extern void sdfTexFreeDelayed(void *aHandle);
-extern void sdfDrawTagInit(sdfDrawTag_t *aTag);
-extern s32 sdfGrAllocPacketBuff(s32 aSize);
 extern f32 aViewEye[4], aViewTarget[4];
 extern void *effPCPHelperBEDGetModel(void *pHelperBED);
-extern void ToMatrix(void);
-extern void dds3BillboardSetAnimKey2(void *hBillboard, s32 frame);
 extern void dds3BillboardSetScale(void *hBillboard, f32 x, f32 y);
 extern void dds3BillboardSetRotate(void *hBillboard, f32 rot);
-extern void dds3BillboardDraw(void *hData);
 extern void SetRotateMatrixY_B(f32 aAngle);
 extern void SetRotateMatrixAxis(f32 aAngle, const void *aAxis);
 extern s32 effPadVibeFrames[2], effPadVibeRemain[2];
@@ -528,7 +519,6 @@ typedef struct effPCPBossCamera_t {
     u32 state;
 } effPCPBossCamera_t;
 
-extern f32 sdfCos(f32 angle);
 extern s32 effPadVibeFrames[2];
 extern u8 effPadVibePower[2];
 
@@ -550,20 +540,11 @@ void MultMatrixRevNoArg(void);
 void SetRotateMatrixX(f32 angle);
 f32 atanf(f32 x);
 struct billHandle_t *dds3BillboardGeneral(s32 index);
-struct sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 index);
-void dds3BillboardSetAnimColorAdvMode(struct billHandle_t *billboard);
-void dds3BillboardSetMode(struct billHandle_t *billboard, s32 mode);
-void dds3DeletePathControl(dds3PathBasicControl_t *path);
-void dds3DeleteSceneBasicData(dds3Basic_t *node);
 
 /* Factories accept the serialized parameter prefix used by effect callbacks. */
-EffBlurScatterWork *dds3EffectDistortionBlurCreate(dds3Effect_DistortionBlurParam_t *params);
 void dds3EffectDistortionBlurDelete(EffBlurScatterWork *work);
-EffBlurTemplate *dds3EffectPartialMultiBlurCreate(const dds3Effect_PartialMultiBlurParam_t *body);
 void dds3EffectPartialMultiBlurDelete(EffBlurTemplate *owner);
-EffResourceRectWork *dds3EffectPartialMultiFilterCreate(dds3Effect_PartialMultiFilterParam_t *params);
 void dds3EffectPartialMultiFilterDelete(EffResourceRectWork *work);
-EffBlurScaleWork *dds3EffectRippleBlurCreate(dds3Effect_RippleBlurParam_t *params);
 void dds3EffectRippleBlurDelete(EffBlurScaleWork *work);
 u16 mdlGetMajorNum(const dds3ModelHandle_t *ctx);
 u16 mdlGetMinorNum(const dds3ModelHandle_t *ctx);
@@ -572,8 +553,6 @@ void sdf3DPrimLinkMat(sdfDrawTag_t *packetList, sdfMat_t *asset,
                               s32 (*allocatePacket)(s32));
 
 /* Store the primary or secondary texture owner and mark its draw state dirty. */
-void sdfMatSetTex(struct sdfMat_t *asset, struct sdfTexHandle_t *texture);
-f32 sdfSin(f32 angle);
 
 #include "dds/eff_surface_grid_node.h"
 #include "dds/eff_surface_node.h"
@@ -640,9 +619,7 @@ extern void effReleaseSurfaceGridBuffers(EffSurfaceGridNode *);
 extern sdf3DPrimPolyParm_t effDrawTrackSetWork;
 extern EffTrackSet *effCreateTrackSetWithSharedReferences(u32, u32, u32);
 extern void effReleaseResourceRefs(EffTrackSet *);
-extern void dds3EffectFilter(void *);
 extern f32 mnuMeasureProjectedPerpendicularDistance(f32);
-extern void effBlurStepScaleSlotsAndDraw(void *);
 
 typedef struct EffectObjectFlag {
     u32 state;

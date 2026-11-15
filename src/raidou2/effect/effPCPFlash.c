@@ -4,6 +4,10 @@
 #include "sdf_resource.h"
 #include "sdf_types.h"
 #include "sdfFrame.h"
+#include "sdk_libc.h"
+#include "sdfVu0.h"
+#include "sdfMath.h"
+#include "sdfPacketBuff.h"
 
 struct effDebugPolyParams_t;
 
@@ -794,17 +798,13 @@ struct effDebugPolyParams_t {
 
 extern effDebugPolyParams_t effPCPFlashPolyParams[];
 extern sdfGrOt_t *effPCPFlashTriangleSurfaces[];
-extern void *memcpy(void *a, const void *b, size_t c);
-extern void *memset(void *, s32, size_t);
 struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 aSize);
 void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Load axis-angle rotation into VU0 vf28-vf31. */
-void SetRotateMatrixAxis(f32 aAngle, const sdfVector3_t *aAxis);
 
 extern void sdf3DPrimLinkMat(sdfDrawTag_t *aTag, sdfMat_t *aMat,
                               s32 (*aAllocator)(s32));
@@ -813,11 +813,9 @@ extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
                            s32 (*aAllocator)(s32));
 
 struct sdfMat_t *sdfMatNew(void);
-f32 sdfCos(f32 aRadius);
 void sdfDrawTagInit(struct sdfDrawTag_t *a);
 u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 void sdfMatSetConstant(struct sdfMat_t *aMat, f32 aRatio);
-f32 sdfSin(f32 aRadius);
 extern sdfGrOt_t sdfGrOtTable[85];
 
 #define effFlashOtNode ((sdfGrOt_t *)&sdfGrOtTable[45])

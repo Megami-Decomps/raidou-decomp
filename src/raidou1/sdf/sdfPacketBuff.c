@@ -1,6 +1,7 @@
 #include "common.h"
 #include "sdf_types.h"
 #include "sdf_resource.h"
+#include "sdfPacketBuff.h"
 
 /* Declared here because no header carries these. */
 extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);

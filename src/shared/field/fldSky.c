@@ -70,7 +70,6 @@ enum {
 
 typedef struct devState_t devState_t;
 
-extern void *memset(void *, int, size_t);
 extern u32 fldSkyDisplayPointers[];
 extern u32 fldCallMemset4Data[];
 extern f32 fldSkyPlayerIdx[];
@@ -83,7 +82,6 @@ typedef struct {
 
 #include "sdk_libc.h"
 
-extern void *memcpy(void *, const void *, size_t);
 void fldCallMemset4(void);
 
 void fldCallMemset4(void) {

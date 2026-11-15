@@ -5,19 +5,14 @@
 #include "dds3obj.h"
 #include "model.h"
 #include "ps2asm.h"
+#include "sdfChip.h"
+#include "sdk_libc.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
 
-extern dds3Basic_t *dds3AddSceneBasicData(s32 type);
-extern void dds3DeleteSceneBasicData(dds3Basic_t *basic);
 extern void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
-extern void dds3SetRadiusPoseSet(dds3PoseSet_t *pose);
-extern void dds3FreePoseSet(dds3Basic_t *basic);
-extern void sdfChipFreeDirect(void *aPtr);
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void *memset(void *a, s32 b, size_t c);
-extern void dds3InitPoseSet(dds3Basic_t *basic);
 extern void dds3ObjectBaseOnFlag(dds3Basic_t *basic, u32 flag);
 extern dds3Basic_t *dds3GetControlScene(void);
-extern dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type);
 dds3Basic_t *dds3AddMatterObjectBasic(s32 serialID, f32 *pos, f32 *rot);
 void dds3DeleteMatterObjectBasic(dds3Basic_t *aPtr);
 void dds3MatterObjectBasicSetOt(dds3Basic_t *aPtr, s32 idx);

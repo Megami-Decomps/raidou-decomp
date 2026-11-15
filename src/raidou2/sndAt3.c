@@ -12,7 +12,6 @@
 
 s32 SignalSema(s32 semaphoreId);
 s32 WaitSema(s32 semaphoreId);
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/mnu_result.h"
 #include "dds/mnu_title_stream.h"

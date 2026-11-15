@@ -49,7 +49,6 @@ typedef void (*cdvdPowerCallback_t)(void *argument);
 
 #define UNCACHED(a) ((s32 *)(EE_ADDR(a) | 0x20000000))
 
-extern int scePrintf(const char *fmt, ...);
 extern s32 sceCdStream(u32 lsn, u32 sectors, void *buf, s32 cmd, void *arg);
 
 typedef struct sdfCdClock_t {

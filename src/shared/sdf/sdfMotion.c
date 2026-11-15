@@ -4,6 +4,9 @@
 #include "libsdf.h"
 #include "model.h"
 #include "motion.h"
+#include "sdfChip.h"
+#include "sdfQuat.h"
+#include "sdfMotion.h"
 
 typedef struct
 {
@@ -12,16 +15,11 @@ typedef struct
     sdfModelMorph_t blendSrc;
 } sdfMotNodeMorph_t;
 
-extern void FromEuler(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
-extern void Lerp(f32 aRatio);
-extern void ToMatrix(void);
 extern sdfMotionNodeVTBL_t sdfMotMorphTable;
 void sdfMotionSeek(sdfMotionCtrlr_t *aCtrlr, f32 aFrame);
 
 typedef sdfMotionNode_t *(*sdfMotGenNodeFunc)(sdfMotionCtrlr_t *aCtrlr, u32 aTypeId, u32 aNodeId);
 
-extern void *sdfChipAllocDirect(s32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
 extern sdfModelNode_t *sdfModelSearchNode(sdfModelRootNode_t *aRoot, u32 aId);
 
 extern void sdfMotionChangeBlend(sdfMotionCtrlr_t *aCtrlr, s32 aCutNum, s32 aType, f32 aPreFrame,
@@ -29,7 +27,6 @@ extern void sdfMotionChangeBlend(sdfMotionCtrlr_t *aCtrlr, s32 aCutNum, s32 aTyp
 
 /* The type id's high half picks one of these group tables, its low half the
  * generator inside the group. */
-extern void *sdfChipAllocZeroDirect(s32 aSize);
 extern void *sdfItemArrayNew(s32 aInitCapa, s32 aElemSize, s32 aGrowStep);
 extern void sdfItemArrayFree(void *aArray);
 extern void sdfMatSetDiffuse(sdfMat_t *aMat, u32 aColor);

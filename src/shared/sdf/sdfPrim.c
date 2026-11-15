@@ -1,6 +1,7 @@
 #include "common.h"
 #include "sdf_types.h"
 #include "sdf_resource.h"
+#include "sdfPacketBuff.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -426,7 +427,6 @@ typedef struct effDebugPolyParams_t {
     f32 depth;
 } effDebugPolyParams_t;
 
-s32 sdfGrAllocPacketBuff(s32 aSize);
 void sdfDrawTagInit(sdfDrawTag_t *a);
 void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 void sdfPreDrawTagLink(sdfPreDrawTag_t *aTag, sdfPreDrawHook_t *aHook);

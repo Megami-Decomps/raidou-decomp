@@ -1,4 +1,7 @@
 #include "common.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "dds3GlobalWork.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -9,15 +12,11 @@
 #include "sdk_libc.h"
 #include "dds/sdf_sif_command.h"
 
-u64 *dds3PrimFrameRect(s32 x, s32 y, s32 depth, s32 width, s32 height, u32 colorA, u32 colorB);
 void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
 void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
-void sdfDrawTagInit(struct sdfDrawTag_t *list);
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 size);
 
 #include "dds/itf_grid_text_color_api.h"
 #include "dds/sdf_grid_seek_api.h"

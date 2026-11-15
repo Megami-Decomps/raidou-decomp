@@ -2,8 +2,9 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfChip.h"
+#include "sdfDev9.h"
 
-s32 strlen(const char *aStr);
 
 enum SdfFileIOCmdStat {
     SDF_FILE_CMD_STAT_INIT = 0,
@@ -52,8 +53,6 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-extern void *memcpy(void *, const void *, size_t);
-void *sdfChipAllocDirect(s32 aSize);
 extern const char sdfDev9ResidentFailMsg[];
 extern u8 sdfDev9LoadFlag;
 extern u8 sdfDev9Ready;

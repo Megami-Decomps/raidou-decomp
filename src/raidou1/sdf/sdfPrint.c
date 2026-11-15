@@ -2,8 +2,8 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfPrint.h"
 
-s32 strlen(const char *aStr);
 
 typedef struct sifRpcClientDataPrefix_t {
     u8 opaque00[0x24];
@@ -64,14 +64,12 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-extern void *memcpy(void *, const void *, size_t);
 
 #include "sdk_libmrpc.h"
 
 extern sifRpcClientContextView_t sdfPrintRpcClient;
 extern s8 sdfPrintIopFlag;
 extern char sdfPrintStrFmt[];
-extern s32 scePrintf(const char *, ...);
 extern s32 vsprintf(char *destination, const char *format, void *args);
 void *sdfPrintRpcFunc(s32 unused, sifCommand_t *packet);
 void sdfPrintRpcThread();

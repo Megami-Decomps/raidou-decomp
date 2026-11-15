@@ -6,8 +6,8 @@
 #include "ps2asm.h"
 #include "event.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
 
-extern void sdfMemFreeDirect(void *aHandle);
 extern s32 sdfTexSet(void *aTex);
 s32 fclLoadTexture(char *pFileName);
 

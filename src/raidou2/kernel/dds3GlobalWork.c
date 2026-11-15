@@ -7,9 +7,12 @@
 #include "field.h"
 #include "fpu.h"
 #include "sdfFrame.h"
+#include "sdk_libc.h"
+#include "sdfVu0.h"
+#include "sdfPacketBuff.h"
+#include "dds3GlobalWork.h"
 
 /* Declared here because no header carries these. */
-extern void *memcpy(void *a, const void *b, size_t c);
 typedef void (*sdfGrOtRegFunc_t)(sdfGrOt_t *ot, sdfDrawTag_t *tag);
 
 /* The font node frFont hands back. It accumulates the drawn string's width at
@@ -63,7 +66,6 @@ typedef struct
 
 extern s8 slNewGameBit2208, slNewGameBit2209, slNewGameBit2210, slNewGameBit2211;
 extern s8 slNewGameBit2212, slNewGameBit2213, slNewGameBit2323, slNewGameBit162;
-extern void *sdfGrAllocPacketBuff(s32 aSize);
 
 /* Only the stock capacity word is described by this save-work view. */
 typedef struct
@@ -79,7 +81,6 @@ extern sdfMatrix4_t sdfViewMatrix;
 extern const f32 dds3PrimLineOutline[13][4];
 extern const f32 dds3PrimLineScale[4];
 extern const u8 dds3PrimLinePairs[20][2];
-extern void MultMatrixRev(const void *aMatrix);
 void *dds3PrimLine3D(s32 x, s32 y, s32 z, s32 highlighted);
 extern s8 slNewGameBit2208;
 extern s8 slNewGameBit2209;

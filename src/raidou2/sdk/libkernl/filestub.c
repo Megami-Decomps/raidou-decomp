@@ -3,9 +3,10 @@
 #include "sdk_libgcc.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
-
+#include "sdk_libc.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
+
 s32 write(s32 descriptor, const void *buffer, s32 length);
 s32 read(s32 descriptor, void *buffer, s32 length);
 s32 open(const char *path, s32 flags, s32 mode);
@@ -259,7 +260,6 @@ typedef struct fsOutputCompletion_t {
 } fsOutputCompletion_t;
 
 extern u8 fsCompletionBuffer[];
-extern void *memcpy(void *destination, const void *source, size_t size);
 extern s32 fsCommandSema __attribute__((section(".data")));
 void _sceFsSemInit(void);
 s32 _sceFsWaitS(s32 command);
@@ -297,9 +297,7 @@ extern s32 fsInitialized __attribute__((section(".data")));
 s32 sceFsInit(void);
 extern u8 kernelBuiltinVersion[4] __attribute__((section(".data")));
 extern const void *fsFallbackVersion __attribute__((section(".data")));
-extern s32 memcmp(const void *left, const void *right, size_t count);
 s32 _fs_version(void);
-extern void *memset(void *destination, s32 value, size_t count);
 s32 sceFsReset(void);
 
 typedef struct fsCloseRequest_t {
@@ -496,8 +494,6 @@ typedef struct lfRequest_t {
 } lfRequest_t;
 
 extern u8 kernelBuiltinVersion[4];
-extern s32 memcmp(const void *a, const void *b, size_t size);
-extern void *memset(void *destination, s32 value, size_t size);
 
 typedef struct sifResetPacket_t {
     u64 packetSize : 8;

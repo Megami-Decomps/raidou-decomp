@@ -56,7 +56,6 @@ typedef struct sdfGrOt_t {
     sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
 } sdfGrOt_t;
 
-extern void *memcpy(void *, const void *, size_t);
 
 typedef struct _reent _reent;
 

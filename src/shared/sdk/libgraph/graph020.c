@@ -88,7 +88,6 @@ typedef struct {
 
 #define D2_QWC (*(volatile u32 *)0x1000A020)
 
-extern void scePrintf(const char *fmt, ...);
 
 #include "sdk_libkernl.h"
 

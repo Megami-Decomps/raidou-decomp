@@ -2,6 +2,9 @@
 #include "ps2asm.h"
 #include "sdf_resource.h"
 #include "sif_rpc.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdk_libmc.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -50,9 +53,6 @@ extern u8 sdfFileRpcReadBuf[];
 extern void SleepThread(void);
 extern char *mcModuleNames[];
 extern s32 sceSifLoadModule(const char *, s32, const char *);
-extern char *strcpy(char *, const char *);
-extern char *strcat(char *, const char *);
-extern void sceMcInit(void);
 
 /* Allocate a workspace sized by stackBytes, pass the thread entry to
  * CreateThreadSimple, and return that function's result unchanged. */
@@ -114,7 +114,6 @@ extern s32 WaitSema(s32);
 #include "sdk_libkernl.h"
 
 /* Declared here because no header carries these. */
-extern void *memset(void *a, s32 b, size_t c);
 extern s32 GetThreadId(void);
 extern s32 sdfFileRpcThreadId;
 void SdfFileRpcServerThreadProc(void);
@@ -277,8 +276,6 @@ typedef struct {
 SIZE_CHECK(sdfSceIoStat_size_must_be_0x40, sdfSceIoStat_t, 0x40);
 
 extern s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
-extern s32 sceGetstat(const char *path, sdfSceIoStat_t *stat);
-extern s32 SdfIopFileRpc(const char *name, s32 dataSize, const void *data, s32 *outSize);
 extern s32 WakeupThread(s32 threadId);
 extern u8 sdfHddValid;
 extern const char sdfIopModulePathCdrom[];

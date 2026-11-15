@@ -7,6 +7,10 @@
 #include "field.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "fileManager.h"
+#include "sdfSound.h"
+#include "dds3AdminiProcess.h"
 
 typedef struct fileRequest fileRequest_t;
 
@@ -27,7 +31,6 @@ enum sl_slot_flag
     SL_SLOT_FLAG_DELETE_BEFORE_WRITE = 8
 };
 
-void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern s32 gSlWindowCnt;
 extern s32 gslInfoCode;
 extern s32 slChooseSaveIndex;
@@ -37,8 +40,6 @@ s32 sdfMcGetSlotIndex(s32 request);
 u32 sdfMcGetSlotFlags(s32 request, s32 slot);
 extern saddr_t slChooseData_getCardInfoNext(void);
 extern void mcMakeFileName(char *path, s32 num);
-extern u32 strlen(const char *s);
-extern void *memcpy(void *, const void *, size_t);
 void sdfMcFuncOpen(u32 context, const char *path, s32 openFlags);
 saddr_t slHeadLoadProc_openFile(void);
 extern s32 slMcFd;
@@ -70,7 +71,6 @@ extern sdfMemHandle_t *slBaseIconMemHandle;
 extern addr_t baseIconFileHandle;
 extern u32 gslErrorKeyFlag;
 extern s8 dds3PadButtonState[];
-void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
 
 /* One step of the save and load state machine, which this unit holds as an
  * address and calls through a cast. */
@@ -123,18 +123,12 @@ saddr_t slLoadProc_readFile(void);
 saddr_t slLoadProc_closeFile(void);
 extern s32 gslAnimCnt;
 extern s32 slDraw(s32);
-s32 pacFileCheckEnd(const fileRequest_t *pacFileHandle);
-sdfMemHandle_t *fileGetMemHandle(const fileRequest_t *fileHandle);
-u8 *fileGetLoadPtr(const fileRequest_t *fileHandle);
-u32 fileGetLoadSize(const fileRequest_t *fileHandle);
-s32 fileHandleFree(fileRequest_t *fileHandle);
 extern s32 slQueryYesNoCursor;
 extern s32 slQueryYesNoKeyFlag;
 extern s32 (*proc_func_ans)(dds3ProcessID_t *process);
 
 #include "sdk_libc.h"
 
-extern void dds3AdminiCallSequence(s32 sequence, s32 *data, s32 datasize, s32 restore);
 extern void sdfMcClearSlotFlags(s32 request, s32 slot);
 extern saddr_t slFormatStart(void);
 

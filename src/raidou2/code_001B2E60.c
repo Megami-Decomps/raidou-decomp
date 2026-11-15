@@ -1,4 +1,8 @@
 #include "common.h"
+#include "sdfDraw.h"
+#include "sdf2D.h"
+#include "dds3GlobalWork.h"
+#include "dds3AdminiProcess.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -15,10 +19,8 @@
 #include "dds/sdf_texture_draw_packet.h"
 
 /* Set bit 1 in the active administration task's flags; that task must exist. */
-void dds3AdminiExitSequence(void);
 struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
 dds3TaskKillRequestResult_t dds3KillProcess(dds3ProcessID_t *task, s32 delayTicks);
-u64 *dds3PrimFrameRect(s32 x, s32 y, s32 depth, s32 width, s32 height, u32 colorA, u32 colorB);
 
 /* Return a borrowed scheduler-owned handle from the starting, active, or
  * destroy-pending queue. The handle remains valid through its destroy callback
@@ -48,14 +50,12 @@ void mdlSmoothLoopMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, 
 void mdlSmoothSingleMotion(dds3ModelHandle_t *ctx, s32 searchId, s32 motionIndex, f32 blendLeadFrames,
                        f32 blendDurationFrames);
 
-SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
 void *sdfDevPrintfEx(SifCommand *packet, const char *format, ...);
 void sdfDevSetPrintCB(SifCommand *packet, s32 source, s32 end, s32 argument, s32 index);
 
 struct SdfPacket *sdfDrawRotatedModel(const f32 vertices[][4], const u32 *colors,
                                                    s32 vertexCount, u32 primitiveFlags);
 
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
 SdfChunkHeader *sdfModelGetExtraChunk(const struct dds_sdfModelRootNode_t *model, s32 tag);
 u32 sdfModelGetMarkPosCount(const struct dds_sdfModelRootNode_t *model);
 void sdfModelMakeMarkPosMatrix(struct dds_sdfModelRootNode_t *model, SdfMapPositionRecord *record);

@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libm.h"
 
 #define GET_FLOAT_WORD(i, d)                    \
     do {                                        \
@@ -16,9 +17,7 @@
 
 extern f32 __kernel_cosf(f32 x, f32 tail);
 extern f32 __kernel_sinf(f32 x, f32 tail, s32 reduced);
-extern s32 __ieee754_rem_pio2f(f32 x, f32 *remainder);
 f32 sinf(f32 x);
-s32 __ieee754_rem_pio2f(f32 x, f32 *y);
 f32 __kernel_cosf(f32 x, f32 tail);
 f32 __kernel_sinf(f32 x, f32 y, s32 useTail);
 

@@ -4,6 +4,12 @@
 #include "effect.h"
 #include "billboard.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+#include "sdfVu0.h"
+#include "billManager.h"
+#include "sdfMath.h"
 
 typedef struct dds3Particle_BlurBuffList_t dds3Particle_BlurBuffList_t;
 
@@ -639,8 +645,6 @@ extern f32 dds3ParticleNegOneVec[4];
 extern u8 aViewDown[];
 extern void (*dds3ParticleAllBuffInitTable[])(void *);
 extern void (*dds3ParticleSetScaleTable[])(dds3Particle_Basic_t *, f32);
-extern void *memset(void *a, s32 b, size_t c);
-extern void *memcpy(void *a, const void *b, size_t c);
 dds3Particle_Physics_t *dds3Particle_PhysicsCreate(s32 number);
 void dds3Particle_PhysicsDelete(dds3Particle_Physics_t *hPhysics);
 void dds3Particle_BasicCreate(void *effect);
@@ -728,40 +732,22 @@ void dds3Particle_TrackSet(parSystem_t *hTrackPoly, s32 i, u32 abgr);
 void dds3Particle_Track2Set(parSystem_t *hTrackPoly, s32 i, u32 abgr);
 void dds3Particle_Track3Set(effTrackPolyList_t *hTrackPoly, s32 i, u32 abgr);
 u32 dds3Particle_TrackPolyGetRecTiming();
-sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-void *sdfMemLock(sdfMemHandle_t *aHandle);
-void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 billHandle_t *dds3BillboardGeneral(s32 number);
 void dds3BillboardSetScale(billHandle_t *hBillboard, float x, float y);
-void dds3BillboardSetMode(billHandle_t *hBillboard, s32 mode);
 parSystem_t *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, u32 type);
 void dds3TrackPolyVCSet(void *hTrackPoly, s32 type, void *abgr_in, void *abgr_out);
 void dds3TrackPolySetMode(parSystem_t *hTrackPoly, u16 mode);
 effTrackPolyList_t *Eff_ModelTrackPolyListCreate(effTrackPolyParams_t *pParam, u32 number);
 void dds3TrackPolyDelete(parSystem_t *hTrackPoly);
 void Eff_ModelTrackPolyListDelete(effTrackPolyList_t *list);
-void dds3BillboardDelete(struct billHandle_t *hData);
-void *sdfChipAllocDirect(s32 aSize);
-void sdfChipFreeDirect(void *aPtr);
 f32 dds3GetRandFloatA(effRandState_t *name);
-f32 sdfCos(f32 aRadius);
-f32 sdfSin(f32 aRadius);
 u32 dds3ParticleColorAnim(dds3ParticleColorAnim_t *pColAnim, u32 color_now, s32 frame);
 u32 dds3GetRandA(effRandState_t *name);
-void LookAtMatrix(const void *aTarget, const void *aEye, const void *aDown);
-void ReverseMatrix(void);
-void SetRotateMatrixAxis(f32 aAngle, const sdfVector3_t *aAxis);
-extern void dds3BillboardDraw(billHandle_t *hData);
 void dds3TrackPolyVCRefresh_ParType1(parSystem_t *hTrackPoly, s32 index);
 extern void dds3TrackPolyColorSet(parSystem_t *hTrackPoly, s32 number, u32 color);
 void dds3TrackPolyVCRefresh_ParType2(parSystem_t *hTrackPoly, s32 index);
 void dds3TrackPolyDraw(parSystem_t *node);
 void Eff_ModelTrackPolyListDrawOnly(effTrackPolyList_t *hMTPolyList);
-void MultMatrixNoArg(void);
-struct billHandle_t *dds3BillboardCreate(s32 kind, addr_t data);
-void dds3BillboardSetAnimColorAdvMode(billHandle_t *hBillboard);
-struct billHandle_t *dds3BillboardCopy(const struct billHandle_t *hBillboard);
-void dds3BillboardSetAnimKey(billHandle_t *hBillboard, u32 frame);
 void dds3TrackPolySet(parSystem_t *hTrackPoly, s32 number, const u128 *pV);
 void dds3TrackPolySet2(parSystem_t *hTrackPoly, s32 number, const u128 *pV);
 void Eff_ModelTrackPolyListVertexSet(effTrackPolyList_t *hMTPolyList, s32 index, const u128 *pVertex);

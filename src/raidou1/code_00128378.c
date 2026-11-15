@@ -1,4 +1,5 @@
 #include "common.h"
+#include "evtMoon.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -34,7 +35,6 @@ WorldIndexNode *dds3SceneBasicGetList(dds3Basic_t *object, s32 kind);
 /* Compatible redeclarations keep the broad object header unchanged. */
 Dds3BasicArrayCursorResult dds3SetFirstBasicArray(dds_dds3BasicArrayHandle_t *object);
 Dds3BasicArrayCursorResult dds3SetNextBasicArray(dds_dds3BasicArrayHandle_t *object);
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/ee_mmi.h"
 #include "dds/fpu.h"
@@ -75,7 +75,6 @@ enum {
 #define FIELD_ENCOUNTER_PERCENT_RANGE 100U
 
 extern char D_0039FCA0[], D_0039FCB0[];
-extern void evtDisableMoonDraw(void);
 
 struct dds_dds3ObjectBaseControlWorkData_t;
 

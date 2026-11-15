@@ -4,6 +4,7 @@
 #include "ps2asm.h"
 #include "model.h"
 #include "draw3d.h"
+#include "sdfMemory.h"
 
 #define SDF_DMA_QWORD_SHIFT 4
 
@@ -19,9 +20,6 @@ extern saddr_t corePktPointBuff;
 extern sdfMemHandle_t *sdfCoreDrawBuffHandle;
 extern void *sceDmaGetChan(s32);
 extern void sceDmaSendN(void *, void *, s32);
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 size);
-extern void sdfMemFreeHandleDirect(sdfMemHandle_t **handle);
-extern void *sdfMemLock(sdfMemHandle_t *handle);
 extern u8 *sdfModelAllocTmPacket(sdfModelNode_t *node);
 void sdfCoreDrawScanOneSkinNodes(sdfModelRootNode_t *root, sdfCorePacket_t *p);
 void sdfCoreDrawSetLight(u8 *light);

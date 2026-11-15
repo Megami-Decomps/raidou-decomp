@@ -2,6 +2,8 @@
 #include "sdf_types.h"
 #include "sdf_resource.h"
 #include "eeregs.h"
+#include "sdfPacketBuff.h"
+#include "sdfGsMemory.h"
 
 struct sdfPreDrawHook_t;
 
@@ -107,7 +109,6 @@ typedef struct sdfPreDrawTag_t {
 } sdfPreDrawTag_t;
 
 extern sdfGrFrameSet_t sdfGrFrameSet;
-s32 sdfGetTexelBitCount(u32 aFormat);
 
 typedef struct effDebugPolyParams_t {
     s16 parameterCount;
@@ -146,7 +147,6 @@ extern void sdfLinkLoadImage(sdfDrawTag_t *aDrawTag, sdfGsMemSlice_t *aGsHandle,
                    s32 aDstX, s32 aDstY, s32 aWidth, s32 aHeight,
                    saddr_t aBuffer, s32 (*aAllocator)(s32));
 
-s32 sdfGrAllocPacketBuff(s32 aSize);
 void sdfPreDrawTagLink(sdfPreDrawTag_t *aTag, sdfPreDrawHook_t *aHook);
 
 void sdfPrimSetBitBltElem(sdfPrimBitBltElem_t *aElem, u32 aDstGsAddr, s32 aDstBuffWidth,

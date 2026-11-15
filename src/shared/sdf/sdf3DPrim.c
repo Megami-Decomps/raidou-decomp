@@ -3,6 +3,8 @@
 #include "sdf_lighting.h"
 #include "sdf_resource.h"
 #include "eeregs.h"
+#include "sdk_libc.h"
+#include "sdfPacketBuff.h"
 
 /* Declared here because no header carries these. */
 extern sdfDmaTag_t *sdfMatMakePacket(sdfMat_t *aMat, sdfDmaTag_t *aBuffer, s32 aId);
@@ -158,8 +160,6 @@ typedef struct sdf3DPrimPolyParm_t {
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-void *sdfGrAllocPacketBuff(s32 aSize);
-extern void *memcpy(void *, const void *, size_t);
 
 extern void sdf3DPrimLinkResetTm(sdfDrawTag_t *aTag,
                              s32 (*aAllocator)(s32));

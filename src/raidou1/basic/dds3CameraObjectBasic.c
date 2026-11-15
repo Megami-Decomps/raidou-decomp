@@ -3,17 +3,16 @@
 #include "basic.h"
 #include "dds3obj.h"
 #include "ps2asm.h"
+#include "sdfVu0.h"
+#include "sdfQuat.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
+#include "dds3CameraObjectBasic.h"
 
-extern void dds3SetRadiusPoseSet(dds3PoseSet_t *pose);
-extern void ToMatrix(void);
 
-extern void LookAtMatrix(const sdfVector4_t *aTarget, const sdfVector4_t *aEye,
-                          const sdfVector4_t *aDown);
 
 extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialUp;
 extern const sdfVector4Unaligned_t dds3CameraObjectBasicInitialEye;
-extern dds3Basic_t *dds3AddSceneBasicData(s32 type);
-extern void dds3DeleteSceneBasicData(dds3Basic_t *basic);
 extern void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
 void MakeCamera(dds3Basic_t *pBasic);
 dds3ObjectBaseControlWorkData_t *dds3GetCameraObjectBaseControlWorkData(dds3Basic_t *basic);

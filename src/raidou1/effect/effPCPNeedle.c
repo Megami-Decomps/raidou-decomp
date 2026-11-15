@@ -3,6 +3,9 @@
 #include "effPCPData.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdfVu0.h"
+#include "sdfDraw.h"
+#include "sdfMat.h"
 
 /* One needle instance: position plus the colour the draw loop stamps. */
 typedef struct dds3NeedleModelPart_tag
@@ -55,13 +58,9 @@ extern f32 dds3NeedleModelDefaultPoints[][4];
 extern u32 dds3NeedleModelDefaultColors[];
 extern effDrawSurface_t *dds3NeedleModelDrawSurfaces[];
 extern void *sdfGrAllocPacketBuff(s32 aSize);
-extern void sdfDrawTagInit(void *a);
-extern void sdfDrawTagLink(void *aTag, addr_t aPacket);
 extern void sdf3DPrimLinkMat(void *aTag, void *aMat, s32 aAllocator);
 extern void sdf3DPrimLinkTm(void *aTag, s32 aAllocator);
 extern void *effPkt3DPrimMakePoly(effPrimParam_t *aParm);
-extern void MultMatrixNoArg(void);
-extern void sdfMatFreeDelayed(void *aMat);
 extern void sdfMemFreeDirect(void *aHandle);
 extern void dds3NeedleModelVNCListDelete(dds3NeedleModel_tag *hNModel);
 
@@ -125,9 +124,6 @@ extern effRandState_t dds3EffectBase[];
 extern f32 aViewTarget[4], aViewEye[4], dds3NeedleModelUpVector[4];
 extern void *sdfMemAllocDirect(u32 aSize);
 extern void *sdfMemLock(void *aHandle);
-extern void *sdfMatNew(void);
-extern void sdfMatSetConstant(void *aMat, f32 aRatio);
-extern void *memset(void *a, s32 b, size_t c);
 extern u32 dds3GetRandA(effRandState_t *name);
 extern f32 dds3GetRandFloatA(effRandState_t *name);
 extern trackPolySystem_t *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, u32 type);

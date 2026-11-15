@@ -2,25 +2,24 @@
 #include "libsdf.h"
 #include "ps2asm.h"
 #include "sdf_movie_types.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "sdk_libkernl.h"
+#include "sdfSound.h"
+#include "sdfIpu.h"
+s32 DIntr(void);
+s32 EIntr(void);
 
 s32 sdfFileCmdRead(void *aHandle, void *aBuffer, s32 aLength);
 s32 sdfFileCmdClose(void *aHandle);
 void sdfDummyFunc(void);
-void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-void sdfChipFreeDirect(void *aPtr);
-void sdfIpuFree(sdfIpuDecodeCb_t *cb);
-s32 p2sdSyncMovie(void);
-void *memcpy(void *a, const void *b, size_t c);
 s32 sdfFileCmdFileSize(void *aHandle);
 s32 sdfFileCmdFree(void *aHandle);
-s32 DIntr(void);
-s32 EIntr(void);
-void *memset(void *a, s32 b, size_t c);
 char *strrchr(const char *aStr, s32 aChar);
 s32 strcasecmp(const char *aLeft, const char *aRight);
-void *sdfChipAllocZeroDirect(s32 aSize);
-sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-void *sdfMemLock(sdfMemHandle_t *aHandle);
 void *sdfFileCmdReadOpen(const char *aFileName, SdfStreamRead aCallback, sdfMovieCb_t *aUserData);
 void movieAttachDecodeTask(sdfIpuDecodeCb_t *aNode, sdfIpuInitParm_t *aFormat, SdfStreamRead aRead, sdfMovieCb_t *aContext, s32 aResourceWord);
 s32 sdfCreateSema(s32 initCount, s32 maxCount, s32 option);
@@ -52,11 +51,7 @@ typedef struct sdfMovieDrawPacket_t {
 } sdfMovieDrawPacket_t;
 
 extern u8 *movieWaitSema(s32 size);
-extern s32 sdfGrAllocPacketBuff(s32 size);
 extern sdfDrawTag_t *sdfPrimAllocDrawTag(s32 (*allocator)(s32));
-extern void sdfDrawTagLink(sdfDrawTag_t *tag, addr_t packet);
-extern u32 p2sdSetPcmCallback(addr_t callback);
-extern s32 p2sdPlayPcm(u8 channel);
 void release_movieobj2(sdfMovieCb_t *obj, sdfGrOt_t *ot);
 void movieReadNextChunk(sdfMovieCb_t *aMov);
 s32 movieGetStreamSize(void *aHandle, s32 aOp, void *aBuf, s32 aSize, sdfMovieCb_t *aMov);

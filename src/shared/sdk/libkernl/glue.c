@@ -3,11 +3,12 @@
 #include "sdk_libgcc.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
+#include "sdk_libc.h"
+extern s32 DIntr(void);
+extern s32 EIntr(void);
 
 extern s32 ttyInitDone __attribute__((section(".data")));
 void sceResetttyinit(void);
-extern s32 DIntr(void);
-extern s32 EIntr(void);
 void VSync(void);
 extern void SetVSyncFlag(volatile u32 *flag, volatile u64 *result);
 u64 VSync2(void);
@@ -235,7 +236,6 @@ typedef struct fsOutputCompletion_t {
     u32 size;
 } fsOutputCompletion_t;
 
-extern void *memcpy(void *destination, const void *source, size_t size);
 typedef void (*fsPowerOffCallback_t)(void *argument);
 
 typedef struct fsPowerOffState_t {

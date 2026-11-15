@@ -4,6 +4,10 @@
 #include "ps2asm.h"
 #include "sdf_resource.h"
 #include "sdfFrame.h"
+#include "sdk_libc.h"
+#include "sdfTex.h"
+#include "sdfMath.h"
+#include "sdfPacketBuff.h"
 
 struct effDebugPolyParams_t;
 
@@ -715,12 +719,10 @@ extern sdfGrOt_t *effPCPScatterSurfaceByPool[];
 extern u32 effPCPScatterTexcoords[];
 extern u32 effPCPScatterParams[];
 extern u8 effScatterTriangleIndices[];
-extern void *memset(void *a, s32 b, size_t c);
 struct sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 aSize);
 void *sdfChipAllocDirect(s32 aSize);
 void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
@@ -735,7 +737,6 @@ extern void sdf3DPrimLinkTm(sdfDrawTag_t *aTag,
                            s32 (*aAllocator)(s32));
 
 struct sdfMat_t *sdfMatNew(void);
-f32 sdfCos(f32 aRadius);
 void sdfDrawTagInit(struct sdfDrawTag_t *a);
 
 /* Set vf28-vf31 to vf28-vf31 * vf24-vf27 in place. */
@@ -750,11 +751,8 @@ u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 /* Store the primary or secondary texture owner and mark its draw state dirty. */
 void sdfMatSetTex(struct sdfMat_t *aMat, struct sdfTexHandle_t *aTex);
 void sdfMatSetConstant(struct sdfMat_t *aMat, f32 aRatio);
-f32 sdfSin(f32 aRadius);
 
 /* Acquire a texture from a serialized texture-file header. */
-struct sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
-void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
 
 /* Load the X-axis rotation matrix into the primary VU0 matrix registers. */
 void SetRotateMatrixX(f32 aAngle);
@@ -768,9 +766,7 @@ extern void dds3EffectPartSetColor(effPartHandle_t *hEffPart, u32 abgr);
 extern u32 dds3GetRandA(effRandState_t *name);
 extern u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);
 extern s32 effMagaCylinderCalcColor(s32 color, s32 tint);
-extern f32 sdfAtan(f32 aX);
 extern void SetRotateMatrixAxis(f32 aAngle, const void *aAxis);
-extern void *memcpy(void *a, const void *b, size_t c);
 dds3WhirlwindPolyList_tag *dds3WhirlwindPolyListCreate(u32 number, u32 face);
 void dds3WhirlwindPolyListSetRotateMatrix(dds3WhirlwindPolyList_tag *hPoly, const void *pMatrix);
 dds3ScatterPolyList_tag *dds3ScatterPolyListCreate(s32 face);

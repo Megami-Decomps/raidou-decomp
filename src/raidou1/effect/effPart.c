@@ -5,6 +5,9 @@
 #include "nb.h"
 #include "effBattle.h"
 #include "ps2asm.h"
+#include "sdfChip.h"
+#include "mdlManager.h"
+#include "billManager.h"
 
 extern sdfVector4_t effPartModelPosInit;
 extern sdfVector4_t effPartModelRotInit;
@@ -37,11 +40,6 @@ typedef struct
     void (*setArea)(void *, f32);
 } dds3EffectFunc_t;
 
-void mdlSetPosition(mdlObj_t *aHandle);
-void mdlSetRotate(mdlObj_t *aHandle);
-void mdlSetScale(mdlObj_t *aHandle);
-void mdlSetColor(mdlObj_t *aHandle, u32 aColor);
-void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber);
 extern dds3EffectFunc_t dds3EffectFuncTable[7];
 extern s32 effPartModelSerial;
 
@@ -53,14 +51,9 @@ typedef struct
     u8 data[1];
 } dds3EffectPartModelData_t;
 
-void *dds3BillboardCreate(s32 kind, addr_t data);
-void mdlPackDecode(s32 major, s32 minor, s32 regFlags, const u8 *buff, s32 leng);
 extern dds3EffectFunc_t EffectPCPFuncTable[];
 extern void **effPartPCPDataTable[];
-void *sdfChipAllocDirect(s32 aSize);
-void sdfChipFreeDirect(void *aPtr);
 void dds3BillboardSetScale(void *hBillboard, f32 x, f32 y);
-mdlObj_t *mdlLoad(u32 aMajor, u32 aMinor);
 void dds3EffectPartModelInit(mdlObj_t *hModel);
 effPartHandle_t *dds3EffectPartCreate(u16 type, void *pData);
 void dds3EffectPartDelete(effPartHandle_t *hEffPart);

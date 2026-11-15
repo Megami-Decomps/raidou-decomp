@@ -6,6 +6,7 @@
 #include "newdata.h"
 #include "ps2asm.h"
 #include "event.h"
+#include "sdfChip.h"
 
 typedef struct
 {
@@ -38,11 +39,6 @@ u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
 #include "sdk_libgcc.h"
 #include "dds/btl.h"
 
-extern void *memcpy(void *, const void *, unsigned int);
-void *memset(void *dst, s32 value, u32 size);
-void *sdfChipAllocDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
-u32 strlen(const char *text);
 
 #include "dds/sdf_gs_register_submit_api.h"
 #include "dds/sdf_gs_alpha_register_api.h"

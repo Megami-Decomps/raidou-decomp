@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libm.h"
 
 #define GET_FLOAT_WORD(i, d)                    \
     do {                                        \
@@ -15,11 +16,9 @@
     } while (0)
 
 extern f32 __ieee754_atan2f(f32 y, f32 x);
-extern f32 fabsf(f32 x);
 extern f32 atanf(f32 x);
 f32 __ieee754_atan2f(f32 y, f32 x);
 f32 atanf(f32 x);
-f32 fabsf(f32 x);
 
 f32 __ieee754_atan2f(f32 y, f32 x)
 {

@@ -56,7 +56,6 @@ typedef struct sdfGrOt_t {
     sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
 } sdfGrOt_t;
 
-extern void *memcpy(void *, const void *, size_t);
 
 typedef struct _reent _reent;
 
@@ -164,7 +163,6 @@ struct _reent {
 };
 
 extern _reent *_impure_ptr __attribute__((section(".data")));
-extern void *malloc(size_t size);
 extern s32 atexit(void (*fn)(void));
 
 typedef struct fp_number_type {
@@ -190,7 +188,6 @@ typedef struct fp_number_type_df {
 } fp_number_type_df;
 
 s32 atexit(void (*fn)(void));
-void *malloc(size_t size);
 
 typedef struct mallocChunkPrefix_t {
     u32 previousSize;

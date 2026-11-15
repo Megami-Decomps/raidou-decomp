@@ -3,6 +3,7 @@
 #include "sdk_libgcc.h"
 #include "ps2asm.h"
 #include "sif_rpc.h"
+#include "sdk_libc.h"
 
 s32 write(s32 descriptor, const void *buffer, s32 length);
 s32 read(s32 descriptor, void *buffer, s32 length);
@@ -108,7 +109,6 @@ typedef struct {
 u32 sceSifGetSreg(s32 index);
 u32 sceSifSetSreg(s32 index, u32 value);
 sifCommandContext_t *sceSifGetDataTable(void);
-extern s32 DisableDmac(s32 channel);
 extern s32 RemoveDmacHandler(s32 channel, s32 handlerId);
 extern s32 sifDmacHandlerId;
 extern s32 sceData15;
@@ -256,7 +256,6 @@ typedef struct fsOutputCompletion_t {
     u32 size;
 } fsOutputCompletion_t;
 
-extern void *memcpy(void *destination, const void *source, size_t size);
 typedef void (*fsPowerOffCallback_t)(void *argument);
 
 typedef struct fsPowerOffState_t {

@@ -1,4 +1,6 @@
 #include "common.h"
+#include "sdk_libc.h"
+#include "sdk_libpad.h"
 
 /* One half of a port's double-buffered pad data DMA buffer. */
 typedef struct padDma {
@@ -79,8 +81,6 @@ extern s32 padInitialized __attribute__((section(".data")));
 extern const char *padStateNames[8] __attribute__((section(".data")));
 extern const char *padRequestNames[4] __attribute__((section(".data")));
 extern void SyncDCache(void *start, void *end);
-extern void *memcpy(void *a, const void *b, size_t c);
-extern char *strcpy(char *dst, const char *src);
 
 extern s32 sceSifCallRpc(void *cd, u32 fno, u32 mode, void *send, s32 ssize,
                          void *recv, s32 rsize, void *endfunc, void *endpara);

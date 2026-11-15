@@ -2,9 +2,10 @@
 #include "ps2asm.h"
 #include "sdf_types.h"
 #include "eeregs.h"
+#include "sdk_libc.h"
+#include "sdfVu0.h"
 
 /* Declared here because no header carries these. */
-extern void *memset(void *a, s32 b, size_t c);
 
 enum sdfDecomp_enum {
     SDF_DECOMP_STAT_END = 0,
@@ -43,7 +44,6 @@ enum {
 struct sdfDecompCb_t;
 
 /* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
-void MultMatrixRev(const void *aMatrix);
 extern const u8 *sdfDecompHistory[16];
 
 /* sdf3DScreenParam + 0x70: the scale and trans rows. */
@@ -69,7 +69,6 @@ typedef struct sdfDecompCb_t {
 s32 sdfGrOpenPacketBuff(void);
 void sdfGrClosePacketBuff(saddr_t aBuffPtr);
 extern s32 sdfDecompHistoryIndex;
-extern void *memcpy(void *, const void *, size_t);
 s32 sdfDecomp(sdfDecompCb_t *cb, const u8 *src, s32 length);
 void sdfDecompInit(sdfDecompCb_t *cb, u8 *dst);
 sdfGrPacketHeader_t *sdfDrawModelWithMatrix(const f32 vertices[][4], const u32 *colors, s32 vertexCount, u32 primitiveFlags);

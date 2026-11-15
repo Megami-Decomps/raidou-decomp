@@ -16,9 +16,9 @@
 #include "newdata.h"
 #include "event.h"
 #include "effect.h"
+#include "sdk_libm.h"
 
 extern f32 R360_LR(f32 a, f32 b);
-extern f32 fabsf(f32);
 f32 R360_LR(f32 a, f32 b);
 f32 fldPlayerCalc360_4(f32 aKakudo);
 

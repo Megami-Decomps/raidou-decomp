@@ -5,10 +5,9 @@
 #include "newdata.h"
 #include "ps2asm.h"
 #include "motion.h"
+#include "evtMoon.h"
+#include "EventBit.h"
 
-extern void evtSetAgeOfMoon(u8);
-extern void evtDisableMoonDraw(void);
-extern void evtDisableMoonCalc(void);
 void evtBitAllOff(void);
 void evtBitOff(s32 no);
 

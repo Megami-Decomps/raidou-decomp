@@ -48,7 +48,6 @@ enum {
 
 /* Return the scheduler state, mapping unregistered or invalid states to DETACHED. */
 dds3TaskState_t dds3GetProcessStat(const struct dds3ProcessID_t *task);
-extern void *memcpy(void *, const void *, unsigned int);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new

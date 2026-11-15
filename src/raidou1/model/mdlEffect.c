@@ -7,6 +7,14 @@
 #include "ps2asm.h"
 #include "motion.h"
 #include "sdfFrame.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfDraw.h"
+#include "mdlManager.h"
+#include "sdfTex.h"
+#include "sdfMisc.h"
+#include "dds3GlobalWork.h"
+#include "dds3DebugStuff.h"
 
 typedef struct mdlBillboard_t mdlBillboard_t;
 
@@ -202,9 +210,6 @@ extern f32 sdfFaceDivSoften, sdfFaceDivBias;
 extern char *mdlColorChannelLabels[];
 extern u8 mdlColorChannelStyle[];
 extern u16 mdlPibTrackRowOffset[];
-extern void *sdfChipAllocZeroDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern void *dds3BillboardCreate(s32, addr_t);
 extern void dds3BillboardDelete(mdlBillboard_t *);
 extern mdlBillboard_t *dds3BillboardCopy(mdlBillboard_t *);
@@ -213,14 +218,10 @@ extern void dds3EffectDelete(mdlEffect_t *);
 extern mdlEffect_t *dds3EffectCopy(mdlEffect_t *);
 extern void sdfIpuFree(void *cb);
 extern void sdfIpuSetOutputTex(void *, mdlIpuParams_t *, u8 *, s32, sdfTexHandle_t *);
-extern sdfItemArray_t *sdfItemArrayNew(u32, s32, s32);
-extern void sdfItemArrayFree(sdfItemArray_t *);
 extern mdlMarkPos_t *sdfModelSearchMarkPosData(sdfModelRootNode_t *, s32);
 extern mdlTrackWork_t *Eff_ModelTrackPolyCreate(mdlTrackCreateParams_t *);
 extern void Eff_ModelTrackPolyDelete(mdlTrackWork_t *);
 extern void Eff_ModelTrackPolyDraw(mdlTrackWork_t *);
-extern void mdlSetBlur(mdlObj_t *, s32, s32, u32, u32);
-extern sdfTexHandle_t *sdfTexSearch(s32 id);
 extern sdfModelNode_t *sdfModelSearchNode(sdfModelRootNode_t *, u32);
 extern void dds3BillboardSetPosition(void *, const void *);
 extern void dds3BillboardDraw(mdlBillboard_t *);
@@ -231,9 +232,6 @@ extern void dds3EffectSetRGBA(mdlEffect_t *, s32);
 extern void dds3BillboardSetScale(mdlBillboard_t *, f32, f32);
 extern void dds3EffectSetScale(mdlEffect_t *, f32);
 extern void *sdfDevPrintf(s32, s32, s32, s32, const char *, ...);
-extern void sdfDrawTagLink(sdfDrawTag_t *, addr_t);
-extern void *dds3PrimFrameRect(s32, s32, s32, s32, s32, u32, u32);
-extern void dds3DebugIntEditEx(void *, s32, s64, s64, s64, s64, s8 *);
 
 /* dds3ModelEffectCtrlr_t.type: which effect a controller drives. */
 typedef enum dds3ModelEffectType {

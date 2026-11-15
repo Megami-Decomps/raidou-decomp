@@ -3,13 +3,12 @@
 #include "libsdf.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdf_PadManager.h"
 
 extern u8 dds3PadVibrationState[2];
 extern u8 dds3PadVibrationMode[2];
 extern s32 dds3PadVibrationTable[2];
 extern void dds3GetVibrationLevel(void);
-extern void sdfPadSetAct0(s32 pad, u16 value);
-extern void sdfPadSetAct1(s32 pad, u8 value);
 extern u8 dds3PadButtonState[64];
 extern u8 dds3PadButtonPrev[64];
 extern u32 dds3PadButtonHoldCounters[64];
@@ -33,7 +32,6 @@ void dds3UpdateVibrationSlots(void);
 #include "sdfDevCons.h"
 #include "dds/btl.h"
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 #include "dds/dds3_named_slot.h"
 

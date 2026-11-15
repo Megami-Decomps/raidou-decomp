@@ -1,6 +1,11 @@
 #include "common.h"
 #include "font.h"
 #include "kernel.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "sdfGsMemory.h"
 
 typedef struct frFontHeader_t frFontHeader_t;
 
@@ -214,13 +219,11 @@ void frDelStyleAll(void);
 extern frFontHandle_t *frDestroyFontRequestNow(frFontHandle_t *pFRQ);
 extern u32 frFreeFontTable(frFontNodeHeader_t *pool);
 s32 fmDestroyFontMemControl(void);
-extern void sdfGsMemFree(sdfGsMemSlice_t *aHandle);
 
 void frAddFontStyle(
     u8 StyleNo, u8 *pFontData, sdfMemHandle_t *DataMh
 );
 
-extern u32 sdfMemLock(sdfMemHandle_t *aHandle);
 
 #define FR_FONT_TABLE_ENTRY_SHIFT 6
 
@@ -230,7 +233,6 @@ void frDelFontStyle(s32 StyleNo);
 
 #define FR_FONT_FIRST_RELEASABLE_SLOT 2
 
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern void frLoadFontData(s32 StyleNo, const char *pFileName);
 
 #define FR_FONT_ENTRY_CAPACITY 9
@@ -269,7 +271,6 @@ FontMem_t *fmRentFontMem(void);
 
 extern void sdfImageSetReq(sdfImageRequest_t *parm);
 u8 *frDecodeFontImage(u8 Style, s32 FontNo);
-extern void *sdfChipAllocDirect(s32 aSize);
 
 #define FR_FONT_RESOURCE_CLONE_BYTES 0x120
 
@@ -328,7 +329,6 @@ extern u32 gMessageStepY;
 
 void frSetMessageStepY(u32 StepY);
 u8 *MessageNumSearch(s32 Index, frTextBank_t *pData, s32 Size);
-extern void *memcpy(void *a, const void *b, size_t c);
 void frMessageReturnCode(frMsgInfo_t *pMsgInfo);
 
 #define FR_FONT_CONTEXT_CURSOR_SCALE 8
@@ -341,8 +341,6 @@ u32 frGetMessageResult(u32 Flag);
 extern u32 gMessageRequestResult;
 void frSetVariableRequest(s32 VarNo, s32 pStr);
 extern s8 gMessageSpaceX;
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-extern void *memset(void *a, s32 b, size_t c);
 extern frFontHandle_t *frSetFontString(u8 *text, s8 fontIndex, s8 firstOption, s8 secondOption, frFontHandle_t *chain, s32 flag);
 frFontHandle_t *MessageRequestNS(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1, s32 channel2, s32 channel3, u8 *encodedText, frFontHandle_t *unusedPrevious);
 
@@ -371,9 +369,6 @@ typedef union {
 } frFontSpritePacketView_t;
 
 extern sdfGrOt_t sdfGrOtTable[];
-extern void *sdfGrAllocPacketBuff(u32 size);
-extern void sdfDrawTagInit(sdfDrawTag_t *tag);
-extern void sdfDrawTagLink(sdfDrawTag_t *tag, addr_t packet);
 
 void frCreateDrawFontPacket_20550848(s32 x, s32 y, s32 width, s32 height, u8 style,
     u32 color, u32 depth, s32 filtered, const frFontUvRect_t *uv,

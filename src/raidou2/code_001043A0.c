@@ -1,4 +1,7 @@
 #include "common.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "dds3GlobalWork.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -22,13 +25,9 @@ dds3ProcessID_t *dds3StartProcess(const char *name, u32 priority, s32 startDelay
                          s32 destroyDelay, dds3ProcessFunc_t update,
                          dds3ProcessShutdownFunc_t destroy, u32 userValue);
 
-extern void *memcpy(void *, const void *, unsigned int);
-void sdfDrawTagInit(struct sdfDrawTag_t *list);
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 size);
 
 /* Return borrowed endpoints; callers may inspect list nodes but do not own them. */
 sdfGsMemSlice_t *sdfGsMemGetLinkHead(void);
@@ -59,7 +58,6 @@ extern s32 dds3TextureViewerHandlePad(void);
 extern void dds3DrawTextureViewerFrame(sdfGrOt_t *surface, sdfTexHandle_t *image);
 extern void dds3TextureAttachTask(sdfGrOt_t *surface);
 extern void dds3DrawTextureListDiagnostic(sdfDrawTag_t *packetList, s32 x, s32 y);
-extern u64 *dds3PrimFrameRect(s32, s32, s32, s32, s32, u32, u32);
 extern s32 dds3DebugGraphUpdate(dds3ProcessID_t *task);
 extern dds3ProcessID_t *dds3DebugGraphTask;
 extern s32 dds3TextureCountIncompleteResources(void);

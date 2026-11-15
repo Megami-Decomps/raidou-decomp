@@ -9,6 +9,8 @@
 #include "event.h"
 #include "kernel.h"
 #include "sdf_movie_types.h"
+#include "sdk_libc.h"
+#include "dds3GlobalWork.h"
 
 extern void *dds3SearchProcessName(const char *namestr);
 
@@ -44,7 +46,6 @@ extern movieViewerWork_t movieViewerDebugFlag;
 extern s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 extern void (*DrawPhaseTable[])(fclEncyc_instance_tag *work);
 extern s32 dds3WaitMovieEnd(void);
-extern void *dds3PrimFrameRect(s32 aX, s32 aY, s32 aZ, s32 aW, s32 aH, u32 aBgCol, u32 aFrameCol);
 
 /* The viewer process' own state; the draw tag is at 0x10. */
 typedef struct
@@ -68,7 +69,6 @@ extern void movieViewerFree(void);
 void FinishMovieViewer(void);
 void movieViewerSetFlags(void);
 void movieViewerInitRegs(void);
-extern void *memcpy(void *a, const void *b, size_t c);
 void movieViewerDrawInfo(void);
 
 /* "%08X", "%02X" and "**", in .sdata where a literal cannot go. */

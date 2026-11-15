@@ -2,9 +2,10 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfMisc.h"
 
-void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
-void sdfChipFreeDirect(void *aPtr);
 
 enum SdfFileIOCmdStat {
     SDF_FILE_CMD_STAT_INIT = 0,
@@ -53,13 +54,8 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-void *sdfChipAllocDirect(s32 aSize);
-u32 sdfMemLock(sdfMemHandle_t *aHandle);
-sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
 sdfItemArray_t *sdfItemArrayNew(s32 aInitCapa, s32 aElemSize, s32 aGrowStep);
 void sdfItemArrayFree(sdfItemArray_t *aArray);
-void sdfMemUnlock(sdfMemHandle_t *aHandle);
-void sdfMemReallocRecord(sdfMemHandle_t *aHandle, s32 aSize);
 void sdfDevResizeBufferedRequest(sdfItemArray_t *aArray, s32 aCapacity);
 void sdfItemArrayGrow(sdfItemArray_t *aArray);
 

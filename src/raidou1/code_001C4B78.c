@@ -1,5 +1,7 @@
 #include "common.h"
 #include "raidou_alloc.h"
+#include "mdlManager.h"
+#include "dds3DebugStuff.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -25,10 +27,7 @@ enum {
 
 /* Borrow a controller owned by ctx. The pointer is read-only and expires when
  * that controller is removed or the model context is freed. */
-const struct sdfMotionCtrlr_t *mdlGetMotionCtrlr(
-    const dds3ModelHandle_t *ctx, MdlMotionSearchId searchId);
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
@@ -64,7 +63,6 @@ typedef union EvtMotionValue {
     EvtMotionBits bits;
 } EvtMotionValue;
 
-extern void dds3PrimDebugTextBox(void *, s32, s32, s32, f32 *);
 
 /* Select and draw one light-color bank at the current panel offset. */
 static inline void evtDrawLightRgbComponents(sdfDrawTag_t *list, dds_evtViewerInfo_t *runtime,

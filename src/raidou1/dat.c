@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfMemory.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -33,7 +34,6 @@ enum {
     EFF_WORLD_KIND_COUNT = 18
 };
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 /* Allocate from the chip heap through 0x400 bytes; larger requests use the
  * general heap and return its locked payload address. */
@@ -48,9 +48,6 @@ void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
 /* Release the sdfAllocAuto base in its source heap; interior pointers are
  * invalid. */
 s32 sdfFreeAuto(void *data);
-struct sdfMemHandle_t *sdfMemAllocFromTailDirect(s32 requestedBytes);
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-void *sdfMemLock(struct sdfMemHandle_t *allocation);
 
 #include "dds/sdf_vu0.h"
 #include "dds/sdf_channel.h"

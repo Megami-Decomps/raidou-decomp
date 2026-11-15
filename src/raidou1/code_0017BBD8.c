@@ -1,4 +1,10 @@
 #include "common.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "sdf2D.h"
+#include "sdk_libkernl.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -13,21 +19,11 @@
 #include "dds/sdf_texture_file.h"
 #include "dds/sdk_libkernl.h"
 
-s32 sceDclose(s32 directory);
-s32 sceDopen(const char *path);
 
 /* Allocate a variable-length sprite column packet with this draw header. */
-SdfDrawPacket *sdf2DAllocSprite(s32 loopCount);
-SdfTextureDrawPacket *sdf2DLinkTexPacket(sdfDrawTag_t *packetList, sdfTexHandle_t *texture, s32 context);
-void *sdfChipAllocDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
-void sdfDrawTagInit(struct sdfDrawTag_t *list);
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 size);
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
 void sdfTexFreeDelayed(sdfTexHandle_t *texture);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
@@ -36,8 +32,6 @@ void sdfTexFreeDelayed(sdfTexHandle_t *texture);
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 /* For a new texture, copy payload bytes into queue-owned storage before return. */
 struct sdfTexHandle_t *sdfTexSet(const SdfTextureFileHeader *header);
-char *strcpy(char *dst, const char *src);
-u32 strlen(const char *text);
 
 #include "dds/btl_command.h"
 #include "dds/dds3_effect_sprite.h"
@@ -341,7 +335,6 @@ void btlReplaceResourceHandle(BtlResourceDescriptor *, void *);
 
 void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *descriptor, const char *resourceName);
 void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, void *textureResource);
-extern u8 *sdf2DGetPrimPtr(SdfDrawPacket *packet);
 
 #define EDITOR_KEY_COLS 13
 

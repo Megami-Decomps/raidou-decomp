@@ -2,6 +2,7 @@
 #include "fpu.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfMath.h"
 
 #define SDF_PI_2 1.5707963f
 

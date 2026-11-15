@@ -1,5 +1,8 @@
 #include "common.h"
 #include "libdma.h"
+#include "sdk_libkernl.h"
+extern int DIntr(void);
+extern int EIntr(void);
 
 #define VD_CTRL ((volatile u32 *)0x1000E000)
 
@@ -44,9 +47,6 @@ extern const int sceDmaChanResetFlag[10];
 extern const u8 sceDmaStsBits[16];
 extern const u8 sceDmaStdBits[16];
 extern const u8 sceDmaMfdBits[16];
-extern int scePrintf(const char *fmt, ...);
-extern int DIntr(void);
-extern int EIntr(void);
 void WaitDma(sceDmaChan *chan);
 void WatchDma(sceDmaChan *chan, u32 addr, int timeout);
 u32 CheckAddress(addr_t addr);

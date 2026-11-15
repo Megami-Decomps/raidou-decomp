@@ -1,4 +1,6 @@
 #include "common.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -13,8 +15,6 @@
 #include "dds/eff.h"
 #include "dds/file_pac_completion_api.h"
 
-extern void *memcpy(void *, const void *, unsigned int);
-void *memset(void *dst, s32 value, u32 size);
 FilePacRequestCompletionResult pacCheckEnd(const struct FileRequest *request);
 
 /* These title-specific wrappers forward an opaque stage-task owner and its
@@ -22,9 +22,6 @@ FilePacRequestCompletionResult pacCheckEnd(const struct FileRequest *request);
 s32 pacFileHandleFree_(void *request);
 struct FileRequest *pacLoad(const char *requestName);
 void pacSync(struct FileRequest *request);
-void *sdfChipAllocDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new

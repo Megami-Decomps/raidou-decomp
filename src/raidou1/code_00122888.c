@@ -1,4 +1,5 @@
 #include "common.h"
+#include "scrTraceCode.h"
 
 #ifndef VERSION_DDS2
 #define VERSION_DDS2 1
@@ -12,7 +13,6 @@
  * definition (scrTraceCode.c) returns the context it set the value in, for
  * the script commands that pass it on as their result; their units declare
  * it so. */
-void scrSetIntReturnValue(ScrVmInteger retVal);
 
 extern s32 mtrHasEnoughOwnedMantras(void);
 s32 ptyScriptRemoveUnitAndReturnResult(void);

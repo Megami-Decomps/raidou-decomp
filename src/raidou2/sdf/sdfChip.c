@@ -1,6 +1,12 @@
 #include "common.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfChip.h"
+#include "sdk_libkernl.h"
+#include "sdk_libc.h"
+#include "sdfDev9.h"
+extern s32 DIntr(void);
+extern void EIntr(void);
 
 /* A free chip carries its free-list link at byte 8. */
 typedef struct sdfChip_t
@@ -15,10 +21,6 @@ typedef struct sdfChip_t
 
 #define SDF_CHIP_PAGE_BYTES (1 << SDF_CHIP_PAGE_SHIFT)
 
-extern void *malloc(size_t size);
-extern s32 DIntr(void);
-extern void EIntr(void);
-extern void *sdfZeroMemQuad(void *ptr, s32 quadCount);
 extern void sdfDelayedResrcInitCB(sdfDelayedResrcCB_t *aCB, sdfDelayedResrcFreeFunc aFreeFunc);
 extern void sdfDelayedResrcEntry(sdfDelayedResrcCB_t *aCB, void *aItem);
 extern sdfDelayedResrcCB_t dds3CleanupList;

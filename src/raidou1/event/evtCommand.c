@@ -6,56 +6,46 @@
 #include "scr.h"
 #include "field.h"
 #include "sdfFrame.h"
+#include "evtCommand.h"
+#include "sdfQuat.h"
+#include "evtUnitManager.h"
+#include "scrTraceCode.h"
+#include "dds3EffectObjectBasic.h"
+#include "evtStage.h"
+#include "evtSound.h"
+#include "dds3AdminiProcess.h"
+#include "sdfPrint.h"
+#include "evtPicture.h"
 
 struct effPCPAgiraoFirePartList_t;
 
-extern dds3Basic_t *dds3AddMG12EffectObjectBasic2(s32 type, const struct effPCPAgiraoFirePartList_t *effdata);
-void scrSetIntReturnValue(s32 i);
-extern s32 scrGetIntPara(s32 n);
 void dds3LinkProcess(dds3ProcessID_t *parent, dds3ProcessID_t *target);
 dds3ProcessID_t *evtSearchEventPack(u32 eventno);
 dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId);
 scrProcessWork_s *scrGetScriptHandle(void);
 extern void datDebugPrintf(const char *fmt, ...);
 extern s32 evtInitMotionSeProcess(s32 eventId, s32 resourceId);
-void FromEuler(f32 aRotateX, f32 aRotateY, f32 aRotateZ);
-void Mult(void);
 dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type);
-f32 scrGetFloatPara(s32 n);
 struct dds3Basic_t *dds3GetActiveScene(void);
-extern void *memset(void *a, s32 b, size_t c);
 extern addr_t evtKutiUnit;
-extern void evtRunUnitKutiMotion(addr_t h);
 extern void itfMesMngSetKutiCallback(s32 id, void (*func)(void));
-extern evtUnit_t *evtGetUnitHandle(s32 serial);
-extern void evtSetUnitMove3(evtUnit_t *h, s32 pathID, s32 para1, s32 para2, s32 movesys, s32 movedir, s32 rotsys);
-extern void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1);
 
 /* Canonical provider signatures; callers retain their s32 parameter values. */
-extern s32 evtPlayEventBgm(s32 eventId, s32 variation);
-extern void evtTransEventBgm(s32 eventId, s32 variation);
-extern s32 evtStopEventBgm(s32 eventId, s32 variation);
 extern s32 scrGetMessageHandle(void);
-extern void evtSetUnitKutiMotion(evtUnit_t *h, s32 group, s32 motion);
 void dds3DeleteSceneBasicData(dds3Basic_t *basic);
-void evtUnitLightOn(evtUnit_t *h);
-void evtSetUnitLightDir(evtUnit_t *h, s32 frame);
 extern const char evtMsgLightDirZero[];
 void *evtGetResorceData(u32 eventno, s32 rid);
 
 #include "sdk_libc.h"
 
 extern void evtSetBokasi(s32 sw);
-extern void dds3EffectObjectBasicStatOn(void *basic, s32 s);
 extern dds3Basic_t *dds3AddD3PEffectObjectBasic2(struct effPCPAgiraoFirePartList_t *effdata, void *pos, void *rot);
 extern const char evtMsgEffectBeFailed[];
 extern const char evtMsgEffectBeNotFound[];
-extern void * dds3AddBEDEffectObjectBasic2(void *data, void *pos, void *rot);
 
 typedef struct effEventWork_t effEventWork_t;
 
 void effEveBEDCutSetScale(effEventWork_t *hEveBEDCut, f32 scale);
-extern void dds3StartBEDEffectObjectBasic(void *basic, u32 cutno);
 extern f32 evtCalcEffBedScale(s32);
 
 enum {
@@ -73,7 +63,6 @@ typedef struct evtModelHeader_t {
     f32 positionZ;
 } evtModelHeader_t;
 
-void dds3AdminiCallSequence(s32 sequence, void *data, s32 datasize, s32 restore);
 
 enum {
     EVT_SCALAR_REQUEST_SIZE = 4,
@@ -85,7 +74,6 @@ enum {
 
 void CallBattleSub(s32 encno, s32 eventno);
 void CallBattleSub2(s32 encno);
-char *scrGetStrPara(s32 n);
 struct dds3Basic_t *fldGetUnitFollowCamera(void);
 void *evtSearchBasic(s32 type, s32 serial);
 struct dds3Basic_t *fldGetMatter_From_ModelRangeID(u32 modelRangeID);
@@ -107,7 +95,6 @@ void evtSetAgeOfMoon(s32 age);
 dds3ProcessID_t *evtLoadEventPack(s32 eventno);
 s32 evtGetEventPackStat(u32 eventno);
 extern const char evtMsgBeOk[];
-void sdfPrintf(const char *str, ...);
 extern const char evtMsgLoadBeStart[];
 extern const char evtMsgReadBeStart[];
 extern const char evtMsgPmvRunNoProc[];
@@ -115,25 +102,15 @@ extern const char evtMsgTexBeNoProc[];
 
 typedef u8 sdfTextureClampMode_t;
 
-void evtSetUnitLightAndAmbient(evtUnit_t *h, s32 frame, u32 lrgb, u32 argb);
-void evtSetUnitColorRGB(evtUnit_t *h, s32 frame, u32 rgb);
-void evtSetUnitColorA(evtUnit_t *h, s32 frame, u32 a);
 
 #include "basic.h"
 #include "dds3obj.h"
 #include "ps2asm.h"
 
-extern void dds3EffectObjectPresetMG12(dds3Basic_t *eff);
 
-extern s32 dds3EffectObjectSetMG12Pos(dds3Basic_t *eff, dds3Basic_t *p1,
-                                      dds3Basic_t *p2, dds3Basic_t *p3, dds3Basic_t *p4);
 
-extern void dds3EffectObjectBasicLinkObject(dds3Basic_t *basic, dds3Basic_t *target);
 
-extern s32 dds3EffectObjectBasicLinkObjectIndex(dds3Basic_t *basic, dds3Basic_t *target,
-                                                 s32 index);
 
-extern void dds3EffectObjectBasicUnlinkObject(dds3Basic_t *basic);
 extern void *dds3GetControlScene(void);
 extern s32 dds3GetMapNo(void *scene);
 extern void dds3SetActiveCameraSceneBasic(void *pSceneBasic, dds3Basic_t *pCameraBasic);
@@ -141,30 +118,16 @@ extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 serialID, f32 *pos, f32
 extern s32 dds3AllocObjectId(void);
 extern void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r);
 extern u32 dds3DrawFlag;
-extern void evtEffectLoopControl(dds3Basic_t *eff, s32 sw);
-extern s32 evtCheckPathStat(dds3Basic_t *obj);
 extern s32 evtRegistBEField(s32 eventno, s32 rid);
-extern s32 evtLoadArea(s32 fld, s32 area);
-extern s32 evtStageAnimeControl(s32 type, s32 mode);
-extern void evtFreeAllUnit(void);
-extern void evtFreeStage(void);
 extern void fldSetNextField(s32 command, s32 para);
 extern s32 sdfDelayedResrcCheck(void);
 extern const char evtMsgNameNotFound[];
 extern const char evtMsgEffmg1LoadHint[];
 extern const char evtMsgEffmg2LoadHint[];
 extern void dds3SetSclPoseSet(void *pBasic, u128 *scl);
-extern s32 evtCheckUnitWait(evtUnit_t *h);
-extern void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode);
-extern void evtUnitLightOff(evtUnit_t *h, s32 frame);
-extern u8 evtUnitLightAnimeStat(evtUnit_t *h);
 extern const char evtMsgModelMotionDeprecated[];
 extern const char evtMsgModelMoveMotDeprecated[];
-extern void evtLinkLightObjectBasic(evtUnit_t *h, dds3Basic_t *light, s32 frame);
 extern void evtUnlinkLightObjectBasic(evtUnit_t *h, s32 frame);
-extern void evtPathLoop(dds3Basic_t *basic, s32 sw);
-extern void evtLoadEventBgm(s32 event);
-extern s32 evtCheckEventBgmLoaded(s32 event);
 extern s32 scrGetCommandTimer(void);
 extern void evtSetSkyAlpha(s32 frame, s32 a);
 extern s32 dds3ExistProcess(void *id);
@@ -188,9 +151,6 @@ typedef struct {
 #define EVT_RGBA_SCALE_128 0x43000000
 
 extern const char evtMsgPmvLoadNoProc[];
-extern void evtPictureDrawOn(void *id);
-extern void evtPictureDrawOff(void *id);
-extern void evtKillPictureProcess(void *id);
 extern const char evtMsgSetSkyAlphaLow[];
 extern const char evtMsgSetSkyAlphaHigh[];
 extern s32 *dds3GetActiveUnitSceneBasic(void *pSceneBasic);
@@ -198,7 +158,6 @@ extern void fldSetFilterAnime(s32 on);
 extern void fldSkySetAlpha(s32 alp);
 extern void fldSkySetFilter(s32 idx, s32 mode, s32 hokan);
 extern dds3Basic_t *dds3SceneBasicSearchName(void *scene, const char *name);
-extern dds3Basic_t *dds3AddMG12EffectObjectBasic(s32 type, const char *file);
 extern const char evtMsgTexLoadNoProc[];
 extern const char evtMsgIdNotFound[];
 extern const char evtMsgIdNotFoundWarn[];
@@ -212,7 +171,6 @@ typedef struct
 } evtVec_t;
 
 extern dds3Basic_t *dds3AddD3PEffectObjectBasic(const char *file, evtVec_t *pos, evtVec_t *rot);
-extern dds3Basic_t *dds3AddBEDEffectObjectBasic(const char *file, evtVec_t *pos, evtVec_t *rot);
 extern const char evtMsgEffectLoadHint[];
 extern void evtKillEventPack(s32 eventno);
 extern const char evtMsgObjPathPara0[];
@@ -472,7 +430,6 @@ enum SdfMotionStateValue {
     SDF_MOTION_STATE_SUSPENDED = 6,
 };
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 struct sdfGrOt_t;
 

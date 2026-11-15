@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdfVu0.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -11,11 +12,9 @@
 #include "sdk_libc.h"
 
 /* Load matrix into the VU0 scratch bank and postmultiply the primary bank. */
-void MultMatrixRev(const struct Matrix4 *matrix);
 
 /* Rigid-invert the VU matrix in vf28-vf31 in place; translation becomes
  * -(R^T * t). The rotation input is assumed to contain no scale. */
-void ReverseMatrix(void);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new

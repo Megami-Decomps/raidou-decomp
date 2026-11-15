@@ -59,7 +59,6 @@ typedef struct sdfGrOt_t {
 extern s32 WaitSema(s32);
 extern s32 SignalSema(s32);
 extern s32 GetThreadId(void);
-extern void *memcpy(void *, const void *, size_t);
 
 typedef struct _reent _reent;
 

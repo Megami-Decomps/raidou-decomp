@@ -1,4 +1,9 @@
 #include "common.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "sdfQuat.h"
 
 #ifndef VERSION_DDS1
 #define VERSION_DDS1 1
@@ -10,22 +15,13 @@
 #include "sdf_resource.h"
 #include "sdk_libc.h"
 
-extern void *memcpy(void *, const void *, size_t);
 #include "dds/btl.h"
 #include "dds/sdf_dev_state.h"
 
 /* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
-void Mult(void);
 
 /* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
  * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
-void ToMatrix(void);
-extern void *memcpy(void *, const void *, unsigned int);
-void *memset(void *dst, s32 value, u32 size);
-void *sdfChipAllocDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
-void sdfDrawTagInit(struct sdfDrawTag_t *list);
-void sdfDrawTagLink(struct sdfDrawTag_t *list, u32 packetAddress);
 void sdfFileClose(sdfFileCmdHandle_t *state);
 u32 sdfFileLength(sdfFileCmdHandle_t *state);
 
@@ -35,17 +31,12 @@ void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 size);
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-void *sdfMemLock(struct sdfMemHandle_t *allocation);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-char *strcpy(char *dst, const char *src);
 
 #include "dds/eff_block128.h"
 #include "dds/eff_editor_menu.h"
@@ -894,7 +885,6 @@ struct SdfPacket *effDebugDrawWireModel(const f32 vertices[][4], const u32 *colo
                                                  s32 vertexCount, u32 primitiveFlags);
 
 /* Return the descriptor's payload base as a byte address, not the descriptor. */
-u8 *sdfMemGetPtr(const struct sdfMemHandle_t *block);
 
 #include "dds/prf_profile_parameters.h"
 

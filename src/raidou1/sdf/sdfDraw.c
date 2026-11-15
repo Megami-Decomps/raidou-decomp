@@ -4,6 +4,11 @@
 #include "sdfGsMemIO.h"
 #include "sdf_types.h"
 #include "sdf_resource.h"
+#include "sdfPacketBuff.h"
+#include "sdk_libkernl.h"
+extern s32 DIntr(void);
+extern s32 EIntr(void);
+extern sceDmaChan *sceDmaGetChan(u32 channel);
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -314,8 +319,6 @@ typedef struct sdfGrStdDrawEnv_t {
 void sdfGrStdDrawEnvPredraw(sdfGrStdDrawEnv_t *aPre, s32 aEvenOdd);
 void sdfGrSetRefGifPacket(sdfGrRefGifPacketHeader_t *aPacket, addr_t aRegs, s32 aNumRegs);
 void sdfGrSetDrawDefParmPacket(sdfGrRefGifPacketHeader_t *aDef);
-extern s32 EIntr(void);
-extern s32 DIntr(void);
 extern s32 sdfDrawReqQueueIndex;
 extern sdfDrawReqRec_t sdfGrDrawState[];
 
@@ -335,7 +338,6 @@ typedef struct effDebugPolyParams_t {
     f32 depth;
 } effDebugPolyParams_t;
 
-s32 sdfGrAllocPacketBuff(s32 aSize);
 void sdfDrawTagInit(sdfDrawTag_t *a);
 void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 void sdfDrawTagLinkRefGif(sdfDrawTag_t *aTag, addr_t aPacket);
@@ -390,9 +392,6 @@ extern s32 dds3GsThreadId;
 extern s32 SignalSema(s32 sema);
 extern s32 SleepThread(void);
 extern void FlushCache(s32 mode);
-extern sceDmaChan *sceDmaGetChan(u32 channel);
-extern void sceDmaSend(sceDmaChan *channel, void *tag);
-extern void sceDmaRecvN(sceDmaChan *channel, void *data, u32 qwc);
 extern u64 sceGsGetIMR(void);
 extern u64 sceGsPutIMR(u64 mask);
 extern void sdfDeliverDrawStart(s32 frameId, s32 bufferId);

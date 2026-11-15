@@ -4,6 +4,14 @@
 #include "kernel_draw.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdfDraw.h"
+#include "sdfMat.h"
+#include "dds3KernelDraw.h"
+#include "sdfTex.h"
+#include "sdfPacketBuff.h"
+#include "sdfQuat.h"
+#include "sdfGsMemory.h"
+#include "sdk_libm.h"
 
 /* One A+D register command with its standard DMA/GIF header. */
 typedef struct
@@ -217,12 +225,10 @@ extern u32 dds3RenderTex;
 extern sdfGsMemSlice_t *dds3RenderTexHandle;
 extern sdfTexHandle_t *dds3RenderTexture;
 extern sdfMat_t *eglMaterial;
-sdfMat_t *sdfMatNew(void);
 void *Eve_FilterGetParams(void);
 void Eve_FilterSetParam(void *pParam);
 void Eve_FilterON(void);
 void Eve_FilterOFF(void);
-void *memcpy(void *a, const void *b, size_t c);
 void dds3FadeClear(void);
 s32 dds3FadeCheck(void);
 extern sdf3DScreenParam_t dds3ScreenParam;
@@ -266,26 +272,13 @@ extern dds3RipBlurParam_t dds3BlurState;
 extern dds3Blur2Param_t dds3Blur2State;
 extern dds3Filter2Param_t dds3BlurParam;
 extern dds3MFilterParam_t dds3MFilterCurrent;
-void *memset(void *a, s32 b, size_t c);
-f32 fabsf(f32 value);
 u32 dds3GetFrameID(void);
 void dds3FreeRenderTexture(void);
 sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
-void *sdfGrAllocPacketBuff(u32 aSize);
-void sdfDrawTagInit(sdfDrawTag_t *a);
-void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
 void *sdf2DMakeStdPacket(void *aPacket, s32 aLeng);
-sdfGsMemSlice_t *sdfGsAllocFrameBuff(s32 aW, s32 aH, s32 aPixelFormat);
 
-sdfTexHandle_t *sdfTexNew(s32 aWidth, s32 aHeight, s32 aPixelFormat, s32 aNumOfMipmap,
-    sdfGsMemSlice_t *aPixelGsHandle, s32 aCLUTFormat, s32 aNumOfCLUT, sdfGsMemSlice_t *aCLUTGsHandle);
 
-void sdfTexSetWrapMode(sdfTexHandle_t *aHandle, s32 aMode);
-void sdfTexMakeGIFPacket(sdfTexHandle_t *aHandle);
-void Normalize(void);
 void dds3RotationArc(void);
-void Lerp(f32 aRatio);
-void ToMatrix(void);
 void evtHokanBlur2(s32 hokan, f32 ratio, dds3Blur2Param_t *key1, dds3Blur2Param_t *key2, dds3Blur2Param_t *d);
 void evtHokanMultBlur(s32 hokan, f32 ratio, dds3MultiBlurParam_t *key1, dds3MultiBlurParam_t *key2, dds3MultiBlurParam_t *d);
 void evtHokanDistBlur(s32 hokan, f32 ratio, dds3DistBlurParam_t *key1, dds3DistBlurParam_t *key2, dds3DistBlurParam_t *d);

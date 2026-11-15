@@ -3,9 +3,11 @@
 #include "sdfFrame.h"
 #include "sdf_lighting.h"
 #include "sdf_resource.h"
+#include "sdk_libc.h"
+#include "sdf_PadManager.h"
+#include "sdk_libpad.h"
 
 /* Declared here because no header carries these. */
-extern void *memset(void *a, s32 b, size_t c);
 
 struct sdfPadCb_t;
 
@@ -84,16 +86,6 @@ typedef struct sdfTexPacket_t {
     u64 clampRegister; /* GS CLAMP_1/CLAMP_2 register selector. */
 } sdfTexPacket_t;
 
-extern s32 scePadGetState(s32 port, s32 slot);
-extern s32 scePadRead(s32 port, s32 slot, void *data);
-extern s32 scePadGetReqState(s32 port, s32 slot);
-extern s32 scePadInfoAct(s32 port, s32 slot, s32 actNo, s32 term);
-extern s32 scePadSetActDirect(s32 port, s32 slot, void *actData);
-extern s32 scePadSetMainMode(s32 port, s32 slot, s32 offs, s32 lock);
-extern s32 scePadSetActAlign(s32 port, s32 slot, void *data);
-extern s32 scePadInit(s32);
-extern s32 scePadPortOpen(s32 port, s32 slot, void *buffer);
-extern void *memcpy(void *, const void *, size_t);
 void sdfPadControl(sdfPadCb_t *entry);
 void sdfPadManager(void);
 void sdfPadSetAct0(s32 pad, u16 value);

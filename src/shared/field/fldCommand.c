@@ -6,6 +6,7 @@
 #include "field.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "evtCommand.h"
 
 typedef struct
 {
@@ -48,7 +49,6 @@ typedef struct
 } fldSeedWork_t;
 
 s32 fldCommand_ACT_WIN_DSP3(void);
-s32 fldCommand_PAD_DISABLE(void);
 s32 fldCommand_PAD_ENABLE(void);
 u32 fldCommand_ENCOUNT_ON(void);
 u32 fldCommand_ENCOUNT_OFF(void);

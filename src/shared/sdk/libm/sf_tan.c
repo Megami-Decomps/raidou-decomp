@@ -1,4 +1,5 @@
 #include "common.h"
+#include "sdk_libm.h"
 
 #define GET_FLOAT_WORD(i, d)                    \
     do {                                        \
@@ -15,9 +16,7 @@
     } while (0)
 
 extern f32 __kernel_tanf(f32 x, f32 tail, s32 reciprocal);
-extern s32 __ieee754_rem_pio2f(f32 x, f32 *remainder);
 f32 tanf(f32 x);
-s32 __ieee754_rem_pio2f(f32 x, f32 *y);
 f32 __kernel_tanf(f32 x, f32 y, s32 selector);
 
 f32 tanf(f32 x)

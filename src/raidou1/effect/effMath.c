@@ -3,6 +3,8 @@
 #include "sdf_types.h"
 #include "ps2asm.h"
 #include "fpu.h"
+#include "sdfMemory.h"
+#include "sdfVu0.h"
 
 /* The owner is stored after its contiguous cubic segments. */
 typedef struct
@@ -19,8 +21,6 @@ typedef struct
     void *allocation;
 } effBezier4P_t;
 
-extern void *sdfMemAllocDirect(u32 aSize);
-extern void *sdfMemLock(void *aHandle);
 
 #define EFF_RGBA_UNIT 0x3C000000
 
@@ -46,7 +46,6 @@ extern dds3ScreenParam_t dds3ScreenParam;
 extern f32 sdfViewMatrix[16];
 extern sdfVector4_t aViewEye;
 extern sdfVector4_t aViewDown;
-extern void MultMatrixRev(f32 *aMatrix);
 void effScreenOffset(void);
 s32 effPCPBlurScreenOffset(f32 scale);
 u32 effColorBlend(u32 abgr0, u32 abgr1, f32 rate);

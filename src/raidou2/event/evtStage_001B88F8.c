@@ -5,18 +5,17 @@
 #include "draw3d.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
 
-void dds3GetRadiusPoseSet(dds3Basic_t *node, f32 value);
 u32 dds3AllocObjectId(void);
 void dds3ObjectBaseCreateMover(void *pObjectBasic);
 
 extern void dds3ObjectBaseSetPadControl(dds3Basic_t *object,
                                      s32 (*update)(struct dds3PoseSet_t *, struct dds3Basic_t *));
 
-dds3Basic_t *dds3SetActiveCameraSceneBasic(dds3Basic_t *pSceneBasic, dds3Basic_t *pCameraBasic);
 extern dds3Basic_t *dds3AddCameraObjectBasicTypeFree(s32 serialID, f32 *pos, f32 *rot);
 struct dds3Basic_t *dds3GetControlScene(void);
-extern void *memset(void *a, s32 b, size_t c);
 
 #include "basic.h"
 #include "dds3obj.h"

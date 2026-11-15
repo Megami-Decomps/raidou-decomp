@@ -8,6 +8,13 @@
 #include "billboard.h"
 #include "draw.h"
 #include "sdfFrame.h"
+#include "sdfChip.h"
+#include "sdfVu0.h"
+#include "sdfDraw.h"
+#include "sdfMat.h"
+#include "billManager.h"
+#include "sdfMath.h"
+#include "effPacket.h"
 
 typedef struct dds3P2APolygon_tag {
     f32 dir[4][4];
@@ -43,11 +50,8 @@ typedef struct effBlurDrawBank_t {
     u8 frameMaskSource[0x8E0];
 } effBlurDrawBank_t;
 
-extern f32 sdfCos(f32 aRadius);
-extern f32 sdfSin(f32 aRadius);
 extern f64 fabs(f64 value);
 extern void *sdfGrAllocPacketBuff(s32 aSize);
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
 struct billHandle_t *dds3Billboard_NormalCreate(void *data);
 
 typedef struct billColorWork_t {
@@ -119,7 +123,6 @@ typedef struct billPluralEntry_t {
 
 void dds3BillboardTagLink(billHandle_t *obj, dds3BillResource_tag *child);
 dds3BillAnimResource_tag *dds3BillAnimLoadP2A(void *resourceData);
-void *sdfChipAllocDirect(s32 aSize);
 void dds3BillboardSetScale(struct billHandle_t *hBillboard, f32 x, f32 y);
 
 typedef struct P2A_HEAD_t {
@@ -140,17 +143,8 @@ void dds3Billboard_P2ASetNumber(billHandle_t *pP2A, s32 number);
 /* Advance an entry's frame timer and apply its current record to the shared
  * child payload. Plural descriptors are handled by the dispatcher instead. */
 dds3BillResource_tag *dds3Billboard_P2AAnimDraw(billHandle_t *pP2A, dds3BillAnim_tag *pBillAnim);
-extern void *memcpy(void *a, const void *b, size_t c);
-void sdfDrawTagLink(struct sdfDrawTag_t *aTag, addr_t aPacket);
-sdfMat_t *sdfMatNew(void);
 
 /* Queue an asset owner for the deferred SdfAsset release callback. */
-void sdfMatFreeDelayed(struct sdfMat_t *aMat);
-void sdfChipFreeDirect(void *aPtr);
-void sdfMatSetConstant(struct sdfMat_t *aMat, f32 aRatio);
-void sdfMatSetAmbient(struct sdfMat_t *aMat, u32 aColor);
-void sdfMatSetDiffuse(struct sdfMat_t *aMat, u32 aColor);
-void sdfMatSetSpecular(struct sdfMat_t *aMat, u32 aColor);
 extern f32 aViewTarget[EFF_MAGATUHI_VECTOR_WORD_COUNT];
 extern f32 aViewEye[EFF_MAGATUHI_VECTOR_WORD_COUNT];
 billHandle_t *dds3Billboard_P2ACreate(void *resourceData);
@@ -196,12 +190,8 @@ void dds3P2APolygonGetResource(dds3P2APolygon_tag *hP2APoly, dds3P2APolygonResou
 extern u32 dds3P2APolygonFaceIndex[];
 extern u32 dds3P2APolygonVertexColor[];
 extern sdfGrOt_t *dds3P2APolygonSurfaceTable[];
-extern void MultMatrixNoArg(void);
 extern void sdf3DPrimLinkTm(sdfDrawTag_t *, s32 (*)(s32));
 extern void sdf3DPrimLinkMat(sdfDrawTag_t *, sdfMat_t *, s32 (*)(s32));
-extern void sdfMatSetTex(sdfMat_t *, sdfTexHandle_t *);
-extern void sdfMatSetMultiTex(sdfMat_t *, sdfTexHandle_t *);
-extern void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *);
 void dds3P2APolygonDraw(dds3P2APolygon_tag *instance);
 
 #ifndef VERSION_DDS1

@@ -59,7 +59,6 @@ typedef struct evtScaledValue_t {
     u8 pad18[4];
 } evtScaledValue_t;
 
-extern void *memcpy(void *a, const void *b, size_t c);
 
 static inline void UnpackRGBAWordFloat(u32 color, f32 unit) {
     u32 rgba[4];

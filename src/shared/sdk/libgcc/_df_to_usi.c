@@ -1,5 +1,6 @@
 #include "common.h"
 #include "ps2asm.h"
+#include "sdk_libc.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -53,7 +54,6 @@ typedef struct sdfGrOt_t {
     sdfSortOtNode_tag *data[1];                                /* 0x18: first root; allocation continues */
 } sdfGrOt_t;
 
-extern void *memcpy(void *, const void *, size_t);
 
 typedef struct _reent _reent;
 
@@ -160,7 +160,6 @@ struct _reent {
     FILE __sf[3];
 };
 
-extern void *malloc(size_t size);
 
 typedef struct fp_number_type {
     s32 class;

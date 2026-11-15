@@ -45,7 +45,6 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-extern void *memcpy(void *, const void *, unsigned int);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new

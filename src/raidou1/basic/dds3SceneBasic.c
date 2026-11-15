@@ -3,6 +3,8 @@
 #include "scr.h"
 #include "basic.h"
 #include "kernel.h"
+#include "sdfMemory.h"
+#include "dds3SceneBasic.h"
 
 extern dds3BasicArrayHandle_t *dds3GetBasicArrayHandle(s32 bufcnt);
 extern s32 dds3AddBasicArray(dds3BasicArrayHandle_t *hndl, s32 bufcnt);
@@ -12,8 +14,6 @@ extern u32 fldLoadFile_FromMemory(u32 field, u32 area, void *pF1,
                                   void *pF2, void *pTB, u32 pBF);
 
 extern void fldFreeFile(void);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 extern dds3ProcessID_t *dds3SearchProcessName(const char *namestr);
 extern void dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 dds3Basic_t *dds3GetActiveCameraSceneBasic(dds3Basic_t *pBasic);

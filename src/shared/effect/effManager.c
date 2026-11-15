@@ -2,6 +2,10 @@
 #include "kernel.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdfChip.h"
+#include "sdfDraw.h"
+#include "billManager.h"
+#include "sdfPacketBuff.h"
 
 /* An effect handle: the type's entry in EffMajorTable plus the instance that
  * entry's create returned. version is stamped from the data revision. */
@@ -51,14 +55,11 @@ typedef struct effLegacyInstance_t
     sdfMatrix4_t matrixB0;
 } effLegacyInstance_t;
 
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
 
 #include "sdk_libc.h"
 
 extern void dds3PolygonLinkOt(void);
 extern void dds3TrackPolyLinkOt(void);
-extern void dds3BillboardLinkOt(void);
 extern void dds3MultiBillboardLinkOt(void);
 extern void dds3CrossfadeRun(void);
 extern void Eve_EffectDraw(void);
@@ -66,9 +67,6 @@ effNode_t *dds3EffectCreate(u16 type, u16 arg, saddr_t param);
 void dds3EffectDataRevision(effResourceHeader_t *header);
 extern char dds3EffectProcessName[];
 extern sdfGrOt_t sdfGrOtTable[];
-extern s32 sdfGrAllocPacketBuff(s32 aSize);
-extern void sdfDrawTagInit(sdfDrawTag_t *a);
-extern void sdfDrawTagLink(sdfDrawTag_t *aTag, addr_t aPacket);
 s32 dds3EffectManagerRun(dds3ProcessID_t *ProcessID);
 void dds3EffectPCFSetLoop(void);
 void dds3EffectPCFReset(void);

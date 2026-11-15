@@ -3,6 +3,12 @@
 #include "eeregs.h"
 #include "libsdf.h"
 #include "ps2asm.h"
+#include "sdk_libc.h"
+#include "sdfTex.h"
+#include "sdfGsMemory.h"
+#include "sdfIpu.h"
+extern s32 DIntr();
+extern void EIntr(void);
 
 enum {
     SDF_STREAM_READ_QUERY = 0,
@@ -120,37 +126,28 @@ enum sdf_stream_playback {
     SDF_STREAM_PLAYBACK_CADENCED = 2
 };
 
-extern s32 DIntr();
 
 #include "sdk_libkernl.h"
 
-extern void *memcpy(void *, const void *, size_t);
-extern void EIntr(void);
 extern void FlushCache(s32);
 extern sdfIpuDecodeCb_t *sdfIpuQueueHead;
 extern sdfIpuDecodeCb_t *sdfIpuQueueTail;
 void *sdfAllocAuto(s32 size);
-extern void * memset(void *, s32, size_t);
-extern sdfGsMemSlice_t *sdfGsMemAllocRect(s32, s32, s32, s32, s32);
 void sdfFreeAuto(void *data);
 extern s32 sceIpuSync(s32, s32);
 extern sdfIpuDecodeCb_t *sdfCurrIpuDecodeCb;
 extern void sdfImageSetChainReleaseMem(saddr_t);
-extern void sdfGsMemFreeDelayed(sdfGsMemSlice_t *aHandle);
 extern sdfIpuDecodeCb_t *sdfIpuPendingCb;
 extern s32 sdfIpuDecode(sdfIpuDecodeCb_t *);
 extern s32 sdfIpuDecodeThId;
 extern s32 sdfIpuDoneFrame;
-u32 sdfTexGetPixelAddr(sdfTexHandle_t *aHandle);
 extern s32 sdfFromIpuDmacHandlerHandle;
 extern s32 sdfToIpuDmacHandlerHandle;
 extern void sceIpuInit(void);
 extern s32 DmacAddHandler(s32, s32, void *, s32, s32);
-extern void EnableDmac(s32);
 extern s32 CreateThreadSimple(void *entryAddress, void *workspace, s32 stackBytes, s32 priority);
 extern u8 sdfIpuDecodeThStack[];
 extern void sdfIpuRemoveHandler(void *);
-extern s32 DisableDmac(s32);
 void sdfIpuExecQueue(s32 critical);
 void sdfIpuMakeBltPacket(sdfIpuDecodeCb_t *cb);
 void sdfIpuDetachQueue(sdfIpuDecodeCb_t *cb, s32 critical);

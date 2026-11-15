@@ -5,6 +5,12 @@
 #include "sdf_lighting.h"
 #include "sdf_resource.h"
 #include "eeregs.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "sdfVu0.h"
+#include "sdfDraw.h"
+#include "sdfMat.h"
+#include "sdfTex.h"
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -109,7 +115,6 @@ typedef struct DmaPacketHeader {
 } QWORD_ALIGNED DmaPacketHeader;
 
 /* Bind resource and asset release queues to their matching destruction callbacks. */
-void sdfMatInitSystem(void);
 
 /* Initialize the buffered object-list release queue with its object destructor. */
 void sdfModelInitSystem(void);
@@ -183,16 +188,10 @@ typedef struct sdf3DScreenParam_t {
     f32 cameraPos[4]; /* 0x90 */
 } sdf3DScreenParam_t;
 
-void sdfDrawTagLinkRef(struct sdfDrawTag_t *aTag, addr_t aPacket);
 
 /* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
-u64 sdfTexGetTex0Reg(sdfTexHandle_t *aHandle);
-u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
-void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
 
 /* Acquire a texture from a serialized texture-file header. */
-struct sdfTexHandle_t *sdfTexSet(const TMX_HEADER_t *aTex);
-struct sdfTexHandle_t *sdfTexSetDirect(const TMX_HEADER_t *aTex);
 
 /* Generated 128x64 grayscale power lookup texture: a serialized texture
  * header, 256 RGBA palette words, then the full 64x128 index image. */
@@ -211,9 +210,6 @@ extern void sdfTmxSetHeader(TMX_HEADER_t *, s32, s32, s32, s32, s32);
 extern s32 vu1Tex0Slot0[];
 extern s32 vu1Tex0Slot2[];
 extern s32 vu1Tex0Slot1[];
-extern void *memcpy(void *, const void *, size_t);
-void ReverseMatrix(void);
-void MultMatrixRev(const void *aMatrix);
 void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera);
 void sdf3DSetCamera(sdf3DScreenParam_t *aParam, void *aCamera);
 void sdf3DMakeFogPacket(sdf3DFogPacket_t *aPacket, sdf3DFogParam_t *aParam);
@@ -224,9 +220,6 @@ void sdf3DInit(void);
 void sdf3DSetDefaultLight(u8 *aLight);
 void sdf3DSetDefaultFog(u8 *aFog);
 extern f32 sdf3DUpVector[];
-extern void DiagMatrix(void);
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 size);
-extern void *memset(void *dst, s32 value, size_t size);
 
 void sdf3DMakeViewportPacket(sdf3DViewportPacket_t *aPacket, sdf3DScreenParam_t *aParam, void *aCamera) {
     aPacket->quadwords = 0xC;

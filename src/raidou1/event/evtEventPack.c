@@ -1,10 +1,16 @@
 #include "common.h"
 #include "event.h"
 #include "kernel.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "mdlManager.h"
+#include "sdfTex.h"
+#include "dds3SceneBasic.h"
+#include "evtStage.h"
+#include "evtSound.h"
 
 dds3ProcessID_t *dds3SearchProcessName(const char *namestr);
 dds3ProcessID_t *evtSearchEventPack(u32 eventno);
-void evtMakeEventPackName(s32 taskId, char *buffer);
 
 typedef u8 sdfTextureClampMode_t;
 
@@ -51,16 +57,12 @@ typedef struct evtPackProcessData_t {
 s32 evtGetEventPackStat(u32 eventno);
 evtPackProcessData_t *evtGetPackProcessData(u32 eventno);
 void *evtGetResorceData(u32 eventno, s32 rid);
-void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
 extern s32 evtMotionSeWork;
 
 #include "sdk_libc.h"
 
-extern void mdlPackDecode(s32, s32, s32, void *, s32);
 extern s32 evtSetRegistUnit(s32 major, s32 minor);
 
-extern s32 evtLoadArea_FromMemory(s32 fld, s32 area, saddr_t pF1, saddr_t pF2,
-                                            const sdfTextureOffsetListHeader_t *pTB, s32 pBF);
 
 extern void fldFileAddrResetMode(u32 mode);
 extern u32 dds3DrawFlag;
@@ -96,12 +98,7 @@ typedef struct beMotionSeTable_s {
     u8 unk08[8];
 } beMotionSeTable_s;
 
-dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type);
 struct dds3Basic_t *dds3GetActiveScene(void);
-extern sdfMotionCtrlr_t *mdlGetMotionCtrlr(mdlObj_t *aHandle, s32 aGroup);
-extern s32 evtPlaySe(s32 eventno, s32 seno);
-void sdfChipFreeDirect(void *aPtr);
-u32 sdfMemLock(struct sdfMemHandle_t *aHandle);
 
 struct FileRequest;
 
@@ -116,8 +113,6 @@ enum {
 
 extern char evtLoadDoneMessage[];
 s32 evtCheckScriptDone(dds3ProcessID_t *task);
-void sdfMemFreeDirect(struct sdfMemHandle_t *aHandle);
-void sdfMemFreeDelayedDirect(struct sdfMemHandle_t *aHandle);
 void evtWaitEventPackLoad(dds3ProcessID_t *task);
 extern void fileSyncAll(void);
 extern void Eve_DistortionBlurSetDefTex(void);
@@ -130,8 +125,6 @@ dds3ProcessID_t *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2,
                          dds3ProcessFunc_t deleteExit, void *p);
 
 dds3ProcessID_t *evtLoadEventPack(s32 eventno);
-void *sdfChipAllocDirect(s32 aSize);
-extern void *memset(void *a, s32 b, size_t c);
 void evtKillEventPack(s32 eventno);
 s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 dds3ProcessID_t *evtLoadModelSe(s32 modelKey, s32 eventTaskId, s32 resourceId);

@@ -5,6 +5,8 @@
 #include "sdf_resource.h"
 #include "sdf_types.h"
 #include "sdfFrame.h"
+#include "sdk_libc.h"
+#include "sdfMath.h"
 
 struct effRandState_t;
 
@@ -466,14 +468,11 @@ enum trackPolyTopology {
 extern sdfMemHandle_t *sdfMemAllocDirect(u32 aSize);
 extern void *sdfMemLock(sdfMemHandle_t *aHandle);
 extern void *sdfChipAllocDirect(u32 aSize);
-extern void *memset(void *a, s32 b, size_t c);
 extern parSystem_t *dds3TrackPolyCreate(s32 number, s32 face, s32 rec, u32 type);
 extern void dds3TrackPolySetMode(parSystem_t *hTrackPoly, u16 mode);
 extern void dds3TrackPolyVCSet(parSystem_t *hTrackPoly, s32 type, u32 abgr_in, u32 abgr_out);
 extern void dds3TrackPolyVC3Set_Acute(parSystem_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2);
 extern void dds3TrackPolyVC5Set_AcuteW(parSystem_t *hTrackPoly, u32 abgr_0, u32 abgr_1, u32 abgr_2);
-extern f32 sdfSin(f32 aRadius);
-extern f32 sdfCos(f32 aRadius);
 extern u32 dds3GetKernelCount(void);
 void func_00177AC8(effPCP_ThunderColumnPolyLow_t *work, s32 index);
 void effPCP_ThunderPolyDrawOff(effPCP_ThunderPoly_t *work, s32 index);

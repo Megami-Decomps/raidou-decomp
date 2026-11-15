@@ -1,5 +1,6 @@
 #include "common.h"
 #include "interface.h"
+#include "sdfMemory.h"
 
 /* A color row is also a four-component vector for the template scaler. */
 typedef union
@@ -61,7 +62,6 @@ typedef struct itfPanelTextureData_t {
 } itfPanelTextureData_t;
 
 void itfPnlRelease(itfpanel_t *handle);
-extern void sdfMemFreeDirect(sdfMemHandle_t *aHandle);
 void itfPnlSetPosition(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
 void itfPnlSetPositionOffset(itfpanel_t *handle, s32 x0, s32 y0, s32 x1, s32 y1, s32 z);
 void itfPnlSetColor(itfpanel_t *handle, s32 r, s32 g, s32 b, s32 a);
@@ -151,8 +151,6 @@ static inline void SetVec4(u32 *vec, u32 red, u32 green, u32 blue, u32 alpha) {
     vec[3] = alpha;
 }
 
-extern sdfMemHandle_t *sdfMemAllocDirect(s32 aSize);
-extern void *sdfMemLock(sdfMemHandle_t *aHandle);
 extern s32 itfPanelPayloadSize[];
 itfpanel_t *itfPnlRegist2(s32 type, saddr_t texhandle);
 void CreateColorNormal(itfPanelNormalData_t *pwork, u32 red, u32 green, u32 blue, u32 alpha);

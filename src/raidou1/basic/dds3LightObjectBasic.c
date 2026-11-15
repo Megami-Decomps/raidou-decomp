@@ -3,6 +3,12 @@
 #include "basic.h"
 #include "ps2asm.h"
 #include "sdfFrame.h"
+#include "sdfChip.h"
+#include "sdk_libc.h"
+#include "dds3SceneBasic.h"
+#include "dds3Basic.h"
+#include "evtUnitManager.h"
+#include "dds3LightObjectBasic.h"
 
 typedef struct
 {
@@ -12,7 +18,6 @@ typedef struct
 
 extern dds3SceneLightParam_t dds3LightParam;
 extern sdfVector4_t dds3LightObjectAmbient;
-extern void evtLinkLightObjectBasic(void *h, dds3Basic_t *light, s32 frame);
 extern void evtUnlinkLightObjectBasic(void *h, s32 frame);
 
 struct sdf3DLightParallelPacket_t;
@@ -58,13 +63,6 @@ typedef struct fldResourceLight_t
     f32 AmbientB;
 } fldResourceLight_t;
 
-extern void *memset(void *a, s32 b, size_t c);
-extern void *sdfChipAllocDirect(u32 aSize);
-extern void sdfChipFreeDirect(void *aPtr);
-extern s32 dds3InitPoseSet(dds3Basic_t *basic);
-extern void dds3FreePoseSet(dds3Basic_t *basic);
-extern dds3Basic_t *dds3AddSceneBasicData(s32 type);
-extern void dds3DeleteSceneBasicData(dds3Basic_t *basic);
 extern void dds3ObjectBaseOnFlag(dds3Basic_t *basic, s32 flag);
 extern void dds3ObjectBaseCreateMover(dds3Basic_t *pObjectBasic);
 s32 lightconstructor(dds3Basic_t *basic);

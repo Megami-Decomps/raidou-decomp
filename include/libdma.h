@@ -16,4 +16,7 @@ typedef struct sceDmaChan {
 
 int sceDmaSync(sceDmaChan *chan, int mode, int unused);
 
+void sceDmaRecvN(sceDmaChan *chan, void *data, u32 qwc);
+void sceDmaSend(sceDmaChan *chan, void *tag);
+
 #endif

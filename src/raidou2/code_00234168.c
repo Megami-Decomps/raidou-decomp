@@ -3,6 +3,11 @@
 #include "scr.h"
 #include "event.h"
 #include "field.h"
+#include "sdfMemory.h"
+#include "sdfChip.h"
+#include "billManager.h"
+#include "sdfQuat.h"
+#include "sdfSound.h"
 
 extern void fclShopProcessStart(void *pPlace);
 
@@ -22,47 +27,30 @@ void CallShopTest(s32 flg, void *data);
 
 /* Convert three Euler angle components to the VU0 quaternion output.
  * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
-void FromEuler(f32 x, f32 y, f32 z);
 
 /* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
-void Mult(void);
 
 /* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31.
  * Providers: DDS1 game/code_002E7C20.c and DDS2 game/code_00340AC8.c. */
-void ToMatrix(void);
 f32 acosf(f32 x);
 f32 atan2f(f32 y, f32 x);
 
 /* The selected kind interprets the opaque payload word. */
-struct billHandle_t *dds3BillboardCreate(s32 kind, u32 data);
-void dds3BillboardDelete(struct billHandle_t *obj);
 struct billHandle_t *dds3BillboardGeneral(s32 index);
-void dds3BillboardSetAnimColorAdvMode(struct billHandle_t *billboard);
-void dds3BillboardSetMode(struct billHandle_t *billboard, s32 mode);
-extern void *memcpy(void *, const void *, unsigned int);
 
 /* Apply volume and pan to a sequence track through the command queue. */
-void p2sdPlaySE(s32 trackId, s32 volume, s32 pan);
-s32 sceClose(s32 fd);
-s32 sceSync(const char *device, s32 flag);
-void *sdfChipAllocZeroDirect(s32 size);
-void sdfChipFreeDirect(void *memory);
 void sdfFileClose(sdfFileCmdHandle_t *state);
 u32 sdfFileLength(sdfFileCmdHandle_t *state);
 
 /* Stable state APIs. Callback factories keep caller-specific callback types. */
 sdfFileCmdHandle_t *sdfFileOpen(const char *path);
 void sdfFileRead(sdfFileCmdHandle_t *state, void *buffer, s32 byteCount);
-struct sdfMemHandle_t *sdfMemAllocDirect(s32 requestedBytes);
-void sdfMemFreeDirect(struct sdfMemHandle_t *allocation);
-void *sdfMemLock(struct sdfMemHandle_t *allocation);
 
 /* Both entry points return one caller-owned texture reference. A nonzero
  * resourceKey reuses a live matching texture and increments its count; a new
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-char *strcpy(char *dst, const char *src);
 
 #define SDK_SKIP_memset
 

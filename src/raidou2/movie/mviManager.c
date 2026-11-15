@@ -7,6 +7,10 @@
 #include "sdfFrame.h"
 #include "event.h"
 #include "sdf_movie_types.h"
+#include "sdk_libc.h"
+#include "sdfChip.h"
+#include "dds3GlobalWork.h"
+#include "sdfIpu.h"
 
 extern void *dds3StartProcess(char *v1, u32 dDS3_PRIORITY_DRAW_PB, s32 v2, s32 v3,
                               void *drawExit, void *deleteExit, void *p);
@@ -22,7 +26,6 @@ typedef struct
     /* 0x44D0 */ s32 unk_44D0;
 } rcvWork_t;
 
-extern void sdfChipFreeDirect(void *aPtr);
 extern sdfMovieCb_t movieCb;
 extern void movieStop(void);
 
@@ -45,7 +48,6 @@ extern const char movieDrawProcName[];
 void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor);
 void movieStop(void);
 s32 movieMan_Process(void);
-extern void sdfIpuInit(void);
 extern const char movieManProcName[];
 void *dds3StartMovieManager(void);
 
@@ -81,9 +83,7 @@ typedef struct
 
 extern char movieExtIpu[];
 extern char movieExtIps[];
-extern void *memcpy(void *destination, const void *source, size_t bytes);
 void *movieViewerStep(void);
-extern void *dds3PrimFrameRect(s32 aX, s32 aY, s32 aZ, s32 aW, s32 aH, u32 aBgCol, u32 aFrameCol);
 extern void *sdfDevPrintf(s32 aX, s32 aY, s32 aZ, s32 aAttr, const char *aStr, ...);
 extern void sdfDrawTagLink(sdfDrawTag_t *aTag, void *aPacket);
 

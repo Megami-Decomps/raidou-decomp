@@ -1,5 +1,7 @@
 #include "common.h"
 #include "ps2asm.h"
+#include "sdk_libc.h"
+#include "sdfPacketBuff.h"
 
 enum {
     SDF_TMX_MAGIC = 0x30584D54,
@@ -57,8 +59,6 @@ typedef struct sdfGrOt_t {
 
 /* Reserve size bytes from the active packet buffer, rounded up to 16 bytes.
  * Returns the prior cursor as a 32-bit address; the buffer owns this storage. */
-s32 sdfGrAllocPacketBuff(s32 aSize);
-extern void *memcpy(void *, const void *, size_t);
 sdfSortOtNode_tag *sdfSortOtAvlRotateLR(sdfSortOtNode_tag *node, sdfSortOtNode_tag *parent);
 sdfSortOtNode_tag *sdfSortOtAvlRotateRL(sdfSortOtNode_tag *node, sdfSortOtNode_tag *parent);
 
