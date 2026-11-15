@@ -94,7 +94,6 @@ void evtEnableMoonCalc(void);
 void evtDisableMoonCalc(void);
 s32 evtGetAgeOfMoon(void);
 s32 evtGetAgeOfMoon16(void);
-void evtSetAgeOfMoon(s32 age);
 extern const char evtMsgBeOk[];
 extern const char evtMsgLoadBeStart[];
 extern const char evtMsgReadBeStart[];
@@ -106,9 +105,9 @@ typedef u8 sdfTextureClampMode_t;
 #include "basic.h"
 #include "dds3obj.h"
 #include "ps2asm.h"
+#include "dds3SceneBasic.h"
+#include "evtMoon.h"
 
-extern s32 dds3GetMapNo(void *scene);
-extern void dds3SetActiveCameraSceneBasic(void *pSceneBasic, dds3Basic_t *pCameraBasic);
 extern s32 dds3AllocObjectId(void);
 extern void dds3GetRadiusPoseSet(dds3Basic_t *basic, f32 r);
 extern u32 dds3DrawFlag;
@@ -142,11 +141,9 @@ typedef struct {
 extern const char evtMsgPmvLoadNoProc[];
 extern const char evtMsgSetSkyAlphaLow[];
 extern const char evtMsgSetSkyAlphaHigh[];
-extern s32 *dds3GetActiveUnitSceneBasic(void *pSceneBasic);
 extern void fldSetFilterAnime(s32 on);
 extern void fldSkySetAlpha(s32 alp);
 extern void fldSkySetFilter(s32 idx, s32 mode, s32 hokan);
-extern dds3Basic_t *dds3SceneBasicSearchName(void *scene, const char *name);
 extern const char evtMsgTexLoadNoProc[];
 extern const char evtMsgIdNotFound[];
 extern const char evtMsgIdNotFoundWarn[];
@@ -568,14 +565,14 @@ void *evtSearchBasic(s32 type, s32 serial)
 u32 evtCommand_MODEL_PLAYER(void)
 {
     void *scene;
-    s32 *basic;
+    dds3Basic_t *basic;
     s32 key;
 
     scene = dds3GetActiveScene();
     basic = dds3GetActiveUnitSceneBasic(scene);
     key = -1;
     if (basic != NULL) {
-        key = basic[1];
+        key = basic->serialID;
     }
     scrSetIntReturnValue(key);
     return 1;

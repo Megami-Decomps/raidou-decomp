@@ -51,7 +51,6 @@ extern s32 AddIntcHandler2(s32 channel, s32 handler, s32 argument, s32 next);
 
 extern void DeleteThread(s32 threadId);
 extern void sdfChipInit(u32 aSize);
-void FatalError(const char *format, ...) __attribute__((noreturn));
 s32 CreateThreadSimple(void *entryAddress, void *workspace, s32 stackBytes, s32 priority);
 void *sdfAllocAuto(s32 bytes);
 s32 sdfFreeAuto(void *allocation);
@@ -116,7 +115,6 @@ s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priorit
 void *sdfAllocAuto(s32 size);
 s32 sdfFreeAutoDelayed(void *allocation);
 s32 sdfFreeMemorySlotFromEitherHeap(void **slot);
-void FatalError(const char *format, ...);
 sdfHandlerNode_t *DmacAddHandler(s32 kind, s32 channel, saddr_t handler, s32 arg, s32 next);
 void sdfIpuRemoveHandler(sdfHandlerNode_t *target);
 void sdfAlarmWakeup(s32 arg0, s32 arg1, s32 thid);

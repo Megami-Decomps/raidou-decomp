@@ -4,7 +4,7 @@
 #include "common.h"
 
 s32 CreateThreadSimple(void *entryAddress, void *workspace, s32 stackBytes, s32 priority);
-void FatalError(const char *format, ...);
+void FatalError(const char *format, ...) __attribute__((noreturn));
 void *sdfAllocAuto(s32 size);
 s32 sdfCreateSema(s32 initCount, s32 maxCount, u32 option);
 s32 sdfCreateThreadWithStack(void (*entryAddress)(), s32 stackBytes, s32 priority);

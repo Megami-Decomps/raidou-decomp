@@ -8,6 +8,6 @@ void evtDisableMoonDraw(void);
 void evtEnableMoonCalc(void);
 s32 evtGetAgeOfMoon(void);
 s32 evtGetAgeOfMoon16(void);
-void evtSetAgeOfMoon(u8 age);
+void evtSetAgeOfMoon(s32 age);
 
 #endif

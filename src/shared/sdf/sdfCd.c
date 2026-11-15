@@ -18,7 +18,6 @@ extern s32 sdfCdImageFd;
 extern s32 sdfCdTrayMode;
 sdfCdImageDirEntry_t *sdfCdImageSearchFile(const char *fname, s32 *lsn, u8 *modePtr);
 extern void *sdfCdImageDirData;
-void FatalError(const char *aMessage, ...) __attribute__((noreturn));
 
 enum SdfFileIOCmdStat {
     SDF_FILE_CMD_STAT_INIT = 0,
