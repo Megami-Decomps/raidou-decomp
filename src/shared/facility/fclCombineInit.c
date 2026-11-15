@@ -1,33 +1,92 @@
 #include "common.h"
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSummonTask);
+#else
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", fclModelDevilLbTable);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaReturnTask);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclModelDevilLb);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaBranchTask);
+#else
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", mapStrSmndvUnit);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaJoinTask);
+#else
 INCLUDE_RODATA(const s32, "facility/fclCombineInit", jtbl_004AD370);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSearchTask_fld);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallSummonDvTask);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSpotTask_fld);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclBunriStartLabel);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaGankTask_fld);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclHoukokuStartLabel);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaKoukTask);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaHakaTask);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel2);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaReiTask);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclInnenLabel);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapMskLabel);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakaneLabel);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaDokusinTask);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel3);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaIroTask);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel4);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaHikouTask);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaChikaraTask);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSinnTask);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel5);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclMskLabel6);
@@ -39,20 +98,41 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallSummonDvTask3);
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclGitaiStartLabel);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclGitaiEndLabel);
+#endif
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSpotTask);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaGankTask);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumiTask);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiLabel);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapRefDDS3GBWK7);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotGdc);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapRefDDS3GBWK8);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotMagic);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapRefDDS3GBWK9);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotBstwait);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapLeaf3);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclTakumiMotWait);
+#endif
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCombineInitWork);
 
@@ -62,19 +142,39 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_FLUSH);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaTakumi_CheckEffStart);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapCallBitOff);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSkilIs_SetBit);
+#endif
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaStockOnCheck);
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaSkil_SetBit);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallBitOff);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapIgnite3);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallNakamaStockOnCheck);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mskGetNo);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mskGet);
+#endif
 
+#ifdef VERSION_RAIDOU1
+INCLUDE_ASM(const s32, "facility/fclCombineInit", mapNakamaStockOnCheck_fld);
+#else
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclFunc);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclCallNakamaSkilIsSetBit);
+#endif
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvReturnLoad_LB);
 
@@ -97,6 +197,7 @@ INCLUDE_ASM(const s32, "facility/fclCombineInit", mapCallEffectGetState3);
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapEffDvSummonEnd);
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", mapLeaf26);
+#ifdef VERSION_RAIDOU2
 
 INCLUDE_ASM(const s32, "facility/fclCombineInit", fclLeaf);
 
@@ -257,3 +358,4 @@ INCLUDE_SDATA(const s32, "facility/fclCombineInit", AI_UpdateData12);
 
 INCLUDE_SDATA(const s32, "facility/fclCombineInit", nbData23);
 
+#endif
