@@ -26,7 +26,6 @@ typedef struct
 } sdfModelNodeDefList_t;
 
 
-struct sdf3DTmPacketData_t;
 
 extern sdfItemArray_t *sdfItemArrayNew(s32 aInitCapa, s32 aElemSize, s32 aGrowStep);
 extern void sdfItemArrayFree(void *aArray);
@@ -125,7 +124,7 @@ extern u8 sdf3DScreenTm[];
 typedef struct QWORD_ALIGNED
 {
     sdfDmaTag_t tmTag;
-    u8 tm[0x80];
+    sdf3DTmPacketData_t tm;
     sdfModelDrawParmPacket_t parm;
 } sdfModelTempDrawPacket_t;
 
@@ -878,7 +877,7 @@ void sdfModelTempPacketLinkOt(sdfGrOt_t **ot, sdfModelRootNode_t *root)
                 *(u64 *)&buf->tmTag = 0x10000008;
                 *(u64 *)&buf->tmTag.dat0 = (u64)0x6C07C000 << 32;
                 SDF_VU0_LOADMATRIX(matrix);
-                sdf3DPrimSetTmPacket((sdf3DTmPacketData_t *)((struct sdf3DTmPacketData_t *)buf->tm));
+                sdf3DPrimSetTmPacket(&buf->tm);
                 *(u64 *)&buf->parm.next = 0x20000002;
                 *(u64 *)&buf->parm.next.dat0 = parmTag;
                 buf->parm.unpackColor = 0x6E01C002;

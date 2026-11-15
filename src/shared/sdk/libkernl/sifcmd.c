@@ -115,16 +115,6 @@ void sceSifExitCmd(void);
 void sceSifAddCmdHandler(s32 command, void (*handler)(void *, void *), void *argument);
 void sceSifRemoveCmdHandler(s32 command);
 
-/* DMA bus addresses and transfer controls occupy four 32-bit words. */
-typedef struct sifDmaTransfer_t {
-    u32 source;
-    u32 destination;
-    s32 size;
-    u32 attributes;
-} sifDmaTransfer_t;
-
-SIZE_CHECK(sifDmaTransfer_size_must_be_16, sifDmaTransfer_t, 16);
-
 #include "sdk_libkernl.h"
 
 extern s32 isceSifSetDma(sifDmaTransfer_t *transfers, s32 count);

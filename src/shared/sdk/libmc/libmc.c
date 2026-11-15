@@ -87,7 +87,6 @@ extern s32 mcLastCmd __attribute__((section(".data")));
 extern s32 mcSema __attribute__((section(".data")));
 
 
-extern s32 sceMcOpen(s32 a, s32 b, char *c, s32 d);
 extern void mcDelayThread(u16 ticks);
 
 /* The chunk this string opens also carries the float constants the next
@@ -107,35 +106,24 @@ typedef struct mcSemaParam_t {
 } mcSemaParam_t;
 
 extern s32 CreateSema(mcSemaParam_t *param);
-extern s32 sceMcSync(s32 mode, s32 *command, s32 *result);
 extern s32 sceSifBindRpc(mcRpcCd *client, u32 service, s32 mode);
-s32 sceMcInit(void);
 s32 sceMcEnd(void);
 mcRpcCd *_lmcGetClientPtr(void **reply, void **command);
 s32 sceMcChangeThreadPriority(s32 prio);
 s32 sceMcGetSlotMax(s32 port);
-s32 sceMcOpen(s32 a, s32 b, char *c, s32 d);
-s32 sceMcMkdir(s32 a, s32 b, char *c);
-s32 sceMcClose(s32 a);
 s32 sceMcSeek(s32 fd, s32 offset, s32 origin);
 void mceIntrReadFixAlign(void *argument);
-s32 sceMcRead(s32 a, void *b, s32 c);
-s32 sceMcWrite(s32 a, const void *b, s32 c);
 void mcHearAlarm(s32 cause, s32 address, s32 thread);
 void mcDelayThread(u16 ticks);
 void mceGetInfoApdx(void *response);
 s32 sceMcGetInfo(s32 a, s32 b, s32 *c, s32 *d, s32 *e);
 s32 sceMcUdCheckNewCard(void);
-s32 sceMcGetDir(s32 a, s32 b, char *c, s32 d, s32 e, void *f);
 void mceStorePwd(char *dest);
-s32 sceMcChdir(s32 a, s32 b, char *c, char *d);
-s32 sceMcFormat(s32 port, s32 slot);
-s32 sceMcDelete(s32 port, s32 slot, char *name);
 s32 sceMcFlush(s32 port);
-s32 sceMcSetFileInfo(s32 port, s32 slot, char *name, mcEntInfo *info, s32 flags);
-s32 sceMcRename(s32 port, s32 slot, char *name, char *newname);
+s32 sceMcSetFileInfo(s32 port, s32 slot, const char *name, mcEntInfo *info, s32 flags);
+s32 sceMcRename(s32 port, s32 slot, const char *name, const char *newname);
 s32 sceMcUnformat(s32 port, s32 slot);
-s32 sceMcGetEntSpace(s32 port, s32 slot, char *name);
+s32 sceMcGetEntSpace(s32 port, s32 slot, const char *name);
 
 s32 sceMcInit(void)
 {
@@ -246,7 +234,7 @@ s32 sceMcGetSlotMax(s32 port)
     return mcReplyBuf.result;
 }
 
-s32 sceMcOpen(s32 a, s32 b, char *c, s32 d)
+s32 sceMcOpen(s32 a, s32 b, const char *c, s32 d)
 {
     s32 ret;
 
@@ -275,7 +263,7 @@ s32 sceMcOpen(s32 a, s32 b, char *c, s32 d)
     return ret;
 }
 
-s32 sceMcMkdir(s32 a, s32 b, char *c)
+s32 sceMcMkdir(s32 a, s32 b, const char *c)
 {
     s32 ret = sceMcOpen(a, b, c, 0x40);
 
@@ -499,7 +487,7 @@ s32 sceMcUdCheckNewCard(void)
     return mcReplyBuf.result;
 }
 
-s32 sceMcGetDir(s32 a, s32 b, char *c, s32 d, s32 e, void *f)
+s32 sceMcGetDir(s32 a, s32 b, const char *c, s32 d, s32 e, void *f)
 {
     s32 ret;
 
@@ -550,7 +538,7 @@ void mceStorePwd(char *dest)
     }
 }
 
-s32 sceMcChdir(s32 a, s32 b, char *c, char *d)
+s32 sceMcChdir(s32 a, s32 b, const char *c, char *d)
 {
     s32 ret;
 
@@ -603,7 +591,7 @@ s32 sceMcFormat(s32 port, s32 slot)
     return ret;
 }
 
-s32 sceMcDelete(s32 port, s32 slot, char *name)
+s32 sceMcDelete(s32 port, s32 slot, const char *name)
 {
     s32 ret;
 
@@ -653,7 +641,7 @@ s32 sceMcFlush(s32 port)
     return ret;
 }
 
-s32 sceMcSetFileInfo(s32 port, s32 slot, char *name, mcEntInfo *info, s32 flags)
+s32 sceMcSetFileInfo(s32 port, s32 slot, const char *name, mcEntInfo *info, s32 flags)
 {
     s32 ret;
     /* Keep the live flags separate from the request cursor in $16. This
@@ -689,7 +677,7 @@ s32 sceMcSetFileInfo(s32 port, s32 slot, char *name, mcEntInfo *info, s32 flags)
     return ret;
 }
 
-s32 sceMcRename(s32 port, s32 slot, char *name, char *newname)
+s32 sceMcRename(s32 port, s32 slot, const char *name, const char *newname)
 {
     s32 ret;
 
@@ -744,7 +732,7 @@ s32 sceMcUnformat(s32 port, s32 slot)
     return ret;
 }
 
-s32 sceMcGetEntSpace(s32 port, s32 slot, char *name)
+s32 sceMcGetEntSpace(s32 port, s32 slot, const char *name)
 {
     s32 ret;
 

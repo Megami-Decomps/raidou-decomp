@@ -38,7 +38,6 @@ void sdfChipFreeDirect(void *aPtr);
 sdfChip_t *sdfChipAllocNewPage(sdfChipCB_tag *aCB);
 void *sdfChipAllocZeroDirect(s32 aSize);
 void sdfChipFreeDelayedDirect(void *aPtr);
-s32 sdfChipCheck(s32 aPtr);
 void sdfChipInit(u32 aSize);
 void sdfChipGetInfo(sdfChipInfo_t *aInfo);
 
@@ -187,13 +186,13 @@ void sdfChipFreeDelayedDirect(void *aPtr)
     sdfDelayedResrcEntry(&dds3CleanupList, aPtr);
 }
 
-s32 sdfChipCheck(s32 aPtr)
+s32 sdfChipCheck(void *aPtr)
 {
     s32 inRange;
 
     inRange = 0;
-    if (aPtr >= EE_ADDR_S(sdfChipPageTop)) {
-        inRange = aPtr < EE_ADDR_S(sdfChipPageEnd);
+    if (EE_ADDR_S(aPtr) >= EE_ADDR_S(sdfChipPageTop)) {
+        inRange = EE_ADDR_S(aPtr) < EE_ADDR_S(sdfChipPageEnd);
     }
     return inRange;
 }

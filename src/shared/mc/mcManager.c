@@ -205,7 +205,7 @@ McPollResult sdfMcFuncFormat1(void)
 
 void sdfMcFuncChdir(u32 port, const char *path)
 {
-    sceMcChdir(port, MC_CARD_SLOT, (char *)path, 0);
+    sceMcChdir(port, MC_CARD_SLOT, path, 0);
 }
 
 McPollResult sdfMcFuncChdir1(void)
@@ -224,7 +224,7 @@ McPollResult sdfMcFuncChdir1(void)
 
 void sdfMcFuncMkdir(u32 mccb, const char *cb)
 {
-    sceMcMkdir(mccb, MC_CARD_SLOT, (char *)cb);
+    sceMcMkdir(mccb, MC_CARD_SLOT, cb);
 }
 
 McPollResult sdfMcFuncMkdir1(void)
@@ -247,7 +247,7 @@ McPollResult sdfMcFuncMkdir1(void)
 
 void sdfMcFuncGetDir(u32 port, const char *path, void *directoryEntries, s32 entryLimit)
 {
-    sceMcGetDir(port, MC_CARD_SLOT, (char *)path, 0, entryLimit, directoryEntries);
+    sceMcGetDir(port, MC_CARD_SLOT, path, 0, entryLimit, directoryEntries);
 }
 
 McPollResult sdfMcFuncGetDir1(s32 *commandResultOut)
@@ -271,7 +271,7 @@ McPollResult sdfMcFuncGetDir1(s32 *commandResultOut)
 
 void sdfMcFuncDelete(u32 port, const char *path)
 {
-    sceMcDelete(port, MC_CARD_SLOT, (char *)path);
+    sceMcDelete(port, MC_CARD_SLOT, path);
 }
 
 McPollResult sdfMcFuncDelete1(void)
@@ -290,7 +290,7 @@ McPollResult sdfMcFuncDelete1(void)
 
 void sdfMcFuncOpen(u32 port, const char *path, s32 openFlags)
 {
-    sceMcOpen(port, MC_CARD_SLOT, (char *)path, openFlags);
+    sceMcOpen(port, MC_CARD_SLOT, path, openFlags);
 }
 
 McPollResult sdfMcFuncOpen1(s32 *commandResultOut)

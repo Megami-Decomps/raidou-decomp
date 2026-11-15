@@ -256,7 +256,7 @@ INCLUDE_ASM(const s32, "code_001CF808", evtCallSeFadeOut);
 /* Flush EE cache, submit one word-sized transfer to IOP, and busy-wait for DMA.
  * Return the native request ID; there is no failure retry or timeout here. */
 s32 sndCopyWordsToIopSynchronously(const void *source, u32 iopAddress, u32 wordCount) {
-    SifDmaTransfer transfer;
+    sifDmaTransfer_t transfer;
     s32 dmaRequest;
     transfer.source = (u32)source;
     transfer.destination = iopAddress;

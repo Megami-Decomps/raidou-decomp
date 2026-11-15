@@ -11,7 +11,7 @@ struct EffNode;
 
 struct EffMappedRecord;
 
-struct FilePacRequest;
+struct fileRequest;
 
 struct sdfMemHandle_t;
 
@@ -41,7 +41,7 @@ typedef struct EffectList {
     s32 count;
     EffectListNode *first;
     EffectListNode *last;
-    struct FilePacRequest *request;
+    struct fileRequest *request;
 } EffectList;
 
 typedef char EffectListNode_size_must_be_0x18[(sizeof(EffectListNode) == 0x18) ? 1 : -1];

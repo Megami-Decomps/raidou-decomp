@@ -600,7 +600,7 @@ s32 effRemoveListEntry(EffectList *list) {
  * finished job's buffer to the entry's destination. Returns the remaining entry count. */
 s32 effPollResourceList(EffectList *list) {
     EffectListNode *node = list->first;
-    PacWork *item;
+    sdfPacDecodeResrc_t *item;
     struct sdfMemHandle_t *allocation;
 
     if (node != NULL) {
@@ -619,16 +619,16 @@ s32 effPollResourceList(EffectList *list) {
                 if (list->request != NULL) {
                     pacFileHandleFree_(list->request);
                 }
-                list->request = (FilePacRequest *)pacLoad((const char *)node->length);
+                list->request = pacLoad((const char *)node->length);
                 if (list->mode == 2) {
-                    pacSync((fileRequest_t *)((struct FileRequest *)list->request));
+                    pacSync(list->request);
                 }
                 node->state = 1;
-            } else if (pacCheckEnd((const fileRequest_t *)((struct FileRequest *)list->request)) != 0) {
-                for (item = list->request->packet.queueHead; item != NULL; item = item->next) {
-                    if (((SdfPacStreamPacketHeader *)item->packet)->command == 1) {
+            } else if (pacCheckEnd(list->request) != 0) {
+                for (item = list->request->pac.resrcHead; item != NULL; item = item->next) {
+                    if (((sdfPacStdBlockHeader_t *)item->header)->fileType == 1) {
                         node = list->first;
-                        allocation = PAC_WORK_ALLOCATION(item);
+                        allocation = item->resrc;
                         *node->reference = effCreateResourceSlotSetFromAllocation(allocation, node->kind);
                         if (node->kind == EFF_RESOURCE_SOURCE_TRANSIENT) {
                             sdfMemFreeDirect(allocation);

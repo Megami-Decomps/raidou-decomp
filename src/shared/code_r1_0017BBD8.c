@@ -329,12 +329,8 @@ void btlClosePfsDebugDirectory(s32 directoryHandle);
    clears the directory-type bit, and returns zero when the eight-name table is exhausted. */
 s32 btlReadBattleResourceDirectoryEntry(s32 directoryHandle, SceDirent *reader);
 extern u32 dds3BillboardGeneralNumber(void);
-void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *, const char *);
-void btlReplaceResourceHandle(BtlResourceDescriptor *, void *);
-
-
 void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *descriptor, const char *resourceName);
-void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, void *textureResource);
+void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, TMX_HEADER_t *textureResource);
 
 #define EDITOR_KEY_COLS 13
 
@@ -658,18 +654,18 @@ void btlLoadAndReplaceResourceHandle(BtlResourceDescriptor *descriptor, const ch
         descriptor->texture = 0;
     }
     allocation = sdfDevLoadFileEx(resourceName, &loadedResource, 0);
-    btlReplaceResourceHandle(descriptor, (void *)loadedResource);
+    btlReplaceResourceHandle(descriptor, EE_ADDR_AS(TMX_HEADER_t *, loadedResource));
     sdfMemFreeDirect(allocation);
 }
 
 /* Acquire a texture from the supplied resource, releasing an owned old handle. */
-void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, void *textureResource) {
+void btlReplaceResourceHandle(BtlResourceDescriptor *descriptor, TMX_HEADER_t *textureResource) {
     sdfTexHandle_t *texture = descriptor->texture;
     if (texture != NULL && descriptor->textureCategory == BTL_RESOURCE_ENTRY_CATEGORY_TMX) {
         sdfTexFreeDelayed(texture);
         descriptor->texture = 0;
     }
-    descriptor->texture = sdfTexSet((TMX_HEADER_t *)((SdfTextureFileHeader *)(textureResource)));
+    descriptor->texture = sdfTexSet(textureResource);
 }
 
 /* Queue the descriptor's preview texture as a quad at its screen position. */

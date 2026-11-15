@@ -3,6 +3,16 @@
 
 #include "common.h"
 
+/* DMA bus addresses and transfer controls occupy four 32-bit words. */
+typedef struct sifDmaTransfer_t {
+    u32 source;
+    u32 destination;
+    s32 size;
+    u32 attributes;
+} sifDmaTransfer_t;
+
+SIZE_CHECK(sifDmaTransfer_size_must_be_16, sifDmaTransfer_t, 16);
+
 struct sifRpcServerData_t;
 struct sifRpcDataQueue_t;
 typedef void *(*sceSifRpcFunc)(s32 function, void *request, s32 size);
@@ -18,9 +28,7 @@ s32 sceWrite(s32 descriptor, const void *source, s32 size);
 
 s32 sceOpen(const char *name, s32 flags, ...);
 
-struct sifDmaTransfer_t;
-s32 sceSifSetDma(struct sifDmaTransfer_t *transfers, s32 count);
-
+s32 sceSifSetDma(sifDmaTransfer_t *transfers, s32 count);
 
 s32 sceClose(s32 descriptor);
 s32 sceDclose(s32 descriptor);

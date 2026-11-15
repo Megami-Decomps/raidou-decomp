@@ -178,7 +178,7 @@ void *sdfAllocAuto(s32 size)
 s32 sdfFreeAuto(void *allocation)
 {
     if (allocation != NULL) {
-        if (sdfChipCheck((s32)allocation)) {
+        if (sdfChipCheck(allocation)) {
             sdfChipFreeDirect(allocation);
         } else {
             sdfMemFreePtrDirect(allocation);
@@ -189,7 +189,7 @@ s32 sdfFreeAuto(void *allocation)
 s32 sdfFreeAutoDelayed(void *allocation)
 {
     if (allocation != NULL) {
-        if (sdfChipCheck((s32)allocation)) {
+        if (sdfChipCheck(allocation)) {
             sdfChipFreeDelayedDirect(allocation);
         } else {
             sdfMemFreeDelayedDirect(sdfMemGetHandleByPtr(allocation));
@@ -203,7 +203,7 @@ s32 sdfFreeMemorySlotFromEitherHeap(void **slot)
 
     if (allocation != NULL) {
         *slot = NULL;
-        if (sdfChipCheck((s32)allocation)) {
+        if (sdfChipCheck(allocation)) {
             sdfChipFreeDirect(allocation);
         } else {
             sdfMemFreePtrDirect(allocation);

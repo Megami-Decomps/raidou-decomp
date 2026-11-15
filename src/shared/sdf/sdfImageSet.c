@@ -247,7 +247,7 @@ void sdfImageSetChainReleaseMem(saddr_t p)
 
     if (p != 0) {
         release = sdfChipAllocZeroDirect(0xA0);
-        if (sdfChipCheck((s32)(EE_ADDR_AS(void *, p))) != 0) {
+        if (sdfChipCheck(EE_ADDR_AS(void *, p)) != 0) {
             release->chip = EE_ADDR_AS(void *, p);
             release->freeMode = SDF_IMAGESET_MEM_CHIP;
         } else {
@@ -298,14 +298,14 @@ void sdfImageSetTrans(void)
         s32 threadId = GetThreadId();
         s32 handlerId = AddDmacHandler2(1, (s32 (*)(s32, void *, void *))sdfImageSetDmacHandler, 0, EE_ADDR_AS(void *, threadId));
         u64 tag = SDF_DMA_TAG(EE_ADDR(sdfImageSetTexFlushPacket), 0x20000000);
-        u32 *chan;
+        sceDmaChan *chan;
 
         tagTail->vifCodes = 0;
         tagTail->tag = tag;
         chan = sceDmaGetChan(1);
-        HW_WRITE(chan, HW_READ(chan) | 0x40);
+        HW_WRITE(&chan->chcr, HW_READ(&chan->chcr) | 0x40);
         FlushCache(0);
-        sceDmaSend((sceDmaChan *)chan, EE_ADDR_AS(void *, dmaAddr));
+        sceDmaSend(chan, EE_ADDR_AS(void *, dmaAddr));
         SleepThread();
         RemoveDmacHandler(1, handlerId);
     }

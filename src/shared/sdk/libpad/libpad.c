@@ -90,12 +90,6 @@ extern int _send_to_iop(int port, int slot);
 
 /* padCmdBlock is the command-block array the IOP DMAs from, padDebugPrint the
  * debug-print flag used by initialization and command diagnostics. */
-typedef struct sceSifDmaData {
-    void *src;
-    void *dest;
-    s32 size;
-    s32 attr;
-} sceSifDmaData;
 
 extern s32 padDebugPrint __attribute__((section(".data")));
 extern const char padDmaFailMsg[];
@@ -144,10 +138,10 @@ extern const char padRequestNameComplete[16];
 int _send_to_iop(int port, int slot)
 {
     padCmd *c = padPortState[port][slot].cmd;
-    sceSifDmaData dma[16];
+    sifDmaTransfer_t dma[16];
     int id;
     u32 seq;
-    void *destination;
+    u32 destination;
 
     if (padPortState[port][slot].dmaId != 0) {
         if (sceSifDmaStat(padPortState[port][slot].dmaId) >= 0) {
@@ -158,14 +152,14 @@ int _send_to_iop(int port, int slot)
         }
     }
     seq = c->seq + 1;
-    destination = EE_ADDR_AS(void *, (padPortState[port][slot].iopAddr + ((seq & 1) << 5)));
+    destination = padPortState[port][slot].iopAddr + ((seq & 1) << 5);
     c->seq = seq;
     SyncDCache(c, (u8 *)c + 0x20);
-    dma[0].dest = destination;
-    dma[0].src = c;
+    dma[0].destination = destination;
+    dma[0].source = EE_ADDR(c);
     dma[0].size = 0x20;
-    dma[0].attr = 0;
-    id = sceSifSetDma((struct sifDmaTransfer_t *)dma, 1);
+    dma[0].attributes = 0;
+    id = sceSifSetDma(dma, 1);
     if (id == 0) {
         if (padDebugPrint != 0) {
             scePrintf(padDmaFailMsg);

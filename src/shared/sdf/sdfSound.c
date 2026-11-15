@@ -219,15 +219,7 @@ void sdfSndSyncCmd(s32 aCmdId);
 s32 sdfSndSendSyncCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
 
 /* The SIF DMA request block, reused for every transfer. */
-extern struct
-{
-    u32 source;
-    s32 destination;
-    s32 size;
-    s32 attributes;
-} sdfSndTransBuf;
-
-#include "sdk_libkernl.h"
+extern sifDmaTransfer_t sdfSndTransBuf;
 
 void sdfSndTransToIOP(s32 aIOPAddr, void *aEEAddr, s32 aSize);
 void p2sdPlayBGM(s32 MidiNo);
