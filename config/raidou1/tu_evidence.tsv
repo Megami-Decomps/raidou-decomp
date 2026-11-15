@@ -71,7 +71,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0011EB08	00121590	dat	c	dds:5+smt3:map:2 literal-cores:1 of 94 clipped	kernel/dds3GlobalWork
 001215C8	001225D8	newdata/datCalc	c	dds:6+smt3:names:2+smt3:map:1 of 66	newdata/datCalc
 00122850	00122880	code_00122850	asm	none	
-00122888	00122888	code_00122888	c	dds:1 of 1	
+00122888	00122888	code_r1_00122888	c	dds:1 of 1	
 001228B0	00122C20	code_001228B0	c	dds:2 of 10	
 00122C50	00122F50	kernel/dds3GlobalWork	c	smt3:names:3+smt3:map:1 of 4	kernel/dds3GlobalWork
 00123238	00123920	kernel/dds3DebugStuff	c	smt3:names:6+smt3:map:3 of 9	kernel/dds3DebugStuff

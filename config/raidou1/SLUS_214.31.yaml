@@ -127,7 +127,7 @@ segments:
       - [0x1FB08, c, dat]
       - [0x225C8, c, newdata/datCalc]
       - [0x23850, asm, code_00122850]
-      - [0x23888, c, code_00122888]
+      - [0x23888, c, code_r1_00122888]
       - [0x238B0, c, code_001228B0]
       - [0x23C50, c, kernel/dds3GlobalWork]
       - [0x24238, c, kernel/dds3DebugStuff]

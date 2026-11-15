@@ -73,7 +73,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00121708	00124B18	dat	c	dds:4+smt3:map:2 literal-cores:1 of 114 clipped	kernel/dds3GlobalWork
 00124B28	00126858	newdata/datCalc	c	dds:6+smt3:names:2+smt3:map:1 of 94	newdata/datCalc
 00126AD0	00126B00	code_00126AD0	asm	none	
-00126B08	00126B08	code_00126B08	c	dds:1 of 1	
+00126B08	00126B08	code_r1_00122888	c	dds:1 of 1	
 00126B30	00126EA8	code_00126B30	c	dds:2 of 9	
 00126ED0	00127048	code_00126ED0	asm	none	
 00127070	00127370	kernel/dds3GlobalWork	c	smt3:names:3+smt3:map:1 of 4	kernel/dds3GlobalWork
@@ -244,7 +244,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00233A70	002340C0	code_r1_0021C768	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
 00234128	00234128	pipe/pipeObject	c	smt3:map:1 of 1	pipe/pipeObject
 00234168	0023BEC0	code_00234168	c	dds:103+smt3:map:3+smt3:names:2 literal-cores:1 of 118 clipped	newbattle/nbMisc
-0023C018	0023C3B0	effect/effPCPMisc_0023C018	c	smt3:map:2+smt3:names:1 of 15 reordered part	effect/effPCPMisc
+0023C018	0023C3B0	effect/effPCPMisc_00224D10	c	smt3:map:2+smt3:names:1 of 15 reordered part	effect/effPCPMisc
 0023C400	0023E1A0	code_r1_002250F8	c	dds:39+smt3:map:2 of 59 clipped	effect/effPCPMisc
 0023E1D0	00259408	code_0023E1D0	c	dds:480+smt3:map:2 literal-cores:1 of 628 clipped	effect/effPCPBoss
 002595A8	002595E0	effect/effPCPBoss_002595A8	c	smt3:map:2 of 2 part	effect/effPCPBoss
