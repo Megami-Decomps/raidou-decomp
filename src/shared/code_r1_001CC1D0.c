@@ -140,7 +140,7 @@ typedef struct CampTier {
     s32 value;
 } CampTier;
 
-static inline s32 campSetHandler(MenuTerminalContext *context, s32 mode, void *callback) {
+static inline s32 campSetHandler(mnuTerminalContext_t *context, s32 mode, void *callback) {
     return jmsSeqChange(&context->transitionWork, &context->popupState, mode, callback);
 }
 
@@ -206,7 +206,7 @@ typedef struct EvtFlagGate {
         jmsSeqJump(&(ctx)->popupState, (entry)); \
     } while (0)
 
-struct MenuList;
+struct mnuList_t;
 
 struct dds3ProcessID_t;
 

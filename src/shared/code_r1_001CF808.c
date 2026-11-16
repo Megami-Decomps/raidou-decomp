@@ -53,7 +53,7 @@ typedef s8 BrsProgressAnimationPhase;
 /* Cross-title completion view, 0x14 bytes before the corresponding
  * BrsProgressAnimation row (see mnu_result.h). Only byte 0 of the two
  * icon-state regions is polled; other bytes stay opaque. */
-typedef struct BrsResultCounterView {
+typedef struct mnuBrsResultCounterView_t {
     u8 pad00[0x14];
     BrsProgressAnimationPhase phase;
     u8 pad15[0x1F];
@@ -62,20 +62,20 @@ typedef struct BrsResultCounterView {
     s8 progressIconState[1];
     u8 pad4D[0x13];
     s8 completionIconState[8];
-} BrsResultCounterView;
+} mnuBrsResultCounterView_t;
 
-typedef char BrsResultCounterView_size_must_be_0x68[(sizeof(BrsResultCounterView) == 0x68) ? 1 : -1];
+typedef char mnuBrsResultCounterView_size_must_be_0x68[(sizeof(mnuBrsResultCounterView_t) == 0x68) ? 1 : -1];
 
 extern void mnuTitleStreamUpdateAndLogBgm(void);
 
 /* The four sprite corner colours start from the shared grey table. */
-typedef struct BrsCornerColors {
+typedef struct mnuBrsCornerColors_t {
     u32 rgba[4];
-} BrsCornerColors;
+} mnuBrsCornerColors_t;
 
-typedef struct BrsLevelCornerColors {
+typedef struct mnuBrsLevelCornerColors_t {
     u32 values[4];
-} BrsLevelCornerColors;
+} mnuBrsLevelCornerColors_t;
 
 typedef struct TitleEffectState {
     s32 soundNameIndex;
@@ -140,15 +140,15 @@ extern u32 D_003BC5B0[2];
 extern u32 D_003BC5B8;
 extern s32 sndStreamTransferIopHeapAddress;
 
-typedef struct BrsResultWork {
+typedef struct mnuBrsResultWork_t {
     u8 pad00[0xD40];
     s32 settledFrames;
     u8 padD44[0x19C];
-    BrsResultCounterView levelCounters[8];
-    BrsResultCounterView profileCounters[8];
-} BrsResultWork;
+    mnuBrsResultCounterView_t levelCounters[8];
+    mnuBrsResultCounterView_t profileCounters[8];
+} mnuBrsResultWork_t;
 
-typedef struct BrsProfilePalette { u32 values[4]; } BrsProfilePalette;
+typedef struct mnuBrsProfilePalette_t { u32 values[4]; } mnuBrsProfilePalette_t;
 
 void mnuResetTitleEffectState(s32 command);
 void mnuSetTitleVoicePrefixIndex(s32 prefixIndex);

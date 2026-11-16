@@ -3,9 +3,9 @@
 
 #include "common.h"
 
-typedef struct MenuPoint {
+typedef struct mnuPoint_t {
     s32 x;
     s32 y;
-} MenuPoint;
+} mnuPoint_t;
 
 #endif

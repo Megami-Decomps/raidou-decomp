@@ -6,7 +6,7 @@
 #include "code_r1_001CC1D0.h"
 
 /* The occupied-party display and its five native 0x34-byte entries. */
-typedef struct PartyPanelEntry {
+typedef struct mnuPartyPanelEntry_t {
     s32 unk0;
     s32 index;
     s32 unitIndex;
@@ -16,15 +16,15 @@ typedef struct PartyPanelEntry {
     s32 maxHp;
     s32 maxMp;
     s32 stats[DAT_BASE_STAT_COUNT];
-} PartyPanelEntry;
+} mnuPartyPanelEntry_t;
 
-typedef struct PartyPanel {
+typedef struct mnuPartyPanel_t {
     s32 frontlineCount;
     s32 reserveCount;
-    PartyPanelEntry slots[5];
-} PartyPanel;
+    mnuPartyPanelEntry_t slots[5];
+} mnuPartyPanel_t;
 
-typedef struct MenuSprites {
+typedef struct mnuSprites_t {
     u32 flags;
     u8 pad04[8];
     s32 profileLabelOverride;
@@ -38,21 +38,21 @@ typedef struct MenuSprites {
     s32 slideSpeed;
     s8 menuValueStyleOverride;
     s8 currentValueStyle;
-} MenuSprites;
+} mnuSprites_t;
 
 /* The allocated icon bundle owns its draw fade and fade direction. */
-typedef struct MenuIconBundle {
+typedef struct mnuIconBundle_t {
     u32 unk0[3];
     struct sprHandle_t *sprite[3];
     s32 fade;
     s32 fadeOut;
-} MenuIconBundle;
+} mnuIconBundle_t;
 
-typedef char MenuIconBundle_size_must_be_0x20[
-    sizeof(MenuIconBundle) == 0x20 ? 1 : -1];
+typedef char mnuIconBundle_size_must_be_0x20[
+    sizeof(mnuIconBundle_t) == 0x20 ? 1 : -1];
 
 /* Complete 0x50-byte texture/effect owner embedded in each page bank. */
-typedef struct MenuPageBar {
+typedef struct mnuPageBar_t {
     s32 variant;
     u8 pad04[0x0C];
     s32 quantizedSpan; /* 0x10 */
@@ -66,25 +66,25 @@ typedef struct MenuPageBar {
     s32 fade;
     s32 fadeOut;
     s32 holdEffectUpdate;
-} MenuPageBar;
+} mnuPageBar_t;
 
 /* One command owns both complete 128-entry record arrays. The second
  * initializer explicitly writes all 128 entries, independent of table spacing. */
-typedef struct MenuCommandPosition {
+typedef struct mnuCommandPosition_t {
     s32 x;
     s32 y;
     s32 targetX;
     s32 targetY;
-} MenuCommandPosition;
+} mnuCommandPosition_t;
 
-typedef struct MenuCommandMotion {
+typedef struct mnuCommandMotion_t {
     s32 value; /* Phase step for kind 0, opacity factor for kind 1. */
     s32 delay;
     s32 phase;
     s32 scale;
-} MenuCommandMotion;
+} mnuCommandMotion_t;
 
-typedef struct MenuQueuedCommand {
+typedef struct mnuQueuedCommand_t {
     u32 keepActive; /* Nonzero keeps the command alive after its phase is spent. */
     s32 kind;
     s32 option;
@@ -94,38 +94,38 @@ typedef struct MenuQueuedCommand {
     s32 argument;
     struct sprHandle_t *resources; /* 0x1C: the real draw resource instance. */
     s32 particleCount;
-    MenuCommandPosition positions[128]; /* 0x24 */
-    MenuCommandMotion motion[128];      /* 0x824 */
-} MenuQueuedCommand;
+    mnuCommandPosition_t positions[128]; /* 0x24 */
+    mnuCommandMotion_t motion[128];      /* 0x824 */
+} mnuQueuedCommand_t;
 
 /* One resource prefix followed by two complete command records. Resource
  * destructors visit this prefix once, while command routines use 0x1024 strides. */
-typedef struct MenuPageSlot {
+typedef struct mnuPageSlot_t {
     s32 kind;
     u32 flags;
     u8 pad08[8];
     struct sprHandle_t *icon[3]; /* 0x10 */
-    MenuPageBar hp;               /* 0x1C */
-    MenuPageBar mp;               /* 0x6C */
+    mnuPageBar_t hp;               /* 0x1C */
+    mnuPageBar_t mp;               /* 0x6C */
     struct sprHandle_t *frame[8]; /* 0xBC */
-    struct MenuSprites *windowSprites; /* 0xDC */
-    MenuIconBundle *iconBundle;
+    struct mnuSprites_t *windowSprites; /* 0xDC */
+    mnuIconBundle_t *iconBundle;
     struct sprHandle_t *panelResourceHandles[3]; /* 0xE4 */
-    MenuQueuedCommand commands[2]; /* 0xF0 and 0x1114 */
-} MenuPageSlot;
+    mnuQueuedCommand_t commands[2]; /* 0xF0 and 0x1114 */
+} mnuPageSlot_t;
 
-typedef char MenuCommandPosition_size_check[(sizeof(MenuCommandPosition) == 0x10) ? 1 : -1];
+typedef char mnuCommandPosition_size_check[(sizeof(mnuCommandPosition_t) == 0x10) ? 1 : -1];
 
-typedef char MenuCommandMotion_size_check[(sizeof(MenuCommandMotion) == 0x10) ? 1 : -1];
+typedef char mnuCommandMotion_size_check[(sizeof(mnuCommandMotion_t) == 0x10) ? 1 : -1];
 
-typedef char MenuQueuedCommand_size_check[(sizeof(MenuQueuedCommand) == 0x1024) ? 1 : -1];
+typedef char mnuQueuedCommand_size_check[(sizeof(mnuQueuedCommand_t) == 0x1024) ? 1 : -1];
 
-typedef char MenuPageSlot_size_check[(sizeof(MenuPageSlot) == 0x2138) ? 1 : -1];
+typedef char mnuPageSlot_size_check[(sizeof(mnuPageSlot_t) == 0x2138) ? 1 : -1];
 
-typedef struct MenuPageWindow {
+typedef struct mnuPageWindow_t {
     u32 flags;
     s32 transitionValue;
-    PartyPanel *records;
+    mnuPartyPanel_t *records;
     struct sprHandle_t *resources; /* 0x0C: resolved base-resource handle */
     s32 slot;
     struct sprHandle_t *secondaryResource;
@@ -135,32 +135,32 @@ typedef struct MenuPageWindow {
     /* One main resource bank, copied and consumed in two eight-entry halves. */
     struct sprHandle_t *mainResources[16];
     struct sprHandle_t *handlesC[5];
-    MenuPageSlot slots[5];
-    struct MenuList *lists[2];
+    mnuPageSlot_t slots[5];
+    struct mnuList_t *lists[2];
     s32 selected;
     s32 scrollOffset;
     s32 fade;
-} MenuPageWindow;
+} mnuPageWindow_t;
 
-typedef char MenuPageWindow_size_must_be_0xA6A4[
-    sizeof(MenuPageWindow) == 0xA6A4 ? 1 : -1];
+typedef char mnuPageWindow_size_must_be_0xA6A4[
+    sizeof(mnuPageWindow_t) == 0xA6A4 ? 1 : -1];
 
 typedef char MenuPageWindow_mainResources_extent_check[
-    sizeof(((MenuPageWindow *)0)->mainResources) == 0x40 ? 1 : -1];
+    sizeof(((mnuPageWindow_t *)0)->mainResources) == 0x40 ? 1 : -1];
 
 /* Signed row selector; -1 leaves the panel group without a selected row. */
 typedef s32 MenuPanelGroupSelection;
 
 /* Native group allocations own five panel items and retain their selection. */
-typedef struct MenuPanelGroup {
+typedef struct mnuPanelGroup_t {
     u8 pad00[0x0C];
     struct sprHandle_t *texture; /* 0x0C */
-    struct MenuPanelItem *entries[5]; /* 0x10 */
+    struct mnuPanelItem_t *entries[5]; /* 0x10 */
     MenuPanelGroupSelection selection; /* 0x24; -1 means no selected row. */
     s32 initialValue; /* 0x28 */
-} MenuPanelGroup;
+} mnuPanelGroup_t;
 
-typedef char MenuPanelGroup_size_must_be_0x2C[(sizeof(MenuPanelGroup) == 0x2C) ? 1 : -1];
+typedef char mnuPanelGroup_size_must_be_0x2C[(sizeof(mnuPanelGroup_t) == 0x2C) ? 1 : -1];
 
 void CmdMenuCursorDrawUnlock(void *pCmdMenu);
 

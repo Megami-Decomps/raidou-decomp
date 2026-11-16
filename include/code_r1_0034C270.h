@@ -3,8 +3,8 @@
 
 #include "common.h"
 
-struct MenuList;
+struct mnuList_t;
 
-struct MenuList *mnuCreateListState(s32 id, s32 visibleCount, s32 rowSpacing);
+struct mnuList_t *mnuCreateListState(s32 id, s32 visibleCount, s32 rowSpacing);
 
 #endif

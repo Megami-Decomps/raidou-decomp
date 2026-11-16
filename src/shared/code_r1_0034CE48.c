@@ -18,7 +18,7 @@
 #include "code_r1_0034CE48.h"
 
 /* Native profile-progress panel, including its cached sprite-slot pairs. */
-typedef struct MenuProfilePanel {
+typedef struct mnuProfilePanel_t {
     u8 pad00[0x10];
     s32 capValue;
     s32 option;
@@ -29,24 +29,24 @@ typedef struct MenuProfilePanel {
     s32 randomOpacity[5];
     s32 phase;
     s32 opacity;
-} MenuProfilePanel;
+} mnuProfilePanel_t;
 
-typedef char MenuProfilePanel_size_check[(sizeof(MenuProfilePanel) == 0x48) ? 1 : -1];
+typedef char mnuProfilePanel_size_check[(sizeof(mnuProfilePanel_t) == 0x48) ? 1 : -1];
 
-typedef struct MenuFadeFields {
-    MenuWindowContainer previousWindow;
+typedef struct mnuFadeFields_t {
+    mnuWindowContainer_t previousWindow;
     s32 previousVisibleCount;
-    MenuIconSprites savedResource;
+    mnuIconSprites_t savedResource;
     u32 hasResourceCopy;
     s32 previousProgress;
-    MenuWindowContainer *currentWindow;
+    mnuWindowContainer_t *currentWindow;
     s32 currentProgress;
-} MenuFadeFields;
+} mnuFadeFields_t;
 
-/* Raidou's MenuWindowContainer is 8 bytes longer; the fade functions read currentProgress at 0xC8. */
-typedef char MenuFadeFields_size_must_be_0xCC[(sizeof(MenuFadeFields) == 0xCC) ? 1 : -1];
+/* Raidou's mnuWindowContainer_t is 8 bytes longer; the fade functions read currentProgress at 0xC8. */
+typedef char mnuFadeFields_size_must_be_0xCC[(sizeof(mnuFadeFields_t) == 0xCC) ? 1 : -1];
 
-struct MenuListNode;
+struct mnuListNode_t;
 
 struct StaffMenuRuntime;
 
@@ -152,23 +152,23 @@ struct StaffMenuRuntime;
 
 #define MNU_STAFF_REORDER_CANCEL_MASK 6
 
-typedef struct MenuList MenuList;
+typedef struct mnuList_t mnuList_t;
 
-typedef struct MenuIconState MenuIconState;
+typedef struct mnuIconState_t mnuIconState_t;
 
-typedef struct MenuPanelDrawEntry {
+typedef struct mnuPanelDrawEntry_t {
     s32 slotIndex;
     s32 x;
     s32 y;
-} MenuPanelDrawEntry;
+} mnuPanelDrawEntry_t;
 
 /* The draw routine copies five entries; the data label has a trailing zero entry. */
-typedef struct MenuPanelDrawLayout {
-    MenuPanelDrawEntry entry[5];
-} MenuPanelDrawLayout;
+typedef struct mnuPanelDrawLayout_t {
+    mnuPanelDrawEntry_t entry[5];
+} mnuPanelDrawLayout_t;
 
 /* Menu runtime fields shared by the party, panel and resource handlers. */
-typedef struct MenuContext {
+typedef struct mnuContext_t {
     u8 pad00[8];
     jmsSeqHandle_t transitionWork; /* +0x08: native saved-entry transition state */
     s32 popupState[3];     /* 0x54: passed to the popup state handlers */
@@ -184,33 +184,33 @@ typedef struct MenuContext {
     const void *skillCategoryLayout; /* 0xF8 */
     const void *equippedSkillLayout; /* 0xFC */
     s32 skillPanelResource; /* 0x100 */
-    MenuWindowContainer *imageHandle; /* 0x104: passed to the window fade owner. */
+    mnuWindowContainer_t *imageHandle; /* 0x104: passed to the window fade owner. */
     u8 pad108[4];
     s32 listHandle;        /* 0x10C */
     u8 pad110[8];
     s32 panelHandle;       /* 0x118 */
     u8 pad11C[0x168];
-    MenuPageWindow partyWindow; /* 0x284: lists, page slots and selection */
-    PartyPanel partyPanel; /* 0xA928: counters and five native 0x34-byte entries */
-    MenuPanelGroup *panelGroup; /* 0xAA34 */
-    MenuSpriteState *panelRequest; /* 0xAA38 */
-    MenuSpriteState *panelEffects; /* 0xAA3C */
+    mnuPageWindow_t partyWindow; /* 0x284: lists, page slots and selection */
+    mnuPartyPanel_t partyPanel; /* 0xA928: counters and five native 0x34-byte entries */
+    mnuPanelGroup_t *panelGroup; /* 0xAA34 */
+    mnuSpriteState_t *panelRequest; /* 0xAA38 */
+    mnuSpriteState_t *panelEffects; /* 0xAA3C */
     u8 padAA40[8];
     s32 party;             /* 0xAA48 */
     u8 padAA4C[0x10];
-    MenuProfilePanel *profilePanel; /* 0xAA5C: retained profile-panel allocation */
+    mnuProfilePanel_t *profilePanel; /* 0xAA5C: retained profile-panel allocation */
     u16 slotOfA[0x2A0]; /* 0xAA60 */
     u16 slotOfB[0x40]; /* 0xAFA0 */
     u16 skillSlots[0x75]; /* 0xB020 */
     u8 padB10A[2];
-    MenuFadeFields transition; /* 0xB10C: complete native fade owner. */
+    mnuFadeFields_t transition; /* 0xB10C: complete native fade owner. */
     s32 titleFadingOut;
     s32 titleOpacity;
     s32 titleSlide;
     s32 highlightOpacity;
-} MenuContext;
+} mnuContext_t;
 
-typedef struct MenuListNode MenuListNode;
+typedef struct mnuListNode_t mnuListNode_t;
 
 /* Native selection-state allocation is 0x30 bytes, distinct from item state. */
 typedef struct StaffMenuRuntime {
@@ -221,76 +221,76 @@ typedef struct StaffMenuRuntime {
     s32 staffView;
     s32 staffSelection;
     s32 staffExit;
-    MenuIconState *iconPanel; /* 0x20: created and released with the staff panels. */
+    mnuIconState_t *iconPanel; /* 0x20: created and released with the staff panels. */
     s32 active;
     s32 idleFrames;
     s32 motionSelection;
 } StaffMenuRuntime;
 
 /* The item/skill-state constructor allocates and clears this complete 0x3C. */
-typedef struct SkillMenuRuntime {
+typedef struct mnuSkillMenuRuntime_t {
     sdfMemHandle_t *allocation;
     u8 pad04[4];
     s32 skillMenuActive;
-    MenuList *categoryList;
-    MenuWindowContainer *skillWindows[4];
-    struct MenuPanelState *skillPanel;
-    MenuWindowContainer *selectedWindow;
+    mnuList_t *categoryList;
+    mnuWindowContainer_t *skillWindows[4];
+    struct mnuPanelState_t *skillPanel;
+    mnuWindowContainer_t *selectedWindow;
     s32 activeMark;
     u32 unk2C; /* 2B6FE8 clears this after rebuilding selection. */
     u32 selectionFlags; /* 0x30: resets the selected skill entry. */
     u32 selectedIndex;
     s32 fade; /* 0x38: shared skill-category marker fade. */
-} SkillMenuRuntime;
+} mnuSkillMenuRuntime_t;
 
-typedef struct MenuListDefaults {
+typedef struct mnuListDefaults_t {
     s32 indices[3];
-} MenuListDefaults;
+} mnuListDefaults_t;
 
-typedef struct MnuCategoryPositions {
+typedef struct mnuCategoryPositions_t {
     s32 entries[4][2];
-} MnuCategoryPositions;
+} mnuCategoryPositions_t;
 
-typedef struct MenuPanelBlock {
+typedef struct mnuPanelBlock_t {
     u32 word[14];
-} MenuPanelBlock;
+} mnuPanelBlock_t;
 
-typedef struct MenuPanelWindow {
+typedef struct mnuPanelWindow_t {
     u8 pad0[4];
     s32 field4;
     u8 pad8[0x10];
-    MenuList *list; /* 0x18 */
+    mnuList_t *list; /* 0x18 */
     u8 pad1C[0x3C];
-    MenuPanelBlock block; /* 0x58 */
+    mnuPanelBlock_t block; /* 0x58 */
     u8 pad90[4];
     s32 field94;
-} MenuPanelWindow;
+} mnuPanelWindow_t;
 
-typedef struct MnuCampPanelDrawRecord {
+typedef struct mnuCampPanelDrawRecord_t {
     sprHandle_t *resource;
     s32 sprite;
     s32 xOffset;
     s32 yOffset;
-} MnuCampPanelDrawRecord;
+} mnuCampPanelDrawRecord_t;
 
-typedef struct MnuCampPanelOrigins {
-    MenuPoint primary;
-    MenuPoint secondary;
-} MnuCampPanelOrigins;
+typedef struct mnuCampPanelOrigins_t {
+    mnuPoint_t primary;
+    mnuPoint_t secondary;
+} mnuCampPanelOrigins_t;
 
-typedef struct MenuBadgePlace {
+typedef struct mnuBadgePlace_t {
     s32 slot;
     s32 x;
     s32 y;
-} MenuBadgePlace;
+} mnuBadgePlace_t;
 
-typedef struct MenuBadgeLayout {
-    MenuBadgePlace place[2];
-} MenuBadgeLayout;
+typedef struct mnuBadgeLayout_t {
+    mnuBadgePlace_t place[2];
+} mnuBadgeLayout_t;
 
-typedef struct MenuCampBackdropLayout {
-    MenuBadgeLayout layer[2];
-} MenuCampBackdropLayout;
+typedef struct mnuCampBackdropLayout_t {
+    mnuBadgeLayout_t layer[2];
+} mnuCampBackdropLayout_t;
 
 #define MNU_ADVANCE_FADE(value, amount, maximum) { \
     if ((value) < (maximum)) { \
@@ -301,46 +301,46 @@ typedef struct MenuCampBackdropLayout {
     } \
 }
 
-void mnuUpdateListScrollFlags(MenuList *list);
-s32 mnuListContainsFinalNode(MenuList *list);
+void mnuUpdateListScrollFlags(mnuList_t *list);
+s32 mnuListContainsFinalNode(mnuList_t *list);
 
-typedef struct MenuSpriteRef {
+typedef struct mnuSpriteRef_t {
     s32 sprite;
     s32 effect;
-} MenuSpriteRef;
+} mnuSpriteRef_t;
 
 /* Destroy nonzero resource slots, retaining the native per-iteration count read, then free. */
-typedef struct MenuPos {
+typedef struct mnuPos_t {
     s32 x;
     s32 y;
-} MenuPos;
+} mnuPos_t;
 
-typedef struct MenuPosTable {
-    MenuPos pos[6];
-} MenuPosTable;
+typedef struct mnuPosTable_t {
+    mnuPos_t pos[6];
+} mnuPosTable_t;
 
-typedef struct MenuPosTable3 {
-    MenuPos pos[3];
-} MenuPosTable3;
+typedef struct mnuPosTable3_t {
+    mnuPos_t pos[3];
+} mnuPosTable3_t;
 
-typedef struct MenuOffsets {
+typedef struct mnuOffsets_t {
     s32 x0;
     s32 y0;
     s32 x1;
     s32 y1;
-} MenuOffsets;
+} mnuOffsets_t;
 
-typedef struct MenuIconEntry {
+typedef struct mnuIconEntry_t {
     u32 id;
     s32 x;
     s32 y;
-} MenuIconEntry;
+} mnuIconEntry_t;
 
-typedef struct MenuIconLayout {
-    MenuIconEntry entry[3];
-} MenuIconLayout;
+typedef struct mnuIconLayout_t {
+    mnuIconEntry_t entry[3];
+} mnuIconLayout_t;
 
-MenuListNode *mnuScrollListToEnd(MenuList *list) {
+mnuListNode_t *mnuScrollListToEnd(mnuList_t *list) {
     s32 i;
 
     if (list->cursor == NULL) {

@@ -89,13 +89,13 @@ typedef struct CampEffectRows {
     u32 values[2][4];
 } CampEffectRows;
 
-typedef struct MenuGradientFade {
+typedef struct mnuGradientFade_t {
     u32 active;
     s32 color;
     s32 blend;
-} MenuGradientFade;
+} mnuGradientFade_t;
 
-typedef char MenuGradientFade_size_must_be_0x0C[(sizeof(MenuGradientFade) == 0x0C) ? 1 : -1];
+typedef char mnuGradientFade_size_must_be_0x0C[(sizeof(mnuGradientFade_t) == 0x0C) ? 1 : -1];
 
 /* Native 0x10-byte list-node payload. Its first word is an entry index or
  * displayed value according to the list; price is the preserved base price. */
@@ -111,10 +111,10 @@ typedef char CampWindowParams_size_must_be_0x10[(sizeof(CampWindowParams) == 0x1
 /* The two terminal payload words are a party index and its signed recovery
  * cost. The surrounding node storage
  * is also the camp/sort payload, not a second progress-node struct view. */
-typedef struct MenuThresholdEntry {
+typedef struct mnuThresholdEntry_t {
     s32 entryId;
     s32 requiredAmount;
-} MenuThresholdEntry;
+} mnuThresholdEntry_t;
 
 /* Each mapped record owns status storage expanded while its resource is loaded. */
 typedef struct effMappedRecord_t {
@@ -205,7 +205,7 @@ void effDrawTextureSlot(s32 x, s32 y, u32 z, u32 *colors, u32 flags, sprHandle_t
 sprHandle_t *effUpdateTimedStates(sprHandle_t *effect, u32 slot, void *entryData);
 
 /* The native window constructor allocates 0x98 bytes; panel layout is 0x38. */
-struct MenuIconState {
+struct mnuIconState_t {
     u32 kind;
     u32 unk4;
     s32 count;
@@ -217,7 +217,7 @@ struct MenuIconState {
     s32 fade;
 };
 
-typedef char MenuIconState_size_must_be_0x38[(sizeof(struct MenuIconState) == 0x38) ? 1 : -1];
+typedef char mnuIconState_size_must_be_0x38[(sizeof(struct mnuIconState_t) == 0x38) ? 1 : -1];
 
 /* The backdrop packet's complete resource payload, also used by shop callbacks. */
 typedef struct MapPacket {
@@ -230,15 +230,15 @@ typedef struct MapPacket {
 
 typedef char MapPacket_size_must_be_0x3C[(sizeof(MapPacket) == 0x3C) ? 1 : -1];
 
-typedef struct DspScrollingStrip {
+typedef struct mnuDspScrollingStrip_t {
     struct sprHandle_t *resource;
     s32 frameIndex;
     s32 horizontalOffset;
     s32 verticalOffset;
     s32 scrollSpeed;
-} DspScrollingStrip;
+} mnuDspScrollingStrip_t;
 
-typedef struct DspScrollingStripState {
+typedef struct mnuDspScrollingStripState_t {
     s32 unk0;
     s32 layout;
     s32 unk8;
@@ -246,24 +246,24 @@ typedef struct DspScrollingStripState {
     s32 layer;
     s32 overlayX;
     s32 overlayY;
-    DspScrollingStrip strips[6];
-} DspScrollingStripState;
+    mnuDspScrollingStrip_t strips[6];
+} mnuDspScrollingStripState_t;
 
-typedef char DspScrollingStrip_size_must_be_0x14[(sizeof(DspScrollingStrip) == 0x14) ? 1 : -1];
+typedef char mnuDspScrollingStrip_size_must_be_0x14[(sizeof(mnuDspScrollingStrip_t) == 0x14) ? 1 : -1];
 
-typedef char DspScrollingStripState_size_must_be_0x94[(sizeof(DspScrollingStripState) == 0x94) ? 1 : -1];
+typedef char mnuDspScrollingStripState_size_must_be_0x94[(sizeof(mnuDspScrollingStripState_t) == 0x94) ? 1 : -1];
 
-typedef struct MenuIconSprites {
+typedef struct mnuIconSprites_t {
     struct sdfMemHandle_t *allocation; /* 0x00: retained descriptor for this bundle. */
     u32 value;
     u32 unk8;
     struct sprHandle_t *sprite[3];
-} MenuIconSprites;
+} mnuIconSprites_t;
 
-typedef char MenuIconSprites_size_must_be_0x18[(sizeof(MenuIconSprites) == 0x18) ? 1 : -1];
+typedef char mnuIconSprites_size_must_be_0x18[(sizeof(mnuIconSprites_t) == 0x18) ? 1 : -1];
 
 /* Native list owner, shared by both games' allocator and window consumers. */
-struct MenuListNode {
+struct mnuListNode_t {
     s32 index;
     const u8 *text; /* 0x04: borrowed encoded display text; removing a node frees only the node. */
     struct {
@@ -275,8 +275,8 @@ struct MenuListNode {
     s32 animationTimer; /* 0x50: stepped down to zero while a list is visible */
     u8 selectionByte54; /* 0x54: cleared on moving the list selection */
     u8 pad55[3];
-    struct MenuListNode *next;
-    struct MenuListNode *prev;
+    struct mnuListNode_t *next;
+    struct mnuListNode_t *prev;
     /* The allocator reserves 0x74 bytes. Camp builders fill four payload
      * words at 0x60; other lists use the same storage as sorting keys. */
     union {
@@ -287,7 +287,7 @@ struct MenuListNode {
             u8 pad6C[4];
         };
         CampWindowParams camp;
-        MenuThresholdEntry terminal;
+        mnuThresholdEntry_t terminal;
     };
     /* +0x70: terminal recovery panel at 267050; title at 2674C8.
      * Mantra lists retain a datActorWork_t address in the same word. */
@@ -302,9 +302,9 @@ struct MenuListNode {
 };
 
 typedef char MenuListNode_sprite_word_must_be_4[
-    (sizeof(((struct MenuListNode *)0)->sprites[0].sprite) == 4) ? 1 : -1];
+    (sizeof(((struct mnuListNode_t *)0)->sprites[0].sprite) == 4) ? 1 : -1];
 
-typedef char MenuListNode_size_must_be_0x74[(sizeof(struct MenuListNode) == 0x74) ? 1 : -1];
+typedef char mnuListNode_size_must_be_0x74[(sizeof(struct mnuListNode_t) == 0x74) ? 1 : -1];
 
 /* Timed states borrow records through effTimedState_t.source. Keep this
  * resource alive until those states no longer reference its records.
@@ -315,25 +315,25 @@ typedef struct effMappedResource_t {
     effMappedRecord_t *records;
 } effMappedResource_t;
 
-typedef struct MenuEffectResources {
+typedef struct mnuEffectResources_t {
     MapPacket packet;
     struct effMappedResource_t *animationHandle;
     CampEffectRows rows;
-} MenuEffectResources;
+} mnuEffectResources_t;
 
 /* Result/camp backdrop: resources, sixteen sparks and the badge fade. */
-typedef struct MenuCampEffect {
-    MenuEffectResources resources;
+typedef struct mnuCampEffect_t {
+    mnuEffectResources_t resources;
     s32 direction[16];
     s32 velocity[16][2];
     s32 life[16];
     s32 count;
     s32 fade;
-} MenuCampEffect;
+} mnuCampEffect_t;
 
-typedef char MenuEffectResources_size_must_be_0x60[(sizeof(MenuEffectResources) == 0x60) ? 1 : -1];
+typedef char mnuEffectResources_size_must_be_0x60[(sizeof(mnuEffectResources_t) == 0x60) ? 1 : -1];
 
-typedef char MenuCampEffect_size_must_be_0x168[(sizeof(MenuCampEffect) == 0x168) ? 1 : -1];
+typedef char mnuCampEffect_size_must_be_0x168[(sizeof(mnuCampEffect_t) == 0x168) ? 1 : -1];
 
 typedef char effMappedRecord_size_must_be_0x24[(sizeof(effMappedRecord_t) == 0x24) ? 1 : -1];
 
@@ -342,22 +342,22 @@ typedef char effMappedResource_size_must_be_0x0C[(sizeof(effMappedResource_t) ==
 void jmsSeqJumpAndFree(s32 *entrySlot, jmsSeqUnit_t *entry);
 
 /* An indexed render slot owned by an effect resource set. */
-typedef struct MenuGridSlot {
+typedef struct mnuGridSlot_t {
     struct sprHandle_t *set;
     s32 index;
-} MenuGridSlot;
+} mnuGridSlot_t;
 
-typedef char MenuGridSlot_size_must_be_8[(sizeof(MenuGridSlot) == 8) ? 1 : -1];
+typedef char mnuGridSlot_size_must_be_8[(sizeof(mnuGridSlot_t) == 8) ? 1 : -1];
 
-struct MenuList {
+struct mnuList_t {
     u32 stateFlags;     /* 0x00: cursor and selection-control bits */
     u32 flags;
     s32 id;             /* 0x08: owner/list identifier */
     s32 visibleCount;
-    struct MenuListNode *first;
-    struct MenuListNode *last;
-    struct MenuListNode *head;
-    struct MenuListNode *cursor;
+    struct mnuListNode_t *first;
+    struct mnuListNode_t *last;
+    struct mnuListNode_t *head;
+    struct mnuListNode_t *cursor;
     s32 count;
     s32 windowOffset;
     s32 rowStep;        /* 0x28: constructor argument scaled by eight */
@@ -370,38 +370,38 @@ struct MenuList {
     s32 scale;          /* 0x3C: 8.8 fixed-point default */
 };
 
-typedef char MenuList_size_must_be_0x40[(sizeof(struct MenuList) == 0x40) ? 1 : -1];
+typedef char mnuList_size_must_be_0x40[(sizeof(struct mnuList_t) == 0x40) ? 1 : -1];
 
 typedef u32 MenuPanelSelectionIndex;
 
-typedef struct MenuPanelStatePrefix {
+typedef struct mnuPanelStatePrefix_t {
     u8 pad00[0xC];
     s32 width;
     s32 height;
     MenuPanelSelectionIndex selectedIndex;
     u32 firstValueA;
     u32 firstValueB;
-} MenuPanelStatePrefix;
+} mnuPanelStatePrefix_t;
 
-typedef char MenuPanelStatePrefixSizeCheck[(sizeof(MenuPanelStatePrefix) == 0x20) ? 1 : -1];
+typedef char mnuPanelStatePrefixSizeCheck[(sizeof(mnuPanelStatePrefix_t) == 0x20) ? 1 : -1];
 
 /* Remove and free the cursor node, returning the updated cursor or NULL. */
-struct MenuListNode *mnuRemoveListCursorNode(struct MenuList *list);
+struct mnuListNode_t *mnuRemoveListCursorNode(struct mnuList_t *list);
 
 /* Append a node borrowing display text that must outlive its use by the list. */
-struct MenuListNode *mnuListAppendNode(struct MenuList *list, const void *text);
+struct mnuListNode_t *mnuListAppendNode(struct mnuList_t *list, const void *text);
 
 /* Move the visible list window and return its unchanged cursor node. */
-struct MenuListNode *mnuAdvanceListWindowStart(struct MenuList *list);
+struct mnuListNode_t *mnuAdvanceListWindowStart(struct mnuList_t *list);
 
 /* Anchored insertion defaults before; empty/null/last anchors append regardless of this option. */
 /* Insert a node borrowing display text; the list owns only its node. */
-struct MenuListNode *mnuInsertListNodeRelativeToAnchor(struct MenuList *list,
-                                                       struct MenuListNode *anchor,
+struct mnuListNode_t *mnuInsertListNodeRelativeToAnchor(struct mnuList_t *list,
+                                                       struct mnuListNode_t *anchor,
                                                        const void *text, s32 mode,
                                                        u32 options);
 
-struct MenuListNode *mnuAdvanceListCursorDefault(struct MenuList *list);
+struct mnuListNode_t *mnuAdvanceListCursorDefault(struct mnuList_t *list);
 
 /* The item-list word is an address-or-sentinel result, not always a pointer. */
 typedef u32 ItfMesEntryItemsResult;
@@ -443,14 +443,14 @@ typedef struct EvtResourcePair {
 
 typedef char EvtResourcePair_size_must_be_0x08[(sizeof(EvtResourcePair) == 0x08) ? 1 : -1];
 
-typedef struct MenuWindowContainer {
+typedef struct mnuWindowContainer_t {
     s32 id;                /* 0x00 */
     u32 flags;             /* 0x04 */
     s32 originX;           /* 0x08 */
     s32 originY;           /* 0x0C */
     s32 width;             /* 0x10 */
     s32 height;            /* 0x14 */
-    struct MenuList *list; /* 0x18 */
+    struct mnuList_t *list; /* 0x18 */
     s32 suppressBaseSprite; /* 0x1C */
     struct sprHandle_t *spriteResource; /* 0x20 */
     s32 rowSpriteSlot;     /* 0x24 */
@@ -462,19 +462,19 @@ typedef struct MenuWindowContainer {
     u32 decorationX[3];    /* 0x44 */
     s32 scale50;           /* 0x50 */
     s32 scale54;           /* 0x54 */
-    struct MenuIconState panel; /* 0x58: embedded drawable panel layout */
-    struct MenuIconSprites *resource; /* 0x90: owned sprite-resource bundle */
+    struct mnuIconState_t panel; /* 0x58: embedded drawable panel layout */
+    struct mnuIconSprites_t *resource; /* 0x90: owned sprite-resource bundle */
     u32 unk94;             /* 0x94: cleared by jmsCreateCmdMenu */
     u32 unk98;             /* 0x98: cleared by jmsCreateCmdMenu */
     u32 fadeScale;         /* 0x9C: read as the opacity by the window draw functions */
-} MenuWindowContainer;
+} mnuWindowContainer_t;
 
-typedef struct MenuWindowContainer MenuWindowContainer;
+typedef struct mnuWindowContainer_t mnuWindowContainer_t;
 
-typedef char MenuWindowContainer_size_must_be_0xA0[(sizeof(MenuWindowContainer) == 0xA0) ? 1 : -1];
+typedef char mnuWindowContainer_size_must_be_0xA0[(sizeof(mnuWindowContainer_t) == 0xA0) ? 1 : -1];
 
 /* Terminal/shop modes share this complete 0x38C-byte scene allocation. */
-typedef struct MenuTerminalContext {
+typedef struct mnuTerminalContext_t {
     struct sdfMemHandle_t *resourceHandle;
     u8 pad04[4];
     s32 type;
@@ -484,8 +484,8 @@ typedef struct MenuTerminalContext {
     EvtResourcePair messageResources;
     struct sprHandle_t *effectSlots[4];
     s32 state;
-    MenuWindowContainer *ownedWindows[1];
-    MenuWindowContainer *window;
+    mnuWindowContainer_t *ownedWindows[1];
+    mnuWindowContainer_t *window;
     struct effMappedResource_t *objects[2];
     s32 shopRow;
     s32 multiplier;
@@ -522,15 +522,15 @@ typedef struct MenuTerminalContext {
     s32 rewardValue;
     s32 prepared;
     s32 delayFrames;
-    DspScrollingStripState panelWork[2];
-    MenuCampEffect campEffect; /* 0x210: resources, sixteen sparks and badge fade */
-    struct MenuIconSprites *windowResource;
-    MenuGradientFade gradientFade;
+    mnuDspScrollingStripState_t panelWork[2];
+    mnuCampEffect_t campEffect; /* 0x210: resources, sixteen sparks and badge fade */
+    struct mnuIconSprites_t *windowResource;
+    mnuGradientFade_t gradientFade;
     s8 rewardGranted;
     s8 sceneReady;
     u8 pad38A[2];
-} MenuTerminalContext;
+} mnuTerminalContext_t;
 
-typedef char MenuTerminalContext_size_must_be_0x38C[(sizeof(MenuTerminalContext) == 0x38C) ? 1 : -1];
+typedef char mnuTerminalContext_size_must_be_0x38C[(sizeof(mnuTerminalContext_t) == 0x38C) ? 1 : -1];
 
 #endif

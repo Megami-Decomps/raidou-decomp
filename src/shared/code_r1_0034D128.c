@@ -24,30 +24,30 @@
 /* Blends packed RGBA channels; weights above 0x100 are mirrored from 0x200. */
 u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
 
-void mnuClearEntryFlags(struct MenuIconState *group);
+void mnuClearEntryFlags(struct mnuIconState_t *group);
 
-MenuIconSprites *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
+mnuIconSprites_t *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
                     struct sprHandle_t *resourceHandle, s32 *indices, u32 unused);
 
 /* Draw a window container owned by the menu window subsystem. */
-void mnuDrawWindowContainer(s32 x, s32 y, s32 depth, MenuWindowContainer *menu, s32 drawArg);
+void mnuDrawWindowContainer(s32 x, s32 y, s32 depth, mnuWindowContainer_t *menu, s32 drawArg);
 
-void mnuSetWindowPanelBounds(MenuWindowContainer *panel,
-                             const struct MenuIconState *layout,
+void mnuSetWindowPanelBounds(mnuWindowContainer_t *panel,
+                             const struct mnuIconState_t *layout,
                              u32 left, u32 top, u32 right, u32 bottom);
 
 /* Shared fade-list entry. The unobserved word at 0x04 remains opaque. */
-typedef struct MenuFadeEntry {
+typedef struct mnuFadeEntry_t {
     u32 active; /* 0x00 */
     u32 unknown_04;
     s32 x; /* 0x08: stored draw position. */
     s32 y; /* 0x0C: stored draw position. */
-    struct MenuWindowContainer *window; /* 0x10 */
+    struct mnuWindowContainer_t *window; /* 0x10 */
     s32 fade; /* 0x14 */
-} MenuFadeEntry;
+} mnuFadeEntry_t;
 
 typedef char MenuFadeEntry_extent_must_be_0x18[
-    (sizeof(MenuFadeEntry) == 0x18) ? 1 : -1];
+    (sizeof(mnuFadeEntry_t) == 0x18) ? 1 : -1];
 
 struct StaffMenuRuntime;
 
@@ -163,18 +163,18 @@ struct StaffMenuRuntime;
 
 #define MNU_STAFF_REORDER_CANCEL_MASK 6
 
-typedef struct MenuList MenuList;
+typedef struct mnuList_t mnuList_t;
 
-typedef struct MenuIconState MenuIconState;
+typedef struct mnuIconState_t mnuIconState_t;
 
 extern void itfSetGridEntryQuantizedAndRefresh(sprHandle_t *, s32, s32, s32, s32, s32);
 extern void mnuClearListFlagsOneAndTwo(u32 *flags);
-extern void mnuDrawIconPanel(s32, s32, s32, s32, MenuIconState *, s32, s32);
-extern void mnuUpdateWindowPanelHandleStatesKindFourFive(MenuIconState *);
+extern void mnuDrawIconPanel(s32, s32, s32, s32, mnuIconState_t *, s32, s32);
+extern void mnuUpdateWindowPanelHandleStatesKindFourFive(mnuIconState_t *);
 extern void effDrawTextureSlotWithBlendedCornerColors(s32, s32, s32, u32, s32, sprHandle_t *, s32, s32);
 
 /* Menu runtime fields shared by the party, panel and resource handlers. */
-typedef struct MenuContext {
+typedef struct mnuContext_t {
     u8 pad00[0x54];
     s32 popupState[3];     /* 0x54: passed to the popup state handlers */
     s32 displayHandle;     /* 0x60 */
@@ -190,76 +190,76 @@ typedef struct MenuContext {
     u8 pad110[8];
     s32 panelHandle;       /* 0x118 */
     u8 pad11C[0x168];
-    MenuPageWindow partyWindow; /* 0x284: lists, page slots and selection */
+    mnuPageWindow_t partyWindow; /* 0x284: lists, page slots and selection */
     s32 partyPanelActive;  /* 0xA928 */
     s32 partyPanelLast;    /* 0xA92C */
     u8 padA930[0x104];
-    MenuPanelGroup *panelGroup; /* 0xAA34 */
+    mnuPanelGroup_t *panelGroup; /* 0xAA34 */
     s32 panelRequest;      /* 0xAA38 */
-    MenuSpriteState *panelEffects; /* 0xAA3C */
+    mnuSpriteState_t *panelEffects; /* 0xAA3C */
     u8 padAA40[8];
     s32 party;             /* 0xAA48 */
     u8 padAA4C[0x10];
     s32 resourceList;      /* 0xAA5C */
-} MenuContext;
+} mnuContext_t;
 
-typedef struct MenuListNode MenuListNode;
+typedef struct mnuListNode_t mnuListNode_t;
 
 #define PARTY_BACKUP_OFFSET ((s32)&((PartyMenuData *)0)->backup)
 
 /* Staff/skill-menu work prefix, separate from the party-selection allocation. */
-typedef struct MenuPartyRuntime {
+typedef struct mnuPartyRuntime_t {
     u8 pad00[0x10];
     s32 staffMode; /* 0x10 */
     s32 staffView; /* 0x14: selects the input mask and panel view */
     s32 staffSelection; /* 0x18: chosen list entry */
     s32 staffExit; /* 0x1C: signals the close transition */
     u8 pad20[4];
-    MenuWindowContainer *selectedWindow; /* 0x24 */
+    mnuWindowContainer_t *selectedWindow; /* 0x24 */
     s32 activeMark; /* 0x28 */
     u8 pad2C[8];
-    u32 selectedIndex; /* 0x34: compared with MenuListNode.index */
-} MenuPartyRuntime;
+    u32 selectedIndex; /* 0x34: compared with mnuListNode_t.index */
+} mnuPartyRuntime_t;
 
 /* The idle-motion timer shares the party work area with other menu states. */
-typedef struct MenuVoiceState {
+typedef struct mnuVoiceState_t {
     u8 pad00[0x28];
     s32 idleFrames;
     s32 motionSelection; /* -1 enables periodic motion */
-} MenuVoiceState;
+} mnuVoiceState_t;
 
-typedef struct MenuListDefaults {
+typedef struct mnuListDefaults_t {
     s32 indices[3];
-} MenuListDefaults;
+} mnuListDefaults_t;
 
-extern MenuListDefaults D_0042AF00;
+extern mnuListDefaults_t D_0042AF00;
 
 /* First confirm stores a slot; a different second slot swaps and rebuilds.
  * Cancel clears the saved slot, opening the exit popup only if none was saved. */
-typedef struct MenuPanelBlock {
+typedef struct mnuPanelBlock_t {
     u32 word[14];
-} MenuPanelBlock;
+} mnuPanelBlock_t;
 
-typedef struct MenuPanelWindow {
+typedef struct mnuPanelWindow_t {
     u8 pad0[4];
     s32 field4;
     u8 pad8[0x10];
-    MenuList *list; /* 0x18 */
+    mnuList_t *list; /* 0x18 */
     u8 pad1C[0x3C];
-    MenuPanelBlock block; /* 0x58 */
+    mnuPanelBlock_t block; /* 0x58 */
     u8 pad90[4];
     s32 field94;
-} MenuPanelWindow;
+} mnuPanelWindow_t;
 
-typedef struct MenuBadgePlace {
+typedef struct mnuBadgePlace_t {
     s32 slot;
     s32 x;
     s32 y;
-} MenuBadgePlace;
+} mnuBadgePlace_t;
 
-typedef struct MenuBadgeLayout {
-    MenuBadgePlace place[2];
-} MenuBadgeLayout;
+typedef struct mnuBadgeLayout_t {
+    mnuBadgePlace_t place[2];
+} mnuBadgeLayout_t;
 
 #define MNU_ADVANCE_FADE(value, amount, maximum) { \
     if ((value) < (maximum)) { \
@@ -270,130 +270,130 @@ typedef struct MenuBadgeLayout {
     } \
 }
 
-MenuListNode *mnuListAdvanceCursor(MenuList *list, s32 noScroll, s32 keepFade);
-MenuListNode *mnuListRetreatCursor(MenuList *list, s32 noScroll, s32 keepFade);
-void mnuDrawFourEntries(s32 x, s32 y, s32 depth, MenuList *list, MenuListNode *node, s32 drawArg);
-u32 mnuBlendListNodeColorByFlags(u32 previousColor, MenuListNode *entry);
-void mnuDispatchEntryWords(sprHandle_t *menu, s32 entryIndex, MenuListNode *entry);
+mnuListNode_t *mnuListAdvanceCursor(mnuList_t *list, s32 noScroll, s32 keepFade);
+mnuListNode_t *mnuListRetreatCursor(mnuList_t *list, s32 noScroll, s32 keepFade);
+void mnuDrawFourEntries(s32 x, s32 y, s32 depth, mnuList_t *list, mnuListNode_t *node, s32 drawArg);
+u32 mnuBlendListNodeColorByFlags(u32 previousColor, mnuListNode_t *entry);
+void mnuDispatchEntryWords(sprHandle_t *menu, s32 entryIndex, mnuListNode_t *entry);
 
 /* Draw visible rows, preserving each row's glyph chain and callback state. */
 void mnuDrawWindowListEntries(s32 x, s32 y, s32 depth, s32 xOffset, s32 yOffset,
-                   s32 fadeScale, u32 unusedFlags, MenuList *list, s32 drawArg);
+                   s32 fadeScale, u32 unusedFlags, mnuList_t *list, s32 drawArg);
 
 void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg);
 
 /* Destroy the owned list and optional sprite resources before freeing the window. */
-void jmsDestroyCmdMenu(MenuWindowContainer *menu);
+void jmsDestroyCmdMenu(mnuWindowContainer_t *menu);
 
-void mnuRemoveWindowListCursorNode(MenuWindowContainer *menu);
-MenuListNode *mnuAdvanceListSelection(MenuWindowContainer *menu, s32 step);
-MenuListNode *mnuReverseListSelection(MenuWindowContainer *menu, s32 step);
-void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu);
+void mnuRemoveWindowListCursorNode(mnuWindowContainer_t *menu);
+mnuListNode_t *mnuAdvanceListSelection(mnuWindowContainer_t *menu, s32 step);
+mnuListNode_t *mnuReverseListSelection(mnuWindowContainer_t *menu, s32 step);
+void mnuClearWindowListSelectionFlags(mnuWindowContainer_t *menu);
 
-void mnuInitIconSprites(MenuIconSprites *obj, s32 w, s32 h, u32 value,
+void mnuInitIconSprites(mnuIconSprites_t *obj, s32 w, s32 h, u32 value,
                         sprHandle_t *resource, s32 *idx, s32 unused);
 
-void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, u32 option);
-void mnuDrawWindowIconRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, s32 count, s32 option);
-void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, MenuWindowContainer *window, u32 option);
+void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, mnuWindowContainer_t *window, u32 option);
+void mnuDrawWindowIconRows(s32 x, s32 y, u32 flags, mnuWindowContainer_t *window, s32 count, s32 option);
+void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, mnuWindowContainer_t *window, u32 option);
 
 /* Draw the window, then advance its fade scale without a post-addition clamp. */
 
-typedef struct MenuPos {
+typedef struct mnuPos_t {
     s32 x;
     s32 y;
-} MenuPos;
+} mnuPos_t;
 
-typedef struct MenuPosTable {
-    MenuPos pos[6];
-} MenuPosTable;
+typedef struct mnuPosTable_t {
+    mnuPos_t pos[6];
+} mnuPosTable_t;
 
-typedef struct MenuPosTable3 {
-    MenuPos pos[3];
-} MenuPosTable3;
+typedef struct mnuPosTable3_t {
+    mnuPos_t pos[3];
+} mnuPosTable3_t;
 
-extern const MenuPosTable3 D_0042AF48;
-void mnuDrawIconPanelFade(s32 x, s32 y, s32 z, s32 alpha, MenuIconState *state, s32 mode, s32 surface);
-extern const MenuPosTable D_0042AF60;
-void mnuDrawIconRow6(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surface);
+extern const mnuPosTable3_t D_0042AF48;
+void mnuDrawIconPanelFade(s32 x, s32 y, s32 z, s32 alpha, mnuIconState_t *state, s32 mode, s32 surface);
+extern const mnuPosTable_t D_0042AF60;
+void mnuDrawIconRow6(s32 x, s32 y, s32 z, s32 w, mnuIconState_t *state, s32 surface);
 
-typedef struct MenuOffsets {
+typedef struct mnuOffsets_t {
     s32 x0;
     s32 y0;
     s32 x1;
     s32 y1;
-} MenuOffsets;
+} mnuOffsets_t;
 
-extern const MenuOffsets D_0042AF90;
-void mnuDrawIconPair(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surface);
+extern const mnuOffsets_t D_0042AF90;
+void mnuDrawIconPair(s32 x, s32 y, s32 z, s32 w, mnuIconState_t *state, s32 surface);
 extern void mnuDrawIconPanelFade();
 extern void mnuDrawIconRow6();
 extern void mnuDrawIconPair();
-void mnuDrawIconPanel(s32 x, s32 y, s32 depth, s32 fade, MenuIconState *panel, s32 selectionMode, s32 drawArg);
-void mnuDrawIconState(u32 x, u32 y, u32 depth, u32 fade, MenuIconState *panel, u32 selectionMode, u32 drawArg);
-void mnuDrawIconPanelFullFade(u32 x, u32 y, u32 depth, MenuIconState *panel, s32 drawArg);
-void mnuUpdateWindowPanelHandleStatesKindFourFive(MenuIconState *obj);
-void mnuRebuildListFirstFromCursor(MenuList *list);
-void mnuRebuildListLastFromCursor(MenuList *list);
-void mnuLinkItemList(MenuListNode **nodeArray, s32 count);
+void mnuDrawIconPanel(s32 x, s32 y, s32 depth, s32 fade, mnuIconState_t *panel, s32 selectionMode, s32 drawArg);
+void mnuDrawIconState(u32 x, u32 y, u32 depth, u32 fade, mnuIconState_t *panel, u32 selectionMode, u32 drawArg);
+void mnuDrawIconPanelFullFade(u32 x, u32 y, u32 depth, mnuIconState_t *panel, s32 drawArg);
+void mnuUpdateWindowPanelHandleStatesKindFourFive(mnuIconState_t *obj);
+void mnuRebuildListFirstFromCursor(mnuList_t *list);
+void mnuRebuildListLastFromCursor(mnuList_t *list);
+void mnuLinkItemList(mnuListNode_t **nodeArray, s32 count);
 
 /* Three-way comparison of unsigned primary keys, descending without subtraction. */
-s32 mnuComparePrimaryKeyDescending(MenuListNode **left, MenuListNode **right);
+s32 mnuComparePrimaryKeyDescending(mnuListNode_t **left, mnuListNode_t **right);
 
 /* Three-way comparison of unsigned primary keys, ascending without subtraction. */
-s32 mnuComparePrimaryKeyAscending(MenuListNode **left, MenuListNode **right);
+s32 mnuComparePrimaryKeyAscending(mnuListNode_t **left, mnuListNode_t **right);
 
 /* Three-way comparison of unsigned secondary keys, descending without subtraction. */
-s32 mnuCompareSecondaryKeyDescending(MenuListNode **left, MenuListNode **right);
+s32 mnuCompareSecondaryKeyDescending(mnuListNode_t **left, mnuListNode_t **right);
 
 /* Three-way comparison of unsigned secondary keys, ascending without subtraction. */
-s32 mnuCompareSecondaryKeyAscending(MenuListNode **left, MenuListNode **right);
+s32 mnuCompareSecondaryKeyAscending(mnuListNode_t **left, mnuListNode_t **right);
 
 /* Three-way comparison of unsigned tertiary keys, descending without subtraction. */
-s32 mnuCompareTertiaryKeyDescending(MenuListNode **left, MenuListNode **right);
+s32 mnuCompareTertiaryKeyDescending(mnuListNode_t **left, mnuListNode_t **right);
 
 /* Three-way comparison of unsigned tertiary keys, ascending without subtraction. */
-s32 mnuCompareTertiaryKeyAscending(MenuListNode **left, MenuListNode **right);
-void mnuSortItems(MenuList *menu, s32 keyIndex, s32 ascending);
+s32 mnuCompareTertiaryKeyAscending(mnuListNode_t **left, mnuListNode_t **right);
+void mnuSortItems(mnuList_t *menu, s32 keyIndex, s32 ascending);
 void mnuAllocateListEntries(s32 *list);
 void mnuFreeListEntries(s32 *list);
 void mnuRemoveFadingWindowEntry(s32 *list, u32 slotIndex);
 void mnuDrawFadingWindows(s32 depth, s32 *list, s32 drawArg);
 void mnuUpdateFade(s32 *list);
 
-typedef struct MenuSpritePlacement {
+typedef struct mnuSpritePlacement_t {
     sprHandle_t *source;
     u32 index;
     s32 x;
     s32 y;
-} MenuSpritePlacement;
+} mnuSpritePlacement_t;
 
-typedef struct MenuGatedSpritePlacement {
+typedef struct mnuGatedSpritePlacement_t {
     sprHandle_t *source;
     u32 index;
     s32 x;
     s32 y;
     s8 requiresFlag;
-} MenuGatedSpritePlacement;
+} mnuGatedSpritePlacement_t;
 
-typedef struct MenuIconEntry {
+typedef struct mnuIconEntry_t {
     u32 id;
     s32 x;
     s32 y;
-} MenuIconEntry;
+} mnuIconEntry_t;
 
-typedef struct MenuIconLayout {
-    MenuIconEntry entry[3];
-} MenuIconLayout;
+typedef struct mnuIconLayout_t {
+    mnuIconEntry_t entry[3];
+} mnuIconLayout_t;
 
-typedef struct MenuPanelSequenceSettings {
+typedef struct mnuPanelSequenceSettings_t {
     s32 rows[5][4];
     const char *captions[2];
-} MenuPanelSequenceSettings;
+} mnuPanelSequenceSettings_t;
 
 /* Subtract the fade step only when positive, then clamp any negative result to zero. */
-void mnuDecreaseListNodeFadeCounters(MenuList *list) {
-    MenuListNode *node = list->first;
+void mnuDecreaseListNodeFadeCounters(mnuList_t *list) {
+    mnuListNode_t *node = list->first;
     if (node != NULL) {
         do {
             s32 timer = node->animationTimer;
@@ -411,7 +411,7 @@ void mnuDecreaseListNodeFadeCounters(MenuList *list) {
 }
 
 /* Draw one four-sprite bank; the cursor entry selects the second bank. */
-void mnuDrawFourEntries(s32 x, s32 y, s32 depth, MenuList *list, MenuListNode *node, s32 drawArg) {
+void mnuDrawFourEntries(s32 x, s32 y, s32 depth, mnuList_t *list, mnuListNode_t *node, s32 drawArg) {
     u32 spriteIndex = 0;
     do {
         s32 selected = node == list->cursor;
@@ -426,7 +426,7 @@ void mnuDrawFourEntries(s32 x, s32 y, s32 depth, MenuList *list, MenuListNode *n
 
 /* Blend the flag-selected packed color with the caller's previous color.
  * Flag one takes precedence. */
-u32 mnuBlendListNodeColorByFlags(u32 previousColor, MenuListNode *entry) {
+u32 mnuBlendListNodeColorByFlags(u32 previousColor, mnuListNode_t *entry) {
     u32 flags = entry->flags48;
     u32 color = MNU_ENTRY_MARKED_COLOR;
     if (!(flags & 1)) {
@@ -436,7 +436,7 @@ u32 mnuBlendListNodeColorByFlags(u32 previousColor, MenuListNode *entry) {
 }
 
 /* Apply the same entry-state blend to all four packed colors in one slot. */
-void mnuDispatchEntryWords(sprHandle_t *menu, s32 entryIndex, MenuListNode *entry) {
+void mnuDispatchEntryWords(sprHandle_t *menu, s32 entryIndex, mnuListNode_t *entry) {
     s32 colorIndex;
 
     for (colorIndex = 0; colorIndex < MNU_ENTRY_COLOR_COUNT; colorIndex++) {
@@ -450,13 +450,13 @@ INCLUDE_ASM(const s32, "code_r1_0034D128", mnuDrawWindowListEntries);
 
 /* Invoke the native window renderer at full fade with its size/flag arguments zeroed. */
 void mnuCallInitWide(s32 x, s32 y, s32 depth, s32 menu, s32 drawArg) {
-    mnuDrawWindowListEntries(x, y, depth, 0, 0, MNU_FULL_FADE, 0, (MenuList *)(u32)menu, drawArg);
+    mnuDrawWindowListEntries(x, y, depth, 0, 0, MNU_FULL_FADE, 0, (mnuList_t *)(u32)menu, drawArg);
 }
 
 /* Allocate a zeroed window and its list; the last two arguments configure list rows. */
-MenuWindowContainer *jmsCreateCmdMenu(s32 id, s32 width, s32 height, s32 visibleCount, s32 rowSpacing) {
-    MenuWindowContainer *window = (MenuWindowContainer *)sdfChipAllocZeroDirect(sizeof(MenuWindowContainer));
-    MenuList *list;
+mnuWindowContainer_t *jmsCreateCmdMenu(s32 id, s32 width, s32 height, s32 visibleCount, s32 rowSpacing) {
+    mnuWindowContainer_t *window = (mnuWindowContainer_t *)sdfChipAllocZeroDirect(sizeof(mnuWindowContainer_t));
+    mnuList_t *list;
     window->width = width;
     window->height = height;
     window->id = id;
@@ -472,7 +472,7 @@ INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf22);
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf23);
 
-void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct sprHandle_t *layout2C, u32 layout30, struct sprHandle_t *layout34,
+void mnuSetWindowContainerLayout(mnuWindowContainer_t *menu, struct sprHandle_t *layout2C, u32 layout30, struct sprHandle_t *layout34,
                                     u32 layout48, u32 layout38, struct sprHandle_t *layout3C, u32 layout40,
                                     u32 layout4C) {
     menu->decorations[0].sprite = layout2C;
@@ -486,7 +486,7 @@ void mnuSetWindowContainerLayout(MenuWindowContainer *menu, struct sprHandle_t *
     menu->decorationX[0] = 0;
 }
 
-void mnuInitializeBasicWindowLayout(MenuWindowContainer *menu, struct sprHandle_t *first, u32 second) {
+void mnuInitializeBasicWindowLayout(mnuWindowContainer_t *menu, struct sprHandle_t *first, u32 second) {
     mnuSetWindowContainerLayout(menu, first, second, 0, 0, 0, 0, 0, 0);
 }
 
@@ -494,9 +494,9 @@ INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf24);
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", mnuSetWindowPanelBounds);
 
-void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
+void mnuCreateListWithDefaults(mnuWindowContainer_t *menu, u32 first, u32 second,
                                u32 third, sprHandle_t *spriteResource) {
-    MenuListDefaults defaults = D_0042AF00;
+    mnuListDefaults_t defaults = D_0042AF00;
     menu->resource =
         mnuCreateWindowSpriteResources(first, second, third, spriteResource,
                                        defaults.indices, 3);
@@ -504,22 +504,22 @@ void mnuCreateListWithDefaults(MenuWindowContainer *menu, u32 first, u32 second,
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", CmdMenuCursorDrawUnlock);
 
-MenuListNode *jmsAddCmdMenuItem(MenuWindowContainer *menu, const void *text) {
+mnuListNode_t *jmsAddCmdMenuItem(mnuWindowContainer_t *menu, const void *text) {
     return mnuListAppendNode(menu->list, text);
 }
 
 /* Insert `value` beside anchor in the window's list (see mnuInsertListNodeRelativeToAnchor). */
-MenuListNode *mnuInsertWindowListNodeRelativeToAnchor(MenuWindowContainer *menu, MenuListNode *anchor, const void *text, s32 mode, u32 options) {
+mnuListNode_t *mnuInsertWindowListNodeRelativeToAnchor(mnuWindowContainer_t *menu, mnuListNode_t *anchor, const void *text, s32 mode, u32 options) {
     return mnuInsertListNodeRelativeToAnchor(menu->list, anchor, text, mode, options);
 }
 
-void mnuRemoveWindowListCursorNode(MenuWindowContainer *menu) {
+void mnuRemoveWindowListCursorNode(mnuWindowContainer_t *menu) {
     mnuRemoveListCursorNode(menu->list);
 }
 
 /* Advance selection; clear its byte and panel sprite flags only when a node is returned. */
-MenuListNode *mnuAdvanceListSelection(MenuWindowContainer *menu, s32 step) {
-    MenuListNode *selected = mnuListAdvanceCursor(menu->list, step, 0);
+mnuListNode_t *mnuAdvanceListSelection(mnuWindowContainer_t *menu, s32 step) {
+    mnuListNode_t *selected = mnuListAdvanceCursor(menu->list, step, 0);
     if (selected != NULL) {
         selected->selectionByte54 = 0;
         mnuClearEntryFlags(&menu->panel);
@@ -528,8 +528,8 @@ MenuListNode *mnuAdvanceListSelection(MenuWindowContainer *menu, s32 step) {
 }
 
 /* Retreat selection with the same conditional byte/panel cleanup as advancement. */
-MenuListNode *mnuReverseListSelection(MenuWindowContainer *menu, s32 step) {
-    MenuListNode *selected = mnuListRetreatCursor(menu->list, step, 0);
+mnuListNode_t *mnuReverseListSelection(mnuWindowContainer_t *menu, s32 step) {
+    mnuListNode_t *selected = mnuListRetreatCursor(menu->list, step, 0);
     if (selected != NULL) {
         selected->selectionByte54 = 0;
         mnuClearEntryFlags(&menu->panel);
@@ -537,21 +537,21 @@ MenuListNode *mnuReverseListSelection(MenuWindowContainer *menu, s32 step) {
     return selected;
 }
 
-MenuListNode *mnuAdvanceWindowListSelection(MenuWindowContainer *menu) {
+mnuListNode_t *mnuAdvanceWindowListSelection(mnuWindowContainer_t *menu) {
     return mnuAdvanceListSelection(menu, 0);
 }
 
-MenuListNode *mnuRetreatWindowListSelection(MenuWindowContainer *menu) {
+mnuListNode_t *mnuRetreatWindowListSelection(mnuWindowContainer_t *menu) {
     return mnuReverseListSelection(menu, 0);
 }
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", jmsLeaf25);
 
-void mnuClearWindowListSelectionFlags(MenuWindowContainer *menu) {
+void mnuClearWindowListSelectionFlags(mnuWindowContainer_t *menu) {
     mnuClearListFlagsOneAndTwo(&menu->list->stateFlags);
 }
 
-void mnuInitIconSprites(MenuIconSprites *obj, s32 w, s32 h, u32 value,
+void mnuInitIconSprites(mnuIconSprites_t *obj, s32 w, s32 h, u32 value,
                         sprHandle_t *resource, s32 *idx, s32 unused) {
     obj->value = value;
     obj->sprite[0] = effCreateResourceSlotSet(resource, idx[0], 1);
@@ -563,10 +563,10 @@ void mnuInitIconSprites(MenuIconSprites *obj, s32 w, s32 h, u32 value,
 }
 
 /* Create an owned three-sprite bundle using the caller's slot-index array. */
-MenuIconSprites *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
+mnuIconSprites_t *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value,
                     sprHandle_t *resourceHandle, s32 *indices, u32 unused) {
     struct sdfMemHandle_t *allocation = sdfMemAllocDirect(0x18);
-    MenuIconSprites *bundle = (void *)sdfMemLock(allocation);
+    mnuIconSprites_t *bundle = (void *)sdfMemLock(allocation);
     memset(bundle, 0, 0x18);
     bundle->allocation = allocation;
     mnuInitIconSprites(bundle, width, height, value, resourceHandle, indices, unused);
@@ -574,7 +574,7 @@ MenuIconSprites *mnuCreateWindowSpriteResources(u32 width, u32 height, u32 value
 }
 
 /* Destroy every native sprite slot, then release the bundle's allocation handle. */
-void mnuReleaseWindowTextures(MenuIconSprites *menu) {
+void mnuReleaseWindowTextures(mnuIconSprites_t *menu) {
     u32 spriteIndex = 0;
     do {
         effDestroyResourceSlotSet(menu->sprite[spriteIndex]);
@@ -586,8 +586,8 @@ void mnuReleaseWindowTextures(MenuIconSprites *menu) {
 void jmsLeaf26(void) {
 }
 
-void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
-                   MenuIconSprites *resource, s32 drawArg) {
+void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, mnuList_t *list,
+                   mnuIconSprites_t *resource, s32 drawArg) {
     s32 top;
     s32 trackExtent;
     s32 bottom;
@@ -626,14 +626,14 @@ void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
                   resource->sprite[2], 0, drawArg);
 }
 
-void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, MenuWindowContainer *window, u32 option) {
+void mnuDrawWindowResourceSpriteRows(s32 x, s32 y, u32 flags, mnuWindowContainer_t *window, u32 option) {
     mnuDrawListScrollbar(x - 0xf0, y - 8, flags, window->fadeScale,
                   window->list, window->resource, option);
 }
 
 INCLUDE_ASM(const s32, "code_r1_0034D128", jmsFunc45);
 
-void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, MenuWindowContainer *window, u32 option) {
+void mnuDrawVisibleWindowIconRows(u32 x, u32 y, u32 flags, mnuWindowContainer_t *window, u32 option) {
     mnuDrawWindowIconRows(x, y, flags, window, window->list->visibleCount, option);
 }
 
@@ -647,13 +647,13 @@ INCLUDE_ASM(const s32, "code_r1_0034D128", mnuSpinForWindowListCount);
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", mnuCreateListWithDefaultsTable);
 
-MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
+mnuIconState_t *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
     s32 keys[6] = { 0x20, 0x22, 0x1F, 0x21, 0x22, 0x1F };
-    MenuIconState *panel;
+    mnuIconState_t *panel;
     s32 index;
     s32 first;
 
-    panel = sdfChipAllocZeroDirect(sizeof(MenuIconState));
+    panel = sdfChipAllocZeroDirect(sizeof(mnuIconState_t));
     panel->kind = mode;
     switch (mode) {
     case 0:
@@ -693,7 +693,7 @@ MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
 }
 
 /* Reset low sprite flags only for a present first sprite and a supported panel kind. */
-void mnuClearEntryFlags(MenuIconState *group) {
+void mnuClearEntryFlags(mnuIconState_t *group) {
     s32 spriteIndex;
     if (group->sprite[0] != NULL && group->kind < MNU_PANEL_KIND_LIMIT) {
         for (spriteIndex = 0; spriteIndex < group->count; spriteIndex++) {
@@ -706,7 +706,7 @@ void mnuClearEntryFlags(MenuIconState *group) {
 }
 
 /* Destroy nonzero resource slots, retaining the native per-iteration count read, then free. */
-void mnuReleaseResourceList(MenuIconState *list) {
+void mnuReleaseResourceList(mnuIconState_t *list) {
     s32 slotIndex;
 
     for (slotIndex = 0; slotIndex < list->count; slotIndex++) {
@@ -717,8 +717,8 @@ void mnuReleaseResourceList(MenuIconState *list) {
     sdfChipFreeDirect(list);
 }
 
-void mnuDrawIconPanelFade(s32 x, s32 y, s32 z, s32 alpha, MenuIconState *state, s32 mode, s32 surface) {
-    MenuPosTable3 table = D_0042AF48;
+void mnuDrawIconPanelFade(s32 x, s32 y, s32 z, s32 alpha, mnuIconState_t *state, s32 mode, s32 surface) {
+    mnuPosTable3_t table = D_0042AF48;
     s32 width = state->sprite[0]->workEntries->sourceWidth << 4;
     s32 i;
     s32 a;
@@ -743,8 +743,8 @@ void mnuDrawIconPanelFade(s32 x, s32 y, s32 z, s32 alpha, MenuIconState *state, 
     }
 }
 
-void mnuDrawIconRow6(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surface) {
-    MenuPosTable table = D_0042AF60;
+void mnuDrawIconRow6(s32 x, s32 y, s32 z, s32 w, mnuIconState_t *state, s32 surface) {
+    mnuPosTable_t table = D_0042AF60;
     s32 i;
     for (i = 0; i < state->count; i++) {
         if (i != 3 && i != 5) {
@@ -753,14 +753,14 @@ void mnuDrawIconRow6(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surfa
     }
 }
 
-void mnuDrawIconPair(s32 x, s32 y, s32 z, s32 w, MenuIconState *state, s32 surface) {
-    MenuOffsets offset = D_0042AF90;
+void mnuDrawIconPair(s32 x, s32 y, s32 z, s32 w, mnuIconState_t *state, s32 surface) {
+    mnuOffsets_t offset = D_0042AF90;
     effDrawTextureSlotWithBlendedCornerColors(x + offset.x0, y + offset.y0, z, w, 1, state->sprite[0], 0, surface);
     effDrawTextureSlotWithBlendedCornerColors(x + offset.x1, y + offset.y1, z, w, 1, state->sprite[1], 0, surface);
 }
 
 /* Dispatch six panel kinds; only kind four forces full fade. */
-void mnuDrawIconPanel(s32 x, s32 y, s32 depth, s32 fade, MenuIconState *panel, s32 selectionMode, s32 drawArg) {
+void mnuDrawIconPanel(s32 x, s32 y, s32 depth, s32 fade, mnuIconState_t *panel, s32 selectionMode, s32 drawArg) {
     switch (panel->kind) {
     case 0:
     case 1:
@@ -777,15 +777,15 @@ void mnuDrawIconPanel(s32 x, s32 y, s32 depth, s32 fade, MenuIconState *panel, s
     }
 }
 
-void mnuDrawIconState(u32 x, u32 y, u32 depth, u32 fade, MenuIconState *panel, u32 selectionMode, u32 drawArg) {
+void mnuDrawIconState(u32 x, u32 y, u32 depth, u32 fade, mnuIconState_t *panel, u32 selectionMode, u32 drawArg) {
     mnuDrawIconPanel(x, y, depth, fade, panel, selectionMode, drawArg);
 }
 
-void mnuDrawIconPanelFullFade(u32 x, u32 y, u32 depth, MenuIconState *panel, s32 drawArg) {
+void mnuDrawIconPanelFullFade(u32 x, u32 y, u32 depth, mnuIconState_t *panel, s32 drawArg) {
     mnuDrawIconState(x, y, depth, MNU_FULL_FADE, panel, 0, drawArg);
 }
 
-void mnuUpdateWindowPanelHandleStatesKindFourFive(MenuIconState *obj) {
+void mnuUpdateWindowPanelHandleStatesKindFourFive(mnuIconState_t *obj) {
     switch (obj->kind) {
     case 4:
         itfGridLookupValueOrDefault(obj->sprite[2], 0);
@@ -806,7 +806,7 @@ void mnuUpdateWindowPanelHandleStatesKindFourFive(MenuIconState *obj) {
 }
 
 /* Rebuild the first-node pointer by walking backward from the cursor. */
-void mnuRebuildListFirstFromCursor(MenuList *list) {
+void mnuRebuildListFirstFromCursor(mnuList_t *list) {
     s32 node;
     s32 first;
     s32 previous;
@@ -815,13 +815,13 @@ void mnuRebuildListFirstFromCursor(MenuList *list) {
     first = (s32)list->cursor;
     while (node = previous, node != 0) {
         first = node;
-        previous = (s32)((MenuListNode *)node)->prev;
+        previous = (s32)((mnuListNode_t *)node)->prev;
     }
-    list->first = (MenuListNode *)first;
+    list->first = (mnuListNode_t *)first;
 }
 
 /* Rebuild the last-node pointer by walking forward from the cursor. */
-void mnuRebuildListLastFromCursor(MenuList *list) {
+void mnuRebuildListLastFromCursor(mnuList_t *list) {
     s32 node;
     s32 last;
     s32 next;
@@ -830,16 +830,16 @@ void mnuRebuildListLastFromCursor(MenuList *list) {
     last = (s32)list->cursor;
     while (node = next, node != 0) {
         last = node;
-        next = (s32)((MenuListNode *)node)->next;
+        next = (s32)((mnuListNode_t *)node)->next;
     }
-    list->last = (MenuListNode *)last;
+    list->last = (mnuListNode_t *)last;
 }
 
 /* Reset the viewport/cursor to the first node; exactly one requests replay
  * toward the saved cursor, rather than treating every nonzero value as true. */
-void mnuResetNodeLinks(MenuList *list, s32 restoreCursor) {
-    MenuListNode *first;
-    MenuListNode *oldCursor;
+void mnuResetNodeLinks(mnuList_t *list, s32 restoreCursor) {
+    mnuListNode_t *first;
+    mnuListNode_t *oldCursor;
 
     list->windowOffset = 0;
     first = list->first;
@@ -847,7 +847,7 @@ void mnuResetNodeLinks(MenuList *list, s32 restoreCursor) {
     list->head = first;
     list->cursor = first;
     if (restoreCursor == 1) {
-        MenuListNode *node = first;
+        mnuListNode_t *node = first;
         if (node == NULL) {
             return;
         }
@@ -863,7 +863,7 @@ void mnuResetNodeLinks(MenuList *list, s32 restoreCursor) {
 
 /* Relink and reindex the pointer array. Native endpoint writes require at
  * least two entries; zero/one-entry calls are not guarded here. */
-void mnuLinkItemList(MenuListNode **nodeArray, s32 count) {
+void mnuLinkItemList(mnuListNode_t **nodeArray, s32 count) {
     s32 itemIndex;
 
     nodeArray[0]->prev = NULL;
@@ -897,16 +897,16 @@ INCLUDE_RODATA(const s32, "code_r1_0034D128", mnuDrawIconRow6Table);
 
 INCLUDE_RODATA(const s32, "code_r1_0034D128", mnuDrawIconPairTable);
 
-void mnuSortItems(MenuList *menu, s32 keyIndex, s32 ascending) {
-    s32 (*comparators[MNU_SORT_COMPARATOR_COUNT])(MenuListNode **, MenuListNode **) = {
+void mnuSortItems(mnuList_t *menu, s32 keyIndex, s32 ascending) {
+    s32 (*comparators[MNU_SORT_COMPARATOR_COUNT])(mnuListNode_t **, mnuListNode_t **) = {
         mnuComparePrimaryKeyDescending, mnuCompareSecondaryKeyDescending, mnuCompareTertiaryKeyDescending,
         mnuComparePrimaryKeyAscending, mnuCompareSecondaryKeyAscending, mnuCompareTertiaryKeyAscending
     };
     s32 nodeCount = 0;
     struct sdfMemHandle_t *allocation = sdfMemAllocDirect(menu->count * MNU_LIST_POINTER_BYTES);
-    MenuListNode **items = (MenuListNode **)sdfMemLock(allocation);
-    MenuListNode **writeCursor = items;
-    MenuListNode *node;
+    mnuListNode_t **items = (mnuListNode_t **)sdfMemLock(allocation);
+    mnuListNode_t **writeCursor = items;
+    mnuListNode_t *node;
 
     for (node = menu->first; node != NULL; node = node->next) {
         *writeCursor++ = node;
@@ -953,14 +953,14 @@ void mnuRemoveFadingWindowEntry(s32 *list, u32 slotIndex) {
     if (slotIndex >= MNU_FADING_MUTATION_THRESHOLD) {
         entries = list + 1;
         slot = entries + slotIndex;
-        if (((MenuFadeEntry *)*slot)->active != 0) {
-            jmsDestroyCmdMenu(((MenuFadeEntry *)*slot)->window);
+        if (((mnuFadeEntry_t *)*slot)->active != 0) {
+            jmsDestroyCmdMenu(((mnuFadeEntry_t *)*slot)->window);
         }
         tailIndex = list[0] - 1;
-        ((MenuFadeEntry *)*slot)->window = 0;
+        ((mnuFadeEntry_t *)*slot)->window = 0;
         for (; slotIndex < tailIndex; tailIndex--) {
-            *(MenuFadeEntry *)entries[tailIndex - 1] = *(MenuFadeEntry *)entries[tailIndex];
-            ((MenuFadeEntry *)entries[tailIndex])->window = 0;
+            *(mnuFadeEntry_t *)entries[tailIndex - 1] = *(mnuFadeEntry_t *)entries[tailIndex];
+            ((mnuFadeEntry_t *)entries[tailIndex])->window = 0;
         }
         list[0]--;
     }
@@ -970,7 +970,7 @@ void mnuRemoveFadingWindowEntry(s32 *list, u32 slotIndex) {
 void mnuDrawFadingWindows(s32 depth, s32 *list, s32 drawArg) {
     u32 slotIndex;
     for (slotIndex = 0; slotIndex < (u32)list[0]; slotIndex++) {
-        MenuFadeEntry *entry = (MenuFadeEntry *)list[slotIndex + 1];
+        mnuFadeEntry_t *entry = (mnuFadeEntry_t *)list[slotIndex + 1];
         mnuDrawWindowContainer(entry->x, entry->y, depth, entry->window, drawArg);
     }
 }
@@ -980,7 +980,7 @@ void mnuDrawFadingWindows(s32 depth, s32 *list, s32 drawArg) {
 void mnuUpdateFade(s32 *list) {
     u32 slotIndex;
     for (slotIndex = 0; slotIndex < MNU_FADING_SLOT_COUNT; slotIndex++) {
-        MenuFadeEntry *entry = (MenuFadeEntry *)list[slotIndex + 1];
+        mnuFadeEntry_t *entry = (mnuFadeEntry_t *)list[slotIndex + 1];
         if (entry->fade != 0) {
             entry->fade -= MNU_FADING_WORD_STEP;
         } else {

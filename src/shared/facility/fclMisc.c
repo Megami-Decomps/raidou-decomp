@@ -200,7 +200,7 @@ ScrCommandResult evtOpReadDisplayValue(void);
  * the viewport flag and height consumers. */
 typedef struct EvtListPanelRecord {
     u8 pad0[0x14];
-    struct MenuList *list;
+    struct mnuList_t *list;
 } EvtListPanelRecord;
 
 s32 fclSetModelLight(char *name, dds3Basic_t *dst)

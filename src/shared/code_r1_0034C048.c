@@ -40,7 +40,7 @@ typedef u32 MnuInputActionFlags;
 #define MNU_INPUT_ACTION_LAST_PAGE 0x00000800u
 
 /* Clear only the window's panel-transition bit. */
-void mnuClearWindowPanelTransitionFlag(struct MenuWindowContainer *window);
+void mnuClearWindowPanelTransitionFlag(struct mnuWindowContainer_t *window);
 
 #define MNU_PANEL_ITEM_COUNT 5
 
@@ -110,71 +110,71 @@ void mnuClearWindowPanelTransitionFlag(struct MenuWindowContainer *window);
 
 #define EVT_STAGE_USE_ENTRY_MOTION 0xffffffffffffffff
 
-typedef struct MenuList MenuList;
+typedef struct mnuList_t mnuList_t;
 
-typedef struct MenuQueuedRenderContext {
+typedef struct mnuQueuedRenderContext_t {
     s32 panelIndex;
-    MenuPageWindow *menu;
-    MenuPoint origin;
-    MenuPoint extent;
-} MenuQueuedRenderContext;
+    mnuPageWindow_t *menu;
+    mnuPoint_t origin;
+    mnuPoint_t extent;
+} mnuQueuedRenderContext_t;
 
-typedef char MenuQueuedRenderContext_size_check[
-    sizeof(MenuQueuedRenderContext) == 0x18 ? 1 : -1];
+typedef char mnuQueuedRenderContext_size_check[
+    sizeof(mnuQueuedRenderContext_t) == 0x18 ? 1 : -1];
 
-typedef struct MenuCommandScatterLayout {
-    MenuPoint points[7];
-} MenuCommandScatterLayout;
+typedef struct mnuCommandScatterLayout_t {
+    mnuPoint_t points[7];
+} mnuCommandScatterLayout_t;
 
-typedef char MenuCommandScatterLayout_size_check[
-    sizeof(MenuCommandScatterLayout) == 0x38 ? 1 : -1];
+typedef char mnuCommandScatterLayout_size_check[
+    sizeof(mnuCommandScatterLayout_t) == 0x38 ? 1 : -1];
 
 typedef struct _FRQ _FRQ;
 
-typedef struct MenuSpacing {
+typedef struct mnuSpacing_t {
     s32 step;
     s32 gap;
     s32 tail;
-} MenuSpacing;
+} mnuSpacing_t;
 
-typedef struct MenuPanelState {
-    MenuPanelStatePrefix common;
-    MenuGridSlot backgroundSlot; /* 0x20 */
+typedef struct mnuPanelState_t {
+    mnuPanelStatePrefix_t common;
+    mnuGridSlot_t backgroundSlot; /* 0x20 */
     s32 corners[5][2]; /* 0x28 */
-    MenuGridSlot selectedCenterSlot; /* 0x50 */
-    MenuGridSlot selectedCornerSlot; /* 0x58 */
-    MenuGridSlot rowSlot; /* 0x60 */
+    mnuGridSlot_t selectedCenterSlot; /* 0x50 */
+    mnuGridSlot_t selectedCornerSlot; /* 0x58 */
+    mnuGridSlot_t rowSlot; /* 0x60 */
     s32 secondOffsetX; /* 0x68: row position relative to the panel. */
     s32 secondOffsetY; /* 0x6C */
-    MenuGridSlot headingSlot; /* 0x70 */
+    mnuGridSlot_t headingSlot; /* 0x70 */
     s32 thirdOffsetX; /* 0x78: heading position relative to the panel. */
     s32 thirdOffsetY; /* 0x7C */
     const s32 *headingIndices; /* 0x80: caller supplies a static sprite-index table. */
     u8 pad84[4];
-    struct MenuIconState *resourceHandle; /* 0x88 */
-} MenuPanelState;
+    struct mnuIconState_t *resourceHandle; /* 0x88 */
+} mnuPanelState_t;
 
-typedef char MenuPanelStateSizeCheck[(sizeof(MenuPanelState) == MNU_PANEL_STATE_BYTES) ? 1 : -1];
+typedef char mnuPanelStateSizeCheck[(sizeof(mnuPanelState_t) == MNU_PANEL_STATE_BYTES) ? 1 : -1];
 
-typedef struct MenuWorkCamera {
+typedef struct mnuWorkCamera_t {
     s32 x;
     s32 y;
     f32 depth; /* third component uses float in evtStageTestViewTargetVector */
-} MenuWorkCamera;
+} mnuWorkCamera_t;
 
-typedef struct MenuWorkPosition {
+typedef struct mnuWorkPosition_t {
     s32 x;
     s32 y;
     s32 z;
-} MenuWorkPosition;
+} mnuWorkPosition_t;
 
 struct SoundHandleNode;
 
-void mnuHandleListPageJumpInput(const void *resource, MenuWindowContainer *window,
+void mnuHandleListPageJumpInput(const void *resource, mnuWindowContainer_t *window,
                                 MnuInputActionFlags *actionFlags) {
-    struct MenuListNode *top = NULL;
-    struct MenuListNode *bottom = NULL;
-    MenuList *list = window->list;
+    struct mnuListNode_t *top = NULL;
+    struct mnuListNode_t *bottom = NULL;
+    mnuList_t *list = window->list;
 
     if (resource != NULL) {
         if (list->count >= list->visibleCount) {
@@ -198,7 +198,7 @@ void mnuHandleListPageJumpInput(const void *resource, MenuWindowContainer *windo
     *actionFlags &= ~MNU_INPUT_ACTION_LAST_PAGE;
 }
 
-void mnuHandlePanelListPageJumpInput(MenuWindowContainer *window,
+void mnuHandlePanelListPageJumpInput(mnuWindowContainer_t *window,
                                      MnuInputActionFlags *actionFlags) {
     mnuHandleListPageJumpInput(window->resource, window, actionFlags);
 }

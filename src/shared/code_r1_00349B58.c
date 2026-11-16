@@ -128,7 +128,7 @@ ScrCommandResult evtOpReadDisplayValue(void);
  * the viewport flag and height consumers. */
 typedef struct EvtListPanelRecord {
     u8 pad0[0x14];
-    struct MenuList *list;
+    struct mnuList_t *list;
 } EvtListPanelRecord;
 
 /* Clear the terminal task's stored selection word and report completion. */

@@ -191,7 +191,7 @@ typedef s32 (*FileMenuContinuationCallback)(void);
 
 typedef struct MenuResourceWork MenuResourceWork;
 
-struct MenuListNode;
+struct mnuListNode_t;
 
 struct sprHandle_t;
 

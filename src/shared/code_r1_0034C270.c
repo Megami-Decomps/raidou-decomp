@@ -10,48 +10,48 @@
 #include "code_r1_0034C270.h"
 
 /* Select the indexed node and report whether the index exists. */
-s32 mnuSeekListNode(s32 index, struct MenuList *list);
+s32 mnuSeekListNode(s32 index, struct mnuList_t *list);
 
 #define MNU_LIST_INSERT_AFTER_ANCHOR 0x2
 
 /* Walk the indexed entry and return its node, or NULL when it is absent. */
-struct MenuListNode *mnuWalkNodeList(s32 index, struct MenuList *list);
+struct mnuListNode_t *mnuWalkNodeList(s32 index, struct mnuList_t *list);
 
-struct MenuListNode;
+struct mnuListNode_t;
 
-typedef struct MenuList MenuList;
+typedef struct mnuList_t mnuList_t;
 
-typedef struct MenuListNode MenuListNode;
+typedef struct mnuListNode_t mnuListNode_t;
 
 /* Selected child window and page of the party skill-menu runtime. */
-typedef struct MenuPartyRuntime {
+typedef struct mnuPartyRuntime_t {
     u8 pad00[4];
     s32 selectionList; /* 0x04: list whose cursor selects the active window */
     u8 pad08[0x1C];
     s32 selectedWindow; /* 0x24 */
     u8 pad28[4];
     s32 selectedPage;   /* 0x2C */
-} MenuPartyRuntime;
+} mnuPartyRuntime_t;
 
 /* The camp initializer allocates and clears this complete 0x38-byte child. */
-typedef struct SkillBrowseRuntime {
+typedef struct mnuSkillBrowseRuntime_t {
     struct sdfMemHandle_t *allocation;
     u8 pad04[4];
     s32 active;
-    struct MenuList *categoryList;
-    MenuWindowContainer *windows[4];
+    struct mnuList_t *categoryList;
+    mnuWindowContainer_t *windows[4];
     void *panel;
-    MenuWindowContainer *selectedWindow;
+    mnuWindowContainer_t *selectedWindow;
     s32 activeMark;
     s32 motionSelection;
     u32 selectionFlags;
     u32 selectedIndex;
-} SkillBrowseRuntime;
+} mnuSkillBrowseRuntime_t;
 
-typedef char SkillBrowseRuntimeSizeCheck[(sizeof(SkillBrowseRuntime) == 0x38) ? 1 : -1];
+typedef char mnuSkillBrowseRuntimeSizeCheck[(sizeof(mnuSkillBrowseRuntime_t) == 0x38) ? 1 : -1];
 
 /* Sprite slots of the active skill-menu context; intervening state is opaque. */
-typedef struct MenuContextSprites {
+typedef struct mnuContextSprites_t {
     u8 pad00[0x64];
     u32 sprite64;
     s32 label68;
@@ -62,20 +62,20 @@ typedef struct MenuContextSprites {
     u8 pad7C[0x64];
     u32 spriteE0;
     u32 spriteE4;
-} MenuContextSprites;
+} mnuContextSprites_t;
 
-void mnuUpdateListScrollFlags(MenuList *list);
-s32 mnuListContainsFinalNode(MenuList *list);
-MenuListNode *mnuListAdvanceCursor(MenuList *, s32, s32);
-MenuListNode *mnuListRetreatCursor(MenuList *, s32, s32);
+void mnuUpdateListScrollFlags(mnuList_t *list);
+s32 mnuListContainsFinalNode(mnuList_t *list);
+mnuListNode_t *mnuListAdvanceCursor(mnuList_t *, s32, s32);
+mnuListNode_t *mnuListRetreatCursor(mnuList_t *, s32, s32);
 
-void mnuSelectFirstListNode(MenuList *list);
-void mnuSelectLastListNode(MenuList *list);
-MenuListNode *mnuListAdvanceCursor(MenuList *list, s32 noScroll, s32 keepFade);
-MenuListNode *mnuListRetreatCursor(MenuList *list, s32 noScroll, s32 keepFade);
+void mnuSelectFirstListNode(mnuList_t *list);
+void mnuSelectLastListNode(mnuList_t *list);
+mnuListNode_t *mnuListAdvanceCursor(mnuList_t *list, s32 noScroll, s32 keepFade);
+mnuListNode_t *mnuListRetreatCursor(mnuList_t *list, s32 noScroll, s32 keepFade);
 
-MenuList *mnuCreateListState(s32 id, s32 visibleCount, s32 rowSpacing) {
-    MenuList *item = (MenuList *)sdfChipAllocZeroDirect(sizeof(MenuList));
+mnuList_t *mnuCreateListState(s32 id, s32 visibleCount, s32 rowSpacing) {
+    mnuList_t *item = (mnuList_t *)sdfChipAllocZeroDirect(sizeof(mnuList_t));
     item->id = id;
     item->visibleCount = visibleCount;
     item->rowStep = rowSpacing * 8;
@@ -87,8 +87,8 @@ MenuList *mnuCreateListState(s32 id, s32 visibleCount, s32 rowSpacing) {
     return item;
 }
 
-u32 mnuDestroyListState(MenuList *list) {
-    MenuListNode *pending;
+u32 mnuDestroyListState(mnuList_t *list) {
+    mnuListNode_t *pending;
 
     do {
         pending = mnuRemoveListCursorNode(list);
@@ -97,8 +97,8 @@ u32 mnuDestroyListState(MenuList *list) {
     return 1;
 }
 
-void mnuUpdateListScrollFlags(MenuList *list) {
-    MenuListNode *node = list->head;
+void mnuUpdateListScrollFlags(mnuList_t *list) {
+    mnuListNode_t *node = list->head;
     s32 i;
 
     if (node == NULL) {
@@ -122,8 +122,8 @@ void mnuUpdateListScrollFlags(MenuList *list) {
 
 INCLUDE_ASM(const s32, "code_r1_0034C270", mnuListAppendNode);
 
-s32 mnuListContainsFinalNode(MenuList *list) {
-    MenuListNode *node = list->head;
+s32 mnuListContainsFinalNode(mnuList_t *list) {
+    mnuListNode_t *node = list->head;
     s32 index = 0;
     if (node != NULL) {
         s32 count = list->visibleCount;
@@ -141,10 +141,10 @@ s32 mnuListContainsFinalNode(MenuList *list) {
     return 0;
 }
 
-MenuListNode *mnuInsertListNodeRelativeToAnchor(MenuList *list, MenuListNode *anchor,
+mnuListNode_t *mnuInsertListNodeRelativeToAnchor(mnuList_t *list, mnuListNode_t *anchor,
                          const void *text, s32 mode, u32 options) {
-    MenuListNode *node;
-    MenuListNode *walk;
+    mnuListNode_t *node;
+    mnuListNode_t *walk;
 
     if (list->count == 0 || anchor == NULL || anchor == list->last) {
         node = mnuListAppendNode(list, text);
@@ -160,7 +160,7 @@ MenuListNode *mnuInsertListNodeRelativeToAnchor(MenuList *list, MenuListNode *an
         return node;
     }
 
-    node = sdfChipAllocZeroDirect(sizeof(MenuListNode));
+    node = sdfChipAllocZeroDirect(sizeof(mnuListNode_t));
     node->text = text;
     if (options & MNU_LIST_INSERT_AFTER_ANCHOR) {
         node->prev = anchor;
@@ -238,11 +238,11 @@ MenuListNode *mnuInsertListNodeRelativeToAnchor(MenuList *list, MenuListNode *an
     return node;
 }
 
-MenuListNode *mnuRemoveListCursorNode(MenuList *list) {
-    MenuListNode *node;
-    MenuListNode *cursor;
-    MenuListNode *previous;
-    MenuListNode *next;
+mnuListNode_t *mnuRemoveListCursorNode(mnuList_t *list) {
+    mnuListNode_t *node;
+    mnuListNode_t *cursor;
+    mnuListNode_t *previous;
+    mnuListNode_t *next;
 
     if (list->count == 0) {
         return NULL;
@@ -325,10 +325,10 @@ INCLUDE_ASM(const s32, "code_r1_0034C270", jmsLeaf17);
 INCLUDE_ASM(const s32, "code_r1_0034C270", jmsLeaf18);
 
 /* Advance the visible head when a prior window offset can be reduced. */
-MenuListNode *mnuAdvanceListWindowStart(MenuList *list) {
-    MenuListNode *cursor = list->cursor;
-    MenuListNode *last = list->last;
-    MenuListNode *head = list->head;
+mnuListNode_t *mnuAdvanceListWindowStart(mnuList_t *list) {
+    mnuListNode_t *cursor = list->cursor;
+    mnuListNode_t *last = list->last;
+    mnuListNode_t *head = list->head;
 
     if (cursor == last) {
         return cursor;
@@ -343,10 +343,10 @@ MenuListNode *mnuAdvanceListWindowStart(MenuList *list) {
 }
 
 /* Step the visible head back one node when a full window follows it. */
-MenuListNode *mnuRetreatListWindowStart(MenuList *list) {
-    MenuListNode *cursor = list->cursor;
-    MenuListNode *head = list->head;
-    MenuListNode *node;
+mnuListNode_t *mnuRetreatListWindowStart(mnuList_t *list) {
+    mnuListNode_t *cursor = list->cursor;
+    mnuListNode_t *head = list->head;
+    mnuListNode_t *node;
     s32 i;
 
     if (cursor == list->first) {
@@ -365,11 +365,11 @@ MenuListNode *mnuRetreatListWindowStart(MenuList *list) {
     return cursor;
 }
 
-MenuListNode *mnuListAdvanceCursor(MenuList *list, s32 noScroll, s32 keepFade) {
+mnuListNode_t *mnuListAdvanceCursor(mnuList_t *list, s32 noScroll, s32 keepFade) {
     s32 count = list->count;
-    MenuListNode *cursor = list->cursor;
-    MenuListNode *last;
-    MenuListNode *next;
+    mnuListNode_t *cursor = list->cursor;
+    mnuListNode_t *last;
+    mnuListNode_t *next;
     s32 offset;
 
     if (count < 2) {
@@ -423,11 +423,11 @@ MenuListNode *mnuListAdvanceCursor(MenuList *list, s32 noScroll, s32 keepFade) {
     return cursor;
 }
 
-MenuListNode *mnuListRetreatCursor(MenuList *list, s32 noScroll, s32 keepFade) {
+mnuListNode_t *mnuListRetreatCursor(mnuList_t *list, s32 noScroll, s32 keepFade) {
     s32 count = list->count;
-    MenuListNode *cursor = list->cursor;
-    MenuListNode *first;
-    MenuListNode *prev;
+    mnuListNode_t *cursor = list->cursor;
+    mnuListNode_t *first;
+    mnuListNode_t *prev;
     s32 offset;
 
     if (count < 2) {
@@ -481,10 +481,10 @@ MenuListNode *mnuListRetreatCursor(MenuList *list, s32 noScroll, s32 keepFade) {
     return cursor;
 }
 
-MenuListNode *mnuAdvanceListCursorDefault(MenuList *list) {
+mnuListNode_t *mnuAdvanceListCursorDefault(mnuList_t *list) {
     return mnuListAdvanceCursor(list, 0, 0);
 }
 
-MenuListNode *mnuRetreatListCursorDefault(MenuList *list) {
+mnuListNode_t *mnuRetreatListCursorDefault(mnuList_t *list) {
     return mnuListRetreatCursor(list, 0, 0);
 }

@@ -34,7 +34,7 @@ enum SdfMotionStateValue {
 #define MNU_POPUP_INSERT_BEFORE_TOP 0x20000
 
 /* The generic window panel is embedded at +0x4C and copied as 0x38 bytes. */
-typedef struct MenuPanelHandles {
+typedef struct mnuPanelHandles_t {
     u32 panelKind;
     u8 pad04[4];
     s32 count;
@@ -44,9 +44,9 @@ typedef struct MenuPanelHandles {
     u32 right;
     u32 bottom;
     s32 transition;
-} MenuPanelHandles;
+} mnuPanelHandles_t;
 
-typedef char MenuPanelHandles_size_must_be_0x38[(sizeof(MenuPanelHandles) == 0x38) ? 1 : -1];
+typedef char mnuPanelHandles_size_must_be_0x38[(sizeof(mnuPanelHandles_t) == 0x38) ? 1 : -1];
 
 struct _FRQ;
 
@@ -114,36 +114,36 @@ struct _FRQ;
 
 #define EVT_STAGE_USE_ENTRY_MOTION 0xffffffffffffffff
 
-typedef struct MenuPanelItem MenuPanelItem;
+typedef struct mnuPanelItem_t mnuPanelItem_t;
 
-typedef struct MenuPanelState {
-    MenuPanelStatePrefix common;
-    MenuGridSlot firstSlot; /* 0x20 */
+typedef struct mnuPanelState_t {
+    mnuPanelStatePrefix_t common;
+    mnuGridSlot_t firstSlot; /* 0x20 */
     s32 secondOffsetX; /* 0x28: second row's position relative to the panel. */
     s32 secondOffsetY; /* 0x2C */
-    MenuGridSlot secondSlot; /* 0x30 */
-    MenuGridSlot thirdSlot; /* 0x38 */
+    mnuGridSlot_t secondSlot; /* 0x30 */
+    mnuGridSlot_t thirdSlot; /* 0x38 */
     s32 thirdOffsetX; /* 0x40: third row's position relative to the panel. */
     s32 thirdOffsetY; /* 0x44 */
-    MenuGridSlot fourthSlot; /* 0x48 */
+    mnuGridSlot_t fourthSlot; /* 0x48 */
     s32 fourthOffsetX; /* 0x50: fourth row's position relative to the panel. */
     s32 fourthOffsetY; /* 0x54 */
     u32 fourthValueC; /* 0x58 */
     u8 pad5C[4];
-    MenuPanelHandles *resourceHandle; /* 0x60 */
-} MenuPanelState;
+    mnuPanelHandles_t *resourceHandle; /* 0x60 */
+} mnuPanelState_t;
 
-typedef char MenuPanelStateSizeCheck[(sizeof(MenuPanelState) == MNU_PANEL_STATE_BYTES) ? 1 : -1];
+typedef char mnuPanelStateSizeCheck[(sizeof(mnuPanelState_t) == MNU_PANEL_STATE_BYTES) ? 1 : -1];
 
-struct MenuPanelItem {
+struct mnuPanelItem_t {
     u8 pad00[0x10];
     u32 value10;
     s32 value14;
     s32 value18;
     u32 option;
     s32 selection;
-    MenuGridSlot groupGridSlots[7]; /* 0x24 */
-    MenuGridSlot gridSlots[5]; /* 0x5C */
+    mnuGridSlot_t groupGridSlots[7]; /* 0x24 */
+    mnuGridSlot_t gridSlots[5]; /* 0x5C */
     u8 pad84[4];
     u32 initialValue; /* 0x88 */
     s32 selectionRamp; /* 0x8C */

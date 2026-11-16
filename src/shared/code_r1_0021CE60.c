@@ -155,7 +155,7 @@ struct sprHandle_t;
 
 enum { FILE_CONFIG_SET, FILE_CONFIG_FRAME, FILE_CONFIG_X, FILE_CONFIG_Y };
 
-typedef struct MenuWork {
+typedef struct mnuWork_t {
     FileSavePreviewRecord header;
     s8 applyLoadResult;
     s8 hardInitSelected;
@@ -165,7 +165,7 @@ typedef struct MenuWork {
     u16 unk38;
     u16 unk3A;
     struct sdfMemHandle_t *unk3C;
-} MenuWork;
+} mnuWork_t;
 
 typedef struct MdlFlagPair {
     s32 flag;
@@ -180,7 +180,7 @@ typedef struct FileStatBonus {
     u8 pad07;
 } FileStatBonus;
 
-struct MenuListNode;
+struct mnuListNode_t;
 
 struct sdfMemHandle_t;
 
