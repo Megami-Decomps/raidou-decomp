@@ -19,20 +19,25 @@ brief gives the batch directory D and the worktree T. Do that phase, then stop.
 
 ## Phase splice (before drafting)
 
-1. In T, `tools/find_body.py --batch RNN --summary --write D` writes each body found to
+1. In T, `tools/find_body.py --batch RNN --summary --compile --write D` writes each body found to
    D/NAME.c, renamed to the Raidou name, with its source in a first-line comment; the
-   summary gives tree, status (matched or NON_MATCHING in its tree) and path per row.
-   Note each source file in notes.json.
+   summary gives class, tree, status (matched or NON_MATCHING in its tree), path, the
+   same-function confidence, the compile result and any flags (`size Nx`, `proto differs`)
+   per row. Skip class `other` (a different function). Note each source file in notes.json.
 2. `./splice.py UNIT` for each unit (until tools/splice_batch.py exists): every draft
-   spliced into its unit, check_unit on both games. A body that matches on both games is
-   recorded `./rec.py NAME WORDS "match" "body: smt3 PATH"`; one that compiles but differs
-   is recorded `"nonmatch N words" "body: PATH, first diff +0xOFF"` and left for the
-   matcher; one that does not compile is removed from D and noted in handoff.md with the
-   missing declarations.
-3. Do not tune. Do not edit headers except to add a prototype or extern that a body needs
-   and that the asm confirms (note it in the handoff). Everything else is the matcher's.
-4. Handoff.md: counts, bodies left as nonmatch with their distance, header additions, the
-   list of functions with no body (the matcher's worklist).
+   spliced into its unit, check_unit on both games. Record: a body that matches on both
+   games `./rec.py NAME WORDS "match" "body: smt3 PATH"`; one that compiles but differs
+   `"nonmatch N words" "body: PATH, first diff +0xOFF"`, left for the matcher.
+3. A body that does not compile is sorted by its errors. Only `structure has no member
+   named X` or an undeclared symbol, with the body's size within 2x of the row's words: fix
+   the field or symbol to the Raidou name when the Raidou header has it at the asm's
+   offset, otherwise record it `"nonmatch field X"` and list the error lines in the
+   handoff under "field renames". Size off by more than 2x, or a prototype that disagrees
+   with Raidou's header or the asm's argument registers: a different function; remove it
+   from D, note it under "wrong bodies", and the row is no-body. Do not tune. Header edits
+   are prototypes and field renames the asm confirms, listed in the handoff.
+4. Handoff.md: counts, nonmatches with distance, field renames, wrong bodies, header
+   additions, and the worklist of no-body functions smallest first with words.
 
 ## Phase land (after drafting)
 
@@ -70,6 +75,11 @@ Never rm with a glob; kill only PIDs you started; do not touch the stash "stage6
 unverified"; only this worker commits during its phase. Output discipline: scripts and
 summaries, no file dumps, no narration. The cache expires after 5 minutes idle: nothing in
 the foreground over 4 minutes.
+Run tools with `--help`, never read their source. T is reset to origin/main and configured
+before this phase; if `git -C T log -1 --oneline` is not origin/main, stop and report.
+A gate failure caused by a header edit is reported with the unit and the first flat diff,
+and the edit is reverted; never add a local prototype or declaration to work around it.
+Final message under 100 words of plain sentences, no bold or bullets.
 
 ## Stop and hand off
 
