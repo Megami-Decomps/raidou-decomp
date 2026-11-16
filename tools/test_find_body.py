@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Tests for tools/find_body.py: definitions, their guard status, names to search and the batches column."""
+import json
 import pathlib
 import sys
 import tempfile
@@ -7,6 +8,7 @@ import unittest
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import body_check  # noqa: E402
+import draft_store  # noqa: E402
 import find_body  # noqa: E402
 
 UNIT = """\
@@ -98,6 +100,77 @@ class NameTests(unittest.TestCase):
         got = [h.label() for h in sorted(hits, key=find_body.Hit.key)]
         self.assertEqual(got, ["raidou:matched:name", "smt3:matched:name", "dds:matched:hd",
                                "raidou:matched:similar"])
+
+    def test_a_store_draft_trails_matched_names_and_leads_siblings(self) -> None:
+        def hit(tree, via, status):
+            return find_body.Hit(tree, "r", "p", 1, "f", via, status, "")
+        hits = [hit("raidou", "similar", "matched"), hit("smt3", "name", "nonmatching"),
+                hit("store", "store", "nonmatching"), hit("dds", "alias", "matched")]
+        got = [h.label() for h in sorted(hits, key=find_body.Hit.key)]
+        self.assertEqual(got, ["dds:matched:alias", "store:nonmatching:store", "raidou:matched:similar",
+                               "smt3:nonmatching:name"])
+
+
+class StoreTests(unittest.TestCase):
+    def tree(self, d, body="s32 f(void) {\n    return 1;\n}\n", words=4):
+        code = bytes(range(16))
+        e = draft_store.Entry("f", 0x100, "raidou1", words, draft_store.hash_code(code[:words * 4]), "smt3:g",
+                              "words 2", ["s32 g(void);"], "C0001", "", "2026-11-16", body)
+        c, meta = draft_store.get_paths(pathlib.Path(d), "raidou1", 0x100)
+        c.parent.mkdir(parents=True)
+        c.write_text(body)
+        meta.write_text(json.dumps(e.meta()))
+        tree = find_body.StoreTree.__new__(find_body.StoreTree)
+        tree.store, tree.version, tree.rejected = pathlib.Path(d), "raidou1", {}
+        tree.entries = draft_store.load(pathlib.Path(d), "raidou1")
+        tree.by_name = {x.name: x for x in tree.entries.values()}
+        tree.image = FakeImage({0x100: {"f"}, 0x200: {"h"}}, {"f": (0x100, 16), "h": (0x200, 16)}, code)
+        return tree
+
+    def test_found_by_address_with_its_declarations(self) -> None:
+        with tempfile.TemporaryDirectory() as d:
+            hits = self.tree(d).find("f", 0x100, 4)
+            self.assertEqual([h.label() for h in hits], ["store:nonmatching:store"])
+            self.assertTrue(hits[0].body.startswith("s32 g(void);\ns32 f(void) {"))
+
+    def test_found_after_a_rename(self) -> None:
+        with tempfile.TemporaryDirectory() as d:
+            tree = self.tree(d)
+            tree.image.names[0x100].add("fNew")
+            self.assertEqual(len(tree.find("fNew", 0x100, 4)), 1)
+
+    def test_wrong_address_size_bytes_or_definition_is_left_out(self) -> None:
+        with tempfile.TemporaryDirectory() as d:
+            tree = self.tree(d)
+            self.assertEqual(tree.find("h", 0x100, 4), [])
+            self.assertIn("not at", tree.rejected["h"])
+            self.assertEqual(tree.find("f", 0x100, 5), [])
+            self.assertIn("row has 5", tree.rejected["f"])
+            self.assertEqual(tree.find("h", 0x200, 4), [])
+        with tempfile.TemporaryDirectory() as d:
+            tree = self.tree(d, words=3)
+            self.assertEqual(tree.find("f", 0x100, 0), [])
+            self.assertIn("size 4 words", tree.rejected["f"])
+        with tempfile.TemporaryDirectory() as d:
+            tree = self.tree(d)
+            tree.image.data = bytes(16)
+            self.assertEqual(tree.find("f", None, 0), [])
+            self.assertIn("stale", tree.rejected["f"])
+        with tempfile.TemporaryDirectory() as d:
+            tree = self.tree(d, body="s32 g(void) {\n}\n")
+            self.assertEqual(tree.find("f", 0x100, 4), [])
+            self.assertIn("defines g", tree.rejected["f"])
+
+
+class FakeImage:
+    def __init__(self, names, funcs, data):
+        self.names, self.funcs, self.data = names, funcs, data
+
+    def size_of(self, name):
+        return self.funcs[name][1]
+
+    def code(self, addr, size):
+        return self.data[:size] if addr == 0x100 else b""
 
 
 class ColumnTests(unittest.TestCase):

@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import body_check
+import draft_store
 import find_similar
 
 EPILOG = ("Trees are read at a git revision (default origin/main); identity uses each tree's build/ ELF. "
@@ -35,8 +36,8 @@ NOT_FUNCTIONS = {"if", "while", "for", "switch", "return", "sizeof", "__attribut
                  "INCLUDE_RODATA", "INCLUDE_SDATA", "typedef"}
 # Lower sorts first: a matched body before a draft, smt3 before dds, the Raidou name first.
 STATUS_RANK = {"matched": 0, "nonmatching": 1, "disabled": 2}
-TREE_RANK = {"raidou": 0, "smt3": 1, "dds": 2}
-VIA_RANK = {"name": 0, "alias": 1, "hd": 2, "similar": 3}
+TREE_RANK = {"raidou": 0, "smt3": 1, "dds": 2, "store": 3}
+VIA_RANK = {"name": 0, "alias": 1, "hd": 2, "store": 3, "similar": 4}
 # A same-shape sibling is a template, never the function itself; below this ratio it is a rewrite.
 SIMILAR_FLOOR = 0.9
 SIMILAR_TOP = 3
@@ -55,9 +56,11 @@ class Hit:
     version: str = ""
 
     def key(self):
-        # A sibling sorts after every hit that names the function itself.
-        return (STATUS_RANK[self.status], self.via == "similar", TREE_RANK[self.tree], VIA_RANK[self.via],
-                self.path)
+        # A sibling sorts after every hit that names the function itself. A draft-store entry, whatever its
+        # status, sorts after matched definitions of the function and before everything else.
+        status = 0 if self.via == "store" else STATUS_RANK[self.status]
+        return (status, self.via == "similar", TREE_RANK[self.tree], VIA_RANK[self.via],
+                STATUS_RANK[self.status], self.path)
 
     def label(self):
         return f"{self.tree}:{self.status}:{self.via}"
@@ -209,6 +212,31 @@ class RaidouTree:
         out += [self.hit(g, "similar") for r, g in find_similar.templates(self.funcs, self.index, t, SIMILAR_TOP)
                 if r >= SIMILAR_FLOOR and g["name"] != name]
         return [h for h in out if h]
+
+
+class StoreTree:
+    """Drafts in the draft store (tools/draft_store.py), keyed by address and checked against the build."""
+
+    name = "store"
+
+    def __init__(self, store, version):
+        self.store, self.version = Path(store), version
+        self.entries = draft_store.load(self.store, version)
+        self.by_name = {e.name: e for e in self.entries.values()}
+        self.image = draft_store.load_image(version) if self.entries else None
+        self.rejected = {}
+
+    def find(self, name, addr, words):
+        """The entry for the function at addr (else under name), when its address, size and bytes still agree."""
+        e = self.entries.get(addr) if addr is not None else self.by_name.get(name)
+        if e is None:
+            return []
+        why = draft_store.find_problem(e, self.image, words, name)
+        if why:
+            self.rejected[name] = why
+            return []
+        path = draft_store.get_paths(self.store, self.version, e.addr)[0]
+        return [Hit(self.name, e.date, str(path), 1, e.name, "store", e.guard(), e.text(), self.version)]
 
 
 def read_symbols(path):
@@ -414,6 +442,8 @@ def main():
     ap.add_argument("--unit", help="unit for --compile with plain NAMEs (src/shared/...); --batch uses its column")
     ap.add_argument("--set-column", action="store_true", help="write body_source into --batches (needs --batch)")
     ap.add_argument("--no-raidou", action="store_true", help="leave out this repository's own matched functions")
+    ap.add_argument("--store", type=Path, default=draft_store.STORE, help="draft store (tools/draft_store.py)")
+    ap.add_argument("--no-store", action="store_true", help="leave out the draft store")
     a = ap.parse_args()
     if a.set_column and not a.batch:
         ap.error("--set-column needs --batch")
@@ -430,6 +460,7 @@ def main():
     trees = [Tree("smt3", a.smt3, a.rev), Tree("dds", a.dds, a.rev)]
     own = None if a.no_raidou else RaidouTree()
     names = Names(a.version, a.hd)
+    store = None if a.no_store else StoreTree(a.store, a.version)
     checker = Checker(names, trees, a.version, a.compile)
     if own:
         checker.images["raidou"] = {v: body_check.Image(p) for v, s in VERSIONS_SERIAL.items()
@@ -442,6 +473,8 @@ def main():
         if own:
             hits = sorted(hits + own.find(name, a.version), key=Hit.key)
         addr = addr if addr is not None else names.addr.get(name)
+        if store:
+            hits = sorted(hits + store.find(name, addr, words), key=Hit.key)
         cls, best, ident, tried, flags = checker.check(name, addr, words, unit, hits)
         counts[cls] = counts.get(cls, 0) + 1
         # A hit off by more than 2x in size is left out of the usable and reference counts.
@@ -466,6 +499,8 @@ def main():
             continue
         others = ", ".join(n for n, via in lookups[1:])
         print(f"== {name}" + (f" (also {others})" if others else ""))
+        if store and name in store.rejected:
+            print(f"-- draft store entry left out: {store.rejected[name]}")
         if not hits:
             print("-- no body\n")
         print(f"-- class {cls}" + (f", same function {ident.text()}" if ident else "")

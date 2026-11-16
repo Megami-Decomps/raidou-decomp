@@ -155,7 +155,17 @@ Both tools read only the shape index under
 `~/.local/state/raidou-decomp-work/similar/`: build it once with
 `python3 tools/similar_index.py refresh` (about 90 seconds) and rerun that after
 matching; it re-tokenises only functions whose bytes changed, re-reads matched
-status, and updates the precomputed neighbours of every unmatched function. Regular batches do not run the
+status, and updates the precomputed neighbours of every unmatched function.
+`python3 tools/shape_clusters.py` groups the unmatched Raidou 1 functions by
+shape (ratio 0.9) into `~/.local/state/raidou-decomp-work/clusters/`, each with
+the exemplar whose cluster covers the most words. Drafts made from a cluster,
+outside any batch, go to the draft store with `python3 tools/draft_store.py
+save NAME DRAFT.c --exemplar CORPUS:NAME [--decls FILE]`, which records the
+address, size, a hash of the retail bytes, the declarations the draft assumes
+and the `check_unit.py` result. `find_body.py` reads the store by address and
+leaves out an entry whose address, size, bytes or definition name disagree; a
+store draft ranks after matched definitions of the function and before
+same-shape siblings. Regular batches do not run the
 permuter. As an opt-in, `python3 tools/perm_unit.py import <unit> NAME --batch D`
 sets up [decomp-permuter](https://github.com/simonlindholm/decomp-permuter) on
 the unit's NON_MATCHING draft under `D/permuter/`, scored on both games for a
