@@ -87,6 +87,7 @@ f32 mapGetScreenDir(f32 cx, f32 cy, f32 cz, f32 dir2d);
 void mapHamidasiCheck(void);
 s32 mapHamidasiMoveBoxHit(s32 idx, f32 *cx, f32 *cz, f32 r);
 s32 mapHitAidaCalc(f32 pos1x, f32 pos1z, f32 pos2x, f32 pos2z);
+s32 mapHitCalc(s32 mode, f32 posx, f32 posz, f32 r, f32 *getx, f32 *getz);
 s32 mapHitWorkCalc(f32 newx, f32 newz, f32 r, f32 *retx, f32 *retz);
 void mapHitWorkCalcSetup(s32 mode, f32 cx, f32 cz);
 void mapKaidanAdd(s16 uniq, s32 type, s32 xory, f32 x0, f32 z0, f32 x1, f32 z1, f32 h0, f32 h1, f32 haba, s32 basyo);
@@ -171,7 +172,6 @@ void map_fldPoint3To2O(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2);
 void map_fldPoint3To2O3(f32 x3, f32 y3, f32 z3, f32 *x2, f32 *y2);
 void mefMistDraw(f32 offX, f32 offY, s32 z);
 void mefMistTexDestroy(void);
-effHandle_t *sbtlCallLoad(char *fname);
 sdfVector4_t sbtlCallMemset25(struct camCustom_t *camParam);
 void sndSeStatus_sndAt3(void);
 

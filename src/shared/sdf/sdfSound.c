@@ -25,14 +25,6 @@ typedef struct {
 s32 sdfSndCmdTrans(void);
 extern s8 sdfSndBurstReqMode;
 
-typedef struct
-{
-    u32 unk0;
-    u8 unk4;
-    u8 unk5;
-    u16 unk6;
-} p2sdLoadEntry_t;
-
 s32 sdfSndSendCmd(s32 aCmd, s32 aParam, void *aExDataPtr, s32 aExDataSize);
 
 /* The PCM fill hook, held as an address and called through a cast. */
@@ -238,7 +230,6 @@ void sdfSndTransToIOP(s32 aIOPAddr, void *aEEAddr, s32 aSize);
 void p2sdPlayBGM(s32 MidiNo);
 s32 p2sdSendStopCmd(s32 aId);
 void p2sdResumeBgm(s32 trackId);
-void p2sdStopSe(u32 soundId);
 s32 p2sdStopAllBgm(void);
 s32 p2sdStopAllSe(void);
 u32 sdfSndLoadHDFile(s32 aVcChNum, char *aFilename);
@@ -590,18 +581,10 @@ u32 sdfSndLoadSQFile(s32 aSqChNum, char *aFilename) {
     return sdfSndSendSyncCmd(aSqChNum | 0x80, 0, aFilename, length);
 }
 
-typedef struct sndSkilEntry_t {
-    u16 id;
-    u16 unk2;
-    u32 unk4;
-} sndSkilEntry_t;
-
-sndSkilEntry_t *sdfLeaf35(void);
-
 void sdfSkil(s32 MidiNo)
 {
     char text[0x40];
-    sndSkilEntry_t *entry;
+    p2sdLoadEntry_t *entry;
     s32 i;
     s32 hi;
 
@@ -613,7 +596,7 @@ void sdfSkil(s32 MidiNo)
             if (i == 11) {
                 printf("[skil]-------------\n");
             }
-            printf("%02d : %04x0000\n", i, entry->id);
+            printf("%02d : %04x0000\n", i, (u16)entry->unk0);
             entry++;
         }
         hi = MidiNo >> 16;

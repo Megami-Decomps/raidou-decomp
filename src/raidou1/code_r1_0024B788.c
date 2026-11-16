@@ -7,6 +7,7 @@
 #include "sbtlWork.h"
 #include "sBtlUnit.h"
 #include "sBtlEff.h"
+#include "sBtlSound.h"
 #include "sbtlDMG.h"
 #include "sBtlCalc.h"
 #include "sBtlSM.h"
@@ -168,7 +169,7 @@ s32 sbtlSearchPacData2(s32 major, s32 minor, s32 devilid)
     return 1;
 }
 
-s32 sbtlCallBtlSearchPacData(s32 major, s32 minor, s32 devilid, SBTL_HIT_PACFILE *file)
+s32 sbtlCallBtlSearchPacData(s32 major, s32 minor, s32 devilid, SBTL_HIT_PACFILE *file, s32 size)
 {
     SBTL_HIT_PACENTRY *entry;
     SBTL_HIT_PACDATA *pwk;
@@ -404,9 +405,9 @@ s32 sbtlNakamaSetUp(void)
         wk_sbtl->flg |= 0x8000;
         set = 0;
         if (wk_sbtl->battleMode == 1) {
-            wk->field3C4 = 0;
+            wk->color = 0;
             wk->mode = 5;
-            wk->field41C |= 0x200000;
+            wk->vstatus |= 0x200000;
             bst = sbtlGetBadStatus(&wk->unit);
             if (bst != BST_BOYCOTT) {
                 sbtlSetBadStatus_No(wk, 0, bst, 1, -1);
@@ -432,9 +433,9 @@ s32 sbtlNakamaSetUp(void)
         if (wk_sbtl->battleMode == 3) {
             return 0;
         }
-        wk->field3C4 = 0;
+        wk->color = 0;
         wk->mode = 5;
-        wk->field41C |= 0x200000;
+        wk->vstatus |= 0x200000;
     } else {
         wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
         if (wk == NULL) {
@@ -583,7 +584,7 @@ s32 pbCallBtlCheckLoadFlg(void)
         return 1;
     }
     wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
-    if (wk->field438 == 34) {
+    if (wk->status == 34) {
         if (!(wk_sbtl->flg & 0x1000000) && wk_sbtl->mode != 7 && wk_sbtl->mode != 8 && wk_sbtl->mode != 16) {
             wk_sbtl->flg |= 0x40000000;
             if (!(wk->unit.badStatus & 0x8000) && sbtlCheckUnit_Exec()) {
@@ -601,7 +602,7 @@ s32 pbCallBtlCheckLoadFlg(void)
                 return 1;
             }
         }
-        if (wk->field438 == 34) {
+        if (wk->status == 34) {
             wk_sbtl->endcnt = 0;
             return 1;
         }
@@ -610,7 +611,7 @@ s32 pbCallBtlCheckLoadFlg(void)
         wk_sbtl->endcnt = 0;
         return 1;
     }
-    if (wk->field438 == 40 || wk->field438 == 10 || wk_sbtl->mode == 7 || wk_sbtl->mode == 8
+    if (wk->status == 40 || wk->status == 10 || wk_sbtl->mode == 7 || wk_sbtl->mode == 8
         || wk_sbtl->mode == 16 || wk_sbtl->field424 != 0
         || (sbtlChkBossEventStart_EnemySummonWait() && sbtlCallBtlCheckGeneratorGroupID())) {
         wk_sbtl->endcnt = 0;
@@ -627,9 +628,9 @@ s32 pbCallBtlCheckLoadFlg(void)
     if (wk_sbtl->endcnt == 1) {
         wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->targetUnitID);
         bst = sbtlGetBadStatus(&wk->unit);
-        if (wk->field3A0 == 0) {
-            if (wk_sbtl->battleMode != 1 && wk->field438 != 42) {
-                wk->field41C |= 0x8000000;
+        if (wk->major == 0) {
+            if (wk_sbtl->battleMode != 1 && wk->status != 42) {
+                wk->vstatus |= 0x8000000;
                 if (bst != BST_STONE && bst != BST_MOUDOKU) {
                     sbtlResetBadStatus(wk, BSTF_DEAD | BSTF_GUN | BSTF_SLEEP | BSTF_MAHUU | BSTF_BOUDO | BSTF_PANIC
                                                | BSTF_CHARM | BSTF_KOUFUN | BSTF_KAEN | BSTF_APPAKU | BSTF_KANDEN

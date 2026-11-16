@@ -6,6 +6,7 @@
 #include "kernel.h"
 #include "sdf_types.h"
 #include "sdatUnit.h"
+#include "sdfSound.h"
 
 struct EffectSlotSet;
 
@@ -43,7 +44,10 @@ typedef struct SBTL_WORK {
     dds3ProcessID_t *process;
     s32 syscnt;
     s32 endcnt;
-    u8 pad1B8[0xC];
+    u8 pad1B8[4];
+    s16 equipSword;
+    s16 equipGun;
+    s32 equipBullet;
     u32 flg;
     u32 flg2;
     u8 pad1CC[4];
@@ -51,22 +55,27 @@ typedef struct SBTL_WORK {
     u8 pad1D4[4];
     s32 stageNo;
     struct SBTLUNIT_LISTWORK *unitList;
-    u8 pad1E0[4];
+    s32 loadListID;
     s16 battleMode;
     u8 pad1E6[0x220 - 0x1E6];
     s16 summonIndex[2];
-    u8 pad224[0x2CC - 0x224];
+    u8 pad224[0x238 - 0x224];
+    s32 equipBulletBk;
+    u8 pad23C[0x2CC - 0x23C];
     s32 field2CC;
     u8 pad2D0[4];
     struct SBTLUNIT_LISTWORK *list2D4;
-    u8 pad2D8[0x30C - 0x2D8];
+    u8 pad2D8[4];
+    s32 stockMinor[SDAT_STOCK_NUM];
     s32 stockDevilSkill[SDAT_STOCK_NUM];
     u32 summonBit;
     s32 stockNum;
     s32 field344;
     u8 pad348[0x364 - 0x348];
     s32 stockUnitID[SDAT_STOCK_NUM];
-    u8 pad394[0x3E8 - 0x394];
+    u8 pad394[0x3A4 - 0x394];
+    s32 unitPadID;
+    u8 pad3A8[0x3E8 - 0x3A8];
     struct SBTLUNIT_LISTWORK *list3E8;
     u8 pad3EC[8];
     s32 animList;
@@ -82,9 +91,18 @@ typedef struct SBTL_WORK {
     struct SBTLEFF_DELLISTWORK *effdelList;
     u8 pad420[4];
     s32 field424;
-    u8 pad428[8];
+    u8 pad428[4];
+    s32 hitTargetID;
     s16 mode;
-    u8 pad432[0x5E0 - 0x432];
+    u8 pad432[0x436 - 0x432];
+    s16 field436;
+    u8 pad438[0x448 - 0x438];
+    s32 mag;
+    u8 pad44C[0x458 - 0x44C];
+    s32 hgunNum;
+    u8 pad45C[0x4D8 - 0x45C];
+    s32 huumaDevilID[12];
+    u8 pad508[0x5E0 - 0x508];
     s16 mf_mode;
     s16 mf_counter;
     s16 mf_cmpcounter;
@@ -109,15 +127,27 @@ typedef struct SBTL_WORK {
     struct SBTLDVLTK_LISTWORK *dvltkList;
     struct SBTLEXP_LISTWORK *expList;
     struct SBTL_MODELBIND_LIST *modelBindings;
-    u8 pad640[8];
+    u8 pad640[4];
+    s32 field644;
     struct SBTL_STP *stp;
-    u8 pad64C[0x6C4 - 0x64C];
+    u8 pad64C[0x674 - 0x64C];
+    s32 field674;
+    u8 pad678[0x680 - 0x678];
+    struct SBTLUNIT_WORK *scrUnitList[3];
+    u8 pad68C[0x6C4 - 0x68C];
     s32 scrCnt[4];
     u8 pad6D4[4];
     u32 scrFlag;
     u8 pad6DC[4];
     s32 enshutuCnt[8];
-    u8 pad700[0x87C - 0x700];
+    u8 pad700[0x780 - 0x700];
+    p2sdLoadEntry_t midiLoad[30]; /* copy of the sound driver's MIDI table; 11 to 28 are skill MIDIs */
+    s32 midiSkillCount;
+    s32 midiCount8;
+    u8 field878;
+    u8 field879;
+    u8 field87A;
+    u8 pad87B[0x87C - 0x87B];
 } SBTL_WORK;
 
 extern SBTL_WORK *wk_sbtl;
@@ -153,11 +183,13 @@ typedef struct SBTL_DEVIL_DATA {
 
 /* Battle start parameters, copied to main_data by sbtlSbattle. */
 typedef struct SBTL_START_DATA {
-    u8 pad00[0x28];
+    sdfVector4_t pos;
+    sdfVector4_t rot;
+    u8 pad20[8];
     s32 val28;
     s32 mode;
     s16 val30;
-    u8 pad32[2];
+    s16 stockId; /* stock slot summoned first in battle mode 3, used when below stockNum */
 } SBTL_START_DATA;
 
 /* One loaded SB_PACK resource, indexed by the pack entry id. */
@@ -169,6 +201,7 @@ typedef struct SBTL_PACK_SLOT {
 } SBTL_PACK_SLOT;
 
 SBTL_PLAYER_DATA *sbtlGetPlayerData(void);
+s32 sbtlCallBtlGetPlayerData3(void);
 
 /* One battle stage's row (0x100 bytes) in the table sbtlData100 points at, indexed by SBTL_WORK.stageNo. */
 typedef struct SBTL_STAGE_DATA {
@@ -206,7 +239,7 @@ typedef struct SBTL_MOTION_VISUAL {
     u8 pad01[3];
     f32 field04;
     f32 field08;
-    u8 padC[4];
+    f32 field0C;
     f32 field10;
     f32 scale;
     u8 pad18[0x30 - 0x18];
@@ -215,8 +248,13 @@ typedef struct SBTL_MOTION_VISUAL {
 } SBTL_MOTION_VISUAL;
 
 typedef struct SBTL_UNIT_SUB {
-    u8 pad00[4];
+    u16 flags;
+    u8 pad02[2];
     f32 field04;
+    u8 pad08[8];
+    f32 field10;
+    f32 field14;
+    s16 field18;
 } SBTL_UNIT_SUB;
 
 struct SBTLUNIT_WORK;
@@ -392,8 +430,9 @@ s32 sbtlCallBtlGetItemtbl(void);
 s32 sbtlCallBtlGetNumUnitGroupID(void);
 s32 sbtlCallBtlMapInit(void);
 s32 sbtlCallBtlSearchEffectSABActer(struct SBTLUNIT_WORK *wk);
-s32 sbtlCallBtlSearchPacData(s32 major, s32 minor, s32 devilid, SBTL_HIT_PACFILE *file);
+s32 sbtlCallBtlSearchPacData(s32 major, s32 minor, s32 devilid, SBTL_HIT_PACFILE *file, s32 size);
 s32 sbtlCallBtlSearchPacData2(s32 major, s32 minor, s32 devilid, void *data, s32 size);
+s32 DrawProc2(s32 major, s32 minor, s32 devilid, void *data, s32 size);
 s32 sbtlCallBtlSearchUnitID32(void);
 s32 sbtlCallBtlSearchUnitID33(void);
 s32 sbtlCallBtlSearchUnitID34(sdatUnitWork_t *unit, s32 devilId, s8 flg);
@@ -429,13 +468,12 @@ s32 sbtlRefSbtl23(void);
 s32 sbtlRefSbtl24(struct SBTLUNIT_WORK *wk, s8 flg);
 s32 sbtlRefSbtl27(void);
 s32 sbtlRefSbtl29(void);
-s32 sbtlRefSbtl4(void);
+void sbtlRefSbtl4(void);
 s32 sbtlRefSbtl45(void);
 void sbtlInitTutorial(void);
 s32 sbtlRefSbtl47(void);
 s32 sbtlRefSbtl60(struct SBTLEXP_LISTWORK *lwk);
 s32 sbtlRefSbtl62(struct SBTLUNIT_WORK *wk);
-s32 sbtlRefSbtl7(void);
 s32 sbtlReleaseDelList(struct SBTLEFF_DELLISTWORK *lwk, u8 flg);
 s32 sbtlReleaseDvltk_List(struct SBTLDVLTK_LISTWORK *lwk, u8 flg);
 s32 sbtlReleaseEXP_List(struct SBTLEXP_LISTWORK *lwk, u8 flg);
@@ -446,7 +484,7 @@ s32 sbtlSearchPacData(s32 major, s32 minor, s32 devilid);
 s32 sbtlSearchPacData2(s32 major, s32 minor, s32 devilid);
 s32 sbtlSetBit(u32 *bits, s32 no);
 s32 sbtlSetDevilSkillID(s32 id, s32 flg);
-s32 sbtlSetMotion_sbtlUnit(struct SBTLUNIT_WORK *wk, s32 motion, s16 a, s16 b, s8 c);
+s32 sbtlSetMotion_sbtlUnit(struct SBTLUNIT_WORK *wk, s32 motion, s32 bframe, s32 aframe, s8 flg);
 s32 sbtlSetPacData_MHT(s32 major, s32 minor, s32 devilid, void *data, s32 size);
 s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 a, s8 b, s32 c, s8 d);
 s32 sbtlUpdateVibe(void);

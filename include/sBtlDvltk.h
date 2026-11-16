@@ -4,11 +4,15 @@
 #include "common.h"
 #include "enums.h"
 
+struct SBTLDVLTK_LISTWORK;
 struct SBTLDVLTK_WORK;
 struct SBTLUNIT_WORK;
 
 char *GetDrawText(u32 rgba, struct SBTLUNIT_WORK *wk, SBTLDVLTK_MODE mode, struct SBTLDVLTK_WORK *_dwk);
+s32 sbtlCallBtlCheckMsgMemType(struct SBTLUNIT_WORK *wk);
 s32 sbtlCheckMsgMemType(void);
+s32 sbtlSearchDvltk(struct SBTLDVLTK_LISTWORK *lwk, struct SBTLUNIT_WORK *wk);
+struct SBTLDVLTK_WORK *sbtlCreateDvltk_Priority(struct SBTLDVLTK_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SBTLDVLTK_MODE mode);
 s32 sbtlExtCommand_DVLTK_DSP(void);
 s32 sbtlExtCommand_DVLTK_WAIT(void);
 s32 sbtlExt_ChkMes(void);

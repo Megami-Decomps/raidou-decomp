@@ -20,6 +20,7 @@ s32 sbtlGetPosforDistance(struct SBTLUNIT_WORK *wk, f32 distance);
 s32 sbtlGetQuat(const sdfVector4_t *t1, const sdfVector4_t *t2);
 void sbtlGetQuatFromMatrix(const sdfMatrix4_t *mat);
 s32 sbtlGetRadian_X(const sdfVector4_t *t1, const sdfVector4_t *rot, const sdfVector4_t *rot2, const sdfVector4_t *t2, f32 per);
+f32 sbtlGetChorikiDeg(const sdfVector4_t *pos, const sdfVector4_t *rot, const sdfVector4_t *target, f32 per);
 s32 sbtlGetRotateDeg(const sdfVector4_t *rot, f32 deg);
 s32 sbtlGetRotateDegX(const sdfVector4_t *rot, f32 deg);
 f32 sbtlGetUnitDeg(const sdfVector4_t *rot);

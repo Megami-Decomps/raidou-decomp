@@ -6,6 +6,7 @@
 #include "motion.h"
 
 void mdlFree(mdlObj_t *aHandle);
+saddr_t mdlPrepare(s32 aMajor, s32 aMinor, s32 aBlockMode);
 u32 mdlGetColor(mdlObj_t *aHandle);
 s32 mdlGetMajorNum(mdlObj_t *aHandle);
 s32 mdlGetMinorNum(mdlObj_t *aHandle);

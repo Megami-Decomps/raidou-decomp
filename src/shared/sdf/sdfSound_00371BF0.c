@@ -21,14 +21,6 @@ typedef struct {
     u32 privateData[6];
 } sdfSceIoStat_t;
 
-typedef struct
-{
-    u32 unk0;
-    u8 unk4;
-    u8 unk5;
-    u16 unk6;
-} p2sdLoadEntry_t;
-
 /* The PCM fill hook, held as an address and called through a cast. */
 typedef u8 *(*p2sdPcmFunc_t)(s32);
 

@@ -4,13 +4,58 @@
 #include "common.h"
 #include "sdf_types.h"
 
+/* Footstep frames of one devil's walk motion. */
+typedef struct DVLFOOTSE_WORK {
+    u8 frameNum;
+    u8 sedataNum;
+    u16 flg;
+    f32 frame[4];
+} DVLFOOTSE_WORK;
+
+extern DVLFOOTSE_WORK *sbtlDevilFootSEProcSubData;
+
+/* Per-SE entry; count goes up once per battle sound frame. */
+typedef struct SBTLSOUND_SEENTRY {
+    s32 count;
+    s32 field04;
+    s32 field08;
+} SBTLSOUND_SEENTRY;
+
+extern SBTLSOUND_SEENTRY sbtlWork[256];
+
 struct SBTLEFF_PACLIST;
 struct SBTLUNIT_WORK;
+struct SBTLSOUND_FOOTWORK;
 
+void sbtlRefSbtl5(struct SBTLUNIT_WORK *wk);
+void sbtlSummonDvTaskSub(struct SBTLSOUND_FOOTWORK *fwk);
+DVLFOOTSE_WORK *sbtlDevilFootSEProcSub(s32 devilID);
+void sbtlBtlLoadSkillSESub(s32 arg);
+s32 sbtlBtlPlay3DSEBaseVolSub(const sdfVector4_t *pos, f32 maxlen, f32 minlen, s32 basevol, s32 minvol);
+void sbtlSEVolAngleCalc(u32 no, s32 vol);
+u32 sbtlPlayMotionSENowSub2(s32 devilID, s32 motionID);
+f32 sbtlPlayMotionSENowSub(struct SBTLUNIT_WORK *wk, s32 motionID);
+f32 sbtlCallBtlGetMotionVisualData5(struct SBTLUNIT_WORK *wk, s32 motionID);
+u32 sbtlPlayMotionSENowSub3(s32 devilID, s32 motionID);
+void PlayMotionSENow(struct SBTLUNIT_WORK *wk, s32 motionID, s32 startcnt);
+void sbtlCallEffectShutdown(struct SBTLUNIT_WORK *wk);
+void sbtlCallEffectShutdown2(struct SBTLUNIT_WORK *wk);
+void sbtlStopSkillSE(SKLID skillid, s32 type);
+void sbtlPlaySkillSE(const sdfVector4_t *pos, SKLID skillid, s32 type);
+void sbtlLeaf58(u32 seid);
+void sbtlRefSbtl6(struct SBTLUNIT_WORK *wk, u32 seid, s32 vol, s32 motionID);
+u32 sbtlCallGetRandIntA4(struct SBTLUNIT_WORK *wk);
+u32 sbtlGetDevilSESub(s32 devilID);
+s32 sbtlCallBtlSearchPacData3(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallBtlGetDevilSESub(struct SBTLUNIT_WORK *wk);
 void DevilFootSEProc(struct SBTLUNIT_WORK *wk);
-void sbtlCallGetRandIntA5(const sdfVector4_t *pos, u32 seid);
-u32 sbtlGetBossSE(s32 devilID, s32 motionID);
+u32 sbtlCallGetRandIntA5(struct SBTLSOUND_FOOTWORK *fwk, s32 devilID);
+u32 sbtlGetBossSE(struct SBTLUNIT_WORK *wk, s32 motionID);
 s32 sbtlLoadSkillSE(struct SBTLEFF_PACLIST *ewk);
+void sbtlRefSbtl7(void);
+u32 sbtlCallBtlGetSkilltbl(s32 skillID, s32 type);
+void sbtlCheckBossSE(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallBtlGetBadStatus(struct SBTLUNIT_WORK *wk);
 void sbtlPlay3DSE_BaseVol(u32 no, const sdfVector4_t *pos, s32 flg);
 void sbtlPlayDamageSE(const sdfVector4_t *pos, s32 damageType);
 void sbtlPlaySpecialSE(const sdfVector4_t *pos, s32 specialType);

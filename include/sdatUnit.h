@@ -48,7 +48,7 @@ typedef struct sdatUnitWork_t {
     /* 0x48 */ sdatItemParaWork_t pitem;
     /* 0x60 */ sdatParaWork_t pbtl;
     /* 0x78 */ sdatParaWork_t huuma;
-    /* 0x90 */ u8 pad90[0x28];
+    /* 0x90 */ s32 haveskill[10];
     /* 0xB8 */ u32 badStatus; /* sbtlGetBadStatus reads it */
     /* 0xBC */ u8 padBC[0x14];
     /* 0xD0 */ SBTL_AISYO_TBL aisyo;

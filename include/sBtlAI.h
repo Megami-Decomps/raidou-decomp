@@ -34,6 +34,8 @@ s32 sbtlCheckSkillEquation(struct SBTLUNIT_WORK *wk, s16 adr, SKLID skillid);
 s32 sbtlCheckTargetEquation(struct SBTLUNIT_WORK *wk);
 s32 sbtlGetTargetUnit(struct SBTLUNIT_WORK *wk);
 struct SBTLAI_WORK *sbtlLeaf64(void);
+struct SBTLAI_WORK *Create_sbtlAI(void);
+void sbtlRefSbtl17(struct SBTLUNIT_WORK *wk);
 s32 sbtlProcScript(struct SBTLUNIT_WORK *wk);
 
 #endif

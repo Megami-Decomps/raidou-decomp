@@ -8,6 +8,8 @@
 struct SBTLUNIT_WORK;
 
 void PosOut(struct SBTLUNIT_WORK *wk);
+s32 Proc(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallBtlDeleteHitHelper(struct SBTLUNIT_WORK *wk);
 s32 sbtlAAIInit_BAttack(struct SBTLUNIT_WORK *wk);
 s32 sbtlAAIInit_N_Escape(struct SBTLUNIT_WORK *wk);
 s32 sbtlAAIInit_N_GardeT(struct SBTLUNIT_WORK *wk);

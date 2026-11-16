@@ -9,6 +9,14 @@ struct SBTLEFF_LISTWORK;
 struct SBTLEFF_WORK;
 struct SBTLUNIT_WORK;
 
+/* Effect pack list entry. Partial layout: only the fields read so far are named. */
+typedef struct SBTLEFF_PACLIST {
+    u8 pad00[0x14];
+    s16 skillID;
+    u8 pad16[0x2];
+    u32 SMGID;
+} SBTLEFF_PACLIST;
+
 typedef struct sbtlFileEntry_t {
     char *path;
     struct {
@@ -21,6 +29,7 @@ extern sbtlFileEntry_t sbtlFunc2Data[10];
 
 void sbtlCallFileOpen(sbtlFileEntry_t *entry);
 
+s32 sbtlLoadEffectData_Nakama(struct SBTLUNIT_WORK *wk);
 s32 EffFunc_DEADDAMAGE(struct SBTLEFF_WORK *wk);
 s32 EffFunc_Hanyou(struct SBTLEFF_WORK *wk);
 s32 EffFunc_Hanyou_BED(struct SBTLEFF_WORK *wk);

@@ -42,6 +42,7 @@ s32 sbtlHitCProc(struct SBTLDMG_HITLISTWORK *lwk);
 s32 sbtlHitCProc_Idou(struct SBTLDMG_HITLISTWORK *lwk);
 s32 sbtlInitLoadAttackHitData_pData(void);
 s32 sbtlLoadAttackHitData(struct SBTLUNIT_WORK *wk, s32 id, void *ppData);
+s32 sbtlSearchAttackHitData_Copy(struct SBTLUNIT_WORK *wk);
 s32 sbtlLoadAttackHitData_Decode(struct SBTLUNIT_WORK *wk);
 s32 sbtlLoadAttackHitData_pData(s32 index, void *pData);
 void sbtlRegistAnimList(struct SBTLDMG_ANIMWORK *wk, u32 alp);

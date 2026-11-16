@@ -119,11 +119,11 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
         unit->model->flags &= ~0x1000;
     }
     if (unit->flg & 0x8000000) {
-        unit->field3B6 = devil->field42;
+        unit->motion_setno = devil->field42;
     } else {
-        unit->field3B6 = 0;
+        unit->motion_setno = 0;
     }
-    unit->zero18 = 0;
+    unit->field18 = 0;
     unit->field414 = 2;
     unit->field424 = 0;
     model = unit->model;
