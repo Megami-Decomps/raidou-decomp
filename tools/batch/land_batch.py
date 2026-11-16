@@ -6,10 +6,12 @@ Steps run in order; see docs/batch-workflow.md for the batch directory's files. 
 """
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -26,6 +28,7 @@ STEPS = ("patch", "renames", "splice", "configure", "promote", "docs", "regress"
 GATE = (["tools/check_config.py"], ["tools/check_nonmatching.py"], ["tools/test_raidou_c.py"],
         ["tools/test_docs_index.py"], ["tools/docs_index.py", "--check"], ["tools/revisit_names.py", "--check"])
 NONMATCHING_NAME = re.compile(r"^nonmatching (\w+), 0x", re.M)
+CACHE = Path.home() / ".local/state/raidou-decomp-work/cache"
 
 
 class Run:
@@ -35,6 +38,8 @@ class Run:
         self.work = (args.work or self.batch.dir / "land").resolve()
         self.work.mkdir(parents=True, exist_ok=True)
         self.jobs = args.jobs
+        self.clean_gate = args.clean_gate
+        self.cache = Path(args.cache).resolve() if args.cache else None
         self.python = str(self.tree / ".venv/bin/python")
         self.maps = {g: renames.name_map(self.batch.renames, g) for g in ("raidou1", "raidou2")}
         self.draft_names = self.maps["raidou1"] if args.rename_drafts else {}
@@ -96,15 +101,36 @@ class Run:
         if not self.configure("configure.base.log"):
             raise SystemExit("land_batch: configure failed at the base, see configure.base.log")
 
+    def cache_path(self) -> Path | None:
+        """Base measurements shared by every batch and rerun, keyed by the base and the games measured."""
+        if not self.cache:
+            return None
+        games = "+".join(header_includers.versions(self.tree))
+        return self.cache / "land_before" / f"{self.base}.{games}.json"
+
     def load_before(self) -> dict:
-        """The base measurement, if it is of this base; it is extended, never replaced."""
+        """The base measurement, if it is of this base, from the work dir and the cache; it is extended, never
+        replaced."""
         path = self.work / "before.json"
         before = json.loads(path.read_text()) if path.exists() else {}
-        return before if before.get("!base") == self.base else {}
+        before = before if before.get("!base") == self.base else {}
+        cached = self.cache_path()
+        if cached and cached.exists():
+            before = {**json.loads(cached.read_text()), **before}
+        return before
 
     def save_before(self, before: dict) -> None:
         before["!base"] = self.base
         (self.work / "before.json").write_text(json.dumps(before, indent=1, sort_keys=True) + "\n")
+        if not (cached := self.cache_path()):
+            return
+        # A failed compile is not cached: it may be the run's environment rather than the base.
+        merged = json.loads(cached.read_text()) if cached.exists() else {}
+        merged.update({k: v for k, v in before.items() if k == "!base" or "!error" not in v})
+        cached.parent.mkdir(parents=True, exist_ok=True)
+        tmp = cached.with_name(f"{cached.name}.{os.getpid()}.tmp")
+        tmp.write_text(json.dumps(merged, indent=1, sort_keys=True) + "\n")
+        os.replace(tmp, cached)
 
     def tree_at_base(self) -> bool:
         return self.git("rev-parse", "HEAD").strip() == self.base and not self.git(
@@ -135,6 +161,7 @@ class Run:
         missing = {p: g for p, g in units.items()
                    if not all(f"{p.as_posix()} {x} {m}" in before for x in g for m in header_includers.MODES)}
         if not missing:
+            self.say(f"regress: all {len(units)} units measured at base {self.base[:9]} already")
             return before
         root = self.tree if self.tree_at_base() else self.base_tree()
         self.say(f"regress: measuring {len(missing)} units at base {self.base[:9]} in {root}")
@@ -267,6 +294,11 @@ class Run:
         r = subprocess.run(cmd, cwd=self.tree, capture_output=True, text=True)
         return r.returncode, header_includers.summarise(r.stdout + r.stderr)
 
+    def check_games(self, source: str, games: list[str], alt: Path | None = None) -> dict:
+        """check() on each game at once, in the order of `games`."""
+        with ThreadPoolExecutor(max(len(games), 1)) as pool:
+            return dict(zip(games, pool.map(lambda g: self.check(source, g, alt), games)))
+
     def check_matches(self, source: str, summaries: dict[str, dict[str, str]], finals: dict[str, str]) -> None:
         """Report rows spliced as plain C that are not OK in a game that builds them."""
         for game, summary in summaries.items():
@@ -287,7 +319,7 @@ class Run:
         games = header_includers.unit_paths(self.tree)
         for source in sorted({r.source for r in self.batch.rows.values() if r.name in finals}):
             unit_games = games.get(Path(source), [])
-            base = {g: self.check(source, g) for g in unit_games}
+            base = self.check_games(source, unit_games)
             self.check_matches(source, {g: s for g, (_, s) in base.items()}, finals)
             text = (self.tree / source).read_text()
             for row in self.batch.rows.values():
@@ -302,7 +334,7 @@ class Run:
                 with tempfile.TemporaryDirectory() as tmp:
                     alt = Path(tmp) / Path(source).name
                     alt.write_text(trial)
-                    results = {g: self.check(source, g, alt)[1] for g in unit_games}
+                    results = {g: r[1] for g, r in self.check_games(source, unit_games, alt).items()}
                 # the draft matches and no other function of the unit gets worse
                 name = self.current(row.name)
                 matches = [s.get(name) for s in results.values() if name in s]
@@ -398,11 +430,14 @@ class Run:
         self.say(f"regress: {len(units)} units, {len(worse)} worse, {len(better)} better")
 
     def gate(self) -> None:
-        rc = subprocess.run(f"{self.python} configure.py --clean > {self.work}/gate.configure.log 2>&1 && "
+        """configure and ninja, with --clean only when asked: the incremental build proves the same image, and the
+        clean one runs once, before the push."""
+        configure = "configure.py --clean" if self.clean_gate else "configure.py"
+        rc = subprocess.run(f"{self.python} {configure} > {self.work}/gate.configure.log 2>&1 && "
                             f"ninja > {self.work}/gate.ninja.log 2>&1", shell=True, cwd=self.tree).returncode
         log = (self.work / "gate.ninja.log").read_text() if (self.work / "gate.ninja.log").exists() else ""
         sums = len(re.findall(r"check config/\w+/checksum.sha1", log))
-        self.say(f"gate: configure --clean && ninja rc {rc}, {sums} checksum steps")
+        self.say(f"gate: {configure} && ninja rc {rc}, {sums} checksum steps")
         failed = rc != 0
         for args in GATE:
             if not (self.tree / args[0]).exists():
@@ -411,7 +446,8 @@ class Run:
             self.say(f"gate: {' '.join(args)} rc {r}")
             failed |= r != 0
         warnings = len(re.findall(r"warning:", log))
-        self.say(f"gate: {warnings} compiler warnings in the build log; {'FAILED' if failed else 'passed'}")
+        scope = "the build log" if self.clean_gate else "the objects rebuilt (the total needs --clean-gate)"
+        self.say(f"gate: {warnings} compiler warnings in {scope}; {'FAILED' if failed else 'passed'}")
 
 
 def main() -> int:
@@ -429,7 +465,11 @@ def main() -> int:
     ap.add_argument("--work", type=Path, help="logs and measurements (default: <batch>/land; configure --clean empties build/)")
     ap.add_argument("--reuse-before", action="store_true",
                     help="skip the first base measurement; regress still measures, at the base, units it lacks")
-    ap.add_argument("-j", "--jobs", type=int, default=8)
+    ap.add_argument("--cache", default=str(CACHE),
+                    help=f"base measurements shared across batches and reruns (default {CACHE}; '' for none)")
+    ap.add_argument("--clean-gate", action="store_true",
+                    help="gate with configure.py --clean, as the last gate before a push does")
+    ap.add_argument("-j", "--jobs", type=int, default=header_includers.JOBS)
     args = ap.parse_args()
     skip = set(filter(None, args.skip.split(",")))
     if skip - set(STEPS):

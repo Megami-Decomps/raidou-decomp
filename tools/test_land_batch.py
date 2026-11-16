@@ -106,6 +106,26 @@ class RenamedRowTests(unittest.TestCase):
         self.assertEqual(run.notes, ["u.c: old: 0 INCLUDE_ASM lines"])
 
 
+class BeforeCacheTests(unittest.TestCase):
+    def run_in(self, root: pathlib.Path, work: str, base: str) -> land_batch.Run:
+        run = land_batch.Run.__new__(land_batch.Run)
+        run.tree, run.work, run.cache, run.base = root, root / work, root / "cache", base
+        run.work.mkdir(exist_ok=True)
+        return run
+
+    def test_another_work_dir_reuses_the_base_measurement(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "config").mkdir()
+            (root / "config/versions.json").write_text('{"raidou1": {}, "raidou2": {}}')
+            first = self.run_in(root, "a", "b1")
+            first.save_before({"u raidou1 default": {"f": "OK"}, "v raidou1 default": {"!error": "x"}})
+            self.assertTrue((root / "cache/land_before/b1.raidou1+raidou2.json").exists())
+            again = self.run_in(root, "b", "b1")
+            self.assertEqual(again.load_before(), {"!base": "b1", "u raidou1 default": {"f": "OK"}})
+            self.assertEqual(self.run_in(root, "c", "b2").load_before(), {})
+
+
 class StaleDocsTests(unittest.TestCase):
     def test_drops_entries_of_functions_that_are_no_longer_drafts(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
