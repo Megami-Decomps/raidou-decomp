@@ -8,6 +8,8 @@
 #include "sdfSound.h"
 #include "ModeSelect.h"
 #include "dds3KernelCore.h"
+#include "sdk_libc.h"
+#include "mdlManager.h"
 
 typedef struct evtUnitHandle_t
 {
@@ -197,7 +199,6 @@ typedef struct nbNegoProcessData_t
     s32 selectcur;
 } nbNegoProcessData_t;
 
-#include "sdk_libc.h"
 
 extern void nbPlaySe(s32 no);
 extern char InitExStrMahjonMainProcess[];
@@ -378,7 +379,9 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", ApplyReachEx);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", mjnAfterConfirmationKan_mjn);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", mjnLeaf2);
+void mjnLeaf2(s32 arg0, s32 arg1) {
+    mjnAfterConfirmationKan_mjn(arg0, arg1);
+}
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", mjnRefWorkMjn5);
 
@@ -446,7 +449,9 @@ INCLUDE_ASM(const s32, "kernel/ModeSelect", EndMahjong);
 
 INCLUDE_ASM(const s32, "kernel/ModeSelect", ModelLoad_mjn);
 
-INCLUDE_ASM(const s32, "kernel/ModeSelect", nbLeaf63);
+void nbLeaf63(mdlObj_t *aHandle) {
+    mdlFree(aHandle);
+}
 
 void nbPlaySe(s32 no)
 {

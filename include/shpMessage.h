@@ -7,5 +7,6 @@ s32 fclCheck(void);
 void shpNewsStartScript(void);
 void shpOrderStartScript(s32 a_stockID, s32 a_itemID);
 void shpStartScript(s32 a_procedureNo);
+void fclLeaf(void);
 
 #endif

@@ -17,6 +17,9 @@
 #include "code_r1_001CC1D0.h"
 #include "code_r1_002C8188.h"
 #include "code_r1_002CAFD8.h"
+#include "code_00300578.h"
+#include "cmpModel.h"
+#include "sdfTex.h"
 
 INCLUDE_ASM(const s32, "code_00300578", titleFunc4);
 
@@ -290,7 +293,9 @@ INCLUDE_ASM(const s32, "code_00300578", sysBILLNUM);
 
 INCLUDE_ASM(const s32, "code_00300578", sysCallTexAlloc);
 
-INCLUDE_ASM(const s32, "code_00300578", sysLeaf55);
+void sysLeaf55(sdfTexHandle_t *texture) {
+    sdfTexReleaseReference(texture);
+}
 
 INCLUDE_ASM(const s32, "code_00300578", sysLeaf56);
 
@@ -322,7 +327,9 @@ INCLUDE_ASM(const s32, "code_00300578", frCallMemGetPtr5);
 
 INCLUDE_ASM(const s32, "code_00300578", frCallMemGetPtr6);
 
-INCLUDE_ASM(const s32, "code_00300578", frLeaf10);
+void frLeaf10(s32 arg) {
+    sysLeaf50(arg);
+}
 
 INCLUDE_ASM(const s32, "code_00300578", frCallMemAllocDirect);
 
@@ -777,7 +784,9 @@ INCLUDE_ASM(const s32, "code_00300578", fldCallSetFontColor);
 
 INCLUDE_ASM(const s32, "code_00300578", fldCamUpdateDefault);
 
-INCLUDE_ASM(const s32, "code_00300578", fldDrawProcessSub);
+s32 fldDrawProcessSub(f32 arg) {
+    return fldCallSetFontColor(arg);
+}
 
 INCLUDE_ASM(const s32, "code_00300578", fldShopSetumeiSpr);
 
@@ -787,7 +796,9 @@ INCLUDE_ASM(const s32, "code_00300578", cmpGetFlagScreenShot);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallBitCheck);
 
-INCLUDE_ASM(const s32, "code_00300578", cmpInitCmpModelSub);
+void cmpInitCmpModelSub(void) {
+    cmpInitCore2();
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpSetLight);
 
@@ -821,7 +832,9 @@ INCLUDE_ASM(const s32, "code_00300578", cmpFreeResource);
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallPrepare);
 
-INCLUDE_ASM(const s32, "code_00300578", Setup);
+dds3ModelResrc_t *Setup(MODELTYPE MajorNo, s32 MinorNo, s32 BlockMode) {
+    return cmpCallPrepare(MajorNo, MinorNo, BlockMode);
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCallGetFlagScreenShot);
 
@@ -1049,7 +1062,16 @@ INCLUDE_ASM(const s32, "code_00300578", ProcessStart_cmpStatus);
 
 INCLUDE_ASM(const s32, "code_00300578", ProcessEnd_cmpStatus);
 
-INCLUDE_ASM(const s32, "code_00300578", ProcessCheck_cmpStatus);
+s32 ProcessCheck_cmpStatus(void) {
+    if (g_mainPID == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(g_mainPID) == 3 || dds3GetProcessStat(g_mainPID) == 0) {
+        g_mainPID = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_00300578", cmpCampScriptDevilguide);
 

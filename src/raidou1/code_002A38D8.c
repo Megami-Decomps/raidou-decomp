@@ -67,6 +67,9 @@
 #include "sBtlEXP.h"
 #include "sBtlMenu.h"
 #include "datCalc.h"
+#include "sbtlDebugStr.h"
+#include "sbattle.h"
+#include "code_002A38D8.h"
 
 s32 sbtlCheckMsgMemType(void)
 {
@@ -1482,19 +1485,284 @@ INCLUDE_ASM(const s32, "code_002A38D8", sbtlFunc27);
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlFunc22);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlEffHitEditorDraw_Functbl_Cylinder);
+s32 sbtlEffHitEditorDraw_Functbl_Cylinder(SBDEBUG_CSRWORK *wk, SBTLSKILLHIT_TBL *hwk, SBTLSKILLHIT_POSWORK *para,
+                                          SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path) {
+    char *str = sbtlData109;
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlEffHitEditorDraw_Functbl_Sphere);
+    fldLmapSubmitScaledSpritePacket(0, 320, 0, 244, 52, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para00, 4, wk->point - 1, -1, 14, 42);
+    sbtlDrawFloat_Num(182, 40, hwk->area_r, wk->point, 1);
+    sbtlDrawFloat_Num(182, 52, hwk->cy.height, wk->point, 2);
+    sbtlDrawFloat_Num(182, 64, hwk->rad, wk->point, 3);
+    sbtlDrawInt_Num(182, 76, hwk->lifetime, wk->point, 4);
+    fldLmapSubmitScaledSpritePacket(0, 768, 0, 244, 16, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para01, 1, wk->point - 5, -1, 14, 98);
+    sbtlDrawString(160, 96, str, wk->point, 5);
+    fldLmapSubmitScaledSpritePacket(0, 896, 0, 244, 76, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para02, 6, wk->point - 6, -1, 14, 114);
+    sbtlDrawFloat_Num(182, 112, hwk->dir, wk->point, 6);
+    sbtlDrawFloat_Num(182, 124, hwk->shatei, wk->point, 7);
+    sbtlDrawFloat_Num(182, 136, hwk->sokudo, wk->point, 8);
+    sbtlDrawFloat_Num(182, 148, hwk->kasokudo, wk->point, 9);
+    sbtlDrawFloat_Num(182, 172, hwk->homingpara, wk->point, 11);
+    fldLmapSubmitScaledSpritePacket(0, 1728, 0, 244, 64, 0x60000000, 0x40804040, 103);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlEffHitEditorDraw_Functbl_Ring);
+    switch (sbtlData62.ef_stendp) {
+    case 0:
+        if (hwk->flg & 0x100) {
+            sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03, 5, wk->point - 12, 0, 14, 218);
+            sbtlDrawString(160, 216, str, wk->point, 12);
+        } else {
+            sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_0, 5, wk->point - 12, 0, 14, 218);
+        }
+        sbtlDrawString(144, 228, sblist_efhitmenu_edit_para06_00[para->iti], wk->point, 13);
+        sbtlDrawInt_Num(182, 240, para->iti_no, wk->point, 14);
+        sbtlDrawInt_Num(182, 252, para->takasa, wk->point, 15);
+        sbtlDrawInt_Num(182, 264, para->muki, wk->point, 16);
+        break;
+    case 1:
+        sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_a1, 5, wk->point - 12, 0, 14, 218);
+        sbtlDrawString(160, 216, str, wk->point, 12);
+        sbtlDrawFloat_Num(182, 228, iwk->per, wk->point, 13);
+        sbtlDrawFloat_Num(182, 240, iwk->w, wk->point, 14);
+        sbtlDrawFloat_Num(182, 252, iwk->h, wk->point, 15);
+        break;
+    case 2:
+        sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_a2, 5, wk->point - 12, 0, 14, 218);
+        sbtlDrawString(160, 216, str, wk->point, 12);
+        sbtlDrawFloat_Num(182, 228, iwk->per, wk->point, 13);
+        sbtlDrawFloat_Num(182, 240, iwk->w, wk->point, 14);
+        sbtlDrawFloat_Num(182, 252, iwk->h, wk->point, 15);
+        break;
+    case 3:
+        sbtlDebug_DrawNormalList_Col(sblist_effhitemenu04, 5, wk->point - 12, 0, 14, 218);
+        sbtlDrawString(160, 216, str, wk->point, 12);
+        sbtlDrawString(144, 228, sblist_efhitmenu_edit_para06_00[para->iti], wk->point, 13);
+        sbtlDrawInt_Num(182, 240, para->iti_no, wk->point, 14);
+        sbtlDrawInt_Num(182, 252, para->takasa, wk->point, 15);
+        sbtlDrawInt_Num(182, 264, para->muki, wk->point, 16);
+        break;
+    }
+    sbtlDebug_EPLParaDraw(wk, hwk, para, iwk, 17);
+    sbtlDebug_MoveTypeDraw(wk, hwk, para, iwk, path, 22);
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlMDLHitEditorDraw_Functbl_Sphere);
+s32 sbtlEffHitEditorDraw_Functbl_Sphere(SBDEBUG_CSRWORK *wk, SBTLSKILLHIT_TBL *hwk, SBTLSKILLHIT_POSWORK *para,
+                                          SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path) {
+    char *str = sbtlData109;
+
+    fldLmapSubmitScaledSpritePacket(0, 320, 0, 244, 52, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para00_0, 4, wk->point - 1, -1, 14, 42);
+    sbtlDrawFloat_Num(182, 40, hwk->area_r, wk->point, 1);
+    sbtlDrawFloat_Num(182, 52, hwk->cy.height, wk->point, 2);
+    sbtlDrawFloat_Num(182, 64, hwk->rad, wk->point, 3);
+    sbtlDrawInt_Num(182, 76, hwk->lifetime, wk->point, 4);
+    fldLmapSubmitScaledSpritePacket(0, 768, 0, 244, 16, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para01, 1, wk->point - 5, -1, 14, 98);
+    sbtlDrawString(160, 96, str, wk->point, 5);
+    fldLmapSubmitScaledSpritePacket(0, 896, 0, 244, 88, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para02_0, 7, wk->point - 6, -1, 14, 114);
+    sbtlDrawFloat_Num(182, 112, hwk->dir, wk->point, 6);
+    sbtlDrawFloat_Num(182, 124, hwk->cy.xrad, wk->point, 7);
+    sbtlDrawFloat_Num(182, 136, hwk->shatei, wk->point, 8);
+    sbtlDrawFloat_Num(182, 148, hwk->sokudo, wk->point, 9);
+    sbtlDrawFloat_Num(182, 160, hwk->kasokudo, wk->point, 10);
+    sbtlDrawFloat_Num(182, 184, hwk->homingpara, wk->point, 12);
+    fldLmapSubmitScaledSpritePacket(0, 1728, 0, 244, 64, 0x60000000, 0x40804040, 103);
+
+    switch (sbtlData62.ef_stendp) {
+    case 0:
+        if (hwk->flg & 0x100) {
+            sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03, 5, wk->point - 13, 0, 14, 218);
+            sbtlDrawString(160, 216, str, wk->point, 13);
+        } else {
+            sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_0, 5, wk->point - 13, 0, 14, 218);
+        }
+        sbtlDrawString(144, 228, sblist_efhitmenu_edit_para06_00[para->iti], wk->point, 14);
+        sbtlDrawInt_Num(182, 240, para->iti_no, wk->point, 15);
+        sbtlDrawInt_Num(182, 252, para->takasa, wk->point, 16);
+        sbtlDrawInt_Num(182, 264, para->muki, wk->point, 17);
+        break;
+    case 1:
+        sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_a1, 5, wk->point - 13, 0, 14, 218);
+        sbtlDrawString(160, 216, str, wk->point, 13);
+        sbtlDrawFloat_Num(182, 228, iwk->per, wk->point, 14);
+        sbtlDrawFloat_Num(182, 240, iwk->w, wk->point, 15);
+        sbtlDrawFloat_Num(182, 252, iwk->h, wk->point, 16);
+        break;
+    case 2:
+        sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_a2, 5, wk->point - 13, 0, 14, 218);
+        sbtlDrawString(160, 216, str, wk->point, 13);
+        sbtlDrawFloat_Num(182, 228, iwk->per, wk->point, 14);
+        sbtlDrawFloat_Num(182, 240, iwk->w, wk->point, 15);
+        sbtlDrawFloat_Num(182, 252, iwk->h, wk->point, 16);
+        break;
+    case 3:
+        sbtlDebug_DrawNormalList_Col(sblist_effhitemenu04, 5, wk->point - 13, 0, 14, 218);
+        sbtlDrawString(160, 216, str, wk->point, 13);
+        sbtlDrawString(144, 228, sblist_efhitmenu_edit_para06_00[para->iti], wk->point, 14);
+        sbtlDrawInt_Num(182, 240, para->iti_no, wk->point, 15);
+        sbtlDrawInt_Num(182, 252, para->takasa, wk->point, 16);
+        sbtlDrawInt_Num(182, 264, para->muki, wk->point, 17);
+        break;
+    }
+    sbtlDebug_EPLParaDraw(wk, hwk, para, iwk, 18);
+    sbtlDebug_MoveTypeDraw(wk, hwk, para, iwk, path, 23);
+    return 1;
+}
+
+s32 sbtlEffHitEditorDraw_Functbl_Ring(SBDEBUG_CSRWORK *wk, SBTLSKILLHIT_TBL *hwk, SBTLSKILLHIT_POSWORK *para,
+                                          SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path) {
+    char *str = sbtlData109;
+
+    fldLmapSubmitScaledSpritePacket(0, 320, 0, 244, 64, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para00_1, 5, wk->point - 1, -1, 14, 42);
+    sbtlDrawFloat_Num(182, 40, hwk->area_r, wk->point, 1);
+    sbtlDrawFloat_Num(182, 52, hwk->area_r2, wk->point, 2);
+    sbtlDrawFloat_Num(182, 64, hwk->cy.height, wk->point, 3);
+    sbtlDrawFloat_Num(182, 76, hwk->rad, wk->point, 4);
+    sbtlDrawInt_Num(182, 88, hwk->lifetime, wk->point, 5);
+    fldLmapSubmitScaledSpritePacket(0, 832, 0, 244, 16, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para01, 1, wk->point - 6, -1, 14, 106);
+    sbtlDrawString(160, 106, str, wk->point, 6);
+    fldLmapSubmitScaledSpritePacket(0, 960, 0, 244, 88, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para02_0, 7, wk->point - 7, -1, 14, 122);
+    sbtlDrawFloat_Num(182, 120, hwk->dir, wk->point, 7);
+    sbtlDrawFloat_Num(182, 132, hwk->cy.xrad, wk->point, 8);
+    sbtlDrawFloat_Num(182, 144, hwk->shatei, wk->point, 9);
+    sbtlDrawFloat_Num(182, 156, hwk->sokudo, wk->point, 10);
+    sbtlDrawFloat_Num(182, 168, hwk->kasokudo, wk->point, 11);
+    sbtlDrawFloat_Num(182, 192, hwk->homingpara, wk->point, 13);
+    fldLmapSubmitScaledSpritePacket(0, 1728, 0, 244, 64, 0x60000000, 0x40804040, 103);
+
+    switch (sbtlData62.ef_stendp) {
+    case 0:
+        if (hwk->flg & 0x100) {
+            sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03, 5, wk->point - 14, 0, 14, 218);
+            sbtlDrawString(160, 216, str, wk->point, 14);
+        } else {
+            sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_0, 5, wk->point - 14, 0, 14, 218);
+        }
+        sbtlDrawString(144, 228, sblist_efhitmenu_edit_para06_00[para->iti], wk->point, 15);
+        sbtlDrawInt_Num(182, 240, para->iti_no, wk->point, 16);
+        sbtlDrawInt_Num(182, 252, para->takasa, wk->point, 17);
+        sbtlDrawInt_Num(182, 264, para->muki, wk->point, 18);
+        break;
+    case 1:
+        sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_a1, 5, wk->point - 14, 0, 14, 218);
+        sbtlDrawString(160, 216, str, wk->point, 14);
+        sbtlDrawFloat_Num(182, 228, iwk->per, wk->point, 15);
+        sbtlDrawFloat_Num(182, 240, iwk->w, wk->point, 16);
+        sbtlDrawFloat_Num(182, 252, iwk->h, wk->point, 17);
+        break;
+    case 2:
+        sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_a2, 5, wk->point - 14, 0, 14, 218);
+        sbtlDrawString(160, 216, str, wk->point, 14);
+        sbtlDrawFloat_Num(182, 228, iwk->per, wk->point, 15);
+        sbtlDrawFloat_Num(182, 240, iwk->w, wk->point, 16);
+        sbtlDrawFloat_Num(182, 252, iwk->h, wk->point, 17);
+        break;
+    case 3:
+        sbtlDebug_DrawNormalList_Col(sblist_effhitemenu04, 5, wk->point - 14, 0, 14, 218);
+        sbtlDrawString(160, 216, str, wk->point, 14);
+        sbtlDrawString(144, 228, sblist_efhitmenu_edit_para06_00[para->iti], wk->point, 15);
+        sbtlDrawInt_Num(182, 240, para->iti_no, wk->point, 16);
+        sbtlDrawInt_Num(182, 252, para->takasa, wk->point, 17);
+        sbtlDrawInt_Num(182, 264, para->muki, wk->point, 18);
+        break;
+    }
+    sbtlDebug_EPLParaDraw(wk, hwk, para, iwk, 19);
+    sbtlDebug_MoveTypeDraw(wk, hwk, para, iwk, path, 24);
+    return 1;
+}
+
+s32 sbtlMDLHitEditorDraw_Functbl_Sphere(struct SBDEBUG_CSRWORK *wk, SBTLSKILLHIT_TBL *hwk, SBTLSKILLHIT_POSWORK *para,
+                                        SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path) {
+    char *str = sbtlData109;
+
+    fldLmapSubmitScaledSpritePacket(0, 320, 0, 244, 52, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_mdlhitmenu_edit_para00, 4, wk->point - 1, -1, 14, 42);
+    sbtlDrawFloat_Num(182, 40, hwk->area_r, wk->point, 1);
+    sbtlDrawFloat_Num(182, 52, hwk->cy.height, wk->point, 2);
+    sbtlDrawFloat_Num(182, 64, hwk->rad, wk->point, 3);
+    sbtlDrawInt_Num(182, 76, hwk->lifetime, wk->point, 4);
+    fldLmapSubmitScaledSpritePacket(0, 768, 0, 244, 16, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para01, 1, wk->point - 5, -1, 14, 98);
+    sbtlDrawString(160, 98, str, wk->point, 5);
+    fldLmapSubmitScaledSpritePacket(0, 896, 0, 244, 28, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_mdlhitmenu_edit_para02, 2, wk->point - 6, -1, 14, 114);
+    sbtlDrawFloat_Num(182, 112, hwk->dir, wk->point, 6);
+    sbtlDrawFloat_Num(182, 124, hwk->cy.xrad, wk->point, 7);
+    fldLmapSubmitScaledSpritePacket(0, 1120, 0, 244, 64, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_0, 5, wk->point - 8, 0, 14, 142);
+    sbtlDrawString(160, 144, str, wk->point, 8);
+    sbtlDrawString(144, 156, sblist_efhitmenu_edit_para06_00[para->iti], wk->point, 9);
+    sbtlDrawInt_Num(182, 168, para->iti_no, wk->point, 10);
+    sbtlDrawInt_Num(182, 180, para->takasa, wk->point, 11);
+    sbtlDrawInt_Num(182, 192, para->muki, wk->point, 12);
+    sbtlMDLHitEditor_DrawMotion(wk, hwk, 13);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlMDLHitEditor_DrawMotion);
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlMDLHitEditorDraw_Functbl_Cylinder);
+s32 sbtlMDLHitEditorDraw_Functbl_Cylinder(struct SBDEBUG_CSRWORK *wk, SBTLSKILLHIT_TBL *hwk, SBTLSKILLHIT_POSWORK *para,
+                                        SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path) {
+    char *str = sbtlData109;
 
-INCLUDE_ASM(const s32, "code_002A38D8", sbtlMDLHitEditorDraw_Functbl_Ring);
+    fldLmapSubmitScaledSpritePacket(0, 320, 0, 244, 52, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_mdlhitmenu_edit_para00_0, 4, wk->point - 1, -1, 14, 42);
+    sbtlDrawFloat_Num(182, 40, hwk->area_r, wk->point, 1);
+    sbtlDrawFloat_Num(182, 52, hwk->cy.height, wk->point, 2);
+    sbtlDrawFloat_Num(182, 64, hwk->rad, wk->point, 3);
+    sbtlDrawInt_Num(182, 76, hwk->lifetime, wk->point, 4);
+    fldLmapSubmitScaledSpritePacket(0, 768, 0, 244, 16, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para01, 1, wk->point - 5, -1, 14, 98);
+    sbtlDrawString(160, 98, str, wk->point, 5);
+    fldLmapSubmitScaledSpritePacket(0, 896, 0, 244, 28, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_mdlhitmenu_edit_para02, 2, wk->point - 6, -1, 14, 114);
+    sbtlDrawFloat_Num(182, 112, hwk->dir, wk->point, 6);
+    sbtlDrawFloat_Num(182, 124, hwk->cy.xrad, wk->point, 7);
+    fldLmapSubmitScaledSpritePacket(0, 1120, 0, 244, 64, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_0, 5, wk->point - 8, 0, 14, 142);
+    sbtlDrawString(160, 144, str, wk->point, 8);
+    sbtlDrawString(144, 156, sblist_efhitmenu_edit_para06_00[para->iti], wk->point, 9);
+    sbtlDrawInt_Num(182, 168, para->iti_no, wk->point, 10);
+    sbtlDrawInt_Num(182, 180, para->takasa, wk->point, 11);
+    sbtlDrawInt_Num(182, 192, para->muki, wk->point, 12);
+    sbtlMDLHitEditor_DrawMotion(wk, hwk, 13);
+    return 1;
+}
+
+s32 sbtlMDLHitEditorDraw_Functbl_Ring(struct SBDEBUG_CSRWORK *wk, SBTLSKILLHIT_TBL *hwk, SBTLSKILLHIT_POSWORK *para,
+                                      SBTLSKILLIDOU_WORK *iwk, struct SBDEBUG_PATHDATA *path) {
+    char *str = sbtlData109;
+
+    fldLmapSubmitScaledSpritePacket(0, 320, 0, 244, 64, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_mdlhitmenu_edit_para00_1, 5, wk->point - 1, -1, 14, 42);
+    sbtlDrawFloat_Num(182, 40, hwk->area_r, wk->point, 1);
+    sbtlDrawFloat_Num(182, 52, hwk->area_r2, wk->point, 2);
+    sbtlDrawFloat_Num(182, 64, hwk->cy.height, wk->point, 3);
+    sbtlDrawFloat_Num(182, 76, hwk->rad, wk->point, 4);
+    sbtlDrawInt_Num(182, 88, hwk->lifetime, wk->point, 5);
+    fldLmapSubmitScaledSpritePacket(0, 832, 0, 244, 16, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_efhitmenu_edit_para01, 1, wk->point - 6, -1, 14, 106);
+    sbtlDrawString(160, 106, str, wk->point, 6);
+    fldLmapSubmitScaledSpritePacket(0, 960, 0, 244, 28, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_mdlhitmenu_edit_para02, 2, wk->point - 7, -1, 14, 122);
+    sbtlDrawFloat_Num(182, 122, hwk->dir, wk->point, 7);
+    sbtlDrawFloat_Num(182, 134, hwk->cy.xrad, wk->point, 8);
+    fldLmapSubmitScaledSpritePacket(0, 1184, 0, 244, 64, 0x60000000, 0x40804040, 103);
+    sbtlDebug_DrawNormalList_Col(sblist_effhitemenu03_0, 5, wk->point - 9, 0, 14, 150);
+    sbtlDrawString(160, 150, str, wk->point, 9);
+    sbtlDrawString(144, 162, sblist_efhitmenu_edit_para06_00[para->iti], wk->point, 10);
+    sbtlDrawInt_Num(182, 174, para->iti_no, wk->point, 11);
+    sbtlDrawInt_Num(182, 186, para->takasa, wk->point, 12);
+    sbtlDrawInt_Num(182, 198, para->muki, wk->point, 13);
+    sbtlMDLHitEditor_DrawMotion(wk, hwk, 14);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlDebug_EPLParaDraw);
 
@@ -2249,7 +2517,16 @@ void sbtlSbtlmenuMain(void) {
 
 INCLUDE_ASM(const s32, "code_002A38D8", sbtlCallExistProcess2);
 
-INCLUDE_ASM(const s32, "code_002A38D8", ProcessCheck);
+s32 ProcessCheck(void) {
+    if (ProcessCheckData == NULL) {
+        return 0;
+    }
+    if (dds3GetProcessStat(ProcessCheckData) == 3 || dds3GetProcessStat(ProcessCheckData) == 0) {
+        ProcessCheckData = NULL;
+        return 0;
+    }
+    return 1;
+}
 
 s64 sbtlCallBtlCheckTutorialBattle3(void)
 {

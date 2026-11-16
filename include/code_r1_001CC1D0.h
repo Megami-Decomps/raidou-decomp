@@ -93,6 +93,11 @@ typedef struct jmsSeqWork_t {
     s32 seqUnit;
 } jmsSeqWork_t;
 
+/* Retail calls jmsSeqChange through an inline step; a direct call schedules its arguments differently. */
+static inline dds3ProcessFunc_t menuRunPanel(jmsSeqHandle_t *panel, s32 *seqUnit, s32 mode, dds3ProcessID_t *PID) {
+    return (dds3ProcessFunc_t)jmsSeqChange(panel, seqUnit, mode, PID);
+}
+
 typedef struct campEffectRows_t {
     u32 values[2][4];
 } campEffectRows_t;

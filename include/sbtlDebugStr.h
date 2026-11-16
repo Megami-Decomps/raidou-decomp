@@ -496,5 +496,6 @@ extern char sbtlStrInterpo2[];
 extern char sblist_effhitemenu03_a1Entry[];
 extern char sblist_effhitemenu03_a1Entry3[];
 extern char sblist_effhitemenu03_a1Entry2[];
+extern char sbtlData109[];
 
 #endif

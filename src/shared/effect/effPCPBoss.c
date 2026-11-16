@@ -20,6 +20,8 @@
 #include "effPart.h"
 #include "effPCPThunder.h"
 #include "effPCPFlash.h"
+#include "sdk_libc.h"
+#include "effPCPBoss.h"
 
 typedef struct effPCPBossBED_t
 {
@@ -457,7 +459,6 @@ extern void dds3TrackPolySetMode(void *hTrackPoly, s32 mode);
 extern effPCPCrack_t *effPCPCrackCreate(effPCPCrackParam_t *pParam, void *pPB);
 extern effPCPCrack_t *effPCPCrackCopy(effPCPCrack_t *src);
 
-#include "sdk_libc.h"
 
 extern effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam);
 extern void effPCPCrackDraw(effPCPCrack_t *hData);
@@ -1193,9 +1194,13 @@ void effPCPCrack2Draw(effPCPCrack_t *hData)
     effPCPCrackDraw(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrack2SetPosition);
+void effPCPCrack2SetPosition(void *arg0, void *arg1) {
+    effLeaf286(arg0, arg1);
+}
 
-INCLUDE_ASM(const s32, "effect/effPCPBoss", effPCPCrack2SetColor);
+void effPCPCrack2SetColor(void *arg0, u32 arg1) {
+    effLeaf287(arg0, arg1);
+}
 
 effPCPBossMETATOBeam_t *effPCPBossMETATOBeamCreate(void *pParam)
 {

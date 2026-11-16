@@ -10,9 +10,6 @@
 #include "evtDebug.h"
 #include "sdfChip.h"
 #include "sdfMemory.h"
-s32 DIntr();
-s32 EIntr(void);
-
 #include "event.h"
 #include "kernel_draw.h"
 #include "scr.h"
@@ -21,6 +18,12 @@ s32 EIntr(void);
 #include "sdk_libc.h"
 #include "include_asm.h"
 #include "ps2asm.h"
+#include "ModeSelect.h"
+#include "code_00300578.h"
+#include "shpMessage.h"
+
+s32 DIntr();
+s32 EIntr(void);
 
 #define SDF_MEM_BLOCK_STATE_FREE 0
 
@@ -380,7 +383,9 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitLmap);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf2);
+s32 datLeaf2(void) {
+    return Start_mjn();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datCallShutDown);
 
@@ -410,7 +415,9 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc20);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc21);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf3);
+void datLeaf3(void) {
+    titleFunc7();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc);
 
@@ -422,7 +429,9 @@ INCLUDE_ASM(const s32, "code_r1_0010DF68", ExitHanafudaTest);
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", CheckHanafudaTest);
 
-INCLUDE_ASM(const s32, "code_r1_0010DF68", datLeaf5);
+void datLeaf5(void) {
+    fclLeaf();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0010DF68", datFunc2);
 

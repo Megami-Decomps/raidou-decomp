@@ -792,7 +792,9 @@ void effMagaCylinderBlendColor(dds3MagatuhiBill_tag *work, u32 colorA, u32 color
     }
 }
 
-INCLUDE_ASM(const s32, "effect/effMagatuhi", effMagaSmokeConvPartInitSub);
+void effMagaSmokeConvPartInitSub(dds3MagatuhiBill_tag *work, s32 index) {
+    effMagaCylinderSetPartPtrs(work, index);
+}
 
 /* Clone the first-family parameters; return the work after its state array.
  * Clamp only the copied delay modulus, leaving the caller's parameters intact. */

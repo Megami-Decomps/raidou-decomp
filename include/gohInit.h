@@ -23,5 +23,6 @@ s32 gohLoadBgModel(dds3ProcessID_t *PID, struct gohData_t *pData);
 s32 gohScrCmd_PresentItem(void);
 void gohStartEtcProcess(dds3ProcessID_t *PID);
 s32 jmsGetCursorPosID(void);
+void gohProcessCheck(void);
 
 #endif

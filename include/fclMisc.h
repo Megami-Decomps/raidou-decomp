@@ -17,5 +17,6 @@ void fclInitPanelPos(s32 X, s32 Y, u32 Z, u16 W, u16 H, s32 Work, void *pPanelPo
 void fclSetMessageInvalid(s32 Mode);
 s32 fclSetModelLight(char *pKeyWord, dds3Basic_t *Model);
 s32 fclStartSelMessage(s32 SelMsgNo);
+void fclUpdateMessage(void);
 
 #endif

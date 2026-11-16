@@ -165,7 +165,9 @@ void effPCPNeedleSpiralDelete(effPCPNeedleSpiral_tag *hData) {
 
 INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralCreatePCF);
 
-INCLUDE_ASM(const s32, "effect/effPCPNeedle", effPCPNeedleSpiralCopy);
+void *effPCPNeedleSpiralCopy(void *arg) {
+    return effPCPNeedleSpiralCreate(arg);
+}
 
 void effLeaf264(void) {
 }

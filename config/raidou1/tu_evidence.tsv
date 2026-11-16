@@ -253,7 +253,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 001E5A58	001E5EC8	code_001E5A58	asm	none	
 001E5ED0	001E9718	effect/effEvent	c	smt3:map:26+smt3:names:22+dds:2 of 91	effect/effEvent
 001E97E0	001E9F78	effect/effManager	c	smt3:map:13+smt3:names:6+dds:1 of 24	effect/effManager
-001EA090	001EA0F8	code_001EA090	asm	none	
+001EA090	001EA0F8	code_001EA090	c	none	
 001EA110	001EA420	effect/effBattleMisc	c	smt3:map:3+smt3:names:2+dds:2 of 14	effect/effBattleMisc
 001EA518	001EA550	code_001EA518	c	none	
 001EA558	001F1FF8	effect/parManager	c	smt3:names:59+smt3:map:49 of 123	effect/parManager
@@ -305,7 +305,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0024EE78	0024EE78	code_r1_0024EE78	c	none	
 0024F220	002692C8	code_r1_0024F220	c	none	
 002692F0	002692F0	code_r1_002692F0	c	dds:1 of 1	
-00269318	0026CA00	code_00269318	asm	none	
+00269318	0026CA00	code_00269318	c	none	
 0026CA20	0026CA20	code_0026CA20	c	dds:1 of 1	
 0026FBC8	0027CA90	sbtlActAI	asm	none	
 0027CBE8	0027CC18	code_r1_0027CBE8	c	dds:2 of 2	
@@ -351,7 +351,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 002CEE00	002D7918	kernel/ModeSelect	c	smt3:map:1+smt3:names:1 literal-cores:1 of 103	kernel/ModeSelect
 002D7950	002F1AA8	code_002D7950	c	none	
 002F1B70	002F1B70	result/rstcalc	c	smt3:map:1 of 1	result/rstcalc
-002F1B90	002F53A0	lmap	asm	none	
+002F1B90	002F53A0	lmap	c	none	
 002F5430	002F5430	code_r1_002F5430	c	dds:1 of 1	
 002F5470	002F5758	TitleMain	c	none	
 002F59D0	002F59D0	code_r1_002F59D0	c	none	
@@ -375,17 +375,17 @@ start	last_func	unit	kind	evidence	smt3_unit
 00323138	00323138	code_r1_00323138	c	none	
 00323280	0032F150	code_00323280	asm	none	
 0032F160	0032F278	basic/dds3ModelRangeBasic	c	smt3:map:1 of 4	basic/dds3ModelRangeBasic
-0032F2B8	00336E08	code_0032F2B8	asm	none	
+0032F2B8	00336E08	code_0032F2B8	c	none	
 00336E58	00336E58	code_r1_00336E58	c	dds:1 of 1	
-00336E90	00339648	code_00336E90	asm	none	
+00336E90	00339648	code_00336E90	c	none	
 00339658	00339658	newbattle/nbAiScript	c	smt3:map:1 of 1	newbattle/nbAiScript
-00339690	00344ED8	gohMain	asm	none	
+00339690	00344ED8	gohMain	c	none	
 00344F28	00344F28	code_r1_00344F28	c	dds:1 of 1	
-00344F78	003461E0	code_00344F78	asm	none	
+00344F78	003461E0	code_00344F78	c	none	
 003461E8	003461E8	code_r1_003461E8	c	dds:1 of 1	
-00346258	00349B18	code_00346258	asm	none	
+00346258	00349B18	code_00346258	c	none	
 00349B58	00349B58	code_r1_00349B58	c	dds:1 of 1	
-00349B80	0034B7C0	code_00349B80	asm	none	
+00349B80	0034B7C0	code_00349B80	c	none	
 0034B898	0034BD68	jmsMisc	c	dds:7 of 11	
 0034C048	0034C148	code_r1_0034C048	c	dds:2 of 2	
 0034C170	0034C170	code_0034C170	asm	none	
@@ -445,7 +445,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00372880	00372B40	sdf/sdfDevFile	c	smt3:map:6+smt3:names:3 of 9	sdf/sdfDevFile
 00372B88	00372B88	sdf/sdfAddrResolve	c	smt3:names:1 of 1	sdf/sdfAddrResolve
 00372C70	00374210	sdf/sdfIpu	c	smt3:names:25+smt3:map:1 of 30	sdf/sdfIpu
-00374260	00374260	code_00374260	asm	none	
+00374260	00374260	code_00374260	c	none	
 00374278	003754C8	sdf/sdfMovie	c	smt3:names:11+smt3:map:1 of 15	sdf/sdfMovie
 003754E8	003763B0	sdf/sdfPacDecode	c	smt3:names:26+smt3:map:4 of 34	sdf/sdfPacDecode
 003763F0	00376BF0	sdf/sdf_Decomp	c	smt3:names:4 of 5	sdf/sdf_Decomp
@@ -485,7 +485,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00381B80	00381B80	sdk/libm/sf_fabs	c	sdk:bytes:1 of 1	sdk/libm
 00381BA8	00381BA8	sdk/libm/sf_sin	c	sdk:bytes:1 of 1	sdk/libm
 00381C90	00381C90	sdk/libm/sf_tan	c	sdk:bytes:1 of 1	sdk/libm
-00381D08	00381D50	code_00381D08	asm	none	
+00381D08	00381D50	code_00381D08	c	none	
 00381D68	00381D68	sdk/libm/e_rem_pio2	c	sdk:bytes:1 of 1	
 00382320	00382320	code_00382320	asm	none	
 00382748	00382748	sdk/libm/ef_asin	c	sdk:bytes:1 of 1	
@@ -542,7 +542,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00389680	00389928	sdk/libc/signal	c	sdk:bytes:4+sdk:name:2 of 7	sdk/libc
 00389948	00389948	code_00389948	asm	none	
 00389968	00389968	sdk/libc/signalr	c	sdk:name:1 of 1	sdk/libc
-003899C8	003899C8	code_003899C8	asm	none	
+003899C8	003899C8	code_003899C8	c	none	
 003899E0	003899E0	sdk/libc/sprintf	c	sdk:bytes:1 of 1	sdk/libc
 00389A68	00389AF8	code_00389A68	asm	none	
 00389B00	00389B00	sdk/libc/sscanf	c	sdk:bytes:1 of 1	

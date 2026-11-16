@@ -10,12 +10,6 @@
 #include "evt_world.h"
 #include "code_r1_001CC1D0.h"
 
-static inline s32 menuRunPanel(void *context, s32 mode, void *callback) {
-    return jmsSeqChange((jmsSeqHandle_t *)((u8 *)context + 8),
-                                      (s32 *)((u8 *)context + 0x54), mode,
-                                      callback);
-}
-
 typedef struct _FRQ _FRQ;
 
 extern s32 checkConfigState(void);
@@ -24,12 +18,11 @@ s32 mnuDispatchStaffMenuWithIdlePopup(dds3ProcessID_t *callback);
 
 /* Dispatch a callback; on idle, install the default entry unless busy. */
 s32 mnuDispatchStaffMenuWithIdlePopup(dds3ProcessID_t *callback) {
-    s32 context = EE_ADDR_S(dds3GetProcessData(callback));
-    s32 *dispatchEntry = (s32 *)(context + 0x54);
-    s32 state = menuRunPanel((void *)context, 0, (void *)callback);
+    jmsSeqWork_t *work = dds3GetProcessData(callback);
+    s32 state = (s32)menuRunPanel(&work->panel, &work->seqUnit, 0, callback);
     if (state == 0) {
         if (checkConfigState() == 0) {
-            jmsSeqJumpAndFree(dispatchEntry, mnuCampCommandReturnPopupEntry);
+            jmsSeqJumpAndFree(&work->seqUnit, mnuCampCommandReturnPopupEntry);
         }
         return 0;
     }

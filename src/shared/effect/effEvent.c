@@ -727,9 +727,13 @@ dds3Effect_RippleBlurParam_t *rblurGetParam(void) {
 
 INCLUDE_ASM(const s32, "effect/effEvent", effLeaf30);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effAddBEDEffectSub);
+effBTL_t *effAddBEDEffectSub(void *pData) {
+    return effBTLCreate(pData);
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", effFreeEffectDataSub);
+void effFreeEffectDataSub(effBTL_t *hEveBED) {
+    effBTLDelete(hEveBED);
+}
 
 /* Allocate the compact record, copy its init prefix, then attach the new effect. */
 effEveBEDCut_t *effEveBEDCutCreate(effBTL_t *hEveBED, u16 CutNum, const void *pParams) {

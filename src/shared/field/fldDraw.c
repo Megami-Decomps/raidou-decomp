@@ -735,7 +735,63 @@ void fldDrawPoly3(s32 x0, s32 y0, s32 z0,
     ((void (*)(sdfGrOt_t *, sdfDrawTag_t *))descriptor->regFunc)(descriptor, command);
 }
 
+#ifdef VERSION_RAIDOU1
+void fldDrawFrameSprite(void)
+{
+    sdfDrawTag_t *list = sdfPrimAllocDrawTag(NULL);
+    sdfGrRefPacketHeader_t *reference = EE_ADDR_AS(sdfGrRefPacketHeader_t *, sdfGrAllocPacketBuff(0x20));
+    u64 *texturePacket;
+    u64 *blendPacket;
+    sdfGrPacketHeader_t *sprite;
+    fldSpriteVertex_t *vertex;
+    sdfGrOt_t *surface;
+
+    sdfGrLinkDispFrameTex(list, EE_ADDR(&dds3DrawEnv[dds3GetFrameID()].stdEnv), reference);
+    texturePacket = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+    texturePacket[0] = 3;
+    texturePacket[1] = 0x5000000310000000ULL;
+    texturePacket[2] = 0x1000000000008002ULL;
+    texturePacket[3] = 0xE;
+    texturePacket[4] = 0x8000000080ULL;
+    texturePacket[5] = 0x3B;
+    texturePacket[6] = 0;
+    texturePacket[7] = 0x3F;
+    sdfDrawTagLink(list, EE_ADDR(texturePacket));
+    blendPacket = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+    blendPacket[0] = 3;
+    blendPacket[1] = 0x5000000310000000ULL;
+    blendPacket[2] = 0x1000000000008002ULL;
+    blendPacket[3] = 0xE;
+    blendPacket[4] = 0x31001;
+    blendPacket[5] = 0x47;
+    blendPacket[6] = 0x44;
+    blendPacket[7] = 0x42;
+    sdfDrawTagLink(list, EE_ADDR(blendPacket));
+    sprite = sdf2DAllocSprite(1);
+    vertex = sdf2DGetPrimPtr(sprite);
+    vertex->r = 0x80;
+    vertex->g = 0x80;
+    vertex->b = 0x80;
+    vertex->a = 0x20;
+    vertex->corner[0].u = 0;
+    vertex->corner[0].v = 0;
+    vertex->corner[0].x = 0x6FF8;
+    vertex->corner[0].y = 0x78FC;
+    vertex->corner[0].mask = 0x3FFF;
+    vertex->corner[0].flag = 0;
+    vertex->corner[1].u = 0x2000;
+    vertex->corner[1].v = 0xE00;
+    vertex->corner[1].x = 0x8FF8;
+    vertex->corner[1].y = 0x86FC;
+    vertex->corner[1].mask = 0x3FFF;
+    vertex->corner[1].flag = 0;
+    sdfDrawTagLink(list, EE_ADDR(sprite));
+    surface = &sdfGrOtTable[69];
+    surface->regFunc(surface, list);
+}
+#else
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawFrameSprite);
+#endif
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "field/fldDraw", fldDrawBokasi);

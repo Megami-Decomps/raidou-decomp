@@ -46,5 +46,6 @@ void Tsumikomi(void);
 void TsumikomiDecide(struct Player_t *player);
 struct TehaiAnalysis_t *Tsumoru(s32 playerIndex);
 s32 TsumoruDora(s32 playerIndex);
+void mjnAfterConfirmationKan_mjn(s32 arg0, s32 arg1);
 
 #endif

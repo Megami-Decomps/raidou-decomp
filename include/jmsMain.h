@@ -6,5 +6,6 @@
 
 dds3ProcessFunc_t EndProcess_gohMain(dds3ProcessID_t *PID);
 s32 ScrControl(dds3ProcessID_t *PID);
+void gohCallChkCommonInput(s32 input);
 
 #endif

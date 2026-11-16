@@ -628,11 +628,25 @@ s32 datCheckDying(sdatUnitWork_t *pUnit) {
     return pUnit->now.hp * 100 / pUnit->now.maxhp < 25;
 }
 
+#ifdef VERSION_RAIDOU1
+s32 datLeaf45(sdatUnitWork_t *acter, sdatUnitWork_t *unit, SKLID sklid) {
+    return sbtlGetDamage_GB(acter, unit, sklid);
+}
+#else
 INCLUDE_ASM(const s32, "dat", datLeaf45);
+#endif
 
+#ifdef VERSION_RAIDOU1
+s32 datTakumiKoukaDSub(sdatUnitWork_t *unit, s32 itemID) {
+    return sbtlCallBtlGetItemtbl3(unit, itemID);
+}
+#else
 INCLUDE_ASM(const s32, "dat", datTakumiKoukaDSub);
+#endif
 
-INCLUDE_ASM(const s32, "dat", datMoonAddMoveSub);
+s32 datMoonAddMoveSub(void) {
+    return sbtlCheckDrink();
+}
 
 s32 sdatCalc_GetBadStatus(sdatUnitWork_t *unit) {
     return sbtlGetBadStatus(unit);

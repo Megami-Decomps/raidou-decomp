@@ -37,5 +37,6 @@ s32 sdfSndSetChannelCount(u32 aCh);
 s32 sdfBtlReLoadMapSBtlSceneSub(void);
 p2sdLoadEntry_t *sdfLeaf35(void);
 void sdfCallSndSendCmd(s32 arg);
+s32 sdfCallSndSendCmd2(s32 arg);
 
 #endif

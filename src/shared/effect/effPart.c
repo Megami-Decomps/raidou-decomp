@@ -108,17 +108,59 @@ effPartHandle_t *dds3EffectPartCopy(effPartHandle_t *hEffPartSrc)
     return hEffPart;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", effAPPoint4DrawSub);
+void effAPPoint4DrawSub(effPartHandle_t *hEffPart, void *pPos)
+{
+    void (*handler)(void *, void *) = dds3EffectFuncTable[hEffPart->type].setPosition;
 
-INCLUDE_ASM(const s32, "effect/effPart", effBTLCutSetScaleSub);
+    if (handler != NULL) {
+        handler(hEffPart->pHandle, pPos);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPart", effPCPHama01PartInitSub);
+void effBTLCutSetScaleSub(effPartHandle_t *hEffPart, f32 scale)
+{
+    void (*handler)(void *, f32) = dds3EffectFuncTable[hEffPart->type].setScale;
 
-INCLUDE_ASM(const s32, "effect/effPart", effAPPoint4PartInitSub);
+    if (handler != NULL) {
+        handler(hEffPart->pHandle, scale);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartSetDirection);
+void effPCPHama01PartInitSub(effPartHandle_t *hEffPart, void *pMatrix)
+{
+    void (*handler)(void *, void *) = dds3EffectFuncTable[hEffPart->type].setRotateMatrix;
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartSetArea);
+    if (handler != NULL) {
+        handler(hEffPart->pHandle, pMatrix);
+    }
+}
+
+void effAPPoint4PartInitSub(effPartHandle_t *hEffPart, u32 color)
+{
+    void (*handler)(void *, u32) = dds3EffectFuncTable[hEffPart->type].setColor;
+
+    if (handler != NULL) {
+        handler(hEffPart->pHandle, color);
+    }
+}
+
+void dds3EffectPartSetDirection(effPartHandle_t *hEffPart, void *pDir)
+{
+    void (*handler)(void *, void *) = dds3EffectFuncTable[hEffPart->type].setDirection;
+
+    if (handler != NULL) {
+        handler(hEffPart->pHandle, pDir);
+    }
+}
+
+void dds3EffectPartSetArea(effPartHandle_t *hEffPart, f32 area)
+{
+    void (*handler)(void *, f32) = dds3EffectFuncTable[hEffPart->type].setArea;
+
+    if (handler != NULL) {
+        handler(hEffPart->pHandle, area);
+    }
+}
 
 void *dds3EffectPartTMXBillboardCreate(u32 data)
 {
@@ -164,7 +206,9 @@ mdlObj_t *dds3EffectPartModelCreate(dds3EffectPartModelData_t *pData)
 
 INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelDraw);
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelDelete);
+void dds3EffectPartModelDelete(void *arg) {
+    mdlFree(arg);
+}
 
 INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelCopy);
 
@@ -187,7 +231,9 @@ void dds3EffectPartModelSetRotateMatrix(mdlObj_t *hData, sdfMatrix4_t *pMatrix)
     SDF_VU0_STORE_ROW2(&hData->inner->tm.m[8]);
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPartModelSetColor);
+void dds3EffectPartModelSetColor(void *arg0, u32 arg1) {
+    mdlSetColor(arg0, arg1);
+}
 
 dds3EffectPCP_t *dds3EffectPCPCreate(dds3EffectPCPData_t *hPCPData)
 {
@@ -230,17 +276,65 @@ dds3EffectPCP_t *dds3EffectPCPCopy(dds3EffectPCP_t *hPCPSrc)
     return hPCP;
 }
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetPosition);
+void dds3EffectPCPSetPosition(void *hData, void *pPos)
+{
+    dds3EffectPCP_t *hPCP = hData;
+    void (*handler)(void *, void *) = EffectPCPFuncTable[hPCP->kateg].setPosition;
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetScale);
+    if (handler != NULL) {
+        handler(hPCP->pHandle, pPos);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetRotateMatrix);
+void dds3EffectPCPSetScale(void *hData, f32 scale)
+{
+    dds3EffectPCP_t *hPCP = hData;
+    void (*handler)(void *, f32) = EffectPCPFuncTable[hPCP->kateg].setScale;
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetDirection);
+    if (handler != NULL) {
+        handler(hPCP->pHandle, scale);
+    }
+}
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetColor);
+void dds3EffectPCPSetRotateMatrix(void *hData, void *pMatrix)
+{
+    dds3EffectPCP_t *hPCP = hData;
+    void (*handler)(void *, void *) = EffectPCPFuncTable[hPCP->kateg].setRotateMatrix;
 
-INCLUDE_ASM(const s32, "effect/effPart", dds3EffectPCPSetArea);
+    if (handler != NULL) {
+        handler(hPCP->pHandle, pMatrix);
+    }
+}
+
+void dds3EffectPCPSetDirection(void *hData, void *pDir)
+{
+    dds3EffectPCP_t *hPCP = hData;
+    void (*handler)(void *, void *) = EffectPCPFuncTable[hPCP->kateg].setDirection;
+
+    if (handler != NULL) {
+        handler(hPCP->pHandle, pDir);
+    }
+}
+
+void dds3EffectPCPSetColor(void *hData, u32 color)
+{
+    dds3EffectPCP_t *hPCP = hData;
+    void (*handler)(void *, u32) = EffectPCPFuncTable[hPCP->kateg].setColor;
+
+    if (handler != NULL) {
+        handler(hPCP->pHandle, color);
+    }
+}
+
+void dds3EffectPCPSetArea(void *hData, f32 area)
+{
+    dds3EffectPCP_t *hPCP = hData;
+    void (*handler)(void *, f32) = EffectPCPFuncTable[hPCP->kateg].setArea;
+
+    if (handler != NULL) {
+        handler(hPCP->pHandle, area);
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effPart", effEctPCPCreateSub);
 

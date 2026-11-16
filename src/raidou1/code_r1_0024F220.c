@@ -150,9 +150,13 @@ void sbtlBtlLoadSkillSESub(s32 arg)
     sdfCallSndSendCmd(arg);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlBtlForceDeleteEffectWorkIDSub);
+s32 sbtlBtlForceDeleteEffectWorkIDSub(s32 arg) {
+    return sdfCallSndSendCmd2(arg);
+}
 
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlLeaf57);
+s32 sbtlLeaf57(void) {
+    return sdfBtlReLoadMapSBtlSceneSub();
+}
 
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlSummonMenuFuncOpen00Sub);
 
@@ -446,7 +450,9 @@ INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallGetRandIntA5);
 
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlPlaySpecialSE);
 
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlLeaf58);
+void sbtlLeaf58(u32 seid) {
+    p2sdStopSe(seid);
+}
 
 /* NON_MATCHING: 176 of 178 words match. Two branches are branch-likely in this build where retail uses plain branches with the same delay slot; vector checked (menu): count loop and mot_nowcnt paths only. */
 void sbtlCallBtlCheckEnshutuSummonUnit(void)

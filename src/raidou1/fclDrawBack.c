@@ -15,8 +15,11 @@
 #include "sBtlContinue.h"
 #include "fldFileResolver.h"
 #include "code_r1_00128378.h"
+#include "fclDrawBack.h"
 
-INCLUDE_ASM(const s32, "fclDrawBack", fclLeaf6);
+void fclLeaf6(fileJobPayload_t *job) {
+    fclCallMemFreeDirect(job);
+}
 
 INCLUDE_ASM(const s32, "fclDrawBack", fclCallGetProcessData);
 

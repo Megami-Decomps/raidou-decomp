@@ -11087,7 +11087,9 @@ INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlEffSetTarget);
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlEffCreateUnitList);
 
-INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlLeaf48);
+s32 sbtlLeaf48(struct SBTLUNIT_LISTWORK *lwk) {
+    return sbtlDeleteUnitList(lwk);
+}
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", sbtlCallBtlSetLightMap);
 

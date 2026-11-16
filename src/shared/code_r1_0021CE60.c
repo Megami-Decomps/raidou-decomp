@@ -2739,7 +2739,183 @@ void effScaleWaveEmitterParameters(effScaleOwner_t *owner, f32 scale) {
     dst->unkE0 = src->unkE0 * scale;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateRadialEmitterSlots);
+void effUpdateRadialEmitterSlots(bhvrHandle_t *record) {
+    f32 delta[4];
+    f32 radiusVector[4];
+    f32 previousPosition[4];
+    fileKeyBlock_t *keys;
+    u32 i;
+    u32 count;
+    u32 flags;
+    effPosture_t *slot;
+    fileSlotMotion_t *motion;
+    s32 duration;
+    s32 prewarm;
+    s32 mode;
+    f32 gravity;
+    f32 acceleration;
+    s32 toSpawn;
+    s32 prewarmLength;
+    s32 frame;
+    f32 distance;
+    s32 length;
+
+    keys = (fileKeyBlock_t *)record->data0;
+    count = record->instances;
+    length = keys->length;
+    flags = record->flags;
+    slot = record->slots;
+    motion = (fileSlotMotion_t *)record->instanceWork;
+
+    if (length != 0) {
+        duration = keys->emissionDuration;
+        prewarmLength = keys->length;
+        mode = keys->heading.track.curve.headingMode;
+        gravity = keys->emitter.radial.gravity;
+        acceleration = keys->emitter.radial.acceleration;
+        delta[3] = 0.0f;
+        if (duration != 0 && (s32)record->references >= duration) {
+            toSpawn = 0;
+            prewarm = 0;
+        } else {
+            if (record->references == 0 && keys->prewarm != 0) {
+                prewarm = 1;
+                toSpawn = count;
+                if (keys->spawnVariance > 0.0f) {
+                    toSpawn = (s32)((f32)record->instances *
+                        (dds3GetRandFloatA(dds3RandCB) * (1.0999999046325684f - keys->spawnVariance)));
+                }
+            } else {
+                prewarm = 0;
+                if (keys->spawnVariance > 0.0f) {
+                    record->spawnRemainder += (f32)keys->spawnRate *
+                        (dds3GetRandFloatA(dds3RandCB) * (1.0999999046325684f - keys->spawnVariance));
+                } else {
+                    record->spawnRemainder += (f32)keys->spawnRate;
+                }
+                toSpawn = (s32)fabsf(record->spawnRemainder);
+                record->spawnRemainder -= (f32)toSpawn;
+            }
+        }
+        i = 0;
+        if (count != 0) {
+            do {
+                if (slot->state >= length) {
+                    slot->state = duration != 0 ? -2 : -1;
+                    fileInvalidateSlotGroup((bhvrHandle_t *)record, slot);
+                }
+                frame = slot->state;
+                if (frame != -2) {
+                    if (frame == -1) {
+                        if (toSpawn != 0) {
+                            delta[0] = (dds3GetRandFloatA(dds3RandCB) - 0.5f) * 2.0f;
+                            delta[1] = (dds3GetRandFloatA(dds3RandCB) - 0.5f) * 2.0f;
+                            delta[2] = (dds3GetRandFloatA(dds3RandCB) - 0.5f) * 2.0f;
+                            SDF_VU0_LOADVECTOR(delta);
+                            SDF_VU0_NORMALIZE();
+                            SDF_VU0_STOREVECTOR(delta);
+                            motion->direction[0] = delta[0];
+                            motion->direction[1] = delta[1];
+                            motion->direction[2] = delta[2];
+                            motion->speed = fabsf(keys->emitter.radial.speed *
+                                (dds3GetRandFloatA(dds3RandCB) * keys->emitter.radial.speedRandomness + (1.0f - keys->emitter.radial.speedRandomness)));
+                            {
+                                f32 radius = keys->emitter.radial.radius *
+                                    (dds3GetRandFloatA(dds3RandCB) * keys->emitter.radial.radiusRandomness + (1.0f - keys->emitter.radial.radiusRandomness));
+                                VEC3_SPLAT(radiusVector, radius);
+                            }
+                            /* Retail initializes only XYZ of this radius vector; W is left untouched. */
+                            SDF_VU0_LOADVECTOR(delta);
+                            if (keys->emitter.radial.speed < 0.0f) {
+                                SDF_VU0_NEGVECTOR_XYZ();
+                            }
+                            if (flags & 1) {
+                                SDF_VU0_LOADVECTOR_B(radiusVector);
+                                SDF_VU0_MULVECTOR();
+                            } else {
+                                SDF_VU0_LOADVECTOR_B(radiusVector);
+                                SDF_VU0_MULVECTOR();
+                                SDF_VU0_LOADVECTOR_B(keys->pos);
+                                SDF_VU0_ADDVECTOR();
+                            }
+                            SDF_VU0_STOREVECTOR(slot->pos);
+                            motion->scaleMultiplier = dds3GetRandFloatA(dds3RandCB) * keys->scale.emitter.randomness +
+                                (1.0f - keys->scale.emitter.randomness);
+                            if (mode != 2) {
+                                motion->angleMultiplier = dds3GetRandFloatA(dds3RandCB) * keys->heading.emitter.randomness +
+                                    (1.0f - keys->heading.emitter.randomness);
+                                if (mode == 1) {
+                                    motion->angle = dds3GetRandFloatA(dds3RandCB) * 6.2831850051879883f;
+                                    if (dds3GetRandA(dds3RandCB) & 1) {
+                                        motion->angleMultiplier = -motion->angleMultiplier;
+                                    }
+                                } else {
+                                    motion->angle = 0.0f;
+                                }
+                            } else {
+                                motion->angleMultiplier = 1.0f;
+                                motion->angle = 0.0f;
+                            }
+                            slot->state = 0;
+                            SDF_VU0_COPYVECTOR(previousPosition, slot->pos);
+                            if (prewarm != 0) {
+                                f32 age = (f32)(dds3GetRandA(dds3RandCB) % prewarmLength);
+                                SDF_VU0_LOADVECTOR_B(slot->pos);
+                                distance = motion->speed * age;
+                                distance += acceleration * age * age * 0.5f;
+                                if (distance < 0.0f) {
+                                    distance = 0.0f;
+                                }
+                                delta[0] = distance * motion->direction[0];
+                                delta[1] = distance * motion->direction[1];
+                                delta[2] = distance * motion->direction[2];
+                                delta[1] += gravity * age * age * 0.5f;
+                                SDF_VU0_LOADVECTOR(delta);
+                                SDF_VU0_ADDVECTOR();
+                                SDF_VU0_STOREVECTOR(slot->pos);
+                                slot->state = (s32)age;
+                            }
+                            effCallColorAnimation(slot, keys, slot->state, previousPosition);
+                            slot->scale *= motion->scaleMultiplier;
+                            slot->angle *= motion->angleMultiplier;
+                            slot->angle += motion->angle;
+                            if (prewarm != 0) {
+                                fileCopyAndInvalidateSlotGroup((bhvrHandle_t *)record, slot);
+                                slot->state++;
+                            }
+                            toSpawn--;
+                        }
+                    } else {
+                        f32 age;
+                        SDF_VU0_COPYVECTOR(previousPosition, slot->pos);
+                        SDF_VU0_LOADVECTOR_B(slot->pos);
+                        age = (f32)frame;
+                        distance = motion->speed + acceleration * age;
+                        if (distance < 0.0f) {
+                            distance = 0.0f;
+                        }
+                        delta[0] = distance * motion->direction[0];
+                        delta[1] = distance * motion->direction[1];
+                        delta[2] = distance * motion->direction[2];
+                        delta[1] += gravity * age;
+                        SDF_VU0_LOADVECTOR(delta);
+                        SDF_VU0_ADDVECTOR();
+                        SDF_VU0_STOREVECTOR(slot->pos);
+                        fileSampleKeyTracks(slot, keys, frame, previousPosition);
+                        slot->scale *= motion->scaleMultiplier;
+                        slot->angle *= motion->angleMultiplier;
+                        slot->angle += motion->angle;
+                        effUpdateGridRecordSlotHistory(record, slot);
+                        slot->state = frame + 1;
+                    }
+                }
+                motion++;
+                slot++;
+                i++;
+            } while (i < count);
+        }
+    }
+}
 
 void effScaleRadialEmitterParameters(effScaleOwner_t *owner, f32 scale) {
     effScaleSet_t *src = owner->src;
@@ -3001,7 +3177,196 @@ void effScaleOrientedRingEmitterParameters(effScaleOwner_t *owner, f32 scale) {
     dst->unkE4 = src->unkE4 * scale;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateDirectedEmitterSlots);
+void effUpdateDirectedEmitterSlots(bhvrHandle_t *record) {
+    f32 delta[4];
+    f32 radiusVector[4];
+    f32 previousPosition[4];
+    fileKeyBlock_t *keys;
+    u32 i;
+    u32 count;
+    u32 flags;
+    effPosture_t *slot;
+    fileSlotMotion_t *motion;
+    s32 duration;
+    s32 prewarm;
+    s32 mode;
+    f32 gravity;
+    f32 acceleration;
+    s32 toSpawn;
+    s32 prewarmLength;
+    s32 frame;
+    f32 distance;
+    s32 length;
+
+    keys = (fileKeyBlock_t *)record->data0;
+    count = record->instances;
+    length = keys->length;
+    flags = record->flags;
+    slot = record->slots;
+    motion = (fileSlotMotion_t *)record->instanceWork;
+
+    if (length != 0) {
+        duration = keys->emissionDuration;
+        prewarmLength = keys->length;
+        mode = keys->heading.track.curve.headingMode;
+        gravity = keys->emitter.directed.gravity;
+        acceleration = keys->emitter.directed.acceleration;
+        delta[3] = 0.0f;
+        SDF_VU0_LOADVECTOR(keys->orientation);
+        ToMatrix();
+        if (duration != 0 && (s32)record->references >= duration) {
+            toSpawn = 0;
+            prewarm = 0;
+        } else {
+            if (record->references == 0 && keys->prewarm != 0) {
+                prewarm = 1;
+                if (!(keys->spawnVariance > 0.0f)) {
+                    toSpawn = record->instances;
+                } else {
+                    toSpawn = (s32)((f32)record->instances *
+                        (dds3GetRandFloatA(dds3RandCB) * (1.0999999046325684f - keys->spawnVariance)));
+                }
+            } else {
+                prewarm = 0;
+                if (keys->spawnVariance > 0.0f) {
+                    record->spawnRemainder += (f32)keys->spawnRate *
+                        (dds3GetRandFloatA(dds3RandCB) * (1.0999999046325684f - keys->spawnVariance));
+                } else {
+                    record->spawnRemainder += (f32)keys->spawnRate;
+                }
+                toSpawn = (s32)fabsf(record->spawnRemainder);
+                record->spawnRemainder -= (f32)toSpawn;
+            }
+        }
+        i = 0;
+        if (count != 0) {
+            do {
+                if (slot->state >= length) {
+                    slot->state = duration != 0 ? -2 : -1;
+                    fileInvalidateSlotGroup((bhvrHandle_t *)record, slot);
+                }
+                frame = slot->state;
+                if (frame != -2) {
+                    if (frame == -1) {
+                        if (toSpawn != 0) {
+                            f32 spread;
+                            s32 localSpace;
+
+                            spread = keys->emitter.directed.spread *
+                                (dds3GetRandFloatA(dds3RandCB) * keys->emitter.directed.spreadRandomness +
+                                 (1.0f - keys->emitter.directed.spreadRandomness));
+                            delta[0] = (dds3GetRandFloatA(dds3RandCB) - 0.5f) * 2.0f * spread;
+                            delta[1] = -(1.0f - spread);
+                            delta[2] = (dds3GetRandFloatA(dds3RandCB) - 0.5f) * 2.0f * spread;
+                            SDF_VU0_LOADVECTOR(delta);
+                            SDF_VU0_NORMALIZE();
+                            localSpace = flags & 1;
+                            if (localSpace == 0) {
+                                SDF_VU0_APPLYMATRIX_XYZ();
+                            }
+                            SDF_VU0_STOREVECTOR(delta);
+                            motion->direction[0] = delta[0];
+                            motion->direction[1] = delta[1];
+                            motion->direction[2] = delta[2];
+                            motion->speed = fabsf(keys->emitter.directed.speed *
+                                (dds3GetRandFloatA(dds3RandCB) * keys->emitter.directed.speedRandomness + (1.0f - keys->emitter.directed.speedRandomness)));
+                            {
+                                f32 radius = keys->emitter.directed.radius *
+                                    (dds3GetRandFloatA(dds3RandCB) * keys->emitter.directed.radiusRandomness + (1.0f - keys->emitter.directed.radiusRandomness));
+                                VEC3_SPLAT(radiusVector, radius);
+                            }
+                            /* Retail initializes only XYZ of this radius vector; W is left untouched. */
+                            SDF_VU0_LOADVECTOR(delta);
+                            if (keys->emitter.directed.speed < 0.0f) {
+                                SDF_VU0_NEGVECTOR_XYZ();
+                            }
+                            if (localSpace != 0) {
+                                SDF_VU0_LOADVECTOR_B(radiusVector);
+                                SDF_VU0_MULVECTOR();
+                            } else {
+                                SDF_VU0_LOADVECTOR_B(radiusVector);
+                                SDF_VU0_MULVECTOR();
+                                SDF_VU0_LOADVECTOR_B(keys->pos);
+                                SDF_VU0_ADDVECTOR();
+                            }
+                            SDF_VU0_STOREVECTOR(slot->pos);
+                            motion->scaleMultiplier = dds3GetRandFloatA(dds3RandCB) * keys->scale.emitter.randomness +
+                                (1.0f - keys->scale.emitter.randomness);
+                            if (mode != 2) {
+                                motion->angleMultiplier = dds3GetRandFloatA(dds3RandCB) * keys->heading.emitter.randomness +
+                                    (1.0f - keys->heading.emitter.randomness);
+                                if (mode == 1) {
+                                    motion->angle = dds3GetRandFloatA(dds3RandCB) * 6.2831850051879883f;
+                                    if (dds3GetRandA(dds3RandCB) & 1) {
+                                        motion->angleMultiplier = -motion->angleMultiplier;
+                                    }
+                                } else {
+                                    motion->angle = 0.0f;
+                                }
+                            } else {
+                                motion->angleMultiplier = 1.0f;
+                                motion->angle = 0.0f;
+                            }
+                            slot->state = 0;
+                            SDF_VU0_COPYVECTOR(previousPosition, slot->pos);
+                            if (prewarm != 0) {
+                                f32 age = (f32)(dds3GetRandA(dds3RandCB) % prewarmLength);
+                                SDF_VU0_LOADVECTOR_B(slot->pos);
+                                distance = motion->speed * age;
+                                distance += acceleration * age * age * 0.5f;
+                                if (distance < 0.0f) {
+                                    distance = 0.0f;
+                                }
+                                delta[0] = distance * motion->direction[0];
+                                delta[1] = distance * motion->direction[1];
+                                delta[2] = distance * motion->direction[2];
+                                delta[1] += gravity * age * age * 0.5f;
+                                SDF_VU0_LOADVECTOR(delta);
+                                SDF_VU0_ADDVECTOR();
+                                SDF_VU0_STOREVECTOR(slot->pos);
+                                slot->state = (s32)age;
+                            }
+                            effCallColorAnimation(slot, keys, slot->state, previousPosition);
+                            slot->scale *= motion->scaleMultiplier;
+                            slot->angle *= motion->angleMultiplier;
+                            slot->angle += motion->angle;
+                            if (prewarm != 0) {
+                                fileCopyAndInvalidateSlotGroup((bhvrHandle_t *)record, slot);
+                                slot->state++;
+                            }
+                            toSpawn--;
+                        }
+                    } else {
+                        f32 age;
+                        SDF_VU0_COPYVECTOR(previousPosition, slot->pos);
+                        SDF_VU0_LOADVECTOR_B(slot->pos);
+                        age = (f32)frame;
+                        distance = motion->speed + acceleration * age;
+                        if (distance < 0.0f) {
+                            distance = 0.0f;
+                        }
+                        delta[0] = distance * motion->direction[0];
+                        delta[1] = distance * motion->direction[1];
+                        delta[2] = distance * motion->direction[2];
+                        delta[1] += gravity * age;
+                        SDF_VU0_LOADVECTOR(delta);
+                        SDF_VU0_ADDVECTOR();
+                        SDF_VU0_STOREVECTOR(slot->pos);
+                        fileSampleKeyTracks(slot, keys, frame, previousPosition);
+                        slot->scale *= motion->scaleMultiplier;
+                        slot->angle *= motion->angleMultiplier;
+                        slot->angle += motion->angle;
+                        effUpdateGridRecordSlotHistory(record, slot);
+                        slot->state = frame + 1;
+                    }
+                }
+                motion++;
+                slot++;
+                i++;
+            } while (i < count);
+        }
+    }
+}
 
 void effScaleDirectedEmitterParameters(effScaleOwner_t *owner, f32 scale) {
     effScaleSet_t *src = owner->src;
