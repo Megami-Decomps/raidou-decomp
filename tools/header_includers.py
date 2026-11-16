@@ -17,6 +17,9 @@ INCLUDE = re.compile(r'^\s*#\s*include\s+"([^"]+)"', re.M)
 MODES = ("default", "nonmatching")
 RESULT = re.compile(r"^(OK|DIFF|OVER|MISSING)\s+(\S+)(.*)$")
 DISTANCE = re.compile(r"(\d+) of (\d+) words differ")
+CONTEXT = re.compile(r"^CONTEXT (\S+): ")
+FULL_UNIT = re.compile(r"full unit vs retail: (\d+) of (\d+) words differ")
+UNIT_PROBLEM = re.compile(r"^(NOASM|RODATA|DATA) ")
 
 
 def versions(root: Path) -> list[str]:
@@ -69,17 +72,29 @@ def includers(root: Path, headers: list[Path]) -> dict[Path, list[str]]:
 
 
 def summarise(output: str) -> dict[str, str]:
-    """Function -> "OK" or the result kind with its word distance; "!error" holds the first compiler error."""
+    """Function -> "OK" or the result kind with its word distance; "!error" holds the first compiler error and
+    "!unit" the unit-level problems. A function that compiles differently inside the full unit is CONTEXT."""
     out = {}
-    errors = []
+    errors, unit, context, last = [], [], {}, None
     for line in output.splitlines():
-        if m := RESULT.match(line):
+        if m := CONTEXT.match(line):
+            last = m.group(1)
+            context[last] = "CONTEXT"
+        elif last and (m := FULL_UNIT.search(line)):
+            context[last] = f"CONTEXT {m.group(1)}/{m.group(2)}"
+            last = None
+        elif UNIT_PROBLEM.match(line):
+            unit.append(line.strip()[:200])
+        elif m := RESULT.match(line):
             d = DISTANCE.search(m.group(3))
             out[m.group(2)] = m.group(1) if m.group(1) == "OK" or not d else f"{m.group(1)} {d.group(1)}/{d.group(2)}"
         elif re.match(r"^\S+:\d+: (?!warning:)", line) or "Error:" in line or line.startswith("compile failed"):
             errors.append(re.sub(r"^\S*:\d+(:\d+)?: ", "", line)[:200])
+    out.update(context)
     if errors:
         out["!error"] = errors[0]
+    if unit:
+        out["!unit"] = "\n".join(sorted(unit))
     return out
 
 
@@ -122,6 +137,11 @@ def compare(before: dict, after: dict, renames: dict[str, str] | None = None) ->
         if new.get("!error") and not old.get("!error"):
             worse.append(f"{key}: error: {new['!error']}")
             continue
+        # a unit missing from the baseline has nothing to be worse than
+        added = set(new.get("!unit", "").split("\n")) - set(old.get("!unit", "").split("\n")) - {""} \
+            if key in before else set()
+        for problem in sorted(added):
+            worse.append(f"{key}: unit: {problem}")
         for fn in sorted(set(old) | set(new)):
             if fn.startswith("!") or old.get(fn) == new.get(fn):
                 continue

@@ -26,7 +26,9 @@ existing C unit or `asm/<game>/<unit>` for a gap unit that becomes C.
 
 The drafts and tables use the names after the renames (the drafting worker
 renames them when it writes `renames.tsv`). Pass `--rename-drafts` when they
-still use the old names.
+still use the old names. Either way a row is spliced at the `INCLUDE_ASM` of
+its renamed function, and its draft's own name is renamed. A `docs.json` unit
+is the unit with its folder (`event/evtMoon`); the batches.tsv unit wins.
 
 ## Landing a batch
 
@@ -41,8 +43,9 @@ in order (skip any with `--skip step,...`):
 1. Check out `--base` detached and configure. Measure every unit that includes
    a header the patch edits, or a header that holds a renamed name, plus the
    batch's units: `check_unit.py` on each game, default build and
-   `-DNON_MATCHING` (`<batch>/land/before.json`; `--reuse-before` keeps it on a
-   rerun at the same base).
+   `-DNON_MATCHING`, into `<batch>/land/before.json`, with the base revision in
+   `base.txt`. A measurement of the same base is kept and extended, never
+   replaced, so a resumed run cannot measure the edited tree as its base.
 2. `patch`: `git apply` the header patch, with `--3way` when it does not apply
    cleanly.
 3. `renames`: symbol_addrs, smt3 aliases at the same address, name_sources rows
@@ -62,11 +65,18 @@ in order (skip any with `--skip step,...`):
    `match` row that is not OK in its unit is reported.
 6. `configure`: places the INCLUDE_RODATA and INCLUDE_SDATA lines.
 7. `docs`: drops the docs/matching entries of every batch function and writes
-   one for each remaining NON_MATCHING draft, measured with `-DNON_MATCHING`,
-   then `docs_index.py`.
-8. `regress`: measures the same units again and lists each function that got
-   worse or better (old names mapped through the renames). A worse function of
-   the batch itself is marked as such; any other is a regression to fix.
+   one for each remaining NON_MATCHING draft, measured with `-DNON_MATCHING`.
+   Then every entry in docs/matching is checked against the tree, and an entry
+   whose function is no longer a draft (promoted outside `final/`, or by a
+   header change) is dropped. Then `docs_index.py`.
+8. `regress`: every unit that includes a header changed since the base
+   (`git diff` plus untracked files, through `header_includers.py`), every
+   changed unit and the batch's units, against the base. Units step 1 did not
+   measure are measured at the base in a worktree, `<batch>/land/base-tree`.
+   It lists each function that got worse or better (old names mapped through
+   the renames), counting a function that compiles differently inside the full
+   unit (`CONTEXT`) and new unit-level problems. A worse function of the batch
+   itself is marked as such; any other is a regression to fix.
 9. `gate`: `configure.py --clean && ninja`, then `check_config.py`,
    `check_nonmatching.py`, `test_raidou_c.py`, `test_docs_index.py`,
    `docs_index.py --check` and `revisit_names.py --check`. About 8 minutes.
@@ -74,7 +84,8 @@ in order (skip any with `--skip step,...`):
 The report goes to stdout and `<batch>/land/report.txt`; lines starting
 with `DECIDE` need a hand decision, and the exit status is 1 when there are
 any. Fix them in T, then rerun only the gate on the edited tree (skipping
-`patch` skips the clean-tree check and the checkout):
+`patch` skips the clean-tree check and the checkout, and takes the base from
+`base.txt` or `--base`):
 
 ```sh
 .venv/bin/python tools/batch/land_batch.py --batch DIR --tree T \
@@ -82,7 +93,9 @@ any. Fix them in T, then rerun only the gate on the edited tree (skipping
 ```
 
 A run that stops partway leaves T edited; reset it (`git checkout -- .` and
-delete the new units by name) before starting again.
+delete the new units by name) before starting again, or resume with the steps
+already done skipped. `git worktree remove land/base-tree` cleans up the base
+worktree.
 
 Reproducing R06 from its parent (`--base 3243932^`) gives commit 3243932 except
 seven hand edits: two type renames, one SIZE_CHECK, and three include fixes,

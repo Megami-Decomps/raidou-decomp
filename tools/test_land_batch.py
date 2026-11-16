@@ -8,7 +8,9 @@ import unittest
 TOOLS = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(TOOLS))
 sys.path.insert(0, str(TOOLS / "batch"))
+import batch_files  # noqa: E402
 import header_includers  # noqa: E402
+import land_batch  # noqa: E402
 import matching_docs  # noqa: E402
 import renames  # noqa: E402
 import segments  # noqa: E402
@@ -83,6 +85,52 @@ class DocsTests(unittest.TestCase):
         self.assertIn("control-flow.md", e)
 
 
+class RenamedRowTests(unittest.TestCase):
+    def run_with(self, rows) -> land_batch.Run:
+        run = land_batch.Run.__new__(land_batch.Run)
+        run.maps = {g: renames.name_map(rows, g) for g in ("raidou1", "raidou2")}
+        run.batch = batch_files.Batch(pathlib.Path("."), "R", {"old": batch_files.Row("old", "src/shared/u")})
+        run.notes, run.lines = [], []
+        return run
+
+    def test_splice_finds_the_renamed_include_asm(self) -> None:
+        run = self.run_with([("raidou1", "old", "new", ""), ("raidou2", "old", "new", "")])
+        text = 'INCLUDE_ASM(const s32, "u", new);\n'
+        out = run.splice_row("u.c", text, run.batch.rows["old"], "void new(void) {}\n")
+        self.assertEqual((out, run.notes), ("void new(void) {}\n", []))
+
+    def test_splice_reports_a_missing_line(self) -> None:
+        run = self.run_with([])
+        run.say = lambda line: None
+        run.splice_row("u.c", "", run.batch.rows["old"], "")
+        self.assertEqual(run.notes, ["u.c: old: 0 INCLUDE_ASM lines"])
+
+
+class StaleDocsTests(unittest.TestCase):
+    def test_drops_entries_of_functions_that_are_no_longer_drafts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            tree = pathlib.Path(tmp)
+            page = tree / "docs/matching/event/u.md"
+            page.parent.mkdir(parents=True)
+            page.write_text("# Draft notes: event/u\n\n## f (event/u, raidou1 0x8, raidou2 0x8)\n\nA.\n\n"
+                            "## g (event/u, raidou1 0x8, raidou2 0x8)\n\nB.\n\n## h (event/u, raidou1 0x8)\n\nC.\n")
+            stale = {("event/u", "f"): {"raidou1", "raidou2"}, ("event/u", "g"): {"raidou2"},
+                     ("event/u", "h"): {"raidou1"}}
+            old = matching_docs.stale_entries
+            matching_docs.stale_entries = lambda _tree: stale
+            try:
+                dropped, left = matching_docs.drop_stale(tree)
+            finally:
+                matching_docs.stale_entries = old
+            self.assertEqual(dropped, ["docs/matching/event/u.md: f", "docs/matching/event/u.md: h"])
+            self.assertEqual(left, ["docs/matching/event/u.md: g is no longer a raidou2 draft only"])
+            self.assertEqual(page.read_text(), "# Draft notes: event/u\n\n## g (event/u, raidou1 0x8, raidou2 0x8)\n\nB.\n")
+
+    def test_not_a_draft_lines(self) -> None:
+        out = "docs/matching/event/u.md: f is not a raidou1 draft; drop or fix the entry\n"
+        self.assertEqual(matching_docs.NOT_A_DRAFT.findall(out), [("event/u", "f", "raidou1")])
+
+
 class RodataTests(unittest.TestCase):
     LABELS = [(0x1000, "a"), (0x1010, "b"), (0x1020, "c"), (0x1030, "d")]
 
@@ -133,6 +181,16 @@ class IncluderTests(unittest.TestCase):
                                                  {"k": {"f": "DIFF 1/2", "g": "DIFF 2/9"}})
         self.assertEqual(worse, ["k: f OK -> DIFF 1/2"])
         self.assertEqual(better, ["k: g DIFF 3/9 -> DIFF 2/9"])
+
+    def test_context_counts_against_an_ok(self) -> None:
+        out = ("CONTEXT f: compiles differently inside the full unit (88 vs 84 bytes alone); ...\n"
+               "       full unit vs retail: 2 of 21 words differ (relocated fields masked)\n"
+               "OK   f @ 0x1 (84 bytes)\nRODATA the full unit's .rodata differs from retail at 0x10\n")
+        s = header_includers.summarise(out)
+        self.assertEqual(s["f"], "CONTEXT 2/21")
+        worse, _ = header_includers.compare({"k": {"f": "OK"}}, {"k": s})
+        self.assertEqual(worse, ["k: unit: RODATA the full unit's .rodata differs from retail at 0x10",
+                                 "k: f OK -> CONTEXT 2/21"])
 
 
 if __name__ == "__main__":

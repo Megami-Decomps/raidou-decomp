@@ -41,6 +41,7 @@ class Run:
         self.notes: list[str] = []
         self.promoted: set[str] = set()
         self.lines: list[str] = []
+        self.base = ""
 
     def say(self, line: str) -> None:
         print(line, flush=True)
@@ -58,27 +59,95 @@ class Run:
         out = open(self.work / log, "w") if log else subprocess.DEVNULL
         return subprocess.run([self.python, *args], cwd=self.tree, stdout=out, stderr=subprocess.STDOUT).returncode
 
+    def current(self, name: str, game: str = "raidou1") -> str:
+        """The name a batch row has in the tree once renames.tsv is applied."""
+        return self.maps[game].get(name, name)
+
     def finals(self) -> dict[str, str]:
+        """Row name -> final draft, with the function's own name as renamed (drafts may predate renames.tsv)."""
         out = {}
         for name in self.batch.rows:
-            if (text := self.batch.final(name, self.draft_names)) is not None:
+            names = self.draft_names or ({name: self.current(name)} if self.current(name) != name else {})
+            if (text := self.batch.final(name, names)) is not None:
                 out[name] = text
         return out
 
     # steps
 
     def prepare(self, base: str | None, resume: bool) -> None:
-        """Check out the base in a clean tree; a resumed run (patch skipped) keeps the tree as it is."""
+        """Check out the base in a clean tree; a resumed run (patch skipped) keeps the tree as it is.
+        The base revision is kept in base.txt: every before measurement is of that revision."""
+        saved = self.work / "base.txt"
         if resume:
-            self.say(f"tree {self.tree}: resuming on the edited tree")
+            rev = base or (saved.read_text().strip() if saved.exists() else "")
+            if not rev:
+                raise SystemExit("land_batch: a resumed run needs --base or the first run's base.txt")
+            self.base = self.git("rev-parse", rev).strip()
+            saved.write_text(self.base + "\n")
+            self.say(f"tree {self.tree}: resuming on the edited tree, base {self.base[:9]}")
             return
         if self.git("status", "--porcelain", "--untracked-files=no").strip():
             raise SystemExit(f"land_batch: {self.tree} has uncommitted changes")
         if base:
             self.git("checkout", "-q", "--detach", base)
-        self.say(f"tree {self.tree} at {self.git('rev-parse', '--short', 'HEAD').strip()}")
+        self.base = self.git("rev-parse", "HEAD").strip()
+        saved.write_text(self.base + "\n")
+        self.say(f"tree {self.tree} at {self.base[:9]}")
         if not self.configure("configure.base.log"):
             raise SystemExit("land_batch: configure failed at the base, see configure.base.log")
+
+    def load_before(self) -> dict:
+        """The base measurement, if it is of this base; it is extended, never replaced."""
+        path = self.work / "before.json"
+        before = json.loads(path.read_text()) if path.exists() else {}
+        return before if before.get("!base") == self.base else {}
+
+    def save_before(self, before: dict) -> None:
+        before["!base"] = self.base
+        (self.work / "before.json").write_text(json.dumps(before, indent=1, sort_keys=True) + "\n")
+
+    def tree_at_base(self) -> bool:
+        return self.git("rev-parse", "HEAD").strip() == self.base and not self.git(
+            "status", "--porcelain", "--", "src", "include", "config").strip()
+
+    def base_tree(self) -> Path:
+        """A configured worktree of the base, for units the first measurement did not cover."""
+        path = self.work / "base-tree"
+        if not path.exists():
+            self.git("worktree", "add", "--detach", str(path), self.base)
+        elif subprocess.run(["git", "rev-parse", "HEAD"], cwd=path, capture_output=True,
+                            text=True).stdout.strip() != self.base:
+            subprocess.run(["git", "checkout", "-q", "--detach", self.base], cwd=path, check=True)
+        inputs = [Path("orig") / p.name for p in (self.tree / "orig").iterdir() if not p.name.startswith(".")]
+        for link in [Path(".venv"), *inputs, Path("tools/bin"), Path("tools/compilers"), Path("tools/glibc32")]:
+            if (self.tree / link).exists() and not (path / link).exists():
+                (path / link).symlink_to((self.tree / link).resolve())
+        stamp = path / "build" / "land_base.txt"
+        if not stamp.exists() or stamp.read_text().strip() != self.base:
+            if not self.configure("configure.base-tree.log", path):
+                raise SystemExit("land_batch: configure failed in the base worktree, see configure.base-tree.log")
+            stamp.write_text(self.base + "\n")
+        return path
+
+    def measure_base(self, units: dict[Path, list[str]], before: dict) -> dict:
+        """Add the base measurement of the units `before` does not hold, from this tree while it is still the
+        base, else from the base worktree."""
+        missing = {p: g for p, g in units.items()
+                   if not all(f"{p.as_posix()} {x} {m}" in before for x in g for m in header_includers.MODES)}
+        if not missing:
+            return before
+        root = self.tree if self.tree_at_base() else self.base_tree()
+        self.say(f"regress: measuring {len(missing)} units at base {self.base[:9]} in {root}")
+        before = {**before, **header_includers.measure(root, missing, self.jobs)}
+        self.save_before(before)
+        return before
+
+    def changed_files(self) -> tuple[list[Path], list[Path]]:
+        """(headers, units) that differ from the base in the tree, untracked ones included."""
+        names = self.git("diff", "--name-only", self.base, "--", "include", "src").split()
+        names += self.git("ls-files", "--others", "--exclude-standard", "--", "include", "src").split()
+        paths = sorted({Path(n) for n in names if (self.tree / n).exists()})
+        return [p for p in paths if p.suffix == ".h"], [p for p in paths if p.suffix == ".c"]
 
     def edited_headers(self) -> list[Path]:
         """Headers the patch edits plus headers that hold a name the renames change, measured at the base."""
@@ -102,12 +171,12 @@ class Run:
         return dict(sorted(units.items()))
 
     def measure_before(self) -> None:
+        """Measure the units the patch and renames will reach while the tree is the base; regress adds the rest."""
         headers = self.edited_headers()
         units = self.regress_units(headers)
-        self.say(f"regress: {len(headers)} edited headers, {len(units)} units")
-        before = header_includers.measure(self.tree, units, self.jobs)
-        (self.work / "before.json").write_text(json.dumps(before, indent=1, sort_keys=True) + "\n")
-        (self.work / "units.json").write_text(json.dumps({p.as_posix(): g for p, g in units.items()}, indent=1) + "\n")
+        before = self.load_before()
+        self.say(f"regress: {len(headers)} headers to edit, {len(units)} units, {len(before)} checks kept")
+        self.measure_base(units, before)
 
     def patch(self) -> None:
         patch = self.batch.dir / "headers.wip.patch"
@@ -150,15 +219,24 @@ class Run:
                 continue
             text = path.read_text()
             for row in rows:
-                try:
-                    text = unit_text.splice(text, row.name, finals[row.name], row.name in self.batch.r1only)
-                except ValueError as e:
-                    self.note(f"{source}: {e}")
+                text = self.splice_row(source, text, row, finals[row.name])
             path.write_text(text)
             self.say(f"splice: {source}: {len(rows)} functions")
         missing = sorted(set(self.batch.rows) - set(finals))
         if missing:
             self.say(f"splice: {len(missing)} rows without a draft: {' '.join(missing)}")
+
+    def splice_row(self, source: str, text: str, row: batch_files.Row, final: str) -> str:
+        """Splice at the INCLUDE_ASM of the renamed function, else of its batch name."""
+        names = dict.fromkeys([self.current(row.name), self.current(row.name, "raidou2"), row.name])
+        error = None
+        for name in names:
+            try:
+                return unit_text.splice(text, name, final, row.name in self.batch.r1only)
+            except ValueError as e:
+                error = error or e
+        self.note(f"{source}: {error}")
+        return text
 
     def gap_unit(self, row: batch_files.Row, finals: dict[str, str]) -> None:
         asm = self.tree / "asm" / row.game / f"{row.unit}.s"
@@ -166,7 +244,9 @@ class Run:
         pre = self.batch.dir / "units" / f"{row.unit}.pre"
         if not pre.exists():
             self.note(f"{row.unit}: no units/{row.unit}.pre, wrote #include \"common.h\" only")
-        text = unit_text.gap_unit(pre.read_text() if pre.exists() else '#include "common.h"\n', row.unit, names, finals)
+        by_name = {self.current(n, row.game): f for n, f in finals.items()}
+        text = unit_text.gap_unit(pre.read_text() if pre.exists() else '#include "common.h"\n', row.unit, names,
+                                  by_name)
         (self.tree / row.source).parent.mkdir(parents=True, exist_ok=True)
         (self.tree / row.source).write_text(text)
         plans, notes = segments.plan_unit(self.tree, row.game, row.unit)
@@ -179,7 +259,7 @@ class Run:
             self.say(f"segments: {row.unit} owns {p.kind} of {p.chunk} from 0x{p.start:08X}{rest}")
         for n in notes:
             self.note(n)
-        drafted = sum(n in finals for n in names)
+        drafted = sum(n in by_name for n in names)
         self.say(f"splice: {row.source}: new unit, {len(names)} functions, {drafted} from drafts")
 
     def check(self, source: str, game: str, alt: Path | None = None) -> tuple[int, dict[str, str]]:
@@ -196,7 +276,8 @@ class Run:
                 if game != "raidou1" and row.name in self.batch.r1only:
                     continue
                 # absent from a unit that compiled: this game does not build the function
-                status = summary.get(row.name, "OK" if "!error" not in summary else summary["!error"])
+                name = self.current(row.name, game)
+                status = summary.get(name, "OK" if "!error" not in summary else summary["!error"])
                 if status != "OK":
                     self.note(f"{source} {game}: {row.name} recorded as a match but is {status}")
 
@@ -223,9 +304,10 @@ class Run:
                     alt.write_text(trial)
                     results = {g: self.check(source, g, alt)[1] for g in unit_games}
                 # the draft matches and no other function of the unit gets worse
-                matches = [s.get(row.name) for s in results.values() if row.name in s]
+                name = self.current(row.name)
+                matches = [s.get(name) for s in results.values() if name in s]
                 worse, _ = header_includers.compare({g: base[g][1] for g in unit_games}, results)
-                worse = [w for w in worse if f": {row.name} " not in w]
+                worse = [w for w in worse if f": {name} " not in w]
                 if matches and all(m == "OK" for m in matches) and not worse:
                     text = trial
                     self.promoted.add(row.name)
@@ -236,15 +318,18 @@ class Run:
         if self.promoted:
             self.configure()
 
-    def configure(self, log: str = "configure.log") -> bool:
+    def configure(self, log: str = "configure.log", tree: Path | None = None) -> bool:
         """configure.py, then the eeasm copies of the split asm that check_unit includes."""
-        if self.py("configure.py", log=log):
+        tree = tree or self.tree
+        with open(self.work / log, "w") as out:
+            rc = subprocess.run([self.python, "configure.py"], cwd=tree, stdout=out, stderr=subprocess.STDOUT).returncode
+        if rc:
             self.note(f"configure failed, see {log}")
             return False
-        targets = subprocess.run(["ninja", "-t", "targets", "rule", "eeasm"], cwd=self.tree,
+        targets = subprocess.run(["ninja", "-t", "targets", "rule", "eeasm"], cwd=tree,
                                  capture_output=True, text=True).stdout.split()
         with open(self.work / log, "a") as out:
-            rc = subprocess.run(["ninja", *targets], cwd=self.tree, stdout=out, stderr=subprocess.STDOUT).returncode
+            rc = subprocess.run(["ninja", *targets], cwd=tree, stdout=out, stderr=subprocess.STDOUT).returncode
         if rc:
             self.note(f"ninja of the eeasm files failed, see {log}")
             return False
@@ -254,7 +339,7 @@ class Run:
     def docs(self) -> None:
         finals = self.finals()
         drafted = {n for n in finals if n not in self.promoted and unit_text.unwrap(finals[n]) is not None}
-        for line in matching_docs.drop_entries(self.tree, set(finals)):
+        for line in matching_docs.drop_entries(self.tree, {self.current(n) for n in finals}):
             self.say(f"docs: dropped {line}")
         pages: dict[str, list[str]] = {}
         for name in sorted(drafted, key=list(self.batch.rows).index):
@@ -265,23 +350,43 @@ class Run:
             unit, text, lever = (self.batch.docs[name] + [""] * 3)[:3]
             games = ["raidou1"] if row.gap or name in self.batch.r1only or row.source.startswith("src/raidou1/") \
                 else ["raidou1", "raidou2"]
-            measured = [matching_docs.measure(self.tree, row.source, g, name) for g in games]
-            unit = unit or row.unit
-            pages.setdefault(unit, []).append(matching_docs.entry(name, unit, measured, text, lever))
-            self.say(f"docs: {name}: {' '.join(l for _, l in measured)}")
+            fn = self.current(name)
+            measured = [matching_docs.measure(self.tree, row.source, g, fn) for g in games]
+            # The page is the unit with its folder (event/evtMoon), as docs_index.py files it.
+            if unit and unit != row.unit and unit != Path(row.unit).name:
+                self.note(f"docs: {name}: docs.json unit {unit} is not {row.unit}; filed under {row.unit}")
+            unit = row.unit
+            pages.setdefault(unit, []).append(matching_docs.entry(fn, unit, measured, text, lever))
+            self.say(f"docs: {fn}: {' '.join(l for _, l in measured)}")
         for unit, entries in pages.items():
             matching_docs.append(self.tree, unit, entries)
+        # Every entry is checked against the tree, so drafts promoted outside final/ lose theirs too.
+        dropped, left = matching_docs.drop_stale(self.tree)
+        for line in dropped:
+            self.say(f"docs: dropped {line} (no longer a draft)")
+        for line in left:
+            self.note(f"docs: {line}")
         if self.py("tools/docs_index.py", log="docs_index.log"):
             self.note("docs_index.py failed, see docs_index.log")
 
     def regress(self) -> None:
-        units = {Path(p): g for p, g in json.loads((self.work / "units.json").read_text()).items()}
-        before = json.loads((self.work / "before.json").read_text())
-        before = {k: {self.maps[k.split()[1]].get(f, f): s for f, s in v.items()} for k, v in before.items()}
+        """Every unit that includes a header edited since the base, every edited unit and the batch's units,
+        against the base."""
+        headers, edited = self.changed_files()
+        units = self.regress_units(headers)
+        all_units = header_includers.unit_paths(self.tree)
+        units.update({p: all_units[p] for p in edited if p in all_units})
+        units = dict(sorted(units.items()))
+        self.say(f"regress: {len(headers)} headers edited since the base: {' '.join(map(str, headers))}"[:400])
+        (self.work / "units.json").write_text(json.dumps({p.as_posix(): g for p, g in units.items()}, indent=1) + "\n")
+        before = self.measure_base(units, self.load_before())
+        keys = {f"{p.as_posix()} {g} {m}" for p, gs in units.items() for g in gs for m in header_includers.MODES}
+        before = {k: {self.maps[k.split()[1]].get(f, f): s for f, s in v.items()} for k, v in before.items()
+                  if k in keys}
         after = header_includers.measure(self.tree, units, self.jobs)
         (self.work / "after.json").write_text(json.dumps(after, indent=1, sort_keys=True) + "\n")
         worse, better = header_includers.compare(before, after)
-        batch = set(self.batch.rows)
+        batch = set(self.batch.rows) | {self.current(n, g) for n in self.batch.rows for g in self.maps}
         for line in better:
             self.say(f"regress: better {line}")
         for line in worse:
@@ -323,7 +428,7 @@ def main() -> int:
     ap.add_argument("--skip", default="", help=f"comma-separated steps to skip: {','.join(STEPS)}")
     ap.add_argument("--work", type=Path, help="logs and measurements (default: <batch>/land; configure --clean empties build/)")
     ap.add_argument("--reuse-before", action="store_true",
-                    help="keep the work directory's base measurement from an earlier run at the same base")
+                    help="skip the first base measurement; regress still measures, at the base, units it lacks")
     ap.add_argument("-j", "--jobs", type=int, default=8)
     args = ap.parse_args()
     skip = set(filter(None, args.skip.split(",")))
@@ -331,7 +436,7 @@ def main() -> int:
         ap.error(f"unknown steps: {', '.join(sorted(skip - set(STEPS)))}")
     run = Run(args)
     run.prepare(args.base, "patch" in skip)
-    if "regress" not in skip and not (args.reuse_before and (run.work / "before.json").exists()):
+    if "regress" not in skip and not args.reuse_before and run.tree_at_base():
         run.measure_before()
     for step in STEPS:
         if step not in skip:

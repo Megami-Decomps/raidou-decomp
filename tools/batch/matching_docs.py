@@ -85,3 +85,41 @@ def drop_entries(tree: Path, names: set[str]) -> list[str]:
             else:
                 path.unlink()
     return removed
+
+
+NOT_A_DRAFT = re.compile(r"^docs/matching/(.+)\.md: (\w+) is not a (\w+) draft", re.M)
+ENTRY_HEAD = re.compile(r"^## (.+?) \(([^,]+), ([^)]+)\)$", re.M)
+
+
+def stale_entries(tree: Path) -> dict[tuple[str, str], set[str]]:
+    """(unit, fn) -> games for which docs_index.py --check says the entry's function is not a draft in the tree."""
+    out = subprocess.run([str(tree / ".venv/bin/python"), "tools/docs_index.py", "--check"], cwd=tree,
+                         capture_output=True, text=True).stdout
+    stale: dict[tuple[str, str], set[str]] = {}
+    for unit, fn, game in NOT_A_DRAFT.findall(out):
+        stale.setdefault((unit, fn), set()).add(game)
+    return stale
+
+
+def drop_stale(tree: Path) -> tuple[list[str], list[str]]:
+    """Drop every entry whose function is a draft in none of the entry's games, wherever it was promoted.
+    Returns (dropped, left): left names entries that are stale for only some games or cover several functions."""
+    dropped, left = [], []
+    for (unit, fn), games in sorted(stale_entries(tree).items()):
+        path = tree / "docs/matching" / f"{unit}.md"
+        text = path.read_text() if path.exists() else ""
+        head = next((m for m in ENTRY_HEAD.finditer(text) if m.group(1) == fn), None)
+        if head is None:
+            left.append(f"{path.relative_to(tree)}: {fn} ({', '.join(sorted(games))}), entry covers several functions")
+            continue
+        listed = set(re.findall(r"\b(raidou\d)\b", head.group(3)))
+        if listed - games:
+            left.append(f"{path.relative_to(tree)}: {fn} is no longer a {', '.join(sorted(games))} draft only")
+            continue
+        new = drop(text, fn)
+        if any(l.startswith("## ") for l in new.split("\n")):
+            path.write_text(new)
+        else:
+            path.unlink()
+        dropped.append(f"{path.relative_to(tree)}: {fn}")
+    return dropped, left
