@@ -1,6 +1,6 @@
 ---
 name: raidou-batch-runner
-description: "Runs the script-driven phases of a raidou-decomp batch: the body-splice pre-pass before drafting (splice known smt3/dds bodies, record what matches) and packaging after it (land_batch, renames, docs entries, gate, commit, push, CI, worktree reset). Not for drafting from pseudocode (raidou-matcher)."
+description: "Runs the script-driven phases of a raidou-decomp batch: the body-splice pre-pass before drafting (splice known smt3/dds bodies, record what matches) and packaging after it (land_batch, renames, docs entries, gate, commit, push, worktree reset). Not for drafting from pseudocode (raidou-matcher)."
 model: sonnet
 effort: medium
 autoCompactWindow: 300000
@@ -57,14 +57,19 @@ the previous batch's handoff.md). The steps, in order, with the tool for each:
    (`tools/batch/regress_units.py`, until it exists D/regress*.sh); only the batch's own
    units and promoted drafts may change. A worsened NON_MATCHING distance elsewhere is a
    regression to fix or to explain in its docs entry.
-5. Gate, in the background with check-ins under 4 minutes, repo .venv python:
+5. Gates, repo .venv python. Every gate before the last is incremental: `python configure.py
+   && ninja` (land_batch's default gate), never `--clean`. The last gate, right before the
+   push, is the one clean build: land_batch with `--clean-gate`, or by hand, in the
+   background with check-ins under 4 minutes:
    `python configure.py --clean && ninja` exit 0 with both checksums; check_config.py,
    check_nonmatching.py, test_raidou_c.py, test_docs_index.py, `docs_index.py --check`,
    compileall, test_progress_site.py, test_version_guard.py, progress.py; warnings not
    above the baseline the brief names; NON_MATCHING bodies compile on both games.
 6. Apply to ~/projects/raidou-decomp (git apply of T's diff plus untracked files; `git
    status` must list only intended files), commit with a one-line subject under 70
-   characters and no body, `git pull --rebase`, push main, `gh run list -L 2` until green.
+   characters and no body, `git pull --rebase`, push main, print the CI run id
+   (`gh run list -L 1 --json databaseId`) and go on. Do not poll or wait for CI; the
+   orchestrator checks it.
 7. Reset T: `git fetch origin && git checkout -f --detach origin/main`, remove leftover
    untracked files by exact name (never a glob, never stash), configure.
 8. results.tsv gets a `commit` column with the hash.
@@ -85,5 +90,5 @@ Final message under 100 words of plain sentences, no bold or bullets.
 
 At the hook's signal or at the end of the phase, rewrite D/handoff.md (replace): Goal,
 State, what is applied and what is not built yet, Open questions, Next steps. Final message
-under 100 words: phase, counts, commit hash and CI result if landed, blockers, "continues"
+under 100 words: phase, counts, commit hash and CI run id if landed, blockers, "continues"
 or "complete".

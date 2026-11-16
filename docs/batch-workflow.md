@@ -46,6 +46,10 @@ in order (skip any with `--skip step,...`):
    `-DNON_MATCHING`, into `<batch>/land/before.json`, with the base revision in
    `base.txt`. A measurement of the same base is kept and extended, never
    replaced, so a resumed run cannot measure the edited tree as its base.
+   Measurements are also kept in
+   `~/.local/state/raidou-decomp-work/cache/land_before/<base>.<games>.json`
+   (`--cache DIR`, `--cache ''` for none), so a rerun or another batch on the
+   same base measures only the units it has not seen.
 2. `patch`: `git apply` the header patch, with `--3way` when it does not apply
    cleanly.
 3. `renames`: symbol_addrs, smt3 aliases at the same address, name_sources rows
@@ -77,9 +81,11 @@ in order (skip any with `--skip step,...`):
    the renames), counting a function that compiles differently inside the full
    unit (`CONTEXT`) and new unit-level problems. A worse function of the batch
    itself is marked as such; any other is a regression to fix.
-9. `gate`: `configure.py --clean && ninja`, then `check_config.py`,
+9. `gate`: `configure.py && ninja`, then `check_config.py`,
    `check_nonmatching.py`, `test_raidou_c.py`, `test_docs_index.py`,
-   `docs_index.py --check` and `revisit_names.py --check`. About 8 minutes.
+   `docs_index.py --check` and `revisit_names.py --check`. With
+   `--clean-gate` it runs `configure.py --clean` first and counts every
+   compiler warning; without it the count covers only the objects rebuilt.
 
 The report goes to stdout and `<batch>/land/report.txt`; lines starting
 with `DECIDE` need a hand decision, and the exit status is 1 when there are
@@ -91,6 +97,17 @@ any. Fix them in T, then rerun only the gate on the edited tree (skipping
 .venv/bin/python tools/batch/land_batch.py --batch DIR --tree T \
     --skip patch,renames,splice,configure,promote,docs,regress
 ```
+
+Every gate while drafting and packaging is incremental: `configure.py` (3 s
+when splat's inputs are unchanged) and `ninja` prove the same image as a clean
+build, since ninja relinks and re-checksums whatever an edit reaches. The
+gate before `git push` is the one clean build, `--clean-gate` here or
+`configure.py --clean && ninja` by hand, because a stale `asm/` once hid
+missing names. After the push, print the CI run id and stop; the orchestrator
+checks CI.
+
+`check_unit.py` runs on both games at once in `promote`, and the base and
+regress measurements run `-j` (default: the CPU count) check_units at a time.
 
 A run that stops partway leaves T edited; reset it (`git checkout -- .` and
 delete the new units by name) before starting again, or resume with the steps

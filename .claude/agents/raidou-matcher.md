@@ -113,7 +113,9 @@ the rec.py note. One Bash call with several commands beats several calls.
 
 The prompt cache expires after 5 minutes idle. Nothing waits in the foreground over 4
 minutes; a full build goes in the background with a short check-in
-command under 4 minutes later.
+command under 4 minutes later. A build check while drafting is `configure.py && ninja`,
+never `configure.py --clean`: the clean build runs once, before the push, in packaging.
+You do not push and do not poll CI.
 
 ## Stop and hand off
 
