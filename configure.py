@@ -17,6 +17,7 @@ import shutil
 import stat
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 from tools.ee_gcc_aslr import marker_is_valid
@@ -258,20 +259,47 @@ def splat_digest(version: str, yaml: Path) -> str:
     return digest.hexdigest()
 
 
-def run_splat(version: str, yaml: Path, force: bool) -> bool:
+def needs_splat(version: str, yaml: Path, force: bool) -> bool:
     """Split when configuration or ASM/C ownership changed since the last split."""
-    digest = splat_digest(version, yaml)
     stamp = ROOT / "build" / version / ".splat_stamp"
-    if not force and stamp.exists() and stamp.read_text() == digest and (ROOT / "asm" / version).exists():
-        return False
-    print(f"splat: {version}")
-    sources = sorted(map(str, unit_sources(version).values()))
-    snapshot = snapshot_generated_files(generated_footprint(version))
+    return force or not stamp.exists() or stamp.read_text() != splat_digest(version, yaml) or not (
+        ROOT / "asm" / version).exists()
+
+
+def split_asm(version: str, yaml: Path) -> None:
+    """splat and the jump table pass, which write only asm/<version>; safe to run for both games at once."""
     # splat never deletes files: a unit or rodata split that moved leaves stale
     # asm behind (and include_rodata.py would include it twice).
     shutil.rmtree(ROOT / "asm" / version, ignore_errors=True)
-    subprocess.run([sys.executable, "tools/splat_split.py", str(yaml)], cwd=ROOT, check=True)
-    subprocess.run([sys.executable, "tools/resolve_jtbl_targets.py", f"asm/{version}"], cwd=ROOT, check=True)
+    for cmd in (["tools/splat_split.py", str(yaml)], ["tools/resolve_jtbl_targets.py", f"asm/{version}"]):
+        r = subprocess.run([sys.executable, *cmd], cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                           text=True)
+        print(r.stdout, end="", flush=True)
+        if r.returncode:
+            raise subprocess.CalledProcessError(r.returncode, cmd)
+
+
+def run_splat(versions: list[str], force: bool) -> bool:
+    """Split the versions whose inputs changed, splat for all of them at once; True if any was split."""
+    yamls = {v: ROOT / "config" / v / f"{VERSIONS[v]['serial']}.yaml" for v in versions}
+    todo = [v for v in versions if needs_splat(v, yamls[v], force)]
+    if not todo:
+        return False
+    print(f"splat: {', '.join(todo)}")
+    sources = {v: sorted(map(str, unit_sources(v).values())) for v in todo}
+    snapshots = {v: snapshot_generated_files(generated_footprint(v)) for v in todo}
+    # Each game's output is printed whole once its split ends, so the log stays per game.
+    with ThreadPoolExecutor(len(todo)) as pool:
+        for _ in pool.map(lambda v: split_asm(v, yamls[v]), todo):
+            pass
+    # The post-processors rewrite shared sources, so they run one game at a time.
+    for version in todo:
+        postprocess(version, yamls[version], sources[version], snapshots[version])
+    return True
+
+
+def postprocess(version: str, yaml: Path, sources: list[str], snapshot: dict) -> None:
+    stamp = ROOT / "build" / version / ".splat_stamp"
     subprocess.run([sys.executable, "tools/include_rodata.py", version], cwd=ROOT, check=True)
     subprocess.run([sys.executable, "tools/include_sdata.py", version], cwd=ROOT, check=True)
     subprocess.run([sys.executable, "tools/vu_include.py", version], cwd=ROOT, check=True)
@@ -285,7 +313,6 @@ def run_splat(version: str, yaml: Path, force: bool) -> bool:
     # not the pre-split absence, so the following configure remains a cache hit.
     stamp.write_text(splat_digest(version, yaml) if sorted(map(str, unit_sources(version).values())) == sources
                      else "a shared TU was split after splat named its object")
-    return True
 
 
 def write_configure_build(n, configure_inputs: list[str], argv: list[str]) -> None:
@@ -639,8 +666,7 @@ def write_ninja(versions: list[str], args: argparse.Namespace) -> dict[str, list
     # include_rodata.py/include_sdata.py split a shared TU the versions place
     # differently into per-game files, which moves its object: split again.
     for attempt in range(3):
-        if args.no_split or not any([run_splat(v, ROOT / "config" / v / f"{VERSIONS[v]['serial']}.yaml",
-                                               args.force_split and attempt == 0) for v in versions]):
+        if args.no_split or not run_splat(versions, args.force_split and attempt == 0):
             break
     for version in versions:
         serial = VERSIONS[version]["serial"]
