@@ -299,7 +299,6 @@ static inline void dds3UnpackLightColor(u32 color, f32 unit) {
 
 void dds3SceneLightUpdateFirst(void);
 void dds3SetSoftenBias(s32 frame, f32 soften, f32 bias);
-void eglSetOt(u32 ot);
 extern s32 dds3ScreenBlurOfsX[2];
 
 #include "sdk_libc.h"
@@ -590,7 +589,6 @@ extern s32 dds3DrawBistaData3;
 #endif
 
 extern void uiDrawSurfaceAtNearDepth(u32 surface);
-extern void eglLinkTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst);
 extern void fclDrawPanelSprite(s32 a, s32 b);
 extern void cmpDrawBoxF(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, u32 g);
 extern void evtSubmitDefaultDepthGradientRect(s32 x, s32 y, s32 width, s32 height, s32 topLeftColor, s32 topRightColor, s32 bottomRightColor, s32 bottomLeftColor);

@@ -270,7 +270,9 @@ struct SBTLUNIT_WORK {
     u8 pad43C[0x14];
     SKLID skillid;
     u32 next_st;
-    u8 pad458[0x1C];
+    u8 pad458[0x460 - 0x458];
+    s32 stockID; /* stock slot of a summoned demon, -1 otherwise */
+    u8 pad464[0x474 - 0x464];
     s32 field474;
     u8 pad478[0xC];
     struct SBTLUNIT_MODEL *model;
@@ -279,7 +281,9 @@ struct SBTLUNIT_WORK {
     s16 actMax;
     u8 pad490[0x2];
     s16 field492; /* compared with a hit's actID when flg & 0x800 */
-    u8 pad494[0xC];
+    u8 pad494[0x4];
+    s16 field498;
+    u8 pad49A[0x6];
     s16 field4A0;
     s16 field4A2;
     s32 damage_serialID;

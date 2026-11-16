@@ -16,6 +16,13 @@ struct SBTLSKLVISUAL_TBL *sbtlGetSklVisualTbl(SKLID sklid);
 s32 sbtlSetSkillData(struct SBTLUNIT_WORK *wk, SKLID sklid);
 s32 sbtlSetSkill_MotionData(struct SBTLUNIT_WORK *wk, SKLID sklid);
 
+/* Skill visual table entry (16 bytes in R1). Partial layout. */
+typedef struct SBTLSKLVISUAL_TBL {
+    u8 pad00[0xA];
+    s16 SABno;
+    u8 pad0C[0x4];
+} SBTLSKLVISUAL_TBL;
+
 struct SBTLSKILLP_TBL {
     u16 s_type;
     s16 para;

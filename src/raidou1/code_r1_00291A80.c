@@ -43,17 +43,17 @@ s32 Draw_sbtlSTP(SBTL_STP *stp)
         return 0;
     }
     for (; node != NULL; node = node->next) {
-        if (node->state >= 3 || node->state < 0) {
+        if (node->mode >= 3 || node->mode < 0) {
             continue;
         }
         VU0_LOAD_VF(vf10, &node->pos);
         btlProjectForwardPositionToScreen(&point);
         set = wk_sbtl->panel->resources;
-        slot = slotTable[node->slotIndex];
+        slot = slotTable[node->id];
         for (i = 0; i < 4; i++) {
             palette[i] = (set->workEntries[slot].savedColors[i] & 0xFFFFFF00) | node->alpha;
         }
-        effDrawSpriteWithCornerColors(point.x * 16, (s32)((f32)point.y + node->yOffset) * 8, 0, palette, 0, set, slot, 102);
+        effDrawSpriteWithCornerColors(point.x * 16, (s32)((f32)point.y + node->y) * 8, 0, palette, 0, set, slot, 102);
     }
     return 1;
 }

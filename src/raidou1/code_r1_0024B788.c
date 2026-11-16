@@ -422,7 +422,7 @@ s32 sbtlNakamaSetUp(void)
                 sbtlSetSummon_Unit(wk, wk_sbtl->summonIndex[0], 0, 0, 0, 2);
                 sbtlSetBit(&wk_sbtl->summonBit, wk_sbtl->summonIndex[0]);
                 sbtlSetDevilSkillID(wk_sbtl->stockDevilSkill[wk_sbtl->summonIndex[0]], 0);
-                wk_sbtl->field630[1] = 1;
+                wk_sbtl->field630->num = 1;
             } else {
                 sbtlCreateSM(wk_sbtl->sysmsgList, wk, 53, 0);
             }

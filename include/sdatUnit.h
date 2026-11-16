@@ -57,6 +57,7 @@ typedef struct sdatUnitWork_t {
 typedef sdatUnitWork_t datPartyDevil_t;
 
 #define SDAT_STOCK_NUM 12
+#define SDAT_ITEM_NUM 160
 
 /* Player data, 0xFA0 bytes at DDS3_GBWK+0x1CA0. Only the fields used so far are named. */
 typedef struct SBTL_PLAYER_DATA {
@@ -73,9 +74,8 @@ typedef struct SBTL_PLAYER_DATA {
     /* 0x14C */ s32 val14C;
     /* 0x150 */ s32 val150;
     /* 0x154 */ s32 val154;
-    /* 0x158 */ u8 pad158[0x238 - 0x158];
-    /* 0x238 */ u16 val238;
-    /* 0x23A */ u8 pad23A[0x2D8 - 0x23A];
+    /* 0x158 */ u8 pad158[0x198 - 0x158];
+    /* 0x198 */ s16 item[SDAT_ITEM_NUM]; /* stock per item id */
     /* 0x2D8 */ sdatUnitWork_t stock[SDAT_STOCK_NUM];
     /* 0xF98 */ u8 padF98[2];
     /* 0xF9A */ u16 unkF9A;

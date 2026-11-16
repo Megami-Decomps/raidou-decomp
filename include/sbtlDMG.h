@@ -261,6 +261,8 @@ typedef struct SBTLDMG_HITLISTWORK {
 
 void UnsetKaraburiSub(struct SBTLDMG_HITLISTWORK *lwk, struct SBTLDMG_HITWORK *hwk);
 void sbtlAddSerialID2(void);
+/* flg is unused; retail callers pass 0. */
+s32 sbtlCallBtlCheckALLSkill(struct SBTLUNIT_WORK *wk, struct SBTLDMG_HITWORK *hwk, s32 flg);
 void sbtlAnalyzeAisyo(struct SBTLUNIT_WORK *wk, s32 mode, sdfVector4_t *pos);
 SBTLDMG_LISTWORK *sbtlAnimListProc(void);
 s32 sbtlCHitFunc_ATTACK(struct SBTLUNIT_WORK *wk, struct SBTLEFF_WORK *ewk, struct SBTLDMG_HITWORK *twk, struct SBTLSKILL_TBL *tbl);

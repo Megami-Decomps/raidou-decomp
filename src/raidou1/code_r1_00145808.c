@@ -23,8 +23,6 @@ extern f32 mapCalcLen(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1);
 extern s32 mapSeVolCalc(f32 len, f32 maxLen, f32 minLen, s32 baseVol);
 extern void mapSoundMoveSeVol(s32 seId, s32 vol);
 extern s32 mapBigClipChkF(s32 cut, f32 x, f32 y, f32 z);
-extern void eglSetOt(s32 ot);
-extern void eglLinkTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst);
 extern void eglLinkPoly4(f32 x0, f32 y0, f32 z0, f32 x1, f32 y1, f32 z1, f32 x2, f32 y2, f32 z2, f32 x3, f32 y3, f32 z3, u32 c0, u32 c1, u32 c2, u32 c3);
 extern s32 mapObjTaskData12;
 extern sdfVector4_t mapObjTaskData4[5][8];

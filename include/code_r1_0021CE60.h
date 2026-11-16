@@ -213,6 +213,8 @@ typedef struct sdfFileCmdHandle_t {
     void *callbackContext; /* 0x3C: caller-owned callback context */
 } sdfFileCmdHandle_t;
 
+sdfFileCmdHandle_t *sdfFileOpen(const char *aFileName);
+
 typedef char DevState_size_must_be_0x40[(sizeof(sdfFileCmdHandle_t) == 0x40) ? 1 : -1];
 
 typedef char DevState_operation_size_must_be_1[
@@ -449,6 +451,8 @@ struct FileQueue *Create_effPartsList(struct FileQueue *source);
 struct FileQueue *effPartsCreateFinish(const struct FileQueue *source);
 
 void effPartsDelete(struct FileQueue *queue);
+void effPadVibeFadeUpdate(void);
+void effPartsScaleSet(struct FileQueue *queue, f32 scale);
 void effPartsDraw(struct FileQueue *queue);
 void effPartsPositionSet(struct FileQueue *queue, const f32 position[4]);
 void effPartsRotateSet(struct FileQueue *queue, const f32 rotation[4]);

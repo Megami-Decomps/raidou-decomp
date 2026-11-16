@@ -4,8 +4,6 @@
 #include "sbtlSub_0027ED08.h"
 #include "mapMenuWin.h"
 
-extern void eglSetOt(s32 ot);
-extern void eglLinkTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst);
 extern void evtSubmitDefaultDepthGradientRect(s32 x, s32 y, s32 w, s32 h, u32 c0, u32 c1, u32 c2, u32 c3);
 extern void mapIfDrawActionWin2(s32 x, s32 y, u32 color, const char *str);
 extern void mapIgnite3(s32 id, const char **name1, const char **name2);

@@ -4,7 +4,18 @@
 #include "common.h"
 #include "enums.h"
 
-struct SBTLITEM_LISTWORK;
+struct sdfMemHandle_t;
+
+typedef struct SBTLITEM_DATA {
+    s32 itemid;
+    s32 num;
+} SBTLITEM_DATA;
+
+typedef struct SBTLITEM_LISTWORK {
+    struct sdfMemHandle_t *handle;
+    s32 num;
+    SBTLITEM_DATA *data;
+} SBTLITEM_LISTWORK;
 
 typedef struct SBTLITEM_TBL {
     u32 usetype;
@@ -15,6 +26,8 @@ typedef struct SBTLITEM_TBL {
     s32 gold;
     s32 max_num;
 } SBTLITEM_TBL;
+
+extern SBTLITEM_TBL *tbldata;
 
 SBTLITEM_TBL *sbtlGetItemtbl(s32 id);
 s32 sbtlEntryItemList_Type(struct SBTLITEM_LISTWORK *lwk, u16 type);

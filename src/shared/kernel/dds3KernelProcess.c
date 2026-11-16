@@ -64,8 +64,6 @@ extern void sdf3DMakeFogPacket(sdf3DFogPacket_t *, sdf3DFogParam_t *);
 extern void sdf3DSetCamera(sdf3DScreenParam_t *, void *);
 extern void sdfModelOtInit(sdfModelOt_t *, sdfGrOt_t *, sdfGrOt_t *, sdfGrOt_t *, sdfGrOt_t *);
 extern sdfDrawTag_t *dds3LinkZClearDrawTag(s32);
-extern void eglSetOt(s32 ot);
-extern void eglLinkTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst);
 extern void fldDrwZLoad(void);
 extern void sdfPreDrawChainLink(sdfPreDrawChain_t *, sdfPreDrawTag_t *);
 extern sdfPreDrawChain_t dds3PreDrawChain;

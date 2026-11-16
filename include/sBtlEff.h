@@ -9,39 +9,140 @@ struct SBTLEFF_DELLISTWORK;
 struct SBTLEFF_LISTWORK;
 struct SBTLEFF_WORK;
 struct SBTLUNIT_WORK;
+struct SBTLUNIT_LISTWORK;
 
-/* Effect pack list entry. Partial layout: only the fields read so far are named. */
+struct FileQueue;
+struct sdfMemHandle_t;
+struct fileRequest;
+struct SBTL_HIT_PACDATA;
+
+/* Effect placement data of one pack entry (52 bytes in R1). Partial layout. */
+typedef struct EFFPDATA_WORK {
+    u8 type; /* SBTLEFF_BEDTYPE; retail reads it with lbu */
+    u8 pad01[0x4 - 0x1];
+    s32 eplno;
+    f32 starttime;
+    f32 life;
+    f32 fadeout_time;
+    u8 iti;
+    u8 pad15[0x3];
+    s32 iti_no;
+    s8 takasa;
+    s8 muki;
+    u8 pad1E[0x28 - 0x1E];
+    f32 scale;
+    s32 flg; /* SBTLEFF_FLG */
+    u8 pad30[0x34 - 0x30];
+} EFFPDATA_WORK;
+
+/* One effect of a loaded pack (0xA0 bytes). */
+typedef struct SBTLEFF_PACDATAWORK {
+    struct sdfMemHandle_t *handle; /* pData */
+    u8 pad04[4];
+    struct sdfMemHandle_t *selfHandle;
+    void *pData;
+    struct FileQueue *hPartsList;
+    s32 flg;
+    EFFPDATA_WORK wk;
+    u8 pad4C[0x58 - 0x4C];
+    s32 hitnum;
+    u8 pad5C[0x60 - 0x5C];
+    struct SBTL_HIT_PACDATA *hit[16];
+} SBTLEFF_PACDATAWORK;
+
+#define SBTLEFF_PACDATA_MAX 16
+#define SBTLEFF_PACLIST_MAX 48
+
+/* Effect pack list entry (92 bytes), SBTL_WORK2.effpac. */
 typedef struct SBTLEFF_PACLIST {
-    u8 pad00[0x14];
+    struct sdfMemHandle_t *handle;
+    struct fileRequest *file;
+    void *pData;
+    s32 num;
+    s16 gstat;
+    u16 status; /* EFFPAC_ST */
     s16 skillID;
     u8 pad16[0x2];
     u32 SMGID;
+    SBTLEFF_PACDATAWORK *pwk[SBTLEFF_PACDATA_MAX];
 } SBTLEFF_PACLIST;
 
-/* One live effect. Partial layout: offsets from sbtlGetEffectStat_ID and the hit code, HD names. */
+typedef struct SBTLEFF_LISTWORK {
+    s32 serial;
+    s32 serialID2;
+    s32 num;
+    struct SBTLEFF_WORK *wk;
+} SBTLEFF_LISTWORK;
+
+typedef struct SBTLEFF_DELWORK {
+    struct sdfMemHandle_t *handle;
+    SBTLEFF_DELST gstat;
+    SKLID sklid;
+    s32 GroupID;
+    SBTLUNIT_SIDE side;
+    struct SBTLEFF_DELWORK *prev;
+    struct SBTLEFF_DELWORK *next;
+} SBTLEFF_DELWORK;
+
+typedef struct SBTLEFF_DELLISTWORK {
+    s32 serial;
+    s32 num;
+    SBTLEFF_DELWORK *dwk;
+} SBTLEFF_DELLISTWORK;
+
+/* Effect data handles, inline in SBTLEFF_WORK. */
+typedef struct SBTLEFF_DATAWORK {
+    void *pData;
+    struct sdfMemHandle_t *hData;
+    void *hFile;
+    struct FileQueue *hPartsList;
+} SBTLEFF_DATAWORK;
+
+/* One live effect (0x12C bytes). Partial layout, HD names. */
 typedef struct SBTLEFF_WORK {
     sdfVector4_t pos;
-    u8 pad010[0xB0 - 0x10];
+    sdfVector4_t ppos;
+    sdfVector4_t rot;
+    u8 pad030[0xA0 - 0x30];
+    struct sdfMemHandle_t *handle;
+    s32 acterID;
+    s32 targetID;
+    s32 effectid; /* EFFID */
     s32 eListID;
     s32 hitserialID;
     s32 workID;
-    u8 pad0BC[0xD0 - 0xBC];
-    u32 flg; /* SBTLEFF_FLG */
-    u8 pad0D4[0xE4 - 0xD4];
+    s32 serialID2;
+    s32 alpha;
+    s32 alpha_cnt;
+    u32 rgba;
+    u8 pad0CC[0xD0 - 0xCC];
+    s32 flg; /* SBTLEFF_FLG */
+    u8 pad0D4[0xD8 - 0xD4];
+    f32 scale;
+    u8 pad0DC[0xE4 - 0xDC];
     s32 st; /* SBTLEFF_ST */
     s32 counter;
     s32 cmpcounter;
     s32 starttime;
-    u8 pad0F4[0x108 - 0xF4];
+    s32 life;
+    s32 fin_time;
+    s32 fout_time;
+    s32 helperno; /* SBTLUNIT_MARK */
+    SKLID BEDsklid;
     u8 BEDtype; /* SBTLEFF_BEDTYPE */
-    u8 pad109[0x128 - 0x109];
+    u8 pad109[0x10C - 0x109];
+    s32 BEDno;
+    u8 BEDacterside; /* SBTLUNIT_SIDE bits */
+    u8 pad111[0x114 - 0x111];
+    SBTLEFF_DATAWORK dwk;
+    struct SBTLEFF_WORK *prev;
     struct SBTLEFF_WORK *next;
 } SBTLEFF_WORK;
 
 typedef struct sbtlFileEntry_t {
     char *path;
     struct {
-        void *dst;
+        void **dst;
         s32 arg;
     } slot[18];
 } sbtlFileEntry_t;
@@ -49,6 +150,7 @@ typedef struct sbtlFileEntry_t {
 extern sbtlFileEntry_t sbtlFunc2Data[10];
 
 void sbtlCallFileOpen(sbtlFileEntry_t *entry);
+s32 sbtlCallFreeAuto(void **dst, s32 size, s32 *src);
 
 s32 sbtlLoadEffectData_Nakama(struct SBTLUNIT_WORK *wk);
 s32 EffFunc_DEADDAMAGE(struct SBTLEFF_WORK *wk);
@@ -90,15 +192,43 @@ s32 sbtlLoadEndCheck_PlayerOnMemData(void);
 s32 sbtlCallBtlLoadEffectDataIDMask(void);
 s32 sbtlFunc(s32 id, void *pData);
 s32 sbtlLoadPlayerOnMemData(void);
-s32 sbtlReleaseEff(struct SBTLEFF_LISTWORK *lwk, s32 flg);
+s32 sbtlReleaseEff(struct SBTLEFF_LISTWORK *lwk, u8 flg);
 s32 sbtlResetAIPattern(struct SBTLUNIT_WORK *wk, u32 flg);
 s32 sbtlSearchDelWork_Side(struct SBTLEFF_DELLISTWORK *lwk, SBTLUNIT_SIDE side);
 s32 sbtlSearchEffectData(SKLID skillid);
 s32 sbtlCallBtlSearchEffectData(struct SBTLUNIT_WORK *wk, SKLID skillid, u8 flg, s8 type, u16 side, s32 id, s32 param);
+void sbtlSetEffectData(struct SBTLEFF_WORK *ewk, struct SBTLUNIT_WORK *wk, SKLID sklid, s32 workID, u8 type, s32 no, u16 acterside,
+                       s32 serialID2, s32 sttime);
+s32 sbtlCallBtlCreateUnitList3(struct SBTLUNIT_WORK *wk, SKLID sklid, u8 type, s32 index, s32 id, u16 acterside, s32 serialID2,
+                                s16 tflg, s32 sttime, s16 count);
 s32 sbtlSearchEffect_ID(struct SBTLEFF_LISTWORK *lwk, EFFID effectid);
 s32 sbtlSearchEffect_SAB_Acter(struct SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SKLID BEDsklid, s32 BEDtype);
 s32 sbtlSearchEffect_WorkID(struct SBTLEFF_LISTWORK *lwk, s32 workid);
 s32 sbtlSetDecAlpha_SerialID(struct SBTLEFF_LISTWORK *lwk, s32 serialID, s32 alpha);
 s32 sbtlSetDecAlpha_SerialID2(struct SBTLEFF_LISTWORK *lwk, s32 serialID2, s32 alpha);
+s32 CheckEffectDataSingle(s32 type, s32 cmp);
+s32 sbtlLeaf7(s32 id);
+SBTLEFF_PACDATAWORK *sbtlBtlSetEffectDataSub(s32 id, s32 no);
+EFFPDATA_WORK *sbtlGetDmgEffScale(s32 id, s32 no);
+s32 sbtlBtlCheckDeleteEffectSub(struct SBTLEFF_WORK *wk);
+s32 sbtlBtlLoadEffectDataIDMaskSub(SKLID skillid);
+void sbtlGetEffectData_Num(void);
+s32 sbtlSearchEffect_SAB(struct SBTLEFF_LISTWORK *lwk, SKLID BEDsklid, s32 BEDtype);
+s32 sbtlForceDelete_EffectWork_ID(SKLID id, s8 flg);
+s32 CheckEffectData_Core(struct SBTLUNIT_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, SKLID sklid);
+void Draw_sbtlEff(EFFID id, s32 *starttime, s32 *life);
+s32 sbtlCallMemset18(SBTLEFF_PACLIST *pac, SKLID skillid, u16 flg, void *pData);
+s32 sbtlGetNumOfEffect_SAB(struct SBTLEFF_LISTWORK *lwk, s32 BEDtype, u8 side);
+SBTLEFF_WORK *sbtlCallMemAllocDirect3(SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, s32 id, s32 no);
+s32 sbtlRefSbtl26(struct SBTLEFF_WORK *wk);
+
+/* Per-effect process functions, indexed by SBTLEFF_WORK.effectid. */
+extern s32 (*sbtlCallPadVibeFadeUpdateData[])(struct SBTLEFF_WORK *wk);
+s32 sbtlEffSetActer(s32 id);
+s32 sbtlEffSetTarget(s32 id);
+
+/* epl_otchkflg: set while drawing effects that take the OT check. */
+extern u16 sbtlCallMemset17Data[]; /* SBTLEFF_FLG bits per EFFID */
+extern s32 sbtlCallSetOtData;
 
 #endif

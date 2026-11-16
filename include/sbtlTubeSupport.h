@@ -7,6 +7,6 @@
 struct SBTLUNIT_WORK;
 
 void nwdLeaf5(void);
-void sbtlCallBtlGetSkilltbl16(struct SBTLUNIT_WORK *tgtwk, SKLID sklid);
+s32 sbtlCallBtlGetSkilltbl16(struct SBTLUNIT_WORK *tgtwk, SKLID sklid);
 
 #endif

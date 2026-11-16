@@ -317,9 +317,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 00289E08	00289E08	field/fldPanel	c	smt3:map:1 of 1	field/fldPanel
 00289E50	0028A1E8	sbtlEff_00289E50	c	none	
 0028A298	0028A298	code_r1_0028A298	c	none	
-0028A320	0028EAC0	code_0028A320	asm	none	
+0028A320	0028EAC0	code_0028A320	c	none	
 0028EAE8	0028EAE8	code_r1_0028EAE8	c	none	
-0028EB80	00291810	code_0028EB80	asm	none	
+0028EB80	00291810	code_0028EB80	c	none	
 00291A80	00291A80	code_r1_00291A80	c	none	
 00291C78	002928B0	code_00291C78	asm	none	
 00292930	00292930	code_r1_00292930	c	none	
@@ -329,7 +329,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00297EF0	00297EF0	code_r1_00297EF0	c	none	
 00298540	00299950	code_00298540	asm	none	
 00299970	00299970	code_r1_00299970	c	none	
-002999C0	00299E40	code_002999C0	asm	none	
+002999C0	00299E40	code_002999C0	c	none	
 00299E80	00299E80	newbattle/nbActionProcess	c	smt3:map:1 of 1	newbattle/nbActionProcess
 00299EC8	0029BE98	sbtl	asm	none	
 0029BF50	0029BF50	code_r1_0029BF50	c	none	

@@ -2595,7 +2595,7 @@ u32 UnitRegist(MODELTYPE major, s32 minor)
     return id;
 }
 
-/* NON_MATCHING: 94 of 360 words match. Same control flow and stores; gcc folds player+52 to DDS3_GBWK+7380 and keeps DDS3_GBWK in an extra saved reg, so every register differs; aisyoBase copy scheduled before visual[2..3]; one word long. R1 sBtlSetPlayerData. SBTLUNIT_WORK.model at 0x484 is the ActAI work (flags 0xF8, 0x11C hit_area_r, 0x120 priv_area_r per HD). flg param unused in R1. New SBTL_WORK fields equipSword/equipGun/equipBullet/equipBulletBk/stockMinor/unitPadID/hitTargetID/field436/mag/hgunNum/huumaDevilID/field644; SBTL_START_DATA pos/rot/stockId; sbtlCallBtlGetPlayerData3 prototype.; vector checked (menu). */
+/* NON_MATCHING: 124 of 360 words match. Same control flow and stores; gcc folds player+52 to DDS3_GBWK+7380 and keeps DDS3_GBWK in an extra saved reg, so every register differs; aisyoBase copy scheduled before visual[2..3]; one word long. R1 sBtlSetPlayerData. SBTLUNIT_WORK.model at 0x484 is the ActAI work (flags 0xF8, 0x11C hit_area_r, 0x120 priv_area_r per HD). flg param unused in R1. New SBTL_WORK fields equipSword/equipGun/equipBullet/equipBulletBk/stockMinor/unitPadID/hitTargetID/field436/mag/hgunNum/huumaDevilID/field644; SBTL_START_DATA pos/rot/stockId; sbtlCallBtlGetPlayerData3 prototype.; vector checked (menu). */
 #ifdef NON_MATCHING
 s32 sbtlCallBtlCreateUnit(s8 flg) {
     s32 minorTbl[4] = { 1, 2, 3, 0 };
@@ -2687,7 +2687,7 @@ s32 sbtlCallBtlCreateUnit(s8 flg) {
             sbtlSetSummon_Unit(wk, wk_sbtl->summonIndex[0], 0, 0, 0, 1);
             sbtlSetBit(&wk_sbtl->summonBit, wk_sbtl->summonIndex[0]);
             sbtlSetDevilSkillID(wk_sbtl->stockDevilSkill[wk_sbtl->summonIndex[0]], 0);
-            wk_sbtl->field630[1] = 1;
+            wk_sbtl->field630->num = 1;
             wk = sbtlSearchUnit_ID(wk_sbtl->unitList, wk_sbtl->stockUnitID[wk_sbtl->summonIndex[0]]);
             wk_sbtl->unitPadID = wk->field1A0;
             wk_sbtl->flg = (wk_sbtl->flg | 0x4000000) & ~2;
@@ -4575,7 +4575,7 @@ INCLUDE_ASM(const s32, "code_r1_0024F220", BeginSetsuma);
 
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlBeginSetsumaSub);
 
-/* NON_MATCHING: 195 of 197 words match. Only the register of the actMax copy differs (v0 vs v1); tried local order and one shared unit variable; the stop-key path is if (pressed && bst != BST_BOUDO) {...} else field64C = 0 for the block order; sbtlCallMemset6 takes (s32 index, s32 flg) with flg unused (callers pass 0 in a1); sbtlDeleteEffectData_SerialID2 takes an s32 serial, not a unit; prototypes sbtlForceReset (sBtlEff.h), sbtlCallSetClutColor(wk, BST) (sBtlCalc.h); SBTL_WORK.field64C s8, SBTLUNIT_WORK.field370 s16; vector checked (32 rows, all take the CheckAction_Nakama == 0 return); the summon-cancel loop walked against the asm only. */
+/* NON_MATCHING: 196 of 197 words match. Only the branch at +0x118 differs (beq here, beql in retail); tried local order and one shared unit variable; the stop-key path is if (pressed && bst != BST_BOUDO) {...} else field64C = 0 for the block order; sbtlCallMemset6 takes (s32 index, s32 flg) with flg unused (callers pass 0 in a1); sbtlDeleteEffectData_SerialID2 takes an s32 serial, not a unit; prototypes sbtlForceReset (sBtlEff.h), sbtlCallSetClutColor(wk, BST) (sBtlCalc.h); SBTL_WORK.field64C s8, SBTLUNIT_WORK.field370 s16; vector checked (32 rows, all take the CheckAction_Nakama == 0 return); the summon-cancel loop walked against the asm only. */
 #ifdef NON_MATCHING
 s32 sbtlCallCheckActionNakama(struct SBTLUNIT_WORK *wk)
 {

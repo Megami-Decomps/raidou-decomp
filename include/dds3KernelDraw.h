@@ -72,6 +72,8 @@ void dds3FilterSetAlphaOfs(s32 alp);
 void dds3InitDrawEnv(void);
 void dds3RunQuake(void);
 void eglLinkAlpha(s32 mode);
+void eglSetOt(u32 ot);
+void eglLinkTest(s32 ate, s32 atst, s32 aref, s32 afail, s32 date, s32 datm, s32 zte, s32 ztst);
 s32 sbtlResetJump(void);
 
 extern u32 dds3BackColor;

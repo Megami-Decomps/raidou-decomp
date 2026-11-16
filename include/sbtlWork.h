@@ -8,6 +8,7 @@
 #include "sdatUnit.h"
 #include "sdfSound.h"
 #include "sbtlDMG.h"
+#include "sBtlEff.h"
 
 struct EffectSlotSet;
 
@@ -30,6 +31,7 @@ struct SBTLSM_LISTWORK;
 struct SBTLUNIT_LISTWORK;
 struct SBTL_MODELBIND_LIST;
 struct SBTL_STP;
+struct SBTLEFF_WORK;
 struct scrProcessWork_s;
 
 /* Battle main work (0x87C bytes), pointed to by wk_sbtl. Only fields read so far are named. */
@@ -71,7 +73,11 @@ typedef struct SBTL_WORK {
     s32 eventListID;
     u8 pad21C[4];
     s16 summonIndex[2];
-    u8 pad224[0x238 - 0x224];
+    u8 pad224[0x22C - 0x224];
+    s32 useitemID;
+    u8 pad230[4];
+    s16 useitem_stock; /* stock slot the item is used on, -1 for none */
+    u8 pad236[0x238 - 0x236];
     s32 equipBulletBk;
     u8 pad23C[0x2CC - 0x23C];
     s32 field2CC;
@@ -184,7 +190,7 @@ typedef struct SBTL_WORK {
     u8 pad625[3];
     SBTL_PANEL *panel;
     u8 pad62C[4];
-    s32 *field630;
+    struct SBTL_FIELD630_WORK *field630;
     struct SBTLDVLTK_LISTWORK *dvltkList;
     struct SBTLEXP_LISTWORK *expList;
     struct SBTL_MODELBIND_LIST *modelBindings;
@@ -299,19 +305,31 @@ typedef struct SBTL_STAGE_DATA {
 
 extern SBTL_STAGE_DATA *sbtlData100;
 
-/* Floating marker node, linked through next. The position is read as a VU0 quad. */
+/* Status marker over a unit (HD SBTLSTP_WORK), linked through next. R1 layout differs from HD. */
 typedef struct SBTL_STP_NODE {
     sdfVector4_t pos;
-    s32 state;
-    u8 pad14[8];
-    s16 slotIndex;
-    u8 pad1E[10];
-    u32 alpha;
+    u32 status;
+    s32 mode; /* SBTLSTP_MODE */
+    u8 pad18[4];
+    s16 id; /* SBTLSTP_ID */
+    u8 pad1E[2];
+    s32 counter;
+    s32 counterMax;
+    s32 alpha;
     u8 pad2C[4];
-    f32 yOffset;
-    u8 pad34[0x10];
+    f32 y;
+    f32 spd;
+    s32 ListID;
+    u8 pad3C[4];
     struct SBTL_STP_NODE *next;
 } SBTL_STP_NODE;
+
+/* 0x198 bytes, made by sbtlCallMemAllocDirect4, held in SBTL_WORK.field630. Partial layout. */
+typedef struct SBTL_FIELD630_WORK {
+    sdfMemHandle_t *handle;
+    s32 num;
+    u8 pad008[0x198 - 0x8];
+} SBTL_FIELD630_WORK;
 
 typedef struct SBTL_STP {
     s32 enabled;
@@ -408,12 +426,15 @@ typedef struct SBTL_PACDATA_WORK {
 
 /* Pointed to by sbtlData83, 0x115C bytes. */
 typedef struct SBTL_WORK2 {
-    u8 pad0000[0x1148];
+    SBTLEFF_PACLIST effpac[SBTLEFF_PACLIST_MAX];
+    void *effOnRsc_P;
+    u8 pad1144[4];
     struct fileRequest *pacHandle; /* SB_PACK3.LB, player on-memory data */
     s32 setflg;
     s32 dataCnt;
     sdfMemHandle_t *handle;
-    u8 pad1158[4];
+    s16 effpaccnt; /* packs loaded, clamped to 0..SBTLEFF_PACLIST_MAX - 1 */
+    u8 pad115A[2];
 } SBTL_WORK2;
 
 extern SBTL_WORK2 *sbtlData83;
@@ -434,9 +455,10 @@ s32 sbtlCallBtlGetScrollID(void);
 void pbSetGameCamera0(void);
 void sbtlCallBtlDeleteOnData(void);
 s32 sbtlCallBtlGetPlayerData(void);
-s32 sbtlCallBtlSearchEffectData2(s32 id, s32 a2, void *pData);
+s32 sbtlCallBtlSearchEffectData2(s32 id, u16 flg, void *pData);
 s32 sbtlBtlLoadPlayerOnMemDataSub(s32 index, void *pData);
-void sbtlCallMemset17(struct SBTLEFF_LISTWORK *effList, struct SBTLUNIT_WORK *wk, s32 type, s32 a, f32 *pos, u32 color, s32 b);
+struct SBTLEFF_WORK *sbtlCallMemset17(struct SBTLEFF_LISTWORK *lwk, struct SBTLUNIT_WORK *wk, EFFID effectid, s32 starttime,
+                                      const f32 *defpos, u32 rgba, s8 flg);
 void sbtlCallMemset3(s32 battleMode, s32 stageNo);
 s32 sbtlBtlLoadHuumaMesDataSub(s32 huumaMesNo);
 void sbtlCheckAutoSkill_Enemy(struct SBTLUNIT_WORK *wk);
@@ -444,7 +466,10 @@ s32 sbtlCheckScriptData(s32 devilId);
 s32 sbtlCheckTutorialBattle(void);
 void sbtlGetDevilData(struct SBTLUNIT_WORK *wk, s32 a, s32 b);
 SBTL_DEVIL_DATA *sbtlGetDevilData_sbtlSub(s32 id);
-s32 sbtlGetExeSkill(void);
+s32 sbtlGetExeSkill(SKLID sklid);
+s32 sbtlSobedSAB(SKLID id, char *buf);
+SBTL_FIELD630_WORK *sbtlCallMemAllocDirect4(void);
+s32 sbtlRefSbtl42(SBTL_FIELD630_WORK *wk);
 SBTL_MOTION_VISUAL *sbtlGetMotionVisualData(s32 a, s32 id);
 s32 sbtlGetScrollID(void);
 void sbtlInitDropWork(void);
@@ -458,6 +483,11 @@ void sbtlResetRndEncCount(void);
 void sbtlRndEncTopPriorityMap(s32 *mapOut, s32 *floorOut);
 s32 sbtlSbattle3(void);
 sdatUnitWork_t *sbtlGetStockUnitData(s32 id);
+s32 sbtlLeaf53(sdatUnitWork_t *unit);
+s32 sbtlGetDamage_GB(sdatUnitWork_t *acter, sdatUnitWork_t *unit, SKLID sklid);
+s32 sbtlCallBtlGetItemtbl3(sdatUnitWork_t *unit, s32 itemID);
+s32 sbtlCallBtlSearchUnitID35(s32 stockID);
+s32 sbtlCheckItemMember_Dead(s32 stockID);
 s32 sbtlSbattle5(dds3ProcessID_t *id);
 s32 sbtlSbattle6(dds3ProcessID_t *id);
 void sbtlSbtlCameraproc(void);
@@ -471,6 +501,7 @@ s32 Init_sbtlDraw(void);
 struct SBTLEXP_LISTWORK *InitTarSelProcessData(void);
 s32 Proc_sbtl(void);
 s32 Proc_sbtlEXP(struct SBTL_MODELBIND_LIST *lwk);
+s32 sbtlProcSBtlSTPSub(struct SBTLUNIT_WORK *wk);
 s32 Proc_sbtlSTP(SBTL_STP *stp);
 s32 Draw_sbtlSTP(SBTL_STP *stp);
 s32 btlLoadSbPack(void);

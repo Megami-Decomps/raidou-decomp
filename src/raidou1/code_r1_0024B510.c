@@ -47,7 +47,7 @@ s32 sbtlInitPlayerData(void)
     player->unit.now = para;
     player->unit.backup = para;
     player->unit.aisyo = aisyo;
-    player->val238 = 24;
+    player->item[80] = 24;
     player->val154 = 80;
     player->val146 = 0;
     player->val14C = 0;
