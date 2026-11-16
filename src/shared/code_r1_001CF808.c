@@ -174,15 +174,6 @@ char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename) {
 }
 
 /* NON_MATCHING: 44 of 48 words match. The two constant loads (4 and -1) before the sdata stores are scheduled in the other order; store order tried in all permutations. */
-#ifdef NON_MATCHING
-extern char sndVcInfo[];
-extern char sndSqInfo[];
-extern s16 sndInitWork;
-extern s32 sndInitData[];
-extern s8 sndInitData2;
-extern s32 sndInitData3;
-extern s32 sndInitData4;
-
 void sndInit(void)
 {
     if (sndInitData2 != 0) {
@@ -203,9 +194,6 @@ void sndInit(void)
     sndCallMemset();
     ProcessInit();
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_001CF808", sndInit);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", sndLeaf);
 

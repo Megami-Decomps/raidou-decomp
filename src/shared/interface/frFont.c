@@ -574,7 +574,7 @@ typedef char FrFontPosition_size_must_be_0x08[
 
 void frFontCreateContext();
 
-#define FR_FONT_CONTEXT_ENABLE_VALUE 0x80
+#define FR_FONT_SWITCH_OK_SPEED 128
 
 #define FR_FONT_FADE_COMPLETE 0x80
 
@@ -602,7 +602,7 @@ typedef char FrFontPosition_size_must_be_0x08[
 
 void frFontCreateContext();
 
-#define FR_FONT_CONTEXT_ENABLE_VALUE 0x80
+#define FR_FONT_SWITCH_OK_SPEED 14
 
 #define FR_FONT_FADE_COMPLETE 0x80
 
@@ -1009,19 +1009,10 @@ INCLUDE_ASM(const s32, "interface/frFont", frSetFontString);
 
 INCLUDE_ASM(const s32, "interface/frFont", frSetDrawSpeed);
 
-#ifdef NON_MATCHING
-#ifdef VERSION_RAIDOU1
-/* 1 of 8 words differ (first at +0x10) */
-#else
-/* 2 of 8 words differ (first at +0xC) */
-#endif
 void SwitchOK(_FRQ *glyph) {
-    glyph->contextModeEnabled = 1;
-    frSetDrawSpeed(glyph, FR_FONT_CONTEXT_ENABLE_VALUE);
+    glyph->switchState = 1;
+    frSetDrawSpeed(glyph, FR_FONT_SWITCH_OK_SPEED);
 }
-#else
-INCLUDE_ASM(const s32, "interface/frFont", SwitchOK);
-#endif
 
 INCLUDE_ASM(const s32, "interface/frFont", frLeaf);
 

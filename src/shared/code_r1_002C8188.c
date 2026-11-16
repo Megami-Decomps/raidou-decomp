@@ -12,7 +12,6 @@
 #include "sdf_resource.h"
 #include "sdk_libc.h"
 #include "include_asm.h"
-#include "newdata.h"
 #include "ps2asm.h"
 #include "billboard.h"
 #include "sdf_types.h"
@@ -978,31 +977,35 @@ void itfRotateScreenOffset(s32 *outX, s32 *outY, s32 x, s32 y, s32 centerX, s32 
 }
 
 
-#ifdef NON_MATCHING
-/* 44 of 288 words differ: store scheduling in the final primitive writes. Behavior is the same. */
+/* Sensitive to this unit's declaration set: including newdata.h moves the alias class of the
+ * address-taken corners, and the packet stores then schedule differently. */
 void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSpriteUV *uv,
                          const u32 *colors, u32 flip, f32 angle, u32 alphaMode,
                          s32 filter, sdfTexHandle_t *tex, s32 ot)
 {
-    sdfGrOt_t *otp;
-    void *packet;
-    u64 *prim;
-    void *tag;
     u32 uvs[4];
-    u64 vHi0;
-    u64 vHi1;
-    u32 zq;
-    u64 p0, p1, p2, p3, q1, q2, q3;
-    s32 pt[8];
+    /* Separate corner locals: itfRotateScreenOffset writes each through its own pointer. */
     s32 x0;
     s32 y0;
     s32 x1;
     s32 y1;
+    s32 x2;
+    s32 y2;
+    s32 x3;
+    s32 y3;
+    void *packet;
+    void *tag;
+    u64 *prim;
+    s32 left;
+    s32 top;
+    s32 right;
+    s32 bottom;
     s32 hw;
     s32 hh;
     s32 cx;
     s32 cy;
     s32 t;
+    sdfGrOt_t *otp;
 
     if (filter == 0) {
         sdfTexSetFilter(tex, 0, 1);
@@ -1012,48 +1015,48 @@ void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSp
     packet = EE_ADDR_PTR(sdfGrAllocPacketBuff(sdf2DGetPrimPacketSize(3, 4)));
     sdf2DMakePrimPacketHeader(packet, 0x15C, 3, 0x531, 4);
     prim = (u64 *)sdf2DGetPrimPtr(packet);
-    x0 = x + 0x7000;
-    y0 = y + 0x7900;
-    x1 = x0 + width - 8;
-    y1 = y0 + height - 4;
-    hw = (x1 - x0) / 2;
-    hh = (y1 - y0) / 2;
-    cx = x0 + hw;
-    cy = y0 + hh;
-    pt[0] = x0;
-    pt[1] = y0;
-    pt[6] = x1;
-    pt[7] = y1;
+    left = x + 0x7000;
+    top = y + 0x7900;
+    right = left + width - 8;
+    bottom = top + height - 4;
+    hw = (right - left) / 2;
+    hh = (bottom - top) / 2;
+    cx = left + hw;
+    cy = top + hh;
+    x0 = left;
+    y0 = top;
+    x3 = right;
+    y3 = bottom;
     if (angle == 0.0f) {
-        pt[2] = x1;
-        pt[3] = y0;
-        pt[4] = x0;
-        pt[5] = y1;
+        x1 = right;
+        y1 = top;
+        x2 = left;
+        y2 = bottom;
     } else {
-        itfRotateScreenOffset(&pt[0], &pt[1], -hw, -hh, cx, cy, angle);
-        itfRotateScreenOffset(&pt[2], &pt[3], hw, -hh, cx, cy, angle);
-        itfRotateScreenOffset(&pt[4], &pt[5], -hw, hh, cx, cy, angle);
-        itfRotateScreenOffset(&pt[6], &pt[7], hw, hh, cx, cy, angle);
+        itfRotateScreenOffset(&x0, &y0, -hw, -hh, cx, cy, angle);
+        itfRotateScreenOffset(&x1, &y1, hw, -hh, cx, cy, angle);
+        itfRotateScreenOffset(&x2, &y2, -hw, hh, cx, cy, angle);
+        itfRotateScreenOffset(&x3, &y3, hw, hh, cx, cy, angle);
     }
     uvs[0] = uv->rect.u0 << 4;
     uvs[1] = uv->rect.v0 << 4;
     uvs[2] = uv->rect.u1 << 4;
     uvs[3] = uv->rect.v1 << 4;
-    if ((flip & 1) != 0) {
-        t = pt[0];
-        pt[0] = pt[2];
-        pt[2] = t;
-        t = pt[4];
-        pt[4] = pt[6];
-        pt[6] = t;
+    if (flip & 1) {
+        t = x0;
+        x0 = x1;
+        x1 = t;
+        t = x2;
+        x2 = x3;
+        x3 = t;
     }
-    if ((flip & 2) != 0) {
-        t = pt[1];
-        pt[1] = pt[5];
-        pt[5] = t;
-        t = pt[3];
-        pt[3] = pt[7];
-        pt[7] = t;
+    if (flip & 2) {
+        t = y0;
+        y0 = y2;
+        y2 = t;
+        t = y1;
+        y1 = y3;
+        y3 = t;
     }
     if (colors == NULL) {
         prim[0] = 0x8000000080LL;
@@ -1074,28 +1077,18 @@ void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSp
         prim[18] = (colors[3] >> 24) | ((u64)((colors[3] >> 16) & 0xFF) << 32);
         prim[19] = ((colors[3] >> 8) & 0xFF) | ((u64)(colors[3] & 0xFF) << 32);
     }
-    vHi0 = (u64)uvs[1] << 32;
-    zq = z >> 4;
-    prim[2] = uvs[0] | vHi0;
-    vHi1 = (u64)uvs[3] << 32;
-    p0 = (u32)pt[0] | ((u64)(u32)pt[1] << 32);
-    prim[8] = uvs[2] | vHi0;
-    prim[5] = zq;
-    prim[4] = p0;
-    p1 = (u32)pt[2];
-    q1 = (u64)(u32)pt[3] << 32;
-    prim[14] = uvs[0] | vHi1;
-    prim[11] = zq;
-    prim[10] = p1 | q1;
-    p2 = (u32)pt[4];
-    q2 = (u64)(u32)pt[5] << 32;
-    prim[20] = uvs[2] | vHi1;
-    prim[17] = zq;
-    prim[16] = p2 | q2;
-    p3 = (u32)pt[6];
-    q3 = (u64)(u32)pt[7] << 32;
-    prim[23] = zq;
-    prim[22] = p3 | q3;
+    prim[2] = uvs[0] | ((u64)uvs[1] << 32);
+    prim[4] = (u64)(u32)x0 | ((u64)(u32)y0 << 32);
+    prim[5] = z >> 4;
+    prim[8] = uvs[2] | ((u64)uvs[1] << 32);
+    prim[10] = (u64)(u32)x1 | ((u64)(u32)y1 << 32);
+    prim[11] = z >> 4;
+    prim[14] = uvs[0] | ((u64)uvs[3] << 32);
+    prim[16] = (u64)(u32)x2 | ((u64)(u32)y2 << 32);
+    prim[17] = z >> 4;
+    prim[20] = uvs[2] | ((u64)uvs[3] << 32);
+    prim[22] = (u64)(u32)x3 | ((u64)(u32)y3 << 32);
+    prim[23] = z >> 4;
     effSelectPresetByKind(alphaMode, ot);
     tag = EE_ADDR_AS(void *, sdfGrAllocPacketBuff(0x20));
     sdfDrawTagInit(tag);
@@ -1105,9 +1098,6 @@ void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSp
     otp->regFunc(otp, tag);
     sdfSubmitGsAlphaOneRegisterPacket(0x44, ot);
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_002C8188", sdfDrawTexturedQuad);
-#endif
 
 void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width,
                                     u32 height, const u32 *vertexColors, u32 presetMode, u32 presetValue) {

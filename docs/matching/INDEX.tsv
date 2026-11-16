@@ -1,5 +1,4 @@
 function	unit	size	distance	page	line
-dds3ObjectBaseMakeUnit	basic/dds3ObjectBase	raidou1 0x104, raidou2 0x104	0 of 65 words differ	docs/matching/basic/dds3ObjectBase.md	3
 cmbCallSetUserImage	code_00181858	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00181858.md	3
 cmbRefDDS3GBWK	code_00181858	raidou1 0xD0	7 of 52 words differ	docs/matching/code_00181858.md	11
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3
@@ -57,7 +56,6 @@ mapNakamaTask	code_r1_0016C450	raidou1 0x5E0	360 of 376 words differ	docs/matchi
 mapNpcPathMakeControl	code_r1_00175180	raidou1 0x1C4, raidou2 0x1C4	91 of 96 words differ	docs/matching/code_r1_00175180.md	3
 mapNpcPathTask	code_r1_00175858	raidou1 0xB0, raidou2 0xB0	40 of 42 words differ	docs/matching/code_r1_00175858.md	3
 Start_evtTmxPreLoad	code_r1_001CEEF8	raidou1 0x2D8, raidou2 0x2D8	156 of 172 words differ	docs/matching/code_r1_001CEEF8.md	3
-sndInit	code_r1_001CF808	raidou1 0xC0, raidou2 0xC0	0 of 48 words differ	docs/matching/code_r1_001CF808.md	3
 effUpdateWaveEmitterSlots	code_r1_0021CE60	raidou1 0x888, raidou2 0x888	1 of 546 words differ	docs/matching/code_r1_0021CE60.md	3
 fileAllocateGridRecordSlots	code_r1_0021CE60	raidou1 0x158, raidou2 0x158	83 of 84 words differ	docs/matching/code_r1_0021CE60.md	9
 PartsCreate	code_r1_00226EC8	raidou1 0x59C, raidou2 0x59C	177 of 223 words differ	docs/matching/code_r1_00226EC8.md	3
@@ -76,57 +74,49 @@ sbtlNakamaSetUp	code_r1_0024B788	raidou1 0x48C	249 of 291 words differ	docs/matc
 sbtlSceneLoad	code_r1_0024DE98	raidou1 0xD4	25 of 53 words differ	docs/matching/code_r1_0024DE98.md	3
 sbtlCallMemset4	code_r1_0024EE78	raidou1 0x3A4	37 of 233 words differ	docs/matching/code_r1_0024EE78.md	3
 CheckMapHit	code_r1_0024F220	raidou1 0x88	9 of 34 words differ	docs/matching/code_r1_0024F220.md	3
-ChkHuuma_PlayerInputOk	code_r1_0024F220	raidou1 0x108	0 of 66 words differ	docs/matching/code_r1_0024F220.md	11
-nakamamodeCallGetActiveScene	code_r1_0024F220	raidou1 0x584	6 of 353 words differ	docs/matching/code_r1_0024F220.md	21
-sbtlCallBtlCheckDamageTarget3	code_r1_0024F220	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_0024F220.md	29
-sbtlCallBtlCheckEnshutuSummonUnit	code_r1_0024F220	raidou1 0x2C8	0 of 178 words differ	docs/matching/code_r1_0024F220.md	37
-sbtlCallBtlCheckEnshutuSummonUnit2	code_r1_0024F220	raidou1 0x218	0 of 134 words differ	docs/matching/code_r1_0024F220.md	47
-sbtlCallBtlCreateEnemyList	code_r1_0024F220	raidou1 0x388	2 of 226 words differ	docs/matching/code_r1_0024F220.md	57
-sbtlCallBtlCreateUnit	code_r1_0024F220	raidou1 0x5A0	236 of 360 words differ	docs/matching/code_r1_0024F220.md	65
-sbtlCallBtlGetBadStatus	code_r1_0024F220	raidou1 0x2F8	3 of 190 words differ	docs/matching/code_r1_0024F220.md	73
-sbtlCallBtlGetBadStatus2	code_r1_0024F220	raidou1 0xE4	57 of 58 words differ	docs/matching/code_r1_0024F220.md	81
-sbtlCallBtlGetBadStatus3	code_r1_0024F220	raidou1 0x90	25 of 34 words differ	docs/matching/code_r1_0024F220.md	89
-sbtlCallBtlGetBadStatus4	code_r1_0024F220	raidou1 0x108	0 of 66 words differ	docs/matching/code_r1_0024F220.md	97
-sbtlCallBtlGetDevilSESub	code_r1_0024F220	raidou1 0x20C	40 of 129 words differ	docs/matching/code_r1_0024F220.md	107
-sbtlCallBtlGetSkilltbl	code_r1_0024F220	raidou1 0x2C0	155 of 170 words differ	docs/matching/code_r1_0024F220.md	113
-sbtlCallBtlSearchUnitID7	code_r1_0024F220	raidou1 0xD4	46 of 49 words differ	docs/matching/code_r1_0024F220.md	121
-sbtlCallCheckActionNakama	code_r1_0024F220	raidou1 0x314	1 of 197 words differ	docs/matching/code_r1_0024F220.md	129
-sbtlCallDeleteAll	code_r1_0024F220	raidou1 0x49C	6 of 295 words differ	docs/matching/code_r1_0024F220.md	137
-sbtlCallGetAnlogKey	code_r1_0024F220	raidou1 0x4BC	262 of 298 words differ	docs/matching/code_r1_0024F220.md	143
-sbtlCallGetRandIntA5	code_r1_0024F220	raidou1 0xF0	26 of 58 words differ	docs/matching/code_r1_0024F220.md	151
-sbtlCallMemset11	code_r1_0024F220	raidou1 0x3B8	80 of 238 words differ	docs/matching/code_r1_0024F220.md	157
-sbtlCallMemset12	code_r1_0024F220	raidou1 0x3BC	200 of 240 words differ	docs/matching/code_r1_0024F220.md	163
-sbtlCallMemset5	code_r1_0024F220	raidou1 0x284	140 of 157 words differ	docs/matching/code_r1_0024F220.md	171
-sbtlCheckEffectCancel	code_r1_0024F220	raidou1 0xB0	16 of 44 words differ	docs/matching/code_r1_0024F220.md	179
-sbtlCheckMapHit_Cross	code_r1_0024F220	raidou1 0x114	25 of 69 words differ	docs/matching/code_r1_0024F220.md	187
-sbtlCheckModelDataLoadEnd_sbtlUnit	code_r1_0024F220	raidou1 0x404	164 of 258 words differ	docs/matching/code_r1_0024F220.md	195
-sbtlCheckPad	code_r1_0024F220	raidou1 0x178	4 of 94 words differ	docs/matching/code_r1_0024F220.md	203
-sbtlCreateEnemyList	code_r1_0024F220	raidou1 0xB8	0 of 46 words differ	docs/matching/code_r1_0024F220.md	209
-sbtlCreateSideList	code_r1_0024F220	raidou1 0x120	0 of 72 words differ	docs/matching/code_r1_0024F220.md	219
-sbtlCreateSideList_sbtlUnit	code_r1_0024F220	raidou1 0x120	0 of 72 words differ	docs/matching/code_r1_0024F220.md	229
-sbtlGetPlayer_HitTarget	code_r1_0024F220	raidou1 0xA0	37 of 40 words differ	docs/matching/code_r1_0024F220.md	239
-sbtlGetRotate	code_r1_0024F220	raidou1 0x1AC	86 of 108 words differ	docs/matching/code_r1_0024F220.md	247
-sbtlLoadSkillSE	code_r1_0024F220	raidou1 0x114	0 of 69 words differ	docs/matching/code_r1_0024F220.md	253
-sbtlNormalProc_Huuma	code_r1_0024F220	raidou1 0x378	157 of 222 words differ	docs/matching/code_r1_0024F220.md	263
-sbtlPlayMotionSENowSub2	code_r1_0024F220	raidou1 0x48	13 of 13 words differ	docs/matching/code_r1_0024F220.md	269
-sbtlPlayerRKaitenInit	code_r1_0024F220	raidou1 0x3F8	70 of 254 words differ	docs/matching/code_r1_0024F220.md	275
-sbtlProcScript	code_r1_0024F220	raidou1 0x9C	33 of 36 words differ	docs/matching/code_r1_0024F220.md	281
-sbtlRefSbtl15	code_r1_0024F220	raidou1 0x78	15 of 30 words differ	docs/matching/code_r1_0024F220.md	289
-sbtlRefSbtl17	code_r1_0024F220	raidou1 0x84	5 of 33 words differ	docs/matching/code_r1_0024F220.md	297
-sbtlRefSbtl5	code_r1_0024F220	raidou1 0x98	4 of 38 words differ	docs/matching/code_r1_0024F220.md	303
-sbtlRefSbtl8	code_r1_0024F220	raidou1 0x118	51 of 68 words differ	docs/matching/code_r1_0024F220.md	311
-sbtlSearchReturn_Unit	code_r1_0024F220	raidou1 0xBC	24 of 44 words differ	docs/matching/code_r1_0024F220.md	319
-sbtlSetLight_Map	code_r1_0024F220	raidou1 0x234	39 of 142 words differ	docs/matching/code_r1_0024F220.md	327
-sbtlSetMotion_sbtlUnit	code_r1_0024F220	raidou1 0x1EC	5 of 123 words differ	docs/matching/code_r1_0024F220.md	333
-sbtlSetVibe	code_r1_0024F220	raidou1 0x10C	13 of 13 words differ	docs/matching/code_r1_0024F220.md	339
-btlRunCameraMotionResetTask	code_r1_002692F0	raidou1 0x28	0 of 10 words differ	docs/matching/code_r1_002692F0.md	3
+nakamamodeCallGetActiveScene	code_r1_0024F220	raidou1 0x584	6 of 353 words differ	docs/matching/code_r1_0024F220.md	11
+sbtlCallBtlCheckDamageTarget3	code_r1_0024F220	raidou1 0x500	288 of 310 words differ	docs/matching/code_r1_0024F220.md	19
+sbtlCallBtlCheckEnshutuSummonUnit2	code_r1_0024F220	raidou1 0x218	0 of 134 words differ	docs/matching/code_r1_0024F220.md	27
+sbtlCallBtlCreateEnemyList	code_r1_0024F220	raidou1 0x388	2 of 226 words differ	docs/matching/code_r1_0024F220.md	37
+sbtlCallBtlCreateUnit	code_r1_0024F220	raidou1 0x5A0	236 of 360 words differ	docs/matching/code_r1_0024F220.md	45
+sbtlCallBtlGetBadStatus	code_r1_0024F220	raidou1 0x2F8	3 of 190 words differ	docs/matching/code_r1_0024F220.md	53
+sbtlCallBtlGetBadStatus2	code_r1_0024F220	raidou1 0xE4	57 of 58 words differ	docs/matching/code_r1_0024F220.md	61
+sbtlCallBtlGetBadStatus3	code_r1_0024F220	raidou1 0x90	25 of 34 words differ	docs/matching/code_r1_0024F220.md	69
+sbtlCallBtlGetBadStatus4	code_r1_0024F220	raidou1 0x108	0 of 66 words differ	docs/matching/code_r1_0024F220.md	77
+sbtlCallBtlGetDevilSESub	code_r1_0024F220	raidou1 0x20C	40 of 129 words differ	docs/matching/code_r1_0024F220.md	87
+sbtlCallBtlGetSkilltbl	code_r1_0024F220	raidou1 0x2C0	155 of 170 words differ	docs/matching/code_r1_0024F220.md	93
+sbtlCallBtlSearchUnitID7	code_r1_0024F220	raidou1 0xD4	46 of 49 words differ	docs/matching/code_r1_0024F220.md	101
+sbtlCallCheckActionNakama	code_r1_0024F220	raidou1 0x314	1 of 197 words differ	docs/matching/code_r1_0024F220.md	109
+sbtlCallDeleteAll	code_r1_0024F220	raidou1 0x49C	6 of 295 words differ	docs/matching/code_r1_0024F220.md	117
+sbtlCallGetAnlogKey	code_r1_0024F220	raidou1 0x4BC	262 of 298 words differ	docs/matching/code_r1_0024F220.md	123
+sbtlCallGetRandIntA5	code_r1_0024F220	raidou1 0xF0	26 of 58 words differ	docs/matching/code_r1_0024F220.md	131
+sbtlCallMemset11	code_r1_0024F220	raidou1 0x3B8	80 of 238 words differ	docs/matching/code_r1_0024F220.md	137
+sbtlCallMemset12	code_r1_0024F220	raidou1 0x3BC	200 of 240 words differ	docs/matching/code_r1_0024F220.md	143
+sbtlCallMemset5	code_r1_0024F220	raidou1 0x284	140 of 157 words differ	docs/matching/code_r1_0024F220.md	151
+sbtlCheckEffectCancel	code_r1_0024F220	raidou1 0xB0	16 of 44 words differ	docs/matching/code_r1_0024F220.md	159
+sbtlCheckMapHit_Cross	code_r1_0024F220	raidou1 0x114	25 of 69 words differ	docs/matching/code_r1_0024F220.md	167
+sbtlCheckModelDataLoadEnd_sbtlUnit	code_r1_0024F220	raidou1 0x404	164 of 258 words differ	docs/matching/code_r1_0024F220.md	175
+sbtlCheckPad	code_r1_0024F220	raidou1 0x178	4 of 94 words differ	docs/matching/code_r1_0024F220.md	183
+sbtlGetPlayer_HitTarget	code_r1_0024F220	raidou1 0xA0	37 of 40 words differ	docs/matching/code_r1_0024F220.md	189
+sbtlGetRotate	code_r1_0024F220	raidou1 0x1AC	86 of 108 words differ	docs/matching/code_r1_0024F220.md	197
+sbtlNormalProc_Huuma	code_r1_0024F220	raidou1 0x378	157 of 222 words differ	docs/matching/code_r1_0024F220.md	203
+sbtlPlayMotionSENowSub2	code_r1_0024F220	raidou1 0x48	13 of 13 words differ	docs/matching/code_r1_0024F220.md	209
+sbtlPlayerRKaitenInit	code_r1_0024F220	raidou1 0x3F8	70 of 254 words differ	docs/matching/code_r1_0024F220.md	215
+sbtlProcScript	code_r1_0024F220	raidou1 0x9C	33 of 36 words differ	docs/matching/code_r1_0024F220.md	221
+sbtlRefSbtl15	code_r1_0024F220	raidou1 0x78	15 of 30 words differ	docs/matching/code_r1_0024F220.md	229
+sbtlRefSbtl17	code_r1_0024F220	raidou1 0x84	5 of 33 words differ	docs/matching/code_r1_0024F220.md	237
+sbtlRefSbtl5	code_r1_0024F220	raidou1 0x98	4 of 38 words differ	docs/matching/code_r1_0024F220.md	243
+sbtlRefSbtl8	code_r1_0024F220	raidou1 0x118	51 of 68 words differ	docs/matching/code_r1_0024F220.md	251
+sbtlSearchReturn_Unit	code_r1_0024F220	raidou1 0xBC	24 of 44 words differ	docs/matching/code_r1_0024F220.md	259
+sbtlSetLight_Map	code_r1_0024F220	raidou1 0x234	39 of 142 words differ	docs/matching/code_r1_0024F220.md	267
+sbtlSetMotion_sbtlUnit	code_r1_0024F220	raidou1 0x1EC	5 of 123 words differ	docs/matching/code_r1_0024F220.md	273
+sbtlSetVibe	code_r1_0024F220	raidou1 0x10C	13 of 13 words differ	docs/matching/code_r1_0024F220.md	279
 sbtlBtlLoadPlayerOnMemDataSub	code_r1_0028A298	raidou1 0x88	28 of 30 words differ	docs/matching/code_r1_0028A298.md	3
 Draw_sbtlSTP	code_r1_00291A80	raidou1 0x1F8	90 of 91 words differ	docs/matching/code_r1_00291A80.md	3
 sbtlSetLoadPanelData	code_r1_00292930	raidou1 0x94, raidou2 0x94	18 of 34 words differ	docs/matching/code_r1_00292930.md	3
 sbtlInitTutorial	code_r1_00295298	raidou1 0xF8	58 of 62 words differ	docs/matching/code_r1_00295298.md	3
 sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3
 sbtlCallBtlGetDevilDataSBtlSub4	code_r1_002A1E48	raidou1 0x294	140 of 159 words differ	docs/matching/code_r1_002A1E48.md	3
-sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	44 of 288 words differ	docs/matching/code_r1_002C8188.md	3
 effDrawTextureSlot	code_r1_002CA3F0	raidou1 0x2CC, raidou2 0x2D4	2 of 179 words differ	docs/matching/code_r1_002CA3F0.md	3
 cmpDrawBoxG	code_r1_002CAFD8	raidou1 0x190, raidou2 0x190	8 of 100 words differ	docs/matching/code_r1_002CAFD8.md	3
 evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	docs/matching/code_r1_002F59D0.md	3
@@ -141,12 +131,11 @@ evtSetUnitRot2	event/evtUnitManager	raidou1 0x6C, raidou2 0x6C	1 of 27 words dif
 evtUnitManagerPrimaryFunc	event/evtUnitManager	raidou1 0x6E8	18 of 442 words differ	docs/matching/event/evtUnitManager.md	23
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3
 MessageRequestNS	interface/frFont	raidou1 0x40, raidou2 0x40	7 of 15 words differ	docs/matching/interface/frFont.md	3
-SwitchOK	interface/frFont	raidou1 0x20, raidou2 0x20	1 of 8 words differ	docs/matching/interface/frFont.md	27
-frCallEventVoiceSub	interface/frFont	raidou1 0x74	1 of 29 words differ	docs/matching/interface/frFont.md	47
-frCallGetStrWidth3	interface/frFont	raidou1 0xCC	1 of 51 words differ	docs/matching/interface/frFont.md	59
-frCallSetFontString	interface/frFont	raidou1 0x68, raidou2 0x68	13 of 26 words differ	docs/matching/interface/frFont.md	71
-frFontGetGlyphPositionAtIndex	interface/frFont	raidou1 0x8C	1 of 35 words differ	docs/matching/interface/frFont.md	95
-frSetMessageDefStepY	interface/frFont	raidou1 0xC, raidou2 0xC	1 of 3 words differ	docs/matching/interface/frFont.md	107
+frCallEventVoiceSub	interface/frFont	raidou1 0x74	1 of 29 words differ	docs/matching/interface/frFont.md	27
+frCallGetStrWidth3	interface/frFont	raidou1 0xCC	1 of 51 words differ	docs/matching/interface/frFont.md	39
+frCallSetFontString	interface/frFont	raidou1 0x68, raidou2 0x68	13 of 26 words differ	docs/matching/interface/frFont.md	51
+frFontGetGlyphPositionAtIndex	interface/frFont	raidou1 0x8C	1 of 35 words differ	docs/matching/interface/frFont.md	75
+frSetMessageDefStepY	interface/frFont	raidou1 0xC, raidou2 0xC	1 of 3 words differ	docs/matching/interface/frFont.md	87
 itfCallMiscDrawRectanglePrim	interface/itfPanel	raidou1 0x5B8, raidou2 0x5B8	316 of 320 words differ	docs/matching/interface/itfPanel.md	3
 dds3CallGetFrameID	kernel/dds3KernelDraw	raidou1 0x2F0, raidou2 0x2F0	151 of 188 words differ	docs/matching/kernel/dds3KernelDraw.md	3
 dds3ChangeBistaMode	kernel/dds3KernelDraw	raidou1 0x54, raidou2 0x54	13 of 15 words differ	docs/matching/kernel/dds3KernelDraw.md	11
@@ -164,10 +153,7 @@ sbtlReleaseHitC_List	sbtlDMG	raidou1 0x158	69 of 84 words differ	docs/matching/s
 sbtlSetHitPos	sbtlDMG	raidou1 0x4B4	293 of 302 words differ	docs/matching/sbtlDMG.md	61
 sbtlSetHitPos_XYZ	sbtlDMG	raidou1 0x194	3 of 101 words differ	docs/matching/sbtlDMG.md	71
 sbtlFunc	sbtlEff_00289E50	raidou1 0x144	58 of 79 words differ	docs/matching/sbtlEff_00289E50.md	3
-sdf3MakeScreenParam	sdf/sdf3D	raidou1 0x220, raidou2 0x220	0 of 136 words differ	docs/matching/sdf/sdf3D.md	3
-sdfCdImageSearchFile	sdf/sdfCd	raidou1 0x1B4, raidou2 0x1B4	0 of 109 words differ	docs/matching/sdf/sdfCd.md	3
-sdfFileCdImageCmdThread	sdf/sdfFileIO	raidou1 0x26C, raidou2 0x26C	0 of 155 words differ	docs/matching/sdf/sdfFileIO.md	3
-sdfFileCmdAnalyzeFileName	sdf/sdfFileIO	raidou1 0x168, raidou2 0x168	4 of 90 words differ	docs/matching/sdf/sdfFileIO.md	13
+sdfFileCmdAnalyzeFileName	sdf/sdfFileIO	raidou1 0x168, raidou2 0x168	4 of 90 words differ	docs/matching/sdf/sdfFileIO.md	3
 sdfIpuDecode	sdf/sdfIpu	raidou1 0x1D0, raidou2 0x1D0	96 of 114 words differ	docs/matching/sdf/sdfIpu.md	3
 sdfCallModelMake2	sdf/sdfModel	raidou1 0x9C, raidou2 0x9C	35 of 36 words differ	docs/matching/sdf/sdfModel.md	3
 sdfModelLinkOt_sdfModel	sdf/sdfModel	raidou1 0x4E0, raidou2 0x4E0	285 of 311 words differ	docs/matching/sdf/sdfModel.md	9

@@ -1,24 +1,14 @@
 #include "common.h"
 
 #ifdef VERSION_RAIDOU1
-extern void *sbtlRefSbtl38(void);
-extern void sbtlSetCutScroll(void *work);
-#else
-#endif
+#include "sBtlScene.h"
+#include "sBtlUnit.h"
+#include "sbtlWork.h"
 
-#ifdef VERSION_RAIDOU1
-#ifdef NON_MATCHING
-/* Same bytes as retail, but +0x40 is a raw offset into the work block that
- * sbtlRefSbtl38 returns, whose struct is not defined yet. */
 s32 btlRunCameraMotionResetTask(void) {
-    void *work = sbtlRefSbtl38();
-
-    sbtlSetCutScroll((u8 *)work + 0x40);
+    sbtlSetCutScroll(&sbtlRefSbtl38()->pos);
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_002692F0", btlRunCameraMotionResetTask);
-#endif
 #else
 #include "dds3obj.h"
 #include "effBattle.h"

@@ -495,7 +495,6 @@ void sdfFileCmdThread(sdfFileDeviceCB_t *aCB) {
 /* Worker slot 3 services disc-backed requests through serialized disc operations. */
 /* Residual: 2 of 155 words, +0x218: the fd = -1 after the read-file close
  * takes $3 where retail takes $2. */
-#ifdef NON_MATCHING
 void sdfFileCdImageCmdThread(sdfFileDeviceCB_t *aCB) {
     sdfFileCmdHandle_t *state;
     void (*callback)(sdfFileCmdHandle_t *, s32, saddr_t, s32, s32);
@@ -605,9 +604,6 @@ void sdfFileCdImageCmdThread(sdfFileDeviceCB_t *aCB) {
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "sdf/sdfFileIO", sdfFileCdImageCmdThread);
-#endif
 
 /* Allocate a worker-specific device path; an unsupported worker returns NULL. */
 char *sdfFileCmdMakeRealFileName(const char *aSrcName, s32 aDeviceType) {

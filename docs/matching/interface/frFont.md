@@ -24,26 +24,6 @@ Raidou 2, first differing words:
 | +0x28 | `ld ra,24(sp)` | `sb zero,-19728(gp)` |
 | +0x2C | `sb s0,0(gp)` | `ld ra,24(sp)` |
 
-## SwitchOK (interface/frFont, raidou1 0x20, raidou2 0x20)
-
-- Raidou 1: 1 of 8 words differ, first at +0x10.
-- Raidou 2: 2 of 8 words differ, first at +0xC.
-
-Nothing is recorded about this draft.
-
-Raidou 1, first differing words:
-
-| Offset | Draft | Retail |
-|---|---|---|
-| +0x10 | `sw v0,64(a0)` | `sw v0,76(a0)` |
-
-Raidou 2, first differing words:
-
-| Offset | Draft | Retail |
-|---|---|---|
-| +0xC | `li a1,128` | `li a1,14` |
-| +0x10 | `sw v0,64(a0)` | `sw v0,80(a0)` |
-
 ## frCallEventVoiceSub (interface/frFont, raidou1 0x74)
 
 Raidou 1: 1 of 29 words differ, first at +0x24.

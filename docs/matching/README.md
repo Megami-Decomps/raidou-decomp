@@ -14,11 +14,11 @@ menu scenarios); an entry says which paths they covered.
 
 | Entries | Unit | Games | Page |
 |---|---|---|---|
-| 44 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
+| 38 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
 | 12 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
 | 10 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 9 | sbtlDMG | raidou1 | [sbtlDMG.md](sbtlDMG.md) |
-| 7 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
+| 6 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 5 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 5 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
@@ -32,9 +32,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_r1_0016B498 | raidou1 | [code_r1_0016B498.md](code_r1_0016B498.md) |
 | 2 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 2 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
-| 2 | sdf/sdfFileIO | raidou1, raidou2 | [sdf/sdfFileIO.md](sdf/sdfFileIO.md) |
 | 2 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
-| 1 | basic/dds3ObjectBase | raidou1, raidou2 | [basic/dds3ObjectBase.md](basic/dds3ObjectBase.md) |
 | 1 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
 | 1 | code_r1_0013B0F8 | raidou1 | [code_r1_0013B0F8.md](code_r1_0013B0F8.md) |
 | 1 | code_r1_001403E0 | raidou1, raidou2 | [code_r1_001403E0.md](code_r1_001403E0.md) |
@@ -55,20 +53,17 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_00175180 | raidou1, raidou2 | [code_r1_00175180.md](code_r1_00175180.md) |
 | 1 | code_r1_00175858 | raidou1, raidou2 | [code_r1_00175858.md](code_r1_00175858.md) |
 | 1 | code_r1_001CEEF8 | raidou1, raidou2 | [code_r1_001CEEF8.md](code_r1_001CEEF8.md) |
-| 1 | code_r1_001CF808 | raidou1, raidou2 | [code_r1_001CF808.md](code_r1_001CF808.md) |
 | 1 | code_r1_00242308 | raidou1, raidou2 | [code_r1_00242308.md](code_r1_00242308.md) |
 | 1 | code_r1_0024AC78 | raidou1 | [code_r1_0024AC78.md](code_r1_0024AC78.md) |
 | 1 | code_r1_0024B510 | raidou1 | [code_r1_0024B510.md](code_r1_0024B510.md) |
 | 1 | code_r1_0024DE98 | raidou1 | [code_r1_0024DE98.md](code_r1_0024DE98.md) |
 | 1 | code_r1_0024EE78 | raidou1 | [code_r1_0024EE78.md](code_r1_0024EE78.md) |
-| 1 | code_r1_002692F0 | raidou1 | [code_r1_002692F0.md](code_r1_002692F0.md) |
 | 1 | code_r1_0028A298 | raidou1 | [code_r1_0028A298.md](code_r1_0028A298.md) |
 | 1 | code_r1_00291A80 | raidou1 | [code_r1_00291A80.md](code_r1_00291A80.md) |
 | 1 | code_r1_00292930 | raidou1, raidou2 | [code_r1_00292930.md](code_r1_00292930.md) |
 | 1 | code_r1_00295298 | raidou1 | [code_r1_00295298.md](code_r1_00295298.md) |
 | 1 | code_r1_00297EF0 | raidou1 | [code_r1_00297EF0.md](code_r1_00297EF0.md) |
 | 1 | code_r1_002A1E48 | raidou1 | [code_r1_002A1E48.md](code_r1_002A1E48.md) |
-| 1 | code_r1_002C8188 | raidou1, raidou2 | [code_r1_002C8188.md](code_r1_002C8188.md) |
 | 1 | code_r1_002CA3F0 | raidou1, raidou2 | [code_r1_002CA3F0.md](code_r1_002CA3F0.md) |
 | 1 | code_r1_002CAFD8 | raidou1, raidou2 | [code_r1_002CAFD8.md](code_r1_002CAFD8.md) |
 | 1 | code_r1_002F59D0 | raidou1, raidou2 | [code_r1_002F59D0.md](code_r1_002F59D0.md) |
@@ -80,7 +75,6 @@ menu scenarios); an entry says which paths they covered.
 | 1 | kernel/dds3KernelProcess | raidou1 | [kernel/dds3KernelProcess.md](kernel/dds3KernelProcess.md) |
 | 1 | newbattle/nbTarSelProcess | raidou1, raidou2 | [newbattle/nbTarSelProcess.md](newbattle/nbTarSelProcess.md) |
 | 1 | sbtlEff_00289E50 | raidou1 | [sbtlEff_00289E50.md](sbtlEff_00289E50.md) |
-| 1 | sdf/sdf3D | raidou1, raidou2 | [sdf/sdf3D.md](sdf/sdf3D.md) |
-| 1 | sdf/sdfCd | raidou1, raidou2 | [sdf/sdfCd.md](sdf/sdfCd.md) |
+| 1 | sdf/sdfFileIO | raidou1, raidou2 | [sdf/sdfFileIO.md](sdf/sdfFileIO.md) |
 | 1 | sdf/sdfIpu | raidou1, raidou2 | [sdf/sdfIpu.md](sdf/sdfIpu.md) |
 | 1 | sdf/sdfMovie | raidou1, raidou2 | [sdf/sdfMovie.md](sdf/sdfMovie.md) |

@@ -449,7 +449,6 @@ INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlPlaySpecialSE);
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlLeaf58);
 
 /* NON_MATCHING: 176 of 178 words match. Two branches are branch-likely in this build where retail uses plain branches with the same delay slot; vector checked (menu): count loop and mot_nowcnt paths only. */
-#ifdef NON_MATCHING
 void sbtlCallBtlCheckEnshutuSummonUnit(void)
 {
     s32 i;
@@ -499,9 +498,6 @@ void sbtlCallBtlCheckEnshutuSummonUnit(void)
         }
     }
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallBtlCheckEnshutuSummonUnit);
-#endif
 
 /* NON_MATCHING: 5 of 18 words match. Retail computes the devil SE base twice, once for IDs from 80 up (an inlined special devil ID lookup that folds to the identity); vector checked (menu). */
 #ifdef NON_MATCHING
@@ -762,7 +758,6 @@ INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallBtlGetSkilltbl);
 #endif
 
 /* NON_MATCHING: 28 of 69 words match. Retail fills the case 1 branch delay slot with the SMGID store as branch-likely; this build leaves a nop and the rest shifts by one word; vector checked (menu). */
-#ifdef NON_MATCHING
 s32 sbtlLoadSkillSE(struct SBTLEFF_PACLIST *ewk)
 {
     s32 skillID;
@@ -801,9 +796,6 @@ s32 sbtlLoadSkillSE(struct SBTLEFF_PACLIST *ewk)
     }
     return 0;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlLoadSkillSE);
-#endif
 
 void sbtlPlaySkillSE(const sdfVector4_t *pos, SKLID skillid, s32 type) {
     u32 flg;
@@ -1813,7 +1805,6 @@ INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallBtlSearchUnitID20);
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallBtlCheckDamageTarget2);
 
 /* NON_MATCHING: 45 of 46 words match. Retail has a plain branch where this build emits branch-likely after sbtlCheckDamageTarget; vector checked (menu). */
-#ifdef NON_MATCHING
 s32 sbtlCreateEnemyList(void)
 {
     s32 i;
@@ -1828,12 +1819,8 @@ s32 sbtlCreateEnemyList(void)
     }
     return 1;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCreateEnemyList);
-#endif
 
 /* NON_MATCHING: 70 of 72 words match. Retail has plain branches with the wk_sbtl reload in the delay slot where this build emits branch-likely; vector checked (menu). */
-#ifdef NON_MATCHING
 struct SBTLUNIT_LISTWORK *sbtlCreateSideList(u8 side, s32 flg)
 {
     struct SBTLUNIT_LISTWORK *lwk;
@@ -1859,12 +1846,8 @@ struct SBTLUNIT_LISTWORK *sbtlCreateSideList(u8 side, s32 flg)
     }
     return lwk;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCreateSideList);
-#endif
 
 /* NON_MATCHING: 70 of 72 words match. Retail has plain branches with the wk_sbtl reload in the delay slot where this build emits branch-likely; vector checked (menu). */
-#ifdef NON_MATCHING
 struct SBTLUNIT_LISTWORK *sbtlCreateSideList_sbtlUnit(u8 side, s32 flg)
 {
     struct SBTLUNIT_LISTWORK *lwk;
@@ -1890,9 +1873,6 @@ struct SBTLUNIT_LISTWORK *sbtlCreateSideList_sbtlUnit(u8 side, s32 flg)
     }
     return lwk;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCreateSideList_sbtlUnit);
-#endif
 
 s32 sbtlCallPlayMotionSENow(struct SBTLUNIT_WORK *wk)
 {
@@ -3937,7 +3917,6 @@ void sbtlResetCharge(struct SBTLUNIT_WORK *wk)
 }
 
 /* NON_MATCHING: 65 of 66 words match. One branch: retail uses beql to the return 5 where cc1 uses beq (branch-likely class); the counter is clamped through a wk_sbtl copy, vector checked (32 rows, only the state-0 return). */
-#ifdef NON_MATCHING
 s32 ChkHuuma_PlayerInputOk(struct SBTLUNIT_WORK *wk)
 {
     s32 cnt;
@@ -3968,9 +3947,6 @@ s32 ChkHuuma_PlayerInputOk(struct SBTLUNIT_WORK *wk)
     }
     return 0;
 }
-#else
-INCLUDE_ASM(const s32, "code_r1_0024F220", ChkHuuma_PlayerInputOk);
-#endif
 
 INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCallMemset9);
 

@@ -12,6 +12,14 @@ void ProcessInit(void);
 s32 mnuDestroyTitleEffectTask(dds3ProcessID_t *id);
 s32 mnuIncrementTitleEffectFrameCounter(dds3ProcessID_t *id);
 void sndInit(void);
+
+extern char sndVcInfo[];
+extern char sndSqInfo[];
+extern s16 sndInitWork;
+extern s32 sndInitData[];
+extern s8 sndInitData2;
+extern s32 sndInitData3;
+extern s32 sndInitData4;
 char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename);
 
 /* The PCM voice owner stores idle as 0 and active playback as 1. */

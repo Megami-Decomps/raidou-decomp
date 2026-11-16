@@ -251,9 +251,6 @@ extern f32 sdf3DScreenAdjustScaleY;
 extern f32 sdf3DScreenAdjustOffsetX;
 extern f32 sdf3DScreenAdjustOffsetY;
 
-#ifdef NON_MATCHING
-/* 26 of 136 words differ: scheduling of the final scale and translation loads.
- * SMT3's body plus the screen-adjust tail. Behavior is the same. */
 void sdf3MakeScreenParam(sdf3DScreenParam_t *camera)
 {
     f32 projectionMatrix[16] __attribute__((aligned(16)));
@@ -303,9 +300,6 @@ void sdf3MakeScreenParam(sdf3DScreenParam_t *camera)
         camera->trans[1] += sdf3DScreenAdjustOffsetY;
     }
 }
-#else
-INCLUDE_ASM(const s32, "sdf/sdf3D", sdf3MakeScreenParam);
-#endif
 
 /* vu0 routine: parallel-light packet and lighting basis construction */
 void sdf3DMakeLightParallelPacket(sdf3DLightParallelPacket_t *aPacket, sdf3DLight_t **aLights, sdfVector4_t *aAmbient) {

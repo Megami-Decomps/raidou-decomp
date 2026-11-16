@@ -549,6 +549,7 @@ s32 sbtlCallSetOt(void);
 s32 sbtlCallSin2(void);
 s32 sbtlCallSin3(struct SBTLDVLTK_LISTWORK *lwk);
 s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
+struct SBTLUNIT_WORK *sbtlRefSbtl38(void);
 f32 sbtlFree(f32 x, f32 z); /* ground height at x, z (mapGetY); HD sBtlGetGroundPos */
 s32 sbtlCheckLoadFlg(void);
 void sbtlCallSetColor(void);

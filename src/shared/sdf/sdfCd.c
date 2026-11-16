@@ -256,10 +256,6 @@ sdfCdImageDirEntry_t *sdfCdImageSearchFileDirect(const char *filename, s32 *lsn,
     return &sdfCdImageSearchFileDirect_ent;
 }
 
-/* NON_MATCHING: 108 of 109 words match. Branch after memcmp is bnel with the load in its slot; retail is bne. */
-#ifdef NON_MATCHING
-sdfCdImageDirEntry_t *sdfCdImageSearchFileDirect(const char *filename, s32 *lsn, u8 *mode);
-
 sdfCdImageDirEntry_t *sdfCdImageSearchFile(const char *path, s32 *lsn, u8 *mode)
 {
     char name[32];
@@ -323,9 +319,6 @@ sdfCdImageDirEntry_t *sdfCdImageSearchFile(const char *path, s32 *lsn, u8 *mode)
     }
     return node;
 }
-#else
-INCLUDE_ASM(const s32, "sdf/sdfCd", sdfCdImageSearchFile);
-#endif
 
 s32 sdfDevOpenDiscFileAndGetSize(const char *filename)
 {

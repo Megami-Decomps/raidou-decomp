@@ -146,12 +146,11 @@ struct frFontHandle_t {
     u32 pendingLipsStopCode;
     u32 skipLipsStopWait;
     s32 remainingWaitFrames;
-    s32 contextModeEnabled;
-    u8 pad44[8];
+    u8 pad40[12];
 #ifdef VERSION_RAIDOU2
     u8 pad4C[4];
 #endif
-    s32 contextResetWord; /* cleared on every chain node with the context byte */
+    s32 switchState; /* SwitchOK sets it; frLeaf clears it on every chain node */
     u8 pad_end[8];
 };
 

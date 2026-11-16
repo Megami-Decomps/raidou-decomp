@@ -128,7 +128,6 @@ void *dds3ObjectBaseGetModelHandle(dds3Basic_t *pObjectBasic)
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseFreeModelHandle);
 
 /* NON_MATCHING: 59 of 65 words match. The address register for the two lqc2 loads is v1, retail uses v0. */
-#ifdef NON_MATCHING
 void dds3ObjectBaseMakeUnit(dds3Basic_t *pObjectBasic, MODELTYPE major, s32 minor)
 {
     sdfVector4_t scale;
@@ -160,9 +159,6 @@ void dds3ObjectBaseMakeUnit(dds3Basic_t *pObjectBasic, MODELTYPE major, s32 mino
         work->hUnit = evtCreateUnitHandle(pObjectBasic, obj);
     }
 }
-#else
-INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakeUnit);
-#endif
 
 INCLUDE_ASM(const s32, "basic/dds3ObjectBase", dds3ObjectBaseMakeMatter);
 
