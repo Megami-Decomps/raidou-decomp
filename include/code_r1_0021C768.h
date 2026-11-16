@@ -6,10 +6,10 @@
 
 #define VEC3_SPLAT(v, x) ((v)[0] = (x), (v)[1] = (x), (v)[2] = (x))
 
-void *fileResolvePrimaryBuffer(FileJobPayload *job);
+void *fileResolvePrimaryBuffer(fileJobPayload_t *job);
 
-void *fileResolveSecondaryBuffer(FileJobPayload *job);
+void *fileResolveSecondaryBuffer(fileJobPayload_t *job);
 
-FileJobPayload *Create_effParts(FileJobPayload *request);
+fileJobPayload_t *Create_effParts(fileJobPayload_t *request);
 
 #endif

@@ -18,55 +18,55 @@ enum BtlResourceSelectionStatus {
 typedef u16 FileJobType;
 
 /* File-job buffer offsets are relative to the job unless allocation is retained. */
-typedef struct FileJobBufferSlot {
+typedef struct fileJobBufferSlot_t {
     u32 offset;
     u32 size;
     void *allocation;
     u16 selector;
     u16 unkE;
-} FileJobBufferSlot;
+} fileJobBufferSlot_t;
 
 /* Runtime payload buffers own a general-heap descriptor; queue image slots
- * keep their separate opaque allocation word in FileJobBufferSlot. */
-typedef struct FileJobPayloadBufferSlot {
+ * keep their separate opaque allocation word in fileJobBufferSlot_t. */
+typedef struct fileJobPayloadBufferSlot_t {
     u32 offset;
     u32 size;
     struct sdfMemHandle_t *allocation;
     u16 selector;
     u16 unkE;
-} FileJobPayloadBufferSlot;
+} fileJobPayloadBufferSlot_t;
 
 /* Separately allocated payload and its serialized 0x2C header. Queue entries
  * refer to this object through their address-valued id field. */
-typedef struct FileJobPayload {
+typedef struct fileJobPayload_t {
     u32 unk0;
     FileJobType type;
     u16 unk6;
     void *data;
     u16 option;             /* selects primary payload interpretation */
     u16 unkE;
-    FileJobPayloadBufferSlot primary; /* selector at 0x1C describes the secondary payload */
+    fileJobPayloadBufferSlot_t primary; /* selector at 0x1C describes the secondary payload */
     struct {
         u32 offset;
         u32 size;
         struct sdfMemHandle_t *allocation;
     } secondary;            /* 0x20; no selector follows this descriptor */
-} FileJobPayload;
+} fileJobPayload_t;
 
-typedef char FileJobPayload_size_must_be_0x2C[
-    (sizeof(FileJobPayload) == 0x2C) ? 1 : -1];
+typedef char fileJobPayload_size_must_be_0x2C[
+    (sizeof(fileJobPayload_t) == 0x2C) ? 1 : -1];
 
 #define FILE_JOB_FLAG_SECTOR_FOLLOWER 0x2
 
 /* Effect/file queue entries share this C0-byte record in both games. */
-typedef struct FileJob {
+typedef struct fileJob_t {
     u32 unk0;
     FileJobType type;
     u16 unk6;
     void *data;
     u16 option;
     u16 unkE;
-    FileJobBufferSlot slots[2];
+    fileJobBufferSlot_t slots[2];
     u8 unk30[0x10];
     f32 offset[4];    /* 0x40 */
     f32 quat[4];      /* 0x50 */
@@ -81,19 +81,19 @@ typedef struct FileJob {
     u32 sector;
     u32 flags;
     char name[0x10];  /* 0x9C: queue-entry resource name */
-    struct FileJob *next;
-    struct FileJob *prev;
+    struct fileJob_t *next;
+    struct fileJob_t *prev;
     u8 padB4[0xC];
-} FileJob;
+} fileJob_t;
 
-typedef char FileJobBufferSlot_size_must_be_0x10[
-    (sizeof(FileJobBufferSlot) == 0x10) ? 1 : -1];
+typedef char fileJobBufferSlot_size_must_be_0x10[
+    (sizeof(fileJobBufferSlot_t) == 0x10) ? 1 : -1];
 
-typedef char FileJobPayloadBufferSlot_size_must_be_0x10[
-    (sizeof(FileJobPayloadBufferSlot) == 0x10) ? 1 : -1];
+typedef char fileJobPayloadBufferSlot_size_must_be_0x10[
+    (sizeof(fileJobPayloadBufferSlot_t) == 0x10) ? 1 : -1];
 
-typedef char FileJob_size_must_be_0xC0[
-    (sizeof(FileJob) == 0xC0) ? 1 : -1];
+typedef char fileJob_size_must_be_0xC0[
+    (sizeof(fileJob_t) == 0xC0) ? 1 : -1];
 
 /* Placement of an effect parts list: queues, camera snapshots, and jobs from 0x40 on. */
 typedef struct effPartsListPose_t {
@@ -120,10 +120,10 @@ typedef struct plistHandle_t {
     s32 count;        /* 0x80 */
     u32 updateFrame;  /* 0x84 */
     union {
-        FileJob *last;   /* runtime linked-list tail */
+        fileJob_t *last;   /* runtime linked-list tail */
         u32 entryOffset; /* relative first-entry offset in serialized images */
     };               /* 0x88 */
-    FileJob *first;   /* 0x8C: runtime traversal start */
+    fileJob_t *first;   /* 0x8C: runtime traversal start */
 } plistHandle_t;
 
 typedef char plistHandle_size_must_be_0x90[
@@ -131,7 +131,7 @@ typedef char plistHandle_size_must_be_0x90[
 
 void camFollowOffsetVec(effPartsListPose_t *obj, void *dst);
 void PoseRotBillboard(effPartsListPose_t *obj, void *dst);
-void fileQueueLinkJobToSectorLeader(plistHandle_t *queue, FileJob *job, FileJob *leader);
+void fileQueueLinkJobToSectorLeader(plistHandle_t *queue, fileJob_t *job, fileJob_t *leader);
 
 typedef struct effPosture_t {
     f32 pos[4];       /* 0x00 */
@@ -166,7 +166,7 @@ typedef char bhvrHandleSizeCheck[(sizeof(bhvrHandle_t) == 0x2C) ? 1 : -1];
 
 /* A file job type's operations (0x28), fileJobTypeOperations[type]. Each
  * receives the job's data; a NULL slot is skipped where the caller checks. */
-typedef struct FileTypeCallbacks {
+typedef struct fileTypeCallbacks_t {
     void *(*create)(void *request);                     /* 0x00 */
     void (*invoke)(void *data);                         /* 0x04 */
     void (*destroy)(void *data);                        /* 0x08 */
@@ -177,13 +177,13 @@ typedef struct FileTypeCallbacks {
     void (*setRotation)(void *data, const f32 rotation[4]); /* 0x1C */
     void (*setScale)(void *data, f32 scale);            /* 0x20 */
     void (*setColor)(void *data, u32 color);            /* 0x24 */
-} FileTypeCallbacks;
+} fileTypeCallbacks_t;
 
-typedef char FileTypeCallbacksSizeAssert[sizeof(FileTypeCallbacks) == 0x28 ? 1 : -1];
+typedef char FileTypeCallbacksSizeAssert[sizeof(fileTypeCallbacks_t) == 0x28 ? 1 : -1];
 
-extern FileTypeCallbacks fileJobTypeOperations[];
+extern fileTypeCallbacks_t fileJobTypeOperations[];
 
-FileJobPayload *fileCreateJob(FileJobType type);
+fileJobPayload_t *fileCreateJob(FileJobType type);
 
 /* Protocol IDs use distinct byte-sized storage codes in sdfFileCmdHandle_t. */
 typedef u8 SdfDevOperationCode;
@@ -251,15 +251,15 @@ typedef char effBehavior_RGBParams_size_must_be_0x24[(sizeof(effBehavior_RGBPara
 
 typedef char effBehavior_AlphaParams_size_must_be_0x10[(sizeof(effBehavior_AlphaParams_t) == 0x10) ? 1 : -1];
 
-void fileJobDestroy(FileJobPayload *job);
+void fileJobDestroy(fileJobPayload_t *job);
 
 plistHandle_t *fileQueueCreate(void);
 
-FileJob *fileQueueGetAt(plistHandle_t *queue, s32 index);
+fileJob_t *fileQueueGetAt(plistHandle_t *queue, s32 index);
 
-void fileJobCopyHeader(FileJob *destination, const FileJob *source);
+void fileJobCopyHeader(fileJob_t *destination, const fileJob_t *source);
 
-void fileQueueRemoveAndDestroyJob(plistHandle_t *queue, FileJob *job);
+void fileQueueRemoveAndDestroyJob(plistHandle_t *queue, fileJob_t *job);
 
 /* Piecewise-linear scalar keys. Frames and duration are signed. */
 typedef struct effScalarCurve_t {
@@ -310,10 +310,10 @@ typedef union FileKeyScalarTrack {
 } FileKeyScalarTrack;
 
 /* bhvrHandle_t.type selects the serialized emitter tail. Its
- * descriptors copy E0..124 bytes; FileKeyBlock is their existing primary
+ * descriptors copy E0..124 bytes; fileKeyBlock_t is their existing primary
  * parameter owner. Its +54 surface index is also consumed as signed low 16
  * bits by billboard openers. Grid-group dimensions occupy C0/C4. */
-typedef struct FileKeyBlock {
+typedef struct fileKeyBlock_t {
     f32 pos[4];             /* 0x00 */
     f32 orientation[4];    /* 0x10: emitter quaternion */
     s32 emissionDuration;   /* 0x20 */
@@ -418,7 +418,7 @@ typedef struct FileKeyBlock {
             f32 endpointDrop;
         } curve;
     } emitter;
-} FileKeyBlock;
+} fileKeyBlock_t;
 
 typedef char FileKeyScalarTrackSizeCheck[(sizeof(FileKeyScalarTrack) == 0x2C) ? 1 : -1];
 
@@ -498,7 +498,7 @@ void sdfUpdateFlagListEntries(SdfFlagListWork *);
 
 void sdfDrawFlagListVertices(SdfFlagListWork *);
 
-FileJobPayload *Copy_effParts(FileJobPayload *request);
+fileJobPayload_t *Copy_effParts(fileJobPayload_t *request);
 
 f32 effSampleScalarCurve(const effScalarCurve_t *curve, s32 frame, s32 duration);
 
@@ -721,17 +721,17 @@ typedef char effSpanTable_size_check[
 
 SdfFlagListWork *effCreateSelectionFlagListFromWork(const SdfFlagListParams *);
 
-FileJobPayload *fileJobCreateFromCommandState(const char *entry);
+fileJobPayload_t *fileJobCreateFromCommandState(const char *entry);
 
-void fileJobInvokeTypeCallback(FileJobPayload *job);
+void fileJobInvokeTypeCallback(fileJobPayload_t *job);
 
-void fileWriteToPfs(FileJobPayload *job, const char *filePath);
+void fileWriteToPfs(fileJobPayload_t *job, const char *filePath);
 
-void fileJobSetPrimaryData(FileJobPayload *job, const void *src, s32 size, u16 option);
+void fileJobSetPrimaryData(fileJobPayload_t *job, const void *src, s32 size, u16 option);
 
-void fileJobSetSecondaryData(FileJobPayload *job, const void *src, s32 size, u16 selector);
+void fileJobSetSecondaryData(fileJobPayload_t *job, const void *src, s32 size, u16 selector);
 
-void fileJobCopyCommandIntoSecondaryData(FileJobPayload *job, const char *commandPath, u16 selector);
+void fileJobCopyCommandIntoSecondaryData(fileJobPayload_t *job, const char *commandPath, u16 selector);
 
 plistHandle_t *fileQueueCreateFromCommandState(const char *entry);
 
@@ -739,11 +739,11 @@ void fileQueueSaveVersionedImage(plistHandle_t *queue, const char *filePath);
 
 void fileQueueSaveImage(plistHandle_t *queue, const char *filePath);
 
-FileJob *fileAppendJobFromCommandPath(plistHandle_t *queue, const char *commandPath);
+fileJob_t *fileAppendJobFromCommandPath(plistHandle_t *queue, const char *commandPath);
 
-FileJob *fileJobDuplicateAfter(plistHandle_t *queue, FileJob *source);
+fileJob_t *fileJobDuplicateAfter(plistHandle_t *queue, fileJob_t *source);
 
-void fileQueueDetachSectorFollower(plistHandle_t *queue, FileJob *job);
+void fileQueueDetachSectorFollower(plistHandle_t *queue, fileJob_t *job);
 
 typedef struct effCameraCreateRequest_t {
     struct effFileJobRequest_t *resource;

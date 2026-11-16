@@ -40,7 +40,7 @@ typedef char DatSaveWordsSizeCheck[
 /* The memory-card browser copies the first 0x30 bytes of a save into a
  * compact row. Its final three words retain the shared save-word group. The
  * first two remain opaque. The last is a saved flag word. */
-typedef struct FileSavePreviewRecord {
+typedef struct fileSavePreviewRecord_t {
     char signature[3];
     s8 version;
     s8 mapGroup;
@@ -60,10 +60,10 @@ typedef struct FileSavePreviewRecord {
             u32 savedFlags;
         } saveState;
     };
-} FileSavePreviewRecord;
+} fileSavePreviewRecord_t;
 
-typedef char FileSavePreviewRecordSizeCheck[
-    sizeof(FileSavePreviewRecord) == 0x30 ? 1 : -1];
+typedef char fileSavePreviewRecordSizeCheck[
+    sizeof(fileSavePreviewRecord_t) == 0x30 ? 1 : -1];
 
 struct Standard;
 struct effPartsHandle_t;

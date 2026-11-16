@@ -40,7 +40,7 @@ enum {
     FILE_LOAD_MENU_SLIDE_SELECTION_UP = 2
 };
 
-typedef struct FileLoadMenuState {
+typedef struct fileLoadMenuState_t {
     u8 unk00[4];              /* 0x00: opaque */
     s32 transitionTickCount;  /* 0x04 */
     s32 inputRepeatTimer;     /* 0x08 */
@@ -50,10 +50,10 @@ typedef struct FileLoadMenuState {
     s32 rowVerticalOffset;    /* 0x14 */
     s32 leadingRowAlpha;      /* 0x18 */
     s32 trailingRowAlpha;     /* 0x1C */
-} FileLoadMenuState;
+} fileLoadMenuState_t;
 
-typedef char FileLoadMenuState_size_must_be_0x20[
-    (sizeof(FileLoadMenuState) == 0x20) ? 1 : -1];
+typedef char fileLoadMenuState_size_must_be_0x20[
+    (sizeof(fileLoadMenuState_t) == 0x20) ? 1 : -1];
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -76,13 +76,13 @@ extern void fileFadeStepDown(void);
 
 struct sdfMemHandle_t;
 
-typedef struct LoadMirror {
+typedef struct fileLoadMirror_t {
     u32 current;
     u32 previous;
-} LoadMirror;
+} fileLoadMirror_t;
 
 /* Loader context at fileLoadMenuState. */
-extern FileLoadMenuState fileLoadMenuState;
+extern fileLoadMenuState_t fileLoadMenuState;
 
 /* Far scalar: incomplete array forces non-small-data addressing. */
 #ifdef VERSION_RAIDOU1
@@ -95,30 +95,30 @@ extern void fileLoadSetMode(FileLoadMenuSlideMode mode);
 extern u32 D_003BC834;
 
 /* Init record at fileCursorPulseState. */
-typedef struct Init374E0 {
+typedef struct fileInit374E0_t {
     s8 mode[3];      /* 0x00 */
     u8 pad3;         /* 0x03 */
     s32 pos[3][2];   /* 0x04 */
     s32 counter[3];  /* 0x1C */
     u8 pad28[0xC];   /* 0x28 */
     s32 alpha[3];    /* 0x34 */
-} Init374E0;
+} fileInit374E0_t;
 
 /* Object with loader sub-objects (+0x40...). */
-typedef struct LoadObj {
+typedef struct fileLoadObj_t {
     void *owner;        /* 0x00 */
     u32 color;          /* 0x04 */
     f32 scale;          /* 0x08 */
     u32 selector;       /* 0x0C: secondary job buffer operation */
     u8 pad10[0x24];
     void *deviceHandle; /* 0x34 */
-    FileJobPayload **jobs; /* 0x38: child file-job payloads */
+    fileJobPayload_t **jobs; /* 0x38: child file-job payloads */
     struct sdfMemHandle_t *jobAllocation;          /* 0x3C */
     struct ctexlHandle_t *referenceHolder; /* 0x40 */
     bhvrHandle_t *recordWork; /* 0x44: created by fileAllocateGridRecordSlots */
     s16 unk48;          /* 0x48 */
     u16 unk4A;
-} LoadObj;
+} fileLoadObj_t;
 
 #define FILE_MAIN_BLOB_SIZE 0x33600
 
@@ -182,11 +182,11 @@ void fileResetLoadContextSlide(void);
 
 #define FILE_JOB_LOCATION_CLEAR(payload) ((payload).offset = 0)
 
-extern FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
+extern fileJob_t *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
 
 /* Makes the first job chained to owner's sector the leader and rechains the rest to it. */
-static inline void fileQueueRechainSectorFollowers(plistHandle_t *queue, FileJob *owner, FileJob *leader) {
-    FileJob *next;
+static inline void fileQueueRechainSectorFollowers(plistHandle_t *queue, fileJob_t *owner, fileJob_t *leader) {
+    fileJob_t *next;
 
     leader->sector = 0;
     leader->flags &= ~FILE_JOB_FLAG_SECTOR_FOLLOWER;
@@ -199,25 +199,25 @@ static inline void fileQueueRechainSectorFollowers(plistHandle_t *queue, FileJob
 }
 
 /* Sixteen-byte preamble of a saved file queue. */
-typedef struct FileQueueImageHeader {
+typedef struct fileQueueImageHeader_t {
     s32 version;
     s32 unk4;
     s32 unk8;
     f32 unkC;
-} FileQueueImageHeader;
+} fileQueueImageHeader_t;
 
-FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
+fileJob_t *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
 
 /* Creates a load object sized by the record's cell count, capped at 0x12C. */
-typedef struct FileCellGrid {
+typedef struct fileCellGrid_t {
     u8 pad00[0x20];
     u32 cols;
     u32 rows;
     u8 pad28[0x90];
     u32 layers;
-} FileCellGrid;
+} fileCellGrid_t;
 
-typedef struct FileWaveMotion {
+typedef struct fileWaveMotion_t {
     f32 axis[4];             /* 0x00: xyz only */
     f32 swayDirection[4];    /* 0x10: xyz only */
     f32 phase;
@@ -229,17 +229,17 @@ typedef struct FileWaveMotion {
     f32 scaleMultiplier;
     f32 angle;
     f32 angleMultiplier;
-} FileWaveMotion;            /* 0x44, ordinary word alignment */
+} fileWaveMotion_t;            /* 0x44, ordinary word alignment */
 
-typedef struct FileSlotMotion {
+typedef struct fileSlotMotion_t {
     f32 direction[4];     /* 0x00; this callback initializes xyz only */
     f32 speed;            /* 0x10 */
     f32 scaleMultiplier;  /* 0x14 */
     f32 angle;            /* 0x18 */
     f32 angleMultiplier;  /* 0x1C */
-} FileSlotMotion;
+} fileSlotMotion_t;
 
-typedef struct FileCircularMotion {
+typedef struct fileCircularMotion_t {
     f32 origin[4];          /* 0x00: xyz only */
     f32 orientation[4];     /* 0x10: saved emitter quaternion */
     f32 height;             /* 0x20 */
@@ -251,9 +251,9 @@ typedef struct FileCircularMotion {
     f32 scaleMultiplier;
     f32 angle;
     f32 angleMultiplier;
-} FileCircularMotion;       /* 0x44, ordinary word alignment */
+} fileCircularMotion_t;       /* 0x44, ordinary word alignment */
 
-typedef struct FileOrientedRingMotion {
+typedef struct fileOrientedRingMotion_t {
     f32 origin[4];          /* 0x00: xyz only */
     f32 orientationAngle;   /* 0x10 */
     f32 tiltAngle;
@@ -265,7 +265,7 @@ typedef struct FileOrientedRingMotion {
     f32 scaleMultiplier;
     f32 angle;
     f32 angleMultiplier;
-} FileOrientedRingMotion;   /* 0x38, ordinary word alignment */
+} fileOrientedRingMotion_t;   /* 0x38, ordinary word alignment */
 
 void fileSetMenuValueAndInitializeFlags(u32 value) {
 #ifdef VERSION_RAIDOU1

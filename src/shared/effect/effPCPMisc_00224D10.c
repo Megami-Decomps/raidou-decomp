@@ -42,7 +42,7 @@ struct sprHandle_t;
 enum { FILE_CONFIG_SET, FILE_CONFIG_FRAME, FILE_CONFIG_X, FILE_CONFIG_Y };
 
 typedef struct mnuWork_t {
-    FileSavePreviewRecord header;
+    fileSavePreviewRecord_t header;
     s8 applyLoadResult;
     s8 hardInitSelected;
     u16 flowConditionMask;
@@ -59,12 +59,12 @@ typedef struct MdlFlagPair {
 } MdlFlagPair;
 
 /* Eight-byte story-flag rows select a unit and a six-byte bonus record. */
-typedef struct FileStatBonus {
+typedef struct fileStatBonus_t {
     s32 flag;
     u16 unitId;
     u8 bonusIndex;
     u8 pad07;
-} FileStatBonus;
+} fileStatBonus_t;
 
 struct mnuListNode_t;
 
@@ -98,10 +98,10 @@ typedef struct effDispatchColor_t {
     u8 pad04[0x24];
 } effDispatchColor_t;
 
-typedef struct LoadMirror {
+typedef struct fileLoadMirror_t {
     u32 current;
     u32 previous;
-} LoadMirror;
+} fileLoadMirror_t;
 
 #define FILE_MAIN_BLOB_SIZE 0x1E840
 
@@ -146,25 +146,25 @@ static inline void filePollPromptChoice(void) {
 /* Lower the selected low/alpha byte, retaining the native signed, unmasked bound. */
 
 /* Init record at fileCursorPulseState. */
-typedef struct Init374E0 {
+typedef struct fileInit374E0_t {
     s8 mode[3];      /* 0x00 */
     u8 pad3;         /* 0x03 */
     s32 pos[3][2];   /* 0x04 */
     s32 counter[3];  /* 0x1C */
     u8 pad28[0xC];   /* 0x28 */
     s32 alpha[3];    /* 0x34 */
-} Init374E0;
+} fileInit374E0_t;
 
-typedef struct FileFlowEntry {
+typedef struct fileFlowEntry_t {
     u16 state;
     u16 mask;
-} FileFlowEntry;
+} fileFlowEntry_t;
 
-typedef struct FileMultiFlagBonus {
+typedef struct fileMultiFlagBonus_t {
     s32 flags[4];
     u8 bonusIndex;
     u8 pad11[3];
-} FileMultiFlagBonus;
+} fileMultiFlagBonus_t;
 
 #define FILE_JOB_LOCATION_AS_JOB_RELATIVE_OFFSET(payload) ((payload).offset)
 
@@ -172,11 +172,11 @@ typedef struct FileMultiFlagBonus {
 
 #define FILE_JOB_LOCATION_CLEAR(payload) ((payload).offset = 0)
 
-extern FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
+extern fileJob_t *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
 
 /* Makes the first job chained to owner's sector the leader and rechains the rest to it. */
-static inline void fileQueueRechainSectorFollowers(plistHandle_t *queue, FileJob *owner, FileJob *leader) {
-    FileJob *next;
+static inline void fileQueueRechainSectorFollowers(plistHandle_t *queue, fileJob_t *owner, fileJob_t *leader) {
+    fileJob_t *next;
 
     leader->sector = 0;
     leader->flags &= ~FILE_JOB_FLAG_SECTOR_FOLLOWER;
@@ -189,21 +189,21 @@ static inline void fileQueueRechainSectorFollowers(plistHandle_t *queue, FileJob
 }
 
 /* Sixteen-byte preamble of a saved file queue. */
-typedef struct FileQueueImageHeader {
+typedef struct fileQueueImageHeader_t {
     s32 version;
     s32 unk4;
     s32 unk8;
     f32 unkC;
-} FileQueueImageHeader;
+} fileQueueImageHeader_t;
 
-FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
+fileJob_t *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
 extern void mnuRecordSetVector(void *record, const void *src);
 extern void fileSetRecordSecondVector(void *record, const void *src);
 
 extern void fileReadRecordSecondVector(void *, void *);
 extern void fileReadVectorPtr20(void *, void *);
 
-typedef struct FileWaveMotion {
+typedef struct fileWaveMotion_t {
     f32 axis[4];             /* 0x00: xyz only */
     f32 swayDirection[4];    /* 0x10: xyz only */
     f32 phase;
@@ -215,17 +215,17 @@ typedef struct FileWaveMotion {
     f32 scaleMultiplier;
     f32 angle;
     f32 angleMultiplier;
-} FileWaveMotion;            /* 0x44, ordinary word alignment */
+} fileWaveMotion_t;            /* 0x44, ordinary word alignment */
 
-typedef struct FileSlotMotion {
+typedef struct fileSlotMotion_t {
     f32 direction[4];     /* 0x00; this callback initializes xyz only */
     f32 speed;            /* 0x10 */
     f32 scaleMultiplier;  /* 0x14 */
     f32 angle;            /* 0x18 */
     f32 angleMultiplier;  /* 0x1C */
-} FileSlotMotion;
+} fileSlotMotion_t;
 
-typedef struct FileCircularMotion {
+typedef struct fileCircularMotion_t {
     f32 origin[4];          /* 0x00: xyz only */
     f32 orientation[4];     /* 0x10: saved emitter quaternion */
     f32 height;             /* 0x20 */
@@ -237,9 +237,9 @@ typedef struct FileCircularMotion {
     f32 scaleMultiplier;
     f32 angle;
     f32 angleMultiplier;
-} FileCircularMotion;       /* 0x44, ordinary word alignment */
+} fileCircularMotion_t;       /* 0x44, ordinary word alignment */
 
-typedef struct FileOrientedRingMotion {
+typedef struct fileOrientedRingMotion_t {
     f32 origin[4];          /* 0x00: xyz only */
     f32 orientationAngle;   /* 0x10 */
     f32 tiltAngle;
@@ -251,9 +251,9 @@ typedef struct FileOrientedRingMotion {
     f32 scaleMultiplier;
     f32 angle;
     f32 angleMultiplier;
-} FileOrientedRingMotion;   /* 0x38, ordinary word alignment */
+} fileOrientedRingMotion_t;   /* 0x38, ordinary word alignment */
 
-typedef struct FileCurveMotion {
+typedef struct fileCurveMotion_t {
     f32 firstControl[3];
     f32 secondControl[3];
     f32 rotationReference[3]; /* native live-path input; writer unresolved */
@@ -265,7 +265,7 @@ typedef struct FileCurveMotion {
     f32 scaleMultiplier;
     f32 angle;
     f32 angleMultiplier;
-} FileCurveMotion; /* 0x4C, naturally four-byte aligned */
+} fileCurveMotion_t; /* 0x4C, naturally four-byte aligned */
 
 void fileReadVectorPtr20(void *recordBytes, void *dst);
 void mnuRecordSetVector(void *recordBytes, const void *src);

@@ -600,7 +600,7 @@ typedef struct poltHandle_t {
     u32 index;
     struct sdfMemHandle_t *handleBuffer; // 0x30
     billHandle_t *resource;
-    FileJobPayload **jobs;          // 0x38
+    fileJobPayload_t **jobs;          // 0x38
     struct sdfMemHandle_t *jobAllocation;      // 0x3C
     struct ctexlHandle_t *resourceHolder; // 0x40, released separately from the grid record
     bhvrHandle_t *record; // 0x44: retained grid record table
@@ -1700,14 +1700,14 @@ extern void effComputeBlurRectBounds(EffResourceRectWork *work);
 void effUpdateProjectedFadeColor(effKindWork_t *work);
 void effReplaceLinkedKindWorkTarget(effKindWork_t *work, sdfTexHandle_t *target);
 effKindWork_t *effAllocateKindWork(u16 kind, u8 *source);
-effKindWork_t *effCreateKindWorkFromFile(FileJobPayload *work);
+effKindWork_t *effCreateKindWorkFromFile(fileJobPayload_t *work);
 void effReleaseLinkedTarget(effKindWork_t *work);
 effKindWork_t *effCloneKindWork(effKindWork_t *work);
 effKindWork_t *effAllocateAlternateKindWork(u16 kind, u8 *source);
-effKindWork_t *effCreateKindWorkFromFileB(FileJobPayload *work);
+effKindWork_t *effCreateKindWorkFromFileB(fileJobPayload_t *work);
 void effReleaseAlternateKindWork(effKindWork_t *work);
 effKindWork_t *effCloneAlternateKindWork(effKindWork_t *work);
-u8 *Create_effMuzzleFlash(FileJobPayload *source);
+u8 *Create_effMuzzleFlash(fileJobPayload_t *source);
 void Delete_effMuzzleFlash(effBillboardWork_t *work);
 void ResourceCopy_effMuzzleFlash(s32 dst, s32 src);
 u8 *Copy_effMuzzleFlash(const u8 *source);
@@ -1864,7 +1864,7 @@ typedef struct effRadialRingParams_t {
 typedef char effRadialRingParams_size_must_be_0x68[(sizeof(effRadialRingParams_t) == 0x68) ? 1 : -1];
 
 effClassWork_t *effCreateResourceInstanceA(u16 kind, void *source, u32 option);
-effClassWork_t *effCreateActiveInstanceFromFile(FileJobPayload *request);
+effClassWork_t *effCreateActiveInstanceFromFile(fileJobPayload_t *request);
 void effDestroyActiveInstanceWork(effClassWork_t *work);
 effClassWork_t *effCreateActiveResource(effClassWork_t *work);
 void effResetActiveInstanceFrame(effClassWork_t *work);
@@ -1950,7 +1950,7 @@ void effReleaseRingHandle(effRingResource_t *handle);
 void effUpdateCenteredRadialRingVertices(effClassWork_t *work);
 void billDrawCellBlendB(effClassWork_t *work);
 effClassWork_t *effCreateClassWork(u16 kind, void *source);
-effClassWork_t *effCreateClassWorkFromFile(FileJobPayload *request);
+effClassWork_t *effCreateClassWorkFromFile(fileJobPayload_t *request);
 void effDestroyClassWork(effClassWork_t *work);
 effClassWork_t *effCloneClassWork(effClassWork_t *work);
 void effInitializeClassFrame(effClassWork_t *work);
@@ -1963,16 +1963,16 @@ void effAssetQueueRelease(effPointSet_t *set);
 /* vu0 routine: SDK loads the supplied transform or constructs identity. */
 void effDrawFourPointGroups(effPointSet_t *set, const effMatrix4_t *matrix);
 poltHandle_t *effCreateSurfaceNode(u32 handleCount);
-poltHandle_t *effCreateSurfaceNodeForGrid(FileKeyBlock *grid);
+poltHandle_t *effCreateSurfaceNodeForGrid(fileKeyBlock_t *grid);
 extern void effRebuildSurfaceHandles(poltHandle_t *, u16, void *);
 void effReplaceResourceRef(poltHandle_t *node, u32 entryId, const void *resource);
-poltHandle_t *effResourceReferenceReplaceFromFile(FileJobPayload *work);
+poltHandle_t *effResourceReferenceReplaceFromFile(fileJobPayload_t *work);
 extern void effRebuildSurfaceJobs(poltHandle_t *, void *);
 extern void effReplaceSurfaceResourceHolder(poltHandle_t *node, u32 resource);
 void effReplaceSurfacePrimaryBillboard(poltHandle_t *node, u32 resourceId);
 void effReplaceSurfaceFlaggedBillboard(poltHandle_t *node, u32 resourceId);
 void effSetSurfaceRetainedResource(poltHandle_t *node, u32 resourceId);
-poltHandle_t *effInitializeSurfaceForKind(FileJobPayload *work);
+poltHandle_t *effInitializeSurfaceForKind(fileJobPayload_t *work);
 void effDestroySurfaceNode(poltHandle_t *node);
 poltHandle_t *effRecreateSurfaceNodeFromWork(u8 *work);
 extern void effCloneSurfaceGridResources(poltHandle_t *, u8 *);
@@ -2064,7 +2064,7 @@ void effReleaseBillPointEntries(effClassWork_t *work);
 void effUpdateOrbitalPointSpanWaves(effClassWork_t *work);
 void effDrawRetainedPointSetRows(effClassWork_t *work);
 effClassWork_t *effCreateClassResourceWork(u16 kind, void *source);
-effClassWork_t *effCreateClassResourceFromFile(FileJobPayload *request);
+effClassWork_t *effCreateClassResourceFromFile(fileJobPayload_t *request);
 void effDestroyClassResourceWork(effClassWork_t *work);
 effClassWork_t *effCloneClassResourceWork(effClassWork_t *work);
 void effResetDispatchCounter(effClassWork_t *work);
@@ -2076,9 +2076,9 @@ void effSetClassResourceColor(effClassWork_t *work, u32 color);
 void effSetClassResourceMatrixComponent(effClassWork_t *work, float value);
 extern sdf3DPrimPolyParm_t effWork3[];
 effStripNode_t *effCreateStripNode(u32 percent);
-effStripNode_t *effCreateStripNodeFromGrid(FileKeyBlock *grid);
+effStripNode_t *effCreateStripNodeFromGrid(fileKeyBlock_t *grid);
 extern void effReplaceFileResourceRef(effStripNode_t *, u32, const void *);
-effStripNode_t *effFileResourceReferenceReplace(FileJobPayload *work);
+effStripNode_t *effFileResourceReferenceReplace(fileJobPayload_t *work);
 void Delete_effPolygonTrack(effStripNode_t *work);
 effStripNode_t *effCloneStripResourceFromOwner(effStripNode_t *work);
 void effReplaceFileResourceRef(effStripNode_t *node, u32 entryId, const void *resource);
@@ -2130,7 +2130,7 @@ void effUpdateCompactRingDrawColorAndTransform(u8 *work);
 effClassWork_t *effAllocateBlock(u16 kind, void *source);
 extern effClassWork_t *effAllocateBlock(u16, void *);
 effClassWork_t *effCreateResourceInstanceB(u16 kind, void *source, u32 option);
-effClassWork_t *effCreateBlockResourceFromFile(FileJobPayload *request);
+effClassWork_t *effCreateBlockResourceFromFile(fileJobPayload_t *request);
 void effDestroyBlockResourceWork(effClassWork_t *work);
 effClassWork_t *effDuplicateActiveResourceB(effClassWork_t *work);
 void effResetBlockResourceFrame(effClassWork_t *work);
@@ -2164,14 +2164,14 @@ void effReleaseScalyStripResources(u8 *work);
 void effReleaseTextureAnimationWork(s32 work);
 void effUpdateTintedScaledMesh(BillCellDrawWork *work);
 void effInitializeAnimationPositions(effClassWork_t *work);
-u32 effClampSlotCount(FileKeyBlock *grid);
+u32 effClampSlotCount(fileKeyBlock_t *grid);
 extern u32 effRetainScalyTextureReference(void);
 effAnimationState_t *effCreateAnimationState(u32 unused, u32 count);
 effAnimationState_t *effActivateAnimationState(s32 work);
 extern void effReleaseScalyTextureReference(s32);
 void effReleaseAnimationFrameResources(u8 *work);
 void effSynchronizeFileTransform(u8 *work);
-extern u32 effClampSlotCount(FileKeyBlock *);
+extern u32 effClampSlotCount(fileKeyBlock_t *);
 effAnimationState_t *effCreatePrimarySlotAnimationState(u8 *work);
 effAnimationState_t *effCreateAlternateSlotAnimationState(u8 *work);
 u32 *effAllocateQuantizedBuffer(effBillQuantizedConfig_t *work);
@@ -2184,7 +2184,7 @@ void effUpdateFadedMeshTransform(BillCellDrawWork *work);
 effClassWork_t *effAllocateBlockWithModel(u16 kind, void *source);
 extern effClassWork_t *effAllocateBlockWithModel(u16, void *);
 effClassWork_t *effCreateResourceInstanceC(u16 kind, void *source);
-effClassWork_t *effCreateModelBlockFromFile(FileJobPayload *request);
+effClassWork_t *effCreateModelBlockFromFile(fileJobPayload_t *request);
 void effDestroyModelBlockWork(effClassWork_t *work);
 effClassWork_t *effRecreateActiveByClass(effClassWork_t *work);
 void effResetModelBlockFrame(effClassWork_t *work);
@@ -2212,7 +2212,7 @@ extern void effReleaseModelPointSetAsset(effPointSet_t *);
 void effReleaseParticleList(effSpanTable_t *list);
 void effDrawParticleSpanPointsAndReferences(effModelResource_t *work);
 effModelResource_t *Create_effPolygonCrack(u16 kind, void *source, void *secondary, u32 param);
-u32 PartsCreate_effPolygonCrack(FileJobPayload *work);
+u32 PartsCreate_effPolygonCrack(fileJobPayload_t *work);
 
 typedef struct effModelCreateRequest_t {
     u8 pad0[0x2C];
@@ -2298,7 +2298,7 @@ typedef struct effTintTransitionParams_t {
     } tail;
 } effTintTransitionParams_t;
 
-effParticleSharedResource_t *eff2PartsCreate(FileJobPayload *source);
+effParticleSharedResource_t *eff2PartsCreate(fileJobPayload_t *source);
 void effReleaseParticleResources(effParticleSharedResource_t *work);
 void eff2ResourceCopy(effParticleSharedResource_t *, effParticleSharedResource_t *);
 effParticleSharedResource_t *Copy_eff2D(effParticleSharedResource_t *source);
@@ -2425,7 +2425,7 @@ INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallChipAllocDirect14);
 effFadeHeaderWork_t *effCreateSmallHeaderFromFile(void *work) {
     void *resource;
 
-    resource = fileResolvePrimaryBuffer((FileJobPayload *)work);
+    resource = fileResolvePrimaryBuffer((fileJobPayload_t *)work);
     return effDuplicateSmallHeader(resource);
 }
 
@@ -2533,7 +2533,7 @@ effSelectionHeaderWork_t *effDuplicatePayloadHeader(const void *source) {
 effSelectionHeaderWork_t *effCreateSelectionHeaderFromFile(void *work) {
     void *resource;
 
-    resource = fileResolvePrimaryBuffer((FileJobPayload *)work);
+    resource = fileResolvePrimaryBuffer((fileJobPayload_t *)work);
     return effDuplicatePayloadHeader(resource);
 }
 
@@ -3029,7 +3029,7 @@ effKindWork_t *effAllocateKindWork(u16 kind, u8 *source) {
     return work;
 }
 
-effKindWork_t *effCreateKindWorkFromFile(FileJobPayload *work) {
+effKindWork_t *effCreateKindWorkFromFile(fileJobPayload_t *work) {
     void *source = fileResolvePrimaryBuffer(work);
     effKindWork_t *effect = effAllocateKindWork(work->option, source);
     u32 *secondary = fileResolveSecondaryBuffer(work);
@@ -3118,7 +3118,7 @@ effKindWork_t *effAllocateAlternateKindWork(u16 kind, u8 *source) {
     return work;
 }
 
-effKindWork_t *effCreateKindWorkFromFileB(FileJobPayload *work) {
+effKindWork_t *effCreateKindWorkFromFileB(fileJobPayload_t *work) {
     void *source = fileResolvePrimaryBuffer(work);
     effKindWork_t *effect = effAllocateAlternateKindWork(work->option, source);
     u32 *secondary = fileResolveSecondaryBuffer(work);
@@ -3174,7 +3174,7 @@ void effSetAlternateKindWorkScale(effKindWork_t *work, f32 scale) {
     work->scale = scale;
 }
 
-u8 *Create_effMuzzleFlash(FileJobPayload *source) {
+u8 *Create_effMuzzleFlash(fileJobPayload_t *source) {
     u8 *work = (u8 *)sdfChipAllocDirect(0x68);
     memset(work, 0, 0x68);
     ((effBillboardWork_t *)work)->frame = 0;
@@ -5459,7 +5459,7 @@ effClassWork_t *effCreateResourceInstanceA(u16 kind, void *source, u32 option) {
     return effect;
 }
 
-effClassWork_t *effCreateActiveInstanceFromFile(FileJobPayload *request) {
+effClassWork_t *effCreateActiveInstanceFromFile(fileJobPayload_t *request) {
     u32 *secondary = fileResolveSecondaryBuffer(request);
     void *source;
     switch (request->primary.selector) {
@@ -6312,7 +6312,7 @@ effClassWork_t *effCreateClassWork(u16 kind, void *source) {
     return (effClassWork_t *)effect;
 }
 
-effClassWork_t *effCreateClassWorkFromFile(FileJobPayload *request) {
+effClassWork_t *effCreateClassWorkFromFile(fileJobPayload_t *request) {
     void *source;
 
     source = fileResolvePrimaryBuffer(request);
@@ -6498,7 +6498,7 @@ poltHandle_t *effCreateSurfaceNode(u32 handleCount) {
     return node;
 }
 
-poltHandle_t *effCreateSurfaceNodeForGrid(FileKeyBlock *grid) {
+poltHandle_t *effCreateSurfaceNodeForGrid(fileKeyBlock_t *grid) {
     u32 n;
     s32 w = grid->emissionDuration;
     /* Retail 002A5A58 interprets the capacity factors signed (MULT). */
@@ -6506,9 +6506,9 @@ poltHandle_t *effCreateSurfaceNodeForGrid(FileKeyBlock *grid) {
     return effCreateSurfaceNode(n > 100 ? 100 : n);
 }
 
-poltHandle_t *effResourceReferenceReplaceFromFile(FileJobPayload *work) {
+poltHandle_t *effResourceReferenceReplaceFromFile(fileJobPayload_t *work) {
     u8 *source = fileResolvePrimaryBuffer(work);
-    FileKeyBlock *params = (FileKeyBlock *)(source + 0x1C);
+    fileKeyBlock_t *params = (fileKeyBlock_t *)(source + 0x1C);
     poltHandle_t *node = effCreateSurfaceNodeForGrid(params);
 
     effRebuildSurfaceHandles(node, work->option, source);
@@ -6516,7 +6516,7 @@ poltHandle_t *effResourceReferenceReplaceFromFile(FileJobPayload *work) {
     return node;
 }
 
-poltHandle_t *effInitializeSurfaceForKind(FileJobPayload *work) {
+poltHandle_t *effInitializeSurfaceForKind(fileJobPayload_t *work) {
     poltHandle_t *node = effResourceReferenceReplaceFromFile(work);
     u32 *secondary = fileResolveSecondaryBuffer(work);
 
@@ -6578,7 +6578,7 @@ void effDestroySurfaceNode(poltHandle_t *node) {
 }
 
 poltHandle_t *effRecreateSurfaceNodeFromWork(u8 *work) {
-    FileKeyBlock *params = (FileKeyBlock *)((poltHandle_t *)work)->record->data1;
+    fileKeyBlock_t *params = (fileKeyBlock_t *)((poltHandle_t *)work)->record->data1;
     poltHandle_t *node = effCreateSurfaceNodeForGrid(params);
     effRebuildSurfaceHandles(node, ((poltHandle_t *)work)->record->type, &((poltHandle_t *)work)->params);
     effReplaceResourceRef(node, ((poltHandle_t *)work)->record->type, params);
@@ -6586,7 +6586,7 @@ poltHandle_t *effRecreateSurfaceNodeFromWork(u8 *work) {
 }
 
 poltHandle_t *effSCopy(u8 *work) {
-    FileKeyBlock *params = (FileKeyBlock *)((poltHandle_t *)work)->record->data1;
+    fileKeyBlock_t *params = (fileKeyBlock_t *)((poltHandle_t *)work)->record->data1;
     poltHandle_t *node = effCreateSurfaceNodeForGrid(params);
     effRebuildSurfaceHandles(node, ((poltHandle_t *)work)->record->type, &((poltHandle_t *)work)->params);
     effReplaceResourceRef(node, ((poltHandle_t *)work)->record->type, params);
@@ -6610,7 +6610,7 @@ void effCloneSurfaceGridResources(poltHandle_t *dst, u8 *work) {
         dds3BillboardSetAnimColorAdvMode(dst->resource);
         if (dst->record != 0) {
             bhvrHandle_t *record = dst->record;
-            dds3BillboardSetMode(dst->resource, (s16)((FileKeyBlock *)record->data0)->alphaTrack.surfaceIndex);
+            dds3BillboardSetMode(dst->resource, (s16)((fileKeyBlock_t *)record->data0)->alphaTrack.surfaceIndex);
         }
         break;
     case 5: {
@@ -6631,7 +6631,7 @@ void effCloneSurfaceGridResources(poltHandle_t *dst, u8 *work) {
             return;
         }
         dst->jobAllocation = sdfMemAllocDirect(size);
-        dst->jobs = (FileJobPayload **)sdfMemLock(dst->jobAllocation);
+        dst->jobs = (fileJobPayload_t **)sdfMemLock(dst->jobAllocation);
         for (i = 0; i < count; i++) {
             dst->jobs[i] = Copy_effParts(src->jobs[0]);
         }
@@ -6689,7 +6689,7 @@ void effSetSurfaceRetainedResource(poltHandle_t *node, u32 resourceId) {
     resource = dds3BillboardGeneral(resourceId);
     node->resource = resource;
     if (node->record != 0) {
-        dds3BillboardSetMode(resource, (s16)((FileKeyBlock *)node->record->data0)->alphaTrack.surfaceIndex);
+        dds3BillboardSetMode(resource, (s16)((fileKeyBlock_t *)node->record->data0)->alphaTrack.surfaceIndex);
     }
 }
 
@@ -6701,7 +6701,7 @@ void effReplaceSurfacePrimaryBillboard(poltHandle_t *node, u32 resourceId) {
     resource = dds3BillboardCreate(0, resourceId);
     node->resource = resource;
     if (node->record != 0) {
-        dds3BillboardSetMode(resource, (s16)((FileKeyBlock *)node->record->data0)->alphaTrack.surfaceIndex);
+        dds3BillboardSetMode(resource, (s16)((fileKeyBlock_t *)node->record->data0)->alphaTrack.surfaceIndex);
     }
 }
 
@@ -6714,7 +6714,7 @@ void effReplaceSurfaceFlaggedBillboard(poltHandle_t *node, u32 resourceId) {
     node->resource = resource;
     dds3BillboardSetAnimColorAdvMode(resource);
     if (node->record != 0) {
-        dds3BillboardSetMode(node->resource, (s16)((FileKeyBlock *)node->record->data0)->alphaTrack.surfaceIndex);
+        dds3BillboardSetMode(node->resource, (s16)((fileKeyBlock_t *)node->record->data0)->alphaTrack.surfaceIndex);
     }
 }
 
@@ -6734,8 +6734,8 @@ void effRebuildSurfaceJobs(poltHandle_t *node, void *source) {
     size = count * 4;
     if (size != 0) {
         node->jobAllocation = sdfMemAllocDirect(size);
-        node->jobs = (FileJobPayload **)sdfMemLock(node->jobAllocation);
-        node->jobs[0] = Create_effParts((FileJobPayload *)source);
+        node->jobs = (fileJobPayload_t **)sdfMemLock(node->jobAllocation);
+        node->jobs[0] = Create_effParts((fileJobPayload_t *)source);
         for (i = 1; i < count; i++) {
             node->jobs[i] = Copy_effParts(node->jobs[0]);
         }
@@ -7121,7 +7121,7 @@ static u32 partsEndFrame(ptexHandle_t *ptex)
     return end;
 }
 
-ptexHandle_t *PartsCreate(FileJobPayload *payload)
+ptexHandle_t *PartsCreate(fileJobPayload_t *payload)
 {
     ptexHandle_t *ptex;
     void *buffer;
@@ -8124,7 +8124,7 @@ effClassWork_t *effCreateClassResourceWork(u16 kind, void *source) {
     return effect;
 }
 
-effClassWork_t *effCreateClassResourceFromFile(FileJobPayload *request) {
+effClassWork_t *effCreateClassResourceFromFile(fileJobPayload_t *request) {
     void *source;
 
     source = fileResolvePrimaryBuffer(request);
@@ -8274,7 +8274,7 @@ effStripNode_t *effCreateStripNode(u32 percent) {
     return node;
 }
 
-effStripNode_t *effCreateStripNodeFromGrid(FileKeyBlock *grid) {
+effStripNode_t *effCreateStripNodeFromGrid(fileKeyBlock_t *grid) {
     u32 n;
     s32 w = grid->emissionDuration;
     /* The strip capacity uses the same signed product as 002A5A58. */
@@ -8282,9 +8282,9 @@ effStripNode_t *effCreateStripNodeFromGrid(FileKeyBlock *grid) {
     return effCreateStripNode(n > 100 ? 100 : n);
 }
 
-effStripNode_t *effFileResourceReferenceReplace(FileJobPayload *work) {
+effStripNode_t *effFileResourceReferenceReplace(fileJobPayload_t *work) {
     u8 *source = fileResolvePrimaryBuffer(work);
-    FileKeyBlock *params = (FileKeyBlock *)(source + 0x20);
+    fileKeyBlock_t *params = (fileKeyBlock_t *)(source + 0x20);
     effStripNode_t *node = effCreateStripNodeFromGrid(params);
 
     memcpy(&node->copiedHeader, source, sizeof(node->copiedHeader));
@@ -8306,7 +8306,7 @@ void Delete_effPolygonTrack(effStripNode_t *work) {
 }
 
 effStripNode_t *effCloneStripResourceFromOwner(effStripNode_t *work) {
-    FileKeyBlock *params = (FileKeyBlock *)work->active->data1;
+    fileKeyBlock_t *params = (fileKeyBlock_t *)work->active->data1;
     effStripNode_t *node = effCreateStripNodeFromGrid(params);
     memcpy(&node->copiedHeader, params, sizeof(node->copiedHeader));
     effReplaceFileResourceRef(node, work->active->type, params);
@@ -8351,7 +8351,7 @@ void effDrawEffectStrip(effStripNode_t *node) {
     u32 packedInnerColor;
     u32 packedOuterColor;
     u32 childColor;
-    FileKeyBlock *info;
+    fileKeyBlock_t *info;
     effTrackSet_t *output;
     effPosture_t *entry;
     f32 (*positions)[4];
@@ -8374,7 +8374,7 @@ void effDrawEffectStrip(effStripNode_t *node) {
     f32 along;
     f32 side;
 
-    info = (FileKeyBlock *)node->active->data0;
+    info = (fileKeyBlock_t *)node->active->data0;
     eeUnpackRGBAWordFloat(node->color, 1.0f / 128.0f);
     SDF_VU0_STOREVECTOR_NOMEM(nodeTint);
     eeUnpackRGBAWordFloat(node->copiedHeader.tint, 1.0f / 128.0f);
@@ -9446,7 +9446,7 @@ effClassWork_t *effCreateResourceInstanceB(u16 kind, void *source, u32 option) {
     return effect;
 }
 
-effClassWork_t *effCreateBlockResourceFromFile(FileJobPayload *request) {
+effClassWork_t *effCreateBlockResourceFromFile(fileJobPayload_t *request) {
     u32 *secondary = fileResolveSecondaryBuffer(request);
     void *source;
     switch (request->primary.selector) {
@@ -9855,7 +9855,7 @@ void effInitializeAnimationPositions(effClassWork_t *work) {
     }
 }
 
-u32 effClampSlotCount(FileKeyBlock *grid) {
+u32 effClampSlotCount(fileKeyBlock_t *grid) {
     u32 n;
     s32 w = grid->emissionDuration;
     /* Retail 002AF560 uses signed capacity factors before the unsigned cap. */
@@ -9910,7 +9910,7 @@ void effSynchronizeFileTransform(u8 *work) {
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effCallToMatrix2);
 
 effAnimationState_t *effCreatePrimarySlotAnimationState(u8 *work) {
-    FileKeyBlock *mapping = (FileKeyBlock *)(work + 0x3C);
+    fileKeyBlock_t *mapping = (fileKeyBlock_t *)(work + 0x3C);
     u32 count = effClampSlotCount(mapping);
     effAnimationState_t *state = effCreateAnimationState((u32)work, count);
 
@@ -9919,7 +9919,7 @@ effAnimationState_t *effCreatePrimarySlotAnimationState(u8 *work) {
 }
 
 effAnimationState_t *effCreateAlternateSlotAnimationState(u8 *work) {
-    FileKeyBlock *mapping = (FileKeyBlock *)(work + 0x3C);
+    fileKeyBlock_t *mapping = (fileKeyBlock_t *)(work + 0x3C);
     u32 count = effClampSlotCount(mapping);
     effAnimationState_t *state = effCreateAnimationState((u32)work, count);
 
@@ -10155,7 +10155,7 @@ effClassWork_t *effCreateResourceInstanceC(u16 kind, void *source) {
     return effect;
 }
 
-effClassWork_t *effCreateModelBlockFromFile(FileJobPayload *request) {
+effClassWork_t *effCreateModelBlockFromFile(fileJobPayload_t *request) {
     void *source;
 
     source = fileResolvePrimaryBuffer(request);
@@ -10448,7 +10448,7 @@ effModelResource_t *Create_effPolygonCrack(u16 kind, void *source, void *seconda
     return effect;
 }
 
-u32 PartsCreate_effPolygonCrack(FileJobPayload *work) {
+u32 PartsCreate_effPolygonCrack(fileJobPayload_t *work) {
     void *first = fileResolvePrimaryBuffer(work);
     void *second = fileResolveSecondaryBuffer(work);
     return (u32)Create_effPolygonCrack(work->option, first, second, work->secondary.size);
@@ -10671,7 +10671,7 @@ void effSetActiveSlotOpacity(void *work, f32 opacity) {
 }
 
 /* Alternate particle handles share a header but occupy distinct slots. */
-effParticleSharedResource_t *eff2PartsCreate(FileJobPayload *source) {
+effParticleSharedResource_t *eff2PartsCreate(fileJobPayload_t *source) {
     effParticleSharedResource_t *work = sdfChipAllocDirect(sizeof(effParticleSharedResource_t));
     void *buffer;
 

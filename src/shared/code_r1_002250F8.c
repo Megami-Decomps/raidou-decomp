@@ -192,9 +192,9 @@ typedef struct effResourceModelConfig_t {
 typedef char effResourceModelConfig_size_check[
     sizeof(effResourceModelConfig_t) == 0x3C ? 1 : -1];
 
-effResourceOwner_t *Create_effHelper(FileJobPayload *source);
+effResourceOwner_t *Create_effHelper(fileJobPayload_t *source);
 void Delete_effHelper(effResourceOwner_t *owner);
-extern effResourceOwner_t *Create_effHelper(FileJobPayload *);
+extern effResourceOwner_t *Create_effHelper(fileJobPayload_t *);
 extern void effResourceCopy(effResourceOwner_t *, effResourceOwner_t *);
 effResourceOwner_t *Copy_effHelper(effResourceOwner_t *source);
 void effResourceCopy(effResourceOwner_t *dst, effResourceOwner_t *src);
@@ -385,7 +385,7 @@ INCLUDE_ASM(const s32, "code_r1_002250F8", effLeaf353);
 INCLUDE_ASM(const s32, "code_r1_002250F8", effCallSetScale);
 
 /* Create an empty owner, or load its model and per-record queues from a file job. */
-effResourceOwner_t *Create_effHelper(FileJobPayload *source) {
+effResourceOwner_t *Create_effHelper(fileJobPayload_t *source) {
     effResourceOwner_t *owner = sdfChipAllocDirect(sizeof(effResourceOwner_t));
     u8 *data;
     u32 i;
