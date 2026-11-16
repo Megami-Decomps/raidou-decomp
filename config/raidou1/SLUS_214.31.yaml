@@ -716,7 +716,7 @@ segments:
       - [0x304080, .data, code_r1_00226EC8]
       - [0x304140, data, data_00403140]
       - [0x3047D0, .data, code_r1_00242308]
-      - [0x317448, data, data_00416448]
+      - [0x3185C8, data, data_004175C8]
       - [0x31BE70, .data, code_r1_00289CA0]
       - [0x31BF50, data, data_0041AF50]
       - [0x31E5B0, .data, code_r1_0014F378]

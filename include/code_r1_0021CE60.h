@@ -757,6 +757,7 @@ typedef union effDebugMenuValue {
     u16 *u16Value;                        /* SHORT_CHOICE */
     s32 *s32Value;                        /* INT, INT_RANGE, COUNT, CHOICE */
     u32 *rgbaValue;                       /* RED, GREEN, BLUE, ALPHA: one byte lane each */
+    u32 *bitValue;                        /* BIT: the bits in value2.mask */
     f32 *f32Value;                        /* FLOAT, FLOAT_TENTH */
     struct effDebugMenu_t *child;         /* CHILD, CHILD_PAGE */
     s32 (*poll)(void);                    /* FUNCTION: file choosers */
@@ -772,6 +773,7 @@ typedef union effDebugMenuValue2 {
     s32 minValue;
     void (*release)(void);                /* FUNCTION */
     u32 color;                            /* COMMAND */
+    u32 mask;                             /* BIT */
 } effDebugMenuValue2;
 
 /* Item types of the effect editor; the engine that interprets them is not in retail. */
@@ -779,6 +781,7 @@ typedef union effDebugMenuValue2 {
 #define EFF_DEBUG_ITEM_INT_RANGE 0x04
 #define EFF_DEBUG_ITEM_INT 0x06
 #define EFF_DEBUG_ITEM_FLOAT 0x08
+#define EFF_DEBUG_ITEM_BIT 0x09
 #define EFF_DEBUG_ITEM_BYTE_FLAG 0x0C
 #define EFF_DEBUG_ITEM_BYTE_TOGGLE 0x0E
 #define EFF_DEBUG_ITEM_RED 0x0F
@@ -804,6 +807,13 @@ typedef struct effDebugMenuItem_t {
     f32 step;
 } effDebugMenuItem_t;
 
+/* The page's open and close callbacks: effect pages create a job from the source request; the
+ * battle camera preset pages load and store a snapshot. */
+typedef union effDebugMenuCreate {
+    u32 (*job)(u8 *request);
+    u32 (*value)(u32 value);
+} effDebugMenuCreate;
+
 /* A page of the effect editor and the battle camera presets (0x38 bytes). SMT3's record with
  * flags added, no copy fields, and the parent moved to the end. */
 typedef struct effDebugMenu_t {
@@ -815,11 +825,11 @@ typedef struct effDebugMenu_t {
     effDebugMenuItem_t *items;            /* 0x14 */
     s32 itemCount;                        /* 0x18 */
     struct EffFileJobRequest *source;     /* 0x1C */
-    u32 (*create)(u8 *request);           /* 0x20 */
+    effDebugMenuCreate create;            /* 0x20 */
     void (*update)(u32 job);              /* 0x24 */
     void (*destroy)(u32 job);             /* 0x28 */
     u32 *param;                           /* 0x2C */
-    u32 (*recreate)(u8 *request);         /* 0x30 */
+    effDebugMenuCreate recreate;          /* 0x30 */
     struct effDebugMenu_t *parent;        /* 0x34 */
 } effDebugMenu_t;
 
@@ -857,5 +867,11 @@ struct Standard;
 struct ptcHandle_t;
 
 struct ptcHandle_t *PartsCreate_effParticle(struct Standard *pParts);
+
+/* Effect editor menu commands still in asm. */
+s32 effHandleDebugOrbitInput(void);
+s32 effResetCameraSnapshotSelection(void);
+u32 effPollAndQueueCopiedFileResource(void);
+s32 sysUPDOWNHEIGHT(void);
 
 #endif

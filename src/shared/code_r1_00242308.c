@@ -255,7 +255,7 @@ extern u8 D_0038F9D0[];
 extern u8 D_0038FAD0[];
 extern u8 D_0038F8E8[];
 extern u8 D_0038FA20[];
-extern u8 effData17[];
+extern effDebugMenu_t effData17;
 extern struct BtlResourceNameRecord *effQueuedResourceNameRecord;
 extern void effReleaseQueuedResourceName(void);
 extern const char D_003BD088[];
@@ -736,7 +736,7 @@ typedef struct EffectStateSnapshot {
 typedef char EffectStateSnapshotSizeCheck[(sizeof(EffectStateSnapshot) == 0x80) ? 1 : -1];
 
 extern s32 effUpdateCameraDiagnostics(EffectStateSnapshot *, s8);
-extern u8 effUpdateCameraDiagnosticsData[];
+extern effDebugMenu_t effUpdateCameraDiagnosticsData;
 extern s8 effData22[];
 extern u32 btlDebugMenuSetupNoOp(void *camera);
 s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode);
@@ -750,13 +750,7 @@ typedef union EffectCameraSnapshotView {
     } camera;
 } EffectCameraSnapshotView;
 
-typedef struct EffectCameraDebugState {
-    u32 unknown00[4];
-    u32 flags;
-    u32 unknown14[9];
-} EffectCameraDebugState;
-
-extern EffectCameraDebugState effUpdateCameraSnapshotGuidesData;
+extern effDebugMenu_t effUpdateCameraSnapshotGuidesData;
 
 typedef struct EffectCameraDebugScratch {
     s128 basePosition;
@@ -1885,14 +1879,14 @@ INCLUDE_RODATA(const s32, "code_r1_00242308", effStrLeftRightDir);
 
 INCLUDE_ASM(const s32, "code_r1_00242308", effHandleDebugOrbitInput);
 
-extern u32 effHandleDebugOrbitInputWork[];
+extern f32 effHandleDebugOrbitInputWork[];
 extern u8 effWork7[];
 
 s32 effResetStaticState(void) {
-    effHandleDebugOrbitInputWork[0] = 0;
-    effHandleDebugOrbitInputWork[1] = 0;
-    effHandleDebugOrbitInputWork[2] = 0;
-    effHandleDebugOrbitInputWork[3] = 0;
+    effHandleDebugOrbitInputWork[0] = 0.0f;
+    effHandleDebugOrbitInputWork[1] = 0.0f;
+    effHandleDebugOrbitInputWork[2] = 0.0f;
+    effHandleDebugOrbitInputWork[3] = 0.0f;
     effWork7[0x88] = 8;
     effWork7[0x89] = 0;
     effWork7[0x8A] = 0;
@@ -1902,13 +1896,13 @@ s32 effResetStaticState(void) {
 /* Synchronize the diagnostic camera position and calculate its positional guides.
  * Return input flags; the native diagnostic drawing providers are retail stubs. */
 s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode) {
-    u8 *camera = effUpdateCameraDiagnosticsData;
+    effDebugMenu_t *camera = &effUpdateCameraDiagnosticsData;
     f32 vectors[6][4] __attribute__((aligned(16)));
     f32 length;
     f32 deltaY;
     s32 result = 1;
 
-    if ((*(u32 *)(camera + 0x10) & 2) == 0) {
+    if ((camera->flags & 2) == 0) {
         if (effData22[0] < 0) {
             result = 0;
         }
@@ -1921,7 +1915,7 @@ s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode) {
     btlDebugMenuAfterRecordNoOp();
     SDF_VU0_COPYVECTOR(snapshot->pose.pos, D_003DFA20);
 
-    if ((*(u32 *)(camera + 0x10) & 8) != 0) {
+    if ((camera->flags & 8) != 0) {
         result |= 2;
     }
     if ((result & 2) != 0 && (snapshot->pose.flag & 0x18) != 0) {
@@ -2552,10 +2546,10 @@ s32 effEditTBoardScaleTrack(BaObj *p) {
     return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
 }
 
-extern char effData19[];
+extern effDebugMenu_t effData19;
 
 s32 effEditTBoardRotationTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->value8C, &effData20, effData19);
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->value8C, &effData20, &effData19);
 }
 
 /* SCALE property callback for native W-family descriptors. */
@@ -2570,7 +2564,7 @@ s32 effEditWRotationTrack(BaObj *p) {
 
 /* Edit the SCALE_UV curve in U-CYLND's POLYGON child; forward editor status. */
 s32 effEditUCylinderPolygonUvScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x90), ((EffMappingObject *)p->x0C)->value80, D_0038F9D0, effData17);
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x90), ((EffMappingObject *)p->x0C)->value80, D_0038F9D0, &effData17);
 }
 
 /* Edit the shared U-SMOKE/U-SPIRL root SCALE curve; forward editor status. */
@@ -2585,12 +2579,12 @@ s32 effEditUSmokeSpiralRotationTrack(BaObj *p) {
 
 /* Edit SCALE_UV in their POLYGON children; forward the numeric editor's status. */
 s32 effEditUSmokeSpiralPolygonUvScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C), ((EffMappingObject *)p->x0C)->valueF4, D_0038F9D0, effData17);
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C), ((EffMappingObject *)p->x0C)->valueF4, D_0038F9D0, &effData17);
 }
 
 /* Edit the native U-SPHRE root SCALE curve; forward editor status. */
 s32 effEditUSphereScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value70, D_0038F9D0, effData17);
+    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value70, D_0038F9D0, &effData17);
 }
 
 /* Edit the native 2D root SCALE curve; forward editor status. */
@@ -2603,7 +2597,7 @@ s32 effEditTwoDimensionalRotationTrack(BaObj *p) {
     return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
 }
 
-extern char effData16[];
+extern effDebugMenu_t effData16;
 
 s32 effEditMScaleTrack(BaObj *p) {
     return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0xB0), ((EffMappingObject *)p->x0C)->value108, &effData18, &effData16);
@@ -3104,6 +3098,12 @@ extern f32 bssWork76;
 extern f32 bssWork77;
 extern f32 bssWork78;
 extern s32 bssWork79;
+extern s32 effColorEditAlphaTrack;
+extern u8 effColorEditColorTrack;
+extern s32 effColorEditFadeInFrame;
+extern s32 effColorEditFadeOutFrame;
+extern u32 effColorEditKeyColor;
+extern s32 effColorEditKeyFrame;
 extern char effCreateBlurTaskDataEntry18[];
 extern char effCreateBlurTaskDataEntry19[];
 extern char effCreateBlurTaskDataEntry20[];
@@ -3153,6 +3153,7 @@ extern char effCreateEnvironmentTaskDataEntry6[];
 extern char effCreateEnvironmentTaskDataEntry7[];
 extern char effCreateEnvironmentTaskDataEntry8[];
 extern u8 effCreateEnvironmentTaskDataEntry9[];
+extern char effCreateFilterTaskData2[];
 extern s32 effCreateFilterTaskDataEntry10;
 extern u8 effCreateFilterTaskDataEntry11[];
 extern s32 effCreateFilterTaskDataEntry12;
@@ -4077,7 +4078,18 @@ extern u8 effCreateTwoDimensionalTaskDataEntry4[];
 extern s32 effCreateTwoDimensionalTaskDataEntry5;
 extern s32 effCreateTwoDimensionalTaskDataEntry6;
 extern s32 effCreateTwoDimensionalTaskDataEntry7;
+extern s32 effData10Entry2;
+extern char effData10Entry[];
+extern s32 effData15Entry2;
+extern char effData15Entry[];
+extern char effData18Entry2[];
+extern char effData19Entry2[];
 extern char effData20Entry2[];
+extern char effData20Entry3[];
+extern char effData20Entry4[];
+extern char effData20Entry5[];
+extern f32 effData20Entry6;
+extern s32 effData20Entry7;
 extern u32 effData38;
 extern char effData48[];
 extern char effData49[];
@@ -4099,6 +4111,12 @@ extern u8 effData9Entry32;
 extern u8 effData9Entry33;
 extern u8 effData9Entry34;
 extern s32 effData9Entry35;
+extern char effEditColorTrackDataEntry2[];
+extern char effEditColorTrackDataEntry3[];
+extern char effEditColorTrackDataEntry4[];
+extern f32 effEditScalarTrackData4;
+extern s32 effEditScalarTrackData6;
+extern u8 effEditScalarTrackWork;
 extern char effInitializeResourceQueueData[];
 extern char effLabelBlur[];
 void effLeaf401(void);
@@ -4107,17 +4125,49 @@ extern char effPollAndQueueCopiedFileResourceDataEntry2[];
 extern f32 effPollAndQueueCopiedFileResourceDataEntry;
 s32 effPollMMaterialEplFile(void);
 s32 effPollMMaterialPbFile(void);
+extern char effResetFileQueueStateDataEntry2[];
+extern char effResetFileQueueStateDataEntry3[];
+extern char effStrAlpha[];
 extern char effStrAmplitude[];
 extern char effStrBillboard[];
+extern char effStrBlend[];
+extern char effStrCameraY[];
+extern char effStrCamera[];
+extern char effStrCopyOk[];
 extern char effStrCrackPolygon[];
+extern char effStrDeleteOk[];
 extern char effStrEQuake2[];
 extern char effStrEdgeOut[];
+extern char effStrEffectEditor[];
 extern char effStrEmtRadi[];
 extern char effStrEmtSpre[];
+extern char effStrExitOk[];
+extern char effStrF2Camera[];
+extern char effStrFadeIn[];
+extern char effStrFadeOut[];
 extern char effStrFlashPolygon[];
+extern char effStrFloorModel[];
+extern char effStrFrame[];
+extern char effStrGround[];
+extern char effStrInstanceOk[];
+extern char effStrInstance[];
+extern char effStrMuzzleFlash[];
 extern char effStrOF2Cam[];
+extern char effStrOffset[];
+extern char effStrPartsList20[];
+extern char effStrPartsList[];
+extern char effStrPoint[];
+extern char effStrPolyTrackS2[];
+extern char effStrPoseture[];
+extern char effStrPosition2[];
+extern char effStrPosition[];
+extern char effStrResetOk[];
 extern char effStrSaveEp[];
 extern char effStrScaleUv[];
+extern char effStrSize[];
+extern char effStrTestMenu0[];
+extern char effStrTestMenu1[];
+extern char effStrTestMenu2[];
 extern char effStrToolEffectSampleBDist0Ep[];
 extern char effStrToolEffectSampleBFull0Ep[];
 extern char effStrToolEffectSampleBMulti0[];
@@ -4174,12 +4224,27 @@ extern char effStrToolEffectSampleWSpark0[];
 extern char effStrToolEffectSampleWSphre0[];
 extern char effStrToolEffectSampleWSpirl0[];
 extern char effStrToolEffectSampleXNomal0[];
+extern char effStrTransparency[];
 extern char effStrVcEndIn[];
 extern char effStrVcEndOut[];
 extern char effStrVcStartIn[];
 extern char effStrVcStartOut[];
+extern char effUpdateCameraDiagnosticsDataEntry2[];
+extern f32 effUpdateCameraDiagnosticsDataEntry3;
+extern f32 effUpdateCameraDiagnosticsDataEntry4;
 extern char effUpdateCameraSnapshotGuidesDataEntry2[];
+extern char effUpdateCameraSnapshotGuidesDataEntry3[];
+extern char effUpdatePartsListEditorData3Entry2[];
+extern char effUpdatePartsListEditorData3Entry3[];
+extern char effUpdatePartsListEditorData4Entry2[];
+extern char effUpdatePartsListEditorData4Entry3[];
+extern f32 effUpdatePartsListEditorData4Entry4;
+extern u32 effUpdatePartsListEditorData4Entry5;
+extern u32 effUpdatePartsListEditorData4Entry6;
+extern char effUpdatePartsListEditorData5Entry2[];
 extern char effUpdatePartsListEditorData6Entry2[];
+extern u32 effUpdatePartsListEditorData6Entry3;
+extern f32 effUpdatePartsListEditorData6Entry4;
 extern u8 effWork6[];
 extern char fileLoadEffectSlotADataEntry2[];
 extern f32 fileLoadEffectSlotADataEntry;
@@ -4197,6 +4262,7 @@ extern char sndInitDataEntry3[];
 extern f32 sndInitDataEntry4;
 extern f32 sndInitDataEntry5;
 extern f32 sndInitDataEntry6;
+s32 sysBATTLEONLY(void);
 extern u8 sysBATTLEONLYDataEntry100;
 extern u8 sysBATTLEONLYDataEntry101;
 extern u8 sysBATTLEONLYDataEntry102;
@@ -4295,6 +4361,8 @@ extern u32 sysBATTLEONLYDataEntry96;
 extern s32 sysBATTLEONLYDataEntry97;
 extern u32 sysBATTLEONLYDataEntry98;
 extern u32 sysBATTLEONLYDataEntry99;
+void sysLeaf45(void);
+s32 sysPARTICLE(void);
 extern char sysPARTICLEDataEntry10[];
 extern char sysPARTICLEDataEntry110[];
 extern char sysPARTICLEDataEntry111[];
@@ -4411,6 +4479,7 @@ extern f32 sysPARTICLEDataEntry65;
 extern f32 sysPARTICLEDataEntry66;
 extern f32 sysPARTICLEDataEntry67;
 extern f32 sysPARTICLEDataEntry68;
+s32 sysPOLYTEX(void);
 extern char sysPOLYTEXDataEntry10[];
 extern char sysPOLYTEXDataEntry11[];
 extern u8 sysPOLYTEXDataEntry12[];
@@ -4426,6 +4495,7 @@ extern u8 sysPOLYTEXDataEntry21;
 extern char sysPOLYTEXDataEntry3[];
 extern char sysPOLYTEXDataEntry8[];
 extern char sysPOLYTEXDataEntry9[];
+s32 sysPOLYWIND(void);
 extern f32 sysPOLYWINDDataEntry100;
 extern f32 sysPOLYWINDDataEntry101;
 extern f32 sysPOLYWINDDataEntry102;
@@ -5178,6 +5248,53 @@ extern EffCameraCreateRow effData9Entry5[];
 extern EffCameraCreateRow effData9Entry6[];
 extern EffCameraCreateRow effCreateTwoDimensionalTaskData[];
 extern EffCameraCreateRow effCreatePolyWindTaskData[];
+extern effDebugMenuItem_t effReinitializeFileQueueDataEntry[];
+extern effDebugMenu_t effUpdatePartsListEditorData;
+extern effDebugMenuItem_t effFinalizeQueuedFileDataEntry[];
+extern effDebugMenu_t effUpdatePartsListEditorData3Entry4;
+extern effDebugMenuItem_t effResetFileQueueStateDataEntry[];
+extern effDebugMenu_t effUpdatePartsListEditorData4Entry7;
+extern effDebugMenuItem_t effUpdatePartsListEditorData3Entry6[];
+extern effDebugMenu_t effUpdatePartsListEditorData3Entry5;
+extern effDebugMenuItem_t effUpdatePartsListEditorData2Entry[];
+extern effDebugMenu_t effUpdatePartsListEditorData2;
+extern effDebugMenuItem_t effData10[];
+extern effDebugMenuItem_t effData11[];
+extern effDebugMenu_t effBattleCameraSnapshotSelection;
+extern effDebugMenuItem_t effUpdatePartsListEditorData3Entry[];
+extern effDebugMenu_t effUpdatePartsListEditorData3;
+extern effDebugMenuItem_t effUpdatePartsListEditorData4Entry[];
+extern effDebugMenu_t effUpdatePartsListEditorData4;
+extern effDebugMenuItem_t effUpdatePartsListEditorData5Entry[];
+extern effDebugMenu_t effUpdatePartsListEditorData5;
+extern effDebugMenuItem_t effBtlDebugSetStatusflgSubDataEntry[];
+extern effDebugMenu_t effBtlDebugSetStatusflgSubData;
+extern effDebugMenu_t effPartsListMenu;
+extern effDebugMenuItem_t effUpdatePartsListEditorData6Entry[];
+extern effDebugMenu_t effUpdatePartsListEditorData6;
+extern effDebugMenu_t effSelectCameraFileJobFromRowsData;
+extern effDebugMenuItem_t effUpdateCameraDiagnosticsDataEntry[];
+extern effDebugMenu_t effUpdateCameraDiagnosticsData;
+extern effDebugMenuItem_t effUpdateCameraSnapshotGuidesDataEntry[];
+extern effDebugMenu_t effUpdateCameraSnapshotGuidesData;
+extern effDebugMenuItem_t effEditColorTrackDataEntry[];
+extern effDebugMenu_t effColorEditRgbMenu;
+extern effDebugMenuItem_t effData13[];
+extern effDebugMenuItem_t effData14[];
+extern effDebugMenuItem_t effData15[];
+extern effDebugMenu_t effMappingState;
+extern effDebugMenuItem_t effData16Entry[];
+extern effDebugMenu_t effData16;
+extern effDebugMenuItem_t effData17Entry[];
+extern effDebugMenu_t effData17;
+extern effDebugMenuItem_t effData18Entry[];
+extern effDebugMenu_t effData18;
+extern effDebugMenuItem_t effData19Entry[];
+extern effDebugMenu_t effData19;
+extern effDebugMenuItem_t effData20Entry[];
+extern effDebugMenu_t effData20;
+extern effDebugMenuItem_t effFunc20DataEntry[];
+extern effDebugMenu_t effFunc20Data;
 
 EffFileJobRequest sysPARTICLEDataEntry = {
     sysPARTICLEDataEntry10, 1, { 0 }, 1, { 0 }, sysPARTICLEDataEntry16, 0xF0,
@@ -5190,8 +5307,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry89[2] = {
 
 effDebugMenu_t sysPARTICLEDataEntry69 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry89, 2, &sysPARTICLEDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry90[4] = {
@@ -5203,8 +5320,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry90[4] = {
 
 effDebugMenu_t sysPARTICLEDataEntry70 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry90, 4, &sysPARTICLEDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry91[5] = {
@@ -5217,8 +5334,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry91[5] = {
 
 effDebugMenu_t sysPARTICLEDataEntry71 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry91, 5, &sysPARTICLEDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry92[6] = {
@@ -5232,8 +5349,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry92[6] = {
 
 effDebugMenu_t sysPARTICLEDataEntry72 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry92, 6, &sysPARTICLEDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry19[17] = {
@@ -5258,8 +5375,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry19[17] = {
 
 effDebugMenu_t sysPARTICLEDataEntry2 = {
     sysPARTICLEDataEntry10, 0x8, 8, 0, 0, sysPARTICLEDataEntry19, 17, &sysPARTICLEDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPARTICLEDataEntry93 = {
@@ -5273,8 +5390,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry94[2] = {
 
 effDebugMenu_t sysPARTICLEDataEntry73 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry94, 2, &sysPARTICLEDataEntry93,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry95[4] = {
@@ -5286,8 +5403,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry95[4] = {
 
 effDebugMenu_t sysPARTICLEDataEntry74 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry95, 4, &sysPARTICLEDataEntry93,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry96[6] = {
@@ -5301,8 +5418,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry96[6] = {
 
 effDebugMenu_t sysPARTICLEDataEntry75 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry96, 6, &sysPARTICLEDataEntry93,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry20[17] = {
@@ -5327,8 +5444,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry20[17] = {
 
 effDebugMenu_t sysPARTICLEDataEntry3 = {
     sysPARTICLEDataEntry11, 0x8, 8, 0, 0, sysPARTICLEDataEntry20, 17, &sysPARTICLEDataEntry93,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPARTICLEDataEntry21 = {
@@ -5342,8 +5459,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry97[2] = {
 
 effDebugMenu_t sysPARTICLEDataEntry76 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry97, 2, &sysPARTICLEDataEntry21,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry98[4] = {
@@ -5355,8 +5472,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry98[4] = {
 
 effDebugMenu_t sysPARTICLEDataEntry77 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry98, 4, &sysPARTICLEDataEntry21,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry99[9] = {
@@ -5373,8 +5490,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry99[9] = {
 
 effDebugMenu_t sysPARTICLEDataEntry78 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry99, 9, &sysPARTICLEDataEntry21,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry100[3] = {
@@ -5385,8 +5502,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry100[3] = {
 
 effDebugMenu_t sysPARTICLEDataEntry79 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry100, 3, &sysPARTICLEDataEntry21,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry22[17] = {
@@ -5411,8 +5528,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry22[17] = {
 
 effDebugMenu_t sysPARTICLEDataEntry4 = {
     sysPARTICLEDataEntry12, 0x8, 8, 0, 0, sysPARTICLEDataEntry22, 17, &sysPARTICLEDataEntry21,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPARTICLEDataEntry5 = {
@@ -5426,8 +5543,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry101[2] = {
 
 effDebugMenu_t sysPARTICLEDataEntry80 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry101, 2, &sysPARTICLEDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry102[4] = {
@@ -5439,8 +5556,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry102[4] = {
 
 effDebugMenu_t sysPARTICLEDataEntry81 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry102, 4, &sysPARTICLEDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry103[8] = {
@@ -5456,8 +5573,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry103[8] = {
 
 effDebugMenu_t sysPARTICLEDataEntry82 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry103, 8, &sysPARTICLEDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry23[17] = {
@@ -5482,8 +5599,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry23[17] = {
 
 effDebugMenu_t sysPARTICLEDataEntry6 = {
     sysPARTICLEDataEntry13, 0x8, 8, 0, 0, sysPARTICLEDataEntry23, 17, &sysPARTICLEDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPARTICLEDataEntry24 = {
@@ -5497,8 +5614,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry104[2] = {
 
 effDebugMenu_t sysPARTICLEDataEntry83 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry104, 2, &sysPARTICLEDataEntry24,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry105[4] = {
@@ -5510,8 +5627,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry105[4] = {
 
 effDebugMenu_t sysPARTICLEDataEntry84 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry105, 4, &sysPARTICLEDataEntry24,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry106[8] = {
@@ -5527,8 +5644,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry106[8] = {
 
 effDebugMenu_t sysPARTICLEDataEntry85 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry106, 8, &sysPARTICLEDataEntry24,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry25[17] = {
@@ -5553,8 +5670,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry25[17] = {
 
 effDebugMenu_t sysPARTICLEDataEntry7 = {
     sysPARTICLEDataEntry14, 0x8, 8, 0, 0, sysPARTICLEDataEntry25, 17, &sysPARTICLEDataEntry24,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPARTICLEDataEntry8 = {
@@ -5568,8 +5685,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry107[2] = {
 
 effDebugMenu_t sysPARTICLEDataEntry86 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry107, 2, &sysPARTICLEDataEntry8,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry108[4] = {
@@ -5581,8 +5698,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry108[4] = {
 
 effDebugMenu_t sysPARTICLEDataEntry87 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry108, 4, &sysPARTICLEDataEntry8,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry109[9] = {
@@ -5599,8 +5716,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry109[9] = {
 
 effDebugMenu_t sysPARTICLEDataEntry88 = {
     NULL, 0xB8, 8, 0, 0, sysPARTICLEDataEntry109, 9, &sysPARTICLEDataEntry8,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPARTICLEDataEntry26[17] = {
@@ -5625,8 +5742,8 @@ effDebugMenuItem_t sysPARTICLEDataEntry26[17] = {
 
 effDebugMenu_t sysPARTICLEDataEntry9 = {
     sysPARTICLEDataEntry15, 0x8, 8, 0, 0, sysPARTICLEDataEntry26, 17, &sysPARTICLEDataEntry8,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackControlTaskDataEntry13 = {
@@ -5664,8 +5781,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry63[26] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry51 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry63, 26, &effCreatePolyTrackControlTaskDataEntry13,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry64[5] = {
@@ -5678,8 +5795,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry64[5] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry52 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry64, 5, &effCreatePolyTrackControlTaskDataEntry13,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry65[6] = {
@@ -5693,8 +5810,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry65[6] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry53 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry65, 6, &effCreatePolyTrackControlTaskDataEntry13,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry14[14] = {
@@ -5716,8 +5833,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry14[14] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry = {
     effCreatePolyTrackControlTaskDataEntry20, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry14, 14, &effCreatePolyTrackControlTaskDataEntry13,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackControlTaskDataEntry2 = {
@@ -5755,8 +5872,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry66[26] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry54 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry66, 26, &effCreatePolyTrackControlTaskDataEntry2,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry67[6] = {
@@ -5770,8 +5887,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry67[6] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry55 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry67, 6, &effCreatePolyTrackControlTaskDataEntry2,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry15[14] = {
@@ -5793,8 +5910,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry15[14] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry3 = {
     effCreatePolyTrackControlTaskDataEntry8, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry15, 14, &effCreatePolyTrackControlTaskDataEntry2,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackControlTaskDataEntry68 = {
@@ -5832,8 +5949,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry69[26] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry56 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry69, 26, &effCreatePolyTrackControlTaskDataEntry68,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry70[9] = {
@@ -5850,8 +5967,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry70[9] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry57 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry70, 9, &effCreatePolyTrackControlTaskDataEntry68,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry71[3] = {
@@ -5862,8 +5979,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry71[3] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry58 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry71, 3, &effCreatePolyTrackControlTaskDataEntry68,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry16[14] = {
@@ -5885,8 +6002,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry16[14] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry4 = {
     effCreatePolyTrackControlTaskDataEntry9, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry16, 14, &effCreatePolyTrackControlTaskDataEntry68,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackControlTaskDataEntry17 = {
@@ -5924,8 +6041,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry72[26] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry59 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry72, 26, &effCreatePolyTrackControlTaskDataEntry17,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry73[8] = {
@@ -5941,8 +6058,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry73[8] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry60 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry73, 8, &effCreatePolyTrackControlTaskDataEntry17,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry18[14] = {
@@ -5964,8 +6081,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry18[14] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry5 = {
     effCreatePolyTrackControlTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry18, 14, &effCreatePolyTrackControlTaskDataEntry17,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackControlTaskDataEntry6 = {
@@ -6003,8 +6120,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry74[26] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry61 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry74, 26, &effCreatePolyTrackControlTaskDataEntry6,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry75[8] = {
@@ -6020,8 +6137,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry75[8] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry62 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry75, 8, &effCreatePolyTrackControlTaskDataEntry6,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry19[14] = {
@@ -6043,8 +6160,8 @@ effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry19[14] = {
 
 effDebugMenu_t effCreatePolyTrackControlTaskDataEntry7 = {
     effCreatePolyTrackControlTaskDataEntry11, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry19, 14, &effCreatePolyTrackControlTaskDataEntry6,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackTaskDataEntry66 = {
@@ -6082,8 +6199,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry67[26] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry49 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry67, 26, &effCreatePolyTrackTaskDataEntry66,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry68[5] = {
@@ -6096,8 +6213,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry68[5] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry50 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry68, 5, &effCreatePolyTrackTaskDataEntry66,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry69[5] = {
@@ -6110,8 +6227,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry69[5] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry51 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry69, 5, &effCreatePolyTrackTaskDataEntry66,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry70[6] = {
@@ -6125,8 +6242,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry70[6] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry52 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry70, 6, &effCreatePolyTrackTaskDataEntry66,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry8[16] = {
@@ -6150,8 +6267,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry8[16] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry = {
     effCreatePolyTrackTaskDataEntry6, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry8, 16, &effCreatePolyTrackTaskDataEntry66,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackTaskDataEntry71 = {
@@ -6189,8 +6306,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry72[26] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry53 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry72, 26, &effCreatePolyTrackTaskDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry73[5] = {
@@ -6203,8 +6320,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry73[5] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry54 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry73, 5, &effCreatePolyTrackTaskDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry74[6] = {
@@ -6218,8 +6335,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry74[6] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry55 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry74, 6, &effCreatePolyTrackTaskDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry9[16] = {
@@ -6243,8 +6360,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry9[16] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry2 = {
     effCreatePolyTrackTaskDataEntry87, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry9, 16, &effCreatePolyTrackTaskDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackTaskDataEntry75 = {
@@ -6282,8 +6399,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry76[26] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry56 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry76, 26, &effCreatePolyTrackTaskDataEntry75,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry77[5] = {
@@ -6296,8 +6413,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry77[5] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry57 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry77, 5, &effCreatePolyTrackTaskDataEntry75,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry78[9] = {
@@ -6314,8 +6431,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry78[9] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry58 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry78, 9, &effCreatePolyTrackTaskDataEntry75,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry79[3] = {
@@ -6326,8 +6443,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry79[3] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry59 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry79, 3, &effCreatePolyTrackTaskDataEntry75,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry10[16] = {
@@ -6351,8 +6468,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry10[16] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry3 = {
     effCreatePolyTrackTaskDataEntry88, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry10, 16, &effCreatePolyTrackTaskDataEntry75,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackTaskDataEntry80 = {
@@ -6390,8 +6507,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry81[26] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry60 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry81, 26, &effCreatePolyTrackTaskDataEntry80,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry82[5] = {
@@ -6404,8 +6521,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry82[5] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry61 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry82, 5, &effCreatePolyTrackTaskDataEntry80,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry83[8] = {
@@ -6421,8 +6538,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry83[8] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry62 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry83, 8, &effCreatePolyTrackTaskDataEntry80,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry11[16] = {
@@ -6446,8 +6563,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry11[16] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry4 = {
     effCreatePolyTrackTaskDataEntry89, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry11, 16, &effCreatePolyTrackTaskDataEntry80,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTrackTaskDataEntry12 = {
@@ -6485,8 +6602,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry84[26] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry63 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry84, 26, &effCreatePolyTrackTaskDataEntry12,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry85[5] = {
@@ -6499,8 +6616,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry85[5] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry64 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry85, 5, &effCreatePolyTrackTaskDataEntry12,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry86[8] = {
@@ -6516,8 +6633,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry86[8] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry65 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry86, 8, &effCreatePolyTrackTaskDataEntry12,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTrackTaskDataEntry13[16] = {
@@ -6541,8 +6658,8 @@ effDebugMenuItem_t effCreatePolyTrackTaskDataEntry13[16] = {
 
 effDebugMenu_t effCreatePolyTrackTaskDataEntry5 = {
     effCreatePolyTrackTaskDataEntry7, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry13, 16, &effCreatePolyTrackTaskDataEntry12,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest fileLoadEffectSlotAData = {
@@ -6557,8 +6674,8 @@ effDebugMenuItem_t effData9Entry13[3] = {
 
 effDebugMenu_t effData9Entry7 = {
     fileLoadEffectSlotADataEntry2, 0x8, 8, 0, 0, effData9Entry13, 3, &fileLoadEffectSlotAData,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effPollAndQueueCopiedFileResourceData = {
@@ -6574,8 +6691,8 @@ effDebugMenuItem_t effData9Entry14[4] = {
 
 effDebugMenu_t effData9Entry8 = {
     effPollAndQueueCopiedFileResourceDataEntry2, 0x8, 8, 0, 0, effData9Entry14, 4, &effPollAndQueueCopiedFileResourceData,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateBlurTaskDataEntry10 = {
@@ -6594,8 +6711,8 @@ effDebugMenuItem_t effCreateBlurTaskDataEntry11[7] = {
 
 effDebugMenu_t effCreateBlurTaskDataEntry = {
     effCreateBlurTaskDataEntry18, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry11, 7, &effCreateBlurTaskDataEntry10,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateBlurTaskDataEntry45 = {
@@ -6609,8 +6726,8 @@ effDebugMenuItem_t effCreateBlurTaskDataEntry46[2] = {
 
 effDebugMenu_t effCreateBlurTaskDataEntry42 = {
     NULL, 0xB8, 8, 0, 0, effCreateBlurTaskDataEntry46, 2, &effCreateBlurTaskDataEntry45,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreateBlurTaskDataEntry12[10] = {
@@ -6628,8 +6745,8 @@ effDebugMenuItem_t effCreateBlurTaskDataEntry12[10] = {
 
 effDebugMenu_t effCreateBlurTaskDataEntry2 = {
     effCreateBlurTaskDataEntry49, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry12, 10, &effCreateBlurTaskDataEntry45,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateBlurTaskDataEntry3 = {
@@ -6643,8 +6760,8 @@ effDebugMenuItem_t effCreateBlurTaskDataEntry47[2] = {
 
 effDebugMenu_t effCreateBlurTaskDataEntry43 = {
     NULL, 0xB8, 8, 0, 0, effCreateBlurTaskDataEntry47, 2, &effCreateBlurTaskDataEntry3,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreateBlurTaskDataEntry13[15] = {
@@ -6667,8 +6784,8 @@ effDebugMenuItem_t effCreateBlurTaskDataEntry13[15] = {
 
 effDebugMenu_t effCreateBlurTaskDataEntry4 = {
     effCreateBlurTaskDataEntry7, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry13, 15, &effCreateBlurTaskDataEntry3,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateBlurTaskDataEntry14 = {
@@ -6682,8 +6799,8 @@ effDebugMenuItem_t effCreateBlurTaskDataEntry48[2] = {
 
 effDebugMenu_t effCreateBlurTaskDataEntry44 = {
     NULL, 0xB8, 8, 0, 0, effCreateBlurTaskDataEntry48, 2, &effCreateBlurTaskDataEntry14,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreateBlurTaskDataEntry15[15] = {
@@ -6706,8 +6823,8 @@ effDebugMenuItem_t effCreateBlurTaskDataEntry15[15] = {
 
 effDebugMenu_t effCreateBlurTaskDataEntry5 = {
     effCreateBlurTaskDataEntry21, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry15, 15, &effCreateBlurTaskDataEntry14,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateBlurTaskDataEntry16 = {
@@ -6726,8 +6843,8 @@ effDebugMenuItem_t effCreateBlurTaskDataEntry17[7] = {
 
 effDebugMenu_t effCreateBlurTaskDataEntry6 = {
     effCreateBlurTaskDataEntry8, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry17, 7, &effCreateBlurTaskDataEntry16,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateFilterTaskDataEntry5 = {
@@ -6744,8 +6861,8 @@ effDebugMenuItem_t effCreateFilterTaskDataEntry6[5] = {
 
 effDebugMenu_t effCreateFilterTaskDataEntry = {
     effCreateFilterTaskDataEntry3, 0x8, 8, 0, 0, effCreateFilterTaskDataEntry6, 5, &effCreateFilterTaskDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateFilterTaskDataEntry7 = {
@@ -6759,8 +6876,8 @@ effDebugMenuItem_t effCreateFilterTaskDataEntry15[2] = {
 
 effDebugMenu_t effCreateFilterTaskDataEntry14 = {
     NULL, 0xB8, 8, 0, 0, effCreateFilterTaskDataEntry15, 2, &effCreateFilterTaskDataEntry7,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreateFilterTaskDataEntry8[8] = {
@@ -6776,8 +6893,8 @@ effDebugMenuItem_t effCreateFilterTaskDataEntry8[8] = {
 
 effDebugMenu_t effCreateFilterTaskDataEntry2 = {
     effCreateFilterTaskDataEntry4, 0x8, 8, 0, 0, effCreateFilterTaskDataEntry8, 8, &effCreateFilterTaskDataEntry7,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effHelper_Params_t fileLoadEffectSlotHelpData = {
@@ -6795,8 +6912,8 @@ effDebugMenuItem_t effData9Entry39[1] = {
 
 effDebugMenu_t effData9Entry36 = {
     NULL, 0xB8, 8, 0, 0, effData9Entry39, 1, &effData9Entry15,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effData9Entry16[9] = {
@@ -6813,8 +6930,8 @@ effDebugMenuItem_t effData9Entry16[9] = {
 
 effDebugMenu_t effData9Entry9 = {
     effCreatePolyCrackTaskDataEntry14, 0x8, 8, 0, 0, effData9Entry16, 9, &effData9Entry15,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPOLYTEXDataEntry4 = {
@@ -6828,8 +6945,8 @@ effDebugMenuItem_t sysPOLYTEXDataEntry24[2] = {
 
 effDebugMenu_t sysPOLYTEXDataEntry22 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYTEXDataEntry24, 2, &sysPOLYTEXDataEntry4,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYTEXDataEntry5[10] = {
@@ -6847,8 +6964,8 @@ effDebugMenuItem_t sysPOLYTEXDataEntry5[10] = {
 
 effDebugMenu_t sysPOLYTEXDataEntry = {
     sysPOLYTEXDataEntry3, 0x8, 8, 0, 0, sysPOLYTEXDataEntry5, 10, &sysPOLYTEXDataEntry4,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPOLYTEXDataEntry6 = {
@@ -6862,8 +6979,8 @@ effDebugMenuItem_t sysPOLYTEXDataEntry25[2] = {
 
 effDebugMenu_t sysPOLYTEXDataEntry23 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYTEXDataEntry25, 2, &sysPOLYTEXDataEntry6,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYTEXDataEntry7[12] = {
@@ -6883,8 +7000,8 @@ effDebugMenuItem_t sysPOLYTEXDataEntry7[12] = {
 
 effDebugMenu_t sysPOLYTEXDataEntry2 = {
     sysStrTBoard2, 0x8, 8, 0, 0, sysPOLYTEXDataEntry7, 12, &sysPOLYTEXDataEntry6,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateEnvironmentTaskDataEntry10 = {
@@ -6902,8 +7019,8 @@ effDebugMenuItem_t effCreateEnvironmentTaskDataEntry11[6] = {
 
 effDebugMenu_t effCreateEnvironmentTaskDataEntry = {
     effCreateEnvironmentTaskDataEntry6, 0x8, 8, 0, 0, effCreateEnvironmentTaskDataEntry11, 6, &effCreateEnvironmentTaskDataEntry10,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateEnvironmentTaskDataEntry2 = {
@@ -6921,8 +7038,8 @@ effDebugMenuItem_t effCreateEnvironmentTaskDataEntry12[6] = {
 
 effDebugMenu_t effCreateEnvironmentTaskDataEntry3 = {
     effCreateEnvironmentTaskDataEntry7, 0x8, 8, 0, 0, effCreateEnvironmentTaskDataEntry12, 6, &effCreateEnvironmentTaskDataEntry2,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyFlashTaskDataEntry12 = {
@@ -6954,8 +7071,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry124[20] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry103 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry124, 20, &effCreatePolyFlashTaskDataEntry12,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry13[15] = {
@@ -6978,8 +7095,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry13[15] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry = {
     effCreatePolyFlashTaskDataEntry9, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry13, 15, &effCreatePolyFlashTaskDataEntry12,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyFlashTaskDataEntry125 = {
@@ -7010,8 +7127,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry126[19] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry104 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry126, 19, &effCreatePolyFlashTaskDataEntry125,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry127[2] = {
@@ -7021,8 +7138,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry127[2] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry105 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry127, 2, &effCreatePolyFlashTaskDataEntry125,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry14[17] = {
@@ -7047,8 +7164,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry14[17] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry2 = {
     effCreatePolyFlashTaskDataEntry154, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry14, 17, &effCreatePolyFlashTaskDataEntry125,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyFlashTaskDataEntry128 = {
@@ -7079,8 +7196,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry129[19] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry106 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry129, 19, &effCreatePolyFlashTaskDataEntry128,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry130[4] = {
@@ -7092,8 +7209,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry130[4] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry107 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry130, 4, &effCreatePolyFlashTaskDataEntry128,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry131[3] = {
@@ -7104,8 +7221,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry131[3] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry108 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry131, 3, &effCreatePolyFlashTaskDataEntry128,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry15[17] = {
@@ -7130,8 +7247,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry15[17] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry3 = {
     effCreatePolyFlashTaskDataEntry156, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry15, 17, &effCreatePolyFlashTaskDataEntry128,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyFlashTaskDataEntry132 = {
@@ -7146,8 +7263,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry133[3] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry109 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry133, 3, &effCreatePolyFlashTaskDataEntry132,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry134[20] = {
@@ -7175,8 +7292,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry134[20] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry110 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry134, 20, &effCreatePolyFlashTaskDataEntry132,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry16[16] = {
@@ -7200,8 +7317,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry16[16] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry4 = {
     effCreatePolyFlashTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry16, 16, &effCreatePolyFlashTaskDataEntry132,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyFlashTaskDataEntry135 = {
@@ -7216,8 +7333,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry136[3] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry111 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry136, 3, &effCreatePolyFlashTaskDataEntry135,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry137[19] = {
@@ -7244,8 +7361,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry137[19] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry112 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry137, 19, &effCreatePolyFlashTaskDataEntry135,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry138[2] = {
@@ -7255,8 +7372,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry138[2] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry113 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry138, 2, &effCreatePolyFlashTaskDataEntry135,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry17[18] = {
@@ -7282,8 +7399,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry17[18] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry5 = {
     effCreatePolyFlashTaskDataEntry157, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry17, 18, &effCreatePolyFlashTaskDataEntry135,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyFlashTaskDataEntry18 = {
@@ -7298,8 +7415,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry139[3] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry114 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry139, 3, &effCreatePolyFlashTaskDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry140[21] = {
@@ -7328,8 +7445,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry140[21] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry115 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry140, 21, &effCreatePolyFlashTaskDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry141[4] = {
@@ -7341,8 +7458,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry141[4] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry116 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry141, 4, &effCreatePolyFlashTaskDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry142[4] = {
@@ -7354,8 +7471,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry142[4] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry117 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry142, 4, &effCreatePolyFlashTaskDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry19[18] = {
@@ -7381,8 +7498,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry19[18] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry6 = {
     effCreatePolyFlashTaskDataEntry25, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry19, 18, &effCreatePolyFlashTaskDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyFlashTaskDataEntry143 = {
@@ -7416,8 +7533,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry144[22] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry118 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry144, 22, &effCreatePolyFlashTaskDataEntry143,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry145[4] = {
@@ -7429,8 +7546,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry145[4] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry119 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry145, 4, &effCreatePolyFlashTaskDataEntry143,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry146[4] = {
@@ -7442,8 +7559,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry146[4] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry120 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry146, 4, &effCreatePolyFlashTaskDataEntry143,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry20[17] = {
@@ -7468,8 +7585,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry20[17] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry7 = {
     effCreatePolyFlashTaskDataEntry11, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry20, 17, &effCreatePolyFlashTaskDataEntry143,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyFlashTaskDataEntry147 = {
@@ -7484,8 +7601,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry148[3] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry121 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry148, 3, &effCreatePolyFlashTaskDataEntry147,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry149[19] = {
@@ -7512,8 +7629,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry149[19] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry122 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry149, 19, &effCreatePolyFlashTaskDataEntry147,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry150[7] = {
@@ -7528,8 +7645,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry150[7] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry123 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry150, 7, &effCreatePolyFlashTaskDataEntry147,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyFlashTaskDataEntry21[18] = {
@@ -7555,8 +7672,8 @@ effDebugMenuItem_t effCreatePolyFlashTaskDataEntry21[18] = {
 
 effDebugMenu_t effCreatePolyFlashTaskDataEntry8 = {
     effCreatePolyFlashTaskDataEntry166, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry21, 18, &effCreatePolyFlashTaskDataEntry147,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateEnvironmentTaskDataEntry13 = {
@@ -7572,8 +7689,8 @@ effDebugMenuItem_t effCreateEnvironmentTaskDataEntry14[4] = {
 
 effDebugMenu_t effCreateEnvironmentTaskDataEntry4 = {
     effCreateEnvironmentTaskDataEntry8, 0x8, 8, 0, 0, effCreateEnvironmentTaskDataEntry14, 4, &effCreateEnvironmentTaskDataEntry13,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateEnvironmentTaskDataEntry15 = {
@@ -7591,8 +7708,8 @@ effDebugMenuItem_t effCreateEnvironmentTaskDataEntry16[6] = {
 
 effDebugMenu_t effCreateEnvironmentTaskDataEntry5 = {
     effStrEQuake2, 0x8, 8, 0, 0, effCreateEnvironmentTaskDataEntry16, 6, &effCreateEnvironmentTaskDataEntry15,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyRingTaskDataEntry28 = {
@@ -7628,8 +7745,8 @@ effDebugMenuItem_t effCreatePolyRingTaskDataEntry29[24] = {
 
 effDebugMenu_t effCreatePolyRingTaskDataEntry25 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyRingTaskDataEntry29, 24, &effCreatePolyRingTaskDataEntry28,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyRingTaskDataEntry5[9] = {
@@ -7646,8 +7763,8 @@ effDebugMenuItem_t effCreatePolyRingTaskDataEntry5[9] = {
 
 effDebugMenu_t effCreatePolyRingTaskDataEntry = {
     effCreatePolyRingTaskDataEntry33, 0x8, 8, 0, 0, effCreatePolyRingTaskDataEntry5, 9, &effCreatePolyRingTaskDataEntry28,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyRingTaskDataEntry6 = {
@@ -7683,8 +7800,8 @@ effDebugMenuItem_t effCreatePolyRingTaskDataEntry30[24] = {
 
 effDebugMenu_t effCreatePolyRingTaskDataEntry26 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyRingTaskDataEntry30, 24, &effCreatePolyRingTaskDataEntry6,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyRingTaskDataEntry7[11] = {
@@ -7703,8 +7820,8 @@ effDebugMenuItem_t effCreatePolyRingTaskDataEntry7[11] = {
 
 effDebugMenu_t effCreatePolyRingTaskDataEntry2 = {
     effCreatePolyRingTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyRingTaskDataEntry7, 11, &effCreatePolyRingTaskDataEntry6,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyRingTaskDataEntry31 = {
@@ -7738,8 +7855,8 @@ effDebugMenuItem_t effCreatePolyRingTaskDataEntry32[22] = {
 
 effDebugMenu_t effCreatePolyRingTaskDataEntry27 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyRingTaskDataEntry32, 22, &effCreatePolyRingTaskDataEntry31,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyRingTaskDataEntry8[9] = {
@@ -7756,8 +7873,8 @@ effDebugMenuItem_t effCreatePolyRingTaskDataEntry8[9] = {
 
 effDebugMenu_t effCreatePolyRingTaskDataEntry3 = {
     effCreatePolyRingTaskDataEntry4, 0x8, 8, 0, 0, effCreatePolyRingTaskDataEntry8, 9, &effCreatePolyRingTaskDataEntry31,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyThunderTaskDataEntry = {
@@ -7795,8 +7912,8 @@ effDebugMenuItem_t effCreatePolyThunderTaskDataEntry23[26] = {
 
 effDebugMenu_t effCreatePolyThunderTaskDataEntry20 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyThunderTaskDataEntry23, 26, &effCreatePolyThunderTaskDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyThunderTaskDataEntry6[9] = {
@@ -7813,8 +7930,8 @@ effDebugMenuItem_t effCreatePolyThunderTaskDataEntry6[9] = {
 
 effDebugMenu_t effCreatePolyThunderTaskDataEntry2 = {
     effCreatePolyThunderTaskDataEntry4, 0x8, 8, 0, 0, effCreatePolyThunderTaskDataEntry6, 9, &effCreatePolyThunderTaskDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyThunderTaskDataEntry24 = {
@@ -7852,8 +7969,8 @@ effDebugMenuItem_t effCreatePolyThunderTaskDataEntry25[26] = {
 
 effDebugMenu_t effCreatePolyThunderTaskDataEntry21 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyThunderTaskDataEntry25, 26, &effCreatePolyThunderTaskDataEntry24,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyThunderTaskDataEntry26[6] = {
@@ -7867,8 +7984,8 @@ effDebugMenuItem_t effCreatePolyThunderTaskDataEntry26[6] = {
 
 effDebugMenu_t effCreatePolyThunderTaskDataEntry22 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyThunderTaskDataEntry26, 6, &effCreatePolyThunderTaskDataEntry24,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyThunderTaskDataEntry7[13] = {
@@ -7889,8 +8006,8 @@ effDebugMenuItem_t effCreatePolyThunderTaskDataEntry7[13] = {
 
 effDebugMenu_t effCreatePolyThunderTaskDataEntry3 = {
     effCreatePolyThunderTaskDataEntry34, 0x8, 8, 0, 0, effCreatePolyThunderTaskDataEntry7, 13, &effCreatePolyThunderTaskDataEntry24,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTwinkleTaskDataEntry62 = {
@@ -7918,8 +8035,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry63[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry45 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry63, 16, &effCreatePolyTwinkleTaskDataEntry62,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry64[6] = {
@@ -7933,8 +8050,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry64[6] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry46 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry64, 6, &effCreatePolyTwinkleTaskDataEntry62,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry65[5] = {
@@ -7947,8 +8064,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry65[5] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry47 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry65, 5, &effCreatePolyTwinkleTaskDataEntry62,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry66[6] = {
@@ -7962,8 +8079,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry66[6] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry48 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry66, 6, &effCreatePolyTwinkleTaskDataEntry62,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry12[16] = {
@@ -7987,8 +8104,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry12[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry = {
     effCreatePolyTwinkleTaskDataEntry7, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry12, 16, &effCreatePolyTwinkleTaskDataEntry62,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTwinkleTaskDataEntry67 = {
@@ -8016,8 +8133,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry68[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry49 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry68, 16, &effCreatePolyTwinkleTaskDataEntry67,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry69[6] = {
@@ -8031,8 +8148,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry69[6] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry50 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry69, 6, &effCreatePolyTwinkleTaskDataEntry67,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry70[6] = {
@@ -8046,8 +8163,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry70[6] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry51 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry70, 6, &effCreatePolyTwinkleTaskDataEntry67,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry13[16] = {
@@ -8071,8 +8188,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry13[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry2 = {
     effCreatePolyTwinkleTaskDataEntry8, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry13, 16, &effCreatePolyTwinkleTaskDataEntry67,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTwinkleTaskDataEntry71 = {
@@ -8100,8 +8217,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry72[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry52 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry72, 16, &effCreatePolyTwinkleTaskDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry73[6] = {
@@ -8115,8 +8232,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry73[6] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry53 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry73, 6, &effCreatePolyTwinkleTaskDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry74[9] = {
@@ -8133,8 +8250,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry74[9] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry54 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry74, 9, &effCreatePolyTwinkleTaskDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry75[3] = {
@@ -8145,8 +8262,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry75[3] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry55 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry75, 3, &effCreatePolyTwinkleTaskDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry14[16] = {
@@ -8170,8 +8287,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry14[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry3 = {
     effCreatePolyTwinkleTaskDataEntry9, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry14, 16, &effCreatePolyTwinkleTaskDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTwinkleTaskDataEntry76 = {
@@ -8199,8 +8316,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry77[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry56 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry77, 16, &effCreatePolyTwinkleTaskDataEntry76,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry78[6] = {
@@ -8214,8 +8331,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry78[6] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry57 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry78, 6, &effCreatePolyTwinkleTaskDataEntry76,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry79[8] = {
@@ -8231,8 +8348,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry79[8] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry58 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry79, 8, &effCreatePolyTwinkleTaskDataEntry76,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry15[16] = {
@@ -8256,8 +8373,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry15[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry4 = {
     effCreatePolyTwinkleTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry15, 16, &effCreatePolyTwinkleTaskDataEntry76,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyTwinkleTaskDataEntry5 = {
@@ -8285,8 +8402,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry80[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry59 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry80, 16, &effCreatePolyTwinkleTaskDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry81[6] = {
@@ -8300,8 +8417,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry81[6] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry60 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry81, 6, &effCreatePolyTwinkleTaskDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry82[8] = {
@@ -8317,8 +8434,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry82[8] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry61 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry82, 8, &effCreatePolyTwinkleTaskDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry16[16] = {
@@ -8342,8 +8459,8 @@ effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry16[16] = {
 
 effDebugMenu_t effCreatePolyTwinkleTaskDataEntry6 = {
     effCreatePolyTwinkleTaskDataEntry11, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry16, 16, &effCreatePolyTwinkleTaskDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPOLYWINDDataEntry = {
@@ -8358,8 +8475,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry65[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry46 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry65, 3, &sysPOLYWINDDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry66[15] = {
@@ -8382,8 +8499,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry66[15] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry47 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry66, 15, &sysPOLYWINDDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry67[4] = {
@@ -8395,8 +8512,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry67[4] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry48 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry67, 4, &sysPOLYWINDDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry68[4] = {
@@ -8408,8 +8525,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry68[4] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry49 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry68, 4, &sysPOLYWINDDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry69[3] = {
@@ -8420,8 +8537,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry69[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry50 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry69, 3, &sysPOLYWINDDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry70[3] = {
@@ -8432,8 +8549,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry70[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry51 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry70, 3, &sysPOLYWINDDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry9[17] = {
@@ -8458,8 +8575,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry9[17] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry2 = {
     sysPOLYWINDDataEntry6, 0x8, 8, 0, 0, sysPOLYWINDDataEntry9, 17, &sysPOLYWINDDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPOLYWINDDataEntry71 = {
@@ -8474,8 +8591,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry72[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry52 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry72, 3, &sysPOLYWINDDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry73[15] = {
@@ -8498,8 +8615,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry73[15] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry53 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry73, 15, &sysPOLYWINDDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry74[5] = {
@@ -8512,8 +8629,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry74[5] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry54 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry74, 5, &sysPOLYWINDDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry75[3] = {
@@ -8524,8 +8641,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry75[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry55 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry75, 3, &sysPOLYWINDDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry76[3] = {
@@ -8536,8 +8653,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry76[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry56 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry76, 3, &sysPOLYWINDDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry10[19] = {
@@ -8564,8 +8681,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry10[19] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry3 = {
     sysPOLYWINDDataEntry7, 0x8, 8, 0, 0, sysPOLYWINDDataEntry10, 19, &sysPOLYWINDDataEntry71,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPOLYWINDDataEntry77 = {
@@ -8580,8 +8697,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry78[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry57 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry78, 3, &sysPOLYWINDDataEntry77,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry79[15] = {
@@ -8604,8 +8721,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry79[15] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry58 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry79, 15, &sysPOLYWINDDataEntry77,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry80[4] = {
@@ -8617,8 +8734,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry80[4] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry59 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry80, 4, &sysPOLYWINDDataEntry77,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry11[17] = {
@@ -8643,8 +8760,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry11[17] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry4 = {
     sysPOLYWINDDataEntry96, 0x8, 8, 0, 0, sysPOLYWINDDataEntry11, 17, &sysPOLYWINDDataEntry77,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysPOLYWINDDataEntry81 = {
@@ -8659,8 +8776,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry82[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry60 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry82, 3, &sysPOLYWINDDataEntry81,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry83[15] = {
@@ -8683,8 +8800,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry83[15] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry61 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry83, 15, &sysPOLYWINDDataEntry81,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry84[5] = {
@@ -8697,8 +8814,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry84[5] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry62 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry84, 5, &sysPOLYWINDDataEntry81,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry85[3] = {
@@ -8709,8 +8826,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry85[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry63 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry85, 3, &sysPOLYWINDDataEntry81,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry86[3] = {
@@ -8721,8 +8838,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry86[3] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry64 = {
     NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry86, 3, &sysPOLYWINDDataEntry81,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t sysPOLYWINDDataEntry12[19] = {
@@ -8749,8 +8866,8 @@ effDebugMenuItem_t sysPOLYWINDDataEntry12[19] = {
 
 effDebugMenu_t sysPOLYWINDDataEntry5 = {
     sysPOLYWINDDataEntry97, 0x8, 8, 0, 0, sysPOLYWINDDataEntry12, 19, &sysPOLYWINDDataEntry81,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyScalyTaskDataEntry44 = {
@@ -8776,8 +8893,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry45[14] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry34 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry45, 14, &effCreatePolyScalyTaskDataEntry44,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry46[5] = {
@@ -8790,8 +8907,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry46[5] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry35 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry46, 5, &effCreatePolyScalyTaskDataEntry44,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry47[3] = {
@@ -8802,8 +8919,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry47[3] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry36 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry47, 3, &effCreatePolyScalyTaskDataEntry44,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry7[17] = {
@@ -8828,8 +8945,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry7[17] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry = {
     effCreatePolyScalyTaskDataEntry5, 0x8, 8, 0, 0, effCreatePolyScalyTaskDataEntry7, 17, &effCreatePolyScalyTaskDataEntry44,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyScalyTaskDataEntry48 = {
@@ -8846,8 +8963,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry49[5] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry37 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry49, 5, &effCreatePolyScalyTaskDataEntry48,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry50[5] = {
@@ -8860,8 +8977,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry50[5] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry38 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry50, 5, &effCreatePolyScalyTaskDataEntry48,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry51[6] = {
@@ -8875,8 +8992,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry51[6] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry39 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry51, 6, &effCreatePolyScalyTaskDataEntry48,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry8[16] = {
@@ -8900,8 +9017,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry8[16] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry2 = {
     effCreatePolyScalyTaskDataEntry67, 0x8, 8, 0, 0, effCreatePolyScalyTaskDataEntry8, 16, &effCreatePolyScalyTaskDataEntry48,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyScalyTaskDataEntry52 = {
@@ -8918,8 +9035,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry53[5] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry40 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry53, 5, &effCreatePolyScalyTaskDataEntry52,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry54[9] = {
@@ -8936,8 +9053,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry54[9] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry41 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry54, 9, &effCreatePolyScalyTaskDataEntry52,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry55[3] = {
@@ -8948,8 +9065,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry55[3] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry42 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry55, 3, &effCreatePolyScalyTaskDataEntry52,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry9[16] = {
@@ -8973,8 +9090,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry9[16] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry3 = {
     effCreatePolyScalyTaskDataEntry6, 0x8, 8, 0, 0, effCreatePolyScalyTaskDataEntry9, 16, &effCreatePolyScalyTaskDataEntry52,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyScalyTaskDataEntry56 = {
@@ -8997,8 +9114,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry57[11] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry43 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry57, 11, &effCreatePolyScalyTaskDataEntry56,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyScalyTaskDataEntry10[7] = {
@@ -9013,8 +9130,8 @@ effDebugMenuItem_t effCreatePolyScalyTaskDataEntry10[7] = {
 
 effDebugMenu_t effCreatePolyScalyTaskDataEntry4 = {
     effCreatePolyScalyTaskDataEntry68, 0x8, 8, 0, 0, effCreatePolyScalyTaskDataEntry10, 7, &effCreatePolyScalyTaskDataEntry56,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest fileLoadEffectSlotBData = {
@@ -9029,8 +9146,8 @@ effDebugMenuItem_t effData9Entry17[3] = {
 
 effDebugMenu_t effData9Entry10 = {
     fileLoadEffectSlotBDataEntry2, 0x8, 8, 0, 0, effData9Entry17, 3, &fileLoadEffectSlotBData,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyCrackTaskDataEntry10 = {
@@ -9043,8 +9160,8 @@ effDebugMenuItem_t effCreatePolyCrackTaskDataEntry11[1] = {
 
 effDebugMenu_t effCreatePolyCrackTaskDataEntry7 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyCrackTaskDataEntry11, 1, &effCreatePolyCrackTaskDataEntry10,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyCrackTaskDataEntry12[16] = {
@@ -9068,8 +9185,8 @@ effDebugMenuItem_t effCreatePolyCrackTaskDataEntry12[16] = {
 
 effDebugMenu_t effCreatePolyCrackTaskDataEntry8 = {
     effStrCrackPolygon, 0xB8, 8, 0, 0, effCreatePolyCrackTaskDataEntry12, 16, &effCreatePolyCrackTaskDataEntry10,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t datData29[18] = {
@@ -9095,8 +9212,8 @@ effDebugMenuItem_t datData29[18] = {
 
 effDebugMenu_t effCreatePolyCrackTaskDataEntry31 = {
     NULL, 0xB8, 8, 0, 0, datData29, 18, &effCreatePolyCrackTaskDataEntry10,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyCrackTaskDataEntry13[11] = {
@@ -9115,8 +9232,8 @@ effDebugMenuItem_t effCreatePolyCrackTaskDataEntry13[11] = {
 
 effDebugMenu_t effCreatePolyCrackTaskDataEntry9 = {
     effStrFlashPolygon, 0xB8, 8, 0, 0, effCreatePolyCrackTaskDataEntry13, 11, &effCreatePolyCrackTaskDataEntry10,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyCrackTaskDataEntry2[8] = {
@@ -9132,8 +9249,8 @@ effDebugMenuItem_t effCreatePolyCrackTaskDataEntry2[8] = {
 
 effDebugMenu_t effCreatePolyCrackTaskDataEntry = {
     effCreatePolyCrackTaskDataEntry15, 0x8, 8, 0, 0, effCreatePolyCrackTaskDataEntry2, 8, &effCreatePolyCrackTaskDataEntry10,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyWindTaskDataEntry83 = {
@@ -9156,8 +9273,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry84[11] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry63 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry84, 11, &effCreatePolyWindTaskDataEntry83,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry85[2] = {
@@ -9167,8 +9284,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry85[2] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry64 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry85, 2, &effCreatePolyWindTaskDataEntry83,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry86[5] = {
@@ -9181,8 +9298,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry86[5] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry65 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry86, 5, &effCreatePolyWindTaskDataEntry83,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry87[6] = {
@@ -9196,8 +9313,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry87[6] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry66 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry87, 6, &effCreatePolyWindTaskDataEntry83,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry12[16] = {
@@ -9221,8 +9338,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry12[16] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry = {
     effCreatePolyWindTaskDataEntry7, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry12, 16, &effCreatePolyWindTaskDataEntry83,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyWindTaskDataEntry88 = {
@@ -9245,8 +9362,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry89[11] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry67 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry89, 11, &effCreatePolyWindTaskDataEntry88,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry90[2] = {
@@ -9256,8 +9373,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry90[2] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry68 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry90, 2, &effCreatePolyWindTaskDataEntry88,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry91[6] = {
@@ -9271,8 +9388,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry91[6] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry69 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry91, 6, &effCreatePolyWindTaskDataEntry88,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry13[16] = {
@@ -9296,8 +9413,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry13[16] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry2 = {
     effCreatePolyWindTaskDataEntry122, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry13, 16, &effCreatePolyWindTaskDataEntry88,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyWindTaskDataEntry14 = {
@@ -9320,8 +9437,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry92[11] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry70 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry92, 11, &effCreatePolyWindTaskDataEntry14,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry93[2] = {
@@ -9331,8 +9448,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry93[2] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry71 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry93, 2, &effCreatePolyWindTaskDataEntry14,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry94[9] = {
@@ -9349,8 +9466,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry94[9] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry72 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry94, 9, &effCreatePolyWindTaskDataEntry14,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry95[3] = {
@@ -9361,8 +9478,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry95[3] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry73 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry95, 3, &effCreatePolyWindTaskDataEntry14,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry15[16] = {
@@ -9386,8 +9503,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry15[16] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry3 = {
     effCreatePolyWindTaskDataEntry8, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry15, 16, &effCreatePolyWindTaskDataEntry14,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyWindTaskDataEntry96 = {
@@ -9410,8 +9527,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry97[11] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry74 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry97, 11, &effCreatePolyWindTaskDataEntry96,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry98[2] = {
@@ -9421,8 +9538,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry98[2] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry75 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry98, 2, &effCreatePolyWindTaskDataEntry96,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry99[8] = {
@@ -9438,8 +9555,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry99[8] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry76 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry99, 8, &effCreatePolyWindTaskDataEntry96,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry16[16] = {
@@ -9463,8 +9580,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry16[16] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry4 = {
     effCreatePolyWindTaskDataEntry9, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry16, 16, &effCreatePolyWindTaskDataEntry96,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyWindTaskDataEntry100 = {
@@ -9487,8 +9604,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry101[11] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry77 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry101, 11, &effCreatePolyWindTaskDataEntry100,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry102[2] = {
@@ -9498,8 +9615,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry102[2] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry78 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry102, 2, &effCreatePolyWindTaskDataEntry100,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry103[8] = {
@@ -9515,8 +9632,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry103[8] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry79 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry103, 8, &effCreatePolyWindTaskDataEntry100,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry17[16] = {
@@ -9540,8 +9657,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry17[16] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry5 = {
     effCreatePolyWindTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry17, 16, &effCreatePolyWindTaskDataEntry100,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreatePolyWindTaskDataEntry18 = {
@@ -9564,8 +9681,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry104[11] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry80 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry104, 11, &effCreatePolyWindTaskDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry105[2] = {
@@ -9575,8 +9692,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry105[2] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry81 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry105, 2, &effCreatePolyWindTaskDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry106[9] = {
@@ -9593,8 +9710,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry106[9] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry82 = {
     NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry106, 9, &effCreatePolyWindTaskDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreatePolyWindTaskDataEntry19[16] = {
@@ -9618,8 +9735,8 @@ effDebugMenuItem_t effCreatePolyWindTaskDataEntry19[16] = {
 
 effDebugMenu_t effCreatePolyWindTaskDataEntry6 = {
     effCreatePolyWindTaskDataEntry11, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry19, 16, &effCreatePolyWindTaskDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry = {
@@ -9657,8 +9774,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry34[26] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry2 = {
     sysBATTLEONLYDataEntry22, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry34, 26, &sysBATTLEONLYDataEntry,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry3 = {
@@ -9682,8 +9799,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry35[12] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry4 = {
     sysBATTLEONLYDataEntry23, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry35, 12, &sysBATTLEONLYDataEntry3,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry5 = {
@@ -9712,8 +9829,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry36[17] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry6 = {
     sysBATTLEONLYDataEntry24, 0x8, 8, 1, 0, sysBATTLEONLYDataEntry36, 17, &sysBATTLEONLYDataEntry5,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effLoadFileSlotF2Data = {
@@ -9733,8 +9850,8 @@ effDebugMenuItem_t effData9Entry18[8] = {
 
 effDebugMenu_t effData9Entry11 = {
     effStrOF2Cam, 0x8, 8, 0, 0, effData9Entry18, 8, &effLoadFileSlotF2Data,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry37 = {
@@ -9752,8 +9869,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry38[6] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry7 = {
     sysBATTLEONLYDataEntry25, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry38, 6, &sysBATTLEONLYDataEntry37,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry8 = {
@@ -9768,8 +9885,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry39[3] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry9 = {
     sysBATTLEONLYDataEntry26, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry39, 3, &sysBATTLEONLYDataEntry8,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry10 = {
@@ -9795,8 +9912,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry40[14] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry11 = {
     sysBATTLEONLYDataEntry27, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry40, 14, &sysBATTLEONLYDataEntry10,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry12 = {
@@ -9819,8 +9936,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry41[11] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry13 = {
     sysBATTLEONLYDataEntry28, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry41, 11, &sysBATTLEONLYDataEntry12,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry42 = {
@@ -9838,8 +9955,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry43[6] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry14 = {
     sysBATTLEONLYDataEntry29, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry43, 6, &sysBATTLEONLYDataEntry42,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry15 = {
@@ -9856,8 +9973,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry44[5] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry16 = {
     sysBATTLEONLYDataEntry30, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry44, 5, &sysBATTLEONLYDataEntry15,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effMuzzleFlash_Params_t effData9Entry37 = { 1.0f, 1.0f };
@@ -9875,8 +9992,8 @@ effDebugMenuItem_t effData9Entry19[4] = {
 
 effDebugMenu_t effData9Entry12 = {
     effLoadMaterialFileDataEntry, 0x8, 8, 0, 0, effData9Entry19, 4, &effLoadMaterialFileData,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest effCreateTwoDimensionalTaskDataEntry2 = {
@@ -9890,8 +10007,8 @@ effDebugMenuItem_t effCreateTwoDimensionalTaskDataEntry9[2] = {
 
 effDebugMenu_t effCreateTwoDimensionalTaskDataEntry8 = {
     NULL, 0xB8, 8, 0, 0, effCreateTwoDimensionalTaskDataEntry9, 2, &effCreateTwoDimensionalTaskDataEntry2,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 effDebugMenuItem_t effCreateTwoDimensionalTaskDataEntry3[10] = {
@@ -9909,8 +10026,8 @@ effDebugMenuItem_t effCreateTwoDimensionalTaskDataEntry3[10] = {
 
 effDebugMenu_t effCreateTwoDimensionalTaskDataEntry = {
     effCreateTwoDimensionalTaskData2, 0x8, 8, 0, 0, effCreateTwoDimensionalTaskDataEntry3, 10, &effCreateTwoDimensionalTaskDataEntry2,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry45 = {
@@ -9928,8 +10045,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry46[6] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry17 = {
     sysBATTLEONLYDataEntry69, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry46, 6, &sysBATTLEONLYDataEntry45,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry18 = {
@@ -9966,8 +10083,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry47[25] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry19 = {
     sysStrOLightS, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry47, 25, &sysBATTLEONLYDataEntry18,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffFileJobRequest sysBATTLEONLYDataEntry20 = {
@@ -9991,8 +10108,8 @@ effDebugMenuItem_t sysBATTLEONLYDataEntry48[12] = {
 
 effDebugMenu_t sysBATTLEONLYDataEntry21 = {
     sysStrOMcolrS, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry48, 12, &sysBATTLEONLYDataEntry20,
-    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
-    effCreateBattleCameraJob, NULL,
+    { .job = effCreateBattleCameraJob }, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    { .job = effCreateBattleCameraJob }, NULL,
 };
 
 EffCameraCreateRow sysPARTICLEData[15] __attribute__((aligned(16))) = {
@@ -10191,6 +10308,334 @@ EffCameraCreateRow *effData9[24] = {
     effCreatePolyThunderTaskData, effCreatePolyTwinkleTaskData, sysPOLYWINDData, effCreatePolyScalyTaskData,
     effData9Entry3, effCreatePolyCrackTaskData, sysBATTLEONLYData, effData9Entry5,
     effData9Entry6, effCreateTwoDimensionalTaskData, effCreatePolyWindTaskData, effData9Entry4,
+};
+
+effDebugMenuItem_t effReinitializeFileQueueDataEntry[2] = {
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effReinitializeFileQueue }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effUpdatePartsListEditorData = {
+    effStrResetOk, 8, 8, 0, 0x0, effReinitializeFileQueueDataEntry, 2, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effFinalizeQueuedFileDataEntry[2] = {
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFinalizeQueuedFile }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effUpdatePartsListEditorData3Entry4 = {
+    effStrInstanceOk, 8, 8, 0, 0x0, effFinalizeQueuedFileDataEntry, 2, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effResetFileQueueStateDataEntry[2] = {
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effResetFileQueueState }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effUpdatePartsListEditorData4Entry7 = {
+    effStrDeleteOk, 8, 8, 0, 0x0, effResetFileQueueStateDataEntry, 2, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effUpdatePartsListEditorData3Entry6[2] = {
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effCloneSelectedFileJob }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effUpdatePartsListEditorData3Entry5 = {
+    effStrCopyOk, 8, 8, 0, 0x0, effUpdatePartsListEditorData3Entry6, 2, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effUpdatePartsListEditorData2Entry[2] = {
+    { effResetFileQueueStateDataEntry3, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effSelectLinkedFileState }, { .color = 0xFFFFFF } },
+    { effResetFileQueueStateDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFlagFileQueueActive }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effUpdatePartsListEditorData2 = {
+    effStrExitOk, 8, 8, 0, 0x0, effUpdatePartsListEditorData2Entry, 2, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effData10[3] = {
+    { effCreatePolyCrackTaskDataEntry14, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry5 }, { .mask = 2 }, 0, 1.0f },
+    { effData10Entry, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effData10Entry2 }, { .minValue = 0 }, 0, 1.0f },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry5 }, { .mask = 0x80 }, 0, 1.0f },
+};
+
+effDebugMenuItem_t effData11[9] = {
+    { effStrPosition, EFF_DEBUG_ITEM_BLANK },
+    { effUpdatePartsListEditorData3Entry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effLoadFileSlotAndPoll }, { .color = 0x0 }, 0, 1.0f },
+    { effStrGround, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry5 }, { .mask = 4 }, 0, 1.0f },
+    { effStrCamera, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry5 }, { .mask = 8 }, 0, 1.0f },
+    { effStrCameraY, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry5 }, { .mask = 0x10 }, 0, 1.0f },
+    { sysStrDirection, EFF_DEBUG_ITEM_BLANK },
+    { effUpdatePartsListEditorData3Entry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effProcessQueuedFileRecordAndPersistChanges }, { .color = 0x0 }, 0, 1.0f },
+    { effStrCamera, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry5 }, { .mask = 0x20 }, 0, 1.0f },
+    { effStrCameraY, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry5 }, { .mask = 0x40 }, 0, 1.0f },
+};
+
+effDebugMenu_t effBattleCameraSnapshotSelection = {
+    NULL, 8, 8, 1, 0x0, effData11, 9, NULL,
+    { .value = effLoadBattleCameraSnapshot }, NULL, NULL, NULL, { .value = effStoreBattleCameraSnapshot }, NULL,
+};
+
+effDebugMenuItem_t effUpdatePartsListEditorData3Entry[13] = {
+    { effUpdatePartsListEditorData3Entry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effLoadSelectedFileJob }, { .color = 0x0 } },
+    { effStrPoseture, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effBattleCameraSnapshotSelection }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrInstance, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effUpdatePartsListEditorData3Entry4 }, { .color = 0xFFFFFF }, 0, 0.0f },
+    { effUpdatePartsListEditorData3Entry3, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effUpdatePartsListEditorData3Entry5 }, { .color = 0xFFFFFF }, 0, 0.0f },
+    { effUpdatePartsListEditorData4Entry3, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effUpdatePartsListEditorData4Entry7 }, { .color = 0xFFFFFF }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_BLANK },
+    { effStrPosition, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry5 }, { .mask = 0x80 }, 0, 1.0f },
+    { effStrSize, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry6 }, { .mask = 1 }, 0, 1.0f },
+    { effStrOffset, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &effUpdatePartsListEditorData4Entry4 }, { .minValue = 0 }, 0, 0.1f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData4Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollResourceQueue }, { .release = effInitializeResourceQueue }, 0, 1.0f },
+};
+
+effDebugMenu_t effUpdatePartsListEditorData3 = {
+    NULL, 8, 8, 0, 0x0, effUpdatePartsListEditorData3Entry, 13, NULL,
+    { .value = effLoadBattleCameraSnapshot }, NULL, NULL, NULL, { .value = effStoreBattleCameraSnapshot }, NULL,
+};
+
+effDebugMenuItem_t effUpdatePartsListEditorData4Entry[10] = {
+    { effStrPoseture, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effBattleCameraSnapshotSelection }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_BLANK },
+    { effStrPosition, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry5 }, { .mask = 0x80 }, 0, 1.0f },
+    { effStrSize, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData4Entry6 }, { .mask = 1 }, 0, 1.0f },
+    { effStrOffset, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &effUpdatePartsListEditorData4Entry4 }, { .minValue = 0 }, 0, 0.1f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData4Entry3, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effUpdatePartsListEditorData4Entry7 }, { .color = 0xFFFFFF }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData4Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollResourceQueue }, { .release = effInitializeResourceQueue }, 0, 1.0f },
+};
+
+effDebugMenu_t effUpdatePartsListEditorData4 = {
+    NULL, 8, 8, 0, 0x0, effUpdatePartsListEditorData4Entry, 10, NULL,
+    { .value = effLoadBattleCameraSnapshot }, NULL, NULL, NULL, { .value = effStoreBattleCameraSnapshot }, NULL,
+};
+
+effDebugMenuItem_t effUpdatePartsListEditorData5Entry[22] = {
+    { sysStrParticle, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = sysPARTICLE }, { .color = 0xFFFFFF } },
+    { effStrObjParticle, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreatePolyWindTask }, { .color = 0xFFFFFF } },
+    { effStrPolyTrack, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreatePolyTrackControlTask }, { .color = 0xFFFFFF } },
+    { effStrPolyTrackS2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreatePolyTrackTask }, { .color = 0xFFFFFF } },
+    { sysStrPolyTex, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = sysPOLYTEX }, { .color = 0xFFFFFF } },
+    { effStrPolyFlash, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreatePolyFlashTask }, { .color = 0xFFFFFF } },
+    { effStrPolyRing, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreatePolyRingTask }, { .color = 0xFFFFFF } },
+    { effStrPolyThunder, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreatePolyThunderTask }, { .color = 0xFFFFFF } },
+    { sysStrPolyWind, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = sysPOLYWIND }, { .color = 0xFFFFFF } },
+    { effStrPolyScaly, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreatePolyScalyTask }, { .color = 0xFFFFFF } },
+    { effStrPolyCrack, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreatePolyCrackTask }, { .color = 0xFFFFFF } },
+    { effLabelBlur, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreateBlurTask }, { .color = 0xFFFFFF } },
+    { effCreateFilterTaskData2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreateFilterTask }, { .color = 0xFFFFFF } },
+    { effStrEnvironment, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreateEnvironmentTask }, { .color = 0xFFFFFF } },
+    { effCreateTwoDimensionalTaskData2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effCreateTwoDimensionalTask }, { .color = 0xFFFFFF } },
+    { fileLoadEffectSlotADataEntry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = fileLoadEffectSlotA }, { .release = effBattleResourceDescriptorRelease } },
+    { effStrFloorModel, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = fileLoadEffectSlotB }, { .release = effBattleResourceDescriptorRelease } },
+    { effCreatePolyCrackTaskDataEntry14, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = fileLoadEffectSlotHelp }, { .release = effBattleResourceDescriptorRelease } },
+    { effStrF2Camera, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effLoadFileSlotF2 }, { .release = effBattleResourceDescriptorRelease } },
+    { effStrMuzzleFlash, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effLoadMaterialFile }, { .release = effBattleResourceDescriptorRelease } },
+    { effUpdatePartsListEditorData5Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollAndQueueCopiedFileResource }, { .release = effBattleResourceDescriptorRelease } },
+    { sysStrBattleOnly, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = sysBATTLEONLY }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effUpdatePartsListEditorData5 = {
+    NULL, 184, 8, 0, 0x0, effUpdatePartsListEditorData5Entry, 22, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effBtlDebugSetStatusflgSubDataEntry[5] = {
+    { effStrPartsList, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .editRequest = effUpdatePartsListEditor }, { .color = 0x0 } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrTestMenu0, 0x00 },
+    { effStrTestMenu1, 0x00 },
+    { effStrTestMenu2, 0x00 },
+};
+
+effDebugMenu_t effBtlDebugSetStatusflgSubData = {
+    effStrEffectEditor, 8, 8, 0, 0x0, effBtlDebugSetStatusflgSubDataEntry, 5, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenu_t effPartsListMenu = {
+    effStrPartsList20, 8, 8, 0, 0x0, effBtlDebugSetStatusflgSubDataEntry, 5, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effUpdatePartsListEditorData6Entry[5] = {
+    { effStrPosition2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effRunWithStateBackup }, { .color = 0x0 }, 0, 1.0f },
+    { effStrCamera, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData6Entry3 }, { .mask = 0x20 }, 0, 1.0f },
+    { effStrCameraY, EFF_DEBUG_ITEM_BIT, { 0 }, { .bitValue = &effUpdatePartsListEditorData6Entry3 }, { .mask = 0x40 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &effUpdatePartsListEditorData6Entry4 }, { .minValue = 0 }, 0, 0.1f },
+};
+
+effDebugMenu_t effUpdatePartsListEditorData6 = {
+    NULL, 8, 8, 1, 0x0, effUpdatePartsListEditorData6Entry, 5, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+char effUpdatePartsListEditorData7[] = "LOAD PARTS";
+
+char effUpdatePartsListEditorData8[] = "NEW  PARTS";
+
+char effUpdatePartsListEditorData9[] = "SAVE(EPL)";
+
+char effUpdatePartsListEditorData10[] = "LOAD(EPL)";
+
+char effUpdatePartsListEditorData11[] = "SAVE(D3P)";
+
+effDebugMenu_t effSelectCameraFileJobFromRowsData = {
+    NULL, 8, 8, 0, 0x0, effBtlDebugSetStatusflgSubDataEntry, 5, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effUpdateCameraDiagnosticsDataEntry[6] = {
+    { effCreatePolyWindTaskDataEntry117, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = effHandleDebugOrbitInputWork }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry116, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effUpdateCameraDiagnosticsDataEntry3 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry115, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effUpdateCameraDiagnosticsDataEntry4 }, { .minValue = 0 }, 0, 1.0f },
+    { effUpdateCameraDiagnosticsDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effHandleDebugOrbitInput }, { .color = 0x0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effResetStaticState }, { .color = 0xFFFFFF }, 0, 1.0f },
+};
+
+effDebugMenu_t effUpdateCameraDiagnosticsData = {
+    effStrPosition, 8, 8, 0, 0x0, effUpdateCameraDiagnosticsDataEntry, 6, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+sdfVector4_t effHandleDebugOrbitInputData __attribute__((aligned(16))) = { 0.0f, 0.0f, 1.0f, 0.0f };
+
+effDebugMenuItem_t effUpdateCameraSnapshotGuidesDataEntry[3] = {
+    { effUpdateCameraSnapshotGuidesDataEntry3, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = sysUPDOWNHEIGHT }, { .release = sysLeaf45 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .poll = effResetCameraSnapshotSelection }, { .color = 0xFFFFFF }, 0, 1.0f },
+};
+
+effDebugMenu_t effUpdateCameraSnapshotGuidesData = {
+    sysPOLYTEXDataEntry8, 8, 8, 0, 0x0, effUpdateCameraSnapshotGuidesDataEntry, 3, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effEditColorTrackDataEntry[4] = {
+    { effEditColorTrackDataEntry4, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effColorEditKeyColor }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effEditColorTrackDataEntry3, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effColorEditKeyColor }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effEditColorTrackDataEntry2, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effColorEditKeyColor }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_BLANK },
+};
+
+effDebugMenu_t effColorEditRgbMenu = {
+    NULL, 208, 256, 0, 0x0, effEditColorTrackDataEntry, 4, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effData13[8] = {
+    { effData15Entry, EFF_DEBUG_ITEM_BLANK },
+    { effStrPoint, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &effColorEditColorTrack }, { .minValue = 0 }, 3, 1.0f },
+    { effStrFrame, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effColorEditKeyFrame }, { .minValue = -1 }, -1, 1.0f },
+    { effStrTransparency, EFF_DEBUG_ITEM_BLANK },
+    { effStrAlpha, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effColorEditAlphaTrack }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effStrBlend, 0x13, { 0 }, { .s32Value = &effData15Entry2 }, { .minValue = 1 }, 4, 1.0f },
+    { effStrFadeIn, 0x05, { 0 }, { .s32Value = &effColorEditFadeInFrame }, { .minValue = -1 }, -1, 1.0f },
+    { effStrFadeOut, 0x05, { 0 }, { .s32Value = &effColorEditFadeOutFrame }, { .minValue = -1 }, -1, 1.0f },
+};
+
+effDebugMenuItem_t effData14[8] = {
+    { effData15Entry, EFF_DEBUG_ITEM_BLANK },
+    { effStrPoint, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &effColorEditColorTrack }, { .minValue = 0 }, 3, 1.0f },
+    { effStrFrame, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effColorEditKeyFrame }, { .minValue = -1 }, -1, 1.0f },
+    { effStrTransparency, EFF_DEBUG_ITEM_BLANK },
+    { effStrAlpha, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effColorEditAlphaTrack }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effStrBlend, 0x13, { 0 }, { .s32Value = &effData15Entry2 }, { .minValue = 1 }, 6, 1.0f },
+    { effStrFadeIn, 0x05, { 0 }, { .s32Value = &effColorEditFadeInFrame }, { .minValue = -1 }, -1, 1.0f },
+    { effStrFadeOut, 0x05, { 0 }, { .s32Value = &effColorEditFadeOutFrame }, { .minValue = -1 }, -1, 1.0f },
+};
+
+effDebugMenuItem_t effData15[8] = {
+    { effData15Entry, EFF_DEBUG_ITEM_BLANK },
+    { effStrPoint, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &effColorEditColorTrack }, { .minValue = 0 }, 3, 1.0f },
+    { effStrFrame, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effColorEditKeyFrame }, { .minValue = -1 }, -1, 1.0f },
+    { effStrTransparency, EFF_DEBUG_ITEM_BLANK },
+    { effStrAlpha, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effColorEditAlphaTrack }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effStrBlend, 0x13, { 0 }, { .s32Value = &effData15Entry2 }, { .minValue = 1 }, 3, 1.0f },
+    { effStrFadeIn, 0x05, { 0 }, { .s32Value = &effColorEditFadeInFrame }, { .minValue = -1 }, -1, 1.0f },
+    { effStrFadeOut, 0x05, { 0 }, { .s32Value = &effColorEditFadeOutFrame }, { .minValue = -1 }, -1, 1.0f },
+};
+
+effDebugMenu_t effMappingState = {
+    NULL, 16, 328, 0, 0x14, effData13, 8, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effData16Entry[1] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effEditScalarTrackData4 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effData16 = {
+    NULL, 228, 258, 0, 0x0, effData16Entry, 1, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effData17Entry[1] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effEditScalarTrackData4 }, { .minValue = 0 }, 0, 0.1f },
+};
+
+effDebugMenu_t effData17 = {
+    NULL, 228, 258, 0, 0x0, effData17Entry, 1, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effData18Entry[4] = {
+    { effData20Entry4, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &effEditScalarTrackWork }, { .minValue = 0 }, 3, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effData20Entry6 }, { .minValue = 0 }, 1, 1.0f },
+    { effData18Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effEditScalarTrackData4 }, { .minValue = -1 }, -1, 1.0f },
+    { effData20Entry3, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effEditScalarTrackData6 }, { .minValue = -1 }, -1, 1.0f },
+};
+
+effDebugMenu_t effData18 = {
+    NULL, 12, 364, 0, 0x14, effData18Entry, 4, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effData19Entry[2] = {
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effEditScalarTrackData4 }, { .minValue = 0 }, 0, 1.0f },
+    { effData19Entry2, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &effEditScalarTrackData4 }, { .minValue = 0 }, 0, 0.1f },
+};
+
+effDebugMenu_t effData19 = {
+    NULL, 228, 258, 0, 0x0, effData19Entry, 2, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effData20Entry[5] = {
+    { effData20Entry4, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &effEditScalarTrackWork }, { .minValue = 0 }, 3, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effData20Entry6 }, { .minValue = 0 }, 1, 1.0f },
+    { effData20Entry5, 0x1B, { 0 }, { .s32Value = &effData20Entry7 }, { .minValue = 0 }, 2, 1.0f },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effEditScalarTrackData4 }, { .minValue = -1 }, -1, 1.0f },
+    { effData20Entry3, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effEditScalarTrackData6 }, { .minValue = -1 }, -1, 1.0f },
+};
+
+effDebugMenu_t effData20 = {
+    NULL, 12, 364, 0, 0x14, effData20Entry, 5, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
+};
+
+effDebugMenuItem_t effFunc20DataEntry[2] = {
+    { effStrFadeIn, 0x05, { 0 }, { .s32Value = &effColorEditFadeInFrame }, { .minValue = -1 }, -1, 1.0f },
+    { effStrFadeOut, 0x05, { 0 }, { .s32Value = &effColorEditFadeOutFrame }, { .minValue = -1 }, -1, 1.0f },
+};
+
+effDebugMenu_t effFunc20Data = {
+    NULL, 16, 400, 0, 0x14, effFunc20DataEntry, 2, NULL,
+    { 0 }, NULL, NULL, NULL, { 0 }, NULL,
 };
 
 #endif
