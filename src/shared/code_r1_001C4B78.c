@@ -57,7 +57,7 @@ typedef char evtSerializedChild_size_check[
 
 extern void evtWriteSerializedBytes(s32 output, void *data, s32 size);
 
-struct SoundMixer;
+struct sndMixer_t;
 
 typedef struct {
     s16 enabled;

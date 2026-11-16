@@ -85,9 +85,9 @@ s32 jmsSeqChange(jmsSeqHandle_t *work, s32 *entrySlot, s32 mode, dds3ProcessID_t
 
 void jmsSeqJump(s32 *entrySlot, jmsSeqUnit_t *entry);
 
-typedef struct CampEffectRows {
+typedef struct campEffectRows_t {
     u32 values[2][4];
-} CampEffectRows;
+} campEffectRows_t;
 
 typedef struct mnuGradientFade_t {
     u32 active;
@@ -99,14 +99,14 @@ typedef char mnuGradientFade_size_must_be_0x0C[(sizeof(mnuGradientFade_t) == 0x0
 
 /* Native 0x10-byte list-node payload. Its first word is an entry index or
  * displayed value according to the list; price is the preserved base price. */
-typedef struct CampWindowParams {
+typedef struct campWindowParams_t {
     s32 value;
     s32 id;
     s32 price;
     s32 mode;
-} CampWindowParams;
+} campWindowParams_t;
 
-typedef char CampWindowParams_size_must_be_0x10[(sizeof(CampWindowParams) == 0x10) ? 1 : -1];
+typedef char campWindowParams_size_must_be_0x10[(sizeof(campWindowParams_t) == 0x10) ? 1 : -1];
 
 /* The two terminal payload words are a party index and its signed recovery
  * cost. The surrounding node storage
@@ -142,7 +142,7 @@ typedef struct effTimedState_t {
 
 /* Native 0xA0-byte slot work. Material, grid and textured-surface operations
  * use overlapping payload fields in the same slot, not separate allocations. */
-typedef struct BdWork {
+typedef struct itfBdWork_t {
     s32 flags;           /* 0x00 */
     effSlotGeometry_t geometry; /* 0x04: x, y, width, height, colors, angle */
     effTimedState_t states[2]; /* 0x28 */
@@ -170,7 +170,7 @@ typedef struct BdWork {
         u32 bits;
         void *payload; /* Alternate payloads may be only 0x6C bytes. */
     } alternate;        /* 0x9C */
-} BdWork;
+} itfBdWork_t;
 
 /* Native 0x30-byte resource-slot owner: source descriptors and live work arrays. */
 typedef struct sprHandle_t {
@@ -180,7 +180,7 @@ typedef struct sprHandle_t {
     struct sdfMemHandle_t *descriptionAllocation;
     effSlotDescription_t *descriptions;
     struct sdfMemHandle_t *workAllocation;
-    BdWork *workEntries;
+    itfBdWork_t *workEntries;
     u32 TexNums;
     struct sdfMemHandle_t *textureAllocation;
     sdfTexHandle_t **textureReferences;
@@ -188,7 +188,7 @@ typedef struct sprHandle_t {
     u8 pad2C[4];
 } sprHandle_t;
 
-typedef char BdWorkSizeCheck[sizeof(BdWork) == 0xA0 ? 1 : -1];
+typedef char itfBdWorkSizeCheck[sizeof(itfBdWork_t) == 0xA0 ? 1 : -1];
 
 typedef char sprHandleSizeCheck[sizeof(sprHandle_t) == 0x30 ? 1 : -1];
 
@@ -201,7 +201,7 @@ void cmpFunc3(s32 x, s32 y, u32 z, s32 width, s32 height, u32 *edges, u8 *edgeVa
               u32 *colors, u32 flip, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot);
 void cmpFunc4(s32 x, s32 y, u32 z, s32 width, s32 height, u8 *counts, u8 *steps, effSpriteUV_t *uv, u32 *colors,
               u32 flip, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot);
-void effDrawTextureSlot(s32 x, s32 y, u32 z, u32 *colors, u32 flags, sprHandle_t *set, s32 slot, BdWork *draw, s32 ot);
+void effDrawTextureSlot(s32 x, s32 y, u32 z, u32 *colors, u32 flags, sprHandle_t *set, s32 slot, itfBdWork_t *draw, s32 ot);
 sprHandle_t *effUpdateTimedStates(sprHandle_t *effect, u32 slot, void *entryData);
 
 /* The native window constructor allocates 0x98 bytes; panel layout is 0x38. */
@@ -220,15 +220,15 @@ struct mnuIconState_t {
 typedef char mnuIconState_size_must_be_0x38[(sizeof(struct mnuIconState_t) == 0x38) ? 1 : -1];
 
 /* The backdrop packet's complete resource payload, also used by shop callbacks. */
-typedef struct MapPacket {
+typedef struct mapPacket_t {
     u32 type;
     u32 value;
     struct sprHandle_t *sheets[1]; /* The resource destructor iterates this one-sheet bank. */
     u32 items[11];
     s32 count;
-} MapPacket;
+} mapPacket_t;
 
-typedef char MapPacket_size_must_be_0x3C[(sizeof(MapPacket) == 0x3C) ? 1 : -1];
+typedef char mapPacket_size_must_be_0x3C[(sizeof(mapPacket_t) == 0x3C) ? 1 : -1];
 
 typedef struct mnuDspScrollingStrip_t {
     struct sprHandle_t *resource;
@@ -286,7 +286,7 @@ struct mnuListNode_t {
             u32 sortKeyTertiary;  /* 0x68 */
             u8 pad6C[4];
         };
-        CampWindowParams camp;
+        campWindowParams_t camp;
         mnuThresholdEntry_t terminal;
     };
     /* +0x70: terminal recovery panel at 267050; title at 2674C8.
@@ -316,9 +316,9 @@ typedef struct effMappedResource_t {
 } effMappedResource_t;
 
 typedef struct mnuEffectResources_t {
-    MapPacket packet;
+    mapPacket_t packet;
     struct effMappedResource_t *animationHandle;
-    CampEffectRows rows;
+    campEffectRows_t rows;
 } mnuEffectResources_t;
 
 /* Result/camp backdrop: resources, sixteen sparks and the badge fade. */
@@ -407,38 +407,26 @@ struct mnuListNode_t *mnuAdvanceListCursorDefault(struct mnuList_t *list);
 typedef u32 ItfMesEntryItemsResult;
 
 /* Message tables contain relocated encoded-text addresses. */
-typedef struct ItfMesTable {
+typedef struct itfMesTable_t {
     u8 unk0[0x18];
     s16 count;
     s16 bitCount;
     u32 items[1];
-} ItfMesTable;
+} itfMesTable_t;
 
-typedef struct ItfMesEntry {
+typedef struct itfMesEntry_t {
     /* Relocated table address, or NONE / BRANCH sentinel. */
     ItfMesEntryItemsResult itemList;
-    ItfMesTable *table;
-} ItfMesEntry;
+    itfMesTable_t *table;
+} itfMesEntry_t;
 
-typedef char ItfMesEntry_size_must_be_0x8[
-    sizeof(ItfMesEntry) == 0x8 ? 1 : -1];
-
-typedef struct ItfMesSub {
-    u8 unk0[8];
-    u32 magic;
-    u8 unkC[4];
-    s32 fixupTableOffset;
-    s32 fixupTableBytes;
-    u32 entryCount;
-    u8 relocated;
-    u8 unk1D[3];
-    ItfMesEntry entries[1];
-} ItfMesSub;
+typedef char itfMesEntry_size_must_be_0x8[
+    sizeof(itfMesEntry_t) == 0x8 ? 1 : -1];
 
 /* Native resource handle and the relocatable message data it owns. */
 typedef struct evtResourcePair_t {
     struct sdfMemHandle_t *handle;
-    struct ItfMesSub *messageData;
+    struct itfMesResource_t *messageData;
 } evtResourcePair_t;
 
 typedef char evtResourcePair_size_must_be_0x08[(sizeof(evtResourcePair_t) == 0x08) ? 1 : -1];

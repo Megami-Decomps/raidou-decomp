@@ -40,26 +40,26 @@ u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
 /* Append a TEST-register write to the active GS packet stream. */
 void sdfSubmitGsTestOneRegisterPacket(u64 data, u32 kind);
 
-extern GridTextListItem *itfFindGridNodeByKey(u32, GridTextWidget *);
-extern GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *);
+extern itfGridTextListItem_t *itfFindGridNodeByKey(u32, itfGridTextWidget_t *);
+extern itfGridTextListItem_t *itfRemoveSelectedGridTextItem(itfGridTextWidget_t *);
 void uiDrawUniformColorRect(u32 x, u32 y, u32 z, u32 width, u32 height, u32 color, u32 surfaceIndex);
 void uiDrawSurfaceAtNearDepth(u32 surface);
 void itfInitializeAdminInterfaceNoop(void);
 u32 itfReturnZeroDuplicate(void);
-u32 itfDestroyGridTextWidget(GridTextWidget *widget);
-u32 itfDestroyGridTextWidgetTree(GridTextWidget *widget);
+u32 itfDestroyGridTextWidget(itfGridTextWidget_t *widget);
+u32 itfDestroyGridTextWidgetTree(itfGridTextWidget_t *widget);
 
 /* Grow only; numbered prefixes reserve four columns, plus two for hexadecimal. */
-void itfExpandWidgetColumnWidth(s32 columns, GridTextWidget *widget);
-u32 itfGetGridListLinkFlags(GridTextWidget *owner);
-GridTextListItem *itfAppendGridTextItem(GridTextWidget *owner, const char *text, u32 value);
-GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *widget);
-void itfReplaceGridTextAndExpandColumn(GridTextWidget *widget, GridTextListItem *item, const char *text);
-void itfAdvanceGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps);
-void itfAdvanceSelectedGridScroll(GridTextWidget *widget, u32 steps);
-void itfReverseGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps);
-void itfReverseSelectedGridScroll(GridTextWidget *widget, u32 steps);
-GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget);
+void itfExpandWidgetColumnWidth(s32 columns, itfGridTextWidget_t *widget);
+u32 itfGetGridListLinkFlags(itfGridTextWidget_t *owner);
+itfGridTextListItem_t *itfAppendGridTextItem(itfGridTextWidget_t *owner, const char *text, u32 value);
+itfGridTextListItem_t *itfRemoveSelectedGridTextItem(itfGridTextWidget_t *widget);
+void itfReplaceGridTextAndExpandColumn(itfGridTextWidget_t *widget, itfGridTextListItem_t *item, const char *text);
+void itfAdvanceGridScrollPosition(itfGridTextWidget_t *widget, u32 key, s32 steps);
+void itfAdvanceSelectedGridScroll(itfGridTextWidget_t *widget, u32 steps);
+void itfReverseGridScrollPosition(itfGridTextWidget_t *widget, u32 key, s32 steps);
+void itfReverseSelectedGridScroll(itfGridTextWidget_t *widget, u32 steps);
+itfGridTextListItem_t *itfFindGridNodeByKey(u32 key, itfGridTextWidget_t *widget);
 
 void uiDrawSurfaceAtNearDepth(u32 surface) {
     sdfSubmitGsTestOneRegisterPacket(0x30000, surface);
@@ -111,8 +111,8 @@ INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfCreateGridTextWidget);
 
 INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfSetGridDimensions);
 
-u32 itfDestroyGridTextWidget(GridTextWidget *widget) {
-    GridTextListItem *next;
+u32 itfDestroyGridTextWidget(itfGridTextWidget_t *widget) {
+    itfGridTextListItem_t *next;
 
     sdfChipFreeDirect(widget->text);
     do {
@@ -123,14 +123,14 @@ u32 itfDestroyGridTextWidget(GridTextWidget *widget) {
 }
 
 /* Destroy linked child widgets recursively before releasing the parent widget. */
-u32 itfDestroyGridTextWidgetTree(GridTextWidget *widget) {
-    GridTextListItem *childLink;
+u32 itfDestroyGridTextWidgetTree(itfGridTextWidget_t *widget) {
+    itfGridTextListItem_t *childLink;
 
     sdfChipFreeDirect(widget->text);
     childLink = widget->selected;
     if (childLink != NULL) {
         do {
-            GridTextWidget *childWidget = childLink->child;
+            itfGridTextWidget_t *childWidget = childLink->child;
             if (childWidget != NULL) {
                 itfDestroyGridTextWidgetTree(childWidget);
             }
@@ -144,8 +144,8 @@ u32 itfDestroyGridTextWidgetTree(GridTextWidget *widget) {
 INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfExpandWidgetColumnWidth);
 
 /* Bit 0: the visible node has a predecessor. Bit 1: at least rows successors remain. */
-u32 itfGetGridListLinkFlags(GridTextWidget *owner) {
-    GridTextListItem *node = owner->firstVisible;
+u32 itfGetGridListLinkFlags(itfGridTextWidget_t *owner) {
+    itfGridTextListItem_t *node = owner->firstVisible;
     u32 flags;
     s32 i;
 
@@ -164,9 +164,9 @@ u32 itfGetGridListLinkFlags(GridTextWidget *owner) {
     return flags;
 }
 
-GridTextListItem *itfAppendGridTextItem(GridTextWidget *owner, const char *text, u32 value) {
-    GridTextListItem *item = (GridTextListItem *)sdfChipAllocDirect(sizeof(GridTextListItem));
-    GridTextListItem *tail;
+itfGridTextListItem_t *itfAppendGridTextItem(itfGridTextWidget_t *owner, const char *text, u32 value) {
+    itfGridTextListItem_t *item = (itfGridTextListItem_t *)sdfChipAllocDirect(sizeof(itfGridTextListItem_t));
+    itfGridTextListItem_t *tail;
     s32 length;
     s32 allocation;
     char *copy;
@@ -203,11 +203,11 @@ GridTextListItem *itfAppendGridTextItem(GridTextWidget *owner, const char *text,
 
 INCLUDE_ASM(const s32, "code_r1_002CD5A8", fclGohInitSkillChangeSub);
 
-GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *widget) {
-    GridTextListItem *node;
-    GridTextListItem *cursor;
-    GridTextListItem *previous;
-    GridTextListItem *next;
+itfGridTextListItem_t *itfRemoveSelectedGridTextItem(itfGridTextWidget_t *widget) {
+    itfGridTextListItem_t *node;
+    itfGridTextListItem_t *cursor;
+    itfGridTextListItem_t *previous;
+    itfGridTextListItem_t *next;
 
     if (widget->itemCount == 0) {
         return NULL;
@@ -283,7 +283,7 @@ GridTextListItem *itfRemoveSelectedGridTextItem(GridTextWidget *widget) {
 }
 
 /* Replace the owned text and grow the optional parent column to fit its byte length. */
-void itfReplaceGridTextAndExpandColumn(GridTextWidget *widget, GridTextListItem *item, const char *text) {
+void itfReplaceGridTextAndExpandColumn(itfGridTextWidget_t *widget, itfGridTextListItem_t *item, const char *text) {
     s32 textLength;
     s32 textBytes;
     char *textCopy;
@@ -303,9 +303,9 @@ void itfReplaceGridTextAndExpandColumn(GridTextWidget *widget, GridTextListItem 
 INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfSetGridNumericItemDescriptor);
 
 /* Advance by at least one configured step; crossing the maximum wraps to minimum. */
-void itfAdvanceGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps) {
-    GridNumericDescriptor *range;
-    GridTextListItem *entry;
+void itfAdvanceGridScrollPosition(itfGridTextWidget_t *widget, u32 key, s32 steps) {
+    itfGridNumericDescriptor_t *range;
+    itfGridTextListItem_t *entry;
     float *position;
     float delta;
     float previous;
@@ -324,7 +324,7 @@ void itfAdvanceGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps) {
     }
 }
 
-void itfAdvanceSelectedGridScroll(GridTextWidget *widget, u32 steps) {
+void itfAdvanceSelectedGridScroll(itfGridTextWidget_t *widget, u32 steps) {
     if ((widget->flags & 1) != 0) {
         itfAdvanceGridScrollPosition(widget, (u32)widget->selected->index + widget->rowOffset, steps);
         return;
@@ -332,9 +332,9 @@ void itfAdvanceSelectedGridScroll(GridTextWidget *widget, u32 steps) {
 }
 
 /* Reverse by at least one configured step; crossing the minimum wraps to maximum. */
-void itfReverseGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps) {
-    GridNumericDescriptor *range;
-    GridTextListItem *entry;
+void itfReverseGridScrollPosition(itfGridTextWidget_t *widget, u32 key, s32 steps) {
+    itfGridNumericDescriptor_t *range;
+    itfGridTextListItem_t *entry;
     float *position;
     float delta;
     float previous;
@@ -353,7 +353,7 @@ void itfReverseGridScrollPosition(GridTextWidget *widget, u32 key, s32 steps) {
     }
 }
 
-void itfReverseSelectedGridScroll(GridTextWidget *widget, u32 steps) {
+void itfReverseSelectedGridScroll(itfGridTextWidget_t *widget, u32 steps) {
     if ((widget->flags & 1) != 0) {
         itfReverseGridScrollPosition(widget, (u32)widget->selected->index + widget->rowOffset, steps);
         return;
@@ -366,8 +366,8 @@ INCLUDE_ASM(const s32, "code_r1_002CD5A8", itfFormatGridValueEntryText);
 
 INCLUDE_ASM(const s32, "code_r1_002CD5A8", fclCallDrawBoxF);
 
-GridTextListItem *itfFindGridNodeByKey(u32 key, GridTextWidget *widget) {
-    GridTextListItem *item = widget->head;
+itfGridTextListItem_t *itfFindGridNodeByKey(u32 key, itfGridTextWidget_t *widget) {
+    itfGridTextListItem_t *item = widget->head;
 
     while (item != NULL && item->index != key) {
         item = item->next;

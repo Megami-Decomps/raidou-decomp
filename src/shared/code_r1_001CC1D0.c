@@ -107,47 +107,47 @@ enum {
 
 #define CAMP_PARTY_ACTIVE_FLAG 1
 
-typedef struct CampFlagRow {
+typedef struct campFlagRow_t {
     u32 messageSet;  /* 0x00: shop message resource number */
     s16 flag[8];     /* 0x04 */
     u8 value[9];     /* 0x14: [0] default, [i + 1] for flag[i] */
     u8 pad1D[3];
-} CampFlagRow;
+} campFlagRow_t;
 
 void mnuEvaluateCubicBezierPoint(f32 parameter, const s32 *x, const s32 *y, s32 *outX, s32 *outY);
 extern void mnuEvaluateCubicBezierPoint(f32 parameter, const s32 *x, const s32 *y, s32 *outX, s32 *outY);
 s32 mnuSolveCubicBezierYForX(s32 target, const s32 *x, const s32 *y);
 
-typedef struct CampEntryEnableSet {
+typedef struct campEntryEnableSet_t {
     s32 enabled[7];
-} CampEntryEnableSet;
+} campEntryEnableSet_t;
 
 /* Scan the twenty-one flag IDs in descending slot order. */
 
-typedef struct ShopSourcePriceEntry {
+typedef struct shpSourcePriceEntry_t {
     u16 itemId;
     u8 type;
     u8 pricePercent;
-} ShopSourcePriceEntry;
+} shpSourcePriceEntry_t;
 
-typedef struct ShopSourcePriceRow {
+typedef struct shpSourcePriceRow_t {
     u16 pricePercent;
-    ShopSourcePriceEntry entries[0x60];
-} ShopSourcePriceRow;
+    shpSourcePriceEntry_t entries[0x60];
+} shpSourcePriceRow_t;
 
-typedef struct CampTier {
+typedef struct campTier_t {
     u32 threshold;
     s32 value;
-} CampTier;
+} campTier_t;
 
 static inline s32 campSetHandler(mnuTerminalContext_t *context, s32 mode, void *callback) {
     return jmsSeqChange(&context->transitionWork, &context->popupState, mode, callback);
 }
 
-typedef struct ShopProgressPrice {
+typedef struct shpProgressPrice_t {
     f32 percent;
     u32 unk4;
-} ShopProgressPrice;
+} shpProgressPrice_t;
 
 typedef struct effItemSlot44_t {
     u32 id;
@@ -155,27 +155,27 @@ typedef struct effItemSlot44_t {
 } effItemSlot44_t;
 
 /* A wide reward record carries its weight, kind, item ID and optional variant. */
-typedef struct CampWideRewardEntry {
+typedef struct campWideRewardEntry_t {
     u8 weight;
     u8 kind;
     u8 reserved02[2];
     s32 id;
     u16 variant;
     u8 reserved0A[2];
-} CampWideRewardEntry;
+} campWideRewardEntry_t;
 
-typedef char CampWideRewardEntry_size_check[
-    sizeof(CampWideRewardEntry) == 0xC ? 1 : -1];
+typedef char campWideRewardEntry_size_check[
+    sizeof(campWideRewardEntry_t) == 0xC ? 1 : -1];
 
-typedef struct CampPriceTier {
+typedef struct campPriceTier_t {
     u8 limit;
     u8 percent;
-} CampPriceTier;
+} campPriceTier_t;
 
-typedef struct CampRateRow {
+typedef struct campRateRow_t {
     u16 percent;
     u8 pad02[10];
-} CampRateRow;
+} campRateRow_t;
 
 #define EVT_DISPATCH_OPERATION_POLL 0
 

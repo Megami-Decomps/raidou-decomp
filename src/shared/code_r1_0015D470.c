@@ -100,14 +100,14 @@ typedef struct SBTLVOICE_ENTRY {
 
 /* Camera framing preset: from and to quaternions, their distance multipliers,
  * the camera parameter copied to the action, and padding. */
-typedef struct CameraFramePose {
+typedef struct camCameraFramePose_t {
     f32 fromQuat[4];
     f32 toQuat[4];
     f32 fromDistance;
     f32 toDistance;
     f32 parameter;
     f32 pad2C;
-} CameraFramePose;
+} camCameraFramePose_t;
 
 #define BTL_APPROACH_DIST_START 0.55f
 
@@ -151,12 +151,12 @@ struct dds3Effect_Filter_t;
 
 void mapBadEffDrawTask(void);
 
-typedef struct SoundTaskArgs {
+typedef struct sndTaskArgs_t {
     SBTL_UNIT *actor;
     s32 option;
     u32 slot;
     s32 waitFrames;
-} SoundTaskArgs;
+} sndTaskArgs_t;
 
 enum {
     BATTLE_FORMATION_ACTION_FIRST = 0x1AB,

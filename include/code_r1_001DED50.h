@@ -4,11 +4,11 @@
 #include "common.h"
 
 /* Native billboard UVs are four ordered U/V corners, not a float vector. */
-typedef struct BillTextureQuad {
+typedef struct billTextureQuad_t {
     u16 components[8];
-} BillTextureQuad;
+} billTextureQuad_t;
 
-typedef char BillTextureQuad_size_must_be_0x10[
-    (sizeof(BillTextureQuad) == 0x10) ? 1 : -1];
+typedef char billTextureQuad_size_must_be_0x10[
+    (sizeof(billTextureQuad_t) == 0x10) ? 1 : -1];
 
 #endif

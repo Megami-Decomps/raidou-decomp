@@ -167,7 +167,7 @@ typedef s32 BtlConditionalEncounterGaugeThreshold;
 
 #define DAT_CURRENCY_MAX 0x98967F
 
-typedef struct UiObject {
+typedef struct datUiObject_t {
     u8 unk_00[0x110];
     u32 flags;
     u8 unk_114[0x10];
@@ -176,7 +176,7 @@ typedef struct UiObject {
     u16 maximumValue;
     u8 unk_12A[4];
     u16 statusFlags;
-} UiObject;
+} datUiObject_t;
 
 /* Add the signed per-unit stat byte to its profile adjustment and clamp
  * the existing signed result to 1..99. Stat index is not checked here. */

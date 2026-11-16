@@ -92,7 +92,7 @@ typedef struct evtPad_t {
 
 typedef char evtPad_size_must_be_0x40[(sizeof(evtPad_t) == 0x40) ? 1 : -1];
 
-struct SoundMixer;
+struct sndMixer_t;
 
 typedef struct {
     s16 enabled;

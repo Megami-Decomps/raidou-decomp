@@ -77,10 +77,10 @@ typedef struct mnuBrsLevelCornerColors_t {
     u32 values[4];
 } mnuBrsLevelCornerColors_t;
 
-typedef struct TitleEffectState {
+typedef struct titleEffectState_t {
     s32 soundNameIndex;
     s32 frameCounter;
-} TitleEffectState;
+} titleEffectState_t;
 
 #define MNU_STREAM_LOAD_IDLE 0
 
@@ -203,7 +203,7 @@ INCLUDE_ASM(const s32, "code_r1_001CF808", mnuDestroyTitleEffectTask);
 
 void ProcessInit(void)
 {
-    TitleEffectState *state = sdfChipAllocDirect(sizeof(TitleEffectState));
+    titleEffectState_t *state = sdfChipAllocDirect(sizeof(titleEffectState_t));
 
     mnuTitleSoundTask = dds3StartProcess(evtPicturePriProcName, 0x5212, 1, 1,
                                          mnuIncrementTitleEffectFrameCounter,
@@ -214,7 +214,7 @@ void ProcessInit(void)
 }
 
 void mnuResetTitleEffectState(s32 command) {
-    TitleEffectState *effectState = (TitleEffectState *)dds3GetProcessData(mnuTitleSoundTask);
+    titleEffectState_t *effectState = (titleEffectState_t *)dds3GetProcessData(mnuTitleSoundTask);
     if (p2sdGetPcmState() != 0) {
         p2sdSyncSound();
     }
@@ -223,7 +223,7 @@ void mnuResetTitleEffectState(s32 command) {
 }
 
 void mnuSetTitleVoicePrefixIndex(s32 prefixIndex) {
-    ((TitleEffectState *)dds3GetProcessData(mnuTitleSoundTask))->soundNameIndex = prefixIndex;
+    ((titleEffectState_t *)dds3GetProcessData(mnuTitleSoundTask))->soundNameIndex = prefixIndex;
 }
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", fldNowPlayengStart);
@@ -244,7 +244,7 @@ void mnuNoOpTitleAudio(void) {
 }
 
 s32 mnuGetTitleEffectFrameCounter(void) {
-    return ((TitleEffectState *)dds3GetProcessData(mnuTitleSoundTask))->frameCounter;
+    return ((titleEffectState_t *)dds3GetProcessData(mnuTitleSoundTask))->frameCounter;
 }
 
 #ifdef VERSION_RAIDOU2

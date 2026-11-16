@@ -94,17 +94,17 @@ enum {
 #include "newdata.h"
 
 /* Serialized font-bank entries use byte offsets relative to their bank. */
-typedef struct FrFontTextIndex {
+typedef struct frFontTextIndex_t {
     u32 unk00;
     u32 offset;
-} FrFontTextIndex;
+} frFontTextIndex_t;
 
-typedef struct FrFontTextBank {
+typedef struct frFontTextBank_t {
     u8 pad00[0x18];
     s32 count;
     u8 pad1C[4];
-    FrFontTextIndex entries[1];
-} FrFontTextBank;
+    frFontTextIndex_t entries[1];
+} frFontTextBank_t;
 
 _FRQ *itfDrawColor(s32 x, s32 y, s32 depth, s32 channel0, s32 channel1,
     s32 channel2, s32 channel3, const u8 *encodedText, _FRQ *unusedSub);
@@ -164,7 +164,7 @@ s32 frFontMeasureGlyphStripWidth(s32 line, const _FRQ *glyph);
 /* Decode a two-byte glyph through the lookup table; 0xFFFF is missing. */
 u32 itfDecodeGlyph(u32 glyphCode);
 void itfConvertText(u8 *output, const char *input);
-_FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, FrFontTextBank *bank, s32 flags);
+_FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, frFontTextBank_t *bank, s32 flags);
 
 struct effSpriteUV_t;
 
@@ -247,7 +247,7 @@ INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallCaptionFontFRQ);
 
 INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallFont1FRQ);
 
-_FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, FrFontTextBank *bank, s32 flags) {
+_FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, frFontTextBank_t *bank, s32 flags) {
     const u8 *text = MessageNumSearch(textId, bank, 0);
     u32 mode;
     _FRQ *handle;

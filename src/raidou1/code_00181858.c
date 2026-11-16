@@ -74,7 +74,7 @@ void cmbCallRetFontMem(s32 idx) {
 
 /* NON_MATCHING: 64 of 67 words match. Retail computes the font number before the 0x83C5 branch and stores glyphCode before it. */
 #ifdef NON_MATCHING
-void cmbCallSetUserImage(s32 idx, u32 count, dds3NameChar_t *name, FrFontCtx *ctx) {
+void cmbCallSetUserImage(s32 idx, u32 count, dds3NameChar_t *name, frFontCtx_t *ctx) {
     GsFont_t **cell = cmbData[idx];
     u32 i;
     u32 code;
@@ -96,7 +96,7 @@ void cmbCallSetUserImage(s32 idx, u32 count, dds3NameChar_t *name, FrFontCtx *ct
 INCLUDE_ASM(const s32, "code_00181858", cmbCallSetUserImage);
 #endif
 
-void cmbRefDDS3GBWK3(s32 idx, FrFontCtx *ctx) {
+void cmbRefDDS3GBWK3(s32 idx, frFontCtx_t *ctx) {
     cmbCallSetUserImage(idx, DDS3_GBWK->nameLength[idx], cmbRefDDS3GBWKWork2[idx], ctx);
 }
 
@@ -152,12 +152,12 @@ INCLUDE_ASM(const s32, "code_00181858", nbLeaf56);
 
 INCLUDE_ASM(const s32, "code_00181858", nbRefDDS3GBWK13);
 
-void nbSetFormPosRot(s32 idx, FrFontCtx *ctx) {
+void nbSetFormPosRot(s32 idx, frFontCtx_t *ctx) {
     cmbRefDDS3GBWK2(idx);
     cmbRefDDS3GBWK3(idx, ctx);
 }
 
-void nbCallSetFormPosRot(s32 tag, FrFontCtx *ctx) {
+void nbCallSetFormPosRot(s32 tag, frFontCtx_t *ctx) {
     nbSetFormPosRot(nbTag0Sub(tag), ctx);
     ctx->glyphChain->advance += 8;
     ctx->glyphChain->lastChild->advance += 8;

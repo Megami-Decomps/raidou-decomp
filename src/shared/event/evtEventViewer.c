@@ -140,7 +140,7 @@ void evtEventViewerProcessPending(evtViewerInfo_t *viewer);
 s32 evtEventViewerCountEntries(evtViewerInfo_t *viewer);
 s32 evtEventViewerSumNodeCounts(EvtViewerTrackFileFormat format, evtViewerInfo_t *viewer);
 
-struct SoundMixer;
+struct sndMixer_t;
 
 struct EffNodeDescriptor;
 

@@ -16,7 +16,7 @@
 
 /* The three audio stream records (title stream, title sound buffer, and the
  * stream sndBgmLoadId resets); each is followed by its decoder state. */
-typedef struct TitleAudioStreamState {
+typedef struct titleAudioStreamState_t {
     s32 frameCount;
     s32 frameIndex;
     s32 frameBytes;
@@ -29,30 +29,30 @@ typedef struct TitleAudioStreamState {
     MnuTitleStreamLoadState loadState;
     s32 unk28;
     s32 tableIndex; /* Grown from 0x28: retail addresses +0x2C off all three records. */
-} TitleAudioStreamState;
+} titleAudioStreamState_t;
 
-typedef char TitleAudioStreamState_size[(sizeof(TitleAudioStreamState) == 0x30) ? 1 : -1];
+typedef char titleAudioStreamState_size[(sizeof(titleAudioStreamState_t) == 0x30) ? 1 : -1];
 
 /* One BGM table entry: decoder format, repeat frame and the .at3 base name. */
-typedef struct SndBgmEntry {
+typedef struct sndBgmEntry_t {
     u8 format;
     s16 repeatFrame;
     char name[12];
-} SndBgmEntry;
+} sndBgmEntry_t;
 
-typedef char SndBgmEntry_size[(sizeof(SndBgmEntry) == 0x10) ? 1 : -1];
+typedef char sndBgmEntry_size[(sizeof(sndBgmEntry_t) == 0x10) ? 1 : -1];
 
 /* Shared title-audio stream operations, implemented by each title. */
 void mnuQueueTitleSoundStreamEntry(s32 soundEntryIndex);
 
-typedef struct TitleAudioStreamStatusSnapshot {
+typedef struct titleAudioStreamStatusSnapshot_t {
     u32 frameCount;
     u32 frameIndex;
     u32 repeatFrame;
-} TitleAudioStreamStatusSnapshot;
+} titleAudioStreamStatusSnapshot_t;
 
-typedef char TitleAudioStreamStatusSnapshot_size[
-    (sizeof(TitleAudioStreamStatusSnapshot) == 0x0C) ? 1 : -1];
+typedef char titleAudioStreamStatusSnapshot_size[
+    (sizeof(titleAudioStreamStatusSnapshot_t) == 0x0C) ? 1 : -1];
 
 #define SND_MIX_SAMPLE_COUNT 0x800
 
@@ -72,29 +72,29 @@ typedef char TitleAudioStreamStatusSnapshot_size[
 
 #define MNU_SOUND_BUFFER_BYTES_SMALL 0xE100
 
-extern TitleAudioStreamState mnuTitleSoundBufferState;
+extern titleAudioStreamState_t mnuTitleSoundBufferState;
 extern u32 mnuTitleAudioSilenceBuffer[];
-extern TitleAudioStreamState mnuTitleStreamStatus;
+extern titleAudioStreamState_t mnuTitleStreamStatus;
 extern u32 mnuTitleStreamSemaphore;
 
-void sndMixSampleBuffers(s16 *destinationSamples, TitleAudioStreamState *firstSource, TitleAudioStreamState *secondSource);
+void sndMixSampleBuffers(s16 *destinationSamples, titleAudioStreamState_t *firstSource, titleAudioStreamState_t *secondSource);
 extern u32 mnuTitleStreamDecoderState[];
 void mnuResetTitleStream(void);
 void mnuReleaseSoundBuffer(void);
-void mnuReadTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusSnapshot);
-void mnuWriteTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusValues);
+void mnuReadTitleStreamStatusLocked(titleAudioStreamStatusSnapshot_t *statusSnapshot);
+void mnuWriteTitleStreamStatusLocked(titleAudioStreamStatusSnapshot_t *statusValues);
 void File_BgmLoadStart(char *audioPath);
 void sndBgmLoadFile(void);
 void sndDeadSePlay_VolAngle(void);
 void sndCallSeStop(void);
-void GetVolume(TitleAudioStreamState *stream);
+void GetVolume(titleAudioStreamState_t *stream);
 s32 BgmPlaySub(void);
 void sndBgmFadeIn(void);
 
-extern SndBgmEntry sndBgmLoadId_XFData[];
+extern sndBgmEntry_t sndBgmLoadId_XFData[];
 /* Each BGM's resume frame, by table index. */
 extern u16 sndBgmFadeOutWork[];
-extern TitleAudioStreamState sndCallSeStopWork6;
+extern titleAudioStreamState_t sndCallSeStopWork6;
 extern sdfThCB_t sndCallWaitVblankWork;
 extern u8 sndCallWaitVblankWork2[0x1000];
 extern s32 sndData2;
@@ -109,7 +109,7 @@ INCLUDE_ASM(const s32, "sndAt3", sndUploadStreamToBothIopBuffers);
 
 /* Copy the second source, add the first, and clamp to [-32767, 32767].
  * The native lower limit intentionally excludes the s16 value -32768. */
-void sndMixSampleBuffers(s16 *destinationSamples, TitleAudioStreamState *firstSource, TitleAudioStreamState *secondSource) {
+void sndMixSampleBuffers(s16 *destinationSamples, titleAudioStreamState_t *firstSource, titleAudioStreamState_t *secondSource) {
     s16 *destinationCursor = destinationSamples;
     s16 *sourceCursor = secondSource->samples;
     s32 sampleIndex;
@@ -147,9 +147,9 @@ extern s32 sndCallSeStopData6;
 extern s32 sndCallSeStopData7;
 extern s16 sndCallSeStopData[];
 extern u32 sndWork3[];
-extern TitleAudioStreamState sndCallSeStopWork6;
+extern titleAudioStreamState_t sndCallSeStopWork6;
 extern u32 sndCallSeStopWork7[];
-extern void sndLeaf2(s16 *destinationSamples, TitleAudioStreamState *source);
+extern void sndLeaf2(s16 *destinationSamples, titleAudioStreamState_t *source);
 
 #define MNU_STREAM_COMMIT_READY 3
 #define MNU_STREAM_COMMIT_COMPLETE 4
@@ -159,7 +159,7 @@ extern void sndLeaf2(s16 *destinationSamples, TitleAudioStreamState *source);
 
 /* Per-frame update of the title audio: the stream, the sound buffer and a third voice stream. */
 void sndCallSeStop(void) {
-    TitleAudioStreamState *voice = &sndCallSeStopWork6;
+    titleAudioStreamState_t *voice = &sndCallSeStopWork6;
     u32 *voiceDecoder = sndCallSeStopWork7;
     s16 *mix = sndCallSeStopData;
 
@@ -371,7 +371,7 @@ void sndCallWaitVblankLabel(void) {
 INCLUDE_ASM(const s32, "sndAt3", sndCallMemset);
 
 /* Read state words 0, 1 and 3; the frame-byte word 2 is not in this snapshot. */
-void mnuReadTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusSnapshot) {
+void mnuReadTitleStreamStatusLocked(titleAudioStreamStatusSnapshot_t *statusSnapshot) {
     WaitSema(mnuTitleStreamSemaphore);
     statusSnapshot->frameCount = mnuTitleStreamStatus.frameCount;
     statusSnapshot->frameIndex = mnuTitleStreamStatus.frameIndex;
@@ -380,7 +380,7 @@ void mnuReadTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusSnapsh
 }
 
 /* Restore the same condensed three-word status mapping under the lock. */
-void mnuWriteTitleStreamStatusLocked(TitleAudioStreamStatusSnapshot *statusValues) {
+void mnuWriteTitleStreamStatusLocked(titleAudioStreamStatusSnapshot_t *statusValues) {
     WaitSema(mnuTitleStreamSemaphore);
     mnuTitleStreamStatus.frameCount = statusValues->frameCount;
     mnuTitleStreamStatus.frameIndex = statusValues->frameIndex;
@@ -414,7 +414,7 @@ void sndBgmLoadId(s32 id) {
     char path[MNU_TITLE_SOUND_PATH_BYTES];
     s32 frameBytes;
     s32 format;
-    TitleAudioStreamState *status;
+    titleAudioStreamState_t *status;
 
     sndData5 = id;
     if (sndData6 == id) {
@@ -468,7 +468,7 @@ INCLUDE_ASM(const s32, "sndAt3", sndBgmLoadId);
 INCLUDE_ASM(const s32, "sndAt3", BgmPlaySub);
 
 s32 sndCallWaitSema2(void) {
-    TitleAudioStreamState *stream = &mnuTitleStreamStatus;
+    titleAudioStreamState_t *stream = &mnuTitleStreamStatus;
     s32 status;
 
     WaitSema(mnuTitleStreamSemaphore);

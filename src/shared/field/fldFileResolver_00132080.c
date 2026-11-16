@@ -101,13 +101,6 @@ typedef struct fldFileInfoHeaderFL2_t {
     fldConstruntAreaFL2_t *pAreaTable; /* 0x10 */
 } fldFileInfoHeaderFL2_t;
 
-/* FL1 and FL2 use the same 0x0C-byte resource-type table entries. */
-typedef struct fldSpawnBatch_t {
-    u32 kind;
-    u32 count;
-    fldResHead_t *entries;
-} fldSpawnBatch_t;
-
 typedef struct fldBillConfigView_t {
     u32 flags;
     u32 kind;
@@ -198,17 +191,17 @@ extern u32 fldNextF1Size;
 #include "dds3MatterObjectBasic.h"
 
 /* Variable-sized packet header initialized by sdf2DMakePrimPacketHeader. */
-typedef struct SdfDrawPacket {
+typedef struct sdfDrawPacket_t {
     u16 quadwords;
     u8 pad02[6];
     u32 pad08;
     u32 command;
     u64 gifTag;
     u64 payloadHeader;
-} SdfDrawPacket;
+} sdfDrawPacket_t;
 
-typedef char SdfDrawPacket_size_must_be_0x20[
-    (sizeof(SdfDrawPacket) == 0x20) ? 1 : -1];
+typedef char sdfDrawPacket_size_must_be_0x20[
+    (sizeof(sdfDrawPacket_t) == 0x20) ? 1 : -1];
 
 enum {
     OBJECT_TRANSFORM_FLAG_UPDATE_PENDING = 1,
@@ -273,58 +266,58 @@ enum {
 
 /* Scene-placement chunks use the same wire size but store a fallback script
  * name at +0x04 rather than a file-resolver index. */
-typedef struct FldSceneResourceRecord {
+typedef struct fldSceneResourceRecord_t {
     u32 unk00;
     const char *fallbackResourceName;
     const char *resourceA;
     const char *resourceB;
     const char *resourceC;
     const char *resourceD;
-} FldSceneResourceRecord;
+} fldSceneResourceRecord_t;
 
 /* Object-spawn records carry a name pointer and signed world-node key. */
-typedef struct FldActionSpawn {
+typedef struct fldActionSpawn_t {
     u32 unk00;
     const char *objectName;
     s32 key;
-} FldActionSpawn;
+} fldActionSpawn_t;
 
-typedef char FldSceneResourceRecord_size_check[
-    (sizeof(FldSceneResourceRecord) == 0x18) ? 1 : -1];
+typedef char fldSceneResourceRecord_size_check[
+    (sizeof(fldSceneResourceRecord_t) == 0x18) ? 1 : -1];
 
-typedef char FldActionSpawn_size_check[
-    (sizeof(FldActionSpawn) == 0x0C) ? 1 : -1];
+typedef char fldActionSpawn_size_check[
+    (sizeof(fldActionSpawn_t) == 0x0C) ? 1 : -1];
 
 /* Counted placement-batch input consumed by both field request paths. */
-typedef struct FldSceneRequest {
+typedef struct fldSceneRequest_t {
     u32 spawnBatchCount;
-    FldSpawnBatch *spawnBatches;
-    const FldSceneResourceRecord *record;
+    fldSpawnBatch_t *spawnBatches;
+    const fldSceneResourceRecord_t *record;
     u32 spawnCount;
-    struct FldActionSpawn *spawnList;
-} FldSceneRequest;
+    struct fldActionSpawn_t *spawnList;
+} fldSceneRequest_t;
 
-typedef struct SdfGsTextureAlphaFlushPacket {
+typedef struct sdfGsTextureAlphaFlushPacket_t {
     SdfGsPacketHeader header;
     SdfGsRegisterWrite textureAlpha;
     SdfGsRegisterWrite textureFlush;
-} SdfGsTextureAlphaFlushPacket;
+} sdfGsTextureAlphaFlushPacket_t;
 
-typedef char SdfGsTextureAlphaFlushPacket_size_must_be_0x40[
-    (sizeof(SdfGsTextureAlphaFlushPacket) == 0x40) ? 1 : -1];
+typedef char sdfGsTextureAlphaFlushPacket_size_must_be_0x40[
+    (sizeof(sdfGsTextureAlphaFlushPacket_t) == 0x40) ? 1 : -1];
 
 struct dds3Basic_t;
 
 struct EffNodeDescriptor;
 
-typedef char FldSpawnBatchSize[(sizeof(FldSpawnBatch) == 12) ? 1 : -1];
+typedef char FldSpawnBatchSize[(sizeof(fldSpawnBatch_t) == 12) ? 1 : -1];
 
 /* Camera-setting table capacity. */
 enum {
     FIELD_CAMERA_SETTING_COUNT = 8
 };
 
-typedef struct SdfDrawPacket SdfDrawPacket;
+typedef struct sdfDrawPacket_t sdfDrawPacket_t;
 
 typedef struct DmaPacketHeader DmaPacketHeader;
 
@@ -364,7 +357,7 @@ static inline f32 fldNormalizeProbeVector(void) {
     return length;
 }
 
-extern void fldSpawnPlacementObjectsFromBatches(FldSpawnBatch *spawnBatches, u32 batchCount,
+extern void fldSpawnPlacementObjectsFromBatches(fldSpawnBatch_t *spawnBatches, u32 batchCount,
                                                 FldPlacementBatchMode mode);
 
 /* Serialized transforms leave the position W component zero. */
@@ -390,9 +383,9 @@ static inline void fldCopySpawnTransform(f32 *position, f32 *rotation, const f32
     }
 }
 
-void fldSpawnPlacementObjectsFromBatches(FldSpawnBatch *spawnBatch, u32 batchCount, FldPlacementBatchMode mode);
+void fldSpawnPlacementObjectsFromBatches(fldSpawnBatch_t *spawnBatch, u32 batchCount, FldPlacementBatchMode mode);
 extern char D_0039FE08[], D_0039FE18[], D_0039FE28[];
-void fldProcessFieldRequestAlternate(const FldSceneRequest *request);
+void fldProcessFieldRequestAlternate(const fldSceneRequest_t *request);
 
 extern const u8 *fldCachedRoomResourceData, *fldCachedRoomF1ResourceData, *fldCachedRoomF2ResourceData,
     *fldCachedRoomKF2ResourceData;
@@ -405,10 +398,10 @@ typedef union FldLookAtVector {
     f32 f[4];
 } FldLookAtVector;
 
-typedef struct FldModelMatrices {
+typedef struct fldModelMatrices_t {
     u8 pad00[0xC];
     u8 **rows; /* 0x0C: slot-indexed matrix blocks */
-} FldModelMatrices;
+} fldModelMatrices_t;
 
 struct effRandState_t;
 
@@ -520,7 +513,7 @@ INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldFileResolverFL1);
 
 INCLUDE_ASM(const s32, "field/fldFileResolver_00132080", fldFileResolverFL2);
 
-void fldProcessFieldRequestAlternate(const FldSceneRequest *request) {
+void fldProcessFieldRequestAlternate(const fldSceneRequest_t *request) {
     fldSpawnPlacementObjectsFromBatches(request->spawnBatches, request->spawnBatchCount,
                                         FLD_PLACEMENT_BATCH_MODE_APPEND);
 }

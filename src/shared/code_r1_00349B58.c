@@ -106,16 +106,16 @@ u32 mnuClearTerminalPanelSelection(dds3ProcessID_t *task);
 
 struct MenuTerminalWork;
 
-typedef struct QuadRecord {
+typedef struct fclQuadRecord_t {
     s32 unk00;
     s32 unk04;
     s32 unk08;
     s16 unk0C;
     s16 unk0E;
     s32 unk10;
-} QuadRecord;
+} fclQuadRecord_t;
 
-struct ItfMesSub;
+struct itfMesResource_t;
 
 /* Script opcode: set the supplied active-entry flag without bounds checking. */
 ScrCommandResult evtOpSetActiveEntryFlag(void);

@@ -302,8 +302,8 @@ typedef struct SBTL_STATE {
     s16 eventActive; /* 0x1CC */
     u8 pad1CE[2];
     s32 eventAction; /* 0x1D0 */
-    struct SoundMixer *eventResult; /* 0x1D4 */
-    struct SoundMixer *eventRequest; /* 0x1D8 */
+    struct sndMixer_t *eventResult; /* 0x1D4 */
+    struct sndMixer_t *eventRequest; /* 0x1D8 */
     void *eventData; /* 0x1DC */
     SBTL_UNIT *eventUnit; /* 0x1E0 */
     s32 sequenceHandle; /* 0x1E4 */
@@ -397,7 +397,7 @@ typedef struct SBTL_STATE {
     void *frontFloorResource; /* 0x57C: locked payload address; delayed free resolves its allocation. */
     void *sideFloorResource; /* 0x580: locked payload address; delayed free resolves its allocation. */
     u8 pad584[8];
-    struct SdfFlagListWork *soundTransitionTask; /* 0x58C */
+    struct sdfFlagListWork_t *soundTransitionTask; /* 0x58C */
     u8 pad590[4];
     void (*bossCleanup)(void); /* 0x594 */
     u8 pad598[4];

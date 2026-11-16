@@ -75,7 +75,7 @@ typedef struct effPayload_t {
 typedef struct effRecordBucket_t {
     u32 unk_00;
     /* Negative results hold phase; nonnegative results are per-update deltas. */
-    s32 (*step)(BdWork *, BdWork *, effTimedState_t *);
+    s32 (*step)(itfBdWork_t *, itfBdWork_t *, effTimedState_t *);
     u32 count;
     u8 *records;
 } effRecordBucket_t;
@@ -220,7 +220,7 @@ u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags);
 u32 effResetRecordRun(u8 *work, u32 first, u32 unused);
 void effSelectPresetByKind(u32 mode, u32 value);
 
-typedef struct SdfDrawPacket SdfDrawPacket;
+typedef struct sdfDrawPacket_t sdfDrawPacket_t;
 
 
 extern void effSelectPresetByKind(u32, u32);
@@ -546,7 +546,7 @@ void *effGetSlotWorkOrOverride(sprHandle_t *work, s32 slotIndex) {
     s32 entryAddress;
 
     entryAddress = slotIndex * EFF_SLOT_WORK_BYTES + (s32)work->workEntries;
-    alternatePayload = ((BdWork *)entryAddress)->alternate.payload;
+    alternatePayload = ((itfBdWork_t *)entryAddress)->alternate.payload;
     if (alternatePayload != NULL) {
         entryAddress = (s32)alternatePayload;
     }
@@ -580,7 +580,7 @@ void effInitializeAllSlotWork(sprHandle_t *work) {
 /* Store the owner and slot index before invoking the work initializer. */
 void effAttachSlotWorkOwner(sprHandle_t *owner, s32 slotIndex, void *payload) {
     /* Alternate records share these owner/index fields without a full work allocation. */
-    BdWork *entry = (BdWork *)payload;
+    itfBdWork_t *entry = (itfBdWork_t *)payload;
     entry->owner = owner;
     entry->slotIndex = slotIndex;
     effInitializeSlotWorkFromDescription(owner, slotIndex, payload);
@@ -588,7 +588,7 @@ void effAttachSlotWorkOwner(sprHandle_t *owner, s32 slotIndex, void *payload) {
 
 /* Clear the complete normal slot, then restore owner/index and initialize it. */
 void effResetSlotWork(sprHandle_t *work, u32 slotIndex) {
-    BdWork *entry;
+    itfBdWork_t *entry;
 
     entry = &work->workEntries[slotIndex];
     memset(entry, 0, EFF_SLOT_WORK_BYTES);
@@ -709,7 +709,7 @@ sprHandle_t *effCreateResourceSlotSetFromAllocation(struct sdfMemHandle_t *resou
         sdfMemAllocDirect(set->SpriteNums * 0x80);
     set->descriptions = (effSlotDescription_t *)sdfMemLock(set->descriptionAllocation);
     set->workAllocation = sdfMemAllocDirect(set->SpriteNums * 0xA0);
-    set->workEntries = (BdWork *)sdfMemLock(set->workAllocation);
+    set->workEntries = (itfBdWork_t *)sdfMemLock(set->workAllocation);
     for (index = 0; index < set->SpriteNums; index++) {
         sourceOffset = entries[1];
         memcpy(&set->descriptions[index],
@@ -736,7 +736,7 @@ sprHandle_t *effCreateResourceSlotSet(sprHandle_t *borrowedSource, u32 slot, u32
     effect->descriptionAllocation = sdfMemAllocDirect(count * 0x80);
     effect->descriptions = (effSlotDescription_t *)sdfMemLock(effect->descriptionAllocation);
     effect->workAllocation = sdfMemAllocDirect(effect->SpriteNums * 0xA0);
-    effect->workEntries = (BdWork *)sdfMemLock(effect->workAllocation);
+    effect->workEntries = (itfBdWork_t *)sdfMemLock(effect->workAllocation);
     if (effect->SpriteNums != 0) {
         do {
             memcpy(&effect->descriptions[index], &borrowedSource->descriptions[slot], 0x80);
@@ -818,9 +818,9 @@ sprHandle_t *effUpdateTimedStates(sprHandle_t *effect, u32 slot, void *entryData
     /* Alternate payloads may be only 0x6C bytes; direct access here is limited to timed states.
      * Bucket callbacks retain their existing kind-specific pointer contract.
      */
-    BdWork *entry = (BdWork *)entryData;
+    itfBdWork_t *entry = (itfBdWork_t *)entryData;
     effTimedState_t *states = entry->states;
-    BdWork *record = &effect->workEntries[slot];
+    itfBdWork_t *record = &effect->workEntries[slot];
     s32 idle = 1;
     u32 i;
 
@@ -880,7 +880,7 @@ u32 effSetMaterialSlots(sprHandle_t *owner, s32 index, u32 materialFlags, void *
     }
     owner->workEntries[index].alternate.payload = payload;
     /* Both timed states lie within the shared 0x6C-byte payload region. */
-    states = ((BdWork *)payload)->states;
+    states = ((itfBdWork_t *)payload)->states;
     for (i = 0; i < 2; i++) {
         states[i].materialFlags = materialFlags;
     }
@@ -890,7 +890,7 @@ u32 effSetMaterialSlots(sprHandle_t *owner, s32 index, u32 materialFlags, void *
 INCLUDE_ASM(const s32, "code_r1_002C8188", sysLeaf46);
 
 u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags) {
-    BdWork *effect = &((sprHandle_t *)work)->workEntries[index];
+    itfBdWork_t *effect = &((sprHandle_t *)work)->workEntries[index];
     effSetSlotResourceAndFlags(&effect->states[0], (effMappedRecord_t *)(u32)value, flags);
     effUpdateTimedStates((sprHandle_t *)work, index, effect);
     return 1;
@@ -898,7 +898,7 @@ u32 effConfigureSlotResource(s32 work, s32 index, u32 value, u32 flags) {
 
 u32 effConfigureIndexedSlotResource(sprHandle_t *work, s32 index,
                                     effMappedResource_t *data, s32 item, u32 flags) {
-    BdWork *effect = &work->workEntries[index];
+    itfBdWork_t *effect = &work->workEntries[index];
     effSetSlotResourceAndFlags(&effect->states[0], &data->records[item], flags);
     effUpdateTimedStates(work, index, effect);
     return 1;
@@ -907,7 +907,7 @@ u32 effConfigureIndexedSlotResource(sprHandle_t *work, s32 index,
 u32 effConfigureIndexedSlotMaterial(sprHandle_t *work, s32 index,
                   effMappedResource_t *data, s32 item,
                   u32 materialFlags, u32 materialValue, u32 stateFlags) {
-    BdWork *effect = &work->workEntries[index];
+    itfBdWork_t *effect = &work->workEntries[index];
     effSetSlotResourceAndFlags(&effect->states[0], &data->records[item], stateFlags);
     effUpdateTimedStates(work, index, effect);
     effect->states[0].materialFlags = materialFlags;

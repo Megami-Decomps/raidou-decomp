@@ -458,45 +458,45 @@ void effPartsPositionSet(struct plistHandle_t *queue, const f32 position[4]);
 void effPartsRotateSet(struct plistHandle_t *queue, const f32 rotation[4]);
 void ColorSet(struct plistHandle_t *queue, u32 color);
 
-typedef struct SdfFlagListParams {
+typedef struct sdfFlagListParams_t {
     effBehavior_RGBParams_t color;
     effBehavior_AlphaParams_t alpha;
     s32 maxFrames;
     u32 count;
     f32 speed;
-} SdfFlagListParams;
+} sdfFlagListParams_t;
 
-typedef struct SdfFlagListMark {
+typedef struct sdfFlagListMark_t {
     s32 timer;
     u8 alpha;
     u8 pad05[3];
-} SdfFlagListMark;
+} sdfFlagListMark_t;
 
-typedef struct SdfFlagListWork {
+typedef struct sdfFlagListWork_t {
     s32 frame;
     u32 unk04;
-    SdfFlagListMark *marks;
+    sdfFlagListMark_t *marks;
     f32 (*vertices)[4];
     u32 *colors;
-    SdfFlagListParams params;
+    sdfFlagListParams_t params;
     sdfMemHandle_t *allocation;
-} SdfFlagListWork;
+} sdfFlagListWork_t;
 
-typedef char SdfFlagListParams_size_must_be_0x40[(sizeof(SdfFlagListParams) == 0x40) ? 1 : -1];
+typedef char sdfFlagListParams_size_must_be_0x40[(sizeof(sdfFlagListParams_t) == 0x40) ? 1 : -1];
 
-typedef char SdfFlagListMark_size_must_be_0x08[(sizeof(SdfFlagListMark) == 0x08) ? 1 : -1];
+typedef char sdfFlagListMark_size_must_be_0x08[(sizeof(sdfFlagListMark_t) == 0x08) ? 1 : -1];
 
-typedef char SdfFlagListWork_size_must_be_0x58[(sizeof(SdfFlagListWork) == 0x58) ? 1 : -1];
+typedef char sdfFlagListWork_size_must_be_0x58[(sizeof(sdfFlagListWork_t) == 0x58) ? 1 : -1];
 
-SdfFlagListWork *sdfCreateFlagListWork(const SdfFlagListParams *);
+sdfFlagListWork_t *sdfCreateFlagListWork(const sdfFlagListParams_t *);
 
-void sdfReleaseFlagListResource(SdfFlagListWork *);
+void sdfReleaseFlagListResource(sdfFlagListWork_t *);
 
-SdfFlagListWork *sdfInitializeFlagListFromResource(void *);
+sdfFlagListWork_t *sdfInitializeFlagListFromResource(void *);
 
-void sdfUpdateFlagListEntries(SdfFlagListWork *);
+void sdfUpdateFlagListEntries(sdfFlagListWork_t *);
 
-void sdfDrawFlagListVertices(SdfFlagListWork *);
+void sdfDrawFlagListVertices(sdfFlagListWork_t *);
 
 fileJobPayload_t *Copy_effParts(fileJobPayload_t *request);
 
@@ -719,7 +719,7 @@ typedef char effSpanTable_size_check[
 #define VU0_SET_VF10_COMPONENT(axis, f) \
     VU0_SCALAR_OP_CLOBBER(f, "vaddx." #axis " vf10, vf0, vf2x")
 
-SdfFlagListWork *effCreateSelectionFlagListFromWork(const SdfFlagListParams *);
+sdfFlagListWork_t *effCreateSelectionFlagListFromWork(const sdfFlagListParams_t *);
 
 fileJobPayload_t *fileJobCreateFromCommandState(const char *entry);
 

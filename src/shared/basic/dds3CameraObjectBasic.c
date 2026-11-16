@@ -45,7 +45,7 @@ enum {
 typedef s32 CameraEyePositionMode;
 
 /* Kind-4 world-node data: cached look-at matrix and eye/up vectors (0x90). */
-typedef struct CameraData {
+typedef struct camCameraData_t {
     u32 matrix[4][4]; /* Raw VU matrix words; the SDK also exposes word [0][3]. */
     u128 localEyeOffset;
     u128 localUp;
@@ -55,9 +55,9 @@ typedef struct CameraData {
     CameraEyePositionMode eyeIsRelative;
     u32 fovUpdatePending; /* Bit 0 requests a field-of-view update. */
     f32 fieldOfView;      /* Radians. */
-} CameraData;
+} camCameraData_t;
 
-typedef char CameraData_size_must_be_0x90[(sizeof(CameraData) == 0x90) ? 1 : -1];
+typedef char camCameraData_size_must_be_0x90[(sizeof(camCameraData_t) == 0x90) ? 1 : -1];
 
 typedef struct {
     f32 components[4];
@@ -178,7 +178,7 @@ void dds3DeleteCameraObjectBasic(dds3Basic_t *pBasic)
 
 /* Load the owned look-at matrix into vf28-vf31. */
 void dds3LoadObjectMatrixPointerIntoVu(dds3Basic_t *camera) {
-    VU0_LOAD_MATRIX(((CameraData *)camera->workdata)->matrix);
+    VU0_LOAD_MATRIX(((camCameraData_t *)camera->workdata)->matrix);
 }
 
 /* The recovered name is misleading: retail stores a target, not a matrix. */

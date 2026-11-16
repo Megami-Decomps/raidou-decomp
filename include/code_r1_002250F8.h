@@ -51,7 +51,7 @@ typedef char effRefObjSizeCheck[sizeof(effRefObj_t) == 0x20 ? 1 : -1];
 typedef u8 SdfTextureClampMode;
 
 /* Serialized texture-resource header; payload begins after this 0x40-byte prefix. */
-typedef struct SdfTextureFileHeader {
+typedef struct sdfTextureFileHeader_t {
     u8 unk00;
     u8 payloadOffsetFlags; /* 0x01: high nibble adds payload offset bytes; low bits stay opaque. */
     u8 pad02[2];       /* 0x02 */
@@ -70,16 +70,16 @@ typedef struct SdfTextureFileHeader {
     s32 resourceKey;   /* 0x1C */
     s32 battleTextureSlot; /* 0x20: selects one of two battle-model texture headers */
     u8 pad24[0x1C];    /* 0x24 */
-} SdfTextureFileHeader;
+} sdfTextureFileHeader_t;
 
-typedef char SdfTextureFileHeader_size_must_be_0x40[
-    (sizeof(SdfTextureFileHeader) == 0x40) ? 1 : -1];
+typedef char sdfTextureFileHeader_size_must_be_0x40[
+    (sizeof(sdfTextureFileHeader_t) == 0x40) ? 1 : -1];
 
 ctexlHandle_t *Copy_effCacheTexList(ctexlHandle_t *obj);
 
-effRefObj_t *effCreateSharedTextureReference(struct SdfTextureFileHeader *source);
+effRefObj_t *effCreateSharedTextureReference(struct sdfTextureFileHeader_t *source);
 
-effRefObj_t *effCloneSharedReferenceWithValue(struct SdfTextureFileHeader *source, u32 textureIndex);
+effRefObj_t *effCloneSharedReferenceWithValue(struct sdfTextureFileHeader_t *source, u32 textureIndex);
 
 void effReleaseSharedReference(effRefObj_t *obj);
 

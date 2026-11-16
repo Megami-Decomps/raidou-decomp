@@ -107,8 +107,8 @@ enum {
 
 #define ITF_LINES_PRIMITIVE_BITS 0x49
 
-extern s32 itfScanEncodedTextControls(FrFontCtx *args);
-s32 itfScanEncodedTextControls(FrFontCtx *stream);
+extern s32 itfScanEncodedTextControls(frFontCtx_t *args);
+s32 itfScanEncodedTextControls(frFontCtx_t *stream);
 s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub);
 
 struct effSpriteUV_t;
@@ -122,7 +122,7 @@ INCLUDE_ASM(const s32, "code_r1_001814F0", frLeaf3);
 INCLUDE_ASM(const s32, "code_r1_001814F0", itfScanEncodedTextControls);
 
 s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub) {
-    FrFontCtx args;
+    frFontCtx_t args;
 
     args.x = 0;
     args.y = 0;

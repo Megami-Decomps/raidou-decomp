@@ -20,13 +20,13 @@ typedef s32 ItfGridTextColorTableIndex;
 
 typedef s32 SdfGridSeekResult;
 
-SdfGridSeekResult sdfGridSeekFirstNode(GridTextWidget *widget);
+SdfGridSeekResult sdfGridSeekFirstNode(itfGridTextWidget_t *widget);
 
-SdfGridSeekResult sdfGridSeekLastNode(GridTextWidget *widget);
+SdfGridSeekResult sdfGridSeekLastNode(itfGridTextWidget_t *widget);
 
-typedef GridTextListItem LmapNode;
+typedef itfGridTextListItem_t LmapNode;
 
-typedef GridTextWidget LmapList;
+typedef itfGridTextWidget_t LmapList;
 
 extern LmapNode *fldLmapAdvanceWindowStart(LmapList *);
 extern LmapNode *fldLmapExpandWindowBackward(LmapList *);

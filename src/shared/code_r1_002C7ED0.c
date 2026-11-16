@@ -443,7 +443,7 @@ typedef struct effFieldColorConfig_t {
 
 typedef struct effCopiedSpawnList_t {
     u32 count;
-    FldSpawnBatch *groups;
+    fldSpawnBatch_t *groups;
 } effCopiedSpawnList_t;
 
 extern u128 D_0037EE90, D_0037EEA0, D_0037EEB0, D_0037EEC0, D_0037EED0;

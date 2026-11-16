@@ -201,23 +201,23 @@ void dds3P2APolygonDraw(dds3P2APolygon_tag *instance);
 #include "code_r1_001DED50.h"
 
 /* Current billboard draw record copied independently of its shared child. */
-typedef struct BillSnapshot {
+typedef struct billSnapshot_t {
     f32 x;
     f32 y;
     f32 halfWidth;
     f32 halfHeight;
     sdfTexHandle_t *texture;
-    BillTextureQuad uv;
-} BillSnapshot;
+    billTextureQuad_t uv;
+} billSnapshot_t;
 
-typedef char BillSnapshot_size_must_be_0x24[
-    (sizeof(BillSnapshot) == 0x24) ? 1 : -1];
+typedef char billSnapshot_size_must_be_0x24[
+    (sizeof(billSnapshot_t) == 0x24) ? 1 : -1];
 
 /* Fifteen billboard quads precede the child manager in its 0x450 allocation. */
 typedef struct BillPacketWork {
     f32 positions[15][4]; /* 0x000 */
     u32 colors[15];       /* 0x0F0 */
-    BillTextureQuad uv[15]; /* 0x12C */
+    billTextureQuad_t uv[15]; /* 0x12C */
     f32 offsets[15][8];   /* 0x21C: four X/Y corner offsets per quad */
     s32 count;           /* 0x3FC */
 } BillPacketWork;
@@ -226,12 +226,12 @@ typedef char BillPacketWork_size_must_be_0x400[
     (sizeof(BillPacketWork) == 0x400) ? 1 : -1];
 
 /* Child manager at retained allocation +0x400; shared by resource and draw owners. */
-typedef struct BillChildPayload {
+typedef struct billChildPayload_t {
     sdfTexHandle_t *texture; /* 0x00: acquired texture reference. */
     u16 variant; /* Child variant bits; signed inputs narrow on assignment. */
     u8 pad06[2];
     s32 refCount;      /* 0x08 */
-    BillTextureQuad uv; /* 0x0C */
+    billTextureQuad_t uv; /* 0x0C */
     f32 x;             /* 0x1C */
     f32 y;             /* 0x20 */
     f32 halfWidth;  /* 0x24 */
@@ -241,11 +241,11 @@ typedef struct BillChildPayload {
     u8 pad42[2];
     struct sdfMemHandle_t *allocation; /* 0x44: allocation descriptor released with this child. */
     BillPacketWork *work; /* 0x48: retained packet-buffer address */
-    struct BillChildPayload *next; /* 0x4C */
-} BillChildPayload;
+    struct billChildPayload_t *next; /* 0x4C */
+} billChildPayload_t;
 
-typedef char BillChildPayload_size_must_be_0x50[
-    (sizeof(BillChildPayload) == 0x50) ? 1 : -1];
+typedef char billChildPayload_size_must_be_0x50[
+    (sizeof(billChildPayload_t) == 0x50) ? 1 : -1];
 
 typedef struct DmaPacketHeader DmaPacketHeader;
 
@@ -256,7 +256,7 @@ enum {
     BILL_ANIMATION_ENTRY_MODE_P2A_POLYGON_LOG = 0x00000100
 };
 
-void billCopyCurrentRecordToSnapshot(billHandle_t *obj, BillSnapshot *snapshot);
+void billCopyCurrentRecordToSnapshot(billHandle_t *obj, billSnapshot_t *snapshot);
 
 INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardManagerExit);
 
@@ -470,8 +470,8 @@ INCLUDE_ASM(const s32, "effect/billManager", AnimLoadP2A);
 INCLUDE_ASM(const s32, "effect/billManager", dds3BillAnimFreeP2A);
 
 /* Copy the billboard's current source record (by kind) into a snapshot. */
-void billCopyCurrentRecordToSnapshot(billHandle_t *obj, BillSnapshot *snapshot) {
-    BillChildPayload *record;
+void billCopyCurrentRecordToSnapshot(billHandle_t *obj, billSnapshot_t *snapshot) {
+    billChildPayload_t *record;
 
     if (obj->type == 1) {
         record = dds3Billboard_P2AAnimDraw(obj, obj->resolvedEntries);

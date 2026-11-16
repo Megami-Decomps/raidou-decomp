@@ -49,7 +49,7 @@ typedef struct mnuFadeEntry_t {
 typedef char MenuFadeEntry_extent_must_be_0x18[
     (sizeof(mnuFadeEntry_t) == 0x18) ? 1 : -1];
 
-struct StaffMenuRuntime;
+struct staffMenuRuntime_t;
 
 #define MNU_ENTRY_SPRITE_COUNT 4
 
@@ -596,8 +596,8 @@ void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, mnuList_t *list,
     s32 rowOffset;
     sprHandle_t *firstSprite;
     effSlotDescription_t *firstDescription;
-    BdWork *firstWork;
-    BdWork *lastWork;
+    itfBdWork_t *firstWork;
+    itfBdWork_t *lastWork;
 
     if (resource == NULL) {
         return;

@@ -27,7 +27,7 @@
 #include "code_r1_0017BBD8.h"
 
 /* Project spellings for the SCE iox layout, with retail's ordinary word alignment. */
-typedef struct SceIoStat {
+typedef struct sdfSceIoStat_t {
     u32 mode;
     u32 attributes;
     u32 size;
@@ -36,19 +36,19 @@ typedef struct SceIoStat {
     u8 modificationTime[8];
     u32 highSize;
     u32 privateData[6];
-} SceIoStat;
+} sdfSceIoStat_t;
 
-typedef struct SceDirent {
-    SceIoStat stat;
+typedef struct fsDirectoryEntry_t {
+    sdfSceIoStat_t stat;
     char name[0x100];
     void *privateData;
-} SceDirent;
+} fsDirectoryEntry_t;
 
-typedef char SceIoStat_size_must_be_0x40[
-    (sizeof(SceIoStat) == 0x40) ? 1 : -1];
+typedef char sdfSceIoStat_size_must_be_0x40[
+    (sizeof(sdfSceIoStat_t) == 0x40) ? 1 : -1];
 
-typedef char SceDirent_size_must_be_0x144[
-    (sizeof(SceDirent) == 0x144) ? 1 : -1];
+typedef char fsDirectoryEntry_size_must_be_0x144[
+    (sizeof(fsDirectoryEntry_t) == 0x144) ? 1 : -1];
 
 /* Allocate a variable-length sprite column packet with this draw header. */
 
@@ -368,7 +368,7 @@ void btlClosePfsDebugDirectory(s32 directoryHandle);
 
 /* Debug mode delegates to the native reader. Built-in mode returns each name's length,
    clears the directory-type bit, and returns zero when the eight-name table is exhausted. */
-s32 btlReadBattleResourceDirectoryEntry(s32 directoryHandle, SceDirent *reader);
+s32 btlReadBattleResourceDirectoryEntry(s32 directoryHandle, fsDirectoryEntry_t *reader);
 extern u32 dds3BillboardGeneralNumber(void);
 void btlLoadAndReplaceResourceHandle(SBTLRESOURCE_DESCRIPTOR *descriptor, const char *resourceName);
 void btlReplaceResourceHandle(SBTLRESOURCE_DESCRIPTOR *descriptor, TMX_HEADER_t *textureResource);
@@ -474,7 +474,7 @@ INCLUDE_ASM(const s32, "code_r1_0017BBD8", btlReadBattleResourceDirectoryEntry);
 
 /* Build a scan-order list of built-in names and enabled resource-file categories. */
 SBTLRESOURCEENTRY_LIST *btlScanDirectory(const char *path, s32 flags) {
-    SceDirent reader;
+    fsDirectoryEntry_t reader;
     SBTLRESOURCEENTRY_LIST *list;
     SBTLRESOURCE_ENTRY *entry;
     SBTLRESOURCE_ENTRY *tail;

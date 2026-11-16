@@ -459,11 +459,11 @@ typedef struct effBattleEntryList_t {
     effBattleEntry_t entries[1];     /* 0x78 */
 } effBattleEntryList_t;
 
-typedef struct SoundBank {
+typedef struct sndBank_t {
     u8 pad00[8];
     effBattleEntryList_t list;       /* 0x08 */
     u8 pad98[0x580];
-} SoundBank;
+} sndBank_t;
 
 typedef char effBattleEntry_size_must_be_0x18[
     (sizeof(effBattleEntry_t) == 0x18) ? 1 : -1];
@@ -471,21 +471,21 @@ typedef char effBattleEntry_size_must_be_0x18[
 typedef char effBattleEntryList_size_must_be_0x90[
     (sizeof(effBattleEntryList_t) == 0x90) ? 1 : -1];
 
-typedef char SoundBank_size_must_be_0x618[
-    (sizeof(SoundBank) == 0x618) ? 1 : -1];
+typedef char sndBank_size_must_be_0x618[
+    (sizeof(sndBank_t) == 0x618) ? 1 : -1];
 
-typedef struct SoundMixer {
-    SoundBank banks[2];
+typedef struct sndMixer_t {
+    sndBank_t banks[2];
     u8 pad0C30[8];
     struct sdfMemHandle_t *resource; /* 0xC38: owns the mixer allocation. */
     u32 activeVoiceCount; /* Effect voices currently linked to this mixer. */
     effBTLCutHandle_t *voiceList;
-} SoundMixer;
+} sndMixer_t;
 
 /* The constructor allocates and clears 0x128 bytes. */
 struct effBTLCutHandle_t {
     struct SBTL_UNIT *owner; /* 0x00: borrowed voice owner used for actor scaling. */
-    SoundMixer *state; /* 0x04 */
+    sndMixer_t *state; /* 0x04 */
     u32 color; /* 0x08 */
     u16 flags; /* 0x0C */
     u8 pad0E[2];

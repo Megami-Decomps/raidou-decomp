@@ -169,19 +169,19 @@ extern void fclSetMessageVar(s32 slotIndex, const char *sourceText);
 
 struct MenuTerminalWork;
 
-typedef struct QuadRecord {
+typedef struct fclQuadRecord_t {
     s32 unk00;
     s32 unk04;
     s32 unk08;
     s16 unk0C;
     s16 unk0E;
     s32 unk10;
-} QuadRecord;
+} fclQuadRecord_t;
 
 void evtLoadResourcePair(const char *resourcePath, evtResourcePair_t *record);
 void evtReleaseResourcePairHandle(evtResourcePair_t *record);
 
-struct ItfMesSub;
+struct itfMesResource_t;
 
 s8 evtGetCapturedWindowPanelValue(void);
 

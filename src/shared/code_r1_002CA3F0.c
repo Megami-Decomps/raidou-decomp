@@ -17,7 +17,7 @@ u32 fclBlendColor(u32 color0, u32 color1, u32 weight);
 
 extern void *effGetSlotWorkOrOverride(sprHandle_t *, s32);
 
-void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, sprHandle_t *set, s32 slot, BdWork *entry, s32 layer);
+void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, sprHandle_t *set, s32 slot, itfBdWork_t *entry, s32 layer);
 
 void effDrawSpriteWithCornerFade(s32 x, s32 y, s32 depth, u32 blend, s32 flags,
                    sprHandle_t *set, s32 slotIndex, s32 layer);
@@ -140,7 +140,7 @@ void cmpFunc4(s32 x, s32 y, u32 z, s32 width, s32 height, u8 *counts, u8 *steps,
 
 /* NON_MATCHING: 177 of 179 words match. Retail evaluates fclDrawPanelSprite's id before loading ot into the call's delay slot. */
 #ifdef NON_MATCHING
-void effDrawTextureSlot(s32 x, s32 y, u32 z, u32 *colors, u32 flags, sprHandle_t *set, s32 slot, BdWork *draw,
+void effDrawTextureSlot(s32 x, s32 y, u32 z, u32 *colors, u32 flags, sprHandle_t *set, s32 slot, itfBdWork_t *draw,
                              s32 ot)
 {
     effSlotDescription_t *desc;
@@ -151,7 +151,7 @@ void effDrawTextureSlot(s32 x, s32 y, u32 z, u32 *colors, u32 flags, sprHandle_t
     u32 flip;
     s32 descFlags;
     u32 i;
-    BdWork *work;
+    itfBdWork_t *work;
 
 #ifdef VERSION_RAIDOU2
     if (slot >= set->SpriteNums) {
@@ -218,19 +218,19 @@ INCLUDE_ASM(const s32, "code_r1_002CA3F0", effDrawTextureSlot);
 INCLUDE_ASM(const s32, "code_r1_002CA3F0", cmpCallDrawPanelSprite);
 
 #endif
-void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, sprHandle_t *set, s32 slot, BdWork *entry, s32 layer) {
+void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, sprHandle_t *set, s32 slot, itfBdWork_t *entry, s32 layer) {
     effDrawTextureSlot(x, y, z, entry->geometry.cornerColors, flags, set, slot, entry, layer);
 }
 
 void effDrawSpriteWithCornerColors(s32 x, s32 y, s32 z, u32 *palette, s32 flags, sprHandle_t *set, s32 slot, s32 layer) {
     effDrawTextureSlot(x, y, z, palette, flags, set, slot,
-                  (BdWork *)effGetSlotWorkOrOverride(set, slot), layer);
+                  (itfBdWork_t *)effGetSlotWorkOrOverride(set, slot), layer);
 }
 
 void effDrawSpriteWithCornerFade(s32 x, s32 y, s32 depth, u32 blend, s32 flags,
                    sprHandle_t *set, s32 slotIndex, s32 layer) {
     u32 colors[4];
-    BdWork *work = effGetSlotWorkOrOverride(set, slotIndex);
+    itfBdWork_t *work = effGetSlotWorkOrOverride(set, slotIndex);
     s32 i;
 
     for (i = 0; i < 4; i++) {

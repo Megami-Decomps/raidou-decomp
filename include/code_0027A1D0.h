@@ -297,7 +297,7 @@ typedef struct SBTL_UNIT {
     struct SoundLink *link; /* 0x300: per-unit command effect. */
     struct ActiveSoundNode *listNode; /* 0x304: independently loaded sound node. */
     struct SoundSlotOwner *soundSlotOwner; /* 0x308: shared category/id motion-SE owner. */
-    struct SoundMixer *gunResource; /* 0x30C: retained actor sound mixer. */
+    struct sndMixer_t *gunResource; /* 0x30C: retained actor sound mixer. */
     BtlEffectLinkState effectLink; /* 0x310: effect flags and outstanding effect-task references. */
     u8 firstCountdown; /* 0x318: active linked-number displays; selects modulo-12 offset. */
     u8 counterDisplayCount; /* 0x319: active counter displays; selects modulo-12 offset. */

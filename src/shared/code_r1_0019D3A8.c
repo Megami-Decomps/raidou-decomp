@@ -36,22 +36,22 @@ enum {
 
 /* Variable-size serialized chunk streams share only this eight-byte header.
  * The word at +8 belongs to each chunk's payload. */
-typedef struct SdfChunkHeader {
+typedef struct sdfChunkHeader_t {
     u32 id;   /* 0x00: zero terminates the chunk stream */
     u32 size; /* 0x04: byte extent to the next chunk */
-} SdfChunkHeader;
+} sdfChunkHeader_t;
 
-typedef char SdfChunkHeader_size_must_be_8[(sizeof(SdfChunkHeader) == 8) ? 1 : -1];
+typedef char sdfChunkHeader_size_must_be_8[(sizeof(sdfChunkHeader_t) == 8) ? 1 : -1];
 
 /* MPOS has an eight-byte opaque prefix after the common header, then 0x40-byte
  * rows. Its enclosing chunk extent remains variable and is stored in size. */
-typedef struct SdfMapPositionChunkPrefix {
-    SdfChunkHeader header;
+typedef struct sdfMapPositionChunkPrefix_t {
+    sdfChunkHeader_t header;
     u8 payload08[8];
-} SdfMapPositionChunkPrefix;
+} sdfMapPositionChunkPrefix_t;
 
-typedef char SdfMapPositionChunkPrefix_size_must_be_0x10[
-    (sizeof(SdfMapPositionChunkPrefix) == 0x10) ? 1 : -1];
+typedef char sdfMapPositionChunkPrefix_size_must_be_0x10[
+    (sizeof(sdfMapPositionChunkPrefix_t) == 0x10) ? 1 : -1];
 
 /* Set bit 1 in the active administration task's flags; that task must exist. */
 struct sdfDrawTag_t *dds3FontReqAllocDrawTag(void);
@@ -125,7 +125,7 @@ typedef enum MdlViewerRecordKind {
 /* Viewer-wide state for the model viewer task. Fields that are
  * only written by a defaults initialiser and never read are
  * left as unkNN on purpose: there is no read to earn a role from. */
-typedef struct MdlViewState {
+typedef struct mdlViewState_t {
     dds3ProcessID_t *unk00;
     dds3ProcessID_t *viewerTask;
     s8 exitCleanupStarted; /* 0x08: one-shot guard for viewer task/resource teardown. */
@@ -175,45 +175,26 @@ typedef struct MdlViewState {
     u128 unk60[3]; /* 0x60: quadword slots; their alignment makes the state quadword aligned */
     mdlObj_t *resources[MDL_VIEWER_RESOURCE_SLOTS]; /* 0x90 */
     sdfDrawTag_t *packetList; /* 0xC0: drawing packet destination */
-} MdlViewState;
+} mdlViewState_t;
 
-typedef struct MdlPadState {
-    u8 pad00;
-    s8 confirm;
-    u8 pad02;
-    s8 cancel;
-    s8 stepDownA;  /* 0x04 */
-    s8 stepUpA;    /* 0x05 */
-    s8 stepDownB;  /* 0x06 */
-    s8 stepUpB;    /* 0x07 */
-} MdlPadState;
+extern mdlViewState_t mdlViewerState;
 
-typedef struct MdlCtrlState {
-    MdlPadState *pad;
-    u8 unk04;
-    u8 blinkTick;
-    s16 selection;
-    sdfDrawTag_t *packetList;
-} MdlCtrlState;
-
-extern MdlViewState mdlViewerState;
-
-static inline s8 mdlGetViewerDisplayMode(MdlViewState *state) {
+static inline s8 mdlGetViewerDisplayMode(mdlViewState_t *state) {
     return state->assetDisplayMode;
 }
 
 extern s8 mdlRunViewerSelectionLabelTaskWork[];
 
-typedef struct MdlViewerTaskDef {
+typedef struct mdlViewerTaskDef_t {
     const char *name;
     dds3ProcessFunc_t update;
     s32 data;
-} MdlViewerTaskDef;
+} mdlViewerTaskDef_t;
 
-typedef struct MdlSystemTask {
+typedef struct mdlSystemTask_t {
     const char *name;
     s32 arg;
-} MdlSystemTask;
+} mdlSystemTask_t;
 
 extern char mdlStrModel03[];
 extern char D_003ABCB0[];
@@ -338,15 +319,6 @@ extern f32 mdlDrawMapPositionRecordsData[][4];
 extern u32 mdlDrawMapPositionRecordsData2[];
 void mdlDrawMapPositionRecords(mdlObj_t *resource);
 void mdlFreeViewResources(void);
-
-typedef struct MdlValueEdit {
-    s32 y;
-    f32 *target;   /* 0x04 */
-    s32 min;       /* 0x08 */
-    s32 max;       /* 0x0C */
-    const char *label;  /* 0x10 */
-    const char *format; /* 0x14 */
-} MdlValueEdit;
 
 u64 *mdlBuildViewerRectanglePacket(s32 x, s32 y, s32 depth, s32 width, s32 height) {
     return dds3PrimFrameRect(x, y, depth, width, height, 0x30000000, 0x60404040);
@@ -927,7 +899,7 @@ pibHeaderChunk_t *mdlGetSelectedRecord(void) {
 INCLUDE_ASM(const s32, "code_r1_0019D3A8", mdlUpdateViewerMarkEditorInput);
 
 void mdlDrawViewerEffectRecordList(void) {
-    MdlViewState *state = &mdlViewerState;
+    mdlViewState_t *state = &mdlViewerState;
     mdlObj_t *resource;
     pibHeaderChunk_t *firstList;
     pibHeaderChunk_t *secondList;
@@ -1133,7 +1105,7 @@ void mdlDrawMapPositionRecords(mdlObj_t *resource) {
     if (recordCount > 0) {
         packetList = dds3FontReqAllocDrawTag();
         recordCursor = (sdfModelMarkPos_t *)(
-            (SdfMapPositionChunkPrefix *)sdfModelGetExtraChunk(resource->inner, MDL_MAP_POSITION_TAG) + 1);
+            (sdfMapPositionChunkPrefix_t *)sdfModelGetExtraChunk(resource->inner, MDL_MAP_POSITION_TAG) + 1);
         for (recordIndex = 0; recordIndex != recordCount; recordIndex++) {
             sdfModelMakeMarkPosMatrix(resource->inner, recordCursor);
             recordCursor++;

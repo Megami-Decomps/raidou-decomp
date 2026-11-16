@@ -7,13 +7,13 @@
 #include "common.h"
 
 /* Allocated by dds3EffectFileListCreate. */
-typedef struct Dds3EffectFileListCreateWork {
+typedef struct dds3EffectFileListCreateWork_t {
     s32 unk00; /* 0x00 */
     u8 pad04[48]; /* 0x04 */
     s32 unk34; /* 0x34 */
     s32 unk38; /* 0x38 */
-} Dds3EffectFileListCreateWork;
-SIZE_CHECK(Dds3EffectFileListCreateWorkSizeCheck, Dds3EffectFileListCreateWork, 0x3C);
+} dds3EffectFileListCreateWork_t;
+SIZE_CHECK(dds3EffectFileListCreateWorkSizeCheck, dds3EffectFileListCreateWork_t, 0x3C);
 
 /* Allocated by evtAddFrameInfo. */
 typedef struct evtFrameInfoWork40_t {
@@ -47,7 +47,7 @@ typedef struct evtFrameInfoWork_t {
 SIZE_CHECK(evtFrameInfoWorkSizeCheck, evtFrameInfoWork_t, 0x70);
 
 /* Allocated by dds3ObjectBaseInitControlWorkData. */
-typedef struct Dds3ObjectBaseInitControlWork {
+typedef struct dds3ObjectBaseInitControlWork_t {
     u8 pad00[4]; /* 0x00 */
     s32 unk04; /* 0x04 */
     s32 unk08; /* 0x08 */
@@ -57,8 +57,8 @@ typedef struct Dds3ObjectBaseInitControlWork {
     s32 unkA4; /* 0xA4 */
     u8 padA8[4]; /* 0xA8 */
     s32 unkAC; /* 0xAC */
-} Dds3ObjectBaseInitControlWork;
-SIZE_CHECK(Dds3ObjectBaseInitControlWorkSizeCheck, Dds3ObjectBaseInitControlWork, 0xB0);
+} dds3ObjectBaseInitControlWork_t;
+SIZE_CHECK(dds3ObjectBaseInitControlWorkSizeCheck, dds3ObjectBaseInitControlWork_t, 0xB0);
 
 /* Allocated by effAllocateActiveEffectSlotNode. */
 typedef struct effActiveEffectSlotNode_t {

@@ -507,7 +507,7 @@ void effObjectListCountersReset(void) {
     D_003BC950 = 0xffffffff;
 }
 
-effRefObj_t *effCreateSharedTextureReference(SdfTextureFileHeader *source) {
+effRefObj_t *effCreateSharedTextureReference(sdfTextureFileHeader_t *source) {
     u32 paletteWidth;
     u32 paletteHeight;
     s32 paletteBytes;
@@ -559,7 +559,7 @@ effRefObj_t *effCreateSharedTextureReference(SdfTextureFileHeader *source) {
     return texture;
 }
 
-effRefObj_t *effCloneSharedReferenceWithValue(SdfTextureFileHeader *source, u32 textureIndex) {
+effRefObj_t *effCloneSharedReferenceWithValue(sdfTextureFileHeader_t *source, u32 textureIndex) {
     effRefObj_t *copy;
 
     copy = effCreateSharedTextureReference(source);
@@ -611,14 +611,14 @@ sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, effRefObj_
     list = (sdfDrawTag_t *)sdfGrAllocPacketBuff(0x20);
     sdfDrawTagInit(list);
     sdfLinkLoadImage(list, D_003BC958->clutGsHandle, 0, 0, source->paletteWidth, source->paletteHeight, (s32)source->palette, 0);
-    sdfLinkLoadImage(list, D_003BC958->pixelGsHandle, 0, 0, ((SdfTextureFileHeader *)source->base)->width, ((SdfTextureFileHeader *)source->base)->height, (s32)source->pixels, 0);
+    sdfLinkLoadImage(list, D_003BC958->pixelGsHandle, 0, 0, ((sdfTextureFileHeader_t *)source->base)->width, ((sdfTextureFileHeader_t *)source->base)->height, (s32)source->pixels, 0);
     surface->regFunc(surface, list);
     texture = D_003BC958;
-    width = ((SdfTextureFileHeader *)source->base)->width;
+    width = ((sdfTextureFileHeader_t *)source->base)->width;
     texture->width = width;
     widthLog2 = (s16)width - 1;
     primary = texture->pixelGsHandle->addr >> 6;
-    height = ((SdfTextureFileHeader *)source->base)->height;
+    height = ((sdfTextureFileHeader_t *)source->base)->height;
     texture->height = height;
     clutFormat = texture->CLUTFormat;
     secondary = texture->clutGsHandle->addr;
@@ -681,7 +681,7 @@ struct ctexlHandle_t *effCacheTexCreate(u32 sourceAddress) {
     if (count != 0) {
         do {
             list->entries[i] = *sourceEntry;
-            list->handles[i] = effCreateSharedTextureReference((SdfTextureFileHeader *)payload);
+            list->handles[i] = effCreateSharedTextureReference((sdfTextureFileHeader_t *)payload);
             payload += sourceEntry->payloadSize;
             sourceEntry++;
             i++;

@@ -577,7 +577,7 @@ typedef struct effFieldColorConfig_t {
 
 typedef struct effCopiedSpawnList_t {
     u32 count;
-    FldSpawnBatch *groups;
+    fldSpawnBatch_t *groups;
 } effCopiedSpawnList_t;
 
 extern u128 D_0037EE90, D_0037EEA0, D_0037EEB0, D_0037EEC0, D_0037EED0;
@@ -1001,7 +1001,7 @@ typedef struct effPrfFallbackGroup_t {
 } effPrfFallbackGroup_t;
 
 extern sdfGrOt_t *sdfDrawFlagListVerticesData[];
-void sdfSampleFlagListStartColor(SdfFlagListWork *work);
+void sdfSampleFlagListStartColor(sdfFlagListWork_t *work);
 
 void effLeaf384(void) {
     effResetSlots();
@@ -1120,9 +1120,9 @@ INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf390);
 INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf391);
 
 /* Reset each entry's timer to free, then clear both colour words per entry. */
-void sdfResetFlagListEntries(SdfFlagListWork *work) {
+void sdfResetFlagListEntries(sdfFlagListWork_t *work) {
     u32 entryCount;
-    SdfFlagListMark *markCursor;
+    sdfFlagListMark_t *markCursor;
     u32 entryIndex;
 
     entryIndex = 0;
@@ -1138,23 +1138,23 @@ void sdfResetFlagListEntries(SdfFlagListWork *work) {
     memset(work->colors, 0, entryCount << SDF_FLAG_LIST_VALUE_SHIFT);
 }
 
-SdfFlagListWork *sdfCreateFlagListWork(const SdfFlagListParams *source) {
+sdfFlagListWork_t *sdfCreateFlagListWork(const sdfFlagListParams_t *source) {
     u32 count;
     u32 arrayBytes;
     sdfMemHandle_t *allocation;
     u8 *buffer;
-    SdfFlagListWork *work;
+    sdfFlagListWork_t *work;
 
     count = source->count;
-    arrayBytes = count * (sizeof(f32[2][4]) + sizeof(u32[2]) + sizeof(SdfFlagListMark));
-    allocation = sdfMemAllocDirect(arrayBytes + sizeof(SdfFlagListWork));
+    arrayBytes = count * (sizeof(f32[2][4]) + sizeof(u32[2]) + sizeof(sdfFlagListMark_t));
+    allocation = sdfMemAllocDirect(arrayBytes + sizeof(sdfFlagListWork_t));
     buffer = (u8 *)sdfMemLock(allocation);
-    work = (SdfFlagListWork *)(buffer + arrayBytes);
+    work = (sdfFlagListWork_t *)(buffer + arrayBytes);
     work->vertices = (f32 (*)[4])buffer;
     buffer += count * sizeof(f32[2][4]);
     work->colors = (u32 *)buffer;
     buffer += count * sizeof(u32[2]);
-    work->marks = (SdfFlagListMark *)buffer;
+    work->marks = (sdfFlagListMark_t *)buffer;
     work->unk04 = 0x80808080;
     work->allocation = allocation;
     work->frame = 0;
@@ -1163,11 +1163,11 @@ SdfFlagListWork *sdfCreateFlagListWork(const SdfFlagListParams *source) {
     return work;
 }
 
-SdfFlagListWork *sdfInitializeFlagListFromResource(void *file) {
+sdfFlagListWork_t *sdfInitializeFlagListFromResource(void *file) {
     return effCreateSelectionFlagListFromWork(fileResolvePrimaryBuffer(file));
 }
 
-void sdfReleaseFlagListResource(SdfFlagListWork *work) {
+void sdfReleaseFlagListResource(sdfFlagListWork_t *work) {
     sdfMemFreeDirect(work->allocation);
 }
 
@@ -1175,7 +1175,7 @@ INCLUDE_ASM(const s32, "code_r1_00242308", sdfUpdateFlagListEntries);
 
 /* Copy vertex pairs, optionally add the view target, and submit the packet list.
  * count is reused first as an entry count and then as a vertex count. */
-void sdfDrawFlagListVertices(SdfFlagListWork *work) {
+void sdfDrawFlagListVertices(sdfFlagListWork_t *work) {
     f32 (*sourceVertices)[4];
     f32 (*copiedVertices)[4];
     u32 count;
@@ -1213,7 +1213,7 @@ INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf392);
 INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf393);
 
 /* Sample color/alpha at frame zero with duration zero; discard the return value. */
-void sdfSampleFlagListStartColor(SdfFlagListWork *work) {
+void sdfSampleFlagListStartColor(sdfFlagListWork_t *work) {
     effColorAnimation(&work->params.color, &work->params.alpha, 0, 0);
 }
 

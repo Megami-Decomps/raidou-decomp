@@ -47,14 +47,14 @@ s32 EIntr(void);
 /* Start the background fade-out countdown; zero clears the transition. */
 void dds3FadeBackgroundStartOut(s32 duration);
 
-typedef struct SdfHeapOverlayBlock {
+typedef struct sdfHeapOverlayBlock_t {
     u32 address;   /* 0x00 */
     u8 blockState; /* 0x04: compact snapshot of SdfMemBlockState */
     u8 opaque05[3];
     s32 size;     /* 0x08 */
-} SdfHeapOverlayBlock;
+} sdfHeapOverlayBlock_t;
 
-typedef char SdfHeapOverlayBlock_size[(sizeof(SdfHeapOverlayBlock) == 0x0C) ? 1 : -1];
+typedef char sdfHeapOverlayBlock_size[(sizeof(sdfHeapOverlayBlock_t) == 0x0C) ? 1 : -1];
 
 #ifdef VERSION_RAIDOU1
 extern void evtViewerCreateTaskWithSky(void);
@@ -595,8 +595,8 @@ void sdfDrawHeapSpanOverlay(sdfDrawTag_t *packetList, s32 x, s32 y,
 }
 
 void sdfDrawHeapMapOverlay(sdfDrawTag_t *packetList, s32 x, s32 y) {
-    SdfHeapOverlayBlock *snapshot;
-    SdfHeapOverlayBlock *entry;
+    sdfHeapOverlayBlock_t *snapshot;
+    sdfHeapOverlayBlock_t *entry;
     sdfMemHandle_t *block;
     u32 count;
     u32 i;
@@ -606,7 +606,7 @@ void sdfDrawHeapMapOverlay(sdfDrawTag_t *packetList, s32 x, s32 y) {
     s32 markerX;
     s32 markerY;
 
-    snapshot = (SdfHeapOverlayBlock *)sdfGrOpenPacketBuff();
+    snapshot = (sdfHeapOverlayBlock_t *)sdfGrOpenPacketBuff();
     restoreInterrupts = DIntr();
     block = sdfMemGetTop();
     entry = snapshot;

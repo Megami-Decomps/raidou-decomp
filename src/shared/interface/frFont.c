@@ -538,19 +538,19 @@ enum {
 #endif
 
 #ifdef VERSION_RAIDOU1
-extern void frFontCheckPendingGlyphState(FrFontCtx *);
+extern void frFontCheckPendingGlyphState(frFontCtx_t *);
 #else
 extern u32 itfTextLipsUnitId;
 #endif
 extern u32 itfTextLipsMotionId;
 #ifdef VERSION_RAIDOU1
 extern u32 itfTextLipsUnitId;
-u32 itfReadEncodedTextLead(FrFontCtx *args);
-u32 itfReadEncodedCode(FrFontCtx *args);
+u32 itfReadEncodedTextLead(frFontCtx_t *args);
+u32 itfReadEncodedCode(frFontCtx_t *args);
 #else
 
-u32 itfReadEncodedTextLead(FrFontCtx *stream);
-u32 itfReadEncodedCode(FrFontCtx *stream);
+u32 itfReadEncodedTextLead(frFontCtx_t *stream);
+u32 itfReadEncodedCode(frFontCtx_t *stream);
 #endif
 u32 itfGetTextLipsUnitId(void);
 u32 itfGetTextLipsMotionId(void);
@@ -564,13 +564,13 @@ union EffSpriteColor;
 #ifdef VERSION_RAIDOU1
 
 /* Output point written by glyph-chain position lookup. */
-typedef struct FrFontPosition {
+typedef struct frFontPosition_t {
     s32 x;
     s32 y;
-} FrFontPosition;
+} frFontPosition_t;
 
-typedef char FrFontPosition_size_must_be_0x08[
-    (sizeof(FrFontPosition) == 0x08) ? 1 : -1];
+typedef char frFontPosition_size_must_be_0x08[
+    (sizeof(frFontPosition_t) == 0x08) ? 1 : -1];
 
 void frFontCreateContext();
 
@@ -592,13 +592,13 @@ void frFontCreateContext();
 #else
 
 /* Output point written by glyph-chain position lookup. */
-typedef struct FrFontPosition {
+typedef struct frFontPosition_t {
     s32 x;
     s32 y;
-} FrFontPosition;
+} frFontPosition_t;
 
-typedef char FrFontPosition_size_must_be_0x08[
-    (sizeof(FrFontPosition) == 0x08) ? 1 : -1];
+typedef char frFontPosition_size_must_be_0x08[
+    (sizeof(frFontPosition_t) == 0x08) ? 1 : -1];
 
 void frFontCreateContext();
 
@@ -1384,7 +1384,7 @@ s32 frCallGetStrWidth3(s32 requestedLine, const _FRQ *glyph) {
 #ifdef VERSION_RAIDOU1
 #ifdef NON_MATCHING
 /* 1 of 35 words differ (first at +0x30) */
-void frFontGetGlyphPositionAtIndex(FrFontPosition *position, s32 requestedIndex, const _FRQ *glyph) {
+void frFontGetGlyphPositionAtIndex(frFontPosition_t *position, s32 requestedIndex, const _FRQ *glyph) {
     s32 positionIndex = 0;
     const _FRQ *currentNode;
     const _FRQ *scanNode;
@@ -1421,7 +1421,7 @@ INCLUDE_ASM(const s32, "interface/frFont", frFontGetGlyphPositionAtIndex);
 #else
 /* Write each visited position and stop at requestedIndex. Missing indices leave
  * the last visited position; empty input leaves output unchanged. */
-void frFontGetGlyphPositionAtIndex(FrFontPosition *position, s32 requestedIndex, const _FRQ *glyph) {
+void frFontGetGlyphPositionAtIndex(frFontPosition_t *position, s32 requestedIndex, const _FRQ *glyph) {
     s32 positionIndex = 0;
     const _FRQ *currentNode;
     const _FRQ *scanNode;
@@ -1501,7 +1501,7 @@ INCLUDE_ASM(const s32, "interface/frFont", frFontCreateContext);
 
 /* Cancel creation for an empty child, process pending creation, then process
  * the independent pair refresh. The refresh phase has no NULL-child guard. */
-void frFontCheckPendingGlyphState(FrFontCtx *ctx) {
+void frFontCheckPendingGlyphState(frFontCtx_t *ctx) {
     s8 pending;
 
     if (ctx->glyphChain == NULL) {
@@ -1533,7 +1533,7 @@ void frMessageReturnCode(frMsgInfo_t *pMsgInfo) {
 
 /* Subtract one modulo 256 from the first byte, then advance over the whole pair. */
 #ifdef VERSION_RAIDOU1
-u32 itfReadEncodedTextLead(FrFontCtx *args) {
+u32 itfReadEncodedTextLead(frFontCtx_t *args) {
     s32 *position = &args->encodedTextOffset;
     const u8 *byte = args->encodedText + *position;
     u32 value = *byte;
@@ -1545,7 +1545,7 @@ u32 itfReadEncodedTextLead(FrFontCtx *args) {
 /* Decode a little-endian pair; encoded high byte 0xFF is the zero escape.
  * Neither reader checks the input length. */
 #else
-u32 itfReadEncodedTextLead(FrFontCtx *stream) {
+u32 itfReadEncodedTextLead(frFontCtx_t *stream) {
     s32 *position = &stream->encodedTextOffset;
     const u8 *byte = stream->encodedText + *position;
     u32 value = *byte;
@@ -1558,7 +1558,7 @@ u32 itfReadEncodedTextLead(FrFontCtx *stream) {
  * Neither reader checks the input length. */
 #endif
 #ifdef VERSION_RAIDOU1
-u32 itfReadEncodedCode(FrFontCtx *args) {
+u32 itfReadEncodedCode(frFontCtx_t *args) {
     const u8 *bytes = args->encodedText;
     u32 first;
     u32 second;
@@ -1658,7 +1658,7 @@ INCLUDE_SDATA(const s32, "interface/frFont", gModeFlag);
 
 INCLUDE_SDATA(const s32, "interface/frFont", gFontDrawOT);
 #else
-u32 itfReadEncodedCode(FrFontCtx *stream) {
+u32 itfReadEncodedCode(frFontCtx_t *stream) {
     u32 first;
     u32 second;
 

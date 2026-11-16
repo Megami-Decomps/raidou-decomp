@@ -53,10 +53,10 @@ typedef struct mnuWork_t {
     struct sdfMemHandle_t *unk3C;
 } mnuWork_t;
 
-typedef struct MdlFlagPair {
+typedef struct mdlFlagPair_t {
     s32 flag;
     s32 unk4;
-} MdlFlagPair;
+} mdlFlagPair_t;
 
 /* Eight-byte story-flag rows select a unit and a six-byte bonus record. */
 typedef struct fileStatBonus_t {

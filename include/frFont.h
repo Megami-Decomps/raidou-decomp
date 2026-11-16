@@ -44,7 +44,7 @@ typedef char FrFontGlyph_size_must_be_0x58[sizeof(_FRQ) == 0x58 ? 1 : -1];
 #endif
 
 /* Encoded text cursor and pending glyph updates; distinct from a glyph (0x20). */
-typedef struct FrFontCtx {
+typedef struct frFontCtx_t {
     s32 x;
     s32 y;
     s32 z;
@@ -58,7 +58,7 @@ typedef struct FrFontCtx {
     s8 pendingCreate;
     s8 pendingPosition;
     u8 pad1E[2];
-} FrFontCtx;
+} frFontCtx_t;
 
 #ifdef VERSION_RAIDOU2
 typedef char FrFontGlyph_size_must_be_0x5C[sizeof(_FRQ) == 0x5C ? 1 : -1];

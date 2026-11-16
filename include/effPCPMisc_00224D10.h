@@ -30,12 +30,12 @@ void dds3DispatchIndexedCallback(u16 *record, f32 scale);
 typedef s16 DatNewCycleState;
 
 /* Three opaque words copied together between the game state and save preview. */
-typedef struct DatSaveWords {
+typedef struct datSaveWords_t {
     u32 words[3];
-} DatSaveWords;
+} datSaveWords_t;
 
-typedef char DatSaveWordsSizeCheck[
-    sizeof(DatSaveWords) == 0x0C ? 1 : -1];
+typedef char datSaveWordsSizeCheck[
+    sizeof(datSaveWords_t) == 0x0C ? 1 : -1];
 
 /* The memory-card browser copies the first 0x30 bytes of a save into a
  * compact row. Its final three words retain the shared save-word group. The
@@ -53,7 +53,7 @@ typedef struct fileSavePreviewRecord_t {
     s8 levels[8];
     u32 money;
     union {
-        DatSaveWords saveWords;
+        datSaveWords_t saveWords;
         struct {
             u32 opaque24;
             u32 opaque28;

@@ -30,7 +30,7 @@ typedef char SBTLITEM_DROP_size_must_be_4[
 
 #ifdef VERSION_RAIDOU2
 /* One 0x28-byte battle scene record; datBattleSceneRecords points at the 0x400-entry table. */
-typedef struct DatBattleSceneRecord {
+typedef struct datBattleSceneRecord_t {
     s8 voice;            /* 0x00: signed ENCOUNT voice selector */
     u8 itemDropId;       /* 0x01: item passed to btlAddItemDrop when nonzero */
     u8 itemDropCount;    /* 0x02: number of scene-entry item drops */
@@ -44,11 +44,11 @@ typedef struct DatBattleSceneRecord {
     u8 maxEnemySpawns; /* 0x23: zero removes the cumulative spawn limit. */
     u16 unk24;           /* 0x24: overrides the scene's sound selection when nonzero */
     u16 eventId;         /* 0x26: signed event number; zero disables */
-} DatBattleSceneRecord;
+} datBattleSceneRecord_t;
 #endif
 
 #ifdef VERSION_RAIDOU2
-typedef char DatBattleSceneRecordSizeCheck[sizeof(DatBattleSceneRecord) == 0x28 ? 1 : -1];
+typedef char datBattleSceneRecordSizeCheck[sizeof(datBattleSceneRecord_t) == 0x28 ? 1 : -1];
 #endif
 
 #ifdef VERSION_RAIDOU2
@@ -105,7 +105,7 @@ typedef struct SBTL_CONTROLLER {
     u8 pad_4B0[0x100];
     s32 (*sceneCallback)();
     u8 pad_5B4[0xD4];
-    u32 (*enemyLimitOverride)(SBTL_UNIT *, DatBattleSceneRecord *, u32); /* 0x688 */
+    u32 (*enemyLimitOverride)(SBTL_UNIT *, datBattleSceneRecord_t *, u32); /* 0x688 */
 } SBTL_CONTROLLER;
 
 s32 btlAverageActorAttribute(

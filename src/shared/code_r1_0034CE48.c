@@ -48,7 +48,7 @@ typedef char mnuFadeFields_size_must_be_0xCC[(sizeof(mnuFadeFields_t) == 0xCC) ?
 
 struct mnuListNode_t;
 
-struct StaffMenuRuntime;
+struct staffMenuRuntime_t;
 
 #define MNU_ENTRY_SPRITE_COUNT 4
 
@@ -213,7 +213,7 @@ typedef struct mnuContext_t {
 typedef struct mnuListNode_t mnuListNode_t;
 
 /* Native selection-state allocation is 0x30 bytes, distinct from item state. */
-typedef struct StaffMenuRuntime {
+typedef struct staffMenuRuntime_t {
     sdfMemHandle_t *allocation;
     u8 pad04[4];
     u32 resources[2];
@@ -225,7 +225,7 @@ typedef struct StaffMenuRuntime {
     s32 active;
     s32 idleFrames;
     s32 motionSelection;
-} StaffMenuRuntime;
+} staffMenuRuntime_t;
 
 /* The item/skill-state constructor allocates and clears this complete 0x3C. */
 typedef struct mnuSkillMenuRuntime_t {

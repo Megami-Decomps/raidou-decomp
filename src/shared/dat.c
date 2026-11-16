@@ -20,7 +20,7 @@ extern u32 datCallGetStockDevilIDData;
 
 /* The 0x4C-byte enemy table supplies initial party vitals/stats, skills and
  * rewards. */
-typedef struct DatEnemyRecord {
+typedef struct datEnemyRecord_t {
     u32 flags;            /* 0x00 */
     u8 pad04;
     u8 level;             /* 0x05 */
@@ -51,9 +51,9 @@ typedef struct DatEnemyRecord {
     u8 tickCount;         /* 0x47: enemy action tick count; zero is read as one. */
     u8 attackSpacing;    /* Repeat-hit interval, scaled by the command's effect data. */
     u8 pad49[3];
-} DatEnemyRecord;
+} datEnemyRecord_t;
 
-typedef char DatEnemyRecordSizeCheck[sizeof(DatEnemyRecord) == 0x4C ? 1 : -1];
+typedef char datEnemyRecordSizeCheck[sizeof(datEnemyRecord_t) == 0x4C ? 1 : -1];
 
 /* Sparse world-node identities recovered from the paired operation tables and
  * concrete creators. Unlisted values stay unnamed; COUNT remains the full
@@ -90,20 +90,20 @@ sdfFileCmdHandle_t *sdfFileOpen(const char *path);
 
 #endif
 /* Each configured segment supplies a destination slot and an opaque word. */
-typedef struct SdfChannelEntry {
+typedef struct sdfChannelEntry_t {
     void **slot;
     u32 unused;
-} SdfChannelEntry;
+} sdfChannelEntry_t;
 
 /* The channel loader scans these entries through the first null slot. */
-typedef struct SdfChannel {
+typedef struct sdfChannel_t {
     const char *path;
-    SdfChannelEntry entries[20];
-} SdfChannel;
+    sdfChannelEntry_t entries[20];
+} sdfChannel_t;
 
-typedef char SdfChannelEntry_size_must_be_8[(sizeof(SdfChannelEntry) == 8) ? 1 : -1];
+typedef char sdfChannelEntry_size_must_be_8[(sizeof(sdfChannelEntry_t) == 8) ? 1 : -1];
 
-typedef char SdfChannel_size_must_be_0xA4[(sizeof(SdfChannel) == 0xA4) ? 1 : -1];
+typedef char sdfChannel_size_must_be_0xA4[(sizeof(sdfChannel_t) == 0xA4) ? 1 : -1];
 
 #define SDF_PACKED_STATUS_BIT 0x8000
 
@@ -111,7 +111,7 @@ typedef char SdfChannel_size_must_be_0xA4[(sizeof(SdfChannel) == 0xA4) ? 1 : -1]
 
 #define SDF_UNIT_ENEMY 0x20
 
-extern DatEnemyRecord *datEnemyRecords;
+extern datEnemyRecord_t *datEnemyRecords;
 extern char sdfRuntimeTaskName[];
 
 #define SDF_FLOAT_COUNTER_FROZEN_FLAG 0x00000008
@@ -123,7 +123,7 @@ void evtLoadValueVectorIntoVu(dds3Basic_t *node);
 void evtLoadValueSecondaryVectorIntoVu(dds3Basic_t *node);
 
 extern const char sdfStrSys[10];
-void sdfReloadChannelSegments(SdfChannel *table);
+void sdfReloadChannelSegments(sdfChannel_t *table);
 
 /* Load the world node's borrowed data vector into VF10. */
 void evtLoadValueVectorIntoVu(dds3Basic_t *node) {
@@ -188,7 +188,7 @@ INCLUDE_ASM(const s32, "dat", datAllReleaseScriptSub);
 
 #ifdef VERSION_RAIDOU1
 /* Load a table's file and copy each size-prefixed segment into its own block. */
-void sdfReloadChannelSegments(SdfChannel *table) {
+void sdfReloadChannelSegments(sdfChannel_t *table) {
     sdfFileCmdHandle_t *command;
     struct sdfMemHandle_t *block;
     s32 size;

@@ -92,27 +92,27 @@ enum SdfMotionStateValue {
  * texture starts at one. Release the returned reference once with
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
-typedef struct SdfGsTextureAlphaFlushPacket {
+typedef struct sdfGsTextureAlphaFlushPacket_t {
     SdfGsPacketHeader header;
     SdfGsRegisterWrite textureAlpha;
     SdfGsRegisterWrite textureFlush;
-} SdfGsTextureAlphaFlushPacket;
+} sdfGsTextureAlphaFlushPacket_t;
 
-typedef char SdfGsTextureAlphaFlushPacket_size_must_be_0x40[
-    (sizeof(SdfGsTextureAlphaFlushPacket) == 0x40) ? 1 : -1];
+typedef char sdfGsTextureAlphaFlushPacket_size_must_be_0x40[
+    (sizeof(sdfGsTextureAlphaFlushPacket_t) == 0x40) ? 1 : -1];
 
 struct dds3Basic_t;
 
 struct EffNodeDescriptor;
 
-typedef char FldSpawnBatchSize[(sizeof(FldSpawnBatch) == 12) ? 1 : -1];
+typedef char FldSpawnBatchSize[(sizeof(fldSpawnBatch_t) == 12) ? 1 : -1];
 
 /* Camera-setting table capacity. */
 enum {
     FIELD_CAMERA_SETTING_COUNT = 8
 };
 
-typedef struct SdfDrawPacket SdfDrawPacket;
+typedef struct sdfDrawPacket_t sdfDrawPacket_t;
 
 typedef struct DmaPacketHeader DmaPacketHeader;
 
@@ -194,10 +194,10 @@ typedef union FldLookAtVector {
     f32 f[4];
 } FldLookAtVector;
 
-typedef struct FldModelMatrices {
+typedef struct fldModelMatrices_t {
     u8 pad00[0xC];
     u8 **rows; /* 0x0C: slot-indexed matrix blocks */
-} FldModelMatrices;
+} fldModelMatrices_t;
 
 struct effRandState_t;
 

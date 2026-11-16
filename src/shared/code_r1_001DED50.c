@@ -71,15 +71,15 @@ enum {
 
 /* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
 
-typedef struct SdfGsTexturePacket {
+typedef struct sdfGsTexturePacket_t {
     SdfGsPacketHeader header;
     SdfGsRegisterWrite sampling;
     SdfGsRegisterWrite texture;
     SdfGsRegisterWrite clamp;
-} SdfGsTexturePacket;
+} sdfGsTexturePacket_t;
 
-typedef char SdfGsTexturePacket_size_must_be_0x50[
-    (sizeof(SdfGsTexturePacket) == 0x50) ? 1 : -1];
+typedef char sdfGsTexturePacket_size_must_be_0x50[
+    (sizeof(sdfGsTexturePacket_t) == 0x50) ? 1 : -1];
 
 /* Caller-built composite draw description; 0x68 bytes. */
 typedef struct effCompositeGsDescriptor_t {
@@ -90,8 +90,8 @@ typedef struct effCompositeGsDescriptor_t {
     f32 angle;
     u32 color;
     u32 blendMode;
-    BillTextureQuad primaryUv;
-    BillTextureQuad secondaryUv;
+    billTextureQuad_t primaryUv;
+    billTextureQuad_t secondaryUv;
     sdfTexHandle_t *primaryTexture;
     u64 primaryClamp;
     sdfTexHandle_t *secondaryTexture;
@@ -132,16 +132,16 @@ void effSubmitCompositeGsPacket(sdfGrOt_t *surface, effCompositeGsDescriptor_t *
 
 void effDrawGeneratedTextureQuad(sdfDrawTag_t *list, effGeneratedTextureDescriptor_t *source) {
     f32 matrix[16] __attribute__((aligned(16)));
-    BillTextureQuad uv;
+    billTextureQuad_t uv;
     f32 corners[4][2];
-    SdfGsTexturePacket *texturePacket;
+    sdfGsTexturePacket_t *texturePacket;
     u64 *packet;
     s16 width, height;
     f32 halfWidth, halfHeight;
     f32 cosine, sine;
     f32 cornerX, cornerY;
 
-    texturePacket = (SdfGsTexturePacket *)sdfGrAllocPacketBuff(sizeof(SdfGsTexturePacket));
+    texturePacket = (sdfGsTexturePacket_t *)sdfGrAllocPacketBuff(sizeof(sdfGsTexturePacket_t));
     texturePacket->header.dmaTag = 4;
     texturePacket->header.vifCommands = 0x5000000410000000ULL;
     texturePacket->header.gifTag = 0x1000000000008003ULL;

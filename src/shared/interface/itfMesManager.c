@@ -343,25 +343,25 @@ typedef char ItfMesPoolNode_size_must_be_0x14[(sizeof(mesflow_tag) == 0x14) ? 1 
 
 #define ITF_PANEL_HOLD_CAPACITY 0x40
 
-typedef struct PanelHoldItem {
+typedef struct itfPanelHoldItem_t {
     s32 first;
     s16 second;
     s16 third;
-} PanelHoldItem;
+} itfPanelHoldItem_t;
 
 /* Bounded held-panel queue. Unknown scalar slots stay unnamed. */
-typedef struct PanelHold {
+typedef struct itfPanelHold_t {
     s32 window;
     s16 unk4;
     s16 queuedCount;
     s32 entryEndFrame; /* Script timer deadline of the active entry. */
-    PanelHoldItem items[ITF_PANEL_HOLD_CAPACITY];
-} PanelHold;
+    itfPanelHoldItem_t items[ITF_PANEL_HOLD_CAPACITY];
+} itfPanelHold_t;
 
-typedef char PanelHoldItem_size_must_be_8[sizeof(PanelHoldItem) == 8 ? 1 : -1];
+typedef char itfPanelHoldItem_size_must_be_8[sizeof(itfPanelHoldItem_t) == 8 ? 1 : -1];
 
-typedef char PanelHold_size_must_be_0x20C[
-    sizeof(PanelHold) == 0x20C ? 1 : -1];
+typedef char itfPanelHold_size_must_be_0x20C[
+    sizeof(itfPanelHold_t) == 0x20C ? 1 : -1];
 
 #define ITF_PANEL_COLUMN_COUNT 4
 
@@ -402,7 +402,7 @@ typedef char PanelHold_size_must_be_0x20C[
 #define ITF_PANEL_TINT_BORDER_WIDTH 0x240
 
 extern void (*DrawTable[])(itfpanel_t *, sdfDrawTag_t *);
-extern PanelHold itfHeldPanelCursor;
+extern itfPanelHold_t itfHeldPanelCursor;
 
 extern u8 D_003B45E8[], D_003B4600[], D_003B4618[];
 extern u8 D_003B4630[], D_003B4648[], D_003B4660[];
@@ -522,7 +522,7 @@ void itfMesMngSetPhase(s32 msgid, s8 phase) {
 /* Capture the script window, reset its held queue, and switch to page three.
    Invalid windows still return the native command-complete value of one. */
 s32 itfPanelAcquireHold(void) {
-    PanelHold *hold;
+    itfPanelHold_t *hold;
     ItfMesWindowIndex window;
 
     window = scrGetMessageHandle();
@@ -540,7 +540,7 @@ s32 itfPanelAcquireHold(void) {
 
 /* Clean up the active held window and reset its queue; an inactive hold is a no-op. */
 s32 itfPanelReleaseHold(void) {
-    PanelHold *hold = &itfHeldPanelCursor;
+    itfPanelHold_t *hold = &itfHeldPanelCursor;
 
     if (hold->window < 0) {
         return 1;
@@ -556,7 +556,7 @@ s32 itfPanelReleaseHold(void) {
 /* Queue script words in native second/first/third field order; first and third narrow to s16.
    Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
 s32 itfCommandQueueHeldPanelEntry(void) {
-    PanelHold *cursor = &itfHeldPanelCursor;
+    itfPanelHold_t *cursor = &itfHeldPanelCursor;
     s32 first;
     s32 second;
     s32 third;
@@ -651,7 +651,7 @@ void itfMesMngSetPhase(s32 msgid, s8 phase) {
 /* Capture the script window, reset its held queue, and switch to page three.
    Invalid windows still return the native command-complete value of one. */
 s32 itfPanelAcquireHold(void) {
-    PanelHold *hold;
+    itfPanelHold_t *hold;
     ItfMesWindowIndex window;
 
     window = scrGetMessageHandle();
@@ -669,7 +669,7 @@ s32 itfPanelAcquireHold(void) {
 
 /* Clean up the active held window and reset its queue; an inactive hold is a no-op. */
 s32 itfPanelReleaseHold(void) {
-    PanelHold *hold = &itfHeldPanelCursor;
+    itfPanelHold_t *hold = &itfHeldPanelCursor;
 
     if (hold->window < 0) {
         return 1;
@@ -685,7 +685,7 @@ s32 itfPanelReleaseHold(void) {
 /* Queue script words in native second/first/third field order; first and third narrow to s16.
    Inactive/full queues are ignored with status one; negative queuedCount is not checked. */
 s32 itfCommandQueueHeldPanelEntry(void) {
-    PanelHold *cursor = &itfHeldPanelCursor;
+    itfPanelHold_t *cursor = &itfHeldPanelCursor;
     s32 first;
     s32 second;
     s32 third;

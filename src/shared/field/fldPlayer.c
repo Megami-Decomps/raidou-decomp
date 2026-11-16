@@ -40,12 +40,12 @@ f32 fldSnapAngleToCompassPoint(f32 angle);
 extern u64 D_003BAB70[], D_003BAB78[], D_003BAB80[], D_003BAB88[], D_003BAB90[];
 extern u64 D_003BAB98[], D_003BABA0[], D_003BABA8[], D_003BABB0[];
 
-typedef struct FieldVec4 {
+typedef struct fldVec4_t {
     f32 x;
     f32 y;
     f32 z;
     f32 w;
-} FieldVec4;
+} fldVec4_t;
 
 /* Area-state consumption markers are separate from shared game-state flags. */
 enum {

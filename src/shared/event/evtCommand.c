@@ -521,7 +521,7 @@ extern void evtArmEffectObjectPendingValue(dds3Basic_t *object, s32 value);
 extern void evtResetObjectPendingValue(dds3Basic_t *object);
 
 #endif
-struct SoundMixer;
+struct sndMixer_t;
 
 extern void evtResetObjectPendingValue(dds3Basic_t *object);
 extern void evtArmEffectObjectPendingValue(dds3Basic_t *object, s32 value);
