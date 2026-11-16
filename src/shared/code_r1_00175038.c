@@ -28,3 +28,13 @@ void scrClearProcessGlobals(void) {
         DDS3_GBWK4[i].pBasic = NULL;
     }
 }
+
+#ifdef VERSION_RAIDOU1
+extern mapNpcPathData_t mapNpcPathFastInitDataEntry2;
+extern mapNpcPathData_t mapNpcPathFastInitDataEntry3;
+
+mapNpcPathTable_t mapNpcPathFastInitDataEntry[2] = {
+    { 0, &mapNpcPathFastInitDataEntry2 },
+    { 2, &mapNpcPathFastInitDataEntry3 },
+};
+#endif

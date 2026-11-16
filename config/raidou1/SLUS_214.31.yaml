@@ -699,6 +699,8 @@ segments:
       - [0x2B4348, data, data_003B3348]
       - [0x2E6B94, .data, code_r1_0016A298]
       - [0x2E6B98, data, data_003E5B98]
+      - [0x2E7780, .data, code_r1_00175038]
+      - [0x2E7790, data, data_003E6790]
       - [0x2EA250, .data, code_r1_00195498]
       - [0x2EA258, data, data_003E9258]
       - [0x2F09A8, .data, code_r1_001C4B78]
