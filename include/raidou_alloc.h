@@ -61,7 +61,7 @@ typedef struct Dds3ObjectBaseInitControlWork {
 SIZE_CHECK(Dds3ObjectBaseInitControlWorkSizeCheck, Dds3ObjectBaseInitControlWork, 0xB0);
 
 /* Allocated by effAllocateActiveEffectSlotNode. */
-typedef struct EffActiveEffectSlotNode {
+typedef struct effActiveEffectSlotNode_t {
     s32 unk00; /* 0x00 */
     s32 unk04; /* 0x04 */
     f32 unk08; /* 0x08 */
@@ -74,41 +74,16 @@ typedef struct EffActiveEffectSlotNode {
     u8 pad74[8]; /* 0x74 */
     s16 unk7C; /* 0x7C */
     s16 unk7E; /* 0x7E */
-} EffActiveEffectSlotNode;
-SIZE_CHECK(EffActiveEffectSlotNodeSizeCheck, EffActiveEffectSlotNode, 0x80);
-
-/* Allocated by effBTLCreate. */
-typedef struct EffBTL {
-    u32 unk00[2]; /* 0x00 */
-    u32 unk08[2]; /* 0x08 */
-    u32 unk10[2]; /* 0x10 */
-    u32 unk18[2]; /* 0x18 */
-    u8 pad20[84]; /* 0x20 */
-    u16 unk74; /* 0x74 */
-    u8 pad76[3010]; /* 0x76 */
-    s32 unkC38; /* 0xC38 */
-    s32 unkC3C; /* 0xC3C */
-    s32 unkC40; /* 0xC40 */
-} EffBTL;
-SIZE_CHECK(EffBTLSizeCheck, EffBTL, 0xC44);
+} effActiveEffectSlotNode_t;
+SIZE_CHECK(effActiveEffectSlotNodeSizeCheck, effActiveEffectSlotNode_t, 0x80);
 
 /* Allocated by effDuplicateSmallHeader. */
-typedef struct EffSmallHeader {
+typedef struct effSmallHeader_t {
     s32 unk00; /* 0x00 */
     u8 unk04[8]; /* 0x04 */
     s32 unk0C; /* 0x0C */
-} EffSmallHeader;
-SIZE_CHECK(EffSmallHeaderSizeCheck, EffSmallHeader, 0x10);
-
-/* Allocated by effPCPBossBaelCreate and 1 more with this layout. */
-typedef struct EffPCPBossBael {
-    u8 pad00[32]; /* 0x00 */
-    s32 unk20; /* 0x20 */
-    s32 unk24; /* 0x24 */
-    s32 unk28; /* 0x28 */
-    s32 unk2C; /* 0x2C */
-} EffPCPBossBael;
-SIZE_CHECK(EffPCPBossBaelSizeCheck, EffPCPBossBael, 0x30);
+} effSmallHeader_t;
+SIZE_CHECK(effSmallHeaderSizeCheck, effSmallHeader_t, 0x10);
 
 /* Allocated by evtAddFrameInfo. */
 typedef struct EvtFrameInfo {
@@ -212,7 +187,7 @@ typedef struct EvtUnitHandle {
 SIZE_CHECK(EvtUnitHandleSizeCheck, EvtUnitHandle, 0x230);
 
 /* Allocated by sub_2019F8 and 3 more with this layout. */
-typedef struct EffWork2019F8 {
+typedef struct effWork2019F8_t {
     u8 pad00[16]; /* 0x00 */
     u32 unk10[4]; /* 0x10 */
     u32 unk20[4]; /* 0x20 */
@@ -224,40 +199,40 @@ typedef struct EffWork2019F8 {
     s32 unk5C; /* 0x5C */
     s32 unk60; /* 0x60 */
     s32 unk64; /* 0x64 */
-} EffWork2019F8;
-SIZE_CHECK(EffWork2019F8SizeCheck, EffWork2019F8, 0x68);
+} effWork2019F8_t;
+SIZE_CHECK(effWork2019F8SizeCheck, effWork2019F8_t, 0x68);
 
 /* Allocated by sub_202038 and 5 more with this layout. */
-typedef struct EffWork202038 {
+typedef struct effWork202038_t {
     u8 pad00[24]; /* 0x00 */
     s32 unk18; /* 0x18 */
     f32 unk1C; /* 0x1C */
     s32 unk20; /* 0x20 */
-} EffWork202038;
-SIZE_CHECK(EffWork202038SizeCheck, EffWork202038, 0x24);
+} effWork202038_t;
+SIZE_CHECK(effWork202038SizeCheck, effWork202038_t, 0x24);
 
 /* Allocated by sub_202098 and 5 more with this layout. */
-typedef struct EffWork202098 {
+typedef struct effWork202098_t {
     u8 pad00[24]; /* 0x00 */
     f32 unk18; /* 0x18 */
     f32 unk1C; /* 0x1C */
     s32 unk20; /* 0x20 */
-} EffWork202098;
-SIZE_CHECK(EffWork202098SizeCheck, EffWork202098, 0x24);
+} effWork202098_t;
+SIZE_CHECK(effWork202098SizeCheck, effWork202098_t, 0x24);
 
 /* Allocated by sub_2258D0. */
-typedef struct EffWork2258D0 {
+typedef struct effWork2258D0_t {
     f32 unk00; /* 0x00 */
     u8 unk04; /* 0x04 */
     u8 pad05[3]; /* 0x05 */
     s32 unk08; /* 0x08 */
     s32 unk0C; /* 0x0C */
     u8 pad10[4]; /* 0x10 */
-} EffWork2258D0;
-SIZE_CHECK(EffWork2258D0SizeCheck, EffWork2258D0, 0x14);
+} effWork2258D0_t;
+SIZE_CHECK(effWork2258D0SizeCheck, effWork2258D0_t, 0x14);
 
 /* Allocated by sub_232638. */
-typedef struct EffWork232638 {
+typedef struct effWork232638_t {
     f32 unk00[4]; /* 0x00 */
     f32 unk10[4]; /* 0x10 */
     f32 unk20; /* 0x20 */
@@ -279,16 +254,16 @@ typedef struct EffWork232638 {
     s32 unkD8; /* 0xD8 */
     u8 padDC[8]; /* 0xDC */
     s32 unkE4; /* 0xE4 */
-} EffWork232638;
-SIZE_CHECK(EffWork232638SizeCheck, EffWork232638, 0xE8);
+} effWork232638_t;
+SIZE_CHECK(effWork232638SizeCheck, effWork232638_t, 0xE8);
 
 /* Allocated by sub_252058. */
-typedef struct RaidouWork252058 {
+typedef struct effRaidouWork252058_t {
     s32 unk00; /* 0x00 */
     s32 unk04; /* 0x04 */
     s32 unk08; /* 0x08 */
     s32 unk0C; /* 0x0C */
-} RaidouWork252058;
-SIZE_CHECK(RaidouWork252058SizeCheck, RaidouWork252058, 0x10);
+} effRaidouWork252058_t;
+SIZE_CHECK(effRaidouWork252058SizeCheck, effRaidouWork252058_t, 0x10);
 
 #endif

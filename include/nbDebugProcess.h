@@ -3,8 +3,8 @@
 
 #include "common.h"
 
-struct EffectList;
+struct effList_t;
 
-struct EffectList *InitDebugProcessData(s32 a0);
+struct effList_t *InitDebugProcessData(s32 a0);
 
 #endif

@@ -555,7 +555,7 @@ u32 itfReadEncodedCode(FrFontCtx *stream);
 u32 itfGetTextLipsUnitId(void);
 u32 itfGetTextLipsMotionId(void);
 
-struct EffSpriteUV;
+struct effSpriteUV_t;
 
 struct sdfTexHandle_t;
 

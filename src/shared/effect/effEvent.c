@@ -379,27 +379,27 @@ enum {
 #include "basic.h"
 #include "effBattleMisc.h"
 
-typedef struct EffBattleUnitRgbCommand {
+typedef struct effBattleUnitRgbCommand_t {
     u32 color;
     u32 startFrame;
     s32 startDurationIndex;
     u32 endFrame;
     s32 endDurationIndex;
-} EffBattleUnitRgbCommand;
+} effBattleUnitRgbCommand_t;
 
-typedef struct EffBattleUnitColorCommand {
-    EffectVectorRequest request;
+typedef struct effBattleUnitColorCommand_t {
+    effVectorRequest_t request;
     u32 firstColor;
     u32 secondColor;
     u32 startFrame;
     s32 startDurationIndex;
     u32 endFrame;
     s32 endDurationIndex;
-} EffBattleUnitColorCommand;
+} effBattleUnitColorCommand_t;
 
-typedef char EffBattleUnitRgbCommandSizeCheck[(sizeof(EffBattleUnitRgbCommand) == 0x14) ? 1 : -1];
+typedef char effBattleUnitRgbCommandSizeCheck[(sizeof(effBattleUnitRgbCommand_t) == 0x14) ? 1 : -1];
 
-typedef char EffBattleUnitColorCommandSizeCheck[(sizeof(EffBattleUnitColorCommand) == 0x20) ? 1 : -1];
+typedef char effBattleUnitColorCommandSizeCheck[(sizeof(effBattleUnitColorCommand_t) == 0x20) ? 1 : -1];
 
 /* Each effect bank addresses this many parameter rows when flattening a
  * bank/entry pair into the copy-source index stored in an entry. */
@@ -429,25 +429,25 @@ enum EffBattleEntryActorFilterMode {
     EFF_BATTLE_ENTRY_ACTOR_FILTER_LINK_FLAG_2 = 3,
 };
 
-typedef struct EffBattleEntry {
+typedef struct effBattleEntry_t {
     EffBattleParameterKind parameterKind; /* 0x00: work kind or row-state sentinel. */
     u8 pad02[2];
     EffBattleParameterValue value; /* 0x04 */
-    EffectVectorRequest aimParams;        /* 0x08 */
+    effVectorRequest_t aimParams;        /* 0x08 */
     u32 zeroKindCount;             /* 0x10 */
     EffBattleEntryActorFilterMode kind; /* 0x14: actor eligibility filter mode. */
     u8 pad15[3];
-} EffBattleEntry; /* 0x18 */
+} effBattleEntry_t; /* 0x18 */
 
-typedef struct EffBattleEntryList {
+typedef struct effBattleEntryList_t {
     s32 triggerFrame;              /* 0x00 */
     u8 pad04[2];
     u16 shake;                     /* 0x06: screen-shake amount; 31 or more logs and caps at 300 frames */
     u16 shakeFrame;                /* 0x08: frame at which the shake starts */
     u16 shakeFade;                 /* 0x0A: fade applied with the shake */
-    EffBattleUnitColorCommand colorCommand; /* 0x0C: single command read by the voice updater */
+    effBattleUnitColorCommand_t colorCommand; /* 0x0C: single command read by the voice updater */
     u8 opaque2C[4];                /* 0x2C: retained bytes not read by the update routine */
-    EffBattleUnitRgbCommand rgbCommand;     /* 0x30: single command read by the voice updater */
+    effBattleUnitRgbCommand_t rgbCommand;     /* 0x30: single command read by the voice updater */
     u8 opaque44[4];                /* 0x44: retained bytes not read by the update routine */
     s32 callbackFrame;             /* 0x48 */
     u8 pad4C[0x20];
@@ -456,20 +456,20 @@ typedef struct EffBattleEntryList {
     s32 colorRampEndFrame;         /* 0x70 */
     u8 actorScaleEnabled;          /* 0x74 */
     u8 pad75[3];
-    EffBattleEntry entries[1];     /* 0x78 */
-} EffBattleEntryList;
+    effBattleEntry_t entries[1];     /* 0x78 */
+} effBattleEntryList_t;
 
 typedef struct SoundBank {
     u8 pad00[8];
-    EffBattleEntryList list;       /* 0x08 */
+    effBattleEntryList_t list;       /* 0x08 */
     u8 pad98[0x580];
 } SoundBank;
 
-typedef char EffBattleEntry_size_must_be_0x18[
-    (sizeof(EffBattleEntry) == 0x18) ? 1 : -1];
+typedef char effBattleEntry_size_must_be_0x18[
+    (sizeof(effBattleEntry_t) == 0x18) ? 1 : -1];
 
-typedef char EffBattleEntryList_size_must_be_0x90[
-    (sizeof(EffBattleEntryList) == 0x90) ? 1 : -1];
+typedef char effBattleEntryList_size_must_be_0x90[
+    (sizeof(effBattleEntryList_t) == 0x90) ? 1 : -1];
 
 typedef char SoundBank_size_must_be_0x618[
     (sizeof(SoundBank) == 0x618) ? 1 : -1];
@@ -495,7 +495,7 @@ struct effBTLCutHandle_t {
     u16 kind; /* 0x1C */
     u8 pad1E[2];
     s32 unk20;
-    struct EffBattleEntryList *list; /* 0x24 */
+    struct effBattleEntryList_t *list; /* 0x24 */
     struct effPartHandle_t *parameterWorks[EFF_BATTLE_PARAMETER_ENTRY_CAPACITY]; /* 0x28 */
     BattleEffectCallback sourceFrameCallback; /* 0x118 */
     BattleEffectCallback triggerFrameCallback; /* 0x11C */
@@ -503,20 +503,14 @@ struct effBTLCutHandle_t {
     effBTLCutHandle_t *next; /* 0x124 */
 };
 
-/* The stored screen record keeps eight bytes beyond the copied blur quad. */
-typedef struct EffScreenDrawParams {
-    dds3Effect_Blur_t source;
-    u8 pad28[8];
-} EffScreenDrawParams;
-
-typedef char EffScreenDrawParams_size_must_be_0x30[(sizeof(EffScreenDrawParams) == 0x30) ? 1 : -1];
+typedef char effScreenDrawParams_size_must_be_0x30[(sizeof(effScreenDrawParams_t) == 0x30) ? 1 : -1];
 
 typedef char EffEventLight_size_must_be_0x3C[
     (sizeof(effSimpleBED_t) == 0x3C) ? 1 : -1];
 
 #define EFF_EVENT_EVENT_RECORD_BYTES 0x30
 
-extern EffScreenDrawParams effData4;
+extern effScreenDrawParams_t effData4;
 extern dds3Effect_Filter_t D_00355F88;
 extern s8 EffectDrawData2;
 void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source);
@@ -589,7 +583,7 @@ void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source) {
 }
 
 /* Expose the framebuffer-quad parameter block by address. */
-EffScreenDrawParams *effGetCh73Params(void) {
+effScreenDrawParams_t *effGetCh73Params(void) {
     return &effData4;
 }
 

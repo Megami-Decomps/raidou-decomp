@@ -450,7 +450,7 @@ void evtViewerApplyGlyphLodChannel(s32 position, evtViewerInfo_t *viewer) {
                     glyph = glyph->next;
                 } while (glyph != NULL);
             }
-            lod = ((mdlObj_t *)((EffectObjectData *)node->info->workdata)->modelHolder->pModel)->inner;
+            lod = ((mdlObj_t *)((effObjectData_t *)node->info->workdata)->modelHolder->pModel)->inner;
             if (best == NULL) {
                 lod->lod = 0;
             } else {

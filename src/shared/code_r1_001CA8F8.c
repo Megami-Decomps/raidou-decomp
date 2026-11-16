@@ -188,10 +188,10 @@ typedef struct ShopProgressPrice {
     u32 unk4;
 } ShopProgressPrice;
 
-typedef struct EffItemSlot44 {
+typedef struct effItemSlot44_t {
     u32 id;
     u8 pad_04[0x40];
-} EffItemSlot44;
+} effItemSlot44_t;
 
 /* A wide reward record carries its weight, kind, item ID and optional variant. */
 typedef struct CampWideRewardEntry {

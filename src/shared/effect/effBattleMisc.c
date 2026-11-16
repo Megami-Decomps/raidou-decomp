@@ -33,9 +33,9 @@ extern u32 effBTLFieldColorGetVariantSelector(void);
 
 struct dds3Basic_t;
 
-void effBattleMiscQueryMaskedTargetPosition(u32 actorFlagsMask, EffectVectorRequest *request);
-void effBattleMiscQueryOriginalTargetPosition(u32 unused, EffectVectorRequest *request);
-void effBattleMiscQueryVariantTargetPosition(u32 unused, EffectVectorRequest *request);
+void effBattleMiscQueryMaskedTargetPosition(u32 actorFlagsMask, effVectorRequest_t *request);
+void effBattleMiscQueryOriginalTargetPosition(u32 unused, effVectorRequest_t *request);
+void effBattleMiscQueryVariantTargetPosition(u32 unused, effVectorRequest_t *request);
 
 /* The selected position provider leaves its vector in vf10. */
 void effBTLPartGetPositionPtr(nbFormation_t *pFormation, effBTLAimParams_t *pPosPtr, sdfVector4_t *pPos) {
@@ -59,14 +59,14 @@ void effLeaf38(void) {
 void effLeaf39(void) {
 }
 
-void effBattleMiscQueryOriginalTargetPosition(u32 unused, EffectVectorRequest *request) {
+void effBattleMiscQueryOriginalTargetPosition(u32 unused, effVectorRequest_t *request) {
     BtlUnit *ctx = (BtlUnit *)effBTLSkillGetInvokeFormation();
 
     (void)unused;
     effBattleMiscQueryMaskedTargetPosition(ctx->status.flags & 0xE00, request);
 }
 
-void effBattleMiscQueryVariantTargetPosition(u32 unused, EffectVectorRequest *request) {
+void effBattleMiscQueryVariantTargetPosition(u32 unused, effVectorRequest_t *request) {
     BtlUnit *ctx = (BtlUnit *)effBTLFieldColorGetVariantSelector();
 
     (void)unused;

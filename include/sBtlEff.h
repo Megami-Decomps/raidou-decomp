@@ -11,7 +11,7 @@ struct SBTLEFF_WORK;
 struct SBTLUNIT_WORK;
 struct SBTLUNIT_LISTWORK;
 
-struct FileQueue;
+struct plistHandle_t;
 struct sdfMemHandle_t;
 struct fileRequest;
 struct SBTL_HIT_PACDATA;
@@ -41,7 +41,7 @@ typedef struct SBTLEFF_PACDATAWORK {
     u8 pad04[4];
     struct sdfMemHandle_t *selfHandle;
     void *pData;
-    struct FileQueue *hPartsList;
+    struct plistHandle_t *hPartsList;
     s32 flg;
     EFFPDATA_WORK wk;
     u8 pad4C[0x58 - 0x4C];
@@ -95,7 +95,7 @@ typedef struct SBTLEFF_DATAWORK {
     void *pData;
     struct sdfMemHandle_t *hData;
     void *hFile;
-    struct FileQueue *hPartsList;
+    struct plistHandle_t *hPartsList;
 } SBTLEFF_DATAWORK;
 
 /* One live effect (0x12C bytes). Partial layout, HD names. */

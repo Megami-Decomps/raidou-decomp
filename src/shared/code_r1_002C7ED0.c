@@ -28,26 +28,26 @@
 #include "code_r1_002C8188.h"
 
 /* Resource jobs retain a destination slot until their request completes. */
-typedef struct EffectListNode {
+typedef struct effListNode_t {
     u32 state;
-    struct EffectListNode *next;
+    struct effListNode_t *next;
     const char *value;
     const char *length; /* the resource name, or the package path in modes 1 and 2 */
     u32 kind;
     void **reference;
-} EffectListNode;
+} effListNode_t;
 
-typedef struct EffectList {
+typedef struct effList_t {
     u32 mode;
     s32 count;
-    EffectListNode *first;
-    EffectListNode *last;
+    effListNode_t *first;
+    effListNode_t *last;
     struct fileRequest *request;
-} EffectList;
+} effList_t;
 
-typedef char EffectListNode_size_must_be_0x18[(sizeof(EffectListNode) == 0x18) ? 1 : -1];
+typedef char effListNode_size_must_be_0x18[(sizeof(effListNode_t) == 0x18) ? 1 : -1];
 
-typedef char EffectList_size_must_be_0x14[(sizeof(EffectList) == 0x14) ? 1 : -1];
+typedef char effList_size_must_be_0x14[(sizeof(effList_t) == 0x14) ? 1 : -1];
 
 /* These title-specific wrappers forward an opaque stage-task owner and its
  * handled/not-handled result. */
@@ -68,16 +68,16 @@ static inline void effSubmitSurfacePacket(sdfGrOt_t *surface, sdfDrawTag_t *list
 }
 
 
-typedef struct EffectObjectFlag {
+typedef struct effObjectFlag_t {
     u32 state;
     u8 pad04[8];
     u32 flags;
-} EffectObjectFlag;
+} effObjectFlag_t;
 
 /* Native resource operations add cloning before the frame callbacks.
  * The final word is the copied payload size, not another callback.
  * Factories retain this unit's existing address-word interface. */
-typedef struct EffResourceOps {
+typedef struct effResourceOps_t {
     void (*initialize)();      /* 0x00 */
     u32 (*createResource)();    /* 0x04 */
     void (*destroyResource)(); /* 0x08 */
@@ -85,99 +85,99 @@ typedef struct EffResourceOps {
     void (*update)();          /* 0x10 */
     void (*draw)();            /* 0x14 */
     u32 payloadSize;           /* 0x18 */
-} EffResourceOps;
+} effResourceOps_t;
 
 /* Active frame callbacks receive the parent; destruction receives its child. */
-typedef struct EffActiveInstanceOps {
-    void (*initialize)(EffClassWork *); /* 0x00 */
+typedef struct effActiveInstanceOps_t {
+    void (*initialize)(effClassWork_t *); /* 0x00 */
     u32 (*createResource)(); /* 0x04 */
     void (*destroyResource)(void *); /* 0x08 */
     u32 (*cloneResource)(void *); /* 0x0C */
-    void (*update)(EffClassWork *); /* 0x10 */
-    void (*draw)(EffClassWork *); /* 0x14 */
+    void (*update)(effClassWork_t *); /* 0x10 */
+    void (*draw)(effClassWork_t *); /* 0x14 */
     u32 payloadSize; /* 0x18 */
-} EffActiveInstanceOps;
+} effActiveInstanceOps_t;
 
-typedef char EffActiveInstanceOpsSizeCheck[(sizeof(EffActiveInstanceOps) == 0x1C) ? 1 : -1];
+typedef char effActiveInstanceOpsSizeCheck[(sizeof(effActiveInstanceOps_t) == 0x1C) ? 1 : -1];
 
 /* Class-resource callbacks operate on the parent class-work owner. */
-typedef struct EffClassResourceOps {
-    void (*initialize)(EffClassWork *); /* 0x00 */
-    void *(*createResource)(EffBillPointConfig *); /* 0x04 */
-    void (*destroyResource)(EffClassWork *); /* 0x08 */
-    void (*update)(EffClassWork *); /* 0x0C */
-    void (*draw)(EffClassWork *); /* 0x10 */
+typedef struct effClassResourceOps_t {
+    void (*initialize)(effClassWork_t *); /* 0x00 */
+    void *(*createResource)(effBillPointConfig_t *); /* 0x04 */
+    void (*destroyResource)(effClassWork_t *); /* 0x08 */
+    void (*update)(effClassWork_t *); /* 0x0C */
+    void (*draw)(effClassWork_t *); /* 0x10 */
     u32 payloadSize; /* 0x14 */
-} EffClassResourceOps;
+} effClassResourceOps_t;
 
-typedef char EffClassResourceOps_size_must_be_0x18[
-    (sizeof(EffClassResourceOps) == 0x18) ? 1 : -1];
+typedef char effClassResourceOps_size_must_be_0x18[
+    (sizeof(effClassResourceOps_t) == 0x18) ? 1 : -1];
 
 /* Block-resource callbacks receive the owning class work, not the payload. */
-typedef struct EffBlockOps {
-    void (*initialize)(EffClassWork *); /* 0x00 */
+typedef struct effBlockOps_t {
+    void (*initialize)(effClassWork_t *); /* 0x00 */
     u32 (*createResource)(); /* 0x04: preserve the existing generic result ABI */
-    void (*destroyResource)(EffClassWork *); /* 0x08 */
+    void (*destroyResource)(effClassWork_t *); /* 0x08 */
     u32 (*cloneResource)(void *); /* 0x0C: preserve the existing generic result ABI */
-    void (*update)(EffClassWork *); /* 0x10 */
-    void (*draw)(EffClassWork *); /* 0x14 */
+    void (*update)(effClassWork_t *); /* 0x10 */
+    void (*draw)(effClassWork_t *); /* 0x14 */
     u32 payloadSize; /* 0x18 */
-} EffBlockOps;
+} effBlockOps_t;
 
-typedef char EffBlockOps_size_must_be_0x1C[
-    (sizeof(EffBlockOps) == 0x1C) ? 1 : -1];
+typedef char effBlockOps_size_must_be_0x1C[
+    (sizeof(effBlockOps_t) == 0x1C) ? 1 : -1];
 
-struct EffModelResource;
+struct effModelResource_t;
 
-struct EffSpanConfig;
+struct effSpanConfig_t;
 
-struct EffSpanTable;
+struct effSpanTable_t;
 
 /* This table has a single populated kind with span-resource callbacks. */
-typedef struct EffModelResourceOps {
-    void (*initialize)(struct EffModelResource *); /* 0x00 */
-    struct EffSpanTable *(*createResource)(struct EffSpanConfig *, mdlObj_t *); /* 0x04 */
-    void (*destroyResource)(struct EffSpanTable *); /* 0x08 */
-    void (*update)(struct EffModelResource *); /* 0x0C */
-    void (*draw)(struct EffModelResource *); /* 0x10 */
+typedef struct effModelResourceOps_t {
+    void (*initialize)(struct effModelResource_t *); /* 0x00 */
+    struct effSpanTable_t *(*createResource)(struct effSpanConfig_t *, mdlObj_t *); /* 0x04 */
+    void (*destroyResource)(struct effSpanTable_t *); /* 0x08 */
+    void (*update)(struct effModelResource_t *); /* 0x0C */
+    void (*draw)(struct effModelResource_t *); /* 0x10 */
     u32 payloadSize; /* 0x14 */
-} EffModelResourceOps;
+} effModelResourceOps_t;
 
-typedef char EffModelResourceOps_size_must_be_0x18[
-    (sizeof(EffModelResourceOps) == 0x18) ? 1 : -1];
+typedef char effModelResourceOps_size_must_be_0x18[
+    (sizeof(effModelResourceOps_t) == 0x18) ? 1 : -1];
 
 /* Shared work object for the effEditScalarTrack helpers (layout inferred). */
-typedef struct BaObj {
+typedef struct effBaObj_t {
     u8 pad_0x00[0x0C]; // 0x00
     u8 *x0C;           // 0x0C
-} BaObj; // 0x10
+} effBaObj_t; // 0x10
 
-struct EffCameraCreateRow;
+struct effCameraCreateRow_t;
 
 /* Value holder with a float field and a u16 data pointer (layout inferred). */
-typedef struct ValPtr44 {
+typedef struct effValPtr44_t {
     u8 pad_0x00[0x08]; // 0x00
     float f08;         // 0x08
     u8 pad_0x0C[0x38]; // 0x0C
     u16 *p44;          // 0x44
-} ValPtr44; // 0x48
+} effValPtr44_t; // 0x48
 
-struct EffKindWork;
+struct effKindWork_t;
 
 /* Native kind operations include handle destruction and per-frame update;
  * zero-argument notifications retain the original unprototyped callback ABI. */
-typedef struct EffKindDesc {
+typedef struct effKindDesc_t {
     void *(*create)(void *); // 0x00
     void (*destroy)(void *); // 0x04: release the created handle
     void (*update)();        // 0x08: advance work through its kind callback
-    void (*initialize)(struct EffKindWork *, sdfTexHandle_t *); // 0x0C
+    void (*initialize)(struct effKindWork_t *, sdfTexHandle_t *); // 0x0C
     u32 payloadSize;         // 0x10: bytes copied after the work header
-} EffKindDesc; // 0x14
+} effKindDesc_t; // 0x14
 
 /* Native kind work: 0x40-byte header, followed by the copied source payload.
  * Fade callbacks consume this same object: frame supplies their signed limit,
  * handle is the renderer output, and payload holds the curve configuration. */
-typedef struct EffKindWork {
+typedef struct effKindWork_t {
     f32 position[4]; /* 0x00: vector passed to projection routines */
     s32 mode;       // 0x10
     u32 color;      // 0x14
@@ -189,100 +189,100 @@ typedef struct EffKindWork {
     u32 sourceKind; // 0x2C
     sdfTexHandle_t *target;     // 0x30
     u8 pad_0x34[0xC]; // 0x34
-} EffKindWork; // 0x40
+} effKindWork_t; // 0x40
 
 /* Source payload's kind selects the initial rendering mode. */
-typedef struct EffKindSource {
+typedef struct effKindSource_t {
     u8 pad_00[0x28];
     s32 modeKind;
-} EffKindSource;
+} effKindSource_t;
 
-typedef struct EffFadeHeaderWork {
+typedef struct effFadeHeaderWork_t {
     s32 frame;
     s32 payload[2];
-} EffFadeHeaderWork;
+} effFadeHeaderWork_t;
 
-typedef char EffFadeHeaderWorkSizeCheck[(sizeof(EffFadeHeaderWork) == 0x0C) ? 1 : -1];
+typedef char effFadeHeaderWorkSizeCheck[(sizeof(effFadeHeaderWork_t) == 0x0C) ? 1 : -1];
 
-typedef struct EffSelectionHeaderWork {
+typedef struct effSelectionHeaderWork_t {
     s32 frame;
     s32 payload[4];
-} EffSelectionHeaderWork;
+} effSelectionHeaderWork_t;
 
-typedef char EffSelectionHeaderWorkSizeCheck[(sizeof(EffSelectionHeaderWork) == 0x14) ? 1 : -1];
+typedef char effSelectionHeaderWorkSizeCheck[(sizeof(effSelectionHeaderWork_t) == 0x14) ? 1 : -1];
 
-typedef struct EffFadeConfig {
+typedef struct effFadeConfig_t {
     /* Color and alpha tracks at 0x00/0x24, followed by three scalar
      * tracks at 0x34, 0x60 and 0x8C. The scalar extents differ. */
-    SdfColorTrack blendA;   /* 0x00 */
-    SdfAlphaTrack blendB2;  /* 0x24 */
-    EffScalarCurve blendB;   /* 0x34 */
+    effBehavior_RGBParams_t blendA;   /* 0x00 */
+    effBehavior_AlphaParams_t blendB2;  /* 0x24 */
+    effScalarCurve_t blendB;   /* 0x34 */
     u8 pad58[8];
-    EffScalarTrack rateA;   /* 0x60 */
-    EffScalarTrack rateB;   /* 0x8C */
+    effScalarTrack_t rateA;   /* 0x60 */
+    effScalarTrack_t rateB;   /* 0x8C */
     s32 duration;         /* 0xB8 */
     u8 padBC[4];
     dds3Effect_Filter_t out; /* 0xC0 */
-} EffFadeConfig;
+} effFadeConfig_t;
 
-typedef struct EffRateConfig {
+typedef struct effRateConfig_t {
     /* Color and alpha tracks at 0x00/0x24, followed by three scalar
      * tracks at 0x34, 0x60 and 0x8C. The scalar extents differ. */
-    SdfColorTrack blendA;   /* 0x00 */
-    SdfAlphaTrack blendB2;  /* 0x24 */
-    EffScalarCurve blendB;   /* 0x34 */
+    effBehavior_RGBParams_t blendA;   /* 0x00 */
+    effBehavior_AlphaParams_t blendB2;  /* 0x24 */
+    effScalarCurve_t blendB;   /* 0x34 */
     u8 pad58[8];
-    EffScalarTrack rateA;   /* 0x60 */
-    EffScalarTrack rateB;   /* 0x8C */
+    effScalarTrack_t rateA;   /* 0x60 */
+    effScalarTrack_t rateB;   /* 0x8C */
     s32 duration;         /* 0xB8 */
     u8 fixedMode;         /* 0xBC */
     u8 padBD[3];
     dds3Effect_Blur_t out;       /* 0xC0 */
-} EffRateConfig;
+} effRateConfig_t;
 
-typedef struct EffBillFrameEntry {
+typedef struct effBillFrameEntry_t {
     s32 age;
     f32 spin;
     f32 angle;
     f32 radius;
     f32 innerWidth;
     f32 outerWidth;
-} EffBillFrameEntry;
+} effBillFrameEntry_t;
 
-typedef char EffBillFrameEntrySizeCheck[(sizeof(EffBillFrameEntry) == 0x18) ? 1 : -1];
+typedef char effBillFrameEntrySizeCheck[(sizeof(effBillFrameEntry_t) == 0x18) ? 1 : -1];
 
 /* Kind-4 animated frame entry: the radius grows by radiusStep each frame
  * for the config's drawProgress frames. */
-typedef struct EffBillAnimatedEntry {
+typedef struct effBillAnimatedEntry_t {
     s32 age;
     f32 spin;
     f32 angle;
     f32 radius;
     f32 radiusStep;
     f32 width;
-} EffBillAnimatedEntry;
+} effBillAnimatedEntry_t;
 
 /* Four-byte owner header followed by its class-work pointer array. */
-typedef struct EffClassWorkList {
-    EffClassWork **entries;
-} EffClassWorkList;
+typedef struct effClassWorkList_t {
+    effClassWork_t **entries;
+} effClassWorkList_t;
 
 /* The ring source selects a minimum of three segments and repeats its three colors. */
-typedef struct EffRingSource {
+typedef struct effRingSource_t {
     u8 pad_00[0x38];
     u32 segments;       // 0x38
     u8 pad_3C[8];
     u32 firstColor;     // 0x44
     u32 middleColor;    // 0x48
     u32 lastColor;      // 0x4C
-} EffRingSource;
+} effRingSource_t;
 
 /* Class kind 3 copies this complete 0x68-byte serialized parameter record.
  * The color/alpha prefix is the existing interpolation provider's layout;
  * alphaTrack.surfaceIndex at 0x28 also selects the point-set draw type. */
-typedef struct EffRadialRingParams {
-    SdfColorTrack colorTrack; /* 0x00 */
-    SdfAlphaTrack alphaTrack; /* 0x24 */
+typedef struct effRadialRingParams_t {
+    effBehavior_RGBParams_t colorTrack; /* 0x00 */
+    effBehavior_AlphaParams_t alphaTrack; /* 0x24 */
     u32 duration;            /* 0x34 */
     u32 segments;            /* 0x38 */
     u8 flag;                 /* 0x3C */
@@ -296,32 +296,32 @@ typedef struct EffRadialRingParams {
     f32 acceleration;        /* 0x60 */
     u8 reverseTime;          /* 0x64 */
     u8 pad65[3];
-} EffRadialRingParams;
+} effRadialRingParams_t;
 
-typedef char EffRadialRingParams_size_must_be_0x68[(sizeof(EffRadialRingParams) == 0x68) ? 1 : -1];
+typedef char effRadialRingParams_size_must_be_0x68[(sizeof(effRadialRingParams_t) == 0x68) ? 1 : -1];
 
 struct sdfMat_t;
 
-typedef struct EffCounterHeader {
+typedef struct effCounterHeader_t {
     u32 unk00;
     u32 frame;
-} EffCounterHeader;
+} effCounterHeader_t;
 
 /* Class draw modes own either a counter header or per-segment scales. */
-typedef struct EffClassDrawState {
+typedef struct effClassDrawState_t {
     union {
-        EffCounterHeader *ring;
+        effCounterHeader_t *ring;
         f32 *scales;
     };
-    EffClassWork *effect;
-    EffTrackSet *trackSet;
+    effClassWork_t *effect;
+    effTrackSet_t *trackSet;
     struct sdfMemHandle_t *allocation;
-} EffClassDrawState;
+} effClassDrawState_t;
 
 /* Class 1 ring parameters have a distinct 0x6C-byte copied layout. */
-typedef struct EffExpandingRingParams {
-    SdfColorTrack colorTrack;
-    SdfAlphaTrack alphaTrack;
+typedef struct effExpandingRingParams_t {
+    effBehavior_RGBParams_t colorTrack;
+    effBehavior_AlphaParams_t alphaTrack;
     s32 duration;
     u32 segments;
     u8 flag;
@@ -334,23 +334,23 @@ typedef struct EffExpandingRingParams {
     f32 acceleration;
     u8 reverseTime;
     u8 pad69[3];
-} EffExpandingRingParams;
+} effExpandingRingParams_t;
 
-typedef char EffExpandingRingParams_size[(sizeof(EffExpandingRingParams) == 0x6C) ? 1 : -1];
+typedef char effExpandingRingParams_size[(sizeof(effExpandingRingParams_t) == 0x6C) ? 1 : -1];
 
 /* The cached class payload is copied from the 0x5C-byte source prefix. */
-typedef struct EffRingClassConfig {
-    EffRingSource ring;
+typedef struct effRingClassConfig_t {
+    effRingSource_t ring;
     u8 pad50[0xC];
     u8 classConfig[0x5C];
     u8 padB8[0x10];
     f32 scale;
     f32 scaleRand;
-} EffRingClassConfig;
+} effRingClassConfig_t;
 
 /* Point history of a grid-surface trail: a ring of 16-byte points with packed colors,
  * drawn as triangle strips into the current render packet, then a fixed end cap. */
-typedef struct EffSurfaceTrailHistory {
+typedef struct effSurfaceTrailHistory_t {
     u8 pad00[0x10];
     s32 pointCapacity;        /* 0x10 */
     s32 activePointCount;     /* 0x14 */
@@ -361,25 +361,25 @@ typedef struct EffSurfaceTrailHistory {
     s32 resourceHandle;       /* 0x2C */
     u128 *endPoints;          /* 0x30 */
     u32 *endColors;           /* 0x34 */
-} EffSurfaceTrailHistory;
+} effSurfaceTrailHistory_t;
 
-typedef struct EffDrawEntry {
+typedef struct effDrawEntry_t {
     u32 handle;
     s32 frame;
     u8 pad08[8];
     void (*draw)(u8 *, struct sdfDrawTag_t *);
-} EffDrawEntry;
+} effDrawEntry_t;
 
-typedef struct Matrix4 Matrix4;
+typedef struct effMatrix4_t effMatrix4_t;
 
-typedef struct EffScaleRange {
-    EffScaleRangeEntry *entries;
+typedef struct effScaleRange_t {
+    effScaleRangeEntry_t *entries;
     f32 start;
     f32 delta;
     struct sdfMemHandle_t *allocation;
-} EffScaleRange;
+} effScaleRange_t;
 
-typedef struct EffSpiralParticle {
+typedef struct effSpiralParticle_t {
     s32 timer;      /* -1 free, -2 retired */
     u8 pad04[4];
     f32 tiltX;      /* 0x08 */
@@ -391,7 +391,7 @@ typedef struct EffSpiralParticle {
     f32 width;      /* 0x20 */
     f32 sweep;      /* 0x24 */
     f32 height;     /* 0x28 */
-} EffSpiralParticle;
+} effSpiralParticle_t;
 
 static inline void unpackNormalizedColor(u32 color) {
     u32 rgba[4];
@@ -405,10 +405,10 @@ static inline u32 packNormalizedColor(void) {
     return rgba[0];
 }
 
-typedef char EffModelResource_size_must_be_0x40[
-    (sizeof(EffModelResource) == 0x40) ? 1 : -1];
+typedef char effModelResource_size_must_be_0x40[
+    (sizeof(effModelResource_t) == 0x40) ? 1 : -1];
 
-typedef struct EffModelCreateRequest {
+typedef struct effModelCreateRequest_t {
     u8 pad0[0x2C];
     u16 kind;
     u8 pad2E[2];
@@ -416,7 +416,7 @@ typedef struct EffModelCreateRequest {
     u32 attributes;
     u8 pad38[4];
     void *source;
-} EffModelCreateRequest;
+} effModelCreateRequest_t;
 
 #define EFF_COLLECT_ACTORS_VARIANT_SELECTOR 0
 
@@ -435,29 +435,29 @@ typedef struct EffModelCreateRequest {
 #define EFF_COLLECT_ACTORS_FINAL_SELECTOR 7
 
 /* Payload of resource kind 2: two colours plus the position request that feeds the shared light vector. */
-typedef struct EffFieldColorConfig {
+typedef struct effFieldColorConfig_t {
     u32 firstColor;   /* 0x00 */
     u32 secondColor;  /* 0x04 */
-    EffectVectorRequest direction; /* 0x08 */
-} EffFieldColorConfig;
+    effVectorRequest_t direction; /* 0x08 */
+} effFieldColorConfig_t;
 
-typedef struct EffCopiedSpawnList {
+typedef struct effCopiedSpawnList_t {
     u32 count;
     FldSpawnBatch *groups;
-} EffCopiedSpawnList;
+} effCopiedSpawnList_t;
 
 extern u128 D_0037EE90, D_0037EEA0, D_0037EEB0, D_0037EEC0, D_0037EED0;
 
-typedef struct EffAnimInfo {
+typedef struct effAnimInfo_t {
     u16 id;
     u16 flags;
     u8 actorSelection;
     u8 unk05;
     u16 loop;
-} EffAnimInfo;
+} effAnimInfo_t;
 
 /* The final timer word also supplies the default tint's halfword ID. */
-typedef struct EffTintTransitionParams {
+typedef struct effTintTransitionParams_t {
     u32 duration;
     u32 resourceArgument;
     u16 resourceKind;
@@ -469,43 +469,43 @@ typedef struct EffTintTransitionParams {
             u16 unk0E;
         } ids;
     } tail;
-} EffTintTransitionParams;
+} effTintTransitionParams_t;
 
 /* Payload option (+0x0C) selects the asset identifier at +0x08. */
-typedef struct EffAssetIdentifier {
+typedef struct effAssetIdentifier_t {
     u8 pad_00[4];
     u16 type;       // 0x04
     u8 pad_06[2];
     u16 id;         // 0x08
-} EffAssetIdentifier;
+} effAssetIdentifier_t;
 
-typedef struct EffCameraCreateRow {
-    EffCameraCreateRequest request;
+typedef struct effCameraCreateRow_t {
+    effCameraCreateRequest_t request;
     u32 sourceTail;
-} EffCameraCreateRow;
+} effCameraCreateRow_t;
 
-typedef char EffCameraCreateRowSizeCheck[(sizeof(EffCameraCreateRow) == 0x1C) ? 1 : -1];
+typedef char effCameraCreateRowSizeCheck[(sizeof(effCameraCreateRow_t) == 0x1C) ? 1 : -1];
 
-typedef struct EffectBlock90 {
+typedef struct effBlock90_t {
     u32 word[36];
-} EffectBlock90;
+} effBlock90_t;
 
-typedef struct EffectAlignedBlock128 {
+typedef struct effAlignedBlock128_t {
     u64 word[16];
-} EffectAlignedBlock128;
+} effAlignedBlock128_t;
 
 extern char D_003B3A90[], D_003B3AA8[];
 
-typedef struct EffectStateSnapshot {
+typedef struct effStateSnapshot_t {
     s128 vectors[4];
     f32 position[4]; /* 0x40: copied to the debug camera position and follow offset. */
     s128 unused50;
     u8 pad60[8];
     u32 flags; /* 0x68: transform flags tested by the camera diagnostic. */
     u8 pad6C[0x14];
-} EffectStateSnapshot;
+} effStateSnapshot_t;
 
-typedef char EffectStateSnapshotSizeCheck[(sizeof(EffectStateSnapshot) == 0x80) ? 1 : -1];
+typedef char effStateSnapshotSizeCheck[(sizeof(effStateSnapshot_t) == 0x80) ? 1 : -1];
 
 /* The camera snapshot payload is the 0x90-byte record consumed by this updater. */
 typedef union EffectCameraSnapshotView {
@@ -518,34 +518,34 @@ typedef union EffectCameraSnapshotView {
     } camera;
 } EffectCameraSnapshotView;
 
-typedef struct EffectCameraDebugState {
+typedef struct effCameraDebugState_t {
     u32 unknown00[4];
     u32 flags;
     u32 unknown14[9];
-} EffectCameraDebugState;
+} effCameraDebugState_t;
 
-typedef struct EffectCameraDebugScratch {
+typedef struct effCameraDebugScratch_t {
     s128 basePosition;
     s128 segmentStart;
     s128 segmentEnd;
     s128 rotationMatrix[4];
-} EffectCameraDebugScratch;
+} effCameraDebugScratch_t;
 
-typedef struct EffectPollRecord {
+typedef struct effPollRecord_t {
     char fullName[0xC8]; /* Formatted path or selected built-in name. */
     s32 type;   // 0xC8
     s32 selectionStatus;  // 0xCC
     s32 pathVariant; // 0xD0
-} EffectPollRecord;
+} effPollRecord_t;
 
 /* The effect mapping dispatcher stores its data pointer at +0x0C. */
-typedef struct EffMappingRequest {
+typedef struct effMappingRequest_t {
     u8 pad_00[0x0C];
     s32 object;          // 0x0C
-} EffMappingRequest;
+} effMappingRequest_t;
 
 /* Parameters passed to the mapping dispatcher from distinct object channels. */
-typedef struct EffMappingObject {
+typedef struct effMappingObject_t {
     u8 pad_00[0x34];
     s32 value34;       // 0x34
     u32 value38;       // 0x38
@@ -567,9 +567,9 @@ typedef struct EffMappingObject {
     s32 valueD8;       // 0xD8
     u8 pad_DC[0x18];
     s32 valueF4;       // 0xF4
-} EffMappingObject;
+} effMappingObject_t;
 
-typedef struct EffFileResourceRecord {
+typedef struct effFileResourceRecord_t {
     char *name;
     u8 pad4[4];
     u16 mode;
@@ -577,26 +577,26 @@ typedef struct EffFileResourceRecord {
     u8 *buffer;
     u32 size;
     struct sdfMemHandle_t *allocation;
-} EffFileResourceRecord;
+} effFileResourceRecord_t;
 
-typedef struct EffectFileHeader {
+typedef struct effFileHeader_t {
     u8 unk_00[8];
     u16 mode;
     u8 unk_0A[2];
     u32 start;
     u32 length;
-} EffectFileHeader;
+} effFileHeader_t;
 
-s32 effAppendListEntry(EffectList *list, const char *value, const char *length,
+s32 effAppendListEntry(effList_t *list, const char *value, const char *length,
                           u32 kind, void **reference);
 
-s32 effRemoveListEntry(EffectList *list);
-s32 effPollResourceList(EffectList *list);
+s32 effRemoveListEntry(effList_t *list);
+s32 effPollResourceList(effList_t *list);
 
-s32 effAppendListEntry(EffectList *list, const char *value, const char *length,
+s32 effAppendListEntry(effList_t *list, const char *value, const char *length,
                           u32 kind, void **reference) {
-    EffectListNode *node = sdfChipAllocDirect(sizeof(EffectListNode));
-    memset(node, 0, sizeof(EffectListNode));
+    effListNode_t *node = sdfChipAllocDirect(sizeof(effListNode_t));
+    memset(node, 0, sizeof(effListNode_t));
     node->next = NULL;
     node->kind = kind;
     node->value = value;
@@ -612,9 +612,9 @@ s32 effAppendListEntry(EffectList *list, const char *value, const char *length,
     return ++list->count;
 }
 
-s32 effRemoveListEntry(EffectList *list) {
-    EffectListNode *node = list->first;
-    EffectListNode *next = node->next;
+s32 effRemoveListEntry(effList_t *list) {
+    effListNode_t *node = list->first;
+    effListNode_t *next = node->next;
     sdfChipFreeDirect(node);
     list->first = next;
     if (--list->count == 0) {
@@ -625,8 +625,8 @@ s32 effRemoveListEntry(EffectList *list) {
 
 /* Drives the head request of the list: mode 0 asks for a resource by name, modes 1 and 2 stream a package and hand each
  * finished job's buffer to the entry's destination. Returns the remaining entry count. */
-s32 effPollResourceList(EffectList *list) {
-    EffectListNode *node = list->first;
+s32 effPollResourceList(effList_t *list) {
+    effListNode_t *node = list->first;
     sdfPacDecodeResrc_t *item;
     struct sdfMemHandle_t *allocation;
 

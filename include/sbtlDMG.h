@@ -5,7 +5,7 @@
 #include "enums.h"
 #include "sdf_types.h"
 
-struct FileQueue;
+struct plistHandle_t;
 struct SBTLDMG_ANIMWORK;
 struct SBTLDMG_HITLISTWORK;
 struct SBTLDMG_HITWORK;
@@ -96,7 +96,7 @@ typedef struct SBTL_HIT_PACDATA {
     struct sdfMemHandle_t *handle08; /* BpData */
     u8 pad0C[4];
     struct sdfMemHandle_t *handle10; /* EpData */
-    struct FileQueue *hPartsList;
+    struct plistHandle_t *hPartsList;
     s32 BpSize;
     void *EpData;
     SBTLSKILLHIT_TBL entry;
@@ -205,7 +205,7 @@ typedef struct SBTLDMG_HITWORK {
     u32 attr_flg;
     f32 hitbk_cnt;
     f32 hitbk_rate;
-    struct FileQueue *hPartsList;
+    struct plistHandle_t *hPartsList;
     f32 EPL_counter;
     f32 EPL_st_time;
     f32 EPL_fin_time;

@@ -47,9 +47,9 @@ sdfFileCmdHandle_t *sdfFileOpen(const char *path);
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
 /* A 128-byte block the effect code copies whole (the effect file queue's saved state). */
-typedef struct EffectBlock128 {
+typedef struct effBlock128_t {
     u32 word[32];
-} EffectBlock128;
+} effBlock128_t;
 
 /* Filters consumed by the directory scan; these are independent of entry categories. */
 enum BtlResourceScanFlags {
@@ -63,25 +63,25 @@ enum BtlResourceScanFlags {
     BTL_RESOURCE_SCAN_F2 = 0x80,
 };
 
-typedef struct EffResourceBankSlot {
+typedef struct effResourceBankSlot_t {
     char fullName[0xC8]; /* Formatted path or selected built-in name. */
     char name[0x34];     /* Selected resource name without its extension. */
     s32 type;            /* Resource category returned by the formatter. */
     s32 selectionStatus; /* Browser selection status. */
     s32 pathVariant;     /* Selected path variant returned by the browser. */
     u8 opaque108[8];     /* In caller-sized buffers; not written by this provider. */
-} EffResourceBankSlot;
+} effResourceBankSlot_t;
 
-typedef char EffResourceBankSlot_size_must_be_0x110[
-    sizeof(EffResourceBankSlot) == 0x110 ? 1 : -1];
+typedef char effResourceBankSlot_size_must_be_0x110[
+    sizeof(effResourceBankSlot_t) == 0x110 ? 1 : -1];
 
 typedef char EffResourceBankSlot_fullName_must_be_0xC8[
-    sizeof(((EffResourceBankSlot *)0)->fullName) == 0xC8 ? 1 : -1];
+    sizeof(((effResourceBankSlot_t *)0)->fullName) == 0xC8 ? 1 : -1];
 
 /* Per-instance header shared by every resource-kind callback. payload points
  * to kind-specific bytes immediately after this 0x40-byte allocation prefix;
  * resource is the separately owned kind-specific object. */
-typedef struct EffActiveResource {
+typedef struct effActiveResource_t {
     f32 position[4];
     f32 orientation[4];
     f32 scale;
@@ -96,16 +96,16 @@ typedef struct EffActiveResource {
     u8 pad_34[4];
     u8 *payload;
     u8 pad_3C[4];
-} EffActiveResource;
+} effActiveResource_t;
 
-typedef char EffActiveResource_size_must_be_0x40[
-    (sizeof(EffActiveResource) == 0x40) ? 1 : -1];
+typedef char effActiveResource_size_must_be_0x40[
+    (sizeof(effActiveResource_t) == 0x40) ? 1 : -1];
 
 /* Native 0x70-byte output of the effect resource-name chooser.
  * The producer fills both 50-byte strings: nameWithExtension is the selected
  * name followed by its extension, and name is retained without the extension.
  * Callers prepend the directory path when forming the full file path. */
-typedef struct EffQueueRecord {
+typedef struct effQueueRecord_t {
     char nameWithExtension[0x32];
     char name[0x32];
     union {
@@ -113,11 +113,11 @@ typedef struct EffQueueRecord {
         u32 state;
     } completion;
     u8 pad68[8];
-} EffQueueRecord;
+} effQueueRecord_t;
 
 extern void effQueueResource(const char *extension, const char *resourceName);
 
-extern void effUpdateResourceQueue(const char *directoryPath, const char *extension, EffQueueRecord *);
+extern void effUpdateResourceQueue(const char *directoryPath, const char *extension, effQueueRecord_t *);
 
 typedef u32 BtlResourceWritePermissionResult;
 
@@ -155,16 +155,16 @@ extern s32 effEditorCurrentMenu;
 extern void *effQueuedFileObject;
 extern u8 effPartsListExitRequested;
 extern FileJobPayload *effTemporaryFileJob;
-extern FileQueue *effAuxiliaryFileQueue;
-extern FileQueue *effFileQueue;
+extern plistHandle_t *effAuxiliaryFileQueue;
+extern plistHandle_t *effFileQueue;
 extern FileJobPayload *effQueuedFileHandle;
 extern s32 dds3BillboardGeneralNumber(void);
 
-typedef struct EffectObjectFlag {
+typedef struct effObjectFlag_t {
     u32 state;
     u8 pad04[8];
     u32 flags;
-} EffectObjectFlag;
+} effObjectFlag_t;
 
 extern u8 btlIsRuntimeAllocated(void);
 extern u32 effPartsListScroll;
@@ -173,7 +173,7 @@ extern u32 effData12[];
 /* Native resource operations add cloning before the frame callbacks.
  * The final word is the copied payload size, not another callback.
  * Factories retain this unit's existing address-word interface. */
-typedef struct EffResourceOps {
+typedef struct effResourceOps_t {
     void (*initialize)();      /* 0x00 */
     u32 (*createResource)();    /* 0x04 */
     void (*destroyResource)(); /* 0x08 */
@@ -181,76 +181,76 @@ typedef struct EffResourceOps {
     void (*update)();          /* 0x10 */
     void (*draw)();            /* 0x14 */
     u32 payloadSize;           /* 0x18 */
-} EffResourceOps;
+} effResourceOps_t;
 
 /* Active frame callbacks receive the parent; destruction receives its child. */
-typedef struct EffActiveInstanceOps {
-    void (*initialize)(EffClassWork *); /* 0x00 */
+typedef struct effActiveInstanceOps_t {
+    void (*initialize)(effClassWork_t *); /* 0x00 */
     u32 (*createResource)(); /* 0x04 */
     void (*destroyResource)(void *); /* 0x08 */
     u32 (*cloneResource)(void *); /* 0x0C */
-    void (*update)(EffClassWork *); /* 0x10 */
-    void (*draw)(EffClassWork *); /* 0x14 */
+    void (*update)(effClassWork_t *); /* 0x10 */
+    void (*draw)(effClassWork_t *); /* 0x14 */
     u32 payloadSize; /* 0x18 */
-} EffActiveInstanceOps;
+} effActiveInstanceOps_t;
 
-typedef char EffActiveInstanceOpsSizeCheck[(sizeof(EffActiveInstanceOps) == 0x1C) ? 1 : -1];
+typedef char effActiveInstanceOpsSizeCheck[(sizeof(effActiveInstanceOps_t) == 0x1C) ? 1 : -1];
 
 /* Class-resource callbacks operate on the parent class-work owner. */
-typedef struct EffClassResourceOps {
-    void (*initialize)(EffClassWork *); /* 0x00 */
-    void *(*createResource)(EffBillPointConfig *); /* 0x04 */
-    void (*destroyResource)(EffClassWork *); /* 0x08 */
-    void (*update)(EffClassWork *); /* 0x0C */
-    void (*draw)(EffClassWork *); /* 0x10 */
+typedef struct effClassResourceOps_t {
+    void (*initialize)(effClassWork_t *); /* 0x00 */
+    void *(*createResource)(effBillPointConfig_t *); /* 0x04 */
+    void (*destroyResource)(effClassWork_t *); /* 0x08 */
+    void (*update)(effClassWork_t *); /* 0x0C */
+    void (*draw)(effClassWork_t *); /* 0x10 */
     u32 payloadSize; /* 0x14 */
-} EffClassResourceOps;
+} effClassResourceOps_t;
 
-typedef char EffClassResourceOps_size_must_be_0x18[
-    (sizeof(EffClassResourceOps) == 0x18) ? 1 : -1];
+typedef char effClassResourceOps_size_must_be_0x18[
+    (sizeof(effClassResourceOps_t) == 0x18) ? 1 : -1];
 
 /* Block-resource callbacks receive the owning class work, not the payload. */
-typedef struct EffBlockOps {
-    void (*initialize)(EffClassWork *); /* 0x00 */
+typedef struct effBlockOps_t {
+    void (*initialize)(effClassWork_t *); /* 0x00 */
     u32 (*createResource)(); /* 0x04: preserve the existing generic result ABI */
-    void (*destroyResource)(EffClassWork *); /* 0x08 */
+    void (*destroyResource)(effClassWork_t *); /* 0x08 */
     u32 (*cloneResource)(void *); /* 0x0C: preserve the existing generic result ABI */
-    void (*update)(EffClassWork *); /* 0x10 */
-    void (*draw)(EffClassWork *); /* 0x14 */
+    void (*update)(effClassWork_t *); /* 0x10 */
+    void (*draw)(effClassWork_t *); /* 0x14 */
     u32 payloadSize; /* 0x18 */
-} EffBlockOps;
+} effBlockOps_t;
 
-typedef char EffBlockOps_size_must_be_0x1C[
-    (sizeof(EffBlockOps) == 0x1C) ? 1 : -1];
+typedef char effBlockOps_size_must_be_0x1C[
+    (sizeof(effBlockOps_t) == 0x1C) ? 1 : -1];
 
-struct EffModelResource;
+struct effModelResource_t;
 
-struct EffSpanConfig;
+struct effSpanConfig_t;
 
-struct EffSpanTable;
+struct effSpanTable_t;
 
 /* This table has a single populated kind with span-resource callbacks. */
-typedef struct EffModelResourceOps {
-    void (*initialize)(struct EffModelResource *); /* 0x00 */
-    struct EffSpanTable *(*createResource)(struct EffSpanConfig *, mdlObj_t *); /* 0x04 */
-    void (*destroyResource)(struct EffSpanTable *); /* 0x08 */
-    void (*update)(struct EffModelResource *); /* 0x0C */
-    void (*draw)(struct EffModelResource *); /* 0x10 */
+typedef struct effModelResourceOps_t {
+    void (*initialize)(struct effModelResource_t *); /* 0x00 */
+    struct effSpanTable_t *(*createResource)(struct effSpanConfig_t *, mdlObj_t *); /* 0x04 */
+    void (*destroyResource)(struct effSpanTable_t *); /* 0x08 */
+    void (*update)(struct effModelResource_t *); /* 0x0C */
+    void (*draw)(struct effModelResource_t *); /* 0x10 */
     u32 payloadSize; /* 0x14 */
-} EffModelResourceOps;
+} effModelResourceOps_t;
 
-typedef char EffModelResourceOps_size_must_be_0x18[
-    (sizeof(EffModelResourceOps) == 0x18) ? 1 : -1];
+typedef char effModelResourceOps_size_must_be_0x18[
+    (sizeof(effModelResourceOps_t) == 0x18) ? 1 : -1];
 
-extern EffResourceOps effRuntimeResourceOperations[];
+extern effResourceOps_t effRuntimeResourceOperations[];
 
 /* Shared work object for the effEditScalarTrack helpers (layout inferred). */
-typedef struct BaObj {
+typedef struct effBaObj_t {
     u8 pad_0x00[0x0C]; // 0x00
     u8 *x0C;           // 0x0C
-} BaObj; // 0x10
+} effBaObj_t; // 0x10
 
-extern s32 effEditScalarTrack(EffScalarTrack *, u32, void *, void *);
+extern s32 effEditScalarTrack(effScalarTrack_t *, u32, void *, void *);
 extern u8 D_0038F9D0[];
 extern u8 D_0038FAD0[];
 extern u8 D_0038F8E8[];
@@ -264,9 +264,9 @@ extern char effWork8[];
 extern u8 effBattleOffset[];
 extern u8 *D_003BD074;
 
-struct EffCameraCreateRow;
+struct effCameraCreateRow_t;
 
-extern u32 effSelectCameraFileJobFromRows(const char *, const struct EffCameraCreateRow *, u32);
+extern u32 effSelectCameraFileJobFromRows(const char *, const struct effCameraCreateRow_t *, u32);
 extern char effStrPolyTrack[];
 extern char D_003BCA40[];
 extern char D_003BD050[];
@@ -284,31 +284,31 @@ extern s32 effEditColorTrack(s32, s32, s32);
 extern u8 effWork6[] __attribute__((aligned(4)));
 
 /* Value holder with a float field and a u16 data pointer (layout inferred). */
-typedef struct ValPtr44 {
+typedef struct effValPtr44_t {
     u8 pad_0x00[0x08]; // 0x00
     float f08;         // 0x08
     u8 pad_0x0C[0x38]; // 0x0C
     u16 *p44;          // 0x44
-} ValPtr44; // 0x48
+} effValPtr44_t; // 0x48
 
 extern s32 effPollFileRecord(char *, s32);
 
-struct EffKindWork;
+struct effKindWork_t;
 
 /* Native kind operations include handle destruction and per-frame update;
  * zero-argument notifications retain the original unprototyped callback ABI. */
-typedef struct EffKindDesc {
+typedef struct effKindDesc_t {
     void *(*create)(void *); // 0x00
     void (*destroy)(void *); // 0x04: release the created handle
     void (*update)();        // 0x08: advance work through its kind callback
-    void (*initialize)(struct EffKindWork *, sdfTexHandle_t *); // 0x0C
+    void (*initialize)(struct effKindWork_t *, sdfTexHandle_t *); // 0x0C
     u32 payloadSize;         // 0x10: bytes copied after the work header
-} EffKindDesc; // 0x14
+} effKindDesc_t; // 0x14
 
 /* Native kind work: 0x40-byte header, followed by the copied source payload.
  * Fade callbacks consume this same object: frame supplies their signed limit,
  * handle is the renderer output, and payload holds the curve configuration. */
-typedef struct EffKindWork {
+typedef struct effKindWork_t {
     f32 position[4]; /* 0x00: vector passed to projection routines */
     s32 mode;       // 0x10
     u32 color;      // 0x14
@@ -320,100 +320,100 @@ typedef struct EffKindWork {
     u32 sourceKind; // 0x2C
     sdfTexHandle_t *target;     // 0x30
     u8 pad_0x34[0xC]; // 0x34
-} EffKindWork; // 0x40
+} effKindWork_t; // 0x40
 
 /* Source payload's kind selects the initial rendering mode. */
-typedef struct EffKindSource {
+typedef struct effKindSource_t {
     u8 pad_00[0x28];
     s32 modeKind;
-} EffKindSource;
+} effKindSource_t;
 
-typedef struct EffFadeHeaderWork {
+typedef struct effFadeHeaderWork_t {
     s32 frame;
     s32 payload[2];
-} EffFadeHeaderWork;
+} effFadeHeaderWork_t;
 
-typedef char EffFadeHeaderWorkSizeCheck[(sizeof(EffFadeHeaderWork) == 0x0C) ? 1 : -1];
+typedef char effFadeHeaderWorkSizeCheck[(sizeof(effFadeHeaderWork_t) == 0x0C) ? 1 : -1];
 
-typedef struct EffSelectionHeaderWork {
+typedef struct effSelectionHeaderWork_t {
     s32 frame;
     s32 payload[4];
-} EffSelectionHeaderWork;
+} effSelectionHeaderWork_t;
 
-typedef char EffSelectionHeaderWorkSizeCheck[(sizeof(EffSelectionHeaderWork) == 0x14) ? 1 : -1];
+typedef char effSelectionHeaderWorkSizeCheck[(sizeof(effSelectionHeaderWork_t) == 0x14) ? 1 : -1];
 
-typedef struct EffFadeConfig {
+typedef struct effFadeConfig_t {
     /* Color and alpha tracks at 0x00/0x24, followed by three scalar
      * tracks at 0x34, 0x60 and 0x8C. The scalar extents differ. */
-    SdfColorTrack blendA;   /* 0x00 */
-    SdfAlphaTrack blendB2;  /* 0x24 */
-    EffScalarCurve blendB;   /* 0x34 */
+    effBehavior_RGBParams_t blendA;   /* 0x00 */
+    effBehavior_AlphaParams_t blendB2;  /* 0x24 */
+    effScalarCurve_t blendB;   /* 0x34 */
     u8 pad58[8];
-    EffScalarTrack rateA;   /* 0x60 */
-    EffScalarTrack rateB;   /* 0x8C */
+    effScalarTrack_t rateA;   /* 0x60 */
+    effScalarTrack_t rateB;   /* 0x8C */
     s32 duration;         /* 0xB8 */
     u8 padBC[4];
     dds3Effect_Filter_t out; /* 0xC0 */
-} EffFadeConfig;
+} effFadeConfig_t;
 
-typedef struct EffRateConfig {
+typedef struct effRateConfig_t {
     /* Color and alpha tracks at 0x00/0x24, followed by three scalar
      * tracks at 0x34, 0x60 and 0x8C. The scalar extents differ. */
-    SdfColorTrack blendA;   /* 0x00 */
-    SdfAlphaTrack blendB2;  /* 0x24 */
-    EffScalarCurve blendB;   /* 0x34 */
+    effBehavior_RGBParams_t blendA;   /* 0x00 */
+    effBehavior_AlphaParams_t blendB2;  /* 0x24 */
+    effScalarCurve_t blendB;   /* 0x34 */
     u8 pad58[8];
-    EffScalarTrack rateA;   /* 0x60 */
-    EffScalarTrack rateB;   /* 0x8C */
+    effScalarTrack_t rateA;   /* 0x60 */
+    effScalarTrack_t rateB;   /* 0x8C */
     s32 duration;         /* 0xB8 */
     u8 fixedMode;         /* 0xBC */
     u8 padBD[3];
     dds3Effect_Blur_t out;       /* 0xC0 */
-} EffRateConfig;
+} effRateConfig_t;
 
-typedef struct EffBillFrameEntry {
+typedef struct effBillFrameEntry_t {
     s32 age;
     f32 spin;
     f32 angle;
     f32 radius;
     f32 innerWidth;
     f32 outerWidth;
-} EffBillFrameEntry;
+} effBillFrameEntry_t;
 
-typedef char EffBillFrameEntrySizeCheck[(sizeof(EffBillFrameEntry) == 0x18) ? 1 : -1];
+typedef char effBillFrameEntrySizeCheck[(sizeof(effBillFrameEntry_t) == 0x18) ? 1 : -1];
 
 /* Kind-4 animated frame entry: the radius grows by radiusStep each frame
  * for the config's drawProgress frames. */
-typedef struct EffBillAnimatedEntry {
+typedef struct effBillAnimatedEntry_t {
     s32 age;
     f32 spin;
     f32 angle;
     f32 radius;
     f32 radiusStep;
     f32 width;
-} EffBillAnimatedEntry;
+} effBillAnimatedEntry_t;
 
 /* Four-byte owner header followed by its class-work pointer array. */
-typedef struct EffClassWorkList {
-    EffClassWork **entries;
-} EffClassWorkList;
+typedef struct effClassWorkList_t {
+    effClassWork_t **entries;
+} effClassWorkList_t;
 
 /* The ring source selects a minimum of three segments and repeats its three colors. */
-typedef struct EffRingSource {
+typedef struct effRingSource_t {
     u8 pad_00[0x38];
     u32 segments;       // 0x38
     u8 pad_3C[8];
     u32 firstColor;     // 0x44
     u32 middleColor;    // 0x48
     u32 lastColor;      // 0x4C
-} EffRingSource;
+} effRingSource_t;
 
 /* Class kind 3 copies this complete 0x68-byte serialized parameter record.
  * The color/alpha prefix is the existing interpolation provider's layout;
  * alphaTrack.surfaceIndex at 0x28 also selects the point-set draw type. */
-typedef struct EffRadialRingParams {
-    SdfColorTrack colorTrack; /* 0x00 */
-    SdfAlphaTrack alphaTrack; /* 0x24 */
+typedef struct effRadialRingParams_t {
+    effBehavior_RGBParams_t colorTrack; /* 0x00 */
+    effBehavior_AlphaParams_t alphaTrack; /* 0x24 */
     u32 duration;            /* 0x34 */
     u32 segments;            /* 0x38 */
     u8 flag;                 /* 0x3C */
@@ -427,32 +427,32 @@ typedef struct EffRadialRingParams {
     f32 acceleration;        /* 0x60 */
     u8 reverseTime;          /* 0x64 */
     u8 pad65[3];
-} EffRadialRingParams;
+} effRadialRingParams_t;
 
-typedef char EffRadialRingParams_size_must_be_0x68[(sizeof(EffRadialRingParams) == 0x68) ? 1 : -1];
+typedef char effRadialRingParams_size_must_be_0x68[(sizeof(effRadialRingParams_t) == 0x68) ? 1 : -1];
 
 struct sdfMat_t;
 
-typedef struct EffCounterHeader {
+typedef struct effCounterHeader_t {
     u32 unk00;
     u32 frame;
-} EffCounterHeader;
+} effCounterHeader_t;
 
 /* Class draw modes own either a counter header or per-segment scales. */
-typedef struct EffClassDrawState {
+typedef struct effClassDrawState_t {
     union {
-        EffCounterHeader *ring;
+        effCounterHeader_t *ring;
         f32 *scales;
     };
-    EffClassWork *effect;
-    EffTrackSet *trackSet;
+    effClassWork_t *effect;
+    effTrackSet_t *trackSet;
     struct sdfMemHandle_t *allocation;
-} EffClassDrawState;
+} effClassDrawState_t;
 
 /* Class 1 ring parameters have a distinct 0x6C-byte copied layout. */
-typedef struct EffExpandingRingParams {
-    SdfColorTrack colorTrack;
-    SdfAlphaTrack alphaTrack;
+typedef struct effExpandingRingParams_t {
+    effBehavior_RGBParams_t colorTrack;
+    effBehavior_AlphaParams_t alphaTrack;
     s32 duration;
     u32 segments;
     u8 flag;
@@ -465,23 +465,23 @@ typedef struct EffExpandingRingParams {
     f32 acceleration;
     u8 reverseTime;
     u8 pad69[3];
-} EffExpandingRingParams;
+} effExpandingRingParams_t;
 
-typedef char EffExpandingRingParams_size[(sizeof(EffExpandingRingParams) == 0x6C) ? 1 : -1];
+typedef char effExpandingRingParams_size[(sizeof(effExpandingRingParams_t) == 0x6C) ? 1 : -1];
 
 /* The cached class payload is copied from the 0x5C-byte source prefix. */
-typedef struct EffRingClassConfig {
-    EffRingSource ring;
+typedef struct effRingClassConfig_t {
+    effRingSource_t ring;
     u8 pad50[0xC];
     u8 classConfig[0x5C];
     u8 padB8[0x10];
     f32 scale;
     f32 scaleRand;
-} EffRingClassConfig;
+} effRingClassConfig_t;
 
 /* Point history of a grid-surface trail: a ring of 16-byte points with packed colors,
  * drawn as triangle strips into the current render packet, then a fixed end cap. */
-typedef struct EffSurfaceTrailHistory {
+typedef struct effSurfaceTrailHistory_t {
     u8 pad00[0x10];
     s32 pointCapacity;        /* 0x10 */
     s32 activePointCount;     /* 0x14 */
@@ -492,28 +492,28 @@ typedef struct EffSurfaceTrailHistory {
     s32 resourceHandle;       /* 0x2C */
     u128 *endPoints;          /* 0x30 */
     u32 *endColors;           /* 0x34 */
-} EffSurfaceTrailHistory;
+} effSurfaceTrailHistory_t;
 
-typedef struct EffDrawEntry {
+typedef struct effDrawEntry_t {
     u32 handle;
     s32 frame;
     u8 pad08[8];
     void (*draw)(u8 *, struct sdfDrawTag_t *);
-} EffDrawEntry;
+} effDrawEntry_t;
 
 extern f32 effWorldUpVector[4];
 extern f32 aViewEye[4];
 
-typedef struct Matrix4 Matrix4;
+typedef struct effMatrix4_t effMatrix4_t;
 
-typedef struct EffScaleRange {
-    EffScaleRangeEntry *entries;
+typedef struct effScaleRange_t {
+    effScaleRangeEntry_t *entries;
     f32 start;
     f32 delta;
     struct sdfMemHandle_t *allocation;
-} EffScaleRange;
+} effScaleRange_t;
 
-typedef struct EffSpiralParticle {
+typedef struct effSpiralParticle_t {
     s32 timer;      /* -1 free, -2 retired */
     u8 pad04[4];
     f32 tiltX;      /* 0x08 */
@@ -525,7 +525,7 @@ typedef struct EffSpiralParticle {
     f32 width;      /* 0x20 */
     f32 sweep;      /* 0x24 */
     f32 height;     /* 0x28 */
-} EffSpiralParticle;
+} effSpiralParticle_t;
 
 static inline void unpackNormalizedColor(u32 color) {
     u32 rgba[4];
@@ -539,10 +539,10 @@ static inline u32 packNormalizedColor(void) {
     return rgba[0];
 }
 
-typedef char EffModelResource_size_must_be_0x40[
-    (sizeof(EffModelResource) == 0x40) ? 1 : -1];
+typedef char effModelResource_size_must_be_0x40[
+    (sizeof(effModelResource_t) == 0x40) ? 1 : -1];
 
-typedef struct EffModelCreateRequest {
+typedef struct effModelCreateRequest_t {
     u8 pad0[0x2C];
     u16 kind;
     u8 pad2E[2];
@@ -550,7 +550,7 @@ typedef struct EffModelCreateRequest {
     u32 attributes;
     u8 pad38[4];
     void *source;
-} EffModelCreateRequest;
+} effModelCreateRequest_t;
 
 #define EFF_COLLECT_ACTORS_VARIANT_SELECTOR 0
 
@@ -569,31 +569,31 @@ typedef struct EffModelCreateRequest {
 #define EFF_COLLECT_ACTORS_FINAL_SELECTOR 7
 
 /* Payload of resource kind 2: two colours plus the position request that feeds the shared light vector. */
-typedef struct EffFieldColorConfig {
+typedef struct effFieldColorConfig_t {
     u32 firstColor;   /* 0x00 */
     u32 secondColor;  /* 0x04 */
-    EffectVectorRequest direction; /* 0x08 */
-} EffFieldColorConfig;
+    effVectorRequest_t direction; /* 0x08 */
+} effFieldColorConfig_t;
 
-typedef struct EffCopiedSpawnList {
+typedef struct effCopiedSpawnList_t {
     u32 count;
     FldSpawnBatch *groups;
-} EffCopiedSpawnList;
+} effCopiedSpawnList_t;
 
 extern u128 D_0037EE90, D_0037EEA0, D_0037EEB0, D_0037EEC0, D_0037EED0;
 
-typedef struct EffAnimInfo {
+typedef struct effAnimInfo_t {
     u16 id;
     u16 flags;
     u8 actorSelection;
     u8 unk05;
     u16 loop;
-} EffAnimInfo;
+} effAnimInfo_t;
 
 void effResetSlots(void);
 
 /* The final timer word also supplies the default tint's halfword ID. */
-typedef struct EffTintTransitionParams {
+typedef struct effTintTransitionParams_t {
     u32 duration;
     u32 resourceArgument;
     u16 resourceKind;
@@ -605,15 +605,15 @@ typedef struct EffTintTransitionParams {
             u16 unk0E;
         } ids;
     } tail;
-} EffTintTransitionParams;
+} effTintTransitionParams_t;
 
-EffActiveResource *effAllocateResourcePayload(u16 kind, void *source);
-EffActiveResource *effCreateResourceInstance(u16 kind, void *source, void *secondary, u32 param);
-EffActiveResource *effCreateActiveResourceFromFile(FileJobPayload *request);
-void effDestroyResourceInstance(EffActiveResource *work);
-EffActiveResource *effDuplicateActiveResource(EffActiveResource *source);
-void effClearCallbackFrame(EffActiveResource *work);
-void effDispatchEnabledCallback(EffActiveResource *work);
+effActiveResource_t *effAllocateResourcePayload(u16 kind, void *source);
+effActiveResource_t *effCreateResourceInstance(u16 kind, void *source, void *secondary, u32 param);
+effActiveResource_t *effCreateActiveResourceFromFile(FileJobPayload *request);
+void effDestroyResourceInstance(effActiveResource_t *work);
+effActiveResource_t *effDuplicateActiveResource(effActiveResource_t *source);
+void effClearCallbackFrame(effActiveResource_t *work);
+void effDispatchEnabledCallback(effActiveResource_t *work);
 void effResetFileResourceStores(void);
 s32 btlUpdateEffectWork(void);
 void effResetFileResources(void);
@@ -624,7 +624,7 @@ void effMultiplyQuatWithFlag(effPartsListPose_t *effect);
 extern u8 effSelectedJobHeader[];
 void effApplyBattleCameraToObject();
 u32 effCreateBattleCameraJob(u8 *request);
-FileJobPayload *effLoadFileJobPayload(EffFileJobRequest *request, const char *path);
+FileJobPayload *effLoadFileJobPayload(effFileJobRequest_t *request, const char *path);
 void effInvokeFileJobWithBattleCamera(u32 job);
 void effFileJobQueueRelease(u32 job);
 extern char D_003BD080[];
@@ -640,44 +640,44 @@ u32 effPollAttachedFile(void);
 u8 *effFindAssetData(FileJob *entry);
 effDebugMenu_t *effFindAssetObject(FileJob *entry);
 u32 effGetSelectedFileQueueIndex(void);
-extern EffectBlock128 effEditedQueueHeader;
+extern effBlock128_t effEditedQueueHeader;
 extern u32 btlDebugMenuSetupNoOp(void *context);
 extern void btlDebugMenuBeforeRecordNoOp(void);
 extern void btlDebugMenuAfterRecordNoOp(void);
 
 /* A row of an effect kind's sample list; a list ends with a NULL resource. */
-typedef struct EffCameraCreateRow {
-    EffCameraCreateRequest request;
+typedef struct effCameraCreateRow_t {
+    effCameraCreateRequest_t request;
     u32 sourceTail;
-} EffCameraCreateRow;
+} effCameraCreateRow_t;
 
-typedef char EffCameraCreateRowSizeCheck[(sizeof(EffCameraCreateRow) == 0x1C) ? 1 : -1];
+typedef char effCameraCreateRowSizeCheck[(sizeof(effCameraCreateRow_t) == 0x1C) ? 1 : -1];
 
-extern EffCameraCreateRow sysPARTICLEData[];
-extern EffCameraCreateRow effCreatePolyTrackControlTaskData[];
-extern EffCameraCreateRow effCreatePolyTrackTaskData[];
-extern EffCameraCreateRow effCreateBlurTaskData[];
-extern EffCameraCreateRow effCreateFilterTaskData[];
-extern EffCameraCreateRow sysPOLYTEXData[];
-extern EffCameraCreateRow effCreateEnvironmentTaskData[];
-extern EffCameraCreateRow effCreatePolyFlashTaskData[];
-extern EffCameraCreateRow effCreatePolyRingTaskData[];
-extern EffCameraCreateRow effCreatePolyThunderTaskData[];
-extern EffCameraCreateRow effCreatePolyTwinkleTaskData[];
-extern EffCameraCreateRow sysPOLYWINDData[];
-extern EffCameraCreateRow effCreatePolyScalyTaskData[];
-extern EffCameraCreateRow effCreatePolyCrackTaskData[];
-extern EffCameraCreateRow sysBATTLEONLYData[];
-extern EffCameraCreateRow effCreateTwoDimensionalTaskData[];
-extern EffCameraCreateRow effCreatePolyWindTaskData[];
+extern effCameraCreateRow_t sysPARTICLEData[];
+extern effCameraCreateRow_t effCreatePolyTrackControlTaskData[];
+extern effCameraCreateRow_t effCreatePolyTrackTaskData[];
+extern effCameraCreateRow_t effCreateBlurTaskData[];
+extern effCameraCreateRow_t effCreateFilterTaskData[];
+extern effCameraCreateRow_t sysPOLYTEXData[];
+extern effCameraCreateRow_t effCreateEnvironmentTaskData[];
+extern effCameraCreateRow_t effCreatePolyFlashTaskData[];
+extern effCameraCreateRow_t effCreatePolyRingTaskData[];
+extern effCameraCreateRow_t effCreatePolyThunderTaskData[];
+extern effCameraCreateRow_t effCreatePolyTwinkleTaskData[];
+extern effCameraCreateRow_t sysPOLYWINDData[];
+extern effCameraCreateRow_t effCreatePolyScalyTaskData[];
+extern effCameraCreateRow_t effCreatePolyCrackTaskData[];
+extern effCameraCreateRow_t sysBATTLEONLYData[];
+extern effCameraCreateRow_t effCreateTwoDimensionalTaskData[];
+extern effCameraCreateRow_t effCreatePolyWindTaskData[];
 
 extern void fileQueueInitTransform(void *);
-extern FileJob *fileAppendJob(FileQueue *, u32);
-extern s32 fileQueueCountLinkedJobs(FileQueue *);
+extern FileJob *fileAppendJob(plistHandle_t *, u32);
+extern s32 fileQueueCountLinkedJobs(plistHandle_t *);
 extern FileJob *effCurrentFileQueueEntry;
 extern u32 D_003BD064;
 extern effDebugMenu_t effPartsListMenu;
-u32 effAppendPositionedCameraFileJob(const EffCameraCreateRequest *request);
+u32 effAppendPositionedCameraFileJob(const effCameraCreateRequest_t *request);
 u32 effLoadSelectedFileJob(void);
 extern u32 effReinitializeFileQueueData[];
 u32 effReinitializeFileQueue(void);
@@ -685,19 +685,19 @@ extern u32 effResetFileQueueStateData[];
 u32 effResetFileQueueState(void);
 extern u32 effFinalizeQueuedFileData[];
 u32 effFinalizeQueuedFile(void);
-extern FileJob *fileDuplicateAndAppendJob(FileQueue *, FileJobPayload *);
-extern FileJob *fileQueueFindById(FileQueue *, u32);
+extern FileJob *fileDuplicateAndAppendJob(plistHandle_t *, FileJobPayload *);
+extern FileJob *fileQueueFindById(plistHandle_t *, u32);
 u32 effCloneSelectedFileJob(void);
 extern u32 effSelectLinkedFileState();
 u32 effFlagFileQueueActive(void);
 
-typedef struct EffectBlock90 {
+typedef struct effBlock90_t {
     u32 word[36];
-} EffectBlock90;
+} effBlock90_t;
 
-typedef struct EffectAlignedBlock128 {
+typedef struct effAlignedBlock128_t {
     u64 word[16];
-} EffectAlignedBlock128;
+} effAlignedBlock128_t;
 
 extern effDebugMenu_t effBattleCameraSnapshotSelection;
 extern effDebugMenuItem_t effData10[];
@@ -707,7 +707,7 @@ u32 effLoadBattleCameraSnapshot(u32 value);
 u32 effStoreBattleCameraSnapshot(u32 value);
 
 /* Present named camera/file requests, maintaining a preview job and returning selection status. */
-u32 effSelectCameraFileJobFromRows(const char *nameKey, const EffCameraCreateRow *requests, u32 sourceCount);
+u32 effSelectCameraFileJobFromRows(const char *nameKey, const effCameraCreateRow_t *requests, u32 sourceCount);
 s32 effCreatePolyTrackControlTask(void);
 s32 effCreatePolyTrackTask(void);
 s32 effCreateBlurTask(void);
@@ -721,25 +721,25 @@ s32 effCreatePolyWindTask(void);
 s32 effCreatePolyScalyTask(void);
 s32 effCreatePolyCrackTask(void);
 s32 effCreateTwoDimensionalTask(void);
-extern void effPollResourceBankSlot(char *, u32, EffResourceBankSlot *);
+extern void effPollResourceBankSlot(char *, u32, effResourceBankSlot_t *);
 u32 effPollPartResource(void);
 u32 effPollNamedFileJob(void);
 extern char D_003B3A90[], D_003B3AA8[];
 extern f32 D_003DFA20[4];
 s32 effResetStaticState(void);
 
-typedef struct EffectStateSnapshot {
+typedef struct effStateSnapshot_t {
     effPartsListPose_t pose; /* pos is copied to the debug camera position and follow offset */
     u8 pad70[0x10];
-} __attribute__((aligned(16))) EffectStateSnapshot;
+} __attribute__((aligned(16))) effStateSnapshot_t;
 
-typedef char EffectStateSnapshotSizeCheck[(sizeof(EffectStateSnapshot) == 0x80) ? 1 : -1];
+typedef char effStateSnapshotSizeCheck[(sizeof(effStateSnapshot_t) == 0x80) ? 1 : -1];
 
-extern s32 effUpdateCameraDiagnostics(EffectStateSnapshot *, s8);
+extern s32 effUpdateCameraDiagnostics(effStateSnapshot_t *, s8);
 extern effDebugMenu_t effUpdateCameraDiagnosticsData;
 extern s8 effData22[];
 extern u32 btlDebugMenuSetupNoOp(void *camera);
-s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode);
+s32 effUpdateCameraDiagnostics(effStateSnapshot_t *snapshot, s8 mode);
 
 /* The camera snapshot payload is the 0x90-byte record consumed by this updater. */
 typedef union EffectCameraSnapshotView {
@@ -752,12 +752,12 @@ typedef union EffectCameraSnapshotView {
 
 extern effDebugMenu_t effUpdateCameraSnapshotGuidesData;
 
-typedef struct EffectCameraDebugScratch {
+typedef struct effCameraDebugScratch_t {
     s128 basePosition;
     s128 segmentStart;
     s128 segmentEnd;
     s128 rotationMatrix[4];
-} EffectCameraDebugScratch;
+} effCameraDebugScratch_t;
 
 u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *state, s8 useBattlePosition);
 u32 effLoadFileSlotAndPoll(void);
@@ -765,7 +765,7 @@ s32 effRunWithStateBackup(void);
 extern u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *, s8);
 u32 effProcessQueuedFileRecordAndPersistChanges(void);
 void effBattleResourceDescriptorRelease(void);
-void effPollResourceBankSlot(char *path, u32 flags, EffResourceBankSlot *selection);
+void effPollResourceBankSlot(char *path, u32 flags, effResourceBankSlot_t *selection);
 extern struct BtlResourceNameRecord *effFileQueueNameRecord;
 extern const char D_003BCF30[];
 void effInitializeResourceQueue(void);
@@ -773,14 +773,14 @@ u32 effPollResourceQueue(void);
 void effReleaseQueuedResourceName(void);
 void effReleaseResourceBankDescriptors(void);
 
-typedef struct EffectPollRecord {
+typedef struct effPollRecord_t {
     char fullName[0xC8]; /* Formatted path or selected built-in name. */
     s32 type;   // 0xC8
     s32 selectionStatus;  // 0xCC
     s32 pathVariant; // 0xD0
-} EffectPollRecord;
+} effPollRecord_t;
 
-void effPollResourceBank(s32 flags, EffectPollRecord *record);
+void effPollResourceBank(s32 flags, effPollRecord_t *record);
 extern effDebugMenu_t effMappingState;
 void effResetMappingFlags(void);
 extern effDebugMenuItem_t D_0038F7D8[];
@@ -788,13 +788,13 @@ extern effDebugMenuItem_t effData14[];
 extern effDebugMenuItem_t D_0038F658[];
 
 /* The effect mapping dispatcher stores its data pointer at +0x0C. */
-typedef struct EffMappingRequest {
+typedef struct effMappingRequest_t {
     u8 pad_00[0x0C];
     s32 object;          // 0x0C
-} EffMappingRequest;
+} effMappingRequest_t;
 
 /* Parameters passed to the mapping dispatcher from distinct object channels. */
-typedef struct EffMappingObject {
+typedef struct effMappingObject_t {
     u8 pad_00[0x34];
     s32 value34;       // 0x34
     u32 value38;       // 0x38
@@ -818,7 +818,7 @@ typedef struct EffMappingObject {
     s32 valueF4;       // 0xF4
     u8 pad_F8[0x10];
     s32 value108;      // 0x108
-} EffMappingObject;
+} effMappingObject_t;
 
 s32 effMapObjectWithTemporaryMappingTable(s32 request);
 s32 effEditGkColorTrack(s32 request);
@@ -842,32 +842,32 @@ s32 effEditCrackPolygonColorTrack(s32 request);
 s32 effEditFlashPolygonColorTrack(s32 request);
 s32 effEditTwoDimensionalColorTrack(s32 request);
 void btlResetEffectWork(void);
-s32 effEditScalarTrack(EffScalarTrack *track, u32 frames, void *panelWork, void *subPanelWork);
-s32 effEditPScaleTrack(BaObj *p);
-void effEditMColorTrack(BaObj *p);
-s32 effEditPRotationTrack(BaObj *p);
-s32 effEditGkScaleTrack(BaObj *p);
-s32 effEditKRotationTrack(BaObj *p);
-s32 effEditBScaleTrack(BaObj *p);
-s32 effEditBRotationTrack(BaObj *p);
-s32 effEditBfAreaTrack(BaObj *p);
-s32 effEditTBoardScaleTrack(BaObj *p);
+s32 effEditScalarTrack(effScalarTrack_t *track, u32 frames, void *panelWork, void *subPanelWork);
+s32 effEditPScaleTrack(effBaObj_t *p);
+void effEditMColorTrack(effBaObj_t *p);
+s32 effEditPRotationTrack(effBaObj_t *p);
+s32 effEditGkScaleTrack(effBaObj_t *p);
+s32 effEditKRotationTrack(effBaObj_t *p);
+s32 effEditBScaleTrack(effBaObj_t *p);
+s32 effEditBRotationTrack(effBaObj_t *p);
+s32 effEditBfAreaTrack(effBaObj_t *p);
+s32 effEditTBoardScaleTrack(effBaObj_t *p);
 
 /* Pass the requested T-BOARD ROTATE track and its frame bound to the editor. */
-s32 effEditTBoardRotationTrack(BaObj *p);
-s32 effEditWScaleTrack(BaObj *p);
-s32 effEditWRotationTrack(BaObj *p);
-s32 effEditUCylinderPolygonUvScaleTrack(BaObj *p);
-s32 effEditUSmokeSpiralScaleTrack(BaObj *p);
-s32 effEditUSmokeSpiralRotationTrack(BaObj *p);
-s32 effEditUSmokeSpiralPolygonUvScaleTrack(BaObj *p);
-s32 effEditUSphereScaleTrack(BaObj *p);
-s32 effEditTwoDimensionalScaleTrack(BaObj *p);
-s32 effEditTwoDimensionalRotationTrack(BaObj *p);
+s32 effEditTBoardRotationTrack(effBaObj_t *p);
+s32 effEditWScaleTrack(effBaObj_t *p);
+s32 effEditWRotationTrack(effBaObj_t *p);
+s32 effEditUCylinderPolygonUvScaleTrack(effBaObj_t *p);
+s32 effEditUSmokeSpiralScaleTrack(effBaObj_t *p);
+s32 effEditUSmokeSpiralRotationTrack(effBaObj_t *p);
+s32 effEditUSmokeSpiralPolygonUvScaleTrack(effBaObj_t *p);
+s32 effEditUSphereScaleTrack(effBaObj_t *p);
+s32 effEditTwoDimensionalScaleTrack(effBaObj_t *p);
+s32 effEditTwoDimensionalRotationTrack(effBaObj_t *p);
 extern char effColorEditFrameCountFormat[];
 
 /* Edit the alpha fade interval and its four-breakpoint graph. */
-s32 func_002BB188(SdfAlphaTrack *range, s32 frames);
+s32 func_002BB188(effBehavior_AlphaParams_t *range, s32 frames);
 s32 effEditSPolygonAlphaTrack(s32 work);
 s32 effEditDoPolygonFadeTrack(s32 work);
 s32 effEditNPolygonFadeTrack(s32 work);
@@ -875,14 +875,14 @@ s32 effEditUCylinderPolygonFadeTrack(s32 work);
 s32 effEditUSpherePolygonFadeTrack(s32 work);
 
 /* Poll record from the resource-bank queue; the path variant selects its entry. */
-extern void effPollResourceBank(s32, EffectPollRecord *);
+extern void effPollResourceBank(s32, effPollRecord_t *);
 s32 effPollFileQueueRecord(s32 request);
 s32 effPollResourceQueueWithTlp(void);
 s32 effPollAlternateResourceQueueWithTlp(void);
 s32 effPollResourceQueueWithoutTlp(void);
 extern u16 Start_sbtl(s32);
 
-typedef struct EffFileResourceRecord {
+typedef struct effFileResourceRecord_t {
     char *name;
     u8 pad4[4];
     u16 mode;
@@ -890,7 +890,7 @@ typedef struct EffFileResourceRecord {
     u8 *buffer;
     u32 size;
     struct sdfMemHandle_t *allocation;
-} EffFileResourceRecord;
+} effFileResourceRecord_t;
 
 s32 effPollFileRecord(char *path, s32 flags);
 s32 effPollTextureResourceFile(void);
@@ -904,14 +904,14 @@ s32 effPollSTMaterialTmxFile(void);
 u32 effFileJobSecondaryDataSet(void);
 s32 effPollHlpPbResourceFile(void);
 
-extern EffFileJobRequest effLoadMaterialFileData;
-extern EffFileJobRequest fileLoadEffectSlotAData;
-extern EffFileJobRequest fileLoadEffectSlotBData;
+extern effFileJobRequest_t effLoadMaterialFileData;
+extern effFileJobRequest_t fileLoadEffectSlotAData;
+extern effFileJobRequest_t fileLoadEffectSlotBData;
 u32 fileLoadEffectSlotA(void);
 extern effHelper_Params_t fileLoadEffectSlotHelpData;
 u32 fileLoadEffectSlotHelp(void);
 u32 fileLoadEffectSlotB(void);
-extern EffFileJobRequest effLoadFileSlotF2Data;
+extern effFileJobRequest_t effLoadFileSlotF2Data;
 u32 effLoadFileSlotF2(void);
 u32 effLoadMaterialFile(void);
 void effResetFileResourceManager(void);
@@ -989,16 +989,16 @@ u16 Start_sbtl(s32 flags);
 
 extern u32 D_003BD2C8;
 
-typedef struct Entry24W {
+typedef struct effEntry24W_t {
     u32 v0;            // 0x00
     u8 pad_0x04[0x14]; // 0x04
-} Entry24W; 
+} effEntry24W_t; 
 
-typedef struct PrfFallbackGroup {
+typedef struct effPrfFallbackGroup_t {
     u8 id;
     u8 pad01[3];
     u32 flags[2];
-} PrfFallbackGroup;
+} effPrfFallbackGroup_t;
 
 extern sdfGrOt_t *sdfDrawFlagListVerticesData[];
 void sdfSampleFlagListStartColor(SdfFlagListWork *work);
@@ -1018,10 +1018,10 @@ void effLeaf386(void) {
 void effLeaf387(void) {
 }
 
-EffActiveResource *effAllocateResourcePayload(u16 kind, void *source) {
+effActiveResource_t *effAllocateResourcePayload(u16 kind, void *source) {
     u32 headerSize = 0x40;
     u32 size = effRuntimeResourceOperations[kind].payloadSize;
-    EffActiveResource *effect = sdfChipAllocDirect(size + headerSize);
+    effActiveResource_t *effect = sdfChipAllocDirect(size + headerSize);
     effect->payload = (u8 *)effect + headerSize;
     effect->color = 0x80808080;
     effect->scale = 1.0f;
@@ -1033,8 +1033,8 @@ EffActiveResource *effAllocateResourcePayload(u16 kind, void *source) {
     return effect;
 }
 
-EffActiveResource *effCreateResourceInstance(u16 kind, void *source, void *secondary, u32 param) {
-    EffActiveResource *effect = effAllocateResourcePayload(kind, source);
+effActiveResource_t *effCreateResourceInstance(u16 kind, void *source, void *secondary, u32 param) {
+    effActiveResource_t *effect = effAllocateResourcePayload(kind, source);
 
     if (btlIsRuntimeAllocated() != 0) {
         if (effRuntimeResourceOperations[kind].createResource != NULL) {
@@ -1047,13 +1047,13 @@ EffActiveResource *effCreateResourceInstance(u16 kind, void *source, void *secon
     return effect;
 }
 
-EffActiveResource *effCreateActiveResourceFromFile(FileJobPayload *request) {
+effActiveResource_t *effCreateActiveResourceFromFile(FileJobPayload *request) {
     void *first = fileResolvePrimaryBuffer(request);
     void *second = fileResolveSecondaryBuffer(request);
     return effCreateResourceInstance(request->option, first, second, request->secondary.size);
 }
 
-void effDestroyResourceInstance(EffActiveResource *work) {
+void effDestroyResourceInstance(effActiveResource_t *work) {
     if (btlIsRuntimeAllocated() != 0) {
         void (*callback)(void *) = effRuntimeResourceOperations[work->kind.signedIndex].destroyResource;
         if (callback != NULL) {
@@ -1063,8 +1063,8 @@ void effDestroyResourceInstance(EffActiveResource *work) {
     sdfChipFreeDirect(work);
 }
 
-EffActiveResource *effDuplicateActiveResource(EffActiveResource *source) {
-    EffActiveResource *effect;
+effActiveResource_t *effDuplicateActiveResource(effActiveResource_t *source) {
+    effActiveResource_t *effect;
     u32 kind = source->kind.index;
 
     if (effRuntimeResourceOperations[kind].cloneResource == NULL) {
@@ -1083,7 +1083,7 @@ EffActiveResource *effDuplicateActiveResource(EffActiveResource *source) {
     return effect;
 }
 
-void effClearCallbackFrame(EffActiveResource *work) {
+void effClearCallbackFrame(effActiveResource_t *work) {
     if (btlIsRuntimeAllocated() != 0) {
         void (*callback)(void *) = effRuntimeResourceOperations[work->kind.signedIndex].initialize;
         if (callback != NULL) {
@@ -1095,7 +1095,7 @@ void effClearCallbackFrame(EffActiveResource *work) {
 
 INCLUDE_ASM(const s32, "code_r1_00242308", effCallProcSBtl);
 
-void effDispatchEnabledCallback(EffActiveResource *work) {
+void effDispatchEnabledCallback(effActiveResource_t *work) {
     if (btlIsRuntimeAllocated() != 0) {
         void (*callback)(void *) = effRuntimeResourceOperations[work->kind.signedIndex].draw;
         if (callback != NULL) {
@@ -1104,9 +1104,9 @@ void effDispatchEnabledCallback(EffActiveResource *work) {
     }
 }
 
-void effCallProcSBtl(EffActiveResource *work);
+void effCallProcSBtl(effActiveResource_t *work);
 
-void effFunc18(EffActiveResource *work) {
+void effFunc18(effActiveResource_t *work) {
     effCallProcSBtl(work);
     effDispatchEnabledCallback(work);
 }
@@ -1304,22 +1304,22 @@ void effMultiplyQuatWithFlag(effPartsListPose_t *effect) {
 INCLUDE_ASM(const s32, "code_r1_00242308", effApplyBattleCameraToObject);
 
 u32 effCreateBattleCameraJob(u8 *request) {
-    u8 *outputBuffer = ((EffFileJobRequest *)request)->outputBuffer;
+    u8 *outputBuffer = ((effFileJobRequest_t *)request)->outputBuffer;
     u32 job;
 
     if (outputBuffer != NULL) {
-        if (((EffFileJobRequest *)request)->fileKind == 6) {
+        if (((effFileJobRequest_t *)request)->fileKind == 6) {
             memcpy(outputBuffer, effWork6, 0x3C);
-            outputBuffer = ((EffFileJobRequest *)request)->outputBuffer;
+            outputBuffer = ((effFileJobRequest_t *)request)->outputBuffer;
         }
-        fileJobSetPrimaryData(effQueuedFileHandle, outputBuffer, ((EffFileJobRequest *)request)->size, ((EffFileJobRequest *)request)->transferMode);
+        fileJobSetPrimaryData(effQueuedFileHandle, outputBuffer, ((effFileJobRequest_t *)request)->size, ((effFileJobRequest_t *)request)->transferMode);
     }
     job = (u32)Create_effParts(effQueuedFileHandle);
     effApplyBattleCameraToObject(job);
     return job;
 }
 
-FileJobPayload *effLoadFileJobPayload(EffFileJobRequest *request, const char *path) {
+FileJobPayload *effLoadFileJobPayload(effFileJobRequest_t *request, const char *path) {
     FileJobPayload *job;
     if (path != NULL) {
         void *source;
@@ -1363,7 +1363,7 @@ void effFileJobQueueRelease(u32 job) {
 }
 
 u32 effPollPrimaryFile(void) {
-    EffQueueRecord record;
+    effQueueRecord_t record;
     char path[0x70];
     u32 state;
     u32 result = 0x400001;
@@ -1388,7 +1388,7 @@ void effQueueNamedResourceRequest(void) {
 }
 
 u32 effPollNamedFile(void) {
-    EffQueueRecord record;
+    effQueueRecord_t record;
     char path[0x70];
     u32 state;
     u32 result = 0x400001;
@@ -1414,7 +1414,7 @@ void effQueueAttachedResourceRequest(void) {
 }
 
 u32 effPollAttachedFile(void) {
-    EffQueueRecord record;
+    effQueueRecord_t record;
     char path[0x70];
     u32 state;
     u32 result = 0x400001;
@@ -1434,7 +1434,7 @@ u32 effPollAttachedFile(void) {
     return result;
 }
 
-extern EffCameraCreateRow *effData9[24];
+extern effCameraCreateRow_t *effData9[24];
 
 u8 * effFindAssetData(FileJob *entry) {
     FileJobPayload *requested = (FileJobPayload *)entry->id;
@@ -1442,12 +1442,12 @@ u8 * effFindAssetData(FileJob *entry) {
     u16 option = requested->option;
     u16 i;
     for (i = 0; i < 24; i++) {
-        EffCameraCreateRow *links = effData9[i];
+        effCameraCreateRow_t *links = effData9[i];
         if (links != NULL) {
-            EffCameraCreateRow *current = links;
+            effCameraCreateRow_t *current = links;
             if (current->request.resource != NULL) {
                 do {
-                    EffFileJobRequest *asset = current->request.resource;
+                    effFileJobRequest_t *asset = current->request.resource;
                     if (asset->fileKind == type && asset->transferMode == option) {
                         return (u8 *)asset;
                     }
@@ -1465,12 +1465,12 @@ effDebugMenu_t * effFindAssetObject(FileJob *entry) {
     u16 option = requested->option;
     u16 i;
     for (i = 0; i < 24; i++) {
-        EffCameraCreateRow *links = effData9[i];
+        effCameraCreateRow_t *links = effData9[i];
         if (links != NULL) {
-            EffCameraCreateRow *current = links;
+            effCameraCreateRow_t *current = links;
             if (current->request.resource != NULL) {
                 do {
-                    EffFileJobRequest *asset = current->request.resource;
+                    effFileJobRequest_t *asset = current->request.resource;
                     if (asset->fileKind == type && asset->transferMode == option) {
                         return current->request.object;
                     }
@@ -1495,7 +1495,7 @@ INCLUDE_RODATA(const s32, "code_r1_00242308", effStrPosition2);
 
 INCLUDE_ASM(const s32, "code_r1_00242308", effUpdatePartsListEditor);
 
-u32 effAppendPositionedCameraFileJob(const EffCameraCreateRequest *request) {
+u32 effAppendPositionedCameraFileJob(const effCameraCreateRequest_t *request) {
     FileJob *entry;
     u32 count;
 
@@ -1529,7 +1529,7 @@ u32 effAppendPositionedCameraFileJob(const EffCameraCreateRequest *request) {
 /* Load the selected job's payload and camera snapshots; return the refresh status. */
 u32 effLoadSelectedFileJob(void) {
     FileJob *entry = fileQueueGetAt(effFileQueue, effGetSelectedFileQueueIndex());
-    EffFileJobRequest *request;
+    effFileJobRequest_t *request;
     u8 *fileData;
     u32 job;
 
@@ -1540,7 +1540,7 @@ u32 effLoadSelectedFileJob(void) {
     memcpy(effSelectedJobHeader, entry, 0x80);
 
     effQueuedFileHandle = (FileJobPayload *)entry->id;
-    request = (EffFileJobRequest *)effFindAssetData(entry);
+    request = (effFileJobRequest_t *)effFindAssetData(entry);
     if (request->fileKind != 6) {
         fileData = (u8 *)fileResolvePrimaryBuffer(effQueuedFileHandle);
         memcpy(request->outputBuffer, fileData, request->size);
@@ -1627,7 +1627,7 @@ u32 effCloneSelectedFileJob(void) {
     FileJob *source;
     FileJob *entry;
     FileJob *leader;
-    EffFileJobRequest *resource;
+    effFileJobRequest_t *resource;
     void *fileData;
     s32 linkedCount;
 
@@ -1648,7 +1648,7 @@ u32 effCloneSelectedFileJob(void) {
     memcpy(effSelectedJobHeader, entry, 0x80);
 
     effQueuedFileHandle = (FileJobPayload *)entry->id;
-    resource = (EffFileJobRequest *)effFindAssetData(entry);
+    resource = (effFileJobRequest_t *)effFindAssetData(entry);
     strcpy(entry->name, resource->name);
 
     if (resource->fileKind != 6) {
@@ -1716,9 +1716,9 @@ u32 effSelectLinkedFileState(void) {
 u32 effLoadBattleCameraSnapshot(u32 value) {
     FileJob *record = fileQueueGetAt(effFileQueue, effGetSelectedFileQueueIndex());
 
-    *(EffectBlock90 *)D_003DF840 = *(EffectBlock90 *)record;
-    *(EffectAlignedBlock128 *)D_003DF840 = *(EffectAlignedBlock128 *)effSelectedJobHeader;
-    if (((EffectBlock90 *)D_003DF840)->word[26] & 2) {
+    *(effBlock90_t *)D_003DF840 = *(effBlock90_t *)record;
+    *(effAlignedBlock128_t *)D_003DF840 = *(effAlignedBlock128_t *)effSelectedJobHeader;
+    if (((effBlock90_t *)D_003DF840)->word[26] & 2) {
         effBattleCameraSnapshotSelection.items = effData10;
         effBattleCameraSnapshotSelection.itemCount = 3;
         if (effBattleCameraSnapshotSelection.selected > effBattleCameraSnapshotSelection.itemCount) {
@@ -1737,10 +1737,10 @@ u32 effLoadBattleCameraSnapshot(u32 value) {
 u32 effStoreBattleCameraSnapshot(u32 value) {
     FileJob *record = fileQueueGetAt(effFileQueue, effGetSelectedFileQueueIndex());
 
-    *(EffectBlock90 *)record = *(EffectBlock90 *)D_003DF840;
-    *(EffectAlignedBlock128 *)effSelectedJobHeader = *(EffectAlignedBlock128 *)D_003DF840;
+    *(effBlock90_t *)record = *(effBlock90_t *)D_003DF840;
+    *(effAlignedBlock128_t *)effSelectedJobHeader = *(effAlignedBlock128_t *)D_003DF840;
     effPartsPreviewReload = 1;
-    if (((EffectBlock90 *)D_003DF840)->word[26] & 2) {
+    if (((effBlock90_t *)D_003DF840)->word[26] & 2) {
         effBattleCameraSnapshotSelection.items = effData10;
         effBattleCameraSnapshotSelection.itemCount = 3;
         if (effBattleCameraSnapshotSelection.selected > effBattleCameraSnapshotSelection.itemCount) {
@@ -1831,7 +1831,7 @@ s32 effCreatePolyWindTask(void) {
 }
 
 u32 effPollPartResource(void) {
-    EffResourceBankSlot record;
+    effResourceBankSlot_t record;
     u32 state;
     u32 result = 0x400001;
 
@@ -1851,7 +1851,7 @@ u32 effPollPartResource(void) {
 }
 
 u32 effPollNamedFileJob(void) {
-    EffResourceBankSlot record;
+    effResourceBankSlot_t record;
     u32 state;
     u32 result = 0x400001;
 
@@ -1865,7 +1865,7 @@ u32 effPollNamedFileJob(void) {
         }
         strcpy(effWork8, record.name);
         effFileQueue = fileQueueCreateFromCommandState((const char *)&record);
-        effEditedQueueHeader = *(EffectBlock128 *)effFileQueue;
+        effEditedQueueHeader = *(effBlock128_t *)effFileQueue;
         effPartsListScroll = 0;
         effData12[0] = 0;
         result = 0x400002;
@@ -1895,7 +1895,7 @@ s32 effResetStaticState(void) {
 
 /* Synchronize the diagnostic camera position and calculate its positional guides.
  * Return input flags; the native diagnostic drawing providers are retail stubs. */
-s32 effUpdateCameraDiagnostics(EffectStateSnapshot *snapshot, s8 mode) {
+s32 effUpdateCameraDiagnostics(effStateSnapshot_t *snapshot, s8 mode) {
     effDebugMenu_t *camera = &effUpdateCameraDiagnosticsData;
     f32 vectors[6][4] __attribute__((aligned(16)));
     f32 length;
@@ -1982,7 +1982,7 @@ INCLUDE_ASM(const s32, "code_r1_00242308", sysUPDOWNHEIGHT);
 INCLUDE_ASM(const s32, "code_r1_00242308", effResetCameraSnapshotSelection);
 
 u32 effUpdateCameraSnapshotGuides(EffectCameraSnapshotView *state, s8 useBattlePosition) {
-    EffectCameraDebugScratch scratch;
+    effCameraDebugScratch_t scratch;
     u32 result = 1;
 
     if ((effUpdateCameraSnapshotGuidesData.flags & 2) == 0) {
@@ -2066,7 +2066,7 @@ u32 effLoadFileSlotAndPoll(void) {
     u32 result;
 
     memcpy(D_003DF840, file, 0x90);
-    result = effUpdateCameraDiagnostics((EffectStateSnapshot *)D_003DF840, 1);
+    result = effUpdateCameraDiagnostics((effStateSnapshot_t *)D_003DF840, 1);
     memcpy(file, D_003DF840, 0x90);
     if (result & 1) {
         result |= 0x800000;
@@ -2075,7 +2075,7 @@ u32 effLoadFileSlotAndPoll(void) {
 }
 
 s32 effRunWithStateBackup(void) {
-    EffectStateSnapshot snapshot = *(EffectStateSnapshot *)&effEditedQueueHeader;
+    effStateSnapshot_t snapshot = *(effStateSnapshot_t *)&effEditedQueueHeader;
     f32 *backup = snapshot.pose.pos;
     s32 result;
 
@@ -2130,7 +2130,7 @@ void effBattleResourceDescriptorRelease(void) {
     }
 }
 
-void effPollResourceBankSlot(char *path, u32 flags, EffResourceBankSlot *selection) {
+void effPollResourceBankSlot(char *path, u32 flags, effResourceBankSlot_t *selection) {
 
     if (effResourceBankEntries == 0) {
         effResourceBankEntries = btlScanDirectory(path, flags);
@@ -2193,7 +2193,7 @@ void effQueueResource(const char *extension, const char *resourceName) {
     btlResourceRecordSetName(effQueuedResourceNameRecord, resourceName);
 }
 
-void effUpdateResourceQueue(const char *directoryPath, const char *extension, EffQueueRecord *record) {
+void effUpdateResourceQueue(const char *directoryPath, const char *extension, effQueueRecord_t *record) {
     u32 state;
 
     if (effQueuedResourceNameRecord == 0) {
@@ -2228,7 +2228,7 @@ void effReleaseResourceBankDescriptors(void) {
     }
 }
 
-void effPollResourceBank(s32 flags, EffectPollRecord *record) {
+void effPollResourceBank(s32 flags, effPollRecord_t *record) {
     if (effResourceBankEntries == 0) {
         effResourceBankEntries = btlScanDirectory(0, flags);
         if (flags & BTL_RESOURCE_SCAN_GENERAL) {
@@ -2272,11 +2272,11 @@ INCLUDE_ASM(const s32, "code_r1_00242308", effEditColorTrack);
 
 s32 effMapObjectWithTemporaryMappingTable(s32 request) {
     s32 result;
-    s32 object = ((EffMappingRequest *)request)->object;
+    s32 object = ((effMappingRequest_t *)request)->object;
 
     effMappingState.items = D_0038F7D8;
     effMappingState.itemCount = 8;
-    result = effEditColorTrack(object + 0x2c, object + 0x50, ((EffMappingObject *)object)->valueB8);
+    result = effEditColorTrack(object + 0x2c, object + 0x50, ((effMappingObject_t *)object)->valueB8);
     effMappingState.items = D_0038F658;
     effMappingState.itemCount = 8;
     return result;
@@ -2285,11 +2285,11 @@ s32 effMapObjectWithTemporaryMappingTable(s32 request) {
 /* Edit the request's G-/K-family COLOR tracks; return the native editor status. */
 s32 effEditGkColorTrack(s32 request) {
     s32 result;
-    s32 object = ((EffMappingRequest *)request)->object;
+    s32 object = ((effMappingRequest_t *)request)->object;
 
     effMappingState.items = D_0038F7D8;
     effMappingState.itemCount = 8;
-    result = effEditColorTrack(object + 0x48, object + 0x6c, ((EffMappingObject *)object)->valueD4);
+    result = effEditColorTrack(object + 0x48, object + 0x6c, ((effMappingObject_t *)object)->valueD4);
     effMappingState.items = D_0038F658;
     effMappingState.itemCount = 8;
     return result;
@@ -2299,23 +2299,23 @@ s32 effEditGkColorTrack(s32 request) {
 s32 effEditBfColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->valueB8);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->valueB8);
 }
 
 /* HELPER's COLOR callback edits the shared default color/alpha data. */
 s32 effEditHlpColorTrack(void) {
-    return effEditColorTrack((s32)effWork6, (s32)effWork6 + 0x24, ((EffMappingObject *)effWork6)->value34);
+    return effEditColorTrack((s32)effWork6, (s32)effWork6 + 0x24, ((effMappingObject_t *)effWork6)->value34);
 }
 
 /* Edit T-BOARD color/alpha tracks using the alternate property-option table. */
 s32 effEditTBoardColorTrack(s32 request) {
     s32 result;
-    s32 object = ((EffMappingRequest *)request)->object;
+    s32 object = ((effMappingRequest_t *)request)->object;
 
     effMappingState.items = D_0038F7D8;
     effMappingState.itemCount = 8;
-    result = effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value8C);
+    result = effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value8C);
     effMappingState.items = D_0038F658;
     effMappingState.itemCount = 8;
     return result;
@@ -2325,34 +2325,34 @@ s32 effEditTBoardColorTrack(s32 request) {
 s32 effEditRainColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value34);
 }
 
 /* Pass the E-FLARE request's color/alpha tracks and frame bound to the editor. */
 s32 effEditFlareColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value38);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value38);
 }
 
 /* COLOR property callback shared by the native S-family descriptors. */
 s32 effEditSColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value34);
 }
 
 /* Edit R-NOMAL/R-CRCLE COLOR tracks, then restore the default option table. */
 s32 effEditRColorTrack(s32 request) {
     s32 result;
-    s32 object = ((EffMappingRequest *)request)->object;
+    s32 object = ((effMappingRequest_t *)request)->object;
 
     effMappingState.items = effData14;
     effMappingState.itemCount = 8;
-    result = effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
+    result = effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value34);
     effMappingState.items = D_0038F658;
     effMappingState.itemCount = 8;
     return result;
@@ -2362,25 +2362,25 @@ s32 effEditRColorTrack(s32 request) {
 s32 effEditRTrackColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value34);
 }
 
 /* D-family COLOR callback. */
 s32 effEditDoColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value34);
 }
 
 s32 effResolveMappingWithTemporaryTable(s32 request) {
     s32 result;
-    s32 object = ((EffMappingRequest *)request)->object;
+    s32 object = ((effMappingRequest_t *)request)->object;
 
     effMappingState.items = D_0038F7D8;
     effMappingState.itemCount = 8;
-    result = effEditColorTrack(object + 0x4c, object + 0x70, ((EffMappingObject *)object)->valueD8);
+    result = effEditColorTrack(object + 0x4c, object + 0x70, ((effMappingObject_t *)object)->valueD8);
     effMappingState.items = D_0038F658;
     effMappingState.itemCount = 8;
     return result;
@@ -2390,42 +2390,42 @@ s32 effResolveMappingWithTemporaryTable(s32 request) {
 s32 effEditNColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value34);
 }
 
 /* Edit COLOR in the N-family descriptors' nested POLYGON data. */
 s32 effEditNPolygonColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object + 0x3c, object + 0x60, ((EffMappingObject *)object)->value80);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object + 0x3c, object + 0x60, ((effMappingObject_t *)object)->value80);
 }
 
 /* Edit the root U-CYLND color and alpha tracks selected by the request. */
 s32 effEditUCylinderColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value34);
 }
 
 /* Edit COLOR in U-CYLND's nested POLYGON data. */
 s32 effEditUCylinderPolygonColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object + 0x3c, object + 0x60, ((EffMappingObject *)object)->value80);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object + 0x3c, object + 0x60, ((effMappingObject_t *)object)->value80);
 }
 
 /* U-SMOKE/U-SPIRL COLOR uses its own property options; forward editor status. */
 s32 effEditUSmokeSpiralColorTrack(s32 request) {
     s32 result;
-    s32 object = ((EffMappingRequest *)request)->object;
+    s32 object = ((effMappingRequest_t *)request)->object;
 
     effMappingState.items = D_0038F7D8;
     effMappingState.itemCount = 8;
-    result = effEditColorTrack(object + 0x68, object + 0x8c, ((EffMappingObject *)object)->valueF4);
+    result = effEditColorTrack(object + 0x68, object + 0x8c, ((effMappingObject_t *)object)->valueF4);
     effMappingState.items = D_0038F658;
     effMappingState.itemCount = 8;
     return result;
@@ -2435,34 +2435,34 @@ s32 effEditUSmokeSpiralColorTrack(s32 request) {
 s32 effEditUSphereColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value70);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value70);
 }
 
 /* COLOR callback for the CRACK polygon descriptor. */
 s32 effEditCrackPolygonColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value34);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value34);
 }
 
 /* COLOR callback for the FLASH polygon descriptor. */
 s32 effEditFlashPolygonColorTrack(s32 request) {
     s32 object;
 
-    object = ((EffMappingRequest *)request)->object;
-    return effEditColorTrack(object + 0x50, object + 0x74, ((EffMappingObject *)object)->value84);
+    object = ((effMappingRequest_t *)request)->object;
+    return effEditColorTrack(object + 0x50, object + 0x74, ((effMappingObject_t *)object)->value84);
 }
 
 /* 2D's COLOR callback restores its property options and forwards editor status. */
 s32 effEditTwoDimensionalColorTrack(s32 request) {
     s32 result;
-    s32 object = ((EffMappingRequest *)request)->object;
+    s32 object = ((effMappingRequest_t *)request)->object;
 
     effMappingState.items = effData14;
     effMappingState.itemCount = 8;
-    result = effEditColorTrack(object, object + 0x24, ((EffMappingObject *)object)->value8C);
+    result = effEditColorTrack(object, object + 0x24, ((effMappingObject_t *)object)->value8C);
     effMappingState.items = D_0038F658;
     effMappingState.itemCount = 8;
     return result;
@@ -2474,13 +2474,13 @@ extern effDebugMenuItem_t effData13[];
 /* FUNC effEditMColorTrack */
 #ifdef NON_MATCHING
 /* 7 of 25 words differ, first at +0x20: retail loads the rows address before p->x0C and stores count and rows in a different order. */
-void effEditMColorTrack(BaObj *p) {
+void effEditMColorTrack(effBaObj_t *p) {
     s32 object;
 
     effMappingState.items = effData15;
     effMappingState.itemCount = 8;
     object = p->x0C;
-    effEditColorTrack(object + 0x7C, object + 0xA0, ((EffMappingObject *)object)->value108);
+    effEditColorTrack(object + 0x7C, object + 0xA0, ((effMappingObject_t *)object)->value108);
     effMappingState.items = effData13;
     effMappingState.itemCount = 8;
 }
@@ -2507,100 +2507,100 @@ void btlResetEffectWork(void) {
 INCLUDE_ASM(const s32, "code_r1_00242308", effEditScalarTrack);
 
 /* Edit the requested P-family SCALE track; return the native editor status. */
-s32 effEditPScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->valueB8, D_0038F9D0, D_0038F8E8);
+s32 effEditPScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x60), ((effMappingObject_t *)p->x0C)->valueB8, D_0038F9D0, D_0038F8E8);
 }
 
 /* Edit the requested P-family ROTATE track with its independent editor state. */
-s32 effEditPRotationTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x8C), ((EffMappingObject *)p->x0C)->valueB8, D_0038FAD0, D_0038FA20);
+s32 effEditPRotationTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x8C), ((effMappingObject_t *)p->x0C)->valueB8, D_0038FAD0, D_0038FA20);
 }
 
 /* SCALE property callback shared by native G-/K-family descriptors. */
-s32 effEditGkScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x7C), ((EffMappingObject *)p->x0C)->valueD4, D_0038F9D0, D_0038F8E8);
+s32 effEditGkScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x7C), ((effMappingObject_t *)p->x0C)->valueD4, D_0038F9D0, D_0038F8E8);
 }
 
 /* ROTATE property callback for native K-family descriptors. */
-s32 effEditKRotationTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0xA8), ((EffMappingObject *)p->x0C)->valueD4, D_0038FAD0, D_0038FA20);
+s32 effEditKRotationTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0xA8), ((effMappingObject_t *)p->x0C)->valueD4, D_0038FAD0, D_0038FA20);
 }
 
 /* SCALE property callback for native B-family descriptors. */
-s32 effEditBScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->valueB8, D_0038F9D0, D_0038F8E8);
+s32 effEditBScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x34), ((effMappingObject_t *)p->x0C)->valueB8, D_0038F9D0, D_0038F8E8);
 }
 
 /* B-family ROTATE callback; identical forwarding code does not imply P-family SCALE. */
-s32 effEditBRotationTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->valueB8, D_0038F9D0, D_0038F8E8);
+s32 effEditBRotationTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x60), ((effMappingObject_t *)p->x0C)->valueB8, D_0038F9D0, D_0038F8E8);
 }
 
 /* AREA property callback shared by B-/F-family descriptors. */
-s32 effEditBfAreaTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x8C), ((EffMappingObject *)p->x0C)->valueB8, D_0038F9D0, D_0038F8E8);
+s32 effEditBfAreaTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x8C), ((effMappingObject_t *)p->x0C)->valueB8, D_0038F9D0, D_0038F8E8);
 }
 
 /* Pass the requested T-BOARD SCALE track and its frame bound to the editor. */
-s32 effEditTBoardScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
+s32 effEditTBoardScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x34), ((effMappingObject_t *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
 }
 
 extern effDebugMenu_t effData19;
 
-s32 effEditTBoardRotationTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->value8C, &effData20, &effData19);
+s32 effEditTBoardRotationTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x60), ((effMappingObject_t *)p->x0C)->value8C, &effData20, &effData19);
 }
 
 /* SCALE property callback for native W-family descriptors. */
-s32 effEditWScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x80), ((EffMappingObject *)p->x0C)->valueD8, D_0038F9D0, D_0038F8E8);
+s32 effEditWScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x80), ((effMappingObject_t *)p->x0C)->valueD8, D_0038F9D0, D_0038F8E8);
 }
 
 /* ROTATE property callback for native W-family descriptors. */
-s32 effEditWRotationTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0xAC), ((EffMappingObject *)p->x0C)->valueD8, D_0038FAD0, D_0038FA20);
+s32 effEditWRotationTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0xAC), ((effMappingObject_t *)p->x0C)->valueD8, D_0038FAD0, D_0038FA20);
 }
 
 /* Edit the SCALE_UV curve in U-CYLND's POLYGON child; forward editor status. */
-s32 effEditUCylinderPolygonUvScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x90), ((EffMappingObject *)p->x0C)->value80, D_0038F9D0, &effData17);
+s32 effEditUCylinderPolygonUvScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x90), ((effMappingObject_t *)p->x0C)->value80, D_0038F9D0, &effData17);
 }
 
 /* Edit the shared U-SMOKE/U-SPIRL root SCALE curve; forward editor status. */
-s32 effEditUSmokeSpiralScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x9C), ((EffMappingObject *)p->x0C)->valueF4, D_0038F9D0, D_0038F8E8);
+s32 effEditUSmokeSpiralScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x9C), ((effMappingObject_t *)p->x0C)->valueF4, D_0038F9D0, D_0038F8E8);
 }
 
 /* Edit the shared U-SMOKE/U-SPIRL root ROTATE curve; forward editor status. */
-s32 effEditUSmokeSpiralRotationTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0xC8), ((EffMappingObject *)p->x0C)->valueF4, D_0038FAD0, D_0038FA20);
+s32 effEditUSmokeSpiralRotationTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0xC8), ((effMappingObject_t *)p->x0C)->valueF4, D_0038FAD0, D_0038FA20);
 }
 
 /* Edit SCALE_UV in their POLYGON children; forward the numeric editor's status. */
-s32 effEditUSmokeSpiralPolygonUvScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C), ((EffMappingObject *)p->x0C)->valueF4, D_0038F9D0, &effData17);
+s32 effEditUSmokeSpiralPolygonUvScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C), ((effMappingObject_t *)p->x0C)->valueF4, D_0038F9D0, &effData17);
 }
 
 /* Edit the native U-SPHRE root SCALE curve; forward editor status. */
-s32 effEditUSphereScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value70, D_0038F9D0, &effData17);
+s32 effEditUSphereScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x34), ((effMappingObject_t *)p->x0C)->value70, D_0038F9D0, &effData17);
 }
 
 /* Edit the native 2D root SCALE curve; forward editor status. */
-s32 effEditTwoDimensionalScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x34), ((EffMappingObject *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
+s32 effEditTwoDimensionalScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x34), ((effMappingObject_t *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
 }
 
 /* Edit the native 2D root ROTATE curve; forward editor status. */
-s32 effEditTwoDimensionalRotationTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0x60), ((EffMappingObject *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
+s32 effEditTwoDimensionalRotationTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0x60), ((effMappingObject_t *)p->x0C)->value8C, D_0038F9D0, D_0038F8E8);
 }
 
 extern effDebugMenu_t effData16;
 
-s32 effEditMScaleTrack(BaObj *p) {
-    return effEditScalarTrack((EffScalarTrack *)(p->x0C + 0xB0), ((EffMappingObject *)p->x0C)->value108, &effData18, &effData16);
+s32 effEditMScaleTrack(effBaObj_t *p) {
+    return effEditScalarTrack((effScalarTrack_t *)(p->x0C + 0xB0), ((effMappingObject_t *)p->x0C)->value108, &effData18, &effData16);
 }
 
 void effLeaf401(void) {
@@ -2611,32 +2611,32 @@ INCLUDE_ASM(const s32, "code_r1_00242308", effFunc20);
 
 /* ALPHA callback for POLYGON children of the native S-family descriptors. */
 s32 effEditSPolygonAlphaTrack(s32 work) {
-    return func_002BB188((SdfAlphaTrack *)(((BaObj *)work)->x0C + 0x3c), ((EffMappingObject *)((BaObj *)work)->x0C)->value4C);
+    return func_002BB188((effBehavior_AlphaParams_t *)(((effBaObj_t *)work)->x0C + 0x3c), ((effMappingObject_t *)((effBaObj_t *)work)->x0C)->value4C);
 }
 
 /* D-family POLYGON FADE callback; retain bound plus one. */
 s32 effEditDoPolygonFadeTrack(s32 work) {
-    return func_002BB188((SdfAlphaTrack *)(((BaObj *)work)->x0C + 0x60), ((EffMappingObject *)((BaObj *)work)->x0C)->value3C + 1);
+    return func_002BB188((effBehavior_AlphaParams_t *)(((effBaObj_t *)work)->x0C + 0x60), ((effMappingObject_t *)((effBaObj_t *)work)->x0C)->value3C + 1);
 }
 
 /* FADE callback for N-family POLYGON children; preserve bound plus one. */
 s32 effEditNPolygonFadeTrack(s32 work) {
-    return func_002BB188((SdfAlphaTrack *)(((BaObj *)work)->x0C + 0x70), ((EffMappingObject *)((BaObj *)work)->x0C)->value8C + 1);
+    return func_002BB188((effBehavior_AlphaParams_t *)(((effBaObj_t *)work)->x0C + 0x70), ((effMappingObject_t *)((effBaObj_t *)work)->x0C)->value8C + 1);
 }
 
 /* FADE callback for the native U-CYLND POLYGON child. */
 s32 effEditUCylinderPolygonFadeTrack(s32 work) {
-    return func_002BB188((SdfAlphaTrack *)(((BaObj *)work)->x0C + 0x70), ((EffMappingObject *)((BaObj *)work)->x0C)->value8C + 1);
+    return func_002BB188((effBehavior_AlphaParams_t *)(((effBaObj_t *)work)->x0C + 0x70), ((effMappingObject_t *)((effBaObj_t *)work)->x0C)->value8C + 1);
 }
 
 /* FADE callback for the native U-SPHRE POLYGON child. */
 s32 effEditUSpherePolygonFadeTrack(s32 work) {
-    return func_002BB188((SdfAlphaTrack *)(((BaObj *)work)->x0C + 0x60), ((EffMappingObject *)((BaObj *)work)->x0C)->value74 + 1);
+    return func_002BB188((effBehavior_AlphaParams_t *)(((effBaObj_t *)work)->x0C + 0x60), ((effMappingObject_t *)((effBaObj_t *)work)->x0C)->value74 + 1);
 }
 
 s32 effPollFileQueueRecord(s32 request) {
     u8 record[0xE0];
-    EffectPollRecord *status = (EffectPollRecord *)record;
+    effPollRecord_t *status = (effPollRecord_t *)record;
     s32 selectionStatus;
     s32 result = 0x600001;
 
@@ -2676,7 +2676,7 @@ s32 effPollResourceQueueWithoutTlp(void) {
 }
 
 s32 effPollFileRecord(char *path, s32 flags) {
-    EffResourceBankSlot record;
+    effResourceBankSlot_t record;
     s32 kind;
     s32 result = 0x600001;
 
@@ -2763,10 +2763,10 @@ s32 effPollOMaterialPbFile(void) {
 }
 
 u32 fileLoadEffectSlotA(void) {
-    EffResourceBankSlot fileInfo;
+    effResourceBankSlot_t fileInfo;
     FileJobPayload *job;
     FileJob *entry;
-    EffFileResourceRecord *resource;
+    effFileResourceRecord_t *resource;
     void *fileData;
     s32 status;
     u32 result;
@@ -2786,7 +2786,7 @@ u32 fileLoadEffectSlotA(void) {
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
         effQueuedFileHandle = (FileJobPayload *)entry->id;
-        resource = (EffFileResourceRecord *)effFindAssetData(entry);
+        resource = (effFileResourceRecord_t *)effFindAssetData(entry);
         strcpy(entry->name, resource->name);
         fileData = fileResolvePrimaryBuffer(effQueuedFileHandle);
         memcpy(resource->buffer, fileData, resource->size);
@@ -2806,12 +2806,12 @@ u32 fileLoadEffectSlotA(void) {
 INCLUDE_ASM(const s32, "code_r1_00242308", effPollAndQueueCopiedFileResource);
 
 u32 fileLoadEffectSlotHelp(void) {
-    EffResourceBankSlot fileInfo;
+    effResourceBankSlot_t fileInfo;
     u32 result;
     s32 status;
     FileJobPayload *job;
     FileJob *entry;
-    EffFileResourceRecord *resource;
+    effFileResourceRecord_t *resource;
     u8 *buffer;
     sdfFileCmdHandle_t *command;
     u32 totalLength;
@@ -2839,7 +2839,7 @@ u32 fileLoadEffectSlotHelp(void) {
         fileJobSetPrimaryData(job, buffer, totalLength, 0);
         entry = fileAppendJob(effFileQueue, (u32)job);
         effCurrentFileQueueEntry = entry;
-        resource = (EffFileResourceRecord *)effFindAssetData(entry);
+        resource = (effFileResourceRecord_t *)effFindAssetData(entry);
         strcpy(entry->name, resource->name);
         memcpy(effSelectedJobHeader, entry, 0x80);
         queuedFile = entry->id;
@@ -2867,10 +2867,10 @@ u32 fileLoadEffectSlotHelp(void) {
 }
 
 u32 fileLoadEffectSlotB(void) {
-    EffResourceBankSlot fileInfo;
+    effResourceBankSlot_t fileInfo;
     FileJobPayload *job;
     FileJob *entry;
-    EffFileResourceRecord *resource;
+    effFileResourceRecord_t *resource;
     void *fileData;
     s32 status;
     u32 result;
@@ -2890,7 +2890,7 @@ u32 fileLoadEffectSlotB(void) {
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
         effQueuedFileHandle = (FileJobPayload *)entry->id;
-        resource = (EffFileResourceRecord *)effFindAssetData(entry);
+        resource = (effFileResourceRecord_t *)effFindAssetData(entry);
         strcpy(entry->name, resource->name);
         fileData = fileResolvePrimaryBuffer(effQueuedFileHandle);
         memcpy(resource->buffer, fileData, resource->size);
@@ -2926,10 +2926,10 @@ INCLUDE_RODATA(const s32, "code_r1_00242308", effStrToolEffectMat);
 INCLUDE_RODATA(const s32, "code_r1_00242308", effStrToolEffectHlp);
 
 u32 effLoadFileSlotF2(void) {
-    EffResourceBankSlot fileInfo;
+    effResourceBankSlot_t fileInfo;
     FileJobPayload *job;
     FileJob *entry;
-    EffFileResourceRecord *resource;
+    effFileResourceRecord_t *resource;
     void *fileData;
     s32 status;
     u32 result;
@@ -2949,7 +2949,7 @@ u32 effLoadFileSlotF2(void) {
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
         effQueuedFileHandle = (FileJobPayload *)entry->id;
-        resource = (EffFileResourceRecord *)effFindAssetData(entry);
+        resource = (effFileResourceRecord_t *)effFindAssetData(entry);
         strcpy(entry->name, resource->name);
         fileData = fileResolvePrimaryBuffer(effQueuedFileHandle);
         memcpy(resource->buffer, fileData, resource->size);
@@ -2967,10 +2967,10 @@ u32 effLoadFileSlotF2(void) {
 }
 
 u32 effLoadMaterialFile(void) {
-    EffResourceBankSlot fileInfo;
+    effResourceBankSlot_t fileInfo;
     FileJobPayload *job;
     FileJob *entry;
-    EffFileResourceRecord *resource;
+    effFileResourceRecord_t *resource;
     void *fileData;
     s32 status;
     u32 result;
@@ -2990,7 +2990,7 @@ u32 effLoadMaterialFile(void) {
         effCurrentFileQueueEntry = entry;
         memcpy(effSelectedJobHeader, entry, 0x80);
         effQueuedFileHandle = (FileJobPayload *)entry->id;
-        resource = (EffFileResourceRecord *)effFindAssetData(entry);
+        resource = (effFileResourceRecord_t *)effFindAssetData(entry);
         strcpy(entry->name, resource->name);
         fileData = fileResolvePrimaryBuffer(effQueuedFileHandle);
         memcpy(resource->buffer, fileData, resource->size);
@@ -3032,7 +3032,7 @@ u16 Start_sbtl(s32 flags) {
 }
 
 #ifdef VERSION_RAIDOU1
-struct EffCopiedPayload;
+struct effCopiedPayload_t;
 
 void sbtlCallBtlSetLightMap();
 void sbtlLeaf49(void);
@@ -3042,7 +3042,7 @@ void effResetDefaultColorTables();
 void sbtlLeaf50();
 void effLeaf376(void);
 u32 effLeaf377();
-void effDestroyCopiedEffectPayload(struct EffCopiedPayload *payload);
+void effDestroyCopiedEffectPayload(struct effCopiedPayload_t *payload);
 u32 effLeaf378(void *);
 void effLeaf379(void);
 void effLeaf380(void);
@@ -3062,7 +3062,7 @@ extern sdfGrOt_t sdfDrawFlagListVerticesDataEntry;
 extern sdfGrOt_t effData2;
 extern sdfGrOt_t dds3Data8;
 
-EffResourceOps effRuntimeResourceOperations[14] = {
+effResourceOps_t effRuntimeResourceOperations[14] = {
     { NULL, NULL, NULL, NULL, NULL, NULL, 0x0 },
     { NULL, NULL, sbtlCallBtlSetLightMap, NULL, sbtlLeaf49, NULL, 0x28 },
     { NULL, NULL, sbtlCallSetUnitColorRGB, NULL, sbtlCallSetUnitColorRGB2, NULL, 0x14 },
@@ -3086,7 +3086,7 @@ sdfGrOt_t *sdfDrawFlagListVerticesData[8] = {
 };
 
 /* Effect editor pages for the effect kinds; see effDebugMenu_t. */
-s32 effEditMScaleTrack(BaObj *p);
+s32 effEditMScaleTrack(effBaObj_t *p);
 extern f32 bssWork66;
 extern f32 bssWork67;
 extern u8 bssWork68;
@@ -4674,7 +4674,7 @@ extern char sysStrToolEffectSamplePSpirl1[];
 extern char sysStrToolEffectSampleTBoard0[];
 extern char sysStrToolEffectSampleTBoard1[];
 
-extern EffFileJobRequest sysPARTICLEDataEntry;
+extern effFileJobRequest_t sysPARTICLEDataEntry;
 extern effDebugMenuItem_t sysPARTICLEDataEntry89[];
 extern effDebugMenu_t sysPARTICLEDataEntry69;
 extern effDebugMenuItem_t sysPARTICLEDataEntry90[];
@@ -4685,7 +4685,7 @@ extern effDebugMenuItem_t sysPARTICLEDataEntry92[];
 extern effDebugMenu_t sysPARTICLEDataEntry72;
 extern effDebugMenuItem_t sysPARTICLEDataEntry19[];
 extern effDebugMenu_t sysPARTICLEDataEntry2;
-extern EffFileJobRequest sysPARTICLEDataEntry93;
+extern effFileJobRequest_t sysPARTICLEDataEntry93;
 extern effDebugMenuItem_t sysPARTICLEDataEntry94[];
 extern effDebugMenu_t sysPARTICLEDataEntry73;
 extern effDebugMenuItem_t sysPARTICLEDataEntry95[];
@@ -4694,7 +4694,7 @@ extern effDebugMenuItem_t sysPARTICLEDataEntry96[];
 extern effDebugMenu_t sysPARTICLEDataEntry75;
 extern effDebugMenuItem_t sysPARTICLEDataEntry20[];
 extern effDebugMenu_t sysPARTICLEDataEntry3;
-extern EffFileJobRequest sysPARTICLEDataEntry21;
+extern effFileJobRequest_t sysPARTICLEDataEntry21;
 extern effDebugMenuItem_t sysPARTICLEDataEntry97[];
 extern effDebugMenu_t sysPARTICLEDataEntry76;
 extern effDebugMenuItem_t sysPARTICLEDataEntry98[];
@@ -4705,7 +4705,7 @@ extern effDebugMenuItem_t sysPARTICLEDataEntry100[];
 extern effDebugMenu_t sysPARTICLEDataEntry79;
 extern effDebugMenuItem_t sysPARTICLEDataEntry22[];
 extern effDebugMenu_t sysPARTICLEDataEntry4;
-extern EffFileJobRequest sysPARTICLEDataEntry5;
+extern effFileJobRequest_t sysPARTICLEDataEntry5;
 extern effDebugMenuItem_t sysPARTICLEDataEntry101[];
 extern effDebugMenu_t sysPARTICLEDataEntry80;
 extern effDebugMenuItem_t sysPARTICLEDataEntry102[];
@@ -4714,7 +4714,7 @@ extern effDebugMenuItem_t sysPARTICLEDataEntry103[];
 extern effDebugMenu_t sysPARTICLEDataEntry82;
 extern effDebugMenuItem_t sysPARTICLEDataEntry23[];
 extern effDebugMenu_t sysPARTICLEDataEntry6;
-extern EffFileJobRequest sysPARTICLEDataEntry24;
+extern effFileJobRequest_t sysPARTICLEDataEntry24;
 extern effDebugMenuItem_t sysPARTICLEDataEntry104[];
 extern effDebugMenu_t sysPARTICLEDataEntry83;
 extern effDebugMenuItem_t sysPARTICLEDataEntry105[];
@@ -4723,7 +4723,7 @@ extern effDebugMenuItem_t sysPARTICLEDataEntry106[];
 extern effDebugMenu_t sysPARTICLEDataEntry85;
 extern effDebugMenuItem_t sysPARTICLEDataEntry25[];
 extern effDebugMenu_t sysPARTICLEDataEntry7;
-extern EffFileJobRequest sysPARTICLEDataEntry8;
+extern effFileJobRequest_t sysPARTICLEDataEntry8;
 extern effDebugMenuItem_t sysPARTICLEDataEntry107[];
 extern effDebugMenu_t sysPARTICLEDataEntry86;
 extern effDebugMenuItem_t sysPARTICLEDataEntry108[];
@@ -4732,7 +4732,7 @@ extern effDebugMenuItem_t sysPARTICLEDataEntry109[];
 extern effDebugMenu_t sysPARTICLEDataEntry88;
 extern effDebugMenuItem_t sysPARTICLEDataEntry26[];
 extern effDebugMenu_t sysPARTICLEDataEntry9;
-extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry13;
+extern effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry13;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry63[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry51;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry64[];
@@ -4741,14 +4741,14 @@ extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry65[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry53;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry14[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry;
-extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry2;
+extern effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry2;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry66[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry54;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry67[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry55;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry15[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry3;
-extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry68;
+extern effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry68;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry69[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry56;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry70[];
@@ -4757,21 +4757,21 @@ extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry71[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry58;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry16[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry4;
-extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry17;
+extern effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry17;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry72[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry59;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry73[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry60;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry18[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry5;
-extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry6;
+extern effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry6;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry74[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry61;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry75[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry62;
 extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry19[];
 extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry7;
-extern EffFileJobRequest effCreatePolyTrackTaskDataEntry66;
+extern effFileJobRequest_t effCreatePolyTrackTaskDataEntry66;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry67[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry49;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry68[];
@@ -4782,7 +4782,7 @@ extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry70[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry52;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry8[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry;
-extern EffFileJobRequest effCreatePolyTrackTaskDataEntry71;
+extern effFileJobRequest_t effCreatePolyTrackTaskDataEntry71;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry72[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry53;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry73[];
@@ -4791,7 +4791,7 @@ extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry74[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry55;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry9[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry2;
-extern EffFileJobRequest effCreatePolyTrackTaskDataEntry75;
+extern effFileJobRequest_t effCreatePolyTrackTaskDataEntry75;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry76[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry56;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry77[];
@@ -4802,7 +4802,7 @@ extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry79[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry59;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry10[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry3;
-extern EffFileJobRequest effCreatePolyTrackTaskDataEntry80;
+extern effFileJobRequest_t effCreatePolyTrackTaskDataEntry80;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry81[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry60;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry82[];
@@ -4811,7 +4811,7 @@ extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry83[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry62;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry11[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry4;
-extern EffFileJobRequest effCreatePolyTrackTaskDataEntry12;
+extern effFileJobRequest_t effCreatePolyTrackTaskDataEntry12;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry84[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry63;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry85[];
@@ -4820,75 +4820,75 @@ extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry86[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry65;
 extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry13[];
 extern effDebugMenu_t effCreatePolyTrackTaskDataEntry5;
-extern EffFileJobRequest fileLoadEffectSlotAData;
+extern effFileJobRequest_t fileLoadEffectSlotAData;
 extern effDebugMenuItem_t effData9Entry13[];
 extern effDebugMenu_t effData9Entry7;
-extern EffFileJobRequest effPollAndQueueCopiedFileResourceData;
+extern effFileJobRequest_t effPollAndQueueCopiedFileResourceData;
 extern effDebugMenuItem_t effData9Entry14[];
 extern effDebugMenu_t effData9Entry8;
-extern EffFileJobRequest effCreateBlurTaskDataEntry10;
+extern effFileJobRequest_t effCreateBlurTaskDataEntry10;
 extern effDebugMenuItem_t effCreateBlurTaskDataEntry11[];
 extern effDebugMenu_t effCreateBlurTaskDataEntry;
-extern EffFileJobRequest effCreateBlurTaskDataEntry45;
+extern effFileJobRequest_t effCreateBlurTaskDataEntry45;
 extern effDebugMenuItem_t effCreateBlurTaskDataEntry46[];
 extern effDebugMenu_t effCreateBlurTaskDataEntry42;
 extern effDebugMenuItem_t effCreateBlurTaskDataEntry12[];
 extern effDebugMenu_t effCreateBlurTaskDataEntry2;
-extern EffFileJobRequest effCreateBlurTaskDataEntry3;
+extern effFileJobRequest_t effCreateBlurTaskDataEntry3;
 extern effDebugMenuItem_t effCreateBlurTaskDataEntry47[];
 extern effDebugMenu_t effCreateBlurTaskDataEntry43;
 extern effDebugMenuItem_t effCreateBlurTaskDataEntry13[];
 extern effDebugMenu_t effCreateBlurTaskDataEntry4;
-extern EffFileJobRequest effCreateBlurTaskDataEntry14;
+extern effFileJobRequest_t effCreateBlurTaskDataEntry14;
 extern effDebugMenuItem_t effCreateBlurTaskDataEntry48[];
 extern effDebugMenu_t effCreateBlurTaskDataEntry44;
 extern effDebugMenuItem_t effCreateBlurTaskDataEntry15[];
 extern effDebugMenu_t effCreateBlurTaskDataEntry5;
-extern EffFileJobRequest effCreateBlurTaskDataEntry16;
+extern effFileJobRequest_t effCreateBlurTaskDataEntry16;
 extern effDebugMenuItem_t effCreateBlurTaskDataEntry17[];
 extern effDebugMenu_t effCreateBlurTaskDataEntry6;
-extern EffFileJobRequest effCreateFilterTaskDataEntry5;
+extern effFileJobRequest_t effCreateFilterTaskDataEntry5;
 extern effDebugMenuItem_t effCreateFilterTaskDataEntry6[];
 extern effDebugMenu_t effCreateFilterTaskDataEntry;
-extern EffFileJobRequest effCreateFilterTaskDataEntry7;
+extern effFileJobRequest_t effCreateFilterTaskDataEntry7;
 extern effDebugMenuItem_t effCreateFilterTaskDataEntry15[];
 extern effDebugMenu_t effCreateFilterTaskDataEntry14;
 extern effDebugMenuItem_t effCreateFilterTaskDataEntry8[];
 extern effDebugMenu_t effCreateFilterTaskDataEntry2;
-extern EffFileJobRequest effData9Entry15;
+extern effFileJobRequest_t effData9Entry15;
 extern effDebugMenuItem_t effData9Entry39[];
 extern effDebugMenu_t effData9Entry36;
 extern effDebugMenuItem_t effData9Entry16[];
 extern effDebugMenu_t effData9Entry9;
-extern EffFileJobRequest sysPOLYTEXDataEntry4;
+extern effFileJobRequest_t sysPOLYTEXDataEntry4;
 extern effDebugMenuItem_t sysPOLYTEXDataEntry24[];
 extern effDebugMenu_t sysPOLYTEXDataEntry22;
 extern effDebugMenuItem_t sysPOLYTEXDataEntry5[];
 extern effDebugMenu_t sysPOLYTEXDataEntry;
-extern EffFileJobRequest sysPOLYTEXDataEntry6;
+extern effFileJobRequest_t sysPOLYTEXDataEntry6;
 extern effDebugMenuItem_t sysPOLYTEXDataEntry25[];
 extern effDebugMenu_t sysPOLYTEXDataEntry23;
 extern effDebugMenuItem_t sysPOLYTEXDataEntry7[];
 extern effDebugMenu_t sysPOLYTEXDataEntry2;
-extern EffFileJobRequest effCreateEnvironmentTaskDataEntry10;
+extern effFileJobRequest_t effCreateEnvironmentTaskDataEntry10;
 extern effDebugMenuItem_t effCreateEnvironmentTaskDataEntry11[];
 extern effDebugMenu_t effCreateEnvironmentTaskDataEntry;
-extern EffFileJobRequest effCreateEnvironmentTaskDataEntry2;
+extern effFileJobRequest_t effCreateEnvironmentTaskDataEntry2;
 extern effDebugMenuItem_t effCreateEnvironmentTaskDataEntry12[];
 extern effDebugMenu_t effCreateEnvironmentTaskDataEntry3;
-extern EffFileJobRequest effCreatePolyFlashTaskDataEntry12;
+extern effFileJobRequest_t effCreatePolyFlashTaskDataEntry12;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry124[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry103;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry13[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry;
-extern EffFileJobRequest effCreatePolyFlashTaskDataEntry125;
+extern effFileJobRequest_t effCreatePolyFlashTaskDataEntry125;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry126[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry104;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry127[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry105;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry14[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry2;
-extern EffFileJobRequest effCreatePolyFlashTaskDataEntry128;
+extern effFileJobRequest_t effCreatePolyFlashTaskDataEntry128;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry129[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry106;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry130[];
@@ -4897,14 +4897,14 @@ extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry131[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry108;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry15[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry3;
-extern EffFileJobRequest effCreatePolyFlashTaskDataEntry132;
+extern effFileJobRequest_t effCreatePolyFlashTaskDataEntry132;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry133[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry109;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry134[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry110;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry16[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry4;
-extern EffFileJobRequest effCreatePolyFlashTaskDataEntry135;
+extern effFileJobRequest_t effCreatePolyFlashTaskDataEntry135;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry136[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry111;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry137[];
@@ -4913,7 +4913,7 @@ extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry138[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry113;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry17[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry5;
-extern EffFileJobRequest effCreatePolyFlashTaskDataEntry18;
+extern effFileJobRequest_t effCreatePolyFlashTaskDataEntry18;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry139[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry114;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry140[];
@@ -4924,7 +4924,7 @@ extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry142[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry117;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry19[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry6;
-extern EffFileJobRequest effCreatePolyFlashTaskDataEntry143;
+extern effFileJobRequest_t effCreatePolyFlashTaskDataEntry143;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry144[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry118;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry145[];
@@ -4933,7 +4933,7 @@ extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry146[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry120;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry20[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry7;
-extern EffFileJobRequest effCreatePolyFlashTaskDataEntry147;
+extern effFileJobRequest_t effCreatePolyFlashTaskDataEntry147;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry148[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry121;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry149[];
@@ -4942,40 +4942,40 @@ extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry150[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry123;
 extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry21[];
 extern effDebugMenu_t effCreatePolyFlashTaskDataEntry8;
-extern EffFileJobRequest effCreateEnvironmentTaskDataEntry13;
+extern effFileJobRequest_t effCreateEnvironmentTaskDataEntry13;
 extern effDebugMenuItem_t effCreateEnvironmentTaskDataEntry14[];
 extern effDebugMenu_t effCreateEnvironmentTaskDataEntry4;
-extern EffFileJobRequest effCreateEnvironmentTaskDataEntry15;
+extern effFileJobRequest_t effCreateEnvironmentTaskDataEntry15;
 extern effDebugMenuItem_t effCreateEnvironmentTaskDataEntry16[];
 extern effDebugMenu_t effCreateEnvironmentTaskDataEntry5;
-extern EffFileJobRequest effCreatePolyRingTaskDataEntry28;
+extern effFileJobRequest_t effCreatePolyRingTaskDataEntry28;
 extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry29[];
 extern effDebugMenu_t effCreatePolyRingTaskDataEntry25;
 extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry5[];
 extern effDebugMenu_t effCreatePolyRingTaskDataEntry;
-extern EffFileJobRequest effCreatePolyRingTaskDataEntry6;
+extern effFileJobRequest_t effCreatePolyRingTaskDataEntry6;
 extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry30[];
 extern effDebugMenu_t effCreatePolyRingTaskDataEntry26;
 extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry7[];
 extern effDebugMenu_t effCreatePolyRingTaskDataEntry2;
-extern EffFileJobRequest effCreatePolyRingTaskDataEntry31;
+extern effFileJobRequest_t effCreatePolyRingTaskDataEntry31;
 extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry32[];
 extern effDebugMenu_t effCreatePolyRingTaskDataEntry27;
 extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry8[];
 extern effDebugMenu_t effCreatePolyRingTaskDataEntry3;
-extern EffFileJobRequest effCreatePolyThunderTaskDataEntry;
+extern effFileJobRequest_t effCreatePolyThunderTaskDataEntry;
 extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry23[];
 extern effDebugMenu_t effCreatePolyThunderTaskDataEntry20;
 extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry6[];
 extern effDebugMenu_t effCreatePolyThunderTaskDataEntry2;
-extern EffFileJobRequest effCreatePolyThunderTaskDataEntry24;
+extern effFileJobRequest_t effCreatePolyThunderTaskDataEntry24;
 extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry25[];
 extern effDebugMenu_t effCreatePolyThunderTaskDataEntry21;
 extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry26[];
 extern effDebugMenu_t effCreatePolyThunderTaskDataEntry22;
 extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry7[];
 extern effDebugMenu_t effCreatePolyThunderTaskDataEntry3;
-extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry62;
+extern effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry62;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry63[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry45;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry64[];
@@ -4986,7 +4986,7 @@ extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry66[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry48;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry12[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry;
-extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry67;
+extern effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry67;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry68[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry49;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry69[];
@@ -4995,7 +4995,7 @@ extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry70[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry51;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry13[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry2;
-extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry71;
+extern effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry71;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry72[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry52;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry73[];
@@ -5006,7 +5006,7 @@ extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry75[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry55;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry14[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry3;
-extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry76;
+extern effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry76;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry77[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry56;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry78[];
@@ -5015,7 +5015,7 @@ extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry79[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry58;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry15[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry4;
-extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry5;
+extern effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry5;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry80[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry59;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry81[];
@@ -5024,7 +5024,7 @@ extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry82[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry61;
 extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry16[];
 extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry6;
-extern EffFileJobRequest sysPOLYWINDDataEntry;
+extern effFileJobRequest_t sysPOLYWINDDataEntry;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry65[];
 extern effDebugMenu_t sysPOLYWINDDataEntry46;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry66[];
@@ -5039,7 +5039,7 @@ extern effDebugMenuItem_t sysPOLYWINDDataEntry70[];
 extern effDebugMenu_t sysPOLYWINDDataEntry51;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry9[];
 extern effDebugMenu_t sysPOLYWINDDataEntry2;
-extern EffFileJobRequest sysPOLYWINDDataEntry71;
+extern effFileJobRequest_t sysPOLYWINDDataEntry71;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry72[];
 extern effDebugMenu_t sysPOLYWINDDataEntry52;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry73[];
@@ -5052,7 +5052,7 @@ extern effDebugMenuItem_t sysPOLYWINDDataEntry76[];
 extern effDebugMenu_t sysPOLYWINDDataEntry56;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry10[];
 extern effDebugMenu_t sysPOLYWINDDataEntry3;
-extern EffFileJobRequest sysPOLYWINDDataEntry77;
+extern effFileJobRequest_t sysPOLYWINDDataEntry77;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry78[];
 extern effDebugMenu_t sysPOLYWINDDataEntry57;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry79[];
@@ -5061,7 +5061,7 @@ extern effDebugMenuItem_t sysPOLYWINDDataEntry80[];
 extern effDebugMenu_t sysPOLYWINDDataEntry59;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry11[];
 extern effDebugMenu_t sysPOLYWINDDataEntry4;
-extern EffFileJobRequest sysPOLYWINDDataEntry81;
+extern effFileJobRequest_t sysPOLYWINDDataEntry81;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry82[];
 extern effDebugMenu_t sysPOLYWINDDataEntry60;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry83[];
@@ -5074,7 +5074,7 @@ extern effDebugMenuItem_t sysPOLYWINDDataEntry86[];
 extern effDebugMenu_t sysPOLYWINDDataEntry64;
 extern effDebugMenuItem_t sysPOLYWINDDataEntry12[];
 extern effDebugMenu_t sysPOLYWINDDataEntry5;
-extern EffFileJobRequest effCreatePolyScalyTaskDataEntry44;
+extern effFileJobRequest_t effCreatePolyScalyTaskDataEntry44;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry45[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry34;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry46[];
@@ -5083,7 +5083,7 @@ extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry47[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry36;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry7[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry;
-extern EffFileJobRequest effCreatePolyScalyTaskDataEntry48;
+extern effFileJobRequest_t effCreatePolyScalyTaskDataEntry48;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry49[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry37;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry50[];
@@ -5092,7 +5092,7 @@ extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry51[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry39;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry8[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry2;
-extern EffFileJobRequest effCreatePolyScalyTaskDataEntry52;
+extern effFileJobRequest_t effCreatePolyScalyTaskDataEntry52;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry53[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry40;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry54[];
@@ -5101,15 +5101,15 @@ extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry55[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry42;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry9[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry3;
-extern EffFileJobRequest effCreatePolyScalyTaskDataEntry56;
+extern effFileJobRequest_t effCreatePolyScalyTaskDataEntry56;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry57[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry43;
 extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry10[];
 extern effDebugMenu_t effCreatePolyScalyTaskDataEntry4;
-extern EffFileJobRequest fileLoadEffectSlotBData;
+extern effFileJobRequest_t fileLoadEffectSlotBData;
 extern effDebugMenuItem_t effData9Entry17[];
 extern effDebugMenu_t effData9Entry10;
-extern EffFileJobRequest effCreatePolyCrackTaskDataEntry10;
+extern effFileJobRequest_t effCreatePolyCrackTaskDataEntry10;
 extern effDebugMenuItem_t effCreatePolyCrackTaskDataEntry11[];
 extern effDebugMenu_t effCreatePolyCrackTaskDataEntry7;
 extern effDebugMenuItem_t effCreatePolyCrackTaskDataEntry12[];
@@ -5120,7 +5120,7 @@ extern effDebugMenuItem_t effCreatePolyCrackTaskDataEntry13[];
 extern effDebugMenu_t effCreatePolyCrackTaskDataEntry9;
 extern effDebugMenuItem_t effCreatePolyCrackTaskDataEntry2[];
 extern effDebugMenu_t effCreatePolyCrackTaskDataEntry;
-extern EffFileJobRequest effCreatePolyWindTaskDataEntry83;
+extern effFileJobRequest_t effCreatePolyWindTaskDataEntry83;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry84[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry63;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry85[];
@@ -5131,7 +5131,7 @@ extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry87[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry66;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry12[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry;
-extern EffFileJobRequest effCreatePolyWindTaskDataEntry88;
+extern effFileJobRequest_t effCreatePolyWindTaskDataEntry88;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry89[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry67;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry90[];
@@ -5140,7 +5140,7 @@ extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry91[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry69;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry13[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry2;
-extern EffFileJobRequest effCreatePolyWindTaskDataEntry14;
+extern effFileJobRequest_t effCreatePolyWindTaskDataEntry14;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry92[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry70;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry93[];
@@ -5151,7 +5151,7 @@ extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry95[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry73;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry15[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry3;
-extern EffFileJobRequest effCreatePolyWindTaskDataEntry96;
+extern effFileJobRequest_t effCreatePolyWindTaskDataEntry96;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry97[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry74;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry98[];
@@ -5160,7 +5160,7 @@ extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry99[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry76;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry16[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry4;
-extern EffFileJobRequest effCreatePolyWindTaskDataEntry100;
+extern effFileJobRequest_t effCreatePolyWindTaskDataEntry100;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry101[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry77;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry102[];
@@ -5169,7 +5169,7 @@ extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry103[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry79;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry17[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry5;
-extern EffFileJobRequest effCreatePolyWindTaskDataEntry18;
+extern effFileJobRequest_t effCreatePolyWindTaskDataEntry18;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry104[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry80;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry105[];
@@ -5178,76 +5178,76 @@ extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry106[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry82;
 extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry19[];
 extern effDebugMenu_t effCreatePolyWindTaskDataEntry6;
-extern EffFileJobRequest sysBATTLEONLYDataEntry;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry34[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry2;
-extern EffFileJobRequest sysBATTLEONLYDataEntry3;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry3;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry35[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry4;
-extern EffFileJobRequest sysBATTLEONLYDataEntry5;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry5;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry36[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry6;
-extern EffFileJobRequest effLoadFileSlotF2Data;
+extern effFileJobRequest_t effLoadFileSlotF2Data;
 extern effDebugMenuItem_t effData9Entry18[];
 extern effDebugMenu_t effData9Entry11;
-extern EffFileJobRequest sysBATTLEONLYDataEntry37;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry37;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry38[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry7;
-extern EffFileJobRequest sysBATTLEONLYDataEntry8;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry8;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry39[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry9;
-extern EffFileJobRequest sysBATTLEONLYDataEntry10;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry10;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry40[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry11;
-extern EffFileJobRequest sysBATTLEONLYDataEntry12;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry12;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry41[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry13;
-extern EffFileJobRequest sysBATTLEONLYDataEntry42;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry42;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry43[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry14;
-extern EffFileJobRequest sysBATTLEONLYDataEntry15;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry15;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry44[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry16;
-extern EffFileJobRequest effLoadMaterialFileData;
+extern effFileJobRequest_t effLoadMaterialFileData;
 extern effDebugMenuItem_t effData9Entry19[];
 extern effDebugMenu_t effData9Entry12;
-extern EffFileJobRequest effCreateTwoDimensionalTaskDataEntry2;
+extern effFileJobRequest_t effCreateTwoDimensionalTaskDataEntry2;
 extern effDebugMenuItem_t effCreateTwoDimensionalTaskDataEntry9[];
 extern effDebugMenu_t effCreateTwoDimensionalTaskDataEntry8;
 extern effDebugMenuItem_t effCreateTwoDimensionalTaskDataEntry3[];
 extern effDebugMenu_t effCreateTwoDimensionalTaskDataEntry;
-extern EffFileJobRequest sysBATTLEONLYDataEntry45;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry45;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry46[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry17;
-extern EffFileJobRequest sysBATTLEONLYDataEntry18;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry18;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry47[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry19;
-extern EffFileJobRequest sysBATTLEONLYDataEntry20;
+extern effFileJobRequest_t sysBATTLEONLYDataEntry20;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry48[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry21;
-extern EffCameraCreateRow sysPARTICLEData[];
-extern EffCameraCreateRow effCreatePolyTrackControlTaskData[];
-extern EffCameraCreateRow effCreatePolyTrackTaskData[];
-extern EffCameraCreateRow effData9Entry[];
-extern EffCameraCreateRow effCreateBlurTaskData[];
-extern EffCameraCreateRow effCreateFilterTaskData[];
-extern EffCameraCreateRow effData9Entry2[];
-extern EffCameraCreateRow sysPOLYTEXData[];
-extern EffCameraCreateRow effCreateEnvironmentTaskData[];
-extern EffCameraCreateRow effCreatePolyFlashTaskData[];
-extern EffCameraCreateRow effCreatePolyRingTaskData[];
-extern EffCameraCreateRow effCreatePolyThunderTaskData[];
-extern EffCameraCreateRow effCreatePolyTwinkleTaskData[];
-extern EffCameraCreateRow sysPOLYWINDData[];
-extern EffCameraCreateRow effCreatePolyScalyTaskData[];
-extern EffCameraCreateRow effData9Entry3[];
-extern EffCameraCreateRow effCreatePolyCrackTaskData[];
-extern EffCameraCreateRow sysBATTLEONLYData[];
-extern EffCameraCreateRow effData9Entry4[];
-extern EffCameraCreateRow effData9Entry5[];
-extern EffCameraCreateRow effData9Entry6[];
-extern EffCameraCreateRow effCreateTwoDimensionalTaskData[];
-extern EffCameraCreateRow effCreatePolyWindTaskData[];
+extern effCameraCreateRow_t sysPARTICLEData[];
+extern effCameraCreateRow_t effCreatePolyTrackControlTaskData[];
+extern effCameraCreateRow_t effCreatePolyTrackTaskData[];
+extern effCameraCreateRow_t effData9Entry[];
+extern effCameraCreateRow_t effCreateBlurTaskData[];
+extern effCameraCreateRow_t effCreateFilterTaskData[];
+extern effCameraCreateRow_t effData9Entry2[];
+extern effCameraCreateRow_t sysPOLYTEXData[];
+extern effCameraCreateRow_t effCreateEnvironmentTaskData[];
+extern effCameraCreateRow_t effCreatePolyFlashTaskData[];
+extern effCameraCreateRow_t effCreatePolyRingTaskData[];
+extern effCameraCreateRow_t effCreatePolyThunderTaskData[];
+extern effCameraCreateRow_t effCreatePolyTwinkleTaskData[];
+extern effCameraCreateRow_t sysPOLYWINDData[];
+extern effCameraCreateRow_t effCreatePolyScalyTaskData[];
+extern effCameraCreateRow_t effData9Entry3[];
+extern effCameraCreateRow_t effCreatePolyCrackTaskData[];
+extern effCameraCreateRow_t sysBATTLEONLYData[];
+extern effCameraCreateRow_t effData9Entry4[];
+extern effCameraCreateRow_t effData9Entry5[];
+extern effCameraCreateRow_t effData9Entry6[];
+extern effCameraCreateRow_t effCreateTwoDimensionalTaskData[];
+extern effCameraCreateRow_t effCreatePolyWindTaskData[];
 extern effDebugMenuItem_t effReinitializeFileQueueDataEntry[];
 extern effDebugMenu_t effUpdatePartsListEditorData;
 extern effDebugMenuItem_t effFinalizeQueuedFileDataEntry[];
@@ -5296,7 +5296,7 @@ extern effDebugMenu_t effData20;
 extern effDebugMenuItem_t effFunc20DataEntry[];
 extern effDebugMenu_t effFunc20Data;
 
-EffFileJobRequest sysPARTICLEDataEntry = {
+effFileJobRequest_t sysPARTICLEDataEntry = {
     sysPARTICLEDataEntry10, 1, { 0 }, 1, { 0 }, sysPARTICLEDataEntry16, 0xF0,
 };
 
@@ -5379,7 +5379,7 @@ effDebugMenu_t sysPARTICLEDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPARTICLEDataEntry93 = {
+effFileJobRequest_t sysPARTICLEDataEntry93 = {
     sysPARTICLEDataEntry11, 1, { 0 }, 2, { 0 }, sysPARTICLEDataEntry126, 0xE0,
 };
 
@@ -5448,7 +5448,7 @@ effDebugMenu_t sysPARTICLEDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPARTICLEDataEntry21 = {
+effFileJobRequest_t sysPARTICLEDataEntry21 = {
     sysPARTICLEDataEntry12, 1, { 0 }, 3, { 0 }, sysPARTICLEDataEntry40, 0xF4,
 };
 
@@ -5532,7 +5532,7 @@ effDebugMenu_t sysPARTICLEDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPARTICLEDataEntry5 = {
+effFileJobRequest_t sysPARTICLEDataEntry5 = {
     sysPARTICLEDataEntry13, 1, { 0 }, 4, { 0 }, sysPARTICLEDataEntry17, 0xE8,
 };
 
@@ -5603,7 +5603,7 @@ effDebugMenu_t sysPARTICLEDataEntry6 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPARTICLEDataEntry24 = {
+effFileJobRequest_t sysPARTICLEDataEntry24 = {
     sysPARTICLEDataEntry14, 1, { 0 }, 5, { 0 }, sysPARTICLEDataEntry54, 0xE8,
 };
 
@@ -5674,7 +5674,7 @@ effDebugMenu_t sysPARTICLEDataEntry7 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPARTICLEDataEntry8 = {
+effFileJobRequest_t sysPARTICLEDataEntry8 = {
     sysPARTICLEDataEntry15, 1, { 0 }, 6, { 0 }, sysPARTICLEDataEntry18, 0xEC,
 };
 
@@ -5746,7 +5746,7 @@ effDebugMenu_t sysPARTICLEDataEntry9 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackControlTaskDataEntry13 = {
+effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry13 = {
     effCreatePolyTrackControlTaskDataEntry20, 2, { 0 }, 1, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry21, 0x10C,
 };
 
@@ -5837,7 +5837,7 @@ effDebugMenu_t effCreatePolyTrackControlTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackControlTaskDataEntry2 = {
+effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry2 = {
     effCreatePolyTrackControlTaskDataEntry8, 2, { 0 }, 2, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry12, 0xFC,
 };
 
@@ -5914,7 +5914,7 @@ effDebugMenu_t effCreatePolyTrackControlTaskDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackControlTaskDataEntry68 = {
+effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry68 = {
     effCreatePolyTrackControlTaskDataEntry9, 2, { 0 }, 3, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry105, 0x110,
 };
 
@@ -6006,7 +6006,7 @@ effDebugMenu_t effCreatePolyTrackControlTaskDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackControlTaskDataEntry17 = {
+effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry17 = {
     effCreatePolyTrackControlTaskDataEntry10, 2, { 0 }, 4, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry38, 0x104,
 };
 
@@ -6085,7 +6085,7 @@ effDebugMenu_t effCreatePolyTrackControlTaskDataEntry5 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackControlTaskDataEntry6 = {
+effFileJobRequest_t effCreatePolyTrackControlTaskDataEntry6 = {
     effCreatePolyTrackControlTaskDataEntry11, 2, { 0 }, 5, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry134, 0x104,
 };
 
@@ -6164,7 +6164,7 @@ effDebugMenu_t effCreatePolyTrackControlTaskDataEntry7 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackTaskDataEntry66 = {
+effFileJobRequest_t effCreatePolyTrackTaskDataEntry66 = {
     effCreatePolyTrackTaskDataEntry6, 15, { 0 }, 1, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry90, 0x10C,
 };
 
@@ -6271,7 +6271,7 @@ effDebugMenu_t effCreatePolyTrackTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackTaskDataEntry71 = {
+effFileJobRequest_t effCreatePolyTrackTaskDataEntry71 = {
     effCreatePolyTrackTaskDataEntry87, 15, { 0 }, 2, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry107, 0xFC,
 };
 
@@ -6364,7 +6364,7 @@ effDebugMenu_t effCreatePolyTrackTaskDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackTaskDataEntry75 = {
+effFileJobRequest_t effCreatePolyTrackTaskDataEntry75 = {
     effCreatePolyTrackTaskDataEntry88, 15, { 0 }, 3, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry119, 0x110,
 };
 
@@ -6472,7 +6472,7 @@ effDebugMenu_t effCreatePolyTrackTaskDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackTaskDataEntry80 = {
+effFileJobRequest_t effCreatePolyTrackTaskDataEntry80 = {
     effCreatePolyTrackTaskDataEntry89, 15, { 0 }, 4, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry137, 0x104,
 };
 
@@ -6567,7 +6567,7 @@ effDebugMenu_t effCreatePolyTrackTaskDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTrackTaskDataEntry12 = {
+effFileJobRequest_t effCreatePolyTrackTaskDataEntry12 = {
     effCreatePolyTrackTaskDataEntry7, 15, { 0 }, 5, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry151, 0x104,
 };
 
@@ -6662,7 +6662,7 @@ effDebugMenu_t effCreatePolyTrackTaskDataEntry5 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest fileLoadEffectSlotAData = {
+effFileJobRequest_t fileLoadEffectSlotAData = {
     fileLoadEffectSlotADataEntry2, 3, { 0 }, 0, { 0 }, (u8 *)&fileLoadEffectSlotADataEntry, 0x4,
 };
 
@@ -6678,7 +6678,7 @@ effDebugMenu_t effData9Entry7 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effPollAndQueueCopiedFileResourceData = {
+effFileJobRequest_t effPollAndQueueCopiedFileResourceData = {
     effPollAndQueueCopiedFileResourceDataEntry2, 25, { 0 }, 0, { 0 }, (u8 *)&effPollAndQueueCopiedFileResourceDataEntry, 0x8,
 };
 
@@ -6695,7 +6695,7 @@ effDebugMenu_t effData9Entry8 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateBlurTaskDataEntry10 = {
+effFileJobRequest_t effCreateBlurTaskDataEntry10 = {
     effCreateBlurTaskDataEntry18, 4, { 0 }, 1, { 0 }, effCreateBlurTaskDataEntry23, 0xE8,
 };
 
@@ -6715,7 +6715,7 @@ effDebugMenu_t effCreateBlurTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateBlurTaskDataEntry45 = {
+effFileJobRequest_t effCreateBlurTaskDataEntry45 = {
     effCreateBlurTaskDataEntry49, 4, { 0 }, 2, { 0 }, effCreateBlurTaskDataEntry50, 0xEC,
 };
 
@@ -6749,7 +6749,7 @@ effDebugMenu_t effCreateBlurTaskDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateBlurTaskDataEntry3 = {
+effFileJobRequest_t effCreateBlurTaskDataEntry3 = {
     effCreateBlurTaskDataEntry7, 4, { 0 }, 3, { 0 }, effCreateBlurTaskDataEntry9, 0xEC,
 };
 
@@ -6788,7 +6788,7 @@ effDebugMenu_t effCreateBlurTaskDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateBlurTaskDataEntry14 = {
+effFileJobRequest_t effCreateBlurTaskDataEntry14 = {
     effCreateBlurTaskDataEntry21, 4, { 0 }, 4, { 0 }, effCreateBlurTaskDataEntry33, 0xEC,
 };
 
@@ -6827,7 +6827,7 @@ effDebugMenu_t effCreateBlurTaskDataEntry5 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateBlurTaskDataEntry16 = {
+effFileJobRequest_t effCreateBlurTaskDataEntry16 = {
     effCreateBlurTaskDataEntry8, 4, { 0 }, 5, { 0 }, effCreateBlurTaskDataEntry40, 0xE8,
 };
 
@@ -6847,7 +6847,7 @@ effDebugMenu_t effCreateBlurTaskDataEntry6 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateFilterTaskDataEntry5 = {
+effFileJobRequest_t effCreateFilterTaskDataEntry5 = {
     effCreateFilterTaskDataEntry3, 5, { 0 }, 1, { 0 }, effCreateFilterTaskDataEntry9, 0xD8,
 };
 
@@ -6865,7 +6865,7 @@ effDebugMenu_t effCreateFilterTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateFilterTaskDataEntry7 = {
+effFileJobRequest_t effCreateFilterTaskDataEntry7 = {
     effCreateFilterTaskDataEntry4, 5, { 0 }, 2, { 0 }, effCreateFilterTaskDataEntry11, 0xE4,
 };
 
@@ -6902,7 +6902,7 @@ effHelper_Params_t fileLoadEffectSlotHelpData = {
     0x80, 1, 0.1f, 0.9f, 0x64, 1.0f,
 };
 
-EffFileJobRequest effData9Entry15 = {
+effFileJobRequest_t effData9Entry15 = {
     effCreatePolyCrackTaskDataEntry14, 6, { 0 }, 0, { 0 }, effWork6, 0x3C,
 };
 
@@ -6934,7 +6934,7 @@ effDebugMenu_t effData9Entry9 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPOLYTEXDataEntry4 = {
+effFileJobRequest_t sysPOLYTEXDataEntry4 = {
     sysPOLYTEXDataEntry3, 7, { 0 }, 1, { 0 }, sysPOLYTEXDataEntry12, 0x98,
 };
 
@@ -6968,7 +6968,7 @@ effDebugMenu_t sysPOLYTEXDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPOLYTEXDataEntry6 = {
+effFileJobRequest_t sysPOLYTEXDataEntry6 = {
     sysStrTBoard2, 7, { 0 }, 2, { 0 }, sysPOLYTEXDataEntry16, 0xA0,
 };
 
@@ -7004,7 +7004,7 @@ effDebugMenu_t sysPOLYTEXDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateEnvironmentTaskDataEntry10 = {
+effFileJobRequest_t effCreateEnvironmentTaskDataEntry10 = {
     effCreateEnvironmentTaskDataEntry6, 8, { 0 }, 0, { 0 }, effCreateEnvironmentTaskDataEntry22, 0x40,
 };
 
@@ -7023,7 +7023,7 @@ effDebugMenu_t effCreateEnvironmentTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateEnvironmentTaskDataEntry2 = {
+effFileJobRequest_t effCreateEnvironmentTaskDataEntry2 = {
     effCreateEnvironmentTaskDataEntry7, 9, { 0 }, 0, { 0 }, effCreateEnvironmentTaskDataEntry9, 0x40,
 };
 
@@ -7042,7 +7042,7 @@ effDebugMenu_t effCreateEnvironmentTaskDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyFlashTaskDataEntry12 = {
+effFileJobRequest_t effCreatePolyFlashTaskDataEntry12 = {
     effCreatePolyFlashTaskDataEntry9, 10, { 0 }, 1, { 0 }, effCreatePolyFlashTaskDataEntry26, 0x80,
 };
 
@@ -7099,7 +7099,7 @@ effDebugMenu_t effCreatePolyFlashTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyFlashTaskDataEntry125 = {
+effFileJobRequest_t effCreatePolyFlashTaskDataEntry125 = {
     effCreatePolyFlashTaskDataEntry154, 10, { 0 }, 2, { 0 }, effCreatePolyFlashTaskDataEntry176, 0x8C,
 };
 
@@ -7168,7 +7168,7 @@ effDebugMenu_t effCreatePolyFlashTaskDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyFlashTaskDataEntry128 = {
+effFileJobRequest_t effCreatePolyFlashTaskDataEntry128 = {
     effCreatePolyFlashTaskDataEntry156, 10, { 0 }, 3, { 0 }, effCreatePolyFlashTaskDataEntry186, 0x9C,
 };
 
@@ -7251,7 +7251,7 @@ effDebugMenu_t effCreatePolyFlashTaskDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyFlashTaskDataEntry132 = {
+effFileJobRequest_t effCreatePolyFlashTaskDataEntry132 = {
     effCreatePolyFlashTaskDataEntry10, 10, { 0 }, 4, { 0 }, effCreatePolyFlashTaskDataEntry201, 0x80,
 };
 
@@ -7321,7 +7321,7 @@ effDebugMenu_t effCreatePolyFlashTaskDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyFlashTaskDataEntry135 = {
+effFileJobRequest_t effCreatePolyFlashTaskDataEntry135 = {
     effCreatePolyFlashTaskDataEntry157, 10, { 0 }, 5, { 0 }, effCreatePolyFlashTaskDataEntry210, 0x88,
 };
 
@@ -7403,7 +7403,7 @@ effDebugMenu_t effCreatePolyFlashTaskDataEntry5 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyFlashTaskDataEntry18 = {
+effFileJobRequest_t effCreatePolyFlashTaskDataEntry18 = {
     effCreatePolyFlashTaskDataEntry25, 10, { 0 }, 6, { 0 }, effCreatePolyFlashTaskDataEntry74, 0xA4,
 };
 
@@ -7502,7 +7502,7 @@ effDebugMenu_t effCreatePolyFlashTaskDataEntry6 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyFlashTaskDataEntry143 = {
+effFileJobRequest_t effCreatePolyFlashTaskDataEntry143 = {
     effCreatePolyFlashTaskDataEntry11, 10, { 0 }, 7, { 0 }, effCreatePolyFlashTaskDataEntry237, 0xA8,
 };
 
@@ -7589,7 +7589,7 @@ effDebugMenu_t effCreatePolyFlashTaskDataEntry7 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyFlashTaskDataEntry147 = {
+effFileJobRequest_t effCreatePolyFlashTaskDataEntry147 = {
     effCreatePolyFlashTaskDataEntry166, 10, { 0 }, 8, { 0 }, effCreatePolyFlashTaskDataEntry256, 0x98,
 };
 
@@ -7676,7 +7676,7 @@ effDebugMenu_t effCreatePolyFlashTaskDataEntry8 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateEnvironmentTaskDataEntry13 = {
+effFileJobRequest_t effCreateEnvironmentTaskDataEntry13 = {
     effCreateEnvironmentTaskDataEntry8, 11, { 0 }, 0, { 0 }, (u8 *)&effCreateEnvironmentTaskDataEntry20, 0x8,
 };
 
@@ -7693,7 +7693,7 @@ effDebugMenu_t effCreateEnvironmentTaskDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateEnvironmentTaskDataEntry15 = {
+effFileJobRequest_t effCreateEnvironmentTaskDataEntry15 = {
     effStrEQuake2, 21, { 0 }, 0, { 0 }, (u8 *)&effCreateEnvironmentTaskDataEntry29, 0x10,
 };
 
@@ -7712,7 +7712,7 @@ effDebugMenu_t effCreateEnvironmentTaskDataEntry5 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyRingTaskDataEntry28 = {
+effFileJobRequest_t effCreatePolyRingTaskDataEntry28 = {
     effCreatePolyRingTaskDataEntry33, 12, { 0 }, 1, { 0 }, effCreatePolyRingTaskDataEntry36, 0x6C,
 };
 
@@ -7767,7 +7767,7 @@ effDebugMenu_t effCreatePolyRingTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyRingTaskDataEntry6 = {
+effFileJobRequest_t effCreatePolyRingTaskDataEntry6 = {
     effCreatePolyRingTaskDataEntry10, 12, { 0 }, 2, { 0 }, effCreatePolyRingTaskDataEntry15, 0xD0,
 };
 
@@ -7824,7 +7824,7 @@ effDebugMenu_t effCreatePolyRingTaskDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyRingTaskDataEntry31 = {
+effFileJobRequest_t effCreatePolyRingTaskDataEntry31 = {
     effCreatePolyRingTaskDataEntry4, 12, { 0 }, 3, { 0 }, effCreatePolyRingTaskDataEntry55, 0x68,
 };
 
@@ -7877,7 +7877,7 @@ effDebugMenu_t effCreatePolyRingTaskDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyThunderTaskDataEntry = {
+effFileJobRequest_t effCreatePolyThunderTaskDataEntry = {
     effCreatePolyThunderTaskDataEntry4, 13, { 0 }, 1, { 0 }, effCreatePolyThunderTaskDataEntry5, 0x88,
 };
 
@@ -7934,7 +7934,7 @@ effDebugMenu_t effCreatePolyThunderTaskDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyThunderTaskDataEntry24 = {
+effFileJobRequest_t effCreatePolyThunderTaskDataEntry24 = {
     effCreatePolyThunderTaskDataEntry34, 13, { 0 }, 3, { 0 }, effCreatePolyThunderTaskDataEntry44, 0xAC,
 };
 
@@ -8010,7 +8010,7 @@ effDebugMenu_t effCreatePolyThunderTaskDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTwinkleTaskDataEntry62 = {
+effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry62 = {
     effCreatePolyTwinkleTaskDataEntry7, 14, { 0 }, 1, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry93, 0x110,
 };
 
@@ -8108,7 +8108,7 @@ effDebugMenu_t effCreatePolyTwinkleTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTwinkleTaskDataEntry67 = {
+effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry67 = {
     effCreatePolyTwinkleTaskDataEntry8, 14, { 0 }, 2, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry111, 0x100,
 };
 
@@ -8192,7 +8192,7 @@ effDebugMenu_t effCreatePolyTwinkleTaskDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTwinkleTaskDataEntry71 = {
+effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry71 = {
     effCreatePolyTwinkleTaskDataEntry9, 14, { 0 }, 3, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry124, 0x114,
 };
 
@@ -8291,7 +8291,7 @@ effDebugMenu_t effCreatePolyTwinkleTaskDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTwinkleTaskDataEntry76 = {
+effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry76 = {
     effCreatePolyTwinkleTaskDataEntry10, 14, { 0 }, 4, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry143, 0x108,
 };
 
@@ -8377,7 +8377,7 @@ effDebugMenu_t effCreatePolyTwinkleTaskDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyTwinkleTaskDataEntry5 = {
+effFileJobRequest_t effCreatePolyTwinkleTaskDataEntry5 = {
     effCreatePolyTwinkleTaskDataEntry11, 14, { 0 }, 5, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry158, 0x108,
 };
 
@@ -8463,7 +8463,7 @@ effDebugMenu_t effCreatePolyTwinkleTaskDataEntry6 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPOLYWINDDataEntry = {
+effFileJobRequest_t sysPOLYWINDDataEntry = {
     sysPOLYWINDDataEntry6, 16, { 0 }, 1, { 0 }, sysPOLYWINDDataEntry8, 0xF8,
 };
 
@@ -8579,7 +8579,7 @@ effDebugMenu_t sysPOLYWINDDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPOLYWINDDataEntry71 = {
+effFileJobRequest_t sysPOLYWINDDataEntry71 = {
     sysPOLYWINDDataEntry7, 16, { 0 }, 2, { 0 }, sysPOLYWINDDataEntry123, 0xF4,
 };
 
@@ -8685,7 +8685,7 @@ effDebugMenu_t sysPOLYWINDDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPOLYWINDDataEntry77 = {
+effFileJobRequest_t sysPOLYWINDDataEntry77 = {
     sysPOLYWINDDataEntry96, 16, { 0 }, 3, { 0 }, sysPOLYWINDDataEntry140, 0xD8,
 };
 
@@ -8764,7 +8764,7 @@ effDebugMenu_t sysPOLYWINDDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysPOLYWINDDataEntry81 = {
+effFileJobRequest_t sysPOLYWINDDataEntry81 = {
     sysPOLYWINDDataEntry97, 16, { 0 }, 4, { 0 }, sysPOLYWINDDataEntry156, 0xF4,
 };
 
@@ -8870,7 +8870,7 @@ effDebugMenu_t sysPOLYWINDDataEntry5 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyScalyTaskDataEntry44 = {
+effFileJobRequest_t effCreatePolyScalyTaskDataEntry44 = {
     effCreatePolyScalyTaskDataEntry5, 17, { 0 }, 1, { 0 }, effCreatePolyScalyTaskDataEntry73, 0x10C,
 };
 
@@ -8949,7 +8949,7 @@ effDebugMenu_t effCreatePolyScalyTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyScalyTaskDataEntry48 = {
+effFileJobRequest_t effCreatePolyScalyTaskDataEntry48 = {
     effCreatePolyScalyTaskDataEntry67, 17, { 0 }, 2, { 0 }, effCreatePolyScalyTaskDataEntry91, 0x12C,
 };
 
@@ -9021,7 +9021,7 @@ effDebugMenu_t effCreatePolyScalyTaskDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyScalyTaskDataEntry52 = {
+effFileJobRequest_t effCreatePolyScalyTaskDataEntry52 = {
     effCreatePolyScalyTaskDataEntry6, 17, { 0 }, 3, { 0 }, effCreatePolyScalyTaskDataEntry106, 0x130,
 };
 
@@ -9094,7 +9094,7 @@ effDebugMenu_t effCreatePolyScalyTaskDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyScalyTaskDataEntry56 = {
+effFileJobRequest_t effCreatePolyScalyTaskDataEntry56 = {
     effCreatePolyScalyTaskDataEntry68, 17, { 0 }, 4, { 0 }, effCreatePolyScalyTaskDataEntry122, 0x98,
 };
 
@@ -9134,7 +9134,7 @@ effDebugMenu_t effCreatePolyScalyTaskDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest fileLoadEffectSlotBData = {
+effFileJobRequest_t fileLoadEffectSlotBData = {
     fileLoadEffectSlotBDataEntry2, 18, { 0 }, 0, { 0 }, (u8 *)&fileLoadEffectSlotBDataEntry, 0x4,
 };
 
@@ -9150,7 +9150,7 @@ effDebugMenu_t effData9Entry10 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyCrackTaskDataEntry10 = {
+effFileJobRequest_t effCreatePolyCrackTaskDataEntry10 = {
     effCreatePolyCrackTaskDataEntry15, 19, { 0 }, 1, { 0 }, effCreatePolyCrackTaskDataEntry18, 0xC0,
 };
 
@@ -9253,7 +9253,7 @@ effDebugMenu_t effCreatePolyCrackTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyWindTaskDataEntry83 = {
+effFileJobRequest_t effCreatePolyWindTaskDataEntry83 = {
     effCreatePolyWindTaskDataEntry7, 24, { 0 }, 1, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry123, 0x140,
 };
 
@@ -9342,7 +9342,7 @@ effDebugMenu_t effCreatePolyWindTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyWindTaskDataEntry88 = {
+effFileJobRequest_t effCreatePolyWindTaskDataEntry88 = {
     effCreatePolyWindTaskDataEntry122, 24, { 0 }, 2, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry141, 0x130,
 };
 
@@ -9417,7 +9417,7 @@ effDebugMenu_t effCreatePolyWindTaskDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyWindTaskDataEntry14 = {
+effFileJobRequest_t effCreatePolyWindTaskDataEntry14 = {
     effCreatePolyWindTaskDataEntry8, 24, { 0 }, 3, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry34, 0x144,
 };
 
@@ -9507,7 +9507,7 @@ effDebugMenu_t effCreatePolyWindTaskDataEntry3 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyWindTaskDataEntry96 = {
+effFileJobRequest_t effCreatePolyWindTaskDataEntry96 = {
     effCreatePolyWindTaskDataEntry9, 24, { 0 }, 4, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry165, 0x138,
 };
 
@@ -9584,7 +9584,7 @@ effDebugMenu_t effCreatePolyWindTaskDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyWindTaskDataEntry100 = {
+effFileJobRequest_t effCreatePolyWindTaskDataEntry100 = {
     effCreatePolyWindTaskDataEntry10, 24, { 0 }, 5, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry180, 0x138,
 };
 
@@ -9661,7 +9661,7 @@ effDebugMenu_t effCreatePolyWindTaskDataEntry5 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreatePolyWindTaskDataEntry18 = {
+effFileJobRequest_t effCreatePolyWindTaskDataEntry18 = {
     effCreatePolyWindTaskDataEntry11, 24, { 0 }, 6, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry55, 0x13C,
 };
 
@@ -9739,7 +9739,7 @@ effDebugMenu_t effCreatePolyWindTaskDataEntry6 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry = {
+effFileJobRequest_t sysBATTLEONLYDataEntry = {
     sysBATTLEONLYDataEntry22, 20, { 0 }, 1, { 0 }, (u8 *)&sysBATTLEONLYDataEntry82, 0x28,
 };
 
@@ -9778,7 +9778,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry2 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry3 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry3 = {
     sysBATTLEONLYDataEntry23, 20, { 0 }, 2, { 0 }, (u8 *)&sysBATTLEONLYDataEntry93, 0x14,
 };
 
@@ -9803,7 +9803,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry4 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry5 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry5 = {
     sysBATTLEONLYDataEntry24, 20, { 0 }, 3, { 0 }, (u8 *)&sysBATTLEONLYDataEntry98, 0x10,
 };
 
@@ -9833,7 +9833,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry6 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effLoadFileSlotF2Data = {
+effFileJobRequest_t effLoadFileSlotF2Data = {
     effStrOF2Cam, 20, { 0 }, 4, { 0 }, (u8 *)&effData9Entry31, 0xC,
 };
 
@@ -9854,7 +9854,7 @@ effDebugMenu_t effData9Entry11 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry37 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry37 = {
     sysBATTLEONLYDataEntry25, 20, { 0 }, 5, { 0 }, (u8 *)&sysBATTLEONLYDataEntry77, 0x8,
 };
 
@@ -9873,7 +9873,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry7 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry8 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry8 = {
     sysBATTLEONLYDataEntry26, 20, { 0 }, 6, { 0 }, (u8 *)&sysBATTLEONLYDataEntry81, 0x4,
 };
 
@@ -9889,7 +9889,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry9 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry10 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry10 = {
     sysBATTLEONLYDataEntry27, 20, { 0 }, 7, { 0 }, (u8 *)&sysBATTLEONLYDataEntry31, 0xC,
 };
 
@@ -9916,7 +9916,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry11 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry12 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry12 = {
     sysBATTLEONLYDataEntry28, 20, { 0 }, 8, { 0 }, (u8 *)&sysBATTLEONLYDataEntry105, 0x1C,
 };
 
@@ -9940,7 +9940,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry13 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry42 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry42 = {
     sysBATTLEONLYDataEntry29, 20, { 0 }, 9, { 0 }, (u8 *)&sysBATTLEONLYDataEntry111, 0x10,
 };
 
@@ -9959,7 +9959,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry14 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry15 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry15 = {
     sysBATTLEONLYDataEntry30, 20, { 0 }, 10, { 0 }, (u8 *)&sysBATTLEONLYDataEntry32, 0xC,
 };
 
@@ -9979,7 +9979,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry16 = {
 
 effMuzzleFlash_Params_t effData9Entry37 = { 1.0f, 1.0f };
 
-EffFileJobRequest effLoadMaterialFileData = {
+effFileJobRequest_t effLoadMaterialFileData = {
     effLoadMaterialFileDataEntry, 22, { 0 }, 0, { 0 }, (u8 *)&effData9Entry37, 0x38,
 };
 
@@ -9996,7 +9996,7 @@ effDebugMenu_t effData9Entry12 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest effCreateTwoDimensionalTaskDataEntry2 = {
+effFileJobRequest_t effCreateTwoDimensionalTaskDataEntry2 = {
     effCreateTwoDimensionalTaskData2, 23, { 0 }, 1, { 0 }, effCreateTwoDimensionalTaskDataEntry4, 0x98,
 };
 
@@ -10030,7 +10030,7 @@ effDebugMenu_t effCreateTwoDimensionalTaskDataEntry = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry45 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry45 = {
     sysBATTLEONLYDataEntry69, 20, { 0 }, 11, { 0 }, (u8 *)&sysBATTLEONLYDataEntry117, 0xC,
 };
 
@@ -10049,7 +10049,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry17 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry18 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry18 = {
     sysStrOLightS, 20, { 0 }, 12, { 0 }, (u8 *)&sysBATTLEONLYDataEntry121, 0x20,
 };
 
@@ -10087,7 +10087,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry19 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffFileJobRequest sysBATTLEONLYDataEntry20 = {
+effFileJobRequest_t sysBATTLEONLYDataEntry20 = {
     sysStrOMcolrS, 20, { 0 }, 13, { 0 }, (u8 *)&sysBATTLEONLYDataEntry33, 0x14,
 };
 
@@ -10112,7 +10112,7 @@ effDebugMenu_t sysBATTLEONLYDataEntry21 = {
     { .job = effCreateBattleCameraJob }, NULL,
 };
 
-EffCameraCreateRow sysPARTICLEData[15] __attribute__((aligned(16))) = {
+effCameraCreateRow_t sysPARTICLEData[15] __attribute__((aligned(16))) = {
     { { &sysPARTICLEDataEntry, &sysPARTICLEDataEntry2, sysStrToolEffectSamplePSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &sysPARTICLEDataEntry, &sysPARTICLEDataEntry2, sysStrToolEffectSamplePSmoke1, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &sysPARTICLEDataEntry, &sysPARTICLEDataEntry2, sysStrToolEffectSamplePSmoke2, { 0.0f, 0.0f, 0.0f } }, 0 },
@@ -10130,7 +10130,7 @@ EffCameraCreateRow sysPARTICLEData[15] __attribute__((aligned(16))) = {
     { { NULL } },
 };
 
-EffCameraCreateRow effCreatePolyTrackControlTaskData[6] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreatePolyTrackControlTaskData[6] __attribute__((aligned(16))) = {
     { { &effCreatePolyTrackControlTaskDataEntry13, &effCreatePolyTrackControlTaskDataEntry, effStrToolEffectSampleGSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreatePolyTrackControlTaskDataEntry2, &effCreatePolyTrackControlTaskDataEntry3, effStrToolEffectSampleGSpark0, { 0.0f, -150.0f, 0.0f } }, 0 },
     { { &effCreatePolyTrackControlTaskDataEntry68, &effCreatePolyTrackControlTaskDataEntry4, effStrToolEffectSampleGSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
@@ -10139,7 +10139,7 @@ EffCameraCreateRow effCreatePolyTrackControlTaskData[6] __attribute__((aligned(1
     { { NULL } },
 };
 
-EffCameraCreateRow effCreatePolyTrackTaskData[6] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreatePolyTrackTaskData[6] __attribute__((aligned(16))) = {
     { { &effCreatePolyTrackTaskDataEntry66, &effCreatePolyTrackTaskDataEntry, effStrToolEffectSampleKSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreatePolyTrackTaskDataEntry71, &effCreatePolyTrackTaskDataEntry2, effStrToolEffectSampleKSpark0, { 0.0f, -150.0f, 0.0f } }, 0 },
     { { &effCreatePolyTrackTaskDataEntry75, &effCreatePolyTrackTaskDataEntry3, effStrToolEffectSampleKSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
@@ -10148,12 +10148,12 @@ EffCameraCreateRow effCreatePolyTrackTaskData[6] __attribute__((aligned(16))) = 
     { { NULL } },
 };
 
-EffCameraCreateRow effData9Entry[2] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effData9Entry[2] __attribute__((aligned(16))) = {
     { { &fileLoadEffectSlotAData, &effData9Entry7, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow effCreateBlurTaskData[6] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreateBlurTaskData[6] __attribute__((aligned(16))) = {
     { { &effCreateBlurTaskDataEntry10, &effCreateBlurTaskDataEntry, effStrToolEffectSampleBFull0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreateBlurTaskDataEntry45, &effCreateBlurTaskDataEntry2, effStrToolEffectSampleBMulti0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreateBlurTaskDataEntry3, &effCreateBlurTaskDataEntry4, effStrToolEffectSampleBDist0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
@@ -10162,24 +10162,24 @@ EffCameraCreateRow effCreateBlurTaskData[6] __attribute__((aligned(16))) = {
     { { NULL } },
 };
 
-EffCameraCreateRow effCreateFilterTaskData[3] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreateFilterTaskData[3] __attribute__((aligned(16))) = {
     { { &effCreateFilterTaskDataEntry5, &effCreateFilterTaskDataEntry, effStrToolEffectSampleFFull0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreateFilterTaskDataEntry7, &effCreateFilterTaskDataEntry2, effStrToolEffectSampleFMulti0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow effData9Entry2[2] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effData9Entry2[2] __attribute__((aligned(16))) = {
     { { &effData9Entry15, &effData9Entry9, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow sysPOLYTEXData[3] __attribute__((aligned(16))) = {
+effCameraCreateRow_t sysPOLYTEXData[3] __attribute__((aligned(16))) = {
     { { &sysPOLYTEXDataEntry4, &sysPOLYTEXDataEntry, sysStrToolEffectSampleTBoard0, { 0.0f, -10.0f, 0.0f } }, 0 },
     { { &sysPOLYTEXDataEntry6, &sysPOLYTEXDataEntry2, sysStrToolEffectSampleTBoard1, { 0.0f, -10.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow effCreateEnvironmentTaskData[5] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreateEnvironmentTaskData[5] __attribute__((aligned(16))) = {
     { { &effCreateEnvironmentTaskDataEntry10, &effCreateEnvironmentTaskDataEntry, effStrToolEffectSampleERain0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreateEnvironmentTaskDataEntry2, &effCreateEnvironmentTaskDataEntry3, effStrToolEffectSampleEFlare0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreateEnvironmentTaskDataEntry13, &effCreateEnvironmentTaskDataEntry4, effStrToolEffectSampleEQuake0, { 0.0f, 0.0f, 0.0f } }, 0 },
@@ -10187,7 +10187,7 @@ EffCameraCreateRow effCreateEnvironmentTaskData[5] __attribute__((aligned(16))) 
     { { NULL } },
 };
 
-EffCameraCreateRow effCreatePolyFlashTaskData[11] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreatePolyFlashTaskData[11] __attribute__((aligned(16))) = {
     { { &effCreatePolyFlashTaskDataEntry132, &effCreatePolyFlashTaskDataEntry4, effStrToolEffectSampleSRadT0Ep, { 0.0f, -200.0f, 0.0f } }, 0 },
     { { &effCreatePolyFlashTaskDataEntry135, &effCreatePolyFlashTaskDataEntry5, effStrToolEffectSampleSSpkT0Ep, { 0.0f, -200.0f, 0.0f } }, 0 },
     { { &effCreatePolyFlashTaskDataEntry135, &effCreatePolyFlashTaskDataEntry5, effStrToolEffectSampleSSpkT1Ep, { 0.0f, -200.0f, 0.0f } }, 0 },
@@ -10201,7 +10201,7 @@ EffCameraCreateRow effCreatePolyFlashTaskData[11] __attribute__((aligned(16))) =
     { { NULL } },
 };
 
-EffCameraCreateRow effCreatePolyRingTaskData[6] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreatePolyRingTaskData[6] __attribute__((aligned(16))) = {
     { { &effCreatePolyRingTaskDataEntry28, &effCreatePolyRingTaskDataEntry, effStrToolEffectSampleRNomal0, { 0.0f, -200.0f, 0.0f } }, 0 },
     { { &effCreatePolyRingTaskDataEntry28, &effCreatePolyRingTaskDataEntry, effStrToolEffectSampleRNomal1, { 0.0f, -200.0f, 0.0f } }, 0 },
     { { &effCreatePolyRingTaskDataEntry6, &effCreatePolyRingTaskDataEntry2, effStrToolEffectSampleRTrack0, { 0.0f, -200.0f, 0.0f } }, 0 },
@@ -10210,14 +10210,14 @@ EffCameraCreateRow effCreatePolyRingTaskData[6] __attribute__((aligned(16))) = {
     { { NULL } },
 };
 
-EffCameraCreateRow effCreatePolyThunderTaskData[4] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreatePolyThunderTaskData[4] __attribute__((aligned(16))) = {
     { { &effCreatePolyThunderTaskDataEntry, &effCreatePolyThunderTaskDataEntry2, effStrToolEffectSampleDPoint0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreatePolyThunderTaskDataEntry24, &effCreatePolyThunderTaskDataEntry3, effStrToolEffectSampleDBug0Ep, { 0.0f, -200.0f, 0.0f } }, 0 },
     { { &effCreatePolyThunderTaskDataEntry24, &effCreatePolyThunderTaskDataEntry3, effStrToolEffectSampleDBug1Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow effCreatePolyTwinkleTaskData[6] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreatePolyTwinkleTaskData[6] __attribute__((aligned(16))) = {
     { { &effCreatePolyTwinkleTaskDataEntry62, &effCreatePolyTwinkleTaskDataEntry, effStrToolEffectSampleWSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreatePolyTwinkleTaskDataEntry67, &effCreatePolyTwinkleTaskDataEntry2, effStrToolEffectSampleWSpark0, { 0.0f, -150.0f, 0.0f } }, 0 },
     { { &effCreatePolyTwinkleTaskDataEntry71, &effCreatePolyTwinkleTaskDataEntry3, effStrToolEffectSampleWSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
@@ -10226,7 +10226,7 @@ EffCameraCreateRow effCreatePolyTwinkleTaskData[6] __attribute__((aligned(16))) 
     { { NULL } },
 };
 
-EffCameraCreateRow sysPOLYWINDData[8] __attribute__((aligned(16))) = {
+effCameraCreateRow_t sysPOLYWINDData[8] __attribute__((aligned(16))) = {
     { { &sysPOLYWINDDataEntry, &sysPOLYWINDDataEntry2, sysStrToolEffectSampleNSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &sysPOLYWINDDataEntry, &sysPOLYWINDDataEntry2, sysStrToolEffectSampleNSpirl1, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &sysPOLYWINDDataEntry, &sysPOLYWINDDataEntry2, sysStrToolEffectSampleNSpirl2, { 0.0f, 0.0f, 0.0f } }, 0 },
@@ -10237,7 +10237,7 @@ EffCameraCreateRow sysPOLYWINDData[8] __attribute__((aligned(16))) = {
     { { NULL } },
 };
 
-EffCameraCreateRow effCreatePolyScalyTaskData[5] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreatePolyScalyTaskData[5] __attribute__((aligned(16))) = {
     { { &effCreatePolyScalyTaskDataEntry44, &effCreatePolyScalyTaskDataEntry, effStrToolEffectSampleUCylnd0, { 0.0f, -100.0f, 0.0f } }, 0 },
     { { &effCreatePolyScalyTaskDataEntry56, &effCreatePolyScalyTaskDataEntry4, effStrToolEffectSampleUSphre0, { 0.0f, -160.0f, 0.0f } }, 0 },
     { { &effCreatePolyScalyTaskDataEntry48, &effCreatePolyScalyTaskDataEntry2, effStrToolEffectSampleUSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
@@ -10245,17 +10245,17 @@ EffCameraCreateRow effCreatePolyScalyTaskData[5] __attribute__((aligned(16))) = 
     { { NULL } },
 };
 
-EffCameraCreateRow effData9Entry3[2] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effData9Entry3[2] __attribute__((aligned(16))) = {
     { { &fileLoadEffectSlotBData, &effData9Entry10, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow effCreatePolyCrackTaskData[2] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreatePolyCrackTaskData[2] __attribute__((aligned(16))) = {
     { { &effCreatePolyCrackTaskDataEntry10, &effCreatePolyCrackTaskDataEntry, effStrToolEffectSampleCNomal0, { 0.0f, -1.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow sysBATTLEONLYData[13] __attribute__((aligned(16))) = {
+effCameraCreateRow_t sysBATTLEONLYData[13] __attribute__((aligned(16))) = {
     { { &sysBATTLEONLYDataEntry, &sysBATTLEONLYDataEntry2, sysStrToolEffectSampleOLight0, { 0.0f, -1.0f, 0.0f } }, 0 },
     { { &sysBATTLEONLYDataEntry3, &sysBATTLEONLYDataEntry4, sysStrToolEffectSampleOMcolr0, { 0.0f, -1.0f, 0.0f } }, 0 },
     { { &sysBATTLEONLYDataEntry5, &sysBATTLEONLYDataEntry6, sysStrToolEffectSampleOEffL0Ep, { 0.0f, -1.0f, 0.0f } }, 0 },
@@ -10271,27 +10271,27 @@ EffCameraCreateRow sysBATTLEONLYData[13] __attribute__((aligned(16))) = {
     { { NULL } },
 };
 
-EffCameraCreateRow effData9Entry4[2] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effData9Entry4[2] __attribute__((aligned(16))) = {
     { { &effPollAndQueueCopiedFileResourceData, &effData9Entry8, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow effData9Entry5[2] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effData9Entry5[2] __attribute__((aligned(16))) = {
     { { &effLoadFileSlotF2Data, &effData9Entry11, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow effData9Entry6[2] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effData9Entry6[2] __attribute__((aligned(16))) = {
     { { &effLoadMaterialFileData, &effData9Entry12, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow effCreateTwoDimensionalTaskData[2] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreateTwoDimensionalTaskData[2] __attribute__((aligned(16))) = {
     { { &effCreateTwoDimensionalTaskDataEntry2, &effCreateTwoDimensionalTaskDataEntry, effStrToolEffectSampleXNomal0, { 0.0f, -10.0f, 0.0f } }, 0 },
     { { NULL } },
 };
 
-EffCameraCreateRow effCreatePolyWindTaskData[7] __attribute__((aligned(16))) = {
+effCameraCreateRow_t effCreatePolyWindTaskData[7] __attribute__((aligned(16))) = {
     { { &effCreatePolyWindTaskDataEntry83, &effCreatePolyWindTaskDataEntry, effStrToolEffectSampleMSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
     { { &effCreatePolyWindTaskDataEntry88, &effCreatePolyWindTaskDataEntry2, effStrToolEffectSampleMSpark0, { 0.0f, -150.0f, 0.0f } }, 0 },
     { { &effCreatePolyWindTaskDataEntry14, &effCreatePolyWindTaskDataEntry3, effStrToolEffectSampleMSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
@@ -10301,7 +10301,7 @@ EffCameraCreateRow effCreatePolyWindTaskData[7] __attribute__((aligned(16))) = {
     { { NULL } },
 };
 
-EffCameraCreateRow *effData9[24] = {
+effCameraCreateRow_t *effData9[24] = {
     NULL, sysPARTICLEData, effCreatePolyTrackControlTaskData, effCreatePolyTrackTaskData,
     effData9Entry, effCreateBlurTaskData, effCreateFilterTaskData, effData9Entry2,
     sysPOLYTEXData, effCreateEnvironmentTaskData, effCreatePolyFlashTaskData, effCreatePolyRingTaskData,

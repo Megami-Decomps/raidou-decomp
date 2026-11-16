@@ -3,8 +3,8 @@
 
 #include "common.h"
 
-struct EffectList;
+struct effList_t;
 
-s32 effAppendListEntry(struct EffectList *list, const char *value, const char *length, u32 kind, void **reference);
+s32 effAppendListEntry(struct effList_t *list, const char *value, const char *length, u32 kind, void **reference);
 
 #endif

@@ -674,7 +674,7 @@ ScrCommandResult evtOpModelLodChg(void) {
     s32 lod;
     dds3Basic_t *world;
     dds3Basic_t *unit;
-    EffectObjectData *data;
+    effObjectData_t *data;
     dds3ObjectBaseControlWorkData_t *modelHolder;
     mdlObj_t *context;
     sdfModelRootNode_t *model;

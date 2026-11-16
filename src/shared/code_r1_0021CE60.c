@@ -73,21 +73,21 @@ FileJobPayload *fileDuplicateJob(FileJobPayload *request);
 
 void fileJobWriteSerializedPayload(s32 fd, FileJobPayload *job);
 
-void effPartsPositionSet(struct FileQueue *queue, const f32 position[4]);
+void effPartsPositionSet(struct plistHandle_t *queue, const f32 position[4]);
 
-void effPartsRotateSet(struct FileQueue *queue, const f32 rotation[4]);
+void effPartsRotateSet(struct plistHandle_t *queue, const f32 rotation[4]);
 
-void effPartsScaleSet(struct FileQueue *queue, f32 scale);
+void effPartsScaleSet(struct plistHandle_t *queue, f32 scale);
 
-void effPartsDraw(struct FileQueue *queue);
+void effPartsDraw(struct plistHandle_t *queue);
 
-void fileQueueNotifyAllJobsComplete(struct FileQueue *queue);
+void fileQueueNotifyAllJobsComplete(struct plistHandle_t *queue);
 
 #define FILE_JOB_FLAG_SHARED_PAYLOAD 0x1
 
 #define FILE_JOB_UPDATE_FLAG_APPLY_QUEUE_SCALE 0x1
 
-void ColorSet(FileQueue *queue, u32 color);
+void ColorSet(plistHandle_t *queue, u32 color);
 
 enum EffScalarCurveMode {
     EFF_SCALAR_CURVE_MODE_ENDPOINTS = 0,
@@ -98,36 +98,36 @@ enum EffScalarCurveMode {
 #define FILE_SLOT_FRAME_NONE (-1)
 
 /* A surface node that also owns one cloned file queue per active record. */
-typedef struct EffectQueuedSurfaceNode {
+typedef struct effQueuedSurfaceNode_t {
     u32 handleCount;
     u32 color;
     f32 opacity;
     u32 kind;
-    EffSurfaceParams params; /* 0x10: copied source header */
+    effSurfaceParams_t params; /* 0x10: copied source header */
     u32 index;
     struct sdfMemHandle_t *handleBuffer; // 0x30
     billHandle_t *resource;
     FileJobPayload **jobs;          // 0x38
     struct sdfMemHandle_t *jobAllocation;      // 0x3C
-    struct FileQueue **queues;      // 0x40: cloned queues, one per active record
+    struct plistHandle_t **queues;      // 0x40: cloned queues, one per active record
     struct sdfMemHandle_t *queueAllocation;    // 0x44: backing allocation descriptor
-    struct EffExpandedList *resourceHolder; // 0x48
-    FileSlotTable *record; // 0x4C: retained grid record table
+    struct ctexlHandle_t *resourceHolder; // 0x48
+    bhvrHandle_t *record; // 0x4C: retained grid record table
     u16 active;         // 0x50: initialized to 1
-} EffectQueuedSurfaceNode;
+} effQueuedSurfaceNode_t;
 
-typedef struct ScaleEntry {
+typedef struct effScaleEntry_t {
     f32 unk0;
     f32 value;
-} ScaleEntry;
+} effScaleEntry_t;
 
 /* Access view through +0xF4; intervening storage and any allocation tail stay opaque. */
-typedef struct ScaleSet {
+typedef struct effScaleSet_t {
     u8 pad0[0x64];
     f32 unk64;
     f32 unk68;
     u8 pad6C[4];
-    ScaleEntry entries[3];
+    effScaleEntry_t entries[3];
     u8 pad88[0x40];
     f32 unkC8;
     f32 unkCC;
@@ -139,15 +139,15 @@ typedef struct ScaleSet {
     f32 unkE4;
     u8 padE8[8];
     f32 unkF0;
-} ScaleSet;
+} effScaleSet_t;
 
-typedef struct ScaleOwner {
+typedef struct effScaleOwner_t {
     u8 pad0[0x20];
-    ScaleSet *dst;
-    ScaleSet *src;
-} ScaleOwner;
+    effScaleSet_t *dst;
+    effScaleSet_t *src;
+} effScaleOwner_t;
 
-typedef char ScaleEntry_size_must_be_0x08[(sizeof(ScaleEntry) == 0x08) ? 1 : -1];
+typedef char effScaleEntry_size_must_be_0x08[(sizeof(effScaleEntry_t) == 0x08) ? 1 : -1];
 
 typedef s32 (*FileMenuContinuationCallback)(void);
 
@@ -187,7 +187,7 @@ struct sdfMemHandle_t;
 extern u32 D_00437D18;
 extern u32 D_00437D1C;
 extern u32 D_00437D20;
-extern struct EffExpandedList *effCacheTexCreate(u32);
+extern struct ctexlHandle_t *effCacheTexCreate(u32);
 extern s8 dds3PadButtonState[];
 extern void sdfVuMatrixToQuaternion(const f32 matrix[4][4]);
 
@@ -199,39 +199,39 @@ extern void sdfVuMatrixToQuaternion(const f32 matrix[4][4]);
  * zero falls back through D_003536A0.
  */
 /* 8-byte parameter work (family1): kind id plus one data pointer. */
-typedef struct EffDispatchExtra {
+typedef struct effDispatchExtra_t {
     void (*func)(void *, f32 vector[4]); /* 0x00 vector handler, may be NULL */
     u8 pad04[0x24];
-} EffDispatchExtra;
+} effDispatchExtra_t;
 
-typedef struct EffDispatchScale {
+typedef struct effDispatchScale_t {
     void (*func)(void *, f32); /* 0x00 handler, may be NULL */
     u8 pad04[0x24];
-} EffDispatchScale;
+} effDispatchScale_t;
 
-typedef struct EffDispatchColor {
+typedef struct effDispatchColor_t {
     void (*func)(void *, u32); /* 0x00 handler, may be NULL */
     u8 pad04[0x24];
-} EffDispatchColor;
+} effDispatchColor_t;
 
 typedef struct LoadMirror {
     u32 current;
     u32 previous;
 } LoadMirror;
 
-extern void effCreate(EffectQueuedSurfaceNode *node, u32 entryId, void *resource);
-extern void BillboardSet(EffectQueuedSurfaceNode *node, u32 resourceId);
-extern void BillboardGeneralSet(EffectQueuedSurfaceNode *node, u32 resourceId);
-extern void fileLoadObjectOpenNamedDevice(EffectQueuedSurfaceNode *node, u32 resourceId);
-extern void fileReplaceEffectSurfaceJobs(EffectQueuedSurfaceNode *node, FileJobPayload *job);
-extern void PartsListSet(EffectQueuedSurfaceNode *node, FileQueue *queue);
-extern void fileReplaceReferenceHolder(EffectQueuedSurfaceNode *node, u32 resource);
+extern void effCreate(effQueuedSurfaceNode_t *node, u32 entryId, void *resource);
+extern void BillboardSet(effQueuedSurfaceNode_t *node, u32 resourceId);
+extern void BillboardGeneralSet(effQueuedSurfaceNode_t *node, u32 resourceId);
+extern void fileLoadObjectOpenNamedDevice(effQueuedSurfaceNode_t *node, u32 resourceId);
+extern void fileReplaceEffectSurfaceJobs(effQueuedSurfaceNode_t *node, FileJobPayload *job);
+extern void PartsListSet(effQueuedSurfaceNode_t *node, plistHandle_t *queue);
+extern void fileReplaceReferenceHolder(effQueuedSurfaceNode_t *node, u32 resource);
 extern void fileJobFreePrimaryBuffer(FileJobPayload *job);
 extern void fileJobFreeSecondaryBuffer(FileJobPayload *job);
-extern void fileQueueAppend(FileQueue *queue, FileJob *job);
+extern void fileQueueAppend(plistHandle_t *queue, FileJob *job);
 extern FileJob *fileJobCreate(void);
-extern FileJob *fileQueueFindById(FileQueue *queue, u32 id);
-extern s32 fileFindQueuedJobIndex(FileQueue *queue, FileJob *target);
+extern FileJob *fileQueueFindById(plistHandle_t *queue, u32 id);
+extern s32 fileFindQueuedJobIndex(plistHandle_t *queue, FileJob *target);
 extern u8 sdfHddValid;
 extern char fileWriteToPfsData[];
 extern char fileWriteToPfsData2[];
@@ -320,19 +320,19 @@ void fileJobFreeSecondaryBuffer(FileJobPayload *job);
 void fileJobNotifyPair(FileJobPayload *left, FileJobPayload *right);
 u32 fileJobSerializedSize(FileJobPayload *job);
 void fileJobResetAndInitTransform(FileJob *job);
-void fileQueueAppend(FileQueue *queue, FileJob *job);
-void fileQueueInsertAfter(FileQueue *queue, FileJob *after, FileJob *job);
-void fileQueueRemove(FileQueue *queue, FileJob *job);
+void fileQueueAppend(plistHandle_t *queue, FileJob *job);
+void fileQueueInsertAfter(plistHandle_t *queue, FileJob *after, FileJob *job);
+void fileQueueRemove(plistHandle_t *queue, FileJob *job);
 FileJob *fileJobCreate(void);
 void fileDestroyJob(FileJob *job);
-FileJob *fileAppendJob(FileQueue *queue, u32 id);
-FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source);
+FileJob *fileAppendJob(plistHandle_t *queue, u32 id);
+FileJob *fileDuplicateAndAppendJob(plistHandle_t *queue, FileJobPayload *source);
 extern u8 fileAppendJobFromCommandPathData[];
-extern FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
-extern FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id);
+extern FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
+extern FileJob *fileQueueFindFlaggedById(plistHandle_t *queue, u32 id);
 
 /* Makes the first job chained to owner's sector the leader and rechains the rest to it. */
-static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *owner, FileJob *leader) {
+static inline void fileQueueRechainSectorFollowers(plistHandle_t *queue, FileJob *owner, FileJob *leader) {
     FileJob *next;
 
     leader->sector = 0;
@@ -346,7 +346,7 @@ static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *ow
 }
 
 extern char fileQueueImagePaddingBytes[];
-extern s32 fileQueueCountLinkedJobs(FileQueue *queue);
+extern s32 fileQueueCountLinkedJobs(plistHandle_t *queue);
 
 /* Sixteen-byte preamble of a saved file queue. */
 typedef struct FileQueueImageHeader {
@@ -357,36 +357,36 @@ typedef struct FileQueueImageHeader {
 } FileQueueImageHeader;
 
 extern char fileQueueVersionedImagePaddingBytes[];
-FileJob *fileQueueFindById(FileQueue *queue, u32 id);
-FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id);
-FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
-s32 fileFindQueuedJobIndex(FileQueue *queue, FileJob *target);
-s32 fileQueueCountLinkedJobs(FileQueue *queue);
-EffectQueuedSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity);
-EffectQueuedSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
-void Delete_effParticle(EffectQueuedSurfaceNode *node);
-void ResourceCopy(EffectQueuedSurfaceNode *dst, EffectQueuedSurfaceNode *src);
-EffectQueuedSurfaceNode *Copy_effParticle(EffectQueuedSurfaceNode *owner);
-void effCreate(EffectQueuedSurfaceNode *node, u32 entryId, void *resource);
-void fileLoadObjectOpenNamedDevice(EffectQueuedSurfaceNode *node, u32 resourceId);
-void BillboardSet(EffectQueuedSurfaceNode *node, u32 resourceId);
-void BillboardGeneralSet(EffectQueuedSurfaceNode *node, u32 resourceId);
-void fileReplaceEffectSurfaceJobs(EffectQueuedSurfaceNode *node, FileJobPayload *job);
-void PartsListSet(EffectQueuedSurfaceNode *node, FileQueue *queue);
-void fileReplaceReferenceHolder(EffectQueuedSurfaceNode *obj, u32 resource);
-void fileClearLoadObjectReferences(EffectQueuedSurfaceNode *obj);
+FileJob *fileQueueFindById(plistHandle_t *queue, u32 id);
+FileJob *fileQueueFindFlaggedById(plistHandle_t *queue, u32 id);
+FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
+s32 fileFindQueuedJobIndex(plistHandle_t *queue, FileJob *target);
+s32 fileQueueCountLinkedJobs(plistHandle_t *queue);
+effQueuedSurfaceNode_t *fileCreateSurfaceLoaderState(s32 capacity);
+effQueuedSurfaceNode_t *fileCreateGridLoaderRecord(FileKeyBlock *hdr);
+void Delete_effParticle(effQueuedSurfaceNode_t *node);
+void ResourceCopy(effQueuedSurfaceNode_t *dst, effQueuedSurfaceNode_t *src);
+effQueuedSurfaceNode_t *Copy_effParticle(effQueuedSurfaceNode_t *owner);
+void effCreate(effQueuedSurfaceNode_t *node, u32 entryId, void *resource);
+void fileLoadObjectOpenNamedDevice(effQueuedSurfaceNode_t *node, u32 resourceId);
+void BillboardSet(effQueuedSurfaceNode_t *node, u32 resourceId);
+void BillboardGeneralSet(effQueuedSurfaceNode_t *node, u32 resourceId);
+void fileReplaceEffectSurfaceJobs(effQueuedSurfaceNode_t *node, FileJobPayload *job);
+void PartsListSet(effQueuedSurfaceNode_t *node, plistHandle_t *queue);
+void fileReplaceReferenceHolder(effQueuedSurfaceNode_t *obj, u32 resource);
+void fileClearLoadObjectReferences(effQueuedSurfaceNode_t *obj);
 
-void fileSendLoadObjectRecordVector(EffectQueuedSurfaceNode *obj, const u128 *value);
-void fileCopyLoadObjectRecordVector(EffectQueuedSurfaceNode *obj, const u128 *value);
+void fileSendLoadObjectRecordVector(effQueuedSurfaceNode_t *obj, const u128 *value);
+void fileCopyLoadObjectRecordVector(effQueuedSurfaceNode_t *obj, const u128 *value);
 void fileSetRecordWordFour(s32 record, u32 value);
-void fileSetLoadObjectScale(EffectQueuedSurfaceNode *obj, f32 scale);
-void fileResetSlotStates(FileSlotTable *table);
+void fileSetLoadObjectScale(effQueuedSurfaceNode_t *obj, f32 scale);
+void fileResetSlotStates(bhvrHandle_t *table);
 
-void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot);
-void fileCopyAndInvalidateSlotGroup(FileSlotTable *table, FileSlot *source);
-void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot);
-void fileSampleKeyTracks(FileSlot *out, const FileKeyBlock *block, s32 frame, const f32 *target);
-extern void effUpdateGridRecordSlotHistory(FileSlotTable *, FileSlot *);
+void fileInvalidateSlotGroup(bhvrHandle_t *table, effPosture_t *slot);
+void fileCopyAndInvalidateSlotGroup(bhvrHandle_t *table, effPosture_t *source);
+void effUpdateGridRecordSlotHistory(bhvrHandle_t *record, effPosture_t *slot);
+void fileSampleKeyTracks(effPosture_t *out, const FileKeyBlock *block, s32 frame, const f32 *target);
+extern void effUpdateGridRecordSlotHistory(bhvrHandle_t *, effPosture_t *);
 
 typedef struct FileWaveMotion {
     f32 axis[4];             /* 0x00: xyz only */
@@ -402,7 +402,7 @@ typedef struct FileWaveMotion {
     f32 angleMultiplier;
 } FileWaveMotion;            /* 0x44, ordinary word alignment */
 
-void effScaleWaveEmitterParameters(ScaleOwner *owner, f32 scale);
+void effScaleWaveEmitterParameters(effScaleOwner_t *owner, f32 scale);
 
 typedef struct FileSlotMotion {
     f32 direction[4];     /* 0x00; this callback initializes xyz only */
@@ -454,7 +454,7 @@ typedef struct FileCurveMotion {
     f32 angleMultiplier;
 } FileCurveMotion; /* 0x4C, naturally four-byte aligned */
 
-void effPCPHelperBEDGetModel(FileSlotTable *record);
+void effPCPHelperBEDGetModel(bhvrHandle_t *record);
 
 void fileJobFreeSecondaryBuffer(FileJobPayload *job) {
     struct sdfMemHandle_t *allocation = job->secondary.allocation;
@@ -656,7 +656,7 @@ INCLUDE_ASM(const s32, "code_r1_0021CE60", effLeaf346);
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", effLeaf347);
 
-void fileQueueAppend(FileQueue *queue, FileJob *job) {
+void fileQueueAppend(plistHandle_t *queue, FileJob *job) {
     job->next = NULL;
     if (queue->last != NULL) {
         queue->last->next = job;
@@ -669,7 +669,7 @@ void fileQueueAppend(FileQueue *queue, FileJob *job) {
     queue->count++;
 }
 
-void fileQueueInsertAfter(FileQueue *queue, FileJob *after, FileJob *job) {
+void fileQueueInsertAfter(plistHandle_t *queue, FileJob *after, FileJob *job) {
     if (after->next != NULL) {
         after->next->prev = job;
         job->next = after->next;
@@ -682,7 +682,7 @@ void fileQueueInsertAfter(FileQueue *queue, FileJob *after, FileJob *job) {
     queue->count++;
 }
 
-void fileQueueRemove(FileQueue *queue, FileJob *job) {
+void fileQueueRemove(plistHandle_t *queue, FileJob *job) {
     if (job->prev != NULL) {
         job->prev->next = job->next;
     } else {
@@ -704,8 +704,8 @@ void fileDestroyJob(FileJob *job) {
     sdfChipFreeDirect(job);
 }
 
-FileQueue *Create_effPartsList(FileQueue *source) {
-    FileQueue *queue = fileQueueCreate();
+plistHandle_t *Create_effPartsList(plistHandle_t *source) {
+    plistHandle_t *queue = fileQueueCreate();
     FileJob *entry;
     FileJob *job;
     f32 vec[4] __attribute__((aligned(16)));
@@ -785,7 +785,7 @@ INCLUDE_ASM(const s32, "code_r1_0021CE60", effPartsDraw);
 
 /* A queued job's +0x90 word is a child pointer when flag 1 is clear; it is
  * an ID for other job kinds. Destroy children before their parent jobs. */
-void effPartsDelete(FileQueue *queue) {
+void effPartsDelete(plistHandle_t *queue) {
     FileJob *job = queue->first;
     while (job != NULL) {
         FileJob *next = job->next;
@@ -798,8 +798,8 @@ void effPartsDelete(FileQueue *queue) {
     sdfChipFreeDirect(queue);
 }
 
-FileQueue *effPartsCreateFinish(const FileQueue *source) {
-    FileQueue *queue = fileQueueCreate();
+plistHandle_t *effPartsCreateFinish(const plistHandle_t *source) {
+    plistHandle_t *queue = fileQueueCreate();
     const FileJob *src;
     f32 vec[4] __attribute__((aligned(16)));
 
@@ -823,7 +823,7 @@ FileQueue *effPartsCreateFinish(const FileQueue *source) {
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", fileQueueNotifyAllJobsComplete);
 
-void effPartsPositionSet(FileQueue *queue, const f32 vec[4])
+void effPartsPositionSet(plistHandle_t *queue, const f32 vec[4])
 {
     f32 rot[16];
     f32 base[4];
@@ -857,7 +857,7 @@ void effPartsPositionSet(FileQueue *queue, const f32 vec[4])
     }
 }
 
-void effPartsRotateSet(FileQueue *queue, const f32 rot[4])
+void effPartsRotateSet(plistHandle_t *queue, const f32 rot[4])
 {
     f32 quat[4];
     f32 pos[4];
@@ -880,7 +880,7 @@ void effPartsRotateSet(FileQueue *queue, const f32 rot[4])
     effPartsPositionSet(queue, queue->pose.pos);
 }
 
-void effPartsScaleSet(FileQueue *queue, f32 scale)
+void effPartsScaleSet(plistHandle_t *queue, f32 scale)
 {
     s128 pos;
     FileJob *job;
@@ -917,7 +917,7 @@ void effPartsScaleSet(FileQueue *queue, f32 scale)
  * CSE table, so the loop's 1/128 is rematerialized rather than copied from the
  * first unpack's FPR. Reading the payload before the packed store keeps the
  * store from feeding the argument load. */
-void ColorSet(FileQueue *queue, u32 color) {
+void ColorSet(plistHandle_t *queue, u32 color) {
     f32 tint[4] __attribute__((aligned(16)));
     u32 queueColor[4] __attribute__((aligned(16)));
     u32 jobColor[4] __attribute__((aligned(16)));
@@ -943,14 +943,14 @@ void ColorSet(FileQueue *queue, u32 color) {
     }
 }
 
-void effPartsRotateMatrixSet(FileQueue *queue, f32 matrix[4][4]) {
+void effPartsRotateMatrixSet(plistHandle_t *queue, f32 matrix[4][4]) {
     f32 vec[4] __attribute__((aligned(16)));
     sdfVuMatrixToQuaternion(matrix);
     SDF_VU0_STOREVECTOR(vec);
     effPartsRotateSet(queue, vec);
 }
 
-FileJob *fileAppendJob(FileQueue *queue, u32 id) {
+FileJob *fileAppendJob(plistHandle_t *queue, u32 id) {
     FileJob *job = fileJobCreate();
 
     job->id = id;
@@ -958,17 +958,17 @@ FileJob *fileAppendJob(FileQueue *queue, u32 id) {
     return job;
 }
 
-FileJob *fileDuplicateAndAppendJob(FileQueue *queue, FileJobPayload *source) {
+FileJob *fileDuplicateAndAppendJob(plistHandle_t *queue, FileJobPayload *source) {
     FileJobPayload *job = fileDuplicateJob(source);
     return fileAppendJob(queue, (u32)job);
 }
 
-FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath) {
+FileJob *fileAppendJobFromCommandPath(plistHandle_t *queue, const char *commandPath) {
     printf(fileAppendJobFromCommandPathData);
     return fileAppendJob(queue, (u32)fileJobCreateFromCommandState(commandPath));
 }
 
-FileJob *fileJobDuplicateAfter(FileQueue *queue, FileJob *src) {
+FileJob *fileJobDuplicateAfter(plistHandle_t *queue, FileJob *src) {
     FileJob *job = fileJobCreate();
 
     memcpy(job, src, 0xC0);
@@ -979,7 +979,7 @@ FileJob *fileJobDuplicateAfter(FileQueue *queue, FileJob *src) {
     return job;
 }
 
-void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref) {
+void fileQueueLinkJobToSectorLeader(plistHandle_t *queue, FileJob *job, FileJob *ref) {
     FileJob *node;
     FileJob *found;
     FileJobPayload *source;
@@ -1018,7 +1018,7 @@ void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *ref
     }
 }
 
-void fileQueueDetachSectorFollower(FileQueue *queue, FileJob *job) {
+void fileQueueDetachSectorFollower(plistHandle_t *queue, FileJob *job) {
     u32 flags = job->flags;
     FileJob *first;
 
@@ -1038,10 +1038,10 @@ INCLUDE_ASM(const s32, "code_r1_0021CE60", fileJobCopyHeader);
 
 /* Export a queue: the queue header, one relocated record per job, then each
  * owning job's 16-byte-aligned payload. Child jobs store their parent's index. */
-void fileQueueSaveImage(FileQueue *queue, const char *filePath) {
+void fileQueueSaveImage(plistHandle_t *queue, const char *filePath) {
     char path[0xD0];
     FileJobPayload payload;
-    FileQueue header;
+    plistHandle_t header;
     FileJob record;
     s32 fd;
     s32 count;
@@ -1058,12 +1058,12 @@ void fileQueueSaveImage(FileQueue *queue, const char *filePath) {
     }
     header = *queue;
     header.updateFrame = 0;
-    size = sizeof(FileQueue);
+    size = sizeof(plistHandle_t);
     header.entryOffset = size;
     header.first = NULL;
     count = fileQueueCountLinkedJobs(queue);
-    sceWrite(fd, &header, sizeof(FileQueue));
-    offset = count * sizeof(FileJob) + sizeof(FileQueue);
+    sceWrite(fd, &header, sizeof(plistHandle_t));
+    offset = count * sizeof(FileJob) + sizeof(plistHandle_t);
 
     for (job = queue->first; job != NULL; job = job->next) {
         record = *job;
@@ -1127,10 +1127,10 @@ void fileQueueSaveImage(FileQueue *queue, const char *filePath) {
 
 /* Save a queue image: the queue header, one relocated record per job, then each
  * owning job's 16-byte-aligned payload. Child jobs store their parent's index. */
-void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath) {
+void fileQueueSaveVersionedImage(plistHandle_t *queue, const char *filePath) {
     char path[0xD0];
     FileJobPayload payload;
-    FileQueue header;
+    plistHandle_t header;
     FileJob record;
     FileQueueImageHeader image;
     s32 fd;
@@ -1153,12 +1153,12 @@ void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath) {
 
     header = *queue;
     header.updateFrame = 0;
-    size = sizeof(FileQueue);
+    size = sizeof(plistHandle_t);
     header.entryOffset = size;
     header.first = NULL;
     count = fileQueueCountLinkedJobs(queue);
-    sceWrite(fd, &header, sizeof(FileQueue));
-    offset = count * sizeof(FileJob) + sizeof(FileQueue);
+    sceWrite(fd, &header, sizeof(plistHandle_t));
+    offset = count * sizeof(FileJob) + sizeof(plistHandle_t);
 
     for (job = queue->first; job != NULL; job = job->next) {
         record = *job;
@@ -1220,12 +1220,12 @@ void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath) {
     sceSync(fileWriteToPfsData3, 0);
 }
 
-FileQueue *fileQueueCreateFromCommandState(const char *entry) {
+plistHandle_t *fileQueueCreateFromCommandState(const char *entry) {
     sdfFileCmdHandle_t *command = sdfFileOpen(entry);
     s32 size;
     struct sdfMemHandle_t *allocation;
-    FileQueue *image;
-    FileQueue *queue;
+    plistHandle_t *image;
+    plistHandle_t *queue;
     FileJob *copy;
     FileJob *src;
     u32 i;
@@ -1235,7 +1235,7 @@ FileQueue *fileQueueCreateFromCommandState(const char *entry) {
     }
     size = sdfFileLength(command);
     allocation = sdfMemAllocDirect(size);
-    image = (FileQueue *)sdfMemLock(allocation);
+    image = (plistHandle_t *)sdfMemLock(allocation);
     sdfFileRead(command, image, size);
     sdfFileClose(command);
     queue = fileQueueCreate();
@@ -1261,7 +1261,7 @@ FileQueue *fileQueueCreateFromCommandState(const char *entry) {
     return queue;
 }
 
-FileJob *fileQueueFindById(FileQueue *queue, u32 id) {
+FileJob *fileQueueFindById(plistHandle_t *queue, u32 id) {
     FileJob *job = queue->first;
     while (job != NULL) {
         if (job->id == id) {
@@ -1272,7 +1272,7 @@ FileJob *fileQueueFindById(FileQueue *queue, u32 id) {
     return NULL;
 }
 
-FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id) {
+FileJob *fileQueueFindFlaggedById(plistHandle_t *queue, u32 id) {
     FileJob *job = queue->first;
     while (job != NULL) {
         if ((job->flags & FILE_JOB_FLAG_SHARED_PAYLOAD) != 0 && job->id == id) {
@@ -1283,7 +1283,7 @@ FileJob *fileQueueFindFlaggedById(FileQueue *queue, u32 id) {
     return NULL;
 }
 
-FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector) {
+FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector) {
     FileJob *job = queue->first;
     while (job != NULL) {
         if ((job->flags & (FILE_JOB_FLAG_SHARED_PAYLOAD | FILE_JOB_FLAG_SECTOR_FOLLOWER)) ==
@@ -1295,7 +1295,7 @@ FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector) {
     return NULL;
 }
 
-FileJob *fileQueueGetAt(FileQueue *queue, s32 index) {
+FileJob *fileQueueGetAt(plistHandle_t *queue, s32 index) {
     FileJob *job = queue->first;
     while (job != NULL) {
         if (index-- == 0) {
@@ -1306,7 +1306,7 @@ FileJob *fileQueueGetAt(FileQueue *queue, s32 index) {
     return NULL;
 }
 
-s32 fileFindQueuedJobIndex(FileQueue *queue, FileJob *target) {
+s32 fileFindQueuedJobIndex(plistHandle_t *queue, FileJob *target) {
     FileJob *job = queue->first;
     s32 index = 0;
     while (job != NULL) {
@@ -1319,7 +1319,7 @@ s32 fileFindQueuedJobIndex(FileQueue *queue, FileJob *target) {
     return 0;
 }
 
-s32 fileQueueCountLinkedJobs(FileQueue *queue) {
+s32 fileQueueCountLinkedJobs(plistHandle_t *queue) {
     FileJob *job;
     s32 count;
 
@@ -1391,8 +1391,8 @@ void PoseRotBillboard(effPartsListPose_t *obj, void *dst)
     SDF_VU0_STOREVECTOR(dst);
 }
 
-EffectQueuedSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity) {
-    EffectQueuedSurfaceNode *rec = (EffectQueuedSurfaceNode *)sdfChipAllocZeroDirect(sizeof(EffectQueuedSurfaceNode));
+effQueuedSurfaceNode_t *fileCreateSurfaceLoaderState(s32 capacity) {
+    effQueuedSurfaceNode_t *rec = (effQueuedSurfaceNode_t *)sdfChipAllocZeroDirect(sizeof(effQueuedSurfaceNode_t));
     u32 color = 0x80808080;
 
     rec->handleCount = capacity;
@@ -1408,7 +1408,7 @@ EffectQueuedSurfaceNode *fileCreateSurfaceLoaderState(s32 capacity) {
     return rec;
 }
 
-EffectQueuedSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
+effQueuedSurfaceNode_t *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
     u32 rows = hdr->emissionDuration;
     u32 count = (rows != 0 ? rows : hdr->spawnRate) * (rows != 0 ? hdr->spawnRate : hdr->length);
 
@@ -1417,7 +1417,7 @@ EffectQueuedSurfaceNode *fileCreateGridLoaderRecord(FileKeyBlock *hdr) {
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", PartsCreate_effParticle);
 
-void Delete_effParticle(EffectQueuedSurfaceNode *node) {
+void Delete_effParticle(effQueuedSurfaceNode_t *node) {
     u32 count;
     u32 i;
 
@@ -1447,9 +1447,9 @@ void Delete_effParticle(EffectQueuedSurfaceNode *node) {
     sdfChipFreeDirect(node);
 }
 
-EffectQueuedSurfaceNode *Copy_effParticle(EffectQueuedSurfaceNode *owner) {
+effQueuedSurfaceNode_t *Copy_effParticle(effQueuedSurfaceNode_t *owner) {
     FileKeyBlock *source = (FileKeyBlock *)owner->record->data1;
-    EffectQueuedSurfaceNode *result = fileCreateGridLoaderRecord(source);
+    effQueuedSurfaceNode_t *result = fileCreateGridLoaderRecord(source);
 
     effCreate(result, owner->record->type, source);
     ResourceCopy(result, owner);
@@ -1458,14 +1458,14 @@ EffectQueuedSurfaceNode *Copy_effParticle(EffectQueuedSurfaceNode *owner) {
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", ResourceCopy);
 
-void effCreate(EffectQueuedSurfaceNode *node, u32 entryId, void *resource) {
+void effCreate(effQueuedSurfaceNode_t *node, u32 entryId, void *resource) {
     if (node->record != 0) {
         effPCPHelperBEDGetModel(node->record);
     }
     node->record = fileAllocateGridRecordSlots((u16)entryId, node->handleCount, resource);
 }
 
-void fileLoadObjectOpenNamedDevice(EffectQueuedSurfaceNode *node, u32 resourceId) {
+void fileLoadObjectOpenNamedDevice(effQueuedSurfaceNode_t *node, u32 resourceId) {
     struct billHandle_t *resource = node->resource;
     if (resource != 0) {
         dds3BillboardDelete(resource);
@@ -1477,7 +1477,7 @@ void fileLoadObjectOpenNamedDevice(EffectQueuedSurfaceNode *node, u32 resourceId
     }
 }
 
-void BillboardSet(EffectQueuedSurfaceNode *node, u32 resourceId) {
+void BillboardSet(effQueuedSurfaceNode_t *node, u32 resourceId) {
     struct billHandle_t *resource = node->resource;
     if (resource != 0) {
         dds3BillboardDelete(resource);
@@ -1489,7 +1489,7 @@ void BillboardSet(EffectQueuedSurfaceNode *node, u32 resourceId) {
     }
 }
 
-void BillboardGeneralSet(EffectQueuedSurfaceNode *node, u32 resourceId) {
+void BillboardGeneralSet(effQueuedSurfaceNode_t *node, u32 resourceId) {
     struct billHandle_t *resource = node->resource;
     if (resource != 0) {
         dds3BillboardDelete(resource);
@@ -1502,7 +1502,7 @@ void BillboardGeneralSet(EffectQueuedSurfaceNode *node, u32 resourceId) {
     }
 }
 
-void fileReplaceEffectSurfaceJobs(EffectQueuedSurfaceNode *node, FileJobPayload *job) {
+void fileReplaceEffectSurfaceJobs(effQueuedSurfaceNode_t *node, FileJobPayload *job) {
     u32 count = node->record->count;
     u32 i;
     s32 size;
@@ -1526,7 +1526,7 @@ void fileReplaceEffectSurfaceJobs(EffectQueuedSurfaceNode *node, FileJobPayload 
     }
 }
 
-void PartsListSet(EffectQueuedSurfaceNode *node, FileQueue *queue) {
+void PartsListSet(effQueuedSurfaceNode_t *node, plistHandle_t *queue) {
     u32 count = node->record->count;
     u32 i;
     s32 size;
@@ -1550,14 +1550,14 @@ void PartsListSet(EffectQueuedSurfaceNode *node, FileQueue *queue) {
     }
 }
 
-void fileReplaceReferenceHolder(EffectQueuedSurfaceNode *obj, u32 resource) {
+void fileReplaceReferenceHolder(effQueuedSurfaceNode_t *obj, u32 resource) {
     if (obj->resourceHolder != NULL) {
         effCacheTexDelete(obj->resourceHolder);
     }
     obj->resourceHolder = effCacheTexCreate(resource);
 }
 
-void fileClearLoadObjectReferences(EffectQueuedSurfaceNode *obj) {
+void fileClearLoadObjectReferences(effQueuedSurfaceNode_t *obj) {
     if (obj->record != 0) {
         fileClearRecordReferences(obj->record);
         return;
@@ -1570,11 +1570,11 @@ INCLUDE_ASM(const s32, "code_r1_0021CE60", fileDrawLoadObjectSlots);
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", effCallSRAnimation);
 
-void fileSendLoadObjectRecordVector(EffectQueuedSurfaceNode *obj, const u128 *value) {
+void fileSendLoadObjectRecordVector(effQueuedSurfaceNode_t *obj, const u128 *value) {
     mnuRecordSetVector(obj->record, value);
 }
 
-void fileCopyLoadObjectRecordVector(EffectQueuedSurfaceNode *obj, const u128 *value) {
+void fileCopyLoadObjectRecordVector(effQueuedSurfaceNode_t *obj, const u128 *value) {
     fileSetRecordSecondVector(obj->record, value);
 }
 
@@ -1582,14 +1582,14 @@ void fileSetRecordWordFour(s32 record, u32 value) {
     *(u32 *)(record + 4) = value;
 }
 
-void fileSetLoadObjectScale(EffectQueuedSurfaceNode *obj, f32 scale) {
+void fileSetLoadObjectScale(effQueuedSurfaceNode_t *obj, f32 scale) {
     obj->opacity = scale;
     dds3DispatchIndexedCallback(obj->record, scale);
 }
 
-void fileResetSlotStates(FileSlotTable *table) {
+void fileResetSlotStates(bhvrHandle_t *table) {
     u32 count;
-    FileSlot *slot;
+    effPosture_t *slot;
     u32 index;
 
     count = table->count;
@@ -1605,8 +1605,8 @@ void fileResetSlotStates(FileSlotTable *table) {
 }
 
 /* vu0 routine: preserve the packed RGB snapshot while applying the alpha track. */
-u32 effColorAnimation(const SdfColorTrack *colorTrack,
-                              const SdfAlphaTrack *alphaTrack,
+u32 effColorAnimation(const effBehavior_RGBParams_t *colorTrack,
+                              const effBehavior_AlphaParams_t *alphaTrack,
                               s32 frame, s32 duration) {
     u32 color0;
     u32 color1;
@@ -1701,7 +1701,7 @@ u32 effColorAnimation(const SdfColorTrack *colorTrack,
     return (packedColor & 0x00FFFFFF) | (alpha << 24);
 }
 
-f32 effSampleScalarCurve(const EffScalarCurve *curve, s32 frame, s32 duration) {
+f32 effSampleScalarCurve(const effScalarCurve_t *curve, s32 frame, s32 duration) {
     f32 from, to, factor, durationFloat;
     s32 firstFrame, secondFrame;
     if (duration == 0) {
@@ -1761,13 +1761,13 @@ INCLUDE_ASM(const s32, "code_r1_0021CE60", fileSampleKeyTracks);
 
 INCLUDE_ASM(const s32, "code_r1_0021CE60", effCallColorAnimation);
 
-void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot) {
+void fileInvalidateSlotGroup(bhvrHandle_t *table, effPosture_t *slot) {
     FileKeyBlock *grid = (FileKeyBlock *)table->data0;
     s32 rows = grid->rows;
     s32 columns = grid->columns;
     s32 n = columns * rows;
     u32 index;
-    FileSlot *groupSlot;
+    effPosture_t *groupSlot;
     s32 i;
 
     if (n != 0) {
@@ -1780,13 +1780,13 @@ void fileInvalidateSlotGroup(FileSlotTable *table, FileSlot *slot) {
     }
 }
 
-void fileCopyAndInvalidateSlotGroup(FileSlotTable *table, FileSlot *source) {
+void fileCopyAndInvalidateSlotGroup(bhvrHandle_t *table, effPosture_t *source) {
     FileKeyBlock *grid = (FileKeyBlock *)table->data0;
     s32 rows = grid->rows;
     s32 columns = grid->columns;
     s32 n = columns * rows;
     u32 index;
-    FileSlot *slot;
+    effPosture_t *slot;
 
     if (n != 0) {
         index = ((u32)source - (u32)table->slots) >> 5;
@@ -1797,7 +1797,7 @@ void fileCopyAndInvalidateSlotGroup(FileSlotTable *table, FileSlot *source) {
 }
 
 /* vu0 routine: shifts one slot's history and interpolates its trailing samples. */
-void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot) {
+void effUpdateGridRecordSlotHistory(bhvrHandle_t *record, effPosture_t *slot) {
     f32 points[4][4];
     f32 color[4];
     f32 colorStep[4];
@@ -1815,9 +1815,9 @@ void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot) {
     u32 i;
     u32 historyIndex;
     s32 frame;
-    FileSlot *group;
-    FileSlot *shiftTarget;
-    FileSlot *cursor;
+    effPosture_t *group;
+    effPosture_t *shiftTarget;
+    effPosture_t *cursor;
     f32 fraction;
     f32 step;
     f32 alpha;
@@ -1829,7 +1829,7 @@ void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot) {
     if (count != 0) {
         u8 *base = (u8 *)record->slots;
         frame = FILE_SLOT_FRAME(slot);
-        group = (FileSlot *)(base +
+        group = (effPosture_t *)(base +
             ((record->instances + ((u32)((u8 *)slot - base) >> 5) * count) << 5));
         if (frame == 0) {
             *group = *slot;
@@ -1861,7 +1861,7 @@ void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot) {
             if (rows != 1 && columns >= 2) {
                 if (frame >= 2 && columns >= 3) {
                     if (FILE_SLOT_FRAME(&group[rows * 2]) >= 0) {
-                        FileSlot *previous;
+                        effPosture_t *previous;
                         SDF_VU0_COPYVECTOR(points[0], group[rows * 2].pos);
                         previous = group + rows;
                         SDF_VU0_COPYVECTOR(points[1], previous->pos);
@@ -1903,7 +1903,7 @@ void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot) {
                     }
                 } else if (frame > 0) {
                     if (FILE_SLOT_FRAME(&group[rows]) >= 0) {
-                        FileSlot *previous = group + rows;
+                        effPosture_t *previous = group + rows;
                         shiftTarget = previous;
                         fraction = 0.0f;
                         cursor = previous - 1;
@@ -1943,8 +1943,8 @@ void effUpdateGridRecordSlotHistory(FileSlotTable *record, FileSlot *slot) {
 
                                     EE_MMI_RGBA_PACK_UNIT(packedOutput[0], 128.0f);
                                     slotBytes = (u8 *)cursor;
-                                    *(u32 *)(slotBytes + (u32)&((FileSlot *)0)->color) = packedOutput[0];
-                                    *(s32 *)(slotBytes + (u32)&FILE_SLOT_FRAME((FileSlot *)0)) = frame;
+                                    *(u32 *)(slotBytes + (u32)&((effPosture_t *)0)->color) = packedOutput[0];
+                                    *(s32 *)(slotBytes + (u32)&FILE_SLOT_FRAME((effPosture_t *)0)) = frame;
                                 }
                                 cursor--;
                             }
@@ -1962,7 +1962,7 @@ extern u8 effSharedRandomState[];
 extern f32 effWaveEmitterNegativeYAxis[4];
 #define FILE_SLOT_FRAME_DISABLED (-2)
 
-void effUpdateWaveEmitterSlots(FileSlotTable *record) {
+void effUpdateWaveEmitterSlots(bhvrHandle_t *record) {
     f32 direction[4];
     f32 radiusVector[4];
     f32 previousPosition[4];
@@ -1970,7 +1970,7 @@ void effUpdateWaveEmitterSlots(FileSlotTable *record) {
     u32 i;
     u32 count;
     u32 flags;
-    FileSlot *slot;
+    effPosture_t *slot;
     FileWaveMotion *motion;
     s32 duration;
     s32 prewarm;
@@ -2027,7 +2027,7 @@ void effUpdateWaveEmitterSlots(FileSlotTable *record) {
             do {
                 if (FILE_SLOT_FRAME(slot) >= length) {
                     FILE_SLOT_FRAME(slot) = duration != 0 ? FILE_SLOT_FRAME_DISABLED : FILE_SLOT_FRAME_NONE;
-                    fileInvalidateSlotGroup((FileSlotTable *)record, slot);
+                    fileInvalidateSlotGroup((bhvrHandle_t *)record, slot);
                 }
                 frame = FILE_SLOT_FRAME(slot);
                 if (frame != -2) {
@@ -2137,7 +2137,7 @@ void effUpdateWaveEmitterSlots(FileSlotTable *record) {
                             slot->angle *= motion->angleMultiplier;
                             slot->angle += motion->angle;
                             if (prewarm != 0) {
-                                fileCopyAndInvalidateSlotGroup((FileSlotTable *)record, slot);
+                                fileCopyAndInvalidateSlotGroup((bhvrHandle_t *)record, slot);
                                 FILE_SLOT_FRAME(slot)++;
                             }
                             toSpawn--;
@@ -2176,9 +2176,9 @@ INCLUDE_ASM(const s32, "code_r1_0021CE60", effUpdateWaveEmitterSlots);
 #endif
 
 /* Scale selected wave-emitter parameters from source to destination. */
-void effScaleWaveEmitterParameters(ScaleOwner *owner, f32 scale) {
-    ScaleSet *src = owner->src;
-    ScaleSet *dst = owner->dst;
+void effScaleWaveEmitterParameters(effScaleOwner_t *owner, f32 scale) {
+    effScaleSet_t *src = owner->src;
+    effScaleSet_t *dst = owner->dst;
     u32 i;
 
     dst->unk64 = src->unk64 * scale;
@@ -2215,24 +2215,24 @@ INCLUDE_ASM(const s32, "code_r1_0021CE60", effLeaf349);
 
 /* NON_MATCHING: 3 of 86 words match. Register allocation and scheduling differ; retail keeps type masked in s7 and the key loads before the descriptor loads. */
 #ifdef NON_MATCHING
-FileSlotTable *fileAllocateGridRecordSlots(u16 type, u32 count, const void *configuration)
+bhvrHandle_t *fileAllocateGridRecordSlots(u16 type, u32 count, const void *configuration)
 {
     const FileKeyBlock *key = configuration;
-    EffEmitterType *emitter;
+    effEmitterType_t *emitter;
     u32 dataBytes;
     u32 total;
     struct sdfMemHandle_t *allocation;
-    FileSlotTable *table;
+    bhvrHandle_t *table;
     u8 *data;
     u8 *work;
 
     emitter = &effEmitterTypeDescriptors[type];
     total = count * key->columns * key->rows + count;
     dataBytes = emitter->dataBytes;
-    allocation = sdfMemAllocDirect(total * sizeof(FileSlot) + FILE_SLOT_TABLE_HEADER_BYTES + emitter->slotBytes * count + dataBytes * 2);
+    allocation = sdfMemAllocDirect(total * sizeof(effPosture_t) + FILE_SLOT_TABLE_HEADER_BYTES + emitter->slotBytes * count + dataBytes * 2);
     table = sdfMemLock(allocation);
     table->type = type;
-    table->slots = (FileSlot *)((u8 *)table + FILE_SLOT_TABLE_HEADER_BYTES);
+    table->slots = (effPosture_t *)((u8 *)table + FILE_SLOT_TABLE_HEADER_BYTES);
     data = (u8 *)(table->slots + total);
     table->data0 = data;
     work = data + dataBytes;

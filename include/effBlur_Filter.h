@@ -14,34 +14,21 @@ void effBlurStepScaleSlotsAndDraw(void *);
 
 #include "sdf_resource.h"
 
-typedef struct EffBlurTemplate {
+typedef struct dds3Effect_PartialMultiBlur_t {
     dds3Effect_PartialMultiBlurParam_t body;
     struct sdfTexHandle_t *texture;
-} EffBlurTemplate;
+} dds3Effect_PartialMultiBlur_t;
 
-typedef char EffBlurTemplateSizeCheck[sizeof(EffBlurTemplate) == 0x30 ? 1 : -1];
+typedef char dds3Effect_PartialMultiBlurSizeCheck[sizeof(dds3Effect_PartialMultiBlur_t) == 0x30 ? 1 : -1];
 
-typedef struct EffBlurScatterSlot {
-    s32 delay;
-    f32 angle;
-    dds3Effect_Blur_t quad;
-} EffBlurScatterSlot;
+typedef char effBlurScatterSlotSizeCheck[sizeof(effBlurScatterSlot_t) == 0x30 ? 1 : -1];
 
-typedef struct EffBlurScatterWork {
-    dds3Effect_DistortionBlurParam_t params;
-    struct sdfTexHandle_t *texture;
-    struct sdfMemHandle_t *allocation;
-    EffBlurScatterSlot *slots;
-} EffBlurScatterWork;
+typedef char effBlurScatterWorkSizeCheck[sizeof(effBlurScatterWork_t) == 0x38 ? 1 : -1];
 
-typedef char EffBlurScatterSlotSizeCheck[sizeof(EffBlurScatterSlot) == 0x30 ? 1 : -1];
-
-typedef char EffBlurScatterWorkSizeCheck[sizeof(EffBlurScatterWork) == 0x38 ? 1 : -1];
-
-void effBlurStepScatterSlotsAndDraw(EffBlurScatterWork *work);
+void effBlurStepScatterSlotsAndDraw(effBlurScatterWork_t *work);
 
 void effBlurDrawFramebufferQuad(const dds3Effect_Blur_t *source);
 
-void effDrawBlurFixedPointRectangle(EffBlurTemplate *owner);
+void effDrawBlurFixedPointRectangle(dds3Effect_PartialMultiBlur_t *owner);
 
 #endif

@@ -122,7 +122,7 @@ extern dds3ProcessID_t *itfFontTestScriptTask;
 extern sdfTexHandle_t *itfBackgroundSpriteTexture;
 void itfReleaseBackgroundSpriteTexture(void);
 
-struct EffSpriteUV;
+struct effSpriteUV_t;
 
 struct sdfTexHandle_t;
 

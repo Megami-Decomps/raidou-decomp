@@ -97,9 +97,9 @@ f32 dds3ShortestAngleDelta(f32 fromDegrees, f32 toDegrees);
 
 s32 effObjInitializeFollowModelData(dds3Basic_t *object);
 
-typedef struct EffVec4 {
+typedef struct effVec4_t {
     f32 v[4];
-} EffVec4;
+} effVec4_t;
 
 
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3AddUnitObjectBasic);
@@ -152,13 +152,13 @@ INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3CtnGetSub);
 
 #ifdef VERSION_RAIDOU1
 s32 effObjInitializeFollowModelData(dds3Basic_t *object) {
-    EffectObjectData *data;
+    effObjectData_t *data;
     void *work;
 
     dds3InitPoseSet(object);
-    work = sdfChipAllocDirect(sizeof(EffectObjectData));
+    work = sdfChipAllocDirect(sizeof(effObjectData_t));
     object->workdata = work;
-    memset(work, 0, sizeof(EffectObjectData));
+    memset(work, 0, sizeof(effObjectData_t));
     data = object->workdata;
     data->modelHolder = dds3CreateSlotResourceState(object);
     data->transitionWork = NULL;

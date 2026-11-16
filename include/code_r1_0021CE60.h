@@ -112,7 +112,7 @@ typedef char effPartsListPose_size_must_be_0x70[
     (sizeof(effPartsListPose_t) == 0x70) ? 1 : -1];
 
 /* Runtime queue owner; serialized images retain the same 0x90-byte header. */
-typedef struct FileQueue {
+typedef struct plistHandle_t {
     effPartsListPose_t pose;
     u8 pad70[4];
     f32 scaleMultiplier; /* 0x74: multiplies queue scale during updates */
@@ -124,24 +124,24 @@ typedef struct FileQueue {
         u32 entryOffset; /* relative first-entry offset in serialized images */
     };               /* 0x88 */
     FileJob *first;   /* 0x8C: runtime traversal start */
-} FileQueue;
+} plistHandle_t;
 
-typedef char FileQueue_size_must_be_0x90[
-    (sizeof(FileQueue) == 0x90) ? 1 : -1];
+typedef char plistHandle_size_must_be_0x90[
+    (sizeof(plistHandle_t) == 0x90) ? 1 : -1];
 
 void camFollowOffsetVec(effPartsListPose_t *obj, void *dst);
 void PoseRotBillboard(effPartsListPose_t *obj, void *dst);
-void fileQueueLinkJobToSectorLeader(FileQueue *queue, FileJob *job, FileJob *leader);
+void fileQueueLinkJobToSectorLeader(plistHandle_t *queue, FileJob *job, FileJob *leader);
 
-typedef struct FileSlot {
+typedef struct effPosture_t {
     f32 pos[4];       /* 0x00 */
     s32 state;        /* 0x10: signed animation frame or lifecycle sentinel */
     u32 color;        /* 0x14 */
     f32 scale;        /* 0x18 */
     f32 angle;        /* 0x1C */
-} FileSlot;
+} effPosture_t;
 
-typedef struct FileSlotTable {
+typedef struct bhvrHandle_t {
     u16 type;
     u8 pad02[2];
     u32 instances;         /* 0x04: target's primary-slot count */
@@ -149,17 +149,17 @@ typedef struct FileSlotTable {
     u32 flags;             /* 0x0C */
     u32 references;        /* 0x10: acquisition/frame counter */
     f32 spawnRemainder;    /* 0x14 */
-    FileSlot *slots; /* 0x18 */
+    effPosture_t *slots; /* 0x18 */
     u8 *instanceWork;             /* 0x1C: per-type instance work */
     u8 *data0;             /* 0x20 */
     u8 *data1;             /* 0x24 */
     struct sdfMemHandle_t *allocation; /* 0x28: owns the retained table storage */
-} FileSlotTable;
+} bhvrHandle_t;
 
 /* The existing root-pointer conventions are 4-byte aligned, not VU types. */
-typedef char FileSlotSizeCheck[(sizeof(FileSlot) == 0x20) ? 1 : -1];
+typedef char effPostureSizeCheck[(sizeof(effPosture_t) == 0x20) ? 1 : -1];
 
-typedef char FileSlotTableSizeCheck[(sizeof(FileSlotTable) == 0x2C) ? 1 : -1];
+typedef char bhvrHandleSizeCheck[(sizeof(bhvrHandle_t) == 0x2C) ? 1 : -1];
 
 /* The slots start after the table, rounded up to 16 bytes for the VU0 quad loads. */
 #define FILE_SLOT_TABLE_HEADER_BYTES 0x30
@@ -225,7 +225,7 @@ typedef char DevState_state_size_must_be_1[
 
 /* The flag-list factory appends this owner after its vertex, color and mark
  * arrays. Its parameter record is copied whole into the owner. */
-typedef struct SdfColorTrack {
+typedef struct effBehavior_RGBParams_t {
     u8 segmentMode; /* enum SdfColorTrackMode, stored as a byte */
     u8 pad01[3];
     u32 initialColor;
@@ -236,33 +236,33 @@ typedef struct SdfColorTrack {
         f32 fraction;
     } keys[2];
     u8 pad1C[8];
-} SdfColorTrack;
+} effBehavior_RGBParams_t;
 
-typedef struct SdfAlphaTrack {
+typedef struct effBehavior_AlphaParams_t {
     u32 alpha;
     s32 surfaceIndex;
     f32 fadeInFraction;
     f32 fadeOutFraction;
-} SdfAlphaTrack;
+} effBehavior_AlphaParams_t;
 
-typedef char SdfColorTrack_key_stride_must_be_8[(sizeof(((SdfColorTrack *)0)->keys[0]) == 8) ? 1 : -1];
+typedef char SdfColorTrack_key_stride_must_be_8[(sizeof(((effBehavior_RGBParams_t *)0)->keys[0]) == 8) ? 1 : -1];
 
-typedef char SdfColorTrack_size_must_be_0x24[(sizeof(SdfColorTrack) == 0x24) ? 1 : -1];
+typedef char effBehavior_RGBParams_size_must_be_0x24[(sizeof(effBehavior_RGBParams_t) == 0x24) ? 1 : -1];
 
-typedef char SdfAlphaTrack_size_must_be_0x10[(sizeof(SdfAlphaTrack) == 0x10) ? 1 : -1];
+typedef char effBehavior_AlphaParams_size_must_be_0x10[(sizeof(effBehavior_AlphaParams_t) == 0x10) ? 1 : -1];
 
 void fileJobDestroy(FileJobPayload *job);
 
-FileQueue *fileQueueCreate(void);
+plistHandle_t *fileQueueCreate(void);
 
-FileJob *fileQueueGetAt(FileQueue *queue, s32 index);
+FileJob *fileQueueGetAt(plistHandle_t *queue, s32 index);
 
 void fileJobCopyHeader(FileJob *destination, const FileJob *source);
 
-void fileQueueRemoveAndDestroyJob(FileQueue *queue, FileJob *job);
+void fileQueueRemoveAndDestroyJob(plistHandle_t *queue, FileJob *job);
 
 /* Piecewise-linear scalar keys. Frames and duration are signed. */
-typedef struct EffScalarCurve {
+typedef struct effScalarCurve_t {
     u8 mode; /* enum EffScalarCurveMode, stored as a byte */
     u8 reserved01[3];
     f32 initialValue;
@@ -274,25 +274,25 @@ typedef struct EffScalarCurve {
         f32 value;
         f32 fraction;
     } keys[2];
-} EffScalarCurve; /* 0x24 */
+} effScalarCurve_t; /* 0x24 */
 
 /* Scalar tracks in effect configurations reserve eight trailing bytes. */
-typedef struct EffScalarTrack {
-    EffScalarCurve curve;
+typedef struct effScalarTrack_t {
+    effScalarCurve_t curve;
     u8 reserved24[8];
-} EffScalarTrack; /* 0x2C */
+} effScalarTrack_t; /* 0x2C */
 
 #define FILE_SLOT_FRAME(slot) ((slot)->state)
 
-FileSlotTable *fileAllocateGridRecordSlots(u16 type, u32 count, const void *configuration);
+bhvrHandle_t *fileAllocateGridRecordSlots(u16 type, u32 count, const void *configuration);
 
-void fileClearRecordReferences(FileSlotTable *record);
+void fileClearRecordReferences(bhvrHandle_t *record);
 
 /* The track's +0x0C word is a real emitter random multiplier; the ordinary
  * curve sampler treats it as reserved. Both are members of the serialized
  * parameter format, not a second runtime-record view. */
 typedef union FileKeyScalarTrack {
-    EffScalarTrack track;
+    effScalarTrack_t track;
     struct {
         u8 mode;
         u8 reserved01[3];
@@ -309,7 +309,7 @@ typedef union FileKeyScalarTrack {
     } emitter;
 } FileKeyScalarTrack;
 
-/* FileSlotTable.type selects the serialized emitter tail. Its
+/* bhvrHandle_t.type selects the serialized emitter tail. Its
  * descriptors copy E0..124 bytes; FileKeyBlock is their existing primary
  * parameter owner. Its +54 surface index is also consumed as signed low 16
  * bits by billboard openers. Grid-group dimensions occupy C0/C4. */
@@ -319,8 +319,8 @@ typedef struct FileKeyBlock {
     s32 emissionDuration;   /* 0x20 */
     u32 spawnRate;          /* 0x24: emitter samplers convert this count unsigned */
     f32 spawnVariance;      /* 0x28 */
-    SdfColorTrack colorTrack; /* 0x2C */
-    SdfAlphaTrack alphaTrack; /* 0x50: surfaceIndex is read word-wide or narrowed to s16 */
+    effBehavior_RGBParams_t colorTrack; /* 0x2C */
+    effBehavior_AlphaParams_t alphaTrack; /* 0x50: surfaceIndex is read word-wide or narrowed to s16 */
     FileKeyScalarTrack scale;   /* 0x60 */
     FileKeyScalarTrack heading; /* 0x8C */
     s32 length;            /* 0xB8 */
@@ -423,10 +423,10 @@ typedef struct FileKeyBlock {
 typedef char FileKeyScalarTrackSizeCheck[(sizeof(FileKeyScalarTrack) == 0x2C) ? 1 : -1];
 
 /* Surface parameters copied into the node: 0x1C bytes at +0x10. */
-typedef struct EffSurfaceParams {
+typedef struct effSurfaceParams_t {
     u32 opaque00[6];
     f32 scale;
-} EffSurfaceParams;
+} effSurfaceParams_t;
 
 /*
  * SDK word carriers used by effColorAnimation and the bit-scaled
@@ -446,21 +446,21 @@ static inline u32 eePackRGBAWord(f32 unit) {
     return rgba[0];
 }
 
-struct FileQueue *Create_effPartsList(struct FileQueue *source);
+struct plistHandle_t *Create_effPartsList(struct plistHandle_t *source);
 
-struct FileQueue *effPartsCreateFinish(const struct FileQueue *source);
+struct plistHandle_t *effPartsCreateFinish(const struct plistHandle_t *source);
 
-void effPartsDelete(struct FileQueue *queue);
+void effPartsDelete(struct plistHandle_t *queue);
 void effPadVibeFadeUpdate(void);
-void effPartsScaleSet(struct FileQueue *queue, f32 scale);
-void effPartsDraw(struct FileQueue *queue);
-void effPartsPositionSet(struct FileQueue *queue, const f32 position[4]);
-void effPartsRotateSet(struct FileQueue *queue, const f32 rotation[4]);
-void ColorSet(struct FileQueue *queue, u32 color);
+void effPartsScaleSet(struct plistHandle_t *queue, f32 scale);
+void effPartsDraw(struct plistHandle_t *queue);
+void effPartsPositionSet(struct plistHandle_t *queue, const f32 position[4]);
+void effPartsRotateSet(struct plistHandle_t *queue, const f32 rotation[4]);
+void ColorSet(struct plistHandle_t *queue, u32 color);
 
 typedef struct SdfFlagListParams {
-    SdfColorTrack color;
-    SdfAlphaTrack alpha;
+    effBehavior_RGBParams_t color;
+    effBehavior_AlphaParams_t alpha;
     s32 maxFrames;
     u32 count;
     f32 speed;
@@ -500,13 +500,13 @@ void sdfDrawFlagListVertices(SdfFlagListWork *);
 
 FileJobPayload *Copy_effParts(FileJobPayload *request);
 
-f32 effSampleScalarCurve(const EffScalarCurve *curve, s32 frame, s32 duration);
+f32 effSampleScalarCurve(const effScalarCurve_t *curve, s32 frame, s32 duration);
 
-u32 effColorAnimation(const struct SdfColorTrack *colorTrack,
-                              const struct SdfAlphaTrack *alphaTrack,
+u32 effColorAnimation(const struct effBehavior_RGBParams_t *colorTrack,
+                              const struct effBehavior_AlphaParams_t *alphaTrack,
                               s32 frame, s32 duration);
 
-typedef struct EffFileJobRequest {
+typedef struct effFileJobRequest_t {
     char *name;                       /* 0x00 */
     u16 fileKind;                     /* 0x04 */
     u8 pad06[2];
@@ -518,13 +518,13 @@ typedef struct EffFileJobRequest {
     u16 resourceMode;                 /* 0x18 */
     u8 pad1A[2];
     const char *secondaryCommandPath; /* 0x1C */
-} EffFileJobRequest;
+} effFileJobRequest_t;
 
-typedef char EffFileJobRequestSizeCheck[(sizeof(EffFileJobRequest) == 0x20) ? 1 : -1];
+typedef char effFileJobRequestSizeCheck[(sizeof(effFileJobRequest_t) == 0x20) ? 1 : -1];
 
 /* Class operations select the copied parameter format and own this 0x40-byte
  * header. Each resource kind owns the pointer returned by its factory. */
-typedef struct EffClassWork {
+typedef struct effClassWork_t {
     union {
         u8 transform[0x20];
         struct {
@@ -539,24 +539,24 @@ typedef struct EffClassWork {
     void *resource;
     void *payload;
     u8 pad38[8];
-} EffClassWork;
+} effClassWork_t;
 
 /* Count-bearing serialized formats share the first 0x3C bytes. Native
  * point callbacks compare the time word signed; emitter callbacks compare it
  * unsigned. These are two real interpretations of the same serialized word. */
-typedef struct EffBillTimedHeader {
-    SdfColorTrack colorTrack;
-    SdfAlphaTrack alphaTrack;
+typedef struct effBillTimedHeader_t {
+    effBehavior_RGBParams_t colorTrack;
+    effBehavior_AlphaParams_t alphaTrack;
     union {
         u32 progress;
         s32 duration;
     } time;
     u32 count;
-} EffBillTimedHeader;
+} effBillTimedHeader_t;
 
 /* Track-set allocations end with this 0x30-byte header. Kind selects the
  * geometry and optional column strides; tail follows the geometry buffer. */
-typedef struct EffTrackSet {
+typedef struct effTrackSet_t {
     u32 type;
     u32 color;
     s32 rows;
@@ -565,18 +565,18 @@ typedef struct EffTrackSet {
     s32 count;
     u8 flag;
     u8 pad15[3];
-    struct RefObj *shared;
+    struct effRefObj_t *shared;
     u8 *buffer;
     u8 *columns;
     u8 *tail;
     sdfMat_t *handle;
     struct sdfMemHandle_t *allocation;
-} EffTrackSet;
+} effTrackSet_t;
 
-typedef char EffTrackSet_size_must_be_0x30[(sizeof(EffTrackSet) == 0x30) ? 1 : -1];
+typedef char effTrackSet_size_must_be_0x30[(sizeof(effTrackSet_t) == 0x30) ? 1 : -1];
 
-typedef struct EffBillPointConfig {
-    EffBillTimedHeader timed;
+typedef struct effBillPointConfig_t {
+    effBillTimedHeader_t timed;
     /* Bolt/range updaters interpret the
      * layer word as an unsigned division count for floating-point math. */
     s32 layers;
@@ -598,16 +598,16 @@ typedef struct EffBillPointConfig {
     f32 halfWidth;
     f32 edgeWidth;
     f32 totalLength; /* 0x84: divided by layer count to size each mesh segment. */
-} EffBillPointConfig;
+} effBillPointConfig_t;
 
-typedef char EffClassWorkSizeCheck[(sizeof(EffClassWork) == 0x40) ? 1 : -1];
+typedef char effClassWorkSizeCheck[(sizeof(effClassWork_t) == 0x40) ? 1 : -1];
 
-typedef char EffBillTimedHeaderSizeCheck[(sizeof(EffBillTimedHeader) == 0x3C) ? 1 : -1];
+typedef char effBillTimedHeaderSizeCheck[(sizeof(effBillTimedHeader_t) == 0x3C) ? 1 : -1];
 
-typedef char EffBillPointConfigSizeCheck[(sizeof(EffBillPointConfig) == 0x88) ? 1 : -1];
+typedef char effBillPointConfigSizeCheck[(sizeof(effBillPointConfig_t) == 0x88) ? 1 : -1];
 
 /* Point-set node: `rows` 16-byte entries in `buffer`, then `tail`. */
-typedef struct EffPointSet {
+typedef struct effPointSet_t {
     u32 type;       // 0x00
     u32 color;      // 0x04
     s32 rows;       // 0x08
@@ -617,10 +617,10 @@ typedef struct EffPointSet {
     u8 *tail;       // 0x14
     struct sdfMat_t *handle; // 0x18
     struct sdfMemHandle_t *allocation; // 0x1C
-} EffPointSet;
+} effPointSet_t;
 
-typedef struct EffScaleRangeEntry {
-    struct EffPointSet *set;
+typedef struct effScaleRangeEntry_t {
+    struct effPointSet_t *set;
     f32 position[3];
     u8 pad10[4];
     s32 negativeSeed;
@@ -630,40 +630,40 @@ typedef struct EffScaleRangeEntry {
     f32 angularRate;
     f32 phase;
     f32 height;
-} EffScaleRangeEntry;
+} effScaleRangeEntry_t;
 
-typedef char EffScaleRangeEntrySizeCheck[(sizeof(EffScaleRangeEntry) == 0x30) ? 1 : -1];
+typedef char effScaleRangeEntrySizeCheck[(sizeof(effScaleRangeEntry_t) == 0x30) ? 1 : -1];
 
-typedef char EffPointSetSizeCheck[sizeof(EffPointSet) == 0x20 ? 1 : -1];
+typedef char effPointSetSizeCheck[sizeof(effPointSet_t) == 0x20 ? 1 : -1];
 
 /* Span table layout of the model-effect implementations. */
-typedef struct EffSpanEntry {
+typedef struct effSpanEntry_t {
     f32 first;
     f32 second;
     u32 referenceAge;
-} EffSpanEntry;
+} effSpanEntry_t;
 
-typedef struct EffSpanRecord {
-    EffSpanEntry *entries;
-    struct EffPointSet *pointSet;
-    struct EffTrackSet *references;
+typedef struct effSpanRecord_t {
+    effSpanEntry_t *entries;
+    struct effPointSet_t *pointSet;
+    struct effTrackSet_t *references;
     u32 pointCount;
-} EffSpanRecord;
+} effSpanRecord_t;
 
-typedef struct EffSpanTable {
-    EffSpanRecord *records;
+typedef struct effSpanTable_t {
+    effSpanRecord_t *records;
     u32 count;
     u16 total;
     u8 pad0A[2];
     struct sdfMemHandle_t *allocation;
-} EffSpanTable;
+} effSpanTable_t;
 
 /* Inline source prefix consumed by the paired particle-span owners. Bytes in
  * each explicit pad remain opaque; the operation table supplies copy size, so
  * this declaration does not assert the full copied payload extent. */
-typedef struct EffSpanConfig {
-    SdfColorTrack pointColorTrack;       /* 0x00 */
-    SdfAlphaTrack pointAlphaTrack;       /* 0x24 */
+typedef struct effSpanConfig_t {
+    effBehavior_RGBParams_t pointColorTrack;       /* 0x00 */
+    effBehavior_AlphaParams_t pointAlphaTrack;       /* 0x24 */
     u32 progress;                        /* 0x34 */
     u8 drawPoints;                       /* 0x38 */
     u8 pad39[3];
@@ -672,8 +672,8 @@ typedef struct EffSpanConfig {
     u8 pad44[4];
     f32 drawScale;                       /* 0x48 */
     f32 pointHalfWidth;                  /* 0x4C: ribbon half-width at the span points */
-    SdfColorTrack referenceColorTrack;   /* 0x50 */
-    SdfAlphaTrack referenceAlphaTrack;   /* 0x74 */
+    effBehavior_RGBParams_t referenceColorTrack;   /* 0x50 */
+    effBehavior_AlphaParams_t referenceAlphaTrack;   /* 0x74 */
     s32 referenceLifetime;               /* 0x84 */
     u8 drawReferences;                   /* 0x88 */
     u8 allowMultipleReferenceStarts;     /* 0x89 */
@@ -691,10 +691,10 @@ typedef struct EffSpanConfig {
     f32 rotationAngularVelocity;          /* 0xB4 */
     f32 rotationAngularAcceleration;      /* 0xB8 */
     u8 pointSetFlag;                     /* 0xBC */
-} EffSpanConfig;
+} effSpanConfig_t;
 
 /* An effect's model resource: its placement, color, model context and span configuration. */
-typedef struct EffModelResource {
+typedef struct effModelResource_t {
     f32 position[4];
     f32 orientation[4]; /* Quaternion. */
     f32 scale;
@@ -703,18 +703,18 @@ typedef struct EffModelResource {
     s32 kind;
     mdlObj_t *model;
     u32 attributes;
-    struct EffSpanTable *childResource;
-    struct EffSpanConfig *source;
-} EffModelResource;
+    struct effSpanTable_t *childResource;
+    struct effSpanConfig_t *source;
+} effModelResource_t;
 
-typedef char EffSpanEntry_size_check[
-    (sizeof(EffSpanEntry) == 0x0C) ? 1 : -1];
+typedef char effSpanEntry_size_check[
+    (sizeof(effSpanEntry_t) == 0x0C) ? 1 : -1];
 
-typedef char EffSpanRecord_size_check[
-    (sizeof(EffSpanRecord) == 0x10) ? 1 : -1];
+typedef char effSpanRecord_size_check[
+    (sizeof(effSpanRecord_t) == 0x10) ? 1 : -1];
 
-typedef char EffSpanTable_size_check[
-    (sizeof(EffSpanTable) == 0x10) ? 1 : -1];
+typedef char effSpanTable_size_check[
+    (sizeof(effSpanTable_t) == 0x10) ? 1 : -1];
 
 #define VU0_SET_VF10_COMPONENT(axis, f) \
     VU0_SCALAR_OP_CLOBBER(f, "vaddx." #axis " vf10, vf0, vf2x")
@@ -733,29 +733,29 @@ void fileJobSetSecondaryData(FileJobPayload *job, const void *src, s32 size, u16
 
 void fileJobCopyCommandIntoSecondaryData(FileJobPayload *job, const char *commandPath, u16 selector);
 
-FileQueue *fileQueueCreateFromCommandState(const char *entry);
+plistHandle_t *fileQueueCreateFromCommandState(const char *entry);
 
-void fileQueueSaveVersionedImage(FileQueue *queue, const char *filePath);
+void fileQueueSaveVersionedImage(plistHandle_t *queue, const char *filePath);
 
-void fileQueueSaveImage(FileQueue *queue, const char *filePath);
+void fileQueueSaveImage(plistHandle_t *queue, const char *filePath);
 
-FileJob *fileAppendJobFromCommandPath(FileQueue *queue, const char *commandPath);
+FileJob *fileAppendJobFromCommandPath(plistHandle_t *queue, const char *commandPath);
 
-FileJob *fileJobDuplicateAfter(FileQueue *queue, FileJob *source);
+FileJob *fileJobDuplicateAfter(plistHandle_t *queue, FileJob *source);
 
-void fileQueueDetachSectorFollower(FileQueue *queue, FileJob *job);
+void fileQueueDetachSectorFollower(plistHandle_t *queue, FileJob *job);
 
-typedef struct EffCameraCreateRequest {
-    struct EffFileJobRequest *resource;
+typedef struct effCameraCreateRequest_t {
+    struct effFileJobRequest_t *resource;
     struct effDebugMenu_t *object;
     const char *path;
     f32 position[3];
-} EffCameraCreateRequest;
+} effCameraCreateRequest_t;
 
-typedef char EffCameraCreateRequest_size_must_be_0x18[
-    (sizeof(EffCameraCreateRequest) == 0x18) ? 1 : -1];
+typedef char effCameraCreateRequest_size_must_be_0x18[
+    (sizeof(effCameraCreateRequest_t) == 0x18) ? 1 : -1];
 
-struct BaObj;
+struct effBaObj_t;
 struct effDebugMenu_t;
 
 /* The item at +8, selected by effDebugMenuItem_t.type (EFF_DEBUG_ITEM_*). The function members are
@@ -770,8 +770,8 @@ typedef union effDebugMenuValue {
     struct effDebugMenu_t *child;         /* CHILD, CHILD_PAGE */
     s32 (*poll)(void);                    /* FUNCTION: file choosers */
     u32 (*command)(void);                 /* FUNCTION, COMMAND */
-    s32 (*editObject)(struct BaObj *);    /* FUNCTION: scale and rotation track editors */
-    void (*editObjectNoResult)(struct BaObj *);
+    s32 (*editObject)(struct effBaObj_t *);    /* FUNCTION: scale and rotation track editors */
+    void (*editObjectNoResult)(struct effBaObj_t *);
     s32 (*editRequest)(s32);              /* FUNCTION: colour and fade track editors */
     void (*action)(void);
 } effDebugMenuValue;
@@ -832,7 +832,7 @@ typedef struct effDebugMenu_t {
     u32 flags;                            /* 0x10 */
     effDebugMenuItem_t *items;            /* 0x14 */
     s32 itemCount;                        /* 0x18 */
-    struct EffFileJobRequest *source;     /* 0x1C */
+    struct effFileJobRequest_t *source;     /* 0x1C */
     effDebugMenuCreate create;            /* 0x20 */
     void (*update)(u32 job);              /* 0x24 */
     void (*destroy)(u32 job);             /* 0x28 */

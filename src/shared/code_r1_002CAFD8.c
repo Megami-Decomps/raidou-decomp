@@ -641,13 +641,13 @@ extern void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, sp
 void itfDrawGridWithResolvedSlot(s32 offsetX, s32 offsetY, s32 z, s32 drawFlags, sprHandle_t *resource, s32 resourceIndex, s32 surfaceIndex);
 void itfUpdateGridSlotDescription(sprHandle_t *resource, s32 resourceIndex);
 void itfSetGridEntryQuantizedAndRefresh(sprHandle_t *resource, s32 resourceIndex, s32 x, s32 y, s32 width, s32 height);
-EffSlotPhaseStep itfGridApplySqrtBoundsAndColorScale(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
-EffSlotPhaseStep itfGridApplyQuadraticZoomBoundsAndFadeAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
-EffSlotPhaseStep itfGridApplyTimedBoundsAndAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
-EffSlotPhaseStep itfGridApplyThresholdBoundsAndAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
-EffSlotPhaseStep itfGridInterpolateCornerColorsToTarget(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
-EffSlotPhaseStep itfGridApplyLinearZoomBoundsAndFadeAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
-EffSlotPhaseStep itfGridApplyLinearBoundsAndColorScale(BdWork *rectangle, BdWork *out, EffTimedState *timedState);
+EffSlotPhaseStep itfGridApplySqrtBoundsAndColorScale(BdWork *rectangle, BdWork *out, effTimedState_t *timedState);
+EffSlotPhaseStep itfGridApplyQuadraticZoomBoundsAndFadeAlpha(BdWork *rectangle, BdWork *out, effTimedState_t *timedState);
+EffSlotPhaseStep itfGridApplyTimedBoundsAndAlpha(BdWork *rectangle, BdWork *out, effTimedState_t *timedState);
+EffSlotPhaseStep itfGridApplyThresholdBoundsAndAlpha(BdWork *rectangle, BdWork *out, effTimedState_t *timedState);
+EffSlotPhaseStep itfGridInterpolateCornerColorsToTarget(BdWork *rectangle, BdWork *out, effTimedState_t *timedState);
+EffSlotPhaseStep itfGridApplyLinearZoomBoundsAndFadeAlpha(BdWork *rectangle, BdWork *out, effTimedState_t *timedState);
+EffSlotPhaseStep itfGridApplyLinearBoundsAndColorScale(BdWork *rectangle, BdWork *out, effTimedState_t *timedState);
 void sdfSubmitGsTestOneRegisterPacket(u64 data, u32 kind);
 void uiDrawUniformColorRect(u32 x, u32 y, u32 z, u32 width, u32 height, u32 color, u32 surfaceIndex);
 void uiDrawActiveSurfaceRegion(s32 surfaceIndex);
@@ -712,7 +712,7 @@ s32 itfGridLookupValueOrDefault(sprHandle_t *resource, s32 resourceIndex) {
 }
 
 void itfSetGridEntryQuantizedAndRefresh(sprHandle_t *resource, s32 resourceIndex, s32 x, s32 y, s32 width, s32 height) {
-    EffectSlotDescription *entry = &resource->descriptions[resourceIndex];
+    effSlotDescription_t *entry = &resource->descriptions[resourceIndex];
     void *record = effGetSlotWorkOrOverride(resource, resourceIndex);
 
     entry->bounds[0] = x >> 4;
@@ -730,10 +730,10 @@ INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfGridCopyEntryQuad);
 
 INCLUDE_ASM(const s32, "code_r1_002CAFD8", cmpLeaf34);
 
-EffSlotPhaseStep itfGridApplySqrtBoundsAndColorScale(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
+EffSlotPhaseStep itfGridApplySqrtBoundsAndColorScale(BdWork *rectangle, BdWork *out, effTimedState_t *timedState) {
     GridAngleTable *table;
     s32 deltas[2];
-    EffectSlotGeometry *geometry = &out->geometry;
+    effSlotGeometry_t *geometry = &out->geometry;
     s32 *dimensions = geometry->bounds;
     u32 *sourceColor;
     u32 *destColor;
@@ -768,7 +768,7 @@ EffSlotPhaseStep itfGridApplySqrtBoundsAndColorScale(BdWork *rectangle, BdWork *
 }
 
 /* Apply the ZOOM_01 easing to the adjustment bounds and fade their alpha. */
-EffSlotPhaseStep itfGridApplyQuadraticZoomBoundsAndFadeAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
+EffSlotPhaseStep itfGridApplyQuadraticZoomBoundsAndFadeAlpha(BdWork *rectangle, BdWork *out, effTimedState_t *timedState) {
     GridAngleTable *table;
     s32 squares[2];
     s32 deltas[2];
@@ -821,11 +821,11 @@ EffSlotPhaseStep itfGridApplyQuadraticZoomBoundsAndFadeAlpha(BdWork *rectangle, 
 }
 
 /* Shrink the grid bounds and apply the three-phase flush envelope to corner alpha. */
-EffSlotPhaseStep itfGridApplyTimedBoundsAndAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
+EffSlotPhaseStep itfGridApplyTimedBoundsAndAlpha(BdWork *rectangle, BdWork *out, effTimedState_t *timedState) {
     GridFlushTable *table;
     s32 phases[3];
     s32 deltas[2];
-    EffectSlotGeometry *geometry = &out->geometry;
+    effSlotGeometry_t *geometry = &out->geometry;
     s32 *dimensionOut;
     s32 totalDuration;
     s32 numerator;
@@ -898,10 +898,10 @@ EffSlotPhaseStep itfGridApplyTimedBoundsAndAlpha(BdWork *rectangle, BdWork *out,
     return EFF_SLOT_PHASE_ONE / totalDuration;
 }
 
-EffSlotPhaseStep itfGridApplyThresholdBoundsAndAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
+EffSlotPhaseStep itfGridApplyThresholdBoundsAndAlpha(BdWork *rectangle, BdWork *out, effTimedState_t *timedState) {
     GridAngleTable *table;
     s32 deltas[2];
-    EffectSlotGeometry *geometry = &out->geometry;
+    effSlotGeometry_t *geometry = &out->geometry;
     s32 *dimensions = geometry->bounds;
     u32 *sourceColor;
     u32 *destColor;
@@ -939,7 +939,7 @@ EffSlotPhaseStep itfGridApplyThresholdBoundsAndAlpha(BdWork *rectangle, BdWork *
 INCLUDE_ASM(const s32, "code_r1_002CAFD8", itfUpdateAngleAndGetCycleStep);
 
 /* Blend each saved corner color toward the table's target color. */
-EffSlotPhaseStep itfGridInterpolateCornerColorsToTarget(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
+EffSlotPhaseStep itfGridInterpolateCornerColorsToTarget(BdWork *rectangle, BdWork *out, effTimedState_t *timedState) {
     GridColorTargetTable *table = (GridColorTargetTable *)timedState->source->status;
     u32 *destColor = out->geometry.cornerColors;
     u32 *sourceColor = rectangle->savedColors;
@@ -963,7 +963,7 @@ EffSlotPhaseStep itfGridInterpolateCornerColorsToTarget(BdWork *rectangle, BdWor
 }
 
 /* Apply linear ZOOM easing to the adjustment bounds and fade their alpha. */
-EffSlotPhaseStep itfGridApplyLinearZoomBoundsAndFadeAlpha(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
+EffSlotPhaseStep itfGridApplyLinearZoomBoundsAndFadeAlpha(BdWork *rectangle, BdWork *out, effTimedState_t *timedState) {
     GridAngleTable *table;
     s32 scaled[2];
     s32 deltas[2];
@@ -1022,10 +1022,10 @@ EffSlotPhaseStep itfGridApplyLinearZoomBoundsAndFadeAlpha(BdWork *rectangle, BdW
     return EFF_SLOT_PHASE_ONE / table->cycleDivisor;
 }
 
-EffSlotPhaseStep itfGridApplyLinearBoundsAndColorScale(BdWork *rectangle, BdWork *out, EffTimedState *timedState) {
+EffSlotPhaseStep itfGridApplyLinearBoundsAndColorScale(BdWork *rectangle, BdWork *out, effTimedState_t *timedState) {
     GridAngleTable *table;
     s32 deltas[2];
-    EffectSlotGeometry *geometry = &out->geometry;
+    effSlotGeometry_t *geometry = &out->geometry;
     s32 *dimensions = geometry->bounds;
     u32 *sourceColor;
     u32 *destColor;

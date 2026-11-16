@@ -595,7 +595,7 @@ void mnuDrawListScrollbar(s32 x, s32 y, s32 depth, u32 opacity, MenuList *list,
     s32 visible;
     s32 rowOffset;
     sprHandle_t *firstSprite;
-    EffectSlotDescription *firstDescription;
+    effSlotDescription_t *firstDescription;
     BdWork *firstWork;
     BdWork *lastWork;
 
@@ -680,8 +680,8 @@ MenuIconState *mnuCreatePanelIconState(u32 mode, s32 resource, s32 material) {
         panel->sprite[3] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x0D, 1);
         panel->sprite[4] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x0E, 1);
         panel->sprite[5] = effCreateResourceSlotSet((sprHandle_t *)resource, 0x0E, 1);
-        effConfigureIndexedSlotMaterial(panel->sprite[2], 0, (struct EffMappedResource *)material, 1, 0, 0, 0x0C);
-        effConfigureIndexedSlotMaterial(panel->sprite[4], 0, (struct EffMappedResource *)material, 1, 0, 0, 0x0C);
+        effConfigureIndexedSlotMaterial(panel->sprite[2], 0, (struct effMappedResource_t *)material, 1, 0, 0, 0x0C);
+        effConfigureIndexedSlotMaterial(panel->sprite[4], 0, (struct effMappedResource_t *)material, 1, 0, 0, 0x0C);
         break;
     case 5:
         panel->count = 2;

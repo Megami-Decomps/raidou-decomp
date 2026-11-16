@@ -6,16 +6,16 @@
 /* Each serialized entry expands to itself and additionalCount children.
  * Animation sampling uses additionalCount as the segment length, with one
  * boundary frame between segments. payloadSize advances through the payloads. */
-typedef struct EffExpandedEntry {
+typedef struct effExpandedEntry_t {
     s32 additionalCount;
     u32 payloadSize;
     u8 unk08[8];
-} EffExpandedEntry;
+} effExpandedEntry_t;
 
-typedef char EffExpandedEntrySizeCheck[(sizeof(EffExpandedEntry) == 0x10) ? 1 : -1];
+typedef char effExpandedEntrySizeCheck[(sizeof(effExpandedEntry_t) == 0x10) ? 1 : -1];
 
 /* Reference-counted texture payload placed at the end of its allocation. */
-typedef struct RefObj {
+typedef struct effRefObj_t {
     u8 *base;                         /* 0x00 retained allocation base */
     u8 *pixels;                       /* 0x04 image bytes */
     u8 *palette;                      /* 0x08 palette bytes */
@@ -24,28 +24,28 @@ typedef struct RefObj {
     s32 refCount;                     /* 0x14 retained references to this texture */
     s32 index;                        /* 0x18 caller-selected texture index */
     struct sdfMemHandle_t *allocationHandle; /* 0x1C final-release descriptor */
-} RefObj;
+} effRefObj_t;
 
-/* Kind-7 wrapper owns one allocation and retains a RefObj per entry.
+/* Kind-7 wrapper owns one allocation and retains a effRefObj_t per entry.
  * totalEntryCount is also the animation's total track length. */
-typedef struct EffExpandedList {
+typedef struct ctexlHandle_t {
     u8 unk00[4];
     u32 count;
     u32 flags;
     u8 unk0C[4];
-    EffExpandedEntry *entries;
-    struct RefObj **handles;
+    effExpandedEntry_t *entries;
+    struct effRefObj_t **handles;
     s32 totalEntryCount;
     u32 refCount;
     s32 unk20;
     struct sdfMemHandle_t *allocation;
-} EffExpandedList;
+} ctexlHandle_t;
 
-typedef char EffExpandedListSizeCheck[(sizeof(EffExpandedList) == 0x28) ? 1 : -1];
+typedef char ctexlHandleSizeCheck[(sizeof(ctexlHandle_t) == 0x28) ? 1 : -1];
 
-void effCacheTexDelete(EffExpandedList *holder);
+void effCacheTexDelete(ctexlHandle_t *holder);
 
-typedef char RefObjSizeCheck[sizeof(RefObj) == 0x20 ? 1 : -1];
+typedef char effRefObjSizeCheck[sizeof(effRefObj_t) == 0x20 ? 1 : -1];
 
 /* Serialized byte consumed by the GS texture-state packet builder. */
 typedef u8 SdfTextureClampMode;
@@ -75,16 +75,16 @@ typedef struct SdfTextureFileHeader {
 typedef char SdfTextureFileHeader_size_must_be_0x40[
     (sizeof(SdfTextureFileHeader) == 0x40) ? 1 : -1];
 
-EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj);
+ctexlHandle_t *Copy_effCacheTexList(ctexlHandle_t *obj);
 
-RefObj *effCreateSharedTextureReference(struct SdfTextureFileHeader *source);
+effRefObj_t *effCreateSharedTextureReference(struct SdfTextureFileHeader *source);
 
-RefObj *effCloneSharedReferenceWithValue(struct SdfTextureFileHeader *source, u32 textureIndex);
+effRefObj_t *effCloneSharedReferenceWithValue(struct SdfTextureFileHeader *source, u32 textureIndex);
 
-void effReleaseSharedReference(RefObj *obj);
+void effReleaseSharedReference(effRefObj_t *obj);
 
 /* Retain returns the same object after incrementing its object and shared-texture counts. */
-RefObj *effRetainSharedReference(RefObj *obj);
+effRefObj_t *effRetainSharedReference(effRefObj_t *obj);
 
 struct effPartsHandle_t;
 struct opcHandle_t;

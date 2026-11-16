@@ -121,17 +121,17 @@ typedef struct {
     u32 gradientColors[4];
 } EffTrackPolyParams;
 
-typedef struct EffTrackPolyWork {
+typedef struct effTrackPolyWork_t {
     EffTrackPolyParams params;
     u32 updateCount;
     struct dds3HermitianTrackPoly_tag *data;
-} EffTrackPolyWork;
+} effTrackPolyWork_t;
 
 typedef char EffTrackPolyParams_size_must_be_0x34[(sizeof(EffTrackPolyParams) == 0x34) ? 1 : -1];
 
-typedef char EffTrackPolyWork_size_must_be_0x3C[(sizeof(EffTrackPolyWork) == 0x3C) ? 1 : -1];
+typedef char effTrackPolyWork_size_must_be_0x3C[(sizeof(effTrackPolyWork_t) == 0x3C) ? 1 : -1];
 
-void effTrackPolyReset(EffTrackPolyWork *work);
+void effTrackPolyReset(effTrackPolyWork_t *work);
 
 void Eff_ModelTrackPolyGetMarkPosition(effModelTrackPoly_t *hMTPoly)
 {
@@ -153,7 +153,7 @@ INCLUDE_ASM(const s32, "effect/effModelTrackPoly", effModelTrackPolyListDrawOnlS
 
 /* Sample endpoints between startFrame and endFrame (inclusive), fade after
  * endFrame, and reset history before startFrame. */
-void effTrackPolyUpdate(EffTrackPolyWork *work) {
+void effTrackPolyUpdate(effTrackPolyWork_t *work) {
     mdlObj_t *model = work->params.model;
     f32 currentFrame = model->first->frame;
 

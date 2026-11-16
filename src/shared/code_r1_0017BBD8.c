@@ -154,7 +154,7 @@ typedef struct BtlControlObject {
 /* Select the smallest X for reference flag 0x200, otherwise the largest.
  * An empty indexed list returns NULL but still loads the native scratch vector. */
 
-struct RefObj;
+struct effRefObj_t;
 
 typedef struct BtnUv {
     s32 u;

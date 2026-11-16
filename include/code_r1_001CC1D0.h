@@ -7,14 +7,14 @@
 #include "code_0027A1D0.h"
 
 /* Draw geometry is copied together; grid easing walks the bound coordinates. */
-typedef struct EffectSlotGeometry {
+typedef struct effSlotGeometry_t {
     s32 bounds[4];
     u32 cornerColors[4];
     f32 angleDegrees;
-} EffectSlotGeometry;
+} effSlotGeometry_t;
 
 /* Texture coordinates of a sprite quad; the draw code copies and edits them by index. */
-typedef union EffSpriteUV {
+typedef union effSpriteUV_t {
     struct {
         s32 u0;
         s32 v0;
@@ -22,10 +22,10 @@ typedef union EffSpriteUV {
         s32 v1;
     } rect;
     s32 coord[4];
-} EffSpriteUV;
+} effSpriteUV_t;
 
 /* Native 0x80-byte source descriptor; its bounds feed both grid and slot drawing. */
-typedef struct EffectSlotDescription {
+typedef struct effSlotDescription_t {
     u8 pad00[0x14];
     u32 textureIndex;
     s32 flags;
@@ -34,7 +34,7 @@ typedef struct EffectSlotDescription {
     u8 pad30[4];
     u32 rect[4];
     s32 bounds[4];       /* 0x44: x offset, y offset, width, height in grid units. */
-    EffSpriteUV uv;      /* 0x54 */
+    effSpriteUV_t uv;      /* 0x54 */
     u32 cornerColors[4]; /* 0x64: reordered into the live/saved corner colors. */
     s16 widthOverride;   /* 0x74: zero selects the uv width. */
     s16 heightOverride;  /* 0x76: zero selects the uv height. */
@@ -42,9 +42,9 @@ typedef struct EffectSlotDescription {
     u8 repeatStep[2];    /* 0x7A: tile step across (x16) and down (x8). */
     u16 initialDelay;    /* 0x7C: loaded into each timed state's delay before its +1. */
     u16 descriptionUpdateDelay; /* 0x7E: update-call delay loaded into the live work entry. */
-} EffectSlotDescription;
+} effSlotDescription_t;
 
-typedef char EffectSlotDescriptionSizeCheck[sizeof(EffectSlotDescription) == 0x80 ? 1 : -1];
+typedef char effSlotDescriptionSizeCheck[sizeof(effSlotDescription_t) == 0x80 ? 1 : -1];
 
 typedef s32 (*jmsInt32Delegate)(dds3ProcessID_t *ID);
 
@@ -117,16 +117,16 @@ typedef struct MenuThresholdEntry {
 } MenuThresholdEntry;
 
 /* Each mapped record owns status storage expanded while its resource is loaded. */
-typedef struct EffMappedRecord {
+typedef struct effMappedRecord_t {
     u8 pad00[0x14];
     u32 category;
     u32 statusBytes;
     u8 pad1C[4];
     u8 *status;
-} EffMappedRecord;
+} effMappedRecord_t;
 
 /* Native 0x14-byte timed state embedded in a slot's kind-specific payload. */
-typedef struct EffTimedState {
+typedef struct effTimedState_t {
     u32 flags;
     s32 value; /* Signed 16.16 transition phase, clamped to 0..1.0 */
     union {
@@ -137,15 +137,15 @@ typedef struct EffTimedState {
         s32 delayMax;
         u32 materialValue;
     };
-    struct EffMappedRecord *source;
-} EffTimedState;
+    struct effMappedRecord_t *source;
+} effTimedState_t;
 
 /* Native 0xA0-byte slot work. Material, grid and textured-surface operations
  * use overlapping payload fields in the same slot, not separate allocations. */
 typedef struct BdWork {
     s32 flags;           /* 0x00 */
-    EffectSlotGeometry geometry; /* 0x04: x, y, width, height, colors, angle */
-    EffTimedState states[2]; /* 0x28 */
+    effSlotGeometry_t geometry; /* 0x04: x, y, width, height, colors, angle */
+    effTimedState_t states[2]; /* 0x28 */
     /* Per-mode words: corner-color offsets, grid x/y/width/height, or bar crop. */
     s32 parameters[4];   /* 0x50: bar crop width uses word 2 */
     void *owner;         /* 0x60 */
@@ -178,7 +178,7 @@ typedef struct sprHandle_t {
     u32 sharesTextureReferences;
     u32 SpriteNums;
     struct sdfMemHandle_t *descriptionAllocation;
-    EffectSlotDescription *descriptions;
+    effSlotDescription_t *descriptions;
     struct sdfMemHandle_t *workAllocation;
     BdWork *workEntries;
     u32 TexNums;
@@ -192,14 +192,14 @@ typedef char BdWorkSizeCheck[sizeof(BdWork) == 0xA0 ? 1 : -1];
 
 typedef char sprHandleSizeCheck[sizeof(sprHandle_t) == 0x30 ? 1 : -1];
 
-void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const EffSpriteUV *uv, const u32 *colors,
+void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const effSpriteUV_t *uv, const u32 *colors,
                          u32 flip, f32 angle, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot);
 void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width, u32 height, const u32 *vertexColors,
                                 u32 presetMode, u32 presetValue);
 void sdfCopyCornerWordsWithEdgeByte(u32 *source, u32 *destination, u8 *edgeValues, u32 edge);
-void cmpFunc3(s32 x, s32 y, u32 z, s32 width, s32 height, u32 *edges, u8 *edgeValues, EffSpriteUV *uv,
+void cmpFunc3(s32 x, s32 y, u32 z, s32 width, s32 height, u32 *edges, u8 *edgeValues, effSpriteUV_t *uv,
               u32 *colors, u32 flip, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot);
-void cmpFunc4(s32 x, s32 y, u32 z, s32 width, s32 height, u8 *counts, u8 *steps, EffSpriteUV *uv, u32 *colors,
+void cmpFunc4(s32 x, s32 y, u32 z, s32 width, s32 height, u8 *counts, u8 *steps, effSpriteUV_t *uv, u32 *colors,
               u32 flip, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot);
 void effDrawTextureSlot(s32 x, s32 y, u32 z, u32 *colors, u32 flags, sprHandle_t *set, s32 slot, BdWork *draw, s32 ot);
 sprHandle_t *effUpdateTimedStates(sprHandle_t *effect, u32 slot, void *entryData);
@@ -306,18 +306,18 @@ typedef char MenuListNode_sprite_word_must_be_4[
 
 typedef char MenuListNode_size_must_be_0x74[(sizeof(struct MenuListNode) == 0x74) ? 1 : -1];
 
-/* Timed states borrow records through EffTimedState.source. Keep this
+/* Timed states borrow records through effTimedState_t.source. Keep this
  * resource alive until those states no longer reference its records.
  */
-typedef struct EffMappedResource {
+typedef struct effMappedResource_t {
     s32 count;
     struct sdfMemHandle_t *allocation;
-    EffMappedRecord *records;
-} EffMappedResource;
+    effMappedRecord_t *records;
+} effMappedResource_t;
 
 typedef struct MenuEffectResources {
     MapPacket packet;
-    struct EffMappedResource *animationHandle;
+    struct effMappedResource_t *animationHandle;
     CampEffectRows rows;
 } MenuEffectResources;
 
@@ -335,9 +335,9 @@ typedef char MenuEffectResources_size_must_be_0x60[(sizeof(MenuEffectResources) 
 
 typedef char MenuCampEffect_size_must_be_0x168[(sizeof(MenuCampEffect) == 0x168) ? 1 : -1];
 
-typedef char EffMappedRecord_size_must_be_0x24[(sizeof(EffMappedRecord) == 0x24) ? 1 : -1];
+typedef char effMappedRecord_size_must_be_0x24[(sizeof(effMappedRecord_t) == 0x24) ? 1 : -1];
 
-typedef char EffMappedResource_size_must_be_0x0C[(sizeof(EffMappedResource) == 0x0C) ? 1 : -1];
+typedef char effMappedResource_size_must_be_0x0C[(sizeof(effMappedResource_t) == 0x0C) ? 1 : -1];
 
 void jmsSeqJumpAndFree(s32 *entrySlot, jmsSeqUnit_t *entry);
 
@@ -486,7 +486,7 @@ typedef struct MenuTerminalContext {
     s32 state;
     MenuWindowContainer *ownedWindows[1];
     MenuWindowContainer *window;
-    struct EffMappedResource *objects[2];
+    struct effMappedResource_t *objects[2];
     s32 shopRow;
     s32 multiplier;
     s32 dispatchMode;

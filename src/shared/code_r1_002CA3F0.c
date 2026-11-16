@@ -55,12 +55,12 @@ void sdfCopyCornerWordsWithEdgeByte(u32 *source, u32 *destination, u8 *edgeValue
     }
 }
 
-void cmpFunc3(s32 x, s32 y, u32 z, s32 width, s32 height, u32 *edges, u8 *edgeValues, EffSpriteUV *uv,
+void cmpFunc3(s32 x, s32 y, u32 z, s32 width, s32 height, u32 *edges, u8 *edgeValues, effSpriteUV_t *uv,
               u32 *colors, u32 flip, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot)
 {
     s32 pos[2];
     s32 size[2];
-    EffSpriteUV saved;
+    effSpriteUV_t saved;
     s32 *src = uv->coord;
     u32 edgeColors[4];
     s32 i;
@@ -110,7 +110,7 @@ void cmpFunc3(s32 x, s32 y, u32 z, s32 width, s32 height, u32 *edges, u8 *edgeVa
     }
 }
 
-void cmpFunc4(s32 x, s32 y, u32 z, s32 width, s32 height, u8 *counts, u8 *steps, EffSpriteUV *uv, u32 *colors,
+void cmpFunc4(s32 x, s32 y, u32 z, s32 width, s32 height, u8 *counts, u8 *steps, effSpriteUV_t *uv, u32 *colors,
               u32 flip, u32 alphaMode, s32 filter, sdfTexHandle_t *tex, s32 ot)
 {
     s32 pos[2];
@@ -143,9 +143,9 @@ void cmpFunc4(s32 x, s32 y, u32 z, s32 width, s32 height, u8 *counts, u8 *steps,
 void effDrawTextureSlot(s32 x, s32 y, u32 z, u32 *colors, u32 flags, sprHandle_t *set, s32 slot, BdWork *draw,
                              s32 ot)
 {
-    EffectSlotDescription *desc;
+    effSlotDescription_t *desc;
     sdfTexHandle_t *tex;
-    EffSpriteUV uv;
+    effSpriteUV_t uv;
     u32 alphaMode;
     s32 filter;
     u32 flip;
@@ -249,7 +249,7 @@ void effDrawRepeatedSpriteTiles(s32 x, s32 y, s32 z, s32 length, u32 weight, u32
 
     draw = effGetSlotWorkOrOverride(set, slot);
     for (i = 0; i < 4; i++) {
-        u32 color = ((EffectSlotGeometry *)((u8 *)draw + 4))->cornerColors[i];
+        u32 color = ((effSlotGeometry_t *)((u8 *)draw + 4))->cornerColors[i];
         colors[i] = fclBlendColor(color, color & ~0xFF, weight);
     }
     {

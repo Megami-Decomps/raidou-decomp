@@ -410,7 +410,7 @@ typedef struct FldModelMatrices {
     u8 **rows; /* 0x0C: slot-indexed matrix blocks */
 } FldModelMatrices;
 
-struct EffRandState;
+struct effRandState_t;
 
 /* Signed verticalStepDirection: adjust player Y by -2/+2 and save previous XYZ. */
 

@@ -184,7 +184,7 @@ enum {
 extern u8 itfDrawThreePanelBorderBandsData[];
 extern u8 itfDrawThreePanelBorderBandsData2[];
 
-struct EffSpriteUV;
+struct effSpriteUV_t;
 
 struct sdfTexHandle_t;
 

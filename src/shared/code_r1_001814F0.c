@@ -111,7 +111,7 @@ extern s32 itfScanEncodedTextControls(FrFontCtx *args);
 s32 itfScanEncodedTextControls(FrFontCtx *stream);
 s32 itfInitTextDrawArgs(const u8 *encodedText, _FRQ *sub);
 
-struct EffSpriteUV;
+struct effSpriteUV_t;
 
 struct sdfTexHandle_t;
 

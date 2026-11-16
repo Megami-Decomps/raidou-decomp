@@ -91,7 +91,7 @@ INCLUDE_ASM(const s32, "effect/effBlur_Filter", effStopSub);
 INCLUDE_ASM(const s32, "effect/effBlur_Filter", effCallNullDrawProc2);
 
 /* GS coordinates use sixteenth-pixel X and half-height Y; extent is halved for Y. */
-void effDrawBlurFixedPointRectangle(EffBlurTemplate *owner) {
+void effDrawBlurFixedPointRectangle(dds3Effect_PartialMultiBlur_t *owner) {
     s32 centerX, centerY, halfExtent;
 
     if (dds3NullDrawProc() == 0) {

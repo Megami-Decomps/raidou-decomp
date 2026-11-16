@@ -23,15 +23,15 @@ void effInitializeSlotWork(struct sprHandle_t *owner, s32 slotIndex);
 
 u32 effDestroyResourceSlotSet(struct sprHandle_t *owner);
 
-struct EffMappedResource;
+struct effMappedResource_t;
 
 u32 effConfigureIndexedSlotMaterial(struct sprHandle_t *work, s32 index,
-                                    struct EffMappedResource *data, s32 item,
+                                    struct effMappedResource_t *data, s32 item,
                                     u32 materialFlags, u32 materialValue, u32 stateFlags);
 
 /* Loads base/name; the finished job stores the resource in *outInstance. */
 fileRequest_t *effRequestResourceByMode(const char *base, const char *name, u32 mode, void **outInstance);
 
-void effRequestMappedResource(const char *pFileName, const char *pBundle, EffMappedResource **outMappedResource);
+void effRequestMappedResource(const char *pFileName, const char *pBundle, effMappedResource_t **outMappedResource);
 
 #endif

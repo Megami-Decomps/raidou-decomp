@@ -5,7 +5,7 @@
 #include "basic.h"
 
 /* Kind-5 constructors allocate and clear the complete 0x40-byte payload. */
-typedef struct EffectObjectData {
+typedef struct effObjectData_t {
     dds3ObjectBaseControlWorkData_t *handle;
     s32 word04; /* 0x04: room-mode flag selector; nonpositive bypasses room gating. */
     struct evtUnitHandle_t *transitionWork; /* 0x08: object transition work */
@@ -22,9 +22,9 @@ typedef struct EffectObjectData {
     f32 word34; /* 0x34: entry-blend yaw, loaded directly into the float argument. */
     f32 limitMin38;
     f32 limitMax3C;
-} EffectObjectData;
+} effObjectData_t;
 
-typedef char EffectObjectData_size_must_be_0x40[(sizeof(EffectObjectData) == 0x40) ? 1 : -1];
+typedef char effObjectData_size_must_be_0x40[(sizeof(effObjectData_t) == 0x40) ? 1 : -1];
 
 #include "sdf_types.h"
 

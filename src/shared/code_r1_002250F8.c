@@ -61,22 +61,22 @@ void mdlSingleMotion(mdlObj_t *ctx, s32 searchId, s32 motionIndex);
 /* Store the context-one resource packet on the texture's primary buffer. */
 
 /* Intrusive model-object list node; the object payload stays opaque here. */
-typedef struct EffectObjectNode {
+typedef struct effObjectNode_t {
     void *object;
-    struct EffectObjectNode *prev;
-    struct EffectObjectNode *next;
-} EffectObjectNode;
+    struct effObjectNode_t *prev;
+    struct effObjectNode_t *next;
+} effObjectNode_t;
 
-typedef char EffectObjectNode_size_must_be_0xC[
-    (sizeof(EffectObjectNode) == 0xC) ? 1 : -1];
+typedef char effObjectNode_size_must_be_0xC[
+    (sizeof(effObjectNode_t) == 0xC) ? 1 : -1];
 
 /* Heap-owned model wrapper allocated as a 0x10-byte chip block. */
-typedef struct EffModelOwner {
+typedef struct effModelOwner_t {
     f32 scale;
     struct mdlObj_t *model;
     struct sdf3DLightParallelPacket_t *ownedBuffer;
     u32 flags;
-} EffModelOwner;
+} effModelOwner_t;
 
 /* Floor-list lifecycle and deferred-refresh state shared by both providers. */
 enum {
@@ -88,8 +88,8 @@ enum {
     EFF_MODEL_OWNER_FLAG_UPDATE_DEFERRED = 0x20
 };
 
-typedef char EffModelOwner_size_check[
-    (sizeof(EffModelOwner) == 0x10) ? 1 : -1];
+typedef char effModelOwner_size_check[
+    (sizeof(effModelOwner_t) == 0x10) ? 1 : -1];
 
 /* Kind-7 reference animation modes; other flag bits are uninterpreted. */
 enum EffReferenceFlag {
@@ -97,34 +97,34 @@ enum EffReferenceFlag {
     EFF_ANIM_SET_DOUBLE_Y_SCALE = 0x4,
 };
 
-typedef struct EffAnimSample {
+typedef struct effCacheTexList_Anim_t {
     f32 scaleX;     // 0x00
     f32 scaleY;     // 0x04
     f32 angle;      // 0x08
     s32 segment;    // 0x0C
-} EffAnimSample;
+} effCacheTexList_Anim_t;
 
 #define SDF_TEXTURE_PAYLOAD_EXTRA_OFFSET_MASK 0xF0
 
 /* Serialized texture-animation list header, count entry records, then payloads.
- * flags is copied to EffExpandedList and tested by animation sampling. */
-typedef struct EffExpandedSource {
+ * flags is copied to ctexlHandle_t and tested by animation sampling. */
+typedef struct effExpandedSource_t {
     u8 pad00[4];
     u32 count;
     u32 flags;
     u8 pad0C[4];
-    EffExpandedEntry entries[1];
-} EffExpandedSource;
+    effExpandedEntry_t entries[1];
+} effExpandedSource_t;
 
-typedef char EffExpandedSource_size_check[
-    sizeof(EffExpandedSource) == 0x20 ? 1 : -1];
+typedef char effExpandedSource_size_check[
+    sizeof(effExpandedSource_t) == 0x20 ? 1 : -1];
 
 #define EFF_MODEL_UPDATE_DEFER_FLOOR_REFRESH 0x1
 
-extern struct EffExpandedList *effCacheTexCreate(u32);
+extern struct ctexlHandle_t *effCacheTexCreate(u32);
 
 /* Battle state: resource headers for texture slots 1 and 2. */
-typedef struct EffBattleTexHeaders {
+typedef struct effBattleTexHeaders_t {
     u8 pad_000[0x1F4];
     u32 statusFlags; /* 0x1F4 */
     u8 pad_1F8[0x30];
@@ -132,14 +132,14 @@ typedef struct EffBattleTexHeaders {
     u8 pad_22C[0x350];
     u8 *slot1; // 0x57C
     u8 *slot2; // 0x580
-} EffBattleTexHeaders;
+} effBattleTexHeaders_t;
 
 extern u32 D_003BC950;
 extern u32 D_003BC954;
-extern EffectObjectNode *effFloorModelListHead;
+extern effObjectNode_t *effFloorModelListHead;
 extern u32 effSharedTextureReferenceCount;
 extern sdfTexHandle_t *D_003BC958;
-extern void effFloorModelListRemove(EffectObjectNode *);
+extern void effFloorModelListRemove(effObjectNode_t *);
 
 /* Initialize the VU transforms and the first node's float slot, if present. */
 void Init_effModel(mdlObj_t *model);
@@ -148,69 +148,69 @@ mdlObj_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
 
 /* Clear the lighting attachment before destroying its model context. */
 void effDestroyModelContext(mdlObj_t *model);
-void effDestroyModelOwner(EffModelOwner *owner);
-extern void effRecreateModelFromSource(EffModelOwner *, EffModelOwner *);
-void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source);
-void effApplyModelPrimaryVector(EffModelOwner *owner, const f32 *position);
-void effApplyModelVecB(EffModelOwner *owner, const f32 *rotation);
-void effBroadcastModelMask(EffModelOwner *owner, u32 color);
-void effApplyScaledModelTertiaryVector(EffModelOwner *owner, float scale);
-void effFloorModelListPush(EffModelOwner *obj);
-void effMarkFloorModelForDestruction(EffModelOwner *work);
+void effDestroyModelOwner(effModelOwner_t *owner);
+extern void effRecreateModelFromSource(effModelOwner_t *, effModelOwner_t *);
+void effRecreateModelFromSource(effModelOwner_t *work, effModelOwner_t *source);
+void effApplyModelPrimaryVector(effModelOwner_t *owner, const f32 *position);
+void effApplyModelVecB(effModelOwner_t *owner, const f32 *rotation);
+void effBroadcastModelMask(effModelOwner_t *owner, u32 color);
+void effApplyScaledModelTertiaryVector(effModelOwner_t *owner, float scale);
+void effFloorModelListPush(effModelOwner_t *obj);
+void effMarkFloorModelForDestruction(effModelOwner_t *work);
 
 /* Render the model owner with staged GS TEST_2 packets, then restore the tests. */
-void effRenderModelOwnerWithGsTests(EffModelOwner *owner);
+void effRenderModelOwnerWithGsTests(effModelOwner_t *owner);
 extern u32 effModelUpdateControlFlags;
-void effMarkFloorModelForUpdate(EffModelOwner *work);
+void effMarkFloorModelForUpdate(effModelOwner_t *work);
 extern char D_003B2AA0[];
 
-void effFloorModelListRemove(EffectObjectNode *node);
+void effFloorModelListRemove(effObjectNode_t *node);
 void effSweepFloorModelList(void);
 void mdlMarkAndProcessObjectNodes(void);
 
-typedef struct EffResourceOwner {
+typedef struct effResourceOwner_t {
     u32 count;
     u32 currentFrame;
-    SdfColorTrack colorTrack; /* 0x08 */
-    SdfAlphaTrack alphaTrack; /* 0x2C */
+    effBehavior_RGBParams_t colorTrack; /* 0x08 */
+    effBehavior_AlphaParams_t alphaTrack; /* 0x2C */
     u32 plainEntry; // 0x3C: add the model entry plain instead of flagged
     f32 frameStep; /* 0x40 */
-    struct FileQueue **entries; /* 0x44: retained queue-pointer array */
+    struct plistHandle_t **entries; /* 0x44: retained queue-pointer array */
     struct sdfMemHandle_t *queueAllocation; /* 0x48: queue-pointer array descriptor */
     mdlObj_t *model;
-} EffResourceOwner;
+} effResourceOwner_t;
 
-typedef char EffResourceOwner_size_check[(sizeof(EffResourceOwner) == 0x50) ? 1 : -1];
+typedef char effResourceOwner_size_check[(sizeof(effResourceOwner_t) == 0x50) ? 1 : -1];
 
-typedef struct EffResourceModelConfig {
-    SdfColorTrack colorTrack;
-    SdfAlphaTrack alphaTrack;
+typedef struct effResourceModelConfig_t {
+    effBehavior_RGBParams_t colorTrack;
+    effBehavior_AlphaParams_t alphaTrack;
     u32 plainEntry;
     f32 frameStep;
-} EffResourceModelConfig;
+} effResourceModelConfig_t;
 
-typedef char EffResourceModelConfig_size_check[
-    sizeof(EffResourceModelConfig) == 0x3C ? 1 : -1];
+typedef char effResourceModelConfig_size_check[
+    sizeof(effResourceModelConfig_t) == 0x3C ? 1 : -1];
 
-EffResourceOwner *Create_effHelper(FileJobPayload *source);
-void Delete_effHelper(EffResourceOwner *owner);
-extern EffResourceOwner *Create_effHelper(FileJobPayload *);
-extern void effResourceCopy(EffResourceOwner *, EffResourceOwner *);
-EffResourceOwner *Copy_effHelper(EffResourceOwner *source);
-void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src);
-void effLoadModelPrimaryVector(EffResourceOwner *work, const f32 *position);
-void effSetModelRotationQuaternion(EffResourceOwner *work, const f32 *rotationQuaternion);
-void effPropagateResourceModelMask(EffResourceOwner *work, u32 color);
-void effScaleModelVec(EffResourceOwner *work, float scale);
+effResourceOwner_t *Create_effHelper(FileJobPayload *source);
+void Delete_effHelper(effResourceOwner_t *owner);
+extern effResourceOwner_t *Create_effHelper(FileJobPayload *);
+extern void effResourceCopy(effResourceOwner_t *, effResourceOwner_t *);
+effResourceOwner_t *Copy_effHelper(effResourceOwner_t *source);
+void effResourceCopy(effResourceOwner_t *dst, effResourceOwner_t *src);
+void effLoadModelPrimaryVector(effResourceOwner_t *work, const f32 *position);
+void effSetModelRotationQuaternion(effResourceOwner_t *work, const f32 *rotationQuaternion);
+void effPropagateResourceModelMask(effResourceOwner_t *work, u32 color);
+void effScaleModelVec(effResourceOwner_t *work, float scale);
 void effObjectListCountersReset(void);
-sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, RefObj *source);
+sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, effRefObj_t *source);
 
 /* Serialized expanded list: 0x10-byte header, the entry table, then each entry's payload. */
-struct EffExpandedList *effCacheTexCreate(u32 sourceAddress);
+struct ctexlHandle_t *effCacheTexCreate(u32 sourceAddress);
 
-void effRecreateModelFromSource(EffModelOwner *work, EffModelOwner *source) {
-    EffModelOwner *owner = work;
-    EffModelOwner *original = source;
+void effRecreateModelFromSource(effModelOwner_t *work, effModelOwner_t *source) {
+    effModelOwner_t *owner = work;
+    effModelOwner_t *original = source;
     mdlObj_t *model;
 
     if (owner->model != 0) {
@@ -229,21 +229,21 @@ INCLUDE_ASM(const s32, "code_r1_002250F8", effCallMotionSeek);
 INCLUDE_ASM(const s32, "code_r1_002250F8", effCallSRAnimation2);
 
 /* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
-void effApplyModelPrimaryVector(EffModelOwner *owner, const f32 *position) {
+void effApplyModelPrimaryVector(effModelOwner_t *owner, const f32 *position) {
     SDF_VU0_LOADVECTOR(position);
     mdlSetPosition(owner->model);
 }
 
-void effApplyModelVecB(EffModelOwner *owner, const f32 *rotation) {
+void effApplyModelVecB(effModelOwner_t *owner, const f32 *rotation) {
     SDF_VU0_LOADVECTOR(rotation);
     mdlSetRotate(owner->model);
 }
 
-void effBroadcastModelMask(EffModelOwner *owner, u32 color) {
+void effBroadcastModelMask(effModelOwner_t *owner, u32 color) {
     mdlSetColor(owner->model, color);
 }
 
-void effApplyScaledModelTertiaryVector(EffModelOwner *owner, float scale) {
+void effApplyScaledModelTertiaryVector(effModelOwner_t *owner, float scale) {
     float v[4];
     float t;
 
@@ -258,7 +258,7 @@ void effLeaf350(void) {
 
 INCLUDE_ASM(const s32, "code_r1_002250F8", effFunc13);
 
-void effMarkFloorModelForDestruction(EffModelOwner *work) {
+void effMarkFloorModelForDestruction(effModelOwner_t *work) {
     u32 flags = work->flags | EFF_MODEL_OWNER_FLAG_DESTROY_REQUESTED;
     work->flags = flags;
     if ((flags & EFF_MODEL_OWNER_FLAG_FLOOR_LISTED) == 0) {
@@ -270,7 +270,7 @@ INCLUDE_ASM(const s32, "code_r1_002250F8", effFunc14);
 
 INCLUDE_ASM(const s32, "code_r1_002250F8", effRenderModelOwnerWithGsTests);
 
-void effMarkFloorModelForUpdate(EffModelOwner *work) {
+void effMarkFloorModelForUpdate(effModelOwner_t *work) {
     u32 previous = work->flags;
     u32 flags = previous | EFF_MODEL_OWNER_FLAG_UPDATE_PENDING;
     work->flags = flags;
@@ -284,8 +284,8 @@ void effMarkFloorModelForUpdate(EffModelOwner *work) {
     }
 }
 
-void effFloorModelListPush(EffModelOwner *obj) {
-    EffectObjectNode *entry = sdfChipAllocZeroDirect(sizeof(EffectObjectNode));
+void effFloorModelListPush(effModelOwner_t *obj) {
+    effObjectNode_t *entry = sdfChipAllocZeroDirect(sizeof(effObjectNode_t));
 
     entry->object = obj;
     entry->prev = NULL;
@@ -296,10 +296,10 @@ void effFloorModelListPush(EffModelOwner *obj) {
         entry->next = NULL;
     }
     effFloorModelListHead = entry;
-    ((EffModelOwner *)entry->object)->flags |= EFF_MODEL_OWNER_FLAG_FLOOR_LISTED;
+    ((effModelOwner_t *)entry->object)->flags |= EFF_MODEL_OWNER_FLAG_FLOOR_LISTED;
 }
 
-void effFloorModelListRemove(EffectObjectNode *node) {
+void effFloorModelListRemove(effObjectNode_t *node) {
     if (node->object != NULL) {
         printf(D_003B2AA0, node->object);
         effDestroyModelOwner(node->object);
@@ -317,19 +317,19 @@ void effFloorModelListRemove(EffectObjectNode *node) {
 }
 
 void effSweepFloorModelList(void) {
-    EffectObjectNode *node = effFloorModelListHead;
-    EffectObjectNode *next;
+    effObjectNode_t *node = effFloorModelListHead;
+    effObjectNode_t *next;
 
     if (node != NULL) {
         do {
             next = node->next;
-            if (!(((EffModelOwner *)node->object)->flags & EFF_MODEL_OWNER_FLAG_DESTROY_READY)) {
-                if ((((EffModelOwner *)node->object)->flags &
+            if (!(((effModelOwner_t *)node->object)->flags & EFF_MODEL_OWNER_FLAG_DESTROY_READY)) {
+                if ((((effModelOwner_t *)node->object)->flags &
                      (EFF_MODEL_OWNER_FLAG_UPDATE_PENDING | EFF_MODEL_OWNER_FLAG_LISTED_OBJECT |
                       EFF_MODEL_OWNER_FLAG_UPDATE_DEFERRED)) == EFF_MODEL_OWNER_FLAG_UPDATE_PENDING) {
                     effRenderModelOwnerWithGsTests(node->object);
                 }
-                ((EffModelOwner *)node->object)->flags &= ~EFF_MODEL_OWNER_FLAG_UPDATE_DEFERRED;
+                ((effModelOwner_t *)node->object)->flags &= ~EFF_MODEL_OWNER_FLAG_UPDATE_DEFERRED;
             } else {
                 effFloorModelListRemove(node);
             }
@@ -345,9 +345,9 @@ INCLUDE_ASM(const s32, "code_r1_002250F8", mdlClearListedObjectFlag);
 INCLUDE_ASM(const s32, "code_r1_002250F8", mdlSetListedObjectFlag);
 
 void mdlMarkAndProcessObjectNodes(void) {
-    EffectObjectNode *node = effFloorModelListHead;
-    EffModelOwner *object;
-    EffectObjectNode *next;
+    effObjectNode_t *node = effFloorModelListHead;
+    effModelOwner_t *object;
+    effObjectNode_t *next;
     s32 flags;
 
     if (node == NULL) {
@@ -385,15 +385,15 @@ INCLUDE_ASM(const s32, "code_r1_002250F8", effLeaf353);
 INCLUDE_ASM(const s32, "code_r1_002250F8", effCallSetScale);
 
 /* Create an empty owner, or load its model and per-record queues from a file job. */
-EffResourceOwner *Create_effHelper(FileJobPayload *source) {
-    EffResourceOwner *owner = sdfChipAllocDirect(sizeof(EffResourceOwner));
+effResourceOwner_t *Create_effHelper(FileJobPayload *source) {
+    effResourceOwner_t *owner = sdfChipAllocDirect(sizeof(effResourceOwner_t));
     u8 *data;
     u32 i;
 
-    memset(owner, 0, sizeof(EffResourceOwner));
+    memset(owner, 0, sizeof(effResourceOwner_t));
     if (source != NULL) {
         data = fileResolvePrimaryBuffer(source);
-        memcpy((u8 *)owner + 8, data, sizeof(EffResourceModelConfig));
+        memcpy((u8 *)owner + 8, data, sizeof(effResourceModelConfig_t));
         owner->model = effLoadViewerModelWithVUState(data + 0x40,
                                                    source->primary.size - 0x40);
         if (owner->model->first != NULL) {
@@ -411,7 +411,7 @@ EffResourceOwner *Create_effHelper(FileJobPayload *source) {
         if (data != NULL) {
             owner->queueAllocation = sdfMemAllocDirect(owner->count * 4);
             owner->entries = sdfMemLock(owner->queueAllocation);
-            owner->entries[0] = Create_effPartsList((struct FileQueue *)data);
+            owner->entries[0] = Create_effPartsList((struct plistHandle_t *)data);
             for (i = 1; i < owner->count; i++) {
                 owner->entries[i] = effPartsCreateFinish(owner->entries[0]);
             }
@@ -420,7 +420,7 @@ EffResourceOwner *Create_effHelper(FileJobPayload *source) {
     return owner;
 }
 
-void Delete_effHelper(EffResourceOwner *owner) {
+void Delete_effHelper(effResourceOwner_t *owner) {
     u32 i;
 
     if (owner->model != 0) {
@@ -435,16 +435,16 @@ void Delete_effHelper(EffResourceOwner *owner) {
     sdfChipFreeDirect(owner);
 }
 
-EffResourceOwner *Copy_effHelper(EffResourceOwner *source) {
-    EffResourceOwner *effect = Create_effHelper(0);
+effResourceOwner_t *Copy_effHelper(effResourceOwner_t *source) {
+    effResourceOwner_t *effect = Create_effHelper(0);
 
-    *(EffResourceModelConfig *)((u8 *)effect + 8) =
-        *(EffResourceModelConfig *)((u8 *)source + 8);
+    *(effResourceModelConfig_t *)((u8 *)effect + 8) =
+        *(effResourceModelConfig_t *)((u8 *)source + 8);
     effResourceCopy(effect, source);
     return effect;
 }
 
-void effResourceCopy(EffResourceOwner *dst, EffResourceOwner *src) {
+void effResourceCopy(effResourceOwner_t *dst, effResourceOwner_t *src) {
     u32 i;
 
     if (dst->model != 0) {
@@ -480,21 +480,21 @@ INCLUDE_ASM(const s32, "code_r1_002250F8", effReleaseReferenceHolder);
 INCLUDE_ASM(const s32, "code_r1_002250F8", Draw_effHelper);
 
 /* Pass a vector to the VU0 model helpers via vf10 (gcc cannot do this from plain C). */
-void effLoadModelPrimaryVector(EffResourceOwner *work, const f32 *position) {
+void effLoadModelPrimaryVector(effResourceOwner_t *work, const f32 *position) {
     SDF_VU0_LOADVECTOR(position);
     mdlSetPosition(work->model);
 }
 
-void effSetModelRotationQuaternion(EffResourceOwner *work, const f32 *rotationQuaternion) {
+void effSetModelRotationQuaternion(effResourceOwner_t *work, const f32 *rotationQuaternion) {
     SDF_VU0_LOADVECTOR(rotationQuaternion);
     mdlSetRotate(work->model);
 }
 
-void effPropagateResourceModelMask(EffResourceOwner *work, u32 color) {
+void effPropagateResourceModelMask(effResourceOwner_t *work, u32 color) {
     mdlSetColor(work->model, color);
 }
 
-void effScaleModelVec(EffResourceOwner *work, float scale) {
+void effScaleModelVec(effResourceOwner_t *work, float scale) {
     u32 bits;
 
     SDF_VU0_SETSCALE1VECTOR();
@@ -507,7 +507,7 @@ void effObjectListCountersReset(void) {
     D_003BC950 = 0xffffffff;
 }
 
-RefObj *effCreateSharedTextureReference(SdfTextureFileHeader *source) {
+effRefObj_t *effCreateSharedTextureReference(SdfTextureFileHeader *source) {
     u32 paletteWidth;
     u32 paletteHeight;
     s32 paletteBytes;
@@ -516,7 +516,7 @@ RefObj *effCreateSharedTextureReference(SdfTextureFileHeader *source) {
     s32 textureOffset;
     struct sdfMemHandle_t *allocationHandle;
     u8 *cursor;
-    RefObj *texture;
+    effRefObj_t *texture;
 
     if ((source->pixelFormat == 0x13) || (source->pixelFormat == 0x1B)) {
         paletteWidth = 0x10;
@@ -532,7 +532,7 @@ RefObj *effCreateSharedTextureReference(SdfTextureFileHeader *source) {
     textureOffset = payloadBytes + 0x40;
     allocationHandle = sdfMemAllocDirect(payloadBytes + 0x60);
     cursor = (u8 *)sdfMemLock(allocationHandle);
-    texture = (RefObj *)(cursor + textureOffset);
+    texture = (effRefObj_t *)(cursor + textureOffset);
     texture->base = cursor;
     cursor += 0x40;
     texture->palette = cursor;
@@ -559,15 +559,15 @@ RefObj *effCreateSharedTextureReference(SdfTextureFileHeader *source) {
     return texture;
 }
 
-RefObj *effCloneSharedReferenceWithValue(SdfTextureFileHeader *source, u32 textureIndex) {
-    RefObj *copy;
+effRefObj_t *effCloneSharedReferenceWithValue(SdfTextureFileHeader *source, u32 textureIndex) {
+    effRefObj_t *copy;
 
     copy = effCreateSharedTextureReference(source);
     copy->index = textureIndex;
     return copy;
 }
 
-void effReleaseSharedReference(RefObj *obj) {
+void effReleaseSharedReference(effRefObj_t *obj) {
     effSharedTextureReferenceCount--;
     if (effSharedTextureReferenceCount == 0) {
         sdfTexHandle_t *graphics = D_003BC958;
@@ -582,7 +582,7 @@ void effReleaseSharedReference(RefObj *obj) {
     }
 }
 
-RefObj *effRetainSharedReference(RefObj *obj) {
+effRefObj_t *effRetainSharedReference(effRefObj_t *obj) {
     obj->refCount++;
     effSharedTextureReferenceCount++;
     return obj;
@@ -591,7 +591,7 @@ RefObj *effRetainSharedReference(RefObj *obj) {
 /* Native GS dimension SDK calls: 0029C16C/0029C17C.
  * Address normalization before TEX0 packing is also traced in
  * texture_renew_secondary_epoch_probe (parity OK, local-alloc q14/q16). */
-sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, RefObj *source) {
+sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, effRefObj_t *source) {
     sdfDrawTag_t *list;
     u16 width;
     u16 height;
@@ -640,13 +640,13 @@ sdfTexHandle_t *sdfGetOrCreateTextureForReference(sdfGrOt_t *surface, RefObj *so
     return D_003BC958;
 }
 
-s32 effCountExpandedEntries(const EffExpandedList *list) {
+s32 effCountExpandedEntries(const ctexlHandle_t *list) {
     u32 count = list->count;
     u32 i = 0;
     s32 total = 0;
 
     if (count != 0) {
-        const EffExpandedEntry *entries = list->entries;
+        const effExpandedEntry_t *entries = list->entries;
         do {
             s32 additionalCount = entries->additionalCount;
             entries++;
@@ -660,19 +660,19 @@ s32 effCountExpandedEntries(const EffExpandedList *list) {
 
 /* Serialized expanded list: 0x10-byte header, the entry table, then each entry's payload. */
 /* Copy a serialized list into one allocation and retain a shared texture reference per entry. */
-struct EffExpandedList *effCacheTexCreate(u32 sourceAddress) {
-    const EffExpandedSource *source = (const EffExpandedSource *)sourceAddress;
+struct ctexlHandle_t *effCacheTexCreate(u32 sourceAddress) {
+    const effExpandedSource_t *source = (const effExpandedSource_t *)sourceAddress;
     u32 count = source->count;
-    const EffExpandedEntry *sourceEntry = source->entries;
+    const effExpandedEntry_t *sourceEntry = source->entries;
     u32 i = 0;
     struct sdfMemHandle_t *allocation;
-    EffExpandedList *list;
+    ctexlHandle_t *list;
     u8 *payload;
 
-    allocation = sdfMemAllocDirect(count * (sizeof(EffExpandedEntry) + sizeof(RefObj *)) + sizeof(EffExpandedList));
-    list = (EffExpandedList *)sdfMemLock(allocation);
-    list->entries = (EffExpandedEntry *)(list + 1);
-    list->handles = (RefObj **)(list->entries + count);
+    allocation = sdfMemAllocDirect(count * (sizeof(effExpandedEntry_t) + sizeof(effRefObj_t *)) + sizeof(ctexlHandle_t));
+    list = (ctexlHandle_t *)sdfMemLock(allocation);
+    list->entries = (effExpandedEntry_t *)(list + 1);
+    list->handles = (effRefObj_t **)(list->entries + count);
     list->unk20 = -1;
     list->allocation = allocation;
     list->refCount = 0;
@@ -692,7 +692,7 @@ struct EffExpandedList *effCacheTexCreate(u32 sourceAddress) {
     return list;
 }
 
-void effCacheTexDelete(EffExpandedList *holder) {
+void effCacheTexDelete(ctexlHandle_t *holder) {
     u32 i;
     if (--holder->refCount != 0) {
         return;
@@ -703,16 +703,16 @@ void effCacheTexDelete(EffExpandedList *holder) {
     sdfMemFreeDirect(holder->allocation);
 }
 
-EffExpandedList *Copy_effCacheTexList(EffExpandedList *obj) {
+ctexlHandle_t *Copy_effCacheTexList(ctexlHandle_t *obj) {
     obj->refCount++;
     return obj;
 }
 
-void effCacheTexAnimGet(const EffExpandedList *set, u32 frame, EffAnimSample *out) {
+void effCacheTexAnimGet(const ctexlHandle_t *set, u32 frame, effCacheTexList_Anim_t *out) {
     u32 count = set->count;
     u32 local = 0;
     s32 segment = -1;
-    const EffExpandedEntry *seg;
+    const effExpandedEntry_t *seg;
     u32 acc;
     u32 i;
 
@@ -753,8 +753,8 @@ void effCacheTexAnimGet(const EffExpandedList *set, u32 frame, EffAnimSample *ou
     out->angle = 0.0f;
 }
 
-sdfTexHandle_t *effAssignSampledSegmentReference(const EffExpandedList *set, sdfGrOt_t *target,
-                                                 const EffAnimSample *sample) {
+sdfTexHandle_t *effAssignSampledSegmentReference(const ctexlHandle_t *set, sdfGrOt_t *target,
+                                                 const effCacheTexList_Anim_t *sample) {
     return sdfGetOrCreateTextureForReference(target, set->handles[sample->segment]);
 }
 

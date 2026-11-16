@@ -103,7 +103,7 @@ extern f32 dds3BillboardGetDirectionRotateData2[];
 void sbtlGetVerticalVector(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 f32 sbtlGetVerticalLength(const f32 *vertexA, const f32 *vertexB, const f32 *vertexC);
 
-struct RefObj;
+struct effRefObj_t;
 
 typedef struct BtnUv {
     s32 u;
@@ -360,7 +360,7 @@ BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(BtlProjectedScre
     VU0_MOVE_VF(vf30, vf26);
     VU0_MOVE_VF(vf31, vf27);
     projection = sdfProjectionMatrix;
-    MultMatrixRev((const struct Matrix4 *)projection);
+    MultMatrixRev((const struct effMatrix4_t *)projection);
     SDF_VU0_APPLYMATRIX_XYZ1();
     SDF_VU0_PERSVECTOR();
     projection += 16;

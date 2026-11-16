@@ -83,20 +83,20 @@ extern s8 dds3PadButtonState[];
  * zero falls back through D_003536A0.
  */
 /* 8-byte parameter work (family1): kind id plus one data pointer. */
-typedef struct EffDispatchExtra {
+typedef struct effDispatchExtra_t {
     void (*func)(void *, f32 vector[4]); /* 0x00 vector handler, may be NULL */
     u8 pad04[0x24];
-} EffDispatchExtra;
+} effDispatchExtra_t;
 
-typedef struct EffDispatchScale {
+typedef struct effDispatchScale_t {
     void (*func)(void *, f32); /* 0x00 handler, may be NULL */
     u8 pad04[0x24];
-} EffDispatchScale;
+} effDispatchScale_t;
 
-typedef struct EffDispatchColor {
+typedef struct effDispatchColor_t {
     void (*func)(void *, u32); /* 0x00 handler, may be NULL */
     u8 pad04[0x24];
-} EffDispatchColor;
+} effDispatchColor_t;
 
 typedef struct LoadMirror {
     u32 current;
@@ -172,10 +172,10 @@ typedef struct FileMultiFlagBonus {
 
 #define FILE_JOB_LOCATION_CLEAR(payload) ((payload).offset = 0)
 
-extern FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
+extern FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
 
 /* Makes the first job chained to owner's sector the leader and rechains the rest to it. */
-static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *owner, FileJob *leader) {
+static inline void fileQueueRechainSectorFollowers(plistHandle_t *queue, FileJob *owner, FileJob *leader) {
     FileJob *next;
 
     leader->sector = 0;
@@ -196,7 +196,7 @@ typedef struct FileQueueImageHeader {
     f32 unkC;
 } FileQueueImageHeader;
 
-FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
+FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
 extern void mnuRecordSetVector(void *record, const void *src);
 extern void fileSetRecordSecondVector(void *record, const void *src);
 
@@ -305,11 +305,11 @@ void effDestroyModelContext(mdlObj_t *owner);
 mdlObj_t *effHandleCopy(mdlObj_t *sourceModel);
 
 /* Battle state: resource headers for texture slots 1 and 2. */
-typedef struct EffBattleTexHeaders {
+typedef struct effBattleTexHeaders_t {
     u8 pad_000[0x5B0];
     u8 *slot1; // 0x5B0
     u8 *slot2; // 0x5B4
-} EffBattleTexHeaders;
+} effBattleTexHeaders_t;
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effPCPHelperBEDGetModel);
 
@@ -318,22 +318,22 @@ INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effCalc);
 INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effCalcSub);
 
 void fileReadVectorPtr20(void *recordBytes, void *dst) {
-    FileSlotTable *record = (FileSlotTable *)recordBytes;
+    bhvrHandle_t *record = (bhvrHandle_t *)recordBytes;
     SDF_VU0_COPYVECTOR(dst, record->data0);
 }
 
 void mnuRecordSetVector(void *recordBytes, const void *src) {
-    FileSlotTable *record = (FileSlotTable *)recordBytes;
+    bhvrHandle_t *record = (bhvrHandle_t *)recordBytes;
     SDF_VU0_COPYVECTOR(record->data0, src);
 }
 
 void fileReadRecordSecondVector(void *recordBytes, void *dst) {
-    FileSlotTable *record = (FileSlotTable *)recordBytes;
+    bhvrHandle_t *record = (bhvrHandle_t *)recordBytes;
     SDF_VU0_COPYVECTOR(dst, record->data0 + 0x10);
 }
 
 void fileSetRecordSecondVector(void *recordBytes, const void *src) {
-    FileSlotTable *record = (FileSlotTable *)recordBytes;
+    bhvrHandle_t *record = (bhvrHandle_t *)recordBytes;
     SDF_VU0_COPYVECTOR(record->data0 + 0x10, src);
 }
 

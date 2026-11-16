@@ -4,14 +4,14 @@
 #include "common.h"
 
 /* Packed position/basis query; the final word is a signed extent override. */
-typedef struct EffectVectorRequest {
+typedef struct effVectorRequest_t {
     u8 kind;
     u8 count;
     u8 directionMode;
     u8 pad_03;
     s32 extentOverride;
-} EffectVectorRequest;
+} effVectorRequest_t;
 
-typedef char EffectVectorRequest_size_must_be_8[(sizeof(EffectVectorRequest) == 8) ? 1 : -1];
+typedef char effVectorRequest_size_must_be_8[(sizeof(effVectorRequest_t) == 8) ? 1 : -1];
 
 #endif

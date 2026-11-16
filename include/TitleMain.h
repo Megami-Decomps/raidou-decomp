@@ -6,7 +6,7 @@
 #include "sdf_resource.h"
 #include "code_r1_001CC1D0.h"
 
-struct EffectList;
+struct effList_t;
 
 /* The title key tables below are 3 (frame, value) pairs. */
 typedef struct titleKey_t {
@@ -26,7 +26,7 @@ typedef struct titleData_t {
     s32 mode;
     jmsSeqHandle_t panel;
     s32 seqUnit;
-    struct EffectList *spriteList;
+    struct effList_t *spriteList;
     void *sprite[4];
     u8 unk70[0xC];
     s32 introFrame;

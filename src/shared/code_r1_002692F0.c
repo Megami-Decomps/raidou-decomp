@@ -392,7 +392,7 @@ typedef struct BtlState {
     struct sprHandle_t *numberGlyphSlots; /* 0x4A8: resource slots used for battle-number glyphs. */
     struct sprHandle_t *resC; /* 0x4AC: btlReleaseResourceBlock clears this at retail 0x001AC7B4. */
     u8 pad4B0[4];
-    struct RefObj *buttonTextureHandle; /* 0x4B4: retained button-icon texture reference. */
+    struct effRefObj_t *buttonTextureHandle; /* 0x4B4: retained button-icon texture reference. */
     struct SoundResourceNode *resources[0x31]; /* 0x4B8: SYSEFF resource slots */
     void *frontFloorResource; /* 0x57C: locked payload address; delayed free resolves its allocation. */
     void *sideFloorResource; /* 0x580: locked payload address; delayed free resolves its allocation. */

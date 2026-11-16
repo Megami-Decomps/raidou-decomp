@@ -82,7 +82,7 @@ typedef char SdfGsTexturePacket_size_must_be_0x50[
     (sizeof(SdfGsTexturePacket) == 0x50) ? 1 : -1];
 
 /* Caller-built composite draw description; 0x68 bytes. */
-typedef struct EffCompositeGsDescriptor {
+typedef struct effCompositeGsDescriptor_t {
     f32 position[4];
     f32 scaleX;
     f32 scaleY;
@@ -97,14 +97,14 @@ typedef struct EffCompositeGsDescriptor {
     sdfTexHandle_t *secondaryTexture;
     u8 unk5C[4];
     u64 secondaryClamp;
-} EffCompositeGsDescriptor;
+} effCompositeGsDescriptor_t;
 
-typedef char EffCompositeGsDescriptor_size_must_be_0x68[
-    (sizeof(EffCompositeGsDescriptor) == 0x68) ? 1 : -1];
+typedef char effCompositeGsDescriptor_size_must_be_0x68[
+    (sizeof(effCompositeGsDescriptor_t) == 0x68) ? 1 : -1];
 
 /* Producer-built input shared with the generated-texture packet providers.
  * Bytes 0x18..0x1F remain opaque; the provider does not read them. */
-typedef struct EffGeneratedTextureDescriptor {
+typedef struct effGeneratedTextureDescriptor_t {
     f32 position[4];
     f32 scaleX;
     f32 scaleY;
@@ -112,25 +112,25 @@ typedef struct EffGeneratedTextureDescriptor {
     f32 angle;
     u32 color;
     struct sdfTexHandle_t *texture;
-} EffGeneratedTextureDescriptor;
+} effGeneratedTextureDescriptor_t;
 
 typedef char EffGeneratedTextureDescriptorSizeAssert[
-    (sizeof(EffGeneratedTextureDescriptor) == 0x2C) ? 1 : -1];
+    (sizeof(effGeneratedTextureDescriptor_t) == 0x2C) ? 1 : -1];
 
 #define BILL_VARIANT_MASK 0xFFFF
 
 #define EFF_PACKET_LIST_BYTES 0x20
 
-void effDrawGeneratedTextureQuad(sdfDrawTag_t *packet, EffGeneratedTextureDescriptor *source);
-void effDrawCompositeTextureQuad(sdfDrawTag_t *packet, EffCompositeGsDescriptor *source);
+void effDrawGeneratedTextureQuad(sdfDrawTag_t *packet, effGeneratedTextureDescriptor_t *source);
+void effDrawCompositeTextureQuad(sdfDrawTag_t *packet, effCompositeGsDescriptor_t *source);
 extern f32 aViewTarget[4], aViewEye[4];
 extern u32 D_0034E090[],D_0034E0A0[];
-void effDrawGeneratedTextureQuad(sdfDrawTag_t *list, EffGeneratedTextureDescriptor *source);
-void effSubmitGeneratedTexturePacket(sdfGrOt_t *surface, EffGeneratedTextureDescriptor *source);
-void effDrawCompositeTextureQuad(sdfDrawTag_t *list, EffCompositeGsDescriptor *source);
-void effSubmitCompositeGsPacket(sdfGrOt_t *surface, EffCompositeGsDescriptor *source);
+void effDrawGeneratedTextureQuad(sdfDrawTag_t *list, effGeneratedTextureDescriptor_t *source);
+void effSubmitGeneratedTexturePacket(sdfGrOt_t *surface, effGeneratedTextureDescriptor_t *source);
+void effDrawCompositeTextureQuad(sdfDrawTag_t *list, effCompositeGsDescriptor_t *source);
+void effSubmitCompositeGsPacket(sdfGrOt_t *surface, effCompositeGsDescriptor_t *source);
 
-void effDrawGeneratedTextureQuad(sdfDrawTag_t *list, EffGeneratedTextureDescriptor *source) {
+void effDrawGeneratedTextureQuad(sdfDrawTag_t *list, effGeneratedTextureDescriptor_t *source) {
     f32 matrix[16] __attribute__((aligned(16)));
     BillTextureQuad uv;
     f32 corners[4][2];
@@ -207,7 +207,7 @@ void effDrawGeneratedTextureQuad(sdfDrawTag_t *list, EffGeneratedTextureDescript
 }
 
 /* Allocate/init a packet list, generate its texture payload, then append it to the draw surface. */
-void effSubmitGeneratedTexturePacket(sdfGrOt_t *surface, EffGeneratedTextureDescriptor *source) {
+void effSubmitGeneratedTexturePacket(sdfGrOt_t *surface, effGeneratedTextureDescriptor_t *source) {
     sdfDrawTag_t *packetList = (sdfDrawTag_t *)sdfGrAllocPacketBuff(EFF_PACKET_LIST_BYTES);
 
     sdfDrawTagInit(packetList);
@@ -218,7 +218,7 @@ void effSubmitGeneratedTexturePacket(sdfGrOt_t *surface, EffGeneratedTextureDesc
 INCLUDE_ASM(const s32, "code_r1_001DED50", effDrawCompositeTextureQuad);
 
 /* Allocate/init a packet list, generate its composite GS payload, then append it to the draw surface. */
-void effSubmitCompositeGsPacket(sdfGrOt_t *surface, EffCompositeGsDescriptor *source) {
+void effSubmitCompositeGsPacket(sdfGrOt_t *surface, effCompositeGsDescriptor_t *source) {
     sdfDrawTag_t *packetList = (sdfDrawTag_t *)sdfGrAllocPacketBuff(EFF_PACKET_LIST_BYTES);
 
     sdfDrawTagInit(packetList);

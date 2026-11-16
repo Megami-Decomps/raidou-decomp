@@ -74,8 +74,8 @@ typedef struct LoadObj {
     void *deviceHandle; /* 0x34 */
     FileJobPayload **jobs; /* 0x38: child file-job payloads */
     struct sdfMemHandle_t *jobAllocation;          /* 0x3C */
-    struct EffExpandedList *referenceHolder; /* 0x40 */
-    FileSlotTable *recordWork; /* 0x44: created by fileAllocateGridRecordSlots */
+    struct ctexlHandle_t *referenceHolder; /* 0x40 */
+    bhvrHandle_t *recordWork; /* 0x44: created by fileAllocateGridRecordSlots */
     s16 unk48;          /* 0x48 */
     u16 unk4A;
 } LoadObj;
@@ -140,10 +140,10 @@ void mnuProjectViewPoint(void);
 
 #define FILE_JOB_LOCATION_CLEAR(payload) ((payload).offset = 0)
 
-extern FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
+extern FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
 
 /* Makes the first job chained to owner's sector the leader and rechains the rest to it. */
-static inline void fileQueueRechainSectorFollowers(FileQueue *queue, FileJob *owner, FileJob *leader) {
+static inline void fileQueueRechainSectorFollowers(plistHandle_t *queue, FileJob *owner, FileJob *leader) {
     FileJob *next;
 
     leader->sector = 0;
@@ -164,7 +164,7 @@ typedef struct FileQueueImageHeader {
     f32 unkC;
 } FileQueueImageHeader;
 
-FileJob *fileQueueFindBySector(FileQueue *queue, u32 sector);
+FileJob *fileQueueFindBySector(plistHandle_t *queue, u32 sector);
 
 /* Creates a load object sized by the record's cell count, capped at 0x12C. */
 typedef struct FileCellGrid {
@@ -234,7 +234,7 @@ void mnuProjectViewPoint(void) {
     u8 *matrix;
     VU0_LOAD_MATRIX(sdfViewMatrix);
     matrix = sdfProjectionMatrix;
-    MultMatrixRev((const struct Matrix4 *)matrix);
+    MultMatrixRev((const struct effMatrix4_t *)matrix);
     SDF_VU0_APPLYMATRIX_XYZ1();
     SDF_VU0_PERSVECTOR();
     matrix += 0x40;

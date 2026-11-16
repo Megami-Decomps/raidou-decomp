@@ -166,7 +166,7 @@ u32 itfDecodeGlyph(u32 glyphCode);
 void itfConvertText(u8 *output, const char *input);
 _FRQ *itfDrawBankTextWithLayoutFlags(s32 x, s32 y, s32 depth, u16 textId, FrFontTextBank *bank, s32 flags);
 
-struct EffSpriteUV;
+struct effSpriteUV_t;
 
 struct sdfTexHandle_t;
 

@@ -12,7 +12,7 @@ s32 itfGridLookupValueOrDefault(struct sprHandle_t *resource, s32 resourceIndex)
 void fclDrawPanelSprite(s32 id, s32 ot);
 void fclDrawPanelSprite2(s32 id, s32 ot);
 
-/* Known continuation bit; other EffectSlotDescription.flags meanings remain unspecified. */
+/* Known continuation bit; other effSlotDescription_t.flags meanings remain unspecified. */
 enum EffectSlotDescriptionFlag {
     EFF_SLOT_DESCRIPTION_SEQUENCE_CONTINUATION = 0x20,
 };
