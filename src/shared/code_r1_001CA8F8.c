@@ -78,7 +78,7 @@ typedef u32 MnuCampPrimaryOptionIndex;
 
 typedef u32 MnuCampSecondaryOptionIndex;
 
-void evtEventViewerReleaseQueuedNode(evtViewerInfo_t *viewer, evtViewerObject_t *entry, EvtRuntimeChild *node);
+void evtEventViewerReleaseQueuedNode(evtViewerInfo_t *viewer, evtViewerObject_t *entry, evtFrameInfo_t *node);
 
 #define CAMP_TASK_NAME_BYTES 0x20
 
@@ -148,13 +148,13 @@ typedef struct campFlagRow_t {
 } campFlagRow_t;
 
 void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold);
-void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, EvtRuntimeChild **selected, EvtRuntimeChild **future);
+void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, evtFrameInfo_t **selected, evtFrameInfo_t **future);
 void SetDefaultTmxData(pmdTmxData_t *display);
-void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey);
-void evtHokanTmx(EvtRuntimeChild *from, EvtRuntimeChild *to, pmdTmxData_t *display, f32 ratio);
+void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, evtFrameInfo_t **lowerKey, evtFrameInfo_t **upperKey);
+void evtHokanTmx(evtFrameInfo_t *from, evtFrameInfo_t *to, pmdTmxData_t *display, f32 ratio);
 void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, evtViewerObject_t *track, s32 frame, pmdTmxData_t *display);
 u32 evtFindInputBranchMessage(void);
-void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsOut);
+void mnuUnpackNibbleFields(evtFrameInfo_t *key, s32 *lowBitsOut, s32 *highBitsOut);
 void mnuCampCheckClockDivisor(void);
 
 typedef struct campEntryEnableSet_t {
@@ -254,7 +254,7 @@ INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallMessageDelete);
 /* Process keys at or beyond threshold, restarting at the head after each call. */
 void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold) {
     evtViewerObject_t *track;
-    EvtRuntimeChild *key;
+    evtFrameInfo_t *key;
 
     if (scene->objcnt <= 0) {
         return;
@@ -294,8 +294,8 @@ void SetDefaultTmxData(pmdTmxData_t *display) {
 
 /* Use defaults before the first key; otherwise blend the bounding keys. */
 void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, evtViewerObject_t *track, s32 frame, pmdTmxData_t *display) {
-    EvtRuntimeChild *lowerKey;
-    EvtRuntimeChild *upperKey;
+    evtFrameInfo_t *lowerKey;
+    evtFrameInfo_t *upperKey;
     s32 startFrame;
     s32 endFrame;
     f32 ratio;
@@ -322,7 +322,7 @@ void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, evtViewerObject_t *track, s
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtHokanTmx);
 
-void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey) {
+void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, evtFrameInfo_t **lowerKey, evtFrameInfo_t **upperKey) {
     s32 frameOffset;
 
     *lowerKey = 0;
@@ -358,7 +358,7 @@ u32 evtFindInputBranchMessage(void) {
 }
 
 /* Split the key's packed halfword into its low 12 bits and upper four bits. */
-void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsOut) {
+void mnuUnpackNibbleFields(evtFrameInfo_t *key, s32 *lowBitsOut, s32 *highBitsOut) {
     *lowBitsOut = key->p08.h[0] & CAMP_KEY_LOW_BITS_MASK;
     *highBitsOut = key->p08.h[0] >> CAMP_KEY_HIGH_BITS_SHIFT;
 }

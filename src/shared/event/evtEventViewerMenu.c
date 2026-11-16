@@ -165,7 +165,7 @@ typedef struct evtSelectionCache_t {
 
 dds3TaskUpdateResult_t evtPollRuntimeControlReady(dds3ProcessID_t *task);
 
-typedef char EvtViewKey_size_must_be_0x38[(sizeof(EvtRuntimeChild) == 0x38) ? 1 : -1];
+typedef char EvtViewKey_size_must_be_0x38[(sizeof(evtFrameInfo_t) == 0x38) ? 1 : -1];
 
 typedef char evtCameraColorPayload_size_must_be_0x40[
     (sizeof(evtCameraColorPayload_t) == 0x40) ? 1 : -1];

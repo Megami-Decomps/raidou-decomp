@@ -62,33 +62,9 @@ typedef enum EvtPackLoadPhase {
     EVT_PACK_LOAD_COMPLETE = 2
 } EvtPackLoadPhase;
 
-/* The camp constructor allocates/clears 0x48 bytes and publishes this state to
- * the event-pack load and release callbacks. */
-typedef struct EvtPackLoadState {
-    EvtPackEventId eventId;       /* 0x00: event-pack key, not a scheduler handle */
-    EvtPackLoadPhase loadPhase;    /* 0x04 */
-    struct fileRequest *pendingRequest; /* 0x08: queued event-script request, then cleanup */
-    struct sdfMemHandle_t *resourceAllocation; /* 0x0C: retained descriptor */
-    u8 *data;                     /* 0x10 */
-    const evtPackHeader_t *header;  /* 0x14: borrowed read-only pack header. */
-    const evtPackEntry_t *entries;  /* 0x18: borrowed read-only pack records. */
-    u8 *entryPoint;               /* 0x1C */
-    u8 pad20[4];
-    struct sdfMemHandle_t *sceneAllocation1; /* 0x24: descriptor released at teardown. */
-    u8 pad28[8];
-    struct sdfMemHandle_t *sceneAllocation2; /* 0x30: descriptor released at teardown. */
-    u8 pad34[4];
-    struct sdfTexHandle_t *effect72;      /* 0x38 */
-    struct sdfTexHandle_t *effect71;      /* 0x3C: retained channel texture. */
-    struct sdfTexHandle_t *effect76;      /* 0x40: retained channel texture. */
-    struct sdfTexHandle_t *effect75;      /* 0x44: retained channel texture. */
-} EvtPackLoadState;
-
 typedef char evtPackEntry_size_must_be_0x20[(sizeof(evtPackEntry_t) == 0x20) ? 1 : -1];
 
 typedef char evtPackHeader_size_must_be_0x20[(sizeof(evtPackHeader_t) == 0x20) ? 1 : -1];
-
-typedef char EvtPackLoadState_size_must_be_0x48[(sizeof(EvtPackLoadState) == 0x48) ? 1 : -1];
 
 typedef char EvtPackLoadPhase_must_be_4_bytes[(sizeof(EvtPackLoadPhase) == 4) ? 1 : -1];
 

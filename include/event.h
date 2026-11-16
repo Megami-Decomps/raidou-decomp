@@ -7,26 +7,35 @@
 
 void evtStartEvent(s32 no);
 
+/* A timeline key's scalar formats are selected by its track kind. */
+typedef union EvtViewParam {
+    f32 f; s32 i; u32 u; u16 h[2]; s16 sh[2]; u8 b[4]; s8 sb[4];
+} EvtViewParam;
+
+/* Raidou's key is 0x38 bytes: SMT3's layout with a 0x20-byte parameter area. */
 typedef struct evtFrameInfo_t {
     u16 frame;
-    u16 index;
+    u16 index; /* Also the consecutive index in type-0xB groups. */
     s32 nameIndex;
     union {
-        union { s8 sb[0xC]; u16 sh[6]; s32 sw[3]; f32 sf[3]; } param;
+        union { s8 sb[0x20]; u16 sh[0x10]; s32 sw[8]; f32 sf[8]; } param;
         union {
-            struct { u8 unk08[2]; u16 typeIndex; } f;
-            s32 words[2];
-            s16 shorts[4];
-            s8 bytes[8];
-            u8 unsignedBytes[8];
-            u16 unsignedShorts[4];
-            f32 values[2];
+            struct {
+                u8 unk08[2]; u16 typeIndex;
+                u8 unk0C[6]; u16 groupTypeAIndex;
+            } f;
+            s32 words[8];
         } body;
+        struct {
+            EvtViewParam p08, p0C, p10, p14, p18, p1C, p20, p24;
+        };
     };
-    union { void *work; void *payload; };
+    u8 pad28[4];
+    union { void *work; void *payload; }; /* Type 0x12 owns a dds3Basic_t; other kinds hold buffers or borrowed data. */
     struct evtFrameInfo_t *next;
     struct evtFrameInfo_t *prev;
 } evtFrameInfo_t;
+SIZE_CHECK(evtFrameInfoSizeCheck, evtFrameInfo_t, 0x38);
 
 typedef struct evtViewerObject_s {
     s32 type;

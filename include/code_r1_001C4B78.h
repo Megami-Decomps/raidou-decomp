@@ -16,35 +16,6 @@ typedef u32 EvtPolygonMovieWorkFlags;
 /* Signed index into the fixed message-window pool; -1 means no window. */
 typedef s32 ItfMesWindowIndex;
 
-/* A timeline key's scalar formats are selected by its track kind. */
-typedef union EvtViewParam {
-    f32 f; s32 i; u32 u; u16 h[2]; s16 sh[2]; u8 b[4]; s8 sb[4];
-} EvtViewParam;
-
-/* Complete 0x38-byte key allocated by the viewer and linked on a group. */
-typedef struct EvtRuntimeChild {
-    u16 frame;
-    u16 duration; /* Also the consecutive index in type-0xB groups. */
-    s32 serializedValue;
-    union {
-        s8 parameterBytes[0x20];
-        union {
-            s32 words[8];
-            struct {
-                u8 pad00[2]; u16 groupTypeIndex;
-                u8 pad04[6]; u16 groupTypeAIndex;
-            } f;
-        } body;
-        struct {
-            EvtViewParam p08, p0C, p10, p14, p18, p1C, p20, p24;
-        };
-    };
-    u8 pad28[4];
-    void *payload; /* Type 0x12 owns a dds3Basic_t; other kinds hold buffers or borrowed data. */
-    struct EvtRuntimeChild *next;
-    struct EvtRuntimeChild *prev;
-} EvtRuntimeChild;
-
 /* Serialized and embedded group-link metadata share these eight bytes. */
 typedef struct evtGroupMetadata_t {
     u8 type;
@@ -80,8 +51,6 @@ typedef union EvtFrameRange {
     struct { u16 end; u16 unk02; } f;
 } EvtFrameRange;
 
-typedef char EvtRuntimeChild_size[(sizeof(EvtRuntimeChild) == 0x38) ? 1 : -1];
-
 typedef char evtGroupMetadata_size[(sizeof(evtGroupMetadata_t) == 8) ? 1 : -1];
 
 /* Complete 0x84-byte entry: metadata, selected object and owned key list. */
@@ -108,9 +77,9 @@ typedef struct evtViewerObject_t {
     f32 savedRotation[4];
     EvtObjectAttachmentState attachmentState;
     s32 childCount;
-    EvtRuntimeChild *children;
-    EvtRuntimeChild *lastChild;
-    EvtRuntimeChild *motionKeyCache[4]; /* Last applied key for each model motion channel. */
+    evtFrameInfo_t *children;
+    evtFrameInfo_t *lastChild;
+    evtFrameInfo_t *motionKeyCache[4]; /* Last applied key for each model motion channel. */
     u8 pad6C[0x10];
     struct evtViewerObject_t *next;
     struct evtViewerObject_t *prev;
