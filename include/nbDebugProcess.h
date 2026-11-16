@@ -2,9 +2,8 @@
 #define NBDEBUGPROCESS_H
 
 #include "common.h"
+#include "code_r1_002C7ED0.h"
 
-struct effList_t;
-
-struct effList_t *InitDebugProcessData(s32 a0);
+effList_t *InitDebugProcessData(s32 mode);
 
 #endif

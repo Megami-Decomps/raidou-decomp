@@ -619,7 +619,7 @@ void mapFileLoadSub8(s32 a0);
 void mapFileLoadSub9(s32 a0, f32 a1);
 void mapFileLoadSub10(s32 a0);
 s32 mdlCallMemGetSize(sdfMemHandle_t *handle, s32 major, s32 minor);
-s32 mdlCallMemGetSize2(void);
+void mdlCallMemGetSize2(void);
 struct sdfMat_t *dds3CallMatNew2(struct sdfTexHandle_t *tex);
 void pipeFileLoadSub(s32 a0);
 void pipeFileLoadSub2(s32 a0);

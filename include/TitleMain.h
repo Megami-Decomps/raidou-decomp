@@ -14,6 +14,14 @@ typedef struct titleKey_t {
     s32 value;
 } titleKey_t;
 
+/* Title sprite placement: sprite set index, slot in the set and screen position. */
+typedef struct titleSpritePlacement_t {
+    s32 spriteIndex;
+    s32 slotIndex;
+    s32 x;
+    s32 y;
+} titleSpritePlacement_t;
+
 typedef struct titleKeyTable_t {
     titleKey_t key[3];
 } titleKeyTable_t;
@@ -28,7 +36,7 @@ typedef struct titleCursor_t {
     s32 ScaleTimer;
     s32 Index;
     s32 ConfigIndex;
-    s32 LevelIndex;
+    s32 LastPush; /* HD has LevelIndex here and LastPush after it */
 } titleCursor_t;
 
 typedef struct titleData_t {
@@ -88,7 +96,7 @@ titleData_t *TitleInit(s32 mode);
 void TitleProcessStart(s32 mode);
 void TitleGoMain(titleData_t *pData);
 s32 TitleAt3Load(titleData_t *pData);
-void Flow1_6(titleCursor_t *cursor);
+void TitleInitCursor(titleCursor_t *cursor);
 void TitleAt3Play(titleData_t *pData);
 void evtCallBgmStop(titleData_t *pData);
 s32 evtCallStop(titleData_t *pData);
@@ -97,6 +105,7 @@ s32 TitleProcessCheck(void);
 void TitleProcessEnd(void);
 void evtFunc11(titleLogoState_t *state, void **sprite);
 s32 rstCallGetProcessData30(dds3ProcessID_t *PID);
+s32 evtLeaf30(s32 value, s32 low, s32 high);
 s32 evtFunc9(s32 frame, const titleKey_t *key, s32 count);
 void evtFunc10(s32 slot, s32 value, void **sprite);
 void evtLeaf31(s32 slot, s32 value, const f32 *size, const f32 *scale, void **sprite);

@@ -13,6 +13,14 @@ struct tagLMAP_LIST_WORK;
 struct tagLMAP_LOCK_WORK;
 struct tagLMP_MODEL_WK;
 
+/* Local map work; only the state flags byte is placed so far. */
+typedef struct lmapWork_t {
+    u8 pad0000[0x3150];
+    u8 flags; /* 0x3150 */
+} lmapWork_t;
+
+extern lmapWork_t *DDS3_GBWK2;
+
 dds3ProcessFunc_t ActWnd_Draw(dds3ProcessID_t *proc);
 dds3ProcessFunc_t ActWnd_DrawProcess(dds3ProcessID_t *proc);
 void ActWnd_Init(dds3ProcessID_t *proc);
@@ -69,13 +77,14 @@ void MdlUpdate(struct tagLMP_MODEL_WK *wk);
 s32 NpcDelete(void);
 dds3ProcessFunc_t Process_nwdNews(dds3ProcessID_t *PID);
 void Release_lmap(void);
-void Start_lmap(s32 aFieldNo);
+s32 Start_lmap(s8 aFieldNo);
 void Util_CalcLength(s16 *a_pDat, s16 a_no, s16 a_type);
 s32 Util_GetPadAnalog(sdfVector4_t *p_pad, f32 *p_length, f32 min);
 s8 _Chr_UpdatePadRoute(struct tagLMAP_CHR_WORK *chrwk);
 void _FldWnd_CallEnd(struct tagLMAP_FLDWND_WORK *wk);
 void cmpSetStockVisible(s32 a_bDraw);
 s8 dmCallBitCheck(s16 a_no);
+s32 getLeaf3(s8 flag);
 s16 dmCallLMAPPOINTNO(s32 no);
 dds3ProcessFunc_t lmapCallEffGridSetCBAll(dds3ProcessID_t *proc);
 void lmapCallTexFreeDelayed2(void);

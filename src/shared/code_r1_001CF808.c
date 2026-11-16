@@ -40,12 +40,12 @@ s32 fldCmdSetStateFlag(void);
 #include "sdk_libc.h"
 #include "sdk_libkernl.h"
 #include "sndAt3.h"
+#include "sdk_libsdr.h"
 
 void Exit(s32 status);
 
 /* Return the descriptor's payload base as a byte address, not the descriptor. */
 
-s32 sceSdRemoteInit(void);
 
 /* Shared per-row lifecycle for EXP and profile-point result animations. */
 typedef s8 BrsProgressAnimationPhase;
@@ -128,7 +128,7 @@ MnuTitleStreamLoadState mnuPollTitleStreamStateLocked(void);
 
 struct dds3Basic_t;
 
-extern u32 D_003BC5BC;
+extern u32 mnuCopySoundStreamOnStatusChangeData;
 
 typedef struct { u64 v; } __attribute__((packed)) u64p;
 
@@ -136,8 +136,6 @@ extern u8 D_003BC598[];
 extern dds3ProcessID_t *mnuTitleSoundTask;
 extern char evtPicturePriProcName[];
 
-extern u32 D_003BC5B0[2];
-extern u32 D_003BC5B8;
 extern s32 sndStreamTransferIopHeapAddress;
 
 typedef struct mnuBrsResultWork_t {
@@ -163,9 +161,7 @@ u32 sndOpUpdateTitleBgmState(void);
 u32 mnuResetTitlePlaybackCommands(void);
 u32 mnuAdvanceTitleStreamFromScript(void);
 u8 mnuIsTitleStreamIdle(void);
-s32 sndCopyWordsToIopSynchronously(const void *source, u32 iopAddress, u32 wordCount);
 void sndInitializeStreamTransferBuffers(s32 wordCount);
-void mnuInitTitleSoundRemoteRequest(u32 wordCount);
 
 /* Use the voice prefix with the same packed, unbounded append convention. */
 char *mnuBuildVoiceResourcePath(char *pathBuffer, const char *filename) {
@@ -197,7 +193,13 @@ void sndInit(void)
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", sndLeaf);
 
-INCLUDE_ASM(const s32, "code_r1_001CF808", mnuIncrementTitleEffectFrameCounter);
+s32 mnuIncrementTitleEffectFrameCounter(dds3ProcessID_t *task) {
+    titleEffectState_t *effectState;
+
+    effectState = (titleEffectState_t *)dds3GetProcessData(task);
+    effectState->frameCounter = effectState->frameCounter + 1;
+    return 0;
+}
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", mnuDestroyTitleEffectTask);
 
@@ -251,15 +253,44 @@ s32 mnuGetTitleEffectFrameCounter(void) {
 INCLUDE_ASM(const s32, "code_r1_001CF808", scrLeaf);
 
 #endif
+/* NON_MATCHING: 23 of 29 words match.  */
+#ifdef NON_MATCHING
+s32 scrCallLoadCheckMidi(s32 id) {
+    s32 bank = id & 0xFFFF0000;
+
+    switch (p2sdLoadCheckMidi(bank)) {
+    case 1:
+        return 1;
+    case 0:
+        p2sdLoadSMGFile(bank);
+        return 0;
+    case 2:
+        return 0;
+    default:
+        return 1;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_001CF808", scrCallLoadCheckMidi);
+#endif
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", scrCallGetIntPara7);
 
-INCLUDE_ASM(const s32, "code_r1_001CF808", scrCallGetIntPara8);
+s32 scrCallGetIntPara8(void) {
+    s32 id = scrGetIntPara(0);
+
+    if (scrCallLoadCheckMidi(id) == 0) {
+        return 0;
+    }
+    p2sdPlaySE(id, 127, 63);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "code_r1_001CF808", sndOpStopNamedPlayback);
 
-INCLUDE_ASM(const s32, "code_r1_001CF808", slCallGetIntPara);
+s32 slCallGetIntPara(void) {
+    return scrCallLoadCheckMidi(scrGetIntPara(0)) != 0;
+}
 
 /* Handle an occupied sound-command channel before dispatching a named sound. */
 s32 fldCommandSendNamedSound(void) {
@@ -329,30 +360,51 @@ void sndInitializeStreamTransferBuffers(s32 wordCount) {
     s32 bufferBytes = wordCount * SND_TRANSFER_WORD_BYTES;
     s32 halfwordIndex;
 
-    D_003BC5B8 = sdfMemGetPtr(sdfMemAllocDirect(bufferBytes));
+    sndInitializeStreamTransferBuffersData = sdfMemGetPtr(sdfMemAllocDirect(bufferBytes));
     for (halfwordIndex = 0; halfwordIndex < wordCount * SND_TRANSFER_WORD_HALFWORDS; halfwordIndex++) {
-        ((u16 *)D_003BC5B8)[halfwordIndex] = 0;
+        ((u16 *)sndInitializeStreamTransferBuffersData)[halfwordIndex] = 0;
     }
     sceSifInitIopHeap();
     sndStreamTransferIopHeapAddress = sceSifAllocIopHeap(wordCount * SND_TRANSFER_PAIR_WORD_BYTES);
     if (sndStreamTransferIopHeapAddress <= 0) {
         Exit(0);
     }
-    D_003BC5B0[0] = sndStreamTransferIopHeapAddress;
-    D_003BC5B0[1] = sndStreamTransferIopHeapAddress + bufferBytes;
-    sndCopyWordsToIopSynchronously((const void *)D_003BC5B8, D_003BC5B0[0], wordCount);
-    sndCopyWordsToIopSynchronously((const void *)D_003BC5B8, D_003BC5B0[1], wordCount);
+    sndData[0] = sndStreamTransferIopHeapAddress;
+    sndData[1] = sndStreamTransferIopHeapAddress + bufferBytes;
+    sndCopyWordsToIopSynchronously((const void *)sndInitializeStreamTransferBuffersData, sndData[0], wordCount);
+    sndCopyWordsToIopSynchronously((const void *)sndInitializeStreamTransferBuffersData, sndData[1], wordCount);
 }
 
-INCLUDE_ASM(const s32, "code_r1_001CF808", evtFunc8);
+void evtFunc8(s32 transferSize) {
+    volatile s32 core;
+
+    for (core = 0; core < 2; core++) {
+        sceSdRemote(1, 0x8010, core | 0x980, 0x3FFF);
+        sceSdRemote(1, 0x8010, core | 0xA80, 0x3FFF);
+        sceSdRemote(1, 0x8010, core | 0x800, sceSdRemote(1, 0x8020, core | 0x800) & ~0x30);
+    }
+    sceSdRemote(1, 0x80E0, 1, 0x10, sndStreamTransferIopHeapAddress, transferSize << 3);
+    sceSdRemote(1, 0x8010, 0xF81, 0x7FFF);
+    sceSdRemote(1, 0x8010, 0x1081, 0x7FFF);
+}
 
 void mnuInitTitleSoundRemoteRequest(u32 wordCount) {
     sceSdRemoteInit();
     sndInitializeStreamTransferBuffers(wordCount);
-    D_003BC5BC = 0;
+    mnuCopySoundStreamOnStatusChangeData = 0;
 }
 
-INCLUDE_ASM(const s32, "code_r1_001CF808", mnuCopySoundStreamOnStatusChange);
+s32 mnuCopySoundStreamOnStatusChange(void *samples, u32 wordCount) {
+    u64 status = sceSdRemote(1, 0x8100, 1);
+
+    if ((mnuCopySoundStreamOnStatusChangeWork & 0x1000000) == (status & 0x1000000)) {
+        return 0;
+    }
+    sndCopyWordsToIopSynchronously(samples, sndData[mnuCopySoundStreamOnStatusChangeData & 1], wordCount);
+    mnuCopySoundStreamOnStatusChangeWork = status;
+    mnuCopySoundStreamOnStatusChangeData ^= 1;
+    return 1;
+}
 #ifdef VERSION_RAIDOU2
 
 INCLUDE_RODATA(const s32, "code_r1_001CF808", evtStrOpTitle);

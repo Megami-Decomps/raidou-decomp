@@ -68,6 +68,7 @@ void mdlPibDrawTrackInfo(sdfDrawTag_t *tag, s32 x, s32 y, s32 z, mdlTrackParams_
 void mdlPibEditTrackInfo(mdlTrackParams_t *data, s16 *cursor_p);
 pibHeaderChunk_t *mdlPibGetChunk(mdlObj_t *handle, s32 group);
 u16 mdlPibGetChunkCount(pibHeaderChunk_t *record);
+s32 mdlPibGetVersion(pibHeaderChunk_t *record);
 s32 mdlPibGetChunkItemCount(pibHeaderChunk_t *data);
 u16 mdlPibGetEffectCount(pibHeaderChunk_t *record);
 pibHeaderChunk_t *mdlPibGetFirstChunkItem(pibHeaderChunk_t *data);

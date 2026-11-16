@@ -1,3 +1,15 @@
 #include "common.h"
+#include "sdfMemory.h"
+#include "sdk_libc.h"
+#include "evtTmxPreLoad.h"
 
-INCLUDE_ASM(const s32, "code_r1_001CEBF8", Create_evtTmxPreLoad);
+evtTmxPreLoad_t *Create_evtTmxPreLoad(void) {
+    sdfMemHandle_t *handle;
+    evtTmxPreLoad_t *pData;
+
+    handle = sdfMemAllocDirect(sizeof(evtTmxPreLoad_t));
+    pData = sdfMemLock(handle);
+    memset(pData, 0, sizeof(evtTmxPreLoad_t));
+    pData->memHandle = handle;
+    return pData;
+}

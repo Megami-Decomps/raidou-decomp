@@ -4,5 +4,6 @@
 #include "common.h"
 
 void at3DecDecode(u32 *state);
+void at3DecInit(u32 *state);
 
 #endif

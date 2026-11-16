@@ -52,7 +52,7 @@ typedef struct fileLoadMirror_t {
     u32 previous;
 } fileLoadMirror_t;
 
-extern s32 fmShutDownData2;
+extern s32 slProcShutDownFlg;
 extern u32 D_003BC834;
 
 /* Init record at fileCursorPulseState. */
@@ -232,11 +232,11 @@ INCLUDE_ASM(const s32, "code_r1_001D5158", setAutoSaveDisable);
 INCLUDE_ASM(const s32, "code_r1_001D5158", setCallMemcpy);
 
 u8 fileIsLoadedAndConditionTrue(s32 condition) {
-    return condition != 0 && fmShutDownData2 == 1;
+    return condition != 0 && slProcShutDownFlg == 1;
 }
 
 u8 fileIsLoadedWithActiveFlow(s32 loaded) {
-    return loaded != 0 && fmShutDownData2 == 1;
+    return loaded != 0 && slProcShutDownFlg == 1;
 }
 
 #ifdef VERSION_RAIDOU2

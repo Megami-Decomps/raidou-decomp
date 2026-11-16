@@ -611,7 +611,14 @@ void sdfSkil(s32 MidiNo)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdPlaySE);
+void p2sdPlaySE(s32 trackId, s32 volume, s32 pan) {
+    sndSequenceVolumePanPacket_t packet;
+    sdfSkil(trackId);
+    packet.trackId = trackId;
+    packet.volume = volume;
+    packet.pan = (u8)pan;
+    sdfSndSendCmd(0x90, 0, &packet, 0xC);
+}
 
 /* The angle normalization and attenuation share one frame through the SE tail call. */
 void p2sdPlaySeDeg(s32 trackId, f32 angle, f32 distance) {
@@ -675,9 +682,46 @@ void p2sdSetStandPos(f32 Cposx, f32 Cposy, f32 Cposz,
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdLoadCheckMidi);
+s32 p2sdLoadCheckMidi(s32 MidiNo)
+{
+    s32 bank = MidiNo >> 16;
+    s32 i;
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", p2sdLoadSMGFile);
+    InvalidDCache(&sdfSndWork, (u8 *)&sdfSndWork + sizeof(sndMergedWork_t));
+    for (i = 0; i < SND_SLOT_COUNT; i++) {
+        if (sdfSndWork.slots[i].unk0 == bank) {
+            return 1;
+        }
+    }
+    return (p2sdSmgHandle == bank) ? 2 : 0;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfSound.c:778, found, same function 1.00 (words 54/54, calls 1.00, shape 1.00) */
+void p2sdLoadSMGFile(s32 MidiNo) {
+    char name[0x10];
+    char path[0x100];
+    s32 status = p2sdLoadCheckMidi(MidiNo);
+    s32 id;
+    switch (status) {
+    case 0:
+        id = MidiNo >> 16;
+        sprintf(name, "MIDI%04X.SMG", id);
+        sdfSndMakeFilename(path, name);
+        sdfSndSendSyncCmd(0xA0, 0, path, strlen(path) + 1);
+        p2sdSmgHandle = id;
+        break;
+    case 1:
+        break;
+    case 2:
+        do {
+            sdfDelayThread(2);
+            if (p2sdSmgBuf != NULL) {
+                p2sdSmgBuf();
+            }
+        } while (p2sdLoadCheckMidi(MidiNo) != 1);
+        break;
+    }
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", sdfCallStrlen);
 
@@ -720,7 +764,9 @@ INCLUDE_ASM(const s32, "sdf/sdfSound", sndGetNonnegativeEntryBalance);
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", sdfLeaf34);
 
-INCLUDE_ASM(const s32, "sdf/sdfSound", sdfLeaf35);
+p2sdLoadEntry_t *sdfLeaf35(void) {
+    return sdfSndWork.slots;
+}
 
 INCLUDE_ASM(const s32, "sdf/sdfSound", sdfLeaf36);
 

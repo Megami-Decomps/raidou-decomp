@@ -7,6 +7,7 @@
 void evtKillPictureProcess(dds3ProcessID_t *id);
 void evtPictureDrawOff(dds3ProcessID_t *id);
 void evtPictureDrawOn(dds3ProcessID_t *id);
+s32 evtPictureLoadCheckProcess(dds3ProcessID_t *id);
 
 dds3ProcessID_t *StartProcess_evtPicture(DDS3_PRIORITY priority, char *texpath);
 

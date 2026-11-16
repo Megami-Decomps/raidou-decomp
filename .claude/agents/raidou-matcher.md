@@ -87,6 +87,8 @@ Per function, in this order:
 
 - Matching C preferred. A draft that does not match is kept as NON_MATCHING only if it is
   functionally correct; the port compiles it.
+- A function that shifts from header declaration changes alone is recorded NON_MATCHING with a
+  `Fragile:` line in its docs/matching entry (the cause); never move or add declarations to protect it.
 - No fakematches: no raw pointer offsets, no dummy uses, no pinned registers, no false
   types, no casts that hide a wrong type, no local prototypes. A raw offset means a struct
   is wrong: fix the type for Raidou in T/include (per-game definition if the games differ)

@@ -125,7 +125,7 @@ INCLUDE_ASM(const s32, "event/evtPicture", evtCallGetMemHandle);
 
 INCLUDE_ASM(const s32, "event/evtPicture", evtPictureLoadStartTexFile);
 
-INCLUDE_ASM(const s32, "event/evtPicture", evtCallGetProcessData16);
+INCLUDE_ASM(const s32, "event/evtPicture", evtPictureLoadCheckProcess);
 
 INCLUDE_ASM(const s32, "event/evtPicture", evtCallGetProcessData17);
 

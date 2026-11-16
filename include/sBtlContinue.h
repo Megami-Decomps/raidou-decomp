@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-void sndRefDDS3GBWK(void);
+s32 sndRefDDS3GBWK(void);
 
 #endif

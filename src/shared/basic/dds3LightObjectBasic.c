@@ -46,35 +46,17 @@ typedef struct dds3LightColorWork_t
     u8 pad04[12];
 } dds3LightColorWork_t;
 
-typedef struct fldResourceLight_t
-{
-    u32 resv;
-    u32 Flag;
-    u32 AnimeType;
-    f32 InsideR;
-    f32 OutsideR;
-    f32 Soften;
-    f32 Bias;
-    f32 DiffuseR;
-    f32 DiffuseG;
-    f32 DiffuseB;
-    f32 AmbientR;
-    f32 AmbientG;
-    f32 AmbientB;
-} fldResourceLight_t;
 
 s32 lightconstructor(dds3Basic_t *basic);
 void lightdestructor(dds3Basic_t *basic);
 s32 lightmainprocedure(dds3Basic_t *basic);
 s32 lightdrawprocedure(dds3Basic_t *basic);
 dds3ObjectBaseControlWorkData_t *dds3LightObjectBasicGetControlWorkData(dds3Basic_t *basic);
-dds3Basic_t *dds3AddLightObjectBasic(u32 serial);
 void dds3DeleteLightObjectBasic(dds3Basic_t *basic);
 void dds3LinkSceneLight(dds3Basic_t *basic, s32 frame);
 void dds3UnlinkSceneLight(dds3Basic_t *basic);
 void dds3LinkLightObjectToUnitObject(dds3Basic_t *lightbasic, dds3Basic_t *unitbasic, s32 frame);
 void dds3UnlinkLightObjectFromUnitObject(dds3Basic_t *unitbasic, s32 frame);
-void dds3SetLightObjectResoruce(dds3Basic_t *basic, fldResourceLight_t *resource);
 void dds3SetLightObjectPathResoruce(dds3Basic_t *basic, fldResourceLightPath_t *resource);
 s32 dds3AllocEventBasicWorkData(dds3Basic_t *basic);
 

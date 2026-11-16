@@ -1148,6 +1148,8 @@ s32 CheckMapHit(struct SBTLUNIT_WORK *wk, const sdfVector4_t *oldpos)
 INCLUDE_ASM(const s32, "code_r1_0024F220", CheckMapHit);
 #endif
 
+/* NON_MATCHING: 21 of 21 words match. Fragile, see docs/matching/code_r1_0024F220.md. */
+#ifdef NON_MATCHING
 s32 sbtlCheckMapHit_Data(f32 posx, f32 posz, f32 *px, f32 *pz)
 {
     s32 ret;
@@ -1158,6 +1160,9 @@ s32 sbtlCheckMapHit_Data(f32 posx, f32 posz, f32 *px, f32 *pz)
     *pz = getz;
     return ret;
 }
+#else
+INCLUDE_ASM(const s32, "code_r1_0024F220", sbtlCheckMapHit_Data);
+#endif
 
 /* NON_MATCHING: 44 of 69 words match. s3 and s4 swap for the position pointer and the count, and retail keeps the found test as branches where this build emits sltiu; vector checked (menu): rows return 1 only. */
 #ifdef NON_MATCHING

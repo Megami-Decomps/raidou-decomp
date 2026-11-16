@@ -9,6 +9,7 @@ s32 scrGetIntPara(s32 n);
 s32 scrGetLabelCodeAddress(s32 labelindex);
 u8 *scrGetStrPara(s32 n);
 void scrSetIntReturnValue(s32 i);
+scrProcessWork_s *scrGetScriptHandle(void);
 s32 scrTraceCode(scrProcessWork_s *pwork);
 
 #endif

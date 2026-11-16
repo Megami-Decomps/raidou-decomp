@@ -17,10 +17,6 @@ extern sdfTexHandle_t *sdfTexSetEx(TMX_HEADER_t *aTex, s32 aMemMode);
 extern void *sdfTexTransData(s32 aGsAddr, s32 aWidth, s32 aHeight, s32 aPixelFormat, void *aSrcData,
                              s32 aMemMode);
 
-extern void sdfTexSetPacket(sdfTexPacket_t *aPacket, s32 aWidth, s32 aHeight, s32 aGsAddr,
-                            s32 aPixelFormat, s32 aClutAddr, s32 aClutFormat, s32 aColorComp,
-                            s32 aNumOfMipmap, s32 aMipmapParm, s32 aWrapMode, s32 aContext);
-
 sdfGsMemSlice_t *sdfTexAllocClut(s32 aPixelFormat, s32 aCLUTFormat, s32 aNumOfCLUT);
 void sdfTexAllocClutBuff(sdfTexHandle_t *aHandle);
 void sdfTexCopyClutData(sdfTexHandle_t *aHandle, void *aData);
@@ -322,7 +318,49 @@ sdfTexHandle_t *sdfTexDup(sdfTexHandle_t *aHandle)
     return dup;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexAllocClut);
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfTex.c:307, found, same function 1.00 (words 54/54, calls 1.00, shape 1.00) */
+sdfGsMemSlice_t *sdfTexAllocClut(s32 aPixelFormat, s32 aCLUTFormat, s32 aNumOfCLUT)
+{
+    sdfGsMemSlice_t *slice;
+    s32 bitsPerEntry;
+    s32 size;
+    s16 height;
+
+    slice = NULL;
+    switch (aCLUTFormat) {
+    case 0:
+        bitsPerEntry = 32;
+        break;
+    case 2:
+    case 10:
+        bitsPerEntry = 16;
+        break;
+    default:
+        return NULL;
+    }
+
+    switch (aPixelFormat) {
+    case 19:
+    case 27:
+        size = bitsPerEntry * 8;
+        height = 32;
+        break;
+    case 20:
+    case 36:
+    case 44:
+        size = 64;
+        height = 8;
+        break;
+    default:
+        return slice;
+    }
+
+    slice = sdfGsMemAllocFromTail(size, 3);
+    slice->w = 8;
+    slice->h = height;
+    slice->pixelFormat = aCLUTFormat;
+    return slice;
+}
 
 sdfGsMemSlice_t *sdfTexAllocClutFromHead(s32 aPixelFormat, s32 aCLUTFormat, s32 aNumOfCLUT)
 {
@@ -367,7 +405,16 @@ sdfGsMemSlice_t *sdfTexAllocClutFromHead(s32 aPixelFormat, s32 aCLUTFormat, s32 
     return slice;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexGetClutDataSize);
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfTex.c:350, found, same function 1.00 (words 12/12, calls 1.00, shape 1.00) */
+s32 __attribute__((const)) sdfTexGetClutDataSize(s32 aPixelFormat, s32 aCLUTFormat, s32 aNumOfCLUT)
+{
+    s32 entries;
+    s32 bytesPerEntry;
+
+    bytesPerEntry = (aCLUTFormat == 0) ? 4 : 2;
+    entries = (aPixelFormat == 19 || aPixelFormat == 27) ? 256 : 16;
+    return entries * bytesPerEntry * aNumOfCLUT;
+}
 
 void sdfTexAllocClutBuff(sdfTexHandle_t *aHandle)
 {
@@ -560,7 +607,52 @@ void sdfTexFreeDelayed(sdfTexHandle_t *aHandle)
     }
 }
 
+/* NON_MATCHING: 15 of 90 words match.  */
+#ifdef NON_MATCHING
+/* body: nonmatching in smt3 @ 9401f79e: src/smt3/sdf/sdfTex.c:475, found, same function 1.00 (words 90/90, calls 1.00, shape 1.00) */
+void sdfTexSetPacket(sdfTexPacket_t *aPacket, s32 aWidth, s32 aHeight, s32 aGsAddr,
+                     s32 aPixelFormat, s32 aClutAddr, s32 aClutFormat, s32 aColorComp,
+                     s32 aNumOfMipmap, s32 aMipmapParm, s32 aWrapMode, s32 aContext)
+{
+    s64 cpsm = (s64)aClutFormat << 51;
+    s64 cbp = (s64)(aClutAddr >> 6) << 37;
+    s64 tcc = (s64)aColorComp << 34;
+    s64 th = (s64)PS2_WORD_BIT_LENGTH(aHeight - 1) << 30;
+    s32 tw = PS2_WORD_BIT_LENGTH(aWidth - 1) << 26;
+    s32 psm = aPixelFormat << 20;
+    s32 tbw = (aWidth >> 6) << 14;
+    s32 tbp0 = aGsAddr >> 6;
+    s64 k = (s64)(aMipmapParm & 0xFFF) << 32;
+    s64 l = (s64)((aMipmapParm >> 12) & 3) << 19;
+    s64 mxl = aNumOfMipmap << 2;
+    s64 tex0;
+    s64 tex1;
+
+    aPacket->giftag.regs = 0xE;
+    aPacket->giftag.parm = 0x1000000000008003;
+    tex0 = cpsm | cbp | tcc | th | tw | psm | tbw | tbp0;
+    if (aNumOfMipmap == 0) {
+        tex1 = 0x61;
+    } else {
+        tex1 = k | l | 0x360 | mxl;
+    }
+    aPacket->tex1.data = tex1;
+    aPacket->tex1.reg = aContext == 0 ? 0x14 : 0x15;
+    if (aClutAddr != 0) {
+        tex0 = cpsm | cbp | ((s64)4 << 61) | tcc | th | tw | psm | tbw | tbp0;
+    }
+    aPacket->tex0.data = tex0;
+    aPacket->tex0.reg = aContext == 0 ? 6 : 7;
+    if ((aWrapMode & 0xFF) == 0xFF) {
+        aPacket->clamp.data = 0;
+    } else {
+        aPacket->clamp.data = aWrapMode & 0xF;
+    }
+    aPacket->clamp.reg = aContext == 0 ? 8 : 9;
+}
+#else
 INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexSetPacket);
+#endif
 
 sdfTexPacket_t *sdfTexMakeGIFPacketSub(sdfTexHandle_t *aHandle, s32 aContext)
 {
@@ -842,4 +934,8 @@ sdfTexHandle_t *sdfTexSearch(u32 id)
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfTex", sdfTexInit);
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfTex.c:727, found, same function 1.00 (words 8/8, calls 1.00, shape 1.00) */
+void sdfTexInit(void)
+{
+    sdfDelayedResrcInitCB(&sdfTexDelayedResrcCB, (sdfDelayedResrcFreeFunc)sdfTexFree);
+}

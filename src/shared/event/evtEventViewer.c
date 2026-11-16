@@ -513,7 +513,7 @@ evtFrameInfo_t *AddFrameInfo2(evtViewerObject_s *group, s32 frame, evtViewerInfo
     return evtAddFrameInfo(group, frame);
 }
 
-INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetPIDfromUID);
+INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetSelectFrameInfo);
 
 /* body: matched in smt3 @ 9401f79e: src/smt3/event/evtEventViewer.c:390 */
 void DelFrameInfo(evtViewerObject_t *parent, evtFrameInfo_t *f)
@@ -1056,6 +1056,8 @@ void SetActiveCamera(evtViewerInfo_t *pInfo) {
 }
 
 #ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 122 of 122 words match. Fragile, see docs/matching/event/evtEventViewer.md. */
+#ifdef NON_MATCHING
 void ReqMessage(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
     s32 mesNo;
     s32 mesType;
@@ -1112,6 +1114,9 @@ void ReqMessage(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowfra
         itfMesMngRequestSelect_itf(pInfo->workdata->MesHandle, mesNo);
     }
 }
+#else
+INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
+#endif
 #else
 INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
 #endif
@@ -1334,7 +1339,7 @@ void RunFrame1(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 
         }
         break;
     case 33:
-        if (scrRunFrame1Sub(frame->p08.sh[1]) == 0 && frame->p08.sh[1] > 0) {
+        if (evtChkUID(frame->p08.sh[1]) == 0 && frame->p08.sh[1] > 0) {
             evtCutInCreate(&pInfo->nowframe, pmv_pid, frame->p0C.sh[0] * 16, frame->p0C.sh[1] * 8, 0,
                            frame->frame, frame->p08.sh[0],
                            ((frame->p10.sb[0] + 1) << 16) | (frame->p10.sb[1] + 1), frame->p08.sh[1]);

@@ -1026,8 +1026,9 @@ void itfRotateScreenOffset(s32 *outX, s32 *outY, s32 x, s32 y, s32 centerX, s32 
 }
 
 
-/* Sensitive to this unit's declaration set: including newdata.h moves the alias class of the
- * address-taken corners, and the packet stores then schedule differently. */
+/* NON_MATCHING: 247 of 288 words match on Raidou 1, 244 on Raidou 2. Its schedule depends on the
+ * declarations in scope: the sdfTexSetPacket prototype in sdfTex.h moved it on Raidou 1. */
+#ifdef NON_MATCHING
 void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const effSpriteUV_t *uv,
                          const u32 *colors, u32 flip, f32 angle, u32 alphaMode,
                          s32 filter, sdfTexHandle_t *tex, s32 ot)
@@ -1147,6 +1148,9 @@ void sdfDrawTexturedQuad(s32 x, s32 y, u32 z, s32 width, s32 height, const effSp
     otp->regFunc(otp, tag);
     sdfSubmitGsAlphaOneRegisterPacket(0x44, ot);
 }
+#else
+INCLUDE_ASM(const s32, "code_r1_002C8188", sdfDrawTexturedQuad);
+#endif
 
 void effSelectPresetAndDispatch(u32 x, u32 y, u32 z, u32 width,
                                     u32 height, const u32 *vertexColors, u32 presetMode, u32 presetValue) {

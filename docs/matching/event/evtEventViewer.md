@@ -86,3 +86,11 @@ Raidou 2: 42 of 44 words differ, first at +0x4; emitted 188 bytes, native 172 by
 retail keeps a register copy of the data pointer and re-tests it at the loop top each iteration (no jump threading); mine hoists or threads the null test. Tried do/while with local, while(&&) with break, for-loop, memory test. vector checked (opening: one PM2 and one PM3 cut stored, same as the draft). Name is a poor HD hit (HD body is a Unity scene unload)
 
 Related: [smt3 levers: control flow](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/control-flow.md).
+
+## ReqMessage (event/evtEventViewer, raidou1 0x1E8)
+
+Raidou 1: 4 of 122 words differ, first at +0xFC.
+
+Raidou 1 only. The body matched (0 of 122) until declarations were added to headers the unit includes (a prototype in dds3KernelDraw.h or itfMesManager.h moves it), so it is kept NON_MATCHING and no declaration is moved to protect it.
+
+Fragile: matches only with the declaration set that evtEventViewer.c and its headers carried before the R16 batch; any added declaration moves a register in the second half.

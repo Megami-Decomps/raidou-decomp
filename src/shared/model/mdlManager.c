@@ -182,7 +182,6 @@ extern mdlHddFileEntry_t *mdlHddFileCount;
 extern u8 sdfHddValid;
 extern const char _ctype_[];
 extern void sdfDummyFunc(void);
-extern s32 mdlPibGetVersion(pibHeaderChunk_t *record);
 extern sdfMatrix4_t sdfViewMatrix;
 extern sdf3DScreenParam_t dds3ScreenParam;
 extern s32 mdlFileLoad(s32 major, s32 minor, s32 regFlags, const char *filename, void (*callback)(u32), u32 parm);

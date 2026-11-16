@@ -29,5 +29,7 @@ void sdfTexSetWrapMode(sdfTexHandle_t *aHandle, s32 aMode);
 void sdfTexReleaseReference(sdfTexHandle_t *texture);
 
 void sdfTexSetFilter(sdfTexHandle_t *aHandle, s32 aMagMode, s32 aMinMode);
+void sdfTexSetPacket(struct sdfTexPacket_t *aPacket, s32 aWidth, s32 aHeight, s32 aGsAddr, s32 aPixelFormat, s32 aClutAddr,
+                     s32 aClutFormat, s32 aColorComp, s32 aNumOfMipmap, s32 aMipmapParm, s32 aWrapMode, s32 aContext);
 
 #endif

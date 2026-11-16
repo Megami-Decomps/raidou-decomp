@@ -172,7 +172,6 @@ void *dds3AddBEDEffectObjectBasic2(void *data, void *pos, void *rot);
 void *dds3AddBEDEffectObjectBasic(void *file, void *pos, void *rot);
 void dds3StartBEDEffectObjectBasic(dds3Basic_t *basic, u32 cutno);
 dds3Basic_t *AddESPEffect(const char *name, void *pos, void *rot, f32 r);
-dds3Basic_t *dds3AddESPEffectObjectBasic(const char *name, void *pos, void *rot, f32 r);
 dds3Basic_t *dds3AddMG12EffectObjectBasic2(s32 type, void *effdata);
 void *dds3AddMG12EffectObjectBasic(s32 type, void *file);
 dds3EffectObjectBasicWorkData_t *CheckESP(dds3Basic_t *b);
@@ -184,7 +183,6 @@ s32 dds3EffectObjectSetMG12Pos(dds3Basic_t *eff, dds3Basic_t *p1,
                               dds3Basic_t *p2, dds3Basic_t *p3, dds3Basic_t *p4);
 
 void dds3EffectObjectBasicStatOn(dds3Basic_t *basic, s32 s);
-void dds3EffectObjectBasicStatOff(dds3Basic_t *basic, s32 s);
 s32 dds3EffectObjectBasicLinkObject(dds3Basic_t *basic, dds3Basic_t *target);
 void dds3EffectObjectBasicGetObjectIndex(dds3Basic_t *basic);
 s32 dds3EffectObjectBasicLinkObjectIndex(dds3Basic_t *basic, dds3Basic_t *target, s32 index);

@@ -206,6 +206,12 @@ class IncluderTests(unittest.TestCase):
         self.assertEqual(worse, ["k: f OK -> DIFF 1/2"])
         self.assertEqual(better, ["k: g DIFF 3/9 -> DIFF 2/9"])
 
+    def test_fragile_worse_lines_are_information(self) -> None:
+        worse = ["k: f OK -> DIFF 1/2", "k: g OK -> DIFF 3/9", "k: unit: RODATA x"]
+        hard, info = header_includers.split_fragile(worse, {"f"})
+        self.assertEqual(hard, ["k: g OK -> DIFF 3/9", "k: unit: RODATA x"])
+        self.assertEqual(info, ["k: f OK -> DIFF 1/2"])
+
     def test_context_counts_against_an_ok(self) -> None:
         out = ("CONTEXT f: compiles differently inside the full unit (88 vs 84 bytes alone); ...\n"
                "       full unit vs retail: 2 of 21 words differ (relocated fields masked)\n"

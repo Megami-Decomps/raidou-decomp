@@ -4,6 +4,7 @@
 #include "dds3obj.h"
 #include "field.h"
 #include "fileManager.h"
+#include "dds3LightObjectBasic.h"
 
 enum fldPackedResourceKind
 {
@@ -101,46 +102,6 @@ typedef struct fldFileInfoHeaderFL2_t {
     fldConstruntAreaFL2_t *pAreaTable; /* 0x10 */
 } fldFileInfoHeaderFL2_t;
 
-typedef struct fldBillConfigView_t {
-    u32 flags;
-    u32 kind;
-    u32 resourceIndex;
-    f32 width;
-} fldBillConfigView_t;
-
-typedef struct fldLightDataView_t {
-    u8 pad00[0x64];
-    u32 flags;
-} fldLightDataView_t;
-
-typedef struct fldCollisionDescriptor_t fldCollisionDescriptor_t;
-
-typedef struct fldSpawnCollisionView_t {
-    u32 kind;
-    u32 word04;
-    fldCollisionDescriptor_t *header;
-} fldSpawnCollisionView_t;
-
-enum {
-    FLD_SPAWN_BATCH_KIND_SCRIPT_RESOURCE = 2,
-    FLD_SPAWN_BATCH_KIND_COLLISION = 3,
-    FLD_SPAWN_BATCH_KIND_CAMERA = 4,
-    FLD_SPAWN_BATCH_KIND_EVENT = 6,
-    FLD_SPAWN_BATCH_KIND_UNSUPPORTED = 7,
-    FLD_SPAWN_BATCH_KIND_PATH = 9,
-    FLD_SPAWN_BATCH_KIND_POINT = 10,
-    FLD_SPAWN_BATCH_KIND_BILLBOARD_EFFECT = 11,
-    FLD_SPAWN_BATCH_KIND_LIGHT = 12
-};
-
-typedef struct fldResourceEffect_t fldResourceEffect_t;
-
-typedef struct fldResourceLight_t {
-    u32 resv, Flag, AnimeType;
-    f32 InsideR, OutsideR, Soften, Bias;
-    f32 DiffuseR, DiffuseG, DiffuseB;
-    f32 AmbientR, AmbientG, AmbientB;
-} fldResourceLight_t;
 
 /* Resolved FL2 event and placement payloads, selected by the batch kind. */
 typedef struct fldSpawnEventDataFL2_t {
@@ -435,27 +396,8 @@ typedef struct fldObjectPlacement_t {
     fldModelData_t *model; /* 0x20 */
 } fldObjectPlacement_t;
 
-typedef struct fldResourceNameEntry_t {
-    u32 word00;
-    const char *name; /* 0x04 */
-    u32 word08;
-} fldResourceNameEntry_t;
-
-typedef struct fldResourceNameTable_t {
-    u32 count;
-    fldResourceNameEntry_t entries[1];
-} fldResourceNameTable_t;
-
-typedef struct fldResourceSet_t {
-    u8 unk00[0x18];
-    fldResourceNameTable_t *names; /* 0x18 */
-    u8 unk1C[8];
-} fldResourceSet_t;
-
-extern fldObjectPlacement_t *SetBattleLightWork;
-extern u32 SetBattleLightWork2;
-extern fldResourceSet_t *MakeResouceBasicFL2Work;
-extern u32 MakeResouceBasicFL2Work2;
+extern fldObjectPlacement_t *fldScriptResource;
+extern u32 fldScriptResourceCount;
 extern void *fldData15;
 extern void dds3SetUnitObjectId(dds3Basic_t *basic, char *name);
 extern void dds3ObjectBaseMakeMatter(dds3Basic_t *basic);
@@ -463,13 +405,13 @@ extern void dds3ObjectBaseRegistArea(dds3Basic_t *basic);
 
 void MakeObjectBasic2(void)
 {
-    fldObjectPlacement_t *item = SetBattleLightWork;
-    u32 count = SetBattleLightWork2;
+    fldObjectPlacement_t *item = fldScriptResource;
+    u32 count = fldScriptResourceCount;
     dds3Basic_t *scene;
     dds3Basic_t *matter;
     f32 position[4];
     f32 rotation[4];
-    fldResourceSet_t *set;
+    fldResHead_t *set;
     fldResourceAreaRef_t *areaRef;
     u32 i;
     u32 j;
@@ -489,9 +431,9 @@ void MakeObjectBasic2(void)
         dds3MatterObjectBasicSetHojiID(matter, fldCommand_GetHojiID(item->name));
         dds3ObjectBaseSetControlBasic(matter, dds3SearchSceneBasic(scene, item->serialID, 10));
         dds3ObjectBaseMakeMatter(matter);
-        for (j = 0, set = MakeResouceBasicFL2Work; j < MakeResouceBasicFL2Work2; j++, set++) {
+        for (j = 0, set = g_pHitData; j < g_nHitData; j++, set++) {
             if (set->names != NULL) {
-                fldResourceNameEntry_t *entry = set->names->entries;
+                fldFileNameEntry_t *entry = set->names->entries;
 
                 for (k = 0; k < set->names->count; k++, entry++) {
                     if (strcmp(item->name, entry->name) == 0) {

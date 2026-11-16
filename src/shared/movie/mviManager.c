@@ -37,7 +37,10 @@ typedef struct
 {
     /* 0x00 */ const char *path;
     /* 0x04 */ sdfMovieInitParm_t descriptor;
+    /* 0x18 */ s32 unk_18; /* copied to movieData on play */
 } dds3MovieEntry_t;
+
+extern dds3MovieEntry_t moviePlayData[];
 
 extern void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor);
 extern u16 dds3VblanksPerFrame;
@@ -102,7 +105,12 @@ void moviePlayFile_27041744(const char *path, sdfMovieInitParm_t *descriptor)
     }
 }
 
-INCLUDE_ASM(const s32, "movie/mviManager", moviePlay);
+void moviePlay(s32 aNum) {
+    dds3MovieEntry_t *entry = &moviePlayData[aNum];
+
+    movieData = entry->unk_18;
+    moviePlayFile_27041744(entry->path, &entry->descriptor);
+}
 
 void movieStop(void)
 {
@@ -113,9 +121,15 @@ void movieStop(void)
     }
 }
 
-INCLUDE_ASM(const s32, "movie/mviManager", mviValidateMovieSub);
+/* body: matched in smt3 @ 9401f79e: src/smt3/movie/mviManager.c:106, found, same function 1.00 (words 7/7, calls 1.00, shape 1.00) */
+s32 mviValidateMovieSub(void)
+{
+    return sdfMovieIsFinished(&movieCb);
+}
 
-INCLUDE_ASM(const s32, "movie/mviManager", mviDrawMessageSub);
+s32 mviDrawMessageSub(void) {
+    return movieCb.decodeCb.playbackPhase;
+}
 
 INCLUDE_ASM(const s32, "movie/mviManager", mviLeaf);
 

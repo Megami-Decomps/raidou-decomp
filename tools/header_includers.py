@@ -3,6 +3,7 @@
 
     python3 tools/header_includers.py <headers> [--check] [--save FILE] [--baseline FILE | --baseline-tree DIR]
 --check runs check_unit (default and -DNON_MATCHING) on each and compares every function with the baseline.
+A worse function whose docs/matching entry has a Fragile line is printed as "info fragile", not as a regression.
 """
 import argparse
 import json
@@ -12,6 +13,9 @@ import subprocess
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import docs_index  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 INCLUDE = re.compile(r'^\s*#\s*include\s+"([^"]+)"', re.M)
@@ -157,6 +161,15 @@ def compare(before: dict, after: dict, renames: dict[str, str] | None = None) ->
     return worse, better
 
 
+def split_fragile(lines: list[str], fragile: set[str]) -> tuple[list[str], list[str]]:
+    """(regressions, info): a worse line of a function with a Fragile docs entry is information."""
+    hard, info = [], []
+    for line in lines:
+        fn = line.split(": ")[1].split()[0] if line.count(": ") else ""
+        (info if fn in fragile else hard).append(line)
+    return hard, info
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("headers", nargs="+")
@@ -184,11 +197,15 @@ def main() -> int:
         print(f"{len(after)} checks over {len(units)} units; no baseline given")
         return 0
     worse, better = compare(before, after)
+    worse, fragile = split_fragile(worse, docs_index.fragile_names())
     for line in better:
         print("better", line)
+    for line in fragile:
+        print("info fragile", line)
     for line in worse:
         print("WORSE", line)
-    print(f"{len(units)} units, {len(after)} checks: {len(worse)} worse, {len(better)} better")
+    print(f"{len(units)} units, {len(after)} checks: {len(worse)} worse, {len(better)} better, "
+          f"{len(fragile)} fragile")
     return 1 if worse else 0
 
 

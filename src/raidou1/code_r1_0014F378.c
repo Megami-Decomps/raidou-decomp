@@ -654,7 +654,8 @@ s32 mapFileLoad(s32 mapid)
             break;
         }
     }
-    return mdlCallMemGetSize2();
+    mdlCallMemGetSize2();
+    return 0;
 }
 #else
 INCLUDE_ASM(const s32, "code_r1_0014F378", mapFileLoad);

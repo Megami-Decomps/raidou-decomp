@@ -1314,7 +1314,7 @@
 0x001318F8	fldCommandOBJPATHMOVESub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001318F8, nearest named function fldMakeBlockBasicFL2; called by evtCommand_OBJ_PATH_MOVE
 0x00131900	fldLeaf8	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001318F8, nearest named function fldMakeBlockBasicFL2; no named callee, caller or string
 0x00131908	SetBattleLight	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x00131C90	MakeResouceBasicFL2	hd	hd: Raidou HD fld.MakeResouceBasicFL2, score 10.3 band A
+0x00131C90	fldMakeResouceBasicFL2	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 name of the same body (batch-kind switch over fldSpawnBatch_t, collision batch saved to g_pHitData); HD name lacks the fld prefix; replaces MakeResouceBasicFL2
 0x00132080	fldMakeBlockBasicFL2	inferred	SMT3HD name via SLUS_209.11 0x00126A58, unique-masked-hash; map-agrees
 0x00132100	MakeObjectBasic2	hd	hd: Raidou HD fld.MakeObjectBasic2, score 11.5 band A
 0x00132308	fldFileResolverFL1	hd	hd: Raidou HD fld.fldFileResolverFL1, score 9.9 band B
@@ -3237,7 +3237,7 @@
 0x001AD578	evtCallGetIntPara16	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour evtCommand_CALL_FIELD; calls scrGetIntPara
 0x001AD5D0	evtCommand_CALL_FIELD	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x1e72f8 sim 0.721 margin 0.72 pair
 0x001AD648	evtCallGetIntPara17	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour evtCommand_CALL_FIELD; calls scrGetIntPara
-0x001AD6F0	evtCallGetScriptHandle2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour evtCommand_CALL_FIELD; calls scrGetScriptHandle
+0x001AD6F0	CUTIN_DSP	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCommand CUTIN_DSP: no script handle returns 1, four int paras, evtGetPIDfromUID(uid), evtStartCommand(handle->ProcessID, x, y, type, uid) when absent, else evtPictureLoadCheckProcess; replaces evtCallGetScriptHandle2
 0x001AD7C8	sndCallGetIntPara	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls scrGetIntPara
 0x001AD810	sndWaitForEarringPlayback	inferred	method=dds-fuzzy-70-tie-pair; p=0.38 (n=8); tier=C; source=dds; evidence=dds body 0x205438 sim 0.794 margin 0.04 pair
 0x001AD858	sndFunc	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001AD4E8, neighbour sndWaitForEarringPlayback; no named callee, caller or string
@@ -3278,7 +3278,7 @@
 0x001AF408	SortFrameInfo	inferred	SMT3HD name via SLUS_209.11 0x001EBD88, unique-masked-hash; map-agrees
 0x001AF498	evtAddFrameInfo_evtViewer	hd	hd: Raidou HD evtViewer.evtAddFrameInfo, score 9.0 band B
 0x001AFB68	AddFrameInfo2	inferred	SMT3HD name via SLUS_209.11 0x001EC358, shared-hash-in-run; map-agrees
-0x001AFB80	evtGetPIDfromUID	hd-inferred	method=hd-both-s6; p=0.81 (n=84); tier=B; source=hd; evidence=Raidou HD evtCutIn.evtGetPIDfromUID score 6.8 flag I: calls1 next~ calls-of-match st1:call r1+r2
+0x001AFB80	evtGetSelectFrameInfo	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name: 0x1AFB80 walks viewerinfo->framelist_target children by frameCursor + frameFirst (0x2308/0x2300/0x2304) like SMT3 evtGetSelectFrameInfo; the HD evtGetPIDfromUID name belongs to 0x1CE868 (scrFunc2); replaces evtGetPIDfromUID
 0x001AFBE8	DelFrameInfo	inferred	SMT3HD name via SLUS_209.11 0x001EC3D8, unique-masked-hash; map-agrees
 0x001AFC40	evtDelProcess	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD evtCutIn.evtDelProcess score 5.0 flag I: calls1 callers-of-match st1:call r1+r2
 0x001AFD28	evtCallDelEffectTableEvtEventViewer	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtEventViewer; calls DelEffectTable_evtEventViewer
@@ -3447,7 +3447,7 @@
 0x001BB308	evtStartPictureProcess	inferred	SMT3HD name via SLUS_209.11 0x001F43F8, unique-masked-hash; map-agrees
 0x001BB368	evtCallGetMemHandle	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls fileGetMemHandle
 0x001BB408	evtPictureLoadStartTexFile	hd-inferred	hd: Raidou HD evtPicture.evtPictureLoadStartTexFile, score 7.15 band B
-0x001BB430	evtCallGetProcessData16	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls dds3GetProcessData
+0x001BB430	evtPictureLoadCheckProcess	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtPicture evtPictureLoadCheckProcess(id): dds3GetProcessData(id) field test returning bool; called on the cut-in PID as in HD CUTIN_DSP; replaces evtCallGetProcessData16
 0x001BB458	evtCallGetProcessData17	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls dds3GetProcessData
 0x001BB4C8	evtCallGetProcessData18	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls dds3GetProcessData
 0x001BB4F8	evtPictureSetSize	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -3678,12 +3678,12 @@
 0x001CE610	evtCallGetProcessData28	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour evtStartRain; calls dds3GetProcessData
 0x001CE648	evtCallGetProcessData29	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour evtStartRain; calls dds3GetProcessData
 0x001CE688	scrCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour scrEventSkipEnd; calls dds3GetProcessData
-0x001CE6E8	scrLeaf3	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour scrEventSkipEnd; no named callee, caller or string
+0x001CE6E8	GetIndexFromUID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCutIn static GetIndexFromUID(pData, UID); called with the cut-in data by evtChkUID/evtGetPIDfromUID; replaces scrLeaf3
 0x001CE740	scrEventSkipEnd	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD scr.scrEventSkipEnd score 3.1 flag I: calls1 calls-of-match st2:call r2-only
 0x001CE7B8	scrFunc	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour scrEventSkipEnd; no named callee, caller or string
 0x001CE800	GetRegistNums	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD evtCutIn.GetRegistNums score 2.5 flag -: calls1 calls-of-match st2:call r2-only
-0x001CE838	scrRunFrame1Sub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour scrEventSkipEnd; called by RunFrame1
-0x001CE868	scrFunc2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour scrEventSkipEnd; no named callee, caller or string
+0x001CE838	evtChkUID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCutIn order; returns GetIndexFromUID(UID) >= 0, the UID test of HD evtChkUID; replaces scrRunFrame1Sub
+0x001CE868	evtGetPIDfromUID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCutIn order GetRegistNums, evtChkUID, evtGetPIDfromUID; 0x1CE868 follows GetRegistNums/scrRunFrame1Sub and returns the PID array entry for GetIndexFromUID(UID) (scrLeaf3), as HD evtGetPIDfromUID; replaces scrFunc2
 0x001CE8B0	scrCallPictureSetEndProcess	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour scrEventSkipEnd; calls evtPictureSetEndProcess
 0x001CE908	evtCallPictureSetEndProcess	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour evtCutInCreate; calls evtPictureSetEndProcess
 0x001CE968	evtLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
@@ -3904,12 +3904,12 @@
 0x001D5240	slKanjiDraw3	hd	hd: Raidou HD slMain.slKanjiDraw3, score 11.4 band A
 0x001D52F8	slKanjiDrawH	hd	method=hd-ab-single-raidou1; p=0.95 (n=1370); tier=A; source=hd; evidence=Raidou HD slMain.slKanjiDrawH score 9.8 flag -: calls6 callee-index votes6 st1:cidx r1-only
 0x001D53A0	slCallEnableMode2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls frEnableMode
-0x001D5438	slCallSin2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls sdfSin
-0x001D54C0	effDebugPrintf	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x1aa1f8 sim 0.667 margin 0.67 pair
+0x001D5438	slNextPageDraw	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 slDrawInfo calls slNextPageDraw after the done messages (cases 4, 6, 13); Raidou calls 0x1D5438 in the same cases; replaces slCallSin2
+0x001D54C0	slMcAccessDraw	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 slDrawInfo calls slMcAccessDraw after the saving/formatting messages; Raidou calls 0x1D54C0 after the checking/saving/loading/formatting messages (no printf: void, no arguments); replaces effDebugPrintf
 0x001D54F0	slQueryYesNoProcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit mc/slMain; called by slQueryYesNoProc
 0x001D5500	slQueryYesNoProcSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit mc/slMain; called by slQueryYesNoProc
-0x001D5510	slCallSetOt5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls eglSetOt
-0x001D5678	slInsertedInMEMORY	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit mc/slMain; string 'inserted in MEMORY CARD slot 1.'
+0x001D5510	slDrawWindow	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 slDrawInfo guards every message with if (slDrawWindow() != 0); Raidou slDrawInfo calls 0x1D5510 in the same place; body sets the OT, grows gSlWindowCnt and draws the window box like SMT3 slDrawWindow; replaces slCallSetOt5
+0x001D5678	slDrawError	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=R2 symbol and SMT3 name for the same body (slDraw tail call; same state machine on gslErrorCode); replaces slInsertedInMEMORY
 0x001D5B18	slSetInfo	inferred	SMT3HD name via SLUS_209.11 0x00152D00, reloc-identical; map-agrees
 0x001D5B30	slDrawInfo	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x152d18 sim 0.769 margin 0.36 pair
 0x001D5ED0	fileClearAllSlotFlags	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028AE68, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -3921,22 +3921,22 @@
 0x001D62A0	slEndingTop	inferred	SMT3HD name via SLUS_209.11 0x00153348, reloc-identical; map-agrees
 0x001D62E8	slEndingUpd2	inferred	SMT3HD name via SLUS_209.11 0x00153390, reloc-identical; map-agrees
 0x001D6328	slEndingExit	inferred	SMT3HD name via SLUS_209.11 0x001533D0, reloc-identical; map-agrees
-0x001D6368	slCallSetInfo	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls slSetInfo
-0x001D6390	slBootTop_slMain	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD slMain.slBootTop score 4.5 flag -: calls1 gap4/23 st1:gap r1+r2
+0x001D6368	slBootTop	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=smt3_symbols.txt maps slBootTop to this address; replaces slCallSetInfo
+0x001D6390	slBootRetry	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3_symbols.txt maps slBootRetry to this address; body returns slBootProc_CheckCardR as in SMT3; replaces slBootTop_slMain
 0x001D63E0	slBootError	inferred	SMT3HD name via SLUS_209.11 0x00153480, reloc-identical; map-agrees
 0x001D6420	slBootError2	inferred	SMT3HD name via SLUS_209.11 0x001534C0, reloc-identical; map-agrees
 0x001D6460	slBootRetry_slMain	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD slMain.slBootRetry score 4.5 flag -: calls1 gap4/23 st1:gap r1+r2
 0x001D64A0	slHardSelect2	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD slMain.slHardSelect2 score 0.5 flag -: calls1 gap4/168 st2:gap r1-disagree:0x1d6a10
 0x001D6520	slExit	inferred	SMT3HD name via SLUS_209.11 0x00153630, reloc-identical; map-agrees
 0x001D6548	slCallSetInfo2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls slSetInfo
-0x001D6570	mcdEnterDefaultFileFlow	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028B4D8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x001D65A0	slLeaf4	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit mc/slMain; no named callee, caller or string
+0x001D6570	slExitToTitleSub	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=DDS descriptive name; body is SMT3 slExitToTitleSub without the checks (argument 0, dds3AdminiCallSequence(2, &argument, 4, 0)), called by slLeaf4 like slExitToTitleSub by slExitToTitle; replaces mcdEnterDefaultFileFlow
+0x001D65A0	slExitToTitle	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=config/raidou1/smt3_symbols.txt maps slExitToTitle = 0x001D65A0 (smt3_c.tsv: slEndingExit refers to it); SMT3 body `return slExitToTitleSub();`; Raidou 0x1D65A0 tail-calls the preceding function; replaces slLeaf4
 0x001D65B8	slCallAdminiCallSequence	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls dds3AdminiCallSequence
-0x001D65F8	slLoadProc1st	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
+0x001D65F8	slDefaultFileFlowProc1st	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name was wrong: 0x1D65F8 tail-calls the default file flow entry and is the mode 4 process of the Raidou ending start, while SMT3 slLoadProc1st (mode 1) is 0x1D68E8; replaces slLoadProc1st
 0x001D6610	fileRestartSlotScan	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0028B560, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001D6640	slCallMcGetSlotFlags	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls sdfMcGetSlotFlags
 0x001D6708	slCancel	hd	hd: Raidou HD slMain.slCancel, score 9.8 band B
-0x001D6760	slMcSumIco	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit mc/slMain; string '/mc/sum.ico'
+0x001D6760	slSaveProc1st	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 fmProcTrigSequence mode 0 proc_func_ans; Raidou mode 0 stores slMcSumIco, which precedes slLoadProc1st/slEndingProc1st/slBootProc1st as slSaveProc1st does in SMT3 (body grew: loads /mc/sum.ico); replaces slMcSumIco
 0x001D67B0	slCallSetInfo3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls slSetInfo
 0x001D67D8	slRefSystem	inferred	method=derived-data; p=na; tier=D; source=derived; evidence=unit mc/slMain; references saveloadSystem
 0x001D6808	slLeaf5	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit mc/slMain; no named callee, caller or string
@@ -3945,7 +3945,7 @@
 0x001D6870	slCallSetInfo5	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls slSetInfo
 0x001D6898	slLeaf7	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit mc/slMain; no named callee, caller or string
 0x001D68A8	slCallSetInfo6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls slSetInfo
-0x001D68E8	slLeaf8	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit mc/slMain; no named callee, caller or string
+0x001D68E8	slLoadProc1st	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 fmProcTrigSequence mode 1 sets proc_func_ans = slLoadProc1st; Raidou mode 1 sets slLeaf8 (0x18 bytes, SMT3 0x14), same order as SMT3 slSaveProc1st/slLoadProc1st/slEndingProc1st/slBootProc1st; replaces slLeaf8
 0x001D6900	slLeaf9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit mc/slMain; no named callee, caller or string
 0x001D6918	slEndingProc1st	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x153908 sim 1.000 margin 0.00 pair
 0x001D6940	slBootProc1st	inferred	SMT3HD name via SLUS_209.11 0x00153930, reloc-identical; map-agrees
@@ -3958,8 +3958,8 @@
 0x001D6AC0	slSaveProc_CheckCard	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x153968 sim 0.814 margin 0.23 pair
 0x001D6C08	sl1Ken	inferred	smt3-decomp name via SLUS_209.11 0x00153B28, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.346
 0x001D6C78	slSizeChk	inferred	SMT3HD name via SLUS_209.11 0x00153B98, reloc-identical; map-agrees
-0x001D6CA8	slBootProc_CheckCardR	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x153c90 sim 1.000 margin 0.00 pair
-0x001D6D70	slBootProc_CheckCard	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x153c90 sim 1.000 margin 0.00 pair
+0x001D6CA8	slBootProc_CheckCard	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=smt3 slBootTop (smt3_symbols: raidou slCallSetInfo) returns slBootProc_CheckCard and smt3 slBootRetry returns slBootProc_CheckCardR; Raidou slCallSetInfo returns the first (0x1D6CA8/0x1ED570) and slBootRetry the second; the fuzzy tie pair is swapped; replaces slBootProcSwapTmp
+0x001D6D70	slBootProc_CheckCardR	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=see slBootProc_CheckCardR; the second body tail-calls slChooseData_B like SMT3 slBootProc_CheckCardR; replaces slBootProc_CheckCard
 0x001D6E38	slErrorWaitMc	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x153d58 sim 0.682 margin 0.11 pair
 0x001D7098	slErrorWaitToFileMc	inferred	method=smt3-fuzzy-95-m-pair; p=1.00 (n=22); tier=A; source=smt3; evidence=smt3 body 0x154088 sim 0.961 margin 0.43 pair
 0x001D7168	slCallPlaySE3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit mc/slMain; calls p2sdPlaySE
@@ -8657,9 +8657,9 @@
 0x002F54B0	evtFunc9	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x002F5578	evtLeaf31	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x002F5688	evtFunc10	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
-0x002F56C8	Flow1_6	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x26cff0 sim 0.704 margin 0.14 pair
+0x002F56C8	TitleInitCursor	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain TitleInitCursor clears titleCursor_t and sets ScaleTimer = 6 (TITLEenum_CURSOR_SCALE_TIMER); 0x2F56C8 is memset 0x30 + store 6 at 0x20, called on titleData_t.Cursor; replaces Flow1_6
 0x002F5700	evtTitleDLCInitSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; called by TitleDLCInit
-0x002F5758	evtCallPlaySE	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls p2sdPlaySE
+0x002F5758	TitleCalcCursor	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD TitleMain TitleCalcCursor(PID, pCursor, step): up/down moves Index with Timer = 0, ScaleTimer = 6, SE 0x500001, LastPush from the held buttons, then ItemAlpha[5] fades +-32 toward the selected item and ScaleTimer counts down; 0x2F5758 is the same on titleCursor_t; replaces evtCallPlaySE
 0x002F59D0	evtFunc11	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x002F5BD0	evtCallStop	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls movieStop
 0x002F5C50	evtCallPlay	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls moviePlay
@@ -10288,9 +10288,9 @@
 0x00350AA0	rstLoadMapResource	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.rstLoadMapResource score 8.5 flag I: calls2 callers-of-match-uniq votes3 st1:call r1+r2
 0x00350BA8	rstMapReturnChkXFade	hd-inferred	hd: Raidou HD rstInit.rstMapReturnChkXFade, score 7.85 band B
 0x00350BC8	rstLeaf13	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstMapReturnChkXFade; no named callee, caller or string
-0x00350BD0	rstCallChipAllocDirect	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstMapReturnChkXFade; calls sdfChipAllocDirect
+0x00350BD0	InitBgCore	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD rstInit: InitBgCore allocates rstBG_t and stores pSpr, followed by InitBG and rstDestroyBG; 0x350BD0 is that body (alloc 8, memset, store) and InitBG tail-calls it; replaces rstCallChipAllocDirect
 0x00350C20	InitBG	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD rstInit.InitBG score 7.3 flag -: calls1 prev~ next gap1/3 votes2 st1:gap r1+r2
-0x00350C50	Destroy_rstInit	hd	hd: Raidou HD rstInit.Destroy, score 12.1 band A
+0x00350C50	rstDestroyBG	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD rstInit order InitBgCore, InitBG, rstDestroyBG; 0x350C50 frees the rstBG_t after destroying pSpr (HD's score-12 Destroy match is the process destructor, a different body); replaces Destroy_rstInit
 0x00350CA0	rstCallBitCheck	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstMapReturnChkXFade; calls evtBitCheck
 0x00350DE8	rstCallGetRandA	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstCheckTaiitsu; calls dds3GetRandA
 0x00350F70	rstCallBitCheck2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0034F3B8, neighbour rstCheckTaiitsu; calls evtBitCheck
@@ -11216,7 +11216,7 @@
 0x00375540	sdfPacSetStay	inferred	SMT3HD name via SLUS_209.11 0x002C6088, byte-identical; map-agrees
 0x00375550	sdfPacSetFromTail	inferred	SMT3HD name via SLUS_209.11 0x002C6098, byte-identical; map-agrees
 0x00375560	sdfPacFree	inferred	SMT3HD name via SLUS_209.11 0x002C60A8, reloc-identical; map-agrees
-0x00375598	sdfLeaf41	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit sdf/sdfPacDecode; no named callee, caller or string
+0x00375598	sdfPacMarkPhaseFinished	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 sdfPacMarkPhaseFinished is cb->stat = -1 at the same place in sdfPacDecode; T already calls sdfPacMarkPhaseFinished by its smt3 alias at the same address; replaces sdfLeaf41
 0x003755A8	sdfPacUseSrc	inferred	SMT3HD name via SLUS_209.11 0x002C60F0, byte-identical; map-agrees
 0x003755D0	sdfPacNewBlock	inferred	smt3-decomp C name via SLUS_209.11 0x002C6118, unique-masked-hash-c; map-agrees
 0x003756A8	sdfPacEndBlock	inferred	smt3-decomp C name via SLUS_209.11 0x002C61F0, unique-masked-hash-c; map-agrees
@@ -11385,7 +11385,7 @@
 0x0037D148	sceSdRemoteInit2	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_0037D148, neighbour sceSdTransToIOP; string 'sceSdRemoteInit() RPC bind error!\n'
 0x0037D1F0	sceSdTransToIOP	inferred	method=dds-fuzzy-100-m-pair; p=0.96 (n=1846); tier=C; source=dds; evidence=dds body 0x2f58f8 sim 1.000 margin 0.55 pair
 0x0037D278	sceLeaf	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0037D148, neighbour sceSdTransToIOP; no named callee, caller or string
-0x0037D288	sceCallSifCallRpc	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0037D148, neighbour sceSdTransToIOP; calls sceSifCallRpc
+0x0037D288	sceSdRemote	inferred	method=derived-role; p=na; tier=C; source=derived; evidence=SDK name: libsdr sceSdRemote (HD tools/ps2_names.txt), varargs wrapper over sceSifCallRpc on the RPC client bound by sceSdRemoteInit; replaces sceCallSifCallRpc
 0x0037D488	sceCanStartThread	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_0037D148, neighbour sceSdTransToIOP; string "Can't start thread for streaming.\n"
 0x0037D560	sceCallSifInitRpc	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0037D148, neighbour sceSdTransToIOP; calls sceSifInitRpc
 0x0037D5C8	sceLeaf2	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0037D148, neighbour sceSdTransToIOP; no named callee, caller or string
@@ -17137,7 +17137,7 @@
 0x00455198	slBaseIconName	inferred	method=smt3-alias; p=0.90 (n=D_r1_00455198); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x00455250	fmStrSaveloadSpr	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by fmProcTrigSequence_slMain; string "saveload.spr"
 0x00455260	fmStrMcMcpackLb	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by fmProcTrigSequence_slMain; string "/mc/MCPACK.LB"
-0x00455270	fmStrFileMentCalc	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by 3 functions: fmProcTrigSequence_slMain, fmShutDown, fmProcessChk_slMain; string "FileMentCalc"
+0x00455270	slCalcName	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 fmProcessChk/fmShutDown/fmProcTrigSequence pass slCalcName to dds3SearchProcessName/dds3KillProcessName/dds3StartProcess; same three users in Raidou (derived-string name); replaces fmStrFileMentCalc
 0x00455298	slQueryYesNoDrawTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by slQueryYesNoDraw
 0x004552E8	cfgCallSetOtTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by cfgCallSetOt
 0x00455390	cfgStrEffectSmoke02Tmx	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=no code or data reference; unit code_001DB8A0, section .rodata, size 0x18
@@ -22478,7 +22478,7 @@
 0x0046CDE0	baseIconFileHandle	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CDE0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=8, other=0, sim=1.0, games=2, size=True, sec=True, fn=slEndingProc1st
 0x0046CDE4	fmShutDownData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fmShutDown (2 of 4 refs, 3 functions)
 0x0046CDE8	slNewCycleData16	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by slNewCycle (14 of 21 refs, 5 functions)
-0x0046CDEC	fmShutDownData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fmShutDown (2 of 5 refs, 4 functions)
+0x0046CDEC	slProcShutDownFlg	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 fmProcTrigSequence sets slProcShutDownFlg = 1 after dds3StartProcess and fmShutDown tests and clears it; Raidou 0x46CDEC same (symbol_addrs also has D_003BC7FC there); replaces fmShutDownData2
 0x0046CDF0	slExitWaitCnt	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CDF0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=slExitWait
 0x0046CDF4	gSlNowCardCheck	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CDF4); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=slBootProc1st
 0x0046CDF8	gslCheckCardWait	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CDF8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=slBootProc1st
@@ -22486,12 +22486,12 @@
 0x0046CE00	gslDrawFlagFile_slMain	hd	hd: Raidou HD slMain.gslDrawFlagFile, 8 of 9 functions agree, high confidence
 0x0046CE04	gslAnimCnt	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CE04); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=slCalc
 0x0046CE08	slNewCycleData17	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by slNewCycle (6 of 7 refs, 2 functions)
-0x0046CE0C	slDrawInfoData15	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by slDrawInfo (3 of 5 refs, 3 functions)
-0x0046CE10	slFileSelCalcData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by slFileSelCalc (4 of 6 refs, 3 functions)
-0x0046CE14	fmProcTrigSequence_slMainData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fmProcTrigSequence_slMain (4 of 8 refs, 4 functions)
+0x0046CE0C	gSlExitMode	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 fmProcTrigSequence clears gSlExitMode right after slSetInfo(0); Raidou stores 0 to 0x46CE0C there; replaces slDrawInfoData15
+0x0046CE10	gSlSaveMode	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 order gslDrawFlagFile, gSlSaveMode, gslCheckCardWait; Raidou 0x46CE10 in the same slot; replaces slFileSelCalcData
+0x0046CE14	gSlEndingMode	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 gSlEndingMode = on only in mode 2 (ending), 0 otherwise; Raidou 0x46CE14 same; replaces fmProcTrigSequence_slMainData
 0x0046CE18	fmProcTrigSequence_slMainData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fmProcTrigSequence_slMain (3 of 4 refs, 2 functions)
 0x0046CE1C	slChooseSaveIndex	inferred	method=smt3-ref; p=0.88 (n=D_r1_0046CE1C); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=22, other=2, sim=1.0, games=2, size=True, sec=True, fn=slHeadLoad
-0x0046CE20	slFileSelCalcData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by slFileSelCalc (4 of 7 refs, 4 functions)
+0x0046CE20	gSlFileErroeFlg	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 order gSlNowCardCheck, gSlFileErroeFlg, slQueryYesNoMsg; Raidou 0x46CE20 in the same slot; replaces slFileSelCalcData2
 0x0046CE24	slQueryYesNoCursor	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046CE24); tier=B; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.8636, games=2, size=True, sec=True, fn=slCallMcRegetInfo
 0x0046CE28	saveloadSystem	hd	hd: Raidou HD slMain.saveloadSystem, 3 of 3 functions agree, high confidence
 0x0046CE2C	slQueryYesNoKeyFlag	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046CE2C); tier=B; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.8636, games=2, size=True, sec=True, fn=slCallMcRegetInfo
@@ -22503,7 +22503,7 @@
 0x0046CE44	slDrawInfoData16	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by slDrawInfo (8 of 12 refs, 3 functions)
 0x0046CE48	gslErrorCode_slMain	hd	hd: Raidou HD slMain.gslErrorCode, 5 of 6 functions agree, high confidence
 0x0046CE4C	gslErrorKeyFlag	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CE4C); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=slErrorWaitToFileMc
-0x0046CE50	effDebugPrintfData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by effDebugPrintf (2 of 3 refs, 2 functions)
+0x0046CE50	gSlMcAccessCnt	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 order slQueryYesNoKeyFlag, gSlMcAccessCnt, gSlWindowCnt; Raidou 0x46CE50 in the same slot; replaces effDebugPrintfData
 0x0046CE54	slData4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 5 functions: slCallSetOt5, slSetInfo, slQueryYesNoProcSub
 0x0046CE58	setCallMcGetSlotIndexData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by setCallMcGetSlotIndex
 0x0046CE5C	slData5	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: slDraw_slMain, fmProcTrigSequence_slMain, slLoadData
@@ -24077,10 +24077,10 @@
 0x0046F734	MoverSetDisapperWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by MoverSetDisapper
 0x0046F738	fclDrawWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fclDraw
 0x0046F73C	fclDrawWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fclDraw
-0x0046F740	SetBattleLightWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by SetBattleLight (2 of 3 refs, 2 functions)
-0x0046F744	SetBattleLightWork2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by SetBattleLight (2 of 3 refs, 2 functions)
-0x0046F748	MakeResouceBasicFL2Work	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by MakeResouceBasicFL2 (2 of 3 refs, 2 functions)
-0x0046F74C	MakeResouceBasicFL2Work2	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: MakeResouceBasicFL2, MakeObjectBasic2
+0x0046F740	fldScriptResource	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name; kind-2 batch entries stored by SetBattleLight like fldMakeResouceBasicFL1; replaces SetBattleLightWork
+0x0046F744	fldScriptResourceCount	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name; kind-2 batch count; replaces SetBattleLightWork2
+0x0046F748	g_pHitData	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 fldMakeResouceBasicFL2 stores the collision batch entries to g_pHitData and the count to g_nHitData; Raidou stores the same two words at 0x46F748/0x46F74C; replaces MakeResouceBasicFL2Work
+0x0046F74C	g_nHitData	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=see g_pHitData; replaces MakeResouceBasicFL2Work2
 0x0046F750	mapEffEplInitWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapEffEplInit
 0x0046F754	fldPlayer_MoveCalcWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldPlayer_MoveCalc (9 of 11 refs, 3 functions)
 0x0046F758	fldPlayer_MoveCalcWork2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by fldPlayer_MoveCalc (6 of 8 refs, 3 functions)

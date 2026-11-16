@@ -37,7 +37,7 @@ class MatchingRowTests(unittest.TestCase):
         self.assertEqual(len(docs_index.matching_rows()), headings)
 
     def test_unit_and_line_point_at_the_entry(self) -> None:
-        for fn, unit, _size, _d, page, line in docs_index.matching_rows():
+        for fn, unit, _size, _d, page, line, _fragile in docs_index.matching_rows():
             text = (ROOT / page).read_text().split("\n")[int(line) - 1]
             self.assertTrue(text.startswith("## "), page)
             self.assertIn(fn, text)
@@ -61,16 +61,31 @@ class MatchingRowTests(unittest.TestCase):
                     self.assertEqual(rows[0][3], "51 of 155 words differ")
                     serialized = "\t".join(rows[0])
                     self.assertEqual(len(serialized.splitlines()), 1)
-                    self.assertEqual(len(serialized.split("\t")), 6)
+                    self.assertEqual(len(serialized.split("\t")), 7)
+
+    def test_fragile_line_is_carried_into_the_row(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            drafts = root / "docs/matching"
+            drafts.mkdir(parents=True)
+            (drafts / "example.md").write_text(
+                "## a (example, raidou1 0x28C)\n\nRaidou 1: 0 of 155 words differ.\n\n"
+                "Fragile: matches only with the current declaration\n order in a.h.\n\n"
+                "## b (example, raidou1 0x10)\n\nRaidou 1: 1 of 4 words differ.\n")
+            with patch.object(docs_index, "ROOT", root), patch.object(docs_index, "MATCHING", drafts):
+                rows = docs_index.matching_rows()
+            self.assertEqual(rows[0][6], "matches only with the current declaration order in a.h.")
+            self.assertEqual(rows[1][6], "")
+            self.assertEqual(docs_index.fragile_names(rows), {"a"})
 
     def test_entries_carry_their_games(self) -> None:
-        rows = [("a and b", "u", "raidou1 0x10, raidou2 0x14", "", "docs/matching/u.md", "3")]
+        rows = [("a and b", "u", "raidou1 0x10, raidou2 0x14", "", "docs/matching/u.md", "3", "")]
         self.assertEqual(docs_index.entries(rows), {
             ("a", "u", "raidou1"), ("a", "u", "raidou2"),
             ("b", "u", "raidou1"), ("b", "u", "raidou2")})
 
     def test_entry_without_a_game_is_reported(self) -> None:
-        rows = [("a", "u", "0x10", "", "docs/matching/u.md", "3")]
+        rows = [("a", "u", "0x10", "", "docs/matching/u.md", "3", "")]
         self.assertEqual(len(docs_index.misplaced(rows)), 1)
 
 

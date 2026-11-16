@@ -19,6 +19,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 import batch_files  # noqa: E402
 import decls  # noqa: E402
+import docs_index  # noqa: E402
 import draft_store  # noqa: E402
 import header_includers  # noqa: E402
 import matching_docs  # noqa: E402
@@ -495,16 +496,19 @@ class Run:
         after = header_includers.measure(self.tree, units, self.jobs)
         (self.work / "after.json").write_text(json.dumps(after, indent=1, sort_keys=True) + "\n")
         worse, better = header_includers.compare(before, after)
+        worse, fragile = header_includers.split_fragile(worse, docs_index.fragile_names())
         batch = set(self.batch.rows) | {self.current(n, g) for n in self.batch.rows for g in self.maps}
         for line in better:
             self.say(f"regress: better {line}")
+        for line in fragile:
+            self.say(f"regress: info fragile {line}")
         for line in worse:
             fn = line.split(": ")[1].split()[0] if ": " in line else ""
             if fn in batch:
                 self.say(f"regress: worse (batch) {line}")
             else:
                 self.note(f"regress: worse {line}")
-        self.say(f"regress: {len(units)} units, {len(worse)} worse, {len(better)} better")
+        self.say(f"regress: {len(units)} units, {len(worse)} worse, {len(better)} better, {len(fragile)} fragile")
 
     def gate(self) -> None:
         """configure and ninja, with --clean only when asked: the incremental build proves the same image, and the

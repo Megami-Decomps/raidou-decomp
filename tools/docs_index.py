@@ -3,6 +3,8 @@
 
     python3 tools/docs_index.py [--check]   # --check: fail if stale or a draft has no entry
 Entry heading: "## <function> (<unit>, <game> <size>[, <game> <size>])".
+A line "Fragile: <cause>" in an entry marks a function whose result moves with
+declarations alone; INDEX.tsv carries the cause in its last column.
 """
 import argparse
 import pathlib
@@ -18,6 +20,7 @@ MATCHING = ROOT / "docs/matching"
 
 HEADING = re.compile(r"^## (.+?)(?: \(([^,]+), ([^)]+)\))?$")
 GAME = re.compile(r"\b(" + "|".join(VERSIONS) + r")\b")
+FRAGILE = re.compile(r"^Fragile: (.+?)(?=\n\s*\n|\Z)", re.M | re.S)
 GUARD = re.compile(r"^\s*#\s*(ifdef|ifndef|if)\b(.*)")
 ASM = re.compile(r'INCLUDE_ASM\([^,]+,\s*"[^"]+",\s*(\w+)\)')
 
@@ -84,14 +87,24 @@ def matching_rows() -> list[tuple[str, ...]]:
                 re.sub(r"\s+", " ", d.group(1)) if d else "",
                 page.relative_to(ROOT).as_posix(),
                 str(i + 1),
+                re.sub(r"\s+", " ", f.group(1)).strip() if (f := FRAGILE.search(body)) else "",
             ))
     return rows
+
+
+def fragile_names(rows: list[tuple[str, ...]] | None = None) -> set[str]:
+    """Functions whose entry carries a Fragile line."""
+    out = set()
+    for row in rows if rows is not None else matching_rows():
+        if row[6]:
+            out.update(entry_names(row[0]))
+    return out
 
 
 def entries(rows: list[tuple[str, ...]]) -> set[tuple[str, str, str]]:
     """(function, unit, game) for every entry, the games read from the size field."""
     out = set()
-    for names, unit, size, _d, _page, _line in rows:
+    for names, unit, size, *_ in rows:
         for fn in entry_names(names):
             for game in GAME.findall(size):
                 out.add((fn, unit, game))
@@ -105,7 +118,7 @@ def page_unit(page: pathlib.Path) -> str:
 def misplaced(rows: list[tuple[str, ...]]) -> list[str]:
     """Entries filed on a page other than their unit's, or with no game named."""
     bad = []
-    for names, unit, size, _d, page, line in rows:
+    for names, unit, size, _d, page, line, _f in rows:
         where = f"{page}:{line}"
         if unit != page_unit(ROOT / page):
             bad.append(f"{where}: unit {unit!r} belongs on docs/matching/{unit}.md")
@@ -117,7 +130,7 @@ def misplaced(rows: list[tuple[str, ...]]) -> list[str]:
 def matching_readme(rows: list[tuple[str, ...]]) -> str:
     """A browsable list of the unit pages, most entries first."""
     counts, games = {}, {}
-    for _fn, unit, size, _d, page, _l in rows:
+    for _fn, unit, size, _d, page, _l, _f in rows:
         counts[(page, unit)] = counts.get((page, unit), 0) + 1
         games.setdefault(page, set()).update(GAME.findall(size))
     table = sorted(((n, page, unit) for (page, unit), n in counts.items()),
@@ -152,7 +165,7 @@ def main(argv: list[str] | None = None) -> int:
     rows = matching_rows()
     outputs = {
         MATCHING / "README.md": matching_readme(rows),
-        MATCHING / "INDEX.tsv": render("function\tunit\tsize\tdistance\tpage\tline", rows),
+        MATCHING / "INDEX.tsv": render("function\tunit\tsize\tdistance\tpage\tline\tfragile", rows),
     }
     failed = 0
     for path, want in outputs.items():

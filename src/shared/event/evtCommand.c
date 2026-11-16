@@ -34,7 +34,6 @@ extern const char evtStrEffeplLoad[];
 
 struct effResourceHeader_t;
 
-scrProcessWork_s *scrGetScriptHandle(void);
 extern void datDebugPrintf(const char *fmt, ...);
 dds3Basic_t *dds3SearchSceneBasic(dds3Basic_t *pBasic, u32 serialID, s32 type);
 extern addr_t evtKutiUnit;

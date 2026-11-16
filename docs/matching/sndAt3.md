@@ -34,3 +34,12 @@ First differing words:
 | +0x8 | `sd s0,0(sp)` | `sd s3,24(sp)` |
 | +0xC | `lui a2,0x0` | `lui s3,0x4c` |
 | +0x10 | `sd s1,8(sp)` | `sd s0,0(sp)` |
+
+## sndCallMemFreeDirect (sndAt3, raidou1 0x60, raidou2 0x60)
+
+Raidou 1: 7 of 24 words differ, first at +0x28.
+Raidou 2: 7 of 24 words differ, first at +0x28.
+
+store order of a reset block: source order loadState/allocation/compressedData/samples then sndData5/6/7 is closest (7 words), retail puts sndData6 between loadState and allocation
+
+Related: [smt3 levers: store scheduling](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/levers/scheduling.md).

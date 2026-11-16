@@ -1,3 +1,9 @@
 #include "common.h"
+#include "sndManager.h"
+#include "sdk_libc.h"
 
-INCLUDE_ASM(const s32, "sound/sndManager", sdfSndMakeFilename);
+char *sdfSndMakeFilename(char *aDstName, const char *aSrcName)
+{
+    memcpy(aDstName, sndPathPrefix, 8);
+    return strcat(aDstName, aSrcName);
+}

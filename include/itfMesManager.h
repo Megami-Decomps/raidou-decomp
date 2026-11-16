@@ -222,5 +222,6 @@ void itfMesMngSetVar_itf(s32 id, s32 index, s32 num, s32 type);
 s32 itfMesMngRequestMessage_itf(s32 window, s32 entryIndex, s32 itemIndex);
 s32 itfMesSelectTableItemText(s32 window, s32 entryIndex, s32 itemIndex);
 u32 itfGetMessageType(s32 window, s32 entryIndex);
+sdfTexHandle_t *itfMesGetWindowTexture(void);
 
 #endif

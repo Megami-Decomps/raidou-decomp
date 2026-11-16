@@ -2525,7 +2525,7 @@ mapBadEffDrawTask	c
 mcDelayThread	c
 mcFormatSaveFilename	asm	.rodata differs at 0x0045515C
 mcHearAlarm	c
-mcdEnterDefaultFileFlow	c
+slExitToTitleSub	c
 mceGetInfoApdx	c
 mceIntrReadFixAlign	c
 mceStorePwd	c

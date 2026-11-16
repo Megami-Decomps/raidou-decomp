@@ -115,6 +115,16 @@ typedef struct QWORD_ALIGNED
     sdfModelDrawParmPacket_t parm;
 } sdfModelTempDrawPacket_t;
 
+/* The shaped packet's header quadwords: the cnt tag, the two blend weights
+ * VU1 reads and the UNPACK that follows them. */
+typedef struct QWORD_ALIGNED
+{
+    sdfDmaTag_t dmatag;
+    f32 weight[2];
+    u32 code0;
+    u32 code1;
+} sdfModelShapedHeader_t;
+
 void sdfModelTempPacketLinkOt(sdfGrOt_t **ot, sdfModelRootNode_t *root);
 
 
@@ -476,9 +486,126 @@ sdfDmaTag_t *sdfModelSetNormalDrawPacket(sdfModelNode_t *aNode, sdfShapePacket_t
     return body + 1;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSetOneSkinDrawPacket);
+/* NON_MATCHING: 71 of 96 words match.  */
+#ifdef NON_MATCHING
+/* body: nonmatching in smt3 @ 9401f79e: src/smt3/sdf/sdfModel.c:479, found, same function 1.00 (words 96/96, calls 1.00, shape 1.00) */
+sdfDmaTag_t *sdfModelSetOneSkinDrawPacket(sdfModelNode_t *aNode, sdfShapeOneSkinPacket_t *aDataPtr,
+                                          sdfDmaTag_t *aBuffer, s32 aId)
+{
+    u32 packed = *(u32 *)&aDataPtr->packetSize;
+    u16 matIndex = packed >> 16;
+    s32 ofs;
+    u32 vuAddr = 1;
+    s32 i = 0;
+    sdfDmaTag_t *tag;
+    s32 count;
+    u16 *boneId;
+    u32 *words;
 
+    packed &= 0xFFFF;
+    tag = sdfModelSetMatRefPacket(aNode->root, matIndex, aBuffer, aId);
+    ofs = aId << 7;
+    count = aDataPtr->boneCount;
+    boneId = aDataPtr->boneId;
+    do {
+        sdfModelNode_t *node = sdfModelSearchNode(aNode->root, *boneId++);
+
+        u32 addr;
+
+        i++;
+        tag->qwc = 7;
+        tag->id = 0x30;
+        addr = EE_ADDR(sdfModelAllocTmPacket(node));
+        tag->dat0 = 0;
+        tag->dat1 = vuAddr | 0x6C07C000;
+        tag->addr = EE_ADDR_AS(void *, EE_PHYSICAL(addr + ofs));
+        vuAddr += 7;
+        tag++;
+    } while (i != count);
+    tag->qwc = 1;
+    tag->id = 0x10;
+    tag->dat0 = 0;
+    tag->dat1 = 0;
+    words = (u32 *)(tag + 1);
+    words[0] = 0x6001C000;
+    words[1] = count;
+    words[2] = 0x0400000E;
+    words[3] = 0x14000000;
+    tag += 2;
+    tag->qwc = packed;
+    tag->id = 0x30;
+    tag->dat0 = 0;
+    tag->dat1 = 0;
+    tag->addr = (void *)EE_PHYSICAL(EE_ADDR(aDataPtr->dataBody));
+    return tag + 1;
+}
+#else
+INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelSetOneSkinDrawPacket);
+#endif
+
+/* NON_MATCHING: 98 of 150 words match.  */
+#ifdef NON_MATCHING
+void sdfModelLinkShapedDrawPacket(sdfModelNode_t *aNode, sdfShapeShapedPacket_t *aDataPtr,
+                                  sdfDrawTag_t *aDrawTag, s32 aId)
+{
+    sdfModelMorphParm_t out[2];
+    s32 used = 0;
+    s32 i = 0;
+    u32 packed;
+    u16 matIndex;
+    s32 listCount;
+    sdfModelMorph_t *morph;
+    void *buf;
+    sdfDmaTag_t *tag;
+
+    packed = *(u32 *)&aDataPtr->morphIndex;
+    matIndex = packed >> 16;
+    packed &= 0xFFFF;
+    morph = &aNode->root->morphList->items[packed];
+    listCount = aDataPtr->listCount;
+    do {
+        if (1e-6f < morph->target[i].blend) {
+            out[used] = morph->target[i];
+            used++;
+        }
+        i++;
+    } while (i != 2);
+    tag = EE_ADDR_AS(sdfDmaTag_t *, sdfGrAllocPacketBuff((used * 16 + 0x10) * listCount + 0x40));
+    buf = tag;
+    tag = sdfModelSetMatRefPacket(aNode->root, matIndex, tag, aId);
+    *(u64 *)tag = 0x10000001;
+    *(u64 *)&tag->dat0 = (u64)0x6002C000 << 32;
+    for (i = 0; i < used; i++) {
+        ((sdfModelShapedHeader_t *)tag)->weight[i] = out[i].blend;
+    }
+    for (; i < 2; i++) {
+        ((sdfModelShapedHeader_t *)tag)->weight[i] = 0.0f;
+    }
+    ((sdfModelShapedHeader_t *)tag)->code0 = 0x0400000A;
+    ((sdfModelShapedHeader_t *)tag)->code1 = 0x14000000;
+    tag += 2;
+    i = 0;
+    do {
+        sdfModelShapeList_t *list = aDataPtr->shapeList[i];
+        s32 m;
+
+        for (m = 0; m < used; m++) {
+            *(u64 *)&tag->dat0 = 0;
+            *(u64 *)tag = SDF_DMA_TAG_WORD_FIRST(list->entry[out[m].targetId].qwc | 0x30000000,
+                                                 EE_ADDR(list->entry[out[m].targetId].dataPtr));
+            tag++;
+        }
+        *(u64 *)&tag->dat0 = 0;
+        *(u64 *)tag = SDF_DMA_TAG_WORD_FIRST(list->count | 0x30000000, EE_ADDR(list->next));
+        tag++;
+        i++;
+    } while (i != listCount);
+    QUAD_ZERO(*(u128 *)tag);
+    sdfDrawTagLink2(aDrawTag, EE_ADDR(buf), EE_ADDR(tag));
+}
+#else
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelLinkShapedDrawPacket);
+#endif
 
 sdfModelPacketHeader_tag *sdfModelNewPacketHeader(sdfModelNode_t *aNode, s32 aOtIndex, s32 aId)
 {
@@ -1218,7 +1345,11 @@ void *sdfChunkFindById(void *data, u32 chunkId) {
     return NULL;
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelMake_2);
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfModel.c:1444, found, same function 1.00 (words 6/6, calls 1.00, shape 1.00) */
+void *sdfModelMake_2(sdfModelRootNode_t *aRoot, u32 aChunkId)
+{
+    return sdfChunkFindById(aRoot->extraData, aChunkId);
+}
 
 s32 sdfModelGetNodeIndexByName(sdfModelRootNode_t *aRoot, const char *aName)
 {
@@ -1356,9 +1487,29 @@ sdfModelMarkPos_t *sdfCallModelMake2(sdfModelRootNode_t *aRoot, s32 aId)
 INCLUDE_ASM(const s32, "sdf/sdfModel", sdfCallModelMake2);
 #endif
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPosMatrix_sdfModel);
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfModel.c:1564, found, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+s32 sdfModelGetMarkPosMatrix_sdfModel(sdfModelRootNode_t *aRoot, s32 aId)
+{
+    sdfModelMarkPos_t *data = sdfModelSearchMarkPosData(aRoot, aId);
 
-INCLUDE_ASM(const s32, "sdf/sdfModel", sdfModelGetMarkPos_sdfModel);
+    if (data != NULL) {
+        sdfModelMakeMarkPosMatrix(aRoot, data);
+        return 1;
+    }
+    return 0;
+}
+
+/* body: matched in smt3 @ 9401f79e: src/smt3/sdf/sdfModel.c:1575, found, same function 1.00 (words 15/15, calls 1.00, shape 1.00) */
+s32 sdfModelGetMarkPos_sdfModel(sdfModelRootNode_t *aRoot, s32 aId)
+{
+    sdfModelMarkPos_t *data = sdfModelSearchMarkPosData(aRoot, aId);
+
+    if (data != NULL) {
+        sdfModelMakeMarkPos(aRoot, data);
+        return 1;
+    }
+    return 0;
+}
 
 s32 sdfCallModelMakeMarkPos(sdfModelRootNode_t *aRoot, s32 aId)
 {

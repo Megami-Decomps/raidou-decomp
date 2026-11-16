@@ -100,6 +100,8 @@ Run tools with `--help`, never read their source. T is reset to origin/main and 
 before this phase; if `git -C T log -1 --oneline` is not origin/main, stop and report.
 A gate failure caused by a header edit is reported with the unit and the first flat diff,
 and the edit is reverted; never add a local prototype or declaration to work around it.
+A function that shifts from header declaration changes alone is recorded NON_MATCHING with a
+`Fragile:` line in its docs/matching entry (the cause); never move declarations to protect it.
 Final message under 100 words of plain sentences, no bold or bullets.
 
 ## Stop and hand off

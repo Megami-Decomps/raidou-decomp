@@ -15,6 +15,9 @@ void sndBgmLoadId_XF(s32 id);
 s32 sndBgmStatus_XF(void);
 void sndBgmStop(void);
 void sndBgmTop(void);
+struct fileRequest;
+extern struct fileRequest *GetVolumeWork;
+
 struct titleAudioStreamState_t;
 /* Retail passes the stream record, not a file name pointer. */
 void sndCallFileCheckEnd(struct titleAudioStreamState_t *stream);
@@ -22,6 +25,8 @@ s32 sndCallLoad(void *);
 void sndCallMemset(void);
 s32 sndCallWaitSema3(void);
 void sndProcSequenceSub(void);
+s32 sndProcSequenceSub2(void);
+s32 sndProcSequenceSub4(void);
 void sndCallWaitSema(void);
 void sndSeFadeOut(void);
 s32 sndSePlay(void);

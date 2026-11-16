@@ -14,7 +14,7 @@ typedef struct evtTmxPreLoadQue_t {
 } evtTmxPreLoadQue_t;
 
 typedef struct evtTmxPreLoad_t {
-    u32 unk0;
+    sdfMemHandle_t *memHandle;
     u32 flags;
     u32 unk8;
     s32 count;

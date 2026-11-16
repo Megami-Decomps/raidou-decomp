@@ -184,7 +184,7 @@ s32 TitleFirstCalcProcess3(dds3ProcessID_t *PID) {
             if (evtCallPlay(25, 5400, 30, 1, data) == 0) {
                 return 0;
             }
-            Flow1_6(&data->Cursor);
+            TitleInitCursor(&data->Cursor);
             dds3FadeIn(0, 0, 0, 30);
             jmsSeqJump(&data->seqUnit, &TitleConfigCalcProcessData);
             break;
@@ -433,7 +433,7 @@ s32 rstLvUpWaitCalcProcess(dds3ProcessID_t *PID) {
     }
     if (data->Timer < 1200) {
         if (dds3PadButtonState[0x23] < 0 || dds3PadButtonState[0x2C] < 0) {
-            Flow1_6(&data->Cursor);
+            TitleInitCursor(&data->Cursor);
             jmsSeqJumpAndFree(&data->seqUnit, &TitleConfigCalcProcessData);
             p2sdPlaySE(0x500000, 127, 63);
         }

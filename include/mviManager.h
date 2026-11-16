@@ -2,6 +2,7 @@
 #define MVI_MANAGER_H
 
 #include "common.h"
+#include "sdf_movie_types.h"
 
 typedef struct
 {
@@ -14,6 +15,8 @@ typedef struct
 } movieDecodeWork_t;
 
 extern movieDecodeWork_t movieDecodeWork asm("movieCb");
+extern sdfMovieCb_t movieCb;
+extern s32 movieData;
 
 void movieStop(void);
 void moviePlay(s32 aNum);

@@ -13,6 +13,11 @@
 #include "sndAt3.h"
 #include "sdfSystem.h"
 #include "sdk_libat3dec.h"
+#include "kernel_draw.h"
+#include "mviManager.h"
+#include "sdfMovie.h"
+#include "sdk_libsdr.h"
+#include "sdfMemory.h"
 
 /* The three audio stream records (title stream, title sound buffer, and the
  * stream sndBgmLoadId resets); each is followed by its decoder state. */
@@ -75,10 +80,16 @@ typedef char titleAudioStreamStatusSnapshot_size[
 extern titleAudioStreamState_t mnuTitleSoundBufferState;
 extern u32 mnuTitleAudioSilenceBuffer[];
 extern titleAudioStreamState_t mnuTitleStreamStatus;
+extern s32 evtData25;
+extern u32 sndWork3[];
 extern u32 mnuTitleStreamSemaphore;
 
 void sndMixSampleBuffers(s16 *destinationSamples, titleAudioStreamState_t *firstSource, titleAudioStreamState_t *secondSource);
 extern u32 mnuTitleStreamDecoderState[];
+extern u8 sndWork5[0x9000];
+extern u8 sndCallMemsetWork[0x1000];
+extern u8 sndCallMemsetWork2[0x1000];
+extern u8 sndCallMemsetWork3[0x1000];
 void mnuResetTitleStream(void);
 void mnuReleaseSoundBuffer(void);
 void mnuReadTitleStreamStatusLocked(titleAudioStreamStatusSnapshot_t *statusSnapshot);
@@ -87,7 +98,7 @@ void File_BgmLoadStart(char *audioPath);
 void sndBgmLoadFile(void);
 void sndDeadSePlay_VolAngle(void);
 void sndCallSeStop(void);
-void GetVolume(titleAudioStreamState_t *stream);
+s32 GetVolume(titleAudioStreamState_t *stream);
 s32 BgmPlaySub(void);
 void sndBgmFadeIn(void);
 
@@ -95,6 +106,7 @@ extern sndBgmEntry_t sndBgmLoadId_XFData[];
 /* Each BGM's resume frame, by table index. */
 extern u16 sndBgmFadeOutWork[];
 extern titleAudioStreamState_t sndCallSeStopWork6;
+extern u32 sndCallSeStopWork7[];
 extern sdfThCB_t sndCallWaitVblankWork;
 extern u8 sndCallWaitVblankWork2[0x1000];
 extern s32 sndData2;
@@ -105,7 +117,13 @@ extern s32 sndData6;
 extern s32 sndData7;
 
 void sndUploadStreamToBothIopBuffers(u32 wordCount);
-INCLUDE_ASM(const s32, "sndAt3", sndUploadStreamToBothIopBuffers);
+void sndUploadStreamToBothIopBuffers(u32 wordCount) {
+    sndCopyWordsToIopSynchronously((const void *)sndInitializeStreamTransferBuffersData, sndData[0], wordCount);
+    sndCopyWordsToIopSynchronously((const void *)sndInitializeStreamTransferBuffersData, sndData[1], wordCount);
+    sceSdRemote(1, 0x8010, 0xF81, 0);
+    sceSdRemote(1, 0x8010, 0x1081, 0);
+    sceSdRemote(1, 0x80E0, 1, 2, 0, 0);
+}
 
 /* Copy the second source, add the first, and clamp to [-32767, 32767].
  * The native lower limit intentionally excludes the s16 value -32768. */
@@ -146,9 +164,7 @@ extern s32 sndCallSeStopData5;
 extern s32 sndCallSeStopData6;
 extern s32 sndCallSeStopData7;
 extern s16 sndCallSeStopData[];
-extern u32 sndWork3[];
 extern titleAudioStreamState_t sndCallSeStopWork6;
-extern u32 sndCallSeStopWork7[];
 extern void sndLeaf2(s16 *destinationSamples, titleAudioStreamState_t *source);
 
 #define MNU_STREAM_COMMIT_READY 3
@@ -368,7 +384,56 @@ void sndCallWaitVblankLabel(void) {
     sdfSetMainThreadPriority();
 }
 
-INCLUDE_ASM(const s32, "sndAt3", sndCallMemset);
+void sndCallMemset(void) {
+    memset(mnuTitleAudioSilenceBuffer, 0, 0x1000);
+
+    mnuTitleStreamStatus.control = 2;
+    mnuTitleStreamStatus.repeatFrame = 0;
+    mnuTitleStreamStatus.loadState = 0;
+    mnuTitleStreamStatus.samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    mnuTitleStreamStatus.allocation = NULL;
+    mnuTitleStreamStatus.compressedData = NULL;
+    mnuTitleStreamStatus.decoder = mnuTitleStreamDecoderState;
+    mnuTitleStreamStatus.tableIndex = 0;
+
+    mnuTitleSoundBufferState.control = 2;
+    mnuTitleSoundBufferState.repeatFrame = 0;
+    mnuTitleSoundBufferState.loadState = 0;
+    mnuTitleSoundBufferState.samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    mnuTitleSoundBufferState.allocation = NULL;
+    mnuTitleSoundBufferState.compressedData = NULL;
+    mnuTitleSoundBufferState.decoder = sndWork3;
+    mnuTitleSoundBufferState.tableIndex = 0;
+
+    sndCallSeStopWork6.control = 2;
+    sndCallSeStopWork6.repeatFrame = 0;
+    sndCallSeStopWork6.loadState = 0;
+    sndCallSeStopWork6.allocation = NULL;
+    sndCallSeStopWork6.decoder = sndCallSeStopWork7;
+    sndCallSeStopWork6.compressedData = sndWork5;
+    sndCallSeStopWork6.samples = (s16 *)mnuTitleAudioSilenceBuffer;
+    sndCallSeStopWork7[2] = 2;
+    sndCallSeStopWork6.frameBytes = 192;
+    sndCallSeStopWork6.frameCount = sizeof(sndWork5) / sndCallSeStopWork6.frameBytes;
+    sndCallSeStopWork6.frameIndex = 0;
+    sndCallSeStopWork6.tableIndex = 0;
+
+    mnuInitTitleSoundRemoteRequest(0x400);
+
+    mnuTitleStreamDecoderState[1] = (u32)sndCallMemsetWork;
+    mnuTitleStreamDecoderState[3] = (u32)sdfMemGetPtr(sdfMemAllocDirect(26826));
+    mnuTitleStreamDecoderState[4] = 0;
+    sndWork3[1] = (u32)sndCallMemsetWork2;
+    sndWork3[3] = (u32)sdfMemGetPtr(sdfMemAllocDirect(26826));
+    sndWork3[4] = 2;
+    sndCallSeStopWork7[1] = (u32)sndCallMemsetWork3;
+    sndCallSeStopWork7[3] = (u32)sdfMemGetPtr(sdfMemAllocDirect(26826));
+    sndCallSeStopWork7[4] = 0;
+    at3DecInit(sndCallSeStopWork7);
+
+    memset(sndBgmFadeOutWork, 0, 0xC0);
+    sndCallWaitVblankLabel();
+}
 
 /* Read state words 0, 1 and 3; the frame-byte word 2 is not in this snapshot. */
 void mnuReadTitleStreamStatusLocked(titleAudioStreamStatusSnapshot_t *statusSnapshot) {
@@ -390,9 +455,35 @@ void mnuWriteTitleStreamStatusLocked(titleAudioStreamStatusSnapshot_t *statusVal
 
 INCLUDE_ASM(const s32, "sndAt3", mnuLoadTitleStreamFrameData);
 
-INCLUDE_ASM(const s32, "sndAt3", File_BgmLoadStart);
+void File_BgmLoadStart(char *audioPath) {
+    GetVolumeWork = fileLoadUseTail(audioPath);
+    mnuTitleStreamStatus.loadState = 1;
+}
 
+#ifdef VERSION_RAIDOU1
+s32 GetVolume(titleAudioStreamState_t *stream) {
+    sdfMemHandle_t *handle;
+    u8 *data;
+    s32 size;
+
+    if (pacFileCheckEnd(GetVolumeWork) == 0) {
+        return 0;
+    }
+    handle = fileGetMemHandle(GetVolumeWork);
+    data = fileGetLoadPtr(GetVolumeWork);
+    size = fileGetLoadSize(GetVolumeWork);
+    fileHandleFree(GetVolumeWork);
+    mnuTitleStreamStatus.compressedData = data;
+    mnuTitleStreamStatus.allocation = handle;
+    stream->frameCount = size / stream->frameBytes;
+    stream->frameIndex = 0;
+    at3DecInit(mnuTitleStreamDecoderState);
+    mnuTitleStreamStatus.loadState = 2;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "sndAt3", GetVolume);
+#endif
 
 /* Install the fixed title track and queue its compressed frames under the lock. */
 void sndBgmLoadFile(void) {
@@ -465,7 +556,25 @@ skip:
 INCLUDE_ASM(const s32, "sndAt3", sndBgmLoadId);
 #endif
 
-INCLUDE_ASM(const s32, "sndAt3", BgmPlaySub);
+s32 BgmPlaySub(void) {
+    titleAudioStreamState_t *stream = &mnuTitleStreamStatus;
+
+    if (stream->loadState == 1) {
+        GetVolume(stream);
+    }
+    if (sndData7 == 1) {
+        return 2;
+    }
+    switch (stream->loadState) {
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+        return 3;
+    default:
+        return mnuTitleStreamStatus.loadState;
+    }
+}
 
 s32 sndCallWaitSema2(void) {
     titleAudioStreamState_t *stream = &mnuTitleStreamStatus;
@@ -553,7 +662,23 @@ void sndBgmFadeOut(void) {
 
 INCLUDE_ASM(const s32, "sndAt3", sndBgmFadeOut2);
 
+/* NON_MATCHING: 17 of 24 words match.  */
+#ifdef NON_MATCHING
+void sndCallMemFreeDirect(void) {
+    if (mnuTitleStreamStatus.allocation != NULL) {
+        sdfMemFreeDirect(mnuTitleStreamStatus.allocation);
+        mnuTitleStreamStatus.loadState = 0;
+        mnuTitleStreamStatus.allocation = NULL;
+        mnuTitleStreamStatus.compressedData = NULL;
+        mnuTitleStreamStatus.samples = (s16 *)mnuTitleAudioSilenceBuffer;
+        sndData5 = -1;
+        sndData6 = -1;
+        sndData7 = 0;
+    }
+}
+#else
 INCLUDE_ASM(const s32, "sndAt3", sndCallMemFreeDirect);
+#endif
 
 void sndBgmFree(void) {
     WaitSema(mnuTitleStreamSemaphore);
@@ -614,7 +739,40 @@ INCLUDE_ASM(const s32, "sndAt3", sndSeFree);
 
 INCLUDE_ASM(const s32, "sndAt3", sndSeFadeOut);
 
-INCLUDE_ASM(const s32, "sndAt3", sndBgmLoadIdXFSub);
+void sndBgmLoadIdXFSub(void) {
+    u8 *dst = sndWork5;
+    s32 n = 0;
+    s32 i = 0;
+    u8 *src = mnuTitleStreamStatus.compressedData + mnuTitleStreamStatus.frameBytes * mnuTitleStreamStatus.frameIndex;
+    s32 frame = mnuTitleStreamStatus.frameIndex;
+    s32 j;
+
+    do {
+        if (frame + n >= mnuTitleStreamStatus.frameCount) {
+            src = mnuTitleStreamStatus.compressedData;
+            frame = 0;
+            n = 0;
+        }
+        for (j = 0; j < 192; j++) {
+            *dst++ = *src++;
+        }
+        i++;
+        n++;
+    } while (i < 192);
+
+    if (mnuTitleStreamStatus.control == 1 && (mnuTitleStreamStatus.loadState >= 3 && mnuTitleStreamStatus.loadState <= 5)) {
+        sndCallSeStopData4 = 12;
+        mnuTitleStreamStatus.loadState = 7;
+        sndBgmFadeOutWork[mnuTitleStreamStatus.tableIndex] = mnuTitleStreamStatus.frameIndex;
+        sndCallSeStopWork6.loadState = 6;
+        sndCallSeStopWork6.control = 0;
+        sndCallSeStopWork6.frameIndex = 0;
+        sndCallSeStopWork7[4] = mnuTitleStreamDecoderState[4];
+        if (mnuTitleStreamDecoderState[4] >= 31) {
+            sndCallSeStopWork7[4] = 29;
+        }
+    }
+}
 
 s32 sndCallWaitSema3(void) {
     s32 status = 1;
@@ -682,17 +840,69 @@ void sndBgmLoadId_XF(s32 id) {
 INCLUDE_ASM(const s32, "sndAt3", sndBgmLoadId_XF);
 #endif
 
-INCLUDE_ASM(const s32, "sndAt3", sndBgmStatus_XF);
+s32 sndBgmStatus_XF(void) {
+    s32 stat;
+    s32 ret;
 
-INCLUDE_ASM(const s32, "sndAt3", sndProcSequenceSub);
+    ret = 0;
+    stat = sndData2;
 
-INCLUDE_ASM(const s32, "sndAt3", sndProcSequenceSub2);
+    if (stat == 0) {
+        ret = sndCallWaitSema2();
+    } else if (stat == 1) {
+        ret = sndCallWaitSema3();
+        switch (ret) {
+            case 0:
+            case 2:
+                sndBgmLoadId(sndBgmLoadId_XFData2);
+                sndData2 = 2;
+            case 1:
+                ret = 1;
+                break;
+            default:
+                ret = 1;
+                break;
+        }
+    } else if (stat == 101) {
+        sndBgmLoadId(sndBgmLoadId_XFData2);
+        sndData2 = 2;
+        ret = 1;
+    } else if (stat == 102) {
+        sndBgmLoadId(sndBgmLoadId_XFData2);
+        sndData2 = 2;
+        ret = 1;
+    } else if (stat == 2) {
+        if (sndCallWaitSema2() == stat) {
+            sndData2 = 0;
+            ret = 2;
+        } else {
+            ret = 1;
+        }
+    } else if (stat == 3) {
+        sndData2 = 0;
+        ret = 2;
+    } else if (stat == 4) {
+        sndData2 = 0;
+        ret = 2;
+    }
+    return ret;
+}
+
+void sndProcSequenceSub(void) {
+    evtData25 = 0;
+}
+
+s32 sndProcSequenceSub2(void) {
+    return evtData25;
+}
 
 INCLUDE_ASM(const s32, "sndAt3", sndProcSequenceSub3);
 
 INCLUDE_ASM(const s32, "sndAt3", sndLeaf3);
 
-INCLUDE_ASM(const s32, "sndAt3", sndProcSequenceSub4);
+s32 sndProcSequenceSub4(void) {
+    return sndWork3[4];
+}
 
 #ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "sndAt3", sndHardSelect1Sub);
@@ -700,7 +910,11 @@ INCLUDE_ASM(const s32, "sndAt3", sndHardSelect1Sub);
 
 INCLUDE_ASM(const s32, "sndAt3", sndLeaf4);
 
-INCLUDE_ASM(const s32, "sndAt3", movieNoMemoryAlloc);
+s32 movieNoMemoryAlloc(void)
+{
+    release_movieobj2(&movieCb, &sdfGrOtTable[movieData]);
+    return 0;
+}
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_RODATA(const s32, "sndAt3", movieStrCdrom0Smovie2Demo03Ips);

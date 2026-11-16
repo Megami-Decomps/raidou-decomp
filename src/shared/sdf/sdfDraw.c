@@ -11,6 +11,7 @@
 #include "sdfImageSet.h"
 #include "sdfGraph.h"
 #include "sdk_libgraph.h"
+#include "sdfTex.h"
 extern s32 DIntr(void);
 extern s32 EIntr(void);
 
@@ -758,7 +759,39 @@ void sdfGrSetDrawEnv(sdfGrDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet, s32 aEven
     sdfGrSetDrawDefParmPacket(&aEnv->defParm);
 }
 
+/* NON_MATCHING: 85 of 110 words match.  */
+#ifdef NON_MATCHING
+/* body: nonmatching in smt3 @ 9401f79e: src/smt3/sdf/sdfDraw.c:821, found, same function 1.00 (words 110/110, calls 1.00, shape 1.00) */
+void sdfGrStdDrawEnvPredraw(sdfGrStdDrawEnv_t *env, s32 evenOdd)
+{
+    sdfGrFrameSet_t *view = env->view;
+    s32 width = view->width;
+    s32 height = view->height;
+    s32 frameAddress = view->buffers[evenOdd]->addr;
+    s32 depthAddress = view->buffers[2]->addr;
+    s32 frameFormat = view->bufferFormat;
+    s32 depthFormat = view->auxiliaryFormat;
+    s64 frame;
+
+    sdfGrSetDrawFramePacket(&env->frame1, frameAddress, width, height, frameFormat,
+                            depthAddress, depthFormat, sdfGrBufferSlot, 0);
+    sdfGrSetDrawFramePacket(&env->frame2, frameAddress, width, height, frameFormat,
+                            depthAddress, depthFormat, sdfGrBufferSlot, 1);
+    frame = (s64)(s32)((u32)(frameAddress >> 11) | ((u32)frameFormat << 24) |
+                       ((u32)(width >> 6) << 16)) | 0x00FFFFFF00000000ULL;
+    env->frameContextOne.data = frame;
+    env->frameContextOne.reg = SDF_GS_FRAME_1;
+    env->frameContextTwo.data = frame;
+    env->frameContextTwo.reg = SDF_GS_FRAME_2;
+    if (frameFormat == 0) frameFormat = 1;
+    sdfTexSetPacket(&env->texturePackets[1], width, height, frameAddress, frameFormat,
+                    0, 0, 1, 0, 0, 5, 0);
+    sdfTexSetPacket(&env->texturePackets[0], width, height, view->buffers[evenOdd ^ 1]->addr,
+                    frameFormat, 0, 0, 1, 0, 0, 5, 0);
+}
+#else
 INCLUDE_ASM(const s32, "sdf/sdfDraw", sdfGrStdDrawEnvPredraw);
+#endif
 
 void sdfGrSetStdDrawEnv(sdfGrStdDrawEnv_t *aEnv, sdfGrFrameSet_t *aFrameSet) {
     sdfGrSetRegsPacketHeader(&aEnv->header, SDF_TEXTURE_SCENE_PAYLOAD_QWORDS);

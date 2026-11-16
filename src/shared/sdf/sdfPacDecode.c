@@ -81,7 +81,7 @@ void sdfPacFree(sdfPacDecodeCb_t *cb)
     }
 }
 
-void sdfLeaf41(sdfPacDecodeCb_t *cb)
+void sdfPacMarkPhaseFinished(sdfPacDecodeCb_t *cb)
 {
     cb->stat = -1;
 }
@@ -130,7 +130,35 @@ void sdfPacNewBlock(sdfPacDecodeCb_t *cb)
     }
 }
 
-INCLUDE_ASM(const s32, "sdf/sdfPacDecode", sdfPacEndBlock);
+void sdfPacEndBlock(sdfPacDecodeCb_t *cb)
+{
+    s32 result;
+    sdfPacDecodeResrc_t *tail;
+    sdfPacDecodeResrc_t *scan;
+    sdfPacDecodeResrc_t *next;
+
+    result = cb->callback(cb, 1, (sdfPacStdBlockHeader_t *)cb->resrcTail->header);
+    if (result == 1) {
+        sdfPacMarkPhaseFinished(cb);
+        return;
+    }
+    if (result == 4) {
+        tail = cb->resrcTail;
+        scan = cb->resrcHead;
+        if (scan == tail) {
+            cb->resrcTail = NULL;
+            cb->resrcHead = NULL;
+        } else {
+            while ((next = scan->next) != tail) {
+                scan = next;
+            }
+            /* Retail clears the link but leaves the multi-item tail unchanged. */
+            scan->next = NULL;
+        }
+        sdfChipFreeDirect(tail);
+    }
+    cb->stat = 0;
+}
 
 s32 sdfPacDecode(sdfPacDecodeCb_t *cb, const u8 *data, s32 length)
 {

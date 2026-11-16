@@ -129,7 +129,9 @@ in order (skip any with `--skip step,...`):
    It lists each function that got worse or better (old names mapped through
    the renames), counting a function that compiles differently inside the full
    unit (`CONTEXT`) and new unit-level problems. A worse function of the batch
-   itself is marked as such; any other is a regression to fix.
+   itself is marked as such; any other is a regression to fix. A function whose
+   docs/matching entry has a `Fragile:` line (it shifts with header declarations alone, so it is
+   recorded NON_MATCHING) is listed as `info fragile`, not as a regression.
 9. `gate`: `configure.py && ninja`, then `check_config.py`,
    `check_nonmatching.py`, `test_raidou_c.py`, `test_docs_index.py`,
    `docs_index.py --check` and `revisit_names.py --check`. With

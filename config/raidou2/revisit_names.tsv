@@ -1500,7 +1500,6 @@
 0x001C32D8	evtCallGetScriptHandle	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour evtCommand_CALL_FIELD; calls scrGetScriptHandle
 0x001C3350	evtCallGetIntPara16	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour evtCommand_CALL_FIELD; calls scrGetIntPara
 0x001C3420	evtCallGetIntPara17	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour evtCommand_CALL_FIELD; calls scrGetIntPara
-0x001C34C8	evtCallGetScriptHandle2	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour evtCommand_CALL_FIELD; calls scrGetScriptHandle
 0x001C35A0	sndCallGetIntPara	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls scrGetIntPara
 0x001C3630	sndFunc	func	tier=D	derived-unit	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; no named callee, caller or string
 0x001C3650	sndCallProcTrigSequenceSlMain	func	tier=D	derived-callee	na	unit code_001AD4E8, neighbour sndWaitForEarringPlayback; calls fmProcTrigSequence_slMain
@@ -1605,7 +1604,6 @@
 0x001D1348	evtCallGetProcessData15	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
 0x001D1470	evtCallGetMemHandle	func	tier=D	derived-callee	na	unit event/evtPicture; calls fileGetMemHandle
 0x001D1510	evtPictureLoadStartTexFile	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtPicture.evtPictureLoadStartTexFile, score 7.15 band B
-0x001D1538	evtCallGetProcessData16	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
 0x001D1560	evtCallGetProcessData17	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
 0x001D15D0	evtCallGetProcessData18	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
 0x001D1600	evtPictureSetSize	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
@@ -1765,10 +1763,7 @@
 0x001E46F8	evtCallGetProcessData28	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour evtStartRain; calls dds3GetProcessData
 0x001E4730	evtCallGetProcessData29	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour evtStartRain; calls dds3GetProcessData
 0x001E4770	scrCallGetProcessData	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour scrEventSkipEnd; calls dds3GetProcessData
-0x001E47D0	scrLeaf3	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour scrEventSkipEnd; no named callee, caller or string
 0x001E48A0	scrFunc	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour scrEventSkipEnd; no named callee, caller or string
-0x001E4920	scrRunFrame1Sub	func	tier=D	derived-caller	na	unit code_001CD6D8, neighbour scrEventSkipEnd; called by RunFrame1
-0x001E4950	scrFunc2	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour scrEventSkipEnd; no named callee, caller or string
 0x001E4998	scrCallPictureSetEndProcess	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour scrEventSkipEnd; calls evtPictureSetEndProcess
 0x001E49F0	evtCallPictureSetEndProcess	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour evtCutInCreate; calls evtPictureSetEndProcess
 0x001E4A50	evtLeaf25	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
@@ -1888,20 +1883,14 @@
 0x001EB680	fileIsLoadedWithActiveFlow	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0028A268, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x001EB800	slCallEnableMode	func	tier=D	derived-callee	na	unit mc/slMain; calls frEnableMode
 0x001EB8B8	slCallEnableMode2	func	tier=D	derived-callee	na	unit mc/slMain; calls frEnableMode
-0x001EB950	slCallSin2	func	tier=D	derived-callee	na	unit mc/slMain; calls sdfSin
 0x001EBA08	slQueryYesNoProcSub	func	tier=D	derived-caller	na	unit mc/slMain; called by slQueryYesNoProc
 0x001EBA18	slQueryYesNoProcSub2	func	tier=D	derived-caller	na	unit mc/slMain; called by slQueryYesNoProc
-0x001EBA28	slCallSetOt5	func	tier=D	derived-callee	na	unit mc/slMain; calls eglSetOt
 0x001EC770	fileClearAllSlotFlags	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0028AE68, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001EC9C0	slCallMcFuncClose1	func	tier=D	derived-callee	na	unit mc/slMain; calls sdfMcFuncClose1
-0x001ECC08	slCallSetInfo	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
 0x001ECDE8	slCallSetInfo2	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
-0x001ECE58	slLeaf4	func	tier=D	derived-unit	na	unit mc/slMain; no named callee, caller or string
 0x001ECE70	slCallAdminiCallSequence	func	tier=D	derived-callee	na	unit mc/slMain; calls dds3AdminiCallSequence
-0x001ECEC0	slLoadProc1st	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001ECED8	fileRestartSlotScan	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x0028B560, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001ECF08	slCallMcGetSlotFlags	func	tier=D	derived-callee	na	unit mc/slMain; calls sdfMcGetSlotFlags
-0x001ED028	slMcSumIco	func	tier=D	derived-string	na	unit mc/slMain; string '/mc/sum.ico'
 0x001ED078	slCallSetInfo3	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
 0x001ED0A0	slRefSystem	func	tier=D	derived-data	na	unit mc/slMain; references saveloadSystem
 0x001ED0D0	slLeaf5	func	tier=D	derived-unit	na	unit mc/slMain; no named callee, caller or string
@@ -1910,7 +1899,6 @@
 0x001ED138	slCallSetInfo5	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
 0x001ED160	slLeaf7	func	tier=D	derived-unit	na	unit mc/slMain; no named callee, caller or string
 0x001ED170	slCallSetInfo6	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
-0x001ED1B0	slLeaf8	func	tier=D	derived-unit	na	unit mc/slMain; no named callee, caller or string
 0x001ED1C8	slLeaf9	func	tier=D	derived-unit	na	unit mc/slMain; no named callee, caller or string
 0x001ED240	slCallSetInfo7	func	tier=D	derived-callee	na	unit mc/slMain; calls slSetInfo
 0x001ED270	slCallPlaySE2	func	tier=D	derived-callee	na	unit mc/slMain; calls p2sdPlaySE
@@ -5131,7 +5119,6 @@
 0x0035A9D8	evtLeaf31	func	tier=D	derived-unit	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x0035AB00	evtFunc10	func	tier=D	derived-unit	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x0035AB78	evtTitleDLCInitSub	func	tier=D	derived-caller	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; called by TitleDLCInit
-0x0035ABD0	evtCallPlaySE	func	tier=D	derived-callee	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls p2sdPlaySE
 0x0035AE48	evtFunc11	func	tier=D	derived-unit	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; no named callee, caller or string
 0x0035B048	evtCallStop	func	tier=D	derived-callee	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls movieStop
 0x0035B0C8	evtCallPlay	func	tier=D	derived-callee	na	unit TitleMain, neighbour evtBStartSelectionChainAfterFade; calls moviePlay
@@ -6645,7 +6632,6 @@
 0x003C38E0	rstStorySelectDebug	func	tier=D	derived-string	na	unit code_0034F3B8, neighbour rstLoadMapResource; string 'StorySelectDebugProc'
 0x003C3A48	rstMapReturnChkXFade	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstInit.rstMapReturnChkXFade, score 7.85 band B
 0x003C3A68	rstLeaf13	func	tier=D	derived-unit	na	unit code_0034F3B8, neighbour rstMapReturnChkXFade; no named callee, caller or string
-0x003C3A70	rstCallChipAllocDirect	func	tier=D	derived-callee	na	unit code_0034F3B8, neighbour rstMapReturnChkXFade; calls sdfChipAllocDirect
 0x003C4798	rstResultDraw	func	tier=D	derived-string	na	unit code_003BF2E0, neighbour rstPreCalcUnit; string 'result_draw'
 0x003C4AC8	rstProcessStartRstInitSub	func	tier=D	derived-caller	na	unit code_003BF2E0, neighbour rstPreCalcUnit; called by ProcessStart_rstInit
 0x003C4D20	rstResultLoadWaitProcess	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD rstInit.rstResultLoadWaitProcess, score 14.15 band A
@@ -6747,14 +6733,12 @@
 0x003E9F90	sdfSetStreamFrameDrawMode	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002ECA40, masked-words-identical (order map pair); dds-decomp: descriptive
 0x003E9F98	sdfSetGridScaledDrawBounds	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002ECA48, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x003EA248	release_movieobj2	func	tier=D	legacy-dds	na	dds-decomp DDS1 name via SLUS_209.74 0x002ECCF8, masked-words-identical (strict map pair); dds-decomp: SMT3HD name
-0x003EB1D8	sdfLeaf41	func	tier=D	derived-unit	na	unit sdf/sdfPacDecode; no named callee, caller or string
 0x003EBE50	sdfLeaf42	func	tier=D	derived-unit	na	unit sdf/sdfPacDecode; no named callee, caller or string
 0x003F0420	sceCallSignalSema	func	tier=D	derived-callee	na	unit code_0037A7E0, nearest named function scePadSetWarningLevel; calls iSignalSema
 0x003F2050	msifrpcLeaf	func	tier=D	derived-unit	na	unit sdk/libmrpc/msifrpc; no named callee, caller or string
 0x003F2AE8	gcc2_compiled__8	func	tier=D	legacy-fuzzy	na	fuzzy name from SLUS_209.11 0x002CD9F0, score 1.00, tools/xgame/fuzzy_apply.py
 0x003F2D88	sceSdRemoteInit2	func	tier=D	derived-string	na	unit code_0037D148, neighbour sceSdTransToIOP; string 'sceSdRemoteInit() RPC bind error!\n'
 0x003F2EB8	sceLeaf	func	tier=D	derived-unit	na	unit code_0037D148, neighbour sceSdTransToIOP; no named callee, caller or string
-0x003F2EC8	sceCallSifCallRpc	func	tier=D	derived-callee	na	unit code_0037D148, neighbour sceSdTransToIOP; calls sceSifCallRpc
 0x003F30C8	sceCanStartThread	func	tier=D	derived-string	na	unit code_0037D148, neighbour sceSdTransToIOP; string "Can't start thread for streaming.\n"
 0x003F31A0	sceCallSifInitRpc	func	tier=D	derived-callee	na	unit code_0037D148, neighbour sceSdTransToIOP; calls sceSifInitRpc
 0x003F3208	sceLeaf2	func	tier=D	derived-unit	na	unit code_0037D148, neighbour sceSdTransToIOP; no named callee, caller or string
@@ -12773,7 +12757,6 @@
 0x004BBEF8	slStrWaitMcSaiSetuzokuSareta	data	tier=D	derived-string	na	used by slErrorWaitMc; string "WaitMc sai setuzoku sareta?"
 0x004BC020	fmStrSaveloadSpr	data	tier=D	derived-string	na	used by fmProcTrigSequence_slMain; string "saveload.spr"
 0x004BC030	fmStrMcMcpackLb	data	tier=D	derived-string	na	used by fmProcTrigSequence_slMain; string "/mc/MCPACK.LB"
-0x004BC040	fmStrFileMentCalc	data	tier=D	derived-string	na	used by 3 functions: fmProcTrigSequence_slMain, fmShutDown, fmProcessChk_slMain; string "FileMentCalc"
 0x004BC070	slQueryYesNoDrawTable2	data	tier=D	derived-sole	na	used by slQueryYesNoDraw
 0x004BC0C0	cfgCallSetOtTable	data	tier=D	derived-sole	na	used by cfgCallSetOt
 0x004BC168	cfgStrEffectSmoke02Tmx	data	tier=D	derived-unit	na	no code or data reference; unit code_001DB8A0, section .rodata, size 0x18
@@ -19951,18 +19934,12 @@
 0x004E1578	slNewCycleData99	data	tier=D	derived-dominant	na	used by slNewCycle (6 of 16 refs, 7 functions)
 0x004E1580	fmShutDownData	data	tier=D	derived-dominant	na	used by fmShutDown (2 of 4 refs, 3 functions)
 0x004E1584	slNewCycleData16	data	tier=D	derived-dominant	na	used by slNewCycle (14 of 21 refs, 5 functions)
-0x004E1588	fmShutDownData2	data	tier=D	derived-dominant	na	used by fmShutDown (2 of 5 refs, 4 functions)
 0x004E15A4	slNewCycleData17	data	tier=D	derived-dominant	na	used by slNewCycle (6 of 7 refs, 2 functions)
-0x004E15A8	slDrawInfoData15	data	tier=D	derived-dominant	na	used by slDrawInfo (3 of 5 refs, 3 functions)
-0x004E15AC	slFileSelCalcData	data	tier=D	derived-dominant	na	used by slFileSelCalc (4 of 6 refs, 3 functions)
-0x004E15B0	fmProcTrigSequence_slMainData	data	tier=D	derived-dominant	na	used by fmProcTrigSequence_slMain (4 of 8 refs, 4 functions)
 0x004E15B4	fmProcTrigSequence_slMainData2	data	tier=D	derived-dominant	na	used by fmProcTrigSequence_slMain (3 of 4 refs, 2 functions)
-0x004E15BC	slFileSelCalcData2	data	tier=D	derived-dominant	na	used by slFileSelCalc (4 of 7 refs, 4 functions)
 0x004E15CC	slNewCycleData18	data	tier=D	derived-sole	na	used by slNewCycle
 0x004E15D0	slData2	data	tier=D	derived-shared	na	used by 3 functions: slFileSelCalc, slNewCycle, slInsertedInMEMORY
 0x004E15DC	slData3	data	tier=D	derived-shared	na	used by 4 functions: slCallAdminiCallSequence, slCancel, fmProcTrigSequence_slMain
 0x004E15E0	slDrawInfoData16	data	tier=D	derived-dominant	na	used by slDrawInfo (8 of 12 refs, 3 functions)
-0x004E15EC	effDebugPrintfData	data	tier=D	derived-dominant	na	used by effDebugPrintf (2 of 3 refs, 2 functions)
 0x004E15F0	slData4	data	tier=D	derived-shared	na	used by 5 functions: slCallSetOt5, slSetInfo, slQueryYesNoProcSub
 0x004E15F4	setCallMcGetSlotIndexData	data	tier=D	derived-sole	na	used by setCallMcGetSlotIndex
 0x004E15F8	slData5	data	tier=D	derived-shared	na	used by 4 functions: slDraw_slMain, fmProcTrigSequence_slMain, slLoadData
@@ -21539,10 +21516,6 @@
 0x004E4734	MoverSetDisapperWork2	data	tier=D	derived-sole	na	used by MoverSetDisapper
 0x004E4738	fclDrawWork	data	tier=D	derived-sole	na	used by fclDraw
 0x004E473C	fclDrawWork2	data	tier=D	derived-sole	na	used by fclDraw
-0x004E4744	SetBattleLightWork	data	tier=D	derived-dominant	na	used by SetBattleLight (2 of 3 refs, 2 functions)
-0x004E4748	SetBattleLightWork2	data	tier=D	derived-dominant	na	used by SetBattleLight (2 of 3 refs, 2 functions)
-0x004E474C	MakeResouceBasicFL2Work	data	tier=D	derived-dominant	na	used by MakeResouceBasicFL2 (2 of 3 refs, 2 functions)
-0x004E4750	MakeResouceBasicFL2Work2	data	tier=D	derived-shared	na	used by 2 functions: MakeResouceBasicFL2, MakeObjectBasic2
 0x004E4754	mapEffEplInitWork	data	tier=D	derived-sole	na	used by mapEffEplInit
 0x004E4758	fldPlayer_MoveCalcWork	data	tier=D	derived-dominant	na	used by fldPlayer_MoveCalc (9 of 11 refs, 3 functions)
 0x004E475C	fldPlayer_MoveCalcWork2	data	tier=D	derived-dominant	na	used by fldPlayer_MoveCalc (6 of 8 refs, 3 functions)
@@ -23719,6 +23692,7 @@
 0x001C1348	titleGetPressAnyButton	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD title.titleGetPressAnyButton score 2.0 flag I: prev edge st2:edge r2-only
 0x001C28E0	evtCommand_PATH_START	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1e8448 sim 1.000 margin 0.00 pair
 0x001C2960	evtCommand_PATH_STOP	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x1e8448 sim 1.000 margin 0.00 pair
+0x001C34C8	CUTIN_DSP	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001AD6F0 (r1_r2_pairs, unique-reloc-hash): HD evtCommand CUTIN_DSP: no script handle returns 1, four int paras, evtGetPIDfromUID(uid), evtStartCommand(handle->ProcessID, x, y, type, uid) when absent, else evtPictureLoadCheckProcess; replaces evtCallGetScriptHandle2
 0x001C35E8	sndWaitForEarringPlayback	func	tier=C	dds-fuzzy-70-tie-pair	0.38 (n=8)	dds body 0x205438 sim 0.794 margin 0.04 pair
 0x001C36F8	nbCreateBasicEffect	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x28fad8 sim 0.632 margin 0.63 single
 0x001C3758	prm_DH_PLUS	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x10cfe0 sim 1.000 margin 0.00 single
@@ -23726,6 +23700,7 @@
 0x001C3AC0	evtMoonFadeCheck	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtMoon.evtMoonFadeCheck score 4.7 flag I: next gap5/4 st1:gap r1+r2
 0x001C3AE0	CalcBlendColor	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtMoon.CalcBlendColor score 4.1 flag -: next gap6/5 st1:gap r1+r2
 0x001C4C48	fldFreeAddressProcess	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x144760 sim 1.000 margin 0.00 pair
+0x001C5C48	evtGetSelectFrameInfo	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001AFB80 (r1_r2_pairs, unique-reloc-hash): SMT3 name: 0x1AFB80 walks viewerinfo->framelist_target children by frameCursor + frameFirst (0x2308/0x2300/0x2304) like SMT3 evtGetSelectFrameInfo; the HD evtGetPIDfromUID name belongs to 0x1CE868 (scrFunc2); replaces evtGetPIDfromUID
 0x001C5D08	evtDelProcess	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtCutIn.evtDelProcess score 5.0 flag I: calls1 callers-of-match st1:call r1+r2
 0x001C63D8	SearchNameTable	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtViewer.SearchNameTable score 5.9 flag -: prev next~ gap1/1 st1:gap r1+r2
 0x001CC8C0	EnterFrameChange	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1ef288 sim 0.657 margin 0.29 pair
@@ -23734,6 +23709,7 @@
 0x001CE5B0	oldEventSceneUnload	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evt.oldEventSceneUnload score 5.1 flag -: calls1 calls-of-match st1:call r1+r2
 0x001D0808	evtSetDofTblFileName	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtPMV.evtSetDofTblFileName score 5.1 flag I: prev next~ gap1/2 st1:gap r1+r2
 0x001D0DB0	InitProcessData	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtPicture.InitProcessData score 3.7 flag -: calls1 calls-of-match st1:call r1-only
+0x001D1538	evtPictureLoadCheckProcess	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001BB430 (r1_r2_pairs, unique-reloc-hash): HD evtPicture evtPictureLoadCheckProcess(id): dds3GetProcessData(id) field test returning bool; called on the cut-in PID as in HD CUTIN_DSP; replaces evtCallGetProcessData16
 0x001D1660	evtPictureSetEndProcess	func	tier=C	hd-d	0.53 (n=98)	Raidou HD evtPicture.evtPictureSetEndProcess score 4.0 flag I: calls1 next gap23/18 st2:gap r2-only
 0x001D3D48	evtFileName2Menu	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1f6158 sim 0.664 margin 0.66 pair
 0x001D4208	evtObjectListItem	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1f64f0 sim 0.603 margin 0.20 pair
@@ -23743,8 +23719,11 @@
 0x001E3748	scrTestEntryFlag	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x3163a0 sim 0.600 margin 0.08 pair
 0x001E3DE0	CrossFadeShutdown	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evt.CrossFadeShutdown score 6.0 flag -: calls1 next gap9/21 st1:gap r1+r2
 0x001E4040	SetJyocyuData	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x249258 sim 0.648 margin 0.16 pair
+0x001E47D0	GetIndexFromUID	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001CE6E8 (r1_r2_pairs, unique-reloc-hash): HD evtCutIn static GetIndexFromUID(pData, UID); called with the cut-in data by evtChkUID/evtGetPIDfromUID; replaces scrLeaf3
 0x001E4828	scrEventSkipEnd	func	tier=C	hd-d	0.53 (n=98)	Raidou HD scr.scrEventSkipEnd score 3.1 flag I: calls1 calls-of-match st2:call r2-only
 0x001E48E8	GetRegistNums	func	tier=C	hd-d	0.53 (n=98)	Raidou HD evtCutIn.GetRegistNums score 2.5 flag -: calls1 calls-of-match st2:call r2-only
+0x001E4920	evtChkUID	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001CE838 (r1_r2_pairs, unique-reloc-hash): HD evtCutIn order; returns GetIndexFromUID(UID) >= 0, the UID test of HD evtChkUID; replaces scrRunFrame1Sub
+0x001E4950	evtGetPIDfromUID	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001CE868 (r1_r2_pairs, unique-reloc-hash): HD evtCutIn order GetRegistNums, evtChkUID, evtGetPIDfromUID; 0x1CE868 follows GetRegistNums/scrRunFrame1Sub and returns the PID array entry for GetIndexFromUID(UID) (scrLeaf3), as HD evtGetPIDfromUID; replaces scrFunc2
 0x001E4D40	evtEndCommand	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtCutIn.evtEndCommand score 5.8 flag I: calls1 prev edge st1:edge r1+r2
 0x001E4D70	Create_evtTmxPreLoad	func	tier=C	derived-derived-role	na	retail 0x1CEBF8 allocates the process work (sdfMemAllocDirect(100)+memset) that dds3StartProcess receives; HD inlines new evtTmxPreLoad_t; pairs with Destroy_evtTmxPreLoad; replaces Destroy_evtTmxPreLoad
 0x001E5070	GetTblIndex	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evtTmxPreLoad.GetTblIndex score 5.3 flag -: next gap3/5 st1:gap r1+r2
@@ -23760,15 +23739,17 @@
 0x001E8D58	movieViewerScanDir	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x22b978 sim 0.614 margin 0.27 pair
 0x001E92A0	MovieViewerProc	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x22bda8 sim 0.607 margin 0.34 single
 0x001EB618	setAutoSaveDisable	func	tier=C	hd-both	0.71 (n=206)	Raidou HD fld.setAutoSaveDisable score 4.4 flag -: calls1 calls-of-match st1:call r1+r2
-0x001EB9D8	effDebugPrintf	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1aa1f8 sim 0.667 margin 0.67 pair
+0x001EB950	slNextPageDraw	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001D5438 (r1_r2_pairs, unique-masked-hash): SMT3 slDrawInfo calls slNextPageDraw after the done messages (cases 4, 6, 13); Raidou calls 0x1D5438 in the same cases; replaces slCallSin2
+0x001EB9D8	slMcAccessDraw	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001D54C0 (r1_r2_pairs, unique-masked-hash): SMT3 slDrawInfo calls slMcAccessDraw after the saving/formatting messages; Raidou calls 0x1D54C0 after the checking/saving/loading/formatting messages (no printf: void, no arguments); replaces effDebugPrintf
 0x001EBB90	slDrawError	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x152850 sim 0.695 margin 0.37 single
-0x001ECC30	slBootTop_slMain	func	tier=C	hd-both	0.71 (n=206)	Raidou HD slMain.slBootTop score 4.5 flag -: calls1 gap4/23 st1:gap r1+r2
+0x001ECC08	slBootTop	func	tier=C	derived-derived-role	na	smt3_symbols.txt maps slBootTop to this address; replaces slCallSetInfo
 0x001ECD00	slBootRetry_slMain	func	tier=C	hd-both	0.71 (n=206)	Raidou HD slMain.slBootRetry score 4.5 flag -: calls1 gap4/23 st1:gap r1+r2
 0x001ECD40	slHardSelect2	func	tier=C	hd-d	0.53 (n=98)	Raidou HD slMain.slHardSelect2 score 0.5 flag -: calls1 gap4/168 st2:gap r1-disagree:0x1d6a10
-0x001ECE10	slExitToTitle2	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x1536c0 sim 0.658 margin 0.14 single
+0x001ECE10	slExitToTitleSub	func	tier=C	derived-derived-role	na	fuzzy p=0.33 name; 0x1ECE10 stores argument 0 like SMT3 slExitToTitleSub (slExitToTitle2 stores 2) and is called by slLeaf4; replaces slExitToTitle2
+0x001ECEC0	slDefaultFileFlowProc1st	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x1D65F8; tail-calls slExitToTitle2; replaces slLoadProc1st
+0x001ED1B0	slLoadProc1st	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x001D68E8 (r1_r2_pairs, masked-hash-in-gap): SMT3 fmProcTrigSequence mode 1 sets proc_func_ans = slLoadProc1st; Raidou mode 1 sets slLeaf8 (0x18 bytes, SMT3 0x14), same order as SMT3 slSaveProc1st/slLoadProc1st/slEndingProc1st/slBootProc1st; replaces slLeaf8
 0x001ED1E0	slEndingProc1st	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x153908 sim 1.000 margin 0.00 pair
-0x001ED570	slBootProc_CheckCardR	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x153c90 sim 1.000 margin 0.00 pair
-0x001ED638	slBootProc_CheckCard	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x153c90 sim 1.000 margin 0.00 pair
+0x001ED570	slBootProc_CheckCard	func	tier=C	derived-derived-role	na	smt3 slBootTop (smt3_symbols: raidou slCallSetInfo) returns slBootProc_CheckCard and smt3 slBootRetry returns slBootProc_CheckCardR; Raidou slCallSetInfo returns the first (0x1D6CA8/0x1ED570) and slBootRetry the second; the fuzzy tie pair is swapped; replaces slBootProcSwapTmp
 0x001ED700	slErrorWaitMc	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x153d58 sim 0.682 margin 0.11 pair
 0x001EDDB8	slChooseData_getCardInfo_B	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x154890 sim 1.000 margin 0.00 pair
 0x001EE068	slChooseData_getCardInfo	func	tier=C	smt3-fuzzy-100-tie-pair	0.62 (n=570)	smt3 body 0x154890 sim 1.000 margin 0.00 pair
@@ -23916,7 +23897,7 @@
 0x002795F8	sbtlSetRunAway	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlUnit.sBtlSetRunAway score 4.8 flag I: calls1 next gap4/1 st2:gap r2-only
 0x0027B5A0	sbtlResetCombine	func	tier=C	hd-d	0.53 (n=98)	Raidou HD sBtlPlayer.sBtlResetCombine score 3.3 flag I: calls1 calls-of-match-uniq st2:call r2-only
 0x0027B8B8	sbtlSetNSTOP	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD sBtlPlayer.sBtlSetNSTOP score 6.2 flag I: calls2 calls-of-match votes2 st2:call r2-only
-0x0027E5A0	slExitToTitleSub	func	tier=C	smt3-fuzzy-60-m-single	0.33 (n=9)	smt3 body 0x153658 sim 0.600 margin 0.11 single
+0x0027E5A0	slCallSetFirstAtkGun	func	tier=C	derived-derived-role	na	fuzzy p=0.33 name was wrong: 0x27E5A0 sets wk_sbtl+0xEB0 = 0x50, checks sbtlGetGun_Num < 6 and calls SetFirstAtk_Core(0x29F, 0); neighbour slCallSetFirstAtkCore; frees the SMT3 name for 0x1ECE10; replaces slExitToTitleSub
 0x00285FC8	IsKaja	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlAI.IsKaja score 4.4 flag -: calls1 next gap3/4 st2:gap r2-only
 0x002862F8	sbtlProc_YoyakuEnd	func	tier=C	hd-d-single-raidou2	0.73 (n=371)	Raidou HD sBtlAI.sBtlProc_YoyakuEnd score 2.6 flag I: prev gap3/1 st2:gap r2-only
 0x002890B0	Support_RunWaitProcess	func	tier=C	hd-c	0.69 (n=45)	Raidou HD sBtlScript.Support_RunWaitProcess score 5.0 flag -: calls1 callers-of-match votes2 st2:call r2-only
@@ -24148,6 +24129,8 @@
 0x00358A68	cmpInitDHWindow	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x232e90 sim 0.667 margin 0.17 pair
 0x00359248	FldWnd_LinkSprite	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD lmap.FldWnd_LinkSprite score 2.3 flag -: next~ gap1/28 st2:gap r2-only
 0x0035A898	mselDrawSaveNum	func	tier=C	smt3-fuzzy-100-tie-single	0.62 (n=1144)	smt3 body 0x228710 sim 1.000 margin 0.00 single
+0x0035AB40	TitleInitCursor	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x002F56C8 (r1_r2_pairs, unique-reloc-hash): HD TitleMain TitleInitCursor clears titleCursor_t and sets ScaleTimer = 6 (TITLEenum_CURSOR_SCALE_TIMER); 0x2F56C8 is memset 0x30 + store 6 at 0x20, called on titleData_t.Cursor; replaces Flow1_6
+0x0035ABD0	TitleCalcCursor	func	tier=C	derived-derived-role	na	same function as Raidou 1 0x002F5758 (r1_r2_pairs, unique-masked-hash): HD TitleMain TitleCalcCursor(PID, pCursor, step): up/down moves Index with Timer = 0, ScaleTimer = 6, SE 0x500001, LastPush from the held buttons, then ItemAlpha[5] fades +-32 toward the selected item and ScaleTimer counts down; 0x2F5758 is the same on titleCursor_t; replaces evtCallPlaySE
 0x0035B640	TitleFirstDrawProcess	func	tier=C	hd-c	0.69 (n=45)	Raidou HD TitleMain.TitleFirstDrawProcess score 5.5 flag I: calls2 prev gap42/25 st2:gap r2-only
 0x0035B6B8	TitleCesaInit	func	tier=C	hd-c	0.69 (n=45)	Raidou HD TitleMain.TitleCesaInit score 5.0 flag I: calls2 prev gap41/23 st2:gap r2-only
 0x0035B8D0	evtBStartSelectionChainAfterFade	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x26b260 sim 0.626 margin 0.05 pair
@@ -24377,6 +24360,7 @@
 0x003E9D68	sdfSoundInitAndAppendNode	func	tier=C	dds-fuzzy-100-tie-pair	0.58 (n=653)	dds body 0x2ec818 sim 1.000 margin 0.00 pair
 0x003E9FD0	sdfMovieQueueFrameSprite	func	tier=C	hd-d	0.53 (n=98)	Raidou HD evt.DrawPrimitive2Core score 2.8 flag -: calls2 callers-of-match st2:call r2-only
 0x003F2E30	sceSdTransToIOP	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f58f8 sim 1.000 margin 0.55 pair
+0x003F2EC8	sceSdRemote	func	tier=C	derived-role	na	same function as Raidou 1 0x0037D288 (r1_r2_pairs, unique-masked-hash): SDK libsdr sceSdRemote; replaces sceCallSifCallRpc
 0x003F4D38	at3decMixJointStereo	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f7810 sim 1.000 margin 0.71 pair
 0x003F4F20	at3decInverseTransformBand	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f79f8 sim 1.000 margin 0.75 pair
 0x003F5538	at3decApplyGainControl	func	tier=C	dds-fuzzy-100-m-pair	0.96 (n=1846)	dds body 0x2f8010 sim 1.000 margin 0.83 pair
@@ -24488,6 +24472,7 @@
 0x004ADD28	fldEncDrawName2	data	tier=C	smt3-ref	0.88 (n=D_r1_00449B30)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=False, fn=mapFadeProc; fldEncDrawName is another symbol
 0x004AF020	dds3EffectDirPathFormat2	data	tier=C	smt3-ref	0.88 (n=D_r1_0044A300)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=False, fn=btlOpenPfsDebugDirectory; dds3EffectDirPathFormat is another symbol
 0x004B5DD8	evtViewerTaskName	data	tier=C	dds-ref	0.59 (n=D_r1_0044FC08)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=mapInit
+0x004BC040	slCalcName	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x00455270 (r1_r2_data_pairs): SMT3 fmProcessChk/fmShutDown/fmProcTrigSequence pass slCalcName to dds3SearchProcessName/dds3KillProcessName/dds3StartProcess; same three users in Raidou (derived-string name); replaces fmStrFileMentCalc
 0x004D11C8	fldTestDrawName2	data	tier=C	smt3-ref	0.80 (n=D_r1_00461B98)	smt3-ref/close: nfun=2, other=0, sim=0.7857, games=2, size=True, sec=True, fn=sbtlSeffActCam; fldTestDrawName is another symbol
 0x004D3558	campDrawProcName2	data	tier=C	smt3-ref	0.98 (n=D_r1_00463958)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=campKillProcesses; campDrawProcName is another symbol
 0x004D3568	campUpdateProcName2	data	tier=C	smt3-ref	0.98 (n=D_r1_00463968)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=campKillProcesses; campUpdateProcName is another symbol
@@ -24562,6 +24547,12 @@
 0x004DF5D4	fldMapHaloRequest4	data	tier=C	dds-ref	0.59 (n=D_004DF5D4)	dds-ref/loose: nfun=1, other=1, sim=0.95, games=1, size=True, sec=False, fn=saveCallGetProcessData7; fldMapHaloRequest is another symbol
 0x004DF83C	evtPendingEventSelection	data	tier=C	dds-ref	0.59 (n=D_004DF83C)	dds-ref/close: nfun=2, other=0, sim=0.8621, games=1, size=True, sec=True, fn=CallEvent
 0x004DFF88	sndPathPrefix2	data	tier=C	smt3-ref	0.98 (n=D_r1_0046CD18)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=mnuBuildVoiceResourcePath; sndPathPrefix is another symbol
+0x004E1588	slProcShutDownFlg	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046CDEC (r1_r2_data_pairs): SMT3 fmProcTrigSequence sets slProcShutDownFlg = 1 after dds3StartProcess and fmShutDown tests and clears it; Raidou 0x46CDEC same (symbol_addrs also has D_003BC7FC there); replaces fmShutDownData2
+0x004E15A8	gSlExitMode	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046CE0C (r1_r2_data_pairs): SMT3 fmProcTrigSequence clears gSlExitMode right after slSetInfo(0); Raidou stores 0 to 0x46CE0C there; replaces slDrawInfoData15
+0x004E15AC	gSlSaveMode	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046CE10 (r1_r2_data_pairs): SMT3 order gslDrawFlagFile, gSlSaveMode, gslCheckCardWait; Raidou 0x46CE10 in the same slot; replaces slFileSelCalcData
+0x004E15B0	gSlEndingMode	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046CE14 (r1_r2_data_pairs): SMT3 gSlEndingMode = on only in mode 2 (ending), 0 otherwise; Raidou 0x46CE14 same; replaces fmProcTrigSequence_slMainData
+0x004E15BC	gSlFileErroeFlg	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046CE20 (r1_r2_data_pairs): SMT3 order gSlNowCardCheck, gSlFileErroeFlg, slQueryYesNoMsg; Raidou 0x46CE20 in the same slot; replaces slFileSelCalcData2
+0x004E15EC	gSlMcAccessCnt	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046CE50 (r1_r2_data_pairs): SMT3 order slQueryYesNoKeyFlag, gSlMcAccessCnt, gSlWindowCnt; Raidou 0x46CE50 in the same slot; replaces effDebugPrintfData
 0x004E16E1	Eve_PartialMultiBlurShow	data	tier=C	derived-derived-role	na	cleared by Eve_PartialMultiBlurOFF, tested in EffectDraw; replaces effData28
 0x004E16E2	Eve_DistortionBlurShow	data	tier=C	derived-derived-role	na	cleared by Eve_DistortionBlurOFF; replaces EffectDrawData
 0x004E16E4	Eve_FilterShow	data	tier=C	derived-derived-role	na	cleared by Eve_FilterOFF, gates dds3EffectFilter(&Eve_Filter); replaces EffectDrawData3
@@ -24633,6 +24624,10 @@
 0x004E45E0	sdfMovieDrawColor	data	tier=C	dds-ref	0.59 (n=D_r1_0046F5C8)	dds-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=sdfSetGridScaledDrawBounds
 0x004E46E0	evtSelectionState	data	tier=C	dds-ref	0.59 (n=D_r1_0046F6E0)	dds-ref/exact: nfun=8, other=0, sim=1.0, games=2, size=True, sec=True, fn=evtSelStateCreate
 0x004E4740	fldEncountFlags2	data	tier=C	smt3-alias	0.90 (n=D_004E4740)	smt3-alias/all: game=raidou2; fldEncountFlags is another symbol
+0x004E4744	fldScriptResource	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046F740 (r1_r2_data_pairs): SMT3 name; kind-2 batch entries stored by SetBattleLight like fldMakeResouceBasicFL1; replaces SetBattleLightWork
+0x004E4748	fldScriptResourceCount	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046F744 (r1_r2_data_pairs): SMT3 name; kind-2 batch count; replaces SetBattleLightWork2
+0x004E474C	g_pHitData	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046F748 (r1_r2_data_pairs): SMT3 fldMakeResouceBasicFL2 stores the collision batch entries to g_pHitData and the count to g_nHitData; Raidou stores the same two words at 0x46F748/0x46F74C; replaces MakeResouceBasicFL2Work
+0x004E4750	g_nHitData	data	tier=C	derived-derived-role	na	same data as Raidou 1 0x0046F74C (r1_r2_data_pairs): see g_pHitData; replaces MakeResouceBasicFL2Work2
 0x004E4794	itfTestOverlayPhaseStep	data	tier=C	dds-ref	0.59 (n=D_r1_0046F784)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel3
 0x004E4798	dds3EffectBuiltinNameIndex2	data	tier=C	smt3-ref	0.98 (n=D_r1_0046F788)	smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=btlOpenPfsDebugDirectory; dds3EffectBuiltinNameIndex is another symbol
 0x004E47BC	fldMapHaloRequest	data	tier=C	dds-ref	0.59 (n=D_r1_0046F7AC)	dds-ref/close: nfun=2, other=0, sim=0.9, games=2, size=True, sec=True, fn=mjnDeleteScene
@@ -24797,7 +24792,6 @@
 0x001C33A8	evtCommand_CALL_FIELD	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1e72f8 sim 0.721 margin 0.72 pair
 0x001C4B38	Process1_evtMoon	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD evtMoon.Process1 score 6.5 flag -: prev gap=exact st1:gap r1+r2
 0x001C4BB8	Shutdown_evtMoon	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD evtMoon.Shutdown score 6.8 flag -: next gap=exact st1:gap r1+r2
-0x001C5C48	evtGetPIDfromUID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD evtCutIn.evtGetPIDfromUID score 6.8 flag I: calls1 next~ calls-of-match st1:call r1+r2
 0x001C6000	evtAddViewerObject	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1ec618 sim 0.821 margin 0.22 pair
 0x001C6078	evtGetViewerObjectTypeCount	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1ec680 sim 0.885 margin 0.52 pair
 0x001C64C0	SearchBasicFromNameIndex	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD evtViewer.SearchBasicFromNameIndex score 6.3 flag -: calls1 next gap2/2 st1:gap r1+r2
@@ -25088,7 +25082,6 @@
 0x003585D8	EffGrid_DrawCB	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD lmap.EffGrid_DrawCB score 2.8 flag -: gap=exact st1:gap r1-only
 0x00358630	EffGrid_DrawCBAll	func	tier=B	hd-gap	0.76 (n=21)	Raidou HD lmap.EffGrid_DrawCBAll score 6.3 flag -: next gap=exact st1:gap r1-only
 0x003597D0	dds3EffectDirClose	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x1aad50 sim 0.864 margin 0.86 single
-0x0035AB40	Flow1_6	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x26cff0 sim 0.704 margin 0.14 pair
 0x0035BAB8	TitleMovieInit	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD TitleMain.TitleMovieInit score 6.3 flag I: calls2 callers-of-match st1:call r1+r2
 0x00360370	fclLoadFileAsync	func	tier=B	smt3-fuzzy-70-m-single	0.83 (n=60)	smt3 body 0x2144b8 sim 0.700 margin 0.70 single
 0x00362150	effPCP_HBED2_SetRotateMatrix	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1a1450 sim 0.778 margin 0.16 pair
@@ -25228,6 +25221,7 @@
 0x003E5460	sdfSndInitCmdIF	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2c0ff8 sim 0.822 margin 0.23 pair
 0x003E58B8	sdfSndSeqMapInit	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2c1490 sim 0.838 margin 0.49 pair
 0x003E5990	sdfSndInit	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2c1578 sim 0.948 margin 0.49 pair
+0x003EB1D8	sdfPacMarkPhaseFinished	func	tier=B	smt3-role	na	SMT3 sdfPacMarkPhaseFinished is cb->stat = -1 at the same place in sdfPacDecode; T already calls sdfPacMarkPhaseFinished by its smt3 alias at the same address; replaces sdfLeaf41
 0x00428DB0	dds3PreDrawChain	data	tier=B	smt3-ref	0.80 (n=D_r1_003AE910)	smt3-ref/close: nfun=4, other=0, sim=0.92025, games=2, size=True, sec=True, fn=dds3FirstProcess
 0x00428DC0	dds3DrawEnv	data	tier=B	smt3-ref	0.88 (n=D_r1_003AE920)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=dds3FirstProcess
 0x0042D340	dds3RenderTexId	data	tier=B	smt3-ref	0.88 (n=D_r1_003B2EA0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=dds3InitRenderDrawEnv
