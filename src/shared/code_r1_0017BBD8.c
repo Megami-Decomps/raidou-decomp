@@ -796,6 +796,136 @@ void btlSetResourceNameLengthLimit(struct BtlResourceNameRecord *record, u32 max
 }
 
 INCLUDE_ASM(const s32, "code_r1_0017BBD8", fmOVERWRITEOK);
+
+#ifdef VERSION_RAIDOU1
+extern char dds3EffectFileNameTable2Entry[];
+extern char dds3EffectFileNameTable2Entry2[];
+extern char dds3EffectFileNameTable2Entry3[];
+extern char dds3EffectFileNameTable2Entry4[];
+extern char dds3EffectFileNameTable2Entry5[];
+extern char dds3EffectFileNameTable2Entry6[];
+extern char dds3EffectFileNameTable2Entry7[];
+extern char dds3EffectFileNameTable2Entry8[];
+extern char dds3EffectFileNameTable2Entry9[];
+extern char dds3StrAgOutEpl[];
+extern char dds3StrAgiTobaEpl[];
+extern char dds3StrAgiball00Epl[];
+extern char dds3StrAgiball01Epl[];
+extern char dds3StrAgsword31Epl[];
+extern char dds3StrAgsword32Epl[];
+extern char dds3StrAgsword33Epl[];
+extern char dds3StrB12Hit00Epl[];
+extern char dds3StrB12Hit01Epl[];
+extern char dds3StrB12Hit02Epl[];
+extern char dds3StrB12Hit03Epl[];
+extern char dds3StrBRange00Epl[];
+extern char dds3StrBad01Epl[];
+extern char dds3StrBad04Epl[];
+extern char dds3StrBfInEpl[];
+extern char dds3StrBhudainAEpl[];
+extern char dds3StrBigDamYEpl[];
+extern char dds3StrBlood00Epl[];
+extern char dds3StrBlood02Epl[];
+extern char dds3StrBuhmain00Epl[];
+extern char dds3StrConbAuraEpl[];
+extern char dds3StrDamYuka1Epl[];
+extern char dds3StrDamYuka2Epl[];
+extern char dds3StrDamYukaEpl[];
+extern char dds3StrDamagMuaEpl[];
+extern char dds3StrDamagMubEpl[];
+extern char dds3StrEffTesEpl[];
+extern char dds3StrFuDevilEpl[];
+extern char dds3StrFuRaidohEpl[];
+extern char dds3StrFuYukaEpl[];
+extern char dds3StrKaitenEpl[];
+extern char dds3StrKudanEpl[];
+extern char dds3StrLaunch00Epl[];
+extern char dds3StrLightEpl[];
+extern char dds3StrLightaEp[];
+extern char dds3StrLightaEpl[];
+extern char dds3StrMhbfdinEpl[];
+extern char dds3StrMhmudoEpl[];
+extern char dds3StrMudshotEpl[];
+extern char dds3StrNoooEpl[];
+extern char dds3StrRevtinaEpl[];
+extern char dds3StrShoukanEpl[];
+extern char dds3StrStopHelperPb[];
+extern char dds3StrTest02Epl[];
+extern char dds3StrTest0Epl[];
+extern char dds3StrTest1Epl[];
+extern char dds3StrTest2Epl[];
+extern char dds3StrTest3Epl[];
+extern char dds3StrTestEpl[];
+extern char dds3StrTestP2A[];
+extern char dds3StrTestTlp[];
+extern char dds3StrTestTmx[];
+extern char dds3StrYuka02Fix02Pb[];
+
+char *dds3EffectFileNameTable2[62] = {
+    dds3StrDamagMuaEpl,
+    dds3StrDamagMubEpl,
+    dds3StrBad01Epl,
+    dds3StrBad04Epl,
+    dds3StrConbAuraEpl,
+    dds3StrMhmudoEpl,
+    dds3StrKudanEpl,
+    dds3StrEffTesEpl,
+    dds3StrDamYukaEpl,
+    dds3StrDamYuka1Epl,
+    dds3StrDamYuka2Epl,
+    dds3StrBlood00Epl,
+    dds3StrBlood02Epl,
+    dds3EffectFileNameTable2Entry9,
+    dds3EffectFileNameTable2Entry8,
+    dds3StrBuhmain00Epl,
+    dds3StrB12Hit00Epl,
+    dds3StrB12Hit01Epl,
+    dds3StrB12Hit02Epl,
+    dds3StrB12Hit03Epl,
+    dds3StrFuYukaEpl,
+    dds3StrFuRaidohEpl,
+    dds3StrFuDevilEpl,
+    dds3StrBRange00Epl,
+    dds3StrAgiball00Epl,
+    dds3StrAgiball01Epl,
+    dds3StrLaunch00Epl,
+    dds3StrKaitenEpl,
+    dds3StrNoooEpl,
+    dds3StrTestTmx,
+    dds3EffectFileNameTable2Entry7,
+    dds3EffectFileNameTable2Entry6,
+    dds3StrYuka02Fix02Pb,
+    dds3StrStopHelperPb,
+    dds3EffectFileNameTable2Entry5,
+    dds3EffectFileNameTable2Entry4,
+    dds3EffectFileNameTable2Entry3,
+    dds3StrTestEpl,
+    dds3StrMudshotEpl,
+    dds3StrTest02Epl,
+    dds3StrRevtinaEpl,
+    dds3StrAgiTobaEpl,
+    dds3StrLightEpl,
+    dds3StrLightaEpl,
+    dds3StrLightaEp,
+    dds3StrAgsword31Epl,
+    dds3StrAgsword32Epl,
+    dds3StrAgsword33Epl,
+    dds3StrBigDamYEpl,
+    dds3StrBfInEpl,
+    dds3StrBhudainAEpl,
+    dds3StrShoukanEpl,
+    dds3StrTest0Epl,
+    dds3StrTest1Epl,
+    dds3StrTest2Epl,
+    dds3StrTest3Epl,
+    dds3StrMhbfdinEpl,
+    dds3StrTestP2A,
+    dds3EffectFileNameTable2Entry2,
+    dds3StrAgOutEpl,
+    dds3StrTestTlp,
+    dds3EffectFileNameTable2Entry,
+};
+#endif
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData);
 
 INCLUDE_SDATA(const s32, "code_r1_0017BBD8", btlFormatSelectedResourceNameData2);
