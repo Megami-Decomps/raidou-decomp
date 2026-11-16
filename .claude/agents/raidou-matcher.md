@@ -53,21 +53,22 @@ Per function, in this order:
 2. Write D/NAME.c once with Write. Test with `./t.sh NAME` (one-line result and the first
    diffs; `VER=raidou2 ./t.sh NAME` for a shared unit). `L=60 ./cmp.sh NAME` for a
    side-by-side of your opcodes against retail.
-3. Tune. Read the first differing instruction and ask which lever it is before changing
-   shape: `grep -P '\bMNEMONIC\b' ~/projects/smt3-port/external/smt3-decomp/docs/levers/INDEX.tsv`
-   (columns page, line, mnemonics, tell), then the line it points at.
-   dds-decomp/docs/idioms.md has confirmed shapes for this compiler. Budget per function:
-   three rewrites and eight check runs, counted, not timed. When the budget is spent the
-   function is recorded as it stands. Never enumerate orderings by hand; that is the
-   permuter's job. A function over 300 words whose first draft is more than 30% off is
-   recorded at once and named in the handoff for a run of its own.
-   A draft under 10 words off gets a permuter run before it is recorded, in the same run,
-   never deferred: put it in the unit in T as a NON_MATCHING draft, `python3
-   tools/perm_unit.py import UNIT NAME` (a shared unit is scored on both games), then in the
-   background `python3 ~/projects/decomp-permuter/permuter.py build/permuter/<dir> -j4
-   --best-only --stop-on-zero --quiet` under `timeout 600`, checked under every 4 minutes
-   while you draft the next function. A hit is a hint: keep it only after reducing it to
-   ordinary source under the rules below, then confirm with check_unit.
+3. Tune. A near miss is worked in this order, never skipping ahead:
+   1. Read the first differing word: a wrong constant, callee or prototype is the usual
+      answer.
+   2. Grep the lever index for its mnemonic:
+      `grep -P '\bMNEMONIC\b' ~/projects/smt3-port/external/smt3-decomp/docs/levers/INDEX.tsv`
+      (columns page, line, mnemonics, tell), then read the line it points at.
+      dds-decomp/docs/idioms.md has confirmed shapes for this compiler.
+   3. Run `python3 tools/find_similar.py --for NAME --body` in T and diff against a matched
+      sibling at the exact tier: the other game's copy, a numbered wrapper, a same-shape
+      function in another unit.
+   4. Record it.
+   Budget per function: three rewrites and eight check runs, counted, not timed. When the
+   budget is spent the function is recorded as it stands. Never enumerate orderings by
+   hand. A function over 300 words whose first draft is more than 30% off is recorded at
+   once and named in the handoff for a run of its own. Regular batches do not run the
+   permuter.
 4. Record. `./rec.py NAME WORDS "match"` or `./rec.py NAME WORDS "nonmatch N words" "cause,
    shapes tried, vector note"`. WORDS is the batches.tsv word count; N is check_unit's
    "N of M words differ". A nonmatch also needs a vector check:
@@ -111,7 +112,7 @@ the rec.py note. One Bash call with several commands beats several calls.
 ## Cache and time
 
 The prompt cache expires after 5 minutes idle. Nothing waits in the foreground over 4
-minutes; a full build or a permuter run goes in the background with a short check-in
+minutes; a full build goes in the background with a short check-in
 command under 4 minutes later.
 
 ## Stop and hand off
