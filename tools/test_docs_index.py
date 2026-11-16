@@ -29,6 +29,30 @@ class DraftScanTests(unittest.TestCase):
         self.assertEqual(docs_index.entry_names("a, b and c"), ["a", "b", "c"])
 
 
+class FakematchScanTests(unittest.TestCase):
+    def test_use_in_a_body_names_the_function(self) -> None:
+        text = ("void a(void)\n{\n    f();\n    FAKEMATCH_ASM_LIVE(x);\n}\n\n"
+                "void b(void)\n{\n    g();\n}\n")
+        self.assertEqual(docs_index.fakematch_functions(text), {"a"})
+
+    def test_braces_in_comments_and_strings_are_ignored(self) -> None:
+        text = ('void a(void)\n{\n    /* } */ puts("}");\n    FAKEMATCH_ASM_LIVE(x);\n}\n'
+                "void b(void)\n{\n    FAKEMATCH_ASM_READ(y); // {\n}\n")
+        self.assertEqual(docs_index.fakematch_functions(text), {"a", "b"})
+
+    def test_name_on_a_function_declaration_counts(self) -> None:
+        text = 's32 sdfMain(void) FAKEMATCH_ASM_NAME("main");\n'
+        self.assertEqual(docs_index.fakematch_functions(text), {"sdfMain"})
+
+    def test_name_on_data_names_no_function(self) -> None:
+        text = 'extern s32 work[] FAKEMATCH_ASM_NAME("retailWork");\nvoid f(void)\n{\n}\n'
+        self.assertEqual(docs_index.fakematch_functions(text), set())
+
+    def test_macro_definitions_in_a_comment_are_not_uses(self) -> None:
+        text = "void f(void)\n{\n    /* FAKEMATCH_ASM_LIVE(x) */\n}\n"
+        self.assertEqual(docs_index.fakematch_functions(text), set())
+
+
 class MatchingRowTests(unittest.TestCase):
     def test_every_entry_is_indexed(self) -> None:
         pages = [p for p in (ROOT / "docs/matching").rglob("*.md") if p.name != "README.md"]
@@ -37,7 +61,7 @@ class MatchingRowTests(unittest.TestCase):
         self.assertEqual(len(docs_index.matching_rows()), headings)
 
     def test_unit_and_line_point_at_the_entry(self) -> None:
-        for fn, unit, _size, _d, page, line, _fragile in docs_index.matching_rows():
+        for fn, unit, _size, _d, page, line, *_ in docs_index.matching_rows():
             text = (ROOT / page).read_text().split("\n")[int(line) - 1]
             self.assertTrue(text.startswith("## "), page)
             self.assertIn(fn, text)
@@ -61,7 +85,7 @@ class MatchingRowTests(unittest.TestCase):
                     self.assertEqual(rows[0][3], "51 of 155 words differ")
                     serialized = "\t".join(rows[0])
                     self.assertEqual(len(serialized.splitlines()), 1)
-                    self.assertEqual(len(serialized.split("\t")), 7)
+                    self.assertEqual(len(serialized.split("\t")), 8)
 
     def test_fragile_line_is_carried_into_the_row(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -79,13 +103,28 @@ class MatchingRowTests(unittest.TestCase):
             self.assertEqual(docs_index.fragile_names(rows), {"a"})
 
     def test_entries_carry_their_games(self) -> None:
-        rows = [("a and b", "u", "raidou1 0x10, raidou2 0x14", "", "docs/matching/u.md", "3", "")]
+        rows = [("a and b", "u", "raidou1 0x10, raidou2 0x14", "", "docs/matching/u.md", "3", "", "")]
         self.assertEqual(docs_index.entries(rows), {
             ("a", "u", "raidou1"), ("a", "u", "raidou2"),
             ("b", "u", "raidou1"), ("b", "u", "raidou2")})
 
+    def test_fakematch_line_is_carried_into_the_row(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            drafts = root / "docs/matching"
+            drafts.mkdir(parents=True)
+            (drafts / "example.md").write_text(
+                "## a (example, raidou1 0x28C)\n\nMatches.\n\n"
+                "Fakematch: types and order\n tried first.\n\n"
+                "## b (example, raidou1 0x10)\n\nMatches.\n")
+            with patch.object(docs_index, "ROOT", root), patch.object(docs_index, "MATCHING", drafts):
+                rows = docs_index.matching_rows()
+            self.assertEqual(rows[0][7], "types and order tried first.")
+            self.assertEqual(rows[1][7], "")
+            self.assertEqual(docs_index.fakematch_entries(rows), {("a", "example", "raidou1")})
+
     def test_entry_without_a_game_is_reported(self) -> None:
-        rows = [("a", "u", "0x10", "", "docs/matching/u.md", "3", "")]
+        rows = [("a", "u", "0x10", "", "docs/matching/u.md", "3", "", "")]
         self.assertEqual(len(docs_index.misplaced(rows)), 1)
 
 
@@ -96,6 +135,34 @@ class IndexFreshnessTests(unittest.TestCase):
                 docs_index.matching_rows())), contextlib.redirect_stdout(io.StringIO()) as out:
             self.assertEqual(docs_index.main(["--check"]), 1)
         self.assertIn("no_such_draft has no entry", out.getvalue())
+
+    def run_check(self, uses, rows) -> tuple[int, str]:
+        with patch.object(docs_index, "fakematch_uses", lambda: uses), \
+                patch.object(docs_index, "matching_rows", lambda: rows), \
+                patch.object(docs_index, "drafts", lambda: set()), \
+                patch.object(docs_index, "misplaced", lambda _rows: []), \
+                patch.object(docs_index, "matching_readme", lambda _rows: ""), \
+                patch.object(docs_index.pathlib.Path, "read_text", lambda _self: ""), \
+                contextlib.redirect_stdout(io.StringIO()) as out:
+            rc = docs_index.main(["--check"])
+        return rc, out.getvalue()
+
+    def test_a_fakematch_user_without_a_line_fails_the_check(self) -> None:
+        rows = [("f", "u", "raidou1 0x10", "", "docs/matching/u.md", "3", "", "")]
+        rc, out = self.run_check({("f", "u", "raidou1")}, rows)
+        self.assertEqual(rc, 1)
+        self.assertIn("f uses FAKEMATCH_ASM_* and needs a Fakematch: line", out)
+
+    def test_a_matched_function_with_a_fakematch_line_is_accepted(self) -> None:
+        rows = [("f", "u", "raidou1 0x10", "", "docs/matching/u.md", "3", "", "tried X")]
+        rc, out = self.run_check({("f", "u", "raidou1")}, rows)
+        self.assertNotIn("not a raidou1 draft", out)
+        self.assertNotIn("needs a Fakematch", out)
+
+    def test_a_matched_function_without_a_use_is_still_rejected(self) -> None:
+        rows = [("f", "u", "raidou1 0x10", "", "docs/matching/u.md", "3", "", "tried X")]
+        rc, out = self.run_check(set(), rows)
+        self.assertIn("f is not a raidou1 draft", out)
 
     def test_the_committed_index_is_current(self) -> None:
         """CI runs this; every draft needs an entry and the tables must be regenerated."""
