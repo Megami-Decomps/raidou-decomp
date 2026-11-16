@@ -817,6 +817,29 @@ def text_comparison_extent(text, offset, size, address, next_address):
     return size, False
 
 
+def present_names(source, names):
+    r"""The names in `names` that `source` holds as INCLUDE_ASM, a C definition or an asm("") alias: in one pass, what
+    ^INCLUDE_ASM\([^\n]*\bNAME\);|^[ \t]*(?:[A-Za-z_][^;\n]*\b)?NAME\s*\([^;]*$|\basm\s*\(\s*"NAME"\s*\) accepts (re.M)."""
+    found = set(re.findall(r'\basm\s*\(\s*"(\w+)"\s*\)', source)) & names
+    for m in re.finditer(r"\w+", source):
+        name, start, end = m[0], m.start(), m.end()
+        if name not in names or name in found:
+            continue
+        line = source.rfind("\n", 0, start) + 1
+        if source.startswith("INCLUDE_ASM(", line) and start >= line + 12 and source.startswith(");", end):
+            found.add(name)
+            continue
+        head = source[line:start].lstrip(" \t")
+        if head and not (re.match(r"[A-Za-z_]", head) and ";" not in head and not re.match(r"\w", head[-1])):
+            continue
+        if not (paren := re.compile(r"\s*\(").match(source, end)):
+            continue
+        stop = source.find("\n", paren.end())
+        if ";" not in source[paren.end():stop if stop >= 0 else len(source)]:
+            found.add(name)
+    return found
+
+
 def native_function_size(assembly, name):
     """Read the function's own extent, excluding padding before its neighbour."""
     match = re.search(rf"^nonmatching\s+{re.escape(name)},\s*(0x[0-9A-Fa-f]+)\b",
@@ -1600,11 +1623,12 @@ def main():
     # Every retail function of the unit must still be there, as C or INCLUDE_ASM.
     full = ROOT / "asm" / version / f"{unit_name}.s"
     if full.exists() and not args.func:
-        source = unit_view
-        for name in re.findall(r"^glabel (\w+)", full.read_text(), re.M):
-            # A C definition may carry the retail name through an asm("") alias, which
-            # is how a function called main avoids cc1's __main call.
-            if not re.search(rf"^INCLUDE_ASM\([^\n]*\b{name}\);|^[ \t]*(?:[A-Za-z_][^;\n]*\b)?{name}\s*\([^;]*$|\basm\s*\(\s*\"{name}\"\s*\)", source, re.M):
+        glabels = re.findall(r"^glabel (\w+)", full.read_text(), re.M)
+        # A C definition may carry the retail name through an asm("") alias, which
+        # is how a function called main avoids cc1's __main call.
+        present = present_names(unit_view, set(glabels))
+        for name in glabels:
+            if name not in present:
                 bad += 1
                 print(f"MISSING {name}: neither C nor INCLUDE_ASM in the unit")
     # A func_XXXXXXXX whose address symbol_addrs now names differently fails a fresh link
