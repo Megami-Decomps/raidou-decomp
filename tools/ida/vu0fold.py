@@ -3,7 +3,8 @@
 ps2asm.h/fpu.h macros of vu0cat.json, writing pc/DST/*.c ('-' filters stdin to stdout). Also usable as a module: fold(text)."""
 import json, os, re, sys
 
-W = os.path.expanduser("~/.local/state/raidou-decomp-work/ida-pseudo")  # vu0cat.json and pc/ live in the work dir
+W = os.path.expanduser("~/.local/state/raidou-decomp-work/ida-pseudo")  # pc/ for the batch mode
+HERE = os.path.dirname(os.path.abspath(__file__))
 NO_DEST = {"qmtc2", "ctc2", "mult1", "multu1", "div1", "divu1", "madd1", "maddu1", "mthi1", "mtlo1",
            "pmthi", "pmtlo", "pmthl", "mtsab", "mtsah", "pmaddw", "pmsubw", "pmadduw", "pdivw",
            "pdivuw", "pdivbw", "pmaddh", "pmsubh", "phmadh", "phmsbh"}
@@ -295,7 +296,7 @@ def norm(t):
 
 
 def load_templates():
-    ts = [Template(t) for t in json.load(open(os.path.join(W, "vu0cat.json")))]
+    ts = [Template(t) for t in json.load(open(os.path.join(HERE, "vu0cat.json")))]
     return [t for t in ts if t.ok]
 
 

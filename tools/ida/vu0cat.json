@@ -1,0 +1,12030 @@
+[
+{
+"name": "SDF_VU0_COPYVECTOR",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"src"
+],
+"operands": [
+[
+"r",
+"dst"
+],
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lq",
+"$v0",
+"0x0(%1)"
+],
+[
+"sq",
+"$v0",
+"0x0(%0)"
+]
+],
+"uses": 245
+},
+{
+"name": "SDF_VU0_COPYVECTOR_F32",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"src"
+],
+"operands": [
+[
+"=m",
+"dst"
+],
+[
+"r",
+"dst"
+],
+[
+"r",
+"src"
+],
+[
+"m",
+"src"
+]
+],
+"ops": [
+[
+"lq",
+"$v0",
+"0x0(%2)"
+],
+[
+"sq",
+"$v0",
+"0x0(%1)"
+]
+],
+"uses": 4
+},
+{
+"name": "PS2_STORE_ZERO_QUAD",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sq",
+"$zero",
+"0x0(%0)"
+]
+],
+"uses": 2
+},
+{
+"name": "PS2_STORE_QUAD_GPR",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"value"
+],
+"operands": [
+[
+"=m",
+"dst"
+],
+[
+"r",
+"value"
+]
+],
+"ops": [
+[
+"sq",
+"%1",
+"0x0(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_LOADVECTOR",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf10",
+"0x0(%0)"
+]
+],
+"uses": 880
+},
+{
+"name": "SDF_VU0_LOADVECTOR_MEMOPS",
+"header": "ps2asm.h",
+"params": [
+"lvalue"
+],
+"operands": [
+[
+"m",
+"lvalue"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf10",
+"0x0(%0)"
+]
+],
+"uses": 9
+},
+{
+"name": "SDF_VU0_STOREVECTOR",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf10",
+"0x0(%0)"
+]
+],
+"uses": 638
+},
+{
+"name": "SDF_VU0_STOREVECTOR_MEMOPS",
+"header": "ps2asm.h",
+"params": [
+"lvalue"
+],
+"operands": [
+[
+"=m",
+"lvalue"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf10",
+"0x0(%0)"
+]
+],
+"uses": 10
+},
+{
+"name": "SDF_VU0_STOREVECTOR_F32",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"=m",
+"dst"
+],
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf10",
+"0x0(%1)"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_STOREVECTOR_ZERO",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf0",
+"0x0(%0)"
+]
+],
+"uses": 4
+},
+{
+"name": "SDF_VU0_LOADVECTOR_B",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf11",
+"0x0(%0)"
+]
+],
+"uses": 462
+},
+{
+"name": "SDF_VU0_LOADVECTOR_B_MEMOPS",
+"header": "ps2asm.h",
+"params": [
+"lvalue"
+],
+"operands": [
+[
+"m",
+"lvalue"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf11",
+"0x0(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_LOADVECTOR_B_F32",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"m",
+"src"
+],
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf11",
+"0x0(%1)"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_STOREVECTOR_B",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf11",
+"0x0(%0)"
+]
+],
+"uses": 27
+},
+{
+"name": "SDF_VU0_STOREVECTOR_B_MEMOPS",
+"header": "ps2asm.h",
+"params": [
+"lvalue"
+],
+"operands": [
+[
+"=m",
+"lvalue"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf11",
+"0x0(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_LOADMATRIX",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"lqc2",
+"$vf29",
+"0x10(%0)"
+],
+[
+"lqc2",
+"$vf30",
+"0x20(%0)"
+],
+[
+"lqc2",
+"$vf31",
+"0x30(%0)"
+]
+],
+"uses": 67
+},
+{
+"name": "SDF_VU0_STOREMATRIX",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf29",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf30",
+"0x20(%0)"
+],
+[
+"sqc2",
+"$vf31",
+"0x30(%0)"
+]
+],
+"uses": 37
+},
+{
+"name": "SDF_VU0_COPYMATRIX_A_TO_B",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf24",
+"$vf28"
+],
+[
+"vmove.xyzw",
+"$vf25",
+"$vf29"
+],
+[
+"vmove.xyzw",
+"$vf26",
+"$vf30"
+],
+[
+"vmove.xyzw",
+"$vf27",
+"$vf31"
+]
+],
+"uses": 5
+},
+{
+"name": "VU0_VF10_FROM_GPR",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf10"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_VF10_TO_GPR",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"=r",
+"r"
+]
+],
+"ops": [
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_VF11_FROM_GPR",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf11"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_VF11_TO_GPR",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"=r",
+"r"
+]
+],
+"ops": [
+[
+"qmfc2.ni",
+"%0",
+"$vf11"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_SCALEVECTOR_BITS",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+]
+],
+"uses": 33
+},
+{
+"name": "SDF_VU0_SCALEVECTOR_B_BITS",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf11",
+"$vf11",
+"$vf2x"
+]
+],
+"uses": 15
+},
+{
+"name": "VU0_SET_VF2X",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_COPYVECTOR_A_TO_B",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf11",
+"$vf10"
+]
+],
+"uses": 168
+},
+{
+"name": "SDF_VU0_COPYVECTOR_B_TO_A",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf10",
+"$vf11"
+]
+],
+"uses": 13
+},
+{
+"name": "SDF_VU0_COPYVECTOR_A_TO_C",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf12",
+"$vf10"
+]
+],
+"uses": 93
+},
+{
+"name": "SDF_VU0_COPYVECTOR_C_TO_A",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf10",
+"$vf12"
+]
+],
+"uses": 59
+},
+{
+"name": "SDF_VU0_COPYVECTOR_C_TO_B",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf11",
+"$vf12"
+]
+],
+"uses": 27
+},
+{
+"name": "SDF_VU0_ADDVECTOR",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vadd.xyzw",
+"$vf10",
+"$vf10",
+"$vf11"
+]
+],
+"uses": 182
+},
+{
+"name": "SDF_VU0_SUBVECTOR",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyzw",
+"$vf10",
+"$vf10",
+"$vf11"
+]
+],
+"uses": 168
+},
+{
+"name": "SDF_VU0_MULVECTOR",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyzw",
+"$vf10",
+"$vf10",
+"$vf11"
+]
+],
+"uses": 216
+},
+{
+"name": "VU0_ADD_VF10_VF11_XYZ",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vadd.xyz",
+"$vf10",
+"$vf10",
+"$vf11"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_SUB_VF10_VF11_XYZ",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyz",
+"$vf10",
+"$vf10",
+"$vf11"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MUL_VF10_VF11_XYZ",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyz",
+"$vf10",
+"$vf10",
+"$vf11"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_NEGVECTOR_XYZ",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyz",
+"$vf10",
+"$vf0",
+"$vf10"
+]
+],
+"uses": 7
+},
+{
+"name": "SDF_VU0_VECTOR_W_SET_ZERO",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulx.w",
+"$vf10",
+"$vf10",
+"$vf0x"
+]
+],
+"uses": 37
+},
+{
+"name": "SDF_VU0_VECTOR_W_SET_ONE",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.w",
+"$vf10",
+"$vf0"
+]
+],
+"uses": 48
+},
+{
+"name": "SDF_VU0_ITOF0",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vitof0.xyzw",
+"$vf10",
+"$vf10"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_FTOI0",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_FTOI4",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vftoi4.xyzw",
+"$vf10",
+"$vf10"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_APPLYMATRIX",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf10x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf10y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf10z"
+],
+[
+"vmaddw.xyzw",
+"$vf10",
+"$vf31",
+"$vf10w"
+]
+],
+"uses": 75
+},
+{
+"name": "SDF_VU0_APPLYMATRIX_XYZ1",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf10x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf10y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf10z"
+],
+[
+"vmaddw.xyzw",
+"$vf10",
+"$vf31",
+"$vf0w"
+]
+],
+"uses": 34
+},
+{
+"name": "SDF_VU0_APPLYMATRIX_XYZ",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf10x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf10y"
+],
+[
+"vmaddz.xyzw",
+"$vf10",
+"$vf30",
+"$vf10z"
+]
+],
+"uses": 57
+},
+{
+"name": "VU0_LERP_VF10_VF11",
+"header": "ps2asm.h",
+"params": [
+"t"
+],
+"operands": [
+[
+"f",
+"t"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vsubx.w",
+"$vf3",
+"$vf0",
+"$vf2x"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf11",
+"$vf2x"
+],
+[
+"vmaddw.xyzw",
+"$vf10",
+"$vf10",
+"$vf3w"
+]
+],
+"uses": 4
+},
+{
+"name": "SDF_VU0_INTERPOLATE",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"vsubx.w",
+"$vf3",
+"$vf0",
+"$vf2x"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf11",
+"$vf2x"
+],
+[
+"vmaddw.xyzw",
+"$vf10",
+"$vf10",
+"$vf3w"
+]
+],
+"uses": 6
+},
+{
+"name": "PS2_FLOAT_BITS",
+"header": "ps2asm.h",
+"params": [
+"out",
+"f"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"f",
+"f"
+]
+],
+"ops": [
+[
+"mfc1",
+"%0",
+"%1"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_OUTERPRODUCT",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vopmula.xyz",
+"$ACC",
+"$vf10",
+"$vf11"
+],
+[
+"vopmsub.xyz",
+"$vf10",
+"$vf11",
+"$vf10"
+]
+],
+"uses": 68
+},
+{
+"name": "SDF_VU0_INNERPRODUCT",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=f",
+"out"
+]
+],
+"ops": [
+[
+"vmul.xyz",
+"$vf2",
+"$vf10",
+"$vf11"
+],
+[
+"vaddy.x",
+"$vf2",
+"$vf2",
+"$vf2y"
+],
+[
+"vaddz.x",
+"$vf2",
+"$vf2",
+"$vf2z"
+],
+[
+"qmfc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+]
+],
+"uses": 18
+},
+{
+"name": "SDF_VU0_GETLENGTH",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=f",
+"out"
+]
+],
+"ops": [
+[
+"vmul.xyz",
+"$vf2",
+"$vf10",
+"$vf10"
+],
+[
+"vaddy.x",
+"$vf2",
+"$vf2",
+"$vf2y"
+],
+[
+"vaddz.x",
+"$vf2",
+"$vf2",
+"$vf2z"
+],
+[
+".word",
+"0x4A2203BD                   # vsqrt       $Q",
+"$vf2x # 00200000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vwaitq"
+],
+[
+"cfc2.ni",
+"$v0",
+"$vi22"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+]
+],
+"uses": 35
+},
+{
+"name": "SDF_VU0_NORMALIZE",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyz",
+"$vf2",
+"$vf10",
+"$vf10"
+],
+[
+"vmulax.w",
+"$ACC",
+"$vf0",
+"$vf2x"
+],
+[
+"vmadday.w",
+"$ACC",
+"$vf0",
+"$vf2y"
+],
+[
+"vmaddz.w",
+"$vf2",
+"$vf0",
+"$vf2z"
+],
+[
+"vrsqrt",
+"$Q",
+"$vf0w",
+"$vf2w"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.xyz",
+"$vf10",
+"$vf10",
+"$Q"
+]
+],
+"uses": 168
+},
+{
+"name": "SDF_VU0_PERSVECTOR",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vdiv",
+"$Q",
+"$vf0w",
+"$vf10w"
+],
+[
+"vmove.w",
+"$vf10",
+"$vf0"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.xyzw",
+"$vf10",
+"$vf10",
+"$Q"
+]
+],
+"uses": 12
+},
+{
+"name": "SDF_VU0_CLIPTEST",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+".word",
+"0x4BCA51FF                   # vclipw.xyz  $vf10",
+"$vf10w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_GETCLIPFLAG",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=r",
+"out"
+]
+],
+"ops": [
+[
+"cfc2.ni",
+"%0",
+"$vi18"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_WRITE_CLIP_FLAGS",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"ctc2.ni",
+"%0",
+"$vi18"
+]
+],
+"uses": 0
+},
+{
+"name": "MMI_PEXTLW",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"pextlw",
+"%0",
+"%1",
+"%2"
+]
+],
+"uses": 0
+},
+{
+"name": "MMI_PEXTUW",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"pextuw",
+"%0",
+"%1",
+"%2"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_MMI_STORE_UNIT_MATRIX",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"qmfc2.ni",
+"$a1",
+"$vf0"
+],
+[
+"pextuw",
+"$a0",
+"$zero",
+"$a1"
+],
+[
+"pextuw",
+"$v0",
+"$zero",
+"$a0"
+],
+[
+"pextuw",
+"$v1",
+"$a0",
+"$zero"
+],
+[
+"sq",
+"$v0",
+"0x0(%0)"
+],
+[
+"sq",
+"$v1",
+"0x10(%0)"
+],
+[
+"sq",
+"$a0",
+"0x20(%0)"
+],
+[
+"sq",
+"$a1",
+"0x30(%0)"
+]
+],
+"uses": 3
+},
+{
+"name": "MMI_PCPYLD",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"pcpyld",
+"%0",
+"%1",
+"%2"
+]
+],
+"uses": 0
+},
+{
+"name": "MMI_PCPYUD",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"pcpyud",
+"%0",
+"%1",
+"%2"
+]
+],
+"uses": 0
+},
+{
+"name": "MMI_PADDW",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"paddw",
+"%0",
+"%1",
+"%2"
+]
+],
+"uses": 0
+},
+{
+"name": "MMI_PSUBW",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"psubw",
+"%0",
+"%1",
+"%2"
+]
+],
+"uses": 0
+},
+{
+"name": "MMI_PAND",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"pand",
+"%0",
+"%1",
+"%2"
+]
+],
+"uses": 0
+},
+{
+"name": "MMI_POR",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"por",
+"%0",
+"%1",
+"%2"
+]
+],
+"uses": 0
+},
+{
+"name": "MMI_PLZCW",
+"header": "ps2asm.h",
+"params": [
+"out",
+"in"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"in"
+]
+],
+"ops": [
+[
+"plzcw",
+"%0",
+"%1"
+]
+],
+"uses": 1
+},
+{
+"name": "MMI_RGBA_UNPACK",
+"header": "ps2asm.h",
+"params": [
+"src",
+"unit"
+],
+"operands": [
+[
+"r",
+"src"
+],
+[
+"r",
+"unit"
+]
+],
+"ops": [
+[
+"lw",
+"$v0",
+"0x0(%0)"
+],
+[
+"pextlb",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"vitof0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmtc2.ni",
+"%1",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+]
+],
+"uses": 23
+},
+{
+"name": "SDF_VU0_dds3ColorFtoI",
+"header": "ps2asm.h",
+"params": [
+"out",
+"scale"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"f",
+"scale"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v1",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 0
+},
+{
+"name": "MMI_RGBA_PACK_UNIT",
+"header": "ps2asm.h",
+"params": [
+"out",
+"unit"
+],
+"operands": [
+[
+"=&r",
+"out"
+],
+[
+"r",
+"unit"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%1",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 37
+},
+{
+"name": "SDF_VU0_LOADVECTOR_UNALIGN",
+"header": "ps2asm.h",
+"params": [
+"p"
+],
+"operands": [
+[
+"r",
+"p"
+]
+],
+"ops": [
+[
+"ldr",
+"$v0",
+"0x0(%0)"
+],
+[
+"ldl",
+"$v0",
+"0x7(%0)"
+],
+[
+"lw",
+"$v1",
+"0x8(%0)"
+],
+[
+"pcpyld",
+"$v0",
+"$v1",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf10"
+]
+],
+"uses": 6
+},
+{
+"name": "MMI_STORE_VEC3",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"src"
+],
+"operands": [
+[
+"r",
+"dst"
+],
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lq",
+"$v1",
+"0x0(%1)"
+],
+[
+"pcpyud",
+"$v0",
+"$v1",
+"$zero"
+],
+[
+"sdr",
+"$v1",
+"0x0(%0)"
+],
+[
+"sdl",
+"$v1",
+"0x7(%0)"
+],
+[
+"sw",
+"$v0",
+"0x8(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "EE_MULT1",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"mult1",
+"%0",
+"%1",
+"%2"
+]
+],
+"uses": 0
+},
+{
+"name": "EE_DIV1",
+"header": "ps2asm.h",
+"params": [
+"quotient",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"quotient"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"div1",
+"$zero",
+"%1",
+"%2"
+],
+[
+"mflo1",
+"%0"
+]
+],
+"uses": 0
+},
+{
+"name": "EE_DIVU1",
+"header": "ps2asm.h",
+"params": [
+"quotient",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"quotient"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"divu1",
+"$zero",
+"%1",
+"%2"
+],
+[
+"mflo1",
+"%0"
+]
+],
+"uses": 0
+},
+{
+"name": "EE_REM1",
+"header": "ps2asm.h",
+"params": [
+"remainder",
+"a",
+"b"
+],
+"operands": [
+[
+"=r",
+"remainder"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+]
+],
+"ops": [
+[
+"div1",
+"$zero",
+"%1",
+"%2"
+],
+[
+"mfhi1",
+"%0"
+]
+],
+"uses": 0
+},
+{
+"name": "EE_SYNC",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"sync"
+]
+],
+"uses": 6
+},
+{
+"name": "EE_SYNC_P",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"sync.p"
+]
+],
+"uses": 0
+},
+{
+"name": "EE_SPIN_NOP",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"nop"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_ADDVECTOR_A_C",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vadd.xyzw",
+"$vf10",
+"$vf10",
+"$vf12"
+]
+],
+"uses": 72
+},
+{
+"name": "SDF_VU0_ADDVECTOR_C_A",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vadd.xyzw",
+"$vf12",
+"$vf12",
+"$vf10"
+]
+],
+"uses": 4
+},
+{
+"name": "SDF_VU0_STOREVECTOR_NOMEM",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf10",
+"0x0(%0)"
+]
+],
+"uses": 215
+},
+{
+"name": "SDF_VU0_LOADVECTOR_RWADDR",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"+r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf10",
+"0x0(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_STOREVECTOR_RWADDR",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"+r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf10",
+"0x0(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_COPYVECTOR_RWSRC",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"src"
+],
+"operands": [
+[
+"+r",
+"src"
+],
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"lq",
+"$v0",
+"0x0(%0)"
+],
+[
+"sq",
+"$v0",
+"0x0(%1)"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_LOADVECTOR_B_BARRIER",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf11",
+"0x0(%0)"
+]
+],
+"uses": 4
+},
+{
+"name": "SDF_VU0_SUBVECTOR_B_C",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyzw",
+"$vf11",
+"$vf11",
+"$vf12"
+]
+],
+"uses": 7
+},
+{
+"name": "SDF_VU0_ADDVECTOR_B_C",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vadd.xyzw",
+"$vf11",
+"$vf11",
+"$vf12"
+]
+],
+"uses": 7
+},
+{
+"name": "SDF_VU0_LOADVECTOR_C",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf12",
+"0x0(%0)"
+]
+],
+"uses": 36
+},
+{
+"name": "SDF_VU0_APPLYMATRIX_B",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf11x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf11y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf11z"
+],
+[
+"vmaddw.xyzw",
+"$vf11",
+"$vf31",
+"$vf11w"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_LOADMATRIX_B",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf24",
+"0x0(%0)"
+],
+[
+"lqc2",
+"$vf25",
+"0x10(%0)"
+],
+[
+"lqc2",
+"$vf26",
+"0x20(%0)"
+],
+[
+"lqc2",
+"$vf27",
+"0x30(%0)"
+]
+],
+"uses": 20
+},
+{
+"name": "MMI_STORE_VEC3_VALUE",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"value"
+],
+"operands": [
+[
+"r",
+"dst"
+],
+[
+"r",
+"value"
+]
+],
+"ops": [
+[
+"pcpyud",
+"$v0",
+"%1",
+"$zero"
+],
+[
+"sdr",
+"%1",
+"0x0(%0)"
+],
+[
+"sdl",
+"%1",
+"0x7(%0)"
+],
+[
+"sw",
+"$v0",
+"0x8(%0)"
+]
+],
+"uses": 8
+},
+{
+"name": "SDF_VU0_LOADIDENTITYVECTOR",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf10",
+"$vf0"
+]
+],
+"uses": 18
+},
+{
+"name": "SDF_VU0_GETVECTOR_X",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=f",
+"out"
+]
+],
+"ops": [
+[
+"qmfc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+]
+],
+"uses": 10
+},
+{
+"name": "SDF_VU0_STOREMATRIX_NOMEM",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf29",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf30",
+"0x20(%0)"
+],
+[
+"sqc2",
+"$vf31",
+"0x30(%0)"
+]
+],
+"uses": 3
+},
+{
+"name": "SDF_VU0_STOREMATRIX_RWADDR",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"+r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf29",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf30",
+"0x20(%0)"
+],
+[
+"sqc2",
+"$vf31",
+"0x30(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_COPY_MATRIX",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"src"
+],
+"operands": [
+[
+"r",
+"dst"
+],
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf28",
+"0x0(%1)"
+],
+[
+"lqc2",
+"$vf29",
+"0x10(%1)"
+],
+[
+"lqc2",
+"$vf30",
+"0x20(%1)"
+],
+[
+"lqc2",
+"$vf31",
+"0x30(%1)"
+],
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf29",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf30",
+"0x20(%0)"
+],
+[
+"sqc2",
+"$vf31",
+"0x30(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_STOREIDENTITY",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"qmfc2.ni",
+"$a1",
+"$vf0"
+],
+[
+"pextuw",
+"$a0",
+"$zero",
+"$a1"
+],
+[
+"pextuw",
+"$v0",
+"$zero",
+"$a0"
+],
+[
+"pextuw",
+"$v1",
+"$a0",
+"$zero"
+],
+[
+"sq",
+"$v0",
+"0x0(%0)"
+],
+[
+"sq",
+"$v1",
+"0x10(%0)"
+],
+[
+"sq",
+"$a0",
+"0x20(%0)"
+],
+[
+"sq",
+"$a1",
+"0x30(%0)"
+]
+],
+"uses": 37
+},
+{
+"name": "EE_MMI_RGBA_UNPACK",
+"header": "ps2asm.h",
+"params": [
+"src",
+"unit"
+],
+"operands": [
+[
+"r",
+"src"
+],
+[
+"r",
+"unit"
+]
+],
+"ops": [
+[
+"lw",
+"$v0",
+"0x0(%0)"
+],
+[
+"pextlb",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"vitof0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmtc2.ni",
+"%1",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+]
+],
+"uses": 51
+},
+{
+"name": "SDF_VU0_GETVECTOR_W",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=f",
+"out"
+]
+],
+"ops": [
+[
+"vaddw.x",
+"$vf2",
+"$vf0",
+"$vf10w"
+],
+[
+"qmfc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+]
+],
+"uses": 5
+},
+{
+"name": "SDF_VU0_GETVECTOR_Y",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=f",
+"out"
+]
+],
+"ops": [
+[
+"qmfc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"prot3w",
+"$v0",
+"$v0"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+]
+],
+"uses": 6
+},
+{
+"name": "SDF_VU0_GETVECTOR_Z",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=f",
+"out"
+]
+],
+"ops": [
+[
+"qmfc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"pexew",
+"$v0",
+"$v0"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+]
+],
+"uses": 10
+},
+{
+"name": "SDF_VU0_SETVECTOR_W",
+"header": "ps2asm.h",
+"params": [
+"f"
+],
+"operands": [
+[
+"f",
+"f"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmulx.w",
+"$vf10",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 7
+},
+{
+"name": "SDF_VU0_SETVECTOR_Z",
+"header": "ps2asm.h",
+"params": [
+"value"
+],
+"operands": [
+[
+"f",
+"value"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vaddx.z",
+"$vf10",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 19
+},
+{
+"name": "SDF_VU0_STORE_ROW0",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_STORE_ROW1",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf29",
+"0x0(%0)"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_STORE_ROW2",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf30",
+"0x0(%0)"
+]
+],
+"uses": 3
+},
+{
+"name": "SDF_VU0_SUBVECTOR_B_A",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyzw",
+"$vf11",
+"$vf11",
+"$vf10"
+]
+],
+"uses": 29
+},
+{
+"name": "SDF_VU0_LOADIDENTITY",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyzw",
+"$vf28",
+"$vf0",
+"$vf0"
+],
+[
+"vmr32.xyzw",
+"$vf30",
+"$vf0"
+],
+[
+"vmove.xyzw",
+"$vf31",
+"$vf0"
+],
+[
+"vaddw.x",
+"$vf28",
+"$vf28",
+"$vf0w"
+],
+[
+"vmr32.xyzw",
+"$vf29",
+"$vf30"
+]
+],
+"uses": 14
+},
+{
+"name": "SDF_VU0_LOADVECTOR_MTXCOL",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lw",
+"$v0",
+"0x0(%0)"
+],
+[
+"lw",
+"$v1",
+"0x10(%0)"
+],
+[
+"lw",
+"$a0",
+"0x20(%0)"
+],
+[
+"lw",
+"$a1",
+"0x30(%0)"
+],
+[
+"pextlw",
+"$v0",
+"$v1",
+"$v0"
+],
+[
+"pextlw",
+"$a0",
+"$a1",
+"$a0"
+],
+[
+"pcpyld",
+"$v0",
+"$a0",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf10"
+]
+],
+"uses": 8
+},
+{
+"name": "SDF_VU0_LOADVECTOR_B_MTXCOL",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lw",
+"$v0",
+"0x0(%0)"
+],
+[
+"lw",
+"$v1",
+"0x10(%0)"
+],
+[
+"lw",
+"$a0",
+"0x20(%0)"
+],
+[
+"lw",
+"$a1",
+"0x30(%0)"
+],
+[
+"pextlw",
+"$v0",
+"$v1",
+"$v0"
+],
+[
+"pextlw",
+"$a0",
+"$a1",
+"$a0"
+],
+[
+"pcpyld",
+"$v0",
+"$a0",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf11"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_LOAD_ROW3",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf31",
+"0x0(%0)"
+]
+],
+"uses": 9
+},
+{
+"name": "SDF_VU0_LOAD_ROW0_BARRIER",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf28",
+"0x0(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_LOAD_ROW1_BARRIER",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf29",
+"0x0(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_LOAD_ROW2_BARRIER",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf30",
+"0x0(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_LOAD_ROW3_BARRIER",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf31",
+"0x0(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_RESET_ROW3",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf31",
+"$vf0"
+]
+],
+"uses": 3
+},
+{
+"name": "SDF_VU0_SCALE_XYZ",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulx.xyzw",
+"$vf28",
+"$vf28",
+"$vf10x"
+],
+[
+"vmuly.xyzw",
+"$vf29",
+"$vf29",
+"$vf10y"
+],
+[
+"vmulz.xyzw",
+"$vf30",
+"$vf30",
+"$vf10z"
+]
+],
+"uses": 24
+},
+{
+"name": "VU0_SET_VF10_Y_CLEAR_W",
+"header": "ps2asm.h",
+"params": [
+"f"
+],
+"operands": [
+[
+"f",
+"f"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vaddx.y",
+"$vf10",
+"$vf0",
+"$vf2x"
+],
+[
+"vmulx.w",
+"$vf10",
+"$vf10",
+"$vf0x"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_MATRIX_ROW3_W_SET_ONE",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.w",
+"$vf31",
+"$vf0"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_SET_ROW0",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf28",
+"$vf10"
+]
+],
+"uses": 5
+},
+{
+"name": "SDF_VU0_SET_ROW1",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf29",
+"$vf10"
+]
+],
+"uses": 5
+},
+{
+"name": "SDF_VU0_SET_ROW2",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf30",
+"$vf10"
+]
+],
+"uses": 5
+},
+{
+"name": "SDF_VU0_GET_ROW2",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf10",
+"$vf30"
+]
+],
+"uses": 6
+},
+{
+"name": "SDF_VU0_LOADVECTOR_BARRIER",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf10",
+"0x0(%0)"
+]
+],
+"uses": 17
+},
+{
+"name": "SDF_VU0_SETVECTOR_X",
+"header": "ps2asm.h",
+"params": [
+"value"
+],
+"operands": [
+[
+"f",
+"value"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vaddx.x",
+"$vf10",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 18
+},
+{
+"name": "SDF_VU0_SETVECTOR_Y",
+"header": "ps2asm.h",
+"params": [
+"value"
+],
+"operands": [
+[
+"f",
+"value"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vaddx.y",
+"$vf10",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 18
+},
+{
+"name": "SDF_VU0_STOREIDENTITYVECTOR",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf0",
+"0x0(%0)"
+]
+],
+"uses": 8
+},
+{
+"name": "SDF_VU0_STOREVECTOR_B_NOMEM",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf11",
+"0x0(%0)"
+]
+],
+"uses": 36
+},
+{
+"name": "SDF_VU0_SETSCALE1VECTOR",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vaddw.xyz",
+"$vf10",
+"$vf0",
+"$vf0w"
+],
+[
+"vmulx.w",
+"$vf10",
+"$vf0",
+"$vf0x"
+]
+],
+"uses": 9
+},
+{
+"name": "SDF_VU0_COPYVECTOR_A_TO_B_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf11",
+"$vf10"
+]
+],
+"uses": 3
+},
+{
+"name": "SDF_VU0_SUBVECTOR_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyzw",
+"$vf10",
+"$vf10",
+"$vf11"
+]
+],
+"uses": 4
+},
+{
+"name": "SDF_VU0_APPLYMATRIX_XYZ_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf10x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf10y"
+],
+[
+"vmaddz.xyzw",
+"$vf10",
+"$vf30",
+"$vf10z"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_NORMALIZE_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyz",
+"$vf2",
+"$vf10",
+"$vf10"
+],
+[
+"vmulax.w",
+"$ACC",
+"$vf0",
+"$vf2x"
+],
+[
+"vmadday.w",
+"$ACC",
+"$vf0",
+"$vf2y"
+],
+[
+"vmaddz.w",
+"$vf2",
+"$vf0",
+"$vf2z"
+],
+[
+"vrsqrt",
+"$Q",
+"$vf0w",
+"$vf2w"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.xyz",
+"$vf10",
+"$vf10",
+"$Q"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_COPYVECTOR_A_TO_C_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf12",
+"$vf10"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_COPYVECTOR_C_TO_A_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf10",
+"$vf12"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_OUTERPRODUCT_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vopmula.xyz",
+"$ACC",
+"$vf10",
+"$vf11"
+],
+[
+"vopmsub.xyz",
+"$vf10",
+"$vf11",
+"$vf10"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_MULVECTOR_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyzw",
+"$vf10",
+"$vf10",
+"$vf11"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_ADDVECTOR_A_C_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vadd.xyzw",
+"$vf10",
+"$vf10",
+"$vf12"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_SUBVECTOR_B_A_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyzw",
+"$vf11",
+"$vf11",
+"$vf10"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_COPYVECTOR_A_TO_TEMP_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf2",
+"$vf10"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_COPYVECTOR_TEMP_TO_C_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf12",
+"$vf2"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_SET_ROW3",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf31",
+"$vf10"
+]
+],
+"uses": 24
+},
+{
+"name": "VU0_ADD_VF31_VF10_XYZ",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vadd.xyz",
+"$vf31",
+"$vf31",
+"$vf10"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_ADDVECTOR_B_A",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vadd.xyzw",
+"$vf11",
+"$vf11",
+"$vf10"
+]
+],
+"uses": 10
+},
+{
+"name": "SDF_VU0_COPYVECTOR_B_TO_C",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf12",
+"$vf11"
+]
+],
+"uses": 2
+},
+{
+"name": "PS2_STORE_ZERO_QUAD_AT16",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sq",
+"$zero",
+"0x10(%0)"
+]
+],
+"uses": 2
+},
+{
+"name": "PS2_STORE_ZERO_QUAD_AT32",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sq",
+"$zero",
+"0x20(%0)"
+]
+],
+"uses": 2
+},
+{
+"name": "PS2_STORE_ZERO_QUAD_AT48",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sq",
+"$zero",
+"0x30(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "MMI_PEXT5",
+"header": "ps2asm.h",
+"params": [
+"out",
+"in"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"in"
+]
+],
+"ops": [
+[
+"pext5",
+"%0",
+"%1"
+]
+],
+"uses": 1
+},
+{
+"name": "EE_SYNC_EI",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"sync"
+],
+[
+"ei"
+]
+],
+"uses": 6
+},
+{
+"name": "EE_SYNC_BARRIER",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"sync"
+]
+],
+"uses": 1
+},
+{
+"name": "EE_SYNC_EI_BARRIER",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"sync"
+],
+[
+"ei"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_VF1_ONES_XYZ_ZERO_W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vaddw.xyz",
+"$vf1",
+"$vf0",
+"$vf0w"
+],
+[
+"vsubw.w",
+"$vf1",
+"$vf0",
+"$vf0w"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_QUAT_DOT_VF10_VF11",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=f",
+"out"
+]
+],
+"ops": [
+[
+"vaddw.xyz",
+"$vf1",
+"$vf0",
+"$vf0w"
+],
+[
+"vmul.xyzw",
+"$vf2",
+"$vf10",
+"$vf11"
+],
+[
+"vadday.x",
+"$ACC",
+"$vf2",
+"$vf2y"
+],
+[
+"vmaddaz.x",
+"$ACC",
+"$vf1",
+"$vf2z"
+],
+[
+"vmaddw.x",
+"$vf2",
+"$vf1",
+"$vf2w"
+],
+[
+"qmfc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+]
+],
+"uses": 3
+},
+{
+"name": "VU0_NEGATE_VF11_TO_VF12",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf0",
+"$vf0x"
+],
+[
+"vmsubw.xyzw",
+"$vf12",
+"$vf11",
+"$vf0w"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_SET_WEIGHTS_VF2X_VF3X",
+"header": "ps2asm.h",
+"params": [
+"first",
+"second"
+],
+"operands": [
+[
+"f",
+"first"
+],
+[
+"f",
+"second"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"mfc1",
+"$v1",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf3"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_WEIGHTED_SUM_VF10_VF12",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf10",
+"$vf2x"
+],
+[
+"vmaddx.xyzw",
+"$vf10",
+"$vf12",
+"$vf3x"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_TRANSLATE",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf10x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf10y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf10z"
+],
+[
+"vmaddw.xyzw",
+"$vf31",
+"$vf31",
+"$vf10w"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_TRANSLATE_XYZ1",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf10x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf10y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf10z"
+],
+[
+"vmaddw.xyzw",
+"$vf31",
+"$vf31",
+"$vf0w"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_SCALE_XYZW",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulx.xyzw",
+"$vf28",
+"$vf28",
+"$vf10x"
+],
+[
+"vmuly.xyzw",
+"$vf29",
+"$vf29",
+"$vf10y"
+],
+[
+"vmulz.xyzw",
+"$vf30",
+"$vf30",
+"$vf10z"
+],
+[
+"vmulw.xyzw",
+"$vf31",
+"$vf31",
+"$vf10w"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_SCALEVECTOR_V0_BARRIER",
+"header": "ps2asm.h",
+"params": [
+"value"
+],
+"operands": [
+[
+"f",
+"value"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_SCALEVECTOR_V0",
+"header": "ps2asm.h",
+"params": [
+"value"
+],
+"operands": [
+[
+"f",
+"value"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+]
+],
+"uses": 16
+},
+{
+"name": "SDF_VU0_LOADMATRIX_B_MEMOPS",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+],
+[
+"m",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf24",
+"0x0(%0)"
+],
+[
+"lqc2",
+"$vf25",
+"0x10(%0)"
+],
+[
+"lqc2",
+"$vf26",
+"0x20(%0)"
+],
+[
+"lqc2",
+"$vf27",
+"0x30(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "SDF_VU0_SUBVECTOR_A_C",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyzw",
+"$vf10",
+"$vf10",
+"$vf12"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_COPYMATRIX_B_TO_A",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf28",
+"$vf24"
+],
+[
+"vmove.xyzw",
+"$vf29",
+"$vf25"
+],
+[
+"vmove.xyzw",
+"$vf30",
+"$vf26"
+],
+[
+"vmove.xyzw",
+"$vf31",
+"$vf27"
+]
+],
+"uses": 3
+},
+{
+"name": "SDF_VU0_STOREMATRIX_B",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf24",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf25",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf26",
+"0x20(%0)"
+],
+[
+"sqc2",
+"$vf27",
+"0x30(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_COPYMATRIX_A_TO_C",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf20",
+"$vf28"
+],
+[
+"vmove.xyzw",
+"$vf21",
+"$vf29"
+],
+[
+"vmove.xyzw",
+"$vf22",
+"$vf30"
+],
+[
+"vmove.xyzw",
+"$vf23",
+"$vf31"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_COPYMATRIX_B_TO_C",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf20",
+"$vf24"
+],
+[
+"vmove.xyzw",
+"$vf21",
+"$vf25"
+],
+[
+"vmove.xyzw",
+"$vf22",
+"$vf26"
+],
+[
+"vmove.xyzw",
+"$vf23",
+"$vf27"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_COPYMATRIX_C_TO_A",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf28",
+"$vf20"
+],
+[
+"vmove.xyzw",
+"$vf29",
+"$vf21"
+],
+[
+"vmove.xyzw",
+"$vf30",
+"$vf22"
+],
+[
+"vmove.xyzw",
+"$vf31",
+"$vf23"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_COPYMATRIX_C_TO_B",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf24",
+"$vf20"
+],
+[
+"vmove.xyzw",
+"$vf25",
+"$vf21"
+],
+[
+"vmove.xyzw",
+"$vf26",
+"$vf22"
+],
+[
+"vmove.xyzw",
+"$vf27",
+"$vf23"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_LOADIDENTITY_B",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyzw",
+"$vf24",
+"$vf0",
+"$vf0"
+],
+[
+"vmr32.xyzw",
+"$vf26",
+"$vf0"
+],
+[
+"vmove.xyzw",
+"$vf27",
+"$vf0"
+],
+[
+"vaddw.x",
+"$vf24",
+"$vf24",
+"$vf0w"
+],
+[
+"vmr32.xyzw",
+"$vf25",
+"$vf26"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_STORE_VF24_VF25_VF26",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf24",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf25",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf26",
+"0x20(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_LOAD_VF24_VF25_VF26",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf24",
+"0x0(%0)"
+],
+[
+"lqc2",
+"$vf25",
+"0x10(%0)"
+],
+[
+"lqc2",
+"$vf26",
+"0x20(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_LOAD_VF24_VF25_VF26_AT16",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf24",
+"0x10(%0)"
+],
+[
+"lqc2",
+"$vf25",
+"0x20(%0)"
+],
+[
+"lqc2",
+"$vf26",
+"0x30(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MATRIX4_MUL_BANK_B_LEFT",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf24",
+"$vf28x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf25",
+"$vf28y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf26",
+"$vf28z"
+],
+[
+"vmaddw.xyzw",
+"$vf28",
+"$vf27",
+"$vf28w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf24",
+"$vf29x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf25",
+"$vf29y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf26",
+"$vf29z"
+],
+[
+"vmaddw.xyzw",
+"$vf29",
+"$vf27",
+"$vf29w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf24",
+"$vf30x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf25",
+"$vf30y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf26",
+"$vf30z"
+],
+[
+"vmaddw.xyzw",
+"$vf30",
+"$vf27",
+"$vf30w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf24",
+"$vf31x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf25",
+"$vf31y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf26",
+"$vf31z"
+],
+[
+"vmaddw.xyzw",
+"$vf31",
+"$vf27",
+"$vf31w"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_MATRIX4_MUL_BANK_C_RIGHT",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf20x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf20y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf20z"
+],
+[
+"vmaddw.xyzw",
+"$vf2",
+"$vf31",
+"$vf20w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf21x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf21y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf21z"
+],
+[
+"vmaddw.xyzw",
+"$vf3",
+"$vf31",
+"$vf21w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf22x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf22y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf22z"
+],
+[
+"vmaddw.xyzw",
+"$vf4",
+"$vf31",
+"$vf22w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf23x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf23y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf23z"
+],
+[
+"vmaddw.xyzw",
+"$vf31",
+"$vf31",
+"$vf23w"
+],
+[
+"vmove.xyzw",
+"$vf28",
+"$vf2"
+],
+[
+"vmove.xyzw",
+"$vf29",
+"$vf3"
+],
+[
+"vmove.xyzw",
+"$vf30",
+"$vf4"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_MATRIX4_MUL_BANK_C_LEFT",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf20",
+"$vf28x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf21",
+"$vf28y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf22",
+"$vf28z"
+],
+[
+"vmaddw.xyzw",
+"$vf28",
+"$vf23",
+"$vf28w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf20",
+"$vf29x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf21",
+"$vf29y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf22",
+"$vf29z"
+],
+[
+"vmaddw.xyzw",
+"$vf29",
+"$vf23",
+"$vf29w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf20",
+"$vf30x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf21",
+"$vf30y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf22",
+"$vf30z"
+],
+[
+"vmaddw.xyzw",
+"$vf30",
+"$vf23",
+"$vf30w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf20",
+"$vf31x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf21",
+"$vf31y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf22",
+"$vf31z"
+],
+[
+"vmaddw.xyzw",
+"$vf31",
+"$vf23",
+"$vf31w"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_TRANSMATRIX",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"qmfc2.ni",
+"$t0",
+"$vf28"
+],
+[
+"qmfc2.ni",
+"$t1",
+"$vf29"
+],
+[
+"qmfc2.ni",
+"$t2",
+"$vf30"
+],
+[
+"qmfc2.ni",
+"$t3",
+"$vf31"
+],
+[
+"pextlw",
+"$t4",
+"$t1",
+"$t0"
+],
+[
+"pextuw",
+"$t5",
+"$t1",
+"$t0"
+],
+[
+"pextlw",
+"$t6",
+"$t3",
+"$t2"
+],
+[
+"pextuw",
+"$t7",
+"$t3",
+"$t2"
+],
+[
+"pcpyld",
+"$t0",
+"$t6",
+"$t4"
+],
+[
+"pcpyud",
+"$t1",
+"$t4",
+"$t6"
+],
+[
+"pcpyld",
+"$t2",
+"$t7",
+"$t5"
+],
+[
+"pcpyud",
+"$t3",
+"$t5",
+"$t7"
+],
+[
+"qmtc2.ni",
+"$t0",
+"$vf28"
+],
+[
+"qmtc2.ni",
+"$t1",
+"$vf29"
+],
+[
+"qmtc2.ni",
+"$t2",
+"$vf30"
+],
+[
+"qmtc2.ni",
+"$t3",
+"$vf31"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_MATRIX4_INVERT_RIGID",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"qmfc2.ni",
+"$t0",
+"$vf28"
+],
+[
+"qmfc2.ni",
+"$t1",
+"$vf29"
+],
+[
+"qmfc2.ni",
+"$t2",
+"$vf30"
+],
+[
+"qmfc2.ni",
+"$t3",
+"$vf0"
+],
+[
+"pextlw",
+"$t4",
+"$t1",
+"$t0"
+],
+[
+"pextuw",
+"$t5",
+"$t1",
+"$t0"
+],
+[
+"pextlw",
+"$t6",
+"$t3",
+"$t2"
+],
+[
+"pextuw",
+"$t7",
+"$t3",
+"$t2"
+],
+[
+"pcpyld",
+"$t0",
+"$t6",
+"$t4"
+],
+[
+"pcpyud",
+"$t1",
+"$t4",
+"$t6"
+],
+[
+"pcpyld",
+"$t2",
+"$t7",
+"$t5"
+],
+[
+"vmove.w",
+"$vf31",
+"$vf0"
+],
+[
+"qmtc2.ni",
+"$t0",
+"$vf28"
+],
+[
+"qmtc2.ni",
+"$t1",
+"$vf29"
+],
+[
+"qmtc2.ni",
+"$t2",
+"$vf30"
+],
+[
+"vsuba.xyz",
+"$ACC",
+"$vf0",
+"$vf0"
+],
+[
+"vmsubax.xyz",
+"$ACC",
+"$vf28",
+"$vf31x"
+],
+[
+"vmsubay.xyz",
+"$ACC",
+"$vf29",
+"$vf31y"
+],
+[
+"vmsubz.xyz",
+"$vf31",
+"$vf30",
+"$vf31z"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_GET_ROW3",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf10",
+"$vf31"
+]
+],
+"uses": 3
+},
+{
+"name": "VU0_ROTATE_BASIS_AND_CACHE",
+"header": "ps2asm.h",
+"params": [
+"vectors",
+"matrix",
+"cache"
+],
+"operands": [
+[
+"r",
+"vectors"
+],
+[
+"r",
+"matrix"
+],
+[
+"r",
+"cache"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf2",
+"0x40(%0)"
+],
+[
+"lqc2",
+"$vf5",
+"0x10(%1)"
+],
+[
+"lqc2",
+"$vf6",
+"0x20(%1)"
+],
+[
+"lqc2",
+"$vf7",
+"0x30(%1)"
+],
+[
+"lqc2",
+"$vf3",
+"0x50(%0)"
+],
+[
+"lqc2",
+"$vf4",
+"0x60(%0)"
+],
+[
+"vmulax.xyz",
+"$ACC",
+"$vf5",
+"$vf2x"
+],
+[
+"vmadday.xyz",
+"$ACC",
+"$vf6",
+"$vf2y"
+],
+[
+"vmaddz.xyz",
+"$vf24",
+"$vf7",
+"$vf2z"
+],
+[
+"vmulax.xyz",
+"$ACC",
+"$vf5",
+"$vf3x"
+],
+[
+"vmadday.xyz",
+"$ACC",
+"$vf6",
+"$vf3y"
+],
+[
+"vmaddz.xyz",
+"$vf25",
+"$vf7",
+"$vf3z"
+],
+[
+"vmulax.xyz",
+"$ACC",
+"$vf5",
+"$vf4x"
+],
+[
+"vmadday.xyz",
+"$ACC",
+"$vf6",
+"$vf4y"
+],
+[
+"vmaddz.xyz",
+"$vf26",
+"$vf7",
+"$vf4z"
+],
+[
+"sqc2",
+"$vf2",
+"0x0(%2)"
+],
+[
+"sqc2",
+"$vf3",
+"0x10(%2)"
+],
+[
+"sqc2",
+"$vf4",
+"0x20(%2)"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_COPYVECTOR_MEMOPS",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"src"
+],
+"operands": [
+[
+"=m",
+"dst"
+],
+[
+"r",
+"dst"
+],
+[
+"r",
+"src"
+],
+[
+"m",
+"src"
+]
+],
+"ops": [
+[
+"lq",
+"$v0",
+"0x0(%2)"
+],
+[
+"sq",
+"$v0",
+"0x0(%1)"
+]
+],
+"uses": 4
+},
+{
+"name": "EE_LOAD_UNALIGNED_WORD",
+"header": "ps2asm.h",
+"params": [
+"out",
+"src"
+],
+"operands": [
+[
+"=&r",
+"out"
+],
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lwr",
+"%0",
+"0x0(%1)"
+],
+[
+"lwl",
+"%0",
+"0x3(%1)"
+]
+],
+"uses": 24
+},
+{
+"name": "VU0_MATRIX4_INVERT_SCALED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmula.xyz",
+"$ACC",
+"$vf28",
+"$vf28"
+],
+[
+"vmadda.xyz",
+"$ACC",
+"$vf29",
+"$vf29"
+],
+[
+"vmadd.xyz",
+"$vf2",
+"$vf30",
+"$vf30"
+],
+[
+"vaddw.xyz",
+"$vf3",
+"$vf0",
+"$vf0w"
+],
+[
+"qmfc2.ni",
+"$t0",
+"$vf28"
+],
+[
+"qmfc2.ni",
+"$t1",
+"$vf29"
+],
+[
+"qmfc2.ni",
+"$t2",
+"$vf30"
+],
+[
+"qmfc2.ni",
+"$t3",
+"$vf0"
+],
+[
+"vdiv",
+"$Q",
+"$vf0w",
+"$vf2x"
+],
+[
+"pextlw",
+"$t4",
+"$t1",
+"$t0"
+],
+[
+"pextuw",
+"$t5",
+"$t1",
+"$t0"
+],
+[
+"pextlw",
+"$t6",
+"$t3",
+"$t2"
+],
+[
+"pextuw",
+"$t7",
+"$t3",
+"$t2"
+],
+[
+"pcpyld",
+"$t0",
+"$t6",
+"$t4"
+],
+[
+"pcpyud",
+"$t1",
+"$t4",
+"$t6"
+],
+[
+"pcpyld",
+"$t2",
+"$t7",
+"$t5"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.x",
+"$vf3",
+"$vf3",
+"$Q"
+],
+[
+"vdiv",
+"$Q",
+"$vf0w",
+"$vf2y"
+],
+[
+"qmtc2.ni",
+"$t0",
+"$vf28"
+],
+[
+"qmtc2.ni",
+"$t1",
+"$vf29"
+],
+[
+"qmtc2.ni",
+"$t2",
+"$vf30"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.y",
+"$vf3",
+"$vf3",
+"$Q"
+],
+[
+"vdiv",
+"$Q",
+"$vf0w",
+"$vf2z"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.z",
+"$vf3",
+"$vf3",
+"$Q"
+],
+[
+"vmul.xyz",
+"$vf28",
+"$vf28",
+"$vf3"
+],
+[
+"vmul.xyz",
+"$vf29",
+"$vf29",
+"$vf3"
+],
+[
+"vmul.xyz",
+"$vf30",
+"$vf30",
+"$vf3"
+],
+[
+"vmula.xyz",
+"$ACC",
+"$vf0",
+"$vf0"
+],
+[
+"vmsubax.xyz",
+"$ACC",
+"$vf28",
+"$vf31x"
+],
+[
+"vmsubay.xyz",
+"$ACC",
+"$vf29",
+"$vf31y"
+],
+[
+"vmsubz.xyz",
+"$vf31",
+"$vf30",
+"$vf31z"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_MATRIX4_MUL_BANK_B_RIGHT",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf24x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf24y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf24z"
+],
+[
+"vmaddw.xyzw",
+"$vf2",
+"$vf31",
+"$vf24w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf25x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf25y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf25z"
+],
+[
+"vmaddw.xyzw",
+"$vf3",
+"$vf31",
+"$vf25w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf26x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf26y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf26z"
+],
+[
+"vmaddw.xyzw",
+"$vf4",
+"$vf31",
+"$vf26w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf27x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf27y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf27z"
+],
+[
+"vmaddw.xyzw",
+"$vf31",
+"$vf31",
+"$vf27w"
+],
+[
+"vmove.xyzw",
+"$vf28",
+"$vf2"
+],
+[
+"vmove.xyzw",
+"$vf29",
+"$vf3"
+],
+[
+"vmove.xyzw",
+"$vf30",
+"$vf4"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_SET_CLIP_PLANES",
+"header": "ps2asm.h",
+"params": [
+"bias",
+"eye",
+"projection"
+],
+"operands": [
+[
+"r",
+"bias"
+],
+[
+"r",
+"eye"
+],
+[
+"r",
+"projection"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"lqc2",
+"$vf21",
+"0x0(%1)"
+],
+[
+"lqc2",
+"$vf22",
+"0x70(%2)"
+],
+[
+"lqc2",
+"$vf23",
+"0x80(%2)"
+],
+[
+"vaddz.x",
+"$vf23",
+"$vf23",
+"$vf2z"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_STORE_MATRIX_AND_UNIT_ROWS",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"lui",
+"$at",
+"0x3F80"
+],
+[
+"mtc1",
+"$at",
+"$f0"
+],
+[
+"vmula.xyz",
+"$ACC",
+"$vf28",
+"$vf28"
+],
+[
+"vmadda.xyz",
+"$ACC",
+"$vf29",
+"$vf29"
+],
+[
+"vmadd.xyz",
+"$vf2",
+"$vf30",
+"$vf30"
+],
+[
+"vrsqrt",
+"$Q",
+"$vf0w",
+"$vf2y"
+],
+[
+"qmfc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"mtc1",
+"$v0",
+"$f2"
+],
+[
+"rsqrt.s",
+"$f2",
+"$f0",
+"$f2"
+],
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf29",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf30",
+"0x20(%0)"
+],
+[
+"sqc2",
+"$vf31",
+"0x30(%0)"
+],
+[
+"vwaitq"
+],
+[
+"vaddq.y",
+"$vf3",
+"$vf0",
+"$Q"
+],
+[
+"vrsqrt",
+"$Q",
+"$vf0w",
+"$vf2z"
+],
+[
+"mfc1",
+"$v0",
+"$f2"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf4"
+],
+[
+"vmove.x",
+"$vf3",
+"$vf4"
+],
+[
+"vwaitq"
+],
+[
+"vaddq.z",
+"$vf3",
+"$vf0",
+"$Q"
+],
+[
+"vmul.xyz",
+"$vf4",
+"$vf28",
+"$vf3"
+],
+[
+"vmul.xyz",
+"$vf5",
+"$vf29",
+"$vf3"
+],
+[
+"vmul.xyz",
+"$vf6",
+"$vf30",
+"$vf3"
+],
+[
+"sqc2",
+"$vf4",
+"0x40(%0)"
+],
+[
+"sqc2",
+"$vf5",
+"0x50(%0)"
+],
+[
+"sqc2",
+"$vf6",
+"0x60(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "EE_MMI_RGBA_MULTIPLY_VECTOR",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b",
+"unit"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+],
+[
+"r",
+"unit"
+]
+],
+"ops": [
+[
+"pextlb",
+"$v0",
+"$zero",
+"%1"
+],
+[
+"pextlb",
+"$v1",
+"$zero",
+"%2"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"pextlh",
+"$v1",
+"$zero",
+"$v1"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf3"
+],
+[
+"qmtc2.ni",
+"%3",
+"$vf4"
+],
+[
+"vitof0.xyzw",
+"$vf2",
+"$vf2"
+],
+[
+"vitof0.xyzw",
+"$vf3",
+"$vf3"
+],
+[
+"vmul.xyzw",
+"$vf2",
+"$vf2",
+"$vf3"
+],
+[
+"vmulx.xyzw",
+"$vf2",
+"$vf2",
+"$vf4x"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf2"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_ROTATE_BASIS_X",
+"header": "ps2asm.h",
+"params": [
+"c",
+"s"
+],
+"operands": [
+[
+"f",
+"c"
+],
+[
+"f",
+"s"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v1",
+"%0"
+],
+[
+"mfc1",
+"$v0",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf3"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmove.xyzw",
+"$vf4",
+"$vf29"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf29",
+"$vf3x"
+],
+[
+"vmaddx.xyzw",
+"$vf29",
+"$vf30",
+"$vf2x"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf30",
+"$vf3x"
+],
+[
+"vmsubx.xyzw",
+"$vf30",
+"$vf4",
+"$vf2x"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_ROTATE_BASIS_Y",
+"header": "ps2asm.h",
+"params": [
+"c",
+"s"
+],
+"operands": [
+[
+"f",
+"c"
+],
+[
+"f",
+"s"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v1",
+"%0"
+],
+[
+"mfc1",
+"$v0",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf3"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmove.xyzw",
+"$vf4",
+"$vf28"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf3x"
+],
+[
+"vmsubx.xyzw",
+"$vf28",
+"$vf30",
+"$vf2x"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf4",
+"$vf2x"
+],
+[
+"vmaddx.xyzw",
+"$vf30",
+"$vf30",
+"$vf3x"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_ROTATE_BASIS_Z",
+"header": "ps2asm.h",
+"params": [
+"c",
+"s"
+],
+"operands": [
+[
+"f",
+"c"
+],
+[
+"f",
+"s"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v1",
+"%0"
+],
+[
+"mfc1",
+"$v0",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf3"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmove.xyzw",
+"$vf4",
+"$vf28"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf3x"
+],
+[
+"vmaddx.xyzw",
+"$vf28",
+"$vf29",
+"$vf2x"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf29",
+"$vf3x"
+],
+[
+"vmsubx.xyzw",
+"$vf29",
+"$vf4",
+"$vf2x"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_TRIANGLE_FACING",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b",
+"c"
+],
+"operands": [
+[
+"=f",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+],
+[
+"r",
+"c"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf2",
+"0x0(%1)"
+],
+[
+"lqc2",
+"$vf3",
+"0x0(%2)"
+],
+[
+"lqc2",
+"$vf4",
+"0x0(%3)"
+],
+[
+"vsub.xyz",
+"$vf2",
+"$vf2",
+"$vf3"
+],
+[
+"vsub.xyz",
+"$vf4",
+"$vf4",
+"$vf3"
+],
+[
+"vsub.xyz",
+"$vf3",
+"$vf21",
+"$vf3"
+],
+[
+"vopmula.xyz",
+"$ACC",
+"$vf2",
+"$vf4"
+],
+[
+"vopmsub.xyz",
+"$vf2",
+"$vf4",
+"$vf2"
+],
+[
+"vmul.xyz",
+"$vf2",
+"$vf2",
+"$vf3"
+],
+[
+"vadday.x",
+"$ACC",
+"$vf2",
+"$vf2y"
+],
+[
+"vmaddz.x",
+"$vf2",
+"$vf1",
+"$vf2z"
+],
+[
+"qmfc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_BLEND_NODE_XY",
+"header": "ps2asm.h",
+"params": [
+"node",
+"first",
+"second"
+],
+"operands": [
+[
+"r",
+"node"
+],
+[
+"r",
+"first"
+],
+[
+"r",
+"second"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf2",
+"0x40(%0)"
+],
+[
+"lqc2",
+"$vf8",
+"0x30(%1)"
+],
+[
+"lqc2",
+"$vf9",
+"0x30(%2)"
+],
+[
+"vmulaw.xy",
+"$ACC",
+"$vf8",
+"$vf0w"
+],
+[
+"vmaddaw.xy",
+"$ACC",
+"$vf9",
+"$vf2w"
+],
+[
+"vmsubw.xy",
+"$vf15",
+"$vf8",
+"$vf2w"
+],
+[
+"sqc2",
+"$vf15",
+"0x30(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_BLEND_NODE_VECTORS",
+"header": "ps2asm.h",
+"params": [
+"node",
+"first",
+"second"
+],
+"operands": [
+[
+"r",
+"node"
+],
+[
+"r",
+"first"
+],
+[
+"r",
+"second"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf2",
+"0x40(%0)"
+],
+[
+"lqc2",
+"$vf8",
+"0x30(%1)"
+],
+[
+"lqc2",
+"$vf9",
+"0x30(%2)"
+],
+[
+"lqc2",
+"$vf10",
+"0x20(%1)"
+],
+[
+"lqc2",
+"$vf11",
+"0x20(%2)"
+],
+[
+"vmulaw.xy",
+"$ACC",
+"$vf8",
+"$vf0w"
+],
+[
+"vmaddaw.xy",
+"$ACC",
+"$vf9",
+"$vf2w"
+],
+[
+"vmsubw.xy",
+"$vf15",
+"$vf8",
+"$vf2w"
+],
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf10",
+"$vf0w"
+],
+[
+"vmaddaw.xyzw",
+"$ACC",
+"$vf11",
+"$vf2w"
+],
+[
+"vmsubw.xyzw",
+"$vf16",
+"$vf10",
+"$vf2w"
+],
+[
+"sqc2",
+"$vf15",
+"0x30(%0)"
+],
+[
+"sqc2",
+"$vf16",
+"0x20(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_INTERPOLATE_CLIP_VERTEX",
+"header": "ps2asm.h",
+"params": [
+"out",
+"first",
+"second"
+],
+"operands": [
+[
+"r",
+"out"
+],
+[
+"r",
+"first"
+],
+[
+"r",
+"second"
+]
+],
+"ops": [
+[
+"vaddx.w",
+"$vf2",
+"$vf0",
+"$vf0x"
+],
+[
+"lbu",
+"$v0",
+"0x50(%1)"
+],
+[
+"lqc2",
+"$vf4",
+"0x10(%1)"
+],
+[
+"lqc2",
+"$vf5",
+"0x10(%2)"
+],
+[
+"andi",
+"$v0",
+"$v0",
+"0x1"
+],
+[
+"bne",
+"$zero",
+"$v0",
+". + 4 + (0x2 << 2)"
+],
+[
+"lqc2",
+"$vf6",
+"0x0(%1)"
+],
+[
+"vsubw.w",
+"$vf2",
+"$vf1",
+"$vf0w"
+],
+[
+"lqc2",
+"$vf7",
+"0x0(%2)"
+],
+[
+"lqc2",
+"$vf8",
+"0x30(%1)"
+],
+[
+"lqc2",
+"$vf9",
+"0x30(%2)"
+],
+[
+"vsubw.w",
+"$vf12",
+"$vf2",
+"$vf4w"
+],
+[
+"vsubw.w",
+"$vf13",
+"$vf5",
+"$vf4w"
+],
+[
+"vsub.xyzw",
+"$vf14",
+"$vf7",
+"$vf6"
+],
+[
+"vdiv",
+"$Q",
+"$vf12w",
+"$vf13w"
+],
+[
+"lqc2",
+"$vf10",
+"0x20(%1)"
+],
+[
+"vsub.xyzw",
+"$vf15",
+"$vf9",
+"$vf8"
+],
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf6",
+"$vf0w"
+],
+[
+"sqc2",
+"$vf10",
+"0x20(%0)"
+],
+[
+"vwaitq"
+],
+[
+"cfc2.ni",
+"$v0",
+"$vi22"
+],
+[
+"vmaddq.xyzw",
+"$vf14",
+"$vf14",
+"$Q"
+],
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf8",
+"$vf0w"
+],
+[
+"vmaddq.xy",
+"$vf15",
+"$vf15",
+"$Q"
+],
+[
+"sqc2",
+"$vf14",
+"0x0(%0)"
+],
+[
+"sw",
+"$v0",
+"0x4C(%0)"
+],
+[
+"sqc2",
+"$vf15",
+"0x30(%0)"
+],
+[
+"sqc2",
+"$vf2",
+"0x10(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_BUILD_PACKED_COLOR_TRANSFORM",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"reference",
+"packedColor",
+"firstColor",
+"secondColor",
+"blend"
+],
+"operands": [
+[
+"r",
+"dst"
+],
+[
+"r",
+"reference"
+],
+[
+"r",
+"packedColor"
+],
+[
+"r",
+"firstColor"
+],
+[
+"r",
+"secondColor"
+],
+[
+"r",
+"blend"
+],
+[
+"r",
+null
+],
+[
+"r",
+null
+]
+],
+"ops": [
+[
+"pextlb",
+"$v0",
+"$zero",
+"%3"
+],
+[
+"pextlb",
+"$v1",
+"$zero",
+"%4"
+],
+[
+"pextlb",
+"$a0",
+"$zero",
+"%2"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"pextlh",
+"$v1",
+"$zero",
+"$v1"
+],
+[
+"pextlh",
+"$a0",
+"$zero",
+"$a0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf3"
+],
+[
+"qmtc2.ni",
+"$a0",
+"$vf4"
+],
+[
+"qmtc2.ni",
+"%5",
+"$vf5"
+],
+[
+"qmtc2.ni",
+"%6",
+"$vf6"
+],
+[
+"qmtc2.ni",
+"%7",
+"$vf7"
+],
+[
+"vitof0.xyzw",
+"$vf2",
+"$vf2"
+],
+[
+"vitof0.xyzw",
+"$vf3",
+"$vf3"
+],
+[
+"vitof0.xyzw",
+"$vf4",
+"$vf4"
+],
+[
+"lqc2",
+"$vf8",
+"0x40(%1)"
+],
+[
+"lqc2",
+"$vf9",
+"0x80(%1)"
+],
+[
+"vmulx.xyzw",
+"$vf2",
+"$vf2",
+"$vf6x"
+],
+[
+"vmulx.xyzw",
+"$vf3",
+"$vf3",
+"$vf6x"
+],
+[
+"vmove.w",
+"$vf9",
+"$vf0"
+],
+[
+"vmulx.w",
+"$vf8",
+"$vf8",
+"$vf0x"
+],
+[
+"vmulw.w",
+"$vf4",
+"$vf4",
+"$vf2w"
+],
+[
+"vmul.xyz",
+"$vf9",
+"$vf3",
+"$vf9"
+],
+[
+"vmul.xyz",
+"$vf8",
+"$vf2",
+"$vf8"
+],
+[
+"vmulaw.xyz",
+"$ACC",
+"$vf9",
+"$vf0w"
+],
+[
+"vmaddax.xyz",
+"$ACC",
+"$vf8",
+"$vf5x"
+],
+[
+"vmsubx.xyz",
+"$vf9",
+"$vf9",
+"$vf5x"
+],
+[
+"vmul.xyzw",
+"$vf8",
+"$vf8",
+"$vf4"
+],
+[
+"vmul.xyzw",
+"$vf9",
+"$vf9",
+"$vf4"
+],
+[
+"vminix.xyzw",
+"$vf8",
+"$vf8",
+"$vf7x"
+],
+[
+"vsub.xyz",
+"$vf8",
+"$vf8",
+"$vf9"
+],
+[
+"sqc2",
+"$vf9",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf8",
+"0x20(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_LOAD_VF14",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf14",
+"0x0(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_LOAD_VF15_AT16",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf15",
+"0x10(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_TRANSFORM_POINT_VF11",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf11x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf11y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf11z"
+],
+[
+"vmaddw.xyzw",
+"$vf11",
+"$vf31",
+"$vf0w"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_CLIPTEST_B",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+".word",
+"0x4BCB59FF                   # vclipw.xyz  $vf11",
+"$vf11w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_CLIPTESTWAIT",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=r",
+"out"
+]
+],
+"ops": [
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"cfc2.ni",
+"%0",
+"$vi18"
+]
+],
+"uses": 3
+},
+{
+"name": "VU0_STORE_VF8_AT0",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf8",
+"0x0(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_STORE_VF10_AT16",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf10",
+"0x10(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_STORE_VF9_AT32",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf9",
+"0x20(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_STORE_VF11_AT48",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf11",
+"0x30(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_POSITIVE_CLIP_PLANE_VF2",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vaddw.xyz",
+"$vf2",
+"$vf0",
+"$vf0w"
+],
+[
+"vmulw.w",
+"$vf2",
+"$vf0",
+"$vf0w"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_NEGATIVE_CLIP_PLANE_VF2",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsubw.xyzw",
+"$vf2",
+"$vf0",
+"$vf0w"
+],
+[
+"vsubw.w",
+"$vf2",
+"$vf0",
+"$vf0w"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_CLIP_SEGMENT_PREP_FIRST",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulw.xyzw",
+"$vf3",
+"$vf2",
+"$vf10w"
+],
+[
+"vmulw.xyzw",
+"$vf4",
+"$vf2",
+"$vf11w"
+],
+[
+"vsub.xyzw",
+"$vf5",
+"$vf11",
+"$vf10"
+],
+[
+"vsub.xyzw",
+"$vf6",
+"$vf9",
+"$vf8"
+],
+[
+"vsub.xyzw",
+"$vf3",
+"$vf10",
+"$vf3"
+],
+[
+"vsub.xyzw",
+"$vf4",
+"$vf11",
+"$vf4"
+],
+[
+"vsub.xyzw",
+"$vf4",
+"$vf4",
+"$vf3"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_CLIP_SEGMENT_PREP_SECOND",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulw.xyzw",
+"$vf3",
+"$vf2",
+"$vf11w"
+],
+[
+"vmulw.xyzw",
+"$vf4",
+"$vf2",
+"$vf10w"
+],
+[
+"vsub.xyzw",
+"$vf5",
+"$vf10",
+"$vf11"
+],
+[
+"vsub.xyzw",
+"$vf6",
+"$vf8",
+"$vf9"
+],
+[
+"vsub.xyzw",
+"$vf3",
+"$vf11",
+"$vf3"
+],
+[
+"vsub.xyzw",
+"$vf4",
+"$vf10",
+"$vf4"
+],
+[
+"vsub.xyzw",
+"$vf4",
+"$vf4",
+"$vf3"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_CLIP_RATIO_X",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"vdiv",
+"$Q",
+"$vf3x",
+"$vf4x"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_CLIP_RATIO_Y",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"vdiv",
+"$Q",
+"$vf3y",
+"$vf4y"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_CLIP_RATIO_Z",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"vdiv",
+"$Q",
+"$vf3z",
+"$vf4z"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_PROJECT_COLORED_SEGMENT",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vdiv",
+"$Q",
+"$vf0w",
+"$vf10w"
+],
+[
+"vmul.xyz",
+"$vf10",
+"$vf10",
+"$vf14"
+],
+[
+"vmulaw.xyz",
+"$ACC",
+"$vf15",
+"$vf0w"
+],
+[
+"vmulx.w",
+"$vf10",
+"$vf10",
+"$vf0x"
+],
+[
+"vftoi0.xyzw",
+"$vf8",
+"$vf8"
+],
+[
+"vwaitq"
+],
+[
+"vmaddq.xyz",
+"$vf10",
+"$vf10",
+"$Q"
+],
+[
+"vdiv",
+"$Q",
+"$vf0w",
+"$vf11w"
+],
+[
+"vmul.xyz",
+"$vf11",
+"$vf11",
+"$vf14"
+],
+[
+"vmulx.w",
+"$vf11",
+"$vf11",
+"$vf0x"
+],
+[
+"vftoi4.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"vftoi0.xyzw",
+"$vf9",
+"$vf9"
+],
+[
+"vwaitq"
+],
+[
+"vmaddq.xyz",
+"$vf11",
+"$vf11",
+"$Q"
+],
+[
+"vftoi4.xyzw",
+"$vf11",
+"$vf11"
+]
+],
+"uses": 1
+},
+{
+"name": "MMI_RGBA_UNPACK_NOMEM",
+"header": "ps2asm.h",
+"params": [
+"src",
+"unit"
+],
+"operands": [
+[
+"r",
+"src"
+],
+[
+"r",
+"unit"
+],
+[
+"m",
+"src"
+]
+],
+"ops": [
+[
+"lw",
+"$v0",
+"0x0(%0)"
+],
+[
+"pextlb",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"vitof0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmtc2.ni",
+"%1",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+]
+],
+"uses": 1
+},
+{
+"name": "EE_MMI_RGBA_UNPACK_READONLY",
+"header": "ps2asm.h",
+"params": [
+"src",
+"unit"
+],
+"operands": [
+[
+"r",
+"unit"
+],
+[
+"r",
+"src"
+],
+[
+"m",
+"src"
+]
+],
+"ops": [
+[
+"lw",
+"$v0",
+"0x0(%1)"
+],
+[
+"pextlb",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"vitof0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+]
+],
+"uses": 22
+},
+{
+"name": "EE_MMI_RGBA_TO_VF8",
+"header": "ps2asm.h",
+"params": [
+"rgba"
+],
+"operands": [
+[
+"r",
+"rgba"
+]
+],
+"ops": [
+[
+"pextlb",
+"$v0",
+"$zero",
+"%0"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf8"
+],
+[
+"vitof0.xyzw",
+"$vf8",
+"$vf8"
+]
+],
+"uses": 1
+},
+{
+"name": "EE_MMI_RGBA_TO_VF9",
+"header": "ps2asm.h",
+"params": [
+"rgba"
+],
+"operands": [
+[
+"r",
+"rgba"
+]
+],
+"ops": [
+[
+"pextlb",
+"$v0",
+"$zero",
+"%0"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf9"
+],
+[
+"vitof0.xyzw",
+"$vf9",
+"$vf9"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_CLIP_SEGMENT_UPDATE_FIRST",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vwaitq"
+],
+[
+"vaddq.x",
+"$vf2",
+"$vf0",
+"$Q"
+],
+[
+"vabs.x",
+"$vf2",
+"$vf2"
+],
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf10",
+"$vf0w"
+],
+[
+"vmaddx.xyzw",
+"$vf10",
+"$vf5",
+"$vf2x"
+],
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf8",
+"$vf0w"
+],
+[
+"vmaddx.xyzw",
+"$vf8",
+"$vf6",
+"$vf2x"
+],
+[
+".word",
+"0x4BCA51FF                   # vclipw.xyz  $vf10",
+"$vf10w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_CLIP_SEGMENT_UPDATE_SECOND",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vwaitq"
+],
+[
+"vaddq.x",
+"$vf2",
+"$vf0",
+"$Q"
+],
+[
+"vabs.x",
+"$vf2",
+"$vf2"
+],
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf11",
+"$vf0w"
+],
+[
+"vmaddx.xyzw",
+"$vf11",
+"$vf5",
+"$vf2x"
+],
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf9",
+"$vf0w"
+],
+[
+"vmaddx.xyzw",
+"$vf9",
+"$vf6",
+"$vf2x"
+],
+[
+".word",
+"0x4BCB59FF                   # vclipw.xyz  $vf11",
+"$vf11w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_NORMALIZE_PACKED_VECTOR",
+"header": "ps2asm.h",
+"params": [
+"v"
+],
+"operands": [
+[
+"+m",
+"v"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf10",
+"0x0(%0)"
+],
+[
+"vmul.xyz",
+"$vf2",
+"$vf10",
+"$vf10"
+],
+[
+"vmulax.w",
+"$ACC",
+"$vf0",
+"$vf2x"
+],
+[
+"vmadday.w",
+"$ACC",
+"$vf0",
+"$vf2y"
+],
+[
+"vmaddz.w",
+"$vf2",
+"$vf0",
+"$vf2z"
+],
+[
+"vrsqrt",
+"$Q",
+"$vf0w",
+"$vf2w"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.xyz",
+"$vf10",
+"$vf10",
+"$Q"
+],
+[
+"sqc2",
+"$vf10",
+"0x0(%0)"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_STOREVECTOR_C",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf12",
+"0x0(%0)"
+]
+],
+"uses": 5
+},
+{
+"name": "SDF_VU0_SWAPVECTOR_A_B",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf2",
+"$vf10"
+],
+[
+"vmove.xyzw",
+"$vf10",
+"$vf11"
+],
+[
+"vmove.xyzw",
+"$vf11",
+"$vf2"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_SWAPVECTOR_A_C",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmove.xyzw",
+"$vf2",
+"$vf10"
+],
+[
+"vmove.xyzw",
+"$vf10",
+"$vf12"
+],
+[
+"vmove.xyzw",
+"$vf12",
+"$vf2"
+]
+],
+"uses": 5
+},
+{
+"name": "MMI_RGBA_PACK_255",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"f",
+null
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 1
+},
+{
+"name": "MMI_RGBA_PACK_128",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"f",
+null
+]
+],
+"ops": [
+[
+"mfc1",
+"$v1",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 4
+},
+{
+"name": "MMI_RGBA_PACK_128_S2",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"f",
+null
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 4
+},
+{
+"name": "SDF_VU0_SETVECTOR_X_BITS",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"vaddx.x",
+"$vf10",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_SETVECTOR_Y_BITS",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"vaddx.y",
+"$vf10",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_SETVECTOR_Z_BITS",
+"header": "ps2asm.h",
+"params": [
+"r"
+],
+"operands": [
+[
+"r",
+"r"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"vaddx.z",
+"$vf10",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_SCALE_XYZ_REV",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyz",
+"$vf28",
+"$vf28",
+"$vf10"
+],
+[
+"vmul.xyz",
+"$vf29",
+"$vf29",
+"$vf10"
+],
+[
+"vmul.xyz",
+"$vf30",
+"$vf30",
+"$vf10"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_STOREMATRIX_MEMOPS",
+"header": "ps2asm.h",
+"params": [
+"a",
+"b",
+"c",
+"d"
+],
+"operands": [
+[
+"m",
+"a"
+],
+[
+"m",
+"b"
+],
+[
+"m",
+"c"
+],
+[
+"m",
+"d"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf29",
+"0x0(%1)"
+],
+[
+"sqc2",
+"$vf30",
+"0x0(%2)"
+],
+[
+"sqc2",
+"$vf31",
+"0x0(%3)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_CLIP_TEST_BOX_CORNERS",
+"header": "ps2asm.h",
+"params": [
+"flags",
+"bounds"
+],
+"operands": [
+[
+"=r",
+"flags"
+],
+[
+"r",
+"bounds"
+]
+],
+"ops": [
+[
+"ldr",
+"$v0",
+"0x0(%1)"
+],
+[
+"ldl",
+"$v0",
+"0x7(%1)"
+],
+[
+"lw",
+"$v1",
+"0x8(%1)"
+],
+[
+"ldr",
+"$a2",
+"0xC(%1)"
+],
+[
+"ldl",
+"$a2",
+"0x13(%1)"
+],
+[
+"lw",
+"$a3",
+"0x14(%1)"
+],
+[
+"pcpyld",
+"$v0",
+"$v1",
+"$v0"
+],
+[
+"pcpyld",
+"$a2",
+"$a3",
+"$a2"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"qmtc2.ni",
+"$a2",
+"$vf3"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf2x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf2y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf2z"
+],
+[
+"vmaddw.xyzw",
+"$vf4",
+"$vf31",
+"$vf0w"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf3x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf2y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf2z"
+],
+[
+"vmaddw.xyzw",
+"$vf5",
+"$vf31",
+"$vf0w"
+],
+[
+".word",
+"0x4BC421FF                   # vclipw.xyz  $vf4",
+"$vf4w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf2x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf3y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf2z"
+],
+[
+"vmaddw.xyzw",
+"$vf4",
+"$vf31",
+"$vf0w"
+],
+[
+".word",
+"0x4BC529FF                   # vclipw.xyz  $vf5",
+"$vf5w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf3x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf3y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf2z"
+],
+[
+"vmaddw.xyzw",
+"$vf5",
+"$vf31",
+"$vf0w"
+],
+[
+".word",
+"0x4BC421FF                   # vclipw.xyz  $vf4",
+"$vf4w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf2x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf2y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf3z"
+],
+[
+"vmaddw.xyzw",
+"$vf4",
+"$vf31",
+"$vf0w"
+],
+[
+".word",
+"0x4BC529FF                   # vclipw.xyz  $vf5",
+"$vf5w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf3x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf2y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf3z"
+],
+[
+"vmaddw.xyzw",
+"$vf5",
+"$vf31",
+"$vf0w"
+],
+[
+"vnop"
+],
+[
+"cfc2.ni",
+"$v0",
+"$vi18"
+],
+[
+".word",
+"0x4BC421FF                   # vclipw.xyz  $vf4",
+"$vf4w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf2x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf3y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf3z"
+],
+[
+"vmaddw.xyzw",
+"$vf4",
+"$vf31",
+"$vf0w"
+],
+[
+".word",
+"0x4BC529FF                   # vclipw.xyz  $vf5",
+"$vf5w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf3x"
+],
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf3y"
+],
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf3z"
+],
+[
+"vmaddw.xyzw",
+"$vf5",
+"$vf31",
+"$vf0w"
+],
+[
+".word",
+"0x4BC421FF                   # vclipw.xyz  $vf4",
+"$vf4w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+".word",
+"0x4BC529FF                   # vclipw.xyz  $vf5",
+"$vf5w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"cfc2.ni",
+"$v1",
+"$vi18"
+],
+[
+"and",
+"%0",
+"$v0",
+"$v1"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_LERP_VF10_W",
+"header": "ps2asm.h",
+"params": [
+"t"
+],
+"operands": [
+[
+"f",
+"t"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vsubx.w",
+"$vf3",
+"$vf0",
+"$vf2x"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf11",
+"$vf2x"
+],
+[
+"vmaddw.xyzw",
+"$vf10",
+"$vf10",
+"$vf3w"
+],
+[
+"vmove.w",
+"$vf10",
+"$vf0"
+]
+],
+"uses": 4
+},
+{
+"name": "VU0_LERP_VF10_COPY",
+"header": "ps2asm.h",
+"params": [
+"t"
+],
+"operands": [
+[
+"f",
+"t"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vsubx.w",
+"$vf3",
+"$vf0",
+"$vf2x"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf11",
+"$vf2x"
+],
+[
+"vmaddw.xyzw",
+"$vf10",
+"$vf10",
+"$vf3w"
+],
+[
+"vmove.xyzw",
+"$vf11",
+"$vf10"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_LERP_VEC3_KEYS",
+"header": "ps2asm.h",
+"params": [
+"first",
+"second",
+"t"
+],
+"operands": [
+[
+"r",
+"first"
+],
+[
+"r",
+"second"
+],
+[
+"r",
+"t"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%2",
+"$vf4"
+],
+[
+"ldr",
+"$v0",
+"0x0(%0)"
+],
+[
+"ldl",
+"$v0",
+"0x7(%0)"
+],
+[
+"lw",
+"$v1",
+"0x8(%0)"
+],
+[
+"ldr",
+"$a0",
+"0x0(%0)"
+],
+[
+"ldl",
+"$a0",
+"0x7(%0)"
+],
+[
+"lw",
+"$a1",
+"0x8(%0)"
+],
+[
+"pcpyld",
+"$v0",
+"$v1",
+"$v0"
+],
+[
+"pcpyld",
+"$a0",
+"$a1",
+"$a0"
+],
+[
+"vsubx.w",
+"$vf5",
+"$vf0",
+"$vf4x"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf0",
+"$vf0x"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf3"
+],
+[
+"vmulaw.xyz",
+"$ACC",
+"$vf2",
+"$vf5w"
+],
+[
+"vmaddx.xyz",
+"$vf10",
+"$vf3",
+"$vf4x"
+]
+],
+"uses": 1
+},
+{
+"name": "SDF_VU0_LOADVECTOR_UNALIGN_B",
+"header": "ps2asm.h",
+"params": [
+"p"
+],
+"operands": [
+[
+"r",
+"p"
+]
+],
+"ops": [
+[
+"ldr",
+"$v0",
+"0x0(%0)"
+],
+[
+"ldl",
+"$v0",
+"0x7(%0)"
+],
+[
+"lw",
+"$v1",
+"0x8(%0)"
+],
+[
+"pcpyld",
+"$v0",
+"$v1",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf11"
+]
+],
+"uses": 6
+},
+{
+"name": "SDF_VU0_LOADSHORTVECTOR",
+"header": "ps2asm.h",
+"params": [
+"p"
+],
+"operands": [
+[
+"r",
+"p"
+]
+],
+"ops": [
+[
+"ldr",
+"$v0",
+"0x0(%0)"
+],
+[
+"ldl",
+"$v0",
+"0x7(%0)"
+],
+[
+"pextlh",
+"$v0",
+"$v0",
+"$zero"
+],
+[
+"psraw",
+"$v0",
+"$v0",
+"16"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"vitof12.xyzw",
+"$vf10",
+"$vf10"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_LOADSHORTVECTOR_B",
+"header": "ps2asm.h",
+"params": [
+"p"
+],
+"operands": [
+[
+"r",
+"p"
+]
+],
+"ops": [
+[
+"ldr",
+"$v0",
+"0x0(%0)"
+],
+[
+"ldl",
+"$v0",
+"0x7(%0)"
+],
+[
+"pextlh",
+"$v0",
+"$v0",
+"$zero"
+],
+[
+"psraw",
+"$v0",
+"$v0",
+"16"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf11"
+],
+[
+"vitof12.xyzw",
+"$vf11",
+"$vf11"
+]
+],
+"uses": 2
+},
+{
+"name": "SDF_VU0_STORE_ROW0_NOMEM",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+]
+],
+"uses": 4
+},
+{
+"name": "SDF_VU0_STORE_ROW1_NOMEM",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf29",
+"0x0(%0)"
+]
+],
+"uses": 4
+},
+{
+"name": "SDF_VU0_STORE_ROW2_NOMEM",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf30",
+"0x0(%0)"
+]
+],
+"uses": 4
+},
+{
+"name": "VU0_RGBA_LERP",
+"header": "ps2asm.h",
+"params": [
+"out",
+"a",
+"b",
+"t",
+"half"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"r",
+"a"
+],
+[
+"r",
+"b"
+],
+[
+"f",
+"t"
+],
+[
+"r",
+"half"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%4",
+"$vf3"
+],
+[
+"mfc1",
+"$t0",
+"%3"
+],
+[
+"pextlb",
+"$a0",
+"$zero",
+"%1"
+],
+[
+"pextlb",
+"$a1",
+"$zero",
+"%2"
+],
+[
+"vsub.xyzw",
+"$vf2",
+"$vf0",
+"$vf0"
+],
+[
+"qmtc2.ni",
+"$t0",
+"$vf4"
+],
+[
+"pextlh",
+"$a0",
+"$zero",
+"$a0"
+],
+[
+"pextlh",
+"$a1",
+"$zero",
+"$a1"
+],
+[
+"vaddax.xyzw",
+"$ACC",
+"$vf2",
+"$vf3x"
+],
+[
+"vsubx.w",
+"$vf5",
+"$vf0",
+"$vf4x"
+],
+[
+"qmtc2.ni",
+"$a0",
+"$vf2"
+],
+[
+"qmtc2.ni",
+"$a1",
+"$vf3"
+],
+[
+"vsubx.w",
+"$vf5",
+"$vf0",
+"$vf4x"
+],
+[
+"vitof0.xyzw",
+"$vf2",
+"$vf2"
+],
+[
+"vitof0.xyzw",
+"$vf3",
+"$vf3"
+],
+[
+"vmaddaw.xyzw",
+"$ACC",
+"$vf2",
+"$vf5w"
+],
+[
+"vmaddx.xyzw",
+"$vf5",
+"$vf3",
+"$vf4x"
+],
+[
+"vftoi0.xyzw",
+"$vf4",
+"$vf5"
+],
+[
+"qmfc2.ni",
+"$a0",
+"$vf4"
+],
+[
+"ppach",
+"$a1",
+"$zero",
+"$a0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"$a1"
+]
+],
+"uses": 6
+},
+{
+"name": "SDF_VU0_SCALEVECTOR_B_V0",
+"header": "ps2asm.h",
+"params": [
+"f"
+],
+"operands": [
+[
+"f",
+"f"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf11",
+"$vf11",
+"$vf2x"
+]
+],
+"uses": 5
+},
+{
+"name": "SDF_VU0_SETVECTOR_Y_V0",
+"header": "ps2asm.h",
+"params": [
+"f"
+],
+"operands": [
+[
+"f",
+"f"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vaddx.y",
+"$vf10",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 1
+},
+{
+"name": "MMI_PALETTE_TINT_SETUP",
+"header": "ps2asm.h",
+"params": [
+"amount",
+"tint",
+"unit"
+],
+"operands": [
+[
+"r",
+"amount"
+],
+[
+"r",
+"tint"
+],
+[
+"r",
+"unit"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"pextlb",
+"$v0",
+"$zero",
+"%1"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf3"
+],
+[
+"vitof0.xyzw",
+"$vf3",
+"$vf3"
+],
+[
+"qmtc2.ni",
+"%2",
+"$vf4"
+],
+[
+"vmulx.xyz",
+"$vf3",
+"$vf3",
+"$vf4x"
+]
+],
+"uses": 1
+},
+{
+"name": "MMI_PALETTE_TINT_RGBA",
+"header": "ps2asm.h",
+"params": [
+"value",
+"color"
+],
+"operands": [
+[
+"+r",
+"value"
+],
+[
+"r",
+"color"
+]
+],
+"ops": [
+[
+"pextlb",
+"$v0",
+"$zero",
+"%1"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf5"
+],
+[
+"vitof0.xyzw",
+"$vf5",
+"$vf5"
+],
+[
+"qmtc2.ni",
+"%0",
+"$vf4"
+],
+[
+"vitof0.xyzw",
+"$vf4",
+"$vf4"
+],
+[
+"vmove.w",
+"$vf6",
+"$vf5"
+],
+[
+"vmulx.xyz",
+"$vf4",
+"$vf3",
+"$vf4x"
+],
+[
+"vmulaw.xyz",
+"$ACC",
+"$vf5",
+"$vf0w"
+],
+[
+"vmaddax.xyz",
+"$ACC",
+"$vf4",
+"$vf2x"
+],
+[
+"vmsubx.xyz",
+"$vf6",
+"$vf5",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf6",
+"$vf6"
+],
+[
+"qmfc2.ni",
+"$v0",
+"$vf6"
+],
+[
+"ppach",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"$v0"
+]
+],
+"uses": 1
+},
+{
+"name": "MMI_PALETTE_TINT_RGB5",
+"header": "ps2asm.h",
+"params": [
+"color",
+"value",
+"mask"
+],
+"operands": [
+[
+"+r",
+"color"
+],
+[
+"r",
+"value"
+],
+[
+"r",
+"mask"
+]
+],
+"ops": [
+[
+"pext5",
+"$v0",
+"%0"
+],
+[
+"srl",
+"$v1",
+"$v0",
+"5"
+],
+[
+"and",
+"$v1",
+"$v1",
+"%2"
+],
+[
+"or",
+"$v0",
+"$v0",
+"$v1"
+],
+[
+"pextlb",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf5"
+],
+[
+"vitof0.xyzw",
+"$vf5",
+"$vf5"
+],
+[
+"qmtc2.ni",
+"%1",
+"$vf4"
+],
+[
+"vitof0.xyzw",
+"$vf4",
+"$vf4"
+],
+[
+"vmove.w",
+"$vf6",
+"$vf5"
+],
+[
+"vmulx.xyz",
+"$vf4",
+"$vf3",
+"$vf4x"
+],
+[
+"vmulaw.xyz",
+"$ACC",
+"$vf5",
+"$vf0w"
+],
+[
+"vmaddax.xyz",
+"$ACC",
+"$vf4",
+"$vf2x"
+],
+[
+"vmsubx.xyz",
+"$vf6",
+"$vf5",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf6",
+"$vf6"
+],
+[
+"qmfc2.ni",
+"$v0",
+"$vf6"
+],
+[
+"ppach",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"ppacb",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"ppac5",
+"%0",
+"$v0"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_SEQ_MULT",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyzw",
+"$vf2",
+"$vf10",
+"$vf11"
+],
+[
+"vopmula.xyz",
+"$ACC",
+"$vf10",
+"$vf11"
+],
+[
+"vmaddaw.xyz",
+"$ACC",
+"$vf11",
+"$vf10w"
+],
+[
+"vmaddaw.xyz",
+"$ACC",
+"$vf10",
+"$vf11w"
+],
+[
+"vopmsub.xyz",
+"$vf10",
+"$vf11",
+"$vf10"
+],
+[
+"vmulaw.w",
+"$ACC",
+"$vf10",
+"$vf11w"
+],
+[
+"vmsubax.w",
+"$ACC",
+"$vf0",
+"$vf2x"
+],
+[
+"vmsubay.w",
+"$ACC",
+"$vf0",
+"$vf2y"
+],
+[
+"vmsubz.w",
+"$vf10",
+"$vf0",
+"$vf2z"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_SEQ_INVERSE",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyzw",
+"$vf2",
+"$vf10",
+"$vf10"
+],
+[
+"vaddax.w",
+"$ACC",
+"$vf2",
+"$vf2x"
+],
+[
+"vmadday.w",
+"$ACC",
+"$vf0",
+"$vf2y"
+],
+[
+"vmaddz.w",
+"$vf3",
+"$vf0",
+"$vf2z"
+],
+[
+"vmove.w",
+"$vf2",
+"$vf10"
+],
+[
+"vdiv",
+"$Q",
+"$vf0w",
+"$vf3w"
+],
+[
+"vsub.xyz",
+"$vf2",
+"$vf0",
+"$vf10"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.xyzw",
+"$vf10",
+"$vf2",
+"$Q"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_SEQ_NORMALIZE",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyzw",
+"$vf2",
+"$vf10",
+"$vf10"
+],
+[
+"vaddax.w",
+"$ACC",
+"$vf2",
+"$vf2x"
+],
+[
+"vmadday.w",
+"$ACC",
+"$vf0",
+"$vf2y"
+],
+[
+"vmaddz.w",
+"$vf3",
+"$vf0",
+"$vf2z"
+],
+[
+"vrsqrt",
+"$Q",
+"$vf0w",
+"$vf3w"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.xyzw",
+"$vf10",
+"$vf10",
+"$Q"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_QUAT_LENGTHSQ",
+"header": "ps2asm.h",
+"params": [
+"componentMetric"
+],
+"operands": [
+[
+"=f",
+"componentMetric"
+]
+],
+"ops": [
+[
+"vaddw.xyz",
+"$vf1",
+"$vf0",
+"$vf0w"
+],
+[
+"vmul.xyzw",
+"$vf2",
+"$vf10",
+"$vf10"
+],
+[
+"vmulay.x",
+"$ACC",
+"$vf2",
+"$vf2y"
+],
+[
+"vmaddaz.x",
+"$ACC",
+"$vf1",
+"$vf2z"
+],
+[
+"vmaddw.x",
+"$vf2",
+"$vf1",
+"$vf2w"
+],
+[
+"qmfc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_SEQ_FROM_ROTATION",
+"header": "ps2asm.h",
+"params": [
+"trigValue"
+],
+"operands": [
+[
+"f",
+"trigValue"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmulx.w",
+"$vf10",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_SEQ_FROM_ROTATION_B",
+"header": "ps2asm.h",
+"params": [
+"trigValue"
+],
+"operands": [
+[
+"f",
+"trigValue"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmulx.w",
+"$vf11",
+"$vf0",
+"$vf2x"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_SEQ_TO_MATRIX",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vaddw.xyz",
+"$vf1",
+"$vf0",
+"$vf0w"
+],
+[
+"vadd.xyzw",
+"$vf2",
+"$vf10",
+"$vf10"
+],
+[
+"vmulx.w",
+"$vf28",
+"$vf0",
+"$vf0x"
+],
+[
+"vmulx.w",
+"$vf29",
+"$vf0",
+"$vf0x"
+],
+[
+"vmulx.w",
+"$vf30",
+"$vf0",
+"$vf0x"
+],
+[
+"vmul.xyzw",
+"$vf3",
+"$vf10",
+"$vf2"
+],
+[
+"vmuly.xyzw",
+"$vf4",
+"$vf10",
+"$vf2y"
+],
+[
+"vmulz.xyzw",
+"$vf5",
+"$vf10",
+"$vf2z"
+],
+[
+"vmulx.xyzw",
+"$vf6",
+"$vf10",
+"$vf2x"
+],
+[
+"vaddaw.xyz",
+"$ACC",
+"$vf0",
+"$vf0w"
+],
+[
+"vmsubay.x",
+"$ACC",
+"$vf1",
+"$vf3y"
+],
+[
+"vmsubz.x",
+"$vf28",
+"$vf1",
+"$vf3z"
+],
+[
+"vmsubax.y",
+"$ACC",
+"$vf1",
+"$vf3x"
+],
+[
+"vmsubz.y",
+"$vf29",
+"$vf1",
+"$vf3z"
+],
+[
+"vmsubax.z",
+"$ACC",
+"$vf1",
+"$vf3x"
+],
+[
+"vmsuby.z",
+"$vf30",
+"$vf1",
+"$vf3y"
+],
+[
+"vmulax.y",
+"$ACC",
+"$vf1",
+"$vf4x"
+],
+[
+"vmsubw.y",
+"$vf28",
+"$vf1",
+"$vf5w"
+],
+[
+"vaddw.x",
+"$vf29",
+"$vf4",
+"$vf5w"
+],
+[
+"vsubw.x",
+"$vf30",
+"$vf5",
+"$vf4w"
+],
+[
+"vmulax.z",
+"$ACC",
+"$vf1",
+"$vf5x"
+],
+[
+"vmaddw.z",
+"$vf28",
+"$vf1",
+"$vf4w"
+],
+[
+"vmulay.z",
+"$ACC",
+"$vf1",
+"$vf5y"
+],
+[
+"vmsubw.z",
+"$vf29",
+"$vf1",
+"$vf6w"
+],
+[
+"vaddw.y",
+"$vf30",
+"$vf5",
+"$vf6w"
+],
+[
+"vmove.xyzw",
+"$vf31",
+"$vf0"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_SEQ_EULER_ANGLE_AXIS_Y",
+"header": "ps2asm.h",
+"params": [
+"rotatedZ",
+"rotatedX"
+],
+"operands": [
+[
+"=f",
+"rotatedZ"
+],
+[
+"=f",
+"rotatedX"
+]
+],
+"ops": [
+[
+"qmfc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"pexew",
+"$v0",
+"$v0"
+],
+[
+"mtc1",
+"$v0",
+"%0"
+],
+[
+"qmfc2.ni",
+"$v0",
+"$vf10"
+],
+[
+"mtc1",
+"$v0",
+"%1"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_SEQ_MDL_PACK_DEV_SLOT_COLOR",
+"header": "ps2asm.h",
+"params": [
+"age",
+"unit"
+],
+"operands": [
+[
+"=&r",
+null
+],
+[
+"r",
+"age"
+],
+[
+"r",
+"unit"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%1",
+"$vf2"
+],
+[
+"vitof0.xyzw",
+"$vf2",
+"$vf2"
+],
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf10",
+"$vf0w"
+],
+[
+"vmaddx.xyzw",
+"$vf2",
+"$vf11",
+"$vf2x"
+],
+[
+"vmul.xyzw",
+"$vf10",
+"$vf2",
+"$vf12"
+],
+[
+"qmtc2.ni",
+"%2",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_LOAD_VF2_AT16",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf2",
+"0x10(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MUL_XYZ_VF3_VF2_VF2",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyz",
+"$vf3",
+"$vf2",
+"$vf2"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_ADDAY_X_ACC_VF3_VF3Y",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vadday.x",
+"$ACC",
+"$vf3",
+"$vf3y"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDZ_X_VF4_VF1_VF3Z",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmaddz.x",
+"$vf4",
+"$vf1",
+"$vf3z"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_RSQRT_Q_VF0W_VF4X",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vrsqrt",
+"$Q",
+"$vf0w",
+"$vf4x"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_WAITQ",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vwaitq"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MULQ_XYZ_VF2_VF2_Q",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulq.xyz",
+"$vf2",
+"$vf2",
+"$Q"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_STORE_VF2_AT16",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf2",
+"0x10(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_LOAD_VF19_VF20_VF21",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf19",
+"0x0(%0)"
+],
+[
+"lqc2",
+"$vf20",
+"0x10(%0)"
+],
+[
+"lqc2",
+"$vf21",
+"0x20(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MULX_W_VF24_VF19",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulx.w",
+"$vf24",
+"$vf19",
+"$vf24x"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MULX_W_VF25_VF19",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulx.w",
+"$vf25",
+"$vf19",
+"$vf25x"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MULX_W_VF26_VF19",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulx.w",
+"$vf26",
+"$vf19",
+"$vf26x"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_LOAD_VF16_AT0",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"ld",
+"$v0",
+"0x0(%0)"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf16"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_LOAD_VF17_AT8",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"ld",
+"$v1",
+"0x8(%0)"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf17"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_LOAD_VF18_AT16",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"ld",
+"$v0",
+"0x10(%0)"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf18"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MULAY_W_ACC_VF0_VF19Y",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulay.w",
+"$ACC",
+"$vf0",
+"$vf19y"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDAX_W_ACC_VF24_VF6X",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmaddax.w",
+"$ACC",
+"$vf24",
+"$vf6x"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDAY_W_ACC_VF25_VF6Y",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmadday.w",
+"$ACC",
+"$vf25",
+"$vf6y"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDZ_W_VF7_VF26_VF6Z",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmaddz.w",
+"$vf7",
+"$vf26",
+"$vf6z"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MULAX_XYZW_ACC_VF28_VF2X",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf28",
+"$vf2x"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDAY_XYZW_ACC_VF29_VF2Y",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmadday.xyzw",
+"$ACC",
+"$vf29",
+"$vf2y"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDAZ_XYZW_ACC_VF30_VF2Z",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmaddaz.xyzw",
+"$ACC",
+"$vf30",
+"$vf2z"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDW_XYZW_VF3_VF31_VF0W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmaddw.xyzw",
+"$vf3",
+"$vf31",
+"$vf0w"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_ADDAW_W_ACC_VF7_VF7W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vaddaw.w",
+"$ACC",
+"$vf7",
+"$vf7w"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MSUBW_W_VF6_VF0_VF0W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmsubw.w",
+"$vf6",
+"$vf0",
+"$vf0w"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MAXX_W_VF8_VF7_VF0X",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmaxx.w",
+"$vf8",
+"$vf7",
+"$vf0x"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_CLIPW_XYZW_VF3_VF3W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+".word",
+"0x4BE319FF                   # vclipw.xyzw $vf3",
+"$vf3w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MULAX_XY_ACC_VF16_VF4X",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulax.xy",
+"$ACC",
+"$vf16",
+"$vf4x"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_ADDW_X_VF9_VF0_VF6W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vaddw.x",
+"$vf9",
+"$vf0",
+"$vf6w"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDAY_XY_ACC_VF17_VF4Y",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmadday.xy",
+"$ACC",
+"$vf17",
+"$vf4y"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MINIW_W_VF8_VF8_VF0W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vminiw.w",
+"$vf8",
+"$vf8",
+"$vf0w"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDW_XY_VF5_VF18_VF0W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmaddw.xy",
+"$vf5",
+"$vf18",
+"$vf0w"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_CLIP_VF9_STORE_VERTEX_UV",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"cfc2.ni",
+"$v0",
+"$vi18"
+],
+[
+".word",
+"0x4BE049FF                   # vclipw.xyzw $vf9",
+"$vf0w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf20",
+"$vf0w"
+],
+[
+"vmaddw.xyzw",
+"$vf8",
+"$vf21",
+"$vf8w"
+],
+[
+"sqc2",
+"$vf3",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf6",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf5",
+"0x30(%0)"
+],
+[
+"sqc2",
+"$vf8",
+"0x20(%0)"
+],
+[
+"sb",
+"$v0",
+"0x51(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_STORE_CLIP_UNDEROVER_AT80",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"cfc2.ni",
+"$v0",
+"$vi18"
+],
+[
+"andi",
+"$v0",
+"$v0",
+"0x3"
+],
+[
+"sb",
+"$v0",
+"0x50(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_STORE_VF3_AT0",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf3",
+"0x0(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_STORE_VF6_AT16",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf6",
+"0x10(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MULAW_XYZW_ACC_VF20_VF0W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmulaw.xyzw",
+"$ACC",
+"$vf20",
+"$vf0w"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_CLIP_VF9_STORE_VF8_VI18",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"cfc2.ni",
+"$v0",
+"$vi18"
+],
+[
+"vmaddw.xyzw",
+"$vf8",
+"$vf21",
+"$vf8w"
+],
+[
+".word",
+"0x4BE049FF                   # vclipw.xyzw $vf9",
+"$vf0w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+],
+[
+"vnop"
+],
+[
+"vnop"
+],
+[
+"sqc2",
+"$vf8",
+"0x20(%0)"
+],
+[
+"sb",
+"$v0",
+"0x51(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_LOAD_UV_VF4",
+"header": "ps2asm.h",
+"params": [
+"uv"
+],
+"operands": [
+[
+"r",
+"uv"
+]
+],
+"ops": [
+[
+"ld",
+"$v0",
+"0x0(%0)"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf4"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_LOAD_VF6_AT16",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf6",
+"0x10(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_LOAD_VF2_AT0",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf2",
+"0x0(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_SUB_XYZ_VF6_VF0_VF6",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vsub.xyz",
+"$vf6",
+"$vf0",
+"$vf6"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_CLIPW_XYZW_VF9_VF0W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+".word",
+"0x4BE049FF                   # vclipw.xyzw $vf9",
+"$vf0w # 00000000 <InstrIdType: R5900_COP2_SPECIAL2>"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_MADDW_XYZW_VF8_VF21_VF8W",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmaddw.xyzw",
+"$vf8",
+"$vf21",
+"$vf8w"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_NOP",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vnop"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_STORE_CLIP_VF8_AT80",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"cfc2.ni",
+"$v0",
+"$vi18"
+],
+[
+"sqc2",
+"$vf8",
+"0x20(%0)"
+],
+[
+"andi",
+"$v0",
+"$v0",
+"0x3"
+],
+[
+"sb",
+"$v0",
+"0x50(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_BEGIN_POINT_UNPACK",
+"header": "ps2asm.h",
+"params": [
+"address"
+],
+"operands": [
+[
+"r",
+"address"
+]
+],
+"ops": [
+[
+"ctc2.i",
+"%0",
+"$vi2"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_UNPACK_POINT",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"vlqi.xyzw",
+"$vf4",
+"($vi2++)"
+],
+[
+"vlqi.xyzw",
+"$vf5",
+"($vi2++)"
+],
+[
+"vilwr.w",
+"$vi10",
+"($vi2)"
+],
+[
+"vlqi.xyzw",
+"$vf6",
+"($vi2++)"
+],
+[
+"vlqi.xyzw",
+"$vf7",
+"($vi2++)"
+],
+[
+"sqc2",
+"$vf4",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf5",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf6",
+"0x30(%0)"
+],
+[
+"cfc2.ni",
+"$v0",
+"$vi10"
+],
+[
+"sqc2",
+"$vf7",
+"0x20(%0)"
+],
+[
+"andi",
+"$v1",
+"$v0",
+"0x3"
+],
+[
+"sra",
+"$v0",
+"$v0",
+"6"
+],
+[
+"pextlb",
+"$v0",
+"$v0",
+"$v1"
+],
+[
+"sw",
+"$v0",
+"0x50(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_REFMAP_CACHED_BASIS",
+"header": "ps2asm.h",
+"params": [
+"cache"
+],
+"operands": [
+[
+"r",
+"cache"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf24",
+"0x0(%0)"
+],
+[
+"lqc2",
+"$vf25",
+"0x10(%0)"
+],
+[
+"lqc2",
+"$vf26",
+"0x20(%0)"
+],
+[
+"vmul.xyz",
+"$vf24",
+"$vf24",
+"$vf10"
+],
+[
+"vmul.xyz",
+"$vf25",
+"$vf25",
+"$vf10"
+],
+[
+"vmul.xyz",
+"$vf26",
+"$vf26",
+"$vf10"
+],
+[
+"vaddy.x",
+"$vf24",
+"$vf24",
+"$vf24y"
+],
+[
+"vaddy.x",
+"$vf25",
+"$vf25",
+"$vf25y"
+],
+[
+"vaddy.x",
+"$vf26",
+"$vf26",
+"$vf26y"
+],
+[
+"vaddz.x",
+"$vf24",
+"$vf24",
+"$vf24z"
+],
+[
+"vaddz.x",
+"$vf25",
+"$vf25",
+"$vf25z"
+],
+[
+"vaddz.x",
+"$vf26",
+"$vf26",
+"$vf26z"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_REFMAP_DIRECT_BASIS",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vaddx.x",
+"$vf24",
+"$vf0",
+"$vf10x"
+],
+[
+"vaddy.x",
+"$vf25",
+"$vf0",
+"$vf10y"
+],
+[
+"vaddz.x",
+"$vf26",
+"$vf0",
+"$vf10z"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_REFMAP_COLORS",
+"header": "ps2asm.h",
+"params": [
+"material",
+"color",
+"scale"
+],
+"operands": [
+[
+"r",
+"material"
+],
+[
+"r",
+"color"
+],
+[
+"r",
+"scale"
+]
+],
+"ops": [
+[
+"pextlb",
+"$v0",
+"$zero",
+"%0"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf4"
+],
+[
+"vitof0.xyzw",
+"$vf4",
+"$vf4"
+],
+[
+"pextlb",
+"$v0",
+"$zero",
+"%1"
+],
+[
+"pextlh",
+"$v0",
+"$zero",
+"$v0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf6"
+],
+[
+"vitof0.xyzw",
+"$vf6",
+"$vf6"
+],
+[
+"qmtc2.ni",
+"%2",
+"$vf5"
+],
+[
+"vmulx.xyz",
+"$vf6",
+"$vf6",
+"$vf5x"
+],
+[
+"vmulw.y",
+"$vf5",
+"$vf5",
+"$vf4w"
+],
+[
+"vmul.xyz",
+"$vf6",
+"$vf6",
+"$vf4"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_REFMAP_LOAD_NORMAL",
+"header": "ps2asm.h",
+"params": [
+"node"
+],
+"operands": [
+[
+"r",
+"node"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf2",
+"0x10(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_REFMAP_STEP",
+"header": "ps2asm.h",
+"params": [
+"node",
+"next"
+],
+"operands": [
+[
+"r",
+"node"
+],
+[
+"r",
+"next"
+]
+],
+"ops": [
+[
+"vmulax.x",
+"$ACC",
+"$vf24",
+"$vf2x"
+],
+[
+"vmadday.x",
+"$ACC",
+"$vf25",
+"$vf2y"
+],
+[
+"vmaddz.x",
+"$vf5",
+"$vf26",
+"$vf2z"
+],
+[
+"lqc2",
+"$vf2",
+"0x10(%1)"
+],
+[
+"sqc2",
+"$vf6",
+"0x20(%0)"
+],
+[
+"sqc2",
+"$vf5",
+"0x30(%0)"
+]
+],
+"uses": 0
+},
+{
+"name": "EE_SYNC_L",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"sync"
+]
+],
+"uses": 0
+},
+{
+"name": "EE_FBRST_SET",
+"header": "ps2asm.h",
+"params": [
+"aTmp",
+"aBits"
+],
+"operands": [
+[
+"=r",
+"aTmp"
+]
+],
+"ops": [
+[
+"cfc2.ni",
+"%0",
+"$vi28"
+],
+[
+"ori",
+"%0",
+"%0",
+"0x0"
+]
+],
+"uses": 0
+},
+{
+"name": "EE_GET_VPU_STAT",
+"header": "ps2asm.h",
+"params": [
+"aOut"
+],
+"operands": [
+[
+"=r",
+"aOut"
+]
+],
+"ops": [
+[
+"cfc2.ni",
+"%0",
+"$vi29"
+]
+],
+"uses": 0
+},
+{
+"name": "VU0_LOAD_MATRIX",
+"header": "ps2asm.h",
+"params": [
+"src"
+],
+"operands": [
+[
+"r",
+"src"
+]
+],
+"ops": [
+[
+"lqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"lqc2",
+"$vf29",
+"0x10(%0)"
+],
+[
+"lqc2",
+"$vf30",
+"0x20(%0)"
+],
+[
+"lqc2",
+"$vf31",
+"0x30(%0)"
+]
+],
+"uses": 20
+},
+{
+"name": "EE_MMI_UNIT_MATRIX",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"qmfc2.ni",
+"$a1",
+"$vf0"
+],
+[
+"pextuw",
+"$a0",
+"$zero",
+"$a1"
+],
+[
+"pextuw",
+"$v0",
+"$zero",
+"$a0"
+],
+[
+"pextuw",
+"$v1",
+"$a0",
+"$zero"
+],
+[
+"sq",
+"$v0",
+"0x0(%0)"
+],
+[
+"sq",
+"$v1",
+"0x10(%0)"
+],
+[
+"sq",
+"$a0",
+"0x20(%0)"
+],
+[
+"sq",
+"$a1",
+"0x30(%0)"
+]
+],
+"uses": 2
+},
+{
+"name": "EE_MMI_RGBA_PACK_UNIT",
+"header": "ps2asm.h",
+"params": [
+"out",
+"unit"
+],
+"operands": [
+[
+"=&r",
+"out"
+],
+[
+"r",
+"unit"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%1",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 14
+},
+{
+"name": "VU0_STORE_MATRIX",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf29",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf30",
+"0x20(%0)"
+],
+[
+"sqc2",
+"$vf31",
+"0x30(%0)"
+]
+],
+"uses": 24
+},
+{
+"name": "VU0_SCALAR_OP",
+"header": "ps2asm.h",
+"params": [
+"f",
+"insn"
+],
+"operands": [
+[
+"f",
+"f"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+]
+],
+"uses": 26
+},
+{
+"name": "VU0_LERP_VF10",
+"header": "ps2asm.h",
+"params": [
+"t"
+],
+"operands": [
+[
+"r",
+"t"
+]
+],
+"ops": [
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+],
+[
+"vsubx.w",
+"$vf3",
+"$vf0",
+"$vf2x"
+],
+[
+"vmulax.xyzw",
+"$ACC",
+"$vf11",
+"$vf2x"
+],
+[
+"vmaddw.xyzw",
+"$vf10",
+"$vf10",
+"$vf3w"
+]
+],
+"uses": 2
+},
+{
+"name": "EE_MMI_BIT_LENGTH",
+"header": "ps2asm.h",
+"params": [
+"value"
+],
+"operands": [
+[
+"+r",
+"value"
+]
+],
+"ops": [
+[
+"plzcw",
+"$v0",
+"%0"
+],
+[
+"andi",
+"$v0",
+"$v0",
+"0xFF"
+],
+[
+"addi",
+"%0",
+"$zero",
+"0x1F"
+],
+[
+"subu",
+"%0",
+"%0",
+"$v0"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_SCALAR_OP_TMP",
+"header": "ps2asm.h",
+"params": [
+"tmp",
+"f",
+"insn"
+],
+"operands": [
+[
+"=&r",
+"tmp"
+],
+[
+"f",
+"f"
+]
+],
+"ops": [
+[
+"mfc1",
+"%0",
+"%1"
+],
+[
+"qmtc2.ni",
+"%0",
+"$vf2"
+]
+],
+"uses": 1
+},
+{
+"name": "EE_MMI_RGBA_PACK",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"f",
+null
+]
+],
+"ops": [
+[
+"mfc1",
+"$v1",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 6
+},
+{
+"name": "EE_MMI_RGBA_PACK_UNCLOBBERED",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"f",
+null
+]
+],
+"ops": [
+[
+"mfc1",
+"$v1",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v1",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 1
+},
+{
+"name": "EE_MMI_RGBA_PACK_F128",
+"header": "ps2asm.h",
+"params": [
+"out"
+],
+"operands": [
+[
+"=r",
+"out"
+],
+[
+"f",
+null
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%1"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+],
+[
+"vmulx.xyzw",
+"$vf10",
+"$vf10",
+"$vf2x"
+],
+[
+"vftoi0.xyzw",
+"$vf10",
+"$vf10"
+],
+[
+"qmfc2.ni",
+"%0",
+"$vf10"
+],
+[
+"ppach",
+"%0",
+"$zero",
+"%0"
+],
+[
+"ppacb",
+"%0",
+"$zero",
+"%0"
+]
+],
+"uses": 2
+},
+{
+"name": "VU0_SCALAR_OP_CLOBBER",
+"header": "ps2asm.h",
+"params": [
+"f",
+"insn"
+],
+"operands": [
+[
+"f",
+"f"
+]
+],
+"ops": [
+[
+"mfc1",
+"$v0",
+"%0"
+],
+[
+"qmtc2.ni",
+"$v0",
+"$vf2"
+]
+],
+"uses": 25
+},
+{
+"name": "VU0_STORE_MATRIX_M",
+"header": "ps2asm.h",
+"params": [
+"a",
+"b",
+"c",
+"d"
+],
+"operands": [
+[
+"m",
+"a"
+],
+[
+"m",
+"b"
+],
+[
+"m",
+"c"
+],
+[
+"m",
+"d"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf29",
+"0x0(%1)"
+],
+[
+"sqc2",
+"$vf30",
+"0x0(%2)"
+],
+[
+"sqc2",
+"$vf31",
+"0x0(%3)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_NORMALIZE_VF10_EXTENDED",
+"header": "ps2asm.h",
+"params": [],
+"operands": [],
+"ops": [
+[
+"vmul.xyz",
+"$vf2",
+"$vf10",
+"$vf10"
+],
+[
+"vmulax.w",
+"$ACC",
+"$vf0",
+"$vf2x"
+],
+[
+"vmadday.w",
+"$ACC",
+"$vf0",
+"$vf2y"
+],
+[
+"vmaddz.w",
+"$vf2",
+"$vf0",
+"$vf2z"
+],
+[
+"vrsqrt",
+"$Q",
+"$vf0w",
+"$vf2w"
+],
+[
+"vwaitq"
+],
+[
+"vmulq.xyz",
+"$vf10",
+"$vf10",
+"$Q"
+]
+],
+"uses": 1
+},
+{
+"name": "PCP_COPY_VECTOR_F32",
+"header": "ps2asm.h",
+"params": [
+"dst",
+"src"
+],
+"operands": [
+[
+"=m",
+"dst"
+],
+[
+"r",
+"dst"
+],
+[
+"r",
+"src"
+],
+[
+"m",
+"src"
+]
+],
+"ops": [
+[
+"lq",
+"$v0",
+"0x0(%2)"
+],
+[
+"sq",
+"$v0",
+"0x0(%1)"
+]
+],
+"uses": 1
+},
+{
+"name": "VU0_STORE_MATRIX_UNCLOBBERED",
+"header": "ps2asm.h",
+"params": [
+"dst"
+],
+"operands": [
+[
+"r",
+"dst"
+]
+],
+"ops": [
+[
+"sqc2",
+"$vf28",
+"0x0(%0)"
+],
+[
+"sqc2",
+"$vf29",
+"0x10(%0)"
+],
+[
+"sqc2",
+"$vf30",
+"0x20(%0)"
+],
+[
+"sqc2",
+"$vf31",
+"0x30(%0)"
+]
+],
+"uses": 1
+}
+]
