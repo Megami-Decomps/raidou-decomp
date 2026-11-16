@@ -163,11 +163,23 @@ def classify_errors(stderr: str) -> dict[str, list[str]]:
     return out
 
 
-def splice(unit_text: str, name: str, body: str) -> str | None:
+def splice(unit_text: str, name: str, body: str, version: str | None = None) -> str | None:
+    """unit_text with the INCLUDE_ASM of name replaced by body. With a version, the INCLUDE_ASM that
+    version compiles: a shared unit can hold the same line in a VERSION_ #ifdef block and its #else."""
     pat = re.compile(rf'^INCLUDE_ASM\([^,]+,\s*"[^"]+",\s*{re.escape(name)}\);[^\n]*$', re.M)
-    if not pat.search(unit_text):
+    hits = list(pat.finditer(unit_text))
+    if version is not None and hits:
+        import version_guard
+        active, pos = set(), 0
+        for line, kept in version_guard.lines_for(unit_text, version):
+            if kept:
+                active.add(pos)
+            pos += len(line)
+        hits = [m for m in hits if m.start() in active]
+    if not hits:
         return None
-    return pat.sub(lambda _: body.rstrip("\n"), unit_text, count=1)
+    m = hits[0]
+    return unit_text[:m.start()] + body.rstrip("\n") + unit_text[m.end():]
 
 
 @dataclass
@@ -200,7 +212,7 @@ def try_compile(root: Path, python: str, unit: str, name: str, body: str, versio
     path = root / f"{unit}.c"
     if not unit.startswith("src/") or not path.exists():
         return Tried("no-unit")
-    text = splice(path.read_text(), name, body)
+    text = splice(path.read_text(), name, body, version)
     if text is None:
         return Tried("no-asm-line")
     return check_source(root, python, path, text, name, version)

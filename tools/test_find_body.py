@@ -248,6 +248,16 @@ class CompileTests(unittest.TestCase):
         self.assertEqual(body_check.splice(unit, "f", "void f(void) {}\n"), "a;\nvoid f(void) {}\nb;\n")
         self.assertIsNone(body_check.splice(unit, "g", ""))
 
+    def test_splice_takes_the_version_block(self) -> None:
+        asm = 'INCLUDE_ASM(const s32, "u", f);\n'
+        unit = f"#ifdef VERSION_RAIDOU1\nr1;\n#else\n{asm}#endif\n#ifdef VERSION_RAIDOU1\n{asm}#endif\n"
+        body = "void f(void) {}\n"
+        self.assertEqual(body_check.splice(unit, "f", body, "raidou1"),
+                         f"#ifdef VERSION_RAIDOU1\nr1;\n#else\n{asm}#endif\n#ifdef VERSION_RAIDOU1\n{body}#endif\n")
+        self.assertEqual(body_check.splice(unit, "f", body, "raidou2"),
+                         f"#ifdef VERSION_RAIDOU1\nr1;\n#else\n{body}#endif\n#ifdef VERSION_RAIDOU1\n{asm}#endif\n")
+        self.assertIsNone(body_check.splice("#ifdef VERSION_RAIDOU1\n" + asm + "#endif\n", "f", body, "raidou2"))
+
     def test_label(self) -> None:
         hit = find_body.Hit("smt3", "r", "p", 1, "f", "alias", "matched", "")
         ident = body_check.Identity((10, 12), 1.0, 0.9)
