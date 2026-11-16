@@ -30,6 +30,17 @@ still use the old names. Either way a row is spliced at the `INCLUDE_ASM` of
 its renamed function, and its draft's own name is renamed. A `docs.json` unit
 is the unit with its folder (`event/evtMoon`); the batches.tsv unit wins.
 
+## Pseudocode
+
+The drafting worker reads Hex-Rays pseudocode from the shared IDBs. Three
+tools in `tools/ida/` make it closer to the decomp's C:
+
+| Tool | Use |
+|---|---|
+| `ee32.py` | Hex-Rays pass loaded in IDA (`_install()`): compares and branches on the low 32 bits of a register, so ee-gcc's sign-extended ints stop decompiling as `__int64`. Wrong for real 64-bit compares. |
+| `stylefix.py` | text filter (`stylefix.py -`): `s32`/`u8`/`f32` types, `NULL`, no `__fastcall` or `LL` suffixes, `struct TAG` where the decomp writes it |
+| `propose_protos.py TSV OUT.json` | prototype candidates for undrafted functions: HD signatures and matched shape neighbours, never the function's own definition |
+
 ## Landing a batch
 
 ```sh
