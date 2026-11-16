@@ -11,7 +11,7 @@ published last is fetched from <URL>/<v>/history.json and the current commit is
 added to it, replacing an entry for the same commit. A 404 starts a new history;
 any other failure stops. Writes:
 
-    index.html                   both versions side by side
+    index.html                   both versions side by side, with progress added today
     <v>/index.html               headline, VU microcode, history chart, categories, units
     <v>/history.json             one entry per published commit, oldest first
     <v>/report.json              the game-scope report the page was rendered from
@@ -31,7 +31,7 @@ import subprocess
 import urllib.error
 import urllib.request
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -61,6 +61,47 @@ def merge_history(history: list[dict], entry: dict) -> list[dict]:
     merged.append(entry)
     merged.sort(key=lambda item: datetime.fromisoformat(item["date"]))
     return merged
+
+
+def parse_date(text: str) -> datetime:
+    when = datetime.fromisoformat(text)
+    return when if when.tzinfo else when.replace(tzinfo=timezone.utc)
+
+
+def today_baseline(history: list[dict], date: str) -> dict | None:
+    """The last entry before local midnight of date, else the oldest entry."""
+    if not history:
+        return None
+    now = parse_date(date)
+    midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    ordered = sorted(history, key=lambda item: parse_date(item["date"]))
+    earlier = [item for item in ordered if parse_date(item["date"]) < midnight]
+    return earlier[-1] if earlier else ordered[0]
+
+
+def today_delta(history: list[dict], date: str, current: dict) -> dict | None:
+    """Change in the game totals since the start of today, or None without history."""
+    base = today_baseline(history, date)
+    if base is None:
+        return None
+    return {
+        "code_percent": percent(current["matched_code"], current["total_code"])
+        - percent(base["matched_code"], base["total_code"]),
+        "code_bytes": current["matched_code"] - base["matched_code"],
+        "functions_percent": percent(current["matched_functions"], current["total_functions"])
+        - percent(base["matched_functions"], base["total_functions"]),
+        "functions": current["matched_functions"] - base["matched_functions"],
+    }
+
+
+def delta_line(delta: dict | None, kind: str) -> str:
+    if delta is None:
+        return ""
+    if kind == "code":
+        text = f'{delta["code_percent"]:+.2f}% ({delta["code_bytes"]:+,} bytes) today'
+    else:
+        text = f'{delta["functions_percent"]:+.2f}% ({delta["functions"]:+,} functions) today'
+    return f'<p class="delta">{text}</p>'
 
 
 def badge(label: str, matched: int, total: int) -> dict:
@@ -161,13 +202,16 @@ def render(version: str, report: dict, audit: dict, history: list[dict],
                "bytes are VIF headers, unpack data and the debug font texture, never instructions."
                ) if vu else ""
 
+    delta = today_delta(history, date, game)
     cards = []
-    for title, matched, total, unit in (
-            ("Code bytes", game["matched_code"], game["total_code"], "bytes"),
-            ("Functions", game["matched_functions"], game["total_functions"], "functions")):
+    for title, matched, total, unit, kind in (
+            ("Code bytes", game["matched_code"], game["total_code"], "bytes", "code"),
+            ("Functions", game["matched_functions"], game["total_functions"], "functions",
+             "functions")):
         cards.append(
             f'<div class="card"><h2>{title}</h2>'
-            f'<p class="big">{percent(matched, total):.2f}%</p>{bar(matched, total)}'
+            f'<p class="big">{percent(matched, total):.2f}%</p>{delta_line(delta, kind)}'
+            f'{bar(matched, total)}'
             f'<p class="muted">{number(matched)} / {number(total)} {unit}</p></div>')
     # The microcode is not EE code, so it stays out of the headline; objdiff
     # cannot measure it either, since splat gives .vutext a single label.
@@ -264,6 +308,7 @@ h1 {{ margin: 0 0 4px; font-size: 1.6em; }}
 .card {{ border: 1px solid var(--border); border-radius: 8px; padding: 16px; background: var(--surface); }}
 .card h2 {{ margin: 0; font-size: 1em; color: var(--muted); }}
 .big {{ font-size: 2.2em; font-weight: 600; margin: 4px 0 8px; }}
+.delta {{ margin: -4px 0 8px; color: var(--ok); font-weight: 600; }}
 .card .bar {{ display: block; width: 100%; height: 10px; }}
 .bar {{ display: inline-block; width: 120px; height: 8px; background: var(--border); border-radius: 4px;
   overflow: hidden; vertical-align: middle; }}
@@ -362,12 +407,15 @@ def landing(rows: list[dict], commit: str, date: str) -> str:
     cards = []
     for row in rows:
         game = row["game"]
+        delta = today_delta(row.get("history", []), date, game)
         cards.append(
             f'<div class="card"><h2><a href="{row["version"]}/">{html.escape(row["title"])}</a></h2>'
             f'<p class="big">{percent(game["matched_code"], game["total_code"]):.2f}%</p>'
+            f'{delta_line(delta, "code")}'
             f'{bar(game["matched_code"], game["total_code"])}'
             f'<p class="muted">code bytes, {number(game["matched_code"])} / {number(game["total_code"])}</p>'
             f'<p class="big">{percent(game["matched_functions"], game["total_functions"]):.2f}%</p>'
+            f'{delta_line(delta, "functions")}'
             f'{bar(game["matched_functions"], game["total_functions"])}'
             f'<p class="muted">functions, {number(game["matched_functions"])} / '
             f'{number(game["total_functions"])}</p></div>')
@@ -416,7 +464,7 @@ def main() -> None:
         shutil.copyfile(report_path, out / version / "report.json")
         (out / version / "index.html").write_text(render(
             version, report, audit, history, args.repo, commit, date, vu_coverage(version)))
-        rows.append({"version": version, "title": VERSIONS[version]["title"], "game": game})
+        rows.append({"version": version, "title": VERSIONS[version]["title"], "game": game, "history": history})
         print(f"{version}: {percent(game['matched_code'], game['total_code']):.3f}% code, "
               f"{percent(game['matched_functions'], game['total_functions']):.3f}% functions, "
               f"{len(history)} history entries")

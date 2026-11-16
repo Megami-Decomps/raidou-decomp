@@ -31,6 +31,76 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual([e["commit"] for e in merged], ["late", "later"])
 
 
+def totals(code: int, functions: int) -> dict:
+    return {"matched_code": code, "total_code": 1000, "matched_functions": functions,
+            "total_functions": 10}
+
+
+def full(commit: str, date: str, code: int, functions: int) -> dict:
+    return {"commit": commit, "date": date, **totals(code, functions)}
+
+
+class TodayTests(unittest.TestCase):
+    DATE = "2026-11-16T15:00:00+01:00"
+
+    def test_baseline_is_the_last_entry_before_local_midnight(self) -> None:
+        history = [full("a", "2026-11-14T12:00:00+01:00", 100, 1),
+                   full("b", "2026-11-15T23:30:00+01:00", 200, 2),
+                   full("c", "2026-11-16T09:00:00+01:00", 250, 3)]
+        current = totals(300, 5)
+        delta = progress_site.today_delta(history, self.DATE, current)
+        self.assertEqual((delta["code_bytes"], delta["functions"]), (100, 3))
+        self.assertAlmostEqual(delta["code_percent"], 10.0)
+        self.assertAlmostEqual(delta["functions_percent"], 30.0)
+
+    def test_midnight_uses_the_commits_own_time_zone(self) -> None:
+        # 23:30 UTC on the 15th is 00:30+01:00 on the 16th, so it is today.
+        history = [full("a", "2026-11-15T23:30:00+00:00", 200, 2)]
+        delta = progress_site.today_delta(history, self.DATE, totals(300, 5))
+        self.assertEqual(delta["code_bytes"], 100)
+        history.insert(0, full("old", "2026-11-15T22:00:00+00:00", 150, 1))
+        delta = progress_site.today_delta(history, self.DATE, totals(300, 5))
+        self.assertEqual(delta["code_bytes"], 150)
+
+    def test_without_an_earlier_entry_the_oldest_one_today_is_the_baseline(self) -> None:
+        history = [full("b", "2026-11-16T10:00:00+01:00", 250, 3),
+                   full("a", "2026-11-16T08:00:00+01:00", 200, 2)]
+        delta = progress_site.today_delta(history, self.DATE, totals(300, 5))
+        self.assertEqual((delta["code_bytes"], delta["functions"]), (100, 3))
+
+    def test_empty_history_shows_nothing(self) -> None:
+        self.assertIsNone(progress_site.today_delta([], self.DATE, totals(300, 5)))
+        self.assertEqual(progress_site.delta_line(None, "code"), "")
+
+    def test_lines_carry_percent_and_count(self) -> None:
+        delta = progress_site.today_delta([full("a", "2026-11-15T12:00:00+01:00", 100, 1)],
+                                          self.DATE, totals(150, 0))
+        self.assertEqual(progress_site.delta_line(delta, "code"),
+                         '<p class="delta">+5.00% (+50 bytes) today</p>')
+        self.assertEqual(progress_site.delta_line(delta, "functions"),
+                         '<p class="delta">-10.00% (-1 functions) today</p>')
+
+    def test_pages_show_the_delta_and_counts(self) -> None:
+        history = [{"commit": "a", "date": "2026-11-15T12:00:00+01:00", "matched_code": 100,
+                    "total_code": 2000, "matched_functions": 0, "total_functions": 4}]
+        game = {"matched_code": 500, "total_code": 2000, "matched_functions": 1,
+                "total_functions": 4}
+        page = progress_site.render("raidou1", SparseMeasureTests.REPORT, SparseMeasureTests.AUDIT,
+                                    history, None, "0" * 40, self.DATE)
+        self.assertIn("+20.00% (+400 bytes) today", page)
+        self.assertIn("+25.00% (+1 functions) today", page)
+        self.assertIn("500 / 2,000 bytes", page)
+        rows = [{"version": v, "title": v, "game": game, "history": history}
+                for v in ("raidou1", "raidou2")]
+        index = progress_site.landing(rows, "0" * 40, self.DATE)
+        self.assertEqual(index.count("+20.00% (+400 bytes) today"), 2)
+        self.assertEqual(index.count("(+1 functions) today"), 2)
+        self.assertIn("code bytes, 500 / 2,000", index)
+        self.assertNotIn("today", progress_site.landing(
+            [{"version": "raidou1", "title": "r", "game": game, "history": []}],
+            "0" * 40, self.DATE))
+
+
 class SparseMeasureTests(unittest.TestCase):
     # objdiff omits zero-valued fields and writes byte counts as strings.
     REPORT = {
