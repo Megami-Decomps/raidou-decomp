@@ -41,9 +41,28 @@ def draft_block(lines: list[str], at: int) -> tuple[int, int]:
     return start, at + 2
 
 
-def splice(text: str, name: str, body: str, r1only: bool = False) -> str:
-    """Replace the function's INCLUDE_ASM (and any NON_MATCHING draft around it) with `body`.
-    An R1-only body keeps the INCLUDE_ASM for the other game."""
+def games(text: str) -> list[set[str]]:
+    """The versions that compile each line of text."""
+    import version_guard
+    out = [set() for _ in text.split("\n")]
+    for v in version_guard.VERSIONS:
+        for i, (_, kept) in enumerate(version_guard.lines_for(text, v)):
+            if kept:
+                out[i].add(v)
+    return out
+
+
+def only_raidou1(text: str, at: int) -> bool:
+    """Line `at` is already under a guard only Raidou 1 compiles."""
+    try:
+        return games(text)[at] == {"raidou1"}
+    except ValueError:
+        return False
+
+
+def splice(text: str, name: str, body: str, r1only: bool = False, version: str = "raidou1") -> str:
+    """Replace the function's INCLUDE_ASM (and any NON_MATCHING draft around it) with `body`; of several, the one
+    `version` builds. An R1-only body keeps the INCLUDE_ASM for the other game."""
     lines = text.split("\n")
     hits = [i for i, l in enumerate(lines) if asm_line(name).match(l)]
     body = body.rstrip("\n")
@@ -54,11 +73,16 @@ def splice(text: str, name: str, body: str, r1only: bool = False) -> str:
         if r1only:
             return "\n".join(lines[:hits[0]] + body.split("\n") + lines[hits[0] + 1:])
         return "\n".join(lines[:hits[0] - 1] + body.split("\n") + lines[hits[1] + 2:])
+    if len(hits) > 1:
+        # a shared unit can hold the line once per game, in a VERSION_ block and its #else
+        compiled = games(text)
+        hits = [i for i in hits if version in compiled[i]]
     if len(hits) != 1:
-        raise ValueError(f"{name}: {len(hits)} INCLUDE_ASM lines")
+        raise ValueError(f"{name}: {len(hits)} INCLUDE_ASM lines" + (f" that {version} builds" if hits else ""))
     asm = lines[hits[0]]
     start, end = draft_block(lines, hits[0])
-    body = body.rstrip("\n")
+    if r1only and only_raidou1(text, hits[0]):
+        r1only = False
     if r1only:
         body = f"#ifdef VERSION_RAIDOU1\n{body}\n#else\n{asm}\n#endif"
     return "\n".join(lines[:start] + body.split("\n") + lines[end:])

@@ -45,6 +45,14 @@ class SpliceTests(unittest.TestCase):
                          f"#ifdef VERSION_RAIDOU1\nvoid f(void) {{}}\n#else\n{ASM}\n#endif\n")
         self.assertEqual(unit_text.splice(text, "f", "void f(void) {}\n"), "void f(void) {}\n")
 
+    def test_the_copy_in_the_raidou1_block_is_spliced(self) -> None:
+        text = f"#ifdef VERSION_RAIDOU1\nr1;\n#else\n{ASM}\n#endif\nx;\n#ifdef VERSION_RAIDOU1\n{ASM}\n#endif\n"
+        want = f"#ifdef VERSION_RAIDOU1\nr1;\n#else\n{ASM}\n#endif\nx;\n#ifdef VERSION_RAIDOU1\nvoid f(void) {{}}\n#endif\n"
+        self.assertEqual(unit_text.splice(text, "f", "void f(void) {}\n"), want)
+        self.assertEqual(unit_text.splice(text, "f", "void f(void) {}\n", r1only=True), want)
+        with self.assertRaises(ValueError):
+            unit_text.splice(f"{ASM}\n{ASM}\n", "f", "void f(void) {}\n")
+
     def test_a_missing_function_is_an_error(self) -> None:
         with self.assertRaises(ValueError):
             unit_text.splice(ASM, "g", "void g(void) {}")
