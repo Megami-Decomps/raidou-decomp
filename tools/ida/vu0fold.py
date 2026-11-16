@@ -3,7 +3,7 @@
 ps2asm.h/fpu.h macros of vu0cat.json, writing pc/DST/*.c ('-' filters stdin to stdout). Also usable as a module: fold(text)."""
 import json, os, re, sys
 
-W = os.path.dirname(os.path.abspath(__file__))
+W = os.path.expanduser("~/.local/state/raidou-decomp-work/ida-pseudo")  # vu0cat.json and pc/ live in the work dir
 NO_DEST = {"qmtc2", "ctc2", "mult1", "multu1", "div1", "divu1", "madd1", "maddu1", "mthi1", "mtlo1",
            "pmthi", "pmtlo", "pmthl", "mtsab", "mtsah", "pmaddw", "pmsubw", "pmadduw", "pdivw",
            "pdivuw", "pdivbw", "pmaddh", "pmsubh", "phmadh", "phmsbh"}
