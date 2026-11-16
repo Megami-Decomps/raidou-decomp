@@ -62,7 +62,7 @@ typedef sdatUnitWork_t datPartyDevil_t;
 /* Player data, 0xFA0 bytes at DDS3_GBWK+0x1CA0. Only the fields used so far are named. */
 typedef struct SBTL_PLAYER_DATA {
     /* 0x000 */ sdfVector4_t vec[2];
-    /* 0x020 */ s32 val20;
+    /* 0x020 */ s32 mag;
     /* 0x024 */ s32 val24;
     /* 0x028 */ s32 maka;
     /* 0x02C */ s32 val2C;
@@ -70,7 +70,8 @@ typedef struct SBTL_PLAYER_DATA {
     /* 0x034 */ sdatUnitWork_t unit;
     /* 0x144 */ u8 pad144[2];
     /* 0x146 */ s16 val146;
-    /* 0x148 */ u8 pad148[4];
+    /* 0x148 */ s16 swordAtk;
+    /* 0x14A */ u8 pad14A[2];
     /* 0x14C */ s32 val14C;
     /* 0x150 */ s32 val150;
     /* 0x154 */ s32 val154;

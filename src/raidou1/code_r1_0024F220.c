@@ -2633,7 +2633,7 @@ s32 sbtlCallBtlCreateUnit(s8 flg) {
     wk_sbtl->equipBulletBk = player->val154;
     wk_sbtl->hgunNum = sbtlCallBtlGetPlayerData3();
     wk_sbtl->equipSword = DDS3_GBWK->playerData.val146;
-    wk_sbtl->mag = DDS3_GBWK->playerData.val20;
+    wk_sbtl->mag = DDS3_GBWK->playerData.mag;
     wk_sbtl->equipGun = 1;
     wk_sbtl->stockNum = 0;
     wk_sbtl->field644 = 0;

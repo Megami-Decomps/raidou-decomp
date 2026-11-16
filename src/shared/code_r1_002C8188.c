@@ -199,6 +199,7 @@ struct sdfMemHandle_t *effLoadMappedStatusRecords(const u8 *source, effMappedHea
 /* Build the live batch header from the serialized count and owned record array. */
 void *effGetSlotWorkOrOverride(sprHandle_t *work, s32 slotIndex);
 void effInitializeSlotPhase(effTimedState_t *effect);
+extern s8 effInitializeSlotWorkFromDescriptionData[]; /* corner order 0, 1, 3, 2 */
 extern sprHandle_t *effUpdateTimedStates(sprHandle_t *effect, u32 slot, void *entryData);
 
 /* Rebuild a slot's live work from its source description, then prime the timed states. */
@@ -562,7 +563,55 @@ void effInitializeSlotPhase(effTimedState_t *effect) {
     }
 }
 
+/* NON_MATCHING: 113 of 113 words match. Matches alone, but as C in this unit it changes the schedule of sdfDrawTexturedQuad, whose codegen depends on the declarations in scope. */
+#ifdef NON_MATCHING
+void effInitializeSlotWorkFromDescription(sprHandle_t *owner, s32 slotIndex, void *payload) {
+    itfBdWork_t *entry = payload;
+    effSlotDescription_t *description = &owner->descriptions[slotIndex];
+    itfBdWork_t *work = &owner->workEntries[slotIndex];
+    effSlotGeometry_t *geometry = &entry->geometry;
+    s32 i;
+
+    entry->geometry.bounds[1] = 0;
+    geometry->bounds[0] = 0;
+    for (i = 0; i < 4; i++) {
+        work->bounds.grid.quantizedBounds[i] = description->bounds[i];
+    }
+    for (i = 0; i < 4; i++) {
+        s32 color = description->cornerColors[effInitializeSlotWorkFromDescriptionData[i]];
+        geometry->cornerColors[i] = color;
+        work->savedColors[i] = color;
+    }
+    for (i = 0; i < 4; i++) {
+        entry->bounds.texture.edgeAlpha[i] = 0x80;
+    }
+    if (description->widthOverride != 0) {
+        work->sourceWidth = description->widthOverride;
+    } else {
+        work->sourceWidth = description->uv.rect.u1 - description->uv.rect.u0;
+    }
+    if (description->heightOverride != 0) {
+        work->sourceHeight = description->heightOverride;
+    } else {
+        work->sourceHeight = description->uv.rect.v1 - description->uv.rect.v0;
+    }
+    entry->geometry.angleDegrees = 0;
+    entry->geometry.bounds[2] = work->sourceWidth << 4;
+    entry->geometry.bounds[3] = work->sourceHeight << 3;
+    work->remainingDescriptionUpdates = description->descriptionUpdateDelay;
+    work->slotOffset = 0;
+    for (i = 0; i < sizeof(entry->states) / sizeof(entry->states[0]); i++) {
+        effTimedState_t *state = &entry->states[i];
+
+        state->delay = description->initialDelay;
+        effInitializeSlotPhase(state);
+        state->delay += 1;
+    }
+    effUpdateTimedStates(owner, slotIndex, payload);
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_002C8188", effInitializeSlotWorkFromDescription);
+#endif
 
 /* Initialize the normal slot entry at the unchanged 0xA0-byte stride. */
 void effInitializeSlotWork(sprHandle_t *owner, s32 slotIndex) {

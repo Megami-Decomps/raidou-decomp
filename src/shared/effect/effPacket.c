@@ -6,6 +6,10 @@
 #include "sdf2D.h"
 #include "effPacket.h"
 #include "sdfPacketBuff.h"
+#include "kernel_draw.h"
+#include "dds3KernelMain.h"
+#include "dds3KernelDraw.h"
+#include "sdf_packet_list.h"
 
 /* The native end message is padded to a 0x20-byte rodata block. */
 extern s8 dds3CrossfadeRunFlag;
@@ -15,7 +19,6 @@ extern u32 effPktDefaultFaceIndex[];
 
 #include "sdk_libc.h"
 
-sdfGrPacketHeader_t *effPkt2DAllocTriStrip(s32 num, s32 prim);
 u64 *effPkt2DAllocF4(u32 prim);
 void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm);
 
@@ -302,12 +305,99 @@ void *effPkt3DPrimMakePoly(sdf3DPrimPolyParm_t *aParm) {
 
 INCLUDE_ASM(const s32, "effect/effPacket", dds3CrossfadeStart);
 
-INCLUDE_ASM(const s32, "effect/effPacket", dds3UpdateCrossfade);
+void dds3UpdateCrossfade(void) {
+    sdfDrawTag_t *list;
+    sdfGrRefPacketHeader_t *reference;
+    u64 *texturePacket;
+    u64 *blendPacket;
+    sdfGrPacketHeader_t *sprite;
+    effPacketSpriteVertex_t *vertex;
+    u32 alpha;
+
+    if (dds3CrossfadeRunFlag == 0) {
+        return;
+    }
+    if (dds3CrossfadeFrame == dds3CrossfadeFrameMax) {
+        dds3CrossfadeEnd();
+        return;
+    }
+    if (dds3CrossfadeFrame == 0) {
+        list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+        sdfDrawTagInit(list);
+        reference = EE_ADDR_AS(sdfGrRefPacketHeader_t *, sdfGrAllocPacketBuff(0x20));
+        sdfGrLinkDispFrameTex(list, EE_ADDR(&dds3DrawEnv[dds3GetFrameID()].stdEnv), reference);
+        texturePacket = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+        texturePacket[0] = 3;
+        texturePacket[1] = 0x5000000310000000ULL;
+        texturePacket[2] = 0x1000000000008002ULL;
+        texturePacket[3] = 0xE;
+        texturePacket[4] = 0x8000000080ULL;
+        texturePacket[5] = 0x3B;
+        texturePacket[6] = 0;
+        texturePacket[7] = 0x3F;
+        sdfDrawTagLink(list, EE_ADDR(texturePacket));
+        blendPacket = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+        blendPacket[0] = 3;
+        blendPacket[1] = 0x5000000310000000ULL;
+        blendPacket[2] = 0x1000000000008002ULL;
+        blendPacket[3] = 0xE;
+        blendPacket[4] = 0x31001;
+        blendPacket[5] = 0x47;
+        blendPacket[6] = 0x44;
+        blendPacket[7] = 0x42;
+        sdfDrawTagLink(list, EE_ADDR(blendPacket));
+        sprite = sdf2DAllocSprite(1);
+        vertex = sdf2DGetPrimPtr(sprite);
+        vertex->r = 0x80;
+        vertex->g = 0x80;
+        vertex->b = 0x80;
+        vertex->a = 0x80;
+        vertex->corner[0].u = 0;
+        vertex->corner[0].v = 0;
+        vertex->corner[0].x = 0x77F8;
+        vertex->corner[0].y = 0x78F8;
+        vertex->corner[0].mask = 0xFF0000;
+        vertex->corner[0].flag = 0;
+        vertex->corner[1].u = 0x2000;
+        vertex->corner[1].v = 0xE00;
+        vertex->corner[1].x = 0x87F8;
+        vertex->corner[1].y = 0x86F8;
+        vertex->corner[1].mask = 0xFF0000;
+        vertex->corner[1].flag = 0;
+        sdfDrawTagLink(list, EE_ADDR(sprite));
+        dds3UpdateCrossfadeData.regFunc(&dds3UpdateCrossfadeData, list);
+    }
+    dds3CrossfadeFrame++;
+    alpha = (0x80 - (u32)((f32)dds3CrossfadeFrame * 128.0f / (f32)dds3CrossfadeFrameMax)) & 0xFF;
+    list = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(list);
+    sdf2DLinkTexPacket(list, dds3GetRenderTexture(), 0);
+    sprite = sdf2DAllocSprite(1);
+    vertex = sdf2DGetPrimPtr(sprite);
+    vertex->r = 0x80;
+    vertex->g = 0x80;
+    vertex->b = 0x80;
+    vertex->a = alpha;
+    vertex->corner[0].u = 0;
+    vertex->corner[0].v = 0;
+    vertex->corner[0].x = 0x7000;
+    vertex->corner[0].y = 0x7900;
+    vertex->corner[0].mask = 0xFF0000;
+    vertex->corner[0].flag = 0;
+    vertex->corner[1].u = 0x1000;
+    vertex->corner[1].v = 0xE00;
+    vertex->corner[1].x = 0x9000;
+    vertex->corner[1].y = 0x8700;
+    vertex->corner[1].mask = 0xFF0000;
+    vertex->corner[1].flag = 0;
+    sdfDrawTagLink(list, EE_ADDR(sprite));
+    dds3UpdateCrossfadeData2.regFunc(&dds3UpdateCrossfadeData2, list);
+}
 INCLUDE_SDATA(const s32, "effect/effPacket", dds3CrossfadeRunFlag);
 
 INCLUDE_SDATA(const s32, "effect/effPacket", dds3CrossfadeFrame);
 
 INCLUDE_SDATA(const s32, "effect/effPacket", dds3CrossfadeFrameMax);
 
-INCLUDE_SDATA(const s32, "effect/effPacket", effData23);
+INCLUDE_SDATA(const s32, "effect/effPacket", effFieldColorFlags);
 

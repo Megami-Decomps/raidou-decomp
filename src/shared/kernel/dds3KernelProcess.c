@@ -67,7 +67,6 @@ extern sdfDrawTag_t *dds3LinkZClearDrawTag(s32);
 extern void fldDrwZLoad(void);
 extern void sdfPreDrawChainLink(sdfPreDrawChain_t *, sdfPreDrawTag_t *);
 extern sdfPreDrawChain_t dds3PreDrawChain;
-extern dds3DrawBank_t dds3DrawEnv[2];
 
 /* NON_MATCHING: 35 of 496 words match. Register allocation: mine saves s8, retail only s0-s7; layout and call order match. dds3DrawBank_t.modelEnv[15] and sdfGrOtTable[114] in headers.patch. */
 #ifdef VERSION_RAIDOU1

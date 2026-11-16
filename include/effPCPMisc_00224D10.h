@@ -65,12 +65,25 @@ typedef struct fileSavePreviewRecord_t {
 typedef char fileSavePreviewRecordSizeCheck[
     sizeof(fileSavePreviewRecord_t) == 0x30 ? 1 : -1];
 
-struct Standard;
-struct effPartsHandle_t;
-struct emdlHandle_t;
+/* Next free minor id for effect models (major 5). */
+extern u16 effHandleCreateData;
 
-void Delete(struct effPartsHandle_t *handle);
-struct emdlHandle_t *effCallChipAllocZeroDirect3(struct Standard *pParts);
-struct emdlHandle_t *effPCPAnalyzeBEDCopy(struct effPartsHandle_t *handle);
+struct fileJobPayload_t;
+
+/* Heap-owned model wrapper (0x14 chip block); the light buffer is a 0xE0-byte chip block. */
+typedef struct effModelOwner_t {
+    f32 scale;
+    struct mdlObj_t *model;
+    struct sdf3DLightParallelPacket_t *ownedBuffer;
+    u32 flags;
+    u32 unk10;
+} effModelOwner_t;
+
+SIZE_CHECK(effModelOwnerSizeCheck, effModelOwner_t, 0x14);
+
+mdlObj_t *effHandleCreate(const u8 *data, s32 size);
+void Delete(effModelOwner_t *owner);
+effModelOwner_t *effCreateModelOwner(struct fileJobPayload_t *source);
+effModelOwner_t *effPCPAnalyzeBEDCopy(effModelOwner_t *source);
 
 #endif

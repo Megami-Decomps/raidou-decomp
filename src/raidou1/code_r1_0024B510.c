@@ -36,7 +36,7 @@ s32 sbtlInitPlayerData(void)
     SDF_VU0_STOREVECTOR(&player->vec[0]);
     SDF_VU0_LOADVECTOR(&vec1);
     SDF_VU0_STOREVECTOR(&player->vec[1]);
-    player->val20 = 100;
+    player->mag = 100;
     player->val24 = 1000;
     player->maka = 200;
     player->val2C = 9999;

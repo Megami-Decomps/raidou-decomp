@@ -12,6 +12,14 @@
 #include "code_0027A1D0.h"
 #include "code_r1_0021CE60.h"
 #include "dat.h"
+#include "dds3KernelCore.h"
+#include "EventBit.h"
+#include "fld.h"
+#include "scr.h"
+#include "sBtlDvltk.h"
+#include "sbtlWork.h"
+#include "sBtlSkill.h"
+#include "sBtlCalc.h"
 
 extern u32 datCallCheckStrongSwordAttackData;
 extern u32 cmpLoadModelTablesData;
@@ -112,7 +120,7 @@ typedef char sdfChannel_size_must_be_0xA4[(sizeof(sdfChannel_t) == 0xA4) ? 1 : -
 #define SDF_UNIT_ENEMY 0x20
 
 extern datEnemyRecord_t *datEnemyRecords;
-extern char sdfRuntimeTaskName[];
+extern char dds3GlobalWorkProcName[];
 
 #define SDF_FLOAT_COUNTER_FROZEN_FLAG 0x00000008
 
@@ -141,16 +149,39 @@ void evtLoadValueSecondaryVectorIntoVu(dds3Basic_t *node) {
 
 }
 
-INCLUDE_ASM(const s32, "dat", datGlobalWorkInit);
+void dds3GlobalWorkInit(void) {
+    sdfMemHandle_t *handle = sdfMemAllocDirect(sizeof(dds3GlobalWork_t));
+    dds3GlobalWork_t *work = sdfMemLock(handle);
+
+    memset(work, 0, sizeof(dds3GlobalWork_t));
+    work->memHandle = handle;
+    work->unk1274 = 0;
+    work->unk1278 = 0;
+    dds3StartProcess(dds3GlobalWorkProcName, DDS3_PRIORITY_GLOBALWORK, 0, 0, dds3GlobalWorkMainProc, NULL, work);
+    DDS3_GBWK = work;
+    UserInit();
+}
 
 INCLUDE_ASM(const s32, "dat", datGlobalWorkDestroy);
 
-INCLUDE_ASM(const s32, "dat", UserInit);
+s32 dds3GlobalWorkMainProc(dds3ProcessID_t *id) {
+    DDS3_GBWK->unk1274++;
+    DDS3_GBWK->unk1278++;
+    return 0;
+}
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "dat", datCallGlobalWorkClearFlags);
+void UserInit(void) {
+    dds3GlobalWorkClearFlags();
+    evtInitGlobalWork();
+    datCallMemset();
+    fldGbInit_System(0);
+    datLoadLvUpTables();
+    cmpLoadModelTables();
+    sbtlLoadOnMemMsg();
+}
 #else
-INCLUDE_ASM(const s32, "dat", UserInit_dat);
+INCLUDE_ASM(const s32, "dat", UserInit);
 #endif
 
 void datGlobalWorkDestroySub(void) {
@@ -169,7 +200,25 @@ INCLUDE_ASM(const s32, "dat", datCallBitOn);
 #endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "dat", dds3GlobalWorkUserInit2);
+void dds3GlobalWorkUserInit2(s32 mode) {
+    sdfMemHandle_t *handle;
+
+    if (mode == 1) {
+        datCallBitCheck();
+        handle = DDS3_GBWK->memHandle;
+        memset(DDS3_GBWK, 0, sizeof(dds3GlobalWork_t));
+        DDS3_GBWK->memHandle = handle;
+    }
+    DDS3_GBWK->unk1274 = 0;
+    DDS3_GBWK->unk1278 = 0;
+    dds3GlobalWorkClearFlags();
+    evtInitGlobalWork();
+    datCallMemset();
+    fldGbInit_System(0);
+    if (mode == 1) {
+        NewGame2Pop();
+    }
+}
 #else
 INCLUDE_ASM(const s32, "dat", datLeaf);
 
@@ -184,7 +233,9 @@ void datLeaf42(void) {
 void datLeaf43(void) {
 }
 
-INCLUDE_ASM(const s32, "dat", datAllReleaseScriptSub);
+s32 datAllReleaseScriptSub(void) {
+    return 0;
+}
 
 #ifdef VERSION_RAIDOU1
 /* Load a table's file and copy each size-prefixed segment into its own block. */
@@ -240,30 +291,55 @@ INCLUDE_ASM(const s32, "dat", sdfReloadChannelSegments);
 INCLUDE_ASM(const s32, "dat", datFunc24);
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "dat", datCallMemset);
+void datCallMemset(void) {
+    s16 *item;
+    dds3GlobalWork_t *gbwk;
+    s32 i;
+
+    memset(&DDS3_GBWK->playerData, 0, sizeof(SBTL_PLAYER_DATA));
+    gbwk = DDS3_GBWK;
+    gbwk->playerData.unit.level = 1;
+    gbwk->playerData.unit.flag |= 3;
+    DDS3_GBWK->playerData.mag = 1000;
+    DDS3_GBWK->playerData.val24 = 1000;
+    DDS3_GBWK->playerData.maka = 2000;
+    DDS3_GBWK->playerData.swordAtk = 10;
+    item = DDS3_GBWK->playerData.item;
+    for (i = 255; i >= 0; i--) {
+        *item++ = 0;
+    }
+    sbtlInitPlayerData();
+}
 #else
 INCLUDE_ASM(const s32, "dat", datInitPlayer);
+
+INCLUDE_ASM(const s32, "dat", datGetPlayerParam);
 #endif
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK2);
 #else
-INCLUDE_ASM(const s32, "dat", datGetPlayerParam);
+INCLUDE_ASM(const s32, "dat", datSetPlayerParam);
 #endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "dat", datGetStockDevilID);
+s32 datGetStockDevilID(s32 index) {
+    sdatUnitWork_t *stock = &DDS3_GBWK->playerData.stock[index];
+
+    if (stock->flag & 1) {
+        return stock->devilId;
+    }
+    return 0;
+}
 #else
-INCLUDE_ASM(const s32, "dat", datSetPlayerParam);
+INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK10);
+
+INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK11);
 #endif
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "dat", effCloneParticleSharedResource);
 #else
-INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK10);
-
-INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK11);
-
 INCLUDE_ASM(const s32, "dat", datAdjustStock);
 #endif
 
@@ -272,7 +348,26 @@ INCLUDE_ASM(const s32, "dat", datGetEmptyStock);
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "dat", datCheckSameDevil);
 
-INCLUDE_ASM(const s32, "dat", datCallGetStockDevilID);
+s32 datCallGetStockDevilID(u32 id) {
+    s32 i;
+    s32 j;
+
+    for (i = 0; i < DDS3_GBWK->playerData.partyNum; i++) {
+        if (datGetStockDevilID(i) == id) {
+            return i;
+        }
+    }
+    if (datCheckSameDevil(id) >= 0) {
+        for (i = 0; i < datCallGetStockDevilIDData / 2; i++) {
+            for (j = 0; j < DDS3_GBWK->playerData.partyNum; j++) {
+                if (datGetStockDevilID(j) == EE_ADDR_AS(u16 *, datData6)[i]) {
+                    return j;
+                }
+            }
+        }
+    }
+    return -1;
+}
 #else
 INCLUDE_ASM(const s32, "dat", datGetStockDevilIndex);
 #endif
@@ -286,7 +381,12 @@ INCLUDE_ASM(const s32, "dat", datCalcDevilMaxParCheck);
 #endif
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "dat", datCheckJidouSkillPrioSub);
+s32 datCheckJidouSkillPrioSub(SKLID skill) {
+    if (sbtlCallBtlDrawRedGgData[skill].type & 0x1000) {
+        return 2;
+    }
+    return (u32)(skill - 240) < 48;
+}
 #else
 INCLUDE_ASM(const s32, "dat", Unlock_2);
 #endif
@@ -311,7 +411,52 @@ INCLUDE_ASM(const s32, "dat", datLeaf44);
 
 INCLUDE_ASM(const s32, "dat", CheckJidouSkillPrio);
 
+#ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 18 of 81 words match. Branch layout: retail tests prio == 1 first but lays the prio == 2 block inline and returns 0 through bnel. */
+#ifdef NON_MATCHING
+s32 datCheckSkillEnable(sdatUnitWork_t *unit, SKLID skill) {
+    s32 prio;
+    s32 ret;
+
+    if (skill == 0) {
+        return 0;
+    }
+    prio = datCheckJidouSkillPrioSub(skill);
+    if (prio != 1) {
+        if (prio == 2) {
+            if (unit->flag & 8) {
+                return 1;
+            }
+            if (unit->level < gohData7[unit->devilId].level + 1) {
+                return 0;
+            }
+            unit->flag |= 8;
+            return 1;
+        }
+        return 1;
+    }
+    ret = CheckJidouSkillPrio(unit, skill);
+    if (ret == 1) {
+        if (unit->flag & 0x10) {
+            return ret;
+        }
+    } else if (ret == 2) {
+        if (unit->flag & 0x20) {
+            return 1;
+        }
+    }
+    if (unit->level < gohData7[unit->devilId].level + 2) {
+        return 0;
+    }
+    unit->flag |= 0x30;
+    return 1;
+}
+#else
 INCLUDE_ASM(const s32, "dat", datCheckSkillEnable);
+#endif
+#else
+INCLUDE_ASM(const s32, "dat", datCheckSkillEnable);
+#endif
 
 INCLUDE_ASM(const s32, "dat", datGetSkillCopyIndex);
 
@@ -345,7 +490,16 @@ INCLUDE_ASM(const s32, "dat", datCallGetStockDevilID2);
 INCLUDE_ASM(const s32, "dat", datDelDevil);
 #endif
 
+#ifdef VERSION_RAIDOU1
+void datLoadLvUpTables(void) {
+    sdfDevLoadFileEx("/data/sdatLvUpDevilGift.dat", &sdatLvUpDevilGiftTbl, &sdatLvUpDevilGiftSize);
+    sdfDevLoadFileEx("/data/sdatLvUpDevilParamUp.dat", &sdatLvUpDevilParamUp, &sdatLvUpDevilParamUpSize);
+    sdfDevLoadFileEx("/data/sdatLvUpPlayerParamUp.dat", &sdatLvUpPlayerParamUp, &sdatLvUpPlayerParamUpSize);
+    sdfDevLoadFileEx("/data/sdatLvUpPlayerRankUp.dat", &sdatLvUpPlayerRankUp, &sdatLvUpPlayerRankUpSize);
+}
+#else
 INCLUDE_ASM(const s32, "dat", datLoadLvUpTables);
+#endif
 
 #ifdef VERSION_RAIDOU1
 void cmpLoadModelTables(void)
@@ -470,7 +624,9 @@ INCLUDE_ASM(const s32, "dat", datCallBitCheck2);
 INCLUDE_ASM(const s32, "dat", datLeaf3);
 #endif
 
-INCLUDE_ASM(const s32, "dat", datCheckDying);
+s32 datCheckDying(sdatUnitWork_t *pUnit) {
+    return pUnit->now.hp * 100 / pUnit->now.maxhp < 25;
+}
 
 INCLUDE_ASM(const s32, "dat", datLeaf45);
 
@@ -478,7 +634,9 @@ INCLUDE_ASM(const s32, "dat", datTakumiKoukaDSub);
 
 INCLUDE_ASM(const s32, "dat", datMoonAddMoveSub);
 
-INCLUDE_ASM(const s32, "dat", sdatCalc_GetBadStatus);
+s32 sdatCalc_GetBadStatus(sdatUnitWork_t *unit) {
+    return sbtlGetBadStatus(unit);
+}
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK4);
@@ -495,7 +653,7 @@ INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK13);
 #ifdef VERSION_RAIDOU2
 INCLUDE_ASM(const s32, "dat", datRefDDS3GBWK14);
 #endif
-INCLUDE_SDATA(const s32, "dat", sdfRuntimeTaskName);
+INCLUDE_SDATA(const s32, "dat", dds3GlobalWorkProcName);
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "dat", datCallBitCheckData3);
@@ -549,41 +707,21 @@ INCLUDE_SDATA(const s32, "dat", datBattleAdjustmentRecords);
 
 INCLUDE_SDATA(const s32, "dat", datLeaf66Data);
 
-INCLUDE_SDATA(const s32, "dat", rstCallGetRandAData);
+INCLUDE_SDATA(const s32, "dat", sdatLvUpDevilGiftTbl);
 
-INCLUDE_SDATA(const s32, "dat", datData4);
+INCLUDE_SDATA(const s32, "dat", sdatLvUpDevilGiftSize);
 
-INCLUDE_SDATA(const s32, "dat", sbtlSetHangekiFlagData);
+INCLUDE_SDATA(const s32, "dat", sdatLvUpDevilParamUp);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "dat", datLoadLvUpTablesData);
-#else
-INCLUDE_SDATA(const s32, "dat", datLoadLvUpTablesData3);
-#endif
+INCLUDE_SDATA(const s32, "dat", sdatLvUpDevilParamUpSize);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "dat", datData5);
-#else
-INCLUDE_SDATA(const s32, "dat", datData18);
-#endif
+INCLUDE_SDATA(const s32, "dat", sdatLvUpPlayerParamUp);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "dat", datLoadLvUpTablesData2);
-#else
-INCLUDE_SDATA(const s32, "dat", datLoadLvUpTablesData4);
-#endif
+INCLUDE_SDATA(const s32, "dat", sdatLvUpPlayerParamUpSize);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "dat", rstCallBitCheck2Data);
-#else
-INCLUDE_SDATA(const s32, "dat", rstCalcRankUpData);
-#endif
+INCLUDE_SDATA(const s32, "dat", sdatLvUpPlayerRankUp);
 
-#ifdef VERSION_RAIDOU1
-INCLUDE_SDATA(const s32, "dat", rstCallBitCheck2Data2);
-#else
-INCLUDE_SDATA(const s32, "dat", datData19);
-#endif
+INCLUDE_SDATA(const s32, "dat", sdatLvUpPlayerRankUpSize);
 
 #ifdef VERSION_RAIDOU1
 INCLUDE_SDATA(const s32, "dat", datCallCheckStrongSwordAttackData);

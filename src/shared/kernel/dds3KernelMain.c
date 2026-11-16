@@ -64,7 +64,7 @@ extern void sbtlBattleTmx(void);
 extern void slFirstInitSub(void);
 #endif
 extern void fldSkyDefaultLoad(void);
-extern void datGlobalWorkInit(void);
+extern void dds3GlobalWorkInit(void);
 extern void itfCallLoadIconSprite2(void);
 extern void evtMoonInitProcess(void);
 extern void itfMoneyProcessStart(void);
@@ -114,7 +114,7 @@ void dds3FirstInit(void)
 #else
     LoadOnMemoryData_sbtl();
 #endif
-    datGlobalWorkInit();
+    dds3GlobalWorkInit();
 #ifdef VERSION_RAIDOU2
     itfCallLoadIconSprite2();
 #endif

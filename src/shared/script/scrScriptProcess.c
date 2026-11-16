@@ -31,7 +31,6 @@ extern s32 dds3KillProcess(dds3ProcessID_t *id, s32 shutdowntimer);
 extern s32 scrScriptProcess(dds3ProcessID_t *id);
 void scrScriptShutdown(dds3ProcessID_t *id);
 scrProcessWork_s *scrLoadScriptFile(char *name, s32 messageHandle);
-void dds3GlobalWorkClearFlags(void);
 
 dds3ProcessID_t *scrRunScriptEx(s32 priority, scrHeader_t *header, scrTypeTable_t *typeTable,
                     scrProcTable_t *procTable, scrLabelTable_t *labelTable, scrCode_u *code,

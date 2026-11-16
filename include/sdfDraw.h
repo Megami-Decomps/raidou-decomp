@@ -15,5 +15,7 @@ void sdfGrJoinDrawTag(sdfDrawTag_t *aFore, sdfDrawTag_t *aBack);
 void sdfGrSetRegsPacketHeader(sdfGrPacketHeader_t *header, s32 payloadQwords);
 void sdfPreDrawTagLink(sdfPreDrawTag_t *aTag, sdfPreDrawHook_t *aHook);
 void sdfDrawTagLinkCall(sdfDrawTag_t *aTag, addr_t aPacket);
+void sdfDrawTagLinkRefGif(sdfDrawTag_t *aTag, addr_t aPacket);
+void sdfGrSetFrameMaskReset(const u8 *aEnv, sdfGrRefGifPacketHeader_t *aHdr, s32 aContext);
 
 #endif

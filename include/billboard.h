@@ -55,7 +55,7 @@ typedef struct
     s32 count;
 } sdfBillBoardBatch_t;
 
-/* The tail of BillboardLoadTex's 1100-byte allocation, whose first 1024 bytes
+/* The tail of BillboardLoadTex's 1104-byte allocation, whose first 1024 bytes
  * are the batch. uv, cx, cy, width and height come from the texture's size. */
 struct dds3BillResource_tag
 {
@@ -72,8 +72,8 @@ struct dds3BillResource_tag
     f32 width;
     f32 height;
     /* One tag per ordering table; current_mode picks the one a batch links
-     * into, and dds3BillboardLinkOt flushes all four. */
-    sdfDrawTag_t *pBillTag[4];
+     * into, and dds3BillboardLinkOt flushes all five. */
+    sdfDrawTag_t *pBillTag[5];
     u16 current_mode;
     u8 pad42[2];
     sdfMemHandle_t *hMem;
@@ -82,6 +82,8 @@ struct dds3BillResource_tag
      * self while the resource is not queued. */
     dds3BillResource_tag *next;
 };
+
+typedef char dds3BillResource_tagSizeCheck[sizeof(dds3BillResource_tag) == 0x50 ? 1 : -1];
 
 /* The DMA tag at the head of each packet below carries two VIF codes in the
  * words a chain tag would use for dat0 and dat1, so the fields are spelled out
@@ -252,4 +254,32 @@ typedef struct billHandle_t {
     s32 entryCount;
     struct billOut_t *resolvedEntries;  
 } billHandle_t;
+extern dds3BillResource_tag *dds3BillboardTag;
+extern sdfGrOt_t *dds3BillboardOtTable[];
+extern billRenderPair_t *dds3MultiBillboardPairList;
+extern f32 dds3BillboardUpAxis[4];
+extern f32 dds3BillboardTagParam[4];
+/* {1, 1, 1, 0}: drops w from the direction dds3BillboardGetDirectionRotate projects. */
+extern f32 dds3BillboardGetDirectionRotateData3[4];
+
+/* One general billboard: dds3BillboardManagerInit creates it from the named
+ * texture in the pack and scales it. */
+typedef struct billGeneralEntry_t {
+    const char *name;
+    s16 kind;
+    u8 pad06[2];
+    f32 scale;
+} billGeneralEntry_t;
+SIZE_CHECK(billGeneralEntrySizeCheck, billGeneralEntry_t, 0xC);
+
+extern billGeneralEntry_t BillboardTable[];
+extern billHandle_t *hGeneralBillboard[];
+
+/* The sdfGrOtTable entry the multi-billboard pairs are filed into. */
+#ifdef VERSION_RAIDOU1
+SYMBOL_AT(sdfGrOt_t, dds3MultiBillboardOt, sdfGrOtTable, 0x800);
+#else
+SYMBOL_AT(sdfGrOt_t, dds3MultiBillboardOt, sdfGrOtTable, 0x820);
+#endif
+
 #endif /* BILLBOARD_H */

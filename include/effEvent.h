@@ -33,6 +33,17 @@ void Eve_RippleBlurSetDefTex(void);
 
 struct DepthOfFieldSetting;
 
+/* Show flags, one byte each in sdata. */
+extern s8 Eve_BlurShow;
+extern s8 Eve_PartialMultiBlurShow;
+extern s8 Eve_DistortionBlurShow;
+extern s8 EffectDrawData2;
+extern s8 Eve_FilterShow;
+extern s8 Eve_PartialMultiFilterShow;
+extern s8 Eve_RippleBlurShow;
+extern effScreenDrawParams_t Eve_Blur;
+extern dds3Effect_Filter_t Eve_Filter;
+
 void BlurSetParam2(dds3Effect_Blur_t *pParam);
 void EffectDraw(void);
 void dblurSetParam2(struct DepthOfFieldSetting *_hokanData);

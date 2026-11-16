@@ -68,6 +68,14 @@ typedef struct
     u64 reg;
 } sdfGrTagStdReg_t;
 
+/* Shared A+D state for GS primitive modes, color clamping, dithering and TEXA. */
+typedef struct sdfGrRefGifPacketHeader_t {
+    sdfGrTagStdReg_t dmatag;
+    sdfGrTagStdReg_t giftag;
+    sdfGrTagStdReg_t reftag;
+    sdfGrTagStdReg_t linktag;
+} sdfGrRefGifPacketHeader_t;
+
 /* A GIF packet opens with a DMA tag and a GIF tag, followed by its payload. */
 typedef struct sdfGrPacketHeader_t
 {

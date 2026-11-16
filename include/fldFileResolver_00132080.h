@@ -5,17 +5,17 @@
 #include "common.h"
 #include "field.h"
 
-/* sdfGrPacketHeader_t's layout as plain words: its dmatag union reorders ee-gcc's stores
- * in effDrawGeneratedTextureQuad, which retail emits in this type's order. */
-typedef struct SdfGsPacketHeader {
+/* sdfGrPacketHeader_t stored as four plain words. The dmatag union in sdfGrPacketHeader_t reorders
+ * ee-gcc's stores in effDrawGeneratedTextureQuad; retail stores in this type's order. */
+typedef struct sdfGrPacketHeaderStore_t {
     u64 dmaTag;
     u64 vifCommands;
     u64 gifTag;
     u64 gifRegisters;
-} QWORD_ALIGNED SdfGsPacketHeader;
+} QWORD_ALIGNED sdfGrPacketHeaderStore_t;
 
-typedef char SdfGsPacketHeader_size_must_be_0x20[
-    (sizeof(SdfGsPacketHeader) == 0x20) ? 1 : -1];
+typedef char sdfGrPacketHeaderStore_t_size_must_be_0x20[
+    (sizeof(sdfGrPacketHeaderStore_t) == 0x20) ? 1 : -1];
 
 typedef u32 FldSpawnBatchKind;
 

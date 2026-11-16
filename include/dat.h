@@ -2,6 +2,7 @@
 #define DAT_H
 
 #include "common.h"
+#include "kernel.h"
 
 /* One 0x20C-byte encounter adjustment record. Sound selection shares the
  * header with condition/variant data; four complete weighted groups follow. */
@@ -40,11 +41,37 @@ extern SBTLADJUSTMENT_RECORD *datBattleAdjustmentRecords;
 struct sdatUnitWork_t;
 
 void CallProcEnd_cmpStatus(void);
+s32 dds3GlobalWorkMainProc(dds3ProcessID_t *id);
 void UserInit(void);
 s32 datAddDevil(void);
 char *datGetPlayerExp(CMP_TITLE_ID index);
 void datGlobalWorkDestroy(void);
-void datGlobalWorkInit(void);
+void dds3GlobalWorkInit(void);
 s32 sdatCalc_GetBadStatus(struct sdatUnitWork_t *unit);
+
+extern u32 sdatLvUpDevilGiftTbl;
+extern u32 sdatLvUpDevilGiftSize;
+extern u32 sdatLvUpDevilParamUp;
+extern u32 sdatLvUpDevilParamUpSize;
+extern u32 sdatLvUpPlayerParamUp;
+extern u32 sdatLvUpPlayerParamUpSize;
+extern u32 sdatLvUpPlayerRankUp;
+extern u32 sdatLvUpPlayerRankUpSize;
+
+void datLoadLvUpTables(void);
+void cmpLoadModelTables(void);
+void datCallMemset(void);
+
+void datCallBitCheck(void);
+void NewGame2Pop(void);
+void dds3GlobalWorkUserInit2(s32 mode);
+
+s32 datGetStockDevilID(s32 index);
+s32 datCheckSameDevil(u32 id);
+s32 datAllReleaseScriptSub(void);
+
+s32 datCheckJidouSkillPrioSub(SKLID skill);
+s32 CheckJidouSkillPrio(struct sdatUnitWork_t *unit, SKLID skill);
+s32 datCheckSkillEnable(struct sdatUnitWork_t *unit, SKLID skill);
 
 #endif

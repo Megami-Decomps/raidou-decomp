@@ -68,7 +68,6 @@ extern sdfRandCB_t dds3EffectBase;
 extern void fclEffectManagerInitSub(void);
 extern void dds3PolygonManagerInit(void);
 extern void dds3EffectManagerInitSub(void);
-extern void effEctManagerInitSub(void);
 extern void Eve_EffectInit(void);
 extern void effBTLFieldColorResetFlags(void);
 dds3TaskUpdateResult_t ManagerRunF(dds3ProcessID_t *task);

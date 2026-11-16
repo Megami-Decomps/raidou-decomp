@@ -8,6 +8,7 @@ sdfTexHandle_t *sdfTexAlloc(s32 aWidth, s32 aHeight, s32 aPixelFormat, s32 aNumO
 sdfTexHandle_t *sdfTexDup(sdfTexHandle_t *aHandle);
 void sdfTexFreeDelayed(sdfTexHandle_t *aHandle);
 u64 sdfTexGetClampReg(sdfTexHandle_t *aHandle);
+struct sdfTexPacket_t *sdfTexGetPacket(sdfTexHandle_t *aHandle);
 s32 sdfTexGetPacketLength(sdfTexHandle_t *aHandle);
 u32 sdfTexGetPixelAddr(sdfTexHandle_t *aHandle);
 u64 sdfTexGetTex0Reg(sdfTexHandle_t *aHandle);

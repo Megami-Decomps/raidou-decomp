@@ -11,12 +11,18 @@
 #include "sdfChip.h"
 #include "sdfVu0.h"
 #include "sdfDraw.h"
+#include "kernel_draw.h"
+#include "dds3KernelMain.h"
 #include "sdfMat.h"
 #include "billManager.h"
 #include "sdfMath.h"
 #include "effPacket.h"
 #include "sdf3DPrim.h"
 #include "sdfPacketBuff.h"
+#include "sdf3D.h"
+#include "sdfBillBoard.h"
+#include "sdfMemory.h"
+#include "sdfTex.h"
 
 typedef struct dds3P2APolygon_tag {
     f32 dir[4][4];
@@ -32,25 +38,8 @@ typedef struct dds3EffectFunc3_t {
 } dds3EffectFunc3_t;
 
 extern dds3EffectFunc3_t dds3BillboardFuncTable[];
-extern struct billHandle_t *hGeneralBillboard[];
 
 #include "sdk_libc.h"
-
-typedef struct billGeneralEntry_t {
-    s16 kind;
-    u8 pad02[6];
-} billGeneralEntry_t;
-
-typedef struct billGeneralRow_t {
-    u8 pad00[4];
-    s16 kind;
-    u8 pad06[2];
-} billGeneralRow_t;
-
-typedef struct effBlurDrawBank_t {
-    u8 pad0000[0x1300];
-    u8 frameMaskSource[0x8E0];
-} effBlurDrawBank_t;
 
 extern f64 fabs(f64 value);
 struct billHandle_t *dds3Billboard_NormalCreate(void *data);
@@ -155,8 +144,6 @@ void dds3BillboardSetPosition(void *hBillboard, const void *pPos);
 void dds3BillboardSetCondition(billHandle_t *hBillboard, s32 condition);
 u16 dds3BillboardGetType(billHandle_t *hBillboard);
 u16 dds3BillboardGetDrawType(billHandle_t *hBillboard);
-s32 dds3BillboardGetAnimFrame(const billHandle_t *hBillboard);
-f32 dds3BillboardGetDirectionScale(void *pPos, f32 *pVec);
 dds3P2APolygon_tag *dds3P2APolygonCreate(s32 entryIndex);
 dds3P2APolygon_tag *dds3P2APolygonCopy(const dds3P2APolygon_tag *source);
 void dds3P2APolygonDelete(dds3P2APolygon_tag *hData);
@@ -248,19 +235,235 @@ void billCopyCurrentRecordToSnapshot(billHandle_t *obj, billSnapshot_t *snapshot
 
 INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardManagerExit);
 
-INCLUDE_ASM(const s32, "effect/billManager", BillboardLoadTex);
+dds3BillResource_tag *BillboardLoadTex(void *pTex) {
+    sdfMemHandle_t *allocation;
+    sdfBillBoardBatch_t *batch;
+    dds3BillResource_tag *child;
+    sdfTexHandle_t *tex;
+    s32 uvWidth;
+    s32 uvHeight;
+    s32 i;
 
-INCLUDE_ASM(const s32, "effect/billManager", FreeTex);
+    allocation = sdfMemAllocDirect(sizeof(sdfBillBoardBatch_t) + sizeof(dds3BillResource_tag));
+    batch = sdfMemLock(allocation);
+    child = (dds3BillResource_tag *)(batch + 1);
+    child->count = 0;
+    child->hMem = allocation;
+    child->batch = batch;
+    batch->count = 0;
+    child->next = child;
+    child->type = 0;
+    for (i = 4; i >= 0; i--) {
+        child->pBillTag[i] = NULL;
+    }
+    child->current_mode = 0;
+    tex = sdfTexSet(pTex);
+    child->count = child->count + 1;
+    uvHeight = (s16)((u16)tex->height << 4);
+    uvWidth = (s16)((u16)tex->width << 4);
+    child->uv.components[0] = 0;
+    child->uv.components[1] = 0;
+    child->uv.components[2] = uvWidth;
+    child->uv.components[3] = 0;
+    child->uv.components[4] = uvWidth;
+    child->uv.components[5] = uvHeight;
+    child->uv.components[6] = 0;
+    child->uv.components[7] = uvHeight;
+    child->hTex = tex;
+    child->width = (uvWidth >> 5) * 0.0625f;
+    child->height = (uvHeight >> 5) * 0.0625f;
+    child->cx = 0.0f;
+    child->cy = 0.0f;
+    return child;
+}
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardTagLink);
+void BillboardFreeTex(dds3BillResource_tag *hResource) {
+    s32 refCount = hResource->count - 1;
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardLinkOt);
+    hResource->count = refCount;
+    if (refCount == 0) {
+        sdfTexFreeDelayed(hResource->hTex);
+        sdfMemFreeDirect(hResource->hMem);
+    }
+}
+
+void dds3BillboardTagLink(billHandle_t *obj, dds3BillResource_tag *child) {
+    f32 matrix[16] __attribute__((aligned(16)));
+    sdfVector4_t direction;
+    f32 dot;
+    sdfBillBoardBatch_t *work;
+    s32 selected;
+    void *packet;
+    u32 *vertexPacket;
+    u8 *geometry;
+    s32 index;
+    f32 x, y, halfWidth, halfHeight;
+    f32 cosine, sine;
+    f32 cornerX, cornerY;
+
+    selected = child->current_mode;
+    if (selected != obj->mode) {
+        work = child->batch;
+        if (work->count > 0) {
+            vertexPacket = sdfBillBoardMakeN((const u128 *)work->centre, work->color,
+                work->uv, work->offset, work->count, 0);
+            sdfDrawTagLink(child->pBillTag[selected], EE_ADDR(vertexPacket));
+            work->count = 0;
+        }
+        selected = obj->mode;
+        child->current_mode = selected;
+    }
+    if (child->pBillTag[selected] == NULL) {
+        child->pBillTag[selected] = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+        sdfDrawTagInit(child->pBillTag[selected]);
+        packet = EE_ADDR_AS(void *, sdfGrAllocPacketBuff(0x20));
+        sdf3DMakeDirectRefPacket(packet,
+            EE_ADDR(sdfTexGetPacket(child->hTex)),
+            sdfTexGetPacketLength(child->hTex));
+        sdfDrawTagLinkRef(child->pBillTag[selected], EE_ADDR(packet));
+        if ((u16)(child->type & 1) != 0) {
+            SDF_VU0_LOADVECTOR(aViewTarget);
+            SDF_VU0_LOADVECTOR_B(aViewEye);
+            SDF_VU0_SUBVECTOR();
+            SDF_VU0_NORMALIZE();
+            SDF_VU0_LOADVECTOR_B(dds3BillboardUpAxis);
+            SDF_VU0_INNERPRODUCT(dot);
+            dds3BillboardTagParam[1] = 1.0 - fabs(dot);
+            SDF_VU0_STOREVECTOR(&direction);
+            SDF_VU0_COPYVECTOR_A_TO_B_EXTENDED();
+            SDF_VU0_LOADIDENTITY();
+            SDF_VU0_LOADVECTOR_BARRIER(dds3BillboardTagParam);
+            SDF_VU0_SCALE_XYZ();
+            SDF_VU0_STOREMATRIX(matrix);
+        } else {
+            SDF_VU0_STOREIDENTITY(matrix);
+        }
+        geometry = EE_ADDR_AS(u8 *, sdfGrAllocPacketBuff(0x38));
+        sdfBillBoardMakeTMPacket(geometry, matrix);
+        sdfDrawTagLink(child->pBillTag[selected], EE_ADDR(geometry));
+        if (child->next == child) {
+            child->next = dds3BillboardTag;
+            dds3BillboardTag = child;
+        }
+    }
+    work = child->batch;
+    index = work->count;
+    SDF_VU0_COPYVECTOR(&work->centre[index], obj->pos);
+    work->color[index] = obj->abgr;
+    memcpy(&work->uv[index], &child->uv, sizeof(child->uv));
+    x = child->cx * obj->childScaleX;
+    y = child->cy * obj->childScaleY;
+    halfWidth = child->width * obj->childScaleX;
+    halfHeight = child->height * obj->childScaleY;
+    if (obj->rot == 0.0f) {
+        work->offset[index][0] = x - halfWidth;
+        work->offset[index][1] = y - halfHeight;
+        work->offset[index][2] = x + halfWidth;
+        work->offset[index][3] = y - halfHeight;
+        work->offset[index][4] = x + halfWidth;
+        work->offset[index][5] = y + halfHeight;
+        work->offset[index][6] = x - halfWidth;
+        work->offset[index][7] = y + halfHeight;
+    } else {
+        cosine = sdfCos(obj->rot);
+        sine = sdfSin(obj->rot);
+        cornerX = x - halfWidth;
+        cornerY = y - halfHeight;
+        work->offset[index][0] = cornerX * cosine - cornerY * sine;
+        work->offset[index][1] = cornerX * sine + cornerY * cosine;
+        cornerX = x + halfWidth;
+        cornerY = y - halfHeight;
+        work->offset[index][2] = cornerX * cosine - cornerY * sine;
+        work->offset[index][3] = cornerX * sine + cornerY * cosine;
+        cornerX = x + halfWidth;
+        cornerY = y + halfHeight;
+        work->offset[index][4] = cornerX * cosine - cornerY * sine;
+        work->offset[index][5] = cornerX * sine + cornerY * cosine;
+        cornerX = x - halfWidth;
+        cornerY = y + halfHeight;
+        work->offset[index][6] = cornerX * cosine - cornerY * sine;
+        work->offset[index][7] = cornerX * sine + cornerY * cosine;
+    }
+    work->count++;
+    if (work->count == 15) {
+        vertexPacket = sdfBillBoardMakeN((const u128 *)work->centre, work->color,
+            work->uv, work->offset, 15, 0);
+        sdfDrawTagLink(child->pBillTag[selected], EE_ADDR(vertexPacket));
+        work->count = 0;
+    }
+}
+
+void dds3BillboardLinkOt(void) {
+    dds3BillResource_tag *res = dds3BillboardTag;
+
+    if (res != NULL) {
+        do {
+            sdfBillBoardBatch_t *batch = res->batch;
+            s32 count = batch->count;
+            dds3BillResource_tag *next;
+            s32 i;
+
+            if (count > 0) {
+                u32 *packet = sdfBillBoardMakeN((const u128 *)batch->centre, batch->color, batch->uv,
+                                                batch->offset, count, NULL);
+                sdfDrawTagLink(res->pBillTag[res->current_mode], EE_ADDR(packet));
+                batch->count = 0;
+            }
+            for (i = 0; i < 5; i++) {
+                sdfDrawTag_t *tag = res->pBillTag[i];
+                if (tag != NULL) {
+                    dds3BillboardOtTable[i]->regFunc(dds3BillboardOtTable[i], tag);
+                    res->pBillTag[i] = NULL;
+                }
+            }
+            next = res->next;
+            res->next = res;
+            res = next;
+        } while (res != NULL);
+    }
+    dds3BillboardTag = NULL;
+}
 
 INCLUDE_ASM(const s32, "effect/billManager", dds3MultiBillboardTagLink);
 
 INCLUDE_ASM(const s32, "effect/billManager", dds3MultiBillboardPktLink);
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3CallMultiBillboardPktLink);
+void dds3MultiBillboardLinkOt(void) {
+    billRenderPair_t *pair = dds3MultiBillboardPairList;
+    sdfDrawTag_t *tag;
+    u64 *packet;
+    sdfGrRefGifPacketHeader_t *buffer;
+    u32 frame;
+
+    if (pair != NULL) {
+        do {
+            if (pair->children[1]->batch->count != 0) {
+                dds3MultiBillboardPktLink(pair);
+            }
+            dds3MultiBillboardOt.regFunc(&dds3MultiBillboardOt, pair->packetList);
+            pair->packetList = NULL;
+            pair = pair->next;
+        } while (pair != NULL);
+    }
+    tag = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(0x20));
+    sdfDrawTagInit(tag);
+    buffer = EE_ADDR_AS(sdfGrRefGifPacketHeader_t *, sdfGrAllocPacketBuff(0x40));
+    frame = dds3GetFrameID();
+    sdfGrSetFrameMaskReset((const u8 *)&dds3DrawEnv[frame].stdEnv, buffer, 0);
+    sdfDrawTagLinkRefGif(tag, EE_ADDR(buffer));
+    packet = EE_ADDR_AS(u64 *, sdfGrAllocPacketBuff(0x40));
+    packet[0] = 3;
+    packet[1] = 0x5000000310000000;
+    packet[2] = 0x1000000000008002;
+    packet[3] = 0xE;
+    packet[4] = 0x71801;
+    packet[5] = 0x47;
+    packet[6] = 0x48;
+    packet[7] = 0x42;
+    sdfDrawTagLink(tag, EE_ADDR(packet));
+    dds3MultiBillboardOt.regFunc(&dds3MultiBillboardOt, tag);
+    dds3MultiBillboardPairList = NULL;
+}
 
 void dds3Billboard_BasicInit(billHandle_t *pBasic) {
     f32 zero = 0.0f;
@@ -278,9 +481,22 @@ void dds3Billboard_BasicInit(billHandle_t *pBasic) {
     pBasic->rot = zero;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardNormalCreate);
+billHandle_t *dds3Billboard_NormalCreate(void *data) {
+    billHandle_t *obj = sdfChipAllocDirect(0x34);
 
-INCLUDE_ASM(const s32, "effect/billManager", NormalDelete);
+    obj->u.child = NULL;
+    if (data != NULL) {
+        obj->u.child = BillboardLoadTex(data);
+    }
+    return obj;
+}
+
+void dds3Billboard_NormalDelete(billHandle_t *hData) {
+    if (hData->u.child != NULL) {
+        BillboardFreeTex(hData->u.child);
+    }
+    sdfChipFreeDirect(hData);
+}
 
 void dds3Billboard_NormalDraw(billHandle_t *hData) {
     dds3BillboardTagLink(hData, hData->u.child);
@@ -326,7 +542,10 @@ billHandle_t *dds3Billboard_P2ACopy(const billHandle_t *pCopyP2A) {
     return newobj;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", P2ADelete);
+void dds3Billboard_P2ADelete(billHandle_t *hData) {
+    dds3BillAnimFreeP2A(hData->u.animationData);
+    sdfChipFreeDirect(hData);
+}
 
 dds3BillResource_tag *dds3Billboard_P2AAnimDraw(billHandle_t *pP2A, dds3BillAnim_tag *pBillAnim) {
     P2A_ANIMATION_tag *entry = pBillAnim->pAnim;
@@ -392,9 +611,110 @@ dds3BillResource_tag *dds3Billboard_P2AAnimDraw(billHandle_t *pP2A, dds3BillAnim
     return child;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", nbPanelFlashRGBAMulti);
+/* vu0 routine: multiplies the two colours channel by channel, scaled by 1/128. */
+u32 dds3Billboard_P2AColorMul(u32 color0, u32 color1) {
+    billColorWork_t work[3];
+    u32 unit = 0x3C000000;
+    u32 out;
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3Billboard_P2ADraw);
+    work[0].word = color0;
+    MMI_RGBA_UNPACK(&work[0], unit);
+    SDF_VU0_COPYVECTOR_A_TO_B();
+    work[1].word = color1;
+    MMI_RGBA_UNPACK(&work[1], unit);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_dds3ColorFtoI(out, 128.0f);
+    return out;
+}
+
+void dds3Billboard_P2ADraw(billHandle_t *hData) {
+    u32 modeFlags;
+    u32 savedColor;
+    f32 savedRotation;
+    dds3BillResource_tag *child;
+
+    if (hData->animationActive == 0) {
+        return;
+    }
+    modeFlags = hData->modeFlags;
+    if (modeFlags & BILL_ANIMATION_FLAG_PLURAL_ENTRIES) {
+        dds3BillAnimResource_tag *data = hData->u.animationData;
+        P2A_ANIMATION_tag *entry = data->pAnimTable + hData->animationEntryIndex;
+        billPluralEntry_t *records;
+        u32 i;
+
+        savedColor = hData->abgr;
+        savedRotation = hData->rot;
+        records = (billPluralEntry_t *)(data->pHeader + entry->spranm);
+        for (i = 0; i < hData->entryCount; i++) {
+            dds3BillAnim_tag *out = (dds3BillAnim_tag *)((u8 *)(i * sizeof(dds3BillAnim_tag)) + EE_ADDR(hData->resolvedEntries));
+            s32 frameIndex = out->key;
+
+            if (frameIndex >= 0) {
+                f32 savedX;
+                f32 savedY;
+
+                child = dds3Billboard_P2AAnimDraw(hData, out);
+                savedX = child->cx;
+                savedY = child->cy;
+                child->cx = records[i].x;
+                child->cy = -records[i].y;
+                hData->abgr = dds3Billboard_P2AColorMul(savedColor, hData->abgr);
+                hData->rot = hData->rot + savedRotation;
+                dds3BillboardTagLink(hData, child);
+                child->cx = savedX;
+                child->cy = savedY;
+            } else {
+                out->key = frameIndex + 1;
+            }
+        }
+        hData->rot = savedRotation;
+        hData->abgr = savedColor;
+    } else if (modeFlags & 0x40) {
+        savedColor = hData->abgr;
+        savedRotation = hData->rot;
+        child = dds3Billboard_P2AAnimDraw(hData, hData->resolvedEntries);
+        hData->abgr = dds3Billboard_P2AColorMul(savedColor, hData->abgr);
+        hData->rot = hData->rot + savedRotation;
+        dds3BillboardTagLink(hData, child);
+        child = dds3Billboard_P2AAnimDraw(hData, hData->resolvedEntries + 1);
+        hData->abgr = dds3Billboard_P2AColorMul(savedColor, hData->abgr);
+        hData->rot = hData->rot + savedRotation;
+        dds3BillboardTagLink(hData, child);
+        hData->rot = savedRotation;
+        hData->abgr = savedColor;
+    } else if (modeFlags & 0x80) {
+        u32 flags;
+
+        savedColor = hData->abgr;
+        savedRotation = hData->rot;
+        hData->pair.children[0] = dds3Billboard_P2AAnimDraw(hData, hData->resolvedEntries);
+        hData->pair.colors[0] = dds3Billboard_P2AColorMul(savedColor, hData->abgr);
+        hData->pair.children[1] = dds3Billboard_P2AAnimDraw(hData, hData->resolvedEntries + 1);
+        hData->pair.colors[1] = dds3Billboard_P2AColorMul(savedColor, hData->abgr);
+        flags = hData->resolvedEntries[1].pAnim->mode;
+        if (flags & BILL_ANIMATION_FLAG_PACKET_LIST_2) {
+            hData->pair.kind = 2;
+        } else if (flags & BILL_ANIMATION_FLAG_PACKET_LIST_3) {
+            hData->pair.kind = 3;
+        } else {
+            hData->pair.kind = 1;
+        }
+        hData->rot = hData->rot + savedRotation;
+        dds3MultiBillboardTagLink(hData, &hData->pair);
+        hData->rot = savedRotation;
+        hData->abgr = savedColor;
+    } else {
+        savedColor = hData->abgr;
+        savedRotation = hData->rot;
+        child = dds3Billboard_P2AAnimDraw(hData, hData->resolvedEntries);
+        hData->abgr = dds3Billboard_P2AColorMul(savedColor, hData->abgr);
+        hData->rot = hData->rot + savedRotation;
+        dds3BillboardTagLink(hData, child);
+        hData->rot = savedRotation;
+        hData->abgr = savedColor;
+    }
+}
 
 void dds3Billboard_P2ASetAnim(dds3BillAnimResource_tag *hBillAnimRes, s32 number, dds3BillAnim_tag *pBillAnim) {
     u8 *base;
@@ -453,9 +773,67 @@ void dds3Billboard_P2ASetNumber(billHandle_t *pP2A, s32 number) {
     pP2A->animationActive = 1;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", AnimLoadP2A);
+dds3BillAnimResource_tag *dds3BillAnimLoadP2A(void *resourceData) {
+    sdfMemHandle_t *allocation;
+    dds3BillAnimResource_tag *block;
+    P2A_HEAD_t *base;
+    s32 *texOffsets;
+    s32 childCount;
+    s32 headerSize;
+    s32 entryCount;
+    s32 i;
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillAnimFreeP2A);
+    headerSize = ((P2A_HEAD_t *)resourceData)->tmxofs;
+    texOffsets = (s32 *)((u8 *)resourceData + headerSize);
+    childCount = *texOffsets;
+    texOffsets++;
+    allocation = sdfMemAllocDirect(headerSize + childCount * sizeof(dds3BillResource_tag) + sizeof(dds3BillAnimResource_tag));
+    block = sdfMemLock(allocation);
+    base = (P2A_HEAD_t *)(block + 1);
+    block->hMem = allocation;
+    memcpy(base, resourceData, ((P2A_HEAD_t *)resourceData)->tmxofs);
+    block->pHeader = (u8 *)base;
+    block->TexNum = childCount;
+    block->pAnimTable = (P2A_ANIMATION_tag *)(base + 1);
+    block->pResList = (dds3BillResource_tag **)((u8 *)(base + 1) + base->tmxofs);
+    for (i = 0; i < childCount; i++) {
+        block->pResList[i] = BillboardLoadTex((u8 *)resourceData + *texOffsets++);
+    }
+    block->count = 1;
+    block->AnimNum = 1;
+    entryCount = ((P2A_HEAD_t *)block->pHeader)->AnimNum;
+    for (i = 0; i < entryCount; i++) {
+        P2A_ANIMATION_tag *entry = &block->pAnimTable[i];
+
+        if (entry->mode & BILL_ANIMATION_FLAG_PLURAL_ENTRIES) {
+            u32 frameCount = entry->times;
+
+            block->AnimNum = frameCount;
+            printf("billAnim no[%d][%d]...PLURAL\n", i, frameCount);
+        } else if (entry->attr & 0x40) {
+            block->AnimNum = 2;
+            printf("billAnim no[%d][%d]...MTEX\n", i, 2);
+        } else if (entry->attr & 0x80) {
+            block->AnimNum = 2;
+            printf("billAnim no[%d][%d]...AMTEX\n", i, 2);
+        }
+    }
+    return block;
+}
+
+void dds3BillAnimFreeP2A(dds3BillAnimResource_tag *hBillAnimRes) {
+    s32 listRefCount = hBillAnimRes->count - 1;
+
+    hBillAnimRes->count = listRefCount;
+    if (listRefCount == 0) {
+        s32 i = 0;
+
+        for (; i < hBillAnimRes->TexNum; i++) {
+            BillboardFreeTex(hBillAnimRes->pResList[i]);
+        }
+        sdfMemFreeDirect(hBillAnimRes->hMem);
+    }
+}
 
 /* Copy the billboard's current source record (by kind) into a snapshot. */
 void billCopyCurrentRecordToSnapshot(billHandle_t *obj, billSnapshot_t *snapshot) {
@@ -521,7 +899,18 @@ void dds3BillboardDraw(billHandle_t *hData) {
     hData->callback(hData);
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardGeneral_dds3Billboard);
+billHandle_t *dds3BillboardGeneral(s32 number) {
+    billHandle_t *obj;
+    dds3BillResource_tag *child;
+    s32 refCount;
+
+    obj = dds3BillboardCreate(BillboardTable[number].kind, 0);
+    child = hGeneralBillboard[number]->u.child;
+    refCount = child->count;
+    obj->u.child = child;
+    child->count = refCount + 1;
+    return obj;
+}
 
 u32 dds3Leaf30(void) {
     return 0x15;
@@ -531,7 +920,9 @@ sdfTexHandle_t *dds3BillboardGetGeneralTex(s32 number) {
     return hGeneralBillboard[number]->u.child->hTex;
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardSetPosition);
+void dds3BillboardSetPosition(void *hBillboard, const void *pPos) {
+    SDF_VU0_COPYVECTOR(hBillboard, pPos);
+}
 
 void dds3BillboardSetRotate_dds3Billboard(billHandle_t *hBillboard, float rot) {
     hBillboard->rot = rot;
@@ -722,10 +1113,46 @@ void dds3BillboardSetXYOffset(billHandle_t *hBillboard, float x, float y) {
     }
 }
 
-INCLUDE_ASM(const s32, "effect/billManager", dds3BillboardGetDirectionRotate);
+/* vu0 routine: projects pPos and pPos + pVec to the screen and returns the angle between them. */
+f32 dds3BillboardGetDirectionRotate(const sdfVector4_t *pPos, const sdfVector4_t *pVec) {
+    sdfVector4_t delta;
+    sdfVector4_t origin;
+    sdfVector4_t tip;
+
+    SDF_VU0_LOADMATRIX(&sdfViewMatrix);
+    MultMatrixRev(&dds3ScreenParam.TM);
+    SDF_VU0_LOADVECTOR(pPos);
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    SDF_VU0_APPLYMATRIX_XYZ1();
+    SDF_VU0_PERSVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.scale);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.trans);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&origin);
+    SDF_VU0_LOADVECTOR(pVec);
+    SDF_VU0_LOADVECTOR_B(dds3BillboardGetDirectionRotateData3);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_COPYVECTOR_C_TO_B();
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_APPLYMATRIX_XYZ1();
+    SDF_VU0_PERSVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.scale);
+    SDF_VU0_MULVECTOR();
+    SDF_VU0_LOADVECTOR_B(&dds3ScreenParam.trans);
+    SDF_VU0_ADDVECTOR();
+    SDF_VU0_STOREVECTOR(&tip);
+    delta.x = origin.x - tip.x;
+    delta.y = origin.y - tip.y;
+    delta.z = 0.0f;
+    SDF_VU0_LOADVECTOR_MEMOPS(delta.x);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR_MEMOPS(delta.x);
+    return sdfAtan2(delta.y, delta.x);
+}
 
 /* vu0 routine: 1 - |axis . normalized view direction|. */
-f32 dds3BillboardGetDirectionScale(void *pPos, f32 *pVec) {
+f32 dds3BillboardGetDirectionScale(const sdfVector4_t *pPos, const sdfVector4_t *pVec) {
     f32 dot;
 
     SDF_VU0_LOADVECTOR(aViewTarget);

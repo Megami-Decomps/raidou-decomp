@@ -244,11 +244,11 @@ start	last_func	unit	kind	evidence	smt3_unit
 001DC020	001DE7D0	effect/billManager	c	smt3:names:30+smt3:map:19+dds:1 of 64	effect/billManager
 001DED50	001DF518	code_r1_001DED50	c	dds:4 of 4	
 001DF580	001E3B48	effect/polyManager	c	smt3:names:56+smt3:map:8 of 87	effect/polyManager
-001E3B68	001E3B68	code_001E3B68	asm	none	
+001E3B68	001E3B68	code_001E3B68	c	none	
 001E3B70	001E4650	effect/effPacket	c	smt3:names:3+smt3:map:2 of 9	effect/effPacket
 001E49D8	001E49D8	code_001E49D8	asm	none	
 001E4A08	001E5398	effect/effBattle	c	smt3:map:7+smt3:names:2 of 33	effect/effBattle
-001E53C0	001E5410	code_001E53C0	asm	none	
+001E53C0	001E5410	code_001E53C0	c	none	
 001E5418	001E5A40	effect/effMath	c	smt3:names:6+smt3:map:3 of 11	effect/effMath
 001E5A58	001E5EC8	code_001E5A58	asm	none	
 001E5ED0	001E9718	effect/effEvent	c	smt3:map:26+smt3:names:22+dds:2 of 91	effect/effEvent
@@ -262,10 +262,10 @@ start	last_func	unit	kind	evidence	smt3_unit
 001F5DA0	001F5DA0	code_001F5DA0	asm	none	
 001F5DA8	001F5DA8	code_r1_001F5DA8	c	dds:1 of 1	
 001F5DD0	001F66C0	effect/effSpline	c	smt3:names:7+smt3:map:2 of 12	effect/effSpline
-001F67B0	001F6920	code_001F67B0	asm	none	
+001F67B0	001F6920	code_001F67B0	c	none	
 001F6940	001F74D8	effect/effModelTrackPoly	c	smt3:names:12+smt3:map:6+dds:1 of 22	effect/effModelTrackPoly
 001F77A0	001F77A0	code_r1_001F77A0	c	dds:1 of 1	
-001F7B10	001F7EE0	code_001F7B10	asm	none	
+001F7B10	001F7EE0	code_001F7B10	c	none	
 001F81D0	001F9898	effect/effBlur_Filter	c	smt3:map:12+smt3:names:9+dds:1 of 31	effect/effBlur_Filter
 001F9908	001F9998	code_001F9908	asm	none	
 001F99A0	001FA2B0	effect/effPart	c	smt3:names:16+smt3:map:15 of 38	effect/effPart

@@ -26,6 +26,7 @@
 #include "effect.h"
 #include "code_r1_0021C768.h"
 #include "code_r1_002250F8.h"
+#include "effPCPMisc_00224D10.h"
 
 enum {
     SDF_PSMCT32 = 0x00,
@@ -70,14 +71,6 @@ typedef struct effObjectNode_t {
 typedef char effObjectNode_size_must_be_0xC[
     (sizeof(effObjectNode_t) == 0xC) ? 1 : -1];
 
-/* Heap-owned model wrapper allocated as a 0x10-byte chip block. */
-typedef struct effModelOwner_t {
-    f32 scale;
-    struct mdlObj_t *model;
-    struct sdf3DLightParallelPacket_t *ownedBuffer;
-    u32 flags;
-} effModelOwner_t;
-
 /* Floor-list lifecycle and deferred-refresh state shared by both providers. */
 enum {
     EFF_MODEL_OWNER_FLAG_UPDATE_PENDING = 0x01,
@@ -88,21 +81,12 @@ enum {
     EFF_MODEL_OWNER_FLAG_UPDATE_DEFERRED = 0x20
 };
 
-typedef char effModelOwner_size_check[
-    (sizeof(effModelOwner_t) == 0x10) ? 1 : -1];
-
 /* Kind-7 reference animation modes; other flag bits are uninterpreted. */
 enum EffReferenceFlag {
     EFF_ANIM_SET_LOOP = 0x1,
     EFF_ANIM_SET_DOUBLE_Y_SCALE = 0x4,
 };
 
-typedef struct effCacheTexList_Anim_t {
-    f32 scaleX;     // 0x00
-    f32 scaleY;     // 0x04
-    f32 angle;      // 0x08
-    s32 segment;    // 0x0C
-} effCacheTexList_Anim_t;
 
 #define SDF_TEXTURE_PAYLOAD_EXTRA_OFFSET_MASK 0xF0
 
@@ -149,7 +133,6 @@ mdlObj_t *effLoadViewerModelWithVUState(void *modelData, u32 modelDataSize);
 /* Clear the lighting attachment before destroying its model context. */
 void effDestroyModelContext(mdlObj_t *model);
 void effDestroyModelOwner(effModelOwner_t *owner);
-extern void effRecreateModelFromSource(effModelOwner_t *, effModelOwner_t *);
 void effRecreateModelFromSource(effModelOwner_t *work, effModelOwner_t *source);
 void effApplyModelPrimaryVector(effModelOwner_t *owner, const f32 *position);
 void effApplyModelVecB(effModelOwner_t *owner, const f32 *rotation);

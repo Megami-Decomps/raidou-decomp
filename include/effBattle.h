@@ -96,4 +96,7 @@ extern effBTLCut_t *effBTLCutCreate(effBTL_t *hBTLEffect, u16 CutNum, void *pFor
 extern void effBTLCutDelete(effBTLCut_t *hBTLCutEffect);
 extern void effBTLCutSetScale(effBTLCut_t *hBTLCutEffect, f32 scale);
 
+extern u32 effFieldColorFlags;
+void effBTLFieldColorResetFlags(void);
+
 #endif

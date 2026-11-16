@@ -15,7 +15,7 @@ enum BtlResourceSelectionStatus {
 };
 
 /* Selects the operation and callback rows used by a file job. */
-typedef u16 FileJobType;
+typedef u16 fileJobType_t;
 
 /* File-job buffer offsets are relative to the job unless allocation is retained. */
 typedef struct fileJobBufferSlot_t {
@@ -40,7 +40,7 @@ typedef struct fileJobPayloadBufferSlot_t {
  * refer to this object through their address-valued id field. */
 typedef struct fileJobPayload_t {
     u32 unk0;
-    FileJobType type;
+    fileJobType_t type;
     u16 unk6;
     void *data;
     u16 option;             /* selects primary payload interpretation */
@@ -58,22 +58,41 @@ typedef char fileJobPayload_size_must_be_0x2C[
 
 #define FILE_JOB_FLAG_SECTOR_FOLLOWER 0x2
 
-/* Effect/file queue entries share this C0-byte record in both games. */
+typedef struct effPartsListPose_t {
+    f32 posBase[4];
+    f32 origin[4];
+    u8 unk20[0x20];
+    f32 pos[4];       /* 0x40 */
+    f32 rot[4];       /* 0x50 */
+    f32 scl;          /* 0x60 */
+    u32 abgr;         /* 0x64: modulation colour */
+    u32 flag;         /* 0x68: 0x18 billboard position, 0x60 billboard rotation */
+    u32 unk6C;
+} effPartsListPose_t;
+
+/* Effect/file queue entries share this C0-byte record in both games. The pose
+ * routines read a job through its first 0x70 bytes, of which they use 0x40 on. */
 typedef struct fileJob_t {
-    u32 unk0;
-    FileJobType type;
-    u16 unk6;
-    void *data;
-    u16 option;
-    u16 unkE;
-    fileJobBufferSlot_t slots[2];
-    u8 unk30[0x10];
-    f32 offset[4];    /* 0x40 */
-    f32 quat[4];      /* 0x50 */
-    f32 scale;        /* 0x60 */
-    u32 color;        /* 0x64 */
-    u32 xformFlags;   /* 0x68 */
-    u8 unk6C[0x14];
+    union {
+        struct {
+            u32 unk0;
+            fileJobType_t type;
+            u16 unk6;
+            void *data;
+            u16 option;
+            u16 unkE;
+            fileJobBufferSlot_t slots[2];
+            u8 unk30[0x10];
+            f32 offset[4];    /* 0x40 */
+            f32 quat[4];      /* 0x50 */
+            f32 scale;        /* 0x60 */
+            u32 color;        /* 0x64 */
+            u32 xformFlags;   /* 0x68 */
+            u32 unk6C;
+        };
+        effPartsListPose_t pose;
+    };
+    u8 unk70[0x10];
     s32 startFrame;   /* 0x80: earliest queue frame eligible for updates */
     u32 updateFlags;  /* 0x84 */
     u8 unk88[8];
@@ -96,17 +115,6 @@ typedef char fileJob_size_must_be_0xC0[
     (sizeof(fileJob_t) == 0xC0) ? 1 : -1];
 
 /* Placement of an effect parts list: queues, camera snapshots, and jobs from 0x40 on. */
-typedef struct effPartsListPose_t {
-    f32 posBase[4];
-    f32 origin[4];
-    u8 unk20[0x20];
-    f32 pos[4];       /* 0x40 */
-    f32 rot[4];       /* 0x50 */
-    f32 scl;          /* 0x60 */
-    u32 abgr;         /* 0x64: modulation colour */
-    u32 flag;         /* 0x68: 0x18 billboard position, 0x60 billboard rotation */
-    u32 unk6C;
-} effPartsListPose_t;
 
 typedef char effPartsListPose_size_must_be_0x70[
     (sizeof(effPartsListPose_t) == 0x70) ? 1 : -1];
@@ -114,7 +122,7 @@ typedef char effPartsListPose_size_must_be_0x70[
 /* Runtime queue owner; serialized images retain the same 0x90-byte header. */
 typedef struct plistHandle_t {
     effPartsListPose_t pose;
-    u8 pad70[4];
+    u32 unk70;
     f32 scaleMultiplier; /* 0x74: multiplies queue scale during updates */
     u8 pad78[8];
     s32 count;        /* 0x80 */
@@ -156,6 +164,9 @@ typedef struct bhvrHandle_t {
     struct sdfMemHandle_t *allocation; /* 0x28: owns the retained table storage */
 } bhvrHandle_t;
 
+void effPCPHelperBEDGetModel(bhvrHandle_t *record);
+void fileAcquireRecord(bhvrHandle_t *record);
+
 /* The existing root-pointer conventions are 4-byte aligned, not VU types. */
 typedef char effPostureSizeCheck[(sizeof(effPosture_t) == 0x20) ? 1 : -1];
 
@@ -183,7 +194,11 @@ typedef char FileTypeCallbacksSizeAssert[sizeof(fileTypeCallbacks_t) == 0x28 ? 1
 
 extern fileTypeCallbacks_t fileJobTypeOperations[];
 
-fileJobPayload_t *fileCreateJob(FileJobType type);
+fileJobPayload_t *fileCreateJob(fileJobType_t type);
+void texRelease(fileJobPayload_t *job);
+void fileJobFreePrimaryBuffer(fileJobPayload_t *job);
+void fileJobFreeSecondaryBuffer(fileJobPayload_t *job);
+s32 effSRAnimation(void);
 
 /* Protocol IDs use distinct byte-sized storage codes in sdfFileCmdHandle_t. */
 typedef u8 SdfDevOperationCode;
@@ -422,6 +437,8 @@ typedef struct fileKeyBlock_t {
 
 typedef char FileKeyScalarTrackSizeCheck[(sizeof(FileKeyScalarTrack) == 0x2C) ? 1 : -1];
 
+void effCallColorAnimation(effPosture_t *out, const fileKeyBlock_t *block, s32 frame, const f32 *target);
+
 /* Surface parameters copied into the node: 0x1C bytes at +0x10. */
 typedef struct effSurfaceParams_t {
     u32 opaque00[6];
@@ -438,6 +455,13 @@ static inline void eeUnpackRGBAWord(u32 color, u32 unitBits) {
     u32 rgba[4];
     rgba[0] = color;
     EE_MMI_RGBA_UNPACK_READONLY(rgba, unitBits);
+}
+
+/* Float-input form: GCC moves the binary32 scale to the unpack's GPR operand. */
+static inline void eeUnpackRGBAWordFloat(u32 color, f32 unit) {
+    u32 rgba[4];
+    rgba[0] = color;
+    EE_MMI_RGBA_UNPACK(rgba, unit);
 }
 
 static inline u32 eePackRGBAWord(f32 unit) {
@@ -870,11 +894,6 @@ typedef struct effMuzzleFlash_Params_t {
 } effMuzzleFlash_Params_t;
 
 typedef char effMuzzleFlashParamsSizeCheck[(sizeof(effMuzzleFlash_Params_t) == 0x38) ? 1 : -1];
-
-struct Standard;
-struct ptcHandle_t;
-
-struct ptcHandle_t *PartsCreate_effParticle(struct Standard *pParts);
 
 /* Effect editor menu commands still in asm. */
 s32 effHandleDebugOrbitInput(void);

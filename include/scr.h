@@ -232,4 +232,6 @@ void cmbRefDDS3GBWK(void);
 void scrEventSkipEnd(s32 _restart, dds3ProcessID_t *pid);
 void *scrGetData(void);
 
+void dds3GlobalWorkClearFlags(void);
+
 #endif /* SCR_H */

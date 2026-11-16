@@ -186,4 +186,6 @@ void mapHitWorkCalcSetupSub(f32 *outx, f32 *outz, f32 x, f32 z);
 void scrClearProcessGlobals(void);
 extern s32 gSubFloorID;
 
+void fldGbInit_System(s32 mode);
+
 #endif

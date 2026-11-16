@@ -943,10 +943,10 @@
 0x00121700	dds3GetWorldNodeData	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00117650, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00121708	evtLoadValueVectorIntoVu	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00117658, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00121728	evtLoadValueSecondaryVectorIntoVu	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00117678, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00121750	datGlobalWorkInit	hd-inferred	hd: Raidou HD dat.datGlobalWorkInit, score 10.0 band A
+0x00121750	dds3GlobalWorkInit	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3; replaces datGlobalWorkInit
 0x001217D8	datGlobalWorkDestroy	hd-inferred	hd: Raidou HD dat.datGlobalWorkDestroy, score 7.2 band B; replaces sdfDestroyRuntimeTask: twin-of-raidou1-0x0011EBD8, unique-reloc-hash
-0x00121828	UserInit	hd	hd: Raidou HD dat.UserInit, score 7.7 band B
-0x00121850	UserInit_dat	hd	method=hd-d-single-raidou2; p=0.73 (n=371); tier=C; source=hd; evidence=Raidou HD dat.UserInit score 4.2 flag -: calls2 callers-of-match-uniq votes3 st2:call r1-disagree:0x11ec50
+0x00121828	dds3GlobalWorkMainProc	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3; replaces UserInit
+0x00121850	UserInit	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD; replaces UserInit_dat
 0x001218C0	datGlobalWorkDestroySub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit dat; called by datGlobalWorkDestroy
 0x001218C8	NewGame2Push	hd	method=hd-c-single-raidou2; p=0.85 (n=399); tier=B; source=hd; evidence=Raidou HD dat.NewGame2Push score 6.1 flag -: calls2 next calls-of-match votes2 st2:call r1-disagree:0x11eca0
 0x00121C50	datCallBitOn	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit dat; calls evtBitOn
@@ -4310,25 +4310,25 @@
 0x001F3230	dds3BillboardManagerInit	inferred	smt3-pair: SMT3 dds3BillboardManagerInit body: pacLoad("/bill/billtmx.LB"), pacSync, dds3BillboardCreate per resource, pacFileHandleFree_; directly before dds3BillboardManagerExit
 0x001F3318	dds3BillboardManagerExit	inferred	smt3-decomp name via SLUS_209.11 0x0015B158, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.182
 0x001F3370	BillboardLoadTex	inferred	smt3-decomp name via SLUS_209.11 0x0015B1B0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.652
-0x001F3488	FreeTex	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD dds3Billboard.FreeTex score 9.8 flag -: calls1 next gap=exact st1:gap r1+r2
+0x001F3488	BillboardFreeTex	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 billManager.c body matches; replaces FreeTex
 0x001F34D8	dds3BillboardTagLink	inferred	smt3-decomp name via SLUS_209.11 0x0015B320, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.457
 0x001F3978	dds3BillboardLinkOt	inferred	smt3-decomp name via SLUS_209.11 0x0015B7C0, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.613
 0x001F3A68	dds3MultiBillboardTagLink	inferred	method=smt3-fuzzy-95-m-pair; p=1.00 (n=22); tier=A; source=smt3; evidence=smt3 body 0x15b8b0 sim 0.987 margin 0.45 pair
 0x001F40C8	dds3MultiBillboardPktLink	inferred	smt3-decomp name via SLUS_209.11 0x0015BF20, smt3-fuzzy: opcode and register similarity 1.0 in both games, margin 0.784
-0x001F4228	dds3CallMultiBillboardPktLink	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/billManager, neighbour dds3MultiBillboardPktLink; calls dds3MultiBillboardPktLink
+0x001F4228	dds3MultiBillboardLinkOt	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 billManager.c body matches; replaces dds3CallMultiBillboardPktLink
 0x001F4380	dds3Billboard_BasicInit	inferred	SMT3HD name via SLUS_209.11 0x0015C1E8, byte-identical; map-agrees
-0x001F43C8	dds3BillboardNormalCreate	hd-inferred	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD dds3Billboard.dds3BillboardNormalCreate score 7.3 flag I: calls1 callers-of-match votes2 st1:call r1+r2
-0x001F4418	NormalDelete	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD dds3Billboard.NormalDelete score 7.4 flag -: prev gap=exact st1:gap r1+r2
+0x001F43C8	dds3Billboard_NormalCreate	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 billManager.c body matches; drop smt3_symbols alias; replaces dds3BillboardNormalCreate
+0x001F4418	dds3Billboard_NormalDelete	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 billManager.c body matches; replaces NormalDelete
 0x001F4450	dds3Billboard_NormalDraw	inferred	SMT3HD name via SLUS_209.11 0x0015C2B0, reloc-identical; map-agrees
 0x001F4468	dds3Billboard_P2ACreate	inferred	SMT3HD name via SLUS_209.11 0x0015C2C8, reloc-identical; map-agrees
 0x001F44F0	dds3Billboard_P2ACopy	inferred	SMT3HD name via SLUS_209.11 0x0015C350, reloc-identical; map-agrees
-0x001F4570	P2ADelete	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD dds3Billboard.P2ADelete score 7.9 flag -: prev gap=exact st1:gap r1+r2
+0x001F4570	dds3Billboard_P2ADelete	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 billManager.c body matches; replaces P2ADelete
 0x001F45A0	dds3Billboard_P2AAnimDraw	inferred	SMT3HD name via SLUS_209.11 0x0015C400, byte-identical; map-agrees
-0x001F4770	nbPanelFlashRGBAMulti	inferred	method=smt3-fuzzy-100-m-pair; p=1.00 (n=1842); tier=A; source=smt3; evidence=smt3 body 0x282a70 sim 1.000 margin 1.00 pair
+0x001F4770	dds3Billboard_P2AColorMul	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 billManager.c body matches; replaces nbPanelFlashRGBAMulti
 0x001F47F0	dds3Billboard_P2ADraw	inferred	SMT3HD name via SLUS_209.11 0x0015C650, reloc-identical; map-agrees
 0x001F4AA8	dds3Billboard_P2ASetAnim	inferred	SMT3HD name via SLUS_209.11 0x0015C908, byte-identical; map-agrees
 0x001F4AE0	dds3Billboard_P2ASetNumber	inferred	SMT3HD name via SLUS_209.11 0x0015C940, reloc-identical; map-agrees
-0x001F4C90	AnimLoadP2A	hd	method=hd-ab; p=0.94 (n=2119); tier=A; source=hd; evidence=Raidou HD dds3Billboard.AnimLoadP2A score 7.6 flag -: calls2 callers-of-match-uniq votes2 st1:call r1+r2
+0x001F4C90	dds3BillAnimLoadP2A	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 billManager.c body matches; drop smt3_symbols alias; replaces AnimLoadP2A
 0x001F4E60	dds3BillAnimFreeP2A	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x15ccc8 sim 0.892 margin 0.89 pair
 0x001F4EF0	billCopyCurrentRecordToSnapshot	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00151CE8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x001F4F90	dds3BillboardCreate	inferred	SMT3HD name via SLUS_209.11 0x0015CDB0, reloc-identical; map-agrees
@@ -4336,7 +4336,7 @@
 0x001F5068	dds3BillboardCopy	inferred	SMT3HD name via SLUS_209.11 0x0015CEA0, reloc-identical; map-agrees
 0x001F5108	dds3BillboardDelete	inferred	SMT3HD name via SLUS_209.11 0x0015CF40, reloc-identical; map-agrees
 0x001F5140	dds3BillboardDraw	inferred	SMT3HD name via SLUS_209.11 0x0015CF78, byte-identical; map-agrees
-0x001F5160	dds3BillboardGeneral_dds3Billboard	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD dds3Billboard.dds3BillboardGeneral score 5.5 flag R: calls1 callers-of-match st1:call r1+r2
+0x001F5160	dds3BillboardGeneral	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 billManager.c body matches; replaces dds3BillboardGeneral_dds3Billboard
 0x001F51C8	dds3Leaf30	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit effect/billManager, neighbour dds3BillboardGeneral_dds3Billboard; no named callee, caller or string
 0x001F51D0	dds3BillboardGetGeneralTex	inferred	SMT3HD name via SLUS_209.11 0x0015D000, reloc-identical; map-agrees
 0x001F51F0	dds3BillboardSetPosition	hd	hd: Raidou HD dds3Billboard.dds3BillboardSetPosition, score 7.7 band B, hd-ab: calls1 prev calls-of-match votes2 st1:call r1+r2
@@ -4535,21 +4535,21 @@
 0x001FD1C8	effBlur2OnSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3Blur2On
 0x001FD228	effBlur2SwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3Blur2Swap
 0x001FD238	effBlurUpdateSub3	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
-0x001FD248	effBlurUpdateSub4	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
-0x001FD250	effMultiBlurOnSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3MultiBlurOn
+0x001FD248	Eve_PartialMultiBlurOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub4
+0x001FD250	Eve_PartialMultiBlurSetParam	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches; replaces effMultiBlurOnSub
 0x001FD2B0	effMultiBlurSwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3MultiBlurSwap
 0x001FD2B8	Eve_PartialMultiBlurSetTex	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x001FD2C8	effCallBillboardGetGeneralTex	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effEvent; calls dds3BillboardGetGeneralTex
+0x001FD2C8	Eve_PartialMultiBlurSetDefTex	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches; replaces effCallBillboardGetGeneralTex
 0x001FD2F0	effBlurUpdateSub5	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
-0x001FD300	effBlurUpdateSub6	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
+0x001FD300	Eve_DistortionBlurOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub6
 0x001FD308	effDistBlurOnSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3DistBlurOn
 0x001FD368	effDistBlurSwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3DistBlurSwap
 0x001FD370	Eve_DistortionBlurSetTex	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
-0x001FD380	effCallBillboardGetGeneralTex2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effEvent; calls dds3BillboardGetGeneralTex
+0x001FD380	Eve_DistortionBlurSetDefTex	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches; replaces effCallBillboardGetGeneralTex2
 0x001FD3A8	effBlurUpdateSub7	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
-0x001FD3B8	effBlurUpdateSub8	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
+0x001FD3B8	Eve_RippleBlurOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub8
 0x001FD3C0	effRipBlurOnSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3RipBlurOn
-0x001FD420	effRipBlurSwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3RipBlurSwap
+0x001FD420	Eve_RippleBlurGetParams	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches; drop smt3_symbols alias; replaces effRipBlurSwapSub
 0x001FD428	Eve_RippleBlurSetTex	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
 0x001FD438	Eve_RippleBlurSetDefTex	inferred	SMT3HD name via SLUS_209.11 0x001AD4B8, reloc-identical; map-agrees
 0x001FD460	effEnableFramebufferQuad	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0018F650, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -4557,11 +4557,11 @@
 0x001FD478	effCopyFramebufferQuadParameters	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0018F668, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001FD4D8	effGetCh73Params	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0018F6C8, masked-words-identical (order map pair); dds-decomp: descriptive
 0x001FD4E8	effBlurUpdateSub9	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
-0x001FD4F8	effBlurUpdateSub10	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
+0x001FD4F8	Eve_FilterOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub10
 0x001FD500	dblurSetParam2	inferred	method=smt3-fuzzy-100-tie-pair; p=0.62 (n=570); tier=C; source=smt3; evidence=smt3 body 0x1adb38 sim 1.000 margin 0.00 pair
 0x001FD540	effFilter2SwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3Filter2Swap
 0x001FD550	effBlurUpdateSub11	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
-0x001FD560	effBlurUpdateSub12	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3BlurUpdate
+0x001FD560	Eve_PartialMultiFilterOFF	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 effEvent.c body matches, position; replaces effBlurUpdateSub12
 0x001FD568	Eve_PartialMultiFilterSetParam	inferred	SMT3HD name via SLUS_209.11 0x001AD560, reloc-identical; map-agrees
 0x001FD5B8	effMFilterSwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3MFilterSwap
 0x001FD5C0	Eve_PartialMultiFilterSetTex	inferred	method=idb-smt3; p=na; tier=D; source=smt3; evidence=IDB name in 2 game(s)
@@ -5874,13 +5874,13 @@
 0x00234908	fileDuplicateJob	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293D08, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234990	fileJobCreateFromCommandState	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293D90, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234A30	fileJobSerializedSize	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293E30, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00234AA0	effLeaf346	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021CE60, neighbour effPartsDraw; no named callee, caller or string
-0x00234AF8	effLeaf347	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021CE60, neighbour effPartsDraw; no named callee, caller or string
+0x00234AA0	fileQueueInitTransform	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 body (less memset); drop smt3_symbols alias; replaces effLeaf346
+0x00234AF8	fileJobResetAndInitTransform	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 body (less memset); drop smt3_symbols alias; replaces effLeaf347
 0x00234B30	fileQueueAppend	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293F60, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234B68	fileQueueInsertAfter	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293F98, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234BA8	fileQueueRemove	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00293FD8, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00234BF0	effCallChipAllocZeroDirect	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0021CE60, neighbour effPartsDraw; calls sdfChipAllocZeroDirect
-0x00234C28	effCallChipAllocZeroDirect2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0021CE60, neighbour effPartsDraw; calls sdfChipAllocZeroDirect
+0x00234BF0	fileQueueCreate	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 body; drop smt3_symbols alias; replaces effCallChipAllocZeroDirect
+0x00234C28	fileJobCreate	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 body; drop smt3_symbols alias; replaces effCallChipAllocZeroDirect2
 0x00234C60	fileDestroyJob	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002940B8, masked-words-identical (order map pair); dds-decomp: descriptive
 0x00234C78	Create_effPartsList	hd	hd: Raidou HD effPartsList.Create, score 8.15 band B; replaces fileCloneQueueEntries: dds-decomp DDS1 name via SLUS_209.74 0x002940D0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00234EC0	CallShopTest	inferred	SMT3HD name via SLUS_209.11 0x00109320, twin-of-raidou1-0x0021DBB8; map-agrees
@@ -5926,7 +5926,7 @@
 0x00237300	PartsListSet	hd	hd: Raidou HD effParticle.PartsListSet, score 10.0 band A, hd-ab: calls3 prev callers-of-match votes2 st1:call r1+r2; replaces fileReplaceEffectSurfaceQueues: dds-decomp DDS2 name via SLUS_211.52 0x002D6808, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x002373F8	fileReplaceReferenceHolder	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6900, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00237448	fileClearLoadObjectReferences	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D6950, masked-words-identical (order map pair); dds-decomp: descriptive
-0x00237478	effLeaf348	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021CE60, neighbour effCreate; no named callee, caller or string
+0x00237478	fileAcquireLoadObjectRecord	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 body; replaces effLeaf348
 0x002374A8	fileDrawLoadObjectSlots	inferred	fuzzy name from SLUS_211.52 0x002D69B8, score 0.94, tools/xgame/fuzzy_apply.py
 0x00237E48	effCallSRAnimation	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_0021CE60, neighbour effColorAnimation; calls effSRAnimation
 0x00237E88	fileSendLoadObjectRecordVector	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002D73C0, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -5952,11 +5952,11 @@
 0x0023AF90	effUpdateDirectedEmitterSlots	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00299E58, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023B690	effScaleDirectedEmitterParameters	inferred	fuzzy name from SLUS_209.74 0x0029A558, score 1.00, tools/xgame/fuzzy_apply.py
 0x0023B718	effUpdateSectorEmitterSlots	inferred	dds-decomp DDS2 name via SLUS_211.52 0x002DAAE0, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023BE38	effLeaf349	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_0021CE60, neighbour effColorAnimation; no named callee, caller or string
+0x0023BE38	effScaleSectorEmitterParameters	inferred	method=dds2-body; p=na; tier=A; source=dds2; evidence=DDS2 body, same fields; replaces effLeaf349
 0x0023BEC0	fileAllocateGridRecordSlots	inferred	fuzzy name from SLUS_209.74 0x0029A5E0, score 0.95, tools/xgame/fuzzy_apply.py
 0x0023C018	effPCPHelperBEDGetModel	inferred	SMT3HD name via SLUS_209.11 0x001976D0, reloc-identical; map-agrees
 0x0023C030	effCalc	hd-inferred	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD effBehavior.effCalc score 4.0 flag I: prev edge st1:edge r1+r2
-0x0023C048	effCalcSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc_00224D10; called by Calc
+0x0023C048	fileAcquireRecord	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 body; drop smt3_symbols alias; replaces effCalcSub
 0x0023C090	fileReadVectorPtr20	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A7B0, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x0023C0A8	mnuRecordSetVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A7C8, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0023C0C0	fileReadRecordSecondVector	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A7E0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -5966,7 +5966,7 @@
 0x0023C1B8	effHandleCreate	hd-inferred	hd: Raidou HD effModel.effHandleCreate, score 8.7 band B
 0x0023C248	effDestroyModelContext	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029A938, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023C268	effHandleCopy	hd-inferred	hd: Raidou HD effModel.effHandleCopy, score 11.95 band A, hd-ab: calls4 prev~ callee-index votes2 st1:cidx r1+r2; replaces effCloneModelWithVUState: dds-decomp DDS2 name via SLUS_211.52 0x002DC280, masked-words-identical (callee map pair); dds-decomp: descriptive
-0x0023C2C0	effCallChipAllocZeroDirect3	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit effect/effPCPMisc_00224D10; calls sdfChipAllocZeroDirect
+0x0023C2C0	effCreateModelOwner	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 body; replaces effCallChipAllocZeroDirect3
 0x0023C360	Delete	hd	hd: Raidou HD effModel.Delete, score 10.3 band A, hd-ab: prev next gap=exact st1:gap r1+r2
 0x0023C3B0	effPCPAnalyzeBEDCopy	inferred	method=smt3-fuzzy-95-m-pair; p=1.00 (n=22); tier=A; source=smt3; evidence=smt3 body 0x197810 sim 0.973 margin 0.97 pair
 0x0023C400	effRecreateModelFromSource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029AA90, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -6021,12 +6021,12 @@
 0x0023E0A8	Copy_effCacheTexList	hd	hd: Raidou HD effCacheTexList.Copy, score 10.1 band A; replaces effReferenceObjectRetain: dds-decomp DDS1 name via SLUS_209.74 0x0029C408, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x0023E0C0	effCacheTexAnimGet	hd-inferred	hd: Raidou HD effCacheTexList.effCacheTexAnimGet, score 8.9 band B, hd-ab: calls2 prev calls-of-match votes3 st1:call r1+r2; replaces effSampleAnimSet: dds-decomp DDS1 name via SLUS_209.74 0x0029C420, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E1A0	effAssignSampledSegmentReference	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C500, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x0023E1D0	effCallChipAllocDirect14	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effResetSmallHeaderFrame; calls sdfChipAllocDirect
+0x0023E1D0	effDuplicateSmallHeader	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 code_0029C530.c body plus quake slot; drop smt3_symbols alias; replaces effCallChipAllocDirect14
 0x0023E228	effCreateSmallHeaderFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C570, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x0023E248	effFunc15	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effResetSmallHeaderFrame; no named callee, caller or string
+0x0023E248	effReleaseFadeHeaderAllocation	inferred	method=dds1-derived-role; p=na; tier=C; source=dds1; evidence=DDS1 code_0029C530.c, same position and free; replaces effFunc15
 0x0023E278	effCloneSmallHeaderFromWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C5B8, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023E290	effResetSmallHeaderFrame	inferred	twin-of-raidou1-0x00226F88
-0x0023E298	effCallSRAnimation4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effResetSmallHeaderFrame; calls effSRAnimation
+0x0023E298	effFadeFrameAdvance	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 code_0029C530.c, same body with quake slot; replaces effCallSRAnimation4
 0x0023E310	effCreateFadeVectorWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C620, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x0023E3E0	effCreateFadeVectorFromFile	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C6F0, masked-words-identical (order map pair); dds-decomp: descriptive
 0x0023E400	effFreeFadeVectorWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029C710, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -6076,7 +6076,7 @@
 0x0023FD60	effCloneKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E058, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x0023FD80	effResetKindWorkFrame	inferred	twin-of-raidou1-0x00228A78
 0x0023FD88	effKindWorkFrameUpdate	inferred	method=dds-fuzzy-70-tie-pair; p=0.38 (n=8); tier=C; source=dds; evidence=dds body 0x2e02f8 sim 0.939 margin 0.00 pair
-0x0023FDF0	effLeaf355	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effKindWorkFrameUpdate; no named callee, caller or string
+0x0023FDF0	effSetKindWorkPosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf355
 0x0023FE00	effSetKindWorkColor	inferred	twin-of-raidou1-0x00228AF8
 0x0023FE08	effSetKindWorkScale	inferred	twin-of-raidou1-0x00228B00
 0x0023FE10	effAllocateAlternateKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E0F0, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -6085,7 +6085,7 @@
 0x00240098	effCloneAlternateKindWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E378, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002400B8	effResetAlternateKindWorkFrame	inferred	twin-of-raidou1-0x00228DB0
 0x002400C0	effCallSRAnimation6	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effResetAlternateKindWorkFrame; calls effSRAnimation
-0x00240128	effLeaf356	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetAlternateKindWorkColor; no named callee, caller or string
+0x00240128	effSetAlternateKindWorkPosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf356
 0x00240138	effSetAlternateKindWorkColor	inferred	twin-of-raidou1-0x00228E30
 0x00240140	effSetAlternateKindWorkScale	inferred	twin-of-raidou1-0x00228E38
 0x00240148	Create_effMuzzleFlash	hd	hd: Raidou HD effMuzzleFlash.Create, score 8.5 band B, hd-ab: calls2 calls-of-match-uniq votes3 st1:call r1+r2; replaces effCreateBillboardWork: dds-decomp DDS1 name via SLUS_209.74 0x0029E410, masked-words-identical (strict map pair); dds-decomp: no provenance row
@@ -6094,8 +6094,8 @@
 0x002402E8	ResourceCopy_effMuzzleFlash	hd	hd: Raidou HD effMuzzleFlash.ResourceCopy, score 8.1 band B, hd-ab: calls2 next~ callers-of-match votes3 st1:call r1+r2; replaces effReplaceBillboardClone: dds-decomp DDS1 name via SLUS_209.74 0x0029E5B0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00240338	effBillboardEntryFrameReset	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E600, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00240368	Draw_effMuzzleFlash	hd	hd: Raidou HD effMuzzleFlash.Draw, score 11.8 band A
-0x00240470	effLeaf357	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetBillboardColor; no named callee, caller or string
-0x00240480	effLeaf358	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetBillboardColor; no named callee, caller or string
+0x00240470	effSetBillboardPosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf357
+0x00240480	effSetBillboardRotation	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf358
 0x00240498	effSetBillboardColor	inferred	twin-of-raidou1-0x00229190
 0x002404A0	effSetBillboardScale	inferred	twin-of-raidou1-0x00229198
 0x002404A8	effClearBillFrames	inferred	dds-decomp DDS1 name via SLUS_209.74 0x0029E760, masked-words-identical (gap map pair); dds-decomp: descriptive
@@ -6159,8 +6159,8 @@
 0x002456A0	effAdvanceActiveInstanceFrame	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A3958, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002456F0	effDispatchActiveInstanceDraw	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A39A8, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00245728	effCallSRAnimation7	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetActiveInstanceColor; calls effSRAnimation
-0x00245768	effLeaf359	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetActiveInstanceColor; no named callee, caller or string
-0x00245778	effLeaf360	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetActiveInstanceColor; no named callee, caller or string
+0x00245768	effSetActiveInstancePosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf359
+0x00245778	effSetActiveInstanceRotation	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf360
 0x00245790	effSetActiveInstanceColor	inferred	twin-of-raidou1-0x0022E488
 0x00245798	effSetActiveInstanceScale	inferred	twin-of-raidou1-0x0022E490
 0x002457A0	effCreateTrackSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A3A40, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -6170,7 +6170,7 @@
 0x00245B70	effDrawTrackSet	inferred	fuzzy name from SLUS_209.74 0x002A3E10, score 1.00, tools/xgame/fuzzy_apply.py
 0x00246078	effLoadFlashTextures	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A4318, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002460D8	effLeaf361	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetActiveInstanceScale; no named callee, caller or string
-0x002460F0	effLeaf362	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetActiveInstanceScale; no named callee, caller or string
+0x002460F0	effResetRingResourceFrame	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 body; replaces effLeaf362
 0x00246100	effSegmentPointerSet	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A43A0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002461A8	effReleaseRingResourceHandle	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A4448, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x002461D8	effUpdateExpandingRingPoints	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A4478, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -6180,7 +6180,7 @@
 0x00246818	effReleaseClassDrawResources	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A4AB8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00246850	effUpdateScaledClassFrameRows	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A4AF0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x002469A0	billDrawClassUpdatedCellBlend	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A4C40, masked-words-identical (strict map pair); dds-decomp: descriptive
-0x00246B48	effLeaf363	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetClassWorkColor; no named callee, caller or string
+0x00246B48	effResetClassRingFrame	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=DDS1 body; replaces effLeaf363
 0x00246B58	effCreateRingHandle	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A4DF8, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00246C00	effReleaseRingHandle	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A4EA0, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00246C30	effUpdateCenteredRadialRingVertices	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A4ED0, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -6193,8 +6193,8 @@
 0x002471B8	effCallSRAnimation8	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetClassWorkColor; calls effSRAnimation
 0x00247220	effRunClassPostFrame	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A54A8, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00247258	effUpdateClassFrame	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A54E0, masked-words-identical (gap map pair); dds-decomp: descriptive
-0x00247280	effLeaf364	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetClassWorkColor; no named callee, caller or string
-0x00247290	effLeaf365	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetClassWorkColor; no named callee, caller or string
+0x00247280	effSetClassWorkPosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf364
+0x00247290	effSetClassWorkRotation	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf365
 0x002472A8	effSetClassWorkColor	inferred	twin-of-raidou1-0x0022FFA0
 0x002472B0	effSetClassWorkScale	inferred	twin-of-raidou1-0x0022FFA8
 0x002472B8	effCreatePointSet4	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002A5540, masked-words-identical (strict map pair); dds-decomp: descriptive
@@ -6239,8 +6239,8 @@
 0x0024A138	ResourceCopy_effPolygonTex	hd	hd: Raidou HD effPolygonTex.ResourceCopy, score 10.8 band A
 0x0024A210	effResetRenderResourceFrame	inferred	twin-of-raidou1-0x00232F08
 0x0024A218	Draw_effPolygonTex	hd	hd: Raidou HD effPolygonTex.Draw, score 6.05 band C, hd-consensus: calls1 callers-of-match-uniq votes2 st1:call r1+r2; 10/10 fold runs agree, fold scores 6.0,6.0,7.0,6.0,7.0,6.0,6.0,7.0,6.0,7.0
-0x0024A250	effLeaf366	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effResetRenderResourceFrame; no named callee, caller or string
-0x0024A260	effLeaf367	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetRenderResourceColor; no named callee, caller or string
+0x0024A250	effSetRenderResourcePosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf366
+0x0024A260	effSetRenderResourceRotation	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf367
 0x0024A278	effSetRenderResourceColor	inferred	twin-of-raidou1-0x00232F70
 0x0024A280	effSetRenderResourceScale	inferred	twin-of-raidou1-0x00232F78
 0x0024A288	Update_effPolygonTex	hd	hd: Raidou HD effPolygonTex.Update, score 7.9 band B
@@ -6331,8 +6331,8 @@
 0x00251B40	effAdvanceBlockResourceFrame	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AE120, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00251B90	effDrawBlockResourceWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AE170, masked-words-identical (gap map pair); dds-decomp: descriptive
 0x00251BC8	effCallSRAnimation11	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetBlockResourceColor; calls effSRAnimation
-0x00251C08	effLeaf369	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetBlockResourceColor; no named callee, caller or string
-0x00251C18	effLeaf370	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00226EC8, neighbour effSetBlockResourceColor; no named callee, caller or string
+0x00251C08	effSetBlockResourcePosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf369
+0x00251C18	effSetBlockResourceRotation	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=vector setter beside the type's color/scale setters; replaces effLeaf370
 0x00251C30	effSetBlockResourceColor	inferred	twin-of-raidou1-0x0023A928
 0x00251C38	effSetBlockResourceScale	inferred	twin-of-raidou1-0x0023A930
 0x00251C40	effCreateRibbonWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002AE208, masked-words-identical (strict map pair); dds-decomp: no provenance row
@@ -6481,10 +6481,10 @@
 0x00259A60	effCallProcSBtl	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_00242308, nearest named function effPadVibeFadeIN; calls Proc_sbtl
 0x00259AE0	effDispatchEnabledCallback	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002B46E0, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00259B38	effFunc18	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00242308, nearest named function effPadVibeFadeIN; no named callee, caller or string
-0x00259B60	effLeaf388	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00242308, nearest named function effPadVibeFadeIN; no named callee, caller or string
-0x00259B70	effLeaf389	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00242308, nearest named function effPadVibeFadeIN; no named callee, caller or string
-0x00259B88	effLeaf390	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00242308, nearest named function effPadVibeFadeIN; no named callee, caller or string
-0x00259B90	effLeaf391	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_00242308, nearest named function effPadVibeFadeIN; no named callee, caller or string
+0x00259B60	effSetActiveResourcePosition	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=position setter of effActiveResource_t (effRuntimeResourceOperations work); replaces effLeaf388
+0x00259B70	effSetActiveResourceRotation	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=orientation setter of effActiveResource_t; replaces effLeaf389
+0x00259B88	effSetActiveResourceColor	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=color setter of effActiveResource_t; replaces effLeaf390
+0x00259B90	effSetActiveResourceScale	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=scale setter of effActiveResource_t; replaces effLeaf391
 0x00259B98	sdfResetFlagListEntries	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002CEA90, masked-words-identical (callee map pair); dds-decomp: descriptive
 0x00259BF0	sdfCreateFlagListWork	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002CEAE8, masked-words-identical (strict map pair); dds-decomp: descriptive
 0x00259D10	sdfInitializeFlagListFromResource	inferred	dds-decomp DDS1 name via SLUS_209.74 0x002CEC08, masked-words-identical (order map pair); dds-decomp: descriptive
@@ -14560,8 +14560,7 @@
 0x004560E8	slNewCycleData96	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by slNewCycle
 0x004560F8	slNewCycleData97	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by slNewCycle
 0x00456108	slNewCycleData98	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by slNewCycle
-0x00456120	dds3BillboardManagerInitData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3BillboardManagerInit
-0x00456124	dds3BillboardGeneral_dds3BillboardData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3BillboardGeneral_dds3Billboard
+0x00456120	BillboardTable	inferred	method=derived-role; p=na; tier=B; source=derived; evidence=SMT3, same layout; replaces dds3BillboardManagerInitData
 0x00456220	dds3BillboardUpAxis	inferred	method=smt3-ref; p=0.98 (n=D_r1_003FA460); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3BillboardTagLink
 0x00456230	dds3BillboardTagParam	inferred	method=smt3-ref; p=0.98 (n=D_r1_003FA470); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3BillboardTagLink
 0x00456240	dds3BillboardOtTable	inferred	method=smt3-ref; p=0.98 (n=D_r1_003FA480); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3BillboardLinkOt
@@ -14872,7 +14871,6 @@
 0x0045F180	effDrawTrackSetData5	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by effDrawTrackSet
 0x0045F1A0	effClassResourceWorkOperations2	inferred	method=dds-ref; p=0.59 (n=D_r1_004033E0); tier=C; source=dds; evidence=dds-ref/loose: nfun=2, other=2, sim=1.0, games=2, size=True, sec=True, fn=effCreateClassWork; effClassResourceWorkOperations is another symbol
 0x0045F1A8	dds3MagatuhiDeleteTable2	inferred	method=smt3-ref; p=0.98 (n=D_r1_004033E8); tier=C; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=effDestroyClassWork; dds3MagatuhiDeleteTable is another symbol
-0x0045F1AC	effCallSRAnimation8Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by effCallSRAnimation8
 0x0045F1B0	effRunClassPostFrameData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by effRunClassPostFrame
 0x0045F1B4	effCreateClassWorkData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by effCreateClassWork
 0x0045F200	effData7	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: effDrawFourPointGroups, effDrawRibbon, effDrawScalyTexturedStrip
@@ -25748,7 +25746,7 @@
 0x004DE5CC	dds3TheWorld	inferred	method=smt3-alias; p=0.90 (n=dds3TheWorld_dds3WorldBasic); tier=A; source=smt3; evidence=smt3-alias/all: SMT3 spelling of dds3TheWorld_dds3WorldBasic; replaces dds3TheWorld_dds3WorldBasic: hd: Raidou HD dds3WorldBasic.dds3TheWorld, 18 of 19 functions agree, high confidence
 0x004DE5D0	dds3MoverCount	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046B488); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3AddMoverBasic
 0x004DE5D4	effObjOpacityPassEnabled	inferred	method=dds-ref; p=0.59 (n=D_r1_0046B48C); tier=C; source=dds; evidence=dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=dds3MatterObjectBasicDrawProcedure
-0x004DE5E0	sdfRuntimeTaskName	inferred	method=dds-ref; p=0.59 (n=D_r1_0046B490); tier=C; source=dds; evidence=dds-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=datGlobalWorkInit
+0x004DE5E0	dds3GlobalWorkProcName	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3; replaces sdfRuntimeTaskName
 0x004DE5E5	NewGame2PushData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by NewGame2Push (2 of 3 refs, 2 functions)
 0x004DE5E6	NewGame2PushData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by NewGame2Push (2 of 3 refs, 2 functions)
 0x004DE5E7	datData12	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: NewGame2Push, datCallBitOn
@@ -25769,14 +25767,14 @@
 0x004DE63C	datEncountCalcSubData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by datEncountCalcSub
 0x004DE644	datBattleAdjustmentRecords	inferred	method=dds-ref; p=0.59 (n=D_r1_0046B4DC); tier=C; source=dds; evidence=dds-ref/loose: nfun=6, other=0, sim=1.0, games=2, size=False, sec=True, fn=btlSelectConditionalEncounterGroup
 0x004DE670	datLeaf66Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by datLeaf66
-0x004DE6BC	rstCallGetRandAData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by rstCallGetRandA (4 of 5 refs, 2 functions)
-0x004DE6C0	datData4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: datLoadLvUpTables, rstCallGetRandA
-0x004DE6C4	sbtlSetHangekiFlagData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlSetHangekiFlag (2 of 4 refs, 3 functions)
-0x004DE6C8	datLoadLvUpTablesData3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by datLoadLvUpTables
-0x004DE6CC	datData18	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: datLoadLvUpTables, datCalcMagMaxPlayerUnit
-0x004DE6D0	datLoadLvUpTablesData4	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by datLoadLvUpTables
-0x004DE6D4	rstCalcRankUpData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by rstCalcRankUp (3 of 5 refs, 3 functions)
-0x004DE6D8	datData19	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: datLoadLvUpTables, rstCalcRankUp
+0x004DE6BC	sdatLvUpDevilGiftTbl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD; replaces rstCallGetRandAData
+0x004DE6C0	sdatLvUpDevilGiftSize	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD; replaces datData4
+0x004DE6C4	sdatLvUpDevilParamUp	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD; replaces sbtlSetHangekiFlagData
+0x004DE6C8	sdatLvUpDevilParamUpSize	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD; replaces datLoadLvUpTablesData3
+0x004DE6CC	sdatLvUpPlayerParamUp	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD; replaces datData18
+0x004DE6D0	sdatLvUpPlayerParamUpSize	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD; replaces datLoadLvUpTablesData4
+0x004DE6D4	sdatLvUpPlayerRankUp	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD; replaces rstCalcRankUpData
+0x004DE6D8	sdatLvUpPlayerRankUpSize	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD; replaces datData19
 0x004DE6DC	btlGetConditionalEncounterIntervalData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by btlGetConditionalEncounterInterval (2 of 4 refs, 3 functions)
 0x004DE6E0	nbEncountCalcData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by nbEncountCalc
 0x004DE6E4	nbEncountCalcData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by nbEncountCalc
@@ -27660,18 +27658,18 @@
 0x004E16BC	dds3CrossfadeRunFlag	inferred	method=smt3-ref; p=0.88 (n=D_r1_0046CF74); tier=B; source=smt3; evidence=smt3-ref/loose: nfun=6, other=0, sim=1.0, games=2, size=False, sec=True, fn=dds3CrossfadeStart
 0x004E16C0	dds3CrossfadeFrame	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CF78); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3CrossfadeStart
 0x004E16C4	dds3CrossfadeFrameMax	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046CF7C); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3CrossfadeStart
-0x004E16C8	effData23	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: effLeaf21, effLeaf22, effBTLFieldColorResetFlags
+0x004E16C8	effFieldColorFlags	inferred	method=dds1-body; p=na; tier=A; source=dds1; evidence=dds1 code_00161838.c effBTLFieldColorResetFlags, same body as R1 (R2 code_001FC6B8); replaces effData23
 0x004E16CC	effData24	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: effLeaf17, effBTLSkillGetState
 0x004E16D0	effData25	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: effLeaf17, effBTLSkillGetID
 0x004E16D4	effBTLSkillID	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046CF8C); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x004E16D8	effData26	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: effLeaf17, effBTLFieldColorGetFinalSelector
-0x004E16E0	effData27	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: effBlurUpdateSub, effBlurUpdateSub2, EffectDraw
-0x004E16E1	effData28	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: effBlurUpdateSub3, effBlurUpdateSub4, EffectDraw
-0x004E16E2	EffectDrawData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by EffectDraw (2 of 4 refs, 3 functions)
+0x004E16E0	Eve_BlurShow	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 Eve_EffectDraw tests it before dds3EffectBlur(&Eve_Blur); replaces effData27
+0x004E16E1	Eve_PartialMultiBlurShow	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=cleared by Eve_PartialMultiBlurOFF, tested in EffectDraw; replaces effData28
+0x004E16E2	Eve_DistortionBlurShow	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=cleared by Eve_DistortionBlurOFF; replaces EffectDrawData
 0x004E16E3	EffectDrawData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by EffectDraw (2 of 4 refs, 3 functions)
-0x004E16E4	EffectDrawData3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by EffectDraw (2 of 4 refs, 3 functions)
-0x004E16E5	EffectDrawData4	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by EffectDraw (2 of 4 refs, 3 functions)
-0x004E16E6	EffectDrawData5	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by EffectDraw (2 of 4 refs, 3 functions)
+0x004E16E4	Eve_FilterShow	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=cleared by Eve_FilterOFF, gates dds3EffectFilter(&Eve_Filter); replaces EffectDrawData3
+0x004E16E5	Eve_PartialMultiFilterShow	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=cleared by Eve_PartialMultiFilterOFF; replaces EffectDrawData4
+0x004E16E6	Eve_RippleBlurShow	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=cleared by Eve_RippleBlurOFF; replaces EffectDrawData5
 0x004E16E8	filterDebugMenu2Entry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by filterDebugMenu2Entry
 0x004E16F0	filterDebugMenu2Entry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by filterDebugMenu2Entry
 0x004E16F8	filterDebugMenu2Entry4	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by filterDebugMenu2Entry
@@ -27754,14 +27752,14 @@
 0x004E1890	effScalyTextureHandle	inferred	method=dds-ref; p=0.59 (n=D_r1_0046D150); tier=C; source=dds; evidence=dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=effRetainScalyTextureReference
 0x004E1894	effSharedStripReferenceCount	inferred	method=dds-ref; p=0.59 (n=D_r1_0046D154); tier=C; source=dds; evidence=dds-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=effRetainScalyTextureReference
 0x004E1898	effSharedScalyStripResource	inferred	method=dds-ref; p=0.59 (n=D_r1_0046D158); tier=C; source=dds; evidence=dds-ref/exact: nfun=8, other=0, sim=1.0, games=2, size=True, sec=True, fn=effRetainScalyTextureReference
-0x004E18A0	sbtlEffCreateUnitListData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlEffCreateUnitList (3 of 4 refs, 2 functions)
-0x004E18A4	sbtlEffCreateUnitListData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlEffCreateUnitList (4 of 5 refs, 2 functions)
+0x004E18A0	sbtleffbo_acter	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEffBO.c sBtlEffSetActer store (R2 sbtlEffSetActer); replaces sbtlEffCreateUnitListData
+0x004E18A4	sbtleffbo_target	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD sBtlEffBO.c sBtlEffSetTarget store (R2 sbtlEffSetTarget); replaces sbtlEffCreateUnitListData2
 0x004E18A8	sbtlLeaf51Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlLeaf51
 0x004E18A9	effData36	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: effComputeLightDirectionVU, effResetDefaultColorTables, sbtlLeaf50
-0x004E18B0	effResetSlotsData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by effResetSlots
-0x004E18B8	effResetSlotsData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by effResetSlots
+0x004E18B0	effPadVibeFrames	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effResetSlotsData
+0x004E18B8	effPadVibeRemain	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effResetSlotsData2
 0x004E18C0	effPadVibePower	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046D180); tier=B; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.7596, games=2, size=True, sec=True, fn=effPadVibeFadeUpdate
-0x004E18C8	effData37	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: effResetSlots, effPadVibeFadeUpdate
+0x004E18C8	effPadVibeFadeIn	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 effPCPBoss.c effPadVibeFadeUpdate, same role; replaces effData37
 0x004E18CC	sdfUpdateFlagListEntriesData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sdfUpdateFlagListEntries (3 of 6 refs, 4 functions)
 0x004E18D0	sysPARTICLEDataEntry10	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sysPARTICLEDataEntry
 0x004E18D8	sysPARTICLEDataEntry110	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by sysPARTICLEDataEntry95

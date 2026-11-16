@@ -512,7 +512,6 @@ typedef char EffEventLight_size_must_be_0x3C[
 
 extern effScreenDrawParams_t effData4;
 extern dds3Effect_Filter_t D_00355F88;
-extern s8 EffectDrawData2;
 void effCopyFramebufferQuadParameters(const dds3Effect_Blur_t *source);
 
 
@@ -526,9 +525,13 @@ INCLUDE_ASM(const s32, "effect/effEvent", effBlur2SwapSub);
 
 INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub3);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub4);
+void Eve_PartialMultiBlurOFF(void) {
+    Eve_PartialMultiBlurShow = 0;
+}
 
-INCLUDE_ASM(const s32, "effect/effEvent", effMultiBlurOnSub);
+void Eve_PartialMultiBlurSetParam(dds3Effect_PartialMultiBlurParam_t *pParam) {
+    hEve_PartialMultiBlur->body = *pParam;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", effMultiBlurSwapSub);
 
@@ -536,11 +539,15 @@ void Eve_PartialMultiBlurSetTex(sdfTexHandle_t *hTex) {
     hEve_PartialMultiBlur->texture = hTex;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", effCallBillboardGetGeneralTex);
+void Eve_PartialMultiBlurSetDefTex(void) {
+    hEve_PartialMultiBlur->texture = dds3BillboardGetGeneralTex(EFF_EVENT_BLUR_RESOURCE_INDEX);
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub5);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub6);
+void Eve_DistortionBlurOFF(void) {
+    Eve_DistortionBlurShow = 0;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", effDistBlurOnSub);
 
@@ -550,15 +557,21 @@ effBlurScatterWork_t *effDistBlurSwapSub(void) {
 
 INCLUDE_ASM(const s32, "effect/effEvent", Eve_DistortionBlurSetTex);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effCallBillboardGetGeneralTex2);
+void Eve_DistortionBlurSetDefTex(void) {
+    hEve_DistortionBlur->texture = dds3BillboardGetGeneralTex(EFF_EVENT_BLUR_RESOURCE_INDEX);
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub7);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub8);
+void Eve_RippleBlurOFF(void) {
+    Eve_RippleBlurShow = 0;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", effRipBlurOnSub);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effRipBlurSwapSub);
+effBlurScaleWork_t *Eve_RippleBlurGetParams(void) {
+    return hEve_RippleBlur;
+}
 
 void Eve_RippleBlurSetTex(sdfTexHandle_t *hTex) {
     hEve_RippleBlur->texture = hTex;
@@ -589,7 +602,9 @@ effScreenDrawParams_t *effGetCh73Params(void) {
 
 INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub9);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub10);
+void Eve_FilterOFF(void) {
+    Eve_FilterShow = 0;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", dblurSetParam2);
 
@@ -597,7 +612,9 @@ INCLUDE_ASM(const s32, "effect/effEvent", effFilter2SwapSub);
 
 INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub11);
 
-INCLUDE_ASM(const s32, "effect/effEvent", effBlurUpdateSub12);
+void Eve_PartialMultiFilterOFF(void) {
+    Eve_PartialMultiFilterShow = 0;
+}
 
 /* Copy the resource template body while preserving its selected resource. */
 void Eve_PartialMultiFilterSetParam(dds3Effect_PartialMultiFilterParam_t *pParam) {
@@ -624,7 +641,29 @@ void Eve_EffectInit(void) {
     Eve_RippleBlurGetParams()->params.number = EFF_EVENT_STAGGERED_SLOT_COUNT;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", EffectDraw);
+void EffectDraw(void) {
+    if (Eve_BlurShow != 0) {
+        effDrawBlurRectangle(&Eve_Blur.source);
+    }
+    if (Eve_PartialMultiBlurShow != 0) {
+        effCallNullDrawProc2(hEve_PartialMultiBlur);
+    }
+    if (Eve_DistortionBlurShow != 0) {
+        effBlurStepScatterSlotsAndDraw(hEve_DistortionBlur);
+    }
+    if (Eve_RippleBlurShow != 0) {
+        effBlurStepScaleSlotsAndDraw(hEve_RippleBlur);
+    }
+    if (EffectDrawData2 != 0) {
+        effBlurDrawFramebufferQuad(&effData4.source);
+    }
+    if (Eve_FilterShow != 0) {
+        dds3EffectFilter(&Eve_Filter);
+    }
+    if (Eve_PartialMultiFilterShow != 0) {
+        effPCPMultiFilterExpDrawSub(hEve_PartialMultiFilter);
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", effCallMemcpy);
 
@@ -632,7 +671,9 @@ effScreenDrawParams_t *BlurEditorGetParams(void) {
     return &BlurEditorGetParamsData;
 }
 
-INCLUDE_ASM(const s32, "effect/effEvent", BlurSetParam2);
+void BlurSetParam2(dds3Effect_Blur_t *pParam) {
+    BlurEditorGetParamsData.source = *pParam;
+}
 
 INCLUDE_ASM(const s32, "effect/effEvent", mblurProcess);
 
@@ -1365,11 +1406,11 @@ void effEveAPP4Randomize(effEmit_t *hEffect) {
         bezierSlot->t = cursorStep * (f32)randomStep;
     } while (recordIndex < recordCount);
 }
-INCLUDE_SDATA(const s32, "effect/effEvent", EffectDrawData3);
+INCLUDE_SDATA(const s32, "effect/effEvent", Eve_FilterShow);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", EffectDrawData4);
+INCLUDE_SDATA(const s32, "effect/effEvent", Eve_PartialMultiFilterShow);
 
-INCLUDE_SDATA(const s32, "effect/effEvent", EffectDrawData5);
+INCLUDE_SDATA(const s32, "effect/effEvent", Eve_RippleBlurShow);
 
 INCLUDE_SDATA(const s32, "effect/effEvent", filterDebugMenu2Entry2);
 

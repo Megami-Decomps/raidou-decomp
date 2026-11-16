@@ -72,7 +72,7 @@ enum {
 /* Return packed 64-bit TEX0, TEX1, and CLAMP states from the primary GS packet. */
 
 typedef struct sdfGsTexturePacket_t {
-    SdfGsPacketHeader header;
+    sdfGrPacketHeaderStore_t header;
     sdfGrTagStdReg_t sampling;
     sdfGrTagStdReg_t texture;
     sdfGrTagStdReg_t clamp;
@@ -102,21 +102,6 @@ typedef struct effCompositeGsDescriptor_t {
 typedef char effCompositeGsDescriptor_size_must_be_0x68[
     (sizeof(effCompositeGsDescriptor_t) == 0x68) ? 1 : -1];
 
-/* Producer-built input shared with the generated-texture packet providers.
- * Bytes 0x18..0x1F remain opaque; the provider does not read them. */
-typedef struct effGeneratedTextureDescriptor_t {
-    f32 position[4];
-    f32 scaleX;
-    f32 scaleY;
-    u8 opaque18[8];
-    f32 angle;
-    u32 color;
-    struct sdfTexHandle_t *texture;
-} effGeneratedTextureDescriptor_t;
-
-typedef char EffGeneratedTextureDescriptorSizeAssert[
-    (sizeof(effGeneratedTextureDescriptor_t) == 0x2C) ? 1 : -1];
-
 #define BILL_VARIANT_MASK 0xFFFF
 
 #define EFF_PACKET_LIST_BYTES 0x20
@@ -126,7 +111,6 @@ void effDrawCompositeTextureQuad(sdfDrawTag_t *packet, effCompositeGsDescriptor_
 extern f32 aViewTarget[4], aViewEye[4];
 extern u32 D_0034E090[],D_0034E0A0[];
 void effDrawGeneratedTextureQuad(sdfDrawTag_t *list, effGeneratedTextureDescriptor_t *source);
-void effSubmitGeneratedTexturePacket(sdfGrOt_t *surface, effGeneratedTextureDescriptor_t *source);
 void effDrawCompositeTextureQuad(sdfDrawTag_t *list, effCompositeGsDescriptor_t *source);
 void effSubmitCompositeGsPacket(sdfGrOt_t *surface, effCompositeGsDescriptor_t *source);
 

@@ -64,7 +64,7 @@ struct SBTLUNIT_WORK *sbtlCallMemset21(s32 devilId, s32 point, s32 arg, s32 mode
     sub = sbtlSetUnitSub(2, devil->motionId, 0);
     unit = sbtlSetSummon(1, devilId, arg);
     unit->unit.devilId = devilId;
-    unit->unit.level = devil->field04;
+    unit->unit.level = devil->level;
     unit->unit.raceId = devil->field0E;
     unit->field404 = devil->aisyoId;
     unit->field400 = devil->field0A;

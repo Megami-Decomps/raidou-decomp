@@ -233,7 +233,6 @@ s32 dds3AllocRenderTexture(u16 sx, u16 sy, f32 aspect);
 s32 dds3RenderTextureON(void);
 void dds3RenderTextureOFF(void);
 u32 dds3CheckRenderTexture(void);
-void *dds3GetRenderTexture(void);
 void dds3SetQuake(s32 frame, s32 range);
 void dds3StopQuake(void);
 sdfDrawTag_t *dds3LinkZClearDrawTag(s32 sw);
@@ -564,7 +563,7 @@ u32 dds3CheckRenderTexture(void)
     return dds3RenderTex;
 }
 
-void *dds3GetRenderTexture(void)
+sdfTexHandle_t *dds3GetRenderTexture(void)
 {
     return dds3RenderTexture;
 }
@@ -580,8 +579,6 @@ extern dds3BistaColor_t dds3Data30;
 extern s8 dds3DrawBistaData;
 extern s16 dds3ChangeBistaModeData;
 extern s16 dds3Data32;
-extern s16 dds3DrawBistaData2;
-extern s16 dds3Data33;
 extern u16 dds3BistaUpdateWork;
 extern u16 dds3Work;
 #ifdef VERSION_RAIDOU2

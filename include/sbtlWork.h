@@ -249,8 +249,7 @@ extern SBTL_WORK *wk_sbtl;
 /* Devil table entry returned by sbtlGetDevilData_sbtlSub. */
 typedef struct SBTL_DEVIL_DATA {
     u32 flag;
-    u8 field04;
-    u8 pad05;
+    u16 level;
     s16 motionId;
     u8 pad08[2];
     s16 field0A;
@@ -272,7 +271,10 @@ typedef struct SBTL_DEVIL_DATA {
     f32 field64;
     u8 pad68[2];
     s16 huumaMesNo;
+    u8 pad6C[4];
 } SBTL_DEVIL_DATA;
+
+typedef char SBTL_DEVIL_DATASizeCheck[sizeof(SBTL_DEVIL_DATA) == 0x70 ? 1 : -1];
 
 
 /* Battle start parameters, copied to main_data by sbtlSbattle. */
@@ -592,5 +594,9 @@ s32 sbtlSetMotion_sbtlUnit(struct SBTLUNIT_WORK *wk, s32 motion, s32 bframe, s32
 s32 sbtlSetPacData_MHT(s32 major, s32 minor, s32 devilid, void *data, s32 size);
 s32 sbtlSetSummon_Unit(struct SBTLUNIT_WORK *wk, s32 stock, s32 a, s8 b, s32 c, s8 d);
 s32 sbtlUpdateVibe(void);
+
+s32 sbtlInitPlayerData(void);
+
+extern SBTL_DEVIL_DATA *gohData7;
 
 #endif

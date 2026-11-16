@@ -128,7 +128,6 @@ static inline void filePollPromptChoice(void) {
 
 /* Lower the selected low/alpha byte, retaining the native signed, unmasked bound. */
 
-sdfGrOt_t *effGetPacketSubmissionSurface(s32 index);
 extern u8 sdfViewMatrix[];
 extern u8 sdfProjectionMatrix[];
 extern u8 dds3BillboardGetDirectionRotateData2[];

@@ -30,6 +30,7 @@
 #include "effBattleMisc.h"
 #include "fldFileResolver_00132080.h"
 #include "effPCPMisc_00224D10.h"
+#include "code_r1_00226EC8.h"
 
 /* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
 
@@ -81,26 +82,6 @@ typedef char EffResourceBankSlot_fullName_must_be_0xC8[
 /* Per-instance header shared by every resource-kind callback. payload points
  * to kind-specific bytes immediately after this 0x40-byte allocation prefix;
  * resource is the separately owned kind-specific object. */
-typedef struct effActiveResource_t {
-    f32 position[4];
-    f32 orientation[4];
-    f32 scale;
-    u32 color;
-    u32 frame;
-    union {
-        u32 index;
-        s32 signedIndex;
-        u16 shortIndex;
-    } kind;
-    void *resource;
-    u8 pad_34[4];
-    u8 *payload;
-    u8 pad_3C[4];
-} effActiveResource_t;
-
-typedef char effActiveResource_size_must_be_0x40[
-    (sizeof(effActiveResource_t) == 0x40) ? 1 : -1];
-
 /* Native 0x70-byte output of the effect resource-name chooser.
  * The producer fills both 50-byte strings: nameWithExtension is the selected
  * name followed by its extension, and name is retained without the extension.
@@ -1111,13 +1092,21 @@ void effFunc18(effActiveResource_t *work) {
     effDispatchEnabledCallback(work);
 }
 
-INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf388);
+void effSetActiveResourcePosition(effActiveResource_t *work, const f32 position[4]) {
+    SDF_VU0_COPYVECTOR(work->position, position);
+}
 
-INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf389);
+void effSetActiveResourceRotation(effActiveResource_t *work, const f32 rotation[4]) {
+    SDF_VU0_COPYVECTOR(work->orientation, rotation);
+}
 
-INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf390);
+void effSetActiveResourceColor(effActiveResource_t *work, u32 color) {
+    work->color = color;
+}
 
-INCLUDE_ASM(const s32, "code_r1_00242308", effLeaf391);
+void effSetActiveResourceScale(effActiveResource_t *work, f32 scale) {
+    work->scale = scale;
+}
 
 /* Reset each entry's timer to free, then clear both colour words per entry. */
 void sdfResetFlagListEntries(sdfFlagListWork_t *work) {

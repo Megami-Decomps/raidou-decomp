@@ -89,7 +89,6 @@ sdfGrPacketHeader_t *sdf2DMakePrimPacketHeader(sdfGrPacketHeader_t *aPacketPtr, 
                                        s32 aNumOfPrim);
 
 extern s32 sdf2DGetPrimPacketSize(s32 aNumOfRegs, s32 aNumOfPrim);
-struct sdfTexBuf_t *sdfTexGetPacket(sdfTexHandle_t *aHandle);
 extern void sdfBillBoardMakeTMPacket(u8 *, const f32 *);
 
 

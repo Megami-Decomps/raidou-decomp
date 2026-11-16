@@ -19,6 +19,7 @@
 #include "slMain.h"
 #include "code_r1_001CC1D0.h"
 #include "code_r1_0021C768.h"
+#include "sdfChip.h"
 
 /* Apply volume and pan to a sequence track through the command queue. */
 
@@ -382,7 +383,12 @@ void sdfVuMatrixToQuaternion(const f32 matrix[4][4]) {
     SDF_VU0_LOADVECTOR(quaternion);
 }
 
-INCLUDE_ASM(const s32, "code_r1_0021C768", effGet);
+fileJobPayload_t *effGet(fileJobType_t type) {
+    fileJobPayload_t *job = sdfChipAllocZeroDirect(sizeof(fileJobPayload_t));
+    job->unk0 = 200;
+    job->type = type;
+    return job;
+}
 
 void *fileResolvePrimaryBuffer(fileJobPayload_t *job) {
     if (job->primary.allocation != NULL) {
@@ -412,4 +418,12 @@ fileJobPayload_t *Create_effParts(fileJobPayload_t *request) {
     return job;
 }
 
-INCLUDE_ASM(const s32, "code_r1_0021C768", Delete_effParts);
+void Delete_effParts(fileJobPayload_t *job) {
+    effSRAnimation();
+    if (job->data != NULL) {
+        fileJobTypeOperations[job->type].destroy(job->data);
+    }
+    texRelease(job);
+    fileJobFreeSecondaryBuffer(job);
+    sdfChipFreeDirect(job);
+}

@@ -23,6 +23,8 @@
 #include "motion.h"
 #include "code_r1_001CC1D0.h"
 #include "code_r1_0021CE60.h"
+#include "code_r1_0021C768.h"
+#include "sdfChip.h"
 #include "slMain.h"
 #include "mdlManager.h"
 
@@ -311,11 +313,16 @@ typedef struct effBattleTexHeaders_t {
     u8 *slot2; // 0x5B4
 } effBattleTexHeaders_t;
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effPCPHelperBEDGetModel);
+void effPCPHelperBEDGetModel(bhvrHandle_t *record) {
+    sdfMemFreeDirect(record->allocation);
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effCalc);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effCalcSub);
+void fileAcquireRecord(bhvrHandle_t *record) {
+    effEmitterTypeDescriptors[record->type].updateSlots(record);
+    record->references++;
+}
 
 void fileReadVectorPtr20(void *recordBytes, void *dst) {
     bhvrHandle_t *record = (bhvrHandle_t *)recordBytes;
@@ -358,7 +365,18 @@ void Init_effModel(mdlObj_t *model) {
     model->flags &= ~MDL_SKIP_TRANSFORMS;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effHandleCreate);
+mdlObj_t *effHandleCreate(const u8 *data, s32 size) {
+    mdlObj_t *model;
+
+    while (mdlSearchResrc(5, effHandleCreateData) != NULL) {
+        effHandleCreateData++;
+    }
+    mdlPackDecode(5, effHandleCreateData, 0x101, data, size);
+    model = mdlLoad(5, effHandleCreateData);
+    Init_effModel(model);
+    effHandleCreateData++;
+    return model;
+}
 
 /* Clear the lighting attachment before destroying its model context. */
 void effDestroyModelContext(mdlObj_t *owner) {
@@ -378,11 +396,37 @@ mdlObj_t *effHandleCopy(mdlObj_t *sourceModel) {
     return model;
 }
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effCallChipAllocZeroDirect3);
+effModelOwner_t *effCreateModelOwner(fileJobPayload_t *source) {
+    effModelOwner_t *owner = sdfChipAllocZeroDirect(sizeof(effModelOwner_t));
+
+    owner->ownedBuffer = sdfChipAllocZeroDirect(0xE0);
+    if (source != NULL) {
+        u32 scaleBits;
+        void *data;
+
+        scaleBits = *(u32 *)fileResolvePrimaryBuffer(source);
+        memcpy(&owner->scale, &scaleBits, sizeof(owner->scale));
+        data = fileResolveSecondaryBuffer(source);
+        if (data != NULL) {
+            owner->model = effHandleCreate(data, source->secondary.size);
+            SDF_VU0_SETSCALE1VECTOR();
+            VU0_SCALE_VF_MFC1(vf10, owner->scale);
+            mdlSetScale(owner->model);
+        }
+    }
+    owner->unk10 = 0;
+    return owner;
+}
 
 INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", Delete);
 
-INCLUDE_ASM(const s32, "effect/effPCPMisc_00224D10", effPCPAnalyzeBEDCopy);
+effModelOwner_t *effPCPAnalyzeBEDCopy(effModelOwner_t *source) {
+    effModelOwner_t *owner = effCreateModelOwner(NULL);
+
+    memcpy(&owner->scale, &source->scale, sizeof(owner->scale));
+    effRecreateModelFromSource(owner, source);
+    return owner;
+}
 
 INCLUDE_SDATA(const s32, "effect/effPCPMisc_00224D10", effHandleCreateData);
 

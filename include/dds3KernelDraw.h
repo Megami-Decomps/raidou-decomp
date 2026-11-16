@@ -79,4 +79,10 @@ s32 sbtlResetJump(void);
 extern u32 dds3BackColor;
 extern u32 dds3DrawFlag;
 
+extern s16 dds3DrawBistaData2;
+extern s16 dds3Data33;
+u32 dds3NullDrawProc(void);
+
+struct sdfTexHandle_t *dds3GetRenderTexture(void);
+
 #endif

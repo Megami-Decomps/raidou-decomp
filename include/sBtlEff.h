@@ -226,6 +226,8 @@ s32 sbtlRefSbtl26(struct SBTLEFF_WORK *wk);
 extern s32 (*sbtlCallPadVibeFadeUpdateData[])(struct SBTLEFF_WORK *wk);
 s32 sbtlEffSetActer(s32 id);
 s32 sbtlEffSetTarget(s32 id);
+extern struct SBTLUNIT_WORK *sbtleffbo_acter; /* acter set by sbtlEffSetActer */
+extern struct SBTLUNIT_WORK *sbtleffbo_target; /* target set by sbtlEffSetTarget */
 
 /* epl_otchkflg: set while drawing effects that take the OT check. */
 extern u16 sbtlCallMemset17Data[]; /* SBTLEFF_FLG bits per EFFID */

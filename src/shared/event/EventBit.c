@@ -29,7 +29,6 @@ typedef enum PIB_CHUNK_TYPE {
     PIB_CHUNK_TYPE_END = 0xFFFF
 } PIB_CHUNK_TYPE;
 
-void evtInitGlobalWork(void);
 void evtBitAllOff_FieldDebug(void);
 
 #define BIT_SHIFT(no) (no)

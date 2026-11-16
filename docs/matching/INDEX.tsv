@@ -61,8 +61,8 @@ fileAllocateGridRecordSlots	code_r1_0021CE60	raidou1 0x158, raidou2 0x158	83 of 
 PartsCreate	code_r1_00226EC8	raidou1 0x59C, raidou2 0x59C	177 of 223 words differ	docs/matching/code_r1_00226EC8.md	3
 billAdvanceTrailInstances	code_r1_00226EC8	raidou1 0x7A8, raidou2 0x7A8	18 of 490 words differ	docs/matching/code_r1_00226EC8.md	11
 effCreateSurfaceGridNode	code_r1_00226EC8	raidou1 0x150, raidou2 0x150	33 of 84 words differ	docs/matching/code_r1_00226EC8.md	19
-effDrawFourPointGroups	code_r1_00226EC8	raidou1 0x3C0, raidou2 0x3C0	89 of 232 words differ	docs/matching/code_r1_00226EC8.md	27
-effDrawTrackSet	code_r1_00226EC8	raidou1 0x504, raidou2 0x504	214 of 313 words differ	docs/matching/code_r1_00226EC8.md	33
+effDrawTrackSet	code_r1_00226EC8	raidou1 0x504, raidou2 0x504	214 of 313 words differ	docs/matching/code_r1_00226EC8.md	27
+effCallGetRandFloatA	code_r1_00226EC8	raidou1 0x6FC, raidou2 0x6FC	280 of 448 words differ	docs/matching/code_r1_00226EC8.md	33
 effEditMColorTrack	code_r1_00242308	raidou1 0x64, raidou2 0x64	7 of 25 words differ	docs/matching/code_r1_00242308.md	3
 RestartBattle	code_r1_0024AC78	raidou1 0x7C	7 of 31 words differ	docs/matching/code_r1_0024AC78.md	3
 sbtlInitPlayerData	code_r1_0024B510	raidou1 0x274	114 of 157 words differ	docs/matching/code_r1_0024B510.md	3
@@ -117,10 +117,12 @@ sbtlSetLoadPanelData	code_r1_00292930	raidou1 0x94, raidou2 0x94	18 of 34 words 
 sbtlInitTutorial	code_r1_00295298	raidou1 0xF8	58 of 62 words differ	docs/matching/code_r1_00295298.md	3
 sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3
 sbtlCallBtlGetDevilDataSBtlSub4	code_r1_002A1E48	raidou1 0x294	140 of 159 words differ	docs/matching/code_r1_002A1E48.md	3
+effInitializeSlotWorkFromDescription	code_r1_002C8188	raidou1 0x1C4, raidou2 0x1C4	0 of 113 words differ	docs/matching/code_r1_002C8188.md	3
 effDrawTextureSlot	code_r1_002CA3F0	raidou1 0x2CC, raidou2 0x2D4	2 of 179 words differ	docs/matching/code_r1_002CA3F0.md	3
 cmpDrawBoxG	code_r1_002CAFD8	raidou1 0x190, raidou2 0x190	8 of 100 words differ	docs/matching/code_r1_002CAFD8.md	3
 evtFunc11	code_r1_002F59D0	raidou1 0x200, raidou2 0x200	64 of 128 words differ	docs/matching/code_r1_002F59D0.md	3
 cmpDrawBackPattern	code_r1_00323138	raidou1 0x144, raidou2 0x144	9 of 81 words differ	docs/matching/code_r1_00323138.md	3
+datCheckSkillEnable	dat	raidou1 0x144	63 of 76 words differ	docs/matching/dat.md	3
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	47 of 190 words differ	docs/matching/event/evtEventViewer.md	3
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9

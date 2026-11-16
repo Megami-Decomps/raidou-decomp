@@ -229,4 +229,10 @@ typedef struct dds3Effect_Filter_t {
     s32 xy[2][2];
 } dds3Effect_Filter_t;
 
+void dds3CallCos(const dds3Effect_Blur_t *source, effBlurPrimTriStrip_t *prim, u8 fixedPointCoordinates);
+
+/* sdfGrOtTable entry 80, the ordering table the blur rectangles are filed into. */
+extern sdfGrOt_t effData3;
+sdfGrOt_t *effGetPacketSubmissionSurface(s32 index);
+
 #endif /* EFFECT_H */

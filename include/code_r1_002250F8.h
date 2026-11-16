@@ -2,6 +2,7 @@
 #define CODE_R1_002250_F8_H
 
 #include "common.h"
+#include "sdf_resource.h"
 
 /* Each serialized entry expands to itself and additionalCount children.
  * Animation sampling uses additionalCount as the segment length, with one
@@ -42,6 +43,17 @@ typedef struct ctexlHandle_t {
 } ctexlHandle_t;
 
 typedef char ctexlHandleSizeCheck[(sizeof(ctexlHandle_t) == 0x28) ? 1 : -1];
+
+typedef struct effCacheTexList_Anim_t {
+    f32 scaleX;     // 0x00
+    f32 scaleY;     // 0x04
+    f32 angle;      // 0x08
+    s32 segment;    // 0x0C
+} effCacheTexList_Anim_t;
+
+void effCacheTexAnimGet(const ctexlHandle_t *set, u32 frame, effCacheTexList_Anim_t *out);
+sdfTexHandle_t *effAssignSampledSegmentReference(const ctexlHandle_t *set, sdfGrOt_t *target,
+                                                 const effCacheTexList_Anim_t *sample);
 
 void effCacheTexDelete(ctexlHandle_t *holder);
 

@@ -93,8 +93,6 @@ typedef struct SBTLCONTROL_OBJECT {
 } SBTLCONTROL_OBJECT;
 
 extern f32 aViewEye[];
-extern f32 sdfViewMatrix[];
-extern f32 sdfProjectionMatrix[];
 extern f32 dds3BillboardGetDirectionRotateData2[];
 
 /* Select the smallest X for reference flag 0x200, otherwise the largest.
@@ -345,7 +343,7 @@ BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(SBTLPROJECTEDSCR
     }
     SDF_VU0_NORMALIZE();
     SDF_VU0_COPYVECTOR_A_TO_B();
-    VU0_LOAD_MATRIX(sdfViewMatrix);
+    VU0_LOAD_MATRIX(&sdfViewMatrix);
     SDF_VU0_COPYMATRIX_A_TO_B();
     ReverseMatrix();
     SDF_VU0_GET_ROW2();
@@ -359,7 +357,7 @@ BtlProjectedScreenPointResult btlProjectForwardPositionToScreen(SBTLPROJECTEDSCR
     VU0_MOVE_VF(vf29, vf25);
     VU0_MOVE_VF(vf30, vf26);
     VU0_MOVE_VF(vf31, vf27);
-    projection = sdfProjectionMatrix;
+    projection = sdfProjectionMatrix.m;
     MultMatrixRev((const struct effMatrix4_t *)projection);
     SDF_VU0_APPLYMATRIX_XYZ1();
     SDF_VU0_PERSVECTOR();

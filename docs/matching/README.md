@@ -64,10 +64,12 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_00295298 | raidou1 | [code_r1_00295298.md](code_r1_00295298.md) |
 | 1 | code_r1_00297EF0 | raidou1 | [code_r1_00297EF0.md](code_r1_00297EF0.md) |
 | 1 | code_r1_002A1E48 | raidou1 | [code_r1_002A1E48.md](code_r1_002A1E48.md) |
+| 1 | code_r1_002C8188 | raidou1, raidou2 | [code_r1_002C8188.md](code_r1_002C8188.md) |
 | 1 | code_r1_002CA3F0 | raidou1, raidou2 | [code_r1_002CA3F0.md](code_r1_002CA3F0.md) |
 | 1 | code_r1_002CAFD8 | raidou1, raidou2 | [code_r1_002CAFD8.md](code_r1_002CAFD8.md) |
 | 1 | code_r1_002F59D0 | raidou1, raidou2 | [code_r1_002F59D0.md](code_r1_002F59D0.md) |
 | 1 | code_r1_00323138 | raidou1, raidou2 | [code_r1_00323138.md](code_r1_00323138.md) |
+| 1 | dat | raidou1 | [dat.md](dat.md) |
 | 1 | effect/polyManager | raidou1, raidou2 | [effect/polyManager.md](effect/polyManager.md) |
 | 1 | event/evtPolygonMovie | raidou1, raidou2 | [event/evtPolygonMovie.md](event/evtPolygonMovie.md) |
 | 1 | field/fldProcess | raidou1 | [field/fldProcess.md](field/fldProcess.md) |

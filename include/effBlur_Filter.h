@@ -29,6 +29,10 @@ void effBlurStepScatterSlotsAndDraw(effBlurScatterWork_t *work);
 
 void effBlurDrawFramebufferQuad(const dds3Effect_Blur_t *source);
 
+void effDrawBlurRectangle(const dds3Effect_Blur_t *source);
+void effCallNullDrawProc2(effBlurTemplate_t *owner);
+void effPCPMultiFilterExpDrawSub(dds3Effect_PartialMultiFilter_t *owner);
+
 void effDrawBlurFixedPointRectangle(dds3Effect_PartialMultiBlur_t *owner);
 
 #endif
