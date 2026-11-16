@@ -3705,17 +3705,17 @@
 0x001D0D40	evtPictureDrawOn	inferred	SMT3HD name via SLUS_209.11 0x001F3DC8, reloc-identical; map-agrees
 0x001D0D68	evtPictureDrawOff	inferred	SMT3HD name via SLUS_209.11 0x001F3DF0, reloc-identical; map-agrees
 0x001D0D98	evtKillPictureProcess	inferred	SMT3HD name via SLUS_209.11 0x001F3E20, shared-hash-in-run; map-agrees
-0x001D0DB0	InitProcessData	hd	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD evtPicture.InitProcessData score 3.7 flag -: calls1 calls-of-match st1:call r1-only
-0x001D0E50	evtCallMiscLoadTexture	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls itfMiscLoadTexture
-0x001D0E80	evtLeaf8	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit event/evtPicture; no named callee, caller or string
+0x001D0DB0	InitPictureProcessData	inferred	method=derived-role; p=na; tier=B; source=derived; evidence=smt3_symbols.txt alias at the same address; same role; replaces InitProcessData
+0x001D0E50	LoadTexture	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=smt3_symbols.txt alias; HD LoadTexture; replaces evtCallMiscLoadTexture
+0x001D0E80	GetNowFrame	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtPicture.c GetNowFrame: p_now else now2; replaces evtLeaf8
 0x001D0EA0	evtFunc	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit event/evtPicture; no named callee, caller or string
 0x001D1078	evtCutInCreateSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit event/evtPicture; called by evtCutInCreate
 0x001D1080	evtCallGetSmallFontFRQ2	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls frwGetSmallFontFRQ2
-0x001D1238	evtCallGetProcessData14	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls dds3GetProcessData
-0x001D1348	evtCallGetProcessData15	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls dds3GetProcessData
+0x001D1238	evtPictureProcess1	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=smt3_symbols.txt alias; HD Process1; replaces evtCallGetProcessData14
+0x001D1348	evtPictureShutdown	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=smt3_symbols.txt alias; HD Shutdown; replaces evtCallGetProcessData15
 0x001D13A0	evtStartPictureProcess2	inferred	SMT3HD name via SLUS_209.11 0x001F4388, reloc-identical; map-agrees
 0x001D1410	evtStartPictureProcess	inferred	SMT3HD name via SLUS_209.11 0x001F43F8, unique-masked-hash; map-agrees
-0x001D1470	evtCallGetMemHandle	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls fileGetMemHandle
+0x001D1470	LoadTexCallback	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtPicture.c LoadTexCallback, fileLoadEx end callback from evtPictureLoadStartTexFile; replaces evtCallGetMemHandle
 0x001D1510	evtPictureLoadStartTexFile	hd-inferred	hd: Raidou HD evtPicture.evtPictureLoadStartTexFile, score 7.15 band B
 0x001D1538	evtPictureLoadCheckProcess	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as Raidou 1 0x001BB430 (r1_r2_pairs, unique-reloc-hash): HD evtPicture evtPictureLoadCheckProcess(id): dds3GetProcessData(id) field test returning bool; called on the cut-in PID as in HD CUTIN_DSP; replaces evtCallGetProcessData16
 0x001D1560	evtCallGetProcessData17	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit event/evtPicture; calls dds3GetProcessData
@@ -3728,8 +3728,8 @@
 0x001D17F8	evtSetSkyAlpha	inferred	SMT3HD name via SLUS_209.11 0x001F4520, reloc-identical; map-agrees
 0x001D1860	evtCheckSkyAlphaAnime	inferred	SMT3HD name via SLUS_209.11 0x001F4588, shared-hash-in-run; map-agrees
 0x001D1868	evtUpdateSkyAlpha	inferred	SMT3HD name via SLUS_209.11 0x001F4590, reloc-identical; map-agrees
-0x001D18F0	Process1	hd	hd: Raidou HD evtSky.Process1, score 9.25 band B
-0x001D1940	Shutdown_evtSky	hd	hd: Raidou HD evtSky.Shutdown, score 8.95 band B
+0x001D18F0	evtSkyProcess1	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 evtSky.c evtSkyProcess1, same body and caller evtInitSky; replaces Process1
+0x001D1940	evtSkyShutdown	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3 evtSky.c evtSkyShutdown, same body; replaces Shutdown_evtSky
 0x001D1968	evtExitSky	inferred	SMT3HD name via SLUS_209.11 0x001F4670, reloc-identical; map-agrees
 0x001D19A8	evtInitSky	inferred	SMT3HD name via SLUS_209.11 0x001F46B0, unique-masked-hash; map-agrees
 0x001D1A10	evtUpdateFrameVariableTask	inferred	dds-decomp DDS1 name via SLUS_209.74 0x00235540, masked-words-identical (strict map pair); dds-decomp: no provenance row
@@ -3949,24 +3949,24 @@
 0x001E4730	evtCallGetProcessData29	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour evtStartRain; calls dds3GetProcessData
 0x001E4770	scrCallGetProcessData	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour scrEventSkipEnd; calls dds3GetProcessData
 0x001E47D0	GetIndexFromUID	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as Raidou 1 0x001CE6E8 (r1_r2_pairs, unique-reloc-hash): HD evtCutIn static GetIndexFromUID(pData, UID); called with the cut-in data by evtChkUID/evtGetPIDfromUID; replaces scrLeaf3
-0x001E4828	scrEventSkipEnd	hd-inferred	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD scr.scrEventSkipEnd score 3.1 flag I: calls1 calls-of-match st2:call r2-only
-0x001E48A0	scrFunc	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour scrEventSkipEnd; no named callee, caller or string
+0x001E4828	AddUID	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD evtCutIn.c AddUID, same body (find empty uid slot, store uid and pid); SMT3 scrEventSkipEnd is a different function; replaces scrEventSkipEnd
+0x001E48A0	DelUID	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD evtCutIn.c DelUID, same body; replaces scrFunc
 0x001E48E8	GetRegistNums	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD evtCutIn.GetRegistNums score 2.5 flag -: calls1 calls-of-match st2:call r2-only
 0x001E4920	evtChkUID	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as Raidou 1 0x001CE838 (r1_r2_pairs, unique-reloc-hash): HD evtCutIn order; returns GetIndexFromUID(UID) >= 0, the UID test of HD evtChkUID; replaces scrRunFrame1Sub
 0x001E4950	evtGetPIDfromUID	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=same function as Raidou 1 0x001CE868 (r1_r2_pairs, unique-reloc-hash): HD evtCutIn order GetRegistNums, evtChkUID, evtGetPIDfromUID; 0x1CE868 follows GetRegistNums/scrRunFrame1Sub and returns the PID array entry for GetIndexFromUID(UID) (scrLeaf3), as HD evtGetPIDfromUID; replaces scrFunc2
 0x001E4998	scrCallPictureSetEndProcess	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour scrEventSkipEnd; calls evtPictureSetEndProcess
-0x001E49F0	evtCallPictureSetEndProcess	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour evtCutInCreate; calls evtPictureSetEndProcess
-0x001E4A50	evtLeaf25	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
-0x001E4A68	evtLeaf26	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
-0x001E4A70	evtLeaf27	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
-0x001E4A88	evtCutInCreate	inferred	string: sprintf "%s%s" with "/cutin/", starts a process with destructor name "CutInDestructor"
+0x001E49F0	DelProcessAll	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD evtCutIn.c DelProcessAll, same body; replaces evtCallPictureSetEndProcess
+0x001E4A50	Callback_evtCutIn	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCutIn.c Callback (static), calls DelUID; replaces evtLeaf25
+0x001E4A68	DestructProcess_evtCutIn	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCutIn.c DestructProcess (static), returns 0; replaces evtLeaf26
+0x001E4A70	DestructDestroy_evtCutIn	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCutIn.c DestructDestroy (static), calls DelProcessAll; replaces evtLeaf27
+0x001E4A88	evtStart	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCutIn.c evtStart at the same position between DestructDestroy and evtStartCommand; replaces evtCutInCreate
 0x001E4C70	evtStartCommand	hd-inferred	hd: Raidou HD evtCutIn.evtStartCommand, score 8.8 band B
 0x001E4D40	evtEndCommand	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD evtCutIn.evtEndCommand score 5.8 flag I: calls1 prev edge st1:edge r1+r2
 0x001E4D70	Create_evtTmxPreLoad	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=retail 0x1CEBF8 allocates the process work (sdfMemAllocDirect(100)+memset) that dds3StartProcess receives; HD inlines new evtTmxPreLoad_t; pairs with Destroy_evtTmxPreLoad; replaces Destroy_evtTmxPreLoad
 0x001E4DC8	Destroy_evtTmxPreLoad	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtProcessStart passes Method evtTmxPreLoad_Destroy as shutdownfunc; retail passes 0x1CEC50 there; replaces evtCallGetProcessData30
-0x001E4E60	CheckActionProcessEnd	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x247d60 sim 0.781 margin 0.27 pair
+0x001E4E60	GetIndexFromUID_evtTmxPreLoad	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD evtTmxPreLoad.c GetIndexFromUID (same body); GetIndexFromUID is taken by 0x001CE6E8; replaces CheckActionProcessEnd
 0x001E4EA0	evtLeaf28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit evtTmxPreLoad; no named callee, caller or string
-0x001E4EF0	evtCallGetLoadSize	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit evtTmxPreLoad; calls fileGetLoadSize
+0x001E4EF0	EndCallback_evtTmxPreLoad	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtTmxPreLoad.c EndCallback, fileLoadEx end callback; replaces evtCallGetLoadSize
 0x001E5070	GetTblIndex	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD evtTmxPreLoad.GetTblIndex score 5.3 flag -: next gap3/5 st1:gap r1+r2
 0x001E50E8	evtGetFileNums	hd-inferred	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD evtTmxPreLoad.evtGetFileNums score 4.5 flag I: next gap4/6 st1:gap r1+r2
 0x001E5128	UpdateQue	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD evtTmxPreLoad.UpdateQue score 4.6 flag -: next gap5/7 st1:gap r1+r2
@@ -4531,7 +4531,7 @@
 0x001FD170	effLeaf27	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001E5A58, neighbour effPCPBezierEval; no named callee, caller or string
 0x001FD198	effLeaf28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit code_001E5A58, neighbour effPCPBezierEval; no named callee, caller or string
 0x001FD1B0	effBlurUpdateSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001E5A58, neighbour effPCPBezierEval; called by dds3BlurUpdate
-0x001FD1C0	effBlurUpdateSub2	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit code_001E5A58, neighbour effPCPBezierEval; called by dds3BlurUpdate
+0x001FD1C0	Eve_BlurOFF	inferred	method=derived-body; p=na; tier=A; source=derived; evidence=smt3_symbols.txt alias at 0x001E5EC8; same body (Eve_BlurShow = 0); replaces effBlurUpdateSub2
 0x001FD1C8	effBlur2OnSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3Blur2On
 0x001FD228	effBlur2SwapSub	inferred	method=derived-caller; p=na; tier=D; source=derived; evidence=unit effect/effEvent; called by dds3Blur2Swap
 0x001FD238	Eve_PartialMultiBlurON	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 name; the ON half of the ON/OFF pair at +0x10 (Eve_PartialMultiBlurOFF); DrawEffect calls it under drawmblur; replaces effBlurUpdateSub3
@@ -14139,7 +14139,7 @@
 0x00444708	itfGaugeHighlightVectors	inferred	method=smt3-ref; p=0.98 (n=D_r1_003E87A8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfMiscDrawGauge
 0x00444748	CreateVertexTable	inferred	method=smt3-alias; p=0.90 (n=D_r1_003E87E8); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x00444770	CreateColorTable	inferred	method=smt3-alias; p=0.90 (n=D_r1_003E8810); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
-0x00444798	itfPnlDrawSubData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by itfPnlDrawSub
+0x00444798	DrawTable_itfPanel	inferred	method=smt3-role; p=na; tier=B; source=smt3; evidence=SMT3 itfPanel.c DrawTable (panel handler table indexed by kind); DrawTable is taken by the function at 0x002E0288; replaces itfPnlDrawSubData
 0x004447C0	itfPanelPayloadSize	inferred	method=smt3-ref; p=0.98 (n=D_r1_003E8860); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=itfPnlRegist2
 0x004447E8	itfPanelMesWinRowOffset	inferred	method=smt3-ref; p=0.98 (n=D_r1_003E8888); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=CreateVertexMesWin
 0x004447F8	itfPanelMesWinColorRatio	inferred	method=smt3-alias; p=0.90 (n=D_r1_003E8898); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
@@ -30221,7 +30221,7 @@
 0x00547428	evtWork3	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: evtLeaf19, evtLeaf20, evtLeaf21
 0x00547458	evtWork4	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: evtLeaf20, evtLeaf21
 0x00547488	evtWork5	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: evtLeaf19, evtLeaf20, evtLeaf21
-0x00547498	scrEventSkipEndWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by scrEventSkipEnd (4 of 14 refs, 6 functions)
+0x00547498	Data_evtCutIn	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtCutIn.c static Data (evtCutInData_t), R1 holds the struct itself; replaces scrEventSkipEndWork
 0x00547520	sndCallMemsetWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sndCallMemset
 0x00548520	sndCallSeStopWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sndCallSeStop (24 of 69 refs, 18 functions)
 0x00548524	sndBgmTopWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sndBgmTop

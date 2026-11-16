@@ -89,6 +89,8 @@ void fldFileResolverFL1(struct fldFileInfoHeaderFL1_t *info);
 void fldFileResolverFL2(struct fldFileInfoHeaderFL2_t *info);
 u8 *fldGetInfoHeader(struct fldTransferChunk_t *pData);
 void fldAddressResolver(addr_t pFileTop, struct fldTransferChunk_t *pData);
+void fldAddressResolverReset(addr_t pFileTop, struct fldTransferChunk_t *pData);
+void fldLeaf16(void);
 u32 fldLoadFile_FromMemory(u32 field, u32 area, saddr_t pF1, saddr_t pF2,
                            const struct sdfTextureOffsetListHeader_t *pTB, s32 pBF);
 
@@ -107,7 +109,9 @@ extern saddr_t fldCallTexListFreeData;
 extern saddr_t fldCallTexListFreeData2;
 extern saddr_t fldCallTexListFreeData3;
 extern saddr_t fldCallTexListFreeData4;
-extern s32 fldCallTexListFreeData5;
+extern saddr_t fldCallTexListFreeData5;
+extern saddr_t fldCallTexListFreeData6;
+extern u32 fldCallTexListFreeData7;
 dds3Basic_t *dds3AddModelBasic2(s32 serialID, sdfModelDef_t *pModelDef, sdfMotionPlayBook_t *pMotDef, void *pTexList, char *pName);
 
 #endif

@@ -7,6 +7,7 @@ dds3SceneBasicSearchSerialID_Used	basic/dds3SceneBasic	raidou1 0xC0, raidou2 0xC
 dds3SceneBasicStartScript	basic/dds3SceneBasic	raidou1 0x84, raidou2 0x84	12 of 34 words differ	docs/matching/basic/dds3SceneBasic.md	12		
 eglLinkBoxZ	code_00109A70	raidou1 0x370	6 of 220 words differ	docs/matching/code_00109A70.md	3		
 fldMakeResouceBasicFL2	code_00131C90	raidou1 0x3F0	131 of 246 words differ	docs/matching/code_00131C90.md	3		
+fldCallTexListFree	code_001326C0	raidou1 0x188	1 of 98 words differ	docs/matching/code_001326C0.md	3		
 fldProcSequenceSub3	code_00139330	raidou1 0x48	9 of 16 words differ	docs/matching/code_00139330.md	3		
 fldCallFptodp	code_00139330	raidou1 0xC8	43 of 46 words differ	docs/matching/code_00139330.md	11		
 mapBigClipChkF	code_00139330	raidou1 0x138	34 of 78 words differ	docs/matching/code_00139330.md	19		
@@ -75,6 +76,7 @@ sbtlCallCheckDying	code_002A38D8	raidou1 0x1F8	48 of 126 words differ	docs/match
 sbtlCallBtlSearchUnitID37	code_002A38D8	raidou1 0x398	5 of 230 words differ	docs/matching/code_002A38D8.md	75		
 sbtlCallGetProcessData56	code_002A38D8	raidou1 0x3A4	101 of 231 words differ	docs/matching/code_002A38D8.md	83		
 sbtlCallEventBattleStopChack2	code_002A38D8	raidou1 0x298	70 of 166 words differ	docs/matching/code_002A38D8.md	91		
+fldCallMemGetPtr6	code_002F97C0	raidou1 0xE0	3 of 56 words differ	docs/matching/code_002F97C0.md	3		
 fldCallMemGetPtr11	code_002FA4F0	raidou1 0xE4	13 of 57 words differ	docs/matching/code_002FA4F0.md	3		
 fclCallSetFontColorNo	code_002FA4F0	raidou1 0x6E0	370 of 435 words differ	docs/matching/code_002FA4F0.md	11		
 pipeCampCAMPPACKLB	code_00300578	raidou1 0x158	3 of 86 words differ	docs/matching/code_00300578.md	3		
@@ -197,6 +199,8 @@ evtCheckSeqEnd	event/evtPolygonMovie	raidou1 0x64, raidou2 0x64	3 of 25 words di
 UnitAnime	event/evtUnitManager	raidou1 0x1340, raidou2 0x1340	70 of 1232 words differ	docs/matching/event/evtUnitManager.md	3		
 evtUnitManagerPrimaryFunc	event/evtUnitManager	raidou1 0x6E8	18 of 442 words differ	docs/matching/event/evtUnitManager.md	11		
 MakeLightPacket	event/evtUnitManager	raidou1 0x1F4, raidou2 0x1F4	89 of 115 words differ	docs/matching/event/evtUnitManager.md	17		
+evtLeaf28	evtTmxPreLoad	raidou1 0x4C	17 of 20 words differ	docs/matching/evtTmxPreLoad.md	3		
+EndCallback_evtTmxPreLoad	evtTmxPreLoad	raidou1 0x180	53 of 94 words differ	docs/matching/evtTmxPreLoad.md	11		
 fldGbInit_System	fclDrawBack	raidou1 0x42C	20 of 267 words differ	docs/matching/fclDrawBack.md	3		
 fldGbInit_Field	fclDrawBack	raidou1 0x94	7 of 37 words differ	docs/matching/fclDrawBack.md	11		
 mapSummonDvGet	field/fldFileResolver	raidou1 0x40, raidou2 0x40	14 of 14 words differ	docs/matching/field/fldFileResolver.md	3		

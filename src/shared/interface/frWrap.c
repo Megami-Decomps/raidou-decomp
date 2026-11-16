@@ -237,7 +237,45 @@ INCLUDE_ASM(const s32, "interface/frWrap", frCallGetFontEx);
 
 INCLUDE_ASM(const s32, "interface/frWrap", frLinkKanjiSub);
 
-INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallFontFRQ2);
+frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, void *font, frFontHandle_t *pFRQ)
+{
+    u8 buf[0x400];
+    frFontHandle_t *request;
+    u8 *src = font;
+    s32 len = strlen(font);
+    s32 i = 0;
+
+    buf[len] = 0;
+    if (len > 0) {
+        do {
+            u32 c = src[i];
+
+            if (c < 0x80) {
+                buf[i] = c;
+            } else {
+                c = frGetSmallFontFRQ2Sub(src[i + 1] | (c << 8));
+                if (c != 0xFFFF) {
+                    buf[i] = c >> 8;
+                    buf[i + 1] = c;
+                } else {
+                    buf[i] = 0x80;
+                    buf[i + 1] = 0x80;
+                }
+                i++;
+            }
+            i++;
+        } while (i < len);
+    }
+    frEnableMode(1);
+    frDisableMode(2);
+    request = frCallSetFontString(buf, 1, 0, 0, NULL);
+    frEnableMode(2);
+    frDisableMode(1);
+    frSetDrawPosition(request, x, y);
+    frSetPriority(request, z << 4);
+    frSetFontColor(request, color);
+    return frDestroyFontRequestAfterSub(pFRQ, request, 0);
+}
 
 INCLUDE_ASM(const s32, "interface/frWrap", frwGetSmallNumFontFRQ);
 

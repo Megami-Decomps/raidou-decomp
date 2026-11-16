@@ -20,7 +20,7 @@ typedef struct evtTmxPreLoad_t {
     s32 count;
     sdfTexHandle_t *tex[2];
     sdfTexHandle_t *maskTex[2];
-    s32 size[2][2];
+    s32 maskOfs[2][2];
     u32 ids[2];
     u32 order[2];
     u32 arg[2];
@@ -37,11 +37,12 @@ typedef struct evtTmxPreLoadEntry_t {
 extern evtTmxPreLoadEntry_t GetTblIndexData[27];
 extern dds3ProcessID_t *TmxPreLoadPID;
 
-s32 CheckActionProcessEnd(evtTmxPreLoad_t *pData, u32 id);
+s32 GetIndexFromUID_evtTmxPreLoad(evtTmxPreLoad_t *pData, u32 id);
 evtTmxPreLoad_t *Create_evtTmxPreLoad(void);
-s32 Destroy_evtTmxPreLoad(dds3ProcessID_t *PID);
+void Destroy_evtTmxPreLoad(dds3ProcessID_t *PID);
 s32 Process_evtTmxPreLoad(dds3ProcessID_t *PID);
-void evtCallGetLoadSize(fileRequest_t *req, evtTmxPreLoad_t *pData);
+void EndCallback_evtTmxPreLoad(fileRequest_t *req, evtTmxPreLoad_t *pData);
+s32 evtLeaf28(evtTmxPreLoad_t *pData);
 
 s32 GetTblIndex(s32 EventNo);
 s32 SelectFreeTex(evtTmxPreLoad_t *pData);

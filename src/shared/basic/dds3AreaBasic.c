@@ -162,4 +162,21 @@ dds3BasicArrayHandle_t *dds3AreaBasicArrangeGetItemArray(dds3Basic_t *area, u32 
     return dst;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3AreaBasic", dds3AreaBasicGetFastArea);
+dds3Basic_t *dds3AreaBasicGetFastArea(void)
+{
+    dds3BasicArrayHandle_t *handle;
+    dds3Basic_t *area;
+
+    handle = dds3SceneBasicGetList(dds3GetControlScene(), BASIC_TYPE_AREA);
+    if (handle == NULL) {
+        return NULL;
+    }
+    if (dds3GetBasicArrayCount(handle) == 0) {
+        return NULL;
+    }
+
+    dds3SetFirstBasicArray(handle);
+    area = dds3GetBasicArray(handle);
+    dds3FreeBasicArrayHandle(handle);
+    return area;
+}

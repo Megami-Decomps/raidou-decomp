@@ -65,16 +65,6 @@ typedef struct titleData_t {
 #endif
 } titleData_t;
 
-/* evtFunc11's logo animation state. */
-typedef struct titleLogoState_t {
-    s32 unk00;
-    s32 frame0;
-    s32 frame1;
-    s32 weight[5];
-    s32 step;
-    s32 phase;
-} titleLogoState_t;
-
 #ifdef VERSION_RAIDOU2
 typedef char titleData_size_must_be_0xE8[(sizeof(titleData_t) == 0xE8) ? 1 : -1];
 #else
@@ -88,8 +78,8 @@ s32 TitleAtlusLogoDrawProcess(dds3ProcessID_t *PID);
 dds3ProcessFunc_t TitleConfigCalcProcess(dds3ProcessID_t *PID);
 s32 TitleConfigDestroy(dds3ProcessID_t *PID);
 s32 TitleDLCInit(dds3ProcessID_t *PID);
-s32 TitleDestroy(dds3ProcessID_t *PID);
-dds3ProcessFunc_t TitleEndWaitDrawProcess(dds3ProcessID_t *PID);
+void TitleDestroy(dds3ProcessID_t *PID);
+s32 TitleEndWaitDrawProcess(dds3ProcessID_t *PID);
 s32 TitleFirstCalcProcess3(dds3ProcessID_t *PID);
 s32 TitleFirstDrawProcess(dds3ProcessID_t *PID);
 titleData_t *TitleInit(s32 mode);
@@ -103,15 +93,17 @@ s32 evtCallStop(titleData_t *pData);
 s32 evtCallPlay(s32 MovieNo, s32 Length, s32 FadeFrame, s32 Mode, titleData_t *pData);
 s32 TitleProcessCheck(void);
 void TitleProcessEnd(void);
-void evtFunc11(titleLogoState_t *state, void **sprite);
+void evtFunc11(titleCursor_t *cursor, void **sprite);
 s32 rstCallGetProcessData30(dds3ProcessID_t *PID);
 s32 evtLeaf30(s32 value, s32 low, s32 high);
 s32 evtFunc9(s32 frame, const titleKey_t *key, s32 count);
 void evtFunc10(s32 slot, s32 value, void **sprite);
 void evtLeaf31(s32 slot, s32 value, const f32 *size, const f32 *scale, void **sprite);
 void rstFunc(titleData_t *data);
+void rstCallMemset(void);
+s32 TitleCalcCursor(titleCursor_t *pCursor);
 void fldCallElvReset(s32 iMode);
-dds3ProcessFunc_t rstCallGetProcessData32(dds3ProcessID_t *PID);
+s32 rstCallGetProcessData32(dds3ProcessID_t *PID);
 dds3ProcessFunc_t rstCallGetProcessData33(dds3ProcessID_t *PID);
 s32 rstCallGetProcessData34(dds3ProcessID_t *PID);
 

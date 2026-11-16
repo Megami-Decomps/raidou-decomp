@@ -21,6 +21,7 @@ sdfTexHandle_t *sdfTexSearch(u32 id);
 sdfTexHandle_t *sdfTexSet(TMX_HEADER_t *aTex);
 void sdfTexSetClutColor(sdfTexHandle_t *texture, s32 tint, f32 amount);
 sdfTexHandle_t *sdfTexSetDirect(TMX_HEADER_t *aTex);
+sdfTexHandle_t *sdfTexSetFromHead(TMX_HEADER_t *aTex);
 void sdfTexSetWrapMode(sdfTexHandle_t *aHandle, s32 aMode);
 
 /* Release one caller-owned texture reference. The direct form releases the

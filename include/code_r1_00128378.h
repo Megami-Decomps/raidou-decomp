@@ -19,6 +19,16 @@ f32 mapGetEyeTgt_Rot_OfsPos(f32 eyex, f32 eyez, f32 tgtx, f32 tgtz, f32 olen, f3
 dds3Basic_t *mapGetPlayersBasic(s32 type);
 void mapGetTaniVector(f32 vx0, f32 vy0, f32 *vx1, f32 *vy1);
 void mapRaidouBackUpPosReset(void);
+s32 mapGetRaidouSerialID(void);
+s32 mapGetAiboSerialID(void);
+s32 mapGetAiboSerialID2(void);
+s32 mapGetNakamaSerialID(void);
+s32 mapGetNakamaSerialID2(void);
+void effBTLFieldColorDraw(void);
+void effRefDvBasic2(void);
+void mapNakamaOikakeBuffReset2(void);
+void mapCallGetRotPoseSet(void);
+void mapCallGetRotPoseSet2(void);
 void mapCutFileLoad(void);
 void mapAM_MaskClear(void);
 void fldFirstInit(void);

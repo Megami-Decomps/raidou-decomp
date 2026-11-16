@@ -145,7 +145,10 @@ typedef struct TMX_HEADER_t
     sdfTextureClampMode_t texWrapMode;
     /* The IDB calls 0x1C onward userArea and comment. These two are what this
      * game puts in its user area; sdfTmx reads both as words. */
-    s32 resourceKey;
+    union {
+        s32 resourceKey;
+        u8 maskOfs[2][2]; /* Raidou event masks: two big-endian s16 offsets */
+    };
     s32 battleTextureSlot;
     u8 pad24[0x1C];
 } TMX_HEADER_t;

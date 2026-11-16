@@ -9,6 +9,9 @@
 #include "nbDebugProcess.h"
 #include "jmsMisc.h"
 #include "TitleMain.h"
+#include "code_r1_002C8188.h"
+#include "fclMisc.h"
+#include "evtEventViewer.h"
 
 extern void cfgCopyFlagGblToBak(void);
 extern char TitleInitData[];
@@ -45,7 +48,30 @@ titleData_t *TitleInit(s32 mode)
     return data;
 }
 
+#ifdef VERSION_RAIDOU1
+void TitleDestroy(dds3ProcessID_t *PID) {
+    titleData_t *data;
+    u32 i;
+
+    data = dds3GetProcessData(PID);
+    for (i = 0; i < 4; i++) {
+        if (data->sprite[i] != NULL) {
+            effDestroyResourceSlotSet(data->sprite[i]);
+        }
+    }
+    if (data->PmvPID != NULL) {
+        evtEnd(data->PmvPID);
+        data->PmvPID = NULL;
+    }
+    evtCallStop(data);
+    fclFilterOFF();
+    effDestroyEffectList(data->spriteList);
+    dds3KernelDebugSign = 1;
+    sdfMemFreeDirect(data->hMem);
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_002F7568", TitleDestroy);
+#endif
 
 void TitleProcessStart(s32 mode)
 {
@@ -53,7 +79,7 @@ void TitleProcessStart(s32 mode)
 
     data = TitleInit(mode);
     dds3StartProcess(TitleProcessStartStrTitleCalc, 1030, 0, 0, TitleFirstCalcProcess3, NULL, data);
-    dds3StartProcess(TitleProcessStartStrTitleDraw, 11031, 0, 0, TitleFirstDrawProcess, TitleDestroy, data);
+    dds3StartProcess(TitleProcessStartStrTitleDraw, 11031, 0, 0, TitleFirstDrawProcess, (dds3ProcessFunc_t)TitleDestroy, data);
 }
 
 void TitleProcessEnd(void)

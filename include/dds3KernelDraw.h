@@ -77,6 +77,8 @@ void dds3FilterSet(s32 idx, s32 mode, s32 hokan);
 void dds3FilterSetAlpha(s32 alp);
 void dds3FilterSetAlphaOfs(s32 alp);
 void dds3InitDrawEnv(void);
+s32 dds3IsBistaZBufferClear(void);
+void fldSetFilterAnime(s32 anime);
 void dds3RunQuake(void);
 void eglLinkAlpha(s32 mode);
 void eglSetOt(u32 ot);

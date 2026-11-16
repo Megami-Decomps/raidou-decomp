@@ -24,6 +24,7 @@ void evtSetUnitLightDir(evtUnit_t *h, s32 frame);
 void evtSetUnitLightAndAmbient3(evtUnit_t *h, s32 frame, u32 rgb0, u32 rgb1, u32 rgb2, u32 argb);
 s32 evtSetUnitLightDir1(evtUnit_t *h, s32 frame);
 s32 evtSetUnitLightDir2(evtUnit_t *h, s32 frame);
+void evtSetWaitMotionSpeed(evtUnit_t *h, f32 sp);
 void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode);
 void evtSetUnitMove3(evtUnit_t *h, s32 pathID, s32 para1, s32 para2, s32 movesys, s32 movedir, s32 rotsys);
 void evtSetUnitRot2(evtUnit_t *h, s32 posID, s32 para1);

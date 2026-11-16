@@ -13,6 +13,11 @@
 #include "dds3LightObjectBasic.h"
 #include "dds3WorldBasic.h"
 #include "dds3ObjectBase.h"
+#include "dds3AreaBasic.h"
+#include "dds3PointBasic.h"
+#include "mdlManager.h"
+#include "sdfQuat.h"
+#include "sdfMath.h"
 
 /* Declared here because no header carries these. */
 
@@ -102,7 +107,26 @@ typedef struct effVec4_t {
 } effVec4_t;
 
 
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3AddUnitObjectBasic);
+dds3Basic_t *dds3AddUnitObjectBasic(u32 serialID, const sdfVector4_t *aPos, const sdfVector4_t *aRot)
+{
+    dds3Basic_t *basic = dds3AddSceneBasicData(BASIC_TYPE_UNITOBJECT);
+    dds3UnitObjectBasicWorkData_t *work;
+
+    if (basic != NULL) {
+        basic->serialID = serialID;
+        dds3ObjectBaseCreateMover(basic);
+        dds3SetPosPoseSet(basic, aPos);
+        dds3SetRotPoseSet(basic, aRot);
+        dds3SetRadiusPoseSet(basic->poseset);
+        work = basic->workdata;
+        work->status = -1;
+        work->pWorkData = 0;
+        dds3ObjectBaseSetControlBasicType(basic, dds3AreaBasicGetFastArea(), 4);
+        dds3ObjectBaseRegistArea(basic);
+        return basic;
+    }
+    return NULL;
+}
 
 void dds3DeleteUnitObjectBasic(dds3Basic_t *aPtr) {
     dds3DeleteSceneBasicData(aPtr);
@@ -200,7 +224,87 @@ void dds3UnitObjectBasicDestructor(dds3Basic_t *aPtr) {
 }
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", dds3UnitObjectBasicMainProcedure);
+s32 dds3UnitObjectBasicMainProcedure(dds3Basic_t *basic)
+{
+    dds3UnitObjectBasicWorkData_t *work;
+    mdlObj_t *model;
+    sdfVector4_t rotationAxis = *(const sdfVector4_t *)dds3UnitWobbleAxis;
+    dds3PoseSet_t callbackPose;
+    s32 deform = 0;
+
+    work = basic->workdata;
+    if (work->hUnit != NULL) {
+        dds3BackupPoseSet(&callbackPose);
+        if (evtUnitManagerPrimaryFunc(&callbackPose, basic) != 0) {
+            dds3GetSclPoseSetMCR(basic, &callbackPose.scl);
+            dds3AddRotPoseSet(basic, &callbackPose.rot);
+            dds3GetPosPoseSetMCR(basic, &callbackPose.pos);
+        }
+    }
+
+    model = work->pObjectBaseControlWorkData->pModel;
+    if (model != NULL && dds3CheckPoseSetFlag(basic->poseset, 1) == 1) {
+        dds3OffPoseSetFlag(basic->poseset, 1);
+
+        if (work->hUnit != NULL) {
+            if (work->hUnit->motionState == 0 || work->hUnit->motionState == 3) {
+                u32 motionFlag = work->hUnit->flags & 0x40;
+                deform = motionFlag != 0;
+            }
+            if (work->hUnit->flags & 0x400000) {
+                deform = 1;
+            }
+        }
+
+        SDF_VU0_LOADVECTOR(&basic->poseset->scl);
+        if (work->hUnit != NULL && deform) {
+            SDF_VU0_COPYVECTOR_A_TO_B();
+            SDF_VU0_LOADIDENTITYVECTOR();
+            SDF_VU0_VECTOR_W_SET_ZERO();
+            SDF_VU0_SETVECTOR_X(sdfSin(work->hUnit->wobblePhase) * 0.01f);
+            SDF_VU0_SETVECTOR_Y(sdfSin(work->hUnit->wobblePhase) * 0.004f);
+            SDF_VU0_MULVECTOR();
+            SDF_VU0_ADDVECTOR();
+        }
+        mdlSetScale(model);
+
+        SDF_VU0_LOADVECTOR(&basic->poseset->rot);
+        Normalize();
+        if (work->hUnit != NULL && deform) {
+            SDF_VU0_COPYVECTOR_A_TO_B();
+            SDF_VU0_LOADVECTOR(&rotationAxis);
+            FromRotation(sdfSin(work->hUnit->wobblePhase) * 0.006f);
+            Mult();
+        }
+        if (work->rotationFlags & 1) {
+            SDF_VU0_LOADVECTOR_B(dds3UnitAdditionalRotation);
+            Mult();
+        }
+        mdlSetRotate(model);
+
+        if (dds3CheckPoseSetFlag(basic->poseset, 8) != 0) {
+            SDF_VU0_LOADVECTOR(&basic->poseset->pos2);
+            SDF_VU0_VECTOR_W_SET_ONE();
+        } else {
+            SDF_VU0_LOADVECTOR(&basic->poseset->pos);
+            SDF_VU0_VECTOR_W_SET_ONE();
+        }
+        mdlSetPosition(model);
+        dds3SetRadiusPoseSet(basic->poseset);
+    }
+
+    if (!dds3ObjectBaseCheckFlag(basic, 0x100)) {
+        dds3UnitObjectBasicEL_Link(basic);
+    }
+    if (dds3ObjectBaseCheckFlag(basic, 0x2000)) {
+        if (work->kubiTargetID != 0) {
+            dds3UnitObjectBasicSetKubiTerget(basic, dds3GetWorldNodeData(dds3SearchSceneBasic(dds3GetControlScene(), work->kubiTargetID, 16)));
+        } else {
+            dds3UnitObjectBasicSetKubiModori(basic);
+        }
+    }
+    return 1;
+}
 #else
 INCLUDE_ASM(const s32, "basic/dds3UnitObjectBasic", MainProcedure_dds3UnitObjectBasic);
 #endif

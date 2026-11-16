@@ -443,7 +443,7 @@ s32 mapFileLoad(s32 mapid)
                         mapObjPos(uniq, px, py, pz);
                         mapObjVisible(uniq, 1);
                         basic = mapObjGetBasic(uniq);
-                        mapUnitSetLight(basic, mapCallSetPlayerTargetData3(px, pz), 0);
+                        mapUnitSetLight(basic, mapGetLight(px, pz), 0);
                     }
                 }
             }

@@ -9,13 +9,12 @@ extern const char fldStrNmeDrawProcess[];
 extern s32 dds3KernelDebugSign;
 extern s32 fldCallMemGetPtr(dds3ProcessID_t *id);
 extern s32 fldCallMemGetPtr2(dds3ProcessID_t *id);
-extern s32 fldCallMemGetPtr5(dds3ProcessID_t *id);
 extern s32 titleStartSub(s32 arg);
 extern s32 titleStartSub2(s32 arg);
 
 dds3ProcessID_t *fldNmeProcess(void) {
     sdfMemHandle_t *mem = sdfMemAllocDirect(sizeof(fldNmeWork_t));
-    dds3ProcessID_t *process = dds3StartProcess(fldStrNmeProcess, 0x3FF, 0, 0, fldCallMemGetPtr, fldCallMemGetPtr5, mem);
+    dds3ProcessID_t *process = dds3StartProcess(fldStrNmeProcess, 0x3FF, 0, 0, fldCallMemGetPtr, (dds3ProcessFunc_t)fldCallMemGetPtr5, mem);
     fldNmeWork_t *work = sdfMemGetPtr(mem);
 
     work->unk0 = 0;

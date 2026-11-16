@@ -6,5 +6,6 @@
 #include "field.h"
 
 dds3Basic_t *dds3AddPointBasic(u32 serialID, fldResourcePoint_t *pData, char *pName);
+void *dds3GetWorldNodeData(dds3Basic_t *node);
 
 #endif

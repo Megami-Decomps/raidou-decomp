@@ -20,6 +20,9 @@
 #include "dds3KernelDraw.h"
 #include "kernel_draw.h"
 #include "sdfDelayedResrc.h"
+#include "dds3UnitObjectBasic.h"
+#include "mdlManager.h"
+#include "evtUnitManager.h"
 
 /* declarations needed in evtStage.c (Raidou 1 retail signatures) */
 extern char evtAreaPathFormat[];
@@ -108,14 +111,65 @@ void evtSetTestCamera(void) {
 }
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "event/evtStage", evtSetRegistUnit_evt);
+s32 evtSetRegistUnit_evt(s32 major, s32 minor) {
+    sdfVector4_t position;
+    sdfVector4_t rotation;
+    s32 counter;
+    dds3Basic_t *object;
+    mdlObj_t *model;
+
+    memset(&position, 0, 0x10);
+    position.w = 1.0f;
+    memset(&rotation, 0, 0x10);
+    rotation.w = 1.0f;
+    counter = dds3AllocObjectId();
+    object = dds3AddUnitObjectBasic(counter, &position, &rotation);
+    dds3ObjectBaseOnFlag(object, 0x20);
+    dds3GetRadiusPoseSet(object, 10.0f);
+    dds3ObjectBaseMakeUnit(object, major, minor);
+    model = dds3ObjectBaseGetModelHandle(object);
+    if (model->first != NULL) {
+        mdlLoopMotion(dds3ObjectBaseGetModelHandle(object), 0, 0);
+    }
+    dds3ObjectBaseSetPadControl(object, 0);
+    return counter;
+}
 #else
 INCLUDE_ASM(const s32, "event/evtStage", itfCriLipSyncManagerOff);
 
 INCLUDE_ASM(const s32, "event/evtStage", evtCallMemset);
 #endif
 
+#ifdef VERSION_RAIDOU1
+s32 evtLoadUnit(s32 major, s32 minor) {
+    sdfVector4_t position;
+    sdfVector4_t rotation;
+    s32 counter;
+    dds3Basic_t *object;
+
+    memset(&position, 0, 0x10);
+    position.w = 1.0f;
+    memset(&rotation, 0, 0x10);
+    rotation.w = 1.0f;
+    counter = dds3AllocObjectId();
+    object = dds3AddUnitObjectBasic(counter, &position, &rotation);
+    dds3ObjectBaseOnFlag(object, 0x20);
+    dds3GetRadiusPoseSet(object, 10.0f);
+    dds3ObjectBaseMakeUnit(object, major, minor);
+    mdlLoopMotion(dds3ObjectBaseGetModelHandle(object), 0, 0);
+    mdlSetMotionSpeedEx(dds3ObjectBaseGetModelHandle(object), 0, 0.5f);
+    mdlSetMotionSpeedEx(dds3ObjectBaseGetModelHandle(object), 1, 0.5f);
+    mdlSetMotionSpeedEx(dds3ObjectBaseGetModelHandle(object), 2, 0.5f);
+    evtSetWaitMotionSpeed(evtGetUnitHandle2(object), 0.5f);
+    dds3ObjectBaseSetControlBasic(object, dds3SearchSceneBasic(dds3GetControlScene(), 0x10000, 2));
+    dds3ObjectBaseRegistArea(object);
+    dds3ObjectBaseSetPadControl(object, 0);
+    dds3ObjectBaseOnFlag(object, 0x400);
+    return counter;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtStage", evtLoadUnit);
+#endif
 #ifdef VERSION_RAIDOU2
 
 INCLUDE_ASM(const s32, "event/evtStage", evtLoadBustupData);

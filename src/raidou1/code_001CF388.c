@@ -51,7 +51,7 @@ void *evtGetTex(u32 UID) {
         return NULL;
     }
     pData = dds3GetProcessData(TmxPreLoadPID);
-    i = CheckActionProcessEnd(pData, UID);
+    i = GetIndexFromUID_evtTmxPreLoad(pData, UID);
     if (i < 0) {
         return NULL;
     }
@@ -66,7 +66,7 @@ void *evtGetMaskTex(u32 UID) {
         return NULL;
     }
     pData = dds3GetProcessData(TmxPreLoadPID);
-    i = CheckActionProcessEnd(pData, UID);
+    i = GetIndexFromUID_evtTmxPreLoad(pData, UID);
     if (i < 0) {
         return NULL;
     }
@@ -81,12 +81,12 @@ s32 evtGetMaskOfs(u32 UID, sdfIVector2_t *pOfs) {
         return 0;
     }
     pData = dds3GetProcessData(TmxPreLoadPID);
-    i = CheckActionProcessEnd(pData, UID);
+    i = GetIndexFromUID_evtTmxPreLoad(pData, UID);
     if (i < 0) {
         return 0;
     }
-    pOfs->x = pData->size[i][0];
-    pOfs->y = pData->size[i][1];
+    pOfs->x = pData->maskOfs[i][0];
+    pOfs->y = pData->maskOfs[i][1];
     return 1;
 }
 
@@ -112,7 +112,7 @@ s32 evtProcessStart(dds3ProcessID_t *ParentPID, DDS3_PRIORITY Priority) {
         return 1;
     }
     TmxPreLoadPID = dds3StartProcess("TmxPreLoad", Priority, 0, 0, Process_evtTmxPreLoad,
-        Destroy_evtTmxPreLoad, Create_evtTmxPreLoad());
+        (dds3ProcessFunc_t)Destroy_evtTmxPreLoad, Create_evtTmxPreLoad());
     if (ParentPID != NULL) {
         dds3LinkProcess(ParentPID, TmxPreLoadPID);
     }

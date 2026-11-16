@@ -35,7 +35,7 @@
 0x00189B68 CalcWindow void CalcWindow(s32 a1)
 0x001AB6A0 evtCallMemset2 void evtCallMemset2(ScrVmInteger a1)
 0x001B45D8 MovieStop void MovieStop(void *a1)
-0x001BACE8 InitProcessData evtPictureProcessData_t * InitProcessData(void)
+0x001BACE8 InitPictureProcessData evtPictureProcessData_t * InitPictureProcessData(void)
 0x001D0E80 sndCallWaitVblankLabel void sndCallWaitVblankLabel(void)
 0x001D17F0 sndBgmStop void sndBgmStop(void)
 0x001D1878 sndBgmFadeOut void sndBgmFadeOut(void)

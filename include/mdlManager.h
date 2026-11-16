@@ -23,6 +23,7 @@ void mdlLoopMotion(mdlObj_t *aHandle, s32 aGroup, s32 aNumber);
 void mdlPackDecode(s32 major, s32 minor, s32 regFlags, const u8 *buff, s32 leng);
 void mdlSetBlur(mdlObj_t *aHandle, s32 interval, s32 count, u32 startColor, u32 endColor);
 void mdlSetColor(mdlObj_t *aHandle, u32 aColor);
+void mdlSetMotionSpeedEx(mdlObj_t *aHandle, s32 aGroup, f32 speed);
 void mdlSetPosition(mdlObj_t *aHandle);
 void mdlSetRotate(mdlObj_t *aHandle);
 void mdlSetScale(mdlObj_t *aHandle);

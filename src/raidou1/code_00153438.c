@@ -192,7 +192,7 @@ void mapHitWorkCalcSetupSub(f32 *outx, f32 *outz, f32 x, f32 z) {
     *outz = (f32)(iz * 100) + mapData104;
 }
 
-s32 mapCallSetPlayerTargetData3(f32 x, f32 z) {
+s32 mapGetLight(f32 x, f32 z) {
     s32 ix;
     s32 iz;
     s32 w;

@@ -15,6 +15,8 @@
 #include "dds3KernelCore.h"
 #include "dds3SceneBasic.h"
 #include "fclMisc.h"
+#include "dds3KernelDraw.h"
+#include "effEvent.h"
 
 extern u32 dds3GetRandA(void *name);
 void fclClearFlag(s8 index);
@@ -224,7 +226,18 @@ void fclLoadStage(s32 MajorNo, s32 MinorNo)
     evtLoadArea(MajorNo, MinorNo);
 }
 
-INCLUDE_ASM(const s32, "facility/fclMisc", fclFilterOFF);
+void fclFilterOFF(void)
+{
+    dds3SetBlur(0, 0, 0);
+    dds3MultiBlurOff(0);
+    dds3DistBlurOff(0);
+    dds3FilterClear();
+    Eve_BlurOFF();
+    Eve_PartialMultiBlurOFF();
+    Eve_PartialMultiFilterOFF();
+    Eve_DistortionBlurOFF();
+    Eve_FilterOFF();
+}
 
 INCLUDE_ASM(const s32, "facility/fclMisc", fclFreeStage);
 

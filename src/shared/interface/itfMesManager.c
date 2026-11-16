@@ -23,16 +23,6 @@
 #include "sdk_libm.h"
 #include "sdfSound.h"
 
-/* Message window shake: dist is the x/y offset, power the per-axis amplitude
- * that decays over timer frames. */
-struct itfMesShake_t {
-    s32 dist[2];
-    s32 active;
-    u8 pad0C[4];
-    s32 power[2];
-    u32 timer;
-    u8 pad1C[4];
-};
 extern itfMesShake_t itfData;
 extern u32 itfData3;
 

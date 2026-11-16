@@ -37,6 +37,9 @@ typedef struct
 
 extern u32 mselNameNEFLASHData;
 
+void mselCallEffectDelete(void);
+void mselCallGetControlScene(void);
 void mselCallMInitSceneMjn(void);
+void mselNameNEFLASH(void);
 
 #endif

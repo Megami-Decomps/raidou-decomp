@@ -297,21 +297,21 @@ s32 ProcSequence(dds3ProcessID_t *id)
         }
         mapCutSetCam(cameraBasic, 0);
         if (!fldGlobalBase.summonStop) {
-            fldGlobalBase.wordF8 = mapCallSetPlayerTargetData3(fldGlobalBase.focusX, fldGlobalBase.focusZ);
+            fldGlobalBase.wordF8 = mapGetLight(fldGlobalBase.focusX, fldGlobalBase.focusZ);
             mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 0);
             if (aiboBasic) {
-                mapUnitSetLight(aiboBasic, mapCallSetPlayerTargetData3(aiboBasic->poseset->pos.x, aiboBasic->poseset->pos.z), 0);
+                mapUnitSetLight(aiboBasic, mapGetLight(aiboBasic->poseset->pos.x, aiboBasic->poseset->pos.z), 0);
             }
             if (summonDvBasic) {
-                mapUnitSetLight(summonDvBasic, mapCallSetPlayerTargetData3(summonDvBasic->poseset->pos.x, summonDvBasic->poseset->pos.z), 0);
+                mapUnitSetLight(summonDvBasic, mapGetLight(summonDvBasic->poseset->pos.x, summonDvBasic->poseset->pos.z), 0);
             }
         } else {
-            fldGlobalBase.wordF8 = mapCallSetPlayerTargetData3(fldGlobalBase.focusX, fldGlobalBase.focusZ);
+            fldGlobalBase.wordF8 = mapGetLight(fldGlobalBase.focusX, fldGlobalBase.focusZ);
             mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 0);
             if (fldGlobalBase.amSBlock == fldGlobalBase.word190) {
                 if (fldGlobalBase.nameU == fldGlobalBase.word194) {
                     if (raidoBasic) {
-                        mapUnitSetLight(raidoBasic, mapCallSetPlayerTargetData3(raidoBasic->poseset->pos.x, raidoBasic->poseset->pos.z), 0);
+                        mapUnitSetLight(raidoBasic, mapGetLight(raidoBasic->poseset->pos.x, raidoBasic->poseset->pos.z), 0);
                     }
                 } else if (gSubFloorID == fldGlobalBase.word194 && raidoBasic) {
                     mapUnitSetLight(raidoBasic, mapGetFloorLight(gSubFloorID, raidoBasic->poseset->pos.x, raidoBasic->poseset->pos.z), 0);
@@ -320,7 +320,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             if (fldGlobalBase.amSBlock == fldGlobalBase.word1A8) {
                 if (fldGlobalBase.nameU == fldGlobalBase.word1AC) {
                     if (aiboBasic) {
-                        mapUnitSetLight(aiboBasic, mapCallSetPlayerTargetData3(aiboBasic->poseset->pos.x, aiboBasic->poseset->pos.z), 0);
+                        mapUnitSetLight(aiboBasic, mapGetLight(aiboBasic->poseset->pos.x, aiboBasic->poseset->pos.z), 0);
                     }
                 } else if (gSubFloorID == fldGlobalBase.word1AC && aiboBasic) {
                     mapUnitSetLight(aiboBasic, mapGetFloorLight(gSubFloorID, aiboBasic->poseset->pos.x, aiboBasic->poseset->pos.z), 0);
@@ -566,7 +566,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         fldPlayerCalc();
         mapAiboTask();
         mapNakamaTask();
-        fldGlobalBase.wordF8 = mapCallSetPlayerTargetData3(fldGlobalBase.focusX, fldGlobalBase.focusZ);
+        fldGlobalBase.wordF8 = mapGetLight(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 10);
         mapCalcFXY(fldGlobalBase.wordF8);
         fldGlobalBase.encountState = mapProcSequenceSub5(fldGlobalBase.focusX, fldGlobalBase.focusZ);
@@ -621,7 +621,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             dds3FadeOut(0, 0, 0, 8);
         }
         fldPlayerCalc();
-        fldGlobalBase.wordF8 = mapCallSetPlayerTargetData3(fldGlobalBase.focusX, fldGlobalBase.focusZ);
+        fldGlobalBase.wordF8 = mapGetLight(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 10);
         fldGlobalBase.encountState = mapProcSequenceSub5(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         if (fldGlobalBase.word35C) {

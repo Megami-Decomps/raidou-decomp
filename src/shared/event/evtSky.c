@@ -3,6 +3,9 @@
 #include "kernel.h"
 #include "dds3KernelCore.h"
 #include "evtSky.h"
+#include "dds3KernelDraw.h"
+#include "dds3KernelMain.h"
+#include "fldDraw.h"
 
 extern char evtSkyProcName[];
 extern u16 skyanime;
@@ -54,9 +57,28 @@ void evtUpdateSkyAlpha(void)
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtSky", Process1);
+s32 evtSkyProcess1(dds3ProcessID_t *id)
+{
+    evtUpdateSkyAlpha();
+    if (fldbokasi != 0) {
+#ifdef VERSION_RAIDOU1
+        rsetOtOfs(103);
+#else
+        rsetOtOfs(104);
+#endif
+        if (dds3BgSetScrollSub() == 0) {
+            fldDrawFrameSprite();
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM(const s32, "event/evtSky", Shutdown_evtSky);
+void evtSkyShutdown(dds3ProcessID_t *id)
+{
+    skyanime = 0;
+    fldbokasi = 0;
+    dds3FilterSet(0, 1, 0);
+}
 
 void evtExitSky(void)
 {
@@ -68,7 +90,14 @@ void evtExitSky(void)
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtSky", evtInitSky);
+dds3ProcessID_t *evtInitSky(void)
+{
+    fldSetFilterAnime(0);
+    dds3FilterSetAlpha(0x80);
+    dds3FilterSetAlphaOfs(0);
+    dds3FilterSet(0, 1, 0);
+    return dds3StartProcess(evtSkyProcName, 0x2B0C, 1, 1, evtSkyProcess1, (dds3ProcessFunc_t)evtSkyShutdown, NULL);
+}
 INCLUDE_SDATA(const s32, "event/evtSky", evtSkyProcName);
 
 INCLUDE_SDATA(const s32, "event/evtSky", evtFrameListHeadDataEntry);

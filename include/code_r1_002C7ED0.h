@@ -27,5 +27,6 @@ typedef char effList_size_must_be_0x14[(sizeof(effList_t) == 0x14) ? 1 : -1];
 
 s32 effPollResourceList(struct effList_t *list);
 s32 effAppendListEntry(struct effList_t *list, const char *value, const char *length, u32 kind, void **reference);
+void effDestroyEffectList(effList_t *list);
 
 #endif

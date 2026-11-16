@@ -172,21 +172,49 @@ void dds3EffectDelete(effHandle_t *pData)
     sdfChipFreeDirect(pData);
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectDraw_dds3Effect);
+void dds3EffectDraw_dds3Effect(effHandle_t *hEffect)
+{
+    EffMajorTable[hEffect->type].draw(hEffect->instance);
+}
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectReset);
+void dds3EffectReset(effHandle_t *effect)
+{
+    EffMajorTable[effect->type].reset(effect->instance);
+}
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetScale);
+void dds3EffectSetScale(effHandle_t *effect, f32 scale)
+{
+    EffMajorTable[effect->type].setscale(effect->instance, scale);
+}
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectGetState);
+DDS3EFFECT_STATE dds3EffectGetState(effHandle_t *hEffect)
+{
+    s32 (*getstate)(s32 instance) = EffMajorTable[hEffect->type].getstate;
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetPosition);
+    if (getstate == NULL) {
+        return DDS3EFFECT_STATE_RUN;
+    }
+    return getstate(hEffect->instance);
+}
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetRotateMatrix);
+void dds3EffectSetPosition(effHandle_t *pData, const void *pPos)
+{
+    EffMajorTable[pData->type].setposition(pData->instance, (sdfVector4_t *)pPos);
+}
+
+void dds3EffectSetRotateMatrix(effHandle_t *pData, sdfMatrix4_t *pMatrix)
+{
+    EffMajorTable[pData->type].setrotatematrix(pData->instance, pMatrix);
+}
 
 INCLUDE_ASM(const s32, "effect/effManager", effSetEffectColorSubSub);
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectSetLoop_dds3Effect);
+void dds3EffectSetLoop_dds3Effect(effHandle_t *hEffect, u8 loop)
+{
+    if (EffMajorTable[hEffect->type].setloop != NULL) {
+        EffMajorTable[hEffect->type].setloop(hEffect->instance, loop);
+    }
+}
 
 INCLUDE_ASM(const s32, "effect/effManager", dds3EffectGetLoop);
 
@@ -217,7 +245,10 @@ effHandle_t *dds3EffectLoad(effResourceHeader_t *pD3P)
     return node;
 }
 
-INCLUDE_ASM(const s32, "effect/effManager", dds3EffectLoadEPL);
+effHandle_t *dds3EffectLoadEPL(void *pEPL)
+{
+    return dds3EffectCreate(5, 0, EE_ADDR_S(pEPL));
+}
 
 INCLUDE_ASM(const s32, "effect/effManager", sdfDevLoadTexList);
 

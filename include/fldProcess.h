@@ -46,7 +46,7 @@ s32 sndProcSequenceSub2(void);
 void sndCallWaitSema(void);
 s32 sndSePlay(void);
 void mapCallSetPlayerTargetData4(void);
-s32 mapCallSetPlayerTargetData3(f32 x, f32 z);
+s32 mapGetLight(f32 x, f32 z);
 s32 mapCallSetPlayerTargetData6(f32 x, f32 z);
 s32 mapBadMafuHajiki(void);
 void ProcMskSub_A(void);

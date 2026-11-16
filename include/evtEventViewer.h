@@ -114,6 +114,22 @@ void evtViewerStopFrame(s32 sw, u32 nowframe, evtViewerInfo_t *pInfo);
  * script.ints[199 + selector] must equal the encoded 12-bit value. */
 EvtViewerIndexedConditionResult sndVoiceStatus(EvtViewerIndexedCondition condition);
 
+/* Chip list at evtWork2: evtCallChipAllocDirect shifts the
+ * ten 0x44-byte entries down by one when count reaches ten. */
+typedef struct evtWork2Entry_t {
+    u8 unk0[0x30];
+    void *chip;
+    u8 unk34[0x10];
+} evtWork2Entry_t;
+
+typedef struct evtWork2_t {
+    u32 unk0;
+    evtWork2Entry_t info[10];
+    s32 count;
+    s32 unk2B0;
+} evtWork2_t;
+
+extern evtWork2_t evtWork2;
 extern dds3ProcessID_t *pmv_pid;
 extern s32 last_skip_stat;
 extern struct evtViewerObject_t *evt_camera;
@@ -121,5 +137,6 @@ extern struct evtViewerObject_t *evt_camera;
 dds3TaskUpdateResult_t evtCallGetProcessData11(dds3ProcessID_t *task);
 void evtEventViewerDestroyActiveAlternate(dds3ProcessID_t *task);
 void evtEventViewerInitCampFontResource(evtViewerInfo_t *viewer);
+void DelProcessAll(void);
 
 #endif

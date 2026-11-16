@@ -178,7 +178,7 @@ s32 mapObjFloorAdd_Cash(s32 floor, s16 uniq, MODELTYPE major, s32 minor, s32 mot
     }
     else
     {
-        mapUnitSetLight(basic, mapCallSetPlayerTargetData3(pos.x, pos.z), 0);
+        mapUnitSetLight(basic, mapGetLight(pos.x, pos.z), 0);
     }
     return i;
 }

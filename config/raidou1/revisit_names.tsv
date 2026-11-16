@@ -562,7 +562,6 @@
 0x00153940	mapLeaf21	func	tier=D	derived-unit	na	unit code_00140960, neighbour mapGetFloorLight; no named callee, caller or string
 0x00153960	mapFileLoadSub6	func	tier=D	derived-caller	na	unit code_00140960, neighbour mapGetFloorLight; called by mapFileLoad
 0x00153990	mapHitWorkCalcSetupSub	func	tier=D	derived-caller	na	unit code_00140960, neighbour mapGetFloorLight; called by mapHitWorkCalcSetup
-0x00153A20	mapCallSetPlayerTargetData3	func	tier=D	derived-callee	na	unit code_00140960, neighbour mapGetFloorLight; calls fldSetPlayerTargetData
 0x001541E0	fldRefMapAreaNow	func	tier=D	derived-data	na	unit code_00140960, neighbour fldGetFldBgNameList; references pMapAreaNow
 0x001542E0	mapRefMapAreaNow	func	tier=D	derived-data	na	unit code_00140960, neighbour mapGetCut_FXY; references pMapAreaNow
 0x00154398	mapProcSequenceSub5	func	tier=D	derived-caller	na	unit code_00140960, neighbour mapGetCut_FXY; called by ProcSequence
@@ -1294,13 +1293,8 @@
 0x001BA498	evtAllocMovieWork	func	tier=D	idb-smt3	na	IDB name in 2 game(s)
 0x001BA598	evtCallMemset8	func	tier=D	derived-callee	na	unit event/evtPolygonMovie; calls memset
 0x001BAAF0	evtStart2	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtPMV.evtStart2, score 10.6 band A
-0x001BAD70	evtCallMiscLoadTexture	func	tier=D	derived-callee	na	unit event/evtPicture; calls itfMiscLoadTexture
-0x001BADA0	evtLeaf8	func	tier=D	derived-unit	na	unit event/evtPicture; no named callee, caller or string
 0x001BADC0	evtFunc	func	tier=D	derived-unit	na	unit event/evtPicture; no named callee, caller or string
 0x001BAF98	evtCallGetSmallFontFRQ2	func	tier=D	derived-callee	na	unit event/evtPicture; calls frwGetSmallFontFRQ2
-0x001BB130	evtCallGetProcessData14	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
-0x001BB240	evtCallGetProcessData15	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
-0x001BB368	evtCallGetMemHandle	func	tier=D	derived-callee	na	unit event/evtPicture; calls fileGetMemHandle
 0x001BB408	evtPictureLoadStartTexFile	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtPicture.evtPictureLoadStartTexFile, score 7.15 band B
 0x001BB458	evtCallGetProcessData17	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
 0x001BB4C8	evtCallGetProcessData18	func	tier=D	derived-callee	na	unit event/evtPicture; calls dds3GetProcessData
@@ -1461,15 +1455,9 @@
 0x001CE610	evtCallGetProcessData28	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour evtStartRain; calls dds3GetProcessData
 0x001CE648	evtCallGetProcessData29	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour evtStartRain; calls dds3GetProcessData
 0x001CE688	scrCallGetProcessData	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour scrEventSkipEnd; calls dds3GetProcessData
-0x001CE7B8	scrFunc	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour scrEventSkipEnd; no named callee, caller or string
 0x001CE8B0	scrCallPictureSetEndProcess	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour scrEventSkipEnd; calls evtPictureSetEndProcess
-0x001CE908	evtCallPictureSetEndProcess	func	tier=D	derived-callee	na	unit code_001CD6D8, neighbour evtCutInCreate; calls evtPictureSetEndProcess
-0x001CE968	evtLeaf25	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
-0x001CE980	evtLeaf26	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
-0x001CE988	evtLeaf27	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
 0x001CEAF8	evtStartCommand	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtCutIn.evtStartCommand, score 8.8 band B
 0x001CED28	evtLeaf28	func	tier=D	derived-unit	na	unit evtTmxPreLoad; no named callee, caller or string
-0x001CED78	evtCallGetLoadSize	func	tier=D	derived-callee	na	unit evtTmxPreLoad; calls fileGetLoadSize
 0x001CF388	evtChkLoad	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtTmxPreLoad.evtChkLoad, score 8.8 band B
 0x001CF3E0	evtRequest	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtTmxPreLoad.evtRequest, score 9.8 band B
 0x001CF4C8	evtGetTex	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtTmxPreLoad.evtGetTex, score 9.8 band B
@@ -1694,7 +1682,6 @@
 0x001E5E78	effLeaf27	func	tier=D	derived-unit	na	unit code_001E5A58, neighbour effPCPBezierEval; no named callee, caller or string
 0x001E5EA0	effLeaf28	func	tier=D	derived-unit	na	unit code_001E5A58, neighbour effPCPBezierEval; no named callee, caller or string
 0x001E5EB8	effBlurUpdateSub	func	tier=D	derived-caller	na	unit code_001E5A58, neighbour effPCPBezierEval; called by dds3BlurUpdate
-0x001E5EC8	effBlurUpdateSub2	func	tier=D	derived-caller	na	unit code_001E5A58, neighbour effPCPBezierEval; called by dds3BlurUpdate
 0x001E5ED0	effBlur2OnSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3Blur2On
 0x001E5F30	effBlur2SwapSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3Blur2Swap
 0x001E5FB8	effMultiBlurSwapSub	func	tier=D	derived-caller	na	unit effect/effEvent; called by dds3MultiBlurSwap
@@ -6233,7 +6220,6 @@
 0x003E8748	cmbData2	data	tier=D	derived-shared	na	used by 2 functions: cmbRefDDS3GBWK, cmbCallRetFontMem
 0x003E8760	itfDrawThreePanelBorderBandsData	data	tier=D	derived-sole	na	used by itfDrawThreePanelBorderBands
 0x003E8768	itfDrawThreePanelBorderBandsData2	data	tier=D	derived-sole	na	used by itfDrawThreePanelBorderBands
-0x003E8838	itfPnlDrawSubData	data	tier=D	derived-sole	na	used by itfPnlDrawSub
 0x003E8A40	itfCallMiscDrawRectanglePrimData	data	tier=D	derived-sole	na	used by itfCallMiscDrawRectanglePrim
 0x003E8AD0	itfCallMiscDrawRectanglePrimData2	data	tier=D	derived-sole	na	used by itfCallMiscDrawRectanglePrim
 0x003E8AE0	itfDrawTintedPanelRectData	data	tier=D	derived-sole	na	used by itfDrawTintedPanelRect
@@ -14656,9 +14642,9 @@
 0x0046BAB0	mapData105	data	tier=D	derived-shared	na	used by 3 functions: fldFreeMapData, mapMapSetArea, mapFileLoad
 0x0046BAB4	mapFileLoadData9	data	tier=D	derived-dominant	na	used by mapFileLoad (2 of 3 refs, 2 functions)
 0x0046BAB8	mapFileLoadData10	data	tier=D	derived-dominant	na	used by mapFileLoad (3 of 5 refs, 3 functions)
-0x0046BABC	mapData106	data	tier=D	derived-shared	na	used by 5 functions: mapCallSetPlayerTargetData3, mapFileLoad, mapMapSetArea
+0x0046BABC	mapData106	data	tier=D	derived-shared	na	used by 5 functions: mapGetLight, mapFileLoad, mapMapSetArea
 0x0046BAC0	mapData107	data	tier=D	derived-shared	na	used by 3 functions: fldFreeMapData, mapMapSetArea, mapGetFloorLight
-0x0046BAC4	mapData108	data	tier=D	derived-shared	na	used by 4 functions: mapMapSetArea, mapCallSetPlayerTargetData3, fldFreeMapData
+0x0046BAC4	mapData108	data	tier=D	derived-shared	na	used by 4 functions: mapMapSetArea, mapGetLight, fldFreeMapData
 0x0046BAC8	mapData109	data	tier=D	derived-shared	na	used by 3 functions: fldFreeMapData, mapMapSetArea, mapGetFloorLight
 0x0046BACC	mapData110	data	tier=D	derived-shared	na	used by 5 functions: fldFreeMapData, mapMapSetArea, mapFileLoad
 0x0046BAD0	mapFileLoadData11	data	tier=D	derived-dominant	na	used by mapFileLoad (2 of 3 refs, 2 functions)
@@ -16839,7 +16825,6 @@
 0x004B7818	evtWork3	data	tier=D	derived-shared	na	used by 3 functions: evtLeaf19, evtLeaf20, evtLeaf21
 0x004B7848	evtWork4	data	tier=D	derived-shared	na	used by 2 functions: evtLeaf20, evtLeaf21
 0x004B7878	evtWork5	data	tier=D	derived-shared	na	used by 3 functions: evtLeaf19, evtLeaf20, evtLeaf21
-0x004B7888	scrEventSkipEndWork	data	tier=D	derived-dominant	na	used by scrEventSkipEnd (4 of 14 refs, 6 functions)
 0x004B7910	sndCallMemsetWork	data	tier=D	derived-sole	na	used by sndCallMemset
 0x004B8910	sndCallSeStopWork	data	tier=D	derived-dominant	na	used by sndCallSeStop (24 of 69 refs, 18 functions)
 0x004B8914	sndBgmTopWork	data	tier=D	derived-sole	na	used by sndBgmTop
@@ -18502,7 +18487,9 @@
 0x001B7488	EnterData	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1ef880 sim 0.696 margin 0.31 pair
 0x001B84E8	oldEventSceneUnload	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evt.oldEventSceneUnload score 5.1 flag -: calls1 calls-of-match st1:call r1+r2
 0x001BA740	evtSetDofTblFileName	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtPMV.evtSetDofTblFileName score 5.1 flag I: prev next~ gap1/2 st1:gap r1+r2
-0x001BACE8	InitProcessData	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtPicture.InitProcessData score 3.7 flag -: calls1 calls-of-match st1:call r1-only
+0x001BAD70	LoadTexture	func	tier=C	derived-derived-role	na	smt3_symbols.txt alias; HD LoadTexture; replaces evtCallMiscLoadTexture
+0x001BB130	evtPictureProcess1	func	tier=C	derived-derived-role	na	smt3_symbols.txt alias; HD Process1; replaces evtCallGetProcessData14
+0x001BB240	evtPictureShutdown	func	tier=C	derived-derived-role	na	smt3_symbols.txt alias; HD Shutdown; replaces evtCallGetProcessData15
 0x001BB558	evtPictureSetEndProcess	func	tier=C	hd-d	0.53 (n=98)	Raidou HD evtPicture.evtPictureSetEndProcess score 4.0 flag I: calls1 next gap23/18 st2:gap r2-only
 0x001BDC40	evtFileName2Menu	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1f6158 sim 0.664 margin 0.66 pair
 0x001BE100	evtObjectListItem	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x1f64f0 sim 0.603 margin 0.20 pair
@@ -18512,7 +18499,6 @@
 0x001CD660	scrTestEntryFlag	func	tier=C	dds-fuzzy-60-tie-pair	0.40 (n=2)	dds body 0x3163a0 sim 0.600 margin 0.08 pair
 0x001CDCF8	CrossFadeShutdown	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evt.CrossFadeShutdown score 6.0 flag -: calls1 next gap9/21 st1:gap r1+r2
 0x001CDF58	SetJyocyuData	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x249258 sim 0.648 margin 0.16 pair
-0x001CE740	scrEventSkipEnd	func	tier=C	hd-d	0.53 (n=98)	Raidou HD scr.scrEventSkipEnd score 3.1 flag I: calls1 calls-of-match st2:call r2-only
 0x001CE800	GetRegistNums	func	tier=C	hd-d	0.53 (n=98)	Raidou HD evtCutIn.GetRegistNums score 2.5 flag -: calls1 calls-of-match st2:call r2-only
 0x001CEBC8	evtEndCommand	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtCutIn.evtEndCommand score 5.8 flag I: calls1 prev edge st1:edge r1+r2
 0x001CEBF8	Create_evtTmxPreLoad	func	tier=C	derived-derived-role	na	retail 0x1CEBF8 allocates the process work (sdfMemAllocDirect(100)+memset) that dds3StartProcess receives; HD inlines new evtTmxPreLoad_t; pairs with Destroy_evtTmxPreLoad; replaces Destroy_evtTmxPreLoad
@@ -19413,6 +19399,7 @@
 0x0014C118	mapNpcTblRefresh	func	tier=B	hd-c-single-raidou1	0.85 (n=425)	Raidou HD fld.mapNpcTblRefresh score 6.2 flag -: calls3 next gap16/12 votes2 st1:gap r2-disagree:0x156b70
 0x00153710	fldGetNowCutID	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.fldGetNowCutID score 6.5 flag I: calls1 calls-of-match st1:call r1+r2
 0x00153858	PositioningGuardSystem	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.PositioningGuardSystem score 6.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
+0x00153A20	mapGetLight	func	tier=B	hd-role	na	HD fld.h s32 mapGetLight(f32 fx, f32 fz); R2 names the same callee mapGetLight (0x15F6F0) in evtFldProcSequence; replaces mapCallSetPlayerTargetData3
 0x00153BB0	mapGetHit	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD fld.mapGetHit score 6.0 flag -: calls1 calls-of-match st1:call r1+r2
 0x0015B4A0	mefMistUpdate	func	tier=B	derived-role	na	HD: if fRun { EmitParticle; UpdateParticle; cnt++ }, same shape; replaces pipeFreeLink
 0x0015B838	mefMistEmitParticle	func	tier=B	derived-role	na	HD: num == 512 / cnt % frequency guard, first free particle; replaces mefFreeLinkSub
@@ -19488,6 +19475,9 @@
 0x001B0838	AddBED	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1ecda0 sim 0.887 margin 0.35 pair
 0x001B40B8	rcvIsHealPhase	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x20f888 sim 0.826 margin 0.31 pair
 0x001B4DE8	PushMenu	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1ee608 sim 0.923 margin 0.69 pair
+0x001BACE8	InitPictureProcessData	func	tier=B	derived-role	na	smt3_symbols.txt alias at the same address; same role; replaces InitProcessData
+0x001BADA0	GetNowFrame	func	tier=B	hd-role	na	HD evtPicture.c GetNowFrame: p_now else now2; replaces evtLeaf8
+0x001BB368	LoadTexCallback	func	tier=B	hd-role	na	HD evtPicture.c LoadTexCallback, fileLoadEx end callback from evtPictureLoadStartTexFile; replaces evtCallGetMemHandle
 0x001BB430	evtPictureLoadCheckProcess	func	tier=B	hd-role	na	HD evtPicture evtPictureLoadCheckProcess(id): dds3GetProcessData(id) field test returning bool; called on the cut-in PID as in HD CUTIN_DSP; replaces evtCallGetProcessData16
 0x001BB5F8	evtPictureStartProcess4	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD evtPicture.evtPictureStartProcess4 score 6.2 flag I: calls1 str1 calls-of-match st1:call r1+r2
 0x001BC3E0	evtMenuDisp	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1f4b28 sim 0.807 margin 0.81 pair
@@ -19511,8 +19501,12 @@
 0x001CE6E8	GetIndexFromUID	func	tier=B	hd-role	na	HD evtCutIn static GetIndexFromUID(pData, UID); called with the cut-in data by evtChkUID/evtGetPIDfromUID; replaces scrLeaf3
 0x001CE838	evtChkUID	func	tier=B	hd-role	na	HD evtCutIn order; returns GetIndexFromUID(UID) >= 0, the UID test of HD evtChkUID; replaces scrRunFrame1Sub
 0x001CE868	evtGetPIDfromUID	func	tier=B	hd-role	na	HD evtCutIn order GetRegistNums, evtChkUID, evtGetPIDfromUID; 0x1CE868 follows GetRegistNums/scrRunFrame1Sub and returns the PID array entry for GetIndexFromUID(UID) (scrLeaf3), as HD evtGetPIDfromUID; replaces scrFunc2
+0x001CE968	Callback_evtCutIn	func	tier=B	hd-role	na	HD evtCutIn.c Callback (static), calls DelUID; replaces evtLeaf25
+0x001CE980	DestructProcess_evtCutIn	func	tier=B	hd-role	na	HD evtCutIn.c DestructProcess (static), returns 0; replaces evtLeaf26
+0x001CE988	DestructDestroy_evtCutIn	func	tier=B	hd-role	na	HD evtCutIn.c DestructDestroy (static), calls DelProcessAll; replaces evtLeaf27
+0x001CE9A0	evtStart	func	tier=B	hd-role	na	HD evtCutIn.c evtStart at the same position between DestructDestroy and evtStartCommand; replaces evtCutInCreate
 0x001CEC50	Destroy_evtTmxPreLoad	func	tier=B	hd-role	na	HD evtProcessStart passes Method evtTmxPreLoad_Destroy as shutdownfunc; retail passes 0x1CEC50 there; replaces evtCallGetProcessData30
-0x001CECE8	CheckActionProcessEnd	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x247d60 sim 0.781 margin 0.27 pair
+0x001CED78	EndCallback_evtTmxPreLoad	func	tier=B	hd-role	na	HD evtTmxPreLoad.c EndCallback, fileLoadEx end callback; replaces evtCallGetLoadSize
 0x001D21B8	nbEffectShutdown	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16c500 sim 0.762 margin 0.76 pair
 0x001D2850	fldCommand_FLD_BGM_CONTINUE	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x15a280 sim 0.864 margin 0.86 pair
 0x001D2880	titleFreeWork	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x2278f8 sim 0.800 margin 0.80 pair
@@ -19736,6 +19730,7 @@
 0x003BF130	fldGlobalBase	data	tier=B	smt3-ref	0.88 (n=D_r1_003BF130)	smt3-ref/loose: nfun=10, other=6, sim=1.0, games=2, size=False, sec=True, fn=fldMakeBlockBasicFL2
 0x003BF5D8	fldRandomBuf	data	tier=B	smt3-role	na	SMT3 fldFirstInit seeds sdfRandomize(fldRandomBuf, 0x1E240); same call and seed in Raidou fldFirstInit (HD grnd_cb); replaces fldFirstInitData
 0x003E84F8	gFontBaseWidth	data	tier=B	smt3-ref	0.88 (n=D_r1_003E84F8)	smt3-ref/loose: nfun=2, other=0, sim=0.9419, games=2, size=False, sec=True, fn=frSetUserImage
+0x003E8838	DrawTable_itfPanel	data	tier=B	smt3-role	na	SMT3 itfPanel.c DrawTable (panel handler table indexed by kind); DrawTable is taken by the function at 0x002E0288; replaces itfPnlDrawSubData
 0x003E8AF0	itfMesDebug	data	tier=B	smt3-ref	0.88 (n=D_r1_003E8AF0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=itfMesMngDebugProc
 0x003E8D58	scrEmbedded_3267A8	data	tier=B	smt3-ref	0.88 (n=D_r1_003E8D58)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=itfDebugMesMngInitialize
 0x003EED10	evtStageAmbient	data	tier=B	smt3-ref	0.80 (n=D_r1_003EED10)	smt3-ref/close: nfun=2, other=0, sim=0.9722, games=2, size=True, sec=True, fn=evtLoadArea_FromMemory
@@ -19922,6 +19917,7 @@
 0x004B7330	evtViewerDistBlurParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 15 distortion-blur target, same use; replaces RunFrame2Work8
 0x004B7360	evtViewerRippleBlurParam	data	tier=B	smt3-role	na	SMT3 symbol_addrs; RunFrame2 case 23 ripple-blur target, same use; replaces RunFrame2Work9
 0x004B7390	rf2_hbl	data	tier=B	hd-role	na	HD RunFrame2 case 27 (evtHokanHeikouBlur target); replaces RunFrame2Work10
+0x004B7888	Data_evtCutIn	data	tier=B	hd-role	na	HD evtCutIn.c static Data (evtCutInData_t), R1 holds the struct itself; replaces scrEventSkipEndWork
 0x004C5C80	slTopMenuSel	data	tier=B	smt3-ref	0.88 (n=D_r1_004C5C80)	smt3-ref/loose: nfun=4, other=0, sim=1.0, games=2, size=False, sec=True, fn=slChooseData
 0x004D19C0	quake_list	data	tier=B	hd-role	na	HD effQuake quake_list[32] (Raidou: inline array of 16-byte requests); replaces effLeaf345Work
 0x004FD150	corePktFaceDivParm	data	tier=B	smt3-ref	0.88 (n=D_r1_004FD150)	smt3-ref/loose: nfun=12, other=0, sim=1.0, games=2, size=False, sec=True, fn=corePktXfmLightClip

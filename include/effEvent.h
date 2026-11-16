@@ -44,6 +44,7 @@ void Eve_RippleBlurON(void);
 void Eve_RippleBlurOFF(void);
 void Eve_FilterON(void);
 void Eve_FilterOFF(void);
+void Eve_BlurOFF(void);
 void effEnableFramebufferQuad(void);
 void effDisableFramebufferQuad(void);
 effScreenDrawParams_t *BlurEditorGetParams(void);

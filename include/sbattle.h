@@ -6,6 +6,17 @@
 #include "kernel.h"
 #include "sdf_types.h"
 
+typedef struct SBTLMAIN_DATA {
+    sdfVector4_t pos;
+    sdfVector4_t rot;
+    f32 offset_x;
+    f32 offset_z;
+    s32 encountno;
+    s32 type;
+    s16 mode;
+    s16 stock_id;
+} SBTLMAIN_DATA;
+
 struct MOTIONDATA_WORK;
 struct SBDEBUG_CSRWORK;
 struct SBDEBUG_FILELISTWORK;

@@ -229,9 +229,10 @@ enum scr_result
 typedef enum scr_result SCR_RESULT;
 
 void cmbRefDDS3GBWK(void);
-void scrEventSkipEnd(s32 _restart, dds3ProcessID_t *pid);
+void AddUID(s32 _restart, dds3ProcessID_t *pid);
 void *scrGetData(void);
 
 void dds3GlobalWorkClearFlags(void);
 
 #endif /* SCR_H */
+void DelUID(u32 UID);

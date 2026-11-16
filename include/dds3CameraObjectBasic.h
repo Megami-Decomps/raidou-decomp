@@ -18,7 +18,9 @@ f32 dds3CameraObjectBasicGetFovy(dds3Basic_t *pBasic);
 void dds3CameraObjectBasicAlterMode(dds3Basic_t *pBasic, u32 mode);
 u32 dds3CameraObjectBasicGetMode(dds3Basic_t *pBasic);
 void dds3CameraObjectBasicSetTgtCam(dds3Basic_t *pBasic, const sdfVector4_t *tgtpos, const sdfVector4_t *campos);
-void dds3CameraObjectBasicFourceCalc(dds3Basic_t *pBasic);
+s32 dds3CameraObjectBasicFourceCalc(dds3Basic_t *pBasic);
+void dds3CameraObjectBasicGetCameraTM(dds3Basic_t *basic, const sdfVector4_t *target);
+void MakeCamera(dds3Basic_t *pBasic);
 
 extern sdfVector4_t aViewTarget;
 extern sdfVector4_t aViewEye;

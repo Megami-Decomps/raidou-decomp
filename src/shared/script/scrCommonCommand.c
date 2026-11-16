@@ -146,7 +146,6 @@ s32 scrCommand_FILTER_ALLOFF(void);
 #define SCR_PROCESS_CONTROL_FLAG 210
 
 extern void dds3FadeBackgroundStartOut(s32 duration);
-extern void fldSetFilterAnime(u32 mode);
 extern void fldSkySetAlpha(u32 alpha);
 extern void fldSkySetAlphaOfs(u32 alpha);
 extern void fldSetFadeTarget(s32 area, s32 mode, s32 frame);

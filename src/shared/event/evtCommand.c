@@ -1,6 +1,8 @@
 #include "common.h"
 #include "newdata.h"
 #include "sdf_resource.h"
+#include "code_r1_00128378.h"
+#include "fldProcess.h"
 #include "event.h"
 #include "kernel.h"
 #include "scr.h"
@@ -26,6 +28,13 @@
 #include "dds3Basic.h"
 #include "effEvent.h"
 #include "fileManager.h"
+#include "sbattle.h"
+#include "EventBit.h"
+#include "sdfSound.h"
+#include "fldFileResolver.h"
+#include "fld.h"
+#include "evtEventViewer.h"
+#include "mdlManager.h"
 #include "sdfMemory.h"
 #include "evtPolygonMovie.h"
 
@@ -579,12 +588,36 @@ u32 evtCommand_MODEL_PLAYER(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara4);
+u32 evtCallGetIntPara4(void)
+{
+    dds3Basic_t *basic;
+    s32 serialID;
+
+    basic = mapGetPlayersBasic(scrGetIntPara(0));
+    serialID = -1;
+    if (basic != NULL) {
+        serialID = basic->serialID;
+    }
+    scrSetIntReturnValue(serialID);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_DSP);
 
 #ifdef VERSION_RAIDOU1
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara);
+s32 evtCallGetIntPara(void) {
+    s32 major;
+    s32 minor;
+
+    major = scrGetIntPara(0);
+    minor = scrGetIntPara(1);
+    if (mdlPrepare(major, minor, 0) == 0 || mdlPrepare(major, minor, 0) == -1) {
+        scrSetIntReturnValue(0);
+        return 0;
+    }
+    scrSetIntReturnValue(evtLoadUnit(major, minor));
+    return 1;
+}
 #else
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallBtlCountClear);
 #endif
@@ -624,7 +657,48 @@ u32 evtCommand_MODEL_BE(void) {
     scrSetIntReturnValue(modelKey);
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtFldProcSequence);
+s32 evtFldProcSequence(void)
+{
+    s32 serial;
+    evtUnit_t *unit;
+    dds3Basic_t *obj;
+
+    serial = scrGetIntPara(0);
+    evtSetUnitPos(scrGetIntPara(0), scrGetIntPara(1));
+    if (dds3SearchProcessName(evtStrFldProcSequence) != NULL) {
+        if (serial == mapGetRaidouSerialID()) {
+            mapRaidouBackUpPosReset();
+            serial = mapGetAiboSerialID();
+            if (serial != -1) {
+                evtSetUnitPos(serial, scrGetIntPara(1));
+                effBTLFieldColorDraw();
+                mapAiboWakeUp(1);
+            }
+            serial = mapGetNakamaSerialID();
+            if (serial != -1) {
+                evtSetUnitPos(serial, scrGetIntPara(1));
+                effRefDvBasic2();
+                mapNakamaWakeUp(1);
+            } else {
+                mapNakamaOikakeBuffReset2();
+            }
+        } else if (serial == mapGetAiboSerialID2()) {
+            mapCallGetRotPoseSet();
+            effBTLFieldColorDraw();
+            mapAiboWakeUp(0);
+        } else if (serial == mapGetNakamaSerialID2()) {
+            mapCallGetRotPoseSet2();
+            effRefDvBasic2();
+            mapNakamaWakeUp(0);
+        }
+        unit = evtGetUnitHandle(scrGetIntPara(0));
+        if (unit->unk206 != 0) {
+            obj = unit->effObj;
+            mapUnitSetLight(obj, mapGetLight(obj->poseset->pos.x, obj->poseset->pos.z), 0);
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_MODEL_SHADOW_OFF);
 
@@ -812,7 +886,22 @@ INCLUDE_ASM(const s32, "event/evtCommand", evtMODELMOTION);
 #ifdef VERSION_RAIDOU1
 const char evtMsgModelMotionDeprecated[64] = "\xa2\xa8\xc3\xed\xb0\xd5\x3a\x4d\x4f\x44\x45\x4c\x5f\x4d\x4f\x54\x49\x4f\x4e\x28\x29\xa4\xb3\xa4\xce\xa5\xb3\xa5\xde\xa5\xf3\xa5\xc9\xa4\xcf\xba\xa3\xb8\xe5\xbb\xc8\xcd\xd1\xb6\xd8\xbb\xdf\xa4\xcb\xa4\xca\xa4\xea\xa4\xde\xa4\xb9\xa1\xa3\x0a";
 
-INCLUDE_ASM(const s32, "event/evtCommand", gohScrCmd_GOH_EXIT);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/001A8A58.c:1, match */
+u32 gohScrCmd_GOH_EXIT(void)
+{
+    evtUnit_t *unit;
+
+    datDebugPrintf("MODEL_MOTION2()  %08X %X\n", scrGetIntPara(0), scrGetIntPara(1));
+    unit = evtGetUnitHandle(scrGetIntPara(0));
+    if (unit == NULL) {
+        return 1;
+    }
+    evtSetUnitMotion(unit, scrGetIntPara(1), scrGetIntPara(2), scrGetIntPara(3), scrGetIntPara(4));
+    if (dds3SearchProcessName(evtStrFldProcSequence) != NULL) {
+        mapObjNpcKuseScriptStop(scrGetIntPara(0));
+    }
+    return 1;
+}
 #else
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara);
 #endif
@@ -1739,7 +1828,34 @@ u32 evtCommand_EFFECT_ROT_XYZ(void) {
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_EFFECT_POS);
+u32 evtCommand_EFFECT_POS(void) {
+    dds3Basic_t *obj;
+    dds3Basic_t *source;
+    evtWorldSourceTransformPrefix_t *vec;
+    dds3PoseSet_t *params;
+
+    obj = evtSearchBasic(7, scrGetIntPara(0));
+    if (obj == NULL) {
+        return 1;
+    }
+    source = evtSearchBasic(0x10, scrGetIntPara(1));
+    if (source == NULL) {
+        return 1;
+    }
+    vec = source->workdata;
+    if (!(((evtModelHeader_t *)obj->workdata)->flags & 4)) {
+        params = obj->poseset;
+        params->pos.x = vec->position.x;
+        params->pos.y = vec->position.y;
+        params->pos.z = vec->position.z;
+        params->rot.x = vec->rotation[0];
+        params->rot.y = vec->rotation[1];
+        params->rot.z = vec->rotation[2];
+        params->rot.w = vec->rotation[3];
+    }
+    obj->poseset->flag = (obj->poseset->flag | OBJECT_TRANSFORM_FLAG_UPDATE_PENDING) & ~OBJECT_TRANSFORM_FLAG_MATRIX_CACHE_VALID;
+    return 1;
+}
 
 s32 evtCommand_EFFMG1_POS(void)
 {
@@ -1965,7 +2081,46 @@ INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_EVENT);
 
 INCLUDE_ASM(const s32, "event/evtCommand", campDhWaitMessageEnd);
 
+#ifdef VERSION_RAIDOU1
+void CallBattleSub_evtCommand(s32 encno, s32 eventno) {
+    SBTLMAIN_DATA data;
+    sdfVector4_t pos;
+    sdfVector4_t rot;
+
+    memset(&pos, 0, 0x10);
+    pos.w = 1.0f;
+    memset(&rot, 0, 0x10);
+    rot.w = 1.0f;
+    mapRndEncParamSet();
+    p2sdPlaySE(15, 127, 63);
+    encStart();
+    data.encountno = encno;
+    data.type = 1;
+    SDF_VU0_LOADVECTOR(&pos);
+    SDF_VU0_STOREVECTOR(&data.pos);
+    SDF_VU0_LOADVECTOR(&rot);
+    SDF_VU0_STOREVECTOR(&data.rot);
+    data.stock_id = -1;
+    data.offset_x = 0.0f;
+    data.offset_z = 0.0f;
+    data.mode = 0;
+    if (encno == 31) {
+        data.mode = 1;
+    }
+    if (evtBitCheck(161) && !evtBitCheck(163)) {
+        data.mode = 2;
+    }
+    if (evtBitCheck(2993)) {
+        data.mode = 3;
+        data.stock_id = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
+    }
+    evtPendingEventSelection = eventno;
+    dds3AdminiCallSequence(19, &data, sizeof(data), 0);
+    scrAllReleaseScript();
+}
+#else
 INCLUDE_ASM(const s32, "event/evtCommand", CallBattleSub_evtCommand);
+#endif
 
 s32 evtCommand_CALL_BATTLE(void)
 {
@@ -2002,7 +2157,16 @@ s32 evtCommand_RESTORE_BATTLE(void)
     return 1;
 }
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara10);
+s32 evtCallGetIntPara10(void)
+{
+    s32 map;
+    s32 flor;
+
+    map = scrGetIntPara(0);
+    flor = scrGetIntPara(1);
+    mapCallMap(map, flor, scrGetIntPara(2), NULL);
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_CALL_FIELD2);
 #ifdef VERSION_RAIDOU2
@@ -2472,11 +2636,44 @@ s32 evtCommand_PMV_RUN(void) {
 INCLUDE_ASM(const s32, "event/evtCommand", evtCommand_PMV_RUN);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara11);
+s32 evtCallGetIntPara11(void) {
+    dds3ProcessID_t *pid;
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara12);
+    pid = scrVmIntegerToProcessHandle(scrGetIntPara(0));
+    if (dds3ExistProcess(pid)) {
+        if (!evtCheckRun(pid)) {
+            scrSetIntReturnValue(0);
+            return 1;
+        }
+        if (evtCheckSeqEnd(pid) == 1) {
+            scrSetIntReturnValue(2);
+        } else {
+            scrSetIntReturnValue(1);
+        }
+    }
+    return 1;
+}
 
-INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara13);
+s32 evtCallGetIntPara12(void) {
+    dds3ProcessID_t *pid;
+
+    pid = scrVmIntegerToProcessHandle(scrGetIntPara(0));
+    if (!dds3ExistProcess(pid)) {
+        return 1;
+    }
+    return evtCheckSeqEnd(pid) != 0;
+}
+
+s32 evtCallGetIntPara13(void) {
+    dds3ProcessID_t *pid;
+
+    pid = scrVmIntegerToProcessHandle(scrGetIntPara(0));
+    if (dds3ExistProcess(pid) && evtCheckRun(pid)) {
+        evtEnd(pid);
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM(const s32, "event/evtCommand", evtCallGetIntPara14);
 

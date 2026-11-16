@@ -223,7 +223,7 @@ extern sdfVector4_t mapCutSetCamData;
 extern sdfVector4_t mapObjTaskData;
 
 s32 fldFreeMapData(void);
-s32 mapCallSetPlayerTargetData3(f32 x, f32 z);
+s32 mapGetLight(f32 x, f32 z);
 s32 mapGetAttr(f32 x, f32 z);
 s32 mapGetAttr_Btl(f32 x, f32 z);
 void mapHitWorkCalcSetupSub(f32 *outx, f32 *outz, f32 x, f32 z);

@@ -24,12 +24,44 @@ s32 GetTblIndex(s32 EventNo) {
 
 INCLUDE_ASM(const s32, "code_r1_001CEEF8", evtGetFileNums);
 
-INCLUDE_ASM(const s32, "code_r1_001CEEF8", UpdateQue);
+void UpdateQue(evtTmxPreLoadQue_t *pQue) {
+    s32 i;
+    s32 j;
 
-INCLUDE_ASM(const s32, "code_r1_001CEEF8", SelectFreeTex);
+    for (i = 1; i >= 0; i--) {
+        if (pQue->state[i]) {
+            for (j = i; j < 1; j++) {
+                pQue->id[j] = pQue->id[j + 1];
+                pQue->arg[j] = pQue->arg[j + 1];
+                pQue->state[j] = pQue->state[j + 1];
+            }
+            pQue->state[j] = 0;
+            pQue->count--;
+        }
+    }
+}
+
+s32 SelectFreeTex(evtTmxPreLoad_t *pData) {
+    s32 i;
+    s32 j;
+    s32 found;
+
+    for (i = 0; i < pData->count; i++) {
+        found = 0;
+        for (j = 0; j < pData->que.count; j++) {
+            if (pData->que.id[j] == pData->ids[i]) {
+                found = 1;
+            }
+        }
+        if (!found) {
+            return i;
+        }
+    }
+    return 0;
+}
 
 #ifdef NON_MATCHING
-/* Draft: not yet compared with retail (the type of evtCallGetLoadSize and the word cleared after ids[count] are unconfirmed). */
+/* Draft: not yet compared with retail (the type of EndCallback_evtTmxPreLoad and the word cleared after ids[count] are unconfirmed). */
 void Start_evtTmxPreLoad(evtTmxPreLoad_t *pData) {
     char path[64];
     s32 i;
@@ -47,7 +79,7 @@ void Start_evtTmxPreLoad(evtTmxPreLoad_t *pData) {
         if (index < 0) {
             continue;
         }
-        slot = CheckActionProcessEnd(pData, id);
+        slot = GetIndexFromUID_evtTmxPreLoad(pData, id);
         if (slot >= 0) {
             pData->arg[slot] = arg;
             pData->que.state[i] = 1;
@@ -75,8 +107,8 @@ void Start_evtTmxPreLoad(evtTmxPreLoad_t *pData) {
                 pData->arg[j] = pData->arg[j + 1];
             }
             pData->count--;
-            pData->size[pData->count][0] = 0;
-            pData->size[pData->count][1] = 0;
+            pData->maskOfs[pData->count][0] = 0;
+            pData->maskOfs[pData->count][1] = 0;
             pData->tex[pData->count] = NULL;
             pData->maskTex[pData->count] = NULL;
         }
@@ -84,7 +116,7 @@ void Start_evtTmxPreLoad(evtTmxPreLoad_t *pData) {
         pData->ids[pData->count + 1] = 0;
         pData->arg[pData->count] = arg;
         pData->count++;
-        fileLoadEx(path, 0, EE_ADDR(evtCallGetLoadSize), EE_ADDR(pData));
+        fileLoadEx(path, 0, EE_ADDR(EndCallback_evtTmxPreLoad), EE_ADDR(pData));
         pData->flags |= 1;
         pData->que.state[i] = 1;
     }

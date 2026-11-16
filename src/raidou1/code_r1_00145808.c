@@ -47,7 +47,7 @@ static inline void mapObjTaskSetLight(dds3Basic_t *basic, f32 x, f32 z, s32 defa
 {
     s32 light;
 
-    light = mapCallSetPlayerTargetData3(x, z);
+    light = mapGetLight(x, z);
     if (light == 0)
     {
         light = defaultLight;
@@ -443,7 +443,7 @@ void mapObjTask(void)
                 SDF_VU0_STOREVECTOR(&rot);
                 dds3SetRotPoseSet(basic, &rot);
                 dds3OnPoseSetFlag(basic->poseset, 1);
-                mapUnitSetLight(basic, mapCallSetPlayerTargetData3(basic->poseset->pos.x, basic->poseset->pos.z), 15);
+                mapUnitSetLight(basic, mapGetLight(basic->poseset->pos.x, basic->poseset->pos.z), 15);
                 eglSetOt(23);
                 eglLinkTest(1, 1, 128, 3, 0, 0, 1, 2);
                 eglLinkAlpha(1);

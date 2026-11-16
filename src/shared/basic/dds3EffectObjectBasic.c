@@ -19,6 +19,7 @@
 #include "effManager.h"
 #include "effMagatuhi.h"
 #include "effEvent.h"
+#include "dds3AreaBasic.h"
 
 typedef struct
 {
@@ -131,6 +132,8 @@ enum {
 
 #define EFF_OBJ_OWNER_KIND_END 10
 
+#define EFF_OBJ_OWNER_KIND_EXTRA EFF_WORLD_KIND_ACTION_10
+
 #define EFF_OBJ_FLAG_OWNER_LINK 4
 
 #define EFF_OBJ_FLAG_OWNER_BILL_ENTRY 8
@@ -162,7 +165,7 @@ void FreeEffectData(dds3EffectObjectBasicWorkData_t *work);
 s32 dds3EffectObjectBasicConstructor(dds3Basic_t *aPtr);
 void dds3EffectObjectBasicDestructor(dds3Basic_t *aPtr);
 s32 dds3EffectObjectBasicDrawProcedure(dds3Basic_t *aPtr);
-dds3Basic_t *dds3AddEffectObjectBasic(u32 serialID, void *aPos, void *aRot);
+dds3Basic_t *dds3AddEffectObjectBasic(u32 serialID, const sdfVector4_t *aPos, const sdfVector4_t *aRot);
 dds3Basic_t *dds3AddP2AEffectObjectBasic3(dds3Basic_t *ebasic, void *pos, saddr_t rot);
 void dds3AddP2AEffectObjectBasic2(u32 effdata, void *pos, s32 rot);
 dds3Basic_t *dds3AddP2AEffectObjectBasic(const char *path, void *firstVector, saddr_t secondVectorAddress);
@@ -438,7 +441,7 @@ dds3ObjectBaseControlWorkData_t *dds3EffectObjectBasicGetControlWorkData(dds3Bas
     return ((dds3EffectObjectBasicWorkData_t *)pBasic->workdata)->pObjectBaseControlWorkData;
 }
 
-dds3Basic_t *dds3AddEffectObjectBasic(u32 serialID, void *aPos, void *aRot) {
+dds3Basic_t *dds3AddEffectObjectBasic(u32 serialID, const sdfVector4_t *aPos, const sdfVector4_t *aRot) {
     dds3Basic_t *obj;
     dds3EffectObjectBasicWorkData_t *data;
 
@@ -508,9 +511,46 @@ INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicAddD3
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3CallDevLoadTexList);
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddEPLEffect);
+/* body: matched in store @ 2026-11-16: /home/wsl/.local/state/raidou-decomp-work/clusters/store/raidou1/0011C888.c:1, match */
+dds3Basic_t *AddEPLEffect(effHandle_t *eff, const sdfVector4_t *pos, const sdfVector4_t *rot)
+{
+    sdfVector4_t vector;
+    dds3Basic_t *basic;
+    dds3EffectObjectBasicWorkData_t *work;
+    dds3ObjectBaseControlWorkData_t *control;
+    dds3Basic_t *area;
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicAddEPL);
+    memset(&vector, 0, sizeof(vector));
+    basic = dds3AddEffectObjectBasic(dds3AllocObjectId(), pos, rot);
+    if (basic == NULL) {
+        return NULL;
+    }
+    SDF_VU0_LOADVECTOR(pos);
+    SDF_VU0_STOREVECTOR(&vector);
+    dds3EffectSetPosition(eff, &vector);
+    work = basic->workdata;
+    work->type = EFF_OBJ_STATE_BOUND_BILL;
+    work->handle = eff;
+    work->stat = 0;
+    work->linkbasic = NULL;
+    work->linkindex = 0;
+    work->linkbasictype = 0;
+    control = dds3EffectObjectBasicGetControlWorkData(basic);
+    control->modelType = 2;
+    area = dds3AreaBasicGetFastArea();
+    if (area != NULL) {
+        control->pBasic[4] = area;
+        dds3AreaBasicRegistItem(area, basic);
+    }
+    return basic;
+}
+
+dds3Basic_t *dds3EffectObjectBasicAddEPL(void *effdata, const sdfVector4_t *pos, const sdfVector4_t *rot) {
+    effHandle_t *effect;
+
+    effect = dds3EffectLoadEPL(effdata);
+    return AddEPLEffect(effect, pos, rot);
+}
 
 INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", AddBEDEffect);
 
@@ -687,7 +727,25 @@ void dds3EffectObjectBasicStatOff(dds3Basic_t *basic, s32 s) {
     ((dds3EffectObjectBasicWorkData_t *)basic->workdata)->stat &= ~s;
 }
 
-INCLUDE_ASM(const s32, "basic/dds3EffectObjectBasic", dds3EffectObjectBasicLinkObject);
+s32 dds3EffectObjectBasicLinkObject(dds3Basic_t *basic, dds3Basic_t *target) {
+    dds3EffectObjectBasicWorkData_t *data;
+    u8 kind;
+
+    kind = ((u8 *)&target->type)[3];
+    if (kind < EFF_OBJ_OWNER_KIND_FIRST || (kind >= EFF_OBJ_OWNER_KIND_END && kind != EFF_OBJ_OWNER_KIND_EXTRA)) {
+        return 0;
+    }
+    data = basic->workdata;
+    data->linkpos[2] = 0;
+    data->linkbasic = target;
+    data->linkindex = 0;
+    data->stat |= EFF_OBJ_FLAG_OWNER_LINK;
+    data->stat &= ~EFF_OBJ_FLAG_OWNER_BILL_ENTRY;
+    data->linkpos[0] = 0;
+    data->linkbasictype = ((u8 *)&target->type)[3];
+    data->linkpos[1] = 0;
+    return 1;
+}
 
 void dds3EffectObjectBasicGetObjectIndex(dds3Basic_t *basic) {
     dds3EffectObjectBasicWorkData_t *data;

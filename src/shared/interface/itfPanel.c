@@ -4,6 +4,9 @@
 #include "itfMesManager.h"
 #include "itfMisc.h"
 #include "itfPanel.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "sdf2D.h"
 
 typedef struct itfPanelFrameData_t {
     sdfTexHandle_t *texture;
@@ -18,6 +21,13 @@ typedef struct itfPanelFrameInset_t {
 /* 0x3E8A40: nine uv rectangles; 0x3E8AD0: the four edge sizes. */
 extern s32 itfCallMiscDrawRectanglePrimData[9][4];
 extern itfPanelFrameInset_t itfCallMiscDrawRectanglePrimData2;
+
+/* UV rectangles of a 3x2 sprite panel: top row left, middle, right, then the bottom row. */
+typedef struct itfPanelSpriteUv_t {
+    s32 uv[6][4];
+} itfPanelSpriteUv_t;
+
+extern itfPanelSpriteUv_t itfCallMiscDrawSpritePrimTable;
 
 typedef sdfIVector2_t itfDrawVertex_t;
 
@@ -137,7 +147,6 @@ extern u8 itfPanelLeftFadeStripColorIndex[8];
 
 extern void (*CreateVertexTable[])();
 extern void (*CreateColorTable[])();
-extern void (*DrawTable[])(itfpanel_t *, sdfDrawTag_t *);
 
 static inline void SetVec4(u32 *vec, u32 red, u32 green, u32 blue, u32 alpha) {
     vec[0] = red;
@@ -279,13 +288,44 @@ void itfPnlSetColor(itfpanel_t *handle, s32 r, s32 g, s32 b, s32 a) {
     }
 }
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlDraw);
+void itfPnlDraw(itfpanel_t *handle, itfMesShake_t *offset, sdfGrOt_t *pot)
+{
+    sdfDrawTag_t *packetList = EE_ADDR_AS(sdfDrawTag_t *, sdfGrAllocPacketBuff(ITF_PANEL_PACKET_LIST_BYTES));
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfLeaf6);
+    sdfDrawTagInit(packetList);
+    DrawTestAlphaPrim(packetList);
+    itfPnlDrawSub(handle, offset, packetList);
+    pot->regFunc(pot, packetList);
+}
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfLeaf7);
+void itfLeaf6(s32 *src, s32 *dst)
+{
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+    dst[3] = src[3];
+}
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfPnlDrawSub);
+void itfLeaf7(s32 *dst, s32 *src)
+{
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+    dst[3] = src[3];
+}
+
+void itfPnlDrawSub(itfpanel_t *handle, itfMesShake_t *offset, sdfDrawTag_t *pdrawtag)
+{
+    s32 rect[4];
+
+    itfLeaf6(&handle->left, rect);
+    handle->left += offset->dist[0];
+    handle->top += offset->dist[1];
+    handle->right += offset->dist[0];
+    handle->bottom += offset->dist[1];
+    DrawTable_itfPanel[handle->kind](handle, pdrawtag);
+    itfLeaf7(&handle->left, rect);
+}
 
 /* Emit top/bottom vertices for four columns; collapse overlapping inner columns to the midpoint.
    Coordinates and inset remain in the renderer's native integer units. */
@@ -692,7 +732,49 @@ void itfCallMiscDrawRectanglePrim(itfpanel_t *panel, sdfDrawTag_t *tag) {
 INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawRectanglePrim);
 #endif
 
-INCLUDE_ASM(const s32, "interface/itfPanel", itfCallMiscDrawSpritePrim);
+void itfCallMiscDrawSpritePrim(itfpanel_t *panel, sdfDrawTag_t *tag)
+{
+    s32 rect[4];
+    itfPanelSpriteUv_t uv;
+    itfPanelFrameData_t *data;
+    s32 w;
+    s32 h;
+
+    data = (itfPanelFrameData_t *)panel->pwork;
+    uv = itfCallMiscDrawSpritePrimTable;
+    w = 384;
+    h = 120;
+    rect[0] = panel->left;
+    rect[1] = panel->top;
+    rect[2] = panel->left + w;
+    rect[3] = panel->top + h;
+    itfMiscDrawSpritePrim(rect, uv.uv[0], &panel->red, panel->z, data->texture, 0, tag);
+    rect[0] = panel->left;
+    rect[1] = panel->top + h;
+    rect[2] = panel->left + w;
+    rect[3] = panel->top + 240;
+    itfMiscDrawSpritePrim(rect, uv.uv[3], &panel->red, panel->z, data->texture, 0, tag);
+    rect[0] = panel->right;
+    rect[1] = panel->top;
+    rect[2] = panel->right + w;
+    rect[3] = panel->top + h;
+    itfMiscDrawSpritePrim(rect, uv.uv[2], &panel->red, panel->z, data->texture, 0, tag);
+    rect[0] = panel->right;
+    rect[1] = panel->top + h;
+    rect[2] = panel->right + w;
+    rect[3] = panel->top + 240;
+    itfMiscDrawSpritePrim(rect, uv.uv[5], &panel->red, panel->z, data->texture, 0, tag);
+    rect[0] = panel->left + w;
+    rect[1] = panel->top;
+    rect[2] = panel->right;
+    rect[3] = panel->top + h;
+    itfMiscDrawSpritePrim(rect, uv.uv[1], &panel->red, panel->z, data->texture, 0, tag);
+    rect[0] = panel->left + w;
+    rect[1] = panel->top + h;
+    rect[2] = panel->right;
+    rect[3] = panel->top + 240;
+    itfMiscDrawSpritePrim(rect, uv.uv[4], &panel->red, panel->z, data->texture, 0, tag);
+}
 
 /* Copy bounds and draw the tinted border; alpha uses the native signed 103/128 scale. */
 void itfDrawTintedPanelRect(itfpanel_t *panel, sdfDrawTag_t *command) {
@@ -706,7 +788,16 @@ void itfDrawTintedPanelRect(itfpanel_t *panel, sdfDrawTag_t *command) {
     itfDrawThreePanelBorderBands(rect, itfDrawTintedPanelRectData, panel->z, ITF_PANEL_TINT_BORDER_WIDTH, command);
 }
 
-INCLUDE_ASM(const s32, "interface/itfPanel", DrawTestAlphaPrim);
+void DrawTestAlphaPrim(sdfDrawTag_t *pdrawtag) {
+    s32 packet = sdfGrAllocPacketBuff(ITF_PANEL_STATE_PACKET_BYTES);
+    u64 *stateWords = EE_ADDR_AS(u64 *, sdf2DMakeStdPacket(packet, ITF_PANEL_STATE_PACKET_BYTES));
+
+    stateWords[4] = 0x4101B;
+    stateWords[5] = 0x47;
+    stateWords[6] = 0x44;
+    stateWords[7] = 0x42;
+    sdfDrawTagLink(pdrawtag, packet);
+}
 
 INCLUDE_SDATA(const s32, "interface/itfPanel", itfPanelSelWinLineVertexIndex_itfPanel);
 

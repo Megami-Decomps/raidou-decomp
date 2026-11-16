@@ -307,7 +307,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x003E87A8	0x00444708	itfGaugeHighlightVectors	.data	0x40	yes	code-ref
 0x003E87E8	0x00444748	CreateVertexTable	.data	0x28	no	code-ref
 0x003E8810	0x00444770	CreateColorTable	.data	0x28	no	code-ref
-0x003E8838	0x00444798	itfPnlDrawSubData	.data	0x28	no	code-ref
+0x003E8838	0x00444798	DrawTable_itfPanel	.data	0x28	no	code-ref
 0x003E8860	0x004447C0	itfPanelPayloadSize	.data	0x28	yes	code-ref
 0x003E8888	0x004447E8	itfPanelMesWinRowOffset	.data	0x10	yes	code-ref
 0x003E8898	0x004447F8	itfPanelMesWinColorRatio	.data	0x60	yes	code-ref
@@ -10467,7 +10467,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x004B7818	0x00547428	evtWork3	.bss	0x30	no	code-ref
 0x004B7848	0x00547458	evtWork4	.bss	0x30	no	code-ref
 0x004B7878	0x00547488	evtWork5	.bss	0x10	no	code-ref
-0x004B7888	0x00547498	scrEventSkipEndWork	.bss	0x88	no	code-ref
+0x004B7888	0x00547498	Data_evtCutIn	.bss	0x88	no	code-ref
 0x004B7910	0x00547520	sndCallMemsetWork	.bss	0x1000	no	code-ref
 0x004B8910	0x00548520	sndCallSeStopWork	.bss	0x4	no	code-ref
 0x004B8914	0x00548524	sndBgmTopWork	.bss	0x20	no	code-ref

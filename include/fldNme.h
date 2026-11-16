@@ -116,6 +116,8 @@ void fclFunc11(fldNmeSlotList_t *list, dds3NameChar_t *name, u32 *length);
 void fldCallMemGetPtr8(dds3ProcessID_t *id);
 dds3ProcessID_t *fldNmeProcess(void);
 void fclFunc10(fldNmeSlotList_t *list);
+void fclFunc4(fldNmeDraw_t *draw);
+void fldCallMemGetPtr5(dds3ProcessID_t *id);
 void fclLeaf22(frFontHandle_t *font, u32 index, f32 x, f32 y);
 
 /* Per-code draw offset (x, y) of the first 241 codes. */
@@ -153,3 +155,8 @@ u16 fclSetSpriteNormalSub(s32 index);
 void fclCallSetFontString(fldNmeSlotList_t *list, u16 *text, u32 n);
 
 #endif /* FLDNME_H */
+void fclCallSetFontColorNo(fldNmeDraw_t *draw, u32 page, s32 index, s32 mode, u32 col, s32 row);
+void fclFunc6(fldNmeDraw_t *draw, s32 mode, s32 index);
+void fclCallSetSelect(fldNmeDraw_t *draw, s32 flag);
+void fldCallMemGetPtr10(dds3ProcessID_t *id);
+void fldCallMemGetPtr11(dds3ProcessID_t *id);

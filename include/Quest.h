@@ -5,6 +5,6 @@
 
 void fldFunc19(void);
 void mselCallEffectDelete(void);
-s32 mselLeaf6(void);
+void mselLeaf6(void);
 
 #endif

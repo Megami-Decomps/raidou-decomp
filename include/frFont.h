@@ -6,13 +6,17 @@
 
 frFontHandle_t *MessageRequest(s32 X, s32 Y, u8 *pMsg, frFontHandle_t *pFRQ);
 s32 frDrawFontOt(frFontHandle_t *pFRQ, s8 mode, u32 ot);
-frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, void *font, s32 arg);
+frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, void *font, frFontHandle_t *pFRQ);
+u16 frGetSmallFontFRQ2Sub(u16 code);
+frFontHandle_t *frCallSetFontString(u8 *pStr, s8 Style, s8 ColNo, s8 Tp, frFontHandle_t *pFRQ);
+frFontHandle_t *frDestroyFontRequestAfterSub(frFontHandle_t *pFRQ1, frFontHandle_t *pFRQ2, s32 Mode);
 frFontHandle_t *frSetFontString(u8 *text, s8 style, s8 firstOption, s8 secondOption, frFontHandle_t *chain);
 u32 frGetStrWidth2(frFontHandle_t *pFRQ);
 s32 frDestroyFontRequestAfter(frFontHandle_t *pFRQ);
 u8 frDisableMode(u8 Flag);
 u8 frEnableMode(s32 Flag);
 u32 frGetFontHandleNum(void);
+void frCallMemFreeDirect(s32 slot);
 s32 frGetTextHandleNum(void);
 void frSetDrawPosition(frFontHandle_t *pFRQ, u32 X, u32 Y);
 s32 frCallFlushGsFontTable(frFontHandle_t *pFRQ);

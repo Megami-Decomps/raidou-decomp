@@ -171,7 +171,7 @@ typedef struct
     s32 EL_serialID;
     s32 ot;
     u32 rotationFlags; /* Bit 0 applies the additional model rotation. */
-    u8 reserved1C[4]; /* Constructor-cleared tail with no recovered access. */
+    u32 kubiTargetID; /* Serial of the point basic the head turns to; 0 returns it. */
 } dds3UnitObjectBasicWorkData_t;
 
 /* Matter-object payload. */

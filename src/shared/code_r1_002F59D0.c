@@ -11,7 +11,7 @@ extern const titleKeyTable_t evtFunc11Table;
 extern const titleKeyTable_t evtFunc11Table2;
 extern const f32 evtFunc11Data[];
 
-void evtFunc11(titleLogoState_t *state, void **sprite)
+void evtFunc11(titleCursor_t *cursor, void **sprite)
 {
     f32 size[2] = { evtFunc11Data[0], evtFunc11Data[1] };
     f32 scale[4];
@@ -19,23 +19,23 @@ void evtFunc11(titleLogoState_t *state, void **sprite)
     titleKeyTable_t keys1 = evtFunc11Table2;
     s32 i;
 
-    evtLeaf31(state->phase + 5, evtFunc9(state->frame0, keys0.key, 3), size, scale, sprite);
-    scale[0] = (f32)(6 - state->step) * 0.5f / 6.0f + 0.5f;
+    evtLeaf31(cursor->Index + 5, evtFunc9(cursor->Timer, keys0.key, 3), size, scale, sprite);
+    scale[0] = (f32)(6 - cursor->ScaleTimer) * 0.5f / 6.0f + 0.5f;
     scale[1] = 1.0f;
-    state->frame0++;
-    if (state->frame0 > keys0.key[2].frame) {
-        state->frame0 = 0;
+    cursor->Timer++;
+    if (cursor->Timer > keys0.key[2].frame) {
+        cursor->Timer = 0;
     }
     evtFunc10(9, 256, sprite);
-    if (state->phase == 3) {
+    if (cursor->Index == 3) {
         evtFunc10(10, 256, sprite);
     }
     for (i = 0; i < 5; i++) {
-        evtFunc10(i + 11, evtFunc9(state->frame1, keys1.key, 3) * state->weight[i] / 128, sprite);
+        evtFunc10(i + 11, evtFunc9(cursor->Timer2, keys1.key, 3) * cursor->ItemAlpha[i] / 128, sprite);
     }
-    state->frame1++;
-    if (state->frame1 > keys1.key[2].frame) {
-        state->frame1 = 0;
+    cursor->Timer2++;
+    if (cursor->Timer2 > keys1.key[2].frame) {
+        cursor->Timer2 = 0;
     }
 }
 #else

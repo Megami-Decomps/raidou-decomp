@@ -1335,7 +1335,7 @@ void RunFrame1(evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 
         break;
     case 33:
         if (evtChkUID(frame->p08.sh[1]) == 0 && frame->p08.sh[1] > 0) {
-            evtCutInCreate(&pInfo->nowframe, pmv_pid, frame->p0C.sh[0] * 16, frame->p0C.sh[1] * 8, 0,
+            evtStart(&pInfo->nowframe, pmv_pid, frame->p0C.sh[0] * 16, frame->p0C.sh[1] * 8, 0,
                            frame->frame, frame->p08.sh[0],
                            ((frame->p10.sb[0] + 1) << 16) | (frame->p10.sb[1] + 1), frame->p08.sh[1]);
         }
