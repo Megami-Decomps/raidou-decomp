@@ -41,6 +41,22 @@ void dds3SoftReset(void) {
 """
 
 
+class BatchTests(unittest.TestCase):
+    def test_nonmatches_under_a_distance(self) -> None:
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            batch = Path(tmp) / "batches" / "R09-x"
+            batch.mkdir(parents=True)
+            (Path(tmp) / "batches.tsv").write_text("batch\tname\taddr\twords\tunit\n"
+                                                   "R09-x\tf\t0\t9\tsrc/shared/u\nR09-x\tg\t0\t9\tsrc/shared/u\n"
+                                                   "R09-x\th\t0\t9\tasm/raidou1/v\n")
+            (batch / "results.tsv").write_text("name\twords\tresult\nf\t9\tnonmatch 3 words\n"
+                                               "g\t9\tnonmatch 30 words\nh\t9\tnonmatch 2 words\n")
+            got = perm_unit.batch_nonmatches(batch, 10)
+            self.assertEqual([(u, f, d.name) for u, f, d in got],
+                             [("src/shared/u.c", "f", "f.c"), ("src/raidou1/v.c", "h", "h.c")])
+
+
 class SpliceTests(unittest.TestCase):
     def test_candidate_replaces_the_include_asm_line(self) -> None:
         template, full, include_asm = perm_unit.splice(UNIT, DRAFT, "dds3SoftReset")

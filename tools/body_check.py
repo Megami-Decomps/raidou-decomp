@@ -219,3 +219,63 @@ def try_compile(root: Path, python: str, unit: str, name: str, body: str, versio
         if line.startswith(("OVER ", "CONTEXT ")) and f" {name}" in line:
             return Tried("diff")
     return Tried("other")
+
+
+SIZE_RANGE = (0.5, 2.0)
+DECL = re.compile(r"^([^#\n;{}()]*?)\b(\w+)\s*\(([^;{}]*)\)\s*;", re.M)
+
+
+def size_ratio(ident: Identity) -> float:
+    """The hit's word count over the Raidou function's."""
+    mine, theirs = ident.words
+    return theirs / mine if mine else 0.0
+
+
+def size_ok(ident: Identity | None) -> bool:
+    return ident is None or SIZE_RANGE[0] <= size_ratio(ident) <= SIZE_RANGE[1]
+
+
+def split_params(params: str) -> list[str] | None:
+    """Top-level parameters; None for a variadic or unprototyped list."""
+    out, depth, cur = [], 0, ""
+    for c in params:
+        depth += (c == "(") - (c == ")")
+        if c == "," and depth == 0:
+            out.append(cur.strip())
+            cur = ""
+        else:
+            cur += c
+    out.append(cur.strip())
+    if "..." in out:
+        return None
+    return [] if out in ([""], ["void"]) else out
+
+
+def prototypes(root: Path) -> dict[str, tuple[str, str]]:
+    """Function name -> (return part, parameter list) of its first declaration in include/."""
+    out: dict[str, tuple[str, str]] = {}
+    for path in sorted((root / "include").rglob("*.h")):
+        for m in DECL.finditer(path.read_text(errors="replace")):
+            if m.group(1).strip() and not m.group(1).lstrip().startswith(("typedef", "return")):
+                out.setdefault(m.group(2), (m.group(1), m.group(3)))
+    return out
+
+
+def signature(body: str, name: str) -> tuple[str, str] | None:
+    """(return part, parameter list) of a definition."""
+    m = re.search(rf"^([^{{;]*?)\b{re.escape(name)}\s*\(([^{{;]*)\)\s*\{{", body, re.M | re.S)
+    return (m.group(1), m.group(2)) if m else None
+
+
+def returns_void(ret: str) -> bool:
+    return re.search(r"\bvoid\b", ret) is not None and "*" not in ret
+
+
+def proto_differs(proto: tuple[str, str] | None, sig: tuple[str, str] | None) -> bool:
+    """Parameter count or void return differ between the Raidou prototype and the hit's definition."""
+    if proto is None or sig is None:
+        return False
+    a, b = split_params(proto[1]), split_params(sig[1])
+    if a is not None and b is not None and len(a) != len(b):
+        return True
+    return returns_void(proto[0]) != returns_void(sig[0])

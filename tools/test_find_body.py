@@ -161,6 +161,19 @@ class CompileTests(unittest.TestCase):
         ident = body_check.Identity((10, 12), 1.0, 0.9)
         self.assertEqual(find_body.source_label("near", hit, ident), "near:smt3:matched:alias:0.91")
         self.assertEqual(find_body.source_label("none", None, None), "none")
+        self.assertEqual(find_body.source_label("other", hit, ident, ["size 0.3x", "proto differs"]),
+                         "other:smt3:matched:alias:0.91:size 0.3x, proto differs")
+
+    def test_size_and_prototype_flags(self) -> None:
+        self.assertFalse(body_check.size_ok(body_check.Identity((100, 30), 0, 0)))
+        self.assertTrue(body_check.size_ok(body_check.Identity((100, 150), 0, 0)))
+        self.assertEqual(body_check.split_params("void (*cb)(s32, s32), s32 n"), ["void (*cb)(s32, s32)", "s32 n"])
+        self.assertIsNone(body_check.split_params("char *fmt, ..."))
+        sig = body_check.signature("s32 f(s32 a) {\n    return a;\n}\n", "f")
+        self.assertEqual(sig, ("s32 ", "s32 a"))
+        self.assertTrue(body_check.proto_differs(("s32 ", "s32 a, void *info"), sig))
+        self.assertTrue(body_check.proto_differs(("void ", "s32 a"), sig))
+        self.assertFalse(body_check.proto_differs(("extern s32 ", "s32"), sig))
 
 
 if __name__ == "__main__":

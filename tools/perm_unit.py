@@ -2,6 +2,7 @@
 """Run decomp-permuter on a draft compiled inside its real unit, for one or both games.
 
     tools/perm_unit.py import src/shared/effect/billManager.c dds3Billboard_P2ADraw [draft.c]
+    tools/perm_unit.py import --all-under 10 --batch D    # every nonmatch in D/results.tsv under 10 words
     python3 ../decomp-permuter/permuter.py build/permuter/shared_dds3Billboard_P2ADraw -j8 --best-only --stop-on-zero
 
 `import` writes build/permuter/<shared|raidou1|raidou2>_<func>/. Without a draft file it
@@ -317,6 +318,41 @@ def cmd_import(a: argparse.Namespace) -> None:
     print(out)
 
 
+def batch_nonmatches(batch: Path, under: int) -> list[tuple[str, str, Path]]:
+    """(unit, function, draft) for each results.tsv row of a batch directory recorded "nonmatch N" with N < under."""
+    sys.path.insert(0, str(ROOT / "tools" / "batch"))
+    import batch_files
+    b = batch_files.load(batch)
+    return [(row.source, row.name, batch / f"{row.name}.c") for row in b.rows.values()
+            if row.nonmatch is not None and row.nonmatch < under]
+
+
+def cmd_import_all(a: argparse.Namespace) -> None:
+    dirs, failed = [], []
+    for unit, fn, draft in batch_nonmatches(Path(a.batch).resolve(), a.all_under):
+        if not (ROOT / unit).exists() or not draft.exists():
+            failed.append(f"{fn}: no {unit if not (ROOT / unit).exists() else draft}")
+            continue
+        one = argparse.Namespace(unit=str(ROOT / unit), func=fn, draft=str(draft), version=a.version, out=None)
+        try:
+            try:
+                cmd_import(one)
+            except ImportError as e:
+                raise SystemExit(f"perm_unit: {e}; import needs pycparser and toml") from e
+            tag = unit.split("/")[1] if len(unit_versions(unit)) > 1 and not a.version else (a.version or
+                                                                                          unit_versions(unit)[0])
+            dirs.append(ROOT / "build/permuter" / f"{tag}_{fn}")
+        except (SystemExit, subprocess.CalledProcessError, ValueError) as e:
+            failed.append(f"{fn}: {e}")
+    for d in dirs:
+        print(f"timeout 600 {sys.executable} {permuter_dir() / 'permuter.py'} {d} -j4 --best-only "
+              "--stop-on-zero --quiet")
+    for line in failed:
+        print(f"not imported: {line}", file=sys.stderr)
+    if failed:
+        raise SystemExit(1)
+
+
 def cmd_cc(a: argparse.Namespace) -> None:
     """Compile the candidate (or TARGET, the INCLUDE_ASM body) for each game: the first
     game's object is the output, the others go beside it as <output>.<game>."""
@@ -389,9 +425,12 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("import", help="set up a permuter directory for a draft")
-    p.add_argument("unit")
-    p.add_argument("func")
+    p.add_argument("unit", nargs="?")
+    p.add_argument("func", nargs="?")
     p.add_argument("draft", nargs="?", help="file holding the draft; default the unit's NON_MATCHING draft")
+    p.add_argument("--all-under", type=int, metavar="N",
+                   help="import every results.tsv nonmatch under N words of --batch, its draft D/NAME.c")
+    p.add_argument("--batch", help="batch directory for --all-under")
     p.add_argument("--version", choices=VERSIONS, help="only this game of a shared unit")
     p.add_argument("-o", "--out")
     p = sub.add_parser("cc", help="compile hook used by the directory's compile.sh")
@@ -401,7 +440,13 @@ def main() -> None:
     p = sub.add_parser("objdump", help="dump hook used by the directory's settings.toml")
     p.add_argument("args", nargs="+")
     a = ap.parse_args()
-    if a.cmd == "import":
+    if a.cmd == "import" and a.all_under is not None:
+        if not a.batch or a.unit:
+            ap.error("--all-under takes --batch D and no unit or function")
+        cmd_import_all(a)
+    elif a.cmd == "import":
+        if not (a.unit and a.func):
+            ap.error("import needs a unit and a function, or --all-under N --batch D")
         cmd_import(a)
     elif a.cmd == "cc":
         cmd_cc(a)

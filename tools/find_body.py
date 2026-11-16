@@ -17,7 +17,8 @@ import body_check
 EPILOG = ("Trees are read at a git revision (default origin/main); identity uses each tree's build/ ELF. "
           "A hit is matched, nonmatching (a NON_MATCHING draft in its tree) or disabled (#if 0). "
           "body_source is CLASS:TREE:STATUS:VIA:CONFIDENCE, CLASS one of match, near (usable), adapt, rework, "
-          "other (reference only), found (not compiled), or none.")
+          "other (reference only), found (not compiled), or none; then flags: size Nx (outside 0.5-2x, left out "
+          "of the counts) and proto differs (parameter count or void return against include/).")
 ROOT = Path(__file__).resolve().parents[1]
 HOME = Path.home()
 BATCHES = HOME / ".local/state/raidou-decomp-work/port/rest/batches.tsv"
@@ -260,6 +261,7 @@ class Checker:
         rd = ROOT / "build" / version / f"{VERSIONS_SERIAL[version]}.elf"
         self.raidou = body_check.Image(rd) if rd.exists() else None
         self.images = {t.name: body_check.tree_images(t.name, t.repo, t.rev) for t in trees}
+        self.protos = body_check.prototypes(ROOT)
         self.alias_at = {}
         for a in set(names.alias) | set(names.hd):
             self.alias_at[a] = set(names.alias.get(a, ())) | ({names.hd[a]} if a in names.hd else set())
@@ -288,12 +290,26 @@ class Checker:
                 return body_check.identity(mine, theirs)
         return None
 
+    def flags(self, name, hit, ident):
+        out = []
+        if not body_check.size_ok(ident):
+            out.append(f"size {body_check.size_ratio(ident):.1f}x")
+        if body_check.proto_differs(self.protos.get(name), body_check.signature(hit.body, hit.found)):
+            out.append("proto differs")
+        return out
+
     def check(self, name, addr, words, unit, hits):
-        """(class, best hit, identity, compile result); class is one of CLASSES."""
-        if not hits:
-            return "none", None, None, None
+        """(class, best hit, identity, compile result, flags); class is one of CLASSES."""
+        cls, hit, ident, tried = self.classify(name, addr, words, unit, hits)
+        return cls, hit, ident, tried, (self.flags(name, hit, ident) if hit else [])
+
+    def classify(self, name, addr, words, unit, hits):
         mine = self.raidou_profile(name, addr, words)
         scored = [(h, self.identity(mine, h)) for h in hits]
+        # An alias or HD name is only a lead: its hit needs a size within 2x to be listed.
+        scored = [(h, i) for h, i in scored if h.via == "name" or body_check.size_ok(i)]
+        if not scored:
+            return "none", None, None, None
         # A hit that is the same function beats a better ranked one that is not.
         same = [(h, i) for h, i in scored if i is None or i.confidence >= body_check.SAME_FUNCTION]
         hit, ident = (same or scored)[0]
@@ -318,11 +334,11 @@ GROUPS = {"match": "usable", "near": "usable", "adapt": "adapt", "rework": "refe
 VERSIONS_SERIAL = {"raidou1": "SLUS_214.31", "raidou2": "SLUS_218.45"}
 
 
-def source_label(cls, hit, ident):
+def source_label(cls, hit, ident, flags=()):
     if hit is None:
         return "none"
-    conf = f":{ident.confidence:.2f}" if ident else ""
-    return f"{cls}:{hit.label()}{conf}"
+    conf = f":{ident.confidence:.2f}" if ident else ":"
+    return f"{cls}:{hit.label()}{conf}" + (f":{', '.join(flags)}" if flags else "")
 
 
 def main():
@@ -360,27 +376,31 @@ def main():
     names = Names(a.version, a.hd)
     checker = Checker(names, trees, a.version, a.compile)
 
-    sources, counts, errors = {}, {}, {}
+    sources, counts, errors, groups = {}, {}, {}, {}
     for batch, name, addr, words, unit in todo:
         lookups = names.lookups(name, addr)
         hits = find_bodies(trees, lookups)
         addr = addr if addr is not None else names.addr.get(name)
-        cls, best, ident, tried = checker.check(name, addr, words, unit, hits)
+        cls, best, ident, tried, flags = checker.check(name, addr, words, unit, hits)
         counts[cls] = counts.get(cls, 0) + 1
+        # A hit off by more than 2x in size is left out of the usable and reference counts.
+        group = "flagged" if any(f.startswith("size") for f in flags) else GROUPS[cls]
+        groups[group] = groups.get(group, 0) + 1
         for cause, msgs in (tried.errors if tried else {}).items():
             errors.setdefault(cause, []).extend(f"{name}: {m}" for m in msgs)
-        label = source_label(cls, best, ident)
+        label = source_label(cls, best, ident, flags)
         if batch:
             sources[(batch, name)] = label
         if a.write and best:
             a.write.mkdir(parents=True, exist_ok=True)
-            note = f", same function {ident.text()}" if ident else ""
+            note = (f", same function {ident.text()}" if ident else "") + "".join(f", {f}" for f in flags)
             (a.write / f"{name}.c").write_text(
                 f"/* body: {best.status} in {best.tree} @ {best.rev}: {best.path}:{best.line}, {cls}{note} */\n"
                 + renamed(best.body, best.found, name))
         if a.summary:
             where = f"{best.tree}@{best.rev}:{best.path}:{best.line}" if best else ""
-            extra = "\t".join(x for x in (ident.text() if ident else "", tried.text() if tried else "") if x)
+            extra = "\t".join(x for x in (ident.text() if ident else "", tried.text() if tried else "",
+                                         ", ".join(flags)) if x)
             print(f"{name}\t{label}\t{where}" + (f"\t{extra}" if extra else ""))
             continue
         others = ", ".join(n for n, via in lookups[1:])
@@ -388,7 +408,7 @@ def main():
         if not hits:
             print("-- no body\n")
         print(f"-- class {cls}" + (f", same function {ident.text()}" if ident else "")
-              + (f", compile {tried.text()}" if tried else ""))
+              + (f", compile {tried.text()}" if tried else "") + "".join(f", {f}" for f in flags))
         for msgs in (tried.errors if tried else {}).values():
             for m in msgs[:5]:
                 print(f"   {m}")
@@ -398,9 +418,6 @@ def main():
                 print(renamed(h.body, h.found, name))
     if a.set_column:
         set_column(a.batches, sources)
-    groups = {}
-    for cls, n in counts.items():
-        groups[GROUPS[cls]] = groups.get(GROUPS[cls], 0) + n
     print("# " + (f"{a.batch}: " if a.batch else "") + ", ".join(f"{c} {counts[c]}" for c in CLASSES if c in counts)
           + " (" + ", ".join(f"{g} {n}" for g, n in sorted(groups.items())) + ")", file=sys.stderr)
     if errors:
