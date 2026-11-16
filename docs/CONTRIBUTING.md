@@ -17,7 +17,7 @@ localized compiler constraint is allowed through the `FAKEMATCH_ASM_*` macros
 in `include/common.h` (register binding, a value held live or read, a retail
 symbol name); a unit never spells `asm` itself. The macros are a last resort,
 after real types, prototypes, statement order and the lever index have failed;
-the function's docs/matching entry records what was tried. A close
+the function's docs/matching entry records what was tried in a `Fakematch:` line, and `docs_index.py --check` fails a function that uses a macro without one. A close
 reconstruction stays `INCLUDE_ASM` with its best draft preserved (below).
 
 Raw offsets usually mean a struct is wrong, not that the function is hard.

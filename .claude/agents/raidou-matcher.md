@@ -96,7 +96,7 @@ Per function, in this order:
   Never spell `asm` in a unit; add a macro to common.h if a form is missing. The macros are a
   last resort: first try the real types, prototypes, return values, statement order, temporaries
   and the lever index. Use one only when those fail, and record what was tried in the function's
-  docs/matching entry (`Fakematch:` line). A land report counts the new uses. A raw offset means a struct
+  docs/matching entry (`Fakematch:` line; a matched function gets an entry for it, and `docs_index.py --check` fails without one). A land report counts the new uses. A raw offset means a struct
   is wrong: fix the type for Raidou in T/include (per-game definition if the games differ)
   and write the field access.
 - Names follow the game convention with no exceptions: SMT3 name, else HD name, else
