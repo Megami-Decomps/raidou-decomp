@@ -8,6 +8,7 @@ frFontHandle_t *MessageRequest(s32 X, s32 Y, u8 *pMsg, frFontHandle_t *pFRQ);
 s32 frDrawFontEx2(frFontHandle_t *pFRQ, s32 mode, s32 ot);
 frFontHandle_t *frwGetSmallFontFRQ2(s32 x, s32 y, s32 z, u32 color, void *font, s32 arg);
 frFontHandle_t *frSetFontString(u8 *text, s8 style, s8 firstOption, s8 secondOption, frFontHandle_t *chain);
+u32 frGetStrWidth2(frFontHandle_t *pFRQ);
 s32 frDestroyFontRequestAfter(frFontHandle_t *pFRQ);
 u8 frDisableMode(u8 Flag);
 u8 frEnableMode(s32 Flag);

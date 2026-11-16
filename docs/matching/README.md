@@ -20,6 +20,7 @@ menu scenarios); an entry says which paths they covered.
 | 10 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
 | 9 | sbtlDMG | raidou1 | [sbtlDMG.md](sbtlDMG.md) |
+| 5 | code_0015D490 | raidou1 | [code_0015D490.md](code_0015D490.md) |
 | 5 | code_0028EB80 | raidou1 | [code_0028EB80.md](code_0028EB80.md) |
 | 5 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |

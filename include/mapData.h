@@ -610,12 +610,35 @@ typedef struct mapCallBitCheckData_t {
 extern mapCallBitCheckData_t mapCallBitCheckData[96];
 
 /* The other MAPALL.TBL tables, loaded by fldAllTblLoad. */
-extern u8 mapData[6400];
+/* Place names shown on the map screen, one per map, floor and cut. */
+typedef struct mapCutName_t {
+    s16 map;
+    s16 floor;
+    s16 cut;
+    s16 visited;
+    u8 name[32];
+} mapCutName_t;
+
+extern mapCutName_t mapData[160];
 extern u8 mapData2[3456];
 extern u8 nbCallGetIntParaData[4096];
 extern u8 mapData3[1024];
-extern u8 p2sdData[1536];
-extern u8 mapData4[5120];
+extern s16 p2sdData[48][16];
+/* Ambient (kankyo) sound effect per map: its volume for each cut of the map. */
+typedef struct fldSeCutVol_t {
+    u8 cut;
+    u8 vol;
+} fldSeCutVol_t;
+
+typedef struct fldSeId_t {
+    s32 map;
+    s32 floor;
+    s32 se;
+    s32 waittime;
+    fldSeCutVol_t cutvol[32];
+} fldSeId_t;
+
+extern fldSeId_t mapData4[64];
 extern s8 mapData5[48][64];
 extern u8 fldData2[48];
 extern u8 mapMapObjectRefreshData[512];
@@ -773,7 +796,7 @@ typedef struct mefMistParticle_t {
     f32 pos[2];
     u8 unk08[8];
     f32 velocity[2];
-    u8 unk18[0x58 - 0x18];
+    s32 rgba[4][4];
     u32 lifeCnt;
     u32 deathCnt;
     u32 fExist;

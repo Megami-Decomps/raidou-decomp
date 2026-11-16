@@ -30,7 +30,7 @@ void GetElement(u32 *segment, f32 *weight, struct mapNpcPathData_t *pData, f32 f
 void PositioningGuardSystem(s32 ix, s32 iy, f32 *x, f32 *z);
 void ProcMskSub_B(void);
 s32 ProcRandomEncountCheck(void);
-s32 datInitBossPress(void);
+void datInitBossPress(void);
 void encDrawBokasi0(void);
 s32 encLoad(void);
 void encMode(s32 mode);
@@ -185,7 +185,7 @@ void mapScreenCutReset(s32 cut, f32 x, f32 y, f32 z);
 void mapScreenReset(void);
 void mapSeWallHit(s32 hit);
 void mapSoundMoveSeTask(void);
-s32 mapSoundSmgLoadChk(s32 map);
+void mapSoundSmgLoadChk(s32 map);
 void mapSpotPointDrawEndChk(void);
 s32 mapSpotPointDrawStart(void);
 void mapSpotPointDrawStart2(void);

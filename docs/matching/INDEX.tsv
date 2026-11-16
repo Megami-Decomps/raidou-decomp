@@ -27,6 +27,11 @@ mapCallSetPlayerTargetData6	code_00153438	raidou1 0x70	12 of 28 words differ	doc
 mapCutSet_From_Pos	code_00153438	raidou1 0x204	1 of 129 words differ	docs/matching/code_00153438.md	67	
 mapSpotPointDrawEndChk	code_00157CD0	raidou1 0xA4	2 of 41 words differ	docs/matching/code_00157CD0.md	3	
 mefMistFastCreate	code_00157CD0	raidou1 0x158	4 of 86 words differ	docs/matching/code_00157CD0.md	11	
+mapSoundKankyoTaskSub	code_0015D490	raidou1 0x5C	13 of 23 words differ	docs/matching/code_0015D490.md	3	
+mapSeNakamaDelayTask	code_0015D490	raidou1 0x74	10 of 29 words differ	docs/matching/code_0015D490.md	11	
+mapSeWallHit	code_0015D490	raidou1 0x58	8 of 22 words differ	docs/matching/code_0015D490.md	19	
+mapIfDrawES	code_0015D490	raidou1 0x33C	55 of 207 words differ	docs/matching/code_0015D490.md	27	
+mapCallEnableMode	code_0015D490	raidou1 0x29C	78 of 165 words differ	docs/matching/code_0015D490.md	35	
 encCallPrimAllocDrawTag2	code_00173D20	raidou1 0x1F0	41 of 124 words differ	docs/matching/code_00173D20.md	3	
 cmbCallSetUserImage	code_00181858	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00181858.md	3	
 cmbRefDDS3GBWK	code_00181858	raidou1 0xD0	7 of 52 words differ	docs/matching/code_00181858.md	11	

@@ -72,7 +72,7 @@ s32 fldEncountTestFlag(u32 flag);
 void fldEncountSetFlag(u32 flag);
 s32 fldLeaf6(struct dds3PoseSet_t *pose, struct dds3Basic_t *basic);
 void mapSoundKankyoSeSet(s32 map, s32 floor, s32 cut);
-s32 mapSoundSmgLoadChk(s32 map);
+void mapSoundSmgLoadChk(s32 map);
 void p2sdPlaySE_Vol(s32 se, s32 vol);
 s32 mapBigClipChkF(s32 cut, f32 x, f32 y, f32 z);
 void mapBadEffLoad(s32 slot, s32 status);

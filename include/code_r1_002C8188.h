@@ -22,6 +22,7 @@ struct sprHandle_t *effCreateResourceSlotSet(struct sprHandle_t *borrowedSource,
 void effInitializeSlotWork(struct sprHandle_t *owner, s32 slotIndex);
 
 u32 effDestroyResourceSlotSet(struct sprHandle_t *owner);
+void effReleaseTextureHandlesAndResetSlots(struct sprHandle_t *set);
 
 struct effMappedResource_t;
 
