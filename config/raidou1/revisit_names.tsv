@@ -7535,7 +7535,7 @@
 0x0041A628	sbtlCallDestroyFontRequestAfterData	data	tier=D	derived-dominant	na	used by sbtlCallDestroyFontRequestAfter (4 of 6 refs, 2 functions)
 0x0041A660	sbtlGetBSTNameFontData	data	tier=D	derived-sole	na	used by sbtlGetBSTNameFont
 0x0041A6B0	sbtlSobedSABData	data	tier=D	derived-sole	na	used by sbtlSobedSAB
-0x0041AE70	OnDataLoadProcData	data	tier=D	derived-shared	na	used by 3 functions: OnDataLoadProc, LoadOnMemoryData_sbtlEff, btlLoadSbPack
+0x0041AEA0	sbtl_effonfilepath	data	tier=D	derived-table	na	EPL paths per sbtl_effonfilecheck kind, no code reader
 0x0041AF50	LoadOnMemoryData_sbtlEffData2	data	tier=D	derived-sole	na	used by LoadOnMemoryData_sbtlEff
 0x0041B038	sbtlCallMemset17Data	data	tier=D	derived-sole	na	used by sbtlCallMemset17
 0x0041B0B0	sbtlCallPadVibeFadeUpdateData	data	tier=D	derived-sole	na	used by sbtlCallPadVibeFadeUpdate
@@ -19390,6 +19390,7 @@
 0x00417060	effColorEditRgbMenu	data	tier=C	dds-ref	0.59 (n=D_r1_00417060)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=effEditColorTrack
 0x004172D8	effMappingState	data	tier=C	dds-ref	0.59 (n=D_r1_004172D8)	dds-ref/exact: nfun=20, other=0, sim=1.0, games=2, size=True, sec=True, fn=effResetMappingFlags
 0x004175D0	main_data	data	tier=C	hd	0.47 (n=D_r1_004175D0)	hd/high: conf=high, agree=3, using=3
+0x0041AE70	sbtl_effonfilecheck	data	tier=C	hd	na	HD sBtlEff.c s8 *sbtl_effonfilecheck, read by OnDataLoadProc and LoadOnMemoryData_sbtlEff
 0x0041E870	evtStageTestState	data	tier=C	dds-ref	0.59 (n=D_r1_0041E870)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=False, fn=SceneDel_Calc
 0x004352D0	effPktDefaultFaceIndex2	data	tier=C	smt3-ref	0.88 (n=None)	smt3-ref/loose: nfun=1, other=0, sim=1.0, games=1, size=False, sec=True, fn=evtCallMemcpy; effPktDefaultFaceIndex is another symbol
 0x0043BB40	ModelTable	data	tier=C	hd	0.37 (n=D_r1_0043BB40)	hd/medium: conf=medium, agree=2, using=2

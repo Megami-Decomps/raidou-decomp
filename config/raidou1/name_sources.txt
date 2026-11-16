@@ -13840,7 +13840,8 @@
 0x0041A628	sbtlCallDestroyFontRequestAfterData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCallDestroyFontRequestAfter (4 of 6 refs, 2 functions)
 0x0041A660	sbtlGetBSTNameFontData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetBSTNameFont
 0x0041A6B0	sbtlSobedSABData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlSobedSAB
-0x0041AE70	OnDataLoadProcData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: OnDataLoadProc, LoadOnMemoryData_sbtlEff, btlLoadSbPack
+0x0041AE70	sbtl_effonfilecheck	inferred	method=hd; p=na; tier=C; source=hd; evidence=HD sBtlEff.c s8 *sbtl_effonfilecheck, read by OnDataLoadProc and LoadOnMemoryData_sbtlEff
+0x0041AEA0	sbtl_effonfilepath	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=EPL paths per sbtl_effonfilecheck kind, no code reader
 0x0041AF50	LoadOnMemoryData_sbtlEffData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by LoadOnMemoryData_sbtlEff
 0x0041B038	sbtlCallMemset17Data	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallMemset17
 0x0041B0B0	sbtlCallPadVibeFadeUpdateData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallPadVibeFadeUpdate

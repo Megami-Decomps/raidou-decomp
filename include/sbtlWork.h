@@ -250,7 +250,7 @@ extern char *sbtlData17[20];
 #endif
 extern SBTL_PACK_SLOT btlLoadSbPackData[SBTL_PACK_SLOT_COUNT];
 extern s32 btlLoadSbPackData2;
-extern s8 OnDataLoadProcData[];
+extern s8 sbtl_effonfilecheck[];
 
 /* One file held for a model in SBTL_PACDATA. */
 typedef struct SBTL_PACDATA_FILE {

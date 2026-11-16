@@ -15603,7 +15603,8 @@
 0x00478C40	sbtlGetMeireiFontData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetMeireiFont
 0x00478C78	sbtlCallDestroyFontRequestAfterData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by sbtlCallDestroyFontRequestAfter (4 of 6 refs, 2 functions)
 0x00478CB0	sbtlGetBSTNameFontData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlGetBSTNameFont
-0x00479B40	OnDataLoadProcData	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: OnDataLoadProc, LoadOnMemoryData_sbtlEff, btlLoadSbPack
+0x00479B40	sbtl_effonfilecheck	inferred	method=hd; p=na; tier=C; source=hd; evidence=R1 pair
+0x00479B70	sbtl_effonfilepath	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=R1 pair
 0x00479C28	sbtlCallPartsCreateFinishData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlCallPartsCreateFinish
 0x00479D68	sbtlData129	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: sbtlCreateEff, sbtlCallMemset9
 0x00479E08	sbtlListProcData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sbtlListProc

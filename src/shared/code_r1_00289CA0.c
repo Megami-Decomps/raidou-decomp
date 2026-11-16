@@ -24,7 +24,7 @@ s32 btlLoadSbPack(void)
     pacSync(pac);
     for (resrc = pac->pac.resrcHead; resrc != NULL; resrc = resrc->next) {
         i = ((sdfPacStdBlockHeader_t *)resrc->header)->kind;
-        if (OnDataLoadProcData[i] == 0 || OnDataLoadProcData[i] == 2) {
+        if (sbtl_effonfilecheck[i] == 0 || sbtl_effonfilecheck[i] == 2) {
             void *srcPtr;
             s32 size;
             void *dst;
@@ -49,6 +49,86 @@ s32 btlLoadSbPack(void)
     return 1;
 }
 #ifdef VERSION_RAIDOU1
+extern const char rodatStrBattleOneplAbsorbEpl[];
+extern const char rodatStrBattleOneplAgiSlipEpl[];
+extern const char rodatStrBattleOneplAutorecovEpl[];
+extern const char rodatStrBattleOneplBufSlipEpl[];
+extern const char rodatStrBattleOneplConbAuraEpl[];
+extern const char rodatStrBattleOneplDamYuka1Epl[];
+extern const char rodatStrBattleOneplDamYuka2Epl[];
+extern const char rodatStrBattleOneplDamYukaEpl[];
+extern const char rodatStrBattleOneplDamageR21Epl[];
+extern const char rodatStrBattleOneplDamageR2Epl[];
+extern const char rodatStrBattleOneplDead00Epl[];
+extern const char rodatStrBattleOneplDead01Epl[];
+extern const char rodatStrBattleOneplDead02Epl[];
+extern const char rodatStrBattleOneplDeadYuka1Epl[];
+extern const char rodatStrBattleOneplDeadYuka2Epl[];
+extern const char rodatStrBattleOneplDeadYukaEpl[];
+extern const char rodatStrBattleOneplEncountEpl[];
+extern const char rodatStrBattleOneplGuardEpl[];
+extern const char rodatStrBattleOneplInvalidEpl[];
+extern const char rodatStrBattleOneplJioSlipEpl[];
+extern const char rodatStrBattleOneplKaitenEpl[];
+extern const char rodatStrBattleOneplMikDam2Epl[];
+extern const char rodatStrBattleOneplShoukanEEpl[];
+extern const char rodatStrBattleOneplShoukanEpl[];
+extern const char rodatStrBattleOneplStonedeadEpl[];
+extern const char rodatStrBattleOneplSummonNoEpl[];
+extern const char rodatStrBattleOneplZanSlipEpl[];
+
+s8 sbtl_effonfilecheck[48] = {
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+    2, 2, 2, 2, 2, 1, 2, 2, 1, 1, 1, 1, 1, 1, 2, 1,
+    1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1,
+};
+
+const char *sbtl_effonfilepath[44] = {
+    rodatStrBattleOneplDamYuka1Epl,
+    rodatStrBattleOneplDamYuka2Epl,
+    rodatStrBattleOneplShoukanEpl,
+    rodatStrBattleOneplDamageR2Epl,
+    rodatStrBattleOneplDeadYukaEpl,
+    rodatStrBattleOneplDeadYuka1Epl,
+    rodatStrBattleOneplStonedeadEpl,
+    rodatStrBattleOneplDeadYuka2Epl,
+    rodatStrBattleOneplKaitenEpl,
+    rodatStrBattleOneplGuardEpl,
+    rodatStrBattleOneplDead00Epl,
+    rodatStrBattleOneplInvalidEpl,
+    rodatStrBattleOneplDamageR21Epl,
+    rodatStrBattleOneplDead01Epl,
+    rodatStrBattleOneplDead02Epl,
+    rodatStrBattleOneplAutorecovEpl,
+    rodatStrBattleOneplAgiSlipEpl,
+    rodatStrBattleOneplBufSlipEpl,
+    rodatStrBattleOneplJioSlipEpl,
+    rodatStrBattleOneplZanSlipEpl,
+    rodatStrBattleOneplAbsorbEpl,
+    NULL,
+    rodatStrBattleOneplMikDam2Epl,
+    rodatStrBattleOneplShoukanEEpl,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    rodatStrBattleOneplSummonNoEpl,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    rodatStrBattleOneplDamYukaEpl,
+    rodatStrBattleOneplEncountEpl,
+    NULL,
+    NULL,
+    NULL,
+    rodatStrBattleOneplConbAuraEpl,
+    NULL,
+    NULL,
+};
 
 INCLUDE_SDATA(const s32, "code_r1_00289CA0", btlLoadSbPackData2);
 

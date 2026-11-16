@@ -1583,7 +1583,7 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0041A5F0	0x00478C40	sbtlGetMeireiFontData	.data	0x38	no	code-ref
 0x0041A628	0x00478C78	sbtlCallDestroyFontRequestAfterData	.data	0x38	no	code-ref
 0x0041A660	0x00478CB0	sbtlGetBSTNameFontData	.data	0x50	no	code-ref
-0x0041AE70	0x00479B40	OnDataLoadProcData	.data	0xE0	no	code-ref
+0x0041AE70	0x00479B40	sbtl_effonfilecheck	.data	0xE0	no	code-ref
 0x0041B198	0x00479F48	sbtlRefSbtl51Data	.data	0x8	no	code-ref
 0x0041B1A0	0x00479F50	sbtlRefSbtl51Data2	.data	0x8	no	code-ref
 0x0041B1A8	0x00479F58	sbtlRefSbtl51Data3	.data	0x8	no	code-ref
