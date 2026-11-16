@@ -7,6 +7,7 @@
 #include "sdf_types.h"
 #include "sdatUnit.h"
 #include "sdfSound.h"
+#include "sbtlDMG.h"
 
 struct EffectSlotSet;
 
@@ -19,6 +20,7 @@ typedef struct SBTL_PANEL {
 } SBTL_PANEL;
 
 struct SBTLDMG_HITLISTWORK;
+struct SBTLDMG_LISTWORK;
 struct SBTLDVLTK_LISTWORK;
 struct SBTLEFF_DELLISTWORK;
 struct SBTLEFF_LISTWORK;
@@ -53,7 +55,8 @@ typedef struct SBTL_WORK {
     u32 flg2;
     u8 pad1CC[4];
     s32 targetUnitID;
-    u8 pad1D4[4];
+    u16 hitMdlNo; /* next mdl resource number for hit models (type 7) */
+    u8 pad1D6[2];
     s32 stageNo;
     struct SBTLUNIT_LISTWORK *unitList;
     s32 loadListID;
@@ -83,12 +86,14 @@ typedef struct SBTL_WORK {
     u8 pad348[0x358 - 0x348];
     u8 field358[SDAT_STOCK_NUM];
     s32 stockUnitID[SDAT_STOCK_NUM];
-    u8 pad394[0x3A4 - 0x394];
+    u8 pad394[0x398 - 0x394];
+    s32 stackID[2]; /* stock slots of the summoned demons (HD stack_id) */
+    u8 pad3A0[0x3A4 - 0x3A0];
     s32 unitPadID;
     u8 pad3A8[0x3E8 - 0x3A8];
     struct SBTLUNIT_LISTWORK *list3E8;
     u8 pad3EC[8];
-    s32 animList;
+    struct SBTLDMG_LISTWORK *animList;
     struct SBTLDMG_HITLISTWORK *hitList;
     u8 pad3FC[4];
     struct SBTLEFF_LISTWORK *effList;
@@ -99,7 +104,7 @@ typedef struct SBTL_WORK {
     struct SBTLITEM_LISTWORK *bulletList;
     struct SBTLSM_LISTWORK *sysmsgList;
     struct SBTLEFF_DELLISTWORK *effdelList;
-    u8 pad420[4];
+    struct SBTLDMG_HITWORK *huka2hwk; /* hit whose attacker data later hits copy (HD name) */
     s32 field424;
     u8 pad428[4];
     s32 hitTargetID;
@@ -377,38 +382,7 @@ typedef struct SBTL_PACDATA_FILE {
     u8 pad0C[4];
 } SBTL_PACDATA_FILE;
 
-/* One attack hit record copied from a hit file. */
-typedef struct SBTL_HIT_PACENTRY {
-    s32 word[37];
-} SBTL_HIT_PACENTRY;
-
-typedef struct SBTL_HIT_PACFILE {
-    s32 num;
-    SBTL_HIT_PACENTRY entry[1];
-} SBTL_HIT_PACFILE;
-
-/* 200-byte allocation holding one hit record and the handles it owns. */
-typedef struct SBTL_HIT_PACDATA {
-    u8 pad00[4];
-    sdfMemHandle_t *handle;
-    sdfMemHandle_t *handle08;
-    u8 pad0C[4];
-    sdfMemHandle_t *handle10;
-    u8 pad14[0xC];
-    SBTL_HIT_PACENTRY entry;
-    u8 padB4[0x14];
-} SBTL_HIT_PACDATA;
-
-typedef struct SBTL_PACDATA_HITLIST {
-    u8 pad00[0xC];
-    s32 num;
-    s16 gstat;
-    u16 status;
-    SBTL_HIT_PACDATA *pwk[15];
-} SBTL_PACDATA_HITLIST;
-
 typedef struct SBTL_PACDATA_KEY {
-    u8 pad00[4];
     s32 major;
     s32 minor;
     s32 devilid;
@@ -434,7 +408,10 @@ typedef struct SBTL_PACDATA_WORK {
 
 /* Pointed to by sbtlData83, 0x115C bytes. */
 typedef struct SBTL_WORK2 {
-    u8 pad0000[0x1154];
+    u8 pad0000[0x1148];
+    struct fileRequest *pacHandle; /* SB_PACK3.LB, player on-memory data */
+    s32 setflg;
+    s32 dataCnt;
     sdfMemHandle_t *handle;
     u8 pad1158[4];
 } SBTL_WORK2;
@@ -457,7 +434,8 @@ s32 sbtlCallBtlGetScrollID(void);
 void pbSetGameCamera0(void);
 void sbtlCallBtlDeleteOnData(void);
 s32 sbtlCallBtlGetPlayerData(void);
-s32 sbtlCallBtlSearchEffectData2(s32 id, s32 a2, s32 a3);
+s32 sbtlCallBtlSearchEffectData2(s32 id, s32 a2, void *pData);
+s32 sbtlBtlLoadPlayerOnMemDataSub(s32 index, void *pData);
 void sbtlCallMemset17(struct SBTLEFF_LISTWORK *effList, struct SBTLUNIT_WORK *wk, s32 type, s32 a, f32 *pos, u32 color, s32 b);
 void sbtlCallMemset3(s32 battleMode, s32 stageNo);
 s32 sbtlBtlLoadHuumaMesDataSub(s32 huumaMesNo);
@@ -471,6 +449,8 @@ SBTL_MOTION_VISUAL *sbtlGetMotionVisualData(s32 a, s32 id);
 s32 sbtlGetScrollID(void);
 void sbtlInitDropWork(void);
 s32 sbtlLeaf(dds3ProcessID_t *id);
+s32 OnDataLoadProc(dds3ProcessID_t *id);
+void sbtlLeaf75(dds3ProcessID_t *id);
 s32 sbtlLeaf54(dds3ProcessID_t *id);
 void sbtlRefSbtl18(struct SBTLUNIT_WORK *wk, s32 mode);
 void sbtlRefSbtl31(void);
@@ -501,6 +481,8 @@ SBTL_STP *evtAllocateContext(void);
 s32 pbCallBtlCheckLoadFlg(void);
 void sbtlAllInit(void);
 s32 sbtlBattleSBPACK(void);
+s32 sbtlCallStartRain(void);
+s32 sbtlBattleEventSb(void);
 void sbtlBattleStart(SBTL_STAGE_DATA *stage);
 void sbtlSupport_BattleStop(s32 motionFlag, s32 effectFlag, s32 SEFlag);
 s32 sbtlBtlEntryStockDataSub(sdatUnitWork_t *unit);
@@ -529,6 +511,7 @@ s32 sbtlCallSetVarSBtlSM(struct SBTLSM_LISTWORK *lwk);
 s32 sbtlCallSin2(void);
 s32 sbtlCallSin3(struct SBTLDVLTK_LISTWORK *lwk);
 s32 sbtlCheckDamageTarget(struct SBTLUNIT_WORK *wk);
+f32 sbtlFree(f32 x, f32 z); /* ground height at x, z (mapGetY); HD sBtlGetGroundPos */
 s32 sbtlCheckLoadFlg(void);
 s32 sbtlCheckPad(void);
 s32 sbtlCheckUnit_Exec(void);

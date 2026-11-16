@@ -312,10 +312,10 @@ start	last_func	unit	kind	evidence	smt3_unit
 0027CC80	0027CC80	code_r1_0027CC80	c	dds:1 of 1	
 0027CD48	0027EC00	sbtlSub	asm	none	
 0027ED08	0027FD18	sbtlSub_0027ED08	c	dds:5 of 36 part	
-0027FD88	00289B50	sbtlDMG	asm	none	
+0027FD88	00289B50	sbtlDMG	c	none	
 00289CA0	00289CA0	code_r1_00289CA0	c	none	
 00289E08	00289E08	field/fldPanel	c	smt3:map:1 of 1	field/fldPanel
-00289E50	0028A1E8	sbtlEff_00289E50	asm	none	
+00289E50	0028A1E8	sbtlEff_00289E50	c	none	
 0028A298	0028A298	code_r1_0028A298	c	none	
 0028A320	0028EAC0	code_0028A320	asm	none	
 0028EAE8	0028EAE8	code_r1_0028EAE8	c	none	

@@ -7,6 +7,7 @@
 #include "sdatUnit.h"
 #include "mapLight.h"
 #include "kernel.h"
+#include "sbtlDMG.h"
 
 struct SBTLUNIT_LISTWORK;
 struct mdlObj_t;
@@ -141,6 +142,7 @@ s32 sbtlSetLight_Map(struct SBTLUNIT_WORK *wk, s32 frame, s32 flg);
 void sbtlGetRotate(struct SBTLUNIT_WORK *wk, const sdfVector4_t *pos);
 struct SBTLUNIT_WORK *sbtlSetSummon(s32 major, s32 minor, s32 index);
 s32 sbtlCallBtlGetSkilltbl10(struct SBTLUNIT_WORK *wk);
+s32 sbtlCallBtlGetSklVisualTbl(struct SBTLUNIT_WORK *wk, SKLID skillid, u16 type, s32 a3, s8 a4);
 s32 sbtlCallBtlGetDevilDataSBtlSub4(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlLoadAttackHitData(struct SBTLUNIT_WORK *wk);
 s32 sbtlCallBtlGetMotionVisualData2(struct SBTLUNIT_WORK *wk, SBTLUNIT_MOTION no);
@@ -275,7 +277,9 @@ struct SBTLUNIT_WORK {
     struct SBTLAI_WORK *aiwk;
     s16 actCounter;
     s16 actMax;
-    u8 pad490[0x10];
+    u8 pad490[0x2];
+    s16 field492; /* compared with a hit's actID when flg & 0x800 */
+    u8 pad494[0xC];
     s16 field4A0;
     s16 field4A2;
     s32 damage_serialID;
@@ -294,7 +298,7 @@ struct SBTLUNIT_WORK {
     s32 field4EC;
     u8 pad4F0[0x3];
     u8 field4F3;
-    u8 pad4F4[0x54];
+    SBTL_PACDATA_HITLIST hitwk;
 };
 
 /* One slot of a unit list. */

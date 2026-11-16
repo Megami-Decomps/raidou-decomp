@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "enums.h"
+#include "sdf_types.h"
 
 struct SBTLEFF_DELLISTWORK;
 struct SBTLEFF_LISTWORK;
@@ -16,6 +17,26 @@ typedef struct SBTLEFF_PACLIST {
     u8 pad16[0x2];
     u32 SMGID;
 } SBTLEFF_PACLIST;
+
+/* One live effect. Partial layout: offsets from sbtlGetEffectStat_ID and the hit code, HD names. */
+typedef struct SBTLEFF_WORK {
+    sdfVector4_t pos;
+    u8 pad010[0xB0 - 0x10];
+    s32 eListID;
+    s32 hitserialID;
+    s32 workID;
+    u8 pad0BC[0xD0 - 0xBC];
+    u32 flg; /* SBTLEFF_FLG */
+    u8 pad0D4[0xE4 - 0xD4];
+    s32 st; /* SBTLEFF_ST */
+    s32 counter;
+    s32 cmpcounter;
+    s32 starttime;
+    u8 pad0F4[0x108 - 0xF4];
+    u8 BEDtype; /* SBTLEFF_BEDTYPE */
+    u8 pad109[0x128 - 0x109];
+    struct SBTLEFF_WORK *next;
+} SBTLEFF_WORK;
 
 typedef struct sbtlFileEntry_t {
     char *path;
@@ -66,6 +87,8 @@ s32 sbtlInitEffectWork(void);
 s32 sbtlLoadEffectData_ID(SKLID id);
 s32 sbtlLoadEffectData_IDMask(SKLID id, EFFPAC_ST flg);
 s32 sbtlLoadEndCheck_PlayerOnMemData(void);
+s32 sbtlCallBtlLoadEffectDataIDMask(void);
+s32 sbtlFunc(s32 id, void *pData);
 s32 sbtlLoadPlayerOnMemData(void);
 s32 sbtlReleaseEff(struct SBTLEFF_LISTWORK *lwk, s32 flg);
 s32 sbtlResetAIPattern(struct SBTLUNIT_WORK *wk, u32 flg);

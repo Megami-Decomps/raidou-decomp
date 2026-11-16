@@ -1130,7 +1130,7 @@ s32 sbtlCallBtlCheckMapHitData(f32 posx, f32 posz)
     return ret != -1 ? ret == 0 : 0;
 }
 
-/* NON_MATCHING: 29 of 34 words match. f0 and f1 swap for x and z and one load moves into the delay slot; vector checked (menu): rows cover only the no-hit return. */
+/* NON_MATCHING: 25 of 34 words match. f0 and f1 swap for x and z and one load moves into the delay slot; vector checked (menu): rows cover only the no-hit return. */
 #ifdef NON_MATCHING
 s32 CheckMapHit(struct SBTLUNIT_WORK *wk, const sdfVector4_t *oldpos)
 {

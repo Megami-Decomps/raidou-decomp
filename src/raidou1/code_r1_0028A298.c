@@ -17,13 +17,13 @@
 
 /* NON_MATCHING: 6 of 34 words match. Retail keeps a dead always-true test of a constant 1 around the call and schedules the table copy differently. */
 #ifdef NON_MATCHING
-s32 sbtlBtlLoadPlayerOnMemDataSub(s32 index, s32 arg)
+s32 sbtlBtlLoadPlayerOnMemDataSub(s32 index, void *pData)
 {
     s32 table[8] = { 145, 146, 147, 148, 144, 283, 284, 287 };
     s32 ret = 1;
 
     if (ret) {
-        ret = sbtlCallBtlSearchEffectData2(table[index], 40, arg);
+        ret = sbtlCallBtlSearchEffectData2(table[index], 40, pData);
         if (ret) {
             ret = 1;
         }

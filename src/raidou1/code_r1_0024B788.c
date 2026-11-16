@@ -171,7 +171,7 @@ s32 sbtlSearchPacData2(s32 major, s32 minor, s32 devilid)
 
 s32 sbtlCallBtlSearchPacData(s32 major, s32 minor, s32 devilid, SBTL_HIT_PACFILE *file, s32 size)
 {
-    SBTL_HIT_PACENTRY *entry;
+    SBTLSKILLHIT_TBL *entry;
     SBTL_HIT_PACDATA *pwk;
     sdfMemHandle_t *handle;
     s32 i;

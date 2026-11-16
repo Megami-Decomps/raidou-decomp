@@ -15,7 +15,9 @@ typedef struct SBTLAI_WORK {
     u16 backmode;
     u32 status;
     s16 act_p;
-    u8 pad012[0x4C - 0x12];
+    u8 pad012[0x42 - 0x12];
+    u8 bstside; /* bit 0: confused unit stays on its own side */
+    u8 pad043[0x4C - 0x43];
     s32 field4C;
     s8 scr_actcheckflg;
     u8 pad051[0x3];

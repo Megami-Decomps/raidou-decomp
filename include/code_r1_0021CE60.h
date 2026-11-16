@@ -449,6 +449,10 @@ struct FileQueue *Create_effPartsList(struct FileQueue *source);
 struct FileQueue *effPartsCreateFinish(const struct FileQueue *source);
 
 void effPartsDelete(struct FileQueue *queue);
+void effPartsDraw(struct FileQueue *queue);
+void effPartsPositionSet(struct FileQueue *queue, const f32 position[4]);
+void effPartsRotateSet(struct FileQueue *queue, const f32 rotation[4]);
+void ColorSet(struct FileQueue *queue, u32 color);
 
 typedef struct SdfFlagListParams {
     SdfColorTrack color;
