@@ -26,7 +26,6 @@ extern void dds3RotationArc(void);
 extern s32 sdfModelGetMarkPos(sdfModelRootNode_t *model, s32 id);
 extern void sdfModelSetFaceDivParm(sdfModelRootNode_t *model, f32 soften, f32 bias);
 extern void sdfModelResetFaceDivParm(sdfModelRootNode_t *model);
-extern s32 evtGetCustomSLight_SoftenAndBias(evtUnit_t *unit, f32 *soften, f32 *bias);
 
 f32 GetSplineLength(dds3PathBasicControl_t *path);
 
@@ -839,7 +838,28 @@ void GetBaseLightRGB2(evtUnit_t *h) {
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", GetBaseAmbientRGB);
+void GetBaseAmbientRGB(evtUnit_t *h) {
+    evtTargetInfo_t *info = 0;
+    s32 ownVector = 0;
+    s32 color;
+    f32 scale;
+
+    if (h->currentTransitionValue != 0 && (h->flags & EVT_UNIT_FLAG_TARGET_TRANSITION)) {
+        info = (EE_ADDR_AS(dds3Basic_t *, h->currentTransitionValue))->workdata;
+        if (info->flags & EVT_TARGET_INFO_FLAG_UNIT_OWNS_VECTOR) {
+            ownVector = 1;
+        }
+    }
+    if (h->flags & EVT_UNIT_FLAG_USE_UNIT_SECOND_COLOR) {
+        scale = 0.0078125f;
+        color = h->colorF0;
+        EE_MMI_RGBA_UNPACK(&color, scale);
+    } else if (ownVector) {
+                SDF_VU0_LOADVECTOR(info->secondColor);
+    } else {
+                SDF_VU0_LOADVECTOR(&dds3LightParam.ambient);
+    }
+}
 
 void GetBaseLightDir(evtUnit_t *h) {
     s32 ownVector = 0;
@@ -892,7 +912,65 @@ void GetBaseLightDir2(evtUnit_t *h) {
     }
 }
 
+/* NON_MATCHING: 36 of 125 words match.  */
+#ifdef NON_MATCHING
+void MakeLightPacket(evtUnit_t *h) {
+    sdf3DLight_t source[3];
+    sdfVector4_t ambient;
+    sdf3DLight_t *lights[3] = { &source[0], &source[1], &source[2] };
+    evtColorWork_t work[4];
+    u32 flags;
+    f32 *channel;
+    s32 i;
+    f32 scale;
+
+    flags = h->flags;
+    if (flags & 0x20000) {
+        return;
+    }
+    h->lightPacket = NULL;
+    if ((flags & 0x40000) == 0) {
+        if ((flags & 0x700) == 0) {
+            evtMakeCustomSLightPacket(h);
+            return;
+        }
+    }
+    work[0].word = h->color;
+    scale = 0.0078125f;
+    EE_MMI_RGBA_UNPACK(&work[0], scale);
+    SDF_VU0_STOREVECTOR_MEMOPS(source[0].color);
+    work[1].word = h->color50;
+    scale = 0.0078125f;
+    EE_MMI_RGBA_UNPACK(&work[1], scale);
+    SDF_VU0_STOREVECTOR(&source[1].color);
+    work[2].word = h->colorA0;
+    scale = 0.0078125f;
+    EE_MMI_RGBA_UNPACK(&work[2], scale);
+    SDF_VU0_STOREVECTOR(&source[2].color);
+    SDF_VU0_LOADVECTOR(h->vec10);
+    SDF_VU0_STOREVECTOR(&source[0].v);
+    SDF_VU0_LOADVECTOR(h->vec60);
+    SDF_VU0_STOREVECTOR(&source[1].v);
+    SDF_VU0_LOADVECTOR(h->vecB0);
+    SDF_VU0_STOREVECTOR(&source[2].v);
+    work[3].word = h->colorF0;
+    scale = 0.0078125f;
+    EE_MMI_RGBA_UNPACK(&work[3], scale);
+    SDF_VU0_STOREVECTOR(&ambient);
+    ambient.w = 1.0f;
+    channel = &ambient.x;
+    for (i = 2; i >= 0; i--) {
+        if (1.0f < *channel) {
+            *channel = 1.0f;
+        }
+        channel++;
+    }
+    sdf3DMakeLightParallelPacket(h->endpointWork, lights, &ambient);
+    h->lightPacket = h->endpointWork;
+}
+#else
 INCLUDE_ASM(const s32, "event/evtUnitManager", MakeLightPacket);
+#endif
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtLinkLightObjectBasic);
 
@@ -907,13 +985,68 @@ void evtUnlinkExternalLightPacket(evtUnit_t *h) {
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightAndAmbient);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightAndAmbient3);
+void evtSetUnitLightAndAmbient3(evtUnit_t *h, s32 frame, u32 lrgb, u32 lrgb2, u32 lrgb3, u32 argb) {
+    union {
+        f32 value;
+        u32 bits;
+    } scale;
+    evtColorWork_t work[4];
+    u32 light;
+    u32 ambient;
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir);
+    h->colorDuration = frame;
+    h->color08 = lrgb;
+    h->colorF8 = argb;
+    h->color58 = lrgb2;
+    scale.value = 128.0f;
+    h->colorA8 = lrgb3;
+    GetBaseLightRGB(h);
+    MMI_RGBA_PACK_UNIT(light, scale.bits);
+    work[0].word = light;
+    h->firstCurrent = light;
+    GetBaseLightRGB_2(h);
+    MMI_RGBA_PACK_UNIT(light, scale.bits);
+    work[1].word = light;
+    h->color54 = light;
+    GetBaseLightRGB2(h);
+    MMI_RGBA_PACK_UNIT(light, scale.bits);
+    work[2].word = light;
+    h->colorA4 = light;
+    GetBaseAmbientRGB(h);
+    MMI_RGBA_PACK_UNIT(ambient, scale.bits);
+    h->colorF4 = ambient;
+    h->flags = (h->flags | 0x800) & ~0x1000;
+}
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir1);
+void evtSetUnitLightDir(evtUnit_t *h, s32 frame) {
+    h->directionDuration = frame;
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR_NOMEM(h->vec30);
+    GetBaseLightDir(h);
+    SDF_VU0_STOREVECTOR_NOMEM(h->vec20);
+    h->flags = (h->flags | 0x2400) & ~0x4000;
+}
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitLightDir2);
+s32 evtSetUnitLightDir1(evtUnit_t *h, s32 frame) {
+    h->directionDuration = frame;
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR_NOMEM(h->vec80);
+    evtSetUnitLightDir1Sub(h);
+    SDF_VU0_STOREVECTOR_NOMEM(h->vec70);
+    return h->flags = (h->flags | 0x2400) & ~0x4000;
+}
+
+s32 evtSetUnitLightDir2(evtUnit_t *h, s32 frame) {
+    h->directionDuration = frame;
+    SDF_VU0_VECTOR_W_SET_ZERO();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR_NOMEM(h->vecD0);
+    GetBaseLightDir2(h);
+    SDF_VU0_STOREVECTOR_NOMEM(h->vecC0);
+    return h->flags = (h->flags | 0x2400) & ~0x4000;
+}
 
 void evtSetUnitColorRGB(evtUnit_t *h, s32 frame, u32 rgb) {
     h->rgbDuration = SDF_FRAMES(frame);
@@ -989,7 +1122,51 @@ evtUnit_t *evtGetUnitHandle2(dds3Basic_t *unit) {
     return ((dds3UnitObjectBasicWorkData_t *)unit->workdata)->hUnit;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtCreateUnitHandle);
+evtUnit_t *evtCreateUnitHandle(dds3Basic_t *owner, mdlObj_t *model) {
+    evtUnit_t *work;
+    sdfVector4_t axis;
+    sdfVector4_t axis2;
+    sdfVector4_t axis3;
+
+    axis = evtCreateUnitHandleTable;
+    axis2 = evtCreateUnitHandleTable2;
+    axis3 = evtCreateUnitHandleTable3;
+    work = sdfChipAllocDirect(sizeof(*work));
+    memset(work, 0, sizeof(*work));
+    work->motionState = EVT_UNIT_MOTION_STATE_IDLE;
+    work->waitBlendEnd = 10;
+    work->transitionSourceKind = EVT_UNIT_TRANSITION_SOURCE_WORLD_NODE;
+    work->transitionMotionScale = 0.5f;
+    work->effObj = owner;
+    work->owner = model;
+    work->motionSetup.endFrame = 10;
+    work->waitBlendStart = 0;
+    work->motionSetup.startFrame = 0;
+    SDF_VU0_LOADVECTOR_MEMOPS(axis);
+    SDF_VU0_STOREVECTOR(work->vec10);
+    SDF_VU0_STOREVECTOR(work->vec40);
+    work->color0C = 0xB2B2B2;
+    work->color = 0xB2B2B2;
+    work->colorFC = 0x80303030;
+    work->colorF0 = 0x80303030;
+    SDF_VU0_LOADVECTOR(&axis2);
+    SDF_VU0_STOREVECTOR(work->vec60);
+    SDF_VU0_STOREVECTOR(work->vec90);
+    SDF_VU0_LOADVECTOR(&axis3);
+    SDF_VU0_STOREVECTOR(work->vecB0);
+    SDF_VU0_STOREVECTOR(work->vecE0);
+    work->color5C = 0;
+    work->color50 = 0;
+    work->colorAC = 0;
+    work->colorA0 = 0;
+    work->endpointWork = sdfChipAllocDirect(0xE0);
+    memset(work->endpointWork, 0, 0xE0);
+    work->lightPacket = NULL;
+    work->unk178 = 0;
+    work->unk17C = 0;
+    work->unk206 = 0;
+    return work;
+}
 
 s32 evtDeleteUnitHandle(evtUnit_t *h) {
     void *endpointWork;
@@ -1015,7 +1192,9 @@ s32 evtGetUnitStat(evtUnit_t *h) {
     return h->motionState;
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetUnitStat);
+s16 evtSetUnitStat(evtUnit_t *h, s32 stat) {
+    return h->motionState = stat;
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetWaitMotion);
 
@@ -1075,7 +1254,51 @@ void evtSetUnitMotion(evtUnit_t *h, s32 motion, s32 before, s32 smooth, s32 mode
     }
 }
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitRotationTarget_evt);
+s32 evtUnitRotationTarget(evtUnit_t *h, f32 *pos, f32 radio) {
+    sdfVector4_t dir;
+    sdfVector4_t axis;
+    sdfVector4_t rotation;
+    sdfVector4_t flat;
+    f32 cross;
+    f32 angle;
+
+    dir = evtUnitRotationTarget_evtTable;
+    axis = evtUnitUpAxis;
+    evtGetUnitDirVector(h);
+    SDF_VU0_STOREVECTOR_MEMOPS(dir);
+    SDF_VU0_COPYVECTOR_A_TO_C();
+    evtVu0SubVectorXZAxis(pos, (f32 *)&h->effObj->poseset->pos);
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_STOREVECTOR_NOMEM(&flat);
+    SDF_VU0_LOADVECTOR_B(&axis);
+    SDF_VU0_OUTERPRODUCT();
+    SDF_VU0_NORMALIZE();
+    SDF_VU0_COPYVECTOR_C_TO_B();
+    SDF_VU0_INNERPRODUCT(cross);
+    SDF_VU0_LOADVECTOR(&flat);
+    SDF_VU0_INNERPRODUCT(angle);
+    if (0.9998f <= angle) {
+        return 1;
+    }
+    angle = acosf(angle);
+    if (0.0f < cross) {
+        angle = -angle;
+    }
+    angle *= radio;
+    if ((h->flags & 0x200000) == 0) {
+        if (angle < -0.15707963f) {
+            angle = -0.15707963f;
+        }
+        if (0.15707963f < angle) {
+            angle = 0.15707963f;
+        }
+    }
+    SDF_VU0_LOADVECTOR(&axis);
+    FromRotation(angle);
+    SDF_VU0_STOREVECTOR_NOMEM(&rotation);
+    dds3AddRotPoseSet(h->effObj, &rotation);
+    return 0;
+}
 
 /* Flat, negated direction of the rotation in quat, offset by the effect object's point, aimed with evtRotateUnitTowardTarget. */
 s32 evtUnitRotationQuat(evtUnit_t *h, f32 *rot, f32 radio) {
@@ -1124,7 +1347,7 @@ INCLUDE_RODATA(const s32, "event/evtUnitManager", evtCreateUnitHandleTable3);
 
 INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitRotationTarget_evtTable);
 
-INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitRotationTarget_evtTable2);
+INCLUDE_RODATA(const s32, "event/evtUnitManager", evtUnitUpAxis);
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtCalcFrame_UnitMoveType0);
 
@@ -1406,14 +1629,125 @@ INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitManagerPrimaryFunc);
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtUnitManagerPrimaryFunc);
 #endif
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtInitCustomSceneLight);
+void evtInitCustomSceneLight(void) {
+    s32 i;
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetCustomSceneLightData);
+    for (i = 0; i < 7; i++) {
+        evtInitCustomSceneLightSub(CustomSceneLightArray[i].color, CustomSceneLightArray[i].dir,
+                                   CustomSceneLightArray[i].ambient, &CustomSceneLightArray[i].soften,
+                                   &CustomSceneLightArray[i].bias);
+        CustomSceneLightArray[i].lightType = 0;
+        CustomSceneLightArray[i].unitHandle = NULL;
+    }
+}
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtSetCustomSceneLightData_SoftenAndBias);
+void evtSetCustomSceneLightData(s32 index, s32 lightType, evtUnit_t *h, f32 (*color)[4], f32 (*dir)[4], f32 *ambient) {
+    s32 i;
+
+    if (index >= 7) {
+        return;
+    }
+    for (i = 0; i < 3; i++) {
+        CustomSceneLightArray[index].color[i][0] = color[i][0];
+        CustomSceneLightArray[index].color[i][1] = color[i][1];
+        CustomSceneLightArray[index].color[i][2] = color[i][2];
+        CustomSceneLightArray[index].color[i][3] = 0.0f;
+        CustomSceneLightArray[index].dir[i][0] = dir[i][0];
+        CustomSceneLightArray[index].dir[i][1] = dir[i][1];
+        CustomSceneLightArray[index].dir[i][2] = dir[i][2];
+        CustomSceneLightArray[index].dir[i][3] = dir[i][3];
+    }
+    CustomSceneLightArray[index].ambient[0] = ambient[0];
+    CustomSceneLightArray[index].lightType = lightType;
+    CustomSceneLightArray[index].ambient[1] = ambient[1];
+    CustomSceneLightArray[index].ambient[2] = ambient[2];
+    CustomSceneLightArray[index].ambient[3] = 1.0f;
+    if (lightType == 3) {
+        CustomSceneLightArray[index].unitHandle = h;
+    } else {
+        CustomSceneLightArray[index].unitHandle = NULL;
+    }
+}
+
+void evtSetCustomSceneLightData_SoftenAndBias(s32 index, f32 soften, f32 bias) {
+    if (index < 7) {
+        CustomSceneLightArray[index].soften = soften;
+        CustomSceneLightArray[index].bias = bias;
+    }
+}
 
 INCLUDE_ASM(const s32, "event/evtUnitManager", evtLeaf4);
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtMakeCustomSLightPacket);
+void evtMakeCustomSLightPacket(evtUnit_t *h) {
+    sdf3DLight_t source[3];
+    sdfVector4_t ambient;
+    sdf3DLight_t *lights[3] = { &source[0], &source[1], &source[2] };
+    sdf3DLight_t *light;
+    f32 *channel;
+    s32 index;
+    s32 i;
 
-INCLUDE_ASM(const s32, "event/evtUnitManager", evtGetCustomSLight_SoftenAndBias);
+    index = -1;
+    for (i = 0; i < 7; i++) {
+        if (CustomSceneLightArray[i].lightType == 3 && CustomSceneLightArray[i].unitHandle == h) {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1) {
+        for (i = 0; i < 7; i++) {
+            if (CustomSceneLightArray[i].lightType == 2) {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1) {
+            return;
+        }
+    }
+    light = source;
+    for (i = 0; i < 3; i++) {
+        light->color.x = CustomSceneLightArray[index].color[i][0];
+        light->color.y = CustomSceneLightArray[index].color[i][1];
+        light->color.z = CustomSceneLightArray[index].color[i][2];
+        light->v.x = CustomSceneLightArray[index].dir[i][0];
+        light->v.y = CustomSceneLightArray[index].dir[i][1];
+        light->v.z = CustomSceneLightArray[index].dir[i][2];
+        light->color.w = 0.0f;
+        light->v.w = 0.0f;
+        light++;
+    }
+    ambient.x = CustomSceneLightArray[index].ambient[0];
+    ambient.y = CustomSceneLightArray[index].ambient[1];
+    ambient.z = CustomSceneLightArray[index].ambient[2];
+    ambient.w = 1.0f;
+    channel = &ambient.x;
+    for (i = 2; i >= 0; i--) {
+        if (1.0f < *channel) {
+            *channel = 1.0f;
+        }
+        channel++;
+    }
+    sdf3DMakeLightParallelPacket(h->endpointWork, lights, &ambient);
+    h->lightPacket = h->endpointWork;
+}
+
+s32 evtGetCustomSLight_SoftenAndBias(evtUnit_t *h, f32 *soften, f32 *bias) {
+    s32 i;
+
+    for (i = 0; i < 7; i++) {
+        if (CustomSceneLightArray[i].lightType == 3 && CustomSceneLightArray[i].unitHandle == h) {
+            *soften = CustomSceneLightArray[i].soften;
+            *bias = CustomSceneLightArray[i].bias;
+            return 1;
+        }
+    }
+    for (i = 0; i < 7; i++) {
+        if (CustomSceneLightArray[i].lightType == 2) {
+            *soften = CustomSceneLightArray[i].soften;
+            *bias = CustomSceneLightArray[i].bias;
+            return 1;
+        }
+    }
+    return 0;
+}

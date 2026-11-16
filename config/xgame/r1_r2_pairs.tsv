@@ -2746,7 +2746,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001A6650	0x001BC318	evtRunUnitKutiMotion	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
 0x001A6680	0x001BC348	evtSetUnitExMotion	yes	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
 0x001A6718	0x001BC3E0	evtSetUnitMotion	yes	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
-0x001A67D8	0x001BC4A0	evtUnitRotationTarget_evt	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
+0x001A67D8	0x001BC4A0	evtUnitRotationTarget	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
 0x001A6998	0x001BC660	evtUnitRotationQuat	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
 0x001A6A40	0x001BC708	evtUnitMoveType0	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash
 0x001A6B08	0x001BC7D0	evtCalcFrame_UnitMoveType0	no	yes	asm/raidou1/event/evtUnitManager.s	asm/raidou2/event/evtUnitManager.s	unique-reloc-hash

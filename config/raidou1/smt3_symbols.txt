@@ -101,7 +101,6 @@ evtLinkLightObjectBasic = 0x001A5CB0;
 evtUnlinkLightObjectBasic = 0x001A5D20;
 evtSetUnitLightDir = 0x001A5F58;
 evtRunUnitKutiMotion = 0x001A6650;
-evtUnitRotationTarget = 0x001A67D8;
 evtRunKutiMotion = 0x001A8C50;
 evtCalcEffBedScale = 0x001AA5C8;
 CallBattleSub = 0x001AB530;

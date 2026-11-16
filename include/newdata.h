@@ -162,11 +162,11 @@ typedef struct
     /* 0x1A80 */ u32 EventBit[128];
     /* 0x1C80 */ u8 moonFlags;
     /* 0x1C81 */ u8 moonPhase;
-    /* 0x1C82 */ u8 unk1C82;
-    /* 0x1C83 */ u8 unk1C83;
+    /* 0x1C82 */ s8 takaraCnt;
+    /* 0x1C83 */ s8 zeniCnt;
     /* 0x1C84 */ f32 moonTimer;
-    /* 0x1C88 */ u8 unk1C88;
-    /* 0x1C89 */ u8 unk1C89;
+    /* 0x1C88 */ s8 takumiCnt;
+    /* 0x1C89 */ s8 teisatuCnt;
     /* 0x1C8A */ u8 unk1C8A[0x6];
     /* 0x1C90 */ u32 configFlag;
     /* 0x1C94 */ u32 unk1C94;

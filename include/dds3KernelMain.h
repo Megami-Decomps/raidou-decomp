@@ -9,6 +9,7 @@ void dds3SoftResetOn(void);
 void dds3NewGameStart(void);
 
 s32 dds3BgSetScrollSub(void);
+s32 dds3LinkBoxZSub(void);
 u32 dds3GetFrameID(void);
 u32 dds3GetKernelCount(void);
 

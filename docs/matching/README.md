@@ -22,6 +22,7 @@ menu scenarios); an entry says which paths they covered.
 | 5 | code_r1_00226EC8 | raidou1, raidou2 | [code_r1_00226EC8.md](code_r1_00226EC8.md) |
 | 5 | code_r1_0024B788 | raidou1 | [code_r1_0024B788.md](code_r1_0024B788.md) |
 | 4 | kernel/dds3KernelDraw | raidou1, raidou2 | [kernel/dds3KernelDraw.md](kernel/dds3KernelDraw.md) |
+| 3 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 3 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 2 | code_00181858 | raidou1 | [code_00181858.md](code_00181858.md) |
 | 2 | code_002999C0 | raidou1 | [code_002999C0.md](code_002999C0.md) |
@@ -29,9 +30,10 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_r1_0014F378 | raidou1 | [code_r1_0014F378.md](code_r1_0014F378.md) |
 | 2 | code_r1_0016B498 | raidou1 | [code_r1_0016B498.md](code_r1_0016B498.md) |
 | 2 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
-| 2 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 2 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 2 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
+| 1 | code_00109A70 | raidou1 | [code_00109A70.md](code_00109A70.md) |
+| 1 | code_00173D20 | raidou1 | [code_00173D20.md](code_00173D20.md) |
 | 1 | code_00300578 | raidou1 | [code_00300578.md](code_00300578.md) |
 | 1 | code_r1_0013B0F8 | raidou1 | [code_r1_0013B0F8.md](code_r1_0013B0F8.md) |
 | 1 | code_r1_001403E0 | raidou1, raidou2 | [code_r1_001403E0.md](code_r1_001403E0.md) |
@@ -71,6 +73,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_00323138 | raidou1, raidou2 | [code_r1_00323138.md](code_r1_00323138.md) |
 | 1 | dat | raidou1 | [dat.md](dat.md) |
 | 1 | effect/polyManager | raidou1, raidou2 | [effect/polyManager.md](effect/polyManager.md) |
+| 1 | event/evtMoon | raidou1 | [event/evtMoon.md](event/evtMoon.md) |
 | 1 | event/evtPolygonMovie | raidou1, raidou2 | [event/evtPolygonMovie.md](event/evtPolygonMovie.md) |
 | 1 | field/fldProcess | raidou1 | [field/fldProcess.md](field/fldProcess.md) |
 | 1 | interface/itfPanel | raidou1, raidou2 | [interface/itfPanel.md](interface/itfPanel.md) |

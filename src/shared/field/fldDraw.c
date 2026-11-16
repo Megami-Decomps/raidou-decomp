@@ -29,30 +29,7 @@
 #include "sdf3D.h"
 #include "fldDraw.h"
 
-typedef struct fldSpriteCorner_t fldSpriteCorner_t;
-
-typedef struct fldSpriteVertex_t fldSpriteVertex_t;
-
 typedef struct TMX_HEADER_t TMX_HEADER_t;
-
-struct fldSpriteCorner_t {
-    s32 u;
-    s32 v;
-    u8 pad08[8];
-    s32 x;
-    s32 y;
-    s32 mask;
-    s16 flag;
-    u8 pad1E[2];
-};
-
-struct fldSpriteVertex_t {
-    s32 r;
-    s32 g;
-    s32 b;
-    s32 a;
-    fldSpriteCorner_t corner[2];
-};
 
 typedef struct sdfTexBuf_t sdfTexBuf_t;
 

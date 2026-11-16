@@ -19,9 +19,6 @@ extern void *effGetSlotWorkOrOverride(sprHandle_t *, s32);
 
 void effDrawSpriteWithWorkCornerColors(s32 x, s32 y, s32 z, s32 flags, sprHandle_t *set, s32 slot, itfBdWork_t *entry, s32 layer);
 
-void effDrawSpriteWithCornerFade(s32 x, s32 y, s32 depth, u32 blend, s32 flags,
-                   sprHandle_t *set, s32 slotIndex, s32 layer);
-
 void effDrawRepeatedSpriteTiles(s32 x, s32 y, s32 z, s32 length, u32 weight, u32 flags,
                   sprHandle_t *set, s32 slot, s32 layer);
 

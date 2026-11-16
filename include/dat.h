@@ -44,6 +44,7 @@ void CallProcEnd_cmpStatus(void);
 s32 dds3GlobalWorkMainProc(dds3ProcessID_t *id);
 void UserInit(void);
 s32 datAddDevil(void);
+s32 datMoonAddMoveSub(void);
 char *datGetPlayerExp(CMP_TITLE_ID index);
 void datGlobalWorkDestroy(void);
 void dds3GlobalWorkInit(void);

@@ -9,7 +9,6 @@
 
 extern s8 dds3PadBitTable[32];
 extern u8 sdfPadAnalogSticks[8];
-extern f32 acosf(f32 x);
 extern u8 dds3PadVibrationState[2];
 extern u8 dds3PadVibrationMode[2];
 extern s32 dds3PadVibrationTable[2];

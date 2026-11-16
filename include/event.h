@@ -140,7 +140,7 @@ typedef struct {
     f32 ambient[4];
 } pmdSceneLightTable_t;
 
-/* Event-unit allocation: evtCreateUnitHandle allocates/clears 0x148 bytes.
+/* Event-unit allocation: evtCreateUnitHandle allocates and clears sizeof(evtUnit_t), 0x230 bytes in Raidou.
  * SMT3 omits the motion, shadow and vertical-movement members. */
 typedef enum evtUnitMotionState_t {
     EVT_UNIT_MOTION_STATE_IDLE = 0,
@@ -269,7 +269,9 @@ typedef struct evtUnit_t {
     s8 firstSlot;
     s8 secondSlot;
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
-    u8 padRaidou172[0xE];
+    u8 padRaidou172[6];
+    u32 unk178;
+    u32 unk17C;
 #endif
     u8 slotFlags[12];              /* 0xCC */
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
@@ -303,8 +305,15 @@ typedef struct evtUnit_t {
     };
 #if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
     f32 moveY; /* 0x200: vertical offset applied by the submode 1 move */
+    u8 pad204[2];
+    s16 unk206;
+    u8 pad208[0x28];
 #endif
 } evtUnit_t;
+
+#if defined(VERSION_RAIDOU1) || defined(VERSION_RAIDOU2)
+SIZE_CHECK(evtUnitSizeCheck, evtUnit_t, 0x230);
+#endif
 
 
 

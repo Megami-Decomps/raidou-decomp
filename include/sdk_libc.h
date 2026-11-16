@@ -39,6 +39,8 @@ s32 strcasecmp(const char *left, const char *right);
 
 void *memmove(void *a, const void *b, size_t c);
 
+f32 acosf(f32 x);
+
 void qsort(void *array, u32 count, u32 size, s32 (*compare)(const void *, const void *));
 
 long strtol(const char *s, char **end, s32 base);

@@ -28,8 +28,33 @@ u8 evtUnitLightAnimeStat(evtUnit_t *h);
 void evtUnitLightOff(evtUnit_t *h, s32 frame);
 void evtUnitLightOn(evtUnit_t *h);
 
+/* A scene light set an event script assigns to units; type 3 binds it to one unit. */
+typedef struct CustomSceneLightInfo {
+    s32 lightType;
+    evtUnit_t *unitHandle;
+    f32 color[3][4];
+    f32 dir[3][4];
+    f32 ambient[4];
+    f32 soften;
+    f32 bias;
+} CustomSceneLightInfo;
+
+SIZE_CHECK(CustomSceneLightInfoSizeCheck, CustomSceneLightInfo, 0x80);
+
+extern CustomSceneLightInfo CustomSceneLightArray[7];
+
+void evtInitCustomSceneLightSub(f32 (*color)[4], f32 (*dir)[4], f32 *ambient, f32 *soften, f32 *bias);
 void evtInitCustomSceneLight(void);
+void evtSetCustomSceneLightData(s32 index, s32 lightType, evtUnit_t *h, f32 (*color)[4], f32 (*dir)[4], f32 *ambient);
 void evtSetCustomSceneLightData_SoftenAndBias(s32 index, f32 soften, f32 bias);
+void evtMakeCustomSLightPacket(evtUnit_t *h);
+s32 evtGetCustomSLight_SoftenAndBias(evtUnit_t *h, f32 *soften, f32 *bias);
 s32 evtUnitManagerPrimaryFunc(dds3PoseSet_t *pose, dds3Basic_t *basic);
+
+extern const sdfVector4_t evtCreateUnitHandleTable;
+extern const sdfVector4_t evtCreateUnitHandleTable2;
+extern const sdfVector4_t evtCreateUnitHandleTable3;
+extern const sdfVector4_t evtUnitRotationTarget_evtTable;
+extern const sdfVector4_t evtUnitUpAxis;
 
 #endif

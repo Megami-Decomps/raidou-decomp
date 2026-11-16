@@ -11425,7 +11425,6 @@
 0x004B44D0	evtCreateUnitHandleTable2	data	tier=D	derived-sole	na	used by evtCreateUnitHandle
 0x004B44E0	evtCreateUnitHandleTable3	data	tier=D	derived-sole	na	used by evtCreateUnitHandle
 0x004B44F0	evtUnitRotationTarget_evtTable	data	tier=D	derived-sole	na	used by evtUnitRotationTarget_evt
-0x004B4500	evtUnitRotationTarget_evtTable2	data	tier=D	derived-sole	na	used by evtUnitRotationTarget_evt
 0x004B4510	evtStrYmoveFrameno0	data	tier=D	derived-string	na	used by evtCalcFrame_UnitMoveType0; string "ymove frameno = 0?"
 0x004B4528	evtStrYmoveFramenoAddvalue	data	tier=D	derived-string	na	used by evtCalcFrame_UnitMoveType0; string "ymove frameno = %d addvalue = %f total y"
 0x004B4560	evtStrFldProcSequence2	data	tier=D	derived-string	na	used by evtUnitManagerPrimaryFunc; string "fldProcSequence"
@@ -19061,15 +19060,8 @@
 0x004DF844	evtLipsStopFunction_evtCommandData	data	tier=D	derived-dominant	na	used by evtLipsStopFunction_evtCommand (3 of 4 refs, 2 functions)
 0x004DF848	evtCallMemset2Data	data	tier=D	derived-sole	na	used by evtCallMemset2
 0x004DF84C	sndCallProcTrigSequenceSlMainData	data	tier=D	derived-sole	na	used by sndCallProcTrigSequenceSlMain
-0x004DF850	Process2_evtMoonData	data	tier=D	derived-dominant	na	used by Process2_evtMoon (42 of 43 refs, 2 functions)
-0x004DF854	Process2_evtMoonData2	data	tier=D	derived-sole	na	used by Process2_evtMoon
-0x004DF85C	Process2_evtMoonData3	data	tier=D	derived-dominant	na	used by Process2_evtMoon (6 of 10 refs, 3 functions)
-0x004DF860	Process2_evtMoonData4	data	tier=D	derived-dominant	na	used by Process2_evtMoon (2 of 10 refs, 9 functions)
 0x004DF864	Process2_evtMoonData8	data	tier=D	derived-dominant	na	used by Process2_evtMoon (40 of 41 refs, 2 functions)
 0x004DF868	Process2_evtMoonData9	data	tier=D	derived-dominant	na	used by Process2_evtMoon (41 of 43 refs, 2 functions)
-0x004DF870	Process2_evtMoonData5	data	tier=D	derived-dominant	na	used by Process2_evtMoon (6 of 7 refs, 2 functions)
-0x004DF874	Process2_evtMoonData6	data	tier=D	derived-dominant	na	used by Process2_evtMoon (2 of 3 refs, 2 functions)
-0x004DF878	evtData13	data	tier=D	derived-shared	na	used by 2 functions: Process2_evtMoon, evtMoonAddMove
 0x004DF880	Process2_evtMoonData7	data	tier=D	derived-sole	na	used by Process2_evtMoon
 0x004DF890	evtDebugCameraStepData	data	tier=D	derived-sole	na	used by evtDebugCameraStep
 0x004DF8A0	evtSceneDispRowsEntry	data	tier=D	derived-table	na	pointed to by evtSceneDispRows
@@ -22052,9 +22044,6 @@
 0x005469C0	mapCallFromRotationBWork	data	tier=D	derived-dominant	na	used by mapCallFromRotationB (6 of 14 refs, 5 functions)
 0x005469D0	mapCallFromRotationBWork2	data	tier=D	derived-dominant	na	used by mapCallFromRotationB (8 of 16 refs, 5 functions)
 0x005469E0	mapCallFromRotationBWork3	data	tier=D	derived-dominant	na	used by mapCallFromRotationB (4 of 8 refs, 3 functions)
-0x00546A80	evtInitCustomSceneLightWork	data	tier=D	derived-sole	na	used by evtInitCustomSceneLight
-0x00546AB8	evtMakeCustomSLightPacketWork	data	tier=D	derived-sole	na	used by evtMakeCustomSLightPacket
-0x00546ABC	evtSetCustomSceneLightDataWork	data	tier=D	derived-sole	na	used by evtSetCustomSceneLightData
 0x00546E00	RunFrame2Work	data	tier=D	derived-sole	na	used by RunFrame2
 0x00546E60	RunFrame2Work2	data	tier=D	derived-sole	na	used by RunFrame2
 0x00546E70	RunFrame2Work3	data	tier=D	derived-sole	na	used by RunFrame2
@@ -25321,6 +25310,14 @@
 0x004DF45C	gMessageRequestResult	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C1A4)	smt3-ref/close: nfun=2, other=0, sim=0.86905, games=2, size=True, sec=True, fn=frCallEnableMode
 0x004DF460	gMessageSpaceX	data	tier=B	smt3-ref	0.88 (n=D_r1_0046C1A8)	smt3-ref/loose: nfun=6, other=0, sim=0.9032, games=2, size=False, sec=True, fn=frFontAppendIndexedTextToGlyphChain
 0x004DF4A0	frWrapEmptyString	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C1E8)	smt3-ref/close: nfun=6, other=0, sim=0.9905, games=2, size=True, sec=True, fn=frwGetSmallNumFontFRQ
+0x004DF850	moon_spr	data	tier=B	hd-role	na	HD evtMoon.c moon_spr, loaded by Process1; replaces Process2_evtMoonData
+0x004DF854	gMoonBaseARate	data	tier=B	hd-role	na	HD evtMoon.c static order before gMoonFade; Process2 alpha rate; replaces Process2_evtMoonData2
+0x004DF858	gMoonFade	data	tier=B	hd-role	na	HD evtMoon.c: evtMoonFadeIn stores 1 here and Frame at the next-but-one word; HD static order gMoonFade, gMoonFadeFrame, gMoonFadeFrameMax, gMoonCnt; replaces gMoonFadeFrameMax
+0x004DF85C	gMoonFadeFrame	data	tier=B	hd-role	na	HD evtMoon.c static order between gMoonFade and gMoonFadeFrameMax; PreCalcFade writes it; replaces Process2_evtMoonData3
+0x004DF860	gMoonFadeFrameMax	data	tier=B	hd-role	na	HD evtMoon.c evtMoonFadeIn stores Frame here; word before gMoonCnt in HD static order; replaces Process2_evtMoonData4
+0x004DF870	gMoonCngCnt	data	tier=B	hd-role	na	HD evtMoon.c static order after gMoonCnt; replaces Process2_evtMoonData5
+0x004DF874	gMoonAgeOld	data	tier=B	hd-role	na	HD evtMoon.c static order after gMoonCngCnt; replaces Process2_evtMoonData6
+0x004DF878	gMoonAge16Old	data	tier=B	hd-role	na	HD evtMoon.c static order after gMoonAgeOld; replaces evtData13
 0x004DF894	evtSceneDispWork	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C62C)	smt3-ref/close: nfun=2, other=0, sim=0.9511499999999999, games=2, size=True, sec=True, fn=evtSceneDispProcess
 0x004DF898	evtSceneDispTimer	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C630)	smt3-ref/close: nfun=2, other=0, sim=0.9511499999999999, games=2, size=True, sec=True, fn=evtSceneDispProcess
 0x004DF89C	evtSceneDispState	data	tier=B	smt3-ref	0.80 (n=D_r1_0046C634)	smt3-ref/close: nfun=2, other=0, sim=0.9511499999999999, games=2, size=True, sec=True, fn=evtSceneDispProcess

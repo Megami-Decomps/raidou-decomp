@@ -22,7 +22,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 00104348	00104348	kernel/dds3Randomize	c	smt3:names:1 of 1	kernel/dds3Randomize
 00104370	00105238	code_r1_00104370	c	dds:16 of 19	
 00105400	00109908	kernel/dds3KernelDraw	c	smt3:names:56+smt3:map:6 of 96	kernel/dds3KernelDraw
-00109A70	0010A3E0	code_00109A70	asm	none	
+00109A70	0010A3E0	code_00109A70	c	none	
 0010A750	0010BE90	kernel/dds3KernelDraw_0010A750	c	smt3:names:6+smt3:map:1 of 17 part	kernel/dds3KernelDraw
 0010BEE0	0010CE40	dds3KernelDraw_0010BEE0	asm	none	
 0010D1B8	0010D718	code_r1_0010D1B8	c	dds:4 of 5 part	
@@ -153,7 +153,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 0016C450	0016C450	code_r1_0016C450	c	none	
 0016CA30	0016D368	code_0016CA30	asm	none	
 0016D3B0	00173CD8	facility/fclCombineInit	c	smt3:map:1 of 43	facility/fclCombineInit
-00173D20	00174668	code_00173D20	asm	none	
+00173D20	00174668	code_00173D20	c	none	
 00174698	00174758	field/fldEnc	c	smt3:map:2 of 2	field/fldEnc
 00174790	00174F70	code_00174790	asm	none	
 00175038	001750B0	code_r1_00175038	c	none	

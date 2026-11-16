@@ -1,4 +1,6 @@
 function	unit	size	distance	page	line
+eglLinkBoxZ	code_00109A70	raidou1 0x370	6 of 220 words differ	docs/matching/code_00109A70.md	3
+encCallPrimAllocDrawTag2	code_00173D20	raidou1 0x1F0	41 of 124 words differ	docs/matching/code_00173D20.md	3
 cmbCallSetUserImage	code_00181858	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00181858.md	3
 cmbRefDDS3GBWK	code_00181858	raidou1 0xD0	7 of 52 words differ	docs/matching/code_00181858.md	11
 SetEffectPos	code_0028A320	raidou1 0x50C	238 of 321 words differ	docs/matching/code_0028A320.md	3
@@ -125,9 +127,11 @@ datCheckSkillEnable	dat	raidou1 0x144	63 of 76 words differ	docs/matching/dat.md
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	47 of 190 words differ	docs/matching/event/evtEventViewer.md	3
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9
+Process2_evtMoon	event/evtMoon	raidou1 0xB8C	624 of 723 words differ	docs/matching/event/evtMoon.md	3
 evtHokanSceneLight	event/evtPolygonMovie	raidou1 0x194, raidou2 0x194	38 of 101 words differ	docs/matching/event/evtPolygonMovie.md	3
 UnitAnime	event/evtUnitManager	raidou1 0x1340, raidou2 0x1340	70 of 1232 words differ	docs/matching/event/evtUnitManager.md	3
 evtUnitManagerPrimaryFunc	event/evtUnitManager	raidou1 0x6E8	18 of 442 words differ	docs/matching/event/evtUnitManager.md	11
+MakeLightPacket	event/evtUnitManager	raidou1 0x1F4, raidou2 0x1F4	89 of 115 words differ	docs/matching/event/evtUnitManager.md	17
 ProcSequence	field/fldProcess	raidou1 0x2D08	2571 of 2685 words differ	docs/matching/field/fldProcess.md	3
 MessageRequestNS	interface/frFont	raidou1 0x40, raidou2 0x40	7 of 15 words differ	docs/matching/interface/frFont.md	3
 frCallSetFontString	interface/frFont	raidou1 0x68, raidou2 0x68	13 of 26 words differ	docs/matching/interface/frFont.md	27

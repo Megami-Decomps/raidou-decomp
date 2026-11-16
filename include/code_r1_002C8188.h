@@ -33,5 +33,6 @@ u32 effConfigureIndexedSlotMaterial(struct sprHandle_t *work, s32 index,
 fileRequest_t *effRequestResourceByMode(const char *base, const char *name, u32 mode, void **outInstance);
 
 void effRequestMappedResource(const char *pFileName, const char *pBundle, effMappedResource_t **outMappedResource);
+struct sprHandle_t *effLoadIndexedResource(const char *base, const char *name, u32 keepAllocation);
 
 #endif

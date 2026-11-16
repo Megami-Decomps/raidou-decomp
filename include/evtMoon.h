@@ -2,6 +2,7 @@
 #define EVTMOON_H
 
 #include "common.h"
+#include "kernel.h"
 
 void evtDisableMoonCalc(void);
 void evtDisableMoonDraw(void);
@@ -20,5 +21,14 @@ s32 evtMoonFadeCheck(void);
 void evtMoonFadeIn(s32 Frame);
 void evtMoonFadeOut(s32 Frame);
 void evtMoonInitProcess(void);
+s32 Process1_evtMoon(dds3ProcessID_t *id);
+s32 Process2_evtMoon(dds3ProcessID_t *id);
+
+extern struct sprHandle_t *moon_spr;
+extern s32 gMoonBaseARate;
+extern f32 Process2_evtMoonData7;
+extern s32 gMoonCngCnt;
+extern s32 gMoonAgeOld;
+extern s32 gMoonAge16Old;
 
 #endif

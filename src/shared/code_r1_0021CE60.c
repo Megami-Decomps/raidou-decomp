@@ -49,7 +49,6 @@ void CallShopTest(s32 flg, void *data);
 /* Multiply the quaternions in vf10 and vf11, writing the product to vf10. */
 
 /* Convert the quaternion in vf10 into the primary matrix bank vf28-vf31. */
-f32 acosf(f32 x);
 f32 atan2f(f32 y, f32 x);
 
 /* The selected kind interprets the opaque payload word. */

@@ -3051,7 +3051,7 @@
 0x001A6650	evtRunUnitKutiMotion	hd	hd: Raidou HD evt.evtRunUnitKutiMotion, score 6.8 band C, hd-consensus: prev gap=exact st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.8,7.6,6.8,6.8,6.8,6.8,7.6,6.8,6.8,6.8
 0x001A6680	evtSetUnitExMotion	hd	hd: Raidou HD evt.evtSetUnitExMotion, score 6.75 band C, hd-consensus: next gap=exact st1:gap r1+r2; 10/10 fold runs agree, fold scores 6.8,6.8,6.8,8.8,6.8,8.8,6.8,6.8,8.8,6.8
 0x001A6718	evtSetUnitMotion	inferred	SMT3HD name via SLUS_209.11 0x001E3CC0, unique-masked-hash; map-agrees
-0x001A67D8	evtUnitRotationTarget_evt	hd	hd: Raidou HD evt.evtUnitRotationTarget, score 15.5 band A
+0x001A67D8	evtUnitRotationTarget	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 evtUnitManager.c body matches; replaces evtUnitRotationTarget_evt
 0x001A6998	evtUnitRotationQuat	inferred	SMT3HD name via SLUS_209.11 0x001E3F10, unique-masked-hash; map-agrees
 0x001A6A40	evtUnitMoveType0	inferred	SMT3HD name via SLUS_209.11 0x001E3FB8, unique-masked-hash; map-agrees
 0x001A6B08	evtCalcFrame_UnitMoveType0	hd-inferred	hd: Raidou HD evt.evtCalcFrame_UnitMoveType0, score 10.1 band A
@@ -15906,7 +15906,7 @@
 0x0044DD50	evtCreateUnitHandleTable2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtCreateUnitHandle
 0x0044DD60	evtCreateUnitHandleTable3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtCreateUnitHandle
 0x0044DD70	evtUnitRotationTarget_evtTable	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtUnitRotationTarget_evt
-0x0044DD80	evtUnitRotationTarget_evtTable2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtUnitRotationTarget_evt
+0x0044DD80	evtUnitUpAxis	inferred	method=smt3-body; p=na; tier=A; source=smt3; evidence=SMT3 evtUnitRotationTarget axis (body matches); replaces evtUnitRotationTarget_evtTable2
 0x0044DD90	evtStrYmoveFrameno0	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by evtCalcFrame_UnitMoveType0; string "ymove frameno = 0?"
 0x0044DDA8	evtStrYmoveFramenoAddvalue	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by evtCalcFrame_UnitMoveType0; string "ymove frameno = %d addvalue = %f total y"
 0x0044DDE0	evtStrSetMotX	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by evtUnitManagerPrimaryFunc; string "set mot %X?"
@@ -22194,15 +22194,15 @@
 0x0046C5E0	evtLipsStopFunction_evtCommandData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by evtLipsStopFunction_evtCommand (3 of 4 refs, 2 functions)
 0x0046C5E4	evtCallMemsetData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtCallMemset
 0x0046C5E8	sndCallProcTrigSequenceSlMainData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by sndCallProcTrigSequenceSlMain
-0x0046C5F0	Process2_evtMoonData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by Process2_evtMoon (42 of 43 refs, 2 functions)
-0x0046C5F4	Process2_evtMoonData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by Process2_evtMoon
-0x0046C5F8	gMoonFadeFrameMax	hd	hd: Raidou HD evtMoon.gMoonFadeFrameMax, 3 of 3 functions agree, high confidence
-0x0046C5FC	Process2_evtMoonData3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by Process2_evtMoon (6 of 10 refs, 3 functions)
-0x0046C600	Process2_evtMoonData4	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by Process2_evtMoon (2 of 10 refs, 9 functions)
+0x0046C5F0	moon_spr	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c moon_spr, loaded by Process1; replaces Process2_evtMoonData
+0x0046C5F4	gMoonBaseARate	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c static order before gMoonFade; Process2 alpha rate; replaces Process2_evtMoonData2
+0x0046C5F8	gMoonFade	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c: evtMoonFadeIn stores 1 here and Frame at the next-but-one word; HD static order gMoonFade, gMoonFadeFrame, gMoonFadeFrameMax, gMoonCnt; replaces gMoonFadeFrameMax
+0x0046C5FC	gMoonFadeFrame	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c static order between gMoonFade and gMoonFadeFrameMax; PreCalcFade writes it; replaces Process2_evtMoonData3
+0x0046C600	gMoonFadeFrameMax	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c evtMoonFadeIn stores Frame here; word before gMoonCnt in HD static order; replaces Process2_evtMoonData4
 0x0046C604	gMoonCnt	inferred	smt3-pair: evtEnableMoonDraw stores 1.0f, evtDisableMoonDraw 0
-0x0046C608	Process2_evtMoonData5	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by Process2_evtMoon (6 of 7 refs, 2 functions)
-0x0046C60C	Process2_evtMoonData6	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by Process2_evtMoon (2 of 3 refs, 2 functions)
-0x0046C610	evtData13	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: Process2_evtMoon, evtMoonAddMove
+0x0046C608	gMoonCngCnt	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c static order after gMoonCnt; replaces Process2_evtMoonData5
+0x0046C60C	gMoonAgeOld	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c static order after gMoonCngCnt; replaces Process2_evtMoonData6
+0x0046C610	gMoonAge16Old	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtMoon.c static order after gMoonAgeOld; replaces evtData13
 0x0046C614	addressprocess_id	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046C614); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=fldFreeAddressProcess
 0x0046C618	Process2_evtMoonData7	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by Process2_evtMoon
 0x0046C620	evtMoonProcessName	inferred	method=smt3-content; p=0.97 (n=D_r1_0046C620); tier=A; source=smt3; evidence=smt3-content/all: single
@@ -24590,9 +24590,6 @@
 0x004B6DF0	softenBiasWork	inferred	method=smt3-ref; p=0.98 (n=D_r1_004B6DF0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=soften_bias_Process
 0x004B6E28	evtStageScriptPath	inferred	method=smt3-ref; p=0.98 (n=D_r1_004B6E28); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=1, other=0, sim=1.0, games=1, size=True, sec=True, fn=evtStartEvent
 0x004B6E68	CustomSceneLightArray	inferred	method=hd; p=0.37 (n=D_r1_004B6E68); tier=C; source=hd; evidence=hd/medium: conf=medium, agree=3, using=4
-0x004B6E70	evtInitCustomSceneLightWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtInitCustomSceneLight
-0x004B6EA8	evtMakeCustomSLightPacketWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtMakeCustomSLightPacket
-0x004B6EAC	evtSetCustomSceneLightDataWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by evtSetCustomSceneLightData
 0x004B71F0	RunFrame2Work	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
 0x004B7250	RunFrame2Work2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2
 0x004B7260	RunFrame2Work3	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RunFrame2

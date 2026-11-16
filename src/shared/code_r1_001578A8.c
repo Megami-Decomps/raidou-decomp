@@ -5,7 +5,6 @@
 
 extern void fldCallGrAllocPacketBuff2(void *buf);
 extern void fldCallGrAllocPacketBuff3(void *buf);
-extern void LinkSprite4F(f32 x0, f32 y0, f32 x1, f32 y1, f32 x2, f32 y2, f32 x3, f32 y3, s32 u0, s32 v0, s32 u1, s32 v1, s32 u2, s32 v2, s32 u3, s32 v3, s32 tex, u32 c0, u32 c1, u32 c2, u32 c3, void *th);
 
 /* NON_MATCHING: 8 of 265 words match. Same instruction count, scheduling and register allocation differ. */
 #ifdef NON_MATCHING
