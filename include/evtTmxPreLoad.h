@@ -38,6 +38,9 @@ extern evtTmxPreLoadEntry_t GetTblIndexData[27];
 extern dds3ProcessID_t *TmxPreLoadPID;
 
 s32 CheckActionProcessEnd(evtTmxPreLoad_t *pData, u32 id);
+evtTmxPreLoad_t *Create_evtTmxPreLoad(void);
+s32 Destroy_evtTmxPreLoad(dds3ProcessID_t *PID);
+s32 Process_evtTmxPreLoad(dds3ProcessID_t *PID);
 void evtCallGetLoadSize(fileRequest_t *req, evtTmxPreLoad_t *pData);
 
 s32 GetTblIndex(s32 EventNo);

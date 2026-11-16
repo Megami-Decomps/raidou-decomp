@@ -21,6 +21,16 @@
 #include "evtEventViewer.h"
 #include "code_r1_001CC1D0.h"
 #include "code_r1_001CA8F8.h"
+#include "frFont.h"
+#include "evtPolygonMovie.h"
+#include "evtSound.h"
+#include "dds3KernelDraw.h"
+#include "evtUnitManager.h"
+#include "sdfDraw.h"
+#include "sdfPacketBuff.h"
+#include "itfMisc.h"
+
+extern u8 evtCallSetFontStringData[];
 
 /* Register selectors carried by GIF A+D writes in the two GS contexts. */
 enum {
@@ -254,9 +264,109 @@ void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold) {
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuAdjustTimelineDurations);
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtInitCustomSceneLightSub);
+void evtInitCustomSceneLightSub(f32 (*color)[4], f32 (*dir)[4], f32 *ambient, f32 *soften, f32 *bias) {
+    s32 i;
 
+    for (i = 0; i < 3; i++) {
+        color[i][0] = 0.7f;
+        color[i][1] = 0.7f;
+        color[i][2] = 0.7f;
+        color[i][3] = 0.0f;
+        dir[i][0] = 0.65f;
+        dir[i][1] = 0.39f;
+        dir[i][2] = 0.65f;
+        dir[i][3] = 0.0f;
+    }
+    ambient[0] = 0.2f;
+    ambient[1] = 0.2f;
+    ambient[2] = 0.2f;
+    ambient[3] = 1.0f;
+    *soften = 7.0f;
+    *bias = 0.0f;
+}
+
+/* NON_MATCHING: 127 of 142 words match.  */
+#ifdef NON_MATCHING
+void evtGetValueNewSLightFrame(evtViewerInfo_t *pInfo, evtViewerObject_t *obj, s32 nowframe, pmdSceneLightTable_t *sl, f32 *out_soften, f32 *out_bias) {
+    evtFrameInfo_t *key1;
+    evtFrameInfo_t *key2;
+    pmdSceneLightTable_t *light1;
+    pmdSceneLightTable_t *light2;
+    s32 frame1;
+    s32 frame2;
+    s32 hokan;
+    f32 ratio;
+    f32 soften1;
+    f32 bias1;
+    f32 soften2;
+    f32 bias2;
+    s32 i;
+
+    mnuFindCampKeyTrackNeighbors(obj, nowframe, &key1, &key2);
+    if (key1 != NULL) {
+        frame1 = key1->frame;
+    } else {
+        frame1 = pInfo->firstframe;
+    }
+    if (key2 != NULL) {
+        frame2 = key2->frame;
+    } else {
+        frame2 = pInfo->lastframe.word;
+    }
+    if (frame2 != frame1) {
+        ratio = (f32)(nowframe - frame1) / (f32)(frame2 - frame1);
+    } else {
+        ratio = 0.0f;
+    }
+    if (key1 == NULL) {
+        evtInitCustomSceneLightSub(sl->color, sl->direction, sl->ambient, out_soften, out_bias);
+        return;
+    }
+    hokan = key1->nameIndex;
+    light1 = key1->payload;
+    soften1 = key1->p08.f;
+    bias1 = key1->p0C.f;
+    if (key2 != NULL) {
+        bias2 = key2->p0C.f;
+        light2 = key2->payload;
+        soften2 = key2->p08.f;
+    } else {
+        for (i = 0; i < 4; i++) {
+            sl->color[0][i] = light1->color[0][i];
+            sl->direction[0][i] = light1->direction[0][i];
+            sl->color[1][i] = light1->color[1][i];
+            sl->direction[1][i] = light1->direction[1][i];
+            sl->color[2][i] = light1->color[2][i];
+            sl->direction[2][i] = light1->direction[2][i];
+            sl->ambient[i] = light1->ambient[i];
+        }
+        *out_soften = soften1;
+        *out_bias = bias1;
+        return;
+    }
+    if (light1 == NULL && light2 == NULL) {
+        evtInitCustomSceneLightSub(sl->color, sl->direction, sl->ambient, out_soften, out_bias);
+    } else if (hokan == 0) {
+        for (i = 0; i < 4; i++) {
+            sl->color[0][i] = light1->color[0][i];
+            sl->direction[0][i] = light1->direction[0][i];
+            sl->color[1][i] = light1->color[1][i];
+            sl->direction[1][i] = light1->direction[1][i];
+            sl->color[2][i] = light1->color[2][i];
+            sl->direction[2][i] = light1->direction[2][i];
+            sl->ambient[i] = light1->ambient[i];
+        }
+        *out_soften = soften1;
+        *out_bias = bias1;
+    } else {
+        evtHokanSceneLight(hokan, ratio, light1, light2, sl);
+        *out_soften = evtHokanFloat(hokan, ratio, soften1, soften2);
+        *out_bias = evtHokanFloat(hokan, ratio, bias1, bias2);
+    }
+}
+#else
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtGetValueNewSLightFrame);
+#endif
 
 void SetDefaultTmxData(pmdTmxData_t *display) {
     display->x = 0x100;
@@ -300,7 +410,46 @@ void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, evtViewerObject_t *track, s
     evtHokanTmx(ratio, lowerKey, upperKey, display);
 }
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtHokanTmx);
+void evtHokanTmx(f32 ratio, evtFrameInfo_t *from, evtFrameInfo_t *to, pmdTmxData_t *display) {
+    s32 blend;
+
+    blend = 1;
+    if (to != NULL) {
+        if (from->p1C.sb[0] == 3) {
+            blend = to->p1C.sb[0] == from->p1C.sb[0];
+        } else {
+            blend = to->p1C.sb[0] != 3;
+        }
+    }
+    if (from == NULL) {
+        SetDefaultTmxData(display);
+        return;
+    }
+    if (to == NULL || ratio == 0.0f || from->p08.sh[0] == 0 || !blend) {
+        display->x = from->p0C.sh[0];
+        display->y = from->p0C.sh[1];
+        display->color[0] = from->p10.b[0];
+        display->color[1] = from->p10.b[1];
+        display->color[2] = from->p10.b[2];
+        display->color[3] = from->p10.b[3];
+        display->scaleX = from->p14.f;
+        display->scaleY = from->p18.f;
+        display->enabled = from->p08.sb[0];
+        display->variant = from->p08.sb[1];
+    } else {
+        display->x = from->p0C.sh[0] + (to->p0C.sh[0] - from->p0C.sh[0]) * ratio;
+        display->y = from->p0C.sh[1] + (to->p0C.sh[1] - from->p0C.sh[1]) * ratio;
+        display->color[0] = (u32)(from->p10.b[0] + (to->p10.b[0] - from->p10.b[0]) * ratio);
+        display->color[1] = (u32)(from->p10.b[1] + (to->p10.b[1] - from->p10.b[1]) * ratio);
+        display->color[2] = (u32)(from->p10.b[2] + (to->p10.b[2] - from->p10.b[2]) * ratio);
+        display->color[3] = (u32)(from->p10.b[3] + (to->p10.b[3] - from->p10.b[3]) * ratio);
+        display->scaleX = from->p14.f + (to->p14.f - from->p14.f) * ratio;
+        display->scaleY = from->p18.f + (to->p18.f - from->p18.f) * ratio;
+        display->enabled = from->p08.sb[0];
+        display->variant = from->p08.sb[1];
+    }
+    display->preserveAlpha = from->p1C.sb[0];
+}
 
 void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, evtFrameInfo_t **lowerKey, evtFrameInfo_t **upperKey) {
     s32 frameOffset;
@@ -359,13 +508,90 @@ evtViewerObject_t *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *na
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", campResolvePendingValue);
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtDrawTexture);
+void evtDrawTexture(sdfTexHandle_t *tex, pmdTmxData_t *display, s32 mask, sdfIVector2_t *maskOfs) {
+    s32 width;
+    s32 height;
+    s32 variant;
+    sdfDrawTag_t *tag;
+    u32 ot;
+
+    width = tex->width * display->scaleX;
+    height = tex->height * display->scaleY;
+    evtDrawTextureData2[2] = tex->width * 16;
+    evtDrawTextureData2[3] = tex->height * 16;
+    if (tex->width == 1024) {
+        width--;
+        evtDrawTextureData2[2] -= 16;
+    }
+    if (tex->height == 1024) {
+        height--;
+        evtDrawTextureData2[3] -= 16;
+    }
+    evtDrawTextureData[0] = (display->x - width / 2) * 16;
+    evtDrawTextureData[1] = (display->y - height / 2) * 8;
+    evtDrawTextureData[2] = (display->x + width / 2) * 16;
+    evtDrawTextureData[3] = (display->y + height / 2) * 8;
+    evtDrawTextureData3[0] = display->color[0];
+    evtDrawTextureData3[1] = display->color[1];
+    evtDrawTextureData3[2] = display->color[2];
+    evtDrawTextureData3[3] = display->color[3];
+    variant = display->variant;
+    if (display->color[3] == 0) {
+        return;
+    }
+    tag = (sdfDrawTag_t *)sdfGrAllocPacketBuff(32);
+    sdfDrawTagInit(tag);
+    if (variant == 0) {
+        itfMiscDrawAlphaPrim(tag, 0, 0);
+    } else if (variant == 1) {
+        itfMiscDrawAlphaPrim(tag, 1, 0);
+    } else if (variant == 2) {
+        itfMiscDrawAlphaPrim(tag, 2, 0);
+    }
+    if (mask == 0) {
+        switch (display->preserveAlpha) {
+            case 1:
+                ot = EVT_TEXTURE_OT_VARIANT1;
+                break;
+            case 2:
+                ot = EVT_TEXTURE_OT_MASKED;
+                break;
+            default:
+                ot = EVT_TEXTURE_OT_DEFAULT;
+                break;
+        }
+    } else {
+        ot = EVT_TEXTURE_OT_MASKED;
+        evtDrawTextureData[0] += maskOfs->x;
+        evtDrawTextureData[1] += maskOfs->y;
+        evtDrawTextureData[2] += maskOfs->x;
+        evtDrawTextureData[3] += maskOfs->y;
+    }
+    eglSetOt(ot);
+    eglLinkAlpha(0);
+    eglLinkTest(1, 0, 128, 3, 0, 0, 1, 1);
+    itfMiscDrawSpritePrim(evtDrawTextureData, evtDrawTextureData2, evtDrawTextureData3, 255, tex, 0, tag);
+    {
+        sdfGrOt_t *otEntry = &sdfGrOtTable[ot];
+        otEntry->regFunc(otEntry, tag);
+    }
+}
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", fldResetCampSceneEntries);
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallSetFontString);
+void evtCallSetFontString(evtViewerInfo_t *pInfo) {
+    frFontHandle_t *font;
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuCampLinkFontGlyph);
+    pInfo->glyph = NULL;
+    font = frSetFontString(evtCallSetFontStringData, 0, 0, 0, NULL);
+    pInfo->glyph = font;
+    frSetDrawPosition(font, 0x960, 0x70);
+}
+
+void mnuCampLinkFontGlyph(evtViewerInfo_t *pInfo) {
+    frDestroyFontRequestAfter(pInfo->glyph);
+    pInfo->glyph = NULL;
+}
 
 /* Retail keeps only the divide-by-zero check (break 7) of a division whose result is never used. */
 void mnuCampCheckClockDivisor(void) {
@@ -378,7 +604,33 @@ void mnuCampCheckClockDivisor(void) {
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtRenderTexStart);
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallAllocRenderTexture);
+void evtCallAllocRenderTexture(evtViewerInfo_t *viewer) {
+    s32 stage = viewer->renderTexInfo.stage;
+
+    switch (stage) {
+        case 0:
+            return;
+        case 1:
+            if (dds3RenderTexture == NULL) {
+                dds3AllocRenderTexture(512, 224, 100.75f);
+            }
+            viewer->renderTexInfo.stage++;
+        case 3:
+            evtCallMemAllocFromTailDirect(viewer);
+            viewer->renderTexInfo.stage++;
+        case 4:
+            evtCallPrimAllocDrawTag(viewer);
+            viewer->renderTexInfo.stage++;
+        case 5:
+            if (viewer->renderTexInfo.draw == 1) {
+                evtLeaf15(viewer);
+            }
+            return;
+        default:
+            viewer->renderTexInfo.stage = stage + 1;
+            return;
+    }
+}
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallMemAllocFromTailDirect);
 
@@ -415,9 +667,28 @@ INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf20);
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtLeaf21);
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtEventRegistBGM);
+void evtEventRegistBGM(evtViewerInfo_t *pInfo, s32 id) {
+    s32 i;
 
-INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtEventFadeOutAllBgm);
+    for (i = 0; i < pInfo->registeredCount; i++) {
+        if (pInfo->registeredIds[i] == id) {
+            return;
+        }
+    }
+    if (pInfo->registeredCount < 20) {
+        pInfo->registeredIds[pInfo->registeredCount] = id;
+        pInfo->registeredCount++;
+    }
+}
+
+void evtEventFadeOutAllBgm(evtViewerInfo_t *pInfo) {
+    s32 i;
+
+    for (i = 0; i < pInfo->registeredCount; i++) {
+        evtStopEventBgm(pInfo->workdata->eventNo, pInfo->registeredIds[i]);
+    }
+    pInfo->registeredCount = 0;
+}
 
 INCLUDE_SDATA(const s32, "code_r1_001CA8F8", evtData22);
 

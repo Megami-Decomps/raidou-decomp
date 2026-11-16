@@ -196,7 +196,7 @@ struct evtViewerInfo_t {
     s32 unk2404;
     s32 colorSelection;
     s32 colorEditorActive;
-    u32 glyph;
+    s32 unk2410; /* 0/1 viewer-menu toggle (evtCallMenuDisp2) */
     s32 timedActive;
     s32 timedStart;
     EvtTimedActionEnd timedEnd;
@@ -221,7 +221,8 @@ struct evtViewerInfo_t {
     s32 dontskip_messagetime;
     u8 pad2474[4];
     s32 drawhblur;
-    u8 pad247C[0x18];
+    u8 pad247C[0x14];
+    struct frFontHandle_t *glyph; /* camp font string */
     s32 nowMovieStat; /* 1 while a movie plays */
     s32 MovieStartFrame;
     s32 MovieEndFrame;
@@ -252,5 +253,14 @@ struct evtViewerInfo_t {
 struct pmdProcessWork_t;
 
 s32 evtSetGameData1(struct evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo);
+s32 evtSetGameData2and3(struct evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s32 mode);
+u16 evtSetGameData2and3Sub(struct evtPolygonMovieWork_t *wdata, s32 index);
+s16 evtSetGameData2and3Sub2(struct evtPolygonMovieWork_t *wdata, s32 index);
+u16 evtSetGameData2and3Sub3(struct evtPolygonMovieWork_t *wdata, s32 index);
+u16 evtSetGameData2and3Sub4(struct evtPolygonMovieWork_t *wdata, s32 index);
+union pmdFrameData_t *evtSetGameData2and3Sub5(struct evtPolygonMovieWork_t *wdata, s32 index);
+void evtSetGameData2and3Sub6(pmdSceneLightTable_t *light, pmdSceneLightTable1_t *light1);
+u32 itfGetMessageNo(ItfMesWindowIndex window);
+void evtNotFoundLinkslight(struct evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, evtGroupMetadata_t *link);
 
 #endif

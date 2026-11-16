@@ -23,27 +23,3 @@ Raidou 2, first differing words:
 | +0x24 | `sw zero,0(sp)` | `jal 0x196080` |
 | +0x28 | `ld ra,24(sp)` | `sb zero,-19728(gp)` |
 | +0x2C | `sb s0,0(gp)` | `ld ra,24(sp)` |
-
-## frCallSetFontString (interface/frFont, raidou1 0x68, raidou2 0x68)
-
-Raidou 1 and Raidou 2: 13 of 26 words differ, first at +0x24.
-
-Nothing is recorded about this draft.
-
-Raidou 1, first differing words:
-
-| Offset | Draft | Retail |
-|---|---|---|
-| +0x24 | `move t0,zero` | `sd ra,8(sp)` |
-| +0x28 | `sd ra,8(sp)` | `jal 0x17eee0` |
-| +0x2C | `jal 0x0` | `move t0,zero` |
-| +0x30 | `move t1,zero` | `move v1,v0` |
-
-Raidou 2, first differing words:
-
-| Offset | Draft | Retail |
-|---|---|---|
-| +0x24 | `move t0,zero` | `sd ra,8(sp)` |
-| +0x28 | `sd ra,8(sp)` | `jal 0x193b60` |
-| +0x2C | `jal 0x0` | `move t0,zero` |
-| +0x30 | `move t1,zero` | `move v1,v0` |

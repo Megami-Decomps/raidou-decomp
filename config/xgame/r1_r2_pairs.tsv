@@ -3362,8 +3362,8 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001CE988	0x001E4A70	evtLeaf27	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	masked-hash-in-gap
 0x001CEAF8	0x001E4C70	evtStartCommand	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-reloc-hash
 0x001CEBC8	0x001E4D40	evtEndCommand	no	yes	asm/raidou1/code_001CD6D8.s	asm/raidou2/code_001E37C0.s	unique-reloc-hash
-0x001CEBF8	0x001E4D70	Destroy_evtTmxPreLoad	no	yes	src/raidou1/code_001CEBF8.c	src/raidou2/code_001E4D70.c	unique-reloc-hash
-0x001CEC50	0x001E4DC8	evtCallGetProcessData30	no	yes	asm/raidou1/evtTmxPreLoad.s	asm/raidou2/evtTmxPreLoad.s	unique-reloc-hash
+0x001CEBF8	0x001E4D70	Create_evtTmxPreLoad	no	yes	src/raidou1/code_001CEBF8.c	src/raidou2/code_001E4D70.c	unique-reloc-hash
+0x001CEC50	0x001E4DC8	Destroy_evtTmxPreLoad	no	yes	asm/raidou1/evtTmxPreLoad.s	asm/raidou2/evtTmxPreLoad.s	unique-reloc-hash
 0x001CECE8	0x001E4E60	CheckActionProcessEnd	yes	yes	asm/raidou1/evtTmxPreLoad.s	asm/raidou2/evtTmxPreLoad.s	unique-reloc-hash
 0x001CED28	0x001E4EA0	evtLeaf28	yes	yes	asm/raidou1/evtTmxPreLoad.s	asm/raidou2/evtTmxPreLoad.s	unique-reloc-hash
 0x001CED78	0x001E4EF0	evtCallGetLoadSize	no	yes	asm/raidou1/evtTmxPreLoad.s	asm/raidou2/evtTmxPreLoad.s	unique-reloc-hash

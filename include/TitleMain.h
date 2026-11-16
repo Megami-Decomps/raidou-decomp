@@ -20,6 +20,17 @@ typedef struct titleKeyTable_t {
 
 /* Allocated by TitleInit as a locked memory handle (0xD0 bytes, 0xE8 in Raidou 2); the first words
  * and the four title sprite slots are the part TitleInit sets up. */
+typedef struct titleCursor_t {
+    u32 Stat;
+    s32 Timer;
+    s32 Timer2;
+    s32 ItemAlpha[5];
+    s32 ScaleTimer;
+    s32 Index;
+    s32 ConfigIndex;
+    s32 LevelIndex;
+} titleCursor_t;
+
 typedef struct titleData_t {
     struct sdfMemHandle_t *hMem;
     u32 flag;
@@ -28,12 +39,21 @@ typedef struct titleData_t {
     s32 seqUnit;
     struct effList_t *spriteList;
     void *sprite[4];
-    u8 unk70[0xC];
+    s32 Timer;
+    s32 SkipTimer;
+    s32 WaitTimer;
     s32 introFrame;
+    dds3ProcessID_t *PmvPID; /* event viewer process that plays the title movie */
+    titleCursor_t Cursor;
+    s32 FadeOut;
+    s32 MoviePlayWait;
+    s32 MovieCounter;
+    s32 MovieAlpha; /* 0..128 */
+    s32 MovieSkipFlag;
+    s32 unkC8;
+    s32 AdvSkipFlag;
 #ifdef VERSION_RAIDOU2
-    u8 unk80[0x68];
-#else
-    u8 unk80[0x50];
+    u8 unkD0[0x18];
 #endif
 } titleData_t;
 
@@ -55,8 +75,8 @@ typedef char titleData_size_must_be_0xD0[(sizeof(titleData_t) == 0xD0) ? 1 : -1]
 
 dds3ProcessFunc_t TitleAdvertiseCalcProcess(dds3ProcessID_t *PID);
 s32 TitleAdvertiseInit(dds3ProcessID_t *PID);
-dds3ProcessFunc_t TitleAtlusLogoCalcProcess(dds3ProcessID_t *PID);
-dds3ProcessFunc_t TitleAtlusLogoDrawProcess(dds3ProcessID_t *PID);
+s32 TitleAtlusLogoCalcProcess(dds3ProcessID_t *PID);
+s32 TitleAtlusLogoDrawProcess(dds3ProcessID_t *PID);
 dds3ProcessFunc_t TitleConfigCalcProcess(dds3ProcessID_t *PID);
 s32 TitleConfigDestroy(dds3ProcessID_t *PID);
 s32 TitleDLCInit(dds3ProcessID_t *PID);
@@ -67,6 +87,12 @@ s32 TitleFirstDrawProcess(dds3ProcessID_t *PID);
 titleData_t *TitleInit(s32 mode);
 void TitleProcessStart(s32 mode);
 void TitleGoMain(titleData_t *pData);
+s32 TitleAt3Load(titleData_t *pData);
+void Flow1_6(titleCursor_t *cursor);
+void TitleAt3Play(titleData_t *pData);
+void evtCallBgmStop(titleData_t *pData);
+s32 evtCallStop(titleData_t *pData);
+s32 evtCallPlay(s32 MovieNo, s32 Length, s32 FadeFrame, s32 Mode, titleData_t *pData);
 s32 TitleProcessCheck(void);
 void TitleProcessEnd(void);
 void evtFunc11(titleLogoState_t *state, void **sprite);

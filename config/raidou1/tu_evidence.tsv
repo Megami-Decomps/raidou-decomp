@@ -206,9 +206,9 @@ start	last_func	unit	kind	evidence	smt3_unit
 001AF318	001B84E8	event/evtEventViewer	c	dds:61+smt3:map:20+smt3:names:5 literal-cores:2 of 127	event/evtEventViewer
 001B8598	001BAAF0	event/evtPolygonMovie	c	smt3:names:11+smt3:map:6+dds:6 of 30; starts at evtCheckLoad (HD module evtPMV)	event/evtPolygonMovie
 001BAC78	001BB5F8	event/evtPicture	c	smt3:names:5+smt3:map:3 literal-cores:1 of 21 reordered	event/evtPicture
-001BB6E8	001BB6E8	code_001BB6E8	asm	none	
+001BB6E8	001BB6E8	code_001BB6E8	c	none	
 001BB6F0	001BB8A0	event/evtSky	c	smt3:names:4+smt3:map:1 literal-cores:1 of 7	event/evtSky
-001BB908	001BB908	code_001BB908	asm	none	
+001BB908	001BB908	code_001BB908	c	none	
 001BB928	001BB928	event/evtEventViewerFrameVar	c	smt3:names:1 of 1	event/evtEventViewerFrameVar
 001BB960	001BB9F0	code_001BB960	asm	none	
 001BBA50	001BBA50	field/fldGlobal	c	smt3:map:1 of 1	field/fldGlobal
@@ -220,13 +220,13 @@ start	last_func	unit	kind	evidence	smt3_unit
 001CA880	001CA880	code_001CA880	asm	none	
 001CA8F8	001CC160	code_r1_001CA8F8	c	dds:24+smt3:map:1 of 36	newbattle/nbMainProcess
 001CC1D0	001CC298	code_r1_001CC1D0	c	dds:2 of 2	
-001CC380	001CD660	code_001CC380	asm	none	
+001CC380	001CD660	code_001CC380	c	none	
 001CD6A0	001CD6A0	code_r1_001CD6A0	c	dds:1 of 1	
 001CD6D8	001CEBC8	code_001CD6D8	asm	none	
 001CEBF8	001CEBF8	code_r1_001CEBF8	c	dds:1 of 1	
 001CEC50	001CED78	evtTmxPreLoad	asm	none	
 001CEEF8	001CF0B0	code_r1_001CEEF8	c	none	
-001CF388	001CF748	code_001CF388	asm	none	
+001CF388	001CF748	code_001CF388	c	none	
 001CF7D8	001CF7D8	sound/sndManager	c	smt3:map:1 of 1	sound/sndManager
 001CF808	001D0268	code_r1_001CF808	c	dds:17 of 40	
 001D02F8	001D2698	sndAt3	c	dds:20 literal-cores:1 of 34+gap sndAt3_001D2178 (sndCallWaitSema3, sndBgmLoadId_XF and 13 more)	
@@ -355,7 +355,7 @@ start	last_func	unit	kind	evidence	smt3_unit
 002F5430	002F5430	code_r1_002F5430	c	dds:1 of 1	
 002F5470	002F5758	TitleMain	asm	none	
 002F59D0	002F59D0	code_r1_002F59D0	c	none	
-002F5BD0	002F6930	code_002F5BD0	asm	none	
+002F5BD0	002F6930	code_002F5BD0	c	none	
 002F6AE8	002F6AE8	code_r1_002F6AE8	c	none	
 002F6C00	002F7460	code_002F6C00	asm	none	
 002F7568	002F77B8	code_r1_002F7568	c	none	

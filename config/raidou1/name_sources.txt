@@ -3692,8 +3692,8 @@
 0x001CE9A0	evtCutInCreate	inferred	string: sprintf "%s%s" with "/cutin/", starts a process with destructor name "CutInDestructor"
 0x001CEAF8	evtStartCommand	hd-inferred	hd: Raidou HD evtCutIn.evtStartCommand, score 8.8 band B
 0x001CEBC8	evtEndCommand	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD evtCutIn.evtEndCommand score 5.8 flag I: calls1 prev edge st1:edge r1+r2
-0x001CEBF8	Destroy_evtTmxPreLoad	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD evtTmxPreLoad.Destroy score 4.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
-0x001CEC50	evtCallGetProcessData30	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit evtTmxPreLoad; calls dds3GetProcessData
+0x001CEBF8	Create_evtTmxPreLoad	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=retail 0x1CEBF8 allocates the process work (sdfMemAllocDirect(100)+memset) that dds3StartProcess receives; HD inlines new evtTmxPreLoad_t; pairs with Destroy_evtTmxPreLoad; replaces Destroy_evtTmxPreLoad
+0x001CEC50	Destroy_evtTmxPreLoad	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtProcessStart passes Method evtTmxPreLoad_Destroy as shutdownfunc; retail passes 0x1CEC50 there; replaces evtCallGetProcessData30
 0x001CECE8	CheckActionProcessEnd	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x247d60 sim 0.781 margin 0.27 pair
 0x001CED28	evtLeaf28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit evtTmxPreLoad; no named callee, caller or string
 0x001CED78	evtCallGetLoadSize	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit evtTmxPreLoad; calls fileGetLoadSize
@@ -17086,7 +17086,6 @@
 0x00454C48	evtStrCutInDestructor	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by evtCutInCreate; string "CutInDestructor"
 0x00454C58	Start_evtTmxPreLoadStrSe	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by Start_evtTmxPreLoad; string "%se%d/%s"
 0x00454C68	Start_evtTmxPreLoadStrHaikei	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by Start_evtTmxPreLoad; string "/e_haikei/"
-0x00454C78	evtStrTmxPreLoad	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by evtProcessStart; string "TmxPreLoad"
 0x00454C88	fldStrNowPlayengStart	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by fldNowPlayengStart; string "now playeng start...?"
 0x00454CA0	fldStr04Adb	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by fldNowPlayengStart; string "%s%04d.ADB"
 0x00454CB0	fldStrVoice04Adb	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=used by fldCheckNextFile; string "/voice/%s%04d.ADB"
@@ -23869,10 +23868,10 @@
 0x0046F2E8	sdfFaceDivSoften	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F2E8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=12, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3SceneLightUpdateFirst
 0x0046F2EC	sdfFaceDivBias	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F2EC); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=12, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3SceneLightUpdateFirst
 0x0046F2F0	GlobalParamFlag	hd	hd: Raidou HD sdf3D.GlobalParamFlag, 5 of 6 functions agree, high confidence
-0x0046F2F4	mapBgSetScrollData21	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBgSetScroll (7 of 15 refs, 9 functions)
-0x0046F2F8	mapBgSetScrollData22	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBgSetScroll (7 of 15 refs, 9 functions)
-0x0046F2FC	GlobalParamTransX	hd	hd: Raidou HD sdf3D.GlobalParamTransX, 3 of 3 functions agree, high confidence
-0x0046F300	mapBgSetScrollData23	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBgSetScroll (6 of 16 refs, 10 functions)
+0x0046F2F4	sdf3DScreenAdjustScaleX	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name, read with ScaleY/OffsetY by dds3RefCameraTM and reset to 1.0 by mapBgSetScrollReset and InitPolygonMovieWorkData; replaces mapBgSetScrollData21
+0x0046F2F8	sdf3DScreenAdjustScaleY	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name, same evidence as ScaleX; replaces mapBgSetScrollData22
+0x0046F2FC	sdf3DScreenAdjustOffsetX	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=sits between ScaleY and OffsetY, reset to 0 with OffsetY; IDB name GlobalParamTransX is a fuzzy label (low confidence); replaces GlobalParamTransX
+0x0046F300	sdf3DScreenAdjustOffsetY	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name, same evidence as ScaleX; replaces mapBgSetScrollData23
 0x0046F304	sdf3DLightDefault	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046F304); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x0046F308	sdf3DFogDefault	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046F308); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x0046F30C	sdf3DSlot2Tex	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F30C); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdf3DInit

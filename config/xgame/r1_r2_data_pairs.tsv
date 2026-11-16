@@ -4366,7 +4366,6 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x00454C48	0x004BAFD0	evtStrCutInDestructor	.rodata	0x10	yes	run-order-size
 0x00454C58	0x004BAFE0	Start_evtTmxPreLoadStrSe	.rodata	0x10	yes	code-ref
 0x00454C68	0x004BAFF0	Start_evtTmxPreLoadStrHaikei	.rodata	0x10	yes	code-ref
-0x00454C78	0x004BB000	evtStrTmxPreLoad	.rodata	0x10	yes	code-ref
 0x00454C88	0x004BB010	fldStrNowPlayengStart	.rodata	0x18	yes	code-ref
 0x00454CA0	0x004BB028	fldStr04Adb	.rodata	0x10	yes	code-ref
 0x00454CB0	0x004BB038	fldStrVoice04Adb	.rodata	0x18	yes	code-ref
@@ -9872,10 +9871,10 @@ r1_addr	r2_addr	name	section	size	identical_bytes	evidence
 0x0046F2E8	0x004E4300	sdfFaceDivSoften	.sdata	0x4	yes	code-ref
 0x0046F2EC	0x004E4304	sdfFaceDivBias	.sdata	0x4	yes	code-ref
 0x0046F2F0	0x004E4308	GlobalParamFlag	.sdata	0x4	yes	code-ref
-0x0046F2F4	0x004E430C	mapBgSetScrollData21	.sdata	0x4	yes	code-ref
-0x0046F2F8	0x004E4310	mapBgSetScrollData22	.sdata	0x4	yes	code-ref
-0x0046F2FC	0x004E4314	GlobalParamTransX	.sdata	0x4	yes	code-ref
-0x0046F300	0x004E4318	mapBgSetScrollData23	.sdata	0x4	yes	code-ref
+0x0046F2F4	0x004E430C	sdf3DScreenAdjustScaleX	.sdata	0x4	yes	code-ref
+0x0046F2F8	0x004E4310	sdf3DScreenAdjustScaleY	.sdata	0x4	yes	code-ref
+0x0046F2FC	0x004E4314	sdf3DScreenAdjustOffsetX	.sdata	0x4	yes	code-ref
+0x0046F300	0x004E4318	sdf3DScreenAdjustOffsetY	.sdata	0x4	yes	code-ref
 0x0046F304	0x004E431C	sdf3DLightDefault	.sdata	0x4	yes	code-ref
 0x0046F308	0x004E4320	sdf3DFogDefault	.sdata	0x4	yes	code-ref
 0x0046F30C	0x004E4324	sdf3DSlot2Tex	.sdata	0x4	yes	code-ref

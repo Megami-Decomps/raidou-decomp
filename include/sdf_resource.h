@@ -129,7 +129,10 @@ typedef struct TMX_HEADER_t
     u8 compression;
     s16 userId;
     u32 fileSize;
-    u32 formatId;
+    union {
+        u32 formatId;
+        char formatTag[4]; /* "TMX0" */
+    };
     s32 realSize;
     u8 numOfCLUT;
     u8 CLUTFormat;

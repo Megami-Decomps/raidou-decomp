@@ -61,6 +61,7 @@ struct sdfTexHandle_t;
 s32 dds3BistaCheck(void);
 void dds3BistaClear(void);
 void dds3BistaIn(u32 frame);
+void dds3FadeSet(s32 r, s32 g, s32 b, s32 a);
 void dds3BistaOut(u32 frame);
 void dds3BistaOutEx(u32 frame, u32 btm_h);
 void dds3BistaUpdate(void);
@@ -102,5 +103,7 @@ extern s16 dds3Data33;
 u32 dds3NullDrawProc(void);
 
 struct sdfTexHandle_t *dds3GetRenderTexture(void);
+s32 dds3AllocRenderTexture(u16 sx, u16 sy, f32 aspect);
+extern struct sdfTexHandle_t *dds3RenderTexture;
 
 #endif

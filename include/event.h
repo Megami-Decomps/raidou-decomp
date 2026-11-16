@@ -92,6 +92,13 @@ typedef struct pmdEffectTable_t {
     s32 reserve;
 } pmdEffectTable_t;
 
+typedef struct pmdTmxTable_t {
+    s32 NameIndex;
+    s32 DataOffset;
+    s32 Reserve1;
+    s32 Reserve2;
+} pmdTmxTable_t;
+
 typedef struct pmdHeader_t {
     s8 FileType;
     s8 FileFormat;
@@ -139,6 +146,23 @@ typedef struct {
     f32 direction[3][4];
     f32 ambient[4];
 } pmdSceneLightTable_t;
+
+/* Single-light record of PM2 header kinds below 11 (SMT3's pmdSceneLightTable_t). */
+typedef struct pmdSceneLightTable1_t {
+    f32 color[4];
+    f32 direction[4];
+    f32 ambient[4];
+} pmdSceneLightTable1_t;
+
+/* Parallel-blur record (HD name); only the 40-byte size is confirmed, the fields follow dds3Effect_Blur_t. */
+typedef struct pmdHeikouBlurTable_t {
+    u32 abgr;
+    s32 blend;
+    f32 direction;
+    f32 power;
+    s32 center[2];
+    s32 xy[2][2];
+} pmdHeikouBlurTable_t;
 
 /* Event-unit allocation: evtCreateUnitHandle allocates and clears sizeof(evtUnit_t), 0x230 bytes in Raidou.
  * SMT3 omits the motion, shadow and vertical-movement members. */

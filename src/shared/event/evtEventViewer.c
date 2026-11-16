@@ -46,7 +46,6 @@
 #include "sdfDelayedResrc.h"
 #include "sdfMemory.h"
 
-void evtSetGameData2and3(evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s32 mode);
 extern s16 winoff_x;
 extern sdfColor32_t evtCallGetFrameIDData;
 extern s8 dds3PadButtonState[];

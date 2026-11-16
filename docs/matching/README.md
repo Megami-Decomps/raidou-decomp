@@ -30,7 +30,7 @@ menu scenarios); an entry says which paths they covered.
 | 2 | code_r1_00142038 | raidou1, raidou2 | [code_r1_00142038.md](code_r1_00142038.md) |
 | 2 | code_r1_0014F378 | raidou1 | [code_r1_0014F378.md](code_r1_0014F378.md) |
 | 2 | code_r1_0016B498 | raidou1 | [code_r1_0016B498.md](code_r1_0016B498.md) |
-| 2 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
+| 2 | event/evtPolygonMovie | raidou1, raidou2 | [event/evtPolygonMovie.md](event/evtPolygonMovie.md) |
 | 2 | sdf/sdfModel | raidou1, raidou2 | [sdf/sdfModel.md](sdf/sdfModel.md) |
 | 1 | code_00109A70 | raidou1 | [code_00109A70.md](code_00109A70.md) |
 | 1 | code_00173D20 | raidou1 | [code_00173D20.md](code_00173D20.md) |
@@ -53,6 +53,8 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_r1_0016C450 | raidou1 | [code_r1_0016C450.md](code_r1_0016C450.md) |
 | 1 | code_r1_00175180 | raidou1, raidou2 | [code_r1_00175180.md](code_r1_00175180.md) |
 | 1 | code_r1_00175858 | raidou1, raidou2 | [code_r1_00175858.md](code_r1_00175858.md) |
+| 1 | code_r1_001C4B78 | raidou1, raidou2 | [code_r1_001C4B78.md](code_r1_001C4B78.md) |
+| 1 | code_r1_001CA8F8 | raidou1, raidou2 | [code_r1_001CA8F8.md](code_r1_001CA8F8.md) |
 | 1 | code_r1_001CEEF8 | raidou1, raidou2 | [code_r1_001CEEF8.md](code_r1_001CEEF8.md) |
 | 1 | code_r1_0021CE60 | raidou1, raidou2 | [code_r1_0021CE60.md](code_r1_0021CE60.md) |
 | 1 | code_r1_00242308 | raidou1, raidou2 | [code_r1_00242308.md](code_r1_00242308.md) |
@@ -74,8 +76,8 @@ menu scenarios); an entry says which paths they covered.
 | 1 | dat | raidou1 | [dat.md](dat.md) |
 | 1 | effect/polyManager | raidou1, raidou2 | [effect/polyManager.md](effect/polyManager.md) |
 | 1 | event/evtMoon | raidou1 | [event/evtMoon.md](event/evtMoon.md) |
-| 1 | event/evtPolygonMovie | raidou1, raidou2 | [event/evtPolygonMovie.md](event/evtPolygonMovie.md) |
 | 1 | field/fldProcess | raidou1 | [field/fldProcess.md](field/fldProcess.md) |
+| 1 | interface/frFont | raidou1, raidou2 | [interface/frFont.md](interface/frFont.md) |
 | 1 | interface/itfPanel | raidou1, raidou2 | [interface/itfPanel.md](interface/itfPanel.md) |
 | 1 | kernel/dds3KernelProcess | raidou1 | [kernel/dds3KernelProcess.md](kernel/dds3KernelProcess.md) |
 | 1 | newbattle/nbTarSelProcess | raidou1, raidou2 | [newbattle/nbTarSelProcess.md](newbattle/nbTarSelProcess.md) |

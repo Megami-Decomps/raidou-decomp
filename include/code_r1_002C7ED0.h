@@ -5,6 +5,7 @@
 
 struct effList_t;
 
+s32 effPollResourceList(struct effList_t *list);
 s32 effAppendListEntry(struct effList_t *list, const char *value, const char *length, u32 kind, void **reference);
 
 #endif

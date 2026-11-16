@@ -3962,8 +3962,8 @@
 0x001E4A88	evtCutInCreate	inferred	string: sprintf "%s%s" with "/cutin/", starts a process with destructor name "CutInDestructor"
 0x001E4C70	evtStartCommand	hd-inferred	hd: Raidou HD evtCutIn.evtStartCommand, score 8.8 band B
 0x001E4D40	evtEndCommand	hd-inferred	method=hd-stable; p=0.75 (n=16); tier=C; source=hd; evidence=Raidou HD evtCutIn.evtEndCommand score 5.8 flag I: calls1 prev edge st1:edge r1+r2
-0x001E4D70	Destroy_evtTmxPreLoad	hd	method=hd-both; p=0.71 (n=206); tier=C; source=hd; evidence=Raidou HD evtTmxPreLoad.Destroy score 4.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
-0x001E4DC8	evtCallGetProcessData30	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit evtTmxPreLoad; calls dds3GetProcessData
+0x001E4D70	Create_evtTmxPreLoad	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=retail 0x1CEBF8 allocates the process work (sdfMemAllocDirect(100)+memset) that dds3StartProcess receives; HD inlines new evtTmxPreLoad_t; pairs with Destroy_evtTmxPreLoad; replaces Destroy_evtTmxPreLoad
+0x001E4DC8	Destroy_evtTmxPreLoad	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD evtProcessStart passes Method evtTmxPreLoad_Destroy as shutdownfunc; retail passes 0x1CEC50 there; replaces evtCallGetProcessData30
 0x001E4E60	CheckActionProcessEnd	inferred	method=smt3-fuzzy-70-m-pair; p=0.86 (n=35); tier=B; source=smt3; evidence=smt3 body 0x247d60 sim 0.781 margin 0.27 pair
 0x001E4EA0	evtLeaf28	inferred	method=derived-unit; p=na; tier=D; source=derived; evidence=unit evtTmxPreLoad; no named callee, caller or string
 0x001E4EF0	evtCallGetLoadSize	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit evtTmxPreLoad; calls fileGetLoadSize
@@ -29338,10 +29338,10 @@
 0x004E4300	sdfFaceDivSoften	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F2E8); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=12, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3SceneLightUpdateFirst
 0x004E4304	sdfFaceDivBias	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F2EC); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=12, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3SceneLightUpdateFirst
 0x004E4308	GlobalParamFlag	hd	hd: Raidou HD sdf3D.GlobalParamFlag, 5 of 6 functions agree, high confidence
-0x004E430C	mapBgSetScrollData21	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBgSetScroll (7 of 15 refs, 9 functions)
-0x004E4310	mapBgSetScrollData22	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBgSetScroll (7 of 15 refs, 9 functions)
-0x004E4314	GlobalParamTransX	hd	hd: Raidou HD sdf3D.GlobalParamTransX, 3 of 3 functions agree, high confidence
-0x004E4318	mapBgSetScrollData23	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBgSetScroll (6 of 16 refs, 10 functions)
+0x004E430C	sdf3DScreenAdjustScaleX	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name, read with ScaleY/OffsetY by dds3RefCameraTM and reset to 1.0 by mapBgSetScrollReset and InitPolygonMovieWorkData; replaces mapBgSetScrollData21
+0x004E4310	sdf3DScreenAdjustScaleY	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name, same evidence as ScaleX; replaces mapBgSetScrollData22
+0x004E4314	sdf3DScreenAdjustOffsetX	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=sits between ScaleY and OffsetY, reset to 0 with OffsetY; IDB name GlobalParamTransX is a fuzzy label (low confidence); replaces GlobalParamTransX
+0x004E4318	sdf3DScreenAdjustOffsetY	inferred	method=derived-derived-role; p=na; tier=C; source=derived; evidence=IDB name, same evidence as ScaleX; replaces mapBgSetScrollData23
 0x004E431C	sdf3DLightDefault	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046F304); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x004E4320	sdf3DFogDefault	inferred	method=smt3-alias; p=0.90 (n=D_r1_0046F308); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x004E4324	sdf3DSlot2Tex	inferred	method=smt3-ref; p=0.98 (n=D_r1_0046F30C); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdf3DInit

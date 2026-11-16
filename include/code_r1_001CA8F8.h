@@ -6,7 +6,7 @@
 #include "kernel.h"
 
 struct evtViewerObject_t;
-struct pmdProcessWork_t;
+struct evtPolygonMovieWork_t;
 
 /* Zero-based selections stored in the camp viewer's primary and secondary
  * option fields. The current menus expose two primary rows and three
@@ -40,12 +40,32 @@ void evtEventRegistBGM(evtViewerInfo_t *pInfo, s32 regbgm_no);
 void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, struct evtViewerObject_t *track, s32 frame, pmdTmxData_t *display);
 void evtGetValueNewSLightFrame(evtViewerInfo_t *pInfo, struct evtViewerObject_t *obj, s32 nowframe, pmdSceneLightTable_t *sl, f32 *out_soften, f32 *out_bias);
 void evtRenderTexStart(evtViewerInfo_t *pInfo);
-s32 mnuCampFindMatchingEntryIndex(struct pmdProcessWork_t *wdata, evtViewerInfo_t *pInfo, s32 pm2nametable_idx);
+s32 mnuCampFindMatchingEntryIndex(struct evtPolygonMovieWork_t *wdata, evtViewerInfo_t *pInfo, s32 pm2nametable_idx);
 void mnuCampLinkFontGlyph(evtViewerInfo_t *pInfo);
 void evtRenderTexStart(evtViewerInfo_t *pInfo);
 struct evtViewerObject_t *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *name);
 void evtGetMessageDataAndTypeFromFrame(evtFrameInfo_t *key, s32 *lowBitsOut, s32 *highBitsOut);
 
+MnuCampPrimaryOptionIndex evtMainMenuItemSub(evtViewerInfo_t *scene);
+
+/* Ordering table entries evtDrawTexture files its sprite into. */
+#define EVT_TEXTURE_OT_VARIANT1 39
+#if defined(VERSION_RAIDOU2)
+#define EVT_TEXTURE_OT_MASKED 74
+#define EVT_TEXTURE_OT_DEFAULT 104
+#else
+#define EVT_TEXTURE_OT_MASKED 73
+#define EVT_TEXTURE_OT_DEFAULT 103
+#endif
+
+/* Sprite rectangle, UV rectangle and RGBA colour evtDrawTexture fills. */
+extern s32 evtDrawTextureData[4];
+extern s32 evtDrawTextureData2[4];
+extern u32 evtDrawTextureData3[4];
+
 void evtCallAllocRenderTexture(evtViewerInfo_t *viewer);
+void evtCallMemAllocFromTailDirect(evtViewerInfo_t *pInfo);
+void evtCallPrimAllocDrawTag(evtViewerInfo_t *pInfo);
+void evtLeaf15(evtViewerInfo_t *pInfo);
 
 #endif

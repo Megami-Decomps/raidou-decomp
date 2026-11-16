@@ -14,6 +14,8 @@ s32 evtLoadArea_FromMemory(s32 fld, s32 area, saddr_t pF1, saddr_t pF2, const sd
 void evtPathLoop(dds3Basic_t *basic, s32 sw);
 void evtSetUnitPos(u32 targetKey, u32 sourceKey);
 s32 evtStageAnimeControl(s32 type, s32 mode);
+s32 evtSetRegistUnit_evt(s32 major, s32 minor);
+s32 evtPathLinkAndMake(dds3Basic_t *path, dds3Basic_t *obj);
 
 #include "enums.h"
 #include "sdf_types.h"

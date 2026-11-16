@@ -1775,7 +1775,6 @@
 0x001E4A68	evtLeaf26	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
 0x001E4A70	evtLeaf27	func	tier=D	derived-unit	na	unit code_001CD6D8, neighbour evtCutInCreate; no named callee, caller or string
 0x001E4C70	evtStartCommand	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtCutIn.evtStartCommand, score 8.8 band B
-0x001E4DC8	evtCallGetProcessData30	func	tier=D	derived-callee	na	unit evtTmxPreLoad; calls dds3GetProcessData
 0x001E4EA0	evtLeaf28	func	tier=D	derived-unit	na	unit evtTmxPreLoad; no named callee, caller or string
 0x001E4EF0	evtCallGetLoadSize	func	tier=D	derived-callee	na	unit evtTmxPreLoad; calls fileGetLoadSize
 0x001E5500	evtChkLoad	func	tier=D	legacy-hd-inferred	na	hd: Raidou HD evtTmxPreLoad.evtChkLoad, score 8.8 band B
@@ -21511,9 +21510,6 @@
 0x004E4270	rstCallStartLevelUp2Data	data	tier=D	derived-sole	na	used by rstCallStartLevelUp2
 0x004E42C8	sdfGrPacketBuffPtr	data	tier=D	smt3-offset	na	smt3-offset: between sdfGrPacketBuffBase and sdfGrPacketBuffLimit, same span 0xC, same size
 0x004E42D6	sdfDrawFrameCounter	data	tier=D	smt3-offset	na	smt3-offset: between sdfDrawSyncFlag and sdfDrawPublishFlag, same span 0x3, same size
-0x004E430C	mapBgSetScrollData21	data	tier=D	derived-dominant	na	used by mapBgSetScroll (7 of 15 refs, 9 functions)
-0x004E4310	mapBgSetScrollData22	data	tier=D	derived-dominant	na	used by mapBgSetScroll (7 of 15 refs, 9 functions)
-0x004E4318	mapBgSetScrollData23	data	tier=D	derived-dominant	na	used by mapBgSetScroll (6 of 16 refs, 10 functions)
 0x004E4348	sdfPadButtons	data	tier=D	smt3-offset	na	smt3-offset: between sdf3DSlot1Tex and sdfPadAnalogSticks, same span 0x18, same size
 0x004E4351	dds3RunProcessListData2	data	tier=D	derived-sole	na	used by dds3RunProcessList
 0x004E4352	sbtlData128	data	tier=D	derived-shared	na	used by 2 functions: sbtlReLoadMap, sbtlCallSbtlDebugCheckFreeCameraFlg
@@ -23750,7 +23746,7 @@
 0x001E4828	scrEventSkipEnd	func	tier=C	hd-d	0.53 (n=98)	Raidou HD scr.scrEventSkipEnd score 3.1 flag I: calls1 calls-of-match st2:call r2-only
 0x001E48E8	GetRegistNums	func	tier=C	hd-d	0.53 (n=98)	Raidou HD evtCutIn.GetRegistNums score 2.5 flag -: calls1 calls-of-match st2:call r2-only
 0x001E4D40	evtEndCommand	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD evtCutIn.evtEndCommand score 5.8 flag I: calls1 prev edge st1:edge r1+r2
-0x001E4D70	Destroy_evtTmxPreLoad	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evtTmxPreLoad.Destroy score 4.0 flag -: calls1 calls-of-match-uniq st1:call r1+r2
+0x001E4D70	Create_evtTmxPreLoad	func	tier=C	derived-derived-role	na	retail 0x1CEBF8 allocates the process work (sdfMemAllocDirect(100)+memset) that dds3StartProcess receives; HD inlines new evtTmxPreLoad_t; pairs with Destroy_evtTmxPreLoad; replaces Destroy_evtTmxPreLoad
 0x001E5070	GetTblIndex	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evtTmxPreLoad.GetTblIndex score 5.3 flag -: next gap3/5 st1:gap r1+r2
 0x001E50E8	evtGetFileNums	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evtTmxPreLoad.evtGetFileNums score 4.5 flag I: next gap4/6 st1:gap r1+r2
 0x001E5128	UpdateQue	func	tier=C	hd-both	0.71 (n=206)	Raidou HD evtTmxPreLoad.UpdateQue score 4.6 flag -: next gap5/7 st1:gap r1+r2
@@ -24626,6 +24622,10 @@
 0x004E4170	_gp2	data	tier=C	smt3-ref	0.88 (n=D_r1_0046F150)	smt3-ref/loose: nfun=3, other=0, sim=1.0, games=1, size=False, sec=False, fn=_start; _gp is another symbol
 0x004E4250	g_mainPID3	data	tier=C	hd	0.37 (n=D_r1_0046F238)	hd/medium: conf=medium, agree=2, using=2; g_mainPID is another symbol
 0x004E42F4	sdfForcedAssetTextureMode	data	tier=C	dds-ref	0.59 (n=D_r1_0046F2DC)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfAssetCopyTextureState
+0x004E430C	sdf3DScreenAdjustScaleX	data	tier=C	derived-derived-role	na	IDB name, read with ScaleY/OffsetY by dds3RefCameraTM and reset to 1.0 by mapBgSetScrollReset and InitPolygonMovieWorkData; replaces mapBgSetScrollData21
+0x004E4310	sdf3DScreenAdjustScaleY	data	tier=C	derived-derived-role	na	IDB name, same evidence as ScaleX; replaces mapBgSetScrollData22
+0x004E4314	sdf3DScreenAdjustOffsetX	data	tier=C	derived-derived-role	na	sits between ScaleY and OffsetY, reset to 0 with OffsetY; IDB name GlobalParamTransX is a fuzzy label (low confidence); replaces GlobalParamTransX
+0x004E4318	sdf3DScreenAdjustOffsetY	data	tier=C	derived-derived-role	na	IDB name, same evidence as ScaleX; replaces mapBgSetScrollData23
 0x004E45D0	sdfMovieDrawLeft	data	tier=C	dds-ref	0.59 (n=D_r1_0046F5B8)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfSetGridScaledDrawBounds
 0x004E45D4	sdfMovieDrawTop	data	tier=C	dds-ref	0.59 (n=D_r1_0046F5BC)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfSetGridScaledDrawBounds
 0x004E45D8	sdfMovieDrawRight	data	tier=C	dds-ref	0.59 (n=D_r1_0046F5C0)	dds-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfSetGridScaledDrawBounds
@@ -24823,6 +24823,7 @@
 0x001D5F58	evtEventPosItem	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x1f76f0 sim 0.804 margin 0.42 pair
 0x001E21E0	evtEventRegistBGM	func	tier=B	hd-role	na	HD evt.c evtEventRegistBGM: same list append at the same call sites; replaces evtLeaf22
 0x001E3FA0	evtCrossFadeGetStat	func	tier=B	hd-both-s6	0.81 (n=84)	Raidou HD evt.evtCrossFadeGetStat score 6.5 flag I: calls1 prev gap4/8 st1:gap r1+r2
+0x001E4DC8	Destroy_evtTmxPreLoad	func	tier=B	hd-role	na	HD evtProcessStart passes Method evtTmxPreLoad_Destroy as shutdownfunc; retail passes 0x1CEC50 there; replaces evtCallGetProcessData30
 0x001E4E60	CheckActionProcessEnd	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x247d60 sim 0.781 margin 0.27 pair
 0x001E8518	nbEffectShutdown	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x16c500 sim 0.762 margin 0.76 pair
 0x001E8BC8	fldCommand_FLD_BGM_CONTINUE	func	tier=B	smt3-fuzzy-70-m-pair	0.86 (n=35)	smt3 body 0x15a280 sim 0.864 margin 0.86 pair
