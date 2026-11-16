@@ -12,7 +12,10 @@ Accepted source preserves behavior and compiles to the exact retail bytes.
 
 A fakematch is C that reaches the bytes by something other than a plausible
 reconstruction: a raw pointer offset where a struct field exists, a dummy use
-or an artificial dependency, a pinned register, a false type. A close
+or an artificial dependency written in C, a false type. As in smt3-decomp, a
+localized compiler constraint is allowed through the `FAKEMATCH_ASM_*` macros
+in `include/common.h` (register binding, a value held live or read, a retail
+symbol name); a unit never spells `asm` itself. A close
 reconstruction stays `INCLUDE_ASM` with its best draft preserved (below).
 
 Raw offsets usually mean a struct is wrong, not that the function is hard.

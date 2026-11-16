@@ -89,8 +89,11 @@ Per function, in this order:
   functionally correct; the port compiles it.
 - A function that shifts from header declaration changes alone is recorded NON_MATCHING with a
   `Fragile:` line in its docs/matching entry (the cause); never move or add declarations to protect it.
-- No fakematches: no raw pointer offsets, no dummy uses, no pinned registers, no false
-  types, no casts that hide a wrong type, no local prototypes. A raw offset means a struct
+- No fakematches: no raw pointer offsets, no dummy C uses or dead stores, no false types, no
+  casts that hide a wrong type, no local prototypes. Allowed, as in smt3-decomp: the
+  `FAKEMATCH_ASM_*` macros from include/common.h (`_REG` register binding, `_LIVE*` keeping a
+  value live, `_READ*` reading it, e.g. after a call to stop a tail call, `_NAME` retail symbol).
+  Never spell `asm` in a unit; add a macro to common.h if a form is missing. A raw offset means a struct
   is wrong: fix the type for Raidou in T/include (per-game definition if the games differ)
   and write the field access.
 - Names follow the game convention with no exceptions: SMT3 name, else HD name, else
