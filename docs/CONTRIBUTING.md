@@ -135,6 +135,14 @@ Then run `python3 tools/docs_index.py` to regenerate the README and `INDEX.tsv`.
 `tools/test_docs_index.py` fails when a draft has no entry, an entry has no
 draft, or the index is stale.
 
+Before drafting, `python3 tools/find_body.py NAME...` looks for an existing body
+in smt3-decomp and dds-decomp under the function's name, its SMT3 alias and its
+Raidou HD name, and says whether that body matches in its own tree. For a draft a
+few words off, `python3 tools/perm_unit.py import <unit> NAME` sets up
+[decomp-permuter](https://github.com/simonlindholm/decomp-permuter) on the unit's
+NON_MATCHING draft, scored on both games for a shared unit. A permuter result
+lands only once it is ordinary source.
+
 ## 3. Verify
 
 ```sh
