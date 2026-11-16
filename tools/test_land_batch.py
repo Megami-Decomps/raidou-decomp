@@ -130,6 +130,29 @@ class RenamedRowTests(unittest.TestCase):
         self.assertEqual(run.notes, ["u.c: old: 0 INCLUDE_ASM lines"])
 
 
+class LateR1onlyTests(unittest.TestCase):
+    def test_a_spliced_function_named_in_r1only_later_is_guarded(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = pathlib.Path(tmp)
+            (root / "final").mkdir()
+            (root / "final/old.c").write_text("void old(void) {}\n")
+            (root / "src/shared").mkdir(parents=True)
+            unit = root / "src/shared/u.c"
+            unit.write_text("int a;\nvoid new(void) {}\nint b;\n")
+            run = land_batch.Run.__new__(land_batch.Run)
+            run.tree = root
+            run.maps = {g: {"old": "new"} for g in ("raidou1", "raidou2")}
+            run.draft_names = {}
+            run.batch = batch_files.Batch(root, "R", {"old": batch_files.Row("old", "src/shared/u")}, r1only={"new"})
+            run.notes, run.lines = [], []
+            run.say = run.lines.append
+            want = ('int a;\n#ifdef VERSION_RAIDOU1\nvoid new(void) {}\n#else\nINCLUDE_ASM(const s32, "u", new);\n'
+                    "#endif\nint b;\n")
+            run.r1only()
+            self.assertEqual((unit.read_text(), run.notes), (want, []))
+            run.r1only()
+            self.assertEqual(unit.read_text(), want)
+
 class BeforeCacheTests(unittest.TestCase):
     def run_in(self, root: pathlib.Path, work: str, base: str) -> land_batch.Run:
         run = land_batch.Run.__new__(land_batch.Run)

@@ -27,8 +27,8 @@ import renames  # noqa: E402
 import segments  # noqa: E402
 import unit_text  # noqa: E402
 
-STEPS = ("patch", "renames", "splice", "configure", "promote", "docs", "regress", "gate", "retire")
-DRY_STEPS = ("patch", "renames", "splice")
+STEPS = ("patch", "renames", "splice", "r1only", "configure", "promote", "docs", "regress", "gate", "retire")
+DRY_STEPS = ("patch", "renames", "splice", "r1only")
 GATE = (["tools/check_config.py"], ["tools/check_nonmatching.py"], ["tools/test_raidou_c.py"],
         ["tools/test_docs_index.py"], ["tools/docs_index.py", "--check"], ["tools/revisit_names.py", "--check"])
 NONMATCHING_NAME = re.compile(r"^nonmatching (\w+), 0x", re.M)
@@ -73,6 +73,10 @@ class Run:
     def current(self, name: str, game: str = "raidou1") -> str:
         """The name a batch row has in the tree once renames.tsv is applied."""
         return self.maps[game].get(name, name)
+
+    def is_r1only(self, row: batch_files.Row) -> bool:
+        """r1only.txt names the row by its batch name or by a name renames.tsv gives it."""
+        return bool({row.name, self.current(row.name), self.current(row.name, "raidou2")} & self.batch.r1only)
 
     def finals(self) -> dict[str, str]:
         """Row name -> final draft, with the function's own name as renamed (drafts may predate renames.tsv)."""
@@ -337,11 +341,36 @@ class Run:
         error = None
         for name in names:
             try:
-                return unit_text.splice(text, name, final, row.name in self.batch.r1only)
+                return unit_text.splice(text, name, final, self.is_r1only(row))
             except ValueError as e:
                 error = error or e
         self.note(f"{source}: {error}")
         return text
+
+    def r1only(self) -> None:
+        """Guard shared-unit drafts named in r1only.txt after they were spliced, so a line added on a resumed run
+        applies; Raidou 2 gets the INCLUDE_ASM back."""
+        finals = self.finals()
+        known = {n for r in self.batch.rows.values() for n in (r.name, self.current(r.name), self.current(r.name, "raidou2"))}
+        for name in sorted(self.batch.r1only - known):
+            self.note(f"r1only: {name} is not a row of the batch")
+        for row in self.batch.rows.values():
+            if not (self.is_r1only(row) and row.name in finals and row.source.startswith("src/shared/")):
+                continue
+            path = self.tree / row.source
+            text = path.read_text() if path.exists() else ""
+            bodies = [b.rstrip("\n") for b in (finals[row.name], unit_text.unwrap(finals[row.name])) if b]
+            at = next((text.find(b) for b in bodies if b in text), -1)
+            if at < 0:
+                if not unit_text.asm_line(self.current(row.name)).search(text):
+                    self.note(f"r1only: {row.name}: draft not found in {row.source}")
+                continue
+            if unit_text.only_raidou1(text, text.count("\n", 0, at)):
+                continue
+            body = next(b for b in bodies if text.startswith(b, at))
+            asm = unit_text.asm_call(row.unit, self.current(row.name, "raidou2"))
+            path.write_text(f"{text[:at]}#ifdef VERSION_RAIDOU1\n{body}\n#else\n{asm}\n#endif{text[at + len(body):]}")
+            self.say(f"r1only: {row.source}: {row.name} guarded, Raidou 2 keeps the INCLUDE_ASM")
 
     def gap_unit(self, row: batch_files.Row, finals: dict[str, str]) -> None:
         asm = self.tree / "asm" / row.game / f"{row.unit}.s"
@@ -387,7 +416,7 @@ class Run:
             for row in self.batch.rows.values():
                 if row.source != source or row.name not in finals or unit_text.unwrap(finals[row.name]) is not None:
                     continue
-                if game != "raidou1" and row.name in self.batch.r1only:
+                if game != "raidou1" and self.is_r1only(row):
                     continue
                 # absent from a unit that compiled: this game does not build the function
                 name = self.current(row.name, game)
@@ -462,7 +491,7 @@ class Run:
                 self.note(f"docs: {name} is NON_MATCHING and has no docs.json entry")
                 continue
             unit, text, lever = (self.batch.docs[name] + [""] * 3)[:3]
-            games = ["raidou1"] if row.gap or name in self.batch.r1only or row.source.startswith("src/raidou1/") \
+            games = ["raidou1"] if row.gap or self.is_r1only(row) or row.source.startswith("src/raidou1/") \
                 else ["raidou1", "raidou2"]
             fn = self.current(name)
             measured = [matching_docs.measure(self.tree, row.source, g, fn) for g in games]

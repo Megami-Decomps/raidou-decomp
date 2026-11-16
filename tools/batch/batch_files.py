@@ -89,7 +89,8 @@ def load(dir: Path, batches: Path | None = None, batch_id: str | None = None,
         if r[0] in rows:
             rows[r[0]].words, rows[r[0]].result = int(r[1]), r[2]
     if (dir / "r1only.txt").exists():
-        b.r1only = set((dir / "r1only.txt").read_text().split())
+        b.r1only = {l.split()[0] for l in (dir / "r1only.txt").read_text().splitlines()
+                    if l.strip() and not l.startswith("#")}
     for name in renames:
         b.renames += [tuple(r[:4]) for r in b.tsv(name)]
     b.drop = [tuple(r[:2]) for r in b.tsv("drop_symbols.tsv")]
