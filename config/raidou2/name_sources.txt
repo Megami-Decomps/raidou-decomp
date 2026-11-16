@@ -16472,14 +16472,14 @@
 0x0049F280	CyousaInitData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by CyousaInit
 0x0049F2A0	rstCallGetProcessData7Data2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by rstCallGetProcessData7
 0x0049F2C0	jmsData11	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: jmsCallDrawFont, jmsCallDrawFont2, jmsCallDrawFont3
-0x0049F2D0	jmsData7Entry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0049F358	jmsData7Entry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0049F378	jmsData7Entry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0049F380	jmsData7Entry4	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0049F388	jmsData7Entry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0049F3A8	jmsData7Entry9	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0049F3B0	jmsData7Entry10	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0049F3C0	jmsDrawCyousaPanelSubData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by jmsDrawCyousaPanelSub
+0x0049F2D0	jmsSprTable01	inferred	method=hd; p=na; tier=C; source=hd; evidence=R1 pair, root entry 0
+0x0049F358	jmsSprTable02	inferred	method=hd; p=na; tier=C; source=hd; evidence=R1 pair, root entry 1
+0x0049F378	jmsSprTable03	inferred	method=hd; p=na; tier=C; source=hd; evidence=R1 pair, root entry 2
+0x0049F380	jmsSprTable04	inferred	method=hd; p=na; tier=C; source=hd; evidence=R1 pair, root entry 3
+0x0049F388	jmsSprTable05	inferred	method=hd; p=na; tier=C; source=hd; evidence=R1 pair, root entry 4
+0x0049F3A8	jmsSprTable06	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=root entry 5, numbered after HD jmsSprTable01-05
+0x0049F3B0	jmsSprTable07	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=root entry 6, numbered after HD jmsSprTable01-05
+0x0049F3C0	jmsSprTableRoot	inferred	method=hd; p=na; tier=C; source=hd; evidence=R1 pair
 0x0049F3C4	jmsData7	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: jmsDrawBtnIconSub, jmsFunc40
 0x0049F3F8	cmpCallMenuGetMenuNumData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by cmpCallMenuGetMenuNum
 0x0049F408	cmpCallMenuGetMenuNumData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by cmpCallMenuGetMenuNum

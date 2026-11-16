@@ -9513,14 +9513,8 @@
 0x0049F280	CyousaInitData2	data	tier=D	derived-sole	na	used by CyousaInit
 0x0049F2A0	rstCallGetProcessData7Data2	data	tier=D	derived-sole	na	used by rstCallGetProcessData7
 0x0049F2C0	jmsData11	data	tier=D	derived-shared	na	used by 3 functions: jmsCallDrawFont, jmsCallDrawFont2, jmsCallDrawFont3
-0x0049F2D0	jmsData7Entry	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0049F358	jmsData7Entry2	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0049F378	jmsData7Entry3	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0049F380	jmsData7Entry4	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0049F388	jmsData7Entry5	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0049F3A8	jmsData7Entry9	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0049F3B0	jmsData7Entry10	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0049F3C0	jmsDrawCyousaPanelSubData	data	tier=D	derived-sole	na	used by jmsDrawCyousaPanelSub
+0x0049F3A8	jmsSprTable06	data	tier=D	derived-table	na	root entry 5, numbered after HD jmsSprTable01-05
+0x0049F3B0	jmsSprTable07	data	tier=D	derived-table	na	root entry 6, numbered after HD jmsSprTable01-05
 0x0049F3C4	jmsData7	data	tier=D	derived-shared	na	used by 2 functions: jmsDrawBtnIconSub, jmsFunc40
 0x0049F3F8	cmpCallMenuGetMenuNumData	data	tier=D	derived-sole	na	used by cmpCallMenuGetMenuNum
 0x0049F408	cmpCallMenuGetMenuNumData2	data	tier=D	derived-sole	na	used by cmpCallMenuGetMenuNum
@@ -24576,6 +24570,12 @@
 0x00481DE0	evtStageTestState	data	tier=C	dds-ref	0.59 (n=D_r1_0041E870)	dds-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=False, fn=SceneDel_Calc
 0x0049E3F8	ModelTable	data	tier=C	hd	0.37 (n=D_r1_0043BB40)	hd/medium: conf=medium, agree=2, using=2
 0x0049E818	gohSeqUnit2	data	tier=C	hd	0.37 (n=D_r1_0043BE9C)	hd/medium: conf=medium, agree=2, using=3; gohSeqUnit is another symbol
+0x0049F2D0	jmsSprTable01	data	tier=C	hd	na	R1 pair, root entry 0
+0x0049F358	jmsSprTable02	data	tier=C	hd	na	R1 pair, root entry 1
+0x0049F378	jmsSprTable03	data	tier=C	hd	na	R1 pair, root entry 2
+0x0049F380	jmsSprTable04	data	tier=C	hd	na	R1 pair, root entry 3
+0x0049F388	jmsSprTable05	data	tier=C	hd	na	R1 pair, root entry 4
+0x0049F3C0	jmsSprTableRoot	data	tier=C	hd	na	R1 pair
 0x0049FFF8	sdfPacketResourceEntries	data	tier=C	dds-ref	0.59 (n=D_r1_0043E9A0)	dds-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfLinkStoreFrameImagePredraw
 0x004A0938	sdfGsMemTypeNamesTail2	data	tier=C	smt3-ref	0.98 (n=D_r1_0043F2D8)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfDumpGsMemory; sdfGsMemTypeNamesTail is another symbol
 0x004A33D0	at3decImdctTwiddles	data	tier=C	dds-ref	0.59 (n=D_r1_00441D50)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=at3decInverseTransformBand

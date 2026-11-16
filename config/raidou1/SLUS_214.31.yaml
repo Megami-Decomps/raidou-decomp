@@ -709,6 +709,8 @@ segments:
       - [0x31F858, data, data_0041E858]
       - [0x33CBF0, .data, newbattle/nbAiScript]
       - [0x33CDB0, data, data_0043BDB0]
+      - [0x33D6E0, .data, jmsMisc]
+      - [0x33D7E0, data, data_0043C7E0]
       - [0x343CE8, .data, sdk/libkernl/filestub]
       - [0x343D7C, .data, sdk/libkernl/iopheap]
       - [0x343D80, .data, sdk/libkernl/eeloadfile]

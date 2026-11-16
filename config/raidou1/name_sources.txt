@@ -14329,12 +14329,12 @@
 0x0043C688	jmsData6	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: CyousaInit, jmsCallGetProcessData16
 0x0043C6A4	CyousaCalcProcessData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by CyousaCalcProcess
 0x0043C6C0	RootCalcProcessData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by RootCalcProcess
-0x0043C6E0	jmsData7Entry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0043C768	jmsData7Entry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0043C788	jmsData7Entry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0043C790	jmsData7Entry4	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0043C798	jmsData7Entry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by jmsData7
-0x0043C7B8	jmsDrawCyousaPanelSubData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by jmsDrawCyousaPanelSub
+0x0043C6E0	jmsSprTable01	inferred	method=hd; p=na; tier=C; source=hd; evidence=HD jmsDraw.c jmsSprTable01, root entry 0
+0x0043C768	jmsSprTable02	inferred	method=hd; p=na; tier=C; source=hd; evidence=HD jmsDraw.c, root entry 1
+0x0043C788	jmsSprTable03	inferred	method=hd; p=na; tier=C; source=hd; evidence=HD jmsDraw.c, root entry 2
+0x0043C790	jmsSprTable04	inferred	method=hd; p=na; tier=C; source=hd; evidence=HD jmsDraw.c, root entry 3
+0x0043C798	jmsSprTable05	inferred	method=hd; p=na; tier=C; source=hd; evidence=HD jmsDraw.c, root entry 4
+0x0043C7B8	jmsSprTableRoot	inferred	method=hd; p=na; tier=C; source=hd; evidence=HD jmsDraw.c jmsSprTableRoot, indexed by jmsDrawBtnIconSub (HD DrawGetSpritePos)
 0x0043C7BC	jmsData7	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: jmsDrawBtnIconSub, jmsFunc40
 0x0043C7E0	SetCommand_jmsMenuData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by SetCommand_jmsMenu
 0x0043C7F0	SetCommand_jmsMenuData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by SetCommand_jmsMenu

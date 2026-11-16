@@ -327,3 +327,69 @@ void jmsSeqReturn(jmsSeqHandle_t *state, s32 *entrySlot) {
 }
 
 INCLUDE_ASM(const s32, "jmsMisc", jmsChkCommonInput);
+
+#ifdef VERSION_RAIDOU1
+/* Detective menu sprite layout: parts are placed relative to their parent part (-1 for none). */
+typedef struct jmsSprParts_t {
+    s16 parentNo;
+    s16 spriteNo;
+    s16 x;
+    s16 y;
+} jmsSprParts_t;
+
+typedef struct jmsSprTable_t {
+    s32 nums;
+    jmsSprParts_t *parts;
+} jmsSprTable_t;
+
+jmsSprParts_t jmsSprTable01[17] = {
+    { -1, 17, 44, 63 },
+    { 0, 18, 2, 3 },
+    { 0, 28, 7, 6 },
+    { 0, 28, 10, 336 },
+    { 0, 29, 7, 6 },
+    { 0, 31, 126, 6 },
+    { 0, 32, 10, 336 },
+    { 0, 30, 298, 336 },
+    { 0, 16, 2, 1 },
+    { 0, 19, 392, 311 },
+    { 0, 34, 416, 4 },
+    { 0, 33, 5, 134 },
+    { -1, 83, 83, 19 },
+    { 12, 84, 317, 0 },
+    { 12, 82, 29, 0 },
+    { 12, 13, 19, 3 },
+    { 12, 15, 301, 3 },
+};
+
+jmsSprParts_t jmsSprTable02[4] = {
+    { -1, 27, 20, 225 },
+    { -1, 25, 20, 225 },
+    { -1, 26, 473, 225 },
+    { -1, 24, 473, 225 },
+};
+
+/* Objects of 8 bytes or less default to .sdata; retail keeps these two in .data. */
+jmsSprParts_t jmsSprTable03[1] __attribute__((section(".data"))) = {
+    { -1, 95, 444, 414 },
+};
+
+jmsSprParts_t jmsSprTable04[1] __attribute__((section(".data"))) = {
+    { -1, 78, 444, 414 },
+};
+
+jmsSprParts_t jmsSprTable05[4] = {
+    { -1, 61, -36, -24 },
+    { -1, 62, 3, -29 },
+    { -1, 71, -11, -14 },
+    { -1, 70, -11, -14 },
+};
+
+jmsSprTable_t jmsSprTableRoot[5] = {
+    { 17, jmsSprTable01 },
+    { 4, jmsSprTable02 },
+    { 1, jmsSprTable03 },
+    { 1, jmsSprTable04 },
+    { 4, jmsSprTable05 },
+};
+#endif

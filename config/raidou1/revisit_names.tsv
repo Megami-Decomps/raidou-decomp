@@ -7946,12 +7946,6 @@
 0x0043C688	jmsData6	data	tier=D	derived-shared	na	used by 2 functions: CyousaInit, jmsCallGetProcessData16
 0x0043C6A4	CyousaCalcProcessData2	data	tier=D	derived-sole	na	used by CyousaCalcProcess
 0x0043C6C0	RootCalcProcessData2	data	tier=D	derived-sole	na	used by RootCalcProcess
-0x0043C6E0	jmsData7Entry	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0043C768	jmsData7Entry2	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0043C788	jmsData7Entry3	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0043C790	jmsData7Entry4	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0043C798	jmsData7Entry5	data	tier=D	derived-table	na	pointed to by jmsData7
-0x0043C7B8	jmsDrawCyousaPanelSubData	data	tier=D	derived-sole	na	used by jmsDrawCyousaPanelSub
 0x0043C7BC	jmsData7	data	tier=D	derived-shared	na	used by 2 functions: jmsDrawBtnIconSub, jmsFunc40
 0x0043C7E0	SetCommand_jmsMenuData	data	tier=D	derived-sole	na	used by SetCommand_jmsMenu
 0x0043C7F0	SetCommand_jmsMenuData2	data	tier=D	derived-sole	na	used by SetCommand_jmsMenu
@@ -19400,6 +19394,12 @@
 0x004352D0	effPktDefaultFaceIndex2	data	tier=C	smt3-ref	0.88 (n=None)	smt3-ref/loose: nfun=1, other=0, sim=1.0, games=1, size=False, sec=True, fn=evtCallMemcpy; effPktDefaultFaceIndex is another symbol
 0x0043BB40	ModelTable	data	tier=C	hd	0.37 (n=D_r1_0043BB40)	hd/medium: conf=medium, agree=2, using=2
 0x0043BE9C	gohSeqUnit2	data	tier=C	hd	0.37 (n=D_r1_0043BE9C)	hd/medium: conf=medium, agree=2, using=3; gohSeqUnit is another symbol
+0x0043C6E0	jmsSprTable01	data	tier=C	hd	na	HD jmsDraw.c jmsSprTable01, root entry 0
+0x0043C768	jmsSprTable02	data	tier=C	hd	na	HD jmsDraw.c, root entry 1
+0x0043C788	jmsSprTable03	data	tier=C	hd	na	HD jmsDraw.c, root entry 2
+0x0043C790	jmsSprTable04	data	tier=C	hd	na	HD jmsDraw.c, root entry 3
+0x0043C798	jmsSprTable05	data	tier=C	hd	na	HD jmsDraw.c, root entry 4
+0x0043C7B8	jmsSprTableRoot	data	tier=C	hd	na	HD jmsDraw.c jmsSprTableRoot, indexed by jmsDrawBtnIconSub (HD DrawGetSpritePos)
 0x0043E9A0	sdfPacketResourceEntries	data	tier=C	dds-ref	0.59 (n=D_r1_0043E9A0)	dds-ref/exact: nfun=6, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfLinkStoreFrameImagePredraw
 0x0043F2D8	sdfGsMemTypeNamesTail2	data	tier=C	smt3-ref	0.98 (n=D_r1_0043F2D8)	smt3-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=sdfDumpGsMemory; sdfGsMemTypeNamesTail is another symbol
 0x00441D50	at3decImdctTwiddles	data	tier=C	dds-ref	0.59 (n=D_r1_00441D50)	dds-ref/exact: nfun=2, other=0, sim=1.0, games=2, size=True, sec=True, fn=at3decInverseTransformBand
