@@ -827,6 +827,32 @@ typedef char effDebugMenuItemSizeCheck[(sizeof(effDebugMenuItem_t) == 0x18) ? 1 
 
 typedef char effDebugMenuSizeCheck[(sizeof(effDebugMenu_t) == 0x38) ? 1 : -1];
 
+/* Helper effect parameters (0x3C bytes): HD's effHelper_Params_t with the colour and alpha
+ * parameters inline instead of behind pointers. */
+typedef struct effHelper_Params_t {
+    u32 rgbType;      /* 0x00 */
+    u32 rgbStart;     /* 0x04: RGBA bytes */
+    u32 rgbEnd;       /* 0x08 */
+    u32 rgbPoint[6];  /* 0x0C */
+    u32 transparency; /* 0x24 */
+    s32 blend;        /* 0x28: TNEFFECT_BLEND */
+    f32 fadeInRate;   /* 0x2C */
+    f32 fadeOutRate;  /* 0x30 */
+    s32 life;         /* 0x34 */
+    f32 speed;        /* 0x38 */
+} effHelper_Params_t;
+
+typedef char effHelperParamsSizeCheck[(sizeof(effHelper_Params_t) == 0x3C) ? 1 : -1];
+
+/* Muzzle flash parameters as the effect editor allocates them (0x38 bytes). */
+typedef struct effMuzzleFlash_Params_t {
+    f32 scale_h;      /* 0x00 */
+    f32 scale_w;      /* 0x04 */
+    u8 unk_08[0x30];
+} effMuzzleFlash_Params_t;
+
+typedef char effMuzzleFlashParamsSizeCheck[(sizeof(effMuzzleFlash_Params_t) == 0x38) ? 1 : -1];
+
 struct Standard;
 struct ptcHandle_t;
 

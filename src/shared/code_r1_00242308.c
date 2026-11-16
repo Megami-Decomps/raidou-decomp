@@ -858,6 +858,7 @@ s32 effEditTwoDimensionalColorTrack(s32 request);
 void btlResetEffectWork(void);
 s32 effEditScalarTrack(EffScalarTrack *track, u32 frames, void *panelWork, void *subPanelWork);
 s32 effEditPScaleTrack(BaObj *p);
+void effEditMColorTrack(BaObj *p);
 s32 effEditPRotationTrack(BaObj *p);
 s32 effEditGkScaleTrack(BaObj *p);
 s32 effEditKRotationTrack(BaObj *p);
@@ -917,22 +918,14 @@ s32 effPollSTMaterialTmxFile(void);
 u32 effFileJobSecondaryDataSet(void);
 s32 effPollHlpPbResourceFile(void);
 
-typedef struct EffectFileHeader {
-    u8 unk_00[8];
-    u16 mode;
-    u8 unk_0A[2];
-    u32 start;
-    u32 length;
-} EffectFileHeader;
-
-extern EffectFileHeader effLoadMaterialFileData;
-extern EffectFileHeader fileLoadEffectSlotAData;
-extern EffectFileHeader fileLoadEffectSlotBData;
+extern EffFileJobRequest effLoadMaterialFileData;
+extern EffFileJobRequest fileLoadEffectSlotAData;
+extern EffFileJobRequest fileLoadEffectSlotBData;
 u32 fileLoadEffectSlotA(void);
-extern u8 fileLoadEffectSlotHelpData[] __attribute__((aligned(4)));
+extern effHelper_Params_t fileLoadEffectSlotHelpData;
 u32 fileLoadEffectSlotHelp(void);
 u32 fileLoadEffectSlotB(void);
-extern EffectFileHeader effLoadFileSlotF2Data;
+extern EffFileJobRequest effLoadFileSlotF2Data;
 u32 effLoadFileSlotF2(void);
 u32 effLoadMaterialFile(void);
 void effResetFileResourceManager(void);
@@ -2803,8 +2796,8 @@ u32 fileLoadEffectSlotA(void) {
         result = 0x400000;
     } else if (status == BTL_RESOURCE_SELECTION_ACCEPTED) {
         job = fileCreateJob(3);
-        fileJobSetPrimaryData(job, fileLoadEffectSlotAData.start, fileLoadEffectSlotAData.length,
-                      fileLoadEffectSlotAData.mode);
+        fileJobSetPrimaryData(job, fileLoadEffectSlotAData.outputBuffer, fileLoadEffectSlotAData.size,
+                      fileLoadEffectSlotAData.transferMode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
                       Start_sbtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
@@ -2877,7 +2870,7 @@ u32 fileLoadEffectSlotHelp(void) {
         resource->buffer = buffer;
         resource->size = dataLength + headerBytes;
         resource->mode = 0;
-        memcpy(effWork6, fileLoadEffectSlotHelpData, 0x3C);
+        memcpy(effWork6, &fileLoadEffectSlotHelpData, sizeof(effHelper_Params_t));
         D_003BD064 = effCreateBattleCameraJob(resource);
         effQueuedFileObject = effFindAssetObject(entry);
         ((effDebugMenu_t *)effQueuedFileObject)->parent = &effPartsListMenu;
@@ -2907,8 +2900,8 @@ u32 fileLoadEffectSlotB(void) {
         result = 0x400000;
     } else if (status == BTL_RESOURCE_SELECTION_ACCEPTED) {
         job = fileCreateJob(18);
-        fileJobSetPrimaryData(job, fileLoadEffectSlotBData.start, fileLoadEffectSlotBData.length,
-                      fileLoadEffectSlotBData.mode);
+        fileJobSetPrimaryData(job, fileLoadEffectSlotBData.outputBuffer, fileLoadEffectSlotBData.size,
+                      fileLoadEffectSlotBData.transferMode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
                       Start_sbtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
@@ -2966,8 +2959,8 @@ u32 effLoadFileSlotF2(void) {
         result = 0x400000;
     } else if (status == BTL_RESOURCE_SELECTION_ACCEPTED) {
         job = fileCreateJob(0x14);
-        fileJobSetPrimaryData(job, effLoadFileSlotF2Data.start, effLoadFileSlotF2Data.length,
-                      effLoadFileSlotF2Data.mode);
+        fileJobSetPrimaryData(job, effLoadFileSlotF2Data.outputBuffer, effLoadFileSlotF2Data.size,
+                      effLoadFileSlotF2Data.transferMode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
                       Start_sbtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
@@ -3007,8 +3000,8 @@ u32 effLoadMaterialFile(void) {
         result = 0x400000;
     } else if (status == BTL_RESOURCE_SELECTION_ACCEPTED) {
         job = fileCreateJob(0x16);
-        fileJobSetPrimaryData(job, effLoadMaterialFileData.start, effLoadMaterialFileData.length,
-                      effLoadMaterialFileData.mode);
+        fileJobSetPrimaryData(job, effLoadMaterialFileData.outputBuffer, effLoadMaterialFileData.size,
+                      effLoadMaterialFileData.transferMode);
         fileJobCopyCommandIntoSecondaryData(job, (const char *)&fileInfo,
                       Start_sbtl(fileInfo.type));
         entry = fileAppendJob(effFileQueue, (u32)job);
@@ -3058,36 +3051,1149 @@ u16 Start_sbtl(s32 flags) {
 
 #ifdef VERSION_RAIDOU1
 /* Effect editor pages for the effect kinds; see effDebugMenu_t. */
+extern f32 bssWork66;
+extern f32 bssWork67;
+extern u8 bssWork68;
+extern u32 bssWork72;
+extern u32 bssWork73;
+extern f32 bssWork74;
+extern f32 bssWork75;
+extern f32 bssWork76;
+extern f32 bssWork77;
+extern f32 bssWork78;
+extern s32 bssWork79;
+extern char effCreateBlurTaskDataEntry18[];
+extern char effCreateBlurTaskDataEntry19[];
+extern char effCreateBlurTaskDataEntry20[];
+extern char effCreateBlurTaskDataEntry21[];
+extern char effCreateBlurTaskDataEntry22[];
+extern u8 effCreateBlurTaskDataEntry23[];
+extern s32 effCreateBlurTaskDataEntry24;
+extern s32 effCreateBlurTaskDataEntry25;
+extern s32 effCreateBlurTaskDataEntry26;
+extern s32 effCreateBlurTaskDataEntry27;
+extern s32 effCreateBlurTaskDataEntry28;
+extern s32 effCreateBlurTaskDataEntry29;
+extern s32 effCreateBlurTaskDataEntry30;
+extern f32 effCreateBlurTaskDataEntry31;
+extern s32 effCreateBlurTaskDataEntry32;
+extern u8 effCreateBlurTaskDataEntry33[];
+extern s32 effCreateBlurTaskDataEntry34;
+extern s32 effCreateBlurTaskDataEntry35;
+extern s32 effCreateBlurTaskDataEntry36;
+extern f32 effCreateBlurTaskDataEntry37;
+extern f32 effCreateBlurTaskDataEntry38;
+extern f32 effCreateBlurTaskDataEntry39;
+extern u8 effCreateBlurTaskDataEntry40[];
+extern s32 effCreateBlurTaskDataEntry41;
+extern char effCreateBlurTaskDataEntry49[];
+extern u8 effCreateBlurTaskDataEntry50[];
+extern char effCreateBlurTaskDataEntry7[];
+extern char effCreateBlurTaskDataEntry8[];
+extern u8 effCreateBlurTaskDataEntry9[];
+extern char effCreateEnvironmentTaskDataEntry17[];
+extern char effCreateEnvironmentTaskDataEntry18[];
+extern char effCreateEnvironmentTaskDataEntry19[];
+extern s32 effCreateEnvironmentTaskDataEntry20;
+extern s32 effCreateEnvironmentTaskDataEntry21;
+extern u8 effCreateEnvironmentTaskDataEntry22[];
+extern s32 effCreateEnvironmentTaskDataEntry23;
+extern s32 effCreateEnvironmentTaskDataEntry24;
+extern f32 effCreateEnvironmentTaskDataEntry25;
+extern f32 effCreateEnvironmentTaskDataEntry26;
+extern s32 effCreateEnvironmentTaskDataEntry27;
+extern u8 effCreateEnvironmentTaskDataEntry28;
+extern s32 effCreateEnvironmentTaskDataEntry29;
+extern s32 effCreateEnvironmentTaskDataEntry30;
+extern s32 effCreateEnvironmentTaskDataEntry31;
+extern s32 effCreateEnvironmentTaskDataEntry32;
+extern char effCreateEnvironmentTaskDataEntry6[];
+extern char effCreateEnvironmentTaskDataEntry7[];
+extern char effCreateEnvironmentTaskDataEntry8[];
+extern u8 effCreateEnvironmentTaskDataEntry9[];
+extern s32 effCreateFilterTaskDataEntry10;
+extern u8 effCreateFilterTaskDataEntry11[];
+extern s32 effCreateFilterTaskDataEntry12;
+extern s32 effCreateFilterTaskDataEntry13;
+extern char effCreateFilterTaskDataEntry3[];
+extern char effCreateFilterTaskDataEntry4[];
+extern u8 effCreateFilterTaskDataEntry9[];
+extern char effCreatePolyCrackTaskDataEntry14[];
+extern char effCreatePolyCrackTaskDataEntry15[];
+extern char effCreatePolyCrackTaskDataEntry16[];
+extern char effCreatePolyCrackTaskDataEntry17[];
+extern u8 effCreatePolyCrackTaskDataEntry18[];
+extern s32 effCreatePolyCrackTaskDataEntry19;
+extern u8 effCreatePolyCrackTaskDataEntry20;
+extern u32 effCreatePolyCrackTaskDataEntry21;
+extern u32 effCreatePolyCrackTaskDataEntry22;
+extern f32 effCreatePolyCrackTaskDataEntry23;
+extern s32 effCreatePolyCrackTaskDataEntry24;
+extern u8 effCreatePolyCrackTaskDataEntry25;
+extern u8 effCreatePolyCrackTaskDataEntry26;
+extern s32 effCreatePolyCrackTaskDataEntry27;
+extern s32 effCreatePolyCrackTaskDataEntry28;
+extern f32 effCreatePolyCrackTaskDataEntry29;
+extern f32 effCreatePolyCrackTaskDataEntry30;
+extern char effCreatePolyCrackTaskDataEntry3[];
+extern char effCreatePolyCrackTaskDataEntry4[];
+extern f32 effCreatePolyCrackTaskDataEntry5;
+extern u8 effCreatePolyCrackTaskDataEntry6;
+extern f32 effCreatePolyFlashTaskDataEntry100;
+extern f32 effCreatePolyFlashTaskDataEntry101;
+extern s32 effCreatePolyFlashTaskDataEntry102;
+extern char effCreatePolyFlashTaskDataEntry10[];
+extern char effCreatePolyFlashTaskDataEntry11[];
+extern char effCreatePolyFlashTaskDataEntry151[];
+extern char effCreatePolyFlashTaskDataEntry152[];
+extern char effCreatePolyFlashTaskDataEntry153[];
+extern char effCreatePolyFlashTaskDataEntry154[];
+extern char effCreatePolyFlashTaskDataEntry155[];
+extern char effCreatePolyFlashTaskDataEntry156[];
+extern char effCreatePolyFlashTaskDataEntry157[];
+extern char effCreatePolyFlashTaskDataEntry158[];
+extern char effCreatePolyFlashTaskDataEntry159[];
+extern char effCreatePolyFlashTaskDataEntry160[];
+extern char effCreatePolyFlashTaskDataEntry161[];
+extern char effCreatePolyFlashTaskDataEntry162[];
+extern char effCreatePolyFlashTaskDataEntry163[];
+extern char effCreatePolyFlashTaskDataEntry164[];
+extern char effCreatePolyFlashTaskDataEntry165[];
+extern char effCreatePolyFlashTaskDataEntry166[];
+extern char effCreatePolyFlashTaskDataEntry167[];
+extern u8 effCreatePolyFlashTaskDataEntry168;
+extern u32 effCreatePolyFlashTaskDataEntry169;
+extern u32 effCreatePolyFlashTaskDataEntry170;
+extern f32 effCreatePolyFlashTaskDataEntry171;
+extern f32 effCreatePolyFlashTaskDataEntry172;
+extern f32 effCreatePolyFlashTaskDataEntry173;
+extern f32 effCreatePolyFlashTaskDataEntry174;
+extern f32 effCreatePolyFlashTaskDataEntry175;
+extern u8 effCreatePolyFlashTaskDataEntry176[];
+extern u8 effCreatePolyFlashTaskDataEntry177;
+extern u32 effCreatePolyFlashTaskDataEntry178;
+extern u32 effCreatePolyFlashTaskDataEntry179;
+extern f32 effCreatePolyFlashTaskDataEntry180;
+extern f32 effCreatePolyFlashTaskDataEntry181;
+extern f32 effCreatePolyFlashTaskDataEntry182;
+extern f32 effCreatePolyFlashTaskDataEntry183;
+extern f32 effCreatePolyFlashTaskDataEntry184;
+extern f32 effCreatePolyFlashTaskDataEntry185;
+extern u8 effCreatePolyFlashTaskDataEntry186[];
+extern u8 effCreatePolyFlashTaskDataEntry187;
+extern u32 effCreatePolyFlashTaskDataEntry188;
+extern u32 effCreatePolyFlashTaskDataEntry189;
+extern f32 effCreatePolyFlashTaskDataEntry190;
+extern f32 effCreatePolyFlashTaskDataEntry191;
+extern f32 effCreatePolyFlashTaskDataEntry192;
+extern f32 effCreatePolyFlashTaskDataEntry193;
+extern f32 effCreatePolyFlashTaskDataEntry194;
+extern f32 effCreatePolyFlashTaskDataEntry195;
+extern f32 effCreatePolyFlashTaskDataEntry196;
+extern f32 effCreatePolyFlashTaskDataEntry197;
+extern f32 effCreatePolyFlashTaskDataEntry198;
+extern f32 effCreatePolyFlashTaskDataEntry199;
+extern f32 effCreatePolyFlashTaskDataEntry200;
+extern u8 effCreatePolyFlashTaskDataEntry201[];
+extern u8 effCreatePolyFlashTaskDataEntry202;
+extern u32 effCreatePolyFlashTaskDataEntry203;
+extern u32 effCreatePolyFlashTaskDataEntry204;
+extern f32 effCreatePolyFlashTaskDataEntry205;
+extern f32 effCreatePolyFlashTaskDataEntry206;
+extern f32 effCreatePolyFlashTaskDataEntry207;
+extern f32 effCreatePolyFlashTaskDataEntry208;
+extern s32 effCreatePolyFlashTaskDataEntry209;
+extern u8 effCreatePolyFlashTaskDataEntry210[];
+extern u8 effCreatePolyFlashTaskDataEntry211;
+extern u32 effCreatePolyFlashTaskDataEntry212;
+extern u32 effCreatePolyFlashTaskDataEntry213;
+extern f32 effCreatePolyFlashTaskDataEntry214;
+extern f32 effCreatePolyFlashTaskDataEntry215;
+extern f32 effCreatePolyFlashTaskDataEntry216;
+extern f32 effCreatePolyFlashTaskDataEntry217;
+extern f32 effCreatePolyFlashTaskDataEntry218;
+extern f32 effCreatePolyFlashTaskDataEntry219;
+extern u8 effCreatePolyFlashTaskDataEntry220;
+extern u32 effCreatePolyFlashTaskDataEntry221;
+extern u32 effCreatePolyFlashTaskDataEntry222;
+extern f32 effCreatePolyFlashTaskDataEntry223;
+extern f32 effCreatePolyFlashTaskDataEntry224;
+extern f32 effCreatePolyFlashTaskDataEntry225;
+extern f32 effCreatePolyFlashTaskDataEntry226;
+extern f32 effCreatePolyFlashTaskDataEntry227;
+extern f32 effCreatePolyFlashTaskDataEntry228;
+extern f32 effCreatePolyFlashTaskDataEntry229;
+extern char effCreatePolyFlashTaskDataEntry22[];
+extern f32 effCreatePolyFlashTaskDataEntry230;
+extern f32 effCreatePolyFlashTaskDataEntry231;
+extern f32 effCreatePolyFlashTaskDataEntry232;
+extern f32 effCreatePolyFlashTaskDataEntry233;
+extern f32 effCreatePolyFlashTaskDataEntry234;
+extern f32 effCreatePolyFlashTaskDataEntry235;
+extern f32 effCreatePolyFlashTaskDataEntry236;
+extern u8 effCreatePolyFlashTaskDataEntry237[];
+extern u8 effCreatePolyFlashTaskDataEntry238;
+extern u32 effCreatePolyFlashTaskDataEntry239;
+extern char effCreatePolyFlashTaskDataEntry23[];
+extern u32 effCreatePolyFlashTaskDataEntry240;
+extern f32 effCreatePolyFlashTaskDataEntry241;
+extern f32 effCreatePolyFlashTaskDataEntry242;
+extern f32 effCreatePolyFlashTaskDataEntry243;
+extern f32 effCreatePolyFlashTaskDataEntry244;
+extern f32 effCreatePolyFlashTaskDataEntry245;
+extern f32 effCreatePolyFlashTaskDataEntry246;
+extern f32 effCreatePolyFlashTaskDataEntry247;
+extern f32 effCreatePolyFlashTaskDataEntry248;
+extern f32 effCreatePolyFlashTaskDataEntry249;
+extern char effCreatePolyFlashTaskDataEntry24[];
+extern f32 effCreatePolyFlashTaskDataEntry250;
+extern f32 effCreatePolyFlashTaskDataEntry251;
+extern f32 effCreatePolyFlashTaskDataEntry252;
+extern f32 effCreatePolyFlashTaskDataEntry253;
+extern f32 effCreatePolyFlashTaskDataEntry254;
+extern f32 effCreatePolyFlashTaskDataEntry255;
+extern u8 effCreatePolyFlashTaskDataEntry256[];
+extern u8 effCreatePolyFlashTaskDataEntry257;
+extern u32 effCreatePolyFlashTaskDataEntry258;
+extern u32 effCreatePolyFlashTaskDataEntry259;
+extern char effCreatePolyFlashTaskDataEntry25[];
+extern f32 effCreatePolyFlashTaskDataEntry260;
+extern f32 effCreatePolyFlashTaskDataEntry261;
+extern f32 effCreatePolyFlashTaskDataEntry262;
+extern f32 effCreatePolyFlashTaskDataEntry263;
+extern f32 effCreatePolyFlashTaskDataEntry264;
+extern f32 effCreatePolyFlashTaskDataEntry265;
+extern f32 effCreatePolyFlashTaskDataEntry266;
+extern f32 effCreatePolyFlashTaskDataEntry267;
+extern f32 effCreatePolyFlashTaskDataEntry268;
+extern f32 effCreatePolyFlashTaskDataEntry269;
+extern u8 effCreatePolyFlashTaskDataEntry26[];
+extern s32 effCreatePolyFlashTaskDataEntry27;
+extern s32 effCreatePolyFlashTaskDataEntry28;
+extern s32 effCreatePolyFlashTaskDataEntry29;
+extern s32 effCreatePolyFlashTaskDataEntry30;
+extern u8 effCreatePolyFlashTaskDataEntry31;
+extern u8 effCreatePolyFlashTaskDataEntry32;
+extern f32 effCreatePolyFlashTaskDataEntry33;
+extern f32 effCreatePolyFlashTaskDataEntry34;
+extern f32 effCreatePolyFlashTaskDataEntry35;
+extern s32 effCreatePolyFlashTaskDataEntry36;
+extern s32 effCreatePolyFlashTaskDataEntry37;
+extern s32 effCreatePolyFlashTaskDataEntry38;
+extern s32 effCreatePolyFlashTaskDataEntry39;
+extern u8 effCreatePolyFlashTaskDataEntry40;
+extern u8 effCreatePolyFlashTaskDataEntry41;
+extern f32 effCreatePolyFlashTaskDataEntry42;
+extern f32 effCreatePolyFlashTaskDataEntry43;
+extern f32 effCreatePolyFlashTaskDataEntry44;
+extern s32 effCreatePolyFlashTaskDataEntry45;
+extern s32 effCreatePolyFlashTaskDataEntry46;
+extern s32 effCreatePolyFlashTaskDataEntry47;
+extern s32 effCreatePolyFlashTaskDataEntry48;
+extern s32 effCreatePolyFlashTaskDataEntry49;
+extern u8 effCreatePolyFlashTaskDataEntry50;
+extern u8 effCreatePolyFlashTaskDataEntry51;
+extern f32 effCreatePolyFlashTaskDataEntry52;
+extern f32 effCreatePolyFlashTaskDataEntry53;
+extern f32 effCreatePolyFlashTaskDataEntry54;
+extern s32 effCreatePolyFlashTaskDataEntry55;
+extern s32 effCreatePolyFlashTaskDataEntry56;
+extern s32 effCreatePolyFlashTaskDataEntry57;
+extern s32 effCreatePolyFlashTaskDataEntry58;
+extern u8 effCreatePolyFlashTaskDataEntry59;
+extern u8 effCreatePolyFlashTaskDataEntry60;
+extern f32 effCreatePolyFlashTaskDataEntry61;
+extern f32 effCreatePolyFlashTaskDataEntry62;
+extern f32 effCreatePolyFlashTaskDataEntry63;
+extern s32 effCreatePolyFlashTaskDataEntry64;
+extern s32 effCreatePolyFlashTaskDataEntry65;
+extern s32 effCreatePolyFlashTaskDataEntry66;
+extern s32 effCreatePolyFlashTaskDataEntry67;
+extern u8 effCreatePolyFlashTaskDataEntry68;
+extern u8 effCreatePolyFlashTaskDataEntry69;
+extern f32 effCreatePolyFlashTaskDataEntry70;
+extern f32 effCreatePolyFlashTaskDataEntry71;
+extern f32 effCreatePolyFlashTaskDataEntry72;
+extern s32 effCreatePolyFlashTaskDataEntry73;
+extern u8 effCreatePolyFlashTaskDataEntry74[];
+extern s32 effCreatePolyFlashTaskDataEntry75;
+extern s32 effCreatePolyFlashTaskDataEntry76;
+extern s32 effCreatePolyFlashTaskDataEntry77;
+extern s32 effCreatePolyFlashTaskDataEntry78;
+extern u8 effCreatePolyFlashTaskDataEntry79;
+extern u8 effCreatePolyFlashTaskDataEntry80;
+extern f32 effCreatePolyFlashTaskDataEntry81;
+extern f32 effCreatePolyFlashTaskDataEntry82;
+extern f32 effCreatePolyFlashTaskDataEntry83;
+extern s32 effCreatePolyFlashTaskDataEntry84;
+extern s32 effCreatePolyFlashTaskDataEntry85;
+extern s32 effCreatePolyFlashTaskDataEntry86;
+extern s32 effCreatePolyFlashTaskDataEntry87;
+extern u8 effCreatePolyFlashTaskDataEntry88;
+extern u8 effCreatePolyFlashTaskDataEntry89;
+extern f32 effCreatePolyFlashTaskDataEntry90;
+extern f32 effCreatePolyFlashTaskDataEntry91;
+extern f32 effCreatePolyFlashTaskDataEntry92;
+extern s32 effCreatePolyFlashTaskDataEntry93;
+extern s32 effCreatePolyFlashTaskDataEntry94;
+extern s32 effCreatePolyFlashTaskDataEntry95;
+extern s32 effCreatePolyFlashTaskDataEntry96;
+extern u8 effCreatePolyFlashTaskDataEntry97;
+extern u8 effCreatePolyFlashTaskDataEntry98;
+extern f32 effCreatePolyFlashTaskDataEntry99;
+extern char effCreatePolyFlashTaskDataEntry9[];
+extern char effCreatePolyRingTaskDataEntry10[];
+extern s32 effCreatePolyRingTaskDataEntry11;
+extern f32 effCreatePolyRingTaskDataEntry12;
+extern f32 effCreatePolyRingTaskDataEntry13;
+extern s32 effCreatePolyRingTaskDataEntry14;
+extern u8 effCreatePolyRingTaskDataEntry15[];
+extern s32 effCreatePolyRingTaskDataEntry16;
+extern f32 effCreatePolyRingTaskDataEntry17;
+extern f32 effCreatePolyRingTaskDataEntry18;
+extern f32 effCreatePolyRingTaskDataEntry19;
+extern f32 effCreatePolyRingTaskDataEntry20;
+extern s32 effCreatePolyRingTaskDataEntry21;
+extern f32 effCreatePolyRingTaskDataEntry22;
+extern f32 effCreatePolyRingTaskDataEntry23;
+extern s32 effCreatePolyRingTaskDataEntry24;
+extern char effCreatePolyRingTaskDataEntry33[];
+extern char effCreatePolyRingTaskDataEntry34[];
+extern char effCreatePolyRingTaskDataEntry35[];
+extern u8 effCreatePolyRingTaskDataEntry36[];
+extern s32 effCreatePolyRingTaskDataEntry37;
+extern u8 effCreatePolyRingTaskDataEntry38;
+extern f32 effCreatePolyRingTaskDataEntry39;
+extern u32 effCreatePolyRingTaskDataEntry40;
+extern u32 effCreatePolyRingTaskDataEntry41;
+extern u32 effCreatePolyRingTaskDataEntry42;
+extern f32 effCreatePolyRingTaskDataEntry43;
+extern f32 effCreatePolyRingTaskDataEntry44;
+extern f32 effCreatePolyRingTaskDataEntry45;
+extern s32 effCreatePolyRingTaskDataEntry46;
+extern u8 effCreatePolyRingTaskDataEntry47;
+extern f32 effCreatePolyRingTaskDataEntry48;
+extern u32 effCreatePolyRingTaskDataEntry49;
+extern char effCreatePolyRingTaskDataEntry4[];
+extern u32 effCreatePolyRingTaskDataEntry50;
+extern u32 effCreatePolyRingTaskDataEntry51;
+extern f32 effCreatePolyRingTaskDataEntry52;
+extern f32 effCreatePolyRingTaskDataEntry53;
+extern f32 effCreatePolyRingTaskDataEntry54;
+extern u8 effCreatePolyRingTaskDataEntry55[];
+extern s32 effCreatePolyRingTaskDataEntry56;
+extern u8 effCreatePolyRingTaskDataEntry57;
+extern f32 effCreatePolyRingTaskDataEntry58;
+extern u32 effCreatePolyRingTaskDataEntry59;
+extern u32 effCreatePolyRingTaskDataEntry60;
+extern u32 effCreatePolyRingTaskDataEntry61;
+extern f32 effCreatePolyRingTaskDataEntry62;
+extern char effCreatePolyRingTaskDataEntry9[];
+extern f32 effCreatePolyScalyTaskDataEntry100;
+extern f32 effCreatePolyScalyTaskDataEntry101;
+extern f32 effCreatePolyScalyTaskDataEntry102;
+extern f32 effCreatePolyScalyTaskDataEntry103;
+extern f32 effCreatePolyScalyTaskDataEntry104;
+extern f32 effCreatePolyScalyTaskDataEntry105;
+extern u8 effCreatePolyScalyTaskDataEntry106[];
+extern f32 effCreatePolyScalyTaskDataEntry107;
+extern f32 effCreatePolyScalyTaskDataEntry108;
+extern f32 effCreatePolyScalyTaskDataEntry109;
+extern f32 effCreatePolyScalyTaskDataEntry110;
+extern s32 effCreatePolyScalyTaskDataEntry111;
+extern s32 effCreatePolyScalyTaskDataEntry112;
+extern f32 effCreatePolyScalyTaskDataEntry113;
+extern f32 effCreatePolyScalyTaskDataEntry114;
+extern f32 effCreatePolyScalyTaskDataEntry115;
+extern f32 effCreatePolyScalyTaskDataEntry116;
+extern f32 effCreatePolyScalyTaskDataEntry117;
+extern f32 effCreatePolyScalyTaskDataEntry118;
+extern f32 effCreatePolyScalyTaskDataEntry119;
 extern char effCreatePolyScalyTaskDataEntry11[];
+extern f32 effCreatePolyScalyTaskDataEntry120;
+extern f32 effCreatePolyScalyTaskDataEntry121;
+extern u8 effCreatePolyScalyTaskDataEntry122[];
+extern s32 effCreatePolyScalyTaskDataEntry123;
+extern f32 effCreatePolyScalyTaskDataEntry124;
+extern f32 effCreatePolyScalyTaskDataEntry125;
+extern f32 effCreatePolyScalyTaskDataEntry126;
+extern f32 effCreatePolyScalyTaskDataEntry127;
+extern f32 effCreatePolyScalyTaskDataEntry128;
+extern f32 effCreatePolyScalyTaskDataEntry129;
+extern s32 effCreatePolyScalyTaskDataEntry12;
+extern f32 effCreatePolyScalyTaskDataEntry130;
+extern s32 effCreatePolyScalyTaskDataEntry13;
+extern s32 effCreatePolyScalyTaskDataEntry14;
+extern s32 effCreatePolyScalyTaskDataEntry15;
+extern u8 effCreatePolyScalyTaskDataEntry16;
+extern u8 effCreatePolyScalyTaskDataEntry17;
+extern f32 effCreatePolyScalyTaskDataEntry18;
+extern f32 effCreatePolyScalyTaskDataEntry19;
+extern f32 effCreatePolyScalyTaskDataEntry20;
+extern s32 effCreatePolyScalyTaskDataEntry21;
+extern u8 effCreatePolyScalyTaskDataEntry22;
+extern u8 effCreatePolyScalyTaskDataEntry23;
+extern f32 effCreatePolyScalyTaskDataEntry24;
+extern f32 effCreatePolyScalyTaskDataEntry25;
+extern f32 effCreatePolyScalyTaskDataEntry26;
+extern s32 effCreatePolyScalyTaskDataEntry27;
+extern u8 effCreatePolyScalyTaskDataEntry28;
+extern u8 effCreatePolyScalyTaskDataEntry29;
+extern f32 effCreatePolyScalyTaskDataEntry30;
+extern f32 effCreatePolyScalyTaskDataEntry31;
+extern f32 effCreatePolyScalyTaskDataEntry32;
+extern s32 effCreatePolyScalyTaskDataEntry33;
 extern char effCreatePolyScalyTaskDataEntry58[];
 extern char effCreatePolyScalyTaskDataEntry59[];
+extern char effCreatePolyScalyTaskDataEntry5[];
+extern char effCreatePolyScalyTaskDataEntry60[];
+extern char effCreatePolyScalyTaskDataEntry61[];
+extern char effCreatePolyScalyTaskDataEntry62[];
+extern char effCreatePolyScalyTaskDataEntry63[];
+extern char effCreatePolyScalyTaskDataEntry64[];
+extern char effCreatePolyScalyTaskDataEntry65[];
+extern char effCreatePolyScalyTaskDataEntry66[];
+extern char effCreatePolyScalyTaskDataEntry67[];
+extern char effCreatePolyScalyTaskDataEntry68[];
+extern char effCreatePolyScalyTaskDataEntry69[];
+extern char effCreatePolyScalyTaskDataEntry6[];
+extern char effCreatePolyScalyTaskDataEntry70[];
+extern char effCreatePolyScalyTaskDataEntry71[];
+extern char effCreatePolyScalyTaskDataEntry72[];
+extern u8 effCreatePolyScalyTaskDataEntry73[];
+extern s32 effCreatePolyScalyTaskDataEntry74;
+extern f32 effCreatePolyScalyTaskDataEntry75;
+extern f32 effCreatePolyScalyTaskDataEntry76;
+extern f32 effCreatePolyScalyTaskDataEntry77;
+extern f32 effCreatePolyScalyTaskDataEntry78;
+extern f32 effCreatePolyScalyTaskDataEntry79;
+extern f32 effCreatePolyScalyTaskDataEntry80;
+extern f32 effCreatePolyScalyTaskDataEntry81;
+extern f32 effCreatePolyScalyTaskDataEntry82;
+extern f32 effCreatePolyScalyTaskDataEntry83;
+extern f32 effCreatePolyScalyTaskDataEntry84;
+extern f32 effCreatePolyScalyTaskDataEntry85;
+extern f32 effCreatePolyScalyTaskDataEntry86;
+extern f32 effCreatePolyScalyTaskDataEntry87;
+extern f32 effCreatePolyScalyTaskDataEntry88;
+extern f32 effCreatePolyScalyTaskDataEntry89;
+extern f32 effCreatePolyScalyTaskDataEntry90;
+extern u8 effCreatePolyScalyTaskDataEntry91[];
+extern f32 effCreatePolyScalyTaskDataEntry92;
+extern f32 effCreatePolyScalyTaskDataEntry93;
+extern f32 effCreatePolyScalyTaskDataEntry94;
+extern f32 effCreatePolyScalyTaskDataEntry95;
+extern s32 effCreatePolyScalyTaskDataEntry96;
+extern s32 effCreatePolyScalyTaskDataEntry97;
+extern f32 effCreatePolyScalyTaskDataEntry98;
+extern f32 effCreatePolyScalyTaskDataEntry99;
+extern s32 effCreatePolyThunderTaskDataEntry10;
+extern s32 effCreatePolyThunderTaskDataEntry11;
+extern f32 effCreatePolyThunderTaskDataEntry12;
+extern s32 effCreatePolyThunderTaskDataEntry13;
+extern s32 effCreatePolyThunderTaskDataEntry14;
+extern s32 effCreatePolyThunderTaskDataEntry15;
+extern f32 effCreatePolyThunderTaskDataEntry16;
+extern f32 effCreatePolyThunderTaskDataEntry17;
+extern f32 effCreatePolyThunderTaskDataEntry18;
+extern f32 effCreatePolyThunderTaskDataEntry19;
 extern char effCreatePolyThunderTaskDataEntry27[];
 extern char effCreatePolyThunderTaskDataEntry28[];
 extern char effCreatePolyThunderTaskDataEntry29[];
 extern char effCreatePolyThunderTaskDataEntry30[];
+extern char effCreatePolyThunderTaskDataEntry31[];
+extern char effCreatePolyThunderTaskDataEntry32[];
+extern char effCreatePolyThunderTaskDataEntry33[];
+extern char effCreatePolyThunderTaskDataEntry34[];
+extern s32 effCreatePolyThunderTaskDataEntry35;
+extern s32 effCreatePolyThunderTaskDataEntry36;
+extern f32 effCreatePolyThunderTaskDataEntry37;
+extern u8 effCreatePolyThunderTaskDataEntry38;
+extern u32 effCreatePolyThunderTaskDataEntry39;
+extern u32 effCreatePolyThunderTaskDataEntry40;
+extern u32 effCreatePolyThunderTaskDataEntry41;
+extern f32 effCreatePolyThunderTaskDataEntry42;
+extern f32 effCreatePolyThunderTaskDataEntry43;
+extern u8 effCreatePolyThunderTaskDataEntry44[];
+extern s32 effCreatePolyThunderTaskDataEntry45;
+extern s32 effCreatePolyThunderTaskDataEntry46;
+extern f32 effCreatePolyThunderTaskDataEntry47;
+extern u8 effCreatePolyThunderTaskDataEntry48;
+extern u32 effCreatePolyThunderTaskDataEntry49;
+extern char effCreatePolyThunderTaskDataEntry4[];
+extern u32 effCreatePolyThunderTaskDataEntry50;
+extern u32 effCreatePolyThunderTaskDataEntry51;
+extern f32 effCreatePolyThunderTaskDataEntry52;
+extern f32 effCreatePolyThunderTaskDataEntry53;
+extern s32 effCreatePolyThunderTaskDataEntry54;
+extern f32 effCreatePolyThunderTaskDataEntry55;
+extern f32 effCreatePolyThunderTaskDataEntry56;
+extern f32 effCreatePolyThunderTaskDataEntry57;
+extern f32 effCreatePolyThunderTaskDataEntry58;
+extern f32 effCreatePolyThunderTaskDataEntry59;
+extern u8 effCreatePolyThunderTaskDataEntry5[];
+extern char effCreatePolyThunderTaskDataEntry8[];
+extern s32 effCreatePolyThunderTaskDataEntry9;
+extern s32 effCreatePolyTrackControlTaskDataEntry100;
+extern s32 effCreatePolyTrackControlTaskDataEntry101;
+extern f32 effCreatePolyTrackControlTaskDataEntry102;
+extern f32 effCreatePolyTrackControlTaskDataEntry103;
+extern f32 effCreatePolyTrackControlTaskDataEntry104;
+extern s32 effCreatePolyTrackControlTaskDataEntry105;
+extern s32 effCreatePolyTrackControlTaskDataEntry106;
+extern u32 effCreatePolyTrackControlTaskDataEntry107;
+extern u32 effCreatePolyTrackControlTaskDataEntry108;
+extern u32 effCreatePolyTrackControlTaskDataEntry109;
+extern char effCreatePolyTrackControlTaskDataEntry10[];
+extern u32 effCreatePolyTrackControlTaskDataEntry110;
+extern s32 effCreatePolyTrackControlTaskDataEntry111;
+extern s32 effCreatePolyTrackControlTaskDataEntry112;
+extern f32 effCreatePolyTrackControlTaskDataEntry113;
+extern f32 effCreatePolyTrackControlTaskDataEntry114;
+extern f32 effCreatePolyTrackControlTaskDataEntry115;
+extern f32 effCreatePolyTrackControlTaskDataEntry116;
+extern f32 effCreatePolyTrackControlTaskDataEntry117;
+extern f32 effCreatePolyTrackControlTaskDataEntry118;
+extern f32 effCreatePolyTrackControlTaskDataEntry119;
+extern char effCreatePolyTrackControlTaskDataEntry11[];
+extern f32 effCreatePolyTrackControlTaskDataEntry120;
+extern f32 effCreatePolyTrackControlTaskDataEntry121;
+extern s32 effCreatePolyTrackControlTaskDataEntry122;
+extern u32 effCreatePolyTrackControlTaskDataEntry123;
+extern u32 effCreatePolyTrackControlTaskDataEntry124;
+extern u32 effCreatePolyTrackControlTaskDataEntry125;
+extern u32 effCreatePolyTrackControlTaskDataEntry126;
+extern s32 effCreatePolyTrackControlTaskDataEntry127;
+extern s32 effCreatePolyTrackControlTaskDataEntry128;
+extern f32 effCreatePolyTrackControlTaskDataEntry129;
+extern s32 effCreatePolyTrackControlTaskDataEntry12;
+extern f32 effCreatePolyTrackControlTaskDataEntry130;
+extern f32 effCreatePolyTrackControlTaskDataEntry131;
+extern f32 effCreatePolyTrackControlTaskDataEntry132;
+extern f32 effCreatePolyTrackControlTaskDataEntry133;
+extern s32 effCreatePolyTrackControlTaskDataEntry134;
+extern s32 effCreatePolyTrackControlTaskDataEntry135;
+extern u32 effCreatePolyTrackControlTaskDataEntry136;
+extern u32 effCreatePolyTrackControlTaskDataEntry137;
+extern u32 effCreatePolyTrackControlTaskDataEntry138;
+extern u32 effCreatePolyTrackControlTaskDataEntry139;
+extern s32 effCreatePolyTrackControlTaskDataEntry140;
+extern s32 effCreatePolyTrackControlTaskDataEntry141;
+extern f32 effCreatePolyTrackControlTaskDataEntry142;
+extern f32 effCreatePolyTrackControlTaskDataEntry143;
+extern f32 effCreatePolyTrackControlTaskDataEntry144;
+extern f32 effCreatePolyTrackControlTaskDataEntry145;
+extern f32 effCreatePolyTrackControlTaskDataEntry146;
+extern char effCreatePolyTrackControlTaskDataEntry20[];
+extern s32 effCreatePolyTrackControlTaskDataEntry21;
+extern s32 effCreatePolyTrackControlTaskDataEntry22;
+extern u8 effCreatePolyTrackControlTaskDataEntry23;
+extern f32 effCreatePolyTrackControlTaskDataEntry24;
+extern f32 effCreatePolyTrackControlTaskDataEntry25;
+extern f32 effCreatePolyTrackControlTaskDataEntry26;
+extern s32 effCreatePolyTrackControlTaskDataEntry27;
+extern u8 effCreatePolyTrackControlTaskDataEntry28;
+extern f32 effCreatePolyTrackControlTaskDataEntry29;
+extern f32 effCreatePolyTrackControlTaskDataEntry30;
+extern f32 effCreatePolyTrackControlTaskDataEntry31;
+extern f32 effCreatePolyTrackControlTaskDataEntry32;
+extern s32 effCreatePolyTrackControlTaskDataEntry33;
+extern u8 effCreatePolyTrackControlTaskDataEntry34;
+extern f32 effCreatePolyTrackControlTaskDataEntry35;
+extern f32 effCreatePolyTrackControlTaskDataEntry36;
+extern f32 effCreatePolyTrackControlTaskDataEntry37;
+extern s32 effCreatePolyTrackControlTaskDataEntry38;
+extern s32 effCreatePolyTrackControlTaskDataEntry39;
+extern u8 effCreatePolyTrackControlTaskDataEntry40;
+extern f32 effCreatePolyTrackControlTaskDataEntry41;
+extern f32 effCreatePolyTrackControlTaskDataEntry42;
+extern f32 effCreatePolyTrackControlTaskDataEntry43;
+extern f32 effCreatePolyTrackControlTaskDataEntry44;
+extern s32 effCreatePolyTrackControlTaskDataEntry45;
+extern u8 effCreatePolyTrackControlTaskDataEntry46;
+extern f32 effCreatePolyTrackControlTaskDataEntry47;
+extern f32 effCreatePolyTrackControlTaskDataEntry48;
+extern f32 effCreatePolyTrackControlTaskDataEntry49;
+extern f32 effCreatePolyTrackControlTaskDataEntry50;
 extern char effCreatePolyTrackControlTaskDataEntry76[];
 extern char effCreatePolyTrackControlTaskDataEntry77[];
 extern char effCreatePolyTrackControlTaskDataEntry78[];
 extern char effCreatePolyTrackControlTaskDataEntry79[];
+extern s32 effCreatePolyTrackControlTaskDataEntry80;
+extern u32 effCreatePolyTrackControlTaskDataEntry81;
+extern u32 effCreatePolyTrackControlTaskDataEntry82;
+extern u32 effCreatePolyTrackControlTaskDataEntry83;
+extern u32 effCreatePolyTrackControlTaskDataEntry84;
+extern s32 effCreatePolyTrackControlTaskDataEntry85;
+extern s32 effCreatePolyTrackControlTaskDataEntry86;
+extern f32 effCreatePolyTrackControlTaskDataEntry87;
+extern f32 effCreatePolyTrackControlTaskDataEntry88;
+extern f32 effCreatePolyTrackControlTaskDataEntry89;
+extern char effCreatePolyTrackControlTaskDataEntry8[];
+extern f32 effCreatePolyTrackControlTaskDataEntry90;
+extern f32 effCreatePolyTrackControlTaskDataEntry91;
+extern f32 effCreatePolyTrackControlTaskDataEntry92;
+extern f32 effCreatePolyTrackControlTaskDataEntry93;
+extern f32 effCreatePolyTrackControlTaskDataEntry94;
+extern s32 effCreatePolyTrackControlTaskDataEntry95;
+extern u32 effCreatePolyTrackControlTaskDataEntry96;
+extern u32 effCreatePolyTrackControlTaskDataEntry97;
+extern u32 effCreatePolyTrackControlTaskDataEntry98;
+extern u32 effCreatePolyTrackControlTaskDataEntry99;
+extern char effCreatePolyTrackControlTaskDataEntry9[];
+extern f32 effCreatePolyTrackTaskDataEntry100;
+extern f32 effCreatePolyTrackTaskDataEntry101;
+extern f32 effCreatePolyTrackTaskDataEntry102;
+extern f32 effCreatePolyTrackTaskDataEntry103;
+extern f32 effCreatePolyTrackTaskDataEntry104;
+extern f32 effCreatePolyTrackTaskDataEntry105;
+extern f32 effCreatePolyTrackTaskDataEntry106;
+extern s32 effCreatePolyTrackTaskDataEntry107;
+extern s32 effCreatePolyTrackTaskDataEntry108;
+extern u32 effCreatePolyTrackTaskDataEntry109;
+extern u32 effCreatePolyTrackTaskDataEntry110;
+extern u32 effCreatePolyTrackTaskDataEntry111;
+extern u32 effCreatePolyTrackTaskDataEntry112;
+extern f32 effCreatePolyTrackTaskDataEntry113;
+extern s32 effCreatePolyTrackTaskDataEntry114;
+extern s32 effCreatePolyTrackTaskDataEntry115;
+extern f32 effCreatePolyTrackTaskDataEntry116;
+extern f32 effCreatePolyTrackTaskDataEntry117;
+extern f32 effCreatePolyTrackTaskDataEntry118;
+extern s32 effCreatePolyTrackTaskDataEntry119;
+extern s32 effCreatePolyTrackTaskDataEntry120;
+extern u32 effCreatePolyTrackTaskDataEntry121;
+extern u32 effCreatePolyTrackTaskDataEntry122;
+extern u32 effCreatePolyTrackTaskDataEntry123;
+extern u32 effCreatePolyTrackTaskDataEntry124;
+extern f32 effCreatePolyTrackTaskDataEntry125;
+extern s32 effCreatePolyTrackTaskDataEntry126;
+extern s32 effCreatePolyTrackTaskDataEntry127;
+extern f32 effCreatePolyTrackTaskDataEntry128;
+extern f32 effCreatePolyTrackTaskDataEntry129;
+extern f32 effCreatePolyTrackTaskDataEntry130;
+extern f32 effCreatePolyTrackTaskDataEntry131;
+extern f32 effCreatePolyTrackTaskDataEntry132;
+extern f32 effCreatePolyTrackTaskDataEntry133;
+extern f32 effCreatePolyTrackTaskDataEntry134;
+extern f32 effCreatePolyTrackTaskDataEntry135;
+extern f32 effCreatePolyTrackTaskDataEntry136;
+extern s32 effCreatePolyTrackTaskDataEntry137;
+extern s32 effCreatePolyTrackTaskDataEntry138;
+extern u32 effCreatePolyTrackTaskDataEntry139;
+extern u32 effCreatePolyTrackTaskDataEntry140;
+extern u32 effCreatePolyTrackTaskDataEntry141;
+extern u32 effCreatePolyTrackTaskDataEntry142;
+extern f32 effCreatePolyTrackTaskDataEntry143;
+extern s32 effCreatePolyTrackTaskDataEntry144;
+extern s32 effCreatePolyTrackTaskDataEntry145;
+extern f32 effCreatePolyTrackTaskDataEntry146;
+extern f32 effCreatePolyTrackTaskDataEntry147;
+extern f32 effCreatePolyTrackTaskDataEntry148;
+extern f32 effCreatePolyTrackTaskDataEntry149;
 extern char effCreatePolyTrackTaskDataEntry14[];
+extern f32 effCreatePolyTrackTaskDataEntry150;
+extern s32 effCreatePolyTrackTaskDataEntry151;
+extern s32 effCreatePolyTrackTaskDataEntry152;
+extern u32 effCreatePolyTrackTaskDataEntry153;
+extern u32 effCreatePolyTrackTaskDataEntry154;
+extern u32 effCreatePolyTrackTaskDataEntry155;
+extern u32 effCreatePolyTrackTaskDataEntry156;
+extern f32 effCreatePolyTrackTaskDataEntry157;
+extern s32 effCreatePolyTrackTaskDataEntry158;
+extern s32 effCreatePolyTrackTaskDataEntry159;
 extern char effCreatePolyTrackTaskDataEntry15[];
+extern f32 effCreatePolyTrackTaskDataEntry160;
+extern f32 effCreatePolyTrackTaskDataEntry161;
+extern f32 effCreatePolyTrackTaskDataEntry162;
+extern f32 effCreatePolyTrackTaskDataEntry163;
+extern f32 effCreatePolyTrackTaskDataEntry164;
 extern char effCreatePolyTrackTaskDataEntry16[];
 extern char effCreatePolyTrackTaskDataEntry17[];
 extern char effCreatePolyTrackTaskDataEntry18[];
 extern char effCreatePolyTrackTaskDataEntry19[];
+extern char effCreatePolyTrackTaskDataEntry20[];
+extern s32 effCreatePolyTrackTaskDataEntry21;
+extern u8 effCreatePolyTrackTaskDataEntry22;
+extern f32 effCreatePolyTrackTaskDataEntry23;
+extern f32 effCreatePolyTrackTaskDataEntry24;
+extern f32 effCreatePolyTrackTaskDataEntry25;
+extern s32 effCreatePolyTrackTaskDataEntry26;
+extern u8 effCreatePolyTrackTaskDataEntry27;
+extern f32 effCreatePolyTrackTaskDataEntry28;
+extern f32 effCreatePolyTrackTaskDataEntry29;
+extern f32 effCreatePolyTrackTaskDataEntry30;
+extern f32 effCreatePolyTrackTaskDataEntry31;
+extern s32 effCreatePolyTrackTaskDataEntry32;
+extern u8 effCreatePolyTrackTaskDataEntry33;
+extern f32 effCreatePolyTrackTaskDataEntry34;
+extern f32 effCreatePolyTrackTaskDataEntry35;
+extern f32 effCreatePolyTrackTaskDataEntry36;
+extern s32 effCreatePolyTrackTaskDataEntry37;
+extern u8 effCreatePolyTrackTaskDataEntry38;
+extern f32 effCreatePolyTrackTaskDataEntry39;
+extern f32 effCreatePolyTrackTaskDataEntry40;
+extern f32 effCreatePolyTrackTaskDataEntry41;
+extern f32 effCreatePolyTrackTaskDataEntry42;
+extern s32 effCreatePolyTrackTaskDataEntry43;
+extern u8 effCreatePolyTrackTaskDataEntry44;
+extern f32 effCreatePolyTrackTaskDataEntry45;
+extern f32 effCreatePolyTrackTaskDataEntry46;
+extern f32 effCreatePolyTrackTaskDataEntry47;
+extern f32 effCreatePolyTrackTaskDataEntry48;
+extern char effCreatePolyTrackTaskDataEntry6[];
+extern char effCreatePolyTrackTaskDataEntry7[];
+extern char effCreatePolyTrackTaskDataEntry87[];
+extern char effCreatePolyTrackTaskDataEntry88[];
+extern char effCreatePolyTrackTaskDataEntry89[];
+extern s32 effCreatePolyTrackTaskDataEntry90;
+extern s32 effCreatePolyTrackTaskDataEntry91;
+extern u32 effCreatePolyTrackTaskDataEntry92;
+extern u32 effCreatePolyTrackTaskDataEntry93;
+extern u32 effCreatePolyTrackTaskDataEntry94;
+extern u32 effCreatePolyTrackTaskDataEntry95;
+extern f32 effCreatePolyTrackTaskDataEntry96;
+extern s32 effCreatePolyTrackTaskDataEntry97;
+extern s32 effCreatePolyTrackTaskDataEntry98;
+extern f32 effCreatePolyTrackTaskDataEntry99;
+extern u32 effCreatePolyTwinkleTaskDataEntry100;
+extern s32 effCreatePolyTwinkleTaskDataEntry101;
+extern s32 effCreatePolyTwinkleTaskDataEntry102;
+extern f32 effCreatePolyTwinkleTaskDataEntry103;
+extern f32 effCreatePolyTwinkleTaskDataEntry104;
+extern f32 effCreatePolyTwinkleTaskDataEntry105;
+extern f32 effCreatePolyTwinkleTaskDataEntry106;
+extern f32 effCreatePolyTwinkleTaskDataEntry107;
+extern f32 effCreatePolyTwinkleTaskDataEntry108;
+extern f32 effCreatePolyTwinkleTaskDataEntry109;
+extern char effCreatePolyTwinkleTaskDataEntry10[];
+extern f32 effCreatePolyTwinkleTaskDataEntry110;
+extern u8 effCreatePolyTwinkleTaskDataEntry111;
+extern u32 effCreatePolyTwinkleTaskDataEntry112;
+extern u32 effCreatePolyTwinkleTaskDataEntry113;
+extern f32 effCreatePolyTwinkleTaskDataEntry114;
+extern f32 effCreatePolyTwinkleTaskDataEntry115;
+extern f32 effCreatePolyTwinkleTaskDataEntry116;
+extern f32 effCreatePolyTwinkleTaskDataEntry117;
+extern u32 effCreatePolyTwinkleTaskDataEntry118;
+extern s32 effCreatePolyTwinkleTaskDataEntry119;
+extern char effCreatePolyTwinkleTaskDataEntry11[];
+extern s32 effCreatePolyTwinkleTaskDataEntry120;
+extern f32 effCreatePolyTwinkleTaskDataEntry121;
+extern f32 effCreatePolyTwinkleTaskDataEntry122;
+extern f32 effCreatePolyTwinkleTaskDataEntry123;
+extern u8 effCreatePolyTwinkleTaskDataEntry124;
+extern u32 effCreatePolyTwinkleTaskDataEntry125;
+extern u32 effCreatePolyTwinkleTaskDataEntry126;
+extern f32 effCreatePolyTwinkleTaskDataEntry127;
+extern f32 effCreatePolyTwinkleTaskDataEntry128;
+extern f32 effCreatePolyTwinkleTaskDataEntry129;
+extern f32 effCreatePolyTwinkleTaskDataEntry130;
+extern u32 effCreatePolyTwinkleTaskDataEntry131;
+extern s32 effCreatePolyTwinkleTaskDataEntry132;
+extern s32 effCreatePolyTwinkleTaskDataEntry133;
+extern f32 effCreatePolyTwinkleTaskDataEntry134;
+extern f32 effCreatePolyTwinkleTaskDataEntry135;
+extern f32 effCreatePolyTwinkleTaskDataEntry136;
+extern f32 effCreatePolyTwinkleTaskDataEntry137;
+extern f32 effCreatePolyTwinkleTaskDataEntry138;
+extern f32 effCreatePolyTwinkleTaskDataEntry139;
+extern f32 effCreatePolyTwinkleTaskDataEntry140;
+extern f32 effCreatePolyTwinkleTaskDataEntry141;
+extern f32 effCreatePolyTwinkleTaskDataEntry142;
+extern u8 effCreatePolyTwinkleTaskDataEntry143;
+extern u32 effCreatePolyTwinkleTaskDataEntry144;
+extern u32 effCreatePolyTwinkleTaskDataEntry145;
+extern f32 effCreatePolyTwinkleTaskDataEntry146;
+extern f32 effCreatePolyTwinkleTaskDataEntry147;
+extern f32 effCreatePolyTwinkleTaskDataEntry148;
+extern f32 effCreatePolyTwinkleTaskDataEntry149;
+extern u32 effCreatePolyTwinkleTaskDataEntry150;
+extern s32 effCreatePolyTwinkleTaskDataEntry151;
+extern s32 effCreatePolyTwinkleTaskDataEntry152;
+extern f32 effCreatePolyTwinkleTaskDataEntry153;
+extern f32 effCreatePolyTwinkleTaskDataEntry154;
+extern f32 effCreatePolyTwinkleTaskDataEntry155;
+extern f32 effCreatePolyTwinkleTaskDataEntry156;
+extern f32 effCreatePolyTwinkleTaskDataEntry157;
+extern u8 effCreatePolyTwinkleTaskDataEntry158;
+extern u32 effCreatePolyTwinkleTaskDataEntry159;
+extern u32 effCreatePolyTwinkleTaskDataEntry160;
+extern f32 effCreatePolyTwinkleTaskDataEntry161;
+extern f32 effCreatePolyTwinkleTaskDataEntry162;
+extern f32 effCreatePolyTwinkleTaskDataEntry163;
+extern f32 effCreatePolyTwinkleTaskDataEntry164;
+extern u32 effCreatePolyTwinkleTaskDataEntry165;
+extern s32 effCreatePolyTwinkleTaskDataEntry166;
+extern s32 effCreatePolyTwinkleTaskDataEntry167;
+extern f32 effCreatePolyTwinkleTaskDataEntry168;
+extern f32 effCreatePolyTwinkleTaskDataEntry169;
+extern f32 effCreatePolyTwinkleTaskDataEntry170;
+extern f32 effCreatePolyTwinkleTaskDataEntry171;
+extern f32 effCreatePolyTwinkleTaskDataEntry172;
+extern s32 effCreatePolyTwinkleTaskDataEntry17;
+extern u8 effCreatePolyTwinkleTaskDataEntry18;
+extern f32 effCreatePolyTwinkleTaskDataEntry19;
+extern f32 effCreatePolyTwinkleTaskDataEntry20;
+extern f32 effCreatePolyTwinkleTaskDataEntry21;
+extern s32 effCreatePolyTwinkleTaskDataEntry22;
+extern u8 effCreatePolyTwinkleTaskDataEntry23;
+extern f32 effCreatePolyTwinkleTaskDataEntry24;
+extern f32 effCreatePolyTwinkleTaskDataEntry25;
+extern f32 effCreatePolyTwinkleTaskDataEntry26;
+extern f32 effCreatePolyTwinkleTaskDataEntry27;
+extern s32 effCreatePolyTwinkleTaskDataEntry28;
+extern u8 effCreatePolyTwinkleTaskDataEntry29;
+extern f32 effCreatePolyTwinkleTaskDataEntry30;
+extern f32 effCreatePolyTwinkleTaskDataEntry31;
+extern f32 effCreatePolyTwinkleTaskDataEntry32;
+extern s32 effCreatePolyTwinkleTaskDataEntry33;
+extern u8 effCreatePolyTwinkleTaskDataEntry34;
+extern f32 effCreatePolyTwinkleTaskDataEntry35;
+extern f32 effCreatePolyTwinkleTaskDataEntry36;
+extern f32 effCreatePolyTwinkleTaskDataEntry37;
+extern f32 effCreatePolyTwinkleTaskDataEntry38;
+extern s32 effCreatePolyTwinkleTaskDataEntry39;
+extern u8 effCreatePolyTwinkleTaskDataEntry40;
+extern f32 effCreatePolyTwinkleTaskDataEntry41;
+extern f32 effCreatePolyTwinkleTaskDataEntry42;
+extern f32 effCreatePolyTwinkleTaskDataEntry43;
+extern f32 effCreatePolyTwinkleTaskDataEntry44;
+extern char effCreatePolyTwinkleTaskDataEntry7[];
 extern char effCreatePolyTwinkleTaskDataEntry83[];
+extern char effCreatePolyTwinkleTaskDataEntry84[];
+extern char effCreatePolyTwinkleTaskDataEntry85[];
+extern char effCreatePolyTwinkleTaskDataEntry86[];
+extern char effCreatePolyTwinkleTaskDataEntry87[];
+extern char effCreatePolyTwinkleTaskDataEntry88[];
+extern char effCreatePolyTwinkleTaskDataEntry89[];
+extern char effCreatePolyTwinkleTaskDataEntry8[];
+extern char effCreatePolyTwinkleTaskDataEntry90[];
+extern char effCreatePolyTwinkleTaskDataEntry91[];
+extern char effCreatePolyTwinkleTaskDataEntry92[];
+extern u8 effCreatePolyTwinkleTaskDataEntry93;
+extern u32 effCreatePolyTwinkleTaskDataEntry94;
+extern u32 effCreatePolyTwinkleTaskDataEntry95;
+extern f32 effCreatePolyTwinkleTaskDataEntry96;
+extern f32 effCreatePolyTwinkleTaskDataEntry97;
+extern f32 effCreatePolyTwinkleTaskDataEntry98;
+extern f32 effCreatePolyTwinkleTaskDataEntry99;
+extern char effCreatePolyTwinkleTaskDataEntry9[];
 extern char effCreatePolyWindTaskDataEntry107[];
 extern char effCreatePolyWindTaskDataEntry108[];
 extern char effCreatePolyWindTaskDataEntry109[];
+extern char effCreatePolyWindTaskDataEntry10[];
 extern char effCreatePolyWindTaskDataEntry110[];
 extern char effCreatePolyWindTaskDataEntry111[];
 extern char effCreatePolyWindTaskDataEntry112[];
+extern char effCreatePolyWindTaskDataEntry113[];
+extern char effCreatePolyWindTaskDataEntry114[];
+extern char effCreatePolyWindTaskDataEntry115[];
+extern char effCreatePolyWindTaskDataEntry116[];
+extern char effCreatePolyWindTaskDataEntry117[];
+extern char effCreatePolyWindTaskDataEntry118[];
+extern char effCreatePolyWindTaskDataEntry119[];
+extern char effCreatePolyWindTaskDataEntry11[];
+extern char effCreatePolyWindTaskDataEntry120[];
+extern char effCreatePolyWindTaskDataEntry121[];
+extern char effCreatePolyWindTaskDataEntry122[];
+extern u8 effCreatePolyWindTaskDataEntry123;
+extern f32 effCreatePolyWindTaskDataEntry124;
+extern f32 effCreatePolyWindTaskDataEntry125;
+extern f32 effCreatePolyWindTaskDataEntry126;
+extern f32 effCreatePolyWindTaskDataEntry127;
+extern f32 effCreatePolyWindTaskDataEntry128;
+extern f32 effCreatePolyWindTaskDataEntry129;
+extern u8 effCreatePolyWindTaskDataEntry130;
+extern s32 effCreatePolyWindTaskDataEntry131;
+extern s32 effCreatePolyWindTaskDataEntry132;
+extern f32 effCreatePolyWindTaskDataEntry133;
+extern f32 effCreatePolyWindTaskDataEntry134;
+extern f32 effCreatePolyWindTaskDataEntry135;
+extern f32 effCreatePolyWindTaskDataEntry136;
+extern f32 effCreatePolyWindTaskDataEntry137;
+extern f32 effCreatePolyWindTaskDataEntry138;
+extern f32 effCreatePolyWindTaskDataEntry139;
+extern f32 effCreatePolyWindTaskDataEntry140;
+extern u8 effCreatePolyWindTaskDataEntry141;
+extern f32 effCreatePolyWindTaskDataEntry142;
+extern f32 effCreatePolyWindTaskDataEntry143;
+extern f32 effCreatePolyWindTaskDataEntry144;
+extern f32 effCreatePolyWindTaskDataEntry145;
+extern f32 effCreatePolyWindTaskDataEntry146;
+extern f32 effCreatePolyWindTaskDataEntry147;
+extern u8 effCreatePolyWindTaskDataEntry148;
+extern s32 effCreatePolyWindTaskDataEntry149;
+extern s32 effCreatePolyWindTaskDataEntry150;
+extern f32 effCreatePolyWindTaskDataEntry151;
+extern f32 effCreatePolyWindTaskDataEntry152;
+extern f32 effCreatePolyWindTaskDataEntry153;
+extern f32 effCreatePolyWindTaskDataEntry154;
+extern f32 effCreatePolyWindTaskDataEntry155;
+extern f32 effCreatePolyWindTaskDataEntry156;
+extern f32 effCreatePolyWindTaskDataEntry157;
+extern f32 effCreatePolyWindTaskDataEntry158;
+extern f32 effCreatePolyWindTaskDataEntry159;
+extern u8 effCreatePolyWindTaskDataEntry160;
+extern s32 effCreatePolyWindTaskDataEntry161;
+extern f32 effCreatePolyWindTaskDataEntry162;
+extern f32 effCreatePolyWindTaskDataEntry163;
+extern f32 effCreatePolyWindTaskDataEntry164;
+extern u8 effCreatePolyWindTaskDataEntry165;
+extern f32 effCreatePolyWindTaskDataEntry166;
+extern f32 effCreatePolyWindTaskDataEntry167;
+extern f32 effCreatePolyWindTaskDataEntry168;
+extern f32 effCreatePolyWindTaskDataEntry169;
+extern f32 effCreatePolyWindTaskDataEntry170;
+extern f32 effCreatePolyWindTaskDataEntry171;
+extern u8 effCreatePolyWindTaskDataEntry172;
+extern s32 effCreatePolyWindTaskDataEntry173;
+extern s32 effCreatePolyWindTaskDataEntry174;
+extern f32 effCreatePolyWindTaskDataEntry175;
+extern f32 effCreatePolyWindTaskDataEntry176;
+extern f32 effCreatePolyWindTaskDataEntry177;
+extern f32 effCreatePolyWindTaskDataEntry178;
+extern f32 effCreatePolyWindTaskDataEntry179;
+extern u8 effCreatePolyWindTaskDataEntry180;
+extern f32 effCreatePolyWindTaskDataEntry181;
+extern f32 effCreatePolyWindTaskDataEntry182;
+extern f32 effCreatePolyWindTaskDataEntry183;
+extern f32 effCreatePolyWindTaskDataEntry184;
+extern f32 effCreatePolyWindTaskDataEntry185;
+extern f32 effCreatePolyWindTaskDataEntry186;
+extern u8 effCreatePolyWindTaskDataEntry187;
+extern s32 effCreatePolyWindTaskDataEntry188;
+extern s32 effCreatePolyWindTaskDataEntry189;
+extern f32 effCreatePolyWindTaskDataEntry190;
+extern f32 effCreatePolyWindTaskDataEntry191;
+extern f32 effCreatePolyWindTaskDataEntry192;
+extern f32 effCreatePolyWindTaskDataEntry193;
+extern f32 effCreatePolyWindTaskDataEntry194;
+extern f32 effCreatePolyWindTaskDataEntry195;
+extern f32 effCreatePolyWindTaskDataEntry196;
+extern f32 effCreatePolyWindTaskDataEntry197;
+extern f32 effCreatePolyWindTaskDataEntry198;
+extern f32 effCreatePolyWindTaskDataEntry199;
+extern f32 effCreatePolyWindTaskDataEntry200;
+extern u8 effCreatePolyWindTaskDataEntry201;
+extern s32 effCreatePolyWindTaskDataEntry202;
+extern s32 effCreatePolyWindTaskDataEntry203;
+extern f32 effCreatePolyWindTaskDataEntry204;
+extern f32 effCreatePolyWindTaskDataEntry205;
+extern f32 effCreatePolyWindTaskDataEntry206;
+extern f32 effCreatePolyWindTaskDataEntry207;
+extern f32 effCreatePolyWindTaskDataEntry208;
+extern s32 effCreatePolyWindTaskDataEntry209;
+extern char effCreatePolyWindTaskDataEntry20[];
+extern s32 effCreatePolyWindTaskDataEntry21;
+extern u8 effCreatePolyWindTaskDataEntry22;
+extern u8 effCreatePolyWindTaskDataEntry23;
+extern f32 effCreatePolyWindTaskDataEntry24;
+extern f32 effCreatePolyWindTaskDataEntry25;
+extern f32 effCreatePolyWindTaskDataEntry26;
+extern s32 effCreatePolyWindTaskDataEntry27;
+extern u8 effCreatePolyWindTaskDataEntry28;
+extern u8 effCreatePolyWindTaskDataEntry29;
+extern f32 effCreatePolyWindTaskDataEntry30;
+extern f32 effCreatePolyWindTaskDataEntry31;
+extern f32 effCreatePolyWindTaskDataEntry32;
+extern f32 effCreatePolyWindTaskDataEntry33;
+extern u8 effCreatePolyWindTaskDataEntry34;
+extern s32 effCreatePolyWindTaskDataEntry35;
+extern u8 effCreatePolyWindTaskDataEntry36;
+extern u8 effCreatePolyWindTaskDataEntry37;
+extern f32 effCreatePolyWindTaskDataEntry38;
+extern f32 effCreatePolyWindTaskDataEntry39;
+extern f32 effCreatePolyWindTaskDataEntry40;
+extern s32 effCreatePolyWindTaskDataEntry41;
+extern u8 effCreatePolyWindTaskDataEntry42;
+extern u8 effCreatePolyWindTaskDataEntry43;
+extern f32 effCreatePolyWindTaskDataEntry44;
+extern f32 effCreatePolyWindTaskDataEntry45;
+extern f32 effCreatePolyWindTaskDataEntry46;
+extern f32 effCreatePolyWindTaskDataEntry47;
+extern s32 effCreatePolyWindTaskDataEntry48;
+extern u8 effCreatePolyWindTaskDataEntry49;
+extern u8 effCreatePolyWindTaskDataEntry50;
+extern f32 effCreatePolyWindTaskDataEntry51;
+extern f32 effCreatePolyWindTaskDataEntry52;
+extern f32 effCreatePolyWindTaskDataEntry53;
+extern f32 effCreatePolyWindTaskDataEntry54;
+extern u8 effCreatePolyWindTaskDataEntry55;
+extern s32 effCreatePolyWindTaskDataEntry56;
+extern u8 effCreatePolyWindTaskDataEntry57;
+extern u8 effCreatePolyWindTaskDataEntry58;
+extern f32 effCreatePolyWindTaskDataEntry59;
+extern f32 effCreatePolyWindTaskDataEntry60;
+extern f32 effCreatePolyWindTaskDataEntry61;
+extern f32 effCreatePolyWindTaskDataEntry62;
+extern char effCreatePolyWindTaskDataEntry7[];
+extern char effCreatePolyWindTaskDataEntry8[];
+extern char effCreatePolyWindTaskDataEntry9[];
+extern char effCreateTwoDimensionalTaskData2[];
+extern u8 effCreateTwoDimensionalTaskDataEntry4[];
+extern s32 effCreateTwoDimensionalTaskDataEntry5;
+extern s32 effCreateTwoDimensionalTaskDataEntry6;
+extern s32 effCreateTwoDimensionalTaskDataEntry7;
 extern char effData20Entry2[];
 extern u32 effData38;
+extern char effData48[];
+extern char effData49[];
+extern char effData50[];
+extern char effData51[];
+extern s32 effData9Entry20;
+extern char effData9Entry21[];
+extern char effData9Entry22[];
+extern char effData9Entry23[];
+extern char effData9Entry24[];
+extern char effData9Entry25[];
+extern char effData9Entry26[];
+extern char effData9Entry27[];
+extern s32 effData9Entry28;
+extern s32 effData9Entry29;
+extern f32 effData9Entry30;
+extern s32 effData9Entry31;
+extern u8 effData9Entry32;
+extern u8 effData9Entry33;
+extern u8 effData9Entry34;
+extern s32 effData9Entry35;
+extern char effInitializeResourceQueueData[];
 extern char effLabelBlur[];
+extern char effLoadMaterialFileDataEntry[];
+extern char effPollAndQueueCopiedFileResourceDataEntry2[];
+extern f32 effPollAndQueueCopiedFileResourceDataEntry;
 extern char effStrAmplitude[];
+extern char effStrBillboard[];
+extern char effStrCrackPolygon[];
+extern char effStrEQuake2[];
+extern char effStrEdgeOut[];
+extern char effStrEmtRadi[];
+extern char effStrEmtSpre[];
+extern char effStrFlashPolygon[];
+extern char effStrOF2Cam[];
 extern char effStrSaveEp[];
+extern char effStrScaleUv[];
+extern char effStrVcEndIn[];
+extern char effStrVcEndOut[];
+extern char effStrVcStartIn[];
+extern char effStrVcStartOut[];
+extern char effUpdateCameraSnapshotGuidesDataEntry2[];
 extern char effUpdatePartsListEditorData6Entry2[];
+extern u8 effWork6[];
+extern char fileLoadEffectSlotADataEntry2[];
+extern f32 fileLoadEffectSlotADataEntry;
+extern char fileLoadEffectSlotBDataEntry2[];
+extern f32 fileLoadEffectSlotBDataEntry;
+extern s32 sbtlRefSbtl51Data7Entry3;
+extern f32 sbtlRefSbtl51Data7Entry4;
+extern f32 sbtlRefSbtl51Data7Entry5;
+extern f32 sbtlRefSbtl51Data7Entry6;
+extern f32 sbtlRefSbtl51Data7Entry7;
+extern f32 sbtlRefSbtl51Data7Entry8;
+extern f32 sbtlRefSbtl51Data7Entry9;
+extern char sndInitDataEntry2[];
+extern char sndInitDataEntry3[];
+extern f32 sndInitDataEntry4;
+extern f32 sndInitDataEntry5;
+extern f32 sndInitDataEntry6;
+extern u8 sysBATTLEONLYDataEntry100;
+extern u8 sysBATTLEONLYDataEntry101;
+extern u8 sysBATTLEONLYDataEntry102;
+extern u32 sysBATTLEONLYDataEntry103;
+extern s32 sysBATTLEONLYDataEntry104;
+extern s32 sysBATTLEONLYDataEntry105;
+extern s32 sysBATTLEONLYDataEntry106;
+extern s32 sysBATTLEONLYDataEntry107;
+extern s32 sysBATTLEONLYDataEntry108;
+extern u8 sysBATTLEONLYDataEntry109;
+extern u8 sysBATTLEONLYDataEntry110;
+extern s32 sysBATTLEONLYDataEntry111;
+extern s32 sysBATTLEONLYDataEntry112;
+extern s32 sysBATTLEONLYDataEntry113;
+extern s32 sysBATTLEONLYDataEntry114;
+extern f32 sysBATTLEONLYDataEntry115;
+extern f32 sysBATTLEONLYDataEntry116;
+extern s32 sysBATTLEONLYDataEntry117;
+extern u16 sysBATTLEONLYDataEntry118;
+extern s32 sysBATTLEONLYDataEntry119;
+extern s32 sysBATTLEONLYDataEntry120;
+extern s32 sysBATTLEONLYDataEntry121;
+extern s32 sysBATTLEONLYDataEntry122;
+extern s32 sysBATTLEONLYDataEntry123;
+extern u32 sysBATTLEONLYDataEntry124;
+extern u32 sysBATTLEONLYDataEntry125;
+extern s32 sysBATTLEONLYDataEntry126;
+extern u8 sysBATTLEONLYDataEntry127;
+extern u8 sysBATTLEONLYDataEntry128;
+extern s32 sysBATTLEONLYDataEntry129;
+extern s32 sysBATTLEONLYDataEntry130;
+extern s32 sysBATTLEONLYDataEntry131;
+extern s32 sysBATTLEONLYDataEntry132;
+extern u32 sysBATTLEONLYDataEntry133;
+extern s32 sysBATTLEONLYDataEntry134;
+extern char sysBATTLEONLYDataEntry22[];
+extern char sysBATTLEONLYDataEntry23[];
+extern char sysBATTLEONLYDataEntry24[];
+extern char sysBATTLEONLYDataEntry25[];
+extern char sysBATTLEONLYDataEntry26[];
+extern char sysBATTLEONLYDataEntry27[];
+extern char sysBATTLEONLYDataEntry28[];
+extern char sysBATTLEONLYDataEntry29[];
+extern char sysBATTLEONLYDataEntry30[];
+extern u32 sysBATTLEONLYDataEntry31;
+extern s32 sysBATTLEONLYDataEntry32;
+extern s32 sysBATTLEONLYDataEntry33;
+extern char sysBATTLEONLYDataEntry49[];
+extern char sysBATTLEONLYDataEntry50[];
+extern char sysBATTLEONLYDataEntry51[];
+extern char sysBATTLEONLYDataEntry52[];
+extern char sysBATTLEONLYDataEntry53[];
+extern char sysBATTLEONLYDataEntry54[];
+extern char sysBATTLEONLYDataEntry55[];
+extern char sysBATTLEONLYDataEntry56[];
+extern char sysBATTLEONLYDataEntry57[];
+extern char sysBATTLEONLYDataEntry58[];
+extern char sysBATTLEONLYDataEntry59[];
+extern char sysBATTLEONLYDataEntry60[];
+extern char sysBATTLEONLYDataEntry61[];
+extern char sysBATTLEONLYDataEntry62[];
+extern char sysBATTLEONLYDataEntry63[];
+extern char sysBATTLEONLYDataEntry64[];
+extern char sysBATTLEONLYDataEntry65[];
+extern char sysBATTLEONLYDataEntry66[];
+extern char sysBATTLEONLYDataEntry67[];
+extern char sysBATTLEONLYDataEntry68[];
+extern char sysBATTLEONLYDataEntry69[];
+extern char sysBATTLEONLYDataEntry70[];
+extern char sysBATTLEONLYDataEntry71[];
+extern char sysBATTLEONLYDataEntry72[];
+extern char sysBATTLEONLYDataEntry73[];
+extern char sysBATTLEONLYDataEntry74[];
+extern char sysBATTLEONLYDataEntry75[];
+extern char sysBATTLEONLYDataEntry76[];
+extern u16 sysBATTLEONLYDataEntry77;
+extern u16 sysBATTLEONLYDataEntry78;
+extern s32 sysBATTLEONLYDataEntry79;
+extern u8 sysBATTLEONLYDataEntry80;
+extern s32 sysBATTLEONLYDataEntry81;
+extern s32 sysBATTLEONLYDataEntry82;
+extern s32 sysBATTLEONLYDataEntry83;
+extern s32 sysBATTLEONLYDataEntry84;
+extern s32 sysBATTLEONLYDataEntry85;
+extern s32 sysBATTLEONLYDataEntry86;
+extern u32 sysBATTLEONLYDataEntry87;
+extern u32 sysBATTLEONLYDataEntry88;
+extern s32 sysBATTLEONLYDataEntry89;
+extern u8 sysBATTLEONLYDataEntry90;
+extern u8 sysBATTLEONLYDataEntry91;
+extern u8 sysBATTLEONLYDataEntry92;
+extern s32 sysBATTLEONLYDataEntry93;
+extern s32 sysBATTLEONLYDataEntry94;
+extern s32 sysBATTLEONLYDataEntry95;
+extern u32 sysBATTLEONLYDataEntry96;
+extern s32 sysBATTLEONLYDataEntry97;
+extern u32 sysBATTLEONLYDataEntry98;
+extern u32 sysBATTLEONLYDataEntry99;
 extern char sysPARTICLEDataEntry10[];
 extern char sysPARTICLEDataEntry110[];
 extern char sysPARTICLEDataEntry111[];
@@ -3204,12 +4310,163 @@ extern f32 sysPARTICLEDataEntry65;
 extern f32 sysPARTICLEDataEntry66;
 extern f32 sysPARTICLEDataEntry67;
 extern f32 sysPARTICLEDataEntry68;
+extern char sysPOLYTEXDataEntry10[];
+extern char sysPOLYTEXDataEntry11[];
+extern u8 sysPOLYTEXDataEntry12[];
+extern s32 sysPOLYTEXDataEntry13;
+extern f32 sysPOLYTEXDataEntry14;
+extern u8 sysPOLYTEXDataEntry15;
+extern u8 sysPOLYTEXDataEntry16[];
+extern s32 sysPOLYTEXDataEntry17;
+extern s32 sysPOLYTEXDataEntry18;
+extern s32 sysPOLYTEXDataEntry19;
+extern f32 sysPOLYTEXDataEntry20;
+extern u8 sysPOLYTEXDataEntry21;
+extern char sysPOLYTEXDataEntry3[];
 extern char sysPOLYTEXDataEntry8[];
 extern char sysPOLYTEXDataEntry9[];
+extern f32 sysPOLYWINDDataEntry100;
+extern f32 sysPOLYWINDDataEntry101;
+extern f32 sysPOLYWINDDataEntry102;
+extern f32 sysPOLYWINDDataEntry103;
+extern f32 sysPOLYWINDDataEntry104;
+extern f32 sysPOLYWINDDataEntry105;
+extern f32 sysPOLYWINDDataEntry106;
+extern f32 sysPOLYWINDDataEntry107;
+extern u8 sysPOLYWINDDataEntry108;
+extern f32 sysPOLYWINDDataEntry109;
+extern f32 sysPOLYWINDDataEntry110;
+extern f32 sysPOLYWINDDataEntry111;
+extern f32 sysPOLYWINDDataEntry112;
+extern f32 sysPOLYWINDDataEntry113;
+extern f32 sysPOLYWINDDataEntry114;
+extern f32 sysPOLYWINDDataEntry115;
+extern f32 sysPOLYWINDDataEntry116;
+extern f32 sysPOLYWINDDataEntry117;
+extern f32 sysPOLYWINDDataEntry118;
+extern f32 sysPOLYWINDDataEntry119;
+extern f32 sysPOLYWINDDataEntry120;
+extern f32 sysPOLYWINDDataEntry121;
+extern f32 sysPOLYWINDDataEntry122;
+extern u8 sysPOLYWINDDataEntry123[];
+extern s32 sysPOLYWINDDataEntry124;
+extern f32 sysPOLYWINDDataEntry125;
+extern f32 sysPOLYWINDDataEntry126;
+extern f32 sysPOLYWINDDataEntry127;
+extern f32 sysPOLYWINDDataEntry128;
+extern f32 sysPOLYWINDDataEntry129;
+extern f32 sysPOLYWINDDataEntry130;
+extern f32 sysPOLYWINDDataEntry131;
+extern f32 sysPOLYWINDDataEntry132;
+extern f32 sysPOLYWINDDataEntry133;
+extern f32 sysPOLYWINDDataEntry134;
+extern f32 sysPOLYWINDDataEntry135;
+extern f32 sysPOLYWINDDataEntry136;
+extern f32 sysPOLYWINDDataEntry137;
+extern f32 sysPOLYWINDDataEntry138;
+extern f32 sysPOLYWINDDataEntry139;
+extern s32 sysPOLYWINDDataEntry13;
+extern u8 sysPOLYWINDDataEntry140[];
+extern s32 sysPOLYWINDDataEntry141;
+extern f32 sysPOLYWINDDataEntry142;
+extern f32 sysPOLYWINDDataEntry143;
+extern f32 sysPOLYWINDDataEntry144;
+extern f32 sysPOLYWINDDataEntry145;
+extern f32 sysPOLYWINDDataEntry146;
+extern f32 sysPOLYWINDDataEntry147;
+extern f32 sysPOLYWINDDataEntry148;
+extern f32 sysPOLYWINDDataEntry149;
+extern s32 sysPOLYWINDDataEntry14;
+extern f32 sysPOLYWINDDataEntry150;
+extern u8 sysPOLYWINDDataEntry151;
+extern f32 sysPOLYWINDDataEntry152;
+extern f32 sysPOLYWINDDataEntry153;
+extern f32 sysPOLYWINDDataEntry154;
+extern f32 sysPOLYWINDDataEntry155;
+extern u8 sysPOLYWINDDataEntry156[];
+extern s32 sysPOLYWINDDataEntry157;
+extern f32 sysPOLYWINDDataEntry158;
+extern f32 sysPOLYWINDDataEntry159;
+extern s32 sysPOLYWINDDataEntry15;
+extern f32 sysPOLYWINDDataEntry160;
+extern f32 sysPOLYWINDDataEntry161;
+extern f32 sysPOLYWINDDataEntry162;
+extern f32 sysPOLYWINDDataEntry163;
+extern f32 sysPOLYWINDDataEntry164;
+extern f32 sysPOLYWINDDataEntry165;
+extern f32 sysPOLYWINDDataEntry166;
+extern u8 sysPOLYWINDDataEntry167;
+extern f32 sysPOLYWINDDataEntry168;
+extern f32 sysPOLYWINDDataEntry169;
+extern s32 sysPOLYWINDDataEntry16;
+extern f32 sysPOLYWINDDataEntry170;
+extern f32 sysPOLYWINDDataEntry171;
+extern f32 sysPOLYWINDDataEntry172;
+extern f32 sysPOLYWINDDataEntry173;
+extern f32 sysPOLYWINDDataEntry174;
+extern f32 sysPOLYWINDDataEntry175;
+extern f32 sysPOLYWINDDataEntry176;
+extern f32 sysPOLYWINDDataEntry177;
+extern f32 sysPOLYWINDDataEntry178;
+extern u8 sysPOLYWINDDataEntry17;
+extern u8 sysPOLYWINDDataEntry18;
+extern s32 sysPOLYWINDDataEntry19;
+extern s32 sysPOLYWINDDataEntry20;
+extern s32 sysPOLYWINDDataEntry21;
+extern s32 sysPOLYWINDDataEntry22;
+extern u8 sysPOLYWINDDataEntry23;
+extern u8 sysPOLYWINDDataEntry24;
+extern f32 sysPOLYWINDDataEntry25;
+extern f32 sysPOLYWINDDataEntry26;
+extern f32 sysPOLYWINDDataEntry27;
+extern s32 sysPOLYWINDDataEntry28;
+extern s32 sysPOLYWINDDataEntry29;
+extern s32 sysPOLYWINDDataEntry30;
+extern s32 sysPOLYWINDDataEntry31;
+extern u8 sysPOLYWINDDataEntry32;
+extern u8 sysPOLYWINDDataEntry33;
+extern f32 sysPOLYWINDDataEntry34;
+extern f32 sysPOLYWINDDataEntry35;
+extern f32 sysPOLYWINDDataEntry36;
+extern s32 sysPOLYWINDDataEntry37;
+extern s32 sysPOLYWINDDataEntry38;
+extern s32 sysPOLYWINDDataEntry39;
+extern s32 sysPOLYWINDDataEntry40;
+extern u8 sysPOLYWINDDataEntry41;
+extern u8 sysPOLYWINDDataEntry42;
+extern f32 sysPOLYWINDDataEntry43;
+extern f32 sysPOLYWINDDataEntry44;
+extern f32 sysPOLYWINDDataEntry45;
+extern char sysPOLYWINDDataEntry6[];
+extern char sysPOLYWINDDataEntry7[];
+extern char sysPOLYWINDDataEntry87[];
+extern char sysPOLYWINDDataEntry88[];
+extern char sysPOLYWINDDataEntry89[];
+extern u8 sysPOLYWINDDataEntry8[];
+extern char sysPOLYWINDDataEntry90[];
+extern char sysPOLYWINDDataEntry91[];
+extern char sysPOLYWINDDataEntry92[];
+extern char sysPOLYWINDDataEntry93[];
+extern char sysPOLYWINDDataEntry94[];
+extern char sysPOLYWINDDataEntry95[];
+extern char sysPOLYWINDDataEntry96[];
+extern char sysPOLYWINDDataEntry97[];
+extern s32 sysPOLYWINDDataEntry98;
+extern f32 sysPOLYWINDDataEntry99;
 extern char sysStrAccurate[];
+extern char sysStrCycleRot[];
+extern char sysStrDirection[];
+extern char sysStrEmtCurve[];
+extern char sysStrEmtHeight[];
+extern char sysStrEmtRadius[];
 extern char sysStrLength[];
+extern char sysStrLifeCol[];
+extern char sysStrLifeScl[];
 extern char sysStrMaterial[];
+extern char sysStrOLightS[];
+extern char sysStrOMcolrS[];
 extern char sysStrResource[];
+extern char sysStrTBoard2[];
 
 extern EffFileJobRequest sysPARTICLEDataEntry;
 extern effDebugMenuItem_t sysPARTICLEDataEntry89[];
@@ -3269,6 +4526,499 @@ extern effDebugMenuItem_t sysPARTICLEDataEntry109[];
 extern effDebugMenu_t sysPARTICLEDataEntry88;
 extern effDebugMenuItem_t sysPARTICLEDataEntry26[];
 extern effDebugMenu_t sysPARTICLEDataEntry9;
+extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry13;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry63[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry51;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry64[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry52;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry65[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry53;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry14[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry;
+extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry2;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry66[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry54;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry67[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry55;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry15[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry3;
+extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry68;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry69[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry56;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry70[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry57;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry71[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry58;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry16[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry4;
+extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry17;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry72[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry59;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry73[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry60;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry18[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry5;
+extern EffFileJobRequest effCreatePolyTrackControlTaskDataEntry6;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry74[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry61;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry75[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry62;
+extern effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry19[];
+extern effDebugMenu_t effCreatePolyTrackControlTaskDataEntry7;
+extern EffFileJobRequest effCreatePolyTrackTaskDataEntry66;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry67[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry49;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry68[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry50;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry69[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry51;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry70[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry52;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry8[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry;
+extern EffFileJobRequest effCreatePolyTrackTaskDataEntry71;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry72[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry53;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry73[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry54;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry74[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry55;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry9[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry2;
+extern EffFileJobRequest effCreatePolyTrackTaskDataEntry75;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry76[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry56;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry77[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry57;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry78[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry58;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry79[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry59;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry10[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry3;
+extern EffFileJobRequest effCreatePolyTrackTaskDataEntry80;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry81[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry60;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry82[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry61;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry83[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry62;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry11[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry4;
+extern EffFileJobRequest effCreatePolyTrackTaskDataEntry12;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry84[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry63;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry85[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry64;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry86[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry65;
+extern effDebugMenuItem_t effCreatePolyTrackTaskDataEntry13[];
+extern effDebugMenu_t effCreatePolyTrackTaskDataEntry5;
+extern EffFileJobRequest fileLoadEffectSlotAData;
+extern effDebugMenuItem_t effData9Entry13[];
+extern effDebugMenu_t effData9Entry7;
+extern EffFileJobRequest effPollAndQueueCopiedFileResourceData;
+extern effDebugMenuItem_t effData9Entry14[];
+extern effDebugMenu_t effData9Entry8;
+extern EffFileJobRequest effCreateBlurTaskDataEntry10;
+extern effDebugMenuItem_t effCreateBlurTaskDataEntry11[];
+extern effDebugMenu_t effCreateBlurTaskDataEntry;
+extern EffFileJobRequest effCreateBlurTaskDataEntry45;
+extern effDebugMenuItem_t effCreateBlurTaskDataEntry46[];
+extern effDebugMenu_t effCreateBlurTaskDataEntry42;
+extern effDebugMenuItem_t effCreateBlurTaskDataEntry12[];
+extern effDebugMenu_t effCreateBlurTaskDataEntry2;
+extern EffFileJobRequest effCreateBlurTaskDataEntry3;
+extern effDebugMenuItem_t effCreateBlurTaskDataEntry47[];
+extern effDebugMenu_t effCreateBlurTaskDataEntry43;
+extern effDebugMenuItem_t effCreateBlurTaskDataEntry13[];
+extern effDebugMenu_t effCreateBlurTaskDataEntry4;
+extern EffFileJobRequest effCreateBlurTaskDataEntry14;
+extern effDebugMenuItem_t effCreateBlurTaskDataEntry48[];
+extern effDebugMenu_t effCreateBlurTaskDataEntry44;
+extern effDebugMenuItem_t effCreateBlurTaskDataEntry15[];
+extern effDebugMenu_t effCreateBlurTaskDataEntry5;
+extern EffFileJobRequest effCreateBlurTaskDataEntry16;
+extern effDebugMenuItem_t effCreateBlurTaskDataEntry17[];
+extern effDebugMenu_t effCreateBlurTaskDataEntry6;
+extern EffFileJobRequest effCreateFilterTaskDataEntry5;
+extern effDebugMenuItem_t effCreateFilterTaskDataEntry6[];
+extern effDebugMenu_t effCreateFilterTaskDataEntry;
+extern EffFileJobRequest effCreateFilterTaskDataEntry7;
+extern effDebugMenuItem_t effCreateFilterTaskDataEntry15[];
+extern effDebugMenu_t effCreateFilterTaskDataEntry14;
+extern effDebugMenuItem_t effCreateFilterTaskDataEntry8[];
+extern effDebugMenu_t effCreateFilterTaskDataEntry2;
+extern EffFileJobRequest effData9Entry15;
+extern effDebugMenuItem_t effData9Entry39[];
+extern effDebugMenu_t effData9Entry36;
+extern effDebugMenuItem_t effData9Entry16[];
+extern effDebugMenu_t effData9Entry9;
+extern EffFileJobRequest sysPOLYTEXDataEntry4;
+extern effDebugMenuItem_t sysPOLYTEXDataEntry24[];
+extern effDebugMenu_t sysPOLYTEXDataEntry22;
+extern effDebugMenuItem_t sysPOLYTEXDataEntry5[];
+extern effDebugMenu_t sysPOLYTEXDataEntry;
+extern EffFileJobRequest sysPOLYTEXDataEntry6;
+extern effDebugMenuItem_t sysPOLYTEXDataEntry25[];
+extern effDebugMenu_t sysPOLYTEXDataEntry23;
+extern effDebugMenuItem_t sysPOLYTEXDataEntry7[];
+extern effDebugMenu_t sysPOLYTEXDataEntry2;
+extern EffFileJobRequest effCreateEnvironmentTaskDataEntry10;
+extern effDebugMenuItem_t effCreateEnvironmentTaskDataEntry11[];
+extern effDebugMenu_t effCreateEnvironmentTaskDataEntry;
+extern EffFileJobRequest effCreateEnvironmentTaskDataEntry2;
+extern effDebugMenuItem_t effCreateEnvironmentTaskDataEntry12[];
+extern effDebugMenu_t effCreateEnvironmentTaskDataEntry3;
+extern EffFileJobRequest effCreatePolyFlashTaskDataEntry12;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry124[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry103;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry13[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry;
+extern EffFileJobRequest effCreatePolyFlashTaskDataEntry125;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry126[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry104;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry127[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry105;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry14[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry2;
+extern EffFileJobRequest effCreatePolyFlashTaskDataEntry128;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry129[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry106;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry130[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry107;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry131[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry108;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry15[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry3;
+extern EffFileJobRequest effCreatePolyFlashTaskDataEntry132;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry133[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry109;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry134[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry110;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry16[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry4;
+extern EffFileJobRequest effCreatePolyFlashTaskDataEntry135;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry136[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry111;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry137[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry112;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry138[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry113;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry17[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry5;
+extern EffFileJobRequest effCreatePolyFlashTaskDataEntry18;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry139[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry114;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry140[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry115;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry141[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry116;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry142[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry117;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry19[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry6;
+extern EffFileJobRequest effCreatePolyFlashTaskDataEntry143;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry144[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry118;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry145[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry119;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry146[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry120;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry20[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry7;
+extern EffFileJobRequest effCreatePolyFlashTaskDataEntry147;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry148[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry121;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry149[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry122;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry150[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry123;
+extern effDebugMenuItem_t effCreatePolyFlashTaskDataEntry21[];
+extern effDebugMenu_t effCreatePolyFlashTaskDataEntry8;
+extern EffFileJobRequest effCreateEnvironmentTaskDataEntry13;
+extern effDebugMenuItem_t effCreateEnvironmentTaskDataEntry14[];
+extern effDebugMenu_t effCreateEnvironmentTaskDataEntry4;
+extern EffFileJobRequest effCreateEnvironmentTaskDataEntry15;
+extern effDebugMenuItem_t effCreateEnvironmentTaskDataEntry16[];
+extern effDebugMenu_t effCreateEnvironmentTaskDataEntry5;
+extern EffFileJobRequest effCreatePolyRingTaskDataEntry28;
+extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry29[];
+extern effDebugMenu_t effCreatePolyRingTaskDataEntry25;
+extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry5[];
+extern effDebugMenu_t effCreatePolyRingTaskDataEntry;
+extern EffFileJobRequest effCreatePolyRingTaskDataEntry6;
+extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry30[];
+extern effDebugMenu_t effCreatePolyRingTaskDataEntry26;
+extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry7[];
+extern effDebugMenu_t effCreatePolyRingTaskDataEntry2;
+extern EffFileJobRequest effCreatePolyRingTaskDataEntry31;
+extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry32[];
+extern effDebugMenu_t effCreatePolyRingTaskDataEntry27;
+extern effDebugMenuItem_t effCreatePolyRingTaskDataEntry8[];
+extern effDebugMenu_t effCreatePolyRingTaskDataEntry3;
+extern EffFileJobRequest effCreatePolyThunderTaskDataEntry;
+extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry23[];
+extern effDebugMenu_t effCreatePolyThunderTaskDataEntry20;
+extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry6[];
+extern effDebugMenu_t effCreatePolyThunderTaskDataEntry2;
+extern EffFileJobRequest effCreatePolyThunderTaskDataEntry24;
+extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry25[];
+extern effDebugMenu_t effCreatePolyThunderTaskDataEntry21;
+extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry26[];
+extern effDebugMenu_t effCreatePolyThunderTaskDataEntry22;
+extern effDebugMenuItem_t effCreatePolyThunderTaskDataEntry7[];
+extern effDebugMenu_t effCreatePolyThunderTaskDataEntry3;
+extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry62;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry63[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry45;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry64[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry46;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry65[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry47;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry66[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry48;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry12[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry;
+extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry67;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry68[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry49;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry69[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry50;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry70[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry51;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry13[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry2;
+extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry71;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry72[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry52;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry73[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry53;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry74[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry54;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry75[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry55;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry14[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry3;
+extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry76;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry77[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry56;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry78[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry57;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry79[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry58;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry15[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry4;
+extern EffFileJobRequest effCreatePolyTwinkleTaskDataEntry5;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry80[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry59;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry81[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry60;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry82[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry61;
+extern effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry16[];
+extern effDebugMenu_t effCreatePolyTwinkleTaskDataEntry6;
+extern EffFileJobRequest sysPOLYWINDDataEntry;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry65[];
+extern effDebugMenu_t sysPOLYWINDDataEntry46;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry66[];
+extern effDebugMenu_t sysPOLYWINDDataEntry47;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry67[];
+extern effDebugMenu_t sysPOLYWINDDataEntry48;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry68[];
+extern effDebugMenu_t sysPOLYWINDDataEntry49;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry69[];
+extern effDebugMenu_t sysPOLYWINDDataEntry50;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry70[];
+extern effDebugMenu_t sysPOLYWINDDataEntry51;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry9[];
+extern effDebugMenu_t sysPOLYWINDDataEntry2;
+extern EffFileJobRequest sysPOLYWINDDataEntry71;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry72[];
+extern effDebugMenu_t sysPOLYWINDDataEntry52;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry73[];
+extern effDebugMenu_t sysPOLYWINDDataEntry53;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry74[];
+extern effDebugMenu_t sysPOLYWINDDataEntry54;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry75[];
+extern effDebugMenu_t sysPOLYWINDDataEntry55;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry76[];
+extern effDebugMenu_t sysPOLYWINDDataEntry56;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry10[];
+extern effDebugMenu_t sysPOLYWINDDataEntry3;
+extern EffFileJobRequest sysPOLYWINDDataEntry77;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry78[];
+extern effDebugMenu_t sysPOLYWINDDataEntry57;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry79[];
+extern effDebugMenu_t sysPOLYWINDDataEntry58;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry80[];
+extern effDebugMenu_t sysPOLYWINDDataEntry59;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry11[];
+extern effDebugMenu_t sysPOLYWINDDataEntry4;
+extern EffFileJobRequest sysPOLYWINDDataEntry81;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry82[];
+extern effDebugMenu_t sysPOLYWINDDataEntry60;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry83[];
+extern effDebugMenu_t sysPOLYWINDDataEntry61;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry84[];
+extern effDebugMenu_t sysPOLYWINDDataEntry62;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry85[];
+extern effDebugMenu_t sysPOLYWINDDataEntry63;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry86[];
+extern effDebugMenu_t sysPOLYWINDDataEntry64;
+extern effDebugMenuItem_t sysPOLYWINDDataEntry12[];
+extern effDebugMenu_t sysPOLYWINDDataEntry5;
+extern EffFileJobRequest effCreatePolyScalyTaskDataEntry44;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry45[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry34;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry46[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry35;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry47[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry36;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry7[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry;
+extern EffFileJobRequest effCreatePolyScalyTaskDataEntry48;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry49[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry37;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry50[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry38;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry51[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry39;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry8[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry2;
+extern EffFileJobRequest effCreatePolyScalyTaskDataEntry52;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry53[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry40;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry54[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry41;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry55[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry42;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry9[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry3;
+extern EffFileJobRequest effCreatePolyScalyTaskDataEntry56;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry57[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry43;
+extern effDebugMenuItem_t effCreatePolyScalyTaskDataEntry10[];
+extern effDebugMenu_t effCreatePolyScalyTaskDataEntry4;
+extern EffFileJobRequest fileLoadEffectSlotBData;
+extern effDebugMenuItem_t effData9Entry17[];
+extern effDebugMenu_t effData9Entry10;
+extern EffFileJobRequest effCreatePolyCrackTaskDataEntry10;
+extern effDebugMenuItem_t effCreatePolyCrackTaskDataEntry11[];
+extern effDebugMenu_t effCreatePolyCrackTaskDataEntry7;
+extern effDebugMenuItem_t effCreatePolyCrackTaskDataEntry12[];
+extern effDebugMenu_t effCreatePolyCrackTaskDataEntry8;
+extern effDebugMenuItem_t datData29[];
+extern effDebugMenu_t effCreatePolyCrackTaskDataEntry31;
+extern effDebugMenuItem_t effCreatePolyCrackTaskDataEntry13[];
+extern effDebugMenu_t effCreatePolyCrackTaskDataEntry9;
+extern effDebugMenuItem_t effCreatePolyCrackTaskDataEntry2[];
+extern effDebugMenu_t effCreatePolyCrackTaskDataEntry;
+extern EffFileJobRequest effCreatePolyWindTaskDataEntry83;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry84[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry63;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry85[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry64;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry86[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry65;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry87[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry66;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry12[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry;
+extern EffFileJobRequest effCreatePolyWindTaskDataEntry88;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry89[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry67;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry90[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry68;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry91[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry69;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry13[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry2;
+extern EffFileJobRequest effCreatePolyWindTaskDataEntry14;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry92[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry70;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry93[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry71;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry94[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry72;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry95[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry73;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry15[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry3;
+extern EffFileJobRequest effCreatePolyWindTaskDataEntry96;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry97[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry74;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry98[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry75;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry99[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry76;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry16[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry4;
+extern EffFileJobRequest effCreatePolyWindTaskDataEntry100;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry101[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry77;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry102[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry78;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry103[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry79;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry17[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry5;
+extern EffFileJobRequest effCreatePolyWindTaskDataEntry18;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry104[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry80;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry105[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry81;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry106[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry82;
+extern effDebugMenuItem_t effCreatePolyWindTaskDataEntry19[];
+extern effDebugMenu_t effCreatePolyWindTaskDataEntry6;
+extern EffFileJobRequest sysBATTLEONLYDataEntry;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry34[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry2;
+extern EffFileJobRequest sysBATTLEONLYDataEntry3;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry35[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry4;
+extern EffFileJobRequest sysBATTLEONLYDataEntry5;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry36[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry6;
+extern EffFileJobRequest effLoadFileSlotF2Data;
+extern effDebugMenuItem_t effData9Entry18[];
+extern effDebugMenu_t effData9Entry11;
+extern EffFileJobRequest sysBATTLEONLYDataEntry37;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry38[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry7;
+extern EffFileJobRequest sysBATTLEONLYDataEntry8;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry39[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry9;
+extern EffFileJobRequest sysBATTLEONLYDataEntry10;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry40[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry11;
+extern EffFileJobRequest sysBATTLEONLYDataEntry12;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry41[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry13;
+extern EffFileJobRequest sysBATTLEONLYDataEntry42;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry43[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry14;
+extern EffFileJobRequest sysBATTLEONLYDataEntry15;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry44[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry16;
+extern EffFileJobRequest effLoadMaterialFileData;
+extern effDebugMenuItem_t effData9Entry19[];
+extern effDebugMenu_t effData9Entry12;
+extern EffFileJobRequest effCreateTwoDimensionalTaskDataEntry2;
+extern effDebugMenuItem_t effCreateTwoDimensionalTaskDataEntry9[];
+extern effDebugMenu_t effCreateTwoDimensionalTaskDataEntry8;
+extern effDebugMenuItem_t effCreateTwoDimensionalTaskDataEntry3[];
+extern effDebugMenu_t effCreateTwoDimensionalTaskDataEntry;
+extern EffFileJobRequest sysBATTLEONLYDataEntry45;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry46[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry17;
+extern EffFileJobRequest sysBATTLEONLYDataEntry18;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry47[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry19;
+extern EffFileJobRequest sysBATTLEONLYDataEntry20;
+extern effDebugMenuItem_t sysBATTLEONLYDataEntry48[];
+extern effDebugMenu_t sysBATTLEONLYDataEntry21;
 
 EffFileJobRequest sysPARTICLEDataEntry = {
     sysPARTICLEDataEntry10, 1, { 0 }, 1, { 0 }, sysPARTICLEDataEntry16, 0xF0,
@@ -3716,6 +5466,4372 @@ effDebugMenuItem_t sysPARTICLEDataEntry26[17] = {
 
 effDebugMenu_t sysPARTICLEDataEntry9 = {
     sysPARTICLEDataEntry15, 0x8, 8, 0, 0, sysPARTICLEDataEntry26, 17, &sysPARTICLEDataEntry8,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackControlTaskDataEntry13 = {
+    effCreatePolyTrackControlTaskDataEntry20, 2, { 0 }, 1, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry21, 0x10C,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry63[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry21 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry80 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry81 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry81 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry81 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry81 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry82 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry82 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry82 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry82 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry83 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry83 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry83 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry83 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry84 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry84 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry84 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry84 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry51 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry63, 26, &effCreatePolyTrackControlTaskDataEntry13,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry64[5] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry85 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry86 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry87 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry88 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry52 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry64, 5, &effCreatePolyTrackControlTaskDataEntry13,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry65[6] = {
+    { effCreatePolyWindTaskDataEntry110, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry89 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry109, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry90 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry108, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry91 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry107, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry92 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry93 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry94 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry53 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry65, 6, &effCreatePolyTrackControlTaskDataEntry13,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry14[14] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry52 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry22 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackControlTaskDataEntry23 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry51 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry24 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry25 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry26 }, { .minValue = 0 }, 0, 0.01f },
+    { effStrAmplitude, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry53 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry = {
+    effCreatePolyTrackControlTaskDataEntry20, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry14, 14, &effCreatePolyTrackControlTaskDataEntry13,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackControlTaskDataEntry2 = {
+    effCreatePolyTrackControlTaskDataEntry8, 2, { 0 }, 2, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry12, 0xFC,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry66[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry12 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry95 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry96 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry96 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry96 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry96 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry97 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry97 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry97 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry97 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry98 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry98 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry98 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry98 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry99 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry99 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry99 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry99 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry54 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry66, 26, &effCreatePolyTrackControlTaskDataEntry2,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry67[6] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry100 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry101 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry102 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry103 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry104 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry55 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry67, 6, &effCreatePolyTrackControlTaskDataEntry2,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry15[14] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry55 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry27 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackControlTaskDataEntry28 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry54 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry29 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry30 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry31 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry32 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry3 = {
+    effCreatePolyTrackControlTaskDataEntry8, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry15, 14, &effCreatePolyTrackControlTaskDataEntry2,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackControlTaskDataEntry68 = {
+    effCreatePolyTrackControlTaskDataEntry9, 2, { 0 }, 3, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry105, 0x110,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry69[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry105 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry106 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry107 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry107 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry107 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry107 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry108 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry108 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry108 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry108 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry109 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry109 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry109 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry109 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry110 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry110 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry110 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry110 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry56 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry69, 26, &effCreatePolyTrackControlTaskDataEntry68,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry70[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry111 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry112 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry113 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry79, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry114 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry115 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry116 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry117 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry118 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry57 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry70, 9, &effCreatePolyTrackControlTaskDataEntry68,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry71[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry119 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry120 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry121 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry58 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry71, 3, &effCreatePolyTrackControlTaskDataEntry68,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry16[14] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry57 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry33 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackControlTaskDataEntry34 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry56 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry35 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry36 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry37 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry58 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry4 = {
+    effCreatePolyTrackControlTaskDataEntry9, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry16, 14, &effCreatePolyTrackControlTaskDataEntry68,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackControlTaskDataEntry17 = {
+    effCreatePolyTrackControlTaskDataEntry10, 2, { 0 }, 4, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry38, 0x104,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry72[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry38 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry122 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry123 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry123 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry123 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry123 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry126 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry126 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry126 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry126 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry59 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry72, 26, &effCreatePolyTrackControlTaskDataEntry17,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry73[8] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry127 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry128 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry129 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry130 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry131 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry132 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry133 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry60 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry73, 8, &effCreatePolyTrackControlTaskDataEntry17,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry18[14] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry60 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry39 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackControlTaskDataEntry40 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry59 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry41 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry42 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry43 }, { .minValue = 0 }, 0, 0.001f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry44 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry5 = {
+    effCreatePolyTrackControlTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry18, 14, &effCreatePolyTrackControlTaskDataEntry17,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackControlTaskDataEntry6 = {
+    effCreatePolyTrackControlTaskDataEntry11, 2, { 0 }, 5, { 0 }, (u8 *)&effCreatePolyTrackControlTaskDataEntry134, 0x104,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry74[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry134 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry135 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry136 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry136 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry136 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry136 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry137 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry137 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry137 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry137 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry138 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry138 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry138 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry138 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry139 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry139 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry139 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackControlTaskDataEntry139 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry61 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry74, 26, &effCreatePolyTrackControlTaskDataEntry6,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry75[8] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry140 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry141 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry142 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry143 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry144 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry112, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry145 }, { .minValue = 0 }, 1, 0.1f },
+    { effCreatePolyWindTaskDataEntry111, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry146 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry62 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry75, 8, &effCreatePolyTrackControlTaskDataEntry6,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackControlTaskDataEntry19[14] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry62 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackControlTaskDataEntry45 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackControlTaskDataEntry46 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackControlTaskDataEntry61 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry47 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry48 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry49 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackControlTaskDataEntry50 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackControlTaskDataEntry7 = {
+    effCreatePolyTrackControlTaskDataEntry11, 0x8, 8, 0, 0, effCreatePolyTrackControlTaskDataEntry19, 14, &effCreatePolyTrackControlTaskDataEntry6,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackTaskDataEntry66 = {
+    effCreatePolyTrackTaskDataEntry6, 15, { 0 }, 1, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry90, 0x10C,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry67[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry90 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry91 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry92 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry92 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry92 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry92 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry93 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry93 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry93 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry93 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry94 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry94 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry94 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry94 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry95 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry95 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry95 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry95 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry49 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry67, 26, &effCreatePolyTrackTaskDataEntry66,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry68[5] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateResourceQueueWithTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateTextureResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry111, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateEpResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry96 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry50 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry68, 5, &effCreatePolyTrackTaskDataEntry66,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry69[5] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry97 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry98 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry99 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry100 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry51 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry69, 5, &effCreatePolyTrackTaskDataEntry66,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry70[6] = {
+    { effCreatePolyWindTaskDataEntry110, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry101 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry109, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry102 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry108, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry103 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry107, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry104 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry105 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry106 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry52 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry70, 6, &effCreatePolyTrackTaskDataEntry66,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry8[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry51 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry21 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackTaskDataEntry22 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditKRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry49 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry50 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry23 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry24 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry25 }, { .minValue = 0 }, 0, 0.01f },
+    { effStrAmplitude, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry52 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry = {
+    effCreatePolyTrackTaskDataEntry6, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry8, 16, &effCreatePolyTrackTaskDataEntry66,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackTaskDataEntry71 = {
+    effCreatePolyTrackTaskDataEntry87, 15, { 0 }, 2, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry107, 0xFC,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry72[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry107 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry108 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry109 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry109 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry109 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry109 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry110 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry110 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry110 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry110 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry111 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry111 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry111 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry111 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry112 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry112 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry112 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry112 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry53 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry72, 26, &effCreatePolyTrackTaskDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry73[5] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateResourceQueueWithTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateTextureResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry111, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateEpResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry113 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry54 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry73, 5, &effCreatePolyTrackTaskDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry74[6] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry114 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry115 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry116 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry117 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry118 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry55 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry74, 6, &effCreatePolyTrackTaskDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry9[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry55 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry26 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackTaskDataEntry27 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditKRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry53 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry54 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry28 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry29 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry30 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry31 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry2 = {
+    effCreatePolyTrackTaskDataEntry87, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry9, 16, &effCreatePolyTrackTaskDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackTaskDataEntry75 = {
+    effCreatePolyTrackTaskDataEntry88, 15, { 0 }, 3, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry119, 0x110,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry76[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry119 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry120 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry121 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry121 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry121 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry121 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry122 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry122 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry122 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry122 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry123 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry123 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry123 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry123 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry56 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry76, 26, &effCreatePolyTrackTaskDataEntry75,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry77[5] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateResourceQueueWithTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateTextureResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry111, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateEpResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry125 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry57 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry77, 5, &effCreatePolyTrackTaskDataEntry75,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry78[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry126 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry127 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry128 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry79, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry129 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry130 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry131 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry132 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry133 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry58 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry78, 9, &effCreatePolyTrackTaskDataEntry75,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry79[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry134 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry135 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry136 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry59 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry79, 3, &effCreatePolyTrackTaskDataEntry75,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry10[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry58 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry32 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackTaskDataEntry33 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditKRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry56 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry57 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry34 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry35 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry36 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry59 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry3 = {
+    effCreatePolyTrackTaskDataEntry88, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry10, 16, &effCreatePolyTrackTaskDataEntry75,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackTaskDataEntry80 = {
+    effCreatePolyTrackTaskDataEntry89, 15, { 0 }, 4, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry137, 0x104,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry81[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry137 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry138 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry139 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry139 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry139 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry139 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry140 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry140 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry140 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry140 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry141 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry141 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry141 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry141 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry142 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry142 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry142 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry142 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry60 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry81, 26, &effCreatePolyTrackTaskDataEntry80,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry82[5] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateResourceQueueWithTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateTextureResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry111, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateEpResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry143 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry61 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry82, 5, &effCreatePolyTrackTaskDataEntry80,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry83[8] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry144 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry145 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry146 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry147 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry148 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry149 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry150 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry62 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry83, 8, &effCreatePolyTrackTaskDataEntry80,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry11[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry62 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry37 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackTaskDataEntry38 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditKRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry60 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry61 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry39 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry40 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry41 }, { .minValue = 0 }, 0, 0.001f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry42 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry4 = {
+    effCreatePolyTrackTaskDataEntry89, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry11, 16, &effCreatePolyTrackTaskDataEntry80,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTrackTaskDataEntry12 = {
+    effCreatePolyTrackTaskDataEntry7, 15, { 0 }, 5, { 0 }, (u8 *)&effCreatePolyTrackTaskDataEntry151, 0x104,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry84[26] = {
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry151 }, { .minValue = 1 }, 0x64, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry152 }, { .minValue = 1 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry153 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry153 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry153 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry153 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcStartOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry154 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry154 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry154 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry154 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndIn, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry155 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry155 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry155 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry155 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrVcEndOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry156 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry156 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry156 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTrackTaskDataEntry156 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry63 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry84, 26, &effCreatePolyTrackTaskDataEntry12,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry85[5] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateResourceQueueWithTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateTextureResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry111, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollAlternateEpResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry157 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry64 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry85, 5, &effCreatePolyTrackTaskDataEntry12,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry86[8] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry158 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry159 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry160 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry161 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry162 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry112, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry163 }, { .minValue = 0 }, 1, 0.1f },
+    { effCreatePolyWindTaskDataEntry111, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry164 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry65 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTrackTaskDataEntry86, 8, &effCreatePolyTrackTaskDataEntry12,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTrackTaskDataEntry13[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry65 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTrackTaskDataEntry43 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTrackTaskDataEntry44 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditGkColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditGkScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditKRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry63 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTrackTaskDataEntry64 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry45 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry46 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry47 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTrackTaskDataEntry48 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTrackTaskDataEntry5 = {
+    effCreatePolyTrackTaskDataEntry7, 0x8, 8, 0, 0, effCreatePolyTrackTaskDataEntry13, 16, &effCreatePolyTrackTaskDataEntry12,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest fileLoadEffectSlotAData = {
+    fileLoadEffectSlotADataEntry2, 3, { 0 }, 0, { 0 }, (u8 *)&fileLoadEffectSlotADataEntry, 0x4,
+};
+
+effDebugMenuItem_t effData9Entry13[3] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &fileLoadEffectSlotADataEntry }, { .minValue = 0 }, 0, 0.1f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effData9Entry7 = {
+    fileLoadEffectSlotADataEntry2, 0x8, 8, 0, 0, effData9Entry13, 3, &fileLoadEffectSlotAData,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effPollAndQueueCopiedFileResourceData = {
+    effPollAndQueueCopiedFileResourceDataEntry2, 25, { 0 }, 0, { 0 }, (u8 *)&effPollAndQueueCopiedFileResourceDataEntry, 0x8,
+};
+
+effDebugMenuItem_t effData9Entry14[4] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &effPollAndQueueCopiedFileResourceDataEntry }, { .minValue = 0 }, 0, 0.1f },
+    { effData9Entry21, 0x31, { 0 }, { .s32Value = &effData9Entry20 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effData9Entry8 = {
+    effPollAndQueueCopiedFileResourceDataEntry2, 0x8, 8, 0, 0, effData9Entry14, 4, &effPollAndQueueCopiedFileResourceData,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateBlurTaskDataEntry10 = {
+    effCreateBlurTaskDataEntry18, 4, { 0 }, 1, { 0 }, effCreateBlurTaskDataEntry23, 0xE8,
+};
+
+effDebugMenuItem_t effCreateBlurTaskDataEntry11[7] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry24 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditBfColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBRotationTrack }, { .release = btlResetEffectWork } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateBlurTaskDataEntry = {
+    effCreateBlurTaskDataEntry18, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry11, 7, &effCreateBlurTaskDataEntry10,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateBlurTaskDataEntry45 = {
+    effCreateBlurTaskDataEntry49, 4, { 0 }, 2, { 0 }, effCreateBlurTaskDataEntry50, 0xEC,
+};
+
+effDebugMenuItem_t effCreateBlurTaskDataEntry46[2] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollResourceQueueWithoutTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollBfMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreateBlurTaskDataEntry42 = {
+    NULL, 0xB8, 8, 0, 0, effCreateBlurTaskDataEntry46, 2, &effCreateBlurTaskDataEntry45,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreateBlurTaskDataEntry12[10] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry25 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateBlurTaskDataEntry19, 0x1D, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry26 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditBfColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBRotationTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry10, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBfAreaTrack }, { .release = btlResetEffectWork } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreateBlurTaskDataEntry42 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateBlurTaskDataEntry2 = {
+    effCreateBlurTaskDataEntry49, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry12, 10, &effCreateBlurTaskDataEntry45,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateBlurTaskDataEntry3 = {
+    effCreateBlurTaskDataEntry7, 4, { 0 }, 3, { 0 }, effCreateBlurTaskDataEntry9, 0xEC,
+};
+
+effDebugMenuItem_t effCreateBlurTaskDataEntry47[2] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollResourceQueueWithoutTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollBfMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreateBlurTaskDataEntry43 = {
+    NULL, 0xB8, 8, 0, 0, effCreateBlurTaskDataEntry47, 2, &effCreateBlurTaskDataEntry3,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreateBlurTaskDataEntry13[15] = {
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry29 }, { .minValue = 0 }, 0x64, 1.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry27 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateBlurTaskDataEntry19, 0x1D, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry28 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditBfColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBRotationTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry10, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBfAreaTrack }, { .release = btlResetEffectWork } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreateBlurTaskDataEntry43 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreateBlurTaskDataEntry20, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry30 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreateBlurTaskDataEntry31 }, { .minValue = 0 }, 0, 0.1f },
+    { effCreatePolyTwinkleTaskDataEntry88, 0x05, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry32 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateBlurTaskDataEntry4 = {
+    effCreateBlurTaskDataEntry7, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry13, 15, &effCreateBlurTaskDataEntry3,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateBlurTaskDataEntry14 = {
+    effCreateBlurTaskDataEntry21, 4, { 0 }, 4, { 0 }, effCreateBlurTaskDataEntry33, 0xEC,
+};
+
+effDebugMenuItem_t effCreateBlurTaskDataEntry48[2] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollResourceQueueWithoutTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollBfMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreateBlurTaskDataEntry44 = {
+    NULL, 0xB8, 8, 0, 0, effCreateBlurTaskDataEntry48, 2, &effCreateBlurTaskDataEntry14,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreateBlurTaskDataEntry15[15] = {
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry36 }, { .minValue = 0 }, 0x28, 1.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry34 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateBlurTaskDataEntry19, 0x1D, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry35 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditBfColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBRotationTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry10, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBfAreaTrack }, { .release = btlResetEffectWork } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreateBlurTaskDataEntry44 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreateBlurTaskDataEntry20, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreateBlurTaskDataEntry38 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreateBlurTaskDataEntry37 }, { .minValue = 0 }, 0, 0.1f },
+    { effCreateBlurTaskDataEntry22, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreateBlurTaskDataEntry39 }, { .minValue = 0 }, 0, 0.1f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateBlurTaskDataEntry5 = {
+    effCreateBlurTaskDataEntry21, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry15, 15, &effCreateBlurTaskDataEntry14,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateBlurTaskDataEntry16 = {
+    effCreateBlurTaskDataEntry8, 4, { 0 }, 5, { 0 }, effCreateBlurTaskDataEntry40, 0xE8,
+};
+
+effDebugMenuItem_t effCreateBlurTaskDataEntry17[7] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateBlurTaskDataEntry41 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditBfColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBRotationTrack }, { .release = btlResetEffectWork } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateBlurTaskDataEntry6 = {
+    effCreateBlurTaskDataEntry8, 0x8, 8, 0, 0, effCreateBlurTaskDataEntry17, 7, &effCreateBlurTaskDataEntry16,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateFilterTaskDataEntry5 = {
+    effCreateFilterTaskDataEntry3, 5, { 0 }, 1, { 0 }, effCreateFilterTaskDataEntry9, 0xD8,
+};
+
+effDebugMenuItem_t effCreateFilterTaskDataEntry6[5] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateFilterTaskDataEntry10 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditBfColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateFilterTaskDataEntry = {
+    effCreateFilterTaskDataEntry3, 0x8, 8, 0, 0, effCreateFilterTaskDataEntry6, 5, &effCreateFilterTaskDataEntry5,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateFilterTaskDataEntry7 = {
+    effCreateFilterTaskDataEntry4, 5, { 0 }, 2, { 0 }, effCreateFilterTaskDataEntry11, 0xE4,
+};
+
+effDebugMenuItem_t effCreateFilterTaskDataEntry15[2] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollResourceQueueWithoutTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollBfMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreateFilterTaskDataEntry14 = {
+    NULL, 0xB8, 8, 0, 0, effCreateFilterTaskDataEntry15, 2, &effCreateFilterTaskDataEntry7,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreateFilterTaskDataEntry8[8] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateFilterTaskDataEntry12 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateBlurTaskDataEntry19, 0x1D, { 0 }, { .s32Value = &effCreateFilterTaskDataEntry13 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditBfColorTrack }, { .release = effResetMappingFlags } },
+    { sysPOLYTEXDataEntry10, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditBfAreaTrack }, { .release = btlResetEffectWork } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreateFilterTaskDataEntry14 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateFilterTaskDataEntry2 = {
+    effCreateFilterTaskDataEntry4, 0x8, 8, 0, 0, effCreateFilterTaskDataEntry8, 8, &effCreateFilterTaskDataEntry7,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effHelper_Params_t fileLoadEffectSlotHelpData = {
+    0, 0x80808080, 0x80808080, { 0, 0, 0, 0, 0, 0 },
+    0x80, 1, 0.1f, 0.9f, 0x64, 1.0f,
+};
+
+EffFileJobRequest effData9Entry15 = {
+    effCreatePolyCrackTaskDataEntry14, 6, { 0 }, 0, { 0 }, effWork6, 0x3C,
+};
+
+effDebugMenuItem_t effData9Entry39[1] = {
+    { sysPARTICLEDataEntry110, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollEplResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effData9Entry36 = {
+    NULL, 0xB8, 8, 0, 0, effData9Entry39, 1, &effData9Entry15,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effData9Entry16[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effData9Entry29 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effEditHlpColorTrack }, { .release = effResetMappingFlags } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effData9Entry36 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &effData9Entry30 }, { .minValue = 0 }, 0, 0.1f },
+    { effData9Entry22, 0x25, { 0 }, { .s32Value = &effData9Entry28 }, { .minValue = 0 }, 7, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effData9Entry9 = {
+    effCreatePolyCrackTaskDataEntry14, 0x8, 8, 0, 0, effData9Entry16, 9, &effData9Entry15,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysPOLYTEXDataEntry4 = {
+    sysPOLYTEXDataEntry3, 7, { 0 }, 1, { 0 }, sysPOLYTEXDataEntry12, 0x98,
+};
+
+effDebugMenuItem_t sysPOLYTEXDataEntry24[2] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollResourceQueueWithTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollTextureResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t sysPOLYTEXDataEntry22 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYTEXDataEntry24, 2, &sysPOLYTEXDataEntry4,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYTEXDataEntry5[10] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYTEXDataEntry13 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry10, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYTEXDataEntry14 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditTBoardColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditTBoardScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditTBoardRotationTrack }, { .release = btlResetEffectWork } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYTEXDataEntry22 }, { .minValue = 0 }, 0, 0.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYTEXDataEntry15 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysPOLYTEXDataEntry = {
+    sysPOLYTEXDataEntry3, 0x8, 8, 0, 0, sysPOLYTEXDataEntry5, 10, &sysPOLYTEXDataEntry4,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysPOLYTEXDataEntry6 = {
+    sysStrTBoard2, 7, { 0 }, 2, { 0 }, sysPOLYTEXDataEntry16, 0xA0,
+};
+
+effDebugMenuItem_t sysPOLYTEXDataEntry25[2] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollResourceQueueWithTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollTextureResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t sysPOLYTEXDataEntry23 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYTEXDataEntry25, 2, &sysPOLYTEXDataEntry6,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYTEXDataEntry7[12] = {
+    { sysStrLifeCol, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYTEXDataEntry17 }, { .minValue = 0 }, 0, 1.0f },
+    { sysStrLifeScl, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYTEXDataEntry18 }, { .minValue = 0 }, 0, 1.0f },
+    { sysStrCycleRot, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYTEXDataEntry19 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry10, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYTEXDataEntry20 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditTBoardColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditTBoardScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditTBoardRotationTrack }, { .release = btlResetEffectWork } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYTEXDataEntry23 }, { .minValue = 0 }, 0, 0.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYTEXDataEntry21 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysPOLYTEXDataEntry2 = {
+    sysStrTBoard2, 0x8, 8, 0, 0, sysPOLYTEXDataEntry7, 12, &sysPOLYTEXDataEntry6,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateEnvironmentTaskDataEntry10 = {
+    effCreateEnvironmentTaskDataEntry6, 8, { 0 }, 0, { 0 }, effCreateEnvironmentTaskDataEntry22, 0x40,
+};
+
+effDebugMenuItem_t effCreateEnvironmentTaskDataEntry11[6] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateEnvironmentTaskDataEntry23 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateEnvironmentTaskDataEntry24 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreateEnvironmentTaskDataEntry25 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditRainColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateEnvironmentTaskDataEntry = {
+    effCreateEnvironmentTaskDataEntry6, 0x8, 8, 0, 0, effCreateEnvironmentTaskDataEntry11, 6, &effCreateEnvironmentTaskDataEntry10,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateEnvironmentTaskDataEntry2 = {
+    effCreateEnvironmentTaskDataEntry7, 9, { 0 }, 0, { 0 }, effCreateEnvironmentTaskDataEntry9, 0x40,
+};
+
+effDebugMenuItem_t effCreateEnvironmentTaskDataEntry12[6] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateEnvironmentTaskDataEntry27 }, { .minValue = 0 }, 0, 1.0f },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreateEnvironmentTaskDataEntry26 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry18, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &effCreateEnvironmentTaskDataEntry28 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditFlareColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateEnvironmentTaskDataEntry3 = {
+    effCreateEnvironmentTaskDataEntry7, 0x8, 8, 0, 0, effCreateEnvironmentTaskDataEntry12, 6, &effCreateEnvironmentTaskDataEntry2,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyFlashTaskDataEntry12 = {
+    effCreatePolyFlashTaskDataEntry9, 10, { 0 }, 1, { 0 }, effCreatePolyFlashTaskDataEntry26, 0x80,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry124[20] = {
+    { effData50, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry171 }, { .minValue = 0 }, 0, 1.0f },
+    { effData49, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry172 }, { .minValue = 0 }, 0, 1.0f },
+    { effData48, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry173 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry174 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyRingTaskDataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry175 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry168 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry169 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry169 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry169 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry169 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry170 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry170 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry170 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry170 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry103 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry124, 20, &effCreatePolyFlashTaskDataEntry12,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry13[15] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry27 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry28 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry32 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry29 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry30 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry31 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry103 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry33 }, { .minValue = 0 }, 0, 0.001f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry34 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry35 }, { .minValue = 0 }, 0, 0.001f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry = {
+    effCreatePolyFlashTaskDataEntry9, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry13, 15, &effCreatePolyFlashTaskDataEntry12,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyFlashTaskDataEntry125 = {
+    effCreatePolyFlashTaskDataEntry154, 10, { 0 }, 2, { 0 }, effCreatePolyFlashTaskDataEntry176, 0x8C,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry126[19] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry180 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry181 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry182 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyRingTaskDataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry183 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry177 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry178 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry178 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry178 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry178 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry179 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry179 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry179 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry179 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry104 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry126, 19, &effCreatePolyFlashTaskDataEntry125,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry127[2] = {
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry184 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry185 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry105 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry127, 2, &effCreatePolyFlashTaskDataEntry125,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry14[17] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry36 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry37 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry41 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry38 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry39 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry40 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry104 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry105 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry42 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry43 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry44 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreateEnvironmentTaskDataEntry18, 0x1C, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry45 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry2 = {
+    effCreatePolyFlashTaskDataEntry154, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry14, 17, &effCreatePolyFlashTaskDataEntry125,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyFlashTaskDataEntry128 = {
+    effCreatePolyFlashTaskDataEntry156, 10, { 0 }, 3, { 0 }, effCreatePolyFlashTaskDataEntry186, 0x9C,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry129[19] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry190 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry191 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry192 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyRingTaskDataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry193 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry187 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry188 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry188 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry188 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry188 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry189 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry189 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry189 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry189 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry106 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry129, 19, &effCreatePolyFlashTaskDataEntry128,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry130[4] = {
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry194 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry195 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry196 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry197 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry107 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry130, 4, &effCreatePolyFlashTaskDataEntry128,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry131[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry198 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry199 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry200 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry108 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry131, 3, &effCreatePolyFlashTaskDataEntry128,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry15[17] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry46 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry47 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry51 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry48 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry49 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry50 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry106 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry107 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry52 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry53 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry54 }, { .minValue = 0 }, 0, 0.001f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry108 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry3 = {
+    effCreatePolyFlashTaskDataEntry156, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry15, 17, &effCreatePolyFlashTaskDataEntry128,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyFlashTaskDataEntry132 = {
+    effCreatePolyFlashTaskDataEntry10, 10, { 0 }, 4, { 0 }, effCreatePolyFlashTaskDataEntry201, 0x80,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry133[3] = {
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollSTMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFileJobSecondaryDataSet }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry109 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry133, 3, &effCreatePolyFlashTaskDataEntry132,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry134[20] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry205 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry206 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry207 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyRingTaskDataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry208 }, { .minValue = 0 }, 1, 1.0f },
+    { effData51, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry209 }, { .minValue = 1 }, 0xFFFFFFF, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry202 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry203 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry203 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry203 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry203 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry204 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry204 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry204 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry204 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry110 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry134, 20, &effCreatePolyFlashTaskDataEntry132,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry16[16] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry55 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry56 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry60 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSColorTrack }, { .release = effResetMappingFlags } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry109 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry57 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry58 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry59 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry110 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry61 }, { .minValue = 0 }, 0, 0.001f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry62 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry63 }, { .minValue = 0 }, 0, 0.001f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry4 = {
+    effCreatePolyFlashTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry16, 16, &effCreatePolyFlashTaskDataEntry132,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyFlashTaskDataEntry135 = {
+    effCreatePolyFlashTaskDataEntry157, 10, { 0 }, 5, { 0 }, effCreatePolyFlashTaskDataEntry210, 0x88,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry136[3] = {
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollSTMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFileJobSecondaryDataSet }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry111 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry136, 3, &effCreatePolyFlashTaskDataEntry135,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry137[19] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry214 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry215 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry216 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyRingTaskDataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry217 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry211 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry212 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry212 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry212 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry212 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry213 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry213 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry213 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry213 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry112 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry137, 19, &effCreatePolyFlashTaskDataEntry135,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry138[2] = {
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry218 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry219 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry113 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry138, 2, &effCreatePolyFlashTaskDataEntry135,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry17[18] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry64 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry65 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry69 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSColorTrack }, { .release = effResetMappingFlags } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry111 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry66 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry67 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry68 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry112 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry113 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry70 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry71 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry72 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreateEnvironmentTaskDataEntry18, 0x1C, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry73 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry5 = {
+    effCreatePolyFlashTaskDataEntry157, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry17, 18, &effCreatePolyFlashTaskDataEntry135,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyFlashTaskDataEntry18 = {
+    effCreatePolyFlashTaskDataEntry25, 10, { 0 }, 6, { 0 }, effCreatePolyFlashTaskDataEntry74, 0xA4,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry139[3] = {
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollSTMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFileJobSecondaryDataSet }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry114 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry139, 3, &effCreatePolyFlashTaskDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry140[21] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry223 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry224 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyFlashTaskDataEntry161, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry225 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry160, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry226 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyFlashTaskDataEntry159, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry227 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry158, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry228 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry220 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry221 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry221 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry221 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry221 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry222 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry222 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry222 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry222 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry115 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry140, 21, &effCreatePolyFlashTaskDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry141[4] = {
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry229 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry230 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry231 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry232 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry116 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry141, 4, &effCreatePolyFlashTaskDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry142[4] = {
+    { effCreatePolyFlashTaskDataEntry165, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry233 }, { .minValue = -1 }, 1, 0.1f },
+    { effCreatePolyFlashTaskDataEntry164, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry234 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyFlashTaskDataEntry163, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry235 }, { .minValue = -1 }, 1, 0.1f },
+    { effCreatePolyFlashTaskDataEntry162, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry236 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry117 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry142, 4, &effCreatePolyFlashTaskDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry19[18] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry75 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry76 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry80 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSColorTrack }, { .release = effResetMappingFlags } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry114 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry77 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry78 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry79 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry115 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrEmtRadi, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry116 }, { .minValue = 0 }, 0, 0.0f },
+    { effStrEmtSpre, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry117 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry81 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry82 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry83 }, { .minValue = 0 }, 0, 0.001f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry6 = {
+    effCreatePolyFlashTaskDataEntry25, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry19, 18, &effCreatePolyFlashTaskDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyFlashTaskDataEntry143 = {
+    effCreatePolyFlashTaskDataEntry11, 10, { 0 }, 7, { 0 }, effCreatePolyFlashTaskDataEntry237, 0xA8,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry144[22] = {
+    { effData50, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry241 }, { .minValue = 0 }, 0, 1.0f },
+    { effData49, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry242 }, { .minValue = 0 }, 0, 1.0f },
+    { effData48, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry243 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyFlashTaskDataEntry161, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry244 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry160, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry245 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyFlashTaskDataEntry159, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry246 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry158, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry247 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry238 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry239 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry239 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry239 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry239 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry240 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry240 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry240 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry240 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry118 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry144, 22, &effCreatePolyFlashTaskDataEntry143,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry145[4] = {
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry248 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry249 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry250 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry251 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry119 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry145, 4, &effCreatePolyFlashTaskDataEntry143,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry146[4] = {
+    { effCreatePolyFlashTaskDataEntry165, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry252 }, { .minValue = -1 }, 1, 0.1f },
+    { effCreatePolyFlashTaskDataEntry164, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry253 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyFlashTaskDataEntry163, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry254 }, { .minValue = -1 }, 1, 0.1f },
+    { effCreatePolyFlashTaskDataEntry162, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry255 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry120 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry146, 4, &effCreatePolyFlashTaskDataEntry143,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry20[17] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry84 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry85 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry89 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry86 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry87 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry88 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry118 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrEmtRadi, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry119 }, { .minValue = 0 }, 0, 0.0f },
+    { effStrEmtSpre, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry120 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry90 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry91 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry92 }, { .minValue = 0 }, 0, 0.001f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry7 = {
+    effCreatePolyFlashTaskDataEntry11, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry20, 17, &effCreatePolyFlashTaskDataEntry143,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyFlashTaskDataEntry147 = {
+    effCreatePolyFlashTaskDataEntry166, 10, { 0 }, 8, { 0 }, effCreatePolyFlashTaskDataEntry256, 0x98,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry148[3] = {
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollSTMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFileJobSecondaryDataSet }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry121 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry148, 3, &effCreatePolyFlashTaskDataEntry147,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry149[19] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry260 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry261 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry262 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyRingTaskDataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry263 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry257 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry258 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry258 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry258 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry258 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry259 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry259 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry259 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyFlashTaskDataEntry259 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry151, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSPolygonAlphaTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry122 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry149, 19, &effCreatePolyFlashTaskDataEntry147,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry150[7] = {
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry264 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry265 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry266 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry267 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyWindTaskDataEntry112, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry268 }, { .minValue = -1 }, 1, 0.1f },
+    { effCreatePolyFlashTaskDataEntry167, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry269 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry123 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyFlashTaskDataEntry150, 7, &effCreatePolyFlashTaskDataEntry147,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyFlashTaskDataEntry21[18] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry93 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry94 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry98 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditSColorTrack }, { .release = effResetMappingFlags } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry121 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry95 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry96 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyFlashTaskDataEntry97 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry122 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyFlashTaskDataEntry123 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry99 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry100 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyFlashTaskDataEntry101 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreateEnvironmentTaskDataEntry18, 0x1C, { 0 }, { .s32Value = &effCreatePolyFlashTaskDataEntry102 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyFlashTaskDataEntry8 = {
+    effCreatePolyFlashTaskDataEntry166, 0x8, 8, 0, 0, effCreatePolyFlashTaskDataEntry21, 18, &effCreatePolyFlashTaskDataEntry147,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateEnvironmentTaskDataEntry13 = {
+    effCreateEnvironmentTaskDataEntry8, 11, { 0 }, 0, { 0 }, (u8 *)&effCreateEnvironmentTaskDataEntry20, 0x8,
+};
+
+effDebugMenuItem_t effCreateEnvironmentTaskDataEntry14[4] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateEnvironmentTaskDataEntry20 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry19, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateEnvironmentTaskDataEntry21 }, { .minValue = 0 }, 0x190, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateEnvironmentTaskDataEntry4 = {
+    effCreateEnvironmentTaskDataEntry8, 0x8, 8, 0, 0, effCreateEnvironmentTaskDataEntry14, 4, &effCreateEnvironmentTaskDataEntry13,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateEnvironmentTaskDataEntry15 = {
+    effStrEQuake2, 21, { 0 }, 0, { 0 }, (u8 *)&effCreateEnvironmentTaskDataEntry29, 0x10,
+};
+
+effDebugMenuItem_t effCreateEnvironmentTaskDataEntry16[6] = {
+    { sysBATTLEONLYDataEntry52, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateEnvironmentTaskDataEntry29 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry51, EFF_DEBUG_ITEM_INT_RANGE, { 0 }, { .s32Value = &effCreateEnvironmentTaskDataEntry30 }, { .minValue = 0 }, 0x1F4, 1.0f },
+    { sysBATTLEONLYDataEntry50, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateEnvironmentTaskDataEntry31 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry49, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateEnvironmentTaskDataEntry32 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateEnvironmentTaskDataEntry5 = {
+    effStrEQuake2, 0x8, 8, 0, 0, effCreateEnvironmentTaskDataEntry16, 6, &effCreateEnvironmentTaskDataEntry15,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyRingTaskDataEntry28 = {
+    effCreatePolyRingTaskDataEntry33, 12, { 0 }, 1, { 0 }, effCreatePolyRingTaskDataEntry36, 0x6C,
+};
+
+effDebugMenuItem_t effCreatePolyRingTaskDataEntry29[24] = {
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyRingTaskDataEntry37 }, { .minValue = 3 }, 0xFF, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry39 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyRingTaskDataEntry38 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyRingTaskDataEntry34, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry43 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry89, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry44 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry41 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry41 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry41 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry41 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrEdgeOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry45 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry42 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry42 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry42 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry42 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyRingTaskDataEntry25 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyRingTaskDataEntry29, 24, &effCreatePolyRingTaskDataEntry28,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyRingTaskDataEntry5[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyRingTaskDataEntry11 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditRColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyRingTaskDataEntry25 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry12 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry13 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreateEnvironmentTaskDataEntry18, 0x1C, { 0 }, { .s32Value = &effCreatePolyRingTaskDataEntry14 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyRingTaskDataEntry = {
+    effCreatePolyRingTaskDataEntry33, 0x8, 8, 0, 0, effCreatePolyRingTaskDataEntry5, 9, &effCreatePolyRingTaskDataEntry28,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyRingTaskDataEntry6 = {
+    effCreatePolyRingTaskDataEntry10, 12, { 0 }, 2, { 0 }, effCreatePolyRingTaskDataEntry15, 0xD0,
+};
+
+effDebugMenuItem_t effCreatePolyRingTaskDataEntry30[24] = {
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyRingTaskDataEntry46 }, { .minValue = 3 }, 0xFF, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry48 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyRingTaskDataEntry47 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyRingTaskDataEntry34, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry52 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry49 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry49 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry49 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry49 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry89, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry53 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrEdgeOut, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry54 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry51 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry51 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry51 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry51 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyRingTaskDataEntry26 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyRingTaskDataEntry30, 24, &effCreatePolyRingTaskDataEntry6,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyRingTaskDataEntry7[11] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyRingTaskDataEntry16 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditRTrackColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyRingTaskDataEntry26 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry17 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry18 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry19 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyRingTaskDataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry20 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyRingTaskDataEntry2 = {
+    effCreatePolyRingTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyRingTaskDataEntry7, 11, &effCreatePolyRingTaskDataEntry6,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyRingTaskDataEntry31 = {
+    effCreatePolyRingTaskDataEntry4, 12, { 0 }, 3, { 0 }, effCreatePolyRingTaskDataEntry55, 0x68,
+};
+
+effDebugMenuItem_t effCreatePolyRingTaskDataEntry32[22] = {
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyRingTaskDataEntry56 }, { .minValue = 3 }, 0xFF, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry58 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyRingTaskDataEntry57 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyRingTaskDataEntry35, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry59 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry59 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry59 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry59 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyThunderTaskDataEntry31, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry60 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry60 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry60 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry60 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry90, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry62 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry61 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry61 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry61 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyRingTaskDataEntry61 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyRingTaskDataEntry27 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyRingTaskDataEntry32, 22, &effCreatePolyRingTaskDataEntry31,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyRingTaskDataEntry8[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyRingTaskDataEntry21 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditRColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyRingTaskDataEntry27 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry22 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyRingTaskDataEntry23 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreateEnvironmentTaskDataEntry18, 0x1C, { 0 }, { .s32Value = &effCreatePolyRingTaskDataEntry24 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyRingTaskDataEntry3 = {
+    effCreatePolyRingTaskDataEntry4, 0x8, 8, 0, 0, effCreatePolyRingTaskDataEntry8, 9, &effCreatePolyRingTaskDataEntry31,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyThunderTaskDataEntry = {
+    effCreatePolyThunderTaskDataEntry4, 13, { 0 }, 1, { 0 }, effCreatePolyThunderTaskDataEntry5, 0x88,
+};
+
+effDebugMenuItem_t effCreatePolyThunderTaskDataEntry23[26] = {
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry35 }, { .minValue = 3 }, 0x64, 1.0f },
+    { effCreatePolyThunderTaskDataEntry33, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry36 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry32, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry37 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyThunderTaskDataEntry38 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry90, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry43 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry41 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry41 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry41 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry41 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry89, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry42 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry39 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry39 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry39 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry39 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyThunderTaskDataEntry31, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry40 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditDoPolygonFadeTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyThunderTaskDataEntry20 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyThunderTaskDataEntry23, 26, &effCreatePolyThunderTaskDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyThunderTaskDataEntry6[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry9 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry10 }, { .minValue = 0 }, 0x1E, 1.0f },
+    { effCreatePolyThunderTaskDataEntry8, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry11 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditDoColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyThunderTaskDataEntry20 }, { .minValue = 0 }, 0, 0.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry12 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyThunderTaskDataEntry2 = {
+    effCreatePolyThunderTaskDataEntry4, 0x8, 8, 0, 0, effCreatePolyThunderTaskDataEntry6, 9, &effCreatePolyThunderTaskDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyThunderTaskDataEntry24 = {
+    effCreatePolyThunderTaskDataEntry34, 13, { 0 }, 3, { 0 }, effCreatePolyThunderTaskDataEntry44, 0xAC,
+};
+
+effDebugMenuItem_t effCreatePolyThunderTaskDataEntry25[26] = {
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry45 }, { .minValue = 3 }, 0x64, 1.0f },
+    { effCreatePolyThunderTaskDataEntry33, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry46 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry32, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry47 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyThunderTaskDataEntry48 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry90, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry53 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry51 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry51 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry51 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry51 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry89, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry52 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry49 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry49 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry49 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry49 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyThunderTaskDataEntry31, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyThunderTaskDataEntry50 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditDoPolygonFadeTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyThunderTaskDataEntry21 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyThunderTaskDataEntry25, 26, &effCreatePolyThunderTaskDataEntry24,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyThunderTaskDataEntry26[6] = {
+    { effCreateEnvironmentTaskDataEntry18, 0x1F, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry54 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry55 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry56 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry57 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry58 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry79, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry59 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyThunderTaskDataEntry22 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyThunderTaskDataEntry26, 6, &effCreatePolyThunderTaskDataEntry24,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyThunderTaskDataEntry7[13] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry13 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry14 }, { .minValue = 0 }, 0x1E, 1.0f },
+    { effCreatePolyThunderTaskDataEntry8, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyThunderTaskDataEntry15 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditDoColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyThunderTaskDataEntry21 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyThunderTaskDataEntry22 }, { .minValue = 0 }, 0, 0.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry16 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry17 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry18 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyThunderTaskDataEntry19 }, { .minValue = 0 }, 0, 0.001f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyThunderTaskDataEntry3 = {
+    effCreatePolyThunderTaskDataEntry34, 0x8, 8, 0, 0, effCreatePolyThunderTaskDataEntry7, 13, &effCreatePolyThunderTaskDataEntry24,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTwinkleTaskDataEntry62 = {
+    effCreatePolyTwinkleTaskDataEntry7, 14, { 0 }, 1, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry93, 0x110,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry63[16] = {
+    { effCreatePolyTwinkleTaskDataEntry92, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry97 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry91, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry98 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry96 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry93 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry89, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry94 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry94 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry94 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry94 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry90, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry95 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry95 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry95 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry95 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry45 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry63, 16, &effCreatePolyTwinkleTaskDataEntry62,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry64[6] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry99 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry100 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry100 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry100 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry100 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry46 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry64, 6, &effCreatePolyTwinkleTaskDataEntry62,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry65[5] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry101 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry102 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry103 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry104 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry47 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry65, 5, &effCreatePolyTwinkleTaskDataEntry62,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry66[6] = {
+    { effCreatePolyWindTaskDataEntry110, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry105 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry109, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry106 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry108, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry107 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry107, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry108 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry109 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry110 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry48 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry66, 6, &effCreatePolyTwinkleTaskDataEntry62,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry12[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry47 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry17 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry18 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effResolveMappingWithTemporaryTable }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry45 }, { .minValue = 0 }, 0, 0.0f },
+    { effStrBillboard, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry46 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry19 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry20 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry21 }, { .minValue = 0 }, 0, 0.01f },
+    { effStrAmplitude, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry48 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry = {
+    effCreatePolyTwinkleTaskDataEntry7, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry12, 16, &effCreatePolyTwinkleTaskDataEntry62,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTwinkleTaskDataEntry67 = {
+    effCreatePolyTwinkleTaskDataEntry8, 14, { 0 }, 2, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry111, 0x100,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry68[16] = {
+    { effCreatePolyTwinkleTaskDataEntry92, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry115 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry91, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry116 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry114 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry111 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry89, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry112 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry112 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry112 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry112 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry90, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry113 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry113 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry113 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry113 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry49 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry68, 16, &effCreatePolyTwinkleTaskDataEntry67,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry69[6] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry117 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry118 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry118 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry118 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry118 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry50 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry69, 6, &effCreatePolyTwinkleTaskDataEntry67,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry70[6] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry119 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry120 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry121 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry122 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry123 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry51 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry70, 6, &effCreatePolyTwinkleTaskDataEntry67,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry13[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry51 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry22 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry23 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effResolveMappingWithTemporaryTable }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry49 }, { .minValue = 0 }, 0, 0.0f },
+    { effStrBillboard, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry50 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry24 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry25 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry26 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry27 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry2 = {
+    effCreatePolyTwinkleTaskDataEntry8, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry13, 16, &effCreatePolyTwinkleTaskDataEntry67,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTwinkleTaskDataEntry71 = {
+    effCreatePolyTwinkleTaskDataEntry9, 14, { 0 }, 3, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry124, 0x114,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry72[16] = {
+    { effCreatePolyTwinkleTaskDataEntry92, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry128 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry91, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry129 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry127 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry124 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry89, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry90, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry126 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry126 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry126 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry126 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry52 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry72, 16, &effCreatePolyTwinkleTaskDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry73[6] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry130 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry131 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry131 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry131 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry131 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry53 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry73, 6, &effCreatePolyTwinkleTaskDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry74[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry132 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry133 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry134 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry79, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry135 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry136 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry137 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry138 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry139 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry54 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry74, 9, &effCreatePolyTwinkleTaskDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry75[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry140 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry141 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry142 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry55 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry75, 3, &effCreatePolyTwinkleTaskDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry14[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry54 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry28 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry29 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effResolveMappingWithTemporaryTable }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry52 }, { .minValue = 0 }, 0, 0.0f },
+    { effStrBillboard, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry53 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry30 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry31 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry32 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry55 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry3 = {
+    effCreatePolyTwinkleTaskDataEntry9, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry14, 16, &effCreatePolyTwinkleTaskDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTwinkleTaskDataEntry76 = {
+    effCreatePolyTwinkleTaskDataEntry10, 14, { 0 }, 4, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry143, 0x108,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry77[16] = {
+    { effCreatePolyTwinkleTaskDataEntry92, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry147 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry91, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry148 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry146 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry143 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry89, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry144 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry144 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry144 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry144 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry90, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry145 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry145 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry145 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry145 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry56 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry77, 16, &effCreatePolyTwinkleTaskDataEntry76,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry78[6] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry149 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry150 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry150 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry150 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry150 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry57 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry78, 6, &effCreatePolyTwinkleTaskDataEntry76,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry79[8] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry151 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry152 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry153 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry154 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry155 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry156 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry157 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry58 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry79, 8, &effCreatePolyTwinkleTaskDataEntry76,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry15[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry58 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry33 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry34 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effResolveMappingWithTemporaryTable }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry56 }, { .minValue = 0 }, 0, 0.0f },
+    { effStrBillboard, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry57 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry35 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry36 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry37 }, { .minValue = 0 }, 0, 0.001f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry38 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry4 = {
+    effCreatePolyTwinkleTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry15, 16, &effCreatePolyTwinkleTaskDataEntry76,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyTwinkleTaskDataEntry5 = {
+    effCreatePolyTwinkleTaskDataEntry11, 14, { 0 }, 5, { 0 }, (u8 *)&effCreatePolyTwinkleTaskDataEntry158, 0x108,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry80[16] = {
+    { effCreatePolyTwinkleTaskDataEntry92, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry162 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry91, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry163 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry161 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry158 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry89, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry159 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry159 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry159 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry159 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry90, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry160 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry160 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry160 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry160 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry59 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry80, 16, &effCreatePolyTwinkleTaskDataEntry5,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry81[6] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry164 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry165 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry165 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry165 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyTwinkleTaskDataEntry165 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry60 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry81, 6, &effCreatePolyTwinkleTaskDataEntry5,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry82[8] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry166 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry167 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry168 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry169 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry170 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry112, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry171 }, { .minValue = 0 }, 1, 0.1f },
+    { effCreatePolyWindTaskDataEntry111, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry172 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry61 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry82, 8, &effCreatePolyTwinkleTaskDataEntry5,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyTwinkleTaskDataEntry16[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry61 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyTwinkleTaskDataEntry39 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyTwinkleTaskDataEntry40 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effResolveMappingWithTemporaryTable }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditWRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry59 }, { .minValue = 0 }, 0, 0.0f },
+    { effStrBillboard, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyTwinkleTaskDataEntry60 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry41 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry42 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry43 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyTwinkleTaskDataEntry44 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyTwinkleTaskDataEntry6 = {
+    effCreatePolyTwinkleTaskDataEntry11, 0x8, 8, 0, 0, effCreatePolyTwinkleTaskDataEntry16, 16, &effCreatePolyTwinkleTaskDataEntry5,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysPOLYWINDDataEntry = {
+    sysPOLYWINDDataEntry6, 16, { 0 }, 1, { 0 }, sysPOLYWINDDataEntry8, 0xF8,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry65[3] = {
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollNMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFileJobSecondaryDataSet }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry46 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry65, 3, &sysPOLYWINDDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry66[15] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry106 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry107 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry104 }, { .minValue = 0 }, 0, 0.1f },
+    { sysPOLYWINDDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry105 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry98 }, { .minValue = 3 }, 0x64, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry108 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry64, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry99 }, { .minValue = 0 }, 0, 1.0f },
+    { sndInitDataEntry3, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry100 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry63, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry101 }, { .minValue = 0 }, 0, 1.0f },
+    { sndInitDataEntry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry102 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry103 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonColorTrack }, { .release = effResetMappingFlags } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry47 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry66, 15, &sysPOLYWINDDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry67[4] = {
+    { sysPOLYWINDDataEntry92, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry113 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYWINDDataEntry91, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry114 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry90, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry115 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYWINDDataEntry89, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry116 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry48 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry67, 4, &sysPOLYWINDDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry68[4] = {
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry109 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry110 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry111 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry112 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry49 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry68, 4, &sysPOLYWINDDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry69[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry120 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry121 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry122 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry50 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry69, 3, &sysPOLYWINDDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry70[3] = {
+    { sysPOLYWINDDataEntry95, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry119 }, { .minValue = 0 }, 0, 10.0f },
+    { sysPOLYWINDDataEntry94, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry117 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry93, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry118 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry51 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry70, 3, &sysPOLYWINDDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry9[17] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry13 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry14 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry18 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNColorTrack }, { .release = effResetMappingFlags } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry46 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry15 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry16 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry17 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &sysPOLYWINDDataEntry47 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysStrEmtRadius, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry49 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrEmtHeight, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry48 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrEmtCurve, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry51 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry50 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry2 = {
+    sysPOLYWINDDataEntry6, 0x8, 8, 0, 0, sysPOLYWINDDataEntry9, 17, &sysPOLYWINDDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysPOLYWINDDataEntry71 = {
+    sysPOLYWINDDataEntry7, 16, { 0 }, 2, { 0 }, sysPOLYWINDDataEntry123, 0xF4,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry72[3] = {
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollNMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFileJobSecondaryDataSet }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry52 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry72, 3, &sysPOLYWINDDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry73[15] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry127 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry128 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry125 }, { .minValue = 0 }, 0, 0.1f },
+    { sysPOLYWINDDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry126 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry124 }, { .minValue = 3 }, 0x64, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &bssWork68 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry64, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &bssWork66 }, { .minValue = 0 }, 0, 1.0f },
+    { sndInitDataEntry3, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sndInitDataEntry4 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry63, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sndInitDataEntry5 }, { .minValue = 0 }, 0, 1.0f },
+    { sndInitDataEntry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sndInitDataEntry6 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &bssWork67 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonColorTrack }, { .release = effResetMappingFlags } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry53 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry73, 15, &sysPOLYWINDDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry74[5] = {
+    { effCreatePolyTrackControlTaskDataEntry79, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry133 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry129 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry130 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry131 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry132 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry54 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry74, 5, &sysPOLYWINDDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry75[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry134 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry135 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry136 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry55 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry75, 3, &sysPOLYWINDDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry76[3] = {
+    { sysPOLYWINDDataEntry95, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry139 }, { .minValue = 0 }, 0, 10.0f },
+    { sysPOLYWINDDataEntry94, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry137 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry93, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry138 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry56 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry76, 3, &sysPOLYWINDDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry10[19] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry19 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry20 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry24 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNColorTrack }, { .release = effResetMappingFlags } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry52 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry21 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry22 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry23 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &sysPOLYWINDDataEntry53 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry54 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry25 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry26 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry27 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry55 }, { .minValue = 0 }, 0, 0.0f },
+    { sysPOLYWINDDataEntry95, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry56 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry3 = {
+    sysPOLYWINDDataEntry7, 0x8, 8, 0, 0, sysPOLYWINDDataEntry10, 19, &sysPOLYWINDDataEntry71,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysPOLYWINDDataEntry77 = {
+    sysPOLYWINDDataEntry96, 16, { 0 }, 3, { 0 }, sysPOLYWINDDataEntry140, 0xD8,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry78[3] = {
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollNMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFileJobSecondaryDataSet }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry57 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry78, 3, &sysPOLYWINDDataEntry77,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry79[15] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry149 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry150 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry147 }, { .minValue = 0 }, 0, 0.1f },
+    { sysPOLYWINDDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry148 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry141 }, { .minValue = 3 }, 0x64, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry151 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry64, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry142 }, { .minValue = 0 }, 0, 1.0f },
+    { sndInitDataEntry3, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry143 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry63, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry144 }, { .minValue = 0 }, 0, 1.0f },
+    { sndInitDataEntry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry145 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry146 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonColorTrack }, { .release = effResetMappingFlags } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry58 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry79, 15, &sysPOLYWINDDataEntry77,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry80[4] = {
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry152 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry153 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry154 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry155 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry59 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry80, 4, &sysPOLYWINDDataEntry77,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry11[17] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry28 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry29 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry33 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNColorTrack }, { .release = effResetMappingFlags } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry57 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry30 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry31 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry32 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &sysPOLYWINDDataEntry58 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry59 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry34 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry35 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry36 }, { .minValue = 0 }, 0, 0.001f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry4 = {
+    sysPOLYWINDDataEntry96, 0x8, 8, 0, 0, sysPOLYWINDDataEntry11, 17, &sysPOLYWINDDataEntry77,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysPOLYWINDDataEntry81 = {
+    sysPOLYWINDDataEntry97, 16, { 0 }, 4, { 0 }, sysPOLYWINDDataEntry156, 0xF4,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry82[3] = {
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollNMaterialTmxFile }, { .release = effBattleResourceDescriptorRelease } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdateCameraSnapshotGuidesDataEntry2, EFF_DEBUG_ITEM_COMMAND, { 0 }, { .command = effFileJobSecondaryDataSet }, { .color = 0xFFFFFF } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry60 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry82, 3, &sysPOLYWINDDataEntry81,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry83[15] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry165 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry166 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry163 }, { .minValue = 0 }, 0, 0.1f },
+    { sysPOLYWINDDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry164 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry157 }, { .minValue = 3 }, 0x64, 1.0f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry167 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry64, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry158 }, { .minValue = 0 }, 0, 1.0f },
+    { sndInitDataEntry3, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry159 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry63, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry160 }, { .minValue = 0 }, 0, 1.0f },
+    { sndInitDataEntry2, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry161 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry162 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonColorTrack }, { .release = effResetMappingFlags } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNPolygonFadeTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry61 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry83, 15, &sysPOLYWINDDataEntry81,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry84[5] = {
+    { effCreatePolyTrackControlTaskDataEntry79, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry172 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry168 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry169 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry170 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry171 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry62 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry84, 5, &sysPOLYWINDDataEntry81,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry85[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry173 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry174 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry175 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry63 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry85, 3, &sysPOLYWINDDataEntry81,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry86[3] = {
+    { sysPOLYWINDDataEntry95, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry178 }, { .minValue = 0 }, 0, 10.0f },
+    { sysPOLYWINDDataEntry94, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry176 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry93, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry177 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry64 = {
+    NULL, 0xB8, 8, 0, 0, sysPOLYWINDDataEntry86, 3, &sysPOLYWINDDataEntry81,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t sysPOLYWINDDataEntry12[19] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry37 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry38 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry42 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditNColorTrack }, { .release = effResetMappingFlags } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry60 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry39 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysPOLYWINDDataEntry40 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysPOLYWINDDataEntry41 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &sysPOLYWINDDataEntry61 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry62 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry43 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry44 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysPOLYWINDDataEntry45 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry63 }, { .minValue = 0 }, 0, 0.0f },
+    { sysPOLYWINDDataEntry95, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &sysPOLYWINDDataEntry64 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysPOLYWINDDataEntry5 = {
+    sysPOLYWINDDataEntry97, 0x8, 8, 0, 0, sysPOLYWINDDataEntry12, 19, &sysPOLYWINDDataEntry81,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyScalyTaskDataEntry44 = {
+    effCreatePolyScalyTaskDataEntry5, 17, { 0 }, 1, { 0 }, effCreatePolyScalyTaskDataEntry73, 0x10C,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry45[14] = {
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry81 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry155, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry82 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry79 }, { .minValue = 0 }, 0, 0.01f },
+    { sysPOLYWINDDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry80 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry74 }, { .minValue = 3 }, 0x64, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry64, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry75 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry66, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry77 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry63, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry76 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry65, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry78 }, { .minValue = 0 }, 0, 0.01f },
+    { effStrScaleUv, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditUCylinderPolygonUvScaleTrack }, { .release = btlResetEffectWork } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUCylinderPolygonColorTrack }, { .release = effResetMappingFlags } },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUCylinderPolygonFadeTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry34 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry45, 14, &effCreatePolyScalyTaskDataEntry44,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry46[5] = {
+    { effCreatePolyTrackControlTaskDataEntry79, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry87 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry83 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry84 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry85 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry86 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry35 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry46, 5, &effCreatePolyScalyTaskDataEntry44,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry47[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry88 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry89 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry90 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry36 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry47, 3, &effCreatePolyScalyTaskDataEntry44,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry7[17] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry12 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateEnvironmentTaskDataEntry17, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry13 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyScalyTaskDataEntry17 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUCylinderColorTrack }, { .release = effResetMappingFlags } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry24, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry14 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry23, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry15 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyFlashTaskDataEntry22, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyScalyTaskDataEntry16 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry34 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry35 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry18 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry19 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry20 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry36 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry = {
+    effCreatePolyScalyTaskDataEntry5, 0x8, 8, 0, 0, effCreatePolyScalyTaskDataEntry7, 17, &effCreatePolyScalyTaskDataEntry44,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyScalyTaskDataEntry48 = {
+    effCreatePolyScalyTaskDataEntry67, 17, { 0 }, 2, { 0 }, effCreatePolyScalyTaskDataEntry91, 0x12C,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry49[5] = {
+    { effCreatePolyScalyTaskDataEntry64, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry92 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry66, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry94 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry63, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry93 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry65, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry95 }, { .minValue = 0 }, 0, 0.01f },
+    { effStrScaleUv, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditUSmokeSpiralPolygonUvScaleTrack }, { .release = btlResetEffectWork } },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry37 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry49, 5, &effCreatePolyScalyTaskDataEntry48,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry50[5] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry96 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry97 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry98 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry99 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry38 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry50, 5, &effCreatePolyScalyTaskDataEntry48,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry51[6] = {
+    { effCreatePolyWindTaskDataEntry110, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry100 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry109, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry101 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry108, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry102 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry107, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry103 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry104 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry105 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry39 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry51, 6, &effCreatePolyScalyTaskDataEntry48,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry8[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry38 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry21 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyScalyTaskDataEntry22 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyScalyTaskDataEntry23 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUSmokeSpiralColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditUSmokeSpiralScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditUSmokeSpiralRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry37 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry24 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry25 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry26 }, { .minValue = 0 }, 0, 0.01f },
+    { effStrAmplitude, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry39 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry2 = {
+    effCreatePolyScalyTaskDataEntry67, 0x8, 8, 0, 0, effCreatePolyScalyTaskDataEntry8, 16, &effCreatePolyScalyTaskDataEntry48,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyScalyTaskDataEntry52 = {
+    effCreatePolyScalyTaskDataEntry6, 17, { 0 }, 3, { 0 }, effCreatePolyScalyTaskDataEntry106, 0x130,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry53[5] = {
+    { effCreatePolyScalyTaskDataEntry64, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry107 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry66, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry109 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry63, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry108 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry65, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry110 }, { .minValue = 0 }, 0, 0.01f },
+    { effStrScaleUv, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditUSmokeSpiralPolygonUvScaleTrack }, { .release = btlResetEffectWork } },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry40 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry53, 5, &effCreatePolyScalyTaskDataEntry52,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry54[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry111 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry112 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry113 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry79, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry114 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry115 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry116 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry117 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry118 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry41 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry54, 9, &effCreatePolyScalyTaskDataEntry52,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry55[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry119 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry120 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry121 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry42 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry55, 3, &effCreatePolyScalyTaskDataEntry52,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry9[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry41 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry27 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyScalyTaskDataEntry28 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyScalyTaskDataEntry29 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUSmokeSpiralColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditUSmokeSpiralScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditUSmokeSpiralRotationTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry40 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry30 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry31 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry32 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry42 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry3 = {
+    effCreatePolyScalyTaskDataEntry6, 0x8, 8, 0, 0, effCreatePolyScalyTaskDataEntry9, 16, &effCreatePolyScalyTaskDataEntry52,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyScalyTaskDataEntry56 = {
+    effCreatePolyScalyTaskDataEntry68, 17, { 0 }, 4, { 0 }, effCreatePolyScalyTaskDataEntry122, 0x98,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry57[11] = {
+    { effCreatePolyScalyTaskDataEntry60, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry123 }, { .minValue = 4 }, 0x50, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry129 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry10, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry130 }, { .minValue = 0 }, 0xB4, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry72, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry124 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry71, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry125 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry70, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry126 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry69, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry127 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyScalyTaskDataEntry62, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyScalyTaskDataEntry128 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry61, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUSpherePolygonFadeTrack }, { .release = effLeaf401 } },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry43 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyScalyTaskDataEntry57, 11, &effCreatePolyScalyTaskDataEntry56,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyScalyTaskDataEntry10[7] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyScalyTaskDataEntry33 }, { .minValue = 0 }, 0, 1.0f },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditUSphereColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditUSphereScaleTrack }, { .release = btlResetEffectWork } },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyScalyTaskDataEntry43 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyScalyTaskDataEntry4 = {
+    effCreatePolyScalyTaskDataEntry68, 0x8, 8, 0, 0, effCreatePolyScalyTaskDataEntry10, 7, &effCreatePolyScalyTaskDataEntry56,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest fileLoadEffectSlotBData = {
+    fileLoadEffectSlotBDataEntry2, 18, { 0 }, 0, { 0 }, (u8 *)&fileLoadEffectSlotBDataEntry, 0x4,
+};
+
+effDebugMenuItem_t effData9Entry17[3] = {
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &fileLoadEffectSlotBDataEntry }, { .minValue = 0 }, 0, 0.1f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effData9Entry10 = {
+    fileLoadEffectSlotBDataEntry2, 0x8, 8, 0, 0, effData9Entry17, 3, &fileLoadEffectSlotBData,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyCrackTaskDataEntry10 = {
+    effCreatePolyCrackTaskDataEntry15, 19, { 0 }, 1, { 0 }, effCreatePolyCrackTaskDataEntry18, 0xC0,
+};
+
+effDebugMenuItem_t effCreatePolyCrackTaskDataEntry11[1] = {
+    { effCreatePolyCrackTaskDataEntry14, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollHlpPbResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreatePolyCrackTaskDataEntry7 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyCrackTaskDataEntry11, 1, &effCreatePolyCrackTaskDataEntry10,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyCrackTaskDataEntry12[16] = {
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditCrackPolygonColorTrack }, { .release = effResetMappingFlags } },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyCrackTaskDataEntry19 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyCrackTaskDataEntry16, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyCrackTaskDataEntry20 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry88, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyCrackTaskDataEntry23 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyCrackTaskDataEntry21 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyCrackTaskDataEntry21 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyCrackTaskDataEntry21 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyCrackTaskDataEntry21 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &effCreatePolyCrackTaskDataEntry22 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &effCreatePolyCrackTaskDataEntry22 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &effCreatePolyCrackTaskDataEntry22 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &effCreatePolyCrackTaskDataEntry22 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyCrackTaskDataEntry8 = {
+    effStrCrackPolygon, 0xB8, 8, 0, 0, effCreatePolyCrackTaskDataEntry12, 16, &effCreatePolyCrackTaskDataEntry10,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t datData29[18] = {
+    { effData50, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &bssWork74 }, { .minValue = 0 }, 0, 1.0f },
+    { effData49, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &bssWork75 }, { .minValue = 0 }, 0, 1.0f },
+    { effData48, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &bssWork76 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPOLYWINDDataEntry87, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &bssWork77 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyRingTaskDataEntry9, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &bssWork78 }, { .minValue = 0 }, 1, 1.0f },
+    { effData51, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &bssWork79 }, { .minValue = 1 }, 0xFFFFFFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry153, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &bssWork72 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &bssWork72 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &bssWork72 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &bssWork72 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyFlashTaskDataEntry152, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &bssWork73 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &bssWork73 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &bssWork73 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry84, EFF_DEBUG_ITEM_ALPHA, { 0 }, { .rgbaValue = &bssWork73 }, { .minValue = 0 }, 0xFF, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyCrackTaskDataEntry31 = {
+    NULL, 0xB8, 8, 0, 0, datData29, 18, &effCreatePolyCrackTaskDataEntry10,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyCrackTaskDataEntry13[11] = {
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditFlashPolygonColorTrack }, { .release = effResetMappingFlags } },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyCrackTaskDataEntry24 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyCrackTaskDataEntry16, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyCrackTaskDataEntry25 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreateEnvironmentTaskDataEntry18, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &effCreatePolyCrackTaskDataEntry26 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry8, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyCrackTaskDataEntry27 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreateBlurTaskDataEntry20, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyCrackTaskDataEntry28 }, { .minValue = 1 }, 0xFFFFFFF, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyCrackTaskDataEntry29 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyCrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyCrackTaskDataEntry30 }, { .minValue = 0 }, 0, 0.001f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry20, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyCrackTaskDataEntry31 }, { .minValue = 0 }, 0, 0.0f },
+};
+
+effDebugMenu_t effCreatePolyCrackTaskDataEntry9 = {
+    effStrFlashPolygon, 0xB8, 8, 0, 0, effCreatePolyCrackTaskDataEntry13, 11, &effCreatePolyCrackTaskDataEntry10,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyCrackTaskDataEntry2[8] = {
+    { effCreatePolyCrackTaskDataEntry4, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyCrackTaskDataEntry8 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyCrackTaskDataEntry3, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyCrackTaskDataEntry9 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyCrackTaskDataEntry7 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &effCreatePolyCrackTaskDataEntry5 }, { .minValue = 0 }, 0, 0.1f },
+    { sysPOLYTEXDataEntry11, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyCrackTaskDataEntry6 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyCrackTaskDataEntry = {
+    effCreatePolyCrackTaskDataEntry15, 0x8, 8, 0, 0, effCreatePolyCrackTaskDataEntry2, 8, &effCreatePolyCrackTaskDataEntry10,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyWindTaskDataEntry83 = {
+    effCreatePolyWindTaskDataEntry7, 24, { 0 }, 1, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry123, 0x140,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry84[11] = {
+    { effCreatePolyWindTaskDataEntry120, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry123 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry119, EFF_DEBUG_ITEM_BYTE_TOGGLE, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry130 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyWindTaskDataEntry118, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyWindTaskDataEntry117, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry124 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry116, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry125 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry115, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry126 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry127 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyWindTaskDataEntry114, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry128 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry113, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry129 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry63 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry84, 11, &effCreatePolyWindTaskDataEntry83,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry85[2] = {
+    { effCreatePolyWindTaskDataEntry121, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialPbFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry110, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialEplFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry64 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry85, 2, &effCreatePolyWindTaskDataEntry83,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry86[5] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry131 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry132 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry133 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry134 }, { .minValue = 0 }, 0, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry65 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry86, 5, &effCreatePolyWindTaskDataEntry83,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry87[6] = {
+    { effCreatePolyWindTaskDataEntry110, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry135 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry109, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry136 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry108, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry137 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry107, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry138 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry139 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry140 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry66 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry87, 6, &effCreatePolyWindTaskDataEntry83,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry12[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry65 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry21 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry22 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry23 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObjectNoResult = effEditMColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditMScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyWindTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyWindTaskDataEntry63 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry64 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry24 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry25 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry26 }, { .minValue = 0 }, 0, 0.01f },
+    { effStrAmplitude, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry66 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry = {
+    effCreatePolyWindTaskDataEntry7, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry12, 16, &effCreatePolyWindTaskDataEntry83,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyWindTaskDataEntry88 = {
+    effCreatePolyWindTaskDataEntry122, 24, { 0 }, 2, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry141, 0x130,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry89[11] = {
+    { effCreatePolyWindTaskDataEntry120, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry141 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry119, EFF_DEBUG_ITEM_BYTE_TOGGLE, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry148 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyWindTaskDataEntry118, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyWindTaskDataEntry117, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry142 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry116, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry143 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry115, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry144 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry145 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyWindTaskDataEntry114, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry146 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry113, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry147 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry67 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry89, 11, &effCreatePolyWindTaskDataEntry88,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry90[2] = {
+    { effCreatePolyWindTaskDataEntry121, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialPbFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry110, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialEplFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry68 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry90, 2, &effCreatePolyWindTaskDataEntry88,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry91[6] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry149 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry150 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry151 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry152 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry153 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry69 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry91, 6, &effCreatePolyWindTaskDataEntry88,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry13[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry69 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry27 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry28 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry29 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObjectNoResult = effEditMColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditMScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyWindTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyWindTaskDataEntry67 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry68 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry30 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry31 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry32 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry33 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry2 = {
+    effCreatePolyWindTaskDataEntry122, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry13, 16, &effCreatePolyWindTaskDataEntry88,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyWindTaskDataEntry14 = {
+    effCreatePolyWindTaskDataEntry8, 24, { 0 }, 3, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry34, 0x144,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry92[11] = {
+    { effCreatePolyWindTaskDataEntry120, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry34 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry119, EFF_DEBUG_ITEM_BYTE_TOGGLE, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry160 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyWindTaskDataEntry118, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyWindTaskDataEntry117, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry154 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry116, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry155 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry115, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry156 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry157 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyWindTaskDataEntry114, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry158 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry113, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry159 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry70 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry92, 11, &effCreatePolyWindTaskDataEntry14,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry93[2] = {
+    { effCreatePolyWindTaskDataEntry121, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialPbFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry110, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialEplFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry71 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry93, 2, &effCreatePolyWindTaskDataEntry14,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry94[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry161 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sbtlRefSbtl51Data7Entry3 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sbtlRefSbtl51Data7Entry4 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry79, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sbtlRefSbtl51Data7Entry5 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sbtlRefSbtl51Data7Entry6 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sbtlRefSbtl51Data7Entry7 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sbtlRefSbtl51Data7Entry8 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sbtlRefSbtl51Data7Entry9 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry72 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry94, 9, &effCreatePolyWindTaskDataEntry14,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry95[3] = {
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry162 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry163 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry164 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry73 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry95, 3, &effCreatePolyWindTaskDataEntry14,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry15[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry72 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry35 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry36 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry37 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObjectNoResult = effEditMColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditMScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyWindTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyWindTaskDataEntry70 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry71 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry38 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry39 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry40 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry73 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry3 = {
+    effCreatePolyWindTaskDataEntry8, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry15, 16, &effCreatePolyWindTaskDataEntry14,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyWindTaskDataEntry96 = {
+    effCreatePolyWindTaskDataEntry9, 24, { 0 }, 4, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry165, 0x138,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry97[11] = {
+    { effCreatePolyWindTaskDataEntry120, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry165 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry119, EFF_DEBUG_ITEM_BYTE_TOGGLE, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry172 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyWindTaskDataEntry118, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyWindTaskDataEntry117, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry166 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry116, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry167 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry115, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry168 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry169 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyWindTaskDataEntry114, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry170 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry113, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry171 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry74 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry97, 11, &effCreatePolyWindTaskDataEntry96,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry98[2] = {
+    { effCreatePolyWindTaskDataEntry121, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialPbFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry110, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialEplFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry75 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry98, 2, &effCreatePolyWindTaskDataEntry96,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry99[8] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry173 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry174 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry175 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyThunderTaskDataEntry30, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry176 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry29, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry177 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyThunderTaskDataEntry28, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry178 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyThunderTaskDataEntry27, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry179 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry76 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry99, 8, &effCreatePolyWindTaskDataEntry96,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry16[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry76 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry41 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry42 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry43 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObjectNoResult = effEditMColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditMScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyWindTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyWindTaskDataEntry74 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry75 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyScalyTaskDataEntry11, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry44 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyScalyTaskDataEntry59, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry45 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry46 }, { .minValue = 0 }, 0, 0.001f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry47 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry4 = {
+    effCreatePolyWindTaskDataEntry9, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry16, 16, &effCreatePolyWindTaskDataEntry96,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyWindTaskDataEntry100 = {
+    effCreatePolyWindTaskDataEntry10, 24, { 0 }, 5, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry180, 0x138,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry101[11] = {
+    { effCreatePolyWindTaskDataEntry120, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry180 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry119, EFF_DEBUG_ITEM_BYTE_TOGGLE, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry187 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyWindTaskDataEntry118, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyWindTaskDataEntry117, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry181 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry116, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry182 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry115, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry183 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry184 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyWindTaskDataEntry114, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry185 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry113, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry186 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry77 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry101, 11, &effCreatePolyWindTaskDataEntry100,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry102[2] = {
+    { effCreatePolyWindTaskDataEntry121, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialPbFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry110, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialEplFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry78 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry102, 2, &effCreatePolyWindTaskDataEntry100,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry103[8] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry188 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry189 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry190 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry191 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry192 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry112, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry193 }, { .minValue = 0 }, 1, 0.1f },
+    { effCreatePolyWindTaskDataEntry111, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry194 }, { .minValue = 0 }, 1, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry79 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry103, 8, &effCreatePolyWindTaskDataEntry100,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry17[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry79 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry48 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry49 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry50 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObjectNoResult = effEditMColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditMScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyWindTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyWindTaskDataEntry77 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry78 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry51 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry52 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry53 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry54 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry5 = {
+    effCreatePolyWindTaskDataEntry10, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry17, 16, &effCreatePolyWindTaskDataEntry100,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreatePolyWindTaskDataEntry18 = {
+    effCreatePolyWindTaskDataEntry11, 24, { 0 }, 6, { 0 }, (u8 *)&effCreatePolyWindTaskDataEntry55, 0x13C,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry104[11] = {
+    { effCreatePolyWindTaskDataEntry120, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry55 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry119, EFF_DEBUG_ITEM_BYTE_TOGGLE, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry201 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyWindTaskDataEntry118, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyWindTaskDataEntry117, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry195 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry116, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry196 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry115, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry197 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry198 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyWindTaskDataEntry114, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry199 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry113, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry200 }, { .minValue = 0 }, 0, 0.001f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry80 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry104, 11, &effCreatePolyWindTaskDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry105[2] = {
+    { effCreatePolyWindTaskDataEntry121, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialPbFile }, { .release = effBattleResourceDescriptorRelease } },
+    { sysPARTICLEDataEntry110, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollMMaterialEplFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry81 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry105, 2, &effCreatePolyWindTaskDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry106[9] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry202 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry78, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry203 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry77, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry204 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackControlTaskDataEntry76, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry205 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry83, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry206 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyWindTaskDataEntry112, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry207 }, { .minValue = 0 }, 1, 0.1f },
+    { effCreatePolyWindTaskDataEntry111, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry208 }, { .minValue = 0 }, 1, 1.0f },
+    { sysPARTICLEDataEntry113, 0x05, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry209 }, { .minValue = 0 }, 0x168, 1.0f },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry82 = {
+    NULL, 0xB8, 8, 0, 0, effCreatePolyWindTaskDataEntry106, 9, &effCreatePolyWindTaskDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreatePolyWindTaskDataEntry19[16] = {
+    { effCreatePolyTrackTaskDataEntry19, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry82 }, { .minValue = 0 }, 0, 0.0f },
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreatePolyWindTaskDataEntry56 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry18, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry57 }, { .minValue = 0 }, 0, 1.0f },
+    { effData20Entry2, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &effCreatePolyWindTaskDataEntry58 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObjectNoResult = effEditMColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditMScaleTrack }, { .release = btlResetEffectWork } },
+    { effCreatePolyWindTaskDataEntry20, EFF_DEBUG_ITEM_CHILD_PAGE, { 0 }, { .child = &effCreatePolyWindTaskDataEntry80 }, { .minValue = 0 }, 0, 0.0f },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreatePolyWindTaskDataEntry81 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effCreatePolyTrackTaskDataEntry16, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry59 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyTrackTaskDataEntry15, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry60 }, { .minValue = 0 }, 1, 1.0f },
+    { effCreatePolyScalyTaskDataEntry58, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry61 }, { .minValue = 0 }, 0, 0.01f },
+    { effCreatePolyTrackTaskDataEntry17, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &effCreatePolyWindTaskDataEntry62 }, { .minValue = 0 }, 0, 0.01f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreatePolyWindTaskDataEntry6 = {
+    effCreatePolyWindTaskDataEntry11, 0x8, 8, 0, 0, effCreatePolyWindTaskDataEntry19, 16, &effCreatePolyWindTaskDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry = {
+    sysBATTLEONLYDataEntry22, 20, { 0 }, 1, { 0 }, (u8 *)&sysBATTLEONLYDataEntry82, 0x28,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry34[26] = {
+    { sysBATTLEONLYDataEntry52, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry82 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry58, 0x20, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry89 }, { .minValue = 1 }, 7, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry50, 0x05, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry83 }, { .minValue = -1 }, 0xFFFFFF, 1.0f },
+    { sysBATTLEONLYDataEntry49, 0x05, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry84 }, { .minValue = -1 }, 0xFFFFFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry57, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry87 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry87 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry87 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry56, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry88 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry88 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry88 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysStrDirection, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry50, 0x05, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry85 }, { .minValue = -1 }, 0xFFFFFF, 1.0f },
+    { sysBATTLEONLYDataEntry49, 0x05, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry86 }, { .minValue = -1 }, 0xFFFFFF, 1.0f },
+    { sysBATTLEONLYDataEntry55, 0x22, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry90 }, { .minValue = 0 }, 7, 1.0f },
+    { sysBATTLEONLYDataEntry54, 0x23, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry91 }, { .minValue = 0 }, 5, 1.0f },
+    { sysBATTLEONLYDataEntry53, 0x24, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry92 }, { .minValue = 0 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry2 = {
+    sysBATTLEONLYDataEntry22, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry34, 26, &sysBATTLEONLYDataEntry,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry3 = {
+    sysBATTLEONLYDataEntry23, 20, { 0 }, 2, { 0 }, (u8 *)&sysBATTLEONLYDataEntry93, 0x14,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry35[12] = {
+    { sysBATTLEONLYDataEntry52, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry93 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry58, 0x20, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry97 }, { .minValue = 0 }, 7, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysBATTLEONLYDataEntry50, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry94 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry49, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry95 }, { .minValue = 0 }, 0, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry96 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry96 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry96 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry4 = {
+    sysBATTLEONLYDataEntry23, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry35, 12, &sysBATTLEONLYDataEntry3,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry5 = {
+    sysBATTLEONLYDataEntry24, 20, { 0 }, 3, { 0 }, (u8 *)&sysBATTLEONLYDataEntry98, 0x10,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry36[17] = {
+    { sysBATTLEONLYDataEntry57, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry98 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry98 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry98 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry56, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry99 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry99 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry99 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysStrDirection, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry55, 0x22, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry100 }, { .minValue = 1 }, 7, 1.0f },
+    { sysBATTLEONLYDataEntry54, 0x23, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry101 }, { .minValue = 0 }, 5, 1.0f },
+    { sysBATTLEONLYDataEntry53, 0x24, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry102 }, { .minValue = 0 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry6 = {
+    sysBATTLEONLYDataEntry24, 0x8, 8, 1, 0, sysBATTLEONLYDataEntry36, 17, &sysBATTLEONLYDataEntry5,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effLoadFileSlotF2Data = {
+    effStrOF2Cam, 20, { 0 }, 4, { 0 }, (u8 *)&effData9Entry31, 0xC,
+};
+
+effDebugMenuItem_t effData9Entry18[8] = {
+    { effData9Entry25, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effData9Entry31 }, { .minValue = 0 }, 0, 1.0f },
+    { effData9Entry24, 0x21, { 0 }, { .s32Value = &effData9Entry35 }, { .minValue = 1 }, 8, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effData9Entry22, 0x22, { 0 }, { .u8Value = &effData9Entry32 }, { .minValue = 1 }, 7, 1.0f },
+    { effCreatePolyTrackControlTaskDataEntry79, 0x23, { 0 }, { .u8Value = &effData9Entry33 }, { .minValue = 0 }, 5, 1.0f },
+    { effData9Entry23, 0x24, { 0 }, { .u8Value = &effData9Entry34 }, { .minValue = 0 }, 0xA, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effData9Entry11 = {
+    effStrOF2Cam, 0x8, 8, 0, 0, effData9Entry18, 8, &effLoadFileSlotF2Data,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry37 = {
+    sysBATTLEONLYDataEntry25, 20, { 0 }, 5, { 0 }, (u8 *)&sysBATTLEONLYDataEntry77, 0x8,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry38[6] = {
+    { effCreateEnvironmentTaskDataEntry17, 0x29, { 0 }, { .u16Value = &sysBATTLEONLYDataEntry77 }, { .minValue = 0 }, 0x1C, 1.0f },
+    { sysBATTLEONLYDataEntry61, 0x2A, { 0 }, { .u16Value = &sysBATTLEONLYDataEntry78 }, { .minValue = 0 }, 2, 1.0f },
+    { sysBATTLEONLYDataEntry60, 0x20, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry79 }, { .minValue = 1 }, 7, 1.0f },
+    { sysBATTLEONLYDataEntry59, EFF_DEBUG_ITEM_BYTE_TOGGLE, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry80 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry7 = {
+    sysBATTLEONLYDataEntry25, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry38, 6, &sysBATTLEONLYDataEntry37,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry8 = {
+    sysBATTLEONLYDataEntry26, 20, { 0 }, 6, { 0 }, (u8 *)&sysBATTLEONLYDataEntry81, 0x4,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry39[3] = {
+    { sysBATTLEONLYDataEntry62, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry81 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry9 = {
+    sysBATTLEONLYDataEntry26, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry39, 3, &sysBATTLEONLYDataEntry8,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry10 = {
+    sysBATTLEONLYDataEntry27, 20, { 0 }, 7, { 0 }, (u8 *)&sysBATTLEONLYDataEntry31, 0xC,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry40[14] = {
+    { sysBATTLEONLYDataEntry63, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry104 }, { .minValue = 0 }, 0, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry57, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry31 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry31 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry31 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry56, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry103 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry103 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry103 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry11 = {
+    sysBATTLEONLYDataEntry27, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry40, 14, &sysBATTLEONLYDataEntry10,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry12 = {
+    sysBATTLEONLYDataEntry28, 20, { 0 }, 8, { 0 }, (u8 *)&sysBATTLEONLYDataEntry105, 0x1C,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry41[11] = {
+    { sysBATTLEONLYDataEntry65, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry52, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry105 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry51, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry109 }, { .minValue = 0 }, 1, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysBATTLEONLYDataEntry64, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry52, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry106 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry50, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry107 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry49, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry108 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry51, EFF_DEBUG_ITEM_BYTE, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry110 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry13 = {
+    sysBATTLEONLYDataEntry28, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry41, 11, &sysBATTLEONLYDataEntry12,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry42 = {
+    sysBATTLEONLYDataEntry29, 20, { 0 }, 9, { 0 }, (u8 *)&sysBATTLEONLYDataEntry111, 0x10,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry43[6] = {
+    { sysBATTLEONLYDataEntry52, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry111 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry50, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry113 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry49, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry114 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry66, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry112 }, { .minValue = 0 }, 0x80, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry14 = {
+    sysBATTLEONLYDataEntry29, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry43, 6, &sysBATTLEONLYDataEntry42,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry15 = {
+    sysBATTLEONLYDataEntry30, 20, { 0 }, 10, { 0 }, (u8 *)&sysBATTLEONLYDataEntry32, 0xC,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry44[5] = {
+    { sysBATTLEONLYDataEntry68, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry32 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry110, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysBATTLEONLYDataEntry115 }, { .minValue = 1 }, 0x96, 1.0f },
+    { sysBATTLEONLYDataEntry67, EFF_DEBUG_ITEM_FLOAT, { 0 }, { .f32Value = &sysBATTLEONLYDataEntry116 }, { .minValue = 1 }, 0x96, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry16 = {
+    sysBATTLEONLYDataEntry30, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry44, 5, &sysBATTLEONLYDataEntry15,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effMuzzleFlash_Params_t effData9Entry37 = { 1.0f, 1.0f };
+
+EffFileJobRequest effLoadMaterialFileData = {
+    effLoadMaterialFileDataEntry, 22, { 0 }, 0, { 0 }, (u8 *)&effData9Entry37, 0x38,
+};
+
+effDebugMenuItem_t effData9Entry19[4] = {
+    { effData9Entry27, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &effData9Entry37.scale_h }, { .minValue = 0 }, 0, 0.1f },
+    { effData9Entry26, EFF_DEBUG_ITEM_FLOAT_TENTH, { 0 }, { .f32Value = &effData9Entry37.scale_w }, { .minValue = 0 }, 0, 0.1f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effData9Entry12 = {
+    effLoadMaterialFileDataEntry, 0x8, 8, 0, 0, effData9Entry19, 4, &effLoadMaterialFileData,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest effCreateTwoDimensionalTaskDataEntry2 = {
+    effCreateTwoDimensionalTaskData2, 23, { 0 }, 1, { 0 }, effCreateTwoDimensionalTaskDataEntry4, 0x98,
+};
+
+effDebugMenuItem_t effCreateTwoDimensionalTaskDataEntry9[2] = {
+    { sysStrResource, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollResourceQueueWithTlp }, { .release = effReleaseResourceBankDescriptors } },
+    { sysPARTICLEDataEntry112, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .poll = effPollTextureResourceFile }, { .release = effBattleResourceDescriptorRelease } },
+};
+
+effDebugMenu_t effCreateTwoDimensionalTaskDataEntry8 = {
+    NULL, 0xB8, 8, 0, 0, effCreateTwoDimensionalTaskDataEntry9, 2, &effCreateTwoDimensionalTaskDataEntry2,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+effDebugMenuItem_t effCreateTwoDimensionalTaskDataEntry3[10] = {
+    { effCreatePolyTrackTaskDataEntry14, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateTwoDimensionalTaskDataEntry5 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry117, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateTwoDimensionalTaskDataEntry6 }, { .minValue = 0 }, 0, 1.0f },
+    { effCreatePolyWindTaskDataEntry116, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &effCreateTwoDimensionalTaskDataEntry7 }, { .minValue = 0 }, 0, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editRequest = effEditTwoDimensionalColorTrack }, { .release = effResetMappingFlags } },
+    { effUpdatePartsListEditorData6Entry2, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditTwoDimensionalScaleTrack }, { .release = btlResetEffectWork } },
+    { sysPOLYTEXDataEntry8, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .editObject = effEditTwoDimensionalRotationTrack }, { .release = btlResetEffectWork } },
+    { sysStrMaterial, EFF_DEBUG_ITEM_CHILD, { 0 }, { .child = &effCreateTwoDimensionalTaskDataEntry8 }, { .minValue = 0 }, 0, 0.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t effCreateTwoDimensionalTaskDataEntry = {
+    effCreateTwoDimensionalTaskData2, 0x8, 8, 0, 0, effCreateTwoDimensionalTaskDataEntry3, 10, &effCreateTwoDimensionalTaskDataEntry2,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry45 = {
+    sysBATTLEONLYDataEntry69, 20, { 0 }, 11, { 0 }, (u8 *)&sysBATTLEONLYDataEntry117, 0xC,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry46[6] = {
+    { sysBATTLEONLYDataEntry60, 0x2E, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry117 }, { .minValue = 0 }, 8, 1.0f },
+    { sysBATTLEONLYDataEntry61, 0x2A, { 0 }, { .u16Value = &sysBATTLEONLYDataEntry118 }, { .minValue = 0 }, 2, 1.0f },
+    { sysBATTLEONLYDataEntry71, 0x2F, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry119 }, { .minValue = 0 }, 1, 1.0f },
+    { sysBATTLEONLYDataEntry70, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry120 }, { .minValue = 0 }, 0x80, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry17 = {
+    sysBATTLEONLYDataEntry69, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry46, 6, &sysBATTLEONLYDataEntry45,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry18 = {
+    sysStrOLightS, 20, { 0 }, 12, { 0 }, (u8 *)&sysBATTLEONLYDataEntry121, 0x20,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry47[25] = {
+    { sysBATTLEONLYDataEntry52, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry121 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry58, 0x2E, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry126 }, { .minValue = 0 }, 8, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysPOLYTEXDataEntry9, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry50, 0x05, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry122 }, { .minValue = -1 }, 0xFFFFFF, 1.0f },
+    { sysBATTLEONLYDataEntry49, 0x05, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry123 }, { .minValue = -1 }, 0xFFFFFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry57, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry124 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry56, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry125 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysBATTLEONLYDataEntry76, EFF_DEBUG_ITEM_BLANK },
+    { sysBATTLEONLYDataEntry75, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry127 }, { .minValue = 0 }, 1, 1.0f },
+    { sysBATTLEONLYDataEntry74, EFF_DEBUG_ITEM_BYTE_FLAG, { 0 }, { .u8Value = &sysBATTLEONLYDataEntry128 }, { .minValue = 0 }, 1, 1.0f },
+    { sysBATTLEONLYDataEntry73, 0x30, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry129 }, { .minValue = 0 }, 0x3E8, 1.0f },
+    { sysBATTLEONLYDataEntry72, 0x30, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry130 }, { .minValue = 0 }, 0x3E8, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry19 = {
+    sysStrOLightS, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry47, 25, &sysBATTLEONLYDataEntry18,
+    effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
+    effCreateBattleCameraJob, NULL,
+};
+
+EffFileJobRequest sysBATTLEONLYDataEntry20 = {
+    sysStrOMcolrS, 20, { 0 }, 13, { 0 }, (u8 *)&sysBATTLEONLYDataEntry33, 0x14,
+};
+
+effDebugMenuItem_t sysBATTLEONLYDataEntry48[12] = {
+    { sysBATTLEONLYDataEntry52, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry33 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry58, 0x2E, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry134 }, { .minValue = 0 }, 8, 1.0f },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { sysBATTLEONLYDataEntry50, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry131 }, { .minValue = 0 }, 0, 1.0f },
+    { sysBATTLEONLYDataEntry49, EFF_DEBUG_ITEM_INT, { 0 }, { .s32Value = &sysBATTLEONLYDataEntry132 }, { .minValue = 0 }, 0, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { effCreatePolyTwinkleTaskDataEntry87, EFF_DEBUG_ITEM_RED, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry133 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry86, EFF_DEBUG_ITEM_GREEN, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry133 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effCreatePolyTwinkleTaskDataEntry85, EFF_DEBUG_ITEM_BLUE, { 0 }, { .rgbaValue = &sysBATTLEONLYDataEntry133 }, { .minValue = 0 }, 0xFF, 1.0f },
+    { effInitializeResourceQueueData, EFF_DEBUG_ITEM_BLANK },
+    { NULL, EFF_DEBUG_ITEM_SEPARATOR },
+    { effStrSaveEp, EFF_DEBUG_ITEM_FUNCTION, { 0 }, { .command = effPollPrimaryFile }, { .release = effReleaseQueuedResourceName } },
+};
+
+effDebugMenu_t sysBATTLEONLYDataEntry21 = {
+    sysStrOMcolrS, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry48, 12, &sysBATTLEONLYDataEntry20,
     effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
     effCreateBattleCameraJob, NULL,
 };
