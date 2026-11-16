@@ -359,7 +359,11 @@ class Run:
             self.note(f"{row.unit}: no asm subsegment in the {row.game} yaml")
         yaml = segments.yaml_path(self.tree, row.game)
         for p in plans:
-            yaml.write_text(segments.apply_plan(yaml.read_text(), p))
+            try:
+                yaml.write_text(segments.apply_plan(yaml.read_text(), p))
+            except ValueError as e:
+                self.note(str(e))
+                continue
             rest = f", {p.kind} resumes at 0x{p.rest:08X}" if p.rest is not None else ""
             self.say(f"segments: {row.unit} owns {p.kind} of {p.chunk} from 0x{p.start:08X}{rest}")
         for n in notes:

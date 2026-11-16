@@ -192,6 +192,23 @@ class RodataTests(unittest.TestCase):
                       "      - [0x345698, rodata, rodata_00444698]\n      - [0x3456A0, .rodata, k]\n", out)
 
 
+    def test_two_units_in_one_chunk_keep_address_order(self) -> None:
+        yaml = ("  - name: main\n    start: 0x1000\n    vram: 0x100000\n    subsegments:\n"
+                "      - [0x345680, rodata, rodata_00444680]\n      - [0x3456A0, .rodata, k]\n")
+        a = segments.Plan("a", "rodata", "rodata_00444680", 0x444680, 0x444688)
+        b = segments.Plan("b", "rodata", "rodata_00444680", 0x444690, 0x444698)
+        want = ("      - [0x345680, .rodata, a]\n      - [0x345688, rodata, rodata_00444688]\n"
+                "      - [0x345690, .rodata, b]\n      - [0x345698, rodata, rodata_00444698]\n"
+                "      - [0x3456A0, .rodata, k]\n")
+        for first, second in ((a, b), (b, a)):
+            out = segments.apply_plan(segments.apply_plan(yaml, first), second)
+            self.assertTrue(out.endswith(want), out)
+        c = segments.Plan("c", "rodata", "rodata_00444680", 0x444688, 0x444690)
+        out = segments.apply_plan(segments.apply_plan(yaml, b), c)
+        self.assertTrue(out.endswith("      - [0x345680, rodata, rodata_00444680]\n      - [0x345688, .rodata, c]\n"
+                                     "      - [0x345690, .rodata, b]\n      - [0x345698, rodata, rodata_00444698]\n"
+                                     "      - [0x3456A0, .rodata, k]\n"), out)
+
 class IncluderTests(unittest.TestCase):
     def test_closure_through_headers_and_games(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

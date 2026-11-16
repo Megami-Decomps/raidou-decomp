@@ -115,18 +115,27 @@ def plan_unit(tree: Path, game: str, unit: str) -> tuple[list[Plan], list[str]]:
 
 
 def apply_plan(yaml_text: str, p: Plan) -> str:
-    """Give the unit its labels: a .<kind> subsegment at its first label, the chunk resuming after its last."""
+    """Give the unit its labels: a .<kind> subsegment at its first label, the chunk resuming after its last. The
+    chunk may already be split by another unit's plan; the unit goes into the piece that holds its first label."""
     off = rom_offset(yaml_text)
-    out = []
-    for line in yaml_text.split("\n"):
-        m = SUBSEG.match(line)
-        if not (m and m.group(4) == p.chunk and m.group(3) == p.kind):
-            out.append(line)
-            continue
-        head = m.group(1)
-        if int(m.group(2), 16) + off < p.start:
-            out.append(line)
-        out.append(f"{head}0x{p.start - off:X}, .{p.kind}, {p.unit}]")
-        if p.rest is not None:
-            out.append(f"{head}0x{p.rest - off:X}, {p.kind}, {p.kind}_{p.rest:08X}]")
-    return "\n".join(out)
+    lines = yaml_text.split("\n")
+    target, rest = p.start - off, None if p.rest is None else p.rest - off
+    starts = [(int(m.group(2), 16), i) for i, l in enumerate(lines) if (m := SUBSEG.match(l))]
+    at = max(((a, i) for a, i in starts if a <= target), default=(0, None))[1]
+    if at is None:
+        raise ValueError(f"{p.unit}: no subsegment holds 0x{p.start:08X}")
+    m = SUBSEG.match(lines[at])
+    if m.group(3) != p.kind or not (m.group(4) == p.chunk or m.group(4).startswith(f"{p.kind}_")):
+        raise ValueError(f"{p.unit}: {p.kind} at 0x{p.start:08X} lies in {m.group(4)}, not in {p.chunk}")
+    head = m.group(1)
+    new = [f"{head}0x{target:X}, .{p.kind}, {p.unit}]"]
+    nxt = SUBSEG.match(lines[at + 1]) if at + 1 < len(lines) else None
+    if rest is not None and not (nxt and int(nxt.group(2), 16) == rest):
+        if nxt and int(nxt.group(2), 16) < rest:
+            raise ValueError(f"{p.unit}: {nxt.group(4)} starts inside its {p.kind}")
+        new.append(f"{head}0x{rest:X}, {p.kind}, {p.kind}_{p.rest:08X}]")
+    if int(m.group(2), 16) == target:
+        lines[at:at + 1] = new
+    else:
+        lines[at + 1:at + 1] = new
+    return "\n".join(lines)
