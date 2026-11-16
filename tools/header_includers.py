@@ -6,6 +6,7 @@
 """
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -108,12 +109,18 @@ def check(root: Path, path: Path, version: str, mode: str) -> dict[str, str]:
     return summarise(r.stdout + r.stderr)
 
 
-def measure(root: Path, units: dict[Path, list[str]], jobs: int = 8) -> dict[str, dict[str, str]]:
+JOBS = os.cpu_count() or 8
+
+
+def measure(root: Path, units: dict[Path, list[str]], jobs: int = JOBS) -> dict[str, dict[str, str]]:
     """"<path> <game> <mode>" -> function summary, for every unit, game and mode."""
     keys = [(path, game, mode) for path, games in units.items() for game in games for mode in MODES]
+    # Largest units first, so a 6 s unit does not start last.
+    size = {p: (root / p).stat().st_size if (root / p).exists() else 0 for p in units}
+    order = sorted(keys, key=lambda k: -size[k[0]])
     with ThreadPoolExecutor(jobs) as pool:
-        results = pool.map(lambda k: check(root, *k), keys)
-    return {f"{p.as_posix()} {g} {m}": r for (p, g, m), r in zip(keys, results)}
+        results = dict(zip(order, pool.map(lambda k: check(root, *k), order)))
+    return {f"{p.as_posix()} {g} {m}": results[(p, g, m)] for p, g, m in keys}
 
 
 def rank(status: str | None) -> tuple[int, int]:
@@ -158,7 +165,7 @@ def main() -> int:
     ap.add_argument("--baseline", type=Path, help="summary written by an earlier --save")
     ap.add_argument("--baseline-tree", type=Path, help="checkout to measure the same units in")
     ap.add_argument("--tree", type=Path, default=ROOT, help="checkout to read and measure (default: this one)")
-    ap.add_argument("-j", "--jobs", type=int, default=8)
+    ap.add_argument("-j", "--jobs", type=int, default=JOBS)
     args = ap.parse_args()
     root = args.tree.resolve()
     units = includers(root, [header_path(root, h) for h in args.headers])
