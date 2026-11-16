@@ -16,11 +16,11 @@ existing C unit or `asm/<game>/<unit>` for a gap unit that becomes C.
 |---|---|
 | `results.tsv` | `name words result minutes`, result `match` or `nonmatch N` (N differing words) |
 | `final/<name>.c` | the text to splice: plain C, or the `NON_MATCHING` block with its comment |
-| `<name>.c`, `comments.json` | used when `final/<name>.c` is missing: the draft, and the comment for a nonmatch |
+| `<name>.c`, `comments.json` | used when `final/<name>.c` is missing: the draft, and the comment for a nonmatch (a draft already in a `NON_MATCHING` block is rewrapped, not wrapped twice) |
 | `headers.wip.patch` | `git diff` of the drafting tree's header and declaration edits, new files included |
 | `renames.tsv` | `game old new reason`, applied in order (a chain `a -> b`, `c -> a` is fine); `--renames FILE` adds a table |
 | `drop_symbols.tsv` | `game name`: labels to delete, such as data that a C function now defines |
-| `r1only.txt` | shared-unit functions whose Raidou 2 body differs; Raidou 2 keeps the `INCLUDE_ASM` |
+| `r1only.txt` | shared-unit functions whose Raidou 2 body differs, one per line by batch or renamed name, a reason may follow; Raidou 2 keeps the `INCLUDE_ASM` |
 | `units/<unit>.pre` | the includes and declarations that open a new gap unit |
 | `docs.json` | `name: [unit, text, lever]` for each NON_MATCHING draft's docs/matching entry |
 | `<name>.decls` | the declarations a draft store entry assumes, one per line, from `find_body.py --write` |
@@ -72,7 +72,7 @@ in `tools/ida/` make it closer to the decomp's C:
 | `ee32.py` | Hex-Rays pass loaded in IDA (`_install()`): compares and branches on the low 32 bits of a register, so ee-gcc's sign-extended ints stop decompiling as `__int64`. Wrong for real 64-bit compares. |
 | `stylefix.py` | text filter (`stylefix.py -`): `s32`/`u8`/`f32` types, `NULL`, no `__fastcall` or `LL` suffixes, `struct TAG` where the decomp writes it |
 | `propose_protos.py TSV OUT.json` | prototype candidates for undrafted functions: HD signatures and matched shape neighbours, never the function's own definition |
-| `shared.py`, `land_sync.sh`, `sync/` | sync the shared IDBs to a tree (names, types, prototypes, globals) and apply prototype proposals; data and `changes.log` live in `~/.local/state/raidou-decomp-work/ida-pseudo` |
+| `shared.py`, `land_sync.sh [--game r1\|r2]`, `sync/` | sync the shared IDBs to a tree (names, types, prototypes, globals) and apply prototype proposals; data and `changes.log` live in `~/.local/state/raidou-decomp-work/ida-pseudo` |
 
 ## Landing a batch
 
@@ -100,29 +100,37 @@ in order (skip any with `--skip step,...`):
    (tier from the reason), the carried config tables and the pair tables of
    both games, then `src`, `include` and `docs`; then `drop_symbols.tsv` and
    `revisit_names.py`. It lists derived data labels used only by a batch
-   function as candidates for `drop_symbols.tsv`.
+   function as candidates for `drop_symbols.tsv`. The sources are renamed once
+   for both games, so a row for one game whose old name the other game also
+   has gets the other game's row added; it refuses when the other game already
+   has the new name or the function is in `r1only.txt`.
 4. `splice`: the includes in `includes.tsv` go after each unit's last
    `#include`; each final draft replaces its `INCLUDE_ASM` (and any older
-   NON_MATCHING draft around it). A gap unit is written from its `.pre` and its
+   NON_MATCHING draft around it). When a shared unit holds the line twice, in
+   a `VERSION_RAIDOU1` block and its `#else`, the Raidou 1 copy is replaced. A gap unit is written from its `.pre` and its
    functions in address order, its subsegment and tu_evidence row become `c`,
    and it takes the `.rodata` and `.lit4` labels that only its asm uses, when
-   they form one run in one unowned chunk. Anything else (a label another unit
+   they form one run in one unowned chunk; several new units can split one
+   chunk, in any order. Anything else (a label another unit
    uses, labels in several chunks) is reported for a hand decision. The run
    stops (refused) when a unit's `.c` gained, against the base, a draft store
    entry's declaration, a function prototype for a function the unit does not
    define, or an `#include` below its first declaration: those belong in
    headers (`place_decls.py`). The gate repeats the check.
-5. `promote`: a NON_MATCHING draft whose C leaves `check_unit.py` passing for
+5. `r1only`: a shared-unit function in `r1only.txt` that is spliced as plain C
+   goes under `#ifdef VERSION_RAIDOU1` with the `INCLUDE_ASM` in its `#else`,
+   so a line added after the splice applies on a resumed run.
+6. `promote`: a NON_MATCHING draft whose C leaves `check_unit.py` passing for
    the whole unit, on every game that builds it, becomes plain C. A draft that
    matches alone but changes another function of the unit stays a draft. A
    `match` row that is not OK in its unit is reported.
-6. `configure`: places the INCLUDE_RODATA and INCLUDE_SDATA lines.
-7. `docs`: drops the docs/matching entries of every batch function and writes
+7. `configure`: places the INCLUDE_RODATA and INCLUDE_SDATA lines.
+8. `docs`: drops the docs/matching entries of every batch function and writes
    one for each remaining NON_MATCHING draft, measured with `-DNON_MATCHING`.
    Then every entry in docs/matching is checked against the tree, and an entry
    whose function is no longer a draft (promoted outside `final/`, or by a
    header change) is dropped. Then `docs_index.py`.
-8. `regress`: every unit that includes a header changed since the base
+9. `regress`: every unit that includes a header changed since the base
    (`git diff` plus untracked files, through `header_includers.py`), every
    changed unit and the batch's units, against the base. Units step 1 did not
    measure are measured at the base in a worktree, `<batch>/land/base-tree`.
@@ -132,16 +140,16 @@ in order (skip any with `--skip step,...`):
    itself is marked as such; any other is a regression to fix. A function whose
    docs/matching entry has a `Fragile:` line (it shifts with header declarations alone, so it is
    recorded NON_MATCHING) is listed as `info fragile`, not as a regression.
-9. `gate`: `configure.py && ninja`, then `check_config.py`,
+10. `gate`: `configure.py && ninja`, then `check_config.py`,
    `check_nonmatching.py`, `test_raidou_c.py`, `test_docs_index.py`,
    `docs_index.py --check` and `revisit_names.py --check`. With
    `--clean-gate` it runs `configure.py --clean` first and counts every
    compiler warning; without it the count covers only the objects rebuilt.
-10. `retire`: when the gate passed in this run with nothing to decide, the
+11. `retire`: when the gate passed in this run with nothing to decide, the
    draft store entries of the spliced functions move to `landed/` with the
    batch id (`--store DIR`, `--store ''` for none).
 
-`--dry-run` runs only `patch`, `renames` and `splice` (with the declaration
+`--dry-run` runs only `patch`, `renames`, `splice` and `r1only` (with the declaration
 check), without configuring, and leaves T edited.
 
 The report goes to stdout and `<batch>/land/report.txt`; lines starting
@@ -152,7 +160,7 @@ any. Fix them in T, then rerun only the gate on the edited tree (skipping
 
 ```sh
 .venv/bin/python tools/batch/land_batch.py --batch DIR --tree T \
-    --skip patch,renames,splice,configure,promote,docs,regress
+    --skip patch,renames,splice,r1only,configure,promote,docs,regress
 ```
 
 Every gate while drafting and packaging is incremental: `configure.py` (3 s

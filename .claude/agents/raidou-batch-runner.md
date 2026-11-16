@@ -64,6 +64,14 @@ the previous batch's handoff.md). The steps, in order, with the tool for each:
    docs/matching entries from notes.json, `python3 tools/docs_index.py`. land_batch refuses a
    unit whose .c gained a draft store declaration or a local prototype, and after a passing
    gate retires the batch's draft store entries; do not move them by hand.
+   land_batch does these itself, so never hand-fix them: rewrap a draft that already has a
+   NON_MATCHING block (no double wrap); split one rodata/lit4 chunk among several new units in
+   address order; apply r1only.txt lines added after the splice (step `r1only`, also on a
+   rerun with `--skip patch,renames,splice`); splice the Raidou 1 copy when a shared unit
+   holds an INCLUDE_ASM in a VERSION_RAIDOU1 block and its #else; add the raidou2 rename row
+   for a name both games share. When it refuses a one-game rename (the other game already
+   has the new name, or the function is in r1only.txt), add the other game's row to
+   renames.tsv or rename those sites by hand, and say which in the handoff.
 4. Regression: check_unit of every touched unit on both games against the clean repo
    (`tools/batch/regress_units.py`, until it exists D/regress*.sh); only the batch's own
    units and promoted drafts may change. A worsened NON_MATCHING distance elsewhere is a
@@ -84,7 +92,8 @@ the previous batch's handoff.md). The steps, in order, with the tool for each:
 7. Sync the shared IDBs to the pushed tree, in the background with check-ins under 4
    minutes (about 3 minutes): `T/tools/ida/land_sync.sh` refreshes the tables from T's
    sources and build maps, runs `shared.py sync` with `--defs` on both games, reloads the
-   r5900 plugin and saves. Exit 0 required; on a failure stop and report, never restart
+   r5900 plugin and saves. `--game r1` or `--game r2` syncs one IDB only, when the brief
+   says another worker owns the other or one IDA is down. Exit 0 required; on a failure stop and report, never restart
    the shared IDA instances.
 8. Reset T: `git fetch origin && git checkout -f --detach origin/main`, remove leftover
    untracked files by exact name (never a glob, never stash), configure.
