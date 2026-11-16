@@ -61,4 +61,6 @@ typedef char itfGridTextWidgetSizeCheck[sizeof(itfGridTextWidget_t) == 0x44 ? 1 
 
 typedef char itfGridTextListItemSizeCheck[sizeof(itfGridTextListItem_t) == 0x2C ? 1 : -1];
 
+u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
+
 #endif

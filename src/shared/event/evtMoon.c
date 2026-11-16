@@ -9,12 +9,12 @@
 #include "fld.h"
 #include "dat.h"
 #include "code_r1_002CA3F0.h"
+#include "code_r1_002CD5A8.h"
 #include "code_r1_001CC1D0.h"
 #include "dds3KernelDraw.h"
 #include "slMain.h"
 #include "sdfMath.h"
 
-u32 fclBlendColor(u32 firstColor, u32 secondColor, u32 weight);
 extern dds3ProcessID_t *addressprocess_id;
 extern const char evtMoonProcessName[];
 extern s32 Shutdown_evtMoon(dds3ProcessID_t *id);
