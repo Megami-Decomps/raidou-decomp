@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Print smt3-decomp and dds-decomp bodies for Raidou functions, found by Raidou, SMT3 alias or HD name.
+"""Print smt3-decomp, dds-decomp and raidou-decomp bodies for Raidou functions, by name, alias, HD name or shape.
 
 Usage: find_body.py NAME [NAME ...] | --batch R07 [--summary] [--write DIR] [--set-column]; see --help.
 """
@@ -13,8 +13,11 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import body_check
+import find_similar
 
 EPILOG = ("Trees are read at a git revision (default origin/main); identity uses each tree's build/ ELF. "
+          "The raidou tree is this working copy: the other game's matched C for the function (via name) and "
+          "matched functions of the same asm shape from find_similar.py (via similar, ratio 0.9 or better). "
           "A hit is matched, nonmatching (a NON_MATCHING draft in its tree) or disabled (#if 0). "
           "body_source is CLASS:TREE:STATUS:VIA:CONFIDENCE, CLASS one of match, near (usable), adapt, rework, "
           "other (reference only), found (not compiled), or none; then flags: size Nx (outside 0.5-2x, left out "
@@ -30,8 +33,11 @@ NOT_FUNCTIONS = {"if", "while", "for", "switch", "return", "sizeof", "__attribut
                  "INCLUDE_RODATA", "INCLUDE_SDATA", "typedef"}
 # Lower sorts first: a matched body before a draft, smt3 before dds, the Raidou name first.
 STATUS_RANK = {"matched": 0, "nonmatching": 1, "disabled": 2}
-TREE_RANK = {"smt3": 0, "dds": 1}
-VIA_RANK = {"name": 0, "alias": 1, "hd": 2}
+TREE_RANK = {"raidou": 0, "smt3": 1, "dds": 2}
+VIA_RANK = {"name": 0, "alias": 1, "hd": 2, "similar": 3}
+# A same-shape sibling is a template, never the function itself; below this ratio it is a rewrite.
+SIMILAR_FLOOR = 0.9
+SIMILAR_TOP = 3
 
 
 @dataclass
@@ -44,9 +50,12 @@ class Hit:
     via: str
     status: str
     body: str
+    version: str = ""
 
     def key(self):
-        return STATUS_RANK[self.status], TREE_RANK[self.tree], VIA_RANK[self.via], self.path
+        # A sibling sorts after every hit that names the function itself.
+        return (STATUS_RANK[self.status], self.via == "similar", TREE_RANK[self.tree], VIA_RANK[self.via],
+                self.path)
 
     def label(self):
         return f"{self.tree}:{self.status}:{self.via}"
@@ -158,6 +167,36 @@ class Tree:
             if end is None:
                 continue
             yield Hit(self.name, self.rev, path, line, name, via, guard_status(text, start), text[start:end])
+
+
+class RaidouTree:
+    """This repository's own matched functions on both games, through find_similar.py's corpus."""
+
+    name = "raidou"
+
+    def __init__(self):
+        self.repo = ROOT
+        self.rev = git(ROOT, "rev-parse", "--short", "HEAD").strip()
+        self.funcs = find_similar.load()
+        self.index = find_similar.Index(self.funcs)
+
+    def hit(self, f, via):
+        got = find_similar.definition(f)
+        if got is None:
+            return None
+        path, line, text = got
+        return Hit(self.name, self.rev, path.relative_to(ROOT).as_posix(), line, f["name"], via, "matched",
+                   text, f["version"])
+
+    def find(self, name, version):
+        """The other game's matched copy, then same-shape matched functions of either game."""
+        t = find_similar.lookup(self.funcs, name, version)
+        if t is None or t["version"] != version:
+            return []
+        out = [self.hit(g, "name") for g in find_similar.same_name(self.funcs, t)]
+        out += [self.hit(g, "similar") for r, g in find_similar.templates(self.funcs, self.index, t, SIMILAR_TOP)
+                if r >= SIMILAR_FLOOR and g["name"] != name]
+        return [h for h in out if h]
 
 
 def read_symbols(path):
@@ -283,8 +322,8 @@ class Checker:
         if mine is None:
             return None
         images = self.images.get(hit.tree, {})
-        # The version the body's path names first, then the others.
-        order = sorted(images, key=lambda v: f"/{v}/" not in f"/{hit.path}")
+        # The hit's own version, else the version its path names, then the others.
+        order = sorted(images, key=lambda v: (v != hit.version, f"/{v}/" not in f"/{hit.path}"))
         for v in order:
             theirs = images[v].profile(hit.found)
             if theirs is not None:
@@ -311,10 +350,12 @@ class Checker:
         scored = [(h, i) for h, i in scored if h.via == "name" or body_check.size_ok(i)]
         if not scored:
             return "none", None, None, None
-        # A hit that is the same function beats a better ranked one that is not.
-        same = [(h, i) for h, i in scored if i is None or i.confidence >= body_check.SAME_FUNCTION]
+        # A hit that is the same function beats a better ranked one that is not. A sibling's
+        # callees differ by definition; its asm shape already passed find_similar's floor.
+        same = [(h, i) for h, i in scored
+                if i is None or h.via == "similar" or i.confidence >= body_check.SAME_FUNCTION]
         hit, ident = (same or scored)[0]
-        if ident is not None and ident.confidence < body_check.SAME_FUNCTION:
+        if hit.via != "similar" and ident is not None and ident.confidence < body_check.SAME_FUNCTION:
             return "other", hit, ident, None
         if not self.compile or not unit:
             return "found", hit, ident, None
@@ -360,6 +401,7 @@ def main():
                     help="splice each same-function body into its unit and run check_unit.py on it")
     ap.add_argument("--unit", help="unit for --compile with plain NAMEs (src/shared/...); --batch uses its column")
     ap.add_argument("--set-column", action="store_true", help="write body_source into --batches (needs --batch)")
+    ap.add_argument("--no-raidou", action="store_true", help="leave out this repository's own matched functions")
     a = ap.parse_args()
     if a.set_column and not a.batch:
         ap.error("--set-column needs --batch")
@@ -374,13 +416,19 @@ def main():
         for repo in (a.smt3, a.dds):
             git(repo, "fetch", "-q", "origin")
     trees = [Tree("smt3", a.smt3, a.rev), Tree("dds", a.dds, a.rev)]
+    own = None if a.no_raidou else RaidouTree()
     names = Names(a.version, a.hd)
     checker = Checker(names, trees, a.version, a.compile)
+    if own:
+        checker.images["raidou"] = {v: body_check.Image(p) for v, s in VERSIONS_SERIAL.items()
+                                    if (p := ROOT / "build" / v / f"{s}.elf").exists()}
 
     sources, counts, errors, groups = {}, {}, {}, {}
     for batch, name, addr, words, unit in todo:
         lookups = names.lookups(name, addr)
         hits = find_bodies(trees, lookups)
+        if own:
+            hits = sorted(hits + own.find(name, a.version), key=Hit.key)
         addr = addr if addr is not None else names.addr.get(name)
         cls, best, ident, tried, flags = checker.check(name, addr, words, unit, hits)
         counts[cls] = counts.get(cls, 0) + 1

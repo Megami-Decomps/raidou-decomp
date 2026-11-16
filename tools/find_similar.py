@@ -280,8 +280,8 @@ def clusters(funcs: dict[str, dict], tier: int = 3) -> list[list[dict]]:
     return sorted(out, key=lambda v: -sum(f["n"] * 4 for f in v if f["state"] == "asm"))
 
 
-def body(f: dict) -> str | None:
-    """The C definition of a matched function as its game compiles it, with file and line."""
+def definition(f: dict) -> tuple[Path, int, str] | None:
+    """(source path, line, text) of a matched function's C definition as its game compiles it."""
     if f is None or f["state"] != "c":
         return None
     path = unit_sources(f["version"]).get(f["unit"])
@@ -300,8 +300,16 @@ def body(f: dict) -> str | None:
             if depth == 0:
                 break
         i += 1
-    line = text[:m.start()].count("\n") + 1
-    return f"// {path.relative_to(ROOT)}:{line} ({f['version']} view)\n{text[m.start():i + 1]}"
+    return path, text[:m.start()].count("\n") + 1, text[m.start():i + 1]
+
+
+def body(f: dict) -> str | None:
+    """The C definition of a matched function, with its file and line."""
+    got = definition(f)
+    if got is None:
+        return None
+    path, line, text = got
+    return f"// {path.relative_to(ROOT)}:{line} ({f['version']} view)\n{text}"
 
 
 def differences(a: dict, b: dict) -> list[str]:

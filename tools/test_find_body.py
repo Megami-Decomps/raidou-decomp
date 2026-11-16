@@ -91,6 +91,14 @@ class NameTests(unittest.TestCase):
         hits = [hit("dds", "name", "matched"), hit("smt3", "name", "nonmatching"), hit("smt3", "hd", "matched")]
         self.assertEqual(sorted(hits, key=find_body.Hit.key)[0].label(), "smt3:matched:hd")
 
+    def test_the_other_games_copy_leads_and_a_sibling_trails(self) -> None:
+        def hit(tree, via):
+            return find_body.Hit(tree, "r", "p", 1, "f", via, "matched", "")
+        hits = [hit("raidou", "similar"), hit("dds", "hd"), hit("raidou", "name"), hit("smt3", "name")]
+        got = [h.label() for h in sorted(hits, key=find_body.Hit.key)]
+        self.assertEqual(got, ["raidou:matched:name", "smt3:matched:name", "dds:matched:hd",
+                               "raidou:matched:similar"])
+
 
 class ColumnTests(unittest.TestCase):
     def test_column_added_and_only_named_rows_set(self) -> None:
