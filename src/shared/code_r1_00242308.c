@@ -157,8 +157,6 @@ extern u8 effPartsListExitRequested;
 extern FileJobPayload *effTemporaryFileJob;
 extern FileQueue *effAuxiliaryFileQueue;
 extern FileQueue *effFileQueue;
-extern u8 effCreatePolyTrackTaskData[];
-extern u8 effCreatePolyTwinkleTaskData[];
 extern FileJobPayload *effQueuedFileHandle;
 extern s32 dds3BillboardGeneralNumber(void);
 
@@ -280,17 +278,6 @@ extern char effStrObjParticle[];
 extern char effStrPolyScaly[];
 extern char effStrPolyCrack[];
 extern char D_003BD000[];
-extern u8 effCreatePolyTrackControlTaskData[];
-extern u8 effCreateBlurTaskData[];
-extern u8 effCreateFilterTaskData[];
-extern u8 effCreateEnvironmentTaskData[];
-extern u8 effCreatePolyFlashTaskData[];
-extern u8 effCreatePolyRingTaskData[];
-extern u8 effCreatePolyThunderTaskData[];
-extern u8 effCreatePolyWindTaskData[];
-extern u8 effCreatePolyScalyTaskData[];
-extern u8 effCreatePolyCrackTaskData[];
-extern u8 effCreateTwoDimensionalTaskData[];
 extern u8 D_003DF840[];
 extern u8 effWork9[];
 extern s32 effEditColorTrack(s32, s32, s32);
@@ -637,32 +624,18 @@ void effMultiplyQuatWithFlag(effPartsListPose_t *effect);
 extern u8 effSelectedJobHeader[];
 void effApplyBattleCameraToObject();
 u32 effCreateBattleCameraJob(u8 *request);
-FileJobPayload *effLoadFileJobPayload(EffFileJobRequest *request, u32 existingJob);
+FileJobPayload *effLoadFileJobPayload(EffFileJobRequest *request, const char *path);
 void effInvokeFileJobWithBattleCamera(u32 job);
 void effFileJobQueueRelease(u32 job);
 extern char D_003BD080[];
 extern const char D_003BD078[];
 
 /* Payload option (+0x0C) selects the asset identifier at +0x08. */
-typedef struct EffAssetIdentifier {
-    u8 pad_00[4];
-    u16 type;       // 0x04
-    u8 pad_06[2];
-    u16 id;         // 0x08
-} EffAssetIdentifier;
-
 u32 effPollPrimaryFile(void);
 void effQueueNamedResourceRequest(void);
 u32 effPollNamedFile(void);
 void effQueueAttachedResourceRequest(void);
 u32 effPollAttachedFile(void);
-
-/* Sentinel-terminated map from asset identifiers to their runtime objects. */
-typedef struct EffectAssetLink {
-    u8 *asset;
-    void *object;
-    u8 pad_08[0x14];
-} EffectAssetLink;
 
 u8 *effFindAssetData(FileJob *entry);
 effDebugMenu_t *effFindAssetObject(FileJob *entry);
@@ -672,12 +645,31 @@ extern u32 btlDebugMenuSetupNoOp(void *context);
 extern void btlDebugMenuBeforeRecordNoOp(void);
 extern void btlDebugMenuAfterRecordNoOp(void);
 
+/* A row of an effect kind's sample list; a list ends with a NULL resource. */
 typedef struct EffCameraCreateRow {
     EffCameraCreateRequest request;
     u32 sourceTail;
 } EffCameraCreateRow;
 
 typedef char EffCameraCreateRowSizeCheck[(sizeof(EffCameraCreateRow) == 0x1C) ? 1 : -1];
+
+extern EffCameraCreateRow sysPARTICLEData[];
+extern EffCameraCreateRow effCreatePolyTrackControlTaskData[];
+extern EffCameraCreateRow effCreatePolyTrackTaskData[];
+extern EffCameraCreateRow effCreateBlurTaskData[];
+extern EffCameraCreateRow effCreateFilterTaskData[];
+extern EffCameraCreateRow sysPOLYTEXData[];
+extern EffCameraCreateRow effCreateEnvironmentTaskData[];
+extern EffCameraCreateRow effCreatePolyFlashTaskData[];
+extern EffCameraCreateRow effCreatePolyRingTaskData[];
+extern EffCameraCreateRow effCreatePolyThunderTaskData[];
+extern EffCameraCreateRow effCreatePolyTwinkleTaskData[];
+extern EffCameraCreateRow sysPOLYWINDData[];
+extern EffCameraCreateRow effCreatePolyScalyTaskData[];
+extern EffCameraCreateRow effCreatePolyCrackTaskData[];
+extern EffCameraCreateRow sysBATTLEONLYData[];
+extern EffCameraCreateRow effCreateTwoDimensionalTaskData[];
+extern EffCameraCreateRow effCreatePolyWindTaskData[];
 
 extern void fileQueueInitTransform(void *);
 extern FileJob *fileAppendJob(FileQueue *, u32);
@@ -1333,11 +1325,11 @@ u32 effCreateBattleCameraJob(u8 *request) {
     return job;
 }
 
-FileJobPayload *effLoadFileJobPayload(EffFileJobRequest *request, u32 existingJob) {
+FileJobPayload *effLoadFileJobPayload(EffFileJobRequest *request, const char *path) {
     FileJobPayload *job;
-    if (existingJob != 0) {
+    if (path != NULL) {
         void *source;
-        job = fileJobCreateFromCommandState((const char *)existingJob);
+        job = fileJobCreateFromCommandState(path);
         source = fileResolvePrimaryBuffer(job);
         memcpy(request->outputBuffer, source, request->size);
     } else {
@@ -1448,7 +1440,7 @@ u32 effPollAttachedFile(void) {
     return result;
 }
 
-extern EffectAssetLink *effData9[24];
+extern EffCameraCreateRow *effData9[24];
 
 u8 * effFindAssetData(FileJob *entry) {
     FileJobPayload *requested = (FileJobPayload *)entry->id;
@@ -1456,17 +1448,17 @@ u8 * effFindAssetData(FileJob *entry) {
     u16 option = requested->option;
     u16 i;
     for (i = 0; i < 24; i++) {
-        EffectAssetLink *links = effData9[i];
+        EffCameraCreateRow *links = effData9[i];
         if (links != NULL) {
-            EffectAssetLink *current = links;
-            if (current->asset != NULL) {
+            EffCameraCreateRow *current = links;
+            if (current->request.resource != NULL) {
                 do {
-                    u8 *asset = current->asset;
-                    if (((EffAssetIdentifier *)asset)->type == type && ((EffAssetIdentifier *)asset)->id == option) {
-                        return asset;
+                    EffFileJobRequest *asset = current->request.resource;
+                    if (asset->fileKind == type && asset->transferMode == option) {
+                        return (u8 *)asset;
                     }
                     current++;
-                } while (current->asset != NULL);
+                } while (current->request.resource != NULL);
             }
         }
     }
@@ -1479,17 +1471,17 @@ effDebugMenu_t * effFindAssetObject(FileJob *entry) {
     u16 option = requested->option;
     u16 i;
     for (i = 0; i < 24; i++) {
-        EffectAssetLink *links = effData9[i];
+        EffCameraCreateRow *links = effData9[i];
         if (links != NULL) {
-            EffectAssetLink *current = links;
-            if (current->asset != NULL) {
+            EffCameraCreateRow *current = links;
+            if (current->request.resource != NULL) {
                 do {
-                    u8 *asset = current->asset;
-                    if (((EffAssetIdentifier *)asset)->type == type && ((EffAssetIdentifier *)asset)->id == option) {
-                        return current->object;
+                    EffFileJobRequest *asset = current->request.resource;
+                    if (asset->fileKind == type && asset->transferMode == option) {
+                        return current->request.object;
                     }
                     current++;
-                } while (current->asset != NULL);
+                } while (current->request.resource != NULL);
             }
         }
     }
@@ -1514,7 +1506,7 @@ u32 effAppendPositionedCameraFileJob(const EffCameraCreateRequest *request) {
     u32 count;
 
     fileQueueInitTransform(effSelectedJobHeader);
-    entry = fileAppendJob(effFileQueue, (u32)effLoadFileJobPayload(request->resource, request->existingJob));
+    entry = fileAppendJob(effFileQueue, (u32)effLoadFileJobPayload(request->resource, request->path));
     effCurrentFileQueueEntry = entry;
     strcpy(entry->name, request->resource->name);
     entry->offset[0] = request->position[0];
@@ -1773,7 +1765,6 @@ u32 effStoreBattleCameraSnapshot(u32 value) {
 INCLUDE_ASM(const s32, "code_r1_00242308", effSelectCameraFileJobFromRows);
 
 extern char sysStrParticle[];
-extern char sysPARTICLEData[];
 s32 sysPARTICLE(void) {
     return effSelectCameraFileJobFromRows(sysStrParticle, sysPARTICLEData, 0xF);
 }
@@ -1799,7 +1790,6 @@ s32 effCreateEnvironmentTask(void) {
 }
 
 extern char sysStrPolyTex[];
-extern char sysPOLYTEXData[];
 s32 sysPOLYTEX(void) {
     return effSelectCameraFileJobFromRows(sysStrPolyTex, sysPOLYTEXData, 0x3);
 }
@@ -1821,7 +1811,6 @@ s32 effCreatePolyTwinkleTask(void) {
 }
 
 extern char sysStrPolyWind[];
-extern char sysPOLYWINDData[];
 s32 sysPOLYWIND(void) {
     return effSelectCameraFileJobFromRows(sysStrPolyWind, sysPOLYWINDData, 0x8);
 }
@@ -1835,7 +1824,6 @@ s32 effCreatePolyCrackTask(void) {
 }
 
 extern char sysStrBattleOnly[];
-extern char sysBATTLEONLYData[];
 s32 sysBATTLEONLY(void) {
     return effSelectCameraFileJobFromRows(sysStrBattleOnly, sysBATTLEONLYData, 0xD);
 }
@@ -3051,6 +3039,7 @@ u16 Start_sbtl(s32 flags) {
 
 #ifdef VERSION_RAIDOU1
 /* Effect editor pages for the effect kinds; see effDebugMenu_t. */
+s32 effEditMScaleTrack(BaObj *p);
 extern f32 bssWork66;
 extern f32 bssWork67;
 extern u8 bssWork68;
@@ -4059,9 +4048,12 @@ extern u8 effData9Entry34;
 extern s32 effData9Entry35;
 extern char effInitializeResourceQueueData[];
 extern char effLabelBlur[];
+void effLeaf401(void);
 extern char effLoadMaterialFileDataEntry[];
 extern char effPollAndQueueCopiedFileResourceDataEntry2[];
 extern f32 effPollAndQueueCopiedFileResourceDataEntry;
+s32 effPollMMaterialEplFile(void);
+s32 effPollMMaterialPbFile(void);
 extern char effStrAmplitude[];
 extern char effStrBillboard[];
 extern char effStrCrackPolygon[];
@@ -4073,6 +4065,62 @@ extern char effStrFlashPolygon[];
 extern char effStrOF2Cam[];
 extern char effStrSaveEp[];
 extern char effStrScaleUv[];
+extern char effStrToolEffectSampleBDist0Ep[];
+extern char effStrToolEffectSampleBFull0Ep[];
+extern char effStrToolEffectSampleBMulti0[];
+extern char effStrToolEffectSampleBParal0[];
+extern char effStrToolEffectSampleBRiple0[];
+extern char effStrToolEffectSampleCNomal0[];
+extern char effStrToolEffectSampleDBug0Ep[];
+extern char effStrToolEffectSampleDBug1Ep[];
+extern char effStrToolEffectSampleDPoint0[];
+extern char effStrToolEffectSampleEFlare0[];
+extern char effStrToolEffectSampleEQuake0[];
+extern char effStrToolEffectSampleEQuake20[];
+extern char effStrToolEffectSampleERain0Ep[];
+extern char effStrToolEffectSampleFFull0Ep[];
+extern char effStrToolEffectSampleFMulti0[];
+extern char effStrToolEffectSampleGHspak0[];
+extern char effStrToolEffectSampleGSmoke0[];
+extern char effStrToolEffectSampleGSpark0[];
+extern char effStrToolEffectSampleGSphre0[];
+extern char effStrToolEffectSampleGSpirl0[];
+extern char effStrToolEffectSampleKHspak0[];
+extern char effStrToolEffectSampleKSmoke0[];
+extern char effStrToolEffectSampleKSpark0[];
+extern char effStrToolEffectSampleKSphre0[];
+extern char effStrToolEffectSampleKSpirl0[];
+extern char effStrToolEffectSampleMAspak0[];
+extern char effStrToolEffectSampleMHspak0[];
+extern char effStrToolEffectSampleMSmoke0[];
+extern char effStrToolEffectSampleMSpark0[];
+extern char effStrToolEffectSampleMSphre0[];
+extern char effStrToolEffectSampleMSpirl0[];
+extern char effStrToolEffectSampleRCrcle0[];
+extern char effStrToolEffectSampleRCrcle1[];
+extern char effStrToolEffectSampleRNomal0[];
+extern char effStrToolEffectSampleRNomal1[];
+extern char effStrToolEffectSampleRTrack0[];
+extern char effStrToolEffectSampleSCylnd0[];
+extern char effStrToolEffectSampleSRadT0Ep[];
+extern char effStrToolEffectSampleSRadi1Ep[];
+extern char effStrToolEffectSampleSRing0Ep[];
+extern char effStrToolEffectSampleSRngT0Ep[];
+extern char effStrToolEffectSampleSSctT0Ep[];
+extern char effStrToolEffectSampleSSpark0[];
+extern char effStrToolEffectSampleSSpark1[];
+extern char effStrToolEffectSampleSSpkT0Ep[];
+extern char effStrToolEffectSampleSSpkT1Ep[];
+extern char effStrToolEffectSampleUCylnd0[];
+extern char effStrToolEffectSampleUSmoke0[];
+extern char effStrToolEffectSampleUSphre0[];
+extern char effStrToolEffectSampleUSpirl0[];
+extern char effStrToolEffectSampleWHspak0[];
+extern char effStrToolEffectSampleWSmoke0[];
+extern char effStrToolEffectSampleWSpark0[];
+extern char effStrToolEffectSampleWSphre0[];
+extern char effStrToolEffectSampleWSpirl0[];
+extern char effStrToolEffectSampleXNomal0[];
 extern char effStrVcEndIn[];
 extern char effStrVcEndOut[];
 extern char effStrVcStartIn[];
@@ -4467,6 +4515,41 @@ extern char sysStrOLightS[];
 extern char sysStrOMcolrS[];
 extern char sysStrResource[];
 extern char sysStrTBoard2[];
+extern char sysStrToolEffectSampleNCyldr0[];
+extern char sysStrToolEffectSampleNCylnd0[];
+extern char sysStrToolEffectSampleNCylnd1[];
+extern char sysStrToolEffectSampleNSphre0[];
+extern char sysStrToolEffectSampleNSpirl0[];
+extern char sysStrToolEffectSampleNSpirl1[];
+extern char sysStrToolEffectSampleNSpirl2[];
+extern char sysStrToolEffectSampleOEffL0Ep[];
+extern char sysStrToolEffectSampleOFldF0Ep[];
+extern char sysStrToolEffectSampleOFldL0Ep[];
+extern char sysStrToolEffectSampleOFovy0Ep[];
+extern char sysStrToolEffectSampleOLight0[];
+extern char sysStrToolEffectSampleOLight2[];
+extern char sysStrToolEffectSampleOMcolr0[];
+extern char sysStrToolEffectSampleOMcolr2[];
+extern char sysStrToolEffectSampleOMot0Ep[];
+extern char sysStrToolEffectSampleOSe0Ep[];
+extern char sysStrToolEffectSampleOUnitd0[];
+extern char sysStrToolEffectSampleOVibe0Ep[];
+extern char sysStrToolEffectSamplePAspak0[];
+extern char sysStrToolEffectSamplePAspak1[];
+extern char sysStrToolEffectSamplePHspak0[];
+extern char sysStrToolEffectSamplePHspak1[];
+extern char sysStrToolEffectSamplePSmoke0[];
+extern char sysStrToolEffectSamplePSmoke1[];
+extern char sysStrToolEffectSamplePSmoke2[];
+extern char sysStrToolEffectSamplePSpark0[];
+extern char sysStrToolEffectSamplePSpark1[];
+extern char sysStrToolEffectSamplePSpark2[];
+extern char sysStrToolEffectSamplePSphre0[];
+extern char sysStrToolEffectSamplePSphre1[];
+extern char sysStrToolEffectSamplePSpirl0[];
+extern char sysStrToolEffectSamplePSpirl1[];
+extern char sysStrToolEffectSampleTBoard0[];
+extern char sysStrToolEffectSampleTBoard1[];
 
 extern EffFileJobRequest sysPARTICLEDataEntry;
 extern effDebugMenuItem_t sysPARTICLEDataEntry89[];
@@ -5019,6 +5102,29 @@ extern effDebugMenu_t sysBATTLEONLYDataEntry19;
 extern EffFileJobRequest sysBATTLEONLYDataEntry20;
 extern effDebugMenuItem_t sysBATTLEONLYDataEntry48[];
 extern effDebugMenu_t sysBATTLEONLYDataEntry21;
+extern EffCameraCreateRow sysPARTICLEData[];
+extern EffCameraCreateRow effCreatePolyTrackControlTaskData[];
+extern EffCameraCreateRow effCreatePolyTrackTaskData[];
+extern EffCameraCreateRow effData9Entry[];
+extern EffCameraCreateRow effCreateBlurTaskData[];
+extern EffCameraCreateRow effCreateFilterTaskData[];
+extern EffCameraCreateRow effData9Entry2[];
+extern EffCameraCreateRow sysPOLYTEXData[];
+extern EffCameraCreateRow effCreateEnvironmentTaskData[];
+extern EffCameraCreateRow effCreatePolyFlashTaskData[];
+extern EffCameraCreateRow effCreatePolyRingTaskData[];
+extern EffCameraCreateRow effCreatePolyThunderTaskData[];
+extern EffCameraCreateRow effCreatePolyTwinkleTaskData[];
+extern EffCameraCreateRow sysPOLYWINDData[];
+extern EffCameraCreateRow effCreatePolyScalyTaskData[];
+extern EffCameraCreateRow effData9Entry3[];
+extern EffCameraCreateRow effCreatePolyCrackTaskData[];
+extern EffCameraCreateRow sysBATTLEONLYData[];
+extern EffCameraCreateRow effData9Entry4[];
+extern EffCameraCreateRow effData9Entry5[];
+extern EffCameraCreateRow effData9Entry6[];
+extern EffCameraCreateRow effCreateTwoDimensionalTaskData[];
+extern EffCameraCreateRow effCreatePolyWindTaskData[];
 
 EffFileJobRequest sysPARTICLEDataEntry = {
     sysPARTICLEDataEntry10, 1, { 0 }, 1, { 0 }, sysPARTICLEDataEntry16, 0xF0,
@@ -9834,6 +9940,204 @@ effDebugMenu_t sysBATTLEONLYDataEntry21 = {
     sysStrOMcolrS, 0x8, 8, 0, 0, sysBATTLEONLYDataEntry48, 12, &sysBATTLEONLYDataEntry20,
     effCreateBattleCameraJob, effInvokeFileJobWithBattleCamera, effFileJobQueueRelease, &effData38,
     effCreateBattleCameraJob, NULL,
+};
+
+EffCameraCreateRow sysPARTICLEData[15] __attribute__((aligned(16))) = {
+    { { &sysPARTICLEDataEntry, &sysPARTICLEDataEntry2, sysStrToolEffectSamplePSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry, &sysPARTICLEDataEntry2, sysStrToolEffectSamplePSmoke1, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry, &sysPARTICLEDataEntry2, sysStrToolEffectSamplePSmoke2, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry93, &sysPARTICLEDataEntry3, sysStrToolEffectSamplePSpark0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry93, &sysPARTICLEDataEntry3, sysStrToolEffectSamplePSpark1, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry93, &sysPARTICLEDataEntry3, sysStrToolEffectSamplePSpark2, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry21, &sysPARTICLEDataEntry4, sysStrToolEffectSamplePSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry21, &sysPARTICLEDataEntry4, sysStrToolEffectSamplePSpirl1, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry5, &sysPARTICLEDataEntry6, sysStrToolEffectSamplePSphre0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry5, &sysPARTICLEDataEntry6, sysStrToolEffectSamplePSphre1, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry24, &sysPARTICLEDataEntry7, sysStrToolEffectSamplePHspak0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry24, &sysPARTICLEDataEntry7, sysStrToolEffectSamplePHspak1, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry8, &sysPARTICLEDataEntry9, sysStrToolEffectSamplePAspak0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPARTICLEDataEntry8, &sysPARTICLEDataEntry9, sysStrToolEffectSamplePAspak1, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreatePolyTrackControlTaskData[6] __attribute__((aligned(16))) = {
+    { { &effCreatePolyTrackControlTaskDataEntry13, &effCreatePolyTrackControlTaskDataEntry, effStrToolEffectSampleGSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTrackControlTaskDataEntry2, &effCreatePolyTrackControlTaskDataEntry3, effStrToolEffectSampleGSpark0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTrackControlTaskDataEntry68, &effCreatePolyTrackControlTaskDataEntry4, effStrToolEffectSampleGSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTrackControlTaskDataEntry17, &effCreatePolyTrackControlTaskDataEntry5, effStrToolEffectSampleGSphre0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTrackControlTaskDataEntry6, &effCreatePolyTrackControlTaskDataEntry7, effStrToolEffectSampleGHspak0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreatePolyTrackTaskData[6] __attribute__((aligned(16))) = {
+    { { &effCreatePolyTrackTaskDataEntry66, &effCreatePolyTrackTaskDataEntry, effStrToolEffectSampleKSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTrackTaskDataEntry71, &effCreatePolyTrackTaskDataEntry2, effStrToolEffectSampleKSpark0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTrackTaskDataEntry75, &effCreatePolyTrackTaskDataEntry3, effStrToolEffectSampleKSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTrackTaskDataEntry80, &effCreatePolyTrackTaskDataEntry4, effStrToolEffectSampleKSphre0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTrackTaskDataEntry12, &effCreatePolyTrackTaskDataEntry5, effStrToolEffectSampleKHspak0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effData9Entry[2] __attribute__((aligned(16))) = {
+    { { &fileLoadEffectSlotAData, &effData9Entry7, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreateBlurTaskData[6] __attribute__((aligned(16))) = {
+    { { &effCreateBlurTaskDataEntry10, &effCreateBlurTaskDataEntry, effStrToolEffectSampleBFull0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreateBlurTaskDataEntry45, &effCreateBlurTaskDataEntry2, effStrToolEffectSampleBMulti0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreateBlurTaskDataEntry3, &effCreateBlurTaskDataEntry4, effStrToolEffectSampleBDist0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreateBlurTaskDataEntry14, &effCreateBlurTaskDataEntry5, effStrToolEffectSampleBRiple0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreateBlurTaskDataEntry16, &effCreateBlurTaskDataEntry6, effStrToolEffectSampleBParal0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreateFilterTaskData[3] __attribute__((aligned(16))) = {
+    { { &effCreateFilterTaskDataEntry5, &effCreateFilterTaskDataEntry, effStrToolEffectSampleFFull0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreateFilterTaskDataEntry7, &effCreateFilterTaskDataEntry2, effStrToolEffectSampleFMulti0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effData9Entry2[2] __attribute__((aligned(16))) = {
+    { { &effData9Entry15, &effData9Entry9, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow sysPOLYTEXData[3] __attribute__((aligned(16))) = {
+    { { &sysPOLYTEXDataEntry4, &sysPOLYTEXDataEntry, sysStrToolEffectSampleTBoard0, { 0.0f, -10.0f, 0.0f } }, 0 },
+    { { &sysPOLYTEXDataEntry6, &sysPOLYTEXDataEntry2, sysStrToolEffectSampleTBoard1, { 0.0f, -10.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreateEnvironmentTaskData[5] __attribute__((aligned(16))) = {
+    { { &effCreateEnvironmentTaskDataEntry10, &effCreateEnvironmentTaskDataEntry, effStrToolEffectSampleERain0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreateEnvironmentTaskDataEntry2, &effCreateEnvironmentTaskDataEntry3, effStrToolEffectSampleEFlare0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreateEnvironmentTaskDataEntry13, &effCreateEnvironmentTaskDataEntry4, effStrToolEffectSampleEQuake0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreateEnvironmentTaskDataEntry15, &effCreateEnvironmentTaskDataEntry5, effStrToolEffectSampleEQuake20, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreatePolyFlashTaskData[11] __attribute__((aligned(16))) = {
+    { { &effCreatePolyFlashTaskDataEntry132, &effCreatePolyFlashTaskDataEntry4, effStrToolEffectSampleSRadT0Ep, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyFlashTaskDataEntry135, &effCreatePolyFlashTaskDataEntry5, effStrToolEffectSampleSSpkT0Ep, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyFlashTaskDataEntry135, &effCreatePolyFlashTaskDataEntry5, effStrToolEffectSampleSSpkT1Ep, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyFlashTaskDataEntry147, &effCreatePolyFlashTaskDataEntry8, effStrToolEffectSampleSSctT0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyFlashTaskDataEntry18, &effCreatePolyFlashTaskDataEntry6, effStrToolEffectSampleSRngT0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyFlashTaskDataEntry12, &effCreatePolyFlashTaskDataEntry, effStrToolEffectSampleSRadi1Ep, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyFlashTaskDataEntry125, &effCreatePolyFlashTaskDataEntry2, effStrToolEffectSampleSSpark0, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyFlashTaskDataEntry125, &effCreatePolyFlashTaskDataEntry2, effStrToolEffectSampleSSpark1, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyFlashTaskDataEntry143, &effCreatePolyFlashTaskDataEntry7, effStrToolEffectSampleSRing0Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyFlashTaskDataEntry128, &effCreatePolyFlashTaskDataEntry3, effStrToolEffectSampleSCylnd0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreatePolyRingTaskData[6] __attribute__((aligned(16))) = {
+    { { &effCreatePolyRingTaskDataEntry28, &effCreatePolyRingTaskDataEntry, effStrToolEffectSampleRNomal0, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyRingTaskDataEntry28, &effCreatePolyRingTaskDataEntry, effStrToolEffectSampleRNomal1, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyRingTaskDataEntry6, &effCreatePolyRingTaskDataEntry2, effStrToolEffectSampleRTrack0, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyRingTaskDataEntry31, &effCreatePolyRingTaskDataEntry3, effStrToolEffectSampleRCrcle0, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyRingTaskDataEntry31, &effCreatePolyRingTaskDataEntry3, effStrToolEffectSampleRCrcle1, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreatePolyThunderTaskData[4] __attribute__((aligned(16))) = {
+    { { &effCreatePolyThunderTaskDataEntry, &effCreatePolyThunderTaskDataEntry2, effStrToolEffectSampleDPoint0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyThunderTaskDataEntry24, &effCreatePolyThunderTaskDataEntry3, effStrToolEffectSampleDBug0Ep, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &effCreatePolyThunderTaskDataEntry24, &effCreatePolyThunderTaskDataEntry3, effStrToolEffectSampleDBug1Ep, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreatePolyTwinkleTaskData[6] __attribute__((aligned(16))) = {
+    { { &effCreatePolyTwinkleTaskDataEntry62, &effCreatePolyTwinkleTaskDataEntry, effStrToolEffectSampleWSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTwinkleTaskDataEntry67, &effCreatePolyTwinkleTaskDataEntry2, effStrToolEffectSampleWSpark0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTwinkleTaskDataEntry71, &effCreatePolyTwinkleTaskDataEntry3, effStrToolEffectSampleWSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTwinkleTaskDataEntry76, &effCreatePolyTwinkleTaskDataEntry4, effStrToolEffectSampleWSphre0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &effCreatePolyTwinkleTaskDataEntry5, &effCreatePolyTwinkleTaskDataEntry6, effStrToolEffectSampleWHspak0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow sysPOLYWINDData[8] __attribute__((aligned(16))) = {
+    { { &sysPOLYWINDDataEntry, &sysPOLYWINDDataEntry2, sysStrToolEffectSampleNSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPOLYWINDDataEntry, &sysPOLYWINDDataEntry2, sysStrToolEffectSampleNSpirl1, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPOLYWINDDataEntry, &sysPOLYWINDDataEntry2, sysStrToolEffectSampleNSpirl2, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPOLYWINDDataEntry77, &sysPOLYWINDDataEntry4, sysStrToolEffectSampleNSphre0, { 0.0f, -200.0f, 0.0f } }, 0 },
+    { { &sysPOLYWINDDataEntry71, &sysPOLYWINDDataEntry3, sysStrToolEffectSampleNCylnd0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPOLYWINDDataEntry71, &sysPOLYWINDDataEntry3, sysStrToolEffectSampleNCylnd1, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &sysPOLYWINDDataEntry81, &sysPOLYWINDDataEntry5, sysStrToolEffectSampleNCyldr0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreatePolyScalyTaskData[5] __attribute__((aligned(16))) = {
+    { { &effCreatePolyScalyTaskDataEntry44, &effCreatePolyScalyTaskDataEntry, effStrToolEffectSampleUCylnd0, { 0.0f, -100.0f, 0.0f } }, 0 },
+    { { &effCreatePolyScalyTaskDataEntry56, &effCreatePolyScalyTaskDataEntry4, effStrToolEffectSampleUSphre0, { 0.0f, -160.0f, 0.0f } }, 0 },
+    { { &effCreatePolyScalyTaskDataEntry48, &effCreatePolyScalyTaskDataEntry2, effStrToolEffectSampleUSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyScalyTaskDataEntry52, &effCreatePolyScalyTaskDataEntry3, effStrToolEffectSampleUSpirl0, { 0.0f, -100.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effData9Entry3[2] __attribute__((aligned(16))) = {
+    { { &fileLoadEffectSlotBData, &effData9Entry10, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreatePolyCrackTaskData[2] __attribute__((aligned(16))) = {
+    { { &effCreatePolyCrackTaskDataEntry10, &effCreatePolyCrackTaskDataEntry, effStrToolEffectSampleCNomal0, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow sysBATTLEONLYData[13] __attribute__((aligned(16))) = {
+    { { &sysBATTLEONLYDataEntry, &sysBATTLEONLYDataEntry2, sysStrToolEffectSampleOLight0, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry3, &sysBATTLEONLYDataEntry4, sysStrToolEffectSampleOMcolr0, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry5, &sysBATTLEONLYDataEntry6, sysStrToolEffectSampleOEffL0Ep, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry37, &sysBATTLEONLYDataEntry7, sysStrToolEffectSampleOMot0Ep, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry8, &sysBATTLEONLYDataEntry9, sysStrToolEffectSampleOSe0Ep, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry10, &sysBATTLEONLYDataEntry11, sysStrToolEffectSampleOFldL0Ep, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry42, &sysBATTLEONLYDataEntry14, sysStrToolEffectSampleOFldF0Ep, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry12, &sysBATTLEONLYDataEntry13, sysStrToolEffectSampleOVibe0Ep, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry15, &sysBATTLEONLYDataEntry16, sysStrToolEffectSampleOFovy0Ep, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry45, &sysBATTLEONLYDataEntry17, sysStrToolEffectSampleOUnitd0, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry18, &sysBATTLEONLYDataEntry19, sysStrToolEffectSampleOLight2, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { &sysBATTLEONLYDataEntry20, &sysBATTLEONLYDataEntry21, sysStrToolEffectSampleOMcolr2, { 0.0f, -1.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effData9Entry4[2] __attribute__((aligned(16))) = {
+    { { &effPollAndQueueCopiedFileResourceData, &effData9Entry8, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effData9Entry5[2] __attribute__((aligned(16))) = {
+    { { &effLoadFileSlotF2Data, &effData9Entry11, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effData9Entry6[2] __attribute__((aligned(16))) = {
+    { { &effLoadMaterialFileData, &effData9Entry12, NULL, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreateTwoDimensionalTaskData[2] __attribute__((aligned(16))) = {
+    { { &effCreateTwoDimensionalTaskDataEntry2, &effCreateTwoDimensionalTaskDataEntry, effStrToolEffectSampleXNomal0, { 0.0f, -10.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow effCreatePolyWindTaskData[7] __attribute__((aligned(16))) = {
+    { { &effCreatePolyWindTaskDataEntry83, &effCreatePolyWindTaskDataEntry, effStrToolEffectSampleMSmoke0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyWindTaskDataEntry88, &effCreatePolyWindTaskDataEntry2, effStrToolEffectSampleMSpark0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &effCreatePolyWindTaskDataEntry14, &effCreatePolyWindTaskDataEntry3, effStrToolEffectSampleMSpirl0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyWindTaskDataEntry96, &effCreatePolyWindTaskDataEntry4, effStrToolEffectSampleMSphre0, { 0.0f, -150.0f, 0.0f } }, 0 },
+    { { &effCreatePolyWindTaskDataEntry100, &effCreatePolyWindTaskDataEntry5, effStrToolEffectSampleMHspak0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { &effCreatePolyWindTaskDataEntry18, &effCreatePolyWindTaskDataEntry6, effStrToolEffectSampleMAspak0, { 0.0f, 0.0f, 0.0f } }, 0 },
+    { { NULL } },
+};
+
+EffCameraCreateRow *effData9[24] = {
+    NULL, sysPARTICLEData, effCreatePolyTrackControlTaskData, effCreatePolyTrackTaskData,
+    effData9Entry, effCreateBlurTaskData, effCreateFilterTaskData, effData9Entry2,
+    sysPOLYTEXData, effCreateEnvironmentTaskData, effCreatePolyFlashTaskData, effCreatePolyRingTaskData,
+    effCreatePolyThunderTaskData, effCreatePolyTwinkleTaskData, sysPOLYWINDData, effCreatePolyScalyTaskData,
+    effData9Entry3, effCreatePolyCrackTaskData, sysBATTLEONLYData, effData9Entry5,
+    effData9Entry6, effCreateTwoDimensionalTaskData, effCreatePolyWindTaskData, effData9Entry4,
 };
 
 #endif

@@ -702,7 +702,7 @@ segments:
       - [0x2F09A8, .data, code_r1_001C4B78]
       - [0x2F0A08, data, data_003EFA08]
       - [0x3049F0, .data, code_r1_00242308]
-      - [0x316620, data, data_00415620]
+      - [0x317448, data, data_00416448]
       - [0x31E5B0, .data, code_r1_0014F378]
       - [0x31F858, data, data_0041E858]
       - [0x33CBF0, .data, newbattle/nbAiScript]

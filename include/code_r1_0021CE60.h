@@ -740,7 +740,7 @@ void fileQueueDetachSectorFollower(FileQueue *queue, FileJob *job);
 typedef struct EffCameraCreateRequest {
     struct EffFileJobRequest *resource;
     struct effDebugMenu_t *object;
-    u32 existingJob;
+    const char *path;
     f32 position[3];
 } EffCameraCreateRequest;
 
