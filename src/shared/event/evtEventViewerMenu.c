@@ -68,7 +68,7 @@ enum {
 
 /* Shared 0x40-byte event-viewer control state. Unobserved input slots remain
  * opaque; the named bytes are consumed by both titles' editor handlers. */
-typedef struct EvtPad {
+typedef struct evtPad_t {
     u8 pad00[6];
     s8 frameEnd; /* +0x06: jump from group properties to the last key. */
     s8 frameStart; /* +0x07: jump from group properties to the first key. */
@@ -88,9 +88,9 @@ typedef struct EvtPad {
     s8 apply; /* 0x2C */
     s8 select; /* 0x2D: port 0 Select in input bank 1. */
     u8 pad2E[0x12]; /* Remaining two-bank, two-port input backing. */
-} EvtPad;
+} evtPad_t;
 
-typedef char EvtPad_size_must_be_0x40[(sizeof(EvtPad) == 0x40) ? 1 : -1];
+typedef char evtPad_size_must_be_0x40[(sizeof(evtPad_t) == 0x40) ? 1 : -1];
 
 struct SoundMixer;
 
@@ -109,7 +109,7 @@ void evtDrawMenuFrame(sdfDrawTag_t *list, s32 x, s32 y, s32 width, s32 rows, s32
                    EvtMenuHeaderFn header, EvtMenuRowFn row);
 
 extern sdfGrOt_t sdfDebugGrOt;
-extern EvtPad dds3PadButtonState;
+extern evtPad_t dds3PadButtonState;
 extern char evtFmtStr[];
 
 void evtViewerDrawPendingNodeRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
@@ -118,16 +118,16 @@ s32 mnuDrawInfoWindowB(s32 x, s32 y, evtViewerInfo_t *work);
 s32 mnuDrawCutFlagLabel(sdfDrawTag_t *target, s32 x, s32 y);
 s32 mnuDrawMotionChangeLabel(sdfDrawTag_t *target, s32 x, s32 y);
 
-typedef struct EvtMotionBits {
+typedef struct evtMotionBits_t {
     s32 group : 8;
     s32 motion : 8;
     s32 loop : 8;
     s32 hokan : 8;
-} EvtMotionBits;
+} evtMotionBits_t;
 
 typedef union EvtMotionValue {
     s32 word;
-    EvtMotionBits bits;
+    evtMotionBits_t bits;
 } EvtMotionValue;
 
 extern char evtDrawGroupListRowData2[];
@@ -158,22 +158,22 @@ extern char evtViewerDrawGroupRowData[];
 void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx);
 s32 evtViewerDrawGroupWindow(s32 x, s32 y, evtViewerInfo_t *ctx);
 
-typedef struct EvtSelectionCache {
+typedef struct evtSelectionCache_t {
     u8 pad00[0x24];
     s32 selectedEntry; /* 0x24 */
-} EvtSelectionCache;
+} evtSelectionCache_t;
 
 dds3TaskUpdateResult_t evtPollRuntimeControlReady(dds3ProcessID_t *task);
 
 typedef char EvtViewKey_size_must_be_0x38[(sizeof(EvtRuntimeChild) == 0x38) ? 1 : -1];
 
-typedef char EvtCameraColorPayload_size_must_be_0x40[
-    (sizeof(EvtCameraColorPayload) == 0x40) ? 1 : -1];
+typedef char evtCameraColorPayload_size_must_be_0x40[
+    (sizeof(evtCameraColorPayload_t) == 0x40) ? 1 : -1];
 
 extern s32 (*evtDispatchActionByIndexData[])(s32, s32, evtViewerInfo_t *);
 
 /* Fixed prefix shared by PMD directory streams. */
-typedef struct EvtPmdFilePrefix {
+typedef struct evtViewerFileHeader_t {
     u8 reserved00;
     u8 reserved01;
     u16 reserved02;
@@ -184,12 +184,12 @@ typedef struct EvtPmdFilePrefix {
     s32 kind;
     s32 reserved18;
     s32 reserved1C;
-} EvtPmdFilePrefix;
+} evtViewerFileHeader_t;
 
-typedef char EvtPmdFilePrefix_size_check[sizeof(EvtPmdFilePrefix) == 0x20 ? 1 : -1];
+typedef char evtViewerFileHeader_size_check[sizeof(evtViewerFileHeader_t) == 0x20 ? 1 : -1];
 
 /* PM1 section 2 and section 3 use the same 0x20-byte package record. */
-typedef struct EvtViewerPackageRecord {
+typedef struct evtViewerPackageRecord_t {
     s32 nameIndex;
     s32 reserved04;
     s32 packageId;
@@ -198,20 +198,20 @@ typedef struct EvtViewerPackageRecord {
     s32 length;
     s32 loadOrder;
     s32 reserved1C;
-} EvtViewerPackageRecord;
+} evtViewerPackageRecord_t;
 
 /* PM1 auxiliary and texture section entries each occupy 0x10 bytes. */
-typedef struct EvtViewerResourceRecord {
+typedef struct evtViewerResourceRecord_t {
     s32 nameIndex;
     u32 offset;
     s32 kind;
     s32 reserved0C;
-} EvtViewerResourceRecord;
+} evtViewerResourceRecord_t;
 
 /* The section-21 wire record is also the group's link subobject at +0x18. */
-typedef char EvtViewerPackageRecord_size[(sizeof(EvtViewerPackageRecord) == 0x20) ? 1 : -1];
+typedef char evtViewerPackageRecord_size[(sizeof(evtViewerPackageRecord_t) == 0x20) ? 1 : -1];
 
-typedef char EvtViewerResourceRecord_size[(sizeof(EvtViewerResourceRecord) == 0x10) ? 1 : -1];
+typedef char evtViewerResourceRecord_size[(sizeof(evtViewerResourceRecord_t) == 0x10) ? 1 : -1];
 
 typedef struct { u8 bytes[0x18]; } EvtRowPayload18;
 
@@ -435,7 +435,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtGROUPMAX);
 INCLUDE_ASM(const s32, "event/evtEventViewerMenu", evtCallMenuDisp4);
 
 void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     s32 color;
     s32 n;
 
@@ -465,7 +465,7 @@ void evtDrawGroupListRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerI
 }
 
 s32 evtUpdateGroupListDialog(s32 x, s32 y, evtViewerInfo_t *ctx) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     s32 count = 0;
     sdfDrawTag_t *packets;
     s32 shown = 15;
@@ -552,7 +552,7 @@ INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtCallMenuDisp5Table);
 INCLUDE_RODATA(const s32, "event/evtEventViewerMenu", evtStrFaceDiv);
 
 void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewerInfo_t *ctx) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     s32 color;
     s32 n;
 
@@ -581,7 +581,7 @@ void evtViewerDrawGroupRow(sdfDrawTag_t *list, s32 x, s32 y, s32 index, evtViewe
 }
 
 s32 evtViewerDrawGroupWindow(s32 x, s32 y, evtViewerInfo_t *ctx) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     s32 count = 0;
     sdfDrawTag_t *packets;
     s32 shown = 15;

@@ -19,38 +19,17 @@ typedef s32 ItfMesWindowIndex;
 /* PMD2 records and the complete 0x11C-byte owner cleared by both games'
  * InitPolygonMovieWorkData. Movie parsing, asynchronous resource loading,
  * viewer dialogs and message-window lifetime all use this single object. */
-typedef struct PmdEntry {
-    u32 type;     /* 0x00 */
-    u32 elementSize; /* 0x04: serialized payload bytes per element. */
-    u32 value;    /* 0x08 */
-    u32 offset;   /* 0x0C */
-} PmdEntry;
-
-typedef struct PmdHeader {
-    s8 FileType;
-    s8 FileFormat;
-    s16 UserID;
-    s32 FileSize;
-    char MagicCode[4];
-    s32 ExpandSize;
-    s32 count;    /* 0x10 */
-    s32 kind;     /* 0x14 */
-    s32 Reserve2;
-    s32 Reserve3;
-    const PmdEntry entries[1]; /* 0x20: serialized records are read-only. */
-} PmdHeader;
-
-typedef struct PolyMovieResourceSlot {
+typedef struct evtPolyMovieResourceSlot_t {
     struct fileRequest *request;
     sdfMemHandle_t *handle;
-    PmdHeader *address;
-} PolyMovieResourceSlot;
+    pmdHeader_t *address;
+} evtPolyMovieResourceSlot_t;
 
 typedef struct PolyMovieWork {
     EvtPolygonMovieWorkFlags flags; /* 0x00 */
-    PolyMovieResourceSlot mainResource; /* 0x04 */
-    PmdHeader *data;   /* 0x10 */
-    const PmdEntry *entries; /* 0x14: borrowed directory records. */
+    evtPolyMovieResourceSlot_t mainResource; /* 0x04 */
+    pmdHeader_t *data;   /* 0x10 */
+    const pmdEntry_t *entries; /* 0x14: borrowed directory records. */
     u8 *mainEntry1Data;   /* 0x18 */
     u32 mainEntry1Value; /* 0x1C: value from the main type-1 entry. */
     u8 *mainEntry2Data;   /* 0x20 */
@@ -68,17 +47,17 @@ typedef struct PolyMovieWork {
     u8 *mainEntry22Data;  /* 0x50 */
     u32 mainEntry22Count; /* 0x54: PMD type-22 texture row count */
     u8 *mainEntry23Data;  /* 0x58 */
-    PolyMovieResourceSlot secondaryResource; /* 0x5C */
-    PolyMovieResourceSlot tertiaryResource; /* 0x68 */
-    PmdHeader *sub;    /* 0x74 */
-    const PmdEntry *subEntries; /* 0x78: borrowed directory records. */
+    evtPolyMovieResourceSlot_t secondaryResource; /* 0x5C */
+    evtPolyMovieResourceSlot_t tertiaryResource; /* 0x68 */
+    pmdHeader_t *sub;    /* 0x74 */
+    const pmdEntry_t *subEntries; /* 0x78: borrowed directory records. */
     u8 *subEntry1Data;    /* 0x7C */
     u32 subEntry1Value; /* 0x80: value from the secondary type-1 entry. */
     u8 *subEntry0Data;    /* 0x84 */
     const struct EvtCompactRow *subEntry4Kind4Data; /* 0x88 */
     const struct EvtExtendedRow *subEntry4OtherData; /* 0x8C */
-    PmdHeader *sub2;   /* 0x90 */
-    const PmdEntry *sub2Entries; /* 0x94: borrowed directory records. */
+    pmdHeader_t *sub2;   /* 0x90 */
+    const pmdEntry_t *sub2Entries; /* 0x94: borrowed directory records. */
     const struct EvtExtendedRow *secondEntry4Data; /* 0x98 */
     u32 extendedEntry4Count; /* 0x9C: rows in the extended type-4 table */
     u32 subEntry4Count; /* 0xA0 */
@@ -146,14 +125,14 @@ typedef struct EvtRuntimeChild {
 } EvtRuntimeChild;
 
 /* Serialized and embedded group-link metadata share these eight bytes. */
-typedef struct EvtGroupMetadata {
+typedef struct evtGroupMetadata_t {
     u8 type;
     u8 flag;
     s16 entry;
     s16 value;
     s8 option; /* +0x06: type-specific group mode chosen by the viewer. */
     s8 extra2;
-} EvtGroupMetadata;
+} evtGroupMetadata_t;
 
 typedef s32 EvtViewerParameterKeySource;
 
@@ -182,10 +161,10 @@ typedef union EvtFrameRange {
 
 typedef char EvtRuntimeChild_size[(sizeof(EvtRuntimeChild) == 0x38) ? 1 : -1];
 
-typedef char EvtGroupMetadata_size[(sizeof(EvtGroupMetadata) == 8) ? 1 : -1];
+typedef char evtGroupMetadata_size[(sizeof(evtGroupMetadata_t) == 8) ? 1 : -1];
 
 /* Complete 0x84-byte entry: metadata, selected object and owned key list. */
-typedef struct EvtRuntimeGroup {
+typedef struct evtViewerObject_t {
     s32 type;
     union {
         struct { u8 metadataFlag; u8 pad05[3]; };
@@ -200,7 +179,7 @@ typedef struct EvtRuntimeGroup {
         struct SoundMixer *soundMixerResource; /* Type 0x12 borrowed BED template. */
         struct { u16 resourceGroup, resourceId; } resourceIds;
     };
-    EvtGroupMetadata metadata;
+    evtGroupMetadata_t metadata;
     u8 pad20[4];
     sdfTexHandle_t *texture; /* Retained kind-0x18 texture; released with the group. */
     EvtViewerParameterKeySource parameterKeySource; /* 0x28: timeline or pending key. */
@@ -212,11 +191,11 @@ typedef struct EvtRuntimeGroup {
     EvtRuntimeChild *lastChild;
     EvtRuntimeChild *motionKeyCache[4]; /* Last applied key for each model motion channel. */
     u8 pad6C[0x10];
-    struct EvtRuntimeGroup *next;
-    struct EvtRuntimeGroup *prev;
-} EvtRuntimeGroup;
+    struct evtViewerObject_t *next;
+    struct evtViewerObject_t *prev;
+} evtViewerObject_t;
 
-typedef char EvtRuntimeGroup_size[(sizeof(EvtRuntimeGroup) == 0x84) ? 1 : -1];
+typedef char evtViewerObject_size[(sizeof(evtViewerObject_t) == 0x84) ? 1 : -1];
 
 /* One allocation retained by the EventViewer task. Camp-named timeline
  * helpers receive this same pointer; their old types omitted the voice tail. */
@@ -239,8 +218,8 @@ struct evtViewerInfo_t {
     u8 freecamera[4];
     dds3Basic_t *gamecamera;
     s32 objcnt;
-    EvtRuntimeGroup *firstobjinfo;
-    EvtRuntimeGroup *lastTrack;
+    evtViewerObject_t *firstobjinfo;
+    evtViewerObject_t *lastTrack;
     dds3Basic_t *effectBasic[127];
     s32 framedisp;
     evtViewerMenuEntry_t menuStack[8];
@@ -272,7 +251,7 @@ struct evtViewerInfo_t {
     s32 framelist_x;
     s32 frameFirst;
     s32 frameCursor;
-    EvtRuntimeGroup *framelist_target;
+    evtViewerObject_t *framelist_target;
     s32 framelist_type;
     s32 value;
     s32 min;

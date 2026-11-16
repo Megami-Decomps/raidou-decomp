@@ -146,7 +146,7 @@ struct EffNodeDescriptor;
 
 extern u8 evtViewerHasUpdateFlag(evtViewerInfo_t *);
 
-typedef struct CampDisplayDefaults CampDisplayDefaults;
+typedef struct pmdTmxData_t pmdTmxData_t;
 
 void evtApplyViewerTimelineFrame(s32 time, evtViewerInfo_t *viewer);
 void evtViewerPushCommandHistory(s32 actionMode, s32 first, s32 second, evtViewerInfo_t *viewer);
@@ -155,15 +155,15 @@ dds3TaskUpdateResult_t evtViewerUpdateFrame(dds3ProcessID_t *task);
 
 struct EffNode;
 
-typedef struct EvtViewerObjectData {
+typedef struct evtViewerObjectData_t {
     u8 pad00[0xC];
     struct EffNode *parameterNode;
-} EvtViewerObjectData;
+} evtViewerObjectData_t;
 
 u16 evtViewerPopHistory(evtViewerInfo_t *viewer);
 extern char evtViewerTaskName[];
 
-typedef struct CampDisplayDefaults CampDisplayDefaults;
+typedef struct pmdTmxData_t pmdTmxData_t;
 
 extern void ValidatePathFrame(s32 endTime, evtViewerInfo_t *viewer);
 extern void evtViewerApplyGlyphLodChannel(s32 position, evtViewerInfo_t *viewer);
@@ -172,7 +172,7 @@ EvtRuntimeChild *evtViewFindGlyphAtOrBefore(evtViewerInfo_t *viewer);
 extern void evtSetMovieClipPositionClampedToDuration(dds3Basic_t *movie, s32 unused, s32 start, s32 end, s32 offset);
 void ValidatePathFrame(s32 endTime, evtViewerInfo_t *viewer);
 
-extern EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
+extern EvtRuntimeChild *GetUnitMotionChangeFrame(evtViewerObject_t *group, s32 frame,
                                                              MdlMotionSearchId channel);
 
 extern u32 sdfGetLodChunkValue(sdfModelRootNode_t *model);
@@ -180,7 +180,7 @@ void evtViewerApplyGlyphLodChannel(s32 position, evtViewerInfo_t *viewer);
 void ValidateUnitPosChange(s32 position, evtViewerInfo_t *viewer);
 u8 evtViewerHasUpdateFlag(evtViewerInfo_t *viewer);
 
-EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
+EvtRuntimeChild *GetUnitMotionChangeFrame(evtViewerObject_t *group, s32 frame,
                                                       MdlMotionSearchId channel);
 
 enum {
@@ -242,7 +242,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtAddViewerObject);
 INCLUDE_ASM(const s32, "event/evtEventViewer", evtGetViewerObjectTypeCount);
 
 s32 evtEventViewerCountEntries(evtViewerInfo_t *viewer) {
-    EvtRuntimeGroup *entry;
+    evtViewerObject_t *entry;
     s32 entryCount;
 
     entryCount = 0;
@@ -254,7 +254,7 @@ s32 evtEventViewerCountEntries(evtViewerInfo_t *viewer) {
 
 /* PM2 skips group ids 5/0x13; PM3 serializes only those groups. */
 s32 evtEventViewerSumNodeCounts(EvtViewerTrackFileFormat format, evtViewerInfo_t *viewer) {
-    EvtRuntimeGroup *entry;
+    evtViewerObject_t *entry;
     s32 total;
 
     total = 0;
@@ -346,7 +346,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", evtRunFrame);
 EvtRuntimeChild *evtViewFindGlyphAtOrBefore(evtViewerInfo_t *viewer) {
     EvtRuntimeChild *result = NULL;
     s32 best = 99999;
-    EvtRuntimeGroup *node = viewer->firstobjinfo;
+    evtViewerObject_t *node = viewer->firstobjinfo;
 
     while (node != NULL) {
         if (node->type == 2) {
@@ -379,7 +379,7 @@ void ValidatePathFrame(s32 endTime, evtViewerInfo_t *viewer) {
     evtWorldTable_t *worldTable;
     evtWorldSlot_t *worldSlots;
     dds3Basic_t *movieObject;
-    EvtRuntimeGroup *trackEntry;
+    evtViewerObject_t *trackEntry;
     s32 startFrame;
     s32 extra;
     EvtRuntimeChild *glyph;
@@ -429,7 +429,7 @@ INCLUDE_ASM(const s32, "event/evtEventViewer", ValidateUnitMotionFrame);
 /* Applies the latest kind-6 key at/before position to a kind-1 track's LOD
  * byte, provided the requested signed-byte level is supported by its chunk. */
 void evtViewerApplyGlyphLodChannel(s32 position, evtViewerInfo_t *viewer) {
-    EvtRuntimeGroup *node = viewer->firstobjinfo;
+    evtViewerObject_t *node = viewer->firstobjinfo;
     EvtRuntimeChild *glyph;
     EvtRuntimeChild *best;
     s32 bestFrame;
@@ -467,7 +467,7 @@ void evtViewerApplyGlyphLodChannel(s32 position, evtViewerInfo_t *viewer) {
 /* At an exact kind-7 key frame, attaches the indexed world object. Index -1
  * restores the saved vectors; losing the active key restores them once too. */
 void ValidateUnitPosChange(s32 position, evtViewerInfo_t *viewer) {
-    EvtRuntimeGroup *node = viewer->firstobjinfo;
+    evtViewerObject_t *node = viewer->firstobjinfo;
 
     while (node != NULL) {
         if (node->type == 1) {
@@ -553,7 +553,7 @@ void evtProcess3Sub2(evtViewerInfo_t *viewer) {
 
 /* Returns the latest eligible kind-5 motion key at/before frame for channel,
  * or NULL. Its condition must pass; equal-frame ties retain the first key. */
-EvtRuntimeChild *GetUnitMotionChangeFrame(EvtRuntimeGroup *group, s32 frame,
+EvtRuntimeChild *GetUnitMotionChangeFrame(evtViewerObject_t *group, s32 frame,
                                                       MdlMotionSearchId channel) {
     s32 bestFrame = -1;
     EvtRuntimeChild *best = NULL;

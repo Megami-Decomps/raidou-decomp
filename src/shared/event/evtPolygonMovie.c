@@ -469,7 +469,7 @@ void evtHokanHeikouBlur(s32 enable, f32 t, const dds3Effect_Blur_t *a, const dds
     }
 }
 
-void evtBlendParamsH(s32 enable, f32 t, const EvtBlendKey *a, const EvtBlendKey *b, EvtBlendKey *out)
+void evtBlendParamsH(s32 enable, f32 t, const evtBlendKey_t *a, const evtBlendKey_t *b, evtBlendKey_t *out)
 {
     s32 colorChannelIndex;
 

@@ -90,11 +90,11 @@ struct MenuTerminalWork;
 
 #define DSP_DIALOG_TEXT_BYTES 0x11
 
-typedef struct EvtActiveFlagTable {
+typedef struct evtActiveFlagTable_t {
     s32 unk0;
     s32 unk4;
     s8 flags[0];
-} EvtActiveFlagTable;
+} evtActiveFlagTable_t;
 
 typedef struct {
     u8 entryCount;
@@ -126,10 +126,10 @@ ScrCommandResult evtOpReadDisplayValue(void);
 
 /* The outer panel owner is unresolved; its list pointer is shared by
  * the viewport flag and height consumers. */
-typedef struct EvtListPanelRecord {
+typedef struct evtListPanelRecord_t {
     u8 pad0[0x14];
     struct mnuList_t *list;
-} EvtListPanelRecord;
+} evtListPanelRecord_t;
 
 /* Clear the terminal task's stored selection word and report completion. */
 u32 mnuClearTerminalPanelSelection(dds3ProcessID_t *task) {

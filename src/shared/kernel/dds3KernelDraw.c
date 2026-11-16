@@ -476,10 +476,10 @@ typedef struct {
 } DrawVec4;
 
 /* The allocated draw state's float at +0x1C is initialized to 1. */
-typedef struct EvtDrawState {
+typedef struct evtDrawState_t {
     u8 pad00[0x1C];
     f32 value1C;
-} EvtDrawState;
+} evtDrawState_t;
 
 typedef struct dds3ResourceNode_t {
     s32 unk0;
@@ -495,11 +495,11 @@ static inline void eeUnpackRGBAWordFloatReadOnly(u32 color, f32 unit) {
 }
 
 /* GS AD packet payload starts after the 0x20-byte command header. */
-typedef struct EvtGsCommand {
+typedef struct evtGsCommand_t {
     u8 pad00[0x20];
     u64 data;
     u64 registerId;
-} EvtGsCommand;
+} evtGsCommand_t;
 
 void evtSubmitFixedAlphaBlend(s32 fixedAlpha);
 
@@ -2133,10 +2133,10 @@ INCLUDE_ASM(const s32, "kernel/dds3KernelDraw", eglLinkAlpha);
 void evtSubmitFixedAlphaBlend(s32 fixedAlpha) {
     void *list = (void *)sdfGrAllocPacketBuff(EVT_PACKET_LIST_BYTES);
     void *packet;
-    EvtGsCommand *command;
+    evtGsCommand_t *command;
     sdfDrawTagInit(list);
     packet = (void *)sdfGrAllocPacketBuff(EVT_GS_COMMAND_BYTES);
-    command = (EvtGsCommand *)sdf2DMakeStdPacket((u32)packet, EVT_GS_COMMAND_BYTES);
+    command = (evtGsCommand_t *)sdf2DMakeStdPacket((u32)packet, EVT_GS_COMMAND_BYTES);
     command->data = ((u64)fixedAlpha << 32) | EVT_FIXED_ALPHA_INTERPOLATION;
     command->registerId = EVT_GS_ALPHA_PRIMARY;
     sdfDrawTagLink(list, (u32)(packet));

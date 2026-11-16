@@ -193,12 +193,12 @@ typedef struct CampRateRow {
 
 #define EVT_PROGRESS_FLAG_GATE_COUNT 1
 
-typedef struct EvtFlagGate {
+typedef struct evtFlagGate_t {
     s8 threshold;
     u8 pad1;
     u16 cue;
     u32 flag;
-} EvtFlagGate;
+} evtFlagGate_t;
 
 #define MNU_INSTALL_STATE_TABLE(ctx, table, entry) \
     do { \

@@ -17,7 +17,7 @@ typedef u32 EvtSelStateMode;
 #define EVT_SEL_STATE_UNBOUNDED_LIMIT (-1)
 
 /* The selection shake: a per-axis offset that ramps up, holds and ramps down. */
-typedef struct EvtSelState {
+typedef struct evtSelState_t {
     EvtSelStateMode mode;  /* 0x00: current interpolation phase */
     s32 limit;              /* 0x04: deadline frame; unbounded sentinel never ends */
     s32 rampUpFrames;   /* 0x08: frames to ramp up over */
@@ -26,9 +26,9 @@ typedef struct EvtSelState {
     u8 pad16[2];
     s32 count;         /* 0x18: frames elapsed */
     f32 offset[3];     /* 0x1C: current per-axis shake limit */
-} EvtSelState;
+} evtSelState_t;
 
-typedef char EvtSelState_size_check[(sizeof(EvtSelState) == 0x28) ? 1 : -1];
+typedef char evtSelState_size_check[(sizeof(evtSelState_t) == 0x28) ? 1 : -1];
 
 enum {
     EVT_PACKET_LIST_BYTES = 0x20,
@@ -52,7 +52,7 @@ enum {
 };
 
 extern s8 evtSelectionStateActive;
-extern EvtSelState *evtSelectionState;
+extern evtSelState_t *evtSelectionState;
 extern u8 sdfViewShakeVector[];
 
 typedef struct {
@@ -63,10 +63,10 @@ typedef struct {
 } DrawVec4;
 
 /* The allocated draw state's float at +0x1C is initialized to 1. */
-typedef struct EvtDrawState {
+typedef struct evtDrawState_t {
     u8 pad00[0x1C];
     f32 value1C;
-} EvtDrawState;
+} evtDrawState_t;
 
 extern void evtUpdateSelectionStateInterpolation(void);
 extern void evtSelStateDestroy(void);
@@ -85,11 +85,11 @@ static inline void eeUnpackRGBAWordFloatReadOnly(u32 color, f32 unit) {
 }
 
 /* GS AD packet payload starts after the 0x20-byte command header. */
-typedef struct EvtGsCommand {
+typedef struct evtGsCommand_t {
     u8 pad00[0x20];
     u64 data;
     u64 registerId;
-} EvtGsCommand;
+} evtGsCommand_t;
 
 s32 evtSelStateCreate(s32 countLimit, s16 frames, s32 firstValue, s32 secondValue);
 u32 evtCheckSelectionState(void);
@@ -98,7 +98,7 @@ void evtSelStateDestroy(void);
 
 /* Zero frames leaves the prior state untouched; zero countLimit selects the -1 sentinel. */
 s32 evtSelStateCreate(s32 countLimit, s16 frames, s32 firstValue, s32 secondValue) {
-    EvtSelState *selectionState;
+    evtSelState_t *selectionState;
     if (frames == 0) {
         return 0;
     }
@@ -123,7 +123,7 @@ s32 evtSelStateCreate(s32 countLimit, s16 frames, s32 firstValue, s32 secondValu
 
 /* Return zero only when inactive on entry; updating or destroying active state returns one. */
 u32 evtCheckSelectionState(void) {
-    EvtSelState *selectionState;
+    evtSelState_t *selectionState;
     if (evtSelectionStateActive == 0) {
         return 0;
     }

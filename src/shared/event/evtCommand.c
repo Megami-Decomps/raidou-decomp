@@ -492,10 +492,10 @@ struct sdfGrOt_t;
 struct EffNodeDescriptor;
 
 #ifdef VERSION_RAIDOU2
-typedef struct PcpScatterWork4 PcpScatterWork4;
+typedef struct evtPcpScatterWork4_t evtPcpScatterWork4_t;
 
 /* func_001730D0 */
-struct PcpScatterWork4 {
+struct evtPcpScatterWork4_t {
     u8 pad00[0x40];
     s128 unk40;
     u8 pad50[0x12C];

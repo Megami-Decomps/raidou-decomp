@@ -16,7 +16,7 @@ typedef struct Dds3EffectFileListCreateWork {
 SIZE_CHECK(Dds3EffectFileListCreateWorkSizeCheck, Dds3EffectFileListCreateWork, 0x3C);
 
 /* Allocated by evtAddFrameInfo. */
-typedef struct EvtFrameInfoWork40 {
+typedef struct evtFrameInfoWork40_t {
     s32 unk00; /* 0x00 */
     s32 unk04; /* 0x04 */
     s32 unk08; /* 0x08 */
@@ -24,11 +24,11 @@ typedef struct EvtFrameInfoWork40 {
     s32 unk10; /* 0x10 */
     s32 unk14; /* 0x14 */
     u8 pad18[40]; /* 0x18 */
-} EvtFrameInfoWork40;
-SIZE_CHECK(EvtFrameInfoWork40SizeCheck, EvtFrameInfoWork40, 0x40);
+} evtFrameInfoWork40_t;
+SIZE_CHECK(evtFrameInfoWork40SizeCheck, evtFrameInfoWork40_t, 0x40);
 
 /* Allocated by evtAddFrameInfo. */
-typedef struct EvtFrameInfoWork {
+typedef struct evtFrameInfoWork_t {
     f32 unk00; /* 0x00 */
     u8 pad04[12]; /* 0x04 */
     f32 unk10; /* 0x10 */
@@ -43,8 +43,8 @@ typedef struct EvtFrameInfoWork {
     u8 pad54[12]; /* 0x54 */
     f32 unk60; /* 0x60 */
     u8 pad64[12]; /* 0x64 */
-} EvtFrameInfoWork;
-SIZE_CHECK(EvtFrameInfoWorkSizeCheck, EvtFrameInfoWork, 0x70);
+} evtFrameInfoWork_t;
+SIZE_CHECK(evtFrameInfoWorkSizeCheck, evtFrameInfoWork_t, 0x70);
 
 /* Allocated by dds3ObjectBaseInitControlWorkData. */
 typedef struct Dds3ObjectBaseInitControlWork {
@@ -85,57 +85,8 @@ typedef struct effSmallHeader_t {
 } effSmallHeader_t;
 SIZE_CHECK(effSmallHeaderSizeCheck, effSmallHeader_t, 0x10);
 
-/* Allocated by evtAddFrameInfo. */
-typedef struct EvtFrameInfo {
-    u16 unk00; /* 0x00 */
-    s16 unk02; /* 0x02 */
-    s32 unk04; /* 0x04 */
-    u8 unk08; /* 0x08 */
-    u8 unk09; /* 0x09 */
-    s16 unk0A; /* 0x0A */
-    u8 unk0C; /* 0x0C */
-    u8 unk0D; /* 0x0D */
-    u8 unk0E; /* 0x0E */
-    u8 unk0F; /* 0x0F */
-    u8 unk10; /* 0x10 */
-    u8 unk11; /* 0x11 */
-    u8 unk12; /* 0x12 */
-    u8 unk13; /* 0x13 */
-    s16 unk14; /* 0x14 */
-    s16 unk16; /* 0x16 */
-    s16 unk18; /* 0x18 */
-    s16 unk1A; /* 0x1A */
-    u8 unk1C; /* 0x1C */
-    u8 unk1D; /* 0x1D */
-    u8 unk1E; /* 0x1E */
-    u8 pad1F; /* 0x1F */
-    u64 unk20; /* 0x20 */
-    s32 unk28; /* 0x28 */
-    s32 unk2C; /* 0x2C */
-    s32 unk30; /* 0x30 */
-    s32 unk34; /* 0x34 */
-} EvtFrameInfo;
-SIZE_CHECK(EvtFrameInfoSizeCheck, EvtFrameInfo, 0x38);
-
-/* Allocated by evtAddViewerObject. */
-typedef struct EvtViewerObject {
-    s32 unk00; /* 0x00 */
-    s32 unk04; /* 0x04 */
-    s32 unk08; /* 0x08 */
-    s32 unk0C; /* 0x0C */
-    s32 unk10; /* 0x10 */
-    s16 unk14; /* 0x14 */
-    s16 unk16; /* 0x16 */
-    u8 pad18[12]; /* 0x18 */
-    s32 unk24; /* 0x24 */
-    u8 pad28[84]; /* 0x28 */
-    s32 unk7C; /* 0x7C */
-    s32 unk80; /* 0x80 */
-} EvtViewerObject;
-SIZE_CHECK(EvtViewerObjectSizeCheck, EvtViewerObject, 0x84);
-
 /* Allocated by evtCreateUnitHandle. */
-typedef struct EvtUnitHandle {
+typedef struct evtUnitHandleAlloc_t {
     s32 unk00; /* 0x00 */
     u8 pad04[8]; /* 0x04 */
     s32 unk0C; /* 0x0C */
@@ -183,8 +134,8 @@ typedef struct EvtUnitHandle {
     u8 pad180[134]; /* 0x180 */
     s16 unk206; /* 0x206 */
     u8 pad208[40]; /* 0x208 */
-} EvtUnitHandle;
-SIZE_CHECK(EvtUnitHandleSizeCheck, EvtUnitHandle, 0x230);
+} evtUnitHandleAlloc_t;
+SIZE_CHECK(evtUnitHandleAllocSizeCheck, evtUnitHandleAlloc_t, 0x230);
 
 /* Allocated by sub_2019F8 and 3 more with this layout. */
 typedef struct effWork2019F8_t {

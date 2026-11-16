@@ -153,11 +153,11 @@ struct MenuTerminalWork;
 
 extern s8 dspCapturedSoundMode;
 
-typedef struct EvtActiveFlagTable {
+typedef struct evtActiveFlagTable_t {
     s32 unk0;
     s32 unk4;
     s8 flags[0];
-} EvtActiveFlagTable;
+} evtActiveFlagTable_t;
 
 typedef struct {
     u8 entryCount;
@@ -178,8 +178,8 @@ typedef struct QuadRecord {
     s32 unk10;
 } QuadRecord;
 
-void evtLoadResourcePair(const char *resourcePath, EvtResourcePair *record);
-void evtReleaseResourcePairHandle(EvtResourcePair *record);
+void evtLoadResourcePair(const char *resourcePath, evtResourcePair_t *record);
+void evtReleaseResourcePairHandle(evtResourcePair_t *record);
 
 struct ItfMesSub;
 
@@ -198,10 +198,10 @@ ScrCommandResult evtOpReadDisplayValue(void);
 
 /* The outer panel owner is unresolved; its list pointer is shared by
  * the viewport flag and height consumers. */
-typedef struct EvtListPanelRecord {
+typedef struct evtListPanelRecord_t {
     u8 pad0[0x14];
     struct mnuList_t *list;
-} EvtListPanelRecord;
+} evtListPanelRecord_t;
 
 s32 fclSetModelLight(char *name, dds3Basic_t *dst)
 {
@@ -279,12 +279,12 @@ void shuffleIndices(s8 *order, s32 count, s32 rounds)
 }
 
 /* Store the resource handle in word zero and the loader's data address in word one. */
-void evtLoadResourcePair(const char *resourcePath, EvtResourcePair *record) {
+void evtLoadResourcePair(const char *resourcePath, evtResourcePair_t *record) {
     record->handle = sdfDevLoadFileEx(resourcePath, (u32 *)&record->messageData, 0);
 }
 
 /* Release the handle without clearing either word of the caller's record. */
-void evtReleaseResourcePairHandle(EvtResourcePair *record) {
+void evtReleaseResourcePairHandle(evtResourcePair_t *record) {
     sdfMemFreeDirect(record->handle);
 }
 

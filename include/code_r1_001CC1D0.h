@@ -436,12 +436,12 @@ typedef struct ItfMesSub {
 } ItfMesSub;
 
 /* Native resource handle and the relocatable message data it owns. */
-typedef struct EvtResourcePair {
+typedef struct evtResourcePair_t {
     struct sdfMemHandle_t *handle;
     struct ItfMesSub *messageData;
-} EvtResourcePair;
+} evtResourcePair_t;
 
-typedef char EvtResourcePair_size_must_be_0x08[(sizeof(EvtResourcePair) == 0x08) ? 1 : -1];
+typedef char evtResourcePair_size_must_be_0x08[(sizeof(evtResourcePair_t) == 0x08) ? 1 : -1];
 
 typedef struct mnuWindowContainer_t {
     s32 id;                /* 0x00 */
@@ -481,7 +481,7 @@ typedef struct mnuTerminalContext_t {
     jmsSeqHandle_t transitionWork;
     s32 popupState;
     jmsSeqUnit_t *popupTable;
-    EvtResourcePair messageResources;
+    evtResourcePair_t messageResources;
     struct sprHandle_t *effectSlots[4];
     s32 state;
     mnuWindowContainer_t *ownedWindows[1];

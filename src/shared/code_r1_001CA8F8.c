@@ -57,7 +57,7 @@ enum {
     SDF_GS_TRXDIR = 0x53
 };
 
-typedef struct CampDisplayDefaults {
+typedef struct pmdTmxData_t {
     s32 x;          /* 0x00 */
     s32 y;          /* 0x04 */
     u8 color[4];    /* 0x08 */
@@ -66,10 +66,10 @@ typedef struct CampDisplayDefaults {
     s32 enabled;    /* 0x14 */
     s32 variant;    /* 0x18 */
     s32 preserveAlpha; /* 0x1C: RGB-only alpha-fail drawing */
-} CampDisplayDefaults;
+} pmdTmxData_t;
 
 typedef char CampDisplayDefaults_size_is_20[
-    (sizeof(CampDisplayDefaults) == 0x20) ? 1 : -1];
+    (sizeof(pmdTmxData_t) == 0x20) ? 1 : -1];
 
 /* Zero-based selections stored in the camp viewer's primary and secondary
  * option fields. The current menus expose two primary rows and three
@@ -78,7 +78,7 @@ typedef u32 MnuCampPrimaryOptionIndex;
 
 typedef u32 MnuCampSecondaryOptionIndex;
 
-void evtEventViewerReleaseQueuedNode(evtViewerInfo_t *viewer, EvtRuntimeGroup *entry, EvtRuntimeChild *node);
+void evtEventViewerReleaseQueuedNode(evtViewerInfo_t *viewer, evtViewerObject_t *entry, EvtRuntimeChild *node);
 
 #define CAMP_TASK_NAME_BYTES 0x20
 
@@ -148,11 +148,11 @@ typedef struct CampFlagRow {
 } CampFlagRow;
 
 void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold);
-void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **selected, EvtRuntimeChild **future);
-void SetDefaultTmxData(CampDisplayDefaults *display);
-void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey);
-void evtHokanTmx(EvtRuntimeChild *from, EvtRuntimeChild *to, CampDisplayDefaults *display, f32 ratio);
-void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display);
+void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, EvtRuntimeChild **selected, EvtRuntimeChild **future);
+void SetDefaultTmxData(pmdTmxData_t *display);
+void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey);
+void evtHokanTmx(EvtRuntimeChild *from, EvtRuntimeChild *to, pmdTmxData_t *display, f32 ratio);
+void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, evtViewerObject_t *track, s32 frame, pmdTmxData_t *display);
 u32 evtFindInputBranchMessage(void);
 void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsOut);
 void mnuCampCheckClockDivisor(void);
@@ -232,12 +232,12 @@ typedef struct CampRateRow {
 
 #define EVT_PROGRESS_FLAG_GATE_COUNT 1
 
-typedef struct EvtFlagGate {
+typedef struct evtFlagGate_t {
     s8 threshold;
     u8 pad1;
     u16 cue;
     u32 flag;
-} EvtFlagGate;
+} evtFlagGate_t;
 
 #define MNU_INSTALL_STATE_TABLE(ctx, table, entry) \
     do { \
@@ -253,7 +253,7 @@ INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtCallMessageDelete);
 
 /* Process keys at or beyond threshold, restarting at the head after each call. */
 void mnuFxWorldDropOutOfRange(evtViewerInfo_t *scene, s32 threshold) {
-    EvtRuntimeGroup *track;
+    evtViewerObject_t *track;
     EvtRuntimeChild *key;
 
     if (scene->objcnt <= 0) {
@@ -278,7 +278,7 @@ INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtInitCustomSceneLightSub);
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtGetValueNewSLightFrame);
 
-void SetDefaultTmxData(CampDisplayDefaults *display) {
+void SetDefaultTmxData(pmdTmxData_t *display) {
     display->x = 0x100;
     display->y = 0xE0;
     display->color[0] = 0x80;
@@ -293,7 +293,7 @@ void SetDefaultTmxData(CampDisplayDefaults *display) {
 }
 
 /* Use defaults before the first key; otherwise blend the bounding keys. */
-void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32 frame, CampDisplayDefaults *display) {
+void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, evtViewerObject_t *track, s32 frame, pmdTmxData_t *display) {
     EvtRuntimeChild *lowerKey;
     EvtRuntimeChild *upperKey;
     s32 startFrame;
@@ -322,7 +322,7 @@ void evtGetValueNewTMXFrame(evtViewerInfo_t *viewer, EvtRuntimeGroup *track, s32
 
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", evtHokanTmx);
 
-void mnuFindCampKeyTrackNeighbors(EvtRuntimeGroup *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey) {
+void mnuFindCampKeyTrackNeighbors(evtViewerObject_t *track, s32 frame, EvtRuntimeChild **lowerKey, EvtRuntimeChild **upperKey) {
     s32 frameOffset;
 
     *lowerKey = 0;
@@ -366,8 +366,8 @@ void mnuUnpackNibbleFields(EvtRuntimeChild *key, s32 *lowBitsOut, s32 *highBitsO
 INCLUDE_ASM(const s32, "code_r1_001CA8F8", mnuCampFindMatchingEntryIndex);
 
 /* Return the first track with this fixed-width name, or NULL when absent. */
-EvtRuntimeGroup *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *name) {
-    EvtRuntimeGroup *track = scene->firstobjinfo;
+evtViewerObject_t *mnuCampFindEntryByName(evtViewerInfo_t *scene, const char *name) {
+    evtViewerObject_t *track = scene->firstobjinfo;
     while (track != NULL) {
         if (strcmp(scene->nametable[track->entryHeader], name) == 0) {
             return track;

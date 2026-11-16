@@ -224,10 +224,10 @@ typedef struct {
 } DrawVec4;
 
 /* The allocated draw state's float at +0x1C is initialized to 1. */
-typedef struct EvtDrawState {
+typedef struct evtDrawState_t {
     u8 pad00[0x1C];
     f32 value1C;
-} EvtDrawState;
+} evtDrawState_t;
 
 typedef struct dds3ResourceNode_t {
     s32 unk0;
@@ -243,11 +243,11 @@ static inline void eeUnpackRGBAWordFloatReadOnly(u32 color, f32 unit) {
 }
 
 /* GS AD packet payload starts after the 0x20-byte command header. */
-typedef struct EvtGsCommand {
+typedef struct evtGsCommand_t {
     u8 pad00[0x20];
     u64 data;
     u64 registerId;
-} EvtGsCommand;
+} evtGsCommand_t;
 
 /* Native rectangle emitter: x/y/width/height, explicit depth, then TL/TR/BR/BL colors. */
 void evtSubmitGradientRectAtDepth(s32 x, s32 y, s32 w, s32 h, u32 depth, s32 color0, s32 color1, s32 color2, s32 color3);

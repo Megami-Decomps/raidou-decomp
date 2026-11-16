@@ -3,26 +3,27 @@
 
 #include "common.h"
 #include "sdf_resource.h"
+#include "evtEventPack.h"
 
 /* Camera-color timeline keys interpolate two banks of three values. */
-typedef struct EvtBlendKey {
+typedef struct evtBlendKey_t {
     s32 w[4];
     s32 x;
     u32 flagWord;
     u8 pad18[8];
     s32 y[3];
     s32 z[3];
-} EvtBlendKey;
+} evtBlendKey_t;
 
-typedef char EvtBlendKeySizeCheck[(sizeof(EvtBlendKey) == 0x38) ? 1 : -1];
+typedef char evtBlendKeySizeCheck[(sizeof(evtBlendKey_t) == 0x38) ? 1 : -1];
 
 /* Allocated and serialized type-0x19 payload; the final bytes remain opaque. */
-typedef struct EvtCameraColorPayload {
-    EvtBlendKey parameters;
+typedef struct evtCameraColorPayload_t {
+    evtBlendKey_t parameters;
     u8 unknown38[8];
-} EvtCameraColorPayload;
+} evtCameraColorPayload_t;
 
-typedef char EvtCameraColorPayload_size[(sizeof(EvtCameraColorPayload) == 0x40) ? 1 : -1];
+typedef char evtCameraColorPayload_size[(sizeof(evtCameraColorPayload_t) == 0x40) ? 1 : -1];
 
 /* Payload categories used by the fixed-stride BE resource table. */
 typedef enum EvtPackKind {
@@ -45,7 +46,7 @@ typedef s32 EvtPackFieldResourceId;
 /* MODEL_BE key used to select a motion-cue record. */
 typedef s32 EvtPackMotionResourceId;
 
-/* Entry resource keys are interpreted according to EvtPackEntry.kind. */
+/* Entry resource keys are interpreted according to evtPackEntry_t.kind. */
 typedef union EvtPackResourceId {
     EvtPackFieldResourceId field; /* resource and texture-offset entries */
     EvtPackMotionResourceId motion; /* motion-cue entries */
@@ -53,25 +54,6 @@ typedef union EvtPackResourceId {
 
 /* Numeric event key used to name and find the camp's event-pack task. */
 typedef s32 EvtPackEventId;
-
-/* BE resource files have a 0x20-byte header and fixed 0x20-byte records. */
-typedef struct EvtPackEntry {
-    EvtPackKind kind;             /* 0x00 */
-    s32 dataSize;                 /* 0x04: package byte count */
-    s32 cueCount;                 /* 0x08: type-6 count */
-    u32 dataOffset;               /* 0x0C: relative to the retained file base */
-    EvtPackSecondaryResourceId secondaryResourceId; /* 0x10 */
-    EvtPackResourceId resourceId; /* 0x14: field or motion key by kind */
-    u8 pad18[4];
-    s32 motionId;                 /* 0x1C: type-6 motion index */
-} EvtPackEntry;
-
-typedef struct EvtPackHeader {
-    u8 pad00[0x10];
-    s32 entryCount;               /* 0x10 */
-    u8 pad14[0xC];
-    EvtPackEntry entries[0];      /* 0x20 */
-} EvtPackHeader;
 
 typedef enum EvtPackLoadPhase {
     EVT_PACK_LOAD_PHASE_INVALID = -1,
@@ -88,8 +70,8 @@ typedef struct EvtPackLoadState {
     struct fileRequest *pendingRequest; /* 0x08: queued event-script request, then cleanup */
     struct sdfMemHandle_t *resourceAllocation; /* 0x0C: retained descriptor */
     u8 *data;                     /* 0x10 */
-    const EvtPackHeader *header;  /* 0x14: borrowed read-only pack header. */
-    const EvtPackEntry *entries;  /* 0x18: borrowed read-only pack records. */
+    const evtPackHeader_t *header;  /* 0x14: borrowed read-only pack header. */
+    const evtPackEntry_t *entries;  /* 0x18: borrowed read-only pack records. */
     u8 *entryPoint;               /* 0x1C */
     u8 pad20[4];
     struct sdfMemHandle_t *sceneAllocation1; /* 0x24: descriptor released at teardown. */
@@ -102,9 +84,9 @@ typedef struct EvtPackLoadState {
     struct sdfTexHandle_t *effect75;      /* 0x44: retained channel texture. */
 } EvtPackLoadState;
 
-typedef char EvtPackEntry_size_must_be_0x20[(sizeof(EvtPackEntry) == 0x20) ? 1 : -1];
+typedef char evtPackEntry_size_must_be_0x20[(sizeof(evtPackEntry_t) == 0x20) ? 1 : -1];
 
-typedef char EvtPackHeader_size_must_be_0x20[(sizeof(EvtPackHeader) == 0x20) ? 1 : -1];
+typedef char evtPackHeader_size_must_be_0x20[(sizeof(evtPackHeader_t) == 0x20) ? 1 : -1];
 
 typedef char EvtPackLoadState_size_must_be_0x48[(sizeof(EvtPackLoadState) == 0x48) ? 1 : -1];
 

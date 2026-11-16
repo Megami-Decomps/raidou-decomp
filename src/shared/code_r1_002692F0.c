@@ -495,10 +495,10 @@ typedef struct {
 } BtlCommandItemWork;
 
 /* Kind-5 world-node payload attaches the event unit at +8. */
-typedef struct EventUnitData {
+typedef struct evtUnitData_t {
     u8 pad00[8];
     evtUnitHandle_t *unit;
-} EventUnitData;
+} evtUnitData_t;
 
 /* Draw the unit's transparency model into its mirror's packet buffer, then draw the mirror from it. Either
  * model is created (and the update ends) on the first frame it is missing. */

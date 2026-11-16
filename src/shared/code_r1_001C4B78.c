@@ -43,17 +43,17 @@ enum {
  * sdfTexReleaseReference or sdfTexFreeDelayed. */
 
 /* One child row emitted by the event-viewer track serializer. */
-typedef struct EvtSerializedChild {
+typedef struct evtSerializedChild_t {
     u16 groupType;
     u16 start;
     u16 span;
     u16 value;
     u8 opaque08[4];
     s32 body[8];
-} EvtSerializedChild;
+} evtSerializedChild_t;
 
-typedef char EvtSerializedChild_size_check[
-    (sizeof(EvtSerializedChild) == 0x2C) ? 1 : -1];
+typedef char evtSerializedChild_size_check[
+    (sizeof(evtSerializedChild_t) == 0x2C) ? 1 : -1];
 
 extern void evtWriteSerializedBytes(s32 output, void *data, s32 size);
 
@@ -67,16 +67,16 @@ typedef struct {
 typedef s32 (*EvtMenuHeaderFn)();
 typedef void (*EvtMenuRowFn)();
 
-typedef struct EvtMotionBits {
+typedef struct evtMotionBits_t {
     s32 group : 8;
     s32 motion : 8;
     s32 loop : 8;
     s32 hokan : 8;
-} EvtMotionBits;
+} evtMotionBits_t;
 
 typedef union EvtMotionValue {
     s32 word;
-    EvtMotionBits bits;
+    evtMotionBits_t bits;
 } EvtMotionValue;
 
 /* Select and draw one light-color bank at the current panel offset. */
@@ -95,15 +95,15 @@ static inline s32 evtLightCaptionX(s32 panelOffset) {
     return (s32)(0x8740u + ((u32)panelOffset << 4));
 }
 
-typedef struct EvtSelectionCache {
+typedef struct evtSelectionCache_t {
     u8 pad00[0x24];
     s32 selectedEntry; /* 0x24 */
-} EvtSelectionCache;
+} evtSelectionCache_t;
 
 typedef char EvtViewKey_size_must_be_0x38[(sizeof(EvtRuntimeChild) == 0x38) ? 1 : -1];
 
-typedef char EvtCameraColorPayload_size_must_be_0x40[
-    (sizeof(EvtCameraColorPayload) == 0x40) ? 1 : -1];
+typedef char evtCameraColorPayload_size_must_be_0x40[
+    (sizeof(evtCameraColorPayload_t) == 0x40) ? 1 : -1];
 
 s32 evtBasicListMenu(s32 x, s32 y, evtViewerInfo_t *ctx);
 s32 evtCallGetPIDfromUID6(s32 x, s32 y, evtViewerInfo_t *ctx);
@@ -154,7 +154,7 @@ s32 evtIndexGroupTypeSeventeenChildren(evtViewerInfo_t *runtime);
 s32 evtIndexGroupTypeTwentyFiveChildren(evtViewerInfo_t *runtime);
 
 /* Fixed prefix shared by PMD directory streams. */
-typedef struct EvtPmdFilePrefix {
+typedef struct evtViewerFileHeader_t {
     u8 reserved00;
     u8 reserved01;
     u16 reserved02;
@@ -165,9 +165,9 @@ typedef struct EvtPmdFilePrefix {
     s32 kind;
     s32 reserved18;
     s32 reserved1C;
-} EvtPmdFilePrefix;
+} evtViewerFileHeader_t;
 
-typedef char EvtPmdFilePrefix_size_check[sizeof(EvtPmdFilePrefix) == 0x20 ? 1 : -1];
+typedef char evtViewerFileHeader_size_check[sizeof(evtViewerFileHeader_t) == 0x20 ? 1 : -1];
 
 void evtViewerWriteChildRecords(s32 output, EvtViewerTrackFileFormat format, evtViewerInfo_t *runtime);
 void evtWriteFixedSizeEntries(s32 output, evtViewerInfo_t *table);
@@ -183,7 +183,7 @@ void evtWriteGroupMetadata(s32 output, evtViewerInfo_t *runtime);
 void evtEmitGroupTypeTwentyFivePayloads(s32 output, evtViewerInfo_t *runtime);
 
 /* PM1 section 2 and section 3 use the same 0x20-byte package record. */
-typedef struct EvtViewerPackageRecord {
+typedef struct evtViewerPackageRecord_t {
     s32 nameIndex;
     s32 reserved04;
     s32 packageId;
@@ -192,20 +192,20 @@ typedef struct EvtViewerPackageRecord {
     s32 length;
     s32 loadOrder;
     s32 reserved1C;
-} EvtViewerPackageRecord;
+} evtViewerPackageRecord_t;
 
 /* PM1 auxiliary and texture section entries each occupy 0x10 bytes. */
-typedef struct EvtViewerResourceRecord {
+typedef struct evtViewerResourceRecord_t {
     s32 nameIndex;
     u32 offset;
     s32 kind;
     s32 reserved0C;
-} EvtViewerResourceRecord;
+} evtViewerResourceRecord_t;
 
 /* The section-21 wire record is also the group's link subobject at +0x18. */
-typedef char EvtViewerPackageRecord_size[(sizeof(EvtViewerPackageRecord) == 0x20) ? 1 : -1];
+typedef char evtViewerPackageRecord_size[(sizeof(evtViewerPackageRecord_t) == 0x20) ? 1 : -1];
 
-typedef char EvtViewerResourceRecord_size[(sizeof(EvtViewerResourceRecord) == 0x10) ? 1 : -1];
+typedef char evtViewerResourceRecord_size[(sizeof(evtViewerResourceRecord_t) == 0x10) ? 1 : -1];
 
 typedef struct { u8 bytes[0x18]; } EvtRowPayload18;
 
@@ -240,7 +240,7 @@ void evtWriteSerializedBytes(s32 output, void *data, s32 size) {
 
 s32 evtAssignRuntimeChildSequenceAndCount(evtViewerInfo_t *runtime) {
     s32 childIndex = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0xA) {
             EvtRuntimeChild *child;
@@ -254,7 +254,7 @@ s32 evtAssignRuntimeChildSequenceAndCount(evtViewerInfo_t *runtime) {
 
 s32 evtIndexGroupTypeElevenChildren(evtViewerInfo_t *runtime) {
     s32 childIndex = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0xB) {
             EvtRuntimeChild *child;
@@ -268,7 +268,7 @@ s32 evtIndexGroupTypeElevenChildren(evtViewerInfo_t *runtime) {
 
 s32 evtIndexGroupTypeThirteenChildren(evtViewerInfo_t *runtime) {
     s32 childIndex = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0xD) {
             EvtRuntimeChild *child;
@@ -282,7 +282,7 @@ s32 evtIndexGroupTypeThirteenChildren(evtViewerInfo_t *runtime) {
 
 s32 evtIndexGroupTypeFourteenChildren(evtViewerInfo_t *runtime) {
     s32 childIndex = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0xE) {
             EvtRuntimeChild *child;
@@ -296,7 +296,7 @@ s32 evtIndexGroupTypeFourteenChildren(evtViewerInfo_t *runtime) {
 
 s32 evtIndexGroupTypeFifteenChildren(evtViewerInfo_t *runtime) {
     s32 childIndex = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0xF) {
             EvtRuntimeChild *child;
@@ -310,7 +310,7 @@ s32 evtIndexGroupTypeFifteenChildren(evtViewerInfo_t *runtime) {
 
 s32 evtIndexGroupTypeTwentyThreeChildren(evtViewerInfo_t *runtime) {
     s32 childIndex = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x17) {
             EvtRuntimeChild *child;
@@ -324,7 +324,7 @@ s32 evtIndexGroupTypeTwentyThreeChildren(evtViewerInfo_t *runtime) {
 
 s32 evtIndexGroupTypeTwentySevenChildren(evtViewerInfo_t *runtime) {
     s32 childIndex = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x1B) {
             EvtRuntimeChild *child;
@@ -338,7 +338,7 @@ s32 evtIndexGroupTypeTwentySevenChildren(evtViewerInfo_t *runtime) {
 
 s32 evtIndexGroupTypeSixteenChildren(evtViewerInfo_t *runtime) {
     s32 childIndex = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x10) {
             EvtRuntimeChild *child;
@@ -352,7 +352,7 @@ s32 evtIndexGroupTypeSixteenChildren(evtViewerInfo_t *runtime) {
 
 s32 evtIndexGroupTypeSeventeenChildren(evtViewerInfo_t *runtime) {
     s32 index = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x11) {
             EvtRuntimeChild *child;
@@ -366,7 +366,7 @@ s32 evtIndexGroupTypeSeventeenChildren(evtViewerInfo_t *runtime) {
 
 s32 evtIndexGroupTypeTwentyFiveChildren(evtViewerInfo_t *runtime) {
     s32 index = 0;
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x19) {
             EvtRuntimeChild *child;
@@ -385,7 +385,7 @@ INCLUDE_ASM(const s32, "code_r1_001C4B78", evtWriteRuntimeHeaderValues);
 /* Filter groups by file format and serialize each child body. Type-8 spans use the
  * next start or terminal range halfword, unless their body marker disables them. */
 void evtViewerWriteChildRecords(s32 output, EvtViewerTrackFileFormat format, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
 
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         EvtRuntimeChild *child = group->children;
@@ -401,7 +401,7 @@ void evtViewerWriteChildRecords(s32 output, EvtViewerTrackFileFormat format, evt
         }
 
         for (; child != NULL; child = child->next) {
-            EvtSerializedChild record;
+            evtSerializedChild_t record;
             s32 i;
             u16 value;
 
@@ -450,7 +450,7 @@ INCLUDE_ASM(const s32, "code_r1_001C4B78", evtWriteGroupHeader);
 INCLUDE_ASM(const s32, "code_r1_001C4B78", evtFunc6);
 
 void evtEmitGroupTypeElevenPayloads(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0xB) {
             EvtRuntimeChild *child;
@@ -462,7 +462,7 @@ void evtEmitGroupTypeElevenPayloads(s32 output, evtViewerInfo_t *runtime) {
 }
 
 void evtEmitGroupTypeThirteenPayloads(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0xD) {
             EvtRuntimeChild *child;
@@ -474,7 +474,7 @@ void evtEmitGroupTypeThirteenPayloads(s32 output, evtViewerInfo_t *runtime) {
 }
 
 void evtEmitGroupTypeFourteenPayloads(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0xE) {
             EvtRuntimeChild *child;
@@ -486,7 +486,7 @@ void evtEmitGroupTypeFourteenPayloads(s32 output, evtViewerInfo_t *runtime) {
 }
 
 void evtEmitGroupTypeFifteenPayloads(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0xF) {
             EvtRuntimeChild *child;
@@ -498,7 +498,7 @@ void evtEmitGroupTypeFifteenPayloads(s32 output, evtViewerInfo_t *runtime) {
 }
 
 void evtEmitGroupTypeTwentyThreePayloads(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x17) {
             EvtRuntimeChild *child;
@@ -510,7 +510,7 @@ void evtEmitGroupTypeTwentyThreePayloads(s32 output, evtViewerInfo_t *runtime) {
 }
 
 void evtEmitGroupTypeTwentySevenPayloads(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x1B) {
             EvtRuntimeChild *child;
@@ -522,7 +522,7 @@ void evtEmitGroupTypeTwentySevenPayloads(s32 output, evtViewerInfo_t *runtime) {
 }
 
 void evtEmitGroupTypeSixteenPayloads(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x10) {
             EvtRuntimeChild *child;
@@ -534,7 +534,7 @@ void evtEmitGroupTypeSixteenPayloads(s32 output, evtViewerInfo_t *runtime) {
 }
 
 void evtEmitGroupTypeSeventeenPayloads(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x11) {
             EvtRuntimeChild *child;
@@ -546,7 +546,7 @@ void evtEmitGroupTypeSeventeenPayloads(s32 output, evtViewerInfo_t *runtime) {
 }
 
 void evtWriteGroupMetadata(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         u8 header[8];
         header[0] = *(u8 *)group;
@@ -560,7 +560,7 @@ void evtWriteGroupMetadata(s32 output, evtViewerInfo_t *runtime) {
 }
 
 void evtEmitGroupTypeTwentyFivePayloads(s32 output, evtViewerInfo_t *runtime) {
-    EvtRuntimeGroup *group;
+    evtViewerObject_t *group;
     for (group = runtime->firstobjinfo; group != NULL; group = group->next) {
         if (group->type == 0x19) {
             EvtRuntimeChild *child;

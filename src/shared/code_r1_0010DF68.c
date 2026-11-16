@@ -227,17 +227,17 @@ typedef struct {
 } DrawVec4;
 
 /* The allocated draw state's float at +0x1C is initialized to 1. */
-typedef struct EvtDrawState {
+typedef struct evtDrawState_t {
     u8 pad00[0x1C];
     f32 value1C;
-} EvtDrawState;
+} evtDrawState_t;
 
 /* GS AD packet payload starts after the 0x20-byte command header. */
-typedef struct EvtGsCommand {
+typedef struct evtGsCommand_t {
     u8 pad00[0x20];
     u64 data;
     u64 registerId;
-} EvtGsCommand;
+} evtGsCommand_t;
 
 extern s32 evtDrawGeneralHeapUsageGraph(struct dds3ProcessID_t *);
 
