@@ -23,12 +23,44 @@ existing C unit or `asm/<game>/<unit>` for a gap unit that becomes C.
 | `r1only.txt` | shared-unit functions whose Raidou 2 body differs; Raidou 2 keeps the `INCLUDE_ASM` |
 | `units/<unit>.pre` | the includes and declarations that open a new gap unit |
 | `docs.json` | `name: [unit, text, lever]` for each NON_MATCHING draft's docs/matching entry |
+| `<name>.decls` | the declarations a draft store entry assumes, one per line, from `find_body.py --write` |
+| `store_decls.tsv`, `includes.tsv` | where `place_decls.py` put each of them; `source header` rows of includes a unit needs |
 
 The drafts and tables use the names after the renames (the drafting worker
 renames them when it writes `renames.tsv`). Pass `--rename-drafts` when they
 still use the old names. Either way a row is spliced at the `INCLUDE_ASM` of
 its renamed function, and its draft's own name is renamed. A `docs.json` unit
 is the unit with its folder (`event/evtMoon`); the batches.tsv unit wins.
+
+## Draft store pick-up
+
+`find_body.py --batch B --write D` takes a draft store entry
+(`tools/draft_store.py`) like any other body; `--set-column` marks it in
+`body_source` with the cluster as VIA (`match:store:matched:C0022:1.00`). The
+entry's declarations go to `D/<name>.decls`, never into `D/<name>.c`. Then
+
+```sh
+.venv/bin/python tools/batch/place_decls.py D --tree T
+```
+
+puts each one in a header of T: present (include/ declares it already),
+include (declared in a header the unit does not reach, which joins the unit's
+includes), placed (the owning unit's `include/<unit>.h`, else the header that
+declares its neighbours in its asm or data file, when that header sees every
+type it uses, else the drafting unit's own `include/<unit>.h`, created when
+missing), differs (include/ declares it another way and wins) or required (a
+header edit for the batch handoff). Its exit status is 1 when any is required.
+The header edits travel in `headers.wip.patch`; the includes a C unit needs go
+in `includes.tsv`, which land_batch's splice applies, and a gap unit's go in
+its `units/<unit>.pre`.
+
+Entries in no planned batch get batches of their own:
+`draft_store.py plan --append batches.tsv --write DIR` writes one batch
+`S-<unit>` per unit (rows, `<name>.c`, `<name>.decls`, `results.tsv` from the
+store status), skipping entries already in batches.tsv, already C or not
+compiling. After a land with a passing gate, land_batch moves the batch's
+entries to the store's `landed/`, so they are not offered again;
+`draft_store.py check` lists entries whose function is already C.
 
 ## Pseudocode
 
@@ -68,12 +100,17 @@ in order (skip any with `--skip step,...`):
    both games, then `src`, `include` and `docs`; then `drop_symbols.tsv` and
    `revisit_names.py`. It lists derived data labels used only by a batch
    function as candidates for `drop_symbols.tsv`.
-4. `splice`: each final draft replaces its `INCLUDE_ASM` (and any older
+4. `splice`: the includes in `includes.tsv` go after each unit's last
+   `#include`; each final draft replaces its `INCLUDE_ASM` (and any older
    NON_MATCHING draft around it). A gap unit is written from its `.pre` and its
    functions in address order, its subsegment and tu_evidence row become `c`,
    and it takes the `.rodata` and `.lit4` labels that only its asm uses, when
    they form one run in one unowned chunk. Anything else (a label another unit
-   uses, labels in several chunks) is reported for a hand decision.
+   uses, labels in several chunks) is reported for a hand decision. The run
+   stops (refused) when a unit's `.c` gained, against the base, a draft store
+   entry's declaration, a function prototype for a function the unit does not
+   define, or an `#include` below its first declaration: those belong in
+   headers (`place_decls.py`). The gate repeats the check.
 5. `promote`: a NON_MATCHING draft whose C leaves `check_unit.py` passing for
    the whole unit, on every game that builds it, becomes plain C. A draft that
    matches alone but changes another function of the unit stays a draft. A
@@ -97,6 +134,12 @@ in order (skip any with `--skip step,...`):
    `docs_index.py --check` and `revisit_names.py --check`. With
    `--clean-gate` it runs `configure.py --clean` first and counts every
    compiler warning; without it the count covers only the objects rebuilt.
+10. `retire`: when the gate passed in this run with nothing to decide, the
+   draft store entries of the spliced functions move to `landed/` with the
+   batch id (`--store DIR`, `--store ''` for none).
+
+`--dry-run` runs only `patch`, `renames` and `splice` (with the declaration
+check), without configuring, and leaves T edited.
 
 The report goes to stdout and `<batch>/land/report.txt`; lines starting
 with `DECIDE` need a hand decision, and the exit status is 1 when there are

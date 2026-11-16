@@ -165,7 +165,10 @@ address, size, a hash of the retail bytes, the declarations the draft assumes
 and the `check_unit.py` result. `find_body.py` reads the store by address and
 leaves out an entry whose address, size, bytes or definition name disagree; a
 store draft ranks after matched definitions of the function and before
-same-shape siblings. Regular batches do not run the
+same-shape siblings. The store is a git repository (`save` and `retire`
+commit). A batch puts an entry's declarations in headers with
+`tools/batch/place_decls.py`, never in the `.c`, and landing it retires the
+entry; [batch-workflow.md](batch-workflow.md) has the pick-up. Regular batches do not run the
 permuter. As an opt-in, `python3 tools/perm_unit.py import <unit> NAME --batch D`
 sets up [decomp-permuter](https://github.com/simonlindholm/decomp-permuter) on
 the unit's NON_MATCHING draft under `D/permuter/`, scored on both games for a

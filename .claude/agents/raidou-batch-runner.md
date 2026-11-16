@@ -24,6 +24,14 @@ brief gives the batch directory D and the worktree T. Do that phase, then stop.
    summary gives class, tree, status (matched or NON_MATCHING in its tree), path, the
    same-function confidence, the compile result and any flags (`size Nx`, `proto differs`)
    per row. Skip class `other` (a different function). Note each source file in notes.json.
+   Run it with `--set-column` too, so batches.tsv's body_source records each pick-up.
+   Draft store hits are rows whose body_source has TREE `store` and the cluster as VIA
+   (`match:store:matched:C0022:1.00`); find_body writes their declarations to D/NAME.decls.
+1b. Store hits: `tools/batch/place_decls.py D --tree T` puts every declaration in a header of
+   T (or adds an include to the unit, D/includes.tsv) and writes D/store_decls.tsv. Never
+   paste a .decls line into a draft or a unit. Rows with action `required` are header edits
+   the handoff lists; `differs` rows are the header's declaration winning, checked by the
+   splice. Regenerate D/headers.wip.patch (`git diff` of T/include plus new headers).
 2. `./splice.py UNIT` for each unit (until tools/splice_batch.py exists): every draft
    spliced into its unit, check_unit on both games. Record: a body that matches on both
    games `./rec.py NAME WORDS "match" "body: smt3 PATH"`; one that compiles but differs
@@ -37,7 +45,8 @@ brief gives the batch directory D and the worktree T. Do that phase, then stop.
    from D, note it under "wrong bodies", and the row is no-body. Do not tune. Header edits
    are prototypes and field renames the asm confirms, listed in the handoff.
 4. Handoff.md: counts, nonmatches with distance, field renames, wrong bodies, header
-   additions, and the worklist of no-body functions smallest first with words.
+   additions, draft store hits (name, cluster, class) with store_decls.tsv's `required` and
+   `differs` rows, and the worklist of no-body functions smallest first with words.
 
 ## Phase land (after drafting)
 
@@ -52,7 +61,9 @@ the previous batch's handoff.md). The steps, in order, with the tool for each:
    mkdocs.py from D in that order): final/ with NON_MATCHING wrapping and measured
    distances, units written (gap units from units/*.pre in asm order), yaml subsegments
    asm -> c, rodata ownership for the labels in packaging_notes.txt, tu_evidence,
-   docs/matching entries from notes.json, `python3 tools/docs_index.py`.
+   docs/matching entries from notes.json, `python3 tools/docs_index.py`. land_batch refuses a
+   unit whose .c gained a draft store declaration or a local prototype, and after a passing
+   gate retires the batch's draft store entries; do not move them by hand.
 4. Regression: check_unit of every touched unit on both games against the clean repo
    (`tools/batch/regress_units.py`, until it exists D/regress*.sh); only the batch's own
    units and promoted drafts may change. A worsened NON_MATCHING distance elsewhere is a
