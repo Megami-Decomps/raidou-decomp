@@ -16,8 +16,10 @@ import body_check
 import find_similar
 
 EPILOG = ("Trees are read at a git revision (default origin/main); identity uses each tree's build/ ELF. "
-          "The raidou tree is this working copy: the other game's matched C for the function (via name) and "
-          "matched functions of the same asm shape from find_similar.py (via similar, ratio 0.9 or better). "
+          "The raidou source reads the shape index (tools/similar_index.py; build it once with `similar_index.py "
+          "refresh` and rerun that after matching): the other game's matched C for the function (via name) and "
+          "matched functions of the same asm shape in any corpus (via similar, ratio 0.9 or better, precomputed "
+          "for unmatched functions). "
           "A hit is matched, nonmatching (a NON_MATCHING draft in its tree) or disabled (#if 0). "
           "body_source is CLASS:TREE:STATUS:VIA:CONFIDENCE, CLASS one of match, near (usable), adapt, rework, "
           "other (reference only), found (not compiled), or none; then flags: size Nx (outside 0.5-2x, left out "
@@ -107,9 +109,18 @@ def definition_at(text, start):
 
 def guard_status(text, start):
     """matched, nonmatching (inside #ifdef NON_MATCHING) or disabled (inside #if 0) at offset start."""
-    stack = []
-    for line in text[:start].splitlines():
-        m = re.match(r"\s*#\s*(ifdef|ifndef|if|elif|else|endif)\b\s*(.*)", line)
+    return guard_statuses(text[:start])[-1]
+
+
+GUARD = re.compile(r"\s*#\s*(ifdef|ifndef|if|elif|else|endif)\b\s*(.*)")
+
+
+def guard_statuses(text):
+    """guard_status at the start of every line of text, and after its last line."""
+    stack, out = [], []
+    for line in text.splitlines():
+        out.append("disabled" if "off" in stack else "nonmatching" if "nm" in stack else "matched")
+        m = GUARD.match(line) if "#" in line else None
         if not m:
             continue
         kind, cond = m.group(1), m.group(2).strip()
@@ -125,9 +136,8 @@ def guard_status(text, start):
             stack[-1] = {"nm": "match", "match": "nm", "off": "other"}.get(stack[-1], stack[-1])
         elif kind == "endif" and stack:
             stack.pop()
-    if "off" in stack:
-        return "disabled"
-    return "nonmatching" if "nm" in stack else "matched"
+    out.append("disabled" if "off" in stack else "nonmatching" if "nm" in stack else "matched")
+    return out
 
 
 def def_name(line):
@@ -170,7 +180,7 @@ class Tree:
 
 
 class RaidouTree:
-    """This repository's own matched functions on both games, through find_similar.py's corpus."""
+    """Matched functions of the shape index: the other Raidou game's copy, and same-shape functions of any corpus."""
 
     name = "raidou"
 
@@ -185,8 +195,10 @@ class RaidouTree:
         if got is None:
             return None
         path, line, text = got
-        return Hit(self.name, self.rev, path.relative_to(ROOT).as_posix(), line, f["name"], via, "matched",
-                   text, f["version"])
+        if path.is_absolute():
+            return Hit(self.name, self.rev, path.relative_to(ROOT).as_posix(), line, f["name"], via, "matched",
+                       text, f["version"])
+        return Hit(f["tree"], f["rev"][:9], path.as_posix(), line, f["name"], via, "matched", text, f["version"])
 
     def find(self, name, version):
         """The other game's matched copy, then same-shape matched functions of either game."""
@@ -273,13 +285,13 @@ def batch_rows(path, batch):
     return want
 
 
-def set_column(path, sources):
-    """Write body_source for the rows named in sources; other rows keep theirs (or get an empty one)."""
+def set_column(path, sources, column="body_source"):
+    """Write column for the rows named in sources; other rows keep theirs (or get an empty one)."""
     lines = path.read_text().splitlines()
     head = lines[0].split("\t")
-    if "body_source" not in head:
-        head.append("body_source")
-    col, name_col = head.index("body_source"), head.index("name")
+    if column not in head:
+        head.append(column)
+    col, name_col = head.index(column), head.index("name")
     out = ["\t".join(head)]
     for line in lines[1:]:
         if not line:

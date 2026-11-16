@@ -57,6 +57,8 @@ jobs:
           python3 tools/test_raidou_c.py
           python3 tools/test_docs_index.py
           python3 tools/test_find_body.py
+          python3 tools/test_similar_index.py
+          python3 tools/test_find_similar.py
           python3 tools/test_perm_unit.py
           python3 tools/test_land_batch.py
           python3 tools/test_version_guard.py

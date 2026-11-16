@@ -137,24 +137,31 @@ draft, or the index is stale.
 
 Before drafting, `python3 tools/find_body.py NAME...` looks for an existing body
 in smt3-decomp and dds-decomp under the function's name, its SMT3 alias and its
-Raidou HD name, and in this repository: the other game's matched C for the
-function, and matched functions of the same asm shape (`find_similar.py`, ratio
-0.9 or better). It says whether each body matches in its own tree. It compares
+Raidou HD name, and in the shape index: the other game's matched C for the
+function, and matched functions of the same asm shape in any of the five
+executables (ratio 0.9 or better). It says whether each body matches in its own tree. It compares
 the retail code of both functions (instruction count, call targets, opcode
 sequence) and prints a confidence that they are the same function; below 0.6 the
 hit is a different function sharing the name. `--compile` splices the body into
 the Raidou unit and runs `check_unit.py`: `match` and `near` compile as found,
 `adapt` fails only on its signature, callee arity or one global (usually a
 global the SMT3 code reads that Raidou passes as an argument), `rework` lacks
-several declarations or struct members and is a reference only. `python3 tools/find_similar.py --for NAME [--body]` ranks this repository's own
-matched functions on both games by retail instruction shape: the other game's
-copy, numbered wrappers such as `sbtlCallBtlGetSkilltbl8`/`10`/`16`, and
-same-shape siblings in other units. Read its `sub` count, the instructions the
-template does not supply, not the ratio. Regular batches do not run the
+several declarations or struct members and is a reference only. `python3 tools/find_similar.py --for NAME [--body]` ranks
+matched functions of both Raidou games, SMT3 and DDS 1/2 by retail instruction
+shape: the other game's copy, numbered wrappers such as
+`sbtlCallBtlGetSkilltbl8`/`10`/`16`, and same-shape functions elsewhere. Read
+its `sub` count, the instructions the template does not supply, not the ratio.
+Both tools read only the shape index under
+`~/.local/state/raidou-decomp-work/similar/`: build it once with
+`python3 tools/similar_index.py refresh` (about 90 seconds) and rerun that after
+matching; it re-tokenises only functions whose bytes changed, re-reads matched
+status, and updates the precomputed neighbours of every unmatched function. Regular batches do not run the
 permuter. As an opt-in, `python3 tools/perm_unit.py import <unit> NAME --batch D`
 sets up [decomp-permuter](https://github.com/simonlindholm/decomp-permuter) on
 the unit's NON_MATCHING draft under `D/permuter/`, scored on both games for a
-shared unit. A permuter result lands only once it is ordinary source.
+shared unit. `perm_unit.py scan DIR` rejects outputs that add a local only ever
+set to a constant or copied from one variable. A permuter result lands only once
+it is ordinary source.
 
 ## 3. Verify
 

@@ -17,46 +17,6 @@ def seq(*words):
             "addr": 0, "version": "raidou1"}
 
 
-class OperandTests(unittest.TestCase):
-    def test_registers_and_immediates_are_separated(self) -> None:
-        self.assertEqual(fs.operands("v0,0x10(a0)"), (["v0", "a0"], [0x10]))
-
-    def test_float_and_vector_registers_count_as_registers(self) -> None:
-        regs, imms = fs.operands("$f20,$vf10xyzw")
-        self.assertEqual(regs, ["$f20", "$vf10xyzw"])
-        self.assertEqual(imms, [])
-
-    def test_a_negative_immediate_keeps_its_sign(self) -> None:
-        self.assertEqual(fs.operands("sp,sp,-96"), (["sp", "sp"], [-96]))
-
-    def test_the_symbol_objdump_appends_is_not_an_operand(self) -> None:
-        self.assertEqual(fs.operands("0x285d60 <ChkAiHojo>"), ([], [0x285D60]))
-
-
-class TokenTests(unittest.TestCase):
-    """The tiers must coarsen in one direction and nothing else."""
-
-    def test_the_four_tiers_drop_what_they_say_they_drop(self) -> None:
-        got = fs.tokens(0x1000, "lw", "v0,0x10(a0)", 0x100000, 0x2E6E50)
-        self.assertEqual(got, ("lw v0,a0 16", "lw v0,a0", "lw  16", "lw"))
-
-    def test_a_call_target_is_wildcarded_at_every_tier(self) -> None:
-        a = fs.tokens(0x100000, "jal", "0x200000 <foo>", 0x100000, 0x2E6E50)
-        b = fs.tokens(0x100000, "jal", "0x210000 <bar>", 0x100000, 0x2E6E50)
-        self.assertEqual(a, b)
-
-    def test_a_branch_target_becomes_an_offset_so_two_copies_agree(self) -> None:
-        a = fs.tokens(0x100000, "beqz", "a0,0x100020", 0x100000, 0x2E6E50)
-        b = fs.tokens(0x200000, "beqz", "a0,0x200020", 0x100000, 0x2E6E50)
-        self.assertEqual(a, b)
-        self.assertIn("32", a[0])
-
-    def test_a_target_outside_text_is_left_alone(self) -> None:
-        """A %lo immediate that happens to sit last is data, not a branch."""
-        got = fs.tokens(0x100000, "bltz", "a0,0x900000", 0x100000, 0x2E6E50)
-        self.assertEqual(got[0], "bltz a0 9437184")
-
-
 class DifferenceTests(unittest.TestCase):
     def test_equal_sequences_have_no_differences(self) -> None:
         a, b = seq("lw v0,a0 16", "jr ra "), seq("lw v0,a0 16", "jr ra ")
@@ -127,19 +87,6 @@ class ClusterTests(unittest.TestCase):
                                  ("c", ["3", "3", "3", "3"], 8))}
         self.assertEqual([[f["name"] for f in g] for g in fs.clusters(funcs, 0)], [])
         self.assertEqual([[f["name"] for f in g] for g in fs.clusters(funcs, 1)], [["a", "b"]])
-
-
-@unittest.skipUnless((ROOT / "asm" / "raidou1").exists(), "needs configure.py")
-class CorpusTests(unittest.TestCase):
-    """The corpus covers the split asm exactly; objdump without -z would silently drop nops."""
-
-    def test_every_function_of_every_unit_is_covered(self) -> None:
-        for version in fs.VERSIONS:
-            funcs = fs.corpus(version)
-            for f in fs.inventory(version):
-                got = funcs[f["name"]]
-                self.assertEqual(len(got["seq"][0]), f["n"], f["name"])
-                self.assertEqual(got["addr"], f["addr"], f["name"])
 
 
 if __name__ == "__main__":
