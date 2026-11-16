@@ -203,6 +203,11 @@ def try_compile(root: Path, python: str, unit: str, name: str, body: str, versio
     text = splice(path.read_text(), name, body)
     if text is None:
         return Tried("no-asm-line")
+    return check_source(root, python, path, text, name, version)
+
+
+def check_source(root: Path, python: str, path: Path, text: str, name: str, version: str) -> Tried:
+    """check_unit.py on one function of text compiled as the unit at path (which may not exist yet)."""
     with tempfile.TemporaryDirectory() as tmp:
         src = Path(tmp) / path.name
         src.write_text(text)

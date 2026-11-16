@@ -23,12 +23,13 @@ ROOT = Path(__file__).resolve().parent.parent
 STORE = Path.home() / ".local/state/raidou-decomp-work/clusters/store"
 STATUS = re.compile(r"^(match|nocompile|words \d+)$")
 # find_body ranks a draft by how its status compares with a tree definition's guard.
+GAP_HEAD = '#include "common.h"\n\n'
 GUARD = {"match": "matched", "words": "nonmatching", "nocompile": "disabled"}
 EPILOG = ("The store is STORE/<version>/<ADDR>.c (the definition alone) and <ADDR>.json: name, addr, version, "
           "words, asm_hash (blake2b-8 of the retail bytes, as similar_index.py hashes them), exemplar, cluster, "
           "status (match, words N, nocompile), decls (declarations the draft assumes, spliced in before it) and "
           "date. `save` reads the address and size from build/<version>/<serial>.elf and measures the status with "
-          "check_unit.py in the function's unit; --status is only for a function whose unit has no .c yet. "
+          "check_unit.py in the function's unit, or alone after common.h when the unit has no .c yet (a gap unit). "
           "`check` lists entries whose bytes, size or name no longer agree with the build.")
 
 
@@ -150,7 +151,11 @@ def save(a) -> None:
     unit = a.unit or find_unit(a.version, addr, a.root)
     e = Entry(a.name, addr, a.version, size // 4, hash_code(img.code(addr, size)), a.exemplar, "", decls,
               a.cluster, unit, datetime.date.today().isoformat(), body if body.endswith("\n") else body + "\n")
-    tried = body_check.try_compile(a.root, sys.executable, unit, a.name, e.text(), a.version) if unit else None
+    if unit.startswith("asm/"):
+        gap = a.root / "src" / a.version / f"{unit.split('/', 2)[2]}.c"
+        tried = body_check.check_source(a.root, sys.executable, gap, GAP_HEAD + e.text(), a.name, a.version)
+    else:
+        tried = body_check.try_compile(a.root, sys.executable, unit, a.name, e.text(), a.version) if unit else None
     measured = get_status(tried) if tried else None
     if measured and a.status and a.status != measured:
         raise SystemExit(f"{a.name}: check_unit says {measured}, not {a.status}")
@@ -177,7 +182,7 @@ def main() -> None:
     s.add_argument("--cluster", default="")
     s.add_argument("--unit", help="src/... unit to measure in (default: the one holding its INCLUDE_ASM)")
     s.add_argument("--root", type=Path, default=ROOT, help="tree to measure in (its build/ names the function)")
-    s.add_argument("--status", help="only when the unit has no .c: match, nocompile or 'words N'")
+    s.add_argument("--status", help="only when check_unit cannot say: match, nocompile or 'words N'")
     lp = sub.add_parser("list")
     lp.add_argument("--cluster")
     sub.add_parser("check")

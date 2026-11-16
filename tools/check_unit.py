@@ -880,7 +880,8 @@ def main():
     else:
         unit_name = unit.relative_to(ROOT / "src" / version).with_suffix("").as_posix()
     source_view = view(source.read_text(), version)
-    unit_view = view(unit.read_text(), version)
+    # A gap unit has no .c yet; with --source it is checked as that file alone.
+    unit_view = view(unit.read_text(), version) if unit.exists() else source_view
     source_text = drop_nonmatching(source_view)
     syms = symbols(version)
     aliases = load_symbol_aliases(ROOT, version)
