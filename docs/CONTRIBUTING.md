@@ -81,6 +81,8 @@ from smt3-decomp. smt3-decomp has C for many of the same functions; copy the bod
 drop `static`, and adapt types.
 [smt3-decomp's matching levers](https://github.com/Megami-Decomps/smt3-decomp/blob/main/docs/matching-levers.md)
 list what to try when a function is close.
+[docs/matching/](matching/README.md) records what was already tried on each
+draft here; grep its `INDEX.tsv` for the function first.
 
 ### Non-matching C
 
@@ -108,6 +110,15 @@ retail's behavior, including its bugs, and declare every callee before first use
 `python3 tools/check_nonmatching.py` compiles every unit with a draft under
 `NON_MATCHING` and `SKIP_ASM`, once per version that builds it, with implicit
 declarations as errors. It checks that the draft compiles and nothing else.
+
+Each draft also gets an entry in `docs/matching/<unit>.md`, headed
+`## <function> (<unit>, <game> <size>)` with one size per game that builds it:
+the distance from `check_unit.py --cflags=-DNON_MATCHING` ("N of M words
+differ", plus emitted and native sizes when they differ), what blocks the match,
+the shapes tried, and a link to the smt3-decomp lever page that names the cause.
+Then run `python3 tools/docs_index.py` to regenerate the README and `INDEX.tsv`.
+`tools/test_docs_index.py` fails when a draft has no entry, an entry has no
+draft, or the index is stale.
 
 ## 3. Verify
 
