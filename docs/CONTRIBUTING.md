@@ -67,6 +67,21 @@ and `tools/check_config.py` fails when it is stale.
 (`tools/xgame/sig_leads.py`), as leads for whoever decompiles the function. Nothing
 reads it.
 
+### Type names
+
+A struct, union or enum takes its SMT3 name (smt3-decomp), else its Raidou HD name
+(raidouhd-reconstructed-sources), else a DDS name dds-decomp did not invent. Match
+the type by layout and by the functions that use it, not by name. Otherwise name it
+the way SMT3 and HD do:
+
+- `<module><Name>_t`, with the module's lowercase prefix: `sprHandle_t`,
+  `fldAreaWork_t`, `effBlurScaleWork_t`, `mnuPanelState_t`.
+- Battle (`sbtl`) types use HD's uppercase form `SBTL<WORDS>_<KIND>`:
+  `SBTLCAMERA_WORK`, `SBTLITEM_LISTWORK`.
+- Members are lowerCamel (`texture`, `slots`); HD's Hungarian `p`/`h` prefixes
+  (`pLink`, `hBillboard`) are kept where the member is HD's.
+- A size check is `<name without _t>SizeCheck`.
+
 Before starting, claim the unit in `config/<version>/claims.tsv` and set the row
 to `done` when you stop, finished or not. The file is advisory and nothing in the
 build reads it. Check it before you pick a unit.
