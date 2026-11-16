@@ -18,7 +18,8 @@ EPILOG = ("Trees are read at a git revision (default origin/main); identity uses
           "A hit is matched, nonmatching (a NON_MATCHING draft in its tree) or disabled (#if 0). "
           "body_source is CLASS:TREE:STATUS:VIA:CONFIDENCE, CLASS one of match, near (usable), adapt, rework, "
           "other (reference only), found (not compiled), or none; then flags: size Nx (outside 0.5-2x, left out "
-          "of the counts) and proto differs (parameter count or void return against include/).")
+          "of the counts) and proto differs (parameter count or void return against include/; shown but counted, "
+          "since on R08 it flagged 7 of the 11 bodies that worked: SMT3 reads a global Raidou passes in).")
 ROOT = Path(__file__).resolve().parents[1]
 HOME = Path.home()
 BATCHES = HOME / ".local/state/raidou-decomp-work/port/rest/batches.tsv"
