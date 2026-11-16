@@ -119,7 +119,7 @@ print('cleared cached cfuncs')
         print(out[-1500:], "exit", r.returncode)
         applied = json.load(open(f"{ip.WORK}/pc/_dumpp_applied-{ver}.json"))
         marks = {n: o["applied"]["protos_kept"][0] for n, o in applied.items()
-                 if o.get("applied", {}).get("protos_kept", ["none"])[0] not in ("none", "own")}
+                 if o.get("applied", {}).get("protos_kept", ["none"])[0] not in ("none", "own", "slow")}
         addrs = {r["name"]: int(r["addr"], 16) for r in todo}
         detail = {"hdm": "hd_from", "sim": "sim_from"}
         jobs = [(addrs[n], f"proto proposed: {src} {props.get(n, {}).get(detail.get(src), '') or ''}".rstrip() + " (shared.py protos)")

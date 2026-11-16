@@ -3,7 +3,9 @@
 then with the first CHAIN source that applies (none, hd, sim, call; "!" rejects an arity change), into
 pc/LABEL/NAME.c, restoring every type. SAMPLE picks the TSV. OFF=MOD removes that loaded Hex-Rays pass
 for the run; HEXOPTIONS=0x... sets that Hex-Rays option word for the run (0x100831FD hides casts).
-KEEP=1 leaves the chosen prototype applied (one variant); PORT=N targets that instance instead of VER's copy."""
+KEEP=1 leaves the chosen prototype applied (one variant); PORT=N targets that instance instead of VER's copy.
+Each py_eval stops starting decompiles after BUDGET seconds (default 30): the IDA MCP tool timeout (60 s) raises inside
+a Hex-Rays callback and leaves the decompiler busy or hung. A row that alone exceeds it is skipped as "slow"."""
 import csv, json, os, sys, time
 import ip, vu0fold
 
@@ -19,17 +21,32 @@ for r in rows:
 outfile = ip.winpath(ip.WORK + f"/pc/_dumpp-{ver}.json")
 
 CODE = r'''
-import ida_hexrays, ida_lines, ida_nalt, ida_typeinf, ida_funcs, idautils, idc, json, re
+import ida_hexrays, ida_lines, ida_nalt, ida_typeinf, ida_funcs, idautils, idc, json, re, time
 
 JOBS = %r
 VARIANTS = %r
 KEEP = %r
+BUDGET = %r
+START = time.monotonic()
+SLOWEST = [0.0]
+
+class Slow(BaseException):
+    pass
+
+def decompile(ea, hf=None):
+    """Raise Slow unless a decompile as slow as the slowest so far still ends inside BUDGET."""
+    if time.monotonic() + max(5.0, 1.5 * SLOWEST[0]) > START + BUDGET:
+        raise Slow()
+    t = time.monotonic()
+    cf = ida_hexrays.decompile(ea, hf, ida_hexrays.DECOMP_NO_CACHE | ida_hexrays.DECOMP_NO_WAIT)
+    SLOWEST[0] = max(SLOWEST[0], time.monotonic() - t)
+    return cf
 TIL = ida_typeinf.get_idati()
 KEYWORDS = set("const volatile struct union enum unsigned signed void char short int long float double bool".split())
 
 def text(ea):
     hf = ida_hexrays.hexrays_failure_t()
-    cf = ida_hexrays.decompile(ea, hf, ida_hexrays.DECOMP_NO_CACHE | ida_hexrays.DECOMP_NO_WAIT)
+    cf = decompile(ea, hf)
     if cf is None:
         if hf.code == ida_hexrays.MERR_BUSY:
             raise SystemExit("MERR_BUSY")
@@ -77,7 +94,7 @@ def callsite_types(ea):
     callers = sorted({ida_funcs.get_func(x).start_ea for x in idautils.CodeRefsTo(ea, 0) if ida_funcs.get_func(x)})
     for c in callers[:12]:
         try:
-            cf = ida_hexrays.decompile(c, None, ida_hexrays.DECOMP_NO_CACHE | ida_hexrays.DECOMP_NO_WAIT)
+            cf = decompile(c)
         except Exception:
             continue
         if cf is None:
@@ -163,6 +180,10 @@ def nargs_of(decl_tif):
 
 res = {}
 for name, ea, p in JOBS:
+    if res and time.monotonic() + max(5.0, 4 * SLOWEST[0]) > START + BUDGET:
+        break
+    first = not res
+    slow = False
     saved = ida_typeinf.tinfo_t()
     had = ida_nalt.get_tinfo(saved, ea)
     ida_nalt.del_tinfo(ea)
@@ -217,6 +238,8 @@ for name, ea, p in JOBS:
                 out["texts"][label] = "// DECOMPILE FAILED: %%s" %% e
             out["applied"][label] = [src, got]
             ida_nalt.del_tinfo(ea)
+    except Slow:
+        slow, keep = True, None
     except Exception as e:
         out["error"] = str(e)
     finally:
@@ -225,6 +248,10 @@ for name, ea, p in JOBS:
             ida_typeinf.apply_tinfo(ea, keep, ida_typeinf.TINFO_DEFINITE)
         elif had:
             ida_typeinf.apply_tinfo(ea, saved, ida_typeinf.TINFO_DEFINITE)
+    if slow and not first:
+        break
+    if slow:
+        out = {"texts": {}, "applied": {label: ["slow", None] for label in VARIANTS}, "error": "slow: over %%d s alone" %% BUDGET}
     res[name] = out
 ida_hexrays.clear_cached_cfuncs()
 open(%r, "w", encoding="utf-8").write(json.dumps(res))
@@ -233,6 +260,7 @@ print(len(res))
 
 OFF = os.environ.get("OFF")
 KEEP = os.environ.get("KEEP") == "1"
+BUDGET = float(os.environ.get("BUDGET", "30"))
 PORT = int(os.environ.get("PORT", "0"))
 if KEEP and len(variants) != 1:
     raise SystemExit("KEEP=1 takes one LABEL=CHAIN")
@@ -265,23 +293,31 @@ def save_applied(res):
 res = {}
 setup(True)
 try:
-    for i in range(0, len(jobs), 8):
-        code = CODE % (jobs[i:i + 8], variants, KEEP, outfile)
+    i = 0
+    while i < len(jobs):
+        code = CODE % (jobs[i:i + 50], variants, KEEP, BUDGET, outfile)
         for attempt in range(20):
             r = run("def __m():\n" + "".join("    " + l + "\n" for l in code.split("\n")) + "__m()\n")
             out = (r["stdout"] + r["stderr"]).strip()
             if "MERR_BUSY" not in out:
                 break
             time.sleep(3)  # another client is decompiling; the chunk restores types before it exits
-        if not out.endswith(str(len(jobs[i:i + 8]))):
-            raise SystemExit("IDA side failed at chunk %d: %s" % (i, out[-1500:]))
-        res.update(json.load(open(ip.WORK + f"/pc/_dumpp-{ver}.json")))
+        last = out.splitlines()[-1] if out else ""
+        if not last.isdigit() or int(last) == 0:
+            raise SystemExit("IDA side failed at row %d: %s" % (i, out[-1500:]))
+        got = json.load(open(ip.WORK + f"/pc/_dumpp-{ver}.json"))
+        res.update(got)
         save_applied(res)
-        print(f"chunk {i + 8}/{len(jobs)}", file=sys.stderr, flush=True)
+        i += int(last)
+        for n, o in got.items():
+            if o.get("error", "").startswith("slow"):
+                print(f"slow, skipped: {n}", file=sys.stderr, flush=True)
+        print(f"row {i}/{len(jobs)}", file=sys.stderr, flush=True)
 finally:
     setup(False)
 if KEEP:
-    print("kept", sum(1 for o in res.values() if o.get("applied", {}).get(next(iter(variants)), ["none"])[0] not in ("none", "own")))
+    print("kept", sum(1 for o in res.values() if o.get("applied", {}).get(next(iter(variants)), ["none"])[0] not in ("none", "own", "slow")),
+          "slow", sum(1 for o in res.values() if o.get("error", "").startswith("slow")))
 for label in variants:
     d = os.path.join(ip.WORK, "pc", label)
     os.makedirs(d, exist_ok=True)
