@@ -14735,14 +14735,14 @@
 0x0045C520	effPartPCPDataTableEntry45	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTableEntry7
 0x0045C560	effPartPCPDataTableEntry46	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTableEntry7
 0x0045C5A0	effPartPCPDataTableEntry47	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTableEntry8
-0x0045C5E0	effPartPCPDataTableEntry	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTable
-0x0045C608	effPartPCPDataTableEntry2	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTable
-0x0045C660	effPartPCPDataTableEntry3	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTable
-0x0045C668	effPartPCPDataTableEntry4	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTable
-0x0045C670	effPartPCPDataTableEntry5	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTable
-0x0045C678	effPartPCPDataTableEntry6	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTable
-0x0045C680	effPartPCPDataTableEntry7	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTable
-0x0045C688	effPartPCPDataTableEntry8	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by effPartPCPDataTable
+0x0045C5E0	effPCPThunderSpherePolyDataList	smt3	smt3: effPCPThunderSpherePolyDataList; effPartPCPDataTable slot order matches SMT3's non-null slots
+0x0045C608	effPCPThunderPolyDataList	smt3	smt3: effPCPThunderPolyDataList; effPartPCPDataTable slot order matches SMT3's non-null slots
+0x0045C660	effPCPThunderRadiatePolyDataList	smt3	smt3: effPCPThunderRadiatePolyDataList; effPartPCPDataTable slot order matches SMT3's non-null slots
+0x0045C668	effPCPMultiBlurExpDataList	smt3	smt3: effPCPMultiBlurExpDataList; effPartPCPDataTable slot order matches SMT3's non-null slots
+0x0045C670	effPCPSparkleSphereDataList	smt3	smt3: effPCPSparkleSphereDataList; effPartPCPDataTable slot order matches SMT3's non-null slots
+0x0045C678	effPCPFlashPolySphereDataList	smt3	smt3: effPCPFlashPolySphereDataList; effPartPCPDataTable slot order matches SMT3's non-null slots
+0x0045C680	effPCPMultiFilterExpDataList	smt3	smt3: effPCPMultiFilterExpDataList; effPartPCPDataTable slot order matches SMT3's non-null slots
+0x0045C688	effPCPBlinkMultiBlurDataList	smt3	smt3: effPCPBlinkMultiBlurDataList; effPartPCPDataTable slot order matches SMT3's non-null slots
 0x0045C690	effPartPCPDataTable	inferred	method=smt3-ref; p=0.98 (n=D_r1_004008D0); tier=A; source=smt3; evidence=smt3-ref/exact: nfun=4, other=0, sim=1.0, games=2, size=True, sec=True, fn=dds3EffectPCPCreate
 0x0045C700	dds3EffectFuncTable	inferred	method=smt3-alias; p=0.90 (n=D_r1_00400940); tier=A; source=smt3; evidence=smt3-alias/all: game=raidou1
 0x0045C704	dds3EffectPartDrawData	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by dds3EffectPartDraw

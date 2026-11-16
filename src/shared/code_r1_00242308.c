@@ -3038,6 +3038,59 @@ u16 Start_sbtl(s32 flags) {
 }
 
 #ifdef VERSION_RAIDOU1
+struct EffCopiedPayload;
+
+void sbtlCallBtlSetLightMap();
+void sbtlLeaf49(void);
+void sbtlCallSetUnitColorRGB();
+void sbtlCallSetUnitColorRGB2();
+void effResetDefaultColorTables();
+void sbtlLeaf50();
+void effLeaf376(void);
+u32 effLeaf377();
+void effDestroyCopiedEffectPayload(struct EffCopiedPayload *payload);
+u32 effLeaf378(void *);
+void effLeaf379(void);
+void effLeaf380(void);
+void effLeaf381(void);
+void effLeaf382(void);
+void effLeaf383(void);
+void effCallPadVibeFadeIN();
+void sbtlCallBtlEffCreateUnitList();
+void sbtlLeaf51();
+void sbtlCallBtlSetLightMap2();
+void sbtlCallBtlEffCreateUnitList2();
+void effCallSetUnitColorRGB();
+void effCallBtlEffCreateUnitList();
+
+extern sdfGrOt_t dds3Data7;
+extern sdfGrOt_t sdfDrawFlagListVerticesDataEntry;
+extern sdfGrOt_t effData2;
+extern sdfGrOt_t dds3Data8;
+
+EffResourceOps effRuntimeResourceOperations[14] = {
+    { NULL, NULL, NULL, NULL, NULL, NULL, 0x0 },
+    { NULL, NULL, sbtlCallBtlSetLightMap, NULL, sbtlLeaf49, NULL, 0x28 },
+    { NULL, NULL, sbtlCallSetUnitColorRGB, NULL, sbtlCallSetUnitColorRGB2, NULL, 0x14 },
+    { NULL, NULL, effResetDefaultColorTables, NULL, sbtlLeaf50, NULL, 0x10 },
+    { effLeaf376, effLeaf377, effDestroyCopiedEffectPayload, effLeaf378, effLeaf379, NULL, 0xC },
+    { NULL, NULL, NULL, NULL, effLeaf380, NULL, 0x8 },
+    { NULL, NULL, NULL, NULL, effLeaf381, NULL, 0x4 },
+    { NULL, NULL, effLeaf382, NULL, effLeaf383, NULL, 0xC },
+    { NULL, NULL, effLeaf384, NULL, effCallPadVibeFadeIN, NULL, 0x1C },
+    { NULL, NULL, effLeaf385, NULL, effLeaf386, NULL, 0x10 },
+    { NULL, NULL, NULL, NULL, effLeaf387, NULL, 0xC },
+    { NULL, NULL, NULL, NULL, sbtlCallBtlEffCreateUnitList, NULL, 0xC },
+    { sbtlLeaf51, NULL, sbtlCallBtlSetLightMap2, NULL, sbtlCallBtlEffCreateUnitList2, NULL, 0x20 },
+    { NULL, NULL, effCallSetUnitColorRGB, NULL, effCallBtlEffCreateUnitList, NULL, 0x14 },
+};
+
+mapLightParam_t sbtlCallBtlEffCreateUnitList2Data __attribute__((aligned(16))) = { { 0.0f } };
+
+sdfGrOt_t *sdfDrawFlagListVerticesData[8] = {
+    &dds3Data7, &dds3Data7, &effData2, &dds3Data8, &sdfDrawFlagListVerticesDataEntry, NULL, NULL, NULL,
+};
+
 /* Effect editor pages for the effect kinds; see effDebugMenu_t. */
 s32 effEditMScaleTrack(BaObj *p);
 extern f32 bssWork66;

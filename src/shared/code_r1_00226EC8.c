@@ -1599,7 +1599,7 @@ struct EffKindWork;
  * zero-argument notifications retain the original unprototyped callback ABI. */
 typedef struct EffKindDesc {
     void *(*create)(void *); // 0x00
-    void (*destroy)(void *); // 0x04: release the created handle
+    void (*destroy)();       // 0x04: release the created handle
     void (*update)();        // 0x08: advance work through its kind callback
     void (*initialize)(struct EffKindWork *, sdfTexHandle_t *); // 0x0C
     u32 payloadSize;         // 0x10: bytes copied after the work header
@@ -10883,6 +10883,23 @@ void effResetSlots(void) {
 
 INCLUDE_ASM(const s32, "code_r1_00226EC8", effPadVibeFadeUpdate);
 
+#ifdef VERSION_RAIDOU1
+EffKindDesc effData5[6] = {
+    { NULL, NULL, NULL, NULL, 0x0 },
+    { NULL, NULL, effUpdateFadeBlendA, NULL, 0xE8 },
+    { effCreateFadeBlendWorkFromOutput, effReleaseFadeBlendWork, effUpdateProjectedBlurFadeRectangle, effUpdateTarget, 0xEC },
+    { effCreateFixedSlotBlurWorkFromFadeOutput, effReleaseFixedSlotBlurWork, effUpdateFadeMapA, effTextureReferenceRelease, 0xEC },
+    { effCreateVariableSlotBlurWorkFromFadeOutput, effReleaseVariableSlotBlurWork, effUpdateFadeMapB, effReplaceKindLinkedTarget, 0xEC },
+    { NULL, NULL, effUpdateFadeBlendB, NULL, 0xE8 },
+};
+
+EffKindDesc effData6[3] = {
+    { NULL, NULL, NULL, NULL, 0x0 },
+    { NULL, NULL, effUpdateFadeBlendC, NULL, 0xD8 },
+    { effCreateFadeColorWorkFromOutput, effReleaseFadeColorWork, effUpdateProjectedFadeColor, effReplaceLinkedKindWorkTarget, 0xE4 },
+};
+
+#endif
 INCLUDE_RODATA(const s32, "code_r1_00226EC8", sbtlCallBtlEffCreateUnitList2Table);
 
 INCLUDE_RODATA(const s32, "code_r1_00226EC8", sysStrAccurate);

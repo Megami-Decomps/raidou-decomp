@@ -6736,14 +6736,6 @@
 0x00400760	effPartPCPDataTableEntry45	data	tier=D	derived-table	na	pointed to by effPartPCPDataTableEntry7
 0x004007A0	effPartPCPDataTableEntry46	data	tier=D	derived-table	na	pointed to by effPartPCPDataTableEntry7
 0x004007E0	effPartPCPDataTableEntry47	data	tier=D	derived-table	na	pointed to by effPartPCPDataTableEntry8
-0x00400820	effPartPCPDataTableEntry	data	tier=D	derived-table	na	pointed to by effPartPCPDataTable
-0x00400848	effPartPCPDataTableEntry2	data	tier=D	derived-table	na	pointed to by effPartPCPDataTable
-0x004008A0	effPartPCPDataTableEntry3	data	tier=D	derived-table	na	pointed to by effPartPCPDataTable
-0x004008A8	effPartPCPDataTableEntry4	data	tier=D	derived-table	na	pointed to by effPartPCPDataTable
-0x004008B0	effPartPCPDataTableEntry5	data	tier=D	derived-table	na	pointed to by effPartPCPDataTable
-0x004008B8	effPartPCPDataTableEntry6	data	tier=D	derived-table	na	pointed to by effPartPCPDataTable
-0x004008C0	effPartPCPDataTableEntry7	data	tier=D	derived-table	na	pointed to by effPartPCPDataTable
-0x004008C8	effPartPCPDataTableEntry8	data	tier=D	derived-table	na	pointed to by effPartPCPDataTable
 0x00400944	dds3EffectPartDrawData	data	tier=D	derived-sole	na	used by dds3EffectPartDraw
 0x00400948	dds3EffectPartDeleteData	data	tier=D	derived-sole	na	used by dds3EffectPartDelete
 0x00400950	effAPPoint4DrawSubData	data	tier=D	derived-sole	na	used by effAPPoint4DrawSub
