@@ -156,7 +156,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapWaitCbScreenFadeBSub(0);
         if (fldGlobalBase.word2E8) {
             datDebugPrintf("EISEI TAIITU devil:[%02x]\n", fldGlobalBase.word2EC);
-            fldGlobalBase.summonStop = 1;
+            fldGlobalBase.nakamaMode = 1;
             DDS3_GBWK->mapSummonID = fldGlobalBase.word2EC;
             fldGlobalBase.word2E8 = 0;
             fldGlobalBase.word2EC = 0;
@@ -261,7 +261,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             fldGlobalBase.word1D0 = 1;
         } else {
             mapHamidasiCheck();
-            if (!fldGlobalBase.summonStop) {
+            if (!fldGlobalBase.nakamaMode) {
                 mapAiboFoceSet3(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
                 mapAiboWakeUp(1);
                 mapSummonDvFoceSet2(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
@@ -282,7 +282,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             fldGlobalBase.word218 = -1;
             mapCatChkMain(cutReq);
         }
-        if (fldGlobalBase.summonStop) {
+        if (fldGlobalBase.nakamaMode) {
             mdlSetMotionSpeed(5);
         } else {
             mdlSetMotionSpeed(0);
@@ -301,7 +301,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             mapBgSetScroll(playerBasic->poseset->pos2.x, playerBasic->poseset->pos2.y - 128.0f, playerBasic->poseset->pos2.z, 0);
         }
         mapCutSetCam(cameraBasic, 0);
-        if (!fldGlobalBase.summonStop) {
+        if (!fldGlobalBase.nakamaMode) {
             fldGlobalBase.wordF8 = mapGetLight(fldGlobalBase.focusX, fldGlobalBase.focusZ);
             mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 0);
             if (aiboBasic) {
@@ -424,7 +424,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         } else if (fldGlobalBase.word310) {
             fldAutoMapSeqFlags.stage = 12;
             datDebugPrintf("SEQ_BGM_DPLAY\n");
-        } else if (!fldGlobalBase.summonStop) {
+        } else if (!fldGlobalBase.nakamaMode) {
             fldAutoMapSeqFlags.stage = 14;
             datDebugPrintf("SEQ_NORMAL\n");
         } else {
@@ -442,7 +442,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             }
             fldBgZoomTest(2);
         }
-        if (fldGlobalBase.summonStop) {
+        if (fldGlobalBase.nakamaMode) {
             mdlSetMotionSpeed(5);
         } else {
             mdlSetMotionSpeed(1);
@@ -505,7 +505,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             if (fldGlobalBase.word310) {
                 fldAutoMapSeqFlags.stage = 12;
                 datDebugPrintf("SEQ_BGM_DPLAY\n");
-            } else if (fldGlobalBase.summonStop) {
+            } else if (fldGlobalBase.nakamaMode) {
                 fldAutoMapSeqFlags.stage = 15;
                 datDebugPrintf("SEQ_NORMAL_NAKAMA\n");
             } else {
@@ -540,7 +540,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
                 sndBgmPlay();
             }
         }
-        if (fldGlobalBase.summonStop) {
+        if (fldGlobalBase.nakamaMode) {
             fldAutoMapSeqFlags.stage = 15;
             datDebugPrintf("SEQ_NORMAL_NAKAMA\n");
         } else {
@@ -573,7 +573,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         mapNakamaTask();
         fldGlobalBase.wordF8 = mapGetLight(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         mapUnitSetLight(playerBasic, fldGlobalBase.wordF8, 10);
-        mapCalcFXY(fldGlobalBase.wordF8);
+        mapDebugLightSet(fldGlobalBase.wordF8);
         fldGlobalBase.encountState = mapProcSequenceSub5(fldGlobalBase.focusX, fldGlobalBase.focusZ);
         if (fldGlobalBase.word35C) {
             mapCallSetPlayerTargetData4();
@@ -714,7 +714,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             fldGlobalBase.ifDrawOn = 0;
             mapBgDrawOnOff(0);
             mapWaitCbScreenFadeBSub(1);
-            if (fldGlobalBase.summonStop) {
+            if (fldGlobalBase.nakamaMode) {
                 fldProcSequenceSub5(fldGlobalBase.float184, fldGlobalBase.float18C, fldGlobalBase.word194, &entryPos[0], &entryPos[1]);
                 fldProcSequenceSub4(fldGlobalBase.focusX, fldGlobalBase.focusZ, &entryPos2[0], &entryPos2[1]);
                 fldCallFindSceneEntryData(entryPos[0], entryPos[1], entryPos2[0], entryPos2[1], fldGlobalBase.amSBlock, fldGlobalBase.nameU, 1);
@@ -737,7 +737,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             if (dds3PadButtonState[0x21] >= 0) {
                 break;
             }
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
             dds3VisibleSceneBasic(dds3GetActiveScene(), 1);
             fldGlobalBase.ifDrawOn = 1;
             mapBgDrawOnOff(1);
@@ -746,7 +746,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             if (!ProcessCheck_cmpMap()) {
                 break;
             }
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
             dds3VisibleSceneBasic(dds3GetActiveScene(), 1);
             fldGlobalBase.ifDrawOn = 1;
             mapBgDrawOnOff(1);
@@ -756,7 +756,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         goto moon_pad;
     case 0x15:
         if (!dds3FadeCheck()) {
-            if (fldGlobalBase.summonStop) {
+            if (fldGlobalBase.nakamaMode) {
                 fldProcSequenceSub5(fldGlobalBase.float184, fldGlobalBase.float18C, fldGlobalBase.word194, &entryPos[0], &entryPos[1]);
                 fldProcSequenceSub4(fldGlobalBase.focusX, fldGlobalBase.focusZ, &entryPos2[0], &entryPos2[1]);
                 fldCallFindSceneEntryData(entryPos[0], entryPos[1], entryPos2[0], entryPos2[1], fldGlobalBase.amSBlock, fldGlobalBase.nameU, 1);
@@ -806,7 +806,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             }
         }
         dds3RefCameraTM2();
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         dds3VisibleSceneBasic(dds3GetActiveScene(), 1);
         dds3ProcSequenceSub(1);
         fldGlobalBase.ifDrawOn = 1;
@@ -897,7 +897,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (--ProcSequenceData3 < 0) {
             mapSoundKankyoSeSet(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.cutIdx);
             fldRegistUnitPad();
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         if (fldGlobalBase.word33C) {
             mapCallSetPlayerTargetData4();
@@ -951,7 +951,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         while (mapNpcTblRefresh_Wait() == 1) {
         }
         mapMapObjectRefresh();
-        if (!fldGlobalBase.summonStop) {
+        if (!fldGlobalBase.nakamaMode) {
             mapAiboFoceSet3(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
             mapAiboWakeUp(1);
             mapSummonDvFoceSet2(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
@@ -971,7 +971,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             mapSoundKankyoSeSet(fldGlobalBase.amSBlock, fldGlobalBase.nameU, fldGlobalBase.cutIdx);
             dds3FadeIn2(15);
             fldRegistUnitPad();
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         break;
     case 0x22:
@@ -992,7 +992,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             gMapRndEncLoad_Mode = 1;
             ProcSequenceData5 = sndProcSequenceSub3();
             mdlMotionPause(playerModel);
-            if (!fldGlobalBase.summonStop) {
+            if (!fldGlobalBase.nakamaMode) {
                 if (summonDvModel) {
                     mdlMotionPause(summonDvModel);
                 }
@@ -1076,15 +1076,15 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (!sndSeStatus()) {
             goto proc_msk_b;
         }
-        if (fldGlobalBase.summonStop && (fldGlobalBase.word148 & 0xF000) == 0x1000) {
+        if (fldGlobalBase.nakamaMode && (fldGlobalBase.word148 & 0xF000) == 0x1000) {
             dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_hajiki_label");
-        } else if (fldGlobalBase.summonStop && fldGlobalBase.word148 == 0x2000) {
+        } else if (fldGlobalBase.nakamaMode && fldGlobalBase.word148 == 0x2000) {
             dds3SceneBasicStartScript(dds3GetActiveScene(), "bunri_hajiki3_label");
         } else {
             mdlSetMotionSpeed(2);
             dds3SceneBasicStartScript(dds3GetActiveScene(), fldGlobalBase.scriptName);
         }
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         goto proc_msk_b;
     case 0x27:
         mafuResult = mapBadMafuHajiki();
@@ -1102,7 +1102,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
                 break;
             case 4:
             case 6:
-                nextStage = fldGlobalBase.summonStop ? 15 : 14;
+                nextStage = fldGlobalBase.nakamaMode ? 15 : 14;
                 break;
             case 5:
                 fldReleaseUnitPad();
@@ -1114,7 +1114,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
             }
         } else {
             fldRegistUnitPad();
-            nextStage = fldGlobalBase.summonStop ? 15 : 14;
+            nextStage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         fldAutoMapSeqFlags.stage = nextStage;
         goto proc_msk_b;
@@ -1145,7 +1145,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (mapNakamaSearchTask_fld()) {
             goto proc_msk_b;
         }
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         if (fldGlobalBase.word33C) {
             mapCallSetPlayerTargetData4();
         }
@@ -1156,14 +1156,14 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (mapNakamaSpotTask_fld()) {
             goto proc_msk_b;
         }
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         fldRegistUnitPad();
         goto proc_msk_b;
     case 0x2C:
         if (mapNakamaGankTask_fld()) {
             goto proc_msk_b;
         }
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         if (fldGlobalBase.word33C) {
             mapCallSetPlayerTargetData4();
         }
@@ -1173,7 +1173,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (mapNakamaKoukTask()) {
             goto proc_msk_b;
         }
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         if (fldGlobalBase.word33C) {
             mapCallSetPlayerTargetData4();
         }
@@ -1182,7 +1182,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
     case 0x2E:
         ProcMskSub_A();
         if (!mapNakamaHakaTask()) {
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         goto proc_msk_b;
     case 0x2F:
@@ -1196,7 +1196,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
     case 0x30:
         ProcMskSub_A();
         if (!mapNakamaReiTask()) {
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         goto proc_msk_b;
     case 0x31:
@@ -1210,7 +1210,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
     case 0x32:
         ProcMskSub_A();
         if (!mapNakamaChikaraTask()) {
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         goto proc_msk_b;
     case 0x33:
@@ -1224,7 +1224,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
     case 0x34:
         ProcMskSub_A();
         if (!mapNakamaDokusinTask()) {
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         goto proc_msk_b;
     case 0x35:
@@ -1238,7 +1238,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
     case 0x36:
         ProcMskSub_A();
         if (!mapNakamaIroTask()) {
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         goto proc_msk_b;
     case 0x37:
@@ -1252,7 +1252,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
     case 0x38:
         ProcMskSub_A();
         if (!mapNakamaHikouTask()) {
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         goto proc_msk_b;
     case 0x39:
@@ -1266,7 +1266,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
     case 0x3A:
         ProcMskSub_A();
         if (!mapNakamaSinnTask()) {
-            fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+            fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         }
         goto proc_msk_b;
     case 0x3B:
@@ -1281,7 +1281,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (mapNakamaSpotTask()) {
             goto proc_msk_b;
         }
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         if (fldGlobalBase.word33C) {
             mapCallSetPlayerTargetData4();
         }
@@ -1291,7 +1291,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (mapNakamaGankTask()) {
             goto proc_msk_b;
         }
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         if (fldGlobalBase.word33C) {
             mapCallSetPlayerTargetData4();
         }
@@ -1301,7 +1301,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (mapNakamaTakumiTask()) {
             goto proc_msk_b;
         }
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         if (fldGlobalBase.word33C) {
             mapCallSetPlayerTargetData4();
         }
@@ -1326,7 +1326,7 @@ s32 ProcSequence(dds3ProcessID_t *id)
         if (dds3FadeCheck()) {
             goto proc_msk_b;
         }
-        fldAutoMapSeqFlags.stage = fldGlobalBase.summonStop ? 15 : 14;
+        fldAutoMapSeqFlags.stage = fldGlobalBase.nakamaMode ? 15 : 14;
         fldRegistUnitPad();
         goto proc_msk_b;
     case 0x42:
@@ -1587,7 +1587,7 @@ void mapCallMap(s32 map, s32 flor, s32 point, char *label)
         mapHamidasiCheck();
         mapCutSet_From_Pos(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
         fldPlayerForceSetPos_NoHokan(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
-        if (fldGlobalBase.summonStop == 0) {
+        if (fldGlobalBase.nakamaMode == 0) {
             mapAiboFoceSet3(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);
             mapAiboWakeUp(1);
             mapSummonDvFoceSet2(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ);

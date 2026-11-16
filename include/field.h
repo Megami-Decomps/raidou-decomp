@@ -231,7 +231,7 @@ typedef struct fldAreaWork_t
     f32 camAngle2;              /* 0x128 */
     union { f32 float12C; s32 word12C; }; /* 0x12C: Raidou stores -1 */
     s32 mskIndex;               /* 0x130: MSK index from mapNpcTableGetMSK */
-    s32 hitValid;               /* 0x134 */
+    s32 nowDoorSe;              /* 0x134 */
     s32 word138;                /* 0x138 */
     f32 float13C;               /* 0x13C */
     f32 float140;               /* 0x140 */
@@ -244,7 +244,7 @@ typedef struct fldAreaWork_t
     s32 word15C;                /* 0x15C */
     s32 word160;                /* 0x160 */
     s32 word164;                /* 0x164 */
-    s32 summonStop;             /* 0x168 */
+    s32 nakamaMode;             /* 0x168 */
     s32 word16C;                /* 0x16C */
     s32 word170;                /* 0x170 */
     s32 word174;                /* 0x174 */
@@ -383,7 +383,7 @@ typedef struct fldAreaWork_t
     s32 word188;                /* 0x188 */
     s32 word18C;                /* 0x18C */
     s32 word190;                /* 0x190 */
-    s32 summonStop;             /* 0x194 */
+    s32 nakamaMode;             /* 0x194 */
     s32 word198;                /* 0x198 */
     s32 word19C;                /* 0x19C */
     s32 word1A0;                /* 0x1A0 */

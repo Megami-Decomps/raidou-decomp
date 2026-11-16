@@ -1,3 +1,8 @@
 #include "common.h"
+#include "code_0015D490.h"
 
-INCLUDE_ASM(const s32, "field/fldSnow", fldSetSnowActive);
+void fldSetSnowActive(void) {
+    if (mapData133 == 0) {
+        mapData132 = 0x30;
+    }
+}

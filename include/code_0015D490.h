@@ -5,6 +5,7 @@
 
 struct sprHandle_t;
 struct effHandle_t;
+struct sdfMemHandle_t;
 
 /* One looping field sound effect: kankyo (ambient) slots and moving-object slots. */
 typedef struct mapSoundSe_t {
@@ -21,10 +22,20 @@ typedef struct mapSeDelay_t {
     s16 vol;
 } mapSeDelay_t;
 
-/* Bad-status effects drawn on the player (mapData117) and the summoned devil (mapCallMemset2Data). */
-extern struct effHandle_t *mapData117;
+/* Countdown of the screen flash drawn by mapIsFldKeyFreeSub4. */
+extern s32 mapIsFldKeyFreeSub4Data;
+extern s32 mapIsFldKeyFreeSub4Data2;
+
+/* Bad-status effects drawn on the player (eMapBadEff_R) and the summoned devil (eMapBadEff_N). */
+extern struct sdfMemHandle_t *hMapBadEff_R;
+extern s32 mapBadEffLoadData;
+extern struct effHandle_t *eMapBadEff_R;
+extern s32 eMapBadEff_R_BADID;
 extern s32 mapData118;
-extern struct effHandle_t *mapCallMemset2Data;
+extern struct sdfMemHandle_t *hMapBadEff_N;
+extern s32 mapBadEffLoadData3;
+extern struct effHandle_t *eMapBadEff_N;
+extern s32 eMapBadEff_N_BADID;
 extern s32 mapData120;
 extern s32 mapData121;
 extern u8 *mapCallEnableModeData2[];
@@ -36,6 +47,8 @@ extern s32 p2sdData2;
 extern s32 mapData129;
 extern s32 mapSoundKankyoTaskSubData;
 extern s32 mapData131;
+extern s32 mapData132;
+extern s32 mapData133;
 extern s32 mapSeWallHitData;
 extern s32 takara_openanm_objid;
 extern s32 fldCallSetOt4Data;

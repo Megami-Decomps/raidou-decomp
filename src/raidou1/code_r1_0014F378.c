@@ -2035,9 +2035,9 @@ INCLUDE_SDATA(const s32, "code_r1_0014F378", mapMapSetAreaData23);
 
 INCLUDE_SDATA(const s32, "code_r1_0014F378", gSubFloorID);
 
-INCLUDE_SDATA(const s32, "code_r1_0014F378", mapData114);
+INCLUDE_SDATA(const s32, "code_r1_0014F378", npc_delcash_cnt);
 
-INCLUDE_SDATA(const s32, "code_r1_0014F378", mapData115);
+INCLUDE_SDATA(const s32, "code_r1_0014F378", npc_addcash_cnt);
 
 INCLUDE_SDATA(const s32, "code_r1_0014F378", mapNpcTblRefresh_WaitData);
 

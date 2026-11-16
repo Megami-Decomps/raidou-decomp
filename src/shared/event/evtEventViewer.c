@@ -1056,6 +1056,8 @@ void SetActiveCamera(evtViewerInfo_t *pInfo) {
 }
 
 #ifdef VERSION_RAIDOU1
+/* NON_MATCHING: 118 of 122 words match. Fragile: renaming one fldProcess.h prototype swaps two load pairs in the full unit. */
+#ifdef NON_MATCHING
 void ReqMessage(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowframe, s32 length, evtViewerInfo_t *pInfo) {
     s32 mesNo;
     s32 mesType;
@@ -1112,6 +1114,9 @@ void ReqMessage(struct evtViewerObject_t *obj, evtFrameInfo_t *frame, s32 nowfra
         itfMesMngRequestSelect_itf(pInfo->workdata->MesHandle, mesNo);
     }
 }
+#else
+INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
+#endif
 #else
 INCLUDE_ASM(const s32, "event/evtEventViewer", ReqMessage);
 #endif

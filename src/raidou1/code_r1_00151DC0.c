@@ -302,8 +302,8 @@ void mapMapSetAreaRefresh(void)
         }
     }
     mapNpcTblRefresh_WaitData = -1;
-    mapData114 = 0;
-    mapData115 = 0;
+    npc_delcash_cnt = 0;
+    npc_addcash_cnt = 0;
     if (fldGlobalBase.menuOpenFlag != 0)
     {
         return;

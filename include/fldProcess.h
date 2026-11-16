@@ -130,7 +130,7 @@ s32 fldHirukoYukaGo_Idx2_B_fld(s32 arg);
 s32 fldGetFldBgNameList(f32 x, f32 z);
 s32 effProcSequenceSub(void);
 s32 datCallGetStockDevilID(u32 id);
-void mapCalcFXY(s32 arg);
+void mapDebugLightSet(s32 arg);
 
 void DecisionFeedIn(void);
 void encStart(void);

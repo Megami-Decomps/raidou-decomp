@@ -358,7 +358,7 @@ dds3Basic_t *mapGetPlayersBasic(s32 type) {
         case 0:
             return playerBasic;
         case 1:
-            if (fldGlobalBase.summonStop == 0) {
+            if (fldGlobalBase.nakamaMode == 0) {
                 return playerBasic;
             }
             return raidoBasic;
@@ -415,7 +415,7 @@ INCLUDE_ASM(const s32, "code_r1_00128378", mapCallProcessCheck);
 #endif
 
 s32 mapGetRaidouSerialID(void) {
-    if (!fldGlobalBase.summonStop) {
+    if (!fldGlobalBase.nakamaMode) {
         return playerBasic->serialID;
     }
     return raidoBasic->serialID;
@@ -465,7 +465,7 @@ INCLUDE_RODATA(const s32, "code_r1_00128378", mapGetEyeTgtRotTable);
 void mapRaidouBackUpPosReset(void) {
     f32 axis[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
 
-    if (fldGlobalBase.summonStop) {
+    if (fldGlobalBase.nakamaMode) {
         SDF_VU0_LOADVECTOR(axis);
         fldGlobalBase.word190 = fldGlobalBase.amSBlock;
         fldGlobalBase.word194 = fldGlobalBase.nameU;

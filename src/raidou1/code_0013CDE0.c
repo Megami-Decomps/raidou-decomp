@@ -362,7 +362,7 @@ void fldAllTblPacLoad(void) {
         case 3:
             handle = node->resrc;
             top = sdfMemGetPtr(handle);
-            memcpy(mapWork5, top, sdfMemGetSize(handle));
+            memcpy(LightDataTbl, top, sdfMemGetSize(handle));
             sdfMemFreeDirect(node->resrc);
             break;
         case 0:

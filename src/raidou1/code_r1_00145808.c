@@ -70,7 +70,7 @@ static inline void mapObjTaskDist3(f32 px, f32 py, f32 pz, const sdfVector4_t *v
 
 static inline void mapObjTaskPlayerDist3(const sdfVector4_t *v, f32 *d1, f32 *d2, f32 *d3)
 {
-    if (fldGlobalBase.summonStop == 0)
+    if (fldGlobalBase.nakamaMode == 0)
     {
         mapObjTaskDist3(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ, v, d1, d2, d3);
     }

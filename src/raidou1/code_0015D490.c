@@ -41,7 +41,7 @@ void mapCallMemset2(void) {
     if (mapData121 != 0) {
         return;
     }
-    if (fldGlobalBase.summonStop == 0) {
+    if (fldGlobalBase.nakamaMode == 0) {
         playerMdl = playerModel;
         summonMdl = summonDvModel;
         player = playerBasic;
@@ -51,24 +51,24 @@ void mapCallMemset2(void) {
         player = raidoBasic;
     }
     summon = summonDvBasic;
-    if (mapData117 != NULL && mapData118 == 0) {
+    if (eMapBadEff_R != NULL && mapData118 == 0) {
         bad = sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.unit);
         if ((bad == 6 || bad == 11) && !dds3ObjectBaseCheckFlag(player, 1)) {
             sdfModelGetMarkPos_sdfModel(playerMdl->inner, 2);
             SDF_VU0_STOREVECTOR(&pos);
-            dds3EffectSetPosition(mapData117, &pos);
-            dds3EffectDraw_dds3Effect(mapData117);
+            dds3EffectSetPosition(eMapBadEff_R, &pos);
+            dds3EffectDraw_dds3Effect(eMapBadEff_R);
         }
     }
-    if (mapCallMemset2Data != NULL && mapData120 == 0) {
+    if (eMapBadEff_N != NULL && mapData120 == 0) {
         id = datCallGetStockDevilID(DDS3_GBWK->mapSummonID);
         if (id != -1) {
             bad = sdatCalc_GetBadStatus(&DDS3_GBWK->playerData.stock[id]);
             if ((bad == 6 || bad == 11) && !dds3ObjectBaseCheckFlag(summon, 1) && (mdlGetColor(summonMdl) & 0xFF000000)) {
                 sdfModelGetMarkPos_sdfModel(summonMdl->inner, 2);
                 SDF_VU0_STOREVECTOR(&pos);
-                dds3EffectSetPosition(mapCallMemset2Data, &pos);
-                dds3EffectDraw_dds3Effect(mapCallMemset2Data);
+                dds3EffectSetPosition(eMapBadEff_N, &pos);
+                dds3EffectDraw_dds3Effect(eMapBadEff_N);
             }
         }
     }

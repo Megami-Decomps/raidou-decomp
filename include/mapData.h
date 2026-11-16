@@ -43,7 +43,7 @@ typedef struct fldMapFileHead_t
 /* Placed point: id, grid cell, corner offset and direction index. */
 typedef struct fldMapPointRec_t
 {
-    s16 id;
+    u16 id;
     u16 ix;
     u16 iy;
     u8 ofs;
@@ -455,13 +455,13 @@ typedef struct MAP_WHIT_t
 {
     s16 use;
     s16 uniq;
+    s32 type;
     f32 x0;
     f32 z0;
     f32 x1;
     f32 z1;
     f32 vx;
     f32 vz;
-    s32 attr;
 } MAP_WHIT_t;
 
 typedef struct MAP_SAKA4_t
@@ -532,6 +532,9 @@ extern MAP_WORK_HIT_LIST_t mapData34[];
 extern s32 map_work_hit_list_num;
 extern s32 mapHamidasiWHitSubSub(f32 *outx, f32 *outz, f32 newx, f32 newz, f32 r, f32 x0, f32 z0, f32 x1, f32 z1, f32 vx, f32 vz);
 extern s32 mapHamidasiMoveBoxHitSub(f32 *outx, f32 *outz, f32 newx, f32 newz, f32 r, f32 x0, f32 z0, f32 x1, f32 z1, f32 vx, f32 vz);
+s32 mapHamidasiCHitSub(f32 cx, f32 cz, f32 *updx, f32 *updz);
+s32 mapHamidasiNpcSub(f32 cx, f32 cz, f32 *updx, f32 *updz);
+s32 mapHamidasiWHitSub(f32 *cx, f32 *cz, f32 r);
 
 /* The loaded map file and the pointers into it. The words between the named
  * pointers are zeroed together when the map is freed. */
@@ -666,8 +669,9 @@ extern MskEveHitTbl_t mapMskEveHitTbl[16];
 extern s32 mapBtlReLoadMapSBtlSceneSub2Data;
 void mapBtlReLoadMapSBtlSceneSub2(void);
 extern s32 mapNpcTblRefresh_WaitData;
-extern s32 mapData114;
-extern s32 mapData115;
+extern s32 mapNpcTblRefresh_WaitData2;
+extern s32 npc_delcash_cnt;
+extern s32 npc_addcash_cnt;
 
 extern sdfMemHandle_t *mapData99;
 extern fldMapSub3File_t *mapFileLoadData8;
@@ -697,9 +701,74 @@ extern void *mapMapSetAreaData21;
 extern MpbEncHead_t *mapData112;
 extern s32 fldFreeMapDataData2;
 extern MpbPoint_t *pMpbPointNow;
-/* ALLTBL.LB resources 0 and 3, layouts unknown. */
-extern u8 mapEXFloorData[];
-extern u8 mapWork5[];
+/* One condition group of an NPC table entry. */
+typedef struct mapNpcCond_t
+{
+    s16 flag1;
+    s16 flag1j;
+    s16 flag2;
+    s16 flag2j;
+    u32 skil;
+} mapNpcCond_t;
+
+/* One field NPC (ALLTBL.LB resource 0); the model_c* fields replace the model once model_cflag is set. */
+typedef struct mapNpc_t
+{
+    s16 map;
+    s16 flor;
+    s32 point;
+    u8 model_id1;
+    u8 model_id2;
+    u8 model_lod;
+    s8 model_mot;
+    f32 model_size;
+    s16 model_cflag;
+    u8 model_cid2;
+    u8 model_clod;
+    s32 model_cmot;
+    f32 model_csize;
+    s16 hit_size;
+    s16 flag1;
+    s16 flag2;
+    s16 flag3;
+    char scr_label[32];
+    mapNpcCond_t cond[4];
+} mapNpc_t;
+
+extern mapNpc_t mapEXFloorData[640];
+
+/* NPCs mapNpcTblRefreshSub found placed but no longer wanted: {table index, map object index}. */
+extern s32 npc_delcash[16][2];
+/* NPCs mapNpcTblRefreshSub wants placed: {table index, point, floor, model}; mapNpcTblRefresh_Wait loads them. */
+extern s32 npc_addcash[16][4];
+
+/* One field light set: three directional lights and the ambient colour (ALLTBL.LB resource 3). */
+typedef struct LightTbl_t
+{
+    f32 dir0[3];
+    f32 col0[3];
+    f32 dir1[3];
+    f32 col1[3];
+    f32 dir2[3];
+    f32 col2[3];
+    f32 cola[3];
+} LightTbl_t;
+
+extern LightTbl_t LightDataTbl[51][32];
+
+/* One light as the light edit unit shows it. */
+typedef struct mapLightEdit_t
+{
+    f32 col[4];
+    f32 dir[4];
+    u8 unk20[0x20];
+} mapLightEdit_t;
+
+extern mapLightEdit_t mapData21;
+extern mapLightEdit_t mapUnitSetLightData;
+extern mapLightEdit_t mapUnitSetLightData2;
+extern f32 fldSkyPlayerIdx[];
+extern const char mapStrLightEditUnit[];
 extern s32 fldFreeMapDataData3;
 extern MpbWall_t *mapData113;
 extern s32 fldFreeMapDataData4;
@@ -730,10 +799,13 @@ extern f32 mapData20[16];
 extern s32 mapMapObjectRefresh_fldData[];
 extern s32 evtWorkScriptContextReturnValue;
 extern s32 evtWorkScriptContextReturnValue2;
+/* Wall object index and flag of the warp mapCallSetPlayerTargetData last hit. */
+extern s32 mapCallSetPlayerTargetDataData;
+extern s32 mapData98;
 
 void mapMapObjectRefresh_fld(void);
 s32 mapObjFloorAdd_Cash(s32 floor, s16 uniq, MODELTYPE major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s);
-s32 mapAddHukidashi(s32 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s);
+s32 mapAddHukidashi(s16 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, s32 cash, f32 x, f32 y, f32 z, f32 r, f32 s);
 s32 mapObjectRefreshSub(s32 uniq, s32 major, s32 minor, s32 motion, u32 cut_bit, f32 x, f32 y, f32 z, f32 r, f32 s);
 void mapObjLightAdd(s16 uniq, f32 x, f32 y, f32 z, f32 in_r, f32 out_r, f32 dif_r, f32 dif_g, f32 dif_b, f32 amb_r, f32 amb_g, f32 amb_b);
 void mapObjEveHitSet2(s16 uniq, s32 act, s32 dir, f32 size, char *scr_name);
@@ -745,8 +817,8 @@ void mapWHitAdd(s16 uniq, s32 attr, f32 x0, f32 z0, f32 x1, f32 z1, f32 vx, f32 
 void mapSetAreaRefreshSub(s32 ix, s32 iy, s32 type, s32 bit);
 void mapSetAreaRefreshSub2(s32 floor, s32 uniq, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9);
 void mapCallBitCheck2(s32 floor, s32 uniq, s32 kind, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8);
-void mapCallPositioningGuardSystem2(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10, s32 a11, void *a12);
-void mapCallPositioningGuardSystem3(s32 a0, s32 a1, s32 a2, s32 a3, s32 a4, s32 a5, s32 a6, s32 a7, s32 a8, s32 a9, s32 a10);
+void mapCallPositioningGuardSystem2(s32 id, s32 ix, s32 iy, s32 iw, s32 ih, s32 dir, u16 flag0, u8 flag0j, u16 flag1, u8 flag1j, s32 act, s32 msk, void *scr_name);
+void mapCallPositioningGuardSystem3(s32 id, s32 ix, s32 iy, s32 iw, s32 ih, s32 act, s32 dir, s32 fieldID, s32 areaID, s32 posID, s32 se);
 /* Run-map refresh grid: w * h 64-bit cells, one bit per refresh type. */
 extern sdfMemHandle_t *fldRunMapData;
 extern u64 *fldRunMapCellData;
@@ -756,11 +828,14 @@ extern s32 fldData24;
 void mapCallMemAllocDirect(s32 w, s32 h);
 void fldCallMemFreeDirect(void);
 void mapCallMemFreeDirect(void);
+s32 mapNpcTbl_GetModelID(s32 idx);
+void mapNpcTblAdd_fld(s32 map, s32 flor, s32 point);
+void mapNpcTblRefreshSub(s32 point);
 void mapNpcTblRefresh(void);
 s32 mapFileLoad(s32 mapid);
 void mapFileLoadSub2(void);
 void mapFileLoadSub3(s16 uniq, s32 a1);
-s32 mapFileLoadSub4(s32 floor, s32 kind);
+s32 mapFileLoadSub4(s32 floor, s16 kind);
 void mapFileLoadSub5(s32 a0, f32 a1, f32 a2, f32 a3, f32 a4, f32 a5, f32 a6, f32 a7, f32 a8, f32 a9, f32 a10, f32 a11, f32 a12);
 void mapFileLoadSub6(f32 *outx, f32 *outz, f32 x, f32 z);
 s32 mefMistTexOnDataCheck(void);

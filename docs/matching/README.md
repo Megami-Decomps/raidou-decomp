@@ -18,7 +18,7 @@ menu scenarios); an entry says which paths they covered.
 |---|---|---|---|
 | 39 | code_r1_0024F220 | raidou1 | [code_r1_0024F220.md](code_r1_0024F220.md) |
 | 12 | code_002A38D8 | raidou1 | [code_002A38D8.md](code_002A38D8.md) |
-| 11 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
+| 12 | event/evtEventViewer | raidou1, raidou2 | [event/evtEventViewer.md](event/evtEventViewer.md) |
 | 10 | code_0028A320 | raidou1 | [code_0028A320.md](code_0028A320.md) |
 | 9 | code_00153438 | raidou1 | [code_00153438.md](code_00153438.md) |
 | 9 | sbtlDMG | raidou1 | [sbtlDMG.md](sbtlDMG.md) |
@@ -36,6 +36,7 @@ menu scenarios); an entry says which paths they covered.
 | 4 | mc/slMain | raidou1 | [mc/slMain.md](mc/slMain.md) |
 | 4 | sndAt3 | raidou1, raidou2 | [sndAt3.md](sndAt3.md) |
 | 3 | code_00143568 | raidou1 | [code_00143568.md](code_00143568.md) |
+| 3 | code_0014B660 | raidou1 | [code_0014B660.md](code_0014B660.md) |
 | 3 | code_002A20E0 | raidou1 | [code_002A20E0.md](code_002A20E0.md) |
 | 3 | event/evtUnitManager | raidou1, raidou2 | [event/evtUnitManager.md](event/evtUnitManager.md) |
 | 3 | field/fldProcess | raidou1, raidou2 | [field/fldProcess.md](field/fldProcess.md) |
@@ -43,6 +44,8 @@ menu scenarios); an entry says which paths they covered.
 | 3 | sdk/libcdvd/cdvd000 | raidou1, raidou2 | [sdk/libcdvd/cdvd000.md](sdk/libcdvd/cdvd000.md) |
 | 2 | basic/dds3Basic | raidou1, raidou2 | [basic/dds3Basic.md](basic/dds3Basic.md) |
 | 2 | basic/dds3SceneBasic | raidou1, raidou2 | [basic/dds3SceneBasic.md](basic/dds3SceneBasic.md) |
+| 2 | code_00140960 | raidou1 | [code_00140960.md](code_00140960.md) |
+| 2 | code_00148310 | raidou1 | [code_00148310.md](code_00148310.md) |
 | 2 | code_00157CD0 | raidou1 | [code_00157CD0.md](code_00157CD0.md) |
 | 2 | code_00174790 | raidou1 | [code_00174790.md](code_00174790.md) |
 | 2 | code_00181858 | raidou1 | [code_00181858.md](code_00181858.md) |
@@ -68,6 +71,7 @@ menu scenarios); an entry says which paths they covered.
 | 1 | code_00131C90 | raidou1 | [code_00131C90.md](code_00131C90.md) |
 | 1 | code_001326C0 | raidou1 | [code_001326C0.md](code_001326C0.md) |
 | 1 | code_0013AAC8 | raidou1 | [code_0013AAC8.md](code_0013AAC8.md) |
+| 1 | code_00156778 | raidou1 | [code_00156778.md](code_00156778.md) |
 | 1 | code_00173D20 | raidou1 | [code_00173D20.md](code_00173D20.md) |
 | 1 | code_001AD4E8 | raidou1 | [code_001AD4E8.md](code_001AD4E8.md) |
 | 1 | code_002F97C0 | raidou1 | [code_002F97C0.md](code_002F97C0.md) |

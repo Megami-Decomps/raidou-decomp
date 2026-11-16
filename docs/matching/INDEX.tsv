@@ -17,9 +17,16 @@ mapBgFScrollOn	code_0013CDE0	raidou1 0x80	22 of 32 words differ	docs/matching/co
 sndSePlay_sndAt3	code_0013CDE0	raidou1 0x80	8 of 32 words differ	docs/matching/code_0013CDE0.md	11		
 fldBgZoomTest	code_0013CDE0	raidou1 0x2B4		docs/matching/code_0013CDE0.md	19		three FAKEMATCH_ASM_LIVE(mode) after the mapZoomSetGoal calls that must stay jal. Without them the function is 14 words off; the same result with C dead stores matches but is not allowed.
 mapCutBgLoad	code_0013CDE0	raidou1 0x88		docs/matching/code_0013CDE0.md	25		one FAKEMATCH_ASM_LIVE(cut) after mapBgFree2. Without it the function is 30 words off; the same result with a C dead store matches but is not allowed.
+mapUnitSetLight	code_00140960	raidou1 0x43C	154 of 271 words differ	docs/matching/code_00140960.md	3		
+mapHamidasiWHitSub	code_00140960	raidou1 0xC8	3 of 50 words differ	docs/matching/code_00140960.md	11		
 mapLeaf12	code_00143568	raidou1 0x50	2 of 20 words differ	docs/matching/code_00143568.md	3		
 mdlCallMemGetSize	code_00143568	raidou1 0x140	25 of 78 words differ	docs/matching/code_00143568.md	11		
 mdlCallMemGetInfo	code_00143568	raidou1 0x12C	22 of 73 words differ	docs/matching/code_00143568.md	19		
+mapCallPositioningGuardSystem2	code_00148310	raidou1 0x1B4	5 of 109 words differ	docs/matching/code_00148310.md	3		
+mapCallSetPlayerTargetData2	code_00148310	raidou1 0x10C	3 of 67 words differ	docs/matching/code_00148310.md	11		
+mapNpcTblAdd_fld	code_0014B660	raidou1 0x3E0	189 of 246 words differ	docs/matching/code_0014B660.md	3		
+mapNpcTblRefresh	code_0014B660	raidou1 0x408	144 of 258 words differ	docs/matching/code_0014B660.md	11		
+mapNpcTblRefresh_Wait	code_0014B660	raidou1 0x35C	121 of 216 words differ	docs/matching/code_0014B660.md	19		
 mapMapSetEnc	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	3		
 mapMapSetForm	code_00153438	raidou1 0x88	30 of 34 words differ	docs/matching/code_00153438.md	11		
 mapGetHit	code_00153438	raidou1 0x60	4 of 24 words differ	docs/matching/code_00153438.md	19		
@@ -29,6 +36,7 @@ mapGetFloorY	code_00153438	raidou1 0x474	168 of 277 words differ	docs/matching/c
 mapCallSetPlayerTargetData5	code_00153438	raidou1 0x5C	4 of 23 words differ	docs/matching/code_00153438.md	51		
 mapCallSetPlayerTargetData6	code_00153438	raidou1 0x70	12 of 28 words differ	docs/matching/code_00153438.md	59		
 mapCutSet_From_Pos	code_00153438	raidou1 0x204	1 of 129 words differ	docs/matching/code_00153438.md	67		
+fldCallGrAllocPacketBuff2	code_00156778	raidou1 0x160	2 of 88 words differ	docs/matching/code_00156778.md	3		
 mapSpotPointDrawEndChk	code_00157CD0	raidou1 0xA4	2 of 41 words differ	docs/matching/code_00157CD0.md	3		
 mefMistFastCreate	code_00157CD0	raidou1 0x158	4 of 86 words differ	docs/matching/code_00157CD0.md	11		
 mapSoundKankyoTaskSub	code_0015D490	raidou1 0x5C	13 of 23 words differ	docs/matching/code_0015D490.md	3		
@@ -176,7 +184,7 @@ sbtlBtlLoadPlayerOnMemDataSub	code_r1_0028A298	raidou1 0x88	28 of 30 words diffe
 Draw_sbtlSTP	code_r1_00291A80	raidou1 0x1F8	90 of 91 words differ	docs/matching/code_r1_00291A80.md	3		
 sbtlSetLoadPanelData	code_r1_00292930	raidou1 0x94, raidou2 0x94	18 of 34 words differ	docs/matching/code_r1_00292930.md	3		
 sbtlInitTutorial	code_r1_00295298	raidou1 0xF8	58 of 62 words differ	docs/matching/code_r1_00295298.md	3		
-sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3		
+sbtlCallMemset21	code_r1_00297EF0	raidou1 0x650	380 of 404 words differ	docs/matching/code_r1_00297EF0.md	3	the -DNON_MATCHING code moves with the declarations the unit includes; adding three prototypes to fld.h (mapGetHit, mapGetAttr_DevilWall, mapHamidasiCheckSub) turned 380 of 404 differing words into a full-unit CONTEXT result.	
 sbtlCallBtlGetDevilDataSBtlSub4	code_r1_002A1E48	raidou1 0x294	140 of 159 words differ	docs/matching/code_r1_002A1E48.md	3		
 effInitializeSlotWorkFromDescription	code_r1_002C8188	raidou1 0x1C4, raidou2 0x1C4	0 of 113 words differ	docs/matching/code_r1_002C8188.md	3		
 sdfDrawTexturedQuad	code_r1_002C8188	raidou1 0x480, raidou2 0x480	41 of 288 words differ	docs/matching/code_r1_002C8188.md	14	matches only with the declaration set of code_r1_002C8188.c's headers as it was before sdfTexSetPacket joined sdfTex.h.	
@@ -190,15 +198,16 @@ dds3FilterCalc	dds3KernelDraw_0010BEE0	raidou1 0x188	0 of 98 words differ	docs/m
 dds3SpPoly_RollRingDraw	effect/polyManager	raidou1 0x194, raidou2 0x194	73 of 97 words differ	docs/matching/effect/polyManager.md	3		
 Process3	event/evtEventViewer	raidou1 0x2F8, raidou2 0x2F8	59 of 188 words differ	docs/matching/event/evtEventViewer.md	3		
 evtCallGetProcessData11	event/evtEventViewer	raidou1 0x90, raidou2 0x90	7 of 36 words differ	docs/matching/event/evtEventViewer.md	9		
-RunFrame1	event/evtEventViewer	raidou1 0x74C, raidou2 0x74C	1 of 467 words differ	docs/matching/event/evtEventViewer.md	17		
-ValidateAt3Bgm	event/evtEventViewer	raidou1 0x19C, raidou2 0x19C	86 of 104 words differ	docs/matching/event/evtEventViewer.md	26		
-Validate1stAt3Bgm	event/evtEventViewer	raidou1 0x148, raidou2 0x148	34 of 82 words differ	docs/matching/event/evtEventViewer.md	35		
-OutFrame1	event/evtEventViewer	raidou1 0x120, raidou2 0x120	45 of 72 words differ	docs/matching/event/evtEventViewer.md	44		
-RunFrame2	event/evtEventViewer	raidou1 0xC44, raidou2 0xC44	770 of 786 words differ	docs/matching/event/evtEventViewer.md	51		
-RunFrameUnit	event/evtEventViewer	raidou1 0x39C, raidou2 0x39C	6 of 231 words differ	docs/matching/event/evtEventViewer.md	60		
-ValidateRenderTex	event/evtEventViewer	raidou1 0x1F8, raidou2 0x1F8	61 of 126 words differ	docs/matching/event/evtEventViewer.md	67		
-DrawMessage	event/evtEventViewer	raidou1 0x1C0, raidou2 0x1C0	48 of 110 words differ	docs/matching/event/evtEventViewer.md	74		
-oldEventSceneUnload	event/evtEventViewer	raidou1 0xAC, raidou2 0xAC	42 of 44 words differ	docs/matching/event/evtEventViewer.md	81		
+ReqMessage	event/evtEventViewer	raidou1 0x1E8	4 of 122 words differ	docs/matching/event/evtEventViewer.md	17	renaming the fldProcess.h prototype mapCalcFXY to mapDebugLightSet, with no other change, turned a full-unit match into 4 differing words.	
+RunFrame1	event/evtEventViewer	raidou1 0x74C, raidou2 0x74C	1 of 467 words differ	docs/matching/event/evtEventViewer.md	25		
+ValidateAt3Bgm	event/evtEventViewer	raidou1 0x19C, raidou2 0x19C	86 of 104 words differ	docs/matching/event/evtEventViewer.md	34		
+Validate1stAt3Bgm	event/evtEventViewer	raidou1 0x148, raidou2 0x148	34 of 82 words differ	docs/matching/event/evtEventViewer.md	43		
+OutFrame1	event/evtEventViewer	raidou1 0x120, raidou2 0x120	45 of 72 words differ	docs/matching/event/evtEventViewer.md	52		
+RunFrame2	event/evtEventViewer	raidou1 0xC44, raidou2 0xC44	770 of 786 words differ	docs/matching/event/evtEventViewer.md	59		
+RunFrameUnit	event/evtEventViewer	raidou1 0x39C, raidou2 0x39C	6 of 231 words differ	docs/matching/event/evtEventViewer.md	68		
+ValidateRenderTex	event/evtEventViewer	raidou1 0x1F8, raidou2 0x1F8	61 of 126 words differ	docs/matching/event/evtEventViewer.md	75		
+DrawMessage	event/evtEventViewer	raidou1 0x1C0, raidou2 0x1C0	48 of 110 words differ	docs/matching/event/evtEventViewer.md	82		
+oldEventSceneUnload	event/evtEventViewer	raidou1 0xAC, raidou2 0xAC	42 of 44 words differ	docs/matching/event/evtEventViewer.md	89		
 Process2_evtMoon	event/evtMoon	raidou1 0xB8C	624 of 723 words differ	docs/matching/event/evtMoon.md	3		
 evtHokanSceneLight	event/evtPolygonMovie	raidou1 0x194, raidou2 0x194	38 of 101 words differ	docs/matching/event/evtPolygonMovie.md	3		
 evtCheckSeqEnd	event/evtPolygonMovie	raidou1 0x64, raidou2 0x64	3 of 25 words differ	docs/matching/event/evtPolygonMovie.md	9		

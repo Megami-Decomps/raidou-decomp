@@ -1618,7 +1618,7 @@
 0x00149058	mapCutSetCam	hd	hd: Raidou HD fld.mapCutSetCam, score 10.3 band A
 0x001491D0	mapCallZoomClear	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit code_001416C0, neighbour mapCutSetCam; calls mapZoomClear
 0x00149258	fldCallMemset4	inferred	method=derived-callee; p=na; tier=D; source=derived; evidence=unit field/fldSky; calls memset; replaces fld_1374F0: smt3-decomp C name via SLUS_209.11 0x001374F0, unique-masked-hash-c; map-agrees
-0x001492A8	mapCalcFXY	hd	method=hd-d; p=0.53 (n=98); tier=C; source=hd; evidence=Raidou HD fld.mapCalcFXY score 2.5 flag -: calls1 prev~ gap10/38 st1:gap r1-only
+0x001492A8	mapDebugLightSet	inferred	method=hd-body; p=na; tier=A; source=hd; evidence=HD mapCalcFXY is (f32,f32,f32*,f32*); HD mapDebugLightSet(s32 lightid) is an emptied debug stub; R1 body copies the light table entry into the light edit globals unless LIGHT EDIT UNIT runs; name unused elsewhere; replaces mapCalcFXY
 0x001493E0	mapUnitSetLight	hd	hd: Raidou HD fld.mapUnitSetLight, score 10.6 band A
 0x00149820	nbMoveFormation	inferred	method=smt3-fuzzy-60-m-pair; p=0.40 (n=5); tier=C; source=smt3; evidence=smt3 body 0x28b330 sim 0.644 margin 0.64 pair
 0x00149880	nbLIGHTEDITUNIT	inferred	method=derived-string; p=na; tier=D; source=derived; evidence=unit code_001492A8, neighbour nbMoveFormation; string 'LIGHT EDIT UNIT'
@@ -26091,8 +26091,8 @@
 0x004DEC30	mapMapSetAreaData22	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (2 of 5 refs, 4 functions)
 0x004DEC34	mapMapSetAreaData23	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (2 of 3 refs, 2 functions)
 0x004DEC38	gSubFloorID	hd	hd: Raidou HD fld.gSubFloorID, 8 of 8 functions agree, high confidence
-0x004DEC3C	mapData114	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapNpcTblRefresh, mapNpcTblRefreshSub, mapNpcTblRefresh_Wait
-0x004DEC40	mapData115	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapNpcTblRefresh, mapNpcTblRefreshSub, mapNpcTblRefresh_Wait
+0x004DEC3C	npc_delcash_cnt	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapNpcTblRefreshSub; replaces mapData114
+0x004DEC40	npc_addcash_cnt	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapNpcTblRefreshSub; replaces mapData115
 0x004DEC44	mapNpcTblRefresh_WaitData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapNpcTblRefresh_Wait (7 of 9 refs, 3 functions)
 0x004DEC48	mapNpcTblRefresh_WaitData2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapNpcTblRefresh_Wait
 0x004DEC50	mapFileLoadData12	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapFileLoad
@@ -26108,15 +26108,15 @@
 0x004DEC7C	cmpPanelEffList2	inferred	method=smt3-ref; p=0.80 (n=D_r1_0046BB3C); tier=C; source=smt3; evidence=smt3-ref/close: nfun=2, other=0, sim=0.8, games=2, size=True, sec=True, fn=mapGenbaPosEffCreate; cmpPanelEffList is another symbol
 0x004DEC80	mapIsFldKeyFreeSub4Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapIsFldKeyFreeSub4 (2 of 4 refs, 3 functions)
 0x004DEC84	mapIsFldKeyFreeSub4Data2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapIsFldKeyFreeSub4 (2 of 4 refs, 3 functions)
-0x004DEC88	mapData116	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
+0x004DEC88	hMapBadEff_R	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapBadEffFree frees it in the mode 0 arm; replaces mapData116
 0x004DEC8C	mapBadEffLoadData	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBadEffLoad (3 of 4 refs, 2 functions)
-0x004DEC90	mapData117	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapCallMemset2, mapBadEffFree, mapBadEffLoad
-0x004DEC94	mapBadEffLoadData2	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBadEffLoad (3 of 5 refs, 3 functions)
+0x004DEC90	eMapBadEff_R	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapBadEffFree; replaces mapData117
+0x004DEC94	eMapBadEff_R_BADID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapBadEffFree u64 store of 0xFFFFFFFF; replaces mapBadEffLoadData2
 0x004DEC98	mapData118	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
-0x004DEC9C	mapData119	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
+0x004DEC9C	hMapBadEff_N	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapBadEffFree; replaces mapData119
 0x004DECA0	mapBadEffLoadData3	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBadEffLoad (3 of 4 refs, 2 functions)
-0x004DECA4	mapCallMemset2Data	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapCallMemset2 (6 of 9 refs, 3 functions)
-0x004DECA8	mapBadEffLoadData4	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapBadEffLoad (3 of 5 refs, 3 functions)
+0x004DECA4	eMapBadEff_N	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapBadEffFree; replaces mapCallMemset2Data
+0x004DECA8	eMapBadEff_N_BADID	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapBadEffFree; replaces mapBadEffLoadData4
 0x004DECAC	mapData120	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
 0x004DECB0	mapData121	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: mapWaitCbScreenFadeBSub, mapCallMemset2
 0x004DECB4	mapData122	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 6 functions: mapNakamaGankTask_fld, mapNakamaKoukTask, mapNakamaSpotTask
@@ -29979,7 +29979,7 @@
 0x00520051	bssWork143	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x2F
 0x00520080	nbFunc6Table2Entry8	inferred	method=derived-table; p=na; tier=D; source=derived; evidence=pointed to by nbFunc6Table2Entry2
 0x00522020	bssWork144	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x1E18
-0x00523E38	mapWork5	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 4 functions: fldAllTblPacLoad, mapCalcFXY, mapUnitSetLight
+0x00523E38	LightDataTbl	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapUnitSetLight reads GetFldLightTable(LightDataTbl, fieldID, lightid); R1 reads mapWork5[amSBlock][lightid]; replaces mapWork5
 0x00524146	bssWork145	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x306
 0x0052444C	bssWork146	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0xFD
 0x00524549	bssWork147	inferred	method=derived-section; p=na; tier=D; source=derived; evidence=no code or data reference; unit bss, section .bss, size 0x7
@@ -30054,8 +30054,8 @@
 0x00540418	mapMapSetAreaWork15	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
 0x00540518	mapFileLoadWork2	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by mapFileLoad
 0x00540618	mapMapSetAreaWork16	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapMapSetArea (4 of 6 refs, 2 functions)
-0x00540718	mapWork6	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 3 functions: mapNpcTblRefresh, mapNpcTblRefresh_Wait, mapNpcTblRefreshSub
-0x005407D8	mapNpcTblRefresh_WaitWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapNpcTblRefresh_Wait (4 of 8 refs, 3 functions)
+0x00540718	npc_delcash	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapNpcTblRefreshSub fills it with {npc index, obj index}, count npc_delcash_cnt; replaces mapWork6
+0x005407D8	npc_addcash	inferred	method=hd-role; p=na; tier=B; source=hd; evidence=HD mapNpcTblRefreshSub fills it with {npc, point, flor, model}, count npc_addcash_cnt; replaces mapNpcTblRefresh_WaitWork
 0x00540958	fldWork9	inferred	method=derived-shared; p=na; tier=D; source=derived; evidence=used by 2 functions: fldCallMemset2, nbCallEffectDistortionBlurSetParam
 0x005409C0	fldCallSinWork	inferred	method=derived-sole; p=na; tier=D; source=derived; evidence=used by fldCallSin
 0x00540C00	mapEffEplStartWork	inferred	method=derived-dominant; p=na; tier=D; source=derived; evidence=used by mapEffEplStart (4 of 34 refs, 16 functions)

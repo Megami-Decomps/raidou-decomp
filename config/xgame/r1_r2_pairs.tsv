@@ -1376,7 +1376,7 @@ r1_addr	r2_addr	name	identical_bytes	masked_identical	r1_unit	r2_unit	evidence
 0x001403E0	0x00148CA0	mapCutGetCam	no	no	asm/raidou1/code_00139330.s	asm/raidou2/code_001416C0.s	unique-masked-hash
 0x00140798	0x00149058	mapCutSetCam	no	yes	asm/raidou1/code_00139330.s	asm/raidou2/code_001416C0.s	unique-reloc-hash
 0x00140910	0x00149258	fldCallMemset4	no	yes	src/shared/field/fldSky.c	src/shared/field/fldSky.c	unique-reloc-hash
-0x00140960	0x001492A8	mapCalcFXY	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
+0x00140960	0x001492A8	mapDebugLightSet	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x00140A98	0x001493E0	mapUnitSetLight	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x00140ED8	0x00149820	nbMoveFormation	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash
 0x001413B0	0x0014A150	mapCutSetLight	no	yes	asm/raidou1/code_00140960.s	asm/raidou2/code_001492A8.s	unique-reloc-hash

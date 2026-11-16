@@ -42,7 +42,7 @@
 void fldPlayerMotReset(void) {
     s16 motion = playerModel->current.h.motionIndex;
 
-    if (fldGlobalBase.summonStop == 0) {
+    if (fldGlobalBase.nakamaMode == 0) {
         if (mapCheckDying(0) != 0) {
             fldLeaf18(motion, 2, 10.0f);
         } else {
@@ -58,7 +58,7 @@ INCLUDE_ASM(const s32, "code_00139330", fldPlayerMotReset2);
 void fldPlayerMotReset3(void) {
     s16 motion = playerModel->current.h.motionIndex;
 
-    if (fldGlobalBase.summonStop == 0) {
+    if (fldGlobalBase.nakamaMode == 0) {
         fldLeaf18(motion, 0, 15.0f);
     } else {
         NakamaMotion(motion, 0, 15.0f);
@@ -71,7 +71,7 @@ s32 fldNakamaMotReset3(void) {
     if (summonDvBasic != NULL) {
         s16 motion = summonDvModel->current.h.motionIndex;
 
-        if (fldGlobalBase.summonStop == 0) {
+        if (fldGlobalBase.nakamaMode == 0) {
             NakamaMotion(motion, 0, 15.0f);
         }
     }
@@ -79,7 +79,7 @@ s32 fldNakamaMotReset3(void) {
 
 s32 fldAiboMotReset(void) {
     if (aiboBasic != NULL) {
-        if (fldGlobalBase.summonStop == 0) {
+        if (fldGlobalBase.nakamaMode == 0) {
             aiboModel->first->speed = 0.5f;
             mdlSmoothLoopMotion(aiboModel, 0, 2, 15.0f, 15.0f);
         }
@@ -209,7 +209,7 @@ INCLUDE_ASM(const s32, "code_00139330", fldCallSin3);
 #ifdef NON_MATCHING
 void fldProcSequenceSub3(void) {
     if (playerModel != NULL) {
-        if (fldGlobalBase.summonStop != 0 || playerModel->current.h.motionIndex != 1) {
+        if (fldGlobalBase.nakamaMode != 0 || playerModel->current.h.motionIndex != 1) {
             fldGlobalBase.wordDC = 0;
         } else {
             fldGlobalBase.wordDC++;

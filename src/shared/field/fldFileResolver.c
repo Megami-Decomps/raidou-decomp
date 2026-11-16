@@ -360,7 +360,7 @@ void mapAiboFoceSet3(f32 x, f32 y, f32 z) {
     dds3PoseSet_t *pose;
 
     if (aiboBasic != NULL) {
-        if (fldGlobalBase.summonStop == 0) {
+        if (fldGlobalBase.nakamaMode == 0) {
             dds3GetRotPoseSet(playerBasic);
             SDF_VU0_STOREVECTOR(&rot);
             dds3SetRotPoseSet(aiboBasic, &rot);
@@ -375,7 +375,7 @@ void mapAiboFoceSet3(f32 x, f32 y, f32 z) {
         dds3OnPoseSetFlag(aiboBasic->poseset, 8);
         pose = aiboBasic->poseset;
         SDF_VU0_COPYVECTOR(&pose->pos2, &pose->pos);
-        if (fldGlobalBase.summonStop == 0) {
+        if (fldGlobalBase.nakamaMode == 0) {
             dds3GetRotPoseSet(playerBasic);
             SDF_VU0_STOREVECTOR(&rot);
             dds3SetRotPoseSet(aiboBasic, &rot);
@@ -457,7 +457,7 @@ void mapSummonDvFoceSet2(f32 x, f32 y, f32 z) {
         dds3OnPoseSetFlag(summonDvBasic->poseset, 8);
         pose = summonDvBasic->poseset;
         SDF_VU0_COPYVECTOR(&pose->pos2, &pose->pos);
-        if (fldGlobalBase.summonStop == 0) {
+        if (fldGlobalBase.nakamaMode == 0) {
             dds3GetRotPoseSet(playerBasic);
             SDF_VU0_STOREVECTOR(&rot);
             dds3SetRotPoseSet(summonDvBasic, &rot);

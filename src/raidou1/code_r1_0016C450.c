@@ -85,7 +85,7 @@ void mapNakamaTask(void) {
         break;
     case 2:
         if (fldEncountTestFlag(0x40)) {
-            if (fldGlobalBase.summonStop != 0) {
+            if (fldGlobalBase.nakamaMode != 0) {
                 mdlSetMotionSpeed(5);
             } else {
                 mdlSetMotionSpeed(1);
@@ -94,7 +94,7 @@ void mapNakamaTask(void) {
         break;
     case 3:
         if (fldEncountTestFlag(0x40)) {
-            if (fldGlobalBase.summonStop != 0) {
+            if (fldGlobalBase.nakamaMode != 0) {
                 mdlSetMotionSpeed(5);
             } else {
                 mdlSetMotionSpeed(1);
@@ -139,7 +139,7 @@ void mapNakamaTask(void) {
         changed = 1;
         color = GRAY(a);
     } else {
-        if (fldGlobalBase.summonStop == 0) {
+        if (fldGlobalBase.nakamaMode == 0) {
             if (mapNakamaMinAlpDownData >= 0) {
                 if (mapNakamaMinAlpDownData > 0) {
                     a = mapNakamaTaskData7 + 8;
@@ -162,7 +162,7 @@ void mapNakamaTask(void) {
             }
         }
     }
-    if (mapNakamaTaskData8 != 0 && summonDvBasic != NULL && fldGlobalBase.summonStop == 0) {
+    if (mapNakamaTaskData8 != 0 && summonDvBasic != NULL && fldGlobalBase.nakamaMode == 0) {
         if (mapNakamaTaskData8 == 1) {
             pose = summonDvBasic->poseset;
             if (fldPointDistance(fldGlobalBase.focusX, fldGlobalBase.focusY, fldGlobalBase.focusZ, pose->pos.x, pose->pos.y, pose->pos.z) > 100.0f) {

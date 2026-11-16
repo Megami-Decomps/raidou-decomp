@@ -14,6 +14,14 @@ Raidou 1 and Raidou 2: 7 of 36 words differ, first at +0x1C.
 
 Tried: u16 locals and passing the fields directly as arguments; neither moved the work pointer's register.
 
+## ReqMessage (event/evtEventViewer, raidou1 0x1E8)
+
+Raidou 1: 4 of 122 words differ in the full unit, first at +0xFC; it matches when compiled alone.
+
+Two load pairs swap (+0xFC/+0x104 and +0x1C4/+0x1CC). Raidou 2 keeps its INCLUDE_ASM.
+
+Fragile: renaming the fldProcess.h prototype mapCalcFXY to mapDebugLightSet, with no other change, turned a full-unit match into 4 differing words.
+
 ## RunFrame1 (event/evtEventViewer, raidou1 0x74C, raidou2 0x74C)
 
 Raidou 1: 1 of 467 words differ, first at +0x134.

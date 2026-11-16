@@ -263,7 +263,7 @@ s32 mapGetAttr(f32 x, f32 z) {
             if (mapData23[i].use == 0) {
                 continue;
             }
-            if (fldGlobalBase.summonStop != 0 && mapData23[i].mode == 1) {
+            if (fldGlobalBase.nakamaMode != 0 && mapData23[i].mode == 1) {
                 continue;
             }
             if (mapData23[i].floor != -1 && mapData23[i].floor != fldGlobalBase.nameU) {

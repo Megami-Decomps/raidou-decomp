@@ -112,7 +112,7 @@ void fldGbInit_System(s32 mode) {
     fldGlobalBase.lightMaIdx = 0;
     fldGlobalBase.floatC4 = 180.0f;
     fldGlobalBase.camZoom = 4;
-    fldGlobalBase.hitValid = 16;
+    fldGlobalBase.nowDoorSe = 16;
     fldGlobalBase.defaultEncounterId = 0;
     fldGlobalBase.floatC0 = 0.0f;
     fldGlobalBase.wordC8 = 0;
@@ -150,7 +150,7 @@ void fldGbInit_System(s32 mode) {
     fldGlobalBase.word15C = 0;
     fldGlobalBase.word160 = 0;
     fldGlobalBase.word164 = 0;
-    fldGlobalBase.summonStop = 0;
+    fldGlobalBase.nakamaMode = 0;
     fldGlobalBase.word178 = 0;
     fldGlobalBase.word174 = 6;
     fldGlobalBase.word180 = 6;

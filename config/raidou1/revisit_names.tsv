@@ -551,7 +551,6 @@
 0x0014B498	mapLeaf19	func	tier=D	derived-unit	na	unit code_00140960, neighbour mapObjPointAdd2; no named callee, caller or string
 0x0014B610	mapLeaf20	func	tier=D	derived-unit	na	unit code_00140960, neighbour mapObjPointGet2; no named callee, caller or string
 0x0014B910	mapFileLoadSub5	func	tier=D	derived-caller	na	unit code_00140960, neighbour mapWHitAdd; called by mapFileLoad
-0x0014B9F0	mapCallBitCheck3	func	tier=D	derived-callee	na	unit code_00140960, neighbour mapNpcTblAdd; calls evtBitCheck
 0x0014C880	mapBtlReLoadMapSBtlSceneSub	func	tier=D	derived-caller	na	unit code_00140960, neighbour mapNpcTblRefresh_Wait; called by sbtlReLoadMap_sbtlScene
 0x0014DF70	mapEXFloor	func	tier=D	derived-string	na	unit code_00140960, neighbour mapMapObjectRefresh_fld; string 'EX floor:%d\n'
 0x0014F368	mapBtlReLoadMapSBtlSceneSub2	func	tier=D	derived-caller	na	unit code_00140960, neighbour mapFileLoad; called by sbtlReLoadMap_sbtlScene
@@ -6070,7 +6069,7 @@
 0x003BF830	mapObjTaskData2	data	tier=D	derived-dominant	na	used by mapObjTask (84 of 196 refs, 43 functions)
 0x003BF834	mapObjOnOffData	data	tier=D	derived-sole	na	used by mapObjOnOff
 0x003BF854	mapScriptGet_PosData	data	tier=D	derived-sole	na	used by mapScriptGet_Pos
-0x003BF884	mapData22	data	tier=D	derived-shared	na	used by 2 functions: mapCallBitCheck3, mapEXFloor
+0x003BF884	mapData22	data	tier=D	derived-shared	na	used by 2 functions: mapNpcTblAdd_fld, mapEXFloor
 0x003C0000	cmpCallGetSpriteHnd5DataEntry5	data	tier=D	derived-table	na	pointed to by cmpCallGetSpriteHnd5DataEntry3
 0x003C3230	mapScriptGet_PosData2	data	tier=D	derived-dominant	na	used by mapScriptGet_Pos (14 of 24 refs, 6 functions)
 0x003C3234	mapCallPositioningGuardSystem2Data	data	tier=D	derived-sole	na	used by mapCallPositioningGuardSystem2
@@ -6088,7 +6087,7 @@
 0x003CFFC4	datData22	data	tier=D	derived-section	na	no code or data reference; unit data, section .data, size 0x56C
 0x003D0530	mapData31	data	tier=D	derived-shared	na	used by 7 functions: mapSpotPointGet2D, mapSpotPointFlagOn, mapSpotPointDrawStart
 0x003D0730	mapEXFloorData	data	tier=D	derived-dominant	na	used by mapEXFloor (14 of 30 refs, 7 functions)
-0x003D0738	mapCallBitCheck3Data	data	tier=D	derived-sole	na	used by mapCallBitCheck3
+0x003D0738	mapNpcTblAdd_fldData	data	tier=D	derived-sole	na	used by mapNpcTblAdd_fld
 0x003D9830	fldAllTblPacLoadData	data	tier=D	derived-sole	na	used by fldAllTblPacLoad
 0x003E0000	datData23	data	tier=D	derived-section	na	no code or data reference; unit data, section .data, size 0x2930
 0x003E2950	mapData32	data	tier=D	derived-shared	na	used by 4 functions: mapFileLoadSub2, mapSetAreaRefreshSub2, mapMapSetAreaRefresh
@@ -14659,8 +14658,6 @@
 0x0046BAFC	fldFreeMapDataData4	data	tier=D	derived-sole	na	used by fldFreeMapData
 0x0046BB00	mapMapSetAreaData22	data	tier=D	derived-dominant	na	used by mapMapSetArea (2 of 5 refs, 4 functions)
 0x0046BB04	mapMapSetAreaData23	data	tier=D	derived-dominant	na	used by mapMapSetArea (2 of 3 refs, 2 functions)
-0x0046BB0C	mapData114	data	tier=D	derived-shared	na	used by 4 functions: mapNpcTblRefresh, mapNpcTblRefreshSub, mapNpcTblRefresh_Wait
-0x0046BB10	mapData115	data	tier=D	derived-shared	na	used by 4 functions: mapNpcTblRefresh, mapNpcTblRefreshSub, mapNpcTblRefresh_Wait
 0x0046BB14	mapNpcTblRefresh_WaitData	data	tier=D	derived-dominant	na	used by mapNpcTblRefresh_Wait (7 of 9 refs, 3 functions)
 0x0046BB18	mapNpcTblRefresh_WaitData2	data	tier=D	derived-sole	na	used by mapNpcTblRefresh_Wait
 0x0046BB1C	mapCallSetOt8Data	data	tier=D	derived-sole	na	used by mapCallSetOt8
@@ -14668,15 +14665,9 @@
 0x0046BB28	mapSIZEData2	data	tier=D	derived-sole	na	used by mapSIZE
 0x0046BB40	mapIsFldKeyFreeSub4Data	data	tier=D	derived-dominant	na	used by mapIsFldKeyFreeSub4 (2 of 4 refs, 3 functions)
 0x0046BB44	mapIsFldKeyFreeSub4Data2	data	tier=D	derived-dominant	na	used by mapIsFldKeyFreeSub4 (2 of 4 refs, 3 functions)
-0x0046BB48	mapData116	data	tier=D	derived-shared	na	used by 3 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
 0x0046BB4C	mapBadEffLoadData	data	tier=D	derived-dominant	na	used by mapBadEffLoad (3 of 4 refs, 2 functions)
-0x0046BB50	mapData117	data	tier=D	derived-shared	na	used by 3 functions: mapCallMemset2, mapBadEffFree, mapBadEffLoad
-0x0046BB54	mapBadEffLoadData2	data	tier=D	derived-dominant	na	used by mapBadEffLoad (3 of 5 refs, 3 functions)
 0x0046BB58	mapData118	data	tier=D	derived-shared	na	used by 4 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
-0x0046BB5C	mapData119	data	tier=D	derived-shared	na	used by 3 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
 0x0046BB60	mapBadEffLoadData3	data	tier=D	derived-dominant	na	used by mapBadEffLoad (3 of 4 refs, 2 functions)
-0x0046BB64	mapCallMemset2Data	data	tier=D	derived-dominant	na	used by mapCallMemset2 (6 of 9 refs, 3 functions)
-0x0046BB68	mapBadEffLoadData4	data	tier=D	derived-dominant	na	used by mapBadEffLoad (3 of 5 refs, 3 functions)
 0x0046BB6C	mapData120	data	tier=D	derived-shared	na	used by 4 functions: mapBadEffLoad, mapBadEffFree, mapLeaf
 0x0046BB70	mapData121	data	tier=D	derived-shared	na	used by 2 functions: mapWaitCbScreenFadeBSub, mapCallMemset2
 0x0046BB74	mapData122	data	tier=D	derived-shared	na	used by 6 functions: mapNakamaGankTask_fld, mapNakamaKoukTask, mapNakamaSpotTask
@@ -16675,7 +16666,6 @@
 0x00490007	mdlGetNumOfMinorDataEntry21	data	tier=D	derived-table	na	pointed to by mdlGetNumOfMinorDataEntry5
 0x00490048	bssWork23	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0xC
 0x00490054	scrCallClearProfileFlagsTable3DataEntry	data	tier=D	derived-table	na	pointed to by scrCallClearProfileFlagsTable3Data
-0x004901A8	mapWork5	data	tier=D	derived-shared	na	used by 4 functions: fldAllTblPacLoad, mapCalcFXY, mapUnitSetLight
 0x0049033A	bssWork24	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x4218
 0x00494552	bssWork25	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x1
 0x00494553	bssWork26	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x1
@@ -16700,8 +16690,6 @@
 0x004B0006	mdlGetNumOfMinorDataEntry30	data	tier=D	derived-table	na	pointed to by mdlGetNumOfMinorDataEntry2
 0x004B0007	mdlGetNumOfMinorDataEntry31	data	tier=D	derived-table	na	pointed to by mdlGetNumOfMinorDataEntry5
 0x004B004A	bssWork35	data	tier=D	derived-section	na	no code or data reference; unit bss, section .bss, size 0x18DE
-0x004B1928	mapWork6	data	tier=D	derived-shared	na	used by 3 functions: mapNpcTblRefresh, mapNpcTblRefresh_Wait, mapNpcTblRefreshSub
-0x004B19A8	mapNpcTblRefresh_WaitWork	data	tier=D	derived-dominant	na	used by mapNpcTblRefresh_Wait (4 of 8 refs, 3 functions)
 0x004B1AB0	mapEffEplStartWork	data	tier=D	derived-dominant	na	used by mapEffEplStart (4 of 34 refs, 16 functions)
 0x004B1AC4	fldMapAllBUFUWork	data	tier=D	derived-sole	na	used by fldMapAllBUFU
 0x004B20E0	mapWork7	data	tier=D	derived-shared	na	used by 5 functions: mapLoadGenbaEpl, mapCallEffectDelete, mapGenbaPosEffAdd
@@ -18313,7 +18301,6 @@
 0x0013EB40	mapBgFScrollOn	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapBgFScrollOn score 4.6 flag -: calls1 calls-of-match votes2 st2:call r2-only
 0x00140050	mapAutomapFldClr	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD fld.mapAutomapFldClr score 0.9 flag -: calls1 callers-of-match st1:call r2-disagree:0x148448
 0x00140110	mapCutSetTblID2	func	tier=C	hd-d-single-raidou1	0.71 (n=403)	Raidou HD fld.mapCutSetTblID2 score 4.5 flag -: calls2 calls-of-match votes2 st1:call r2-disagree:0x1489b0
-0x00140960	mapCalcFXY	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapCalcFXY score 2.5 flag -: calls1 prev~ gap10/38 st1:gap r1-only
 0x00140ED8	nbMoveFormation	func	tier=C	smt3-fuzzy-60-m-pair	0.40 (n=5)	smt3 body 0x28b330 sim 0.644 margin 0.64 pair
 0x00140F38	mapGetLightParam	func	tier=C	hd-stable	0.75 (n=16)	Raidou HD fld.mapGetLightParam score 5.3 flag -: calls2 next callers-of-match votes2 st1:call r2-disagree:0x149880
 0x00141AC0	mapHamidasiCHitSub	func	tier=C	hd-d	0.53 (n=98)	Raidou HD fld.mapHamidasiCHitSub score 2.5 flag -: calls1 next~ calls-of-match st1:call r1-only
@@ -19803,7 +19790,15 @@
 0x0046B9E0	fldRunMapCellData	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E0)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x0046B9E4	pFroMapHead	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E4)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
 0x0046B9E8	fldRunMapScale	data	tier=B	smt3-ref	0.80 (n=D_r1_0046B9E8)	smt3-ref/close: nfun=2, other=0, sim=0.9333, games=2, size=True, sec=True, fn=fldCallMemFreeDirect
+0x0046BB0C	npc_delcash_cnt	data	tier=B	hd-role	na	HD mapNpcTblRefreshSub; replaces mapData114
+0x0046BB10	npc_addcash_cnt	data	tier=B	hd-role	na	HD mapNpcTblRefreshSub; replaces mapData115
 0x0046BB2C	pMapMoya	data	tier=B	hd-role	na	HD global of type mefMistSystem_t *; replaces mefData
+0x0046BB48	hMapBadEff_R	data	tier=B	hd-role	na	HD mapBadEffFree frees it in the mode 0 arm; replaces mapData116
+0x0046BB50	eMapBadEff_R	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapData117
+0x0046BB54	eMapBadEff_R_BADID	data	tier=B	hd-role	na	HD mapBadEffFree u64 store of 0xFFFFFFFF; replaces mapBadEffLoadData2
+0x0046BB5C	hMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapData119
+0x0046BB64	eMapBadEff_N	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapCallMemset2Data
+0x0046BB68	eMapBadEff_N_BADID	data	tier=B	hd-role	na	HD mapBadEffFree; replaces mapBadEffLoadData4
 0x0046BEE0	hPartialMultiBlur	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE0)	smt3-ref/close: nfun=4, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStop
 0x0046BEE4	gencMode	data	tier=B	smt3-ref	0.88 (n=D_r1_0046BEE4)	smt3-ref/loose: nfun=2, other=2, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x0046BEE8	gencStageInnAlp	data	tier=B	smt3-ref	0.80 (n=D_r1_0046BEE8)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
@@ -19903,6 +19898,9 @@
 0x00474F20	map_aibo_buff	data	tier=B	hd-role	na	HD mapAiboFoceSet loop over map_aibo_buff (128 xyz rows); replaces mapWork
 0x00475520	map_aibo_pos	data	tier=B	hd-role	na	HD mapAiboFoceSet map_aibo_pos = xyz; replaces mapAiboTaskWork
 0x00475530	map_summondv_buff	data	tier=B	hd-role	na	HD mapSummonDvGet map_summondv_buff[map_summondv_buff_read_idx]; replaces mapWork2
+0x004901A8	LightDataTbl	data	tier=B	hd-role	na	HD mapUnitSetLight reads GetFldLightTable(LightDataTbl, fieldID, lightid); R1 reads mapWork5[amSBlock][lightid]; replaces mapWork5
+0x004B1928	npc_delcash	data	tier=B	hd-role	na	HD mapNpcTblRefreshSub fills it with {npc index, obj index}, count npc_delcash_cnt; replaces mapWork6
+0x004B19A8	npc_addcash	data	tier=B	hd-role	na	HD mapNpcTblRefreshSub fills it with {npc, point, flor, model}, count npc_addcash_cnt; replaces mapNpcTblRefresh_WaitWork
 0x004B4B60	encBlurParam	data	tier=B	smt3-ref	0.80 (n=D_r1_004B4B60)	smt3-ref/close: nfun=2, other=0, sim=0.9574, games=2, size=True, sec=True, fn=encStart
 0x004B5EE0	pbDebugPanel2Pos	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EE0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel2
 0x004B5EF0	pbDebugPanel3X	data	tier=B	smt3-ref	0.88 (n=D_r1_004B5EF0)	smt3-ref/loose: nfun=2, other=0, sim=1.0, games=2, size=False, sec=True, fn=pbDebugPrintPanel3
