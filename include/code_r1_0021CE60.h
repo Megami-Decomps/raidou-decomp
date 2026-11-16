@@ -514,15 +514,6 @@ typedef struct EffFileJobRequest {
 
 typedef char EffFileJobRequestSizeCheck[(sizeof(EffFileJobRequest) == 0x20) ? 1 : -1];
 
-/* A code address stored in a menu row; the menu dispatcher decides how to call it. */
-typedef union EffEditorCallback {
-    u32 word;
-    s32 (*signedPoll)(void);
-    u32 (*unsignedPoll)(void);
-    void (*action)(void);
-    u32 (*wordTransform)(u32);
-} EffEditorCallback;
-
 /* Class operations select the copied parameter format and own this 0x40-byte
  * header. Each resource kind owns the pointer returned by its factory. */
 typedef struct EffClassWork {
@@ -748,7 +739,7 @@ void fileQueueDetachSectorFollower(FileQueue *queue, FileJob *job);
 
 typedef struct EffCameraCreateRequest {
     struct EffFileJobRequest *resource;
-    struct EffQueuedFileObject *object;
+    struct effDebugMenu_t *object;
     u32 existingJob;
     f32 position[3];
 } EffCameraCreateRequest;
@@ -756,60 +747,85 @@ typedef struct EffCameraCreateRequest {
 typedef char EffCameraCreateRequest_size_must_be_0x18[
     (sizeof(EffCameraCreateRequest) == 0x18) ? 1 : -1];
 
-/* The row's opcode selects one of these complete 16-byte payload roles. */
-typedef union EffEditorPayload {
-    struct {
-        void *target;
-        s32 lower;
-        s32 upper;
-        f32 step;
-    } numeric;
-    struct {
-        struct EffQueuedFileObject *editor;
-        u32 attributes;
-        s32 control;
-        f32 step;
-    } submenu;
-    struct {
-        EffEditorCallback poll;
-        EffEditorCallback action;
-        s32 control;
-        f32 step;
-    } callbacks;
-    struct {
-        EffEditorCallback action;
-        u32 attributes;
-        s32 control;
-        f32 step;
-    } action;
-} EffEditorPayload;
+struct BaObj;
+struct effDebugMenu_t;
 
-/* A menu row of the effect editor and the battle camera presets: text, opcode and a
- * 16-byte payload. */
-typedef struct EffEditorRow {
-    const char *text;
-    u8 kind;
-    u8 reserved05[3];
-    EffEditorPayload payload;
-} EffEditorRow;
+/* The item at +8, selected by effDebugMenuItem_t.type (EFF_DEBUG_ITEM_*). The function members are
+ * one engine slot; they differ only in the prototypes the editors were given. */
+typedef union effDebugMenuValue {
+    u8 *u8Value;                          /* BYTE, BYTE_TOGGLE, BYTE_CHOICE */
+    u16 *u16Value;                        /* SHORT_CHOICE */
+    s32 *s32Value;                        /* INT, INT_RANGE, COUNT, CHOICE */
+    u32 *rgbaValue;                       /* RED, GREEN, BLUE, ALPHA: one byte lane each */
+    f32 *f32Value;                        /* FLOAT, FLOAT_TENTH */
+    struct effDebugMenu_t *child;         /* CHILD, CHILD_PAGE */
+    s32 (*poll)(void);                    /* FUNCTION: file choosers */
+    u32 (*command)(void);                 /* FUNCTION, COMMAND */
+    s32 (*editObject)(struct BaObj *);    /* FUNCTION: scale and rotation track editors */
+    void (*editObjectNoResult)(struct BaObj *);
+    s32 (*editRequest)(s32);              /* FUNCTION: colour and fade track editors */
+    void (*action)(void);
+} effDebugMenuValue;
 
-/* A menu object (0x38 bytes) of the effect editor and the battle camera presets: the
- * title, placement, cursor, flag bits and rows of one page. */
-typedef struct EffQueuedFileObject {
-    const char *title; /* 0x00 */
-    s32 originX; /* 0x04: copied to the preset selector at 002B74AC. */
-    s32 originY; /* 0x08 */
-    s32 cursor; /* 0x0C */
-    u32 flags; /* 0x10 */
-    EffEditorRow *rows; /* 0x14 */
-    s32 count; /* 0x18 */
-    u32 unknown1C[6];
-    u8 *linkedState; /* 0x34: the menu to switch to */
-} EffQueuedFileObject;
+/* The item at +0xC: the lower bound, or the second function or colour of a command row. */
+typedef union effDebugMenuValue2 {
+    s32 minValue;
+    void (*release)(void);                /* FUNCTION */
+    u32 color;                            /* COMMAND */
+} effDebugMenuValue2;
 
-typedef char EffEditorRowSizeCheck[(sizeof(EffEditorRow) == 0x18) ? 1 : -1];
+/* Item types of the effect editor; the engine that interprets them is not in retail. */
+#define EFF_DEBUG_ITEM_BYTE 0x02
+#define EFF_DEBUG_ITEM_INT_RANGE 0x04
+#define EFF_DEBUG_ITEM_INT 0x06
+#define EFF_DEBUG_ITEM_FLOAT 0x08
+#define EFF_DEBUG_ITEM_BYTE_FLAG 0x0C
+#define EFF_DEBUG_ITEM_BYTE_TOGGLE 0x0E
+#define EFF_DEBUG_ITEM_RED 0x0F
+#define EFF_DEBUG_ITEM_GREEN 0x10
+#define EFF_DEBUG_ITEM_BLUE 0x11
+#define EFF_DEBUG_ITEM_ALPHA 0x12
+#define EFF_DEBUG_ITEM_SEPARATOR 0x14
+#define EFF_DEBUG_ITEM_BLANK 0x15
+#define EFF_DEBUG_ITEM_CHILD 0x16
+#define EFF_DEBUG_ITEM_CHILD_PAGE 0x17
+#define EFF_DEBUG_ITEM_COMMAND 0x19
+#define EFF_DEBUG_ITEM_FUNCTION 0x1A
+#define EFF_DEBUG_ITEM_FLOAT_TENTH 0x1E
 
-typedef char EffQueuedFileObjectSizeCheck[(sizeof(EffQueuedFileObject) == 0x38) ? 1 : -1];
+/* An effect editor item (0x18 bytes). SMT3 names; the step is f32 here. */
+typedef struct effDebugMenuItem_t {
+    const char *label;
+    u8 type;
+    u8 pad5[3];
+    effDebugMenuValue value;
+    effDebugMenuValue2 value2;
+    s32 maxValue;
+    f32 step;
+} effDebugMenuItem_t;
+
+/* A page of the effect editor and the battle camera presets (0x38 bytes). SMT3's record with
+ * flags added, no copy fields, and the parent moved to the end. */
+typedef struct effDebugMenu_t {
+    const char *title;                    /* 0x00 */
+    s32 x;                                /* 0x04: copied to the preset selector at 002B74AC. */
+    s32 y;                                /* 0x08 */
+    s32 selected;                         /* 0x0C */
+    u32 flags;                            /* 0x10 */
+    effDebugMenuItem_t *items;            /* 0x14 */
+    s32 itemCount;                        /* 0x18 */
+    struct EffFileJobRequest *source;     /* 0x1C */
+    u32 (*create)(u8 *request);           /* 0x20 */
+    void (*update)(u32 job);              /* 0x24 */
+    void (*destroy)(u32 job);             /* 0x28 */
+    u32 *param;                           /* 0x2C */
+    u32 (*recreate)(u8 *request);         /* 0x30 */
+    struct effDebugMenu_t *parent;        /* 0x34 */
+} effDebugMenu_t;
+
+typedef char effDebugMenuItemSizeCheck[(sizeof(effDebugMenuItem_t) == 0x18) ? 1 : -1];
+
+typedef char effDebugMenuSizeCheck[(sizeof(effDebugMenu_t) == 0x38) ? 1 : -1];
 
 struct Standard;
 struct ptcHandle_t;
