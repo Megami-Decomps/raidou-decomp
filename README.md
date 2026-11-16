@@ -126,6 +126,7 @@ that do not need retail inputs.
 - [docs/tus.md](docs/tus.md): how `.text` is split into translation units.
 - [docs/shared-c.md](docs/shared-c.md): units compiled into both versions.
 - [docs/smt3-names.md](docs/smt3-names.md): names carried over from smt3-decomp.
+- [docs/batch-workflow.md](docs/batch-workflow.md): landing a drafted batch with `tools/batch/land_batch.py`, and checking a header's includers.
 - `config/xgame/r1_r2_pairs.tsv`: functions present in both games, by address and unit, so none is matched twice.
 - `config/xgame/r1_r2_data_pairs.tsv`: data symbols present in both games. A pair has one name in both ([naming rule](docs/CONTRIBUTING.md#names-in-both-games)).
 - `config/<version>/claims.tsv`: advisory unit claims.
